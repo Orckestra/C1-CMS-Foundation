@@ -979,10 +979,10 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
     {
         public FlowToken Execute(EntityToken entityToken, ActionToken actionToken, FlowControllerServicesContainer flowControllerServicesContainer)
         {
-            DataEntityToken token = (DataEntityToken)entityToken;
+            var token = (DataEntityToken)entityToken;
             IPage page = token.Data as IPage;
 
-            PublicationScope publicationScope = PublicationScope.Unpublished;
+            var publicationScope = PublicationScope.Unpublished;
             if (actionToken is ViewPublicActionToken)
             {
                 publicationScope = PublicationScope.Published;
@@ -1010,29 +1010,36 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 previewPage = PageManager.GetPageById(page.Id);
             }
 
-            PageUrlData pageUrlData = new PageUrlData(previewPage);
+            var pageUrlData = new PageUrlData(previewPage);
 
+            string previewUrl = GetPagePreviewUrl(pageUrlData);
+
+            var arguments = new Dictionary<string, string> { { "URL", previewUrl } };
+            var consoleServices = flowControllerServicesContainer.GetService<IManagementConsoleMessageService>();
+
+            ConsoleMessageQueueFacade.Enqueue(new OpenHandledViewMessageQueueItem(
+                EntityTokenSerializer.Serialize(entityToken, true), "Composite.Management.Browser", arguments), 
+                consoleServices.CurrentConsoleId);
+
+            return null;
+        }
+
+
+        private static string GetPagePreviewUrl(PageUrlData pageUrlData)
+        {
             var httpContext = HttpContext.Current;
 
             var urlSpace = new UrlSpace();
-            if(HostnameBindingsFacade.GetBindingForCurrentRequest() != null
+            if (HostnameBindingsFacade.GetBindingForCurrentRequest() != null
                 || HostnameBindingsFacade.GetAliasBinding(httpContext) != null)
             {
                 urlSpace.ForceRelativeUrls = true;
             }
 
-            string url = PageUrls.BuildUrl(pageUrlData, UrlKind.Public, urlSpace)
+            return PageUrls.BuildUrl(pageUrlData, UrlKind.Public, urlSpace)
                       ?? PageUrls.BuildUrl(pageUrlData, UrlKind.Renderer, urlSpace); 
-
-            var arguments = new Dictionary<string, string> {{"URL", url}};
-            IManagementConsoleMessageService consoleServices = flowControllerServicesContainer.GetService<IManagementConsoleMessageService>();
-            ConsoleMessageQueueFacade.Enqueue(new OpenHandledViewMessageQueueItem(EntityTokenSerializer.Serialize(entityToken, true), "Composite.Management.Browser", arguments), consoleServices.CurrentConsoleId);
-
-            return null;
         }
     }
-
-
 
     // Not to used on elements. This is only for determin drag'n'drop security
     internal sealed class DragAndDropActionToken : ActionToken

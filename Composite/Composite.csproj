@@ -240,6 +240,7 @@
     <Compile Include="Functions\DynamicMethodHelper.cs" />
     <Compile Include="Functions\FunctionCallEditorManager.cs" />
     <Compile Include="Functions\FunctionCallEditorSettings.cs" />
+    <Compile Include="Plugins\Commands\ConsoleCommandHandlers\BrowseUrl.cs" />
     <Compile Include="Plugins\Commands\ConsoleCommandHandlers\FocusData.cs" />
     <Compile Include="Plugins\Data\DataProviders\MSSqlServerDataProvider\CodeGeneration\DataContextAssembler.cs" />
     <Compile Include="Plugins\Data\DataProviders\VirtualImageFileProvider\VirtualImageFileQueryable.cs" />
