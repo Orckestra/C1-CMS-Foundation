@@ -1535,7 +1535,6 @@
     <Compile Include="Data\Foundation\DataStoreExistenceVerifier.cs" />
     <Compile Include="Data\Types\IDynamicTypeFormDefinitionFile.cs" />
     <Compile Include="Data\Types\ILockingInformation.cs" />
-    <Compile Include="Data\Types\IPageHostNameBinding.cs" />
     <Compile Include="Data\Types\Foundation\PagePublishControlledAuxiliary.cs" />
     <Compile Include="Data\Types\IPagePlaceholderContent.cs" />
     <Compile Include="Data\Types\IPageUnpublishSchedule.cs" />

@@ -53,9 +53,7 @@ namespace Composite.Core.Routing
                     {
                         return;
                     }
-
-                    ConvertLegacyBindings();
-
+                    
                     var configurationData = DataFacade.BuildNew<IUrlConfiguration>();
                     configurationData.Id = new Guid("c7bd886b-7208-4257-b641-df2571a4872b");
 
@@ -63,38 +61,6 @@ namespace Composite.Core.Routing
 
                     DataFacade.AddNew(configurationData);
                 }
-            }
-        }
-
-        private static void ConvertLegacyBindings()
-        {
-            // TODO: remove in v 2.3
-            CultureInfo defaultCulture = DataLocalizationFacade.DefaultUrlMappingCulture;
-
-            if(defaultCulture == null)
-            {
-                return;
-            }
-#pragma warning disable 0612, 0618
-            foreach (var legacyBinding in DataFacade.GetData<IPageHostNameBinding>().ToList())
-#pragma warning restore 0612, 0618
- {
-                string hostname = legacyBinding.HostName;
-
-                if(!DataFacade.GetData<IHostnameBinding>(b => b.Hostname == hostname).Any())
-                {
-                    var newBinding = DataFacade.BuildNew<IHostnameBinding>(true);
-
-                    newBinding.Id = new Guid();
-                    newBinding.Hostname = hostname;
-                    newBinding.IncludeHomePageInUrl = false;
-                    newBinding.IncludeCultureInUrl = true;
-                    newBinding.Culture = defaultCulture.Name;
-
-                    DataFacade.AddNew(newBinding);
-                }
-
-                DataFacade.Delete(legacyBinding);
             }
         }
 
