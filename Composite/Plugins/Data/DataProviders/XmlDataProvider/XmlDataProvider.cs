@@ -219,7 +219,10 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
         internal object GetKey(DataTypeDescriptor dataTypeDescriptor)
         {
-            return dataTypeDescriptor.DataTypeId;
+            Guid dataTypeId = dataTypeDescriptor.DataTypeId;
+            object[] allKeys = BaseGetAllKeys();
+
+            return allKeys.Contains(dataTypeId) ? dataTypeId : (object)null;
         }
 
         internal XmlProviderInterfaceConfigurationElement Get(object key)
