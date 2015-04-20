@@ -223,12 +223,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
         private static DataTypeDescriptor GetDataTypeDescriptorNotNull(XmlProviderInterfaceConfigurationElement element)
         {
-            if (!element.DataTypeId.HasValue)
-            {
-                throw NewConfigurationException(element, "Missing 'dataTypeId' attribute");
-            }
-
-            Guid dataTypeId = element.DataTypeId.Value;
+            Guid dataTypeId = element.DataTypeId;
 
             var dataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(dataTypeId, true);
             if (dataTypeDescriptor == null)

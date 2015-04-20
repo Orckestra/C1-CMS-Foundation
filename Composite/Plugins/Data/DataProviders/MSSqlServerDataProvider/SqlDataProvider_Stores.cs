@@ -308,12 +308,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
             foreach (InterfaceConfigurationElement element in configurationElements)
             {
-                if (!element.DataTypeId.HasValue)
-                {
-                    throw NewConfigurationException(element, "Missing 'dataTypeId' attribute");
-                }
-
-                Guid dataTypeId = element.DataTypeId.Value;
+                Guid dataTypeId = element.DataTypeId;
 
                 var dataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(dataTypeId, true);
                 if (dataTypeDescriptor == null)
@@ -491,12 +486,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
             result.DataScopes = dataScopes;
 
-            if (!element.DataTypeId.HasValue)
-            {
-                throw NewConfigurationException(element, "Missing 'dataTypeId' attribute");
-            }
-
-            Guid dataTypeId = element.DataTypeId.Value;
+            Guid dataTypeId = element.DataTypeId;
 
             var dataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(dataTypeId, true);
             if (dataTypeDescriptor == null)
@@ -1018,17 +1008,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
             foreach (InterfaceConfigurationElement element in _interfaceConfigurationElements)
             {
-                if (!element.DataTypeId.HasValue)
-                {
-#pragma warning disable 612,618
-                    string interfaceName = element.InterfaceType ?? "<unknown type name>";
-#pragma warning restore 612,618
-
-                    Log.LogWarning(LogTitle, "Failed to create store for type '{0}' as it doesn't have an assigned 'dataTypeId' attribute, or it wasn't correctly loaded from meta data files".FormatWith(interfaceName));
-                    continue;
-                }
-
-                Guid dataTypeId = element.DataTypeId.Value;
+                Guid dataTypeId = element.DataTypeId;
                 var dataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(dataTypeId, true);
                 if (dataTypeDescriptor == null)
                 {

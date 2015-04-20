@@ -273,9 +273,9 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
             foreach (InterfaceConfigurationElement element in _interfaceConfigurationElements)
             {
-                if (element.DataTypeId == null || element.DataTypeId == Guid.Empty) continue;
+                if (element.DataTypeId == Guid.Empty) continue;
 
-                DataTypeDescriptor dataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(element.DataTypeId.Value);
+                var dataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(element.DataTypeId);
 
                 if (!dataTypeDescriptor.ValidateRuntimeType())
                 {
@@ -283,11 +283,11 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                     continue;
                 }
 
-                List<SqlDataTypeStoreDataScope> sqlDataTypeStoreDataScopes = new List<SqlDataTypeStoreDataScope>();
+                var sqlDataTypeStoreDataScopes = new List<SqlDataTypeStoreDataScope>();
 
                 foreach (StorageInformation storageInformation in element.Stores)
                 {
-                    SqlDataTypeStoreDataScope sqlDataTypeStoreDataScope = new SqlDataTypeStoreDataScope
+                    var sqlDataTypeStoreDataScope = new SqlDataTypeStoreDataScope
                     {
                         DataScopeName = storageInformation.DataScope,
                         CultureName = storageInformation.CultureName,
@@ -356,14 +356,14 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                 interfaceConfigurationElements.Add(table);
             }
 
-            ReplaceTypeNamesWithTypeIDs(interfaceConfigurationElements);
+            var sqlLoggingContext = new SqlLoggingContext
+            {
+                Enabled = sqlDataProviderData.SqlQueryLoggingEnabled,
+                IncludeStack = sqlDataProviderData.SqlQueryLoggingIncludeStack,
+                TypesToIgnore = new List<Type>(),
+                TablesToIgnore = new List<string>()
+            };
 
-
-            var sqlLoggingContext = new SqlLoggingContext();
-            sqlLoggingContext.Enabled = sqlDataProviderData.SqlQueryLoggingEnabled;
-            sqlLoggingContext.IncludeStack = sqlDataProviderData.SqlQueryLoggingIncludeStack;
-            sqlLoggingContext.TypesToIgnore = new List<Type>();
-            sqlLoggingContext.TablesToIgnore = new List<string>();
             if (sqlDataProviderData.SqlQueryLoggingEnabled)
             {
                 foreach (LoggingIgnoreInterfacesConfigurationElement element in sqlDataProviderData.LoggingIgnoreInterfaces)
@@ -373,7 +373,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                     {
                         sqlLoggingContext.TypesToIgnore.Add(interfaceType);
 
-                        InterfaceConfigurationElement interfaceElement = interfaceConfigurationElements.Where(f => f.DataTypeId == interfaceType.GetImmutableTypeId()).SingleOrDefault();
+                        InterfaceConfigurationElement interfaceElement = interfaceConfigurationElements.SingleOrDefault(f => f.DataTypeId == interfaceType.GetImmutableTypeId());
                         if (interfaceElement == null) continue;
 
                         foreach (StoreConfigurationElement store in interfaceElement.ConfigurationStores)
@@ -402,42 +402,6 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
             return new SqlDataProvider(connectionString, interfaceConfigurationElements, sqlLoggingContext);
         }
-
-        #region Build manager upgrade C1 2.0 -> 3.0
-
-        private static void ReplaceTypeNamesWithTypeIDs(IEnumerable<InterfaceConfigurationElement> configurationElements)
-        {
-#pragma warning disable 612,618
-
-            Dictionary<string, Guid> typeNameToTypeIdMap = null;
-
-            foreach (var interfaceConfigurationElement in configurationElements)
-            {
-                string interfaceTypeName = interfaceConfigurationElement.InterfaceType;
-
-                if (interfaceTypeName.IsNullOrEmpty())
-                {
-                    continue;
-                }
-
-                typeNameToTypeIdMap = typeNameToTypeIdMap ?? DataMetaDataFacade.GetTypeManagerTypeNameToTypeIdMap();
-
-                if (!typeNameToTypeIdMap.ContainsKey(interfaceTypeName))
-                {
-                    Log.LogWarning(LogTitle, "Failed to find DataTypeId for interface '{0}'".FormatWith(interfaceTypeName));
-                    continue;
-                }
-
-                interfaceConfigurationElement.DataTypeId = typeNameToTypeIdMap[interfaceTypeName];
-                interfaceConfigurationElement.InterfaceType = null;
-            }
-
-#pragma warning restore 612,618
-        }
-
-
-
-        #endregion Build manager upgrade C1 2.0 -> 3.0
     }
 
 
@@ -650,21 +614,11 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
 
         private const string _dataTypeIdName = "dataTypeId";
-        [System.Configuration.ConfigurationProperty(_dataTypeIdName, IsRequired = false)]
-        public Guid? DataTypeId
+        [System.Configuration.ConfigurationProperty(_dataTypeIdName, IsRequired = true)]
+        public Guid DataTypeId
         {
-            get { return (Guid?)base[_dataTypeIdName]; }
+            get { return (Guid)base[_dataTypeIdName]; }
             set { base[_dataTypeIdName] = value; }
-        }
-
-
-        private const string _interfaceTypePropertyName = "interfaceType";
-        [System.Configuration.ConfigurationProperty(_interfaceTypePropertyName, IsRequired = false)]
-        [Obsolete("Attribute 'dataTypeId' should be used instead, used for upgrade procedure")]
-        public string InterfaceType
-        {
-            get { return (string)base[_interfaceTypePropertyName]; }
-            set { base[_interfaceTypePropertyName] = value; }
         }
 
 
@@ -720,42 +674,28 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
         protected override object GetElementKey(System.Configuration.ConfigurationElement element)
         {
             Guid? dataTypeId = ((InterfaceConfigurationElement) element).DataTypeId;
-            if(dataTypeId != null)
-            {
-                return GetKey(dataTypeId, null);
-            }
+            Verify.IsNotNull(dataTypeId, "Configuration element is missing attribute 'dataTypeId'");
 
-
-#pragma warning disable 612,618
-            string interfaceTypeName = ((InterfaceConfigurationElement) element).InterfaceType;
-#pragma warning restore 612,618
-
-            Verify.IsNotNull(interfaceTypeName, "Configuration element is missing attribute 'dataTypeId'");
-
-            return GetKey(null, interfaceTypeName);
+            return dataTypeId;
         }
 
         internal bool ContainsInterfaceType(InterfaceConfigurationElement interfaceConfigurationElement)
         {
-#pragma warning disable 612,618
-            return ContainsInterfaceType(interfaceConfigurationElement.DataTypeId, interfaceConfigurationElement.InterfaceType);
-#pragma warning restore 612,618
+            return ContainsInterfaceType(interfaceConfigurationElement.DataTypeId);
         }
 
         internal bool ContainsInterfaceType(DataTypeDescriptor dataTypeDescriptor)
         {
-            return ContainsInterfaceType(dataTypeDescriptor.DataTypeId, dataTypeDescriptor.TypeManagerTypeName);
+            return ContainsInterfaceType(dataTypeDescriptor.DataTypeId);
         }
 
         internal InterfaceConfigurationElement Get(DataTypeDescriptor dataTypeDescriptor)
         {
-            var keys = GetKeys(dataTypeDescriptor.DataTypeId, dataTypeDescriptor.TypeManagerTypeName).ToList();
-
             foreach (InterfaceConfigurationElement element in this)
             {
                 object key = GetElementKey(element);
 
-                if (keys.Contains(key))
+                if ((Guid)key == dataTypeDescriptor.DataTypeId)
                 {
                     return element;
                 }
@@ -764,53 +704,21 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
             return null;
         }
 
-        internal bool ContainsInterfaceType(Guid? dataTypeId, string typeName)
+        internal bool ContainsInterfaceType(Guid dataTypeId)
         {
             object[] allKeys = BaseGetAllKeys();
 
-            return GetKeys(dataTypeId, typeName).Any(allKeys.Contains);
+            return allKeys.Contains(dataTypeId);
         }
 
         internal void Remove(DataTypeDescriptor dataTypeDescriptor)
         {
-            Remove(dataTypeDescriptor.DataTypeId, dataTypeDescriptor.TypeManagerTypeName);
+            Remove(dataTypeDescriptor.DataTypeId);
         }
 
-        internal void Remove(Guid? dataTypeId, string typeName)
+        internal void Remove(Guid dataTypeId)
         {
-            GetKeys(dataTypeId, typeName).ForEach(this.BaseRemove);
-        }
-
-        private static IEnumerable<object> GetKeys(Guid? dataTypeId, string typeName)
-        {
-            var result = new List<object>();
-
-            if(dataTypeId != null)
-            {
-                result.Add(GetKey(dataTypeId, null));
-            }
-
-            if(typeName != null)
-            {
-                result.Add(GetKey(null, typeName));
-            }
-
-            return result;
-        }
-
-        private static object GetKey(Guid? dataTypeId, string typeName)
-        {
-            if (dataTypeId != null) return dataTypeId;
-
-            Verify.IsNotNull(typeName, "Both 'interfaceType' and 'dataTypeId' attributes are empty");
-
-            string canonicTypeName = typeName;
-            if (!typeName.StartsWith("DynamicType:") && !typeName.Contains(","))
-            {
-                canonicTypeName = "DynamicType:" + canonicTypeName;
-            }
-
-            return canonicTypeName;
+            this.BaseRemove(dataTypeId);
         }
     }
 
