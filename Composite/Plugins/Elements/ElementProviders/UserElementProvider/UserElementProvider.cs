@@ -9,6 +9,7 @@ using Composite.Core.ResourceSystem;
 using Composite.Core.ResourceSystem.Icons;
 using Composite.C1Console.Security;
 using Composite.C1Console.Workflow;
+using Composite.Plugins.Security.LoginProviderPlugins.DataBasedFormLoginProvider;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 using Microsoft.Practices.ObjectBuilder;
@@ -47,6 +48,11 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
             set { _elementProviderContext = value; }
         }
 
+        private class UserInfo
+        {
+            public IUser User { get; set; }
+            public IUserFormLogin UserFormLogin { get; set; }
+        }
 
 
         public IEnumerable<Element> GetRoots(SearchToken seachToken)
@@ -110,14 +116,15 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 
             foreach (EntityToken entityToken in entityTokens)
             {
-                DataEntityToken dataEntityToken = entityToken as DataEntityToken;
+                var dataEntityToken = entityToken as DataEntityToken;
 
                 Type type = dataEntityToken.InterfaceType;
                 if (type != typeof(IUser)) continue;
 
                 IUser user = dataEntityToken.Data as IUser;
+                IUserFormLogin userFormLogin = user.GetUserFormLogin();
 
-                var newEntityToken = new UserElementProviderGroupEntityToken(user.Group);
+                var newEntityToken = new UserElementProviderGroupEntityToken(userFormLogin.Folder);
 
                 result.Add(entityToken, new EntityToken[] { newEntityToken });
             }
@@ -131,29 +138,30 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
         {
             IEnumerable<string> groups;
 
-            if (seachToken.IsValidKeyword() == false)
+            if (!seachToken.IsValidKeyword())
             {
                 groups =
-                    (from user in DataFacade.GetData<IUser>()
-                     orderby user.Group
-                     select user.Group).Distinct().ToList();
+                    (from user in DataFacade.GetData<IUserFormLogin>()
+                     orderby user.Folder
+                     select user.Folder).Distinct().ToList();
             }
             else
             {
                 string keyword = seachToken.Keyword.ToLowerInvariant();
 
                 groups =
-                    (from user in DataFacade.GetData<IUser>().ToList()
+                    (from userFormLogin in DataFacade.GetData<IUserFormLogin>().ToList()
+                     join user in DataFacade.GetData<IUser>().ToList() on userFormLogin.UserId equals user.Id
                      where user.Username.ToLowerInvariant().Contains(keyword)
-                     orderby user.Group
-                     select user.Group).Distinct().ToList();
+                     orderby userFormLogin.Folder
+                     select userFormLogin.Folder).Distinct().ToList();
             }
 
-            List<Element> children = new List<Element>();
+            var children = new List<Element>();
 
             foreach (string group in groups)
             {
-                Element element = new Element(_elementProviderContext.CreateElementHandle(new UserElementProviderGroupEntityToken(group)))
+                var element = new Element(_elementProviderContext.CreateElementHandle(new UserElementProviderGroupEntityToken(group)))
                 {
                     VisualData = new ElementVisualizedData
                     {
@@ -191,44 +199,52 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 
 
 
-        private IEnumerable<Element> GetUsersChildrenElements(string groupName, SearchToken seachToken)
+        private IEnumerable<Element> GetUsersChildrenElements(string folderName, SearchToken seachToken)
         {
-            IEnumerable<IUser> users;
+            ICollection<UserInfo> users;
 
-            if (seachToken.IsValidKeyword() == false)
+
+
+            if (!seachToken.IsValidKeyword())
             {
                 users =
-                    (from user in DataFacade.GetData<IUser>()
-                     where user.Group == groupName
+                    (from userFormLogin in DataFacade.GetData<IUserFormLogin>().ToList()
+                     join user in DataFacade.GetData<IUser>().ToList() on userFormLogin.UserId equals user.Id
+                     where userFormLogin.Folder == folderName
                      orderby user.Username
-                     select user).ToList();
+                     select new UserInfo { User = user, UserFormLogin = userFormLogin }).ToList();
             }
             else
             {
                 string keyword = seachToken.Keyword.ToLowerInvariant();
 
                 users =
-                    (from user in DataFacade.GetData<IUser>().ToList()
-                     where user.Group == groupName &&
+                    (from userFormLogin in DataFacade.GetData<IUserFormLogin>().ToList()
+                     join user in DataFacade.GetData<IUser>().ToList() on userFormLogin.UserId equals user.Id
+                     where userFormLogin.Folder == folderName &&
                            user.Username.ToLowerInvariant().Contains(keyword)
                      orderby user.Username
-                     select user).ToList();
+                     select new UserInfo { User = user, UserFormLogin = userFormLogin }).ToList();
             }
 
             var children = new List<Element>();
 
-            foreach (IUser user in users)
+            foreach (var userInfo in users)
             {
-                var element = new Element(_elementProviderContext.CreateElementHandle(user.GetDataEntityToken()))
-                {
-                    VisualData = new ElementVisualizedData
+                string label = userInfo.User.GetLabel();
+
+                var element =
+                    new Element(_elementProviderContext.CreateElementHandle(userInfo.User.GetDataEntityToken()))
                     {
-                        Label = user.GetLabel(),
-                        ToolTip = user.GetLabel(),
-                        HasChildren = false,
-                        Icon = !user.IsLocked ? UserIcon : LockedUserIcon,
-                    }
-                };
+                        VisualData = new ElementVisualizedData
+                        {
+                            Label = label,
+                            ToolTip = label,
+                            HasChildren = false,
+                            Icon = !userInfo.UserFormLogin.IsLocked ? UserIcon : LockedUserIcon,
+
+                        }
+                    };
 
                 // Making "Edit permissions" not show up on user elements - it's confusing :)
                 element.ElementExternalActionAdding = ElementExternalActionAddingExtensions.Remove(element.ElementExternalActionAdding, ElementExternalActionAdding.AllowManageUserPermissions);

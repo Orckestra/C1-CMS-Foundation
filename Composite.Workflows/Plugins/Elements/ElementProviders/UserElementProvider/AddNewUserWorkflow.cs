@@ -25,13 +25,12 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
     public sealed partial class AddNewUserWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
-        private static string NewUserBindingName { get { return "NewUser"; } }
-
-
         private static class BindingNames
         {
+            public const string NewUser = "NewUser";
             public const string Username = "NewUser.Username";
-            public const string EncryptedPassword = "NewUser.EncryptedPassword";
+            public const string Password = "Password";
+            public const string UserFormLogin = "UserFormLogin";
         }
 
         public AddNewUserWorkflow()
@@ -48,13 +47,21 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 
         private void IsUserValid(object sender, ConditionalEventArgs e)
         {
-            IUser newUser = this.GetBinding<IUser>(NewUserBindingName);
+            IUser newUser = this.GetBinding<IUser>(BindingNames.NewUser);
+            var bindedUserFormLogin = this.GetBinding<IUserFormLogin>(BindingNames.UserFormLogin);
 
             NormalizeUsername(newUser);
             
             ValidationResults validationResults = ValidationFacade.Validate(newUser);
 
             bool isValid = validationResults.IsValid;
+
+            if (isValid)
+            {
+                validationResults = ValidationFacade.Validate(bindedUserFormLogin);
+
+                isValid = validationResults.IsValid;
+            }
 
             if(isValid)
             {
@@ -71,12 +78,15 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
                     isValid = false;
                 }
 
+                string password = this.GetBinding<string>(BindingNames.Password);
+
+
                 IList<string> validationMessages;
-                if (!PasswordPolicyFacade.ValidatePassword(newUser, newUser.EncryptedPassword, out validationMessages))
+                if (!PasswordPolicyFacade.ValidatePassword(newUser, password, out validationMessages))
                 {
                     foreach (var message in validationMessages)
                     {
-                        this.ShowFieldMessage(BindingNames.EncryptedPassword, message);
+                        this.ShowFieldMessage(BindingNames.Password, message);
                     }
 
                     isValid = false;
@@ -89,7 +99,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 
         private void MissingActiveLanguageCodeActivity_ExecuteCode(object sender, EventArgs e)
         {
-            FlowControllerServicesContainer flowControllerServicesContainer = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
+            var flowControllerServicesContainer = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
             var managementConsoleMessageService = flowControllerServicesContainer.GetService<IManagementConsoleMessageService>();
 
             managementConsoleMessageService.ShowMessage(
@@ -105,11 +115,17 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
             IUser newUser = DataFacade.BuildNew<IUser>();
             newUser.Id = Guid.NewGuid();
 
+            var userFormLogin = DataFacade.BuildNew<IUserFormLogin>();
+
+            userFormLogin.PasswordHash = "";
+            userFormLogin.PasswordHashSalt = "";
+
+
             var groupEntityToken = this.EntityToken as UserElementProviderGroupEntityToken;
 
             if (groupEntityToken != null)
             {
-                newUser.Group = groupEntityToken.Id;
+                userFormLogin.Folder = groupEntityToken.Id;
             }
 
             CultureInfo userCulture = UserSettings.CultureInfo; // Copy admins settings
@@ -118,7 +134,8 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
             List<KeyValuePair> regionLanguageList = StringResourceSystemFacade.GetSupportedCulturesList();
             Dictionary<string, string> culturesDictionary = StringResourceSystemFacade.GetAllCultures();
             
-            this.Bindings.Add(NewUserBindingName, newUser);
+            this.Bindings.Add(BindingNames.NewUser, newUser);
+            this.Bindings.Add(BindingNames.UserFormLogin, userFormLogin);
 
             this.Bindings.Add("AllCultures", culturesDictionary);
             this.Bindings.Add("CultureName", userCulture.Name);
@@ -131,14 +148,14 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 
         private void step1CodeActivity_ExecuteCode(object sender, EventArgs e)
         {
-            IUser newUser = this.GetBinding<IUser>(NewUserBindingName);
+            IUser newUser = this.GetBinding<IUser>(BindingNames.NewUser);
             NormalizeUsername(newUser);
 
             ValidationResults validationResults = ValidationFacade.Validate(newUser);
 
             foreach (ValidationResult result in validationResults)
             {
-                this.ShowFieldMessage(string.Format("{0}.{1}", NewUserBindingName, result.Key), result.Message);
+                this.ShowFieldMessage(string.Format("{0}.{1}", BindingNames.NewUser, result.Key), result.Message);
             }
 
             IQueryable<IUser> usersWithTheSameName =
@@ -158,15 +175,16 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
         {
             AddNewTreeRefresher addNewTreeRefresher = this.CreateAddNewTreeRefresher(this.EntityToken);
 
-            IUser newUser = this.GetBinding<IUser>(NewUserBindingName);
+            IUser newUser = this.GetBinding<IUser>(BindingNames.NewUser);
+            var bindedUserFormLogin = this.GetBinding<IUserFormLogin>(BindingNames.UserFormLogin);
+
             NormalizeUsername(newUser);
 
-            string password = newUser.EncryptedPassword;
+            string password = this.GetBinding<string>(BindingNames.Password);
 
-            newUser.EncryptedPassword = "";
             newUser = DataFacade.AddNew<IUser>(newUser);
 
-            UserPasswordManager.SetPassword(newUser, password);
+            UserFormLoginManager.CreateUserFormLogin(newUser.Id, password, bindedUserFormLogin.Folder);
 
             string cultureName = this.GetBinding<string>("CultureName");
             string c1ConsoleUiLanguageName = this.GetBinding<string>("C1ConsoleUiLanguageName");

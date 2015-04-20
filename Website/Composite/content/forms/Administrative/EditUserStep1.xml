@@ -2,6 +2,7 @@
 <cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
   <cms:bindings>
     <cms:binding name="User" type="Composite.Data.Types.IUser" />
+    <cms:binding name="UserFormLogin" type="Composite.Data.Types.IUserFormLogin" />
     <cms:binding name="CultureName" type="System.String" />
     <cms:binding name="C1ConsoleUiLanguageName" type="System.String" />
     <cms:binding name="C1ConsoleUiCultures" type="System.Collections.IEnumerable" />
@@ -41,7 +42,7 @@
           </TextBox>
           <TextBox Label="${Composite.Management, Website.Forms.Administrative.EditUserStep1.GroupLabel}" Help="${Composite.Management, Website.Forms.Administrative.EditUserStep1.GroupHelp}">
             <TextBox.Text>
-              <cms:bind source="User.Group" />
+              <cms:bind source="UserFormLogin.Folder" />
             </TextBox.Text>
           </TextBox>
           <f:NullCheck>
@@ -61,7 +62,7 @@
           </f:NullCheck>
           <CheckBox Label="${Composite.Management, Website.Forms.Administrative.EditUserStep1.IsLockedLabel}" ItemLabel="${Composite.Management, Website.Forms.Administrative.EditUserStep1.IsLockedItemLabel}" Help="${Composite.Management, Website.Forms.Administrative.EditUserStep1.IsLockedHelp}">
             <CheckBox.Checked>
-              <cms:bind source="User.IsLocked" />
+              <cms:bind source="UserFormLogin.IsLocked" />
             </CheckBox.Checked>
           </CheckBox>
         </FieldGroup>

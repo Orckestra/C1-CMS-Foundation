@@ -230,6 +230,7 @@
     <Compile Include="Data\Types\IPublishSchedule.cs" />
     <Compile Include="Data\Types\ISchedule.cs" />
     <Compile Include="Data\Types\IUnpublishSchedule.cs" />
+    <Compile Include="Data\Types\IUserFormLogin.cs" />
     <Compile Include="Data\Types\IUserPasswordHistory.cs" />
     <Compile Include="Data\PublishScheduling\PublishScheduleHelper.cs" />
     <Compile Include="Data\Types\TypeVersionAttribute.cs" />
@@ -988,7 +989,7 @@
     <Compile Include="Plugins\Routing\Pages\DefaultPageUrlProvider.cs" />
     <Compile Include="Plugins\Routing\UrlFormatters\StringReplaceUrlFormatter.cs" />
     <Compile Include="Plugins\Routing\UrlFormatters\ToLowerCaseUrlFormatter.cs" />
-    <Compile Include="Plugins\Security\LoginProviderPlugins\DataBasedFormLoginProvider\UserPasswordManager.cs" />
+    <Compile Include="Plugins\Security\LoginProviderPlugins\DataBasedFormLoginProvider\UserFormLoginManager.cs" />
     <Compile Include="Plugins\Security\PasswordRules\DifferentCharacterGroups\DifferentCharacterGroupsPasswordRule.cs" />
     <Compile Include="Plugins\Security\PasswordRules\DoNotUseUserName\DoNotUseUserNamePasswordRule.cs" />
     <Compile Include="Plugins\Security\PasswordRules\EnforcePasswordHistory\EnforcePasswordHistoryPasswordRule.cs" />

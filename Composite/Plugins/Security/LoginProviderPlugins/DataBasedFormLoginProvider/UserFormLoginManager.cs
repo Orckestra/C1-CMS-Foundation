@@ -4,7 +4,6 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using Composite.C1Console.Security;
-using Composite.C1Console.Security.Cryptography;
 using Composite.Core.Extensions;
 using Composite.Core.Linq;
 using Composite.Data;
@@ -15,51 +14,59 @@ namespace Composite.Plugins.Security.LoginProviderPlugins.DataBasedFormLoginProv
     /// <summary>
     /// User password update/validation.
     /// </summary>
-    public static class UserPasswordManager
+    public static class UserFormLoginManager
     {
+        /// <summary>
+        /// Creates user's form login data.
+        /// </summary>
+        /// <param name="userId">The user id.</param>
+        /// <param name="password">Password</param>
+        /// <param name="userFolder">The name of the folder in which the user will be shown in c1 console.</param>
+        public static void CreateUserFormLogin(Guid userId, string password, string userFolder)
+        {
+            var userFormLogin = DataFacade.BuildNew<IUserFormLogin>();
+            userFormLogin.UserId = userId;
+            userFormLogin.Folder = userFolder;
+
+            SetPasswordFieldsInt(userFormLogin, password);
+            DataFacade.AddNew(userFormLogin);
+        }
+
         /// <summary>
         /// Sets a password for a user, preserving password history.
         /// </summary>
-        /// <param name="user">The user.</param>
+        /// <param name="userFormLogin">The user form login data.</param>
         /// <param name="password">The new password.</param>
-        public static void SetPassword(IUser user, string password)
+        public static void SetPassword(IUserFormLogin userFormLogin, string password)
         {
             Verify.ArgumentNotNullOrEmpty(password, "password");
 
-            SavePasswordHistory(user);
-            SetPasswordFieldsInt(user, password);
+            SavePasswordHistory(userFormLogin);
+            SetPasswordFieldsInt(userFormLogin, password);
 
-            user.LastPasswordChangeDate = DateTime.Now;
+            userFormLogin.LastPasswordChangeDate = DateTime.Now;
 
-            DataFacade.Update(user);
+            DataFacade.Update(userFormLogin);
         }
 
-        private static void SavePasswordHistory(IUser user)
+        private static void SavePasswordHistory(IUserFormLogin userFormLogin)
         {
-            if (string.IsNullOrEmpty(user.EncryptedPassword) || PasswordPolicyFacade.PasswordHistoryLength <= 0)
+            if (string.IsNullOrEmpty(userFormLogin.PasswordHash) || PasswordPolicyFacade.PasswordHistoryLength <= 0)
             {
                 return;
             }
 
-            // Backwards compatibility - hashing old paswords on password change
-            if (string.IsNullOrEmpty(user.PasswordHashSalt))
-            {
-                string oldPassword = user.EncryptedPassword.Decrypt();
-
-                SetPasswordFieldsInt(user, oldPassword);
-            }
-            
             var passwordHistoryRecord = DataFacade.BuildNew<IUserPasswordHistory>();
             passwordHistoryRecord.Id = Guid.NewGuid();
-            passwordHistoryRecord.UserId = user.Id;
-            passwordHistoryRecord.SetDate = user.LastPasswordChangeDate;
-            passwordHistoryRecord.PasswordSalt = user.PasswordHashSalt;
-            passwordHistoryRecord.PasswordHash = user.EncryptedPassword;
+            passwordHistoryRecord.UserId = userFormLogin.UserId;
+            passwordHistoryRecord.SetDate = userFormLogin.LastPasswordChangeDate;
+            passwordHistoryRecord.PasswordSalt = userFormLogin.PasswordHashSalt;
+            passwordHistoryRecord.PasswordHash = userFormLogin.PasswordHash;
 
             DataFacade.AddNew(passwordHistoryRecord);
 
             // Cleaning up old history records
-            Guid userId = user.Id;
+            Guid userId = userFormLogin.UserId;
             var passwordDataToBeRemoved = DataFacade.GetData<IUserPasswordHistory>()
                 .Where(uph => uph.UserId == userId)
                 .OrderByDescending(uph => uph.SetDate).Skip(PasswordPolicyFacade.PasswordHistoryLength).ToList();
@@ -70,12 +77,12 @@ namespace Composite.Plugins.Security.LoginProviderPlugins.DataBasedFormLoginProv
             }
         }
 
-        private static void SetPasswordFieldsInt(IUser user, string password)
+        private static void SetPasswordFieldsInt(IUserFormLogin user, string password)
         {
             var salt = GenerateHashSalt();
 
-            user.EncryptedPassword = GeneratePasswordHash(password, salt);
             user.PasswordHashSalt = Convert.ToBase64String(salt);
+            user.PasswordHash = GeneratePasswordHash(password, salt);
         }
 
 
@@ -85,21 +92,21 @@ namespace Composite.Plugins.Security.LoginProviderPlugins.DataBasedFormLoginProv
         /// <param name="user"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        public static bool ValidatePassword(IUser user, string password)
+        public static bool ValidatePassword(IUserFormLogin user, string password)
         {
-            if (user.EncryptedPassword.IsNullOrEmpty())
+            if (user.PasswordHash.IsNullOrEmpty())
             {
                 return false;
             }
 
             if (user.PasswordHashSalt.IsNullOrEmpty())
             {
-                return LegacyPasswordMatch(user, password);
+                return false;
             }
 
             byte[] salt = Convert.FromBase64String(user.PasswordHashSalt);
 
-            return user.EncryptedPassword == GeneratePasswordHash(password, salt);
+            return user.PasswordHash == GeneratePasswordHash(password, salt);
         }
 
         /// <summary>
@@ -127,15 +134,14 @@ namespace Composite.Plugins.Security.LoginProviderPlugins.DataBasedFormLoginProv
             return false;
         }
 
-        /// <summary>
-        /// Note: In C1 4.2 and older the password was encrypted instead of being hashed.
-        /// </summary>
-        private static bool LegacyPasswordMatch(IUser user, string password)
-        {
-            return user.EncryptedPassword == password.Encrypt();
-        }
 
-        private static string GeneratePasswordHash(string password, byte[] salt)
+        /// <summary>
+        /// Generates password hash.
+        /// </summary>
+        /// <param name="password">The password.</param>
+        /// <param name="salt">The salt.</param>
+        /// <returns></returns>
+        public static string GeneratePasswordHash(string password, byte[] salt)
         {
             using (HashAlgorithm algorithm = new SHA256Managed())
             {
@@ -145,12 +151,14 @@ namespace Composite.Plugins.Security.LoginProviderPlugins.DataBasedFormLoginProv
                 plainText.CopyTo(plainTextWithSaltBytes, 0);
                 salt.CopyTo(plainTextWithSaltBytes, plainText.Length);
 
-                byte[] hash = algorithm.ComputeHash(plainTextWithSaltBytes);
-                return Convert.ToBase64String(hash);
+                return Convert.ToBase64String(algorithm.ComputeHash(plainTextWithSaltBytes));
             }
         }
 
-        private static byte[] GenerateHashSalt()
+        /// <summary>
+        /// Generates hash salt.
+        /// </summary>
+        public static byte[] GenerateHashSalt()
         {
             using (var csprng = new RNGCryptoServiceProvider())
             {
@@ -158,6 +166,14 @@ namespace Composite.Plugins.Security.LoginProviderPlugins.DataBasedFormLoginProv
                 csprng.GetBytes(salt);
                 return salt;
             }
+        }
+
+        /// <exclude />
+        public static IUserFormLogin GetUserFormLogin(this IUser user)
+        {
+            Guid userId = user.Id;
+            return DataFacade.GetData<IUserFormLogin>().Where(ufl => ufl.UserId == userId)
+                .FirstOrException("Missing user form login data for user id '{0}'", userId);
         }
     }
 }

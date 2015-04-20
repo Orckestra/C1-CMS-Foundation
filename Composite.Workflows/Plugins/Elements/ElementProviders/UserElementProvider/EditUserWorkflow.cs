@@ -26,7 +26,7 @@ using Composite.Plugins.Security.LoginProviderPlugins.DataBasedFormLoginProvider
 using Microsoft.Practices.EnterpriseLibrary.Validation;
 using Composite.Core.Logging;
 
-// using Texts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_Management;
+using Texts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_Management;
 
 namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 {
@@ -45,6 +45,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
         private static class BindingNames
         {
             public const string User = "User";
+            public const string UserFormLogin = "UserFormLogin";
             public const string NewPassword = "NewPassword";
         }
 
@@ -59,9 +60,11 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
         {
             var dataEntityToken = (DataEntityToken)this.EntityToken;
 
-            IUser user = (IUser)dataEntityToken.Data;
+            var user = (IUser)dataEntityToken.Data;
+            var userFormLogin = user.GetUserFormLogin();
 
             this.Bindings.Add(BindingNames.User, user);
+            this.Bindings.Add(BindingNames.UserFormLogin, userFormLogin);
             this.Bindings.Add(BindingNames.NewPassword, NotPassword);
 
             CultureInfo userCulture = UserSettings.GetUserCultureInfo(user.Username);
@@ -178,6 +181,9 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
         private void saveCodeActivity_ExecuteCode(object sender, EventArgs e)
         {
             IUser user = this.GetBinding<IUser>(BindingNames.User);
+            var userFormLogin = GetBinding<IUserFormLogin>(BindingNames.UserFormLogin);
+
+            var userFormLoginFromDatabase = user.GetUserFormLogin();
 
             bool userValidated = true;
 
@@ -236,11 +242,11 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
             if (string.Compare(user.Username, UserSettings.Username, StringComparison.InvariantCultureIgnoreCase) == 0)
             {
                 // Current user shouldn't be able to lock itself 
-                if (user.IsLocked)
+                if (userFormLogin.IsLocked)
                 {
                     this.ShowMessage(DialogType.Message,
-                             GetText("EditUserWorkflow.EditErrorTitle"),
-                             GetText("EditUserWorkflow.LockingOwnUserAccount"));
+                             Texts.EditUserWorkflow_EditErrorTitle,
+                             Texts.EditUserWorkflow_LockingOwnUserAccount);
 
                     userValidated = false;
                 }
@@ -252,15 +258,15 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
                     && !newUserGroupIds.Any(groupsWithAccessToSystemPerspective.Contains))
                 {
                     this.ShowMessage(DialogType.Message,
-                             GetText("EditUserWorkflow.EditErrorTitle"),
-                             GetText("EditUserWorkflow.EditOwnAccessToSystemPerspective"));
+                             Texts.EditUserWorkflow_EditErrorTitle,
+                             Texts.EditUserWorkflow_EditOwnAccessToSystemPerspective);
 
                     userValidated = false;
                 }
             }
 
             string newPassword = this.GetBinding<string>(BindingNames.NewPassword);
-            if (newPassword == NotPassword || UserPasswordManager.ValidatePassword(user, newPassword))
+            if (newPassword == NotPassword || UserFormLoginManager.ValidatePassword(userFormLoginFromDatabase, newPassword))
             {
                 newPassword = null;
             }
@@ -283,17 +289,17 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
                 return;
             }
 
-            if (!user.IsLocked)
+            if (!userFormLogin.IsLocked)
             {
-                user.LockoutReason = (int)UserLockoutReason.Undefined;
+                userFormLogin.LockoutReason = (int)UserLockoutReason.Undefined;
             }
             else
             {
-                bool wasLockedBefore = DataFacade.GetData<IUser>().First(f => f.Id == user.Id).IsLocked;
+                bool wasLockedBefore = userFormLoginFromDatabase.IsLocked;
 
                 if (!wasLockedBefore)
                 {
-                    user.LockoutReason = (int)UserLockoutReason.LockedByAdministrator;
+                    userFormLoginFromDatabase.LockoutReason = (int)UserLockoutReason.LockedByAdministrator;
                 }
             }
 
@@ -305,9 +311,13 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
             {
                 DataFacade.Update(user);
 
+                userFormLoginFromDatabase.Folder = userFormLogin.Folder;
+                userFormLoginFromDatabase.IsLocked = userFormLogin.IsLocked;
+                DataFacade.Update(userFormLoginFromDatabase);
+
                 if (newPassword != null)
                 {
-                    UserPasswordManager.SetPassword(user, newPassword);
+                    UserFormLoginManager.SetPassword(userFormLoginFromDatabase, newPassword);
                 }
 
                 string cultureName = this.GetBinding<string>("CultureName");

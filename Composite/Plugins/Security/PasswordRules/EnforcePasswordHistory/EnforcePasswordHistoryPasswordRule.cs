@@ -14,7 +14,7 @@ namespace Composite.Plugins.Security.PasswordRules.EnforcePasswordHistory
         {
             if (PasswordPolicyFacade.PasswordHistoryLength <= 0) return true;
 
-            return !UserPasswordManager.PasswordFoundInHistory(user, password);
+            return !UserFormLoginManager.PasswordFoundInHistory(user, password);
         }
 
         public string GetRuleDescription()

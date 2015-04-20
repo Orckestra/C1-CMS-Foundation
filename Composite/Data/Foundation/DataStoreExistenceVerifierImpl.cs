@@ -64,6 +64,7 @@ namespace Composite.Data.Foundation
                     typeof(IUserActivePerspective),
                     typeof(IUserConsoleInformation),
                     typeof(IUserDeveloperSettings),
+                    typeof(IUserFormLogin),
                     typeof(IUserGroup),
                     typeof(IUserGroupActivePerspective),
                     typeof(IUserGroupPermissionDefinition),
