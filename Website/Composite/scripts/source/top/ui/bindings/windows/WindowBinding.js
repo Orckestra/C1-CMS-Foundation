@@ -22,14 +22,7 @@ WindowBinding.getMarkup = function ( windowBinding ) {
 	if ( windowBinding.isAttached ) {
 		var doc = windowBinding.getContentDocument ();
 		if ( doc != null ) {
-			var root = doc.getElementsByTagName ( "html" ).item ( 0 ); // IE6 compliant documentElement
-			var html = "<html xmlns=\"" + Constants.NS_XHTML + "\">" + root.innerHTML + "</html>";
-			WebServiceProxy.isFaultHandler = false;
-			result = top.MarkupFormatService.HtmlToXhtml ( html );
-			WebServiceProxy.isFaultHandler = true;
-			if ( result instanceof SOAPFault ) {
-				result = null;
-			}
+			result = new XMLSerializer().serializeToString(doc);
 		}
 	}
 	return result;
