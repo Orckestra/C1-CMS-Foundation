@@ -21,8 +21,18 @@ WindowBinding.getMarkup = function ( windowBinding ) {
 	var result = null;
 	if ( windowBinding.isAttached ) {
 		var doc = windowBinding.getContentDocument ();
-		if ( doc != null ) {
+		if (doc != null) {
 			result = new XMLSerializer().serializeToString(doc);
+			if (XMLParser.parse(result, true) == null) { // Make sense to change to Client.IsExplorer
+				var root = doc.getElementsByTagName("html").item(0); // IE6 compliant documentElement
+				var html = "<html xmlns=\"" + Constants.NS_XHTML + "\">" + root.innerHTML + "</html>";
+				WebServiceProxy.isFaultHandler = false;
+				result = top.MarkupFormatService.HtmlToXhtml(html);
+				WebServiceProxy.isFaultHandler = true;
+				if (result instanceof SOAPFault) {
+					result = null;
+				}
+			}
 		}
 	}
 	return result;
