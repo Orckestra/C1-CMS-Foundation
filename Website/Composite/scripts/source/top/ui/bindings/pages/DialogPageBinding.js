@@ -68,6 +68,11 @@ function DialogPageBinding () {
 	 * @type {boolean}
 	 */
 	this.isAutoHeightLayoutMode = false;
+
+	/**
+	 * @type {boolean}
+	 */
+	this.isNonAjaxPage = true;
 }
 
 /**

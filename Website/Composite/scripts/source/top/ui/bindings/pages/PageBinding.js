@@ -111,6 +111,12 @@ function PageBinding () { // Note to self: This class can safely descend from Fl
 	 * @type {boolean}
 	 */
 	this.isActivated = false;
+
+
+	/**
+	 * @type {boolean}
+	 */
+	this.isNonAjaxPage = false;
 	
 	/**
 	 * When a server postback is fired, this flag will be reversed to 
@@ -405,7 +411,7 @@ PageBinding.prototype._setupDotNet = function () {
 	 * TODO: Remove this when dialogs go AJAX.
 	 * form.__isSetup was set by UpdateManager.
 	 */
-	if ( !form.__isSetup ) {
+	if (!form.__isSetup && this.isNonAjaxPage) {
 		DOMEvents.addEventListener ( this.bindingWindow, DOMEvents.UNLOAD, {
 			handleEvent : function () {
 				if ( isLocked ) {
@@ -426,7 +432,7 @@ PageBinding.prototype._setupDotNet = function () {
 		 * For non-AJAX pages (dialogs and wizards),  
 		 * this stunt will lock the UI on form submit.
 		 */
-		if ( !form.__isSetup ) {
+		if ( !form.__isSetup && this.isNonAjaxPage) {
 			Application.lock ( self );
 			isLocked = true;
 		}
