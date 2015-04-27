@@ -10950,6 +10950,8 @@ var _7d3=null;
 if(_7d2.isAttached){
 var doc=_7d2.getContentDocument();
 if(doc!=null){
+_7d3=new XMLSerializer().serializeToString(doc);
+if(XMLParser.parse(_7d3,true)==null){
 var root=doc.getElementsByTagName("html").item(0);
 var html="<html xmlns=\""+Constants.NS_XHTML+"\">"+root.innerHTML+"</html>";
 WebServiceProxy.isFaultHandler=false;
@@ -10957,6 +10959,7 @@ _7d3=top.MarkupFormatService.HtmlToXhtml(html);
 WebServiceProxy.isFaultHandler=true;
 if(_7d3 instanceof SOAPFault){
 _7d3=null;
+}
 }
 }
 }
@@ -21522,6 +21525,7 @@ this._initBlockers=null;
 this._isReadyForInitialize=false;
 this.isActivationAware=false;
 this.isActivated=false;
+this.isNonAjaxPage=false;
 this._canPostBack=true;
 this._responseResolver=null;
 this._isUpdating=false;
@@ -21649,7 +21653,7 @@ var self=this;
 var form=this.bindingDocument.forms[0];
 var _d50=this.bindingWindow.__doPostBack;
 var _d51=false;
-if(!form.__isSetup){
+if(!form.__isSetup&&this.isNonAjaxPage){
 DOMEvents.addEventListener(this.bindingWindow,DOMEvents.UNLOAD,{handleEvent:function(){
 if(_d51){
 Application.unlock(self);
@@ -21657,7 +21661,7 @@ Application.unlock(self);
 }});
 }
 this.bindingWindow.__doPostBack=function(_d52,_d53){
-if(!form.__isSetup){
+if(!form.__isSetup&&this.isNonAjaxPage){
 Application.lock(self);
 _d51=true;
 }
@@ -21959,6 +21963,7 @@ this.minheight=null;
 this.controls=null;
 this.isResizable=null;
 this.isAutoHeightLayoutMode=false;
+this.isNonAjaxPage=true;
 }
 DialogPageBinding.prototype.toString=function(){
 return "[DialogPageBinding]";
