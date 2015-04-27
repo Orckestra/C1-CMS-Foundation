@@ -29,7 +29,8 @@ namespace Composite.Functions
         private static readonly MethodInfo NewLazyObjectMethodInfo = StaticReflection.GetGenericMethodInfo(() => NewLazyObject<object>(null));
 
 
-        internal ParameterList(FunctionContextContainer functionContextContainer)
+        /// <exclude />
+        public ParameterList(FunctionContextContainer functionContextContainer)
         {
             _functionContextContainer = functionContextContainer;
         }
@@ -39,13 +40,7 @@ namespace Composite.Functions
         /// <exclude />
         public IEnumerable<string> AllParameterNames
         {
-            get
-            {
-                foreach (var keyName in _parameters.Keys)
-                {
-                    yield return keyName;
-                }
-            }
+            get { return _parameters.Keys; }
         }
 
 
@@ -110,7 +105,7 @@ namespace Composite.Functions
         public object GetParameter(string parameterName)
         {
             object value;
-            if (TryGetParameter(parameterName, out value) == false) throw new ArgumentException(string.Format("No parameter named '{0}' exists", parameterName));
+            if (!TryGetParameter(parameterName, out value)) throw new ArgumentException(string.Format("No parameter named '{0}' exists", parameterName));
             return value;
         }
 
@@ -202,8 +197,8 @@ namespace Composite.Functions
         }
 
 
-
-        internal void AddConstantParameter(string parameterName, object value, Type parameterType, bool isDefaultValue = false)
+        /// <exclude />
+        public void AddConstantParameter(string parameterName, object value, Type parameterType, bool isDefaultValue = false)
         {
             Verify.That(!_parameters.ContainsKey(parameterName), "Parameter '{0}' has already been assigned", parameterName);
 
@@ -212,7 +207,8 @@ namespace Composite.Functions
 
 
 
-        internal void AddLazyParameter(string parameterName, BaseRuntimeTreeNode runtimeTreeNode, Type parameterType)
+        /// <exclude />
+        public void AddLazyParameter(string parameterName, BaseRuntimeTreeNode runtimeTreeNode, Type parameterType)
         {
             Verify.That(!_parameters.ContainsKey(parameterName), "Parameter '{0}' has already been assigned", parameterName);
 
