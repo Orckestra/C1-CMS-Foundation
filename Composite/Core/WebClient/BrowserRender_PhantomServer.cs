@@ -136,10 +136,10 @@ namespace Composite.Core.WebClient
 
                 string requestLine = cookieInfo + "|" + url + "|" + tempFilePath + "|" + mode;
 
-                Task<string> readerTask = Task.Run(async () =>
+                Task<string> readerTask = Task.Run(() =>
                 {
                     _stdin.WriteLine(requestLine);
-                    return await _stdout.ReadLineAsync();
+                    return _stdout.ReadLine();
                 });
 
                 double timeout = (DateTime.Now - _process.StartTime).TotalSeconds < 120 ? 65 : 30;
