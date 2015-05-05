@@ -139,7 +139,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
 
             string[] sourceCode = C1File.ReadAllLines(ex.FileName);
 
-            XhtmlErrorFormatter.EmbedSouceCodeInformation(ex, sourceCode, ex.Line);
+            XhtmlErrorFormatter.EmbedSourceCodeInformation(ex, sourceCode, ex.Line);
         }
 
         private void EmbedSourceCodeInformation(HttpCompileException ex)
@@ -171,7 +171,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
 
 	        string[] sourceCode = C1File.ReadAllLines(firstError.FileName);
 
-	        XhtmlErrorFormatter.EmbedSouceCodeInformation(ex, sourceCode, firstError.Line);
+	        XhtmlErrorFormatter.EmbedSourceCodeInformation(ex, sourceCode, firstError.Line);
         }
 
 		public abstract object Execute(ParameterList parameters, FunctionContextContainer context);

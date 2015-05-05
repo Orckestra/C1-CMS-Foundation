@@ -48,7 +48,7 @@ namespace Composite.Functions.Inline
                 
                 if (_sourceCode.Length > 0)
                 {
-                    XhtmlErrorFormatter.EmbedSouceCodeInformation(exception, _sourceCode, error.Item1);
+                    XhtmlErrorFormatter.EmbedSourceCodeInformation(exception, _sourceCode, error.Item1);
                 }
 
                 throw exception;

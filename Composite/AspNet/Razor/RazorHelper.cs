@@ -135,7 +135,7 @@ namespace Composite.AspNet.Razor
 				{
 				    string[] codeLines = output.Split(new [] { Environment.NewLine, "\n" }, StringSplitOptions.None);
 
-				    XhtmlErrorFormatter.EmbedSouceCodeInformation(ex, codeLines, ex.LineNumber);
+				    XhtmlErrorFormatter.EmbedSourceCodeInformation(ex, codeLines, ex.LineNumber);
 
 				    throw;
 				}

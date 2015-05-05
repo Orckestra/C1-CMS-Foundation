@@ -18,13 +18,20 @@ namespace Composite.Core.Xml
         private const string SourceCodeErrorLineStyle = "background-color: white; color: red";
         private static readonly string ExceptionData_SourceCode = "C1.SourceCode";
 
+        /// <exclude />
+        [Obsolete("Use EmbedSourceCodeInformation() instead")]
+        public static void EmbedSouceCodeInformation(Exception ex, string[] sourceCodeLines, int errorLine)
+        {
+            EmbedSourceCodeInformation(ex, sourceCodeLines, errorLine);
+        }
+
         /// <summary>
-        /// Embeds the souce code information.
+        /// Embeds the source code information.
         /// </summary>
         /// <param name="ex">The exception.</param>
         /// <param name="sourceCodeLines">The source code lines.</param>
         /// <param name="errorLine">The error line number.</param>
-        public static void EmbedSouceCodeInformation(Exception ex, string[] sourceCodeLines, int errorLine)
+        public static void EmbedSourceCodeInformation(Exception ex, string[] sourceCodeLines, int errorLine)
         {
             if (ex.Data.Contains(ExceptionData_SourceCode))
             {
