@@ -14,7 +14,7 @@ namespace Composite.Core.Routing.Pages
     public class C1PageRoute : RouteBase
     {
         /// <exclude />
-        public static readonly string RouteDate_PageUrl = "C1Page";
+        public static readonly string RouteData_PageUrl = "C1Page";
 
         internal static readonly string HttpContextItem_C1PageUrl = "C1_PageUrl";
         private static readonly string HttpContextItem_PathInfoHandled = "C1PageRoute_PathInfoHandled";
@@ -174,7 +174,7 @@ namespace Composite.Core.Routing.Pages
             }
 
             var data = new RouteData(this, new C1PageRouteHandler(pageUrlData));
-            data.Values.Add(RouteDate_PageUrl, pageUrlData);
+            data.Values.Add(RouteData_PageUrl, pageUrlData);
 
             return data;
         }

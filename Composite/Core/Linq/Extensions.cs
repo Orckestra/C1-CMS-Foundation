@@ -77,6 +77,7 @@ namespace Composite.Core.Linq
         /// <param name="exceptionOnMultipleResults">Exception format for multiple rows found</param>
         /// <param name="formatArgs"></param>
         /// <returns></returns>
+        [StringFormatMethod("formatArgs")]
         public static T SingleOrException<T>(this IQueryable<T> query, string exceptionOnEmpty, string exceptionOnMultipleResults, params object[] formatArgs) 
         {
             var result = query.ToList();
@@ -96,6 +97,7 @@ namespace Composite.Core.Linq
         /// <param name="exceptionOnMultipleResults">Exception format for multiple rows found</param>
         /// <param name="formatArgs"></param>
         /// <returns></returns>
+        [StringFormatMethod("formatArgs")]
         public static T SingleOrException<T>(this IEnumerable<T> query, string exceptionOnEmpty, string exceptionOnMultipleResults, params object[] formatArgs)
         {
             var result = query.ToList();
@@ -114,6 +116,7 @@ namespace Composite.Core.Linq
         /// <param name="exceptionOnMultipleResults">Exception format for multiple rows found</param>
         /// <param name="formatArgs">Format arguments</param>
         /// <returns></returns>
+        [StringFormatMethod("formatArgs")]
         public static T SingleOrDefaultOrException<T>(this IEnumerable<T> query, string exceptionOnMultipleResults, params object[] formatArgs)
         {
             var result = query.ToList();

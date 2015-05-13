@@ -87,7 +87,7 @@ namespace Composite.Plugins.Security.LoginProviderPlugins.DataBasedFormLoginProv
             FailedLoginInfo failedLoginInfo;
             _loginHistory.TryGetValue(username, out failedLoginInfo);
 
-            if(!BruteFourcePreventionCheck(username, failedLoginInfo))
+            if(!BruteForcePreventionCheck(username, failedLoginInfo))
             {
                 return LoginResult.PolicyViolated;
             }
@@ -173,7 +173,7 @@ namespace Composite.Plugins.Security.LoginProviderPlugins.DataBasedFormLoginProv
             _loginHistory[username] = new FailedLoginInfo {LastLoginAttempt = DateTime.Now, LoginAttemptCount = 1};
         }
 
-        static bool BruteFourcePreventionCheck(string username, FailedLoginInfo failedLoginInfo)
+        static bool BruteForcePreventionCheck(string username, FailedLoginInfo failedLoginInfo)
         {
             if (failedLoginInfo == null)
             {
@@ -255,6 +255,8 @@ namespace Composite.Plugins.Security.LoginProviderPlugins.DataBasedFormLoginProv
         {
             int processed = 0;
 
+            var toBeUpdated = new List<IUser>();
+
             foreach (var user in DataFacade.GetData<IUser>())
             {
                 if (string.IsNullOrEmpty(user.EncryptedPassword) || !string.IsNullOrEmpty(user.PasswordHashSalt))
@@ -269,7 +271,14 @@ namespace Composite.Plugins.Security.LoginProviderPlugins.DataBasedFormLoginProv
                 user.PasswordHashSalt = Convert.ToBase64String(salt);
                 user.EncryptedPassword = UserFormLoginManager.GeneratePasswordHash(password, salt);
 
+                toBeUpdated.Add(user);
+
                 processed++;
+            }
+
+            if (toBeUpdated.Any())
+            {
+                DataFacade.Update(toBeUpdated);
             }
 
             if (processed > 0)
