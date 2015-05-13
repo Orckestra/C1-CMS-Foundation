@@ -120,7 +120,15 @@ namespace Composite.Core.WebClient
                     }
                     catch (BrowserRenderException)
                     {
-                        ShutDown(true);
+                        try
+                        {
+                            ShutDown(true);
+                        }
+                        catch (Exception shutdownException)
+                        {
+                            Log.LogError("PhantomServer", shutdownException);
+                        }
+                        
                         throw;
                     }
                 }
@@ -135,6 +143,13 @@ namespace Composite.Core.WebClient
                 string cookieInfo = authenticationCookie.Name + "," + authenticationCookie.Value + "," + cookieDomain;
 
                 string requestLine = cookieInfo + "|" + url + "|" + tempFilePath + "|" + mode;
+
+                // Async way:
+                //Task<string> readerTask = Task.Run(async () =>
+                //{
+                //    await _stdin.WriteLineAsync(requestLine);
+                //    return await _stdout.ReadLineAsync();
+                //});
 
                 Task<string> readerTask = Task.Run(() =>
                 {
@@ -228,7 +243,17 @@ namespace Composite.Core.WebClient
                     {
                         string stdOut = _stdout.ReadToEnd();
                         string stdError = _stderror.ReadToEnd();
-                        return string.Format("output: '{0}', error: '{1}'", stdOut, stdError);
+
+                        string result = !string.IsNullOrEmpty(stdOut) ? "output: '{0}'".FormatWith(stdOut) : "";
+
+                        if (!string.IsNullOrEmpty(stdError))
+                        {
+                            if (result.Length > 0) { result += ", ";}
+
+                            result += string.Format("error: '{0}'", stdError);
+                        }
+
+                        return result;
                     }
                     catch (Exception ex)
                     {
@@ -236,43 +261,50 @@ namespace Composite.Core.WebClient
                     }
                 });
 
+                
                 errorFeedbackTask.Wait(500);
 
                 string errorFeedback = errorFeedbackTask.Status == TaskStatus.RanToCompletion ? errorFeedbackTask.Result : "Process Hang";
 
-                int exitCode = -1;
-
-                try
-                {
-                    proccessHasExited = _process.HasExited;
-                }
-                catch (Exception)
-                {
-                    proccessHasExited = true;
-                }
-
                 if (!proccessHasExited)
                 {
-                    _stdin.Close();
-                    _stdout.Close();
-                    _stderror.Close();
-                    _process.Kill();
-                    _process.WaitForExit(500);
+                    try
+                    {
+                        proccessHasExited = _process.HasExited;
+                    }
+                    catch (Exception)
+                    {
+                        proccessHasExited = true;
+                    }
+
+                    if (!proccessHasExited)
+                    {
+                        _stdin.Close();
+                        _stdout.Close();
+                        _stderror.Close();
+                        _process.Kill();
+                        _process.WaitForExit(500);
+                    }
                 }
 
-                exitCode = _process.ExitCode;
+                int exitCode = _process.ExitCode;
 
                 _stdin.Dispose();
                 _stdout.Dispose();
                 _stderror.Dispose();
 
-
                 _process.Dispose();
                 _job.Dispose();
 
-                if (!silent && exitCode != 0 || errorFeedbackTask.Status != TaskStatus.RanToCompletion)
+                if (!silent && (exitCode != 0 || errorFeedbackTask.Status != TaskStatus.RanToCompletion))
                 {
-                    throw new InvalidOperationException("Error executing PhantomJs.exe. Exit code: {0}, {1}".FormatWith(exitCode, errorFeedback));
+                    string errorMessage = "Error executing PhantomJs.exe. Exit code: {0}".FormatWith(exitCode);
+
+                    if (!string.IsNullOrEmpty(errorFeedback))
+                    {
+                        errorMessage += ", " + errorMessage;
+                    }
+                    throw new InvalidOperationException(errorMessage);
                 }
             }
         }
