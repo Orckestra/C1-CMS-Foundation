@@ -222,7 +222,7 @@ namespace Composite.Core.Types
             {
                 var attributeList = new List<Attribute>();
 
-                GetCustomAttributesRecursively(t, attributeList, null, new List<Type>(), true);
+                GetCustomAttributesRecursively(t, attributeList, null, new List<Type>(), false);
 
                 return attributeList;
             });
