@@ -690,12 +690,12 @@ namespace Composite.Data
 
             foreach (Type refType in refereeTypes)
             {
-                List<ForeignPropertyInfo> foreignKeyProperyInfos = DataReferenceRegistry.GetForeignKeyProperties(refType);
+                List<ForeignPropertyInfo> foreignKeyProperties = DataReferenceRegistry.GetForeignKeyProperties(refType);
 
                 if (propertiesToSearchBy != null)
                 {
-                    foreignKeyProperyInfos =
-                        (from fkpi in foreignKeyProperyInfos
+                    foreignKeyProperties =
+                        (from fkpi in foreignKeyProperties
                          from pi in propertiesToSearchBy
                          where fkpi.SourcePropertyInfo == pi
                          select fkpi).ToList();
@@ -708,7 +708,7 @@ namespace Composite.Data
                         using (new DataScope(dataScopeIdentifier))
                         {
                             IQueryable dataset = DataFacade.GetData(refType);
-                            List<IData> refs = GetReferees(referencedData, dataset, foreignKeyProperyInfos, returnOnFirstFound);
+                            List<IData> refs = GetReferees(referencedData, dataset, foreignKeyProperties, returnOnFirstFound);
                             referees.AddRange(refs.KeyDistinct()); // KeyDistinct is used here if a type has more than one refernce to a nother time
 
                             if ((returnOnFirstFound) && (referees.Count > 0))
@@ -721,7 +721,7 @@ namespace Composite.Data
                 else
                 {
                     IQueryable dataset = DataFacade.GetData(refType);
-                    List<IData> refs = GetReferees(referencedData, dataset, foreignKeyProperyInfos, returnOnFirstFound);
+                    List<IData> refs = GetReferees(referencedData, dataset, foreignKeyProperties, returnOnFirstFound);
                     referees.AddRange(refs.KeyDistinct()); // KeyDistinct is used here if a type has more than one refernce to a nother time
 
                     if ((returnOnFirstFound) && (referees.Count > 0))
@@ -749,8 +749,8 @@ namespace Composite.Data
             int toDisplay = brokenReferences.Count > maximumLinesToShow ? maximumLinesToShow - 1 : brokenReferences.Count;
             for (int i = 0; i < toDisplay; i++)
             {
-                IData brokenRefernce = brokenReferences[i];
-                Type type = brokenRefernce.DataSourceId.InterfaceType;
+                IData brokenReference = brokenReferences[i];
+                Type type = brokenReference.DataSourceId.InterfaceType;
 
 
                 string typeTitle = DynamicTypeReflectionFacade.GetTitle(type);
@@ -759,23 +759,23 @@ namespace Composite.Data
                     typeTitle = type.FullName;
                 }
                 
-                string labelField = DynamicTypeReflectionFacade.GetLabelPropertyName(type);
-                if (string.IsNullOrEmpty(labelField))
+                string labelPropertyName = DynamicTypeReflectionFacade.GetLabelPropertyName(type);
+                if (string.IsNullOrEmpty(labelPropertyName))
                 {
-                    labelField = "Id"; // Is is a nasty fallback, but will work in post cases and all the time with generated types.
+                    labelPropertyName = "Id"; // This is a nasty fallback, but will work in most cases and all the time with generated types.
                 }
 
-                PropertyInfo labelPropertyInfo = type.GetProperty(labelField, BindingFlags.Instance | BindingFlags.Public);
+                PropertyInfo labelPropertyInfo = brokenReference.GetType().GetProperty(labelPropertyName, BindingFlags.Instance | BindingFlags.Public);
                 string dataLabel;
 
                 if (labelPropertyInfo != null)
                 {
-                    object propertyFieldValue = labelPropertyInfo.GetValue(brokenRefernce, null);
+                    object propertyFieldValue = labelPropertyInfo.GetValue(brokenReference, null);
                     dataLabel = (propertyFieldValue ?? "NULL").ToString();
                 }
                 else
                 {
-                    dataLabel = "'Failed to get ID'";
+                    dataLabel = "'Failed to resolve ({0}) field'".FormatWith(labelPropertyName);
                 }
 
 
