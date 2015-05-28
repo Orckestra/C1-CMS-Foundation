@@ -58,25 +58,35 @@ function BuildFunctionPreview(system, console, address, output, authCookie, mode
 
     // redirects ...
 	page.onResourceReceived = function (response) {
-	    var closePage = false;
+	    if (response.id == 1) {
+	        var closePage = false;
 
-	    if (response.id == 1 && (response.status == 301 || response.status == 302)) {
-	        console.log('REDIRECT: ' + response.url);
+	        if (response.status == 301 || response.status == 302) {
+	            console.log('REDIRECT: ' + response.url);
+	            closePage = true;
+	        }
 
-	        closePage = true;
+            if (response.status >= 400) {
+                var description  = 'HTTP Status-Code ' + response.status + '.';
+
+                if (response.status == 500) {
+                    description = '500 Internal Server Error.';
+                }
+                else if (response.status == 503) {
+                    description = '503 Service Unavailable.';
+                }
+
+                console.log('ERROR: ' + description);
+
+                closePage = true;
+            }
+
+	        if (closePage) {
+	            clearGlobalTimeout();
+	            page.close();
+	            WaitForInput(system, console);
+	        }
 	    }
-
-	    if (response.id == 1 && response.status == 503) {
-	        console.log('ERROR: 503 Service Unavailable.');
-
-	        closePage = true;
-	    }
-
-	    if (closePage) {
-	        clearGlobalTimeout();
-            page.close();
-            WaitForInput(system, console);
-        }
 	}
 
     // called by our custom js injected in the rendered page
