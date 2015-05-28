@@ -221,18 +221,18 @@ namespace Composite.Core.WebClient
 
             void DisposeInternal(bool silent)
             {
-                bool proccessHasExited;
+                bool processHasExited;
 
                 try
                 {
-                    proccessHasExited = _process.HasExited;
+                    processHasExited = _process.HasExited;
                 }
                 catch (Exception)
                 {
-                    proccessHasExited = true;
+                    processHasExited = true;
                 }
 
-                if (!proccessHasExited)
+                if (!processHasExited)
                 {
                     _stdin.WriteLine("exit");
                 }
@@ -266,18 +266,18 @@ namespace Composite.Core.WebClient
 
                 string errorFeedback = errorFeedbackTask.Status == TaskStatus.RanToCompletion ? errorFeedbackTask.Result : "Process Hang";
 
-                if (!proccessHasExited)
+                if (!processHasExited)
                 {
                     try
                     {
-                        proccessHasExited = _process.HasExited;
+                        processHasExited = _process.HasExited;
                     }
                     catch (Exception)
                     {
-                        proccessHasExited = true;
+                        processHasExited = true;
                     }
 
-                    if (!proccessHasExited)
+                    if (!processHasExited)
                     {
                         _stdin.Close();
                         _stdout.Close();
@@ -296,9 +296,12 @@ namespace Composite.Core.WebClient
                 _process.Dispose();
                 _job.Dispose();
 
-                if (!silent && (exitCode != 0 || errorFeedbackTask.Status != TaskStatus.RanToCompletion))
+                bool meaningfullExitCode = exitCode != 0 && exitCode != -1073741819 /* Access violation, the ExitCode property returns this value by default for some reason */;
+
+                if (!silent && (meaningfullExitCode || errorFeedbackTask.Status != TaskStatus.RanToCompletion))
                 {
-                    string errorMessage = "Error executing PhantomJs.exe. Exit code: {0}".FormatWith(exitCode);
+                    string errorMessage = "Error executing PhantomJs.exe";
+                    if (meaningfullExitCode) errorMessage += "; Exit code: {0}".FormatWith(exitCode);
 
                     if (!string.IsNullOrEmpty(errorFeedback))
                     {

@@ -134,7 +134,7 @@ namespace Composite.Core.WebClient.HttpModules
             // On authenticated request make sure these resources gets compiled / launched. 
             if (ApplicationOnlineHandlerFacade.IsApplicationOnline && GlobalInitializerFacade.SystemCoreInitialized && !GlobalInitializerFacade.SystemCoreInitializing && SystemSetupFacade.IsSystemFirstTimeInitialized)
             {
-                BrowserRender.EnsureReadyness();
+                BrowserRender.EnsureReadiness();
                 BuildManagerHelper.InitializeControlPreLoading();
             }
         }

@@ -55,7 +55,7 @@ namespace Composite.Core.WebClient
         /// <summary>
         /// Ensures that the BrowserRenderer service is launched, without blocking the current thread
         /// </summary>
-        public static void EnsureReadyness()
+        public static void EnsureReadiness()
         {
             _lastUsageDate = DateTime.Now;
             if (ServerAvailabilityChecked) return;
@@ -83,7 +83,7 @@ namespace Composite.Core.WebClient
         }
 
         /// <summary>
-        /// Renders a url and return a full path to a rendered image, or <value>null</value> when rendering process is failing or inaccessable.
+        /// Renders a url and return a full path to a rendered image, or <value>null</value> when rendering process is failing or inaccessible.
         /// </summary>
         public static async Task<RenderingResult> RenderUrlAsync(HttpContext context, string url, string mode)
         {

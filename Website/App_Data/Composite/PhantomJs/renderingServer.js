@@ -13,7 +13,14 @@ function getPlaceholdersLocationInfo(placeholderElementName) {
 function BuildFunctionPreview(system, console, address, output, authCookie, mode) {
     var page = require('webpage').create();
     var globalTimeout = null;
-    
+
+    var clearGlobalTimeout = function() {
+        if (globalTimeout != null) {
+            clearTimeout(globalTimeout);
+            globalTimeout = null;
+        }
+    };
+
 	if(authCookie != null) {
 		phantom.deleteCookie(authCookie.name);
 		
@@ -34,13 +41,13 @@ function BuildFunctionPreview(system, console, address, output, authCookie, mode
     
 	page.onResourceTimeout = function (request) {
 	    if (request.id == 1) {
-	        if (globalTimeout != null) {
-	            clearTimeout(globalTimeout);
-	            globalTimeout = null;
-	        }
-	        console.log('ERROR, page.onResourceTimeout: ' + JSON.stringify(request.errorString) + ', URL: ' + JSON.stringify(request.url));
-	        
-            phantom.exit(); // TODO: optimize, no exit needed
+	        clearGlobalTimeout();
+
+	        var errorMessage = 'TIMEOUT: page.onResourceTimeout: ' + JSON.stringify(request.errorString) + ', URL: ' + JSON.stringify(request.url);
+	        page.close();
+
+	        console.log(errorMessage);
+	        WaitForInput(system, console);
 	    }
 	};
 
@@ -51,23 +58,31 @@ function BuildFunctionPreview(system, console, address, output, authCookie, mode
 
     // redirects ...
 	page.onResourceReceived = function (response) {
+	    var closePage = false;
+
 	    if (response.id == 1 && (response.status == 301 || response.status == 302)) {
 	        console.log('REDIRECT: ' + response.url);
-	        phantom.exit(); // TODO: optimize, no exit needed
+
+	        closePage = true;
 	    }
 
 	    if (response.id == 1 && response.status == 503) {
-	        console.log('503 Service Unavailable.');
-	        phantom.exit(); // TODO: optimize, no exit needed
+	        console.log('ERROR: 503 Service Unavailable.');
+
+	        closePage = true;
 	    }
+
+	    if (closePage) {
+	        clearGlobalTimeout();
+            page.close();
+            WaitForInput(system, console);
+        }
 	}
 
     // called by our custom js injected in the rendered page
 	page.onCallback = function (data) {
-	    if (globalTimeout != null) {
-	        clearTimeout(globalTimeout);
-	        globalTimeout = null;
-	    }
+	    clearGlobalTimeout();
+
 	    if (mode == "function") {
 	        var previewElementId = "CompositeC1FunctionPreview";
 
@@ -110,19 +125,13 @@ function BuildFunctionPreview(system, console, address, output, authCookie, mode
     try {
         page.open(address, function (status) {
             if (status !== 'success') {
-                if (globalTimeout != null) {
-                    clearTimeout(globalTimeout);
-                    globalTimeout = null;
-                }
+                clearGlobalTimeout();
                 console.log('ERROR, page.open: ' + status);
                 page.close();
                 WaitForInput(system, console);
             } else {
                 if (mode == "test") {
-                    if (globalTimeout != null) {
-                        clearTimeout(globalTimeout);
-                        globalTimeout = null;
-                    }
+                    clearGlobalTimeout();
 
                     page.render(output);
                     page.close();
@@ -134,7 +143,7 @@ function BuildFunctionPreview(system, console, address, output, authCookie, mode
         });
     } finally {
         globalTimeout = setTimeout(function () {
-            console.log("Max execution time - 60 seconds - exceeded");
+            console.log("TIMEOUT: Max execution time - 60 seconds - exceeded");
             globalTimeout = null;
             page.close();
             WaitForInput(system, console);
@@ -186,7 +195,7 @@ function WaitForInput(system, console) {
 		  return;
 	   }
 	   else {
-		  console.log('Usage: {Authentication cookie information}|{url}|{out put file name}. Where {Authentication cookie information} = {name},{value},{domain}');
+		  console.log('Usage: {Authentication cookie information}|{url}|{out put file name}|{mode}. Where {Authentication cookie information} = {name},{value},{domain}');
 	   }
    }
 }
