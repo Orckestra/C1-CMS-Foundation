@@ -20,7 +20,22 @@ namespace Composite.Core.WebClient.Renderings
 
             var renderingResult = await BrowserRender.RenderUrlAsync(context, previewUrl, RenderingMode);
 
-            return renderingResult != null ? renderingResult.FilePath : null;
+            if (renderingResult == null)
+            {
+                return null;
+            }
+
+            if (renderingResult.Status == BrowserRender.RenderingResultStatus.Success)
+            {
+                return renderingResult.FilePath;
+            }
+
+            if (renderingResult.Status >= BrowserRender.RenderingResultStatus.Error)
+            {
+                Log.LogWarning("FunctionPreview", "Failed to build preview for function. Reason: {0}; Output:\r\n{1}", 
+                    renderingResult.Status, renderingResult.Output);
+            }
+            return null;
         }
 
         /// <exclude />

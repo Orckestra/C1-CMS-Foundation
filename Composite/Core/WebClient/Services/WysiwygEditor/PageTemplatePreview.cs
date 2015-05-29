@@ -11,6 +11,7 @@ namespace Composite.Core.WebClient.Services.WysiwygEditor
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class PageTemplatePreview
     {
+        private static readonly string ServiceUrl = UrlUtils.ResolvePublicUrl("~/Renderers/TemplatePreview.ashx");
         private const string RenderingMode = "template";
 
         static PageTemplatePreview()
@@ -34,9 +35,8 @@ namespace Composite.Core.WebClient.Services.WysiwygEditor
         /// <exclude />
         public static bool GetPreviewInformation(HttpContext context, Guid pageId, Guid templateId, out string imageFilePath, out PlaceholderInformation[] placeholders)
         {
-            string serviceUrl = UrlUtils.ResolvePublicUrl("~/Renderers/TemplatePreview.ashx");
             int updateHash = BrowserRender.GetLastCacheUpdateTime(RenderingMode).GetHashCode();
-            string requestUrl = new UrlBuilder(context.Request.Url.ToString()).ServerUrl + serviceUrl + "?p=" + pageId + "&t=" + templateId + "&hash=" + updateHash;
+            string requestUrl = new UrlBuilder(context.Request.Url.ToString()).ServerUrl + ServiceUrl + "?p=" + pageId + "&t=" + templateId + "&hash=" + updateHash;
 
             BrowserRender.RenderingResult result = null;
 
@@ -49,6 +49,16 @@ namespace Composite.Core.WebClient.Services.WysiwygEditor
 
             if (result == null)
             {
+                imageFilePath = null;
+                placeholders = null;
+                return false;
+            }
+
+            if (result.Status != BrowserRender.RenderingResultStatus.Success)
+            {
+                Log.LogWarning("PageTemplatePreview", "Failed to build preview for page template '{0}'. Reason: {1}; Output:\r\n{2}",
+                    templateId, result.Status, result.Output);
+
                 imageFilePath = null;
                 placeholders = null;
                 return false;

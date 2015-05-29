@@ -165,12 +165,14 @@ function BuildFunctionPreview(system, console, address, output, authCookie, mode
             }
         });
     } finally {
+        var timeoutInSeconds = 60;
+
         globalTimeout = setTimeout(function () {
-            console.log("TIMEOUT: Max execution time - 60 seconds - exceeded");
+            console.log("TIMEOUT: Max execution time - " + timeoutInSeconds + " seconds - exceeded");
             globalTimeout = null;
             page.close();
             WaitForInput(system, console);
-        }, 60000);
+        }, timeoutInSeconds * 1000);
     }
 }
 

@@ -107,19 +107,18 @@ namespace Composite.Core.WebClient
             }
 
 
-            public static async Task<string> RenderUrlAsync(HttpCookie authenticationCookie, string url, string tempFilePath, string mode)
+            public static async Task<RenderingResult> RenderUrlAsync(HttpCookie authenticationCookie, string url, string outputImageFilePath, string mode)
             {
                 using (await _instanceAsyncLock.LockAsync())
                 {
-                    try
+                    _lastUsageDate = DateTime.Now;
+                    var renderingResult = Instance.RenderUrlImpl(authenticationCookie, url, outputImageFilePath, mode);
+
+                    if (renderingResult.Status == RenderingResultStatus.PhantomServerTimeout
+                        || renderingResult.Status == RenderingResultStatus.PhantomServerIncorrectResponse)
                     {
-                        _lastUsageDate = DateTime.Now;
-                        string output;
-                        Instance.RenderUrlImpl(authenticationCookie, url, tempFilePath, mode, out output);
-                        return output;
-                    }
-                    catch (BrowserRenderException)
-                    {
+                        Log.LogWarning("PhantomServer", "Shutting down PhantomJs server. Reason: {0}, Output: {1}", renderingResult.Status, renderingResult.Output);
+
                         try
                         {
                             ShutDown(true);
@@ -128,21 +127,21 @@ namespace Composite.Core.WebClient
                         {
                             Log.LogError("PhantomServer", shutdownException);
                         }
-                        
-                        throw;
                     }
+                    
+                    return renderingResult;
                 }
             }
 
 
-            private void RenderUrlImpl(HttpCookie authenticationCookie, string url, string tempFilePath, string mode, out string output)
+            private RenderingResult RenderUrlImpl(HttpCookie authenticationCookie, string url, string outputImageFilePath, string mode)
             {
                 Verify.ArgumentNotNull(authenticationCookie, "authenticationCookie");
 
                 string cookieDomain = new Uri(url).Host;
                 string cookieInfo = authenticationCookie.Name + "," + authenticationCookie.Value + "," + cookieDomain;
 
-                string requestLine = cookieInfo + "|" + url + "|" + tempFilePath + "|" + mode;
+                string requestLine = cookieInfo + "|" + url + "|" + outputImageFilePath + "|" + mode;
 
                 // Async way:
                 //Task<string> readerTask = Task.Run(async () =>
@@ -161,35 +160,74 @@ namespace Composite.Core.WebClient
 
                 readerTask.Wait(TimeSpan.FromSeconds(timeout));
 
+                string output;
+
                 switch (readerTask.Status)
                 {
                     case TaskStatus.RanToCompletion:
                         output = readerTask.Result;
                         break;
                     default:
-                        // nuke the exe process here - stuff is likely fucked up.
-                        #if DEBUG
-                            throw new BrowserRenderException(Environment.NewLine + "Request failed to complete within expected time: " + requestLine);
-                        #else
-                            throw new BrowserRenderException(Environment.NewLine + "Request failed to complete within expected time: " + url + " " + mode);
-                        #endif
-
+                        return new RenderingResult
+                        {
+                            Status = RenderingResultStatus.PhantomServerTimeout,
+                            Output = "Request failed to complete within expected time: " +
+#if DEBUG
+                                requestLine
+#else
+                                url + " " + mode
+#endif
+                        };
                 }
 
-
-                if (!C1File.Exists(tempFilePath))
+                if (C1File.Exists(outputImageFilePath))
                 {
-                    if (output == null)
-                    {
-                        output = _stderror.ReadToEnd();
-                    }
-
-                    #if DEBUG
-                        throw new BrowserRenderException(output + Environment.NewLine + "Request: " + requestLine);
-                    #else
-                        throw new BrowserRenderException(output + Environment.NewLine + "Request: " + url + " " + mode);
-                    #endif
+                    return new RenderingResult 
+                    { 
+                        Status = RenderingResultStatus.Success, 
+                        Output = output,
+                        FilePath = outputImageFilePath
+                    };
                 }
+
+                const string redirectResponsePrefix = "REDIRECT: ";
+                if (output.StartsWith(redirectResponsePrefix))
+                {
+                    return new RenderingResult
+                    {
+                        Status = RenderingResultStatus.Redirect,
+                        Output = output,
+                        RedirectUrl = output.Substring(redirectResponsePrefix.Length)
+                    };
+                }
+
+                const string timeoutResponsePrefix = "TIMEOUT: ";
+                if (output.StartsWith(timeoutResponsePrefix))
+                {
+                    return new RenderingResult
+                    {
+                        Status = RenderingResultStatus.Timeout,
+                        Output = output,
+                        RedirectUrl = output.Substring(timeoutResponsePrefix.Length)
+                    };
+                }
+
+                const string errorResponsePrefix = "ERROR: ";
+                if (output.StartsWith(errorResponsePrefix))
+                {
+                    return new RenderingResult
+                    {
+                        Status = RenderingResultStatus.Error,
+                        Output = output,
+                        RedirectUrl = output.Substring(errorResponsePrefix.Length)
+                    };
+                }
+
+                return new RenderingResult
+                {
+                    Status = RenderingResultStatus.PhantomServerIncorrectResponse,
+                    Output = output
+                };
             }
 
             public static string ScriptFilePath

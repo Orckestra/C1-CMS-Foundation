@@ -24,7 +24,7 @@ namespace Composite.Plugins.Security.LoginSessionStores.HttpContextBasedLoginSes
 
         private static readonly string ContextKey = typeof(HttpContextBasedLoginSessionStore).FullName + "StoredUsername";
 
-        private const string AuthCookieName = ".CMSAUTH";
+        internal const string AuthCookieName = ".CMSAUTH";
 
         public bool CanPersistAcrossSessions
         {
