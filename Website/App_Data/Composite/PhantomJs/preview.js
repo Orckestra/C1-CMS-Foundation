@@ -184,3 +184,6 @@ function setDebugMarkers() {
         previewMarkerElement.style.opacity = 0.5;
     }
 }
+
+
+window.previewJsInitialized = true;

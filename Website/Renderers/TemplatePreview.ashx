@@ -7,7 +7,6 @@ using System.Web;
 using System.Xml.Linq;
 using Composite.C1Console.Security;
 using Composite.Core.PageTemplates;
-using Composite.Core.WebClient;
 using Composite.Core.WebClient.Renderings.Page;
 using Composite.Core.Xml;
 using Composite.Data;
@@ -83,7 +82,7 @@ namespace Composite.Renderers
 
 					if (!previewStagingJsAppended)
 					{
-						placeholderDocument.Body.Add(XElement.Parse(previewStagingJs));
+						placeholderDocument.Body.Add(XElement.Parse(PreviewStagingJs));
 						previewStagingJsAppended = true;
 					}
 
@@ -98,14 +97,14 @@ namespace Composite.Renderers
 
 				string output = PagePreviewBuilder.RenderPreview(page, contents, RenderingReason.ScreenshotGeneration);
 
+                // NOTE: output is always empty in integrated mode, as RenderPreview() does a request transfer.
 				if (output != String.Empty)
 				{
 					context.Response.ContentType = "text/html";
 					context.Response.Write(output);
-					if (!previewStagingJsAppended)
+                    if (!previewStagingJsAppended || !output.Contains(PreviewStagingJsMarker))
 					{
-						context.Response.Write(previewStagingJs);
-						previewStagingJsAppended = true;
+                        context.Response.Write(PreviewStagingJs);
 					}
 
 				}
@@ -124,7 +123,7 @@ namespace Composite.Renderers
 
 		// this script block will 
 		//  - finalize (call phantom)
-		const string previewStagingJs = @"
+		const string PreviewStagingJs = @"
 <script xmlns='http://www.w3.org/1999/xhtml'>    //<!--
     window.addEventListener('load', function () {
 		window.setTimeout( function() {
@@ -138,9 +137,13 @@ namespace Composite.Renderers
 			window.callPhantom('load');
 	}
 
+    window.previewJsInitialized = true;
+
 // -->
 </script>
 ";
+
+	    private const string PreviewStagingJsMarker = "window.callPhantom('load')";
 
 	}
 }

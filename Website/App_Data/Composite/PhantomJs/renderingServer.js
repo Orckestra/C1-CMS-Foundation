@@ -148,6 +148,19 @@ function BuildFunctionPreview(system, console, address, output, authCookie, mode
                     console.log('SUCCESS');
 
                     WaitForInput(system, console);
+                } else {
+                    var previewJsExecuted = page.evaluate(function () {
+                        return window.previewJsInitialized == true;
+                    });
+
+                    // If "preview.js" isn't inserted, closing the page, as the default callback will not be called
+                    if (!previewJsExecuted) {
+                        clearGlobalTimeout();
+                        page.close();
+                        console.log('ERROR: preview.js script is not present in the response body');
+
+                        WaitForInput(system, console);
+                    }
                 }
             }
         });
