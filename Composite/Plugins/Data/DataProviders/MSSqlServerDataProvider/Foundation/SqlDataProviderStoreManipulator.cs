@@ -105,7 +105,11 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
             }
 
             var sql = new StringBuilder();
-            var sqlColumns = typeDescriptor.Fields.Select(fieldDescriptor => GetColumnInfo(tableName, fieldDescriptor.Name, fieldDescriptor, true, false)).ToList();
+
+            Func<string, bool> isKeyField = typeDescriptor.KeyPropertyNames.Contains;
+            var sqlColumns = typeDescriptor.Fields.Select(fieldDescriptor 
+                => GetColumnInfo(tableName, fieldDescriptor.Name, fieldDescriptor, true, false, isKeyField(fieldDescriptor.Name))
+                ).ToList();
 
             sql.AppendFormat("CREATE TABLE dbo.[{0}]({1});", tableName, string.Join(",", sqlColumns));
             sql.Append(SetPrimaryKey(tableName, typeDescriptor.KeyPropertyNames, typeDescriptor.PrimaryKeyIsClusteredIndex));
@@ -445,14 +449,16 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
                 }
 
                 DropFields(alteredTableName, changeDescriptor.DeletedFields, changeDescriptor.OriginalType.Fields);
-                ImplementFieldChanges(alteredTableName, changeDescriptor.ExistingFields);
+                ImplementFieldChanges(alteredTableName, changeDescriptor.ExistingFields, changeDescriptor.AlteredType.KeyPropertyNames);
 
 
                 Dictionary<string, object> defaultValues = null;
                 if (updateDataTypeDescriptor.PublicationAdded)
                 {
-                    defaultValues = new Dictionary<string, object>();
-                    defaultValues.Add("PublicationStatus", GenericPublishProcessController.Draft);
+                    defaultValues = new Dictionary<string, object>
+                    {
+                        {"PublicationStatus", GenericPublishProcessController.Draft}
+                    };
                 }
 
                 AppendFields(alteredTableName, changeDescriptor.AddedFields, defaultValues);
@@ -552,15 +558,22 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
             }
         }
 
-        private void ImplementFieldChanges(string tableName, IEnumerable<DataTypeChangeDescriptor.ExistingFieldInfo> existingFieldDescription)
+        private void ImplementFieldChanges(
+            string tableName, 
+            IEnumerable<DataTypeChangeDescriptor.ExistingFieldInfo> existingFieldDescription,
+            IEnumerable<string> keyFieldNames)
         {
+            Func<string, bool> isKeyField = keyFieldNames.Contains;
+
             foreach (var changedFieldDescriptor in existingFieldDescription)
             {
-                // Recreating deleted contraints, if necessary - renaming the column/changing its type
+                // Recreating deleted constraints, if necessary - renaming the column/changing its type
                 bool changes = changedFieldDescriptor.AlteredFieldHasChanges;
                 var columnName = changedFieldDescriptor.OriginalField.Name;
 
-                ConfigureColumn(tableName, columnName, changedFieldDescriptor.AlteredField, changedFieldDescriptor.OriginalField, changes);
+                ConfigureColumn(tableName, columnName, 
+                    changedFieldDescriptor.AlteredField, changedFieldDescriptor.OriginalField, changes,
+                    isKeyField(changedFieldDescriptor.AlteredField.Name));
             }
         }
 
@@ -685,18 +698,18 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
 
 
 
-        private void CreateColumn(string tableName, DataFieldDescriptor fieldDescriptor, object defaultValue = null)
+        private void CreateColumn(string tableName, DataFieldDescriptor fieldDescriptor, object defaultValue = null, bool isPartOfTableKey = false)
         {
             if (defaultValue == null && !fieldDescriptor.IsNullable && fieldDescriptor.DefaultValue != null)
             {
                 ExecuteNonQuery("ALTER TABLE [{0}] ADD {1};"
-                            .FormatWith(tableName, GetColumnInfo(tableName, fieldDescriptor.Name, fieldDescriptor, true, false)));
+                            .FormatWith(tableName, GetColumnInfo(tableName, fieldDescriptor.Name, fieldDescriptor, true, false, isPartOfTableKey)));
                 return;
             }
 
             // Creating a column, making it nullable
             ExecuteNonQuery("ALTER TABLE [{0}] ADD {1};"
-                            .FormatWith(tableName, GetColumnInfo(tableName, fieldDescriptor.Name, fieldDescriptor, true, true)));
+                            .FormatWith(tableName, GetColumnInfo(tableName, fieldDescriptor.Name, fieldDescriptor, true, true, isPartOfTableKey)));
 
             // Setting default value with "UPDATE" statement
             if (defaultValue != null || (!fieldDescriptor.IsNullable && fieldDescriptor.DefaultValue == null))
@@ -722,13 +735,13 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
             // Making column not nullable if necessary
             if(!fieldDescriptor.IsNullable)
             {
-                AlterColumn(tableName, GetColumnInfo(tableName, fieldDescriptor.Name, fieldDescriptor, false, false));
+                AlterColumn(tableName, GetColumnInfo(tableName, fieldDescriptor.Name, fieldDescriptor, false, false, isPartOfTableKey));
             }
         }
 
 
 
-        private void ConfigureColumn(string tableName, string columnName, DataFieldDescriptor fieldDescriptor, DataFieldDescriptor originalFieldDescriptor, bool changes)
+        private void ConfigureColumn(string tableName, string columnName, DataFieldDescriptor fieldDescriptor, DataFieldDescriptor originalFieldDescriptor, bool changes, bool isPartOfTableKey)
         {
             if (columnName != fieldDescriptor.Name)
             {
@@ -743,7 +756,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
                 {
                     if (fieldDescriptor.StoreType.ToString() != originalFieldDescriptor.StoreType.ToString())
                     {
-                        AlterColumn(tableName, GetColumnInfo(tableName, fieldDescriptor.Name, fieldDescriptor, false, true));
+                        AlterColumn(tableName, GetColumnInfo(tableName, fieldDescriptor.Name, fieldDescriptor, false, true, isPartOfTableKey));
                     }
 
                     string defaultValue = fieldDescriptor.DefaultValue != null
@@ -754,7 +767,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
                                     .FormatWith(tableName, fieldDescriptor.Name, defaultValue));
                 }
 
-                AlterColumn(tableName, GetColumnInfo(tableName, fieldDescriptor.Name, fieldDescriptor, false, false));
+                AlterColumn(tableName, GetColumnInfo(tableName, fieldDescriptor.Name, fieldDescriptor, false, false, isPartOfTableKey));
             }
 
             ExecuteNonQuery(SetDefaultValue(tableName, fieldDescriptor.Name, fieldDescriptor.DefaultValue));
@@ -765,7 +778,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
             ExecuteNonQuery(string.Format("ALTER TABLE [{0}] ALTER COLUMN {1};", tableName, columnInfo));
         }
 
-        internal string GetColumnInfo(string tableName, string columnName, DataFieldDescriptor fieldDescriptor, bool includeDefault, bool forceNullable)
+        internal string GetColumnInfo(string tableName, string columnName, DataFieldDescriptor fieldDescriptor, bool includeDefault, bool forceNullable, bool isPartOfTableKey)
         {
             string defaultInfo = string.Empty;
 
@@ -777,10 +790,19 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
                 }
             }
 
+            // Enabling case sensitive comparison for the string fields that are a part of the table key
+            string collation = string.Empty;
+            if (isPartOfTableKey &&
+                fieldDescriptor.StoreType.PhysicalStoreType == PhysicalStoreFieldType.String)
+            {
+                collation = "COLLATE Latin1_General_CS_AS";
+            }
+            
             return string.Format(
-                "[{0}] {1} {2} {3}",
+                "[{0}] {1} {2} {3} {4}",
                 fieldDescriptor.Name,
                 DynamicTypesCommon.MapStoreTypeToSqlDataType(fieldDescriptor.StoreType),
+                collation,
                 fieldDescriptor.IsNullable || forceNullable ? "NULL" : "NOT NULL",
                 defaultInfo);
         }

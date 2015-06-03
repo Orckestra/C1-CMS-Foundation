@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Threading;
 using System.Transactions;
 using Composite.Core.Collections.Generic;
+using Composite.Core.Linq;
 using Composite.Data.Caching;
 using Composite.Data.Foundation;
 using Composite.C1Console.Events;
@@ -432,7 +433,7 @@ namespace Composite.Data
         {
             PropertyInfo propertyInfo = DataAttributeFacade.GetKeyProperties(typeof(T)).Single();
 
-            DataKeyPropertyCollection dataKeyPropertyCollection = new DataKeyPropertyCollection();
+            var dataKeyPropertyCollection = new DataKeyPropertyCollection();
             dataKeyPropertyCollection.AddKeyProperty(propertyInfo, dataKeyValue);
 
             return GetPredicateExpressionByUniqueKey<T>(dataKeyPropertyCollection);
@@ -446,15 +447,15 @@ namespace Composite.Data
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");
             if (dataKeyPropertyCollection == null) throw new ArgumentNullException("dataKeyPropertyCollection");
 
-            var keyPropertyInfos = DataAttributeFacade.GetKeyProperties(interfaceType);
+            var keyProperties = DataAttributeFacade.GetKeyProperties(interfaceType);
 
             ParameterExpression parameterExpression = Expression.Parameter(interfaceType, "data");
 
-            Expression currentExpression = GetPredicateExpressionByUniqueKeyFilterExpression(keyPropertyInfos, dataKeyPropertyCollection, parameterExpression);
+            Expression currentExpression = GetPredicateExpressionByUniqueKeyFilterExpression(keyProperties, dataKeyPropertyCollection, parameterExpression);
 
-            Type delegateType = typeof(Func<,>).MakeGenericType(new Type[] { interfaceType, typeof(bool) });
+            Type delegateType = typeof(Func<,>).MakeGenericType(new [] { interfaceType, typeof(bool) });
 
-            LambdaExpression lambdaExpression = Expression.Lambda(delegateType, currentExpression, new ParameterExpression[] { parameterExpression });
+            LambdaExpression lambdaExpression = Expression.Lambda(delegateType, currentExpression, new [] { parameterExpression });
 
             return lambdaExpression;
         }
@@ -469,7 +470,7 @@ namespace Composite.Data
 
             PropertyInfo propertyInfo = DataAttributeFacade.GetKeyProperties(interfaceType).Single();
 
-            DataKeyPropertyCollection dataKeyPropertyCollection = new DataKeyPropertyCollection();
+            var dataKeyPropertyCollection = new DataKeyPropertyCollection();
             dataKeyPropertyCollection.AddKeyProperty(propertyInfo, dataKeyValue);
 
             return GetPredicateExpressionByUniqueKey(interfaceType, dataKeyPropertyCollection);
@@ -478,32 +479,20 @@ namespace Composite.Data
 
 
         // Private helper
-        private static Expression GetPredicateExpressionByUniqueKeyFilterExpression(IReadOnlyList<PropertyInfo> keyPropertyInfos, DataKeyPropertyCollection dataKeyPropertyCollection, ParameterExpression parameterExpression)
+        private static Expression GetPredicateExpressionByUniqueKeyFilterExpression(IReadOnlyList<PropertyInfo> keyProperties, DataKeyPropertyCollection dataKeyPropertyCollection, ParameterExpression parameterExpression)
         {
-            if (keyPropertyInfos.Count != dataKeyPropertyCollection.Count) throw new ArgumentException("Missing og to many key propertyies");
+            if (keyProperties.Count != dataKeyPropertyCollection.Count) throw new ArgumentException("Missing og to many key properties");
 
-            Expression currentExpression = null;
+            var propertiesWithValues = new List<Tuple<PropertyInfo, object>>();
             foreach (var kvp in dataKeyPropertyCollection.KeyProperties)
             {
-                PropertyInfo keyPropertyInfo = keyPropertyInfos.Where(f => f.Name == kvp.Key).Single();
-
-                Expression left = LambdaExpression.Property(parameterExpression, keyPropertyInfo);
+                PropertyInfo keyPropertyInfo = keyProperties.Single(f => f.Name == kvp.Key);
                 object castedDataKey = ValueTypeConverter.Convert(kvp.Value, keyPropertyInfo.PropertyType);
-                Expression right = Expression.Constant(castedDataKey);
 
-                Expression filter = Expression.Equal(left, right);
-
-                if (currentExpression == null)
-                {
-                    currentExpression = filter;
-                }
-                else
-                {
-                    currentExpression = Expression.And(currentExpression, filter);
-                }
+                propertiesWithValues.Add(new Tuple<PropertyInfo, object>(keyPropertyInfo, castedDataKey));
             }
 
-            return currentExpression;
+            return ExpressionHelper.CreatePropertyPredicate(parameterExpression, propertiesWithValues);
         }
 
         #endregion
@@ -519,7 +508,7 @@ namespace Composite.Data
         {
             PropertyInfo propertyInfo = DataAttributeFacade.GetKeyProperties(typeof(T)).Single();
 
-            DataKeyPropertyCollection dataKeyPropertyCollection = new DataKeyPropertyCollection();
+            var dataKeyPropertyCollection = new DataKeyPropertyCollection();
             dataKeyPropertyCollection.AddKeyProperty(propertyInfo, dataKeyValue);
 
             return TryGetDataByUniqueKey<T>(dataKeyPropertyCollection);

@@ -14,11 +14,6 @@ namespace Composite.Data
     {
         private readonly Dictionary<string, object> _keyProperties = new Dictionary<string, object>();
 
-        /// <exclude />
-        public DataKeyPropertyCollection()
-        {
-        }
-
 
         /// <exclude />
         public void AddKeyProperty(PropertyInfo propertyInfo, object value)
@@ -55,12 +50,9 @@ namespace Composite.Data
         /// <exclude />
         public IEnumerable<KeyValuePair<string, object>> KeyProperties
         {
-            get
-            {
-                foreach (KeyValuePair<string, object> kvp in _keyProperties)
-                {
-                    yield return kvp;
-                }
+            get 
+            { 
+                return _keyProperties;
             }
         }
 
@@ -88,19 +80,13 @@ namespace Composite.Data
         /// <exclude />
         public bool Equals(DataKeyPropertyCollection dataKeyPropertyCollection)
         {
-            if (dataKeyPropertyCollection == null) return false;
-
-            if (this.Count != dataKeyPropertyCollection.Count) return false;
+            if (dataKeyPropertyCollection == null || dataKeyPropertyCollection.Count != Count) return false;
 
             foreach (var kvp in this.KeyProperties)
             {
                 object value;
-                if (dataKeyPropertyCollection.TryGetKeyValue(kvp.Key, out value) == false)
-                {
-                    return false;
-                }
-
-                if (kvp.Value.Equals(value) == false)
+                if (!dataKeyPropertyCollection.TryGetKeyValue(kvp.Key, out value)
+                    || !kvp.Value.Equals(value))
                 {
                     return false;
                 }
@@ -130,7 +116,7 @@ namespace Composite.Data
         /// <exclude />
         public override string ToString()
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
 
             bool first = true;
             foreach (var kvp in _keyProperties)

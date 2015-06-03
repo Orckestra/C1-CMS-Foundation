@@ -23,7 +23,7 @@ namespace Composite.Data
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public sealed class DefaultFieldStringValueAttribute : DefaultFieldValueAttribute
     {
-        private string _defaultValue;
+        private readonly string _defaultValue;
 
 
         /// <summary>    
@@ -51,7 +51,7 @@ namespace Composite.Data
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public sealed class DefaultFieldIntValueAttribute : DefaultFieldValueAttribute
     {
-        private int _defaultValue;
+        private readonly int _defaultValue;
 
 
         /// <summary>    
@@ -78,7 +78,7 @@ namespace Composite.Data
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public sealed class DefaultFieldDecimalValueAttribute : DefaultFieldValueAttribute
     {
-        private decimal _defaultValue;
+        private readonly decimal _defaultValue;
 
         /// <summary>
         /// Decimals are not allowed as attribute parameter values. They are structs.
@@ -106,7 +106,7 @@ namespace Composite.Data
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public sealed class DefaultFieldBoolValueAttribute : DefaultFieldValueAttribute
     {
-        private bool _defaultValue;
+        private readonly bool _defaultValue;
 
 
         /// <summary>    
@@ -133,7 +133,7 @@ namespace Composite.Data
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public sealed class DefaultFieldGuidValueAttribute : DefaultFieldValueAttribute
     {
-        private Guid _defaultValue;
+        private readonly Guid _defaultValue;
 
 
         /// <summary>    
@@ -160,14 +160,6 @@ namespace Composite.Data
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public sealed class DefaultFieldNewGuidValueAttribute : DefaultFieldValueAttribute
     {
-        /// <summary>    
-        /// Associate a random new GUID to a GUID property on a data type.
-        /// </summary>
-        public DefaultFieldNewGuidValueAttribute()
-        {
-        }
-
-
         /// <exclude />
         public override DefaultValue GetDefaultValue()
         {
@@ -183,14 +175,6 @@ namespace Composite.Data
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public sealed class DefaultFieldNowDateTimeValueAttribute : DefaultFieldValueAttribute
     {
-        /// <summary>
-        /// Associate the current date and time to a DateTime property on a data type.
-        /// </summary>
-        public DefaultFieldNowDateTimeValueAttribute()
-        {
-        }
-
-
         /// <exclude />
         public override DefaultValue GetDefaultValue()
         {

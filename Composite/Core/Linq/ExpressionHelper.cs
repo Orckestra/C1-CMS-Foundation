@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using Composite.Data;
-using Composite.Core.Linq;
 
 
 namespace Composite.Core.Linq
@@ -139,5 +139,24 @@ namespace Composite.Core.Linq
 
             return joinExpression;
         }
+
+	    public static Expression CreatePropertyPredicate(ParameterExpression parameterExpression, IEnumerable<Tuple<PropertyInfo, object>> propertiesWithValues)
+	    {
+            Expression currentExpression = null;
+            foreach (var kvp in propertiesWithValues)
+            {
+                PropertyInfo propertyInfo = kvp.Item1;
+                object value = kvp.Item2;
+
+                Expression left = LambdaExpression.Property(parameterExpression, propertyInfo);
+                Expression right = Expression.Constant(value);
+
+                Expression filter = Expression.Equal(left, right);
+
+                currentExpression = currentExpression == null ? filter : Expression.And(currentExpression, filter);
+            }
+
+            return currentExpression;
+	    }
 	}
 }
