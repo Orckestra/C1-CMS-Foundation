@@ -371,7 +371,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
             public void AddRedirectsForAssembly(string filePath, FileVersionInfo fileVersionInfo)
             {
                 var targetVersion = new Version(fileVersionInfo.FileVersion);
-                string newTargetVersionStr = "{0}.{1}.0.0".FormatWith(targetVersion.Major, targetVersion.Minor);
+                string newTargetVersionStr = "{0}.{1}.{2}.0".FormatWith(targetVersion.Major, targetVersion.Minor, targetVersion.Revision);
 
                 AssemblyName assemblyName;
 
