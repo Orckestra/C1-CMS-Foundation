@@ -8,6 +8,7 @@ using Composite.C1Console.Events;
 using Composite.Core.Linq;
 using Composite.Core.Types;
 using Composite.Core.WebClient;
+using Composite.Data.DynamicTypes;
 
 namespace Composite.Data
 {
@@ -15,14 +16,13 @@ namespace Composite.Data
     /// Sets the field's value to a random base64 string value of the specified length.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-    public sealed class DefaultFieldRandomStringValueAttribute : Attribute
+    public sealed class DefaultFieldRandomStringValueAttribute : DefaultFieldValueAttribute
     {
-        private readonly bool _checkCollisions;
-
         private static readonly ConcurrentDictionary<Type, IEnumerable<RandomStringValueProperty>> ReflectionCache =
             new ConcurrentDictionary<Type, IEnumerable<RandomStringValueProperty>>();
 
         internal int Length { get; private set; }
+        internal bool CheckCollisions { get; private set; }
 
         private class RandomStringValueProperty
         {
@@ -42,7 +42,7 @@ namespace Composite.Data
             Verify.ArgumentCondition(length <= 22, "length", "Maximum allowed length is 22 characters, which is an equivalent to a Guid value");
 
             Length = length;
-            _checkCollisions = checkCollisions;
+            CheckCollisions = checkCollisions;
         }
 
         static DefaultFieldRandomStringValueAttribute()
@@ -65,7 +65,7 @@ namespace Composite.Data
 
                 string randomString = GenerateRandomString(field.Attribute.Length);
 
-                if (field.Attribute._checkCollisions)
+                if (field.Attribute.CheckCollisions)
                 {
                     bool uniqueValueFound = false;
 
@@ -147,6 +147,11 @@ namespace Composite.Data
 
                 return result ?? Enumerable.Empty<RandomStringValueProperty>();
             });
+        }
+
+        public override DefaultValue GetDefaultValue()
+        {
+            return DefaultValue.RandomString(Length, CheckCollisions);
         }
     }
 }

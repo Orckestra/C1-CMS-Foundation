@@ -9,14 +9,16 @@ using Composite.Core.Serialization;
 
 namespace Composite.Data.DynamicTypes
 {
-    /// <summary>    
+    /// <summary>
+    /// Represents a default value for a data type field
     /// </summary>
-    [Serializable()]
+    [Serializable]
     public sealed class DefaultValue : IComparable
     {
-        private object _value;
-        private DefaultValueType _valueType;
+        private readonly object _value;
+        private readonly DefaultValueType _valueType;
 
+        private readonly RandomStringSettings _randomStringSettings;
 
         /// <summary>
         /// String default value
@@ -33,7 +35,7 @@ namespace Composite.Data.DynamicTypes
         public static DefaultValue Integer(int defaultValue) { return new DefaultValue(defaultValue); }
 
         /// <summary>
-        /// Demimal default value
+        /// Decimal default value
         /// </summary>
         /// <param name="defaultValue">value</param>
         /// <returns></returns>
@@ -73,6 +75,15 @@ namespace Composite.Data.DynamicTypes
         public static DefaultValue NewGuid { get { return new DefaultValue(DefaultValueType.NewGuid); } }
 
 
+        /// <summary>
+        /// A new value is a new random string
+        /// </summary>
+        /// <returns></returns>
+        public static DefaultValue RandomString(int length, bool checkCollisions)
+        {
+            return new DefaultValue(new RandomStringSettings(length, checkCollisions)); 
+        }
+
 
         /// <summary>
         /// The default value.
@@ -88,6 +99,9 @@ namespace Composite.Data.DynamicTypes
 
                     case DefaultValueType.NewGuid:
                         return System.Guid.NewGuid();
+
+                    case DefaultValueType.RandomString:
+                        return null; // A new value is generated and set in an "OnBeforeAdd" event handler.
 
                     default:
                         return _value;
@@ -131,6 +145,9 @@ namespace Composite.Data.DynamicTypes
                 case DefaultValueType.String:
                     return DefaultValue.String((string)_value);
 
+                case DefaultValueType.RandomString:
+                    return new DefaultValue(_randomStringSettings);
+
                 default:
                     throw new NotImplementedException();
             }
@@ -140,13 +157,18 @@ namespace Composite.Data.DynamicTypes
         /// <exclude />
         public string Serialize()
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
 
             StringConversionServices.SerializeKeyValuePair(sb, "ValueType", this.ValueType.ToString());
             
             if (!IsDynamicValue && this.Value != null)
             {
                 StringConversionServices.SerializeKeyValuePair(sb, "Value", SerializeDefaultValue(ValueType, this.Value));
+            }
+
+            if (_randomStringSettings != null)
+            {
+                _randomStringSettings.Serialize(sb);
             }
 
             return sb.ToString();
@@ -177,6 +199,7 @@ namespace Composite.Data.DynamicTypes
                     case DefaultValueType.String:
                         return (string)value;
 
+                    case DefaultValueType.RandomString:
                     case DefaultValueType.NewGuid:
                     case DefaultValueType.DateTimeNow:
                         return string.Empty;
@@ -190,28 +213,28 @@ namespace Composite.Data.DynamicTypes
         /// <exclude />
         public static DefaultValue Deserialize(string serializedData)
         {
+            Verify.ArgumentNotNullOrEmpty(serializedData, "serializedData");
+
             using (TimerProfilerFacade.CreateTimerProfiler())
             {
-                if (string.IsNullOrEmpty(serializedData)) throw new ArgumentNullException("serializedData");
-
                 Dictionary<string, string> dic = StringConversionServices.ParseKeyValueCollection(serializedData);
 
-                if (dic.ContainsKey("ValueType") == false) throw new ArgumentException("Wrong serialized format");
+                Verify.That(dic.ContainsKey("ValueType"), "Wrong serialized format");
 
                 string valueTypeString = StringConversionServices.DeserializeValue<string>(dic["ValueType"]);
-                DefaultValueType valueType = (DefaultValueType)Enum.Parse(typeof(DefaultValueType), valueTypeString);
+                var valueType = (DefaultValueType)Enum.Parse(typeof(DefaultValueType), valueTypeString);
 
-                bool hasValue = dic.ContainsKey("Value") ;
+                bool hasValue = dic.ContainsKey("Value");
 
                 switch (valueType)
                 {
                     case DefaultValueType.Boolean:
-                        if (hasValue == false) throw new ArgumentException("Wrong serialized format");
+                        Verify.That(hasValue, "Wrong serialized format");
                         bool boolValue = StringConversionServices.DeserializeValueBool(dic["Value"]);
                         return DefaultValue.Boolean(boolValue);
 
                     case DefaultValueType.DateTime:
-                        if (hasValue == false) throw new ArgumentException("Wrong serialized format");
+                        Verify.That(hasValue, "Wrong serialized format");
                         DateTime dateTimeValue = StringConversionServices.DeserializeValueDateTime(dic["Value"]);
                         return DefaultValue.DateTime(dateTimeValue);
 
@@ -219,17 +242,17 @@ namespace Composite.Data.DynamicTypes
                         return DefaultValue.Now;
 
                     case DefaultValueType.Decimal:
-                        if (hasValue == false) throw new ArgumentException("Wrong serialized format");
+                        Verify.That(hasValue, "Wrong serialized format");
                         decimal decimalValue = StringConversionServices.DeserializeValueDecimal(dic["Value"]);
                         return DefaultValue.Decimal(decimalValue);
 
                     case DefaultValueType.Guid:
-                        if (hasValue == false) throw new ArgumentException("Wrong serialized format");
+                        Verify.That(hasValue, "Wrong serialized format");
                         Guid guidValue = StringConversionServices.DeserializeValueGuid(dic["Value"]);
                         return DefaultValue.Guid(guidValue);
 
                     case DefaultValueType.Integer:
-                        if (hasValue == false) throw new ArgumentException("Wrong serialized format");
+                        Verify.That(hasValue, "Wrong serialized format");
                         int intValue = StringConversionServices.DeserializeValueInt(dic["Value"]);
                         return DefaultValue.Integer(intValue);
 
@@ -243,6 +266,11 @@ namespace Composite.Data.DynamicTypes
                             stringValue = StringConversionServices.DeserializeValueString(dic["Value"]);
                         }
                         return DefaultValue.String(stringValue);
+
+                    case DefaultValueType.RandomString:
+                        var settings = RandomStringSettings.Deserialize(dic);
+
+                        return new DefaultValue(settings);
 
                     default:
                         throw new NotImplementedException("DefaultValueType = " + valueType);
@@ -271,18 +299,18 @@ namespace Composite.Data.DynamicTypes
                     break;
 
                 case DefaultValueType.Guid:
-                    codeAttributeDeclaration = new CodeAttributeDeclaration(new CodeTypeReference(typeof(DefaultFieldGuidValueAttribute)));
-                    codeAttributeDeclaration.Arguments.Add(new CodeAttributeArgument(new CodePrimitiveExpression(this.Value.ToString())));
+                    codeAttributeDeclaration = new CodeAttributeDeclaration(new CodeTypeReference(typeof(DefaultFieldGuidValueAttribute)),
+                        new CodeAttributeArgument(new CodePrimitiveExpression(this.Value.ToString())));
                     break;
 
                 case DefaultValueType.Integer :
-                    codeAttributeDeclaration = new CodeAttributeDeclaration(new CodeTypeReference(typeof(DefaultFieldIntValueAttribute)));
-                    codeAttributeDeclaration.Arguments.Add(new CodeAttributeArgument(new CodePrimitiveExpression(this.Value)));
+                    codeAttributeDeclaration = new CodeAttributeDeclaration(new CodeTypeReference(typeof(DefaultFieldIntValueAttribute)),
+                        new CodeAttributeArgument(new CodePrimitiveExpression(this.Value)));
                     break;
 
                 case DefaultValueType.Decimal:
-                    codeAttributeDeclaration = new CodeAttributeDeclaration(new CodeTypeReference(typeof(DefaultFieldDecimalValueAttribute)));
-                    codeAttributeDeclaration.Arguments.Add(new CodeAttributeArgument(new CodePrimitiveExpression(decimal.ToInt32((decimal)this.Value))));
+                    codeAttributeDeclaration = new CodeAttributeDeclaration(new CodeTypeReference(typeof(DefaultFieldDecimalValueAttribute)),
+                        new CodeAttributeArgument(new CodePrimitiveExpression(decimal.ToInt32((decimal)this.Value))));
                     break;
 
                 case DefaultValueType.NewGuid:
@@ -290,13 +318,19 @@ namespace Composite.Data.DynamicTypes
                     break;
 
                 case DefaultValueType.String:
-                    codeAttributeDeclaration = new CodeAttributeDeclaration(new CodeTypeReference(typeof(DefaultFieldStringValueAttribute)));
-                    codeAttributeDeclaration.Arguments.Add(new CodeAttributeArgument(new CodePrimitiveExpression(this.Value)));
+                    codeAttributeDeclaration = new CodeAttributeDeclaration(new CodeTypeReference(typeof(DefaultFieldStringValueAttribute)),
+                        new CodeAttributeArgument(new CodePrimitiveExpression(this.Value)));
+                    break;
+
+                case DefaultValueType.RandomString:
+                    codeAttributeDeclaration = new CodeAttributeDeclaration(new CodeTypeReference(typeof(DefaultFieldRandomStringValueAttribute)),
+                        new CodeAttributeArgument(new CodePrimitiveExpression(_randomStringSettings.Length)),
+                        new CodeAttributeArgument(new CodePrimitiveExpression(_randomStringSettings.CheckCollisions)));
                     break;
 
                 case DefaultValueType.Boolean:
-                    codeAttributeDeclaration = new CodeAttributeDeclaration(new CodeTypeReference(typeof(DefaultFieldBoolValueAttribute)));
-                    codeAttributeDeclaration.Arguments.Add(new CodeAttributeArgument(new CodePrimitiveExpression(this.Value)));
+                    codeAttributeDeclaration = new CodeAttributeDeclaration(new CodeTypeReference(typeof(DefaultFieldBoolValueAttribute)),
+                        new CodeAttributeArgument(new CodePrimitiveExpression(this.Value)));
                     break;
 
                     
@@ -307,8 +341,6 @@ namespace Composite.Data.DynamicTypes
             return codeAttributeDeclaration;
         }
 
-
-
         internal bool IsAssignableTo(StoreFieldType storeType)
         {
             switch (this.ValueType)
@@ -317,10 +349,10 @@ namespace Composite.Data.DynamicTypes
                 case DefaultValueType.DateTimeNow:
                     return storeType.IsDateTime || storeType.IsString;
                 case DefaultValueType.String:
-                    if (storeType.IsString == false) return false;
-                    if (this.Value == null) return true;
-                    if (storeType.MaximumLength >= this.Value.ToString().Length) return true;
-                    return false;
+                    if (!storeType.IsString) return false;
+                    return this.Value == null || storeType.MaximumLength >= this.Value.ToString().Length;
+                case DefaultValueType.RandomString:
+                    return storeType.IsString && storeType.MaximumLength >= _randomStringSettings.Length;
                 case DefaultValueType.Integer:
                     return storeType.IsNumeric || storeType.IsString;
                 case DefaultValueType.Decimal:
@@ -335,6 +367,11 @@ namespace Composite.Data.DynamicTypes
             throw new ArgumentException("Unknown store type");
         }
 
+        private DefaultValue(RandomStringSettings randomStringSettings)
+        {
+            _valueType = DefaultValueType.RandomString;
+            _randomStringSettings = randomStringSettings;
+        }
 
 
         private DefaultValue(string defaultValue)
@@ -394,7 +431,12 @@ namespace Composite.Data.DynamicTypes
 
         private bool IsDynamicValue
         {
-            get { return ValueType == DefaultValueType.DateTimeNow || ValueType == DefaultValueType.NewGuid; }
+            get
+            {
+                return ValueType == DefaultValueType.DateTimeNow 
+                    || ValueType == DefaultValueType.NewGuid
+                    || ValueType == DefaultValueType.RandomString;
+            }
         }
 
 
@@ -415,8 +457,8 @@ namespace Composite.Data.DynamicTypes
                     return 0;
 
                 case DefaultValueType.String:
-                    if ((this.Value == null) && (compareTo.Value == null)) return 0;
-                    return this.Value.ToString().CompareTo(compareTo.Value.ToString());
+                    if (this.Value == null && compareTo.Value == null) return 0;
+                    return string.Compare(this.Value.ToString(), compareTo.Value.ToString());
 
                 case DefaultValueType.Integer:
                     return ((int)this.Value).CompareTo((int)compareTo.Value);
@@ -431,14 +473,49 @@ namespace Composite.Data.DynamicTypes
                     return ((DateTime)this.Value).CompareTo((DateTime)compareTo.Value);
 
                 case DefaultValueType.Guid:
-                    return this.Value.ToString().CompareTo(compareTo.Value.ToString());
+                    return string.Compare(this.Value.ToString(), compareTo.Value.ToString(), StringComparison.OrdinalIgnoreCase);
+
+                case DefaultValueType.RandomString:
+                    return string.Compare(_randomStringSettings.ToString(), compareTo._randomStringSettings.ToString(), StringComparison.OrdinalIgnoreCase);
 
                 default:
-                    throw new NotImplementedException("Unanble to compare DefaultValue objects - unknown case of DefaultValueType");
+                    throw new NotImplementedException("Unable to compare DefaultValue objects - unknown case of DefaultValueType");
             }
         }
-    }
 
+        private class RandomStringSettings
+        {
+            public RandomStringSettings(int length, bool checkCollisions)
+            {
+                Length = length;
+                CheckCollisions = checkCollisions;
+            }
+
+            public void Serialize(StringBuilder sb)
+            {
+                StringConversionServices.SerializeKeyValuePair(sb, "Length", Length);
+                StringConversionServices.SerializeKeyValuePair(sb, "CheckCollisions", CheckCollisions);
+            }
+
+            public static RandomStringSettings Deserialize(Dictionary<string, string> values)
+            {
+                return new RandomStringSettings(
+                    StringConversionServices.DeserializeValueInt(values["Length"]),
+                    StringConversionServices.DeserializeValueBool(values["CheckCollisions"]));
+            }
+
+
+
+            public int Length { get; private set; }
+            public bool CheckCollisions { get; private set; }
+
+            public override string ToString()
+            {
+                return string.Format("{0},{1}", Length, CheckCollisions);
+            }
+        }
+
+    }
 
 
     /// <summary>    
@@ -469,6 +546,9 @@ namespace Composite.Data.DynamicTypes
         Guid = 6,
 
         /// <exclude />
-        NewGuid = 7
+        NewGuid = 7,
+
+        /// <exclude />
+        RandomString = 8,
     }
 }
