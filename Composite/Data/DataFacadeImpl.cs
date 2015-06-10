@@ -504,7 +504,7 @@ namespace Composite.Data
 
             IData data = (IData)Activator.CreateInstance(generatedType, new object[] { });
 
-            SetNewInstancaFieldDefaultValues(data);
+            SetNewInstanceFieldDefaultValues(data);
 
             if (suppressEventing == false)
             {
@@ -526,9 +526,9 @@ namespace Composite.Data
 
             IData data = (IData)Activator.CreateInstance(generatedType, new object[] { });
 
-            SetNewInstancaFieldDefaultValues(data);
+            SetNewInstanceFieldDefaultValues(data);
 
-            if (suppressEventling == false)
+            if (!suppressEventling)
             {
                 DataEventSystemFacade.FireDataAfterBuildNewEvent(generatedType, data);
             }
@@ -551,7 +551,7 @@ namespace Composite.Data
 
 
 
-        private void SetNewInstancaFieldDefaultValues(IData data)
+        private void SetNewInstanceFieldDefaultValues(IData data)
         {
             Type interfaceType = data.DataSourceId.InterfaceType;
             List<PropertyInfo> properties = interfaceType.GetPropertiesRecursively();
@@ -559,9 +559,9 @@ namespace Composite.Data
             {
                 try
                 {
-                    NewInstanceDefaultFieldValueAttribute attribute = propertyInfo.GetCustomAttributesRecursively<NewInstanceDefaultFieldValueAttribute>().SingleOrDefault();
-                    if (attribute == null || attribute.HasValue == false) continue;
-                    if (propertyInfo.CanWrite == false)
+                    var attribute = propertyInfo.GetCustomAttributesRecursively<NewInstanceDefaultFieldValueAttribute>().SingleOrDefault();
+                    if (attribute == null || !attribute.HasValue) continue;
+                    if (!propertyInfo.CanWrite)
                     {
                         Log.LogError(LogTitle, string.Format("The property '{0}' on the interface '{1}' has defined a standard value, but no setter", propertyInfo.Name, interfaceType));
                         continue;
@@ -570,7 +570,7 @@ namespace Composite.Data
                     object value = attribute.GetValue();
                     value = ValueTypeConverter.Convert(value, propertyInfo.PropertyType);
 
-                    PropertyInfo targetPropertyInfo = data.GetType().GetProperties().Where(f => f.Name == propertyInfo.Name).Single();
+                    PropertyInfo targetPropertyInfo = data.GetType().GetProperties().Single(f => f.Name == propertyInfo.Name);
                     targetPropertyInfo.SetValue(data, value, null);
                 }
                 catch (Exception ex)
@@ -587,7 +587,7 @@ namespace Composite.Data
         {
             foreach (CultureInfo cultureInfo in DataLocalizationFacade.ActiveLocalizationCultures.Except(excludedCultureInfoes))
             {
-                using (DataScope dataScope = new DataScope(cultureInfo))
+                using (new DataScope(cultureInfo))
                 {
                     bool exists = DataFacade.GetData<T>().Any();
                     if (exists)

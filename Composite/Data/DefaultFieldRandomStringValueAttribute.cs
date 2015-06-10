@@ -47,13 +47,13 @@ namespace Composite.Data
 
         static DefaultFieldRandomStringValueAttribute()
         {
-            DataEvents<IData>.OnBeforeAdd += OnBeforeAddData;
+            DataEvents<IData>.OnNew += (sender, arguments) => SetRandomStringFieldValues(arguments.Data, false);
+            DataEvents<IData>.OnBeforeAdd += (sender, arguments) => SetRandomStringFieldValues(arguments.Data, true);
             GlobalEventSystemFacade.SubscribeToFlushEvent(a => ReflectionCache.Clear());
         }
 
-        private static void OnBeforeAddData(object sender, DataEventArgs dataEventArgs)
+        private static void SetRandomStringFieldValues(IData data, bool checkCollisions)
         {
-            var data = dataEventArgs.Data;
             var interfaceType = data.DataSourceId.InterfaceType;
 
             var fieldsToFill = GetRandomStringProperties(interfaceType);
@@ -61,35 +61,44 @@ namespace Composite.Data
             foreach (var field in fieldsToFill)
             {
                 var value = field.Property.GetValue(data, null);
-                if (value != null) continue;
+                if (value != null
+                    && (!(checkCollisions && field.Attribute.CheckCollisions)
+                        || !ValueIsInUse(interfaceType, field.Property, (string)value, field.IsKey))) continue;
 
-                string randomString = GenerateRandomString(field.Attribute.Length);
-
-                if (field.Attribute.CheckCollisions)
-                {
-                    bool uniqueValueFound = false;
-
-                    const int tries = 2;
-                    for (int i = 0; i < tries; i++)
-                    {
-                        if (!ValueIsInUse(interfaceType, field.Property, randomString, field.IsKey))
-                        {
-                            uniqueValueFound = true;
-                            break;
-                        }
-
-                        randomString = GenerateRandomString(field.Attribute.Length);
-                    }
-
-                    if (!uniqueValueFound)
-                    {
-                        Verify.That(uniqueValueFound, "Failed to generate a unique random string value after {0} tries. Field name: {1}, random value length: {2}",
-                            tries, field.Property.Name, field.Attribute.Length);
-                    }
-                }
+                string randomString = GenerateNewUniqueValue(interfaceType, field);
 
                 field.Property.SetValue(data, randomString);
             }
+        }
+
+        private static string GenerateNewUniqueValue(Type interfaceType, RandomStringValueProperty field)
+        {
+            string randomString = GenerateRandomString(field.Attribute.Length);
+
+            if (field.Attribute.CheckCollisions)
+            {
+                bool uniqueValueFound = false;
+
+                const int tries = 2;
+                for (int i = 0; i < tries; i++)
+                {
+                    if (!ValueIsInUse(interfaceType, field.Property, randomString, field.IsKey))
+                    {
+                        uniqueValueFound = true;
+                        break;
+                    }
+
+                    randomString = GenerateRandomString(field.Attribute.Length);
+                }
+
+                if (!uniqueValueFound)
+                {
+                    Verify.That(uniqueValueFound, "Failed to generate a unique random string value after {0} tries. Field name: {1}, random value length: {2}",
+                        tries, field.Property.Name, field.Attribute.Length);
+                }
+            }
+
+            return randomString;
         }
 
         private static bool ValueIsInUse(Type interfaceType, PropertyInfo property, string value, bool isKeyField)
@@ -114,7 +123,7 @@ namespace Composite.Data
 
             MethodInfo methodInfo = DataFacade.GetGetDataWithPredicatMethodInfo(interfaceType);
 
-            IQueryable queryable = (IQueryable)methodInfo.Invoke(null, new object[] { lambdaExpression });
+            var queryable = (IQueryable)methodInfo.Invoke(null, new object[] { lambdaExpression });
 
             return queryable.OfType<IData>().Any();
         }
@@ -149,6 +158,7 @@ namespace Composite.Data
             });
         }
 
+        /// <exclude />
         public override DefaultValue GetDefaultValue()
         {
             return DefaultValue.RandomString(Length, CheckCollisions);

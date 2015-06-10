@@ -42,7 +42,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 var guid = dataEntityToken.Data.DataSourceId.InterfaceType.GetImmutableTypeId();
                 var typeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(guid);
 
-                var generatedTypesHelper = new GeneratedTypesHelper(typeDescriptor) { AllowForiegnKeyEditing = true };
+                var generatedTypesHelper = new GeneratedTypesHelper(typeDescriptor) { AllowForeignKeyEditing = true };
 
                 _helper = new DataTypeDescriptorFormsHelper(typeDescriptor, true, EntityToken)
                 {

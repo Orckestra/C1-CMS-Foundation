@@ -2691,6 +2691,16 @@ namespace Composite.Core.ResourceSystem
  public static string EditorCommon_HelpTitle { get { return T("EditorCommon.HelpTitle"); } } 
  /// <summary>&quot;Fields&quot;</summary> 
  public static string EditorCommon_LabelFields { get { return T("EditorCommon.LabelFields"); } } 
+ /// <summary>&quot;Key field type&quot;</summary> 
+ public static string EditorCommon_KeyFieldTypeLabel { get { return T("EditorCommon.KeyFieldTypeLabel"); } } 
+ /// <summary>&quot;The type of the primary key. Use the default &apos;Guid&apos; type for optimal performance and &apos;RandomString&apos; for shorter data urls.&quot;</summary> 
+ public static string EditorCommon_KeyFieldTypeHelp { get { return T("EditorCommon.KeyFieldTypeHelp"); } } 
+ /// <summary>&quot;Guid&quot;</summary> 
+ public static string EditorCommon_KeyFieldType_Guid { get { return T("EditorCommon.KeyFieldType.Guid"); } } 
+ /// <summary>&quot;Random String, 4 characters long&quot;</summary> 
+ public static string EditorCommon_KeyFieldType_RandomString4 { get { return T("EditorCommon.KeyFieldType.RandomString4"); } } 
+ /// <summary>&quot;Random String, 8 characters long&quot;</summary> 
+ public static string EditorCommon_KeyFieldType_RandomString8 { get { return T("EditorCommon.KeyFieldType.RandomString8"); } } 
  /// <summary>&quot;Services&quot;</summary> 
  public static string EditorCommon_ServicesLabel { get { return T("EditorCommon.ServicesLabel"); } } 
  /// <summary>&quot;Has caching&quot;</summary> 

@@ -11,6 +11,8 @@
     <cms:binding name="HasPublishing" type="System.Boolean" />
     <cms:binding name="HasLocalization" type="System.Boolean" />
     <cms:binding name="LabelFieldName" type="System.String" optional="true" />
+    <cms:binding name="KeyFieldType" type="System.String" />
+    <cms:binding name="KeyFieldTypeOptions" type="System.Collections.IEnumerable" />
   </cms:bindings>
   <cms:layout iconhandle="generated-type-add">
     <TabPanels>
@@ -34,6 +36,18 @@
           <TextBox Label="${Composite.Plugins.GeneratedDataTypesElementProvider, EditorCommon.LabelTypeNamespace}" Help="${Composite.Plugins.GeneratedDataTypesElementProvider, EditorCommon.HelpTypeNamespace}" Type="ProgrammingNamespace">
             <cms:bind source="NewTypeNamespace" />
           </TextBox>
+          
+          <KeySelector OptionsKeyField="Key" OptionsLabelField="Value"
+                   Label="${Composite.Plugins.GeneratedDataTypesElementProvider, EditorCommon.KeyFieldTypeLabel}"
+                   Help="${Composite.Plugins.GeneratedDataTypesElementProvider, EditorCommon.KeyFieldTypeHelp}">
+            <KeySelector.Selected>
+              <cms:bind source="KeyFieldType" />
+            </KeySelector.Selected>
+            <KeySelector.Options>
+              <cms:read source="KeyFieldTypeOptions" />
+            </KeySelector.Options>
+          </KeySelector>
+          
           <PlaceHolder Label="${Composite.Plugins.GeneratedDataTypesElementProvider, EditorCommon.ServicesLabel}">
             <CheckBox Label="${Composite.Plugins.GeneratedDataTypesElementProvider, EditorCommon.HasCaching}" ItemLabel="${Composite.Plugins.GeneratedDataTypesElementProvider, EditorCommon.HasCaching}">
               <CheckBox.Checked>

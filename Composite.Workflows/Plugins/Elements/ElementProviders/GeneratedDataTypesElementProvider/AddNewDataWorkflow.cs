@@ -72,7 +72,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                     throw new InvalidOperationException(string.Format("Can not find the type descriptor for the type '{0}'", type));
                 }
 
-                var generatedTypesHelper = new GeneratedTypesHelper(typeDescriptor) { AllowForiegnKeyEditing = true };
+                var generatedTypesHelper = new GeneratedTypesHelper(typeDescriptor) { AllowForeignKeyEditing = true };
 
                 _helper = new DataTypeDescriptorFormsHelper(typeDescriptor, true, EntityToken)
                 {
@@ -115,7 +115,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 publishControlled.PublicationStatus = GenericPublishProcessController.Draft;
             }
 
-            if (string.IsNullOrEmpty(Payload) == false)
+            if (!string.IsNullOrEmpty(Payload))
             {
                 var values = new Dictionary<string, string>();
 
@@ -139,7 +139,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
         {
             var helper = GetDataTypeDescriptorFormsHelper();
 
-            if (BindingExist("DataAdded") == false)
+            if (!BindingExist("DataAdded"))
             {
                 helper.LayoutLabel = helper.DataTypeDescriptor.Name;
             }

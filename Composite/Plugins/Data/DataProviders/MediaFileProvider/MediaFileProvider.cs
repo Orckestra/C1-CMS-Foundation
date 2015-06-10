@@ -332,6 +332,8 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
 
                         IQueryable<IMediaFileData> files = DataFacade.GetData<IMediaFileData>();
 
+                        // DDZ: now the whole list of media files is loaded to memory, should be rewritten to return 
+                        // a proper IQueryable, similar to our VirtualImageFileQueryable
 
                         var publicDataScope = DataScopeIdentifier.Public;
                         foreach (IMediaFileData file in files)

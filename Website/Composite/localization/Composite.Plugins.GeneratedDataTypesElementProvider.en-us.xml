@@ -73,6 +73,11 @@
   <string key="EditorCommon.LabelTitle" value="Title" />
   <string key="EditorCommon.HelpTitle" value="Use this entry to specify a user friendly name. This name is used in most UI." />
   <string key="EditorCommon.LabelFields" value="Fields" />
+  <string key="EditorCommon.KeyFieldTypeLabel" value="Key field type"/>
+  <string key="EditorCommon.KeyFieldTypeHelp" value="The type of the primary key. Use the default 'Guid' type for optimal performance and 'RandomString' for shorter data urls."/>
+  <string key="EditorCommon.KeyFieldType.Guid" value="Guid"/>
+  <string key="EditorCommon.KeyFieldType.RandomString4" value="Random String, 4 characters long"/>
+  <string key="EditorCommon.KeyFieldType.RandomString8" value="Random String, 8 characters long"/>
   <string key="EditorCommon.ServicesLabel" value="Services" />
   <string key="EditorCommon.HasCaching" value="Has caching" />
   <string key="EditorCommon.HasPublishing" value="Has publishing" />

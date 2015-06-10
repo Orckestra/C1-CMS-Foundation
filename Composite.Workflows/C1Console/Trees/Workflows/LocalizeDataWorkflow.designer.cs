@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Collections;
@@ -68,7 +68,7 @@ namespace Composite.C1Console.Trees.Workflows
             // ifElseBranchActivity1
             // 
             this.ifElseBranchActivity1.Activities.Add(this.setStateActivity2);
-            codecondition1.Condition += new System.EventHandler<System.Workflow.Activities.ConditionalEventArgs>(this.ValidateReferencingPropertyies);
+            codecondition1.Condition += new System.EventHandler<System.Workflow.Activities.ConditionalEventArgs>(this.ValidateReferencingProperties);
             this.ifElseBranchActivity1.Condition = codecondition1;
             this.ifElseBranchActivity1.Name = "ifElseBranchActivity1";
             // 

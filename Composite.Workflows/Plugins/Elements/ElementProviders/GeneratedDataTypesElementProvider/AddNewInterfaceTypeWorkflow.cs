@@ -26,21 +26,35 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             InitializeComponent();
         }
 
-
+        private static class BindingNames
+        {
+            public const string KeyFieldType = "KeyFieldType";
+            public const string KeyFieldTypeOptions = "KeyFieldTypeOptions";
+        }
 
         private void initialStateCodeActivity_ExecuteCode(object sender, EventArgs e)
         {
-            Dictionary<string, object> bindings = new Dictionary<string, object>();
+            var keyFieldTypeOptions = new Dictionary<string, string>
+            {
+                {GeneratedTypesHelper.KeyFieldType.Guid.ToString(), Texts.EditorCommon_KeyFieldType_Guid},
+                {GeneratedTypesHelper.KeyFieldType.RandomString4.ToString(), Texts.EditorCommon_KeyFieldType_RandomString4},
+                {GeneratedTypesHelper.KeyFieldType.RandomString8.ToString(), Texts.EditorCommon_KeyFieldType_RandomString8}
+            };
 
-            bindings.Add("ViewLabel", Texts.AddNewInterfaceTypeStep1_DocumentTitle);
-            bindings.Add("NewTypeName", "");
-            bindings.Add("NewTypeNamespace", UserSettings.LastSpecifiedNamespace);
-            bindings.Add("NewTypeTitle", "");
-            bindings.Add("DataFieldDescriptors", new List<DataFieldDescriptor>());
-            bindings.Add("HasCaching", false);
-            bindings.Add("HasPublishing", false);
-            bindings.Add("HasLocalization", false);
-            bindings.Add("LabelFieldName", "");
+            var bindings = new Dictionary<string, object>
+            {
+                {"ViewLabel", Texts.AddNewInterfaceTypeStep1_DocumentTitle},
+                {"NewTypeName", ""},
+                {"NewTypeNamespace", UserSettings.LastSpecifiedNamespace},
+                {"NewTypeTitle", ""},
+                {"DataFieldDescriptors", new List<DataFieldDescriptor>()},
+                {"HasCaching", false},
+                {"HasPublishing", false},
+                {"HasLocalization", false},
+                {"LabelFieldName", ""},
+                {BindingNames.KeyFieldType, GeneratedTypesHelper.KeyFieldType.Guid.ToString()},
+                {BindingNames.KeyFieldTypeOptions, keyFieldTypeOptions}
+            };
 
             this.Bindings = bindings;
 
@@ -50,7 +64,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
             if (RuntimeInformation.IsDebugBuild && DynamicTempTypeCreator.UseTempTypeCreator)
             {
-                DynamicTempTypeCreator dynamicTempTypeCreator = new DynamicTempTypeCreator("GlobalTest");
+                var dynamicTempTypeCreator = new DynamicTempTypeCreator("GlobalTest");
 
                 this.UpdateBinding("NewTypeName", dynamicTempTypeCreator.TypeName);
                 this.UpdateBinding("NewTypeTitle", dynamicTempTypeCreator.TypeTitle);
@@ -73,7 +87,10 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 bool hasPublishing = this.GetBinding<bool>("HasPublishing");
                 bool hasLocalization = this.GetBinding<bool>("HasLocalization");
                 string labelFieldName = this.GetBinding<string>("LabelFieldName");
-                List<DataFieldDescriptor> dataFieldDescriptors = this.GetBinding<List<DataFieldDescriptor>>("DataFieldDescriptors");
+                var dataFieldDescriptors = this.GetBinding<List<DataFieldDescriptor>>("DataFieldDescriptors");
+
+                var keyFieldType = (GeneratedTypesHelper.KeyFieldType) Enum.Parse(typeof (GeneratedTypesHelper.KeyFieldType),
+                                                                                  GetBinding<string>(BindingNames.KeyFieldType));
 
 
                 GeneratedTypesHelper helper;
@@ -87,28 +104,29 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 else
                 {
                     helper = new GeneratedTypesHelper();
+                    helper.SetKeyFieldType(keyFieldType);
                 }
 
                 string errorMessage;
-                if (helper.ValidateNewTypeName(typeName, out errorMessage) == false)
+                if (!helper.ValidateNewTypeName(typeName, out errorMessage))
                 {
                     this.ShowFieldMessage("NewTypeName", errorMessage);
                     return;
                 }
 
-                if (helper.ValidateNewTypeNamespace(typeNamespace, out errorMessage) == false)
+                if (!helper.ValidateNewTypeNamespace(typeNamespace, out errorMessage))
                 {
                     this.ShowFieldMessage("NewTypeNamespace", errorMessage);
                     return;
                 }
 
-                if (helper.ValidateNewTypeFullName(typeName, typeNamespace, out errorMessage) == false)
+                if (!helper.ValidateNewTypeFullName(typeName, typeNamespace, out errorMessage))
                 {
                     this.ShowFieldMessage("NewTypeName", errorMessage);
                     return;
                 }
 
-                if (helper.ValidateNewFieldDescriptors(dataFieldDescriptors, out errorMessage) == false)
+                if (!helper.ValidateNewFieldDescriptors(dataFieldDescriptors, out errorMessage))
                 {
                     this.ShowMessage(
                             DialogType.Warning,
@@ -150,7 +168,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                     originalTypeDataExists = DataFacade.HasDataInAnyScope(interfaceType);
                 }
 
-                if (helper.TryValidateUpdate(originalTypeDataExists, out errorMessage) == false)
+                if (!helper.TryValidateUpdate(originalTypeDataExists, out errorMessage))
                 {
                     this.ShowMessage(
                             DialogType.Warning,

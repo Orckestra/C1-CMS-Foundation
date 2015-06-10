@@ -65,7 +65,7 @@ namespace Composite.C1Console.Trees.Workflows
 
                     _typeName = dataTypeDescriptor.Name;
 
-                    GeneratedTypesHelper generatedTypesHelper = new GeneratedTypesHelper(dataTypeDescriptor) { AllowForiegnKeyEditing = true };
+                    var generatedTypesHelper = new GeneratedTypesHelper(dataTypeDescriptor) { AllowForeignKeyEditing = true };
 
                     _dataTypeDescriptorFormsHelper = new DataTypeDescriptorFormsHelper(dataTypeDescriptor, true, this.EntityToken);
                     if (!string.IsNullOrEmpty(customFormMarkupPath))

@@ -483,6 +483,7 @@ namespace Composite.Data.DynamicTypes
             }
         }
 
+        [Serializable]
         private class RandomStringSettings
         {
             public RandomStringSettings(int length, bool checkCollisions)

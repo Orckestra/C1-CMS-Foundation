@@ -104,7 +104,7 @@ namespace Composite.C1Console.Trees.Workflows
 
                     this.TypeName = dataTypeDescriptor.Name;
 
-                    GeneratedTypesHelper generatedTypesHelper = new GeneratedTypesHelper(dataTypeDescriptor) { AllowForiegnKeyEditing = true };
+                    var generatedTypesHelper = new GeneratedTypesHelper(dataTypeDescriptor) { AllowForeignKeyEditing = true };
 
                     _dataTypeDescriptorFormsHelper = new DataTypeDescriptorFormsHelper(dataTypeDescriptor, true, this.EntityToken);
                     if (!string.IsNullOrEmpty(CustomFormMarkupPath))
@@ -140,7 +140,7 @@ namespace Composite.C1Console.Trees.Workflows
             if (PageFolderFacade.GetAllFolderTypes().Contains(InterfaceType))
             {
                 Dictionary<string, string> piggybag = PiggybagSerializer.Deserialize(this.ExtraPayload);
-                PiggybagDataFinder piggybagDataFinder = new PiggybagDataFinder(piggybag, this.EntityToken);
+                var piggybagDataFinder = new PiggybagDataFinder(piggybag, this.EntityToken);
                 IPage page = (IPage)piggybagDataFinder.TryGetData(typeof(IPage));
                 if (page != null)
                 {
@@ -155,14 +155,14 @@ namespace Composite.C1Console.Trees.Workflows
             }
 
 
-            Dictionary<string, string> values = new Dictionary<string, string>();
-            TreeDataFieldGroupingElementEntityToken castedEntityToken = this.EntityToken as TreeDataFieldGroupingElementEntityToken;
+            var values = new Dictionary<string, string>();
+            var castedEntityToken = this.EntityToken as TreeDataFieldGroupingElementEntityToken;
             if (castedEntityToken != null)
             {
                 Tree tree = TreeFacade.GetTree(castedEntityToken.Source);
-                DataFolderElementsTreeNode treeNode = (DataFolderElementsTreeNode)tree.GetTreeNode(castedEntityToken.TreeNodeId);
+                var treeNode = (DataFolderElementsTreeNode)tree.GetTreeNode(castedEntityToken.TreeNodeId);
 
-                if ((treeNode.Range == null) && (treeNode.FirstLetterOnly == false))
+                if (treeNode.Range == null && !treeNode.FirstLetterOnly)
                 {
                     foreach (var kvp in castedEntityToken.DeserializedGroupingValues)
                     {
@@ -178,14 +178,7 @@ namespace Composite.C1Console.Trees.Workflows
                 // Filtering payload data which is not default field values
                 if (props.ContainsKey(kvp.Key))
                 {
-                    if (values.ContainsKey(kvp.Key) == false)
-                    {
-                        values.Add(kvp.Key, StringConversionServices.DeserializeValueString(kvp.Value));
-                    }
-                    else
-                    {
-                        values[kvp.Key] = StringConversionServices.DeserializeValueString(kvp.Value);
-                    }
+                    values[kvp.Key] = StringConversionServices.DeserializeValueString(kvp.Value);
                 }
             }
 
@@ -206,7 +199,7 @@ namespace Composite.C1Console.Trees.Workflows
         {
             Initialize();
 
-            if (this.BindingExist("DataAdded") == false)
+            if (!BindingExist("DataAdded"))
             {
                 this.FormsHelper.LayoutLabel = this.FormsHelper.DataTypeDescriptor.Name;
             }
@@ -237,7 +230,7 @@ namespace Composite.C1Console.Trees.Workflows
                 isValid = false;
             }
 
-            if (isValid == false)
+            if (!isValid)
             {
                 SetSaveStatus(false);
                 return;
@@ -245,7 +238,7 @@ namespace Composite.C1Console.Trees.Workflows
 
             this.RefreshCurrentEntityToken();
 
-            if (this.BindingExist("DataAdded") == false)
+            if (!this.BindingExist("DataAdded"))
             {
                 newData = DataFacade.AddNew(newData);
 
@@ -271,7 +264,7 @@ namespace Composite.C1Console.Trees.Workflows
         {
             if (newData is IPublishControlled && _doPublish)
             {
-                GenericPublishProcessController.PublishActionToken actionToken = new GenericPublishProcessController.PublishActionToken();
+                var actionToken = new GenericPublishProcessController.PublishActionToken();
                 FlowControllerServicesContainer serviceContainer = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
                 ActionExecutorFacade.Execute(newData.GetDataEntityToken(), actionToken, serviceContainer);
             }

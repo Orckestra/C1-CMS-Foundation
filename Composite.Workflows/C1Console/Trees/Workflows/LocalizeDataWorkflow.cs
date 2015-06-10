@@ -30,20 +30,20 @@ namespace Composite.C1Console.Trees.Workflows
 
 
 
-        private void ValidateReferencingPropertyies(object sender, ConditionalEventArgs e)
+        private void ValidateReferencingProperties(object sender, ConditionalEventArgs e)
         {
-            DataEntityToken dataEntityToken = (DataEntityToken)this.EntityToken;
-            ILocalizedControlled data = dataEntityToken.Data as ILocalizedControlled;
+            var dataEntityToken = (DataEntityToken)this.EntityToken;
+            var data = dataEntityToken.Data as ILocalizedControlled;
 
-            IEnumerable<ReferenceFailingPropertyInfo> referenceFailingPropertyInfos = DataLocalizationFacade.GetReferencingLocalizeFailingProperties(data).Evaluate();
+            IEnumerable<ReferenceFailingPropertyInfo> referenceFailingProperties = DataLocalizationFacade.GetReferencingLocalizeFailingProperties(data).Evaluate();
 
-            if (referenceFailingPropertyInfos.Any(f => f.OptionalReferenceWithValue == false))
+            if (referenceFailingProperties.Any(f => f.OptionalReferenceWithValue == false))
             {
                 List<string> row = new List<string>();
 
                 row.Add(StringResourceSystemFacade.GetString("Composite.C1Console.Trees", "LocalizeData.ShowError.Description"));
 
-                foreach (ReferenceFailingPropertyInfo referenceFailingPropertyInfo in referenceFailingPropertyInfos.Where(f => f.OptionalReferenceWithValue == false))
+                foreach (ReferenceFailingPropertyInfo referenceFailingPropertyInfo in referenceFailingProperties.Where(f => f.OptionalReferenceWithValue == false))
                 {
                     row.Add(string.Format(StringResourceSystemFacade.GetString("Composite.C1Console.Trees", "LocalizeData.ShowError.FieldErrorFormat"), referenceFailingPropertyInfo.DataFieldDescriptor.Name, referenceFailingPropertyInfo.ReferencedType.GetTypeTitle(), referenceFailingPropertyInfo.OriginLocaleDataValue.GetLabel()));
                 }
@@ -153,12 +153,7 @@ namespace Composite.C1Console.Trees.Workflows
             var enumerable = result as IEnumerable;
             Verify.IsNotNull(enumerable, "Enumeration expected");
 
-            foreach (object o in enumerable)
-            {
-                return true;
-            }
-
-            return false;
+            return enumerable.Cast<object>().Any();
         }
     }
 }
