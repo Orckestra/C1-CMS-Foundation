@@ -701,8 +701,6 @@
     <Content Include="Composite\scripts\source\page\document\DocumentCrawler.js" />
     <Content Include="Composite\scripts\source\page\document\DocumentManager.js" />
     <Content Include="Composite\scripts\source\page\document\DocumentUpdatePlugin.js" />
-    <Content Include="Composite\scripts\source\page\functions\C1Function.js" />
-    <Content Include="Composite\scripts\source\page\functions\C1FunctionParam.js" />
     <Content Include="Composite\scripts\source\page\updates\AttributesUpdate.js" />
     <Content Include="Composite\scripts\source\page\updates\ReplaceUpdate.js" />
     <Content Include="Composite\scripts\source\page\updates\SiblingUpdate.js" />

@@ -62,7 +62,6 @@ var Developer = new function () {
 			"test-marcusfun" 				: "${root}/content/views/dev/developer/tests/fields/postbackfun.aspx", 
 			"test-dmitryfun" 				: "${root}/content/views/dev/developer/tests/ui/dmitryfun.aspx",
 			"test-mothfun" 					: "${root}/content/views/dev/developer/tests/ui/updatemanager/updatemanager.aspx",
-			"test-c1function"				: "${root}/content/views/dev/developer/tests/ui/c1functions.aspx",
 			
 		// DAILOGS ............................................................................
 		

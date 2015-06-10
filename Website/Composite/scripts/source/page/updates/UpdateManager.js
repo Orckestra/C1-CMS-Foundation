@@ -1,12 +1,3 @@
-/*
- * ----------------------------------------------------------------------------
- * "THE BEER-WARE LICENSE" (Revised):
- * Composite.NET wrote this file. As long as you retain this notice 
- * you can do whatever you want with this stuff. If we meet some day, 
- * and you think this stuff is worth it, you can buy us a beer in return.
- * ----------------------------------------------------------------------------
- */
-
 /**
  * This fellow will manage form request and server response to produce an AJAH-style 
  * webpage interface. The form is posted without reloading the page, the response is 

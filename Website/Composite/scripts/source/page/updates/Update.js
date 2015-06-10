@@ -1,12 +1,3 @@
-/*
- * ----------------------------------------------------------------------------
- * "THE BEER-WARE LICENSE" (Revised):
- * Composite.NET wrote this file. As long as you retain this notice 
- * you can do whatever you want with this stuff. If we meet some day, 
- * and you think this stuff is worth it, you can buy us a beer in return.
- * ----------------------------------------------------------------------------
- */
-
 /**
  * Default replacement update with which a section of the  
  * DOM subtree is simply replaced with something new. 

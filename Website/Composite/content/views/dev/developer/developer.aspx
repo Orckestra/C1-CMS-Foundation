@@ -24,7 +24,6 @@
 					<ui:tabpanel>
 						<ui:tree>
 							<ui:treebody>
-								<ui:treenode label="Javascript AJAX API" oncommand="Developer.load('test-c1function')"/>
 								<ui:treenode label="SourceEditor test" oncommand="Developer.load('test-fields-sourceedit')"/>
 								<ui:treenode label="UpdateManager fun" oncommand="Developer.load('test-mothfun')"/>
 								<ui:treenode label="Non-framework doc" oncommand="Developer.load('test-nonframework')"/>
