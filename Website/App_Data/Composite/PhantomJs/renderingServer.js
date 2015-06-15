@@ -1,3 +1,5 @@
+var page = require('webpage').create();
+
 function getPlaceholdersLocationInfo(placeholderElementName) {
     var ret = [];
 
@@ -11,7 +13,6 @@ function getPlaceholdersLocationInfo(placeholderElementName) {
 };
 
 function BuildFunctionPreview(system, console, address, output, authCookie, mode) {
-    var page = require('webpage').create();
     var globalTimeout = null;
 
     var clearGlobalTimeout = function() {
@@ -44,7 +45,6 @@ function BuildFunctionPreview(system, console, address, output, authCookie, mode
 	        clearGlobalTimeout();
 
 	        var errorMessage = 'TIMEOUT: page.onResourceTimeout: ' + JSON.stringify(request.errorString) + ', URL: ' + JSON.stringify(request.url);
-	        page.close();
 
 	        console.log(errorMessage);
 	        WaitForInput(system, console);
@@ -53,7 +53,7 @@ function BuildFunctionPreview(system, console, address, output, authCookie, mode
 
     // if js errors happen on the page 
 	page.onError = function (msg, trace) {
-        // ignore in page js errors - some dev writing sloppy js, should not affect us
+	    // ignore in page js errors - some dev writing sloppy js, should not affect us
 	}
 
     // redirects ...
@@ -83,7 +83,6 @@ function BuildFunctionPreview(system, console, address, output, authCookie, mode
 
 	        if (closePage) {
 	            clearGlobalTimeout();
-	            page.close();
 	            WaitForInput(system, console);
 	        }
 	    }
@@ -111,7 +110,6 @@ function BuildFunctionPreview(system, console, address, output, authCookie, mode
 	        }
 
 	        page.render(output);
-	        page.close();
 
 	        console.log('SUCCESS: ' + address);
 	    } else if (mode == "template") {
@@ -119,12 +117,10 @@ function BuildFunctionPreview(system, console, address, output, authCookie, mode
 	        var placeholdersInfo = page.evaluate(getPlaceholdersLocationInfo, 'placeholderpreview');
 
 	        page.render(output);
-	        page.close();
 
 	        console.log('templateInfo:' + placeholdersInfo);
 	    } else {
 	        page.render(output);
-	        page.close();
 
 	        console.log('SUCCESS');
 	    }
@@ -137,14 +133,14 @@ function BuildFunctionPreview(system, console, address, output, authCookie, mode
             if (status !== 'success') {
                 clearGlobalTimeout();
                 console.log('ERROR, page.open: ' + status);
-                page.close();
+
                 WaitForInput(system, console);
             } else {
                 if (mode == "test") {
                     clearGlobalTimeout();
 
                     page.render(output);
-                    page.close();
+
                     console.log('SUCCESS');
 
                     WaitForInput(system, console);
@@ -156,7 +152,7 @@ function BuildFunctionPreview(system, console, address, output, authCookie, mode
                     // If "preview.js" isn't inserted, closing the page, as the default callback will not be called
                     if (!previewJsExecuted) {
                         clearGlobalTimeout();
-                        page.close();
+
                         console.log('ERROR: preview.js script is not present in the response body');
 
                         WaitForInput(system, console);
@@ -170,7 +166,6 @@ function BuildFunctionPreview(system, console, address, output, authCookie, mode
         globalTimeout = setTimeout(function () {
             console.log("TIMEOUT: Max execution time - " + timeoutInSeconds + " seconds - exceeded");
             globalTimeout = null;
-            page.close();
             WaitForInput(system, console);
         }, timeoutInSeconds * 1000);
     }
