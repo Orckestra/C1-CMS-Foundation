@@ -66,8 +66,8 @@ namespace Composite.Core
                     string key = DefaultHttpEncoder.UrlDecode(encodedKey);
                     string value = DefaultHttpEncoder.UrlDecode(encodedValue);
 
-                    badUrl = DefaultHttpEncoder.UrlEncode(key) != encodedKey
-                             || DefaultHttpEncoder.UrlEncode(value) != encodedValue;
+                    badUrl = DefaultHttpEncoder.UrlEncode(key) != encodedKey.Replace("%20", "+")
+                             || DefaultHttpEncoder.UrlEncode(value) != encodedValue.Replace("%20", "+");
 
                     if (!badUrl)
                     {
