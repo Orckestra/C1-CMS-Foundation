@@ -1,3 +1,6 @@
+AttributesUpdate.prototype = new Update();
+AttributesUpdate.superclass = Update.prototype;
+
 /**
  * @type {Element}  
  */
