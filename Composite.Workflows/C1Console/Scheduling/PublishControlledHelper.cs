@@ -152,8 +152,8 @@ namespace Composite.C1Console.Scheduling
             WorkflowInstance publishWorkflowInstance = null;
             WorkflowInstance unpublishWorkflowInstance = null;
 
-            var publishDate = (DateTime?)binding["PublishDate"];
-            var unpublishDate = (DateTime?)binding["UnpublishDate"];
+            var publishDate = binding.ContainsKey("PublishDate") ? (DateTime?)binding["PublishDate"] : null;
+            var unpublishDate = binding.ContainsKey("UnpublishDate") ? (DateTime?)binding["UnpublishDate"] : null;
 
             string cultureName = UserSettings.ActiveLocaleCultureInfo.Name;
             HandlePublishUnpublishWorkflows(data, cultureName, publishDate, unpublishDate, ref publishWorkflowInstance, ref unpublishWorkflowInstance);
