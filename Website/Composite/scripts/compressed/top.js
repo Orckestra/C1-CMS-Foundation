@@ -3242,6 +3242,8 @@ UpdateManager.setupForms();
 }
 return _326;
 };
+AttributesUpdate.prototype=new Update();
+AttributesUpdate.superclass=Update.prototype;
 AttributesUpdate.prototype.currentElement=null;
 function AttributesUpdate(id,_328,_329){
 this.type=type=Update.TYPE_ATTRIBUTES;
