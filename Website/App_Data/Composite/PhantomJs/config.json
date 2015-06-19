@@ -1,4 +1,7 @@
 {
   "ignoreSslErrors": true,
-   "localToRemoteUrlAccessEnabled" : true
+  "localToRemoteUrlAccessEnabled": true,
+  //"proxy": "address:port",   //specifies the proxy server to use (e.g. "proxy" : "192.168.1.42:8080")
+  //"proxyType": "[http|socks5|none]", //specifies the type of the proxy server (default is "http").
+  //"proxyAuth":  "username:password"  //specifies the authentication information for the proxy.
 }
