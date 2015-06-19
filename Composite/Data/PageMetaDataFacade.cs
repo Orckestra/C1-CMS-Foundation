@@ -13,7 +13,6 @@ using Composite.Data.Types;
 using Composite.Data.Transactions;
 using Composite.Core.Linq;
 using Composite.Core.Types;
-using Composite.Core.Extensions;
 using Composite.C1Console.Users;
 
 
@@ -695,7 +694,7 @@ namespace Composite.Data
         /// <param name="newMetaDataContainerId"></param>
         public static void UpdateDefinition(Guid definingItemId, string definitionName, string newLabel, Guid newMetaDataContainerId)
         {
-            using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope())
+            using (var transactionScope = TransactionsFacade.CreateNewScope())
             {
                 IPageMetaDataDefinition pageMetaDataDefinition = GetMetaDataDefinition(definingItemId, definitionName);
                 pageMetaDataDefinition.Label = newLabel;
@@ -728,7 +727,7 @@ namespace Composite.Data
         /// <param name="newMetaDataContainerId"></param>
         public static void UpdateDefinition(Guid definingItemId, string definitionName, string newLabel, int newStartLevel, int newLevels, Guid newMetaDataContainerId)
         {
-            using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope())
+            using (var transactionScope = TransactionsFacade.CreateNewScope())
             {
                 IPageMetaDataDefinition pageMetaDataDefinition = GetMetaDataDefinition(definingItemId, definitionName);
                 pageMetaDataDefinition.Label = newLabel;
@@ -796,18 +795,18 @@ namespace Composite.Data
 
             if (deleteExistingMetaData)
             {
-                using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope())
+                using (var transactionScope = TransactionsFacade.CreateNewScope())
                 {
                     foreach (CultureInfo localeCultureInfo in DataLocalizationFacade.ActiveLocalizationCultures)
                     {
                         using (new DataScope(localeCultureInfo))
                         {
-                            using (DataScope dataScope = new DataScope(DataScopeIdentifier.Public))
+                            using (new DataScope(DataScopeIdentifier.Public))
                             {
                                 RemoveDefinitionDeleteData(definitionName, metaDataType, otherPageMetaDataDefinitions);
                             }
 
-                            using (DataScope dataScope = new DataScope(DataScopeIdentifier.Administrated))
+                            using (new DataScope(DataScopeIdentifier.Administrated))
                             {
                                 RemoveDefinitionDeleteData(definitionName, metaDataType, otherPageMetaDataDefinitions);
                             }
@@ -892,7 +891,7 @@ namespace Composite.Data
         {
             Type interfaceType = metaData.DataSourceId.InterfaceType;
 
-            PropertyInfo idPropertyInfo = interfaceType.GetPropertiesRecursively().Where(f => f.Name == MetaDataType_IdFieldName).SingleOrDefault();
+            PropertyInfo idPropertyInfo = interfaceType.GetPropertiesRecursively().SingleOrDefault(f => f.Name == MetaDataType_IdFieldName);
             idPropertyInfo.SetValue(metaData, Guid.NewGuid(), null);
 
             PropertyInfo namePropertyInfo = GetDefinitionNamePropertyInfo(interfaceType);
@@ -907,7 +906,7 @@ namespace Composite.Data
         /// <exclude />
         public static PropertyInfo GetDefinitionNamePropertyInfo(Type metaDataType)
         {
-            return metaDataType.GetPropertiesRecursively().Where(f => f.Name == MetaDataType_MetaDataDefinitionFieldName).Single();
+            return metaDataType.GetPropertiesRecursively().Single(f => f.Name == MetaDataType_MetaDataDefinitionFieldName);
         }
 
 
@@ -915,7 +914,7 @@ namespace Composite.Data
         /// <exclude />
         public static PropertyInfo GetDefinitionPageReferencePropertyInfo(Type metaDataType)
         {
-            return metaDataType.GetPropertiesRecursively().Where(f => f.Name == MetaDataType_PageReferenceFieldName).Single();
+            return metaDataType.GetPropertiesRecursively().Last(f => f.Name == MetaDataType_PageReferenceFieldName);
         }
 
 
@@ -944,14 +943,7 @@ namespace Composite.Data
 
         private static Guid GetPageIdOrNull(this IPage page)
         {
-            if (page != null)
-            {
-                return page.Id;
-            }
-            else
-            {
-                return Guid.Empty;
-            }
+            return page != null ? page.Id : Guid.Empty;
         }
     }
 }

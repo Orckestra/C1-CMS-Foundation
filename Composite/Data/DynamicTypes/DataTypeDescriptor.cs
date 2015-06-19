@@ -321,6 +321,11 @@ namespace Composite.Data.DynamicTypes
             {
                 foreach (PropertyInfo propertyInfo in interfaceType.GetProperties())
                 {
+                    if (propertyInfo.Name == "PageId" && interfaceType == typeof (IPageData))
+                    {
+                        continue;
+                    }
+
                     DataFieldDescriptor dataFieldDescriptor = ReflectionBasedDescriptorBuilder.BuildFieldDescriptor(propertyInfo, true);
 
                     this.Fields.Add(dataFieldDescriptor);

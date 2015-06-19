@@ -359,7 +359,7 @@ namespace Composite.Data
         /// <exclude />
         public static PropertyInfo GetDefinitionPageReferencePropertyInfo(Type pageFolderType)
         {
-            return pageFolderType.GetPropertiesRecursively().Single(f => f.Name == PageFolderType_PageReferenceFieldName);
+            return pageFolderType.GetPropertiesRecursively().Last(f => f.Name == PageFolderType_PageReferenceFieldName);
         }
     }
 }

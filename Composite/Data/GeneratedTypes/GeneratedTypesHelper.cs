@@ -778,11 +778,13 @@ namespace Composite.Data.GeneratedTypes
             if (_dataAssociationType == DataAssociationType.Aggregation)
             {
                 dataTypeDescriptor.AddSuperInterface(typeof(IPageData));
+                dataTypeDescriptor.AddSuperInterface(typeof(IPageRelatedData));
                 dataTypeDescriptor.AddSuperInterface(typeof(IPageFolderData));
             }
             else if (_dataAssociationType == DataAssociationType.Composition)
             {
                 dataTypeDescriptor.AddSuperInterface(typeof(IPageData));
+                dataTypeDescriptor.AddSuperInterface(typeof(IPageRelatedData));
                 dataTypeDescriptor.AddSuperInterface(typeof(IPageMetaData));
             }
             else
