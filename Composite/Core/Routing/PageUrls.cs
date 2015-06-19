@@ -67,9 +67,9 @@ namespace Composite.Core.Routing
         /// <param name="urlKind">Kind of the URL.</param>
         /// <param name="urlSpace">The URL space.</param>
         /// <returns></returns>
-        public static string BuildUrl(PageUrlData pageUrlData, UrlKind urlKind, UrlSpace urlSpace) 
+        public static string BuildUrl(PageUrlData pageUrlData, UrlKind urlKind = UrlKind.Public, UrlSpace urlSpace = null) 
         {
-            return UrlProvider.BuildUrl(pageUrlData, urlKind, urlSpace);
+            return UrlProvider.BuildUrl(pageUrlData, urlKind, urlSpace ?? new UrlSpace());
         }
 
         /// <summary>
