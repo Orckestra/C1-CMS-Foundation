@@ -49,7 +49,7 @@
 
 	<xsl:template match="PageFolder">
 		<li class="PageFolder">
-			<img src="/Website/Composite/services/icon/GetIcon.ashx?resourceName=generated-interface-open&amp;resourceNamespace=Composite.Icons" />
+			<img src="/Website/Composite/services/icon/GetIcon.ashx?resourceName=data-interface-open&amp;resourceNamespace=Composite.Icons" />
 			<span class="PageFolderTitle">
 				<xsl:value-of select="@Title" />
 			</span>
@@ -64,7 +64,7 @@
 
 	<xsl:template match="DataType">
 		<li class="PageFolder">
-			<img src="/Website/Composite/services/icon/GetIcon.ashx?resourceName=generated-interface-open&amp;resourceNamespace=Composite.Icons" />
+			<img src="/Website/Composite/services/icon/GetIcon.ashx?resourceName=data-interface-open&amp;resourceNamespace=Composite.Icons" />
 			<span class="DataFolderTitle">
 				<xsl:value-of select="@Title" />
 			</span>

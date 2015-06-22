@@ -345,8 +345,8 @@
           <xs:enumeration value="all-functions-generatedocumentation" />
           <xs:enumeration value="generated-root-open" />
           <xs:enumeration value="generated-root-closed" />
-          <xs:enumeration value="generated-interface-open" />
-          <xs:enumeration value="generated-interface-closed" />
+          <xs:enumeration value="data-interface-open" />
+          <xs:enumeration value="data-interface-closed" />
           <xs:enumeration value="generated-type-add" />
           <xs:enumeration value="generated-type-edit" />
           <xs:enumeration value="generated-type-delete" />

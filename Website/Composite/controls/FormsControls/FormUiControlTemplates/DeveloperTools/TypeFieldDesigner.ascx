@@ -36,7 +36,7 @@
 		</ui:toolbar>
 		<ui:tree>
 			<ui:treebody id="typefielddesignertreebody">
-					<ui:treenode callbackid="folder" label="<%= GetString("LabelDataTypeFields") %>" open="true" image="${icon:<%= (this.HasFields ? "generated-interface-open" : "generated-interface-closed" ) %>}">
+					<ui:treenode callbackid="folder" label="<%= GetString("LabelDataTypeFields") %>" open="true" image="${icon:<%= (this.HasFields ? "data-interface-open" : "data-interface-closed" ) %>}">
                        <asp:Repeater runat="server" ID="FieldListRepeater" OnItemCommand="FieldDataList_ItemCommand">
 							<ItemTemplate>
 							<aspui:TreeNode ImageUrl="${icon:parameter}" CommandName="Select" runat="server" ID="FieldSelectLinkButton" CommandArgument='<%# Eval("Id") %>' Text='<%# Server.HtmlEncode(((DataFieldDescriptor)Container.DataItem).Name) %>' Focused='<%# ((DataFieldDescriptor)Container.DataItem).Id == this.CurrentlySelectedFieldId %>' /> 

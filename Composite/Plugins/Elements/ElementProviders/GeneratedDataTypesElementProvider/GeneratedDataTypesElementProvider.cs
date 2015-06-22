@@ -110,13 +110,16 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
         public static ResourceHandle RootClosed { get { return GetIconHandle("generated-root-closed"); } }
 
         /// <exclude />
-        public static ResourceHandle DynamicDataTypeIcon { get { return GetIconHandle("generated-type-edit"); } }
+        public static ResourceHandle DynamicDataTypeIconOpen { get { return GetIconHandle("generated-type-open"); } }
 
         /// <exclude />
-        public static ResourceHandle InterfaceOpen { get { return GetIconHandle("generated-interface-open"); } }
+        public static ResourceHandle DynamicDataTypeIconClosed { get { return GetIconHandle("generated-type-closed"); } }
 
         /// <exclude />
-        public static ResourceHandle InterfaceClosed { get { return GetIconHandle("generated-interface-closed"); } }
+        public static ResourceHandle InterfaceOpen { get { return GetIconHandle("data-interface-open"); } }
+
+        /// <exclude />
+        public static ResourceHandle InterfaceClosed { get { return GetIconHandle("data-interface-closed"); } }
 
         /// <exclude />
         public static ResourceHandle AddDataTypeIcon { get { return GetIconHandle("generated-type-add"); } }
@@ -206,8 +209,8 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             {
                 _providerContext = value;
                 _dataGroupingProviderHelper = new DataGroupingProviderHelper(_providerContext);
-                _dataGroupingProviderHelper.FolderOpenIcon = GetIconHandle("generated-interface-open");
-                _dataGroupingProviderHelper.FolderClosedIcon = GetIconHandle("generated-interface-closed");
+                _dataGroupingProviderHelper.FolderOpenIcon = GetIconHandle("data-interface-open");
+                _dataGroupingProviderHelper.FolderClosedIcon = GetIconHandle("data-interface-closed");
                 _dataGroupingProviderHelper.OnCreateLeafElement = GetElementFromData;
                 _dataGroupingProviderHelper.OnCreateGhostedLeafElement = GetGhostedElementFromData;
                 _dataGroupingProviderHelper.OnCreateDisabledLeafElement = GetDisabledElementFromData;
@@ -604,8 +607,8 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 bool failedToLoad = queryDataException != null;
                 bool isStaticType = type.IsStaticDataType();
 
-                var openIcon = _websiteItemsView || isStaticType ? InterfaceOpen : DynamicDataTypeIcon;
-                var closedIcon = _websiteItemsView ||isStaticType ? InterfaceClosed : DynamicDataTypeIcon;
+                var openIcon = _websiteItemsView || isStaticType ? InterfaceOpen : DynamicDataTypeIconOpen;
+                var closedIcon = _websiteItemsView ||isStaticType ? InterfaceClosed : DynamicDataTypeIconClosed;
 
                 Element element = new Element(_providerContext.CreateElementHandle(
                     new GeneratedDataTypesElementProviderTypeEntityToken(typeName, _providerContext.ProviderName,
@@ -857,8 +860,8 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                         Label = type.FullName,
                         ToolTip = type.FullName,
                         HasChildren = false,
-                        Icon = isEditable ? DynamicDataTypeIcon : InterfaceClosed,
-                        OpenedIcon = isEditable ? DynamicDataTypeIcon : InterfaceOpen
+                        Icon = isEditable ? DynamicDataTypeIconClosed : InterfaceClosed,
+                        OpenedIcon = isEditable ? DynamicDataTypeIconOpen : InterfaceOpen
                     }
                 };
 
@@ -959,8 +962,8 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                         Label = type.FullName,
                         ToolTip = type.FullName,
                         HasChildren = false,
-                        Icon = isEditable ? DynamicDataTypeIcon : InterfaceClosed,
-                        OpenedIcon = isEditable ? DynamicDataTypeIcon : InterfaceOpen
+                        Icon = isEditable ? DynamicDataTypeIconClosed : InterfaceClosed,
+                        OpenedIcon = isEditable ? DynamicDataTypeIconOpen : InterfaceOpen
                     }
                 };
 

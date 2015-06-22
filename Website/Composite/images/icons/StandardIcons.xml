@@ -555,17 +555,27 @@
 		<IconFile size="large" path="harmony\composite\datatype_24.png" />
 		<!-- <IconFile size="xlarge" path="harmony\composite\datatype_32.png" /> -->
 	</Icon>
-	<Icon name="generated-interface-open">
+	<Icon name="data-interface-open">
 		<IconFile size="normal" path="harmony\composite\datafolder_16.png" />
-		<IconFile size="large" path="harmony\composite\datafolder_16.png" />
+		<IconFile size="large" path="harmony\composite\datafolder_24.png" />
 		<!-- <IconFile size="xlarge" path="harmony\composite\datafolder_16.png" /> -->
 	</Icon>
-	<Icon name="generated-interface-closed">
+	<Icon name="data-interface-closed">
 		<IconFile size="normal" path="harmony\composite\datafolder_16.png" />
-		<IconFile size="large" path="harmony\composite\datafolder_16.png" />
+		<IconFile size="large" path="harmony\composite\datafolderedit_24.png" />
 		<!-- <IconFile size="xlarge" path="harmony\composite\datafolder_16.png" /> -->
 	</Icon>
-	<Icon name="generated-type-add">
+  <Icon name="generated-type-open">
+    <IconFile size="normal" path="harmony\composite\datafolderedit_16.png" />
+    <IconFile size="large" path="harmony\composite\datafolder_24.png" />
+    <!-- <IconFile size="xlarge" path="harmony\composite\datafolder_16.png" /> -->
+  </Icon>
+  <Icon name="generated-type-closed">
+    <IconFile size="normal" path="harmony\composite\datafolderedit_16.png" />
+    <IconFile size="large" path="harmony\composite\datafolder_24.png" />
+    <!-- <IconFile size="xlarge" path="harmony\composite\datafolder_16.png" /> -->
+  </Icon>
+  <Icon name="generated-type-add">
 		<IconFile size="normal" path="harmony\composite\datafolderadd_16.png" />
 		<IconFile size="large" path="harmony\composite\datafolderadd_24.png" />
 		<!-- <IconFile size="xlarge" path="harmony\composite\datafolderadd_32.png" /> -->

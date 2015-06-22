@@ -36,8 +36,8 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
         public static ResourceHandle DelocalizeDataTypeIcon { get { return GetIconHandle("generated-type-delocalize"); } }
         private ResourceHandle DataAssociationOpenIcon { get { return GetIconHandle("dataassociation-rootfolder-open"); } }
         private ResourceHandle DataAssociationClosedIcon { get { return GetIconHandle("dataassociation-rootfolder-closed"); } }
-        private ResourceHandle InterfaceOpenIcon { get { return GetIconHandle("generated-interface-open"); } }
-        private ResourceHandle InterfaceClosedIcon { get { return GetIconHandle("generated-interface-closed"); } }
+        private ResourceHandle InterfaceOpenIcon { get { return GetIconHandle("data-interface-open"); } }
+        private ResourceHandle InterfaceClosedIcon { get { return GetIconHandle("data-interface-closed"); } }
 
         private ResourceHandle AddAssociatedDataIcon { get { return GetIconHandle("associated-data-add"); } }
         private ResourceHandle EditAssociatedDataIcon { get { return GetIconHandle("associated-data-edit"); } }

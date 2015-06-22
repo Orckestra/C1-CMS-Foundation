@@ -46,7 +46,7 @@
 	
 	<xsl:template match="PageFolder|DataType">
 		<ui:treenode open="true" label="{@Title}">
-			<xsl:attribute name="image">${icon:generated-interface-open}</xsl:attribute>
+			<xsl:attribute name="image">${icon:data-interface-open}</xsl:attribute>
 			<xsl:if test="DataItem">
 				<xsl:apply-templates select="DataItem"/>
 			</xsl:if>
