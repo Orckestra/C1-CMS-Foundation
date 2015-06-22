@@ -56,7 +56,7 @@ namespace Composite.Functions
 
                 try
                 {                    
-                    ParameterList parameters = new ParameterList(contextContainer);
+                    var parameters = new ParameterList(contextContainer);
 
                     foreach (ParameterProfile parameterProfile in _function.ParameterProfiles)
                     {
@@ -77,7 +77,15 @@ namespace Composite.Functions
 
                         if (parameterProfile.IsRequired)
                         {
-                            throw new ArgumentException("Missing parameter '" + parameterProfile.Name + "' (type of " + parameterProfile.Type.FullName + ")");
+                            var injectedValue = TryGetInjectedValue(parameterProfile.Type);
+
+                            if (injectedValue == null)
+                            {
+                                throw new ArgumentException("Missing parameter '{0}' (type of {1})".FormatWith(parameterProfile.Name, parameterProfile.Type.FullName));
+                            }
+
+                            parameters.AddConstantParameter(parameterProfile.Name, injectedValue, parameterProfile.Type);
+                            continue;
                         }
 
                         BaseValueProvider valueProvider = parameterProfile.FallbackValueProvider;
@@ -128,14 +136,32 @@ namespace Composite.Functions
             }
         }
 
+        private object TryGetInjectedValue(Type type)
+        {
+            // TODO: make a call to a dependency injection container here
+            if (IsRoutedDataParameterType(type))
+            {
+                // TODO: cache constructor
+                var defaultConstructor = type.GetConstructor(new Type[0]);
+                Verify.IsNotNull(defaultConstructor, "Type '{0}' does not have a default constructor", type.FullName);
+
+                return defaultConstructor.Invoke(null);
+            }
+
+            return null;
+        }
 
 
+        private static bool IsRoutedDataParameterType(Type type)
+        {
+            return type.IsGenericType && type.GetGenericTypeDefinition() == typeof (RoutedData<>)
+                   || (type.BaseType != null && IsRoutedDataParameterType(type.BaseType));
+        }
+ 
         /// <exclude />
         public override IEnumerable<string> GetAllSubFunctionNames()
         {
-            List<string> names = new List<string>();
-
-            names.Add(_function.CompositeName());
+            var names = new List<string> { _function.CompositeName() };
 
             foreach (BaseParameterRuntimeTreeNode parameter in this.Parameters)
             {
@@ -157,7 +183,7 @@ namespace Composite.Functions
 
             foreach (ParameterProfile parameterProfile in _function.ParameterProfiles)
             {
-                BaseParameterRuntimeTreeNode parameterRuntimeTreeNode = this.Parameters.Where(ptn => ptn.Name == parameterProfile.Name).FirstOrDefault();
+                BaseParameterRuntimeTreeNode parameterRuntimeTreeNode = this.Parameters.FirstOrDefault(ptn => ptn.Name == parameterProfile.Name);
 
                 if (parameterRuntimeTreeNode != null)
                 {

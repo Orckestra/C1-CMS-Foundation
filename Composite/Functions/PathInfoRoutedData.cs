@@ -3,18 +3,22 @@ using Composite.Data;
 
 namespace Composite.Functions
 {
-    /// <summary>
-    /// Parameter return type for functions handling data references passed via url
-    /// </summary>
-    /// <typeparam name="T">The data type.</typeparam>
-    public class PathInfoRoutedData<T>: RoutedData<T> where T: class, IData
+    public static class RoutedData
     {
-        public override IRoutedDataUrlMapper GetUrlMapper()
+        /// <summary>
+        /// Parameter return type for functions handling data references passed via url
+        /// </summary>
+        /// <typeparam name="T">The data type.</typeparam>
+        public class ById<T> : RoutedData<T> where T : class, IData
         {
-            var page = PageRenderer.CurrentPage;
-            Verify.IsNotNull(page, "The current page is not set");
+            /// <exclude />
+            protected override IRoutedDataUrlMapper GetUrlMapper()
+            {
+                var page = PageRenderer.CurrentPage;
+                Verify.IsNotNull(page, "The current page is not set");
 
-            return new PathInfoRoutedDataUrlMapper<T>(page);
+                return new PathInfoRoutedDataUrlMapper<T>(page);
+            }
         }
     }
 }

@@ -6,10 +6,7 @@ using System.Web.WebPages;
 using Composite.AspNet.Razor;
 using Composite.Core.Extensions;
 using Composite.Core.IO;
-using Composite.Core.Routing;
-using Composite.Core.Routing.Pages;
 using Composite.Core.WebClient;
-using Composite.Core.WebClient.Renderings.Page;
 using Composite.Core.Xml;
 using Composite.Functions;
 using Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvider;
@@ -56,11 +53,6 @@ namespace Composite.Plugins.Functions.FunctionProviders.RazorFunctionProvider
 
                     object parameterValue = parameters.GetParameter(param);
 
-                    if (parameterValue == null)
-                    {
-                        parameterValue = TryCreateParameterValue(parameter.Type);
-                    }
-
                     parameter.SetValue(webPageBase, parameterValue);
 			    }
 		    };
@@ -76,45 +68,6 @@ namespace Composite.Plugins.Functions.FunctionProviders.RazorFunctionProvider
                 throw;
             }
 		}
-
-        private object TryCreateParameterValue(Type type)
-        {
-            // TODO: move logic to a function parameter value provider
-            if (typeof (IRoutedData).IsAssignableFrom(type))
-            {
-                return CreateRoutedData(type);
-            }
-
-            return null;
-        }
-
-        private object CreateRoutedData(Type type)
-        {
-            // TODO: cache constructor
-            var defaultConstructor = type.GetConstructor(new Type[0]);
-            Verify.IsNotNull(defaultConstructor, "Type '{0}' does not have a default constructor", type.FullName);
-
-            var routedData = (IRoutedData) defaultConstructor.Invoke(null);
-
-            var urlMapper = routedData.GetUrlMapper();
-            if (urlMapper != null)
-            {
-                // // TODO: un-comment when DataUrlMapper logic is implemented
-                // DataUrls.RegisterDynamicDataUrlMapper(PageRenderer.CurrentPage, type, new RoutedDataUrlMapperAdapter(urlMapper)); 
-
-                var pageUrlData = C1PageRoute.PageUrlData;
-
-                var model = urlMapper.GetRouteDataModel(pageUrlData);
-                routedData.SetModel(model);
-
-                if (!string.IsNullOrEmpty(pageUrlData.PathInfo) && model.IsRouteResolved)
-                {
-                    C1PageRoute.RegisterPathInfoUsage();
-                } 
-            }
-
-            return routedData;
-        }
 
         private void EmbedExecutionExceptionSourceCode(Exception ex)
         {

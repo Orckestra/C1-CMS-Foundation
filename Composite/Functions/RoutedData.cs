@@ -1,34 +1,12 @@
 ﻿using System;
 using System.Linq;
 using Composite.Core.Routing;
+using Composite.Core.Routing.Pages;
+using Composite.Core.WebClient.Renderings.Page;
 using Composite.Data;
 
 namespace Composite.Functions
 {
-    /// <summary>
-    /// Base interface for supporting function parameter based data routing
-    /// </summary>
-    public interface IRoutedData
-    {
-        /// <summary>
-        /// Get an instance of associated <see cref="IRoutedDataUrlMapper" />
-        /// </summary>
-        /// <returns></returns>
-        IRoutedDataUrlMapper GetUrlMapper();
-
-        /// <summary>
-        /// Returns the supported data type
-        /// </summary>
-        /// <returns></returns>
-        Type GetDataType();
-
-        /// <summary>
-        /// Sets the resolved data object
-        /// </summary>
-        /// <param name="resolvedData"></param>
-        void SetModel(RoutedDataModel model);
-    }
-
     public interface IRoutedDataUrlMapper
     {
         RoutedDataModel GetRouteDataModel(PageUrlData pageUrlData);
@@ -66,19 +44,36 @@ namespace Composite.Functions
     /// Base class for return type of a data parameter. 
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public abstract class RoutedData<T> : IRoutedData where T : class, IData
+    public abstract class RoutedData<T> where T : class, IData
     {
         private RoutedDataModel _model;
 
-        public abstract IRoutedDataUrlMapper GetUrlMapper();
+        protected RoutedData()
+        {
+            var urlMapper = GetUrlMapper();
+            Verify.IsNotNull(urlMapper, "UrlMapper is null");
+            
+            // TODO: un-comment when DataUrlMapper logic is implemented
+            // DataUrls.RegisterDynamicDataUrlMapper(PageRenderer.CurrentPage, typeof(T), new RoutedDataUrlMapperAdapter(urlMapper));
 
-        public Type GetDataType() { return typeof(T); }
+            var pageUrlData = C1PageRoute.PageUrlData;
+
+            var model = urlMapper.GetRouteDataModel(pageUrlData);
+            SetModel(model);
+
+            if (!string.IsNullOrEmpty(pageUrlData.PathInfo) && model.IsRouteResolved)
+            {
+                C1PageRoute.RegisterPathInfoUsage();
+            }
+        } 
+
+        protected abstract IRoutedDataUrlMapper GetUrlMapper();
 
         /// <summary>
         /// Sets the data model.
         /// </summary>
         /// <param name="model">The data model.</param>
-        public virtual void SetModel(RoutedDataModel model)
+        protected virtual void SetModel(RoutedDataModel model)
         {
             _model = model;
         }
@@ -150,6 +145,23 @@ namespace Composite.Functions
         }
 
         /// <summary>
+        /// Returns a public url to the specified data item.
+        /// </summary>
+        /// <param name="data">The data item.</param>
+        /// <returns></returns>
+        public virtual string DataUrl(object key)
+        {
+            var data = DataFacade.GetDataByUniqueKey<T>(key);
+            if (data == null)
+            {
+                return null;
+            }
+
+            var mapper = GetUrlMapper();
+            return PageUrls.BuildUrl(mapper.BuildDataUrl(data));
+        }
+
+        /// <summary>
         /// Returns a currently resolved model.
         /// </summary>
         protected virtual RoutedDataModel Model
@@ -161,26 +173,26 @@ namespace Composite.Functions
                 return _model;
             }
         }
+
+        //internal class RoutedDataUrlMapperAdapter : IDataUrlMapper
+        //{
+        //    private readonly IRoutedDataUrlMapper _mapper;
+
+        //    public RoutedDataUrlMapperAdapter(IRoutedDataUrlMapper mapper)
+        //    {
+        //        _mapper = mapper;
+        //    }
+
+        //    public IData GetData(PageUrlData pageUrlData)
+        //    {
+        //        var model = _mapper.GetRouteDataModel(pageUrlData);
+        //        return model.IsRouteResolved && model.IsDetailView ? model.Data : null;
+        //    }
+
+        //    public PageUrlData GetPageUrlData(IData instance)
+        //    {
+        //        return _mapper.BuildDataUrl(instance);
+        //    }
+        //}
     }
-
-    //internal class RoutedDataUrlMapperAdapter : IDataUrlMapper
-    //{
-    //    private readonly IRoutedDataUrlMapper _mapper;
-
-    //    public RoutedDataUrlMapperAdapter(IRoutedDataUrlMapper mapper)
-    //    {
-    //        _mapper = mapper;
-    //    }
-
-    //    public IData GetData(PageUrlData pageUrlData)
-    //    {
-    //        var model = _mapper.GetRouteDataModel(pageUrlData);
-    //        return model.IsRouteResolved && model.IsDetailView ? model.Data : null;
-    //    }
-
-    //    public PageUrlData GetPageUrlData(IData instance)
-    //    {
-    //        return _mapper.BuildDataUrl(instance);
-    //    }
-    //}
  }
