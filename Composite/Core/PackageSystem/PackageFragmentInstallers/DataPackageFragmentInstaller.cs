@@ -170,14 +170,17 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     dataType.InterfaceType = GetInstalledVersionOfPendingType(dataType.InterfaceType, data);
                 }
 
+                var properties = GetDataTypeProperties(dataType.InterfaceType);
+
                 foreach (XAttribute attribute in addElement.Attributes())
                 {
-                    if (IsObsoleteField(dataType, attribute.Name.LocalName))
+                    string fieldName = attribute.Name.LocalName;
+                    if (IsObsoleteField(dataType, fieldName))
                     {
                         continue;
                     }
 
-                    PropertyInfo propertyInfo = dataType.InterfaceType.GetPropertiesRecursively().Single(f => f.Name == attribute.Name);
+                    PropertyInfo propertyInfo = properties[fieldName];
 
                     propertyInfo.SetValue(data, ValueTypeConverter.Convert(attribute.Value, propertyInfo.PropertyType), null);
                 }
@@ -209,8 +212,6 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
             return datasElement;
         }
-
-
 
         private void ValidateConfiguration()
         {
@@ -386,25 +387,29 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 var assignedPropertyNames = new List<string>();
                 var fieldValues = new Dictionary<string, object>();
 
+                var properties = GetDataTypeProperties(dataType.InterfaceType);
+
                 foreach (XAttribute attribute in addElement.Attributes())
                 {
-                    PropertyInfo propertyInfo = dataType.InterfaceType.GetPropertiesRecursively().FirstOrDefault(f => f.Name == attribute.Name);
-                    if (propertyInfo == null)
+                    string fieldName = attribute.Name.LocalName;
+
+                    PropertyInfo propertyInfo;
+                    if (!properties.TryGetValue(fieldName, out propertyInfo))
                     {
                         // A compatibility fix
-                        if (IsObsoleteField(dataType, attribute.Name.LocalName))
+                        if (IsObsoleteField(dataType, fieldName))
                         {
                             continue;
                         }
 
-                        _validationResult.AddFatal(GetText("DataPackageFragmentInstaller.MissingProperty").FormatWith(dataType.InterfaceType, attribute.Name));
+                        _validationResult.AddFatal(GetText("DataPackageFragmentInstaller.MissingProperty").FormatWith(dataType.InterfaceType, fieldName));
                         propertyValidationPassed = false;
                         continue;
                     }
 
                     if (!propertyInfo.CanWrite)
                     {
-                        _validationResult.AddFatal(GetText("DataPackageFragmentInstaller.MissingWritableProperty").FormatWith(dataType.InterfaceType, attribute.Name));
+                        _validationResult.AddFatal(GetText("DataPackageFragmentInstaller.MissingWritableProperty").FormatWith(dataType.InterfaceType, fieldName));
                         propertyValidationPassed = false;
                         continue;
                     }
@@ -420,14 +425,13 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                         propertyValidationPassed = false;
                         continue;
                     }
-                    string fieldName = attribute.Name.LocalName;
 
                     if (dataType.InterfaceType.GetKeyPropertyNames().Contains(fieldName))
                     {
                         dataKeyPropertyCollection.AddKeyProperty(fieldName, fieldValue);
                     }
 
-                    assignedPropertyNames.Add(attribute.Name.LocalName);
+                    assignedPropertyNames.Add(fieldName);
                     fieldValues.Add(fieldName, fieldValue);
                 }
 
@@ -538,6 +542,16 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         private static bool IsObsoleteField(DataType dataType, string fieldName)
         {
             return typeof(ILocalizedControlled).IsAssignableFrom(dataType.InterfaceType) && fieldName == "CultureName";
+        }
+
+        private static Dictionary<string, PropertyInfo> GetDataTypeProperties(Type type)
+        {
+            return type.GetPropertiesRecursively().Where(property => !IsObsoleteProperty(property)).ToDictionary(prop => prop.Name);
+        }
+
+        private static bool IsObsoleteProperty(PropertyInfo propertyInfo)
+        {
+            return propertyInfo.Name == "PageId" && propertyInfo.DeclaringType == typeof(IPageData);
         }
 
         private static bool IsObsoleteField(DataTypeDescriptor dataTypeDescriptor, string fieldName)

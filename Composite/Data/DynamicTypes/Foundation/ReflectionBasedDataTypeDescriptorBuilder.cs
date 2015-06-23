@@ -49,6 +49,11 @@ namespace Composite.Data.DynamicTypes.Foundation
             {
                 foreach (PropertyInfo propertyInfo in superInterfaceType.GetProperties())
                 {
+                    if (propertyInfo.Name == "PageId" && propertyInfo.DeclaringType == typeof(IPageData))
+                    {
+                        continue;
+                    }
+
                     DataFieldDescriptor fieldDescriptor = BuildFieldDescriptor(propertyInfo, true);
 
                     typeDescriptor.Fields.Add(fieldDescriptor);
