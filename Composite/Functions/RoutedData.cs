@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Web;
 using Composite.Core.Routing;
 using Composite.Core.Routing.Pages;
 using Composite.Core.WebClient.Renderings.Page;
@@ -20,19 +21,22 @@ namespace Composite.Functions
         {
         }
 
-        public RoutedDataModel(IData data)
+        public RoutedDataModel(IData data, bool isCanonical)
         {
             Data = data;
             IsDetailView = data != null;
             IsRouteResolved = data != null;
+            IsCanonicalUrl = isCanonical;
         }
 
         public RoutedDataModel(Func<IQueryable> getQueryable)
         {
             GetQueryable = getQueryable;
             IsRouteResolved = true;
+            IsCanonicalUrl = true;
         }
 
+        public bool IsCanonicalUrl { get; protected set; }
         public bool IsRouteResolved { get; protected set; }
         public bool IsDetailView { get; protected set; }
         public IData Data { get; protected set; }
@@ -54,7 +58,7 @@ namespace Composite.Functions
             Verify.IsNotNull(urlMapper, "UrlMapper is null");
             
             // TODO: un-comment when DataUrlMapper logic is implemented
-            // DataUrls.RegisterDynamicDataUrlMapper(PageRenderer.CurrentPage, typeof(T), new RoutedDataUrlMapperAdapter(urlMapper));
+            //DataUrls.RegisterDynamicDataUrlMapper(PageRenderer.CurrentPage, typeof(T), new RoutedDataUrlMapperAdapter(urlMapper));
 
             var pageUrlData = C1PageRoute.PageUrlData;
 
@@ -64,8 +68,30 @@ namespace Composite.Functions
             if (!string.IsNullOrEmpty(pageUrlData.PathInfo) && model.IsRouteResolved)
             {
                 C1PageRoute.RegisterPathInfoUsage();
+
+                if (model.IsDetailView && !model.IsCanonicalUrl)
+                {
+                    var canonicalUrlData = urlMapper.BuildDataUrl(model.Data);
+                    if (canonicalUrlData.PathInfo != pageUrlData.PathInfo)
+                    {
+                        string newUrl = PageUrls.BuildUrl(canonicalUrlData);
+                        if (newUrl != null)
+                        {
+                            PermanentRedirect(newUrl);
+                        }
+                    }
+                }
             }
-        } 
+        }
+
+        private static void PermanentRedirect(string url)
+        {
+            var response = HttpContext.Current.Response;
+
+            response.AddHeader("Location", url);
+            response.StatusCode = 301; //  "Moved Permanently"
+            response.End();
+        }
 
         protected abstract IRoutedDataUrlMapper GetUrlMapper();
 
@@ -145,9 +171,9 @@ namespace Composite.Functions
         }
 
         /// <summary>
-        /// Returns a public url to the specified data item.
+        /// Returns a public url to the specified data item key.
         /// </summary>
-        /// <param name="data">The data item.</param>
+        /// <param name="key">The key value.</param>
         /// <returns></returns>
         public virtual string DataUrl(object key)
         {
@@ -159,6 +185,18 @@ namespace Composite.Functions
 
             var mapper = GetUrlMapper();
             return PageUrls.BuildUrl(mapper.BuildDataUrl(data));
+        }
+
+        /// <summary>
+        /// Returns a url link to the current page
+        /// </summary>
+        public virtual string ListUrl
+        {
+            get
+            {
+                return PageUrls.BuildUrl(PageRenderer.CurrentPage) ??
+                       PageUrls.BuildUrl(PageRenderer.CurrentPage, UrlKind.Internal);
+            }
         }
 
         /// <summary>
