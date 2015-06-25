@@ -461,6 +461,9 @@
     <Compile Include="Composite\controls\StyleLoaderControl.ascx.designer.cs">
       <DependentUpon>StyleLoaderControl.ascx</DependentUpon>
     </Compile>
+    <Compile Include="Composite\GenerateIconSprite.aspx.cs">
+      <DependentUpon>GenerateIconSprite.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Composite\Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -483,6 +486,7 @@
       <DependentUpon>GenerateDynamicSchemas.aspx</DependentUpon>
     </Compile>
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\Selectors\UrlComboBox.ascx" />
+    <Content Include="Composite\GenerateIconSprite.aspx" />
     <Content Include="Composite\images\editfunction.png" />
     <Content Include="Composite\images\function.png" />
     <Content Include="Composite\images\functionheaderbackground.png" />
