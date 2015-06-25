@@ -72,28 +72,21 @@ namespace Composite.Core.Types
         /// <exclude />
         public static List<PropertyInfo> GetPropertiesRecursively(this Type type, Func<PropertyInfo, bool> predicate)
         {
-            List<PropertyInfo> properties = new List<PropertyInfo>();
+            predicate = predicate ?? (p => true);
 
-            if (predicate == null)
-            {
-                properties.AddRange(type.GetProperties());
-            }
-            else
-            {
-                properties.AddRange(type.GetProperties().Where(predicate));
-            }
+            var properties = new List<PropertyInfo>();
+            properties.AddRange(type.GetProperties().Where(predicate));
 
             Type[] interfaceTypes = type.GetInterfaces();
             foreach (Type interfaceType in interfaceTypes)
             {
-                if (predicate == null)
-                {
-                    properties.AddRange(interfaceType.GetProperties());
-                }
-                else
-                {
-                    properties.AddRange(interfaceType.GetProperties().Where(predicate));
-                }
+                properties.AddRange(interfaceType.GetProperties().Where(predicate));
+            }
+
+            // A compatibility fix, returning the same "PageId" property twice usually leads to an error
+            if (typeof (IPageData).IsAssignableFrom(type))
+            {
+                properties.RemoveAll(p => p.Name == "PageId" && p.DeclaringType == typeof (IPageData));
             }
 
             return properties;
@@ -104,7 +97,7 @@ namespace Composite.Core.Types
         /// <exclude />
         public static List<Type> GetInterfacesRecursively(this Type type)
         {
-            List<Type> interfaces = new List<Type>();
+            var interfaces = new List<Type>();
 
             GetInterfacesRecursively(type, null, interfaces);
 
@@ -116,7 +109,7 @@ namespace Composite.Core.Types
         /// <exclude />
         public static List<Type> GetInterfacesRecursively(this Type type, Func<Type, bool> predicate)
         {
-            List<Type> interfaces = new List<Type>();
+            var interfaces = new List<Type>();
 
             GetInterfacesRecursively(type, predicate, interfaces);
 
@@ -162,7 +155,7 @@ namespace Composite.Core.Types
         {
             if (serializedValue == null) return null;
 
-            if (targetType == typeof(string)) return (string)serializedValue;
+            if (targetType == typeof(string)) return serializedValue;
             if (targetType == typeof(Guid)) return new Guid(serializedValue);
             if (targetType == typeof(int)) return int.Parse(serializedValue); ;
 
