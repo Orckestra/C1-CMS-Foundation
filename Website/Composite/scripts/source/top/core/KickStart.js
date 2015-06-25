@@ -39,21 +39,13 @@ var KickStart = new function () {
 
 			
 
-		//TESTUI Load images
+		//NEWUI Load SVG images
 
 
 			function onload() {
 				var xhr = this, x = document.createElement('x'), s = xhr.s;
 
 				x.innerHTML = xhr.responseText;
-
-				
-
-				//xhr.onload = function () {
-				//	s.splice(0).map(function (array) {
-				//		//embed(array[0], x.querySelector('#' + array[1].replace(/(\W)/g, '\\$1')));
-				//	});
-				//};
 
 				var uses = x.querySelectorAll("use");
 				for (var i = 0; i < uses.length; ++i) {

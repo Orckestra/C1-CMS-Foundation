@@ -131,27 +131,10 @@ StageDeckBinding.prototype.handleAction = function ( action ) {
 				this.dispatchAction(StageDeckBinding.ACTION_LOADED);
 
 
-				////TESTUI
-				//var explorerdocument = this.windowBinding.getContentDocument();
-				//var explorerpanel = this.windowBinding.getContentWindow().bindingMap.explorerpanel;
-				//// construct ViewBinding
-				//var viewBinding = ViewBinding.newInstance(explorerdocument);
-				//viewBinding.setType(ViewBinding.TYPE_EXPLORERVIEW);
-				//viewBinding.setDefinition(this.definition);
+				//NEWUI LOAD Browser to first tab
 
-				//explorerpanel.add(viewBinding);
+				var explorerdocument = this.windowBinding.getContentDocument();
 
-				////setTimeout ( function () {         
-				//	viewBinding.attach();
-				//	viewBinding.initialize();
-				////}, 0);
-
-				//this._viewBinding = viewBinding;
-
-
-				explorerdocument = this.windowBinding.getContentDocument();
-
-				//TESTUI 
 				var browserpanel = this.windowBinding.getContentWindow().bindingMap.browserpanel;
 
 				var viewBinding = ViewBinding.newInstance(explorerdocument);
@@ -162,12 +145,10 @@ StageDeckBinding.prototype.handleAction = function ( action ) {
 
 				browserpanel.add(viewBinding);
 
-				//setTimeout(function () {
-					viewBinding.attach();
-					viewBinding.initialize();
-				//}, 0);
+				viewBinding.attach();
+				viewBinding.initialize();
 
-					this._viewBinding = viewBinding;
+				this._viewBinding = viewBinding;
 
 				action.consume ();
 			}

@@ -145,7 +145,7 @@ BrowserPageBinding.prototype.setPageArgument = function ( map ) {
 
 	this.systemViewDefinition = map["SystemViewDefinition"];
 
-	//TESTUI
+	//NEWUI Add tree to Browser
 	var explorerdocument = this.bindingDocument;
 	var explorerpanel = this.bindingWindow.bindingMap.explorerpanel;
 	// construct ViewBinding
@@ -155,10 +155,8 @@ BrowserPageBinding.prototype.setPageArgument = function ( map ) {
 
 	explorerpanel.add(viewBinding);
 
-	//setTimeout ( function () {         
 	viewBinding.attach();
 	viewBinding.initialize();
-	//}, 0);
 
 	this._viewBinding = viewBinding;
 }
