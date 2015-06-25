@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg  width="18px" height="24px" xmlns="http://www.w3.org/2000/svg">
+  <g stroke="#666" fill="white">
+    <title>Content</title>
+    <g id="perspective-content" viewBox="0 0 18 24" stroke-width="1" fill="none" fill-rule="evenodd">
+      <path d="M17.5,23.5 L0.5,23.5 L0.5,0.5 L11.5,0.5 L17.5,6.5 L17.5,23.5 L17.5,23.5 Z" id="Stroke-2869" stroke-linejoin="round"></path>
+      <path d="M11.5,0.5 L11.5,6.5 L17.5,6.5" id="Stroke-2870" stroke-linejoin="round"></path>
+      <path d="M4.5,7.5 L9,7.5" id="Stroke-2871"></path>
+      <path d="M4.5,10.5 L13.5,10.5" id="Stroke-2872"></path>
+      <path d="M4.5,13.5 L13.5,13.5" id="Stroke-2873"></path>
+      <path d="M4.5,16.5 L13.5,16.5" id="Stroke-2874"></path>
+      <path d="M4.5,19.5 L13.5,19.5" id="Stroke-2875"></path>
+    </g>
+  </g>
+</svg>

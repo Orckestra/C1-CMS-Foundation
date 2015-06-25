@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="20px" height="19px" viewBox="0 0 20 19" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+  <!-- Generator: Sketch 3.3.2 (12043) - http://www.bohemiancoding.com/sketch -->
+  <title>Tree_view</title>
+  <desc>Created with Sketch.</desc>
+  <defs></defs>
+  <g fill="#999" stroke="#999">
+    <g id="nodes" viewBox="0 0 20 19" stroke-width="1" fill="none">
+      <g id="Browser" transform="translate(0.000000, -6.000000)" stroke-linejoin="round">
+        <g id="Tree_view" transform="translate(0.000000, 6.000000)" >
+          <path d="M9.5002375,3.56289583 L9.5002375,13.4273072" id="Stroke-6233" stroke-linecap="square"></path>
+          <path d="M15.5125122,3.49053963 L3.49884033,3.49053955 L3.49884033,0.512268064 L15.5125122,0.512268064 L15.5125122,3.49053963 Z" id="Stroke-6234" fill="#FFFFFF"></path>
+          <path d="M4.52099593,17.5054526 L0.545328771,17.5054526 L0.545328771,13.5428874 L4.52099593,13.5428874 L4.52099593,17.5054526 Z" id="Stroke-6236" fill="#FFFFFF"></path>
+          <path d="M11.5209959,17.5054526 L7.54532877,17.5054526 L7.54532877,13.5428874 L11.5209959,13.5428874 L11.5209959,17.5054526 Z" id="Stroke-6236-Copy" fill="#FFFFFF"></path>
+          <path d="M18.5209959,17.5054526 L14.5453288,17.5054526 L14.5453288,13.5428874 L18.5209959,13.5428874 L18.5209959,17.5054526 Z" id="Stroke-6236-Copy-2" fill="#FFFFFF"></path>
+          <path d="M16.4979658,13.3233643 L16.4979658,9.51863606 L2.50805664,9.51863606 L2.50805664,13.4320474" id="Stroke-6238" stroke-linecap="square"></path>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

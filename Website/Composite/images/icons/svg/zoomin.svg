@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" ?>
+<!DOCTYPE svg  PUBLIC '-//W3C//DTD SVG 1.1//EN'  'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'>
+<svg enable-background="new 0 0 50 50" height="50px" id="Layer_1" version="1.1" viewBox="0 0 50 50" width="50px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+ <g fill="#999" stroke="#999">
+<g id="zoomin" viewBox="0 0 50 50">
+  <rect fill="none" height="50" width="50"  stroke="none"/>
+  <circle cx="21" cy="20" fill="none" r="16"   stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/>
+  <line fill="none"   stroke-miterlimit="10" stroke-width="4" x1="32.229" x2="45.5" y1="32.229" y2="45.5"/>
+  <line fill="none"   stroke-miterlimit="10" stroke-width="2" x1="13" x2="29" y1="20" y2="20"/>
+  <line fill="none"   stroke-miterlimit="10" stroke-width="2" x1="21" x2="21" y1="12" y2="28"/>
+</g>
+ </g>
+</svg>
