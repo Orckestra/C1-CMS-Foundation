@@ -147,22 +147,30 @@ LabelBinding.prototype.setImage = function ( url, isNotBuildingClassName ) {
 	if ( url != false ) {
 		url = url ? url : LabelBinding.DEFAULT_IMAGE;
 		var resolverUrl = Resolver.resolve(url);
-		if (resolverUrl.classes) {
+		if (resolverUrl.svg) {
+			this.setImageSvg(resolverUrl.svg);
+			this.setAlphaTransparentBackdrop(false);
+			this.setImageClasses();
+		} else if (resolverUrl.classes) {
+			this.setImageSvg();
 			this.setAlphaTransparentBackdrop(false);
 			this.setImageClasses(resolverUrl.classes);
 		}
 		else {
+			this.setImageSvg();
 			this.setImageClasses();
 			this.setAlphaTransparentBackdrop(
-				resolverUrl
+					resolverUrl
 			);
 		}
-		this.setProperty ( "image", url );
+		//this.setProperty ( "image", url );
 		this.hasImage = true;
 		if ( !isNotBuildingClassName ) {
 			this.buildClassName ();
 		}
 	} else {
+		this.setImageSvg();
+		this.setImageClasses()
 		this.setAlphaTransparentBackdrop(false);
 		this.setImageClasses();
 		this.deleteProperty ( "image" );
@@ -192,6 +200,53 @@ LabelBinding.prototype.setImageClasses = function (classes) {
 				this.shadowTree.labelBody.insertBefore(this.shadowTree.icon, this.shadowTree.labelBody.firstChild);
 			}
 			this.shadowTree.icon.className = classes;
+		}
+	}
+}
+
+
+/**
+ * Set image class.
+ * @param {string} url
+ */
+LabelBinding.prototype.setImageSvg = function (svg) {
+
+	if (this.shadowTree.labelBody) {
+		if (!svg) {
+			if (this.shadowTree.svg) {
+				if (this.shadowTree.svg.parentNode) {
+					this.shadowTree.svg.parentNode.removeChild(this.shadowTree.svg);
+				}
+				this.shadowTree.svg = null;
+				this.shadowTree.use = null;
+
+			}
+		} else {
+			var xmlns = "http://www.w3.org/2000/svg";
+			if (!this.shadowTree.svg) {
+				this.shadowTree.svg = this.bindingDocument.createElementNS(xmlns, "svg");
+
+				this.shadowTree.labelBody.insertBefore(this.shadowTree.svg, this.shadowTree.labelBody.firstChild);
+				this.shadowTree.svg.setAttribute("viewBox", "0 0 24 24");
+			}
+			var g = KickStart.sprites.querySelector("#" + svg);
+			if (g) {
+				var viewBox = g.getAttribute('viewBox'),
+					fragment = document.createDocumentFragment(),
+					clone = g.cloneNode(true);
+
+				if (viewBox) {
+					this.shadowTree.svg.setAttribute('viewBox', viewBox);
+				}
+
+				//while (clone.childNodes.length) {
+				//	fragment.appendChild(clone.childNodes[0]);
+				//}
+
+				fragment.appendChild(clone);
+				this.shadowTree.svg.innerHTML = "";
+				this.shadowTree.svg.appendChild(fragment);
+			}
 		}
 	}
 }

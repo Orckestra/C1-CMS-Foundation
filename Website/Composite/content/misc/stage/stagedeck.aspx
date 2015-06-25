@@ -18,7 +18,6 @@
 			<ui:bindingmapping element="ui:splitpanel" binding="StageSplitPanelBinding"/>
 			<ui:bindingmapping element="ui:splitter" binding="StageSplitterBinding"/>
 		</ui:bindingmappingset>
-		
 	</head>
 	<body>
 		
@@ -31,6 +30,7 @@
 		-->
 		
 		<ui:viewset id="views"/>
+
 		
 		<ui:splitbox orient="horizontal" layout="8:3">
 			<ui:splitpanel>
@@ -38,8 +38,21 @@
 					<ui:splitpanel type="editors">
 						<ui:dock reference="main" type="editors">
 							<ui:docktabs>
+								<ui:docktab label="Browser" image="${icon:browser}" selected="true" pinned="true"></ui:docktab>
 							</ui:docktabs>
 							<ui:dockpanels>
+								<ui:dockpanel  id="browserpanel">
+									
+									<%--<ui:splitbox id="app1horizontalsplitbox" orient="horizontal" layout="2:7" persist="layout">
+										<ui:splitpanel type="explorer" id="explorerpanel">
+											
+										</ui:splitpanel>
+										<ui:splitter/>
+										<ui:splitpanel>
+											
+										</ui:splitpanel>
+									</ui:splitbox>--%>
+								</ui:dockpanel>
 							</ui:dockpanels>
 						</ui:dock>
 					</ui:splitpanel>

@@ -25,12 +25,20 @@ ui|box.controls ui|clickbutton {
 	float: none;
 	margin: 0 0 3px 0;
 }
+
+ui|box.controls ui|clickbutton.isdisabled{
+	opacity: 0.4;
+}
+
 ui|box.controls ui|clickbutton ui|labeltext {
 	font-family: "Courier New", monospace;
 }
 ui|box.controls ui|clickbutton ui|labelbox{
 	padding: 4px 6px 5px;
+	border-color: #CCCCCC;
 }
+
+
 ui|dialogpage {
 	padding: 0;	
 }

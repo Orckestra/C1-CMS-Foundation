@@ -2,7 +2,6 @@ SelectorBinding.prototype = new DataBinding;
 SelectorBinding.prototype.constructor = SelectorBinding;
 SelectorBinding.superclass = DataBinding.prototype;
 
-SelectorBinding.INDICATOR_IMAGE = Resolver.resolve ( "${skin}/fields/selectorindicator.png" );
 SelectorBinding.ACTION_SELECTIONCHANGED = "selectorselectionchanged";
 SelectorBinding.ACTION_COMMAND = "selectorcommand";
 SelectorBinding.CLASSNAME_POPUP = "selectorpopup";
@@ -263,16 +262,14 @@ SelectorBinding.prototype.parseDOMProperties = function () {
 SelectorBinding.prototype._computeImageProfile = function () {
 
 	Binding.imageProfile ( this );
-	//alert ( this.imageProfile )
 }
 
 /**
- * Build button, indicator and popup. Finally populate by selection elements.
+ * Build button and popup. Finally populate by selection elements.
  */
 SelectorBinding.prototype.buildDOMContent = function () {
 
 	this.buildButton ();
-	this.buildIndicator ();
 	this.buildPopup ();
 	this.buildSelections ();
 	
@@ -280,7 +277,7 @@ SelectorBinding.prototype.buildDOMContent = function () {
 	if ( Client.isExplorer == true ) {
 		this.bindingElement.hideFocus = true;
 	}
-}		
+}
 
 /**
  * Build form field for serverside processing.
@@ -322,19 +319,6 @@ SelectorBinding.prototype.buildButton = function () {
 	this._buttonBinding = button;
 	this.shadowTree.button = button; /* don't serialize */
 	button.attach ();
-}
-
-/**
- * Building dropdown indicator image.
- * TODO: stylesheet this?
- */
-SelectorBinding.prototype.buildIndicator = function () {
-	
-	var img = this.bindingDocument.createElement ( "img" );
-	img.src = SelectorBinding.INDICATOR_IMAGE;
-	img.className = "selectorindicatorimage";
-	this._buttonBinding.labelBinding.bindingElement.appendChild(img);
-	this.shadowTree.selectorindicatorimage = img;
 }
 
 /**
@@ -490,9 +474,8 @@ SelectorBinding.prototype.populateFromList = function ( list ) {
 			if ( !this._selectedItemBinding ) {
 				this.select ( firstItem, true );
 			}
-			this.shadowTree.selectorindicatorimage.style.display = "block";
 		} else {
-			this.shadowTree.selectorindicatorimage.style.display = "none";
+
 		}
 	} else {
 		
@@ -654,7 +637,6 @@ SelectorBinding.prototype.setDisabled = function ( isDisabled ) {
 	
 	if ( this.isAttached == true ) {	
 		var button = this._buttonBinding;
-		this.shadowTree.selectorindicatorimage.style.display = isDisabled ? "none" : "block";
 		button.setDisabled ( isDisabled );
 	}	
 	if ( isDisabled ) {

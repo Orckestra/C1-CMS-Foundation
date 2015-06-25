@@ -324,10 +324,12 @@ StageBinding.prototype._onStageReady = function () {
 		/*
 		 * Broadcasting readystate. If no start 
 		 * page, show default start splash. 
-		 */	
-		if ( !Application.hasStartPage || !Application.hasExternalConnection) {
-			top.app.bindingMap.defaultstartdeck.select ();
-			this._isShowingDefaultStart = true;
+		 */
+		//TESTUI
+		if (!Application.hasStartPage || !Application.hasExternalConnection || Client.isPad || true) {
+
+			top.app.bindingMap.maindecks.select ( "stagedeck" );
+			//this._isShowingDefaultStart = true;
 		}
 		EventBroadcaster.broadcast ( BroadcastMessages.STAGE_INITIALIZED );
 		this._isStageReady = true;
@@ -446,7 +448,7 @@ StageBinding.prototype.handleAction = function ( action ) {
 			if ( !Application.isOperational ) {
 				ProgressBarBinding.notch ( 5 );
 			}
-			this.handlePerspectiveChange ( binding );
+			this.handlePerspectiveChange(app.bindingMap.explorermenu);
 			action.consume ();
 			break;
 			

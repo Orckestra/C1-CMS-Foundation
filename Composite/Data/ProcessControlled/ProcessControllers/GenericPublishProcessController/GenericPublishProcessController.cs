@@ -79,18 +79,6 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
         public static ResourceHandle SendBackForPublication { get { return GetIconHandle("item-send-back-for-publication"); } }
 
         /// <exclude />
-        public static ResourceHandle SendToDraftDisabled { get { return GetIconHandle("item-send-to-draft-disabled"); } }
-
-        /// <exclude />
-        public static ResourceHandle SendForApprovalDisabled { get { return GetIconHandle("item-send-for-approval-disabled"); } }
-
-        /// <exclude />
-        public static ResourceHandle SendForPublicationDisabled { get { return GetIconHandle("item-send-for-publication-disabled"); } }
-
-        /// <exclude />
-        public static ResourceHandle PublishDisabled { get { return GetIconHandle("item-publish-disabled"); } }
-
-        /// <exclude />
         public static readonly ActionGroup WorkflowActionGroup = new ActionGroup("Workflow", ActionGroupPriority.PrimaryMedium);
 
         /// <exclude />
@@ -199,7 +187,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
                 {
                     Label = StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "SendForApproval"),
                     ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "SendForApprovalToolTip"),
-                    Icon = GenericPublishProcessController.SendBackForApproval,
+                    Icon = GenericPublishProcessController.SendForwardForApproval,
                     Disabled = false,
                     ActionLocation = new ActionLocation
                     {
@@ -218,7 +206,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
                 {
                     Label = StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "SendForPublication"),
                     ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "SendForPublicationToolTip"),
-                    Icon = GenericPublishProcessController.SendBackForPublication,
+                    Icon = GenericPublishProcessController.SendForwardForApproval,
                     Disabled = false,
                     ActionLocation = new ActionLocation
                     {
@@ -238,7 +226,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
                 {
                     Label = StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "SendToDraft"),
                     ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "SendToDraftToolTip"),
-                    Icon = GenericPublishProcessController.SendToDraftDisabled,
+                    Icon = GenericPublishProcessController.SendBackToDraft,
                     Disabled = true,
                     ActionLocation = new ActionLocation
                     {
@@ -257,7 +245,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
                 {
                     Label = StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "SendForApproval"),
                     ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "SendForApprovalToolTip"),
-                    Icon = GenericPublishProcessController.SendForApprovalDisabled,
+                    Icon = GenericPublishProcessController.SendForwardForApproval,
                     Disabled = true,
                     ActionLocation = new ActionLocation
                     {
@@ -276,7 +264,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
                 {
                     Label = StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "SendForPublication"),
                     ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "SendForPublicationToolTip"),
-                    Icon = GenericPublishProcessController.SendForPublicationDisabled,
+                    Icon = GenericPublishProcessController.SendBackForPublication,
                     Disabled = true,
                     ActionLocation = new ActionLocation
                     {
@@ -295,7 +283,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
                 {
                     Label = StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "Publish"),
                     ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "PublishToolTip"),
-                    Icon = GenericPublishProcessController.PublishDisabled,
+                    Icon = GenericPublishProcessController.Publish,
                     Disabled = true,
                     ActionLocation = new ActionLocation
                     {

@@ -4,54 +4,62 @@
 ui|tabbox ui|tabpanel {
 	background-color: white;
 }
- ui|tab table.matrix {
-	width: 189px;
-}
+
 ui|tab ui|labeltext {
 	width: 110px;
 	overflow: hidden;
 	#ie text-overflow: ellipsis;
 }
-ui|tab ui|labelbox  {
+
+ui|tab ui|labelbox {
 	position: relative;
 	overflow: visible;
 }
-ui|tab ui|labelbox img {
-	position: absolute;
-	margin-top: 2px;
-	right: -42px;
-}
-ui|tab ui|labelbox img {
-	visibility: hidden;
-}
+
+	ui|tab ui|labelbox img {
+		position: absolute;
+		margin-top: 2px;
+		right: -42px;
+	}
+
+	ui|tab ui|labelbox img {
+		visibility: hidden;
+	}
+
 ui|tab.selected ui|labelbox img,
 ui|tab.hover ui|labelbox img {
-	visibility: visible;	
+	visibility: visible;
 }
+
 ui|tab.hover ui|labelbox img {
 	margin-top: 0;
 }
+
 ui|datainput#addressbar {
 	float: left;
-}
-ui|datainput#addressbar ui|box {
-	height: 27px;
-}
-ui|datainput#addressbar input {
-	width: 100%;
-	height: 100%;
-	padding-top: 5px;
-	#ie padding-top: 4px;
-	padding-left: 5px;
+	margin-top: 0px;
+	padding: 0px;
 }
 
+	ui|datainput#addressbar ui|box {
+		height: 31px;
+	}
+
+	ui|datainput#addressbar input {
+		width: 100%;
+		height: 100%;
+		padding-top: 2px;
+		padding-left: 5px;
+	}
+
 ui|cover#blocker {
-	cursor: pointer !important;		
+	cursor: pointer !important;
 }
 
 div#message {
 	padding: 22px;
 }
+
 div#icon {
 	width: 32px;
 	height: 32px;
@@ -60,8 +68,13 @@ div#icon {
 	position: relative;
 	top: 2px;
 }
+
 div#text {
 	padding-left: 44px;
 	-moz-user-select: none;
 	padding-top: 8px;
+}
+
+ui|toolbar#navbar {
+	padding: 4px 3px 4px 3px;
 }

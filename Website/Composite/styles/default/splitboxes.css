@@ -33,10 +33,9 @@ ui|splitpanel.maximized {
 ui|splitter {
 	display: block;
 	z-index: 2;
-	#ie font-size: 1px; /* cannot use overflow:hidden hack for IE6 */
 	position: relative;
-	background-color: $(color:threedface);
-	color: $(color:threedface); /* moz appends a text node inside the splitter */
+	background: transparent;
+	font-size: 1px;
 }
 ui|splitter.active {
 	z-index: 23; /* float to top while dragging */
@@ -45,8 +44,8 @@ ui|splitter.horizontal {
 	height: 100%;
 	width: 8px;
 	float: left;
-	border-right: 1px solid $(color:threedhighlight);
-	border-left: 1px solid $(color:threeddarkshadow);
+	border: 0px;
+	margin: 0 -4px;
 }
 ui|splitter.vertical {
 	height: 8px;
@@ -57,15 +56,13 @@ ui|splitter.vertical {
 ui|splitterbody {
 	display: block;
 	position: absolute;	
-	background-color: $(color:threedface);
+	background: transparent;
 }
 ui|splitter.horizontal ui|splitterbody {
 	width: 8px;
 	height: 100%;
 	margin-left: -1px;
 	cursor: e-resize;
-	border-left: 1px solid $(color:threedhighlight);
-	border-right: 1px solid $(color:threeddarkshadow);
 }
 ui|splitter.horizontal ui|splitterbody.hover,
 ui|splitter.horizontal ui|splitterbody.active {
@@ -82,4 +79,15 @@ ui|splitter.vertical ui|splitterbody {
 ui|splitter.vertical ui|splitterbody.hover,
 ui|splitter.vertical ui|splitterbody.active {
 	-vendor-box-shadow: 0 2px 3px rgba(0,0,0,0.35);
+}
+
+
+ui|splitbox.line ui|splitter.horizontal ui|splitterbody:after{
+	content: '';
+	position: absolute;
+	border-left: 1px solid #CCCCCC;
+	height: 100%;
+	width: 0px;
+	top: 0px;
+	left: 4px;
 }

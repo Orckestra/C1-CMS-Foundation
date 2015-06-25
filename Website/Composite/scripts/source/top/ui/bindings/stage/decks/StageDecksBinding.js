@@ -47,6 +47,7 @@ StageDecksBinding.prototype.mountDefinition = function ( definition ) {
 	var deckBinding = StageDeckBinding.newInstance ( this.bindingDocument );
 	deckBinding.handle = definition.handle;
 	deckBinding.perspectiveNode = definition.node;
+	deckBinding.definition = definition;
 	this._decks [ deckBinding.handle ] = deckBinding;
 	this.add ( deckBinding );
 	deckBinding.attach ();

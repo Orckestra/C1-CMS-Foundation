@@ -22,18 +22,13 @@ ui|toolbar ui|clickbutton ui|labeltext {
 ui|toolbarlabel {
 	padding: 4px;
 }
-#region vista
-	ui|toolbar ui|toolbarbutton ui|labeltext,
-	ui|toolbar ui|clickbutton ui|labeltext,
-	ui|toolbar ui|toolbarlabel ui|labeltext {
-		padding-top: 0;
-	}
-#endregion
 
-ui|toolbarbutton.isdisabled ui|labeltext,
-ui|clickbutton.isdisabled ui|labeltext {
-	color: $(color:graytext);
+ui|toolbar ui|toolbarbutton ui|labeltext,
+ui|toolbar ui|clickbutton ui|labeltext,
+ui|toolbar ui|toolbarlabel ui|labeltext {
+	padding-top: 0;
 }
+
 
 ui|toolbarbody.alignright ui|toolbarbutton,
 ui|toolbarbody.alignright ui|clickbutton {
@@ -43,10 +38,6 @@ ui|toolbarbody.alignright ui|clickbutton {
 ui|toolbar {
 	display: block;
 	clear: both;
-	border-top: 1px solid $(color:threedhighlight);
-	border-bottom: 1px solid $(color:threedshadow);
-	background-color: $(color:threedface);
-	padding: 1px 3px 1px 3px;
 	white-space: nowrap;
 }
 ui|toolbar.plain {
@@ -69,8 +60,6 @@ ui|toolbarbody.alignright {
 ui|toolbargroup {
 	display: block;
 	float: left;
-	border-right: 1px solid $(color:threedshadow);
-	border-left: 1px solid $(color:threedhighlight);
 	padding-left: 1px;
 }
 ui|toolbargroup.max {
@@ -91,33 +80,4 @@ ui|toolbargroup.defaultcontent {
 	margin-right: -1px;
 	visibility: hidden;
 	border: none;
-}
-
-/* combobutton */
-
-ui|toolbarbutton.isdisabled ui|combobox {
-	color: $(color:graytext);
-}
-
-ui|toolbarbutton.combobutton ui|combobox {
-	border-left: 1px solid transparent;
-	margin: -4px -4px -4px 0;
-	display: block;
-	float: left;
-	line-height: 22px;
-	font-size: 9px;
-	padding-left: 5px;
-	padding-right: 5px;
-	-moz-user-select: none;
-	position: relative;
-}
-
-ui|toolbarbutton.combobutton table.matrix td{
-	overflow: visible;
-}
-
-ui|toolbarbutton.hover ui|combobox,
-ui|toolbarbutton.active ui|combobox
-{
-	border-left: 1px solid #A0A0A0;
 }

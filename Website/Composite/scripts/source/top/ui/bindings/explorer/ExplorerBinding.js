@@ -29,9 +29,12 @@ ExplorerBinding.bindingInstance = null;
  */
 ExplorerBinding.getFocusedTreeNodeBindings = function () {
 
-	var selectedDeck = ExplorerBinding.bindingInstance.getSelectedDeckBinding();
-	var selectedView = selectedDeck.getAssociatedView();
-	var selectedTree = selectedView.getContentWindow().bindingMap.tree;
+	var selectedDeck = app.bindingMap.stagedecks.getSelectedDeckBinding();
+	var selectedView = selectedDeck._viewBinding;
+
+//	var selectedDeck = ExplorerBinding.bindingInstance.getSelectedDeckBinding();
+//	var selectedView = selectedDeck.getAssociatedView();
+	var selectedTree = selectedView.getContentWindow().bindingMap.browserpage._viewBinding.getContentWindow().bindingMap.tree;
 	var focusedTreeNodeBinding = selectedTree.getFocusedTreeNodeBindings();
 
 	//TODO: Refactor this
@@ -145,12 +148,14 @@ ExplorerBinding.prototype.onBindingAttach = function () {
 	this._decksBinding = this.addMember ( 
 		this.getDescendantBindingByLocalName ( "explorerdecks" )
 	);
-	this._splitterBinding = this.addMember ( 
-		this.getDescendantBindingByLocalName ( "explorersplitter" )
-	);
-	this._menuBinding = this.addMember ( 
-		this.getDescendantBindingByLocalName ( "explorermenu" )
-	);
+	//this._splitterBinding = this.addMember ( 
+	//	this.getDescendantBindingByLocalName ( "explorersplitter" )
+	//);
+	//this._menuBinding = this.addMember ( 
+	//	this.getDescendantBindingByLocalName ( "explorermenu" )
+	//);
+
+	this._menuBinding = this.addMember(app.bindingMap.explorermenu);
 }
 
 /**

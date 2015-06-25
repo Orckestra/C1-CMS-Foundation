@@ -23,37 +23,6 @@ DockTabsBinding.prototype.toString = function () {
 	return "[DockTabsBinding]";
 }
 
-
-/**
- * @overloads {TabsBinding#buildDOMContent}
- */
-DockTabsBinding.prototype.buildDOMContent = function () {
-
-	DockTabsBinding.superclass.buildDOMContent.call ( this );
-	
-	if ( this.containingTabBoxBinding.type != DockBinding.TYPE_EXPLORER ) {
-		this.controlGroupBinding = this.add (
-			ControlGroupBinding.newInstance ( this.bindingDocument ) 
-		);
-		this.controlGroupBinding.attachClassName ( "docktabscontrolgroup" );
-		// this.controlGroupBinding.add ( this.getControlBinding ( ControlBinding.TYPE_MINIMIZE ));
-		this.controlGroupBinding.add ( this.getControlBinding ( ControlBinding.TYPE_MAXIMIZE ));
-		this.controlGroupBinding.attachRecursive ();
-	}
-}
-
-/**
- * Build DockControlBinding.
- * @param {string} type
- * @return {ControlBinding}
- */
-DockTabsBinding.prototype.getControlBinding = function ( type ) {
-
-	var controlBinding = DockControlBinding.newInstance ( this.bindingDocument );
-	controlBinding.setControlType ( type );
-	return controlBinding;
-}
-
 /**
  * @overloads {TabsBinding#flex}
  * @implements {IFlexible}

@@ -2,71 +2,110 @@
 
 ui|explorersplitter,
 ui|explorertoolbarbutton {
-	border-bottom: 1px solid $(color:threedshadow);
+	
 }
+
+ui|explorermenu ui|toolbarbutton,
 ui|explorertoolbarbutton {
 	float: left;
 	padding: 4px;
+	border: 1px solid transparent;
+	margin: 8px 2px 8px 13px;
+	padding: 7px 20px 10px 14px;
+	cursor: pointer;
 	width: 100%;
-	#region default
-		#alphabackdrop: url("${skin}/explorer/button.png");
-	#endregion
-	#region osx
-		#alphabackdrop: url("${skin}/explorer/button.png");
-	#endregion
-	#region vista
-		#alphabackdrop: url("${skin}/explorer/vista/button.png");
-	#endregion
 }
 
+ui|explorermenu ui|toolbarbutton {
+	background: transparent;
+	color: #666666;
+}
+
+ui|explorertoolbarbutton {
+	filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale"); /* Firefox 10+, Firefox on Android */
+    filter: gray; /* IE6-9 */
+	-webkit-filter: grayscale(100%); /* Chrome 19+, Safari 6+, Safari 6+ iOS */
+}
+ui|explorermenu ui|toolbarbutton ui|labelbody,
+ui|explorertoolbarbutton ui|labelbody {
+	color: #666666;
+	text-transform: uppercase;
+	font-weight: bold;
+	font-family: Arial;
+	cursor: pointer;
+}
+
+ui|explorermenu ui|toolbarbutton ui|labelbox,
 ui|explorertoolbarbutton ui|labelbox {
 	padding-left: 1px;
+	cursor: pointer;
 }
+
+
+
+
+
+
 ui|explorertoolbarbutton.hover {
-	background-color: $(color:threedhighlight);
+	filter: none;
+	-webkit-filter: none;
+
 }
 ui|explorertoolbarbutton.active {
-	#region default
-		background-color: $(color:highlight);
-		border-bottom-color: $(color:highlight);
-	#endregion
-	#region osx
-		/*
-		background-color: $(color:highlight);
-		border-bottom-color: $(color:highlight);
-		*/
-		background-color: $(color:activecaption);
-		border-bottom-color: $(color:threedshadow);
-	#endregion
-	#region vista
-		border-bottom-color: #658fD5;
-	#endregion
+	filter: none;
+	-webkit-filter: none;
+	
+	
 }
 ui|explorertoolbarbutton.active ui|labeltext {
-	#region osx
-		color: $(color:captiontext);
-	#endregion
-	#region default
-		color: $(color:highlighttext);
-	#endregion
-	#region vista
-		color: white;
-	#endregion
+	
+	color: #21B980;
+	
 }
-ui|explorerbar {
-	border-top: 1px solid $(color:threedhighlight);
+ui|explorertoolbar {
+
+	padding: 0px;
+
 }
 ui|explorertoolbar ui|toolbargroup {
 	margin: 0;
 	padding: 0;
 }
+
+ui|explorermenu {
+	background: #333333;
+}
 ui|explorermenu ui|toolbar {
 	border: none;
 }
 
+ui|explorermenu ui|toolbarbutton,
+ui|explorertoolbarbutton {
+	background: none !important;
+	
+}
 
-ui|explorertoolbarbutton.active {
-	/* IE9 SVG, needs conditional override of 'filter' to 'none' */
-	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2FjYzJlOCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjMzJSIgc3RvcC1jb2xvcj0iIzkzYWZkYyIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjMzJSIgc3RvcC1jb2xvcj0iIzc2OWFkMyIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM5YmI1ZGYiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
-	background: linear-gradient(to bottom, #acc2e8 0%,#93afdc 33%,#769ad3 33%,#9bb5df 100%); /* W3C */
+ui|explorermenu ui|toolbarbutton ui|labelbody,
+ui|explorertoolbarbutton ui|labelbody {
+	color: #9A9A9A;
+}
+
+ui|explorermenu ui|toolbarbutton ui|labeltext,
+ui|explorertoolbarbutton ui|labeltext {
+	line-height: 22px;
+}
+
+ui|explorermenu ui|toolbarbutton svg,
+ui|explorermenu ui|toolbarbutton ui|labelbox.imageonly svg,
+ui|explorertoolbarbutton svg {
+	width: 21px;
+	height: 21px;
+	margin-left: -31px;
+}
+
+ui|explorermenu ui|toolbarbutton.active ui|labelbody,
+ui|explorermenu ui|toolbarbutton.hover ui|labelbody,
+ui|explorertoolbarbutton.active ui|labelbody,
+ui|explorertoolbarbutton.hover ui|labelbody {
+	color: #23B880;
 }

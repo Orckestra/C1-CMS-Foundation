@@ -27,11 +27,6 @@ function DialogBinding () {
 	this.isFlexible = false;
 	
 	/**
-	 * @type {DialogMatrixBinding}
-	 */
-	this._matrix = null;
-	
-	/**
 	 * @type {DialogHeadBinding}
 	 */
 	this._head = null;
@@ -191,10 +186,9 @@ DialogBinding.prototype.onBindingAttach = function () {
 DialogBinding.prototype.buildDescendantBindings = function () {
 
 	// these are always appended dynamically
-	this._matrix = DialogMatrixBinding.newInstance ( this.bindingDocument );
 	this._head = DialogHeadBinding.newInstance ( this.bindingDocument );
 	this._titlebar = DialogTitleBarBinding.newInstance ( this.bindingDocument );
-	this.add ( this._matrix );
+
 	this.addFirst ( this._head );
 	this._head.add ( this._titlebar );
 

@@ -3,37 +3,20 @@
 
 ui|tabbox {
 	display: block;
-	background-color: $(color:threedface);
 	overflow: hidden;
-	/*width: 100%;*/
 }
 ui|tabs {
 	display: block;
 	position: relative !important;
 	overflow: hidden;
-	border-top: 1px solid $(color:threedhighlight);
-	height: 29px;
 }
-ui|tabbox.boxed ui|tabs {
-	border-top: none;
-	height: 28px;
-}
-ui|tabbox.tabsbelow ui|tabs {
-	border-top: none;
-	border-bottom: 1px solid $(color:threedshadow);	
-}
+
 ui|tab {
 	display: block;
 	float: left;
 	position: relative;
 	white-space: nowrap;
-	padding: 7px;
 }
-/*
-ui|tab.selected {
-	text-decoration: underline;
-}
-*/
 ui|tabpanels {
 	display: block;
 	height: 100%;
@@ -44,11 +27,7 @@ ui|tabbox.boxed ui|tabpanels {
 	overflow: visible;
 	height: auto;
 }
-#region moz
-	ui|tabbox:not(.equalsize).boxed ui|tabpanels {
-		height: auto !important;
-	}
-#endregion
+
 ui|tabbox.equalsize ui|tabpanels {
 	overflow: hidden;
 	height: 100%;
@@ -63,25 +42,6 @@ ui|tabpanel {  /* styles comparable to deck - please coordinate all changes! */
 ui|tabbox.equalsize ui|tabpanel {
 	overflow: visible;
 	height: auto !important;
-}
-
-/* TABLINER .................................................................... */
-
-div.tabliner {
-	position: absolute;
-	left: 0;
-	bottom: 0;
-	width: 100%;
-	#ie width: 110%; /* dont ask */
-	height: 3px;
-	overflow: hidden;
-	z-index: 2;
-}
-ui|tabbox.boxed div.tabliner {
-	#ie width: 100%; /* dont ask */
-}
-ui|tabbox.tabsbelow ui|tabs div.tabliner {
-	top: 0;
 }
 
 /* TABMANAGER .................................................................... */

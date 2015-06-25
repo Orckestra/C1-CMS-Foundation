@@ -104,7 +104,9 @@ DataDialogBinding.prototype.onBindingAttach = function () {
 	this.parseDOMProperties();
 	
 	if ( this.getProperty ( "handle" ) != null || this.getProperty ( "url" )) {
-		this._buildIndicator ();
+		//this._buildIndicator ();
+		this._buttonBinding.setImage("${icon:popup}");
+		this._buttonBinding.labelBinding.attachClassName("flipped");
 	}
 	
 	this.bindingElement.tabIndex = 0;
@@ -148,11 +150,36 @@ DataDialogBinding.prototype._buildButton = function () {
  */
 DataDialogBinding.prototype._buildIndicator = function () {
 	
-	var img = this.bindingDocument.createElement ( "img" );
-	img.src = Resolver.resolve ( "${icon:popup}" );
-	img.className = "dialogindicatorimage";
-	this._buttonBinding.bindingElement.appendChild ( img );
-	this.shadowTree.indicatorimage = img;
+	//var img = this.bindingDocument.createElement ( "img" );
+	//img.src = Resolver.resolve ( "${icon:popup}" );
+	//img.className = "dialogindicatorimage";
+	//this._buttonBinding.bindingElement.appendChild ( img );
+	//this.shadowTree.indicatorimage = img;
+
+
+
+	var xmlns = "http://www.w3.org/2000/svg";
+	
+	this.shadowTree.indicatorimage = this.bindingDocument.createElementNS(xmlns, "svg");
+
+	this.shadowTree.indicatorimage.setAttribute("viewBox", "0 0 24 24");
+	this.shadowTree.indicatorimage.setAttribute("class","dialogindicatorimage");
+	
+	var g = KickStart.sprites.querySelector("#popup");
+	if (g) {
+		var viewBox = g.getAttribute('viewBox'),
+				fragment = document.createDocumentFragment(),
+				clone = g.cloneNode(true);
+
+		if (viewBox) {
+			this.shadowTree.indicatorimage.setAttribute('viewBox', viewBox);
+		}
+		fragment.appendChild(clone);
+
+		this.shadowTree.indicatorimage.appendChild(fragment);
+	}
+
+	this._buttonBinding.bindingElement.appendChild(this.shadowTree.indicatorimage);
 }
 
 /**

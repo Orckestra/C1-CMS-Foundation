@@ -1,0 +1,102 @@
+﻿@using System.Xml.Linq
+@{
+	XNamespace nsSys = "http://www.w3.org/2000/svg";
+	XNamespace nsLink = "http://www.w3.org/1999/xlink";
+
+	var file = XDocument.Load(Server.MapPath("~/Composite/images/sprite.svg"));
+	var root = file.Root;
+	if (root == null)
+	{
+		return;
+	}
+	var iconElements = root.Element(nsSys + "defs").Elements().ToList();
+
+	var mimeTypeIcons = iconElements.Where(el => el.Attribute("id") != null && el.Attribute("id").Value.StartsWith("mimetype-")).ToList();
+	var iconsWithUSe = iconElements.Where(el => el.Element(nsSys + "use") != null).ToList();
+	var genralIcons = iconElements.Except(mimeTypeIcons).Except(iconsWithUSe).ToList();
+
+}
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://www.composite.net/ns/function/1.0">
+<head>
+	<style type="text/css">
+		.cell {
+			float: left;
+			width: 380px;
+			height: 24px;
+			line-height: 24px;
+			vertical-align: middle;
+			font-size: 14px;
+			margin-bottom: 10px;
+		}
+
+		.icons24x24:after {
+			clear: both;
+			content: " ";
+			display: table;
+		}
+
+		.icons24x24 svg {
+			fill: currentColor;
+			color: #999;
+			stroke: #999;
+			width: 24px;
+			height: 24px;
+			padding-right: 15px;
+		}
+	</style>
+</head>
+<body>
+	<h2>General Icons 24x24:</h2>
+	<div class="icons24x24">
+		@foreach (var item in genralIcons)
+		{
+			var viewBox = item.Attribute("viewBox") != null ? item.Attribute("viewBox").Value : string.Empty;
+
+			<div class="cell">
+				<svg xmlns="http://www.w3.org/2000/svg"
+					 @if (!string.IsNullOrEmpty(viewBox)) {  @: viewBox="@viewBox"
+					                         }>
+					<use xlink:href="~/Composite/images/sprite.svg#@item.Attribute("id").Value" xmlns:xlink="http://www.w3.org/1999/xlink" />
+				</svg>
+				<span>@item.Attribute("id").Value</span>
+			</div>
+		}
+	</div>
+	<h2>Icons that use reference to general icons:</h2>
+	<div class="icons24x24">
+		@foreach (var item in iconsWithUSe)
+		{
+			var viewBox = item.Attribute("viewBox") != null ? item.Attribute("viewBox").Value : string.Empty;
+			var useIconId = item.Element(nsSys + "use").Attribute(nsLink + "href").Value;
+			<div class="cell">
+				<svg xmlns="http://www.w3.org/2000/svg"
+					 @if (!string.IsNullOrEmpty(viewBox)) {  @: viewBox="@viewBox"
+					                                                                                                        }>
+					<use xlink:href="~/Composite/images/sprite.svg#@item.Attribute("id").Value" xmlns:xlink="http://www.w3.org/1999/xlink" />
+				</svg>
+				<span>@item.Attribute("id").Value (@useIconId)</span>
+			</div>
+		}
+	</div>
+	<h2>File Format Icons:</h2>
+	<div class="icons24x24">
+		@foreach (var item in mimeTypeIcons)
+		{
+			var viewBox = item.Attribute("viewBox") != null ? item.Attribute("viewBox").Value : string.Empty;
+
+			<div class="cell">
+				<svg xmlns="http://www.w3.org/2000/svg"
+					 @if (!string.IsNullOrEmpty(viewBox)) {  @: viewBox="@viewBox"
+					                                                      }>
+					<use xlink:href="~/Composite/images/sprite.svg#@item.Attribute("id").Value" xmlns:xlink="http://www.w3.org/1999/xlink" />
+				</svg>
+				<span>@item.Attribute("id").Value</span>
+			</div>
+		}
+	</div>
+
+</body>
+</html>

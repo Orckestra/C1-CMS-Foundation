@@ -30,19 +30,22 @@ _ImageProvider.prototype = {
 		var url = Constants.APPROOT + "/" + this.SERVICE_URL + "?resourceName=${name}&resourceNamespace=${hash}&size=${size}";
 		var hash = object.ResourceNamespace;
 		var name = object.ResourceName;
-		size = size ? size : "DEFAULT";
+		//size = size ? size : "DEFAULT";
 		
-		if ( name != null && hash != null ) {
-			result = url
-				.replace ( "${name}", name )
-				.replace ( "${hash}", hash )
-				.replace ( "${size}", size );
-			if ( size == "DEFAULT" ) {
-				result = result.split ( "&size=DEFAULT" )[ 0 ];
-			}
-		} else {
-			throw "Could not compute image URL.";
-		}
+		//if ( name != null && hash != null ) {
+		//	result = url
+		//		.replace ( "${name}", name )
+		//		.replace ( "${hash}", hash )
+		//		.replace ( "${size}", size );
+		//	if ( size == "DEFAULT" ) {
+		//		result = result.split ( "&size=DEFAULT" )[ 0 ];
+		//	}
+		//} else {
+		//	throw "Could not compute image URL.";
+		//}
+		//return result;
+		result = "${svg:"+object.ResourceName+"}";
+
 		return result;
 	},
 	

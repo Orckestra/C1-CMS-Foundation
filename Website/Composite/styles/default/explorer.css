@@ -1,6 +1,7 @@
 @namespace url("http://www.w3.org/1999/xhtml");
 @namespace ui url("http://www.w3.org/1999/xhtml");
 
+
 ui|explorer,
 ui|explorerbody,
 ui|explorerdecks,
@@ -13,6 +14,9 @@ ui|explorerbar,
 ui|explorerbarbutton {
 	display: block;
 }
+
+
+
 ui|explorer {
 	height: 100%;
 	overflow: hidden;

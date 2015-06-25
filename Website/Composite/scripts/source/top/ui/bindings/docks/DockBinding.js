@@ -163,19 +163,6 @@ DockBinding.prototype.onBindingAttach = function () {
 
 /**
  * Hide editorsdock dockcontrols.
- * @overloads {TabBoxBinding#onBindingAttach}
- */
-DockBinding.prototype.onBindingInitialize = function () {
-	
-	if ( this.type == DockBinding.TYPE_EDITORS ) {
-		this.showControls ( false );
-	}
-	
-	DockBinding.superclass.onBindingInitialize.call ( this );
-}
-
-/**
- * Hide editorsdock dockcontrols.
  * @overloads {TabBoxBinding#onMembersAttached}
  *
 DockBinding.prototype.onMembersAttached = function () {
@@ -194,13 +181,13 @@ DockBinding.prototype.onMembersAttached = function () {
  */
 DockBinding.prototype.buildDOMContent = function () {
 	
-	var parentBinding = UserInterface.getBinding ( this.bindingElement.parentNode );
-	var matrixBinding = MatrixBinding.newInstance ( this.bindingDocument );
-	matrixBinding.attachClassName ( "dockliner" );
-	this.shadowTree.dockLiner = matrixBinding;
-	parentBinding.add ( matrixBinding );
-	matrixBinding.attach ();
-	matrixBinding.manifest ();
+	//var parentBinding = UserInterface.getBinding ( this.bindingElement.parentNode );
+	//var matrixBinding = MatrixBinding.newInstance ( this.bindingDocument );
+	//matrixBinding.attachClassName ( "dockliner" );
+	//this.shadowTree.dockLiner = matrixBinding;
+	//parentBinding.add ( matrixBinding );
+	//matrixBinding.attach ();
+	//matrixBinding.manifest ();
 	
 	var type = this.getProperty ( "type" );
 	this.type = type ? type : DockBinding.TYPE_TOOLS;;
@@ -809,7 +796,7 @@ DockBinding.prototype.show = function () {
 	if ( this.isVisible ) {
 		DockBinding.superclass.show.call ( this );
 		this.isFlexible = true;
-		this.shadowTree.dockLiner.style.display = "block";
+		//this.shadowTree.dockLiner.style.display = "block";
 	}
 }
 
@@ -821,25 +808,10 @@ DockBinding.prototype.hide = function () {
 	
 	if ( !this.isVisible ) {
 		DockBinding.superclass.hide.call ( this );
-		this.shadowTree.dockLiner.style.display = "none";
+		//this.shadowTree.dockLiner.style.display = "none";
 		this.isFlexible = false;
 		if ( this.isActive ) {
 			this.deActivate ();
 		}
-	}
-}
-
-/**
- * Showhide the dockcontrols. They are hidden when the stagedeck 
- * presents the main editorsdock as the single open dock.
- * @param {boolean} isShow
- */
-DockBinding.prototype.showControls = function ( isShow ) {
-	
-	var tabs = this.getChildBindingByLocalName ( this._nodename_tabs );
-	if ( isShow ) {
-		tabs.controlGroupBinding.show ();
-	} else {
-		tabs.controlGroupBinding.hide ();
 	}
 }

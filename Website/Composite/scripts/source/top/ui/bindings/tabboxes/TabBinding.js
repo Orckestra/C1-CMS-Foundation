@@ -1,6 +1,6 @@
-TabBinding.prototype = new MatrixBinding;
+TabBinding.prototype = new Binding;
 TabBinding.prototype.constructor = TabBinding;
-TabBinding.superclass = MatrixBinding.prototype;
+TabBinding.superclass = Binding.prototype;
 
 TabBinding.ACTION_SELECTED = "tabselected";
 TabBinding.ACTION_UNSELECTED = "tabunselected";

@@ -153,6 +153,17 @@ var ViewDefinitions = {
 		image		: "${icon:icon}",
 		url 		: "${root}/content/views/dev/icons/files/harmony.aspx"
 	}),
+
+	/*
+	 * Icon Pack Sprite SVG.
+	 */
+	"Composite.Management.IconPack.SpriteSVG": new HostedViewDefinition({
+		handle: "Composite.Management.IconPack.SpriteSVG",
+		position: DockBinding.MAIN,
+		label: "Sprite SVG",
+		image: "${icon:icon}",
+		url: "${root}/content/views/dev/icons/svg/sprite.cshtml"
+	}),
 	
 	/*
 	 * Explorer.

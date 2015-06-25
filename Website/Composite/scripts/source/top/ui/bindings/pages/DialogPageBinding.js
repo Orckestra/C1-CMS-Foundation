@@ -137,13 +137,47 @@ DialogPageBinding.prototype.parseDOMProperties = function () {
 		var isResizable = this.getProperty ( "resizable" );
 		this.isResizable = isResizable ? isResizable : DialogPageBinding.DEFAULT_RESIZABLE;
 	}
-	
+
 	/*
 	 * Comment here please!
 	 */
 	if ( this.height == "auto" ) {
 		this.enableAutoHeightLayoutMode ( true );
 	}
+}
+
+
+/**
+ * @overloads {PageBinding#onBindingAttach}
+ */
+DialogPageBinding.prototype.onBindingAttach = function () {
+
+	DialogPageBinding.superclass.onBindingAttach.call(this);
+
+	var image = this.getProperty("image");
+	var dialogvignette = this.getDescendantElementsByLocalName("dialogvignette").getFirst();
+	if (image && dialogvignette) {
+		this.labelBinding = LabelBinding.newInstance(this.bindingDocument);
+		this.labelBinding.setImage(image);
+		dialogvignette.appendChild(
+			this.labelBinding.bindingElement
+		);
+		this.labelBinding.attach();
+	}
+
+}
+
+/**
+ * @overloads {PageBinding#setPageArgument}
+ * @param {object} arg
+ */
+DialogPageBinding.prototype.setPageArgument = function (arg) {
+
+	DialogPageBinding.superclass.setPageArgument.call(this);
+
+	var image = arg.image;
+	if (image)
+		this.setProperty("image", image);
 }
 
 /**

@@ -33,6 +33,9 @@ _Resolver.prototype = {
 			else if (string.indexOf("${class:") > -1) {
 				string = this._resolveClasses(string);
 			}
+			else if (string.indexOf("${svg:") > -1) {
+				string = this._resolveSVG(string);
+			}
 			else if ( string.indexOf ( "${string:" ) >-1 ) {
 				string = this._resolveString ( string );
 			}
@@ -110,7 +113,11 @@ _Resolver.prototype = {
 		result = ImageProvider.getImageURL ({
 			ResourceNamespace : provider,
 			ResourceName : resource
-		}, size );
+		}, size);
+
+		var result = {};
+		result.svg = resource;
+		return result;
 		
 		return result;
 	},
@@ -127,6 +134,14 @@ _Resolver.prototype = {
 		var result = {};
 		resource = string.split("${class:")[1].split("}")[0];
 		result.classes = resource;
+		return result;
+	},
+
+	_resolveSVG : function(string) {
+
+		var result = {};
+		var resource = string.split("${svg:")[1].split("}")[0];
+		result.svg = resource;
 		return result;
 	}
 }

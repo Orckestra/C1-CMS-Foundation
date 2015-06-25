@@ -1,51 +1,93 @@
 @namespace url("http://www.w3.org/1999/xhtml");
 @namespace ui url("http://www.w3.org/1999/xhtml");
 
-
 /* FOCUS */
 
 ui|clickbutton.focused ui|labelbox,
 ui|clickbutton.default ui|labelbox {
-	border-color: #3C7FB1;
-	box-shadow: inset 0px 0px 0px 1px #3AD6FD;
+	border-color: #0EBA7E;
+	background: linear-gradient(to bottom, #22b77f 0%,#1da370 100%); /* W3C */
+	color: #FFFFFF;
+	border-color: transparent;
 }
 
 /* ACTIVE */
 
 ui|clickbutton.active ui|labelbox {
-	#ie background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2UyZTJlMiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iI2U2ZTZlNiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iI2NlY2VjZSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNkZGRkZGQiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
-	background: linear-gradient(to bottom, rgba(226,226,226,1) 0%,rgba(230,230,230,1) 50%,rgba(206,206,206,1) 50%,rgba(221,221,221,1) 100%); /* W3C */
-	box-shadow: none;
+	border-color: #0EBA7E;
+	background: linear-gradient(to bottom, #22b77f 0%,#1da370 100%); /* W3C */
+	color: #FFFFFF;
+	border-color: transparent;
 }
 
 /* DEFAULT and DISABLED */
 
-ui|clickbutton ui|labelbox,
-ui|clickbutton.isdisabled ui|labelbox {
-	#ie background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIwLjEiLz4KICAgIDxzdG9wIG9mZnNldD0iNDklIiBzdG9wLWNvbG9yPSIjZmZmZmZmIiBzdG9wLW9wYWNpdHk9IjAuOTgiLz4KICAgIDxzdG9wIG9mZnNldD0iNTAlIiBzdG9wLWNvbG9yPSIjZDZkNmQ2IiBzdG9wLW9wYWNpdHk9IjEiLz4KICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2Y3ZjdmNyIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgPC9saW5lYXJHcmFkaWVudD4KICA8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSJ1cmwoI2dyYWQtdWNnZy1nZW5lcmF0ZWQpIiAvPgo8L3N2Zz4=);
-	background: linear-gradient(to bottom, rgba(255,255,255,0.1) 0%,rgba(255,255,255,0.5) 49%,rgba(214,214,214,1) 50%,rgba(247,247,247,1) 100%); /* W3C */
-	border: 1px solid #707070;
+ui|clickbutton ui|labelbox
+{
 	border-radius: 4px;
-	box-shadow: inset 0px 0px 0px 1px #F3F3F3;
+	color: #0EBA7E;
+	border: 1px solid #0EBA7E;
+	background: #ffffff;
 }
 
 /* HOVER */
 
 ui|clickbutton.hover ui|labelbox {
-	border: 1px solid #3C7FB1;
-	box-shadow: inset 0px 0px 0px 1px #3AD6FD;
+	border-color: #0EBA7E;
+	background: linear-gradient(to bottom, #22b77f 0%,#1da370 100%); /* W3C */
+	color: #FFFFFF;
+	border-color: transparent;
 }
 
-/* TOOLBAR CLICKBUTTONS ..............................................*/
-ui|toolbar ui|clickbutton ui|labelbox,
-ui|toolbar ui|clickbutton.isdisabled ui|labelbox {
-	#ie background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2Y5ZjlmOSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iI2ZiZmJmYiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iI2VjZWNlYyIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjgwJSIgc3RvcC1jb2xvcj0iI2Y2ZjZmNiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNlZWVlZWUiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
-	background: linear-gradient(to bottom, rgba(249,249,249,1) 0%,rgba(251,251,251,1) 50%,rgba(236,236,236,1) 50%,rgba(246,246,246,1) 80%,rgba(238,238,238,1) 100%); /* W3C */
-	border: 1px solid #CECFC4;
-	border-radius: 3px;
-	box-shadow: inset -1px -1px 1px 0px #CECFC4;
+
+
+/* SELECTOR INDICATOR */
+ui|toolbarbutton ui|combobox:before,
+ui|selector ui|clickbutton ui|labelbox:before {
+	content: "";
+	position: absolute;
+	top: 12px;
+	right: 10px;
+	width: 0;
+	height: 0;
+	border-style: solid;
+	border-width: 5px 5px 0 5px;
+	border-color: #0EBA7E transparent transparent transparent;
 }
 
-ui|toolbar ui|clickbutton.active ui|labelbox {
-	border: 1px solid #707070;
+ui|toolbarbutton ui|combobox:after,
+ui|selector ui|clickbutton ui|labelbox:after {
+	content: "";
+	position: absolute;
+	top: 12px;
+	right: 11px;
+	width: 0;
+	height: 0;
+	border-style: solid;
+	border-width: 4px 4px 0 4px;
+	border-color: #fff transparent transparent transparent;
+}
+ui|toolbarbutton.active ui|combobox:before,
+ui|toolbarbutton.hover ui|combobox:before,
+ui|selector ui|clickbutton.hover ui|labelbox:before {
+	border-color: #fff transparent transparent transparent;
+}
+
+ui|toolbarbutton.active ui|combobox:after,
+ui|toolbarbutton.hover ui|combobox:after,
+ui|selector ui|clickbutton.hover ui|labelbox:after {
+	border-color: #0EBA7E transparent transparent transparent;
+}
+
+
+ui|selector ui|clickbutton.active ui|labelbox:before {
+	top: 12px;
+	border-width: 0px 5px 5px 5px;
+	border-color: transparent transparent #fff transparent;
+}
+
+ui|selector ui|clickbutton.active ui|labelbox:after {
+	top: 13px;
+	border-width: 0px 4px 4px 4px;
+	border-color: transparent transparent #0EBA7E transparent;
 }

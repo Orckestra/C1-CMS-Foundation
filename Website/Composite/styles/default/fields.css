@@ -8,24 +8,24 @@ ui|datacollector {
 }
 ui|fields {
 	display: none; /* adjusted by FieldsBinding.js */
-	width: 408px; /* table.fieldgroupmatrix makes up 4px on both sides! */
 	position: relative; /* mostly because it fixes an ie bug where fieldgroup captions would hang on tabpanel changes */
-	/* padding-bottom: 9px; fixes a dialog resize problem - moved to functioncalleditor.aspx where the problem is spotted */
 }
 
 /* FIELDGROUP ......................................... */
 
 ui|fieldgroup {
+	width: 430px;
 	display: block;
 	overflow: visible;
-	margin-top: 34px !important;
+	margin-top: 54px;
+	margin-bottom: 10px;
 	padding-top: 7px;
 	position: relative;
-	padding: 18px 2px 18px 2px;
+	padding: 8px 17px 27px 17px;
 
 }
 ui|fieldgroup.first {
-	margin-top: 10px !important;
+	margin-top: 34px;
 }
 
 #region vista
@@ -36,7 +36,7 @@ ui|fieldgroup.first {
 #endregion
 
 ui|labelbox.fieldgrouplabel {
-	top: -10px;
+	top: -34px;
 	left: -2px;
 	right: -2px;
 	position:absolute;
@@ -46,9 +46,6 @@ ui|labelbox.fieldgrouplabel {
 
 ui|labelbox.fieldgrouplabel ui|labeltext {
 	padding-right: 5px;
-	#region default
-			color: $(color:activecaption);
-	#endregion
 }
 
 ui|labelbox.fieldgrouplabel ui|labelbody {
@@ -61,21 +58,18 @@ ui|labelbox.fieldgrouplabel ui|labelbody {
 
 ui|field {
 	display: block;
-	margin: 0 16px 0 10px;
+	margin: 0;
 	padding-bottom: 0;
 }
 ui|fielddesc {
 	display: block;
-	float: left;
-	width: 150px;
-	padding: 8px 0 0 5px;
+	padding: 8px 0 5px 5px;
 	white-space: normal;
 	-vendor-user-select: none;
 }
 ui|fielddata {
 	display: block;
-	float: right;
-	width: 220px;
+
 	position: relative; /* because of strange fieldhelp setup for exploder */
 }
 ui|fielddata input,
@@ -89,10 +83,6 @@ ui|fielddata textarea {
 }
 ui|fielddata input {
 	padding: 5px 0 0 7px;
-	#moz padding-bottom: 4px;
-	#ie height: 24px;
-	#ie position: relative;
-	#ie top: -1px;
 }
 
 ui|datainput {
@@ -106,10 +96,16 @@ ui|urlinputdialog ui|box,
 ui|textbox ui|box,
 ui|editortextbox ui|box,
 ui|multiselector ui|box {
-	border: 1px solid #7F9DB9;
+	border: 1px solid #CCCCCC;
+	border-radius: 5px;
 	background-color: white;
-	height: 26px;
+	height: 30px;
 	overflow: hidden;
+
+}
+
+ui|textbox ui|box {
+	position: relative;
 }
 ui|datainput.disabled ui|box,
 ui|datainput.readonly ui|box,
@@ -222,10 +218,7 @@ ui|selector {
 ui|toolbar ui|selector { /* TODO: handle focus outline here somehow */
 	padding: 0;	
 }
-ui|toolbar ui|selector ui|clickbutton table.matrix td.c {
-	padding-top: 0;
-	padding-bottom: 0;
-}
+
 ui|selection,
 ui|selector input {
 	display: none;	
@@ -235,7 +228,7 @@ ui|selector ui|clickbutton{
 	margin: 0;
 }
 ui|selector ui|clickbutton ui|labelbox {
-	padding: 3px 20px 5px 5px;
+	padding: 5px 20px 7px 5px;
 }
 
 
@@ -244,41 +237,22 @@ ui|fields ui|field.fieldhelp ui|selector ui|clickbutton ui|labelbox {
 	float:none;
 }
 
-ui|selector img.selectorindicatorimage {
-	position: absolute;
-	z-index: 1;
-	right: 7px;
-	top: 4px;
-	-vendor-user-select: none;
-}
-ui|fields ui|selector img.selectorindicatorimage {
-	top: 5px;
-}
-
 /* SIMPLESELECTORS ............................................ */
 
 ui|simpleselector {
 	display: block;
 	position: relative;
 	overflow: visible;
-	#region ie 
-		margin-top: 3px;
-	#endregion
 }
 ui|simpleselector select {
-	#moz padding: 4px;
-	display: block;
-	width: 216px;
-	border: 1px solid #7F9DB9;
-	background-color: white;
+
 }
 ui|simpleselector select:focus,
 ui|simpleselector select:focus * {
 	outline: none;
 }
 ui|simpleselector.invalid {
-	padding: 1px;
-	border: 1px solid #A40000 !important;
+
 }
 
 /* MULTISELECTORS ............................................. */
@@ -287,12 +261,10 @@ ui|multiselector {
 	display: block;
 }
 ui|multiselector ui|box {
-	width: 216px;
 	-vendor-user-select: none;
 	padding: 5px 0 5px 0;
 	overflow: auto;
-	#ie height: 88px;
-	#moz height: 84px;
+	height: 100px;
 }
 ui|field.fieldhelp ui|multiselector ui|box {
 	width: 186px;	
@@ -302,8 +274,7 @@ ui|multiselector ui|box div {
 	width: 100%;
 }
 ui|multiselector ui|box div.selected {
-	background-color: $(color:highlight);
-	color: $(color:highlighttext);
+
 }
 ui|multiselector ui|datadialog,
 ui|multiselector ui|postbackdialog {
@@ -325,25 +296,26 @@ ui|datainputselector ui|toolbarbutton,
 ui|datainputdialog ui|toolbarbutton,
 ui|datainputbutton ui|toolbarbutton,
 ui|urlinputdialog ui|toolbarbutton {
-	margin-right: 0;
+	margin: 0;
+	padding: 5px;
+	border-color: transparent;
 	position: absolute;
 	right: 3px;
 	top: 3px;
 }
-#region moz
-	ui|datainputselector.focused ui|toolbarbutton,
-	ui|datainputdialog.focused ui|toolbarbutton,
-	ui|datainputbutton.focused ui|toolbarbutton,
-	ui|urlinputdialog.focused ui|toolbarbutton {
-		right: 2px;
-		top: 2px;
-	}
-#endregion
+
+ui|datainputselector ui|toolbarbutton ui|labelbox,
+ui|datainputdialog ui|toolbarbutton ui|labelbox,
+ui|datainputbutton ui|toolbarbutton ui|labelbox,
+ui|urlinputdialog ui|toolbarbutton ui|labelbox {
+	padding: 0px;
+}
+
 ui|fielddata ui|datainputselector input,
 ui|fielddata ui|datainputdialog input,
 ui|fielddata ui|datainputbutton input,
 ui|fielddata ui|urlinputdialog input {
-	width: 189px;
+	width: 100%;
 }
 ui|fielddata ui|datainputselector.imagesizenormal input{
 	background: transparent none no-repeat 4px 4px;
@@ -351,13 +323,12 @@ ui|fielddata ui|datainputselector.imagesizenormal input{
 }
 ui|field.fieldhelp ui|fielddata {
 	position: relative;
-	top: -1px; /* why? */
 }
 ui|field.fieldhelp ui|fielddata ui|datainputselector input,
 ui|field.fieldhelp ui|fielddata ui|datainputdialog input ,
 ui|field.fieldhelp ui|fielddata ui|datainputbutton input ,
 ui|field.fieldhelp ui|fielddata ui|urlinputdialog input {
-	width: 159px;
+	width: 100%;
 }
 
 /* EXOTIC STUFF ................................... */
@@ -380,10 +351,10 @@ ui|editortextbox {
 ui|textbox textarea,
 ui|editortextbox textarea {
 	overflow: auto;
-	#ie padding: 5px 5px 5px 7px; /* moz applies padding fugt here! */
 	position: absolute;
 	height: 102px;
 	-vendor-tab-size: 4;
+	padding: 4px;
 }
 
 /* FULLBLOWN EDITORTEXTBOX */
@@ -412,9 +383,7 @@ ui|flexbox ui|editortextbox ui|box {
 
 /* FIELDHELP ......................................... */
  
-ui|fieldhelp { /* strange setup fixes a vanishing glitch in explorer */
-	height: 1px;
-	width: 222px;
+ui|fieldhelp {
 	overflow: visible;
 	float: right;
 	position: relative;
@@ -422,15 +391,14 @@ ui|fieldhelp { /* strange setup fixes a vanishing glitch in explorer */
  
 ui|field.fieldhelp ui|fielddata {
 	margin-right: 30px;
-	width: 190px;
 }
 ui|field.fieldhelp ui|fielddata input,
 ui|field.fieldhelp ui|fielddata select,
 ui|field.fieldhelp ui|fielddata textarea {
-	width: 184px;
+	width: 100%;
 }
 ui|field.fieldhelp ui|fielddata ui|simpleselector select {
-	width: 186px;	
+	width: 100%;
 }
 ui|clickbutton.fieldhelp { /* width and height needed for explorer vanishing dysfunction */
 	margin: 0;
@@ -465,11 +433,7 @@ ui|fields ui|textbox.focused,
 ui|fields ui|editortextbox.focused,
 ui|fields ui|radiodatagroup.focused,
 ui|fields ui|checkbox.focused {
-	padding: 1px;
-	border: 1px solid $(color:threedshadow);
-	#region osx
-		border-color: -moz-mac-focusring;
-	#endregion
+
 }
 
 

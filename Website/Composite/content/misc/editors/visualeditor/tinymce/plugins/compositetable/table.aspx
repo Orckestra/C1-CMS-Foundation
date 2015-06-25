@@ -14,7 +14,7 @@
 	<body>
 		<ui:dialogpage binding="TableDialogPageBinding"
 			label="(label computed)" 
-			image="${skin}/wysiwygeditor/table.png" 
+			image="${icon:table}" 
 			height="auto"
 			class="tabboxed">
 			<ui:pagebody>

@@ -1,6 +1,6 @@
 @namespace url("http://www.w3.org/1999/xhtml");
+@namespace url("http://www.w3.org/2000/svg");
 @namespace ui url("http://www.w3.org/1999/xhtml");
-
 /*
 ui|dialogpage,
 ui|wizardpage {
@@ -22,19 +22,16 @@ ui|dialogpagebody {
 ui|dialogtoolbar {
 	display: block;
 	clear: both;
-	background-color: $(color:threedface);
 	white-space: nowrap;	
 	padding: 12px 11px 14px 12px;
 	margin-right: 0;
 	margin-left: 0;
 }
 ui|dialogtoolbar ui|clickbutton.focusable {
-	margin: 2px !important;
+	margin: 5px !important;
 }
 ui|dialogtoolbar ui|clickbutton.focused {
-	outline: 1px solid $(color:threedshadow);
-	margin: 1px !important;
-	padding: 1px;
+	
 }
 
 /* STANDARD DIALOGS ................................................................*/
@@ -60,6 +57,10 @@ ui|dialogvignette {
 	display: block;
 	width: 32px;
 	height: 32px;
+	margin-right: 16px;
 }
 
-/* standard dialog images in skin! */
+ui|dialogpage ui|dialogvignette svg {
+	width: 32px;
+	height: 32px;
+}

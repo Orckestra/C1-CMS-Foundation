@@ -35,7 +35,7 @@ ImageProfile.prototype.setDefaultImage = function ( image ) {
  */
 ImageProfile.prototype.getHoverImage = function () {
 
-	return this._hover;
+	return this._default;
 }
 
 /**
@@ -71,7 +71,7 @@ ImageProfile.prototype.setActiveImage = function ( image ) {
  */
 ImageProfile.prototype.getDisabledImage = function () {
 
-	return this._disabled;
+	return this._default;
 }
 
 /**

@@ -84,11 +84,6 @@ TabsBinding.prototype.onBindingAttach = function () {
  */
 TabsBinding.prototype.buildDOMContent = function () {
 	
-	// build a hook for visual styling
-	var div = this.bindingDocument.createElement ( "div" );
-	div.className = "tabliner";
-	this.bindingElement.insertBefore ( div, this.bindingElement.firstChild );
-	
 	// build the tabmanager
 	this.shadowTree.tabManager = this.bindingDocument.createElement ( "div" );
 	this.shadowTree.tabManager.className = "tabmanager";

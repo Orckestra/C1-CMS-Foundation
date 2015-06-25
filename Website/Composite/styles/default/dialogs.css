@@ -13,7 +13,7 @@ ui|dialogset {
 }
 ui|dialog {
 	display: block;
-	background-color: $(color:threedface);
+	background-color: #F7F7F7;
 	overflow: hidden;
 	position: absolute;
 	z-index: 6; /* above shadow - adjusted by script */
@@ -30,7 +30,7 @@ ui|dialog.maximized {
 ui|dialoghead,
 ui|dialogbody {
 	display: block;
-	padding: 1px;
+	padding: 0px;
 }
 ui|dialoghead {
 	padding-bottom: 0 !important;
@@ -40,33 +40,8 @@ ui|dialogbody {
 	width: 100%; /* ie bug */
 	overflow: hidden;
 }
-ui|dialogmatrix {
-	display: block;
-	position: absolute;
-	z-index: -1;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	overflow: hidden;
-}
-ui|dialog ui|dialogmatrix table.dialogmatrix {
-	width: 100%;
-	height: 100%;
-}
-ui|dialogmatrix td {
-	background-color: InactiveCaption;
-}
-ui|dialog.active ui|dialogmatrix td {
-	background-color: $(color:activecaption);
-}
-ui|dialogmatrix td.c {
-	height: 100%;
-	width: 100%;
-	#moz border: 1px solid $(color:threedface); /* moz bug */
-	#moz border-top: none;
-	background-color: $(color:threedface) !important;
-}
+
+
 ui|dialogborder {
 	position: absolute;
 	overflow: hidden;

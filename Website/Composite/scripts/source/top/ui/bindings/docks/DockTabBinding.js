@@ -188,13 +188,17 @@ DockTabBinding.prototype.buildDOMContent = function () {
 
 	DockTabBinding.superclass.buildDOMContent.call ( this );
 
-	this._controlGroupBinding = this.labelBinding.add (
-		ControlGroupBinding.newInstance ( this.bindingDocument ) 
-	);
-	var controlBinding = DialogControlBinding.newInstance ( this.bindingDocument );
-	controlBinding.setControlType ( ControlBinding.TYPE_CLOSE );
-	this._controlGroupBinding.add ( controlBinding );
-	this._controlGroupBinding.attachRecursive ();
+	if (this.getProperty("pinned") != true) {
+
+		this._controlGroupBinding = this.labelBinding.add(
+			ControlGroupBinding.newInstance(this.bindingDocument)
+		);
+		var controlBinding = DialogControlBinding.newInstance(this.bindingDocument);
+		controlBinding.setControlType(ControlBinding.TYPE_CLOSE);
+		controlBinding.attachClassName("closecontrol");
+		this._controlGroupBinding.add(controlBinding);
+		this._controlGroupBinding.attachRecursive();
+	}
 }
 
 /**
@@ -596,7 +600,9 @@ DockTabBinding.prototype.select = function ( isManaged ) {
  */
 DockTabBinding.prototype.close = function () {
 	
-	this.containingTabBoxBinding.closeTab ( this );
+	if (this.getProperty("pinned") != true) {
+		this.containingTabBoxBinding.closeTab(this);
+	}
 }
 
 /**

@@ -106,7 +106,7 @@ function SystemTreeBinding() {
 	 * Lock tree to editor?
 	 * @type {boolean}
 	 */
-	this.isLockedToEditor = true;
+	this.isLockedToEditor = false;
 
 	/**
 	 * Because we execute lock-tree focus on a timeout, 
@@ -225,7 +225,7 @@ SystemTreeBinding.prototype.handleAction = function (action) {
 		case TreeNodeBinding.ACTION_ONFOCUS:
 		case TreeNodeBinding.ACTION_ONMULTIFOCUS:
 			this._restorableFocusHandle = null;
-			this._handleSystemTreeFocus();
+			//this._handleSystemTreeFocus();  //Dublicate with parent
 			break;
 
 			/**
@@ -275,16 +275,16 @@ SystemTreeBinding.prototype.handleAction = function (action) {
 	}
 }
 
-/**
- * @overloads {TreeBinding#focus}
- */
-SystemTreeBinding.prototype.focus = function () {
+///**
+// * @overloads {TreeBinding#focus}
+// */
+//SystemTreeBinding.prototype.focus = function () {
 
-	SystemTreeBinding.superclass.focus.call(this);
-	if (this.isFocused) {
-		this._handleSystemTreeFocus();
-	}
-}
+//	SystemTreeBinding.superclass.focus.call(this);
+//	if (this.isFocused) {
+//		this._handleSystemTreeFocus();
+//	}
+//}
 
 /**
  * Default focus action - focus LAST FOCUSED node in tree.
@@ -297,6 +297,16 @@ SystemTreeBinding.prototype._focusDefault = function () {
 		SystemTreeBinding.superclass._focusDefault.call(this);
 	}
 }
+
+
+/**
+ * Return perspective handle for tree
+ */
+SystemTreeBinding.prototype.getPerspectiveHandle = function () {
+
+	return this.perspectiveNode.getHandle();
+}
+
 
 /**
  * By now, something has probably eliminated all tree focus. But since   
@@ -323,7 +333,11 @@ SystemTreeBinding.prototype._handleSystemTreeFocus = function () {
 		if (this._isActionProfileAware) {
 			EventBroadcaster.broadcast(
 				BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED,
-				{ activePosition: this._activePosition, actionProfile: this.getCompiledActionProfile() }
+				{
+					activePosition: this._activePosition,
+					actionProfile: this.getCompiledActionProfile(),
+					perspectiveHandle: this.getPerspectiveHandle()
+		}
 			);
 		}
 	}
@@ -1099,9 +1113,9 @@ SystemTreeBinding.prototype.getCompiledActionProfile = function () {
 
 	var result = new Map();
 
-	var focusedBindings = this.getFocusedTreeNodeBindings();
+	var focusedBinding = this.getFocusedTreeNodeBindings().getFirst();
 
-	var actionProfile = focusedBindings.getFirst().node.getActionProfile();
+	var actionProfile = focusedBinding.node.getActionProfile();
 
 	if (actionProfile != null) {
 		var self = this;
@@ -1124,55 +1138,10 @@ SystemTreeBinding.prototype.getCompiledActionProfile = function () {
 
 	result.activePosition = this._activePosition;
 
-	// THIS FAILS SOMEHOW!
-
-	/*
-	* Build a temporary list of SystemAction keys.
-	*
-	focusedBindings.each ( 
-	function ( binding ) {
-	var actionProfile = binding.node.getActionProfile ();	
-	actionProfile.each ( function ( groupid, list ) {
-	list.each ( function ( systemAction ) {
-	var key = systemAction.getHandle ();
-	if ( !temp [ key ]) {
-	temp [ key ] = new List ();
+	var propertyBag = focusedBinding.node.getPropertyBag();
+	if (propertyBag && propertyBag.Uri && propertyBag.ElementType === "application/x-composite-page") {
+		result.Uri = propertyBag.Uri;
 	}
-	temp [ key ].add ({
-	groupid : groupid,
-	systemAction : systemAction
-	});
-	});
-	});
-	}
-	);
-	
-	/* 
-	* Delete entries that doesn't apply to *all* focused treenodes
-	*
-	for ( var key in temp ) {
-	var list = temp [ key ];
-	if ( list.getLength () != focusedBindings.getLength ()) {
-	delete temp [ key ];
-	}
-	}
-	
-	/*
-	* Build resulting actionprofile. The result should be comparable to a 
-	* single actionprofile as computed by {@link SystemNode#getActionProfile}
-	*
-	for ( var key in temp ) {
-	var list = temp [ key ];
-	var entry = list.getFirst ();
-	if ( !result.has ( entry.groupid )) {
-	result.set ( 
-	entry.groupid, 
-	new List ()
-	);
-	}
-	result.get ( entry.groupid ).add ( entry.systemAction );
-	}
-	*/
 
 	return result;
 }

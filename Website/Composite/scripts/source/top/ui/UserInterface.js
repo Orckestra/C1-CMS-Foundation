@@ -21,7 +21,6 @@ var UserInterface = new function () {
 		"ui:dialog"						: DialogBinding,
 		"ui:dialoghead"					: DialogHeadBinding,
 		"ui:dialogbody"					: DialogBodyBinding,
-		"ui:dialogmatrix"				: DialogMatrixBinding,
 		"ui:dialogset"					: DialogSetBinding,
 		"ui:dialogborder"				: DialogBorderBinding,
 		"ui:dialogcover"				: DialogCoverBinding,

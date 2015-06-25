@@ -27,11 +27,11 @@ ui|clickbutton ui|labelbox {
 }
 
 ui|toolbar ui|clickbutton ui|labelbox {
-	padding: 3px 5px;
+	padding: 3px 2px;
 }
 
 ui|toolbar ui|selector ui|clickbutton ui|labelbox{
-	padding: 3px 24px 3px 3px;
+	padding: 6px 24px 6px 9px;
 }
 
 ui|checkbutton {

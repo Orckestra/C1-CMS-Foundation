@@ -54,6 +54,25 @@ namespace Composite.Services
 
             return PageUrls.BuildUrl(pageUrlData, UrlKind.Renderer, new UrlSpace());
         }
+
+		[WebMethod]
+		public string GetSavedPagelUrl(string url)
+		{
+			if (PageUrlHelper.IsInternalUrl(url))
+			{
+				return url;
+			}
+
+			var pageUrlData = PageUrls.ParseUrl(url);
+			pageUrlData.PublicationScope = PublicationScope.Unpublished;
+
+			if (pageUrlData == null)
+			{
+				return string.Empty;
+			}
+
+			return AddServerUrl(PageUrls.BuildUrl(pageUrlData, UrlKind.Public, new UrlSpace()));
+		}
         
         [WebMethod]
         public string ConvertRelativePageUrlToAbsolute(string pageUrl)

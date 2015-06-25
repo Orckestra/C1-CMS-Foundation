@@ -281,11 +281,10 @@ SystemToolBarBinding.prototype.buildLeft = function () {
  */
 SystemToolBarBinding.prototype._containAllButtons = function () {
 	
-	var tools = this.bindingWindow.bindingMap.toolsbutton;
 	var mores = this.bindingWindow.bindingMap.moreactionstoolbargroup;
-	var avail = tools.bindingElement.offsetLeft - this._moreActionsWidth;
+	var avail = this.bindingElement.offsetWidth - this._moreActionsWidth;
 	if (Localization.isUIRtl) {
-		avail = this.bindingElement.offsetWidth - tools.bindingElement.offsetWidth - this._moreActionsWidth;
+		avail = this.bindingElement.offsetWidth - this._moreActionsWidth;
 	}
 	var total = 0;
 	var hides = new List ();
@@ -388,11 +387,8 @@ SystemToolBarBinding.prototype.getToolBarButtonBinding = function ( action ) {
 	var image 		= action.getImage ();
 	var isDisabled	= action.isDisabled ();
 	
-	if ( image && image.indexOf ( "size=" ) ==-1 ) {
-		image = image + "&size=" + this.getImageSize ();
-		binding.imageProfile = new ImageProfile ({ 
-			image : image
-		});
+	if (image) {
+		binding.setImage(image);
 	}
 	if ( label ) {
 		binding.setLabel ( label );
@@ -443,4 +439,37 @@ SystemToolBarBinding.newInstance = function ( ownerDocument ) {
 
 	var element = DOMUtil.createElementNS ( Constants.NS_UI, "ui:toolbar", ownerDocument );
 	return UserInterface.registerBinding ( element, SystemToolBarBinding );
+}
+
+
+/**
+ * @param {Point} point
+ */
+SystemToolBarBinding.prototype.setPosition = function (point) {
+
+	this.bindingElement.style.left = point.x + "px";
+	this.bindingElement.style.top = point.y + "px";
+}
+
+/**
+ * @param {Dimension} dimension
+ */
+SystemToolBarBinding.prototype.setDimension = function (dimension) {
+
+	dimension.h -= ViewBinding.VERTICAL_ADJUST;
+	dimension.w -= ViewBinding.HORIZONTAL_ADJUST;
+
+	/*
+	 * Something hardcoded here...
+	 */
+	dimension.w -= 1;
+
+	if (dimension.h < 0) { // not sure why this happens...
+		dimension.h = 0;
+	}
+	if (dimension.w < 0) {
+		dimension.w = 0;
+	}
+	this.bindingElement.style.width = String(dimension.w) + "px";
+	this.bindingElement.style.height = String(dimension.h) + "px";
 }

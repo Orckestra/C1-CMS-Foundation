@@ -1,6 +1,6 @@
-LocalizationSelectorBinding.prototype = new SelectorBinding;
+LocalizationSelectorBinding.prototype = new MenuBinding;
 LocalizationSelectorBinding.prototype.constructor = LocalizationSelectorBinding;
-LocalizationSelectorBinding.superclass = SelectorBinding.prototype;
+LocalizationSelectorBinding.superclass = MenuBinding.prototype;
 
 /**
  * @class
@@ -34,7 +34,10 @@ LocalizationSelectorBinding.prototype.onBindingAttach = function () {
 	LocalizationSelectorBinding.superclass.onBindingAttach.call ( this );
 	this.subscribe ( BroadcastMessages.UPDATE_LANGUAGES );
 	this.subscribe ( BroadcastMessages.TOLANGUAGE_UPDATED );
-	this._populateFromLanguages ( Localization.languages );
+	this._populateFromLanguages(Localization.languages);
+
+
+	this.addActionListener(MenuItemBinding.ACTION_COMMAND);
 }
 
 /**
@@ -63,6 +66,26 @@ LocalizationSelectorBinding.prototype.handleBroadcast = function ( broadcast, ar
 	}
 }
 
+
+/**
+ * @implements {IActionListener}
+ * @overloads {Binding#handleAction}
+ * @param {Action} action
+ */
+LocalizationSelectorBinding.prototype.handleAction = function (action) {
+
+	LocalizationSelectorBinding.superclass.handleAction.call(this, action);
+
+	switch (action.type) {
+		case MenuItemBinding.ACTION_COMMAND:
+			this.onValueChange(action.target.selectionValue);
+			//action.consume();
+			break;
+	}
+}
+
+
+
 /**
  * Populate selector. If no argument, then hide the selector.
  * @param {List<object>} list A list of objects with the following properties: 
@@ -87,9 +110,9 @@ LocalizationSelectorBinding.prototype._populateFromLanguages = function ( list )
 			);
 		});
 		this.populateFromList ( selections );
-		this.show ();
+		//this.show ();
 	} else {
-		this.hide ();
+		//this.hide ();
 	}
 }
 
@@ -100,14 +123,70 @@ LocalizationSelectorBinding.prototype._populateFromLanguages = function ( list )
  */
 LocalizationSelectorBinding.prototype.populateFromList = function ( list ) {
 	
-	LocalizationSelectorBinding.superclass.populateFromList.call ( this, list );
-	this._backupSelectionValue = this._selectionValue;
+	if (this.isAttached) {
+
+		/*
+		 * Clear existing content, leaving only the default selection.
+		 */
+		//this.clear();
+
+		var self = this;
+		var menugroup = this.getDescendantBindingByLocalName("menugroup")
+		
+		menugroup.detachRecursive();
+		menugroup.bindingElement.innerHTML = "";
+
+		/*
+		 * Add new content.
+		 */
+		if (list.hasEntries()) {
+			var firstItem = null;
+			while (list.hasNext()) {
+				var selection = list.getNext();
+				///var item = this.addSelection(selection);
+				if (selection.isSelected) {
+					//this.select(item, true);
+					this.setLabel(selection.label);
+
+				}
+
+				
+
+				var itemBinding = MenuItemBinding.newInstance(this.bindingDocument);
+				itemBinding.imageProfile = selection.imageProfile;
+				itemBinding.setLabel(selection.label);
+				if (selection.tooltip != null) {
+					itemBinding.setToolTip(selection.tooltip);
+				}
+				itemBinding.selectionValue = selection.value;
+
+				menugroup.add(itemBinding);
+				itemBinding.attach();
+
+
+				//if (!firstItem) {
+				//	firstItem = item;
+				//}
+			}
+			//if (!this._selectedItemBinding) {
+			//	this.select(firstItem, true);
+			//}
+			//this.shadowTree.selectorindicatorimage.style.display = "block";
+		} else {
+			//this.shadowTree.selectorindicatorimage.style.display = "none";
+		}
+	} else {
+
+		throw "Could not populate unattached selector"; // TODO: Cache the list and wait?
+	}
+
+	//this._backupSelectionValue = this._selectionValue;
 }
 
 /**
  * @overwrites {SelectorBinding#onValueChange}
  */
-LocalizationSelectorBinding.prototype.onValueChange = function () {
+LocalizationSelectorBinding.prototype.onValueChange = function (token) {
 	ExplorerBinding.saveFocusedNodes();
 	var self = this;
 	Dialog.warning ( 
@@ -122,12 +201,12 @@ LocalizationSelectorBinding.prototype.onValueChange = function () {
 						EventBroadcaster.broadcast ( BroadcastMessages.SAVE_ALL );
 					} else {
 						EventBroadcaster.broadcast ( BroadcastMessages.CLOSE_VIEWS );
-						self._invokeAction ();
+						self._invokeAction (token);
 					}
-					self._backupSelectionValue = self.getValue ();
+					//._backupSelectionValue = self.getValue ();
 					break;
 				case Dialog.RESPONSE_CANCEL :
-					self.selectByValue ( self._backupSelectionValue );
+					//self.selectByValue ( self._backupSelectionValue );
 					break;
 			}
 		}
@@ -137,9 +216,8 @@ LocalizationSelectorBinding.prototype.onValueChange = function () {
 /**
  * Invoke that action!
  */
-LocalizationSelectorBinding.prototype._invokeAction = function () {
+LocalizationSelectorBinding.prototype._invokeAction = function (token) {
 	
-	var token = this.getValue ();
 	var root = SystemNode.taggedNodes.get ( "Root" );
 	var action = new SystemAction ({
 		Label : "Generated Action: Change Locale",

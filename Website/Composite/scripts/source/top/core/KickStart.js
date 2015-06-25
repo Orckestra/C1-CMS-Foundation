@@ -37,11 +37,63 @@ var KickStart = new function () {
 			InstallationService = WebServiceProxy.createProxy(Constants.URL_WSDL_INSTALLSERVICE);
 			StringService = WebServiceProxy.createProxy(Constants.URL_WSDL_STRINGSERVICE);
 
-			EventBroadcaster.broadcast(BroadcastMessages.APPLICATION_KICKSTART);
+			
 
-			setTimeout(function () {
-				Persistance.initialize(); // NOTE: We are not using this stuff!
-			}, 0);
+		//TESTUI Load images
+
+
+			function onload() {
+				var xhr = this, x = document.createElement('x'), s = xhr.s;
+
+				x.innerHTML = xhr.responseText;
+
+				
+
+				//xhr.onload = function () {
+				//	s.splice(0).map(function (array) {
+				//		//embed(array[0], x.querySelector('#' + array[1].replace(/(\W)/g, '\\$1')));
+				//	});
+				//};
+
+				var uses = x.querySelectorAll("use");
+				for (var i = 0; i < uses.length; ++i) {
+					var use = uses[i];
+					var def = use.parentNode;
+					var hash = use.getAttribute('xlink:href').split('#')[1];
+					var target = x.querySelector('#' + hash);
+					if (target) {
+						
+						
+						//var fragment = document.createDocumentFragment();
+						var clone = target.cloneNode(true);
+						clone.id = def.id;
+						def.parentNode.replaceChild(clone, def);
+					}
+
+				}
+
+				KickStart.sprites = x;
+
+				EventBroadcaster.broadcast(BroadcastMessages.APPLICATION_KICKSTART);
+
+				setTimeout(function () {
+					Persistance.initialize(); // NOTE: We are not using this stuff!
+				}, 0);
+			}
+			var xhr = new XMLHttpRequest();
+
+			if (!xhr.s) {
+				xhr.s = [];
+
+				xhr.open('GET', Resolver.resolve("${root}/images/sprite.svg"));
+
+				xhr.onload = onload;
+
+				xhr.send();
+			}
+
+
+			
 		
 	};
 

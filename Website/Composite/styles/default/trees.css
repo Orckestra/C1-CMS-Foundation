@@ -5,14 +5,12 @@ ui|tree {
 	display: block;
 	overflow: hidden;
 	position: relative;
-	
 }
 ui|treebody {
 	display: block;
-	background-color: Window;
 	color: $(color:windowtext);
-	overflow: auto !important;	
-	padding: 8px 6px 16px 6px;
+	overflow: auto !important;
+	padding-top: 10px;
 }
 ui|treenode,
 ui|treecontent {
@@ -21,17 +19,7 @@ ui|treecontent {
 	clear: both;
 	overflow: visible;
 }
-#region moz
-	ui|treenode:after { /* moz bug */
-		content: "";
-		width: 1px;
-		height: 1px;
-		overflow: hidden;
-		margin-bottom: -1px;
-		display: block;
-		clear: both;
-	}
-#endregion
+
 ui|treenode ui|labelbox {
 	background: none transparent no-repeat 1px 4px;
 	padding-left: 16px;
@@ -40,16 +28,10 @@ ui|treecontent {
 	padding-left: 40px;
 	-vendor-user-select: none; /* hope we don't need an input field */
 }
-ui|treenode ui|labelbox.focused ui|labeltext {
-	background-color: $(color:threedface) !important; /* too light for projection */
-	background-color: $(color:threedlightshadow) !important;
-}
-ui|tree.focused ui|treenode ui|labelbox.focused ui|labeltext {
-	background-color: $(color:highlight) !important;
-	color: $(color:highlighttext);
-}
+
 ui|treenode ui|treenode {
-	margin-left: 18px;
+	padding-left: 50px;
+
 }
 ui|treenode.closed ui|treenode,
 ui|treenode.closed ui|treecontent {
@@ -63,25 +45,10 @@ ui|treenode ui|labelbody {
 	max-width: none;
 }
 ui|treenode ui|labeltext {
-    line-height: 15px;
-	padding: 1px 4px 2px 4px;
-	#region vista
-		padding-right: 5px;
-		position: relative;
-		top: -1px;
-	#endregion
+    line-height: 17px;
+	padding: 2px 4px 2px 4px;
 }
-#region moz
-	ui|treenode.dragged {
-		opacity: 0.5;
-	}
-#endregion 
-#region ie
-	ui|treenode.dragged ui|labeltext { /* text disappears on alpha filter! */
-		color: $(color:graytext);		
-	}
-}
-#endregion
+
 ui|treepositionindicator {
 	display: block;
 	position: absolute;

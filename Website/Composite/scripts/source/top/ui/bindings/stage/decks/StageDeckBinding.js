@@ -71,6 +71,9 @@ function StageDeckBinding () {
 	 * @type {boolean}
 	 */
 	this.isSubPanelMaximized = false;
+
+
+	this.definition = null;
 }
 
 /**
@@ -125,7 +128,47 @@ StageDeckBinding.prototype.handleAction = function ( action ) {
 				this.removeActionListener ( WindowBinding.ACTION_LOADED );
 				this.addActionListener ( StageSplitBoxBinding.ACTION_DOCK_EMPTIED );
 				this.addActionListener ( StageSplitBoxBinding.ACTION_DOCK_OPENED );
-				this.dispatchAction ( StageDeckBinding.ACTION_LOADED );
+				this.dispatchAction(StageDeckBinding.ACTION_LOADED);
+
+
+				////TESTUI
+				//var explorerdocument = this.windowBinding.getContentDocument();
+				//var explorerpanel = this.windowBinding.getContentWindow().bindingMap.explorerpanel;
+				//// construct ViewBinding
+				//var viewBinding = ViewBinding.newInstance(explorerdocument);
+				//viewBinding.setType(ViewBinding.TYPE_EXPLORERVIEW);
+				//viewBinding.setDefinition(this.definition);
+
+				//explorerpanel.add(viewBinding);
+
+				////setTimeout ( function () {         
+				//	viewBinding.attach();
+				//	viewBinding.initialize();
+				////}, 0);
+
+				//this._viewBinding = viewBinding;
+
+
+				explorerdocument = this.windowBinding.getContentDocument();
+
+				//TESTUI 
+				var browserpanel = this.windowBinding.getContentWindow().bindingMap.browserpanel;
+
+				var viewBinding = ViewBinding.newInstance(explorerdocument);
+				viewBinding.setType(ViewBinding.TYPE_EXPLORERVIEW);
+				var browserViewDefinition = ViewDefinitions["Composite.Management.Browser"];
+				browserViewDefinition.argument["SystemViewDefinition"] = this.definition;
+				viewBinding.setDefinition(browserViewDefinition);
+
+				browserpanel.add(viewBinding);
+
+				//setTimeout(function () {
+					viewBinding.attach();
+					viewBinding.initialize();
+				//}, 0);
+
+					this._viewBinding = viewBinding;
+
 				action.consume ();
 			}
 			break;

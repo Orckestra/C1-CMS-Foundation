@@ -19,7 +19,7 @@
           <cms:read source="ShowPurchaseThisButton"/>
         </f:BooleanCheck.CheckValue>
         <f:BooleanCheck.WhenTrue>
-          <ToolbarButton Label="${Composite.Plugins.PackageElementProvider, ViewInstalledInformation.Toolbar.PurchaseLabel}" IconHandle="package-installer-readmore">
+          <ToolbarButton Label="${Composite.Plugins.PackageElementProvider, ViewInstalledInformation.Toolbar.PurchaseLabel}" IconHandle="cart">
             <ToolbarButton.LaunchUrl>
               <cms:read source="TrialPurchaseUrl" />
             </ToolbarButton.LaunchUrl>

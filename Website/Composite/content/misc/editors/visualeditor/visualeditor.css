@@ -27,10 +27,6 @@ ui|splitter.horizontal {
 	border-left-color: $(color:threedface);
 	border-right-color: $(color:threedshadow);
 }
-ui|toolbarbutton.isdisabled {
-	filter: url("${root}/templates/grayscalefilter.xml#grayscale");
-	opacity: 0.35;
-}
 
 ui|toolbar {
 	white-space: normal;

@@ -53,8 +53,8 @@
 			                            id="btnAddFunction"
 			                            callbackid="btnAddFunction" 
 			                            label="${string:Composite.Web.FormControl.FunctionCallsDesigner:AddNewButtonLabel}" 
-			                            image="${icon:functioncall}" 
-			                            image-disabled="${icon:functioncall}" 
+			                            image="${icon:add}" 
+			                            image-disabled="${icon:add}" 
 			                            disabled="false" 
 			                            value="(not-empty!)"/>
 			                            

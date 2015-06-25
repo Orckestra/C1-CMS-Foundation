@@ -17,7 +17,6 @@ body {
 	overflow: hidden;
 }
 body {
-	background-color: $(color:threedface);
 	color: $(color:windowtext);
 }
 form { /* assuming that all forms are standard body-childnode dot net forms! */
@@ -112,11 +111,10 @@ ui|dialogpage > .flexboxelement {
 }
 
 ui|*.clearfloatelement:after {
-	content: "";
-	width: 1px;
-	height: 1px;
+	content: " ";
+	font-size: 0;
+	height: 0px;
 	overflow: hidden;
-	margin-bottom: -1px;
 	display: block;
 	clear: both;
 }
@@ -163,4 +161,12 @@ a img {
 }
 ui|status {
 	display: none;	
+}
+
+[isdisabled="true"] {
+	opacity: 0.4;
+}
+
+page[isdisabled="true"] {
+	opacity: 0.95;
 }

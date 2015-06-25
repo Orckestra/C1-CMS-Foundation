@@ -52,7 +52,6 @@ ui|dockpanel {  /* styles comparable to deck - please coordinate all changes! */
 	overflow: hidden;
 	position: absolute;
 	top: -10000px;
-	background-color: $(color:threedface);
 }
 
 /* CONTROVERSIAL STYLES - MAYBE MOVE TO SKIN? */

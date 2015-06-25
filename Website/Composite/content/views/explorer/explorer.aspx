@@ -16,7 +16,7 @@
 			 	<ui:explorerdecks>
 			 		<ui:cover id="explorerdeckscover" busy="false"/>
 			 	</ui:explorerdecks>
-			 	<ui:explorersplitter/>
+<%--			 	<ui:explorersplitter/>
 			 	<ui:explorermenu>
 			 		<ui:explorertoolbar>
 			 		 	<ui:toolbarbody>
@@ -28,7 +28,7 @@
 				 			<ui:toolbargroup/>
 				 		</ui:toolbarbody>
 			 		</ui:toolbar>
-			 	</ui:explorermenu>
+			 	</ui:explorermenu>--%>
 			 </ui:explorer>
 		</ui:page>
 	</body>

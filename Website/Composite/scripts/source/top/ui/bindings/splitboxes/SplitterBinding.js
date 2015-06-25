@@ -2,7 +2,7 @@ SplitterBinding.prototype = new Binding;
 SplitterBinding.prototype.constructor = SplitterBinding;
 SplitterBinding.superclass = Binding.prototype;
 
-SplitterBinding.DIMENSION = 8;
+SplitterBinding.DIMENSION = 0;
 SplitterBinding.BUFFER = 30;
 
 SplitterBinding.COLLAPSE_AFTER = "after";

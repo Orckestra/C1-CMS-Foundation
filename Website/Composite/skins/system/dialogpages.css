@@ -1,29 +1,33 @@
 @namespace url("http://www.w3.org/1999/xhtml");
+@namespace url("http://www.w3.org/2000/svg");
 @namespace ui url("http://www.w3.org/1999/xhtml");
 
-/*
-#region vista
-	ui|dialogpage {
-		padding: 14px 13px 13px 13px;
-	}
-#endregion
-*/
+ui|dialogtoolbar {
+	background-color: #FFFFFF;
+	border-top: 1px solid #E1E1E1;
+}
+
+
+
+
 
 /* STANDARD DIALOGS ................................................................*/
 
 ui|dialogpage.question ui|dialogvignette,
 ui|dialogvignette.question {
-	#alphabackdrop: url("${skin}/dialogpages/question_32.png");
+	color: #EFAD57;
 }
 ui|dialogpage.warning ui|dialogvignette,
 ui|dialogvignette.warning {
-	#alphabackdrop: url("${skin}/dialogpages/warning_32.png");
+	color: #EFAD57;
 }
 ui|dialogpage.message ui|dialogvignette,
 ui|dialogvignette.message {
-	#alphabackdrop: url("${skin}/dialogpages/message_32.png");
+	color: #5FC0DC;
 }
 ui|dialogpage.error ui|dialogvignette,
 ui|dialogvignette.error {
-	#alphabackdrop: url("${skin}/dialogpages/error_32.png");
+	color: #D75553;
 }
+
+

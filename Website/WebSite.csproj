@@ -129,6 +129,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Composite\compilesvg.aspx.cs">
+      <DependentUpon>compilesvg.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Composite\compilesvg.aspx.designer.cs">
+      <DependentUpon>compilesvg.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Composite\content\dialogs\functions\editFunctionCall.aspx.designer.cs">
       <DependentUpon>editFunctionCall.aspx</DependentUpon>
     </Compile>
@@ -150,6 +157,7 @@
     <Content Include="App_Data\Composite\PhantomJs\preview.js" />
     <Content Include="App_Data\Composite\PhantomJs\renderingServer.js" />
     <Content Include="App_Data\PageTemplates\web.config" />
+    <Content Include="Composite\compilesvg.aspx" />
     <Content Include="Composite\content\dialogs\functions\editFunctionCall.css" />
     <Content Include="Composite\content\dialogs\postback\postbackdialog.aspx" />
     <Content Include="Composite\content\dialogs\postback\PostBackDialogPageBinding.js" />
@@ -486,6 +494,7 @@
     <Content Include="Composite\images\editfunction.png" />
     <Content Include="Composite\images\function.png" />
     <Content Include="Composite\images\functionheaderbackground.png" />
+    <Content Include="Composite\images\sprite.svg" />
     <Content Include="Composite\images\warning.png" />
     <Content Include="Composite\scripts\source\top\proxies\FunctionService.js" />
     <Content Include="Composite\scripts\source\top\proxies\PageTemplateService.js" />
@@ -501,7 +510,6 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Composite\localization\Composite.Plugins.PageTemplateFeatureElementProvider.en-us.xml" />
-    <Content Include="Composite\skins\system\toolbars\osx\backdrop.png" />
     <Content Include="Composite\templates\PageTemplates\XmlPageTemplate.xml" />
     <Content Include="Composite\templates\PageTemplates\MasterPage.cs.txt" />
     <Content Include="Composite\templates\PageTemplates\MasterPage.txt" />
@@ -891,7 +899,6 @@
     <Content Include="Composite\scripts\source\top\ui\bindings\dialogs\DialogControlImageProfile.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\dialogs\DialogCoverBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\dialogs\DialogHeadBinding.js" />
-    <Content Include="Composite\scripts\source\top\ui\bindings\dialogs\DialogMatrixBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\dialogs\DialogSetBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\dialogs\DialogTitleBarBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\dialogs\DialogTitleBarBodyBinding.js" />
@@ -5548,14 +5555,6 @@
     <Content Include="Composite\skins\system\balloons\balloon-sw.png" />
     <Content Include="Composite\skins\system\balloons\balloon-w.png" />
     <Content Include="Composite\skins\system\buttons.css" />
-    <Content Include="Composite\skins\system\buttons\button-e.png" />
-    <Content Include="Composite\skins\system\buttons\button-n.png" />
-    <Content Include="Composite\skins\system\buttons\button-ne.png" />
-    <Content Include="Composite\skins\system\buttons\button-nw.png" />
-    <Content Include="Composite\skins\system\buttons\button-s.png" />
-    <Content Include="Composite\skins\system\buttons\button-se.png" />
-    <Content Include="Composite\skins\system\buttons\button-sw.png" />
-    <Content Include="Composite\skins\system\buttons\button-w.png" />
     <Content Include="Composite\skins\system\buttons\checkbutton-active-hover.png" />
     <Content Include="Composite\skins\system\buttons\checkbutton-active.png" />
     <Content Include="Composite\skins\system\buttons\checkbutton-default.png" />
@@ -5601,36 +5600,7 @@
     <Content Include="Composite\skins\system\dialogpages\question_32.png" />
     <Content Include="Composite\skins\system\dialogpages\warning_32.png" />
     <Content Include="Composite\skins\system\dialogs.css" />
-    <Content Include="Composite\skins\system\dialogs\vista\dialog-active-e.png" />
-    <Content Include="Composite\skins\system\dialogs\vista\dialog-active-n.png" />
-    <Content Include="Composite\skins\system\dialogs\vista\dialog-active-ne.png" />
-    <Content Include="Composite\skins\system\dialogs\vista\dialog-active-nw.png" />
-    <Content Include="Composite\skins\system\dialogs\vista\dialog-active-s.png" />
-    <Content Include="Composite\skins\system\dialogs\vista\dialog-active-se.png" />
-    <Content Include="Composite\skins\system\dialogs\vista\dialog-active-sw.png" />
-    <Content Include="Composite\skins\system\dialogs\vista\dialog-active-titlebar.png" />
-    <Content Include="Composite\skins\system\dialogs\vista\dialog-active-w.png" />
-    <Content Include="Composite\skins\system\dialogs\vista\dialog-e.png" />
-    <Content Include="Composite\skins\system\dialogs\vista\dialog-n.png" />
-    <Content Include="Composite\skins\system\dialogs\vista\dialog-ne.png" />
-    <Content Include="Composite\skins\system\dialogs\vista\dialog-nw.png" />
-    <Content Include="Composite\skins\system\dialogs\vista\dialog-s.png" />
-    <Content Include="Composite\skins\system\dialogs\vista\dialog-se.png" />
-    <Content Include="Composite\skins\system\dialogs\vista\dialog-sw.png" />
-    <Content Include="Composite\skins\system\dialogs\vista\dialog-titlebar.png" />
-    <Content Include="Composite\skins\system\dialogs\vista\dialog-w.png" />
-    <Content Include="Composite\skins\system\dialogs\osx\dialog-active-e.png" />
-    <Content Include="Composite\skins\system\dialogs\osx\dialog-active-n.png" />
-    <Content Include="Composite\skins\system\dialogs\osx\dialog-active-ne.png" />
-    <Content Include="Composite\skins\system\dialogs\osx\dialog-active-nw.png" />
-    <Content Include="Composite\skins\system\dialogs\osx\dialog-active-s.png" />
-    <Content Include="Composite\skins\system\dialogs\osx\dialog-active-se.png" />
-    <Content Include="Composite\skins\system\dialogs\osx\dialog-active-sw.png" />
-    <Content Include="Composite\skins\system\dialogs\osx\dialog-active-titlebar.png" />
-    <Content Include="Composite\skins\system\dialogs\osx\dialog-active-w.png" />
-    <Content Include="Composite\skins\system\docks-default.css" />
-    <Content Include="Composite\skins\system\docks-osx.css" />
-    <Content Include="Composite\skins\system\docks-vista.css" />
+    <Content Include="Composite\skins\system\docks.css" />
     <Content Include="Composite\skins\system\docks\control-maximize-default.png" />
     <Content Include="Composite\skins\system\docks\control-minimize-default.png" />
     <Content Include="Composite\skins\system\docks\control-restore-default.png" />
@@ -5638,46 +5608,6 @@
     <Content Include="Composite\skins\system\docks\icon-maximize.png" />
     <Content Include="Composite\skins\system\docks\icon-minimize.png" />
     <Content Include="Composite\skins\system\docks\icon-restore.png" />
-    <Content Include="Composite\skins\system\docks\tabbackdrop.png" />
-    <Content Include="Composite\skins\system\docks\tabsbackdrop.png" />
-    <Content Include="Composite\skins\system\docks\vista\tab-active-c.png" />
-    <Content Include="Composite\skins\system\docks\vista\tab-active-e.png" />
-    <Content Include="Composite\skins\system\docks\vista\tab-active-n.png" />
-    <Content Include="Composite\skins\system\docks\vista\tab-active-ne.png" />
-    <Content Include="Composite\skins\system\docks\vista\tab-active-nw.png" />
-    <Content Include="Composite\skins\system\docks\vista\tab-active-s.png" />
-    <Content Include="Composite\skins\system\docks\vista\tab-active-se.png" />
-    <Content Include="Composite\skins\system\docks\vista\tab-active-sw.png" />
-    <Content Include="Composite\skins\system\docks\vista\tab-active-w.png" />
-    <Content Include="Composite\skins\system\docks\vista\tab-c.png" />
-    <Content Include="Composite\skins\system\docks\vista\tab-e.png" />
-    <Content Include="Composite\skins\system\docks\vista\tab-n.png" />
-    <Content Include="Composite\skins\system\docks\vista\tab-ne.png" />
-    <Content Include="Composite\skins\system\docks\vista\tab-nw.png" />
-    <Content Include="Composite\skins\system\docks\vista\tab-s.png" />
-    <Content Include="Composite\skins\system\docks\vista\tab-se.png" />
-    <Content Include="Composite\skins\system\docks\vista\tab-sw.png" />
-    <Content Include="Composite\skins\system\docks\vista\tab-w.png" />
-    <Content Include="Composite\skins\system\docks\vista\tabbackdrop.png" />
-    <Content Include="Composite\skins\system\docks\vista\tabsbackdrop.png" />
-    <Content Include="Composite\skins\system\docks\vista\tinted\tab-c.png" />
-    <Content Include="Composite\skins\system\docks\vista\tinted\tab-e.png" />
-    <Content Include="Composite\skins\system\docks\vista\tinted\tab-n.png" />
-    <Content Include="Composite\skins\system\docks\vista\tinted\tab-ne.png" />
-    <Content Include="Composite\skins\system\docks\vista\tinted\tab-nw.png" />
-    <Content Include="Composite\skins\system\docks\vista\tinted\tab-s.png" />
-    <Content Include="Composite\skins\system\docks\vista\tinted\tab-se.png" />
-    <Content Include="Composite\skins\system\docks\vista\tinted\tab-sw.png" />
-    <Content Include="Composite\skins\system\docks\vista\tinted\tab-w.png" />
-    <Content Include="Composite\skins\system\docks\osx\tab-active-c.png" />
-    <Content Include="Composite\skins\system\docks\osx\tab-active-e.png" />
-    <Content Include="Composite\skins\system\docks\osx\tab-active-n.png" />
-    <Content Include="Composite\skins\system\docks\osx\tab-active-ne.png" />
-    <Content Include="Composite\skins\system\docks\osx\tab-active-nw.png" />
-    <Content Include="Composite\skins\system\docks\osx\tab-active-s.png" />
-    <Content Include="Composite\skins\system\docks\osx\tab-active-se.png" />
-    <Content Include="Composite\skins\system\docks\osx\tab-active-sw.png" />
-    <Content Include="Composite\skins\system\docks\osx\tab-active-w.png" />
     <Content Include="Composite\skins\system\editors\redo-disabled.png" />
     <Content Include="Composite\skins\system\editors\redo.png" />
     <Content Include="Composite\skins\system\editors\save-disabled.png" />
@@ -5687,71 +5617,25 @@
     <Content Include="Composite\skins\system\editors\undo-disabled.png" />
     <Content Include="Composite\skins\system\editors\undo.png" />
     <Content Include="Composite\skins\system\explorer.css" />
-    <Content Include="Composite\skins\system\explorer\button.png" />
-    <Content Include="Composite\skins\system\explorer\vista\button.png" />
     <Content Include="Composite\skins\system\fields.css" />
     <Content Include="Composite\skins\system\fields\datainputbackdrop.png" />
     <Content Include="Composite\skins\system\fields\dialogindicator.png" />
     <Content Include="Composite\skins\system\fields\fieldhelpindicator.png" />
-    <Content Include="Composite\skins\system\fields\selectorindicator.png" />
     <Content Include="Composite\skins\system\imageeditor.css" />
     <Content Include="Composite\skins\system\imageeditor\select16.png" />
     <Content Include="Composite\skins\system\imageeditor\select24.png" />
     <Content Include="Composite\skins\system\menus.css" />
-    <Content Include="Composite\skins\system\menus\vistabackdrop.png" />
     <Content Include="Composite\skins\system\splash.css" />
     <Content Include="Composite\skins\system\splash\button.png" />
     <Content Include="Composite\skins\system\tabboxes.css" />
     <Content Include="Composite\skins\system\tabboxes\backdrop.png" />
-    <Content Include="Composite\skins\system\tabboxes\boxedpanelbackdrop.png" />
     <Content Include="Composite\skins\system\tabboxes\tab-below-s.png" />
     <Content Include="Composite\skins\system\tabboxes\tab-below-se.png" />
     <Content Include="Composite\skins\system\tabboxes\tab-below-sw.png" />
     <Content Include="Composite\skins\system\tabboxes\tab-close-default.png" />
     <Content Include="Composite\skins\system\tabboxes\tab-close-hover.png" />
     <Content Include="Composite\skins\system\tabboxes\tab-close.png" />
-    <Content Include="Composite\skins\system\tabboxes\tab-e.png" />
-    <Content Include="Composite\skins\system\tabboxes\tab-left.png" />
-    <Content Include="Composite\skins\system\tabboxes\tab-n.png" />
-    <Content Include="Composite\skins\system\tabboxes\tab-ne.png" />
-    <Content Include="Composite\skins\system\tabboxes\tab-nw.png" />
-    <Content Include="Composite\skins\system\tabboxes\tab-on-e.png" />
-    <Content Include="Composite\skins\system\tabboxes\tab-on-n.png" />
-    <Content Include="Composite\skins\system\tabboxes\tab-on-ne.png" />
-    <Content Include="Composite\skins\system\tabboxes\tab-on-nw.png" />
-    <Content Include="Composite\skins\system\tabboxes\tab-on-s.png" />
-    <Content Include="Composite\skins\system\tabboxes\tab-on-se.png" />
-    <Content Include="Composite\skins\system\tabboxes\tab-on-sw.png" />
-    <Content Include="Composite\skins\system\tabboxes\tab-on-w.png" />
-    <Content Include="Composite\skins\system\tabboxes\tab-right.png" />
-    <Content Include="Composite\skins\system\tabboxes\tab-s.png" />
-    <Content Include="Composite\skins\system\tabboxes\tab-se.png" />
-    <Content Include="Composite\skins\system\tabboxes\tab-sw.png" />
-    <Content Include="Composite\skins\system\tabboxes\tab-w.png" />
-    <Content Include="Composite\skins\system\tabboxes\tab.png" />
     <Content Include="Composite\skins\system\tabboxes\tabinvalid.png" />
-    <Content Include="Composite\skins\system\tabboxes\vista\tab-active-e.png" />
-    <Content Include="Composite\skins\system\tabboxes\vista\tab-active-n.png" />
-    <Content Include="Composite\skins\system\tabboxes\vista\tab-active-ne.png" />
-    <Content Include="Composite\skins\system\tabboxes\vista\tab-active-nw.png" />
-    <Content Include="Composite\skins\system\tabboxes\vista\tab-active-w.png" />
-    <Content Include="Composite\skins\system\tabboxes\vista\tab-c.png" />
-    <Content Include="Composite\skins\system\tabboxes\vista\tab-e.png" />
-    <Content Include="Composite\skins\system\tabboxes\vista\tab-hover-c.png" />
-    <Content Include="Composite\skins\system\tabboxes\vista\tab-hover-e.png" />
-    <Content Include="Composite\skins\system\tabboxes\vista\tab-hover-n.png" />
-    <Content Include="Composite\skins\system\tabboxes\vista\tab-hover-ne.png" />
-    <Content Include="Composite\skins\system\tabboxes\vista\tab-hover-nw.png" />
-    <Content Include="Composite\skins\system\tabboxes\vista\tab-hover-se.png" />
-    <Content Include="Composite\skins\system\tabboxes\vista\tab-hover-sw.png" />
-    <Content Include="Composite\skins\system\tabboxes\vista\tab-hover-w.png" />
-    <Content Include="Composite\skins\system\tabboxes\vista\tab-n.png" />
-    <Content Include="Composite\skins\system\tabboxes\vista\tab-ne.png" />
-    <Content Include="Composite\skins\system\tabboxes\vista\tab-nw.png" />
-    <Content Include="Composite\skins\system\tabboxes\vista\tab-s.png" />
-    <Content Include="Composite\skins\system\tabboxes\vista\tab-se.png" />
-    <Content Include="Composite\skins\system\tabboxes\vista\tab-sw.png" />
-    <Content Include="Composite\skins\system\tabboxes\vista\tab-w.png" />
     <Content Include="Composite\skins\system\throbber\throbber.gif" />
     <Content Include="Composite\skins\system\throbber\throbber_16.png" />
     <Content Include="Composite\skins\system\throbber\throbber_activate.gif" />
@@ -5759,9 +5643,7 @@
     <Content Include="Composite\skins\system\throbber\throbber_X.gif" />
     <Content Include="Composite\skins\system\throbber\throbber_Y.gif" />
     <Content Include="Composite\skins\system\titlebars.css" />
-    <Content Include="Composite\skins\system\titlebars\titlebar.png" />
     <Content Include="Composite\skins\system\toolbars.css" />
-    <Content Include="Composite\skins\system\toolbars\backdrop.png" />
     <Content Include="Composite\skins\system\trees.css" />
     <Content Include="Composite\skins\system\trees\default-item-disabled.png" />
     <Content Include="Composite\skins\system\trees\default-item.png" />
@@ -5803,7 +5685,6 @@
     <Content Include="Composite\skins\system\wysiwygeditor\source.png" />
     <Content Include="Composite\skins\system\wysiwygeditor\strikethrough-disabled.png" />
     <Content Include="Composite\skins\system\wysiwygeditor\strikethrough.png" />
-    <Content Include="Composite\skins\system\wysiwygeditor\table.png" />
     <Content Include="Composite\skins\system\wysiwygeditor\table_cell_props.png" />
     <Content Include="Composite\skins\system\wysiwygeditor\table_delete.png" />
     <Content Include="Composite\skins\system\wysiwygeditor\table_delete_col.png" />
@@ -5888,6 +5769,8 @@
     <Content Include="Composite\content\misc\editors\visualeditor\tinymce\skins\lightgray\fonts\tinymce.eot" />
     <Content Include="Composite\content\misc\editors\visualeditor\tinymce\skins\lightgray\fonts\tinymce.ttf" />
     <Content Include="Composite\content\misc\editors\visualeditor\tinymce\skins\lightgray\fonts\tinymce.woff" />
+    <Content Include="Composite\content\views\dev\icons\svg\sprite.cshtml" />
+    <Content Include="Composite\content\views\dev\icons\svg\web.config" />
     <None Include="Composite\extensions\compositec1\chrome.manifest" />
     <None Include="Composite\extensions\compositec1\chrome\content\compositec1.xul" />
     <None Include="Composite\extensions\compositec1\compositec1.xpi" />
@@ -5968,7 +5851,6 @@
     </None>
     <Content Include="Composite\services\WysiwygEditor\getconfig.ashx" />
     <Content Include="Composite\services\WysiwygEditor\PageTemplate.asmx" />
-    <None Include="Composite\skins\system\docks\vista\Thumbs.db" />
     <Content Include="Composite\web.config">
       <SubType>Designer</SubType>
     </Content>

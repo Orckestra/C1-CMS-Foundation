@@ -25,7 +25,7 @@ ui|editorpage.dialogsubpage {
 
 ui|pagehead {
 	display: block;
-	width: 408px; /* matching fields! */
+	width: 488px; /* matching fields! */
 	padding-left: 2px;
 	padding-bottom: 1em;
 	-vendor-user-select: none;
@@ -41,4 +41,13 @@ ui|pagedescription {
 	display: block;
 	padding: 0 0 12px 0;
 	-vendor-user-select: none;
+}
+
+ui|editorpage > ui|toolbar {
+        padding: 0px;
+        border: 0px;
+}
+
+ui|editorpage > ui|toolbar ui|toolbarbody {
+        float: right;
 }

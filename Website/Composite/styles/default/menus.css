@@ -1,51 +1,34 @@
-@namespace url("http://www.w3.org/1999/xhtml");
 @namespace ui url("http://www.w3.org/1999/xhtml");
+
 
 /* see also popups.css for shared visual styles!!!!!!! */
 
 ui|menubar {
 	display: block;
-	border-top: 1px solid $(color:threedhighlight);
-	border-bottom: 1px solid $(color:threedshadow);
 	white-space: nowrap;
 }
 ui|menu {
 	display: block;
-	float: left;
+	float: right;
 	margin: 0;
 	padding: 0;
+	height: 30px;
 }
 ui|menubody {
 	display: block;
-	padding: 4px 2px 4px 2px;
-	background-color: $(color:menu);
-	color: $(color:menutext);
 }
 ui|menugroup {
 	display: block;
-	border-top: 1px solid $(color:threedhighlight);
-	border-bottom: 1px solid $(color:threedshadow);
-	padding: 5px 0 5px 0;
 }
 ui|menugroup.first {
-	border-top: none;
 	padding-top: 0;
 }
 ui|menugroup.last {
-	border-bottom: none;
 	padding-bottom: 0;
 }
 ui|menu ui|labelbox.menulabel {
-	padding: 4px 6px 1px 4px;
+	padding: 7px 16px 1px 4px;
 	position: relative; /* ie something */
-	#region vista
-		padding-top: 2px;
-		padding-bottom: 2px;
-	#endregion
-}
-ui|menu.hover ui|labelbox.menulabel {
-	background-color: $(color:highlight);
-	color: $(color:highlighttext);	
 }
 ui|menuitem {
 	white-space: nowrap;
@@ -70,43 +53,31 @@ ui|menubody ui|labelbody
 	clear: both;
 }
 ui|menuitem ui|labelbox {
-	padding: 2px 8px 2px 8px;
+	padding: 7px 8px 7px 8px;
 }
 ui|menubody.checkboxed ui|menuitem ui|labelbox {
-	padding: 2px 8px 2px 24px;
+	padding: 7px 8px 7px 24px;
 }
-ui|menuitem ui|labelbox.hover {
-	background-color: $(color:highlight);
-	color: $(color:highlighttext);
-}
+
 ui|menuitem ui|labeltext {
 	padding-left: 4px;
 	position: relative;
-	#moz top: 1px;
-	#ie top: 2px;
-	#region vista
-		top: 0;
-		_top: 1px;
-	#endregion
 }
 ui|popup.selectorpopup ui|menuitem ui|labeltext {
 	text-transform: none; /* selectors should NOT capitalize text! */
 }
-/* TODO: enable this and remove script hack!
-ui|menuitem ui|label.textonly ui|labelbody {
-	padding-left: 16px;
-}
-*/
+
 ui|menuitem ui|labelbox {
 	position: relative;
 	#ie width: 100%;
 }
+
 div.checkboxindicator {
 	font-family: Arial, sans-serif;
 	font-size: 11px;
 	position: absolute;
-	left: 7px;
-	top: 3px;
+	left: 10px;
+	top: 10px;
 }
 div.submenuindicator {
 	font-family: Arial, sans-serif;
@@ -115,3 +86,19 @@ div.submenuindicator {
 	right: 7px;
 	top: 3px;
 }
+
+ui|menu ui|labelbox {
+	text-transform: uppercase;
+}
+
+ui|menu ui|menubody ui|labelbox {
+	text-transform: none;
+}
+
+ui|menu ui|clickbutton ui|labelbox {
+	border:0 !important;
+	background-color: transparent;
+
+}
+
+

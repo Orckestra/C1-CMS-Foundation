@@ -1,4 +1,5 @@
 @namespace url("http://www.w3.org/1999/xhtml");
+@namespace url("http://www.w3.org/2000/svg");
 @namespace ui url("http://www.w3.org/1999/xhtml");
 
 ui|labelbox {
@@ -8,9 +9,11 @@ ui|labelbox {
 	-vendor-user-select: none; /* See notes in DocumentManager.js */
 	max-width: 100%;
 }
-ui|labelbox.toolbartext {
-	margin-top: 4px;	
-}
+
+	ui|labelbox.toolbartext {
+		margin-top: 4px;
+	}
+
 ui|labelbody {
 	background: transparent none no-repeat 0 0;
 	display: block;
@@ -18,36 +21,19 @@ ui|labelbody {
 	margin-left: auto !important;
 	max-width: 100%;
 }
+
 ui|labelbox.flipped ui|labelbody {
 	background-position: 100% 0;
 	padding-left: 0 !important;
 }
-ui|labelbody,
-ui|*.imagesizenormal ui|labelbody {
+
+ui|labelbody{
 	height: 16px;
 	padding-left: 16px;
 }
-ui|labelbox.flipped ui|labelbody,
-ui|*.imagesizelarge ui|labelbox.flipped ui|labelbody {
+
+ui|labelbox.flipped ui|labelbody{
 	padding-right: 16px;
-}
-ui|*.imagesizelarge ui|labelbody {
-	height: 24px;
-	padding-top: 5px;
-	padding-left: 28px; /* 28px 4px added space */
-}
-ui|*.imagesizelarge ui|labelbox.flipped ui|labelbody {
-	padding-right: 28px;
-}
-ui|*.imagesizelarge ui|labelbox.imageonly ui|labelbody {
-	padding-left: 24px;
-}
-ui|*.imagesizexlarge ui|labelbody {
-	height: 32px;
-	padding-left: 36px; /* 36 4px added space */
-}
-ui|*.imagesizexlarge ui|labelbox.imageonly ui|labelbody {
-	padding-left: 32px;
 }
 
 ui|*.textonly ui|labelbody,
@@ -72,18 +58,62 @@ ui|labeltext {
 	#ie text-overflow: ellipsis;
 	max-width: 100%;
 }
+
 ui|*.textonly ui|labeltext,
 ui|labelbox.textonly ui|labeltext {
 	padding-left: 5px !important;
 }
+
 ui|*.imagesonly ui|labeltext {
 	display: none;
 	padding-left: 0 !important;
 }
+
 ui|labelbox.both ui|labeltext {
-	#moz margin-left: 4px; 
+	#moz margin-left: 4px;
 	#ie margin-left: 4px;
 }
+
 ui|labelbox.graytext ui|labeltext {
 	color: graytext;
+}
+
+ui|labelbox svg {
+	width: 16px;
+	height: 16px;
+	display: block;
+	margin-left: -16px;
+	float: left;
+}
+
+ui|labelbox.flipped ui|labelbody svg {
+	right: 8px;
+	position: absolute;
+}
+
+ui|labelbox.imageonly svg {
+	margin-left: -16px;
+}
+
+/*ui|labelbox svg g.hover {
+	visibility: hidden;
+	fill: currentColor;
+}*/
+
+ui|toolbarbutton.hover ui|labelbox svg g.hover {
+	visibility: visible;
+}
+
+ui|toolbarbutton.hover ui|labelbox svg g.default {
+	visibility: hidden;
+}
+
+/*ui|labelbox {
+	color: #666;
+}*/
+
+ui|labelbox svg {
+	fill: currentColor;
+	color: currentColor;
+	stroke: currentColor;
 }

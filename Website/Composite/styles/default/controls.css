@@ -1,4 +1,4 @@
-@namespace url("http://www.w3.org/1999/xhtml");
+﻿@namespace url("http://www.w3.org/1999/xhtml");
 @namespace ui url("http://www.w3.org/1999/xhtml");
 
 ui|controlgroup {
@@ -13,4 +13,26 @@ ui|control {
 
 .dialogcontrol {
 	padding: 0;
+}
+
+ui|control[controltype="close"] ui|labelbody{
+	background-position: -200px -200px;
+	padding-left: 24px;
+	
+}
+
+ui|control[controltype="close"] ui|labelbody:after {
+
+	content: '×';
+	position: absolute;
+	height: 100%;
+	width: 0px;
+	top: -6px;
+	left: 15px;
+	color: #ccc;
+	font-size: 17px;
+}
+
+ui|control.hover ui|labelbody:after {
+	color: #808080;
 }

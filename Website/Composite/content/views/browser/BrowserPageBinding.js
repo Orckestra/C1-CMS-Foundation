@@ -77,11 +77,38 @@ BrowserPageBinding.prototype.toString = function () {
  */
 BrowserPageBinding.prototype.onBindingRegister = function () {
 	
-	BrowserPageBinding.superclass.onBindingRegister.call ( this );
+	BrowserPageBinding.superclass.onBindingRegister.call(this);
+	this.subscribe(BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED);
 	this.addActionListener ( WindowBinding.ACTION_ONLOAD );
 	this.addActionListener ( TabBoxBinding.ACTION_SELECTED );
 	this.addActionListener ( TabBoxBinding.ACTION_UPDATED );	
 	this.addActionListener ( BrowserTabBinding.ACTIONVENT_CLOSE );
+	
+	
+}
+
+/**
+ * @implements {IBroadcastListener}
+ * @param {string} broadcast
+ * @param {object} arg
+ */
+BrowserPageBinding.prototype.handleBroadcast = function (broadcast, arg) {
+
+	BrowserPageBinding.superclass.handleBroadcast.call(this, broadcast, arg);
+
+	switch (broadcast) {
+		case BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED:
+			if (arg.perspectiveHandle == this.getPerspectiveHandle()) {
+				var url = arg.actionProfile.Uri;
+				if (url) {
+					url = PageService.GetSavedPagelUrl(url);
+					if (url != this._box.getLocation()) {
+						this.setURL(url);
+					}
+				}
+			}
+			break;
+	}
 }
 
 /**
@@ -115,6 +142,25 @@ BrowserPageBinding.prototype.setPageArgument = function ( map ) {
 	} else {
 		this._startURL = url;
 	}
+
+	this.systemViewDefinition = map["SystemViewDefinition"];
+
+	//TESTUI
+	var explorerdocument = this.bindingDocument;
+	var explorerpanel = this.bindingWindow.bindingMap.explorerpanel;
+	// construct ViewBinding
+	var viewBinding = ViewBinding.newInstance(explorerdocument);
+	viewBinding.setType(ViewBinding.TYPE_EXPLORERVIEW);
+	viewBinding.setDefinition(this.systemViewDefinition);
+
+	explorerpanel.add(viewBinding);
+
+	//setTimeout ( function () {         
+	viewBinding.attach();
+	viewBinding.initialize();
+	//}, 0);
+
+	this._viewBinding = viewBinding;
 }
 
 /**
@@ -128,16 +174,21 @@ BrowserPageBinding.prototype.onBeforePageInitialize = function () {
 	var navbar = window.bindingMap.navbar;
 	navbar.addActionListener ( ButtonBinding.ACTION_COMMAND, this );
 	
-	var menubar = window.bindingMap.menubar;
-	menubar.addActionListener ( MenuItemBinding.ACTION_COMMAND, this );
-	
 	var contextmenu = window.bindingMap.contextmenu;
-	contextmenu.addActionListener ( MenuItemBinding.ACTION_COMMAND, this );
+	contextmenu.addActionListener(MenuItemBinding.ACTION_COMMAND, this);
+
+
+	var docktab = this.getAncestorBindingByType(DockPanelBinding, true);
+	docktab.addActionListener(FocusBinding.ACTION_BLUR, this);
+	docktab.addActionListener(FocusBinding.ACTION_FOCUS, this);
+	
 	
 	if ( this._startURL ) {
 		this._newURL ( this._startURL );
 		this._startURL = null;
 	}
+
+	
 }
 
 /**
@@ -161,6 +212,10 @@ BrowserPageBinding.prototype.onAfterPageInitialize = function () {
 			}
 		});
 	}
+
+
+	this.reflex(); //?
+
 }
 
 /**
@@ -232,6 +287,16 @@ BrowserPageBinding.prototype.handleAction = function ( action ) {
 			this._isDisposing = true;
 			action.consume ();
 			break;
+		case FocusBinding.ACTION_BLUR:
+			//TODO add check target
+			this.hideToolbar();
+			break;
+		case FocusBinding.ACTION_FOCUS:
+			//TODO add check target
+			this.showToolbar();
+			break;
+			
+			
 	}
 }
 
@@ -358,7 +423,13 @@ BrowserPageBinding.prototype._handleDocumentLoad = function ( binding ) {
 	if ( cover.isVisible ) {
 		cover.hide ();
 	}
-	
+
+	var entityToken = TreeService.GetEntityTokenByPageUrl(url);
+	EventBroadcaster.broadcast(
+		BroadcastMessages.SYSTEMTREEBINDING_FOCUS,
+		entityToken
+	);
+
 	/*
 	 * Dispatch event for Browser plugins to hook into.
 	 */
@@ -618,4 +689,54 @@ BrowserPageBinding.prototype.handleEvent = function ( e ) {
 			}
 			break;
 	}
+}
+
+/**
+ * @overloads {TabsBinding#flex}
+ * @implements {IFlexible}
+ */
+BrowserPageBinding.prototype.flex = function () {
+
+	
+
+	BrowserPageBinding.superclass.flex.call(this);
+
+
+	this.showToolbar();
+
+}
+
+
+/**
+ * Show toolbar
+ */
+BrowserPageBinding.prototype.showToolbar = function () {
+	var snap = this.bindingWindow.bindingMap.toolbar;
+
+	var position = snap.boxObject.getUniversalPosition();
+	var dimension = snap.boxObject.getDimension();
+
+
+	var systemtoolbar = top.app.bindingMap.systemtoolbar;
+
+	systemtoolbar.setPosition(position);
+	systemtoolbar.setDimension(dimension);
+	systemtoolbar.show();
+}
+
+/**
+ *  Hide toolbar
+ */
+BrowserPageBinding.prototype.hideToolbar = function () {
+
+	var systemtoolbar = top.app.bindingMap.systemtoolbar;
+	systemtoolbar.hide();
+}
+
+/**
+ * Return perspective handle for browser
+ */
+BrowserPageBinding.prototype.getPerspectiveHandle = function () {
+
+	return this.systemViewDefinition.handle;
 }

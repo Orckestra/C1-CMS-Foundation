@@ -59,11 +59,7 @@ ExplorerToolBarButtonBinding.prototype.onBindingAttach = function () {
  */
 ExplorerToolBarButtonBinding.newInstance = function ( ownerDocument, explorerToolBarButtonType ) {
 
-	var nodename = ( 
-		explorerToolBarButtonType == ExplorerToolBarButtonBinding.TYPE_LARGE ? 
-		 	"ui:explorertoolbarbutton" :
-		 	"ui:toolbarbutton"
-	);
+	var nodename = "ui:explorertoolbarbutton";
 	
 	var element = DOMUtil.createElementNS ( Constants.NS_UI, nodename, ownerDocument );
 	var binding = UserInterface.registerBinding ( element, ExplorerToolBarButtonBinding );

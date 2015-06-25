@@ -12,28 +12,26 @@ div#splash {
 }
 ui|menubar#menubar,
 ui|toolbar#toolbar {
-	#region ie6
-	 	background-color: $(color:threedface);
-	#endregion
-	#region default
-		background-image: url("${root}/skins/system/toolbars/backdrop.png");
-		background-repeat: repeat-y;
-	#endregion
-	#region vista
-		background-color: $(color:toolbar);
-		border-bottom-color: $(color:threedshadow) !important;
-	#endregion
-	#region osx
-		background-image: url("${root}/skins/system/toolbars/osx/backdrop.png");
-		background-position: left center;
-	#endregion
+	background: #333;
+	color: #919191;
 }
-ui|toolbar#statusbar {
-	border-top: 1px solid $(color:threedhighlight);
-	border-bottom: none;
+
+#systemtoolbar { 
+	position: absolute;
+	top: -200px;
+	z-index: 2;
+	box-shadow: none;
 }
+
+
+#systemtoolbar ui|toolbarbutton {
+  /*margin: 15px 5px 13px 5px;*/
+}
+
+
+
 ui|throbber {
-	display: block;
+	display: none;
 	width: 38px;
 	height: 20px;
 	position: absolute;
@@ -80,13 +78,23 @@ ui|toolbar#toolbar ui|toolbarbutton.active ui|labelbox {
 	#endregion
 }
 
+
+ui|explorermenu {
+	float: left;
+	width: 50px;
+	height: 100%;
+	overflow: hidden;
+}
+
 ui|stagecontainer {
 	display: block;
 	overflow: hidden;
+	padding-right: 50px;
+	margin-right: -50px;
+	float: left;
 }
 ui|flexbox#stageflexbox {
-	padding: 10px 8px 8px 8px;
-	border-bottom: 1px solid $(color:threedshadow);
+	padding: 0;
 }
 ui|stage {
 	display: block;
@@ -145,4 +153,39 @@ ui|window#downloadwindow {
 	height: 100px;
 	top: -100px;
 	left: -100px;
+}
+
+
+body.expanded ui|explorermenu {
+	width: 240px;
+}
+
+body.expanded ui|stagecontainer {
+	padding-right: 240px;
+	margin-right: -240px;
+}
+
+body.expanded #systemtoolbar {
+	visibility: hidden;
+}
+
+
+/* COMPOSITE C1 LOGO */
+ui|toolbarbutton#compositebutton:before {
+	content: "Composite";
+	position: absolute;
+	top: 9px;
+	left: 35px;
+	text-transform: none;
+	font-size: 21px;
+}
+
+ui|toolbarbutton#compositebutton:after {
+	content: "C1";
+	position: absolute;
+	top: 9px;
+	left: 138px;
+	text-transform: none;
+	font-size: 21px;
+	font-weight: bold;
 }

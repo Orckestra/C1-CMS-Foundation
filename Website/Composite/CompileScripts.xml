@@ -172,7 +172,6 @@
 			<Script filename="${root}/scripts/source/top/ui/bindings/dialogs/DialogBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/dialogs/DialogHeadBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/dialogs/DialogBodyBinding.js"/>
-			<Script filename="${root}/scripts/source/top/ui/bindings/dialogs/DialogMatrixBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/dialogs/DialogSetBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/dialogs/DialogBorderBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/dialogs/DialogCoverBinding.js"/>
