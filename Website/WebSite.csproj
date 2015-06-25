@@ -129,13 +129,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Composite\compilesvg.aspx.cs">
-      <DependentUpon>compilesvg.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Composite\compilesvg.aspx.designer.cs">
-      <DependentUpon>compilesvg.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Composite\content\dialogs\functions\editFunctionCall.aspx.designer.cs">
       <DependentUpon>editFunctionCall.aspx</DependentUpon>
     </Compile>
@@ -157,7 +150,6 @@
     <Content Include="App_Data\Composite\PhantomJs\preview.js" />
     <Content Include="App_Data\Composite\PhantomJs\renderingServer.js" />
     <Content Include="App_Data\PageTemplates\web.config" />
-    <Content Include="Composite\compilesvg.aspx" />
     <Content Include="Composite\content\dialogs\functions\editFunctionCall.css" />
     <Content Include="Composite\content\dialogs\postback\postbackdialog.aspx" />
     <Content Include="Composite\content\dialogs\postback\PostBackDialogPageBinding.js" />
