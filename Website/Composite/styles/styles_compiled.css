@@ -17,7 +17,6 @@ padding: 0;
 overflow: hidden;
 }
 body {
-background-color: $(color:threedface);
 color: $(color:windowtext);
 }
 form { /* assuming that all forms are standard body-childnode dot net forms! */
@@ -112,11 +111,10 @@ height: auto;
 }
 
 ui|*.clearfloatelement:after {
-content: "";
-width: 1px;
-height: 1px;
+content: " ";
+font-size: 0;
+height: 0px;
 overflow: hidden;
-margin-bottom: -1px;
 display: block;
 clear: both;
 }
@@ -164,6 +162,14 @@ cursor: pointer;
 ui|status {
 display: none;	
 }
+
+[isdisabled="true"] {
+opacity: 0.4;
+}
+
+page[isdisabled="true"] {
+opacity: 0.95;
+}
 @namespace url("http://www.w3.org/1999/xhtml");
 @namespace ui url("http://www.w3.org/1999/xhtml");
 
@@ -196,6 +202,7 @@ ui|header {
 font-weight: bold;
 }
 @namespace url("http://www.w3.org/1999/xhtml");
+@namespace url("http://www.w3.org/2000/svg");
 @namespace ui url("http://www.w3.org/1999/xhtml");
 
 ui|labelbox {
@@ -205,9 +212,11 @@ white-space: nowrap;
 -vendor-user-select: none; /* See notes in DocumentManager.js */
 max-width: 100%;
 }
+
 ui|labelbox.toolbartext {
-margin-top: 4px;	
+margin-top: 4px;
 }
+
 ui|labelbody {
 background: transparent none no-repeat 0 0;
 display: block;
@@ -215,36 +224,19 @@ float: left;
 margin-left: auto !important;
 max-width: 100%;
 }
+
 ui|labelbox.flipped ui|labelbody {
 background-position: 100% 0;
 padding-left: 0 !important;
 }
-ui|labelbody,
-ui|*.imagesizenormal ui|labelbody {
+
+ui|labelbody{
 height: 16px;
 padding-left: 16px;
 }
-ui|labelbox.flipped ui|labelbody,
-ui|*.imagesizelarge ui|labelbox.flipped ui|labelbody {
+
+ui|labelbox.flipped ui|labelbody{
 padding-right: 16px;
-}
-ui|*.imagesizelarge ui|labelbody {
-height: 24px;
-padding-top: 5px;
-padding-left: 28px; /* 28px 4px added space */
-}
-ui|*.imagesizelarge ui|labelbox.flipped ui|labelbody {
-padding-right: 28px;
-}
-ui|*.imagesizelarge ui|labelbox.imageonly ui|labelbody {
-padding-left: 24px;
-}
-ui|*.imagesizexlarge ui|labelbody {
-height: 32px;
-padding-left: 36px; /* 36 4px added space */
-}
-ui|*.imagesizexlarge ui|labelbox.imageonly ui|labelbody {
-padding-left: 32px;
 }
 
 ui|*.textonly ui|labelbody,
@@ -269,20 +261,64 @@ float: left;
 #ie text-overflow: ellipsis;
 max-width: 100%;
 }
+
 ui|*.textonly ui|labeltext,
 ui|labelbox.textonly ui|labeltext {
 padding-left: 5px !important;
 }
+
 ui|*.imagesonly ui|labeltext {
 display: none;
 padding-left: 0 !important;
 }
+
 ui|labelbox.both ui|labeltext {
-#moz margin-left: 4px; 
+#moz margin-left: 4px;
 #ie margin-left: 4px;
 }
+
 ui|labelbox.graytext ui|labeltext {
 color: graytext;
+}
+
+ui|labelbox svg {
+width: 16px;
+height: 16px;
+display: block;
+margin-left: -16px;
+float: left;
+}
+
+ui|labelbox.flipped ui|labelbody svg {
+right: 8px;
+position: absolute;
+}
+
+ui|labelbox.imageonly svg {
+margin-left: -16px;
+}
+
+/*ui|labelbox svg g.hover {
+visibility: hidden;
+fill: currentColor;
+}*/
+
+ui|toolbarbutton.hover ui|labelbox svg g.hover {
+visibility: visible;
+}
+
+ui|toolbarbutton.hover ui|labelbox svg g.default {
+visibility: hidden;
+}
+
+/*ui|labelbox {
+color: #666;
+}*/
+
+ui|labelbox svg {
+fill: currentColor;
+color: currentColor;
+stroke: currentColor;
 }
 @namespace url("http://www.w3.org/1999/xhtml");
 @namespace ui url("http://www.w3.org/1999/xhtml");
@@ -299,7 +335,7 @@ z-index: 4; /* below popupset */
 }
 ui|dialog {
 display: block;
-background-color: $(color:threedface);
+background-color: #F7F7F7;
 overflow: hidden;
 position: absolute;
 z-index: 6; /* above shadow - adjusted by script */
@@ -316,7 +352,7 @@ border: 5px solid lime;
 ui|dialoghead,
 ui|dialogbody {
 display: block;
-padding: 1px;
+padding: 0px;
 }
 ui|dialoghead {
 padding-bottom: 0 !important;
@@ -326,33 +362,8 @@ padding-top: 0 !important;
 width: 100%; /* ie bug */
 overflow: hidden;
 }
-ui|dialogmatrix {
-display: block;
-position: absolute;
-z-index: -1;
-top: 0;
-left: 0;
-width: 100%;
-height: 100%;
-overflow: hidden;
-}
-ui|dialog ui|dialogmatrix table.dialogmatrix {
-width: 100%;
-height: 100%;
-}
-ui|dialogmatrix td {
-background-color: InactiveCaption;
-}
-ui|dialog.active ui|dialogmatrix td {
-background-color: $(color:activecaption);
-}
-ui|dialogmatrix td.c {
-height: 100%;
-width: 100%;
-#moz border: 1px solid $(color:threedface); /* moz bug */
-#moz border-top: none;
-background-color: $(color:threedface) !important;
-}
+
+
 ui|dialogborder {
 position: absolute;
 overflow: hidden;
@@ -404,8 +415,8 @@ z-index: 2; /* adjusted by script */
 background-color: transparent;
 }
 @namespace url("http://www.w3.org/1999/xhtml");
+@namespace url("http://www.w3.org/2000/svg");
 @namespace ui url("http://www.w3.org/1999/xhtml");
-
 /*
 ui|dialogpage,
 ui|wizardpage {
@@ -427,19 +438,16 @@ padding: 2px 2px 0 2px;
 ui|dialogtoolbar {
 display: block;
 clear: both;
-background-color: $(color:threedface);
 white-space: nowrap;	
 padding: 12px 11px 14px 12px;
 margin-right: 0;
 margin-left: 0;
 }
 ui|dialogtoolbar ui|clickbutton.focusable {
-margin: 2px !important;
+margin: 5px !important;
 }
 ui|dialogtoolbar ui|clickbutton.focused {
-outline: 1px solid $(color:threedshadow);
-margin: 1px !important;
-padding: 1px;
+
 }
 
 /* STANDARD DIALOGS ................................................................*/
@@ -465,9 +473,13 @@ ui|dialogvignette {
 display: block;
 width: 32px;
 height: 32px;
+margin-right: 16px;
 }
 
-/* standard dialog images in skin! */
+ui|dialogpage ui|dialogvignette svg {
+width: 32px;
+height: 32px;
+}
 @namespace url("http://www.w3.org/1999/xhtml");
 @namespace ui url("http://www.w3.org/1999/xhtml");
 
@@ -480,17 +492,6 @@ left: 0;
 width: 0;
 height: 0;
 z-index: 5; /* above dialogset */
-/*
-display: inline;
-overflow: visible;
-#moz position: absolute;
-#ie position: static;
-top: 0;
-left: 0;
-height: 0;
-width: 0;
-z-index: 5;
-*/
 }
 ui|popup,
 ui|menupopup {
@@ -498,13 +499,14 @@ position: absolute;
 z-index: 6;  /* above the shadow */ 
 min-width: 160px;
 visibility: hidden;
--vendor-transition-property: opacity;
+/*-vendor-transition-property: opacity;
 -vendor-transition-duration: 0.15s;
--vendor-box-shadow: 2px 2px 4px rgba(0,0,0,0.75);
+-vendor-box-shadow:  0px 0px 5px 0px rgba(97,97,97,0.25);*/
+border-radius: 3px;
 display: none;
-border: 1px solid $(color:threedshadow);
 -vendor-user-select: none;
 }
+
 ui|popupbody { /* NOT USED ON COMMON POPUPS! */
 display: block;
 padding: 10px 12px 10px 12px;
@@ -520,54 +522,37 @@ overflow-y: scroll;
 height: 211px; /* move this to script when separators are supported */
 border-right: none;
 }
-@namespace url("http://www.w3.org/1999/xhtml");
 @namespace ui url("http://www.w3.org/1999/xhtml");
+
 
 /* see also popups.css for shared visual styles!!!!!!! */
 
 ui|menubar {
 display: block;
-border-top: 1px solid $(color:threedhighlight);
-border-bottom: 1px solid $(color:threedshadow);
 white-space: nowrap;
 }
 ui|menu {
 display: block;
-float: left;
+float: right;
 margin: 0;
 padding: 0;
+height: 30px;
 }
 ui|menubody {
 display: block;
-padding: 4px 2px 4px 2px;
-background-color: $(color:menu);
-color: $(color:menutext);
 }
 ui|menugroup {
 display: block;
-border-top: 1px solid $(color:threedhighlight);
-border-bottom: 1px solid $(color:threedshadow);
-padding: 5px 0 5px 0;
 }
 ui|menugroup.first {
-border-top: none;
 padding-top: 0;
 }
 ui|menugroup.last {
-border-bottom: none;
 padding-bottom: 0;
 }
 ui|menu ui|labelbox.menulabel {
-padding: 4px 6px 1px 4px;
+padding: 7px 16px 1px 4px;
 position: relative; /* ie something */
-#region vista
-padding-top: 2px;
-padding-bottom: 2px;
-#endregion
-}
-ui|menu.hover ui|labelbox.menulabel {
-background-color: $(color:highlight);
-color: $(color:highlighttext);	
 }
 ui|menuitem {
 white-space: nowrap;
@@ -592,43 +577,31 @@ float: none;
 clear: both;
 }
 ui|menuitem ui|labelbox {
-padding: 2px 8px 2px 8px;
+padding: 7px 8px 7px 8px;
 }
 ui|menubody.checkboxed ui|menuitem ui|labelbox {
-padding: 2px 8px 2px 24px;
+padding: 7px 8px 7px 24px;
 }
-ui|menuitem ui|labelbox.hover {
-background-color: $(color:highlight);
-color: $(color:highlighttext);
-}
+
 ui|menuitem ui|labeltext {
 padding-left: 4px;
 position: relative;
-#moz top: 1px;
-#ie top: 2px;
-#region vista
-top: 0;
-_top: 1px;
-#endregion
 }
 ui|popup.selectorpopup ui|menuitem ui|labeltext {
 text-transform: none; /* selectors should NOT capitalize text! */
 }
-/* TODO: enable this and remove script hack!
-ui|menuitem ui|label.textonly ui|labelbody {
-padding-left: 16px;
-}
-*/
+
 ui|menuitem ui|labelbox {
 position: relative;
 #ie width: 100%;
 }
+
 div.checkboxindicator {
 font-family: Arial, sans-serif;
 font-size: 11px;
 position: absolute;
-left: 7px;
-top: 3px;
+left: 10px;
+top: 10px;
 }
 div.submenuindicator {
 font-family: Arial, sans-serif;
@@ -637,6 +610,22 @@ position: absolute;
 right: 7px;
 top: 3px;
 }
+
+ui|menu ui|labelbox {
+text-transform: uppercase;
+}
+
+ui|menu ui|menubody ui|labelbox {
+text-transform: none;
+}
+
+ui|menu ui|clickbutton ui|labelbox {
+border:0 !important;
+background-color: transparent;
+
+}
+
+
 @namespace url("http://www.w3.org/1999/xhtml");
 @namespace ui url("http://www.w3.org/1999/xhtml");
 
@@ -666,11 +655,11 @@ padding: 6px 9px 7px;
 }
 
 ui|toolbar ui|clickbutton ui|labelbox {
-padding: 3px 5px;
+padding: 3px 2px;
 }
 
 ui|toolbar ui|selector ui|clickbutton ui|labelbox{
-padding: 3px 24px 3px 3px;
+padding: 6px 24px 6px 9px;
 }
 
 ui|checkbutton {
@@ -717,7 +706,6 @@ overflow: hidden;
 ui|titlebarbody {
 display: block;
 position: relative;
-padding: 5px 3px 4px 5px;
 }
 @namespace url("http://www.w3.org/1999/xhtml");
 @namespace ui url("http://www.w3.org/1999/xhtml");
@@ -734,6 +722,28 @@ float: left;
 
 .dialogcontrol {
 padding: 0;
+}
+
+ui|control[controltype="close"] ui|labelbody{
+background-position: -200px -200px;
+padding-left: 24px;
+
+}
+
+ui|control[controltype="close"] ui|labelbody:after {
+
+content: '×';
+position: absolute;
+height: 100%;
+width: 0px;
+top: -6px;
+left: 15px;
+color: #ccc;
+font-size: 17px;
+}
+
+ui|control.hover ui|labelbody:after {
+color: #808080;
 }
 @namespace url("http://www.w3.org/1999/xhtml");
 @namespace ui url("http://www.w3.org/1999/xhtml");
@@ -759,18 +769,13 @@ padding-bottom: 0;
 ui|toolbarlabel {
 padding: 4px;
 }
-#region vista
+
 ui|toolbar ui|toolbarbutton ui|labeltext,
 ui|toolbar ui|clickbutton ui|labeltext,
 ui|toolbar ui|toolbarlabel ui|labeltext {
 padding-top: 0;
 }
-#endregion
 
-ui|toolbarbutton.isdisabled ui|labeltext,
-ui|clickbutton.isdisabled ui|labeltext {
-color: $(color:graytext);
-}
 
 ui|toolbarbody.alignright ui|toolbarbutton,
 ui|toolbarbody.alignright ui|clickbutton {
@@ -780,10 +785,6 @@ margin-left: 2px;
 ui|toolbar {
 display: block;
 clear: both;
-border-top: 1px solid $(color:threedhighlight);
-border-bottom: 1px solid $(color:threedshadow);
-background-color: $(color:threedface);
-padding: 1px 3px 1px 3px;
 white-space: nowrap;
 }
 ui|toolbar.plain {
@@ -806,8 +807,6 @@ float: right;
 ui|toolbargroup {
 display: block;
 float: left;
-border-right: 1px solid $(color:threedshadow);
-border-left: 1px solid $(color:threedhighlight);
 padding-left: 1px;
 }
 ui|toolbargroup.max {
@@ -829,71 +828,25 @@ margin-right: -1px;
 visibility: hidden;
 border: none;
 }
-
-/* combobutton */
-
-ui|toolbarbutton.isdisabled ui|combobox {
-color: $(color:graytext);
-}
-
-ui|toolbarbutton.combobutton ui|combobox {
-border-left: 1px solid transparent;
-margin: -4px -4px -4px 0;
-display: block;
-float: left;
-line-height: 22px;
-font-size: 9px;
-padding-left: 5px;
-padding-right: 5px;
--moz-user-select: none;
-position: relative;
-}
-
-ui|toolbarbutton.combobutton table.matrix td{
-overflow: visible;
-}
-
-ui|toolbarbutton.hover ui|combobox,
-ui|toolbarbutton.active ui|combobox
-{
-border-left: 1px solid #A0A0A0;
-}
 @namespace url("http://www.w3.org/1999/xhtml");
 @namespace ui url("http://www.w3.org/1999/xhtml");
 
 ui|tabbox {
 display: block;
-background-color: $(color:threedface);
 overflow: hidden;
-/*width: 100%;*/
 }
 ui|tabs {
 display: block;
 position: relative !important;
 overflow: hidden;
-border-top: 1px solid $(color:threedhighlight);
-height: 29px;
 }
-ui|tabbox.boxed ui|tabs {
-border-top: none;
-height: 28px;
-}
-ui|tabbox.tabsbelow ui|tabs {
-border-top: none;
-border-bottom: 1px solid $(color:threedshadow);	
-}
+
 ui|tab {
 display: block;
 float: left;
 position: relative;
 white-space: nowrap;
-padding: 7px;
 }
-/*
-ui|tab.selected {
-text-decoration: underline;
-}
-*/
 ui|tabpanels {
 display: block;
 height: 100%;
@@ -904,11 +857,7 @@ ui|tabbox.boxed ui|tabpanels {
 overflow: visible;
 height: auto;
 }
-#region moz
-ui|tabbox:not(.equalsize).boxed ui|tabpanels {
-height: auto !important;
-}
-#endregion
+
 ui|tabbox.equalsize ui|tabpanels {
 overflow: hidden;
 height: 100%;
@@ -923,25 +872,6 @@ top: -10000px;
 ui|tabbox.equalsize ui|tabpanel {
 overflow: visible;
 height: auto !important;
-}
-
-/* TABLINER .................................................................... */
-
-div.tabliner {
-position: absolute;
-left: 0;
-bottom: 0;
-width: 100%;
-#ie width: 110%; /* dont ask */
-height: 3px;
-overflow: hidden;
-z-index: 2;
-}
-ui|tabbox.boxed div.tabliner {
-#ie width: 100%; /* dont ask */
-}
-ui|tabbox.tabsbelow ui|tabs div.tabliner {
-top: 0;
 }
 
 /* TABMANAGER .................................................................... */
@@ -1001,10 +931,9 @@ float: none !important;
 ui|splitter {
 display: block;
 z-index: 2;
-#ie font-size: 1px; /* cannot use overflow:hidden hack for IE6 */
 position: relative;
-background-color: $(color:threedface);
-color: $(color:threedface); /* moz appends a text node inside the splitter */
+background: transparent;
+font-size: 1px;
 }
 ui|splitter.active {
 z-index: 23; /* float to top while dragging */
@@ -1013,8 +942,8 @@ ui|splitter.horizontal {
 height: 100%;
 width: 8px;
 float: left;
-border-right: 1px solid $(color:threedhighlight);
-border-left: 1px solid $(color:threeddarkshadow);
+border: 0px;
+margin: 0 -4px;
 }
 ui|splitter.vertical {
 height: 8px;
@@ -1025,15 +954,13 @@ border-top: 1px solid $(color:threeddarkshadow);
 ui|splitterbody {
 display: block;
 position: absolute;	
-background-color: $(color:threedface);
+background: transparent;
 }
 ui|splitter.horizontal ui|splitterbody {
 width: 8px;
 height: 100%;
 margin-left: -1px;
 cursor: e-resize;
-border-left: 1px solid $(color:threedhighlight);
-border-right: 1px solid $(color:threeddarkshadow);
 }
 ui|splitter.horizontal ui|splitterbody.hover,
 ui|splitter.horizontal ui|splitterbody.active {
@@ -1050,6 +977,17 @@ border-bottom: 1px solid $(color:threeddarkshadow);
 ui|splitter.vertical ui|splitterbody.hover,
 ui|splitter.vertical ui|splitterbody.active {
 -vendor-box-shadow: 0 2px 3px rgba(0,0,0,0.35);
+}
+
+
+ui|splitbox.line ui|splitter.horizontal ui|splitterbody:after{
+content: '';
+position: absolute;
+border-left: 1px solid #CCCCCC;
+height: 100%;
+width: 0px;
+top: 0px;
+left: 4px;
 }
 @namespace url("http://www.w3.org/1999/xhtml");
 @namespace ui url("http://www.w3.org/1999/xhtml");
@@ -1075,14 +1013,12 @@ ui|tree {
 display: block;
 overflow: hidden;
 position: relative;
-
 }
 ui|treebody {
 display: block;
-background-color: Window;
 color: $(color:windowtext);
-overflow: auto !important;	
-padding: 8px 6px 16px 6px;
+overflow: auto !important;
+padding-top: 10px;
 }
 ui|treenode,
 ui|treecontent {
@@ -1091,17 +1027,7 @@ float: none;
 clear: both;
 overflow: visible;
 }
-#region moz
-ui|treenode:after { /* moz bug */
-content: "";
-width: 1px;
-height: 1px;
-overflow: hidden;
-margin-bottom: -1px;
-display: block;
-clear: both;
-}
-#endregion
+
 ui|treenode ui|labelbox {
 background: none transparent no-repeat 1px 4px;
 padding-left: 16px;
@@ -1110,16 +1036,10 @@ ui|treecontent {
 padding-left: 40px;
 -vendor-user-select: none; /* hope we don't need an input field */
 }
-ui|treenode ui|labelbox.focused ui|labeltext {
-background-color: $(color:threedface) !important; /* too light for projection */
-background-color: $(color:threedlightshadow) !important;
-}
-ui|tree.focused ui|treenode ui|labelbox.focused ui|labeltext {
-background-color: $(color:highlight) !important;
-color: $(color:highlighttext);
-}
+
 ui|treenode ui|treenode {
-margin-left: 18px;
+padding-left: 50px;
+
 }
 ui|treenode.closed ui|treenode,
 ui|treenode.closed ui|treecontent {
@@ -1133,25 +1053,10 @@ ui|treenode ui|labelbody {
 max-width: none;
 }
 ui|treenode ui|labeltext {
-line-height: 15px;
-padding: 1px 4px 2px 4px;
-#region vista
-padding-right: 5px;
-position: relative;
-top: -1px;
-#endregion
+line-height: 17px;
+padding: 2px 4px 2px 4px;
 }
-#region moz
-ui|treenode.dragged {
-opacity: 0.5;
-}
-#endregion 
-#region ie
-ui|treenode.dragged ui|labeltext { /* text disappears on alpha filter! */
-color: $(color:graytext);		
-}
-}
-#endregion
+
 ui|treepositionindicator {
 display: block;
 position: absolute;
@@ -1217,7 +1122,6 @@ clear: both;
 overflow: hidden;
 position: absolute;
 top: -10000px;
-background-color: $(color:threedface);
 }
 
 /* CONTROVERSIAL STYLES - MAYBE MOVE TO SKIN? */
@@ -1254,7 +1158,7 @@ min-height: 100%; /* IE relies on flexibility instead */
 
 ui|pagehead {
 display: block;
-width: 408px; /* matching fields! */
+width: 488px; /* matching fields! */
 padding-left: 2px;
 padding-bottom: 1em;
 -vendor-user-select: none;
@@ -1270,6 +1174,15 @@ ui|pagedescription {
 display: block;
 padding: 0 0 12px 0;
 -vendor-user-select: none;
+}
+
+ui|editorpage > ui|toolbar {
+padding: 0px;
+border: 0px;
+}
+
+ui|editorpage > ui|toolbar ui|toolbarbody {
+float: right;
 }
 @namespace url("http://www.w3.org/1999/xhtml");
 @namespace ui url("http://www.w3.org/1999/xhtml");
@@ -1302,6 +1215,7 @@ top: -10000px;
 @namespace url("http://www.w3.org/1999/xhtml");
 @namespace ui url("http://www.w3.org/1999/xhtml");
 
+
 ui|explorer,
 ui|explorerbody,
 ui|explorerdecks,
@@ -1314,6 +1228,9 @@ ui|explorerbar,
 ui|explorerbarbutton {
 display: block;
 }
+
+
+
 ui|explorer {
 height: 100%;
 overflow: hidden;
@@ -1567,24 +1484,24 @@ visibility: hidden;
 }
 ui|fields {
 display: none; /* adjusted by FieldsBinding.js */
-width: 408px; /* table.fieldgroupmatrix makes up 4px on both sides! */
 position: relative; /* mostly because it fixes an ie bug where fieldgroup captions would hang on tabpanel changes */
-/* padding-bottom: 9px; fixes a dialog resize problem - moved to functioncalleditor.aspx where the problem is spotted */
 }
 
 /* FIELDGROUP ......................................... */
 
 ui|fieldgroup {
+width: 430px;
 display: block;
 overflow: visible;
-margin-top: 34px !important;
+margin-top: 54px;
+margin-bottom: 10px;
 padding-top: 7px;
 position: relative;
-padding: 18px 2px 18px 2px;
+padding: 8px 17px 27px 17px;
 
 }
 ui|fieldgroup.first {
-margin-top: 10px !important;
+margin-top: 34px;
 }
 
 #region vista
@@ -1595,7 +1512,7 @@ margin-bottom: 5px; /* strange flex bug */
 #endregion
 
 ui|labelbox.fieldgrouplabel {
-top: -10px;
+top: -34px;
 left: -2px;
 right: -2px;
 position:absolute;
@@ -1605,9 +1522,6 @@ max-width: 200%;
 
 ui|labelbox.fieldgrouplabel ui|labeltext {
 padding-right: 5px;
-#region default
-color: $(color:activecaption);
-#endregion
 }
 
 ui|labelbox.fieldgrouplabel ui|labelbody {
@@ -1620,21 +1534,18 @@ float:left;
 
 ui|field {
 display: block;
-margin: 0 16px 0 10px;
+margin: 0;
 padding-bottom: 0;
 }
 ui|fielddesc {
 display: block;
-float: left;
-width: 150px;
-padding: 8px 0 0 5px;
+padding: 8px 0 5px 5px;
 white-space: normal;
 -vendor-user-select: none;
 }
 ui|fielddata {
 display: block;
-float: right;
-width: 220px;
+
 position: relative; /* because of strange fieldhelp setup for exploder */
 }
 ui|fielddata input,
@@ -1648,10 +1559,6 @@ display: block;
 }
 ui|fielddata input {
 padding: 5px 0 0 7px;
-#moz padding-bottom: 4px;
-#ie height: 24px;
-#ie position: relative;
-#ie top: -1px;
 }
 
 ui|datainput {
@@ -1665,10 +1572,16 @@ ui|urlinputdialog ui|box,
 ui|textbox ui|box,
 ui|editortextbox ui|box,
 ui|multiselector ui|box {
-border: 1px solid #7F9DB9;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
 background-color: white;
-height: 26px;
+height: 30px;
 overflow: hidden;
+
+}
+
+ui|textbox ui|box {
+position: relative;
 }
 ui|datainput.disabled ui|box,
 ui|datainput.readonly ui|box,
@@ -1781,10 +1694,7 @@ overflow: hidden !important; /* relevant for editor selectors */
 ui|toolbar ui|selector { /* TODO: handle focus outline here somehow */
 padding: 0;	
 }
-ui|toolbar ui|selector ui|clickbutton table.matrix td.c {
-padding-top: 0;
-padding-bottom: 0;
-}
+
 ui|selection,
 ui|selector input {
 display: none;	
@@ -1794,7 +1704,7 @@ float: none;
 margin: 0;
 }
 ui|selector ui|clickbutton ui|labelbox {
-padding: 3px 20px 5px 5px;
+padding: 5px 20px 7px 5px;
 }
 
 
@@ -1803,41 +1713,22 @@ overflow: hidden;
 float:none;
 }
 
-ui|selector img.selectorindicatorimage {
-position: absolute;
-z-index: 1;
-right: 7px;
-top: 4px;
--vendor-user-select: none;
-}
-ui|fields ui|selector img.selectorindicatorimage {
-top: 5px;
-}
-
 /* SIMPLESELECTORS ............................................ */
 
 ui|simpleselector {
 display: block;
 position: relative;
 overflow: visible;
-#region ie 
-margin-top: 3px;
-#endregion
 }
 ui|simpleselector select {
-#moz padding: 4px;
-display: block;
-width: 216px;
-border: 1px solid #7F9DB9;
-background-color: white;
+
 }
 ui|simpleselector select:focus,
 ui|simpleselector select:focus * {
 outline: none;
 }
 ui|simpleselector.invalid {
-padding: 1px;
-border: 1px solid #A40000 !important;
+
 }
 
 /* MULTISELECTORS ............................................. */
@@ -1846,12 +1737,10 @@ ui|multiselector {
 display: block;
 }
 ui|multiselector ui|box {
-width: 216px;
 -vendor-user-select: none;
 padding: 5px 0 5px 0;
 overflow: auto;
-#ie height: 88px;
-#moz height: 84px;
+height: 100px;
 }
 ui|field.fieldhelp ui|multiselector ui|box {
 width: 186px;	
@@ -1861,8 +1750,7 @@ padding: 1px 5px 2px 7px;
 width: 100%;
 }
 ui|multiselector ui|box div.selected {
-background-color: $(color:highlight);
-color: $(color:highlighttext);
+
 }
 ui|multiselector ui|datadialog,
 ui|multiselector ui|postbackdialog {
@@ -1884,25 +1772,26 @@ ui|datainputselector ui|toolbarbutton,
 ui|datainputdialog ui|toolbarbutton,
 ui|datainputbutton ui|toolbarbutton,
 ui|urlinputdialog ui|toolbarbutton {
-margin-right: 0;
+margin: 0;
+padding: 5px;
+border-color: transparent;
 position: absolute;
 right: 3px;
 top: 3px;
 }
-#region moz
-ui|datainputselector.focused ui|toolbarbutton,
-ui|datainputdialog.focused ui|toolbarbutton,
-ui|datainputbutton.focused ui|toolbarbutton,
-ui|urlinputdialog.focused ui|toolbarbutton {
-right: 2px;
-top: 2px;
+
+ui|datainputselector ui|toolbarbutton ui|labelbox,
+ui|datainputdialog ui|toolbarbutton ui|labelbox,
+ui|datainputbutton ui|toolbarbutton ui|labelbox,
+ui|urlinputdialog ui|toolbarbutton ui|labelbox {
+padding: 0px;
 }
-#endregion
+
 ui|fielddata ui|datainputselector input,
 ui|fielddata ui|datainputdialog input,
 ui|fielddata ui|datainputbutton input,
 ui|fielddata ui|urlinputdialog input {
-width: 189px;
+width: 100%;
 }
 ui|fielddata ui|datainputselector.imagesizenormal input{
 background: transparent none no-repeat 4px 4px;
@@ -1910,13 +1799,12 @@ padding-left: 24px;
 }
 ui|field.fieldhelp ui|fielddata {
 position: relative;
-top: -1px; /* why? */
 }
 ui|field.fieldhelp ui|fielddata ui|datainputselector input,
 ui|field.fieldhelp ui|fielddata ui|datainputdialog input ,
 ui|field.fieldhelp ui|fielddata ui|datainputbutton input ,
 ui|field.fieldhelp ui|fielddata ui|urlinputdialog input {
-width: 159px;
+width: 100%;
 }
 
 /* EXOTIC STUFF ................................... */
@@ -1939,10 +1827,10 @@ position: relative;
 ui|textbox textarea,
 ui|editortextbox textarea {
 overflow: auto;
-#ie padding: 5px 5px 5px 7px; /* moz applies padding fugt here! */
 position: absolute;
 height: 102px;
 -vendor-tab-size: 4;
+padding: 4px;
 }
 
 /* FULLBLOWN EDITORTEXTBOX */
@@ -1971,9 +1859,7 @@ margin: 0;
 
 /* FIELDHELP ......................................... */
 
-ui|fieldhelp { /* strange setup fixes a vanishing glitch in explorer */
-height: 1px;
-width: 222px;
+ui|fieldhelp {
 overflow: visible;
 float: right;
 position: relative;
@@ -1981,15 +1867,14 @@ position: relative;
 
 ui|field.fieldhelp ui|fielddata {
 margin-right: 30px;
-width: 190px;
 }
 ui|field.fieldhelp ui|fielddata input,
 ui|field.fieldhelp ui|fielddata select,
 ui|field.fieldhelp ui|fielddata textarea {
-width: 184px;
+width: 100%;
 }
 ui|field.fieldhelp ui|fielddata ui|simpleselector select {
-width: 186px;	
+width: 100%;
 }
 ui|clickbutton.fieldhelp { /* width and height needed for explorer vanishing dysfunction */
 margin: 0;
@@ -2024,11 +1909,7 @@ ui|fields ui|textbox.focused,
 ui|fields ui|editortextbox.focused,
 ui|fields ui|radiodatagroup.focused,
 ui|fields ui|checkbox.focused {
-padding: 1px;
-border: 1px solid $(color:threedshadow);
-#region osx
-border-color: -moz-mac-focusring;
-#endregion
+
 }
 
 

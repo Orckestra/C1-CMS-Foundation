@@ -1,80 +1,355 @@
+@namespace url("http://www.w3.org/1999/xhtml");
 @namespace ui url("http://www.w3.org/1999/xhtml");
 
-#region vista
 ui|menubar {
-background: url("${skin}/menus/vistabackdrop.png") $(color:threedface) repeat-x 0 50% !important;
 }
-#endregion
+
+ui|menubody {
+padding: 0px 0px 0px 0px;
+background-color: #fff;
+color: #343434;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+}
+
+
+ui|menugroup {
+padding: 0px 0px 0px 0px;
+border-bottom: 1px solid #CCCCCC;
+}
+
+ui|menugroup.last {
+border-bottom: none;
+}
+
+ui|menuitem ui|labelbox.hover {
+}
+
+
+ui|menupopup {
+margin-top: 5px;
+}
+
+ui|menu > ui|menupopup:before {
+content: "";
+position: absolute;
+top: -9px;
+left: 50%;
+width: 0;
+height: 0;
+border-left: 9px solid transparent;
+border-right: 9px solid transparent;
+border-bottom: 9px solid #ccc;
+margin-left: -9px;
+}
+
+ui|menu > ui|menupopup:after {
+content: "";
+position: absolute;
+top: -8px;
+left: 50%;
+width: 0;
+height: 0;
+border-left: 9px solid transparent;
+border-right: 9px solid transparent;
+border-bottom: 9px solid #fff;
+margin-left: -9px;
+}
+
+ui|menubody ui|labelbox.hover {
+background: #0EBA7E;
+color: #ffffff;
+}
+
+ui|menu.hover {
+color: #0EBA7E;
+}
+
+ui|menubody ui|labelbox.hover ui|labeltext {
+
+}
+
+ui|menu > ui|labelbox {
+margin-left: 12px;
+}
+
+
+ui|menu > ui|labelbox.textonly:before {
+content: "";
+position: absolute;
+top: 12px;
+right: 0;
+width: 0;
+height: 0;
+border-style: solid;
+border-width: 5px 5px 0 5px;
+border-color: #0EBA7E transparent transparent transparent;
+}
+
+ui|menu > ui|labelbox.textonly:after {
+content: "";
+position: absolute;
+top: 12px;
+right: 1px;
+width: 0;
+height: 0;
+border-style: solid;
+border-width: 4px 4px 0 4px;
+border-color: #333 transparent transparent transparent;
+}
+
+
+ui|menu.hover > ui|labelbox.textonly:before {
+top: 12px;
+border-width: 0px 5px 5px 5px;
+border-color: transparent transparent #909090 transparent;
+}
+
+ui|menu.hover > ui|labelbox.textonly:after {
+top: 13px;
+right: 1px;
+border-width: 0px 4px 4px 4px;
+border-color: transparent transparent #333 transparent;
+}
+
+
+.submenuindicator {
+display: none;
+}
+@namespace url("http://www.w3.org/1999/xhtml");
+@namespace url("http://www.w3.org/2000/svg");
 @namespace ui url("http://www.w3.org/1999/xhtml");
+
+
+ui|toolbarbutton {
+border-radius: 4px;
+text-transform: uppercase;
+padding: 0;
+border: 1px solid #CCCCCC;
+border-radius: 3px;
+background: #ffffff;
+color: #626262;
+margin: 0px 6px 0px 6px;
+
+}
+
+ui|toolbarbutton ui|labelbox{
+padding: 6px 11px;
+}
+
+ui|toolbar ui|clickbutton ui|labelbox,
+ui|toolbar ui|clickbutton.isdisabled ui|labelbox {
+border: 1px solid #CCCCCC;
+color: #626262;
+}
 
 /* HOVER */
-ui|toolbarbutton {
-border: 1px solid transparent;
-}
 
 ui|toolbarbutton.hover {
-border: 1px solid #9398A5;
-border-radius: 4px;
-box-shadow: inset 0px 0px 0px 1px #F3F3F3;
+
 }
 
 /* ACTIVE */
 
 ui|toolbarbutton.active {
-border: 1px solid #9398A5;
-border-radius: 4px;
-box-shadow: inset 1px 1px 1px 0px rgba(0,0,0,0.75);
+
+}
+
+ui|toolbar {
+box-shadow: inset 0px -1px 0px 0px rgba(204, 204, 204, 1);
+border: 0px;
+padding: 15px 10px 15px 10px;
+
+}
+
+ui|editorpage > ui|toolbar {
+box-shadow: none;
+
+}
+
+ui|toolbar.dark {
+background: #EFEFEF;
+}
+
+ui|toolbarbutton.hover,
+ui|toolbarbutton.active {
+background: linear-gradient(to bottom, #22b77f 0%,#1da370 100%); /* W3C */
+color: #FFFFFF;
+border-color: transparent;
+}
+
+ui|editorpage > ui|toolbar ui|toolbarbutton {
+margin: 15px 5px 0px 5px;
+}
+
+/* EDITOR TOOLBAR*/
+
+ui|splitpanel#editorsplitpanel ui|toolbar {
+background: #fff;
+}
+
+ui|splitpanel#editorsplitpanel ui|toolbar  ui|toolbargroup ui|toolbarbutton,
+ui|splitpanel#editorsplitpanel ui|toolbar ui|selector,
+ui|toolbar#templatetoolbar ui|toolbarbutton {
+margin: 0px 5px 0px 5px;
+}
+
+ui|splitpanel#editorsplitpanel ui|toolbar#toolbar {
+background: #EFEFEF;
+}
+
+ui|toolbar#templatetoolbar {
+background: #EFEFEF;
+padding: 15px 10px 15px 10px;
+}
+
+ui|splitpanel#editorsplitpanel ui|toolbar#toolbar ui|toolbargroup {
+border: 1px solid #CCCCCC;
+border-radius: 3px;
+margin: 0px 5px 0px 5px;
+padding: 0px;
+overflow: hidden;
+}
+
+
+ui|splitpanel#editorsplitpanel ui|toolbar#toolbar ui|toolbargroup:empty {
+display: none;
+}
+
+ui|splitpanel#editorsplitpanel ui|toolbar#toolbar ui|toolbargroup ui|toolbarbutton {
+border-color: transparent;
+margin: 0px;
+border-radius: 0;
+text-transform: none;
+}
+
+ui|splitpanel#editorsplitpanel ui|toolbar#toolbar ui|toolbargroup ui|toolbarbutton + ui|toolbarbutton{
+border-color: transparent transparent transparent #CCCCCC;
+}
+
+ui|splitpanel#editorsplitpanel ui|toolbar#toolbar  ui|toolbargroup ui|toolbarbutton ui|labelbox {
+padding: 5px 9px;
+}
+
+
+
+/* COMBO BUTTON */
+
+ui|toolbarbutton.isdisabled ui|combobox {
+
+}
+
+ui|toolbarbutton.combobutton ui|combobox {
+border-left: 1px solid transparent;
+margin: 0;
+display: block;
+float: left;
+line-height: 28px;
+font-size: 9px;
+padding: 0 10px;
+-moz-user-select: none;
+position: relative;
+color: transparent;
+}
+
+
+ui|toolbarbutton.hover ui|combobox,
+ui|toolbarbutton.active ui|combobox
+{
+border-left: 1px solid #A3E4CD;
 }
 @namespace url("http://www.w3.org/1999/xhtml");
 @namespace ui url("http://www.w3.org/1999/xhtml");
-
 
 /* FOCUS */
 
 ui|clickbutton.focused ui|labelbox,
 ui|clickbutton.default ui|labelbox {
-border-color: #3C7FB1;
-box-shadow: inset 0px 0px 0px 1px #3AD6FD;
+border-color: #0EBA7E;
+background: linear-gradient(to bottom, #22b77f 0%,#1da370 100%); /* W3C */
+color: #FFFFFF;
+border-color: transparent;
 }
 
 /* ACTIVE */
 
 ui|clickbutton.active ui|labelbox {
-#ie background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2UyZTJlMiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iI2U2ZTZlNiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iI2NlY2VjZSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNkZGRkZGQiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
-background: linear-gradient(to bottom, rgba(226,226,226,1) 0%,rgba(230,230,230,1) 50%,rgba(206,206,206,1) 50%,rgba(221,221,221,1) 100%); /* W3C */
-box-shadow: none;
+border-color: #0EBA7E;
+background: linear-gradient(to bottom, #22b77f 0%,#1da370 100%); /* W3C */
+color: #FFFFFF;
+border-color: transparent;
 }
 
 /* DEFAULT and DISABLED */
 
-ui|clickbutton ui|labelbox,
-ui|clickbutton.isdisabled ui|labelbox {
-#ie background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIwLjEiLz4KICAgIDxzdG9wIG9mZnNldD0iNDklIiBzdG9wLWNvbG9yPSIjZmZmZmZmIiBzdG9wLW9wYWNpdHk9IjAuOTgiLz4KICAgIDxzdG9wIG9mZnNldD0iNTAlIiBzdG9wLWNvbG9yPSIjZDZkNmQ2IiBzdG9wLW9wYWNpdHk9IjEiLz4KICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2Y3ZjdmNyIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgPC9saW5lYXJHcmFkaWVudD4KICA8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSJ1cmwoI2dyYWQtdWNnZy1nZW5lcmF0ZWQpIiAvPgo8L3N2Zz4=);
-background: linear-gradient(to bottom, rgba(255,255,255,0.1) 0%,rgba(255,255,255,0.5) 49%,rgba(214,214,214,1) 50%,rgba(247,247,247,1) 100%); /* W3C */
-border: 1px solid #707070;
+ui|clickbutton ui|labelbox
+{
 border-radius: 4px;
-box-shadow: inset 0px 0px 0px 1px #F3F3F3;
+color: #0EBA7E;
+border: 1px solid #0EBA7E;
+background: #ffffff;
 }
 
 /* HOVER */
 
 ui|clickbutton.hover ui|labelbox {
-border: 1px solid #3C7FB1;
-box-shadow: inset 0px 0px 0px 1px #3AD6FD;
+border-color: #0EBA7E;
+background: linear-gradient(to bottom, #22b77f 0%,#1da370 100%); /* W3C */
+color: #FFFFFF;
+border-color: transparent;
 }
 
-/* TOOLBAR CLICKBUTTONS ..............................................*/
-ui|toolbar ui|clickbutton ui|labelbox,
-ui|toolbar ui|clickbutton.isdisabled ui|labelbox {
-#ie background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2Y5ZjlmOSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iI2ZiZmJmYiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iI2VjZWNlYyIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjgwJSIgc3RvcC1jb2xvcj0iI2Y2ZjZmNiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNlZWVlZWUiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
-background: linear-gradient(to bottom, rgba(249,249,249,1) 0%,rgba(251,251,251,1) 50%,rgba(236,236,236,1) 50%,rgba(246,246,246,1) 80%,rgba(238,238,238,1) 100%); /* W3C */
-border: 1px solid #CECFC4;
-border-radius: 3px;
-box-shadow: inset -1px -1px 1px 0px #CECFC4;
+
+
+/* SELECTOR INDICATOR */
+ui|toolbarbutton ui|combobox:before,
+ui|selector ui|clickbutton ui|labelbox:before {
+content: "";
+position: absolute;
+top: 12px;
+right: 10px;
+width: 0;
+height: 0;
+border-style: solid;
+border-width: 5px 5px 0 5px;
+border-color: #0EBA7E transparent transparent transparent;
 }
 
-ui|toolbar ui|clickbutton.active ui|labelbox {
-border: 1px solid #707070;
+ui|toolbarbutton ui|combobox:after,
+ui|selector ui|clickbutton ui|labelbox:after {
+content: "";
+position: absolute;
+top: 12px;
+right: 11px;
+width: 0;
+height: 0;
+border-style: solid;
+border-width: 4px 4px 0 4px;
+border-color: #fff transparent transparent transparent;
+}
+ui|toolbarbutton.active ui|combobox:before,
+ui|toolbarbutton.hover ui|combobox:before,
+ui|selector ui|clickbutton.hover ui|labelbox:before {
+border-color: #fff transparent transparent transparent;
+}
+
+ui|toolbarbutton.active ui|combobox:after,
+ui|toolbarbutton.hover ui|combobox:after,
+ui|selector ui|clickbutton.hover ui|labelbox:after {
+border-color: #0EBA7E transparent transparent transparent;
+}
+
+
+ui|selector ui|clickbutton.active ui|labelbox:before {
+top: 12px;
+border-width: 0px 5px 5px 5px;
+border-color: transparent transparent #fff transparent;
+}
+
+ui|selector ui|clickbutton.active ui|labelbox:after {
+top: 13px;
+border-width: 0px 4px 4px 4px;
+border-color: transparent transparent #0EBA7E transparent;
 }
 @namespace ui url("http://www.w3.org/1999/xhtml");
 
@@ -100,354 +375,90 @@ ui|tabbox.boxed {
 }
 
 ui|tabs {	
-padding-left: 3px;
+
 }
-ui|tabbox.boxed ui|tabs {	
-padding-left: 0;
-}
-ui|tabs div.tabliner {
-background-color: #FFFFFF;
-background-color: #F6F6F2;
-border-top: 1px solid #B5B5B5;
-border-bottom: 1px solid #B5B5B5;
-z-index: 2;
-}
-ui|tabbox.boxed ui|tabs div.tabliner {
-border: 1px solid #B5B5B5;
-background-color: #FFFFFF;
-border-bottom: none;
-}
+
 ui|tab {
-padding: 0;
-margin-right: -1px;
 z-index: 1;
-color: black; /* should not default to system color because of tab graphics */
+border-width: 1px;
+border-style: solid;
+border-color: #DDDDDD;
+border-radius: 5px 5px 0 0;
+background: #ffffff;
+z-index: 2;
+margin-right: -4px;
+text-transform: uppercase;
+
 }
 ui|tab ui|labelbox {
-padding: 1px 5px 0 1px; /* how did this get unbalanced? */
+
 }
-ui|tabbox.boxed ui|tabpanels {
-background-repeat: repeat-x;
-background-color: #F4F3EE;
-border: 1px solid #B5B5B5;
-border-top: none;
-padding: 12px;
-padding-bottom: 16px;
-background-image: url("${skin}/tabboxes/boxedpanelbackdrop.png");
+
+ui|pagebody > ui|tabbox {
+margin: 0 -14px 0 -14px;
+
 }
+ui|pagebody > ui|tabbox ui|tabpanel {
+padding: 0 14px 0 14px;
+}
+
 
 /* TAB GRAPHICS .................................................................. */
 
 /* tabs on top */
 
+ui|tabbox.tabsontop ui|tabs {
+box-shadow: inset 0px -1px 0px 0px rgba(204,204,204,1);
+
+}
+
 ui|tabbox.tabsontop ui|tab {
-margin-top: 3px;
+padding: 5px 10px 5px 10px;
+color: #ADADAD;
+
 }
 ui|tabbox.tabsontop ui|tab.selected {
-margin-top: 1px;
+color: #323232;
 z-index: 3;
-}
-#region default
-ui|tabbox.tabsontop ui|tab table.matrix td.c,
-ui|tabbox.tabsontop ui|tab table.matrix td.s {
-background-color: #F6F6F2;
-}
-ui|tabbox.tabsontop ui|tab.selected table.matrix td.c,
-ui|tabbox.tabsontop ui|tab.selected table.matrix td.s {
-background-color: #FFFFFF;
-}
-ui|tabbox.tabsontop ui|tab table.matrix td.n {
-#alphabackdrop: url("${skin}/tabboxes/tab-n.png");
-}
-ui|tabbox.tabsontop ui|tab table.matrix td.ne {
-#alphabackdrop: url("${skin}/tabboxes/tab-ne.png");
-}
-ui|tabbox.tabsontop ui|tab table.matrix td.nw {
-#alphabackdrop: url("${skin}/tabboxes/tab-nw.png");
-}
-ui|tabbox.tabsontop ui|tab table.matrix td.e, 
-ui|tabbox.tabsontop ui|tab table.matrix td.se {
-#alphabackdrop: url("${skin}/tabboxes/tab-e.png");
-}
-ui|tabbox.tabsontop ui|tab table.matrix td.w, 
-ui|tabbox.tabsontop ui|tab table.matrix td.sw {
-#alphabackdrop: url("${skin}/tabboxes/tab-w.png");
-}
-ui|tabbox.tabsontop ui|tab.hover table.matrix td.n,
-ui|tabbox.tabsontop ui|tab.selected table.matrix td.n  {
-#alphabackdrop: url("${skin}/tabboxes/tab-on-n.png");
-}
-ui|tabbox.tabsontop ui|tab.selected table.matrix td.e,
-ui|tabbox.tabsontop ui|tab.selected table.matrix td.se {
-#alphabackdrop: url("${skin}/tabboxes/tab-on-e.png");
-}
-ui|tabbox.tabsontop ui|tab.selected table.matrix td.w,
-ui|tabbox.tabsontop ui|tab.selected table.matrix td.sw {
-#alphabackdrop: url("${skin}/tabboxes/tab-on-w.png");
-}
-ui|tabbox.tabsontop ui|tab.hover table.matrix td.ne,
-ui|tabbox.tabsontop ui|tab.selected table.matrix td.ne {
-#alphabackdrop: url("${skin}/tabboxes/tab-on-ne.png");
-}
-ui|tabbox.tabsontop ui|tab.hover table.matrix td.nw,
-ui|tabbox.tabsontop ui|tab.selected table.matrix td.nw {
-#alphabackdrop: url("${skin}/tabboxes/tab-on-nw.png");
-}
-#endregion
-
-/*
-#region osx
-ui|tabbox.tabsontop ui|tab table.matrix td.c,
-ui|tabbox.tabsontop ui|tab table.matrix td.s {
-background-color: #F6F6F2;
-}
-ui|tabbox.tabsontop ui|tab.selected table.matrix td.c,
-ui|tabbox.tabsontop ui|tab.selected table.matrix td.s {
-background-color: #FFFFFF;
-}
-ui|tabbox.tabsontop ui|tab table.matrix td.n {
-#alphabackdrop: url("${skin}/tabboxes/tab-n.png");
-}
-ui|tabbox.tabsontop ui|tab table.matrix td.ne {
-#alphabackdrop: url("${skin}/tabboxes/tab-ne.png");
-}
-ui|tabbox.tabsontop ui|tab table.matrix td.nw {
-#alphabackdrop: url("${skin}/tabboxes/tab-nw.png");
-}
-ui|tabbox.tabsontop ui|tab table.matrix td.e, 
-ui|tabbox.tabsontop ui|tab table.matrix td.se {
-#alphabackdrop: url("${skin}/tabboxes/tab-e.png");
-}
-ui|tabbox.tabsontop ui|tab table.matrix td.w, 
-ui|tabbox.tabsontop ui|tab table.matrix td.sw {
-#alphabackdrop: url("${skin}/tabboxes/tab-w.png");
-}
-ui|tabbox.tabsontop ui|tab.hover table.matrix td.n,
-ui|tabbox.tabsontop ui|tab.selected table.matrix td.n  {
-#alphabackdrop: url("${skin}/tabboxes/tab-on-n.png");
-}
-ui|tabbox.tabsontop ui|tab.selected table.matrix td.e,
-ui|tabbox.tabsontop ui|tab.selected table.matrix td.se {
-#alphabackdrop: url("${skin}/tabboxes/tab-on-e.png");
-}
-ui|tabbox.tabsontop ui|tab.selected table.matrix td.w,
-ui|tabbox.tabsontop ui|tab.selected table.matrix td.sw {
-#alphabackdrop: url("${skin}/tabboxes/tab-on-w.png");
-}
-ui|tabbox.tabsontop ui|tab.hover table.matrix td.ne,
-ui|tabbox.tabsontop ui|tab.selected table.matrix td.ne {
-#alphabackdrop: url("${skin}/tabboxes/tab-on-ne.png");
-}
-ui|tabbox.tabsontop ui|tab.hover table.matrix td.nw,
-ui|tabbox.tabsontop ui|tab.selected table.matrix td.nw {
-#alphabackdrop: url("${skin}/tabboxes/tab-on-nw.png");
-}
-#endregion
-*/
-
-#region osx
-ui|tabbox.tabsontop ui|tab {
-filter: url("${root}/templates/grayscalefilter.xml#grayscale");	
-}
-#endregion
-
-ui|tabbox.tabsontop ui|tab table.matrix td.c {
-#alphabackdrop: url("${skin}/tabboxes/vista/tab-c.png");
-}
-ui|tabbox.tabsontop ui|tab table.matrix td.n {
-#alphabackdrop: url("${skin}/tabboxes/vista/tab-n.png");
-}
-ui|tabbox.tabsontop ui|tab table.matrix td.s {
-#alphabackdrop: url("${skin}/tabboxes/vista/tab-s.png");
-}
-ui|tabbox.tabsontop ui|tab table.matrix td.ne {
-#alphabackdrop: url("${skin}/tabboxes/vista/tab-ne.png");
-}
-ui|tabbox.tabsontop ui|tab table.matrix td.nw {
-#alphabackdrop: url("${skin}/tabboxes/vista/tab-nw.png");
-}
-ui|tabbox.tabsontop ui|tab table.matrix td.e {
-#alphabackdrop: url("${skin}/tabboxes/vista/tab-e.png");
-}
-ui|tabbox.tabsontop ui|tab table.matrix td.se {
-#alphabackdrop: url("${skin}/tabboxes/vista/tab-se.png");
-}
-ui|tabbox.tabsontop ui|tab table.matrix td.w {
-#alphabackdrop: url("${skin}/tabboxes/vista/tab-w.png");
-}
-ui|tabbox.tabsontop ui|tab table.matrix td.sw {
-#alphabackdrop: url("${skin}/tabboxes/vista/tab-sw.png");
+border-color: #CCCCCC #CCCCCC transparent #CCCCCC;
 }
 
 
-ui|tabbox.tabsontop ui|tab.selected table.matrix td.c,
-ui|tabbox.tabsontop ui|tab.selected table.matrix td.s {
-background-color: white;
-background-image: none !important;
-_filter: none;
-}
-ui|tabbox.tabsontop ui|tab.selected table.matrix td.n {
-#alphabackdrop: url("${skin}/tabboxes/vista/tab-active-n.png");
-}
-ui|tabbox.tabsontop ui|tab.selected table.matrix td.ne {
-#alphabackdrop: url("${skin}/tabboxes/vista/tab-active-ne.png");
-}
-ui|tabbox.tabsontop ui|tab.selected table.matrix td.nw {
-#alphabackdrop: url("${skin}/tabboxes/vista/tab-active-nw.png");
-}
-ui|tabbox.tabsontop ui|tab.selected table.matrix td.e,
-ui|tabbox.tabsontop ui|tab.selected table.matrix td.se {
-#alphabackdrop: url("${skin}/tabboxes/vista/tab-active-e.png");
-}
-ui|tabbox.tabsontop ui|tab.selected table.matrix td.w,
-ui|tabbox.tabsontop ui|tab.selected table.matrix td.sw {
-#alphabackdrop: url("${skin}/tabboxes/vista/tab-active-w.png");
-}
 
-
-ui|tabbox.tabsontop ui|tab.hover table.matrix td.c {
-#alphabackdrop: url("${skin}/tabboxes/vista/tab-hover-c.png");
-}
-ui|tabbox.tabsontop ui|tab.hover table.matrix td.n {
-#alphabackdrop: url("${skin}/tabboxes/vista/tab-hover-n.png");
-}
-ui|tabbox.tabsontop ui|tab.hover table.matrix td.ne {
-#alphabackdrop: url("${skin}/tabboxes/vista/tab-hover-ne.png");
-}
-ui|tabbox.tabsontop ui|tab.hover table.matrix td.nw {
-#alphabackdrop: url("${skin}/tabboxes/vista/tab-hover-nw.png");
-}
-ui|tabbox.tabsontop ui|tab.hover table.matrix td.e {
-#alphabackdrop: url("${skin}/tabboxes/vista/tab-hover-e.png");
-}
-ui|tabbox.tabsontop ui|tab.hover table.matrix td.w {
-#alphabackdrop: url("${skin}/tabboxes/vista/tab-hover-w.png");
-}
-ui|tabbox.tabsontop ui|tab.hover table.matrix td.se {
-#alphabackdrop: url("${skin}/tabboxes/vista/tab-hover-se.png");
-}
-ui|tabbox.tabsontop ui|tab.hover table.matrix td.sw {
-#alphabackdrop: url("${skin}/tabboxes/vista/tab-hover-sw.png");
-}
-ui|tabbox.tabsontop ui|tab.hover table.matrix td.s {
-background-color: #A7D9F5;
-background-image: none !important;
-_filter: none;
-}
-
-
-/* tabs below NOT USED! */
-
-ui|tabbox.tabsbelow ui|tab {
-margin-top: 0;
-margin-bottom: 20px;
-}
-ui|tabbox.tabsbelow ui|tab.selected {
-margin-top: 2px;
-z-index: 3;
-}
-ui|tabbox.tabsbelow ui|tab table.matrix td.c,
-ui|tabbox.tabsbelow ui|tab table.matrix td.n {
-background-color: #F6F6F2;
-}
-ui|tabbox.tabsbelow ui|tab table.matrix td.e, 
-ui|tabbox.tabsbelow ui|tab table.matrix td.ne {
-#alphabackdrop: url("${skin}/tabboxes/tab-e.png");
-}
-ui|tabbox.tabsbelow ui|tab table.matrix td.w, 
-ui|tabbox.tabsbelow ui|tab table.matrix td.nw {
-#alphabackdrop: url("${skin}/tabboxes/tab-w.png");
-}
-ui|tabbox.tabsbelow ui|tab table.matrix td.se {
-#alphabackdrop: url("${skin}/tabboxes/tab-se.png");
-}
-ui|tabbox.tabsbelow ui|tab table.matrix td.sw {
-#alphabackdrop: url("${skin}/tabboxes/tab-below-sw.png");
-}
-ui|tabbox.tabsbelow ui|tab table.matrix td.se {
-#alphabackdrop: url("${skin}/tabboxes/tab-below-se.png");
-}
-ui|tabbox.tabsbelow ui|tab table.matrix td.s {
-#alphabackdrop: url("${skin}/tabboxes/tab-below-s.png");
-}
-ui|tabbox.tabsbelow ui|tab.selected table.matrix td.e,
-ui|tabbox.tabsbelow ui|tab.selected table.matrix td.ne {
-#alphabackdrop: url("${skin}/tabboxes/tab-on-e.png");
-}
-ui|tabbox.tabsbelow ui|tab.selected table.matrix td.w,
-ui|tabbox.tabsbelow ui|tab.selected table.matrix td.nw {
-#alphabackdrop: url("${skin}/tabboxes/tab-on-w.png");
-}
-ui|tabbox.tabsbelow ui|tab.selected table.matrix td.c,
-ui|tabbox.tabsbelow ui|tab.selected table.matrix td.n {
-background-color: #FFFFFF;
-}
-ui|tabbox.tabsbelow ui|tab.hover table.matrix td.sw,
-ui|tabbox.tabsbelow ui|tab.selected table.matrix td.sw {
-#alphabackdrop: url("${skin}/tabboxes/tab-on-sw.png");
-}
-ui|tabbox.tabsbelow ui|tab.hover table.matrix td.se,
-ui|tabbox.tabsbelow ui|tab.selected table.matrix td.se {
-#alphabackdrop: url("${skin}/tabboxes/tab-on-se.png");
-}
-ui|tabbox.tabsbelow ui|tab.hover table.matrix td.s,
-ui|tabbox.tabsbelow ui|tab.selected table.matrix td.s {
-#alphabackdrop: url("${skin}/tabboxes/tab-on-s.png");
-}
-
-ui|tabbox td.w,
-ui|tabbox td.e{
-background-repeat: repeat-y;
-}
-
-ui|tabbox td.n,
-ui|tabbox td.s {
-background-repeat: repeat-x;
-}
-
-ui|tabbox td.nw,
-ui|tabbox td.ne,
-ui|tabbox td.se,
-ui|tabbox td.sw{
-background-repeat: no-repeat;
-}
 @namespace ui url("http://www.w3.org/1999/xhtml");
 
-#region default
-ui|titlebar {
-background-color: InactiveCaption;
-color: Inactive$(color:captiontext);
-#alphabackdrop: url("${skin}/docks/tabbackdrop.png");
-}
-ui|dialog.active ui|titlebar {
-background-color: $(color:activecaption);
-color: $(color:captiontext);
-}
-#endregion
 
-#region vista
-ui|dialog ui|titlebar {
-margin: 3px 3px 0 3px;
-#alphabackdrop: url("${skin}/dialogs/vista/dialog-titlebar.png");
+ui|titlebar {
 }
+
 ui|dialog.active ui|titlebar {
-#alphabackdrop: url("${skin}/dialogs/vista/dialog-active-titlebar.png");	
 }
+
+
+
+ui|dialog ui|titlebar {
+
+}
+
+ui|dialog.active ui|titlebar {
+}
+
 ui|dialog ui|titlebarbody {
-padding: 2px 3px 6px 5px;
-_padding: 5px 3px 6px 5px;
+padding: 13px 15px 17px 0px;
 }
+
 ui|dialog ui|titlebar ui|controlgroup {
 position: relative;
-top: 2px;
 }
+
 ui|dialog ui|titlebar ui|labeltext {
-color: white;
 position: relative;
-top: 1px;
 overflow: hidden;
 text-overflow: ellipsis;
-
+font-size: 14px;
+text-transform: uppercase;
+font-weight: normal;
+color: #0EBA7E;
 }
 
 ui|dialog ui|titlebar ui|labelbox.dialogtitle,
@@ -455,347 +466,367 @@ ui|dialog ui|titlebar ui|labelbox.dialogtitle ui|labelbody,
 ui|dialog ui|titlebar ui|labelbox.dialogtitle ui|labeltext {
 float: none;
 }
-
-#endregion
-
-#region osx
-ui|dialog ui|titlebar {
-margin: 3px 3px 0 3px;
-#alphabackdrop: url("${skin}/dialogs/vista/dialog-titlebar.png");
-}
-ui|dialog.active ui|titlebar {
-#alphabackdrop: url("${skin}/dialogs/osx/dialog-active-titlebar.png");	
-}
-ui|dialog ui|titlebarbody {
-padding: 2px 3px 6px 5px;
-_padding: 5px 3px 6px 5px;
-}
-ui|dialog ui|titlebar ui|controlgroup {
-position: relative;
-top: 2px;
-}
-ui|dialog ui|titlebar ui|labeltext {
-position: relative;
-top: 1px;
-}
-ui|dialog ui|titlebar ui|controlgroup {
-float: left;
-position: relative;
-z-index: 23;
-}
-ui|dialog ui|titlebar ui|labelbox.dialogtitle,
-ui|dialog ui|titlebar ui|labelbox.dialogtitle ui|labelbody,
-ui|dialog ui|titlebar ui|labelbox.dialogtitle ui|labeltext {
-display: block;
-float: none;
-width: 100%;
-text-align: center;
-}
-ui|dialog ui|titlebar ui|labelbox.dialogtitle ui|labeltext {
-position: relative;
-left: -13px;
-}
-#endregion
+@namespace url("http://www.w3.org/1999/xhtml");
+@namespace url("http://www.w3.org/2000/svg");
 @namespace ui url("http://www.w3.org/1999/xhtml");
+
 
 ui|treenode ui|labelbox.open {
 background-image: url("${skin}/trees/icon-treenode-minus.png");
 }
+
 ui|treenode ui|labelbox.closed {
 background-image: url("${skin}/trees/icon-treenode-plus.png");
+}
+
+ui|treebody {
+background: #EFEFEF;
+}
+
+ui|treenode {
+margin: 0;
+padding: 0 8px;
+position: relative;
+}
+
+ui|treenode ui|labelbox {
+float: none;
+height: 28px;
+color: #999;
+
+}
+
+ui|treenode ui|labelbox ui|labeltext {
+color: #333333;
+}
+
+
+/*ui|treenode ui|labelbox.focused ui|labeltext {
+background-color: $(color:threedface) !important; 
+background-color: $(color:threedlightshadow) !important;
+}*/
+
+ui|tree.focused ui|treenode ui|labelbox.focused ui|labelbody{
+color: #21B980;
+
+}
+ui|tree.focused ui|treenode ui|labelbox.focused ui|labeltext {
+background-color: #21B980 !important;
+color: #fff;
+}
+
+
+ui|treenode ui|labelbody {
+padding-left: 18px;
+}
+
+
+ui|treenode ui|labelbox svg{
+width: 18px;
+height: 18px;
+margin-left: -18px;
+}
+
+
+ui|treenode ui|treenode::before, 
+ui|treenode ui|treenode::after {
+content: '';
+position: absolute;
+}
+
+ui|treenode ui|treenode::before {
+border-top: 1px solid #999;
+top: 9px;
+width: 30px;
+height: 0;
+left: 23px;
+}
+ui|treenode ui|treenode.open::before,
+ui|treenode ui|treenode.closed::before {
+width: 20px;
+}
+
+
+ui|treenode ui|treenode::after {
+border-left: 1px solid #999;
+height: 100%;
+width: 0px;
+top: -6px;
+left: 23px;
+}
+
+ui|treenode ui|treenode:last-of-type::after{
+height: 16px;
+}
+
+
+
+
+/* Template selector */
+
+ui|toolbar#templatetoolbar ui|toolbarbody,
+ui|toolbar#templatetoolbar ui|toolbargroup,
+ui|toolbar#templatetoolbar ui|selector {
+width: 100%;
+}
+/* temporary */
+ui|toolbar#templatetoolbar > ui|toolbargroup {
+display: none;
+}
+
+ui|tree#templatetree ui|treebody{
+background: #fff;
+padding-top: 19px;
+}
+
+ui|tree#templatetree ui|treenode {
+padding: 1px 4px;
+}
+
+ui|tree#templatetree ui|labelbody {
+background-position: -200px -200px;
+position: relative;
+}
+
+ui|tree#templatetree ui|labelbody:before {
+box-sizing: border-box;
+content: '';
+position: absolute;
+width: 16px;
+height: 16px;
+border: 1px solid #DDDDDD;
+border-radius: 8px;
+left: 0px;
+top: 4px;
+
+}
+ui|tree#templatetree ui|labelbox.focused ui|labelbody:after {
+content: '';
+position: absolute;
+width: 8px;
+height: 8px;
+border-radius: 4px;
+background: #23B881;
+left: 4px;
+top: 8px;
+}
+
+ui|tree#templatetree ui|treenode ui|labelbox.focused ui|labeltext {
+background: transparent !important;
+color: #000;
+}
+
+ui|tree#templatetree ui|labelbody svg{
+display: none;
 }
 @namespace ui url("http://www.w3.org/1999/xhtml");
 
 ui|explorersplitter,
 ui|explorertoolbarbutton {
-border-bottom: 1px solid $(color:threedshadow);
+
 }
+
+ui|explorermenu ui|toolbarbutton,
 ui|explorertoolbarbutton {
 float: left;
 padding: 4px;
+border: 1px solid transparent;
+margin: 8px 2px 8px 13px;
+padding: 7px 20px 10px 14px;
+cursor: pointer;
 width: 100%;
-#region default
-#alphabackdrop: url("${skin}/explorer/button.png");
-#endregion
-#region osx
-#alphabackdrop: url("${skin}/explorer/button.png");
-#endregion
-#region vista
-#alphabackdrop: url("${skin}/explorer/vista/button.png");
-#endregion
 }
 
+ui|explorermenu ui|toolbarbutton {
+background: transparent;
+color: #666666;
+}
+
+ui|explorertoolbarbutton {
+filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale"); /* Firefox 10+, Firefox on Android */
+filter: gray; /* IE6-9 */
+-webkit-filter: grayscale(100%); /* Chrome 19+, Safari 6+, Safari 6+ iOS */
+}
+ui|explorermenu ui|toolbarbutton ui|labelbody,
+ui|explorertoolbarbutton ui|labelbody {
+color: #666666;
+text-transform: uppercase;
+font-weight: bold;
+font-family: Arial;
+cursor: pointer;
+}
+
+ui|explorermenu ui|toolbarbutton ui|labelbox,
 ui|explorertoolbarbutton ui|labelbox {
 padding-left: 1px;
+cursor: pointer;
 }
+
+
+
+
+
+
 ui|explorertoolbarbutton.hover {
-background-color: $(color:threedhighlight);
+filter: none;
+-webkit-filter: none;
+
 }
 ui|explorertoolbarbutton.active {
-#region default
-background-color: $(color:highlight);
-border-bottom-color: $(color:highlight);
-#endregion
-#region osx
-/*
-background-color: $(color:highlight);
-border-bottom-color: $(color:highlight);
-*/
-background-color: $(color:activecaption);
-border-bottom-color: $(color:threedshadow);
-#endregion
-#region vista
-border-bottom-color: #658fD5;
-#endregion
+filter: none;
+-webkit-filter: none;
+
+
 }
 ui|explorertoolbarbutton.active ui|labeltext {
-#region osx
-color: $(color:captiontext);
-#endregion
-#region default
-color: $(color:highlighttext);
-#endregion
-#region vista
-color: white;
-#endregion
+
+color: #21B980;
+
 }
-ui|explorerbar {
-border-top: 1px solid $(color:threedhighlight);
+ui|explorertoolbar {
+
+padding: 0px;
+
 }
 ui|explorertoolbar ui|toolbargroup {
 margin: 0;
 padding: 0;
 }
+
+ui|explorermenu {
+background: #333333;
+}
 ui|explorermenu ui|toolbar {
 border: none;
 }
 
+ui|explorermenu ui|toolbarbutton,
+ui|explorertoolbarbutton {
+background: none !important;
 
-ui|explorertoolbarbutton.active {
-/* IE9 SVG, needs conditional override of 'filter' to 'none' */
-background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2FjYzJlOCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjMzJSIgc3RvcC1jb2xvcj0iIzkzYWZkYyIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjMzJSIgc3RvcC1jb2xvcj0iIzc2OWFkMyIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM5YmI1ZGYiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
-background: linear-gradient(to bottom, #acc2e8 0%,#93afdc 33%,#769ad3 33%,#9bb5df 100%); /* W3C */
+}
+
+ui|explorermenu ui|toolbarbutton ui|labelbody,
+ui|explorertoolbarbutton ui|labelbody {
+color: #9A9A9A;
+}
+
+ui|explorermenu ui|toolbarbutton ui|labeltext,
+ui|explorertoolbarbutton ui|labeltext {
+line-height: 22px;
+}
+
+ui|explorermenu ui|toolbarbutton svg,
+ui|explorermenu ui|toolbarbutton ui|labelbox.imageonly svg,
+ui|explorertoolbarbutton svg {
+width: 21px;
+height: 21px;
+margin-left: -31px;
+}
+
+ui|explorermenu ui|toolbarbutton.active ui|labelbody,
+ui|explorermenu ui|toolbarbutton.hover ui|labelbody,
+ui|explorertoolbarbutton.active ui|labelbody,
+ui|explorertoolbarbutton.hover ui|labelbody {
+color: #23B880;
 }
 @namespace ui url("http://www.w3.org/1999/xhtml");
 
 ui|dialog {
 -vendor-box-shadow: 4px 4px 16px rgba(0,0,0,0.75);
-#region osx
--vendor-box-shadow: 4px 4px 32px rgba(0,0,0,0.75);
-#endregion
+border-radius: 5px;
+border: 1px solid #CCCCCC;
+}
+
+ui|dialoghead {
+padding: 3px;
+border-bottom: 1px solid #CCCCCC;
+background: #FFFFFF;
 }
 
 ui|dialogbody {
-border: 2px solid InactiveCaption;
-border-top: none;
 }
+
 ui|dialog.active ui|dialogbody {
-border-color: $(color:activecaption);
 }
 
-#region vista
+
 
 ui|dialog {
-background-color: transparent;
-#moz background-color: rgba(0,0,0,0.75);
--vendor-border-radius: 4px;
-/*
--vendor-transition-property: opacity;
--vendor-transition-duration: 0.15s;
-*/
 }
+
 ui|dialogbody,
-ui|dialog.active ui|dialogbody,
-ui|dialogmatrix td,
-ui|dialog.active table.dialogmatrix td {
-background-color: transparent;
-border-color: transparent;
+ui|dialog.active ui|dialogbody {
+
 }
+
 ui|dialogbody {
-border-width: 3px; /* broad vista borders */
 }
-ui|dialog.active table.dialogmatrix td.c {
-background-color: transparent;
-}
+
 
 /* DEFAULT */
 
-ui|dialog table.dialogmatrix td.c {
-background-color: transparent;
-}
-ui|dialog table.dialogmatrix td.n {
-#alphabackdrop: url("${skin}/dialogs/vista/dialog-n.png");
-}
-ui|dialog table.dialogmatrix td.s {
-#alphabackdrop: url("${skin}/dialogs/vista/dialog-s.png");
-}
-ui|dialog table.dialogmatrix td.e {
-#alphabackdrop: url("${skin}/dialogs/vista/dialog-e.png");
-}
-ui|dialog table.dialogmatrix td.w {
-#alphabackdrop: url("${skin}/dialogs/vista/dialog-w.png");
-}
-ui|dialog table.dialogmatrix td.ne {
-#alphabackdrop: url("${skin}/dialogs/vista/dialog-ne.png");
-}
-ui|dialog table.dialogmatrix td.nw {
-#alphabackdrop: url("${skin}/dialogs/vista/dialog-nw.png");
-}
-ui|dialog table.dialogmatrix td.se {
-#alphabackdrop: url("${skin}/dialogs/vista/dialog-se.png");
-}
-ui|dialog table.dialogmatrix td.sw {
-#alphabackdrop: url("${skin}/dialogs/vista/dialog-sw.png");
+ui|dialog {
 }
 
 
 /* ACTIVE */
 
-ui|dialog.active table.dialogmatrix td.n {
-#alphabackdrop: url("${skin}/dialogs/vista/dialog-active-n.png");
-}
-ui|dialog.active table.dialogmatrix td.s {
-#alphabackdrop: url("${skin}/dialogs/vista/dialog-active-s.png");
-}
-ui|dialog.active table.dialogmatrix td.e {
-#alphabackdrop: url("${skin}/dialogs/vista/dialog-active-e.png");
-}
-ui|dialog.active table.dialogmatrix td.w {
-#alphabackdrop: url("${skin}/dialogs/vista/dialog-active-w.png");
-}
-ui|dialog.active table.dialogmatrix td.ne {
-#alphabackdrop: url("${skin}/dialogs/vista/dialog-active-ne.png");
-}
-ui|dialog.active table.dialogmatrix td.nw {
-#alphabackdrop: url("${skin}/dialogs/vista/dialog-active-nw.png");
-}
-ui|dialog.active table.dialogmatrix td.se {
-#alphabackdrop: url("${skin}/dialogs/vista/dialog-active-se.png");
-}
-ui|dialog.active table.dialogmatrix td.sw {
-#alphabackdrop: url("${skin}/dialogs/vista/dialog-active-sw.png");
-}
-
-#endregion
-
-
-#region osx
-
-ui|dialog {
-background-color: transparent;
--vendor-border-radius: 4px;
-/*
--vendor-border-radius-bottomleft: 0;
--vendor-border-radius-bottomright: 0;
-*/
-}
-ui|dialogbody,
-ui|dialog.active ui|dialogbody,
-ui|dialogmatrix td,
-ui|dialog.active table.dialogmatrix td {
-background-color: transparent;
-border-color: transparent;
-}
-ui|dialogbody {
-border-width: 3px; /* no osx borders */
-border-width: 0;
-
-}
-ui|dialog.active table.dialogmatrix td.c {
-background-color: transparent;
-}
-
-/* DEFAULT */
-
-ui|dialog table.dialogmatrix td.c {
-background-color: transparent;
-}
-ui|dialog table.dialogmatrix td.n {
-#alphabackdrop: url("${skin}/dialogs/vista/dialog-n.png");
-}
-ui|dialog table.dialogmatrix td.s {
-#alphabackdrop: url("${skin}/dialogs/vista/dialog-s.png");
-}
-ui|dialog table.dialogmatrix td.e {
-#alphabackdrop: url("${skin}/dialogs/vista/dialog-e.png");
-}
-ui|dialog table.dialogmatrix td.w {
-#alphabackdrop: url("${skin}/dialogs/vista/dialog-w.png");
-}
-ui|dialog table.dialogmatrix td.ne {
-#alphabackdrop: url("${skin}/dialogs/vista/dialog-ne.png");
-}
-ui|dialog table.dialogmatrix td.nw {
-#alphabackdrop: url("${skin}/dialogs/vista/dialog-nw.png");
-}
-ui|dialog table.dialogmatrix td.se {
-#alphabackdrop: url("${skin}/dialogs/vista/dialog-se.png");
-}
-ui|dialog table.dialogmatrix td.sw {
-#alphabackdrop: url("${skin}/dialogs/vista/dialog-sw.png");
+ui|dialog.active {
 }
 
 
-/* ACTIVE */
 
-ui|dialog.active table.dialogmatrix td.n {
-#alphabackdrop: url("${skin}/dialogs/osx/dialog-active-n.png");
-}
-ui|dialog.active table.dialogmatrix td.s {
-#alphabackdrop: url("${skin}/dialogs/osx/dialog-active-s.png");
-}
-ui|dialog.active table.dialogmatrix td.e {
-#alphabackdrop: url("${skin}/dialogs/osx/dialog-active-e.png");
-}
-ui|dialog.active table.dialogmatrix td.w {
-#alphabackdrop: url("${skin}/dialogs/osx/dialog-active-w.png");
-}
-ui|dialog.active table.dialogmatrix td.ne {
-#alphabackdrop: url("${skin}/dialogs/osx/dialog-active-ne.png");
-}
-ui|dialog.active table.dialogmatrix td.nw {
-#alphabackdrop: url("${skin}/dialogs/osx/dialog-active-nw.png");
-}
-ui|dialog.active table.dialogmatrix td.se {
-/*#alphabackdrop: url("${skin}/dialogs/osx/dialog-active-se.png");*/
-background-color: rgb(127,127,127);
-
-}
-ui|dialog.active table.dialogmatrix td.sw {
-#alphabackdrop: url("${skin}/dialogs/osx/dialog-active-sw.png");
-background-color: rgb(127,127,127);
+ui|dialogpage ui|labelbox.fieldgrouplabel
+ui|wizardpage ui|labelbox.fieldgrouplabel {
+display: none;
 }
 
-#endregion
+ui|dialogpage ui|fieldgroup.first,
+ui|wizardpage ui|fieldgroup.first {
+margin-top: 0px;
+}
+
+ui|dialogpage ui|fieldgroup,
+ui|wizardpage ui|fieldgroup {
+border: 0px;
+background: transparent;
+width: auto;
+padding: 6px 1px 27px 13px;
+}
 @namespace url("http://www.w3.org/1999/xhtml");
+@namespace url("http://www.w3.org/2000/svg");
 @namespace ui url("http://www.w3.org/1999/xhtml");
 
-/*
-#region vista
-ui|dialogpage {
-padding: 14px 13px 13px 13px;
+ui|dialogtoolbar {
+background-color: #FFFFFF;
+border-top: 1px solid #E1E1E1;
 }
-#endregion
-*/
+
+
+
+
 
 /* STANDARD DIALOGS ................................................................*/
 
 ui|dialogpage.question ui|dialogvignette,
 ui|dialogvignette.question {
-#alphabackdrop: url("${skin}/dialogpages/question_32.png");
+color: #EFAD57;
 }
 ui|dialogpage.warning ui|dialogvignette,
 ui|dialogvignette.warning {
-#alphabackdrop: url("${skin}/dialogpages/warning_32.png");
+color: #EFAD57;
 }
 ui|dialogpage.message ui|dialogvignette,
 ui|dialogvignette.message {
-#alphabackdrop: url("${skin}/dialogpages/message_32.png");
+color: #5FC0DC;
 }
 ui|dialogpage.error ui|dialogvignette,
 ui|dialogvignette.error {
-#alphabackdrop: url("${skin}/dialogpages/error_32.png");
+color: #D75553;
 }
+
+
 @namespace url("http://www.w3.org/1999/xhtml");
 @namespace ui url("http://www.w3.org/1999/xhtml");
 
@@ -813,54 +844,89 @@ right: -1px;
 }
 
 ui|fieldgroup {
-border-left:  2px groove #FFF;
-border-right:  2px groove #FFF;
-border-bottom:  2px groove #FFF;
-border-radius: 0 0 5px 5px;
+border: 1px solid #E5E5E5;
+border-radius: 5px;
+background: #F7F7F7;
 }
 
 ui|fieldgroup.nolabel {
-border:  2px groove #FFF;
-border-radius: 5px;
+
 }
 
 
-ui|labelbox.fieldgrouplabel ui|labelbody:before {
-content:"";
-display: block;
-height: 16px;
-width: 12px;
-float: left;
-border-top:  2px groove #FFF;
-border-left:  2px groove #FFF;
-border-radius: 5px 0 0 0;
-margin-top: 7px;
+ui|labelbox.fieldgrouplabel {
+color: #23B880;
+text-transform: uppercase;
+font-style: italic;
+font-weight: bold;
 }
 
-ui|labelbox.fieldgrouplabel > div {
-border-top:  2px groove #FFF;
-border-right:  2px groove #FFF;
-border-radius: 0 5px 0 0;
-margin-top: 7px;
+
+/* *** FIELD HELP *** */
+
+ui|fieldhelp ui|clickbutton.fieldhelp{
+
+}
+ui|fieldhelp ui|clickbutton.fieldhelp ui|labelbox {
+border-color: transparent;
+background: transparent !important;
+}
+
+ui|fieldhelp ui|clickbutton.fieldhelp ui|labelbody {
+background-position: -32px -32px;
+background-color: transparent;
+}
+
+
+ui|fieldhelp ui|clickbutton.fieldhelp:after {
+content: "?";
+width: 16px;
 height: 16px;
-overflow: hidden;
+color: white;
+position: absolute;
+top: 4px;
+left: 4px;
+background: #CDCDCF;
+border-radius: 8px;
+font-size: 11px;
+text-align: center;
+line-height: 16px;
+font-weight: normal;
+font-family: Verdana;
+}
+
+ui|fieldhelp ui|clickbutton.fieldhelp.active:after,
+ui|fieldhelp ui|clickbutton.fieldhelp.hover:after {
+background: #808080;
+}
+
+
+
+ui|fielddesc {
+color: #999999;
+
 }
 
 
 ui|tabbox.boxed ui|fieldgroup {
-border-left:  1px solid #B5B5B5;
-border-right:  1px solid #B5B5B5;
-border-bottom:  1px solid #B5B5B5;
+
 }
 
 ui|tabbox.boxed ui|labelbox.fieldgrouplabel ui|labelbody:before {
-border-top:  1px solid #B5B5B5;
-border-left:  1px solid #B5B5B5;
+
 }
 
 ui|tabbox.boxed ui|labelbox.fieldgrouplabel > div {
-border-top:  1px solid #B5B5B5;
-border-right:  1px solid #B5B5B5;
+
+}
+
+ui|selector ui|clickbutton ui|labelbox {
+border-color: #CCCCCC;
+}
+
+ui|multiselector ui|box div.selected {
+background: #0EBA7E;
+color: #FFF;
 }
 @namespace ui url("http://www.w3.org/1999/xhtml");
 @namespace url("http://www.w3.org/1999/xhtml");
