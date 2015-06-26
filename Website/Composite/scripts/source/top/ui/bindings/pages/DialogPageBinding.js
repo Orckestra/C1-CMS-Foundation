@@ -173,7 +173,7 @@ DialogPageBinding.prototype.onBindingAttach = function () {
  */
 DialogPageBinding.prototype.setPageArgument = function (arg) {
 
-	DialogPageBinding.superclass.setPageArgument.call(this);
+	DialogPageBinding.superclass.setPageArgument.call(this, arg);
 
 	var image = arg.image;
 	if (image)
