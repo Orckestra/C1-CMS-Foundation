@@ -68,7 +68,7 @@ LabelBinding.spriteLoad = function () {
 
 	if (!LabelBinding.spriteLoading) {
 		LabelBinding.spriteLoading = true;
-		var request = DOMUtil.getXMLHTTPRequest();
+		var request = new XMLHttpRequest();
 		request.open('GET', Resolver.resolve(LabelBinding.SPRITE_PATH));
 		request.onload = onspriteload;
 		request.send();
