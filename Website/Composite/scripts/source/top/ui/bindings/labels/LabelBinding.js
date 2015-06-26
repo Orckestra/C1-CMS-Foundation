@@ -8,9 +8,118 @@ LabelBinding.superclass = Binding.prototype;
  */
 LabelBinding.DIALOG_INDECATOR_SUFFIX = String.fromCharCode ( 8230 ); // "…".charCodeAt ( 0 );
 LabelBinding.DEFAULT_IMAGE = "${root}/images/blank.png";
+LabelBinding.SPRITE_PATH = "${root}/images/sprite.svg";
 LabelBinding.EXPLORER_IMAGE_FILTER = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='${url}',sizingMethod='crop');"
 LabelBinding.CLASSNAME_GRAYTEXT = "graytext";
 LabelBinding.CLASSNAME_FLIPPED = "flipped";
+
+
+/**
+ * SVG Images
+ * @type {Element}
+ */
+LabelBinding.sprites = null;
+
+/**
+ * Sprite whiting to load
+ * @type {Element}
+ */
+LabelBinding.spritesQueue = new Map();
+
+
+/**
+ * Indicate that loading images starterd
+ * @type {Element}
+ */
+LabelBinding.spriteLoading = false;
+
+/**
+ * Load SVG images 
+ */
+LabelBinding.spriteLoad = function () {
+
+	function onspriteload() {
+		var request = this, sprites = document.createElement('x');
+		sprites.innerHTML = request.responseText;
+		var uses = sprites.querySelectorAll("use");
+		for (var i = 0; i < uses.length; ++i) {
+			var use = uses[i];
+			var def = use.parentNode;
+			var hash = use.getAttribute('xlink:href').split('#')[1];
+			var target = sprites.querySelector('#' + hash);
+			if (target) {
+				var clone = target.cloneNode(true);
+				clone.id = def.id;
+				def.parentNode.replaceChild(clone, def);
+			}
+		}
+		LabelBinding.sprites = sprites;
+		LabelBinding.spriteLoading = false;
+
+		LabelBinding.spritesQueue.each(function (key, image) {
+			var binding = UserInterface.getBindingByKey(key);
+			if(binding != null ) {
+				LabelBinding.setImageSvg(binding, image);
+			}
+		});
+
+		LabelBinding.spritesQueue.empty();
+	}
+
+	if (!LabelBinding.spriteLoading) {
+		LabelBinding.spriteLoading = true;
+		var request = DOMUtil.getXMLHTTPRequest();
+		request.open('GET', Resolver.resolve(LabelBinding.SPRITE_PATH));
+		request.onload = onspriteload;
+		request.send();
+	}
+}
+
+/**
+ * Set SVG Image 
+ * @param {LabelBinding} binding
+ * @param {string} image
+ */
+LabelBinding.setImageSvg = function (binding, image) {
+	
+	if (binding.shadowTree.labelBody) {
+		if (!image) {
+			if (binding.shadowTree.svg) {
+				if (binding.shadowTree.svg.parentNode) {
+					binding.shadowTree.svg.parentNode.removeChild(binding.shadowTree.svg);
+				}
+				binding.shadowTree.svg = null;
+			}
+		} else {
+
+			if (LabelBinding.sprites) {
+				var xmlns = "http://www.w3.org/2000/svg";
+				if (!binding.shadowTree.svg) {
+					binding.shadowTree.svg = binding.bindingDocument.createElementNS(xmlns, "svg");
+					binding.shadowTree.labelBody.insertBefore(binding.shadowTree.svg, binding.shadowTree.labelBody.firstChild);
+				}
+				binding.shadowTree.svg.setAttribute("viewBox", "0 0 24 24");
+				var g = LabelBinding.sprites.querySelector("#" + image);
+				if (g) {
+					var viewBox = g.getAttribute('viewBox'),
+						fragment = document.createDocumentFragment(),
+						clone = g.cloneNode(true);
+
+					if (viewBox) {
+						binding.shadowTree.svg.setAttribute('viewBox', viewBox);
+					}
+
+					fragment.appendChild(clone);
+					binding.shadowTree.svg.innerHTML = "";
+					binding.shadowTree.svg.appendChild(fragment);
+				}
+			} else {
+				LabelBinding.spritesQueue.set(binding.getID(), image);
+				LabelBinding.spriteLoad();
+			}
+		}
+	}
+}
 
 /**
  * @class
@@ -211,44 +320,7 @@ LabelBinding.prototype.setImageClasses = function (classes) {
  */
 LabelBinding.prototype.setImageSvg = function (svg) {
 
-	if (this.shadowTree.labelBody) {
-		if (!svg) {
-			if (this.shadowTree.svg) {
-				if (this.shadowTree.svg.parentNode) {
-					this.shadowTree.svg.parentNode.removeChild(this.shadowTree.svg);
-				}
-				this.shadowTree.svg = null;
-				this.shadowTree.use = null;
-
-			}
-		} else {
-			var xmlns = "http://www.w3.org/2000/svg";
-			if (!this.shadowTree.svg) {
-				this.shadowTree.svg = this.bindingDocument.createElementNS(xmlns, "svg");
-
-				this.shadowTree.labelBody.insertBefore(this.shadowTree.svg, this.shadowTree.labelBody.firstChild);
-				this.shadowTree.svg.setAttribute("viewBox", "0 0 24 24");
-			}
-			var g = KickStart.sprites.querySelector("#" + svg);
-			if (g) {
-				var viewBox = g.getAttribute('viewBox'),
-					fragment = document.createDocumentFragment(),
-					clone = g.cloneNode(true);
-
-				if (viewBox) {
-					this.shadowTree.svg.setAttribute('viewBox', viewBox);
-				}
-
-				//while (clone.childNodes.length) {
-				//	fragment.appendChild(clone.childNodes[0]);
-				//}
-
-				fragment.appendChild(clone);
-				this.shadowTree.svg.innerHTML = "";
-				this.shadowTree.svg.appendChild(fragment);
-			}
-		}
-	}
+	LabelBinding.setImageSvg(this, svg);
 }
 
 

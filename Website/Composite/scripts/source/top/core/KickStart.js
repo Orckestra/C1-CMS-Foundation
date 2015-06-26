@@ -37,56 +37,11 @@ var KickStart = new function () {
 			InstallationService = WebServiceProxy.createProxy(Constants.URL_WSDL_INSTALLSERVICE);
 			StringService = WebServiceProxy.createProxy(Constants.URL_WSDL_STRINGSERVICE);
 
-			
+			EventBroadcaster.broadcast(BroadcastMessages.APPLICATION_KICKSTART);
 
-		//NEWUI Load SVG images
-
-
-			function onload() {
-				var xhr = this, x = document.createElement('x'), s = xhr.s;
-
-				x.innerHTML = xhr.responseText;
-
-				var uses = x.querySelectorAll("use");
-				for (var i = 0; i < uses.length; ++i) {
-					var use = uses[i];
-					var def = use.parentNode;
-					var hash = use.getAttribute('xlink:href').split('#')[1];
-					var target = x.querySelector('#' + hash);
-					if (target) {
-						
-						
-						//var fragment = document.createDocumentFragment();
-						var clone = target.cloneNode(true);
-						clone.id = def.id;
-						def.parentNode.replaceChild(clone, def);
-					}
-
-				}
-
-				KickStart.sprites = x;
-
-				EventBroadcaster.broadcast(BroadcastMessages.APPLICATION_KICKSTART);
-
-				setTimeout(function () {
-					Persistance.initialize(); // NOTE: We are not using this stuff!
-				}, 0);
-			}
-			var xhr = new XMLHttpRequest();
-
-			if (!xhr.s) {
-				xhr.s = [];
-
-				xhr.open('GET', Resolver.resolve("${root}/images/sprite.svg"));
-
-				xhr.onload = onload;
-
-				xhr.send();
-			}
-
-
-			
-		
+			setTimeout(function () {
+				Persistance.initialize(); // NOTE: We are not using this stuff!
+			}, 0);
 	};
 
 	
