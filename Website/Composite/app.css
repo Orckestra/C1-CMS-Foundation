@@ -86,6 +86,11 @@ ui|explorermenu {
 	overflow: hidden;
 }
 
+ui|cover.explorermenucover {
+	margin-left: 50px;
+	display: none;
+}
+
 ui|stagecontainer {
 	display: block;
 	overflow: hidden;
@@ -156,6 +161,8 @@ ui|window#downloadwindow {
 }
 
 
+
+
 body.expanded ui|explorermenu {
 	width: 240px;
 }
@@ -168,6 +175,12 @@ body.expanded ui|stagecontainer {
 body.expanded #systemtoolbar {
 	visibility: hidden;
 }
+
+body.expanded ui|cover.explorermenucover {
+	margin-left: 240px;
+	display: block;
+}
+
 
 
 /* COMPOSITE C1 LOGO */

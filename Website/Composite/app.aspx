@@ -225,6 +225,7 @@
 			</ui:toolbarbody>
 		</ui:explorertoolbar>
 	</ui:explorermenu>
+	<ui:cover id="explorermenucover" transparent="true" busy="false" class="explorermenucover" onclick="top.app.bindingMap.explorermenu.collapse()"/>
 
 	<ui:cover id="stagesplittercover" hidden="true" transparent="true" busy="false" />
 	<ui:stagesplitterbody id="stagesplitterbody" class="binding" binding="StageSplitterBodyBinding" />

@@ -13,17 +13,6 @@ function ExplorerMenuBinding() {
 	 */
 	this.logger = SystemLogger.getLogger("ExplorerMenuBinding");
 
-	///**
-	// * Associating buttons to handles.
-	// * @type {Map<string><ExplorerToolBarButtonBinding>}
-	// */
-	//this._maxButtons = new Map ();
-
-	///**
-	// * @type {List<ExplorerToolBarButtonBinding}
-	// */
-	//this._maxList = new List ();
-
 	/**
 	 * Associating buttons to handles.
 	 * @type {Map<string><ToolBarButtonBinding>}
@@ -39,12 +28,6 @@ function ExplorerMenuBinding() {
 	 * @type {int}
 	 */
 	this._index = -1;
-
-	///**
-	// * The big toolbargroup
-	// * @type {ToolBarGroupBinding}
-	// */
-	//this._maxGroup= null;
 
 	/**
 	 * The small toolbargroup
@@ -88,7 +71,6 @@ ExplorerMenuBinding.prototype.onBindingAttach = function () {
 
 	ExplorerMenuBinding.superclass.onBindingAttach.call(this);
 	this.addMember ( this.getChildBindingByLocalName ( "explorertoolbar" ));
-	//this.addMember(this.getChildBindingByLocalName("toolbar"));
 }
 
 /**
@@ -98,9 +80,6 @@ ExplorerMenuBinding.prototype.onBindingAttach = function () {
 ExplorerMenuBinding.prototype.onMemberInitialize = function (binding) {
 
 	switch (binding.constructor) {
-		//case ExplorerToolBarBinding :
-		//        this._maxGroup= binding.getToolBarGroupByIndex ( 0 );
-		//        break;
 		case ExplorerToolBarBinding:
 			this._minGroup = binding.getToolBarGroupByIndex(0);
 			break;
@@ -114,33 +93,9 @@ ExplorerMenuBinding.prototype.onMemberInitialize = function (binding) {
  */
 ExplorerMenuBinding.prototype.mountDefinition = function (definition) {
 
-	//this._maxButtons.set ( definition.handle, this._mountMaxButton ( definition ));
 	this._minButtons.set(definition.handle, this._mountMinButton(definition));
 	this._index++;
 }
-
-///**
-// * Building big menubutton.
-// * @param {SystemViewDefinition} definition
-// * @return {ExplorerToolBarButtonBinding}
-// */
-//ExplorerMenuBinding.prototype._mountMaxButton = function ( definition ) {
-
-//        var button = ExplorerToolBarButtonBinding.newInstance (
-//                this.bindingDocument,
-//                ExplorerToolBarButtonBinding.TYPE_LARGE
-//        );
-//        button.setLabel ( definition.label );
-//        button.setToolTip ( definition.toolTip );
-//        button.handle = definition.handle;
-//        button.node = definition.node;
-//        this._maxGroup.add ( button );
-//        this._maxList.add ( button );
-//        button.attach();
-//        //if (Client.isPad)
-//                button.hide(); // note that we hide large buttons on startup for iPad!
-//        return button;
-//}
 
 /**
  * Building small menubutton.
@@ -178,23 +133,11 @@ ExplorerMenuBinding.prototype.handleAction = function (action) {
 	switch (action.type) {
 		case RadioGroupBinding.ACTION_SELECTIONCHANGED:
 
+			this.collapse();
 			var radioGroupBinding = action.target;
 			var buttonBinding = radioGroupBinding.getCheckedButtonBinding();
 			var handle = buttonBinding.handle;
 			
-			//switch ( radioGroupBinding ) {
-			//        case this._maxGroup:
-			//                this._minGroup.setCheckedButtonBinding (
-			//                        this._minButtons.get ( handle ), true
-			//                );
-			//                break;
-			//        case this._minGroup :
-			//                this._maxGroup.setCheckedButtonBinding (
-			//                        this._maxButtons.get ( handle ), true
-			//                );
-			//                break;
-			//}
-
 			this._selectedHandle = handle;
 			this._selectedTag = buttonBinding.node.getTag();
 			//this.dispatchAction ( ExplorerMenuBinding.ACTION_SELECTIONCHANGED );
@@ -266,7 +209,6 @@ ExplorerMenuBinding.prototype.toggle = function () {
  */
 ExplorerMenuBinding.prototype.collapse = function () {
 	top.app.bindingMap.app.detachClassName("expanded");
-	//top.app.bindingMap.menutogglebutton.setImage("${icon:next}");
 
 }
 
@@ -276,5 +218,4 @@ ExplorerMenuBinding.prototype.collapse = function () {
  */
 ExplorerMenuBinding.prototype.expand = function () {
 	top.app.bindingMap.app.attachClassName("expanded");
-	//top.app.bindingMap.menutogglebutton.setImage("${icon:back}");
 }
