@@ -41,6 +41,11 @@ function BrowserPageBinding () {
 	 * @type {boolean}
 	 */
 	this._isHistoryBrowsing = false;
+
+	/**
+	 * @type {boolean}
+	 */
+	this._isNewUrl = false;
 	
 	/**
 	 * @type {boolean}
@@ -103,6 +108,7 @@ BrowserPageBinding.prototype.handleBroadcast = function (broadcast, arg) {
 				if (url) {
 					url = PageService.GetSavedPagelUrl(url);
 					if (url != this._box.getLocation()) {
+						this
 						this.setURL(url);
 					}
 				}
@@ -228,7 +234,8 @@ BrowserPageBinding.prototype._newURL = function ( url ) {
 	}
 	
 	var cover = window.bindingMap.cover;
-	cover.show ();
+	cover.show();
+	this._isNewUrl = true;
 	this._box.newURL ( url );
 }
 
@@ -244,6 +251,7 @@ BrowserPageBinding.prototype.setURL = function (url) {
     
     var cover = window.bindingMap.cover;
     cover.show();
+    this._isNewUrl = true;
     this._box.setURL(url);
 }
 
@@ -422,16 +430,20 @@ BrowserPageBinding.prototype._handleDocumentLoad = function ( binding ) {
 		cover.hide ();
 	}
 
-	var entityToken = TreeService.GetEntityTokenByPageUrl(url);
-	EventBroadcaster.broadcast(
-		BroadcastMessages.SYSTEMTREEBINDING_FOCUS,
-		entityToken
-	);
+	if (!this._isNewUrl) {
+		var entityToken = TreeService.GetEntityTokenByPageUrl(url);
+		EventBroadcaster.broadcast(
+			BroadcastMessages.SYSTEMTREEBINDING_FOCUS,
+			entityToken
+		);
+	}
 
 	/*
 	 * Dispatch event for Browser plugins to hook into.
 	 */
-	this.dispatchAction ( BrowserPageBinding.ACTION_ONLOAD );
+	this.dispatchAction(BrowserPageBinding.ACTION_ONLOAD);
+
+	this._isNewUrl = false;
 }
 
 /**
