@@ -26,6 +26,6 @@
 </script>
 <ui:filepicker required="true">
 	<ui:datainput class="fake" isdisabled="true" spellcheck="false" />
-	<ui:clickbutton image="${icon:popup}" width="28"/>
+	<ui:clickbutton image="${icon:popup}" width="30"/>
     <asp:FileUpload runat="server" ID="fileUpload" CssClass="real" onkeydown="return false;"/>
 </ui:filepicker>

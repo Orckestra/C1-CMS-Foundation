@@ -62,6 +62,7 @@ ExplorerMenuBinding.prototype.onBindingRegister = function () {
 
 	ExplorerMenuBinding.superclass.onBindingRegister.call(this);
 	this.addActionListener(RadioGroupBinding.ACTION_SELECTIONCHANGED, this);
+	this.subscribe(this.bindingWindow.WindowManager.WINDOW_RESIZED_BROADCAST);
 }
 
 /**
@@ -148,6 +149,23 @@ ExplorerMenuBinding.prototype.handleAction = function (action) {
 			break;
 	}
 }
+
+/**
+ * @implements {IBroadcastListener}
+ * @param {string} broadcast
+ * @param {object} arg
+ */
+ExplorerMenuBinding.prototype.handleBroadcast = function (broadcast, arg) {
+
+	ExplorerMenuBinding.superclass.handleBroadcast.call(this, broadcast, arg);
+
+	switch (broadcast) {
+		case this.bindingWindow.WindowManager.WINDOW_RESIZED_BROADCAST:
+			this.collapse();
+			break;
+	}
+}
+
 
 /**
  * Set selection by handle.
