@@ -108,7 +108,6 @@ BrowserPageBinding.prototype.handleBroadcast = function (broadcast, arg) {
 				if (url) {
 					url = PageService.GetSavedPagelUrl(url);
 					if (url != this._box.getLocation()) {
-						this
 						this.setURL(url);
 					}
 				}
