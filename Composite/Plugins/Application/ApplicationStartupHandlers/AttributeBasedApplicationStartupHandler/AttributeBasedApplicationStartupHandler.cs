@@ -6,7 +6,6 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Security;
-using System.Web.Hosting;
 using System.Xml;
 using System.Xml.Serialization;
 using Composite.Core;
@@ -16,6 +15,7 @@ using Composite.Core.Configuration;
 using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Core.Types;
+using Microsoft.Framework.DependencyInjection;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
 
@@ -128,8 +128,8 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
             {
                 MethodInfo onBeforeInitializeMethod, onInitializedMethod;
                 
-                if(!TryGetPulicStaticMethod(type, "OnBeforeInitialize", out onBeforeInitializeMethod)
-                   || !TryGetPulicStaticMethod(type, "OnInitialized", out onInitializedMethod))
+                if(!TryGetPublicStaticMethod(type, "OnBeforeInitialize", out onBeforeInitializeMethod)
+                   || !TryGetPublicStaticMethod(type, "OnInitialized", out onInitializedMethod))
                 {
                     continue;
                 }
@@ -139,7 +139,7 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
             }
         }
 
-        private static bool TryGetPulicStaticMethod(Type type, string methodName, out MethodInfo methodInfo)
+        private static bool TryGetPublicStaticMethod(Type type, string methodName, out MethodInfo methodInfo)
         {
             methodInfo = type.GetMethods().FirstOrDefault(m => m.Name == methodName);
             if (methodInfo == null)
@@ -252,7 +252,7 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
             }
             catch (ReflectionTypeLoadException ex)
             {
-                Log.LogWarning(LogTitle, "Failed to load assebmly '{0}'".FormatWith(filePath));
+                Log.LogWarning(LogTitle, "Failed to load assembly '{0}'".FormatWith(filePath));
                 if(ex.LoaderExceptions != null && ex.LoaderExceptions.Length > 0)
                 {
                     Log.LogError(LogTitle, ex.LoaderExceptions[0]);
@@ -292,7 +292,7 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
             {
                 try
                 {
-                    bool hasAttribute = type.GetCustomAttributes(false).Any(f => f.GetType() == typeof(ApplicationStartupAttribute));
+                    bool hasAttribute = type.GetCustomAttributes(false).Any(f => f is ApplicationStartupAttribute);
 
                     if (hasAttribute)
                     {
@@ -354,20 +354,18 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
             }
             catch (TypeLoadException exception)
             {
-                Log.LogError(LogTitle, new Exception("Failed to load assebmly '{0}'".FormatWith(assembly.FullName), exception));
+                Log.LogError(LogTitle, new Exception("Failed to load assembly '{0}'".FormatWith(assembly.FullName), exception));
                 types = null;
                 return false;
             }
             catch(ReflectionTypeLoadException exception)
             {
-                if (exception.LoaderExceptions != null)
-                {
-                    Log.LogError(LogTitle, new Exception("Failed to load assebmly '{0}'".FormatWith(assembly.FullName), exception.LoaderExceptions.First()));
-                }
-                else
-                {
-                    Log.LogError(LogTitle, new Exception("Failed to load assebmly '{0}'".FormatWith(assembly.FullName), exception));
-                }
+                var exceptionToLog = exception.LoaderExceptions != null
+                    ? exception.LoaderExceptions.First()
+                    : exception;
+                
+                Log.LogError(LogTitle, new Exception("Failed to load assembly '{0}'".FormatWith(assembly.FullName), exceptionToLog));
+
                 types = null;
                 return false;
             }
@@ -375,22 +373,29 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
 
 
         /// <exclude />
-        [Obsolete("Use Composite.Core.Types.AsseblyFacade.IsAppCodeDll(assembly)", true)]
+        [Obsolete("Use Composite.Core.Types.AssemblyFacade.IsAppCodeDll(assembly)", true)]
         public static bool IsAppCodeDll(Assembly assembly)
         {
             return AssemblyFacade.IsAppCodeDll(assembly);
         }
 
 
-        /// <exclude />
-        public void OnBeforeInitialize()
+        private object[] GetParameters(MethodInfo methodInfo)
         {
-            foreach (MethodInfo methodInfo in _onBeforeInitializeMethods)
+            var parameters = methodInfo.GetParameters();
+            if (parameters.Length == 0)
             {
-                methodInfo.Invoke(null, null);
+                return null;
             }
-        }
 
+            if (parameters.Length == 1 && parameters[0].ParameterType == typeof (IServiceCollection))
+            {
+                return new object[] { ServiceLocator.ServiceCollection };
+            }
+
+            throw new InvalidOperationException("Application startup does not support the specified method signature on method '{0}' of type '{1}'"
+                .FormatWith(methodInfo.Name, methodInfo.DeclaringType.FullName));
+        }
 
         private static XmlSerializer GetSerializer()
         {
@@ -428,13 +433,23 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
 
 
         /// <exclude />
+        public void OnBeforeInitialize()
+        {
+            foreach (MethodInfo methodInfo in _onBeforeInitializeMethods)
+            {
+                methodInfo.Invoke(null, GetParameters(methodInfo));
+            }
+        }
+
+
+        /// <exclude />
         public void OnInitialized()
         {
             foreach (MethodInfo methodInfo in _onInitializedMethods)
             {
                 try
                 {
-                    methodInfo.Invoke(null, null);
+                    methodInfo.Invoke(null, GetParameters(methodInfo));
                 }
                 catch (TargetInvocationException ex)
                 {

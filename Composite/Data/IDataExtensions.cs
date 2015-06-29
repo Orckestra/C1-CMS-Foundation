@@ -346,10 +346,15 @@ namespace Composite.Data
             return result;
         }
 
-
-
+        [Obsolete("Use GetDataPropertyRecursively instead")]
         /// <exclude />
         public static PropertyInfo GetDataPropertyRecursivly(this Type dataType, string propertyName)
+        {
+            return GetDataPropertyRecursively(dataType, propertyName);
+        }
+
+        /// <exclude />
+        public static PropertyInfo GetDataPropertyRecursively(this Type dataType, string propertyName)
         {
             Verify.ArgumentNotNull(dataType, "dataType");
 
@@ -386,8 +391,8 @@ namespace Composite.Data
 
             foreach (Type superInterface in dataType.GetInterfacesRecursively())
             {
-                if ((superInterface != typeof(IData)) &&
-                    (typeof(IData).IsAssignableFrom(superInterface)))
+                if (superInterface != typeof(IData) &&
+                    typeof(IData).IsAssignableFrom(superInterface))
                 {
                     result.AddRange(superInterface.GetProperties());
                 }

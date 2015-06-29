@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Xml.Linq;
+using Composite.Core.Application;
 using Composite.Data;
 using Composite.Functions.Foundation;
 using Composite.Core.Instrumentation;
@@ -136,28 +137,17 @@ namespace Composite.Functions
             }
         }
 
-        private object TryGetInjectedValue(Type type)
+        private static object TryGetInjectedValue(Type type)
         {
-            // TODO: make a call to a dependency injection container here
-            if (IsRoutedDataParameterType(type))
+            var services = ServiceLocator.RequestServices;
+            if (services != null)
             {
-                // TODO: cache constructor
-                var defaultConstructor = type.GetConstructor(new Type[0]);
-                Verify.IsNotNull(defaultConstructor, "Type '{0}' does not have a default constructor", type.FullName);
-
-                return defaultConstructor.Invoke(null);
+                return services.GetService(type);
             }
 
             return null;
         }
 
-
-        private static bool IsRoutedDataParameterType(Type type)
-        {
-            return type.IsGenericType && type.GetGenericTypeDefinition() == typeof (RoutedData<>)
-                   || (type.BaseType != null && IsRoutedDataParameterType(type.BaseType));
-        }
- 
         /// <exclude />
         public override IEnumerable<string> GetAllSubFunctionNames()
         {

@@ -258,7 +258,7 @@ namespace CompositeEditFunctionCall
                 return false;
             }
             
-            return !function.ParameterProfiles.Any(p => p.IsRequired && p.WidgetFunction == null);
+            return !function.ParameterProfiles.Any(p => p.IsRequired && p.WidgetFunction == null && !p.IsInjectedValue);
 	    }
 
 		private void SetDesignerParameters()
@@ -282,11 +282,6 @@ namespace CompositeEditFunctionCall
 		    var state = new FunctionCallEditorStateSimple();
 
 		    IEnumerable<XElement> functionCalls = GetFunctionElementsFromQueryString();
-		    if (IsWidgetSelection)
-		    {
-		        functionCalls = ConvertToFunctions(functionCalls);
-		    }
-
 		    var functionCallsEvaluated = functionCalls.Evaluate();
 
             state.FunctionCallsXml = new XElement("functions", functionCallsEvaluated).ToString();
@@ -426,13 +421,6 @@ namespace CompositeEditFunctionCall
 				}
 				(state as FunctionCallEditorStateSimple).FunctionCallsXml = new XElement("functions", GetFunctionElements(value)).ToString(); ;
 				SessionStateManager.DefaultProvider.SetState<IFunctionCallEditorState>(SessionStateId, state, DateTime.Now.AddDays(7.0));
-			}
-		}
-		private IEnumerable<XElement> ConvertToFunctions(IEnumerable<XElement> functionCalls)
-		{
-			foreach (XElement element in functionCalls)
-			{
-				yield return element;
 			}
 		}
 	}

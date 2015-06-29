@@ -56,17 +56,17 @@ namespace Composite.Data.Foundation
         {
             Verify.ArgumentNotNull(refereeType, "refereeType");
 
-            IReadOnlyList<ForeignPropertyInfo> foreignKeyProperyInfos;
+            IReadOnlyList<ForeignPropertyInfo> foreignKeyProperties;
 
             using (GlobalInitializerFacade.CoreIsInitializedScope)
             {
-                if (_foreignKeyProperties.TryGetValue(refereeType, out foreignKeyProperyInfos) == false)
+                if (!_foreignKeyProperties.TryGetValue(refereeType, out foreignKeyProperties))
                 {
                     return new List<ForeignPropertyInfo>();
                 }
             }
 
-            return new List<ForeignPropertyInfo>(foreignKeyProperyInfos);
+            return new List<ForeignPropertyInfo>(foreignKeyProperties);
         }
 
 
@@ -93,18 +93,18 @@ namespace Composite.Data.Foundation
         {
             var foreignKeyProperties = DataAttributeFacade.GetDataReferenceProperties(interfaceType);
             
-            foreach (ForeignPropertyInfo foreignKeyProperyInfo in foreignKeyProperties)
+            foreach (ForeignPropertyInfo foreignKeyPropertyInfo in foreignKeyProperties)
             {
-                if (foreignKeyProperyInfo.SourcePropertyInfo.CanRead == false) throw new InvalidOperationException(string.Format("The property '{0}' shoud have a getter", foreignKeyProperyInfo.SourcePropertyInfo));
-                if (foreignKeyProperyInfo.TargetType.IsNotReferenceable()) throw new InvalidOperationException(string.Format("The referenced type '{0}' is marked NotReferenceable and can not be referenced by the interfaceType '{1}'", foreignKeyProperyInfo.TargetType, interfaceType));
+                if (foreignKeyPropertyInfo.SourcePropertyInfo.CanRead == false) throw new InvalidOperationException(string.Format("The property '{0}' shoud have a getter", foreignKeyPropertyInfo.SourcePropertyInfo));
+                if (foreignKeyPropertyInfo.TargetType.IsNotReferenceable()) throw new InvalidOperationException(string.Format("The referenced type '{0}' is marked NotReferenceable and can not be referenced by the interfaceType '{1}'", foreignKeyPropertyInfo.TargetType, interfaceType));
 
-                PropertyInfo propertyInfo = foreignKeyProperyInfo.TargetType.GetDataPropertyRecursivly(foreignKeyProperyInfo.TargetKeyPropertyName);
+                PropertyInfo propertyInfo = foreignKeyPropertyInfo.TargetType.GetDataPropertyRecursively(foreignKeyPropertyInfo.TargetKeyPropertyName);
 
-                Verify.IsNotNull(propertyInfo, "The data type '{0}' does not contain a property named '{1}' as specified by the '{2}' attribute on the data type '{3}'", foreignKeyProperyInfo.TargetType, foreignKeyProperyInfo.TargetKeyPropertyName, typeof(ForeignKeyAttribute), foreignKeyProperyInfo.SourcePropertyInfo.DeclaringType);
-                Verify.That(propertyInfo.CanRead, "The property '{0}' shoud have a getter", propertyInfo);
-                if (foreignKeyProperyInfo.IsNullableString && (propertyInfo.PropertyType != typeof(string))) throw new InvalidOperationException("NullableString can only be used when the foreign key is of type string");
+                Verify.IsNotNull(propertyInfo, "The data type '{0}' does not contain a property named '{1}' as specified by the '{2}' attribute on the data type '{3}'", foreignKeyPropertyInfo.TargetType, foreignKeyPropertyInfo.TargetKeyPropertyName, typeof(ForeignKeyAttribute), foreignKeyPropertyInfo.SourcePropertyInfo.DeclaringType);
+                Verify.That(propertyInfo.CanRead, "The property '{0}' should have a getter", propertyInfo);
+                if (foreignKeyPropertyInfo.IsNullableString && (propertyInfo.PropertyType != typeof(string))) throw new InvalidOperationException("NullableString can only be used when the foreign key is of type string");
 
-                Type sourcePropertyType = foreignKeyProperyInfo.SourcePropertyInfo.PropertyType;
+                Type sourcePropertyType = foreignKeyPropertyInfo.SourcePropertyInfo.PropertyType;
                 if (sourcePropertyType.IsGenericType &&
                     (sourcePropertyType.GetGenericTypeDefinition() == typeof(Nullable<>)))
                 {
@@ -112,23 +112,23 @@ namespace Composite.Data.Foundation
                     sourcePropertyType = sourcePropertyType.GetGenericArguments()[0];
                 }
 
-                if (propertyInfo.PropertyType != sourcePropertyType) throw new InvalidOperationException(string.Format("Type mismatch '{0}' and '{1}' does not match from the two properties '{2}' and '{3}'", propertyInfo.PropertyType, foreignKeyProperyInfo.SourcePropertyInfo.PropertyType, propertyInfo, foreignKeyProperyInfo.SourcePropertyInfo));
+                if (propertyInfo.PropertyType != sourcePropertyType) throw new InvalidOperationException(string.Format("Type mismatch '{0}' and '{1}' does not match from the two properties '{2}' and '{3}'", propertyInfo.PropertyType, foreignKeyPropertyInfo.SourcePropertyInfo.PropertyType, propertyInfo, foreignKeyPropertyInfo.SourcePropertyInfo));
                 
-                foreignKeyProperyInfo.TargetKeyPropertyInfo = propertyInfo;
+                foreignKeyPropertyInfo.TargetKeyPropertyInfo = propertyInfo;
             }
 
 
             _foreignKeyProperties.Add(interfaceType, foreignKeyProperties);
 
-            foreach (ForeignPropertyInfo foreignKeyProperyInfo in foreignKeyProperties)
+            foreach (ForeignPropertyInfo foreignKeyPropertyInfo in foreignKeyProperties)
             {
                 List<Type> referees;
 
-                if (_referencedToReferees.TryGetValue(foreignKeyProperyInfo.TargetType, out referees) == false)
+                if (!_referencedToReferees.TryGetValue(foreignKeyPropertyInfo.TargetType, out referees))
                 {
                     referees = new List<Type>();
 
-                    _referencedToReferees.Add(foreignKeyProperyInfo.TargetType, referees);
+                    _referencedToReferees.Add(foreignKeyPropertyInfo.TargetType, referees);
                 } 
                 else
                 {
@@ -140,9 +140,9 @@ namespace Composite.Data.Foundation
 
                 referees.Add(interfaceType);
 
-                if (!DataProviderRegistry.AllInterfaces.Contains(foreignKeyProperyInfo.TargetType))
+                if (!DataProviderRegistry.AllInterfaces.Contains(foreignKeyPropertyInfo.TargetType))
                 {
-                    Log.LogCritical(LogTitle, string.Format("The one type '{0}' is referring the non supported data type '{1}'", interfaceType, foreignKeyProperyInfo.TargetType));
+                    Log.LogCritical(LogTitle, string.Format("The one type '{0}' is referring the non supported data type '{1}'", interfaceType, foreignKeyPropertyInfo.TargetType));
                 }
             }
         }

@@ -1,20 +1,32 @@
 <%@ Application Language="C#" %>
 <%@ Import Namespace="System.Web.Routing" %>
+<%@ Import Namespace="Composite.Core.Application" %>
 <%@ Import Namespace="Composite.Core.Routing" %>
 <%@ Import Namespace="Composite.Core.WebClient" %>
+<%@ Import Namespace="Composite.Functions" %>
+<%@ Import Namespace="Microsoft.Framework.DependencyInjection" %>
 
 
 <script RunAt="server">
+
+
     void Application_Start(object sender, EventArgs e)
     {
         ApplicationLevelEventHandlers.LogRequestDetails = false;
         ApplicationLevelEventHandlers.LogApplicationLevelErrors = true;
+
+        ConfigureServices(ServiceLocator.ServiceCollection);
         
         ApplicationLevelEventHandlers.Application_Start(sender, e);
 
         RegisterRoutes(RouteTable.Routes);
     }
 
+    void ConfigureServices(IServiceCollection serviceCollection)
+    {
+        RoutedData.ConfigureServices(serviceCollection);
+    }
+    
     public static void RegisterRoutes(RouteCollection routes)
     {
         Routes.RegisterPageRoute(routes);
@@ -23,7 +35,6 @@
         
         Routes.Register404Route(routes);
     }
-
 
     
     void Application_End(object sender, EventArgs e)
@@ -34,12 +45,16 @@
     
     void Application_BeginRequest(object sender, EventArgs e)
     {
+        ServiceLocator.CreateRequestServicesScope();
+        
         ApplicationLevelEventHandlers.Application_BeginRequest(sender, e);
     }
 
     
     void Application_EndRequest(object sender, EventArgs e)
     {
+        ServiceLocator.DisposeRequestServicesScope();
+        
         ApplicationLevelEventHandlers.Application_EndRequest(sender, e);
     }
 
@@ -53,5 +68,6 @@
     {
         return ApplicationLevelEventHandlers.GetVaryByCustomString(context, custom) ?? base.GetVaryByCustomString(context, custom);
     }
+
 </script>
 

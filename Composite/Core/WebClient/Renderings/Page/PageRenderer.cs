@@ -33,11 +33,13 @@ namespace Composite.Core.WebClient.Renderings.Page
         /// <exclude />
         public static FunctionContextContainer GetPageRenderFunctionContextContainer()
         {
-            XEmbeddedControlMapper mapper = new XEmbeddedControlMapper();
+            var mapper = new XEmbeddedControlMapper();
 
-            FunctionContextContainer contextContainer = new FunctionContextContainer();
-            contextContainer.XEmbedableMapper = mapper;
-            contextContainer.SuppressXhtmlExceptions = true;
+            var contextContainer = new FunctionContextContainer
+            {
+                XEmbedableMapper = mapper,
+                SuppressXhtmlExceptions = true
+            };
 
             return contextContainer;
         }
@@ -226,7 +228,7 @@ namespace Composite.Core.WebClient.Renderings.Page
 
 
         /// <exclude />
-        [Obsolete()]
+        [Obsolete]
         public static IEnumerable<IData> GetCurrentPageAssociatedData(Type type)
         {
             return PageRenderer.CurrentPage.GetReferees(type);
@@ -235,13 +237,10 @@ namespace Composite.Core.WebClient.Renderings.Page
 
 
         /// <exclude />
-        [Obsolete()]
+        [Obsolete]
         public static IEnumerable<IData> GetCurrentPageAssociatedData<T>() where T : IData
         {
-            foreach (IData data in PageRenderer.CurrentPage.GetReferees(typeof(T)))
-            {
-                yield return (T)data;
-            }
+            return PageRenderer.CurrentPage.GetReferees(typeof (T));
         }
 
 

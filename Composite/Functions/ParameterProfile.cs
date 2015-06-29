@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Composite.Core;
+using Composite.Core.Application;
 using Composite.Core.Types;
 using Composite.Data;
 using Composite.Core.ResourceSystem;
@@ -15,8 +16,10 @@ namespace Composite.Functions
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public sealed class ParameterProfile
 	{
-        private readonly WidgetFunctionProvider _widgetFuntionProvider;
+        private readonly WidgetFunctionProvider _widgetFunctionProvider;
         private Dictionary<string, object> _widgetFunctionRuntimeParameters;
+
+        private bool? _isInjectedValue;
 
         /// <exclude />
         public ParameterProfile(string name, Type type, bool isRequired, BaseValueProvider fallbackValueProvider, WidgetFunctionProvider widgetFunctionProvider, string label, HelpDefinition helpDefinition)
@@ -45,12 +48,11 @@ namespace Composite.Functions
             this.Type = type;
             this.IsRequired = isRequired && (!type.IsGenericType || type.GetGenericTypeDefinition() != typeof(NullableDataReference<>));
             this.FallbackValueProvider = fallbackValueProvider;
-            _widgetFuntionProvider = widgetFunctionProvider;
+            _widgetFunctionProvider = widgetFunctionProvider;
             this.Label = label;
             this.HelpDefinition = helpDefinition;
             this.HideInSimpleView = hideInSimpleView;
         }
-
 
         /// <exclude />
         public ParameterProfile(
@@ -61,6 +63,25 @@ namespace Composite.Functions
             _widgetFunctionRuntimeParameters = widgetFunctionRuntimeParameters;
         }
 
+
+        /// <summary>
+        /// Shows whether the value for the parameter can be dynamically provided.
+        /// </summary>
+        public bool IsInjectedValue
+        {
+            get
+            {
+                if (_isInjectedValue == null)
+                {
+                    var locator = ServiceLocator.RequestServices ?? ServiceLocator.ApplicationServices;
+
+                    var type = Type;
+                    _isInjectedValue = !type.IsPrimitive && locator != null && locator.GetService(type) != null;
+                }
+
+                return _isInjectedValue.Value;
+            }
+        }
 
         /// <exclude />
         public string Name { get; private set; }
@@ -83,7 +104,7 @@ namespace Composite.Functions
         {
             get
             {
-                return _widgetFuntionProvider != null ? _widgetFuntionProvider.WidgetFunction : null;
+                return _widgetFunctionProvider != null ? _widgetFunctionProvider.WidgetFunction : null;
             }
         }
 
@@ -93,7 +114,7 @@ namespace Composite.Functions
         {
             get
             {
-                return _widgetFuntionProvider.WidgetFunctionParameters;
+                return _widgetFunctionProvider.WidgetFunctionParameters;
             }
         }
 
@@ -105,7 +126,7 @@ namespace Composite.Functions
 //                if (_widgetFunctionRuntimeParameters == null) return null;
 
 //                Dictionary<string, object> parameters = new Dictionary<string, object>(_widgetFunctionRuntimeParameters);
-//                foreach (BaseParameterRuntimeTreeNode param in _widgetFuntionProvider.WidgetFunctionParameters)
+//                foreach (BaseParameterRuntimeTreeNode param in _widgetFunctionProvider.WidgetFunctionParameters)
 //                {
 //                    if (parameters.ContainsKey(param.Name) == false)
 //                    {
