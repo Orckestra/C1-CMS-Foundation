@@ -626,6 +626,7 @@
     <Content Include="Composite\images\icons\svg\finish.svg" />
     <Content Include="Composite\images\icons\svg\flag.svg" />
     <Content Include="Composite\images\icons\svg\folder-add.svg" />
+    <Content Include="Composite\images\icons\svg\folder-open.svg" />
     <Content Include="Composite\images\icons\svg\folder-blue.svg" />
     <Content Include="Composite\images\icons\svg\folder-delete.svg" />
     <Content Include="Composite\images\icons\svg\folder-lock.svg" />
@@ -967,7 +968,6 @@
     <Content Include="Composite\images\icons\svg\page-template-feature-template.svg" />
     <Content Include="Composite\images\icons\svg\page-template-root-closed.svg" />
     <Content Include="Composite\images\icons\svg\page-template-root-open.svg" />
-    <Content Include="Composite\images\icons\svg\page-template-template - Copy.svg" />
     <Content Include="Composite\images\icons\svg\page-template-template.svg" />
     <Content Include="Composite\images\icons\svg\page-view-administrated-scope.svg" />
     <Content Include="Composite\images\icons\svg\page-view-public-scope.svg" />
