@@ -1,314 +1,105 @@
-@namespace url("http://www.w3.org/1999/xhtml");
+@import url("base.css");
 @namespace ui url("http://www.w3.org/1999/xhtml");
 
-ui|splash { /* IMPORTANT: synchronize this with updated.css! */
-	color: #B2B2B2;
-	display: block;
-	width: 315px;
-	height: 360px;
-	position: absolute;
-	overflow: hidden;
-	top: 45%;
-	left: 50%;
-	margin-left: -180px;
-	margin-top: -157px;
-}
-ui|splash ui|deck div {
-	-moz-user-select: none;	
-}
-div#backdrop { /* explorer bug when backdrop directly on deck or splash */
-	width: 100%;
-	height: 100%;
-	position: absolute;
-	top: 0;
-	left: 0;
-	#alphabackdrop: url("${root}/images/box.png");
-}
-ui|splash ui|decks {
-	width: 200px;
-	margin-left: 58px;
-	height: 180px;
-	margin-top: 140px;
-	position: relative;
-	z-index: 2;
-}
-div.errortext {
-	position: absolute;
-	font-weight: bold;
-	color: #CC071E;
-	display: none;
-}
-div#loginerror {
-	position: absolute;
-	top: -18px;
-}
-div#registrationerror,
-div#expirationerror {
-	bottom: 34px;
-	right: 7px;
-}
-div.strong {
-	color: #B2B2B2;
-	font-weight: bold;
-}
-div#progressbar {
-	color: #676767;
-	font-weight: normal;
-}
-div#progressbar {
-	position: absolute;
-	text-align: center;
-	bottom: 30px;
-	width: 100%;
-	left: 0;
-}
-ui|progressbar {
-	display: block;
-	width: 200px;
-	height: 23px;
-	margin-top: 6px;
-	position: relative;
-	text-align: right;
-	padding-top: 2px;
-	padding-right: 5px;
-	#alphabackdrop: url("${root}/images/progressbar.png");
-}
-ui|progressbar ui|cover {
-	background-color: white;
-	height: 19px;
-	width: 190px;
-	margin-left: auto;
-	margin-right: 0;
-	position: static;
-}
-#splash ui|dialogtoolbar {
-	padding: 0;
-	background-color: transparent;
-	position: absolute;
-	bottom: 0px;
-	width: 100%;
-}
-ui|fields#loginfields {
-	width: 200px !important;
-	padding: 0 !important;
-	position: absolute;
-	bottom: 30px;
-}
-ui|fields#loginfields ui|field {
-	margin: 0;
-}
-ui|fields#loginfields ui|fielddesc {
-	width: 60px;
-	white-space: nowrap;
-	overflow: hidden;
-	padding-left: 0;
-	padding-right: 0;
-	font-weight: bold;
-	padding-top: 7px;
-}
-ui|fields#loginfields ui|fielddata {
-	width: 130px;
-}
-ui|fields#loginfields ui|fielddata input {
-	width: 124px;
-	padding-top: 4px;
-	#ie height: 21px;
-}
-ui|fields#loginfields ui|datainput ui|box {
-	height: 23px;
-}
-ui|fields#passwordfields {
-	width: 250px !important;
-	bottom: 30px;
-}
-ui|fields#passwordfields ui|field {
-	margin: 0;
-}
-ui|fields#passwordfields ui|fielddesc {
-	width: 110px;
-	white-space: nowrap;
-	overflow: hidden;
-	padding-left: 0;
-	padding-right: 0;
-	font-weight: bold;
-	padding-top: 7px;
-}
-ui|fields#passwordfields ui|fielddata {
-	width: 130px;
+.loginpage .cover {
+    background-image: url("${root}/images/top-page-cover-bg.jpg");
 }
 
-ui|fields#passwordfields ui|fielddata input {
-	width: 124px;
-	padding-top: 4px;
-	#ie height: 21px;
-}
-ui|fields#passwordfields ui|datainput ui|box {
-	height: 23px;
+.loginpage .logo {
+    width: 138px;
+    height: 38px;
+    background: url("${root}/images/composite-logo.png") no-repeat 0 0;
+    margin: 0 auto 40px auto;
 }
 
-
-a#registrationlink,
-a#expirationlink {
-	text-decoration: underline;
-	color: #CC071E;
-	cursor: pointer;
-	#ie cursor: hand;
-}
-ui|block {
-	width: 100%;
-	height: 100%;
-	top: 0;
-	left: 0;
-	position: absolute;
-	z-index: 0; /* below cover */
-}
-ui|theatre,
-ui|theatre * {
-	cursor: wait;	
-}
-ui|theatre {
-	display: block;
-	position: absolute;
-	top: 100%;
-	left: 100%;
-	width: 100%;
-	height: 100%;
-	top: 0;
-	left: 0;
-	z-index: 4; /* below cover */
-	z-index: 6; /* above cover! */
-	z-index: 1001; /* above mastercover! */
-	background-color: transparent;
-}
-ui|theatre canvas {
-	width: 100%;
-	height: 100%;	
-}
-div#offlinesplash {
-	width: 128px;
-	height: 128px;
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	margin-top: -100px;
-	margin-left: -64px;
-	z-index: 1;
-	text-align: center;
-}
-div#offlineimage {
-	width: 100%;
-	height: 100%;
-	margin-bottom: 10px;
-	#alphaimage: url("images/loading.svg.ashx");
-}
-div#offlinetext {
-	color: rgb(255,255,255);
-	font-weight: bold;
-	-vendor-text-shadow: 2px 2px 5px rgb(0,0,0);
-	#region ie
-		position: relative;
-		top: -10px;
-		/*
-		 * WHY NOT WORK?
-		filter: progid:DXImageTransform.Microsoft.Shadow(color=#0000FF,direction=45);
-		-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(color=#0000FF,direction=45)";
-		*/
-		color: rgb(0,0,0);
-	#endregion
+.loginpage .buzzwords {
+    display: none;
 }
 
-/* SPECIAL BUTTON! ............................................. */
-
-ui|clickbutton {
-	float: right;
-}
-ui|clickbutton ui|labelbox {
-	padding: 6px 7px 4px;
-	position: relative;
-}
-ui|clickbutton ui|labeltext {
-	padding: 0 4px 1px 1px;
-	color: white;
-	text-transform: uppercase;
-	font-weight: bold;
-}
-ui|cover#mastercover {
-	z-index: 1000;	
-}
-ui|cover#applockcover {
-	background-color: black;	
-}
-ui|uncover {
-	display: block;
-	position: absolute;
-	top: -100px;
-	left: -100px;
-	width: 100px;
-	height: 100px;
-	cursor: default;
+.loginpage ui|fielddata {
+    border-bottom: solid 1px #ddd;
+    margin-bottom: 20px;
+    height: 40px;
+    padding: 5px 0;
 }
 
-/* HOVER */
+    .loginpage ui|fielddata .icon {
+        color: #21B980;
+        stroke: #21B980;
+    }
 
-.splash ui|clickbutton.hover ui|labelbox,
-.splash ui|clickbutton.focused  ui|labelbox{
-	background: #D63548;
-	margin: 0;
-	border: 0;
-	border-radius: 7px;
-	box-shadow: none;
+        .loginpage ui|fielddata .icon svg {
+            width: 20px;
+            height: 26px;
+        }
+
+    .loginpage  ui|fielddata ui|datainput {
+        padding: 0;
+    }
+
+    .loginpage ui|fielddata ui|box {
+        height: 26px;
+    }
+
+    .loginpage ui|fielddata input {
+        font-size: 16px;
+        width: 100%;
+        padding: 0 4px 5px 15px;
+    }
+
+        .loginpage ui|fielddata input.warning {
+            font-weight: normal;
+        }
+
+
+.loginpage ui|datainput ui|box {
+    border: none;
 }
 
-/* ACTIVE */
-
-ui|clickbutton.active ui|labelbox {
-	background: #A40618;
+.loginpage ui|dialogtoolbar {
+    margin-top: 30px;
+    padding: 0;
+    background-color: transparent;
+    border: none;
 }
 
-/* DEFAULT and DISABLED */
-
-ui|clickbutton ui|labelbox,
-ui|clickbutton.isdisabled ui|labelbox {
-	background: #CC071E;
-	margin: 0;
-	border: 0;
-	border-radius: 7px;
-	box-shadow: none;
-
+.loginpage ui|dialogtoolbar ui|toolbargroup {
+    display: none;
 }
 
-ui|cover.widesplash div#backdrop{
-	background-image: url("/Composite/images/about.png") !important;
-	background-position: -10px -30px;
-	height: 120px;
+.loginpage .progressbar {
+    position: absolute;
+    bottom: 30px;
+    width: 100%;
+    left: 0;
+    text-align: center;
+    font-size: 12px;
 }
 
-ui|cover.widesplash ui|splash{
-	box-shadow: 0px 0px 20px 0px rgba(128, 128, 128, 0.75);
-	border-radius: 30px;
-	background: white;
-	height: auto;
-	min-height: 360px;
-	padding-bottom: 20px;
-	margin-top: -137px;
+.loginpage .progressbar-msg {
+    padding-bottom: 20px;
+    text-align: center;
+    margin-bottom: 80px;
+    border-bottom: solid 1px #ccc;
 }
 
-ui|cover.widesplash ui|splash ui|decks {
-	width: 250px;
-	margin-left: 33px;
-	height: auto;
-	margin-top: 110px;
-	position: relative;
-	z-index: 2;
+.loginpage .progressbar ui|progressbar {
+    display: block;
+    width: 200px;
+    height: 23px;
+    margin: 6px auto auto;
+    position: relative;
+    text-align: right;
+    padding-top: 2px;
+    padding-right: 5px;
+    background: url("${root}/images/progressbar.png");
 }
 
-ui|cover.widesplash ui|fields {
-	padding: 20px 0 60px 0;
-	position: inherit;
-	
-}
-ui|cover.widesplash div.errortext {
-	position: static;
-	padding-bottom: 5px;
-	display: block;
-}
+    .loginpage .progressbar ui|progressbar ui|cover {
+        background-color: white;
+        height: 19px;
+        width: 190px;
+        margin-left: auto;
+        margin-right: 0;
+        position: static;
+    }

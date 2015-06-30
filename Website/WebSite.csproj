@@ -463,6 +463,7 @@
     </Compile>
     <Compile Include="Composite\GenerateIconSprite.aspx.cs">
       <DependentUpon>GenerateIconSprite.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Composite\Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>
@@ -486,6 +487,7 @@
       <DependentUpon>GenerateDynamicSchemas.aspx</DependentUpon>
     </Compile>
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\Selectors\UrlComboBox.ascx" />
+    <Content Include="Composite\base.css" />
     <Content Include="Composite\GenerateIconSprite.aspx" />
     <Content Include="Composite\images\editfunction.png" />
     <Content Include="Composite\images\function.png" />
@@ -1150,6 +1152,7 @@
     <Content Include="Composite\images\icons\svg\zoom.svg" />
     <Content Include="Composite\images\icons\svg\zoomin.svg" />
     <Content Include="Composite\images\icons\svg\zoomout.svg" />
+    <Content Include="Composite\images\top-page-cover-bg.jpg" />
     <Content Include="Composite\images\sprite.svg" />
     <Content Include="Composite\images\warning.png" />
     <Content Include="Composite\scripts\source\top\proxies\FunctionService.js" />

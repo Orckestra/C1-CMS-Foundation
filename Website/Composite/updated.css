@@ -1,80 +1,17 @@
-@import url("default.css");
-	
-div#splash {
-	display: none; /* adjusted by script */
-	color: #B2B2B2;
-	display: block;
-	width: 315px;
-	height: 360px;
-	position: absolute;
-	overflow: hidden;
-	top: 45%;
-	left: 50%;
-	margin-left: -180px;
-	margin-top: -157px;
+@import url("base.css");
+
+.updatedpage .cover {
+    background-image: url("${root}/images/top-page-cover-bg.jpg");
 }
-div#backdrop { /* explorer bug when backdrop directly on div#updated */
-	width: 100%;
-	height: 100%;
-	position: absolute;
-	top: 0;
-	left: 0;
-	background-image: url("${root}/images/box.png");
+
+.updatedpage .logo {
+    width: 138px;
+    height: 38px;
+    background: url("${root}/images/composite-logo.png") no-repeat 0 0;
+    margin: 0 auto 40px auto;
 }
-div#updated {
-	position: absolute;
-	width: 228px;
-	height: 150px;
-	left: 30px;
-	top: 40px;
-	background-color: white;
-	padding-left: 28px;
-	padding-top: 20px;
-	font-weight: normal;
-	z-index: 2;
+
+.updatedpage .clickbutton {
+    margin-top: 30px;
 }
-div#vignette {
-	width: 32px;
-	height: 32px;
-	position: absolute;
-	top: 15px;
-	left: 5px;
-	background-image: url("${folder}/skins/system/dialogpages/warning_32.png");
-	#region default
-		top: 11px;
-	#endregion
-}
-div#head {
-	position: relative;
-}
-h1 {
-	font-size: 200%;
-	line-height: 1.1em;
-	color: #1A171B;
-	font-weight: bold;
-	position: absolute;
-	top: -20px;
-	left: 37px;
-	_top: -3px;
-	text-align: right;
-}
-h1 span {
-	position: relative;
-	left: -3px;	
-}
-p {
-	color: #676767;
-	margin-top: 81px;
-	width: 200px;
-	line-height: 1.25em;
-}
-/*
-a {
-	top: 253px;
-	left: 29px;
-}
-*/
-div#start a {
-	top: 253px;
-	left: 29px;
-}
+

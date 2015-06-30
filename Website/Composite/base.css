@@ -1,0 +1,94 @@
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+.toppage {
+    font-size: 16px;
+    font-family: "Segoe UI", Tahoma, sans-serif;
+}
+
+    .toppage .cover {
+        display: block;
+        position: absolute;
+        overflow: hidden;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgb(240,240,240);
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+        background-position: center center;
+        background-repeat: no-repeat;
+    }
+
+    .toppage .cover-dark-overlay:after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 2;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.6);
+    }
+
+    .toppage .splash {
+        color: #666;
+        display: block;
+        width: 312px;
+        position: absolute;
+        z-index: 3;
+        overflow: hidden;
+        top: 45%;
+        left: 50%;
+        margin-left: -156px;
+        margin-top: -157px;
+        -ms-border-radius: 15px;
+        border-radius: 15px;
+        background: #fff;
+    }
+
+    .toppage .splash-inner {
+        padding: 30px 30px 40px 30px;
+    }
+
+    .toppage .splash .errortext {
+        display: none;
+        color: red;
+    }
+
+    .toppage ui|clickbutton {
+        float: none;
+        width: 100%;
+        margin: 0;
+    }
+
+    .toppage ui|dialogtoolbar ui|clickbutton.focusable {
+        margin: 0 !important;
+    }
+
+    .toppage ui|clickbutton ui|labelbox, .toppage .clickbutton {
+        display: block;
+        text-decoration: none;
+        background: #21B980;
+        color: #fff;
+        -ms-border-radius: 20px;
+        border-radius: 20px;
+        width: 100%;
+        text-transform: uppercase;
+        padding: 10px 0;
+        text-align: center;
+    }
+
+        .toppage ui|dialogtoolbar ui|clickbutton.hover ui|labelbox, .toppage .clickbutton:hover {
+            background: #04A380;
+        }
+
+    .toppage ui|clickbutton ui|labelbody {
+        height: auto;
+    }
+
+    .toppage ui|clickbutton ui|labelbody, .toppage ui|clickbutton ui|labelbox ui|labeltext {
+        float: none;
+    }
