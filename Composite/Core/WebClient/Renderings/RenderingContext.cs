@@ -318,6 +318,8 @@ namespace Composite.Core.WebClient.Renderings
         /// <exclude />
         public void Dispose()
         {
+            PageRenderingHistory.MarkPageAsRendered(this.Page);
+
             if (_dataScope != null)
             {
                 _dataScope.Dispose();

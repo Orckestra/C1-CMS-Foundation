@@ -203,6 +203,13 @@
       <DependentUpon>LocalizationFiles.tt</DependentUpon>
     </Compile>
     <Compile Include="Core\ResourceSystem\Plugins\ResourceProvider\ILocalizationProvider.cs" />
+    <Compile Include="Core\Routing\DataUrls.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\Routing\IDataUrlMapper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Data\PageRenderingHistory.cs" />
     <Compile Include="Functions\PathInfoRoutedDataUrlMapper.cs" />
     <Compile Include="Functions\PathInfoRoutedData.cs" />
     <Compile Include="Functions\RoutedData.cs" />
