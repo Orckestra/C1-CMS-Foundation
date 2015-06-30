@@ -57,8 +57,7 @@ namespace Composite.Functions
             var urlMapper = GetUrlMapper();
             Verify.IsNotNull(urlMapper, "UrlMapper is null");
             
-            // TODO: un-comment when DataUrlMapper logic is implemented
-            //DataUrls.RegisterDynamicDataUrlMapper(PageRenderer.CurrentPage, typeof(T), new RoutedDataUrlMapperAdapter(urlMapper));
+            DataUrls.RegisterDynamicDataUrlMapper(PageRenderer.CurrentPage, typeof(T), new RoutedDataUrlMapperAdapter(urlMapper));
 
             var pageUrlData = C1PageRoute.PageUrlData;
 
@@ -212,25 +211,25 @@ namespace Composite.Functions
             }
         }
 
-        //internal class RoutedDataUrlMapperAdapter : IDataUrlMapper
-        //{
-        //    private readonly IRoutedDataUrlMapper _mapper;
+        internal class RoutedDataUrlMapperAdapter : IDataUrlMapper
+        {
+            private readonly IRoutedDataUrlMapper _mapper;
 
-        //    public RoutedDataUrlMapperAdapter(IRoutedDataUrlMapper mapper)
-        //    {
-        //        _mapper = mapper;
-        //    }
+            public RoutedDataUrlMapperAdapter(IRoutedDataUrlMapper mapper)
+            {
+                _mapper = mapper;
+            }
 
-        //    public IData GetData(PageUrlData pageUrlData)
-        //    {
-        //        var model = _mapper.GetRouteDataModel(pageUrlData);
-        //        return model.IsRouteResolved && model.IsDetailView ? model.Data : null;
-        //    }
+            public IData GetData(PageUrlData pageUrlData)
+            {
+                var model = _mapper.GetRouteDataModel(pageUrlData);
+                return model.IsRouteResolved && model.IsDetailView ? model.Data : null;
+            }
 
-        //    public PageUrlData GetPageUrlData(IData instance)
-        //    {
-        //        return _mapper.BuildDataUrl(instance);
-        //    }
-        //}
+            public PageUrlData GetPageUrlData(IData instance)
+            {
+                return _mapper.BuildDataUrl(instance);
+            }
+        }
     }
  }
