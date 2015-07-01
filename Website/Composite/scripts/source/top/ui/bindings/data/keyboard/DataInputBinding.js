@@ -255,9 +255,6 @@ DataInputBinding.prototype._buildDOMContent = function () {
 	this.shadowTree.input = this._getInputElement();
 	this.shadowTree.box = DOMUtil.createElementNS(Constants.NS_UI, "ui:box", this.bindingDocument);
 
-
-	this.shadowTree.input
-
 	if (Client.isExplorer == true) {
 		this.bindingElement.hideFocus = true;
 	}
