@@ -4,6 +4,7 @@ using System.Reflection;
 using Composite.Core.Extensions;
 using Composite.Core.Linq;
 using Composite.Core.Routing;
+using Composite.Core.Routing.Foundation.PluginFacades;
 using Composite.Core.Types;
 using Composite.Data;
 using Composite.Data.Types;
@@ -185,7 +186,7 @@ namespace Composite.Functions
 
         private static string LabelToUrlPart(string partnerName)
         {
-            return partnerName.Trim().Replace("/", "").Replace("+", "_").Replace(" ", "_").Replace("__", "_").Replace("__", "_");
+            return UrlFormattersPluginFacade.FormatUrl(partnerName, true);
         }
 
         private static string GetUrlLabel(IData data)

@@ -157,8 +157,12 @@ namespace Composite.Core.Routing.Pages
                 string originalFilePath = new UrlBuilder(currentUrl).RelativeFilePath;
                 string correctFilePath = new UrlBuilder(correctUrl).RelativeFilePath;
 
+                string decodedOriginalPath = HttpUtility.UrlDecode(originalFilePath);
+
                 if (!urlSpace.ForceRelativeUrls 
-                    && (originalFilePath.Length != correctFilePath.Length && System.Web.HttpUtility.UrlDecode(originalFilePath) != correctFilePath)
+                    && (originalFilePath.Length != correctFilePath.Length
+                        && decodedOriginalPath != correctFilePath
+                        && decodedOriginalPath != HttpUtility.UrlDecode(correctFilePath))
                     || (string.Compare(originalFilePath, correctFilePath, false, CultureInfo.InvariantCulture) != 0 
                         && string.Compare(originalFilePath, correctFilePath, true, CultureInfo.InvariantCulture) == 0))
                 {

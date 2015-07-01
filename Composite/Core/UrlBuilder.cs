@@ -80,7 +80,7 @@ namespace Composite.Core
             }
         }
 
-        private static class DefaultHttpEncoder
+        internal static class DefaultHttpEncoder
         {
             public static string UrlEncode(string urlPart)
             {
@@ -153,6 +153,7 @@ namespace Composite.Core
             string result = _filePath;
             if (_pathInfo != null)
             {
+                // TODO: encode symbols in path info
                 result += _pathInfo;
             }
 

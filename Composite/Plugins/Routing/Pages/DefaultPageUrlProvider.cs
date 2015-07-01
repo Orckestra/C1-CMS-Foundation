@@ -290,7 +290,7 @@ namespace Composite.Plugins.Routing.Pages
             var urlBuilder = new UrlBuilder(relativeUrl);
 
             // Structure of a public url:
-            // http://<hostname>[/ApplicationVitrualPath]{/languageCode}[/Path to a page][/c1mode(unpublished)][/c1mode(relative)][UrlSuffix]{/PathInfo}
+            // http://<hostname>[/ApplicationVirtualPath]{/languageCode}[/Path to a page][/c1mode(unpublished)][/c1mode(relative)][UrlSuffix]{/PathInfo}
            
 
             string filePathAndPathInfo = HttpUtility.UrlDecode(urlBuilder.FullPath);
@@ -687,7 +687,7 @@ namespace Composite.Plugins.Routing.Pages
 
             if (!string.IsNullOrEmpty(pageUrlData.PathInfo))
             {
-                AppendUrlPart(pageUrlPath, pageUrlData.PathInfo);
+                AppendPathInfo(pageUrlPath, pageUrlData.PathInfo);
             }
 
 
@@ -817,6 +817,39 @@ namespace Composite.Plugins.Routing.Pages
             }
 
             return sb.Append('/').Append(urlPart);
+        }
+
+        private static StringBuilder AppendPathInfo(StringBuilder sb, string pathInfo)
+        {
+            if (string.IsNullOrEmpty(pathInfo))
+            {
+                return sb;
+            }
+
+            Verify.That(pathInfo[0] == '/', "pathInfo has to start with '/' character");
+
+            bool endsWithSlash = sb.Length != 0 && sb[sb.Length - 1] == '/';
+            if (!endsWithSlash)
+            {
+                sb.Append('/');
+            }
+
+            var parts = pathInfo.Split('/');
+
+            bool isFirst = true;
+            foreach (var pathInfoPart in parts.Skip(1))
+            {
+                if (!isFirst)
+                {
+                    sb.Append('/');
+                }
+
+                sb.Append(UrlBuilder.DefaultHttpEncoder.UrlEncode(pathInfoPart));
+
+                isFirst = false;
+            }
+
+            return sb;
         }
 
         private static string BuildRenderUrl(PageUrlData pageUrlData)
