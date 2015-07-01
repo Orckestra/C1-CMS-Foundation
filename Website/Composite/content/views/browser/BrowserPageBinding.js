@@ -452,8 +452,8 @@ BrowserPageBinding.prototype._updateAddressBar = function ( url ) {
 	
 	var bar = this.bindingWindow.bindingMap.addressbar;
 	if (bar != null) {
-		url = PageService.ConvertRelativePageUrlToAbsolute(url);
-		bar.setValue ( url );
+		//url = PageService.ConvertRelativePageUrlToAbsolute(url);
+		//bar.setValue ( url );
 	}
 }
 

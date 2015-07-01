@@ -15,12 +15,6 @@ function SourceEditorToolBarBinding () {
 	this.logger = SystemLogger.getLogger ( "SourceEditorToolBarBinding" );
 	
 	/**
-	 * Indexing toolbarbuttons by value of the cmd attribute.
-	 * @type {Map<string><EditorToolBarButtonBinding>}
-	 */
-	this._buttons = null;
-
-	/**
 	 * The containing editor.
 	 * @type {CodemirrorEditorBinding}
 	 */
@@ -64,39 +58,8 @@ SourceEditorToolBarBinding.prototype.onBindingAttach = function () {
 
 	SourceEditorToolBarBinding.superclass.onBindingAttach.call(this);
 
-	/*
-	var codepresswindow = this.bindingWindow.bindingMap.codepresswindow;
-	if ( codepresswindow ) {
-	EditorBinding.registerComponent ( this, codepresswindow );
-	}
-	*/
-
 	var codemirrorwindow = this.bindingWindow.bindingMap.codemirrorwindow;
 	EditorBinding.registerComponent(this, codemirrorwindow);
-}
-
-/*
- * Index toolbar buttons.
- * @overloads {ToolBarBinding#onBindingInitialize}
- */
-SourceEditorToolBarBinding.prototype.onBindingInitialize = function () {
-	
-	SourceEditorToolBarBinding.superclass.onBindingInitialize.call ( this )
-	
-	this._buttons = new Map ();
-	
-	if ( this._toolBarBodyLef != null ) {
-		var buttons = this._toolBarBodyLeft.getDescendantBindingsByLocalName ( "toolbarbutton" );
-		while ( buttons.hasNext ()) {
-			var button = buttons.getNext ();
-			if ( button.cmd != null ) {
-				this._buttons.set ( 
-					button.cmd, 
-					button 
-				);
-			}
-		}
-	}
 }
 
 /**
@@ -119,59 +82,6 @@ SourceEditorToolBarBinding.prototype.initializeSourceEditorComponent = function 
 			this.bindingWindow.bindingMap.xmltools.show ();
 			break;
 	}
-}
-
-/**
- * This handles all button commands.
- * @implements {IActionListener}
- * @overloads {Binding#handleAction}
- * @param {Action} action
- */
-SourceEditorToolBarBinding.prototype.handleAction = function (action) {
-	SourceEditorToolBarBinding.superclass.handleAction.call(this, action);
-
-	var page = this.bindingWindow.bindingMap.editorpage;
-
-	switch (action.type) {
-		case ButtonBinding.ACTION_COMMAND:
-			var button = action.target;
-			if (button.cmd) {
-				switch (button.cmd) {
-					case "plainview":
-						page.switchMode(true);
-						break;
-					case "fancyview":
-						page.switchMode(false);
-						break;
-				}
-				this.updateButtons();
-			}
-			break;
-	}
-}
-
-/**
- * Hide one buttons, show the other. Presented as separate method 
- * because it gets invoked by SourceEditorPageBinding onload.
- */
-SourceEditorToolBarBinding.prototype.updateButtons = function () {
-
-	var cmd1 = window.bindingMap.editorpage.isPlainView ? "plainview" : "fancyview";
-	var cmd2 = window.bindingMap.editorpage.isPlainView ? "fancyview" : "plainview";
-	if (this._buttons.has(cmd1) && this._buttons.has(cmd2)) {
-		this._buttons.get(cmd1).hide();
-		this._buttons.get(cmd2).show();
-	}
-}
-
-/** 
- * Exposing buttons so that outside fellows can control the toolbar.
- * @param {string} cmd
- * @return {EditorToolBarButtonBinding}
- */
-SourceEditorToolBarBinding.prototype.getButtonForCommand = function ( cmd ) {
-	
-	return this._buttons.get ( cmd );
 }
 
 /**

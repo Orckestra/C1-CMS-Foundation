@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://www.w3.org/1999/xhtml"
 xmlns:control="http://www.composite.net/ns/uicontrol">
-    
+
 <%@ Page Language="C#" %>
 
 <control:httpheaders runat="server" />
@@ -42,74 +42,33 @@ xmlns:control="http://www.composite.net/ns/uicontrol">
 		</ui:popup>
 	</ui:popupset>
 	<ui:page id="editorpage" binding="SourceEditorPageBinding">
-		<!--  fitasdialogsubpage="false" -->
-		<!-- 
-			<ui:toolbar id="toolbar" binding="SourceEditorToolBarBinding" hidden="true">
-				
-				PlainTextEditor disabled pending https://bugzilla.mozilla.org/show_bug.cgi?id=602484
-				
-				<ui:toolbarbody>
-					<ui:region match="mozilla">
-						<ui:toolbargroup>
-							<ui:toolbarbutton cmd="plainview" label="${string:Composite.Web.SourceEditor:Switch.PlainEdit.Label}" image="${icon:editor-plainedit}" tooltip="${string:Composite.Web.SourceEditor:Switch.PlainEdit.ToolTip}" hidden="true" editorcontrol="false"/>
-							<ui:toolbarbutton cmd="fancyview" label="${string:Composite.Web.SourceEditor:Switch.ColoredEdit.Label}" image="${icon:editor-fancyedit}" tooltip="${string:Composite.Web.SourceEditor:Switch.ColoredEdit.ToolTip}" hidden="true" editorcontrol="false"/>
-						</ui:toolbargroup>
-					</ui:region>
-					<ui:region match="mozilla">
-						<ui:toolbargroup rel="developermode">
-							<ui:toolbarbutton label="Debug" oncommand="bindingMap.editorpage.debug ()" image="${icon:systemlog}"/>
-						</ui:toolbargroup>
-					</ui:region>
-				</ui:toolbarbody>
-				
-				<ui:toolbarbody align="right">
-					<ui:toolbargroup>
-						 
-							When loaded inside the wysiwygeditor, 
-							the WysiwygEditorBinding will insert 
-							a toolbarbutton here! 
-						
-					</ui:toolbargroup>
-				</ui:toolbarbody>
-			</ui:toolbar>
-			-->
-		<ui:decks id="sourcecodeeditordecks" selectedindex="1">
-			<ui:deck id="plaindeck">
-				<ui:flexbox>
-					<ui:cover id="plaineditorcover" busy="false" hidden="true" />
-					<ui:editortextbox id="plaineditor" />
-				</ui:flexbox>
-			</ui:deck>
-			<ui:deck id="fancydeck">
-				<ui:toolbar id="toolbar" binding="SourceEditorToolBarBinding">
-					<ui:toolbarbody>
-						<ui:toolbargroup>
-							<ui:toolbarbutton id="insertbutton" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelInsert}"
-								image="${icon:insert}" image-disabled="${icon:insert-disabled}" observes="broadcasterIsActive"
-								popup="insertpopup" binding="SourceEditorInsertToolbarButtonBinding" />
-						</ui:toolbargroup>
-						<ui:toolbargroup id="xmltools" hidden="true">
-							<ui:toolbarbutton id="formatbutton" label="${string:Composite.Web.SourceEditor:Toolbar.Format.Label}" tooltip="${string:Composite.Web.SourceEditor:Toolbar.Format.ToolTip}" image="${icon:editor-formatsource}"
-								image-disabled="${icon:editor-formatsource-disabled}" observes="broadcasterIsActive"
-								binding="SourceEditorFormatToolbarButtonBinding" />
-						</ui:toolbargroup>
-					</ui:toolbarbody>
-					<ui:toolbarbody align="right">
-						<ui:toolbargroup>
-							<!-- 
+		<ui:toolbar id="toolbar" binding="SourceEditorToolBarBinding">
+			<ui:toolbarbody>
+				<ui:toolbargroup>
+					<ui:toolbarbutton id="insertbutton" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelInsert}"
+						image="${icon:insert}" image-disabled="${icon:insert-disabled}" observes="broadcasterIsActive"
+						popup="insertpopup" binding="SourceEditorInsertToolbarButtonBinding" />
+				</ui:toolbargroup>
+				<ui:toolbargroup id="xmltools" hidden="true">
+					<ui:toolbarbutton id="formatbutton" label="${string:Composite.Web.SourceEditor:Toolbar.Format.Label}" tooltip="${string:Composite.Web.SourceEditor:Toolbar.Format.ToolTip}" image="${icon:editor-formatsource}"
+						image-disabled="${icon:editor-formatsource-disabled}" observes="broadcasterIsActive"
+						binding="SourceEditorFormatToolbarButtonBinding" />
+				</ui:toolbargroup>
+			</ui:toolbarbody>
+			<ui:toolbarbody align="right">
+				<ui:toolbargroup>
+					<!-- 
 										When loaded inside the wysiwygeditor, 
 										the WysiwygEditorBinding will insert 
 										a toolbarbutton here! 
 									-->
-						</ui:toolbargroup>
-					</ui:toolbarbody>
-				</ui:toolbar>
-				<ui:flexbox id="codepressflexbox">
-					<ui:cover id="codepresscover" busy="false" />
-					<ui:window id="codemirrorwindow" />
-				</ui:flexbox>
-			</ui:deck>
-		</ui:decks>
+				</ui:toolbargroup>
+			</ui:toolbarbody>
+		</ui:toolbar>
+		<ui:flexbox id="editorflexbox">
+			<ui:window id="codemirrorwindow" />
+		</ui:flexbox>
+
 	</ui:page>
 </body>
 </html>

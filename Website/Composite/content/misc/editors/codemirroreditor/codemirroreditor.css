@@ -9,6 +9,6 @@ input#focusableinput { /* synchronize with wysiwygeditor.css */
 	left: 0;
 	display: none;
 }
-ui|flexbox#codepressflexbox {
+ui|flexbox#editorflexbox {
 	position: relative;
 }
