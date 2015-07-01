@@ -68,7 +68,7 @@ namespace Composite.Plugins.Elements.ElementProviders.SqlFunctionElementProvider
             var connections = DataFacade.GetData<ISqlConnection>();
 
             List<Element> elements = new List<Element>();
-            bool hasChildren = connections.Count() > 0;
+            bool hasChildren = connections.Any();
 
             Element element = new Element(_context.CreateElementHandle(new SqlFunctionProviderRootEntityToken(_context.ProviderName, _context.ProviderName)))
             {
@@ -135,8 +135,8 @@ namespace Composite.Plugins.Elements.ElementProviders.SqlFunctionElementProvider
             List<Element> elements = new List<Element>();
             foreach (ISqlConnection connection in connections)
             {
-                int qurieCount = queries.Where(x => x.ConnectionId == connection.Id).Count();
-                bool hasChildren = qurieCount > 0;
+                int queryCount = queries.Where(x => x.ConnectionId == connection.Id).Count();
+                bool hasChildren = queryCount > 0;
 
                 Element element = new Element(_context.CreateElementHandle(connection.GetDataEntityToken()))
                 {
@@ -327,15 +327,15 @@ namespace Composite.Plugins.Elements.ElementProviders.SqlFunctionElementProvider
         {
             bool hasChildren = (node.SubFolders.Count != 0) || (node.Leafs.Count != 0);
 
-            Element element = new Element(_context.CreateElementHandle(new SqlFunctionProviderFolderEntityToken(StringExtensionMethods.CreateNamespace(node.Namespace, node.Name, '.'), _context.ProviderName, connectionId)))
+            var element = new Element(_context.CreateElementHandle(new SqlFunctionProviderFolderEntityToken(StringExtensionMethods.CreateNamespace(node.Namespace, node.Name, '.'), _context.ProviderName, connectionId)))
             {
-                VisualData = new ElementVisualizedData()
+                VisualData = new ElementVisualizedData
                 {
                     Label = node.Name,
                     ToolTip = node.Name,
                     HasChildren = (node.SubFolders.Count != 0) || (node.Leafs.Count != 0),
                     Icon = hasChildren ? this.FolderIcon : this.EmptyFolderIcon,
-                    OpenedIcon = this.FolderIcon
+                    OpenedIcon = this.OpenFolderIcon
                 }
             };
 
@@ -368,9 +368,9 @@ namespace Composite.Plugins.Elements.ElementProviders.SqlFunctionElementProvider
 
         private Element CreateXmlFunctionInfoElement(INamespaceTreeBuilderLeafInfo leafInfo, string connectionId)
         {
-            Element element = new Element(_context.CreateElementHandle(((SqlNamespaceTreeBuilderLeafInfo)leafInfo).EntityToken))
+            var element = new Element(_context.CreateElementHandle(((SqlNamespaceTreeBuilderLeafInfo)leafInfo).EntityToken))
             {
-                VisualData = new ElementVisualizedData()
+                VisualData = new ElementVisualizedData
                 {
                     Label = leafInfo.Name,
                     ToolTip = leafInfo.Name,
@@ -433,23 +433,23 @@ namespace Composite.Plugins.Elements.ElementProviders.SqlFunctionElementProvider
 
         public Dictionary<EntityToken, IEnumerable<EntityToken>> GetParents(IEnumerable<EntityToken> entityTokens)
         {
-            Dictionary<EntityToken, IEnumerable<EntityToken>> result = new Dictionary<EntityToken, IEnumerable<EntityToken>>();
+            var result = new Dictionary<EntityToken, IEnumerable<EntityToken>>();
 
             foreach (EntityToken entityToken in entityTokens)
             {
-                DataEntityToken dataEntityToken = entityToken as DataEntityToken;
+                var dataEntityToken = entityToken as DataEntityToken;
 
                 if (dataEntityToken.InterfaceType == typeof(ISqlFunctionInfo))
                 {
                     ISqlFunctionInfo sqlFunctionInfo = dataEntityToken.Data as ISqlFunctionInfo;
                     
-                    SqlFunctionProviderFolderEntityToken parentEntityToken = new SqlFunctionProviderFolderEntityToken(sqlFunctionInfo.Namespace, _context.ProviderName, sqlFunctionInfo.ConnectionId.ToString());
+                    var parentEntityToken = new SqlFunctionProviderFolderEntityToken(sqlFunctionInfo.Namespace, _context.ProviderName, sqlFunctionInfo.ConnectionId.ToString());
 
                     result.Add(entityToken, new EntityToken[] { parentEntityToken });
                 }
                 else if (dataEntityToken.InterfaceType == typeof(ISqlConnection))
                 {
-                    SqlFunctionProviderRootEntityToken parentEntityToken = new SqlFunctionProviderRootEntityToken(_context.ProviderName, _context.ProviderName);
+                    var parentEntityToken = new SqlFunctionProviderRootEntityToken(_context.ProviderName, _context.ProviderName);
 
                     result.Add(entityToken, new EntityToken[] { parentEntityToken });
                 }
@@ -478,7 +478,7 @@ namespace Composite.Plugins.Elements.ElementProviders.SqlFunctionElementProvider
         [DebuggerDisplay("Name = {Name}, Namespace = {Namespace}")]
         private sealed class SqlNamespaceTreeBuilderLeafInfo : INamespaceTreeBuilderLeafInfo
         {
-            ISqlFunctionInfo _sqlFunctionInfo;
+            readonly ISqlFunctionInfo _sqlFunctionInfo;
 
             public SqlNamespaceTreeBuilderLeafInfo(ISqlFunctionInfo sqlFunctionInfo)
             {

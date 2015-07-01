@@ -185,11 +185,13 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
         /// <exclude />
         static GeneratedDataTypesElementProvider()
         {
-            DataIconLookup = new Dictionary<string, ResourceHandle>();
-            DataIconLookup.Add(GenericPublishProcessController.Draft, DataIconFacade.DataDraftIcon);
-            DataIconLookup.Add(GenericPublishProcessController.AwaitingApproval, DataIconFacade.DataAwaitingApprovalIcon);
-            DataIconLookup.Add(GenericPublishProcessController.AwaitingPublication, DataIconFacade.DataAwaitingPublicationIcon);
-            DataIconLookup.Add(GenericPublishProcessController.Published, DataIconFacade.DataPublishedIcon);
+            DataIconLookup = new Dictionary<string, ResourceHandle>
+            {
+                {GenericPublishProcessController.Draft, DataIconFacade.DataDraftIcon},
+                {GenericPublishProcessController.AwaitingApproval, DataIconFacade.DataAwaitingApprovalIcon},
+                {GenericPublishProcessController.AwaitingPublication, DataIconFacade.DataAwaitingPublicationIcon},
+                {GenericPublishProcessController.Published, DataIconFacade.DataPublishedIcon}
+            };
         }
 
 
@@ -208,29 +210,30 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             set
             {
                 _providerContext = value;
-                _dataGroupingProviderHelper = new DataGroupingProviderHelper(_providerContext);
-                _dataGroupingProviderHelper.FolderOpenIcon = GetIconHandle("data-interface-open");
-                _dataGroupingProviderHelper.FolderClosedIcon = GetIconHandle("data-interface-closed");
-                _dataGroupingProviderHelper.OnCreateLeafElement = GetElementFromData;
-                _dataGroupingProviderHelper.OnCreateGhostedLeafElement = GetGhostedElementFromData;
-                _dataGroupingProviderHelper.OnCreateDisabledLeafElement = GetDisabledElementFromData;
-                _dataGroupingProviderHelper.OnAddActions = AddGroupFolderActions;
-                _dataGroupingProviderHelper.OnGetRootParentEntityToken = GetRootParentEntityToken;
-                _dataGroupingProviderHelper.OnOwnsType = type =>
+                _dataGroupingProviderHelper = new DataGroupingProviderHelper(_providerContext)
                 {
-                    if (!type.IsGenerated() && !type.IsStaticDataType()) return false;
-                    if (PageFolderFacade.GetAllFolderTypes().Contains(type)) return false;
-                    if (PageMetaDataFacade.GetAllMetaDataTypes().Contains(type)) return false;
-
-                    if (_websiteItemsView)
+                    FolderOpenIcon = InterfaceOpen,
+                    FolderClosedIcon = InterfaceClosed,
+                    OnCreateLeafElement = GetElementFromData,
+                    OnCreateGhostedLeafElement = GetGhostedElementFromData,
+                    OnCreateDisabledLeafElement = GetDisabledElementFromData,
+                    OnAddActions = AddGroupFolderActions,
+                    OnGetRootParentEntityToken = GetRootParentEntityToken,
+                    OnOwnsType = type =>
                     {
-                        return IsTypeWhiteListed(type);
-                    }
+                        if (!type.IsGenerated() && !type.IsStaticDataType()) return false;
+                        if (PageFolderFacade.GetAllFolderTypes().Contains(type)) return false;
+                        if (PageMetaDataFacade.GetAllMetaDataTypes().Contains(type)) return false;
 
-                    return true;
+                        if (_websiteItemsView)
+                        {
+                            return IsTypeWhiteListed(type);
+                        }
+
+                        return true;
+                    },
+                    OnGetPayload = token => null
                 };
-                _dataGroupingProviderHelper.OnGetPayload = token => null;
-
             }
         }
         
@@ -241,15 +244,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
         {
             get
             {
-                foreach (Type type in DataFacade.GetGeneratedInterfaces())
-                {
-                    if (DataLocalizationFacade.IsLocalized(type))
-                    {
-                        return true;
-                    }
-                }
-
-                return false;
+                return DataFacade.GetGeneratedInterfaces().Any(DataLocalizationFacade.IsLocalized);
             }
         }
 
@@ -610,7 +605,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 var openIcon = _websiteItemsView || isStaticType ? InterfaceOpen : DynamicDataTypeIconOpen;
                 var closedIcon = _websiteItemsView ||isStaticType ? InterfaceClosed : DynamicDataTypeIconClosed;
 
-                Element element = new Element(_providerContext.CreateElementHandle(
+                var element = new Element(_providerContext.CreateElementHandle(
                     new GeneratedDataTypesElementProviderTypeEntityToken(typeName, _providerContext.ProviderName,
                         GeneratedDataTypesElementProviderRootEntityToken.GlobalDataTypeFolderId)))
                 {
@@ -619,8 +614,8 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                         Label = label,
                         ToolTip = !failedToLoad ? label : GetNestedExceptionMessage(queryDataException),
                         HasChildren = hasChildren,
-                        Icon = !failedToLoad ? openIcon : ErrorIcon,
-                        OpenedIcon = !failedToLoad ? closedIcon : ErrorIcon
+                        Icon = !failedToLoad ? closedIcon : ErrorIcon,
+                        OpenedIcon = !failedToLoad ? openIcon : ErrorIcon
                     }
                 };
 

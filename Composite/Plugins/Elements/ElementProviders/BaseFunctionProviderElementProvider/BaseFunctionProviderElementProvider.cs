@@ -264,18 +264,18 @@ namespace Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElemen
         {
             bool hasChildren = (node.SubFolders.Count != 0) || (node.Leafs.Count != 0);
 
-            Element element = new Element(_context.CreateElementHandle(new BaseFunctionFolderElementEntityToken(CreateId(node, _context.ProviderName))))
+            var element = new Element(_context.CreateElementHandle(new BaseFunctionFolderElementEntityToken(CreateId(node, _context.ProviderName))))
             {
-                VisualData = new ElementVisualizedData()
+                VisualData = new ElementVisualizedData
                 {
                     Label = node.Name,
                     ToolTip = node.Name,
                     HasChildren = (node.SubFolders.Count != 0) || (node.Leafs.Count != 0),
                     Icon = hasChildren ? this.FolderIcon : this.EmptyFolderIcon,
-                    OpenedIcon = this.FolderIcon
-                }
+                    OpenedIcon = this.OpenFolderIcon
+                },
+                TreeLockBehavior = OnGetTreeLockBehavior()
             };
-            element.TreeLockBehavior = OnGetTreeLockBehavior();
 
             IEnumerable<ElementAction> actions = OnGetFolderActions();
             if (actions != null)
