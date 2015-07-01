@@ -21,13 +21,13 @@
         <ui:field>
           <ui:fielddata>
             <ui:labelbox class="icon" image="${icon:user}"></ui:labelbox>
-            <ui:datainput name="username" required="true" autoselect="true"/>
+            <ui:datainput name="username" required="true" autoselect="true" placeholder="Username" />
           </ui:fielddata>
         </ui:field>
         <ui:field>
           <ui:fielddata>
             <ui:labelbox class="icon" image="${icon:users-changeownpassword}"></ui:labelbox>
-            <ui:datainput name="password" password="true" required="true" autoselect="true"/>
+            <ui:datainput name="password" password="true" required="true" autoselect="true" placeholder="Password"/>
           </ui:fielddata>
         </ui:field>
       </ui:fields>
