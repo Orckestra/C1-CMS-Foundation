@@ -175,9 +175,8 @@ DialogPageBinding.prototype.setPageArgument = function (arg) {
 
 	DialogPageBinding.superclass.setPageArgument.call(this, arg);
 
-	var image = arg.image;
-	if (image)
-		this.setProperty("image", image);
+	if (arg && arg.image)
+		this.setProperty("image", arg.image);
 }
 
 /**
