@@ -82,7 +82,16 @@ namespace Composite.Functions
                             key = pathInfo.Substring(1);
                         }
 
-                        var data = DataFacade.TryGetDataByUniqueKey<T>(key);
+                        var keyType = _keyPropertyInfo.PropertyType;
+                        object keyValue = ValueTypeConverter.Convert(key, keyType);
+                        
+                        if(keyValue == null 
+                           || (keyValue is Guid && (Guid)keyValue == Guid.Empty && key != Guid.Empty.ToString()))
+                        {
+                            return new RoutedDataModel();
+                        }
+
+                        var data = DataFacade.TryGetDataByUniqueKey<T>(keyValue);
 
                         bool isCanonical;
                         if (_dataRouteKind == DataRouteKind.KeyAndLabel)
