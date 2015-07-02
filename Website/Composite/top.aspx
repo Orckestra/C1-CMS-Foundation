@@ -62,7 +62,7 @@
 		
 		<ui:persistance id="persistance"/>
 
-		<ui:page id="toppage" class="toppage loginpage" strongfocusmanager="false" flex="false">
+		<ui:page id="toppage" class="toppage" strongfocusmanager="false" flex="false">
 		
 			<!-- show intro splash or normal splash? -->
 			<ui:cover id="cover" class="cover cover-dark-overlay" busy="false">                

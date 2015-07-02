@@ -1,49 +1,70 @@
 @namespace ui url("http://www.w3.org/1999/xhtml");
 
+html {
+    overflow: auto;
+}
+
 .toppage {
     font-size: 16px;
     font-family: "Segoe UI", Tahoma, sans-serif;
+    color: #666;
+    overflow: auto;
 }
+
+    .toppage a, .toppage a:focus {
+        color: #21B980;
+        cursor: pointer;
+    }
+
+
+        .toppage a:hover {
+            color: #04A380;
+            text-decoration: underline;
+        }
 
     .toppage .cover {
         display: block;
         position: absolute;
-        overflow: hidden;
         z-index: 1;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
+        overflow: auto;
         background-color: rgb(240,240,240);
         -moz-background-size: cover;
         -o-background-size: cover;
         background-size: cover;
         background-position: center center;
         background-repeat: no-repeat;
+        background-image: url("${root}/images/top-page-cover-bg.jpg");
     }
 
     .toppage .cover-dark-overlay:after {
         content: "";
-        position: absolute;
+        position: fixed;
         top: 0;
         left: 0;
+        bottom: 0;
         z-index: 2;
         width: 100%;
-        height: 100%;
         background-color: rgba(0, 0, 0, 0.6);
     }
 
+
+    .toppage .logo {
+        width: 138px;
+        height: 38px;
+        background: url("${root}/images/composite-logo.png") no-repeat 0 0;
+        margin: 0 auto 40px auto;
+    }
+
     .toppage .splash {
-        color: #666;
+        position: relative;
+        z-index: 3;
         display: block;
         width: 312px;
-        position: absolute;
-        z-index: 3;
-        overflow: hidden;
-        top: 45%;
-        left: 50%;
-        margin-left: -156px;
-        margin-top: -157px;
+        margin: 200px auto;
         -ms-border-radius: 15px;
         border-radius: 15px;
         background: #fff;
@@ -51,6 +72,11 @@
 
     .toppage .splash-inner {
         padding: 30px 30px 40px 30px;
+    }
+
+    .toppage h1 {
+        border-bottom: solid 1px #E1E1E1;
+        padding-bottom: 10px;
     }
 
     .toppage .splash .errortext {
@@ -62,6 +88,16 @@
         float: none;
         width: 100%;
         margin: 0;
+    }
+
+    .toppage ui|clickbutton.right-btn {
+        float: right;
+        width: auto;
+    }
+
+    .toppage ui|clickbutton.left-btn {
+        float: left;
+        width: auto;
     }
 
     .toppage ui|dialogtoolbar ui|clickbutton.focusable {
@@ -77,7 +113,7 @@
         border-radius: 20px;
         width: 100%;
         text-transform: uppercase;
-        padding: 10px 0;
+        padding: 10px 20px;
         text-align: center;
     }
 
@@ -92,3 +128,11 @@
     .toppage ui|clickbutton ui|labelbody, .toppage ui|clickbutton ui|labelbox ui|labeltext {
         float: none;
     }
+
+    .toppage ui|clickbutton.isdisabled {
+        opacity: 0.5;
+    }
+
+        .toppage ui|clickbutton.isdisabled ui|labeltext {
+            color: white;
+        }

@@ -4,21 +4,24 @@
 		<link rel="stylesheet" type="text/css" href="welcome.css.aspx"/>
 	</head>
 	<body>
+	<div class="welcomepage">
 		<ui:cover id="introcover" hidden="true" busy="false"/>
-		<ui:tableframe id="intro" class="splash">
-			<p id="crumbs">
-				<span id="crumbtest" class="selected">Welcome</span>
-				<em>►</em>
-				<span id="crumblicense">License</span> 
-				<em>►</em> 
-				<span id="crumbsetup">Setup</span> 
-				<em>►</em>
-				<span id="crumblanguage">Language</span> 
-				<em>►</em>
-				<span id="crumblogin">Login</span>
-			</p>
-			<ui:decks id="introdecks" flex="false">
-				<ui:deck id="test">
+		<div class="splash">
+			<div class="splash-inner">
+				<div id="intro" class="intro">
+					<p id="crumbs" class="crumbs">
+						<span id="crumbtest" class="selected">Welcome</span>
+						<em>►</em>
+						<span id="crumblicense">License</span> 
+						<em>►</em> 
+						<span id="crumbsetup">Setup</span> 
+						<em>►</em>
+						<span id="crumblanguage">Language</span> 
+						<em>►</em>
+						<span id="crumblogin">Login</span>
+					</p>
+					<ui:decks id="introdecks" flex="false">
+					<ui:deck id="test">
 					<h1>Welcome</h1>
 					<div>
 						<p>Please wait while we test your installation.</p>
@@ -29,27 +32,23 @@
 							<a href="#" onclick="window.location.reload()">(check again)</a>
 						</p>
 					</div>
-				</ui:deck>
-				<ui:deck id="license">
-					<h1>License</h1>
-					<div>
-						<div id="licensetext"/>
+					</ui:deck>
+					<ui:deck id="license">
+						<h1>License</h1>
+						<div id="licensetext" class="licensetext"/>
 						<form id="licenseform" action="javascript://" method="get">
-							<div>
-								<input id="licenseaccept" type="checkbox" class="checkbox" onclick="Welcome.acceptLicense(this)"/>
-								<label for="licenseaccept">Accept</label>
-							</div>
+							<input id="licenseaccept" type="checkbox" class="checkbox" onclick="Welcome.acceptLicense(this)"/>
+							<label for="licenseaccept">Accept</label>
 						</form>
-					</div>
-				</ui:deck>
-				<ui:deck id="setup">
-					<h1>Setup</h1>
-					<div>
-						<div id="setuptext"/>
-						<div id="setupfields"/>
-					</div>			
-				</ui:deck>
-				<ui:deck id="language">
+					</ui:deck>
+					<ui:deck id="setup">
+						<h1>Setup</h1>
+						<div>
+							<div id="setuptext"/>
+							<div id="setupfields" class="setupfields"/>
+						</div>
+					</ui:deck>
+					<ui:deck id="language">
 					<h1>Language</h1>
 					<div>
 						<!-- p id="consolehelp">The "console language" is the language used in the administration of your website. You can change this later.</p-->
@@ -73,8 +72,8 @@
 							</div>
 						</form>
 					</div>			
-				</ui:deck>
-				<ui:deck id="login">
+					</ui:deck>
+					<ui:deck id="login">
 					<h1>Create Login</h1>
 					<div>
 						<form id="loginform" class="fields" action="javascript://" method="get">
@@ -111,40 +110,43 @@
 							<p id="lengthbad">Minimum 6 characters password.</p>
 						</div>
 					</div>
-				</ui:deck>
-			</ui:decks>
-		</ui:tableframe>
-		<ui:decks id="navdecks" class="splash">
+					</ui:deck>
+				</ui:decks>
+			</div>
+			<ui:decks id="navdecks" class="navdecks">
 			<ui:deck id="navtest">
 				<ui:dialogtoolbar>
-					<ui:clickbutton id="introtestsuccessbutton" label="Next" image="${skin}/splash/button.png" focusable="true" oncommand="Welcome.switchTo('license')"/>
-					<ui:clickbutton id="introtestfailurebutton" label="Read more" image="${skin}/splash/button.png" focusable="true" url="http://docs.composite.net/installationfailed?errors=" hidden="true"/>
+					<ui:clickbutton id="introtestsuccessbutton" class="right-btn" label="Next" focusable="true" oncommand="Welcome.switchTo('license')"/>
+					<ui:clickbutton id="introtestfailurebutton" label="Read more" focusable="true" url="http://docs.composite.net/installationfailed?errors=" hidden="true"/>
 				</ui:dialogtoolbar>
 			</ui:deck>
 			<ui:deck id="navlicense">
 				<ui:dialogtoolbar>
-					<ui:clickbutton style="float:left;" label="Back" image="${skin}/splash/buttonback.png" focusable="true" oncommand="Welcome.switchTo('test')"/>
-					<ui:clickbutton id="setupbutton" label="Next" image="${skin}/splash/button.png" focusable="true" oncommand="Welcome.switchTo('setup')" isdisabled="true"/>
+					<ui:clickbutton label="Back" class="left-btn"  focusable="true" oncommand="Welcome.switchTo('test')"/>
+					<ui:clickbutton id="setupbutton" class="right-btn"  label="Next" focusable="true" oncommand="Welcome.switchTo('setup')" isdisabled="true"/>
 				</ui:dialogtoolbar>
 			</ui:deck>
 			<ui:deck id="navsetup">
 				<ui:dialogtoolbar>
-					<ui:clickbutton style="float:left;" label="Back" image="${skin}/splash/buttonback.png" focusable="true" oncommand="Welcome.switchTo('license')"/>
-					<ui:clickbutton label="Next" image="${skin}/splash/button.png" focusable="true" oncommand="Welcome.switchTo('language')"/>
+					<ui:clickbutton label="Back" class="left-btn" focusable="true" oncommand="Welcome.switchTo('license')"/>
+					<ui:clickbutton label="Next" class="right-btn" focusable="true" oncommand="Welcome.switchTo('language')"/>
 				</ui:dialogtoolbar>
 			</ui:deck>
 			<ui:deck id="navlanguage">
 				<ui:dialogtoolbar>
-					<ui:clickbutton style="float:left;" label="Back" image="${skin}/splash/buttonback.png" focusable="true" oncommand="Welcome.switchTo('setup')"/>
-					<ui:clickbutton label="Next" image="${skin}/splash/button.png" focusable="true" oncommand="Welcome.switchTo('login')"/>
+					<ui:clickbutton class="left-btn" label="Back" focusable="true" oncommand="Welcome.switchTo('setup')"/>
+					<ui:clickbutton class="right-btn" label="Next" focusable="true" oncommand="Welcome.switchTo('login')"/>
 				</ui:dialogtoolbar>
 			</ui:deck>
 			<ui:deck id="navlogin">
 				<ui:dialogtoolbar>
-					<ui:clickbutton style="float:left;" label="Back" image="${skin}/splash/buttonback.png" focusable="true" oncommand="Welcome.switchTo('language')"/>
-					<ui:clickbutton id="startbutton" isdisabled="true" label="Start C1" image="${skin}/splash/button.png" focusable="true" oncommand="Welcome.login()"/>
+					<ui:clickbutton class="left-btn"  label="Back" focusable="true" oncommand="Welcome.switchTo('language')"/>
+					<ui:clickbutton class="right-btn" id="startbutton" isdisabled="true" label="Start C1" focusable="true" oncommand="Welcome.login()"/>
 				</ui:dialogtoolbar>
 			</ui:deck>
-		</ui:decks>
+			</ui:decks>
+		</div>
+	</div>
+</div>
 	</body>
 </html>

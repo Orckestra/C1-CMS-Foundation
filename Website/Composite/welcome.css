@@ -1,270 +1,195 @@
-@namespace url("http://www.w3.org/1999/xhtml");
+@import url("base.css");
 @namespace ui url("http://www.w3.org/1999/xhtml");
 
-ui|cover#cover {
-	text-align: center;
-	overflow-y: scroll;
-}
-ui|cover#introcover {
-	height: 100%;
-	width: 440px;
-	left: 50%;
-	margin-left: -220px;
-}
-table#intro {
-	margin-top: 60px;
-	margin-left: auto;
-	margin-right: auto;
-}
-table#intro {
-	border-collapse: collapse;
-}
-table#intro td {
-	background-repeat: repeat;
-	padding: 0;
-}
-table#intro td.xn,
-table#intro td.xne,
-table#intro td.xnw,
-table#intro td.xs,
-table#intro td.xse,
-table#intro td.xsw {
-	height: 60px;
-}
-table#intro td.xe,
-table#intro td.xne,
-table#intro td.xnw,
-table#intro td.xw,
-table#intro td.xse,
-table#intro td.xsw {
-	width: 58px;
-}
-table#intro td.xn {
-	#alphabackdrop: url("${root}/images/ui/box-n.png");	
-}
-table#intro td.xs {
-	#alphabackdrop: url("${root}/images/ui/box-s.png");	
-}
-table#intro td.xe {
-	#alphabackdrop: url("${root}/images/ui/box-e.png");
-}
-table#intro td.xw {
-	#alphabackdrop: url("${root}/images/ui/box-w.png");	
-}
-table#intro td.xne {
-	#alphabackdrop: url("${root}/images/ui/box-ne.png");	
-}
-table#intro td.xnw {
-	#alphabackdrop: url("${root}/images/ui/box-nw.png");	
-}
-table#intro td.xse {
-	#alphabackdrop: url("${root}/images/ui/box-se.png");	
-}
-table#intro td.xsw {
-	#alphabackdrop: url("${root}/images/ui/box-sw.png");	
-}
-table#intro td.xc {
-	background-color: rgb(255,255,255);
-	width: 320px;
-	text-align: left;
-	vertical-align: top;
-	padding-bottom: 50px;
-	overflow: visible;
+.welcomepage .splash {
+    width: 480px;
 }
 
-/* ............................................................. */
 
-ui|decks#navdecks {
-	width: 497px;
-	width: 399px;
-	height: 100px;
-	margin-left: auto;
-	margin-right: auto;
-	position: relative;
-	top: -90px;
-	
+.welcomepage .crumbs {
+    font-weight: bold;
 }
-ui|decks#navdecks ui|dialogtoolbar {
-	background-color: transparent;
-	padding: 0 35px 0 35px;
+
+    .welcomepage .crumbs em {
+        font-family: Arial, sans-serif;
+        font-size: 10px;
+    }
+
+    .welcomepage .crumbs span.selected {
+        color: #21B980;
+    }
+
+.welcomepage ui|dialogtoolbar {
+    padding: 20px 0 0 0;
+    margin-top: 15px;
 }
-table#intro {
-	color: black;
+
+.welcomepage .navdecks ui|toolbargroup {
+    display: none;
 }
+
+.welcomepage .licensetext {
+    padding: 10px;
+    height: 120px;
+    overflow: auto;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+.welcomepage .setupfields {
+    font-size: 14px;
+}
+
+
 p#introtestsuccess,
 ui|clickbutton#introtestsuccessbutton {
-	visibility: hidden;
+    visibility: hidden;
 }
+
 p#introtestfailure {
-	display: none;	
+    display: none;
 }
-table#intro ui|dialogtoolbar {
-	position: relative;
-	z-index: 100;
-	top: 20px;
-}
-table#intro h1 {
-	margin: 0 0 1.5em 0;
-	font-size: 200%;
-	border-bottom: 1px solid #B2B2B2;
-}
-table#intro p {
-	margin: 0 0 1em 0;	
-}
+
+
+
+
+
 ul#introtest {
-	list-style: none;
-	margin: 0 0 1em 0;
-	padding: 0;
-	line-height: 1.5em;
-}
-ul#introtest li {
-	padding-left: 20px;	
-	background-repeat: no-repeat;
-	color: #B2B2B2;
-}
-ul#introtest li.on {
-	color: black;	
-}
-ul#introtest li.ok {
-	background-image: url("${root}/services/Icon/GetIcon.ashx?resourceName=accept&resourceNamespace=Composite.Icons");
-}
-ul#introtest li.bad {
-	background-image: url("${root}/services/Icon/GetIcon.ashx?resourceName=cancel&resourceNamespace=Composite.Icons");
+    list-style: none;
+    margin: 0 0 1em 0;
+    padding: 0;
+    line-height: 1.5em;
 }
 
+    ul#introtest li {
+        padding-left: 20px;
+        background-repeat: no-repeat;
+        color: #B2B2B2;
+    }
 
-table#intro ui|radio,
-table#intro ui|checkbox {
-	font-weight: bold !important;	
+        ul#introtest li.on {
+            color: black;
+        }
+
+        ul#introtest li.ok {
+            background-image: url("${root}/services/Icon/GetIcon.ashx?resourceName=accept&resourceNamespace=Composite.Icons");
+        }
+
+        ul#introtest li.bad {
+            background-image: url("${root}/services/Icon/GetIcon.ashx?resourceName=cancel&resourceNamespace=Composite.Icons");
+        }
+
+
+.welcomepage ui|radio,
+.welcomepage ui|checkbox {
+    font-weight: bold !important;
 }
-table#intro ui|radiodatagroup p,
-table#intro ui|checkboxgroup p {
-	padding-left: 25px;
+
+.welcomepage ui|radio ui|datalabeltext {
+    padding-top: 0;
 }
-table#intro ui|checkboxgroup {
-	padding-left: 2px;
-	margin-top: -11px;
+
+.welcomepage ui|radiodatagroup p,
+.welcomepage ui|checkboxgroup p {
+    padding-left: 25px;
 }
-table#intro ui|checkbutton {
-	position: relative;
-	left: -1px;	
+
+.welcomepage ui|checkboxgroup {
+    padding-left: 2px;
+    margin-top: -11px;
 }
-table#intro div.options {
-	padding-left: 25px;
-	display: none;
+
+.welcomepage ui|checkbutton {
+    position: relative;
+    left: -1px;
 }
-table#intro div.options.visible {
-	display: block;	
+
+.welcomepage div.options {
+    padding-left: 25px;
+    display: none;
 }
+
+    .welcomepage div.options.visible {
+        display: block;
+    }
 
 form.fields {
-	text-align: right;
+    text-align: right;
 }
-form.fields div {
-	padding-bottom: 4px;
-	clear: both;	
-}
-form.fields label {
-	float: left;
-	position: relative;
-	top: 6px;
-}
-form.fields input,
-form.fields select {
-	width: 170px;
-	padding: 5px;
-	border: 1px solid #B2B2B2;
-}
-form.fields label.innerlabel {
-	float: none;
-	position: relative;
-	top: 4px;
-    top: 0;
-}
-form.fields input.newslettercheckbox {
-    padding: 0;
-    position: relative;
-    #region moz
-        margin-right: 6px;
+
+    form.fields div {
+        padding-bottom: 4px;
+        clear: both;
+    }
+
+    form.fields label {
+        float: left;
+        position: relative;
+        top: 6px;
+    }
+
+    form.fields input,
+    form.fields select {
+        width: 170px;
+        padding: 5px;
+        border: 1px solid #B2B2B2;
+    }
+
+    form.fields label.innerlabel {
+        float: none;
+        position: relative;
+        top: 4px;
+        top: 0;
+    }
+
+    form.fields input.newslettercheckbox {
+        padding: 0;
+        position: relative;
+        #region moz margin-right: 6px;
         top: 2px;
-    #endregion
-    vertical-align: bottom;
-    width: auto;
-}
-form.fields input:focus,
-form.fields select:focus {
-	border-color: black;
-}
-form.fields input.disabled {
-	background-color: ThreeDFace; 
-	color: GrayText;
-}
-/*
-form#languageform p {
-	padding-top: 1em;
-	height: 3em;
-	text-align: left;
-}
-*/
+        #endregion vertical-align: bottom;
+        width: auto;
+    }
+
+    form.fields input:focus,
+    form.fields select:focus {
+        border-color: black;
+    }
+
+    form.fields input.disabled {
+        background-color: ThreeDFace;
+        color: GrayText;
+    }
+
 p#websitehelp,
 p#consolehelp {
-	padding-bottom: 1em;
-	height: 3.5em;
+    padding-bottom: 1em;
+    height: 3.5em;
 }
+
 p#loginok {
-	visibility: hidden;	
+    visibility: hidden;
 }
+
 p#lengthbad,
 p#loginbad {
- 	display: none;
- 	position: absolute;
- 	top: 0;
- 	left: 0;
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
-ui|clickbutton.isdisabled {
-	opacity: 0.5;
-	filter: url("${root}/templates/grayscalefilter.xml#grayscale");
-}
-ui|clickbutton.isdisabled ui|labeltext {
-	color: white;
-}
-div#licensetext {
-	padding: 7px;
-	height: 120px;
-	overflow: auto;
-	border: 1px solid #B2B2B2;
-}
-table#intro a {
-	color: blue;
-	text-decoration: underline;
-	cursor: pointer;	
-}
+
+
+
 ui|deck#license form {
-	padding-top: 1em;
-	position: relative;
-	left: -4px;
+    padding-top: 1em;
+    position: relative;
+    left: -4px;
 }
+
 ui|deck#license input {
-	position: relative;
-	top: 1px;
-	cursor: default;
-	margin: 3px 3px 3px 4px;
-}
-p#crumbs {
-	color: GrayText;
-	position: relative;
-	top: -10px;	
-}
-p#crumbs em {
-	font-family: Arial, sans-serif;
-	font-size: 10px; 
-	/* opacity: 0.75; */
-}
-p#crumbs span {
-	font-weight: bold;
-	/* opacity: 0.75; */
-}
-p#crumbs span.selected {
-	color: #CC071E;
-	opacity: 1;             
+    position: relative;
+    top: 1px;
+    cursor: default;
+    margin: 3px 3px 3px 4px;
 }
