@@ -76,10 +76,23 @@ namespace Composite.Functions
                     var locator = ServiceLocator.RequestServices ?? ServiceLocator.ApplicationServices;
 
                     var type = Type;
-                    _isInjectedValue = !type.IsPrimitive && locator != null && locator.GetService(type) != null;
+                    _isInjectedValue = !type.IsPrimitive && ServiceExists(locator, type);
                 }
 
                 return _isInjectedValue.Value;
+            }
+        }
+
+        private static bool ServiceExists(IServiceProvider serviceProvider, Type type)
+        {
+            // TODO: a more advanced check if possible
+            try
+            {
+                return serviceProvider != null && serviceProvider.GetService(type) != null;
+            }
+            catch (Exception)
+            {
+                return true;
             }
         }
 
