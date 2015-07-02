@@ -188,7 +188,8 @@ namespace Composite.C1Console.Drawing
 
         private class FunctionHeader: IDisposable
         {
-            const int _headerHeight = 60;
+            const int HeaderHeight = 60;
+            private const int TitleAndEditSpacing = 25;
             private readonly int _headerWidth;
             private readonly Font _titleFont;
             private readonly Font _buttonFont;
@@ -205,7 +206,7 @@ namespace Composite.C1Console.Drawing
 
             private static readonly string FunctionIconPath = GetIconPath("images/function.png");
             private static readonly string EditFunctionIconPath = GetIconPath("images/editfunction.png");
-            private static readonly string WarninigIconPath = GetIconPath("images/warning.png");
+            private static readonly string WarningIconPath = GetIconPath("images/warning.png");
 
             private static string GetIconPath(string relativePath)
             {
@@ -232,10 +233,10 @@ namespace Composite.C1Console.Drawing
                 _titleSize = MeasureText(_title, _titleFont);
 
                 _isWarning = isWarning;
-                _functionIcon = SafeImageFromFile(_isWarning ? WarninigIconPath : FunctionIconPath);
+                _functionIcon = SafeImageFromFile(_isWarning ? WarningIconPath : FunctionIconPath);
 
                 int leftPadding = 15;
-                _titlePosition = new Point(leftPadding + _functionIcon.Width, (_headerHeight - _titleSize.Height) / 2);
+                _titlePosition = new Point(leftPadding + _functionIcon.Width, (HeaderHeight - _titleSize.Height) / 2);
 
                 int editButtonSizeWithPaddings = 0;
                 if (showEditButton)
@@ -244,24 +245,24 @@ namespace Composite.C1Console.Drawing
                     editButtonSizeWithPaddings = _editLabelSize.Width + 45;
                 }
 
-                _headerWidth = _titlePosition.X + _titleSize.Width + editButtonSizeWithPaddings + 20;
+                _headerWidth = _titlePosition.X + _titleSize.Width + editButtonSizeWithPaddings + TitleAndEditSpacing;
 
                 MinimumWidth = _titlePosition.X + editButtonSizeWithPaddings;
             }
 
             public int MinimumWidth { get; private set; }
 
-            public Size HeaderSize { get { return new Size(_headerWidth, _headerHeight); } }
+            public Size HeaderSize { get { return new Size(_headerWidth, HeaderHeight); } }
 
             public void DrawHeader(Bitmap bitmap, Graphics graphics, int bitmapWidth)
             {
                 using (var whiteBrush = new SolidBrush(Color.White))
                 {
-                    graphics.FillRectangle(whiteBrush, 0, 0, bitmapWidth, _headerHeight);
+                    graphics.FillRectangle(whiteBrush, 0, 0, bitmapWidth, HeaderHeight);
                 }
 
                 // Function icon
-                var functionIconRec = new Rectangle(10, (_headerHeight - _functionIcon.Height) / 2,
+                var functionIconRec = new Rectangle(10, (HeaderHeight - _functionIcon.Height) / 2,
                                     _functionIcon.Width, _functionIcon.Height);
                 graphics.DrawImage(_functionIcon, functionIconRec);
 
@@ -292,11 +293,11 @@ namespace Composite.C1Console.Drawing
 
             private void DrawTransparentEditButton(Bitmap bitmap, Graphics graphics, int bitmapWidth)
             {
-                Point editLabelPosition = new Point(bitmapWidth - 25 - _editLabelSize.Width, (_headerHeight - _editLabelSize.Height) / 2);
+                Point editLabelPosition = new Point(bitmapWidth - TitleAndEditSpacing - _editLabelSize.Width, (HeaderHeight - _editLabelSize.Height) / 2);
 
                 using (var whiteBrush = new SolidBrush(Color.White))
                 {
-                    graphics.FillRectangle(whiteBrush, editLabelPosition.X - 50, 0, bitmapWidth - editLabelPosition.X + 50, _headerHeight);
+                    graphics.FillRectangle(whiteBrush, editLabelPosition.X - 50, 0, bitmapWidth - editLabelPosition.X + 50, HeaderHeight);
                 }
 
                 using (var solidBrush = new SolidBrush(Color.Black))
@@ -313,7 +314,7 @@ namespace Composite.C1Console.Drawing
                 using (var icon = (Bitmap)SafeImageFromFile(EditFunctionIconPath))
                 {
                     editFunctionIconSize = icon.Size;
-                    editFunctionIconY = (_headerHeight - icon.Height) / 2;
+                    editFunctionIconY = (HeaderHeight - icon.Height) / 2;
 
                     graphics.DrawImage(icon, editLabelPosition.X - icon.Width, editFunctionIconY);
 
