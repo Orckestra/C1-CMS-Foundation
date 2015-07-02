@@ -70,8 +70,12 @@ ui|*.imagesonly ui|labeltext {
 }
 
 ui|labelbox.both ui|labeltext {
-	#moz margin-left: 4px;
-	#ie margin-left: 4px;
+	margin-left: 6px;
+}
+
+ui|labelbox.both.flipped ui|labeltext {
+	margin-left: 0px;
+	margin-right: 6px;
 }
 
 ui|labelbox.graytext ui|labeltext {

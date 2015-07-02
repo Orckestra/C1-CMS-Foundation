@@ -21,7 +21,7 @@ ui|treecontent {
 }
 
 ui|treenode ui|labelbox {
-	background: none transparent no-repeat 1px 4px;
+	background: none transparent no-repeat 1px 8px;
 	padding-left: 16px;
 }
 ui|treecontent {
@@ -46,7 +46,8 @@ ui|treenode ui|labelbody {
 }
 ui|treenode ui|labeltext {
     line-height: 17px;
-	padding: 2px 4px 2px 4px;
+	padding: 3px 4px 5px 4px;
+
 }
 
 ui|treepositionindicator {

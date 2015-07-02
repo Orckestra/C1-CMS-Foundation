@@ -144,3 +144,21 @@ img.compositeFunctionWysiwygRepresentation::selection {
     background-color: transparent;
     color: #000;
 }
+
+::-webkit-scrollbar {
+	width: 13px;
+	height: 13px;
+	background: #FAFAFA;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #CACACA;
+  border: 3px solid #FAFAFA;
+  border-radius: 7px;
+}
+
+
+::-webkit-scrollbar-thumb:hover {
+  background: #21B980;
+}
+

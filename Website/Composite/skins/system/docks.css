@@ -27,6 +27,12 @@ ui|docktab ui|labelbox {
 ui|docktab ui|labeltext {
 	position: relative;
 }
+
+ui|docktab ui|labelbox.both ui|labeltext {
+	margin-left: 14px;
+}
+
+
 ui|docktab ui|control ui|labelbox {
 	top: 1px;
 }

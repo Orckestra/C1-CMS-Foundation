@@ -30,6 +30,8 @@ ui|treenode ui|labelbox {
 
 ui|treenode ui|labelbox ui|labeltext {
 	color: #333333;
+	font-size: 13px;
+	border-radius: 2px;
 }
 
 
@@ -57,6 +59,7 @@ ui|treenode ui|labelbox svg{
 	width: 18px;
 	height: 18px;
 	margin-left: -18px;
+	margin-top: 3px;
 }
 
 
@@ -68,7 +71,7 @@ ui|treenode ui|treenode::after {
 
 ui|treenode ui|treenode::before {
 	border-top: 1px solid #999;
-	top: 9px;
+	top: 12px;
 	width: 30px;
 	height: 0;
 	left: 23px;
@@ -83,7 +86,7 @@ ui|treenode ui|treenode::after {
 	border-left: 1px solid #999;
 	height: 100%;
 	width: 0px;
-	top: -6px;
+	top: -3px;
 	left: 23px;
 }
 
