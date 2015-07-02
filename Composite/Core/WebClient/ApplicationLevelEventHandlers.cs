@@ -13,6 +13,7 @@ using Composite.Core.Logging;
 using Composite.Core.Routing;
 using Composite.Core.Threading;
 using Composite.Core.Types;
+using Composite.Functions;
 
 
 namespace Composite.Core.WebClient
@@ -26,7 +27,7 @@ namespace Composite.Core.WebClient
         private const string _verboseLogEntryTitle = "RGB(205, 92, 92)ApplicationEventHandler";
         readonly static object _syncRoot = new object();
         private static DateTime _startTime;
-        private static bool _systemIsInitialized = false;
+        private static bool _systemIsInitialized;
         private static readonly ConcurrentDictionary<string, Func<HttpContext, string>> _c1PageCustomStringProviders = new ConcurrentDictionary<string, Func<HttpContext, string>>();
 
         /// <exclude />
@@ -67,6 +68,7 @@ namespace Composite.Core.WebClient
             
             AppDomain.CurrentDomain.DomainUnload += CurrentDomain_DomainUnload;
 
+            RoutedData.ConfigureServices(ServiceLocator.ServiceCollection);
 
             lock (_syncRoot)
             {
@@ -135,12 +137,16 @@ namespace Composite.Core.WebClient
         /// <exclude />
         public static void Application_BeginRequest(object sender, EventArgs e)
         {
+            var context = (sender as HttpApplication).Context;
+
             ThreadDataManager.InitializeThroughHttpContext(true);
+
+            ServiceLocator.CreateRequestServicesScope(context);
 
             if (LogRequestDetails)
             {
                 // LoggingService.LogVerbose("Begin request", string.Format("{0}", Request.Path));
-                HttpContext.Current.Items.Add("Global.asax timer", Environment.TickCount);
+                context.Items.Add("Global.asax timer", Environment.TickCount);
             }
         }
 
@@ -148,13 +154,17 @@ namespace Composite.Core.WebClient
         /// <exclude />
         public static void Application_EndRequest(object sender, EventArgs e)
         {
+            var context = (sender as HttpApplication).Context;
+
             try
             {
-                if (LogRequestDetails && HttpContext.Current.Items.Contains("Global.asax timer"))
+                ServiceLocator.DisposeRequestServicesScope(context);
+
+                if (LogRequestDetails && context.Items.Contains("Global.asax timer"))
                 {
-                    int startTimer = (int)HttpContext.Current.Items["Global.asax timer"];
-                    string requesrPath = HttpContext.Current.Request.Path;
-                    Log.LogVerbose("End request", string.Format("{0} - took {1} ms", requesrPath, (Environment.TickCount - startTimer)));
+                    int startTimer = (int)context.Items["Global.asax timer"];
+                    string requestPath = context.Request.Path;
+                    Log.LogVerbose("End request", string.Format("{0} - took {1} ms", requestPath, (Environment.TickCount - startTimer)));
                 }
             }
             finally
@@ -171,7 +181,7 @@ namespace Composite.Core.WebClient
             var httpApplication = (sender as HttpApplication);
             Exception exception = httpApplication.Server.GetLastError();
 
-            TraceEventType eventType = TraceEventType.Error;
+            var eventType = TraceEventType.Error;
 
             var httpContext = httpApplication.Context;
 

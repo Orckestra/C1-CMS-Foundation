@@ -1,11 +1,15 @@
 <%@ Application Language="C#" %>
 <%@ Import Namespace="System.Web.Routing" %>
+<%@ Import Namespace="Composite.Core.Application" %>
 <%@ Import Namespace="Composite.Core.Routing" %>
 <%@ Import Namespace="Composite.Core.WebClient" %>
+<%@ Import Namespace="Microsoft.Framework.DependencyInjection" %>
 
 <script RunAt="server">
     void Application_Start(object sender, EventArgs e)
     {
+        ConfigureServices(ServiceLocator.ServiceCollection);
+
         ApplicationLevelEventHandlers.LogRequestDetails = false;
         ApplicationLevelEventHandlers.LogApplicationLevelErrors = false;
         
@@ -13,6 +17,13 @@
 
         RegisterRoutes(RouteTable.Routes);
     }
+
+
+    void ConfigureServices(IServiceCollection serviceCollection)
+    {
+        // Define your dependencies here
+    }
+
 
     public static void RegisterRoutes(RouteCollection routes)
     {

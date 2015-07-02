@@ -67,7 +67,7 @@ namespace Composite.Core.Application
         /// <summary>
         /// Creates a service scope associated with the current http context
         /// </summary>
-        public static void CreateRequestServicesScope()
+        public static void CreateRequestServicesScope(HttpContext context)
         {
             if (ApplicationServices == null)
             {
@@ -77,23 +77,20 @@ namespace Composite.Core.Application
             var serviceScopeFactory = (IServiceScopeFactory) ApplicationServices.GetService(typeof(IServiceScopeFactory));
             var serviceScope = serviceScopeFactory.CreateScope();
 
-            var context = HttpContext.Current;
             context.Items[HttpContextKey] = serviceScope;
         }
 
         /// <summary>
         /// Disposes a service scope associated with the current http context
         /// </summary>
-        public static void DisposeRequestServicesScope()
+        public static void DisposeRequestServicesScope(HttpContext context)
         {
             if (ApplicationServices == null)
             {
                 return;
             }
 
-            var context = HttpContext.Current;
             var scope = (IServiceScope)context.Items[HttpContextKey];
-
             if (scope != null)
             {
                 scope.Dispose();

@@ -3,7 +3,6 @@
 <%@ Import Namespace="Composite.Core.Application" %>
 <%@ Import Namespace="Composite.Core.Routing" %>
 <%@ Import Namespace="Composite.Core.WebClient" %>
-<%@ Import Namespace="Composite.Functions" %>
 <%@ Import Namespace="Microsoft.Framework.DependencyInjection" %>
 
 
@@ -12,20 +11,22 @@
 
     void Application_Start(object sender, EventArgs e)
     {
+        ConfigureServices(ServiceLocator.ServiceCollection);
+        
         ApplicationLevelEventHandlers.LogRequestDetails = false;
         ApplicationLevelEventHandlers.LogApplicationLevelErrors = true;
-
-        ConfigureServices(ServiceLocator.ServiceCollection);
         
         ApplicationLevelEventHandlers.Application_Start(sender, e);
 
         RegisterRoutes(RouteTable.Routes);
     }
 
+    
     void ConfigureServices(IServiceCollection serviceCollection)
     {
-        RoutedData.ConfigureServices(serviceCollection);
+        // Define your dependencies here
     }
+    
     
     public static void RegisterRoutes(RouteCollection routes)
     {
@@ -45,16 +46,12 @@
     
     void Application_BeginRequest(object sender, EventArgs e)
     {
-        ServiceLocator.CreateRequestServicesScope();
-        
         ApplicationLevelEventHandlers.Application_BeginRequest(sender, e);
     }
 
     
     void Application_EndRequest(object sender, EventArgs e)
     {
-        ServiceLocator.DisposeRequestServicesScope();
-        
         ApplicationLevelEventHandlers.Application_EndRequest(sender, e);
     }
 
