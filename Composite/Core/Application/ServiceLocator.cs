@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Web;
 using Microsoft.Framework.DependencyInjection;
 
@@ -97,6 +98,35 @@ namespace Composite.Core.Application
             {
                 scope.Dispose();
             }
+        }
+
+        internal static bool HasService(Type serviceType)
+        {
+            var serviceCollection = ServiceLocator.ServiceCollection;
+            if (serviceCollection != null
+                && serviceCollection.Any(sd => sd.ServiceType.IsAssignableFrom(serviceType)
+                                               || (serviceType.IsGenericType 
+                                                    && sd.ServiceType.IsAssignableFrom(serviceType.GetGenericTypeDefinition()))))
+            {
+                return true;
+            }
+
+            var serviceProvider = RequestServices ?? ApplicationServices;
+
+            if (serviceProvider != null)
+            {
+                try
+                {
+                    return serviceProvider.GetService(serviceType) != null;
+                }
+                catch (Exception)
+                {
+                    // Some of the services may fail during construction in current context.
+                    return true;
+                }
+            }
+            
+            return false;
         }
     }
 }
