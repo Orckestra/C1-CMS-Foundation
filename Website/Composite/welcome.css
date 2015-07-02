@@ -34,6 +34,7 @@
     overflow: auto;
     border: 1px solid #ccc;
     font-size: 14px;
+    margin-bottom: 20px;
 }
 
 .welcomepage .setupfields {
@@ -52,8 +53,6 @@ p#introtestfailure {
 
 
 
-
-
 ul#introtest {
     list-style: none;
     margin: 0 0 1em 0;
@@ -62,21 +61,24 @@ ul#introtest {
 }
 
     ul#introtest li {
-        padding-left: 20px;
+        padding-left: 30px;
         background-repeat: no-repeat;
         color: #B2B2B2;
     }
 
         ul#introtest li.on {
-            color: black;
+            color: #333;
         }
 
         ul#introtest li.ok {
-            background-image: url("${root}/services/Icon/GetIcon.ashx?resourceName=accept&resourceNamespace=Composite.Icons");
+            background-image: url("${root}/images/icons/svg/accept.svg");
+            -moz-background-position-y: -2px;
+            -o-background-position-y: -2px;
+            background-position-y: -2px;
         }
 
-        ul#introtest li.bad {
-            background-image: url("${root}/services/Icon/GetIcon.ashx?resourceName=cancel&resourceNamespace=Composite.Icons");
+ul#introtest li.bad {
+            background-image: url("${root}/images/icons/svg/cancel.svg");
         }
 
 
@@ -85,9 +87,9 @@ ul#introtest {
     font-weight: bold !important;
 }
 
-.welcomepage ui|radio ui|datalabeltext {
-    padding-top: 0;
-}
+    .welcomepage ui|radio ui|datalabeltext {
+        padding-top: 0;
+    }
 
 .welcomepage ui|radiodatagroup p,
 .welcomepage ui|checkboxgroup p {
@@ -113,83 +115,35 @@ ul#introtest {
         display: block;
     }
 
-form.fields {
-    text-align: right;
+.form .field-group {
+    margin-top: 10px;
 }
 
-    form.fields div {
-        padding-bottom: 4px;
+    .form .field-group:after {
         clear: both;
+        content: " ";
+        display: table;
     }
 
-    form.fields label {
+
+    .form .field-group label {
         float: left;
-        position: relative;
-        top: 6px;
+        display: block;
+        width: 50%;
     }
 
-    form.fields input,
-    form.fields select {
-        width: 170px;
-        padding: 5px;
-        border: 1px solid #B2B2B2;
-    }
+.form .form-control {
+    float: left;
+    padding: 5px 10px;
+    border: solid 1px #ddd;
+    width: 50%;
+}
 
-    form.fields label.innerlabel {
-        float: none;
-        position: relative;
-        top: 4px;
-        top: 0;
-    }
 
-    form.fields input.newslettercheckbox {
-        padding: 0;
-        position: relative;
-        #region moz margin-right: 6px;
-        top: 2px;
-        #endregion vertical-align: bottom;
-        width: auto;
-    }
-
-    form.fields input:focus,
-    form.fields select:focus {
-        border-color: black;
-    }
-
-    form.fields input.disabled {
-        background-color: ThreeDFace;
-        color: GrayText;
-    }
-
-p#websitehelp,
-p#consolehelp {
-    padding-bottom: 1em;
-    height: 3.5em;
+.form input.disabled {
+    opacity: 0.5;
 }
 
 p#loginok {
     visibility: hidden;
-}
-
-p#lengthbad,
-p#loginbad {
-    display: none;
-    position: absolute;
-    top: 0;
-    left: 0;
-}
-
-
-
-ui|deck#license form {
-    padding-top: 1em;
-    position: relative;
-    left: -4px;
-}
-
-ui|deck#license input {
-    position: relative;
-    top: 1px;
-    cursor: default;
-    margin: 3px 3px 3px 4px;
 }

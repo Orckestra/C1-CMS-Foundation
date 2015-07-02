@@ -166,18 +166,16 @@ var Welcome = new function () {
 	function getLanguages() {
 
 		var langs = new List(SetupService.GetLanguages(true));
-		var markup = "<select id=\"websitelanguage\">";
+		var markup = "";
 		langs.each(function (lang) {
 			markup += "<option value=\"" + lang.Key + "\"" + (lang.Selected ? " selected=\"selected\"" : "") + ">" + lang.Title + "</option>";
 		});
-		markup += "</select>";
-
+		
 		var selector = document.getElementById("websitelanguage");
-		selector.parentNode.innerHTML = markup;
+		selector.innerHTML = markup;
 
-		markup = markup.replace("websitelanguage", "consolelanguage");
 		selector = document.getElementById("consolelanguage");
-		selector.parentNode.innerHTML = markup;
+		selector.innerHTML = markup;
 	}
 
 	/**

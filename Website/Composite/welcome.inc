@@ -4,7 +4,7 @@
 		<link rel="stylesheet" type="text/css" href="welcome.css.aspx"/>
 	</head>
 	<body>
-	<div class="welcomepage">
+	<div class="welcomepage splash-wrap">
 		<ui:cover id="introcover" hidden="true" busy="false"/>
 		<div class="splash">
 			<div class="splash-inner">
@@ -53,7 +53,7 @@
 					<div>
 						<!-- p id="consolehelp">The "console language" is the language used in the administration of your website. You can change this later.</p-->
 						<p id="websitehelp">Select the default public language of your website. You can add more languages later.</p>
-						<form id="languageform" class="fields" action="javascript://" method="get">
+						<form id="languageform" class="form" action="javascript://" method="get">
 							<!-- 
 							<div>
 								<label>Console language</label>
@@ -64,52 +64,42 @@
 								</span>
 							</div>
 							-->
-							<div>
+							<div class="field-group">
 								<label>Website language</label>
-								<span>
-									<select id="websitelanguage"/>
-								</span>
+								<select id="websitelanguage" class="form-control" />
 							</div>
 						</form>
 					</div>			
 					</ui:deck>
 					<ui:deck id="login">
-					<h1>Create Login</h1>
-					<div>
-						<form id="loginform" class="fields" action="javascript://" method="get">
-							<div>
+						<h1>Create Login</h1>
+						<p id="loginbad" class="errortext">Passwords don't match!</p>
+						<p id="lengthbad" class="errortext">Minimum 6 characters password.</p>
+						<form id="loginform" class="form" action="javascript://" method="get">
+							<div class="field-group">
 								<label>Username</label>
-								<input id="username" class="text" type="text" value="admin"/>
+								<input id="username" class="form-control" type="text" value="admin"/>
 							</div>
-							<div>
+							<div class="field-group">
 								<label>Email</label>
-								<input id="email" class="text" type="text" value=""/>
+								<input id="email" class="form-control" type="text" value=""/>
 							</div>
-							<div>
+							<div class="field-group">
 								<label>Password</label>
-								<input id="password" class="text" type="password"/>
+								<input id="password" class="form-control" type="password"/>
 							</div>
-							<div>
+							<div class="field-group">
 								<label>Repeat password</label>
-								<input id="passcheck" class="text" type="password"/>
+								<input id="passcheck" class="form-control" type="password"/>
 							</div>
-							<div>
+							<div class="field-group">
 								<label>Regional settings</label>
-								<span>
-									<select id="consolelanguage"/>
-								</span>
+								<select id="consolelanguage" class="form-control" />
 							</div>
-							<div>
+							<div class="field-group">
 								<label class="innerlabel" for="newsletter">Sign up for our newsletter</label> <input id="newsletter" class="newslettercheckbox" type="checkbox" checked="checked"/>
 							</div>
 						</form>
-						<br/>
-						<div style="position:relative;">
-							<span>&#160;</span>
-							<p id="loginbad">Passwords don't match!</p>
-							<p id="lengthbad">Minimum 6 characters password.</p>
-						</div>
-					</div>
 					</ui:deck>
 				</ui:decks>
 			</div>

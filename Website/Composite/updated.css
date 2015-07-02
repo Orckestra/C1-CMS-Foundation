@@ -1,14 +1,8 @@
 @import url("base.css");
-
-.updatedpage .cover {
-    background-image: url("${root}/images/top-page-cover-bg.jpg");
-}
-
-.updatedpage .logo {
-    width: 138px;
-    height: 38px;
-    background: url("${root}/images/composite-logo.png") no-repeat 0 0;
-    margin: 0 auto 40px auto;
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 .updatedpage .clickbutton {
