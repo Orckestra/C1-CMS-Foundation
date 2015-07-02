@@ -173,6 +173,14 @@ SourceEditorPageBinding.prototype._fit = function () {
 }
 
 /**
+ * @param isDisabled
+ * @return
+ */
+SourceEditorPageBinding.prototype.cover = function (isCover) {
+	
+}
+
+/**
  * @return {string}
  */
 SourceEditorPageBinding.prototype.getCheckSum = function () {
