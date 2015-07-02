@@ -358,14 +358,34 @@ ui|control {
 margin-left: 2px;
 background-color: transparent;
 }
-#region vista
-ui|control.dialogcontrol ui|labelbody { /* elongated vista controls */
-padding-left: 29px;
+ui|control.dialogcontrol ui|labelbody {
+padding-left: 16px;
 }
-ui|toolbarbutton.dialogcontrol ui|labelbody { /* elongated vista controls */
-padding-left: 29px;
+ui|toolbarbutton.dialogcontrol ui|labelbody {
+padding-left: 16px;
 }
-#endregion 
+
+ui|control[controltype="close"] ui|labelbody{
+background-position: -200px -200px;
+padding-left: 16px !important;
+
+}
+
+ui|control[controltype="close"] ui|labelbody:after {
+
+content: '×';
+position: absolute;
+height: 100%;
+width: 0px;
+top: -6px;
+left: 8px;
+color: #ccc;
+font-size: 17px;
+}
+
+ui|control.hover ui|labelbody:after {
+color: #808080;
+}
 @namespace ui url("http://www.w3.org/1999/xhtml");
 
 ui|tabbox.boxed {
@@ -498,6 +518,8 @@ color: #999;
 
 ui|treenode ui|labelbox ui|labeltext {
 color: #333333;
+font-size: 13px;
+border-radius: 2px;
 }
 
 
@@ -525,6 +547,7 @@ ui|treenode ui|labelbox svg{
 width: 18px;
 height: 18px;
 margin-left: -18px;
+margin-top: 3px;
 }
 
 
@@ -536,7 +559,7 @@ position: absolute;
 
 ui|treenode ui|treenode::before {
 border-top: 1px solid #999;
-top: 9px;
+top: 12px;
 width: 30px;
 height: 0;
 left: 23px;
@@ -551,7 +574,7 @@ ui|treenode ui|treenode::after {
 border-left: 1px solid #999;
 height: 100%;
 width: 0px;
-top: -6px;
+top: -3px;
 left: 23px;
 }
 

@@ -169,6 +169,25 @@ opacity: 0.4;
 page[isdisabled="true"] {
 opacity: 0.95;
 }
+
+
+::-webkit-scrollbar {
+width: 13px;
+height: 13px;
+background: #FAFAFA;
+}
+
+::-webkit-scrollbar-thumb {
+background: #CACACA;
+border: 3px solid #FAFAFA;
+border-radius: 7px;
+}
+
+
+::-webkit-scrollbar-thumb:hover {
+background: #21B980;
+}
+
 @namespace url("http://www.w3.org/1999/xhtml");
 @namespace ui url("http://www.w3.org/1999/xhtml");
 
@@ -272,8 +291,12 @@ padding-left: 0 !important;
 }
 
 ui|labelbox.both ui|labeltext {
-#moz margin-left: 4px;
-#ie margin-left: 4px;
+margin-left: 6px;
+}
+
+ui|labelbox.both.flipped ui|labeltext {
+margin-left: 0px;
+margin-right: 6px;
 }
 
 ui|labelbox.graytext ui|labeltext {
@@ -723,27 +746,6 @@ float: left;
 padding: 0;
 }
 
-ui|control[controltype="close"] ui|labelbody{
-background-position: -200px -200px;
-padding-left: 24px;
-
-}
-
-ui|control[controltype="close"] ui|labelbody:after {
-
-content: '×';
-position: absolute;
-height: 100%;
-width: 0px;
-top: -6px;
-left: 15px;
-color: #ccc;
-font-size: 17px;
-}
-
-ui|control.hover ui|labelbody:after {
-color: #808080;
-}
 @namespace url("http://www.w3.org/1999/xhtml");
 @namespace ui url("http://www.w3.org/1999/xhtml");
 
@@ -1028,7 +1030,7 @@ overflow: visible;
 }
 
 ui|treenode ui|labelbox {
-background: none transparent no-repeat 1px 4px;
+background: none transparent no-repeat 1px 8px;
 padding-left: 16px;
 }
 ui|treecontent {
@@ -1053,7 +1055,8 @@ max-width: none;
 }
 ui|treenode ui|labeltext {
 line-height: 17px;
-padding: 2px 4px 2px 4px;
+padding: 3px 4px 5px 4px;
+
 }
 
 ui|treepositionindicator {
