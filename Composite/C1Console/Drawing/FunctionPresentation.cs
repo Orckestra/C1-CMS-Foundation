@@ -26,24 +26,24 @@ namespace Composite.C1Console.Drawing
             {
                 var headerSize = header.HeaderSize;
 
-                Size totalSize = new Size(Math.Max(header.MinimumWidth, previewImage.Width), headerSize.Height + previewImage.Height);
+                Size totalSize = new Size(Math.Max(header.HeaderSize.Width, previewImage.Width), headerSize.Height + previewImage.Height);
 
                 using (var bitmap = new Bitmap(totalSize.Width, totalSize.Height))
                 using (var graphics = Graphics.FromImage(bitmap))
                 {
                     header.DrawHeader(bitmap, graphics, totalSize.Width);
 
-                    Point prevewImageOffset = new Point(
+                    Point previewImageOffset = new Point(
                         (Math.Max(totalSize.Width - 10, previewImage.Width) - previewImage.Width) / 2, headerSize.Height);
 
                     // Preview image
-                    graphics.DrawImage(previewImage, prevewImageOffset);
+                    graphics.DrawImage(previewImage, previewImageOffset);
 
                     // Image outline
                     using (var brush = new HatchBrush(HatchStyle.LargeCheckerBoard, Color.FromArgb(190, 190, 190), Color.Transparent))
                     using (var pen = new Pen(brush))
                     {
-                        graphics.DrawRectangle(pen, new Rectangle(prevewImageOffset,
+                        graphics.DrawRectangle(pen, new Rectangle(previewImageOffset,
                             new Size(previewImage.Width - 1, previewImage.Height - 1)));
                     }
 
