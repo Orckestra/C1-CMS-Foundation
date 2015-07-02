@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Web.WebPages;
 using Composite.AspNet.Razor;
+using Composite.Core;
 using Composite.Core.WebClient;
 using Composite.Functions;
 using Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvider;
@@ -9,7 +10,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 namespace Composite.Plugins.Functions.FunctionProviders.RazorFunctionProvider
 {
 	[ConfigurationElementType(typeof(RazorFunctionProviderData))]
-    internal class RazorFunctionProvider : FileBasedFunctionProvider.FileBasedFunctionProvider<RazorBasedFunction>
+    internal class RazorFunctionProvider : FileBasedFunctionProvider<RazorBasedFunction>
 	{
 		protected override string FileExtension
 		{
@@ -35,10 +36,12 @@ namespace Composite.Plugins.Functions.FunctionProviders.RazorFunctionProvider
 
             if(!(razorPage is RazorFunction))
             {
+                Log.LogWarning(typeof(RazorFunctionProvider).Name, "Razor page '{0}' does not inherit from the base class for razor functions '{1}' and will be ignored",
+                               virtualPath, typeof(RazorFunction).FullName);
                 return null;
             }
 
-		    RazorFunction razorFunction = razorPage as RazorFunction;
+		    var razorFunction = razorPage as RazorFunction;
 
 		    var functionParameters = FunctionBasedFunctionProviderHelper.GetParameters(razorFunction, typeof(RazorFunction), virtualPath);
 
