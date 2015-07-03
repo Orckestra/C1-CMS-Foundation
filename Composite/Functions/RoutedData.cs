@@ -10,8 +10,8 @@ namespace Composite.Functions
 {
     public interface IRoutedDataUrlMapper
     {
-        RoutedDataModel GetRouteDataModel(PageUrlData pageUrlData);
-        PageUrlData BuildDataUrl(IData dataItem);
+        RoutedDataModel GetRouteDataModel(PageUrlData pageUrlData, out bool isCanonicalUrl);
+        PageUrlData BuildDataUrl(IData item);
     }
 
     /// <exclude />
@@ -21,25 +21,22 @@ namespace Composite.Functions
         {
         }
 
-        public RoutedDataModel(IData data, bool isCanonical)
+        public RoutedDataModel(IData item)
         {
-            Data = data;
-            IsDetailView = data != null;
-            IsRouteResolved = data != null;
-            IsCanonicalUrl = isCanonical;
+            Item = item;
+            IsItem = item != null;
+            IsRouteResolved = item != null;
         }
 
         public RoutedDataModel(Func<IQueryable> getQueryable)
         {
             GetQueryable = getQueryable;
             IsRouteResolved = true;
-            IsCanonicalUrl = true;
         }
 
-        public bool IsCanonicalUrl { get; protected set; }
         public bool IsRouteResolved { get; protected set; }
-        public bool IsDetailView { get; protected set; }
-        public IData Data { get; protected set; }
+        public bool IsItem { get; protected set; }
+        public IData Item { get; protected set; }
         public Func<IQueryable> GetQueryable { get; protected set; }
     }
  
@@ -61,16 +58,17 @@ namespace Composite.Functions
 
             var pageUrlData = C1PageRoute.PageUrlData;
 
-            var model = urlMapper.GetRouteDataModel(pageUrlData);
+            bool isCanonicalUrl;
+            var model = urlMapper.GetRouteDataModel(pageUrlData, out isCanonicalUrl);
             SetModel(model);
 
             if (!string.IsNullOrEmpty(pageUrlData.PathInfo) && model.IsRouteResolved)
             {
                 C1PageRoute.RegisterPathInfoUsage();
 
-                if (model.IsDetailView && !model.IsCanonicalUrl)
+                if (model.IsItem && !isCanonicalUrl)
                 {
-                    var canonicalUrlData = urlMapper.BuildDataUrl(model.Data);
+                    var canonicalUrlData = urlMapper.BuildDataUrl(model.Item);
                     if (canonicalUrlData.PathInfo != pageUrlData.PathInfo)
                     {
                         string newUrl = PageUrls.BuildUrl(canonicalUrlData);
@@ -106,13 +104,13 @@ namespace Composite.Functions
         /// <summary>
         /// A data item to be shown in a detail view.
         /// </summary>
-        public virtual T Data
+        public virtual T Item
         {
             get
             {
                 var model = Model;
-                Verify.That(model.IsDetailView, "This property should not be called when IsDetailView is false");
-                return (T) model.Data;
+                Verify.That(model.IsItem, "This property should not be called when IsDetailView is false");
+                return (T) model.Item;
             }
         }
 
@@ -127,17 +125,17 @@ namespace Composite.Functions
         /// <summary>
         /// Indicates whether a detail view should be shown
         /// </summary>
-        public bool IsDetailView 
+        public bool IsItem 
         {
-            get { return Model.IsDetailView; }
+            get { return Model.IsItem; }
         }
 
         /// <summary>
         /// Indicates whether a list view should be shown
         /// </summary>
-        public bool IsListView
+        public bool IsList
         {
-            get { return Model.IsRouteResolved && !Model.IsDetailView; }
+            get { return Model.IsRouteResolved && !Model.IsItem; }
         }
 
         /// <summary>
@@ -154,7 +152,7 @@ namespace Composite.Functions
                     return Enumerable.Empty<T>().AsQueryable();
                 }
 
-                return model.IsDetailView ? (new [] { (T) model.Data }).AsQueryable() : (IQueryable<T>) model.GetQueryable();
+                return model.IsItem ? (new [] { (T) model.Item }).AsQueryable() : (IQueryable<T>) model.GetQueryable();
             }
         }
 
@@ -163,7 +161,7 @@ namespace Composite.Functions
         /// </summary>
         /// <param name="data">The data item.</param>
         /// <returns></returns>
-        public virtual string DataUrl(IData data)
+        public virtual string ItemUrl(IData data)
         {
             var mapper = GetUrlMapper();
             return PageUrls.BuildUrl(mapper.BuildDataUrl(data));
@@ -174,7 +172,7 @@ namespace Composite.Functions
         /// </summary>
         /// <param name="key">The key value.</param>
         /// <returns></returns>
-        public virtual string DataUrl(object key)
+        public virtual string ItemUrl(object key)
         {
             var data = DataFacade.GetDataByUniqueKey<T>(key);
             if (data == null)
@@ -222,8 +220,9 @@ namespace Composite.Functions
 
             public IData GetData(PageUrlData pageUrlData)
             {
-                var model = _mapper.GetRouteDataModel(pageUrlData);
-                return model.IsRouteResolved && model.IsDetailView ? model.Data : null;
+                bool isCanonical;
+                var model = _mapper.GetRouteDataModel(pageUrlData, out isCanonical);
+                return model.IsRouteResolved && model.IsItem ? model.Item : null;
             }
 
             public PageUrlData GetPageUrlData(IData instance)
