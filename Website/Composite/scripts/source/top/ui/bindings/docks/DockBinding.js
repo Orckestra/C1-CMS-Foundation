@@ -815,3 +815,20 @@ DockBinding.prototype.hide = function () {
 		}
 	}
 }
+
+/**
+ * @overloads {TabBoxBinding#getBestTab}
+ */
+DockBinding.prototype.getBestTab = function () {
+
+	var bestTabBinding = null;
+	var tabBindings = this.getTabBindings();
+	var tabsLength = tabBindings.getLength();
+	
+	if (tabsLength == 1) { // first tab
+		bestTabBinding = null;
+	} else { 
+		bestTabBinding = tabBindings.get(0);
+	}
+	return bestTabBinding;
+}
