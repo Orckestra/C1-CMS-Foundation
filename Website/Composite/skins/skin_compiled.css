@@ -800,7 +800,7 @@ ui|dialog.active {
 
 
 
-ui|dialogpage ui|labelbox.fieldgrouplabel
+ui|dialogpage ui|labelbox.fieldgrouplabel,
 ui|wizardpage ui|labelbox.fieldgrouplabel {
 display: none;
 }
@@ -816,6 +816,14 @@ border: 0px;
 background: transparent;
 width: auto;
 padding: 6px 1px 27px 13px;
+}
+
+
+ui|wizardpage ui|fieldgroup ui|field,
+ui|dialogpage ui|fieldgroup ui|field {
+background: transparent;
+padding: 0;
+border: none !important;
 }
 @namespace url("http://www.w3.org/1999/xhtml");
 @namespace url("http://www.w3.org/2000/svg");
@@ -867,10 +875,31 @@ right: -1px;
 }
 
 ui|fieldgroup {
-border: 1px solid #E5E5E5;
-border-radius: 5px;
-background: #F7F7F7;
+padding: 0px 0px 35px 0px;
+
 }
+
+ui|fieldgroup ui|field {
+border-width: 0 1px;
+border-style: solid;
+border-color: #E5E5E5;
+background: #F7F7F7;
+padding: 0 17px;
+}
+
+ui|fieldgroup ui|field:first-of-type {
+padding-top: 8px;
+border-top-width: 1px;
+border-top-left-radius: 5px;
+border-top-right-radius: 5px;
+}
+
+ui|fieldgroup ui|field:last-of-type {
+padding-bottom: 27px;
+border-bottom-width: 1px;
+border-bottom-left-radius: 5px;
+border-bottom-right-radius: 5px;
+} 
 
 ui|fieldgroup.nolabel {
 
@@ -882,6 +911,8 @@ color: #23B880;
 text-transform: uppercase;
 font-style: italic;
 font-weight: bold;
+margin-top: 0px;
+margin-bottom: 20px;
 }
 
 
