@@ -184,26 +184,29 @@ body.expanded ui|cover.explorermenucover {
 
 
 /* COMPOSITE C1 LOGO */
-ui|toolbarbutton#compositebutton:before {
+ui|toolbarbutton#compositebutton ui|labelbox:before {
 	content: "Composite";
 	position: absolute;
-	top: 9px;
-	left: 35px;
+	top: 1px;
+	left: 22px;
 	text-transform: none;
 	font-size: 21px;
 }
 
-ui|toolbarbutton#compositebutton:after {
+ui|toolbarbutton#compositebutton ui|labelbox:after {
 	content: "C1";
 	position: absolute;
-	top: 9px;
-	left: 138px;
+	top: 1px;
+	left: 127px;
 	text-transform: none;
 	font-size: 21px;
 	font-weight: bold;
 }
 
-ui|toolbarbutton#compositebutton,
-ui|toolbarbutton#compositebutton ui|labelbody{
+ui|toolbarbutton#compositebutton ui|labelbox {
 	color: #FFF;
+	position: relative;
+}
+ui|toolbarbutton#compositebutton ui|labelbody{
+	color: #0EBA7E;
 }

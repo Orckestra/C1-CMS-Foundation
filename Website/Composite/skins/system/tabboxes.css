@@ -45,12 +45,12 @@ ui|tabbox.tabsontop ui|tabs {
 }
 
 ui|tabbox.tabsontop ui|tab {
-	padding: 5px 10px 5px 10px;
+	padding: 5px 20px 5px 15px;
 	color: #ADADAD;
 	
 }
 ui|tabbox.tabsontop ui|tab.selected {
-	color: #323232;
+	color: #0EBA7E;
 	z-index: 3;
 	border-color: #CCCCCC #CCCCCC transparent #CCCCCC;
 }

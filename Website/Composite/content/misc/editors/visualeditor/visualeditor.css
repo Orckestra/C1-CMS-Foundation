@@ -21,7 +21,7 @@ ui|flexbox#tinyflexbox {
 	position: relative; /* contain the cover */	
 }
 ui|splitpanel#editorsplitpanel {
-	border-right: 1px solid $(color:threedshadow);	
+	border-right: 1px solid #DDDDDD;	
 }
 ui|splitter.horizontal {
 	border-left-color: $(color:threedface);

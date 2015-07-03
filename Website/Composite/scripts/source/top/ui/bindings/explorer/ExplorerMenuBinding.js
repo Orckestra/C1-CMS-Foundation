@@ -227,6 +227,7 @@ ExplorerMenuBinding.prototype.toggle = function () {
  */
 ExplorerMenuBinding.prototype.collapse = function () {
 	top.app.bindingMap.app.detachClassName("expanded");
+	top.app.bindingMap.menutogglebutton.setImage("${icon:menu}");
 
 }
 
@@ -236,4 +237,5 @@ ExplorerMenuBinding.prototype.collapse = function () {
  */
 ExplorerMenuBinding.prototype.expand = function () {
 	top.app.bindingMap.app.attachClassName("expanded");
+	top.app.bindingMap.menutogglebutton.setImage("${icon:arrow-left}");
 }

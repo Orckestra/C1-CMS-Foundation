@@ -5,6 +5,7 @@
 ui|docktabs {
 	box-shadow: inset 0px -1px 0px 0px rgba(204,204,204,1);
 	padding: 10px 10px 0 10px;
+	background: #EFEFEF;
 }
 ui|docktabs ui|toolbarbutton {
 	position: relative;
@@ -104,7 +105,7 @@ ui|splitpanel.editors {
 }
 
 ui|splitpanel.editors ui|dock {
-	border-radius: 5px 5px 0 0;
+	border-radius: 5px 0 0 0;
 	box-shadow: inset 0px 0px 0px 1px rgba(204,204,204,1);
 	background: #fff;
 }

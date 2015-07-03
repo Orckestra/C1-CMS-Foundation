@@ -10,8 +10,8 @@ ui|explorertoolbarbutton {
 	float: left;
 	padding: 4px;
 	border: 1px solid transparent;
-	margin: 8px 2px 8px 13px;
-	padding: 7px 20px 10px 14px;
+	margin: 0px 0px 0px 0px;
+	padding: 21px 22px 21px 27px;
 	cursor: pointer;
 	width: 100%;
 }

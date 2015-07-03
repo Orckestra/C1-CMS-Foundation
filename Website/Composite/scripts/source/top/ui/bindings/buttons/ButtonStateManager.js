@@ -249,13 +249,6 @@ ButtonStateManager.prototype.invokeNormalState = function () {
 	this.binding.detachClassName ( "hover" );
 	this.binding.detachClassName ( "active" );
 	this.binding.detachClassName ( "isdisabled" );
-	
-	if ( this.imageProfile ) {
-		var url = this.imageProfile.getDefaultImage ();
-		if ( url ) {
-			this.binding.setImage ( url );
-		}
-	}
 }
 
 /**
@@ -265,13 +258,6 @@ ButtonStateManager.prototype.invokeHoverState = function () {
 
 	this.binding.attachClassName ( "hover" );
 	this.binding.detachClassName ( "active" );
-	
-	if ( this.imageProfile ) {
-		var url = this.imageProfile.getHoverImage ();
-		if ( url ) {
-			this.binding.setImage ( url );
-		}
-	}
 }
 
 /**
@@ -281,13 +267,6 @@ ButtonStateManager.prototype.invokeActiveState = function () {
 
 	this.binding.attachClassName ( "active" );
 	this.binding.detachClassName ( "hover" );
-	
-	if ( this.imageProfile ) {
-		var url = this.imageProfile.getActiveImage ();
-		if ( url ) {
-			this.binding.setImage ( url );
-		}
-	}
 }
 
 /**
@@ -299,11 +278,4 @@ ButtonStateManager.prototype.invokeDisabledState = function () {
 	this.binding.detachClassName ( "hover" );
 	this.binding.detachClassName ( "active" );
 	this.binding.attachClassName ( "isdisabled" );
-	
-	if ( this.imageProfile ) {
-		var image = this.imageProfile.getDisabledImage ();
-		if ( image ) {
-			this.binding.setImage ( image );
-		}
-	}
 }
