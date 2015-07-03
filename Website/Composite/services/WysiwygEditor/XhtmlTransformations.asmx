@@ -12,6 +12,7 @@ using System.Web.Services.Protocols;
 using System.Xml.Linq;
 using Composite.C1Console.Security;
 using Composite.C1Console.Users;
+using Composite.Core;
 using Composite.Core.Extensions;
 using Composite.Core.Linq;
 using Composite.Core.WebClient.Renderings;
@@ -60,11 +61,13 @@ namespace Composite.Services
                 XDocument structuredResult;
                 try
                 {
-                    Dictionary<string, string> xsltParameters = new Dictionary<string, string>();
-                    xsltParameters.Add("requesthostname", HttpContext.Current.Request.Url.Host);
-                    xsltParameters.Add("requestport", HttpContext.Current.Request.Url.Port.ToString());
-                    xsltParameters.Add("requestscheme", HttpContext.Current.Request.Url.Scheme);
-                    xsltParameters.Add("requestapppath", UrlUtils.PublicRootPath);
+                    var xsltParameters = new Dictionary<string, string>
+                    {
+                        {"requesthostname", HttpContext.Current.Request.Url.Host},
+                        {"requestport", HttpContext.Current.Request.Url.Port.ToString()},
+                        {"requestscheme", HttpContext.Current.Request.Url.Scheme},
+                        {"requestapppath", UrlUtils.PublicRootPath}
+                    };
 
                     structuredResult = MarkupTransformationServices.RepairXhtmlAndTransform(WrapInnerBody(htmlFragment), xsltPath, xsltParameters, out warnings);
                 }
@@ -244,7 +247,7 @@ namespace Composite.Services
             try
             {
                 string warnings = "";
-                string XhtmlPassSsltPath = Server.MapPath("..\\..\\transformations\\WysiwygEditor_StructuredContentToTinyContent.xsl");
+                string XhtmlPassXsltPath = Server.MapPath("..\\..\\transformations\\WysiwygEditor_StructuredContentToTinyContent.xsl");
 
                 string html = WrapInnerBody(htmlFragment);
 
@@ -256,9 +259,9 @@ namespace Composite.Services
 
                 foreach (var functionElement in functionRoots.ToList())
                 {
-                    string cssSelecor = BuildAncestorCssSelector(functionElement);
+                    string cssSelector = BuildAncestorCssSelector(functionElement);
 
-                    functionElement.ReplaceWith(GetImageTagForFunctionCall(functionElement, pageId, pageTemplateId, functionPreviewPlaceholderName, cssSelecor, width));
+                    functionElement.ReplaceWith(GetImageTagForFunctionCall(functionElement, pageId, pageTemplateId, functionPreviewPlaceholderName, cssSelector, width));
                 }
 
                 IEnumerable<XElement> dataFieldReferences = xml.Descendants(Namespaces.DynamicData10 + "fieldreference");
@@ -292,10 +295,12 @@ namespace Composite.Services
                     unHandledHtmlElement.ReplaceWith(GetImageTagForHtmlElement(unHandledHtmlElement));
                 }
 
-                Dictionary<string, string> xsltParameters = new Dictionary<string, string>();
-                xsltParameters.Add("requestapppath", UrlUtils.PublicRootPath);
+                var xsltParameters = new Dictionary<string, string>
+                {
+                    {"requestapppath", UrlUtils.PublicRootPath}
+                };
 
-                XDocument structuredResult = MarkupTransformationServices.RepairXhtmlAndTransform(xml.ToString(), XhtmlPassSsltPath, xsltParameters, out warnings);
+                XDocument structuredResult = MarkupTransformationServices.RepairXhtmlAndTransform(xml.ToString(), XhtmlPassXsltPath, xsltParameters, out warnings);
 
                 string bodyInnerXhtml = MarkupTransformationServices.OutputBodyDescendants(structuredResult);
 
@@ -307,7 +312,7 @@ namespace Composite.Services
             }
             catch (Exception ex)
             {
-                LoggingService.LogError("XhtmlTransformation", ex.ToString());
+                Log.LogError("XhtmlTransformation", ex.ToString());
                 throw;
             }
         }
@@ -367,15 +372,14 @@ namespace Composite.Services
         public FunctionInfo GetFunctionInfo(string functionName)
         {
             IFunction function = FunctionFacade.GetFunction(functionName);
+            
+            var functionRuntimeTreeNode = new FunctionRuntimeTreeNode(function);
 
-            FunctionRuntimeTreeNode functionRuntimeTreeNode = new FunctionRuntimeTreeNode(function);
-
-            FunctionInfo functionInfo = new FunctionInfo();
-
-            functionInfo.FunctionMarkup = functionRuntimeTreeNode.Serialize().ToString();
-            functionInfo.RequireConfiguration = function.ParameterProfiles.Any();
-
-            return functionInfo;
+            return new FunctionInfo
+            {
+                FunctionMarkup = functionRuntimeTreeNode.Serialize().ToString(),
+                RequireConfiguration = function.ParameterProfiles.Any(p => !p.IsInjectedValue)
+            };
         }
 
 
@@ -455,10 +459,10 @@ namespace Composite.Services
                     foreach (var option in element.Elements().Where(e => e.Name.Namespace == Namespaces.Localization10))
                     {
                         int toGrab = Math.Min(35, option.Value.Length);
-                        string elipsis = (option.Value.Length > 35 ? "..." : "");
+                        string ellipsis = (option.Value.Length > 35 ? "..." : "");
                         string descriptionContent = string.Format("{0}{1}",
                                 option.Value.Substring(0, toGrab),
-                                elipsis);
+                                ellipsis);
 
                         if (String.IsNullOrWhiteSpace(option.Value) && option.Nodes().Any())
                         {
@@ -524,6 +528,7 @@ namespace Composite.Services
 			int viewWidth,
             bool editable)
         {
+            // TODO: cache ZipContent calls?
             string imageUrl = "~/Renderers/FunctionBox?type={0}&title={1}&description={2}&markup={3}&lang={4}&hash={5}".FormatWith(
                 HttpUtility.UrlEncode(type, Encoding.UTF8),
                 HttpUtility.UrlEncode(title, Encoding.UTF8),
