@@ -21,16 +21,16 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
 
 
         private readonly ElementProviderContext _elementProviderContext;
-        private readonly string _undefinedLableValue;
+        private readonly string _undefinedLabelValue;
 
         private static readonly MethodInfo GenericCastMethodInfo = 
-            StaticReflection.GetGenericMethodInfo(() => DataGroupingProviderHelper.Cast<IData>((IQueryable<IData>)null));
+            StaticReflection.GetGenericMethodInfo(() => DataGroupingProviderHelper.Cast<IData>(null));
 
 
         public DataGroupingProviderHelper(ElementProviderContext elementProviderContext)
         {
             _elementProviderContext = elementProviderContext;
-            _undefinedLableValue = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "UndefinedLabelTemplate");
+            _undefinedLabelValue = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "UndefinedLabelTemplate");
 
             this.FolderOpenIcon = GetIconHandle("datagroupinghelper-folder-open");
             this.FolderClosedIcon = GetIconHandle("datagroupinghelper-folder-closed");
@@ -247,7 +247,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
 
             IQueryable queryable = GetFilteredData(interfaceType, filter);
 
-            ExpressionBuilder expressionBuilder = new ExpressionBuilder(interfaceType, queryable);
+            var expressionBuilder = new ExpressionBuilder(interfaceType, queryable);
 
             IQueryable resultQueryable = expressionBuilder.
                 OrderBy(propertyInfo, true, firstDataFieldDescriptor.TreeOrderingProfile.OrderDescending).
@@ -255,7 +255,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
                 Distinct().
                 CreateQuery();
 
-            PropertyInfoValueCollection propertyInfoValueCollection = new PropertyInfoValueCollection();
+            var propertyInfoValueCollection = new PropertyInfoValueCollection();
 
             return CreateGroupFolderElements(interfaceType, firstDataFieldDescriptor, resultQueryable, parentEntityToken, propertyInfoValueCollection);
         }
@@ -266,7 +266,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
         }
 
 
-        private IQueryable OrderData(IQueryable source, Type interfaceType)
+        public static IQueryable OrderData(IQueryable source, Type interfaceType)
         {
             var typeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(interfaceType);
 
@@ -544,14 +544,14 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
                 Element element = new Element(_elementProviderContext.CreateElementHandle(entityToken));
 
 
-                string label = (obj == null ? string.Format(_undefinedLableValue, dataFieldDescriptor.Name) : obj.ToString());
+                string label = (obj == null ? string.Format(_undefinedLabelValue, dataFieldDescriptor.Name) : obj.ToString());
                 if (obj is DateTime)
                 {
                     DateTime dt = (DateTime)obj;
                     label = dt.ToString("yyyy-MM-dd");
                 }
 
-                if ((obj != null) && (dataFieldDescriptor.ForeignKeyReferenceTypeName != null))
+                if (obj != null && dataFieldDescriptor.ForeignKeyReferenceTypeName != null)
                 {
                     Type refType = TypeManager.GetType(dataFieldDescriptor.ForeignKeyReferenceTypeName);
 

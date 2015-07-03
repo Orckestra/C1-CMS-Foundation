@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+using Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProviderHelper;
 using Composite.Core.Extensions;
 using Composite.Core.Linq;
 using Composite.Core.Routing;
@@ -52,7 +53,7 @@ namespace Composite.Functions
             if (pathInfo.IsNullOrEmpty())
             {
                 isCanonicalUrl = true;
-                return GetListViewModel();
+                return new RoutedDataModel(GetListQueryable);
             }
 
             switch (_dataRouteKind)
@@ -130,16 +131,22 @@ namespace Composite.Functions
             }
         }
 
-        private RoutedDataModel GetListViewModel()
+        private IQueryable GetListQueryable()
         {
-            if (typeof(IPageRelatedData).IsAssignableFrom(typeof(T)))
+            IQueryable unorderedQuery;
+
+            if (typeof (IPageRelatedData).IsAssignableFrom(typeof (T)))
             {
                 Guid pageId = _page.Id;
 
-                return new RoutedDataModel(() => DataFacade.GetData<T>().Where(t => (t as IPageRelatedData).PageId == pageId));
-
+                unorderedQuery = DataFacade.GetData<T>().Where(t => (t as IPageRelatedData).PageId == pageId);
             }
-            return new RoutedDataModel(DataFacade.GetData<T>);
+            else
+            {
+                unorderedQuery = DataFacade.GetData<T>();
+            }
+
+            return DataGroupingProviderHelper.OrderData(unorderedQuery, typeof(T));
         }
 
         public PageUrlData BuildDataUrl(IData dataItem)
