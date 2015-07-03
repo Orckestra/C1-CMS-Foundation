@@ -45,7 +45,7 @@ ui|dialog {
 
 
 
-ui|dialogpage ui|labelbox.fieldgrouplabel
+ui|dialogpage ui|labelbox.fieldgrouplabel,
 ui|wizardpage ui|labelbox.fieldgrouplabel {
 		display: none;
 	}
@@ -61,4 +61,12 @@ ui|wizardpage ui|fieldgroup {
 	background: transparent;
 	width: auto;
 	padding: 6px 1px 27px 13px;
+}
+
+
+ui|wizardpage ui|fieldgroup ui|field,
+ui|dialogpage ui|fieldgroup ui|field {
+	background: transparent;
+	padding: 0;
+	border: none !important;
 }

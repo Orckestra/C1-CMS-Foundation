@@ -9,6 +9,9 @@ ui|datacollector {
 ui|fields {
 	display: none; /* adjusted by FieldsBinding.js */
 	position: relative; /* mostly because it fixes an ie bug where fieldgroup captions would hang on tabpanel changes */
+	-webkit-column-width: 430px; /* Chrome, Safari, Opera */
+    -moz-column-width: 430px; /* Firefox */
+    column-width: 430px;
 }
 
 /* FIELDGROUP ......................................... */
@@ -17,30 +20,25 @@ ui|fieldgroup {
 	width: 430px;
 	display: block;
 	overflow: visible;
-	margin-top: 54px;
-	margin-bottom: 10px;
 	padding-top: 7px;
 	position: relative;
-	padding: 8px 17px 27px 17px;
+	-webkit-column-break-inside: avoid; /* Chrome, Safari, Opera */
+	page-break-inside: avoid; /* Firefox */
+	break-inside: avoid; /* IE 10+ */
+	
 
 }
-ui|fieldgroup.first {
-	margin-top: 34px;
+
+
+ui|dialogpage ui|fieldgroup,
+ui|wizardpage ui|fieldgroup {
+	margin-bottom: 5px; /* strange flex bug */
 }
 
-#region vista
-	ui|dialogpage ui|fieldgroup,
-	ui|wizardpage ui|fieldgroup {
-		margin-bottom: 5px; /* strange flex bug */
-	}
-#endregion
 
-ui|labelbox.fieldgrouplabel {
-	top: -34px;
-	left: -2px;
-	right: -2px;
-	position:absolute;
-	max-width: 200%;
+
+ui|labelbox.fieldgrouplabel:after {
+	
 }
 
 
@@ -60,6 +58,8 @@ ui|field {
 	display: block;
 	margin: 0;
 	padding-bottom: 0;
+	clear: both;
+
 }
 ui|fielddesc {
 	display: block;
