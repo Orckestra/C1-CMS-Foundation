@@ -1,0 +1,134 @@
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+.splash-cover {
+    font-size: 16px;
+    font-family: "Segoe UI", Tahoma, sans-serif;
+    color: #333;
+    overflow: auto;
+    position: relative;
+}
+
+.splash-bg {
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(240,240,240);
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-image: url("${root}/images/top-page-cover-bg.jpg");
+}
+
+.splash-bg:after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.splash-cover a, .splash-cover a:focus {
+    color: #21B980;
+    cursor: pointer;
+}
+
+    .splash-cover a:hover {
+        color: #04A380;
+        text-decoration: underline;
+    }
+
+.splash-cover .logo {
+    width: 138px;
+    height: 38px;
+    background: url("${root}/images/logo.png") no-repeat 0 0;
+    margin: 0 auto 40px auto;
+}
+
+.splash-cover .splash {
+    position: relative;
+    z-index: 3;
+    display: block;
+    width: 312px;
+    margin: 10% auto 0 auto;
+    -ms-border-radius: 15px;
+    border-radius: 15px;
+    background: #fff;
+}
+
+.splash-cover .splash-inner {
+    padding: 30px 30px 40px 30px;
+}
+
+.splash-cover h1 {
+    border-bottom: solid 1px #E1E1E1;
+    padding-bottom: 10px;
+}
+
+.splash-cover .errortext {
+    display: none;
+    color: red;
+}
+
+.splash-cover ui|clickbutton {
+    float: none;
+    width: 100%;
+    margin: 0;
+}
+
+    .splash-cover ui|clickbutton.right-btn {
+        float: right;
+        width: auto;
+    }
+
+    .splash-cover ui|clickbutton.left-btn {
+        float: left;
+        width: auto;
+    }
+
+.splash-cover ui|dialogtoolbar ui|clickbutton.focusable {
+    margin: 0 !important;
+    color: #fff;
+}
+
+.splash-cover ui|clickbutton ui|labelbox, .splash-cover .clickbutton {
+    display: block;
+    text-decoration: none;
+    background: #21B980;
+    color: #fff;
+    -ms-border-radius: 20px;
+    border-radius: 20px;
+    width: 100%;
+    text-transform: uppercase;
+    padding: 10px 20px;
+    text-align: center;
+}
+
+    .splash-cover ui|dialogtoolbar ui|clickbutton.hover ui|labelbox, .splash-cover .clickbutton:hover {
+        background: #04A380;
+        color: #fff;
+        text-decoration: none;
+    }
+
+.splash-cover ui|clickbutton ui|labelbody {
+    height: auto;
+}
+
+.splash-cover ui|clickbutton ui|labelbody, .splash-cover ui|clickbutton ui|labelbox ui|labeltext {
+    float: none;
+}
+
+.splash-cover ui|clickbutton.isdisabled {
+    opacity: 0.4;
+}
+
+    .splash-cover ui|clickbutton.isdisabled ui|labeltext {
+        color: white;
+    }

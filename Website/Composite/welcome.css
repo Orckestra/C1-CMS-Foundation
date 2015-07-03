@@ -1,5 +1,18 @@
-@import url("base.css");
+@import url("splash.css");
 @namespace ui url("http://www.w3.org/1999/xhtml");
+
+html, body {
+    overflow: auto;
+    height: auto;
+}
+
+.welcomepage #introcover {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+}
 
 .welcomepage .splash {
     width: 480px;
@@ -32,7 +45,7 @@
     padding: 10px;
     height: 120px;
     overflow: auto;
-    border: 1px solid #ccc;
+    border: 1px solid #E1E1E1;
     font-size: 14px;
     margin-bottom: 20px;
 }
@@ -137,6 +150,7 @@ ul#introtest li.bad {
     padding: 5px 10px;
     border: solid 1px #ddd;
     width: 50%;
+    font-size: 14px;
 }
 
 

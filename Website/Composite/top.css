@@ -1,5 +1,53 @@
-@import url("base.css");
+@import url("splash.css");
 @namespace ui url("http://www.w3.org/1999/xhtml");
+
+ui|theatre,
+ui|theatre * {
+	cursor: wait;	
+}
+ui|theatre {
+	display: block;
+	position: absolute;
+	top: 100%;
+	left: 100%;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	z-index: 4; /* below cover */
+	z-index: 6; /* above cover! */
+	z-index: 1001; /* above mastercover! */
+	background-color: transparent;
+}
+
+ui|theatre canvas {
+	width: 100%;
+	height: 100%;	
+}
+
+div#offlinesplash {
+	width: 128px;
+	height: 128px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-top: -100px;
+	margin-left: -64px;
+	z-index: 1;
+	text-align: center;
+}
+
+div#offlineimage {
+	width: 100%;
+	height: 100%;
+	margin-bottom: 10px;
+	background: url("images/loading.svg.ashx");
+}
+
+div#offlinetext {
+    color: #666;
+	font-weight: bold;
+}
 
 .loginpage .buzzwords {
     display: none;

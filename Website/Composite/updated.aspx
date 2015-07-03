@@ -9,8 +9,9 @@
     <link rel="shortcut icon" type="image/x-icon" href="images/icons/branding/favicon16.ico" />
     <script type="text/javascript" src="updated.js"></script>
 </head>
-<body class="toppage updatedpage">
-    <div class="cover cover-dark-overlay">
+<body class="updatedpage">
+    <div class="splash-cover">
+        <div class="splash-bg"></div>
         <div id="splash" class="splash">
             <div class="splash-inner">
                 <div class="logo"></div>

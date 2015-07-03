@@ -4,7 +4,7 @@
 		<link rel="stylesheet" type="text/css" href="welcome.css.aspx"/>
 	</head>
 	<body>
-	<div class="welcomepage splash-wrap">
+	<div class="welcomepage">
 		<ui:cover id="introcover" hidden="true" busy="false"/>
 		<div class="splash">
 			<div class="splash-inner">
