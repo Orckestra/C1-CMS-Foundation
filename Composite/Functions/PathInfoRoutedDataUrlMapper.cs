@@ -47,12 +47,11 @@ namespace Composite.Functions
             }
         }
 
-        public RoutedDataModel GetRouteDataModel(PageUrlData pageUrlData, out bool isCanonicalUrl)
+        public RoutedDataModel GetRouteDataModel(PageUrlData pageUrlData)
         {
             string pathInfo = pageUrlData.PathInfo;
             if (pathInfo.IsNullOrEmpty())
             {
-                isCanonicalUrl = true;
                 return new RoutedDataModel(GetListQueryable);
             }
 
@@ -69,7 +68,6 @@ namespace Composite.Functions
                             string[] parts = pathInfo.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
                             if (parts.Length > 2)
                             {
-                                isCanonicalUrl = true;
                                 return new RoutedDataModel();
                             }
                             key = parts[0];
@@ -79,7 +77,6 @@ namespace Composite.Functions
                         {
                             if (pathInfo.Length < 2 || pathInfo.LastIndexOf('/') > 0)
                             {
-                                isCanonicalUrl = true;
                                 return new RoutedDataModel();
                             }
 
@@ -92,23 +89,10 @@ namespace Composite.Functions
                         if(keyValue == null 
                            || (keyValue is Guid && (Guid)keyValue == Guid.Empty && key != Guid.Empty.ToString()))
                         {
-                            isCanonicalUrl = true;
                             return new RoutedDataModel();
                         }
 
                         var data = DataFacade.TryGetDataByUniqueKey<T>(keyValue);
-
-                        if (_dataRouteKind == DataRouteKind.KeyAndLabel)
-                        {
-                            string canonicalUrlLabel = GetUrlLabel(data);
-                            isCanonicalUrl = string.IsNullOrEmpty(canonicalUrlLabel) 
-                                ?  string.IsNullOrEmpty(label) 
-                                : string.Equals(canonicalUrlLabel, label, StringComparison.Ordinal);
-                        }
-                        else
-                        {
-                            isCanonicalUrl = true;
-                        }
 
                         return new RoutedDataModel(data);
                     }
@@ -117,13 +101,12 @@ namespace Composite.Functions
                     {
                         if (pathInfo.Length < 2 || pathInfo.LastIndexOf('/') > 0)
                         {
-                            isCanonicalUrl = true;
                             return new RoutedDataModel();
                         }
 
                         string label = pathInfo.Substring(1);
 
-                        var data = GetDataByLabel(label, out isCanonicalUrl);
+                        var data = GetDataByLabel(label);
                         return new RoutedDataModel(data);
                     }
                 default:
@@ -185,7 +168,7 @@ namespace Composite.Functions
             return new PageUrlData(_page) { PathInfo = pathInfo };
         }
 
-        private static T GetDataByLabel(string label, out bool canonical)
+        private static T GetDataByLabel(string label)
         {
             foreach (var data in DataFacade.GetData<T>())
             {
@@ -194,12 +177,10 @@ namespace Composite.Functions
 
                 if (label.Equals(urlLabel, StringComparison.OrdinalIgnoreCase))
                 {
-                    canonical = label.Equals(urlLabel, StringComparison.Ordinal);
                     return data;
                 }
             }
 
-            canonical = false;
             return null;
         }
 

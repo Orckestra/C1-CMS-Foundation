@@ -10,7 +10,7 @@ namespace Composite.Functions
 {
     public interface IRoutedDataUrlMapper
     {
-        RoutedDataModel GetRouteDataModel(PageUrlData pageUrlData, out bool isCanonicalUrl);
+        RoutedDataModel GetRouteDataModel(PageUrlData pageUrlData);
         PageUrlData BuildItemUrl(IData item);
     }
 
@@ -58,15 +58,12 @@ namespace Composite.Functions
 
             var pageUrlData = C1PageRoute.PageUrlData;
 
-            bool isCanonicalUrl;
-            var model = urlMapper.GetRouteDataModel(pageUrlData, out isCanonicalUrl);
+            var model = urlMapper.GetRouteDataModel(pageUrlData);
             SetModel(model);
 
             if (!string.IsNullOrEmpty(pageUrlData.PathInfo) && model.IsRouteResolved)
             {
-                C1PageRoute.RegisterPathInfoUsage();
-
-                if (model.IsItem && !isCanonicalUrl)
+                if (model.IsItem)
                 {
                     var canonicalUrlData = urlMapper.BuildItemUrl(model.Item);
                     if (canonicalUrlData.PathInfo != pageUrlData.PathInfo)
@@ -78,6 +75,8 @@ namespace Composite.Functions
                         }
                     }
                 }
+
+                C1PageRoute.RegisterPathInfoUsage();
             }
         }
 
@@ -220,8 +219,7 @@ namespace Composite.Functions
 
             public IData GetData(PageUrlData pageUrlData)
             {
-                bool isCanonical;
-                var model = _mapper.GetRouteDataModel(pageUrlData, out isCanonical);
+                var model = _mapper.GetRouteDataModel(pageUrlData);
                 return model.IsRouteResolved && model.IsItem ? model.Item : null;
             }
 
