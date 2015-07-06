@@ -11,7 +11,7 @@ namespace Composite.Functions
     public interface IRoutedDataUrlMapper
     {
         RoutedDataModel GetRouteDataModel(PageUrlData pageUrlData, out bool isCanonicalUrl);
-        PageUrlData BuildDataUrl(IData item);
+        PageUrlData BuildItemUrl(IData item);
     }
 
     /// <exclude />
@@ -30,14 +30,14 @@ namespace Composite.Functions
 
         public RoutedDataModel(Func<IQueryable> getQueryable)
         {
-            GetQueryable = getQueryable;
+            QueryableBuilder = getQueryable;
             IsRouteResolved = true;
         }
 
         public bool IsRouteResolved { get; protected set; }
         public bool IsItem { get; protected set; }
         public IData Item { get; protected set; }
-        public Func<IQueryable> GetQueryable { get; protected set; }
+        public Func<IQueryable> QueryableBuilder { get; protected set; }
     }
  
 
@@ -68,7 +68,7 @@ namespace Composite.Functions
 
                 if (model.IsItem && !isCanonicalUrl)
                 {
-                    var canonicalUrlData = urlMapper.BuildDataUrl(model.Item);
+                    var canonicalUrlData = urlMapper.BuildItemUrl(model.Item);
                     if (canonicalUrlData.PathInfo != pageUrlData.PathInfo)
                     {
                         string newUrl = PageUrls.BuildUrl(canonicalUrlData);
@@ -152,7 +152,7 @@ namespace Composite.Functions
                     return Enumerable.Empty<T>().AsQueryable();
                 }
 
-                return model.IsItem ? (new [] { (T) model.Item }).AsQueryable() : (IQueryable<T>) model.GetQueryable();
+                return model.IsItem ? (new [] { (T) model.Item }).AsQueryable() : (IQueryable<T>) model.QueryableBuilder();
             }
         }
 
@@ -164,7 +164,7 @@ namespace Composite.Functions
         public virtual string ItemUrl(IData data)
         {
             var mapper = GetUrlMapper();
-            return PageUrls.BuildUrl(mapper.BuildDataUrl(data));
+            return PageUrls.BuildUrl(mapper.BuildItemUrl(data));
         }
 
         /// <summary>
@@ -181,7 +181,7 @@ namespace Composite.Functions
             }
 
             var mapper = GetUrlMapper();
-            return PageUrls.BuildUrl(mapper.BuildDataUrl(data));
+            return PageUrls.BuildUrl(mapper.BuildItemUrl(data));
         }
 
         /// <summary>
@@ -227,7 +227,7 @@ namespace Composite.Functions
 
             public PageUrlData GetPageUrlData(IData instance)
             {
-                return _mapper.BuildDataUrl(instance);
+                return _mapper.BuildItemUrl(instance);
             }
         }
     }

@@ -149,7 +149,7 @@ namespace Composite.Functions
             return DataGroupingProviderHelper.OrderData(unorderedQuery, typeof(T));
         }
 
-        public PageUrlData BuildDataUrl(IData dataItem)
+        public PageUrlData BuildItemUrl(IData dataItem)
         {
             Verify.ArgumentNotNull(dataItem, "dataItem");
 
