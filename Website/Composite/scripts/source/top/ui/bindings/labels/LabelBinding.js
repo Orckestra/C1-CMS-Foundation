@@ -339,12 +339,12 @@ LabelBinding.prototype.setDefaultImage = function ( url ) {
 LabelBinding.prototype.setAlphaTransparentBackdrop = function ( url ) {
 	
 	if ( this.shadowTree.labelBody ) { // sometimes it glitches in moz...
-		if ( url != false ) {
+		if ( url ) {
 			url = Resolver.resolve ( url );
 			this.shadowTree.labelBody.style.backgroundImage = "url('" + url + "')";
 			
 		} else {
-			this.shadowTree.labelBody.style.backgroundImage = "none";
+			this.shadowTree.labelBody.style.removeProperty("backgroundImage");
 		}
 	}
 }
