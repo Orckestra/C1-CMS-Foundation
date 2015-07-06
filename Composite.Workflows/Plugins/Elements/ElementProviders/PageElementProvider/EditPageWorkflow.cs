@@ -150,7 +150,11 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             if (!BindingExist("SelectedPage"))
             {
                 selectedPage = GetDataItemFromEntityToken<IPage>();
-                selectedPage.PublicationStatus = GenericPublishProcessController.Draft;
+                
+                if (selectedPage.PublicationStatus == GenericPublishProcessController.Published)
+                {
+                    selectedPage.PublicationStatus = GenericPublishProcessController.Draft;
+                }
                 Bindings.Add("SelectedPage", selectedPage);
             }
             else
@@ -268,12 +272,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
 
             var contents = DataFacade.GetData<IPagePlaceholderContent>(f => f.PageId == selectedPage.Id).ToList();
-            var namedXhtmlFragments = new Dictionary<string, string>();
-            foreach (var content in contents)
-            {
-                namedXhtmlFragments.Add(content.PlaceHolderId, content.Content ?? "");
-            }
-
+            var namedXhtmlFragments = contents.ToDictionary(content => content.PlaceHolderId, content => content.Content ?? "");
 
 
             UpdateBinding("SelectablePageTypeIds", GetSelectablePageTypes());
@@ -563,7 +562,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
             var pageValidationResults = ValidationFacade.Validate(selectedPage);
 
-            if (pageValidationResults.IsValid == false)
+            if (!pageValidationResults.IsValid)
             {
                 isValid = false;
             }
@@ -573,7 +572,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             {
                 var validationResults = ValidationFacade.Validate(kvp.Value);
 
-                if (validationResults.IsValid == false)
+                if (!validationResults.IsValid)
                 {
                     isValid = false;
 
@@ -701,9 +700,9 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
             if (string.IsNullOrEmpty(selectedPage.FriendlyUrl) == false)
             {
-                var usedFrendlyUrls = DataFacade.GetData<IPage>(f => f.FriendlyUrl != null && f.FriendlyUrl != string.Empty && f.Id != selectedPage.Id).Select(f => f.FriendlyUrl).ToList();
+                var usedFriendlyUrls = DataFacade.GetData<IPage>(f => f.FriendlyUrl != null && f.FriendlyUrl != string.Empty && f.Id != selectedPage.Id).Select(f => f.FriendlyUrl).ToList();
 
-                if (usedFrendlyUrls.Any(f => f.Equals(selectedPage.FriendlyUrl, StringComparison.InvariantCultureIgnoreCase)))
+                if (usedFriendlyUrls.Any(f => f.Equals(selectedPage.FriendlyUrl, StringComparison.InvariantCultureIgnoreCase)))
                 {
                     ShowFieldMessage("SelectedPage.FriendlyUrl", "${Composite.Plugins.PageElementProvider, FriendlyUrlNotUniqueError}");
                     e.Result = false;
@@ -717,7 +716,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             }
 
             var validationResults = ValidationFacade.Validate(selectedPage);
-            if (validationResults.IsValid == false)
+            if (!validationResults.IsValid)
             {
                 if (validationResults.Any(f => f.Key == "UrlTitle"))
                 {

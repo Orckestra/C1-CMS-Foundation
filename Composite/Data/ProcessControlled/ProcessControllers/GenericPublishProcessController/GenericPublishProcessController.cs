@@ -6,6 +6,7 @@ using System.Transactions;
 using Composite.C1Console.Actions;
 using Composite.C1Console.Events;
 using Composite.C1Console.Elements;
+using Composite.Core.Linq;
 using Composite.Core.ResourceSystem;
 using Composite.Core.ResourceSystem.Icons;
 using Composite.C1Console.Security;
@@ -50,8 +51,8 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
 
         private readonly IDictionary<string, IList<string>> _transitions;
         private readonly IDictionary<string, IList<string>> _visualTransitions;
-        private readonly IDictionary<string, string> _transitionNames = new Dictionary<string, string>();
-        private readonly IDictionary<string, Func<ElementAction>> _visualTransitionsActions = new Dictionary<string, Func<ElementAction>>();  // Using visual transition names as key
+        private readonly IDictionary<string, string> _transitionNames;
+        private readonly IDictionary<string, Func<ElementAction>> _visualTransitionsActions;  // Using visual transition names as keys
 
 
         /// <exclude />
@@ -87,26 +88,33 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
         /// <exclude />
         public GenericPublishProcessController()
         {
-            _transitions = new Dictionary<string, IList<string>>();
-            _transitions.Add(Draft, new List<string>() { AwaitingApproval, AwaitingPublication, Published });
-            _transitions.Add(AwaitingApproval, new List<string>() { Draft, AwaitingPublication, Published });
-            _transitions.Add(AwaitingPublication, new List<string>() { Draft, AwaitingApproval, Published });
-            _transitions.Add(Published, new List<string>() { Draft, AwaitingApproval, AwaitingPublication });
+            _transitions = new Dictionary<string, IList<string>>
+            {
+                {Draft, new List<string> {AwaitingApproval, AwaitingPublication, Published}},
+                {AwaitingApproval, new List<string> {Draft, AwaitingPublication, Published}},
+                {AwaitingPublication, new List<string> {Draft, AwaitingApproval, Published}},
+                {Published, new List<string> {Draft, AwaitingApproval, AwaitingPublication}}
+            };
 
-            _visualTransitions = new Dictionary<string, IList<string>>();
-            _visualTransitions.Add(Draft, new List<string>() { _draftDisabled, _forwardToAwaitingApproval, _forwardToAwaitingPublication, Published });
-            _visualTransitions.Add(AwaitingApproval, new List<string>() { Draft, _awaitingApprovalDisabled, _forwardToAwaitingPublication, Published });
-            _visualTransitions.Add(AwaitingPublication, new List<string>() { Draft, _backToAwaitingApproval, _awaitingPublicationDisabled, Published });
-            _visualTransitions.Add(Published, new List<string>() { }); // when public, no "send to" available.
+            _visualTransitions = new Dictionary<string, IList<string>>
+            {
+                {Draft, new List<string> { _draftDisabled, _forwardToAwaitingApproval, _forwardToAwaitingPublication, Published }},
+                {AwaitingApproval, new List<string> { Draft, _awaitingApprovalDisabled, _forwardToAwaitingPublication, Published }},
+                {AwaitingPublication, new List<string> { Draft, _backToAwaitingApproval, _awaitingPublicationDisabled, Published }},
+                {Published, new List<string>()} // when public, no "send to" available.
+            };
 
-            _transitionNames.Add(Draft, "Draft");
-            _transitionNames.Add(AwaitingApproval, "Awaiting Approval");
-            _transitionNames.Add(AwaitingPublication, "Awaiting Publication");
-            _transitionNames.Add(Published, "Published");
+            _transitionNames = new Dictionary<string, string>
+            {
+                {Draft, "Draft"},
+                {AwaitingApproval, "Awaiting Approval"},
+                {AwaitingPublication, "Awaiting Publication"},
+                {Published, "Published"}
+            };
 
             Func<ElementAction> sendBackToDraftAction = () => new ElementAction(new ActionHandle(new DraftActionToken()))
             {
-                VisualData = new ActionVisualizedData()
+                VisualData = new ActionVisualizedData
                 {
                     Label = StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "SendToDraft"),
                     ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "SendToDraftToolTip"),
@@ -125,7 +133,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
 
             Func<ElementAction> sendForwardToAwaitingApprovalAction = () => new ElementAction(new ActionHandle(new AwaitingApprovalActionToken()))
             {
-                VisualData = new ActionVisualizedData()
+                VisualData = new ActionVisualizedData
                 {
                     Label = StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "SendForApproval"),
                     ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "SendForApprovalToolTip"),
@@ -144,7 +152,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
 
             Func<ElementAction> sendForwardToAwaitingPublicationAction = () => new ElementAction(new ActionHandle(new AwaitingPublicationActionToken()))
             {
-                VisualData = new ActionVisualizedData()
+                VisualData = new ActionVisualizedData
                 {
                     Label = StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "SendForPublication"),
                     ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "SendForPublicationToolTip"),
@@ -163,7 +171,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
 
             Func<ElementAction> publishAction = () => new ElementAction(new ActionHandle(new PublishActionToken()))
             {
-                VisualData = new ActionVisualizedData()
+                VisualData = new ActionVisualizedData
                 {
                     Label = StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "Publish"),
                     ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "PublishToolTip"),
@@ -183,7 +191,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
             // "arrow pointing left when state change is going backwards" actions
             Func<ElementAction> sendBackToAwaitingApprovalAction = () => new ElementAction(new ActionHandle(new AwaitingApprovalActionToken()))
             {
-                VisualData = new ActionVisualizedData()
+                VisualData = new ActionVisualizedData
                 {
                     Label = StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "SendForApproval"),
                     ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "SendForApprovalToolTip"),
@@ -202,7 +210,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
 
             Func<ElementAction> sendBackToAwaitingPublicationAction = () => new ElementAction(new ActionHandle(new AwaitingPublicationActionToken()))
             {
-                VisualData = new ActionVisualizedData()
+                VisualData = new ActionVisualizedData
                 {
                     Label = StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "SendForPublication"),
                     ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "SendForPublicationToolTip"),
@@ -222,7 +230,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
             // disabled actions 
             Func<ElementAction> draftActionDisabled = () => new ElementAction(new ActionHandle(new DraftActionToken()))
             {
-                VisualData = new ActionVisualizedData()
+                VisualData = new ActionVisualizedData
                 {
                     Label = StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "SendToDraft"),
                     ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "SendToDraftToolTip"),
@@ -241,7 +249,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
 
             Func<ElementAction> awaitingApprovalActionDisabled = () => new ElementAction(new ActionHandle(new AwaitingApprovalActionToken()))
             {
-                VisualData = new ActionVisualizedData()
+                VisualData = new ActionVisualizedData
                 {
                     Label = StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "SendForApproval"),
                     ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "SendForApprovalToolTip"),
@@ -260,7 +268,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
 
             Func<ElementAction> awaitingPublicationActionDisabled = () => new ElementAction(new ActionHandle(new AwaitingPublicationActionToken()))
             {
-                VisualData = new ActionVisualizedData()
+                VisualData = new ActionVisualizedData
                 {
                     Label = StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "SendForPublication"),
                     ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "SendForPublicationToolTip"),
@@ -279,7 +287,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
                 
             Func<ElementAction> publishActionDisabled = () => new ElementAction(new ActionHandle(new DisabledActionToken())) 
             {
-                VisualData = new ActionVisualizedData()
+                VisualData = new ActionVisualizedData
                 {
                     Label = StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "Publish"),
                     ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "PublishToolTip"),
@@ -294,20 +302,22 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
                     }
                 }
             };
-                
-                
-            _visualTransitionsActions.Add(Draft, sendBackToDraftAction);
-            _visualTransitionsActions.Add(_backToAwaitingApproval, sendBackToAwaitingApprovalAction);
-            _visualTransitionsActions.Add(_backToAwaitingPublication, sendBackToAwaitingPublicationAction);
 
-            _visualTransitionsActions.Add(_forwardToAwaitingApproval, sendForwardToAwaitingApprovalAction);
-            _visualTransitionsActions.Add(_forwardToAwaitingPublication, sendForwardToAwaitingPublicationAction);
-            _visualTransitionsActions.Add(Published, publishAction);
+            _visualTransitionsActions = new Dictionary<string, Func<ElementAction>>
+            {
+                {Draft, sendBackToDraftAction},
+                {_backToAwaitingApproval, sendBackToAwaitingApprovalAction},
+                {_backToAwaitingPublication, sendBackToAwaitingPublicationAction},
 
-            _visualTransitionsActions.Add(_draftDisabled, draftActionDisabled);
-            _visualTransitionsActions.Add(_awaitingApprovalDisabled, awaitingApprovalActionDisabled);
-            _visualTransitionsActions.Add(_awaitingPublicationDisabled, awaitingPublicationActionDisabled);
-            _visualTransitionsActions.Add(_publishedDisabled, publishActionDisabled);
+                {_forwardToAwaitingApproval, sendForwardToAwaitingApprovalAction},
+                {_forwardToAwaitingPublication, sendForwardToAwaitingPublicationAction},
+                {Published, publishAction},
+
+                {_draftDisabled, draftActionDisabled},
+                {_awaitingApprovalDisabled, awaitingApprovalActionDisabled},
+                {_awaitingPublicationDisabled, awaitingPublicationActionDisabled},
+                {_publishedDisabled, publishActionDisabled}
+            };
         }
 
 
@@ -315,33 +325,28 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
         /// <exclude />
         public List<ElementAction> GetActions(IData data, Type elementProviderType)
         {
-            if ((data is IPublishControlled == false) ||
-                (data.DataSourceId.DataScopeIdentifier.Equals(DataScopeIdentifier.Administrated) == false))
+            if (!(data is IPublishControlled) ||
+                !data.DataSourceId.DataScopeIdentifier.Equals(DataScopeIdentifier.Administrated))
             {
                 return new List<ElementAction>();
             }
 
-            if (((data is ILocalizedControlled)) && (UserSettings.ActiveLocaleCultureInfo.Equals(data.DataSourceId.LocaleScope) == false))
+            if (data is ILocalizedControlled && !UserSettings.ActiveLocaleCultureInfo.Equals(data.DataSourceId.LocaleScope))
             {
                 return new List<ElementAction>();
             }
 
-            IPublishControlled publishControlled = (IPublishControlled)data;
+            var publishControlled = (IPublishControlled)data;
 
             IList<string> visualTrans = _visualTransitions[publishControlled.PublicationStatus];
 
-            List<ElementAction> clientActions = new List<ElementAction>();
-
-            foreach (string newState in visualTrans)
-            {
-                clientActions.Add(_visualTransitionsActions[newState]());
-            }
+            var clientActions = visualTrans.Select(newState => _visualTransitionsActions[newState]()).ToList();
 
 
             IData publicData = DataFacade.GetDataFromOtherScope(data, DataScopeIdentifier.Public, true).FirstOrDefault();
             if (publicData != null)
             {
-                ElementAction unpublishAction = new ElementAction(new ActionHandle(new UnpublishActionToken()))
+                var unpublishAction = new ElementAction(new ActionHandle(new UnpublishActionToken()))
                 {
                     VisualData = new ActionVisualizedData()
                     {
@@ -379,9 +384,9 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
                             actionToken = new UndoPublishedChangesActionToken();
                         }
 
-                        ElementAction undoPublishedChangesAction = new ElementAction(new ActionHandle(actionToken))
+                        var undoPublishedChangesAction = new ElementAction(new ActionHandle(actionToken))
                         {
-                            VisualData = new ActionVisualizedData()
+                            VisualData = new ActionVisualizedData
                             {
                                 Label = StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "UndoPublishedChanges"),
                                 ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "UndoPublishedChangesToolTip"),
@@ -410,13 +415,13 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
         /// <exclude />
         public void SetStartStatus(IData data)
         {
-            if ((data is IPublishControlled == false) ||
-                (data.DataSourceId.DataScopeIdentifier.Equals(DataScopeIdentifier.Administrated) == false))
+            if (!(data is IPublishControlled) ||
+                !data.DataSourceId.DataScopeIdentifier.Equals(DataScopeIdentifier.Administrated))
             {
                 return;
             }
 
-            IPublishControlled publishControlled = (IPublishControlled)data;
+            var publishControlled = (IPublishControlled)data;
             publishControlled.PublicationStatus = Draft;
         }
 
@@ -425,8 +430,8 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
         /// <exclude />
         public IDictionary<string, string> GetValidTransitions(IData data)
         {
-            if ((data is IPublishControlled == false) ||
-                (data.DataSourceId.DataScopeIdentifier.Equals(DataScopeIdentifier.Administrated) == false))
+            if (!(data is IPublishControlled) ||
+                !data.DataSourceId.DataScopeIdentifier.Equals(DataScopeIdentifier.Administrated))
             {
                 return new Dictionary<string, string>();
             }
@@ -439,7 +444,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
         /// <exclude />
         public bool OnAfterBuildNew(IData data)
         {
-            IPublishControlled publishControlled = (IPublishControlled)data;
+            var publishControlled = (IPublishControlled)data;
 
             publishControlled.PublicationStatus = Draft;
 
@@ -453,21 +458,19 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
         {
             DataFacade.RemoveDataTag(data, _oldPublishedStatusTag);
 
-            if (data.DataSourceId.DataScopeIdentifier.Equals(DataScopeIdentifier.Administrated) == false) return false;
+            if (!data.DataSourceId.DataScopeIdentifier.Equals(DataScopeIdentifier.Administrated)) return false;
 
-            IPublishControlled publishControlled = (IPublishControlled)data;
+            var publishControlled = (IPublishControlled)data;
 
             if (publishControlled.PublicationStatus == Published)
             {
                 using (new DataScope(DataScopeIdentifier.Public))
                 {
-                    IEnumerable<IData> exsisting =
-                        from item in DataFacade.GetDataFromOtherScope((IData)publishControlled, DataScopeIdentifier.Public)
-                        select item;
+                    var existing = DataFacade.GetDataFromOtherScope((IData)publishControlled, DataScopeIdentifier.Public).Evaluate();
 
-                    if (exsisting.Count() > 0)
+                    if (existing.Any())
                     {
-                        DataFacade.Delete(exsisting, CascadeDeleteType.Disable);
+                        DataFacade.Delete(existing, CascadeDeleteType.Disable);
                     }
 
                     DataFacade.AddNew(data);
@@ -485,13 +488,13 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
         /// <exclude />
         public void ValidateTransition(IData data, string status)
         {
-            IPublishControlled publishControlled = (IPublishControlled)data;
+            var publishControlled = (IPublishControlled)data;
             string oldTag;
             if (DataFacade.TryGetDataTag<string>(publishControlled, _oldPublishedStatusTag, out oldTag))
             {
                 if (status != oldTag)
                 {
-                    if (_transitions[oldTag].Contains(status) == false)
+                    if (!_transitions[oldTag].Contains(status))
                     {
                         throw new ArgumentException("Invalid transition");
                     }
@@ -585,13 +588,13 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
                         {
                             using (ProcessControllerFacade.NoProcessControllers)
                             {
-                                IPublishControlled adminstrativeData = (IPublishControlled)token.Data;
+                                var administrativeData = (IPublishControlled)token.Data;
                                 IData publishedData = DataFacade.GetDataFromOtherScope(token.Data, DataScopeIdentifier.Public).Single();
 
-                                publishedData.FullCopyChangedTo(adminstrativeData);
-                                adminstrativeData.PublicationStatus = Draft;
+                                publishedData.FullCopyChangedTo(administrativeData);
+                                administrativeData.PublicationStatus = Draft;
 
-                                DataFacade.Update(adminstrativeData);
+                                DataFacade.Update(administrativeData);
                             }
 
                             transactionScope.Complete();
@@ -599,7 +602,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
                     }
                     else
                     {
-                        throw new ArgumentException("Unknow action token", "actionToken");
+                        throw new ArgumentException("Unknown action token", "actionToken");
                     }
                     
                     DataFacade.Update(publishControlled);
@@ -608,7 +611,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
                 }
                 else
                 {
-                    IManagementConsoleMessageService managementConsoleMessageService = flowControllerServicesContainer.GetService<IManagementConsoleMessageService>();
+                    var managementConsoleMessageService = flowControllerServicesContainer.GetService<IManagementConsoleMessageService>();
 
                     StringBuilder sb = new System.Text.StringBuilder();
                     sb.AppendLine(StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "ValidationErrorMessage"));
@@ -651,7 +654,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
         [ActionExecutor(typeof(PublishActionExecutor))]
         internal sealed class PublishActionToken : ActionToken
         {
-            private static IEnumerable<PermissionType> _permissionTypes = new PermissionType[] { PermissionType.Publish };
+            private static IEnumerable<PermissionType> _permissionTypes = new [] { PermissionType.Publish };
 
             public override IEnumerable<PermissionType> PermissionTypes
             {
@@ -701,7 +704,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
         [ActionExecutor(typeof(PublishActionExecutor))]
         internal sealed class UndoPublishedChangesActionToken : ActionToken
         {
-            private static IEnumerable<PermissionType> _permissionTypes = new PermissionType[] { PermissionType.Edit, PermissionType.Publish };
+            private static IEnumerable<PermissionType> _permissionTypes = new [] { PermissionType.Edit, PermissionType.Publish };
 
             public override IEnumerable<PermissionType> PermissionTypes
             {
@@ -726,7 +729,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
         [ActionExecutor(typeof(PublishActionExecutor))]
         internal sealed class DraftActionToken : ActionToken
         {
-            private static IEnumerable<PermissionType> _permissionTypes = new PermissionType[] { PermissionType.Edit, PermissionType.Approve, PermissionType.Publish };
+            private static IEnumerable<PermissionType> _permissionTypes = new [] { PermissionType.Edit, PermissionType.Approve, PermissionType.Publish };
 
             public override IEnumerable<PermissionType> PermissionTypes
             {
@@ -751,7 +754,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
         [ActionExecutor(typeof(PublishActionExecutor))]
         internal sealed class AwaitingApprovalActionToken : ActionToken
         {
-            private static IEnumerable<PermissionType> _permissionTypes = new PermissionType[] { PermissionType.Edit };
+            private static IEnumerable<PermissionType> _permissionTypes = new [] { PermissionType.Edit };
 
             public override IEnumerable<PermissionType> PermissionTypes
             {
@@ -776,7 +779,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
         [ActionExecutor(typeof(PublishActionExecutor))]
         internal sealed class AwaitingPublicationActionToken : ActionToken
         {
-            private static IEnumerable<PermissionType> _permissionTypes = new PermissionType[] { PermissionType.Approve };
+            private static IEnumerable<PermissionType> _permissionTypes = new [] { PermissionType.Approve };
 
             public override IEnumerable<PermissionType> PermissionTypes
             {
