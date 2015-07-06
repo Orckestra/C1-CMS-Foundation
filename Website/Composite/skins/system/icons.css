@@ -16,7 +16,7 @@ ui|tree#templatetree ui|labelbody:before {
 	position: absolute;
 	width: 16px;
 	height: 16px;
-	border: 1px solid #DDDDDD;
+	border: 1px solid #CCCCCC;
 	border-radius: 8px;
 	left: 0px;
 	top: 4px;
@@ -56,7 +56,8 @@ ui|checkbutton ui|labelbody:before {
 	width: 16px;
 	height: 16px;
 	background: #ffffff;
-	border: 1px solid #DDDDDD;
+	border: 1px solid #CCCCCC;
+	border-radius: 3px;
 }
 
 ui|checkbutton.hover ui|labelbody:before {
@@ -70,10 +71,12 @@ ui|checkbutton[ischecked='true'] ui|labelbody:after {
 	left: 0px;
 	content: "\2713";
 	font-size: 12px;
+	font-weight: bold;
 	width: 16px;
 	height: 16px;
 	color: #23B881;
 	text-align: center;
 	line-height: 13px;
-	padding-left: 2px;
+	padding-left: 1px;
+	
 }

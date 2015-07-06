@@ -444,6 +444,7 @@ ui|radiodatagroup {
 	margin-bottom: 3px;
 	padding: 2px;
 	padding-top: 4px;
+	margin-left: 3px;
 }
 ui|radio {
 	display: block;
@@ -474,6 +475,7 @@ ui|checkboxgroup {
 	padding-top: 4px;
 	padding-bottom: 2px;
 	margin-bottom: 3px;
+	margin-left: 3px;
 }
 ui|checkboxgroup ui|labelbox.invalid {
 	margin-bottom: 4px;	
