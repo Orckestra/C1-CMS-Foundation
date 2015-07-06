@@ -209,6 +209,7 @@ CheckBoxBinding.prototype._hack = function () {
 
 	this._buttonBinding.oncommand = function () {
 		self.isChecked = this.isChecked;
+		self.setProperty("ischecked", self.isChecked);
 		self.focus ();
 		self.relate ();
 		if ( self.oncommand ) {

@@ -161,6 +161,7 @@ RadioDataBinding.prototype._hack = function () {
 	
 	this._buttonBinding.oncommand = function () {
 		self.isChecked = this.isChecked;
+		self.setProperty("ischecked", self.isChecked);
 		self.relate ();
 		if ( Types.isFunction ( self.oncommand )) {
 			self.oncommand ();

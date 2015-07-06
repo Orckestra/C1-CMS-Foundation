@@ -1161,6 +1161,7 @@
     <Content Include="Composite\scripts\source\top\ui\bindings\pages\ResponsePageBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\roots\StyleBinding.js" />
     <Content Include="Composite\services\WysiwygEditor\FunctionService.asmx" />
+    <Content Include="Composite\skins\system\icons.css" />
     <Content Include="Composite\styles\default\rtl.css" />
     <Content Include="Composite\unsecure.js" />
     <Content Include="Composite\skins\system\dialogpages\unsecure_32.png" />
@@ -1501,7 +1502,6 @@
     <Content Include="Composite\scripts\source\top\ui\bindings\buttons\ButtonBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\buttons\ButtonStateManager.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\buttons\checkbutton\CheckButtonBinding.js" />
-    <Content Include="Composite\scripts\source\top\ui\bindings\buttons\checkbutton\CheckButtonImageProfile.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\buttons\clickbutton\ClickButtonBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\buttons\combobutton\ComboBoxBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\buttons\combobutton\ToolBarComboButtonBinding.js" />
@@ -6215,13 +6215,6 @@
     <Content Include="Composite\skins\system\balloons\balloon-sw.png" />
     <Content Include="Composite\skins\system\balloons\balloon-w.png" />
     <Content Include="Composite\skins\system\buttons.css" />
-    <Content Include="Composite\skins\system\buttons\checkbutton-active-hover.png" />
-    <Content Include="Composite\skins\system\buttons\checkbutton-active.png" />
-    <Content Include="Composite\skins\system\buttons\checkbutton-default.png" />
-    <Content Include="Composite\skins\system\buttons\checkbutton-hover.png" />
-    <Content Include="Composite\skins\system\buttons\radiobutton-active.png" />
-    <Content Include="Composite\skins\system\buttons\radiobutton-default.png" />
-    <Content Include="Composite\skins\system\buttons\radiobutton-hover.png" />
     <Content Include="Composite\skins\system\controls.css" />
     <Content Include="Composite\skins\system\controls\control-close-active.png" />
     <Content Include="Composite\skins\system\controls\control-close-blur.png" />

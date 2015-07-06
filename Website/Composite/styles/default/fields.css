@@ -445,9 +445,6 @@ ui|radiodatagroup {
 	padding: 2px;
 	padding-top: 4px;
 }
-ui|fields ui|radiodatagroup.focused {
-	padding-top: 3px;	
-}
 ui|radio {
 	display: block;
 	width: 100%;	

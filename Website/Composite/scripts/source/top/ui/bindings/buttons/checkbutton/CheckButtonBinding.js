@@ -24,17 +24,6 @@ function CheckButtonBinding () {
 	 * @type {boolean}
 	 */
 	this.isCheckBox = true;
-	
-	/**
-	 * @overwrites {MatrixBinding#hasMatrix}
-	 * @type {boolean}
-	 */
-	this.hasMatrix = false;
-	
-	/**
-	 * @type {CheckButtonImageProfile}
-	 */
-	this.imageProfile = new CheckButtonImageProfile ( this );
 }
 
 /**

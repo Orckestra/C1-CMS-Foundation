@@ -153,7 +153,6 @@
 			<Script filename="${root}/scripts/source/top/ui/bindings/buttons/clickbutton/ClickButtonBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/buttons/radiobutton/RadioButtonBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/buttons/checkbutton/CheckButtonBinding.js"/>
-			<Script filename="${root}/scripts/source/top/ui/bindings/buttons/checkbutton/CheckButtonImageProfile.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/buttons/viewbutton/ViewButtonBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/controls/ControlGroupBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/controls/ControlBinding.js"/>

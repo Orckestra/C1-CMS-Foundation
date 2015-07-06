@@ -1,0 +1,79 @@
+﻿@namespace ui url("http://www.w3.org/1999/xhtml");
+
+/* Radio buttons */
+/* Radio button for template tree */
+
+ui|radiobutton ui|labelbody,
+ui|tree#templatetree ui|labelbody {
+	background-position: -200px -200px;
+	position: relative;
+}
+
+ui|radiobutton ui|labelbody:before,
+ui|tree#templatetree ui|labelbody:before {
+	box-sizing: border-box;
+	content: '';
+	position: absolute;
+	width: 16px;
+	height: 16px;
+	border: 1px solid #DDDDDD;
+	border-radius: 8px;
+	left: 0px;
+	top: 4px;
+	background: #FFFFFF;
+}
+
+ui|radiobutton.hover ui|labelbody:before {
+	border-color: #23B881;
+}
+
+ui|radiobutton[ischecked='true'] ui|labelbody:after,
+ui|tree#templatetree ui|labelbox.focused ui|labelbody:after {
+	content: '';
+	position: absolute;
+	width: 8px;
+	height: 8px;
+	border-radius: 4px;
+	background: #23B881;
+	left: 4px;
+	top: 8px;
+}
+
+
+/* Checkbox */
+
+ui|checkbutton ui|labelbody {
+	background-position: -200px -200px;
+	position: relative;
+}
+
+ui|checkbutton ui|labelbody:before {
+	box-sizing: border-box;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	content: '';
+	width: 16px;
+	height: 16px;
+	background: #ffffff;
+	border: 1px solid #DDDDDD;
+}
+
+ui|checkbutton.hover ui|labelbody:before {
+	border-color: #23B881;
+}
+
+ui|checkbutton[ischecked='true'] ui|labelbody:after {
+	box-sizing: border-box;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	content: "\2713";
+	font-size: 12px;
+	width: 16px;
+	height: 16px;
+	color: #23B881;
+	text-align: center;
+	line-height: 13px;
+	padding-left: 2px;
+}

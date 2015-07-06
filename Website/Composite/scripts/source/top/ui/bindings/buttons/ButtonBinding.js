@@ -603,8 +603,10 @@ ButtonBinding.prototype.check = function ( isDisableCommand ) {
 			if ( !isDisableCommand == true ) {
 				this.fireCommand ();
 			}
+		} else {
+			this.setProperty("ischecked", true);
 		}
-		this.setProperty ( "ischecked", true );
+		
 	}
 }
 
@@ -619,6 +621,7 @@ ButtonBinding.prototype._check = function ( isStateManager ) {
 	if ( !isStateManager ) {
 		this._stateManager.invokeActiveState ();
 	}
+	this.setProperty("ischecked", true);
 }
 
 /**
@@ -629,12 +632,14 @@ ButtonBinding.prototype.uncheck = function ( isDisableCommand ) {
 
 	if (( this.isCheckButton || this.isRadioButton ) && this.isChecked ) {
 		if (this.isAttached == true && !this.isDisposed) {
-			this._uncheck ();
-			if ( !isDisableCommand == true ) {
-				this.fireCommand ();
+			this._uncheck();
+			if (!isDisableCommand == true) {
+				this.fireCommand();
 			}
+		} else {
+			this.setProperty("ischecked", false);
 		}
-		this.setProperty ( "ischecked", false );
+
 	}
 }
 
@@ -649,6 +654,7 @@ ButtonBinding.prototype._uncheck = function ( isStateManager ) {
 	if ( !isStateManager ) {
 		this._stateManager.invokeNormalState ();
 	}
+	this.setProperty("ischecked", false);
 }
 
 /**

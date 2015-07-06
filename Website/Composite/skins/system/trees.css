@@ -118,34 +118,6 @@ ui|tree#templatetree ui|treenode {
 	padding: 1px 4px;
 }
 
-ui|tree#templatetree ui|labelbody {
-	background-position: -200px -200px;
-	position: relative;
-}
-
-ui|tree#templatetree ui|labelbody:before {
-	box-sizing: border-box;
-	content: '';
-	position: absolute;
-	width: 16px;
-	height: 16px;
-	border: 1px solid #DDDDDD;
-	border-radius: 8px;
-	left: 0px;
-	top: 4px;
-
-}
-ui|tree#templatetree ui|labelbox.focused ui|labelbody:after {
-	content: '';
-	position: absolute;
-	width: 8px;
-	height: 8px;
-	border-radius: 4px;
-	background: #23B881;
-	left: 4px;
-	top: 8px;
-}
-
 ui|tree#templatetree ui|treenode ui|labelbox.focused ui|labeltext {
 	background: transparent !important;
 	color: #000;
