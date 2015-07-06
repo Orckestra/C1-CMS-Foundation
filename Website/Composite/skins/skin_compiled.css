@@ -199,7 +199,7 @@ background: #EFEFEF;
 
 ui|toolbar#templatetoolbar {
 background: #EFEFEF;
-padding: 15px 10px 15px 10px;
+padding: 15px 18px 15px 18px;
 }
 
 ui|splitpanel#editorsplitpanel ui|toolbar#toolbar ui|toolbargroup {
@@ -433,12 +433,12 @@ padding: 0px 10px 0px 10px;
 }
 
 ui|tabbox.tabsontop ui|tab {
-padding: 5px 10px 5px 10px;
+padding: 5px 20px 5px 15px;
 color: #ADADAD;
 
 }
 ui|tabbox.tabsontop ui|tab.selected {
-color: #323232;
+color: #0EBA7E;
 z-index: 3;
 border-color: #CCCCCC #CCCCCC transparent #CCCCCC;
 }
@@ -606,34 +606,6 @@ ui|tree#templatetree ui|treenode {
 padding: 1px 4px;
 }
 
-ui|tree#templatetree ui|labelbody {
-background-position: -200px -200px;
-position: relative;
-}
-
-ui|tree#templatetree ui|labelbody:before {
-box-sizing: border-box;
-content: '';
-position: absolute;
-width: 16px;
-height: 16px;
-border: 1px solid #DDDDDD;
-border-radius: 8px;
-left: 0px;
-top: 4px;
-
-}
-ui|tree#templatetree ui|labelbox.focused ui|labelbody:after {
-content: '';
-position: absolute;
-width: 8px;
-height: 8px;
-border-radius: 4px;
-background: #23B881;
-left: 4px;
-top: 8px;
-}
-
 ui|tree#templatetree ui|treenode ui|labelbox.focused ui|labeltext {
 background: transparent !important;
 color: #000;
@@ -654,8 +626,8 @@ ui|explorertoolbarbutton {
 float: left;
 padding: 4px;
 border: 1px solid transparent;
-margin: 8px 2px 8px 13px;
-padding: 7px 20px 10px 14px;
+margin: 0px 0px 0px 0px;
+padding: 21px 22px 21px 27px;
 cursor: pointer;
 width: 100%;
 }
@@ -862,7 +834,7 @@ color: #D75553;
 @namespace ui url("http://www.w3.org/1999/xhtml");
 
 ui|radio ui|labelbody { /* radiobuttons! */
-height: 18px;
+height: 20px;
 padding-left: 18px;
 }
 ui|radio ui|datalabeltext {
@@ -1072,4 +1044,86 @@ margin-left: -40px;
 #region vista
 margin-left: -53px;
 #endregion
+}
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+/* Radio buttons */
+/* Radio button for template tree */
+
+ui|radiobutton ui|labelbody,
+ui|tree#templatetree ui|labelbody {
+background-position: -200px -200px;
+position: relative;
+}
+
+ui|radiobutton ui|labelbody:before,
+ui|tree#templatetree ui|labelbody:before {
+box-sizing: border-box;
+content: '';
+position: absolute;
+width: 16px;
+height: 16px;
+border: 1px solid #CCCCCC;
+border-radius: 8px;
+left: 0px;
+top: 4px;
+background: #FFFFFF;
+}
+
+ui|radiobutton.hover ui|labelbody:before {
+border-color: #23B881;
+}
+
+ui|radiobutton[ischecked='true'] ui|labelbody:after,
+ui|tree#templatetree ui|labelbox.focused ui|labelbody:after {
+content: '';
+position: absolute;
+width: 8px;
+height: 8px;
+border-radius: 4px;
+background: #23B881;
+left: 4px;
+top: 8px;
+}
+
+
+/* Checkbox */
+
+ui|checkbutton ui|labelbody {
+background-position: -200px -200px;
+position: relative;
+}
+
+ui|checkbutton ui|labelbody:before {
+box-sizing: border-box;
+position: absolute;
+top: 0px;
+left: 0px;
+content: '';
+width: 16px;
+height: 16px;
+background: #ffffff;
+border: 1px solid #CCCCCC;
+border-radius: 3px;
+}
+
+ui|checkbutton.hover ui|labelbody:before {
+border-color: #23B881;
+}
+
+ui|checkbutton[ischecked='true'] ui|labelbody:after {
+box-sizing: border-box;
+position: absolute;
+top: 0px;
+left: 0px;
+content: "\2713";
+font-size: 12px;
+font-weight: bold;
+width: 16px;
+height: 16px;
+color: #23B881;
+text-align: center;
+line-height: 13px;
+padding-left: 1px;
+
 }

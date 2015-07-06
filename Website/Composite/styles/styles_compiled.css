@@ -1922,9 +1922,7 @@ display: block;
 margin-bottom: 3px;
 padding: 2px;
 padding-top: 4px;
-}
-ui|fields ui|radiodatagroup.focused {
-padding-top: 3px;	
+margin-left: 3px;
 }
 ui|radio {
 display: block;
@@ -1955,6 +1953,7 @@ display: block;
 padding-top: 4px;
 padding-bottom: 2px;
 margin-bottom: 3px;
+margin-left: 3px;
 }
 ui|checkboxgroup ui|labelbox.invalid {
 margin-bottom: 4px;	
