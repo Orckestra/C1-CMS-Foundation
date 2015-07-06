@@ -1,6 +1,7 @@
 using System;
 using System.CodeDom;
 using System.ComponentModel;
+using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
 using System.Collections.Generic;
@@ -28,10 +29,12 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
 
         public CodeTypeDeclaration CreateClass()
         {
-            CodeTypeDeclaration declaration = new CodeTypeDeclaration(_className);
+            var declaration = new CodeTypeDeclaration(_className)
+            {
+                IsClass = true,
+                TypeAttributes = TypeAttributes.Public | TypeAttributes.Sealed
+            };
 
-            declaration.IsClass = true;
-            declaration.TypeAttributes = TypeAttributes.Public | TypeAttributes.Sealed;
             declaration.BaseTypes.Add(typeof(IDataId));
             declaration.CustomAttributes.Add(
                 new CodeAttributeDeclaration(
@@ -70,14 +73,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
         {
             get
             {
-                Dictionary<string, Type> result = new Dictionary<string, Type>();
-
-                foreach (DataFieldDescriptor field in _dataTypeDescriptor.KeyFields)
-                {
-                    result.Add(field.Name, field.InstanceType);
-                }
-
-                return result;
+                return _dataTypeDescriptor.KeyFields.ToDictionary(field => field.Name, field => field.InstanceType);
             }
         }
 
@@ -85,8 +81,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
 
         private static void AddDefaultConstructor(CodeTypeDeclaration declaration)
         {
-            CodeConstructor defaultConstructor = new CodeConstructor();
-            defaultConstructor.Attributes = MemberAttributes.Public | MemberAttributes.Final;
+            var defaultConstructor = new CodeConstructor {Attributes = MemberAttributes.Public | MemberAttributes.Final};
             declaration.Members.Add(defaultConstructor);
         }
 
@@ -94,8 +89,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
 
         private void AddConstructor(CodeTypeDeclaration declaration)
         {
-            CodeConstructor constructor = new CodeConstructor();
-            constructor.Attributes = MemberAttributes.Public | MemberAttributes.Final;
+            var constructor = new CodeConstructor {Attributes = MemberAttributes.Public | MemberAttributes.Final};
 
             constructor.Parameters.Add(new CodeParameterDeclarationExpression(
                     typeof(XElement),
@@ -104,12 +98,10 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
 
 
 
-            foreach (string keyPropertyName in _dataTypeDescriptor.KeyPropertyNames)
+            foreach (var keyField in _dataTypeDescriptor.KeyFields)
             {
-                DataFieldDescriptor keyProperty = _dataTypeDescriptor.Fields[keyPropertyName];
-
-                string propertyFieldName = MakePropertyFieldName(keyProperty.Name);
-                string attributeVariableName = "attr" + keyProperty.Name;
+                string propertyFieldName = MakePropertyFieldName(keyField.Name);
+                string attributeVariableName = "attr" + keyField.Name;
 
                 // CODEGEN:
                 // XAttribute attr{fieldName} = element.Attribute(_{fieldName}XName);
@@ -120,7 +112,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
                         new CodeMethodInvokeExpression(
                             new CodeVariableReferenceExpression("element"),
                             "Attribute",
-                            new CodeFieldReferenceExpression(null, MakeXNameFieldName(keyPropertyName))
+                            new CodeFieldReferenceExpression(null, MakeXNameFieldName(keyField.Name))
                             )));
 
 
@@ -141,7 +133,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
                                     typeof(InvalidOperationException),
                                     new CodeExpression[] {
                                         new CodePrimitiveExpression(
-                                            string.Format("Missing '{0}' attribute in a data store file.", keyProperty.Name)
+                                            string.Format("Missing '{0}' attribute in a data store file.", keyField.Name)
                                         )
                                     }
                                 )
@@ -155,7 +147,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
                 constructor.Statements.Add(new CodeAssignStatement(
                         new CodeVariableReferenceExpression(propertyFieldName),
                         new CodeCastExpression(
-                            keyProperty.InstanceType,
+                            keyField.InstanceType,
                             new CodeVariableReferenceExpression(attributeVariableName)
                         )
                     ));
@@ -179,12 +171,14 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
 
             declaration.Members.Add(new CodeMemberField(type, propertyFieldName));
 
-            CodeMemberProperty property = new CodeMemberProperty();
-            property.Name = name;
-            property.Attributes = MemberAttributes.Public | MemberAttributes.Final;
-            property.HasSet = true;
-            property.HasGet = true;
-            property.Type = new CodeTypeReference(type);
+            var property = new CodeMemberProperty
+            {
+                Name = name,
+                Attributes = MemberAttributes.Public | MemberAttributes.Final,
+                HasSet = true,
+                HasGet = true,
+                Type = new CodeTypeReference(type)
+            };
             property.GetStatements.Add(new CodeMethodReturnStatement(new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), propertyFieldName)));
             property.SetStatements.Add(new CodeAssignStatement(new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), propertyFieldName), new CodeArgumentReferenceExpression("value")));
 
@@ -193,11 +187,13 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
             // CODEGEN:
             // private static readonly XName _EmailXName = "Email";
 
-            var xNameField = new CodeMemberField();
-            xNameField.Name = MakeXNameFieldName(name);
-            xNameField.Type = new CodeTypeReference(typeof(XName));
-            xNameField.Attributes = MemberAttributes.Static | MemberAttributes.Private;
-            xNameField.InitExpression = new CodePrimitiveExpression(name);
+            var xNameField = new CodeMemberField
+            {
+                Name = MakeXNameFieldName(name),
+                Type = new CodeTypeReference(typeof (XName)),
+                Attributes = MemberAttributes.Static | MemberAttributes.Private,
+                InitExpression = new CodePrimitiveExpression(name)
+            };
             declaration.Members.Add(xNameField);
         }
 
@@ -211,10 +207,12 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
             //     return object.Equals(this.FullPath, (obj as FileSystemFileDataId1).FullPath) && .....;
             // }
 
-            var method = new CodeMemberMethod();
-            method.Attributes = MemberAttributes.Public | MemberAttributes.Override;
-            method.Name = "Equals";
-            method.ReturnType = new CodeTypeReference(typeof(bool));
+            var method = new CodeMemberMethod
+            {
+                Attributes = MemberAttributes.Public | MemberAttributes.Override,
+                Name = "Equals",
+                ReturnType = new CodeTypeReference(typeof (bool))
+            };
             method.Parameters.Add(new CodeParameterDeclarationExpression(typeof(object), "obj"));
 
 
@@ -266,10 +264,12 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
 
             var hashcodeField = new CodeMemberField(typeof(int?), "_hashcode");
 
-            var method = new CodeMemberMethod();
-            method.Attributes = MemberAttributes.Public | MemberAttributes.Override;
-            method.Name = "GetHashCode";
-            method.ReturnType = new CodeTypeReference(typeof(int));
+            var method = new CodeMemberMethod
+            {
+                Attributes = MemberAttributes.Public | MemberAttributes.Override,
+                Name = "GetHashCode",
+                ReturnType = new CodeTypeReference(typeof (int))
+            };
 
             Verify.That(_dataTypeDescriptor.KeyPropertyNames.Count > 0, "A dynamic type should have at least one key property");
 
@@ -298,7 +298,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
             }
 
             // "this.__hashcode"
-            CodeFieldReferenceExpression hashCodeFieldReference =
+            var hashCodeFieldReference =
                 new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), "_hashcode");
 
             method.Statements.Add(new CodeConditionStatement(
