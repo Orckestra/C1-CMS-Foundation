@@ -54,7 +54,7 @@ namespace Composite.Functions
             var urlMapper = GetUrlMapper();
             Verify.IsNotNull(urlMapper, "UrlMapper is null");
             
-            DataUrls.RegisterDynamicDataUrlMapper(PageRenderer.CurrentPage, typeof(T), new RoutedDataUrlMapperAdapter(urlMapper));
+            DataUrls.RegisterDynamicDataUrlMapper(PageRenderer.CurrentPageId, typeof(T), new RoutedDataUrlMapperAdapter(urlMapper));
 
             var pageUrlData = C1PageRoute.PageUrlData;
 
