@@ -33,9 +33,6 @@ _Resolver.prototype = {
 			else if (string.indexOf("${class:") > -1) {
 				string = this._resolveClasses(string);
 			}
-			else if (string.indexOf("${svg:") > -1) {
-				string = this._resolveSVG(string);
-			}
 			else if ( string.indexOf ( "${string:" ) >-1 ) {
 				string = this._resolveString ( string );
 			}
@@ -86,7 +83,7 @@ _Resolver.prototype = {
 	
 	/**
 	 * Resolve image of syntax ${icon:ProviderName:ResourceName(size)}
-	 * where ProviderName and size are optional and will default.
+	 * ProviderName and size are optional and will be ignored.
 	 * Example: "${icon:previous(large)}"
 	 * @param {string} string
 	 * @return {string}
@@ -103,23 +100,14 @@ _Resolver.prototype = {
 		if ( resource.indexOf ( ":" ) >-1 ) {
 			provider = resource.split ( ":" ) [ 0 ];
 			resource = resource.split ( ":" ) [ 1 ];
-		} else {
-			provider = ImageProvider.UI;
 		}
 		if ( resource.indexOf ( "(" ) >-1 ) {
 			size = resource.split ( "(" ) [ 1 ].split ( ")" )[ 0 ];
 			resource = resource.split ( "(" ) [ 0 ];
 		}
-		result = ImageProvider.getImageURL ({
-			ResourceNamespace : provider,
-			ResourceName : resource
-		}, size);
+		result = resource;
+		return result;
 
-		var result = {};
-		result.svg = resource;
-		return result;
-		
-		return result;
 	},
 
 	/**
@@ -134,14 +122,6 @@ _Resolver.prototype = {
 		var result = {};
 		resource = string.split("${class:")[1].split("}")[0];
 		result.classes = resource;
-		return result;
-	},
-
-	_resolveSVG : function(string) {
-
-		var result = {};
-		var resource = string.split("${svg:")[1].split("}")[0];
-		result.svg = resource;
 		return result;
 	}
 }

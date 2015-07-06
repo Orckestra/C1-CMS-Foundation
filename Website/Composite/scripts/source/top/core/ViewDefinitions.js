@@ -122,39 +122,6 @@ var ViewDefinitions = {
 	}),
 	
 	/*
-	 * Icon Pack System.
-	 */
-	"Composite.Management.IconPack.System" : new HostedViewDefinition ({
-		handle 		: "Composite.Management.IconPack.System",
-		position 	: DockBinding.ABSBOTTOMLEFT,
-		label 		: "Freja",
-		image		: "${icon:icon}",
-		url 		: "${root}/content/views/dev/icons/system/Default.aspx"
-	}),
-	
-	/*
-	 * Icon Pack Republic.
-	 */
-	"Composite.Management.IconPack.Republic" : new HostedViewDefinition ({
-		handle 		: "Composite.Management.IconPack.Republic",
-		position 	: DockBinding.ABSBOTTOMLEFT,
-		label 		: "Republic",
-		image		: "${icon:icon}",
-		url 		: "${root}/content/views/dev/icons/files/republic.aspx"
-	}),
-	
-	/*
-	 * Icon Pack Harmony.
-	 */
-	"Composite.Management.IconPack.Harmony" : new HostedViewDefinition ({
-		handle 		: "Composite.Management.IconPack.Harmony",
-		position 	: DockBinding.ABSBOTTOMLEFT,
-		label 		: "Harmony",
-		image		: "${icon:icon}",
-		url 		: "${root}/content/views/dev/icons/files/harmony.aspx"
-	}),
-
-	/*
 	 * Icon Pack Sprite SVG.
 	 */
 	"Composite.Management.IconPack.SpriteSVG": new HostedViewDefinition({

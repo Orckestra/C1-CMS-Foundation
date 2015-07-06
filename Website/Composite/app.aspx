@@ -145,19 +145,8 @@
 							<ui:menupopup>
 								<ui:menubody>
 									<ui:menugroup>
-										<ui:menuitem label="Composite C1" binding="StageViewMenuItemBinding" handle="Composite.Management.IconPack.System" type="checkbox" image="${icon:icon}" />
-										<ui:menuitem label="Files">
-											<ui:menupopup>
-				<ui:menubody>
-					<ui:menugroup>
-														<ui:menuitem label="Republic" binding="StageViewMenuItemBinding" handle="Composite.Management.IconPack.Republic" type="checkbox" image="${icon:icon}" />
-														<ui:menuitem label="Harmony" binding="StageViewMenuItemBinding" handle="Composite.Management.IconPack.Harmony" type="checkbox" image="${icon:icon}" />
-														<ui:menuitem label="Sprite SVG" binding="StageViewMenuItemBinding" handle="Composite.Management.IconPack.SpriteSVG" type="checkbox" image="${icon:icon}" />
-													</ui:menugroup>
-												</ui:menubody>
-											</ui:menupopup>
-										</ui:menuitem>
-					</ui:menugroup>
+										<ui:menuitem label="Sprite SVG" binding="StageViewMenuItemBinding" handle="Composite.Management.IconPack.SpriteSVG" type="checkbox" image="${icon:icon}" />
+									</ui:menugroup>
 								</ui:menubody>
 							</ui:menupopup>
 						</ui:menuitem>

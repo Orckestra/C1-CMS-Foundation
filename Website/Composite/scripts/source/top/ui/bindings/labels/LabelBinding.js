@@ -7,9 +7,8 @@ LabelBinding.superclass = Binding.prototype;
  * open. Looks more elegant than three regular dots.
  */
 LabelBinding.DIALOG_INDECATOR_SUFFIX = String.fromCharCode ( 8230 ); // "…".charCodeAt ( 0 );
-LabelBinding.DEFAULT_IMAGE = "${root}/images/blank.png";
+LabelBinding.DEFAULT_IMAGE = "blank";
 LabelBinding.SPRITE_PATH = "${root}/images/sprite.svg";
-LabelBinding.EXPLORER_IMAGE_FILTER = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='${url}',sizingMethod='crop');"
 LabelBinding.CLASSNAME_GRAYTEXT = "graytext";
 LabelBinding.CLASSNAME_FLIPPED = "flipped";
 
@@ -81,41 +80,43 @@ LabelBinding.spriteLoad = function () {
  * @param {string} image
  */
 LabelBinding.setImageSvg = function (binding, image) {
-	
-	if (binding.shadowTree.labelBody) {
-		if (!image) {
-			if (binding.shadowTree.svg) {
-				if (binding.shadowTree.svg.parentNode) {
-					binding.shadowTree.svg.parentNode.removeChild(binding.shadowTree.svg);
-				}
-				binding.shadowTree.svg = null;
-			}
-		} else {
-
-			if (LabelBinding.sprites) {
-				var xmlns = "http://www.w3.org/2000/svg";
-				if (!binding.shadowTree.svg) {
-					binding.shadowTree.svg = binding.bindingDocument.createElementNS(xmlns, "svg");
-					binding.shadowTree.labelBody.insertBefore(binding.shadowTree.svg, binding.shadowTree.labelBody.firstChild);
-				}
-				binding.shadowTree.svg.setAttribute("viewBox", "0 0 24 24");
-				var g = LabelBinding.sprites.querySelector("#" + image);
-				if (g) {
-					var viewBox = g.getAttribute('viewBox'),
-						fragment = document.createDocumentFragment(),
-						clone = g.cloneNode(true);
-
-					if (viewBox) {
-						binding.shadowTree.svg.setAttribute('viewBox', viewBox);
+	//validate that image is string and have valid Id
+	if (typeof image == "string" && /^[A-Za-z]+[\w\-\.]*$/.test(image)) {
+		if (binding.shadowTree.labelBody) {
+			if (!image) {
+				if (binding.shadowTree.svg) {
+					if (binding.shadowTree.svg.parentNode) {
+						binding.shadowTree.svg.parentNode.removeChild(binding.shadowTree.svg);
 					}
-
-					fragment.appendChild(clone);
-					binding.shadowTree.svg.innerHTML = "";
-					binding.shadowTree.svg.appendChild(fragment);
+					binding.shadowTree.svg = null;
 				}
 			} else {
-				LabelBinding.spritesQueue.set(binding.getID(), image);
-				LabelBinding.spriteLoad();
+
+				if (LabelBinding.sprites) {
+					var g = LabelBinding.sprites.querySelector("#" + image);
+					if (g) {
+						var xmlns = "http://www.w3.org/2000/svg";
+						if (!binding.shadowTree.svg) {
+							binding.shadowTree.svg = binding.bindingDocument.createElementNS(xmlns, "svg");
+							binding.shadowTree.labelBody.insertBefore(binding.shadowTree.svg, binding.shadowTree.labelBody.firstChild);
+						}
+						binding.shadowTree.svg.setAttribute("viewBox", "0 0 24 24");
+						var viewBox = g.getAttribute('viewBox'),
+							fragment = document.createDocumentFragment(),
+							clone = g.cloneNode(true);
+
+						if (viewBox) {
+							binding.shadowTree.svg.setAttribute('viewBox', viewBox);
+						}
+
+						fragment.appendChild(clone);
+						binding.shadowTree.svg.innerHTML = "";
+						binding.shadowTree.svg.appendChild(fragment);
+					}
+				} else {
+					LabelBinding.spritesQueue.set(binding.getID(), image);
+					LabelBinding.spriteLoad();
+				}
 			}
 		}
 	}
@@ -256,31 +257,28 @@ LabelBinding.prototype.setImage = function ( url, isNotBuildingClassName ) {
 	if ( url != false ) {
 		url = url ? url : LabelBinding.DEFAULT_IMAGE;
 		var resolverUrl = Resolver.resolve(url);
-		if (resolverUrl.svg) {
-			this.setImageSvg(resolverUrl.svg);
-			this.setAlphaTransparentBackdrop(false);
-			this.setImageClasses();
-		} else if (resolverUrl.classes) {
+		if (resolverUrl.classes) {
+			this.setAlphaTransparentBackdrop();
 			this.setImageSvg();
-			this.setAlphaTransparentBackdrop(false);
 			this.setImageClasses(resolverUrl.classes);
-		}
-		else {
+		} else if (typeof resolverUrl == "string" && resolverUrl[0] == "/") {
+			this.setAlphaTransparentBackdrop(resolverUrl);
 			this.setImageSvg();
 			this.setImageClasses();
-			this.setAlphaTransparentBackdrop(
-					resolverUrl
-			);
+		} else {
+			this.setAlphaTransparentBackdrop();
+			this.setImageSvg(resolverUrl);
+			this.setImageClasses();
 		}
-		//this.setProperty ( "image", url );
+		if (typeof resolverUrl == "string") {
+			this.setProperty ( "image", url );
+		}
 		this.hasImage = true;
 		if ( !isNotBuildingClassName ) {
 			this.buildClassName ();
 		}
 	} else {
 		this.setImageSvg();
-		this.setImageClasses()
-		this.setAlphaTransparentBackdrop(false);
 		this.setImageClasses();
 		this.deleteProperty ( "image" );
 		this.hasImage = false;
@@ -343,17 +341,10 @@ LabelBinding.prototype.setAlphaTransparentBackdrop = function ( url ) {
 	if ( this.shadowTree.labelBody ) { // sometimes it glitches in moz...
 		if ( url != false ) {
 			url = Resolver.resolve ( url );
-			if ( Client.isExplorer6 ) {
-				this.shadowTree.labelBody.style.filter = LabelBinding.EXPLORER_IMAGE_FILTER.replace ( "${url}", url );
-			} else {
-				this.shadowTree.labelBody.style.backgroundImage = "url('" + url + "')";
-			}
+			this.shadowTree.labelBody.style.backgroundImage = "url('" + url + "')";
+			
 		} else {
-			if ( Client.isExplorer6 ) {
-				this.shadowTree.labelBody.style.filter = "none";
-			} else {
-				this.shadowTree.labelBody.style.backgroundImage = "none";
-			}
+			this.shadowTree.labelBody.style.backgroundImage = "none";
 		}
 	}
 }

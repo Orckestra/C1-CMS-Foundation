@@ -69,7 +69,6 @@
 			<Script filename="${root}/scripts/source/top/core/SearchTokens.js"/>
 			<Script filename="${root}/scripts/source/top/core/StringBundle.js"/>
 			<Script filename="${root}/scripts/source/top/core/KeyMaster.js"/>
-			<Script filename="${root}/scripts/source/top/core/ImageProvider.js"/>
 			<Script filename="${root}/scripts/source/top/core/Resolver.js"/>
 			<Script filename="${root}/scripts/source/top/core/Download.js"/>
 			<Script filename="${root}/scripts/source/top/core/Cookies.js"/>

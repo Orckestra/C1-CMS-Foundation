@@ -193,20 +193,16 @@ SystemNode.prototype.getTag = function () {
 
 /**
  * @return {ImageProfile}
- * @param {string} size
+ * @param {string} size, obsolute
  * @return {ImageProfile}
  */
 SystemNode.prototype.getImageProfile = function ( size ) {
  	
  	return new ImageProfile ({
-		image : ImageProvider.getImageURL ( 
-			this._data.Icon,
-			size
-		),
-		imageActive :  ImageProvider.getImageURL ( 
-			this._data.OpenedIcon ? this._data.OpenedIcon : this._data.Icon,
-			size
-		)
+		image :
+			this._data.Icon.ResourceName,
+		imageActive :
+			(this._data.OpenedIcon ? this._data.OpenedIcon : this._data.Icon).ResourceName
 	});
 }
 

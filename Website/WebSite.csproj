@@ -271,13 +271,6 @@
     <Compile Include="Composite\content\views\datatypedescriptor\ToXml.aspx.designer.cs">
       <DependentUpon>ToXml.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Composite\content\views\dev\icons\system\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Composite\content\views\dev\icons\system\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Composite\content\views\functiondoc\FunctionDocumentation.aspx.cs">
       <DependentUpon>FunctionDocumentation.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1389,7 +1382,6 @@
     <Content Include="Composite\scripts\source\top\core\DialogButton.js" />
     <Content Include="Composite\scripts\source\top\core\Download.js" />
     <Content Include="Composite\scripts\source\top\core\EventBroadcaster.js" />
-    <Content Include="Composite\scripts\source\top\core\ImageProvider.js" />
     <Content Include="Composite\scripts\source\top\core\Installation.js" />
     <Content Include="Composite\scripts\source\top\core\Interfaces.js" />
     <Content Include="Composite\scripts\source\top\core\Keyboard.js" />
@@ -2032,14 +2024,6 @@
     <Content Include="Composite\content\views\dev\developer\tests\ui\trees.aspx" />
     <Content Include="Composite\content\views\dev\developer\tests\ui\TreeTest.js" />
     <Content Include="Composite\content\views\dev\developer\tests\ui\xmleditor.jar" />
-    <Content Include="Composite\content\views\dev\icons\files\harmony.aspx" />
-    <Content Include="Composite\content\views\dev\icons\files\harmonyrender.aspx" />
-    <Content Include="Composite\content\views\dev\icons\files\iconpack.css" />
-    <Content Include="Composite\content\views\dev\icons\files\IconPageBinding.js" />
-    <Content Include="Composite\content\views\dev\icons\files\republic.aspx" />
-    <Content Include="Composite\content\views\dev\icons\files\republicrender.aspx" />
-    <Content Include="Composite\content\views\dev\icons\system\Default.aspx" />
-    <Content Include="Composite\content\views\dev\icons\system\Default.css" />
     <Content Include="Composite\content\views\dev\systemlog\systemlog.aspx" />
     <Content Include="Composite\content\views\dev\systemlog\systemlog.css" />
     <Content Include="Composite\content\views\dev\systemlog\systemlogoutput.aspx" />
