@@ -1,75 +1,71 @@
 ﻿@namespace url("http://www.w3.org/1999/xhtml");
 @namespace ui url("http://www.w3.org/1999/xhtml");
 
-*#scrollbox
-{
-	background-color: white !important;
-	line-height: 20px;
+*#scrollbox {
+    background-color: white !important;
+    line-height: 20px;
 }
-table
-{
-	border-collapse: collapse;
+
+table {
+    border-collapse: collapse;
 }
 
 
-ul#functionList
-{
-	margin-left: 20px;
-	margin-top: 20px;
-	padding-left: 0;
-	list-style: none;
-}
-ul#functionList li
-{
-	margin-top: 5px;
-	padding-left: 25px;
-	background-image: url(../../../services/Icon/GetIcon.ashx?resourceName=functioncall&resourceNamespace=Composite.Icons&size=normal);
-	background-repeat: no-repeat;
-	background-position: 0 3px;
-}
-div.header
-{
-	font-weight: bold;
-	margin-bottom: 0;
-	display: inline;
-}
-table.parameters tr
-{
-	line-height: 20px;
-}
-table.parameters td
-{
-	vertical-align: top;
-}
-table.parameters td.requiredInfo
-{
-	background-repeat: no-repeat;
-	background-position: 2px 3px;
-	width: 20px;
-}
-table.parameters td.requiredTrue
-{
-	background-image: url(../../../services/Icon/GetIcon.ashx?resourceName=parameter_missing&resourceNamespace=Composite.Icons&size=normal);
-}
-table.parameters td.requiredFalse
-{
-	background-image: url(../../../services/Icon/GetIcon.ashx?resourceName=parameter&resourceNamespace=Composite.Icons&size=normal);
-}
-table.parameters td.name
-{
-	width: 10em;
-}
-table.parameters td.description
-{
+ul#functionList {
+    margin-left: 20px;
+    margin-top: 20px;
+    padding-left: 0;
+    list-style: none;
 }
 
-span.typeinfo
-{
-	color: #485588;
-	padding-right: 5px;
+    ul#functionList li {
+        margin-top: 5px;
+        padding-left: 25px;
+        background-image: url(../../../images/icons/svg/functioncall.svg);
+        background-repeat: no-repeat;
+        background-position: 0 3px;
+        line-height: 24px;
+    }
+
+div.header {
+    font-weight: bold;
+    display: inline;
 }
 
-div.header span.typeinfo
-{
-	font-weight: normal;
+table.parameters tr {
+    line-height: 20px;
+}
+
+table.parameters td {
+    vertical-align: top;
+}
+
+    table.parameters td.requiredInfo {
+        background-repeat: no-repeat;
+        background-position: 2px 3px;
+        width: 24px;
+    }
+
+    table.parameters td.requiredTrue {
+        background-image: url(../../../images/icons/svg/parameter_missing.svg);
+    }
+
+    table.parameters td.requiredFalse {
+        background-image: url(../../../images/icons/svg/parameter.svg);
+    }
+
+    table.parameters td.name {
+        width: 10em;
+    }
+
+    table.parameters td.description {
+    }
+
+span.typeinfo {
+    color: #485588;
+    padding-right: 5px;
+}
+
+div.header span.typeinfo {
+    font-weight: normal;
 }
