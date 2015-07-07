@@ -108,15 +108,11 @@ _Resolver.prototype = {
 			resource = resource.split("(")[0];
 		}
 
-		//If default provider than return just name
-		if (provider == ImageProvider.UI) {
-			result = resource;
-		}else{
-			result = ImageProvider.getImageURL({
-				ResourceNamespace: provider,
-				ResourceName: resource
-			}, size);
-		}
+		result = ImageProvider.getImageURL({
+			ResourceNamespace: provider,
+			ResourceName: resource
+		}, size);
+
 		return result;
 	},
 

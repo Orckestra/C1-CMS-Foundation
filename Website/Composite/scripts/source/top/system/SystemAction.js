@@ -209,7 +209,7 @@ SystemAction.prototype.getLabel = function () {
  */
 SystemAction.prototype.getImage = function () {
 
-	return this._data.Icon.ResourceName;
+	return ImageProvider.getImageURL ( this._data.Icon );
 }
 
 /**

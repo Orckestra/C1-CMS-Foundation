@@ -444,15 +444,10 @@ namespace Composite.Core.WebClient.Services.ConsoleMessageService
         private static string GetImage(ResourceHandle resourceHandle)
         {
             if (resourceHandle == null) return null;
-	        if (resourceHandle.ResourceNamespace == BuildInIconProviderName.ProviderName)
-	        {
-				return resourceHandle.ResourceName;
-	        }
-	        else
-	        {
-		        return string.Format("${{root}}/services/Icon/GetIcon.ashx?resourceNamespace={0}&resourceName={1}",
+	        
+		    return string.Format("${{icon:{0}:{1}}}",
 			        resourceHandle.ResourceNamespace, resourceHandle.ResourceName);
-	        }
+	      
         }
     }
 }
