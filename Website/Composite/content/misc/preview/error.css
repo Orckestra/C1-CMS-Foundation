@@ -1,27 +1,18 @@
-@namespace url("http://www.w3.org/1999/xhtml");
-@namespace ui url("http://www.w3.org/1999/xhtml");
-
-div#message {
+.message {
 	padding: 22px;
 }
-div#icon {
+.icon {
 	width: 32px;
 	height: 32px;
-	#alphabackdrop: url("${root}/services/Icon/GetIcon.ashx?resourceName=error&resourceNamespace=Composite.Icons&size=xlarge");
 	float: left;
-	position: relative;
-	top: 2px;
 }
-div#text {
+.icon svg{
+    width: 32px;
+    height: 32px;
+    color: red;
+}
+.text {
 	padding-left: 44px;
 	-moz-user-select: none;
 	padding-top: 10px;
-}
-div#desc {
-	clear: both;
-	padding-top: 10px;
-	color: graytext;
-}
-img#warning {
-	padding-right: 3px;	
 }

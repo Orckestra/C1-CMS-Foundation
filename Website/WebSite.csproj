@@ -481,6 +481,8 @@
     </Compile>
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\Selectors\UrlComboBox.ascx" />
     <Content Include="Composite\images\icons\svg\accept-green.svg" />
+    <Content Include="Composite\images\icons\svg\error.svg" />
+    <Content Include="Composite\images\icons\svg\stop.svg" />
     <Content Include="Composite\splash.css" />
     <Content Include="Composite\GenerateIconSprite.aspx" />
     <Content Include="Composite\images\editfunction.png" />
