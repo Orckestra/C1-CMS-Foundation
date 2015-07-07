@@ -18,7 +18,7 @@ namespace Composite.Core.Routing
         /// <summary>
         /// Gets page url data by a a data item
         /// </summary>
-        /// <param name="pageUrlData"></param>
+        /// <param name="instance"></param>
         /// <returns></returns>
         PageUrlData GetPageUrlData(IData instance);
     }

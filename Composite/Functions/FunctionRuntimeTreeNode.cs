@@ -139,7 +139,7 @@ namespace Composite.Functions
 
         private static object TryGetInjectedValue(Type type)
         {
-            var services = ServiceLocator.RequestServices;
+            var services = ServiceLocator.RequestServices ?? ServiceLocator.ApplicationServices;
             if (services != null)
             {
                 return services.GetService(type);

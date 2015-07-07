@@ -128,9 +128,12 @@ namespace Composite.Data
                 return;
             }
 
+            var requestUrl = context.Request.Url;
+            string hostName = requestUrl.Host;
+
             if (!url.StartsWith("http", StringComparison.InvariantCultureIgnoreCase))
             {
-                string serverUrl = new UrlBuilder(context.Request.Url.ToString()).ServerUrl;
+                string serverUrl = new UrlBuilder(requestUrl.ToString()).ServerUrl;
 
                 url = UrlUtils.Combine(serverUrl, url);
             }
@@ -138,7 +141,7 @@ namespace Composite.Data
             string cookies = context.Request.Headers["Cookie"];
 
             string responseBody, errorMessage;
-            var result = RenderPage(url, cookies, out responseBody, out errorMessage);
+            var result = RenderPage(hostName, url, cookies, out responseBody, out errorMessage);
 
             // TODO: log errors if any
         }
@@ -152,10 +155,12 @@ namespace Composite.Data
             NotFound = 3
         }
 
-        private static PageRenderingResult RenderPage(string url, string cookies, out string responseBody, out string errorMessage)
+        private static PageRenderingResult RenderPage(string hostname, string url, string cookies, out string responseBody, out string errorMessage)
         {
             try
             {
+                url = url.Replace("://" + hostname + "/", "://127.0.0.1/");
+
                 var request = WebRequest.Create(url) as HttpWebRequest;
 
                 request.UserAgent = @"Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.1.5) Gecko/20091102 Firefox/3.5.5";
@@ -163,6 +168,7 @@ namespace Composite.Data
                 request.AllowAutoRedirect = false; // Some pages may contain redirects to other pages/different websites
                 request.Method = "GET";
                 request.Headers.Add("Cookie", cookies);
+                request.Host = hostname;
 
 
                 int statusCode;
