@@ -406,16 +406,6 @@ CodeMirrorEditorBinding.prototype.initializeEditorComponent = function (binding)
 }
 
 /**
-* On clean, also clean the plaintext editor.
-* @overloads {EditorBinding#clean}
-*/
-CodeMirrorEditorBinding.prototype.clean = function () {
-
-	CodeMirrorEditorBinding.superclass.clean.call(this);
-	this.getContentWindow().bindingMap.editorpage.clean();
-}
-
-/**
 * @param {MouseEvent} e
 */
 CodeMirrorEditorBinding.prototype.handleContextMenu = function (e) {
