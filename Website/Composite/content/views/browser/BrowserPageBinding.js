@@ -731,6 +731,9 @@ BrowserPageBinding.prototype.showToolbar = function () {
 	systemtoolbar.setPosition(position);
 	systemtoolbar.setDimension(dimension);
 	systemtoolbar.show();
+	//Update More button
+	systemtoolbar._toolBarBodyLeft.refreshToolBarGroups();
+	systemtoolbar._containAllButtons();
 }
 
 /**
