@@ -1,7 +1,6 @@
 @namespace ui url("http://www.w3.org/1999/xhtml");
 
 ui|dialog {
-	-vendor-box-shadow: 4px 4px 16px rgba(0,0,0,0.75);
 	border-radius: 5px;
 	border: 1px solid #CCCCCC;
 }
@@ -42,6 +41,13 @@ ui|dialog {
 
 	ui|dialog.active {
 	}
+
+
+ui|dialogcover {
+	background-color: #000;
+	opacity: 0.3;
+}
+
 
 
 
