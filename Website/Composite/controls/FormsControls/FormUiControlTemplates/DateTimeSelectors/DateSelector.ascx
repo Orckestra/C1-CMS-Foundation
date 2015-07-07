@@ -3,7 +3,7 @@
 <div id="updatezone<%= this.UniqueID %>A">
     <div>
         <ui:datainputbutton name="<%= this.UniqueID  %>" callbackid="<%=  GetButtonCallbackId()  %>"
-            image="${icon:fields}" value="<%= this.CurrentStringValue %>" readonly="<%=this.ReadOnly.ToString().ToLower()%>" />
+            image="${icon:calendar-full}" value="<%= this.CurrentStringValue %>" readonly="<%=this.ReadOnly.ToString().ToLower()%>" />
     </div>
     <div style="display:none">
         <asp:PlaceHolder ID="MessagesPlaceHolder" runat="server"></asp:PlaceHolder>
