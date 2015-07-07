@@ -486,6 +486,10 @@ ui|dialog ui|titlebar ui|labelbox.dialogtitle ui|labelbody,
 ui|dialog ui|titlebar ui|labelbox.dialogtitle ui|labeltext {
 float: none;
 }
+
+ui|dialog ui|titlebar ui|labelbox.dialogtitle svg {
+display: none;
+}
 @namespace url("http://www.w3.org/1999/xhtml");
 @namespace url("http://www.w3.org/2000/svg");
 @namespace ui url("http://www.w3.org/1999/xhtml");
@@ -728,7 +732,6 @@ color: #23B880;
 @namespace ui url("http://www.w3.org/1999/xhtml");
 
 ui|dialog {
--vendor-box-shadow: 4px 4px 16px rgba(0,0,0,0.75);
 border-radius: 5px;
 border: 1px solid #CCCCCC;
 }
@@ -769,6 +772,13 @@ ui|dialog {
 
 ui|dialog.active {
 }
+
+
+ui|dialogcover {
+background-color: #000;
+opacity: 0.3;
+}
+
 
 
 
