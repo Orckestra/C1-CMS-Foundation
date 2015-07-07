@@ -9,6 +9,7 @@ using Composite.C1Console.Users;
 using Composite.Core.ResourceSystem;
 using Composite.Core.Logging;
 using Composite.Core.Configuration;
+using Composite.Core.ResourceSystem.Icons;
 
 
 namespace Composite.Core.WebClient.Services.ConsoleMessageService
@@ -68,7 +69,7 @@ namespace Composite.Core.WebClient.Services.ConsoleMessageService
                     ToolTip = openViewItem.ToolTip ?? openViewItem.Label
                 };
 
-                openViewParams.Image = GetImageUrl(openViewItem.IconResourceHandle);
+                openViewParams.Image = GetImage(openViewItem.IconResourceHandle);
 
                 newMessages.Add(new ConsoleAction
                 {
@@ -128,7 +129,7 @@ namespace Composite.Core.WebClient.Services.ConsoleMessageService
                     UrlPostArguments = arguments
                 };
 
-                openGenericViewParams.Image = GetImageUrl(openGenericView.IconResourceHandle);
+                openGenericViewParams.Image = GetImage(openGenericView.IconResourceHandle);
 
                 newMessages.Add(new ConsoleAction
                 {
@@ -160,7 +161,7 @@ namespace Composite.Core.WebClient.Services.ConsoleMessageService
                     UrlPostArguments = arguments
                 };
 
-                openExternalViewParams.Image = GetImageUrl(openExternalView.IconResourceHandle);
+                openExternalViewParams.Image = GetImage(openExternalView.IconResourceHandle);
 
                 newMessages.Add(new ConsoleAction
                 {
@@ -440,11 +441,18 @@ namespace Composite.Core.WebClient.Services.ConsoleMessageService
 
 
 
-        private static string GetImageUrl(ResourceHandle resourceHandle)
+        private static string GetImage(ResourceHandle resourceHandle)
         {
             if (resourceHandle == null) return null;
-
-            return string.Format("${{root}}/services/Icon/GetIcon.ashx?resourceNamespace={0}&resourceName={1}", resourceHandle.ResourceNamespace, resourceHandle.ResourceName);
+	        if (resourceHandle.ResourceNamespace == BuildInIconProviderName.ProviderName)
+	        {
+				return resourceHandle.ResourceName;
+	        }
+	        else
+	        {
+		        return string.Format("${{root}}/services/Icon/GetIcon.ashx?resourceNamespace={0}&resourceName={1}",
+			        resourceHandle.ResourceNamespace, resourceHandle.ResourceName);
+	        }
         }
     }
 }

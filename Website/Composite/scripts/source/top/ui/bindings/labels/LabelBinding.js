@@ -344,7 +344,7 @@ LabelBinding.prototype.setAlphaTransparentBackdrop = function ( url ) {
 			this.shadowTree.labelBody.style.backgroundImage = "url('" + url + "')";
 			
 		} else {
-			this.shadowTree.labelBody.style.removeProperty("backgroundImage");
+			this.shadowTree.labelBody.style.removeProperty("background-image");
 		}
 	}
 }

@@ -83,31 +83,41 @@ _Resolver.prototype = {
 	
 	/**
 	 * Resolve image of syntax ${icon:ProviderName:ResourceName(size)}
-	 * ProviderName and size are optional and will be ignored.
+	 * where ProviderName and size are optional and will default.
 	 * Example: "${icon:previous(large)}"
 	 * @param {string} string
 	 * @return {string}
 	 */
-	_resolveImage : function ( string ) {
-		
+	_resolveImage: function (string) {
+
 		var result = null;
 		var provider = null;
 		var resource = null;
 		var size = null;
-		
-		resource = string.split ( "${icon:" )[ 1 ].split ( "}" )[ 0 ];
-		
-		if ( resource.indexOf ( ":" ) >-1 ) {
-			provider = resource.split ( ":" ) [ 0 ];
-			resource = resource.split ( ":" ) [ 1 ];
-		}
-		if ( resource.indexOf ( "(" ) >-1 ) {
-			size = resource.split ( "(" ) [ 1 ].split ( ")" )[ 0 ];
-			resource = resource.split ( "(" ) [ 0 ];
-		}
-		result = resource;
-		return result;
 
+		resource = string.split("${icon:")[1].split("}")[0];
+
+		if (resource.indexOf(":") > -1) {
+			provider = resource.split(":")[0];
+			resource = resource.split(":")[1];
+		} else {
+			provider = ImageProvider.UI;
+		}
+		if (resource.indexOf("(") > -1) {
+			size = resource.split("(")[1].split(")")[0];
+			resource = resource.split("(")[0];
+		}
+
+		//If default provider than return just name
+		if (provider == ImageProvider.UI) {
+			result = resource;
+		}else{
+			result = ImageProvider.getImageURL({
+				ResourceNamespace: provider,
+				ResourceName: resource
+			}, size);
+		}
+		return result;
 	},
 
 	/**
