@@ -1,183 +1,113 @@
 <%@ Page Language="C#" AutoEventWireup="true" EnableViewState="false" Inherits="Composite_Management_Login" CodeFile="Login.aspx.cs" %>
-<html xmlns="http://www.w3.org/1999/xhtml">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>Composite.Management</title>
-    
     <meta name="robots" content="noindex, nofollow" />
     <meta http-equiv="X-UA-Compatible" content="IE=9" />
+    <link rel="shortcut icon" type="image/x-icon" href="images/icons/branding/favicon16.ico" />
+    <link rel="stylesheet" type="text/css" href="splash.css.aspx" />
     <style type="text/css">
-        body {
-            background-color: #F0F0F0;
-            
-            font-family: "Segoe UI",Tahoma,sans-serif;
-            font-size: 12px;
+        * {
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
         }
-        
-        div#splash {
-            color: #B2B2B2;
-            display: block;
-            height: 360px;
-            left: 50%;
-            margin-left: -180px;
-            margin-top: -157px;
-            overflow-x: hidden;
-            overflow-y: hidden;
-            position: absolute;
-            top: 45%;
-            width: 315px;
-            z-index: 5;
-            
-            
+
+        input:focus, input:active {
+            border: 0;
+            background: #fff;
+             outline: 0;
         }
-        div#splashcontent {
-            height: 180px;
-            margin-left: 58px;
-            margin-top: 140px;
-            position: relative;
-            width: 200px;
-            z-index: 2;
-            
-            position: static;
-            clear: both;
-            display: block;
-            height: 100%;
-            overflow-x: hidden;
-            overflow-y: hidden;
-            position: absolute;
+
+        svg {
+            color: #21B980;
+            stroke: currentColor;
+            fill: currentColor;
         }
-        
-        div#splashcontent div.splashtext {
-            height: 95px;
+
+        .field {
+            border-bottom: solid 1px #ddd;
+            margin-bottom: 20px;
+            height: 40px;
+            padding: 5px 0;
         }
-        
-        div#backdrop {
-            background-image: url("images/box.png");
-            height: 100%;
-            left: 0;
-            position: absolute;
-            top: 0;
-            width: 100%;
-        }
-        /* Forms */
-        div.field div.label {
-            width: 60px;
+
+        .field .icon {
             float: left;
-            font-weight: bold;
-            padding-top: 7px;
         }
-        
-        div.field div.value {
-            height: 23px;
-            float: right;
-            padding-top: 4px;
+
+        .field .value {
+            height: 40px;
+            margin-left: 20px;
         }
-        
-        div.field div.value input {
-            width: 130px;
-            border-style: solid;
-            border-width: 1px;
-            border-color: rgb(127,157,185);
-            padding: 4px 0 4px 7px;
-            max-height: 25px;
+
+        .field input {
+            border: 0;
+            font-size: 16px;
+            width: 100%;
+            padding: 4px 10px 5px 15px;
         }
-        
-        div.field div.value input:focus {
-            outline-style: solid;
-            outline-width: 1px;
-            outline-color: #B2B2B2;
+        .error {
+            color: red;
         }
-        
-        input.error {
-            border-color: #CC071E !important;
-        }
-        
-        div#divLoginFailed {
-            color: #CC071E;
-            font-weight: bold;
-        }
-        
-        div.LoginButton {
-            float: right;
-            padding-top: 5px;
-        }
-        
-        div.LoginButton a {
-            text-transform: uppercase;
-            display: inline-block;
-            color: white;
-            padding: 6px 10px 6px 30px;
-            background-color: #CC071E;
-            text-decoration: none;
-            border-radius: 10px;
-            font-weight: bold;
-            vertical-align: central;
-            height: 16px;
-            background-image: url("skins/system/splash/button.png");
-            background-position: 8px 7px;
-            background-repeat: no-repeat;
-        }
-        
-        div.LoginButton a:hover {
-            background-color: #D63548;
-        }
-        
-        
-        div.clear {
-            clear: both;
-        }
-        
     </style>
 </head>
 <body>
-    <div id="splash">
-        <div id="backdrop"></div>
+    <div class="splash-cover">
+        <div class="splash-bg"></div>
+        <div id="splash" class="splash">
+            <div class="splash-inner">
+                <div class="logo"></div>
+                <div id="splashcontent">
+                    <form id="form_login" method="post">
+                        <!-- action="Login.aspx"  -->
+                        <div class="splashtext">
+                            <p>The entered url is protected, please enter C1 Console credentials</p>
+                            <div id="divLoginFailed" runat="server" visible="false" class="error">
+                                Username or password is incorrect.
+                            </div>
+                        </div>
+                        <div class="fields">
+                            <div class="field">
+                                <div class="icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="26px" viewBox="0 0 20 20">
+                                        <g id="user" viewBox="0 0 20 20">
+                                            <path d="M9.5 11c-3.033 0-5.5-2.467-5.5-5.5s2.467-5.5 5.5-5.5 5.5 2.467 5.5 5.5-2.467 5.5-5.5 5.5zM9.5 1c-2.481 0-4.5 2.019-4.5 4.5s2.019 4.5 4.5 4.5c2.481 0 4.5-2.019 4.5-4.5s-2.019-4.5-4.5-4.5z" stroke="none" />
+                                            <path d="M17.5 20h-16c-0.827 0-1.5-0.673-1.5-1.5 0-0.068 0.014-1.685 1.225-3.3 0.705-0.94 1.67-1.687 2.869-2.219 1.464-0.651 3.283-0.981 5.406-0.981s3.942 0.33 5.406 0.981c1.199 0.533 2.164 1.279 2.869 2.219 1.211 1.615 1.225 3.232 1.225 3.3 0 0.827-0.673 1.5-1.5 1.5zM9.5 13c-3.487 0-6.060 0.953-7.441 2.756-1.035 1.351-1.058 2.732-1.059 2.746 0 0.274 0.224 0.498 0.5 0.498h16c0.276 0 0.5-0.224 0.5-0.5-0-0.012-0.023-1.393-1.059-2.744-1.382-1.803-3.955-2.756-7.441-2.756z" stroke="none" />
+                                        </g></svg>
 
-        <div id="splashcontent">
-            <form id="form_login" method="post"> <!-- action="Login.aspx"  -->
-                
-            <div class="splashtext">
-                The entered url is protected, please enter C1 Console credentials
-                
-                <div id="divLoginFailed" runat="server" Visible="false">
-                    <br/>
-                    Username or password is incorrect.
+                                </div>
+                                <div class="value">
+                                    <input runat="server" tabindex="1" placeholder="Username" type="text" id="txtUsername" onkeydown="if (event.keyCode == 13) document.getElementById('aLogin').click()" />
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 16" width="20px" height="26px">
+                                        <g id="users-changeownpassword" viewBox="0 0 14 16" stroke-width="1" fill="none">
+                                            <path d="M7,8.5 C7,8.776 6.776,9 6.5,9 C6.224,9 6,8.776 6,8.5 C6,8.224 6.224,8 6.5,8 C6.776,8 7,8.224 7,8.5 L7,8.5 Z" id="Stroke-69" />
+                                            <path d="M6.48358154,9.48071289 L6.48358154,11.5175781" id="Stroke-71" stroke-linecap="round" />
+                                            <path d="M12.5124512,5.50524903 L0.567382832,5.50524903 L0.567382832,14.4874271 L12.5124512,14.4874271 L12.5124512,5.50524903 Z" id="Stroke-73" />
+                                            <path d="M6.5,0 C8.43327273,0 10.5031738,1.64133341 10.5031738,3.66666675 L10.5031738,5.50317383 L2.50640869,5.50317383 L2.50640869,3.66666675 C2.50640869,1.64133341 4.56672727,0 6.5,0 Z" id="Stroke-75" />
+                                        </g>
+                                    </svg>
+                                </div>
+                                <div class="value">
+                                    <input runat="server" tabindex="2" type="password" placeholder="Password" id="txtPassword" onkeydown="if (event.keyCode == 13) document.getElementById('aLogin').click()" autocomplete="off" />
+                                </div>
+                            </div>
+                            <div class="LoginButton">
+                                <a href="#" id="aLogin" tabindex="3" class="clickbutton" onclick="document.forms['form_login'].submit();">Login</a>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
-
-            <div class="fields">
-                <div class="field">
-                    <div class="label">
-                        <label for="txtUsername">Username</label>
-                    </div>
-                    <div class="value">
-                        <input runat="server" tabindex="1" type="text" id="txtUsername" onkeydown="if (event.keyCode == 13) document.getElementById('aLogin').click()"/>
-                    </div>
-                    <div class="clear"></div>
-                </div>
-                <div class="field">
-                    <div class="label">
-                        <label for="txtPassword">Password</label>
-                    </div>
-                    <div class="value">
-                        <input runat="server" tabindex="2" type="password" id="txtPassword" onkeydown="if (event.keyCode == 13) document.getElementById('aLogin').click()" autocomplete="off" />
-                    </div>
-                    <div class="clear"></div>
-                </div>
-                
-                <div class="LoginButton">
-                    <a href="#" id="aLogin" tabindex="3" onclick="document.forms['form_login'].submit();">
-                        <!--img src="skins/system/splash/button.png" /-->
-                        Login
-                    </a>
-                </div>
-            </div>
-            </form>
         </div>
-        <script type="text/javascript">
-            document.getElementById('txtUsername').focus();
-        </script>
-        
     </div>
+    <script type="text/javascript">
+        document.getElementById('txtUsername').focus();
+    </script>
 </body>
 </html>

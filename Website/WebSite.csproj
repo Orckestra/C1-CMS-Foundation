@@ -1717,7 +1717,6 @@
     <Content Include="Composite\unsecure.aspx" />
     <Content Include="Composite\unknownbrowser.aspx" />
     <Content Include="Composite\unsupported.aspx" />
-    <Content Include="Composite\unsupported.css" />
     <Content Include="Composite\welcome.css" />
     <Content Include="Composite\Welcome.js" />
     <Content Include="Composite\welcome.xsl" />
@@ -2229,7 +2228,6 @@
     <Content Include="Composite\controls\StyleLoaderControl.ascx" />
     <Content Include="Composite\dead.aspx" />
     <Content Include="Composite\default.aspx" />
-    <Content Include="Composite\default.css" />
     <Content Include="Composite\develop.aspx" />
     <Content Include="Composite\extensions\compositec1\chrome\content\compositec1.css" />
     <Content Include="Composite\extensions\compositec1\chrome\content\CompositeC1.js" />
@@ -2239,7 +2237,6 @@
     <Content Include="Composite\images\about.png" />
     <Content Include="Composite\images\actionended.png" />
     <Content Include="Composite\images\blank.png" />
-    <Content Include="Composite\images\box.png" />
     <Content Include="Composite\images\fieldbox.png" />
     <Content Include="Composite\images\icons\branding\16x16CompositeS.png" />
     <Content Include="Composite\images\icons\branding\24x24CompositeS.png" />
@@ -6160,9 +6157,6 @@
     <Content Include="Composite\images\originals\winxpskin\tab-below-right.png" />
     <Content Include="Composite\images\originals\winxpskin\tab-below.png" />
     <Content Include="Composite\images\progressbar.png" />
-    <Content Include="Composite\images\startcomposite.png" />
-    <Content Include="Composite\images\startcompositedev.PNG" />
-    <Content Include="Composite\images\ui\lighten.png" />
     <Content Include="Composite\images\unfortunateerror.png" />
     <Content Include="Composite\localization\Composite.Plugins.UserGroupElementProvider.en-us.xml" />
     <Content Include="Composite\localization\Composite.Web.PageBrowser.en-us.xml" />
