@@ -211,7 +211,6 @@
     </Compile>
     <Compile Include="Data\PageRenderingHistory.cs" />
     <Compile Include="Functions\PathInfoRoutedDataUrlMapper.cs" />
-    <Compile Include="Functions\PathInfoRoutedData.cs" />
     <Compile Include="Functions\RoutedData.cs" />
     <Compile Include="Core\Routing\Pages\SeoFriendlyRedirectHttpHandler.cs" />
     <Compile Include="Core\Routing\Pages\SeoFriendlyRedirectRouteHandler.cs" />
