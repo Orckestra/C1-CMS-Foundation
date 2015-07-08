@@ -43,7 +43,7 @@ ui|toolbar {
 	padding: 15px 10px 15px 10px;
 	
 }
-
+ui|page > ui|toolbar#toolbar,
 ui|editorpage > ui|toolbar {
 	box-shadow: none;
 	
@@ -60,6 +60,7 @@ ui|toolbarbutton.active {
 	border-color: transparent;
 }
 
+ui|page > ui|toolbar#toolbar ui|toolbarbutton,
 ui|editorpage > ui|toolbar ui|toolbarbutton {
 	margin: 15px 5px 0px 5px;
 }

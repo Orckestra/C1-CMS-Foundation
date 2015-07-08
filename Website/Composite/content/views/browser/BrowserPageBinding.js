@@ -720,7 +720,7 @@ BrowserPageBinding.prototype.flex = function () {
  * Show toolbar
  */
 BrowserPageBinding.prototype.showToolbar = function () {
-	var snap = this.bindingWindow.bindingMap.toolbar;
+	var snap = this.bindingWindow.bindingMap.toolbarplaceholder;
 
 	var position = snap.boxObject.getUniversalPosition();
 	var dimension = snap.boxObject.getDimension();

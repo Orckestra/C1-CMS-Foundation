@@ -44,7 +44,7 @@
 	</ui:popupset>
 	<ui:page id="browserpage" binding="BrowserPageBinding" image="${icon:browser}">
 		<ui:cover id="cover" transparent="true" busy="false" />
-		<ui:toolbar id="toolbar" class="explorertoolbar">
+		<ui:toolbar id="toolbarplaceholder" class="explorertoolbar">
 			<ui:toolbarbody />
 		</ui:toolbar>
 		<ui:toolbar id="navbar" class="dark" binding="BrowserToolBarBinding">

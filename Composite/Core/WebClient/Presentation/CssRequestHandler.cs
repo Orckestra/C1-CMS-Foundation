@@ -94,8 +94,8 @@ namespace Composite.Core.WebClient.Presentation
 
             public Colors ( User user )
             {
-                scheme.Add("threedface", "rgb(240,240,240)");
-                scheme.Add("threedshadow", "rgb(160,160,160)");
+                scheme.Add("threedface", "#FFFFFF");
+				scheme.Add("threedshadow", "#DDDDDD");
                 scheme.Add("threedlightshadow", "rgb(227,227,227)");
                 scheme.Add("threedhighlight", "rgb(255,255,255)");
                 scheme.Add("threeddarkshadow", "rgb(105,105,105)");
