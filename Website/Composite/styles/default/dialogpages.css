@@ -1,24 +1,17 @@
 @namespace url("http://www.w3.org/1999/xhtml");
 @namespace url("http://www.w3.org/2000/svg");
 @namespace ui url("http://www.w3.org/1999/xhtml");
-/*
-ui|dialogpage,
-ui|wizardpage {
-	padding: 15px 14px 14px 14px;
-}
-*/
 
 
 ui|pagebody {
 	display: block;
 	padding: 15px 14px 0 14px;
 }
-/*
-ui|dialogpagebody { 
-	display: block;
-	padding: 2px 2px 0 2px;
+
+ui|pagebody.pad-0 {
+    padding: 0;
 }
-*/
+
 ui|dialogtoolbar {
 	display: block;
 	clear: both;

@@ -1,9 +1,6 @@
 @namespace url("http://www.w3.org/1999/xhtml");
 @namespace ui url("http://www.w3.org/1999/xhtml");
 
-ui|tree {
-	border: 1px solid $(color:threedshadow);
-}
 ui|toolbarbody.max {
 	overflow: hidden;
 	#moz padding-right: 6px;
@@ -13,12 +10,7 @@ ui|datainput#treeselectionresult {
 	position: relative;
 	left: -1px;
 }
-/*
-ui|dialogtoolbar {
-	overflow: hidden;
-	height: 51px; /* explorerness */
-}
-*/
+
 ui|pagebody {
 	position: relative;	/* contain the cover */
 }

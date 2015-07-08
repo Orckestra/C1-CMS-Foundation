@@ -482,6 +482,7 @@
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\Selectors\UrlComboBox.ascx" />
     <Content Include="Composite\images\icons\svg\accept-green.svg" />
     <Content Include="Composite\images\icons\svg\error.svg" />
+    <Content Include="Composite\images\icons\svg\folder-open-2.svg" />
     <Content Include="Composite\images\icons\svg\stop.svg" />
     <Content Include="Composite\scripts\source\top\core\ImageProvider.js" />
     <Content Include="Composite\splash.css" />
@@ -1789,7 +1790,6 @@
     <Content Include="Composite\content\dialogs\translations\TranslationsDialogPageBinding.js" />
     <Content Include="Composite\content\dialogs\treeselector\special\imageselector.aspx" />
     <Content Include="Composite\content\dialogs\treeselector\special\imageselector.css" />
-    <Content Include="Composite\content\dialogs\treeselector\special\imageselector.png" />
     <Content Include="Composite\content\dialogs\treeselector\special\ImageSelectorDialogPageBinding.js" />
     <Content Include="Composite\content\dialogs\treeselector\treeselector.aspx" />
     <Content Include="Composite\content\dialogs\treeselector\treeselector.css" />

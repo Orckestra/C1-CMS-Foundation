@@ -39,9 +39,9 @@ ImageSelectorDialogPageBinding.prototype._updateDisplayAndResult = function () {
 	// Page id is in brackets, so getting subscring from opening bracket to closing bracket
 	var mediaItemId = new String(String(url).split("(")[1]).split(")")[0];
 	s = Resolver.resolve("${root}/../media/") + mediaItemId;
-	s += "?&action=fit&mw=220&mh=288";
+	s += "?&action=fit&mw=220&mh=200";
 	
-	image.style.backgroundImage = "url('" + s + "')";	
+	image.style.backgroundImage = "url('" + s + "')";
 	info.className = "image";
 }
 
@@ -55,7 +55,6 @@ ImageSelectorDialogPageBinding.prototype._clearDisplayAndResult = function () {
 	
 	var image = document.getElementById ( "previewimage" );
 	var info = document.getElementById ( "info" );
-	
-	image.style.backgroundImage = 'url("imageselector.png")';
+	image.style.backgroundImage = '';
 	info.className = "";
 }

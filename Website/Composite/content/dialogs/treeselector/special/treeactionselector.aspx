@@ -32,7 +32,7 @@
 					</ui:toolbargroup>
 				</ui:toolbarbody>
 			</ui:toolbar>
-			<ui:pagebody>
+			<ui:pagebody class="pad-0">
 				<ui:tree id="selectiontree" binding="SystemTreeBinding" selectiontype="single" actionaware="true" treeselector="true" locktoeditor="false">
 					<ui:treebody/>
 				</ui:tree>

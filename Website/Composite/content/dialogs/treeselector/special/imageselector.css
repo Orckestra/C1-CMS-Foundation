@@ -1,34 +1,50 @@
-@namespace url("http://www.w3.org/1999/xhtml");
 @namespace ui url("http://www.w3.org/1999/xhtml");
+
+ui|tree {
+    border-right: solid 1px #E1E1E1;
+}
 
 ui|box#treebox,
 ui|box#infobox {
-	height: 100%;
-	float: left;
+    height: 100%;
+    width: 50%;
+    float: left;
+    position: relative;
 }
-ui|box#treebox {
-	width: 233px;
-	position: relative; /* contain treecover */
+
+div#info.image .icon-preview {
+    display: none;
 }
-ui|box#infobox {
-	padding: 0 0 0 12px;
-}
+
 div#previewimage {
-	width: 220px;
-	height: 288px;
-	background: none transparent no-repeat 0 0;
-	background-position: center 0;
-	background-image: url("imageselector.png");
+    width: 100%;
+    height: 300px;
+    background-repeat: no-repeat;
+    background-position: center 50px;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
-div#info ui|labelbox {
-	float: none;
-	clear: both;
-	margin-top: 4px;
-	visibility: hidden;
+
+    div#previewimage svg {
+        width: 150px;
+        height: 150px;
+        margin: 65px;
+        float: none;
+        color: #999999;
+    }
+
+ui|datainput#treeselectionresult {
+    opacity: 1;
 }
-div#info.image ui|labelbox {
-	visibility: visible;
-}
-div#info div#labels {
-	padding-top: 4px;	
-}
+
+    ui|datainput#treeselectionresult ui|box {
+        border: none;
+    }
+
+        ui|datainput#treeselectionresult ui|box input {
+            text-align: center;
+            color: #343434;
+            padding: 10px 0 0 0 !important;
+            font-size: 12px;
+        }
