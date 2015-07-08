@@ -439,24 +439,17 @@ background-color: transparent;
 @namespace url("http://www.w3.org/1999/xhtml");
 @namespace url("http://www.w3.org/2000/svg");
 @namespace ui url("http://www.w3.org/1999/xhtml");
-/*
-ui|dialogpage,
-ui|wizardpage {
-padding: 15px 14px 14px 14px;
-}
-*/
 
 
 ui|pagebody {
 display: block;
 padding: 15px 14px 0 14px;
 }
-/*
-ui|dialogpagebody { 
-display: block;
-padding: 2px 2px 0 2px;
+
+ui|pagebody.pad-0 {
+padding: 0;
 }
-*/
+
 ui|dialogtoolbar {
 display: block;
 clear: both;
@@ -502,7 +495,6 @@ ui|dialogpage ui|dialogvignette svg {
 width: 32px;
 height: 32px;
 }
-@namespace url("http://www.w3.org/1999/xhtml");
 @namespace ui url("http://www.w3.org/1999/xhtml");
 
 ui|popupset {
@@ -523,7 +515,7 @@ min-width: 160px;
 visibility: hidden;
 /*-vendor-transition-property: opacity;
 -vendor-transition-duration: 0.15s;
--vendor-box-shadow:  0px 0px 5px 0px rgba(97,97,97,0.25);*/
+*/
 border-radius: 3px;
 display: none;
 -vendor-user-select: none;
@@ -532,9 +524,11 @@ display: none;
 ui|popupbody { /* NOT USED ON COMMON POPUPS! */
 display: block;
 padding: 10px 12px 10px 12px;
-background-color: $(color:menu);
+background-color: #FFF;
 color: $(color:menutext);
 -vendor-user-select: none;
+border: 1px solid #CCCCCC;
+-vendor-box-shadow:  0px 0px 5px 0px rgba(97,97,97,0.25);
 }
 
 /* OVERFLOW ................................................ */
@@ -543,6 +537,15 @@ ui|popup.overflow {
 overflow-y: scroll;
 height: 211px; /* move this to script when separators are supported */
 border-right: none;
+}
+
+ui|popup div.popupindicator {
+position: absolute;
+width: 0;
+height: 0;
+top: 0px;
+left: 0px;
+
 }
 @namespace ui url("http://www.w3.org/1999/xhtml");
 
@@ -1178,11 +1181,12 @@ padding: 0 0 12px 0;
 -vendor-user-select: none;
 }
 
+ui|page > ui|toolbar#toolbar,
 ui|editorpage > ui|toolbar {
 padding: 0px;
 border: 0px;
 }
-
+ui|page > ui|toolbar#toolbar ui|toolbarbody,
 ui|editorpage > ui|toolbar ui|toolbarbody {
 float: right;
 }
