@@ -223,14 +223,14 @@ namespace Composite.Data.DynamicTypes.Foundation
 
         public static List<DataTypeAssociationDescriptor> GetDataTypeAssociationDescriptors(Type interfaceType)
         {
-            List<DataTypeAssociationDescriptor> result = new List<DataTypeAssociationDescriptor>();
+            var result = new List<DataTypeAssociationDescriptor>();
 
-            List<DataAssociationAttribute> attributes = interfaceType.GetCustomAttributes(typeof(DataAssociationAttribute), false).OfType<DataAssociationAttribute>().ToList();
+            var attributes = interfaceType.GetCustomAttributes(typeof(DataAssociationAttribute), false).OfType<DataAssociationAttribute>().ToList();
 
             foreach (DataAssociationAttribute attribute in attributes)
             {
-                DataTypeAssociationDescriptor dataTypeAssociationDescriptor = new DataTypeAssociationDescriptor(attribute.AssociatedInterfaceType, attribute.ForeignKeyPropertyName, attribute.AssociationType);
-                if (result.Contains(dataTypeAssociationDescriptor) == false)
+                var dataTypeAssociationDescriptor = new DataTypeAssociationDescriptor(attribute.AssociatedInterfaceType, attribute.ForeignKeyPropertyName, attribute.AssociationType);
+                if (!result.Contains(dataTypeAssociationDescriptor))
                 {
                     result.Add(dataTypeAssociationDescriptor);
                 }
@@ -243,14 +243,14 @@ namespace Composite.Data.DynamicTypes.Foundation
 
         public static List<DataTypeAssociationDescriptor> GetDataTypeAssociationDescriptorsRecursively(Type interfaceType)
         {
-            List<DataTypeAssociationDescriptor> result = new List<DataTypeAssociationDescriptor>();
+            var result = new List<DataTypeAssociationDescriptor>();
 
             List<DataAssociationAttribute> attributes = interfaceType.GetCustomAttributesRecursively<DataAssociationAttribute>().ToList();
 
             foreach (DataAssociationAttribute attribute in attributes)
             {
-                DataTypeAssociationDescriptor dataTypeAssociationDescriptor = new DataTypeAssociationDescriptor(attribute.AssociatedInterfaceType, attribute.ForeignKeyPropertyName, attribute.AssociationType);
-                if (result.Contains(dataTypeAssociationDescriptor) == false)
+                var dataTypeAssociationDescriptor = new DataTypeAssociationDescriptor(attribute.AssociatedInterfaceType, attribute.ForeignKeyPropertyName, attribute.AssociationType);
+                if (!result.Contains(dataTypeAssociationDescriptor))
                 {
                     result.Add(dataTypeAssociationDescriptor);
                 }

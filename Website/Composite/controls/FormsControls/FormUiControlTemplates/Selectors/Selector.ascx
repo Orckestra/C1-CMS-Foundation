@@ -77,4 +77,4 @@
     }
 </script>
 
-<aspui:Selector ID="clientSelector" runat="server" />
+<aspui:Selector ID="clientSelector" runat="server" IsDisabled="<%# ReadOnly %>" />

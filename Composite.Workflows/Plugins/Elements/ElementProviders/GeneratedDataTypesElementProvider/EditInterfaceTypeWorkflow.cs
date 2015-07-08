@@ -12,7 +12,7 @@ using Composite.Data.ProcessControlled;
 using Composite.Data.Types;
 using Composite.Data.Validation.ClientValidationRules;
 using Composite.C1Console.Workflow;
-
+using Composite.Plugins.Elements.ElementProviders.Common;
 using Texts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_Plugins_GeneratedDataTypesElementProvider;
 
 namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider
@@ -26,6 +26,11 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             InitializeComponent();
         }
 
+        private static class BindingNames
+        {
+            public const string KeyFieldType = "KeyFieldType";
+            public const string KeyFieldTypeOptions = "KeyFieldTypeOptions";
+        }
 
         private DataTypeDescriptor GetDataTypeDescriptor()
         {
@@ -63,14 +68,19 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 {"HasPublishing", helper.IsPublishControlled},
                 {"EditProcessControlledAllowed", helper.IsEditProcessControlledAllowed},
                 {"OldTypeName", dataTypeDescriptor.Name},
-                {"OldTypeNamespace", dataTypeDescriptor.Namespace}
+                {"OldTypeNamespace", dataTypeDescriptor.Namespace},
+                {BindingNames.KeyFieldType, KeyFieldHelper.GetKeyFieldType(dataTypeDescriptor).ToString()},
+                {BindingNames.KeyFieldTypeOptions, KeyFieldHelper.GetKeyFieldOptions()}
             };
 
             this.UpdateBindings(bindings);
 
-            this.BindingsValidationRules.Add("TypeName", new List<ClientValidationRule> { new NotNullClientValidationRule() });
-            this.BindingsValidationRules.Add("TypeNamespace", new List<ClientValidationRule> { new NotNullClientValidationRule() });
-            this.BindingsValidationRules.Add("TypeTitle", new List<ClientValidationRule> { new NotNullClientValidationRule() });
+            this.BindingsValidationRules = new Dictionary<string, List<ClientValidationRule>>
+            {
+                {"TypeName", new List<ClientValidationRule> {new NotNullClientValidationRule()}},
+                {"TypeNamespace", new List<ClientValidationRule> {new NotNullClientValidationRule()}},
+                {"TypeTitle", new List<ClientValidationRule> {new NotNullClientValidationRule()}}
+            };
         }
 
 

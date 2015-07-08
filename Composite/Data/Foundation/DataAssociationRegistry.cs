@@ -7,7 +7,6 @@ using Composite.Core.Extensions;
 using Composite.Data.ProcessControlled;
 using Composite.C1Console.Events;
 using Composite.Core.Linq;
-using Composite.Core.Logging;
 using Composite.Core.Types;
 using Composite.Data.Types;
 using Composite.Core;
@@ -22,28 +21,28 @@ namespace Composite.Data.Foundation
     internal static class DataAssociationRegistry
     {
         // Associated type -> Association type
-        private static Dictionary<Type, List<Type>> _associatedTypes = null;
+        private static Dictionary<Type, List<Type>> _associatedTypes;
 
-        // Accociation type -> Associated type -> DataAssociationInfo
+        // Association type -> Associated type -> DataAssociationInfo
         // As long as only one association is allowed for a given type, this dictionary is over kill /MRJ
-        private static Dictionary<Type, Dictionary<Type, DataAssociationInfo>> _dataAccociationInfoes = null;
+        private static Dictionary<Type, Dictionary<Type, DataAssociationInfo>> _dataAssociations;
 
 
 
         static DataAssociationRegistry()
         {
-            GlobalEventSystemFacade.SubscribeToFlushEvent(OnFlushEvent);
+            GlobalEventSystemFacade.SubscribeToFlushEvent(args => Flush());
         }
 
 
 
         public static bool IsAssociationType(Type associationType)
         {
-            if (associationType == null) throw new ArgumentNullException("associationType");
+            Verify.ArgumentNotNull(associationType, "associationType");
 
             using (GlobalInitializerFacade.CoreIsInitializedScope)
             {
-                return _dataAccociationInfoes.ContainsKey(associationType);
+                return _dataAssociations.ContainsKey(associationType);
             }
         }
 
@@ -51,21 +50,18 @@ namespace Composite.Data.Foundation
 
         public static DataAssociationType GetAssociationType(Type associationType)
         {
-            if (associationType == null) throw new ArgumentNullException("associationType");
+            Verify.ArgumentNotNull(associationType, "associationType");
 
             using (GlobalInitializerFacade.CoreIsInitializedScope)
             {
                 Dictionary<Type, DataAssociationInfo> dataAssociationInfo;
 
-                if (_dataAccociationInfoes.TryGetValue(associationType, out dataAssociationInfo))
-                {
-                    return dataAssociationInfo.Single().Value.AssociationType;
-
-                }
-                else
+                if (!_dataAssociations.TryGetValue(associationType, out dataAssociationInfo))
                 {
                     return DataAssociationType.None;
                 }
+                    
+                return dataAssociationInfo.Single().Value.AssociationType;
             }
         }
 
@@ -73,28 +69,20 @@ namespace Composite.Data.Foundation
 
         public static IEnumerable<string> GetForeignKeyPropertyNames(this Type associationType, DataAssociationType dataAssociationType)
         {
-            if (associationType == null) throw new ArgumentNullException("associationType");
+            Verify.ArgumentNotNull(associationType, "associationType");
 
             using (GlobalInitializerFacade.CoreIsInitializedScope)
             {
                 Dictionary<Type, DataAssociationInfo> dataAssociationInfos;
 
-                if (_dataAccociationInfoes.TryGetValue(associationType, out dataAssociationInfos))
+                if (!_dataAssociations.TryGetValue(associationType, out dataAssociationInfos))
                 {
-                    IEnumerable<string> result =
-                        from info in dataAssociationInfos.Values
+                    return Enumerable.Empty<string>();
+                }
+
+                return from info in dataAssociationInfos.Values
                         where info.AssociationType == dataAssociationType
                         select info.ForeignKeyPropertyName;
-
-                    foreach (string name in result)
-                    {
-                        yield return name;
-                    }
-                }
-                else
-                {
-                    yield break;
-                }
             }
         }
 
@@ -105,19 +93,17 @@ namespace Composite.Data.Foundation
             if (associatedType == null) throw new ArgumentNullException("associatedType");
             if (dataAssociationType == DataAssociationType.None) throw new ArgumentException(string.Format("dataAssociationType may not be '{0}", DataAssociationType.None));
 
-            List<Type> associationTypes;
-
             using (GlobalInitializerFacade.CoreIsInitializedScope)
             {
-                if (_associatedTypes.TryGetValue(associatedType, out associationTypes) == false)
+                List<Type> associationTypes;
+                if (!_associatedTypes.TryGetValue(associatedType, out associationTypes))
                 {
                     return new List<Type>();
                 }
 
-
                 return
                     (from t1 in associationTypes
-                     from info in _dataAccociationInfoes[t1].Values
+                     from info in _dataAssociations[t1].Values
                      where info.AssociationType == dataAssociationType
                      select t1).ToList();
             }
@@ -127,20 +113,20 @@ namespace Composite.Data.Foundation
 
         public static List<Type> GetAssociatedTypes(Type associationType, DataAssociationType dataAssociationType)
         {
-            if (associationType == null) throw new ArgumentNullException("associationType");
+            Verify.ArgumentNotNull(associationType, "associationType");
             if (dataAssociationType == DataAssociationType.None) throw new ArgumentException(string.Format("dataAssociationType may not be '{0}", DataAssociationType.None));
 
             using (GlobalInitializerFacade.CoreIsInitializedScope)
             {
-                Dictionary<Type, DataAssociationInfo> dataAssociationInfos;
+                Dictionary<Type, DataAssociationInfo> dataAssociations;
 
-                if (_dataAccociationInfoes.TryGetValue(associationType, out dataAssociationInfos) == false)
+                if (!_dataAssociations.TryGetValue(associationType, out dataAssociations))
                 {
                     throw new InvalidOperationException(string.Format("Type type '{0}' is not an association type", associationType));
                 }
 
                 return
-                    (from info in dataAssociationInfos
+                    (from info in dataAssociations
                      where info.Value.AssociationType == dataAssociationType
                      select info.Key).ToList();
             }
@@ -157,10 +143,10 @@ namespace Composite.Data.Foundation
             {
                 Dictionary<Type, DataAssociationInfo> dataAssociationInfos;
 
-                if (_dataAccociationInfoes.TryGetValue(associationType, out dataAssociationInfos) == false) throw new ArgumentException(string.Format("The type '{0}' is not associated to any types", associationType));
+                if (!_dataAssociations.TryGetValue(associationType, out dataAssociationInfos)) throw new ArgumentException(string.Format("The type '{0}' is not associated to any types", associationType));
 
                 DataAssociationInfo dataAssociationInfo;
-                if (dataAssociationInfos.TryGetValue(associatedType, out dataAssociationInfo) == false) throw new ArgumentException(string.Format("The type '{0}' is not associated to the type '{1}'", associationType, associatedType));
+                if (!dataAssociationInfos.TryGetValue(associatedType, out dataAssociationInfo)) throw new ArgumentException(string.Format("The type '{0}' is not associated to the type '{1}'", associationType, associatedType));
 
                 return dataAssociationInfo.ForeignKeyPropertyName;
             }
@@ -177,10 +163,10 @@ namespace Composite.Data.Foundation
             {
                 Dictionary<Type, DataAssociationInfo> dataAssociationInfos;
 
-                if (_dataAccociationInfoes.TryGetValue(associationType, out dataAssociationInfos) == false) throw new ArgumentException(string.Format("The type '{0}' is not associated to any types", associationType));
+                if (!_dataAssociations.TryGetValue(associationType, out dataAssociationInfos)) throw new ArgumentException(string.Format("The type '{0}' is not associated to any types", associationType));
 
                 DataAssociationInfo dataAssociationInfo;
-                if (dataAssociationInfos.TryGetValue(associatedType, out dataAssociationInfo) == false) throw new ArgumentException(string.Format("The type '{0}' is not associated to the type '{1}'", associationType, associatedType));
+                if (!dataAssociationInfos.TryGetValue(associatedType, out dataAssociationInfo)) throw new ArgumentException(string.Format("The type '{0}' is not associated to the type '{1}'", associationType, associatedType));
 
                 return dataAssociationInfo.ForeignKeyPropertyInfo;
             }
@@ -196,7 +182,7 @@ namespace Composite.Data.Foundation
             }
 
             _associatedTypes = new Dictionary<Type, List<Type>>();
-            _dataAccociationInfoes = new Dictionary<Type, Dictionary<Type, DataAssociationInfo>>();
+            _dataAssociations = new Dictionary<Type, Dictionary<Type, DataAssociationInfo>>();
 
             foreach (Type type in DataProviderRegistry.AllInterfaces)
             {
@@ -215,7 +201,7 @@ namespace Composite.Data.Foundation
                 return;
             }
 
-            Dictionary<Type, DataAssociationInfo> dataAssociationInfos = new Dictionary<Type, DataAssociationInfo>();
+            var dataAssociationInfos = new Dictionary<Type, DataAssociationInfo>();
 
             foreach (DataAssociationAttribute attribute in attributes)
             {
@@ -247,13 +233,13 @@ namespace Composite.Data.Foundation
 
                 
 
-                DataAssociationInfo dataAssociationInfo = new DataAssociationInfo
-                                                              {
-                                                                  AssociatedInterfaceType = associatedInterface,
-                                                                  ForeignKeyPropertyName = attribute.ForeignKeyPropertyName,
-                                                                  ForeignKeyPropertyInfo = propertyInfo,
-                                                                  AssociationType = attribute.AssociationType,
-                                                              };
+                var dataAssociationInfo = new DataAssociationInfo
+                {
+                    AssociatedInterfaceType = associatedInterface,
+                    ForeignKeyPropertyName = attribute.ForeignKeyPropertyName,
+                    ForeignKeyPropertyInfo = propertyInfo,
+                    AssociationType = attribute.AssociationType,
+                };
 
                 Verify.IsFalse(dataAssociationInfos.ContainsKey(associatedInterface), "Failed to register interface '{0}'. Data association already exist, type: '{1}'".FormatWith(interfaceType, associatedInterface));
                 dataAssociationInfos.Add(associatedInterface, dataAssociationInfo);
@@ -264,7 +250,7 @@ namespace Composite.Data.Foundation
                 }
             }
 
-            _dataAccociationInfoes.Add(interfaceType, dataAssociationInfos);
+            _dataAssociations.Add(interfaceType, dataAssociationInfos);
         }
 
 
@@ -299,14 +285,7 @@ namespace Composite.Data.Foundation
         private static void Flush()
         {
             _associatedTypes = null;
-            _dataAccociationInfoes = null;
-        }
-
-
-
-        private static void OnFlushEvent(FlushEventArgs args)
-        {
-            Flush();
+            _dataAssociations = null;
         }
 
 

@@ -3,65 +3,74 @@ using System.Linq;
 using System.Collections.Generic;
 using Composite.C1Console.Actions;
 using Composite.C1Console.Events;
+using Composite.Core;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
 using Composite.Data.GeneratedTypes;
-using Composite.Core.Logging;
-using Composite.C1Console.Security;
 using Composite.Core.Types;
 using Composite.C1Console.Users;
 using Composite.Data.Validation.ClientValidationRules;
 using Composite.C1Console.Workflow;
 using Composite.Data.ExtendedDataType.Debug;
-
+using Composite.Plugins.Elements.ElementProviders.Common;
+using Texts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_Plugins_GeneratedDataTypesElementProvider;
 
 namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider
 {
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
     public sealed partial class AddNewAggregationTypeWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
-        private string NewTypeNameBindingName { get { return "NewTypeName"; } }
-        private string NewTypeNamespaceBindingName { get { return "NewTypeNamespace"; } }
-        private string NewTypeTitleBindingName { get { return "NewTypeTitle"; } }
-        private string DataFieldDescriptorsBindingName { get { return "DataFieldDescriptors"; } }
-        private string LabelFieldNameBindingName { get { return "LabelFieldName"; } }
-
-        private string HasCachingBindingName { get { return "HasCaching"; } }
-        private string HasPublishingBindingName { get { return "HasPublishing"; } }
-        private string HasLocalizationBindingName { get { return "HasLocalization"; } }
-        
-
         public AddNewAggregationTypeWorkflow()
         {
             InitializeComponent();
         }
 
+        private static class BindingNames
+        {
+            public const string NewTypeName = "NewTypeName";
+            public const string NewTypeNamespace = "NewTypeNamespace";
+            public const string NewTypeTitle = "NewTypeTitle";
+            public const string DataFieldDescriptors = "DataFieldDescriptors";
+            public const string LabelFieldName = "LabelFieldName";
+            public const string HasCaching = "HasCaching";
+            public const string HasPublishing = "HasPublishing";
+            public const string HasLocalization = "HasLocalization"; 
+            public const string KeyFieldType = "KeyFieldType";
+            public const string KeyFieldTypeOptions = "KeyFieldTypeOptions";
+        }
 
 
         private void initializeStateCodeActivity_Initialize_ExecuteCode(object sender, EventArgs e)
         {
-            this.Bindings.Add(this.NewTypeNameBindingName, "");
-            this.Bindings.Add(this.NewTypeNamespaceBindingName, UserSettings.LastSpecifiedNamespace);
-            this.Bindings.Add(this.NewTypeTitleBindingName, "");
-            this.Bindings.Add(this.DataFieldDescriptorsBindingName, new List<DataFieldDescriptor>());
-            this.Bindings.Add(this.LabelFieldNameBindingName, "");
-
-            this.Bindings.Add(this.HasCachingBindingName, false);
-            this.Bindings.Add(this.HasPublishingBindingName, false);
-            this.Bindings.Add(this.HasLocalizationBindingName, false);
-
-            this.BindingsValidationRules.Add(this.NewTypeNameBindingName, new List<ClientValidationRule> { new NotNullClientValidationRule() });
-            this.BindingsValidationRules.Add(this.NewTypeNamespaceBindingName, new List<ClientValidationRule> { new NotNullClientValidationRule() });
-            this.BindingsValidationRules.Add(this.NewTypeTitleBindingName, new List<ClientValidationRule> { new NotNullClientValidationRule() });
-
-            if ((RuntimeInformation.IsDebugBuild) && (DynamicTempTypeCreator.UseTempTypeCreator))
+            this.Bindings = new Dictionary<string, object>
             {
-                DynamicTempTypeCreator dynamicTempTypeCreator = new DynamicTempTypeCreator("PageFolder");
+                {BindingNames.NewTypeName, ""},
+                {BindingNames.NewTypeNamespace, UserSettings.LastSpecifiedNamespace},
+                {BindingNames.NewTypeTitle, ""},
+                {BindingNames.DataFieldDescriptors, new List<DataFieldDescriptor>()},
+                {BindingNames.LabelFieldName, ""},
+                {BindingNames.HasCaching, false},
+                {BindingNames.HasPublishing, false},
+                {BindingNames.HasLocalization, false},
+                {BindingNames.KeyFieldType, GeneratedTypesHelper.KeyFieldType.Guid.ToString()},
+                {BindingNames.KeyFieldTypeOptions, KeyFieldHelper.GetKeyFieldOptions()}
+            };
 
-                this.UpdateBinding(this.NewTypeNameBindingName, dynamicTempTypeCreator.TypeName);
-                this.UpdateBinding(this.NewTypeTitleBindingName, dynamicTempTypeCreator.TypeTitle);
-                this.UpdateBinding(this.DataFieldDescriptorsBindingName, dynamicTempTypeCreator.DataFieldDescriptors);
-                this.UpdateBinding(this.LabelFieldNameBindingName, dynamicTempTypeCreator.DataFieldDescriptors.First().Name);
+            this.BindingsValidationRules = new Dictionary<string, List<ClientValidationRule>>
+            {
+                {BindingNames.NewTypeName, new List<ClientValidationRule> {new NotNullClientValidationRule()}},
+                {BindingNames.NewTypeNamespace, new List<ClientValidationRule> {new NotNullClientValidationRule()}},
+                {BindingNames.NewTypeTitle, new List<ClientValidationRule> {new NotNullClientValidationRule()}}
+            };
+
+            if (RuntimeInformation.IsDebugBuild && DynamicTempTypeCreator.UseTempTypeCreator)
+            {
+                var dynamicTempTypeCreator = new DynamicTempTypeCreator("PageFolder");
+
+                this.UpdateBinding(BindingNames.NewTypeName, dynamicTempTypeCreator.TypeName);
+                this.UpdateBinding(BindingNames.NewTypeTitle, dynamicTempTypeCreator.TypeTitle);
+                this.UpdateBinding(BindingNames.DataFieldDescriptors, dynamicTempTypeCreator.DataFieldDescriptors);
+                this.UpdateBinding(BindingNames.LabelFieldName, dynamicTempTypeCreator.DataFieldDescriptors.First().Name);
             }
         }
 
@@ -71,16 +80,17 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
         {
             try
             {
-                string typeName = this.GetBinding<string>(this.NewTypeNameBindingName);
-                string typeNamespace = this.GetBinding<string>(this.NewTypeNamespaceBindingName);
-                string typeTitle = this.GetBinding<string>(this.NewTypeTitleBindingName);
-                bool hasCaching = this.GetBinding<bool>(this.HasCachingBindingName);
-                bool hasPublishing = this.GetBinding<bool>(this.HasPublishingBindingName);
-                bool hasLocalization = this.GetBinding<bool>(this.HasLocalizationBindingName);
-                string labelFieldName = this.GetBinding<string>(this.LabelFieldNameBindingName);
-                List<DataFieldDescriptor> dataFieldDescriptors = this.GetBinding<List<DataFieldDescriptor>>(this.DataFieldDescriptorsBindingName);
+                string typeName = this.GetBinding<string>(BindingNames.NewTypeName);
+                string typeNamespace = this.GetBinding<string>(BindingNames.NewTypeNamespace);
+                string typeTitle = this.GetBinding<string>(BindingNames.NewTypeTitle);
+                bool hasCaching = this.GetBinding<bool>(BindingNames.HasCaching);
+                bool hasPublishing = this.GetBinding<bool>(BindingNames.HasPublishing);
+                bool hasLocalization = this.GetBinding<bool>(BindingNames.HasLocalization);
+                string labelFieldName = this.GetBinding<string>(BindingNames.LabelFieldName);
+                var dataFieldDescriptors = this.GetBinding<List<DataFieldDescriptor>>(BindingNames.DataFieldDescriptors);
+                var keyFieldType = KeyFieldHelper.ParseKeyFieldType(GetBinding<string>(BindingNames.KeyFieldType));
 
-                GeneratedTypesHelper helper = new GeneratedTypesHelper();
+                var helper = new GeneratedTypesHelper();
                 Type interfaceType = null;
                 if (this.BindingExist("InterfaceType"))
                 {
@@ -91,32 +101,33 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 else
                 {
                     helper = new GeneratedTypesHelper();
+                    helper.SetKeyFieldType(keyFieldType);
                 }
 
                 string errorMessage;
-                if (helper.ValidateNewTypeName(typeName, out errorMessage) == false)
+                if (!helper.ValidateNewTypeName(typeName, out errorMessage))
                 {
                     this.ShowFieldMessage("NewTypeName", errorMessage);
                     return;
                 }
 
-                if (helper.ValidateNewTypeNamespace(typeNamespace, out errorMessage) == false)
+                if (!helper.ValidateNewTypeNamespace(typeNamespace, out errorMessage))
                 {
                     this.ShowFieldMessage("NewTypeNamespace", errorMessage);
                     return;
                 }
 
-                if (helper.ValidateNewTypeFullName(typeName, typeNamespace, out errorMessage) == false)
+                if (!helper.ValidateNewTypeFullName(typeName, typeNamespace, out errorMessage))
                 {
                     this.ShowFieldMessage("NewTypeName", errorMessage);
                     return;
                 }
 
-                if (helper.ValidateNewFieldDescriptors(dataFieldDescriptors, out errorMessage) == false)
+                if (!helper.ValidateNewFieldDescriptors(dataFieldDescriptors, out errorMessage))
                 {
                     this.ShowMessage(
                             DialogType.Warning,
-                            "${Composite.Plugins.GeneratedDataTypesElementProvider, AddNewAggregationTypeWorkflow.ErrorTitle}",
+                            Texts.AddNewAggregationTypeWorkflow_ErrorTitle,
                             errorMessage
                         );
                     return;
@@ -133,7 +144,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 helper.SetNewTypeTitle(typeTitle);
                 helper.SetNewFieldDescriptors(dataFieldDescriptors, labelFieldName);
 
-                if (this.BindingExist("InterfaceType") == false)
+                if (!this.BindingExist("InterfaceType"))
                 {
                     Type targetType = TypeManager.GetType(this.Payload);
 
@@ -146,11 +157,11 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                     originalTypeDataExists = DataFacade.HasDataInAnyScope(interfaceType);
                 }
 
-                if (helper.TryValidateUpdate(originalTypeDataExists, out errorMessage) == false)
+                if (!helper.TryValidateUpdate(originalTypeDataExists, out errorMessage))
                 {
                     this.ShowMessage(
                             DialogType.Warning,
-                            "${Composite.Plugins.GeneratedDataTypesElementProvider, AddNewAggregationTypeWorkflow.ErrorTitle}",
+                            Texts.AddNewAggregationTypeWorkflow_ErrorTitle,
                             errorMessage
                         );
                     return;
@@ -165,7 +176,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 else
                 {
                     string serializedTypeName = TypeManager.SerializeType(helper.InterfaceType);
-                    EntityToken entityToken = new GeneratedDataTypesElementProviderTypeEntityToken(
+                    var entityToken = new GeneratedDataTypesElementProviderTypeEntityToken(
                         serializedTypeName,
                         this.EntityToken.Source,
                         GeneratedDataTypesElementProviderRootEntityToken.PageDataFolderTypeFolderId);
@@ -184,7 +195,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             }
             catch (Exception ex)
             {
-                LoggingService.LogCritical("AddNewAggregationTypeWorkflow", ex);
+                Log.LogCritical("AddNewAggregationTypeWorkflow", ex);
 
                 this.ShowMessage(DialogType.Error, ex.Message, ex.Message);
             }

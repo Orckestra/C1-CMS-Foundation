@@ -80,6 +80,9 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
         /// <exclude />
         public bool CompactMode { get; set; }
 
+        /// <exclude />
+        public bool ReadOnly { get; set; }
+
 
         internal string OptionsKeyField { get; set; }
         internal string OptionsLabelField { get; set; }
@@ -406,6 +409,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
             _userControl.OptionsKeyField = this.OptionsKeyField;
             _userControl.BindingType = this.BindingType;
             _userControl.Required = this.Required;
+            _userControl.ReadOnly = this.ReadOnly;
             _userControl.MultiSelector = false;
 
             return _userControl;

@@ -12,7 +12,7 @@ using Composite.Core.Types;
 using Composite.Data.Types;
 using Composite.Data.Validation.ClientValidationRules;
 using Composite.C1Console.Workflow;
-
+using Composite.Plugins.Elements.ElementProviders.Common;
 using Texts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_Plugins_GeneratedDataTypesElementProvider;
 
 namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider
@@ -21,16 +21,23 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
     public sealed partial class EditAggregationTypeWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
-        private string NewTypeNameBindingName { get { return "NewTypeName"; } }
-        private string NewTypeNamespaceBindingName { get { return "NewTypeNamespace"; } }
-        private string NewTypeTitleBindingName { get { return "NewTypeTitle"; } }
-        private string DataFieldDescriptorsBindingName { get { return "DataFieldDescriptors"; } }
-        private string LabelFieldNameBindingName { get { return "LabelFieldName"; } }
+        private static class BindingNames
+        {
+            public const string TypeName = "TypeName";
+            public const string TypeNamespace = "TypeNamespace";
+            public const string TypeTitle = "TypeTitle";
+            public const string DataFieldDescriptors = "DataFieldDescriptors";
+            public const string LabelFieldName = "LabelFieldName";
+            public const string HasCaching = "HasCaching";
+            public const string HasPublishing = "HasPublishing";
 
-        private string HasCachingBindingName { get { return "HasCaching"; } }
-        private string HasPublishingBindingName { get { return "HasPublishing"; } }
-
-
+            public const string OldTypeName = "OldTypeName";
+            public const string OldTypeNamespace = "OldTypeNamespace";
+            
+            public const string KeyFieldType = "KeyFieldType";
+            public const string KeyFieldTypeOptions = "KeyFieldTypeOptions";
+        }
+        
         public EditAggregationTypeWorkflow()
         {
             InitializeComponent();
@@ -54,25 +61,31 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             Type type = TypeManager.GetType(this.Payload);
 
             DataTypeDescriptor dataTypeDescriptor = GetDataTypeDescriptor();
-            GeneratedTypesHelper helper = new GeneratedTypesHelper(dataTypeDescriptor);
+            var helper = new GeneratedTypesHelper(dataTypeDescriptor);
+
             List<DataFieldDescriptor> fieldDescriptors = helper.EditableOwnDataFields.ToList();
 
-            this.Bindings.Add("TypeName", dataTypeDescriptor.Name);
-            this.Bindings.Add("TypeNamespace", dataTypeDescriptor.Namespace);
-            this.Bindings.Add("TypeTitle", dataTypeDescriptor.Title);
-            this.Bindings.Add("LabelFieldName", dataTypeDescriptor.LabelFieldName);
+            this.Bindings = new Dictionary<string, object>
+            {
+                {BindingNames.TypeName, dataTypeDescriptor.Name},
+                {BindingNames.TypeNamespace, dataTypeDescriptor.Namespace},
+                {BindingNames.TypeTitle, dataTypeDescriptor.Title},
+                {BindingNames.LabelFieldName, dataTypeDescriptor.LabelFieldName},
+                {BindingNames.HasCaching, helper.IsCachable},
+                {BindingNames.HasPublishing, helper.IsPublishControlled},
+                {BindingNames.DataFieldDescriptors, fieldDescriptors},
+                {BindingNames.OldTypeName, dataTypeDescriptor.Name},
+                {BindingNames.OldTypeNamespace, dataTypeDescriptor.Namespace},
+                {BindingNames.KeyFieldType, KeyFieldHelper.GetKeyFieldType(dataTypeDescriptor).ToString()},
+                {BindingNames.KeyFieldTypeOptions, KeyFieldHelper.GetKeyFieldOptions()}
+            };
 
-            this.Bindings.Add("HasCaching", helper.IsCachable);
-            this.Bindings.Add("HasPublishing", helper.IsPublishControlled);
-
-            this.Bindings.Add("DataFieldDescriptors", fieldDescriptors);
-
-            this.Bindings.Add("OldTypeName", dataTypeDescriptor.Name);
-            this.Bindings.Add("OldTypeNamespace", dataTypeDescriptor.Namespace);
-
-            this.BindingsValidationRules.Add(this.NewTypeNameBindingName, new List<ClientValidationRule> { new NotNullClientValidationRule() });
-            this.BindingsValidationRules.Add(this.NewTypeNamespaceBindingName, new List<ClientValidationRule> { new NotNullClientValidationRule() });
-            this.BindingsValidationRules.Add(this.NewTypeTitleBindingName, new List<ClientValidationRule> { new NotNullClientValidationRule() });           
+            this.BindingsValidationRules = new Dictionary<string, List<ClientValidationRule>>
+            {
+                {BindingNames.TypeName, new List<ClientValidationRule> {new NotNullClientValidationRule()}},
+                {BindingNames.TypeNamespace, new List<ClientValidationRule> {new NotNullClientValidationRule()}},
+                {BindingNames.TypeTitle, new List<ClientValidationRule> {new NotNullClientValidationRule()}}
+            };
         }
 
 
@@ -90,32 +103,32 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             {
                 Type oldType = GetOldTypeFromBindings();
 
-                string typeName = this.GetBinding<string>("TypeName");
-                string typeNamespace = this.GetBinding<string>("TypeNamespace");
-                string typeTitle = this.GetBinding<string>("TypeTitle");
-                bool hasCaching = this.GetBinding<bool>("HasCaching");
-                bool hasPublishing = this.GetBinding<bool>("HasPublishing");
-                string labelFieldName = this.GetBinding<string>("LabelFieldName");
-                List<DataFieldDescriptor> dataFieldDescriptors = this.GetBinding<List<DataFieldDescriptor>>("DataFieldDescriptors");
+                string typeName = this.GetBinding<string>(BindingNames.TypeName);
+                string typeNamespace = this.GetBinding<string>(BindingNames.TypeNamespace);
+                string typeTitle = this.GetBinding<string>(BindingNames.TypeTitle);
+                bool hasCaching = this.GetBinding<bool>(BindingNames.HasCaching);
+                bool hasPublishing = this.GetBinding<bool>(BindingNames.HasPublishing);
+                string labelFieldName = this.GetBinding<string>(BindingNames.LabelFieldName);
+                var dataFieldDescriptors = this.GetBinding<List<DataFieldDescriptor>>(BindingNames.DataFieldDescriptors);
 
                 var helper = new GeneratedTypesHelper(oldType);
 
                 string errorMessage;
                 if (!helper.ValidateNewTypeName(typeName, out errorMessage))
                 {
-                    this.ShowFieldMessage("NewTypeName", errorMessage);
+                    this.ShowFieldMessage(BindingNames.TypeName, errorMessage);
                     return;
                 }
 
                 if (!helper.ValidateNewTypeNamespace(typeNamespace, out errorMessage))
                 {
-                    this.ShowFieldMessage("NewTypeNamespace", errorMessage);
+                    this.ShowFieldMessage(BindingNames.TypeNamespace, errorMessage);
                     return;
                 }
 
                 if (!helper.ValidateNewTypeFullName(typeName, typeNamespace, out errorMessage))
                 {
-                    this.ShowFieldMessage("NewTypeName", errorMessage);
+                    this.ShowFieldMessage(BindingNames.TypeName, errorMessage);
                     return;
                 }
 
@@ -156,8 +169,8 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
                 helper.CreateType(originalTypeDataExists);
 
-                UpdateBinding("OldTypeName", typeName);
-                UpdateBinding("OldTypeNamespace", typeNamespace);
+                UpdateBinding(BindingNames.OldTypeName, typeName);
+                UpdateBinding(BindingNames.OldTypeNamespace, typeNamespace);
 
                 SetSaveStatus(true);
 

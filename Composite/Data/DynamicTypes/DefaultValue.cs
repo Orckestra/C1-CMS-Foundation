@@ -457,8 +457,12 @@ namespace Composite.Data.DynamicTypes
                     return 0;
 
                 case DefaultValueType.String:
-                    if (this.Value == null && compareTo.Value == null) return 0;
-                    return string.Compare(this.Value.ToString(), compareTo.Value.ToString());
+                    if (this.Value == null)
+                    {
+                        return compareTo.Value == null ? 0 : -1;
+                    }
+
+                    return string.Compare(this.Value.ToString(), compareTo.Value.ToString(), StringComparison.Ordinal);
 
                 case DefaultValueType.Integer:
                     return ((int)this.Value).CompareTo((int)compareTo.Value);
@@ -482,6 +486,14 @@ namespace Composite.Data.DynamicTypes
                     throw new NotImplementedException("Unable to compare DefaultValue objects - unknown case of DefaultValueType");
             }
         }
+
+
+        /// <exclude />
+        public override bool Equals(object obj)
+        {
+            return obj is DefaultValue && CompareTo(obj) == 0;
+        }
+
 
         [Serializable]
         private class RandomStringSettings

@@ -13,7 +13,7 @@ using Composite.Core.Types;
 using Composite.C1Console.Users;
 using Composite.Data.Validation.ClientValidationRules;
 using Composite.C1Console.Workflow;
-
+using Composite.Plugins.Elements.ElementProviders.Common;
 using Texts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_Plugins_GeneratedDataTypesElementProvider;
 
 namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider
@@ -34,14 +34,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
         private void initialStateCodeActivity_ExecuteCode(object sender, EventArgs e)
         {
-            var keyFieldTypeOptions = new Dictionary<string, string>
-            {
-                {GeneratedTypesHelper.KeyFieldType.Guid.ToString(), Texts.EditorCommon_KeyFieldType_Guid},
-                {GeneratedTypesHelper.KeyFieldType.RandomString4.ToString(), Texts.EditorCommon_KeyFieldType_RandomString4},
-                {GeneratedTypesHelper.KeyFieldType.RandomString8.ToString(), Texts.EditorCommon_KeyFieldType_RandomString8}
-            };
-
-            var bindings = new Dictionary<string, object>
+            this.Bindings = new Dictionary<string, object>
             {
                 {"ViewLabel", Texts.AddNewInterfaceTypeStep1_DocumentTitle},
                 {"NewTypeName", ""},
@@ -53,14 +46,15 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 {"HasLocalization", false},
                 {"LabelFieldName", ""},
                 {BindingNames.KeyFieldType, GeneratedTypesHelper.KeyFieldType.Guid.ToString()},
-                {BindingNames.KeyFieldTypeOptions, keyFieldTypeOptions}
+                {BindingNames.KeyFieldTypeOptions, KeyFieldHelper.GetKeyFieldOptions()}
             };
 
-            this.Bindings = bindings;
-
-            this.BindingsValidationRules.Add("NewTypeName", new List<ClientValidationRule> { new NotNullClientValidationRule() });
-            this.BindingsValidationRules.Add("NewTypeNamespace", new List<ClientValidationRule> { new NotNullClientValidationRule() });
-            this.BindingsValidationRules.Add("NewTypeTitle", new List<ClientValidationRule> { new NotNullClientValidationRule() });
+            this.BindingsValidationRules = new Dictionary<string, List<ClientValidationRule>>
+            {
+                {"NewTypeName", new List<ClientValidationRule> {new NotNullClientValidationRule()}},
+                {"NewTypeNamespace", new List<ClientValidationRule> {new NotNullClientValidationRule()}},
+                {"NewTypeTitle", new List<ClientValidationRule> {new NotNullClientValidationRule()}}
+            };
 
             if (RuntimeInformation.IsDebugBuild && DynamicTempTypeCreator.UseTempTypeCreator)
             {
@@ -89,8 +83,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 string labelFieldName = this.GetBinding<string>("LabelFieldName");
                 var dataFieldDescriptors = this.GetBinding<List<DataFieldDescriptor>>("DataFieldDescriptors");
 
-                var keyFieldType = (GeneratedTypesHelper.KeyFieldType) Enum.Parse(typeof (GeneratedTypesHelper.KeyFieldType),
-                                                                                  GetBinding<string>(BindingNames.KeyFieldType));
+                var keyFieldType = KeyFieldHelper.ParseKeyFieldType(GetBinding<string>(BindingNames.KeyFieldType));
 
 
                 GeneratedTypesHelper helper;

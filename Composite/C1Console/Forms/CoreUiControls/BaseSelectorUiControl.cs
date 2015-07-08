@@ -15,24 +15,27 @@ namespace Composite.C1Console.Forms.CoreUiControls
             this.Required = true;
         }
 
-        [RequiredValue()]
-        [FormsProperty()]
+        [RequiredValue]
+        [FormsProperty]
         public IEnumerable Options { get; set; }
 
-        [FormsProperty()]
+        [FormsProperty]
         public string OptionsKeyField { get; set; }
 
-        [FormsProperty()]
+        [FormsProperty]
         public string OptionsLabelField { get; set; }
 
-        [FormsProperty()]
+        [FormsProperty]
         public SelectorBindingType BindingType { get; set; }
 
-        [FormsProperty()]
+        [FormsProperty]
         public bool Required { get; set; }
 
-        [BindableProperty()]
-        [FormsProperty()]
+        [FormsProperty]
+        public bool ReadOnly { get; set; }
+
+        [BindableProperty]
+        [FormsProperty]
         public EventHandler SelectedIndexChangedEventHandler { get; set; }
     }
 

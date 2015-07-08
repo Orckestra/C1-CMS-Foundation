@@ -27,11 +27,13 @@ namespace Composite.Data.GeneratedTypes
         public enum KeyFieldType
         {
             /// <exclude />
-            Guid = 0,
+            Undefined = 0,
             /// <exclude />
-            RandomString4 = 1,
+            Guid = 1,
             /// <exclude />
-            RandomString8 = 2
+            RandomString4 = 2,
+            /// <exclude />
+            RandomString8 = 3
         }
 
 
@@ -503,8 +505,8 @@ namespace Composite.Data.GeneratedTypes
         public void SetForeignKeyReference(DataTypeDescriptor targetDataTypeDescriptor, DataAssociationType dataAssociationType)
         {
             if (dataAssociationType == DataAssociationType.None) throw new ArgumentException("dataAssociationType");
-            if (dataAssociationType == DataAssociationType.Aggregation && _pageMetaDataDescriptionForeignKeyDataFieldDescriptor != null) throw new InvalidOperationException("The type already have a foreign key reference");
-            if (dataAssociationType == DataAssociationType.Composition && _pageMetaDataDescriptionForeignKeyDataFieldDescriptor != null) throw new InvalidOperationException("The type already have a foreign key reference");
+            if (dataAssociationType == DataAssociationType.Aggregation && _pageMetaDataDescriptionForeignKeyDataFieldDescriptor != null) throw new InvalidOperationException("The type already has a foreign key reference");
+            if (dataAssociationType == DataAssociationType.Composition && _pageMetaDataDescriptionForeignKeyDataFieldDescriptor != null) throw new InvalidOperationException("The type already has a foreign key reference");
 
 
             Type targetType = TypeManager.GetType(targetDataTypeDescriptor.TypeManagerTypeName);
@@ -775,19 +777,20 @@ namespace Composite.Data.GeneratedTypes
                 dataTypeDescriptor.AddSuperInterface(typeof(ILocalizedControlled));
             }
 
+            bool addKeyField = true;
             if (_dataAssociationType == DataAssociationType.Aggregation)
             {
-                dataTypeDescriptor.AddSuperInterface(typeof(IPageData));
-                dataTypeDescriptor.AddSuperInterface(typeof(IPageRelatedData));
-                dataTypeDescriptor.AddSuperInterface(typeof(IPageFolderData));
+                dataTypeDescriptor.AddSuperInterface(typeof(IPageDataFolder));
             }
             else if (_dataAssociationType == DataAssociationType.Composition)
             {
+                addKeyField = false;
                 dataTypeDescriptor.AddSuperInterface(typeof(IPageData));
                 dataTypeDescriptor.AddSuperInterface(typeof(IPageRelatedData));
                 dataTypeDescriptor.AddSuperInterface(typeof(IPageMetaData));
             }
-            else
+
+            if (addKeyField)
             {
                 var idDataFieldDescriptor = BuildKeyFieldDescriptor();
 

@@ -31,6 +31,9 @@ namespace Composite.Core.WebClient.UiControlLib
         /// <exclude />
         public bool SimpleSelectorMode { get; set; }
 
+        /// <exclude />
+        public bool IsDisabled { get; set; }
+
 
         /// <exclude />
         protected override HtmlTextWriterTag TagKey
@@ -43,7 +46,6 @@ namespace Composite.Core.WebClient.UiControlLib
         protected override string TagName
         {
             get { return this.SimpleSelectorMode ? "ui:simpleselector" : "ui:selector"; }
-            
         }
 
 
@@ -65,6 +67,11 @@ namespace Composite.Core.WebClient.UiControlLib
                 string requiredLabel = this.SelectionRequiredLabel;
                 if (string.IsNullOrEmpty(requiredLabel)) requiredLabel = StringResourceSystemFacade.GetString("Composite.Management", "AspNetUiControl.Selector.SelectValueLabel");
                 writer.AddAttribute("label", requiredLabel);
+            }
+
+            if (this.IsDisabled)
+            {
+                writer.AddAttribute("isdisabled", "true");
             }
 
             this.AddClientAttributes(writer);
