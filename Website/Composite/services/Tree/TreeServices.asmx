@@ -198,6 +198,32 @@ namespace Composite.Services
         }
 
 
+        [WebMethod]
+        public string GetBrowserUrlByEntityToken(string serializedEntityToken)
+        {
+            var entityToken = EntityTokenSerializer.Deserialize(serializedEntityToken);
+
+            if (entityToken is DataEntityToken)
+            {
+                var data = (entityToken as DataEntityToken).Data;
+
+                if (data != null)
+                {
+                    var urlData = DataUrls.TryGetPageUrlData(data);
+                    if (urlData != null)
+                    {
+                        var url = PageUrls.BuildUrl(urlData);
+                        if (url != null)
+                        {
+                            return url;
+                        }
+                    }
+                }
+            }
+
+            return null;
+        }
+        
 
         [WebMethod]
         public List<ClientLabeledProperty> GetProperties(ClientElement clientElement)
@@ -302,25 +328,25 @@ namespace Composite.Services
 		[WebMethod]
 		public List<KeyValuePair> GetDefaultEntityTokens(string dummy)
 		{
-			List<KeyValuePair> tokens = new List<KeyValuePair>();
-			using (var connection = new DataConnection())
+			var tokens = new List<KeyValuePair>();
+			using (new DataConnection())
 			{
-				var homepage = PageServices.GetChildren(Guid.Empty).FirstOrDefault();
-				if (homepage != null)
-				{
-					tokens.Add(
-						new KeyValuePair(
-							EntityTokenSerializer.Serialize(AttachingPoint.ContentPerspective.EntityToken, true),
-							EntityTokenSerializer.Serialize(homepage.GetDataEntityToken(), true)
-							)
-						);
-				}
-				tokens.Add(
-					new KeyValuePair(
-						EntityTokenSerializer.Serialize(AttachingPoint.SystemPerspective.EntityToken, true),
-						EntityTokenSerializer.Serialize(new Composite.Plugins.Elements.ElementProviders.PackageElementProvider.PackageElementProviderAvailablePackagesFolderEntityToken(), true)
-						)
-					);
+			    var homepage = PageServices.GetChildren(Guid.Empty).FirstOrDefault();
+			    if (homepage != null)
+			    {
+			        tokens.Add(
+			            new KeyValuePair(
+			                EntityTokenSerializer.Serialize(AttachingPoint.ContentPerspective.EntityToken, true),
+			                EntityTokenSerializer.Serialize(homepage.GetDataEntityToken(), true)
+			                )
+			            );
+			    }
+			    tokens.Add(
+			        new KeyValuePair(
+			            EntityTokenSerializer.Serialize(AttachingPoint.SystemPerspective.EntityToken, true),
+			            EntityTokenSerializer.Serialize(new Composite.Plugins.Elements.ElementProviders.PackageElementProvider.PackageElementProviderAvailablePackagesFolderEntityToken(), true)
+			            )
+			        );
 					
 				
 			}
