@@ -64,14 +64,20 @@ namespace Composite.Services
 			}
 
 			var pageUrlData = PageUrls.ParseUrl(url);
+            if (pageUrlData == null)
+            {
+                return string.Empty;
+            }
+            
 			pageUrlData.PublicationScope = PublicationScope.Unpublished;
 
-			if (pageUrlData == null)
-			{
-				return string.Empty;
-			}
-
-			return AddServerUrl(PageUrls.BuildUrl(pageUrlData, UrlKind.Public, new UrlSpace()));
+		    string newUrl = PageUrls.BuildUrl(pageUrlData, UrlKind.Public, new UrlSpace() {ForceRelativeUrls = true});
+		    if (newUrl == null)
+		    {
+		        return string.Empty;
+		    }
+            
+            return AddServerUrl(newUrl);
 		}
         
         [WebMethod]
