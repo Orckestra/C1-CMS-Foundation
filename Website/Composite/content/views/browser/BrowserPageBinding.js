@@ -561,6 +561,16 @@ BrowserPageBinding.prototype._handleCommand = function ( cmd ) {
 			url = PageService.GetPageBrowserDefaultUrl ( true );
 			this.setURL ( url );
 			break;
+		case "toggletree":
+			var toggletreebutton = this.bindingWindow.bindingMap.toggletreebutton;
+			var explorerpanel = this.bindingWindow.bindingMap.explorerpanel;
+			if (toggletreebutton.isChecked) {
+				explorerpanel.show();
+			} else {
+				explorerpanel.hide();
+			}
+			this.reflex();
+			break;
 		case DockTabPopupBinding.CMD_VIEWSOURCE : /* notice dependencies */
 			this._viewSource ( cmd );
 			break;

@@ -50,6 +50,7 @@
 		<ui:toolbar id="navbar" class="dark" binding="BrowserToolBarBinding">
 			<ui:toolbarbody>
 				<ui:toolbargroup>
+					<ui:toolbarbutton id="toggletreebutton" cmd="toggletree" image="${icon:nodes}" binding="CheckButtonBinding" ischecked="true"/>
 					<ui:toolbarbutton cmd="back" image="${icon:previous}" image-disabled="${icon:previous-disabled}" tooltip="${string:Composite.Web.PageBrowser:ToolBarButton.Back.ToolTip}" observes="broadcasterHistoryBack" />
 					<ui:toolbarbutton cmd="forward" image="${icon:next}" image-disabled="${icon:next-disabled}" tooltip="${string:Composite.Web.PageBrowser:ToolBarButton.Forward.ToolTip}" observes="broadcasterHistoryForward" />
 					<ui:toolbarbutton cmd="refresh" image="${icon:refresh}" tooltip="${string:Composite.Web.PageBrowser:ToolBarButton.Refresh.ToolTip}" />
