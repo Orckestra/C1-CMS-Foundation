@@ -1143,5 +1143,7 @@ SystemTreeBinding.prototype.getCompiledActionProfile = function () {
 		result.Uri = propertyBag.Uri;
 	}
 
+	result.EnitityToken = focusedBinding.node.getEntityToken();
+
 	return result;
 }

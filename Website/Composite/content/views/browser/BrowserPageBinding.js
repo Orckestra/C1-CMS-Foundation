@@ -104,12 +104,27 @@ BrowserPageBinding.prototype.handleBroadcast = function (broadcast, arg) {
 	switch (broadcast) {
 		case BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED:
 			if (arg.perspectiveHandle == this.getPerspectiveHandle()) {
+				// TODO: make queue
 				var url = arg.actionProfile.Uri;
+				var entityToken = arg.actionProfile.EnitityToken;
+				var self = this;
 				if (url) {
-					url = PageService.GetSavedPagelUrl(url);
-					if (url != this._box.getLocation()) {
-						this.setURL(url);
-					}
+				
+					PageService.GetSavedPagelUrl(url, function (result) {
+						setTimeout(function() {
+							if (result && result !== self._box.getLocation()) {
+								self.setURL(result);
+							}
+						}, 0);
+					});
+				} else if (entityToken) {
+					TreeService.GetBrowserUrlByEntityToken(entityToken, function (result) {
+						setTimeout(function() {
+							if (result && self._box.getLocation()) {
+								self.setURL(result);
+							}
+						}, 0);
+					});
 				}
 			}
 			break;
