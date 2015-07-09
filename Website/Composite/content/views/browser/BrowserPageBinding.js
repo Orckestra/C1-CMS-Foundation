@@ -113,6 +113,7 @@ BrowserPageBinding.prototype.handleBroadcast = function (broadcast, arg) {
 					PageService.GetSavedPagelUrl(url, function (result) {
 						setTimeout(function() {
 							if (result && result != self._box.getLocation()) {
+								this._isNewUrl = true;
 								self.setURL(result);
 							}
 						}, 0);
@@ -121,6 +122,7 @@ BrowserPageBinding.prototype.handleBroadcast = function (broadcast, arg) {
 					TreeService.GetBrowserUrlByEntityToken(entityToken, function (result) {
 						setTimeout(function() {
 							if (result && result != self._box.getLocation()) {
+								this._isNewUrl = true;
 								self.setURL(result);
 							}
 						}, 0);
@@ -249,7 +251,6 @@ BrowserPageBinding.prototype._newURL = function ( url ) {
 	
 	var cover = window.bindingMap.cover;
 	cover.show();
-	this._isNewUrl = true;
 	this._box.newURL ( url );
 }
 
@@ -265,7 +266,6 @@ BrowserPageBinding.prototype.setURL = function (url) {
     
     var cover = window.bindingMap.cover;
     cover.show();
-    this._isNewUrl = true;
     this._box.setURL(url);
 }
 
