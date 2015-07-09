@@ -797,7 +797,7 @@ ui|dialogpage ui|fieldgroup,
 ui|wizardpage ui|fieldgroup {
 border: 0px;
 background: transparent;
-width: auto;
+width: 100%;
 padding: 6px 1px 27px 13px;
 }
 

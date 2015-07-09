@@ -1500,7 +1500,7 @@ column-width: 430px;
 
 ui|fieldgroup {
 width: 430px;
-display: block;
+display: inline-block;
 overflow: visible;
 padding-top: 7px;
 position: relative;

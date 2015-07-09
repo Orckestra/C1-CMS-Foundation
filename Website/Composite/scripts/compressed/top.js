@@ -23478,6 +23478,7 @@ var _e54=_e4d.node.getPropertyBag();
 if(_e54&&_e54.Uri&&_e54.ElementType==="application/x-composite-page"){
 _e4c.Uri=_e54.Uri;
 }
+_e4c.EnitityToken=_e4d.node.getEntityToken();
 return _e4c;
 };
 SystemTreePopupBinding.prototype=new PopupBinding;
