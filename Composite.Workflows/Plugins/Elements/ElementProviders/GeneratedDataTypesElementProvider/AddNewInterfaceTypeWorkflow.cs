@@ -30,6 +30,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
         {
             public const string KeyFieldType = "KeyFieldType";
             public const string KeyFieldTypeOptions = "KeyFieldTypeOptions";
+            public const string KeyFieldReadOnly = "KeyFieldReadOnly";
         }
 
         private void initialStateCodeActivity_ExecuteCode(object sender, EventArgs e)
@@ -46,7 +47,8 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 {"HasLocalization", false},
                 {"LabelFieldName", ""},
                 {BindingNames.KeyFieldType, GeneratedTypesHelper.KeyFieldType.Guid.ToString()},
-                {BindingNames.KeyFieldTypeOptions, KeyFieldHelper.GetKeyFieldOptions()}
+                {BindingNames.KeyFieldTypeOptions, KeyFieldHelper.GetKeyFieldOptions()},
+                {BindingNames.KeyFieldReadOnly, false}
             };
 
             this.BindingsValidationRules = new Dictionary<string, List<ClientValidationRule>>
@@ -197,6 +199,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 }
 
                 this.UpdateBinding("InterfaceType", helper.InterfaceType);
+                this.UpdateBinding(BindingNames.KeyFieldReadOnly, true);
 
                 this.UpdateBinding("ViewLabel", typeTitle);
                 RerenderView();

@@ -6,13 +6,13 @@
     <cms:binding name="NewTypeNamespace" type="System.String" />
     <cms:binding name="NewTypeTitle" type="System.String" />
     <cms:binding name="DataFieldDescriptors" type="System.Object" />
-    <!--<cms:binding name="HasVersioning" type="System.Boolean" />-->
     <cms:binding name="HasCaching" type="System.Boolean" />
     <cms:binding name="HasPublishing" type="System.Boolean" />
     <cms:binding name="HasLocalization" type="System.Boolean" />
     <cms:binding name="LabelFieldName" type="System.String" optional="true" />
     <cms:binding name="KeyFieldType" type="System.String" />
     <cms:binding name="KeyFieldTypeOptions" type="System.Collections.IEnumerable" />
+    <cms:binding name="KeyFieldReadOnly" type="System.Boolean" />
   </cms:bindings>
   <cms:layout iconhandle="generated-type-add">
     <TabPanels>
@@ -46,6 +46,9 @@
             <KeySelector.Options>
               <cms:read source="KeyFieldTypeOptions" />
             </KeySelector.Options>
+            <KeySelector.ReadOnly>
+              <cms:read source="KeyFieldReadOnly" />
+            </KeySelector.ReadOnly>
           </KeySelector>
           
           <PlaceHolder Label="${Composite.Plugins.GeneratedDataTypesElementProvider, EditorCommon.ServicesLabel}">

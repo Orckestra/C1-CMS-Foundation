@@ -339,19 +339,23 @@ namespace Composite.Data
 
 
         /// <summary>
-        /// Updates the given page folder item with new Id and setting the page folder defintion id and defining item id
+        /// Updates the given page folder item with new Id and setting the page folder definition id and defining item id
         /// </summary>
         /// <param name="pageFolderData"></param>        
         /// <param name="definingPage"></param>
         public static void AssignFolderDataSpecificValues(IData pageFolderData, IPage definingPage)
         {
-            Type interfaceType = pageFolderData.DataSourceId.InterfaceType;
-            PropertyInfo idPropertyInfo = interfaceType.GetPropertiesRecursively()
-                                                       .SingleOrDefault(f => f.Name == PageFolderType_IdFieldName);
-            idPropertyInfo.SetValue(pageFolderData, Guid.NewGuid(), null);
+            var pageRelatedData = pageFolderData as IPageRelatedData;
+            if (pageRelatedData != null)
+            {
+                pageRelatedData.PageId = definingPage.Id;
+            }
 
-            PropertyInfo pageReferencePropertyInfo = GetDefinitionPageReferencePropertyInfo(interfaceType);
-            pageReferencePropertyInfo.SetValue(pageFolderData, definingPage.Id, null);
+            var pageData = pageFolderData as IPageData;
+            if (pageData != null)
+            {
+                pageData.Id = Guid.NewGuid();
+            }
         }
 
 

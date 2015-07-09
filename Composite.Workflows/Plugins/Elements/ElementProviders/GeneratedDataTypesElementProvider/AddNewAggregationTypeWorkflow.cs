@@ -27,6 +27,8 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
         private static class BindingNames
         {
+            public const string ViewLabel = "ViewLabel";
+            public const string InterfaceType = "InterfaceType";
             public const string NewTypeName = "NewTypeName";
             public const string NewTypeNamespace = "NewTypeNamespace";
             public const string NewTypeTitle = "NewTypeTitle";
@@ -37,6 +39,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             public const string HasLocalization = "HasLocalization"; 
             public const string KeyFieldType = "KeyFieldType";
             public const string KeyFieldTypeOptions = "KeyFieldTypeOptions";
+            public const string KeyFieldReadOnly = "KeyFieldReadOnly";
         }
 
 
@@ -44,6 +47,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
         {
             this.Bindings = new Dictionary<string, object>
             {
+                {BindingNames.ViewLabel, Texts.AddNewAggregationTypeWorkflow_DocumentTitle},
                 {BindingNames.NewTypeName, ""},
                 {BindingNames.NewTypeNamespace, UserSettings.LastSpecifiedNamespace},
                 {BindingNames.NewTypeTitle, ""},
@@ -53,7 +57,8 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 {BindingNames.HasPublishing, false},
                 {BindingNames.HasLocalization, false},
                 {BindingNames.KeyFieldType, GeneratedTypesHelper.KeyFieldType.Guid.ToString()},
-                {BindingNames.KeyFieldTypeOptions, KeyFieldHelper.GetKeyFieldOptions()}
+                {BindingNames.KeyFieldTypeOptions, KeyFieldHelper.GetKeyFieldOptions()},
+                {BindingNames.KeyFieldReadOnly, false}
             };
 
             this.BindingsValidationRules = new Dictionary<string, List<ClientValidationRule>>
@@ -92,9 +97,9 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
                 var helper = new GeneratedTypesHelper();
                 Type interfaceType = null;
-                if (this.BindingExist("InterfaceType"))
+                if (this.BindingExist(BindingNames.InterfaceType))
                 {
-                    interfaceType = this.GetBinding<Type>("InterfaceType");
+                    interfaceType = this.GetBinding<Type>(BindingNames.InterfaceType);
 
                     helper = new GeneratedTypesHelper(interfaceType);
                 }
@@ -107,19 +112,19 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 string errorMessage;
                 if (!helper.ValidateNewTypeName(typeName, out errorMessage))
                 {
-                    this.ShowFieldMessage("NewTypeName", errorMessage);
+                    this.ShowFieldMessage(BindingNames.NewTypeName, errorMessage);
                     return;
                 }
 
                 if (!helper.ValidateNewTypeNamespace(typeNamespace, out errorMessage))
                 {
-                    this.ShowFieldMessage("NewTypeNamespace", errorMessage);
+                    this.ShowFieldMessage(BindingNames.NewTypeNamespace, errorMessage);
                     return;
                 }
 
                 if (!helper.ValidateNewTypeFullName(typeName, typeNamespace, out errorMessage))
                 {
-                    this.ShowFieldMessage("NewTypeName", errorMessage);
+                    this.ShowFieldMessage(BindingNames.NewTypeName, errorMessage);
                     return;
                 }
 
@@ -144,7 +149,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 helper.SetNewTypeTitle(typeTitle);
                 helper.SetNewFieldDescriptors(dataFieldDescriptors, labelFieldName);
 
-                if (!this.BindingExist("InterfaceType"))
+                if (!this.BindingExist(BindingNames.InterfaceType))
                 {
                     Type targetType = TypeManager.GetType(this.Payload);
 
@@ -184,7 +189,10 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                     SetSaveStatus(true, entityToken);
                 }
 
-                this.UpdateBinding("InterfaceType", helper.InterfaceType);
+                this.UpdateBinding(BindingNames.InterfaceType, helper.InterfaceType);
+                this.UpdateBinding(BindingNames.KeyFieldReadOnly, true);
+                this.UpdateBinding(BindingNames.ViewLabel, typeTitle);
+                RerenderView();
 
                 this.WorkflowResult = TypeManager.SerializeType(helper.InterfaceType);
 
