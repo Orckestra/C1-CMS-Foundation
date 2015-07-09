@@ -21,6 +21,9 @@ namespace Composite.Data
         private static ConcurrentDictionary<Type, IReadOnlyCollection<DataScopeIdentifier>> _supportedDataScopes
             = new ConcurrentDictionary<Type, IReadOnlyCollection<DataScopeIdentifier>>();
 
+        private static MethodInfo ToDataReferenceMethodInfo =
+            StaticReflection.GetGenericMethodInfo(() => ToDataReference<IData>(null));
+
         /// <summary>
         /// Copies all changed properties from sourceData to targetData.
         /// </summary>
@@ -197,6 +200,35 @@ namespace Composite.Data
         public static T GetUniqueKey<T>(this IData data)
         {
             return (T)data.GetUniqueKey();
+        }
+
+
+
+        /// <summary>
+        /// Converts a data item into a data reference
+        /// </summary>
+        /// <param name="data">The data item</param>
+        /// <returns></returns>
+        public static IDataReference ToDataReference(this IData data)
+        {
+            Verify.ArgumentNotNull(data, "data");
+
+            var interfaceType = data.DataSourceId.InterfaceType;
+
+            return (IDataReference) ToDataReferenceMethodInfo
+                .MakeGenericMethod(new[] {interfaceType}).Invoke(null, new object[] {data});
+        }
+
+
+
+        /// <summary>
+        /// Converts a data item into a data reference
+        /// </summary>
+        /// <param name="data">The data item</param>
+        /// <returns></returns>
+        public static DataReference<T> ToDataReference<T>(T data) where T : class, IData
+        {
+            return new DataReference<T>(data);
         }
 
 

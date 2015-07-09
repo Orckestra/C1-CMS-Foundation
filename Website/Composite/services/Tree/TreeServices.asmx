@@ -184,8 +184,9 @@ namespace Composite.Services
 
             if (!string.IsNullOrEmpty(pageUrlData.PathInfo) || pageUrlData.QueryParameters.AllKeys.Any())
             {
-                var data = DataUrls.TryGetData(pageUrlData);
-                if (data != null)
+                IData data;
+                var dataReference = DataUrls.TryGetData(pageUrlData);
+                if (dataReference != null && (data = dataReference.Data) != null)
                 {
                     return EntityTokenSerializer.Serialize(data.GetDataEntityToken(), true);
                 }
@@ -209,7 +210,7 @@ namespace Composite.Services
 
                 if (data != null)
                 {
-                    var urlData = DataUrls.TryGetPageUrlData(data);
+                    var urlData = DataUrls.TryGetPageUrlData(data.ToDataReference());
                     if (urlData != null)
                     {
                         var url = PageUrls.BuildUrl(urlData);

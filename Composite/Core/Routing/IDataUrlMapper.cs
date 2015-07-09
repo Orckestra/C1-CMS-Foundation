@@ -13,13 +13,13 @@ namespace Composite.Core.Routing
         /// </summary>
         /// <param name="pageUrlData"></param>
         /// <returns></returns>
-        IData GetData(PageUrlData pageUrlData);
+        IDataReference GetData(PageUrlData pageUrlData);
 
         /// <summary>
         /// Gets page url data by a a data item
         /// </summary>
         /// <param name="instance"></param>
         /// <returns></returns>
-        PageUrlData GetPageUrlData(IData instance);
+        PageUrlData GetPageUrlData(IDataReference instance);
     }
 }

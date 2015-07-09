@@ -80,7 +80,8 @@ namespace Composite.Data
         /// <param name="data">The data item to reference.</param>
         public DataReference(T data)
         {
-            _keyValue = data == null ? null : data.GetUniqueKey();
+            _keyValue = data.GetUniqueKey();
+            _cachedValue = data;
         }
 
 

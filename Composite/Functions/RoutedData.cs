@@ -282,15 +282,16 @@ namespace Composite.Functions
                 _mapper = mapper;
             }
 
-            public IData GetData(PageUrlData pageUrlData)
+            public IDataReference GetData(PageUrlData pageUrlData)
             {
                 var model = _mapper.GetRouteDataModel(pageUrlData);
-                return model.IsRouteResolved && model.IsItem ? model.Item : null;
+                return model.IsRouteResolved && model.IsItem ? model.Item.ToDataReference() : null;
             }
 
-            public PageUrlData GetPageUrlData(IData instance)
+            public PageUrlData GetPageUrlData(IDataReference instance)
             {
-                return _mapper.BuildItemUrl(instance);
+                var data = instance.Data;
+                return data != null ? _mapper.BuildItemUrl(data) : null;
             }
         }
     }

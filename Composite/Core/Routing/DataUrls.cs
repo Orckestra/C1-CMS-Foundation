@@ -51,7 +51,7 @@ namespace Composite.Core.Routing
         /// </summary>
         /// <param name="pageUrlData"></param>
         /// <returns></returns>
-        public static IData TryGetData(PageUrlData pageUrlData)
+        public static IDataReference TryGetData(PageUrlData pageUrlData)
         {
             Verify.ArgumentNotNull(pageUrlData, "pageUrlData");
 
@@ -85,35 +85,37 @@ namespace Composite.Core.Routing
         }
 
         /// <summary>
-        /// Gets page url data by data item; returns <value>null</value> if no data url mappers found.
+        /// Gets page url data by data reference; returns <value>null</value> if no data url mappers found.
         /// </summary>
-        /// <param name="data">The data item.</param>
+        /// <param name="data">The data reference.</param>
         /// <returns></returns>
-        public static PageUrlData TryGetPageUrlData(IData data)
+        public static PageUrlData TryGetPageUrlData(IDataReference dataReference)
         {
-            Verify.ArgumentNotNull(data, "data");
-            var interfaceType = data.DataSourceId.InterfaceType;
+            Verify.ArgumentNotNull(dataReference, "dataReference");
+            var interfaceType = dataReference.ReferencedType;
 
             IDataUrlMapper dataUrlMapper;
             if (_globalDataUrlMappers.TryGetValue(interfaceType, out dataUrlMapper))
             {
-                return dataUrlMapper.GetPageUrlData(data);
+                return dataUrlMapper.GetPageUrlData(dataReference);
             }
 
-            if (data is IPageRelatedData)
+            if (typeof(IPageRelatedData).IsAssignableFrom(dataReference.ReferencedType))
             {
+                var data = dataReference.Data;
+
                 Guid pageId = (data as IPageRelatedData).PageId;
-                return TryGetPageUrlData(pageId, data);
+                return TryGetPageUrlData(pageId, dataReference);
             }
 
             return null;
         }
 
 
-        private static PageUrlData TryGetPageUrlData(Guid pageId, IData data)
+        private static PageUrlData TryGetPageUrlData(Guid pageId, IDataReference dataReference)
         {
             if (pageId == Guid.Empty) return null;
-            var interfaceType = data.DataSourceId.InterfaceType;
+            var interfaceType = dataReference.ReferencedType;
 
             var page = PageManager.GetPageById(pageId);
             if (page == null) return null;
@@ -123,7 +125,7 @@ namespace Composite.Core.Routing
             {
                 if (mapper.Key.IsAssignableFrom(interfaceType))
                 {
-                    var pageUrlData = mapper.Value.GetPageUrlData(data);
+                    var pageUrlData = mapper.Value.GetPageUrlData(dataReference);
                     if (pageUrlData != null) return pageUrlData;
                 }
             }
@@ -133,7 +135,7 @@ namespace Composite.Core.Routing
             {
                 if (mapper.Key.IsAssignableFrom(interfaceType))
                 {
-                    var pageUrlData = mapper.Value.GetPageUrlData(data);
+                    var pageUrlData = mapper.Value.GetPageUrlData(dataReference);
                     if (pageUrlData != null) return pageUrlData;
                 }
             }
