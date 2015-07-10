@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Web;
 using Composite.C1Console.Elements;
 using Composite.C1Console.Security;
 using Composite.Core.Extensions;
@@ -26,22 +27,35 @@ namespace Composite.Plugins.Elements.UrlToEntityToken
                 return null;
             }
 
-            if (data is IPage)
+
+            PageUrlData pageUrlData;
+
+            var page = data as IPage;
+            if (page != null)
             {
-                // TODO: remove page url handling logic here
-                return null;
+                pageUrlData = new PageUrlData(page);
+            }
+            else
+            {
+                pageUrlData = DataUrls.TryGetPageUrlData(data.ToDataReference());
             }
 
-            var urlData = DataUrls.TryGetPageUrlData(data.ToDataReference());
-            if (urlData != null)
+            return pageUrlData != null ? GetPagePreviewUrl(pageUrlData) : null;
+        }
+
+        private static string GetPagePreviewUrl(PageUrlData pageUrlData)
+        {
+            var httpContext = HttpContext.Current;
+
+            var urlSpace = new UrlSpace();
+            if (HostnameBindingsFacade.GetBindingForCurrentRequest() != null
+                || HostnameBindingsFacade.GetAliasBinding(httpContext) != null)
             {
-                var url = PageUrls.BuildUrl(urlData);
-                if (url != null)
-                {
-                    return url;
-                }
+                urlSpace.ForceRelativeUrls = true;
             }
-            return null;
+
+            return PageUrls.BuildUrl(pageUrlData, UrlKind.Public, urlSpace)
+                      ?? PageUrls.BuildUrl(pageUrlData, UrlKind.Renderer, urlSpace);
         }
 
         public EntityToken TryGetEntityToken(string url)
