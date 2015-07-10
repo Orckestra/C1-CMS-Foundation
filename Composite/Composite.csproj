@@ -164,6 +164,8 @@
     <Compile Include="AspNet\UserControlFunction.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="C1Console\Elements\IUrlToEntityTokenMapper.cs" />
+    <Compile Include="C1Console\Elements\UrlToEntityTokenFacade.cs" />
     <Compile Include="C1Console\Commands\ConsoleCommandFacade.cs" />
     <Compile Include="C1Console\Commands\Foundation\PluginFacades\ConsoleCommandHandlerPluginFacade.cs" />
     <Compile Include="C1Console\Commands\IConsoleCommandHandler.cs" />
@@ -275,6 +277,7 @@
     <Compile Include="Plugins\Elements\ElementProviders\VirtualElementProvider\AttachProviderVirtualElement.cs" />
     <Compile Include="Plugins\Elements\ElementProviders\VirtualElementProvider\SimpleVirtualElement.cs" />
     <Compile Include="Plugins\Elements\ElementProviders\VirtualElementProvider\VirtualElementConfigurationElement.cs" />
+    <Compile Include="Plugins\Elements\UrlToEntityToken\ServerLogUrlToEntityTokenMapper.cs" />
     <Compile Include="Plugins\Forms\WebChannel\UiControlFactories\TemplatedFontIconSelectorUiControlFactory.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -1063,6 +1066,7 @@
     <Compile Include="Core\Types\CompatibilityCheckResult.cs" />
     <Compile Include="C1Console\Users\UserSettingsMock.cs" />
     <Compile Include="Data\Validation\Validators\StringSizeValidatorAttribute.cs" />
+    <Compile Include="Plugins\Elements\UrlToEntityToken\DataUrlToEntityTokenMapper.cs" />
     <Compile Include="Verify.cs" />
     <Compile Include="C1Console\Events\BroadcastMessageQueueItem.cs" />
     <Compile Include="C1Console\Events\CollapseAndRefreshConsoleMessageQueueItem.cs" />

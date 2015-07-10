@@ -13,6 +13,11 @@
 		<script type="text/javascript">
 		    DocumentManager.isDocumentSelectable = true;
 		</script>
+        <% if(HideToolbar) { %>
+            <style>
+                #toolbar { display: none; }
+            </style>
+        <% } %>
 	</head>
 	<body>
 		<form id="Form1" runat="server">

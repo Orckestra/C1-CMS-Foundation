@@ -18,10 +18,12 @@ public partial class Composite_content_views_log_log : System.Web.UI.Page
 
     private string SelectedDateStr
     {
-        get
-        {
-            return System.Web.HttpContext.Current.Request.Form["Pager"];
-        }
+        get { return Request.Form["Pager"]; }
+    }
+
+    protected bool HideToolbar
+    {
+        get { return Request.QueryString["hideToolbar"] == "true"; }
     }
 
     private bool _allLogsHaveBeenDeleted;

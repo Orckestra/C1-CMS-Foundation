@@ -13,7 +13,6 @@ using Composite.C1Console.Elements;
 using Composite.C1Console.Security;
 using Composite.C1Console.Users;
 using Composite.Core;
-using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Core.Routing;
 using Composite.Core.Xml;
@@ -172,30 +171,9 @@ namespace Composite.Services
         [WebMethod]
         public string GetEntityTokenByPageUrl(string pageUrl)
         {
-            UrlKind urlKind;
-            
-            PageUrlData pageUrlData = PageUrls.ParseUrl(pageUrl, out urlKind);
-            if (pageUrlData == null) return string.Empty;
+            EntityToken entityToken = UrlToEntityTokenFacade.TryGetEntityToken(pageUrl);
 
-            if (pageUrlData.PublicationScope == PublicationScope.Published)
-            {
-                pageUrlData.PublicationScope = PublicationScope.Unpublished;
-            }
-
-            if (!string.IsNullOrEmpty(pageUrlData.PathInfo) || pageUrlData.QueryParameters.AllKeys.Any())
-            {
-                IData data;
-                var dataReference = DataUrls.TryGetData(pageUrlData);
-                if (dataReference != null && (data = dataReference.Data) != null)
-                {
-                    return EntityTokenSerializer.Serialize(data.GetDataEntityToken(), true);
-                }
-            }
-
-            IPage page = pageUrlData.GetPage();
-            if (page == null) return string.Empty;
-
-            return EntityTokenSerializer.Serialize(page.GetDataEntityToken(), true);
+            return entityToken != null ? EntityTokenSerializer.Serialize(entityToken, true) : string.Empty;
         }
 
 
@@ -204,25 +182,7 @@ namespace Composite.Services
         {
             var entityToken = EntityTokenSerializer.Deserialize(serializedEntityToken);
 
-            if (entityToken is DataEntityToken)
-            {
-                var data = (entityToken as DataEntityToken).Data;
-
-                if (data != null)
-                {
-                    var urlData = DataUrls.TryGetPageUrlData(data.ToDataReference());
-                    if (urlData != null)
-                    {
-                        var url = PageUrls.BuildUrl(urlData);
-                        if (url != null)
-                        {
-                            return url;
-                        }
-                    }
-                }
-            }
-
-            return null;
+            return UrlToEntityTokenFacade.TryGetUrl(entityToken);
         }
         
 

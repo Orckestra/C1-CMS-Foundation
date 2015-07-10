@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Text;
 using System.Web;
+using Composite.C1Console.Elements;
 using Composite.C1Console.Events;
 using Composite.Core.Application;
 using Composite.Core.Configuration;
@@ -14,6 +15,7 @@ using Composite.Core.Routing;
 using Composite.Core.Threading;
 using Composite.Core.Types;
 using Composite.Functions;
+using Composite.Plugins.Elements.UrlToEntityToken;
 
 
 namespace Composite.Core.WebClient
@@ -68,7 +70,7 @@ namespace Composite.Core.WebClient
             
             AppDomain.CurrentDomain.DomainUnload += CurrentDomain_DomainUnload;
 
-            RoutedData.ConfigureServices(ServiceLocator.ServiceCollection);
+            InitializeServices();
 
             lock (_syncRoot)
             {
@@ -79,7 +81,15 @@ namespace Composite.Core.WebClient
                 _systemIsInitialized = true;
             }
         }
-        
+
+
+        private static void InitializeServices()
+        {
+            UrlToEntityTokenFacade.Register(new DataUrlToEntityTokenMapper());
+            UrlToEntityTokenFacade.Register(new ServerLogUrlToEntityTokenMapper());
+
+            RoutedData.ConfigureServices(ServiceLocator.ServiceCollection);
+        }
 
 
         /// <exclude />
