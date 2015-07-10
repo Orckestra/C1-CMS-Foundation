@@ -43,7 +43,7 @@
 
 	</ui:popupset>
 	<ui:page id="browserpage" binding="BrowserPageBinding" image="${icon:browser}">
-		<ui:cover id="cover" transparent="true" busy="false" />
+		
 		<ui:toolbar id="toolbarplaceholder" class="explorertoolbar">
 			<ui:toolbarbody />
 		</ui:toolbar>
@@ -72,6 +72,7 @@
 			</ui:splitpanel>
 			<ui:splitter />
 			<ui:splitpanel>
+				<ui:cover id="cover" transparent="true" busy="false" />
 				<ui:tabbox id="browsertabbox" binding="BrowserTabBoxBinding">
 					<ui:tabs hidden="true" />
 					<ui:tabpanels style="position: relative;">
