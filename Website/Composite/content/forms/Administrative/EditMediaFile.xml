@@ -6,7 +6,7 @@
     <cms:binding name="FileDataDescription" type="System.String" optional="true"/>
     <cms:binding name="ProvidesMetaData" type="System.Boolean" />
   </cms:bindings>
-  <cms:layout>
+  <cms:layout iconhandle="media-edit-media-file">
     <FieldGroup Label="${Composite.Management, Website.Forms.Administrative.EditMediaFile.LabelFieldGroup}">
       <TextBox Label="${Composite.Management, Website.Forms.Administrative.EditMediaFile.LabelFileName}" Help="${Composite.Management, Website.Forms.Administrative.EditMediaFile.HelpFileName}" SpellCheck="false">
         <TextBox.Text>

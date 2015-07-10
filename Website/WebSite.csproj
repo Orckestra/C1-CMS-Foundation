@@ -483,6 +483,7 @@
     <Content Include="Composite\images\icons\svg\accept-green.svg" />
     <Content Include="Composite\images\icons\svg\error.svg" />
     <Content Include="Composite\images\icons\svg\folder-open-2.svg" />
+    <Content Include="Composite\images\icons\svg\folder-edit.svg" />
     <Content Include="Composite\images\icons\svg\stop.svg" />
     <Content Include="Composite\scripts\source\top\core\ImageProvider.js" />
     <Content Include="Composite\splash.css" />
@@ -2193,7 +2194,9 @@
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\DeveloperTools\FunctionCallsDesigner.ascx" />
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\DeveloperTools\FunctionCallsDesigner.css" />
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\DeveloperTools\FunctionCallsDesigner.Function.TreeBinding.js" />
-    <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\DeveloperTools\FunctionCallsDesigner.UiTree.xsl" />
+    <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\DeveloperTools\FunctionCallsDesigner.UiTree.xsl">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\DeveloperTools\FunctionCallsDesigner.Widget.TreeBinding.js" />
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\DeveloperTools\FunctionParameterDesigner.ascx" />
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\DeveloperTools\MarkupEditor.ascx" />

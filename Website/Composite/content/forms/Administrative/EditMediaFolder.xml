@@ -6,7 +6,7 @@
 		<cms:binding name="FolderName" type="System.String" />
 		<cms:binding name="ProvidesMetaData" type="System.Boolean" />
 	</cms:bindings>
-	<cms:layout>
+	<cms:layout iconhandle="folder-edit">
 		<FieldGroup Label="${Composite.Management, Website.Forms.Administrative.EditMediaFolder.LabelFieldGroup}">
 			<TextBox Label="${Composite.Management, Website.Forms.Administrative.EditMediaFolder.LabelFolderName}" Help="${Composite.Management, Website.Forms.Administrative.EditMediaFolder.HelpFolderName}">
 				<TextBox.Text>

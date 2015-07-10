@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="18px" height="18px" viewBox="0 0 18 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+  <!-- Generator: Sketch 3.3.2 (12043) - http://www.bohemiancoding.com/sketch -->
+  <title>folder_properties</title>
+  <desc>Created with Sketch.</desc>
+  <defs></defs>
+  <g stroke="#666" fill="#666">
+    <g id="folder-edit" viewBox="0 0 18 18" stroke-width="1" fill="none" fill-rule="evenodd" >
+      <g  transform="translate(-448.000000, -255.000000)" stroke-linejoin="round">
+        <g transform="translate(448.000000, 257.000000)">
+          <g stroke-linecap="round" >
+            <path d="M11.5216236,3.4828403 L11.5216236,1.53724885 L4.46177459,1.53724885 L4.46177459,0.5 L0.5,0.5 L0.5,10.0229492 C0.5,10.8509492 1.21938614,11.4868164 2.04938614,11.4868164 C2.87738614,11.4868164 3.5,10.8509492 3.5,10.0229492 L3.5,3.4828403 L13.5040455,3.4828403 L13.5040455,5.48039341"></path>
+            <path d="M2,11.4868164 L7.47190523,11.4868164" id="Stroke-323"></path>
+          </g>
+          <g transform="translate(9.000000, 6.000000)">
+            <path d="M0.848510742,8.49243164 L1.57684326,5.79174805 L6.73101823,0.7666626 L8.49652116,2.56530762 L3.41699219,7.76947022 L0.848510742,8.49243164 Z" stroke-linecap="round"></path>
+            <path d="M5.45918333,2.26962917 L7.23001667,4.0404625"></path>
+            <path d="M1.85217285,5.88140869 L3.43737793,7.5513916" stroke-linecap="round"></path>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+
+</svg>

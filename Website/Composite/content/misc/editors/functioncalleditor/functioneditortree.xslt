@@ -43,7 +43,7 @@
 
 		<ui:treenode 
 			label="{$label}" 
-			image="${{icon:functioncall}}" 
+			image="${{icon:base-function-function}}" 
 			open="true" title="{$desc/@description}" 
 			callbackid="{@id}"
 			id="id{$id}"

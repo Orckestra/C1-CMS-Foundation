@@ -1,9 +1,14 @@
-﻿<?xml version="1.0" ?>
-<svg enable-background="new 0 0 32 32" height="20px" id="svg2" version="1.1" viewBox="0 0 32 32" width="20px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:svg="http://www.w3.org/2000/svg">
-  <g fill="#999" stroke="#999">
-  <g id="parameter" viewBox="0 0 32 32" stroke="none">
-    <rect fill="none" height="32" width="32"/>
-    <polygon points="16,2.001 16,10 2,10 2,22 16,22 16,30 30,16  "/>
- </g>
+﻿<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="18px" height="18px" viewBox="0 0 18 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+  <!-- Generator: Sketch 3.3.2 (12043) - http://www.bohemiancoding.com/sketch -->
+  <title>parameter</title>
+  <desc>Created with Sketch.</desc>
+  <defs></defs>
+  <g fill="#666" stroke="#666">
+    <g id="parameter" viewBox="0 0 18 18"  stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+      <g id="Content-edit-Copy" sketch:type="MSArtboardGroup" transform="translate(-198.000000, -293.000000)" stroke="#7CB84B" fill="#FFFFFF" stroke-linejoin="round">
+        <path d="M198.518738,299.479 L206.539612,299.479 L206.539612,294.502625 L214.494324,302.518433 L206.539612,310.49469 L206.539612,305.490356 L198.518738,305.490356 L198.518738,299.479 Z" id="parameter"></path>
+      </g>
+    </g>
   </g>
 </svg>
