@@ -45,7 +45,7 @@ function BrowserPageBinding () {
 	/**
 	 * @type {boolean}
 	 */
-	this._isNewUrl = false;
+	this._isPushingUrl = false;
 	
 	/**
 	 * @type {boolean}
@@ -113,18 +113,16 @@ BrowserPageBinding.prototype.handleBroadcast = function (broadcast, arg) {
 					PageService.GetSavedPagelUrl(url, function (result) {
 						setTimeout(function() {
 							if (result && result != self._box.getLocation()) {
-								this._isNewUrl = true;
-								self.setURL(result);
+								//this._isNewUrl = true;
+								self.pushURL(result);
 							}
 						}, 0);
 					});
 				} else if (entityToken) {
 					TreeService.GetBrowserUrlByEntityToken(entityToken, function (result) {
 						setTimeout(function() {
-							if (result && result != self._box.getLocation()) {
-								this._isNewUrl = true;
-								self.setURL(result);
-							}
+							self.pushURL(result);
+
 						}, 0);
 					});
 				}
@@ -236,6 +234,19 @@ BrowserPageBinding.prototype.onAfterPageInitialize = function () {
 
 	this.reflex(); //?
 
+}
+
+
+/**
+ * Add Url to order
+ * @param {string} url
+ * @return
+ */
+BrowserPageBinding.prototype.pushURL = function (url) {
+	if (url && url != this._box.getLocation()) {
+		this._isPushingUrl = true;
+		this.setURL(url);
+	}
 }
 
 /**
@@ -402,7 +413,7 @@ BrowserPageBinding.prototype._handleTabBoxUpdate = function () {
  */
 BrowserPageBinding.prototype._handleDocumentLoad = function ( binding ) {
 		
-	var url = new String ( binding.getContentDocument ().location );
+	var url = new String(binding.getContentDocument().location);
 
 	/*
 	 * Update stuff.
@@ -444,7 +455,7 @@ BrowserPageBinding.prototype._handleDocumentLoad = function ( binding ) {
 		cover.hide ();
 	}
 
-	if (!this._isNewUrl) {
+	if (!this._isPushingUrl) {
 		var entityToken = TreeService.GetEntityTokenByPageUrl(url);
 		EventBroadcaster.broadcast(
 			BroadcastMessages.SYSTEMTREEBINDING_FOCUS,
@@ -457,7 +468,7 @@ BrowserPageBinding.prototype._handleDocumentLoad = function ( binding ) {
 	 */
 	this.dispatchAction(BrowserPageBinding.ACTION_ONLOAD);
 
-	this._isNewUrl = false;
+	this._isPushingUrl = false;
 }
 
 /**
