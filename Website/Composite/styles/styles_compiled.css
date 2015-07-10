@@ -249,12 +249,12 @@ padding-left: 0 !important;
 }
 
 ui|labelbody{
-height: 16px;
-padding-left: 16px;
+height: 18px;
+padding-left: 18px;
 }
 
 ui|labelbox.flipped ui|labelbody{
-padding-right: 16px;
+padding-right: 18px;
 }
 
 ui|*.textonly ui|labelbody,
@@ -265,10 +265,10 @@ background-position: -200px -200px; /* huh? */
 
 ui|labelbox ui|labelbody ui|icon {
 float: left;
-width: 16px;
-height: 16px;
-margin-left: -16px;
-font-size: 16px;
+width: 18px;
+height: 18px;
+margin-left: -18px;
+font-size: 18px;
 text-align: center;
 color: #333;
 }
@@ -304,10 +304,10 @@ color: graytext;
 }
 
 ui|labelbox svg {
-width: 16px;
-height: 16px;
+width: 18px;
+height: 18px;
 display: block;
-margin-left: -16px;
+margin-left: -18px;
 float: left;
 }
 
