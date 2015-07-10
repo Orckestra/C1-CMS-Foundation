@@ -35,8 +35,6 @@ namespace Composite.Services
             }
         }
 
-
-
         [WebMethod]
         public string TranslateToInternalUrl(string url)
         {
@@ -55,31 +53,6 @@ namespace Composite.Services
             return PageUrls.BuildUrl(pageUrlData, UrlKind.Renderer, new UrlSpace());
         }
 
-		[WebMethod]
-		public string GetSavedPagelUrl(string url)
-		{
-			if (PageUrlHelper.IsInternalUrl(url))
-			{
-				return url;
-			}
-
-			var pageUrlData = PageUrls.ParseUrl(url);
-            if (pageUrlData == null)
-            {
-                return string.Empty;
-            }
-            
-			pageUrlData.PublicationScope = PublicationScope.Unpublished;
-
-		    string newUrl = PageUrls.BuildUrl(pageUrlData, UrlKind.Public, new UrlSpace() {ForceRelativeUrls = true});
-		    if (newUrl == null)
-		    {
-		        return string.Empty;
-		    }
-            
-            return AddServerUrl(newUrl);
-		}
-        
         [WebMethod]
         public string ConvertRelativePageUrlToAbsolute(string pageUrl)
         {
