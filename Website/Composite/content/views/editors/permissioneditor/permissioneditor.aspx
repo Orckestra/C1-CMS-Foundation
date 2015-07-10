@@ -70,9 +70,6 @@
 							<table id="grid0" class="binding grid" binding="PermissionEditorGridBinding">
 								<tbody/>
 							</table>
-							<table id="deco0" class="deco" summary="for decoration purposes only">
-								<tbody/>
-							</table>
 						</ui:scrollbox>
 					</ui:tabpanel>
 					<ui:tabpanel id="tabpanel1">
@@ -88,9 +85,6 @@
 							<table id="grid1" class="binding grid" binding="PermissionEditorGridBinding">
 								<tbody>
 								</tbody>
-							</table>
-							<table id="deco1" class="deco" summary="for decoration purposes only">
-								<tbody/>
 							</table>
 						</ui:scrollbox>
 					</ui:tabpanel>

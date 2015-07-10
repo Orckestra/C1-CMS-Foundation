@@ -103,14 +103,6 @@ PermissionEditorGridBinding.prototype.populate = function ( inheritedList, defin
 		tbody.appendChild ( row );
 	});
 	
-	/*
-	 * Build decorational table. But only on first rendering.
-	 */
-	var deco = document.getElementById ( "deco" + this._index );
-	tbody = DOMUtil.getElementsByTagName ( deco, "tbody" ).item ( 0 );
-	if ( !tbody.hasChildNodes ()) {
-		tbody.appendChild ( this._getRow ());
-	}
 }
 
 /**

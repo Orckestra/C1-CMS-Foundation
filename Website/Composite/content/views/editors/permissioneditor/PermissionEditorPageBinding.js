@@ -199,7 +199,6 @@ PermissionEditorPageBinding.prototype._display = function ( index, isDisplay ) {
 	
 	document.getElementById ( "head" + index ).style.display = display;
 	document.getElementById ( "grid" + index ).style.display = display;
-	document.getElementById ( "deco" + index ).style.display = display;
 }
 
 /**
