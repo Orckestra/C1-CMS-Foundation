@@ -42,11 +42,6 @@ function ControlBinding () {
 	this.commandAction = ControlBinding.ACTION_COMMAND;
 	
 	/**
-	 * @overwrites {ButtonBinding#imageProfile}
-	 */
-	this.imageProfile = true;
-	
-	/**
 	 * @type {ControlBoxBinding}
 	 */
 	this.containingControlBoxBinding = null;
@@ -98,7 +93,6 @@ ControlBinding.prototype.onBindingAttach = function () {
 			}
 			ControlBinding.superclass.onBindingAttach.call ( this );
 			this.addEventListener ( DOMEvents.MOUSEDOWN );	
-			this.setImage ( this.imageProfile.getDefaultImage ());
 		} else {
 			throw "ControlBinding: type not specified.";
 		}
@@ -132,11 +126,6 @@ ControlBinding.prototype.setControlType = function ( type ) {
 	this.controlType = type;
 	this.setProperty ( "controltype", type );
 	this.setToolTip ( ControlBinding.TOOLTIP [ type ]);
-	if ( this.isAttached ) {
-		this.setImage ( 
-			this.imageProfile.getDefaultImage ()
-		);
-	}
 }
 
 /**

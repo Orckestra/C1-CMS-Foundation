@@ -41,7 +41,6 @@ DialogControlBinding.prototype.toString = function () {
 DialogControlBinding.prototype.onBindingRegister = function () {
 
 	DialogControlBinding.superclass.onBindingRegister.call ( this );
-	this.setImageProfile ( DialogControlImageProfile );
 	this.attachClassName ( DialogControlBinding.CLASSNAME );
 }
 

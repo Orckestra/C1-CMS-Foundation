@@ -1494,7 +1494,6 @@
     <Content Include="Composite\scripts\source\top\ui\bindings\controls\ControlBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\controls\ControlBoxBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\controls\ControlGroupBinding.js" />
-    <Content Include="Composite\scripts\source\top\ui\bindings\controls\ControlImageProfile.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\cover\CoverBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\cover\UncoverBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\cursors\CursorBinding.js" />
@@ -1538,7 +1537,6 @@
     <Content Include="Composite\scripts\source\top\ui\bindings\dialogs\DialogBodyBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\dialogs\DialogBorderBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\dialogs\DialogControlBinding.js" />
-    <Content Include="Composite\scripts\source\top\ui\bindings\dialogs\DialogControlImageProfile.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\dialogs\DialogCoverBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\dialogs\DialogHeadBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\dialogs\DialogSetBinding.js" />
@@ -1546,8 +1544,6 @@
     <Content Include="Composite\scripts\source\top\ui\bindings\dialogs\DialogTitleBarBodyBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\dialogs\DialogTitleBarPopupBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\docks\DockBinding.js" />
-    <Content Include="Composite\scripts\source\top\ui\bindings\docks\DockControlBinding.js" />
-    <Content Include="Composite\scripts\source\top\ui\bindings\docks\DockControlImageProfile.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\docks\DockPanelBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\docks\DockPanelsBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\docks\DockTabBinding.js" />

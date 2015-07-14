@@ -45,7 +45,6 @@ function StageSplitPanelBinding () {
 	/** 
 	 * Computing "ghosted" controls. Modified by DockBinding.
 	 * @see {DockBinding#activate} 
-	 * @see {ControlImageProfile}
 	 * @type {boolean}
 	 */
 	this.isActive = true;
