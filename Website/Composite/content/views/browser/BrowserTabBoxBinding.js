@@ -12,7 +12,17 @@ function BrowserTabBoxBinding () {
 	 * @type {SystemLogger}
 	 */
 	this.logger = SystemLogger.getLogger ( "BrowserTabBoxBinding" );
+
+	/**
+	 * @type {TabBinding}
+	 */
+	this._browserTabBinding = null;
 	
+
+	/**
+	 * @type {TabBinding}
+	 */
+	this._genericViewTabBinding = null;
 	/*
 	 * Returnable.
 	 */
@@ -27,31 +37,62 @@ BrowserTabBoxBinding.prototype.toString = function () {
 	return "[BrowserTabBoxBinding]";
 }
 
-/**
- * Open new tab (and show the URL). 
- * TODO: If URL is already displayed, find the tab and focus it instead?
- * @param @optional {string} url
- */
-BrowserTabBoxBinding.prototype.newURL = function ( url ) {
-	
-	var tab = BrowserTabBinding.newInstance ( this.bindingDocument );
-	var win = WindowBinding.newInstance ( this.bindingDocument );
-	tab.browserwindow = win;
-	this.appendTabByBindings ( tab, win );
-	if ( url != null ) {
-		this.setURL ( url );
-	}
-}
+
 
 /**
- * Show URL in selected tab.
+ * Show URL.
  * @param {string} url.
  */
 BrowserTabBoxBinding.prototype.setURL = function ( url ) {
 	
-	var tab = this.getSelectedTabBinding ();
+	var tab = this.getBrowserTabBinding();
+	this.select(tab);
+	//tab.select();
 	var win = tab.browserwindow;
-	win.setURL ( url );
+	win.setURL(url);
+
+}
+
+/**
+ * obsolute
+ * Show URL.
+ * @param @optional {string} url
+ */
+BrowserTabBoxBinding.prototype.newURL = BrowserTabBoxBinding.prototype.setURL;
+
+/**
+ * Get BrowserTabBinding
+ * @param {string} url.
+ */
+BrowserTabBoxBinding.prototype.getBrowserTabBinding = function () {
+
+	if (!this._browserTabBinding) {
+		this._browserTabBinding = BrowserTabBinding.newInstance ( this.bindingDocument );
+		var win = WindowBinding.newInstance(this.bindingDocument);
+		this._browserTabBinding.browserwindow = win;
+		this.appendTabByBindings ( this._browserTabBinding, win );
+	}
+	//hide tabs buttons
+	this.getTabsBinding().hide();
+	return this._browserTabBinding;
+}
+
+/**
+ * Get BrowserTabBinding
+ * @param {string} url.
+ */
+BrowserTabBoxBinding.prototype.getGeneticViewTabBinding = function () {
+
+	if (!this._genericViewTabBinding) {
+		this._genericViewTabBinding = TabBinding.newInstance(this.bindingDocument);
+
+		//var tree = TreeBinding.newInstance(this.bindingDocument);
+		//tree.bindingElement.innerHTML = "<ui:treebody />";
+		this.appendTabByBindings(this._genericViewTabBinding);
+	}
+	//hide tabs buttons
+	this.getTabsBinding().hide();
+	return this._genericViewTabBinding;
 }
 
 /**
@@ -60,7 +101,7 @@ BrowserTabBoxBinding.prototype.setURL = function ( url ) {
  */
 BrowserTabBoxBinding.prototype.getLocation = function () {
 	
-	var tab = this.getSelectedTabBinding ();
+	var tab = this.getBrowserTabBinding();
 	var win = tab.browserwindow;
 	return new String ( win.getContentDocument ().location );
 }
@@ -71,7 +112,7 @@ BrowserTabBoxBinding.prototype.getLocation = function () {
  */
 BrowserTabBoxBinding.prototype.getContentDocument = function () {
 
-	var tab = this.getSelectedTabBinding ();
+	var tab = this.getBrowserTabBinding();
 	var win = tab.browserwindow;
 	return win.getContentDocument ();
 }
@@ -82,7 +123,7 @@ BrowserTabBoxBinding.prototype.getContentDocument = function () {
  */
 BrowserTabBoxBinding.prototype.getContentWindow = function () {
 
-	var tab = this.getSelectedTabBinding ();
+	var tab = this.getBrowserTabBinding();
 	var win = tab.browserwindow;
 	return win.getContentWindow ();
 }

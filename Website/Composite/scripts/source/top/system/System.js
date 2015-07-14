@@ -14,6 +14,11 @@ var System = new function () {
 	this.hasActivePerspectives = false;
 
 	/**
+	 * Cache tree
+	 */
+	this.nodes = new Map();
+
+	/**
 	* Get default EntityToken for perspective.
 	* @return {EntityToken}
 	*/
@@ -74,25 +79,33 @@ var System = new function () {
 	* @return {List<SystemNode>}
 	*/
 	this.getChildNodes = function (node, searchToken) {
-
 		var result = new List();
 		var response = null;
 
-		if (searchToken) {
-			if (SearchTokens.hasToken(searchToken)) {
-				searchToken = SearchTokens.getToken(searchToken);
-			}
-			response = TreeService.GetElementsBySearchToken(node.getData(), searchToken);
-		} else {
-			response = TreeService.GetElements(node.getData());
-		}
-		new List(response).each(function (element) {
-			var newnode = new SystemNode(element);
+		var handle = node.getHandle();
+		if (!this.nodes.has(handle) || searchToken) {
 			if (searchToken) {
-				newnode.searchToken = searchToken;
+				if (SearchTokens.hasToken(searchToken)) {
+					searchToken = SearchTokens.getToken(searchToken);
+				}
+				response = TreeService.GetElementsBySearchToken(node.getData(), searchToken);
+			} else {
+				response = TreeService.GetElements(node.getData());
 			}
-			result.add(newnode);
-		});
+			new List(response).each(function(element) {
+				var newnode = new SystemNode(element);
+				if (searchToken) {
+					newnode.searchToken = searchToken;
+				}
+				result.add(newnode);
+			});
+
+			if (!searchToken) {
+				this.nodes.set(handle, result.copy());
+			}
+		} else {
+			result = this.nodes.get(handle).copy();
+		}
 		return result;
 	}
 
@@ -183,6 +196,11 @@ var System = new function () {
 			var element = elements.getNext();
 			list.add(new SystemNode(element));
 		}
+
+		var self = this;
+		map.each(function(key, list) {
+			self.nodes.set(key, list.copy());
+		});
 	}
 
 	/**

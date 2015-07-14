@@ -109,8 +109,12 @@ BrowserPageBinding.prototype.handleBroadcast = function (broadcast, arg) {
 				var self = this;
 				if (entityToken) {
 					TreeService.GetBrowserUrlByEntityToken(entityToken, function (result) {
-						setTimeout(function() {
-							self.pushURL(result);
+						setTimeout(function () {
+							if (result) {
+								self.pushURL(result);
+							} else {
+								self.pushToken(entityToken);
+							}
 
 						}, 0);
 					});
@@ -238,6 +242,17 @@ BrowserPageBinding.prototype.pushURL = function (url) {
 	}
 }
 
+
+/**
+ * Add Url to order
+ * @param {string} url
+ * @return
+ */
+BrowserPageBinding.prototype.pushToken = function (url) {
+	var tab = this._box.getGeneticViewTabBinding();
+	this._box.select(tab);
+}
+
 /**
  * Load URL in new tab.
  * @param {string} url
@@ -260,10 +275,7 @@ BrowserPageBinding.prototype._newURL = function ( url ) {
  * @return
  */
 BrowserPageBinding.prototype.setURL = function (url) {
-    if (Client.isPrism) {
-        Prism.disableCache();
-    }
-    
+
     var cover = window.bindingMap.cover;
     cover.show();
     this._box.setURL(url);
