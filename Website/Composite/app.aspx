@@ -97,7 +97,7 @@
 		</ui:popup>
 	</ui:popupset>
 	
-	<ui:toolbar id="systemtoolbar" binding="SystemToolBarBinding">
+	<ui:toolbar id="systemtoolbar" class="system-toolbar" binding="SystemToolBarBinding">
 			<ui:toolbarbody/>
 			<ui:toolbarbody id="moreactionstoolbargroup">
 				<ui:toolbargroup>
@@ -109,7 +109,7 @@
 	<ui:balloonset id="balloonset" />
 	<ui:balloonset id="dialogballoonset" />
 
-	<ui:menubar id="menubar" binding="StageMenuBarBinding">
+	<ui:menubar id="menubar" class="menubar" binding="StageMenuBarBinding">
 		
 <%--		<ui:menu label="${string:Website.App.LabelFile}" >
 			<ui:menupopup>
@@ -201,12 +201,8 @@
 		<ui:explorertoolbar>
 			<ui:toolbarbody align="left">
 				<ui:toolbargroup>
-					<ui:throbber id="throbber" />
-					<ui:toolbarbutton id="compositebutton" image="${icon:composite}"  oncommand="/* nothing */" />
-					<ui:toolbarbutton id="menutogglebutton" image="${icon:menu}"  oncommand="top.app.bindingMap.explorermenu.toggle()" />
-				</ui:toolbargroup>
-				<ui:toolbargroup>
-					<%--<ui:toolbarbutton id="mainmenubutton" popup="mainmenupopup" image="${icon:menu}" />--%>
+					<ui:toolbarbutton id="compositebutton" class="logo" image="${icon:composite}"  oncommand="/* nothing */" />
+					<ui:toolbarbutton id="menutogglebutton" class="menu-toggle" image="${icon:menu}"  oncommand="top.app.bindingMap.explorermenu.toggle()" />
 				</ui:toolbargroup>
 			</ui:toolbarbody>
 			<ui:toolbarbody class="max">

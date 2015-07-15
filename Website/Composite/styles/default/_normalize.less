@@ -1,0 +1,242 @@
+* {
+    cursor: default;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+    *:focus, *:focus * {
+        outline: none;
+    }
+
+//
+// 1. Set default font family to sans-serif.
+// 2. Prevent iOS text size adjust after orientation change, without disabling
+//    user zoom.
+//
+
+html {
+    font-family: sans-serif; // 1
+    -ms-text-size-adjust: 100%; // 2
+    -webkit-text-size-adjust: 100%; // 2
+}
+
+//
+// Remove default margin/padding.
+//
+html, body {
+    margin: 0;
+    padding: 0;
+    border: none;
+}
+
+// Links
+// ==========================================================================
+
+//
+// 1. Remove the gray background color from active links in IE 10.
+//
+
+a {
+    text-decoration: none;
+    background-color: transparent; // 1
+    img {
+        cursor: pointer;
+    }
+}
+
+    //
+    // Improve readability when focused and also mouse hovered in all browsers.
+    //
+
+    a:active,
+    a:hover {
+        outline: 0;
+    }
+
+//
+// Remove border when inside `a` element in IE 8/9/10.
+//
+
+img {
+    border: 0;
+}
+
+// Scrollbar
+// ==========================================================================
+
+// Only Chrome support custom scrollbar styling
+::-webkit-scrollbar {
+    width: 13px;
+    height: 13px;
+    background: #FAFAFA;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #CACACA;
+    border: 3px solid #FAFAFA;
+    border-radius: 7px;
+}
+
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: @primary-color;
+    }
+
+
+// Forms
+// ==========================================================================
+
+// IVB: copied from old base.css, if you know it is not used, please delete
+form { /* assuming that all forms are standard body-childnode dot net forms! */
+    height: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+//
+// Known limitation: by default, Chrome and Safari on OS X allow very limited
+// styling of `select`, unless a `border` property is set.
+//
+
+//
+// 1. Correct color not being inherited.
+//    Known issue: affects color of disabled elements.
+// 2. Correct font properties not being inherited.
+// 3. Address margins set differently in Firefox 4+, Safari, and Chrome.
+//
+
+button,
+input,
+optgroup,
+select,
+textarea {
+    color: inherit; // 1
+    font: inherit; // 2
+    margin: 0; // 3
+}
+
+//
+// Address `overflow` set to `hidden` in IE 8/9/10/11.
+//
+
+button {
+    overflow: visible;
+}
+
+//
+// Address inconsistent `text-transform` inheritance for `button` and `select`.
+// All other form control elements do not inherit `text-transform` values.
+// Correct `button` style inheritance in Firefox, IE 8/9/10/11, and Opera.
+// Correct `select` style inheritance in Firefox.
+//
+
+button,
+select {
+    text-transform: none;
+}
+
+//
+// 1. Avoid the WebKit bug in Android 4.0.* where (2) destroys native `audio`
+//    and `video` controls.
+// 2. Correct inability to style clickable `input` types in iOS.
+// 3. Improve usability and consistency of cursor style between image-type
+//    `input` and others.
+//
+
+button,
+html input[type="button"], // 1
+input[type="reset"],
+input[type="submit"] {
+    -webkit-appearance: button; // 2
+    cursor: pointer; // 3
+}
+
+    //
+    // Re-set default cursor for disabled elements.
+    //
+
+    button[disabled],
+    html input[disabled] {
+        cursor: default;
+    }
+
+    //
+    // Remove inner padding and border in Firefox 4+.
+    //
+
+    button::-moz-focus-inner,
+    input::-moz-focus-inner {
+        border: 0;
+        padding: 0;
+    }
+
+//
+// Address Firefox 4+ setting `line-height` on `input` using `!important` in
+// the UA stylesheet.
+//
+
+input {
+    line-height: normal;
+}
+
+    //
+    // It's recommended that you don't attempt to style these elements.
+    // Firefox's implementation doesn't respect box-sizing, padding, or width.
+    //
+    // 1. Address box sizing set to `content-box` in IE 8/9/10.
+    // 2. Remove excess padding in IE 8/9/10.
+    //
+
+    input[type="checkbox"],
+    input[type="radio"] {
+        box-sizing: border-box; // 1
+        padding: 0; // 2
+    }
+
+    //
+    // Fix the cursor style for Chrome's increment/decrement buttons. For certain
+    // `font-size` values of the `input`, it causes the cursor style of the
+    // decrement button to change from `default` to `text`.
+    //
+
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+        height: auto;
+    }
+
+//
+// Remove default vertical scrollbar in IE 8/9/10/11.
+//
+
+textarea {
+    overflow: auto;
+}
+
+
+textarea,
+input {
+    cursor: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    -webkit-user-select: text;
+    user-select: text;
+    resize: none;
+}
+
+// Tables
+// ==========================================================================
+
+//
+// Remove most spacing between table cells.
+//
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+td,
+th {
+    padding: 0;
+}

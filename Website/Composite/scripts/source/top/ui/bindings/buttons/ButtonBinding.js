@@ -10,7 +10,7 @@ ButtonBinding.TYPE_RADIOBUTTON = "radio";
 
 ButtonBinding.CLASSNAME_FOCUSABLE = "focusable";
 ButtonBinding.CLASSNAME_FOCUSED = "focused";
-ButtonBinding.CLASSNAME_DEFAULT = "default";
+ButtonBinding.CLASSNAME_DEFAULT = "primary";
 
 /**
  * @class

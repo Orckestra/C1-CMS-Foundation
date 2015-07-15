@@ -1,0 +1,118 @@
+/* see "toolbars.css" for styles shared with toolbarbutton */
+/** NOTICE SHARED LAYOUT! */
+ui|toolbarbutton,
+ui|clickbutton,
+ui|radiobutton,
+ui|checkbutton,
+ui|toolbarlabel {
+    display: block;
+    position: relative;
+    float: left;
+    margin-right: 2px;
+    overflow: hidden !important; /* contain added stuff */
+}
+
+// == ClickButton (usage: ... )
+ui|clickbutton {
+    padding: 0;
+
+    ui|labelbox {
+        float: none;
+        overflow: hidden;
+        padding: 6px 9px 7px;
+        border-radius: @btn-border-radius;
+        border: solid 1px @btn-border-color;
+        color: @btn-color;
+        background-color: @btn-bg-color;
+    }
+
+    &.focused, &.primary {
+        ui|labelbox {
+            border-color: @btn-primary-border-color;
+            background-color: @btn-primary-bg-color;
+            background-image: @btn-primary-bg-image;
+            color: @btn-primary-color;
+        }
+    }
+
+    &.active {
+        ui|labelbox {
+            border-color: @btn-border-color;
+            background-color: @btn-bg-color;
+            background-image: @btn-bg-image;
+            color: @btn-color;
+        }
+    }
+
+    &.hover {
+        ui|labelbox {
+            border-color: @btn-hover-border-color;
+            background-color: @btn-hover-bg-color;
+            background-image: @btn-hover-bg-image;
+            color: @btn-hover-color;
+        }
+    }
+}
+
+
+ui|toolbar ui|clickbutton ui|labelbox {
+    padding: 3px 2px;
+}
+
+ui|toolbar ui|selector ui|clickbutton ui|labelbox {
+    padding: 6px 24px 6px 9px;
+}
+
+//ivb: moved from skin. require re-factoring
+
+/* SELECTOR INDICATOR */
+ui|toolbarbutton ui|combobox:before,
+ui|selector ui|clickbutton ui|labelbox:before {
+    content: "";
+    position: absolute;
+    top: 12px;
+    right: 10px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 5px 5px 0 5px;
+    border-color: #0EBA7E transparent transparent transparent;
+}
+
+ui|toolbarbutton ui|combobox:after,
+ui|selector ui|clickbutton ui|labelbox:after {
+    content: "";
+    position: absolute;
+    top: 12px;
+    right: 11px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 4px 4px 0 4px;
+    border-color: #fff transparent transparent transparent;
+}
+
+ui|toolbarbutton.active ui|combobox:before,
+ui|toolbarbutton.hover ui|combobox:before,
+ui|selector ui|clickbutton.hover ui|labelbox:before {
+    border-color: #fff transparent transparent transparent;
+}
+
+ui|toolbarbutton.active ui|combobox:after,
+ui|toolbarbutton.hover ui|combobox:after,
+ui|selector ui|clickbutton.hover ui|labelbox:after {
+    border-color: #0EBA7E transparent transparent transparent;
+}
+
+
+ui|selector ui|clickbutton.active ui|labelbox:before {
+    top: 12px;
+    border-width: 0px 5px 5px 5px;
+    border-color: transparent transparent #fff transparent;
+}
+
+ui|selector ui|clickbutton.active ui|labelbox:after {
+    top: 13px;
+    border-width: 0px 4px 4px 4px;
+    border-color: transparent transparent #0EBA7E transparent;
+}

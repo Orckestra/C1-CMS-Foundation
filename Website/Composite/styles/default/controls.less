@@ -1,0 +1,42 @@
+﻿ui|controlgroup {
+    display: block;
+    float: right;
+}
+
+ui|control {
+    display: block;
+    float: left;
+    margin-left: 2px;
+    background-color: transparent;
+
+    .dialogcontrol {
+        padding: 0;
+
+        ui|labelbody {
+            padding-left: 16px;
+        }
+    }
+}
+
+    ui|control[controltype="close"] {
+        ui|labelbody {
+            padding-left: 16px !important;
+
+            &:after {
+                content: '×';
+                position: absolute;
+                height: 100%;
+                width: 0px;
+                top: -6px;
+                left: 8px;
+                color: @base-border-color;
+                font-size: 17px;
+            }
+        }
+
+        &.hover {
+            ui|labelbody:after {
+                color: darken( @base-border-color, 50%);
+            }
+        }
+    }

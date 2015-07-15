@@ -1,0 +1,83 @@
+ui|pagebody {
+    display: block;
+    padding: 15px 14px 0 14px;
+
+    &.pad-0 {
+        padding: 0;
+    }
+}
+
+
+ui|dialogtoolbar {
+    display: block;
+    clear: both;
+    white-space: nowrap;
+    padding: 12px 11px 14px 12px;
+    margin-right: 0;
+    margin-left: 0;
+    background-color: #FFFFFF;
+    border-top: 1px solid @base-border-color;
+}
+
+    ui|dialogtoolbar ui|clickbutton.focusable {
+        //margin: 5px !important;
+    }
+
+/* STANDARD DIALOGS ................................................................*/
+
+#dialoglayout {
+    margin: 0;
+    width: 306px;
+    table-layout: fixed;
+
+    td {
+        vertical-align: middle;
+        padding: 0;
+    }
+
+    &#dialogvignette {
+        padding: 0 0px 0 10px;
+        width: 60px;
+    }
+
+    #dialogtext {
+        padding-bottom: 4px;
+        word-wrap: break-word;
+    }
+}
+
+
+ui|dialogvignette {
+    display: block;
+    width: 32px;
+    height: 32px;
+    margin-right: 16px;
+}
+
+ui|dialogpage ui|dialogvignette svg {
+    width: 32px;
+    height: 32px;
+}
+
+
+/* STANDARD DIALOGS ................................................................*/
+
+ui|dialogpage.question ui|dialogvignette,
+ui|dialogvignette.question {
+    color: #EFAD57;
+}
+
+ui|dialogpage.warning ui|dialogvignette,
+ui|dialogvignette.warning {
+    color: #EFAD57;
+}
+
+ui|dialogpage.message ui|dialogvignette,
+ui|dialogvignette.message {
+    color: #5FC0DC; /* usage: Broadcast Message */
+}
+
+ui|dialogpage.error ui|dialogvignette,
+ui|dialogvignette.error {
+    color: #D75553;
+}

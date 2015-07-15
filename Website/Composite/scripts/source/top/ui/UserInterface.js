@@ -127,7 +127,6 @@ var UserInterface = new function () {
 		"ui:balloonset"					: BalloonSetBinding,
 		"ui:balloon"					: BalloonBinding,
 		"ui:error"						: ErrorBinding,
-		"ui:throbber"					: ThrobberBinding,
 		"ui:progressbar"				: ProgressBarBinding,
 		"ui:lazybinding"				: LazyBindingBinding,
 		"ui:sourcecodeviewer"			: SourceCodeViewerBinding,

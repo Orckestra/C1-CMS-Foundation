@@ -1,0 +1,109 @@
+ui|tabbox {
+    display: block;
+    overflow: hidden;
+}
+
+ui|tabs {
+    display: block;
+    position: relative !important;
+    overflow: hidden;
+}
+
+ui|tab {
+    display: block;
+    float: left;
+    position: relative;
+    white-space: nowrap;
+    border: solid 1px @tabs-border-color;
+    border-radius: @tabs-border-radius @tabs-border-radius 0 0;
+    background: @tabs-bg-color;
+    z-index: 2;
+    margin-right: -4px;
+    text-transform: uppercase;
+}
+
+ui|tabpanels {
+    display: block;
+    height: 100%;
+    clear: both;
+    overflow: hidden;
+}
+
+ui|tabbox.boxed ui|tabpanels {
+    overflow: visible;
+    height: auto;
+}
+
+ui|tabbox.equalsize ui|tabpanels {
+    overflow: hidden;
+    height: 100%;
+}
+
+ui|tabpanel { /* styles comparable to deck - please coordinate all changes! */
+    display: block;
+    height: 100% !important;
+    overflow: hidden;
+    position: absolute;
+    top: -10000px;
+}
+
+ui|tabbox.equalsize ui|tabpanel {
+    overflow: visible;
+    height: auto !important;
+}
+
+ui|tabbox.tabsontop {
+
+    ui|tabs {
+        box-shadow: inset 0px -1px 0px 0px rgba(204,204,204,1);
+        padding: 0px 10px 0px 10px;
+    }
+
+    ui|tab {
+        padding: 5px 20px 5px 15px;
+        color: @tabs-text-color;
+
+        &.selected {
+             color: @tabs-active-text-color;
+            z-index: 3;
+            border-color: @tabs-active-border-color @tabs-active-border-color transparent @tabs-active-border-color;
+        }
+    }
+}
+
+
+/* TABMANAGER .................................................................... */
+
+ui|toolbarbutton.tabbutton {
+    position: absolute;
+    z-index: 400;
+    display: none;
+    background-color: transparent;
+    margin: 0;
+    padding: 0;
+}
+
+    ui|toolbarbutton.tabbutton ui|labeltext {
+        font-weight: bold;
+    }
+
+    ui|toolbarbutton.tabbutton ui|labelbox span.arrow {
+        font-weight: normal;
+        font-size: 120%;
+        font-family: "Courier New", monospace;
+        position: relative;
+        top: -2px;
+        left: -2px;
+        /*#ie left: -4px; */
+    }
+
+// from skin
+
+ui|pagebody > ui|tabbox {
+    margin: 0 -14px 0 -14px;
+}
+
+    ui|pagebody > ui|tabbox ui|tabpanel {
+        padding: 0 14px 0 14px;
+    }
+

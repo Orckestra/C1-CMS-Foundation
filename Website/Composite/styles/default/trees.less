@@ -1,0 +1,211 @@
+ui|tree {
+    display: block;
+    overflow: hidden;
+    position: relative;
+}
+
+ui|treebody {
+    display: block;
+    color: @text-color;
+    overflow: auto !important;
+    padding-top: 10px;
+    background: @tree-bg-color;
+}
+
+ui|treenode,
+ui|treecontent {
+    display: block;
+    float: none;
+    clear: both;
+    overflow: visible;
+}
+
+ui|treenode {
+    margin: 0;
+    padding: 0 8px;
+    position: relative;
+
+    ui|labelbox {
+        background: none transparent no-repeat 1px 8px;
+        padding-bottom: 3px;
+        padding-left: 16px;
+        float: none;
+        height: 28px;
+        color: @tree-icon-color;
+        position: relative;
+
+        svg {
+            width: 18px;
+            height: 18px;
+            margin-left: -18px;
+            margin-top: 3px;
+        }
+
+        ui|labelbody {
+            max-width: none;
+        }
+
+        ui|labeltext {
+            color: @tree-text-color;
+            font-size: @tree-font-size;
+            border-radius: 2px;
+            padding: 3px 4px 5px 4px;
+            line-height: 17px;
+        }
+
+        &:before, &:after {
+            position: absolute;
+            left: 2px;
+            display: block;
+            content: "";
+            border: 5px solid transparent;
+        }
+
+        &.open {
+            &:before {
+                top: 11px;
+                border-top-color: @primary-color; /*Chevron Color*/
+            }
+
+            &:after {
+                top: 10px;
+                border-top-color: @tree-bg-color;
+            }
+        }
+
+        &.closed {
+            &:before {
+                top: 8px;
+                border-left-color: #999; /*Chevron Color*/
+            }
+
+            &:after {
+                top: 8px;
+                border-left-color: @tree-bg-color;
+                left: 0;
+            }
+        }
+
+        &.focused {
+            ui|labelbody {
+                color: @primary-color;
+            }
+
+            ui|labeltext {
+                background-color: @primary-color !important;
+                color: #fff;
+            }
+        }
+    }
+
+    ui|treenode {
+        padding-left: 50px;
+
+        &::before, &::after {
+            content: '';
+            position: absolute;
+        }
+
+        &::before {
+            border-top: 1px solid #999;
+            top: 12px;
+            width: 30px;
+            height: 0;
+            left: 23px;
+        }
+
+        &::after {
+            border-left: 1px solid #999;
+            height: 100%;
+            width: 0px;
+            top: -3px;
+            left: 23px;
+        }
+
+        &.open, &.closed {
+            &::before {
+                width: 20px;
+            }
+        }
+
+        &:last-of-type::after {
+            height: 16px;
+        }
+    }
+
+    &.closed {
+        ui|treenode, ui|treecontent {
+            display: none;
+        }
+    }
+}
+
+ui|treecontent {
+    padding-left: 40px;
+    -vendor-user-select: none; /* hope we don't need an input field */
+}
+
+
+ui|treepositionindicator {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 140px;
+    height: 1px;
+    overflow: hidden;
+    background-color: #3399FF;
+    z-index: -1;
+}
+
+/* Template selector */
+
+ui|tree#templatetree {
+    ui|treebody {
+        background: #fff;
+        padding-top: 19px;
+    }
+
+    ui|treenode {
+        padding: 1px 4px;
+    }
+
+    ui|labelbody {
+        position: relative;
+
+        svg {
+            display: none;
+        }
+
+        &:before {
+            box-sizing: border-box;
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            border: 1px solid @field-border-color;
+            border-radius: 8px;
+            left: 0px;
+            top: 4px;
+            background: #FFFFFF;
+        }
+    }
+
+    ui|labelbox.focused {
+        ui|labeltext {
+            background: transparent !important;
+            color: #000;
+        }
+
+        ui|labelbody:after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 4px;
+            background: @primary-color;
+            left: 4px;
+            top: 8px;
+        }
+    }
+}

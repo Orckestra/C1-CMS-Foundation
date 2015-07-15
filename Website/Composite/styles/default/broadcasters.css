@@ -1,8 +1,0 @@
-@namespace url("http://www.w3.org/1999/xhtml");
-@namespace ui url("http://www.w3.org/1999/xhtml");
-
-ui|broadcasterset,
-ui|broadcaster {
-	position: absolute;
-	visibility: hidden;
-}

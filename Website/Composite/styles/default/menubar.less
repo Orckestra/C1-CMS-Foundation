@@ -1,0 +1,18 @@
+.menubar {
+    background: @menubar-bg-color;
+    
+
+    > ui|menu {
+        > ui|labelbox {
+            margin-left: 12px;
+            text-transform: uppercase;
+            color: @menubar-text-color;
+        }
+
+        &.hover {
+            > ui|labelbox {
+                color: @primary-color;
+            }
+        }
+    }
+}

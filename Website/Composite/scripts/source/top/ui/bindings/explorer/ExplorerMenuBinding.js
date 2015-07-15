@@ -215,7 +215,7 @@ ExplorerMenuBinding.prototype.setSelectionDefault = function () {
  * Toogle explorer
  */
 ExplorerMenuBinding.prototype.toggle = function () {
-	if (top.app.bindingMap.app.hasClassName("expanded")) {
+    if (top.app.bindingMap.app.hasClassName("exploler-expanded")) {
 		this.collapse();
 	} else {
 		this.expand();
@@ -226,7 +226,7 @@ ExplorerMenuBinding.prototype.toggle = function () {
  * Collapse explorer
  */
 ExplorerMenuBinding.prototype.collapse = function () {
-	top.app.bindingMap.app.detachClassName("expanded");
+    top.app.bindingMap.app.detachClassName("exploler-expanded");
 	top.app.bindingMap.menutogglebutton.setImage("${icon:menu}");
 
 }
@@ -236,6 +236,6 @@ ExplorerMenuBinding.prototype.collapse = function () {
  * Expand explorer
  */
 ExplorerMenuBinding.prototype.expand = function () {
-	top.app.bindingMap.app.attachClassName("expanded");
+    top.app.bindingMap.app.attachClassName("exploler-expanded");
 	top.app.bindingMap.menutogglebutton.setImage("${icon:arrow-left}");
 }

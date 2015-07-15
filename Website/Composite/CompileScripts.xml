@@ -309,7 +309,6 @@
 			<Script filename="${root}/scripts/source/top/ui/bindings/editors/visualeditor/multieditor/VisualMultiTemplateEditorBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/editors/CodeMirrorEditor/CodeMirrorEditorPopupBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/editors/CodeMirrorEditor/CodeMirrorEditorBinding.js"/>
-			<Script filename="${root}/scripts/source/top/ui/bindings/throbber/ThrobberBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/progressbar/ProgressBarBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/start/StartMenuItemBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/keys/KeySetBinding.js"/>

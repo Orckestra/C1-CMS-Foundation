@@ -1,0 +1,129 @@
+ui|selector {
+    display: block;
+    overflow: hidden !important; /* relevant for editor selectors */
+}
+
+ui|toolbar ui|selector { /* TODO: handle focus outline here somehow */
+    padding: 0;
+}
+
+ui|selection,
+ui|selector input {
+    display: none;
+}
+
+ui|selector {
+  
+      ui|clickbutton {
+        float: none;
+        margin: 0;
+
+        ui|labelbox {
+            padding: 5px 20px 7px 5px;
+            border-color: @field-border-color;
+        }
+
+        &.infobox {
+            ui|clickbutton ui|labeltext {
+                font-style: italic;
+            }
+        }
+    }
+}
+
+ui|fields ui|field.fieldhelp ui|selector ui|clickbutton ui|labelbox {
+    overflow: hidden;
+    float: none;
+}
+
+/* SIMPLESELECTORS ............................................ */
+
+ui|simpleselector {
+    display: block;
+    position: relative;
+    overflow: visible;
+}
+
+
+/* MULTISELECTORS ............................................. */
+
+ui|multiselector {
+    display: block;
+
+    ui|box {
+        -vendor-user-select: none;
+        padding: 5px 0 5px 0;
+        overflow: auto;
+        height: 100px;
+
+        div {
+            padding: 1px 5px 2px 7px;
+            width: 100%;
+
+            &.selected {
+                background: @primary-color;
+                color: #FFF;
+            }
+        }
+    }
+
+    input {
+        display: none;
+    }
+
+    ui|datadialog, ui|postbackdialog {
+        padding: 2px 0 0 0;
+    }
+}
+
+
+ui|field.fieldhelp ui|multiselector ui|box {
+    width: 186px;
+}
+
+
+/* DATAINPUTSELECTORS ......................................... */
+ui|datainputselector,
+ui|datainputdialog,
+ui|datainputbutton,
+ui|urlinputdialog {
+    display: block;
+    position: relative;
+
+    ui|toolbarbutton {
+        margin: 0;
+        padding: 5px;
+        border-color: transparent;
+        position: absolute;
+        right: 3px;
+        top: 3px;
+
+        ui|labelbox {
+            padding: 0px;
+        }
+    }
+}
+
+
+ui|fielddata ui|datainputselector input,
+ui|fielddata ui|datainputdialog input,
+ui|fielddata ui|datainputbutton input,
+ui|fielddata ui|urlinputdialog input {
+    width: 100%;
+}
+
+ui|fielddata ui|datainputselector.imagesizenormal input {
+    background: transparent none no-repeat 4px 4px;
+    padding-left: 24px;
+}
+
+ui|field.fieldhelp ui|fielddata {
+    position: relative;
+}
+
+    ui|field.fieldhelp ui|fielddata ui|datainputselector input,
+    ui|field.fieldhelp ui|fielddata ui|datainputdialog input,
+    ui|field.fieldhelp ui|fielddata ui|datainputbutton input,
+    ui|field.fieldhelp ui|fielddata ui|urlinputdialog input {
+        width: 100%;
+    }

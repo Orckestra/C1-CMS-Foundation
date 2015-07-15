@@ -1,9 +1,0 @@
-@namespace url("http://www.w3.org/1999/xhtml");
-@namespace ui url("http://www.w3.org/1999/xhtml");
-
-ui|lazybindingset,
-ui|lazybinding {
-	position: absolute;
-	visibility: hidden;
-	display: none;
-}

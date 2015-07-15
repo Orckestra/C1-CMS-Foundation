@@ -51,8 +51,8 @@
 			<ui:toolbarbody>
 				<ui:toolbargroup>
 					<ui:toolbarbutton id="toggletreebutton" cmd="toggletree" image="${icon:nodes}" binding="CheckButtonBinding" ischecked="true"/>
-					<ui:toolbarbutton cmd="back" image="${icon:previous}" image-disabled="${icon:previous-disabled}" tooltip="${string:Composite.Web.PageBrowser:ToolBarButton.Back.ToolTip}" observes="broadcasterHistoryBack" />
-					<ui:toolbarbutton cmd="forward" image="${icon:next}" image-disabled="${icon:next-disabled}" tooltip="${string:Composite.Web.PageBrowser:ToolBarButton.Forward.ToolTip}" observes="broadcasterHistoryForward" />
+					<ui:toolbarbutton class="btn-group-left" cmd="back" image="${icon:previous}" image-disabled="${icon:previous-disabled}" tooltip="${string:Composite.Web.PageBrowser:ToolBarButton.Back.ToolTip}" observes="broadcasterHistoryBack" />
+					<ui:toolbarbutton class="btn-group-right" cmd="forward" image="${icon:next}" image-disabled="${icon:next-disabled}" tooltip="${string:Composite.Web.PageBrowser:ToolBarButton.Forward.ToolTip}" observes="broadcasterHistoryForward" />
 					<ui:toolbarbutton cmd="refresh" image="${icon:refresh}" tooltip="${string:Composite.Web.PageBrowser:ToolBarButton.Refresh.ToolTip}" />
 					<ui:toolbarbutton cmd="home" image="${icon:home}" tooltip="${string:Composite.Web.PageBrowser:ToolBarButton.Home.ToolTip}" />
 					<ui:toolbarbutton  cmd="viewsource" tooltip="${string:Composite.Web.PageBrowser:Menu.ViewSource}" image="${icon:editor-sourceview}" />
@@ -62,7 +62,6 @@
 				<ui:toolbargroup>
 					<ui:datainput id="addressbar" name="addressbar" binding="BrowserAddressBarBinding" autoselect="true" />
 					<ui:toolbarbutton id="go" image="${icon:input}" image-disabled="${icon:input-disabled}" isdisabled="true" tooltip="${string:Composite.Web.PageBrowser:ToolBarButton.Go.ToolTip}" />
-					
 				</ui:toolbargroup>
 			</ui:toolbarbody>
 		</ui:toolbar>

@@ -1,0 +1,51 @@
+ui|page,
+ui|editorpage,
+ui|dialogpage,
+ui|wizardpage {
+	display: block;
+	height: 100%;
+	width: 100%;
+	overflow: hidden;
+	visibility: hidden; 	
+}
+ui|dialogpage.auto,
+ui|wizardpage.auto {
+	height: auto;
+}
+ui|page.dialogsubpage,
+ui|editorpage.dialogsubpage {
+	height: auto;
+	min-height: 100%; /* IE relies on flexibility instead */
+}
+
+
+
+ui|pagehead {
+	display: block;
+	width: 488px; /* matching fields! */
+	padding-left: 2px;
+	padding-bottom: 1em;
+	-vendor-user-select: none;
+}
+ui|pageheading {
+	display: block;
+	font-size: 120%;
+	font-weight: bold;
+	padding: 0 0 0.5em 0;
+	-vendor-user-select: none;	
+}
+ui|pagedescription {
+	display: block;
+	padding: 0 0 12px 0;
+	-vendor-user-select: none;
+}
+
+ui|page > ui|toolbar#toolbar,
+ui|editorpage > ui|toolbar {
+        padding: 0px;
+        border: 0px;
+}
+ui|page > ui|toolbar#toolbar ui|toolbarbody,
+ui|editorpage > ui|toolbar ui|toolbarbody {
+        float: right;
+}

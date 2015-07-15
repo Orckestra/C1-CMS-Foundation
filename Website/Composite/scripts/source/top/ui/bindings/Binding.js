@@ -15,7 +15,7 @@ Binding.CALLBACKARG = "callbackarg"; // __EVENTARGUMENT
  * best way to performance-optimize Internet Explorer.
  * @see "base.css"
  */
-Binding.CLASSNAME_CLEARFLOAT = "clearfloatelement";
+Binding.CLASSNAME_CLEARFLOAT = "clearfix";
 Binding.CLASSNAME_FOCUSED = "focused";
 
 /*

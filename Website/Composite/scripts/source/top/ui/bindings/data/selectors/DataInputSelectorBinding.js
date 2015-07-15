@@ -2,7 +2,7 @@ DataInputSelectorBinding.prototype = new DataInputBinding;
 DataInputSelectorBinding.prototype.constructor = DataInputSelectorBinding;
 DataInputSelectorBinding.superclass = DataInputBinding.prototype;
 
-DataInputSelectorBinding.INDICATOR_IMAGE = Resolver.resolve ( "${skin}/fields/selectorindicator.png" );
+DataInputSelectorBinding.INDICATOR_IMAGE = null;
 DataInputSelectorBinding.ACTION_SELECTIONCHANGED = "datainputselectorselectionchanged";
 
 /**

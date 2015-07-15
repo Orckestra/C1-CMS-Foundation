@@ -1,0 +1,142 @@
+html,
+body {
+    height: 100%;
+    overflow: hidden;
+}
+
+html,
+input,
+textarea,
+button,
+select,
+td,
+th {
+    font-family: @font-family-sans-serif;
+    font-size: @font-size-base;
+    color: @text-color;
+}
+
+img.designmodesanitizer {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 24px; /* ie must have a fixed px height */
+    z-index: 2; /* above selectorindicator in EditorSelectorBinding */
+}
+
+
+a.buttonurl {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+ui|binding,
+ui|feedbackset { /* ONLY MAW USES THIS FOR NOW! */
+    display: none;
+}
+
+ui|box {
+    display: block;
+}
+
+ui|cover  {
+    display: block;
+    position: absolute;
+    overflow: hidden;
+    z-index: 5;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    &.transparent {
+        background-color: transparent;
+   }
+}
+
+ui|*.maxboxelement,
+ui|*.flexboxelement {
+    display: block;
+    height: 100%;
+    overflow: hidden;
+}
+
+ui|stagecontainer {
+	display: block;
+	overflow: hidden;
+	padding-right: 50px;
+	margin-right: -50px;
+	float: left;
+}
+
+ui|flexbox#stageflexbox {
+	padding: 0;
+}
+
+ui|stage {
+	display: block;
+	height: 100%;
+	overflow: hidden;
+	position: relative;
+}
+
+
+/* Fix for IE9-10 */
+ui|wizardpage > .flexboxelement,
+ui|dialogpage > .flexboxelement {
+    height: auto;
+}
+
+
+ui|persistance {
+    display: none;
+    /*#ie behavior: url(#default#userdata);*/
+}
+
+ui|window {
+    display: block;
+    position: relative; /* to contain a possible cover */
+    overflow: auto; /*?*/
+    -webkit-overflow-scrolling: touch;
+}
+
+iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: none !important;
+    border-width: 0;
+}
+
+ui|scrollbox {
+    display: block;
+    height: 100%;
+    overflow: auto !important;
+    position: relative; /* marks srollbox as an "offsetparent" for position calculations */
+}
+
+    ui|scrollbox.infobox {
+        background-color: white;
+        border: 1px solid @base-border-color;
+    }
+
+ui|status {
+    display: none;
+}
+
+[isdisabled="true"] {
+    opacity: 0.4;
+}
+
+page[isdisabled="true"] {
+	opacity: 0.95;
+}
+
+
+

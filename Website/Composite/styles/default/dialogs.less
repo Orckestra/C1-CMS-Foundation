@@ -1,0 +1,86 @@
+ui|dialogset {
+    display: block;
+    overflow: visible;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    z-index: @dialogset-zindex; /* below popupset */
+}
+
+ui|dialog {
+    display: block;
+    background-color: @dialog-bg-color;
+    overflow: hidden;
+    position: absolute;
+    z-index: @dialog-zindex; /* above shadow - adjusted by script */
+    margin-top: -10000px;
+    padding: 0px; /* override chrome user agent stylesheet 1em */
+    border-radius: @dialog-border-radius;
+    border: solid 1px @dialog-border-color;
+
+    &.minimized {
+        border: 5px solid pink;
+    }
+
+    &.maximized {
+        border: 5px solid lime;
+    }
+}
+
+ui|dialoghead,
+ui|dialogbody {
+    display: block;
+    padding: 0px;
+}
+
+ui|dialoghead {
+    padding: 3px;
+    border-bottom: 1px solid @dialog-border-color;
+    background: @dialog-header-bg-color;
+}
+
+ui|dialogbody {
+    padding-top: 0 !important;
+    width: 100%; /* ie bug */
+    overflow: hidden;
+}
+
+ui|dialogcover {
+    position: absolute;
+    height: 100%; /* adjusted by script */
+    width: 100%; /* adjusted by script */
+    left: 0;
+    top: 0;
+    z-index: 2; /* adjusted by script */
+    background-color: #000;
+    .opacity(0.3);
+}
+
+//require refactoring
+ui|dialogpage ui|labelbox.fieldgrouplabel,
+ui|wizardpage ui|labelbox.fieldgrouplabel {
+    display: none;
+}
+
+ui|dialogpage ui|fieldgroup.first,
+ui|wizardpage ui|fieldgroup.first {
+    margin-top: 0px;
+}
+
+ui|dialogpage ui|fieldgroup,
+ui|wizardpage ui|fieldgroup {
+    border: 0px;
+    background: transparent;
+    width: 100%;
+    padding: 6px 1px 27px 13px;
+}
+
+
+    ui|wizardpage ui|fieldgroup ui|field,
+    ui|dialogpage ui|fieldgroup ui|field {
+        background: transparent;
+        padding: 0;
+        border: none !important;
+    }

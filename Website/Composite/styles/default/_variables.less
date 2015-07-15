@@ -1,0 +1,105 @@
+﻿//== Path
+@images-root-path: '../images';
+
+
+//== Colors
+@primary-color: #22B980;
+@gray-color: #666;
+
+
+
+//== Typography
+@font-family-sans-serif: "Segoe UI", Tahoma, sans-serif;
+@font-size-base: 12px;
+@text-color: #333;
+@heading-h1-color: @primary-color;
+
+//== Base
+@base-border-color: #ccc;
+@base-border-radius: 5px;
+
+
+//== Buttons
+@btn-border-radius: 4px;
+@btn-border-color: darken(@primary-color, 5%);
+@btn-bg-color: #fff;
+@btn-bg-image: none; 
+@btn-color: darken(@primary-color, 5%);
+
+@btn-hover-border-color: darken(@primary-color, 10%);
+@btn-hover-bg-color: darken(@primary-color, 5%);
+@btn-hover-bg-image: linear-gradient(to bottom, @btn-hover-bg-color 0%,@btn-hover-border-color 100%); /* W3C */
+@btn-hover-color: #fff;
+
+@btn-primary-border-color: darken(@primary-color, 5%);
+@btn-primary-bg-color: @primary-color;
+@btn-primary-bg-image: linear-gradient(to bottom,@btn-primary-bg-color 0%,@btn-primary-border-color 100%); /* W3C */
+@btn-primary-color: #fff;
+
+
+
+//== MenuBar (Settings, Languages, Help, Developer tools... )
+@menubar-bg-color: #333;
+@menubar-text-color: #919191;
+
+//== Explorer (Perspective Navbar)
+@explorer-bg-color: #333;
+@explorer-icon-color: #9A9A9A;
+@explorer-text-color: #9A9A9A;
+@explorer-text-active-color: @primary-color;
+
+
+//== Tabs
+@tabs-border-color: #ddd;
+@tabs-border-radius: @base-border-radius;
+@tabs-bg-color: #fff;
+@tabs-text-color: #ADADAD;
+
+@tabs-active-bg-color: #fff;
+@tabs-active-border-color: @base-border-color;
+@tabs-active-text-color: @primary-color;
+
+
+// Trees
+@tree-bg-color: #EFEFEF;
+@tree-icon-color: #999;
+@tree-text-color: @text-color;
+@tree-font-size: 13px;
+
+//== Toolbars
+@visual-editor-toolbar-bg-color: #EFEFEF;
+@pagetemplates-toolbar-bg-color: #EFEFEF;
+
+//== Dialogs
+@dialog-border-radius: @base-border-radius;
+@dialog-bg-color: #F7F7F7;
+@dialog-border-color: @base-border-color;
+@dialog-header-bg-color: #fff;
+
+
+//== Balloons
+@balloons-bg-color: lightyellow;
+@balloons-border: solid 1px @base-border-color;
+@balloons-width: 280px;
+
+
+//== Forms, Fields
+@fields-group-bg-color: #F7F7F7;
+@fields-group-border-color:  @base-border-color;
+@fields-group-border-radius: @base-border-radius;
+
+@field-label-color: #999;
+@field-border-color: @base-border-color;
+@field-border-radius:  @base-border-radius;
+@field-bg-color: #fff;
+
+@field-error-color: #A40000;
+
+
+//Z-indexes
+@balloonset-zindex: 3; /* below dialogs */
+@dialogset-zindex: 4; /* below popupset */
+@dialogballoonset-zindex: 5; /* above dialogs */	
+@popupset-zindex: 5; /* above dialogset */
+@dialog-zindex: 6; /* above shadow - adjusted by script */
+

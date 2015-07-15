@@ -1,0 +1,174 @@
+/* see also popups.css for shared visual styles!!!!!!! */
+ui|menubar {
+    display: block;
+    white-space: nowrap;
+}
+
+ui|menubody {
+    display: block;
+    padding: 0;
+    background-color: #fff;
+    border-radius: 3px;
+    border: 1px solid @base-border-color;
+}
+
+ui|menugroup {
+    display: block;
+    padding: 0;
+    border-bottom: 1px solid @base-border-color;
+
+    &.last {
+        border-bottom: none;
+    }
+}
+
+
+ui|menuitem {
+    white-space: nowrap;
+    display: block;
+    clear: both;
+    position: relative;
+
+    ui|labelbox {
+        position: relative;
+        padding: 7px 8px 7px 8px;
+
+        &.hover {
+            background: @primary-color;
+            color: #fff;
+        }
+    }
+
+    ui|labeltext {
+        padding-left: 4px;
+        position: relative;
+    }
+
+    .checkboxindicator {
+        font-family: Arial, sans-serif;
+        font-size: 11px;
+        position: absolute;
+        left: 10px;
+        top: 10px;
+    }
+    //is it used?
+    .submenuindicator {
+        font-family: Arial, sans-serif;
+        font-size: 11px;
+        position: absolute;
+        right: 7px;
+        top: 3px;
+        display: none;
+    }
+
+    ui|menupopup {
+        margin-top: -2px;
+        margin-left: -2px;
+    }
+}
+
+ui|menubody.checkboxed ui|menuitem ui|labelbox {
+    padding: 7px 8px 7px 24px;
+}
+
+
+ui|menuitem ui|labelbox,
+ui|menuitem ui|labelbody,
+ui|menubody ui|labelbox,
+ui|menubody ui|labelbody {
+    float: none;
+    clear: both;
+}
+
+ui|menu {
+    display: block;
+    float: right;
+    margin: 0;
+    padding: 0;
+    height: 30px;
+
+    .menulabel {
+        padding: 7px 16px 1px 4px;
+        position: relative; /* ie something */
+    }
+
+    ui|clickbutton ui|labelbox {
+        border: 0 !important;
+        background-color: transparent;
+    }
+
+    > ui|menupopup {
+        margin-top: 5px;
+
+        &:before {
+            content: "";
+            position: absolute;
+            top: -9px;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-left: 9px solid transparent;
+            border-right: 9px solid transparent;
+            border-bottom: 9px solid @base-border-color;
+            margin-left: -9px;
+        }
+
+        &:after {
+            content: "";
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-left: 9px solid transparent;
+            border-right: 9px solid transparent;
+            border-bottom: 9px solid #fff;
+            margin-left: -9px;
+        }
+    }
+
+    > ui|labelbox.textonly {
+
+        &:before {
+            content: "";
+            position: absolute;
+            top: 12px;
+            right: 0;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 5px 5px 0 5px;
+            border-color: @primary-color transparent transparent transparent;
+        }
+
+        &:after {
+            content: "";
+            position: absolute;
+            top: 12px;
+            right: 1px;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 4px 4px 0 4px;
+            border-color: @menubar-bg-color transparent transparent transparent;
+        }
+    }
+
+    &.hover {
+        > ui|labelbox.textonly {
+
+            &:before {
+                top: 12px;
+                border-width: 0px 5px 5px 5px;
+                border-color: transparent transparent #909090 transparent;
+            }
+
+            &:after {
+                top: 13px;
+                right: 1px;
+                border-width: 0px 4px 4px 4px;
+                border-color: transparent transparent @menubar-bg-color transparent;
+            }
+        }
+    }
+}

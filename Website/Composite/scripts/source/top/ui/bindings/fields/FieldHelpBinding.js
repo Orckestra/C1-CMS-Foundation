@@ -2,7 +2,7 @@ FieldHelpBinding.prototype = new Binding;
 FieldHelpBinding.prototype.constructor = FieldHelpBinding;
 FieldHelpBinding.superclass = Binding.prototype;
 
-FieldHelpBinding.INDICATOR_IMAGE = "${skin}/fields/fieldhelpindicator.png";
+FieldHelpBinding.INDICATOR_IMAGE = null;
 
 /**
  * @class

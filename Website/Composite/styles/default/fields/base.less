@@ -1,0 +1,290 @@
+ui|datacollectorset,
+ui|datacollector {
+    position: absolute;
+    visibility: hidden;
+}
+
+ui|fields {
+    display: none; /* adjusted by FieldsBinding.js */
+    position: relative; /* mostly because it fixes an ie bug where fieldgroup captions would hang on tabpanel changes */
+    -webkit-column-width: 430px; /* Chrome, Safari, Opera */
+    -moz-column-width: 430px; /* Firefox */
+    column-width: 430px;
+}
+
+ui|fieldgroup {
+    width: 430px;
+    display: inline-block;
+    overflow: visible;
+    padding: 0px 0px 35px 0px;
+    position: relative;
+    -webkit-column-break-inside: avoid; /* Chrome, Safari, Opera */
+    page-break-inside: avoid; /* Firefox */
+    break-inside: avoid; /* IE 10+ */
+    .fieldgrouplabel {
+        color: @heading-h1-color;
+        text-transform: uppercase;
+        font-style: italic;
+        font-weight: bold;
+        margin-top: 0px;
+        margin-bottom: 20px;
+
+        ui|labeltext {
+            padding-right: 5px;
+        }
+
+        ui|labelbody {
+            float: left;
+        }
+    }
+}
+
+ui|dialogpage ui|fieldgroup,
+ui|wizardpage ui|fieldgroup {
+    margin-bottom: 5px; /* strange flex bug */
+}
+
+ui|fielddesc {
+    display: block;
+    padding: 8px 0 5px 5px;
+    white-space: normal;
+    -vendor-user-select: none;
+    color: @field-label-color;
+}
+
+ui|field {
+    display: block;
+    margin: 0;
+    clear: both;
+    border-width: 0 1px;
+    border-style: solid;
+    border-color: @fields-group-border-color;
+    background: @fields-group-bg-color;
+    padding: 0 17px;
+
+    &:first-of-type {
+        padding-top: 8px;
+        border-top-width: 1px;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+    }
+
+    &:last-of-type {
+        padding-bottom: 27px;
+        border-bottom-width: 1px;
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+    }
+
+    &.fieldhelp {
+        ui|fielddata {
+            margin-right: 30px;
+
+            input, select, textarea, ui|simpleselector select {
+                width: 100%;
+            }
+        }
+
+        ui|datalabeltext {
+            width: 163px;
+        }
+    }
+
+    &.nodesc ui|fielddata {
+        width: auto;
+        float: none;
+    }
+}
+
+ui|fieldhelp {
+    overflow: visible;
+    float: right;
+    position: relative;
+
+    ui|clickbutton.fieldhelp {
+
+        ui|labelbox {
+            border-color: transparent;
+            background: transparent !important;
+        }
+
+        &:after {
+            content: "?";
+            width: 16px;
+            height: 16px;
+            color: white;
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            background: #CDCDCF;
+            border-radius: 8px;
+            font-size: 11px;
+            text-align: center;
+            line-height: 16px;
+            font-weight: normal;
+            font-family: Verdana;
+        }
+
+        &.active, &.hover {
+            &:after {
+                background: #808080;
+            }
+        }
+    }
+}
+
+ui|clickbutton {
+    &.fieldhelp { /* width and height needed for explorer vanishing dysfunction */
+        margin: 0;
+        margin-top: 2px;
+        right: 2px;
+        position: absolute;
+        width: 26px;
+        height: 26px;
+
+        ui|labelbox {
+            padding: 4px;
+        }
+    }
+}
+
+ui|popup.fieldhelppopup {
+    min-width: 220px;
+}
+
+ui|fielddata {
+    display: block;
+    position: relative; /* because of strange fieldhelp setup for exploder */
+    input, select, textarea {
+        width: 214px;
+        padding: 0;
+        margin: 0;
+        border: none;
+        display: block;
+    }
+
+    input, textarea {
+        &.warning {
+            font-weight: bold;
+            color: @field-error-color;
+        }
+    }
+
+    .disabled, .readonly {
+        input, textarea {
+            cursor: default;
+            background-color: #fff;
+            -vendor-user-select: none;
+            -vendor-user-focus: none;
+        }
+    }
+
+    input {
+        padding: 5px 0 0 7px;
+    }
+}
+
+ui|datainput {
+    display: block;
+}
+
+ui|datainput,
+ui|datainputselector,
+ui|datainputdialog,
+ui|datainputbutton,
+ui|urlinputdialog,
+ui|textbox,
+ui|selector,
+ui|simpleselector,
+ui|multiselector,
+ui|datadialog,
+ui|postbackdialog,
+ui|htmldatadialog,
+ui|editortextbox {
+    padding: 2px;
+
+    input {
+        border: none;
+    }
+
+    ui|box {
+        border: 1px solid @field-border-color;
+        border-radius: @field-border-radius;
+        background-color: @field-bg-color;
+        height: 30px;
+        overflow: hidden;
+    }
+
+    &.disabled, &.readonly {
+        ui|box {
+            border-color: #ddd;
+            background-color: #fff;
+        }
+    }
+
+    &.invalid {
+        ui|box {
+            border-color: @field-error-color;
+        }
+
+        ui|labeltext {
+            font-weight: bold;
+            border-color: @field-error-color;
+        }
+    }
+}
+
+
+/* EXOTIC STUFF ................................... */
+
+ui|nullpostbackdatadialog {
+    display: block;
+}
+
+
+ui|datalabeltext {
+    display: block;
+    float: left;
+    width: 195px;
+    padding-left: 5px;
+    padding-top: 2px;
+    -vendor-user-select: none; /* See notes in DocumentManager.js */
+}
+
+
+
+/* TOOLBARS ........................................................... */
+
+ui|toolbar ui|field {
+    margin: 0;
+    float: left;
+    /*#ie width: 1px !important;*/
+}
+
+ui|toolbar ui|fielddesc,
+ui|toolbar ui|fielddata {
+    float: left;
+    width: auto;
+}
+
+    ui|toolbar ui|fielddata input,
+    ui|toolbar ui|fielddata select {
+        width: 100px;
+    }
+
+ui|fields ui|datadialog ui|clickbutton ui|labeltext,
+ui|fields ui|postbackdialog ui|clickbutton ui|labeltext,
+ui|fields ui|htmldatadialog ui|clickbutton ui|labeltext,
+ui|fields ui|datainputdialog ui|clickbutton ui|labeltext,
+ui|fields ui|datainputbutton ui|clickbutton ui|labeltext,
+ui|fields ui|urlinputdialog ui|clickbutton ui|labeltext,
+ui|fields ui|selector ui|clickbutton ui|labeltext {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+//
+ui|tabbox.boxed ui|labelbox.fieldgrouplabel {
+    left: -1px;
+    right: -1px;
+}

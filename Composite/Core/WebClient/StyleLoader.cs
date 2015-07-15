@@ -14,6 +14,7 @@ namespace Composite.Core.WebClient
             StringBuilder _builder = new StringBuilder();
             string root = UrlUtils.AdminRootPath;
 
+            /*
             if (directive == "compile")
             {
                 StyleCompiler.Compile(HostingEnvironment.MapPath(root + "/styles/styles.css"),
@@ -24,21 +25,19 @@ namespace Composite.Core.WebClient
 
                 return string.Empty;
             }
+             * */
 
             bool isInDevelopMode = CookieHandler.Get("mode") == "develop";
 
             if (isInDevelopMode)
             {
                 _builder.AppendLine(stylesheet(root + "/styles/styles.css.aspx"));
-                _builder.AppendLine(stylesheet(root + "/skins/skin.css.aspx"));
             }
             else
             {
-                _builder.AppendLine(stylesheet(root + "/styles/styles_compiled.css.aspx"));
-                _builder.AppendLine(stylesheet(root + "/skins/skin_compiled.css.aspx"));
+                _builder.AppendLine(stylesheet(root + "/styles/styles.min.css.aspx"));
             }
 
-            _builder.AppendLine(stylesheet(root + "/skins/dynamicskin.css.aspx"));
 
             return _builder.ToString();
 

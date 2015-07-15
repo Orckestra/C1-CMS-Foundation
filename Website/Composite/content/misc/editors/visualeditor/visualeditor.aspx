@@ -67,7 +67,7 @@
 						<ui:deck id="designdeck">
 							<ui:box id="toolbarsbox" binding="VisualEditorBoxBinding">
 								<ui:cover id="toolbarscover" busy="false"/>
-								<ui:toolbar id="toolbar" binding="VisualEditorSimpleToolBarBinding" observes="broadcasterIsActive">
+								<ui:toolbar id="toolbar" class="visualeditor-toolbar" binding="VisualEditorSimpleToolBarBinding" observes="broadcasterIsActive">
 									<% Response.WriteFile ( "includes/toolbarsimple.inc" ); %>
 								</ui:toolbar>
 								<ui:toolbar id="advancedtoolbar" binding="VisualEditorToolBarBinding">
@@ -90,7 +90,7 @@
 				</ui:splitpanel>
 				<ui:splitter id="toolsplitter" collapse="after" collapsed="true" />
 				<ui:splitpanel id="toolsplitpanel">
-					<ui:toolbar id="templatetoolbar" hidden="true">
+					<ui:toolbar id="templatetoolbar" class="pagetemplates-toolbar" hidden="true">
 						<ui:toolbarbody>
 							<ui:toolbargroup>
 								<ui:selector id="templateselector" editorcontrol="false" />

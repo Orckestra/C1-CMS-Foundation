@@ -1,0 +1,37 @@
+.visualeditor-toolbar {
+    background: @visual-editor-toolbar-bg-color;
+
+    ui|toolbargroup {
+        border: 1px solid @base-border-color;
+        border-radius: 3px;
+        margin: 0px 5px 0px 5px;
+        padding: 0px;
+        overflow: hidden;
+
+        &:empty {
+            display: none;
+        }
+
+        ui|toolbarbutton {
+            border-color: transparent;
+            margin: 0px;
+            border-radius: 0;
+            text-transform: none;
+
+            + ui|toolbarbutton {
+                border-color: transparent transparent transparent @btn-border-color;
+            }
+
+            ui|labelbox {
+                padding: 5px 9px;
+            }
+        }
+    }
+}
+
+//refactor
+    ui|splitpanel#editorsplitpanel ui|toolbar ui|toolbargroup ui|toolbarbutton,
+    ui|splitpanel#editorsplitpanel ui|toolbar ui|selector,
+    ui|toolbar#templatetoolbar ui|toolbarbutton {
+        margin: 0px 5px 0px 5px;
+    }
