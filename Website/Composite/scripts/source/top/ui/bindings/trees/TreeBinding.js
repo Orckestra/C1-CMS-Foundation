@@ -199,7 +199,15 @@ TreeBinding.prototype.onBindingAttach = function () {
 	if ( focusable != null ) {
 		this._isFocusable = focusable;
 	}
-	
+
+	if (!this._treeBodyBinding && this.bindingElement.childElementCount === 0) {
+		this._treeBodyBinding = TreeBodyBinding.newInstance(this.bindingDocument);
+		this.bindingElement.appendChild(
+			this._treeBodyBinding.bindingElement
+		);
+		this._treeBodyBinding.attach();
+	}
+
 	if ( !this._treeBodyBinding ) {
 		this._treeBodyBinding = this.addMember ( 
 			this.getChildBindingByLocalName ( "treebody" )

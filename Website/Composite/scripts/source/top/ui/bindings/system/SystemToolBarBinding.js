@@ -40,6 +40,12 @@ function SystemToolBarBinding () {
 	this._moreActions = null;
 
 	/**
+	 * Actions that wouldn't fit on the toolbar.
+	 * @type {SystemNode}
+	 */
+	this._node = null;
+
+	/**
 	* Tree position 
 	* @type {int}
 	*/
@@ -133,6 +139,8 @@ SystemToolBarBinding.prototype.handleBroadcast = function (broadcast, arg) {
 				if (arg.activePosition == this.getActivePosition()) {
 					if (arg.actionProfile != null && arg.actionProfile.hasEntries()) {
 						this._actionProfile = arg.actionProfile;
+						//TODO: refactor with updating API
+						this._node = arg.actionProfile.Node;
 						var key = this._getProfileKey();
 						if (key != this._currentProfileKey) {
 
@@ -151,6 +159,7 @@ SystemToolBarBinding.prototype.handleBroadcast = function (broadcast, arg) {
 							self.emptyLeft();
 							self._actionFolderNames = {};
 							self._currentProfileKey = null;
+							self._node = null;
 							var mores = self.bindingWindow.bindingMap.moreactionstoolbargroup;
 							if (mores != null) {
 								mores.hide();
@@ -221,12 +230,13 @@ SystemToolBarBinding.prototype.handleAction = function ( action ) {
 SystemToolBarBinding.prototype._handleSystemAction = function ( action ) {
 	
 	if ( action != null ) {
-		var list = ExplorerBinding.getFocusedTreeNodeBindings ();
-		if ( list.hasEntries ()) {
-			var treeNodeBinding = list.getFirst ();
-			var systemNode = treeNodeBinding.node;
-		}
-		SystemAction.invoke ( action, systemNode );
+		//var list = ExplorerBinding.getFocusedTreeNodeBindings ();
+		//if ( list.hasEntries ()) {
+		//	var treeNodeBinding = list.getFirst ();
+		//	var systemNode = treeNodeBinding.node;
+		//}
+		//SystemAction.invoke ( action, systemNode );
+		SystemAction.invoke(action, this._node);
 	}
 }
 

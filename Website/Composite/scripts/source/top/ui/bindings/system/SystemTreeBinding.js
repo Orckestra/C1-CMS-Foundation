@@ -1138,12 +1138,14 @@ SystemTreeBinding.prototype.getCompiledActionProfile = function () {
 
 	result.activePosition = this._activePosition;
 
+	//TODO: remove using URI - obsolute
 	var propertyBag = focusedBinding.node.getPropertyBag();
 	if (propertyBag && propertyBag.Uri && propertyBag.ElementType === "application/x-composite-page") {
 		result.Uri = propertyBag.Uri;
 	}
-
+	//TODO: remove using EnitityToken - node used
 	result.EnitityToken = focusedBinding.node.getEntityToken();
+	result.Node = focusedBinding.node;
 
 	return result;
 }

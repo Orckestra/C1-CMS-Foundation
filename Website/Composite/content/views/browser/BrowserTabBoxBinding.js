@@ -86,9 +86,9 @@ BrowserTabBoxBinding.prototype.getGeneticViewTabBinding = function () {
 	if (!this._genericViewTabBinding) {
 		this._genericViewTabBinding = TabBinding.newInstance(this.bindingDocument);
 
-		//var tree = TreeBinding.newInstance(this.bindingDocument);
-		//tree.bindingElement.innerHTML = "<ui:treebody />";
-		this.appendTabByBindings(this._genericViewTabBinding);
+		var tree = GenericViewBinding.newInstance(this.bindingDocument);
+		this.appendTabByBindings(this._genericViewTabBinding, tree);
+		this._genericViewTabBinding.tree = tree;
 	}
 	//hide tabs buttons
 	this.getTabsBinding().hide();

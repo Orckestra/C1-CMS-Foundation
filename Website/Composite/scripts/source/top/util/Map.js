@@ -36,7 +36,8 @@ Map.prototype.get = function ( key ) {
 		SystemLogger.getLogger ( "Map" ).error ( cry );
 		SystemDebug.stack ( arguments );
 		if ( Application.isDeveloperMode ) {
-			alert ( cry );
+			console.log(cry);
+			console.log(arguments);
 		}
 	}
 	return result;

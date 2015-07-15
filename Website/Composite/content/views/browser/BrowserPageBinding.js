@@ -112,8 +112,10 @@ BrowserPageBinding.prototype.handleBroadcast = function (broadcast, arg) {
 						setTimeout(function () {
 							if (result) {
 								self.pushURL(result);
+							} else if (arg.actionProfile.Node && arg.actionProfile.Node.hasChildren()) {
+								self.pushToken(arg.actionProfile.Node);
 							} else {
-								self.pushToken(entityToken);
+								self.pushDefault();
 							}
 
 						}, 0);
@@ -248,9 +250,22 @@ BrowserPageBinding.prototype.pushURL = function (url) {
  * @param {string} url
  * @return
  */
-BrowserPageBinding.prototype.pushToken = function (url) {
+BrowserPageBinding.prototype.pushToken = function (node) {
 	var tab = this._box.getGeneticViewTabBinding();
-	this._box.select(tab);
+	this._box.select(tab, true);
+
+	tab.tree.setNode(node);
+}
+
+
+/**
+ * Add Url to order
+ * @param {string} url
+ * @return
+ */
+BrowserPageBinding.prototype.pushDefault = function () {
+	var tab = this._box.getBrowserTabBinding();
+	this._box.select(tab, true);
 }
 
 /**
@@ -321,11 +336,13 @@ BrowserPageBinding.prototype.handleAction = function ( action ) {
 			break;
 		case FocusBinding.ACTION_BLUR:
 			//TODO add check target
-			this.hideToolbar();
+			if(action.target instanceof DockPanelBinding)
+				this.hideToolbar();
 			break;
 		case FocusBinding.ACTION_FOCUS:
 			//TODO add check target
-			this.showToolbar();
+			if (action.target instanceof DockPanelBinding)
+				this.showToolbar();
 			break;
 			
 			

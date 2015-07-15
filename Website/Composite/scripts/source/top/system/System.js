@@ -82,8 +82,9 @@ var System = new function () {
 		var result = new List();
 		var response = null;
 
-		var handle = node.getHandle();
-		if (!this.nodes.has(handle) || searchToken) {
+		//disabel cache prototype
+		//var handle = node.getHandle();
+		//if (!this.nodes.has(handle) || searchToken) {
 			if (searchToken) {
 				if (SearchTokens.hasToken(searchToken)) {
 					searchToken = SearchTokens.getToken(searchToken);
@@ -100,12 +101,12 @@ var System = new function () {
 				result.add(newnode);
 			});
 
-			if (!searchToken) {
-				this.nodes.set(handle, result.copy());
-			}
-		} else {
-			result = this.nodes.get(handle).copy();
-		}
+		//	if (!searchToken) {
+		//		this.nodes.set(handle, result.copy());
+		//	}
+		//} else {
+		//	result = this.nodes.get(handle).copy();
+		//}
 		return result;
 	}
 
