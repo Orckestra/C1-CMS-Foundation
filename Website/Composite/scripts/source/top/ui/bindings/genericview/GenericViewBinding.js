@@ -45,12 +45,35 @@ GenericViewBinding.prototype.onBindingRegister = function () {
 
 	GenericViewBinding.superclass.onBindingRegister.call(this);
 
+
+	this.addActionListener(TreeNodeBinding.ACTION_COMMAND);
+
 	this.attachClassName(GenericViewBinding.CLASSNAME);
 
 	/*
 	 * Mark the tree as resident on the currently selected perspective.
 	 */
 	this.perspectiveNode = StageBinding.perspectiveNode;
+}
+
+
+/**
+ * @implements {IActionListener}
+ * @overloads {TreeBinding#handleAction}
+ * @param {Action} action
+ */
+GenericViewBinding.prototype.handleAction = function (action) {
+
+	GenericViewBinding.superclass.handleAction.call(this, action);
+
+	var binding = action.target;
+
+	switch (action.type) {
+		case TreeNodeBinding.ACTION_COMMAND:
+			EventBroadcaster.broadcast(BroadcastMessages.INVOKE_DEFAULT_ACTION);
+			action.consume();
+			break;
+	}
 }
 
 /**
