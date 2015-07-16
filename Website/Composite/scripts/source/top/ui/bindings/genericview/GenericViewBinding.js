@@ -3,6 +3,7 @@ GenericViewBinding.prototype.constructor = GenericViewBinding;
 GenericViewBinding.superclass = TreeBinding.prototype;
 
 GenericViewBinding.CLASSNAME = "generericview";
+GenericViewBinding.CLASSNAME_SINGLE = "single";
 
 /**
  * @class
@@ -75,8 +76,6 @@ GenericViewBinding.prototype.handleAction = function (action) {
 			action.consume();
 			break;
 		case TreeNodeBinding.ACTION_OPEN:
-			//this.setNode(action.target.node);
-			//console.log(action);
 
 			EventBroadcaster.broadcast(
 				BroadcastMessages.SYSTEMTREEBINDING_FOCUS,
@@ -88,36 +87,51 @@ GenericViewBinding.prototype.handleAction = function (action) {
 }
 
 /**
- * seto shoving children of SystemNode
+ * Set showing children of SystemNode
   * @param {SystemNode} node
  */
 GenericViewBinding.prototype.setNode = function (node) {
 
 	this.empty();
+	this.detachClassName(GenericViewBinding.CLASSNAME_SINGLE);
 
 	if (node) {
-		var children = node.getChildren();
+		if (node.hasChildren()) {
+			
+			var children = node.getChildren();
 
-		while (children.hasEntries()) {
-			var child = children.extractFirst();
-			var treenode = TreeNodeBinding.newInstance(this.bindingDocument
-			);
-			treenode.node = child;
-			var label = treenode.node.getLabel();
-			if (label) {
-				treenode.setLabel(label);
+			while (children.hasEntries()) {
+				var child = children.extractFirst();
+				this.addNode(child);
 			}
-
-			var imageProfile = treenode.node.getImageProfile();
-			if (imageProfile) {
-				treenode.setImage(imageProfile.getDefaultImage());
-			}
-
-			treenode.isContainer = treenode.node.hasChildren();
-			this.add(treenode);
-			treenode.attach();
+		} else {
+			this.attachClassName(GenericViewBinding.CLASSNAME_SINGLE);
+			this.addNode(node);
 		}
 	}
+}
+
+/**
+ * Add node to tree
+  * @param {SystemNode} node
+ */
+GenericViewBinding.prototype.addNode = function (child) {
+	var treenode = TreeNodeBinding.newInstance(this.bindingDocument
+				);
+	treenode.node = child;
+	var label = treenode.node.getLabel();
+	if (label) {
+		treenode.setLabel(label);
+	}
+
+	var imageProfile = treenode.node.getImageProfile();
+	if (imageProfile) {
+		treenode.setImage(imageProfile.getDefaultImage());
+	}
+
+	treenode.isContainer = treenode.node.hasChildren();
+	this.add(treenode);
+	treenode.attach();
 }
 
 

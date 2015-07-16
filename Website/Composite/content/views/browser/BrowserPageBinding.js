@@ -112,7 +112,7 @@ BrowserPageBinding.prototype.handleBroadcast = function (broadcast, arg) {
 						setTimeout(function () {
 							if (result) {
 								self.pushURL(result);
-							} else if (arg.actionProfile.Node && arg.actionProfile.Node.hasChildren()) {
+							} else if (arg.actionProfile.Node) {
 								self.pushToken(arg.actionProfile.Node);
 							} else {
 								self.pushDefault();
