@@ -47,6 +47,7 @@ GenericViewBinding.prototype.onBindingRegister = function () {
 
 
 	this.addActionListener(TreeNodeBinding.ACTION_COMMAND);
+	this.addActionListener(TreeNodeBinding.ACTION_OPEN);
 
 	this.attachClassName(GenericViewBinding.CLASSNAME);
 
@@ -71,6 +72,16 @@ GenericViewBinding.prototype.handleAction = function (action) {
 	switch (action.type) {
 		case TreeNodeBinding.ACTION_COMMAND:
 			EventBroadcaster.broadcast(BroadcastMessages.INVOKE_DEFAULT_ACTION);
+			action.consume();
+			break;
+		case TreeNodeBinding.ACTION_OPEN:
+			//this.setNode(action.target.node);
+			//console.log(action);
+
+			EventBroadcaster.broadcast(
+				BroadcastMessages.SYSTEMTREEBINDING_FOCUS,
+				action.target.node.getEntityToken()
+			);
 			action.consume();
 			break;
 	}
@@ -101,6 +112,8 @@ GenericViewBinding.prototype.setNode = function (node) {
 			if (imageProfile) {
 				treenode.setImage(imageProfile.getDefaultImage());
 			}
+
+			treenode.isContainer = treenode.node.hasChildren();
 			this.add(treenode);
 			treenode.attach();
 		}
