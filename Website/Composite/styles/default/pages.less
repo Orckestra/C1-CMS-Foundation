@@ -40,12 +40,16 @@ ui|pagedescription {
 	-vendor-user-select: none;
 }
 
-ui|page > ui|toolbar#toolbar,
-ui|editorpage > ui|toolbar {
-        padding: 0px;
-        border: 0px;
-}
-ui|page > ui|toolbar#toolbar ui|toolbarbody,
 ui|editorpage > ui|toolbar ui|toolbarbody {
         float: right;
 }
+
+ui|pagebody {
+    display: block;
+    padding: 15px 14px 0 14px;
+
+    &.pad-0 {
+        padding: 0;
+    }
+}
+

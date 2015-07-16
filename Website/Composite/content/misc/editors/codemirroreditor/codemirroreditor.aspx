@@ -42,7 +42,7 @@ xmlns:control="http://www.composite.net/ns/uicontrol">
 		</ui:popup>
 	</ui:popupset>
 	<ui:page id="editorpage" binding="SourceEditorPageBinding">
-		<ui:toolbar id="toolbar" binding="SourceEditorToolBarBinding">
+		<ui:toolbar id="toolbar" class="codemirroreditor-toolbar" binding="SourceEditorToolBarBinding">
 			<ui:toolbarbody>
 				<ui:toolbargroup>
 					<ui:toolbarbutton id="insertbutton" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelInsert}"

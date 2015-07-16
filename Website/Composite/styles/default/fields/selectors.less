@@ -13,14 +13,61 @@ ui|selector input {
 }
 
 ui|selector {
-  
-      ui|clickbutton {
+
+    ui|clickbutton {
         float: none;
         margin: 0;
 
         ui|labelbox {
             padding: 5px 20px 7px 5px;
             border-color: @field-border-color;
+
+            &:before, &:after {
+                content: "";
+                position: absolute;
+                width: 0;
+                height: 0;
+                border-style: solid;
+            }
+
+            &:before {
+                top: 12px;
+                right: 10px;
+                border-width: 5px 5px 0 5px;
+                border-color: @btn-border-color transparent transparent transparent;
+            }
+
+            &:after {
+                top: 12px;
+                right: 11px;
+                border-width: 4px 4px 0 4px;
+                border-color: @btn-bg-color transparent transparent transparent;
+            }
+        }
+
+        &.hover {
+
+            ui|labelbox:before {
+                border-color: @btn-hover-border-color transparent transparent transparent;
+            }
+
+            ui|labelbox:after {
+                border-color: @btn-hover-bg-color transparent transparent transparent;
+            }
+        }
+
+        &.active {
+            ui|labelbox:before {
+                top: 12px;
+                border-width: 0px 5px 5px 5px;
+                border-color: transparent transparent @btn-hover-border-color transparent;
+            }
+
+            ui|labelbox:after {
+                top: 13px;
+                border-width: 0px 4px 4px 4px;
+                border-color: transparent transparent @btn-hover-bg-color transparent;
+            }
         }
 
         &.infobox {
@@ -30,6 +77,7 @@ ui|selector {
         }
     }
 }
+
 
 ui|fields ui|field.fieldhelp ui|selector ui|clickbutton ui|labelbox {
     overflow: hidden;

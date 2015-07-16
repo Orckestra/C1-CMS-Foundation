@@ -1,14 +1,6 @@
 @namespace ui url("http://www.w3.org/1999/xhtml");
 
-/*
- * @see {EditorToolBarButtonBinding}
- *
-ui|toolbarbutton,
-ui|clickbutton,
-ui|selector {
-	overflow: hidden !important;
-}
-*/
+
 ui|box {
 	position: relative;
 	
@@ -28,9 +20,6 @@ ui|splitter.horizontal {
 	border-right-color: $(color:threedshadow);
 }
 
-ui|toolbar {
-	white-space: normal;
-}
 ui|toolbar#statusbar {
 	border-top: none;
 }
@@ -45,6 +34,3 @@ input#focusableinput { /* synchronize with sourcecodeeditor.css */
 	cursor: help;
 }
 
-#switchbutton {
-	margin-left: -10px;
-}

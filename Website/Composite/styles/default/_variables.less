@@ -21,21 +21,27 @@
 
 //== Buttons
 @btn-border-radius: 4px;
-@btn-border-color: darken(@primary-color, 5%);
+@btn-border-color: @primary-color;
 @btn-bg-color: #fff;
 @btn-bg-image: none; 
-@btn-color: darken(@primary-color, 5%);
+@btn-color: @primary-color; //#575757;
 
-@btn-hover-border-color: darken(@primary-color, 10%);
-@btn-hover-bg-color: darken(@primary-color, 5%);
-@btn-hover-bg-image: linear-gradient(to bottom, @btn-hover-bg-color 0%,@btn-hover-border-color 100%); /* W3C */
-@btn-hover-color: #fff;
+@btn-hover-border-color: darken(@primary-color, 5%);
+@btn-hover-bg-color: #fff;
+@btn-hover-color: darken(@primary-color, 5%);
 
 @btn-primary-border-color: darken(@primary-color, 5%);
 @btn-primary-bg-color: @primary-color;
-@btn-primary-bg-image: linear-gradient(to bottom,@btn-primary-bg-color 0%,@btn-primary-border-color 100%); /* W3C */
+@btn-primary-bg-image: linear-gradient(to bottom, @btn-primary-bg-color 0%,@btn-primary-border-color 100%); /* W3C */
 @btn-primary-color: #fff;
 
+@btn-toolbar-border-color: @base-border-color;
+@btn-toolbar-bg-color:#fff;
+@btn-toolbar-color: #575757;
+
+@btn-toolbar-hover-border-color: @primary-color;
+@btn-toolbar-hover-bg-color: #fff;
+@btn-toolbar-hover-color: @primary-color;
 
 
 //== MenuBar (Settings, Languages, Help, Developer tools... )

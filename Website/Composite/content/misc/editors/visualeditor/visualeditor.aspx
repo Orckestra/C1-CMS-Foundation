@@ -70,7 +70,7 @@
 								<ui:toolbar id="toolbar" class="visualeditor-toolbar" binding="VisualEditorSimpleToolBarBinding" observes="broadcasterIsActive">
 									<% Response.WriteFile ( "includes/toolbarsimple.inc" ); %>
 								</ui:toolbar>
-								<ui:toolbar id="advancedtoolbar" binding="VisualEditorToolBarBinding">
+								<ui:toolbar id="advancedtoolbar" class="visualeditor-adv-toolbar" binding="VisualEditorToolBarBinding">
 									<% Response.WriteFile ( "includes/toolbaradvanced.inc" ); %>
 								</ui:toolbar>
 							</ui:box>

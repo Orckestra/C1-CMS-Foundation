@@ -22,12 +22,6 @@
 	<link rel="stylesheet" type="text/css" href="codemirror.css" />
 	<link rel="stylesheet" type="text/css" href="theme/composite.css" />
 	<script type="text/javascript" src="codemirror.js"></script>
-	<style type="text/css">
-		.CodeMirror {
-			border-top: 1px solid black;
-			border-bottom: 1px solid black;
-		}
-	</style>
 </head>
 <body class="editor">
 	<textarea id="textarea" rows="20" cols="80"></textarea>
