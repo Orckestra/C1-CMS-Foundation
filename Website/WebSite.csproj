@@ -2414,7 +2414,8 @@
     <None Include="Composite\styles\default\titlebars.less" />
     <Content Include="Composite\styles\default\toolbars\system.less" />
     <Content Include="Composite\styles\default\toolbars\visual-editor.less" />
-    <None Include="Composite\styles\default\toolbars\base.less" />
+    <Content Include="Composite\styles\default\toolbars\nav-toolbar.less" />
+    <None Include="Composite\styles\default\toolbars\toolbars-base.less" />
     <Content Include="Composite\styles\default\toolbars\pagetemplates.less" />
     <Content Include="Composite\styles\default\toolbars\codemirror-editor.less" />
     <Content Include="Composite\styles\default\toolbars\dialog.less" />

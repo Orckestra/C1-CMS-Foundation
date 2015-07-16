@@ -47,7 +47,7 @@
 		<ui:toolbar id="toolbarplaceholder" class="explorertoolbar">
 			<ui:toolbarbody />
 		</ui:toolbar>
-		<ui:toolbar id="navbar" class="dark" binding="BrowserToolBarBinding">
+		<ui:toolbar id="navbar" class="dark nav-toolbar" binding="BrowserToolBarBinding">
 			<ui:toolbarbody>
 				<ui:toolbargroup>
 					<ui:toolbarbutton id="toggletreebutton" cmd="toggletree" image="${icon:nodes}" binding="CheckButtonBinding" ischecked="true"/>

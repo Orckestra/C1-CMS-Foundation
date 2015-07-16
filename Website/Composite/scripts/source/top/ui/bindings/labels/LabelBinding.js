@@ -429,7 +429,7 @@ LabelBinding.prototype.buildClassName = function () {
 	
 	var class1 = "textonly";
 	var class2 = "imageonly";
-	var class3 = "both";
+	var class3 = "image-and-text";
 	
 	if ( this.hasLabel && this.hasImage ) {
 		this.detachClassName ( class1 );	

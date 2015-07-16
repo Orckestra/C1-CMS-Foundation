@@ -11,14 +11,14 @@ ui|explorerbarbutton {
 }
 
 ui|cover.explorermenucover {
-    margin-left: 50px;
+    margin-left: @explorer-width;
     display: none;
 }
 
 ui|explorermenu {
     background: @explorer-bg-color;
     float: left;
-    width: 50px;
+    width: @explorer-width;
     height: 100%;
     overflow: hidden;
 
@@ -43,8 +43,8 @@ ui|explorermenu {
             &:before {
                 content: "Composite";
                 position: absolute;
-                top: 1px;
-                left: 22px;
+                top: 6px;
+                left: 33px;
                 text-transform: none;
                 font-size: 21px;
             }
@@ -52,8 +52,8 @@ ui|explorermenu {
             &:after {
                 content: "C1";
                 position: absolute;
-                top: 1px;
-                left: 127px;
+                top: 6px;
+                left: 138px;
                 text-transform: none;
                 font-size: 21px;
                 font-weight: bold;
@@ -64,8 +64,9 @@ ui|explorermenu {
             color: @primary-color;
 
             svg {
-                height: 26px !important;
-                width: 13px !important;
+                height: 35px !important;
+                width: 35px !important;
+                margin-left: -35px !important;
             }
         }
     }
@@ -102,32 +103,38 @@ ui|explorertoolbarbutton {
 ui|explorermenu ui|toolbarbutton,
 ui|explorertoolbarbutton {
     float: left;
-    border: 1px solid transparent;
-    margin: 0px 0px 0px 0px;
-    padding: 21px 22px 21px 27px;
-    cursor: pointer;
+    margin: 0;
+    padding: 25px 22px 21px 27px;
     width: 100%;
+    border: none;
 
     ui|labelbody {
         color: @explorer-icon-color;
         text-transform: uppercase;
         font-weight: bold;
         font-family: Arial;
-        cursor: pointer;
+        height: 24px;
     }
 
     ui|labelbox {
         padding-left: 1px;
-        cursor: pointer;
+
+        &.image-and-text {
+            ui|labeltext {
+                margin-left: 13px;
+            }
+        }
     }
 
     ui|labeltext {
-        line-height: 22px;
+        line-height: 24px;
         font-weight: bold;
         color: @explorer-text-color;
     }
 
     &.active, &.hover {
+        border: none;
+
         ui|labelbody {
             color: @explorer-text-active-color;
         }
@@ -136,13 +143,17 @@ ui|explorertoolbarbutton {
             color: @explorer-text-active-color;
         }
     }
+
+    &.menu-toggle {
+        margin-top: 15px;
+    }
 }
 
     ui|explorermenu ui|toolbarbutton svg,
     ui|explorermenu ui|toolbarbutton ui|labelbox.imageonly svg,
     ui|explorertoolbarbutton svg {
-        width: 21px;
-        height: 21px;
+        width: 24px;
+        height: 24px;
         margin-left: -31px;
     }
 
@@ -161,20 +172,20 @@ ui|explorerdecks {
 .exploler-expanded {
 
     ui|explorermenu {
-        width: 240px;
+        width: @explorer-expanded-width;
     }
 
     ui|stagecontainer {
-        padding-right: 240px;
-        margin-right: -240px;
+        padding-right: @explorer-expanded-width;
+        margin-right: -@explorer-expanded-width;
     }
 
     .system-toolbar {
-        visibility: hidden;
+        left: @explorer-expanded-width !important;
     }
 
     ui|cover.explorermenucover {
-        margin-left: 240px;
+        margin-left: @explorer-expanded-width;
         display: block;
     }
 }

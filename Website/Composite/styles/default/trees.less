@@ -22,7 +22,7 @@ ui|treecontent {
 
 ui|treenode {
     margin: 0;
-    padding: 0 8px;
+    padding: 0;
     position: relative;
 
     ui|labelbox {
@@ -137,6 +137,12 @@ ui|treenode {
         ui|treenode, ui|treecontent {
             display: none;
         }
+    }
+}
+
+ui|tree ui|treebody > ui|treenode > ui|labelbox {
+    &:before, &:after {
+        display: none;
     }
 }
 
