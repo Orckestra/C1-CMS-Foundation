@@ -111,8 +111,10 @@ LocalizationSelectorBinding.prototype._populateFromLanguages = function ( list )
 		});
 		this.populateFromList ( selections );
 		//this.show ();
+		this.bindingElement.style.display = "block";
 	} else {
 		//this.hide ();
+		this.bindingElement.style.display = "none";
 	}
 }
 
@@ -140,18 +142,11 @@ LocalizationSelectorBinding.prototype.populateFromList = function ( list ) {
 		 * Add new content.
 		 */
 		if (list.hasEntries()) {
-			var firstItem = null;
 			while (list.hasNext()) {
 				var selection = list.getNext();
-				///var item = this.addSelection(selection);
 				if (selection.isSelected) {
-					//this.select(item, true);
 					this.setLabel(selection.label);
-
 				}
-
-				
-
 				var itemBinding = MenuItemBinding.newInstance(this.bindingDocument);
 				itemBinding.imageProfile = selection.imageProfile;
 				itemBinding.setLabel(selection.label);
@@ -163,24 +158,14 @@ LocalizationSelectorBinding.prototype.populateFromList = function ( list ) {
 				menugroup.add(itemBinding);
 				itemBinding.attach();
 
-
-				//if (!firstItem) {
-				//	firstItem = item;
-				//}
 			}
-			//if (!this._selectedItemBinding) {
-			//	this.select(firstItem, true);
-			//}
-			//this.shadowTree.selectorindicatorimage.style.display = "block";
 		} else {
-			//this.shadowTree.selectorindicatorimage.style.display = "none";
+
 		}
 	} else {
 
 		throw "Could not populate unattached selector"; // TODO: Cache the list and wait?
 	}
-
-	//this._backupSelectionValue = this._selectionValue;
 }
 
 /**
@@ -203,10 +188,8 @@ LocalizationSelectorBinding.prototype.onValueChange = function (token) {
 						EventBroadcaster.broadcast ( BroadcastMessages.CLOSE_VIEWS );
 						self._invokeAction (token);
 					}
-					//._backupSelectionValue = self.getValue ();
 					break;
 				case Dialog.RESPONSE_CANCEL :
-					//self.selectByValue ( self._backupSelectionValue );
 					break;
 			}
 		}
