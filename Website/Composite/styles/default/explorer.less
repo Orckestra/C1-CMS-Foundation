@@ -36,15 +36,17 @@ ui|explorermenu {
     }
 
     .logo {
+        padding-top: 10px;
         ui|labelbox {
             color: #FFF;
             position: relative;
+            padding: 0;
 
             &:before {
                 content: "Composite";
                 position: absolute;
-                top: 6px;
-                left: 33px;
+                top: 0;
+                left: 30px;
                 text-transform: none;
                 font-size: 21px;
             }
@@ -52,8 +54,8 @@ ui|explorermenu {
             &:after {
                 content: "C1";
                 position: absolute;
-                top: 6px;
-                left: 138px;
+                top: 0;
+                left: 134px;
                 text-transform: none;
                 font-size: 21px;
                 font-weight: bold;
@@ -64,11 +66,15 @@ ui|explorermenu {
             color: @primary-color;
 
             svg {
-                height: 35px !important;
-                width: 35px !important;
-                margin-left: -35px !important;
+                height: 28px !important;
+                width: 28px !important;
+                margin-left: -28px !important;
             }
         }
+    }
+
+    .menu-toggle {
+        margin-top: 8px;
     }
 }
 
@@ -104,7 +110,7 @@ ui|explorermenu ui|toolbarbutton,
 ui|explorertoolbarbutton {
     float: left;
     margin: 0;
-    padding: 25px 22px 21px 27px;
+    padding: 21px 22px 21px 22px;
     width: 100%;
     border: none;
 
@@ -113,7 +119,6 @@ ui|explorertoolbarbutton {
         text-transform: uppercase;
         font-weight: bold;
         font-family: Arial;
-        height: 24px;
     }
 
     ui|labelbox {
@@ -121,7 +126,7 @@ ui|explorertoolbarbutton {
 
         &.image-and-text {
             ui|labeltext {
-                margin-left: 13px;
+                margin-left: 10px;
             }
         }
     }
@@ -144,17 +149,14 @@ ui|explorertoolbarbutton {
         }
     }
 
-    &.menu-toggle {
-        margin-top: 15px;
-    }
 }
 
     ui|explorermenu ui|toolbarbutton svg,
     ui|explorermenu ui|toolbarbutton ui|labelbox.imageonly svg,
     ui|explorertoolbarbutton svg {
-        width: 24px;
-        height: 24px;
-        margin-left: -31px;
+        width: 22px;
+        height: 22px;
+        margin-left: -28px;
     }
 
 ui|explorersplitter {
