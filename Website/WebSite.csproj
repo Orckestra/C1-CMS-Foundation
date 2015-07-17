@@ -1609,7 +1609,6 @@
     <Content Include="Composite\scripts\source\top\ui\bindings\localization\LocalizationSelectorBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\localstore\LocalStoreBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\localstore\LocalStoreWindowBinding.js" />
-    <Content Include="Composite\scripts\source\top\ui\bindings\matrixes\MatrixBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\menus\MenuBarBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\menus\MenuBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\menus\MenuBodyBinding.js" />

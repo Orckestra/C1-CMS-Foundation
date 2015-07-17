@@ -60,7 +60,6 @@ var UserInterface = new function () {
 		"ui:scrollbox" 					: ScrollBoxBinding,
 		"ui:popupset" 					: PopupSetBinding,
 		"ui:popup" 						: PopupBinding,
-		"ui:matrix" 					: MatrixBinding,
 		"ui:sourceeditor"				: CodeMirrorEditorBinding,
 		"ui:visualeditor" 				: VisualEditorBinding,
 		"ui:visualmultieditor" 			: VisualMultiEditorBinding,

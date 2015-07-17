@@ -19,7 +19,7 @@ ScrollBoxBinding.prototype.toString = function () {
 }
 
 /**
- * @overloads {MatrixBinding#onBindintRegister}
+ * @overloads {Binding#onBindintRegister}
  */
 ScrollBoxBinding.prototype.onBindingRegister = function () {
 	

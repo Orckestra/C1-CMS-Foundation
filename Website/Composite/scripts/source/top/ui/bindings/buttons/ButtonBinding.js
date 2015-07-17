@@ -169,7 +169,7 @@ ButtonBinding.prototype.toString = function () {
 }
 
 /**
- * @overloads {MatrixBinding#onBindingRegister} 
+ * @overloads {Binding#onBindingRegister} 
  */
 ButtonBinding.prototype.onBindingRegister = function () {
 
@@ -178,7 +178,7 @@ ButtonBinding.prototype.onBindingRegister = function () {
 }
 
 /**
- * @overloads {MatrixBinding#onBindingAttach} 
+ * @overloads {Binding#onBindingAttach} 
  */
 ButtonBinding.prototype.onBindingAttach = function () {
 

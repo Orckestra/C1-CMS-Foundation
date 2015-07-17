@@ -1,6 +1,6 @@
-BalloonBinding.prototype = new MatrixBinding;
+BalloonBinding.prototype = new Binding;
 BalloonBinding.prototype.constructor = BalloonBinding;
-BalloonBinding.superclass = MatrixBinding.prototype;
+BalloonBinding.superclass = Binding.prototype;
 
 /**
  * Time before each position update in milliseconds. 
@@ -72,7 +72,7 @@ BalloonBinding.prototype.toString = function () {
 /**
  * Note that the binding is *invisible* when created!
  * @see {BalloonBinding#newInstance}
- * @overloads {MatrixBinding#onBindintAttach}
+ * @overloads {Binding#onBindintAttach}
  */
 BalloonBinding.prototype.onBindingAttach = function () {
 	
@@ -437,13 +437,10 @@ BalloonBinding.prototype.handleAction = function ( action ) {
 BalloonBinding.prototype.setLabel = function ( label ) {
 	
 	if ( this.isAttached == true ) {
-		if ( !this._isTableIndexed ) {
-			this._indexTable ();
-		}
 		var element = DOMUtil.createElementNS ( Constants.NS_UI, "ui:balloontext", this.bindingDocument );
 		var text = this.bindingDocument.createTextNode ( label );
 		element.appendChild ( text );
-		this.shadowTree [ MatrixBinding.CENTER ].appendChild ( element );
+		this.bindingElement.appendChild(element);
 	}
 	this.setProperty ( "label", label );
 }

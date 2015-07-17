@@ -181,14 +181,6 @@ DockBinding.prototype.onMembersAttached = function () {
  */
 DockBinding.prototype.buildDOMContent = function () {
 	
-	//var parentBinding = UserInterface.getBinding ( this.bindingElement.parentNode );
-	//var matrixBinding = MatrixBinding.newInstance ( this.bindingDocument );
-	//matrixBinding.attachClassName ( "dockliner" );
-	//this.shadowTree.dockLiner = matrixBinding;
-	//parentBinding.add ( matrixBinding );
-	//matrixBinding.attach ();
-	//matrixBinding.manifest ();
-	
 	var type = this.getProperty ( "type" );
 	this.type = type ? type : DockBinding.TYPE_TOOLS;;
 	this.attachClassName ( this.type );
