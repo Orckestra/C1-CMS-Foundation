@@ -17,7 +17,7 @@
     
 </script>
 
-<ui:toolbar>
+<ui:toolbar class="document-toolbar">
     <ui:toolbarbody>
         <ui:toolbargroup>
             <asp:Repeater runat="server" ID="repeater">
