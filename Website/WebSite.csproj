@@ -491,10 +491,12 @@
     <Content Include="Composite\images\balloons\balloon-sw-speak.png" />
     <Content Include="Composite\images\balloons\balloon-sw.png" />
     <Content Include="Composite\images\balloons\balloon-w.png" />
+    <Content Include="Composite\images\icons\StandardIcons.xml" />
     <Content Include="Composite\images\icons\svg\accept-green.svg" />
     <Content Include="Composite\images\icons\svg\error.svg" />
     <Content Include="Composite\images\icons\svg\folder-open-2.svg" />
     <Content Include="Composite\images\icons\svg\folder-edit.svg" />
+    <Content Include="Composite\images\icons\svg\perspective-functions.svg" />
     <Content Include="Composite\images\icons\svg\stop.svg" />
     <Content Include="Composite\scripts\source\top\core\ImageProvider.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\genericview\GenericViewBinding.js" />
@@ -2250,9 +2252,6 @@
     <Content Include="Composite\images\icons\branding\composite_16.png" />
     <Content Include="Composite\images\icons\branding\favicon16.ico" />
     <Content Include="Composite\images\icons\branding\favicon32.ico" />
-    <Content Include="Composite\images\icons\StandardIcons.xml">
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="Composite\images\logo.png" />
     <Content Include="Composite\images\originals\harmonies\back_red_16.png" />
     <Content Include="Composite\images\originals\harmonies\back_red_24.png" />
@@ -2401,7 +2400,6 @@
     <None Include="Composite\styles\default\keys.less" />
     <None Include="Composite\styles\default\labels.less" />
     <None Include="Composite\styles\default\lazybindings.less" />
-    <None Include="Composite\styles\default\matrixes.less" />
     <None Include="Composite\styles\default\menus.less" />
     <None Include="Composite\styles\default\pages.less" />
     <None Include="Composite\styles\default\popups.less" />

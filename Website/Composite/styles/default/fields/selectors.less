@@ -3,10 +3,6 @@ ui|selector {
     overflow: hidden !important; /* relevant for editor selectors */
 }
 
-ui|toolbar ui|selector { /* TODO: handle focus outline here somehow */
-    padding: 0;
-}
-
 ui|selection,
 ui|selector input {
     display: none;
@@ -21,6 +17,8 @@ ui|selector {
         ui|labelbox {
             padding: 5px 20px 7px 5px;
             border-color: @field-border-color;
+            text-transform: none;
+            color: @btn-toolbar-color;
 
             &:before, &:after {
                 content: "";
@@ -141,7 +139,7 @@ ui|urlinputdialog {
     ui|toolbarbutton {
         margin: 0;
         padding: 5px;
-        border-color: transparent;
+        border: none;
         position: absolute;
         right: 3px;
         top: 3px;
