@@ -1,108 +1,92 @@
 ui|balloonset {
-	display: block;
-	overflow: visible;
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 0;
-	height: 0;
-	z-index: @balloonset-zindex; /* below dialogs */
+    display: block;
+    overflow: visible;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    z-index: @balloonset-zindex; // below dialogs
 }
-ui|balloonset#dialogballoonset {
-	z-index: @dialogballoonset-zindex; /* above dialogs */	
-}
+
+    ui|balloonset#dialogballoonset {
+        z-index: @dialogballoonset-zindex; //above dialogs
+    }
+
 ui|balloon {
-	min-width: 280px;
-	display: block;
-	position: absolute;
-	overflow: visible;
-	-vendor-transition-property: top, left;
-	-vendor-transition-duration: 0.25s;
-}
-ui|balloon table.matrix {
-	width: 100%;
-	height: 100%;
-}
-ui|balloontext {
-	display: block;
-	-vendor-user-select: none;
-	position: relative;
-	z-index: 2;
-	padding-bottom: 4px;
-}
-ui|balloonspeak {
-	display: block;	
-	position: absolute;
-	z-index: 1;
+    min-width: 280px;
+    background: @balloons-bg-color;
+    border-radius: @base-border-radius;
+    border-bottom-left-radius: 0;
+    border: solid 1px @balloons-border-color;
+    display: block;
+    overflow: visible;
+    position: absolute;
+    -vendor-transition-property: top, left;
+    -vendor-transition-duration: 0.25s;
+    -webkit-box-shadow: 0px 0px 12px -2px rgba(204,204,204,1);
+    -moz-box-shadow: 0px 0px 12px -2px rgba(204,204,204,1);
+    box-shadow: 0px 0px 12px -2px rgba(204,204,204,1);
+
+    &:after, &:before {
+        content: '';
+        position: absolute;
+        border-style: solid;
+        width: 0;
+        bottom: 0;
+        display: block;
+        border-width: 8px;
+    }
+
+    &:after {
+        border-color: transparent @balloons-bg-color @balloons-bg-color transparent;
+        z-index: 1;
+        left: -14px;
+        border-width: 7px;
+    }
+
+    &:before {
+        border-style: solid;
+        border-color: transparent @balloons-border-color @balloons-border-color transparent;
+        z-index: 0;
+        left: -16px;
+        bottom: -1px;
+    }
+
+    &.left {
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: @base-border-radius;
+
+        &:after {
+            border-color: transparent transparent @balloons-bg-color @balloons-bg-color;
+            right: -14px;
+            left: auto;
+        }
+
+        &:before {
+            border-color: transparent transparent @balloons-border-color @balloons-border-color;
+            right: -16px;
+            left: auto;
+        }
+    }
+
+    ui|controlgroup {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }
 }
 
-//moved from skin
-ui|balloon table.matrix td {
-	width: 32px;
-	height: 32px;
-}
-ui|balloon table.matrix td.n,
-ui|balloon table.matrix td.s {
-	width: auto;
-}
-ui|balloon table.matrix td.e,
-ui|balloon table.matrix td.w {
-	height: auto;
-}
-ui|balloon table.matrix td.c {
-	width: auto;
-	height: auto;
-	background: @balloons-bg-color;
-	overflow: visible !important;
-}
-ui|balloon table.matrix td.n {
-	background: url("@{images-root-path}/balloons/balloon-n.png");
-}
-ui|balloon table.matrix td.s {
-	background: url("@{images-root-path}/balloons/balloon-s.png");
-}
-ui|balloon table.matrix td.e {
-	background: url("@{images-root-path}/balloons/balloon-e.png");
-}
-ui|balloon table.matrix td.w {
-	background: url("@{images-root-path}/balloons/balloon-w.png");
-}
-ui|balloon table.matrix td.ne {
-	background: url("@{images-root-path}/balloons/balloon-ne.png");
-}
-ui|balloon table.matrix td.nw {
-	background: url("@{images-root-path}/balloons/balloon-nw.png");
-}
-ui|balloon table.matrix td.se {
-	background: url("@{images-root-path}/balloons/balloon-se.png");
-}
-ui|balloon table.matrix td.sw {
-	background: url("@{images-root-path}/balloons/balloon-sw.png");
-}
 ui|balloontext {
-	margin-bottom: -10px;
-	width: 200px;
+    display: block;
+    width: 100%;
+    -vendor-user-select: none;
+    position: relative;
+    z-index: 2;
+    padding: 15px;
 }
-ui|balloonspeak {
-	width: 50px;
-	height: 50px;
-	top: 100%;
-	left: 0;
-	background: url("@{images-root-path}/balloons/balloon-sw-speak.png");
-	margin-top: -34px;
-	margin-left: -12px;
-}
-ui|balloon.left ui|balloonspeak {
-	top: 100%;
-	left: 100%;
-	background: url("@{images-root-path}/balloons/balloon-se-speak.png");
-	margin-left: -37px;
-}
-ui|balloon ui|controlgroup {
-	position: absolute;
-	top: 0;
-	left: 100%;
-	margin-top: 21px;
-	margin-left: -53px;
 
+ui|balloonspeak {
+    display: none;
 }
+

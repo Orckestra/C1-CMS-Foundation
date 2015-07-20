@@ -30,9 +30,9 @@
 @btn-hover-bg-color: #fff;
 @btn-hover-color: darken(@primary-color, 5%);
 
-@btn-primary-border-color: darken(@primary-color, 5%);
+@btn-primary-border-color: @primary-color;
 @btn-primary-bg-color: @primary-color;
-@btn-primary-bg-image: linear-gradient(to bottom, @btn-primary-bg-color 0%,@btn-primary-border-color 100%); /* W3C */
+@btn-primary-bg-image: linear-gradient(to bottom, @btn-primary-bg-color 0%, darken(@btn-primary-bg-color, 5%) 100%); /* W3C */
 @btn-primary-color: #fff;
 
 @btn-toolbar-border-color: @base-border-color;
@@ -87,7 +87,7 @@
 
 //== Balloons
 @balloons-bg-color: lightyellow;
-@balloons-border: solid 1px @base-border-color;
+@balloons-border-color: @base-border-color;
 @balloons-width: 280px;
 
 

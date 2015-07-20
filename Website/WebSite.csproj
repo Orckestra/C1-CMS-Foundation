@@ -480,17 +480,6 @@
       <DependentUpon>GenerateDynamicSchemas.aspx</DependentUpon>
     </Compile>
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\Selectors\UrlComboBox.ascx" />
-    <Content Include="Composite\images\balloons\balloon-e.png" />
-    <Content Include="Composite\images\balloons\balloon-n.png" />
-    <Content Include="Composite\images\balloons\balloon-ne.png" />
-    <Content Include="Composite\images\balloons\balloon-nw.png" />
-    <Content Include="Composite\images\balloons\balloon-s.png" />
-    <Content Include="Composite\images\balloons\balloon-se-speak.png" />
-    <Content Include="Composite\images\balloons\balloon-se.png" />
-    <Content Include="Composite\images\balloons\balloon-speak.png" />
-    <Content Include="Composite\images\balloons\balloon-sw-speak.png" />
-    <Content Include="Composite\images\balloons\balloon-sw.png" />
-    <Content Include="Composite\images\balloons\balloon-w.png" />
     <Content Include="Composite\images\icons\StandardIcons.xml" />
     <Content Include="Composite\images\icons\svg\accept-green.svg" />
     <Content Include="Composite\images\icons\svg\error.svg" />

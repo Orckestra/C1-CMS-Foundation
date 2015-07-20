@@ -1,15 +1,27 @@
 ﻿.document-toolbar {
     padding: 0 10px 0 10px;
     position: relative;
-    top: 15px;
-    z-index: 5;
+    top: 13px;
+    z-index: 4;
+    margin-left: 50%;
 
-    + ui|scrollbox {
+    + ui|scrollbox { // usage: Data Type Edit
         margin-top: 35px;
         border-top: solid 1px @base-border-color;
     }
 
-    + ui|sourceeditor {
-       top: -30px;
+    + ui|sourceeditor { //usage:  Data Type - Edit Form Markup
+        top: -30px;
+    }
+
+    ui|toolbarbutton {
+        border: 1px solid @btn-primary-border-color;
+        background-image: @btn-primary-bg-image;
+        color: @btn-primary-color;
+
+        &.hover {
+            border: 1px solid darken(@btn-primary-border-color, 5%);
+            color: @btn-primary-color;
+        }
     }
 }
