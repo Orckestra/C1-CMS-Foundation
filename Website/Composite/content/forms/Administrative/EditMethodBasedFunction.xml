@@ -4,7 +4,7 @@
     <cms:binding name="CurrentMethodFunctionInfo" type="Composite.Data.Types.IMethodBasedFunctionInfo, Composite" />
     <cms:binding optional="true" name="ErrorMessage" type="System.String" />
   </cms:bindings>
-  <cms:layout>
+  <cms:layout iconhandle="functioncall">
     <cms:layout.label>
       <cms:read source="CurrentMethodFunctionInfo.UserMethodName" />
     </cms:layout.label>

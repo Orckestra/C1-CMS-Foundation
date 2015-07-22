@@ -10,7 +10,7 @@
     <cms:binding name="FieldNameList" type="System.Collections.IEnumerable" />
     <cms:binding name="TemplateList" type="System.Collections.IEnumerable" />
   </cms:bindings>
-  <cms:layout iconhandle="wysiwyg-function">
+  <cms:layout iconhandle="functioncall">
     <TabPanels PreSelectedIndex="0">
       <TabPanels.Label>
         <cms:read source="Function.Name" />

@@ -5,7 +5,7 @@
     <cms:binding name="FileName" type="System.String" />
     <cms:binding name="FileMimeType" type="System.String" />
   </cms:bindings>
-  <cms:layout iconhandle="razor-function-edit">
+  <cms:layout iconhandle="functioncall">
     <TextEditor>
       <TextEditor.MimeType>
         <cms:read source="FileMimeType" />

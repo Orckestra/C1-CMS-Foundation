@@ -64,8 +64,6 @@ p#introtestfailure {
     display: none;
 }
 
-
-
 ul#introtest {
     list-style: none;
     margin: 0 0 1em 0;
@@ -153,10 +151,6 @@ ul#introtest li.bad {
     font-size: 14px;
 }
 
-
-.form input.disabled {
-    opacity: 0.5;
-}
 
 p#loginok {
     visibility: hidden;

@@ -22,7 +22,7 @@ xmlns:control="http://www.composite.net/ns/uicontrol">
 
 </head>
 <body>
-    <ui:editorpage label="<%= Request.QueryString["functionPrefix"]%> Functions" image="${icon:all-functions-generatedocumentation}">
+    <ui:page label="<%= Request.QueryString["functionPrefix"]%> Functions" image="${icon:all-functions-generatedocumentation}">
         <ui:toolbar id="toolbar">
             <ui:toolbarbody>
                 <ui:toolbargroup>
@@ -38,6 +38,6 @@ xmlns:control="http://www.composite.net/ns/uicontrol">
                 <asp:PlaceHolder ID="functionDescriptorsPlaceholder" runat="server" />
             </div>
         </ui:scrollbox>
-    </ui:editorpage>
+    </ui:page>
 </body>
 </html>

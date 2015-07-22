@@ -1,4 +1,3 @@
-@import url("splash.css");
 @namespace ui url("http://www.w3.org/1999/xhtml");
 
 ui|theatre,
@@ -49,21 +48,12 @@ div#offlinetext {
 	font-weight: bold;
 }
 
-.loginpage .buzzwords {
-    display: none;
-}
-
 .loginpage ui|fielddata {
     border-bottom: solid 1px #ddd;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     height: 40px;
     padding: 5px 0;
 }
-
-    .loginpage ui|fielddata .icon {
-        color: #21B980;
-        stroke: #21B980;
-    }
 
         .loginpage ui|fielddata .icon svg {
             width: 20px;
@@ -106,7 +96,7 @@ div#offlinetext {
 
 .loginpage .progressbar {
     position: absolute;
-    bottom: 30px;
+    bottom: 40px;
     width: 100%;
     left: 0;
     text-align: center;
@@ -116,7 +106,7 @@ div#offlinetext {
 .loginpage .progressbar-msg {
     padding-bottom: 20px;
     text-align: center;
-    margin-bottom: 80px;
+    margin-bottom: 90px;
     border-bottom: solid 1px #ccc;
 }
 
@@ -129,7 +119,7 @@ div#offlinetext {
     text-align: right;
     padding-top: 2px;
     padding-right: 5px;
-    background: url("${root}/images/progressbar.png");
+    background: url("images/progressbar.png");
 }
 
     .loginpage .progressbar ui|progressbar ui|cover {

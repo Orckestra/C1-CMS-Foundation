@@ -11,7 +11,7 @@
     <cms:binding name="File2Name" type="System.String" optional="true" />
     <cms:binding name="File2MimeType" type="System.String" optional="true" />
   </cms:bindings>
-  <cms:layout iconhandle="usercontrol-function-edit">
+  <cms:layout iconhandle="functioncall">
     <TabPanels>
       <TabPanels.Label>
         <cms:read source="Title" />

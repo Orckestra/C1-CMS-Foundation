@@ -4,7 +4,7 @@
       <div class="logo"></div>
       <ui:deck id="introdeck"/>
       <ui:deck id="logindeck">
-        <div class="buzzwords">
+        <div class="buzzwords hide">
           <div id="version">
             <ui:text label="${version}"/>
           </div>
@@ -16,18 +16,18 @@
           </div>
         </div>
         <ui:fields id="loginfields" >
-          <div id="loginerror" class="errortext">
+          <div id="loginerror" class="text-error hide">
             <ui:text label="Username or password incorrect!"/>
           </div>
-          <ui:field>
+          <ui:field class="no-bg">
             <ui:fielddata>
-              <ui:labelbox class="icon" image="${icon:user}"></ui:labelbox>
+              <ui:labelbox class="icon text-primary" image="${icon:user}"></ui:labelbox>
               <ui:datainput name="username" required="true" autoselect="true" placeholder="Username" />
             </ui:fielddata>
           </ui:field>
-          <ui:field>
+          <ui:field  class="no-bg">
             <ui:fielddata>
-              <ui:labelbox class="icon" image="${icon:users-changeownpassword}"></ui:labelbox>
+              <ui:labelbox class="icon text-primary" image="${icon:users-changeownpassword}"></ui:labelbox>
               <ui:datainput name="password" password="true" required="true" autoselect="true" placeholder="Password"/>
             </ui:fielddata>
           </ui:field>

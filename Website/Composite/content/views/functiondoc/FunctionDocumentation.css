@@ -11,7 +11,6 @@ table
 	border-collapse: collapse;
 }
 
-
 ul#functionList
 {
 	margin-left: 20px;
@@ -23,7 +22,7 @@ ul#functionList li
 {
 	margin-top: 5px;
 	padding-left: 25px;
-	background-image: url(../../../images/icons/svg/functioncall.svg);
+	background-image: url(../../../images/icons/svg/base-function-function.svg);
 	background-repeat: no-repeat;
 	background-position: 0 3px;
     line-height: 24px;
@@ -59,9 +58,6 @@ table.parameters td.requiredFalse
 table.parameters td.name
 {
 	width: 10em;
-}
-table.parameters td.description
-{
 }
 
 span.typeinfo

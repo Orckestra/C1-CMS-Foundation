@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:control="http://www.composite.net/ns/uicontrol">
 
 <%@ Page Language="C#" %>
 
 <head>
     <title>Browser not supported</title>
-    <link rel="stylesheet" type="text/css" href="splash.css.aspx" />
+    <control:styleloader runat="server" />
     <link rel="shortcut icon" type="image/x-icon" href="images/icons/branding/favicon16.ico" />
 </head>
 <body>

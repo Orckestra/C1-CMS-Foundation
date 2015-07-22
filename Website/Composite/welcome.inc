@@ -73,8 +73,8 @@
 					</ui:deck>
 					<ui:deck id="login">
 						<h1>Create Login</h1>
-						<p id="loginbad" class="errortext">Passwords don't match!</p>
-						<p id="lengthbad" class="errortext">Minimum 6 characters password.</p>
+						<p id="loginbad" class="text-error hide">Passwords don't match!</p>
+						<p id="lengthbad" class="text-error hide">Minimum 6 characters password.</p>
 						<form id="loginform" class="form" action="javascript://" method="get">
 							<div class="field-group">
 								<label>Username</label>

@@ -14,12 +14,13 @@
     }
 %>
 <?xml version="1.0" encoding="UTF-8" ?>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:control="http://www.composite.net/ns/uicontrol">
 <head>
     <title>Unsecure Connection</title>
     <meta name="https-check-watermark" content="<%= websiteWatermark %>" id="watermark" />
     <link rel="stylesheet" type="text/css" href="unsecure.css.aspx" />
     <link rel="shortcut icon" type="image/x-icon" href="images/icons/branding/favicon16.ico" />
+     <control:styleloader runat="server" />
     <script type="text/javascript" src="unsecure.js.aspx"></script>
 </head>
 <body>

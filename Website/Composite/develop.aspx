@@ -9,11 +9,11 @@
     }
 </script>
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:control="http://www.composite.net/ns/uicontrol">
 <head>
     <title>Start Developer Mode</title>
     <meta name="robots" content="noindex, nofollow" />
-    <link rel="stylesheet" type="text/css" href="splash.css.aspx" />
+     <control:styleloader runat="server"/>
     <link rel="shortcut icon" type="image/x-icon" href="images/icons/branding/favicon16.ico" />
     <script type="text/javascript" src="default.js"></script>
     <style type="text/css">
@@ -44,7 +44,7 @@
                     <p>Press <kbd>SHIFT</kbd> for OperationalMode</p>
                 </div>
                 <div id="start">
-                    <a class="clickbutton" href="javascript:Composite.start(true);" title="Open Composite C1 in a new window">Start Developer Mode</a>
+                    <a class="clickbutton mt-40" href="javascript:Composite.start(true);" title="Open Composite C1 in a new window">Start Developer Mode</a>
                 </div>
             </div>
         </div>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml"  xmlns:control="http://www.composite.net/ns/uicontrol">
 
 <%@ Page Language="C#" %>
 
@@ -7,6 +7,7 @@
     <title>Composite C1 was updated</title>
     <link rel="stylesheet" type="text/css" href="updated.css.aspx" />
     <link rel="shortcut icon" type="image/x-icon" href="images/icons/branding/favicon16.ico" />
+    <control:styleloader runat="server" />
     <script type="text/javascript" src="updated.js"></script>
 </head>
 <body class="updatedpage">
@@ -23,11 +24,11 @@
                                 <span>was updated</span></h3>
                         </div>
                     </div>
-                    <p>Your Composite C1 installation has successfully been updated. Enjoy!</p>
+                    <p>
+                        Your Composite C1 installation has successfully been updated. Enjoy!
+                    </p>
                     <div id="start">
-                        <a id="continuelink" href="top.aspx" class="clickbutton">
-                              Continue
-                        </a>
+                        <a id="continuelink" href="top.aspx" class="clickbutton mt-40">Continue</a>
                     </div>
                 </div>
             </div>

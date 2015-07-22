@@ -489,7 +489,7 @@
     <Content Include="Composite\images\icons\svg\stop.svg" />
     <Content Include="Composite\scripts\source\top\core\ImageProvider.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\genericview\GenericViewBinding.js" />
-    <Content Include="Composite\splash.css" />
+    <None Include="Composite\styles\default\splash.less" />
     <Content Include="Composite\GenerateIconSprite.aspx" />
     <Content Include="Composite\images\editfunction.png" />
     <Content Include="Composite\images\function.png" />
@@ -2433,7 +2433,6 @@
     <Content Include="Composite\transformations\WysiwygEditor_StructuredContentToTinyContent.xsl" />
     <Content Include="Composite\transformations\WysiwygEditor_TinyContentToStructuredContent.xsl" />
     <Content Include="Composite\updated.aspx" />
-    <Content Include="Composite\updated.css" />
     <Content Include="Composite\updated.js" />
     <Content Include="Composite\help\help.ashx" />
     <Content Include="App_Data\Razor\web.config" />

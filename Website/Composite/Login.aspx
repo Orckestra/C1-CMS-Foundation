@@ -1,27 +1,21 @@
 <%@ Page Language="C#" AutoEventWireup="true" EnableViewState="false" Inherits="Composite_Management_Login" CodeFile="Login.aspx.cs" %>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:control="http://www.composite.net/ns/uicontrol">
 <head runat="server">
     <title>Composite.Management</title>
     <meta name="robots" content="noindex, nofollow" />
     <meta http-equiv="X-UA-Compatible" content="IE=9" />
     <link rel="shortcut icon" type="image/x-icon" href="images/icons/branding/favicon16.ico" />
-    <link rel="stylesheet" type="text/css" href="splash.css.aspx" />
+    <control:styleloader runat="server"/>
     <style type="text/css">
-        * {
-            -webkit-box-sizing: border-box;
-            -moz-box-sizing: border-box;
-            box-sizing: border-box;
-        }
 
-        input:focus, input:active {
+        input, input:focus, input:active {
             border: 0;
             background: #fff;
-             outline: 0;
+            outline: 0;
         }
 
         svg {
-            color: #21B980;
             stroke: currentColor;
             fill: currentColor;
         }
@@ -48,9 +42,7 @@
             width: 100%;
             padding: 4px 10px 5px 15px;
         }
-        .error {
-            color: red;
-        }
+
     </style>
 </head>
 <body>
@@ -62,16 +54,16 @@
                 <div id="splashcontent">
                     <form id="form_login" method="post">
                         <!-- action="Login.aspx"  -->
-                        <div class="splashtext">
+                        <div class="text-error">
                             <p>The entered url is protected, please enter C1 Console credentials</p>
-                            <div id="divLoginFailed" runat="server" visible="false" class="error">
+                            <div id="divLoginFailed" runat="server" visible="false" class="text-error hide">
                                 Username or password is incorrect.
                             </div>
                         </div>
                         <div class="fields">
                             <div class="field">
                                 <div class="icon">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="26px" viewBox="0 0 20 20">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="text-primary" width="20px" height="26px" viewBox="0 0 20 20">
                                         <g id="user" viewBox="0 0 20 20">
                                             <path d="M9.5 11c-3.033 0-5.5-2.467-5.5-5.5s2.467-5.5 5.5-5.5 5.5 2.467 5.5 5.5-2.467 5.5-5.5 5.5zM9.5 1c-2.481 0-4.5 2.019-4.5 4.5s2.019 4.5 4.5 4.5c2.481 0 4.5-2.019 4.5-4.5s-2.019-4.5-4.5-4.5z" stroke="none" />
                                             <path d="M17.5 20h-16c-0.827 0-1.5-0.673-1.5-1.5 0-0.068 0.014-1.685 1.225-3.3 0.705-0.94 1.67-1.687 2.869-2.219 1.464-0.651 3.283-0.981 5.406-0.981s3.942 0.33 5.406 0.981c1.199 0.533 2.164 1.279 2.869 2.219 1.211 1.615 1.225 3.232 1.225 3.3 0 0.827-0.673 1.5-1.5 1.5zM9.5 13c-3.487 0-6.060 0.953-7.441 2.756-1.035 1.351-1.058 2.732-1.059 2.746 0 0.274 0.224 0.498 0.5 0.498h16c0.276 0 0.5-0.224 0.5-0.5-0-0.012-0.023-1.393-1.059-2.744-1.382-1.803-3.955-2.756-7.441-2.756z" stroke="none" />
@@ -83,8 +75,8 @@
                                 </div>
                             </div>
                             <div class="field">
-                                <div class="icon">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 16" width="20px" height="26px">
+                                <div class="icon text-primary">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="text-primary" viewBox="0 0 14 16" width="20px" height="26px">
                                         <g id="users-changeownpassword" viewBox="0 0 14 16" stroke-width="1" fill="none">
                                             <path d="M7,8.5 C7,8.776 6.776,9 6.5,9 C6.224,9 6,8.776 6,8.5 C6,8.224 6.224,8 6.5,8 C6.776,8 7,8.224 7,8.5 L7,8.5 Z" id="Stroke-69" />
                                             <path d="M6.48358154,9.48071289 L6.48358154,11.5175781" id="Stroke-71" stroke-linecap="round" />

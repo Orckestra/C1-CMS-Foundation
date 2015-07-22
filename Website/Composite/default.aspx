@@ -12,11 +12,11 @@
         Response.Redirect("develop.aspx");
     }
 %>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:control="http://www.composite.net/ns/uicontrol">
 <head>
     <title>Start Composite</title>
     <meta name="robots" content="noindex, nofollow" />
-    <link rel="stylesheet" type="text/css" href="splash.css.aspx" />
+    <control:styleloader runat="server"/>
     <link rel="shortcut icon" type="image/x-icon" href="images/icons/branding/favicon16.ico" />
     <script type="text/javascript" src="default.js"></script>
 </head>
@@ -30,7 +30,7 @@
                     <p>Welcome to your Composite C1 website. You can start the C1 Console or go back to your website <a href=".." title="Go to the main page">frontpage</a>.</p>
                 </div>
                 <div id="start">
-                    <a class="clickbutton" href="javascript:Composite.start();" title="Open Composite C1 in a new window">Start Composite C1</a>
+                    <a class="clickbutton mt-40" href="javascript:Composite.start();" title="Open Composite C1 in a new window">Start Composite C1</a>
                 </div>
             </div>
         </div>

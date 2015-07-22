@@ -65,15 +65,20 @@ ui|field {
     &:first-of-type {
         padding-top: 8px;
         border-top-width: 1px;
-        border-top-left-radius: 5px;
-        border-top-right-radius: 5px;
+        border-top-left-radius: @base-border-radius;
+        border-top-right-radius: @base-border-radius;
     }
 
     &:last-of-type {
         padding-bottom: 27px;
         border-bottom-width: 1px;
-        border-bottom-left-radius: 5px;
-        border-bottom-right-radius: 5px;
+        border-bottom-left-radius: @base-border-radius;
+        border-bottom-right-radius: @base-border-radius;
+    }
+
+    &.no-bg {
+        background: none;
+        border: 0;
     }
 
     &.fieldhelp {
