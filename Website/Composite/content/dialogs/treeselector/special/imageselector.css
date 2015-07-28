@@ -40,10 +40,12 @@ ui|datainput#treeselectionresult {
 
     ui|datainput#treeselectionresult ui|box {
         border: none;
+        background: none;
     }
 
         ui|datainput#treeselectionresult ui|box input {
             text-align: center;
+            background: none;
             color: #343434;
             padding: 10px 0 0 0 !important;
             font-size: 12px;
