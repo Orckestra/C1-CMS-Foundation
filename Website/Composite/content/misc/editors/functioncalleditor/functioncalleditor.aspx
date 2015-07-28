@@ -11,7 +11,7 @@
 		<control:scriptloader type="sub" runat="server" />
         <control:httpheaders runat="server" />
         
-		<link rel="stylesheet" type="text/css" href="functioneditor.css.aspx"/>
+	
 		<script type="text/javascript" src="bindings/FunctionEditorPageBinding.js"></script>
 		<script type="text/javascript" src="bindings/ToolBarButtonDataBindingAddNew.js"></script>
 		<script type="text/javascript" src="bindings/FieldsButtonDataBinding.js"></script>
@@ -23,7 +23,7 @@
 	</head>
 	<body>
 		<form id="Form1" runat="server" class="updateform updatezone">
-			<ui:page id="functioneditorpage" binding="FunctionEditorPageBinding"> <!--  fitasdialogsubpage="false" -->
+			<ui:page id="functioneditorpage" binding="FunctionEditorPageBinding" class="with-top-toolbar"> <!--  fitasdialogsubpage="false" -->
 
                 <aspui:Feedback runat="server" 
                     ID="ctlFeedback"
@@ -83,14 +83,13 @@
 										callbackid="switchbutton"
 										callbackarg="source"
 									 	clientid="switchbutton"
-										label="${string:Composite.Web.FormControl.FunctionCallsDesigner:ToolBar.LabelSource}" 
 										image="${icon:editor-sourceview}" 
 										image-disabled="${icon:editor-sourceview-disabled}"
-										flip="true"
+										
                                         />
 								</ui:toolbargroup>
 								<ui:toolbargroup id="basicgroup">
-									<ui:toolbarbutton id="basicbutton" label="${string:Website.Dialogs.EditFunction.BasicView}" image="${icon:editor-plainedit}" flip="true" />
+									<ui:toolbarbutton id="basicbutton" image="${icon:editor-plainedit}" />
 									</ui:toolbargroup>
 							</ui:toolbarbody>
 							
@@ -107,7 +106,7 @@
 								</ui:splitpanel>
 								<ui:splitter />
 								<ui:splitpanel id="fieldspanel" forcefitness="true">
-									<ui:scrollbox class="padded" id="scrollbox">
+									<ui:scrollbox id="scrollbox" class="padded-sm">
 									
 									    <asp:MultiView ID="mlvMain" runat="server">
 									      <asp:View ID="viewParameter" runat="server">
@@ -126,24 +125,23 @@
 									      	
 		                                      <ui:fields id="fieldsData" style="padding-bottom: 9px;"> <!-- padding hacks resize problem in dialog :( --> 
 		                                     
-		                                          <ui:fieldgroup id="optionsfieldgroup">
+		                                          <ui:fieldgroup id="optionsfieldgroup" class="options-filedgroup">
 		                                              <ui:field>
 		                                                  <ui:fielddesc><%= Server.HtmlEncode(GetString("ParameterTypeLabel")) %></ui:fielddesc>
 		                                                  <ui:fielddata id="optionsfielddata">
 		                                                      <aspui:Generic TagName="ui:fieldsbutton" runat="server" 
-		                                                          id="btnDefault" image="${icon:blank}" label="${string:Composite.Web.FormControl.FunctionCallsDesigner:ParameterTypeDefaultLabel}" 
+		                                                          id="btnDefault" label="${string:Composite.Web.FormControl.FunctionCallsDesigner:ParameterTypeDefaultLabel}" 
 		                                                          callbackid="btnDefault"  />
 		                                                          
 		                                                      <aspui:Generic TagName="ui:fieldsbutton" runat="server" 
-		                                                           id="btnConstant" image="${icon:blank}" label="${string:Composite.Web.FormControl.FunctionCallsDesigner:ParameterTypeConstantLabel}" callbackid="btnConstant" />
+		                                                           id="btnConstant" label="${string:Composite.Web.FormControl.FunctionCallsDesigner:ParameterTypeConstantLabel}" callbackid="btnConstant" />
 		                                                           
-		                                                      <aspui:Generic TagName="ui:fieldsbutton" runat="server"
-		                                                           id="btnInputParameter" image="${icon:blank}" label="${string:Composite.Web.FormControl.FunctionCallsDesigner:ParameterTypeInputParameterLabel}" callbackid="btnInputParameter" />
+		                                                      <aspui:Generic TagName="ui:fieldsbutton" runat="server" 
+		                                                           id="btnInputParameter" label="${string:Composite.Web.FormControl.FunctionCallsDesigner:ParameterTypeInputParameterLabel}" callbackid="btnInputParameter" />
 		                                                      
 	                                                             <aspui:PostBackDialog runat="server" 
 	                                                                   EnableViewState="false"
 	                                                                   ID="btnFunctionCall" 
-	                                                                   image="${icon:blank}" 
 	                                                                   label="${string:Composite.Web.FormControl.FunctionCallsDesigner:ParameterTypeFunctionLabel}" 
 	                                                                   callbackid="btnFunctionCall"
 	                                                                   handle="Composite.Management.FunctionSelectorDialog" 
@@ -160,7 +158,7 @@
 		                                            
 		                                            <asp:View ID="viewWidget_InputParameter" runat="server">
 		                                                
-		                                             <ui:fieldgroup id="parameternamefieldgroup">
+		                                             <ui:fieldgroup id="parameternamefieldgroup" class="width-md">
 		                                                 <ui:field>
 		            					                    <ui:fielddesc><%= Server.HtmlEncode(GetString("ParameterNameLabel")) %></ui:fielddesc>
 		            					                    <ui:fieldhelp></ui:fieldhelp>

@@ -8,6 +8,7 @@ ui|menubody {
     display: block;
     padding: 0;
     background-color: #fff;
+    -vendor-box-shadow: @base-box-shadow;
     border-radius: 3px;
     border: 1px solid @base-border-color;
 }
@@ -100,30 +101,25 @@ ui|menu {
     > ui|menupopup {
         margin-top: 5px;
 
-        &:before {
+        &:before, &:after {
             content: "";
             position: absolute;
-            top: -9px;
-            left: 50%;
             width: 0;
             height: 0;
+            left: 50%;
             border-left: 9px solid transparent;
             border-right: 9px solid transparent;
-            border-bottom: 9px solid @base-border-color;
             margin-left: -9px;
         }
 
+        &:before {
+            top: -9px;
+            border-bottom: 9px solid @base-border-color;
+        }
+
         &:after {
-            content: "";
-            position: absolute;
             top: -8px;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-left: 9px solid transparent;
-            border-right: 9px solid transparent;
             border-bottom: 9px solid #fff;
-            margin-left: -9px;
         }
     }
 

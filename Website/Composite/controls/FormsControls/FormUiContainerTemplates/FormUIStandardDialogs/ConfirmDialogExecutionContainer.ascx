@@ -15,7 +15,7 @@
 		    	class="standard question" 
 		    	label="<%= Server.HtmlEncode( this.ContainerLabel )%>"
 		        image="${icon:question}"  
-		        width="340" 
+		        width="380" 
 		        resizable="false">
 		        
 		        <aspui:Feedback runat="server"

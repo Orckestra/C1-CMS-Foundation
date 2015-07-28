@@ -150,7 +150,6 @@
     <Content Include="App_Data\Composite\PhantomJs\preview.js" />
     <Content Include="App_Data\Composite\PhantomJs\renderingServer.js" />
     <Content Include="App_Data\PageTemplates\web.config" />
-    <Content Include="Composite\content\dialogs\functions\editFunctionCall.css" />
     <Content Include="Composite\content\dialogs\postback\postbackdialog.aspx" />
     <Content Include="Composite\content\dialogs\postback\PostBackDialogPageBinding.js" />
     <Content Include="Composite\content\dialogs\util\comparestrings\comparestrings.aspx" />
@@ -489,6 +488,7 @@
     <Content Include="Composite\images\icons\svg\stop.svg" />
     <Content Include="Composite\scripts\source\top\core\ImageProvider.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\genericview\GenericViewBinding.js" />
+    <Content Include="Composite\styles\default\fields\fields-base.less" />
     <None Include="Composite\styles\default\splash.less" />
     <Content Include="Composite\GenerateIconSprite.aspx" />
     <Content Include="Composite\images\editfunction.png" />
@@ -2143,7 +2143,6 @@
     <Content Include="Composite\content\misc\editors\functioncalleditor\bindings\FunctionEditorPageBinding.js" />
     <Content Include="Composite\content\misc\editors\functioncalleditor\functioncalleditor.aspx" />
     <Content Include="Composite\content\misc\editors\functioncalleditor\functioneditor-sample-function.xml" />
-    <Content Include="Composite\content\misc\editors\functioncalleditor\functioneditor.css" />
     <Content Include="Composite\content\misc\editors\functioncalleditor\functioneditortree.xslt">
       <SubType>Designer</SubType>
     </Content>
@@ -2380,8 +2379,8 @@
     <None Include="Composite\styles\default\controls.less" />
     <None Include="Composite\styles\default\cursors.less" />
     <None Include="Composite\styles\default\decks.less" />
-    <None Include="Composite\styles\default\dialogpages.less" />
-    <None Include="Composite\styles\default\dialogs.less" />
+    <None Include="Composite\styles\default\dialogs\dialogvignette.less" />
+    <None Include="Composite\styles\default\dialogs\dialogs.less" />
     <None Include="Composite\styles\default\docks.less" />
     <None Include="Composite\styles\default\errors.less" />
     <None Include="Composite\styles\default\explorer.less" />

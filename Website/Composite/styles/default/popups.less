@@ -1,51 +1,47 @@
 ui|popupset {
-	display: block;
-	overflow: visible;
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 0;
-	height: 0;
-	z-index: @popupset-zindex; /* above dialogset */
+    display: block;
+    overflow: visible;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    z-index: @popupset-zindex; /* above dialogset */
 }
+
 ui|popup,
 ui|menupopup {
-	position: absolute;
-	z-index: 6;  /* above the shadow */ 
-	min-width: 160px;
-	visibility: hidden;
-	/*-vendor-transition-property: opacity;
-	-vendor-transition-duration: 0.15s;
-	*/
-	border-radius: 3px;
-	display: none;
-	-vendor-user-select: none;
+    position: absolute;
+    z-index: 6; /* above the shadow */
+    min-width: 160px;
+    visibility: hidden;
+    display: none;
+    -vendor-user-select: none;
 }
 
 ui|popupbody { /* NOT USED ON COMMON POPUPS! */
-	display: block;
-	padding: 10px 12px 10px 12px;
-	background-color: #FFF;
-	color: @text-color;
-	-vendor-user-select: none;
-	border: 1px solid @base-border-color;
+    display: block;
+    padding: 10px 12px;
+    background-color: #FFF;
+    color: @text-color;
+    -vendor-user-select: none;
+    border: 1px solid @base-border-color;
     border-radius: @base-border-radius;
-	-vendor-box-shadow:  0px 0px 5px 0px rgba(97,97,97,0.25);
+    -vendor-box-shadow: 0px 0px 5px 0px rgba(97,97,97,0.25);
 }
 
 /* OVERFLOW ................................................ */
 
 ui|popup.overflow {
-	overflow-y: scroll;
-	height: 211px; /* move this to script when separators are supported */
-	border-right: none;
+    overflow-y: scroll;
+    height: 211px; /* move this to script when separators are supported */
+    border-right: none;
 }
 
 ui|popup div.popupindicator {
-	position: absolute;
-	width: 0;
-	height: 0;
-	top: 0px;
-	left: 0px;
-
+    position: absolute;
+    width: 0;
+    height: 0;
+    top: 0px;
+    left: 0px;
 }

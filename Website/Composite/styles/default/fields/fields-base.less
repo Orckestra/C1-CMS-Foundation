@@ -37,11 +37,10 @@ ui|fieldgroup {
             float: left;
         }
     }
-}
 
-ui|dialogpage ui|fieldgroup,
-ui|wizardpage ui|fieldgroup {
-    margin-bottom: 5px; /* strange flex bug */
+    &:last-child {
+        padding-bottom: 0;
+    }
 }
 
 ui|fielddesc {
@@ -141,14 +140,47 @@ ui|fieldhelp {
 ui|clickbutton {
     &.fieldhelp { /* width and height needed for explorer vanishing dysfunction */
         margin: 0;
-        margin-top: 2px;
+        top: 2px;
         right: 2px;
         position: absolute;
-        width: 26px;
+        width: 20px;
         height: 26px;
 
         ui|labelbox {
-            padding: 4px;
+            padding: 0;
+        }
+    }
+}
+
+ui|fieldsbutton ui|clickbutton {
+    float: none;
+    margin: 2px 0 10px 0;
+
+    ui|labelbox {
+        border-color: @field-border-color;
+        color: @text-color;
+    }
+}
+
+.options-filedgroup { // usage: FunctionCallEditor - Advanced View
+    ui|clickbutton {
+
+        ui|labelbox {
+            padding-left: 28px;
+        }
+    }
+
+    .isdisabled, .selected {
+        opacity: 0.75 !important;
+
+        &:after {
+            content: "\2713";
+            font-size: 16px;
+            font-weight: bold;
+            position: absolute;
+            top: 4px;
+            left: 10px;
+            color: @primary-color;
         }
     }
 }
@@ -206,7 +238,6 @@ ui|datadialog,
 ui|postbackdialog,
 ui|htmldatadialog,
 ui|editortextbox {
-    padding: 2px;
 
     input {
         border: none;

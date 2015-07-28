@@ -22,8 +22,9 @@
         label="(title supplied as page argument!)"
         width="600"
         height="480"
-        resizable="false">
-        <ui:toolbar id="toolbar" binding="TreeSelectorToolBarBinding" imagesize="large">
+        resizable="false"
+        class="with-top-toolbar">
+        <ui:toolbar id="toolbar" binding="TreeSelectorToolBarBinding" imagesize="large" class="white">
             <ui:toolbarbody />
             <ui:toolbarbody id="moreactionstoolbargroup">
                 <ui:toolbargroup>

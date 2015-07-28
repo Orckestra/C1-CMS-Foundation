@@ -14,7 +14,6 @@
 	<control:styleloader id="Styleloader1" runat="server" />
 	<control:scriptloader id="Scriptloader1" type="sub" runat="server" />
 	<asp:PlaceHolder ID="HeaderPlaceHolder" runat="server" />
-	<link rel="stylesheet" type="text/css" href="editFunctionCall.css.aspx" />
 	<script type="text/javascript" src="EditFunctionCallDialogPageBinding.js"></script>
 
 	<script type="text/javascript">
@@ -43,21 +42,22 @@
 			binding="EditFunctionCallDialogPageBinding"
 			id="renderingdialogpage"
 			image="${icon:parameter_overloaded}"
-			width="<% =ActiveTab == Tab.Basic? "500" : "880" %>"
+			width="<% =ActiveTab == Tab.Basic? "340" : "820" %>"
 			height="<% =ActiveTab == Tab.Basic? "100" : "410" %>"
 			resizable="false"
-			label="<%= this.DialogLabel %>">
+			label="<%= this.DialogLabel %>"
+            class="with-top-toolbar">
 			<asp:HiddenField runat="server" ID="hdnActiveTab" Value="<%# hdnActiveTab.Value %>"></asp:HiddenField>
 			<asp:PlaceHolder runat="server" ID="BasicPanel">
 				<ui:toolbar id="toolbar">
 					<ui:toolbarbody />
-					<ui:toolbarbody id="switchtoolbargroup" class="alignright">
+					<ui:toolbarbody id="switchtoolbargroup">
 						<ui:toolbargroup>
 							<ui:toolbarbutton id="advancedbutton" label="${string:Website.Dialogs.EditFunction.AdvancedView}" image="${icon:advanced}" flip="true" />
 						</ui:toolbargroup>
 					</ui:toolbarbody>
 				</ui:toolbar>
-				<ui:scrollbox class="padded">
+				<ui:scrollbox>
 					<asp:PlaceHolder ID="BasicContentPanel" runat="server"></asp:PlaceHolder>
                     <asp:PlaceHolder ID="plhNoParameters" runat="server" Visible="false">
                         <label>
@@ -78,7 +78,8 @@
 						<ui:clickbutton label="${string:Website.Dialogs.LabelAccept}"
 							oncommand="bindingMap.renderingdialogpage.onOk ()"
 							callbackid="buttonAccept"
-							focusable="true" />
+                            class="primary"
+                            focusable="true" />
 						<ui:clickbutton label="${string:Website.Dialogs.LabelCancel}"
 							response="cancel"
 							focusable="true" />

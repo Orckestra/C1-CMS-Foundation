@@ -1,0 +1,146 @@
+ui|dialogset,
+ui|dialog,
+ui|dialoghead,
+ui|dialogbody,
+ui|dialogpage,
+ui|wizardpage {
+    display: block;
+}
+
+ui|dialogcover {
+    position: absolute;
+    height: 100%; /* adjusted by script */
+    width: 100%; /* adjusted by script */
+    left: 0;
+    top: 0;
+    z-index: 2; /* adjusted by script */
+    background-color: #000;
+    .opacity(0.3);
+}
+
+ui|dialogset {
+    overflow: visible;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    z-index: @dialogset-zindex; /* below popupset */
+}
+
+ui|dialog {
+    background-color: @dialog-bg-color;
+    overflow: hidden;
+    position: absolute;
+    z-index: @dialog-zindex; /* above shadow - adjusted by script */
+    margin-top: -10000px;
+    padding: 0px; /* override chrome user agent stylesheet 1em */
+    border-radius: @dialog-border-radius;
+    border: solid 1px @dialog-border-color;
+}
+
+ui|dialoghead {
+    background: @dialog-header-bg-color;
+
+    ui|titlebarbody {
+        padding: 20px 15px 18px 0px;
+    }
+}
+
+ui|dialogbody {
+    padding-top: 0 !important;
+    width: 100%; /* ie bug */
+    overflow: hidden;
+}
+
+//== Dialog Page and Wizard Page
+ui|dialogpage, ui|wizardpage {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    visibility: hidden;
+
+    &.auto {
+        height: auto;
+    }
+
+    ui|scrollbox {
+        padding: 20px 25px;
+    }
+
+    ui|pagebody {
+        padding: 20px 25px;
+        border-top: 1px solid @dialog-border-color;
+    }
+
+    ui|labelbox.fieldgrouplabel {
+        display: none;
+    }
+
+    ui|fieldgroup {
+        border: 0px;
+        background: transparent;
+        padding: 0;
+        width: 100%;
+
+        &.first {
+            margin-top: 0px;
+        }
+
+        ui|field {
+            background: transparent;
+            padding: 0 !important;
+            border: none !important;
+        }
+    }
+}
+
+ui|dialogpage {
+
+    &.with-top-toolbar {
+
+        ui|toolbar {
+            padding-top: 0;
+            background: #fff;
+        }
+
+        ui|pagebody {
+            border-top: 0;
+        }
+    }
+
+    &.tabboxed {
+
+        ui|pagebody {
+            padding-top: 0;
+            border-top: 0;
+        }
+
+        ui|tabs {
+            background: @dialog-header-bg-color;
+        }
+
+        ui|tabbox {
+            margin: 0 -25px;
+        }
+
+        ui|tabpanels {
+            padding: 20px 25px;
+        }
+    }
+}
+
+.dialogsubpage {
+    height: auto;
+    min-height: 100%; /* IE relies on flexibility instead */
+    &.with-top-toolbar {
+        ui|toolbar {
+            padding-top: 0;
+            background: #fff;
+        }
+    }
+
+    ui|fieldgroup {
+        width: 100%;
+    }
+}

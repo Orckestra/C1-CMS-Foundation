@@ -1036,7 +1036,7 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
     private void ShowParameterData(XElement functionNode, string parameterName, string fullParameterPath)
     {
         mlvMain.SetActiveView(viewParameter);
-
+       
         IMetaFunction function = TreeHelper.GetFunction(functionNode);
 
         ParameterProfile parameterProfile = function.ParameterProfiles.FirstOrDefault(p => p.Name == parameterName);
@@ -1056,6 +1056,7 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
         txtFieldDescription.Text = Server.HtmlEncode(StringResourceSystemFacade.ParseString(parameterProfile.HelpDefinition.HelpText));
 
         XElement parameterNode = TreeHelper.GetParameterNode(functionNode, parameterName);
+
 
         if (!_state.AllowSelectingInputParameters)
         {
@@ -1095,7 +1096,6 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
             mlvWidget.Visible = false;
 
             btnDefault.Attributes["isdisabled"] = "true";
-            btnDefault.Attributes["image"] = "${icon:accept}";
             return;
         }
 
@@ -1109,7 +1109,7 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
         if (parameterNode.Elements(FunctionNodeXName).Any())
         {
             // function call should be shown
-            btnFunctionCall.Attributes["image"] = "${icon:accept}";
+            btnFunctionCall.Attributes["class"] = "selected";
 
             mlvWidget.Visible = false;
             return;
@@ -1117,8 +1117,7 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
 
         // Constant (or input parameter), widget should be shown
         btnConstant.Attributes["isdisabled"] = "true";
-        btnConstant.Attributes["image"] = "${icon:accept}";
-
+  
         object parameterValue = FunctionMarkupHelper.GetParameterValue(parameterNode, parameterProfile);
 
         if (parameterProfile.Type.IsLazyGenericType() && parameterValue != null)
@@ -1177,7 +1176,7 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
         // string inputParameterName = functionNode.Elements().First().Attribute("value").Value;
 
         btnInputParameter.Attributes["isdisabled"] = "true";
-        btnInputParameter.Attributes["image"] = "${icon:accept}";
+        btnInputParameter.Attributes["class"] = "selected";
 
         mlvWidget.SetActiveView(viewWidget_InputParameter);
 
