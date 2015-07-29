@@ -45,6 +45,8 @@
 		<Files>
 			<File path="\Composite\scripts\compressed\sub-uncompressed.js" />
 			<File path="\Composite\scripts\compressed\top-uncompressed.js" />
+      <File path="\gruntfile.js" />
+      <File path="\package.json" />
 			<File path="\ReleaseCleanupConfiguration.xml" />
 		</Files>
 	</Target>
