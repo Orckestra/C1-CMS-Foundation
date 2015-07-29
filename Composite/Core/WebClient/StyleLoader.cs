@@ -31,11 +31,11 @@ namespace Composite.Core.WebClient
 
             if (isInDevelopMode)
             {
-                _builder.AppendLine(stylesheet(root + "/styles/styles.css.aspx"));
+                _builder.AppendLine(stylesheet(root + "/styles/styles.css"));
             }
             else
             {
-                _builder.AppendLine(stylesheet(root + "/styles/styles.min.css.aspx"));
+                _builder.AppendLine(stylesheet(root + "/styles/styles.min.css"));
             }
 
 
