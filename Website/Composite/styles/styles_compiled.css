@@ -1,36 +1,170 @@
 @namespace ui url("http://www.w3.org/1999/xhtml");
-
+/* W3C */
+/* below dialogs */
+/* below popupset */
+/* above dialogs */
+/* above dialogset */
+/* above shadow - adjusted by script */
 * {
 cursor: default;
--vendor-box-sizing: border-box;
+-moz-box-sizing: border-box;
+-webkit-box-sizing: border-box;
+box-sizing: border-box;
 }
-*:focus {
+*:focus,
+*:focus * {
 outline: none;
+}
+html {
+font-family: sans-serif;
+-ms-text-size-adjust: 100%;
+-webkit-text-size-adjust: 100%;
+}
+html,
+body {
+margin: 0;
+padding: 0;
+border: none;
+}
+a {
+text-decoration: none;
+background-color: transparent;
+}
+a img {
+cursor: pointer;
+}
+a:active,
+a:hover {
+outline: 0;
+}
+img {
+border: 0;
+}
+::-webkit-scrollbar {
+width: 13px;
+height: 13px;
+background: #FAFAFA;
+}
+::-webkit-scrollbar-thumb {
+background: #CACACA;
+border: 3px solid #FAFAFA;
+border-radius: 7px;
+}
+::-webkit-scrollbar-thumb:hover {
+background: #22b980;
+}
+form {
+/* assuming that all forms are standard body-childnode dot net forms! */
+padding: 0;
+margin: 0;
+height: 100%;
+}
+button,
+input,
+optgroup,
+select,
+textarea {
+color: inherit;
+font: inherit;
+margin: 0;
+}
+button {
+overflow: visible;
+}
+button,
+select {
+text-transform: none;
+}
+button,
+html input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+-webkit-appearance: button;
+cursor: pointer;
+}
+button[disabled],
+html input[disabled] {
+cursor: default;
+}
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+border: 0;
+padding: 0;
+}
+input {
+line-height: normal;
+}
+input[type="checkbox"],
+input[type="radio"] {
+box-sizing: border-box;
+padding: 0;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+height: auto;
+}
+textarea {
+overflow: auto;
+}
+textarea,
+input {
+cursor: text;
+-moz-user-select: text;
+-ms-user-select: text;
+-webkit-user-select: text;
+user-select: text;
+resize: none;
+}
+table {
+border-collapse: collapse;
+border-spacing: 0;
+}
+td,
+th {
+padding: 0;
+}
+.text-primary {
+color: #22b980;
+}
+.text-error {
+color: #a40000;
+}
+.hide {
+display: none;
+}
+.pull-left {
+float: left;
+}
+.pull-right {
+float: right;
+}
+*.padded {
+padding: 30px 30px 30px 40px;
+}
+.padded-sm {
+padding: 18px 20px;
+}
+.clearfix:before,
+.clearfloatelement:before,
+.clearfix:after,
+.clearfloatelement:after {
+content: " ";
+display: table;
+}
+.clearfix:after,
+.clearfloatelement:after {
+clear: both;
+}
+.mt-20 {
+margin-top: 20px;
+}
+.mt-40 {
+margin-top: 40px;
 }
 html,
 body {
 height: 100%;
-border: none;
-margin: 0;
-padding: 0;
 overflow: hidden;
-}
-body {
-color: $(color:windowtext);
-}
-form { /* assuming that all forms are standard body-childnode dot net forms! */
-height: 100%;
-padding: 0;
-margin: 0;	
-}
-p {
-margin: 0 0 1.3em 0;	
-}
-textarea,					
-input {
-cursor: text;
--vendor-user-select: text;
--vendor-resize: none;
 }
 html,
 input,
@@ -39,18 +173,9 @@ button,
 select,
 td,
 th {
-#region default
-font-family: Tahoma, sans-serif;
-font-size: 11px;
-#endregion
-#region vista
 font-family: "Segoe UI", Tahoma, sans-serif;
 font-size: 12px;
-#endregion
-#region osx
-font-family: "Lucida Grande", sans-serif;
-font-size: 11px;
-#endregion
+color: #333333;
 }
 img.designmodesanitizer {
 display: block;
@@ -58,11 +183,10 @@ position: absolute;
 top: 0;
 left: 0;
 width: 100%;
-height: 24px; /* ie must have a fixed px height */
-z-index: 2; /* above selectorindicator in EditorSelectorBinding */
-}
-*.padded {
-padding: 30px 30px 30px 40px;
+height: 24px;
+/* ie must have a fixed px height */
+z-index: 2;
+/* above selectorindicator in EditorSelectorBinding */
 }
 a.buttonurl {
 display: block;
@@ -71,13 +195,11 @@ top: 0;
 left: 0;
 width: 100%;
 height: 100%;
-#ie background-color: pink;
-#ie opacity: 0;
-
 }
 ui|binding,
-ui|feedbackset { /* ONLY MAW USES THIS FOR NOW! */
-display: none;	
+ui|feedbackset {
+/* ONLY MAW USES THIS FOR NOW! */
+display: none;
 }
 ui|box {
 display: block;
@@ -91,7 +213,7 @@ top: 0;
 left: 0;
 width: 100%;
 height: 100%;
-background-color: $(color:threedface);
+background-color: #fff;
 }
 ui|cover.transparent {
 background-color: transparent;
@@ -102,40 +224,43 @@ display: block;
 height: 100%;
 overflow: hidden;
 }
-
+ui|stagecontainer {
+display: block;
+overflow: hidden;
+padding-right: 50px;
+margin-right: -50px;
+float: left;
+}
+ui|flexbox#stageflexbox {
+padding: 0;
+}
+ui|stage {
+display: block;
+height: 100%;
+overflow: hidden;
+position: relative;
+}
 /* Fix for IE9-10 */
 ui|wizardpage > .flexboxelement,
 ui|dialogpage > .flexboxelement {
 height: auto;
 }
-
-ui|*.clearfloatelement:after {
-content: " ";
-font-size: 0;
-height: 0px;
-overflow: hidden;
-display: block;
-clear: both;
-}
-
-
 ui|persistance {
 display: none;
-#ie behavior: url(#default#userdata);
+/*#ie behavior: url(#default#userdata);*/
 }
-
 ui|window {
 display: block;
-position: relative; /* to contain a possible cover */
-overflow: auto; /*?*/
+position: relative;
+/* to contain a possible cover */
+overflow: auto;
+/*?*/
 -webkit-overflow-scrolling: touch;
-
 }
 iframe {
 display: block;
 width: 100%;
 height: 100%;
-
 border: none !important;
 border-width: 0;
 }
@@ -143,54 +268,23 @@ ui|scrollbox {
 display: block;
 height: 100%;
 overflow: auto !important;
-position: relative; /* marks srollbox as an "offsetparent" for position calculations */
+position: relative;
+/* marks srollbox as an "offsetparent" for position calculations */
 }
 ui|scrollbox.infobox {
 background-color: white;
-border: 1px solid;
-border-color: $(color:threeddarkshadow) $(color:threedshadow) $(color:threedshadow) $(color:threeddarkshadow);
-}
-a  {
-text-decoration: none;
-color: $(color:windowtext);
-}
-a img {
-border: none;
-cursor: pointer;
+border: 1px solid #cccccc;
 }
 ui|status {
-display: none;	
+display: none;
 }
-
-[isdisabled="true"] {
+[isdisabled="true"],
+.isdisabled {
 opacity: 0.4;
 }
-
 page[isdisabled="true"] {
 opacity: 0.95;
 }
-
-
-::-webkit-scrollbar {
-width: 13px;
-height: 13px;
-background: #FAFAFA;
-}
-
-::-webkit-scrollbar-thumb {
-background: #CACACA;
-border: 3px solid #FAFAFA;
-border-radius: 7px;
-}
-
-
-::-webkit-scrollbar-thumb:hover {
-background: #21B980;
-}
-
-@namespace url("http://www.w3.org/1999/xhtml");
-@namespace ui url("http://www.w3.org/1999/xhtml");
-
 ui|updatepanel,
 ui|updatepanelbody {
 display: block;
@@ -205,13 +299,11 @@ ui|updatepanel.inline,
 ui|updatepanel.inline ui|updatepanelbody {
 display: inline;
 }
-@namespace url("http://www.w3.org/1999/xhtml");
-@namespace ui url("http://www.w3.org/1999/xhtml");
-
 ui|text,
 ui|header {
 display: block;
--vendor-user-select: none; /* See notes in DocumentManager.js */	
+-vendor-user-select: none;
+/* See notes in DocumentManager.js */
 }
 ui|text {
 margin: 0 0 1em 0;
@@ -219,50 +311,23 @@ margin: 0 0 1em 0;
 ui|header {
 font-weight: bold;
 }
-@namespace url("http://www.w3.org/1999/xhtml");
-@namespace url("http://www.w3.org/2000/svg");
-@namespace ui url("http://www.w3.org/1999/xhtml");
-
 ui|labelbox {
 display: block;
 float: left;
 white-space: nowrap;
--vendor-user-select: none; /* See notes in DocumentManager.js */
+-vendor-user-select: none;
+/* See notes in DocumentManager.js */
 max-width: 100%;
 }
-
-ui|labelbox.toolbartext {
-margin-top: 4px;
-}
-
-ui|labelbody {
+ui|labelbox ui|labelbody {
 background: transparent none no-repeat 0 0;
 display: block;
 float: left;
 margin-left: auto !important;
 max-width: 100%;
-}
-
-ui|labelbox.flipped ui|labelbody {
-background-position: 100% 0;
-padding-left: 0 !important;
-}
-
-ui|labelbody{
 height: 18px;
 padding-left: 18px;
 }
-
-ui|labelbox.flipped ui|labelbody{
-padding-right: 18px;
-}
-
-ui|*.textonly ui|labelbody,
-ui|labelbox.textonly ui|labelbody {
-padding-left: 0 !important;
-background-position: -200px -200px; /* huh? */
-}
-
 ui|labelbox ui|labelbody ui|icon {
 float: left;
 width: 18px;
@@ -272,215 +337,211 @@ font-size: 18px;
 text-align: center;
 color: #333;
 }
-
-ui|labeltext {
+ui|labelbox ui|labeltext {
 display: block;
 float: left;
-#ie text-overflow: ellipsis;
 max-width: 100%;
 }
-
-ui|*.textonly ui|labeltext,
-ui|labelbox.textonly ui|labeltext {
-padding-left: 5px !important;
+ui|labelbox.toolbartext {
+margin-top: 4px;
 }
-
-ui|*.imagesonly ui|labeltext {
-display: none;
-padding-left: 0 !important;
-}
-
-ui|labelbox.both ui|labeltext {
-margin-left: 6px;
-}
-
-ui|labelbox.both.flipped ui|labeltext {
-margin-left: 0px;
-margin-right: 6px;
-}
-
-ui|labelbox.graytext ui|labeltext {
-color: graytext;
-}
-
 ui|labelbox svg {
 width: 18px;
 height: 18px;
 display: block;
 margin-left: -18px;
 float: left;
-}
-
-ui|labelbox.flipped ui|labelbody svg {
-right: 8px;
-position: absolute;
-}
-
-ui|labelbox.imageonly svg {
-margin-left: -16px;
-}
-
-/*ui|labelbox svg g.hover {
-visibility: hidden;
-fill: currentColor;
-}*/
-
-ui|toolbarbutton.hover ui|labelbox svg g.hover {
-visibility: visible;
-}
-
-ui|toolbarbutton.hover ui|labelbox svg g.default {
-visibility: hidden;
-}
-
-/*ui|labelbox {
-color: #666;
-}*/
-
-ui|labelbox svg {
 fill: currentColor;
 color: currentColor;
 stroke: currentColor;
 }
-@namespace url("http://www.w3.org/1999/xhtml");
-@namespace ui url("http://www.w3.org/1999/xhtml");
-
-ui|dialogset {
+ui|labelbox.flipped ui|labelbody {
+background-position: 100% 0;
+padding-left: 0 !important;
+}
+ui|labelbox.flipped svg {
+right: 8px;
+position: absolute;
+}
+ui|labelbox.textonly ui|labelbody {
+padding-left: 0;
+}
+ui|labelbox.textonly ui|labeltext {
+padding-left: 0;
+}
+ui|labelbox.imageonly ui|labeltext {
+display: none;
+}
+ui|labelbox.imageonly svg {
+margin-left: -16px;
+}
+ui|labelbox.image-and-text ui|labeltext {
+margin-left: 6px;
+}
+ui|labelbox.image-and-text.flipped ui|labelbody {
+padding-right: 18px;
+}
+ui|labelbox.image-and-text.flipped ui|labeltext {
+margin-left: 0px;
+margin-right: 6px;
+}
+ui|labelbox.graytext ui|labeltext {
+color: graytext;
+}
+ui|*.imagesonly ui|labeltext {
+display: none;
+padding-left: 0 !important;
+}
+ui|toolbarbutton.hover ui|labelbox svg g.hover {
+visibility: visible;
+}
+ui|toolbarbutton.hover ui|labelbox svg g.default {
+visibility: hidden;
+}
+ui|dialogset,
+ui|dialog,
+ui|dialoghead,
+ui|dialogbody,
+ui|dialogpage,
+ui|wizardpage {
 display: block;
+}
+ui|dialogcover {
+position: absolute;
+height: 100%;
+/* adjusted by script */
+width: 100%;
+/* adjusted by script */
+left: 0;
+top: 0;
+z-index: 2;
+/* adjusted by script */
+background-color: #000;
+opacity: 0.3;
+filter: alpha(opacity=30);
+}
+ui|dialogset {
 overflow: visible;
 position: absolute;
 top: 0;
 left: 0;
 width: 0;
 height: 0;
-z-index: 4; /* below popupset */
+z-index: 4;
+/* below popupset */
 }
 ui|dialog {
-display: block;
-background-color: #F7F7F7;
+background-color: #f7f7f7;
 overflow: hidden;
 position: absolute;
-z-index: 6; /* above shadow - adjusted by script */
+z-index: 6;
+/* above shadow - adjusted by script */
 margin-top: -10000px;
-padding: 0px; /* override chrome user agent stylesheet 1em */
-border: none; /* override chrome user agent stylesheet */
-}
-ui|dialog.minimized {
-border: 5px solid pink;
-}
-ui|dialog.maximized {
-border: 5px solid lime;
-}
-ui|dialoghead,
-ui|dialogbody {
-display: block;
 padding: 0px;
+/* override chrome user agent stylesheet 1em */
+border-radius: 5px;
+border: solid 1px #cccccc;
 }
 ui|dialoghead {
-padding-bottom: 0 !important;
+background: #ffffff;
+}
+ui|dialoghead ui|titlebarbody {
+padding: 20px 15px 18px 0px;
 }
 ui|dialogbody {
 padding-top: 0 !important;
-width: 100%; /* ie bug */
+width: 100%;
+/* ie bug */
 overflow: hidden;
 }
-
-
-ui|dialogborder {
-position: absolute;
+ui|dialogpage,
+ui|wizardpage {
+height: 100%;
+width: 100%;
 overflow: hidden;
-z-index: 4;
+visibility: hidden;
 }
-ui|dialogborder.n {
-top: 0;
-left: 0;
-width: 100%;
-height: 4px;
+ui|dialogpage.auto,
+ui|wizardpage.auto {
+height: auto;
 }
-ui|dialogborder.s {
-bottom: 0;
-left: 0;
-width: 100%;
-height: 4px;
+ui|dialogpage ui|scrollbox,
+ui|wizardpage ui|scrollbox {
+padding: 20px 25px;
 }
-ui|dialogborder.w {
-top: 0;
-left: 0;
-width: 4px;
-height: 100%;
+ui|dialogpage ui|pagebody,
+ui|wizardpage ui|pagebody {
+padding: 20px 25px;
+border-top: 1px solid #cccccc;
 }
-ui|dialogborder.e {
-top: 0;
-right: 0;
-width: 4px;
-height: 100%;
+ui|dialogpage ui|labelbox.fieldgrouplabel,
+ui|wizardpage ui|labelbox.fieldgrouplabel {
+display: none;
 }
-ui|dialog.resizable ui|dialogborder.n {
-cursor: n-resize;
-}
-ui|dialog.resizable ui|dialogborder.s {
-cursor: s-resize;
-}
-ui|dialog.resizable ui|dialogborder.w {
-cursor: w-resize;
-}
-ui|dialog.resizable ui|dialogborder.e {
-cursor: e-resize;
-} 
-ui|dialogcover {
-position: absolute;
-height: 100%; /* adjusted by script */
-width: 100%; /* adjusted by script */
-left: 0;
-top: 0;
-z-index: 2; /* adjusted by script */
-background-color: transparent;
-}
-@namespace url("http://www.w3.org/1999/xhtml");
-@namespace url("http://www.w3.org/2000/svg");
-@namespace ui url("http://www.w3.org/1999/xhtml");
-
-
-ui|pagebody {
-display: block;
-padding: 15px 14px 0 14px;
-}
-
-ui|pagebody.pad-0 {
+ui|dialogpage ui|fieldgroup,
+ui|wizardpage ui|fieldgroup {
+border: 0px;
+background: transparent;
 padding: 0;
+width: 100%;
 }
-
-ui|dialogtoolbar {
-display: block;
-clear: both;
-white-space: nowrap;	
-padding: 12px 11px 14px 12px;
-margin-right: 0;
-margin-left: 0;
+ui|dialogpage ui|fieldgroup.first,
+ui|wizardpage ui|fieldgroup.first {
+margin-top: 0px;
 }
-ui|dialogtoolbar ui|clickbutton.focusable {
-margin: 5px !important;
+ui|dialogpage ui|fieldgroup ui|field,
+ui|wizardpage ui|fieldgroup ui|field {
+background: transparent;
+padding: 0 !important;
+border: none !important;
 }
-ui|dialogtoolbar ui|clickbutton.focused {
-
+ui|dialogpage.with-top-toolbar ui|toolbar {
+padding-top: 0;
+background: #fff;
 }
-
+ui|dialogpage.with-top-toolbar ui|pagebody {
+border-top: 0;
+}
+ui|dialogpage.tabboxed ui|pagebody {
+padding-top: 0;
+border-top: 0;
+}
+ui|dialogpage.tabboxed ui|tabs {
+background: #ffffff;
+}
+ui|dialogpage.tabboxed ui|tabbox {
+margin: 0 -25px;
+}
+ui|dialogpage.tabboxed ui|tabpanels {
+padding: 20px 25px;
+}
+.dialogsubpage {
+height: auto;
+min-height: 100%;
+/* IE relies on flexibility instead */
+}
+.dialogsubpage.with-top-toolbar ui|toolbar {
+padding-top: 0;
+background: #fff;
+}
+.dialogsubpage ui|fieldgroup {
+width: 100%;
+}
 /* STANDARD DIALOGS ................................................................*/
-
-table#dialoglayout {
+#dialoglayout {
 margin: 0;
 width: 306px;
 table-layout: fixed;
 }
-table#dialoglayout td {
+#dialoglayout td {
 vertical-align: middle;
 padding: 0;
 }
-table#dialoglayout td#dialogvignette {
-padding: 0 0px 0 10px;
-width: 60px;
+#dialoglayout #dialogvignette {
+padding: 0;
+width: 50px;
 }
-table#dialoglayout td#dialogtext {
+#dialoglayout #dialogtext {
 padding-bottom: 4px;
 word-wrap: break-word;
 }
@@ -490,13 +551,28 @@ width: 32px;
 height: 32px;
 margin-right: 16px;
 }
-
 ui|dialogpage ui|dialogvignette svg {
 width: 32px;
 height: 32px;
 }
-@namespace ui url("http://www.w3.org/1999/xhtml");
-
+/* STANDARD DIALOGS ................................................................*/
+ui|dialogpage.question ui|dialogvignette,
+ui|dialogvignette.question {
+color: #EFAD57;
+}
+ui|dialogpage.warning ui|dialogvignette,
+ui|dialogvignette.warning {
+color: #EFAD57;
+}
+ui|dialogpage.message ui|dialogvignette,
+ui|dialogvignette.message {
+color: #5FC0DC;
+/* usage: Broadcast Message */
+}
+ui|dialogpage.error ui|dialogvignette,
+ui|dialogvignette.error {
+color: #D75553;
+}
 ui|popupset {
 display: block;
 overflow: visible;
@@ -505,56 +581,111 @@ top: 0;
 left: 0;
 width: 0;
 height: 0;
-z-index: 5; /* above dialogset */
+z-index: 5;
+/* above dialogset */
 }
 ui|popup,
 ui|menupopup {
 position: absolute;
-z-index: 6;  /* above the shadow */ 
+z-index: 6;
+/* above the shadow */
 min-width: 160px;
 visibility: hidden;
-/*-vendor-transition-property: opacity;
--vendor-transition-duration: 0.15s;
-*/
-border-radius: 3px;
 display: none;
 -vendor-user-select: none;
 }
-
-ui|popupbody { /* NOT USED ON COMMON POPUPS! */
+ui|popupbody {
+/* NOT USED ON COMMON POPUPS! */
 display: block;
-padding: 10px 12px 10px 12px;
+padding: 10px 12px;
 background-color: #FFF;
-color: $(color:menutext);
+color: #333333;
 -vendor-user-select: none;
-border: 1px solid #CCCCCC;
--vendor-box-shadow:  0px 0px 5px 0px rgba(97,97,97,0.25);
+border: 1px solid #cccccc;
+border-radius: 5px;
+-vendor-box-shadow: 0px 0px 5px 0px rgba(97, 97, 97, 0.25);
 }
-
 /* OVERFLOW ................................................ */
-
 ui|popup.overflow {
 overflow-y: scroll;
-height: 211px; /* move this to script when separators are supported */
+height: 211px;
+/* move this to script when separators are supported */
 border-right: none;
 }
-
 ui|popup div.popupindicator {
 position: absolute;
 width: 0;
 height: 0;
 top: 0px;
 left: 0px;
-
 }
-@namespace ui url("http://www.w3.org/1999/xhtml");
-
-
 /* see also popups.css for shared visual styles!!!!!!! */
-
 ui|menubar {
 display: block;
 white-space: nowrap;
+}
+ui|menubody {
+display: block;
+padding: 0;
+background-color: #fff;
+-vendor-box-shadow: 0px 0px 12px -1px rgba(204, 204, 204, 0.75);
+border-radius: 3px;
+border: 1px solid #cccccc;
+}
+ui|menugroup {
+display: block;
+padding: 0;
+border-bottom: 1px solid #cccccc;
+}
+ui|menugroup.last {
+border-bottom: none;
+}
+ui|menuitem {
+white-space: nowrap;
+display: block;
+clear: both;
+position: relative;
+}
+ui|menuitem ui|labelbox {
+position: relative;
+padding: 7px 8px 7px 8px;
+}
+ui|menuitem ui|labelbox.hover {
+background: #22b980;
+color: #fff;
+}
+ui|menuitem ui|labeltext {
+padding-left: 4px;
+position: relative;
+}
+ui|menuitem .checkboxindicator {
+font-family: Arial, sans-serif;
+font-size: 11px;
+position: absolute;
+left: 10px;
+top: 10px;
+}
+ui|menuitem .submenuindicator {
+font-family: Arial, sans-serif;
+font-size: 11px;
+position: absolute;
+right: 7px;
+top: 3px;
+display: none;
+}
+ui|menuitem ui|menupopup {
+margin-top: -2px;
+margin-left: -2px;
+}
+ui|menubody.checkboxed ui|menuitem ui|labelbox {
+padding: 7px 8px 7px 24px;
+}
+ui|menuitem ui|labelbox,
+ui|menuitem ui|labelbody,
+ui|menubody ui|labelbox,
+ui|menubody ui|labelbody {
+float: none;
+clear: both;
 }
 ui|menu {
 display: block;
@@ -563,99 +694,71 @@ margin: 0;
 padding: 0;
 height: 30px;
 }
-ui|menubody {
-display: block;
-}
-ui|menugroup {
-display: block;
-}
-ui|menugroup.first {
-padding-top: 0;
-}
-ui|menugroup.last {
-padding-bottom: 0;
-}
-ui|menu ui|labelbox.menulabel {
+ui|menu .menulabel {
 padding: 7px 16px 1px 4px;
-position: relative; /* ie something */
-}
-ui|menuitem {
-white-space: nowrap;
-display: block;
-clear: both;
 position: relative;
+/* ie something */
 }
-ui|menuitem ui|menupopup {
-margin-top: -2px;
-margin-left: -2px;
-}
-ui|menuitem.isdisabled,
-ui|menu ui|menu.isdisabled {
-color: $(color:graytext);
-}
-ui|menuitem ui|labelbox,
-ui|menuitem ui|labelbody,
-ui|menubody ui|labelbox,
-ui|menubody ui|labelbody
-{
-float: none;
-clear: both;
-}
-ui|menuitem ui|labelbox {
-padding: 7px 8px 7px 8px;
-}
-ui|menubody.checkboxed ui|menuitem ui|labelbox {
-padding: 7px 8px 7px 24px;
-}
-
-ui|menuitem ui|labeltext {
-padding-left: 4px;
-position: relative;
-}
-ui|popup.selectorpopup ui|menuitem ui|labeltext {
-text-transform: none; /* selectors should NOT capitalize text! */
-}
-
-ui|menuitem ui|labelbox {
-position: relative;
-#ie width: 100%;
-}
-
-div.checkboxindicator {
-font-family: Arial, sans-serif;
-font-size: 11px;
-position: absolute;
-left: 10px;
-top: 10px;
-}
-div.submenuindicator {
-font-family: Arial, sans-serif;
-font-size: 11px;	
-position: absolute;
-right: 7px;
-top: 3px;
-}
-
-ui|menu ui|labelbox {
-text-transform: uppercase;
-}
-
-ui|menu ui|menubody ui|labelbox {
-text-transform: none;
-}
-
 ui|menu ui|clickbutton ui|labelbox {
-border:0 !important;
+border: 0 !important;
 background-color: transparent;
-
 }
-
-
-@namespace url("http://www.w3.org/1999/xhtml");
-@namespace ui url("http://www.w3.org/1999/xhtml");
-
+ui|menu > ui|menupopup {
+margin-top: 5px;
+}
+ui|menu > ui|menupopup:before,
+ui|menu > ui|menupopup:after {
+content: "";
+position: absolute;
+width: 0;
+height: 0;
+left: 50%;
+border-left: 9px solid transparent;
+border-right: 9px solid transparent;
+margin-left: -9px;
+}
+ui|menu > ui|menupopup:before {
+top: -9px;
+border-bottom: 9px solid #cccccc;
+}
+ui|menu > ui|menupopup:after {
+top: -8px;
+border-bottom: 9px solid #fff;
+}
+ui|menu > ui|labelbox.textonly:before {
+content: "";
+position: absolute;
+top: 12px;
+right: 0;
+width: 0;
+height: 0;
+border-style: solid;
+border-width: 5px 5px 0 5px;
+border-color: #22b980 transparent transparent transparent;
+}
+ui|menu > ui|labelbox.textonly:after {
+content: "";
+position: absolute;
+top: 12px;
+right: 1px;
+width: 0;
+height: 0;
+border-style: solid;
+border-width: 4px 4px 0 4px;
+border-color: #333333 transparent transparent transparent;
+}
+ui|menu.hover > ui|labelbox.textonly:before {
+top: 12px;
+border-width: 0px 5px 5px 5px;
+border-color: transparent transparent #909090 transparent;
+}
+ui|menu.hover > ui|labelbox.textonly:after {
+top: 13px;
+right: 1px;
+border-width: 0px 4px 4px 4px;
+border-color: transparent transparent #333333 transparent;
+}
 /* see "toolbars.css" for styles shared with toolbarbutton */
-
 /** NOTICE SHARED LAYOUT! */
 ui|toolbarbutton,
 ui|clickbutton,
@@ -665,148 +768,226 @@ ui|toolbarlabel {
 display: block;
 position: relative;
 float: left;
-margin-right: 2px;
-overflow: hidden !important; /* contain added stuff */
+margin: 2px;
+overflow: hidden !important;
+/* contain added stuff */
 }
 ui|clickbutton {
 padding: 0;
-
+margin: 0 6px;
 }
-
 ui|clickbutton ui|labelbox {
 float: none;
 overflow: hidden;
-padding: 6px 9px 7px;
+padding: 6px 15px;
+border-radius: 4px;
+border: solid 1px #22b980;
+color: #22b980;
+background-color: #ffffff;
+text-transform: uppercase;
 }
-
-ui|toolbar ui|clickbutton ui|labelbox {
-padding: 3px 2px;
+ui|clickbutton.active ui|labelbox {
+border-color: #22b980;
+background-color: #ffffff;
+background-image: none;
+color: #22b980;
 }
-
-ui|toolbar ui|selector ui|clickbutton ui|labelbox{
-padding: 6px 24px 6px 9px;
+ui|clickbutton.focused ui|labelbox,
+ui|clickbutton.primary ui|labelbox {
+border-color: #22b980;
+background-color: #22b980;
+background-image: linear-gradient(to bottom, #22b980 0%, #1ea371 100%);
+color: #ffffff;
 }
-
-ui|checkbutton {
-margin-top: 2px;
+ui|clickbutton.hover ui|labelbox {
+border-color: #1ea371;
+background-color: #ffffff;
+background-image: none;
+color: #1ea371;
 }
-@namespace url("http://www.w3.org/1999/xhtml");
-@namespace ui url("http://www.w3.org/1999/xhtml");
-
-ui|matrix {
-display: block;	
+ui|clickbutton.hover.focused ui|labelbox,
+ui|clickbutton.hover.primary ui|labelbox {
+border-color: #1ea371;
+background-color: #22b980;
+background-image: linear-gradient(to bottom, #22b980 0%, #1ea371 100%);
+color: #ffffff;
 }
-table.matrix td {
-overflow: hidden;
-width: 4px;
-height: 4px;
+ui|toolbarbutton {
+text-transform: uppercase;
 padding: 0;
+border: 1px solid #cccccc;
+border-radius: 4px;
+background: #ffffff;
+color: #575757;
+margin: 0px 10px 0 0;
+-webkit-box-shadow: 0 2px 2px -2px #dddddd;
+-ms-box-shadow: 0 2px 2px -2px #dddddd;
+box-shadow: 0 2px 2px -2px #dddddd;
 }
-table.matrix td.n,
-table.matrix td.s {
-width: auto;
+ui|toolbarbutton ui|labelbox {
+padding: 6px 11px;
 }
-table.matrix td.e,
-table.matrix td.w {
-height: auto;
-
+ui|toolbarbutton.btn-group-left {
+margin-right: 0;
+border-top-right-radius: 0;
+border-bottom-right-radius: 0;
 }
-table.matrix td.c {
-width: auto;
-height: auto;
+ui|toolbarbutton.btn-group-left.hover {
+border-right: 1px solid #cccccc !important;
 }
-div.matrixbindingmanifester {
-height: 1px;
-overflow: hidden;
-visibility: hidden;	
+ui|toolbarbutton.btn-group-right {
+margin-left: 0;
+border-top-left-radius: 0;
+border-bottom-left-radius: 0;
+border-left: 0;
 }
-@namespace url("http://www.w3.org/1999/xhtml");
-@namespace ui url("http://www.w3.org/1999/xhtml");
-
+ui|toolbarbutton.combobutton ui|combobox {
+border-left: 1px solid transparent;
+margin: 0;
+display: block;
+float: left;
+line-height: 28px;
+font-size: 9px;
+padding: 0 10px;
+-moz-user-select: none;
+position: relative;
+color: transparent;
+}
+ui|toolbarbutton.combobutton ui|combobox:before,
+ui|toolbarbutton.combobutton ui|combobox:after {
+content: "";
+position: absolute;
+width: 0;
+height: 0;
+border-style: solid;
+}
+ui|toolbarbutton.combobutton ui|combobox:before {
+top: 12px;
+right: 10px;
+border-width: 5px 5px 0 5px;
+border-color: #1ea371 transparent transparent transparent;
+}
+ui|toolbarbutton.combobutton ui|combobox:after {
+top: 12px;
+right: 11px;
+border-width: 4px 4px 0 4px;
+border-color: #ffffff transparent transparent transparent;
+}
+ui|toolbarbutton.hover,
+ui|toolbarbutton.active {
+border-color: #22b980;
+background-color: #ffffff;
+color: #1ea371;
+}
+ui|toolbarbutton.hover ui|combobox,
+ui|toolbarbutton.active ui|combobox {
+border-left: 1px solid #22b980;
+}
+ui|toolbarbutton.hover ui|combobox:before,
+ui|toolbarbutton.active ui|combobox:before {
+border-color: #ffffff transparent transparent transparent;
+}
+ui|toolbarbutton.hover ui|combobox:after,
+ui|toolbarbutton.active ui|combobox:after {
+border-color: #22b980 transparent transparent transparent;
+}
 ui|titlebar {
 display: block;
-font-weight: bold;
 overflow: hidden;
+}
+ui|titlebar ui|labeltext {
+position: relative;
+overflow: hidden;
+-ms-text-overflow: ellipsis;
+-o-text-overflow: ellipsis;
+text-overflow: ellipsis;
+font-size: 14px;
+text-transform: uppercase;
+color: #22b980;
 }
 ui|titlebarbody {
 display: block;
 position: relative;
 }
-@namespace url("http://www.w3.org/1999/xhtml");
-@namespace ui url("http://www.w3.org/1999/xhtml");
-
+ui|dialog ui|titlebar ui|dialog ui|titlebar ui|labelbox.dialogtitle,
+ui|dialog ui|titlebar ui|labelbox.dialogtitle ui|labelbody,
+ui|dialog ui|titlebar ui|labelbox.dialogtitle ui|labeltext {
+float: none;
+}
+ui|dialog ui|titlebar ui|labelbox.dialogtitle svg {
+display: none;
+}
 ui|controlgroup {
 display: block;
 float: right;
-
+position: relative;
 }
 ui|control {
 display: block;
 float: left;
+margin-left: 2px;
+background-color: transparent;
 }
-
-.dialogcontrol {
+ui|control .dialogcontrol {
 padding: 0;
 }
-
-@namespace url("http://www.w3.org/1999/xhtml");
-@namespace ui url("http://www.w3.org/1999/xhtml");
-
-/* SEE ALSO BUTTONS.CSS */
-
-ui|toolbar ui|selector {
-margin-right: 2px;
-float: left;
+ui|control .dialogcontrol ui|labelbody {
+padding-left: 16px;
 }
-ui|toolbarbutton {
-padding: 3px;
+ui|control[controltype="close"] ui|labelbody {
+padding-left: 16px !important;
 }
-ui|toolbarbutton ui|labeltext,
-ui|clickbutton ui|labeltext,
-ui|toolbarlabel ui|labeltext {
-padding: 1px 4px 3px 1px; /* REFACTOR THIS, SEE VISTA BELOW */
+ui|control[controltype="close"] ui|labelbody:after {
+content: '×';
+position: absolute;
+height: 100%;
+width: 0px;
+top: -6px;
+left: 8px;
+color: #cccccc;
+font-size: 17px;
 }
-ui|toolbar ui|toolbarbutton ui|labeltext,
-ui|toolbar ui|clickbutton ui|labeltext {
-padding-bottom: 0;
-}
-ui|toolbarlabel {
-padding: 4px;
-}
-
-ui|toolbar ui|toolbarbutton ui|labeltext,
-ui|toolbar ui|clickbutton ui|labeltext,
-ui|toolbar ui|toolbarlabel ui|labeltext {
-padding-top: 0;
-}
-
-
-ui|toolbarbody.alignright ui|toolbarbutton,
-ui|toolbarbody.alignright ui|clickbutton {
-margin-right: 0;
-margin-left: 2px;
+ui|control[controltype="close"].hover ui|labelbody:after {
+color: #4d4d4d;
 }
 ui|toolbar {
 display: block;
 clear: both;
 white-space: nowrap;
+box-shadow: inset 0px -1px 0px 0px #cccccc;
+border: 0px;
+padding: 15px 20px;
 }
 ui|toolbar.plain {
-border: none;	
+border: none;
 }
 ui|toolbar.statusbar {
-border-top-color: $(color:threedlightshadow);
+border-top-color: #000;
 border-bottom: none;
+}
+ui|toolbar.dark {
+background: #EFEFEF;
+}
+ui|toolbar.white {
+background: #fff;
+}
+ui|toolbar ui|selector {
+float: left;
+}
+ui|editorpage > ui|toolbar {
+box-shadow: none;
 }
 ui|toolbarbody {
 display: block;
 float: left;
 }
-ui|toolbarbody.max {
-/* this is actually scripted by ToolBarBinding */	
-}
 ui|toolbarbody.alignright {
 float: right;
+}
+ui|toolbarbody.alignright ui|toolbarbutton,
+ui|toolbarbody.alignright ui|clickbutton {
+margin-right: 0;
+margin-left: 12px;
 }
 ui|toolbargroup {
 display: block;
@@ -814,16 +995,16 @@ float: left;
 padding-left: 1px;
 }
 ui|toolbargroup.max {
-float: none;	
+float: none;
 }
 ui|toolbargroup.first {
-border-left: none;	
+border-left: none;
 }
 ui|toolbargroup.last {
 border-right: none;
 }
 ui|toolbargroup.alignright {
-float: right;	
+float: right;
 }
 ui|toolbargroup.defaultcontent {
 width: 1px;
@@ -832,9 +1013,91 @@ margin-right: -1px;
 visibility: hidden;
 border: none;
 }
-@namespace url("http://www.w3.org/1999/xhtml");
-@namespace ui url("http://www.w3.org/1999/xhtml");
-
+.system-toolbar {
+position: absolute;
+top: -200px;
+z-index: 2;
+box-shadow: none;
+}
+.visualeditor-toolbar {
+background: #efefef;
+}
+.visualeditor-toolbar ui|toolbargroup {
+border: 1px solid #cccccc;
+border-radius: 3px;
+margin: 0px 5px 0px 5px;
+padding: 0px;
+overflow: hidden;
+}
+.visualeditor-toolbar ui|toolbargroup:empty {
+display: none;
+}
+.visualeditor-toolbar ui|toolbargroup ui|toolbarbutton {
+border-color: transparent;
+margin: 0px;
+border-radius: 0;
+text-transform: none;
+}
+.visualeditor-toolbar ui|toolbargroup ui|toolbarbutton + ui|toolbarbutton {
+border-color: transparent transparent transparent #22b980;
+}
+.visualeditor-toolbar ui|toolbargroup ui|toolbarbutton ui|labelbox {
+padding: 5px 9px;
+}
+.visualeditor-adv-toolbar ui|selector,
+.visualeditor-adv-toolbar ui|toolbarbutton {
+margin: 0px 5px 0px 5px;
+text-transform: none;
+}
+.pagetemplates-toolbar {
+background: #efefef;
+padding: 15px 18px 15px 18px;
+/* temporary */
+}
+.pagetemplates-toolbar ui|toolbarbody,
+.pagetemplates-toolbar ui|toolbargroup,
+.pagetemplates-toolbar ui|selector {
+width: 100%;
+}
+.pagetemplates-toolbar > ui|toolbargroup {
+display: none;
+}
+ui|dialogtoolbar {
+display: block;
+clear: both;
+white-space: nowrap;
+padding: 12px 11px 14px 12px;
+margin-right: 0;
+margin-left: 0;
+background-color: #fff;
+border-top: 1px solid #cccccc;
+}
+.nav-toolbar ui|toolbarbody.alignright ui|toolbarbutton {
+margin-left: 2px;
+}
+.document-toolbar {
+padding: 0 10px 0 10px;
+position: relative;
+top: 13px;
+z-index: 4;
+margin-left: 50%;
+}
+.document-toolbar + ui|scrollbox {
+margin-top: 35px;
+border-top: solid 1px #cccccc;
+}
+.document-toolbar + ui|sourceeditor {
+top: -30px;
+}
+.document-toolbar ui|toolbarbutton {
+border: 1px solid #22b980;
+background-image: linear-gradient(to bottom, #22b980 0%, #1ea371 100%);
+color: #ffffff;
+}
+.document-toolbar ui|toolbarbutton.hover {
+border: 1px solid #1ea371;
+color: #ffffff;
+}
 ui|tabbox {
 display: block;
 overflow: hidden;
@@ -844,12 +1107,17 @@ display: block;
 position: relative !important;
 overflow: hidden;
 }
-
 ui|tab {
 display: block;
 float: left;
 position: relative;
 white-space: nowrap;
+border: solid 1px #dddddd;
+border-radius: 5px 5px 0 0;
+background: #ffffff;
+z-index: 2;
+margin-right: -4px;
+text-transform: uppercase;
 }
 ui|tabpanels {
 display: block;
@@ -861,12 +1129,12 @@ ui|tabbox.boxed ui|tabpanels {
 overflow: visible;
 height: auto;
 }
-
 ui|tabbox.equalsize ui|tabpanels {
 overflow: hidden;
 height: 100%;
 }
-ui|tabpanel {  /* styles comparable to deck - please coordinate all changes! */
+ui|tabpanel {
+/* styles comparable to deck - please coordinate all changes! */
 display: block;
 height: 100% !important;
 overflow: hidden;
@@ -877,9 +1145,20 @@ ui|tabbox.equalsize ui|tabpanel {
 overflow: visible;
 height: auto !important;
 }
-
+ui|tabbox.tabsontop ui|tabs {
+box-shadow: inset 0px -1px 0px 0px #cccccc;
+padding: 0px 10px 0px 10px;
+}
+ui|tabbox.tabsontop ui|tab {
+padding: 5px 20px 5px 15px;
+color: #adadad;
+}
+ui|tabbox.tabsontop ui|tab.selected {
+color: #22b980;
+z-index: 3;
+border-color: #cccccc #cccccc transparent #cccccc;
+}
 /* TABMANAGER .................................................................... */
-
 ui|toolbarbutton.tabbutton {
 position: absolute;
 z-index: 400;
@@ -898,11 +1177,8 @@ font-family: "Courier New", monospace;
 position: relative;
 top: -2px;
 left: -2px;
-#ie left: -4px;
+/*#ie left: -4px; */
 }
-@namespace url("http://www.w3.org/1999/xhtml");
-@namespace ui url("http://www.w3.org/1999/xhtml");
-
 /*
 * Note that splitboxes and splitpanels have additional styles  
 * for IE on the MAIN STAGE! See "app.css" and "stagedeck.css".
@@ -914,7 +1190,8 @@ position: relative;
 overflow: hidden;
 }
 ui|splitbox.maximized,
-ui|splitpanel.maximized { /* used for stage stuff */
+ui|splitpanel.maximized {
+/* used for stage stuff */
 position: absolute;
 top: 0;
 left: 0;
@@ -930,7 +1207,7 @@ ui|splitpanel.horizontal {
 float: left;
 }
 ui|splitpanel.maximized {
-float: none !important;	
+float: none !important;
 }
 ui|splitter {
 display: block;
@@ -940,7 +1217,8 @@ background: transparent;
 font-size: 1px;
 }
 ui|splitter.active {
-z-index: 23; /* float to top while dragging */
+z-index: 23;
+/* float to top while dragging */
 }
 ui|splitter.horizontal {
 height: 100%;
@@ -952,12 +1230,12 @@ margin: 0 -4px;
 ui|splitter.vertical {
 height: 8px;
 width: 100%;
-border-bottom: 1px solid $(color:threedhighlight);
-border-top: 1px solid $(color:threeddarkshadow);
+border-bottom: 1px solid #000;
+border-top: 1px solid #000;
 }
 ui|splitterbody {
 display: block;
-position: absolute;	
+position: absolute;
 background: transparent;
 }
 ui|splitter.horizontal ui|splitterbody {
@@ -968,23 +1246,21 @@ cursor: e-resize;
 }
 ui|splitter.horizontal ui|splitterbody.hover,
 ui|splitter.horizontal ui|splitterbody.active {
--vendor-box-shadow: 2px 0 3px rgba(0,0,0,0.35);
+-vendor-box-shadow: 2px 0 3px rgba(0, 0, 0, 0.35);
 }
 ui|splitter.vertical ui|splitterbody {
 height: 8px;
 width: 100%;
 cursor: n-resize;
 margin-top: -1px;
-border-top: 1px solid $(color:threedhighlight);
-border-bottom: 1px solid $(color:threeddarkshadow);
+border-top: 1px solid #000;
+border-bottom: 1px solid #000;
 }
 ui|splitter.vertical ui|splitterbody.hover,
 ui|splitter.vertical ui|splitterbody.active {
--vendor-box-shadow: 0 2px 3px rgba(0,0,0,0.35);
+-vendor-box-shadow: 0 2px 3px rgba(0, 0, 0, 0.35);
 }
-
-
-ui|splitbox.line ui|splitter.horizontal ui|splitterbody:after{
+ui|splitbox.line ui|splitter.horizontal ui|splitterbody:after {
 content: '';
 position: absolute;
 border-left: 1px solid #CCCCCC;
@@ -993,11 +1269,7 @@ width: 0px;
 top: 0px;
 left: 4px;
 }
-@namespace url("http://www.w3.org/1999/xhtml");
-@namespace ui url("http://www.w3.org/1999/xhtml");
-
 /* remember that both dekcs and deck gets assigned the "flexboxelement" class! */
-
 ui|*.deckselement {
 display: block;
 position: relative;
@@ -1010,9 +1282,6 @@ overflow: hidden;
 position: absolute;
 top: -10000px;
 }
-@namespace url("http://www.w3.org/1999/xhtml");
-@namespace ui url("http://www.w3.org/1999/xhtml");
-
 ui|tree {
 display: block;
 overflow: hidden;
@@ -1020,9 +1289,10 @@ position: relative;
 }
 ui|treebody {
 display: block;
-color: $(color:windowtext);
+color: #333333;
 overflow: auto !important;
 padding-top: 10px;
+background: #efefef;
 }
 ui|treenode,
 ui|treecontent {
@@ -1031,37 +1301,112 @@ float: none;
 clear: both;
 overflow: visible;
 }
-
+ui|treenode {
+margin: 0;
+padding: 0;
+position: relative;
+}
 ui|treenode ui|labelbox {
 background: none transparent no-repeat 1px 8px;
-padding-left: 16px;
+padding-bottom: 3px;
+padding-left: 20px;
+float: none;
+height: 28px;
+color: #999999;
+position: relative;
 }
-ui|treecontent {
-padding-left: 40px;
--vendor-user-select: none; /* hope we don't need an input field */
+ui|treenode ui|labelbox svg {
+width: 18px;
+height: 18px;
+margin-left: -18px;
+margin-top: 3px;
 }
-
+ui|treenode ui|labelbox ui|labelbody {
+max-width: none;
+}
+ui|treenode ui|labelbox ui|labeltext {
+color: #333333;
+font-size: 13px;
+border-radius: 2px;
+padding: 3px 4px 5px 4px;
+line-height: 17px;
+}
+ui|treenode ui|labelbox:before,
+ui|treenode ui|labelbox:after {
+position: absolute;
+left: 2px;
+display: block;
+content: "";
+border: 5px solid transparent;
+}
+ui|treenode ui|labelbox.open:before {
+top: 11px;
+border-top-color: #22b980;
+/*Chevron Color*/
+}
+ui|treenode ui|labelbox.open:after {
+top: 10px;
+border-top-color: #efefef;
+}
+ui|treenode ui|labelbox.closed:before {
+top: 8px;
+border-left-color: #999;
+/*Chevron Color*/
+}
+ui|treenode ui|labelbox.closed:after {
+top: 8px;
+border-left-color: #efefef;
+left: 0;
+}
+ui|treenode ui|labelbox.focused ui|labelbody {
+color: #22b980;
+}
+ui|treenode ui|labelbox.focused ui|labeltext {
+background-color: #22b980 !important;
+color: #fff;
+}
 ui|treenode ui|treenode {
 padding-left: 50px;
-
+}
+ui|treenode ui|treenode::before,
+ui|treenode ui|treenode::after {
+content: '';
+position: absolute;
+}
+ui|treenode ui|treenode::before {
+border-top: 1px solid #999;
+top: 12px;
+width: 30px;
+height: 0;
+left: 27px;
+}
+ui|treenode ui|treenode::after {
+border-left: 1px solid #999;
+height: 100%;
+width: 0px;
+top: -3px;
+left: 27px;
+}
+ui|treenode ui|treenode.open::before,
+ui|treenode ui|treenode.closed::before {
+width: 20px;
+}
+ui|treenode ui|treenode:last-of-type::after {
+height: 16px;
 }
 ui|treenode.closed ui|treenode,
 ui|treenode.closed ui|treecontent {
 display: none;
 }
-ui|treenode ui|labelbox { 
-padding-bottom: 3px;
+ui|tree ui|treebody > ui|treenode > ui|labelbox:before,
+ui|tree ui|treebody > ui|treenode > ui|labelbox:after {
+display: none;
 }
-
-ui|treenode ui|labelbody {
-max-width: none;
+ui|treecontent {
+padding-left: 40px;
+-vendor-user-select: none;
+/* hope we don't need an input field */
 }
-ui|treenode ui|labeltext {
-line-height: 17px;
-padding: 3px 4px 5px 4px;
-
-}
-
 ui|treepositionindicator {
 display: block;
 position: absolute;
@@ -1070,101 +1415,59 @@ left: 0;
 width: 140px;
 height: 1px;
 overflow: hidden;
-background-color: $(color:highlight);
+background-color: #3399FF;
 z-index: -1;
 }
-@namespace url("http://www.w3.org/1999/xhtml");
-@namespace ui url("http://www.w3.org/1999/xhtml");
-
-/*
-* Docks are absolutely positioned in explorer in order to fix a display 
-* bug on browser resize. The bug is only noticeable on second area and 
-* higher (remove absolute positioning, navigate to area two, open some 
-* stuff and resize the browser). They are NOT absolute in Mozilla because 
-* moz may update display multiple times in a single thread, temporarily 
-* showing the dock overlaying other stuff. 
-*/
-ui|dock {
-display: block;
-overflow: hidden;
-#region ie
-position: absolute;
-top: 0;
-left: 0;
-width: 100%;
-heigth: 100%;
-#endregion
+/* Template selector */
+ui|tree#templatetree ui|treebody {
+background: #fff;
+padding-top: 19px;
 }
-ui|docktabs {
-display: block;
-position: relative !important;
-overflow: hidden;
+ui|tree#templatetree ui|treenode {
+padding: 1px 4px;
 }
-ui|docktabs ui|controlgroup.docktabscontrolgroup {
+ui|tree#templatetree ui|labelbody {
 position: relative;
-z-index: 2;
 }
-ui|docktab {
-display: block;
-float: left;
-position: relative;
-white-space: nowrap;
-bottom: -100px; /* adjusted by script */
+ui|tree#templatetree ui|labelbody svg {
+display: none;
 }
-ui|docktab ui|control {
-position: relative;	
-}
-ui|dockpanels {
-display: block;
-height: 100%;
-clear: both;
-overflow: hidden;
-}
-ui|dockpanel {  /* styles comparable to deck - please coordinate all changes! */
-display: block;
-height: 100%;
-clear: both;
-overflow: hidden;
+ui|tree#templatetree ui|labelbody:before {
+box-sizing: border-box;
+content: '';
 position: absolute;
-top: -10000px;
+width: 16px;
+height: 16px;
+border: 1px solid #cccccc;
+border-radius: 8px;
+left: 0px;
+top: 4px;
+background: #FFFFFF;
 }
-
-/* CONTROVERSIAL STYLES - MAYBE MOVE TO SKIN? */
-ui|dock.tools ui|docktab.default ui|labelbody,
-ui|dock.tools ui|docktab.hover ui|labelbody {
-padding-left: 0;
-#moz background-position: -32px -32px;
-#ie filter: none !important;
+ui|tree#templatetree ui|labelbox.focused ui|labeltext {
+background: transparent !important;
+color: #000;
 }
-@namespace url("http://www.w3.org/1999/xhtml");
-@namespace ui url("http://www.w3.org/1999/xhtml");
-
+ui|tree#templatetree ui|labelbox.focused ui|labelbody:after {
+content: '';
+position: absolute;
+width: 8px;
+height: 8px;
+border-radius: 4px;
+background: #22b980;
+left: 4px;
+top: 8px;
+}
 ui|page,
-ui|editorpage,
-ui|dialogpage,
-ui|wizardpage {
+ui|editorpage {
 display: block;
 height: 100%;
 width: 100%;
 overflow: hidden;
-visibility: hidden; 	
+visibility: hidden;
 }
-ui|dialogpage.auto,
-ui|wizardpage.auto {
-height: auto;
-}
-ui|page.dialogsubpage,
-ui|editorpage.dialogsubpage {
-height: auto;
-min-height: 100%; /* IE relies on flexibility instead */
-}
-
-
-
 ui|pagehead {
 display: block;
-width: 488px; /* matching fields! */
-padding-left: 2px;
 padding-bottom: 1em;
 -vendor-user-select: none;
 }
@@ -1173,30 +1476,27 @@ display: block;
 font-size: 120%;
 font-weight: bold;
 padding: 0 0 0.5em 0;
--vendor-user-select: none;	
+-vendor-user-select: none;
 }
 ui|pagedescription {
 display: block;
 padding: 0 0 12px 0;
 -vendor-user-select: none;
 }
-
-ui|page > ui|toolbar#toolbar,
-ui|editorpage > ui|toolbar {
-padding: 0px;
-border: 0px;
-}
-ui|page > ui|toolbar#toolbar ui|toolbarbody,
 ui|editorpage > ui|toolbar ui|toolbarbody {
 float: right;
 }
-@namespace url("http://www.w3.org/1999/xhtml");
-@namespace ui url("http://www.w3.org/1999/xhtml");
-
+ui|pagebody {
+display: block;
+}
+ui|pagebody.pad-0 {
+padding: 0;
+}
 ui|viewset {
 display: block;
 position: absolute;
-z-index: 1; /* needed for ie, but why? */
+z-index: 1;
+/* needed for ie, but why? */
 top: 0;
 left: 0;
 width: 0;
@@ -1208,21 +1508,19 @@ display: block;
 overflow: hidden;
 }
 ui|dialogset ui|view {
-z-index: 5; /* above the dialog */
+z-index: 5;
+/* above the dialog */
 }
-ui|view.dockview { /* is this ever assigned? */
+ui|view.dockview {
+/* is this ever assigned? */
 position: absolute;
 z-index: 1;
 }
-ui|view.dockview ui|window { /* adjusted onload - fixes a moz display glitch */
+ui|view.dockview ui|window {
+/* adjusted onload - fixes a moz display glitch */
 position: absolute;
 top: -10000px;
 }
-@namespace url("http://www.w3.org/1999/xhtml");
-@namespace ui url("http://www.w3.org/1999/xhtml");
-
-
-ui|explorer,
 ui|explorerbody,
 ui|explorerdecks,
 ui|explorerdeck,
@@ -1234,79 +1532,212 @@ ui|explorerbar,
 ui|explorerbarbutton {
 display: block;
 }
-
-
-
-ui|explorer {
+ui|cover.explorermenucover {
+margin-left: 50px;
+display: none;
+}
+ui|explorermenu {
+background: #333333;
+float: left;
+width: 50px;
 height: 100%;
 overflow: hidden;
+}
+ui|explorermenu ui|toolbarbutton {
+background: none !important;
+filter: none;
+color: #9a9a9a;
+-webkit-box-shadow: none;
+-ms-box-shadow: none;
+box-shadow: none;
+}
+ui|explorermenu ui|toolbar {
+border: none;
+}
+ui|explorermenu .logo {
+padding-top: 10px;
+}
+ui|explorermenu .logo ui|labelbox {
+color: #FFF;
+position: relative;
+padding: 0;
+}
+ui|explorermenu .logo ui|labelbox:before {
+content: "Composite";
+position: absolute;
+top: 0;
+left: 30px;
+text-transform: none;
+font-size: 21px;
+}
+ui|explorermenu .logo ui|labelbox:after {
+content: "C1";
+position: absolute;
+top: 0;
+left: 134px;
+text-transform: none;
+font-size: 21px;
+font-weight: bold;
+}
+ui|explorermenu .logo ui|labelbody {
+color: #22b980;
+}
+ui|explorermenu .logo ui|labelbody svg {
+height: 28px !important;
+width: 28px !important;
+margin-left: -28px !important;
+}
+ui|explorermenu .menu-toggle {
+margin-top: 8px;
 }
 ui|explorerbody {
 height: 100%;
 overflow: hidden;
 }
+ui|explorertoolbar {
+padding: 0;
+}
 ui|explorertoolbar ui|toolbarbody,
 ui|explorertoolbar ui|toolbargroup {
 float: none;
 }
-ui|explorertoolbarbutton ui|labeltext {
+ui|explorertoolbar ui|toolbargroup {
+margin: 0;
+padding: 0;
+}
+ui|explorertoolbarbutton {
+filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale");
+/* Firefox 10+, Firefox on Android */
+filter: gray;
+/* IE6-9 */
+-webkit-filter: grayscale(100%);
+/* Chrome 19+, Safari 6+, Safari 6+ iOS */
+}
+ui|explorertoolbarbutton.hover,
+ui|explorertoolbarbutton.active {
+filter: none;
+-webkit-filter: none;
+}
+ui|explorermenu ui|toolbarbutton,
+ui|explorertoolbarbutton {
+float: left;
+margin: 0;
+padding: 21px 22px 21px 22px;
+width: 100%;
+border: none;
+}
+ui|explorermenu ui|toolbarbutton ui|labelbody,
+ui|explorertoolbarbutton ui|labelbody {
+color: #9a9a9a;
+text-transform: uppercase;
 font-weight: bold;
+font-family: Arial;
+}
+ui|explorermenu ui|toolbarbutton ui|labelbox,
+ui|explorertoolbarbutton ui|labelbox {
+padding-left: 1px;
+}
+ui|explorermenu ui|toolbarbutton ui|labelbox.image-and-text ui|labeltext,
+ui|explorertoolbarbutton ui|labelbox.image-and-text ui|labeltext {
+margin-left: 10px;
+}
+ui|explorermenu ui|toolbarbutton ui|labeltext,
+ui|explorertoolbarbutton ui|labeltext {
+line-height: 24px;
+font-weight: bold;
+color: #9a9a9a;
+}
+ui|explorermenu ui|toolbarbutton.active,
+ui|explorertoolbarbutton.active,
+ui|explorermenu ui|toolbarbutton.hover,
+ui|explorertoolbarbutton.hover {
+border: none;
+}
+ui|explorermenu ui|toolbarbutton.active ui|labelbody,
+ui|explorertoolbarbutton.active ui|labelbody,
+ui|explorermenu ui|toolbarbutton.hover ui|labelbody,
+ui|explorertoolbarbutton.hover ui|labelbody {
+color: #22b980;
+}
+ui|explorermenu ui|toolbarbutton.active ui|labeltext,
+ui|explorertoolbarbutton.active ui|labeltext,
+ui|explorermenu ui|toolbarbutton.hover ui|labeltext,
+ui|explorertoolbarbutton.hover ui|labeltext {
+color: #22b980;
+}
+ui|explorermenu ui|toolbarbutton svg,
+ui|explorermenu ui|toolbarbutton ui|labelbox.imageonly svg,
+ui|explorertoolbarbutton svg {
+width: 22px;
+height: 22px;
+margin-left: -28px;
 }
 ui|explorersplitter {
 height: 8px;
 overflow: hidden;
-background-color: $(color:threedface);
+background-color: #fff;
 cursor: n-resize;
 }
 ui|explorerdecks {
 display: none;
 }
-ui|cover#explorercover {
-cursor: n-resize;
+.exploler-expanded ui|explorermenu {
+width: 240px;
 }
-@namespace url("http://www.w3.org/1999/xhtml");
-@namespace ui url("http://www.w3.org/1999/xhtml");
-
+.exploler-expanded ui|stagecontainer {
+padding-right: 240px;
+margin-right: -240px;
+}
+.exploler-expanded .system-toolbar {
+left: 240px !important;
+}
+.exploler-expanded ui|cover.explorermenucover {
+margin-left: 240px;
+display: block;
+}
+.menubar {
+background: #333333;
+}
+.menubar > ui|menu > ui|labelbox {
+margin-left: 12px;
+text-transform: uppercase;
+color: #919191;
+}
+.menubar > ui|menu.hover > ui|labelbox {
+color: #22b980;
+}
 body.rtl {
 direction: rtl;
 }
-
-
 body.rtl table.matrix,
 body.rtl ui|dialog,
-body.rtl ui|dialogset
-{
+body.rtl ui|dialogset {
 direction: ltr;
 }
-
 body.rtl ui|tab,
 body.rtl ui|toolbarbody,
 body.rtl ui|toolbargroup,
-body.rtl ui|toolbarbutton, 
-body.rtl ui|clickbutton, 
-body.rtl ui|radiobutton, 
-body.rtl ui|checkbutton, 
+body.rtl ui|toolbarbutton,
+body.rtl ui|clickbutton,
+body.rtl ui|radiobutton,
+body.rtl ui|checkbutton,
 body.rtl ui|toolbarlabel,
 body.rtl ui|docktab,
 body.rtl ui|menu,
 body.rtl ui|labelbox,
 body.rtl ui|labelbody,
 body.rtl ui|labeltext,
-body.rtl ui|fielddesc{
+body.rtl ui|fielddesc {
 float: right;
 }
-
-
 body.rtl ui|clickbutton ui|labelbox,
-body.rtl ui|menuitem ui|labelbox, 
-body.rtl ui|menuitem ui|labelbody, 
-body.rtl ui|menubody ui|labelbox, 
+body.rtl ui|menuitem ui|labelbox,
+body.rtl ui|menuitem ui|labelbody,
+body.rtl ui|menubody ui|labelbox,
 body.rtl ui|menubody ui|labelbody,
-body.rtl ui|selector ui|clickbutton
-{
+body.rtl ui|selector ui|clickbutton {
 float: none;
 }
-
 body.rtl ui|datainputselector ui|toolbarbutton,
 body.rtl ui|datainputdialog ui|toolbarbutton,
 body.rtl ui|datainputbutton ui|toolbarbutton,
@@ -1314,97 +1745,79 @@ body.rtl ui|urlinputdialog ui|toolbarbutton {
 left: 3px;
 right: auto;
 }
-
 body.rtl ui|toolbarbody.alignright,
 body.rtl ui|fieldhelp,
-body.rtl ui|fielddata{
+body.rtl ui|fielddata {
 float: left;
 }
-
 body.rtl fielddata input {
 padding: 5px 7px 4px 0;
 }
-
 body.rtl ui|field.fieldhelp ui|fielddata {
 margin-left: 30px;
 margin-right: 0px;
 }
-
-body.rtl ui|clickbutton.fieldhelp{
+body.rtl ui|clickbutton.fieldhelp {
 left: 2px;
 right: auto;
 }
-
-
-body.rtl ui|throbber{
+body.rtl ui|throbber {
 right: auto;
 left: 0;
 }
-
 body.rtl ui|labelbox ui|labelbody {
 background-position: 100% 0;
 padding-left: 0 !important;
 }
-
 body.rtl ui|labelbox ui|labelbody,
 body.rtl ui|*.imagesizelarge ui|labelbox ui|labelbody {
 padding-right: 16px;
 }
-
 body.rtl ui|*.imagesizelarge ui|labelbox ui|labelbody {
 padding-right: 28px;
 }
-
 body.rtl ui|labelbox.both ui|labeltext {
-margin-left: 0px; 
+margin-left: 0px;
 margin-right: 4px;
 }
-
-body.rtl  ui|treenode ui|treenode {
+body.rtl ui|treenode ui|treenode {
 margin-right: 18px;
 margin-left: 0px;
 }
-
 body.rtl ui|treenode ui|labelbox {
-background-position: right;	
+background-position: right;
 padding-right: 16px;
 padding-left: 0px;
 }
-
 body.rtl ui|*.textonly ui|labelbody {
 padding-right: 0px;
 }
-
 body.rtl ui|labelbox.fieldgrouplabel ui|labelbody {
 float: right;
 }
-
 body.rtl ui|labelbox.fieldgrouplabel ui|labelbody:before {
-border-top:  2px groove #FFF;
+border-top: 2px groove #FFF;
 border-right: 2px groove #FFF;
 border-left: 0;
 border-radius: 0px 5px 0 0;
 float: right;
 }
 body.rtl ui|labelbox.fieldgrouplabel > div {
-border-top:  2px groove #FFF;
+border-top: 2px groove #FFF;
 border-left: 2px groove #FFF;
 border-right: 0;
 border-radius: 5px 0 0 0;
 }
-
 body.rtl ui|controlgroup {
-float:left;
+float: left;
 }
-
-
 body.rtl ui|controlgroup ui|labelbody {
 float: left;
 left: 0px;
 right: auto;
 }
 body.rtl ui|splitpanel.editors ui|docktab.selected ui|controlgroup,
-body.rtl ui|splitpanel.editors ui|docktab.selected ui|controlgroup{
+body.rtl ui|splitpanel.editors ui|docktab.selected ui|controlgroup {
 float: left;
 left: -16px;
 right: auto;
@@ -1412,42 +1825,29 @@ right: auto;
 body.rtl ui|controlgroup ui|labelbody {
 padding-right: 32px !important;
 }
-
 body.rtl #switchbutton {
 margin-right: -10px;
 margin-left: 0px;
 }
-
 body.rtl ui|controlgroup#controlgroup {
 float: left;
 height: 30px;
 position: relative;
 right: auto;
 }
-
 body.rtl #start {
 clear: both;
 }
-
 body.rtl ui|toolbargroup {
-border-left: 1px solid rgb(160,160,160);
-border-right: 1px solid rgb(255,255,255);
+border-left: 1px solid #a0a0a0;
+border-right: 1px solid #ffffff;
 }
-
 body.rtl ui|toolbargroup.first {
-border-right: none; 
+border-right: none;
 }
 body.rtl ui|toolbargroup.last {
 border-left: none;
 }
-
-/*
-Explorer will reach af max amount of @import statements at 32: see
-http://www.juniper.net/security/auto/vulnerabilities/vuln3394.html
-*/
-@namespace url("http://www.w3.org/1999/xhtml");
-@namespace ui url("http://www.w3.org/1999/xhtml");
-
 ui|functioneditor,
 ui|parametereditor,
 ui|sourceeditor,
@@ -1456,7 +1856,8 @@ ui|visualmultieditor,
 ui|visualmultitemplateeditor {
 display: block;
 overflow: hidden;
-position: relative; /* contain the cover */
+position: relative;
+/* contain the cover */
 }
 ui|functioneditor textarea,
 ui|parametereditor textarea,
@@ -1472,103 +1873,223 @@ ui|visualmultitemplateeditor ui|selector,
 ui|visualmultitemplateeditor div {
 display: none;
 }
-@namespace url("http://www.w3.org/1999/xhtml");
-@namespace ui url("http://www.w3.org/1999/xhtml");
-
 ui|broadcasterset,
 ui|broadcaster {
 position: absolute;
 visibility: hidden;
 }
-@namespace url("http://www.w3.org/1999/xhtml");
-@namespace ui url("http://www.w3.org/1999/xhtml");
-
 ui|datacollectorset,
 ui|datacollector {
 position: absolute;
 visibility: hidden;
 }
 ui|fields {
-display: none; /* adjusted by FieldsBinding.js */
-position: relative; /* mostly because it fixes an ie bug where fieldgroup captions would hang on tabpanel changes */
--webkit-column-width: 430px; /* Chrome, Safari, Opera */
--moz-column-width: 430px; /* Firefox */
+display: none;
+/* adjusted by FieldsBinding.js */
+position: relative;
+/* mostly because it fixes an ie bug where fieldgroup captions would hang on tabpanel changes */
+-webkit-column-width: 430px;
+/* Chrome, Safari, Opera */
+-moz-column-width: 430px;
+/* Firefox */
 column-width: 430px;
 }
-
-/* FIELDGROUP ......................................... */
-
 ui|fieldgroup {
 width: 430px;
 display: inline-block;
 overflow: visible;
-padding-top: 7px;
+padding: 0px 0px 35px 0px;
 position: relative;
--webkit-column-break-inside: avoid; /* Chrome, Safari, Opera */
-page-break-inside: avoid; /* Firefox */
-break-inside: avoid; /* IE 10+ */
-
-
+-webkit-column-break-inside: avoid;
+/* Chrome, Safari, Opera */
+page-break-inside: avoid;
+/* Firefox */
+break-inside: avoid;
+/* IE 10+ */
 }
-
-
-ui|dialogpage ui|fieldgroup,
-ui|wizardpage ui|fieldgroup {
-margin-bottom: 5px; /* strange flex bug */
+ui|fieldgroup .fieldgrouplabel {
+color: #22b980;
+text-transform: uppercase;
+font-style: italic;
+font-weight: bold;
+margin-top: 0px;
+margin-bottom: 20px;
 }
-
-
-
-ui|labelbox.fieldgrouplabel:after {
-
-}
-
-
-ui|labelbox.fieldgrouplabel ui|labeltext {
+ui|fieldgroup .fieldgrouplabel ui|labeltext {
 padding-right: 5px;
 }
-
-ui|labelbox.fieldgrouplabel ui|labelbody {
-float:left;
+ui|fieldgroup .fieldgrouplabel ui|labelbody {
+float: left;
 }
-
-
-
-/* FIELDS ......................................... */
-
-ui|field {
-display: block;
-margin: 0;
+ui|fieldgroup:last-child {
 padding-bottom: 0;
-clear: both;
-
 }
 ui|fielddesc {
 display: block;
 padding: 8px 0 5px 5px;
 white-space: normal;
 -vendor-user-select: none;
+color: #999999;
+}
+ui|field {
+display: block;
+margin: 0;
+clear: both;
+border-width: 0 1px;
+border-style: solid;
+border-color: #cccccc;
+background: #f7f7f7;
+padding: 0 17px;
+}
+ui|field:first-of-type {
+padding-top: 8px;
+border-top-width: 1px;
+border-top-left-radius: 5px;
+border-top-right-radius: 5px;
+}
+ui|field:last-of-type {
+padding-bottom: 27px;
+border-bottom-width: 1px;
+border-bottom-left-radius: 5px;
+border-bottom-right-radius: 5px;
+}
+ui|field.no-bg {
+background: none;
+border: 0;
+}
+ui|field.fieldhelp ui|fielddata {
+margin-right: 30px;
+}
+ui|field.fieldhelp ui|fielddata input,
+ui|field.fieldhelp ui|fielddata select,
+ui|field.fieldhelp ui|fielddata textarea,
+ui|field.fieldhelp ui|fielddata ui|simpleselector select {
+width: 100%;
+}
+ui|field.fieldhelp ui|datalabeltext {
+width: 163px;
+}
+ui|field.nodesc ui|fielddata {
+width: auto;
+float: none;
+}
+ui|fieldhelp {
+overflow: visible;
+float: right;
+position: relative;
+}
+ui|fieldhelp ui|clickbutton.fieldhelp ui|labelbox {
+border-color: transparent;
+background: transparent !important;
+}
+ui|fieldhelp ui|clickbutton.fieldhelp:after {
+content: "?";
+width: 16px;
+height: 16px;
+color: white;
+position: absolute;
+top: 4px;
+left: 4px;
+background: #CDCDCF;
+border-radius: 8px;
+font-size: 11px;
+text-align: center;
+line-height: 16px;
+font-weight: normal;
+font-family: Verdana;
+}
+ui|fieldhelp ui|clickbutton.fieldhelp.active:after,
+ui|fieldhelp ui|clickbutton.fieldhelp.hover:after {
+background: #808080;
+}
+ui|clickbutton.fieldhelp {
+/* width and height needed for explorer vanishing dysfunction */
+margin: 0;
+top: 2px;
+right: 2px;
+position: absolute;
+width: 20px;
+height: 26px;
+}
+ui|clickbutton.fieldhelp ui|labelbox {
+padding: 0;
+}
+ui|fieldsbutton ui|clickbutton {
+float: none;
+margin: 2px 0 10px 0;
+}
+ui|fieldsbutton ui|clickbutton ui|labelbox {
+border-color: #cccccc;
+color: #333333;
+}
+.options-filedgroup ui|clickbutton ui|labelbox {
+padding-left: 28px;
+}
+.options-filedgroup .isdisabled,
+.options-filedgroup .selected {
+opacity: 0.75 !important;
+}
+.options-filedgroup .isdisabled:after,
+.options-filedgroup .selected:after {
+content: "\2713";
+font-size: 16px;
+font-weight: bold;
+position: absolute;
+top: 4px;
+left: 10px;
+color: #22b980;
+}
+ui|popup.fieldhelppopup {
+min-width: 220px;
 }
 ui|fielddata {
 display: block;
-
-position: relative; /* because of strange fieldhelp setup for exploder */
+position: relative;
+/* because of strange fieldhelp setup for exploder */
 }
 ui|fielddata input,
 ui|fielddata select,
 ui|fielddata textarea {
-width: 214px;
+width: 100%;
 padding: 0;
 margin: 0;
 border: none;
 display: block;
 }
+ui|fielddata input.warning,
+ui|fielddata textarea.warning {
+font-weight: bold;
+color: #a40000;
+}
+ui|fielddata .disabled input,
+ui|fielddata .readonly input,
+ui|fielddata .disabled textarea,
+ui|fielddata .readonly textarea {
+cursor: default;
+background-color: #fff;
+-vendor-user-select: none;
+-vendor-user-focus: none;
+}
 ui|fielddata input {
 padding: 5px 0 0 7px;
 }
-
 ui|datainput {
-display: block;	
+display: block;
+}
+ui|datainput input,
+ui|datainputselector input,
+ui|datainputdialog input,
+ui|datainputbutton input,
+ui|urlinputdialog input,
+ui|textbox input,
+ui|selector input,
+ui|simpleselector input,
+ui|multiselector input,
+ui|datadialog input,
+ui|postbackdialog input,
+ui|htmldatadialog input,
+ui|editortextbox input {
+border: none;
 }
 ui|datainput ui|box,
 ui|datainputselector ui|box,
@@ -1576,169 +2097,276 @@ ui|datainputdialog ui|box,
 ui|datainputbutton ui|box,
 ui|urlinputdialog ui|box,
 ui|textbox ui|box,
-ui|editortextbox ui|box,
-ui|multiselector ui|box {
-border: 1px solid #CCCCCC;
+ui|selector ui|box,
+ui|simpleselector ui|box,
+ui|multiselector ui|box,
+ui|datadialog ui|box,
+ui|postbackdialog ui|box,
+ui|htmldatadialog ui|box,
+ui|editortextbox ui|box {
+border: 1px solid #cccccc;
 border-radius: 5px;
-background-color: white;
+background-color: #ffffff;
 height: 30px;
 overflow: hidden;
-
-}
-
-ui|textbox ui|box {
-position: relative;
 }
 ui|datainput.disabled ui|box,
-ui|datainput.readonly ui|box,
 ui|datainputselector.disabled ui|box,
-ui|datainputselector.readonly ui|box,
 ui|datainputdialog.disabled ui|box,
 ui|datainputbutton.disabled ui|box,
 ui|urlinputdialog.disabled ui|box,
+ui|textbox.disabled ui|box,
+ui|selector.disabled ui|box,
+ui|simpleselector.disabled ui|box,
+ui|multiselector.disabled ui|box,
+ui|datadialog.disabled ui|box,
+ui|postbackdialog.disabled ui|box,
+ui|htmldatadialog.disabled ui|box,
+ui|editortextbox.disabled ui|box,
+ui|datainput.readonly ui|box,
+ui|datainputselector.readonly ui|box,
 ui|datainputdialog.readonly ui|box,
 ui|datainputbutton.readonly ui|box,
 ui|urlinputdialog.readonly ui|box,
-ui|textbox.disabled ui|box,
-ui|textbox.readonly ui|box {
-border-color: $(color:threedshadow);
-background-color: $(color:threedface);
-#alphabackdrop: url("${root}/images/ui/lighten.png");
+ui|textbox.readonly ui|box,
+ui|selector.readonly ui|box,
+ui|simpleselector.readonly ui|box,
+ui|multiselector.readonly ui|box,
+ui|datadialog.readonly ui|box,
+ui|postbackdialog.readonly ui|box,
+ui|htmldatadialog.readonly ui|box,
+ui|editortextbox.readonly ui|box {
+border-color: #ddd;
+background-color: #fff;
+}
+ui|datainput.invalid ui|box,
+ui|datainputselector.invalid ui|box,
+ui|datainputdialog.invalid ui|box,
+ui|datainputbutton.invalid ui|box,
+ui|urlinputdialog.invalid ui|box,
+ui|textbox.invalid ui|box,
+ui|selector.invalid ui|box,
+ui|simpleselector.invalid ui|box,
+ui|multiselector.invalid ui|box,
+ui|datadialog.invalid ui|box,
+ui|postbackdialog.invalid ui|box,
+ui|htmldatadialog.invalid ui|box,
+ui|editortextbox.invalid ui|box {
+border-color: #a40000;
+}
+ui|datainput.invalid ui|labeltext,
+ui|datainputselector.invalid ui|labeltext,
+ui|datainputdialog.invalid ui|labeltext,
+ui|datainputbutton.invalid ui|labeltext,
+ui|urlinputdialog.invalid ui|labeltext,
+ui|textbox.invalid ui|labeltext,
+ui|selector.invalid ui|labeltext,
+ui|simpleselector.invalid ui|labeltext,
+ui|multiselector.invalid ui|labeltext,
+ui|datadialog.invalid ui|labeltext,
+ui|postbackdialog.invalid ui|labeltext,
+ui|htmldatadialog.invalid ui|labeltext,
+ui|editortextbox.invalid ui|labeltext {
+font-weight: bold;
+border-color: #a40000;
+}
+/* EXOTIC STUFF ................................... */
+ui|nullpostbackdatadialog {
+display: block;
+}
+ui|datalabeltext {
+display: block;
+float: left;
+width: 195px;
+padding-left: 5px;
+padding-top: 2px;
+-vendor-user-select: none;
+/* See notes in DocumentManager.js */
+}
+/* TOOLBARS ........................................................... */
+ui|toolbar ui|field {
+margin: 0;
+float: left;
+/*#ie width: 1px !important;*/
+}
+ui|toolbar ui|fielddesc,
+ui|toolbar ui|fielddata {
+float: left;
+width: auto;
+}
+ui|toolbar ui|fielddata input,
+ui|toolbar ui|fielddata select {
+width: 100px;
+}
+ui|fields ui|datadialog ui|clickbutton ui|labeltext,
+ui|fields ui|postbackdialog ui|clickbutton ui|labeltext,
+ui|fields ui|htmldatadialog ui|clickbutton ui|labeltext,
+ui|fields ui|datainputdialog ui|clickbutton ui|labeltext,
+ui|fields ui|datainputbutton ui|clickbutton ui|labeltext,
+ui|fields ui|urlinputdialog ui|clickbutton ui|labeltext,
+ui|fields ui|selector ui|clickbutton ui|labeltext {
+overflow: hidden;
+text-overflow: ellipsis;
+}
+ui|tabbox.boxed ui|labelbox.fieldgrouplabel {
+left: -1px;
+right: -1px;
+}
+ui|textbox,
+ui|editortextbox {
+display: block;
+height: 108px;
+/* half width */
+position: relative;
+}
+ui|textbox textarea,
+ui|editortextbox textarea {
+overflow: auto;
+position: absolute;
+height: 102px;
+-vendor-tab-size: 4;
+padding: 4px;
 }
 ui|textbox ui|box,
 ui|editortextbox ui|box {
+position: relative;
 height: 104px;
 }
-ui|datainputselector.invalid ui|box,
-ui|datainputdialog.invalid ui|box,
-ui|postbackdialog.invalid ui|labelbox,
-ui|datainputbutton.invalid ui|box,
-ui|urlinputdialog.invalid ui|box,
-ui|datainput.invalid ui|box,
-ui|textbox.invalid ui|box,
-ui|editortextbox.invalid ui|box {
-border-color: #A40000;
+/* FULLBLOWN EDITORTEXTBOX */
+ui|flexbox ui|editortextbox {
+padding: 0;
+border: none;
+width: 100%;
+height: 100%;
 }
-ui|datainputselector input,
-ui|datainputdialog input,
-ui|datainputbutton input,
-ui|urlinputdialog input,
-ui|datainput input,
-ui|textbox input,
-ui|editortextbox input {
+ui|flexbox ui|editortextbox textarea {
+width: 100%;
+height: 100%;
+font-family: "Courier New", monospace;
+font-size: 13px;
+margin: 0;
 border: none;
 }
-ui|datainputselector.readonly input,
-ui|datainputdialog.readonly input,
-ui|datainputbutton.readonly input,
-ui|urlinputdialog.readonly input,
-ui|datainput.readonly input,
-ui|textbox.readonly textarea,
-ui|editortextbox.readonly textarea {
-cursor: default;
-background-color: $(color:threedface);
-#alphabackdrop: url("${root}/images/ui/lighten.png");
+ui|flexbox ui|editortextbox ui|box {
+border: none;
+height: 100%;
+padding: 0;
+margin: 0;
 }
-ui|datainputselector.isdisabled input,
-ui|datainputdialog.isdisabled input,
-ui|datainputbutton.isdisabled input,
-ui|urlinputdialog.isdisabled input,
-ui|datainput.isdisabled input,
-ui|textbox.isdisabled textarea,
-ui|editortextbox.isdisabled textarea {
-cursor: default;
-background-color: $(color:threedface);
+.calendar {
+border: 1px solid #cccccc;
+background-color: #fff;
+position: relative;
+top: -1px;
+}
+.calendar table {
+width: 100%;
+margin: 0 !important;
+border: 0 !important;
+border-collapse: collapse;
+}
+.calendar table td {
+padding-top: 3px;
+padding-bottom: 3px;
 -vendor-user-select: none;
--vendor-user-focus: none;
-#alphabackdrop: url("${root}/images/ui/lighten.png");
+text-align: center;
+vertical-align: top;
+width: 14.2%;
 }
-ui|datainputselector.isdisabled ui|box,
-ui|datainputdialog.isdisabled ui|box,
-ui|datainputbutton.isdisabled ui|box,
-ui|urlinputdialog.isdisabled ui|box,
-ui|datainput.isdisabled ui|box,
-ui|textbox.isdisabled ui|box,
-ui|editortextbox.isdisabled ui|box,
-ui|multiselector.isdisabled ui|box {
-background-color: $(color:threedface);
-border-color: $(color:threedshadow);
+.calendar table td.active {
+cursor: pointer;
 }
-ui|fielddata input.warning,
-ui|fielddata textarea.warning {
-font-weight: bold;
-color: #A40000;
+.calendar table td.active:hover {
+background-color: #22b980;
+color: #fff;
 }
-ui|field.nodesc ui|fielddata {
-width: auto;
-float: none;
+.calendar table td.othermonth {
+color: #bbb;
 }
-
-/* COMMON ......................................... */
-
-ui|datainput,
-ui|datainputselector,
-ui|datainputdialog,
-ui|datainputbutton,
-ui|urlinputdialog,
-ui|textbox,
-ui|selector,
-ui|simpleselector,
-ui|multiselector,
-ui|datadialog,
-ui|postbackdialog,
-ui|htmldatadialog,
-ui|editortextbox {
-padding: 2px;
+.calendar table td.selectedday {
+background-color: #22b980;
+color: #fff;
+margin: 0;
 }
-
-/* SELECTORS ......................................... */
-
+.calendar table .month td {
+border-bottom: 1px solid #cccccc;
+}
+.calendar .monthbrowse {
+font-family: "Courier New", monospace;
+cursor: pointer;
+}
+.calendar .monthbrowse:hover {
+color: #22b980;
+}
 ui|selector {
 display: block;
-overflow: hidden !important; /* relevant for editor selectors */
+overflow: hidden !important;
+/* relevant for editor selectors */
 }
-ui|toolbar ui|selector { /* TODO: handle focus outline here somehow */
-padding: 0;	
-}
-
 ui|selection,
 ui|selector input {
-display: none;	
+display: none;
 }
-ui|selector ui|clickbutton{
+ui|selector ui|clickbutton {
 float: none;
 margin: 0;
 }
 ui|selector ui|clickbutton ui|labelbox {
 padding: 5px 20px 7px 5px;
+border-color: #cccccc;
+text-transform: none;
+color: #575757;
 }
-
-
+ui|selector ui|clickbutton ui|labelbox:before,
+ui|selector ui|clickbutton ui|labelbox:after {
+content: "";
+position: absolute;
+width: 0;
+height: 0;
+border-style: solid;
+}
+ui|selector ui|clickbutton ui|labelbox:before {
+top: 12px;
+right: 10px;
+border-width: 5px 5px 0 5px;
+border-color: #22b980 transparent transparent transparent;
+}
+ui|selector ui|clickbutton ui|labelbox:after {
+top: 12px;
+right: 11px;
+border-width: 4px 4px 0 4px;
+border-color: #ffffff transparent transparent transparent;
+}
+ui|selector ui|clickbutton.hover ui|labelbox:before {
+border-color: #1ea371 transparent transparent transparent;
+}
+ui|selector ui|clickbutton.hover ui|labelbox:after {
+border-color: #ffffff transparent transparent transparent;
+}
+ui|selector ui|clickbutton.active ui|labelbox:before {
+top: 12px;
+border-width: 0px 5px 5px 5px;
+border-color: transparent transparent #1ea371 transparent;
+}
+ui|selector ui|clickbutton.active ui|labelbox:after {
+top: 13px;
+border-width: 0px 4px 4px 4px;
+border-color: transparent transparent #ffffff transparent;
+}
+ui|selector ui|clickbutton.infobox ui|clickbutton ui|labeltext {
+font-style: italic;
+}
 ui|fields ui|field.fieldhelp ui|selector ui|clickbutton ui|labelbox {
 overflow: hidden;
-float:none;
+float: none;
 }
-
 /* SIMPLESELECTORS ............................................ */
-
 ui|simpleselector {
 display: block;
 position: relative;
 overflow: visible;
 }
-ui|simpleselector select {
-
-}
-ui|simpleselector select:focus,
-ui|simpleselector select:focus * {
-outline: none;
-}
-ui|simpleselector.invalid {
-
-}
-
 /* MULTISELECTORS ............................................. */
-
 ui|multiselector {
 display: block;
 }
@@ -1748,24 +2376,24 @@ padding: 5px 0 5px 0;
 overflow: auto;
 height: 100px;
 }
-ui|field.fieldhelp ui|multiselector ui|box {
-width: 186px;	
-} 
 ui|multiselector ui|box div {
 padding: 1px 5px 2px 7px;
 width: 100%;
 }
 ui|multiselector ui|box div.selected {
-
+background: #22b980;
+color: #FFF;
+}
+ui|multiselector input {
+display: none;
 }
 ui|multiselector ui|datadialog,
 ui|multiselector ui|postbackdialog {
 padding: 2px 0 0 0;
 }
-ui|multiselector input {
-display: none;	
+ui|field.fieldhelp ui|multiselector ui|box {
+width: 186px;
 }
-
 /* DATAINPUTSELECTORS ......................................... */
 ui|datainputselector,
 ui|datainputdialog,
@@ -1780,26 +2408,24 @@ ui|datainputbutton ui|toolbarbutton,
 ui|urlinputdialog ui|toolbarbutton {
 margin: 0;
 padding: 5px;
-border-color: transparent;
+border: none;
 position: absolute;
-right: 3px;
-top: 3px;
+right: 1px;
+top: 1px;
 }
-
 ui|datainputselector ui|toolbarbutton ui|labelbox,
 ui|datainputdialog ui|toolbarbutton ui|labelbox,
 ui|datainputbutton ui|toolbarbutton ui|labelbox,
 ui|urlinputdialog ui|toolbarbutton ui|labelbox {
 padding: 0px;
 }
-
 ui|fielddata ui|datainputselector input,
 ui|fielddata ui|datainputdialog input,
 ui|fielddata ui|datainputbutton input,
 ui|fielddata ui|urlinputdialog input {
 width: 100%;
 }
-ui|fielddata ui|datainputselector.imagesizenormal input{
+ui|fielddata ui|datainputselector.imagesizenormal input {
 background: transparent none no-repeat 4px 4px;
 padding-left: 24px;
 }
@@ -1807,220 +2433,11 @@ ui|field.fieldhelp ui|fielddata {
 position: relative;
 }
 ui|field.fieldhelp ui|fielddata ui|datainputselector input,
-ui|field.fieldhelp ui|fielddata ui|datainputdialog input ,
-ui|field.fieldhelp ui|fielddata ui|datainputbutton input ,
+ui|field.fieldhelp ui|fielddata ui|datainputdialog input,
+ui|field.fieldhelp ui|fielddata ui|datainputbutton input,
 ui|field.fieldhelp ui|fielddata ui|urlinputdialog input {
 width: 100%;
 }
-
-/* EXOTIC STUFF ................................... */
-
-ui|nullpostbackdatadialog {
-display: block;	
-}
-
-/* TEXTBOX ......................................... */
-
-ui|textbox,
-ui|editortextbox {
-display: block;
-}
-ui|textbox,
-ui|editortextbox {			
-height: 108px; /* half width */
-position: relative;
-}
-ui|textbox textarea,
-ui|editortextbox textarea {
-overflow: auto;
-position: absolute;
-height: 102px;
--vendor-tab-size: 4;
-padding: 4px;
-}
-
-/* FULLBLOWN EDITORTEXTBOX */
-
-ui|flexbox ui|editortextbox {
-padding: 0;
-border: none;
-}
-ui|flexbox ui|editortextbox,
-ui|flexbox ui|editortextbox textarea {
-width: 100%;
-height: 100%;
-}
-ui|flexbox ui|editortextbox textarea {
-font-family: "Courier New", monospace;
-font-size: 13px;
-margin: 0;
-border: none;
-}
-ui|flexbox ui|editortextbox ui|box {
-border: none;
-height: 100%;
-padding: 0;
-margin: 0;
-}
-
-/* FIELDHELP ......................................... */
-
-ui|fieldhelp {
-overflow: visible;
-float: right;
-position: relative;
-}
-
-ui|field.fieldhelp ui|fielddata {
-margin-right: 30px;
-}
-ui|field.fieldhelp ui|fielddata input,
-ui|field.fieldhelp ui|fielddata select,
-ui|field.fieldhelp ui|fielddata textarea {
-width: 100%;
-}
-ui|field.fieldhelp ui|fielddata ui|simpleselector select {
-width: 100%;
-}
-ui|clickbutton.fieldhelp { /* width and height needed for explorer vanishing dysfunction */
-margin: 0;
-margin-top: 2px;
-right: 2px;
-position: absolute;
-width: 26px;
-height: 26px;
-}
-ui|clickbutton.fieldhelp ui|labelbox {
-padding: 4px;
-}
-ui|popup.fieldhelppopup {
-#moz min-width: 220px;
-#ie width: 220px;
-}
-
-/* FOCUS .............................................................. */
-
-ui|fields ui|selector.focused,
-ui|fields ui|multiselector.focused,
-ui|fields ui|simpleselector.focused,
-ui|fields ui|datainput.focused,
-ui|fields ui|datainputselector.focused,
-ui|fields ui|datainputdialog.focused,
-ui|fields ui|datainputbutton.focused,
-ui|fields ui|urlinputdialog.focused,
-ui|fields ui|datadialog.focused,
-ui|fields ui|postbackdialog.focused,
-ui|fields ui|htmldatadialog.focused,
-ui|fields ui|textbox.focused,
-ui|fields ui|editortextbox.focused,
-ui|fields ui|radiodatagroup.focused,
-ui|fields ui|checkbox.focused {
-
-}
-
-
-/* RADIO & CHECKBOX .............................................. */
-
-ui|radiodatagroup {	
-display: block;
-margin-bottom: 3px;
-padding: 2px;
-padding-top: 4px;
-margin-left: 3px;
-}
-ui|radio {
-display: block;
-width: 100%;	
-}
-ui|radio {
-display: block;
-width: 100%;
-padding-bottom: 1px;
-padding-top: 1px;
-}
-ui|radio.disabled {
-color: $(color:graytext);
-}
-ui|datalabeltext {
-display: block;
-float: left;
-width: 195px;
-padding-left: 5px;
-padding-top: 2px;
--vendor-user-select: none; /* See notes in DocumentManager.js */
-}
-ui|field.fieldhelp ui|datalabeltext {
-width: 163px;
-}
-ui|checkboxgroup {
-display: block;
-padding-top: 4px;
-padding-bottom: 2px;
-margin-bottom: 3px;
-margin-left: 3px;
-}
-ui|checkboxgroup ui|labelbox.invalid {
-margin-bottom: 4px;	
-margin-left: 1px;
-margin-top: 4px;
-}
-ui|checkboxgroup ui|labelbox.invalid,
-ui|checkboxgroup ui|labelbox.invalid * {
-float: none;
-}
-
-ui|postbackdialog.invalid ui|labeltext,
-ui|checkboxgroup ui|labelbox.invalid ui|labeltext,
-ui|selector.invalid ui|clickbutton ui|labeltext {
-font-weight: bold;
-color: #A40000;
-}
-ui|selector.infobox ui|clickbutton ui|labeltext {
-font-style:italic;
-}
-ui|checkbox {
-display: block;
-width: 100%;
-padding: 2px;
-}
-ui|field.fieldhelp ui|datalabeltext {
-width: 163px;
-}
-
-/* DATADIALOG ......................................................... */
-
-ui|datadialog,
-ui|postbackdialog,
-ui|htmldatadialog {
-display: block;
-}
-ui|datadialog ui|clickbutton,
-ui|postbackdialog ui|clickbutton,
-ui|htmldatadialog ui|clickbutton {
-float: none;
-margin: 0;
-}
-
-ui|datadialog ui|clickbutton ui|labelbox,
-ui|postbackdialog ui|clickbutton ui|labelbox,
-ui|htmldatadialog ui|clickbutton ui|labelbox {
-padding: 3px 9px 5px;
-}
-ui|datadialog input,
-ui|postbackdialog input,
-ui|htmldatadialog input {
-display: none;
-}
-img.dialogindicatorimage {
-position: absolute;
-z-index: 1;
-right: 7px;
-top: 5px;
--vendor-user-select: none;
-}
-
-/* FILEPICKER ......................................................... */
-
 ui|filepicker {
 display: block;
 position: relative;
@@ -2044,95 +2461,154 @@ float: left;
 }
 ui|filepicker ui|clickbutton {
 position: absolute;
-top: 3px;
-right: 1px;
+margin: 0;
+top: 7px;
+right: 0;
 }
-
 ui|filepicker ui|clickbutton ui|labelbox {
-padding: 5px 5px;
+padding: 0;
+border: none;
+background: none;
 }
-
-/* CALENDAR ........................................................... */
-
-div.calendar {
-border: 1px solid $(color:threedshadow);
-background-color: $(color:threedhighlight);
-position: relative;
-top: -1px;
-#ie width: 99.9%;
+ui|radiodatagroup {
+display: block;
+margin-bottom: 3px;
+padding: 2px;
+padding-top: 4px;
+margin-left: 3px;
 }
-div.calendar table {
+ui|radio {
+display: block;
 width: 100%;
-margin: 0 !important;
-border-collapse: collapse;
+padding-bottom: 1px;
+padding-top: 1px;
 }
-div.calendar td {
+ui|radio ui|labelbody {
+height: 20px;
+padding-left: 18px;
+}
+ui|radio ui|datalabeltext {
 padding-top: 3px;
-padding-bottom: 3px;
--vendor-user-select: none;
+}
+ui|radio.disabled {
+color: #666666;
+}
+ui|radiobutton ui|labelbody {
+position: relative;
+}
+ui|radiobutton ui|labelbody:before {
+box-sizing: border-box;
+content: '';
+position: absolute;
+width: 16px;
+height: 16px;
+border: 1px solid #cccccc;
+border-radius: 8px;
+left: 0px;
+top: 4px;
+background: #FFFFFF;
+}
+ui|radiobutton.hover ui|labelbody:before {
+border-color: #22b980;
+}
+ui|radiobutton[ischecked='true'] ui|labelbody:after {
+content: '';
+position: absolute;
+width: 8px;
+height: 8px;
+border-radius: 4px;
+background: #22b980;
+left: 4px;
+top: 8px;
+}
+ui|checkboxgroup {
+display: block;
+padding-top: 4px;
+padding-bottom: 2px;
+margin-bottom: 3px;
+margin-left: 3px;
+}
+ui|checkboxgroup ui|labelbox.invalid {
+margin-bottom: 4px;
+margin-left: 1px;
+margin-top: 4px;
+float: none;
+}
+ui|checkboxgroup ui|labelbox.invalid * {
+float: none;
+}
+ui|checkboxgroup ui|labelbox.invalid i|labeltext {
+font-weight: bold;
+color: #a40000;
+}
+ui|checkbox {
+display: block;
+width: 100%;
+padding: 2px;
+}
+ui|checkbutton ui|labelbody {
+position: relative;
+}
+ui|checkbutton ui|labelbody:before {
+box-sizing: border-box;
+position: absolute;
+top: 0px;
+left: 0px;
+content: '';
+width: 16px;
+height: 16px;
+background: #ffffff;
+border: 1px solid #cccccc;
+border-radius: 3px;
+}
+ui|checkbutton.hover ui|labelbody:before {
+border-color: #22b980;
+}
+ui|checkbutton[ischecked='true'] ui|labelbody:after {
+box-sizing: border-box;
+position: absolute;
+top: 0px;
+left: 0px;
+content: "\2713";
+font-size: 12px;
+font-weight: bold;
+width: 16px;
+height: 16px;
+color: #22b980;
 text-align: center;
-vertical-align: top;
-width: 14.2%;
+line-height: 13px;
+padding-left: 1px;
 }
-div.calendar td.active {
-cursor: pointer;	
+ui|datadialog,
+ui|postbackdialog,
+ui|htmldatadialog {
+display: block;
+position: relative;
 }
-div.calendar td.active:hover {
-background-color: $(color:highlight);
-color: $(color:highlighttext);
-}
-div.calendar td.othermonth {
-color: #bbb;	
-}
-div.calendar td.selectedday {
-background-color: #ccc;
+ui|datadialog ui|clickbutton,
+ui|postbackdialog ui|clickbutton,
+ui|htmldatadialog ui|clickbutton {
+float: none;
 margin: 0;
 }
-div.calendar tr.month td {
-border-bottom: 1px solid $(color:threedshadow);	
+ui|datadialog ui|clickbutton ui|labelbox,
+ui|postbackdialog ui|clickbutton ui|labelbox,
+ui|htmldatadialog ui|clickbutton ui|labelbox {
+border-color: #cccccc;
+color: #333333;
 }
-div.calendar .monthbrowse {
-font-family: "Courier New", monospace;
-cursor: pointer;	
+ui|datadialog input,
+ui|postbackdialog input,
+ui|htmldatadialog input {
+display: none;
 }
-div.calendar .monthbrowse:hover {
-color: $(color:highlight);	
+.dialogindicatorimage {
+position: absolute;
+z-index: 1;
+right: 7px;
+top: 5px;
+-vendor-user-select: none;
 }
-
-/* TOOLBARS ........................................................... */
-
-ui|toolbar ui|field {
-margin: 0;
-float: left;
-#ie width: 1px !important;
-}
-ui|toolbar ui|fielddesc,
-ui|toolbar ui|fielddata {
-float: left;
-width: auto;
-#ie width: 1px;
-}
-ui|toolbar ui|fielddata input,
-ui|toolbar ui|fielddata select {
-width: 100px;
-}
-
-ui|fields ui|datadialog ui|clickbutton ui|labeltext,
-ui|fields ui|postbackdialog ui|clickbutton ui|labeltext,
-ui|fields ui|htmldatadialog ui|clickbutton ui|labeltext,
-ui|fields ui|datainputdialog ui|clickbutton ui|labeltext,
-ui|fields ui|datainputbutton ui|clickbutton ui|labeltext,
-ui|fields ui|urlinputdialog ui|clickbutton ui|labeltext,
-ui|fields ui|selector ui|clickbutton ui|labeltext {
-overflow: hidden;
-text-overflow: ellipsis;
-}
-@namespace url("http://www.w3.org/1999/xhtml");
-@namespace ui url("http://www.w3.org/1999/xhtml");
-
-@namespace url("http://www.w3.org/1999/xhtml");
-@namespace ui url("http://www.w3.org/1999/xhtml");
-
 ui|keyset,
 ui|key {
 display: block;
@@ -2143,9 +2619,6 @@ left: 0;
 width: 0;
 height: 0;
 }
-@namespace url("http://www.w3.org/1999/xhtml");
-@namespace ui url("http://www.w3.org/1999/xhtml");
-
 ui|bindingmappingset,
 ui|bindingmapping {
 display: block;
@@ -2156,16 +2629,14 @@ left: 0;
 width: 0;
 height: 0;
 }
-@namespace url("http://www.w3.org/1999/xhtml");
-@namespace ui url("http://www.w3.org/1999/xhtml");
-
 ui|cursor {
 display: block;
 position: absolute;
 width: 0;
 height: 0;
 overflow: visible;
-z-index: 4; /* why this much needed? */
+z-index: 4;
+/* why this much needed? */
 margin-top: 16px;
 margin-left: 16px;
 width: 24px;
@@ -2173,15 +2644,11 @@ height: 24px;
 top: -100px;
 left: -100px;
 }
-
 ui|cursor ui|labelbox.indicator {
 position: relative;
 top: -10px;
 left: 6px;
 }
-@namespace url("http://www.w3.org/1999/xhtml");
-@namespace ui url("http://www.w3.org/1999/xhtml");
-
 ui|balloonset {
 display: block;
 overflow: visible;
@@ -2190,57 +2657,89 @@ top: 0;
 left: 0;
 width: 0;
 height: 0;
-z-index: 3; /* below dialogs */
+z-index: 3;
 }
 ui|balloonset#dialogballoonset {
-z-index: 5; /* above dialogs */	
+z-index: 5;
 }
 ui|balloon {
-#moz min-width: 280px;
-#ie width: 280px;
+min-width: 280px;
+background: lightyellow;
+border-radius: 5px;
+border-bottom-left-radius: 0;
+border: solid 1px #cccccc;
 display: block;
-position: absolute;
 overflow: visible;
+position: absolute;
 -vendor-transition-property: top, left;
 -vendor-transition-duration: 0.25s;
+-webkit-box-shadow: 0px 0px 12px -2px #cccccc;
+-moz-box-shadow: 0px 0px 12px -2px #cccccc;
+box-shadow: 0px 0px 12px -2px #cccccc;
 }
-ui|balloon table.matrix {
-width: 100%;
-height: 100%;
+ui|balloon:after,
+ui|balloon:before {
+content: '';
+position: absolute;
+border-style: solid;
+width: 0;
+bottom: 0;
+display: block;
+border-width: 8px;
+}
+ui|balloon:after {
+border-color: transparent lightyellow lightyellow transparent;
+z-index: 1;
+left: -14px;
+border-width: 7px;
+}
+ui|balloon:before {
+border-style: solid;
+border-color: transparent #cccccc #cccccc transparent;
+z-index: 0;
+left: -16px;
+bottom: -1px;
+}
+ui|balloon.left {
+border-bottom-right-radius: 0;
+border-bottom-left-radius: 5px;
+}
+ui|balloon.left:after {
+border-color: transparent transparent lightyellow lightyellow;
+right: -14px;
+left: auto;
+}
+ui|balloon.left:before {
+border-color: transparent transparent #cccccc #cccccc;
+right: -16px;
+left: auto;
+}
+ui|balloon ui|controlgroup {
+position: absolute;
+top: 10px;
+right: 10px;
 }
 ui|balloontext {
 display: block;
+width: 100%;
 -vendor-user-select: none;
 position: relative;
 z-index: 2;
-padding-bottom: 4px;
+padding: 15px;
 }
 ui|balloonspeak {
-display: block;	
-position: absolute;
-z-index: 1;
-}
-@namespace url("http://www.w3.org/1999/xhtml");
-@namespace ui url("http://www.w3.org/1999/xhtml");
-
-ui|errorset {
 display: none;
 }
+ui|errorset,
 ui|error {
 display: none;
 }
-@namespace url("http://www.w3.org/1999/xhtml");
-@namespace ui url("http://www.w3.org/1999/xhtml");
-
 ui|lazybindingset,
 ui|lazybinding {
 position: absolute;
 visibility: hidden;
 display: none;
 }
-@namespace url("http://www.w3.org/1999/xhtml");
-@namespace ui url("http://www.w3.org/1999/xhtml");
-
 ui|sourcecodeviewer {
 display: block;
 width: 100%;
@@ -2250,3 +2749,293 @@ overflow: hidden;
 ui|sourcecodeviewer textarea {
 display: none;
 }
+/*
+* Docks are absolutely positioned in explorer in order to fix a display 
+* bug on browser resize. The bug is only noticeable on second area and 
+* higher (remove absolute positioning, navigate to area two, open some 
+* stuff and resize the browser). They are NOT absolute in Mozilla because 
+* moz may update display multiple times in a single thread, temporarily 
+* showing the dock overlaying other stuff. 
+*/
+ui|dock {
+display: block;
+overflow: hidden;
+/*
+#region ie
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+heigth: 100%;
+#endregion
+*/
+}
+ui|docktabs {
+display: block;
+position: relative !important;
+overflow: hidden;
+}
+ui|docktabs ui|controlgroup.docktabscontrolgroup {
+position: relative;
+z-index: 2;
+}
+ui|docktab {
+display: block;
+float: left;
+position: relative;
+white-space: nowrap;
+bottom: -100px;
+/* adjusted by script */
+}
+ui|docktab ui|control {
+position: relative;
+}
+ui|dockpanels {
+display: block;
+height: 100%;
+clear: both;
+overflow: hidden;
+}
+ui|dockpanel {
+/* styles comparable to deck - please coordinate all changes! */
+display: block;
+height: 100%;
+clear: both;
+overflow: hidden;
+position: absolute;
+top: -10000px;
+}
+/* CONTROVERSIAL STYLES - MAYBE MOVE TO SKIN? */
+ui|dock.tools ui|docktab.default ui|labelbody,
+ui|dock.tools ui|docktab.hover ui|labelbody {
+padding-left: 0;
+filter: none !important;
+}
+ui|docktabs {
+box-shadow: inset 0px -1px 0px 0px #cccccc;
+padding: 10px 10px 0 10px;
+background: #EFEFEF;
+}
+ui|docktabs ui|toolbarbutton {
+position: relative;
+}
+ui|docktab {
+border-width: 1px;
+border-style: solid;
+border-color: #DDDDDD;
+border-radius: 5px 5px 0 0;
+background: #ffffff;
+z-index: 2;
+margin-right: -4px;
+text-transform: uppercase;
+}
+ui|docktab ui|labelbox {
+position: relative;
+top: -1px;
+}
+ui|docktab ui|labeltext {
+position: relative;
+}
+ui|docktab ui|labelbox.both ui|labeltext {
+margin-left: 14px;
+}
+ui|docktab ui|control ui|labelbox {
+top: 1px;
+}
+ui|docktab.selected {
+z-index: 3;
+border-color: #CCCCCC #CCCCCC transparent #CCCCCC;
+}
+/* START DOCK ............................ */
+ui|dock.start ui|docktab {
+display: none;
+}
+ui|dock.start ui|docktabs ui|controlgroup {
+display: none;
+}
+ui|dock.start ui|docktabs {
+height: 2px;
+-vendor-border-radius-topleft: 3x;
+-vendor-border-radius-topright: 3px;
+}
+/* EXPLORER DOCK ......................... */
+ui|dock.explorer ui|docktab {
+float: none;
+padding-right: 1px;
+}
+ui|dock.explorer ui|docktab table.matrix {
+width: 100%;
+}
+ui|dock.explorer ui|docktabs {
+padding-left: 0;
+}
+ui|dock.explorer ui|docktab ui|controlgroup {
+display: none;
+}
+ui|splitpanel.explorer ui|dock.active ui|docktab.selected ui|labeltext {
+font-weight: bold;
+}
+ui|splitpanel.explorer div.dockliner {
+display: none;
+}
+/* TOOLS DOCK ............................ */
+ui|dock.tools ui|docktab.selected {
+margin-right: 4px;
+}
+ui|dock.tools ui|dockpanels {
+width: auto !important;
+}
+/* EDITORS DOCK .......................... */
+ui|splitpanel.editors {
+box-shadow: inset 0px 5px 0px 0px #333333;
+}
+ui|splitpanel.editors ui|dock {
+border-radius: 5px 0 0 0;
+box-shadow: inset 0px 0px 0px 1px #cccccc;
+background: #fff;
+}
+ui|splitpanel.editors ui|docktab {
+padding: 10px 10px 10px 10px;
+width: 189px;
+}
+ui|splitpanel.editors ui|docktab ui|labelbody {
+padding-left: 24px;
+color: #ADADAD;
+}
+ui|splitpanel.editors ui|docktab ui|labeltext {
+width: 110px;
+overflow: hidden;
+}
+ui|splitpanel.editors ui|dock.active ui|docktab.selected ui|labelbody {
+color: #22B980;
+}
+ui|splitpanel.editors ui|dockpanels {
+width: auto !important;
+}
+ui|splitpanel.editors ui|docktab.default ui|controlgroup {
+display: none;
+}
+ui|splitpanel.editors ui|toolbar {
+box-shadow: inset 0px -1px 0px 0px #cccccc;
+}
+/* ACTIVE DOCK */
+.splash-cover {
+overflow: auto;
+position: relative;
+font-size: 16px;
+}
+.splash-cover .logo {
+width: 138px;
+height: 38px;
+background: url("../images/logo.png") no-repeat 0 0;
+margin: 0 auto 40px auto;
+}
+.splash-cover .splash {
+position: relative;
+z-index: 3;
+display: block;
+width: 312px;
+margin: 10% auto 0 auto;
+-ms-border-radius: 15px;
+border-radius: 15px;
+background: #fff;
+}
+.splash-cover .splash-inner {
+padding: 30px 30px 40px 30px;
+}
+.splash-cover h1 {
+border-bottom: solid 1px #E1E1E1;
+padding-bottom: 10px;
+}
+.splash-cover a,
+.splash-cover a:focus,
+.splash-cover a:active {
+color: #21B980;
+cursor: pointer;
+}
+.splash-cover a:hover {
+color: #04A380;
+text-decoration: underline;
+}
+.splash-cover .clickbutton {
+display: block;
+text-decoration: none;
+background: #21B980;
+color: #fff;
+-ms-border-radius: 20px;
+border-radius: 20px;
+width: 100%;
+text-transform: uppercase;
+padding: 10px 20px;
+text-align: center;
+}
+.splash-cover .clickbutton:hover,
+.splash-cover .clickbutton:active,
+.splash-cover .clickbutton:focus {
+background: #04A380;
+color: #fff;
+text-decoration: none;
+}
+.splash-cover ui|clickbutton {
+float: none;
+width: 100%;
+margin: 0;
+}
+.splash-cover ui|clickbutton ui|labelbody {
+height: auto;
+float: none;
+}
+.splash-cover ui|clickbutton ui|labeltext {
+float: none;
+}
+.splash-cover ui|clickbutton ui|labelbox {
+display: block;
+text-decoration: none;
+background: #21B980;
+color: #fff;
+-ms-border-radius: 20px;
+border-radius: 20px;
+width: 100%;
+text-transform: uppercase;
+padding: 10px 20px;
+text-align: center;
+}
+.splash-cover ui|clickbutton.right-btn {
+float: right;
+width: auto;
+}
+.splash-cover ui|clickbutton.left-btn {
+float: left;
+width: auto;
+}
+.splash-cover ui|clickbutton.hover ui|labelbox {
+background: #04A380;
+color: #fff;
+}
+.splash-bg {
+position: fixed;
+z-index: 1;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background-color: #f0f0f0;
+-moz-background-size: cover;
+-o-background-size: cover;
+-webkit-background-size: cover;
+background-size: cover;
+background-position: center center;
+background-repeat: no-repeat;
+background-image: url("../images/top-page-cover-bg.jpg");
+}
+.splash-bg:after {
+content: "";
+position: fixed;
+top: 0;
+left: 0;
+z-index: 2;
+width: 100%;
+height: 100%;
+background-color: rgba(0, 0, 0, 0.6);
+}
+/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkNvbXBvc2l0ZS9zdHlsZXMvc3R5bGVzLmxlc3MiLCJDb21wb3NpdGUvc3R5bGVzL2RlZmF1bHQvX25vcm1hbGl6ZS5sZXNzIiwiQ29tcG9zaXRlL3N0eWxlcy9kZWZhdWx0L19oZWxwZXJzLmxlc3MiLCJDb21wb3NpdGUvc3R5bGVzL2RlZmF1bHQvX21peGlucy5sZXNzIiwiQ29tcG9zaXRlL3N0eWxlcy9kZWZhdWx0L2Jhc2UubGVzcyIsIkNvbXBvc2l0ZS9zdHlsZXMvZGVmYXVsdC9fdmFyaWFibGVzLmxlc3MiLCJDb21wb3NpdGUvc3R5bGVzL2RlZmF1bHQvdXBkYXRlcGFuZWxzLmxlc3MiLCJDb21wb3NpdGUvc3R5bGVzL2RlZmF1bHQvdGV4dHMubGVzcyIsIkNvbXBvc2l0ZS9zdHlsZXMvZGVmYXVsdC9sYWJlbHMubGVzcyIsIkNvbXBvc2l0ZS9zdHlsZXMvZGVmYXVsdC9kaWFsb2dzL2RpYWxvZ3MubGVzcyIsIkNvbXBvc2l0ZS9zdHlsZXMvZGVmYXVsdC9kaWFsb2dzL2RpYWxvZ3ZpZ25ldHRlLmxlc3MiLCJDb21wb3NpdGUvc3R5bGVzL2RlZmF1bHQvcG9wdXBzLmxlc3MiLCJDb21wb3NpdGUvc3R5bGVzL2RlZmF1bHQvbWVudXMubGVzcyIsIkNvbXBvc2l0ZS9zdHlsZXMvZGVmYXVsdC9idXR0b25zLmxlc3MiLCJDb21wb3NpdGUvc3R5bGVzL2RlZmF1bHQvdGl0bGViYXJzLmxlc3MiLCJDb21wb3NpdGUvc3R5bGVzL2RlZmF1bHQvY29udHJvbHMubGVzcyIsIkNvbXBvc2l0ZS9zdHlsZXMvZGVmYXVsdC90b29sYmFycy90b29sYmFycy1iYXNlLmxlc3MiLCJDb21wb3NpdGUvc3R5bGVzL2RlZmF1bHQvdG9vbGJhcnMvc3lzdGVtLmxlc3MiLCJDb21wb3NpdGUvc3R5bGVzL2RlZmF1bHQvdG9vbGJhcnMvdmlzdWFsLWVkaXRvci5sZXNzIiwiQ29tcG9zaXRlL3N0eWxlcy9kZWZhdWx0L3Rvb2xiYXJzL3BhZ2V0ZW1wbGF0ZXMubGVzcyIsIkNvbXBvc2l0ZS9zdHlsZXMvZGVmYXVsdC90b29sYmFycy9kaWFsb2cubGVzcyIsIkNvbXBvc2l0ZS9zdHlsZXMvZGVmYXVsdC90b29sYmFycy9uYXYtdG9vbGJhci5sZXNzIiwiQ29tcG9zaXRlL3N0eWxlcy9kZWZhdWx0L3Rvb2xiYXJzL2RvY3VtZW50LXRvb2xiYXIubGVzcyIsIkNvbXBvc2l0ZS9zdHlsZXMvZGVmYXVsdC90YWJib3hlcy5sZXNzIiwiQ29tcG9zaXRlL3N0eWxlcy9kZWZhdWx0L3NwbGl0Ym94ZXMubGVzcyIsIkNvbXBvc2l0ZS9zdHlsZXMvZGVmYXVsdC9kZWNrcy5sZXNzIiwiQ29tcG9zaXRlL3N0eWxlcy9kZWZhdWx0L3RyZWVzLmxlc3MiLCJDb21wb3NpdGUvc3R5bGVzL2RlZmF1bHQvcGFnZXMubGVzcyIsIkNvbXBvc2l0ZS9zdHlsZXMvZGVmYXVsdC92aWV3cy5sZXNzIiwiQ29tcG9zaXRlL3N0eWxlcy9kZWZhdWx0L2V4cGxvcmVyLmxlc3MiLCJDb21wb3NpdGUvc3R5bGVzL2RlZmF1bHQvbWVudWJhci5sZXNzIiwiQ29tcG9zaXRlL3N0eWxlcy9kZWZhdWx0L3J0bC5sZXNzIiwiQ29tcG9zaXRlL3N0eWxlcy9kZWZhdWx0L2VkaXRvcnMubGVzcyIsIkNvbXBvc2l0ZS9zdHlsZXMvZGVmYXVsdC9icm9hZGNhc3RlcnMubGVzcyIsIkNvbXBvc2l0ZS9zdHlsZXMvZGVmYXVsdC9maWVsZHMvZmllbGRzLWJhc2UubGVzcyIsIkNvbXBvc2l0ZS9zdHlsZXMvZGVmYXVsdC9maWVsZHMvdGV4dGJveC5sZXNzIiwiQ29tcG9zaXRlL3N0eWxlcy9kZWZhdWx0L2ZpZWxkcy9jYWxlbmRhci5sZXNzIiwiQ29tcG9zaXRlL3N0eWxlcy9kZWZhdWx0L2ZpZWxkcy9zZWxlY3RvcnMubGVzcyIsIkNvbXBvc2l0ZS9zdHlsZXMvZGVmYXVsdC9maWVsZHMvZmlsZXBpY2tlci5sZXNzIiwiQ29tcG9zaXRlL3N0eWxlcy9kZWZhdWx0L2ZpZWxkcy9yYWRpby5sZXNzIiwiQ29tcG9zaXRlL3N0eWxlcy9kZWZhdWx0L2ZpZWxkcy9jaGVja2JveC5sZXNzIiwiQ29tcG9zaXRlL3N0eWxlcy9kZWZhdWx0L2ZpZWxkcy9kYXRhZGlhbG9nLmxlc3MiLCJDb21wb3NpdGUvc3R5bGVzL2RlZmF1bHQva2V5cy5sZXNzIiwiQ29tcG9zaXRlL3N0eWxlcy9kZWZhdWx0L2JpbmRpbmdtYXBwaW5ncy5sZXNzIiwiQ29tcG9zaXRlL3N0eWxlcy9kZWZhdWx0L2N1cnNvcnMubGVzcyIsIkNvbXBvc2l0ZS9zdHlsZXMvZGVmYXVsdC9iYWxsb29ucy5sZXNzIiwiQ29tcG9zaXRlL3N0eWxlcy9kZWZhdWx0L2Vycm9ycy5sZXNzIiwiQ29tcG9zaXRlL3N0eWxlcy9kZWZhdWx0L2xhenliaW5kaW5ncy5sZXNzIiwiQ29tcG9zaXRlL3N0eWxlcy9kZWZhdWx0L3NvdXJjZWNvZGV2aWV3ZXJzLmxlc3MiLCJDb21wb3NpdGUvc3R5bGVzL2RlZmF1bHQvZG9ja3MubGVzcyIsIkNvbXBvc2l0ZS9zdHlsZXMvZGVmYXVsdC9zcGxhc2gubGVzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQSxrQkFBa0I7Ozs7Ozs7QUNBbEI7RUFDSSxlQUFBO0VBQ0EsMkJBQUE7RUFDQSw4QkFBQTtFQUNBLHNCQUFBOztBQUdBLENBQUM7QUFBUSxDQUFDLE1BQU87RUFDYixhQUFBOztBQVNSO0VBQ0ksdUJBQUE7RUFDQSwwQkFBQTtFQUNBLDhCQUFBOztBQU1KO0FBQU07RUFDRixTQUFBO0VBQ0EsVUFBQTtFQUNBLFlBQUE7O0FBVUo7RUFDSSxxQkFBQTtFQUNBLDZCQUFBOztBQUZKLENBR0k7RUFDSSxlQUFBOztBQVFKLENBQUM7QUFDRCxDQUFDO0VBQ0csVUFBQTs7QUFPUjtFQUNJLFNBQUE7O0FBT0o7RUFDSSxXQUFBO0VBQ0EsWUFBQTtFQUNBLG1CQUFBOztBQUdKO0VBQ0ksbUJBQUE7RUFDQSx5QkFBQTtFQUNBLGtCQUFBOztBQUlBLHlCQUF5QjtFQUNyQixtQkFBQTs7QUFNUjs7RUFDSSxVQUFBO0VBQ0EsU0FBQTtFQUNBLFlBQUE7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 */
