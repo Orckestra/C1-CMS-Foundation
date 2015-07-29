@@ -1442,7 +1442,6 @@
     <Compile Include="Core\WebClient\State\Runtime\SessionStateProviderFactory.cs" />
     <Compile Include="Core\WebClient\State\Runtime\SessionStateProviderSettings.cs" />
     <Compile Include="Core\WebClient\State\StateManager.cs" />
-    <Compile Include="Core\WebClient\StyleCompiler.cs" />
     <Compile Include="Core\WebClient\UiControlLib\BindingUpdatePanel.cs" />
     <Compile Include="Core\WebClient\UiControlLib\CheckBox.cs" />
     <Compile Include="Core\WebClient\UiControlLib\ClickButton.cs" />
