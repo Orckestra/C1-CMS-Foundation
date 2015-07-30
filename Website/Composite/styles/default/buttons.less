@@ -159,4 +159,27 @@ ui|toolbarbutton {
             }
         }
     }
+
+    &.tabbutton { //== usage: "More Tabs" buttons when browser width is small
+        position: absolute;
+        margin-top: 1px;
+        z-index: 400;
+        display: none;
+        background-color: transparent;
+        margin: 0;
+        padding: 0;
+
+        ui|labelbox {
+            padding: 8px 10px;
+            font-weight: bold;
+
+            .arrow {
+                font-size: 120%;
+                font-family: "Courier New", monospace;
+                position: relative;
+                top: -1px;
+                left: 2px;
+            }
+        }
+    }
 }
