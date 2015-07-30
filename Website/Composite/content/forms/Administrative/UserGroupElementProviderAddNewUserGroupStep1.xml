@@ -3,8 +3,8 @@
 	<cms:bindings>
 		<cms:binding name="NewUserGroup" type="Composite.Data.Types.IUserGroup" />
   </cms:bindings>
-	<cms:layout iconhandle="usergroups-addusergroup">
-		<FieldGroup Label="${Composite.Plugins.UserGroupElementProvider, AddNewUserGroup.AddNewUserGroupStep1.LabelFieldGroup}">
+	<cms:layout iconhandle="usergroups-addusergroup" label="${Composite.Plugins.UserGroupElementProvider, AddNewUserGroup.AddNewUserGroupStep1.LabelFieldGroup}">
+		<FieldGroup>
 			<TextBox Label="${Composite.Plugins.UserGroupElementProvider, AddNewUserGroup.AddNewUserGroupStep1.UserGroupNameLabel}" Help="${Composite.Plugins.UserGroupElementProvider, AddNewUserGroup.AddNewUserGroupStep1.UserGroupNameHelp}">
 				<TextBox.Text>
 					<cms:bind source="NewUserGroup.Name" />

@@ -11,7 +11,6 @@
   <string key="DeleteUserControlFunction.ToolTip" value="Delete the User Control function" />
   
   <string key="AddNewUserControlFunction.LabelDialog" value="Add User Control Function" />
-  <string key="AddNewUserControlFunction.LabelFieldGroup" value="New User Control function" />
   <string key="AddNewUserControlFunction.LabelName" value="Name" />
   <string key="AddNewUserControlFunction.HelpName" value="" />
   <string key="AddNewUserControlFunction.LabelNamespace" value="Namespace" />

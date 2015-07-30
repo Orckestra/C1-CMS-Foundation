@@ -5,7 +5,7 @@
     <cms:binding name="ConnectionString" type="System.String" />
   </cms:bindings>
   <cms:layout iconhandle="sql-based-connection-add" label="${Composite.Plugins.SqlFunction, AddNewSqlFunctionConnection.LabelDialog}">
-    <FieldGroup Label="${Composite.Plugins.SqlFunction, AddEditSqlFunctionConnection.LabelFieldGroup}">
+    <FieldGroup>
       <TextBox Label="${Composite.Plugins.SqlFunction, AddNewSqlFunctionConnection.LabelName}" Help="${Composite.Plugins.SqlFunction, AddNewSqlFunctionConnection.HelpName}">
         <TextBox.Text>
           <cms:bind source="NewSqlConnection.Name" />

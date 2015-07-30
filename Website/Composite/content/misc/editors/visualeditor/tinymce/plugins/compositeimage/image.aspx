@@ -28,7 +28,7 @@
 					<ui:tabpanels>
 						<ui:tabpanel>
 							<ui:fields>
-								<ui:fieldgroup label="${string:Composite.Web.VisualEditor:Image.LabelImage}">
+								<ui:fieldgroup>
 									<ui:field>
 										<ui:fielddesc label="${string:Composite.Web.VisualEditor:Image.Source}"/>
 										<ui:fielddata>
@@ -61,7 +61,7 @@
 						</ui:tabpanel>
 						<ui:tabpanel>
 							<ui:fields>
-								<ui:fieldgroup label="${string:Composite.Web.VisualEditor:LabelPresentation}">
+								<ui:fieldgroup>
 									<ui:field>
 										<ui:fielddesc label="${string:Composite.Web.VisualEditor:LabelId}"/>
 										<ui:fieldhelp label="${string:Composite.Web.VisualEditor:HelpId}"/>

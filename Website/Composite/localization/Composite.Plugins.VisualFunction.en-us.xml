@@ -11,10 +11,8 @@
   <string key="AddNew.NoPageTemplatesExistsErrorMessage" value="At least one template must exist before you can create a rendering. Create one template and try again." />
   <string key="AddNew.MissingActiveLanguageTitle" value="A Language Is Required" />
   <string key="AddNew.MissingActiveLanguageMessage" value="To create a visual function a language is required, but no languages have been added yet. You can add one under the System perspective." />
-  <string key="AddNewStep1.FieldGroupLabel" value="Select datatype to visualize" />
   <string key="AddNewStep1.TypeSelectorLabel" value="Datatype" />
   <string key="AddNewStep1.TypeSelectorHelp" value="" />
-  <string key="AddNewStep2.FieldGroupLabel" value="Visual function naming" />
   <string key="AddNewStep2.FuncitonNameLabel" value="Function name" />
   <string key="AddNewStep2.FuncitonNameHelp" value="" />
   <string key="AddNewStep2.FuncitonNamespaceLabel" value="Function namespace" />

@@ -16,7 +16,6 @@
 
 
   <string key="AddNewMasterPagePageTemplate.LabelDialog" value="Add New Master Page Template" />
-  <string key="AddNewMasterPagePageTemplate.LabelFieldGroup" value="Master Page Template" />
   <string key="AddNewMasterPagePageTemplate.LabelTemplateTitle" value="Template Title" />
   <string key="AddNewMasterPagePageTemplate.LabelTemplateTitleHelp" value="The title identifies this template in lists. Consider selecting a short but meaningful name." />
   <string key="AddNewMasterPagePageTemplate.LabelCopyFrom" value="Copy from" />

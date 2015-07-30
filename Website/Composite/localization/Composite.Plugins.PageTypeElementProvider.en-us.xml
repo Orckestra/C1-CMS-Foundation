@@ -70,7 +70,6 @@
   <string key="PageType.DeletePageTypeWorkflow.PagesRefering.Layout.Label" value="Page Type in Use" />
   <string key="PageType.DeletePageTypeWorkflow.PagesRefering.Layout.Message" value="The page type {0} is in use and it is not possible to delete it" />
   <string key="PageType.AddPageTypeDefaultPageContentWorkflow.Layout.Label" value="Add Default Content" />
-  <string key="PageType.AddPageTypeDefaultPageContentWorkflow.FieldGroup.Label" value="Choose placeholder" />
   <string key="PageType.AddPageTypeDefaultPageContentWorkflow.PlaceHolderIdTextBox.Label" value="Placeholder ID" />
   <string key="PageType.AddPageTypeDefaultPageContentWorkflow.PlaceHolderIdTextBox.Help" value="The ID of the placeholder. You can write a non-existing ID and create the placeholder afterwards (by editing Page Template markup)." />
   <string key="PageType.AddPageTypeDefaultPageContentWorkflow.NonExistingPlaceholderId.Title" value="No templates with {0}" />

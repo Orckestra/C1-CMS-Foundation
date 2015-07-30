@@ -3,8 +3,8 @@
   <cms:bindings>
     <cms:binding name="UploadedFile" type="Composite.C1Console.Forms.CoreUiControls.UploadedFile, Composite" />
   </cms:bindings>
-  <cms:layout>
-    <FieldGroup Label="${Composite.Plugins.WebsiteFileElementProvider, UploadNewWebsiteFile.LabelFieldGroup}">
+  <cms:layout label="${Composite.Plugins.WebsiteFileElementProvider, UploadNewWebsiteFile.LabelFieldGroup}">
+    <FieldGroup>
       <FileUpload Label="${Composite.Plugins.WebsiteFileElementProvider, UploadNewWebsiteFile.LabelFile}" 
 				  Help="${Composite.Plugins.WebsiteFileElementProvider, UploadNewWebsiteFile.HelpFile}">
         <FileUpload.UploadedFile>

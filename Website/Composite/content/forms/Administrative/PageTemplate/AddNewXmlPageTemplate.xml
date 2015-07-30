@@ -7,7 +7,7 @@
     
   </cms:bindings>
   <cms:layout iconhandle="generic-add" label="${Composite.Plugins.PageTemplateElementProvider, AddNewXmlPageTemplate.LabelDialog}">
-    <FieldGroup Label="${Composite.Plugins.PageTemplateElementProvider, AddNewXmlPageTemplate.LabelFieldGroup}">
+    <FieldGroup>
       <TextBox Label="${Composite.Plugins.PageTemplateElementProvider, AddNewXmlPageTemplate.LabelTemplateTitle}" Help="${Composite.Plugins.PageTemplateElementProvider, AddNewXmlPageTemplate.LabelTemplateTitleHelp}" Required="true">
         <TextBox.Text>
           <cms:bind source="NewPageTemplate.Title" />

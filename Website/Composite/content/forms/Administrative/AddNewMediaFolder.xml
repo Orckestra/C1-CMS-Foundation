@@ -5,8 +5,8 @@
     <cms:binding name="FolderName" type="System.String" />
     <cms:binding name="ProvidesMetaData" type="System.Boolean" />
   </cms:bindings>
-  <cms:layout iconhandle="media-add-media-folder">
-    <FieldGroup Label="${Composite.Management, Website.Forms.Administrative.AddNewMediaFolder.Label.AddNewMediaFolder}">
+  <cms:layout iconhandle="media-add-media-folder" label="${Composite.Management, Website.Forms.Administrative.AddNewMediaFolder.Label.AddNewMediaFolder}">
+    <FieldGroup>
       <TextBox Label="${Composite.Management, Website.Forms.Administrative.AddNewMediaFolder.LabelFolderName}" Help="${Composite.Management, Website.Forms.Administrative.AddNewMediaFolder.HelpFolderName}">
         <TextBox.Text>
           <cms:bind source="FolderName" />

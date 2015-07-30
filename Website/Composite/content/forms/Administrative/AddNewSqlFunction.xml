@@ -5,7 +5,7 @@
   </cms:bindings>
   <cms:layout iconhandle="sql-based-function" label="${Composite.Plugins.SqlFunction, AddNewSqlFunction.LabelDialog}">
     <PlaceHolder>
-      <FieldGroup Label="${Composite.Plugins.SqlFunction, AddNewSqlFunction.LabelNamingPanel}">
+      <FieldGroup>
         <TextBox Label="${Composite.Plugins.SqlFunction, AddNewSqlFunction.LabelName}" Help="${Composite.Plugins.SqlFunction, AddNewSqlFunction.HelpName}" Type="ProgrammingIdentifier">
           <TextBox.Text>
             <cms:bind source="NewSqlQueryInfo.Name" />

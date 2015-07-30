@@ -12,7 +12,6 @@
     <string key="ElementProvider.EditVisuallyToolTip" value="When enabled the visual editor will be used to manage this feature" />
 
     <string key="AddWorkflow.LabelDialog" value="Add New Page Template Feature" />
-    <string key="AddWorkflow.LabelFieldGroup" value="Page Template Feature" />
     <string key="AddWorkflow.LabelTemplateFeatureName" value="Feature name" />
     <string key="AddWorkflow.LabelTemplateFeatureNameHelp" value="The name is used to identify this feature when included in templates" />
     <string key="AddWorkflow.LabelTemplateFeatureEditorType" value="Editor type" />

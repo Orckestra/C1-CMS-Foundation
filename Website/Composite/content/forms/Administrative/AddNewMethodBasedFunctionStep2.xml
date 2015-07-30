@@ -5,7 +5,7 @@
     <cms:binding name="SelectedMethodName" type="System.String" />
   </cms:bindings>
   <cms:layout>
-    <FieldGroup Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, AddNewMethodBasedFunction.LabelFieldGroup}">
+    <FieldGroup>
       <KeySelector Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, AddNewMethodBasedFunctionStep2.LabelMethodName}" OptionsKeyField="" OptionsLabelField="" Help="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, AddNewMethodBasedFunctionStep2.HelpMethodName}">
         <KeySelector.Options>
           <cms:read source="MethodNames" />

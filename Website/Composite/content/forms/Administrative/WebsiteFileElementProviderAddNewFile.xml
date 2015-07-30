@@ -3,8 +3,8 @@
 	<cms:bindings>
 		<cms:binding name="NewFileName" type="System.String" />
 	</cms:bindings>
-	<cms:layout>
-		<FieldGroup Label="${Composite.Plugins.WebsiteFileElementProvider, AddNewFile.LabelFieldGroup}">
+	<cms:layout label="${Composite.Plugins.WebsiteFileElementProvider, AddNewFile.LabelFieldGroup}">
+		<FieldGroup>
 			<TextBox Label="${Composite.Plugins.WebsiteFileElementProvider, AddNewFile.Text}"
 					 Help="${Composite.Plugins.WebsiteFileElementProvider, AddNewFile.Help}">
 				<TextBox.Text>

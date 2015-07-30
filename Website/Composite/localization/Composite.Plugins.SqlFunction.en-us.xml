@@ -30,7 +30,6 @@
   <string key="AddEditSqlFunction.LabelIsQuery" value="Is a query" />
   <string key="AddEditSqlFunction.LabelIsQueryCheckBox" value="Yes, the command returns data" />
   <string key="AddEditSqlFunction.LabelCommandBehaviour" value="SQL Command behaviour" />
-  <string key="AddEditSqlFunctionConnection.LabelFieldGroup" value="SQL Connection settings" />
   <string key="AddEditSqlFunction.LabelSqlEditor" value="SQL Command" />
   <string key="AddNewSqlFunctionConnection.LabelDialog" value="Add New SQL Connection" />
   <string key="AddNewSqlFunctionConnection.LabelName" value="Name" />

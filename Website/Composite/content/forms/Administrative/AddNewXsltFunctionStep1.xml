@@ -6,7 +6,7 @@
     <cms:binding name="CopyFromOptions" type="System.Object" />
   </cms:bindings>
   <cms:layout label="${Composite.Plugins.XsltBasedFunction, AddNewXsltFunctionStep1.LabelDialog}" iconhandle="xslt-based-function">
-    <FieldGroup Label="${Composite.Plugins.XsltBasedFunction, AddNewXsltFunctionStep1.LabelFieldGroup}">
+    <FieldGroup>
       <TextBox Label="${Composite.Plugins.XsltBasedFunction, AddNewXsltFunctionStep1.LabelName}" Help="${Composite.Plugins.XsltBasedFunction, AddNewXsltFunctionStep1.HelpName}" Type="ProgrammingIdentifier">
         <TextBox.Text>
           <cms:bind source="NewXslt.Name" />

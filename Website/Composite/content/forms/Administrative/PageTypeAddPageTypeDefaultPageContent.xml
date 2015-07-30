@@ -4,7 +4,7 @@
     <cms:binding name="DefaultPageContent" type="Composite.Data.Types.IPageTypeDefaultPageContent"/>
   </cms:bindings>
   <cms:layout iconhandle="pagetype-add-pagetypedefaultpagecontent" label="${Composite.Plugins.PageTypeElementProvider, PageType.AddPageTypeDefaultPageContentWorkflow.Layout.Label}">
-    <FieldGroup Label="${Composite.Plugins.PageTypeElementProvider, PageType.AddPageTypeDefaultPageContentWorkflow.FieldGroup.Label}">
+    <FieldGroup >
 
       <TextBox Label="${Composite.Plugins.PageTypeElementProvider, PageType.AddPageTypeDefaultPageContentWorkflow.PlaceHolderIdTextBox.Label}"
                Help="${Composite.Plugins.PageTypeElementProvider, PageType.AddPageTypeDefaultPageContentWorkflow.PlaceHolderIdTextBox.Help}">

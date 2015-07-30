@@ -8,7 +8,7 @@
     <cms:binding name="CopyFromOptions" type="System.Object" />
   </cms:bindings>
   <cms:layout label="${Composite.Plugins.RazorFunction, AddNewRazorFunction.LabelDialog}" iconhandle="razor-function-add">
-    <FieldGroup Label="${Composite.Plugins.RazorFunction, AddNewRazorFunction.LabelFieldGroup}">
+    <FieldGroup>
       <TextBox Label="${Composite.Plugins.RazorFunction, AddNewRazorFunction.LabelName}" Help="${Composite.Plugins.RazorFunction, AddNewRazorFunction.HelpName}" Type="ProgrammingIdentifier">
         <TextBox.Text>
           <cms:bind source="Name" />

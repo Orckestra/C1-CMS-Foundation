@@ -9,8 +9,8 @@
     <cms:binding name="AllCultures" type="System.Collections.IEnumerable" />
     <cms:binding name="Password" type="System.String" optional="true"/>
   </cms:bindings>
-	<cms:layout iconhandle="users-adduser">
-		<FieldGroup Label="${Composite.Management, Website.Forms.Administrative.AddNewUserStep1.LabelFieldGroup}">
+	<cms:layout iconhandle="users-adduser" label="${Composite.Management, Website.Forms.Administrative.AddNewUserStep1.LabelFieldGroup}">
+		<FieldGroup>
 			<TextBox Label="${Composite.Management, Website.Forms.Administrative.AddNewUserStep1.UserNameLabel}" Help="${Composite.Management, Website.Forms.Administrative.AddNewUserStep1.UserNameHelp}" SpellCheck="false">
 				<TextBox.Text>
 					<cms:bind source="NewUser.Username" />

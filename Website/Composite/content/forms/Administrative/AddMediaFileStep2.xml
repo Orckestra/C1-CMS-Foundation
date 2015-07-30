@@ -8,7 +8,7 @@
   </cms:bindings>
   <cms:layout iconhandle="media-add-media-file" label="${Composite.Management, Website.Forms.Administrative.AddNewMediaFile.Layout.Label}">
 
-    <FieldGroup Label="${Composite.Management, Website.Forms.Administrative.AddNewMediaFile.FieldGroup.Label}">
+    <FieldGroup>
       
       <TextBox Label="${Composite.Management, Website.Forms.Administrative.AddNewMediaFile.FilenameTextBox.Label}" 
                Help="${Composite.Management, Website.Forms.Administrative.AddNewMediaFile.FilenameTextBox.Help}">

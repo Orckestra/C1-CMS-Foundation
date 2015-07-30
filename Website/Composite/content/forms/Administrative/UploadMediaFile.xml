@@ -4,8 +4,8 @@
     <cms:binding name="UploadedFile" type="Composite.C1Console.Forms.CoreUiControls.UploadedFile, Composite" />
     <cms:binding name="NextEventHandler" type="System.EventHandler" optional="true" />
   </cms:bindings>
-  <cms:layout iconhandle="media-add-media-file">
-    <FieldGroup Label="${Composite.Management, Website.Forms.Administrative.UploadMediaFile.LabelFieldGroup}">
+  <cms:layout iconhandle="media-add-media-file" label="${Composite.Management, Website.Forms.Administrative.UploadMediaFile.LabelFieldGroup}">
+    <FieldGroup>
       <FileUpload Label="${Composite.Management, Website.Forms.Administrative.UploadMediaFile.LabelFile}" Help="${Composite.Management, Website.Forms.Administrative.UploadMediaFile.HelpFile}">
         <FileUpload.UploadedFile>
           <cms:bind source="UploadedFile" />

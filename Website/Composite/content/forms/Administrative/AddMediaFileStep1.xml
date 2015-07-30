@@ -6,7 +6,7 @@
   </cms:bindings>
   <cms:layout iconhandle="media-add-media-file" label="${Composite.Management, Website.Forms.Administrative.AddNewMediaFile.Layout.Label}">
     
-    <FieldGroup Label="${Composite.Management, Website.Forms.Administrative.AddNewMediaFile.FieldGroup.Label}">
+    <FieldGroup>
       
       <FileUpload Label="${Composite.Management, Website.Forms.Administrative.AddNewMediaFile.FileUpload.Label}" 
                   Help="${Composite.Management, Website.Forms.Administrative.AddNewMediaFile.FileUpload.Help}">

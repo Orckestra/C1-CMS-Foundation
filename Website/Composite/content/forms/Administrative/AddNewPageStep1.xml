@@ -7,7 +7,7 @@
     <cms:binding name="PageTypeOptions" type="System.Collections.IEnumerable" />
   </cms:bindings>
   <cms:layout iconhandle="page-add-page" label="${Composite.Plugins.PageElementProvider, AddNewPageStep1.DialogLabel}">
-    <FieldGroup Label="${Composite.Plugins.PageElementProvider, GeneralSettings.FieldGroupLabel}">
+    <FieldGroup>
       <TextBox Label="${Composite.Plugins.PageElementProvider, AddNewPageStep1.LabelTitle}" Help="${Composite.Plugins.PageElementProvider, AddNewPageStep1.LabelTitleHelp}">
         <TextBox.Text>
           <cms:bind source="NewPage.Title" />

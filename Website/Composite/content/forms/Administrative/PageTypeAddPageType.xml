@@ -4,7 +4,7 @@
     <cms:binding name="NewPageType" type="Composite.Data.Types.IPageType"/>
   </cms:bindings>
   <cms:layout iconhandle="pagetype-add-pagetype" label="${Composite.Plugins.PageTypeElementProvider, PageType.AddNewPageTypeWorkflow.Layout.Label}">
-    <FieldGroup Label="${Composite.Plugins.PageTypeElementProvider, PageType.AddNewPageTypeWorkflow.FieldGroup.Label}">
+    <FieldGroup>
 
       <TextBox Label="${Composite.Plugins.PageTypeElementProvider, PageType.AddNewPageTypeWorkflow.NameTextBox.Label}"
                Help="${Composite.Plugins.PageTypeElementProvider, PageType.AddNewPageTypeWorkflow.NameTextBox.Help}">

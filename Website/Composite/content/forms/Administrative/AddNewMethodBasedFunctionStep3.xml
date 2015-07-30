@@ -5,7 +5,7 @@
     <cms:binding optional="true" name="ErrorMessage" type="System.String" />
   </cms:bindings>
   <cms:layout>
-    <FieldGroup Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, AddNewMethodBasedFunction.LabelFieldGroup}">
+    <FieldGroup>
       <TextBox Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, AddNewMethodBasedFunctionStep3.LabelMethodName}" Help="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, AddNewMethodBasedFunctionStep3.HelpMethodName}" Type="ProgrammingIdentifier">
         <TextBox.Text>
           <cms:bind source="NewMethodBasedFunction.UserMethodName" />

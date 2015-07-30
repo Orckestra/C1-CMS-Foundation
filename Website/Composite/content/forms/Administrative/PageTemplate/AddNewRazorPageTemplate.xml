@@ -7,7 +7,7 @@
     
   </cms:bindings>
   <cms:layout iconhandle="generic-add" label="${Composite.Plugins.RazorPageTemplate, AddNewRazorPageTemplate.LabelDialog}">
-    <FieldGroup Label="${Composite.Plugins.RazorPageTemplate, AddNewRazorPageTemplate.LabelFieldGroup}">
+    <FieldGroup>
       <TextBox Label="${Composite.Plugins.RazorPageTemplate, AddNewRazorPageTemplate.LabelTemplateTitle}" Help="${Composite.Plugins.RazorPageTemplate, AddNewRazorPageTemplate.LabelTemplateTitleHelp}" Required="true">
         <TextBox.Text>
           <cms:bind source="Title" />

@@ -5,7 +5,7 @@
     <cms:binding name="TemplateTypeId" type="System.String" />
   </cms:bindings>
   <cms:layout iconhandle="generic-add" label="${Composite.Plugins.PageTemplateElementProvider, AddNewPageTemplate.LabelDialog}">
-    <FieldGroup Label="${Composite.Plugins.PageTemplateElementProvider, AddNewPageTemplate.LabelFieldGroup}">
+    <FieldGroup>
       <KeySelector OptionsKeyField="Key" OptionsLabelField="Value" Help="${Composite.Plugins.PageTemplateElementProvider, AddNewPageTemplate.TemplateTypeHelp}" Label="${Composite.Plugins.PageTemplateElementProvider, AddNewPageTemplate.TemplateTypeLabel}">
         <KeySelector.Selected>
           <cms:bind source="TemplateTypeId" />

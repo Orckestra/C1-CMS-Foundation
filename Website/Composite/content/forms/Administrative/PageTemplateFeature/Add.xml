@@ -6,7 +6,7 @@
     <cms:binding name="EditorTypeOptions" type="System.Collections.IEnumerable" />
   </cms:bindings>
   <cms:layout label="${Composite.Plugins.PageTemplateFeatureElementProvider, AddWorkflow.LabelDialog}" iconhandle="page-template-feature-add">
-    <FieldGroup Label="${Composite.Plugins.PageTemplateFeatureElementProvider, AddWorkflow.LabelFieldGroup}">
+    <FieldGroup>
 
       <TextBox Label="${Composite.Plugins.PageTemplateFeatureElementProvider, AddWorkflow.LabelTemplateFeatureName}" Help="${Composite.Plugins.PageTemplateFeatureElementProvider, AddWorkflow.LabelTemplateFeatureNameHelp}" Required="true" SpellCheck="false">
         <cms:bind source="Name" />

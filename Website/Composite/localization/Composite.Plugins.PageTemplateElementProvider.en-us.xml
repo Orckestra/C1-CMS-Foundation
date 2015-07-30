@@ -17,7 +17,6 @@
   <string key="PageTemplateElementProvider.EditXmlTemplateToolTip" value="Edit the selected XML template" />
 
   <string key="AddNewXmlPageTemplate.LabelDialog" value="Add New XML Page Template" />
-  <string key="AddNewXmlPageTemplate.LabelFieldGroup" value="XML Template" />
   <string key="AddNewXmlPageTemplate.LabelTemplateTitle" value="Template Title" />
   <string key="AddNewXmlPageTemplate.LabelTemplateTitleHelp" value="The title identifies this template in lists. Consider selecting a short but meaningful name." />
   <string key="AddNewXmlPageTemplate.LabelCopyFrom" value="Copy from" />
@@ -46,7 +45,6 @@
   <string key="DeletePageTemplateWorkflow.PageTypeReference" value="There are {0} page type[s] referencing this template: {1}" />
 
   <string key="AddNewPageTemplate.LabelDialog" value="Add New Page Template" />
-  <string key="AddNewPageTemplate.LabelFieldGroup" value="New page template" />
   <string key="AddNewPageTemplate.TemplateTypeHelp" value="Choose one of the possible types of page templates" />
   <string key="AddNewPageTemplate.TemplateTypeLabel" value="Template type" />
 

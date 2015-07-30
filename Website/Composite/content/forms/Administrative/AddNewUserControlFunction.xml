@@ -7,7 +7,7 @@
     <cms:binding name="CopyFromOptions" type="System.Object" />
   </cms:bindings>
   <cms:layout label="${Composite.Plugins.UserControlFunction, AddNewUserControlFunction.LabelDialog}" iconhandle="usercontrol-function">
-    <FieldGroup Label="${Composite.Plugins.UserControlFunction, AddNewUserControlFunction.LabelFieldGroup}">
+    <FieldGroup>
       
       <TextBox Label="${Composite.Plugins.UserControlFunction, AddNewUserControlFunction.LabelName}" Help="${Composite.Plugins.UserControlFunction, AddNewUserControlFunction.HelpName}" Type="ProgrammingIdentifier">
         <TextBox.Text>

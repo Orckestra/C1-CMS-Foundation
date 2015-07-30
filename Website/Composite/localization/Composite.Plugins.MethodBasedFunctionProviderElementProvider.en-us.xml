@@ -12,7 +12,6 @@
   <string key="EditToolTip" value="Edit Function." />
   <string key="Delete" value="Delete" />
   <string key="DeleteToolTip" value="Delete Function." />
-  <string key="AddNewMethodBasedFunction.LabelFieldGroup" value="Add new method based function" />
   <string key="AddNewMethodBasedFunctionStep1.LabelType" value="Type" />
   <string key="AddNewMethodBasedFunctionStep1.LabelTypeHelp" value="The type that contains the method in question" />
   <string key="AddNewMethodBasedFunctionStep2.LabelMethodName" value="Method name" />

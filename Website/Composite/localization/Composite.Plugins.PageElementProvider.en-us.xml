@@ -16,7 +16,6 @@
   <string key="AddNewPageStep1.LabelAddToBottom" value="Insert at the bottom" />
   <string key="AddNewPageStep1.LabelAddAlphabetic" value="Insert alphabetically" />
   <string key="AddNewPageStep1.LabelAddBelowOtherPage" value="Select position..." />
-  <string key="AddNewPageStep2.LabelFieldGroup" value="Advanced settings" />
   <string key="AddNewPageStep2.LabelUrlTitle" value="URL title" />
   <string key="AddNewPageStep2.HelpUrlTitle" value="The entry specified in this field is shown in the browser address bar. The field is used by search engines" />
   <string key="AddNewPageStep2.LabelMenuTitle" value="Menu title" />

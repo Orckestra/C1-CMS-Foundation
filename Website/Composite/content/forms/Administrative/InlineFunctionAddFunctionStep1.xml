@@ -5,9 +5,9 @@
     <cms:binding name="TemplateOptions" type="System.Collections.IEnumerable" />
     <cms:binding name="SelectedTemplate" type="System.String" />
   </cms:bindings>
-  <cms:layout iconhandle="functioncall">
+  <cms:layout iconhandle="functioncall" label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, AddInlineFunctionWorkflow.FieldGroup.Label}">
 
-    <FieldGroup Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, AddInlineFunctionWorkflow.FieldGroup.Label}">
+    <FieldGroup>
 
       <TextBox Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, AddInlineFunctionWorkflow.MethodName.Label}"
                Help="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, AddInlineFunctionWorkflow.MethodName.Help}" Type="ProgrammingIdentifier">

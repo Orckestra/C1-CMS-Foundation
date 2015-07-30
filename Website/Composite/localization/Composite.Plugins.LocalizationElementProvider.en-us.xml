@@ -8,7 +8,6 @@
   <string key="AddSystemLocaleWorkflow.AddElementActionLabel" value="Add Language" />
   <string key="AddSystemLocaleWorkflow.AddElementActionToolTip" value="Add new language" />
   <string key="AddSystemLocaleWorkflow.Dialog.Label" value="Add Language" />
-  <string key="AddSystemLocaleWorkflow.FieldGroup.Label" value="Choose language" />
   <string key="AddSystemLocaleWorkflow.CultureSelector.Label" value="Languages" />
   <string key="AddSystemLocaleWorkflow.CultureSelector.Help" value="The list of available, uninstalled languages. Language packages may be installed for additional options." />
   <string key="AddSystemLocaleWorkflow.UrlMappingName.Label" value="URL mapping name" />

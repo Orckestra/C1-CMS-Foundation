@@ -8,7 +8,7 @@
   </cms:bindings>
   <cms:layout>
     <PlaceHolder>
-      <FieldGroup Label="${Composite.Plugins.PageElementProvider, AddNewPageStep2.LabelFieldGroup}">
+      <FieldGroup>
         <TextBox Label="${Composite.Plugins.PageElementProvider, AddNewPageStep2.LabelUrlTitle}" Help="${Composite.Plugins.PageElementProvider, AddNewPageStep2.HelpUrlTitle}" SpellCheck="false">
 		  <TextBox.Required>
 		    <cms:read source="UrlTitleIsRequired" />

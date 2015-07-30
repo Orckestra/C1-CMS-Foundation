@@ -10,7 +10,6 @@
   <string key="DeleteRazorPageTemplateAction.ToolTip" value="Delete page template" />
 
   <string key="AddNewRazorPageTemplate.LabelDialog" value="Add New Razor Template" />
-  <string key="AddNewRazorPageTemplate.LabelFieldGroup" value="Razor Template" />
   <string key="AddNewRazorPageTemplate.LabelTemplateTitle" value="Template Title" />
   <string key="AddNewRazorPageTemplate.LabelTemplateTitleHelp" value="The title identifies this template in lists. Consider selecting a short but meaningful name." />
   <string key="AddNewRazorPageTemplate.LabelCopyFrom" value="Copy from" />

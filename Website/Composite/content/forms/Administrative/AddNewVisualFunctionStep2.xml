@@ -4,7 +4,7 @@
     <cms:binding name="Function" type="Composite.Data.Types.IVisualFunction, Composite" />
   </cms:bindings>
   <cms:layout iconhandle="wysiwyg-function" label="${Composite.Plugins.VisualFunction, AddNew.DialogLabel}">
-    <FieldGroup Label="${Composite.Plugins.VisualFunction, AddNewStep2.FieldGroupLabel}">
+    <FieldGroup>
       <TextBox Label="${Composite.Plugins.VisualFunction, AddNewStep2.FuncitonNameLabel}" Help="${Composite.Plugins.VisualFunction, AddNewStep2.FuncitonNameHelp}" Type="ProgrammingIdentifier">
         <TextBox.Text>
           <cms:bind source="Function.Name" />

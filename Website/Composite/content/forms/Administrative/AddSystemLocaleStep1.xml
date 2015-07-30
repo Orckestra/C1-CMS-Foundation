@@ -8,7 +8,7 @@
     <cms:binding name="CustomEvent01Handler" type="System.EventHandler" />
   </cms:bindings>
   <cms:layout iconhandle="localization-addsystemlocale" label="${Composite.Plugins.LocalizationElementProvider, AddSystemLocaleWorkflow.Dialog.Label}">
-    <FieldGroup Label="${Composite.Plugins.LocalizationElementProvider, AddSystemLocaleWorkflow.FieldGroup.Label}">
+    <FieldGroup>
       <KeySelector OptionsKeyField="Key" OptionsLabelField="Value" 
 									 Label="${Composite.Plugins.LocalizationElementProvider, AddSystemLocaleWorkflow.CultureSelector.Label}" 
 									 Help="${Composite.Plugins.LocalizationElementProvider, AddSystemLocaleWorkflow.CultureSelector.Help}">
