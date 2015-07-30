@@ -210,7 +210,13 @@ ui|fielddata {
     .disabled, .readonly {
         input, textarea {
             cursor: default;
-            background-color: #fff;
+            background-color: @field-readonly-bg-color;
+        }
+    }
+
+    .disabled {
+
+        input, textarea {
             -vendor-user-select: none;
             -vendor-user-focus: none;
         }
@@ -253,8 +259,7 @@ ui|editortextbox {
 
     &.disabled, &.readonly {
         ui|box {
-            border-color: #ddd;
-            background-color: #fff;
+            background-color: @field-readonly-bg-color;
         }
     }
 
