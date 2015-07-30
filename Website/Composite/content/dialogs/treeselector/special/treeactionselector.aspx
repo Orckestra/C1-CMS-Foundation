@@ -20,9 +20,10 @@
 			binding="TreeSelectorDialogPageBinding"
 			label="(title supplied as page argument!)"
 			image="${icon:default}" 
-			width="400"
-			height="400"
-			resizable="false">
+			width="500"
+			height="500"
+			resizable="false"
+            class="with-top-toolbar">
 			
 			<ui:toolbar id="toolbar" binding="TreeSelectorToolBarBinding" imagesize="large">
 				<ui:toolbarbody />

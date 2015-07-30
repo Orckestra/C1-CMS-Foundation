@@ -17,8 +17,8 @@
 			binding="TreeSelectorDialogPageBinding"
 			label="(title supplied as page argument!)"
 			image="${icon:default}" 
-			width="400"
-			height="400"
+			width="500"
+			height="500"
 			resizable="false">
 			
 			<ui:pagebody class="pad-0">
