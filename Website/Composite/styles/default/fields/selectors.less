@@ -3,10 +3,10 @@ ui|selector {
     overflow: hidden !important; /* relevant for editor selectors */
 }
 
-ui|selection,
-ui|selector input {
-    display: none;
-}
+    ui|selection,
+    ui|selector input {
+        display: none;
+    }
 
 ui|selector {
 
@@ -94,13 +94,13 @@ ui|simpleselector {
 /* MULTISELECTORS ............................................. */
 
 ui|multiselector {
-    display: block;
 
     ui|box {
+        display: block;
+        height: 100px;
         -vendor-user-select: none;
         padding: 5px 0 5px 0;
         overflow: auto;
-        height: 100px;
 
         div {
             padding: 1px 5px 2px 7px;
@@ -111,22 +111,17 @@ ui|multiselector {
                 color: #FFF;
             }
         }
+
+        input {
+            display: none;
+        }
     }
 
-    input {
-        display: none;
-    }
 
     ui|datadialog, ui|postbackdialog {
         padding: 2px 0 0 0;
     }
 }
-
-
-ui|field.fieldhelp ui|multiselector ui|box {
-    width: 186px;
-}
-
 
 /* DATAINPUTSELECTORS ......................................... */
 ui|datainputselector,

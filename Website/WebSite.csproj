@@ -489,6 +489,7 @@
     <Content Include="Composite\scripts\source\top\core\ImageProvider.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\genericview\GenericViewBinding.js" />
     <Content Include="Composite\styles\default\fields\fields-base.less" />
+    <Content Include="Composite\styles\default\dialogs\dialog-multiselector.less" />
     <None Include="Composite\styles\default\splash.less" />
     <Content Include="Composite\GenerateIconSprite.aspx" />
     <Content Include="Composite\images\editfunction.png" />
@@ -1750,7 +1751,6 @@
     <Content Include="Composite\content\dialogs\imageeditor\scaleimage\scaleimage.aspx" />
     <Content Include="Composite\content\dialogs\imageeditor\scaleimage\ScaleImageDialogPageBinding.js" />
     <Content Include="Composite\content\dialogs\multiselector\multiselectordialog.aspx" />
-    <Content Include="Composite\content\dialogs\multiselector\multiselectordialog.css" />
     <Content Include="Composite\content\dialogs\multiselector\MultiSelectorDialogPageBinding.js" />
     <Content Include="Composite\content\dialogs\options\options.aspx" />
     <Content Include="Composite\content\dialogs\options\OptionsDialogPageBinding.js" />

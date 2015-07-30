@@ -8,7 +8,6 @@
 		<title>Composite.Management.MultiSelectorDialog</title>
 		<control:styleloader runat="server"/>
 		<control:scriptloader type="sub" runat="server"/>
-		<link rel="stylesheet" type="text/css" href="multiselectordialog.css.aspx"/>
 		<script type="text/javascript" src="MultiSelectorDialogPageBinding.js"></script>
 	</head>
 	<body>
@@ -18,10 +17,10 @@
 			<ui:broadcaster id="broadcasterUp" isdisabled="true"/>
 			<ui:broadcaster id="broadcasterDown" isdisabled="true"/>
 		</ui:broadcasterset>
-		<ui:dialogpage width="549" binding="MultiSelectorDialogPageBinding">
+		<ui:dialogpage width="560" binding="MultiSelectorDialogPageBinding" class="dialog-multiselector">
 			<ui:flexbox>
 				<ui:fields>
-					<ui:field class="nodesc">
+					<ui:field class="left">
 						<ui:fielddata>
 							<ui:multiselector 
 								id="leftselector"
@@ -34,7 +33,7 @@
 						<ui:clickbutton label="►" id="rightbutton" observes="broadcasterLeft"/>
 						<ui:clickbutton label="◄" id="leftbutton" observes="broadcasterRight"/>
 					</ui:box>
-					<ui:field class="nodesc">
+					<ui:field class="right">
 						<ui:fielddata>
 							<ui:multiselector 
 								id="rightselector" 

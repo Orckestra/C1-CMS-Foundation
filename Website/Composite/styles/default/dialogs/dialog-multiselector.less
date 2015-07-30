@@ -1,0 +1,46 @@
+﻿.dialog-multiselector {
+
+    ui|fields {
+        padding: 20px 15px 10px 25px;
+        border-top: solid 1px @dialog-border-color;
+    }
+
+    ui|field {
+        border: none;
+        float: left;
+        width: 220px;
+        clear: none;
+        padding: 0 !important;
+
+        &:after {
+            clear: none;
+        }
+    }
+
+    .controls {
+        float: left;
+        margin: 0 5px 0 5px;
+        font-family: "Courier New", monospace;
+
+        ui|clickbutton {
+            float: none;
+            margin: 0 0 3px 0;
+            line-height: 18px;
+
+            ui|labelbox {
+                padding: 3px 10px;
+                width: 29px;
+            }
+        }
+    }
+
+    ui|multiselector {
+        display: block;
+        width: 100%;
+        overflow: hidden;
+
+        ui|box {
+            height: 200px;
+        }
+    }
+}
