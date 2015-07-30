@@ -203,6 +203,11 @@ ButtonBinding.prototype.onBindingDispose = function () {
 		this._stateManager.dispose ();
 		this._stateManager = null;
 	}
+
+    var callbackid = this.getProperty("callbackid");
+    if (callbackid != null) {
+        this.bindingWindow.DataManager.unRegisterDataBinding(callbackid);
+    }
 }
 
 /**
