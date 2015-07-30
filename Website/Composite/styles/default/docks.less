@@ -8,8 +8,8 @@
  * showing the dock overlaying other stuff. 
  */
 ui|dock {
-	display: block;
-	overflow: hidden;
+    display: block;
+    overflow: hidden;
     /*
 	#region ie
 		position: absolute;
@@ -20,110 +20,142 @@ ui|dock {
 	#endregion
         */
 }
+
 ui|docktabs {
-	display: block;
-	position: relative !important;
-	overflow: hidden;
+    display: block;
+    position: relative !important;
+    overflow: hidden;
 }
-ui|docktabs ui|controlgroup.docktabscontrolgroup {
-	position: relative;
-	z-index: 2;
-}
+
+    ui|docktabs ui|controlgroup.docktabscontrolgroup {
+        position: relative;
+        z-index: 2;
+    }
+
 ui|docktab {
-	display: block;
-	float: left;
-	position: relative;
-	white-space: nowrap;
-	bottom: -100px; /* adjusted by script */
+    display: block;
+    float: left;
+    position: relative;
+    white-space: nowrap;
+    bottom: -100px; /* adjusted by script */
 }
-ui|docktab ui|control {
-	position: relative;	
-}
+
+    ui|docktab ui|control {
+        position: relative;
+
+        &.closecontrol {
+            ui|labelbody:after {
+                top: 2px;
+                font-weight: normal;
+                font-size: 12px;
+                line-height: 9px;
+                text-align: center;
+                color: #fff;
+                background: #D5D5D5;
+                width: 11px;
+                height: 11px;
+                border-radius: 50%;
+            }
+
+            &.hover {
+                ui|labelbody:after {
+                    background: #ABABAB;
+                    color: #fff;
+                }
+            }
+        }
+    }
+
 ui|dockpanels {
-	display: block;
-	height: 100%;
-	clear: both;
-	overflow: hidden;
+    display: block;
+    height: 100%;
+    clear: both;
+    overflow: hidden;
 }
-ui|dockpanel {  /* styles comparable to deck - please coordinate all changes! */
-	display: block;
-	height: 100%;
-	clear: both;
-	overflow: hidden;
-	position: absolute;
-	top: -10000px;
+
+ui|dockpanel { /* styles comparable to deck - please coordinate all changes! */
+    display: block;
+    height: 100%;
+    clear: both;
+    overflow: hidden;
+    position: absolute;
+    top: -10000px;
 }
 
 /* CONTROVERSIAL STYLES - MAYBE MOVE TO SKIN? */
 ui|dock.tools ui|docktab.default ui|labelbody,
 ui|dock.tools ui|docktab.hover ui|labelbody {
-	padding-left: 0;
-	filter: none !important;
+    padding-left: 0;
+    filter: none !important;
 }
 
 // from skin
 
 ui|docktabs {
-	box-shadow: inset 0px -1px 0px 0px rgba(204,204,204,1);
-	padding: 10px 10px 0 10px;
-	background: #EFEFEF;
+    box-shadow: inset 0px -1px 0px 0px rgba(204,204,204,1);
+    padding: 10px 10px 0 10px;
+    background: #EFEFEF;
 }
-ui|docktabs ui|toolbarbutton {
-	position: relative;
-}
+
+    ui|docktabs ui|toolbarbutton {
+        position: relative;
+    }
+
 ui|docktab {
-	border-width: 1px;
-	border-style: solid;
-	border-color: #DDDDDD;
-	border-radius: 5px 5px 0 0;
-	background: #ffffff;
-	z-index: 2;
-	margin-right: -4px;
-	text-transform: uppercase;
-
-}
-ui|docktab ui|labelbox {
-	position: relative;
-	top: -1px;
-}
-ui|docktab ui|labeltext {
-	position: relative;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #DDDDDD;
+    border-radius: 5px 5px 0 0;
+    background: #ffffff;
+    z-index: 2;
+    margin-right: -4px;
+    text-transform: uppercase;
 }
 
-ui|docktab ui|labelbox.both ui|labeltext {
-	margin-left: 14px;
-}
+    ui|docktab ui|labelbox {
+        position: relative;
+        top: -1px;
+    }
+
+    ui|docktab ui|labeltext {
+        position: relative;
+    }
+
+    ui|docktab ui|labelbox.both ui|labeltext {
+        margin-left: 14px;
+    }
 
 
-ui|docktab ui|control ui|labelbox {
-	top: 1px;
-}
+    ui|docktab ui|control ui|labelbox {
+        top: 1px;
+    }
 
-ui|docktab.selected {
-	z-index: 3;
-	border-color: #CCCCCC #CCCCCC transparent #CCCCCC;
-}
+    ui|docktab.selected {
+        z-index: 3;
+        border-color: #CCCCCC #CCCCCC transparent #CCCCCC;
+    }
 
 ui|dockpanels {
-
 }
-ui|dockpanel {
 
+ui|dockpanel {
 }
 
 
 /* START DOCK ............................ */
 
 ui|dock.start ui|docktab {
-	display: none;	
+    display: none;
 }
+
 ui|dock.start ui|docktabs ui|controlgroup {
-	display: none;
+    display: none;
 }
+
 ui|dock.start ui|docktabs {
-	height: 2px;
-	-vendor-border-radius-topleft: 3x;
-	-vendor-border-radius-topright: 3px;
+    height: 2px;
+    -vendor-border-radius-topleft: 3x;
+    -vendor-border-radius-topright: 3px;
 }
 
 
@@ -131,108 +163,112 @@ ui|dock.start ui|docktabs {
 
 
 ui|dock.explorer ui|docktab {
-	float: none;
-	padding-right: 1px;
+    float: none;
+    padding-right: 1px;
 }
-ui|dock.explorer ui|docktab table.matrix {
-	width: 100%;
-}
+
+    ui|dock.explorer ui|docktab table.matrix {
+        width: 100%;
+    }
+
 ui|dock.explorer ui|docktabs {
-	padding-left: 0;
+    padding-left: 0;
 }
+
 ui|dock.explorer ui|docktab ui|controlgroup {
-	display: none;
+    display: none;
 }
+
 ui|splitpanel.explorer ui|dock.active ui|docktab.selected ui|labeltext {
-	font-weight: bold;
+    font-weight: bold;
 }
+
 ui|splitpanel.explorer div.dockliner {
-	display: none;
+    display: none;
 }
 
 /* TOOLS DOCK ............................ */
 
 ui|dock.tools ui|docktab.selected {
-	margin-right: 4px;
+    margin-right: 4px;
 }
+
 ui|dock.tools ui|dockpanels {
-	width: auto !important;
+    width: auto !important;
 }
 
 /* EDITORS DOCK .......................... */
 
 ui|splitpanel.editors {
-	box-shadow: inset 0px 5px 0px 0px rgba(51,51,51,1);
+    box-shadow: inset 0px 5px 0px 0px rgba(51,51,51,1);
 }
 
-ui|splitpanel.editors ui|dock {
-	border-radius: 5px 0 0 0;
-	box-shadow: inset 0px 0px 0px 1px rgba(204,204,204,1);
-	background: #fff;
-}
+    ui|splitpanel.editors ui|dock {
+        border-radius: 5px 0 0 0;
+        box-shadow: inset 0px 0px 0px 1px rgba(204,204,204,1);
+        background: #fff;
+    }
 
-ui|splitpanel.editors ui|docktab {
-	padding: 10px 10px 10px 10px;
-	width: 189px;
-}
-ui|splitpanel.editors ui|docktab.selected {
+    ui|splitpanel.editors ui|docktab {
+        padding: 10px 10px 10px 10px;
+        width: 189px;
+    }
 
-
-}
-
-
-ui|splitpanel.editors ui|docktab ui|labelbody{
-	padding-left: 24px;
-	color: #ADADAD;
-}
-
-ui|splitpanel.editors ui|docktab ui|labeltext {
-	width: 110px;
-	overflow: hidden;
-}
+        ui|splitpanel.editors ui|docktab.selected {
+        }
 
 
-ui|splitpanel.editors ui|docktab.selected ui|labelbox {
+        ui|splitpanel.editors ui|docktab ui|labelbody {
+            padding-left: 24px;
+            color: #ADADAD;
+        }
 
-}
-ui|splitpanel.editors ui|dock.active ui|docktab.selected ui|labelbody {
-	color: #22B980;
-}
-ui|splitpanel.editors ui|docktab.default,
-ui|splitpanel.editors ui|docktab.hover {
+        ui|splitpanel.editors ui|docktab ui|labeltext {
+            width: 110px;
+            overflow: hidden;
+        }
 
-}
-ui|splitpanel.editors ui|dockpanels {
-	width: auto !important;
-}
-ui|splitpanel.editors ui|docktab {
 
-}
-ui|splitpanel.editors ui|docktab.selected {
+        ui|splitpanel.editors ui|docktab.selected ui|labelbox {
+        }
 
-}
-ui|splitpanel.editors ui|docktab.default ui|controlgroup {
-	display: none;
-}
+    ui|splitpanel.editors ui|dock.active ui|docktab.selected ui|labelbody {
+        color: #22B980;
+    }
 
-ui|splitpanel.editors ui|toolbar {
-	box-shadow: inset  0px -1px 0px 0px rgba(204,204,204,1);
-}
+    ui|splitpanel.editors ui|docktab.default,
+    ui|splitpanel.editors ui|docktab.hover {
+    }
+
+    ui|splitpanel.editors ui|dockpanels {
+        width: auto !important;
+    }
+
+    ui|splitpanel.editors ui|docktab {
+    }
+
+        ui|splitpanel.editors ui|docktab.selected {
+        }
+
+        ui|splitpanel.editors ui|docktab.default ui|controlgroup {
+            display: none;
+        }
+
+    ui|splitpanel.editors ui|toolbar {
+        box-shadow: inset 0px -1px 0px 0px rgba(204,204,204,1);
+    }
 
 
 /* ACTIVE DOCK */
 
 ui|dock.active ui|docktabs {
-	
 }
 
 ui|dock.active ui|docktab.selected ui|labeltext {
-	
 }
+
 ui|dock.active ui|dockpanels {
-	
 }
 
 ui|dock.active ui|dockpanel {
-	
 }
