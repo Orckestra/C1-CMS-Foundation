@@ -129,19 +129,19 @@ namespace Composite.Core.Localization
         {            
             using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope())
             {
-                if (IsLocaleInstalled(cultureInfo)) throw new InvalidOperationException(string.Format("The locale '{0}' has already been added to the system", cultureInfo));
-                if (IsUrlMappingNameInUse(urlMappingName)) throw new InvalidOperationException(string.Format("The url mapping name '{0}' has already been used in the system", urlMappingName));
+                Verify.That(!IsLocaleInstalled(cultureInfo), "The locale '{0}' has already been added to the system", cultureInfo);
+                Verify.That(!IsUrlMappingNameInUse(urlMappingName), "The url mapping name '{0}' has already been used in the system", urlMappingName);
 
                 if (!DataLocalizationFacade.ActiveLocalizationCultures.Any())
                 {
                     addAccessToAllUsers = true;
                 }
 
-                ISystemActiveLocale systemActiveLocale = DataFacade.BuildNew<ISystemActiveLocale>();
+                var systemActiveLocale = DataFacade.BuildNew<ISystemActiveLocale>();
                 systemActiveLocale.Id = Guid.NewGuid();
                 systemActiveLocale.CultureName = cultureInfo.Name;
                 systemActiveLocale.UrlMappingName = urlMappingName;
-                DataFacade.AddNew<ISystemActiveLocale>(systemActiveLocale);
+                DataFacade.AddNew(systemActiveLocale);
 
                 if (addAccessToAllUsers)
                 {
@@ -153,10 +153,10 @@ namespace Composite.Core.Localization
                     {
                         UserSettings.AddActiveLocaleCultureInfo(username, cultureInfo);
 
-                        if (UserSettings.ActiveLocaleCultureInfo == null)
+                        if (UserSettings.GetCurrentActiveLocaleCultureInfo(username) == null)
                         {
-                            UserSettings.ActiveLocaleCultureInfo = cultureInfo;
-                            UserSettings.ForeignLocaleCultureInfo = cultureInfo;
+                            UserSettings.SetCurrentActiveLocaleCultureInfo(username, cultureInfo);
+                            UserSettings.SetForeignLocaleCultureInfo(username, cultureInfo);
                         }
                     }
                 }
@@ -298,10 +298,10 @@ namespace Composite.Core.Localization
         /// <param name="makeFlush"></param>
         public static void RemoveLocale(CultureInfo cultureInfo, bool makeFlush = true)
         {
-            if (IsDefaultLocale(cultureInfo)) throw new InvalidOperationException(string.Format("The locale '{0}' is the default locale and can not be removed", cultureInfo));
-            if (IsOnlyActiveLocaleForSomeUsers(cultureInfo)) throw new InvalidOperationException(string.Format("The locale '{0}' is the only locale for some user(s) and can not be removed", cultureInfo));
+            Verify.That(!IsDefaultLocale(cultureInfo), "The locale '{0}' is the default locale and can not be removed", cultureInfo);
+            Verify.That(!IsOnlyActiveLocaleForSomeUsers(cultureInfo), "The locale '{0}' is the only locale for some user(s) and can not be removed", cultureInfo);
 
-            using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope())
+            using (var transactionScope = TransactionsFacade.CreateNewScope())
             {
                 string cultureName = cultureInfo.Name;
 

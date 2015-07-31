@@ -10,14 +10,13 @@ using Composite.Data.Types;
 using Composite.Core.Configuration;
 using Composite.C1Console.Security;
 using Composite.C1Console.Security.Foundation.PluginFacades;
-using Composite.Data.Foundation;
 
 
 namespace Composite.C1Console.Users
 {
     internal class UserSettingsImpl : IUserSettingsFacade
     {
-        private static object _lock = new object();
+        private static readonly object _lock = new object();
 
         private static readonly Cache<string, IUserSettings> _userSettingsCache = new Cache<string, IUserSettings>("User settings", 100);
 
@@ -195,16 +194,15 @@ namespace Composite.C1Console.Users
                        ual.CultureName == cultureInfo.Name
                  select ual).Any();
 
-            if (exists == false)
-            {
-                GetSettings(username, true); // Ensure that we have usersettings 
+            if (exists) return;
 
-                IUserActiveLocale userActiveLocale = DataFacade.BuildNew<IUserActiveLocale>();
-                userActiveLocale.Id = Guid.NewGuid();
-                userActiveLocale.Username = username;
-                userActiveLocale.CultureName = cultureInfo.Name;
-                DataFacade.AddNew<IUserActiveLocale>(userActiveLocale);
-            }
+            GetSettings(username, true); // Ensure that we have usersettings 
+
+            var userActiveLocale = DataFacade.BuildNew<IUserActiveLocale>();
+            userActiveLocale.Id = Guid.NewGuid();
+            userActiveLocale.Username = username;
+            userActiveLocale.CultureName = cultureInfo.Name;
+            DataFacade.AddNew<IUserActiveLocale>(userActiveLocale);
         }
 
 
@@ -219,7 +217,7 @@ namespace Composite.C1Console.Users
 
             if (id != Guid.Empty)
             {
-                IUserSettings userSettings = DataFacade.GetData<IUserSettings>().Where(f => f.Username == username).SingleOrDefault();
+                IUserSettings userSettings = DataFacade.GetData<IUserSettings>().SingleOrDefault(f => f.Username == username);
                 if (userSettings != null)
                 {
                     if (userSettings.CurrentActiveLocaleCultureName == cultureInfo.Name)
@@ -252,16 +250,9 @@ namespace Composite.C1Console.Users
 
         public string LastSpecifiedNamespace
         {
-            get
+            get 
             {
-                if (UserProfileDataAvailable)
-                {
-                    return GetDeveloperSettings().LastSpecifiedNamespace;
-                }
-                else
-                {
-                    return "";
-                }
+                return UserProfileDataAvailable ? GetDeveloperSettings().LastSpecifiedNamespace : "";
             }
             set
             {
@@ -349,7 +340,7 @@ namespace Composite.C1Console.Users
 
         private IUserSettings CreateUserSettings(string username)
         {
-            IUserSettings settings = DataFacade.BuildNew<IUserSettings>();
+            var settings = DataFacade.BuildNew<IUserSettings>();
 
             settings.Username = username;
             settings.CultureName = GlobalSettingsFacade.DefaultCultureName;
@@ -362,7 +353,7 @@ namespace Composite.C1Console.Users
 
         private IUserDeveloperSettings CreateUserDeveloperSettings()
         {
-            IUserDeveloperSettings settings = DataFacade.BuildNew<IUserDeveloperSettings>();
+            var settings = DataFacade.BuildNew<IUserDeveloperSettings>();
 
             settings.Username = Username;
             settings.LastSpecifiedNamespace = "";

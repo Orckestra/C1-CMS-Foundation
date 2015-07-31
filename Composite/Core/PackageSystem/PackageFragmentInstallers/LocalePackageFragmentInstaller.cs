@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Xml.Linq;
-using Composite.Core.Extensions;
 using Composite.Core.Localization;
 using Composite.Core.Xml;
 using Composite.Data;
 
+using Texts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_Core_PackageSystem_PackageFragmentInstallers;
 
 namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 {
@@ -18,7 +18,9 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class LocalePackageFragmentInstaller : BasePackageFragmentInstaller
     {
-        List<Tuple<CultureInfo, string, bool>> _localesToInstall = null;
+        private static readonly string LogTitle = typeof (LocalePackageFragmentInstaller).Name;
+
+        List<Tuple<CultureInfo, string, bool>> _localesToInstall;
 
 
         /// <exclude />
@@ -28,7 +30,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
             if (this.Configuration.Count(f => f.Name == "Locales") > 1)
             {
-                validationResult.AddFatal(GetText("VirtualElementProviderNodePackageFragmentInstaller.OnlyOneElement"));
+                validationResult.AddFatal(Texts.PackageFragmentInstaller_OnlyOneElementAllowed("Locales"));
                 return validationResult;
             }
 
@@ -47,7 +49,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     if (nameAttribute == null)
                     {
                         // Missing attribute
-                        validationResult.AddFatal(GetText("FilePackageFragmentInstaller.MissingAttribute").FormatWith("order"), localeElement);
+                        validationResult.AddFatal(Texts.PackageFragmentInstaller_MissingAttribute("name"), localeElement);
                         continue;
                     }
 
@@ -59,7 +61,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     catch
                     {
                         // Name error
-                        validationResult.AddFatal(GetText("FilePackageFragmentInstaller.MissingAttribute").FormatWith("order"), nameAttribute);
+                        validationResult.AddFatal(Texts.PackageFragmentInstaller_MissingAttribute("name"), nameAttribute);
                         continue;
                     }
 
@@ -71,7 +73,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     if (_localesToInstall.Any(f => f.Item1.Equals(cultureInfo)))
                     {
                         // Already installed or going to be installed
-                        validationResult.AddFatal(GetText("FilePackageFragmentInstaller.MissingAttribute").FormatWith("order"), nameAttribute);
+                        validationResult.AddFatal(Texts.PackageFragmentInstaller_MissingAttribute("name"), nameAttribute);
                         continue;
                     }
 
@@ -83,8 +85,8 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
                     if (LocalizationFacade.IsUrlMappingNameInUse(urlMappingName) || _localesToInstall.Any(f => f.Item2 == urlMappingName))
                     {
-                        // Url mapping name alread used or going to be used
-                        validationResult.AddFatal(GetText("FilePackageFragmentInstaller.MissingAttribute").FormatWith("order"), urlMappingNameAttribute);
+                        // Url mapping name already used or going to be used
+                        validationResult.AddFatal(Texts.PackageFragmentInstaller_MissingAttribute("urlMappingName"), urlMappingNameAttribute);
                         continue;
                     }
 
@@ -94,7 +96,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                         if (!defaultAttribute.TryGetBoolValue(out isDefault))
                         {
                             // Wrong attribute value
-                            validationResult.AddFatal(GetText("FilePackageFragmentInstaller.MissingAttribute").FormatWith("order"), defaultAttribute);
+                            validationResult.AddFatal(Texts.PackageFragmentInstaller_MissingAttribute("default"), defaultAttribute);
                             continue;
                         }
                     }
@@ -102,7 +104,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     if (isDefault && _localesToInstall.Any(f => f.Item3))
                     {
                         // More than one is specified as default
-                        validationResult.AddFatal(GetText("FilePackageFragmentInstaller.MissingAttribute").FormatWith("order"), defaultAttribute);
+                        validationResult.AddFatal(Texts.PackageFragmentInstaller_MissingAttribute("default"), defaultAttribute);
                         continue;
                     }
 
@@ -126,25 +128,25 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         /// <exclude />
         public override IEnumerable<XElement> Install()
         {
-            if (_localesToInstall == null) throw new InvalidOperationException("LocalePackageFragmentInstaller has not been validated");
+            Verify.IsNotNull(_localesToInstall, typeof(LocalePackageFragmentInstaller).Name + " has not been validated");
 
             XAttribute oldDefaultAttribute = null;
             if (DataLocalizationFacade.DefaultLocalizationCulture != null)
             {
                 oldDefaultAttribute = new XAttribute("oldDefault", DataLocalizationFacade.DefaultLocalizationCulture.Name);
             }
-
+            
             var localeElements = new List<XElement>();
 
             foreach (Tuple<CultureInfo, string, bool> tuple in _localesToInstall)
             {
-                Log.LogVerbose("LocalePackageFragmentInstaller", string.Format("Adding the locale '{0}'", tuple.Item1));
+                Log.LogVerbose(LogTitle, "Adding the locale '{0}'", tuple.Item1);
 
                 LocalizationFacade.AddLocale(tuple.Item1, tuple.Item2, true, false);
 
                 if (tuple.Item3)
                 {
-                    Log.LogVerbose("LocalePackageFragmentInstaller", string.Format("Setting new default locale to '{0}'", tuple.Item1));
+                    Log.LogVerbose(LogTitle, "Setting new default locale to '{0}'", tuple.Item1);
 
                     LocalizationFacade.SetDefaultLocale(tuple.Item1);
                 }
@@ -160,11 +162,6 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
             }
             
             yield return element;
-        }
-
-        private static string GetText(string stringId)
-        {
-            return GetResourceString(stringId);
         }
     }
 }
