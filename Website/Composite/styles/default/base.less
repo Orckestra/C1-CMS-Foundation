@@ -16,6 +16,14 @@ th {
     color: @text-color;
 }
 
+a {
+    color: @primary-color;
+    text-decoration: none;
+    &:hover {
+        color: darken(@primary-color, 10%);
+    }
+}
+
 img.designmodesanitizer {
     display: block;
     position: absolute;

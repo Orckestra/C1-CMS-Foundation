@@ -9,7 +9,7 @@
 		<control:styleloader runat="server" />
 		<control:scriptloader type="sub" runat="server" />
 		<script type="text/javascript" src="CharMapDialogPageBinding.js"></script>
-		<link rel="stylesheet" type="text/css" href="charmap.css.aspx"/>
+		<link rel="stylesheet" type="text/css" href="charmap.css"/>
 	</head>
 	<body>
 		<ui:dialogpage 
@@ -28,14 +28,14 @@
 					<ui:tabpanels>
 						<ui:tabpanel>
 							<ui:fields>
-								<ui:fieldgroup label="${string:Composite.Web.VisualEditor:CharMap.LabelCommon}">
+								<ui:fieldgroup label="${string:Composite.Web.VisualEditor:CharMap.LabelCommon}" class="boxed">
 									<ui:field>
 										<a code="160" entity="nbsp" text="no-break space" href="javascript:void(false);" />
 										<a code="38" entity="amp" text="ampersand" href="javascript:void(false);">&amp;</a>
 										<a code="34" entity="quot" text="quotation mark" href="javascript:void(false);">"</a>
 									</ui:field>
 								</ui:fieldgroup>
-								<ui:fieldgroup label="${string:Composite.Web.VisualEditor:CharMap.LabelQuotation}">
+								<ui:fieldgroup label="${string:Composite.Web.VisualEditor:CharMap.LabelQuotation}" class="boxed">
 									<ui:field>
 										<a code="8249" entity="lsaquo" text="Single left-pointing angle quotation" href="javascript:void(false);">‹</a>
 										<a code="8250" entity="rsaquo" text="Single right-pointing angle quotation" href="javascript:void(false);">›</a>
@@ -63,7 +63,7 @@
 										<a code="176" entity="deg" text="Degree sign" href="javascript:void(false);">°</a>
 									</ui:field>
 								</ui:fieldgroup>
-								<ui:fieldgroup label="${string:Composite.Web.VisualEditor:CharMap.LabelCurrency}">
+								<ui:fieldgroup label="${string:Composite.Web.VisualEditor:CharMap.LabelCurrency}" class="boxed">
 									<ui:field>
 										<a code="164" entity="curren" text="Currency sign" href="javascript:void(false);">¤</a>
 										<a code="8364" entity="euro" text="Euro" href="javascript:void(false);">€</a>
@@ -77,7 +77,7 @@
 						</ui:tabpanel>
 						<ui:tabpanel>
 							<ui:fields>
-								<ui:fieldgroup label="${string:Composite.Web.VisualEditor:CharMap.LabelLatin}">
+								<ui:fieldgroup label="${string:Composite.Web.VisualEditor:CharMap.LabelLatin}" class="boxed">
 									<ui:field>
 										<a code="192" entity="Agrave" text="A - grave" href="javascript:void(false);">À</a>
 										<a code="193" entity="Aacute" text="A - acute" href="javascript:void(false);">Á</a>
@@ -147,7 +147,7 @@
 										<a code="255" entity="yuml" text="y - diaeresis" href="javascript:void(false);">ÿ</a>
 									</ui:field>
 								</ui:fieldgroup>
-								<ui:fieldgroup label="${string:Composite.Web.VisualEditor:CharMap.LabelGreek}">
+								<ui:fieldgroup label="${string:Composite.Web.VisualEditor:CharMap.LabelGreek}" class="boxed">
 									<ui:field>
 										<a code="913" entity="Alpha" text="Alpha" href="javascript:void(false);">Α</a>
 										<a code="914" entity="Beta" text="Beta" href="javascript:void(false);">Β</a>
@@ -204,7 +204,7 @@
 						</ui:tabpanel>
 						<ui:tabpanel>
 							<ui:fields>
-								<ui:fieldgroup label="${string:Composite.Web.VisualEditor:CharMap.LabelMathAndLogic}">
+								<ui:fieldgroup label="${string:Composite.Web.VisualEditor:CharMap.LabelMathAndLogic}" class="boxed">
 									<ui:field>
 										<a code="8722" entity="minus" text="Minus sign" href="javascript:void(false);">−</a>
 										<a code="177" entity="plusmn" text="Plus-minus sign" href="javascript:void(false);">±</a>
@@ -246,7 +246,7 @@
 										<a code="8736" entity="ang" text="Angle" href="javascript:void(false);">∠</a>
 									</ui:field>
 								</ui:fieldgroup>
-								<ui:fieldgroup label="${string:Composite.Web.VisualEditor:CharMap.LabelSymbols}">
+								<ui:fieldgroup label="${string:Composite.Web.VisualEditor:CharMap.LabelSymbols}" class="boxed">
 									<ui:field>
 										<a code="169" entity="copy" text="Copyright" href="javascript:void(false);">©</a>
 										<a code="174" entity="reg" text="Registered" href="javascript:void(false);">®</a>
@@ -263,7 +263,7 @@
 										<a code="223" entity="szlig" text="Sharp S / Ess-Zed" href="javascript:void(false);">ß</a>
 									</ui:field>
 								</ui:fieldgroup>
-								<ui:fieldgroup label="${string:Composite.Web.VisualEditor:CharMap.LabelArrows}">
+								<ui:fieldgroup label="${string:Composite.Web.VisualEditor:CharMap.LabelArrows}" class="boxed">
 									<ui:field>
 										<a code="8592" entity="larr" text="leftwards arrow" href="javascript:void(false);">←</a>
 										<a code="8593" entity="uarr" text="upwards arrow" href="javascript:void(false);">↑</a>

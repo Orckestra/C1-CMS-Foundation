@@ -13,14 +13,10 @@ ui|fields {
 }
 
 ui|fieldgroup {
-    width: 430px;
-    display: inline-block;
-    overflow: visible;
-    padding: 0px 0px 35px 0px;
-    position: relative;
-    -webkit-column-break-inside: avoid; /* Chrome, Safari, Opera */
-    page-break-inside: avoid; /* Firefox */
-    break-inside: avoid; /* IE 10+ */
+    width: 100%;
+    display: block;
+    padding: 0px 0px 30px 0px;
+
     .fieldgrouplabel {
         color: @heading-h1-color;
         text-transform: uppercase;
@@ -55,30 +51,7 @@ ui|field {
     display: block;
     margin: 0;
     clear: both;
-    border-width: 0 1px;
-    border-style: solid;
-    border-color: @fields-group-border-color;
-    background: @fields-group-bg-color;
-    padding: 0 17px;
-
-    &:first-of-type {
-        padding-top: 8px;
-        border-top-width: 1px;
-        border-top-left-radius: @base-border-radius;
-        border-top-right-radius: @base-border-radius;
-    }
-
-    &:last-of-type {
-        padding-bottom: 27px;
-        border-bottom-width: 1px;
-        border-bottom-left-radius: @base-border-radius;
-        border-bottom-right-radius: @base-border-radius;
-    }
-
-    &.no-bg {
-        background: none;
-        border: 0;
-    }
+    padding: 0;
 
     &.fieldhelp {
         ui|fielddata {
@@ -97,6 +70,40 @@ ui|field {
     &.nodesc ui|fielddata {
         width: auto;
         float: none;
+    }
+}
+
+ui|editorpage ui|fieldgroup {
+    width: 430px;
+    display: inline-block;
+    overflow: visible;
+    position: relative;
+    -webkit-column-break-inside: avoid; /* Chrome, Safari, Opera */
+    page-break-inside: avoid; /* Firefox */
+    break-inside: avoid; /* IE 10+ */
+}
+
+ui|fieldgroup.boxed, ui|editorpage ui|fieldgroup {
+
+    ui|field {
+        border: solid 1px @fields-group-border-color;
+        border-width: 0 1px;
+        background: @fields-group-bg-color;
+        padding: 0 17px;
+
+        &:first-of-type {
+            padding-top: 8px;
+            border-top-width: 1px;
+            border-top-left-radius: @base-border-radius;
+            border-top-right-radius: @base-border-radius;
+        }
+
+        &:last-of-type {
+            padding-bottom: 25px;
+            border-bottom-width: 1px;
+            border-bottom-left-radius: @base-border-radius;
+            border-bottom-right-radius: @base-border-radius;
+        }
     }
 }
 
@@ -322,10 +329,4 @@ ui|fields ui|urlinputdialog ui|clickbutton ui|labeltext,
 ui|fields ui|selector ui|clickbutton ui|labeltext {
     overflow: hidden;
     text-overflow: ellipsis;
-}
-
-//
-ui|tabbox.boxed ui|labelbox.fieldgrouplabel {
-    left: -1px;
-    right: -1px;
 }

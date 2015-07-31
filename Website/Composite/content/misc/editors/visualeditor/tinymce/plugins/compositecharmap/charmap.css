@@ -1,6 +1,10 @@
 @namespace url("http://www.w3.org/1999/xhtml");
 @namespace ui url("http://www.w3.org/1999/xhtml");
 
+ui|fieldgroup {
+    padding-bottom: 20px;
+}
+
 ui|field a {
 	display: block;
 	float: left;
@@ -11,15 +15,13 @@ ui|field a {
 	overflow: hidden;
 	font-family: Arial, sans-serif;
 	font-size: 16px;
-	#moz cursor: pointer;
-	#ie cursor: hand;
 }
 ui|field a:hover {
-	background-color: $(color:highlight);
-	color: $(color:highlighttext);
+	background-color: #22B980;
+	color: #fff;
 }
 div#selection {
-	padding-top: 12px;
+	padding-top: 0;
 	padding-bottom: 18px;
 	font-weight: bold;
 }
