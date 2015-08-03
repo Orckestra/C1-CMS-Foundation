@@ -6,7 +6,6 @@ using System.IO;
 using System.Linq;
 using Composite.Core;
 using Composite.Core.Configuration;
-using Composite.Core.Extensions;
 using Composite.Core.Instrumentation;
 using Composite.Core.IO;
 using Composite.Core.Types;
@@ -397,6 +396,8 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                 }
 
                 var connStringConfigNode = System.Web.Configuration.WebConfigurationManager.ConnectionStrings[connectionStringName];
+                Verify.IsNotNull(connStringConfigNode, "Failed to find an SQL connection string by name '{0}'", connectionStringName);
+
                 connectionString = connStringConfigNode.ConnectionString;
             }
 
@@ -551,7 +552,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
         {
             get
             {
-                Dictionary<string, Type> dic = new Dictionary<string, Type>();
+                var dic = new Dictionary<string, Type>();
 
                 foreach (SimpleNameTypeConfigurationElement element in ConfigurationDataIdProperties)
                 {
@@ -568,7 +569,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
         {
             get
             {
-                Dictionary<string, string> dic = new Dictionary<string, string>();
+                var dic = new Dictionary<string, string>();
 
                 foreach (PropertyNameMappingConfigurationElement element in ConfigurationPropertyNameMappings)
                 {
@@ -585,7 +586,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
         {
             get
             {
-                Dictionary<string, Type> dic = new Dictionary<string, Type>();
+                var dic = new Dictionary<string, Type>();
 
                 if (ConfigurationPropertyInitializers != null)
                 {
