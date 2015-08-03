@@ -2133,7 +2133,6 @@
     <Content Include="App_Data\Composite\app_offline.htm" />
     <Content Include="App_Data\Composite\ReleaseBuild.Composite.config.changeHistory.txt" />
     <Content Include="Composite\app.aspx" />
-    <Content Include="Composite\app.css" />
     <Content Include="Composite\blank.aspx" />
     <Content Include="Composite\compile.aspx" />
     <Content Include="Composite\content\forms\Administrative\ReportFunctionAction.xml" />

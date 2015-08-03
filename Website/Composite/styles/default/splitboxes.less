@@ -1,90 +1,121 @@
-/*
- * Note that splitboxes and splitpanels have additional styles  
- * for IE on the MAIN STAGE! See "app.css" and "stagedeck.css".
- */
+ui|splitbox, ui|splitpanel {
+    display: block;
+    position: relative;
+    overflow: hidden;
+
+    &.maximized {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+}
+
 ui|splitbox {
-	height: 100%;
-	display: block;
-	position: relative;
-	overflow: hidden;
+    height: 100%;
+
+    &.line {
+        ui|splitter.horizontal ui|splitterbody:after {
+            content: '';
+            position: absolute;
+            border-left: 1px solid @base-border-color;
+            height: 100%;
+            width: 0px;
+            top: 0px;
+            left: 4px;
+        }
+    }
 }
-ui|splitbox.maximized,
-ui|splitpanel.maximized { /* used for stage stuff */
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-}
+
 ui|splitpanel {
-	display: block;
-	position: relative;
-	overflow: hidden;
+    &.horizontal {
+        float: left;
+    }
+
+    &.maximized {
+        float: none !important;
+    }
 }
-ui|splitpanel.horizontal {
-	float: left;
-}
-ui|splitpanel.maximized {
-	float: none !important;	
-}
+
 ui|splitter {
-	display: block;
-	z-index: 2;
-	position: relative;
-	background: transparent;
-	font-size: 1px;
+    display: block;
+    z-index: 2;
+    position: relative;
+    background: transparent;
+    font-size: 1px;
+
+    &.active {
+        z-index: 23; /* float to top while dragging */
+    }
+
+    &.horizontal {
+        height: 100%;
+        width: 4px;
+        float: left;
+        border: 0px;
+        margin: 0 -4px;
+
+        ui|splitterbody {
+            width: 4px;
+            height: 100%;
+            margin-left: -1px;
+            cursor: e-resize;
+
+            &.hover, &.active {
+                -vendor-box-shadow: 2px 0 3px rgba(0,0,0,0.35);
+            }
+        }
+    }
+
+    &.vertical {
+        height: 4px;
+        width: 100%;
+        border-bottom: 1px solid @base-border-color;
+        border-top: 1px solid @base-border-color;
+
+        ui|splitterbody {
+            height: 4px;
+            width: 100%;
+            cursor: n-resize;
+            margin-top: -1px;
+
+            &.hover, &.active {
+                vendor-box-shadow: 0 2px 3px rgba(0,0,0,0.35);
+            }
+        }
+    }
 }
-ui|splitter.active {
-	z-index: 23; /* float to top while dragging */
-}
-ui|splitter.horizontal {
-	height: 100%;
-	width: 8px;
-	float: left;
-	border: 0px;
-	margin: 0 -4px;
-}
-ui|splitter.vertical {
-	height: 8px;
-	width: 100%;
-	border-bottom: 1px solid #000;
-	border-top: 1px solid #000;
-}
+
 ui|splitterbody {
-	display: block;
-	position: absolute;	
-	background: transparent;
-}
-ui|splitter.horizontal ui|splitterbody {
-	width: 8px;
-	height: 100%;
-	margin-left: -1px;
-	cursor: e-resize;
-}
-ui|splitter.horizontal ui|splitterbody.hover,
-ui|splitter.horizontal ui|splitterbody.active {
-	-vendor-box-shadow: 2px 0 3px rgba(0,0,0,0.35);
-}
-ui|splitter.vertical ui|splitterbody {
-	height: 8px;
-	width: 100%;
-	cursor: n-resize;
-	margin-top: -1px;
-	border-top: 1px solid #000;
-	border-bottom: 1px solid #000;
-}
-ui|splitter.vertical ui|splitterbody.hover,
-ui|splitter.vertical ui|splitterbody.active {
-	-vendor-box-shadow: 0 2px 3px rgba(0,0,0,0.35);
+    display: block;
+    position: absolute;
+    background: transparent;
 }
 
+ui|stagesplitterbody {
+    background-color: #fff;
+    width: 10px;
+    height: 10px;
+    overflow: hidden;
+    position: absolute;
+    display: none;
+    z-index: 4; /* above views (firefox3 alpha needs them +2 above) */
+    &.horizontal {
+        border-left: 1px solid @base-border-color;
+        border-right: 1px solid @base-border-color;
+        box-shadow: 2px 0 3px rgba(0,0,0,0.35);
+        cursor: e-resize;
+    }
 
-ui|splitbox.line ui|splitter.horizontal ui|splitterbody:after{
-	content: '';
-	position: absolute;
-	border-left: 1px solid #CCCCCC;
-	height: 100%;
-	width: 0px;
-	top: 0px;
-	left: 4px;
+    &.vertical {
+        border-top: 1px solid @base-border-color;
+        border-bottom: 1px solid @base-border-color;
+        -moz-box-shadow: 0 2px 3px rgba(0,0,0,0.35);
+        cursor: n-resize;
+    }
+}
+
+.stagesplittercover {
+    z-index: 5; /* above stagesplitterbody */
 }

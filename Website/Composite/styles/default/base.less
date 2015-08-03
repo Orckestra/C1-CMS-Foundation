@@ -19,6 +19,7 @@ th {
 a {
     color: @primary-color;
     text-decoration: none;
+
     &:hover {
         color: darken(@primary-color, 10%);
     }
@@ -53,7 +54,7 @@ ui|box {
     display: block;
 }
 
-ui|cover  {
+ui|cover {
     display: block;
     position: absolute;
     overflow: hidden;
@@ -63,9 +64,10 @@ ui|cover  {
     width: 100%;
     height: 100%;
     background-color: #fff;
+
     &.transparent {
         background-color: transparent;
-   }
+    }
 }
 
 .maxboxelement,
@@ -76,22 +78,22 @@ ui|cover  {
 }
 
 ui|stagecontainer {
-	display: block;
-	overflow: hidden;
-	padding-right: @explorer-width;
-	margin-right: -@explorer-width;
-	float: left;
+    display: block;
+    overflow: hidden;
+    padding-right: @explorer-width;
+    margin-right: -@explorer-width;
+    float: left;
 }
 
 ui|flexbox#stageflexbox {
-	padding: 0;
+    padding: 0;
 }
 
 ui|stage {
-	display: block;
-	height: 100%;
-	overflow: hidden;
-	position: relative;
+    display: block;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
 }
 
 
@@ -112,6 +114,14 @@ ui|window {
     position: relative; /* to contain a possible cover */
     overflow: auto; /*?*/
     -webkit-overflow-scrolling: touch;
+
+    &#downloadwindow {
+        position: absolute;
+        width: 100px;
+        height: 100px;
+        top: -100px;
+        left: -100px;
+    }
 }
 
 iframe {
@@ -143,8 +153,5 @@ ui|status {
 }
 
 page[isdisabled="true"] {
-	opacity: 0.95;
+    opacity: 0.95;
 }
-
-
-

@@ -13,7 +13,6 @@
 
 	<control:scriptloader type="sub" runat="server" />
 	<control:styleloader runat="server" />
-	<link rel="stylesheet" type="text/css" href="app.css.aspx" />
 
 	<ui:bindingmappingset>
 		<ui:bindingmapping element="ui:splitbox" binding="StageSplitBoxBinding" />
