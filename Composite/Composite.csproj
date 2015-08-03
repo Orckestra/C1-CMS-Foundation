@@ -277,6 +277,7 @@
     <Compile Include="Plugins\Elements\ElementProviders\VirtualElementProvider\AttachProviderVirtualElement.cs" />
     <Compile Include="Plugins\Elements\ElementProviders\VirtualElementProvider\SimpleVirtualElement.cs" />
     <Compile Include="Plugins\Elements\ElementProviders\VirtualElementProvider\VirtualElementConfigurationElement.cs" />
+    <Compile Include="Plugins\Elements\UrlToEntityToken\MediaBrowserUrlToEntityTokenMapper.cs" />
     <Compile Include="Plugins\Elements\UrlToEntityToken\ServerLogUrlToEntityTokenMapper.cs" />
     <Compile Include="Plugins\Forms\WebChannel\UiControlFactories\TemplatedFontIconSelectorUiControlFactory.cs">
       <SubType>ASPXCodeBehind</SubType>

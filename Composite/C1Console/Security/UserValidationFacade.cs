@@ -205,9 +205,10 @@ namespace Composite.C1Console.Security
         /// <exclude />
         public static UserToken GetUserToken()
         {
-            Verify.That(IsLoggedIn(), "No user has been logged in");
+            var userName = LoginSessionStorePluginFacade.StoredUsername;
+            Verify.That(!string.IsNullOrEmpty(userName), "No user has been logged in");
 
-            return new UserToken(LoginSessionStorePluginFacade.StoredUsername);
+            return new UserToken(userName);
         }
 
 
@@ -215,9 +216,10 @@ namespace Composite.C1Console.Security
         /// <exclude />
         public static string GetUsername()
         {
-            Verify.That(IsLoggedIn(), "No user has been logged in");
+            var userName = LoginSessionStorePluginFacade.StoredUsername;
+            Verify.That(!string.IsNullOrEmpty(userName), "No user has been logged in");
 
-            return LoginSessionStorePluginFacade.StoredUsername;
+            return userName;
         }
 
 

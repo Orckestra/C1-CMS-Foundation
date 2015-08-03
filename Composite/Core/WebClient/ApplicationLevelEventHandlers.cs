@@ -87,6 +87,7 @@ namespace Composite.Core.WebClient
         {
             UrlToEntityTokenFacade.Register(new DataUrlToEntityTokenMapper());
             UrlToEntityTokenFacade.Register(new ServerLogUrlToEntityTokenMapper());
+            UrlToEntityTokenFacade.Register(new MediaBrowserUrlToEntityTokenMapper());
 
             RoutedData.ConfigureServices(ServiceLocator.ServiceCollection);
         }
