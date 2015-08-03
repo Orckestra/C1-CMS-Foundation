@@ -1,11 +1,8 @@
-@namespace url("http://www.w3.org/1999/xhtml");
 @namespace ui url("http://www.w3.org/1999/xhtml");
 
-ui|labelbox svg {
+ui|labelbox.imageonly svg {
     height: 150px;
     width: 150px;
-    margin-left: 50px;
-    margin-top: 25px;
 }
 
 .filePreview {
@@ -32,6 +29,10 @@ ui|labelbox svg {
     color: #777;
 }    
 
+.filePreview .previewIcon {
+    margin: 0 auto 0 auto;
+}
+
 .folderPreview {
     margin: -30px 0 30px -30px;
 }
@@ -45,12 +46,15 @@ ui|labelbox svg {
     margin: 30px 0 0 30px;
 }
 
-.filePreview .previewIcon {
-    margin: 0 auto 0 auto;
+.folderPreview .previewItem ui|labelbox.imageonly svg {
+    margin: 25px 0 25px 60px;
 }
+
+
 
 .folderPreview .previewItem .imagePreviewFrame {
     height: 200px;
+    margin-bottom: 5px; 
 }
 
 .folderPreview .previewItem .previewImage {

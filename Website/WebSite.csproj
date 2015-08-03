@@ -142,6 +142,10 @@
     <Compile Include="Composite\content\views\functioninfo\ShowFunctionInfo.aspx.designer.cs">
       <DependentUpon>ShowFunctionInfo.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Composite\content\views\mediabrowser\mediabrowser.aspx.cs">
+      <DependentUpon>mediabrowser.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Composite\controls\FormsControls\FormUiContainerTemplates\DocumentExecutionContainer.ascx.designer.cs">
       <DependentUpon>DocumentExecutionContainer.ascx</DependentUpon>
     </Compile>
@@ -217,6 +221,8 @@
     <Content Include="Composite\content\views\dev\developer\tests\ui\style2.css" />
     <Content Include="Composite\content\views\generic\generic.aspx" />
     <Content Include="Composite\content\views\generic\GenericPageBinding.js" />
+    <Content Include="Composite\content\views\mediabrowser\mediabrowser.aspx" />
+    <Content Include="Composite\content\views\mediabrowser\mediabrowser.css" />
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\DateTimeSelectors\DateSelector.ascx.cs">
       <SubType>ASPXCodeBehind</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
