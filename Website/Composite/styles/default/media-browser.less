@@ -1,0 +1,74 @@
+﻿
+.media-browser {
+    padding: 30px 0 30px 40px;
+
+    svg {
+        height: 150px;
+        width: 150px;
+        color: #999;
+    }
+
+
+    .filePreview {
+        text-align: center;
+
+        .imagePreviewFrame {
+
+            img {
+                border: 1px solid #EAEAEA;
+                max-width: 100%;
+                max-height: 100%;
+            }
+        }
+
+        .description {
+            padding-top: 25px;
+            max-width: 100%;
+        }
+
+        .previewIcon {
+           
+            * {
+                float: none;
+            }
+
+            svg {
+                margin: 30px auto;
+            }
+        }
+    }
+
+    .folderPreview {
+
+        .previewItem {
+            width: 300px;
+            float: left;
+            text-align: center;
+            margin: 0 30px 50px 0;
+
+            ui|labelbox.imageonly svg {
+                margin: 25px 0 25px 75px;
+            }
+
+            .imagePreviewFrame {
+                height: 200px;
+                line-height: 200px;
+                margin-bottom: 20px;
+
+                img {
+                    max-width: 100%;
+                    max-height: 300px;
+                    border: 1px solid #EAEAEA;
+                    vertical-align: middle;
+                }
+            }
+
+            .title {
+                -ms-word-break: break-all;
+                word-break: break-all;
+                height: 32px;
+                overflow: hidden;
+            }
+        }
+    }
+}

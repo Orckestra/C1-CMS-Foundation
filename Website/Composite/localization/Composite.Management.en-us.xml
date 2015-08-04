@@ -577,7 +577,6 @@
 	<string key="Website.Forms.Administrative.AddNewMediaFolder.FolderNameTooLong" value="The total length of the folder name is too long" />
 	<string key="Website.Forms.Administrative.AddNewMediaFolder.FolderNotOnlySlash" value="The folder name can not only be '/' or '\'" />
 	<string key="Website.Forms.Administrative.AddZipMediaFile.LabelDialog" value="Upload Multiple Files via a Zip File" />
-	<string key="Website.Forms.Administrative.AddZipMediaFile.LabelFieldGroup" value="Select Zip file containing files to extract" />
 	<string key="Website.Forms.Administrative.AddZipMediaFile.LabelFile" value="Zip file" />
 	<string key="Website.Forms.Administrative.AddZipMediaFile.HelpFile" value="Create a Zip file (right click local folder and select Send to -&gt; Compressed folder) and select it using the Browse button" />
 	<string key="Website.Forms.Administrative.AddZipMediaFile.LabelRecreateStructure" value="Create folders" />

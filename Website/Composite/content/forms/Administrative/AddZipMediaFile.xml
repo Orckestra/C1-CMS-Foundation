@@ -6,7 +6,7 @@
     <cms:binding name="OverwriteExisting" type="System.Boolean" />
   </cms:bindings>
   <cms:layout iconhandle="media-upload-zip-file" label="${Composite.Management, Website.Forms.Administrative.AddZipMediaFile.LabelDialog}">
-    <FieldGroup Label="${Composite.Management, Website.Forms.Administrative.AddZipMediaFile.LabelFieldGroup}">
+    <FieldGroup>
       <FileUpload Label="${Composite.Management, Website.Forms.Administrative.AddZipMediaFile.LabelFile}" Help="${Composite.Management, Website.Forms.Administrative.AddZipMediaFile.HelpFile}">
         <FileUpload.UploadedFile>
           <cms:bind source="UploadedFile" />

@@ -10,7 +10,7 @@ ui|explorerbarbutton {
     display: block;
 }
 
-ui|cover.explorermenucover {
+.explorermenucover {
     margin-left: @explorer-width;
     display: none;
 }
@@ -46,7 +46,7 @@ ui|explorermenu {
                 content: "Composite";
                 position: absolute;
                 top: 0;
-                left: 30px;
+                left: 38px;
                 text-transform: none;
                 font-size: 21px;
             }
@@ -55,7 +55,7 @@ ui|explorermenu {
                 content: "C1";
                 position: absolute;
                 top: 0;
-                left: 134px;
+                left: 142px;
                 text-transform: none;
                 font-size: 21px;
                 font-weight: bold;
@@ -64,17 +64,18 @@ ui|explorermenu {
 
         ui|labelbody {
             color: @primary-color;
-
             svg {
                 height: 28px !important;
                 width: 28px !important;
-                margin-left: -28px !important;
             }
         }
     }
 
     .menu-toggle {
         margin-top: 8px;
+        ui|labelbox {
+            padding: 0;
+        }
     }
 }
 
@@ -110,7 +111,7 @@ ui|explorermenu ui|toolbarbutton,
 ui|explorertoolbarbutton {
     float: left;
     margin: 0;
-    padding: 21px 22px 21px 22px;
+    padding: 21px 15px;
     width: 100%;
     border: none;
 
@@ -122,11 +123,10 @@ ui|explorertoolbarbutton {
     }
 
     ui|labelbox {
-        padding-left: 1px;
-
+ 
         &.image-and-text {
             ui|labeltext {
-                margin-left: 10px;
+                margin-left: 38px;
             }
         }
     }
@@ -156,20 +156,11 @@ ui|explorertoolbarbutton {
     ui|explorertoolbarbutton svg {
         width: 22px;
         height: 22px;
-        margin-left: -28px;
     }
-
-ui|explorersplitter {
-    height: 8px;
-    overflow: hidden;
-    background-color: #fff;
-    cursor: n-resize;
-}
 
 ui|explorerdecks {
     display: none;
 }
-
 
 .exploler-expanded {
 

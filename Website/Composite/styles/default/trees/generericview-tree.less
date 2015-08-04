@@ -1,0 +1,48 @@
+﻿.generericview {
+
+    ui|treebody {
+        padding: 30px;
+    }
+
+    ui|treenode {
+        float: left;
+        clear: none;
+        margin-bottom: 40px;
+    }
+
+    ui|labelbox, svg, ui|labelbody, ui|labeltext {
+        float: none;
+        padding: 0;
+        margin: 0;
+    }
+    
+    
+    ui|labelbox {
+        width: 300px;
+        height: auto;
+        text-align: center;
+        overflow: hidden;
+
+
+        svg {
+            width: 150px;
+            height: 150px;
+            margin: 10px auto;
+        }
+
+        &.focused {
+            ui|labeltext {
+                background-color: transparent;
+                color: @primary-color;
+            }
+        }
+
+        &.image-and-text ui|labeltext {
+            margin-left: 0;
+        }
+    }
+
+    ui|labelbody {
+        width: 100%;
+    }
+}

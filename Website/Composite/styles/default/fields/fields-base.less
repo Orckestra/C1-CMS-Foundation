@@ -7,9 +7,6 @@ ui|datacollector {
 ui|fields {
     display: none; /* adjusted by FieldsBinding.js */
     position: relative; /* mostly because it fixes an ie bug where fieldgroup captions would hang on tabpanel changes */
-    -webkit-column-width: 430px; /* Chrome, Safari, Opera */
-    -moz-column-width: 430px; /* Firefox */
-    column-width: 430px;
 }
 
 ui|fieldgroup {
@@ -73,15 +70,25 @@ ui|field {
     }
 }
 
-ui|editorpage ui|fieldgroup {
-    width: 430px;
-    display: inline-block;
-    overflow: visible;
-    position: relative;
-    -webkit-column-break-inside: avoid; /* Chrome, Safari, Opera */
-    page-break-inside: avoid; /* Firefox */
-    break-inside: avoid; /* IE 10+ */
-}
+ui|editorpage {
+
+    ui|fields {
+        -webkit-column-width: 430px; /* Chrome, Safari, Opera */
+        -moz-column-width: 430px; /* Firefox */
+        column-width: 430px;
+    }
+
+    ui|fieldgroup {
+        width: 430px;
+        display: inline-block;
+        overflow: visible;
+        position: relative;
+        -webkit-column-break-inside: avoid; /* Chrome, Safari, Opera */
+        page-break-inside: avoid; /* Firefox */
+        break-inside: avoid; /* IE 10+ */
+    }
+} 
+
 
 ui|fieldgroup.boxed, ui|editorpage ui|fieldgroup {
 

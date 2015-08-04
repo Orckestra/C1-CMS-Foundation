@@ -86,7 +86,6 @@
   <string key="InstallRemotePackage.ShowWarning.LayoutLabel" value="The package Did Not Validate" />
   <string key="InstallRemotePackage.ShowWarning.InfoTableCaption" value="The package did not validate" />
   <string key="InstallLocalPackage.Step1.LayoutLabel" value="Install Local Package" />
-  <string key="InstallLocalPackage.Step1.FieldGroupLabel" value="Path to the local package" />
   <string key="InstallLocalPackage.Step1.FileUploadLabel" value="Package file" />
   <string key="InstallLocalPackage.Step1.FileUploadHelp" value="Browse to and select the local package file" />
   <string key="InstallLocalPackage.Step2.LayoutLabel" value="Install Local Package" />

@@ -222,7 +222,6 @@
     <Content Include="Composite\content\views\generic\generic.aspx" />
     <Content Include="Composite\content\views\generic\GenericPageBinding.js" />
     <Content Include="Composite\content\views\mediabrowser\mediabrowser.aspx" />
-    <Content Include="Composite\content\views\mediabrowser\mediabrowser.css" />
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\DateTimeSelectors\DateSelector.ascx.cs">
       <SubType>ASPXCodeBehind</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -496,6 +495,7 @@
     <Content Include="Composite\scripts\source\top\ui\bindings\genericview\GenericViewBinding.js" />
     <Content Include="Composite\styles\default\fields\fields-base.less" />
     <Content Include="Composite\styles\default\dialogs\dialog-multiselector.less" />
+    <Content Include="Composite\styles\default\media-browser.less" />
     <None Include="Composite\styles\default\splash.less" />
     <Content Include="Composite\GenerateIconSprite.aspx" />
     <Content Include="Composite\images\editfunction.png" />
@@ -2358,7 +2358,8 @@
     <Content Include="Composite\styles\default\toolbars\pagetemplates.less" />
     <Content Include="Composite\styles\default\toolbars\codemirror-editor.less" />
     <Content Include="Composite\styles\default\toolbars\dialog.less" />
-    <None Include="Composite\styles\default\trees.less" />
+    <Content Include="Composite\styles\default\trees\generericview-tree.less" />
+    <None Include="Composite\styles\default\trees\trees-base.less" />
     <None Include="Composite\styles\default\updatepanels.less" />
     <None Include="Composite\styles\default\views.less" />
     <Content Include="Composite\styles\default\_normalize.less" />

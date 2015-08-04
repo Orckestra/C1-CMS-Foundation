@@ -4,24 +4,6 @@ ui|checkboxgroup {
     padding-bottom: 2px;
     margin-bottom: 3px;
     margin-left: 3px;
-
-    ui|labelbox {
-        &.invalid {
-            margin-bottom: 4px;
-            margin-left: 1px;
-            margin-top: 4px;
-            float: none;
-
-            * {
-                float: none;
-            }
-
-            i|labeltext {
-                font-weight: bold;
-                color: @field-error-color;
-            }
-        }
-    }
 }
 
 ui|checkbox {
@@ -33,9 +15,29 @@ ui|checkbox {
 
 ui|checkbutton {
 
-    ui|labelbody {
+    ui|labelbox {
+        height: 18px;
+        padding-left: 18px;
         position: relative;
 
+        &.invalid {
+            margin-bottom: 4px;
+            margin-left: 1px;
+            margin-top: 4px;
+            float: none;
+
+            * {
+                float: none;
+            }
+
+            ui|labeltext {
+                font-weight: bold;
+                color: @field-error-color;
+            }
+        }
+    }
+
+    ui|labelbody {
         &:before {
             box-sizing: border-box;
             position: absolute;
@@ -57,7 +59,6 @@ ui|checkbutton {
     }
 
     &[ischecked='true'] ui|labelbody:after {
-        box-sizing: border-box;
         position: absolute;
         top: 0px;
         left: 0px;

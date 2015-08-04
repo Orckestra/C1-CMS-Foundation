@@ -10,18 +10,16 @@
         <control:httpheaders runat="server" />
 		<control:styleloader runat="server" />
 		<control:scriptloader type="sub" runat="server" updateManagerDisabled="True"/>
-
-		<link rel="stylesheet" type="text/css" href="mediabrowser.css.aspx" />
 	</head>
 	<body>
 		<form id="Form1" runat="server">
-			<ui:page label="${string:ServerLog.LabelTitle}" image="${icon:log-viewlog}">
+			<ui:page label="${string:ServerLog.LabelTitle}" image="${icon:log-viewlog}" class="media-browser">
 
-				<ui:scrollbox id="scrollbox" class="padded">
+				<ui:scrollbox id="scrollbox">
                    
                     <asp:PlaceHolder runat="server" ID="plhShowFile" Visible="false">
                         <div class="filePreview">
-                            <div class="fileName">
+                            <div class="fileName hide">
                               <asp:Literal runat="server" ID="txtFileName"></asp:Literal>  
                             </div>
                             <div class="title">
