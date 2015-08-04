@@ -142,10 +142,10 @@
     <Compile Include="Composite\content\views\functioninfo\ShowFunctionInfo.aspx.designer.cs">
       <DependentUpon>ShowFunctionInfo.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Composite\content\views\mediabrowser\mediabrowser.aspx.cs">
+    <Content Include="Composite\content\views\mediabrowser\mediabrowser.aspx.cs">
       <DependentUpon>mediabrowser.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
-    </Compile>
+    </Content>
     <Compile Include="Composite\controls\FormsControls\FormUiContainerTemplates\DocumentExecutionContainer.ascx.designer.cs">
       <DependentUpon>DocumentExecutionContainer.ascx</DependentUpon>
     </Compile>
