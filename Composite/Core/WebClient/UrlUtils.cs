@@ -22,7 +22,7 @@ namespace Composite.Core.WebClient
         private static readonly string _adminFolderName = "Composite";
         private static readonly string _renderersFolderName = "Renderers";
         private static readonly string _applicationVirtualPath;
-        private static readonly string[] UrlStartMarkers = new[] { "\"", "\'", "&#39;", "&#34;" };
+        private static readonly string[] UrlStartMarkers = { "\"", "\'", "&#39;", "&#34;" };
         private static readonly string SessionUrlPrefix = "Session_";
 
         static UrlUtils()
@@ -215,7 +215,7 @@ namespace Composite.Core.WebClient
                     }
                 }
 
-                // Skippnig match if the quotes aren't defined
+                // Skipping match if the quotes aren't defined
                 if(endOffset < 0)
                 {
                     startIndex = prefixEndOffset;

@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Globalization;
 using System.Linq;
-using System.Text;
 using System.Web;
 using System.Xml.Linq;
-using Composite.Core.Logging;
 using Composite.Core.Routing;
 using Composite.Data;
 using Composite.Data.Types;
 using Composite.Core.WebClient.Renderings.Page;
 using Composite.Core.Extensions;
+using Composite.Plugins.Routing.InternalUrlConverters;
 
 
 namespace Composite.Core.WebClient
@@ -333,7 +332,7 @@ namespace Composite.Core.WebClient
                 return result;
             }
 
-            throw new NotImplementedException("BuildUrl function suppors only 'Public' and 'Unternal' urls.");
+            throw new NotImplementedException("BuildUrl function supports only 'Public' and 'Unternal' urls.");
         }
 
 
@@ -412,7 +411,7 @@ namespace Composite.Core.WebClient
             else
             {
                 cultureInfo = LocalizationScopeManager.CurrentLocalizationScope;
-                if(cultureInfo == CultureInfo.InvariantCulture)
+                if(cultureInfo.Equals(CultureInfo.InvariantCulture))
                 {
                     cultureInfo = DataLocalizationFacade.DefaultLocalizationCulture;
                 }
@@ -437,93 +436,7 @@ namespace Composite.Core.WebClient
         /// <exclude />
         public static string ChangeRenderingPageUrlsToPublic(string html)
         {
-            StringBuilder result = null;
-
-            // Urls, generated in UserControl-s may still have "~/" as a prefix
-            html = UrlUtils.ReplaceUrlPrefix(html, RawInternalUrlPrefix, InternalUrlPrefix);
-            html = UrlUtils.ReplaceUrlPrefix(html, RawRendererUrlPrefix, RendererUrlPrefix);
-
-            // We assume that url starts with either 
-            // "{virtual folder path}/Renderers/Page.aspx"  or "{virtual folder path}/page("
-            // and ends with one of the following characters: 
-            // double quote, single quote, or "&#39;" which is single quote mark (') encoded in xml attribute 
-            List<UrlUtils.UrlMatch> internalUrls = UrlUtils.FindUrlsInHtml(html, RendererUrlPrefix);
-            internalUrls.AddRange(UrlUtils.FindUrlsInHtml(html, InternalUrlPrefix));
-
-            // Sorting the offsets by descending, so we can replace urls in that order by not affecting offsets of not yet processed urls
-            internalUrls.Sort((a, b) => -a.Index.CompareTo(b.Index));
-
-            UrlSpace urlSpace = HttpContext.Current != null ? new UrlSpace(HttpContext.Current) : new UrlSpace();
-
-            var resolvedUrls = new Dictionary<string, string>();
-            foreach (UrlUtils.UrlMatch pageUrlMatch in internalUrls)
-            {
-                string internalPageUrl = pageUrlMatch.Value;
-                string publicPageUrl;
-
-                if (!resolvedUrls.TryGetValue(internalPageUrl, out publicPageUrl))
-                {
-                    PageUrlData pageUrlData;
-                    string decodedInternalUrl = internalPageUrl.Replace("%28", "(").Replace("%29", ")").Replace("&amp;", "&");
-                    string anchor;
-
-                    try
-                    {
-                        anchor = new UrlBuilder(internalPageUrl).Anchor;
-                        pageUrlData = PageUrls.UrlProvider.ParseInternalUrl(decodedInternalUrl);
-                    }
-                    catch
-                    {
-                        LoggingService.LogWarning(LogTitle, "Failed to parse url '{0}'".FormatWith(internalPageUrl));
-                        resolvedUrls.Add(internalPageUrl, null); 
-                        continue;
-                    }
-
-                    if (pageUrlData == null)
-                    {
-                        resolvedUrls.Add(internalPageUrl, null); 
-                        continue;
-                    }
-
-                    // While viewing pages in "unpublished" scope, all the links should also be in the same scope
-                    if(DataScopeManager.CurrentDataScope == DataScopeIdentifier.Administrated)
-                    {
-                        pageUrlData.PublicationScope = PublicationScope.Unpublished;
-                    }
-
-                    publicPageUrl = PageUrls.BuildUrl(pageUrlData, UrlKind.Public, urlSpace);
-                    if (publicPageUrl == null)
-                    {
-                        // We have this situation if page does not exist
-                        resolvedUrls.Add(internalPageUrl, null); 
-                        continue;
-                    }
-
-                    if (!anchor.IsNullOrEmpty())
-                    {
-                        publicPageUrl += "#" + anchor;
-                    }
-
-                    // Encoding xml attribute value
-                    publicPageUrl = publicPageUrl.Replace("&", "&amp;");
-
-                    resolvedUrls.Add(internalPageUrl, publicPageUrl); 
-                }
-                else
-                {
-                    if(publicPageUrl == null) continue;
-                }
-
-                if (result == null)
-                {
-                    result = new StringBuilder(html);
-                }
-
-                result.Remove(pageUrlMatch.Index, pageUrlMatch.Value.Length);
-                result.Insert(pageUrlMatch.Index, publicPageUrl);
-            }
-
-            return result != null ? result.ToString() : html;
+            return InternalUrls.ConvertInternalUrlsToPublic(html, new[] {new PageInternalUrlConverter()});
         }
 
 
@@ -535,7 +448,7 @@ namespace Composite.Core.WebClient
         internal static string GetPathInfoFromInternalUrl(string url)
         {
             // From string ".../Renderers/Page.aspx/AAAA/VVV/CCC?pageId=..." will extract "/AAAA/VVV/CCC"
-            int aspxOffset = url.IndexOf(".aspx");
+            int aspxOffset = url.IndexOf(".aspx", StringComparison.Ordinal);
 
             if(url[aspxOffset + 5] == '?') return null;
 

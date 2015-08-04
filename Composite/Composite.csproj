@@ -211,6 +211,8 @@
     <Compile Include="Core\Routing\IDataUrlMapper.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Core\Routing\IInternalUrlConverter.cs" />
+    <Compile Include="Core\Routing\InternalUrls.cs" />
     <Compile Include="Data\PageRenderingHistory.cs" />
     <Compile Include="Functions\PathInfoRoutedDataUrlMapper.cs" />
     <Compile Include="Functions\RoutedData.cs" />
@@ -807,6 +809,8 @@
     <Compile Include="Plugins\ResourceSystem\AggregationLocalizationProvider\AggregationLocalizationProvider.cs" />
     <Compile Include="Plugins\ResourceSystem\XmlLocalizationProvider\XmlLocalizationProvider.cs" />
     <Compile Include="Plugins\Routing\Hostnames\FormFunctions.cs" />
+    <Compile Include="Plugins\Routing\InternalUrlConverters\MediaInternalUrlConverter.cs" />
+    <Compile Include="Plugins\Routing\InternalUrlConverters\PageInternalUrlConverter.cs" />
     <Compile Include="Plugins\Routing\Pages\PageUrlBuilder.cs" />
     <Compile Include="Core\WebClient\Renderings\Plugins\RenderingResponseHandler\IDataRenderingResponseHandler.cs" />
     <Compile Include="Core\WebClient\Renderings\Plugins\RenderingResponseHandler\IRenderingResponseHandler.cs" />
@@ -2450,6 +2454,7 @@
   <ItemGroup>
     <Folder Include="Core\Cloud\" />
     <Folder Include="Core\Logging\WCF\" />
+    <Folder Include="Core\Routing\Plugins\InternalUrls\" />
     <Folder Include="Functions\ManagedParameters\Types\" />
     <Folder Include="Functions\Types\" />
     <Folder Include="Plugins\Elements\Design\" />

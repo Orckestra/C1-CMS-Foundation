@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using Composite.Core.Extensions;
 using Composite.Core.Routing;
 using Composite.Data;
 using Composite.Data.Types;
+using Composite.Plugins.Routing.InternalUrlConverters;
 
 
 namespace Composite.Core.WebClient
@@ -21,9 +21,9 @@ namespace Composite.Core.WebClient
 	{
 	    private static readonly string DefaultMediaStore = "MediaArchive";
         private static readonly Regex GuidRegex = new Regex(@"^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$");
-        private static readonly string LogTitle = typeof(MediaUrlHelper).Name;
+        //private static readonly string LogTitle = typeof(MediaUrlHelper).Name;
         private static readonly string InternalMediaUrlPrefix = UrlUtils.PublicRootPath + "/media";
-        private static readonly string DecodedFullInternalMediaUrlPrefix = InternalMediaUrlPrefix + "(";
+        //private static readonly string DecodedFullInternalMediaUrlPrefix = InternalMediaUrlPrefix + "(";
         private static readonly string RawMediaUrlPrefix = "~/media";
 
         /// <exclude />
@@ -182,112 +182,7 @@ namespace Composite.Core.WebClient
         /// <exclude />
         public static string ChangeInternalMediaUrlsToPublic(string content)
         {
-            StringBuilder result = null;
-
-            // Urls, generated in UserControl-s may still have "~/" as a prefix
-            content = UrlUtils.ReplaceUrlPrefix(content, RawMediaUrlPrefix, InternalMediaUrlPrefix);
-
-            // We assume that url starts with "{Site root}/media({MediaId})[?{Query}]" 
-            List<UrlUtils.UrlMatch> internalUrls = UrlUtils.FindUrlsInHtml(content, InternalMediaUrlPrefix);
-
-            // Sorting the offsets by descending, so we can replace urls in that order by not affecting offsets of not yet processed urls
-            internalUrls.Reverse();
-
-
-            var convertionCache = new Dictionary<string, string>();
-            foreach (UrlUtils.UrlMatch mediaUrlMatch in internalUrls)
-            {
-                string internalMediaUrl = mediaUrlMatch.Value;
-                string publicMediaUrl;
-
-                if (!convertionCache.TryGetValue(internalMediaUrl, out publicMediaUrl))
-                {
-                    string decodedMediaUrl = internalMediaUrl.Replace("%28", "(").Replace("%29", ")").Replace("&amp;", "&");
-                    if(!decodedMediaUrl.StartsWith(DecodedFullInternalMediaUrlPrefix))
-                    {
-                        continue;
-                    }
-
-                    int closingBracketOffset = decodedMediaUrl.IndexOf(")", StringComparison.InvariantCulture);
-
-                    if(closingBracketOffset < 0)
-                    {
-                        continue;
-                    }
-
-                    Guid mediaId;
-                    int prefixLength = DecodedFullInternalMediaUrlPrefix.Length;
-
-                    string mediaStore;
-
-                    string mediaIdStr = decodedMediaUrl.Substring(prefixLength, closingBracketOffset - prefixLength);
-
-                    int semicolonOffset = mediaIdStr.IndexOf(":", StringComparison.Ordinal);
-                    if (semicolonOffset > 0)
-                    {
-                        mediaStore = mediaIdStr.Substring(0, semicolonOffset);
-                        mediaIdStr = mediaIdStr.Substring(semicolonOffset + 1);
-                    }
-                    else
-                    {
-                        mediaStore = DefaultMediaStore;
-                    }
-
-                    if (!Guid.TryParse(mediaIdStr, out mediaId))
-                    {
-                        continue;
-                    }
-
-                    UrlBuilder parsedOldUrl;
-
-                    try
-                    {
-                        parsedOldUrl = new UrlBuilder(decodedMediaUrl);
-                    }
-                    catch
-                    {
-                        Log.LogWarning(LogTitle, "Failed to parse url '{0}'".FormatWith(internalMediaUrl));
-                        convertionCache.Add(internalMediaUrl, null);
-                        continue;
-                    }
-
-                    NameValueCollection queryParams = parsedOldUrl.GetQueryParameters();
-
-                    publicMediaUrl = MediaUrls.BuildUrl(
-                        new MediaUrlData
-                        {
-                            MediaId = mediaId,
-                            MediaStore = mediaStore,
-                            QueryParameters = queryParams
-                        },
-                        UrlKind.Public);
-
-                    if (publicMediaUrl == null)
-                    {
-                        convertionCache.Add(internalMediaUrl, null);
-                        continue;
-                    }
-
-                    // Encoding xml attribute value
-                    publicMediaUrl = publicMediaUrl.Replace("&", "&amp;");
-
-                    convertionCache.Add(internalMediaUrl, publicMediaUrl);
-                }
-                else
-                {
-                    if (internalMediaUrl == null) continue;
-                }
-
-                if (result == null)
-                {
-                    result = new StringBuilder(content);
-                }
-
-                result.Remove(mediaUrlMatch.Index, mediaUrlMatch.Value.Length);
-                result.Insert(mediaUrlMatch.Index, publicMediaUrl);
-            }
-
-            return result != null ? result.ToString() : content;
+            return InternalUrls.ConvertInternalUrlsToPublic(content, new[] {new MediaInternalUrlConverter()});
         }
 	}
 }

@@ -16,6 +16,7 @@ using Composite.Core.Threading;
 using Composite.Core.Types;
 using Composite.Functions;
 using Composite.Plugins.Elements.UrlToEntityToken;
+using Composite.Plugins.Routing.InternalUrlConverters;
 
 
 namespace Composite.Core.WebClient
@@ -90,6 +91,9 @@ namespace Composite.Core.WebClient
             UrlToEntityTokenFacade.Register(new MediaBrowserUrlToEntityTokenMapper());
 
             RoutedData.ConfigureServices(ServiceLocator.ServiceCollection);
+
+            InternalUrls.Register(new MediaInternalUrlConverter());
+            InternalUrls.Register(new PageInternalUrlConverter());
         }
 
 

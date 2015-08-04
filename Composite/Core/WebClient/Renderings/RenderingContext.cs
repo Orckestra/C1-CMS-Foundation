@@ -23,6 +23,8 @@ namespace Composite.Core.WebClient.Renderings
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class RenderingContext: IDisposable
     {
+        private static readonly string LogTitle = typeof (RenderingContext).Name;
+
         /// <summary>
         /// Indicates whether performance profiling is enabled.
         /// </summary>
@@ -82,9 +84,9 @@ namespace Composite.Core.WebClient.Renderings
             }
 
             var httpContext = HttpContext.Current;
-            var response = HttpContext.Current.Response;
+            var response = httpContext.Response;
 
-            RenderingResponseHandlerResult responseHandling = RenderingResponseHandlerFacade.GetDataResponseHandling(PageRenderer.CurrentPage.GetDataEntityToken());
+            var responseHandling = RenderingResponseHandlerFacade.GetDataResponseHandling(PageRenderer.CurrentPage.GetDataEntityToken());
             if (responseHandling != null)
             {
                 if (responseHandling.PreventPublicCaching)
@@ -121,14 +123,9 @@ namespace Composite.Core.WebClient.Renderings
         /// <exclude />
         public string ConvertInternalLinks(string xhtml)
         {
-            using (Profiler.Measure("Changing 'internal' page urls to 'public'"))
+            using (Profiler.Measure("Converting internal urls to public"))
             {
-                xhtml = PageUrlHelper.ChangeRenderingPageUrlsToPublic(xhtml);
-            }
-
-            using (Profiler.Measure("Changing 'internal' media urls to 'public'"))
-            {
-                xhtml = MediaUrlHelper.ChangeInternalMediaUrlsToPublic(xhtml);
+                xhtml = InternalUrls.ConvertInternalUrlsToPublic(xhtml);
             }
 
             return xhtml;
@@ -158,10 +155,10 @@ namespace Composite.Core.WebClient.Renderings
                             {
                                 _prettifyErrorUrls.Add(_cachedUrl);
                                 _prettifyErrorCount++;
-                                Log.LogWarning("/Renderers/Page.aspx", "Failed to format output xhtml in a pretty way - your page output is likely not strict xml. Url: " + (HttpUtility.UrlDecode(_cachedUrl) ?? "undefined"));
+                                Log.LogWarning(LogTitle, "Failed to format output xhtml in a pretty way - your page output is likely not strict xml. Url: " + (HttpUtility.UrlDecode(_cachedUrl) ?? "undefined"));
                                 if (maxWarningsToShow == _prettifyErrorCount)
                                 {
-                                    Log.LogInformation("/Renderers/Page.aspx", "{0} xhtml format errors logged since startup. No more will be logged untill next startup.", maxWarningsToShow);
+                                    Log.LogInformation(LogTitle, "{0} xhtml format errors logged since startup. No more will be logged until next startup.", maxWarningsToShow);
                                 }
                             }
                         }
