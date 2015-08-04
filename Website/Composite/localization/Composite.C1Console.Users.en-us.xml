@@ -29,7 +29,6 @@
   <string key="ChangeOwnCultureWorkflow.Dialog.C1ConsoleLanguageSelector.Help" value="Select the language to be used for labels, help texts, dialogs etc. The available options here are limited to languages installed. You may install more languages via the Package system, see Composite.Localization." />
   <string key="ChangeOwnCultureWorkflow.Dialog.Confirm.Title" value="Change application language"/>
   <string key="ChangeOwnCultureWorkflow.Dialog.Confirm.Text" value="Are your sure you wish to change the settings? The application will restart and all your unsaved changes will be lost."/>
-	<string key="ChangeOwnCultureWorkflow.FieldGroup.Label" value="Regional settings"/>
 	<string key="AdministratorAutoCreator.DefaultGroupName" value="Administrators"/>
 
 	<!-- change own active and foreign locale -->

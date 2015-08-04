@@ -5,7 +5,7 @@
     <cms:binding name="Message" type="System.String"/>
   </cms:bindings>
   <cms:layout iconhandle="balloon" label="${Composite.Management, SendMessageToConsolesWorkflow.Layout.Label}">
-    <FieldGroup Label="${Composite.Management, SendMessageToConsolesWorkflow.FieldGroup.Label}">
+    <FieldGroup>
 
       <TextBox Label="${Composite.Management, SendMessageToConsolesWorkflow.TitleTextBox.Label}"
                Help="${Composite.Management, SendMessageToConsolesWorkflow.TitleTextBox.Help}">

@@ -277,7 +277,6 @@
 	<string key="VirtualElementProviderElementProvider.RootActions.RestartApplicationLabel" value="Restart server" />
 	<string key="VirtualElementProviderElementProvider.RootActions.RestartApplicationTooltip" value="Restart the server" />
 	<string key="SendMessageToConsolesWorkflow.Layout.Label" value="Broadcast Message to All C1 Consoles" />
-	<string key="SendMessageToConsolesWorkflow.FieldGroup.Label" value="Message to broadcast" />
 	<string key="SendMessageToConsolesWorkflow.TitleTextBox.Label" value="Title" />
 	<string key="SendMessageToConsolesWorkflow.TitleTextBox.Help" value="Dialog title of broadcast message" />
 	<string key="SendMessageToConsolesWorkflow.MessageTextArea.Label" value="Message" />

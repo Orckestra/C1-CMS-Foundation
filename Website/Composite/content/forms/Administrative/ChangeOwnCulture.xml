@@ -7,7 +7,7 @@
     <cms:binding name="AllCultures" type="System.Collections.IEnumerable" />
   </cms:bindings>
   <cms:layout iconhandle="users-changeownculture" label="${Composite.C1Console.Users, ChangeOwnCultureWorkflow.Dialog.Label}">
-    <FieldGroup Label="${Composite.C1Console.Users, ChangeOwnCultureWorkflow.FieldGroup.Label}">
+    <FieldGroup>
       <KeySelector OptionsKeyField="Key" OptionsLabelField="Value" Label="${Composite.C1Console.Users, ChangeOwnCultureWorkflow.Dialog.CultureSelector.Label}" Help="${Composite.C1Console.Users, ChangeOwnCultureWorkflow.Dialog.CultureSelector.Help}">
         <KeySelector.Options>
           <cms:read source="AllCultures"/>
