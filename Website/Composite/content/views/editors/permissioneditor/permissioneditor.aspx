@@ -11,11 +11,10 @@
 		<script type="text/javascript" src="PermissionEditorPageBinding.js"></script>
 		<script type="text/javascript" src="PermissionEditorGridBinding.js"></script>
 		<script type="text/javascript" src="PermissionEditorHeadBinding.js"></script>
-		<link rel="stylesheet" type="text/css" href="permissioneditor.css.aspx"/>
 	</head>
 	<body>
 	
-		<ui:page 
+		<ui:editorpage 
 			id="page"
 			label="${string:Website.Content.Views.Editors.PermissionEditor.LabelTitle}" 
 			image="${icon:security-manage-permissions}"
@@ -25,21 +24,8 @@
 				<ui:broadcaster id="broadcasterCanSave" isdisabled="true"/>
 			</ui:broadcasterset>
 			
-			<!-- Reference table row structure: 
-				<tr class="first">
-					<td class="edit">&#160;</td>
-					<td class="index">&#160;</td>
-					<td>&#160;</td>
-					<td>&#160;</td>
-					<td>&#160;</td>
-					<td>&#160;</td>
-					<td>&#160;</td>
-					<td class="last">&#160;</td>
-				</tr>
-			-->
-			
-			<ui:toolbar id="toolbar">
-			 	<ui:toolbarbody>
+			<ui:toolbar id="toolbar" class="document-toolbar">
+			 	<ui:toolbarbody class="pull-right">
 					<ui:toolbargroup>
 						<ui:toolbarbutton
 							label="${string:Website.Content.Views.Editors.PermissionEditor.LabelButtonSave}" 
@@ -58,31 +44,31 @@
 				</ui:tabs>
 				<ui:tabpanels>
 					<ui:tabpanel id="tabpanel0">
-						<table id="head0" class="binding head" binding="PermissionEditorHeadBinding">
+						<table id="head0" class="table permissions-table hide" binding="PermissionEditorHeadBinding">
 							<thead>
-								<tr>
+								<tr class="head">
 									<th class="edit">&#160;</th>
 									<th class="index">&#160;</th>
 								</tr>
 							</thead>
 						</table>
 						<ui:scrollbox>
-							<table id="grid0" class="binding grid" binding="PermissionEditorGridBinding">
+							<table id="grid0" class="table permissions-table hide" binding="PermissionEditorGridBinding">
 								<tbody/>
 							</table>
 						</ui:scrollbox>
 					</ui:tabpanel>
 					<ui:tabpanel id="tabpanel1">
-						<table id="head1" class="binding head" binding="PermissionEditorHeadBinding">
+						<table id="head1" class="table permissions-table"  binding="PermissionEditorHeadBinding">
 							<thead>
-								<tr>
+								<tr class="head">
 									<th class="edit">&#160;</th>
 									<th class="index">&#160;</th>
 								</tr>
 							</thead>
 						</table>
 						<ui:scrollbox>
-							<table id="grid1" class="binding grid" binding="PermissionEditorGridBinding">
+							<table id="grid1" class="table permissions-table" binding="PermissionEditorGridBinding">
 								<tbody>
 								</tbody>
 							</table>
@@ -90,6 +76,6 @@
 					</ui:tabpanel>
 				</ui:tabpanels>
 			</ui:tabbox>
-		</ui:page>
+		</ui:editorpage>
 	</body>
 </html>

@@ -6,10 +6,6 @@ ui|toolbar {
     border: 0px;
     padding: 15px 20px;
 
-    &.plain {
-        border: none;
-    }
-
     &.statusbar {
         border-top-color: #000;
         border-bottom: none;
@@ -21,7 +17,6 @@ ui|toolbar {
     &.white {
         background: #fff;
     }
-
     ui|selector {
         float: left;
     }
@@ -36,9 +31,7 @@ ui|toolbarbody {
     float: left;
 
     &.alignright {
-        float: right;
-
-        ui|toolbarbutton, ui|clickbutton {
+         ui|toolbarbutton, ui|clickbutton {
             margin-right: 0;
             margin-left: 12px;
         }
@@ -62,9 +55,6 @@ ui|toolbargroup {
         border-right: none;
     }
 
-    &.alignright {
-        float: right;
-    }
 
     &.defaultcontent {
         width: 1px;

@@ -2,7 +2,7 @@ PermissionEditorGridBinding.prototype = new Binding;
 PermissionEditorGridBinding.prototype.constructor = PermissionEditorGridBinding;
 PermissionEditorGridBinding.superclass = Binding.prototype;
 
-PermissionEditorGridBinding.CLASSNAME_DEFINED = "set";
+PermissionEditorGridBinding.CLASSNAME_DEFINED = "primary";
 
 /**
  * @class
