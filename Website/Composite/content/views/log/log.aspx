@@ -31,19 +31,19 @@
 						</ui:toolbargroup>
 						<ui:toolbargroup>
 						    
-                            <div class="left">
+                            <div class="pull-left">
                                 <aspui:CheckBox runat="server" ItemLabel="${string:ServerLog.Severity.Critical}" ID="chkCritical" Checked="True" AutoPostBack="true" />
                             </div>
-                            <div class="left">
+                            <div class="pull-left">
                                 <aspui:CheckBox runat="server" ItemLabel="${string:ServerLog.Severity.Error}" ID="chkError" Checked="True" AutoPostBack="true" />
                             </div>
-                            <div class="left">
+                            <div class="pull-left">
                                 <aspui:CheckBox runat="server" ItemLabel="${string:ServerLog.Severity.Warning}" ID="chkWarning" Checked="True" AutoPostBack="true" />
                             </div>
-                            <div class="left">
+                            <div class="pull-left">
                                 <aspui:CheckBox runat="server" ItemLabel="${string:ServerLog.Severity.Information}" ID="chkInformation" Checked="True" AutoPostBack="true" />
                             </div>
-                            <div class="left">
+                            <div class="pull-left">
                                 <aspui:CheckBox runat="server" ItemLabel="${string:ServerLog.Severity.Verbose}" ID="chkVerbose" Checked="False" AutoPostBack="true" />
                             </div>
                             

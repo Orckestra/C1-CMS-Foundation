@@ -53,36 +53,33 @@ ui|docktab {
     text-transform: uppercase;
     padding: 10px 30px 10px 19px;
 
-    ui|control {
-        position: relative;
 
+    .closecontrol {
+        top: 12px;
+        right: 20px;
 
-        &.closecontrol {
+        ui|labelbody:after {
+            font-weight: normal;
+            font-size: 12px;
+            line-height: 9px;
+            text-align: center;
+            color: #fff;
+            background: #D5D5D5;
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+        }
+
+        &.hover {
             ui|labelbody:after {
-                top: 3px;
-                right: -19px;
-                font-weight: normal;
-                font-size: 12px;
-                line-height: 9px;
-                text-align: center;
+                background: #ABABAB;
                 color: #fff;
-                background: #D5D5D5;
-                width: 11px;
-                height: 11px;
-                border-radius: 50%;
-            }
-
-            &.hover {
-                ui|labelbody:after {
-                    background: #ABABAB;
-                    color: #fff;
-                }
             }
         }
     }
 
+
     ui|labelbox {
-        position: relative;
         color: #ADADAD;
     }
 

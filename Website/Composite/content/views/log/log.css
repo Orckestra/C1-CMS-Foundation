@@ -1,6 +1,20 @@
 @namespace url("http://www.w3.org/1999/xhtml");
 @namespace ui url("http://www.w3.org/1999/xhtml");
 
+ui|selector {
+    margin-right: 10px;
+}
+
+ui|selector ui|clickbutton ui|labelbox {
+    width: 140px;
+    height: 31px;
+}
+
+ui|checkbox {
+    padding-top: 7px;
+    
+}
+
 ui|scrollbox#scrollbox {
 	background-color: white !important;
 	overflow: scroll !important;
@@ -16,14 +30,14 @@ ui|scrollbox#scrollbox td, th {
 	white-space: nowrap;
 }
 ui|scrollbox#scrollbox td {
-	border: 1px solid $(color:threeddarkshadow);
+	border: 1px solid #ddd;
 	vertical-align: top;
 	cursor: text;
 }
 ui|scrollbox#scrollbox th {
 	text-align: left;
 	font-weight: bold;
-	background-color: $(color:threedface);
+	background-color: #eeeeee;
 }
 pre 
 {
@@ -34,7 +48,7 @@ pre
 
 div#emptylabel {
 	padding: 1em;
-	border-top: 1px solid $(color:threedhighlight);
+	border-top: 1px solid #ddd;
 }
 
 #toolbar datalabeltext {
@@ -46,21 +60,14 @@ div#emptylabel {
     margin-top: 1px;
 }
 
-#toolbar .left:first-child checkbutton {
-    margin-left: 8px;
-}
-            
-div.left {
-    float: left;
-}
             
 a.expandCode {
     display: block;
     width: 200px;
     font-weight: bold;
     text-align: center; 
-    border: 1px solid #777;
-    color: #777;
+    border: 1px solid #ddd;
+    color: #ddd;
     margin-left: 20px;
 }            
 

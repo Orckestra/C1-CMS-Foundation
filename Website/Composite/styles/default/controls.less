@@ -1,43 +1,37 @@
-﻿ui|controlgroup {
+﻿ui|controlgroup, ui|control {
+    position: absolute;
     display: block;
-    float: right;
-    position: relative;
+}
+
+ui|controlgroup {
+    right: 0;
+    top: 0;
 }
 
 ui|control {
-    display: block;
-    float: left;
-    margin-left: 2px;
-    background-color: transparent;
 
-    .dialogcontrol {
-        padding: 0;
+    &[controltype="close"] {
+        right: 30px;
+        top: 7px;
 
-        ui|labelbody {
-            padding-left: 16px;
-        }
-    }
-}
-
-    ui|control[controltype="close"] {
         ui|labelbody {
 
             &:after {
                 content: '×';
                 position: absolute;
-                height: 100%;
-                width: 0px;
-                top: -18px;
-                right: 8px;
+                width: 15px;
+                height: 15px;
                 color: @base-border-color;
                 font-size: 20px;
+                line-height: 15px;
                 font-weight: bold;
             }
         }
 
         &.hover {
             ui|labelbody:after {
-                color: darken( @base-border-color, 50%);
+                color: darken(@base-border-color, 50%);
             }
         }
     }
+}
