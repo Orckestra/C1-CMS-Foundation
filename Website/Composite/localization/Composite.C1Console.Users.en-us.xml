@@ -4,7 +4,6 @@
 	<string key="ChangeOwnPasswordWorkflow.ElementActionLabel" value="Change Password..."/>
 	<string key="ChangeOwnPasswordWorkflow.ElementActionToolTip" value="Change your password"/>
 	<string key="ChangeOwnPasswordWorkflow.Dialog.Label" value="Change Password"/>
-	<string key="ChangeOwnPasswordWorkflow.Dialog.FieldGroup.Label" value="Change your password"/>
 	<string key="ChangeOwnPasswordWorkflow.Dialog.ExistingPassword.Label" value="Existing password"/>
 	<string key="ChangeOwnPasswordWorkflow.Dialog.ExistingPassword.Help" value="For security reasons you must present your existing password before you can continue."/>
 	<string key="ChangeOwnPasswordWorkflow.Dialog.NewPassword.Label" value="New password"/>
