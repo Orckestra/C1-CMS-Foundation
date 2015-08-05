@@ -2,7 +2,7 @@ ImageCursorBinding.prototype = new CursorBinding;
 ImageCursorBinding.prototype.constructor = ImageCursorBinding;
 ImageCursorBinding.superclass = CursorBinding.prototype;
 
-ImageCursorBinding.CURSOR_SELECT = "${skin}/imageeditor/select16.png";
+ImageCursorBinding.CURSOR_SELECT = "${icon:selection}";;
 ImageCursorBinding.CURSOR_ZOOMIN = "${icon:zoomin}";
 ImageCursorBinding.CURSOR_ZOOMOUT = "${icon:zoomout}";
 

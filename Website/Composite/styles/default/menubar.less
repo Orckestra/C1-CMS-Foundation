@@ -1,17 +1,28 @@
 .menubar {
     background: @menubar-bg-color;
-    
 
     > ui|menu {
+        border: none;
+
         > ui|labelbox {
-            margin-left: 12px;
-            text-transform: uppercase;
             color: @menubar-text-color;
+
+            &.textonly {
+                &:after {
+                    border-color: @menubar-bg-color transparent transparent transparent;
+                }
+            }
         }
 
         &.hover {
             > ui|labelbox {
                 color: @primary-color;
+
+                &.textonly {
+                    &:after {
+                        border-color: transparent transparent @menubar-bg-color transparent;
+                    }
+                }
             }
         }
     }

@@ -67,7 +67,7 @@
 						<ui:deck id="designdeck">
 							<ui:box id="toolbarsbox" binding="VisualEditorBoxBinding">
 								<ui:cover id="toolbarscover" busy="false"/>
-								<ui:toolbar id="toolbar" class="visualeditor-toolbar" binding="VisualEditorSimpleToolBarBinding" observes="broadcasterIsActive">
+								<ui:toolbar id="toolbar" class="visualeditor-toolbar btns-group" binding="VisualEditorSimpleToolBarBinding" observes="broadcasterIsActive">
 									<% Response.WriteFile ( "includes/toolbarsimple.inc" ); %>
 								</ui:toolbar>
 								<ui:toolbar id="advancedtoolbar" class="visualeditor-adv-toolbar" binding="VisualEditorToolBarBinding">

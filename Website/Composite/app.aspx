@@ -134,7 +134,7 @@
 				</ui:menubody>
 			</ui:menupopup>
 		</ui:menu>--%>
-		<ui:menu label="Developer" rel="developermode">
+		<ui:menu label="Developer" rel="developermode" class="last">
 			<ui:menupopup>
 				<ui:menubody>
 					<ui:menugroup>
@@ -160,7 +160,7 @@
 				</ui:menubody>
 			</ui:menupopup>
 		</ui:menu>--%>
-		<ui:menu image="${icon:help}">
+		<ui:menu image="${icon:help}" class="icon">
 			<ui:menupopup>
 				<ui:menubody>
 					<ui:menugroup>
@@ -183,7 +183,7 @@
 			</ui:menupopup>
 		</ui:menu>
 
-		<ui:menu label="${string:AssociatedDataElementProviderHelper.AddDataFolderExCreateNewType.LabelNewType}">
+		<ui:menu image="${icon:settings}" class="icon">
 			<ui:menupopup>
 				<ui:menubody>
 					<ui:menugroup>

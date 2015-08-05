@@ -6,17 +6,14 @@ ui|toolbar {
     border: 0px;
     padding: 15px 20px;
 
-    &.statusbar {
-        border-top-color: #000;
-        border-bottom: none;
-    }
-
     &.dark {
         background: #EFEFEF;
     }
+
     &.white {
         background: #fff;
     }
+
     ui|selector {
         float: left;
     }
@@ -31,7 +28,7 @@ ui|toolbarbody {
     float: left;
 
     &.alignright {
-         ui|toolbarbutton, ui|clickbutton {
+        ui|toolbarbutton, ui|clickbutton {
             margin-right: 0;
             margin-left: 12px;
         }
@@ -55,7 +52,6 @@ ui|toolbargroup {
         border-right: none;
     }
 
-
     &.defaultcontent {
         width: 1px;
         overflow: hidden;
@@ -65,4 +61,35 @@ ui|toolbargroup {
     }
 }
 
+ui|toolbar.btns-group {
+    ui|toolbargroup {
+        border: 1px solid @base-border-color;
+        border-radius: 3px;
+        margin: 0px 5px 0px 5px;
+        padding: 0px;
+        overflow: hidden;
 
+        &:empty {
+            display: none;
+        }
+
+        ui|toolbarbutton {
+            border-color: transparent;
+            margin: 0px;
+            border-radius: 0;
+            text-transform: none;
+
+            + ui|toolbarbutton {
+                border-color: transparent transparent transparent @base-border-color;
+            }
+
+            ui|labelbox {
+                padding: 5px 9px;
+            }
+
+            ui|labelbody {
+                min-width: 18px;
+            }
+        }
+    }
+}
