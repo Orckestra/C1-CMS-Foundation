@@ -135,7 +135,7 @@
 					var image = document.getElementById(row.id + "_image");
 					if(image != null)
 					{
-						image.src = currentRowIsCollapsed ? "/Composite/skins/system/trees/icon-treenode-plus.png" : "/Composite/skins/system/trees/icon-treenode-minus.png";
+						image.src = currentRowIsCollapsed ? "/Composite/images/icon-treenode-plus.png" : "/Composite/images/icon-treenode-minus.png";
 					}
 				}
             }
