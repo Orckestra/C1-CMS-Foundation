@@ -27,6 +27,13 @@
         }
     }
 
+    protected override void OnPreRender(EventArgs e)
+    {
+        base.OnPreRender(e);
+
+        clientSelector.IsDisabled = ReadOnly;
+    }
+
     
     private void EnsurePostDataLoaded()
     {
@@ -77,4 +84,4 @@
     }
 </script>
 
-<aspui:Selector ID="clientSelector" runat="server" IsDisabled="<%# ReadOnly %>" />
+<aspui:Selector ID="clientSelector" runat="server" />
