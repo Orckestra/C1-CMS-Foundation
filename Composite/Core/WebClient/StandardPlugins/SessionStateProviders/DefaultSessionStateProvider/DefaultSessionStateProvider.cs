@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Composite.Data;
@@ -94,11 +93,11 @@ namespace Composite.Plugins.WebClient.SessionStateProviders.DefaultSessionStateP
                 ISessionStateEntry entry;
                 if (queryable.IsEnumerableQuery())
                 {
-                    entry = (queryable as IEnumerable<ISessionStateEntry>).Where(row => row.Id == stateId).FirstOrDefault();
+                    entry = queryable.AsEnumerable().FirstOrDefault(row => row.Id == stateId);
                 }
                 else
                 {
-                    entry = queryable.Where(row => row.Id == stateId).FirstOrDefault();
+                    entry = queryable.FirstOrDefault(row => row.Id == stateId);
                 }
 
                 return entry;

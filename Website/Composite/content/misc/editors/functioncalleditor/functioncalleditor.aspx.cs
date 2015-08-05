@@ -751,14 +751,24 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
         var formTreeCompiler = FunctionUiHelper.BuildWidgetForParameters(
             new[] { parameterProfile },
             bindings,
-            "FORM"+SelectedNode.GetHashCode().ToString(),
+            "FORM" + SelectedNode.GetHashCode(),
             "",
             WebManagementChannel.Identifier);
 
         // The control is temporary added to page, so it will get a correct ID
-        IWebUiControl webUiControl = (IWebUiControl)formTreeCompiler.UiControl;
+        var webUiControl = (IWebUiControl)formTreeCompiler.UiControl;
 
         plhWidget.Controls.Add(webUiControl.BuildWebControl());
+
+        // Loading control's post data
+        foreach (var key in Request.Form.AllKeys)
+        {
+            var control = Page.FindControl(key);
+            if (control is IPostBackDataHandler)
+            {
+                (control as IPostBackDataHandler).LoadPostData(key, Request.Form);
+            }
+        }
 
         formTreeCompiler.SaveControlProperties();
 
@@ -1131,18 +1141,19 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
         var formTreeCompiler = FunctionUiHelper.BuildWidgetForParameters(
             new[] { parameterProfile },
             bindings,
-            "FORM" + SelectedNode.GetHashCode().ToString(),
+            "FORM" + SelectedNode.GetHashCode(),
             "",
             WebManagementChannel.Identifier);
 
         IWebUiControl webUiControl = (IWebUiControl)formTreeCompiler.UiControl;
 
         var fieldGroupControl = webUiControl.BuildWebControl();
+        var fieldGroupControlBase = fieldGroupControl as ContainerTemplateUserControlBase;
 
         // Preventing <ui:fields> tag from rendering
-        (fieldGroupControl as ContainerTemplateUserControlBase).Settings.Add("RenderFieldsTag", false);
+        fieldGroupControlBase.Settings.Add("RenderFieldsTag", false);
         // Overwriting field label
-        (fieldGroupControl as ContainerTemplateUserControlBase).Settings.Add("FieldLabel", GetString("ParameterValueLabel"));
+        fieldGroupControlBase.Settings.Add("FieldLabel", GetString("ParameterValueLabel"));
 
         mlvWidget.Visible = true;
         mlvWidget.SetActiveView(viewWidget_Constant);
@@ -1232,8 +1243,8 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
             Verify.That(TreePathToIdMapping.ContainsKey(elementPath), "There's no tree ID assigned to element '{0}'", elementPath);
             string treeNodeId = TreePathToIdMapping[elementPath];
 
-            element.Add(new XAttribute("id", treeNodeId));
-            element.Add(new XAttribute("path", elementPath));
+            element.Add(new XAttribute("id", treeNodeId),
+                        new XAttribute("path", elementPath));
         }
 
         return copy;
@@ -1336,7 +1347,7 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
         string transformationCacheKey = "Compiled" + xsltFilePath;
         var cache = HttpContext.Current.Cache;
 
-        XslCompiledTransform transform = cache[transformationCacheKey] as XslCompiledTransform;
+        var transform = cache[transformationCacheKey] as XslCompiledTransform;
         if (transform == null)
         {
             lock (this.GetType())

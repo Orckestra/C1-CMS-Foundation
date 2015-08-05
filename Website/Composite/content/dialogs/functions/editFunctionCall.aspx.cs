@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web.UI;
 using System.Xml.Linq;
 using Composite;
 using Composite.C1Console.Forms;
@@ -136,6 +137,15 @@ namespace CompositeEditFunctionCall
 	            return true;
 	        }
 
+            // Loading control's post data
+	        foreach (var key in Request.Form.AllKeys)
+	        {
+	            var control = Page.FindControl(key);
+	            if (control is IPostBackDataHandler)
+	            {
+	                (control as IPostBackDataHandler).LoadPostData(key, Request.Form);
+	            }
+	        }
 
 	        var validationErrors = formTreeCompiler.SaveAndValidateControlProperties();
 

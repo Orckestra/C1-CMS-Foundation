@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using Composite.Core.Collections.Generic;
+using Composite.Core.Linq;
 using Composite.Data.DynamicTypes;
 using Composite.Data.Foundation;
 using Composite.Data.Foundation.PluginFacades;
@@ -150,13 +151,13 @@ namespace Composite.Data.Caching
             CachedTable cachedTable;
             if (!localizationScopeData.TryGetValue(localizationScope, out cachedTable))
             {
-                IQueryable wholeTable = DataFacade.GetData<T>(false, null);
+                IQueryable<T> wholeTable = DataFacade.GetData<T>(false, null);
 
                 if(!DataProvidersSupportDataWrapping(typeof(T)))
                 {
                     DisableCachingForType(typeof(T));
 
-                    return Verify.ResultNotNull(wholeTable as IQueryable<T>);
+                    return Verify.ResultNotNull(wholeTable);
                 }
 
                 if(_maximumSize != -1)
@@ -166,14 +167,14 @@ namespace Composite.Data.Caching
                     {
                         DisableCachingForType(typeof (T));
 
-                        return Verify.ResultNotNull(wholeTable as IQueryable<T>);
+                        return Verify.ResultNotNull(wholeTable);
                     }
                     cachedTable = new CachedTable(cuttedTable.Cast<T>().AsQueryable());
 
                 }
                 else
                 {
-                    cachedTable = new CachedTable(wholeTable.ToDataList().Cast<T>().AsQueryable());
+                    cachedTable = new CachedTable(wholeTable.Evaluate().AsQueryable());
                 }
 
                 using (_resourceLocker.Locker)
@@ -188,7 +189,7 @@ namespace Composite.Data.Caching
             var typedData = cachedTable.Queryable as IQueryable<T>;
             Verify.IsNotNull(typedData, "Cached value is invalid.");
 
-            // Leaving a posibility to extract original query
+            // Leaving a possibility to extract original query
             Func<IQueryable> originalQueryGetter = () =>
             {
                 using (new DataScope(dataScopeIdentifier, localizationScope))
