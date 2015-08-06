@@ -15,8 +15,8 @@
         padding: 0;
         margin: 0;
     }
-    
-    
+
+
     ui|labelbox {
         width: 300px;
         height: auto;
@@ -44,5 +44,29 @@
 
     ui|labelbody {
         width: 100%;
+    }
+
+    &.single {
+        ui|treenode {
+            float: none;
+        }
+
+        ui|labelbox {
+            width: 100%;
+        }
+
+        svg {
+            width: 400px;
+            height: 400px;
+            margin-top: 50px;
+        }
+
+        ui|labeltext {
+           position: absolute;
+           top: 0;
+           width: 100%;
+           text-align: center;
+
+        }
     }
 }
