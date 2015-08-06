@@ -563,7 +563,7 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DeveloperTools
 
         private void Baloon(System.Web.UI.Control c, string message)
         {
-            Baloon(c.ClientID.Replace("_", "$"), message);
+            Baloon(c.UniqueID, message);
         }
 
         private void Baloon(string fieldName, string message)
@@ -590,12 +590,13 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DeveloperTools
 
             if (this.CurrentFields.Count(f => f.Id == this.CurrentlySelectedFieldId) == 0)
             {
-                ManagedParameterDefinition newField = new ManagedParameterDefinition {
-                   Id = this.CurrentlySelectedFieldId, 
-                   Name = this.NameField.Text, 
-                   Type = this.CurrentlySelectedType
+                var newField = new ManagedParameterDefinition
+                {
+                    Id = this.CurrentlySelectedFieldId,
+                    Name = this.NameField.Text,
+                    Type = this.CurrentlySelectedType,
+                    Position = this.CurrentFields.Count
                 };
-                newField.Position = this.CurrentFields.Count;
                 this.CurrentFields.Add(newField);
             }
 

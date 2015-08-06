@@ -2,35 +2,39 @@
 <%@ Import Namespace="Composite.Data.Validation.ClientValidationRules" %>
 
 <script runat="server">
-    private string _currentStringValue = null;
+    private string _currentStringValue;
 
-    protected void Page_Init(object sender, EventArgs e)
+    protected override void InitializeViewState()
     {
-        if (_currentStringValue == null)
-        {
-            _currentStringValue = Request.Form[this.UniqueID];
-        }
+        _currentStringValue = this.Text;
     }
+    
+
+    public override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
+    {
+        _currentStringValue = postCollection[postDataKey];
+        return true;
+    }
+    
     
     protected override void BindStateToProperties()
     {
         this.Text = _currentStringValue;
     }
 
-    protected override void InitializeViewState()
-    {
-        _currentStringValue = this.Text;
-    }
-
+    
     public override string GetDataFieldClientName()
     {
-        return this.ClientID.Replace("_", "$");
+        return this.UniqueID;
     }
+    
+    
     
     private string IsRequired()
     {
         return ClientValidationRules != null && ClientValidationRules.Any(rule => rule is NotNullClientValidationRule) ? "true" : "false";
     }
+    
     
     private string TypeParam()
     {

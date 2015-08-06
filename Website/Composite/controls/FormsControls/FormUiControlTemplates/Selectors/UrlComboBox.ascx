@@ -1,27 +1,23 @@
 ﻿<%@ Control Language="C#" Inherits="Composite.Plugins.Forms.WebChannel.UiControlFactories.TextInputTemplateUserControlBase"  %>
-<%@ Import Namespace="Composite.Data.Validation.ClientValidationRules" %>
-<%@ Import Namespace="System.Xml" %>
-<%@ Import Namespace="System.IO" %>
 
 <script runat="server">
-    private string _currentStringValue = null;
+    
+    private string _currentStringValue;
 
-    protected void Page_Init(object sender, EventArgs e)
+    protected override void InitializeViewState()
     {
-        if (_currentStringValue == null)
-        {
-            _currentStringValue = Request.Form[this.UniqueID];
-        }
+        _currentStringValue = this.Text;
+    }
+    
+    public override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
+    {
+        _currentStringValue = postCollection[postDataKey];
+        return true;
     }
     
     protected override void BindStateToProperties()
     {
         this.Text = _currentStringValue;
-    }
-
-    protected override void InitializeViewState()
-    {
-        _currentStringValue = this.Text;
     }
 
     public override string GetDataFieldClientName()
@@ -31,9 +27,9 @@
 
     private string ValidationParams()
     {
-        StringBuilder paramsBuilder = new StringBuilder();
+        var paramsBuilder = new StringBuilder();
 
-        if (this.Required == true) paramsBuilder.Append(@" required=""true""");
+        if (this.Required) paramsBuilder.Append(@" required=""true""");
 
         return paramsBuilder.ToString();
     }
@@ -44,5 +40,6 @@
         return Server.HtmlEncode((text ?? string.Empty).Replace('\0', ' '));
     }
     
+
 </script>
 <ui:urlinputdialog id="<%= this.UniqueID  %>" type="url" handle="Composite.Management.LinkableSelectorDialog" name="<%= this.UniqueID  %>" value="<%= FilterCharactersAndEncode(_currentStringValue) %>"  <%= ValidationParams() %> />

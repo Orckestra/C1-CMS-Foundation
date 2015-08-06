@@ -1,7 +1,4 @@
 <%@ Control Language="C#" Inherits="Composite.Plugins.Forms.WebChannel.UiControlFactories.SelectorTemplateUserControlBase" %>
-<%@ Import Namespace="Composite.Plugins.Forms.WebChannel.UiControlFactories" %>
-<%@ Import Namespace="Composite.Core.Types" %>
-<%@ Import Namespace="System.Collections.Generic" %>
 <%@ Import Namespace="System.Linq" %>
 
 <script runat="server">
@@ -37,7 +34,7 @@
             var unselectedOptions = this.GetOptions().Where(o => selectedKeys.Contains(o.Key)==false);
 
 
-            //workarround
+            // workaround
             this._selectedKeys = selectedKeys;
             string postBackName = this.ClientID;
             if (!string.IsNullOrEmpty(Request.Form[postBackName]))
@@ -56,6 +53,7 @@
     {
         var definition = (KeyLabelPair) e.Item.DataItem;
         e.Item.ID = definition.Key.GetHashCode().ToString();
+        
         Control control = e.Item.FindControl("CheckBox");
 
         var checkBox = (Composite.Core.WebClient.UiControlLib.CheckBox)control;
@@ -77,8 +75,6 @@
             for (int i = 0; i < CheckBoxRepeater.Items.Count; i++)
             {
                 Control control = CheckBoxRepeater.Items[i].FindControl("CheckBox");
-
-                EnsurePostDataLoaded(control);
 
                 var checkBox = (Composite.Core.WebClient.UiControlLib.CheckBox)control;
 
@@ -104,12 +100,6 @@
     }
 
 
-    private void EnsurePostDataLoaded(Control control)
-    {
-        (control as IPostBackDataHandler).LoadPostData(control.UniqueID, Request.Form);
-    }
-
-
     public override string GetDataFieldClientName()
     {
         if (this.CompactMode)
@@ -119,7 +109,7 @@
 
         if (CheckBoxRepeater.Items.Count > 0)
         {
-            return CheckBoxRepeater.Items[0].ClientID.Replace("_", "$") + "$CheckBox";
+            return CheckBoxRepeater.Items[0].UniqueID + "$CheckBox";
         }
 
         return null;

@@ -1,28 +1,28 @@
 ﻿<%@ Control Language="C#" Inherits="Composite.Plugins.Forms.WebChannel.UiControlFactories.TextInputTemplateUserControlBase"  %>
 <%@ Import Namespace="Composite.Data.Validation.ClientValidationRules" %>
-<%@ Import Namespace="System.Xml" %>
-<%@ Import Namespace="System.IO" %>
 
 <script runat="server">
-    private string _currentStringValue = null;
+    private string _currentStringValue;
 
-    protected void Page_Init(object sender, EventArgs e)
+    protected override void InitializeViewState()
     {
-        if (_currentStringValue == null)
-        {
-            _currentStringValue = Request.Form[this.UniqueID];
-        }
+        _currentStringValue = this.Text;
     }
+
+    
+    public override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
+    {
+        _currentStringValue = postCollection[postDataKey];
+        return true;
+    }
+
     
     protected override void BindStateToProperties()
     {
         this.Text = _currentStringValue;
     }
 
-    protected override void InitializeViewState()
-    {
-        _currentStringValue = this.Text;
-    }
+        
 
     public override string GetDataFieldClientName()
     {
@@ -79,10 +79,10 @@
             }
         }
 
-        StringBuilder paramsBuilder = new StringBuilder();
+        var paramsBuilder = new StringBuilder();
 
-        if (required == true) paramsBuilder.Append(@" required=""true""");
-        if (hasLengthRule == true) paramsBuilder.AppendFormat(@" minlength=""{0}"" maxlength=""{1}""", minLength, maxLength);
+        if (required) paramsBuilder.Append(@" required=""true""");
+        if (hasLengthRule) paramsBuilder.AppendFormat(@" minlength=""{0}"" maxlength=""{1}""", minLength, maxLength);
         
         return paramsBuilder.ToString();
     }

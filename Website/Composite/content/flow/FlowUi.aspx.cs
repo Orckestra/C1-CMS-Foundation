@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using System.Web;
 using System.Web.UI;
 
@@ -12,7 +13,7 @@ using Composite.Core.WebClient.FlowMediators;
 
 public partial class Composite_Management_FlowUi : FlowPage
 {
-    private int _startTickCount = Environment.TickCount;
+    private readonly int _startTickCount = Environment.TickCount;
     private string _consoleId = null;
     private string _uiContainerName = null;
 
@@ -22,14 +23,14 @@ public partial class Composite_Management_FlowUi : FlowPage
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        this.Error += new EventHandler(Composite_Management_FlowUi_Error);
+        this.Error += Composite_Management_FlowUi_Error;
         _consoleId = Request.QueryString[_consoleIdParameterName];
         string flowHandleSerialized = Request.QueryString[_flowHandleParameterName];
         string elementProviderName = Request.QueryString[_elementProviderNameParameterName];
 
-        if (string.IsNullOrEmpty(_consoleId) == true) throw new ArgumentNullException(_consoleIdParameterName, "Missing query string parameter");
-        if (string.IsNullOrEmpty(flowHandleSerialized) == true) throw new ArgumentNullException(_flowHandleParameterName, "Missing query string parameter");
-        if (string.IsNullOrEmpty(elementProviderName) == true) throw new ArgumentNullException(_elementProviderNameParameterName, "Missing query string parameter");
+        if (string.IsNullOrEmpty(_consoleId)) throw new ArgumentNullException(_consoleIdParameterName, "Missing query string parameter");
+        if (string.IsNullOrEmpty(flowHandleSerialized)) throw new ArgumentNullException(_flowHandleParameterName, "Missing query string parameter");
+        if (string.IsNullOrEmpty(elementProviderName)) throw new ArgumentNullException(_elementProviderNameParameterName, "Missing query string parameter");
 
         FlowHandle flowHandle = FlowHandle.Deserialize(flowHandleSerialized);
 
@@ -50,9 +51,16 @@ public partial class Composite_Management_FlowUi : FlowPage
                 }
             }
         }
+        catch (ThreadAbortException)
+        {
+            throw;
+        }
         catch (Exception ex)
         {
-            IConsoleMessageQueueItem errorLogEntry = new LogEntryMessageQueueItem { Sender = typeof(System.Web.UI.Page), Level = Composite.Core.Logging.LogLevel.Error, Message = ex.Message };
+            IConsoleMessageQueueItem errorLogEntry = new LogEntryMessageQueueItem
+            {
+                Sender = typeof(System.Web.UI.Page), Level = Composite.Core.Logging.LogLevel.Error, Message = ex.Message
+            };
             ConsoleMessageQueueFacade.Enqueue(errorLogEntry, _consoleId);
             throw;
         }
@@ -70,10 +78,10 @@ public partial class Composite_Management_FlowUi : FlowPage
 
     protected override void OnUnload(EventArgs e)
     {
-        if (Composite.RuntimeInformation.IsDebugBuild == true)
+        if (Composite.RuntimeInformation.IsDebugBuild)
         {
             int endTickCount = Environment.TickCount;
-            Log.LogVerbose("FlowUi.aspx", string.Format("Time spent serving request: {0} ms", endTickCount - _startTickCount));
+            Log.LogVerbose("FlowUi.aspx", "Time spent serving request: {0} ms", endTickCount - _startTickCount);
             base.OnUnload(e);
         }
     }

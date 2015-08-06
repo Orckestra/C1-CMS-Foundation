@@ -9,52 +9,18 @@
 <script runat="server">
     protected override void BindStateToProperties()
     {
-    	EnsurePostDataLoaded();
         Type dataReferenceType = typeof(DataReference<>).MakeGenericType(new [] {this.DataType});
-        object[] activationParameters = new object[1];
-        activationParameters[0] = GetValue();
-        IDataReference dataReference = (IDataReference)Activator.CreateInstance(dataReferenceType, activationParameters);
+
+        object[] activationParameters = { DataReferenceSelector.SelectedValue };
+        
+        var dataReference = (IDataReference) Activator.CreateInstance(dataReferenceType, activationParameters);
 
         this.Selected = dataReference;
-        
-        InitializeViewState();
-    }
-
-	private void EnsurePostDataLoaded()
-	{
-		var form = System.Web.HttpContext.Current.Request.Form;
-		if (form[DataReferenceSelector.UniqueID] != null)
-		{
-			(DataReferenceSelector as IPostBackDataHandler).LoadPostData(DataReferenceSelector.UniqueID, form);
-		}
-	}
-	
-    private string GetValue()
-    {
-        string value = DataReferenceSelector.SelectedValue;
-        if(string.IsNullOrEmpty(DataReferenceSelector.SelectedValue))
-        {
-            return this.Request.Form[DataReferenceSelector.UniqueID] ?? string.Empty;
-        }
-        
-        return value;
     }
 
     protected override void InitializeViewState()
     {
-        PopulateSelector();
-
-        if (this.Selected != null && this.Selected.IsSet)
-        {
-            ListItem selectedItem = DataReferenceSelector.Items.FindByValue(this.Selected.KeyValue.ToString());
-            if (selectedItem != null) selectedItem.Selected = true;
-        }
-    }
-    
-    private void PopulateSelector()
-    {
-        // This widget is currently 'code bound' to IMediaFileFolder. Rename or - even better - put this out of it's missery.
-        
+        // This widget is currently 'code bound' to IMediaFileFolder. Rename or - even better - put this out of it's misery.
         if (this.DataType == typeof(IMediaFileFolder))
         {
             DataReferenceSelector.DataSource = DataFacade.GetData<IMediaFileFolder>().OrderBy(f => f.Path).ToDataList();
@@ -67,8 +33,14 @@
         DataReferenceSelector.DataTextField = "Path";
         DataReferenceSelector.DataValueField = "KeyPath";
         DataReferenceSelector.DataBind();
-    }
 
+        if (this.Selected != null && this.Selected.IsSet)
+        {
+            ListItem selectedItem = DataReferenceSelector.Items.FindByValue(this.Selected.KeyValue.ToString());
+            if (selectedItem != null) selectedItem.Selected = true;
+        }
+    }
+    
     public override string GetDataFieldClientName()
     {
         return this.DataReferenceSelector.UniqueID;

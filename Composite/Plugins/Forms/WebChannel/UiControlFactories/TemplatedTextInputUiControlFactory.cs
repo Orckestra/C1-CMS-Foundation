@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Configuration;
 using System.Web.UI;
 using Composite.C1Console.Forms;
@@ -18,8 +19,8 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
     /// <summary>    
     /// </summary>
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
-    public abstract class TextInputTemplateUserControlBase : UserControl
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+    public abstract class TextInputTemplateUserControlBase : UserControl, IPostBackDataHandler
     {
         private string _formControlLabel;
         private string _text;
@@ -78,6 +79,23 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
         public TextBoxType Type { get; set; }
 
 
+        /// <summary>
+        /// When implemented by a class, processes postback data for an ASP.NET server control.
+        /// </summary>
+        /// <param name="postDataKey"></param>
+        /// <param name="postCollection"></param>
+        /// <returns></returns>
+        public virtual bool LoadPostData(string postDataKey, NameValueCollection postCollection)
+        {
+            return false;
+        }
+
+        /// <summary>
+        /// When implemented by a class, signals the server control to notify the ASP.NET application that the state of the control has changed.
+        /// </summary>
+        public virtual void RaisePostDataChangedEvent()
+        {
+        }
     }
 
 

@@ -1,19 +1,13 @@
 <%@ Control Language="C#" Inherits="Composite.Plugins.Forms.WebChannel.UiControlFactories.TemplatedDoubleKeySelectorUserControlBase"  %>
 <%@ Import Namespace="Composite.Plugins.Forms.WebChannel.UiControlFactories" %>
 <%@ Import Namespace="System.Linq" %>
-<%@ Import Namespace="System.Collections.Generic" %>
+
 
 <script runat="server">
-    private bool _optionsListInitialized;
-    
+ 
     protected override void BindStateToProperties()
     {
-        // TODO: refactor???
-        InitializeOptionList();
-        EnsurePostDataLoaded();
-
-
-        var match = Options.Where(tuple => clientSelector.SelectedValue == GetKey(tuple)).FirstOrDefault();
+        var match = Options.FirstOrDefault(tuple => clientSelector.SelectedValue == GetKey(tuple));
         
         if(match != null)
         {
@@ -38,37 +32,15 @@
         }*/
     }
 
-    
-    private void EnsurePostDataLoaded()
-    {
-        var form = System.Web.HttpContext.Current.Request.Form;
-        if(form[clientSelector.UniqueID] != null)
-        {
-            (clientSelector as IPostBackDataHandler).LoadPostData(clientSelector.UniqueID, form);
-        }
-    }
-    
-    private void InitializeOptionList()
-    {
-        if(!_optionsListInitialized)
-        {
-            List<KeyLabelPair> options = this.GetOptions();
-
-            clientSelector.DataSource = options;
-            clientSelector.DataTextField = "Label";
-            clientSelector.DataValueField = "Key";
-            clientSelector.DataBind();
-            
-            _optionsListInitialized = true;
-        }
-    }
-    
 
     protected override void InitializeViewState()
     {
-        InitializeOptionList();
-        
         List<KeyLabelPair> options = this.GetOptions();
+
+        clientSelector.DataSource = options;
+        clientSelector.DataTextField = "Label";
+        clientSelector.DataValueField = "Key";
+        clientSelector.DataBind();
 
         string key = GetKey(this.FirstKey, this.SecondKey);
         
