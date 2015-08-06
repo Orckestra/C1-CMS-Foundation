@@ -47,6 +47,18 @@ FieldGroupBinding.prototype._buildDOMContent = function () {
 	} else {
 		this.attachClassName ( FieldGroupBinding.CLASSNAME_NOLABEL );
 	}
+	var fields = this.bindingElement.getElementsByTagName('field');
+    if (!fields.length) {
+        fields = this.bindingElement.getElementsByTagName('ui:field'); // taht works for IE
+    }
+    var firstField = fields[0];
+    var lastField = fields[fields.length - 1];
+    if (firstField) {
+        firstField.className += " " + "first";
+    }
+    if (lastField) {
+        lastField.className += " " + "last";
+    }
 }
 
 /**
