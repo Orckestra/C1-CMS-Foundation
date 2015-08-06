@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<!DOCTYPE svg  PUBLIC '-//W3C//DTD SVG 1.1//EN'  'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'>
+<svg enable-background="new 0 0 80 80" height="80px" id="Icons" version="1.1" viewBox="0 0 80 80" width="80px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+ <g fill="#666" stroke="#666">
+  <g id="after" viewBox="0 0 80 80" stroke="none">
+    <rect height="38" width="5" x="56" y="21.082"/>
+    <polygon points="33.629,20.629 30.094,24.164 43.512,37.582 19,37.582 19,42.582 43.348,42.582 30.094,55.836 33.629,59.371 53,40     "/>
+  </g></g>
+</svg>

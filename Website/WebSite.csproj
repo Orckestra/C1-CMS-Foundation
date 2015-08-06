@@ -485,6 +485,20 @@
     </Compile>
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\Selectors\UrlComboBox.ascx" />
     <Content Include="Composite\images\icons\StandardIcons.xml" />
+    <Content Include="Composite\images\icons\svg\bullist.svg" />
+    <Content Include="Composite\images\icons\svg\end.svg" />
+    <Content Include="Composite\images\icons\svg\numlist.svg" />
+    <Content Include="Composite\images\icons\svg\outdent.svg" />
+    <Content Include="Composite\images\icons\svg\merge.svg" />
+    <Content Include="Composite\images\icons\svg\image-left.svg" />
+    <Content Include="Composite\images\icons\svg\image-right.svg" />
+    <Content Include="Composite\images\icons\svg\indent.svg" />
+    <Content Include="Composite\images\icons\svg\split.svg" />
+    <Content Include="Composite\images\icons\svg\selection.svg" />
+    <Content Include="Composite\images\icons\svg\settings.svg" />
+    <Content Include="Composite\images\icons\svg\start.svg" />
+    <Content Include="Composite\images\icons\svg\before.svg" />
+    <Content Include="Composite\images\icons\svg\after.svg" />
     <Content Include="Composite\images\icons\svg\accept-green.svg" />
     <Content Include="Composite\images\icons\svg\error.svg" />
     <Content Include="Composite\images\icons\svg\folder-open-2.svg" />

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="18px" height="18px" viewBox="0 0 18 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.3.2 (12043) - http://www.bohemiancoding.com/sketch -->
+    <title>List</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="numlist" viewBox="0 0 18 18" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g  transform="translate(-522.000000, -258.000000)" stroke-linecap="round" stroke-linejoin="round">
+            <g transform="translate(522.000000, 259.000000)">
+                <path d="M2.02252198,3.48449707 L2.02252198,0.548339844 L1.04705811,1.23260498"  stroke-width="0.8" ></path>
+                <path d="M2.5171167,9.5637 L0.982116703,9.5637 C2.08013507,8.0798914 2.46592531,8.2008218 2.46592531,7.36469565 C2.46592531,6.95590638 2.13206837,6.63688753 1.724021,6.63688753 C1.31300602,6.63688753 1.00734145,6.94922924 1.00734145,7.35801851"  stroke-width="0.8" ></path>
+                <path d="M1.0166167,12.5637 L2.4826167,12.5637 L1.72342457,13.7298191 C2.35051727,13.7298191 2.4826167,14.0957497 2.4826167,14.4753458 C2.4826167,14.8549418 2.35051727,15.2208724 1.72342457,15.2208724 L1.0166167,15.2208724" stroke-width="0.8"></path>
+                <path d="M5.5003,2.5 L16.4999996,2.5" ></path>
+                <path d="M5.5003,8.5 L16.4999996,8.5" ></path>
+                <path d="M5.5003,14.5 L16.4999996,14.5" ></path>
+            </g>
+        </g>
+    </g>
+</svg>

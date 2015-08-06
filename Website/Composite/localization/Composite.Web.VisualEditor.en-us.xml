@@ -79,7 +79,6 @@
   <!-- general -->
   <string key="LabelTabBasic" value="Basic" />
   <string key="LabelTabAdvanced" value="Advanced" />
-  <string key="LabelPresentation" value="Presentation" />
   <string key="LabelClass" value="Class" />
   <string key="HelpClass" value="The class attribute specifies a CSS classname for an element." />
   <string key="LabelId" value="ID" />

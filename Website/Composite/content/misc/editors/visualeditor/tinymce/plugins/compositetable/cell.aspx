@@ -14,7 +14,7 @@
 	<body>
 		<ui:dialogpage binding="TableCellDialogPageBinding"
 			label="${string:Composite.Web.VisualEditor:Tables.Cell.LabelCellProperties}" 
-			image="${skin}/wysiwygeditor/table_cell_props.png" 
+			image="${icon:fields}" 
 			height="auto"
 			class="tabboxed">
 			<ui:pagebody>
@@ -26,7 +26,7 @@
 					<ui:tabpanels>
 						<ui:tabpanel>
 							<ui:fields>
-								<ui:fieldgroup label="${string:Composite.Web.VisualEditor:Tables.Cell.LabelLayout}">
+								<ui:fieldgroup>
 									<ui:field>
 										<ui:fielddesc label="${string:Composite.Web.VisualEditor:Tables.Cell.CellType}"/>
 										<ui:fielddata>
@@ -88,7 +88,7 @@
 						</ui:tabpanel>
 						<ui:tabpanel>
 							<ui:fields>
-								<ui:fieldgroup label="${string:Composite.Web.VisualEditor:LabelPresentation}">
+								<ui:fieldgroup>
 									<ui:field>
 										<ui:fielddesc label="${string:Composite.Web.VisualEditor:LabelId}"/>
 										<ui:fieldhelp label="${string:Composite.Web.VisualEditor:HelpId}"/>

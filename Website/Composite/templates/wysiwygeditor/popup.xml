@@ -11,12 +11,12 @@
 	</ui:menugroup>
 	<ui:menugroup rel="image">
 		<ui:menuitem cmd="compositeInsertImage" val="update" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelImageProperties}" image="${icon:image}" binding="EditorMenuItemBinding"/>
-		<ui:menuitem label="${string:Composite.Web.VisualEditor:ContextMenu.LabelAlignImage}" image="${skin}/wysiwygeditor/left.png" binding="EditorMenuItemBinding">
+		<ui:menuitem label="${string:Composite.Web.VisualEditor:ContextMenu.LabelAlignImage}" image="${icon:image-left}" binding="EditorMenuItemBinding">
 			<ui:menupopup>
 				<ui:menubody>
 					<ui:menugroup>
-						<ui:menuitem cmd="JustifyLeft" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelAlignImageLeft}" image="${skin}/wysiwygeditor/left.png" binding="EditorMenuItemBinding"/>
-						<ui:menuitem cmd="JustifyRight" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelAlignImageRight}" image="${skin}/wysiwygeditor/right.png" binding="EditorMenuItemBinding"/>
+						<ui:menuitem cmd="JustifyLeft" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelAlignImageLeft}" image="${icon:image-left}" binding="EditorMenuItemBinding"/>
+						<ui:menuitem cmd="JustifyRight" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelAlignImageRight}" image="${icon:image-right}" binding="EditorMenuItemBinding"/>
 						<ui:menuitem cmd="RemoveFormat" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelAlignImageNone}" image="${icon:blank}" binding="EditorMenuItemBinding"/>
 					</ui:menugroup>
 				</ui:menubody>
@@ -40,8 +40,8 @@
 							<ui:menupopup>
 								<ui:menubody>
 									<ui:menugroup>
-										<ui:menuitem cmd="mceTablePasteRowBefore" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelBefore}" image="{skin}/wysiwygeditor/table_insert_row_before.png" binding="EditorMenuItemBinding"/>
-										<ui:menuitem cmd="mceTablePasteRowAfter" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelAfter}" image="{skin}/wysiwygeditor/table_insert_row_after.png" binding="EditorMenuItemBinding"/>
+										<ui:menuitem cmd="mceTablePasteRowBefore" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelBefore}" image="{icon:start}" binding="EditorMenuItemBinding"/>
+										<ui:menuitem cmd="mceTablePasteRowAfter" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelAfter}" image="{icon:end}" binding="EditorMenuItemBinding"/>
 									</ui:menugroup>
 								</ui:menubody>
 							</ui:menupopup>
@@ -49,41 +49,41 @@
 					</ui:menugroup>
 					<ui:menugroup>
 						<ui:menuitem cmd="compositeInsertTable" val="update" gui="true" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelTableProperties}" image="${icon:table}" binding="EditorMenuItemBinding"/>
-						<ui:menuitem cmd="compositeTableCellProps" gui="true" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelCellProperties}" image="${skin}/wysiwygeditor/table_cell_props.png" binding="EditorMenuItemBinding"/>
-						<ui:menuitem cmd="compositeTableRowProps" gui="true" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelRowProperties}" image="${skin}/wysiwygeditor/table_row_props.png" binding="EditorMenuItemBinding"/>
+						<ui:menuitem cmd="compositeTableCellProps" gui="true" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelCellProperties}" image="${icon:fields}" binding="EditorMenuItemBinding"/>
+						<ui:menuitem cmd="compositeTableRowProps" gui="true" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelRowProperties}" image="${icon:fields}" binding="EditorMenuItemBinding"/>
 					</ui:menugroup>	
 					<ui:menugroup>
-						<ui:menuitem label="${string:Composite.Web.VisualEditor:ContextMenu.LabelInsertRow}" image="${skin}/wysiwygeditor/table_insert_row_before.png" binding="EditorMenuItemBinding">
+						<ui:menuitem label="${string:Composite.Web.VisualEditor:ContextMenu.LabelInsertRow}" image="${icon:add}" binding="EditorMenuItemBinding">
 							<ui:menupopup>
 								<ui:menubody>
 									<ui:menugroup>
-										<ui:menuitem cmd="mceTableInsertRowBefore" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelBefore}" image="${skin}/wysiwygeditor/table_insert_row_before.png" binding="EditorMenuItemBinding"/>
-										<ui:menuitem cmd="mceTableInsertRowAfter" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelAfter}" image="${skin}/wysiwygeditor/table_insert_row_after.png" binding="EditorMenuItemBinding"/>
+										<ui:menuitem cmd="mceTableInsertRowBefore" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelBefore}" image="${icon:start}" binding="EditorMenuItemBinding"/>
+										<ui:menuitem cmd="mceTableInsertRowAfter" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelAfter}" image="${icon:end}" binding="EditorMenuItemBinding"/>
 									</ui:menugroup>
 								</ui:menubody>
 							</ui:menupopup>
 						</ui:menuitem>
-						<ui:menuitem cmd="mceTableDeleteRow" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelDeleteRow}" image="${skin}/wysiwygeditor/table_delete_row.png" binding="EditorMenuItemBinding"/>
+						<ui:menuitem cmd="mceTableDeleteRow" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelDeleteRow}" image="${icon:delete}" binding="EditorMenuItemBinding"/>
 					</ui:menugroup>
 					<ui:menugroup>
-						<ui:menuitem label="${string:Composite.Web.VisualEditor:ContextMenu.LabelInsertcolumn}" image="${skin}/wysiwygeditor/table_insert_col_before.png" binding="EditorMenuItemBinding">
+						<ui:menuitem label="${string:Composite.Web.VisualEditor:ContextMenu.LabelInsertcolumn}" image="${icon:add}" binding="EditorMenuItemBinding">
 							<ui:menupopup>
 								<ui:menubody>
 									<ui:menugroup>
-										<ui:menuitem cmd="mceTableInsertColBefore" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelBefore}" image="${skin}/wysiwygeditor/table_insert_col_before.png" binding="EditorMenuItemBinding"/>
-										<ui:menuitem cmd="mceTableInsertColAfter" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelAfter}" image="${skin}/wysiwygeditor/table_insert_col_after.png" binding="EditorMenuItemBinding"/>
+										<ui:menuitem cmd="mceTableInsertColBefore" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelBefore}" image="${icon:before}" binding="EditorMenuItemBinding"/>
+										<ui:menuitem cmd="mceTableInsertColAfter" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelAfter}" image="${icon:after}" binding="EditorMenuItemBinding"/>
 									</ui:menugroup>
 								</ui:menubody>
 							</ui:menupopup>
 						</ui:menuitem>
-						<ui:menuitem cmd="mceTableDeleteCol" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelDeleteColumn}" image="${skin}/wysiwygeditor/table_delete_col.png" binding="EditorMenuItemBinding"/>
+						<ui:menuitem cmd="mceTableDeleteCol" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelDeleteColumn}" image="${icon:delete}" binding="EditorMenuItemBinding"/>
 					</ui:menugroup>
 					<ui:menugroup>
-						<ui:menuitem cmd="mceTableMergeCells" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelMergeTableCells}" gui="true" image="${skin}/wysiwygeditor/table_merge_cells.png" binding="EditorMenuItemBinding"/>
-						<ui:menuitem cmd="mceTableSplitCells" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelSplitMergedCells}" image="${skin}/wysiwygeditor/table_split_cells.png" binding="EditorMenuItemBinding"/>
+						<ui:menuitem cmd="mceTableMergeCells" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelMergeTableCells}" gui="true" image="${icon:merge}" binding="EditorMenuItemBinding"/>
+						<ui:menuitem cmd="mceTableSplitCells" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelSplitMergedCells}" image="${icon:split}" binding="EditorMenuItemBinding"/>
 					</ui:menugroup>
 					<ui:menugroup>
-						<ui:menuitem cmd="mceTableDelete" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelDeleteTable}" image="${skin}/wysiwygeditor/table_delete.png" binding="EditorMenuItemBinding"/>
+						<ui:menuitem cmd="mceTableDelete" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelDeleteTable}" image="${icon:delete}" binding="EditorMenuItemBinding"/>
 					</ui:menugroup>
 				</ui:menubody>
 			</ui:menupopup>

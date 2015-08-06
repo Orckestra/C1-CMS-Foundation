@@ -60,7 +60,7 @@
 						</ui:tabpanel>
 						<ui:tabpanel>
 							<ui:fields>
-								<ui:fieldgroup label="${string:Composite.Web.VisualEditor:LabelPresentation}">
+								<ui:fieldgroup>
 									<ui:field>
 										<ui:fielddesc label="${string:Composite.Web.VisualEditor:LabelId}"/>
 										<ui:fieldhelp label="${string:Composite.Web.VisualEditor:HelpId}"/>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="18px" height="18px" viewBox="0 0 18 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+  <!-- Generator: Sketch 3.3.2 (12043) - http://www.bohemiancoding.com/sketch -->
+  <title>Photo_left</title>
+  <desc>Created with Sketch.</desc>
+  <defs></defs>
+  <g fill="#666" stroke="#666">
+    <g id="image-left" viewBox="0 0 18 18" stroke-width="1" fill="none">
+      <g  transform="translate(-443.000000, -258.000000)" stroke-linecap="round" stroke-linejoin="round">
+        <g  transform="translate(452.000000, 267.000000) scale(-1, 1) translate(-452.000000, -267.000000) translate(444.000000, 259.000000)">
+          <path d="M15.5000001,10.0236979 C15.5000002,12.2157987 15.5000005,15.4527588 15.5000005,15.4527588 L0.556770802,15.4527588 L0.556770802,0.5 L15.5,0.5 L15.5000001,10.0236979 Z" ></path>
+          <path d="M3.50000003,3.5 L6.5002,3.5"></path>
+          <path d="M2.50000003,5.5 L6.5002,5.5" ></path>
+          <path d="M2.50000003,7.5 L6.5002,7.5" ></path>
+          <path d="M2.5,9.5 L13.5,9.5" ></path>
+          <path d="M2.50000003,11.5 L11.4999997,11.5"></path>
+          <path d="M13.5000001,7.56718731 L8.49075518,7.56718731 L8.49075518,2.5 L13.5,2.5 L13.5000001,7.56718731 Z" ></path>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

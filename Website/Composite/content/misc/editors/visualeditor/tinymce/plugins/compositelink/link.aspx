@@ -27,7 +27,7 @@
 					<ui:tabpanels>
 						<ui:tabpanel>
 							<ui:fields>
-								<ui:fieldgroup label="${string:Composite.Web.VisualEditor:Link.LabelLink}">
+								<ui:fieldgroup>
 									<ui:field>
 										<ui:fielddesc label="${string:Composite.Web.VisualEditor:Link.LinkDestination}"/>
 										<ui:fielddata>
@@ -75,7 +75,7 @@
 						</ui:tabpanel>
 						<ui:tabpanel>
 							<ui:fields>
-								<ui:fieldgroup label="${string:Composite.Web.VisualEditor:LabelPresentation}">
+								<ui:fieldgroup>
 									<ui:field>
 										<ui:fielddesc label="${string:Composite.Web.VisualEditor:LabelClass}"/>
 										<ui:fieldhelp label="${string:Composite.Web.VisualEditor:HelpClass}"/>

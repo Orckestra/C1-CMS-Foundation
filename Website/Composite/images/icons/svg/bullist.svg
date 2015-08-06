@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="18px" height="18px" viewBox="0 0 18 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.3.2 (12043) - http://www.bohemiancoding.com/sketch -->
+    <title>Checklist</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="bullist" viewBox="0 0 18 18" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g transform="translate(-480.000000, -258.000000)" stroke-linecap="round">
+            <g  transform="translate(480.000000, 259.000000)">
+                <path d="M6.5003,1.5 L16.4999996,1.5" ></path>
+                <path d="M6.5003,7.5 L16.4999996,7.5" ></path>
+                <path d="M6.5003,13.5 L16.4999996,13.5" ></path>
+                <path d="M3.53448486,3.50372314 L0.5,3.50372314 L0.5,0.5 L3.53448486,0.5 L3.53448486,3.50372314 Z" ></path>
+                <path d="M3.53448486,9.50372314 L0.5,9.50372314 L0.5,6.5 L3.53448486,6.5 L3.53448486,9.50372314 Z" ></path>
+                <path d="M3.53448486,15.5037231 L0.5,15.5037231 L0.5,12.5 L3.53448486,12.5 L3.53448486,15.5037231 Z" ></path>
+            </g>
+        </g>
+    </g>
+</svg>
