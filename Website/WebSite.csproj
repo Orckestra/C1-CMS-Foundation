@@ -496,6 +496,7 @@
     <Content Include="Composite\styles\default\fields\fields-base.less" />
     <Content Include="Composite\styles\default\dialogs\dialog-multiselector.less" />
     <Content Include="Composite\styles\default\media-browser.less" />
+    <Content Include="Composite\styles\default\fields\urlinputdialog.less" />
     <None Include="Composite\styles\default\splash.less" />
     <Content Include="Composite\GenerateIconSprite.aspx" />
     <Content Include="Composite\images\editfunction.png" />
