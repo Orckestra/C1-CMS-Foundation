@@ -10,9 +10,8 @@ namespace Composite.C1Console.Security
         IEnumerable<EntityToken> GetHookies(EntityToken hooker);
         IEnumerable<EntityToken> GetParentHookers();
         IEnumerable<EntityToken> GetParentToChildHooks(EntityToken parentEntityToken);
-        void RemoveHook(EntityTokenHook entityTokenHook);
+
         void RemoveHooks(IEnumerable<EntityTokenHook> entityTokenHooks);
-        void AddHook(EntityTokenHook entityTokenHook);
         void AddHooks(IEnumerable<EntityTokenHook> entityTokenHooks);
 
         void RegisterDirtyCallback(string id, DirtyHooksCallbackDelegate dirtyHooksCallbackDelegate);

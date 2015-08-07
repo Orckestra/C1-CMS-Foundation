@@ -6,7 +6,6 @@ using Composite.C1Console.Events;
 using Composite.C1Console.Security.Plugins.HookRegistrator;
 using Composite.C1Console.Security.Plugins.HookRegistrator.Runtime;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
-using Composite.Core.Logging;
 
 
 namespace Composite.C1Console.Security.Foundation
@@ -17,7 +16,7 @@ namespace Composite.C1Console.Security.Foundation
 
         static HookRegistratorRegistry()
         {
-            GlobalEventSystemFacade.SubscribeToFlushEvent(OnFlushEvent);
+            GlobalEventSystemFacade.SubscribeToFlushEvent(args => Flush());
         }
 
 
@@ -37,8 +36,9 @@ namespace Composite.C1Console.Security.Foundation
 
         private static bool HasConfiguration()
         {
-            return (ConfigurationServices.ConfigurationSource != null) &&
-                   (ConfigurationServices.ConfigurationSource.GetSection(HookRegistratorSettings.SectionName) != null);
+            var configSource = ConfigurationServices.ConfigurationSource;
+
+            return configSource != null && configSource.GetSection(HookRegistratorSettings.SectionName) != null;
         }
 
 
@@ -64,13 +64,6 @@ namespace Composite.C1Console.Security.Foundation
 
 
 
-        private static void OnFlushEvent(FlushEventArgs args)
-        {
-            Flush();
-        }
-
-
-
         private sealed class Resources
         {
             public List<string> HookRegistratorPluginNames { get; set; }
@@ -83,7 +76,7 @@ namespace Composite.C1Console.Security.Foundation
 
                     IConfigurationSource configurationSource = GetConfiguration();
 
-                    HookRegistratorSettings settings = configurationSource.GetSection(HookRegistratorSettings.SectionName) as HookRegistratorSettings;
+                    var settings = configurationSource.GetSection(HookRegistratorSettings.SectionName) as HookRegistratorSettings;
 
                     if (settings == null)
                     {

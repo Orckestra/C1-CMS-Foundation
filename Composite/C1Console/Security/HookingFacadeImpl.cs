@@ -17,10 +17,10 @@ namespace Composite.C1Console.Security
     {
         private event HookingFacade.NewElementProviderRootEntitiesDelegate _newElementProviderRootEntitiesEvent;
 
-        private Dictionary<EntityToken, List<EntityToken>> _parentToChildHooks;
-        private Dictionary<EntityToken, List<EntityToken>> _childToParentHooks;
-        private bool _isInitialized = false;
-        private bool _isInitializing = false;
+        private EvaluatedHooks _evaluatedHooks;
+        private DateTime _lastFlushDateTime = DateTime.MinValue;
+
+        private bool _isInitializing;
         private Dictionary<string, DirtyHooksCallbackDelegate> _dirtyHooksCallbackDelegates = new Dictionary<string, DirtyHooksCallbackDelegate>();
 
         private readonly object _lock = new object();
@@ -29,86 +29,92 @@ namespace Composite.C1Console.Security
         private readonly List<Pair<bool, EntityTokenHook>> _changesQueue = new List<Pair<bool, EntityTokenHook>>();
 
 
+        private class EvaluatedHooks
+        {
+            public Dictionary<EntityToken, List<EntityToken>> ParentToChild = new Dictionary<EntityToken, List<EntityToken>>();
+            public Dictionary<EntityToken, List<EntityToken>> ChildToParent = new Dictionary<EntityToken, List<EntityToken>>();
+        }
+
+
         public void EnsureInitialization()
         {
-            if (!_isInitialized)
+            GetEvaluatedHooks();
+        }
+
+
+        private EvaluatedHooks GetEvaluatedHooks()
+        {
+            var evaluatedHooks = _evaluatedHooks;
+            if (evaluatedHooks != null) return evaluatedHooks;
+
+            lock (_lock)
             {
-                lock (_lock)
+                evaluatedHooks = _evaluatedHooks;
+                if (evaluatedHooks != null) return evaluatedHooks;
+
+                Verify.IsFalse(_isInitializing, "Calling to HookingFacade while it's initializing is not allowed");
+                _isInitializing = true;
+
+                DateTime calculationTime = DateTime.Now;
+
+                try
                 {
-                    if (!_isInitialized)
+                    ClearChangesQueue();
+                    evaluatedHooks = DoInitializeFromRegistrator();
+
+
+                    var dirtyHooksCallbackDelegates = _dirtyHooksCallbackDelegates;
+                    if (dirtyHooksCallbackDelegates.Count > 0)
                     {
-                        Verify.IsFalse(_isInitializing, "Calling to HookingFacade while it's initialalizing is not allowed");
-                        _isInitializing = true;
+                        var delegates = new Dictionary<string, DirtyHooksCallbackDelegate>(dirtyHooksCallbackDelegates);
+                        _dirtyHooksCallbackDelegates = new Dictionary<string, DirtyHooksCallbackDelegate>();
 
-                        try
+                        foreach (DirtyHooksCallbackDelegate dirtyHooksCallbackDelegate in delegates.Values)
                         {
-                            if (_parentToChildHooks == null || _childToParentHooks == null)
+                            try
                             {
-                                ClearChangesQueue();
-                                DoInitialize();
+                                dirtyHooksCallbackDelegate();
                             }
-
-                            if (_dirtyHooksCallbackDelegates.Count > 0)
+                            catch (Exception ex)
                             {
-                                var delegates = new Dictionary<string, DirtyHooksCallbackDelegate>(_dirtyHooksCallbackDelegates);
-                                _dirtyHooksCallbackDelegates = new Dictionary<string, DirtyHooksCallbackDelegate>();
-
-                                foreach (DirtyHooksCallbackDelegate dirtyHooksCallbackDelegate in delegates.Values)
-                                {
-                                    try
-                                    {
-                                        dirtyHooksCallbackDelegate();
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        Log.LogError("HookingFacade", ex);
-                                    }
-                                }
+                                Log.LogError("HookingFacade", ex);
                             }
-
-                            ApplyQueuedChanges();
-
-                            _isInitialized = true;
-                        }
-                        finally
-                        {
-                            _isInitializing = false;
                         }
                     }
+
+                    ApplyQueuedChanges(evaluatedHooks);
+
+                    if (calculationTime > _lastFlushDateTime)
+                    {
+                        _evaluatedHooks = evaluatedHooks;
+                    }
+
+                    return evaluatedHooks;
+                }
+                finally
+                {
+                    _isInitializing = false;
                 }
             }
         }
 
 
-
         public IEnumerable<EntityToken> GetHookies(EntityToken hook)
         {
             Verify.ArgumentNotNull(hook, "hook");
+            var evaluatedHooks = GetEvaluatedHooks();
 
-            lock (_lock)
-            {
-                EnsureInitialization();
-
-                List<EntityToken> hooks;
-                if (!_childToParentHooks.TryGetValue(hook, out hooks))
-                {
-                    return null;
-                }
-
-                return hooks;
-            }
+            List<EntityToken> hooks;
+            return evaluatedHooks.ChildToParent.TryGetValue(hook, out hooks) ? hooks : null;
         }
 
 
 
         public IEnumerable<EntityToken> GetParentHookers()
         {
-            lock (_lock)
-            {
-                EnsureInitialization();
+            var evaluatedHooks = GetEvaluatedHooks();
 
-                return _parentToChildHooks.Keys.ToList();
-            }
+            return evaluatedHooks.ParentToChild.Keys;
         }
 
 
@@ -117,51 +123,33 @@ namespace Composite.C1Console.Security
         {
             Verify.ArgumentNotNull(parentEntityToken, "parentEntityToken");
 
-            lock (_lock)
-            {
-                EnsureInitialization();
+            var evaluatedHooks = GetEvaluatedHooks();
 
-                List<EntityToken> hooks;
-                if (_parentToChildHooks.TryGetValue(parentEntityToken, out hooks) == false)
-                {
-                    return null;
-                }
-
-                return hooks;
-            }
+            List<EntityToken> hooks;
+            return evaluatedHooks.ParentToChild.TryGetValue(parentEntityToken, out hooks) ? hooks : null;
         }
 
 
-        public void RemoveHook(EntityTokenHook entityTokenHook)
+
+        private void RemoveHookInternal(EvaluatedHooks hooks, EntityTokenHook entityTokenHook)
         {
             Verify.ArgumentNotNull(entityTokenHook, "entityTokenHook");
 
-            lock (_changesQueueSyncRoot)
+            if (hooks.ParentToChild.ContainsKey(entityTokenHook.Hooker))
             {
-                _changesQueue.Add(new Pair<bool, EntityTokenHook>(false, entityTokenHook));
-            }
-        }
-
-
-        public void RemoveHookInternal(EntityTokenHook entityTokenHook)
-        {
-            Verify.ArgumentNotNull(entityTokenHook, "entityTokenHook");
-
-            if (_parentToChildHooks.ContainsKey(entityTokenHook.Hooker))
-            {
-                List<EntityToken> hookies = _parentToChildHooks[entityTokenHook.Hooker];
+                List<EntityToken> hookies = hooks.ParentToChild[entityTokenHook.Hooker];
 
                 foreach (EntityToken hookie in hookies)
                 {
-                    _childToParentHooks[hookie].Remove(entityTokenHook.Hooker);
+                    hooks.ChildToParent[hookie].Remove(entityTokenHook.Hooker);
 
-                    if (_childToParentHooks[hookie].Count == 0)
+                    if (hooks.ChildToParent[hookie].Count == 0)
                     {
-                        _childToParentHooks.Remove(hookie);
+                        hooks.ChildToParent.Remove(hookie);
                     }
                 }
 
-                _parentToChildHooks.Remove(entityTokenHook.Hooker);
+                hooks.ParentToChild.Remove(entityTokenHook.Hooker);
             }
         }
 
@@ -173,33 +161,19 @@ namespace Composite.C1Console.Security
 
             lock (_changesQueueSyncRoot)
             {
-                foreach (EntityTokenHook entityTokenHook in entityTokenHooks)
-                {
-                    RemoveHook(entityTokenHook);
-                }
+                _changesQueue.AddRange(entityTokenHooks.Select(hook => new Pair<bool, EntityTokenHook>(false, hook)));
             }
         }
 
 
-        public void AddHook(EntityTokenHook entityTokenHook)
-        {
-            Verify.ArgumentNotNull(entityTokenHook, "entityTokenHook");
-
-            lock (_changesQueueSyncRoot)
-            {
-                _changesQueue.Add(new Pair<bool, EntityTokenHook>(true, entityTokenHook));
-            }
-        }
-
-
-        private void AddHookInternal(EntityTokenHook entityTokenHook)
+        private void AddHookInternal(EvaluatedHooks hooks, EntityTokenHook entityTokenHook)
         {
             Verify.ArgumentNotNull(entityTokenHook, "entityTokenHook");
 
             List<EntityToken> hookies;
-            if (_parentToChildHooks.TryGetValue(entityTokenHook.Hooker, out hookies) == false)
+            if (!hooks.ParentToChild.TryGetValue(entityTokenHook.Hooker, out hookies))
             {
-                _parentToChildHooks.Add(entityTokenHook.Hooker, entityTokenHook.Hookies.ToList());
+                hooks.ParentToChild.Add(entityTokenHook.Hooker, entityTokenHook.Hookies.ToList());
             }
             else
             {
@@ -217,11 +191,11 @@ namespace Composite.C1Console.Security
             {
                 List<EntityToken> hookers;
 
-                if (_childToParentHooks.TryGetValue(hookie, out hookers) == false)
+                if (!hooks.ChildToParent.TryGetValue(hookie, out hookers))
                 {
                     hookers = new List<EntityToken>();
 
-                    _childToParentHooks.Add(hookie, hookers);
+                    hooks.ChildToParent.Add(hookie, hookers);
                 }
                 else if (hookers.Contains(entityTokenHook.Hooker))
                 {
@@ -240,10 +214,7 @@ namespace Composite.C1Console.Security
 
             lock (_changesQueueSyncRoot)
             {
-                foreach (EntityTokenHook entityTokenHook in entityTokenHooks)
-                {
-                    AddHook(entityTokenHook);
-                }
+                _changesQueue.AddRange(entityTokenHooks.Select(hook => new Pair<bool, EntityTokenHook>(true, hook)));
             }
         }
 
@@ -255,7 +226,7 @@ namespace Composite.C1Console.Security
 
             lock (_lock)
             {
-                if (_dirtyHooksCallbackDelegates.ContainsKey(id) == false)
+                if (!_dirtyHooksCallbackDelegates.ContainsKey(id))
                 {
                     _dirtyHooksCallbackDelegates.Add(id, dirtyHooksCallbackDelegate);
                 }
@@ -305,26 +276,22 @@ namespace Composite.C1Console.Security
 
         public void Flush()
         {
-            lock (_lock)
-            {
-                _isInitialized = false;
-                _parentToChildHooks = null;
-                _childToParentHooks = null;
-                _dirtyHooksCallbackDelegates = new Dictionary<string, DirtyHooksCallbackDelegate>();
-            }
+            _lastFlushDateTime = DateTime.Now;
+            _evaluatedHooks = null;
+            _dirtyHooksCallbackDelegates = new Dictionary<string, DirtyHooksCallbackDelegate>();
         }
 
 
 
-        private void DoInitialize()
+        private EvaluatedHooks DoInitializeFromRegistrator()
         {
+            var result = new EvaluatedHooks();
+
             using (GlobalInitializerFacade.CoreIsInitializedScope)
             {
                 if (HostingEnvironment.ApplicationHost.ShutdownInitiated())
                 {
-                    _parentToChildHooks = new Dictionary<EntityToken, List<EntityToken>>();
-                    _childToParentHooks = new Dictionary<EntityToken, List<EntityToken>>();
-                    return;
+                    return result;
                 }
 
                 using(new LogExecutionTime("RGB(194, 252, 131)HookingFacade", "Initializing Entity Hooks"))
@@ -332,52 +299,32 @@ namespace Composite.C1Console.Security
                 {
                     Verify.That(GlobalInitializerFacade.SystemCoreInitialized, "Expected system core to be initialized");
 
-                    var parentToChildHooks = new Dictionary<EntityToken, List<EntityToken>>();
 
                     foreach (string name in HookRegistratorRegistry.HookRegistratorPluginNames)
                     {
                         var entityTokenHooks = HookRegistratorPluginFacade.GetHooks(name);
                         
-
                         foreach (EntityTokenHook entityTokenHook in entityTokenHooks)
                         {
-                            List<EntityToken> hookies;
-
-                            if (!parentToChildHooks.TryGetValue(entityTokenHook.Hooker, out hookies))
-                            {
-                                hookies = new List<EntityToken>();
-
-                                parentToChildHooks.Add(entityTokenHook.Hooker, hookies);
-                            }
+                            List<EntityToken> hookies = result.ParentToChild.GetOrAdd(entityTokenHook.Hooker, () => new List<EntityToken>());
 
                             hookies.AddRange(entityTokenHook.Hookies);
                         }
                     }
 
-                    _parentToChildHooks = parentToChildHooks;
-
-                    var childToParentHooks = new Dictionary<EntityToken, List<EntityToken>>();
-
-                    foreach (KeyValuePair<EntityToken, List<EntityToken>> kvp in _parentToChildHooks)
+                    foreach (KeyValuePair<EntityToken, List<EntityToken>> kvp in result.ParentToChild)
                     {
                         foreach (EntityToken hookie in kvp.Value)
                         {
-                            List<EntityToken> hookers;
-
-                            if (!childToParentHooks.TryGetValue(hookie, out hookers))
-                            {
-                                hookers = new List<EntityToken>();
-
-                                childToParentHooks.Add(hookie, hookers);
-                            }
+                            List<EntityToken> hookers = result.ChildToParent.GetOrAdd(hookie, () => new List<EntityToken>());
 
                             hookers.Add(kvp.Key);
                         }
                     }
-
-                    _childToParentHooks = childToParentHooks;
                 }
             }
+
+            return result;
         }
 
 
@@ -392,7 +339,7 @@ namespace Composite.C1Console.Security
 
 
 
-        private void ApplyQueuedChanges()
+        private void ApplyQueuedChanges(EvaluatedHooks evaluatedHooks)
         {
             lock (_changesQueueSyncRoot)
             {
@@ -400,11 +347,11 @@ namespace Composite.C1Console.Security
                 {
                     if (change.First)
                     {
-                        AddHookInternal(change.Second);
+                        AddHookInternal(evaluatedHooks, change.Second);
                     }
                     else
                     {
-                        RemoveHookInternal(change.Second);
+                        RemoveHookInternal(evaluatedHooks, change.Second);
                     }
                 }
 
