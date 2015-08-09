@@ -493,6 +493,8 @@
     <Content Include="Composite\images\icons\svg\image-left.svg" />
     <Content Include="Composite\images\icons\svg\image-right.svg" />
     <Content Include="Composite\images\icons\svg\indent.svg" />
+    <Content Include="Composite\images\icons\svg\resize-screen.svg" />
+    <Content Include="Composite\images\icons\svg\seo.svg" />
     <Content Include="Composite\images\icons\svg\split.svg" />
     <Content Include="Composite\images\icons\svg\selection.svg" />
     <Content Include="Composite\images\icons\svg\settings.svg" />
@@ -511,6 +513,7 @@
     <Content Include="Composite\styles\default\dialogs\dialog-multiselector.less" />
     <Content Include="Composite\styles\default\media-browser.less" />
     <Content Include="Composite\styles\default\fields\urlinputdialog.less" />
+    <Content Include="Composite\styles\default\icons.less" />
     <None Include="Composite\styles\default\splash.less" />
     <Content Include="Composite\GenerateIconSprite.aspx" />
     <Content Include="Composite\images\editfunction.png" />
@@ -588,7 +591,6 @@
     <Content Include="Composite\images\icons\svg\cross.svg" />
     <Content Include="Composite\images\icons\svg\customurlaction-defaulticon.svg" />
     <Content Include="Composite\images\icons\svg\cut.svg" />
-    <Content Include="Composite\images\icons\svg\data-awaiting-approval - Copy.svg" />
     <Content Include="Composite\images\icons\svg\data-awaiting-publication.svg" />
     <Content Include="Composite\images\icons\svg\data-draft.svg" />
     <Content Include="Composite\images\icons\svg\data-ghosted.svg" />
@@ -2363,6 +2365,7 @@
     <None Include="Composite\styles\default\sourcecodeviewers.less" />
     <None Include="Composite\styles\default\splitboxes.less" />
     <None Include="Composite\styles\default\tabboxes.less" />
+    <Content Include="Composite\styles\default\tables.less" />
     <None Include="Composite\styles\default\texts.less" />
     <None Include="Composite\styles\default\titlebars.less" />
     <Content Include="Composite\styles\default\toolbars\system.less" />

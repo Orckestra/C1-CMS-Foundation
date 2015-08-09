@@ -8,10 +8,11 @@ ToolBarBinding.TYPE_DEFAULT					= "imagesandtext";
 ToolBarBinding.CLASSNAME_TEXTONLY 			= "textonly";
 ToolBarBinding.CLASSNAME_IMAGESONLY 		= "imagesonly";
 ToolBarBinding.CLASSNAME_IMAGESIZELARGE 	= "imagesizelarge";
-ToolBarBinding.CLASSNAME_IMAGESIZEXLARGE 	= "imagesizexlarge";
+ToolBarBinding.CLASSNAME_IMAGESIZEXLARGE    = "imagesizexlarge";
+ToolBarBinding.CLASSNAME_ICONSIZE_22        = "icons-s-22";
 ToolBarBinding.IMAGESIZE_NORMAL 			= "normal";
 ToolBarBinding.IMAGESIZE_LARGE 				= "large";
-ToolBarBinding.IMAGESIZE_XLARGE 			= "xlarge";
+ToolBarBinding.ICONSIZE_22                  = "icons-s-22";
 
 /**
  * @class
@@ -325,6 +326,9 @@ ToolBarBinding.prototype.setImageSize = function ( size ) {
 			this.attachClassName ( ToolBarBinding.CLASSNAME_IMAGESIZEXLARGE );
 			this.detachClassName ( ToolBarBinding.CLASSNAME_IMAGESIZELARGE );
 			break;
+	    case ToolBarBinding.ICONSIZE_22:
+	        this.attachClassName(ToolBarBinding.CLASSNAME_ICONSIZE_22);
+	        break;
 		default :
 			this.detachClassName ( ToolBarBinding.CLASSNAME_IMAGESIZELARGE );
 			this.detachClassName ( ToolBarBinding.CLASSNAME_IMAGESIZEXLARGE );

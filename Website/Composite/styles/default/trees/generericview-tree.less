@@ -10,10 +10,15 @@
         margin-bottom: 40px;
     }
 
-    ui|labelbox, svg, ui|labelbody, ui|labeltext {
+    ui|labelbox, ui|labelbody, ui|labeltext {
         float: none;
         padding: 0;
         margin: 0;
+    }
+   
+    svg {
+        float: none;
+        margin: 10px auto;
     }
 
 
@@ -23,12 +28,6 @@
         text-align: center;
         overflow: hidden;
 
-
-        svg {
-            width: 150px;
-            height: 150px;
-            margin: 10px auto;
-        }
 
         &.focused {
             ui|labeltext {
@@ -54,10 +53,8 @@
         ui|labelbox {
             width: 100%;
         }
-
+        
         svg {
-            width: 400px;
-            height: 400px;
             margin-top: 50px;
         }
 
@@ -66,7 +63,6 @@
            top: 0;
            width: 100%;
            text-align: center;
-
         }
     }
 }

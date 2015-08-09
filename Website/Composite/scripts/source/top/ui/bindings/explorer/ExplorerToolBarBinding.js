@@ -34,7 +34,7 @@ ExplorerToolBarBinding.prototype.toString = function () {
 ExplorerToolBarBinding.prototype.onBindingRegister = function () {
 	
 	ExplorerToolBarBinding.superclass.onBindingRegister.call ( this );
-	this.setImageSize ( ToolBarBinding.IMAGESIZE_LARGE );
+	this.setImageSize(ToolBarBinding.ICONSIZE_22);
 	
 }
 

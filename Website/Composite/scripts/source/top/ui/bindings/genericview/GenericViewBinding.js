@@ -4,7 +4,8 @@ GenericViewBinding.superclass = TreeBinding.prototype;
 
 GenericViewBinding.CLASSNAME = "generericview";
 GenericViewBinding.CLASSNAME_SINGLE = "single";
-
+GenericViewBinding.CLASSNAME_ICONSIZE = "icons-s-150";
+GenericViewBinding.CLASSNAME_SINGLE_ICONSIZE = "icons-s-400";
 /**
  * @class
  */
@@ -94,6 +95,8 @@ GenericViewBinding.prototype.setNode = function (node) {
 
 	this.empty();
 	this.detachClassName(GenericViewBinding.CLASSNAME_SINGLE);
+	this.detachClassName(GenericViewBinding.CLASSNAME_SINGLE_ICONSIZE);
+	this.detachClassName(GenericViewBinding.CLASSNAME_ICONSIZE);
 
 	if (node) {
 		if (node.hasChildren()) {
@@ -103,9 +106,11 @@ GenericViewBinding.prototype.setNode = function (node) {
 			while (children.hasEntries()) {
 				var child = children.extractFirst();
 				this.addNode(child);
+				this.attachClassName(GenericViewBinding.CLASSNAME_ICONSIZE);
 			}
 		} else {
-			this.attachClassName(GenericViewBinding.CLASSNAME_SINGLE);
+		    this.attachClassName(GenericViewBinding.CLASSNAME_SINGLE);
+		    this.attachClassName(GenericViewBinding.CLASSNAME_SINGLE_ICONSIZE);
 			this.addNode(node);
 		}
 	}

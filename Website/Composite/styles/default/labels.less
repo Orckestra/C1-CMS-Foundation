@@ -8,18 +8,14 @@ ui|labelbox {
     -vendor-user-select: none; /* See notes in DocumentManager.js */
     max-width: 100%;
 
+
+    svg {
+        float: left;
+    }
+
     ui|labelbody {
         margin-left: auto !important;
         max-width: 100%;
-
-        ui|icon { // usage: FontIconSelector
-            float: left;
-            width: 18px;
-            height: 18px;
-            font-size: 18px;
-            text-align: center;
-            color: #333;
-        }
     }
 
     ui|labeltext {
@@ -29,17 +25,6 @@ ui|labelbox {
 
     &.toolbartext {
         margin-top: 4px;
-    }
-
-
-    svg {
-        width: 18px;
-        height: 18px;
-        display: block;
-        float: left;
-        fill: currentColor;
-        color: currentColor;
-        stroke: currentColor;
     }
 
     &.flipped {
@@ -72,6 +57,7 @@ ui|labelbox {
     }
 
     &.image-and-text {
+
         ui|labeltext {
             margin-left: 28px;
         }

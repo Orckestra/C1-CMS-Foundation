@@ -30,7 +30,7 @@
                                 <img id="imgViewFile" runat="server" class="previewImage" Visible="false" />
                             </div>
                             
-                            <div class="previewIcon" runat="server" ID="divIconPreview" Visible="false">
+                            <div class="previewIcon icons-s-400" runat="server" ID="divIconPreview" Visible="false">
                                 <ui:labelbox class="imageonly" image="<%= FileIconName %>" />
                             </div>
 
@@ -49,7 +49,7 @@
                                         <div class="imagePreviewFrame">
                                             <img ID="imgPreview" runat="server" class="previewImage" Visible="false" />
                                             
-                                            <div class="previewIcon" runat="server" ID="divIconPreview" Visible="false">
+                                            <div class="previewIcon icons-s-150" runat="server" ID="divIconPreview" Visible="false">
                                                 <ui:labelbox class="imageonly" image="<%# (Container.DataItem as Element).VisualData.Icon.ResourceName %>" />
                                             </div>
                                         </div>
