@@ -18,10 +18,13 @@
     <group>
       <format id="bold" label="Strong" image="" notes="Strong text" inline="strong">
         <!-- Add button: you can overwrite the label, image and notes attributes -->
-        <button image="Images/bold.png" label="" />
+        <button image="${icon:bold}" label="" />
       </format>
       <format id="italic" label="Emphasis" image="" notes="Emphasized text" inline="em">
-        <button image="Images/italic.png" label="" />
+        <button image="${icon:italic}" label="" />
+      </format>
+      <format id="code" label="Inline Code" image="" notes="Inline Code" inline="code">
+        <button label="CODE" />
       </format>
       <!-- example: Button to surround selection with u - note this isn't propper xhtml. Consider using a class for this 
       <format id="underline" label="Underline" image="" notes="Underlined text" inline="u">
@@ -63,22 +66,22 @@
 
     <radiogroup>
       <format id="textalignleft" label="Left align text" image="" notes="" classes="textalignleft" selector="p, h1, h2, h3">
-        <button label="" image="Images/textalignleft.png" />
+        <button label="" image="${icon:text-align-left}" />
       </format>
       <format id="textaligncenter" label="Center text" image="" notes="" classes="textaligncenter" selector="p, h1, h2, h3">
-        <button label="" image="Images/textaligncenter.png" />
+        <button label="" image="${icon:text-align-center}" />
       </format>
       <format id="textalignright" label="Right align text" image="" notes="" classes="textalignright" selector="p, h1, h2, h3">
-        <button label="" image="Images/textalignright.png" />
+        <button label="" image="${icon:text-align-right}" />
       </format>
     </radiogroup>
 
-    <!--<radiogroup>
-      <format id="alignleft" label="Left" image="" notes="Align left" classes="left" selector="img,table">
-        <button label="" image="images/left.png" />
+   <!--<radiogroup>
+      <format id="alignleft" label="Left" image="" notes="Align left" classes="pull-left" selector="img,table">
+        <button label="" image="${icon:image-left}" />
       </format>
-      <format id="alignright" label="Right" image="" notes="Align right" classes="right" selector="img,table">
-        <button label="" image="images/right.png" />
+      <format id="alignright" label="Right" image="" notes="Align right" classes="pull-right" selector="img,table">
+        <button label="" image="${icon:image-right}" />
       </format>
     </radiogroup>-->
 
