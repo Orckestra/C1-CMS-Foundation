@@ -484,6 +484,7 @@
       <DependentUpon>GenerateDynamicSchemas.aspx</DependentUpon>
     </Compile>
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\Selectors\UrlComboBox.ascx" />
+    <Content Include="Composite\grunt.html" />
     <Content Include="Composite\images\icons\StandardIcons.xml" />
     <Content Include="Composite\images\icons\svg\bullist.svg" />
     <Content Include="Composite\images\icons\svg\end.svg" />

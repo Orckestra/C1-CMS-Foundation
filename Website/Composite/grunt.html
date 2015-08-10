@@ -1,0 +1,68 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Setting up GRUNT with Visual Studio</title>
+    <style type="text/css">
+        body, html {
+            height: 100%;
+            background: #ececec;
+            font-size: 16px;
+            font-family: Arial, sans-serif;
+            line-height: 1.4;
+        }
+
+        .container {
+            width: 900px;
+            margin: 5% auto;
+            border: solid 1px #ccc;
+            background: #fff;
+            padding: 30px;
+        }
+
+        ol li {
+            margin-bottom: 20px;
+        }
+
+        .command {
+            background: #000;
+            color: #fff;
+            padding: 3px 5px;
+            width: 300px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Setting up Grunt with Visual Studio 2013</h1>
+        <ol>
+            <li>You need to install <strong>Node.JS</strong> which you can get from here <a href="http://nodejs.org/download/">http://nodejs.org/download/</a></li>
+            <li>
+                You need to install Grunt globally which you do by running this command
+                <p class="command">npm install -g grunt-cli</p>
+                You can do that on your command shell as Administrator (for Windows).
+                For more details read here - <a href="http://gruntjs.com/getting-started">http://gruntjs.com/getting-started</a>
+            </li>
+            <li>
+                Install <strong>Grunt Runner</strong> for Visual Studio <br />
+                <a href="https://visualstudiogallery.msdn.microsoft.com/8e1b4368-4afb-467a-bc13-9650572db708">https://visualstudiogallery.msdn.microsoft.com/8e1b4368-4afb-467a-bc13-9650572db708</a>
+            </li>
+            <li>
+                Install <strong>Grunt Launcher</strong> for Visual Studio (additional features for Grunt, Gulp, npm and Bower) -
+                <br /><a href="https://visualstudiogallery.msdn.microsoft.com/dcbc5325-79ef-4b72-960e-0a51ee33a0ff">https://visualstudiogallery.msdn.microsoft.com/dcbc5325-79ef-4b72-960e-0a51ee33a0ff</a>
+            </li>
+            <li>
+                Opent the C1 solution in Visual Studio. In Website root folder locate the file <br /><code>package.json  -> Right click ->  NPM install packages</code>. <br />
+                That command will add next folder "node_modules".
+            </li>
+            <li>Open "Task Runner Explorer". In Visual Studio open <br /><code>VIEW -> Other Windows -> Task Runner Explorer</code></li>
+            <li>On "Task Runner Explorer" window press "Refresh" button and run <strong>"build"</strong> task.</li>
+            <li>
+                <strong>You are done</strong>. <code>CSS</code> is compiled.<br/>
+                <a href="top.aspx">Start Composite C1 console</a> and press F5 in your Browser.
+            </li>
+
+        </ol>
+    </div>
+</body>
+</html>
