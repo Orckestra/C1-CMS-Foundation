@@ -124,3 +124,54 @@ ui|dialogpage {
         width: 100%;
     }
 }
+
+
+ui|dialogborder {
+	position: absolute;
+	overflow: hidden;
+	z-index: 4;
+
+	&.n {
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 4px;
+	}
+	&.s {
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		height: 4px;
+	}
+	&.w {
+		top: 0;
+		left: 0;
+		width: 4px;
+		height: 100%;
+	}
+	&.e {
+		top: 0;
+		right: 0;
+		width: 4px;
+		height: 100%;
+	}
+
+}
+ui|dialog.resizable ui|dialogborder {
+
+	&.n {
+		cursor: n-resize;
+	}
+
+	&.s {
+		cursor: s-resize;
+	}
+
+	&.w {
+		cursor: w-resize;
+	}
+
+	&.e {
+		cursor: e-resize;
+	}
+}
