@@ -18011,9 +18011,10 @@ ToolBarBinding.CLASSNAME_TEXTONLY="textonly";
 ToolBarBinding.CLASSNAME_IMAGESONLY="imagesonly";
 ToolBarBinding.CLASSNAME_IMAGESIZELARGE="imagesizelarge";
 ToolBarBinding.CLASSNAME_IMAGESIZEXLARGE="imagesizexlarge";
+ToolBarBinding.CLASSNAME_ICONSIZE_22="icons-s-22";
 ToolBarBinding.IMAGESIZE_NORMAL="normal";
 ToolBarBinding.IMAGESIZE_LARGE="large";
-ToolBarBinding.IMAGESIZE_XLARGE="xlarge";
+ToolBarBinding.ICONSIZE_22="icons-s-22";
 function ToolBarBinding(){
 this.logger=SystemLogger.getLogger("ToolBarBinding");
 this.hasImages=true;
@@ -18154,6 +18155,9 @@ break;
 case ToolBarBinding.IMAGESIZE_XLARGE:
 this.attachClassName(ToolBarBinding.CLASSNAME_IMAGESIZEXLARGE);
 this.detachClassName(ToolBarBinding.CLASSNAME_IMAGESIZELARGE);
+break;
+case ToolBarBinding.ICONSIZE_22:
+this.attachClassName(ToolBarBinding.CLASSNAME_ICONSIZE_22);
 break;
 default:
 this.detachClassName(ToolBarBinding.CLASSNAME_IMAGESIZELARGE);
@@ -26207,7 +26211,7 @@ return "[ExplorerToolBarBinding]";
 };
 ExplorerToolBarBinding.prototype.onBindingRegister=function(){
 ExplorerToolBarBinding.superclass.onBindingRegister.call(this);
-this.setImageSize(ToolBarBinding.IMAGESIZE_LARGE);
+this.setImageSize(ToolBarBinding.ICONSIZE_22);
 };
 ExplorerToolBarBinding.newInstance=function(_fc0){
 var _fc1=DOMUtil.createElementNS(Constants.NS_UI,"ui:explorertoolbar",_fc0);
@@ -29190,6 +29194,8 @@ GenericViewBinding.prototype.constructor=GenericViewBinding;
 GenericViewBinding.superclass=TreeBinding.prototype;
 GenericViewBinding.CLASSNAME="generericview";
 GenericViewBinding.CLASSNAME_SINGLE="single";
+GenericViewBinding.CLASSNAME_ICONSIZE="icons-s-150";
+GenericViewBinding.CLASSNAME_SINGLE_ICONSIZE="icons-s-400";
 function GenericViewBinding(){
 this.logger=SystemLogger.getLogger("GenericViewBinding");
 this.perspectiveNode=null;
@@ -29222,15 +29228,19 @@ break;
 GenericViewBinding.prototype.setNode=function(node){
 this.empty();
 this.detachClassName(GenericViewBinding.CLASSNAME_SINGLE);
+this.detachClassName(GenericViewBinding.CLASSNAME_SINGLE_ICONSIZE);
+this.detachClassName(GenericViewBinding.CLASSNAME_ICONSIZE);
 if(node){
 if(node.hasChildren()){
 var _11c9=node.getChildren();
 while(_11c9.hasEntries()){
 var child=_11c9.extractFirst();
 this.addNode(child);
+this.attachClassName(GenericViewBinding.CLASSNAME_ICONSIZE);
 }
 }else{
 this.attachClassName(GenericViewBinding.CLASSNAME_SINGLE);
+this.attachClassName(GenericViewBinding.CLASSNAME_SINGLE_ICONSIZE);
 this.addNode(node);
 }
 }
