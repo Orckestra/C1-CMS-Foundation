@@ -39,7 +39,7 @@ namespace Composite.Core.Instrumentation
 
             var stack = threadData[ProfilerKey] as Stack<Measurement>;
 
-            Verify.That(stack.Count == 1, "Perfomance node stack should have exactly one (the root) node");
+            Verify.That(stack.Count == 1, "Performance node stack should have exactly one (the root) node");
 
             threadData.SetValue(ProfilerKey, null);
 
@@ -56,49 +56,78 @@ namespace Composite.Core.Instrumentation
         {
             if (Disabled) return EmptyDisposable.Instance;
 
+            Measurement currentNode;
+            Stack<Measurement> stack;
+            bool isInParallel;
+
+            if (!GetCurrentNode(out currentNode, out stack, out isInParallel))
+            {
+                return EmptyDisposable.Instance;
+            }
+
+            Stack<Measurement> newNodeStack;
+
+            if (isInParallel)
+            {
+                ThreadDataManagerData currentThreadData = ThreadDataManager.Current;
+
+                if (currentThreadData.HasValue(currentThreadData))
+                {
+                    newNodeStack = currentThreadData[ProfilerKey] as Stack<Measurement>;
+                }
+                else
+                {
+                    newNodeStack = new Stack<Measurement>();
+                    currentThreadData.SetValue(ProfilerKey, newNodeStack);
+                }
+            }
+            else
+            {
+                newNodeStack = stack;
+            }
+
+            return new InfoCollector(currentNode, name, isInParallel, newNodeStack);
+        }
+
+        private static bool GetCurrentNode(
+            out Measurement parentNode, 
+            out Stack<Measurement> stack,
+            out bool isInParallel)
+        {
+            if (Disabled)
+            {
+                parentNode = null;
+                stack = null;
+                isInParallel = false;
+                return false;
+            }
+
             ThreadDataManagerData currentThreadData = ThreadDataManager.Current;
             ThreadDataManagerData threadData = currentThreadData;
 
-            bool isInParralel = false;
-            while(threadData != null)
+            isInParallel = false;
+            while (threadData != null)
             {
-                if(threadData.HasValue(ProfilerKey))
+                if (threadData.HasValue(ProfilerKey))
                 {
-                    var stack = threadData[ProfilerKey] as Stack<Measurement>;
+                    stack = threadData[ProfilerKey] as Stack<Measurement>;
 
                     if (stack.Count > 0)
                     {
-                        Measurement parentNode = stack.Peek();
+                        parentNode = stack.Peek();
 
-                        Stack<Measurement> newNodeStack;
-
-                        if (isInParralel)
-                        {
-                            if (currentThreadData.HasValue(currentThreadData))
-                            {
-                                newNodeStack = currentThreadData[ProfilerKey] as Stack<Measurement>;
-                            }
-                            else
-                            {
-                                newNodeStack = new Stack<Measurement>();
-                                currentThreadData.SetValue(ProfilerKey, newNodeStack);
-                            }
-                        }
-                        else
-                        {
-                            newNodeStack = stack;
-                        }
-
-                        return new InfoCollector(parentNode, name, isInParralel, newNodeStack);
+                        return true;
                     }
                 }
 
                 // Going to parent thread
                 threadData = threadData.Parent;
-                isInParralel = true;
+                isInParallel = true;
             }
 
-            return EmptyDisposable.Instance;
+            stack = null;
+            parentNode = null;
+            return false;
         }
 
         private class InfoCollector : IDisposable
@@ -143,6 +172,32 @@ namespace Composite.Core.Instrumentation
 #endif
 
                 _stack.Pop();
+            }
+        }
+
+        internal static void AddSubMeasurement(Measurement measurement)
+        {
+            Verify.ArgumentNotNull(measurement, "measurement");
+
+            Measurement currentNode;
+            Stack<Measurement> stack;
+            bool isInParallel;
+
+            if (!GetCurrentNode(out currentNode, out stack, out isInParallel))
+            {
+                return;
+            }
+
+            if (isInParallel)
+            {
+                lock (currentNode.SyncRoot)
+                {
+                    currentNode.ParallelNodes.Add(measurement);
+                }
+            }
+            else
+            {
+                currentNode.Nodes.Add(measurement);
             }
         }
 

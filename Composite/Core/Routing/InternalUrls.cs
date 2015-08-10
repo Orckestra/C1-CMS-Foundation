@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using Composite.Core.Instrumentation;
 using Composite.Core.Linq;
 using Composite.Core.WebClient;
 
@@ -101,6 +103,8 @@ namespace Composite.Core.Routing
 
             var urlSpace = new UrlSpace();
 
+            var measurements = new Dictionary<string, Measurement>();
+
             var convertionCache = new Dictionary<string, string>();
             foreach (var urlToConvert in urlsToConvert)
             {
@@ -119,7 +123,11 @@ namespace Composite.Core.Routing
                         continue;
                     }
 
-                    publicUrl = urlToConvert.Converter.Convert(decodedInternalUrl, urlSpace);
+                    var converter = urlToConvert.Converter;
+                    MeasureConvertionPerformance(measurements, converter, () =>
+                    {
+                        publicUrl = urlToConvert.Converter.Convert(decodedInternalUrl, urlSpace);
+                    });
 
                     if (publicUrl == null)
                     {
@@ -146,7 +154,44 @@ namespace Composite.Core.Routing
                 result.Insert(urlMatch.Index, publicUrl);
             }
 
+            foreach (var measurement in measurements.Values)
+            {
+                Profiler.AddSubMeasurement(measurement);
+            }
+
             return result != null ? result.ToString() : html;
+        }
+
+        private static void MeasureConvertionPerformance(Dictionary<string, Measurement> measurements, IInternalUrlConverter converter, Action action)
+        {
+            string key = converter.GetType().FullName;
+
+            var stopwatch = new Stopwatch();
+
+            long memoryBefore = GC.GetTotalMemory(false);
+
+            stopwatch.Start();
+            action();
+            stopwatch.Stop();
+
+            long memoryTotal = GC.GetTotalMemory(false) - memoryBefore;
+            long totalTime = (stopwatch.ElapsedTicks*1000000)/Stopwatch.Frequency;
+
+            if (memoryTotal < 0)
+            {
+                memoryTotal = 0;
+            }
+
+            Measurement existingRecord;
+            if (measurements.TryGetValue(key, out existingRecord))
+            {
+                existingRecord.MemoryUsage += memoryTotal;
+                existingRecord.TotalTime += totalTime; // NOTE: Loosing some of the precision here
+            }
+            else
+            {
+                measurements.Add(key, new Measurement(key) { MemoryUsage = memoryTotal, TotalTime = totalTime });
+            }
         }
 
         private class UrlToConvert : Tuple<UrlUtils.UrlMatch, string, IInternalUrlConverter>
