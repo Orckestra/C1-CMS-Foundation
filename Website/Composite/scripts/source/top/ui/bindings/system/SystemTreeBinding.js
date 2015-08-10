@@ -997,6 +997,9 @@ SystemTreeBinding.prototype.selectDefault = function () {
 	}
 	else if (this._defaultTreeNode) {
 		this._defaultTreeNode.focus();
+		if (this._defaultTreeNode.isContainer && !this._defaultTreeNode.isOpen) {
+			this._defaultTreeNode.open();
+		}
 		this._defaultTreeNode = null;
 	}
 }
