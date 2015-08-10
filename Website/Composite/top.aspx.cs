@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using Composite.Core.Configuration;
 
 
@@ -7,6 +8,13 @@ public partial class Composite_Management_Top : System.Web.UI.Page
 {
     protected void Page_Init(object sender, EventArgs e)
     {
+        var isCSSCompiled = File.Exists(Server.MapPath("~/Composite/styles/styles.min.css"));
+        gruntholder.Visible = !isCSSCompiled;
+        if (!isCSSCompiled)
+        {
+            return;
+        }
+        
         string myPathAndQuery = Request.Url.PathAndQuery;
 
         if (!myPathAndQuery.Contains("/Composite/"))
@@ -36,5 +44,6 @@ public partial class Composite_Management_Top : System.Web.UI.Page
             introholder.Visible = false;
             splashholder.Visible = true;
         }
+       
     }
 }

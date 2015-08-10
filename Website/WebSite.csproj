@@ -1196,6 +1196,7 @@
     <None Include="Composite\styles\default\editors.less" />
     <Content Include="Composite\styles\default\_mixins.less" />
     <None Include="Composite\styles\default\rtl.less" />
+    <Content Include="Composite\grunt.inc" />
     <Content Include="Composite\unsecure.js" />
     <Content Include="Composite\unsecure.css" />
     <Content Include="Composite\images\loading.gif" />
