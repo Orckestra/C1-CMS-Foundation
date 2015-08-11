@@ -48,39 +48,6 @@ namespace Composite.Core.WebClient.Media
         /// </summary>
         public int? Quality { get; set; }
 
-        /// <exclude />
-        public ResizingOptions()
-        {
-        }
-
-        /// <exclude />
-        internal ResizingOptions(string predefinedOptionsName)
-        {
-            //Load the xml file
-            var options = GetPredefinedResizingOptions().Elements("image");
-
-            foreach (XElement e in options.Where(e => (string)e.Attribute("name") == predefinedOptionsName))
-            {
-                Height = ParseOptionalIntAttribute(e, "height");
-                Width = ParseOptionalIntAttribute(e, "width");
-                MaxHeight = ParseOptionalIntAttribute(e, "maxheight");
-                MaxWidth = ParseOptionalIntAttribute(e, "maxwidth");
-                Quality = ParseOptionalIntAttribute(e, "quality");
-
-                var attr = e.Attribute("action");
-                if (attr != null)
-                {
-                    ResizingAction = (ResizingAction)Enum.Parse(typeof(ResizingAction), attr.Value, true);
-                }
-            }
-        }
-
-        private static int? ParseOptionalIntAttribute(XElement element, string attributeName)
-        {
-            XAttribute attribute = element.Attribute(attributeName);
-            return attribute == null ? (int?) null : int.Parse(attribute.Value);
-        }
-
         /// <summary>
         /// Image quality (when doing lossy compression)
         /// </summary>
@@ -112,6 +79,13 @@ namespace Composite.Core.WebClient.Media
             }
         }
 
+
+        /// <exclude />
+        public ResizingOptions()
+        {
+        }
+
+
         /// <summary>
         /// Parses resizing options from query string collection
         /// </summary>
@@ -127,6 +101,34 @@ namespace Composite.Core.WebClient.Media
             }
 
             return FromQueryString(queryString);
+        }
+
+        /// <exclude />
+        internal ResizingOptions(string predefinedOptionsName)
+        {
+            //Load the xml file
+            var options = GetPredefinedResizingOptions().Elements("image");
+
+            foreach (XElement e in options.Where(e => (string)e.Attribute("name") == predefinedOptionsName))
+            {
+                Height = ParseOptionalIntAttribute(e, "height");
+                Width = ParseOptionalIntAttribute(e, "width");
+                MaxHeight = ParseOptionalIntAttribute(e, "maxheight");
+                MaxWidth = ParseOptionalIntAttribute(e, "maxwidth");
+                Quality = ParseOptionalIntAttribute(e, "quality");
+
+                var attr = e.Attribute("action");
+                if (attr != null)
+                {
+                    ResizingAction = (ResizingAction)Enum.Parse(typeof(ResizingAction), attr.Value, true);
+                }
+            }
+        }
+
+        private static int? ParseOptionalIntAttribute(XElement element, string attributeName)
+        {
+            XAttribute attribute = element.Attribute(attributeName);
+            return attribute == null ? (int?) null : int.Parse(attribute.Value);
         }
 
         /// <summary>
