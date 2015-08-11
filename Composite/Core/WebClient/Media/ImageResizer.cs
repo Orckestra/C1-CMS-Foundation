@@ -96,7 +96,7 @@ namespace Composite.Core.WebClient.Media
                 bool centerCrop;
                 bool needToResize = CalculateSize(imageSize.Value.Width, imageSize.Value.Height, resizingOptions, out newWidth, out newHeight, out centerCrop);
 
-                needToResize = needToResize || resizingOptions.Quality.HasValue;
+                needToResize = needToResize || resizingOptions.CustomQuality;
 
                 if (!needToResize)
                 {
@@ -108,7 +108,7 @@ namespace Composite.Core.WebClient.Media
                 string centerCroppedString = centerCrop ? "c" : string.Empty;
 
                 string fileExtension = _ImageFormat2Extension[targetImageFormat];
-                string resizedImageFileName = string.Format("{0}x{1}_{2}{3}_{4}.{5}", newWidth, newHeight, filePathHash, centerCroppedString, resizingOptions.QualityOrDefault, fileExtension);
+                string resizedImageFileName = string.Format("{0}x{1}_{2}{3}_{4}.{5}", newWidth, newHeight, filePathHash, centerCroppedString, resizingOptions.Quality, fileExtension);
 
                 string imageFullPath = Path.Combine(_resizedImagesDirectoryPath, resizedImageFileName);
 
@@ -120,7 +120,7 @@ namespace Composite.Core.WebClient.Media
                         bitmap = new Bitmap(fileStream);
                     }
 
-                    ResizeImage(bitmap, imageFullPath, newWidth, newHeight, centerCrop, targetImageFormat, resizingOptions.QualityOrDefault);
+                    ResizeImage(bitmap, imageFullPath, newWidth, newHeight, centerCrop, targetImageFormat, resizingOptions.Quality);
 
                     if (file.LastWriteTime.HasValue)
                     {

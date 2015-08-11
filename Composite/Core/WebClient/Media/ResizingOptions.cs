@@ -46,18 +46,28 @@ namespace Composite.Core.WebClient.Media
         /// <summary>
         /// Image quality (when doing lossy compression)
         /// </summary>
-        public int? Quality { get; set; }
+        private int? QualityOverride { get; set; }
+
+        /// <summary>
+        /// Indicate if resizing options has a default or non-default quality setting (used when doing lossy compression). 
+        /// </summary>
+        public bool CustomQuality {
+            get
+            {
+                return QualityOverride.HasValue;
+            } 
+        }
 
         /// <summary>
         /// Image quality (when doing lossy compression)
         /// </summary>
-        public int QualityOrDefault
+        public int Quality
         {
             get
             {
-                if (Quality.HasValue)
+                if (QualityOverride.HasValue)
                 {
-                    return Quality.Value;
+                    return QualityOverride.Value;
                 }
                 return GlobalSettingsFacade.ImageQuality;
             }
@@ -75,7 +85,7 @@ namespace Composite.Core.WebClient.Media
         {
             get
             {
-                return Height == null && Width == null && MaxHeight == null && MaxWidth == null && Quality == null;
+                return Height == null && Width == null && MaxHeight == null && MaxWidth == null && QualityOverride == null;
             }
         }
 
@@ -115,7 +125,7 @@ namespace Composite.Core.WebClient.Media
                 Width = ParseOptionalIntAttribute(e, "width");
                 MaxHeight = ParseOptionalIntAttribute(e, "maxheight");
                 MaxWidth = ParseOptionalIntAttribute(e, "maxwidth");
-                Quality = ParseOptionalIntAttribute(e, "quality");
+                QualityOverride = ParseOptionalIntAttribute(e, "quality");
 
                 var attr = e.Attribute("action");
                 if (attr != null)
@@ -167,9 +177,9 @@ namespace Composite.Core.WebClient.Media
             str = queryString["q"];
             if (!string.IsNullOrEmpty(str))
             {
-                result.Quality = int.Parse(str);
-                if (result.Quality < 1) result.Quality = 1;
-                if (result.Quality > 100) result.Quality = 100;
+                result.QualityOverride = int.Parse(str);
+                if (result.QualityOverride < 1) result.QualityOverride = 1;
+                if (result.QualityOverride > 100) result.QualityOverride = 100;
             }
 
             ResizingAction resizingAction;
@@ -232,7 +242,7 @@ namespace Composite.Core.WebClient.Media
         override public string ToString()
         {
             var sb = new StringBuilder();
-            var parameters = new int?[] { Width, Height, MaxWidth, MaxHeight, Quality };
+            var parameters = new int?[] { Width, Height, MaxWidth, MaxHeight, QualityOverride };
             var parameterNames = new[] { "w", "h", "mw", "mh", "q" };
 
             for (int i = 0; i < parameters.Length; i++)
