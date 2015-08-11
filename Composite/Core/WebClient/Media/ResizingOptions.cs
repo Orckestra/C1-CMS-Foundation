@@ -186,16 +186,16 @@ namespace Composite.Core.WebClient.Media
 
         private static XElement GetPredefinedResizingOptions()
         {
-            if (_resizedImageKeysFilePath == null)
-            {
-                _resizedImageKeysFilePath = PathUtil.Resolve(ResizedImageKeys);
-            }
-
             XElement xel = HttpRuntime.Cache.Get("ResizedImageKeys") as XElement;
 
             //If it's not there, load the xml document and then add it to the cache
             if (xel == null)
             {
+                if (_resizedImageKeysFilePath == null)
+                {
+                    _resizedImageKeysFilePath = PathUtil.Resolve(ResizedImageKeys);
+                }
+
                 if (!C1File.Exists(_resizedImageKeysFilePath))
                 {
                     string directoryPath = Path.GetDirectoryName(_resizedImageKeysFilePath);
