@@ -78,7 +78,7 @@
 								<ui:window id="tinywindow" url="tinymce.aspx?config=<%= Request.QueryString [ "config" ] %>"/>
 								<ui:cover id="tinycover" busy="false"/>
 							</ui:flexbox>
-							<ui:toolbar id="statusbar" binding="VisualEditorStatusBarBinding" observes="broadcasterIsActive" class="statusbar">
+							<ui:toolbar id="statusbar" binding="VisualEditorStatusBarBinding" observes="broadcasterIsActive" class="statusbar dark">
 								<ui:toolbarbody />
 							</ui:toolbar>
 						</ui:deck>

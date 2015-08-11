@@ -3,26 +3,19 @@
 
 ui|box {
 	position: relative;
-	
 }
+
 ui|cover#toolbarscover {
-	border-top: 1px solid $(color:threedhighlight);
-	border-bottom: 1px solid $(color:threedshadow);
+	border-top: 1px solid #fff;
+	border-bottom: 1px solid #ddd;
 }
 ui|flexbox#tinyflexbox {
 	position: relative; /* contain the cover */	
 }
 ui|splitpanel#editorsplitpanel {
-	border-right: 1px solid #DDDDDD;	
-}
-ui|splitter.horizontal {
-	border-left-color: $(color:threedface);
-	border-right-color: $(color:threedshadow);
+	border-right: 1px solid #ddd;	
 }
 
-ui|toolbar#statusbar {
-	border-top: none;
-}
 input#focusableinput { /* synchronize with sourcecodeeditor.css */
 	background-color: transparent;
 	border: none;
@@ -30,7 +23,6 @@ input#focusableinput { /* synchronize with sourcecodeeditor.css */
 	bottom: 0;
 	right: 0;
 	display: none;
-	background-color: red !important;
 	cursor: help;
 }
 
