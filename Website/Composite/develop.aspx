@@ -7,13 +7,19 @@
     {
         get { return Composite.Core.IO.C1File.Exists(this.MapPath("scripts/source/top/core/Application.js")); }
     }
+
+    bool isCSSCompiled
+    {
+        get { return Composite.Core.IO.C1File.Exists(this.MapPath("styles/styles.min.css")) && Composite.Core.IO.C1File.Exists(this.MapPath("styles/styles.css")); }
+    }
+    
 </script>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:control="http://www.composite.net/ns/uicontrol">
 <head>
     <title>Start Developer Mode</title>
     <meta name="robots" content="noindex, nofollow" />
-     <control:styleloader runat="server"/>
+    <control:styleloader runat="server" />
     <link rel="shortcut icon" type="image/x-icon" href="images/icons/branding/favicon16.ico" />
     <script type="text/javascript" src="default.js"></script>
     <style type="text/css">
@@ -28,10 +34,21 @@
         div#developermodeprb {
             display: <%= (this.HasDeveloperModeSupport ? "none" : "block" ) %>;
         }
+
+        div#grunt {
+            display: <%= (this.isCSSCompiled ? "none" : "block" ) %>;
+        }
+
+        div#splash {
+            display: <%= (this.isCSSCompiled ? "block" : "none" ) %>;
+        }
     </style>
 </head>
 <body>
-    <div class="splash-cover">
+    <div id="grunt">
+        <% Response.WriteFile("grunt.inc"); %>
+    </div>
+    <div id="splash" class="splash-cover">
         <div class="splash-bg"></div>
         <div class="splash">
             <div class="splash-inner">

@@ -1,5 +1,5 @@
 using System;
-using System.IO;
+using Composite.Core.IO;
 using Composite.Core.Configuration;
 
 
@@ -8,7 +8,7 @@ public partial class Composite_Management_Top : System.Web.UI.Page
 {
     protected void Page_Init(object sender, EventArgs e)
     {
-        var isCSSCompiled = File.Exists(Server.MapPath("~/Composite/styles/styles.min.css"));
+        var isCSSCompiled = C1File.Exists(this.MapPath("styles/styles.min.css")) && C1File.Exists(this.MapPath("styles/styles.css"));
         gruntholder.Visible = !isCSSCompiled;
         if (!isCSSCompiled)
         {
