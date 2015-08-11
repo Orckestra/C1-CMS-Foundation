@@ -53,7 +53,11 @@ BrowserAddressBarBinding.prototype.onBindingAttach = function () {
  */
 BrowserAddressBarBinding.prototype.maximize = function ( avail ) {
 	
-	var width = avail - this._goButton.boxObject.getDimension ().w;
+	var width = avail - this._goButton.boxObject.getDimension().w;
+	if (this.bindingWindow.bindingMap.addressrightgroup) {
+		width = width - this.bindingWindow.bindingMap.addressrightgroup.boxObject.getDimension().w;
+	}
+
 	this.bindingElement.style.width = ( width - 10 ) + "px";
 }
 

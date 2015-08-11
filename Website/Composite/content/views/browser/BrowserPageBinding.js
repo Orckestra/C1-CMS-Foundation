@@ -615,6 +615,10 @@ BrowserPageBinding.prototype._handleCommand = function ( cmd ) {
 			}
 			this.reflex();
 			break;
+		case "seoassistant":
+			var def = ViewDefinitions["Composite.Management.SEOAssistant"];
+			StageBinding.presentViewDefinition(def);
+			break;
 		case DockTabPopupBinding.CMD_VIEWSOURCE : /* notice dependencies */
 			this._viewSource ( cmd );
 			break;
