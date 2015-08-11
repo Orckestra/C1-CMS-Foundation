@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Globalization;
 using System.Linq;
-using System.Web; 
+using System.Web;
 using Composite.Core.Extensions;
 using Composite.Core.Routing;
 using Composite.Core.WebClient;
@@ -30,14 +30,35 @@ namespace Composite.AspNet
         /// <exclude />
         public override SiteMapNode CurrentNode
         {
-            get { return FindSiteMapNode(HttpContext.Current); }
+            get
+            {
+                var context = HttpContext.Current;
+
+                var node = ResolveSiteMapNode(context) ?? FindSiteMapNode(context);
+
+                return ReturnNodeIfAccessible(node);
+            }
         }
 
         /// <exclude />
         public override SiteMapNode RootNode
         {
-            get { return GetRootNodeCore(); }
+            get { return ReturnNodeIfAccessible(GetRootNodeCore()); }
         }
+
+
+
+        private SiteMapNode ReturnNodeIfAccessible(SiteMapNode node)
+        {
+            if (node != null && node.IsAccessibleToUser(HttpContext.Current))
+            {
+                return node;
+            }
+            return null;
+        }
+
+ 
+
 
         /// <exclude />
         public override SiteMapProvider RootProvider
@@ -93,7 +114,7 @@ namespace Composite.AspNet
             if (siteMap == null) return null;
 
             SiteMapNode node;
-            if(siteMap.KeyToNodesMap.TryGetValue(key, out node))
+            if (siteMap.KeyToNodesMap.TryGetValue(key, out node))
             {
                 return node;
             }
@@ -118,7 +139,7 @@ namespace Composite.AspNet
             Verify.ArgumentNotNull(node, "node");
 
             SiteMapNodeCollection childNodes;
-            var culture = ((CompositeC1SiteMapNode) node).Culture;
+            var culture = ((CompositeC1SiteMapNode)node).Culture;
             var container = GetContainer(culture);
 
             container.ChildCollectionsMap.TryGetValue(node.Key, out childNodes);
@@ -153,7 +174,10 @@ namespace Composite.AspNet
             Verify.ArgumentNotNull(node, "node");
 
             SiteMapNode parentNode;
-            var culture = ((CompositeC1SiteMapNode) node).Culture;
+            var culture = node is CompositeC1SiteMapNode 
+                ? ((CompositeC1SiteMapNode)node).Culture 
+                : LocalizationScopeManager.CurrentLocalizationScope;
+
             var container = GetContainer(culture);
 
             container.ParentNodesMap.TryGetValue(node.Key, out parentNode);
@@ -204,7 +228,7 @@ namespace Composite.AspNet
 
         private SiteMapContainer GetContainer(CultureInfo cultureInfo)
         {
-            using(new DataScope(cultureInfo))
+            using (new DataScope(cultureInfo))
             {
                 return LoadSiteMap();
             }
@@ -214,7 +238,7 @@ namespace Composite.AspNet
         {
             var siteMapContext = SiteMapContext.Current;
 
-            if(siteMapContext != null)
+            if (siteMapContext != null)
             {
                 var rootPage = siteMapContext.RootPage;
 
@@ -300,7 +324,7 @@ namespace Composite.AspNet
 
                 string mappingPrefix = UrlUtils.PublicRootPath + "/" + cultureUrlMapping;
 
-                if(rawUrl.Equals(mappingPrefix, StringComparison.OrdinalIgnoreCase)
+                if (rawUrl.Equals(mappingPrefix, StringComparison.OrdinalIgnoreCase)
                     || rawUrl.StartsWith(mappingPrefix + "/", StringComparison.OrdinalIgnoreCase))
                 {
                     culture = activeCulture;
@@ -339,7 +363,7 @@ namespace Composite.AspNet
 
             if (ExtranetEnabled)
             {
-                throw new NotImplementedException("Extranet is not implemented in the currect C1 sitemap provider");
+                throw new NotImplementedException("Extranet is not implemented in the current C1 sitemap provider");
             }
 
             return true;
@@ -380,10 +404,10 @@ namespace Composite.AspNet
 
             var context = HttpContext.Current;
 
-            var overridenContext = SiteMapContext.Current;
-            if (overridenContext != null)
+            var overriddenContext = SiteMapContext.Current;
+            if (overriddenContext != null)
             {
-                urlData = new PageUrlData(overridenContext.RootPage);
+                urlData = new PageUrlData(overriddenContext.RootPage);
             }
             else
             {
@@ -408,17 +432,17 @@ namespace Composite.AspNet
                 {
                     var newHost = new Uri(publicUrl).Host;
 
-                    uri = new Uri(ReplaceFirstOccurance(uri.ToString(), uri.Host, newHost));
+                    uri = new Uri(ReplaceFirstOccurrence(uri.ToString(), uri.Host, newHost));
                 }
             }
 
             return uri;
         }
 
-        private static string ReplaceFirstOccurance(string @string, string oldValue, string newValue)
+        private static string ReplaceFirstOccurrence(string @string, string oldValue, string newValue)
         {
             int offset = @string.IndexOf(oldValue, StringComparison.Ordinal);
-            if(offset >= 0)
+            if (offset >= 0)
             {
                 return @string.Substring(0, offset) + newValue + @string.Substring(offset + oldValue.Length);
             }
