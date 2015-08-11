@@ -83,10 +83,12 @@
         </ui:dialogtoolbar>
       </ui:deck>
       <ui:deck id="loadingdeck">
-        <p class="progressbar-msg">Depending on your internet connection speed, Composite C1 may take a few moments to load.</p>
-        <div id="progressbar" class="progressbar">
-          <ui:text label="Initializing Composite C1"/>
-          <ui:progressbar/>
+        <div class="progress">
+          <p class="progressbar-msg">Depending on your internet connection speed, Composite C1 may take a few moments to load.</p>
+          <div id="progressbar" class="progressbar">
+            <ui:text label="Initializing Composite C1"/>
+            <ui:progressbar/>
+          </div>
         </div>
       </ui:deck>
       <ui:deck id="shutdowndeck">
