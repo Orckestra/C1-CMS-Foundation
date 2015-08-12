@@ -209,7 +209,7 @@ var ViewDefinitions = {
 	 */
 	"Composite.Management.SEOAssistant" : new HostedViewDefinition ({
 		handle 		: "Composite.Management.SEOAssistant",
-		position	: DockBinding.RIGHTTOP,
+		position: DockBinding.ABSBOTTOMRIGHT,
 		perspective	: ExplorerBinding.PERSPECTIVE_CONTENT,
 		url			: "${root}/content/views/seoassist/seoassist.aspx",
 		label		: "${string:Composite.Web.SEOAssistant:SEOAssistant}",
