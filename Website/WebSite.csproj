@@ -496,6 +496,7 @@
     <Content Include="Composite\images\icons\svg\indent.svg" />
     <Content Include="Composite\images\icons\svg\resize-screen.svg" />
     <Content Include="Composite\images\icons\svg\seo.svg" />
+    <Content Include="Composite\images\icons\svg\small-text.svg" />
     <Content Include="Composite\images\icons\svg\split.svg" />
     <Content Include="Composite\images\icons\svg\selection.svg" />
     <Content Include="Composite\images\icons\svg\settings.svg" />
