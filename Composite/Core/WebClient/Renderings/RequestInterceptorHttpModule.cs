@@ -6,6 +6,7 @@ using Composite.Core.Routing;
 using Composite.Core.Routing.Pages;
 using Composite.Core.Threading;
 using Composite.Core.Configuration;
+using Composite.Data.Foundation.PluginFacades;
 using Composite.Data.Types;
 
 
@@ -47,7 +48,7 @@ namespace Composite.Core.WebClient.Renderings
             IHostnameBinding hostnameBinding = HostnameBindingsFacade.GetBindingForCurrentRequest();
             if(hostnameBinding != null && !hostnameBinding.Culture.IsNullOrEmpty())
             {
-                CultureInfo cultureInfo = new CultureInfo(hostnameBinding.Culture);
+                var cultureInfo = new CultureInfo(hostnameBinding.Culture);
                 var thread = System.Threading.Thread.CurrentThread;
                 thread.CurrentCulture = cultureInfo;
                 thread.CurrentUICulture = cultureInfo;
@@ -60,6 +61,27 @@ namespace Composite.Core.WebClient.Renderings
 
             UrlKind urlKind;
             var mediaUrlData = MediaUrls.ParseUrl(rawUrl, out urlKind);
+
+            // Redirecting to public media url if it isn't pointing to our handler
+            if (urlKind == UrlKind.Internal && mediaUrlData.MediaStore != MediaUrls.DefaultMediaStore)
+            {
+                var mediaDataProvider = DataProviderPluginFacade.GetMediaDataProviderByStoreId(mediaUrlData.MediaStore);
+                if (mediaDataProvider != null)
+                {
+                    var mediaUrlProvider = mediaDataProvider.MediaUrlProvider;
+
+                    if (mediaUrlProvider != null)
+                    {
+                        string publicUrl = mediaUrlProvider.GetUrl(mediaUrlData);
+                        if (!string.IsNullOrEmpty(publicUrl) && !publicUrl.StartsWith(MediaUrls.MediaUrl_PublicPrefix))
+                        {
+                            httpContext.Response.Redirect(publicUrl, false);
+                            httpContext.ApplicationInstance.CompleteRequest();
+                            return true;
+                        }
+                    }
+                }
+            }
 
             if(mediaUrlData != null
                 && (urlKind == UrlKind.Public || urlKind == UrlKind.Internal))

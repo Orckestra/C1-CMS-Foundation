@@ -321,7 +321,7 @@ namespace Composite.Data.Foundation
 
                                     if (RuntimeInformation.IsDebugBuild)
                                     {
-                                        Log.LogVerbose("DataProviderRegistry", "Adding known IData interface: {0}" + knownType);
+                                        Log.LogVerbose("DataProviderRegistry", "Adding known IData interface: {0}", knownType);
                                     }
                                 }
 

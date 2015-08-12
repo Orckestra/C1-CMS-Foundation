@@ -20,7 +20,7 @@ namespace Composite.Plugins.Elements.UrlToEntityToken
             }
 
             var dataEntityToken = entityToken as DataEntityToken;
-            if (dataEntityToken == null || dataEntityToken.Source != "MediaFileDataProvider")
+            if (dataEntityToken == null)
             {
                 return null;
             }

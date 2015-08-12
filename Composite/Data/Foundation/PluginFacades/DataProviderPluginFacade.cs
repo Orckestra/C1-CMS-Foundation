@@ -67,7 +67,7 @@ namespace Composite.Data.Foundation.PluginFacades
 
                     if (knownInterfaces.Contains(null))
                     {
-                        Log.LogWarning("DataProviderPluginFacade", string.Format("Data Provider '{0}' returned (null) as a known interface type. Value is ignored.", providerName));
+                        Log.LogWarning("DataProviderPluginFacade", "Data Provider '{0}' returned (null) as a known interface type. Value is ignored.", providerName);
                         knownInterfaces.RemoveAll(f => f == null);
                     }
 
@@ -297,29 +297,17 @@ namespace Composite.Data.Foundation.PluginFacades
 
         public static bool IsWriteableProvider(string providerName)
         {
-            using (TimerProfilerFacade.CreateTimerProfiler())
-            {
-                using (_resourceLocker.Locker)
-                {
-                    var dataProvider = GetDataProvider(providerName);
+            var dataProvider = GetDataProvider(providerName);
 
-                    return (dataProvider is IWritableDataProvider);
-                }
-            }
+            return (dataProvider is IWritableDataProvider);
         }
 
 
         public static bool IsDynamicProvider(string providerName)
         {
-            using (TimerProfilerFacade.CreateTimerProfiler())
-            {
-                using (_resourceLocker.Locker)
-                {
-                    var dataProvider = GetDataProvider(providerName);
+            var dataProvider = GetDataProvider(providerName);
 
-                    return (dataProvider is IDynamicDataProvider);
-                }
-            }
+            return (dataProvider is IDynamicDataProvider);
         }
 
 
@@ -416,6 +404,22 @@ namespace Composite.Data.Foundation.PluginFacades
             return dataProvider;
         }
 
+
+        internal static IMediaDataProvider GetMediaDataProviderByStoreId(string storeId)
+        {
+            foreach (var dataProviderName in DataProviderRegistry.DataProviderNames)
+            {
+                var dataProvider = GetDataProvider(dataProviderName);
+                var mediaDataProvider = dataProvider as IMediaDataProvider;
+
+                if (mediaDataProvider != null && mediaDataProvider.IsSupportedStoreId(storeId))
+                {
+                    return mediaDataProvider;
+                }
+            }
+
+            return null;
+        }
 
 
         internal static void Flush()
