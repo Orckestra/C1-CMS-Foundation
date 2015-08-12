@@ -106,6 +106,19 @@ BrowserTabBoxBinding.prototype.getLocation = function () {
 	return new String ( win.getContentDocument ().location );
 }
 
+
+/**
+ * Get currently active browser window.
+ * @return {DOMDocument}
+ */
+BrowserTabBoxBinding.prototype.getBrowserWindow = function () {
+
+	var tab = this.getBrowserTabBinding();
+	var win = tab.browserwindow;
+	return win;
+}
+
+
 /**
  * Get currently active document.
  * @return {DOMDocument}
@@ -126,4 +139,15 @@ BrowserTabBoxBinding.prototype.getContentWindow = function () {
 	var tab = this.getBrowserTabBinding();
 	var win = tab.browserwindow;
 	return win.getContentWindow ();
+}
+
+/**
+ * Get currently active frame.
+ * @return {DOMDocumentView}
+ */
+BrowserTabBoxBinding.prototype.getFrameElement = function () {
+
+	var tab = this.getBrowserTabBinding();
+	var win = tab.browserwindow;
+	return win.getFrameElement();
 }

@@ -190,6 +190,8 @@ BrowserPageBinding.prototype.onBeforePageInitialize = function () {
 	var contextmenu = window.bindingMap.contextmenu;
 	contextmenu.addActionListener(MenuItemBinding.ACTION_COMMAND, this);
 
+	var screenpopup = window.bindingMap.screenpopup;
+	screenpopup.addActionListener(MenuItemBinding.ACTION_COMMAND, this);
 
 	var docktab = this.getAncestorBindingByType(DockPanelBinding, true);
 	docktab.addActionListener(FocusBinding.ACTION_BLUR, this);
@@ -316,7 +318,7 @@ BrowserPageBinding.prototype.handleAction = function ( action ) {
 		 	
 		case ButtonBinding.ACTION_COMMAND :
 		case MenuItemBinding.ACTION_COMMAND :
-			this._handleCommand ( binding.getProperty ( "cmd" ));
+			this._handleCommand ( binding.getProperty ( "cmd" ), binding);
 			action.consume ();
 			break;
 			 
@@ -577,8 +579,9 @@ BrowserPageBinding.prototype._updateHistory = function ( url ) {
 /**
  * Handle command (navbar or contextmenu).
  * @param {string} cmd
+ * @param {Binding} binding
  */
-BrowserPageBinding.prototype._handleCommand = function ( cmd ) {
+BrowserPageBinding.prototype._handleCommand = function ( cmd, binding ) {
 	
 	/*
 	 * Because of a bug in the history object in Prism 0.91,
@@ -619,6 +622,12 @@ BrowserPageBinding.prototype._handleCommand = function ( cmd ) {
 			var def = ViewDefinitions["Composite.Management.SEOAssistant"];
 			StageBinding.presentViewDefinition(def);
 			break;
+		case "setscreen":
+			var w = binding.getProperty("w");
+			var h = binding.getProperty("h");
+			this.setScreen(new Dimension(w, h));
+			break;
+
 		case DockTabPopupBinding.CMD_VIEWSOURCE : /* notice dependencies */
 			this._viewSource ( cmd );
 			break;
@@ -802,6 +811,33 @@ BrowserPageBinding.prototype.hideToolbar = function () {
 	var systemtoolbar = top.app.bindingMap.systemtoolbar;
 	systemtoolbar.hide();
 }
+
+
+/**
+ * Set client width for browser iframe
+ * @param {int} width
+ */
+BrowserPageBinding.prototype.setScreen = function (dim) {
+	var frameelement = this._box.getFrameElement();
+	var win = this._box.getBrowserWindow().bindingElement;
+	if (dim.w) {
+		frameelement.style.width = dim.w + "px";
+		win.style.overflowX = "auto";
+	} else {
+		frameelement.style.removeProperty("width");
+		win.style.removeProperty("overflow-x");
+	}
+	if (dim.h) {
+		frameelement.style.height = dim.h + "px";
+		win.style.overflowY = "auto";
+	} else {
+		frameelement.style.removeProperty("height");
+		win.style.removeProperty("overflow-y");
+	}
+
+}
+
+
 
 /**
  * Return perspective handle for browser

@@ -39,8 +39,18 @@
 		<ui:popup id="toolboxpopupgroup" />
 		<ui:popup id="toolboxpopup" position="bottom" />
 		<ui:popup id="moreactionspopup" position="bottom" />
-
-
+		<ui:popup id="screenpopup" position="bottom">
+			<ui:menubody>
+				<ui:menugroup>
+					<ui:menuitem cmd="setscreen" label="Auto" image="screen"/>
+					<ui:menuitem cmd="setscreen" label="Desktop(1366x768)" w="1366" h="768" image="screen"/>
+					<ui:menuitem cmd="setscreen" label="Tablet(1024x768)" w="1024" h="768" image="tablet"/>
+					<ui:menuitem cmd="setscreen" label="Size 1" w="360" h="640" image="smartphone"/>
+					<ui:menuitem cmd="setscreen" label="Size 2" w="1366" h="768" image="screen" />
+					<ui:menuitem cmd="setscreen" label="Size 3" w="1366" h="768" image="screen" />
+				</ui:menugroup>
+			</ui:menubody>
+		</ui:popup>
 	</ui:popupset>
 	<ui:page id="browserpage" binding="BrowserPageBinding" image="${icon:browser}">
 		
@@ -60,10 +70,12 @@
 			<ui:toolbarbody align="right" class="max" style="overflow: hidden;">
 				<ui:toolbargroup>
 					<ui:datainput id="addressbar" name="addressbar" binding="BrowserAddressBarBinding" autoselect="true" />
-					<ui:toolbarbutton id="go" image="${icon:input}" image-disabled="${icon:input-disabled}" isdisabled="true" tooltip="${string:Composite.Web.PageBrowser:ToolBarButton.Go.ToolTip}" />
 				</ui:toolbargroup>
 				<ui:toolbargroup id="addressrightgroup">
-					<ui:toolbarbutton  cmd="viewsource" tooltip="${string:Composite.Web.PageBrowser:Menu.ViewSource}" image="${icon:editor-sourceview}" />
+					
+					<ui:toolbarbutton id="setscreenbutton" image="${icon:resize-screen}" popup="screenpopup"/>
+					<ui:toolbarbutton id="go" image="${icon:input}" image-disabled="${icon:input-disabled}" isdisabled="true" tooltip="${string:Composite.Web.PageBrowser:ToolBarButton.Go.ToolTip}" />
+					<ui:toolbarbutton cmd="viewsource" tooltip="${string:Composite.Web.PageBrowser:Menu.ViewSource}" image="${icon:editor-sourceview}" />
 					<ui:toolbarbutton cmd="seoassistant" image="${icon:seo}" />
 				</ui:toolbargroup>
 			</ui:toolbarbody>
