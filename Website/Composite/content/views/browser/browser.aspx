@@ -41,13 +41,7 @@
 		<ui:popup id="moreactionspopup" position="bottom" />
 		<ui:popup id="screenpopup" position="bottom">
 			<ui:menubody>
-				<ui:menugroup>
-					<ui:menuitem cmd="setscreen" label="Auto" image="screen"/>
-					<ui:menuitem cmd="setscreen" label="Desktop(1366x768)" w="1366" h="768" image="screen"/>
-					<ui:menuitem cmd="setscreen" label="Tablet(1024x768)" w="1024" h="768" image="tablet"/>
-					<ui:menuitem cmd="setscreen" label="Size 1" w="360" h="640" image="smartphone"/>
-					<ui:menuitem cmd="setscreen" label="Size 2" w="1366" h="768" image="screen" />
-					<ui:menuitem cmd="setscreen" label="Size 3" w="1366" h="768" image="screen" />
+				<ui:menugroup id="screenpopupgroup">
 				</ui:menugroup>
 			</ui:menubody>
 		</ui:popup>

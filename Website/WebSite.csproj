@@ -142,6 +142,9 @@
     <Compile Include="Composite\content\views\functioninfo\ShowFunctionInfo.aspx.designer.cs">
       <DependentUpon>ShowFunctionInfo.aspx</DependentUpon>
     </Compile>
+    <Content Include="Composite\content\views\browser\deviceoptions.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Composite\content\views\mediabrowser\mediabrowser.aspx.cs">
       <DependentUpon>mediabrowser.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

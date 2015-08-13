@@ -8,6 +8,8 @@ BrowserPageBinding.ICON_UNPUBLISHED = "${icon:page-view-administrated-scope}";
 BrowserPageBinding.ACTION_ONLOAD = "browserpage loaded";
 BrowserPageBinding.ACTION_TABSHIFT = "browserpage tabshift";
 
+BrowserPageBinding.DEVICE_LIST = "${root}/content/views/browser/deviceoptions.xml";
+
 /**
  * @class
  */
@@ -228,6 +230,7 @@ BrowserPageBinding.prototype.onAfterPageInitialize = function () {
 		});
 	}
 
+	this.loadDeviceList();
 
 	this.reflex(); //?
 
@@ -625,7 +628,8 @@ BrowserPageBinding.prototype._handleCommand = function ( cmd, binding ) {
 		case "setscreen":
 			var w = binding.getProperty("w");
 			var h = binding.getProperty("h");
-			this.setScreen(new Dimension(w, h));
+			var touch = binding.getProperty("touch");
+			this.setScreen(new Dimension(w, h), touch);
 			break;
 
 		case DockTabPopupBinding.CMD_VIEWSOURCE : /* notice dependencies */
@@ -812,12 +816,47 @@ BrowserPageBinding.prototype.hideToolbar = function () {
 	systemtoolbar.hide();
 }
 
+BrowserPageBinding.prototype.loadDeviceList = function() {
+	var request = DOMUtil.getXMLHTTPRequest();
+	var url = Resolver.resolve(BrowserPageBinding.DEVICE_LIST);
+	var group = window.bindingMap.screenpopupgroup;
+	var bindingDocument = this.bindingDocument;
+	request.open("get", url, true);
+	request.onreadystatechange = function () {
+		if (request.readyState == 4) {
+			if (request.status == 200) {
+				var response = request.responseXML;
+				group.empty();
+				new List(response.getElementsByTagName("device")).each(function (device) {
+					var label = device.getAttribute("label");
+					var image = device.getAttribute("image");
+					var w = device.getAttribute("w");
+					var h = device.getAttribute("h");
+					var touch = device.getAttribute("touch");
+
+					var itemBinding = MenuItemBinding.newInstance(bindingDocument);
+					itemBinding.setImage(image);
+					itemBinding.setLabel(label);
+					itemBinding.setProperty("cmd", "setscreen");
+					itemBinding.setProperty("w", w);
+					itemBinding.setProperty("h", h);
+					itemBinding.setProperty("touch", touch);
+					group.add(itemBinding);
+					itemBinding.attach();
+				});
+
+			}
+		}
+	};
+	request.send(null);
+}
+
 
 /**
  * Set client width for browser iframe
  * @param {int} width
  */
-BrowserPageBinding.prototype.setScreen = function (dim) {
+BrowserPageBinding.prototype.setScreen = function (dim, touch) {
 	var frameelement = this._box.getFrameElement();
 	var win = this._box.getBrowserWindow().bindingElement;
 	if (dim.w) {
@@ -833,6 +872,12 @@ BrowserPageBinding.prototype.setScreen = function (dim) {
 	} else {
 		frameelement.style.removeProperty("height");
 		win.style.removeProperty("overflow-y");
+	}
+	if (touch) {
+		frameelement.scrolling = "no";
+		
+	} else {
+		frameelement.scrolling = "yes";
 	}
 
 }
