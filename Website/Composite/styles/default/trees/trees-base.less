@@ -22,16 +22,22 @@ ui|treecontent {
 
 ui|treenode {
     margin: 0;
-    padding: 0;
+    padding: 0 8px;
     position: relative;
 
     ui|labelbox {
         padding-bottom: 3px;
-        padding-left: 20px;
+        padding-left: 18px;
         float: none;
         height: 28px;
         color: @tree-icon-color;
         position: relative;
+
+        &.image-and-text {
+            ui|labeltext {
+                margin-left: 25px;
+            }
+        }
 
         svg {
             margin-top: 3px;
@@ -45,7 +51,7 @@ ui|treenode {
             color: @tree-text-color;
             font-size: @tree-font-size;
             border-radius: 2px;
-            padding: 3px 4px 5px 4px;
+            padding: 3px 4px;
             line-height: 17px;
         }
 
@@ -73,12 +79,13 @@ ui|treenode {
             &:before {
                 top: 8px;
                 border-left-color: #999; /*Chevron Color*/
+                left: 4px;
             }
 
             &:after {
                 top: 8px;
                 border-left-color: @tree-bg-color;
-                left: 0;
+                left: 2px;
             }
         }
 
@@ -138,7 +145,7 @@ ui|treenode {
 
 ui|tree ui|treebody > ui|treenode > ui|labelbox {
     &:before, &:after {
-        display: none;
+        // display: none;
     }
 }
 
