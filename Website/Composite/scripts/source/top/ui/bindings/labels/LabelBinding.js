@@ -81,15 +81,10 @@ LabelBinding.spriteLoad = function () {
  */
 LabelBinding.setImageSvg = function (binding, image) {
 	//validate that image is string and have valid Id
-	if (typeof image == "string" && /^[A-Za-z]+[\w\-\.]*$/.test(image)) {
+	if (image && typeof image == "string" && /^[A-Za-z]+[\w\-\.]*$/.test(image)) {
 		if (binding.shadowTree.labelBody) {
 			if (!image) {
-				if (binding.shadowTree.svg) {
-					if (binding.shadowTree.svg.parentNode) {
-						binding.shadowTree.svg.parentNode.removeChild(binding.shadowTree.svg);
-					}
-					binding.shadowTree.svg = null;
-				}
+				
 			} else {
 
 				if (LabelBinding.sprites) {
@@ -118,6 +113,13 @@ LabelBinding.setImageSvg = function (binding, image) {
 					LabelBinding.spriteLoad();
 				}
 			}
+		}
+	} else {
+		if (binding.shadowTree.svg) {
+			if (binding.shadowTree.svg.parentNode) {
+				binding.shadowTree.svg.parentNode.removeChild(binding.shadowTree.svg);
+			}
+			binding.shadowTree.svg = null;
 		}
 	}
 }
@@ -254,7 +256,7 @@ LabelBinding.prototype.getLabel = function () {
  */
 LabelBinding.prototype.setImage = function ( url, isNotBuildingClassName ) {
 	
-	if ( url != false ) {
+	if ( url != false && url != undefined) {
 		url = url ? url : LabelBinding.DEFAULT_IMAGE;
 		var resolverUrl = Resolver.resolve(url);
 		if (resolverUrl.classes) {
