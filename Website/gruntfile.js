@@ -46,4 +46,5 @@ module.exports = function (grunt) {
     //grunt.loadNpmTasks('grunt-svg-sprite');
     // Register the default tasks.
     grunt.registerTask('build', ['less', 'cssmin']);
+    grunt.registerTask('default', ['build']);
 };
