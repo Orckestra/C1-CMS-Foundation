@@ -32,7 +32,7 @@ ui|fieldgroup {
     }
 
     &:last-child {
-       padding-bottom: 0;
+        padding-bottom: 0;
     }
 }
 
@@ -87,32 +87,32 @@ ui|editorpage {
         page-break-inside: avoid; /* Firefox */
         break-inside: avoid; /* IE 10+ */
     }
-} 
+}
 
 
-ui|fieldgroup.boxed, ui|editorpage ui|fieldgroup {
+    ui|fieldgroup.boxed, ui|editorpage ui|fieldgroup {
 
-    ui|field {
-        border: solid 1px @fields-group-border-color;
-        border-width: 0 1px;
-        background: @fields-group-bg-color;
-        padding: 0 17px;
+        ui|field {
+            border: solid 1px @fields-group-border-color;
+            border-width: 0 1px;
+            background: @fields-group-bg-color;
+            padding: 0 17px;
 
-        &.first {
-            padding-top: 8px;
-            border-top-width: 1px;
-            border-top-left-radius: @base-border-radius;
-            border-top-right-radius: @base-border-radius;
-        }
+            &.first {
+                padding-top: 8px;
+                border-top-width: 1px;
+                border-top-left-radius: @base-border-radius;
+                border-top-right-radius: @base-border-radius;
+            }
 
-        &.last {
-            padding-bottom: 25px;
-            border-bottom-width: 1px;
-            border-bottom-left-radius: @base-border-radius;
-            border-bottom-right-radius: @base-border-radius;
+            &.last {
+                padding-bottom: 25px;
+                border-bottom-width: 1px;
+                border-bottom-left-radius: @base-border-radius;
+                border-bottom-right-radius: @base-border-radius;
+            }
         }
     }
-}
 
 ui|fieldhelp {
     overflow: visible;
@@ -258,6 +258,7 @@ ui|datadialog,
 ui|postbackdialog,
 ui|htmldatadialog,
 ui|editortextbox {
+    padding: 2px;
 
     input {
         border: none;
@@ -274,6 +275,14 @@ ui|editortextbox {
     &.disabled, &.readonly {
         ui|box {
             background-color: @field-readonly-bg-color;
+
+            input {
+                background-color: @field-readonly-bg-color;
+            }
+        }
+
+        ui|toolbarbutton {
+            background: transparent;
         }
     }
 
