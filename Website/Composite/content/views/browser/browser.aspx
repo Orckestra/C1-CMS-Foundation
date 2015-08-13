@@ -70,7 +70,7 @@
 					<ui:toolbarbutton id="setscreenbutton" image="${icon:resize-screen}" popup="screenpopup"/>
 					<ui:toolbarbutton id="go" image="${icon:input}" image-disabled="${icon:input-disabled}" isdisabled="true" tooltip="${string:Composite.Web.PageBrowser:ToolBarButton.Go.ToolTip}" />
 					<ui:toolbarbutton cmd="viewsource" tooltip="${string:Composite.Web.PageBrowser:Menu.ViewSource}" image="${icon:editor-sourceview}" />
-					<ui:toolbarbutton cmd="seoassistant" image="${icon:seo}" />
+					<ui:toolbarbutton cmd="seoassistant" image="${icon:seoassistant}" />
 				</ui:toolbargroup>
 			</ui:toolbarbody>
 		</ui:toolbar>
