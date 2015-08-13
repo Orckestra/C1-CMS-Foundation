@@ -2256,7 +2256,6 @@
     <Content Include="Composite\help\help.css" />
     <Content Include="Composite\help\help.js" />
     <Content Include="Composite\help\help.xsl" />
-    <Content Include="Composite\images\about.png" />
     <Content Include="Composite\images\actionended.png" />
     <Content Include="Composite\images\blank.png" />
     <Content Include="Composite\images\fieldbox.png" />
