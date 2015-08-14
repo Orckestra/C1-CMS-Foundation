@@ -7423,15 +7423,9 @@ _626.send();
 }
 };
 LabelBinding.setImageSvg=function(_627,_628){
-if(typeof _628=="string"&&/^[A-Za-z]+[\w\-\.]*$/.test(_628)){
+if(_628&&typeof _628=="string"&&/^[A-Za-z]+[\w\-\.]*$/.test(_628)){
 if(_627.shadowTree.labelBody){
 if(!_628){
-if(_627.shadowTree.svg){
-if(_627.shadowTree.svg.parentNode){
-_627.shadowTree.svg.parentNode.removeChild(_627.shadowTree.svg);
-}
-_627.shadowTree.svg=null;
-}
 }else{
 if(LabelBinding.sprites){
 var g=LabelBinding.sprites.querySelector("#"+_628);
@@ -7455,6 +7449,13 @@ LabelBinding.spritesQueue.set(_627.getID(),_628);
 LabelBinding.spriteLoad();
 }
 }
+}
+}else{
+if(_627.shadowTree.svg){
+if(_627.shadowTree.svg.parentNode){
+_627.shadowTree.svg.parentNode.removeChild(_627.shadowTree.svg);
+}
+_627.shadowTree.svg=null;
 }
 }
 };
@@ -7518,7 +7519,7 @@ LabelBinding.prototype.getLabel=function(){
 return this.getProperty("label");
 };
 LabelBinding.prototype.setImage=function(url,_635){
-if(url!=false){
+if(url!=false&&url!=undefined){
 url=url?url:LabelBinding.DEFAULT_IMAGE;
 var _636=Resolver.resolve(url);
 if(_636.classes){
