@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Specialized;
-using System.Linq;
 using Composite.Core.Extensions;
 using Composite.Core.WebClient;
 using Composite.Core.WebClient.Media;
@@ -24,8 +24,7 @@ namespace Composite.Core.Routing
 
         private static Lazy<IResizableImageUrlProvider> _defaultMediaUrlProvider = new Lazy<IResizableImageUrlProvider>(() => new DefaultMediaUrlProvider(null));
 
-        private static readonly object _providersUpdateLock = new object();
-        private static IMediaUrlProvider[] _mediaUrlProviders = new IMediaUrlProvider[0];
+        private static ConcurrentDictionary<string, IMediaUrlProvider> _mediaUrlProviders = new ConcurrentDictionary<string, IMediaUrlProvider>();
 
         /// <summary>
         /// Parses the URL.
@@ -261,7 +260,11 @@ namespace Composite.Core.Routing
 
         private static string BuildPublicUrl(MediaUrlData mediaUrlData)
         {
-            var urlProvider = _mediaUrlProviders.FirstOrDefault(p => p.IsSupportedStoreId(mediaUrlData.MediaStore)) ?? _defaultMediaUrlProvider.Value;
+            IMediaUrlProvider urlProvider;
+            if (!_mediaUrlProviders.TryGetValue(mediaUrlData.MediaStore, out urlProvider))
+            {
+                urlProvider = _defaultMediaUrlProvider.Value;
+            }
 
             if (mediaUrlData.QueryParameters.Count > 0)
             {
@@ -283,24 +286,11 @@ namespace Composite.Core.Routing
         /// <summary>
         /// Registers a media url provider
         /// </summary>
-        /// <param name="mediaUrlProvider"></param>
-        public static void RegisterMediaUrlProvider(IMediaUrlProvider mediaUrlProvider)
+        /// <param name="storeId">The store id.</param>
+        /// <param name="mediaUrlProvider">The media url provider.</param>
+        public static void RegisterMediaUrlProvider(string storeId, IMediaUrlProvider mediaUrlProvider)
         {
-            lock (_providersUpdateLock)
-            {
-                _mediaUrlProviders = _mediaUrlProviders.Concat(new[] {mediaUrlProvider}).ToArray();
-            }
-        }
-
-        /// <summary>
-        /// Unregister a media url provider
-        /// </summary>
-        public static void UnregisterMediaUrlProvider(IMediaUrlProvider mediaUrlProvider)
-        {
-            lock (_providersUpdateLock)
-            {
-                _mediaUrlProviders = _mediaUrlProviders.Except(new[] {mediaUrlProvider}).ToArray();
-            }
+            _mediaUrlProviders[storeId] = mediaUrlProvider;
         }
     }
 }

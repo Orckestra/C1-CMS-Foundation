@@ -8,8 +8,12 @@ namespace Composite.Core.Routing
     /// </summary>
     public interface IMediaUrlProvider
     {
-        bool IsSupportedStoreId(string storeId);
-
+        /// <summary>
+        /// Gets a public media url
+        /// </summary>
+        /// <param name="storeId">The store id.</param>
+        /// <param name="mediaId">The media id.</param>
+        /// <returns></returns>
         string GetPublicMediaUrl(string storeId, Guid mediaId);
     }
 
@@ -18,6 +22,13 @@ namespace Composite.Core.Routing
     /// </summary>
     public interface IResizableImageUrlProvider: IMediaUrlProvider
     {
+        /// <summary>
+        /// Gets a public media url, that takes the specified resizing options into account
+        /// </summary>
+        /// <param name="storeId">The store id.</param>
+        /// <param name="mediaId">The media id.</param>
+        /// <param name="resizingOptions">The image resizing options.</param>
+        /// <returns></returns>
         string GetResizedImageUrl(string storeId, Guid mediaId, ResizingOptions resizingOptions);
     }
 }

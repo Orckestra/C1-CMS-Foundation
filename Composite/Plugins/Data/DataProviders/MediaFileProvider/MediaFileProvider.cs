@@ -4,7 +4,6 @@ using System.Configuration;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using Composite.C1Console.Events;
 using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Core.Routing;
@@ -66,11 +65,8 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
             DataEventSystemFacade.SubscribeToStoreChanged<IMediaFileData>(ClearQueryCache, false);
             DataEventSystemFacade.SubscribeToStoreChanged<IMediaFolderData>(ClearQueryCache, false);
 
-            _mediaUrlProvider = new DefaultMediaUrlProvider(_storeId);
-
-            MediaUrls.RegisterMediaUrlProvider(_mediaUrlProvider);
-
-            GlobalEventSystemFacade.SubscribeToFlushEvent(a => MediaUrls.UnregisterMediaUrlProvider(_mediaUrlProvider));
+            _mediaUrlProvider = new DefaultMediaUrlProvider(storeId);
+            MediaUrls.RegisterMediaUrlProvider(storeId, _mediaUrlProvider);
         }
 
         private void ClearQueryCache(object sender, StoreEventArgs storeEventArgs)
