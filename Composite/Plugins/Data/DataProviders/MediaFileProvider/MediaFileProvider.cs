@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using Composite.C1Console.Events;
 using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Core.Routing;
@@ -11,6 +12,7 @@ using Composite.Data;
 using Composite.Data.Plugins.DataProvider;
 using Composite.Data.Plugins.DataProvider.Streams;
 using Composite.Data.Types;
+using Composite.Plugins.Routing.MediaUrlProviders;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 using Microsoft.Practices.ObjectBuilder;
@@ -23,7 +25,7 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
     /// <exclude />
     [ConfigurationElementType(typeof(MediaFileDataProviderData))]
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-    public sealed class MediaFileProvider : IWritableDataProvider, IMediaDataProvider
+    public sealed class MediaFileProvider : IWritableDataProvider
     {
         /// <exclude />
         public enum MediaElementType
@@ -47,7 +49,7 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
         private readonly object _syncRoot = new object();
         private IQueryable<IMediaFile> _mediaFilesCachedQuery;
         private IQueryable<IMediaFileFolder> _mediaFoldersCachedQuery;
-        private readonly DefaultMediaUrlProvider _mediaUrlProvider = new DefaultMediaUrlProvider();
+        private readonly DefaultMediaUrlProvider _mediaUrlProvider;
 
         internal MediaFileProvider(string rootDirectory, string storeId, string storeDescription, string storeTitle)
         {
@@ -63,6 +65,12 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
 
             DataEventSystemFacade.SubscribeToStoreChanged<IMediaFileData>(ClearQueryCache, false);
             DataEventSystemFacade.SubscribeToStoreChanged<IMediaFolderData>(ClearQueryCache, false);
+
+            _mediaUrlProvider = new DefaultMediaUrlProvider(_storeId);
+
+            MediaUrls.RegisterMediaUrlProvider(_mediaUrlProvider);
+
+            GlobalEventSystemFacade.SubscribeToFlushEvent(a => MediaUrls.UnregisterMediaUrlProvider(_mediaUrlProvider));
         }
 
         private void ClearQueryCache(object sender, StoreEventArgs storeEventArgs)
@@ -633,18 +641,6 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
             {
                 get { return _dataSourceId; }
             }
-        }
-
-        /// <exclude />
-        public bool IsSupportedStoreId(string storeId)
-        {
-            return storeId == _storeId;
-        }
-
-        /// <exclude />
-        public IMediaUrlProvider MediaUrlProvider
-        {
-            get { return _mediaUrlProvider; }
         }
     }
 

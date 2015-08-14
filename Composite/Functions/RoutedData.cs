@@ -81,10 +81,12 @@ namespace Composite.Functions
     /// <exclude />
     public class RoutedDataModel
     {
+        /// <exclude />
         public RoutedDataModel()
         {
         }
 
+        /// <exclude />
         public RoutedDataModel(IData item)
         {
             Item = item;
@@ -92,15 +94,23 @@ namespace Composite.Functions
             IsRouteResolved = item != null;
         }
 
+        /// <exclude />
         public RoutedDataModel(Func<IQueryable> getQueryable)
         {
             QueryableBuilder = getQueryable;
             IsRouteResolved = true;
         }
 
+        /// <exclude />
         public bool IsRouteResolved { get; protected set; }
+
+        /// <exclude />
         public bool IsItem { get; protected set; }
+
+        /// <exclude />
         public IData Item { get; protected set; }
+
+        /// <exclude />
         public Func<IQueryable> QueryableBuilder { get; protected set; }
     }
  
@@ -154,6 +164,7 @@ namespace Composite.Functions
             response.End();
         }
 
+        /// <exclude />
         protected abstract IRoutedDataUrlMapper GetUrlMapper();
 
         /// <summary>

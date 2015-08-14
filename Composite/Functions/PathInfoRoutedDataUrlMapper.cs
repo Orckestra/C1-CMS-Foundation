@@ -12,9 +12,12 @@ using Composite.Data.Types;
 
 namespace Composite.Functions
 {
+    /// <exclude />
     public interface IRoutedDataUrlMapper
     {
+        /// <exclude />
         RoutedDataModel GetRouteDataModel(PageUrlData pageUrlData);
+        /// <exclude />
         PageUrlData BuildItemUrl(IData item);
     }
 

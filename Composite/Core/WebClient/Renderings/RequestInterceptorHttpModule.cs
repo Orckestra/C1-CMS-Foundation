@@ -6,7 +6,6 @@ using Composite.Core.Routing;
 using Composite.Core.Routing.Pages;
 using Composite.Core.Threading;
 using Composite.Core.Configuration;
-using Composite.Data.Foundation.PluginFacades;
 using Composite.Data.Types;
 
 
@@ -65,21 +64,14 @@ namespace Composite.Core.WebClient.Renderings
             // Redirecting to public media url if it isn't pointing to our handler
             if (urlKind == UrlKind.Internal && mediaUrlData.MediaStore != MediaUrls.DefaultMediaStore)
             {
-                var mediaDataProvider = DataProviderPluginFacade.GetMediaDataProviderByStoreId(mediaUrlData.MediaStore);
-                if (mediaDataProvider != null)
-                {
-                    var mediaUrlProvider = mediaDataProvider.MediaUrlProvider;
+                string publicUrl = MediaUrls.BuildUrl(mediaUrlData, UrlKind.Public);
 
-                    if (mediaUrlProvider != null)
-                    {
-                        string publicUrl = mediaUrlProvider.GetUrl(mediaUrlData);
-                        if (!string.IsNullOrEmpty(publicUrl) && !publicUrl.StartsWith(MediaUrls.MediaUrl_PublicPrefix))
-                        {
-                            httpContext.Response.Redirect(publicUrl, false);
-                            httpContext.ApplicationInstance.CompleteRequest();
-                            return true;
-                        }
-                    }
+                if (!string.IsNullOrEmpty(publicUrl) && !publicUrl.StartsWith(MediaUrls.MediaUrl_PublicPrefix))
+                {
+                    httpContext.Response.Redirect(publicUrl, false);
+                    httpContext.Response.ExpiresAbsolute = DateTime.Now.AddDays(1);
+                    httpContext.ApplicationInstance.CompleteRequest();
+                    return true;
                 }
             }
 

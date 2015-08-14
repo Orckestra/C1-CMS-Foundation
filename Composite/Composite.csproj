@@ -215,7 +215,6 @@
     <Compile Include="Core\Routing\IMediaUrlProvider.cs" />
     <Compile Include="Core\Routing\InternalUrls.cs" />
     <Compile Include="Data\PageRenderingHistory.cs" />
-    <Compile Include="Data\Plugins\DataProvider\IMediaDataProvider.cs" />
     <Compile Include="Functions\PathInfoRoutedDataUrlMapper.cs" />
     <Compile Include="Functions\RoutedData.cs" />
     <Compile Include="Core\Routing\Pages\SeoFriendlyRedirectHttpHandler.cs" />
@@ -267,7 +266,7 @@
     <Compile Include="Functions\FunctionCallEditorSettings.cs" />
     <Compile Include="Plugins\Commands\ConsoleCommandHandlers\BrowseUrl.cs" />
     <Compile Include="Plugins\Commands\ConsoleCommandHandlers\FocusData.cs" />
-    <Compile Include="Plugins\Data\DataProviders\MediaFileProvider\DefaultMediaUrlProvider.cs" />
+    <Compile Include="Plugins\Routing\MediaUrlProviders\DefaultMediaUrlProvider.cs" />
     <Compile Include="Plugins\Data\DataProviders\MSSqlServerDataProvider\CodeGeneration\DataContextAssembler.cs" />
     <Compile Include="Plugins\Data\DataProviders\VirtualImageFileProvider\VirtualImageFileQueryable.cs" />
     <Compile Include="Plugins\Data\DataProviders\VirtualImageFileProvider\VirtualImageFileQueryableVisitor.cs" />

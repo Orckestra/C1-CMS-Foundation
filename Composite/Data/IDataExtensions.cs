@@ -378,8 +378,8 @@ namespace Composite.Data
             return result;
         }
 
-        [Obsolete("Use GetDataPropertyRecursively instead")]
         /// <exclude />
+        [Obsolete("Use GetDataPropertyRecursively instead")]
         public static PropertyInfo GetDataPropertyRecursivly(this Type dataType, string propertyName)
         {
             return GetDataPropertyRecursively(dataType, propertyName);

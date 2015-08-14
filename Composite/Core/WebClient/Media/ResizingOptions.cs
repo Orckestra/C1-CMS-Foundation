@@ -102,7 +102,18 @@ namespace Composite.Core.WebClient.Media
         /// <param name="httpServerUtility">An instance of <see ref="System.Web.HttpServerUtility" />.</param>
         /// <param name="queryString">The query string.</param>
         /// <returns>Resizing options</returns>
+        [Obsolete("Use an overload not taking an HttpServerUtility instance as a parameter")]
         public static ResizingOptions Parse(HttpServerUtility httpServerUtility, NameValueCollection queryString)
+        {
+            return Parse(queryString);
+        }
+
+        /// <summary>
+        /// Parses resizing options from query string collection
+        /// </summary>
+        /// <param name="queryString">The query string.</param>
+        /// <returns>Resizing options</returns>
+        public static ResizingOptions Parse(NameValueCollection queryString)
         {
             string resizingKey = queryString["k"];
             if (!string.IsNullOrEmpty(resizingKey))
@@ -242,7 +253,7 @@ namespace Composite.Core.WebClient.Media
         override public string ToString()
         {
             var sb = new StringBuilder();
-            var parameters = new int?[] { Width, Height, MaxWidth, MaxHeight, QualityOverride };
+            var parameters = new [] { Width, Height, MaxWidth, MaxHeight, QualityOverride };
             var parameterNames = new[] { "w", "h", "mw", "mh", "q" };
 
             for (int i = 0; i < parameters.Length; i++)

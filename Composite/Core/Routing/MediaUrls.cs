@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Specialized;
+using System.Linq;
 using Composite.Core.Extensions;
 using Composite.Core.WebClient;
-using Composite.Data.Foundation.PluginFacades;
+using Composite.Core.WebClient.Media;
 using Composite.Data.Types;
-using Composite.Plugins.Data.DataProviders.MediaFileProvider;
+using Composite.Plugins.Routing.MediaUrlProviders;
 
 namespace Composite.Core.Routing
 {
@@ -21,8 +22,10 @@ namespace Composite.Core.Routing
         private static readonly string MediaUrl_UnprocessedRenderPrefix = "~/Renderers/ShowMedia.ashx";
         private static readonly string MediaUrl_RenderPrefix = UrlUtils.PublicRootPath + "/Renderers/ShowMedia.ashx";
 
-        private static Lazy<IMediaUrlProvider> _defaultMediaUrlProvider = new Lazy<IMediaUrlProvider>(() => new DefaultMediaUrlProvider()); 
+        private static Lazy<IResizableImageUrlProvider> _defaultMediaUrlProvider = new Lazy<IResizableImageUrlProvider>(() => new DefaultMediaUrlProvider(null));
 
+        private static readonly object _providersUpdateLock = new object();
+        private static IMediaUrlProvider[] _mediaUrlProviders = new IMediaUrlProvider[0];
 
         /// <summary>
         /// Parses the URL.
@@ -258,18 +261,46 @@ namespace Composite.Core.Routing
 
         private static string BuildPublicUrl(MediaUrlData mediaUrlData)
         {
-            var mediaDataProvider = DataProviderPluginFacade.GetMediaDataProviderByStoreId(mediaUrlData.MediaStore);
-            if (mediaDataProvider != null)
+            var urlProvider = _mediaUrlProviders.FirstOrDefault(p => p.IsSupportedStoreId(mediaUrlData.MediaStore)) ?? _defaultMediaUrlProvider.Value;
+
+            if (mediaUrlData.QueryParameters.Count > 0)
             {
-                var urlProvider = mediaDataProvider.MediaUrlProvider;
-                if (urlProvider != null)
+                var resizingOptions = ResizingOptions.Parse(mediaUrlData.QueryParameters);
+
+                if (!resizingOptions.IsEmpty)
                 {
-                    return urlProvider.GetUrl(mediaUrlData);
+                    var imageResizableUrlProvider = urlProvider is IResizableImageUrlProvider
+                        ? urlProvider as IResizableImageUrlProvider
+                        : _defaultMediaUrlProvider.Value;
+
+                    return imageResizableUrlProvider.GetResizedImageUrl(mediaUrlData.MediaStore, mediaUrlData.MediaId, resizingOptions);
                 }
             }
 
-            return _defaultMediaUrlProvider.Value.GetUrl(mediaUrlData);
+            return urlProvider.GetPublicMediaUrl(mediaUrlData.MediaStore, mediaUrlData.MediaId);
         }
 
+        /// <summary>
+        /// Registers a media url provider
+        /// </summary>
+        /// <param name="mediaUrlProvider"></param>
+        public static void RegisterMediaUrlProvider(IMediaUrlProvider mediaUrlProvider)
+        {
+            lock (_providersUpdateLock)
+            {
+                _mediaUrlProviders = _mediaUrlProviders.Concat(new[] {mediaUrlProvider}).ToArray();
+            }
+        }
+
+        /// <summary>
+        /// Unregister a media url provider
+        /// </summary>
+        public static void UnregisterMediaUrlProvider(IMediaUrlProvider mediaUrlProvider)
+        {
+            lock (_providersUpdateLock)
+            {
+                _mediaUrlProviders = _mediaUrlProviders.Except(new[] {mediaUrlProvider}).ToArray();
+            }
+        }
     }
 }

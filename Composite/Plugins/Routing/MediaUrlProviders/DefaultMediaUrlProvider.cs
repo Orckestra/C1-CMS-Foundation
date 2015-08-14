@@ -9,19 +9,43 @@ using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Core.Routing;
 using Composite.Core.WebClient;
+using Composite.Core.WebClient.Media;
 using Composite.Data;
 using Composite.Data.Types;
 
-namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
+namespace Composite.Plugins.Routing.MediaUrlProviders
 {
-    internal class DefaultMediaUrlProvider: IMediaUrlProvider
+    /// <exclude />
+    public class DefaultMediaUrlProvider: IResizableImageUrlProvider
     {
         internal static readonly string DefaultMediaStore = "MediaArchive";
         private static readonly string ForbiddenUrlCharacters = @"<>*%&\?#""";
 
-        public string GetUrl(MediaUrlData mediaUrlData)
+        private readonly string _storeId;
+
+        /// <exclude />
+        public DefaultMediaUrlProvider(string storeId)
         {
-            IMediaFile file = GetFileById(mediaUrlData.MediaStore, mediaUrlData.MediaId);
+            _storeId = storeId;
+        }
+
+
+        /// <exclude />
+        public bool IsSupportedStoreId(string storeId)
+        {
+            return storeId == _storeId;
+        }
+
+        /// <exclude />
+        public string GetPublicMediaUrl(string storeId, Guid mediaId)
+        {
+            return GetResizedImageUrl(storeId, mediaId, null);
+        }
+
+        /// <exclude />
+        public string GetResizedImageUrl(string storeId, Guid mediaId, ResizingOptions resizingOptions)
+        {
+            IMediaFile file = GetFileById(storeId, mediaId);
             if (file == null)
             {
                 return null;
@@ -43,13 +67,13 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
 
             string mediaStore = string.Empty;
 
-            if (!mediaUrlData.MediaStore.Equals(DefaultMediaStore, StringComparison.InvariantCultureIgnoreCase))
+            if (!storeId.Equals(DefaultMediaStore, StringComparison.InvariantCultureIgnoreCase))
             {
-                mediaStore = mediaUrlData.MediaStore + "/";
+                mediaStore = storeId + "/";
             }
 
 
-            var url = new UrlBuilder(UrlUtils.PublicRootPath + "/media/" + mediaStore + /* UrlUtils.CompressGuid(*/ mediaUrlData.MediaId /*)*/)
+            var url = new UrlBuilder(UrlUtils.PublicRootPath + "/media/" + mediaStore + /* UrlUtils.CompressGuid(*/ mediaId /*)*/)
             {
                 PathInfo = file.LastWriteTime != null
                     ? "/" + GetDateTimeHash(file.LastWriteTime.Value.ToUniversalTime())
@@ -61,9 +85,9 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
                 url.PathInfo += pathToFile;
             }
 
-            if (mediaUrlData.QueryParameters != null)
+            if (resizingOptions != null && !resizingOptions.IsEmpty)
             {
-                url.AddQueryParameters(mediaUrlData.QueryParameters);
+                return url + "?" + resizingOptions;
             }
 
             return url.ToString();

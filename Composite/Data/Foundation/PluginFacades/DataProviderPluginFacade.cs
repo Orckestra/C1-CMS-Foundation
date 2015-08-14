@@ -405,23 +405,6 @@ namespace Composite.Data.Foundation.PluginFacades
         }
 
 
-        internal static IMediaDataProvider GetMediaDataProviderByStoreId(string storeId)
-        {
-            foreach (var dataProviderName in DataProviderRegistry.DataProviderNames)
-            {
-                var dataProvider = GetDataProvider(dataProviderName);
-                var mediaDataProvider = dataProvider as IMediaDataProvider;
-
-                if (mediaDataProvider != null && mediaDataProvider.IsSupportedStoreId(storeId))
-                {
-                    return mediaDataProvider;
-                }
-            }
-
-            return null;
-        }
-
-
         internal static void Flush()
         {
             _resourceLocker.ResetInitialization();

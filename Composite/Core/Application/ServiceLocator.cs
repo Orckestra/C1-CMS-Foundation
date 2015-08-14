@@ -14,7 +14,9 @@ namespace Composite.Core.Application
         private static IServiceCollection _serviceCollection;
         private static IServiceProvider _applicationServices;
 
-
+        /// <summary>
+        /// A service collection to be populated at startup
+        /// </summary>
         public static IServiceCollection ServiceCollection
         {
             get
