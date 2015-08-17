@@ -906,6 +906,9 @@ BrowserPageBinding.prototype.setScreen = function (dim, touch) {
                 var framePosition = frameelement.getBoundingClientRect();
                 var el = frameelement.contentWindow.document.elementFromPoint(e.clientX - framePosition.left, e.clientY - framePosition.top);
                 if (el) {
+                    if (el.tagName && ["input", "textarea"].indexOf(el.tagName.toLowerCase()) > -1 && ["text", "textarea", "email", "password", "url", "radio", "checkbox"].indexOf(el.type.toLowerCase()) > -1) {
+                        el.focus();
+                    }
                     el.click();
                 }
                 frameOverlay.style.display = "block";
