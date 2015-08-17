@@ -512,6 +512,7 @@
     <Content Include="Composite\images\icons\svg\folder-edit.svg" />
     <Content Include="Composite\images\icons\svg\perspective-functions.svg" />
     <Content Include="Composite\images\icons\svg\stop.svg" />
+    <Content Include="Composite\images\touch-cursor.png" />
     <Content Include="Composite\scripts\source\top\core\ImageProvider.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\genericview\GenericViewBinding.js" />
     <Content Include="Composite\styles\default\fields\fields-base.less" />
