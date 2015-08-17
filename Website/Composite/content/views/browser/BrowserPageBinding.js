@@ -13,85 +13,85 @@ BrowserPageBinding.DEVICE_LIST = "${root}/content/views/browser/deviceoptions.xm
 /**
  * @class
  */
-function BrowserPageBinding () {
+function BrowserPageBinding() {
 
-	/**
+    /**
 	 * @type {SystemLogger}
 	 */
-	this.logger = SystemLogger.getLogger ( "BrowserPageBinding" );
-	
-	/**
+    this.logger = SystemLogger.getLogger("BrowserPageBinding");
+
+    /**
 	 * @type {string}
 	 */
-	this._startURL = null;
-	
-	/**
+    this._startURL = null;
+
+    /**
 	 * See below...
 	 * @type {Map<string><object>}
 	 */
-	this._currents = new Map ();
-	
-	/**
+    this._currents = new Map();
+
+    /**
 	 * This will be set to an index in the map declared above. it has two properties: 
 	 *     history {List<string>}
 	 *     index {int}
 	 * @type {object}
 	 */
-	this._current = null;
-	
-	/**
-	 * @type {boolean}
-	 */
-	this._isHistoryBrowsing = false;
+    this._current = null;
 
-	/**
+    /**
 	 * @type {boolean}
 	 */
-	this._isPushingUrl = false;
-	
-	/**
+    this._isHistoryBrowsing = false;
+
+    /**
 	 * @type {boolean}
 	 */
-	this._isDisposing = false;
-	
-	/**
+    this._isPushingUrl = false;
+
+    /**
+	 * @type {boolean}
+	 */
+    this._isDisposing = false;
+
+    /**
 	 * @type {BrowserTabBoxBinding}
 	 */
-	this._box = null; 
-	
-	/**
+    this._box = null;
+
+    /**
 	 * Timeout to hide the cover that blocks external URLs.
 	 * @type {function}
 	 */
-	this._blockertimeout = null;
-	
-	/*
+    this._blockertimeout = null;
+
+    /*
 	 * Returnable.
 	 */
-	return this;
+    return this;
 }
 
 /**
  * Identifies binding.
  */
 BrowserPageBinding.prototype.toString = function () {
-	
-	return "[BrowserPageBinding]";
+
+    return "[BrowserPageBinding]";
 }
 
 /**
  * @overloads {PageBinding#onBindingRegister}
  */
 BrowserPageBinding.prototype.onBindingRegister = function () {
-	
-	BrowserPageBinding.superclass.onBindingRegister.call(this);
-	this.subscribe(BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED);
-	this.addActionListener ( WindowBinding.ACTION_ONLOAD );
-	this.addActionListener ( TabBoxBinding.ACTION_SELECTED );
-	this.addActionListener ( TabBoxBinding.ACTION_UPDATED );	
-	this.addActionListener ( BrowserTabBinding.ACTIONVENT_CLOSE );
-	
-	
+
+    BrowserPageBinding.superclass.onBindingRegister.call(this);
+    this.subscribe(BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED);
+    this.addActionListener(WindowBinding.ACTION_ONLOAD);
+    this.addActionListener(TabBoxBinding.ACTION_SELECTED);
+    this.addActionListener(TabBoxBinding.ACTION_UPDATED);
+    this.addActionListener(BrowserTabBinding.ACTIONVENT_CLOSE);
+
+
 }
 
 /**
@@ -101,81 +101,81 @@ BrowserPageBinding.prototype.onBindingRegister = function () {
  */
 BrowserPageBinding.prototype.handleBroadcast = function (broadcast, arg) {
 
-	BrowserPageBinding.superclass.handleBroadcast.call(this, broadcast, arg);
+    BrowserPageBinding.superclass.handleBroadcast.call(this, broadcast, arg);
 
-	switch (broadcast) {
-		case BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED:
-			if (arg.perspectiveHandle == this.getPerspectiveHandle()) {
-				// TODO: make queue
-				var entityToken = arg.actionProfile.EnitityToken;
-				var self = this;
-				if (entityToken) {
-					TreeService.GetBrowserUrlByEntityToken(entityToken, function (result) {
-						setTimeout(function () {
-							if (result) {
-								self.pushURL(result);
-							} else if (arg.actionProfile.Node) {
-								self.pushToken(arg.actionProfile.Node);
-							} else {
-								self.pushDefault();
-							}
+    switch (broadcast) {
+        case BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED:
+            if (arg.perspectiveHandle == this.getPerspectiveHandle()) {
+                // TODO: make queue
+                var entityToken = arg.actionProfile.EnitityToken;
+                var self = this;
+                if (entityToken) {
+                    TreeService.GetBrowserUrlByEntityToken(entityToken, function (result) {
+                        setTimeout(function () {
+                            if (result) {
+                                self.pushURL(result);
+                            } else if (arg.actionProfile.Node) {
+                                self.pushToken(arg.actionProfile.Node);
+                            } else {
+                                self.pushDefault();
+                            }
 
-						}, 0);
-					});
-				}
-			}
-			break;
-	}
+                        }, 0);
+                    });
+                }
+            }
+            break;
+    }
 }
 
 /**
  * @overloads {Binding#onBindingDispose}
  */
 BrowserPageBinding.prototype.onBindingDispose = function () {
-	
-	/*
+
+    /*
 	 * This will instruct Prism not to  
 	 * disable forced cache when closing.
 	 * @see {BrowserPageBinding#handleEvent}
 	 */
-	BrowserPageBinding.superclass.onBindingDispose.call ( this );
-	this._isDisposing = true;
+    BrowserPageBinding.superclass.onBindingDispose.call(this);
+    this._isDisposing = true;
 }
 
 /**
  * @overloads {PageBinding#setPageArgument}
  * @param {HashMap<string><string>}
  */
-BrowserPageBinding.prototype.setPageArgument = function ( map ) {
-	
-	BrowserPageBinding.superclass.setPageArgument.call ( this, map );
-	
-	var url = map [ "URL" ];
-	if ( url == null ) {
-		url = PageService.GetPageBrowserDefaultUrl ( true );
-	}
-	if ( this._isPageBindingInitialized ) {
-		this._newURL ( url );
-	} else {
-		this._startURL = url;
-	}
+BrowserPageBinding.prototype.setPageArgument = function (map) {
 
-	this.systemViewDefinition = map["SystemViewDefinition"];
+    BrowserPageBinding.superclass.setPageArgument.call(this, map);
 
-	//NEWUI Add tree to Browser
-	var explorerdocument = this.bindingDocument;
-	var explorerpanel = this.bindingWindow.bindingMap.explorerpanel;
-	// construct ViewBinding
-	var viewBinding = ViewBinding.newInstance(explorerdocument);
-	viewBinding.setType(ViewBinding.TYPE_EXPLORERVIEW);
-	viewBinding.setDefinition(this.systemViewDefinition);
+    var url = map["URL"];
+    if (url == null) {
+        url = PageService.GetPageBrowserDefaultUrl(true);
+    }
+    if (this._isPageBindingInitialized) {
+        this._newURL(url);
+    } else {
+        this._startURL = url;
+    }
 
-	explorerpanel.add(viewBinding);
+    this.systemViewDefinition = map["SystemViewDefinition"];
 
-	viewBinding.attach();
-	viewBinding.initialize();
+    //NEWUI Add tree to Browser
+    var explorerdocument = this.bindingDocument;
+    var explorerpanel = this.bindingWindow.bindingMap.explorerpanel;
+    // construct ViewBinding
+    var viewBinding = ViewBinding.newInstance(explorerdocument);
+    viewBinding.setType(ViewBinding.TYPE_EXPLORERVIEW);
+    viewBinding.setDefinition(this.systemViewDefinition);
 
-	this._viewBinding = viewBinding;
+    explorerpanel.add(viewBinding);
+
+    viewBinding.attach();
+    viewBinding.initialize();
+
+    this._viewBinding = viewBinding;
 }
 
 /**
@@ -183,29 +183,29 @@ BrowserPageBinding.prototype.setPageArgument = function ( map ) {
  * @overwrites {PageBinding#onBeforePageInitialize}
  */
 BrowserPageBinding.prototype.onBeforePageInitialize = function () {
-	
-	this._box = window.bindingMap.browsertabbox;
-	
-	var navbar = window.bindingMap.navbar;
-	navbar.addActionListener ( ButtonBinding.ACTION_COMMAND, this );
-	
-	var contextmenu = window.bindingMap.contextmenu;
-	contextmenu.addActionListener(MenuItemBinding.ACTION_COMMAND, this);
 
-	var screenpopup = window.bindingMap.screenpopup;
-	screenpopup.addActionListener(MenuItemBinding.ACTION_COMMAND, this);
+    this._box = window.bindingMap.browsertabbox;
 
-	var docktab = this.getAncestorBindingByType(DockPanelBinding, true);
-	docktab.addActionListener(FocusBinding.ACTION_BLUR, this);
-	docktab.addActionListener(FocusBinding.ACTION_FOCUS, this);
-	
-	
-	if ( this._startURL ) {
-		this._newURL ( this._startURL );
-		this._startURL = null;
-	}
+    var navbar = window.bindingMap.navbar;
+    navbar.addActionListener(ButtonBinding.ACTION_COMMAND, this);
 
-	
+    var contextmenu = window.bindingMap.contextmenu;
+    contextmenu.addActionListener(MenuItemBinding.ACTION_COMMAND, this);
+
+    var screenpopup = window.bindingMap.screenpopup;
+    screenpopup.addActionListener(MenuItemBinding.ACTION_COMMAND, this);
+
+    var docktab = this.getAncestorBindingByType(DockPanelBinding, true);
+    docktab.addActionListener(FocusBinding.ACTION_BLUR, this);
+    docktab.addActionListener(FocusBinding.ACTION_FOCUS, this);
+
+
+    if (this._startURL) {
+        this._newURL(this._startURL);
+        this._startURL = null;
+    }
+
+
 }
 
 /**
@@ -213,26 +213,26 @@ BrowserPageBinding.prototype.onBeforePageInitialize = function () {
  * @overloads {PageBinding#onAfterPageInitialize}
  */
 BrowserPageBinding.prototype.onAfterPageInitialize = function () {
-	
-	BrowserPageBinding.superclass.onAfterPageInitialize.call ( this );
-	
-	var self = this;
-	var blocker = this.bindingWindow.bindingMap.blocker;
-	
-	if ( blocker != null ) {
-		DOMEvents.addEventListener ( blocker.bindingElement, DOMEvents.MOUSEDOWN, {
-			handleEvent : function () {
-				blocker.hide ();
-				if ( self._blockertimeout != null ) {
-					clearTimeout ( self._blockertimeout );
-				}
-			}
-		});
-	}
 
-	this.loadDeviceList();
+    BrowserPageBinding.superclass.onAfterPageInitialize.call(this);
 
-	this.reflex(); //?
+    var self = this;
+    var blocker = this.bindingWindow.bindingMap.blocker;
+
+    if (blocker != null) {
+        DOMEvents.addEventListener(blocker.bindingElement, DOMEvents.MOUSEDOWN, {
+            handleEvent: function () {
+                blocker.hide();
+                if (self._blockertimeout != null) {
+                    clearTimeout(self._blockertimeout);
+                }
+            }
+        });
+    }
+
+    this.loadDeviceList();
+
+    this.reflex(); //?
 
 }
 
@@ -243,10 +243,10 @@ BrowserPageBinding.prototype.onAfterPageInitialize = function () {
  * @return
  */
 BrowserPageBinding.prototype.pushURL = function (url) {
-	if (url && url != this._box.getLocation()) {
-		this._isPushingUrl = true;
-		this.setURL(url);
-	}
+    if (url && url != this._box.getLocation()) {
+        this._isPushingUrl = true;
+        this.setURL(url);
+    }
 }
 
 
@@ -256,10 +256,10 @@ BrowserPageBinding.prototype.pushURL = function (url) {
  * @return
  */
 BrowserPageBinding.prototype.pushToken = function (node) {
-	var tab = this._box.getGeneticViewTabBinding();
-	this._box.select(tab, true);
+    var tab = this._box.getGeneticViewTabBinding();
+    this._box.select(tab, true);
 
-	tab.tree.setNode(node);
+    tab.tree.setNode(node);
 }
 
 
@@ -269,8 +269,8 @@ BrowserPageBinding.prototype.pushToken = function (node) {
  * @return
  */
 BrowserPageBinding.prototype.pushDefault = function () {
-	var tab = this._box.getBrowserTabBinding();
-	this._box.select(tab, true);
+    var tab = this._box.getBrowserTabBinding();
+    this._box.select(tab, true);
 }
 
 /**
@@ -278,15 +278,15 @@ BrowserPageBinding.prototype.pushDefault = function () {
  * @param {string} url
  * @return
  */
-BrowserPageBinding.prototype._newURL = function ( url ) {
-	
-	if ( Client.isPrism ) {
-		Prism.disableCache ();
-	}
-	
-	var cover = window.bindingMap.cover;
-	cover.show();
-	this._box.newURL ( url );
+BrowserPageBinding.prototype._newURL = function (url) {
+
+    if (Client.isPrism) {
+        Prism.disableCache();
+    }
+
+    var cover = window.bindingMap.cover;
+    cover.show();
+    this._box.newURL(url);
 }
 
 /**
@@ -306,52 +306,52 @@ BrowserPageBinding.prototype.setURL = function (url) {
  * @overloads {PageBinding#handleAction}
  * @param {Action} action
  */
-BrowserPageBinding.prototype.handleAction = function ( action ) {
+BrowserPageBinding.prototype.handleAction = function (action) {
 
-	BrowserPageBinding.superclass.handleAction.call ( this, action );
-	
-	var binding = action.target;
-	
-	switch ( action.type ) {
-	
-		case WindowBinding.ACTION_ONLOAD :
-			this._handleDocumentLoad ( binding );
-			action.consume ();
-			break;
-		 	
-		case ButtonBinding.ACTION_COMMAND :
-		case MenuItemBinding.ACTION_COMMAND :
-			this._handleCommand ( binding.getProperty ( "cmd" ), binding);
-			action.consume ();
-			break;
-			 
-		case TabBoxBinding.ACTION_SELECTED :
-			this._handleSelectedTab ();
-			action.consume ();
-			break;
-			
-		case TabBoxBinding.ACTION_UPDATED :
-			this._handleTabBoxUpdate ();
-			action.consume ();
-			break;
-			
-		case BrowserTabBinding.ACTIONVENT_CLOSE :
-			this._isDisposing = true;
-			action.consume ();
-			break;
-		case FocusBinding.ACTION_BLUR:
-			//TODO add check target
-			if(action.target instanceof DockPanelBinding)
-				this.hideToolbar();
-			break;
-		case FocusBinding.ACTION_FOCUS:
-			//TODO add check target
-			if (action.target instanceof DockPanelBinding)
-				this.showToolbar();
-			break;
-			
-			
-	}
+    BrowserPageBinding.superclass.handleAction.call(this, action);
+
+    var binding = action.target;
+
+    switch (action.type) {
+
+        case WindowBinding.ACTION_ONLOAD:
+            this._handleDocumentLoad(binding);
+            action.consume();
+            break;
+
+        case ButtonBinding.ACTION_COMMAND:
+        case MenuItemBinding.ACTION_COMMAND:
+            this._handleCommand(binding.getProperty("cmd"), binding);
+            action.consume();
+            break;
+
+        case TabBoxBinding.ACTION_SELECTED:
+            this._handleSelectedTab();
+            action.consume();
+            break;
+
+        case TabBoxBinding.ACTION_UPDATED:
+            this._handleTabBoxUpdate();
+            action.consume();
+            break;
+
+        case BrowserTabBinding.ACTIONVENT_CLOSE:
+            this._isDisposing = true;
+            action.consume();
+            break;
+        case FocusBinding.ACTION_BLUR:
+            //TODO add check target
+            if (action.target instanceof DockPanelBinding)
+                this.hideToolbar();
+            break;
+        case FocusBinding.ACTION_FOCUS:
+            //TODO add check target
+            if (action.target instanceof DockPanelBinding)
+                this.showToolbar();
+            break;
+
+
+    }
 }
 
 /**
@@ -359,206 +359,206 @@ BrowserPageBinding.prototype.handleAction = function ( action ) {
  * @param {BrowserTabBoxBinding} tabbox
  */
 BrowserPageBinding.prototype._handleSelectedTab = function () {
-	
-	var tab = this._box.getSelectedTabBinding ();
-	if ( tab.getLabel () != null ) {
-		tab.dispatchAction ( DockTabBinding.ACTION_UPDATE_VISUAL );
-	}
-	if ( Types.isFunction ( tab.getEntityToken )) {
-		tab.dispatchAction ( DockTabBinding.ACTION_UPDATE_TOKEN );
-	}
-	if ( !this._currents.has ( tab.key )) {
-		this._currents.set ( tab.key, {
-			history : new List (),
-			index : parseInt ( -1 )
-		});
-	}
-	this._current = this._currents.get ( tab.key );
-	this._updateBroadcasters ();
-	this._updateAddressBar ( tab.url );
 
-	/*
+    var tab = this._box.getSelectedTabBinding();
+    if (tab.getLabel() != null) {
+        tab.dispatchAction(DockTabBinding.ACTION_UPDATE_VISUAL);
+    }
+    if (Types.isFunction(tab.getEntityToken)) {
+        tab.dispatchAction(DockTabBinding.ACTION_UPDATE_TOKEN);
+    }
+    if (!this._currents.has(tab.key)) {
+        this._currents.set(tab.key, {
+            history: new List(),
+            index: parseInt(-1)
+        });
+    }
+    this._current = this._currents.get(tab.key);
+    this._updateBroadcasters();
+    this._updateAddressBar(tab.url);
+
+    /*
 	 * So that Page Browser remember it's location when closed and reopened.
 	 */
-	if ( tab.browserwindow != null && tab.browserwindow.getContentDocument () != null ) {
-		var def = ViewDefinitions [ "Composite.Management.Browser" ];
-		def.argument = { "URL" : tab.url };
-	}
-	
-	/*
+    if (tab.browserwindow != null && tab.browserwindow.getContentDocument() != null) {
+        var def = ViewDefinitions["Composite.Management.Browser"];
+        def.argument = { "URL": tab.url };
+    }
+
+    /*
 	 * Broadcast contained markup for various panels to intercept. Since the markup   
 	 * extraction requires a server roundtrip, we check for subscribers first.
 	 */
-	if ( EventBroadcaster.hasSubscribers ( BroadcastMessages.XHTML_MARKUP_ON )) {
-		if ( tab.browserwindow != null ) {
-			var markup = WindowBinding.getMarkup ( tab.browserwindow );
-			EventBroadcaster.broadcast ( BroadcastMessages.XHTML_MARKUP_ON, markup );
-		}
-	}
-	
-	/*
+    if (EventBroadcaster.hasSubscribers(BroadcastMessages.XHTML_MARKUP_ON)) {
+        if (tab.browserwindow != null) {
+            var markup = WindowBinding.getMarkup(tab.browserwindow);
+            EventBroadcaster.broadcast(BroadcastMessages.XHTML_MARKUP_ON, markup);
+        }
+    }
+
+    /*
 	 * Dispatch event for plugins to hook.
 	 */
-	this.dispatchAction ( BrowserPageBinding.ACTION_TABSHIFT );
+    this.dispatchAction(BrowserPageBinding.ACTION_TABSHIFT);
 }
 
 /**
  * @param {BrowserTabBoxBinding} tabbox
  */
 BrowserPageBinding.prototype._handleTabBoxUpdate = function () {
-	
-	var box = this._box;
-	
-	switch ( box.updateType ) {
-		
-		case TabBoxBinding.UPDATE_DETACH :
-		case TabBoxBinding.UPDATE_ATTACH :
-			
-			var tabs = UserInterface.getBinding ( box.getTabsElement ());
-			if ( box.getTabBindings ().getLength () == 1 ) {
-				if ( tabs.isVisible ) {
-					tabs.hide ();
-					this.reflex ();
-				}
-			} else {
-				if ( !tabs.isVisible ) {
-					tabs.show ();
-					this.reflex ();
-				}
-			}
-			break;
-	}
+
+    var box = this._box;
+
+    switch (box.updateType) {
+
+        case TabBoxBinding.UPDATE_DETACH:
+        case TabBoxBinding.UPDATE_ATTACH:
+
+            var tabs = UserInterface.getBinding(box.getTabsElement());
+            if (box.getTabBindings().getLength() == 1) {
+                if (tabs.isVisible) {
+                    tabs.hide();
+                    this.reflex();
+                }
+            } else {
+                if (!tabs.isVisible) {
+                    tabs.show();
+                    this.reflex();
+                }
+            }
+            break;
+    }
 }
 
 /**
  * Handle loaded document.
  * @param {WindowBinding} binding
  */
-BrowserPageBinding.prototype._handleDocumentLoad = function ( binding ) {
-		
-	var url = new String(binding.getContentDocument().location);
+BrowserPageBinding.prototype._handleDocumentLoad = function (binding) {
 
-	/*
+    var url = new String(binding.getContentDocument().location);
+
+    /*
 	 * Update stuff.
 	 */
-	this._updateAddressBar ( url );
-	this._updateHistory ( url );
-	this._updateBroadcasters ();
-	this._updateDocument ();
-	this._updateTabBox ( url );
-	
-	/*
+    this._updateAddressBar(url);
+    this._updateHistory(url);
+    this._updateBroadcasters();
+    this._updateDocument();
+    this._updateTabBox(url);
+
+    /*
 	 * Cache control.
 	 */
-	if ( Client.isPrism == true ) {
-		Prism.enableCache ();
-	}
-	
-	/*
+    if (Client.isPrism == true) {
+        Prism.enableCache();
+    }
+
+    /*
 	 * Initialize on first load.
 	 */
-	if ( !this._isPageBindingInitialized ) {
-		this.onPageInitialize ();
-	}
-	
-	/*
+    if (!this._isPageBindingInitialized) {
+        this.onPageInitialize();
+    }
+
+    /*
 	 * Broadcast contained markup for various panels to intercept. Since the markup   
 	 * extraction requires a server roundtrip, we check for subscribers first.
 	 */
-	if ( EventBroadcaster.hasSubscribers ( BroadcastMessages.XHTML_MARKUP_ON )) {
-		var markup = WindowBinding.getMarkup ( binding );
-		EventBroadcaster.broadcast ( BroadcastMessages.XHTML_MARKUP_ON, markup );
-	}
-	
-	/*
+    if (EventBroadcaster.hasSubscribers(BroadcastMessages.XHTML_MARKUP_ON)) {
+        var markup = WindowBinding.getMarkup(binding);
+        EventBroadcaster.broadcast(BroadcastMessages.XHTML_MARKUP_ON, markup);
+    }
+
+    /*
 	 * Hide the cover.
 	 */
-	var cover = window.bindingMap.cover;
-	if ( cover.isVisible ) {
-		cover.hide ();
-	}
+    var cover = window.bindingMap.cover;
+    if (cover.isVisible) {
+        cover.hide();
+    }
 
-	if (!this._isPushingUrl) {
-		var entityToken = TreeService.GetEntityTokenByPageUrl(url);
-		EventBroadcaster.broadcast(
+    if (!this._isPushingUrl) {
+        var entityToken = TreeService.GetEntityTokenByPageUrl(url);
+        EventBroadcaster.broadcast(
 			BroadcastMessages.SYSTEMTREEBINDING_FOCUS,
 			entityToken
 		);
-	}
+    }
 
-	/*
+    /*
 	 * Dispatch event for Browser plugins to hook into.
 	 */
-	this.dispatchAction(BrowserPageBinding.ACTION_ONLOAD);
+    this.dispatchAction(BrowserPageBinding.ACTION_ONLOAD);
 
-	this._isPushingUrl = false;
+    this._isPushingUrl = false;
 }
 
 /**
  * @param {string} url
  */
-BrowserPageBinding.prototype._updateAddressBar = function ( url ) {
-	
-	var bar = this.bindingWindow.bindingMap.addressbar;
-	if (bar != null) {
-		url = PageService.ConvertRelativePageUrlToAbsolute(url);
-		bar.setValue ( url );
-	}
+BrowserPageBinding.prototype._updateAddressBar = function (url) {
+
+    var bar = this.bindingWindow.bindingMap.addressbar;
+    if (bar != null) {
+        url = PageService.ConvertRelativePageUrlToAbsolute(url);
+        bar.setValue(url);
+    }
 }
 
 /**
  * @param {string} url
  */
-BrowserPageBinding.prototype._updateTabBox = function ( url ) {
-	
-	/*
+BrowserPageBinding.prototype._updateTabBox = function (url) {
+
+    /*
 	 * Compute label and image, 
 	 * update containing dock.
 	 */
-	this.label = this.getContentDocument ().title;
-	this.image = (url.indexOf("dataScope=administrated") > 0 || url.indexOf("c1mode(unpublished)") > 0) ? 
+    this.label = this.getContentDocument().title;
+    this.image = (url.indexOf("dataScope=administrated") > 0 || url.indexOf("c1mode(unpublished)") > 0) ?
 			BrowserPageBinding.ICON_UNPUBLISHED : BrowserPageBinding.ICON_PUBLISHED;
-	
-	var tab = this._box.getSelectedTabBinding ();
-	tab.setLabel ( this.label );
-	tab.setImage ( this.image );
-	tab.dispatchAction ( DockTabBinding.ACTION_UPDATE_VISUAL );
-	
-	WebServiceProxy.isFaultHandler = false;
-	var token = TreeService.GetEntityTokenByPageUrl ( url );
-	WebServiceProxy.isFaultHandler = true;
-	
-	if ( token instanceof SOAPFault ) {
-		
-		this.logger.error ( token.getFaultString ());
-		
-	} else {
-		
-		tab.getEntityToken = function () {
-			return token;
-		}
-		tab.dispatchAction ( DockTabBinding.ACTION_UPDATE_TOKEN );
-		
-		/*
+
+    var tab = this._box.getSelectedTabBinding();
+    tab.setLabel(this.label);
+    tab.setImage(this.image);
+    tab.dispatchAction(DockTabBinding.ACTION_UPDATE_VISUAL);
+
+    WebServiceProxy.isFaultHandler = false;
+    var token = TreeService.GetEntityTokenByPageUrl(url);
+    WebServiceProxy.isFaultHandler = true;
+
+    if (token instanceof SOAPFault) {
+
+        this.logger.error(token.getFaultString());
+
+    } else {
+
+        tab.getEntityToken = function () {
+            return token;
+        }
+        tab.dispatchAction(DockTabBinding.ACTION_UPDATE_TOKEN);
+
+        /*
 		 * So that Page Browser remember it's location when closed and reopened.
 		 */
-		tab.url = url;
-		var def = ViewDefinitions [ "Composite.Management.Browser" ];
-		def.argument = { "URL" : tab.url };
-	}
+        tab.url = url;
+        var def = ViewDefinitions["Composite.Management.Browser"];
+        def.argument = { "URL": tab.url };
+    }
 }
 
 /*
  * Update history.
  * @param {string} url
  */
-BrowserPageBinding.prototype._updateHistory = function ( url ) {
+BrowserPageBinding.prototype._updateHistory = function (url) {
 
-	if ( this._isHistoryBrowsing == true ) {
-		this._isHistoryBrowsing = false;
-	} else {
-		
-		/*
+    if (this._isHistoryBrowsing == true) {
+        this._isHistoryBrowsing = false;
+    } else {
+
+        /*
 		 * Clicking the same link twice should not update history, so we 
 		 * made the code below. But since this would not enable user to 
 		 * go back after a HTTP POST submit, the fix was disabled again. 
@@ -569,14 +569,14 @@ BrowserPageBinding.prototype._updateHistory = function ( url ) {
 			alert ( url.toString () + "\n" + last.toString () + "\n" + ( url == last ));
 		}
 		*/
-		
-		while ( this._current.history.getLength () - 1 > this._current.index ) {
-			this._current.history.extractLast ();
-		}
-		this._current.history.add ( url );
-		this._current.index ++;
-		
-	}
+
+        while (this._current.history.getLength() - 1 > this._current.index) {
+            this._current.history.extractLast();
+        }
+        this._current.history.add(url);
+        this._current.index++;
+
+    }
 }
 
 /**
@@ -584,9 +584,9 @@ BrowserPageBinding.prototype._updateHistory = function ( url ) {
  * @param {string} cmd
  * @param {Binding} binding
  */
-BrowserPageBinding.prototype._handleCommand = function ( cmd, binding ) {
-	
-	/*
+BrowserPageBinding.prototype._handleCommand = function (cmd, binding) {
+
+    /*
 	 * Because of a bug in the history object in Prism 0.91,
 	 * we cannot invoke history.back and stuff. We have 
 	 * to load new URLs from our own history. This will 
@@ -594,147 +594,147 @@ BrowserPageBinding.prototype._handleCommand = function ( cmd, binding ) {
 	 * fix at some point... 
 	 * @see https://bugzilla.mozilla.org/show_bug.cgi?id=429550
 	 */
-	switch ( cmd ) {
-		case "back" :
-			this._isHistoryBrowsing = true;
-			this.setURL ( this._current.history.get ( -- this._current.index ));
-			break;
-		case "forward" :
-			this._isHistoryBrowsing = true;
-			this.setURL ( this._current.history.get ( ++ this._current.index ));
-			break;
-		case "refresh" :
-			this._isHistoryBrowsing = true;
-			this.getContentDocument ().location.reload ();
-			break;
-		case "home" :
-			url = PageService.GetPageBrowserDefaultUrl ( true );
-			this.setURL ( url );
-			break;
-		case "toggletree":
-			var toggletreebutton = this.bindingWindow.bindingMap.toggletreebutton;
-			var explorerpanel = this.bindingWindow.bindingMap.explorerpanel;
-			if (toggletreebutton.isChecked) {
-				explorerpanel.show();
-			} else {
-				explorerpanel.hide();
-			}
-			this.reflex();
-			break;
-		case "seoassistant":
-			var def = ViewDefinitions["Composite.Management.SEOAssistant"];
-			StageBinding.presentViewDefinition(def);
-			break;
-		case "setscreen":
-			var w = binding.getProperty("w");
-			var h = binding.getProperty("h");
-			var touch = binding.getProperty("touch");
-			this.setScreen(new Dimension(w, h), touch);
-			break;
+    switch (cmd) {
+        case "back":
+            this._isHistoryBrowsing = true;
+            this.setURL(this._current.history.get(--this._current.index));
+            break;
+        case "forward":
+            this._isHistoryBrowsing = true;
+            this.setURL(this._current.history.get(++this._current.index));
+            break;
+        case "refresh":
+            this._isHistoryBrowsing = true;
+            this.getContentDocument().location.reload();
+            break;
+        case "home":
+            url = PageService.GetPageBrowserDefaultUrl(true);
+            this.setURL(url);
+            break;
+        case "toggletree":
+            var toggletreebutton = this.bindingWindow.bindingMap.toggletreebutton;
+            var explorerpanel = this.bindingWindow.bindingMap.explorerpanel;
+            if (toggletreebutton.isChecked) {
+                explorerpanel.show();
+            } else {
+                explorerpanel.hide();
+            }
+            this.reflex();
+            break;
+        case "seoassistant":
+            var def = ViewDefinitions["Composite.Management.SEOAssistant"];
+            StageBinding.presentViewDefinition(def);
+            break;
+        case "setscreen":
+            var w = binding.getProperty("w");
+            var h = binding.getProperty("h");
+            var touch = binding.getProperty("touch");
+            this.setScreen(new Dimension(w, h), touch);
+            break;
 
-		case DockTabPopupBinding.CMD_VIEWSOURCE : /* notice dependencies */
-			this._viewSource ( cmd );
-			break;
-	}
+        case DockTabPopupBinding.CMD_VIEWSOURCE: /* notice dependencies */
+            this._viewSource(cmd);
+            break;
+    }
 }
 
 /**
  * View source.
  * @param {string} cmd
  */
-BrowserPageBinding.prototype._viewSource = function ( cmd ) {
-	
-	var doc = this.getContentDocument ();
-	var def = ViewDefinitions [ "Composite.User.SourceCodeViewer" ];
-	
-	def.argument = { 
-		action: cmd, 
-		doc: doc
-	}
-	def.label = this.label;
-	StageBinding.presentViewDefinition ( def );
+BrowserPageBinding.prototype._viewSource = function (cmd) {
+
+    var doc = this.getContentDocument();
+    var def = ViewDefinitions["Composite.User.SourceCodeViewer"];
+
+    def.argument = {
+        action: cmd,
+        doc: doc
+    }
+    def.label = this.label;
+    StageBinding.presentViewDefinition(def);
 }
 
 /**
  * Update broadcasters.
  */
 BrowserPageBinding.prototype._updateBroadcasters = function () {
-	
-	var back = window.bindingMap.broadcasterHistoryBack;
-	var forward = window.bindingMap.broadcasterHistoryForward;
-	
-	if ( this._current.index > 0 ) {
-		back.enable ();
-	} else {
-		back.disable ();
-	}
-	if ( this._current.index < this._current.history.getLength () - 1 ) {
-		forward.enable ();
-	} else {
-		forward.disable ();
-	}
+
+    var back = window.bindingMap.broadcasterHistoryBack;
+    var forward = window.bindingMap.broadcasterHistoryForward;
+
+    if (this._current.index > 0) {
+        back.enable();
+    } else {
+        back.disable();
+    }
+    if (this._current.index < this._current.history.getLength() - 1) {
+        forward.enable();
+    } else {
+        forward.disable();
+    }
 }
 
 /**
  * Update hosted document (performed on load).
  */
 BrowserPageBinding.prototype._updateDocument = function () {
-	
-	var win = this.getContentWindow ();
-	var doc = this.getContentDocument ();
-	
-	DOMEvents.addEventListener ( doc, DOMEvents.CONTEXTMENU, this );
-	DOMEvents.addEventListener ( win, DOMEvents.UNLOAD, this );
-	
-	/*
+
+    var win = this.getContentWindow();
+    var doc = this.getContentDocument();
+
+    DOMEvents.addEventListener(doc, DOMEvents.CONTEXTMENU, this);
+    DOMEvents.addEventListener(win, DOMEvents.UNLOAD, this);
+
+    /*
 	 * Paralyze links leading to external websites.
 	 */
-	if ( doc.links.length > 0 ) {
-		
-		var self = this;
-		var span = this.bindingDocument.getElementById ( "externalurl" );
-		var blocker = this.bindingWindow.bindingMap.blocker;
-		
-		var handler = {
-			handleEvent : function ( e ) {
-				DOMEvents.preventDefault ( e );
-				var link = DOMEvents.getTarget ( e );
-				span.firstChild.data = link.href;
-				blocker.show ();
-				self._blockertimeout = setTimeout ( function () {
-					blocker.hide ();
-				}, 2300 );
-			}
-		}
-		
-		var link, i = 0;
-		while (( link = doc.links [ i++ ]) != null ) {
-			if ( link.href.indexOf ( "//" ) >-1 ) {
-	 			var host = link.href.split ( "//" )[ 1 ].split ( "/" )[ 0 ];
-				if ( host != window.location.host ) {
-					DOMEvents.addEventListener ( link, DOMEvents.CLICK, handler );
-				}
-			}
-		}
-	}
+    if (doc.links.length > 0) {
+
+        var self = this;
+        var span = this.bindingDocument.getElementById("externalurl");
+        var blocker = this.bindingWindow.bindingMap.blocker;
+
+        var handler = {
+            handleEvent: function (e) {
+                DOMEvents.preventDefault(e);
+                var link = DOMEvents.getTarget(e);
+                span.firstChild.data = link.href;
+                blocker.show();
+                self._blockertimeout = setTimeout(function () {
+                    blocker.hide();
+                }, 2300);
+            }
+        }
+
+        var link, i = 0;
+        while ((link = doc.links[i++]) != null) {
+            if (link.href.indexOf("//") > -1) {
+                var host = link.href.split("//")[1].split("/")[0];
+                if (host != window.location.host) {
+                    DOMEvents.addEventListener(link, DOMEvents.CLICK, handler);
+                }
+            }
+        }
+    }
 }
 
 /**
  * Get document from selected tab.
  * @return {DOMDocument}
  */
-BrowserPageBinding.prototype.getContentDocument =  function () {
-	
-	return this._box.getContentDocument ();
+BrowserPageBinding.prototype.getContentDocument = function () {
+
+    return this._box.getContentDocument();
 }
 
 /**
  * Get window from selected tab.
  * @return {DOMDocumentView}
  */
-BrowserPageBinding.prototype.getContentWindow =  function () {
-	
-	return this._box.getContentWindow ();
+BrowserPageBinding.prototype.getContentWindow = function () {
+
+    return this._box.getContentWindow();
 }
 
 /**
@@ -742,33 +742,33 @@ BrowserPageBinding.prototype.getContentWindow =  function () {
  * @implements {IEventListener}
  * @param {Event} e
  */
-BrowserPageBinding.prototype.handleEvent = function ( e ) {
-	
-	BrowserPageBinding.superclass.handleEvent.call ( this, e );
-	
-	var cover = window.bindingMap.cover;
-	
-	switch ( e.type ) {
-	
-		case DOMEvents.CONTEXTMENU :
-			var contextmenu = window.bindingMap.contextmenu;
-			var p1 = DOMUtil.getUniversalMousePosition ( e );
-			var p2 = this.boxObject.getUniversalPosition ();
-			var p3 = new Point ( p1.x -p2.x, p1.y - p2.y );
-			contextmenu.snapToPoint ( p3 );
-			DOMEvents.preventDefault ( e );
-			break;
-			
-		case DOMEvents.UNLOAD :
-			
-			if ( !this._isDisposing ) {
-				cover.show ();
-				if ( Client.isPrism ) {
-					Prism.disableCache ();
-				}
-			}
-			break;
-	}
+BrowserPageBinding.prototype.handleEvent = function (e) {
+
+    BrowserPageBinding.superclass.handleEvent.call(this, e);
+
+    var cover = window.bindingMap.cover;
+
+    switch (e.type) {
+
+        case DOMEvents.CONTEXTMENU:
+            var contextmenu = window.bindingMap.contextmenu;
+            var p1 = DOMUtil.getUniversalMousePosition(e);
+            var p2 = this.boxObject.getUniversalPosition();
+            var p3 = new Point(p1.x - p2.x, p1.y - p2.y);
+            contextmenu.snapToPoint(p3);
+            DOMEvents.preventDefault(e);
+            break;
+
+        case DOMEvents.UNLOAD:
+
+            if (!this._isDisposing) {
+                cover.show();
+                if (Client.isPrism) {
+                    Prism.disableCache();
+                }
+            }
+            break;
+    }
 }
 
 /**
@@ -777,12 +777,12 @@ BrowserPageBinding.prototype.handleEvent = function ( e ) {
  */
 BrowserPageBinding.prototype.flex = function () {
 
-	
-
-	BrowserPageBinding.superclass.flex.call(this);
 
 
-	this.showToolbar();
+    BrowserPageBinding.superclass.flex.call(this);
+
+
+    this.showToolbar();
 
 }
 
@@ -791,20 +791,20 @@ BrowserPageBinding.prototype.flex = function () {
  * Show toolbar
  */
 BrowserPageBinding.prototype.showToolbar = function () {
-	var snap = this.bindingWindow.bindingMap.toolbarplaceholder;
+    var snap = this.bindingWindow.bindingMap.toolbarplaceholder;
 
-	var position = snap.boxObject.getUniversalPosition();
-	var dimension = snap.boxObject.getDimension();
+    var position = snap.boxObject.getUniversalPosition();
+    var dimension = snap.boxObject.getDimension();
 
 
-	var systemtoolbar = top.app.bindingMap.systemtoolbar;
+    var systemtoolbar = top.app.bindingMap.systemtoolbar;
 
-	systemtoolbar.setPosition(position);
-	systemtoolbar.setDimension(dimension);
-	systemtoolbar.show();
-	//Update More button
-	systemtoolbar._toolBarBodyLeft.refreshToolBarGroups();
-	systemtoolbar._containAllButtons();
+    systemtoolbar.setPosition(position);
+    systemtoolbar.setDimension(dimension);
+    systemtoolbar.show();
+    //Update More button
+    systemtoolbar._toolBarBodyLeft.refreshToolBarGroups();
+    systemtoolbar._containAllButtons();
 }
 
 /**
@@ -812,43 +812,43 @@ BrowserPageBinding.prototype.showToolbar = function () {
  */
 BrowserPageBinding.prototype.hideToolbar = function () {
 
-	var systemtoolbar = top.app.bindingMap.systemtoolbar;
-	systemtoolbar.hide();
+    var systemtoolbar = top.app.bindingMap.systemtoolbar;
+    systemtoolbar.hide();
 }
 
-BrowserPageBinding.prototype.loadDeviceList = function() {
-	var request = DOMUtil.getXMLHTTPRequest();
-	var url = Resolver.resolve(BrowserPageBinding.DEVICE_LIST);
-	var group = window.bindingMap.screenpopupgroup;
-	var bindingDocument = this.bindingDocument;
-	request.open("get", url, true);
-	request.onreadystatechange = function () {
-		if (request.readyState == 4) {
-			if (request.status == 200) {
-				var response = request.responseXML;
-				group.empty();
-				new List(response.getElementsByTagName("device")).each(function (device) {
-					var label = device.getAttribute("label");
-					var image = device.getAttribute("image");
-					var w = device.getAttribute("w");
-					var h = device.getAttribute("h");
-					var touch = device.getAttribute("touch");
+BrowserPageBinding.prototype.loadDeviceList = function () {
+    var request = DOMUtil.getXMLHTTPRequest();
+    var url = Resolver.resolve(BrowserPageBinding.DEVICE_LIST);
+    var group = window.bindingMap.screenpopupgroup;
+    var bindingDocument = this.bindingDocument;
+    request.open("get", url, true);
+    request.onreadystatechange = function () {
+        if (request.readyState == 4) {
+            if (request.status == 200) {
+                var response = request.responseXML;
+                group.empty();
+                new List(response.getElementsByTagName("device")).each(function (device) {
+                    var label = device.getAttribute("label");
+                    var image = device.getAttribute("image");
+                    var w = device.getAttribute("w");
+                    var h = device.getAttribute("h");
+                    var touch = device.getAttribute("touch");
 
-					var itemBinding = MenuItemBinding.newInstance(bindingDocument);
-					itemBinding.setImage(image);
-					itemBinding.setLabel(label);
-					itemBinding.setProperty("cmd", "setscreen");
-					itemBinding.setProperty("w", w);
-					itemBinding.setProperty("h", h);
-					itemBinding.setProperty("touch", touch);
-					group.add(itemBinding);
-					itemBinding.attach();
-				});
+                    var itemBinding = MenuItemBinding.newInstance(bindingDocument);
+                    itemBinding.setImage(image);
+                    itemBinding.setLabel(label);
+                    itemBinding.setProperty("cmd", "setscreen");
+                    itemBinding.setProperty("w", w);
+                    itemBinding.setProperty("h", h);
+                    itemBinding.setProperty("touch", touch);
+                    group.add(itemBinding);
+                    itemBinding.attach();
+                });
 
-			}
-		}
-	};
-	request.send(null);
+            }
+        }
+    };
+    request.send(null);
 }
 
 
@@ -857,37 +857,87 @@ BrowserPageBinding.prototype.loadDeviceList = function() {
  * @param {int} width
  */
 BrowserPageBinding.prototype.setScreen = function (dim, touch) {
-	var frameelement = this._box.getFrameElement();
-	var win = this._box.getBrowserWindow().bindingElement;
-	if (dim.w) {
-		frameelement.style.width = dim.w + "px";
-		win.style.overflowX = "auto";
-	} else {
-		frameelement.style.removeProperty("width");
-		win.style.removeProperty("overflow-x");
-	}
-	if (dim.h) {
-		frameelement.style.height = dim.h + "px";
-		win.style.overflowY = "auto";
-	} else {
-		frameelement.style.removeProperty("height");
-		win.style.removeProperty("overflow-y");
-	}
-	if (touch) {
-		frameelement.scrolling = "no";
-		
-	} else {
-		frameelement.scrolling = "yes";
-	}
+
+    var frameelement = this._box.getFrameElement();
+    var win = this._box.getBrowserWindow().bindingElement;
+
+    frameelement.style.overflowX = "hidden";
+    frameelement.style.overflowY = "scroll";
+    frameelement.contentWindow.document.getElementsByTagName('body')[0].style.overflowX = "hidden";
+
+    win.style.background = "#444";
+
+    if (dim.w && dim.h && dim.w < win.offsetWidth) {
+        frameelement.style.margin = "50px auto";
+    } else {
+        frameelement.style.removeProperty("margin");
+    }
+    if (dim.w) {
+       
+        if (touch) {
+            frameelement.style.width = dim.w + this.getScrollbarWidth() + "px";
+        } else {
+            frameelement.style.width = dim.w + "px";
+        }
+        win.style.overflowX = "auto";
+    } else {
+        frameelement.style.removeProperty("width");
+        win.style.removeProperty("overflow-x");
+    }
+    if (dim.h) {
+        frameelement.style.height = dim.h + "px";
+        win.style.overflowY = "auto";
+    } else {
+        frameelement.style.removeProperty("height");
+        win.style.removeProperty("overflow-y");
+    }
+    var frameOverlay = document.getElementById('deviceframeoverlay');
+    if (touch) {
+        if (!frameOverlay) {
+            frameOverlay = document.createElement('div');
+            frameOverlay.id = 'deviceframeoverlay';
+            win.appendChild(frameOverlay);
+            frameOverlay.onclick = function (e) {
+                frameOverlay.style.display = "none";
+                var framePosition = frameelement.getBoundingClientRect();
+                var el = frameelement.contentWindow.document.elementFromPoint(e.clientX - framePosition.left, e.clientY - framePosition.top);
+                if (el) {
+                    el.click();
+                }
+                frameOverlay.style.display = "block";
+            };
+        }
+        frameOverlay.style.display = "block";
+        frameOverlay.style.marginLeft = "-" + ((dim.w + this.getScrollbarWidth()) / 2) + "px";
+        frameOverlay.style.width = dim.w + "px";
+        frameOverlay.style.height = dim.h + "px";
+
+    } else {
+        if (frameOverlay) {
+            frameOverlay.style.display = "none";
+        }
+    }
 
 }
 
 
+BrowserPageBinding.prototype.getScrollbarWidth = function () {
+    var div, width = this.getScrollbarWidth.width;
+    if (width === undefined) {
+        div = document.createElement('div');
+        div.innerHTML = '<div style="width:50px;height:50px;position:absolute;left:-50px;top:-50px;overflow:auto;"><div style="width:1px;height:100px;"></div></div>';
+        div = div.firstChild;
+        document.body.appendChild(div);
+        width = this.getScrollbarWidth.width = div.offsetWidth - div.clientWidth;
+        document.body.removeChild(div);
+    }
+    return width;
+};
 
 /**
  * Return perspective handle for browser
  */
 BrowserPageBinding.prototype.getPerspectiveHandle = function () {
 
-	return this.systemViewDefinition.handle;
+    return this.systemViewDefinition.handle;
 }

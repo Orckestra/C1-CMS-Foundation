@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://www.w3.org/1999/xhtml" xmlns:control="http://www.composite.net/ns/uicontrol">
-
 <%@ Page Language="C#" %>
-
 <control:httpheaders runat="server" />
 <head>
 	<title>Composite.Management.Browser</title>
@@ -86,7 +85,7 @@
 					<ui:tabpanels style="position: relative;">
 						<ui:cover id="blocker" transparent="false" busy="false" hidden="true">
 							<div id="message">
-								<div id="icon" />
+								<ui:labelbox image="${icon:message}"></ui:labelbox>
 								<div id="text">
 									<ui:text label="External URL not loaded: " />
 									<span id="externalurl">:)</span>
