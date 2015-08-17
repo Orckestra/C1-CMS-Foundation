@@ -2096,8 +2096,6 @@
     <Content Include="Composite\content\views\search\search.css" />
     <Content Include="Composite\content\views\search\SearchPageBinding.js" />
     <Content Include="Composite\content\views\seoassist\bindings\SEOAssistantPageBinding.js" />
-    <Content Include="Composite\content\views\seoassist\bindings\SEOResultTreeBinding.js" />
-    <Content Include="Composite\content\views\seoassist\bindings\SEOResultTreeNodeBinding.js" />
     <Content Include="Composite\content\views\seoassist\scripts\SEODOMParser.js" />
     <Content Include="Composite\content\views\seoassist\scripts\SEOResult.js" />
     <Content Include="Composite\content\views\seoassist\seoassist.aspx" />

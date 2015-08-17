@@ -622,8 +622,12 @@ BrowserPageBinding.prototype._handleCommand = function (cmd, binding) {
             this.reflex();
             break;
         case "seoassistant":
-            var def = ViewDefinitions["Composite.Management.SEOAssistant"];
-            StageBinding.presentViewDefinition(def);
+        	StageBinding.handleViewPresentation("Composite.Management.SEOAssistant");
+        	var self = this;
+        	setTimeout(function () {
+        		self.getContentDocument().location.reload();
+        	}, 250);
+        	break;
             break;
         case "setscreen":
             var w = binding.getProperty("w");

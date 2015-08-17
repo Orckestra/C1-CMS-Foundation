@@ -111,7 +111,16 @@ SEODOMParser.prototype = {
 		if ( this._isDebugging == true ) {
 			this._logger.debug ( DOMSerializer.serialize ( dom ));
 		}
-		this._results = new Map (); 
+		this._results = new Map();
+
+		//add all keys to result
+		var self = this;
+		this._map.each(function(key) {
+			self._getResult(key);
+		});
+		
+
+
 		this._crawler.crawl ( dom );
 		
 		/*
