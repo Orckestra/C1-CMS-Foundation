@@ -2,12 +2,12 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Composite.C1Console.Events;
 using Composite.Core.Extensions;
+using Composite.Core.Types;
 using Composite.Data;
 using Composite.Data.Types;
-
-using Scope = System.Tuple<Composite.Data.PublicationScope, string>;
 
 namespace Composite.Core.Routing
 {
@@ -92,7 +92,7 @@ namespace Composite.Core.Routing
         /// <summary>
         /// Gets page url data by data reference; returns <value>null</value> if no data url mappers found.
         /// </summary>
-        /// <param name="data">The data reference.</param>
+        /// <param name="dataReference">The data reference.</param>
         /// <returns></returns>
         public static PageUrlData TryGetPageUrlData(IDataReference dataReference)
         {
@@ -105,15 +105,41 @@ namespace Composite.Core.Routing
                 return dataUrlMapper.GetPageUrlData(dataReference);
             }
 
+            IData data = null;
             if (typeof(IPageRelatedData).IsAssignableFrom(dataReference.ReferencedType))
             {
-                var data = dataReference.Data;
+                data = dataReference.Data;
 
                 Guid pageId = (data as IPageRelatedData).PageId;
                 return TryGetPageUrlData(pageId, dataReference);
             }
+            
+            foreach (var propertyInfo in GetPageReferenceFields(dataReference.ReferencedType))
+            {
+                data = data ?? dataReference.Data;
+
+                Guid pageId = (Guid) propertyInfo.GetValue(data, null);
+                if (pageId != Guid.Empty)
+                {
+                    var pageUrlData = TryGetPageUrlData(pageId, dataReference);
+                    if (pageUrlData != null)
+                    {
+                        return pageUrlData;
+                    }
+                }
+            }
 
             return null;
+        }
+
+        private static IEnumerable<PropertyInfo> GetPageReferenceFields(Type referencedType)
+        {
+            var descriptor = DataMetaDataFacade.GetDataTypeDescriptor(referencedType.GetImmutableTypeId());
+
+            return descriptor.Fields.Where(f => f.InstanceType == typeof(Guid) 
+                && f.ForeignKeyReferenceTypeName != null
+                && TypeManager.TryGetType(f.ForeignKeyReferenceTypeName) == typeof(IPage))
+                .Select(f => referencedType.GetProperty(f.Name));
         }
 
 
