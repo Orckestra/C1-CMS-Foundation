@@ -63,7 +63,7 @@ namespace Composite.Services
                 },
                 new KeyValuePair
                 {
-                    Key = "QA, Packages, Documentaion & Support",
+                    Key = "QA, Packages, Documentation & Support",
                     Value = "Vitaly Vysotskyi;Inna Boitsun;Pavlo Kuzminskiy"
                 },
                 new KeyValuePair
@@ -80,7 +80,7 @@ namespace Composite.Services
                         "Emelie Mikaelsson (Invinn AB) for Swedish translation",
                         "Erik Paquet for French translation",
                         "Volodymyr Muzyka for building our Kiev team",
-                        "@burningice for ConpositeC1Contrib",
+                        "@burningice for CompositeC1Contrib",
                         "HolisticWare team for contributions",
                         "@nufaqtz for awesome packages and inspiration",
                         "Our community for help and cheering us on",

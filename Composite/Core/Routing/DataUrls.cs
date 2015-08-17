@@ -55,6 +55,11 @@ namespace Composite.Core.Routing
         {
             Verify.ArgumentNotNull(pageUrlData, "pageUrlData");
 
+            if (string.IsNullOrEmpty(pageUrlData.PathInfo) && pageUrlData.QueryParameters.Count == 0)
+            {
+                return null;
+            }
+
             foreach (var globalDataUrlMapper in _globalDataUrlMappers)
             {
                 var data = globalDataUrlMapper.Value.GetData(pageUrlData);

@@ -8,6 +8,7 @@ using Composite.C1Console.Events;
 using Composite.Core;
 using Composite.Core.Routing;
 using Composite.Core.WebClient;
+using Composite.Core.WebClient.Renderings.Page;
 using Composite.Data.Types;
 
 namespace Composite.Data
@@ -70,9 +71,10 @@ namespace Composite.Data
             _renderedPages.TryRemove(GetCacheKey(page), out temp);
         }
 
+        /// <exclude />
         public static void RenderPageIfNotRendered(IPage page)
         {
-            if (IsPageRendered(page)) return;
+            if (IsPageRendered(page) || PageRenderer.CurrentPageId == page.Id) return;
 
             bool lockTaken = false;
             try

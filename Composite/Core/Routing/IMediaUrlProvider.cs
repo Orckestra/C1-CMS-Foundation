@@ -4,7 +4,7 @@ using Composite.Core.WebClient.Media;
 namespace Composite.Core.Routing
 {
     /// <summary>    
-    /// An interface for providing media urls for a given <see cref="MediaUrlData"/>
+    /// An interface for providing media urls for a given media id.
     /// </summary>
     public interface IMediaUrlProvider
     {
@@ -18,7 +18,7 @@ namespace Composite.Core.Routing
     }
 
     /// <summary>    
-    /// An interface for providing media urls for a given <see cref="MediaUrlData"/>
+    /// An interface for providing media urls for a given media id.
     /// </summary>
     public interface IResizableImageUrlProvider: IMediaUrlProvider
     {
