@@ -57,6 +57,8 @@ namespace Composite.Core.Routing
         /// <returns></returns>
         public static PageUrlData ParseUrl(string relativeUrl, UrlSpace urlSpace, out UrlKind urlKind) 
         {
+            Verify.ArgumentNotNull(relativeUrl, "relativeUrl");
+
             return UrlProvider.ParseUrl(relativeUrl, urlSpace, out urlKind);
         }
 
@@ -69,6 +71,8 @@ namespace Composite.Core.Routing
         /// <returns></returns>
         public static string BuildUrl(PageUrlData pageUrlData, UrlKind urlKind = UrlKind.Public, UrlSpace urlSpace = null) 
         {
+            Verify.ArgumentNotNull(pageUrlData, "pageUrlData");
+
             return UrlProvider.BuildUrl(pageUrlData, urlKind, urlSpace ?? new UrlSpace());
         }
 
