@@ -632,20 +632,16 @@ TreeNodeBinding.prototype.handleEvent = function ( e ) {
 	 */
 	switch ( e.type ) {
 	
-		case DOMEvents.MOUSEDOWN : 
-			switch ( target ) {
-				case label :
-					this._onAction ( e );
-					break;
-				case labelBody :
-				case labelText :
-					if ( !this.isDisabled ) {
-						this._onFocus ( e );
-					}
-					break;
+		case DOMEvents.MOUSEDOWN :
+			if (target == label) {
+				this._onAction(e);
+			} else {
+				if (!this.isDisabled) {
+					this._onFocus(e);
+				}
 			}
 			break;
-			
+
 		case DOMEvents.DOUBLECLICK :
 			this._onAction ( e );
 			break;
