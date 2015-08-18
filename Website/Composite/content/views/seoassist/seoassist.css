@@ -59,13 +59,10 @@ table.resulttable {
 }
 
 table.resulttable ui|toolbarbutton {
-	margin: 0px 5px;
+    margin-left: 10px;
 }
 
-table.resulttable ui|toolbarbutton  ui|labelbox {
-	padding: 5px 11px;
 
-}
 
 
 table.resulttable ui|datainput {
@@ -75,7 +72,7 @@ table.resulttable ui|datainput {
 table.resulttable thead th {
 	height: 50px;
 	white-space: nowrap;
-	padding: 10px;
+	padding: 10px 35px 10px 10px;
 	text-align: left;
 	background: #F7F7F7;
 	font-weight: normal;
@@ -104,8 +101,8 @@ table.resulttable tbody td {
 table.resulttable tbody td.true:after {
 	position: absolute;
 	content: "";
-	top: 4px;
-	left: 10px;
+	top: 5px;
+	left: 12px;
 	width: 14px;
 	height: 7px;
 	border: 1px solid #22B980;
@@ -117,7 +114,7 @@ table.resulttable tbody td.true:after {
 table.resulttable tbody td.false:after {
 	position: absolute;
 	content: '×';
-	top: 0px;
+	top: 4px;
 	left: 10px;
 	width: 15px;
 	height: 15px;
@@ -132,4 +129,14 @@ table.resulttable tbody td.false:after {
 table.resulttable tbody td.score {
 	padding-left: 30px;
 	width: 90px;
+}
+
+.resulttable td ui|clickbutton ui|labelbox.imageonly {
+    background: none;
+    border: none;
+    color: #575757;
+}
+
+.resulttable td ui|clickbutton.hover ui|labelbox.imageonly {
+    color: #22b980;
 }

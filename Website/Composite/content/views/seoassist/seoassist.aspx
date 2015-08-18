@@ -26,7 +26,7 @@
 										<ui:datainput id="keywordinput" />
 									</ui:fielddata>
 									
-									<ui:toolbarbutton image="add" id="addkeywordbutton" />
+									<ui:toolbarbutton image="add" id="addkeywordbutton" title="Add Keyword" />
 								</div>
 							</th>
 							<th>
@@ -41,6 +41,7 @@
 								<ui:text label="${string:Composite.Web.SEOAssistant:isInHeading}"></ui:text></th>
 							<th>
 								<ui:text label="${string:Composite.Web.SEOAssistant:isInContent}"></ui:text></th>
+                            <th></th>
 						</tr>
 					</thead>
 					<tbody id="resultcontaner">

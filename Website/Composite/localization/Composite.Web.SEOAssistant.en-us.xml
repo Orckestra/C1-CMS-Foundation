@@ -7,12 +7,12 @@
   <string key="TabKeywords" value="Keywords" />
   <string key="ResultHeading" value="Keywords found in page preview:" />
   <string key="NoKeywordsWarning" value="No keywords configured." />
-  <string key="isInTitle" value="Keyword in title" />
-  <string key="isInURL" value="Keyword in URL" />
-  <string key="isInMenuTitle" value="Keyword in menu title" />
-  <string key="isInDescription" value="Keyword in description" />
-  <string key="isInHeading" value="Keyword in heading" />
-  <string key="isInContent" value="Keyword in content" />
+  <string key="isInTitle" value="In title" />
+  <string key="isInURL" value="In URL" />
+  <string key="isInMenuTitle" value="In menu title" />
+  <string key="isInDescription" value="In description" />
+  <string key="isInHeading" value="In heading" />
+  <string key="isInContent" value="In content" />
   <string key="NoKeywords" value="No keywords found in page preview" />
 	<string key="IncorrectHtml" value="Failed to analyze the keywords because the markup is not valid" />
 </strings>

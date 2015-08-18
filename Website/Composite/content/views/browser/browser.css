@@ -51,9 +51,6 @@ ui|datainput#addressbar {
     padding: 0;
 }
 
-    ui|datainput#addressbar ui|box {
-        height: 32px;
-    }
 
     ui|datainput#addressbar input {
         width: 100%;
@@ -81,6 +78,7 @@ div#text {
     top: 50px;
     left: 50%;
     background: transparent;
+    cursor: pointer;
     cursor: url('/Composite/images/touch-cursor.png') 16 16, pointer;
     overflow: hidden;
 }
