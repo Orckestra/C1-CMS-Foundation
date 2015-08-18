@@ -19609,16 +19609,12 @@ var _c84=this.labelBinding.shadowTree.labelBody;
 var _c85=this.labelBinding.shadowTree.labelText;
 switch(e.type){
 case DOMEvents.MOUSEDOWN:
-switch(_c82){
-case _c83:
+if(_c82==_c83){
 this._onAction(e);
-break;
-case _c84:
-case _c85:
+}else{
 if(!this.isDisabled){
 this._onFocus(e);
 }
-break;
 }
 break;
 case DOMEvents.DOUBLECLICK:
@@ -29206,7 +29202,7 @@ MessageQueue.update(true);
 GenericViewBinding.prototype=new TreeBinding;
 GenericViewBinding.prototype.constructor=GenericViewBinding;
 GenericViewBinding.superclass=TreeBinding.prototype;
-GenericViewBinding.CLASSNAME="generericview";
+GenericViewBinding.CLASSNAME="genericview";
 GenericViewBinding.CLASSNAME_SINGLE="single";
 GenericViewBinding.CLASSNAME_ICONSIZE="icons-s-150";
 GenericViewBinding.CLASSNAME_SINGLE_ICONSIZE="icons-s-400";
