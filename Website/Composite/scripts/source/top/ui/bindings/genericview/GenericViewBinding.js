@@ -2,7 +2,7 @@
 GenericViewBinding.prototype.constructor = GenericViewBinding;
 GenericViewBinding.superclass = TreeBinding.prototype;
 
-GenericViewBinding.CLASSNAME = "generericview";
+GenericViewBinding.CLASSNAME = "genericview";
 GenericViewBinding.CLASSNAME_SINGLE = "single";
 GenericViewBinding.CLASSNAME_ICONSIZE = "icons-s-150";
 GenericViewBinding.CLASSNAME_SINGLE_ICONSIZE = "icons-s-400";

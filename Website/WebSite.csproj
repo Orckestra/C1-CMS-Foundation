@@ -2381,7 +2381,7 @@
     <Content Include="Composite\styles\default\toolbars\pagetemplates.less" />
     <Content Include="Composite\styles\default\toolbars\codemirror-editor.less" />
     <Content Include="Composite\styles\default\toolbars\dialog.less" />
-    <Content Include="Composite\styles\default\trees\generericview-tree.less" />
+    <Content Include="Composite\styles\default\trees\genericview-tree.less" />
     <None Include="Composite\styles\default\trees\trees-base.less" />
     <None Include="Composite\styles\default\updatepanels.less" />
     <None Include="Composite\styles\default\views.less" />
