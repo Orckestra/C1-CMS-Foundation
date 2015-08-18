@@ -135,6 +135,10 @@ namespace Composite.Core.Routing
         private static IEnumerable<PropertyInfo> GetPageReferenceFields(Type referencedType)
         {
             var descriptor = DataMetaDataFacade.GetDataTypeDescriptor(referencedType.GetImmutableTypeId());
+            if (descriptor == null)
+            {
+                return Enumerable.Empty<PropertyInfo>();
+            }
 
             return descriptor.Fields.Where(f => f.InstanceType == typeof(Guid) 
                 && f.ForeignKeyReferenceTypeName != null
