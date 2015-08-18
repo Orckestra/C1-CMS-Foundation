@@ -18,6 +18,7 @@ using Composite.Core.IO;
 using Composite.Core.Linq;
 using Composite.Core.ResourceSystem;
 using Composite.Core.ResourceSystem.Icons;
+using Composite.Core.Routing;
 using Composite.Core.WebClient;
 using Composite.Data;
 using Composite.Data.Foundation.PluginFacades;
@@ -329,7 +330,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
 
         private IEnumerable<LabeledProperty> GetFolderProperties(IMediaFileFolder folder)
         {
-            var propertyList = new LabeledPropertyList
+            return new LabeledPropertyList
             {
                 {"StoreId", "Store ID", folder.StoreId},
                 {"Path", "Path", folder.Path},
@@ -337,8 +338,6 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
                 {"Description", "Description", folder.Description},
                 {"IsReadOnly", "Read only", folder.IsReadOnly}
             };
-
-            return propertyList;
         }
 
 
@@ -599,7 +598,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
                 result = result != null ? result.Concat(files) : files;
             }
 
-            return result != null ? result.ToList() : new List<Element>();
+            return result != null ? result.Evaluate() : Enumerable.Empty<Element>();
         }
 
 
@@ -622,13 +621,12 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
                      (x.Title != null && x.Title.ToLower().Contains(keyword)));
             }
 
-            if (searchToken is MediaFileSearchToken)
+            var mediaFileSearchToken = searchToken as MediaFileSearchToken;
+            if (mediaFileSearchToken != null)
             {
-                MediaFileSearchToken mediaFileSearchToken = (MediaFileSearchToken)searchToken;
-
                 if (mediaFileSearchToken.MimeTypes != null && mediaFileSearchToken.MimeTypes.Length > 0)
                 {
-                    List<string> mimeTypes = new List<string>(mediaFileSearchToken.MimeTypes);
+                    var mimeTypes = new List<string>(mediaFileSearchToken.MimeTypes);
                     predicates.Add(x => mimeTypes.Contains(x.MimeType));
                 }
 
@@ -723,6 +721,12 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
             element.PropertyBag.Add("Uri", GetMediaUrl(file, true, false));
             element.PropertyBag.Add("ElementType", file.MimeType);
 
+            if (file.MimeType.StartsWith("image/"))
+            {
+                string previewImageUrl =  UrlUtils.ResolvePublicUrl(MediaUrls.BuildUrl(file, UrlKind.Internal) + "?mw={width}&mh={height}");
+                element.PropertyBag.Add("ListViewImage", previewImageUrl);
+                element.PropertyBag.Add("DetailViewImage", previewImageUrl);
+            }
 
             GetFileActions(file).ForEach(element.AddAction);
 
