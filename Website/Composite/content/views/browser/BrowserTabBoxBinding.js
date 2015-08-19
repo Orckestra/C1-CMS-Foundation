@@ -69,6 +69,7 @@ BrowserTabBoxBinding.prototype.getBrowserTabBinding = function () {
 	if (!this._browserTabBinding) {
 		this._browserTabBinding = BrowserTabBinding.newInstance ( this.bindingDocument );
 		var win = WindowBinding.newInstance(this.bindingDocument);
+		win.setProperty("native", "true");
 		this._browserTabBinding.browserwindow = win;
 		this.appendTabByBindings ( this._browserTabBinding, win );
 	}

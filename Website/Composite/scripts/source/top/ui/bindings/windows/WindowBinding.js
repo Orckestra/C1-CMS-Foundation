@@ -129,6 +129,12 @@ function WindowBinding () {
 	 */
 	this._hasLoadActionFired = false;
 	
+	/**
+	 * indicate that iframe should not part of framework
+	 * @type {Boolean}
+	 */
+	this._native = false;
+
 	/*
 	 * Returnable.
 	 */
@@ -172,6 +178,9 @@ WindowBinding.prototype.onBindingRegister = function () {
  * @overloads {Binding#onBindingAttach}
  */
 WindowBinding.prototype.onBindingAttach = function () {
+
+	if (this.getProperty("native"))
+		this._native = this.getProperty("native");
 
 	this.buildDOMContent ();
 	WindowBinding.superclass.onBindingAttach.call ( this );
@@ -404,8 +413,8 @@ WindowBinding.prototype.onWindowLoaded = function ( win ) {
 		if ( !this._hasLoadActionFired ) {
 			if ( win != null && win.document != null && win.document.body != null ) {
 				win.document.body.style.border = "none";
-				if ( win.WindowManager == undefined ) {
-					Application.framework ( win.document );
+				if ( win.WindowManager == undefined && !this._native) {
+					Application.framework(win.document);
 				}
 				if ( this._isReloading == true ) {
 					this._isReloading = false;

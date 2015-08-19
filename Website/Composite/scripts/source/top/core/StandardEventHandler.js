@@ -6,7 +6,7 @@ StandardEventHandler.isBackAllowed = false;
 
 /**
  * @param {DOMDocument} doc
- * @param {boolean} isMouseHandlerOnly Not currently used...
+ * @param {boolean} isMouseHandlerOnly
  */
 function StandardEventHandler ( doc, isMouseHandlerOnly ) { 
 
