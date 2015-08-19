@@ -398,14 +398,42 @@ namespace Composite.Services
 
 					if (pageNode != null)
 					{
-						string label = string.Format("{0} ({1})", pageNode.Title, pageNode.Url);
+                        string label = string.Format("{0} ( {1} )", pageNode.Title, RemovePreviewMarker(pageNode.Url));
 						return label;
 					}
 				}
+
+			    IDataReference dataReference = InternalUrls.TryParseInternalUrl(path);
+                if(dataReference != null)
+                {
+                    var data = dataReference.Data;
+                    if (data != null)
+                    {
+                        string label = data.GetLabel();
+
+                        if (label != null)
+                        {
+                            var dataPageUrlData = DataUrls.TryGetPageUrlData(dataReference);
+                            var dataPublicUrl = dataPageUrlData != null ? PageUrls.BuildUrl(dataPageUrlData) : null;
+
+                            if (dataPublicUrl != null)
+                            {
+                                label += " ( " + RemovePreviewMarker(dataPublicUrl) + " )";
+                            }
+                            
+                            return label;
+                        }
+                    }
+                }
 			}
 			
 			return path;
 		}
+
+        private static string RemovePreviewMarker(string url)
+        {
+            return url.Replace("/c1mode(unpublished)", "");
+        }
 
 		[WebMethod]
 		public string GetCompositeEntityToken(string path)
@@ -438,6 +466,16 @@ namespace Composite.Services
 						return EntityTokenSerializer.Serialize(page.GetDataEntityToken(), true);
 					}
 				}
+
+                IDataReference dataReference = InternalUrls.TryParseInternalUrl(path);
+                if (dataReference != null)
+                {
+                    var data = dataReference.Data;
+                    if (data != null)
+                    {
+                        return EntityTokenSerializer.Serialize(data.GetDataEntityToken(), true);
+                    }
+                }
 			}
 
 			return null;

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -6,6 +7,7 @@ using System.Text;
 using Composite.Core.Instrumentation;
 using Composite.Core.Linq;
 using Composite.Core.WebClient;
+using Composite.Data;
 
 namespace Composite.Core.Routing
 {
@@ -14,16 +16,28 @@ namespace Composite.Core.Routing
     /// </summary>
     public static class InternalUrls
     {
-        private static List<IInternalUrlConverter> _converters = new List<IInternalUrlConverter>();
+        private static readonly List<IInternalUrlConverter> _converters = new List<IInternalUrlConverter>();
+        private static readonly ConcurrentDictionary<Type, IInternalUrlProvider> _providers = new ConcurrentDictionary<Type, IInternalUrlProvider>();
 
         /// <summary>
-        /// Registers a url transformation.
+        /// Registers an internal url converter.
         /// </summary>
         /// <param name="urlConverter"></param>
         public static void Register(IInternalUrlConverter urlConverter)
         {
             _converters.Add(urlConverter);
         }
+
+        /// <summary>
+        /// Register an internal url provider.
+        /// </summary>
+        /// <param name="dataType"></param>
+        /// <param name="urlProvider"></param>
+        public static void Register(Type dataType, IInternalUrlProvider urlProvider)
+        {
+            _providers[dataType] = urlProvider;
+        }
+        
 
         /// <summary>
         /// Converts internal urls to public ones in a given html fragment
@@ -37,6 +51,66 @@ namespace Composite.Core.Routing
             return ConvertInternalUrlsToPublic(html, _converters);
         }
 
+
+        /// <summary>
+        /// Indicates whether internal urls can be generated for the specified data type.
+        /// </summary>
+        /// <param name="dataType"></param>
+        /// <returns></returns>
+        public static bool DataTypeSupported(Type dataType)
+        {
+            Verify.ArgumentNotNull(dataType, "dataType");
+
+            return _providers.ContainsKey(dataType);
+        }
+
+
+        /// <summary>
+        /// Gets an internal url for the specified data reference.
+        /// </summary>
+        /// <param name="dataReference">The data referenc.</param>
+        /// <returns></returns>
+        public static string TryBuildInternalUrl(IDataReference dataReference)
+        {
+            Verify.ArgumentNotNull(dataReference, "dataReference");
+
+            var type = dataReference.ReferencedType;
+
+            IInternalUrlProvider internalUrlProvider;
+
+            if (!_providers.TryGetValue(type, out internalUrlProvider))
+            {
+                return null;
+            }
+
+            return internalUrlProvider.BuildInternalUrl(dataReference);
+        }
+
+
+        /// <summary>
+        /// Tries to parse an internal url, returns a <value>null</value> if failed.
+        /// </summary>
+        /// <param name="internalUrl">The internal url.</param>
+        /// <returns></returns>
+        public static IDataReference TryParseInternalUrl(string internalUrl)
+        {
+            if (!internalUrl.StartsWith("~/")) return null;
+
+            internalUrl = internalUrl.Substring(2);
+
+            foreach (var converter in _converters)
+            {
+                foreach (var prefix in converter.AcceptedUrlPrefixes.Reverse())
+                {
+                    if (internalUrl.StartsWith(prefix, StringComparison.Ordinal))
+                    {
+                        return converter.ToDataReference(internalUrl);
+                    }
+                }
+            }
+
+            return null;
+        }
 
         /// <summary>
         /// Converts internal urls to public ones in a given html fragment
@@ -126,7 +200,7 @@ namespace Composite.Core.Routing
                     var converter = urlToConvert.Converter;
                     MeasureConvertionPerformance(measurements, converter, () =>
                     {
-                        publicUrl = urlToConvert.Converter.Convert(decodedInternalUrl, urlSpace);
+                        publicUrl = urlToConvert.Converter.ToPublicUrl(decodedInternalUrl, urlSpace);
                     });
 
                     if (publicUrl == null)

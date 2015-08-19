@@ -14,7 +14,7 @@ namespace Composite.Plugins.Routing.InternalUrlConverters
 
         public IEnumerable<string> AcceptedUrlPrefixes { get { return _acceptedUrlPrefixes; } }
 
-        public string Convert(string internalPageUrl, UrlSpace urlSpace)
+        public string ToPublicUrl(string internalPageUrl, UrlSpace urlSpace)
         {
             PageUrlData pageUrlData;
             string anchor;
@@ -54,6 +54,11 @@ namespace Composite.Plugins.Routing.InternalUrlConverters
             }
 
             return publicPageUrl;
+        }
+
+        public IDataReference ToDataReference(string internalUrl)
+        {
+            return null;
         }
     }
 }

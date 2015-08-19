@@ -208,6 +208,7 @@
     <Compile Include="Core\Routing\DataUrls.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Core\Routing\IInternalUrlProvider.cs" />
     <Compile Include="Core\Routing\IDataUrlMapper.cs">
       <SubType>Code</SubType>
     </Compile>

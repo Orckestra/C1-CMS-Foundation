@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Composite.Data;
 
 namespace Composite.Core.Routing
 {
@@ -18,6 +19,13 @@ namespace Composite.Core.Routing
         /// <param name="internalUrl">An internal url.</param>
         /// <param name="urlSpace">The target url space.</param>
         /// <returns></returns>
-        string Convert(string internalUrl, UrlSpace urlSpace);
+        string ToPublicUrl(string internalUrl, UrlSpace urlSpace);
+
+        /// <summary>
+        /// Converts an internal url in an internal format (f.e. "~/page(guid)" or "~/media(guid)") to a data reference.
+        /// </summary>
+        /// <param name="internalUrl">An internal url.</param>
+        /// <returns></returns>
+        IDataReference ToDataReference(string internalUrl);
     }
 }

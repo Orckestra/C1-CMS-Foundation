@@ -4,6 +4,7 @@ using System.Collections.Specialized;
 using Composite.Core;
 using Composite.Core.Extensions;
 using Composite.Core.Routing;
+using Composite.Data;
 
 namespace Composite.Plugins.Routing.InternalUrlConverters
 {
@@ -19,7 +20,7 @@ namespace Composite.Plugins.Routing.InternalUrlConverters
             get { return _acceptedUrlPrefixes; }
         }
 
-        public string Convert(string internalMediaUrl, UrlSpace urlSpace)
+        public string ToPublicUrl(string internalMediaUrl, UrlSpace urlSpace)
         {
             int openBracketIndex = internalMediaUrl.IndexOf("(", StringComparison.Ordinal);
             if (openBracketIndex < 0)
@@ -77,6 +78,11 @@ namespace Composite.Plugins.Routing.InternalUrlConverters
                     QueryParameters = queryParams
                 },
                 UrlKind.Public);
+        }
+
+        public IDataReference ToDataReference(string internalUrl)
+        {
+            return null;
         }
     }
 }

@@ -9,6 +9,7 @@ using Composite.C1Console.Workflow;
 using Composite.Core.Extensions;
 using Composite.Core.ResourceSystem;
 using Composite.Core.ResourceSystem.Icons;
+using Composite.Core.Routing;
 using Composite.Core.Types;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
@@ -25,7 +26,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
     {
         internal delegate void HooksChangedCallbackDelegate();
 
-        private ElementProviderContext _elementProviderContext;
+        private readonly ElementProviderContext _elementProviderContext;
         private EntityToken _rootEntityToken;
         private bool _addVisualFunctionActions;
 
@@ -333,7 +334,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
 
             foreach (EntityToken entityToken in entityTokens)
             {
-                DataEntityToken dataEntityToken = entityToken as DataEntityToken;
+                var dataEntityToken = entityToken as DataEntityToken;
                 if (dataEntityToken.Data == null) continue;
 
                 Type interfaceType = dataEntityToken.InterfaceType;
@@ -345,7 +346,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
                 if (referencedPage == null) continue; // TODO: check this branch
 
                 result.Add(entityToken,
-                    new AssociatedDataElementProviderHelperEntityToken[] 
+                    new [] 
                     {
                         new AssociatedDataElementProviderHelperEntityToken(
                         TypeManager.SerializeType(typeof(T)),
@@ -363,7 +364,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
         {
             string label = data.GetLabel();
 
-            Element element = new Element(_elementProviderContext.CreateElementHandle(data.GetDataEntityToken()))
+            var element = new Element(_elementProviderContext.CreateElementHandle(data.GetDataEntityToken()))
             {
                 VisualData = new ElementVisualizedData
                 {
@@ -379,6 +380,15 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
             AddEditAssociatedDataAction(element);
             AddDeleteAssociatedDataAction(element);
 
+            if (InternalUrls.DataTypeSupported(data.DataSourceId.InterfaceType))
+            {
+                string internalUrl = InternalUrls.TryBuildInternalUrl(data.ToDataReference());
+                if (internalUrl != null)
+                {
+                    element.PropertyBag.Add("Uri", internalUrl);
+                }
+            }
+
             return element;
         }
 
@@ -390,7 +400,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
 
             if (enabled)
             {
-                Element element = new Element(_elementProviderContext.CreateElementHandle(entityToken))
+                var element = new Element(_elementProviderContext.CreateElementHandle(entityToken))
                 {
                     VisualData = new ElementVisualizedData
                     {
@@ -440,9 +450,9 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
         #region Action methods
         private void AddAddAssociatedDataAction(Element element, bool isInToolbar)
         {
-            element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper.AddAssociatedDataWorkflow"), _addAssociatedDataPermissionTypes)))
-            {
-                VisualData = new ActionVisualizedData
+            element.AddWorkflowAction("Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper.AddAssociatedDataWorkflow", 
+                _addAssociatedDataPermissionTypes, 
+                new ActionVisualizedData
                 {
                     Label = StringResourceSystemFacade.GetString("Composite.Management", "AssociatedDataElementProviderHelper.AddAssociatedDataLabel"),
                     ToolTip = StringResourceSystemFacade.GetString("Composite.Management", "AssociatedDataElementProviderHelper.AddAssociatedDataToolTip"),
@@ -455,17 +465,16 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
                         IsInToolbar = isInToolbar,
                         ActionGroup = AppendedActionGroup
                     }
-                }
-            });
+                });
         }
 
 
 
         private void AddEditAssociatedDataAction(Element element)
         {
-            element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper.EditAssociatedDataWorkflow"), _editAssociatedDataPermissionTypes)))
-            {
-                VisualData = new ActionVisualizedData
+            element.AddWorkflowAction("Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper.EditAssociatedDataWorkflow", 
+                _editAssociatedDataPermissionTypes,
+                new ActionVisualizedData
                 {
                     Label = StringResourceSystemFacade.GetString("Composite.Management", "AssociatedDataElementProviderHelper.EditAssociatedDataLabel"),
                     ToolTip = StringResourceSystemFacade.GetString("Composite.Management", "AssociatedDataElementProviderHelper.EditAssociatedDataToolTip"),
@@ -478,17 +487,16 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
                         IsInToolbar = true,
                         ActionGroup = PrimaryActionGroup
                     }
-                }
-            });
+                });
         }
 
 
 
         private void AddDeleteAssociatedDataAction(Element element)
         {
-            element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper.DeleteAssociatedDataWorkflow"), _deleteAssociatedDataPermissionTypes)))
-            {
-                VisualData = new ActionVisualizedData
+            element.AddWorkflowAction("Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper.DeleteAssociatedDataWorkflow", 
+                _deleteAssociatedDataPermissionTypes,
+                new ActionVisualizedData
                 {
                     Label = StringResourceSystemFacade.GetString("Composite.Management", "AssociatedDataElementProviderHelper.DeleteAssociatedDataLabel"),
                     ToolTip = StringResourceSystemFacade.GetString("Composite.Management", "AssociatedDataElementProviderHelper.DeleteAssociatedDataToolTip"),
@@ -501,7 +509,6 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
                         IsInToolbar = true,
                         ActionGroup = PrimaryActionGroup
                     }
-                }
             });
         }
         #endregion
