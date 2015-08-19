@@ -10861,6 +10861,7 @@ this._isReloading=false;
 this._onloadHandler=null;
 this._unloadHandler=null;
 this._hasLoadActionFired=false;
+this._native=false;
 return this;
 }
 WindowBinding.prototype.toString=function(){
@@ -10881,6 +10882,9 @@ this.addActionListener(RootBinding.ACTION_ACTIVATED);
 this.addActionListener(RootBinding.ACTION_DEACTIVATED);
 };
 WindowBinding.prototype.onBindingAttach=function(){
+if(this.getProperty("native")){
+this._native=this.getProperty("native");
+}
 this.buildDOMContent();
 WindowBinding.superclass.onBindingAttach.call(this);
 this.setURL(this.getURL());
@@ -10989,7 +10993,7 @@ if(this.getURL()!=WindowBinding.DEFAULT_URL){
 if(!this._hasLoadActionFired){
 if(win!=null&&win.document!=null&&win.document.body!=null){
 win.document.body.style.border="none";
-if(win.WindowManager==undefined){
+if(win.WindowManager==undefined&&!this._native){
 Application.framework(win.document);
 }
 if(this._isReloading==true){
@@ -29209,6 +29213,7 @@ GenericViewBinding.CLASSNAME_ICONSIZE="icons-s-150";
 GenericViewBinding.CLASSNAME_SINGLE_ICONSIZE="icons-s-400";
 GenericViewBinding.ICONSIZE=150;
 GenericViewBinding.SINGLE_ICONSIZE=400;
+GenericViewBinding.LIST_IMAGE="listimage";
 function GenericViewBinding(){
 this.logger=SystemLogger.getLogger("GenericViewBinding");
 this.perspectiveNode=null;
@@ -29272,6 +29277,7 @@ if(this.hasClassName(GenericViewBinding.CLASSNAME_SINGLE)){
 _11cf.setImage(bag.ListViewImage.replace("{width}",GenericViewBinding.SINGLE_ICONSIZE).replace("{height}",GenericViewBinding.SINGLE_ICONSIZE));
 }else{
 _11cf.setImage(bag.ListViewImage.replace("{width}",GenericViewBinding.ICONSIZE).replace("{height}",GenericViewBinding.ICONSIZE));
+_11cf.attachClassName(GenericViewBinding.LIST_IMAGE);
 }
 }else{
 if(_11d2){
