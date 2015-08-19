@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Composite.Core.Linq;
 using Composite.Core.Types;
 
 
@@ -52,15 +53,15 @@ namespace Composite.Data.DynamicTypes.Foundation
 
         public static bool TryGetFieldPosition(PropertyInfo fieldInfo, out int position)
         {
-            var fieldPotitionAttribute = GetCustomAttribute<FieldPositionAttribute>(fieldInfo);
+            var fieldPositionAttribute = GetCustomAttribute<FieldPositionAttribute>(fieldInfo);
 
-            if (fieldPotitionAttribute == null)
+            if (fieldPositionAttribute == null)
             {
                 position = 0;
                 return false;
             }
             
-            position = fieldPotitionAttribute.Position;
+            position = fieldPositionAttribute.Position;
             return true;
         }
 
@@ -133,13 +134,20 @@ namespace Composite.Data.DynamicTypes.Foundation
             return null;
         }
 
+        public static string GetInternalUrlPrefix(Type type)
+        {
+            var internalUrlAttributes = type.GetCustomInterfaceAttributes<InternalUrlAttribute>().Evaluate();
+
+            return internalUrlAttributes.Count > 0 ? internalUrlAttributes.First().InternalUrlPrefix : null;
+        }
+        
 
 
         public static IEnumerable<DataScopeIdentifier> GetDataScopes(Type interfaceType)
         {
             List<DataScopeAttribute> attributes = interfaceType.GetCustomInterfaceAttributes<DataScopeAttribute>().ToList();
 
-            List<DataScopeIdentifier> dataScopeIdentifiers = new List<DataScopeIdentifier>();
+            var dataScopeIdentifiers = new List<DataScopeIdentifier>();
             foreach (DataScopeAttribute attribute in attributes)
             {
                 if (dataScopeIdentifiers.Contains(attribute.Identifier) == false)
@@ -183,7 +191,7 @@ namespace Composite.Data.DynamicTypes.Foundation
 
             if (storeFieldTypeAttributes.Length == 0) throw new InvalidOperationException("Missing PhysicalStoreFieldTypeAttribute on field " + fieldInfo.Name);
 
-            StoreFieldTypeAttribute storeAttribute = (StoreFieldTypeAttribute)storeFieldTypeAttributes[0];
+            var storeAttribute = (StoreFieldTypeAttribute)storeFieldTypeAttributes[0];
             return storeAttribute.IsNullable;
         }
 
@@ -268,7 +276,7 @@ namespace Composite.Data.DynamicTypes.Foundation
         /// <returns></returns>
         public static Type GetBuildNewHandlerType(Type interfaceType)
         {
-            IEnumerable<BuildNewHandlerAttribute> attributes = interfaceType.GetCustomAttributesRecursively<BuildNewHandlerAttribute>();
+            var attributes = interfaceType.GetCustomAttributesRecursively<BuildNewHandlerAttribute>().Evaluate();
 
             if (!attributes.Any()) return null;
 

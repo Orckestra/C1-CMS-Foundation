@@ -11,6 +11,7 @@ using Composite.C1Console.Workflow;
 using Composite.Core.Extensions;
 using Composite.Core.Linq;
 using Composite.Core.ResourceSystem;
+using Composite.Core.Routing;
 using Composite.Core.Types;
 using Composite.Data;
 using Composite.Data.ProcessControlled;
@@ -119,8 +120,10 @@ namespace Composite.C1Console.Trees
             DataEntityToken parentEntityToken = parentDataItem.GetDataEntityToken();
 
             TreeNode parentTreeNode = this.ParentNode;
-            while (((parentTreeNode as DataElementsTreeNode) == null) ||
-                   ((parentTreeNode as DataElementsTreeNode).InterfaceType != parentEntityToken.InterfaceType))
+            var dataElementsTreeNode = parentTreeNode as DataElementsTreeNode;
+
+            while (dataElementsTreeNode == null ||
+                   dataElementsTreeNode.InterfaceType != parentEntityToken.InterfaceType)
             {
                 parentTreeNode = parentTreeNode.ParentNode;
             }
@@ -133,15 +136,15 @@ namespace Composite.C1Console.Trees
         /// <exclude />
         protected override IEnumerable<Element> OnGetElements(EntityToken parentEntityToken, TreeNodeDynamicContext dynamicContext)
         {
-            bool localizationEndabled = this.ShowForeignItems && !UserSettings.ActiveLocaleCultureInfo.Equals(UserSettings.ForeignLocaleCultureInfo);
+            bool localizationEnabled = this.ShowForeignItems && !UserSettings.ActiveLocaleCultureInfo.Equals(UserSettings.ForeignLocaleCultureInfo);
             
             NodeDataSet dataset = GetDataset(dynamicContext);
 
-            List<object> itemKeys = new List<object>();
+            var itemKeys = new List<object>();
             IEnumerable<IData> dataItems;
             IEnumerable<object> keysJoinedByParentFilters = dataset.JoinedKeys;
 
-            if (localizationEndabled && UserSettings.ForeignLocaleCultureInfo != null)
+            if (localizationEnabled && UserSettings.ForeignLocaleCultureInfo != null)
             {
                 NodeDataSet foreignDataset;
                 using (new DataScope(UserSettings.ForeignLocaleCultureInfo))
@@ -176,156 +179,14 @@ namespace Composite.C1Console.Trees
 
             var replaceContext = new DynamicValuesHelperReplaceContext(parentEntityToken, dynamicContext.Piggybag);
 
-            List<Element> elements = new List<Element>();
+            var elements = new List<Element>();
 
             foreach (IData data in dataItems)
             {
                 Verify.IsNotNull(data, "Fetching data for data interface '{0}' yielded an null element".FormatWith(this.InterfaceType));
 
-                replaceContext.CurrentDataItem = data;
-                
-
-                object keyValue = this.KeyPropertyInfo.GetValue(data, null);
-
-                bool itemLocalizationEnabledAndForeign = localizationEndabled && !data.DataSourceId.LocaleScope.Equals(UserSettings.ActiveLocaleCultureInfo);
-
-                if (itemLocalizationEnabledAndForeign && itemKeys.Contains(keyValue)) continue;
-
-                var currentEntityToken = data.GetDataEntityToken();
-
-                Element element = new Element(new ElementHandle
-                (
-                    dynamicContext.ElementProviderName,
-                    currentEntityToken,
-                    dynamicContext.Piggybag.PreparePiggybag(this.ParentNode, parentEntityToken)
-                ));
-
-
-                bool hasChildren;
-                bool isDisabled = false;
-                ResourceHandle icon;
-                ResourceHandle openedIcon;
-                if (itemLocalizationEnabledAndForeign)
-                {
-                    hasChildren = false;
-                    isDisabled = !data.IsTranslatable();
-
-                    if (this.Icon != null)
-                    {
-                        icon = this.Icon;
-                        openedIcon = this.OpenedIcon;
-                    }
-                    else
-                    {
-                        icon = data.GetForeignIcon();
-                        openedIcon = icon;
-                    }
-                 }
-                else
-                {
-                    if (this.Display != LeafDisplayMode.Auto)
-                    {
-                        hasChildren = ChildNodes.Any();
-                    }
-                    else
-                    {
-                        hasChildren = ChildNodes.OfType<SimpleElementTreeNode>().Any();
-
-                        if (!hasChildren)
-                        {
-                            if (keysJoinedByParentFilters != null)
-                            {
-                                keysJoinedByParentFilters = keysJoinedByParentFilters.Evaluate();
-
-                                hasChildren = keysJoinedByParentFilters.Contains(keyValue);
-                            }
-                        }
-
-                        // Checking children filtered by FunctionFilters
-                        if (!hasChildren)
-                        {
-                            foreach (var childNode in this.ChildNodes.OfType<DataElementsTreeNode>()
-                                .Where(n => n.FilterNodes.OfType<FunctionFilterNode>().Any()))
-                            {
-                                TreeNodeDynamicContext newDynamicContext = new TreeNodeDynamicContext(TreeNodeDynamicContextDirection.Down)
-                                {
-                                    ElementProviderName = dynamicContext.ElementProviderName,
-                                    Piggybag = dynamicContext.Piggybag.PreparePiggybag(this.ParentNode, parentEntityToken),
-                                    CurrentEntityToken = currentEntityToken
-                                };
-
-                                if (childNode.GetDataset(newDynamicContext, false).DataItems.Any())
-                                {
-                                    hasChildren = true;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-
-                    if (this.Icon != null)
-                    {
-                        icon = this.Icon;
-                        openedIcon = this.OpenedIcon;
-                    }
-                    else
-                    {
-                        icon = icon = data.GetIcon();
-                        openedIcon = icon;
-                    }                    
-                }
-
-                string label = this.Label.IsNullOrEmpty() 
-                                ? data.GetLabel() 
-                                : this.LabelDynamicValuesHelper.ReplaceValues(replaceContext);                
-
-                string toolTip = this.ToolTip.IsNullOrEmpty() 
-                                ? label 
-                                : this.ToolTipDynamicValuesHelper.ReplaceValues(replaceContext);
-
-                if (itemLocalizationEnabledAndForeign)
-                {
-                    label = string.Format("{0} ({1})", label, DataLocalizationFacade.GetCultureTitle(UserSettings.ForeignLocaleCultureInfo));
-
-                    if (!data.IsTranslatable())
-                    {
-                        toolTip = StringResourceSystemFacade.GetString("Composite.C1Console.Trees", "LocalizeDataWorkflow.DisabledData");
-                    }
-                    else
-                    {
-                        toolTip = string.Format("{0} ({1})", toolTip, DataLocalizationFacade.GetCultureTitle(UserSettings.ForeignLocaleCultureInfo));
-                    }
-                }
-
-                element.VisualData = new ElementVisualizedData
-                {
-                    Label = label,
-                    ToolTip = toolTip,
-                    HasChildren = hasChildren,
-                    Icon = icon,
-                    OpenedIcon = openedIcon,
-                    IsDisabled = isDisabled
-                };
-
-
-                if (itemLocalizationEnabledAndForeign)
-                {
-                    WorkflowActionToken actionToken = new WorkflowActionToken(
-                        WorkflowFacade.GetWorkflowType("Composite.C1Console.Trees.Workflows.LocalizeDataWorkflow"),
-                        LocalizeDataPermissionTypes);
-
-                    element.AddAction(new ElementAction(new ActionHandle(actionToken))
-                    {
-                        VisualData = new ActionVisualizedData
-                        {
-                            Label = StringResourceSystemFacade.GetString("Composite.C1Console.Trees", "LocalizeDataWorkflow.LocalizeDataLabel"),
-                            ToolTip = StringResourceSystemFacade.GetString("Composite.C1Console.Trees", "LocalizeDataWorkflow.LocalizeDataToolTip"),
-                            Icon = LocalizeDataTypeIcon,
-                            Disabled = false,
-                            ActionLocation = ActionLocation.OtherPrimaryActionLocation
-                        }
-                    });
-                }
+                var element = BuildElement(data, replaceContext, dynamicContext, localizationEnabled, itemKeys, ref keysJoinedByParentFilters, parentEntityToken);
+                if(element == null) continue;
 
                 elements.Add(element);
             }
@@ -339,6 +200,171 @@ namespace Composite.C1Console.Trees
         }
 
 
+        private Element BuildElement(IData data, 
+            DynamicValuesHelperReplaceContext replaceContext,
+            TreeNodeDynamicContext dynamicContext,
+            bool localizationEnabled,
+            List<object> itemKeys,
+            ref IEnumerable<object> keysJoinedByParentFilters,
+            EntityToken parentEntityToken
+            )
+        {
+            replaceContext.CurrentDataItem = data;
+            
+            object keyValue = this.KeyPropertyInfo.GetValue(data, null);
+
+            bool itemLocalizationEnabledAndForeign = localizationEnabled && !data.DataSourceId.LocaleScope.Equals(UserSettings.ActiveLocaleCultureInfo);
+
+            if (itemLocalizationEnabledAndForeign && itemKeys.Contains(keyValue)) return null;
+
+            var currentEntityToken = data.GetDataEntityToken();
+
+            var element = new Element(new ElementHandle
+            (
+                dynamicContext.ElementProviderName,
+                currentEntityToken,
+                dynamicContext.Piggybag.PreparePiggybag(this.ParentNode, parentEntityToken)
+            ));
+
+
+            bool hasChildren;
+            bool isDisabled = false;
+            ResourceHandle icon, openedIcon;
+
+            if (itemLocalizationEnabledAndForeign)
+            {
+                hasChildren = false;
+                isDisabled = !data.IsTranslatable();
+
+                if (this.Icon != null)
+                {
+                    icon = this.Icon;
+                    openedIcon = this.OpenedIcon;
+                }
+                else
+                {
+                    icon = data.GetForeignIcon();
+                    openedIcon = icon;
+                }
+            }
+            else
+            {
+                if (this.Display != LeafDisplayMode.Auto)
+                {
+                    hasChildren = ChildNodes.Any();
+                }
+                else
+                {
+                    hasChildren = ChildNodes.OfType<SimpleElementTreeNode>().Any();
+
+                    if (!hasChildren)
+                    {
+                        if (keysJoinedByParentFilters != null)
+                        {
+                            keysJoinedByParentFilters = keysJoinedByParentFilters.Evaluate();
+
+                            hasChildren = keysJoinedByParentFilters.Contains(keyValue);
+                        }
+                    }
+
+                    // Checking children filtered by FunctionFilters
+                    if (!hasChildren)
+                    {
+                        foreach (var childNode in this.ChildNodes.OfType<DataElementsTreeNode>()
+                            .Where(n => n.FilterNodes.OfType<FunctionFilterNode>().Any()))
+                        {
+                            var newDynamicContext = new TreeNodeDynamicContext(TreeNodeDynamicContextDirection.Down)
+                            {
+                                ElementProviderName = dynamicContext.ElementProviderName,
+                                Piggybag = dynamicContext.Piggybag.PreparePiggybag(this.ParentNode, parentEntityToken),
+                                CurrentEntityToken = currentEntityToken
+                            };
+
+                            if (childNode.GetDataset(newDynamicContext, false).DataItems.Any())
+                            {
+                                hasChildren = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                if (this.Icon != null)
+                {
+                    icon = this.Icon;
+                    openedIcon = this.OpenedIcon;
+                }
+                else
+                {
+                    openedIcon = icon = data.GetIcon();
+                }
+            }
+
+            string label = this.Label.IsNullOrEmpty()
+                            ? data.GetLabel()
+                            : this.LabelDynamicValuesHelper.ReplaceValues(replaceContext);
+
+            string toolTip = this.ToolTip.IsNullOrEmpty()
+                            ? label
+                            : this.ToolTipDynamicValuesHelper.ReplaceValues(replaceContext);
+
+            if (itemLocalizationEnabledAndForeign)
+            {
+                label = string.Format("{0} ({1})", label, DataLocalizationFacade.GetCultureTitle(UserSettings.ForeignLocaleCultureInfo));
+
+                if (!data.IsTranslatable())
+                {
+                    toolTip = StringResourceSystemFacade.GetString("Composite.C1Console.Trees", "LocalizeDataWorkflow.DisabledData");
+                }
+                else
+                {
+                    toolTip = string.Format("{0} ({1})", toolTip, DataLocalizationFacade.GetCultureTitle(UserSettings.ForeignLocaleCultureInfo));
+                }
+            }
+
+            element.VisualData = new ElementVisualizedData
+            {
+                Label = label,
+                ToolTip = toolTip,
+                HasChildren = hasChildren,
+                Icon = icon,
+                OpenedIcon = openedIcon,
+                IsDisabled = isDisabled
+            };
+
+
+            if (InternalUrls.DataTypeSupported(data.DataSourceId.InterfaceType))
+            {
+                string internalUrl = InternalUrls.TryBuildInternalUrl(data.ToDataReference());
+                if (internalUrl != null)
+                {
+                    element.PropertyBag.Add("Uri", internalUrl);
+                }
+            }
+
+
+            if (itemLocalizationEnabledAndForeign)
+            {
+                var actionToken = new WorkflowActionToken(
+                    WorkflowFacade.GetWorkflowType("Composite.C1Console.Trees.Workflows.LocalizeDataWorkflow"),
+                    LocalizeDataPermissionTypes);
+
+                element.AddAction(new ElementAction(new ActionHandle(actionToken))
+                {
+                    VisualData = new ActionVisualizedData
+                    {
+                        Label = StringResourceSystemFacade.GetString("Composite.C1Console.Trees", "LocalizeDataWorkflow.LocalizeDataLabel"),
+                        ToolTip = StringResourceSystemFacade.GetString("Composite.C1Console.Trees", "LocalizeDataWorkflow.LocalizeDataToolTip"),
+                        Icon = LocalizeDataTypeIcon,
+                        Disabled = false,
+                        ActionLocation = ActionLocation.OtherPrimaryActionLocation
+                    }
+                });
+            }
+
+            return element;
+        }
+             
 
         /// <exclude />
         protected override void OnInitialize()
@@ -370,11 +396,12 @@ namespace Composite.C1Console.Trees
                     return;
                 }
 
-                ParentFilterHelper helper = new ParentFilterHelper();
-
-                helper.ParentIdFilterNode = parentIdFilterNode;
-                helper.ParentReferencedPropertyInfo = this.InterfaceType.GetPropertiesRecursively().Single(f => f.Name == parentIdFilterNode.ReferenceFieldName);
-                helper.ParentRefereePropertyName = parentIdFilterNode.ParentFilterType.GetKeyProperties()[0].Name;
+                var helper = new ParentFilterHelper
+                {
+                    ParentIdFilterNode = parentIdFilterNode,
+                    ParentReferencedPropertyInfo = this.InterfaceType.GetPropertiesRecursively().Single(f => f.Name == parentIdFilterNode.ReferenceFieldName),
+                    ParentRefereePropertyName = parentIdFilterNode.ParentFilterType.GetKeyProperties()[0].Name
+                };
 
                 this.ParentFilteringHelpers.Add(parentIdFilterNode.ParentFilterType, helper);
             }
@@ -383,9 +410,9 @@ namespace Composite.C1Console.Trees
 
             this.JoinParentIdFilterNode = null;
             this.JoinDataElementsTreeNode = null;
-            foreach (TreeNode decendantTreeNode in this.DescendantsBreadthFirst())
+            foreach (TreeNode descendantTreeNode in this.DescendantsBreadthFirst())
             {
-                DataElementsTreeNode dataElementTreeNode = decendantTreeNode as DataElementsTreeNode;
+                var dataElementTreeNode = descendantTreeNode as DataElementsTreeNode;
                 if (dataElementTreeNode == null) continue;
 
                 ParentIdFilterNode parentIdFilterNode = dataElementTreeNode.FilterNodes.OfType<ParentIdFilterNode>()
@@ -449,17 +476,17 @@ namespace Composite.C1Console.Trees
 
             Expression expression;
 
-            if ((this.Display == LeafDisplayMode.Compact) && (this.JoinDataElementsTreeNode != null))
+            if (this.Display == LeafDisplayMode.Compact && this.JoinDataElementsTreeNode != null)
             {
                 expression = CreateJoinExpression(dynamicContext);
             }
-            else if ((this.Display == LeafDisplayMode.Auto) && (this.JoinDataElementsTreeNode != null))
+            else if (this.Display == LeafDisplayMode.Auto && this.JoinDataElementsTreeNode != null)
             {
                 expression = CreateSimpleExpression(dynamicContext);
 
                 if (returnJoinedTableKeys)
                 {
-                    //MRJ: Multible Parent Filter: Not a real problem here as we just make a request for every filter
+                    //MRJ: Multiple Parent Filter: Not a real problem here as we just make a request for every filter
                     Expression innerExpression = CreateInnerExpression(dynamicContext, this.JoinParentIdFilterNode, this.JoinDataElementsTreeNode, false);
 
                     if (dynamicContext.Direction == TreeNodeDynamicContextDirection.Down)
@@ -512,7 +539,7 @@ namespace Composite.C1Console.Trees
 
         private Expression CreateJoinExpression(TreeNodeDynamicContext dynamicContext)
         {
-            //MRJ: Multible Parent Filter: Here we have to make either multiple calls or create a multiple inner join, kinda hard
+            //MRJ: Multiple Parent Filter: Here we have to make either multiple calls or create a multiple inner join, kinda hard
             // Create inner expression tree
             Expression innerDistinctExpression = CreateInnerExpression(dynamicContext, this.JoinParentIdFilterNode, this.JoinDataElementsTreeNode);
 

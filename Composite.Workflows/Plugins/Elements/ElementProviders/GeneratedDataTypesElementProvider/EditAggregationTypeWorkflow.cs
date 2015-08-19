@@ -28,6 +28,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             public const string TypeTitle = "TypeTitle";
             public const string DataFieldDescriptors = "DataFieldDescriptors";
             public const string LabelFieldName = "LabelFieldName";
+            public const string InternalUrlPrefix = "InternalUrlPrefix";
             public const string HasCaching = "HasCaching";
             public const string HasPublishing = "HasPublishing";
 
@@ -58,8 +59,6 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
         private void initializeStateCodeActivity_Initialize_ExecuteCode(object sender, EventArgs e)
         {
-            Type type = TypeManager.GetType(this.Payload);
-
             DataTypeDescriptor dataTypeDescriptor = GetDataTypeDescriptor();
             var helper = new GeneratedTypesHelper(dataTypeDescriptor);
 
@@ -71,6 +70,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 {BindingNames.TypeNamespace, dataTypeDescriptor.Namespace},
                 {BindingNames.TypeTitle, dataTypeDescriptor.Title},
                 {BindingNames.LabelFieldName, dataTypeDescriptor.LabelFieldName},
+                {BindingNames.InternalUrlPrefix, dataTypeDescriptor.InternalUrlPrefix},
                 {BindingNames.HasCaching, helper.IsCachable},
                 {BindingNames.HasPublishing, helper.IsPublishControlled},
                 {BindingNames.DataFieldDescriptors, fieldDescriptors},
@@ -109,6 +109,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 bool hasCaching = this.GetBinding<bool>(BindingNames.HasCaching);
                 bool hasPublishing = this.GetBinding<bool>(BindingNames.HasPublishing);
                 string labelFieldName = this.GetBinding<string>(BindingNames.LabelFieldName);
+                string internalUrlPrefix = this.GetBinding<string>(BindingNames.InternalUrlPrefix);
                 var dataFieldDescriptors = this.GetBinding<List<DataFieldDescriptor>>(BindingNames.DataFieldDescriptors);
 
                 var helper = new GeneratedTypesHelper(oldType);
@@ -144,6 +145,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
                 helper.SetNewTypeFullName(typeName, typeNamespace);
                 helper.SetNewTypeTitle(typeTitle);
+                helper.SetNewInternalUrlPrefix(internalUrlPrefix);
                 helper.SetNewFieldDescriptors(dataFieldDescriptors, labelFieldName);
 
                 bool hasLocalization = DataLocalizationFacade.IsLocalized(oldType);

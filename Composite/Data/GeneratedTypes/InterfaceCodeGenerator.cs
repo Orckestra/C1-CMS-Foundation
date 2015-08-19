@@ -72,28 +72,29 @@ namespace Composite.Data.GeneratedTypes
         /// Given a <see cref="DataTypeDescriptor"/> creates a interface declaration inheriting from IData, a valid C1 Datatype.
         /// </summary>
         /// <param name="dataTypeDescriptor">A description of the data type to generate interface for</param>
-        /// <returns>The gerenated interface</returns>
+        /// <returns>The generated interface</returns>
         public static CodeTypeDeclaration CreateCodeTypeDeclaration(DataTypeDescriptor dataTypeDescriptor)
         {
             try
             {
-                var codeTypeDeclaration = new CodeTypeDeclaration(dataTypeDescriptor.Name);
-
-                codeTypeDeclaration.IsInterface = true;
+                var codeTypeDeclaration = new CodeTypeDeclaration(dataTypeDescriptor.Name)
+                {
+                    IsInterface = true
+                };
 
                 codeTypeDeclaration.BaseTypes.Add(new CodeTypeReference(typeof(IData)));
 
-                List<string> propertyNamesToSkrip = new List<string>();
+                var propertyNamesToSkip = new List<string>();
 
                 foreach (Type superInterface in dataTypeDescriptor.SuperInterfaces)
                 {
                     codeTypeDeclaration.BaseTypes.Add(new CodeTypeReference(superInterface));
 
-                    propertyNamesToSkrip.AddRange(superInterface.GetAllProperties().Select(p => p.Name));
+                    propertyNamesToSkip.AddRange(superInterface.GetAllProperties().Select(p => p.Name));
                 }
 
                 AddInterfaceAttributes(codeTypeDeclaration, dataTypeDescriptor);
-                AddInterfaceProperties(codeTypeDeclaration, dataTypeDescriptor, propertyNamesToSkrip);
+                AddInterfaceProperties(codeTypeDeclaration, dataTypeDescriptor, propertyNamesToSkip);
 
                 return codeTypeDeclaration;
             }
@@ -117,7 +118,7 @@ namespace Composite.Data.GeneratedTypes
             codeTypeDeclaration.CustomAttributes.Add(
                 new CodeAttributeDeclaration(
                     typeof(DataScopeAttribute).FullName,
-                    new CodeAttributeArgument[] { 
+                    new [] { 
                         new CodeAttributeArgument(
                             new CodePrimitiveExpression( DataScopeIdentifier.GetDefault().Name ))
                     }
@@ -127,7 +128,7 @@ namespace Composite.Data.GeneratedTypes
             codeTypeDeclaration.CustomAttributes.Add(
                 new CodeAttributeDeclaration(
                     typeof(RelevantToUserTypeAttribute).FullName,
-                    new CodeAttributeArgument[] { 
+                    new [] { 
                         new CodeAttributeArgument(
                             new CodePrimitiveExpression( UserType.Developer.ToString() ))
                     }
@@ -145,7 +146,7 @@ namespace Composite.Data.GeneratedTypes
             codeTypeDeclaration.CustomAttributes.Add(
                 new CodeAttributeDeclaration(
                     typeof(DataAncestorProviderAttribute).FullName,
-                    new CodeAttributeArgument[] {
+                    new [] {
                         new CodeAttributeArgument(
                             new CodeTypeOfExpression(typeof(NoAncestorDataAncestorProvider))
                         )
@@ -155,13 +156,13 @@ namespace Composite.Data.GeneratedTypes
             codeTypeDeclaration.CustomAttributes.Add(
                 new CodeAttributeDeclaration(
                     typeof(ImmutableTypeIdAttribute).FullName,
-                    new CodeAttributeArgument[] {
+                    new [] {
                         new CodeAttributeArgument(new CodePrimitiveExpression(dataTypeDescriptor.DataTypeId.ToString()))
                     }
                 ));
 
 
-            CodeFieldReferenceExpression xhtmlEmbedableEnumRef =
+            var xhtmlEmbedableEnumRef =
              new CodeFieldReferenceExpression(
              new CodeTypeReferenceExpression(
               typeof(XhtmlRenderingType)
@@ -171,7 +172,7 @@ namespace Composite.Data.GeneratedTypes
             codeTypeDeclaration.CustomAttributes.Add(
                 new CodeAttributeDeclaration(
                     typeof(KeyTemplatedXhtmlRendererAttribute).FullName,
-                    new CodeAttributeArgument[] {
+                    new [] {
                             new CodeAttributeArgument(xhtmlEmbedableEnumRef),
                             new CodeAttributeArgument(new CodePrimitiveExpression("<span>{label}</span>"))
                         }
@@ -188,7 +189,7 @@ namespace Composite.Data.GeneratedTypes
                     codeTypeDeclaration.CustomAttributes.Add(
                         new CodeAttributeDeclaration(
                             typeof(KeyPropertyNameAttribute).FullName,
-                            new CodeAttributeArgument[] {
+                            new [] {
                             new CodeAttributeArgument(new CodePrimitiveExpression(keyFieldName))
                         }
                         ));
@@ -204,7 +205,7 @@ namespace Composite.Data.GeneratedTypes
                 ));
             }
 
-            if (string.IsNullOrEmpty(dataTypeDescriptor.Title) == false)
+            if (!string.IsNullOrEmpty(dataTypeDescriptor.Title))
             {
                 codeTypeDeclaration.CustomAttributes.Add(
                     new CodeAttributeDeclaration(
@@ -215,7 +216,7 @@ namespace Composite.Data.GeneratedTypes
                     ));
             }
 
-            if (string.IsNullOrEmpty(dataTypeDescriptor.LabelFieldName) == false)
+            if (!string.IsNullOrEmpty(dataTypeDescriptor.LabelFieldName))
             {
                 codeTypeDeclaration.CustomAttributes.Add(
                     new CodeAttributeDeclaration(
@@ -226,13 +227,24 @@ namespace Composite.Data.GeneratedTypes
                     ));
             }
 
+            if (!string.IsNullOrEmpty(dataTypeDescriptor.InternalUrlPrefix))
+            {
+                codeTypeDeclaration.CustomAttributes.Add(
+                    new CodeAttributeDeclaration(
+                        typeof (InternalUrlAttribute).FullName,
+                        new CodeAttributeArgument(
+                            new CodePrimitiveExpression(dataTypeDescriptor.InternalUrlPrefix)
+                            )
+                        ));
+            }
+
 
             foreach (DataTypeAssociationDescriptor dataTypeAssociationDescriptor in dataTypeDescriptor.DataAssociations)
             {
                 codeTypeDeclaration.CustomAttributes.Add(
                     new CodeAttributeDeclaration(
                         typeof(DataAssociationAttribute).FullName,
-                        new CodeAttributeArgument[] {
+                        new [] {
                             new CodeAttributeArgument( new CodeTypeOfExpression(dataTypeAssociationDescriptor.AssociatedInterfaceType)),
                             new CodeAttributeArgument(new CodePrimitiveExpression(dataTypeAssociationDescriptor.ForeignKeyPropertyName)),
                             new CodeAttributeArgument(new CodeFieldReferenceExpression(new CodeTypeReferenceExpression(typeof(DataAssociationType)),dataTypeAssociationDescriptor.AssociationType.ToString()))
@@ -282,11 +294,13 @@ namespace Composite.Data.GeneratedTypes
             {
                 if (propertyNamesToSkip.Contains(dataFieldDescriptor.Name)) continue;
 
-                CodeMemberProperty codeMemberProperty = new CodeMemberProperty();
-                codeMemberProperty.Name = dataFieldDescriptor.Name;
-                codeMemberProperty.Type = new CodeTypeReference(dataFieldDescriptor.InstanceType);
-                codeMemberProperty.HasGet = true;
-                codeMemberProperty.HasSet = true;
+                var codeMemberProperty = new CodeMemberProperty
+                {
+                    Name = dataFieldDescriptor.Name,
+                    Type = new CodeTypeReference(dataFieldDescriptor.InstanceType),
+                    HasGet = true,
+                    HasSet = true
+                };
 
                 AddPropertyAttributes(codeMemberProperty, dataFieldDescriptor, dataTypeDescriptor.KeyPropertyNames.Contains(dataFieldDescriptor.Name));
 
@@ -328,13 +342,14 @@ namespace Composite.Data.GeneratedTypes
             }
 
 
-            List<CodeAttributeArgument> arguments = new List<CodeAttributeArgument>();
-
-            arguments.Add(new CodeAttributeArgument(
-                new CodePropertyReferenceExpression(
-                    new CodeTypeReferenceExpression(typeof(PhysicalStoreFieldType)),
-                    dataFieldDescriptor.StoreType.PhysicalStoreType.ToString()
-                )));
+            var arguments = new List<CodeAttributeArgument>
+            {
+                new CodeAttributeArgument(
+                    new CodePropertyReferenceExpression(
+                        new CodeTypeReferenceExpression(typeof (PhysicalStoreFieldType)),
+                        dataFieldDescriptor.StoreType.PhysicalStoreType.ToString()
+                        ))
+            };
 
 
             switch (dataFieldDescriptor.StoreType.PhysicalStoreType)
@@ -367,7 +382,7 @@ namespace Composite.Data.GeneratedTypes
             {
                 foreach (string functionMarkup in dataFieldDescriptor.ValidationFunctionMarkup)
                 {
-                    CodeAttributeDeclaration codeAttributeDeclaration =
+                    var codeAttributeDeclaration =
                         new CodeAttributeDeclaration(
                             new CodeTypeReference(typeof(LazyFunctionProviedPropertyAttribute)),
                             new CodeAttributeArgument(
@@ -419,7 +434,7 @@ namespace Composite.Data.GeneratedTypes
                 CodeAttributeDeclaration stringLengthAttribute;
                 if (!dataFieldDescriptor.IsNullable)
                 {
-                    stringLengthAttribute = new CodeAttributeDeclaration(new CodeTypeReference(typeof(Composite.Data.Validation.Validators.StringSizeValidatorAttribute)));
+                    stringLengthAttribute = new CodeAttributeDeclaration(new CodeTypeReference(typeof(StringSizeValidatorAttribute)));
                 }
                 else
                 {
@@ -437,7 +452,7 @@ namespace Composite.Data.GeneratedTypes
             {
                 Type validatorAttributeType = dataFieldDescriptor.IsNullable ? typeof(NullIntegerRangeValidatorAttribute) : typeof(IntegerRangeValidatorAttribute);
 
-                CodeAttributeDeclaration integerRangeValidatorAttribute = new CodeAttributeDeclaration(new CodeTypeReference(validatorAttributeType));
+                var integerRangeValidatorAttribute = new CodeAttributeDeclaration(new CodeTypeReference(validatorAttributeType));
                 integerRangeValidatorAttribute.Arguments.Add(new CodeAttributeArgument(new CodePrimitiveExpression(Int32.MinValue)));
                 integerRangeValidatorAttribute.Arguments.Add(new CodeAttributeArgument(new CodePrimitiveExpression(Int32.MaxValue)));
 
@@ -446,7 +461,7 @@ namespace Composite.Data.GeneratedTypes
 
             if (dataFieldDescriptor.StoreType.IsDecimal)
             {
-                CodeAttributeDeclaration decimalPrecisionAttribute = new CodeAttributeDeclaration(new CodeTypeReference(typeof(DecimalPrecisionValidatorAttribute)));
+                var decimalPrecisionAttribute = new CodeAttributeDeclaration(new CodeTypeReference(typeof(DecimalPrecisionValidatorAttribute)));
 
                 int precision = dataFieldDescriptor.StoreType.NumericScale;
 
@@ -466,7 +481,7 @@ namespace Composite.Data.GeneratedTypes
 
             if (dataFieldDescriptor.ForeignKeyReferenceTypeName != null)
             {
-                List<CodeAttributeArgument> codeAttributeArgument = new List<CodeAttributeArgument> 
+                var codeAttributeArgument = new List<CodeAttributeArgument> 
                 {
                     new CodeAttributeArgument(new CodePrimitiveExpression(dataFieldDescriptor.ForeignKeyReferenceTypeName)),
                     new CodeAttributeArgument("AllowCascadeDeletes", new CodePrimitiveExpression(true))

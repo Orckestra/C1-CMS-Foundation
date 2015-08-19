@@ -19,6 +19,7 @@ using Composite.Core.IO;
 using Composite.Core.Instrumentation;
 using Composite.Core.Logging;
 using Composite.Core.PackageSystem;
+using Composite.Core.Routing;
 using Composite.Core.Threading;
 using Composite.Core.Types;
 using Composite.Data.Foundation;
@@ -44,8 +45,8 @@ namespace Composite
         private static bool _initializing;
         private static bool _typesAutoUpdated;
         private static bool _unhandledExceptionLoggingInitialized;
-        private static Exception _exceptionThrownDurringInitialization;
-        private static DateTime _exceptionThrownDurringInitializationTimeStamp;
+        private static Exception _exceptionThrownDuringInitialization;
+        private static DateTime _exceptionThrownDuringInitializationTimeStamp;
         private static int _fatalErrorFlushCount = 0;
         private static readonly ReaderWriterLock _readerWriterLock = new ReaderWriterLock();
         private static Thread _hookingFacadeThread; // This is used to wait on the the thread if a reinitialize is issued
@@ -64,7 +65,7 @@ namespace Composite
         public static bool SystemCoreInitialized { get { return _coreInitialized; } }
 
         /// <summary>
-        /// This is true durring a total flush of the system (re-initialize).
+        /// This is true during a total flush of the system (re-initialize).
         /// </summary>
         public static bool IsReinitializingTheSystem { get; private set; }
 
@@ -94,17 +95,17 @@ namespace Composite
         {
             // if (AppDomain.CurrentDomain.Id == 3) SimpleDebug.AddEntry(string.Format("INITIALIZING {0} {1} {2}", Thread.CurrentThread.ManagedThreadId, _initializing, _coreInitialized));
 
-            if (_exceptionThrownDurringInitialization != null)
+            if (_exceptionThrownDuringInitialization != null)
             {
-                TimeSpan timeSpan = DateTime.Now - _exceptionThrownDurringInitializationTimeStamp;
+                TimeSpan timeSpan = DateTime.Now - _exceptionThrownDuringInitializationTimeStamp;
                 if (timeSpan < TimeSpan.FromMinutes(5.0))
                 {
                     Log.LogCritical(LogTitleNormal, "Exception recorded:" + timeSpan + " ago");
 
-                    throw new Exception("Failed to initialize the system", _exceptionThrownDurringInitialization);
+                    throw new Exception("Failed to initialize the system", _exceptionThrownDuringInitialization);
                 }
 
-                _exceptionThrownDurringInitialization = null;
+                _exceptionThrownDuringInitialization = null;
             }
 
             if (!_initializing && !_coreInitialized)
@@ -133,8 +134,8 @@ namespace Composite
                         }
                         catch (Exception ex)
                         {
-                            _exceptionThrownDurringInitialization = ex;
-                            _exceptionThrownDurringInitializationTimeStamp = DateTime.Now;
+                            _exceptionThrownDuringInitialization = ex;
+                            _exceptionThrownDuringInitializationTimeStamp = DateTime.Now;
 
                             var shutdownReason = HostingEnvironment.ShutdownReason;
 
@@ -241,10 +242,15 @@ namespace Composite
             }
 
 
+            using (new LogExecutionTime(LogTitle, "Initializing internal urls"))
+            {
+                InternalUrls.Initialize_PostDataTypes();
+            }
+            
+
             using (new LogExecutionTime(LogTitle, "Initializing functions"))
             {
                 MetaFunctionProviderRegistry.Initialize_PostDataTypes();
-
             }
 
 
@@ -331,7 +337,7 @@ namespace Composite
                 _hookingFacadeThread.Join(TimeSpan.FromSeconds(30));
                 if (_hookingFacadeException != null)
                 {
-                    throw new InvalidOperationException("The initilization of the HookingFacade failed before this reinitialization was issued", _hookingFacadeException);
+                    throw new InvalidOperationException("The initialization of the HookingFacade failed before this reinitialization was issued", _hookingFacadeException);
                 }
             }
 
@@ -343,7 +349,7 @@ namespace Composite
 
                 _coreInitialized = false;
                 _initializing = false;
-                _exceptionThrownDurringInitialization = null;
+                _exceptionThrownDuringInitialization = null;
 
                 Verify.That(_fatalErrorFlushCount <= 1, "Failed to reload the system. See the log for the details.");
 
@@ -437,7 +443,7 @@ namespace Composite
 
                 _coreInitialized = false;
                 _initializing = false;
-                _exceptionThrownDurringInitialization = null;
+                _exceptionThrownDuringInitialization = null;
             }
         }
 

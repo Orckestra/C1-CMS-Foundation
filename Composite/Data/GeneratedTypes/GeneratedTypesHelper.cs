@@ -54,6 +54,7 @@ namespace Composite.Data.GeneratedTypes
 
         private IEnumerable<DataFieldDescriptor> _newDataFieldDescriptors;
         private string _newLabelFieldName;
+        private string _newInternalUrlPrefix;
 
         private DataAssociationType _dataAssociationType = DataAssociationType.None;
         private DataFieldDescriptor _foreignKeyDataFieldDescriptor;
@@ -446,6 +447,16 @@ namespace Composite.Data.GeneratedTypes
 
 
         /// <exclude />
+        public void SetNewInternalUrlPrefix(string internalUrlPrefix)
+        {
+            Verify.ArgumentNotNullOrEmpty(internalUrlPrefix, "internalUrlPrefix");
+
+            _newInternalUrlPrefix = internalUrlPrefix;
+        }
+
+
+
+        /// <exclude />
         public void SetCachable(bool cachable)
         {
             _cachable = cachable;
@@ -734,6 +745,7 @@ namespace Composite.Data.GeneratedTypes
                 _newTypeName,
                 _newTypeTitle,
                 _newLabelFieldName,
+                _newInternalUrlPrefix,
                 _cachable,
                 _publishControlled,
                 _localizedControlled,
@@ -750,6 +762,7 @@ namespace Composite.Data.GeneratedTypes
             string typeName,
             string typeTitle,
             string labelFieldName,
+            string internalUrlPrefix,
             bool cachable,
             bool publishControlled,
             bool localizedControlled,
@@ -762,7 +775,9 @@ namespace Composite.Data.GeneratedTypes
             var dataTypeDescriptor = new DataTypeDescriptor(id, typeNamespace, typeName, true)
             {
                 Cachable = cachable,
-                Title = typeTitle
+                Title = typeTitle,
+                LabelFieldName = labelFieldName,
+                InternalUrlPrefix = internalUrlPrefix
             };
 
             dataTypeDescriptor.DataScopes.Add(DataScopeIdentifier.Public);
@@ -797,8 +812,6 @@ namespace Composite.Data.GeneratedTypes
                 dataTypeDescriptor.Fields.Add(idDataFieldDescriptor);
                 dataTypeDescriptor.KeyPropertyNames.Add(IdFieldName);
             }
-
-            dataTypeDescriptor.LabelFieldName = labelFieldName;
 
             foreach (DataFieldDescriptor dataFieldDescriptor in dataFieldDescriptors)
             {
@@ -919,6 +932,7 @@ namespace Composite.Data.GeneratedTypes
             }
 
             dataTypeDescriptor.LabelFieldName = _newLabelFieldName;
+            dataTypeDescriptor.InternalUrlPrefix = _newInternalUrlPrefix;
 
             foreach (DataFieldDescriptor dataFieldDescriptor in _newDataFieldDescriptors)
             {
@@ -947,7 +961,9 @@ namespace Composite.Data.GeneratedTypes
         {
             TypeManager.GetType(targetDataTypeDescriptor.TypeManagerTypeName);
 
-            var dataFieldDescriptor = new DataFieldDescriptor(
+            WidgetFunctionProvider widgetFunctionProvider = StandardWidgetFunctions.TextBoxWidget;
+
+            return new DataFieldDescriptor(
                             Guid.NewGuid(),
                             fieldName,
                             targetDataFieldDescriptor.StoreType,
@@ -956,19 +972,14 @@ namespace Composite.Data.GeneratedTypes
             {
                 IsNullable = targetDataFieldDescriptor.IsNullable,
                 DefaultValue = targetDataFieldDescriptor.DefaultValue,
-                ValidationFunctionMarkup = targetDataFieldDescriptor.ValidationFunctionMarkup
+                ValidationFunctionMarkup = targetDataFieldDescriptor.ValidationFunctionMarkup,
+                FormRenderingProfile = new DataFieldFormRenderingProfile
+                {
+                    Label = fieldName,
+                    HelpText = fieldName,
+                    WidgetFunctionMarkup = widgetFunctionProvider.SerializedWidgetFunction.ToString(SaveOptions.DisableFormatting)
+                }
             };
-
-            WidgetFunctionProvider widgetFunctionProvider = StandardWidgetFunctions.TextBoxWidget;
-
-            dataFieldDescriptor.FormRenderingProfile = new DataFieldFormRenderingProfile
-            {
-                Label = dataFieldDescriptor.Name,
-                HelpText = dataFieldDescriptor.Name,
-                WidgetFunctionMarkup = widgetFunctionProvider.SerializedWidgetFunction.ToString(SaveOptions.DisableFormatting)
-            }; 
-
-            return dataFieldDescriptor;
         }
 
 
@@ -983,7 +994,9 @@ namespace Composite.Data.GeneratedTypes
             foreignKeyFieldName = fieldName ??
                                   string.Format("{0}{1}ForeignKey", targetDataTypeDescriptor.Name, targetKeyFieldName);
 
-            var dataFieldDescriptor = new DataFieldDescriptor(
+            WidgetFunctionProvider widgetFunctionProvider = StandardWidgetFunctions.GetDataReferenceWidget(targetType);
+
+            return new DataFieldDescriptor(
                             Guid.NewGuid(),
                             foreignKeyFieldName,
                             targetKeyDataFieldDescriptor.StoreType,
@@ -993,19 +1006,14 @@ namespace Composite.Data.GeneratedTypes
                 IsNullable = targetKeyDataFieldDescriptor.IsNullable,
                 DefaultValue = targetKeyDataFieldDescriptor.DefaultValue,
                 ValidationFunctionMarkup = targetKeyDataFieldDescriptor.ValidationFunctionMarkup,
-                ForeignKeyReferenceTypeName = targetDataTypeDescriptor.TypeManagerTypeName
+                ForeignKeyReferenceTypeName = targetDataTypeDescriptor.TypeManagerTypeName,
+                FormRenderingProfile = new DataFieldFormRenderingProfile
+                {
+                    Label = foreignKeyFieldName,
+                    HelpText = foreignKeyFieldName,
+                    WidgetFunctionMarkup = widgetFunctionProvider.SerializedWidgetFunction.ToString(SaveOptions.DisableFormatting)
+                }
             };
-
-            WidgetFunctionProvider widgetFunctionProvider = StandardWidgetFunctions.GetDataReferenceWidget(targetType);
-
-            dataFieldDescriptor.FormRenderingProfile = new DataFieldFormRenderingProfile
-            {
-                Label = dataFieldDescriptor.Name,
-                HelpText = dataFieldDescriptor.Name,
-                WidgetFunctionMarkup = widgetFunctionProvider.SerializedWidgetFunction.ToString(SaveOptions.DisableFormatting)
-            };;
-
-            return dataFieldDescriptor;
         }
 
 

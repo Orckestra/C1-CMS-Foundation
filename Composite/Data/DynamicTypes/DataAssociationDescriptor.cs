@@ -48,13 +48,10 @@ namespace Composite.Data.DynamicTypes
         /// <exclude />
         public XElement ToXml()
         {
-            XElement element = new XElement("DataTypeAssociationDescriptor");
-
-            element.Add(new XAttribute("associatedInterfaceType", TypeManager.SerializeType(this.AssociatedInterfaceType)));
-            element.Add(new XAttribute("foreignKeyPropertyName", this.ForeignKeyPropertyName));
-            element.Add(new XAttribute("associationType", this.AssociationType));
-
-            return element;
+            return new XElement("DataTypeAssociationDescriptor",
+                new XAttribute("associatedInterfaceType", TypeManager.SerializeType(this.AssociatedInterfaceType)),
+                new XAttribute("foreignKeyPropertyName", this.ForeignKeyPropertyName),
+                new XAttribute("associationType", this.AssociationType));
         }
 
 
@@ -98,6 +95,12 @@ namespace Composite.Data.DynamicTypes
                 this.AssociationType == dataTypeAssociationDescriptor.AssociationType;
         }
 
+
+        /// <exclude />
+        public DataTypeAssociationDescriptor Clone()
+        {
+            return new DataTypeAssociationDescriptor(AssociatedInterfaceType, ForeignKeyPropertyName, AssociationType);
+        }
 
 
         /// <exclude />

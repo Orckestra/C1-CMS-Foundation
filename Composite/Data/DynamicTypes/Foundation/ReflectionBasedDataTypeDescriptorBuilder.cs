@@ -28,6 +28,7 @@ namespace Composite.Data.DynamicTypes.Foundation
             {
                 Title = DynamicTypeReflectionFacade.GetTitle(type),
                 LabelFieldName = DynamicTypeReflectionFacade.GetLabelPropertyName(type),
+                InternalUrlPrefix = DynamicTypeReflectionFacade.GetInternalUrlPrefix(type),
                 DataAssociations = DynamicTypeReflectionFacade.GetDataTypeAssociationDescriptors(type)
             };
             

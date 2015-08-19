@@ -26,14 +26,13 @@ namespace Composite.Data.DynamicTypes
         private string _name;
         private Guid _dataTypeId;
         private string _namespace;
-        private string _labelFieldName;
         private List<Type> _superInterfaces = new List<Type>();
         private List<DataTypeAssociationDescriptor> _dataTypeAssociationDescriptors = new List<DataTypeAssociationDescriptor>();
         private IReadOnlyCollection<DataTypeIndex> _indexes = new DataTypeIndex[0];
 
 
         /// <summary>
-        /// Instanciates an instance of <see cref="DataTypeDescriptor"/> with default settings.
+        /// Instantiates an instance of <see cref="DataTypeDescriptor"/> with default settings.
         /// </summary>
         public DataTypeDescriptor()
         {
@@ -46,7 +45,7 @@ namespace Composite.Data.DynamicTypes
 
 
         /// <summary>
-        /// Instanciates an instance of <see cref="DataTypeDescriptor"/>.
+        /// Instantiates an instance of <see cref="DataTypeDescriptor"/>.
         /// </summary>
         /// <param name="dataTypeId">The permanent Guid which should represent this data type.</param>
         /// <param name="dataTypeNamespace">Namespace of the type.</param>
@@ -63,7 +62,7 @@ namespace Composite.Data.DynamicTypes
 
 
         /// <summary>
-        /// Instanciates an instance of <see cref="DataTypeDescriptor"/> with a custom Type Manager.
+        /// Instantiates an instance of <see cref="DataTypeDescriptor"/> with a custom Type Manager.
         /// </summary>
         /// <param name="dataTypeId">The permanent Guid which should represent this data type.</param>
         /// <param name="dataTypeNamespace">Namespace of the type.</param>
@@ -81,7 +80,7 @@ namespace Composite.Data.DynamicTypes
 
 
         /// <summary>
-        /// Instanciates an instance of <see cref="DataTypeDescriptor"/> with a custom Type Manager.
+        /// Instantiates an instance of <see cref="DataTypeDescriptor"/> with a custom Type Manager.
         /// </summary>
         /// <param name="dataTypeId">The permanent Guid which should represent this data type.</param>
         /// <param name="dataTypeNamespace">Namespace of the type.</param>
@@ -214,28 +213,22 @@ namespace Composite.Data.DynamicTypes
         }
 
 
-
         /// <summary>
         /// The data types title
         /// </summary>
         public string Title { get; set; }
 
 
-
         /// <summary>
         /// The name of field to use when labeling data of this type.
         /// </summary>
-        public string LabelFieldName
-        {
-            get
-            {
-                return _labelFieldName;
-            }
-            set
-            {
-                _labelFieldName = value;
-            }
-        }
+        public string LabelFieldName { get; set; }
+
+
+        /// <summary>
+        /// The internal url name
+        /// </summary>
+        public string InternalUrlPrefix { get; set; }
 
 
         /// <summary>
@@ -398,8 +391,8 @@ namespace Composite.Data.DynamicTypes
                     this.Fields.Remove(dataFieldDescriptor);
                 }
 
-                if ((DynamicTypeReflectionFacade.IsKeyField(propertyInfo)) &&
-                    (this.KeyPropertyNames.Contains(propertyInfo.Name)))
+                if (DynamicTypeReflectionFacade.IsKeyField(propertyInfo) &&
+                    this.KeyPropertyNames.Contains(propertyInfo.Name))
                 {
                     this.KeyPropertyNames.Remove(propertyInfo.Name);
                 }
@@ -556,39 +549,39 @@ namespace Composite.Data.DynamicTypes
 
 
         /// <summary>
-        /// Clones the data type descriotion.
+        /// Clones the data type description.
         /// </summary>
         /// <returns>A clone</returns>
         public DataTypeDescriptor Clone()
         {
-            var dataTypeDescriptor = new DataTypeDescriptor(this.DataTypeId, this.Namespace, this.Name, this.TypeManagerTypeName, this.IsCodeGenerated);
+            var dataTypeDescriptor = new DataTypeDescriptor(this.DataTypeId, this.Namespace, this.Name, this.TypeManagerTypeName, this.IsCodeGenerated)
+            {
+                Title = this.Title,
+                BuildNewHandlerTypeName = this.BuildNewHandlerTypeName,
+                LabelFieldName = this.LabelFieldName,
+                InternalUrlPrefix = this.InternalUrlPrefix,
+            };
 
             foreach (DataTypeAssociationDescriptor dataTypeAssociationDescriptor in this.DataAssociations)
             {
-                dataTypeDescriptor.DataAssociations.Add(
-                    new DataTypeAssociationDescriptor(
-                        dataTypeAssociationDescriptor.AssociatedInterfaceType,
-                        dataTypeAssociationDescriptor.ForeignKeyPropertyName,
-                        dataTypeAssociationDescriptor.AssociationType
-                    ));
+                dataTypeDescriptor.DataAssociations.Add(dataTypeAssociationDescriptor.Clone());
             }
 
             dataTypeDescriptor.DataScopes = new List<DataScopeIdentifier>(this.DataScopes);
 
             foreach (DataFieldDescriptor dataFieldDescriptor in this.Fields)
             {
-                if (dataFieldDescriptor.Inherited == false)
+                if (!dataFieldDescriptor.Inherited)
                 {
                     dataTypeDescriptor.Fields.Add(dataFieldDescriptor.Clone());
                 }
             }
 
+
             foreach (string keyPropertyName in this.KeyPropertyNames)
             {
                 dataTypeDescriptor.KeyPropertyNames.Add(keyPropertyName, false);
             }
-
-            dataTypeDescriptor.LabelFieldName = this.LabelFieldName;
 
             foreach (string storeSortOrderFieldNames in this.StoreSortOrderFieldNames)
             {
@@ -600,21 +593,18 @@ namespace Composite.Data.DynamicTypes
                 dataTypeDescriptor.AddSuperInterface(superInterface);
             }
 
-            dataTypeDescriptor.Title = this.Title;
-            dataTypeDescriptor.BuildNewHandlerTypeName = this.BuildNewHandlerTypeName;
-
             return dataTypeDescriptor;
         }
 
 
 
         /// <summary>
-        /// Serialize the data type descriotion to XML
+        /// Serialize the data type description to XML
         /// </summary>
         /// <returns>Serialized data type descriptor</returns>
         public XElement ToXml()
         {
-            XElement element = new XElement("DataTypeDescriptor",
+            var element = new XElement("DataTypeDescriptor",
                 new XAttribute("dataTypeId", this.DataTypeId),
                 new XAttribute("name", this.Name),
                 new XAttribute("namespace", this.Namespace),
@@ -623,25 +613,24 @@ namespace Composite.Data.DynamicTypes
                 new XAttribute("isCodeGenerated", this.IsCodeGenerated),
                 new XAttribute("cachable", this.Cachable),
                 this.LabelFieldName != null ? new XAttribute("labelFieldName", this.LabelFieldName) : null,
+                this.InternalUrlPrefix != null ? new XAttribute("internalUrlPrefix", this.InternalUrlPrefix) : null,
                 this.TypeManagerTypeName != null ? new XAttribute("typeManagerTypeName", this.TypeManagerTypeName) : null,
                 !string.IsNullOrEmpty(this.BuildNewHandlerTypeName) ? new XAttribute("buildNewHandlerTypeName", this.BuildNewHandlerTypeName) : null);
 
 
-            element.Add(new XElement("DataAssociations",
-                                     DataAssociations.Select(da => da.ToXml())));
-
-            element.Add(new XElement("DataScopes", 
-                                     DataScopes.Select(dsi => new XElement("DataScopeIdentifier", new XAttribute("name", dsi)))));
-
-            element.Add(new XElement("KeyPropertyNames",
-                                     KeyPropertyNames.Select(name => new XElement("KeyPropertyName", new XAttribute("name", name)))));
-
-            element.Add(new XElement("SuperInterfaces", 
-                                     SuperInterfaces.Select(su => new XElement("SuperInterface", new XAttribute("type", TypeManager.SerializeType(su))))));
-
-
-            element.Add(new XElement("Fields", Fields.Select(f => f.ToXml())));
-
+            element.Add(new[]
+            {
+                new XElement("DataAssociations",
+                              DataAssociations.Select(da => da.ToXml())),
+                new XElement("DataScopes", 
+                              DataScopes.Select(dsi => new XElement("DataScopeIdentifier", new XAttribute("name", dsi)))),
+                new XElement("KeyPropertyNames",
+                              KeyPropertyNames.Select(name => new XElement("KeyPropertyName", new XAttribute("name", name)))),
+                new XElement("SuperInterfaces", 
+                              SuperInterfaces.Select(su => new XElement("SuperInterface", new XAttribute("type", TypeManager.SerializeType(su))))),
+                new XElement("Fields", Fields.Select(f => f.ToXml()))
+            });
+            
             if (Indexes.Any())
             {
                 element.Add(new XElement("Indexes", Indexes.Select(i => i.ToXml())));   
@@ -652,7 +641,7 @@ namespace Composite.Data.DynamicTypes
 
 
         /// <summary>
-        /// Deserialized a data type descriptor
+        /// Deserializes a data type descriptor
         /// </summary>
         /// <param name="element">A serialized (XML) data type descriptor</param>
         /// <returns>De-serialized data type descriptor</returns>
@@ -688,15 +677,19 @@ namespace Composite.Data.DynamicTypes
 
             XAttribute titleAttribute = element.Attribute("title");
             XAttribute labelFieldNameAttribute = element.Attribute("labelFieldName");
+            XAttribute internalUrlPrefixAttribute = element.Attribute("internalUrlPrefix");
             string typeManagerTypeName = (string) element.Attribute("typeManagerTypeName");
 
             bool cachable = cachableAttribute != null && (bool)cachableAttribute;
 
-            DataTypeDescriptor dataTypeDescriptor = new DataTypeDescriptor(dataTypeId, @namespace, name, isCodeGenerated);
-            dataTypeDescriptor.Cachable = cachable;
+            var dataTypeDescriptor = new DataTypeDescriptor(dataTypeId, @namespace, name, isCodeGenerated)
+            {
+                Cachable = cachable
+            };
 
             if (titleAttribute != null) dataTypeDescriptor.Title = titleAttribute.Value;
             if (labelFieldNameAttribute != null) dataTypeDescriptor.LabelFieldName = labelFieldNameAttribute.Value;
+            if (internalUrlPrefixAttribute != null) dataTypeDescriptor.InternalUrlPrefix = internalUrlPrefixAttribute.Value;
             if (typeManagerTypeName != null)
             {
                 typeManagerTypeName = TypeManager.FixLegasyTypeName(typeManagerTypeName);

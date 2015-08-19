@@ -141,7 +141,12 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
             // Registering the new type/tables
             foreach (var dataTypeDescriptor in dataTypeDescriptors)
             {
-                var classesInfo = generatedClassesInfo[dataTypeDescriptor];
+                InterfaceGeneratedClassesInfo classesInfo;
+
+                if (!generatedClassesInfo.TryGetValue(dataTypeDescriptor, out classesInfo))
+                {
+                    throw new InvalidOperationException("No generated classes for data type '{0}' found".FormatWith(dataTypeDescriptor.Name));
+                }
                 InitializeStoreResult initInfo = EmbedDataContextInfo(classesInfo, dataContextClass);
 
                 AddDataTypeStore(initInfo, false);

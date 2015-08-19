@@ -28,6 +28,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
         private static class BindingNames
         {
+            public const string InternalUrlPrefix = "InternalUrlPrefix";
             public const string KeyFieldType = "KeyFieldType";
             public const string KeyFieldTypeOptions = "KeyFieldTypeOptions";
         }
@@ -63,6 +64,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 {"TypeNamespace", dataTypeDescriptor.Namespace},
                 {"TypeTitle", dataTypeDescriptor.Title},
                 {"LabelFieldName", dataTypeDescriptor.LabelFieldName},
+                {BindingNames.InternalUrlPrefix, dataTypeDescriptor.InternalUrlPrefix},
                 {"DataFieldDescriptors", fieldDescriptors},
                 {"HasCaching", helper.IsCachable},
                 {"HasPublishing", helper.IsPublishControlled},
@@ -98,6 +100,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             string typeName = this.GetBinding<string>("TypeName");
             string typeNamespace = this.GetBinding<string>("TypeNamespace");
             string typeTitle = this.GetBinding<string>("TypeTitle");
+            string internalUrlPrefix = this.GetBinding<string>(BindingNames.InternalUrlPrefix);
             bool hasCaching = this.GetBinding<bool>("HasCaching");
             bool hasPublishing = this.GetBinding<bool>("HasPublishing");
             string labelFieldName = this.GetBinding<string>("LabelFieldName");
@@ -138,6 +141,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
             helper.SetNewTypeFullName(typeName, typeNamespace);
             helper.SetNewTypeTitle(typeTitle);
+            helper.SetNewInternalUrlPrefix(internalUrlPrefix);
             helper.SetNewFieldDescriptors(dataFieldDescriptors, labelFieldName);
 
             if (helper.IsEditProcessControlledAllowed)

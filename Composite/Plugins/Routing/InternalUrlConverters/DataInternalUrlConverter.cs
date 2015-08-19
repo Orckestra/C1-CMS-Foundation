@@ -1,0 +1,82 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using Composite.Core.Routing;
+using Composite.Core.Types;
+using Composite.Data;
+
+namespace Composite.Plugins.Routing.InternalUrlConverters
+{
+    class DataInternalUrlConverter: IInternalUrlConverter
+    {
+        private readonly IEnumerable<string> _urlPrefixes;
+        private readonly Type _type;
+        private readonly Type _keyType;
+        private readonly ConstructorInfo _dataReferenceConstructor;
+
+
+        public DataInternalUrlConverter(string shortTypeName, Type type)
+        {
+            _urlPrefixes = new[] { shortTypeName + "(" };
+            _type = type;
+            _keyType = _type.GetKeyProperties().Single().PropertyType;
+
+            _dataReferenceConstructor = typeof(DataReference<>).MakeGenericType(_type).GetConstructor(new[] { typeof(object) });
+        }
+
+
+        public IEnumerable<string> AcceptedUrlPrefixes
+        {
+            get { return _urlPrefixes; }
+        }
+
+
+        public string ToPublicUrl(string internalDataUrl, UrlSpace urlSpace)
+        {
+            object keyValue = ExtractKeyValue(internalDataUrl);
+            if(keyValue == null) return null;
+
+            var data = DataFacade.TryGetDataByUniqueKey(_type, keyValue);
+            if(data == null) return null;
+
+            var pageUrlData = DataUrls.TryGetPageUrlData(data.ToDataReference());
+            return pageUrlData != null ? PageUrls.BuildUrl(pageUrlData, UrlKind.Public, urlSpace) : null;
+        }
+
+
+        private object ExtractKeyValue(string internalDataUrl)
+        {
+            int openBracketIndex = internalDataUrl.IndexOf("(", StringComparison.Ordinal);
+            if (openBracketIndex < 0)
+            {
+                return null;
+            }
+
+            int closingBracketOffset = internalDataUrl.IndexOf(")", openBracketIndex + 1, StringComparison.Ordinal);
+            if (closingBracketOffset < 0)
+            {
+                return null;
+            }
+
+            string dataIdStr = internalDataUrl.Substring(openBracketIndex + 1, closingBracketOffset - openBracketIndex - 1);
+
+            object keyValue = ValueTypeConverter.Convert(dataIdStr, _keyType);
+
+            if (keyValue == null || (keyValue is Guid && (Guid)keyValue == Guid.Empty))
+            {
+                return null;
+            }
+
+            return keyValue;
+        }
+
+        public IDataReference ToDataReference(string internalDataUrl)
+        {
+            object keyValue = ExtractKeyValue(internalDataUrl);
+            if (keyValue == null) return null;
+
+            return (IDataReference)_dataReferenceConstructor.Invoke(new [] { keyValue });
+        }
+    }
+}

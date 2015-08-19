@@ -8,6 +8,10 @@ using Composite.Core.Instrumentation;
 using Composite.Core.Linq;
 using Composite.Core.WebClient;
 using Composite.Data;
+using Composite.Data.DynamicTypes.Foundation;
+using Composite.Data.Foundation;
+using Composite.Plugins.Routing.InternalUrlConverters;
+using Composite.Plugins.Routing.InternalUrlProviders;
 
 namespace Composite.Core.Routing
 {
@@ -18,6 +22,19 @@ namespace Composite.Core.Routing
     {
         private static readonly List<IInternalUrlConverter> _converters = new List<IInternalUrlConverter>();
         private static readonly ConcurrentDictionary<Type, IInternalUrlProvider> _providers = new ConcurrentDictionary<Type, IInternalUrlProvider>();
+
+        internal static void Initialize_PostDataTypes()
+        {
+            foreach (Type type in DataProviderRegistry.AllInterfaces)
+            {
+                string internalUrlPrefix = DynamicTypeReflectionFacade.GetInternalUrlPrefix(type);
+                if(string.IsNullOrEmpty(internalUrlPrefix)) continue;
+
+                Register(new DataInternalUrlConverter(internalUrlPrefix, type));
+                Register(type, new DataInternalUrlProvider(internalUrlPrefix, type));
+            }
+        }
+
 
         /// <summary>
         /// Registers an internal url converter.
