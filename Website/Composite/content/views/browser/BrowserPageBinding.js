@@ -109,20 +109,24 @@ BrowserPageBinding.prototype.handleBroadcast = function (broadcast, arg) {
                 // TODO: make queue
                 var entityToken = arg.actionProfile.EnitityToken;
                 var self = this;
+	           
                 if (entityToken) {
-                    TreeService.GetBrowserUrlByEntityToken(entityToken, function (result) {
-                        setTimeout(function () {
-                            if (result) {
-                                self.pushURL(result);
-                            } else if (arg.actionProfile.Node) {
-                                self.pushToken(arg.actionProfile.Node);
-                            } else {
-                                self.pushDefault();
-                            }
+                	if (this._entityToken != entityToken) {
+			            TreeService.GetBrowserUrlByEntityToken(entityToken, function(result) {
+				            setTimeout(function() {
+					            if (result) {
+						            self.pushURL(result);
+					            } else if (arg.actionProfile.Node) {
+						            self.pushToken(arg.actionProfile.Node);
+					            } else {
+						            self.pushDefault();
+					            }
 
-                        }, 0);
-                    });
-                }
+				            }, 0);
+			            });
+		                this._entityToken = entityToken;
+	                }
+	            }
             }
             break;
     }
@@ -479,7 +483,8 @@ BrowserPageBinding.prototype._handleDocumentLoad = function (binding) {
     }
 
     if (!this._isPushingUrl) {
-        var entityToken = TreeService.GetEntityTokenByPageUrl(url);
+    	var entityToken = TreeService.GetEntityTokenByPageUrl(url);
+	    this._entityToken = entityToken;
         EventBroadcaster.broadcast(
 			BroadcastMessages.SYSTEMTREEBINDING_FOCUS,
 			entityToken
