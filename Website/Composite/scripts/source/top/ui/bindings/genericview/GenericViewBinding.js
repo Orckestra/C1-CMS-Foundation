@@ -77,15 +77,15 @@ GenericViewBinding.prototype.handleAction = function (action) {
 
 	switch (action.type) {
 		case TreeNodeBinding.ACTION_COMMAND:
-			EventBroadcaster.broadcast(BroadcastMessages.INVOKE_DEFAULT_ACTION);
-			action.consume();
-			break;
 		case TreeNodeBinding.ACTION_OPEN:
 
 			EventBroadcaster.broadcast(
 				BroadcastMessages.SYSTEMTREEBINDING_FOCUS,
 				action.target.node.getEntityToken()
 			);
+			action.consume();
+			break;
+		case TreeNodeBinding.ACTION_COMMAND:
 			action.consume();
 			break;
 	}
