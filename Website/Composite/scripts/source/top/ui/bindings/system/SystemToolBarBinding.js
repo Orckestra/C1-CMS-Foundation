@@ -40,7 +40,6 @@ function SystemToolBarBinding () {
 	this._moreActions = null;
 
 	/**
-	 * Actions that wouldn't fit on the toolbar.
 	 * @type {SystemNode}
 	 */
 	this._node = null;

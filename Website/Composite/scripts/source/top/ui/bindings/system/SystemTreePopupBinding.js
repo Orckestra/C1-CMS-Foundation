@@ -33,6 +33,11 @@ function SystemTreePopupBinding () {
 	 * @type {object}
 	 */
 	this._actionProfile = null;
+
+	/**
+	 * @type {SystemNode}
+	 */
+	this._node = null;
 	
 	/**
 	 * @type {TreeNodeBinding}
@@ -70,7 +75,9 @@ SystemTreePopupBinding.prototype.handleBroadcast = function ( broadcast, arg ) {
 	
 	switch ( broadcast ) {
 		case BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED :
-			if ( arg != null && arg.actionProfile != null ) {
+			if (arg != null && arg.actionProfile != null) {
+				//TODO: refactor with updating API
+				this._node = arg.actionProfile.Node;
 				this._actionProfile = arg.actionProfile;
 			} else {
 				this._currentProfileKey = null;
@@ -151,12 +158,13 @@ SystemTreePopupBinding.prototype.handleAction = function ( action ) {
 			var menuitemBinding = action.target;
 			var systemAction = menuitemBinding.associatedSystemAction;
 			if ( systemAction ) {
-				var list = ExplorerBinding.getFocusedTreeNodeBindings ();
-				if ( list.hasEntries ()) {
-					var treeNodeBinding = list.getFirst ();
-					var systemNode = treeNodeBinding.node;
-				}
-				SystemAction.invoke ( systemAction, systemNode );
+				//var list = ExplorerBinding.getFocusedTreeNodeBindings ();
+				//if ( list.hasEntries ()) {
+				//	var treeNodeBinding = list.getFirst ();
+				//	var systemNode = treeNodeBinding.node;
+				//}
+				//SystemAction.invoke ( systemAction, systemNode );
+				SystemAction.invoke(systemAction, this._node);
 			} else {
 				var cmd = menuitemBinding.getProperty ( "cmd" );
 				if ( cmd ) {

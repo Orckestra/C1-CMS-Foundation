@@ -57,6 +57,8 @@ GenericViewBinding.prototype.onBindingRegister = function () {
 
 	this.attachClassName(GenericViewBinding.CLASSNAME);
 
+	this.setContextMenu(top.app.bindingMap.systemtreepopup);
+
 	/*
 	 * Mark the tree as resident on the currently selected perspective.
 	 */
