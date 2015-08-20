@@ -192,6 +192,8 @@ namespace Composite.Core.Routing
             // Sorting the offsets by descending, so we can replace urls in that order by not affecting offsets of not yet processed urls
             urlsToConvert.Sort((a, b) => -a.Match.Index.CompareTo(b.Match.Index));
 
+            int lastReplacementIndex = int.MaxValue;
+
             var urlSpace = new UrlSpace();
 
             var measurements = new Dictionary<string, Measurement>();
@@ -200,6 +202,8 @@ namespace Composite.Core.Routing
             foreach (var urlToConvert in urlsToConvert)
             {
                 UrlUtils.UrlMatch urlMatch = urlToConvert.Match;
+                if(urlMatch.Index == lastReplacementIndex) continue;
+
                 string internalUrlPrefix = urlToConvert.UrlPrefix;
 
                 string internalUrl = urlMatch.Value;
@@ -243,6 +247,8 @@ namespace Composite.Core.Routing
 
                 result.Remove(urlMatch.Index, urlMatch.Value.Length);
                 result.Insert(urlMatch.Index, publicUrl);
+
+                lastReplacementIndex = urlMatch.Index;
             }
 
             foreach (var measurement in measurements.Values)

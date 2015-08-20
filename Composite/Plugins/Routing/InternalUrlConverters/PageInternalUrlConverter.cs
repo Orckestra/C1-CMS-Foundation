@@ -10,7 +10,7 @@ namespace Composite.Plugins.Routing.InternalUrlConverters
     {
         private static readonly string LogTitle = typeof(MediaInternalUrlConverter).Name;
 
-        private readonly string[] _acceptedUrlPrefixes = { "page", "Renderers/Page.aspx" }; 
+        private readonly string[] _acceptedUrlPrefixes = { "page(", "Renderers/Page.aspx" }; 
 
         public IEnumerable<string> AcceptedUrlPrefixes { get { return _acceptedUrlPrefixes; } }
 
