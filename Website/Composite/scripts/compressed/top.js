@@ -29234,11 +29234,11 @@ GenericViewBinding.superclass.handleAction.call(this,_11c9);
 var _11ca=_11c9.target;
 switch(_11c9.type){
 case TreeNodeBinding.ACTION_COMMAND:
-EventBroadcaster.broadcast(BroadcastMessages.INVOKE_DEFAULT_ACTION);
-_11c9.consume();
-break;
 case TreeNodeBinding.ACTION_OPEN:
 EventBroadcaster.broadcast(BroadcastMessages.SYSTEMTREEBINDING_FOCUS,_11c9.target.node.getEntityToken());
+_11c9.consume();
+break;
+case TreeNodeBinding.ACTION_COMMAND:
 _11c9.consume();
 break;
 }
