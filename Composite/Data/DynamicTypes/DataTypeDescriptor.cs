@@ -613,7 +613,7 @@ namespace Composite.Data.DynamicTypes
                 new XAttribute("isCodeGenerated", this.IsCodeGenerated),
                 new XAttribute("cachable", this.Cachable),
                 this.LabelFieldName != null ? new XAttribute("labelFieldName", this.LabelFieldName) : null,
-                this.InternalUrlPrefix != null ? new XAttribute("internalUrlPrefix", this.InternalUrlPrefix) : null,
+                !string.IsNullOrEmpty(this.InternalUrlPrefix) ? new XAttribute("internalUrlPrefix", this.InternalUrlPrefix) : null,
                 this.TypeManagerTypeName != null ? new XAttribute("typeManagerTypeName", this.TypeManagerTypeName) : null,
                 !string.IsNullOrEmpty(this.BuildNewHandlerTypeName) ? new XAttribute("buildNewHandlerTypeName", this.BuildNewHandlerTypeName) : null);
 

@@ -34,6 +34,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             public const string NewTypeTitle = "NewTypeTitle";
             public const string DataFieldDescriptors = "DataFieldDescriptors";
             public const string LabelFieldName = "LabelFieldName";
+            public const string InternalUrlPrefix = "InternalUrlPrefix";
             public const string HasCaching = "HasCaching";
             public const string HasPublishing = "HasPublishing";
             public const string HasLocalization = "HasLocalization"; 
@@ -92,6 +93,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 bool hasPublishing = this.GetBinding<bool>(BindingNames.HasPublishing);
                 bool hasLocalization = this.GetBinding<bool>(BindingNames.HasLocalization);
                 string labelFieldName = this.GetBinding<string>(BindingNames.LabelFieldName);
+                string internalUrlPrefix = this.GetBinding<string>(BindingNames.InternalUrlPrefix);
                 var dataFieldDescriptors = this.GetBinding<List<DataFieldDescriptor>>(BindingNames.DataFieldDescriptors);
                 var keyFieldType = KeyFieldHelper.ParseKeyFieldType(GetBinding<string>(BindingNames.KeyFieldType));
 
@@ -147,6 +149,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
                 helper.SetNewTypeFullName(typeName, typeNamespace);
                 helper.SetNewTypeTitle(typeTitle);
+                helper.SetNewInternalUrlPrefix(internalUrlPrefix);
                 helper.SetNewFieldDescriptors(dataFieldDescriptors, labelFieldName);
 
                 if (!this.BindingExist(BindingNames.InterfaceType))

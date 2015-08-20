@@ -28,6 +28,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
         private static class BindingNames
         {
+            public const string InternalUrlPrefix = "InternalUrlPrefix";
             public const string KeyFieldType = "KeyFieldType";
             public const string KeyFieldTypeOptions = "KeyFieldTypeOptions";
             public const string KeyFieldReadOnly = "KeyFieldReadOnly";
@@ -83,6 +84,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 bool hasPublishing = this.GetBinding<bool>("HasPublishing");
                 bool hasLocalization = this.GetBinding<bool>("HasLocalization");
                 string labelFieldName = this.GetBinding<string>("LabelFieldName");
+                string internalUrlPrefix = this.GetBinding<string>(BindingNames.InternalUrlPrefix);
                 var dataFieldDescriptors = this.GetBinding<List<DataFieldDescriptor>>("DataFieldDescriptors");
 
                 var keyFieldType = KeyFieldHelper.ParseKeyFieldType(GetBinding<string>(BindingNames.KeyFieldType));
@@ -155,6 +157,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
                 helper.SetNewTypeFullName(typeName, typeNamespace);
                 helper.SetNewTypeTitle(typeTitle);
+                helper.SetNewInternalUrlPrefix(internalUrlPrefix);
                 helper.SetNewFieldDescriptors(dataFieldDescriptors, labelFieldName);
 
                 bool originalTypeDataExists = false;

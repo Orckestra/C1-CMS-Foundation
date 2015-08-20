@@ -7,6 +7,7 @@
     <cms:binding name="NewTypeTitle" type="System.String" />
     <cms:binding name="DataFieldDescriptors" type="System.Object" />
     <cms:binding name="LabelFieldName" type="System.String" optional="true" />
+    <cms:binding name="InternalUrlPrefix" type="System.String" optional="true" />
     <cms:binding name="HasCaching" type="System.Boolean" />
     <cms:binding name="HasPublishing" type="System.Boolean" />
 	  <cms:binding name="HasLocalization" type="System.Boolean" />
@@ -29,12 +30,18 @@
 
 
         <FieldGroup Label="${Composite.Plugins.GeneratedDataTypesElementProvider, EditorCommon.LabelProgrammaticNamingAndServices}">
+          
           <TextBox Label="${Composite.Plugins.GeneratedDataTypesElementProvider, EditorCommon.LabelTypeName}"
                Help="${Composite.Plugins.GeneratedDataTypesElementProvider, EditorCommon.HelpTypeName}" Type="ProgrammingIdentifier">
             <cms:bind source="NewTypeName" />
           </TextBox>
+          
           <TextBox Label="${Composite.Plugins.GeneratedDataTypesElementProvider, EditorCommon.LabelTypeNamespace}" Help="${Composite.Plugins.GeneratedDataTypesElementProvider, EditorCommon.HelpTypeNamespace}" Type="ProgrammingNamespace">
             <cms:bind source="NewTypeNamespace" />
+          </TextBox>
+
+          <TextBox Label="${Composite.Plugins.GeneratedDataTypesElementProvider, EditorCommon.InternalUrlPrefixLabel}" Help="${Composite.Plugins.GeneratedDataTypesElementProvider, EditorCommon.InternalUrlPrefixHelp}" Type="programmingidentifier">
+            <cms:bind source="InternalUrlPrefix" />
           </TextBox>
 
           <KeySelector OptionsKeyField="Key" OptionsLabelField="Value"

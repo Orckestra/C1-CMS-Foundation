@@ -449,8 +449,6 @@ namespace Composite.Data.GeneratedTypes
         /// <exclude />
         public void SetNewInternalUrlPrefix(string internalUrlPrefix)
         {
-            Verify.ArgumentNotNullOrEmpty(internalUrlPrefix, "internalUrlPrefix");
-
             _newInternalUrlPrefix = internalUrlPrefix;
         }
 
