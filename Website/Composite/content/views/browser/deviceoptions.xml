@@ -1,11 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <devices>
 	<device label="Auto" image="screen"/>
-	<device label="Desktop(1366x768)" w="1366" h="768" image="screen"/>
-	<device label="Tablet(1024x768)" w="1024" h="768" image="tablet" touch="true"/>
-  <device label="Tablet(Portrait)" w="768" h="1024" image="tablet" touch="true"/>
-  <device label="Small Tablet(800x600)" w="800" h="600" image="tablet" touch="true"/>
-  <device label="Small Tablet(Portrait)" w="600" h="800" image="tablet" touch="true"/>
+	<device label="Desktop (1366x768)" w="1366" h="768" image="screen"/>
+	<device label="Tablet (1024x768)" w="1024" h="768" image="tablet" touch="true"/>
+  <device label="Tablet (Portrait)" w="768" h="1024" image="tablet" touch="true"/>
+  <device label="Small Tablet (800x600)" w="800" h="600" image="tablet" touch="true"/>
+  <device label="Small Tablet (Portrait)" w="600" h="800" image="tablet" touch="true"/>
   <device label="Mobile" w="320" h="480" image="smartphone" touch="true"/>
-	<device label="Apple iPhone 5" w="320" h="568" image="smartphone" touch="true"/>
+	<device label="Markup Validation Report" image="editor-formatsource" url="https://validator.w3.org/nu/?doc={encodedurl}" />
+  <device label="Performance Report" image="functioncall" url="{url}?c1mode=perf" />
 </devices>
