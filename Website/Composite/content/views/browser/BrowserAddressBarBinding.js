@@ -45,6 +45,10 @@ BrowserAddressBarBinding.prototype.onBindingAttach = function () {
 	go.oncommand = function () {
 		self.go ();
 	}
+
+	//Hide go button as obsolute
+	//TODO remove button
+	go.hide();
 }
 
 /**

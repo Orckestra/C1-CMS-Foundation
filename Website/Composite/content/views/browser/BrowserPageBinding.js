@@ -238,6 +238,9 @@ BrowserPageBinding.prototype.onAfterPageInitialize = function () {
 
     this.reflex(); //?
 
+    this._clearHistory();
+	this._updateBroadcasters();
+
 }
 
 
@@ -262,8 +265,10 @@ BrowserPageBinding.prototype.pushURL = function (url) {
 BrowserPageBinding.prototype.pushToken = function (node) {
     var tab = this._box.getGeneticViewTabBinding();
     this._box.select(tab, true);
-
     tab.tree.setNode(node);
+    this._updateHistory({ node: node });
+    this._updateBroadcasters();
+
 }
 
 
@@ -358,6 +363,25 @@ BrowserPageBinding.prototype.handleAction = function (action) {
     }
 }
 
+/*
+ * Clear history
+ */
+BrowserPageBinding.prototype._clearHistory = function () {
+	if (!this._current) {
+
+		this._current = {
+			history: new List(),
+			index: parseInt(-1)
+		};
+	}
+
+	while (this._current.history.getLength() > 1) {
+		this._current.history.del(0);
+		this._current.index = this._current.history.getLength() - 1;
+	}
+}
+
+
 /**
  * Handle selected tab.
  * @param {BrowserTabBoxBinding} tabbox
@@ -371,14 +395,21 @@ BrowserPageBinding.prototype._handleSelectedTab = function () {
     if (Types.isFunction(tab.getEntityToken)) {
         tab.dispatchAction(DockTabBinding.ACTION_UPDATE_TOKEN);
     }
-    if (!this._currents.has(tab.key)) {
-        this._currents.set(tab.key, {
-            history: new List(),
-            index: parseInt(-1)
-        });
+    //if (!this._currents.has(tab.key)) {
+    //    this._currents.set(tab.key, {
+    //        history: new List(),
+    //        index: parseInt(-1)
+    //    });
+    //}
+	//this._current = this._currents.get(tab.key);
+
+    if (!this._current) {
+	    this._current = {
+		    history: new List(),
+		    index: parseInt(-1)
+	    };
     }
-    this._current = this._currents.get(tab.key);
-    this._updateBroadcasters();
+	this._updateBroadcasters();
     this._updateAddressBar(tab.url);
 
     /*
@@ -555,9 +586,9 @@ BrowserPageBinding.prototype._updateTabBox = function (url) {
 
 /*
  * Update history.
- * @param {string} url
+ * @param {object} item
  */
-BrowserPageBinding.prototype._updateHistory = function (url) {
+BrowserPageBinding.prototype._updateHistory = function (item) {
 
     if (this._isHistoryBrowsing == true) {
         this._isHistoryBrowsing = false;
@@ -578,7 +609,7 @@ BrowserPageBinding.prototype._updateHistory = function (url) {
         while (this._current.history.getLength() - 1 > this._current.index) {
             this._current.history.extractLast();
         }
-        this._current.history.add(url);
+        this._current.history.add(item);
         this._current.index++;
 
     }
@@ -601,13 +632,30 @@ BrowserPageBinding.prototype._handleCommand = function (cmd, binding) {
 	 */
     switch (cmd) {
         case "back":
-            this._isHistoryBrowsing = true;
-            this.setURL(this._current.history.get(--this._current.index));
+        	this._isHistoryBrowsing = true;
+	        var item = this._current.history.get(--this._current.index);
+	        if (item && item.node) {
+	        	EventBroadcaster.broadcast(
+					BroadcastMessages.SYSTEMTREEBINDING_FOCUS,
+					item.node.getEntityToken()
+				);
+	      
+	        } else {
+	        	this.setURL(item);
+	        }
             break;
         case "forward":
-            this._isHistoryBrowsing = true;
-            this.setURL(this._current.history.get(++this._current.index));
-            break;
+        	this._isHistoryBrowsing = true;
+        	var item = this._current.history.get(++this._current.index);
+        	if (item && item.node) {
+        		EventBroadcaster.broadcast(
+					BroadcastMessages.SYSTEMTREEBINDING_FOCUS,
+					item.node.getEntityToken()
+				);
+	        } else {
+		        this.setURL(item);
+	        }
+	        break;
         case "refresh":
             this._isHistoryBrowsing = true;
             this.getContentDocument().location.reload();
@@ -638,8 +686,22 @@ BrowserPageBinding.prototype._handleCommand = function (cmd, binding) {
             var w = binding.getProperty("w");
             var h = binding.getProperty("h");
             var touch = binding.getProperty("touch");
+            var url = binding.getProperty("url");
             this.setScreen(new Dimension(w, h), touch);
-            break;
+            if (url) {
+            	var customView = this._box.getCustomViewTabBinding();
+            	url = url.replace("{url}", this._box.getLocation());
+            	url = url.replace("{encodedurl}", encodeURIComponent(this._box.getLocation()));
+				//replace 2nd and next '?' to '&'
+	            url = url.replace(/(\?)(.+)/g, function(a,b,c) { return b + c.replace(/\?/g, "&") });
+	            customView.iframe.src = "about:blank";
+            	customView.iframe.src = url;
+            	this._box.select(customView, true);
+            } else {
+            	var browserView = this._box.getBrowserTabBinding();
+            	this._box.select(browserView, true);
+	        }
+	        break;
 
         case DockTabPopupBinding.CMD_VIEWSOURCE: /* notice dependencies */
             this._viewSource(cmd);
@@ -671,6 +733,7 @@ BrowserPageBinding.prototype._updateBroadcasters = function () {
 
     var back = window.bindingMap.broadcasterHistoryBack;
     var forward = window.bindingMap.broadcasterHistoryForward;
+    var browserview = window.bindingMap.broadcasterBrowserView;
 
     if (this._current.index > 0) {
         back.enable();
@@ -682,6 +745,16 @@ BrowserPageBinding.prototype._updateBroadcasters = function () {
     } else {
         forward.disable();
     }
+
+    if (this._box.getGeneticViewTabBinding().isSelected) {
+    	browserview.disable();
+    } else {
+    	browserview.enable();
+    }
+
+    
+
+    
 }
 
 /**
@@ -842,6 +915,7 @@ BrowserPageBinding.prototype.loadDeviceList = function () {
                     var w = device.getAttribute("w");
                     var h = device.getAttribute("h");
                     var touch = device.getAttribute("touch");
+                    var urlProperty = device.getAttribute("url");
 
                     var itemBinding = MenuItemBinding.newInstance(bindingDocument);
                     itemBinding.setImage(image);
@@ -850,6 +924,7 @@ BrowserPageBinding.prototype.loadDeviceList = function () {
                     itemBinding.setProperty("w", w);
                     itemBinding.setProperty("h", h);
                     itemBinding.setProperty("touch", touch);
+                    itemBinding.setProperty("url", urlProperty);
                     group.add(itemBinding);
                     itemBinding.attach();
                 });

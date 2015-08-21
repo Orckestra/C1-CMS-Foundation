@@ -96,6 +96,31 @@ BrowserTabBoxBinding.prototype.getGeneticViewTabBinding = function () {
 	return this._genericViewTabBinding;
 }
 
+
+/**
+ * Get BrowserTabBinding
+ * @param {string} url.
+ */
+BrowserTabBoxBinding.prototype.getCustomViewTabBinding = function () {
+
+	if (!this._customTabBinding) {
+		this._customTabBinding = BrowserTabBinding.newInstance(this.bindingDocument);
+		var element = DOMUtil.createElementNS(Constants.NS_UI, "ui:scrollbox", this.bindingDocument);
+		var scrollbox = UserInterface.registerBinding(element, ScrollBoxBinding);
+
+		var iframe = DOMUtil.createElementNS(Constants.NS_XHTML, "iframe", this.bindingDocument);
+		iframe.setAttribute("frameborder", "0");
+		iframe.frameBorder = 0;
+		iframe.id = KeyMaster.getUniqueKey();
+		scrollbox.bindingElement.appendChild(iframe);
+		this._customTabBinding.iframe = iframe;
+		this.appendTabByBindings(this._customTabBinding, scrollbox);
+	}
+	//hide tabs buttons
+	this.getTabsBinding().hide();
+	return this._customTabBinding;
+}
+
 /**
  * Get URL from selected tab.
  * @return {string}
