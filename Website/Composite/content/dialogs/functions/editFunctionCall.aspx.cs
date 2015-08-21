@@ -85,7 +85,7 @@ namespace CompositeEditFunctionCall
 	        string functionName = (string) functionMarkup.Attribute("name");
 	        IFunction function = FunctionFacade.GetFunction(functionName);
 
-	        if (!function.ParameterProfiles.Any())
+	        if (function.ParameterProfiles.All(p => p.WidgetFunction == null))
 	        {
 	            plhNoParameters.Visible = true;
                 return true;
