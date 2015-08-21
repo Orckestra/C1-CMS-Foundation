@@ -14,6 +14,15 @@ namespace Composite.Functions
     /// </summary>
     public static class RoutedData
     {
+        [Flags]
+        internal enum DataRouteKind
+        {
+            Key = 1,
+            Label = 2,
+            KeyAndLabel = 3,
+        }
+
+
         /// <summary>
         /// Registers function parameter types that enable data url routing.
         /// </summary>
@@ -39,7 +48,7 @@ namespace Composite.Functions
                 var page = PageRenderer.CurrentPage;
                 Verify.IsNotNull(page, "The current page is not set");
 
-                return new PathInfoRoutedDataUrlMapper<T>(page, PathInfoRoutedDataUrlMapper<T>.DataRouteKind.Key);
+                return new PathInfoRoutedDataUrlMapper<T>(page.Id, DataRouteKind.Key);
             }
         }
 
@@ -55,7 +64,7 @@ namespace Composite.Functions
                 var page = PageRenderer.CurrentPage;
                 Verify.IsNotNull(page, "The current page is not set");
 
-                return new PathInfoRoutedDataUrlMapper<T>(page, PathInfoRoutedDataUrlMapper<T>.DataRouteKind.KeyAndLabel);
+                return new PathInfoRoutedDataUrlMapper<T>(page.Id, DataRouteKind.KeyAndLabel);
             }
         }
 
@@ -72,7 +81,78 @@ namespace Composite.Functions
                 Verify.IsNotNull(page, "The current page is not set");
 
                 // return new LabelDataUrlMapper(page);
-                return new PathInfoRoutedDataUrlMapper<T>(page, PathInfoRoutedDataUrlMapper<T>.DataRouteKind.Label);
+                return new PathInfoRoutedDataUrlMapper<T>(page.Id, DataRouteKind.Label);
+            }
+        }
+
+        /// <summary>
+        /// Gets a instance of a <see cref="IDataUrlMapper"/> that can map data references to URLs of with the following format &quot;/{page URL}/{data ID}&quot;
+        /// </summary>
+        /// <param name="pageId">The page id.</param>
+        /// <param name="dataType">The data type.</param>
+        /// <returns></returns>
+        public static IDataUrlMapper GetRoutedByIdDataUrlMapper(Guid pageId, Type dataType)
+        {
+            return GetMapperByType(dataType, pageId, DataRouteKind.Key);
+        }
+
+        /// <summary>
+        /// Gets a instance of a <see cref="IDataUrlMapper"/> that can map data references to URLs of with the following format &quot;/{page URL}/{data item label}&quot;
+        /// </summary>
+        /// <param name="pageId">The page id.</param>
+        /// <param name="dataType">The data type.</param>
+        /// <returns></returns>
+        public static IDataUrlMapper GetRoutedByLabelDataUrlMapper(Guid pageId, Type dataType)
+        {
+            return GetMapperByType(dataType, pageId, DataRouteKind.Label);
+        }
+
+        /// <summary>
+        /// Gets a instance of a <see cref="IDataUrlMapper"/> that can map data references to URLs of with the following format &quot;/{page URL}/{data ID}/{data item label}&quot;
+        /// </summary>
+        /// <param name="pageId">The page id.</param>
+        /// <param name="dataType">The data type.</param>
+        /// <returns></returns>
+        public static IDataUrlMapper GetRoutedByIdAndLabelDataUrlMapper(Guid pageId, Type dataType)
+        {
+            return GetMapperByType(dataType, pageId, DataRouteKind.KeyAndLabel);
+        }
+
+        private static IDataUrlMapper GetMapperByType(Type dataType, Guid pageId, DataRouteKind routeKind)
+        {
+            Verify.ArgumentNotNull(dataType, "dataType");
+            Verify.ArgumentCondition(pageId != Guid.Empty, "pageId", "An empty guid is not allowed here");
+
+            // TODO: use static reflection here
+            var constructor = typeof (PathInfoRoutedDataUrlMapper<>)
+                .MakeGenericType(dataType)
+                .GetConstructor(new [] {typeof (Guid), typeof (DataRouteKind)});
+
+            Verify.IsNotNull(constructor, "Failed to get PathInfoRoutedDataUrlMapper constructor");
+            var routedDataUrlMapper = (IRoutedDataUrlMapper) constructor.Invoke(new object[] {pageId, routeKind});
+
+            return new RoutedDataUrlMapperAdapter(routedDataUrlMapper);
+        }
+
+        internal class RoutedDataUrlMapperAdapter : IDataUrlMapper
+        {
+            private readonly IRoutedDataUrlMapper _mapper;
+
+            public RoutedDataUrlMapperAdapter(IRoutedDataUrlMapper mapper)
+            {
+                _mapper = mapper;
+            }
+
+            public IDataReference GetData(PageUrlData pageUrlData)
+            {
+                var model = _mapper.GetRouteDataModel(pageUrlData);
+                return model.IsRouteResolved && model.IsItem ? model.Item.ToDataReference() : null;
+            }
+
+            public PageUrlData GetPageUrlData(IDataReference instance)
+            {
+                var data = instance.Data;
+                return data != null ? _mapper.BuildItemUrl(data) : null;
             }
         }
     }
@@ -129,7 +209,7 @@ namespace Composite.Functions
             var urlMapper = GetUrlMapper();
             Verify.IsNotNull(urlMapper, "UrlMapper is null");
 
-            DataUrls.RegisterDynamicDataUrlMapper(PageRenderer.CurrentPageId, typeof(T), new RoutedDataUrlMapperAdapter(urlMapper));
+            DataUrls.RegisterDynamicDataUrlMapper(PageRenderer.CurrentPageId, typeof(T), new RoutedData.RoutedDataUrlMapperAdapter(urlMapper));
 
             var pageUrlData = C1PageRoute.PageUrlData;
 
@@ -283,28 +363,5 @@ namespace Composite.Functions
                 return _model;
             }
         }
-
-        internal class RoutedDataUrlMapperAdapter : IDataUrlMapper
-        {
-            private readonly IRoutedDataUrlMapper _mapper;
-
-            public RoutedDataUrlMapperAdapter(IRoutedDataUrlMapper mapper)
-            {
-                _mapper = mapper;
-            }
-
-            public IDataReference GetData(PageUrlData pageUrlData)
-            {
-                var model = _mapper.GetRouteDataModel(pageUrlData);
-                return model.IsRouteResolved && model.IsItem ? model.Item.ToDataReference() : null;
-            }
-
-            public PageUrlData GetPageUrlData(IDataReference instance)
-            {
-                var data = instance.Data;
-                return data != null ? _mapper.BuildItemUrl(data) : null;
-            }
-        }
     }
-
 }

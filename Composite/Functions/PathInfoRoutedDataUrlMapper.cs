@@ -8,7 +8,8 @@ using Composite.Core.Routing;
 using Composite.Core.Routing.Foundation.PluginFacades;
 using Composite.Core.Types;
 using Composite.Data;
-using Composite.Data.Types;
+
+using DataRouteKind = Composite.Functions.RoutedData.DataRouteKind;
 
 namespace Composite.Functions
 {
@@ -21,25 +22,18 @@ namespace Composite.Functions
         PageUrlData BuildItemUrl(IData item);
     }
 
+
     internal class PathInfoRoutedDataUrlMapper<T> : IRoutedDataUrlMapper where T : class, IData
     {
-        [Flags]
-        public enum DataRouteKind
-        {
-            Key = 1,
-            Label = 2,
-            KeyAndLabel = 3,
-        }
-
-        private readonly IPage _page;
+        private readonly Guid _pageId;
         private readonly DataRouteKind _dataRouteKind;
 
         private static PropertyInfo _keyPropertyInfo;
         private static PropertyInfo _labelPropertyInfo;
 
-        public PathInfoRoutedDataUrlMapper(IPage page, DataRouteKind dataRouteKind)
+        public PathInfoRoutedDataUrlMapper(Guid pageId, DataRouteKind dataRouteKind)
         {
-            _page = page;
+            _pageId = pageId;
             _dataRouteKind = dataRouteKind;
 
             if ((dataRouteKind & DataRouteKind.Key) > 0 && _keyPropertyInfo == null)
@@ -125,17 +119,11 @@ namespace Composite.Functions
 
         private IQueryable GetListQueryable()
         {
-            IQueryable unorderedQuery;
+            IQueryable<T> unorderedQuery = DataFacade.GetData<T>();
 
             if (typeof (IPageRelatedData).IsAssignableFrom(typeof (T)))
             {
-                Guid pageId = _page.Id;
-
-                unorderedQuery = DataFacade.GetData<T>().Where(t => (t as IPageRelatedData).PageId == pageId);
-            }
-            else
-            {
-                unorderedQuery = DataFacade.GetData<T>();
+                unorderedQuery = unorderedQuery.Where(t => (t as IPageRelatedData).PageId == _pageId);
             }
 
             return DataGroupingProviderHelper.OrderData(unorderedQuery, typeof(T));
@@ -174,7 +162,9 @@ namespace Composite.Functions
                     throw new InvalidOperationException("Not supported data url kind: " + _dataRouteKind);
             }
 
-            return new PageUrlData(_page) { PathInfo = pathInfo };
+            var culture = LocalizationScopeManager.CurrentLocalizationScope;
+            var publicationScope = DataScopeManager.CurrentDataScope.ToPublicationScope();
+            return new PageUrlData(_pageId, publicationScope, culture) { PathInfo = pathInfo };
         }
 
         private static T GetDataByLabel(string label)
