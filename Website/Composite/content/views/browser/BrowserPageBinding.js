@@ -693,9 +693,12 @@ BrowserPageBinding.prototype._handleCommand = function (cmd, binding) {
             	url = url.replace("{url}", this._box.getLocation());
             	url = url.replace("{encodedurl}", encodeURIComponent(this._box.getLocation()));
 				//replace 2nd and next '?' to '&'
-	            url = url.replace(/(\?)(.+)/g, function(a,b,c) { return b + c.replace(/\?/g, "&") });
-	            customView.iframe.src = "about:blank";
-            	customView.iframe.src = url;
+            	url = url.replace(/(\?)(.+)/g, function (a, b, c) { return b + c.replace(/\?/g, "&") });
+            	customView.iframe.src = "about:blank";
+            	customView.iframe.onload = function () {
+            		customView.iframe.onload = null;
+	            	customView.iframe.src = url;
+	            };
             	this._box.select(customView, true);
             } else {
             	var browserView = this._box.getBrowserTabBinding();
