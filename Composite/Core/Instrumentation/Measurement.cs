@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Composite.C1Console.Security;
 
 
 namespace Composite.Core.Instrumentation
@@ -28,6 +30,9 @@ namespace Composite.Core.Instrumentation
 
         /// <exclude />
         public string Name { get; set; }
+
+        /// <exclude />
+        public Func<EntityToken> EntityTokenFactory  { get; set; }
 
         /// <exclude />
         public List<Measurement> Nodes 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Xml.Linq;
+using Composite.C1Console.Security;
 
 
 namespace Composite.Core.Instrumentation
@@ -39,6 +40,11 @@ namespace Composite.Core.Instrumentation
 
             long ownTime = measurement.TotalTime - measurement.Nodes.Select(childNode => childNode.TotalTime).Sum();
 
+            var entityToken = measurement.EntityTokenFactory != null ? measurement.EntityTokenFactory() : null;
+            string serializedEntityToken = entityToken != null
+                ? EntityTokenSerializer.Serialize(entityToken, true)
+                : null;
+
             var result = new XElement("Measurement",
                                       new XAttribute("_id", id),
                                       new XAttribute("title", measurement.Name),
@@ -46,6 +52,11 @@ namespace Composite.Core.Instrumentation
                                       new XAttribute("ownTime", ownTime),
                                       new XAttribute("persentFromTotal", persentTotal),
                                       new XAttribute("parallel", parallel.ToString().ToLowerInvariant()));
+
+            if (serializedEntityToken != null)
+            {
+                result.Add(new XAttribute("entityToken", serializedEntityToken));
+            }
 
             if (measurement.MemoryUsage != 0)
             {

@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Composite.C1Console.Security;
 using Composite.Core.Threading;
 
 namespace Composite.Core.Instrumentation
@@ -50,9 +51,15 @@ namespace Composite.Core.Instrumentation
             return measurement;
         }
 
-
         /// <exclude />
         public static IDisposable Measure(string name)
+        {
+            return Measure(name, null);
+        }
+
+
+        /// <exclude />
+        public static IDisposable Measure(string name, Func<EntityToken> entityTokenFactory)
         {
             if (Disabled) return EmptyDisposable.Instance;
 
@@ -86,7 +93,7 @@ namespace Composite.Core.Instrumentation
                 newNodeStack = stack;
             }
 
-            return new InfoCollector(currentNode, name, isInParallel, newNodeStack);
+            return new InfoCollector(currentNode, name, isInParallel, newNodeStack, entityTokenFactory);
         }
 
         private static bool GetCurrentNode(
@@ -136,15 +143,22 @@ namespace Composite.Core.Instrumentation
             private readonly Stopwatch _stopwatch;
             private readonly Stack<Measurement> _stack;
 
-            public InfoCollector(Measurement parentNode, string name, bool isInParralel, Stack<Measurement> stack)
+            public InfoCollector(Measurement parentNode, string name, bool isInParallel, Stack<Measurement> stack, Func<EntityToken> entityTokenFactory)
             {
                 _stack = stack;
-                _node = new Measurement(name);
-#if ProfileMemory
-                _node.MemoryUsage = GC.GetTotalMemory(false);
-#endif
 
-                if (isInParralel)
+                _node = new Measurement(name)
+                {
+                    EntityTokenFactory = entityTokenFactory,
+#if ProfileMemory
+                    MemoryUsage = GC.GetTotalMemory(false)
+#endif
+                };
+
+
+
+
+                if (isInParallel)
                 {
                     lock (parentNode.SyncRoot)
                     {

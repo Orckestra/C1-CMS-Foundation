@@ -286,7 +286,17 @@
 				
 
 				<!-- label style="width: 10px; background-image: url(/Composite/skins/system/trees/icon-treenode-minus.png)">&#160;</label -->
-				<xsl:value-of select="@title" />
+        <xsl:choose>
+          <xsl:when test="@entityToken">
+            <a entityToken="{@entityToken}">
+              <xsl:value-of select="@title" />
+            </a> 
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="@title" />
+          </xsl:otherwise>
+        </xsl:choose>
+				
 				<!--xsl:if test="@parallel='true'">
 					<span class="__parallel">*</span>
 				</xsl:if -->

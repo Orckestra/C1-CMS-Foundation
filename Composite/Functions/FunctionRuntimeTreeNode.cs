@@ -111,7 +111,7 @@ namespace Composite.Functions
                         string functionName = _function.CompositeName();
                         if (functionName != "Composite.Utils.GetInputParameter")
                         {
-                            measurement = Profiler.Measure(functionName ?? "<unknown function>");
+                            measurement = Profiler.Measure(functionName ?? "<unknown function>", () => _function.EntityToken);
                         }
 
                         result = _function.Execute(parameters, contextContainer);
