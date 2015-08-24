@@ -6,6 +6,8 @@
 
   <xsl:variable name="TimeMeasurementDefined" select="count(descendant::Measurement[@memoryUsageKb]) &gt; 0" />
     
+  <xsl:variable name="consoleUrl" select="Measurements/@consoleUrl" />
+  
 	<xsl:template match="Measurements">
 		<html xmlns="http://www.w3.org/1999/xhtml">
 			<head></head>
@@ -93,7 +95,7 @@
 		</xsl:if>
 	</xsl:for-each> 
 
-    
+    var consoleUrl = '<xsl:value-of select="$consoleUrl"/>';
 <![CDATA[	
 	function __c1_updateTree() {
         function StringStartsWith(a, b) {
@@ -135,7 +137,7 @@
 					var image = document.getElementById(row.id + "_image");
 					if(image != null)
 					{
-						image.src = currentRowIsCollapsed ? "/Composite/images/icon-treenode-plus.png" : "/Composite/images/icon-treenode-minus.png";
+						image.src = consoleUrl + (currentRowIsCollapsed ? "/images/icon-treenode-plus.png" : "/images/icon-treenode-minus.png");
 					}
 				}
             }
@@ -174,7 +176,6 @@
 					URL: <a href="{@url}" target="_blank">
 						<xsl:value-of select="@url"/>
 					</a>
-					
 				</div>
 				
 				<br/>
@@ -266,7 +267,7 @@
 				
 				<xsl:choose>
 					<xsl:when test="$hasChildren">
-						<input id="{@_id}_image" type="image" src="/Composite/skins/system/trees/icon-treenode-minus.png" width="10" height="10" onclick="__c1_OnRowClick(this);" style="margin-right: 2px;"/>
+						<input id="{@_id}_image" type="image" src="{$consoleUrl}/skins/system/trees/icon-treenode-minus.png" width="10" height="10" onclick="__c1_OnRowClick(this);" style="margin-right: 2px;"/>
 					</xsl:when>
 					<xsl:otherwise>
 						<span style="margin-left: 12px;" />
@@ -275,7 +276,7 @@
 
 
 				<!--xsl:if test="$hasChildren">
-					<input id="{@_id}_image" type="image" src="/Composite/skins/system/trees/icon-treenode-minus.png" width="10" height="10" onclick="__c1_OnRowClick(this);"/>
+					<input id="{@_id}_image" type="image" src="{$consoleUrl}/skins/system/trees/icon-treenode-minus.png" width="10" height="10" onclick="__c1_OnRowClick(this);"/>
 				</xsl:if-->
 				
 				<xsl:value-of select="floor(@totalTime div 1000)" />
@@ -285,10 +286,10 @@
 
 				
 
-				<!-- label style="width: 10px; background-image: url(/Composite/skins/system/trees/icon-treenode-minus.png)">&#160;</label -->
+				<!-- label style="width: 10px; background-image: url({$consoleUrl}/skins/system/trees/icon-treenode-minus.png)">&#160;</label -->
         <xsl:choose>
           <xsl:when test="@entityToken">
-            <a entityToken="{@entityToken}">
+            <a target="_top" href="{$consoleUrl}/top.aspx#FocusElement;{@entityToken}">
               <xsl:value-of select="@title" />
             </a> 
           </xsl:when>

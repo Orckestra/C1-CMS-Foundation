@@ -184,7 +184,8 @@ namespace Composite.Core.WebClient.Renderings
             var url = new UrlBuilder(HttpContext.Current.Request.Url.ToString());
             url["c1mode"] = null;
 
-            reportXml.Add(new XAttribute("url", url));
+            reportXml.Add(new XAttribute("url", url),
+                          new XAttribute("consoleUrl", UrlUtils.AdminRootPath));
 
             return xmlHeader + reportXml;
         }
