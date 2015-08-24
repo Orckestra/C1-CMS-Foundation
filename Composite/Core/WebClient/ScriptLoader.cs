@@ -12,6 +12,7 @@ using System.Web.Hosting;
 using System.Xml.Linq;
 using Composite.Core.IO;
 using Composite.Core.Xml;
+using System.Net.Sockets;
 
 namespace Composite.Core.WebClient
 {
@@ -155,21 +156,18 @@ namespace Composite.Core.WebClient
                 _ctx.Response.Cache.SetExpires(DateTime.Now.AddYears(-10));
                 _ctx.Response.Cache.SetCacheability(HttpCacheability.Private);
 
+                bool isLocalHost = (_ctx.Request.Url.Host.ToLowerInvariant() == "localhost");
                 _hasServerToServerConnection = HasServerToServerConnection();
+
                 builder.AppendLine(@"<script type=""text/javascript"">");
+
                 builder.AppendLine(string.Format(@"Application.hasExternalConnection = {0};", _hasServerToServerConnection.ToString().ToLower()));
+                builder.AppendLine(string.Format(@"Application.isDeveloperMode = {0};", (_mode == CompositeScriptMode.DEVELOP).ToString().ToLower()));
+                builder.AppendLine(string.Format(@"Application.isLocalHost = {0};", (_ctx.Request.Url.Host.ToLowerInvariant() == "localhost").ToString().ToLower()));
+                builder.AppendLine(string.Format(@"Application.isOnPublicNet = {0};", UrlIsOnPublicNet(_ctx.Request.Url).ToString().ToLower()));
+
                 builder.AppendLine(@"</script>");
 
-				// We always want to know whether we're working locally
-				bool isLocalHost = (_ctx.Request.Url.Host.ToLowerInvariant() == "localhost");
-
-				if (isLocalHost || _mode == CompositeScriptMode.DEVELOP)
-				{
-					builder.AppendLine(@"<script type=""text/javascript"">");
-					if (_mode == CompositeScriptMode.DEVELOP) builder.AppendLine(@"Application.isDeveloperMode = true;");
-                    if (isLocalHost) builder.AppendLine(@"Application.isLocalHost = true;");
-					builder.AppendLine(@"</script>");
-				}
 			}
             else
             {
@@ -224,6 +222,26 @@ namespace Composite.Core.WebClient
             }
             catch (Exception) { }
             return result;
+        }
+
+
+        private bool UrlIsOnPublicNet(Uri currentUri)
+        {
+            if (currentUri.HostNameType != UriHostNameType.Dns) return false;
+
+            string hostname = currentUri.Host.ToLowerInvariant();
+
+            if (hostname.IndexOf('.') == -1) return false;
+
+            var dnsResult = System.Net.Dns.GetHostEntry(hostname);
+            if ( dnsResult.AddressList.Length > 0)
+            {
+                var addr = dnsResult.AddressList.First().MapToIPv6();
+                if (addr.IsIPv6SiteLocal || addr.IsIPv6LinkLocal) return false;
+                return true;
+            }
+
+            return false;
         }
 
         /// <exclude />
