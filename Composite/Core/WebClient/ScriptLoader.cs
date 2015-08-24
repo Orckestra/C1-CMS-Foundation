@@ -160,17 +160,17 @@ namespace Composite.Core.WebClient
                 builder.AppendLine(string.Format(@"Application.hasExternalConnection = {0};", _hasServerToServerConnection.ToString().ToLower()));
                 builder.AppendLine(@"</script>");
 
-                if (_mode == CompositeScriptMode.DEVELOP)
-                {
-                    bool isLocalHost = (_ctx.Request.Url.Host.ToLowerInvariant() == "localhost");
-                    string boolean = isLocalHost ? "true" : "false";
+				// We always want to know whether we're working locally
+				bool isLocalHost = (_ctx.Request.Url.Host.ToLowerInvariant() == "localhost");
 
-                    builder.AppendLine(@"<script type=""text/javascript"">");
-                    builder.AppendLine(@"Application.isDeveloperMode = true;");
-                    builder.AppendLine(@"Application.isLocalHost = " + boolean + ";");
-                    builder.AppendLine(@"</script>");
-                }
-            }
+				if (isLocalHost || _mode == CompositeScriptMode.DEVELOP)
+				{
+					builder.AppendLine(@"<script type=""text/javascript"">");
+					if (_mode == CompositeScriptMode.DEVELOP) builder.AppendLine(@"Application.isDeveloperMode = true;");
+                    if (isLocalHost) builder.AppendLine(@"Application.isLocalHost = true;");
+					builder.AppendLine(@"</script>");
+				}
+			}
             else
             {
                 if (!_updateManagerDisabled)

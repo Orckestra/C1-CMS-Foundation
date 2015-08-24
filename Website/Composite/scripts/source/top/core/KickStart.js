@@ -190,10 +190,15 @@ var KickStart = new function () {
 		bindingMap.decks.select ( "logindeck" );
 		
 		setTimeout ( function () {
-			if ( Application.isDeveloperMode && Application.isLocalHost ) {
-				DataManager.getDataBinding ( "username" ).setValue ( DEVUSERNAME );
-				DataManager.getDataBinding ( "password" ).setValue ( DEVPASSWORD );
-			} 
+			if ((Application.isDeveloperMode || Client.isPerformanceTest) && Application.isLocalHost) {
+				DataManager.getDataBinding("username").setValue(DEVUSERNAME);
+				DataManager.getDataBinding("password").setValue(DEVPASSWORD);
+
+				// Auto login for the performance test
+				if (Client.isPerformanceTest) {
+					KickStart.login();
+				}
+			}
 			setTimeout ( function () {
 				DataManager.getDataBinding ( "username" ).focus ();
 			}, 250 );

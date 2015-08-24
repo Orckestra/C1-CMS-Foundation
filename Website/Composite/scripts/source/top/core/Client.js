@@ -17,6 +17,7 @@ function _Client () {
 	this.isMozilla = isMozilla;
 	this.isFirefox = agent.indexOf("firefox") > -1;
 	this.isWebKit = agent.indexOf("webkit") > -1;
+	this.isPerformanceTest = agent.indexOf("performance") > -1;
 	this.isExplorer = isExplorer;
 	this.isExplorer6 = this.isExplorer && ( agent.indexOf ( "msie 6.0" ) > -1 || agent.indexOf ( "msie 6.1" ) > -1 );
 	this.isExplorer8 = this.isExplorer && window.XDomainRequest != null;
