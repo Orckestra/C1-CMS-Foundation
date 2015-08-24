@@ -267,7 +267,7 @@
 				
 				<xsl:choose>
 					<xsl:when test="$hasChildren">
-						<input id="{@_id}_image" type="image" src="{$consoleUrl}/skins/system/trees/icon-treenode-minus.png" width="10" height="10" onclick="__c1_OnRowClick(this);" style="margin-right: 2px;"/>
+						<input id="{@_id}_image" type="image" src="{$consoleUrl}/images/icon-treenode-minus.png" width="10" height="10" onclick="__c1_OnRowClick(this);" style="margin-right: 2px;"/>
 					</xsl:when>
 					<xsl:otherwise>
 						<span style="margin-left: 12px;" />
@@ -276,7 +276,7 @@
 
 
 				<!--xsl:if test="$hasChildren">
-					<input id="{@_id}_image" type="image" src="{$consoleUrl}/skins/system/trees/icon-treenode-minus.png" width="10" height="10" onclick="__c1_OnRowClick(this);"/>
+					<input id="{@_id}_image" type="image" src="{$consoleUrl}/images/icon-treenode-minus.png" width="10" height="10" onclick="__c1_OnRowClick(this);"/>
 				</xsl:if-->
 				
 				<xsl:value-of select="floor(@totalTime div 1000)" />
@@ -286,7 +286,7 @@
 
 				
 
-				<!-- label style="width: 10px; background-image: url({$consoleUrl}/skins/system/trees/icon-treenode-minus.png)">&#160;</label -->
+				<!-- label style="width: 10px; background-image: url({$consoleUrl}/images/icon-treenode-minus.png)">&#160;</label -->
         <xsl:choose>
           <xsl:when test="@entityToken">
             <a target="_top" href="{$consoleUrl}/top.aspx#FocusElement;{@entityToken}">
