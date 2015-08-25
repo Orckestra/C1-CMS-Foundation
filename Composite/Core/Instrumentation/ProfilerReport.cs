@@ -64,13 +64,13 @@ namespace Composite.Core.Instrumentation
             }
 
             int index = 0;
-            foreach (var childNode in measurement.Nodes.OrderByDescending(c => c.TotalTime))
+            foreach (var childNode in measurement.Nodes)  // .OrderByDescending(c => c.TotalTime)
             {
                 result.Add(BuildReportXmlRec(childNode, totalTime, measurement.TotalTime, false, (id + "|" + index)));
                 index++;
             }
 
-            foreach (var childNode in measurement.ParallelNodes.OrderByDescending(c => c.TotalTime))
+            foreach (var childNode in measurement.ParallelNodes) // .OrderByDescending(c => c.TotalTime)
             {
                 result.Add(BuildReportXmlRec(childNode, totalTime, measurement.TotalTime, true, (id + "|" + index)));
                 index++;

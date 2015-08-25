@@ -201,7 +201,8 @@
 				<tbody>
 					<xsl:apply-templates select="Measurement">
 						<xsl:with-param name="Level" select="0" />
-					</xsl:apply-templates>
+            <xsl:sort select="number(@totalTime)" data-type="number" order="descending"/>
+          </xsl:apply-templates>
 				</tbody>
 			</table>
 			<br />
@@ -284,9 +285,8 @@
 				
 				(<xsl:value-of select="@persentFromTotal" />%)
 
-				
 
-				<!-- label style="width: 10px; background-image: url({$consoleUrl}/images/icon-treenode-minus.png)">&#160;</label -->
+        <!-- label style="width: 10px; background-image: url({$consoleUrl}/images/icon-treenode-minus.png)">&#160;</label -->
         <xsl:choose>
           <xsl:when test="@entityToken">
             <a target="_top" href="{$consoleUrl}/top.aspx#FocusElement;{@entityToken}">
@@ -312,6 +312,7 @@
 
 		<xsl:apply-templates select="./Measurement">
 			<xsl:with-param name="Level" select="$Level + 1" />
+      <xsl:sort select="@totalTime" data-type="number" order="descending"/>
 		</xsl:apply-templates>
 
 	</xsl:template>
