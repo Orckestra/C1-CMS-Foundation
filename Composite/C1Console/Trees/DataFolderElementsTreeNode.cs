@@ -96,8 +96,8 @@ namespace Composite.C1Console.Trees
                 List<object> orgLabels = GetObjects(dynamicContext, true);
                 using (new DataScope(UserSettings.ForeignLocaleCultureInfo))
                 {
-                    List<object> foriegnLabels = GetObjects(dynamicContext, true);
-                    orgLabels.AddRange(foriegnLabels);
+                    List<object> foreignLabels = GetObjects(dynamicContext, true);
+                    orgLabels.AddRange(foreignLabels);
                     labels = orgLabels.Distinct();
                 }
             }
@@ -125,11 +125,12 @@ namespace Composite.C1Console.Trees
 
             foreach (object label in labels)
             {
-                var entityToken = new TreeDataFieldGroupingElementEntityToken(this.Id, this.Tree.TreeId, TypeManager.SerializeType(this.InterfaceType));
+                var tupleIndexer = new TupleIndexer(label);
 
-                TupleIndexer tupleIndexer = new TupleIndexer(label);
-
-                entityToken.GroupingValues = new Dictionary<string, object>();
+                var entityToken = new TreeDataFieldGroupingElementEntityToken(this.Id, this.Tree.TreeId, TypeManager.SerializeType(this.InterfaceType))
+                {
+                    GroupingValues = new Dictionary<string, object>()
+                };
 
                 int index = 1;
                 foreach (DataFolderElementsTreeNode dataFolderElementsTreeNode in this.AllGroupingNodes)
@@ -168,17 +169,20 @@ namespace Composite.C1Console.Trees
         {
             if (this.ParentNode is DataFolderElementsTreeNode)
             {
-                TreeDataFieldGroupingElementEntityToken childGroupingElementEntityToken = childEntityToken as TreeDataFieldGroupingElementEntityToken;
+                var childGroupingElementEntityToken = childEntityToken as TreeDataFieldGroupingElementEntityToken;
 
                 if (childGroupingElementEntityToken != null)
                 {
-                    TreeDataFieldGroupingElementEntityToken newGroupingElementEntityToken = new TreeDataFieldGroupingElementEntityToken(
+                    var newGroupingElementEntityToken = new TreeDataFieldGroupingElementEntityToken(
                         this.ParentNode.Id,
                         this.Tree.TreeId,
-                        this.SerializedInterfaceType);
-
-                    newGroupingElementEntityToken.GroupingValues = new Dictionary<string, object>(childGroupingElementEntityToken.GroupingValues);
-                    newGroupingElementEntityToken.FolderRangeValues = new Dictionary<string, int>(childGroupingElementEntityToken.FolderRangeValues);
+                        this.SerializedInterfaceType)
+                    {
+                        GroupingValues =
+                            new Dictionary<string, object>(childGroupingElementEntityToken.GroupingValues),
+                        FolderRangeValues =
+                            new Dictionary<string, int>(childGroupingElementEntityToken.FolderRangeValues)
+                    };
 
                     newGroupingElementEntityToken.GroupingValues.Remove(this.GroupingValuesFieldName);
 
@@ -237,8 +241,8 @@ namespace Composite.C1Console.Trees
                 List<object> orgObjects = GetObjects(dynamicContext);
                 using (new DataScope(UserSettings.ForeignLocaleCultureInfo))
                 {
-                    List<object> foriegnObjects = GetObjects(dynamicContext);
-                    orgObjects.AddRange(foriegnObjects);
+                    List<object> foreignObjects = GetObjects(dynamicContext);
+                    orgObjects.AddRange(foreignObjects);
                     orgObjects.Sort(); // TODO: Check if sorting here is necessary
                     objects = orgObjects.Distinct();
                 }

@@ -350,15 +350,15 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 else if (foreignAdministratedPages.TryGetValue(pageId, out page)
                          && page.IsTranslatable())
                 {
-                    resultPages.Add(new KeyValuePair<PageLocaleState, IPage>(PageLocaleState.ForiegnActive, page));
+                    resultPages.Add(new KeyValuePair<PageLocaleState, IPage>(PageLocaleState.ForeignActive, page));
                 }
                 else if (foreignPublicPages.TryGetValue(pageId, out page))
                 {
-                    resultPages.Add(new KeyValuePair<PageLocaleState, IPage>(PageLocaleState.ForiegnActive, page));
+                    resultPages.Add(new KeyValuePair<PageLocaleState, IPage>(PageLocaleState.ForeignActive, page));
                 }
                 else if (foreignAdministratedPages.TryGetValue(pageId, out page))
                 {
-                    resultPages.Add(new KeyValuePair<PageLocaleState, IPage>(PageLocaleState.ForiegnDisabled, page));
+                    resultPages.Add(new KeyValuePair<PageLocaleState, IPage>(PageLocaleState.ForeignDisabled, page));
                 }
             }
 
@@ -625,7 +625,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 return 0;
             }
 
-            childPageIDs.OrderBy(PageManager.GetLocalOrdering);
+            childPageIDs = childPageIDs.OrderBy(PageManager.GetLocalOrdering).ToList();
 
             return PageManager.GetLocalOrdering(childPageIDs[Math.Min(childPageIDs.Count - 1, dropIndex - 1)]) + 1;
         }
@@ -634,8 +634,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
         private enum PageLocaleState
         {
             Own,
-            ForiegnActive,
-            ForiegnDisabled
+            ForeignActive,
+            ForeignDisabled
         }
 
 
@@ -816,7 +816,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
                     _pageAccociatedHelper.AttachElementActions(element, page);
                 }
-                else if (kvp.Key == PageLocaleState.ForiegnActive)
+                else if (kvp.Key == PageLocaleState.ForeignActive)
                 {
                     // Localized actions
                     bool addAction = false;
@@ -943,7 +943,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                     visualizedElement.OpenedIcon = PageElementProvider.PagePublication;
                 }
             }
-            else if (pageLocaleState == PageLocaleState.ForiegnActive)
+            else if (pageLocaleState == PageLocaleState.ForeignActive)
             {
                 visualizedElement.Icon = PageElementProvider.PageGhosted;
                 visualizedElement.OpenedIcon = PageElementProvider.PageGhosted;

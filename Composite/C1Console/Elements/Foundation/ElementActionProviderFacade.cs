@@ -444,7 +444,7 @@ namespace Composite.C1Console.Elements.Foundation
                 }
             }
 
-            if ((element.ElementExternalActionAdding & ElementExternalActionAdding.AllowProcessConotroller) == ElementExternalActionAdding.AllowProcessConotroller)
+            if ((element.ElementExternalActionAdding & ElementExternalActionAdding.AllowProcessController) == ElementExternalActionAdding.AllowProcessController)
             {
                 if (element.ElementHandle.EntityToken is DataEntityToken)
                 {

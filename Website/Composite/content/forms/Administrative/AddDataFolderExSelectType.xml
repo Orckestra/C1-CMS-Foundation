@@ -4,16 +4,16 @@
     <cms:binding name="Types" type="System.Object"  />
     <cms:binding name="SelectedType" type="System.Type" />
   </cms:bindings>
-  <cms:layout>
-      <FieldGroup Label="${Composite.Management, AssociatedDataElementProviderHelper.AddDataFolderExSelectType.FieldLabel}">
-        <KeySelector Label="${Composite.Management, AssociatedDataElementProviderHelper.AddDataFolderExSelectType.SelectorLabel}" OptionsKeyField="Key" OptionsLabelField="Value" Help="${Composite.Management, AssociatedDataElementProviderHelper.AddDataFolderExSelectType.SelectorHelp}">
-          <KeySelector.Options>
-            <cms:read source="Types" />
-          </KeySelector.Options>
-          <KeySelector.Selected>
-            <cms:bind source="SelectedType" />
-          </KeySelector.Selected>
-        </KeySelector>
-      </FieldGroup>
+  <cms:layout label="${Composite.Management, AssociatedDataElementProviderHelper.AddDataFolderExSelectType.FieldLabel}">
+    <FieldGroup>
+      <KeySelector Label="${Composite.Management, AssociatedDataElementProviderHelper.AddDataFolderExSelectType.SelectorLabel}" OptionsKeyField="Key" OptionsLabelField="Value" Help="${Composite.Management, AssociatedDataElementProviderHelper.AddDataFolderExSelectType.SelectorHelp}">
+        <KeySelector.Options>
+          <cms:read source="Types" />
+        </KeySelector.Options>
+        <KeySelector.Selected>
+          <cms:bind source="SelectedType" />
+        </KeySelector.Selected>
+      </KeySelector>
+    </FieldGroup>
   </cms:layout>
 </cms:formdefinition>

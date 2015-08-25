@@ -19,7 +19,7 @@ namespace Composite.C1Console.Elements
         AllowGlobal = 1,
 
         /// <exclude />
-        AllowProcessConotroller = 2,
+        AllowProcessController = 2,
 
         /// <exclude />
         AllowManageUserPermissions = 4 
@@ -56,7 +56,7 @@ namespace Composite.C1Console.Elements
         private Element()
         {
             this.MovabilityInfo = new ElementDragAndDropInfo();
-            this.ElementExternalActionAdding = ElementExternalActionAdding.AllowGlobal | ElementExternalActionAdding.AllowProcessConotroller | ElementExternalActionAdding.AllowManageUserPermissions;
+            this.ElementExternalActionAdding = ElementExternalActionAdding.AllowGlobal | ElementExternalActionAdding.AllowProcessController | ElementExternalActionAdding.AllowManageUserPermissions;
             this.TreeLockBehavior = TreeLockBehavior.Normal;
         }
 
