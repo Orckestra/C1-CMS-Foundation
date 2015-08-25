@@ -5,7 +5,8 @@ module.exports = function (grunt) {
 
 	// Define global variables here - access them with <%= globalConfig.variableName %>
 	var globalConfig = {
-		rootPath: 'Composite'
+		rootPath: 'Composite',
+		compileScriptsFilename: "CompileScripts.xml"
 	};
 
 	grunt.initConfig({
@@ -55,8 +56,8 @@ module.exports = function (grunt) {
 	//************************************************************************************************************************************************
 	// UGLIFY
 	//************************************************************************************************************************************************
-	var subArray = [];
-	var topArray = [];
+	var subScripts = [];
+	var topScripts = [];
 
 	// Default task
 	grunt.loadNpmTasks('grunt-contrib-uglify');
@@ -71,8 +72,8 @@ module.exports = function (grunt) {
 		},
 		default: {
 			files: {
-				'<%= globalConfig.rootPath %>/scripts/compressed/top.js': topArray,
-				'<%= globalConfig.rootPath %>/scripts/compressed/sub.js': subArray
+				'<%= globalConfig.rootPath %>/scripts/compressed/top.js': topScripts,
+				'<%= globalConfig.rootPath %>/scripts/compressed/sub.js': subScripts
 			}
 		}
 	});
@@ -80,28 +81,28 @@ module.exports = function (grunt) {
 	// Read 'CompileScripts.xml' & call uglify task
 	grunt.registerTask('uglifyCompileScripts', 'Parse CompileScripts.xml for dynamic parsing', function () {
 		var parser = require('xml2js').Parser({ explicitArray: true, trim: true });
-		var filePath = require('path').join(__dirname, globalConfig.rootPath, 'CompileScripts.xml');
+		var filePath = require('path').join(__dirname, globalConfig.rootPath, globalConfig.compileScriptsFilename);
 		var exists = grunt.file.exists(filePath);
 		if (exists) {
 			var jsonpath = require('JSONPath');
 			var data = grunt.file.read(filePath);
-			parser.parseString(data, function (err, result) {
+			parser.parseString(data, function (err, scriptPath) {
 
 				// Get the sub - develop node
 				// [..] is a predicate, ? is to run a script with an expression, @. is to access the attribute (which is represented in the xml2js object as $.name).
 				var expression = "$.Scripts.Type[?(@.$.name == 'sub')].Mode[?(@.$.name == 'develop')].Script[*].$.filename";
-				var resultArr = jsonpath.eval(result, expression, { flatten: true });
+				var scriptPaths = jsonpath.eval(scriptPath, expression, { flatten: true });
 				// Replace the '${root}' prefix
-				resultArr.forEach(function (result) {
-					subArray.push(result.replace('${root}', globalConfig.rootPath));
+				scriptPaths.forEach(function (result) {
+					subScripts.push(result.replace('${root}', globalConfig.rootPath));
 				});
 
 				// Get the top - develop node
 				expression = "$.Scripts.Type[?(@.$.name == 'top')].Mode[?(@.$.name == 'develop')].Script[*].$.filename";
-				resultArr = jsonpath.eval(result, expression, { flatten: true });
+				scriptPaths = jsonpath.eval(scriptPath, expression, { flatten: true });
 				// Replace the '${root}' prefix
-				resultArr.forEach(function (result) {
-					topArray.push(result.replace('${root}', globalConfig.rootPath));
+				scriptPaths.forEach(function (result) {
+					topScripts.push(result.replace('${root}', globalConfig.rootPath));
 				});
 
 				// Done, run the uglify task

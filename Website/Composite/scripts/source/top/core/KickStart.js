@@ -8,8 +8,8 @@ var KickStart = new function () {
 	var isFirstTime = false;
 	var isQualified = Client.qualifies ();
 	
-	var DEVUSERNAME = "admin";
-	var DEVPASSWORD = "123456";
+	var DEFAULT_USERNAME = "admin";
+	var DEFAULT_PASSWORD = "123456";
 	
 
 	if ( !isQualified ) {
@@ -190,10 +190,12 @@ var KickStart = new function () {
 		bindingMap.decks.select ( "logindeck" );
 		
 		setTimeout ( function () {
-			if ((Application.isDeveloperMode || Client.isPerformanceTest) && Application.isLocalHost) {
-				DataManager.getDataBinding("username").setValue(DEVUSERNAME);
-				DataManager.getDataBinding("password").setValue(DEVPASSWORD);
-
+			if (Application.isLocalHost) {
+				if(Application.isDeveloperMode || Client.isPerformanceTest)
+				{
+					DataManager.getDataBinding("username").setValue(DEFAULT_USERNAME);
+					DataManager.getDataBinding("password").setValue(DEFAULT_PASSWORD);
+				}
 				// Auto login for the performance test
 				if (Client.isPerformanceTest) {
 					KickStart.login();
