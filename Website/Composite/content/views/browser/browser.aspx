@@ -67,7 +67,7 @@
 				</ui:toolbargroup>
 				<ui:toolbargroup id="addressrightgroup">
 					<ui:toolbarbutton id="go" image="${icon:input}" image-disabled="${icon:input-disabled}" isdisabled="true" tooltip="${string:Composite.Web.PageBrowser:ToolBarButton.Go.ToolTip}" />
-					<ui:toolbarbutton id="setscreenbutton" image="${icon:resize-screen}" popup="screenpopup"  observes="broadcasterBrowserView" />
+					<ui:toolbarbutton id="setscreenbutton" image="${icon:browsedevicetype}" popup="screenpopup"  observes="broadcasterBrowserView" />
 					<ui:toolbarbutton cmd="viewsource" tooltip="${string:Composite.Web.PageBrowser:Menu.ViewSource}" image="${icon:editor-sourceview}"  observes="broadcasterBrowserView" />
 					<ui:toolbarbutton cmd="seoassistant" image="${icon:seoassistant}"  observes="broadcasterBrowserView" />
 				</ui:toolbargroup>
