@@ -129,6 +129,35 @@ namespace Composite.Core.Routing
             return null;
         }
 
+
+        /// <summary>
+        /// Tries to parse an internal url, returns a <value>null</value> if failed.
+        /// </summary>
+        /// <param name="internalUrl">The internal url.</param>
+        /// <returns></returns>
+        public static string TryConvertInternalUrlToPublic(string internalUrl, UrlSpace urlSpace = null)
+        {
+            if (!internalUrl.StartsWith("~/")) return null;
+
+            string originalUrl = internalUrl;
+
+            internalUrl = internalUrl.Substring(2);
+
+            foreach (var converter in _converters)
+            {
+                foreach (var prefix in converter.AcceptedUrlPrefixes.Reverse())
+                {
+                    if (internalUrl.StartsWith(prefix, StringComparison.Ordinal))
+                    {
+                        return converter.ToPublicUrl(internalUrl, urlSpace ?? new UrlSpace()) ?? originalUrl;
+                    }
+                }
+            }
+
+            return originalUrl;
+        }
+
+
         /// <summary>
         /// Converts internal urls to public ones in a given html fragment
         /// </summary>
