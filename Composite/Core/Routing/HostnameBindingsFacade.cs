@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using Composite.Core.Extensions;
+using Composite.Core.Routing.Pages;
 using Composite.Core.Threading;
 using Composite.Core.WebClient;
 using Composite.Data;
@@ -140,7 +142,25 @@ namespace Composite.Core.Routing
 
             string url = binding.PageNotFoundUrl;
 
-            url = InternalUrls.TryConvertInternalUrlToPublic(url) ?? url;
+            var defaultCulture = DataLocalizationFacade.DefaultLocalizationCulture;
+
+            var pageUrlData = C1PageRoute.PageUrlData;
+            CultureInfo localeFromRequest = pageUrlData != null 
+                ? pageUrlData.LocalizationScope
+                : defaultCulture;
+
+            using (new DataConnection(localeFromRequest))
+            {
+                url = InternalUrls.TryConvertInternalUrlToPublic(url) ?? url;
+            }
+
+            if (url.StartsWith("~/") && localeFromRequest.Name != defaultCulture.Name)
+            {
+                using (new DataConnection(defaultCulture))
+                {
+                    url = InternalUrls.TryConvertInternalUrlToPublic(url) ?? url;
+                }
+            }
 
             if (url.StartsWith("~/")) url = UrlUtils.ResolvePublicUrl(url);
 

@@ -136,7 +136,7 @@ namespace Composite.Core.Routing
         /// <returns></returns>
         public static string TryConvertInternalUrlToPublic(string internalUrl, UrlSpace urlSpace = null)
         {
-            if (!internalUrl.StartsWith("~/")) return null;
+            if (!internalUrl.StartsWith("~/")) return internalUrl;
 
             string urlWithoutTilde = internalUrl.Substring(2);
 
