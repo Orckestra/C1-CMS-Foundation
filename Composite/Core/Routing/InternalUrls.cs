@@ -113,13 +113,12 @@ namespace Composite.Core.Routing
         {
             if (!internalUrl.StartsWith("~/")) return null;
 
-            internalUrl = internalUrl.Substring(2);
-
+            string urlWithoutTilde = internalUrl.Substring(2);
             foreach (var converter in _converters)
             {
                 foreach (var prefix in converter.AcceptedUrlPrefixes.Reverse())
                 {
-                    if (internalUrl.StartsWith(prefix, StringComparison.Ordinal))
+                    if (urlWithoutTilde.StartsWith(prefix, StringComparison.Ordinal))
                     {
                         return converter.ToDataReference(internalUrl);
                     }
@@ -139,22 +138,20 @@ namespace Composite.Core.Routing
         {
             if (!internalUrl.StartsWith("~/")) return null;
 
-            string originalUrl = internalUrl;
-
-            internalUrl = internalUrl.Substring(2);
+            string urlWithoutTilde = internalUrl.Substring(2);
 
             foreach (var converter in _converters)
             {
                 foreach (var prefix in converter.AcceptedUrlPrefixes.Reverse())
                 {
-                    if (internalUrl.StartsWith(prefix, StringComparison.Ordinal))
+                    if (urlWithoutTilde.StartsWith(prefix, StringComparison.Ordinal))
                     {
-                        return converter.ToPublicUrl(internalUrl, urlSpace ?? new UrlSpace()) ?? originalUrl;
+                        return converter.ToPublicUrl(internalUrl, urlSpace ?? new UrlSpace()) ?? internalUrl;
                     }
                 }
             }
 
-            return originalUrl;
+            return internalUrl;
         }
 
 
