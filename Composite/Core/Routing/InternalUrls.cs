@@ -131,7 +131,7 @@ namespace Composite.Core.Routing
 
 
         /// <summary>
-        /// Tries to parse an internal url, returns a <value>null</value> if failed.
+        /// Tries to convert an internal url to a public one, returns the original value if failed.
         /// </summary>
         /// <param name="internalUrl">The internal url.</param>
         /// <returns></returns>

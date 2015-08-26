@@ -1,11 +1,11 @@
-﻿using System;
-using System.Web;
+﻿using System.Web;
 using Composite.Plugins.Routing.Pages;
 
 namespace Composite.Core.Routing
 {
     /// <summary>    
-    /// Describes a set of page urls, generated specifictly. F.e. for a specific hostname or for previewing.
+    /// Allows producing different urls for different hostnames, also to forcibly produce relative urls when needed 
+    /// (f.e. browsing in a console, where an iframe source has to point to the same hostname).
     /// </summary>
     public class UrlSpace
     {
