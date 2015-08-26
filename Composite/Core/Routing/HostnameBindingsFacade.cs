@@ -140,8 +140,9 @@ namespace Composite.Core.Routing
             }
 
             string url = binding.PageNotFoundUrl;
+            string convertedUrl = InternalUrls.TryConvertInternalUrlToPublic(url);
 
-            return url.StartsWith("~") ? UrlUtils.PublicRootPath + url.Substring(1) : url;
+            return convertedUrl != null ? convertedUrl : url;
         }
 
         internal static bool RedirectCustomPageNotFoundUrl(HttpContext httpContext)
