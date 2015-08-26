@@ -69,7 +69,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
             _supportedInterface.Add(interfaceType);
             AddKnownInterface(interfaceType);
 
-            if (xmlDataTypeStore.IsGeneretedDataType)
+            if (xmlDataTypeStore.IsGeneratedDataType)
             {
                 _generatedInterface.Add(interfaceType);
             }

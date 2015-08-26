@@ -25,11 +25,10 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
             XmlDataTypeStore dataTypeStore = _xmlDataTypeStoresContainer.GetDataTypeStore(typeof(T));
 
-            string currentDataScope = DataScopeManager.MapByType(typeof(T)).Name;
-            if (!dataTypeStore.HasDataScopeName(currentDataScope)) return new List<T>().AsQueryable();
+            var currentDataScope = DataScopeManager.MapByType(typeof(T));
+            if (!dataTypeStore.HasDataScopeName(currentDataScope)) return Enumerable.Empty<T>().AsQueryable();
 
-            string cultureName = LocalizationScopeManager.MapByType(typeof(T)).Name;
-            var dataTypeStoreScope = dataTypeStore.GetXmlDateTypeStoreDataScope(currentDataScope, cultureName);
+            var dataTypeStoreScope = dataTypeStore.GetDataScopeForType(typeof(T));
 
             var fileRecord = XmlDataProviderDocumentCache.GetFileRecord(
                 dataTypeStoreScope.Filename,
@@ -61,12 +60,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
             if (dataId == null) throw new ArgumentNullException("dataId");
 
             XmlDataTypeStore dataTypeStore = _xmlDataTypeStoresContainer.GetDataTypeStore(typeof(T));
-
-            string currentDataScope = DataScopeManager.MapByType(typeof(T)).Name;
-            if (dataTypeStore.HasDataScopeName(currentDataScope) == false) throw new InvalidOperationException(string.Format("The store named '{0}' is not supported for type '{1}'", currentDataScope, typeof(T)));
-
-            string cultureName = LocalizationScopeManager.MapByType(typeof(T)).Name;
-            var dataTypeStoreScope = dataTypeStore.GetXmlDateTypeStoreDataScope(currentDataScope, cultureName);
+            var dataTypeStoreScope = dataTypeStore.GetDataScopeForType(typeof(T));
 
             var fileRecord = GetFileRecord(dataTypeStore, dataTypeStoreScope);
 
@@ -104,11 +98,12 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
                     XmlDataTypeStore dataTypeStore = _xmlDataTypeStoresContainer.GetDataTypeStore(data.DataSourceId.InterfaceType);
 
-                    string currentDataScope = data.DataSourceId.DataScopeIdentifier.Name;
-                    if (dataTypeStore.HasDataScopeName(currentDataScope) == false) throw new InvalidOperationException(string.Format("The store named '{0}' is not supported for type '{1}'", currentDataScope, data.DataSourceId.InterfaceType));
 
-                    string cultureName = data.DataSourceId.LocaleScope.Name;
-                    var dataTypeStoreScope = dataTypeStore.GetXmlDateTypeStoreDataScope(currentDataScope, cultureName);
+                    var dataScope = data.DataSourceId.DataScopeIdentifier;
+                    var culture = data.DataSourceId.LocaleScope;
+                    var type = data.DataSourceId.InterfaceType;
+
+                    var dataTypeStoreScope = dataTypeStore.GetDataScope(dataScope, culture, type);
 
                     dataTypeStore.Helper.ValidateDataType(data);
 
@@ -157,26 +152,21 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
             CheckTransactionNotInAbortedState();
 
-            List<T> resultList = new List<T>();
+            var resultList = new List<T>();
 
             using (XmlDataProviderDocumentCache.CreateEditingContext())
             {
-                var validatedElements = new Dictionary<DataSourceId, XElement>();
-
                 XmlDataTypeStore dataTypeStore = _xmlDataTypeStoresContainer.GetDataTypeStore(typeof(T));
-
-                string currentDataScope = DataScopeManager.MapByType(typeof(T)).Name;
-                Verify.That(dataTypeStore.HasDataScopeName(currentDataScope), "The store named '{0}' is not supported for type '{1}'", currentDataScope, typeof(T));
-
-                string cultureName = LocalizationScopeManager.MapByType(typeof(T)).Name;
-                var dataTypeStoreScope = dataTypeStore.GetXmlDateTypeStoreDataScope(currentDataScope, cultureName);
+                var dataTypeStoreScope = dataTypeStore.GetDataScopeForType(typeof(T));
 
                 var fileRecord = GetFileRecord(dataTypeStore, dataTypeStoreScope);
+
+                var validatedElements = new Dictionary<DataSourceId, XElement>();
 
                 // validating phase
                 foreach (IData data in dataset)
                 {
-                    Verify.ArgumentCondition(data != null, "dataset", "The enumeration datas may not contain nulls");
+                    Verify.ArgumentCondition(data != null, "dataset", "The enumeration dataset may not contain nulls");
                     ValidationHelper.Validate(data);
 
                     XElement newElement;
@@ -185,7 +175,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
                     IDataId dataId = dataTypeStore.Helper.CreateDataId(newElement);
                     XElement violatingElement = fileRecord.RecordSet.Index[dataId];
 
-                    Verify.ArgumentCondition(violatingElement == null, "dataset", "Key violation error. An data element with the same dataId is already added");
+                    Verify.ArgumentCondition(violatingElement == null, "dataset", "Key violation error. A data element with the same dataId is already added");
 
                     validatedElements.Add(newData.DataSourceId, newElement);
                     resultList.Add(newData);
@@ -225,11 +215,11 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
                     XmlDataTypeStore dataTypeStore = _xmlDataTypeStoresContainer.GetDataTypeStore(dataSourceId.InterfaceType);
 
-                    string currentDataScope = dataSourceId.DataScopeIdentifier.Name;
-                    if (dataTypeStore.HasDataScopeName(currentDataScope) == false) throw new InvalidOperationException(string.Format("The store named '{0}' is not supported for type '{1}'", currentDataScope, dataSourceId.InterfaceType));
+                    var dataScope = dataSourceId.DataScopeIdentifier;
+                    var culture = dataSourceId.LocaleScope;
+                    var type = dataSourceId.InterfaceType;
 
-                    string cultureName = dataSourceId.LocaleScope.Name;
-                    var dataTypeStoreScope = dataTypeStore.GetXmlDateTypeStoreDataScope(currentDataScope, cultureName);
+                    var dataTypeStoreScope = dataTypeStore.GetDataScope(dataScope, culture, type);
 
                     if (dataTypeStore.Helper._DataIdType != dataSourceId.DataId.GetType())
                     {
@@ -272,7 +262,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
             if (transaction.TransactionInformation.Status == TransactionStatus.Aborted)
             {
-                Log.LogWarning(typeof(XmlDataProvider).Name, new TransactionException("Transaction is in aborted state"));
+                Log.LogWarning(LogTitle, new TransactionException("Transaction is in aborted state"));
             }
         }
 
@@ -315,7 +305,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
             ThreadStart logging = () =>
             {
                 var exception = new TransactionException("XML data provider does not support transaction's API, changes were not rolled back.");
-                Log.LogWarning(typeof(XmlDataProvider).Name, exception);
+                Log.LogWarning(LogTitle, exception);
             };
 
             transaction.EnlistVolatile(new TransactionRollbackHandler(logging), EnlistmentOptions.None);
