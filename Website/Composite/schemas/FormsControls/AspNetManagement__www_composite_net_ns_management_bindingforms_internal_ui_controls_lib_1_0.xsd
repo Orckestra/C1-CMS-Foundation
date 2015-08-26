@@ -812,6 +812,17 @@
   <xsd:complexType name="PageContentEditor" mixed="true">
     <xsd:sequence maxOccurs="unbounded" minOccurs="0">
       <xsd:choice>
+        <xsd:element name="PageContentEditor.PageId">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:bind" />
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
         <xsd:element name="PageContentEditor.TemplateId">
           <xsd:complexType mixed="true">
             <xsd:sequence maxOccurs="1" minOccurs="0">
@@ -877,6 +888,7 @@
         </xsd:element>
       </xsd:choice>
     </xsd:sequence>
+    <xsd:attribute name="PageId" type="xsd:string" use="optional" />
     <xsd:attribute name="TemplateId" type="xsd:string" use="optional" />
     <xsd:attribute name="NamedXhtmlFragments" type="xsd:string" use="optional" />
     <xsd:attribute name="ClassConfigurationName" type="xsd:string" use="optional" />

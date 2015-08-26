@@ -51,11 +51,11 @@
 					<cms:bind source="IncludeCultureInUrl" />
 				</CheckBox.Checked>
 			</CheckBox>
-			<TextBox Label="${Composite.Web.UrlConfiguration, HostnameBinding.Custom404Page.Label}" Help="${Composite.Web.UrlConfiguration, HostnameBinding.Custom404Page.Help}" SpellCheck="false">
-				<TextBox.Text>
+			<UrlComboBox Label="${Composite.Web.UrlConfiguration, HostnameBinding.Custom404Page.Label}" Help="${Composite.Web.UrlConfiguration, HostnameBinding.Custom404Page.Help}" SpellCheck="false">
+        <UrlComboBox.Text>
 					<cms:bind source="PageNotFoundUrl" />
-				</TextBox.Text>
-			</TextBox>
+				</UrlComboBox.Text>
+			</UrlComboBox>
 			<TextArea Label="${Composite.Web.UrlConfiguration, HostnameBinding.Aliases.Label}" Help="${Composite.Web.UrlConfiguration, HostnameBinding.Aliases.Help}" SpellCheck="false">
 				<TextArea.Text>
 					<cms:bind source="Aliases" />
