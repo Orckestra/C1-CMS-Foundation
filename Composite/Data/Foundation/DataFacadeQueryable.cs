@@ -127,10 +127,10 @@ namespace Composite.Data.Foundation
 
             Type elementType = TypeHelpers.FindElementType(expression);
 
-            Type multibleSourceQueryableType = typeof(DataFacadeQueryable<>).MakeGenericType(new Type[] { elementType });
+            Type multipleSourceQueryableType = typeof(DataFacadeQueryable<>).MakeGenericType(new Type[] { elementType });
 
             return Activator.CreateInstance(
-                multibleSourceQueryableType,
+                multipleSourceQueryableType,
                 new object[] { _sources, expression }) as IQueryable;
         }
 
@@ -191,8 +191,7 @@ namespace Composite.Data.Foundation
         {
             get
             {
-                return _sources.Count == 1
-                       && (_sources[0] as IQueryable<T>).IsEnumerableQuery();
+                return _sources.All(source => (source as IQueryable<T>).IsEnumerableQuery());
             }
         }
 
