@@ -335,7 +335,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
             private readonly XDocument _document;
             private readonly XElement _assemblyBindingElement;
-            private bool _changed = false;
+            private bool _changed;
 
             public AssemblyBindingConfiguration(XDocument configFile)
             {
@@ -371,7 +371,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
             public void AddRedirectsForAssembly(string filePath, FileVersionInfo fileVersionInfo)
             {
                 var targetVersion = new Version(fileVersionInfo.FileVersion);
-                string newTargetVersionStr = "{0}.{1}.{2}.0".FormatWith(targetVersion.Major, targetVersion.Minor, targetVersion.Revision);
+                string newTargetVersionStr = "{0}.{1}.{2}.0".FormatWith(targetVersion.Major, targetVersion.Minor, targetVersion.Build);
 
                 AssemblyName assemblyName;
 
