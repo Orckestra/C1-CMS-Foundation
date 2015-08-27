@@ -155,7 +155,7 @@ namespace Composite.Core.WebClient.Renderings
             }
 
             // Redirecting to PageNotFoundUrl or setting 404 response code if PathInfo url part hasn't been used
-            if (!HostnameBindingsFacade.RedirectCustomPageNotFoundUrl(httpContext))
+            if (!HostnameBindingsFacade.ServeCustomPageNotFoundPage(httpContext))
             {
                 page.Response.StatusCode = 404;
             }

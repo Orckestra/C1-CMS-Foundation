@@ -35,7 +35,7 @@ namespace Composite.Core.Routing
         public IHttpHandler GetHttpHandler(RequestContext requestContext)
         {
             var httpContext = HttpContext.Current;
-            if (!HostnameBindingsFacade.RedirectCustomPageNotFoundUrl(httpContext))
+            if (!HostnameBindingsFacade.ServeCustomPageNotFoundPage(httpContext))
             {
                 throw new InvalidOperationException("Failed to redirect to 'page not found' url");
             }

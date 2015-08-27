@@ -167,7 +167,7 @@ namespace Composite.Core.Routing
             return url;
         }
 
-        internal static bool RedirectCustomPageNotFoundUrl(HttpContext httpContext)
+        internal static bool ServeCustomPageNotFoundPage(HttpContext httpContext)
         {
             string rawUrl = httpContext.Request.RawUrl;
 
