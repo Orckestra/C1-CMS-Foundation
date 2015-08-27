@@ -8,12 +8,16 @@
     <link rel="shortcut icon" type="image/x-icon" href="images/icons/branding/favicon16.ico" />
     <control:styleloader runat="server"/>
     <style type="text/css">
-
-        input, input:focus, input:active {
-            border: 0;
-            background: #fff;
-            outline: 0;
+        
+        form {
+            height: auto;
         }
+
+         input, input:focus, input:active {
+             border: 0;
+             background: #fff;
+             outline: 0;
+         }
 
         svg {
             stroke: currentColor;
@@ -42,7 +46,6 @@
             width: 100%;
             padding: 4px 10px 5px 15px;
         }
-
     </style>
 </head>
 <body>
