@@ -256,8 +256,8 @@
           <table id="__tblPerformanceTrace">
             <thead>
               <tr class="head">
-                <th style="width: 15%; max-width: 250px;">Own time, ms</th>
-                <th style="width: 70%;">
+                <th style="width: 80px;">Own time, ms</th>
+                <th>
                   <div style="float: left; padding-top: 4px;">Function calls, ms</div>
                   <div style="float: right; font-weight: normal;">
                     Order by: <a id="orderByExecution" class="btn active order" onclick="__c1_OrderTable('execution')">Execution Order</a>
@@ -266,7 +266,7 @@
 
                 </th>
                 <xsl:if test="$TimeMeasurementDefined">
-                  <th style="width: 15%; max-width: 250px;">Memory usage, kb</th>
+                  <th style="width: 110px;">Memory usage, kb</th>
                 </xsl:if>
               </tr>
             </thead>
