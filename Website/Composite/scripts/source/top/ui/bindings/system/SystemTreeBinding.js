@@ -663,7 +663,7 @@ SystemTreeBinding.prototype._focusTreeNodeByEntityToken = function (entityToken,
 		 * We timeout to lock the GUI while tree is refreshed; this can take some time. 
 		 */
 		var self = this;
-		setTimeout(function () {
+		setTimeout(function() {
 			if (Binding.exists(self)) {
 				self._fetchTreeForEntityToken(entityToken);
 				self._focusTreeNodeByEntityToken(entityToken, true); // do it again!
@@ -671,6 +671,11 @@ SystemTreeBinding.prototype._focusTreeNodeByEntityToken = function (entityToken,
 			Application.unlock(self);
 			StatusBar.clear();
 		}, 0);
+	} else if (treenode == null) {
+		this.getFocusedTreeNodeBindings().each(function(binding) {
+			binding.blur();
+		});
+		EventBroadcaster.broadcast(BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED, { activePosition: this._activePosition });
 	}
 }
 
@@ -1016,7 +1021,7 @@ SystemTreeBinding.prototype.selectDefault = function () {
  */
 SystemTreeBinding.prototype.collapse = function (isDestructive) {
 
-	EventBroadcaster.broadcast(BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED, { position: this._activePosition });
+	EventBroadcaster.broadcast(BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED, { activePosition: this._activePosition });
 
 	if (isDestructive) {
 		this.blurSelectedTreeNodes();

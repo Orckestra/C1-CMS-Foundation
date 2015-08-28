@@ -106,27 +106,8 @@ BrowserPageBinding.prototype.handleBroadcast = function (broadcast, arg) {
     switch (broadcast) {
         case BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED:
             if (arg.perspectiveHandle == this.getPerspectiveHandle()) {
-                // TODO: make queue
-                var entityToken = arg.actionProfile.EnitityToken;
-                var self = this;
-	           
-                if (entityToken) {
-                	if (this._entityToken != entityToken) {
-			            TreeService.GetBrowserUrlByEntityToken(entityToken, function(result) {
-				            setTimeout(function() {
-					            if (result) {
-					            	self.pushURL(result, arg.actionProfile.Node);
-					            } else if (arg.actionProfile.Node) {
-						            self.pushToken(arg.actionProfile.Node);
-					            } else {
-						            self.pushDefault();
-					            }
-
-				            }, 0);
-			            });
-		                this._entityToken = entityToken;
-	                }
-	            }
+                var node = arg.actionProfile.EnitityToken;
+                this.push(arg.actionProfile.Node, true);
             }
             break;
     }
@@ -245,13 +226,40 @@ BrowserPageBinding.prototype.onAfterPageInitialize = function () {
 
 
 /**
+ * Add node to order
+ * @param {string} url
+ * @return
+ */
+BrowserPageBinding.prototype.push = function (node, isManual) {
+	var self = this;
+	if (node) {
+		var entityToken = node.getEntityToken();;
+		if (entityToken) {
+			if (this._entityToken != entityToken) {
+				TreeService.GetBrowserUrlByEntityToken(entityToken, function(result) {
+					setTimeout(function() {
+						if (result) {
+							self.pushURL(result, isManual);
+						} else {
+							self.pushToken(node, isManual);
+						} 
+					}, 0);
+				});
+				this._entityToken = entityToken;
+			}
+		}
+	}
+
+}
+
+/**
  * Add Url to order
  * @param {string} url
  * @return
  */
-BrowserPageBinding.prototype.pushURL = function (url, node) {
+BrowserPageBinding.prototype.pushURL = function (url, isManual) {
     if (url && url != this._box.getLocation()) {
-        this._isPushingUrl = true;
+    	this._isPushingUrl = isManual;
         this.setURL(url);
     	this.hideBreadcrumb();
     }
@@ -264,26 +272,19 @@ BrowserPageBinding.prototype.pushURL = function (url, node) {
  * @param {string} url
  * @return
  */
-BrowserPageBinding.prototype.pushToken = function (node) {
+BrowserPageBinding.prototype.pushToken = function (node, isManual) {
     var tab = this._box.getGeneticViewTabBinding();
     this._box.select(tab, true);
     tab.tree.setNode(node);
     this._updateHistory({ node: node });
     this._updateBroadcasters();
-	this.showBreadcrumb(node);
+    this.showBreadcrumb(node);
+    if (!isManual) {
+	    this.getSystemTree()._focusTreeNodeByEntityToken(node.getEntityToken());
+    }
 
 }
 
-
-/**
- * Add Url to order
- * @param {string} url
- * @return
- */
-BrowserPageBinding.prototype.pushDefault = function () {
-    var tab = this._box.getBrowserTabBinding();
-    this._box.select(tab, true);
-}
 
 /**
  * Load URL in new tab.
@@ -663,8 +664,8 @@ BrowserPageBinding.prototype._handleCommand = function (cmd, binding) {
             this._isHistoryBrowsing = true;
             this.getContentDocument().location.reload();
             break;
-        case "home":
-	        this.getSystemTree().selectDefault();
+    	case "home":
+		    this.push(this.getSystemPage().node);
             break;
         case "toggletree":
             var toggletreebutton = this.bindingWindow.bindingMap.toggletreebutton;
@@ -1044,15 +1045,16 @@ BrowserPageBinding.prototype.showBreadcrumb = function (node) {
 	var breadcrumbgroup = this.bindingWindow.bindingMap.breadcrumbbar;
 	breadcrumbgroup.detachRecursive();
 	breadcrumbgroup.bindingElement.innerHTML = "";
+	var self = this;
 	System.getParents(node.getHandle()).reverse().each(
 		function (parent) {
 			var button = ToolBarButtonBinding.newInstance(breadcrumbgroup.bindingDocument);
 
-			if (parent.getHandle() == this.getPerspectiveHandle()) {
-				//return true;
-				button.setProperty("isdisabled", "true");
+			//if (parent.getHandle() == this.getPerspectiveHandle()) {
+			//	//return true;
+			//	button.setProperty("isdisabled", "true");
 
-			}
+			//}
 			button.setLabel(parent.getLabel());
 
 			breadcrumbgroup.add(button);
@@ -1060,18 +1062,24 @@ BrowserPageBinding.prototype.showBreadcrumb = function (node) {
 
 			button.entityToken = parent.getEntityToken();
 			button.oncommand = function () {
-				//var entityToken = entityToken;
-				EventBroadcaster.broadcast(
-					BroadcastMessages.SYSTEMTREEBINDING_FOCUS,
-					this.entityToken
-				);
+
+				self.push(parent);
+				////var entityToken = entityToken;
+				//EventBroadcaster.broadcast(
+				//	BroadcastMessages.SYSTEMTREEBINDING_FOCUS,
+				//	this.entityToken
+				//);
 
 			}
 
 		}, this
 	);
 
-	
+
+	var button = ToolBarButtonBinding.newInstance(breadcrumbgroup.bindingDocument);
+	button.setLabel(node.getLabel());
+	breadcrumbgroup.add(button);
+	button.attach();
 
 	this.bindingWindow.bindingMap.addressbar.hide();
 	this.bindingWindow.bindingMap.breadcrumbbar.show();
@@ -1094,4 +1102,13 @@ BrowserPageBinding.prototype.hideBreadcrumb = function () {
 BrowserPageBinding.prototype.getSystemTree = function () {
 
 	return this._viewBinding.getContentWindow().bindingMap.tree;
+}
+
+
+/**
+ * Get system tree
+ */
+BrowserPageBinding.prototype.getSystemPage = function () {
+
+	return this._viewBinding.getContentWindow().bindingMap.page;
 }

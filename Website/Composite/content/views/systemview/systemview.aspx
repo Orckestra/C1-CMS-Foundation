@@ -10,15 +10,7 @@
 		<control:scriptloader type="sub" runat="server"/>
 	</head>
 	<body>
-		<ui:page binding="SystemPageBinding">
-		<%--	<ui:toolbar id="toolbar" type="imagesonly">
-				<ui:toolbarbody align="right">
-					<ui:toolbargroup>
-						<ui:toolbarbutton id="collapsebutton" image="${icon:collapseall}" tooltip="${string:Website.Content.Views.SystemView.ToolTipCollapseAll}"/>
-						<ui:toolbarbutton id="locktreebutton" type="checkbox" ischecked="true" image="${icon:synchronize}" tooltip="${string:Website.Content.Views.SystemView.ToolTipLinkWithEditor}"/>
-					</ui:toolbargroup>
-				</ui:toolbarbody>
-			</ui:toolbar>--%>
+		<ui:page binding="SystemPageBinding" id="page">
 			<ui:tree id="tree" binding="SystemTreeBinding">
 				<ui:treebody/>
 			</ui:tree>
