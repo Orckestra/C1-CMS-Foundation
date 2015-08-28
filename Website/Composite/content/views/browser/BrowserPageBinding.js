@@ -115,7 +115,7 @@ BrowserPageBinding.prototype.handleBroadcast = function (broadcast, arg) {
 			            TreeService.GetBrowserUrlByEntityToken(entityToken, function(result) {
 				            setTimeout(function() {
 					            if (result) {
-						            self.pushURL(result);
+					            	self.pushURL(result, arg.actionProfile.Node);
 					            } else if (arg.actionProfile.Node) {
 						            self.pushToken(arg.actionProfile.Node);
 					            } else {
@@ -249,11 +249,13 @@ BrowserPageBinding.prototype.onAfterPageInitialize = function () {
  * @param {string} url
  * @return
  */
-BrowserPageBinding.prototype.pushURL = function (url) {
+BrowserPageBinding.prototype.pushURL = function (url, node) {
     if (url && url != this._box.getLocation()) {
         this._isPushingUrl = true;
         this.setURL(url);
+    	this.hideBreadcrumb();
     }
+
 }
 
 
@@ -268,6 +270,7 @@ BrowserPageBinding.prototype.pushToken = function (node) {
     tab.tree.setNode(node);
     this._updateHistory({ node: node });
     this._updateBroadcasters();
+	this.showBreadcrumb(node);
 
 }
 
@@ -661,8 +664,7 @@ BrowserPageBinding.prototype._handleCommand = function (cmd, binding) {
             this.getContentDocument().location.reload();
             break;
         case "home":
-            url = PageService.GetPageBrowserDefaultUrl(true);
-            this.setURL(url);
+	        this.getSystemTree().selectDefault();
             break;
         case "toggletree":
             var toggletreebutton = this.bindingWindow.bindingMap.toggletreebutton;
@@ -1030,4 +1032,66 @@ BrowserPageBinding.prototype.getScrollbarWidth = function () {
 BrowserPageBinding.prototype.getPerspectiveHandle = function () {
 
     return this.systemViewDefinition.handle;
+}
+
+
+
+/**
+ * Show breadcrumb
+ */
+BrowserPageBinding.prototype.showBreadcrumb = function (node) {
+	
+	var breadcrumbgroup = this.bindingWindow.bindingMap.breadcrumbbar;
+	breadcrumbgroup.detachRecursive();
+	breadcrumbgroup.bindingElement.innerHTML = "";
+	System.getParents(node.getHandle()).reverse().each(
+		function (parent) {
+			var button = ToolBarButtonBinding.newInstance(breadcrumbgroup.bindingDocument);
+
+			if (parent.getHandle() == this.getPerspectiveHandle()) {
+				//return true;
+				button.setProperty("isdisabled", "true");
+
+			}
+			button.setLabel(parent.getLabel());
+
+			breadcrumbgroup.add(button);
+			button.attach();
+
+			button.entityToken = parent.getEntityToken();
+			button.oncommand = function () {
+				//var entityToken = entityToken;
+				EventBroadcaster.broadcast(
+					BroadcastMessages.SYSTEMTREEBINDING_FOCUS,
+					this.entityToken
+				);
+
+			}
+
+		}, this
+	);
+
+	
+
+	this.bindingWindow.bindingMap.addressbar.hide();
+	this.bindingWindow.bindingMap.breadcrumbbar.show();
+}
+
+
+/**
+ * Hide breadcrumb
+ */
+BrowserPageBinding.prototype.hideBreadcrumb = function () {
+
+	this.bindingWindow.bindingMap.breadcrumbbar.hide();
+	this.bindingWindow.bindingMap.addressbar.show();
+}
+
+
+/**
+ * Get system tree
+ */
+BrowserPageBinding.prototype.getSystemTree = function () {
+
+	return this._viewBinding.getContentWindow().bindingMap.tree;
 }

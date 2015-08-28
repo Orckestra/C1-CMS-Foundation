@@ -1001,6 +1001,11 @@ SystemTreeBinding.prototype.selectDefault = function () {
 			this._defaultTreeNode.open();
 		}
 		this._defaultTreeNode = null;
+	} else {
+		var node = this.getDescendantBindingByType(TreeNodeBinding);
+		if (node) {
+			node.focus();
+		}
 	}
 }
 

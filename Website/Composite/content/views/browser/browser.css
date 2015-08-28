@@ -82,3 +82,42 @@ div#text {
     cursor: url('/Composite/images/touch-cursor.png') 16 16, pointer;
     overflow: hidden;
 }
+
+
+ui|toolbar#breadcrumbbar {
+	padding: 0;
+}
+
+ui|path {
+	width: 100%;
+	float: left;
+	border: 1px solid #cccccc;
+    border-radius: 4px;
+    background-color: #ffffff;
+    height: 32px;
+    overflow: hidden;
+	margin: 2px 0 0 0;
+
+}
+
+ui|path ui|toolbarbutton {
+	border: 0;
+	text-transform: none;
+}
+
+ui|path ui|toolbarbutton.isdisabled {
+	opacity: 1;
+}
+
+ui|path ui|toolbarbutton + ui|toolbarbutton:before {
+	content: "/";
+	display: block;
+	position: absolute;
+	color: #DDDDDD;
+	left: 0px;
+	top: 6px;
+}
+
+ui|path ui|toolbarbutton ui|labelbox {
+    padding: 6px 1px 6px 7px;
+}

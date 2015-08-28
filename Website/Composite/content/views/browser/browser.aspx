@@ -10,10 +10,13 @@
 	<link rel="stylesheet" type="text/css" href="browser.css.aspx" />
 	<script type="text/javascript" src="BrowserAddressBarBinding.js"></script>
 	<script type="text/javascript" src="BrowserPageBinding.js"></script>
+	<script type="text/javascript" src="BrowserPathBinding.js"></script>
 	<script type="text/javascript" src="BrowserToolBarBinding.js"></script>
 	<script type="text/javascript" src="BrowserTabBoxBinding.js"></script>
 	<script type="text/javascript" src="BrowserTabBinding.js"></script>
 	<script type="text/javascript" src="LanguageSelectorBinding.js"></script>
+
+	
 </head>
 <body>
 	<ui:broadcasterset>
@@ -64,6 +67,8 @@
 			<ui:toolbarbody align="right" class="max" style="overflow: hidden;">
 				<ui:toolbargroup>
 					<ui:datainput id="addressbar" name="addressbar" binding="BrowserAddressBarBinding" autoselect="true" />
+					<ui:path binding="BrowserPathBinding" id="breadcrumbbar" hidden="true">
+					</ui:path>
 				</ui:toolbargroup>
 				<ui:toolbargroup id="addressrightgroup">
 					<ui:toolbarbutton id="go" image="${icon:input}" image-disabled="${icon:input-disabled}" isdisabled="true" tooltip="${string:Composite.Web.PageBrowser:ToolBarButton.Go.ToolTip}" />

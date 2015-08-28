@@ -62,7 +62,8 @@ BrowserAddressBarBinding.prototype.maximize = function ( avail ) {
 		width = width - this.bindingWindow.bindingMap.addressrightgroup.boxObject.getDimension().w;
 	}
 
-	this.bindingElement.style.width = ( width - 10 ) + "px";
+	this.bindingElement.style.width = (width - 10) + "px";
+	this.bindingElement.parentNode.style.width = (width - 8) + "px";
 }
 
 /**

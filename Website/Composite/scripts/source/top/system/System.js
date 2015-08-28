@@ -19,6 +19,11 @@ var System = new function () {
 	this.nodes = new Map();
 
 	/**
+	 * Cache parents
+	 */
+	this.parents = new Map();
+
+	/**
 	* Get default EntityToken for perspective.
 	* @return {EntityToken}
 	*/
@@ -82,6 +87,7 @@ var System = new function () {
 		var result = new List();
 		var response = null;
 
+		var self = this;
 		//disabel cache prototype
 		//var handle = node.getHandle();
 		//if (!this.nodes.has(handle) || searchToken) {
@@ -99,7 +105,14 @@ var System = new function () {
 					newnode.searchToken = searchToken;
 				}
 				result.add(newnode);
+
+				//Add parents to cache
+				if (!searchToken) {
+					self.parents.set(newnode.getHandle(), node);
+				}
+
 			});
+
 
 		//	if (!searchToken) {
 		//		this.nodes.set(handle, result.copy());
@@ -109,6 +122,20 @@ var System = new function () {
 		//}
 		return result;
 	}
+
+	this.getParents = function (handle) {
+		var handles = new List();
+		var result = new List();
+
+		while (this.parents.has(handle) && !handles.has(handle)) {
+			var parent = this.parents.get(handle);
+			handles.add(handle);
+			result.add(parent);
+			handle = parent.getHandle();
+		}
+		return result;
+	}
+
 
 	/**
 	* Get branch. This will *not* return a tree structure, but the structure 
