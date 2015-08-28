@@ -17,12 +17,17 @@
         top: -30px;
     }
 
+    + ui|visualeditor { //usage:  Page Template Feature - Edit
+        top: 30px;
+        border-top: solid 1px @base-border-color;
+    }
+
     ui|toolbarbutton {
         border: 1px solid @btn-primary-border-color;
         background-image: @btn-primary-bg-image;
         color: @btn-primary-color;
+        margin: 15px 10px -15px 0;
 
-		margin: 15px 10px -15px 0;
         &.hover {
             border: 1px solid darken(@btn-primary-border-color, 5%);
             color: @btn-primary-color;
