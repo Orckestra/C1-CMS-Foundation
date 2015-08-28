@@ -199,6 +199,7 @@
     <Compile Include="Core\PageTemplates\ISharedCodePageTemplateProvider.cs" />
     <Compile Include="Core\PageTemplates\SharedFile.cs" />
     <Compile Include="Core\Parallelization\AsyncLock.cs" />
+    <Compile Include="Core\ResourceSystem\IIconResourceSystemFacade.cs" />
     <Compile Include="Core\ResourceSystem\LocalizationFiles.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1310,7 +1311,6 @@
     <Compile Include="Core\IO\Zip\IZipFileSystem.cs" />
     <Compile Include="Core\WebClient\Renderings\CultureExtrator.cs" />
     <Compile Include="Core\ResourceSystem\IconResourceSystemFacade.cs" />
-    <Compile Include="Core\ResourceSystem\IIconResourceSystemFacade.cs" />
     <Compile Include="C1Console\Security\DataHookMapper.cs" />
     <Compile Include="Core\Serialization\CompositeCollectionValueXmlSerializer.cs" />
     <Compile Include="Core\Serialization\ISerializerHandlerFacade.cs" />
@@ -1969,9 +1969,7 @@
     <Compile Include="Core\WebClient\Renderings\Page\XElementToAspNetExtensions.cs" />
     <Compile Include="Core\ResourceSystem\Foundation\PluginFacades\ResourceProviderPluginFacade.cs" />
     <Compile Include="Core\ResourceSystem\Foundation\ResourceProviderRegistry.cs" />
-    <Compile Include="Core\ResourceSystem\IconSize.cs" />
     <Compile Include="Core\ResourceSystem\Icons\BuildInIconProviderName.cs" />
-    <Compile Include="Core\ResourceSystem\Plugins\ResourceProvider\IIconResourceProvider.cs" />
     <Compile Include="Core\ResourceSystem\Plugins\ResourceProvider\IResourceProvider.cs" />
     <Compile Include="Core\ResourceSystem\Plugins\ResourceProvider\IStringResourceProvider.cs" />
     <Compile Include="Core\ResourceSystem\Plugins\ResourceProvider\NonConfigurableResourceProvider.cs" />
@@ -2264,8 +2262,6 @@
     <Compile Include="Plugins\Data\DataProviders\XmlDataProvider\IXmlDataProviderHelper.cs" />
     <Compile Include="Plugins\Data\DataProviders\XmlDataProvider\XmlDataProvider.cs" />
     <Compile Include="Plugins\Logging\LogTraceListeners\ManagementConsoleLogTracer\ManagementConsoleLogTracer.cs" />
-    <Compile Include="Plugins\ResourceSystem\FileSystemBasedIconResourceProvider\FileSystemBasedIconResourceProvider.cs" />
-    <Compile Include="Plugins\ResourceSystem\FileSystemBasedIconResourceProvider\Foundation\FileSystemBasedIconResourceProviderHelper.cs" />
     <Compile Include="Plugins\ResourceSystem\XmlStringResourceProvider\XmlStringResourceProvider.cs" />
     <Compile Include="Plugins\Security\HookRegistrators\ElementHookRegistrator\ElementHookRegistrator.cs" />
     <Compile Include="Plugins\Security\LoginProviderPlugins\ConfigBasedFormLoginProvider\ConfigBasedFormLoginProvider.cs" />

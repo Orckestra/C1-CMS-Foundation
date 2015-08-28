@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
@@ -23,30 +22,6 @@ namespace Composite.Core.ResourceSystem.Foundation.PluginFacades
             GlobalEventSystemFacade.SubscribeToFlushEvent(OnFlushEvent);
         }
 
-
-        #region IIconResourceProvider methods
-        public static IEnumerable<string> GetIconNames(string providerName)
-        {
-            if (string.IsNullOrEmpty(providerName)) throw new ArgumentNullException("providerName");
-
-            IIconResourceProvider provider = GetResourceProvider<IIconResourceProvider>(providerName);
-
-            return provider.GetIconNames();
-        }
-
-
-
-        public static Bitmap GetIcon(string providerName, string name, IconSize iconSize, CultureInfo cultureInfo)
-        {
-            if (string.IsNullOrEmpty(providerName)) throw new ArgumentNullException("providerName");
-            if (string.IsNullOrEmpty(name)) throw new ArgumentNullException("stringId");
-            if (cultureInfo == null) throw new ArgumentNullException("cultureInfo");
-
-            IIconResourceProvider provider = GetResourceProvider<IIconResourceProvider>(providerName);
-
-            return provider.GetIcon(name, iconSize, cultureInfo);
-        }
-        #endregion
 
         #region ILocalizationProvider methods
 

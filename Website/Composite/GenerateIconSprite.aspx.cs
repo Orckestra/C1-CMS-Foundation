@@ -26,9 +26,7 @@ public partial class GenerateIconSprite : System.Web.UI.Page
             var id = Path.GetFileNameWithoutExtension(file);
             var svgElement = XElement.Load(file);
 
-         
-
-            var taggetGroup = svgElement.Descendants(svgNamespace + "g").FirstOrDefault(el => el.Attribute("id") != null && el.Attribute("id").Value == id);
+            var taggetGroup = svgElement.Descendants(svgNamespace + "g").FirstOrDefault(el => (string) el.Attribute("id") == id);
 
             if (taggetGroup != null)
             {
@@ -37,13 +35,11 @@ public partial class GenerateIconSprite : System.Web.UI.Page
         }
 
 
-       XmlWriterSettings settings = new XmlWriterSettings();
-        settings.OmitXmlDeclaration = true;
-        StringWriter sw = new StringWriter();
+       var settings = new XmlWriterSettings {OmitXmlDeclaration = true};
+
         using (XmlWriter xw = XmlWriter.Create(PathUtil.Resolve("~/Composite/images/sprite.svg"), settings))
         {
             svgSprite.Save(xw);
         }
-   
     }
 }

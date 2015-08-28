@@ -24,19 +24,6 @@ namespace Composite.Core.ResourceSystem.Foundation
 
 
 
-        public static IEnumerable<string> IconResourceProviderNames
-        {
-            get
-            {
-                using (_resourceLocker.ReadLocker)
-                {
-                    return _resourceLocker.Resources.IconResourceProviders;
-                }
-            }
-        }
-
-
-
         public static IEnumerable<string> StringResourceProviderNames
         {
             get
@@ -70,13 +57,11 @@ namespace Composite.Core.ResourceSystem.Foundation
 
         private sealed class Resources
         {
-            public List<string> IconResourceProviders;
             public List<string> StringResourceProviders;
             public List<string> LocalizationProviders;
 
             public static void Initialize(Resources resources)
             {
-                resources.IconResourceProviders = new List<string>();
                 resources.StringResourceProviders = new List<string>();
                 resources.LocalizationProviders = new List<string>();
 
@@ -98,11 +83,7 @@ namespace Composite.Core.ResourceSystem.Foundation
                 {
                     Type type = ResourceProviderPluginFacade.GetProviderType(data.Name);
 
-                    if (typeof(IIconResourceProvider).IsAssignableFrom(type))
-                    {
-                        resources.IconResourceProviders.Add(data.Name);
-                    }
-                    else if (typeof(IStringResourceProvider).IsAssignableFrom(type))
+                    if (typeof(IStringResourceProvider).IsAssignableFrom(type))
                     {
                         Log.LogVerbose(LogTitle, ("String resource provider '{0}' definition ignored." +
                                                   "\nEither remove it from Composite.config, or move the provider definition under a provider of type '{1}' ")
@@ -116,7 +97,7 @@ namespace Composite.Core.ResourceSystem.Foundation
                     }
                     else 
                     {
-                        throw new NotSupportedException(string.Format("Unkown resource provider type '{0}'", type));
+                        throw new NotSupportedException(string.Format("Unknown resource provider type '{0}'", type));
                     }
                 }
             }
