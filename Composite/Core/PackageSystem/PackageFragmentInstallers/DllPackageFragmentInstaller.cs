@@ -200,7 +200,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
                 // Checking for dll version here:
                 var sourceFileVersionInfo = FileVersionInfo.GetVersionInfo(tempFileName);
-                var sourceFileVersion = new Version(sourceFileVersionInfo.FileVersion);
+                var sourceFileVersion = GetDllProductVersion(tempFileName);
 
                 dependencies.Add(new Pair<string, Version>(fileToCopy.TargetRelativeFilePath, sourceFileVersion));
 
@@ -216,8 +216,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
                 if (C1File.Exists(fileToCopy.TargetFilePath) && fileToCopy.Overwrite)
                 {
-                    var existingFileVersionInfo = FileVersionInfo.GetVersionInfo(fileToCopy.TargetFilePath);
-                    var existingFileVersion = new Version(existingFileVersionInfo.FileVersion);
+                    var existingFileVersion = GetDllProductVersion(fileToCopy.TargetFilePath);
 
                     if (existingFileVersion == sourceFileVersion)
                     {
@@ -260,8 +259,9 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 {
                     asmBindingsToAdd.Add(new AssemblyBindingInfo
                     {
-                        NewFileVersionInfo = sourceFileVersionInfo,
-                        FilePath = fileToCopy.TargetFilePath
+                        FilePath = fileToCopy.TargetFilePath,
+                        FileVersionInfo = sourceFileVersionInfo,
+                        VersionInfo = sourceFileVersion
                     });
                 }
                 
@@ -286,6 +286,15 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
             yield return new XElement("Files", fileElements);
         }
 
+        private Version GetDllProductVersion(string dllFilePath)
+        {
+            var fileVersionInfo = FileVersionInfo.GetVersionInfo(dllFilePath);
+            return new Version(
+                fileVersionInfo.ProductMajorPart, 
+                fileVersionInfo.ProductMinorPart, 
+                fileVersionInfo.ProductBuildPart);
+        }
+
         private void UpdateBindingRedirects(IEnumerable<AssemblyBindingInfo> changedFiles)
         {
             string webConfigPath = PathUtil.Resolve("~/web.config");
@@ -296,7 +305,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
             foreach (var file in changedFiles)
             {
-                assemblyBindingConfig.AddRedirectsForAssembly(file.FilePath, file.NewFileVersionInfo);
+                assemblyBindingConfig.AddRedirectsForAssembly(file.FilePath, file.FileVersionInfo, file.VersionInfo);
             }
 
             assemblyBindingConfig.SaveIfChanged(webConfigPath);
@@ -313,7 +322,8 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
         private class AssemblyBindingInfo
         {
-            public FileVersionInfo NewFileVersionInfo;
+            public FileVersionInfo FileVersionInfo;
+            public Version VersionInfo;
             public string FilePath;
         }
 
@@ -368,10 +378,9 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                         .ToArray();
             }
 
-            public void AddRedirectsForAssembly(string filePath, FileVersionInfo fileVersionInfo)
+            public void AddRedirectsForAssembly(string filePath, FileVersionInfo fileVersionInfo, Version version)
             {
-                var targetVersion = new Version(fileVersionInfo.FileVersion);
-                string newTargetVersionStr = "{0}.{1}.{2}.0".FormatWith(targetVersion.Major, targetVersion.Minor, targetVersion.Build);
+                string newTargetVersionStr = "{0}.{1}.{2}.0".FormatWith(version.Major, version.Minor, version.Build);
 
                 AssemblyName assemblyName;
 
@@ -397,8 +406,9 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     }
 
                     var oldRedirectToVersion = new Version(existingBinding.NewVersion);
-                    if (oldRedirectToVersion.Major == targetVersion.Major
-                        && oldRedirectToVersion.Minor == targetVersion.Minor)
+                    if (oldRedirectToVersion.Major == version.Major
+                        && oldRedirectToVersion.Minor == version.Minor
+                        && oldRedirectToVersion.Build == version.Build)
                     {
                         return;
                     }
@@ -447,14 +457,14 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
             internal class DependantAssembly
             {
-                private readonly XElement _innerElement;
-                private XElement _assemblyIdentity;
-                private XElement _bindingRedirect;
+                private readonly XElement _assemblyIdentity;
+                private readonly XElement _bindingRedirect;
+
                 public DependantAssembly(XElement innerElement)
                 {
-                    _innerElement = innerElement;
-                    _assemblyIdentity = _innerElement.Element(AssemblyBindingXNamespace + "assemblyIdentity");
-                    _bindingRedirect = _innerElement.Element(AssemblyBindingXNamespace + "bindingRedirect");
+                    XElement innerElement1 = innerElement;
+                    _assemblyIdentity = innerElement1.Element(AssemblyBindingXNamespace + "assemblyIdentity");
+                    _bindingRedirect = innerElement1.Element(AssemblyBindingXNamespace + "bindingRedirect");
                 }
 
                 public string Name
