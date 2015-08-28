@@ -15,37 +15,25 @@
 
         <div id="__C1PerformanceTrace">
           <style>
-
+            body, html {
+            margin: 0;
+            padding: 0;
+            }
             #__C1PerformanceTrace
             {
             background-color: white;
             color: #333;
             font-family:"Segoe UI",Tahoma,sans-serif;
             font-size: 14px;
-            padding-top: 20px;
-            padding-left: 10px;
-            }
-
-
-            #__C1PerformanceTrace h1 {
-            font-weight: normal;
-            text-transform: uppercase;
-            margin-bottom: 0;
-            color: #22b980;
+            padding: 0;
             }
 
             #__C1PerformanceTrace a {
             color: #22b980;
             }
 
-            #__C1PerformanceTrace .url a {
-            font-size: 20px;
-            color: #666;
-
-            }
-
             #__C1PerformanceTrace .dl {
-            margin: 20px 0;
+            margin: 20px;
             }
 
             #__C1PerformanceTrace .info {
@@ -84,7 +72,7 @@
 
             #__C1PerformanceTrace table {
             font-size: 13px;
-            max-width: 100%;
+            width: 100%;
             margin: 0;
             border-collapse: collapse;
             border-spacing: 0;
@@ -92,7 +80,7 @@
             border: 1px solid #ddd;
             }
 
-            #__C1PerformanceTrace #orderedByTime { 
+            #__C1PerformanceTrace #orderedByTime {
             display: none;
             }
 
@@ -159,70 +147,65 @@
 
           <script language="javascript" type="text/javascript">
             <![CDATA[ // <!--
-    var __c1_collapsedNodes = new Array(); 
+    var __c1_collapsedNodesTime = new Array(); 
+    var __c1_collapsedNodesExecution = new Array();
     var __c1_order = 'execution';
     ]]>
 
             <!-- Collapsing all the nodes that take less than 11% of execution time, and those which whildren has 0 time in total -->
             <xsl:for-each select="descendant::Measurement[(@persentFromTotal &lt; 11) or (count(./Measurement[@totalTime &gt; 0]) = 0)]">
               <xsl:if test="count(./Measurement) > 0">
-                __c1_collapsedNodes[__c1_collapsedNodes.length] = &quot;<xsl:value-of select="@_id" />&quot;;
+                __c1_collapsedNodesTime[__c1_collapsedNodesTime.length] = &quot;<xsl:value-of select="@_id" />&quot;;
               </xsl:if>
             </xsl:for-each>
 
             var consoleUrl = '<xsl:value-of select="$consoleUrl"/>';
             <![CDATA[	
-	function __c1_updateTree() {
+	function __c1_updateTree(order) {
         function StringStartsWith(a, b) {
             return (a.length > b.length) && (a.substring(0, b.length) == b)
         }
 
-        var table = __c1_order == 'execution' ? document.getElementById("orderedByExecution") : document.getElementById("orderedByTime");
-
+        var table = order == 'execution' ? document.getElementById("orderedByExecution") : document.getElementById("orderedByTime");
+        var __c1_collapsedNodes = order == 'execution' ? __c1_collapsedNodesExecution : __c1_collapsedNodesTime;
+    
         var rows = table.childNodes;
 
         for (var i = 0; i < rows.length; i++) {
-            var row = rows[i];
-
-			var currentRowIsCollapsed = false;
-			
-            var shouldBeHidden = false;
+          var row = rows[i];
+          var currentRowIsCollapsed = false;
+          var shouldBeHidden = false;
 
             if (typeof (row.id) != "undefined") {
                 for (var j = 0; j < __c1_collapsedNodes.length; j++) {
-					if(row.id == __c1_collapsedNodes[j]) {
-						currentRowIsCollapsed = true;
-					}
-				
-                    var prefix = __c1_collapsedNodes[j] + "|";
-					
-                    if (StringStartsWith(row.id, prefix)) {
+                  if(row.id == __c1_collapsedNodes[j]) {
+                      currentRowIsCollapsed = true;
+                  }
+                  var prefix = __c1_collapsedNodes[j] + "|";
+                  if (StringStartsWith(row.id, prefix)) {
                         shouldBeHidden = true;
-						break;
+                        break;
                     }
                 }
 
                 // Hiding/displaying the row node
                 row.style.display = shouldBeHidden ? 'none' : '';
-				
-				// Rendering "+" or "-" image
-				if(!shouldBeHidden)
-				{
-					var image = document.getElementById(row.id + "_" + __c1_order + "_image");
-					if(image != null)
-					{
-						image.src = consoleUrl + (currentRowIsCollapsed ? "/images/icon-treenode-plus.png" : "/images/icon-treenode-minus.png");
-					}
-				}
+        
+                // Rendering "+" or "-" image
+                if(!shouldBeHidden) {
+                  var image = document.getElementById(row.id + "_" + __c1_order + "_image");
+                  if(image != null) {
+                    image.src = consoleUrl + (currentRowIsCollapsed ? "/images/icon-treenode-plus.png" : "/images/icon-treenode-minus.png");
+                  }
+                }
             }
-			
-			
-        }
-    }
+     }
+}
 
     function __c1_OnRowClick(imageButton) {
         row = imageButton.parentNode.parentNode;
-
+        
+        var __c1_collapsedNodes = __c1_order == 'execution' ? __c1_collapsedNodesExecution : __c1_collapsedNodesTime;
         for(var i=0; i< __c1_collapsedNodes.length; i++)
         {
             if(__c1_collapsedNodes[i] == row.id) {
@@ -232,14 +215,14 @@
                     newArray[j] = __c1_collapsedNodes[(j < i) ? j : j + 1];
                 }
 
-                __c1_collapsedNodes = newArray;
-                __c1_updateTree();
+                __c1_order == 'execution' ? __c1_collapsedNodesExecution = newArray : __c1_collapsedNodesTime = newArray;
+                __c1_updateTree(__c1_order);
                 return;
             }
         }
 
-        __c1_collapsedNodes[__c1_collapsedNodes.length] = row.id;
-        __c1_updateTree();
+        __c1_order == 'execution' ? __c1_collapsedNodesExecution[__c1_collapsedNodesExecution.length] = row.id : __c1_collapsedNodesTime[__c1_collapsedNodesTime.length] = row.id;
+        __c1_updateTree(__c1_order);
         return;
     }
     
@@ -250,60 +233,40 @@
       var orderByTime = document.getElementById("orderByTime");
       var orderByExecution = document.getElementById("orderByExecution");
   
-    if( __c1_order == 'execution') { 
+    if( __c1_order == 'execution' && orderByExecution.className.indexOf('active') < 0) { 
           tableByTime.style.display = 'none';
           orderByTime.className = orderByTime.className.replace('active', ' ');
           tableByExecution.style.display = 'table-row-group';
           orderByExecution.className = orderByExecution.className + ' active';
     }
     
-     if( __c1_order == 'time') { 
+     if( __c1_order == 'time' && orderByTime.className.indexOf('active') < 0) { 
          tableByExecution.style.display = 'none';
          orderByExecution.className = orderByExecution.className.replace('active', ' ');
          tableByTime.style.display = 'table-row-group';
          orderByTime.className = orderByTime.className  + ' active';
     }
+    __c1_updateTree(__c1_order);
         return;
     }
 	  // --> ]]>
           </script>
 
-          <xsl:if test="count(@url) > 0">
-            <h1>Performance Report for:</h1>
-            <div class="url">
-              <a href="{@url}" target="_blank">
-                <xsl:value-of select="@url"/>
-              </a>
-            </div>
-          </xsl:if>
-          <div class="dl">
-            <div>
-              Allocated memory: <strong>
-                <xsl:value-of select="@MemoryUsageKb"/>
-              </strong> kb. <a class="info">
-                i <small>
-                  Note that memory measurement may be affected by other work happening in the AppDomain at the same time. Possible negative values are caused by garbage collections.
-                  Run this in an isolated environment for getting precise data.
-                </small>
-              </a>
-            </div>
-
-          </div>
-
+   
           <table id="__tblPerformanceTrace">
             <thead>
               <tr class="head">
-                <th>Own time, ms</th>
-                <th style="width: 800px;">
+                <th style="width: 15%; max-width: 250px;">Own time, ms</th>
+                <th style="width: 70%;">
                   <div style="float: left; padding-top: 4px;">Function calls, ms</div>
                   <div style="float: right; font-weight: normal;">
-                    Order by: <a id="orderByExecution" class="btn active order" onclick="__c1_OrderTable('execution')">Execution</a>
+                    Order by: <a id="orderByExecution" class="btn active order" onclick="__c1_OrderTable('execution')">Execution Order</a>
                     <a id="orderByTime" onclick="__c1_OrderTable('time')" class="btn order">Time Used</a>
                   </div>
 
                 </th>
                 <xsl:if test="$TimeMeasurementDefined">
-                  <th>Memory usage, kb</th>
+                  <th style="width: 15%; max-width: 250px;">Memory usage, kb</th>
                 </xsl:if>
               </tr>
             </thead>
@@ -333,20 +296,23 @@
               </tr>
             </tfoot>
           </table>
+          <div class="dl">
+            <div>
+              Allocated memory: <strong>
+                <xsl:value-of select="@MemoryUsageKb"/>
+              </strong> kb. <a class="info">
+                i <small>
+                  Note that memory measurement may be affected by other work happening in the AppDomain at the same time. Possible negative values are caused by garbage collections.
+                  Run this in an isolated environment for getting precise data.
+                </small>
+              </a>
+            </div>
+
+          </div>
           <xsl:if test="count(descendant::Measurement[@parallel='true']) > 0">
             <br />
             <span class="__parallel">P</span> - code is executed in a parallel task
           </xsl:if>
-          <br />
-          <br />
-          <script language="javascript" type="text/javascript">
-            <![CDATA[ // <!--
-				
-					__c1_updateTree(); 
-					
-					// -->
-				]]>
-          </script>
 
         </div>
 
