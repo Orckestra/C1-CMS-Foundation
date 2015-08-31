@@ -144,7 +144,7 @@ GenericViewBinding.prototype.addNode = function (child) {
 		if (this.hasClassName(GenericViewBinding.CLASSNAME_SINGLE)) {
 			treenode.setImage(bag.ListViewImage.replace("{width}", GenericViewBinding.SINGLE_ICONSIZE).replace("{height}", GenericViewBinding.SINGLE_ICONSIZE));
 		} else {
-			treenode.setImage(bag.ListViewImage.replace("{width}", GenericViewBinding.ICONSIZE).replace("{height}", GenericViewBinding.ICONSIZE));
+			treenode.setImage(bag.ListViewImage.replace("{width}", 300).replace("{height}", GenericViewBinding.ICONSIZE));
 			treenode.attachClassName(GenericViewBinding.LIST_IMAGE);
 		}
 		
