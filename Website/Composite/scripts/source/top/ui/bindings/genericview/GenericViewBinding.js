@@ -6,8 +6,8 @@ GenericViewBinding.CLASSNAME = "genericview";
 GenericViewBinding.CLASSNAME_SINGLE = "single";
 GenericViewBinding.CLASSNAME_ICONSIZE = "icons-s-150";
 GenericViewBinding.CLASSNAME_SINGLE_ICONSIZE = "icons-s-400";
-GenericViewBinding.ICONSIZE = 150;
-GenericViewBinding.SINGLE_ICONSIZE = 400;
+GenericViewBinding.ICONSIZE = 300;
+GenericViewBinding.SINGLE_ICONSIZE = 1000;
 GenericViewBinding.LIST_IMAGE = "listimage";
 
 /**
@@ -144,7 +144,7 @@ GenericViewBinding.prototype.addNode = function (child) {
 		if (this.hasClassName(GenericViewBinding.CLASSNAME_SINGLE)) {
 			treenode.setImage(bag.ListViewImage.replace("{width}", GenericViewBinding.SINGLE_ICONSIZE).replace("{height}", GenericViewBinding.SINGLE_ICONSIZE));
 		} else {
-			treenode.setImage(bag.ListViewImage.replace("{width}", 300).replace("{height}", GenericViewBinding.ICONSIZE));
+		    treenode.setImage(bag.ListViewImage.replace("{width}", GenericViewBinding.ICONSIZE).replace("{height}", GenericViewBinding.ICONSIZE));
 			treenode.attachClassName(GenericViewBinding.LIST_IMAGE);
 		}
 		
