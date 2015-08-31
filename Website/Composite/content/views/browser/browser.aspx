@@ -67,8 +67,6 @@
 			<ui:toolbarbody align="right" class="max" style="overflow: hidden;">
 				<ui:toolbargroup>
 					<ui:datainput id="addressbar" name="addressbar" binding="BrowserAddressBarBinding" autoselect="true" />
-					<ui:path binding="BrowserPathBinding" id="breadcrumbbar" hidden="true">
-					</ui:path>
 				</ui:toolbargroup>
 				<ui:toolbargroup id="addressrightgroup">
 					<ui:toolbarbutton id="go" image="${icon:input}" image-disabled="${icon:input-disabled}" isdisabled="true" tooltip="${string:Composite.Web.PageBrowser:ToolBarButton.Go.ToolTip}" />

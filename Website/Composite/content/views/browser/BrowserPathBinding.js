@@ -45,18 +45,14 @@ BrowserPathBinding.prototype.onBindingAttach = function () {
 
 }
 
+
 /**
- * @implements {IActionListener}
- * @overloads {Binding#handleAction}
- * @param {Action} action
+ * ToolBarBodyBinding factory.
+ * @param {DOMDocument} ownerDocument
+ * @return {ToolBarBodyBinding}
  */
-BrowserPathBinding.prototype.handleAction = function (action) {
+BrowserPathBinding.newInstance = function (ownerDocument) {
 
-	BrowserPathBinding.superclass.handleAction.call(this, action);
-
-	//switch (action.type) {
-	//	case Binding.ACTION_UPDATED:
-	//		this.isFit = false;
-	//		break;
-	//}
+	var element = DOMUtil.createElementNS(Constants.NS_UI, "ui:path", ownerDocument);
+	return UserInterface.registerBinding(element, BrowserPathBinding);
 }

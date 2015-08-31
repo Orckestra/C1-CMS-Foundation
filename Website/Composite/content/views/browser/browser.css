@@ -91,18 +91,16 @@ ui|toolbar#breadcrumbbar {
 ui|path {
 	width: 100%;
 	float: left;
-	border: 1px solid #cccccc;
-    border-radius: 4px;
-    background-color: #ffffff;
     height: 32px;
     overflow: hidden;
-	margin: 2px 0 0 0;
 
 }
 
 ui|path ui|toolbarbutton {
 	border: 0;
 	text-transform: none;
+	padding-right: 10px;
+	margin-right: -10px !important;
 }
 
 ui|path ui|toolbarbutton.isdisabled {
@@ -120,4 +118,16 @@ ui|path ui|toolbarbutton + ui|toolbarbutton:before {
 
 ui|path ui|toolbarbutton ui|labelbox {
     padding: 6px 1px 6px 7px;
+}
+
+ui|path ui|toolbarbutton:after {
+	content: "...";
+	display: block;
+	position: absolute;
+	right: 0px;
+	top: 6px;
+}
+
+ui|path ui|toolbarbutton:last-child:after {
+	display: none;
 }

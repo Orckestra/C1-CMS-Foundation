@@ -1,4 +1,5 @@
 BrowserPageBinding.prototype = new PageBinding;
+BrowserPageBinding.prototype = new PageBinding;
 BrowserPageBinding.prototype.constructor = BrowserPageBinding;
 BrowserPageBinding.superclass = PageBinding.prototype;
 
@@ -260,8 +261,9 @@ BrowserPageBinding.prototype.push = function (node, isManual) {
 BrowserPageBinding.prototype.pushURL = function (url, isManual) {
     if (url && url != this._box.getLocation()) {
     	this._isPushingUrl = isManual;
-        this.setURL(url);
-    	this.hideBreadcrumb();
+    	this.setURL(url);
+    	this._updateAddressBar(url);
+        this.bindingWindow.bindingMap.addressbar.showAddreesbar();
     }
 
 }
@@ -278,7 +280,7 @@ BrowserPageBinding.prototype.pushToken = function (node, isManual) {
     tab.tree.setNode(node);
     this._updateHistory({ node: node });
     this._updateBroadcasters();
-    this.showBreadcrumb(node);
+    this.bindingWindow.bindingMap.addressbar.showBreadcrumb(node);
     if (!isManual) {
 	    this.getSystemTree()._focusTreeNodeByEntityToken(node.getEntityToken());
     }
@@ -414,15 +416,15 @@ BrowserPageBinding.prototype._handleSelectedTab = function () {
 	    };
     }
 	this._updateBroadcasters();
-    this._updateAddressBar(tab.url);
+    //this._updateAddressBar(tab.url);
 
-    /*
-	 * So that Page Browser remember it's location when closed and reopened.
-	 */
-    if (tab.browserwindow != null && tab.browserwindow.getContentDocument() != null) {
-        var def = ViewDefinitions["Composite.Management.Browser"];
-        def.argument = { "URL": tab.url };
-    }
+    ///*
+	// * So that Page Browser remember it's location when closed and reopened.
+	// */
+    //if (tab.browserwindow != null && tab.browserwindow.getContentDocument() != null) {
+    //    var def = ViewDefinitions["Composite.Management.Browser"];
+    //    def.argument = { "URL": tab.url };
+    //}
 
     /*
 	 * Broadcast contained markup for various panels to intercept. Since the markup   
@@ -1037,63 +1039,6 @@ BrowserPageBinding.prototype.getPerspectiveHandle = function () {
 
 
 
-/**
- * Show breadcrumb
- */
-BrowserPageBinding.prototype.showBreadcrumb = function (node) {
-	
-	var breadcrumbgroup = this.bindingWindow.bindingMap.breadcrumbbar;
-	breadcrumbgroup.detachRecursive();
-	breadcrumbgroup.bindingElement.innerHTML = "";
-	var self = this;
-	System.getParents(node.getHandle()).reverse().each(
-		function (parent) {
-			var button = ToolBarButtonBinding.newInstance(breadcrumbgroup.bindingDocument);
-
-			//if (parent.getHandle() == this.getPerspectiveHandle()) {
-			//	//return true;
-			//	button.setProperty("isdisabled", "true");
-
-			//}
-			button.setLabel(parent.getLabel());
-
-			breadcrumbgroup.add(button);
-			button.attach();
-
-			button.entityToken = parent.getEntityToken();
-			button.oncommand = function () {
-
-				self.push(parent);
-				////var entityToken = entityToken;
-				//EventBroadcaster.broadcast(
-				//	BroadcastMessages.SYSTEMTREEBINDING_FOCUS,
-				//	this.entityToken
-				//);
-
-			}
-
-		}, this
-	);
-
-
-	var button = ToolBarButtonBinding.newInstance(breadcrumbgroup.bindingDocument);
-	button.setLabel(node.getLabel());
-	breadcrumbgroup.add(button);
-	button.attach();
-
-	this.bindingWindow.bindingMap.addressbar.hide();
-	this.bindingWindow.bindingMap.breadcrumbbar.show();
-}
-
-
-/**
- * Hide breadcrumb
- */
-BrowserPageBinding.prototype.hideBreadcrumb = function () {
-
-	this.bindingWindow.bindingMap.breadcrumbbar.hide();
-	this.bindingWindow.bindingMap.addressbar.show();
-}
 
 
 /**

@@ -14,6 +14,11 @@ function BrowserAddressBarBinding () {
 	 */
 	this.logger = SystemLogger.getLogger ( "BrowserAddressBarBinding" );
 	
+	/**
+	* @type {BrowserPathBinding}
+	*/
+	this.pathBinding = null;
+
 	/*
 	 * Returnable.
 	 */
@@ -49,7 +54,29 @@ BrowserAddressBarBinding.prototype.onBindingAttach = function () {
 	//Hide go button as obsolute
 	//TODO remove button
 	go.hide();
+
+
+
+	this.pathBinding = BrowserPathBinding.newInstance(this.bindingDocument);
+	this.shadowTree.box.appendChild(this.pathBinding.bindingElement);
+	this.pathBinding.attach();
+
+	this.shadowTree.path = BrowserPathBinding;
+
+
 }
+
+/**
+ * @overloads {Binding#onBindingRegister}
+ */
+BrowserAddressBarBinding.prototype.onBindingRegister = function () {
+
+	BrowserAddressBarBinding.superclass.onBindingRegister.call(this);
+
+	this.addEventListener(DOMEvents.CLICK);
+
+}
+
 
 /**
  * Maximize to available width (crappy javascript layout alert).
@@ -116,6 +143,28 @@ BrowserAddressBarBinding.prototype.handleAction = function ( action ) {
 			break;
 	}
 }
+
+/**
+ * @implements {IEventListener}
+ * @overloads {Binding#handleEvent}
+ * @param {MouseEvent} e
+ */
+BrowserAddressBarBinding.prototype.handleEvent = function (e) {
+
+	BrowserAddressBarBinding.superclass.handleEvent.call(this, e);
+
+	switch (e.type) {
+		case DOMEvents.CLICK:
+			if (e.target === this.pathBinding.bindingElement) {
+				this._hideBreadcrumb();
+				this.shadowTree.input.value = "";
+				this.shadowTree.input.focus();
+				
+			}
+			break;
+	}
+}
+
 
 /**
  * @overloads {DataInputBinding#setValue}
@@ -256,4 +305,83 @@ BrowserAddressBarBinding.prototype._getRequestStatus = function ( url ) {
 		result = 0;
 	}
 	return result;
+}
+
+/**
+ * Blur.
+ * @implements {IData}
+ */
+BrowserAddressBarBinding.prototype.blur = function () {
+
+	BrowserAddressBarBinding.superclass.blur.call(this);
+	if (this.isBreadcrumb && !this.shadowTree.input.value && !this.pathBinding.isVisible)
+		this._showBreadcrumb();
+}
+
+
+/**
+ * Show breadcrumb
+ */
+BrowserAddressBarBinding.prototype.showBreadcrumb = function (node) {
+
+	var pathBinding = this.pathBinding;
+	pathBinding.detachRecursive();
+	pathBinding.bindingElement.innerHTML = "";
+	var self = this;
+	System.getParents(node.getHandle()).reverse().each(
+		function (parent) {
+			var button = ToolBarButtonBinding.newInstance(pathBinding.bindingDocument);
+
+			button.setLabel(parent.getLabel());
+
+			pathBinding.add(button);
+			button.attach();
+
+			button.entityToken = parent.getEntityToken();
+			button.oncommand = function () {
+
+				self.bindingWindow.bindingMap.browserpage.push(parent);
+
+			}
+
+		}, this
+	);
+
+
+	var button = ToolBarButtonBinding.newInstance(pathBinding.bindingDocument);
+	button.setLabel(node.getLabel());
+	pathBinding.add(button);
+	button.attach();
+	this.shadowTree.input.value = "";
+	this.shadowTree.input.style.display = "none";
+	this.pathBinding.show();
+	this.isBreadcrumb = true;
+}
+
+
+/**
+ * Hide breadcrumb
+ */
+BrowserAddressBarBinding.prototype.showAddreesbar = function () {
+
+	this._hideBreadcrumb();
+	this.isBreadcrumb = true;
+}
+
+
+/**
+ * Hide breadcrumb
+ */
+BrowserAddressBarBinding.prototype._hideBreadcrumb = function () {
+	this.pathBinding.hide();
+	this.shadowTree.input.style.display = "block";
+}
+
+
+/**
+ * Hide breadcrumb
+ */
+BrowserAddressBarBinding.prototype._showBreadcrumb = function () {
+	this.shadowTree.input.style.display = "none";
+	this.pathBinding.show();
 }
