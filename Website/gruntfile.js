@@ -124,6 +124,43 @@ module.exports = function (grunt) {
 		}
 	});
 
+
+
+    // Merging all svg files into one
+	grunt.registerTask('mergeSvg', 'Merges all the svg files into one sprite', function () {
+	    var sourceDir = 'Composite/images/icons/svg';
+	    var targetFile = 'Composite/images/sprite.svg';
+
+        function GetGTag(xml) {
+            var gIdOffset = xml.indexOf('<g id="');
+
+
+            var closingTag = '</g>';
+            var closeGtag = xml.lastIndexOf(closingTag);
+
+            var ancestorGTagCount = (xml.substring(0, gIdOffset).match(/<g/g) || []).length;
+
+            var i;
+            for (i = 0; i < ancestorGTagCount; i++) {
+                closeGtag = xml.lastIndexOf(closingTag, closeGtag - 1);
+            }
+
+            return xml.substring(gIdOffset, closeGtag + closingTag.length);
+        }
+
+        var resultSvg = ['<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" width="24" height="24"  viewBox="0 0 128 128"><defs>'];
+
+        grunt.file.recurse(sourceDir, function (filepath) {
+	        var svg = grunt.file.read(filepath);
+
+	        resultSvg.push(GetGTag(svg));
+        });
+
+	    resultSvg.push('</defs></svg>');
+
+	    grunt.file.write(targetFile, resultSvg.join(''));
+	});
+
 	//************************************************************************************************************************************************
 	// WATCH
 	//************************************************************************************************************************************************
@@ -148,6 +185,6 @@ module.exports = function (grunt) {
 
 	grunt.registerTask('watchAll', ['watch']);
 	// Register the default tasks.
-	grunt.registerTask('build', ['less', 'postcss', 'uglifyCompileScripts']);
+	grunt.registerTask('build', ['less', 'postcss', 'uglifyCompileScripts', 'mergeSvg']);
 	grunt.registerTask('default', ['build']);
 };

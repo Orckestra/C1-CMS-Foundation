@@ -341,7 +341,11 @@ List.prototype.getLast = function () {
  * Amazing.
  */
 List.prototype.toString = function () {
-	
+	// To avoid errors that popup in Firebug
+    if (typeof this._array === 'undefined') {
+        return null;
+    }
+
 	return this._array.toString ();
 }
 
