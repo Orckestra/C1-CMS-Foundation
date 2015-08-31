@@ -40,7 +40,7 @@ ui|fielddesc {
     display: block;
     padding: 8px 0 5px 5px;
     white-space: normal;
-    user-select: none;
+    -vendor-user-select: none;
     color: @field-label-color;
 }
 
@@ -69,6 +69,8 @@ ui|field {
 ui|editorpage {
 
     ui|fields {
+        -webkit-column-width: 430px; /* Chrome, Safari, Opera */
+        -moz-column-width: 430px; /* Firefox */
         column-width: 430px;
     }
 
@@ -77,6 +79,7 @@ ui|editorpage {
         display: inline-block;
         overflow: visible;
         position: relative;
+        -webkit-column-break-inside: avoid; /* Chrome, Safari, Opera */
         page-break-inside: avoid; /* Firefox */
         break-inside: avoid; /* IE 10+ */
     }
@@ -224,8 +227,8 @@ ui|fielddata {
     .disabled {
 
         input, textarea {
-            user-select: none;
-            user-focus: none;
+            -vendor-user-select: none;
+            -vendor-user-focus: none;
         }
     }
 
@@ -304,7 +307,7 @@ ui|datalabeltext {
     float: left;
     padding-left: 5px;
     padding-top: 2px;
-    user-select: none; /* See notes in DocumentManager.js */
+    -vendor-user-select: none; /* See notes in DocumentManager.js */
 }
 
 

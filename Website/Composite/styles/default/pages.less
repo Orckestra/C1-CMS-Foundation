@@ -1,6 +1,5 @@
 ui|page,
-ui|editorpage
-{
+ui|editorpage {
     display: block;
     height: 100%;
     width: 100%;
@@ -8,28 +7,30 @@ ui|editorpage
     visibility: hidden;
 }
 
-ui|pagehead {
+ui|pagehead, ui|pageheading, ui|pagedescription {
     display: block;
+    -vendor-user-select: none;
+}
+
+ui|pagehead {
     padding-bottom: 1em;
-    user-select: none;
+
 }
 
 ui|pageheading {
-    display: block;
     font-size: 120%;
     font-weight: bold;
     padding: 0 0 0.5em 0;
-    user-select: none;
+
 }
 
 ui|pagedescription {
-    display: block;
     padding: 0 0 12px 0;
-    user-select: none;
 }
 
 ui|pagebody {
     display: block;
+
     &.pad-0 {
         padding: 0;
     }
