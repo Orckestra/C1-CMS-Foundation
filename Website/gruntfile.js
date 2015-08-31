@@ -23,7 +23,8 @@ module.exports = function (grunt) {
 	grunt.config('less', {
 		options: {
 			paths: ['<%= globalConfig.rootPath %>/styles'],
-			sourceMap: true
+			sourceMap: true,
+			sourceMapFileInline: true
 		},
 
 		default: {
@@ -38,8 +39,7 @@ module.exports = function (grunt) {
 	grunt.config('postcss', {
 		options: {
 			map: {
-				inline: false,
-				prev: false
+				inline: false
 			},
 			processors: [
 			  require('autoprefixer-core')({ browsers: 'last 2 versions' }),
@@ -125,6 +125,10 @@ module.exports = function (grunt) {
 	});
 
 
+    // ****************************************************************************************************
+    //  SVG                        
+    // ****************************************************************************************************
+
 
     // Merging all svg files into one
 	grunt.registerTask('mergeSvg', 'Merges all the svg files into one sprite', function () {
@@ -159,7 +163,7 @@ module.exports = function (grunt) {
 	    resultSvg.push('</defs></svg>');
 
 	    grunt.file.write(targetFile, resultSvg.join(''));
-	});
+    });
 
 	//************************************************************************************************************************************************
 	// WATCH
