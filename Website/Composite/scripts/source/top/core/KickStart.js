@@ -4,8 +4,6 @@
 var KickStart = new function () {
 	
 	var isLocalStoreReady = false;
-	var isLoggedIn = null;
-	var isFirstTime = false;
 	var isQualified = Client.qualifies ();
 	
 	var DEFAULT_USERNAME = "admin";
@@ -420,8 +418,8 @@ var KickStart = new function () {
 				bindingMap.cover.attachClassName("widesplash");
 
 				setTimeout(function () {
-					var passwordexpired = document.getElementById("passwordexpired");
-					passwordexpired.firstChild.data = passwordexpired.firstChild.data.replace("{0}", Installation.passwordExpirationTimeInDays);
+				    var passwordexpired = document.getElementById("passwordexpired");
+				    passwordexpired.textContent = passwordexpired.textContent.replace("{0}", Installation.passwordExpirationTimeInDays);
 
 					DataManager.getDataBinding("usernameold").setValue(DataManager.getDataBinding("username").getResult());
 					DataManager.getDataBinding("passwordold").focus();
