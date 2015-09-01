@@ -45,9 +45,6 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
         public static ResourceHandle ListUnpublishedItems = GetIconHandle("page-list-unpublished-items");
         public static ResourceHandle AddSubPage = GetIconHandle("page-add-sub-page");
         public static ResourceHandle DeletePage = GetIconHandle("page-delete-page");
-        public static ResourceHandle PageViewPublicScope = GetIconHandle("page-view-public-scope");
-        public static ResourceHandle PageViewPublicScopeDisabled = GetIconHandle("page-view-public-scope-disabled");
-        public static ResourceHandle PageViewAdministratedScope = GetIconHandle("page-view-administrated-scope");
         public static ResourceHandle PageDraft = GetIconHandle("page-draft");
         public static ResourceHandle PageAwaitingApproval = GetIconHandle("page-awaiting-approval");
         public static ResourceHandle PageAwaitingPublication = GetIconHandle("page-awaiting-publication");
@@ -745,75 +742,6 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                         }
                     });
 
-
-                    element.AddAction(new ElementAction(new ActionHandle(new ViewDraftActionToken()))
-                    {
-                        VisualData = new ActionVisualizedData
-                        {
-                            Label = viewDraftPageLabel,
-                            ToolTip = viewDraftPageToolTip,
-                            Icon = PageElementProvider.PageViewAdministratedScope,
-                            Disabled = false,
-                            ActionLocation = new ActionLocation
-                            {
-                                ActionType = ActionType.Other,
-                                IsInFolder = false,
-                                IsInToolbar = true,
-                                ActionGroup = ViewActionGroup
-                            }
-                        }
-                    });
-
-
-                    bool pageIsPublished;
-                    using (new DataScope(PublicationScope.Published))
-                    {
-                        pageIsPublished = PageManager.GetPageById(page.Id) != null;
-                    }
-
-                    element.AddAction(new ElementAction(new ActionHandle(new ViewPublicActionToken()))
-                    {
-                        VisualData = new ActionVisualizedData
-                        {
-                            Label = viewPublicPageLabel,
-                            ToolTip = viewPublicPageToolTip,
-                            Icon = pageIsPublished ? PageViewPublicScope : PageViewPublicScopeDisabled,
-                            Disabled = !pageIsPublished,
-                            ActionLocation = new ActionLocation
-                            {
-                                ActionType = ActionType.Other,
-                                IsInFolder = false,
-                                IsInToolbar = false,
-                                ActionGroup = ViewActionGroup
-                            }
-                        }
-                    });
-
-
-                    // Creates a problem for the front-end "toolbar caching" mechanism - dont re-introduce this right befroe a release
-                    // Reason: ActionTokin is always unique for a page, making the ActionKey (hash) unique
-
-                    //if (RuntimeInformation.IsDebugBuild)
-                    //{
-                    //    element.AddAction(new ElementAction(new ActionHandle(new DisplayLocalOrderingActionToken(page.Id)))
-                    //    {
-                    //        VisualData = new ActionVisualizedData
-                    //        {
-                    //            Label = displayLocalOrderingLabel,
-                    //            ToolTip = displayLocalOrderingToolTip,
-                    //            Icon = CommonElementIcons.Nodes,
-                    //            Disabled = false,
-                    //            ActionLocation = new ActionLocation
-                    //            {
-                    //                ActionType = ActionType.DeveloperMode,
-                    //                IsInFolder = false,
-                    //                IsInToolbar = false,
-                    //                ActionGroup = AppendedActionGroup
-                    //            }
-                    //        }
-                    //    });
-                    //}
-
                     _pageAccociatedHelper.AttachElementActions(element, page);
                 }
                 else if (kvp.Key == PageLocaleState.ForeignActive)
@@ -859,45 +787,6 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                             }
                         });
                     }
-
-
-                    element.AddAction(new ElementAction(new ActionHandle(new ViewPublicActionToken()))
-                    {
-                        VisualData = new ActionVisualizedData
-                        {
-                            Label = viewPublicPageLabel,
-                            ToolTip = viewPublicPageToolTip,
-                            Icon = PageElementProvider.PageViewPublicScope,// (page.MajorVersionNumber == 0 ? PageElementProvider.PageViewPublicScopeDisabled : PageElementProvider.PageViewPublicScope),
-                            Disabled = false, //(page.MajorVersionNumber == 0),
-                            ActionLocation = new ActionLocation
-                            {
-                                ActionType = ActionType.Other,
-                                IsInFolder = false,
-                                IsInToolbar = false,
-                                ActionGroup = ViewActionGroup
-                            }
-                        }
-                    });
-
-
-
-                    //element.AddAction(new ElementAction(new ActionHandle(new ViewDraftActionToken()))
-                    //{
-                    //    VisualData = new ActionVisualizedData
-                    //    {
-                    //        Label = viewDraftPageLabel,
-                    //        ToolTip = viewDraftPageToolTip,
-                    //        Icon = PageElementProvider.PageViewAdministratedScope,
-                    //        Disabled = false,
-                    //        ActionLocation = new ActionLocation
-                    //        {
-                    //            ActionType = ActionType.Other,
-                    //            IsInFolder = false,
-                    //            IsInToolbar = false,
-                    //            ActionGroup = ViewActionGroup
-                    //        }
-                    //    }
-                    //});
                 }
 
                 elements[i] = element;
@@ -973,74 +862,6 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
         #endregion
     }
 
-
-
-    internal sealed class PreviewActionExecutor : Composite.C1Console.Actions.IActionExecutor
-    {
-        public FlowToken Execute(EntityToken entityToken, ActionToken actionToken, FlowControllerServicesContainer flowControllerServicesContainer)
-        {
-            var token = (DataEntityToken)entityToken;
-            IPage page = token.Data as IPage;
-
-            var publicationScope = PublicationScope.Unpublished;
-            if (actionToken is ViewPublicActionToken)
-            {
-                publicationScope = PublicationScope.Published;
-
-                // Checking whether the page exist in 'Public' scope
-                using (new DataScope(DataScopeIdentifier.Public, page.DataSourceId.LocaleScope))
-                {
-                    bool exist = DataFacade.GetData<IPage>(x => x.Id == page.Id).Any();
-                    if (!exist)
-                    {
-                        var managementConsoleMessageService = flowControllerServicesContainer.GetService<IManagementConsoleMessageService>();
-
-                        managementConsoleMessageService.ShowMessage(DialogType.Message,
-                            StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "Preview.PublishedPage.NotPublishedTitle"),
-                            StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "Preview.PublishedPage.NotPublishedMessage"));
-
-                        return null;
-                    }
-                }
-            }
-
-            IPage previewPage;
-            using(new DataScope(publicationScope, page.DataSourceId.LocaleScope))
-            {
-                previewPage = PageManager.GetPageById(page.Id);
-            }
-
-            var pageUrlData = new PageUrlData(previewPage);
-
-            string previewUrl = GetPagePreviewUrl(pageUrlData);
-
-            var arguments = new Dictionary<string, string> { { "URL", previewUrl } };
-            var consoleServices = flowControllerServicesContainer.GetService<IManagementConsoleMessageService>();
-
-            ConsoleMessageQueueFacade.Enqueue(new OpenHandledViewMessageQueueItem(
-                EntityTokenSerializer.Serialize(entityToken, true), "Composite.Management.Browser", arguments), 
-                consoleServices.CurrentConsoleId);
-
-            return null;
-        }
-
-
-        private static string GetPagePreviewUrl(PageUrlData pageUrlData)
-        {
-            var httpContext = HttpContext.Current;
-
-            var urlSpace = new UrlSpace();
-            if (HostnameBindingsFacade.GetBindingForCurrentRequest() != null
-                || HostnameBindingsFacade.GetAliasBinding(httpContext) != null)
-            {
-                urlSpace.ForceRelativeUrls = true;
-            }
-
-            return PageUrls.BuildUrl(pageUrlData, UrlKind.Public, urlSpace)
-                      ?? PageUrls.BuildUrl(pageUrlData, UrlKind.Renderer, urlSpace); 
-        }
-    }
-
     // Not to used on elements. This is only for determin drag'n'drop security
     internal sealed class DragAndDropActionToken : ActionToken
     {
@@ -1049,56 +870,6 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
         public override IEnumerable<PermissionType> PermissionTypes
         {
             get { return _permissoinTypes; }
-        }
-    }
-
-
-
-    [IgnoreEntityTokenLocking]
-    [ActionExecutor(typeof(PreviewActionExecutor))]
-    internal sealed class ViewPublicActionToken : ActionToken
-    {
-        private static PermissionType[] _permissionTypes = { PermissionType.Read };
-
-        public override IEnumerable<PermissionType> PermissionTypes
-        {
-            get { return _permissionTypes; }
-        }
-
-        public override string Serialize()
-        {
-            return "ViewPublic";
-        }
-
-
-        public static ActionToken Deserialize(string serializedData)
-        {
-            return new ViewPublicActionToken();
-        }
-    }
-
-
-
-    [IgnoreEntityTokenLocking]
-    [ActionExecutor(typeof(PreviewActionExecutor))]
-    internal sealed class ViewDraftActionToken : ActionToken
-    {
-        private static IEnumerable<PermissionType> _permissionTypes = new[] { PermissionType.Read };
-
-        public override IEnumerable<PermissionType> PermissionTypes
-        {
-            get { return _permissionTypes; }
-        }
-
-        public override string Serialize()
-        {
-            return "ViewDraft";
-        }
-
-
-        public static ActionToken Deserialize(string serializedData)
-        {
-            return new ViewDraftActionToken();
         }
     }
 

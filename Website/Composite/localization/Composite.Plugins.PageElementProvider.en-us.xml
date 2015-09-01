@@ -76,10 +76,6 @@
   <string key="PageElementProvider.LocalizePageToolTip" value="Translate selected page" />
   <string key="PageElementProvider.AddSubPage" value="Add Page..." />
   <string key="PageElementProvider.AddSubPageToolTip" value="Add new page below the selected" />
-  <string key="PageElementProvider.ViewPublicPage" value="Browse Published Page" />
-  <string key="PageElementProvider.ViewPublicToolTip" value="View last published version" />
-  <string key="PageElementProvider.ViewDraftPage" value="Browse Saved Page" />
-  <string key="PageElementProvider.ViewDraftToolTip" value="View recent changes" />
   <string key="PageElementProvider.DisplayLocalOrderingLabel" value="Show page local orderings" />
   <string key="PageElementProvider.DisplayLocalOrderingToolTip" value="Show page local orderings" />
   <string key="PageElementProvider.DisabledPage" value="Not yet approved or published" />
@@ -106,8 +102,6 @@
   <string key="ManageHostNames.Remove.FieldGroupLabel" value="Remove host name association from page" />
   <string key="ManageHostNames.Remove.MultiSelectorLabel" value="Host names to remove" />
   <string key="ManageHostNames.Remove.MultiSelectorHelp" value="The host names you select will no longer be associated with the page" />
-  <string key="Preview.PublishedPage.NotPublishedTitle" value="The selected page is not published" />
-  <string key="Preview.PublishedPage.NotPublishedMessage" value="The selected page is not published" />
   <string key="DeletePageWorkflow.MissingConfirmErrorMessage" value="Please confirm deletion of all sub pages" />
   <string key="DeletePageWorkflow.CascadeDeleteErrorTitle" value="Cascade delete error" />
   <string key="DeletePageWorkflow.CascadeDeleteErrorMessage" value="The page is referenced by another type that does not allow cascade deletes. This operation is halted" />
