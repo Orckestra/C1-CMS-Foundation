@@ -27,6 +27,7 @@ namespace Composite.Core.PackageSystem
         private readonly string _zipFilename;
         private readonly string _packageInstallDirectory;
         private readonly string _packageName;
+        private readonly string _packageVersion;
         private readonly Guid _packageId;
         private readonly string _originalPackageInstallDirectory;
         private readonly List<PackageFragmentValidationResult> _preInstallValidationResult;
@@ -89,6 +90,7 @@ namespace Composite.Core.PackageSystem
                     zipFilename, 
                     packageInstallDirectory, 
                     packageInformation.Name, 
+                    packageInformation.Version,
                     packageInformation.Id,
                     originalPackageInstallDirectory);
 
@@ -126,7 +128,8 @@ namespace Composite.Core.PackageSystem
             SystemLockingType systemLockingType, 
             string zipFilename, 
             string packageInstallDirectory, 
-            string packageName, 
+            string packageName,
+            string packageVersion, 
             Guid packageId,
             string originalPackageInstallDirectory)
         {
@@ -138,6 +141,7 @@ namespace Composite.Core.PackageSystem
             _zipFilename = zipFilename;
             _packageInstallDirectory = packageInstallDirectory;
             _packageName = packageName;
+            _packageVersion = packageVersion;
             _packageId = packageId;
             _originalPackageInstallDirectory = originalPackageInstallDirectory;
 
@@ -219,17 +223,15 @@ namespace Composite.Core.PackageSystem
             if (_validationResult.Count > 0) throw new InvalidOperationException("Installation did not validate");
             Verify.IsNull(_installationResult, "Install may only be called once");
 
-            Log.LogInformation(LogTitle, "Installing package: {0}, Id = {1}", _packageName, _packageId);
+            Log.LogInformation(LogTitle, "Installing package: {0}, Version: {1}, Id = {2}", _packageName, _packageVersion, _packageId);
 
             PackageFragmentValidationResult result = _packageInstaller.Install(_systemLockingType);
 
+            _installationResult = new List<PackageFragmentValidationResult>();
+
             if (result != null)
             {
-                _installationResult = new List<PackageFragmentValidationResult> { result };
-            }
-            else
-            {
-                _installationResult = new List<PackageFragmentValidationResult>();
+                _installationResult.Add(result);
             }
 
             _installationResult.AddRange(FinalizeProcess(true));

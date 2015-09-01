@@ -267,7 +267,8 @@ namespace Composite.Core.PackageSystem
                     packageInformation.SystemLockingType, 
                     zipFilename, 
                     packageInstallDirectory, 
-                    packageInformation.Name, 
+                    packageInformation.Name,
+                    packageInformation.Version,
                     packageInformation.Id,
                     originalInstallDirectory);
             }
