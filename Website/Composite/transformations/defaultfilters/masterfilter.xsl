@@ -68,7 +68,7 @@
     <xsl:attribute name="{name()}">
       <xsl:value-of select="." />
       <xsl:if test="not(starts-with(.,'/')) or starts-with(translate(.,'COMPSITE\','compsite/'), translate(concat($appVirtualPath, '/composite/'),'COMPSITE\','compsite/'))">
-        <xsl:if test="not(contains(.,'.aspx'))">
+        <xsl:if test="not(contains(.,'.aspx')) and not(contains(.,'styles.css')) and not(contains(.,'styles.min.css'))">
           <xsl:text>.aspx</xsl:text>
         </xsl:if>
         <xsl:if test="not(contains(.,'?'))">
