@@ -6,7 +6,7 @@ using System.ComponentModel;
 namespace Composite.Core.Application
 {
     /// <summary>
-    /// This is a OS sytem wide named semaphore.
+    /// This is a OS system wide named semaphore.
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
     internal class SystemGlobalSemaphore

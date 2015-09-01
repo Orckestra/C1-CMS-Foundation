@@ -332,7 +332,11 @@ namespace Composite.Core.WebClient
             }
 
             PerformanceCounterFacade.SystemStartupIncrement();
-            ApplicationStartupFacade.FireBeforeSystemInitialize();
+
+            using (GlobalInitializerFacade.GetPreInitHandlersScope())
+            {
+                ApplicationStartupFacade.FireBeforeSystemInitialize();
+            }
 
             TempDirectoryFacade.OnApplicationStart();
 

@@ -59,7 +59,7 @@ namespace Composite.C1Console.Security
             {
                 Log.LogCritical("HookingFacade", ex);
 
-                GlobalInitializerFacade.FatalResetTheSytem();
+                GlobalInitializerFacade.FatalResetTheSystem();
 
                 throw;
             }
@@ -81,7 +81,7 @@ namespace Composite.C1Console.Security
             {
                 Log.LogCritical("HookingFacade", ex);
 
-                GlobalInitializerFacade.FatalResetTheSytem();
+                GlobalInitializerFacade.FatalResetTheSystem();
 
                 throw;
             }
@@ -103,7 +103,7 @@ namespace Composite.C1Console.Security
             {
                 Log.LogCritical("HookingFacade", ex);
 
-                GlobalInitializerFacade.FatalResetTheSytem();
+                GlobalInitializerFacade.FatalResetTheSystem();
 
                 throw;
             }
@@ -133,7 +133,7 @@ namespace Composite.C1Console.Security
             {
                 Log.LogCritical("HookingFacade", ex);
 
-                GlobalInitializerFacade.FatalResetTheSytem();
+                GlobalInitializerFacade.FatalResetTheSystem();
 
                 throw;
             }
@@ -164,7 +164,7 @@ namespace Composite.C1Console.Security
             {
                 Log.LogCritical("HookingFacade", ex);
 
-                GlobalInitializerFacade.FatalResetTheSytem();
+                GlobalInitializerFacade.FatalResetTheSystem();
 
                 throw;
             }
