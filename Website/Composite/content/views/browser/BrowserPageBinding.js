@@ -40,6 +40,17 @@ function BrowserPageBinding() {
 	 */
     this._current = null;
 
+
+	/**
+	 * @type {string}
+	 */
+    this._targetUrl = null;
+
+	/**
+	 * @type {string}
+	 */
+    this._customUrl = null;
+
     /**
 	 * @type {boolean}
 	 */
@@ -261,8 +272,13 @@ BrowserPageBinding.prototype.push = function (node, isManual) {
 BrowserPageBinding.prototype.pushURL = function (url, isManual) {
     if (url && url != this._box.getLocation()) {
     	this._isPushingUrl = isManual;
-    	this.setURL(url);
-    	this._updateAddressBar(url);
+	    if (this._customUrl) {
+		    this._targetUrl = url;
+		    this.setCustomUrl(this._customUrl);
+	    } else {
+		    this.setURL(url);
+	    }
+	    this._updateAddressBar(url);
         this.bindingWindow.bindingMap.addressbar.showAddreesbar();
     }
 
@@ -310,10 +326,9 @@ BrowserPageBinding.prototype._newURL = function (url) {
  * @return
  */
 BrowserPageBinding.prototype.setURL = function (url) {
-
-    var cover = window.bindingMap.cover;
-    cover.show();
-    this._box.setURL(url);
+	var cover = window.bindingMap.cover;
+	cover.show();
+	this._box.setURL(url);
 }
 
 /**
@@ -692,23 +707,18 @@ BrowserPageBinding.prototype._handleCommand = function (cmd, binding) {
             var h = binding.getProperty("h");
             var touch = binding.getProperty("touch");
             var url = binding.getProperty("url");
-            this.setScreen(new Dimension(w, h), touch);
+            this._customUrl = url;
             if (url) {
-            	var customView = this._box.getCustomViewTabBinding();
-            	url = url.replace("{url}", this._box.getLocation());
-            	url = url.replace("{encodedurl}", encodeURIComponent(this._box.getLocation()));
-				//replace 2nd and next '?' to '&'
-            	url = url.replace(/(\?)(.+)/g, function (a, b, c) { return b + c.replace(/\?/g, "&") });
-            	customView.iframe.src = "about:blank";
-            	customView.iframe.onload = function () {
-            		customView.iframe.onload = null;
-	            	customView.iframe.src = url;
-	            };
-            	this._box.select(customView, true);
+	            this.setCustomUrl(url);
             } else {
-            	var browserView = this._box.getBrowserTabBinding();
+	            if (this._targetUrl) {
+	            	this.setURL(this._targetUrl);
+		            this._targetUrl = null;
+	            }
+	            var browserView = this._box.getBrowserTabBinding();
             	this._box.select(browserView, true);
-	        }
+            }
+            this.setScreen(new Dimension(w, h), touch);
 	        break;
 
         case DockTabPopupBinding.CMD_VIEWSOURCE: /* notice dependencies */
@@ -773,7 +783,9 @@ BrowserPageBinding.prototype._updateDocument = function () {
     var win = this.getContentWindow();
     var doc = this.getContentDocument();
 
-    DOMEvents.addEventListener(doc, DOMEvents.CONTEXTMENU, this);
+	//Do not add context menu to UI Pages
+	if(!UserInterface.getBinding(doc.body))
+		DOMEvents.addEventListener(doc, DOMEvents.CONTEXTMENU, this);
     DOMEvents.addEventListener(win, DOMEvents.UNLOAD, this);
 
     /*
@@ -948,6 +960,24 @@ BrowserPageBinding.prototype.loadDeviceList = function () {
  * Set client width for browser iframe
  * @param {int} width
  */
+BrowserPageBinding.prototype.setCustomUrl = function (url) {
+	var customView = this._box.getCustomViewTabBinding();
+	url = url.replace("{url}", this._targetUrl ? this._targetUrl : this._box.getLocation());
+	url = url.replace("{encodedurl}", encodeURIComponent(this._targetUrl ? this._targetUrl : this._box.getLocation()));
+	//replace 2nd and next '?' to '&'
+	url = url.replace(/(\?)(.+)/g, function (a, b, c) { return b + c.replace(/\?/g, "&") });
+	customView.iframe.src = "about:blank";
+	customView.iframe.onload = function () {
+		customView.iframe.onload = null;
+		customView.iframe.src = url;
+	};
+	this._box.select(customView, true);
+}
+
+/**
+ * Set client width for browser iframe
+ * @param {int} width
+ */
 BrowserPageBinding.prototype.setScreen = function (dim, touch) {
 
     var frameelement = this._box.getFrameElement();
@@ -1034,12 +1064,8 @@ BrowserPageBinding.prototype.getScrollbarWidth = function () {
  */
 BrowserPageBinding.prototype.getPerspectiveHandle = function () {
 
-    return this.systemViewDefinition.handle;
+	return this.systemViewDefinition.handle;
 }
-
-
-
-
 
 /**
  * Get system tree
@@ -1048,7 +1074,6 @@ BrowserPageBinding.prototype.getSystemTree = function () {
 
 	return this._viewBinding.getContentWindow().bindingMap.tree;
 }
-
 
 /**
  * Get system tree
