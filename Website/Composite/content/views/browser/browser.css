@@ -79,7 +79,7 @@ div#text {
     left: 50%;
     background: transparent;
     cursor: pointer;
-    cursor: url('/Composite/images/touch-cursor.png') 16 16, pointer;
+    cursor: url('/Composite/images/touch-cursor.png') 13 6, pointer;
     overflow: hidden;
 }
 
