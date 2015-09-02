@@ -1025,7 +1025,7 @@ BrowserPageBinding.prototype.setScreen = function (dim, touch) {
     frameOverlay.style.display = touch ? "block" : "none";
 
     if (touch) {
-        frameOverlay.style.marginLeft = - +(this.getScrollbarWidth()/2) + "px";
+        frameOverlay.style.marginLeft = "-" + (this.getScrollbarWidth()/2) + "px";
         frameOverlay.style.width = dim.w + "px";
         frameOverlay.style.height = dim.h + "px";
         frameOverlay.className = frameelement.className.indexOf('centeredXY') > 0 ? 'centeredXY' : 'centeredX';
