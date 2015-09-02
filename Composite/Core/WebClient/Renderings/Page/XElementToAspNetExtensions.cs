@@ -314,15 +314,6 @@ namespace Composite.Core.WebClient.Renderings.Page
             ExportChildNodes(headSource.Nodes().Where(f => ((f is XElement) == false || ((XElement)f).Name != Namespaces.Xhtml + "title" && ((XElement)f).Name != Namespaces.Xhtml + "meta")), headControl, controlMapper);
 
             headControl.RemoveDuplicates();
-
-            // needed to make asp.net pick up on most recent page descripotion set on Page.Header.Description. Also moves it up below title which is sweet.
-            var descriptionControl = headControl.Controls.OfType<HtmlMeta>().Where(f => f.Name == "description").FirstOrDefault();
-            if (descriptionControl != null)
-            {
-                headControl.Controls.Remove(descriptionControl);
-                int insertAt = Math.Min(headControl.Controls.Count, 1);
-                headControl.Controls.AddAt(insertAt, descriptionControl);
-            }
         }
 
 
@@ -352,7 +343,6 @@ namespace Composite.Core.WebClient.Renderings.Page
                     {
                         case "meta":
                             remove = remove || IsDuplicate(uniqueMetaNameValues, c.Attributes["name"]);
-                            remove = remove || IsDuplicate(uniqueMetaPropertyValues, c.Attributes["property"]);
                             break;
                         case "script":
                             remove = remove || IsDuplicate(uniqueScriptAttributes, c.AttributesAsString());
