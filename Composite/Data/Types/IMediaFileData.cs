@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.Practices.EnterpriseLibrary.Validation.Validators;
 
 
 namespace Composite.Data.Types
@@ -24,12 +25,14 @@ namespace Composite.Data.Types
         /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.String, 2048, IsNullable = false)]
         [ImmutableFieldId("{f832f793-be88-418e-b134-1a72558643d0}")]
+        [NotNullValidator]
         string FolderPath { get; set; }
 
 
         /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.String, 2048, IsNullable = false)]
         [ImmutableFieldId("{00e64f23-aec9-4527-b964-4accd4cef548}")]
+        [NotNullValidator]
         string FileName { get; set; }
 
 
@@ -67,14 +70,14 @@ namespace Composite.Data.Types
         /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.DateTime, IsNullable = true)]
         [ImmutableFieldId("{d9095572-6a08-4115-999a-b70a449c827e}")]
-        [DefaultFieldNowDateTimeValue()]
+        [DefaultFieldNowDateTimeValue]
         DateTime? CreationTime { get; set; }
 
 
         /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.DateTime, IsNullable = true)]
         [ImmutableFieldId("{d3b83ba0-35e0-4168-98a7-80cc4ebfc891}")]
-        [DefaultFieldNowDateTimeValue()]
+        [DefaultFieldNowDateTimeValue]
         DateTime? LastWriteTime { get; set; }
 	}
 }
