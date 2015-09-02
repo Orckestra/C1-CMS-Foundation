@@ -10,8 +10,6 @@
 	<control:httpheaders runat="server"/>
 	<head>
 		<title>Composite.Management.Blank</title>
-		<control:styleloader runat="server"/>
-		<control:scriptloader type="sub" runat="server" />
 		<script type="text/javascript">
 			window.isDefaultDocument = true;
 		</script>
