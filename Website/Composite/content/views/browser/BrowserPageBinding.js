@@ -3,9 +3,6 @@ BrowserPageBinding.prototype = new PageBinding;
 BrowserPageBinding.prototype.constructor = BrowserPageBinding;
 BrowserPageBinding.superclass = PageBinding.prototype;
 
-BrowserPageBinding.ICON_PUBLISHED = "${icon:page-view-public-scope}";
-BrowserPageBinding.ICON_UNPUBLISHED = "${icon:page-view-administrated-scope}";
-
 BrowserPageBinding.ACTION_ONLOAD = "browserpage loaded";
 BrowserPageBinding.ACTION_TABSHIFT = "browserpage tabshift";
 
@@ -559,14 +556,6 @@ BrowserPageBinding.prototype._updateAddressBar = function (url) {
  * @param {string} url
  */
 BrowserPageBinding.prototype._updateTabBox = function (url) {
-
-    /*
-	 * Compute label and image, 
-	 * update containing dock.
-	 */
-    this.label = this.getContentDocument().title;
-    this.image = (url.indexOf("dataScope=administrated") > 0 || url.indexOf("c1mode(unpublished)") > 0) ?
-			BrowserPageBinding.ICON_UNPUBLISHED : BrowserPageBinding.ICON_PUBLISHED;
 
     var tab = this._box.getSelectedTabBinding();
     tab.setLabel(this.label);

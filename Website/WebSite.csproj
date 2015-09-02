@@ -1001,8 +1001,6 @@
     <Content Include="Composite\images\icons\svg\page-template-root-closed.svg" />
     <Content Include="Composite\images\icons\svg\page-template-root-open.svg" />
     <Content Include="Composite\images\icons\svg\page-template-template.svg" />
-    <Content Include="Composite\images\icons\svg\page-view-administrated-scope.svg" />
-    <Content Include="Composite\images\icons\svg\page-view-public-scope.svg" />
     <Content Include="Composite\images\icons\svg\page.svg" />
     <Content Include="Composite\images\icons\svg\pagetype-add-metedatafield.svg" />
     <Content Include="Composite\images\icons\svg\pagetype-add-pagetype.svg" />
