@@ -105,7 +105,7 @@ namespace Composite.Core.WebClient
 
 
         /// <summary>
-        /// Determines whether currect request is administration console request. 
+        /// Determines whether the current request is administration console request. 
         /// (Requests to [/virtual path]/Composite/*)
         /// </summary>
         internal static bool IsAdminConsoleRequest(HttpContext httpContext)
@@ -116,7 +116,7 @@ namespace Composite.Core.WebClient
         }
 
         /// <summary>
-        /// Determines whether currect request is a renderer request. 
+        /// Determines whether the current request is a renderer request. 
         /// (Requests to [/virtual path]/Composite/*)
         /// </summary>
         internal static bool IsRendererRequest(HttpContext httpContext)
@@ -128,7 +128,7 @@ namespace Composite.Core.WebClient
         }
 
         /// <summary>
-        /// Determines whether currect request is administration console request. 
+        /// Determines whether the current request is administration console request. 
         /// (Requests to [/virtual path]/Composite/*)
         /// </summary>
         internal static bool IsAdminConsoleRequest(string requestPath)

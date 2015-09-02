@@ -205,26 +205,29 @@ namespace Composite.Core.WebClient
 
                 if (is404)
                 {
-                    string customPageNotFoundUrl = HostnameBindingsFacade.GetCustomPageNotFoundUrl();
+                    string rawUrl = httpContext.Request.RawUrl;
 
-                    if (!customPageNotFoundUrl.IsNullOrEmpty())
+                    if (!UrlUtils.IsAdminConsoleRequest(rawUrl))
                     {
-                        string rawUrl = httpContext.Request.RawUrl;
+                        string customPageNotFoundUrl = HostnameBindingsFacade.GetCustomPageNotFoundUrl();
 
-                        if (rawUrl == customPageNotFoundUrl)
+                        if (!customPageNotFoundUrl.IsNullOrEmpty())
                         {
-                            throw new HttpException(500, "'Page not found' url isn't handled. Url: '{0}'".FormatWith(rawUrl));
+                            if (rawUrl == customPageNotFoundUrl)
+                            {
+                                throw new HttpException(500, "'Page not found' url isn't handled. Url: '{0}'".FormatWith(rawUrl));
+                            }
+
+                            httpContext.Server.ClearError();
+                            httpContext.Response.Clear();
+
+                            httpContext.Response.Redirect(customPageNotFoundUrl, true);
+
+                            return;
                         }
 
-                        httpContext.Server.ClearError();
-                        httpContext.Response.Clear();
-
-                        httpContext.Response.Redirect(customPageNotFoundUrl, true);
-
-                        return;
+                        eventType = TraceEventType.Verbose;
                     }
-
-                    eventType = TraceEventType.Verbose;
                 }
 
                 // Logging request url

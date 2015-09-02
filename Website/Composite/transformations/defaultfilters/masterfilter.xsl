@@ -25,7 +25,7 @@
     </xsl:copy>
   </xsl:template>
 
-  <!-- supress nested documents head elements (see above) -->
+  <!-- suppress nested documents head elements (see above) -->
   <xsl:template match="/x:html/x:body//x:html">
     <xsl:apply-templates select="x:body/node()" />
   </xsl:template>
@@ -63,8 +63,22 @@
     </xsl:if>
   </xsl:template>
 
-  <!-- cache control scripts and stylesheets-->
-  <xsl:template match="x:script[(not(starts-with(@src,'/')) or contains(translate(@src,'COMPSITE\','compsite/'),'/composite/'))]/@src|x:link[@rel='stylesheet' and (not(starts-with(@href,'/')) or contains(translate(@href,'COMPSITE\','compsite/'),'/composite/')) ]/@href">
+  <!-- cache control scripts-->
+  <xsl:template match="x:script[(not(starts-with(@src,'/')) or contains(translate(@src,'COMPSITE\','compsite/'),'/composite/'))]/@src">
+    <xsl:attribute name="{name()}">
+      <xsl:value-of select="." />
+      <xsl:if test="not(starts-with(.,'/')) or starts-with(translate(.,'COMPSITE\','compsite/'), translate(concat($appVirtualPath, '/composite/'),'COMPSITE\','compsite/'))">
+        <xsl:if test="not(contains(.,'?'))">
+          <xsl:text>?c1=</xsl:text>
+        </xsl:if>
+        <xsl:value-of select="$version" />
+      </xsl:if>
+    </xsl:attribute>
+  </xsl:template>
+
+
+  <!-- cache control stylesheets-->
+  <xsl:template match="x:link[@rel='stylesheet' and (not(starts-with(@href,'/')) or contains(translate(@href,'COMPSITE\','compsite/'),'/composite/')) ]/@href">
     <xsl:attribute name="{name()}">
       <xsl:value-of select="." />
       <xsl:if test="not(starts-with(.,'/')) or starts-with(translate(.,'COMPSITE\','compsite/'), translate(concat($appVirtualPath, '/composite/'),'COMPSITE\','compsite/'))">

@@ -1404,7 +1404,6 @@
     <Compile Include="Core\WebClient\MediaUrlHelper.cs" />
     <Compile Include="Core\WebClient\PageUrlHelper.cs" />
     <Compile Include="Core\WebClient\Presentation\CssRequestHandler.cs" />
-    <Compile Include="Core\WebClient\Presentation\JsRequestHandler.cs" />
     <Compile Include="Core\WebClient\Presentation\OutputTransformationManager.cs" />
     <Compile Include="Core\WebClient\ScriptHandler.cs" />
     <Compile Include="Core\WebClient\Services\ConsoleMessageService\ActionTypeEnum.cs" />
