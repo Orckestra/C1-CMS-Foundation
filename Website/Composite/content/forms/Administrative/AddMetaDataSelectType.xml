@@ -5,7 +5,7 @@
     <cms:binding name="SelectedType" type="System.Type" />
   </cms:bindings>
   <cms:layout iconhandle="generated-type-add" label="${Composite.Management, AssociatedDataElementProviderHelper.AddMetaDataSelectType.LayoutLabel}">
-    <FieldGroup Label="${Composite.Management, AssociatedDataElementProviderHelper.AddMetaDataSelectType.FieldLabel}">
+    <FieldGroup>
       <KeySelector Label="${Composite.Management, AssociatedDataElementProviderHelper.AddMetaDataSelectType.SelectorLabel}" OptionsKeyField="Key" OptionsLabelField="Value" Help="${Composite.Management, AssociatedDataElementProviderHelper.AddMetaDataSelectType.SelectorHelp}">
         <KeySelector.Options>
           <cms:read source="Types" />

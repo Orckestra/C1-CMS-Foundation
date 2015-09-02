@@ -987,16 +987,14 @@ BrowserPageBinding.prototype.setScreen = function (dim, touch) {
     var frameelement = this._box.getFrameElement();
     var win = this._box.getBrowserWindow().bindingElement;
 
-    frameelement.style.overflowX = "hidden";
-    frameelement.style.overflowY = "scroll";
     frameelement.contentWindow.document.getElementsByTagName('body')[0].style.overflowX = "hidden";
 
     win.style.background = "#444";
 
-    if (dim.w && dim.h && dim.w < win.offsetWidth) {
-        frameelement.style.margin = "50px auto";
+    if (dim.w && dim.h && dim.h < win.offsetHeight) {
+        frameelement.className = "deviceframe centeredXY";
     } else {
-        frameelement.style.removeProperty("margin");
+        frameelement.className = 'deviceframe';
     }
     if (dim.w) {
        
@@ -1018,35 +1016,31 @@ BrowserPageBinding.prototype.setScreen = function (dim, touch) {
         win.style.removeProperty("overflow-y");
     }
     var frameOverlay = document.getElementById('deviceframeoverlay');
-    if (touch) {
-        if (!frameOverlay) {
-            frameOverlay = document.createElement('div');
-            frameOverlay.id = 'deviceframeoverlay';
-            win.appendChild(frameOverlay);
-            frameOverlay.onclick = function (e) {
-                frameOverlay.style.display = "none";
-                var framePosition = frameelement.getBoundingClientRect();
-                var el = frameelement.contentWindow.document.elementFromPoint(e.clientX - framePosition.left, e.clientY - framePosition.top);
-                if (el) {
-                    if (el.tagName && ["input", "textarea"].indexOf(el.tagName.toLowerCase()) > -1 && ["text", "textarea", "email", "password", "url", "radio", "checkbox"].indexOf(el.type.toLowerCase()) > -1) {
-                        el.focus();
-                    }
-                    el.click();
+    if (touch && !frameOverlay) {
+        frameOverlay = document.createElement('div');
+        frameOverlay.id = 'deviceframeoverlay';
+        win.appendChild(frameOverlay);
+        frameOverlay.onclick = function (e) {
+            frameOverlay.style.display = "none";
+            var framePosition = frameelement.getBoundingClientRect();
+            var el = frameelement.contentWindow.document.elementFromPoint(e.clientX - framePosition.left, e.clientY - framePosition.top);
+            if (el) {
+                if (el.tagName && ["input", "textarea"].indexOf(el.tagName.toLowerCase()) > -1 && ["text", "textarea", "email", "password", "url", "radio", "checkbox"].indexOf(el.type.toLowerCase()) > -1) {
+                    el.focus();
                 }
-                frameOverlay.style.display = "block";
-            };
-        }
-        frameOverlay.style.display = "block";
-        frameOverlay.style.marginLeft = "-" + ((dim.w + this.getScrollbarWidth()) / 2) + "px";
+                el.click();
+            }
+            frameOverlay.style.display = "block";
+        };
+    }
+    frameOverlay.style.display = touch ? "block" : "none";
+
+    if (touch) {
+        frameOverlay.style.marginLeft = - +(this.getScrollbarWidth()/2) + "px";
         frameOverlay.style.width = dim.w + "px";
         frameOverlay.style.height = dim.h + "px";
-
-    } else {
-        if (frameOverlay) {
-            frameOverlay.style.display = "none";
-        }
-    }
-
+        frameOverlay.className = frameelement.className.indexOf('centeredXY') > 0 ? 'centeredXY' : 'centeredX';
+    } 
 }
 
 
