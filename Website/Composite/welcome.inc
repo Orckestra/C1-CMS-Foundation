@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<script type="text/javascript" src="Welcome.js.aspx"/>
+		<script type="text/javascript" src="Welcome.js"/>
 		<link rel="stylesheet" type="text/css" href="welcome.css.aspx"/>
 	</head>
 	<body>
