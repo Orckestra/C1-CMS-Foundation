@@ -1,4 +1,5 @@
-﻿using Composite.Core.Routing.Foundation.PluginFacades;
+﻿using System.Web;
+using Composite.Core.Routing.Foundation.PluginFacades;
 using Composite.Core.Routing.Plugins.PageUrlsProviders;
 using Composite.Data.Types;
 
@@ -45,7 +46,11 @@ namespace Composite.Core.Routing
                 return UrlProvider.ParseUrl(absoluteUrl, out urlKind);
             }
 
-            return UrlProvider.ParseUrl(absoluteUrl, new UrlSpace(), out urlKind);
+            var context = HttpContext.Current;
+            string hostname = context != null ? context.Request.Url.Host : null;
+            var urlSpace = new UrlSpace(hostname, absoluteUrl);
+
+            return UrlProvider.ParseUrl(absoluteUrl, urlSpace, out urlKind);
         }
 
         /// <summary>
