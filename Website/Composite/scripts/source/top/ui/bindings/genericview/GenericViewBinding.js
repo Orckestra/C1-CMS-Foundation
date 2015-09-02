@@ -4,7 +4,7 @@ GenericViewBinding.superclass = TreeBinding.prototype;
 
 GenericViewBinding.CLASSNAME = "genericview";
 GenericViewBinding.CLASSNAME_SINGLE = "single";
-GenericViewBinding.CLASSNAME_ICONSIZE = "icons-s-150";
+GenericViewBinding.CLASSNAME_ICONSIZE = "icons-s-170";
 GenericViewBinding.CLASSNAME_SINGLE_ICONSIZE = "icons-s-400";
 GenericViewBinding.IMAGE_MAXWIDTH = 300;
 GenericViewBinding.IMAGE_MAXHEIGHT = 170;
