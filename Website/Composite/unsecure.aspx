@@ -21,7 +21,7 @@
     <link rel="stylesheet" type="text/css" href="unsecure.css.aspx" />
     <link rel="shortcut icon" type="image/x-icon" href="images/icons/branding/favicon16.ico" />
      <control:styleloader runat="server" />
-    <script type="text/javascript" src="unsecure.js.aspx"></script>
+    <script type="text/javascript" src="unsecure.js"></script>
 </head>
 <body>
     <div class="splash-cover">

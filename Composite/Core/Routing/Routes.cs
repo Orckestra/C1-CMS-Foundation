@@ -53,7 +53,6 @@ namespace Composite.Core.Routing
             // Ignoring routes that shouldn't be caught by 404 handler
             routes.Ignore("Renderers/{*pathInfo}");
             routes.Ignore("{*all_css_aspx}", new { all_css_aspx = @".*\.css.aspx(/.*)?" });
-            routes.Ignore("{*all_js_aspx}", new { all_js_aspx = @".*\.js.aspx(/.*)?" });
 
             routes.Add("c1 404 route", new PageNotFoundRoute());
         }

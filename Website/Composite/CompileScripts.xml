@@ -2,7 +2,7 @@
 <Scripts>
 	<Type name="sub">
 		<Mode name="operate">
-			<Script filename="${root}/scripts/compressed/sub.js.aspx"/>
+			<Script filename="${root}/scripts/compressed/sub.js"/>
 		</Mode>
 		<Mode name="develop">
 			<Script filename="${root}/scripts/source/page/updates/UpdateManager.js"/>
@@ -22,8 +22,8 @@
 	</Type>
 	<Type name="top">
 		<Mode name="operate">
-			<Script filename="${root}/scripts/compressed/toplevelclassnames.js.aspx"/>
-			<Script filename="${root}/scripts/compressed/top.js.aspx"/>
+			<Script filename="${root}/scripts/compressed/toplevelclassnames.js"/>
+			<Script filename="${root}/scripts/compressed/top.js"/>
 		</Mode>
 		<Mode name="develop">
 			<Script filename="${root}/scripts/source/top/interfaces/IAcceptable.js"/>
