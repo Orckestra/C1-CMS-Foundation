@@ -42,10 +42,9 @@
 		<ui:popup id="toolboxpopupgroup" />
 		<ui:popup id="toolboxpopup" position="bottom" />
 		<ui:popup id="moreactionspopup" position="bottom" />
-		<ui:popup id="screenpopup" position="bottom">
+		<ui:popup id="devicepopup" position="bottom">
 			<ui:menubody>
-				<ui:menugroup id="screenpopupgroup">
-				</ui:menugroup>
+
 			</ui:menubody>
 		</ui:popup>
 	</ui:popupset>
@@ -70,7 +69,7 @@
 				</ui:toolbargroup>
 				<ui:toolbargroup id="addressrightgroup">
 					<ui:toolbarbutton id="go" image="${icon:input}" image-disabled="${icon:input-disabled}" isdisabled="true" tooltip="${string:Composite.Web.PageBrowser:ToolBarButton.Go.ToolTip}" />
-					<ui:toolbarbutton id="setscreenbutton" image="${icon:browsedevicetype}" popup="screenpopup"  observes="broadcasterBrowserView" />
+					<ui:toolbarbutton id="setscreenbutton" image="${icon:browsedevicetype}" popup="devicepopup"  observes="broadcasterBrowserView" />
 					<ui:toolbarbutton cmd="viewsource" tooltip="${string:Composite.Web.PageBrowser:Menu.ViewSource}" image="${icon:editor-sourceview}"  observes="broadcasterBrowserView" />
 					<ui:toolbarbutton cmd="seoassistant" image="${icon:seoassistant}"  observes="broadcasterBrowserView" />
 				</ui:toolbargroup>

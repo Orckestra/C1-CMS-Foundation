@@ -54,13 +54,6 @@ BrowserTabBoxBinding.prototype.setURL = function ( url ) {
 }
 
 /**
- * obsolute
- * Show URL.
- * @param @optional {string} url
- */
-BrowserTabBoxBinding.prototype.newURL = BrowserTabBoxBinding.prototype.setURL;
-
-/**
  * Get BrowserTabBinding
  * @param {string} url.
  */
