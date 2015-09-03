@@ -26,7 +26,7 @@ function Uri(url) {
 
 	this.path = url.replace(/\?.*/g, "");
 
-    this.isInternalUrl = url.startsWith("~/");
+	this.isInternalUrl = url.indexOf("~/") === 0;
 
 	return this;
 }
