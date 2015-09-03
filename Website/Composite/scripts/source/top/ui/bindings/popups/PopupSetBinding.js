@@ -33,6 +33,18 @@ PopupSetBinding.prototype.toString = function () {
 	return "[PopupSetBinding]";
 }
 
+/** 
+* @overloads {Binding#onBindintAttach}
+*/
+PopupSetBinding.prototype.onBindingAttach = function () {
+
+	PopupSetBinding.superclass.onBindingAttach.call(this);
+
+	if (this.bindingElement.parentNode.nodeName.toLowerCase() !== "body") {
+		this.bindingDocument.body.appendChild(this.bindingElement);
+	}
+}
+
 /**
  * PopupSetBinding factory.
  * @param {DOMDocument} ownerDocument
