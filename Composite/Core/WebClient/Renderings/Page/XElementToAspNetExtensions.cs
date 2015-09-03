@@ -386,12 +386,12 @@ namespace Composite.Core.WebClient.Renderings.Page
         {
             if (!string.IsNullOrEmpty(uniqueString))
             {
-                if (uniqueList.Contains(uniqueString))
+                if (uniqueList.Contains(uniqueString.ToLowerInvariant()))
                 {
                     return true;
                 }
 
-                uniqueList.Add(uniqueString);
+                uniqueList.Add(uniqueString.ToLowerInvariant());
             }
 
             return false;

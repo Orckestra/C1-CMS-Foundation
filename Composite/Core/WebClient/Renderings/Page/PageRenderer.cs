@@ -584,8 +584,9 @@ namespace Composite.Core.WebClient.Renderings.Page
                     XhtmlDocument nestedXhtml = new XhtmlDocument(nestedDocument);
 
                     rootDocument.Root.Add(nestedXhtml.Root.Attributes().Except(rootDocument.Root.Attributes(), _nameBasedAttributeComparer));
-                    rootDocument.Head.AddFirst(nestedXhtml.Head.Elements().Where(f=>f.Name.LocalName=="meta"));
-                    rootDocument.Head.Add(nestedXhtml.Head.Nodes().Where(f => !(f is XElement) || ((XElement)f).Name.LocalName != "meta"));
+                    // making <meta property="..." /> from nested documents appear first. We will not filter them later and this ensure desired precedence 
+                    rootDocument.Head.AddFirst(nestedXhtml.Head.Elements().Where(f=>f.Name.LocalName=="meta" && f.Attribute("property")!=null));
+                    rootDocument.Head.Add(nestedXhtml.Head.Nodes().Where(f => !(f is XElement) || !(((XElement)f).Name.LocalName == "meta" && ((XElement)f).Attribute("property") != null)));
                     rootDocument.Head.Add(nestedXhtml.Head.Attributes().Except(rootDocument.Head.Attributes(), _nameBasedAttributeComparer));
                     rootDocument.Body.Add(nestedXhtml.Body.Attributes().Except(rootDocument.Body.Attributes(), _nameBasedAttributeComparer));
 
