@@ -89,7 +89,7 @@ UrlInputDialogBinding.prototype.buildButtonAndLabel = function () {
 
 		var button = ToolBarButtonBinding.newInstance(this.bindingDocument);
 		button.setImage("${icon:editor-sourceview}");
-		button.bindingElement.style.left = "1px";
+		button.bindingElement.style.left = "3px";
 		button.bindingElement.style.width = "29px";
 		this.addFirst(button);
 		button.attach();

@@ -271,16 +271,9 @@ ui|editortextbox {
     }
 
     &.disabled, &.readonly {
-        ui|box {
+
+        ui|box, ui|box input, ui|toolbarbutton {
             background-color: @field-readonly-bg-color;
-
-            input {
-                background-color: @field-readonly-bg-color;
-            }
-        }
-
-        ui|toolbarbutton {
-            background: transparent;
         }
     }
 
