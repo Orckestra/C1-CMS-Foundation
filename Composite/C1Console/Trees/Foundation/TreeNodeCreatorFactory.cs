@@ -15,7 +15,7 @@ namespace Composite.C1Console.Trees.Foundation
     {
         private static readonly string DefaultFolderResourceName = "folder";
         private static readonly string DefaultOpenedFolderResourceName = "folder-open";
-        private static readonly string DefaultDataGroupingFolderResourceName = "folder-disabled";
+        private static readonly string DefaultDataGroupingFolderResourceName = "folder";
 
         
         public static TreeNode CreateTreeNode(XElement element, Tree tree)
@@ -83,7 +83,7 @@ namespace Composite.C1Console.Trees.Foundation
             bool firstLetterOnly = false;
             if (firstLetterOnlyAttribute != null)
             {
-                if (firstLetterOnlyAttribute.TryGetBoolValue(out firstLetterOnly) == false)
+                if (!firstLetterOnlyAttribute.TryGetBoolValue(out firstLetterOnly))
                 {
                     tree.AddValidationError(element, "TreeValidationError.Common.WrongAttributeValue", "FirstLetterOnly");
                 }
@@ -157,10 +157,10 @@ namespace Composite.C1Console.Trees.Foundation
             if (iconAttribute != null) icon = FactoryHelper.GetIcon(iconAttribute.Value);
 
             ResourceHandle openedIcon = null;
-            if ((icon != null) && (openedIconAttribute == null)) openedIcon = icon;
+            if (icon != null && openedIconAttribute == null) openedIcon = icon;
             else if (openedIconAttribute != null) openedIcon = FactoryHelper.GetIcon(openedIconAttribute.Value);
 
-            DataElementsTreeNode dataElementsTreeNode = new DataElementsTreeNode
+            var dataElementsTreeNode = new DataElementsTreeNode
                 {
                     Tree = tree,
                     Id = tree.BuildProcessContext.CreateNewNodeId(),
@@ -236,7 +236,7 @@ namespace Composite.C1Console.Trees.Foundation
                 return null;
             }
 
-            if ((idAttribute.Value == "") || (idAttribute.Value == "RootTreeNode") || (idAttribute.Value.StartsWith("NodeAutoId_")))
+            if (idAttribute.Value == "" || idAttribute.Value == "RootTreeNode" || idAttribute.Value.StartsWith("NodeAutoId_"))
             {
                 tree.AddValidationError(idAttribute, "TreeValidationError.SimpleElement.WrongIdValue");
             }
@@ -259,7 +259,7 @@ namespace Composite.C1Console.Trees.Foundation
             ResourceHandle icon = FactoryHelper.GetIcon(iconAttribute.GetValueOrDefault(DefaultFolderResourceName));
             ResourceHandle openedIcon =
                 FactoryHelper.GetIcon(openedIconAttribute.GetValueOrDefault(DefaultOpenedFolderResourceName));
-            if ((iconAttribute != null) && (openedIconAttribute == null))
+            if (iconAttribute != null && openedIconAttribute == null)
             {
                 openedIcon = icon;
             }

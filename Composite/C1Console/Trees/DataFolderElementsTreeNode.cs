@@ -30,13 +30,13 @@ namespace Composite.C1Console.Trees
         private readonly MethodInfo ToUpperCompareMethodInfo = typeof(string).GetMethods().First(f => f.Name == "ToUpper");
 
         /// <exclude />
-        public Type InterfaceType { get; internal set; }            // Requried
+        public Type InterfaceType { get; internal set; }            // Required
 
         /// <exclude />
         public ResourceHandle Icon { get; internal set; }           // Defaults to 'folder-disabled'
 
         /// <exclude />
-        public string FieldName { get; internal set; }              // Requried
+        public string FieldName { get; internal set; }              // Required
 
         /// <exclude />
         public string DateFormat { get; internal set; }             // Optional
@@ -87,7 +87,7 @@ namespace Composite.C1Console.Trees
         {
             IEnumerable<object> labels;
 
-            if (!this.LocalizationEndabled)
+            if (!this.LocalizationEnabled)
             {
                 labels = GetObjects(dynamicContext, true);
             }
@@ -232,7 +232,7 @@ namespace Composite.C1Console.Trees
 
             IEnumerable<object> objects;
 
-            if (!this.LocalizationEndabled)
+            if (!this.LocalizationEnabled)
             {
                 objects = GetObjects(dynamicContext);
             }
@@ -329,7 +329,7 @@ namespace Composite.C1Console.Trees
             }
             else
             {
-                if (!this.LocalizationEndabled)
+                if (!this.LocalizationEnabled)
                 {
                     indexes = GetObjects<int>(dynamicContext);
                 }
@@ -402,27 +402,30 @@ namespace Composite.C1Console.Trees
 
         private Element CreateElement(EntityToken parentEntityToken, Type referenceType, object referenceValue, TreeNodeDynamicContext dynamicContext, string label, Action<TreeDataFieldGroupingElementEntityToken> entityTokenAction)
         {
-            TreeDataFieldGroupingElementEntityToken entityToken = new TreeDataFieldGroupingElementEntityToken(this.Id.ToString(), this.Tree.TreeId, this.SerializedInterfaceType);
-            entityToken.GroupingValues = new Dictionary<string, object>(dynamicContext.FieldGroupingValues);
-            entityToken.FolderRangeValues = new Dictionary<string, int>(dynamicContext.FieldFolderRangeValues);
-            entityToken.ChildGeneratingDataElementsReferenceType = referenceType;
-            entityToken.ChildGeneratingDataElementsReferenceValue = referenceValue;
+            var entityToken = new TreeDataFieldGroupingElementEntityToken(this.Id.ToString(), this.Tree.TreeId, this.SerializedInterfaceType)
+            {
+                GroupingValues = new Dictionary<string, object>(dynamicContext.FieldGroupingValues),
+                FolderRangeValues = new Dictionary<string, int>(dynamicContext.FieldFolderRangeValues),
+                ChildGeneratingDataElementsReferenceType = referenceType,
+                ChildGeneratingDataElementsReferenceValue = referenceValue
+            };
 
             entityTokenAction(entityToken);
 
-            Element element = new Element(new ElementHandle(
+            var element = new Element(new ElementHandle(
                 dynamicContext.ElementProviderName,
                 entityToken,
                 dynamicContext.Piggybag.PreparePiggybag(this.ParentNode, parentEntityToken)
-            ));
-
-            element.VisualData = new ElementVisualizedData
+            ))
             {
-                Label = label,
-                ToolTip = label,
-                HasChildren = true,
-                Icon = this.Icon,
-                OpenedIcon = this.Icon
+                VisualData = new ElementVisualizedData
+                {
+                    Label = label,
+                    ToolTip = label,
+                    HasChildren = true,
+                    Icon = this.Icon,
+                    OpenedIcon = this.Icon
+                }
             };
 
             element.ElementExternalActionAdding = element.ElementExternalActionAdding.Remove(ElementExternalActionAdding.AllowManageUserPermissions);
@@ -443,7 +446,7 @@ namespace Composite.C1Console.Trees
             
             if (this.PropertyInfo.PropertyType == typeof(DateTime))
             {
-                List<Expression> parameters = new List<Expression>();
+                var parameters = new List<Expression>();
                 if (this.DateTimeFormater.HasYear) parameters.Add(Expression.Property(fieldExpression, DateTimeFormater.DateTime_Year));
                 if (this.DateTimeFormater.HasMonth) parameters.Add(Expression.Property(fieldExpression, DateTimeFormater.DateTime_Month));
                 if (this.DateTimeFormater.HasDay) parameters.Add(Expression.Property(fieldExpression, DateTimeFormater.DateTime_Day));
@@ -618,19 +621,17 @@ namespace Composite.C1Console.Trees
 
         internal override Expression CreateFilterExpression(ParameterExpression parameterExpression, TreeNodeDynamicContext dynamicContext, IList<int> filtersToSkip = null)
         {
-            DataEntityToken dataEntityToken = dynamicContext.CurrentEntityToken as DataEntityToken;
-            TreeSimpleElementEntityToken treeSimpleElementEntityToken = dynamicContext.CurrentEntityToken as TreeSimpleElementEntityToken;
+            var dataEntityToken = dynamicContext.CurrentEntityToken as DataEntityToken;
+            var treeSimpleElementEntityToken = dynamicContext.CurrentEntityToken as TreeSimpleElementEntityToken;
 
             Expression fieldExpression = ExpressionHelper.CreatePropertyExpression(this.InterfaceType, this.PropertyInfo.DeclaringType, this.FieldName, parameterExpression);
 
             object value;
 
-            Func<Expression> resultFilterExpressionFactory = () =>
-                {
-                    return this.UseChildGeneratingFilterExpression
-                               ? this.ChildGeneratingDataElementsTreeNode.CreateFilterExpression(parameterExpression, dynamicContext)
-                               : null;
-            };
+            Func<Expression> resultFilterExpressionFactory = () => 
+                this.UseChildGeneratingFilterExpression
+                ? this.ChildGeneratingDataElementsTreeNode.CreateFilterExpression(parameterExpression, dynamicContext)
+                : null;
 
 
             if (this.FolderRanges == null)
@@ -649,7 +650,7 @@ namespace Composite.C1Console.Trees
                 else if (treeSimpleElementEntityToken != null 
                          && treeSimpleElementEntityToken.ParentEntityToken is DataEntityToken)
                 {
-                    DataEntityToken parentDataEntityToken = treeSimpleElementEntityToken.ParentEntityToken as DataEntityToken;
+                    var parentDataEntityToken = treeSimpleElementEntityToken.ParentEntityToken as DataEntityToken;
 
                     if (CreateFilterExpression_GetValueFromDataEntityToken(parentDataEntityToken, out value) == false)
                     {
@@ -658,21 +659,21 @@ namespace Composite.C1Console.Trees
                 }
                 else if (dynamicContext.Direction == TreeNodeDynamicContextDirection.Down)
                 {
-                    // We shall not create filter for our self when undfolding 
+                    // We shall not create filter for our self when unfolding 
 
                     return resultFilterExpressionFactory();
                 }
                 else if (dynamicContext.Direction == TreeNodeDynamicContextDirection.Up)
                 {
                     // At this point we are going upwards, building the filter and one or 
-                    // more of the parent elements has not been oppened, so we are not able to 
+                    // more of the parent elements has not been opened, so we are not able to 
                     // create a filter. 
                     // This will happen if a parent filter is below us
                     return null;
                 }
                 else
                 {
-                    // This will only happen if we are searcning up and are given another entity token that
+                    // This will only happen if we are searching up and are given another entity token that
                     // TreeDataFieldGroupingElementEntityToken and DataEntityToken or TreeSimpleElementEntityToken 
                     throw new NotImplementedException(string.Format("Unsupported child entity token type '{0}'", dynamicContext.CurrentEntityToken.GetType()));
                 }
@@ -702,20 +703,20 @@ namespace Composite.C1Console.Trees
                 }
                 else if (dynamicContext.Direction == TreeNodeDynamicContextDirection.Down)
                 {
-                    // We shall not create filter for our self when undfolding 
+                    // We shall not create filter for our self when unfolding 
                     return resultFilterExpressionFactory();
                 }
                 else if (dynamicContext.Direction == TreeNodeDynamicContextDirection.Up)
                 {
                     // At this point we are going upwards, building the filter and one or 
-                    // more of the parent elements has not been oppened, so we are not able to 
+                    // more of the parent elements has not been opened, so we are not able to 
                     // create a filter. 
                     // This will happen if a parent filter is below us
                     return null;
                 }
                 else
                 {
-                    // This will only happen if we are searcning up and are given another entity token that
+                    // This will only happen if we are searching up and are given another entity token that
                     // TreeDataFieldGroupingElementEntityToken and DataEntityToken or TreeSimpleElementEntityToken 
                     throw new NotImplementedException(string.Format("Unsupported child entity token type '{0}'", dynamicContext.CurrentEntityToken.GetType()));
                 }
@@ -756,7 +757,7 @@ namespace Composite.C1Console.Trees
         {
             if (dataEntityToken.InterfaceType != this.InterfaceType)
             {
-                // If we dont have the grouping/folerrange value from entity token and dont have the 
+                // If we don't have the grouping/folderrange value from entity token and don't have the 
                 // right data item to get the value, we are not able to create a filter.
                 value = null;
                 return false;
@@ -776,7 +777,7 @@ namespace Composite.C1Console.Trees
         {
             if (dataEntityToken.InterfaceType != this.InterfaceType)
             {
-                // If we dont have the foler range value from entity token and dont have the 
+                // If we don't have the foler range value from entity token and don't have the 
                 // right data item to get the value, we are not able to create a filter.
                 value = null;
                 return false;
@@ -798,7 +799,7 @@ namespace Composite.C1Console.Trees
 
         private Expression CreateSimpleFilterExpression(object value, Expression fieldExpression)
         {
-            if ((this.PropertyInfo.PropertyType != typeof(DateTime)) && (this.PropertyInfo.PropertyType != typeof(DateTime?)))
+            if (this.PropertyInfo.PropertyType != typeof(DateTime) && this.PropertyInfo.PropertyType != typeof(DateTime?))
             {
                 Expression expression = Expression.Equal(fieldExpression, Expression.Constant(value, this.PropertyInfo.PropertyType));
 
@@ -917,7 +918,7 @@ namespace Composite.C1Console.Trees
         /// <exclude />
         protected override void OnInitialize()
         {
-            DataFolderElementsTreeNode parentNode = this.ParentNode as DataFolderElementsTreeNode;
+            var parentNode = this.ParentNode as DataFolderElementsTreeNode;
 
             if (this.InterfaceType == null)
             {
@@ -931,13 +932,13 @@ namespace Composite.C1Console.Trees
             }
             else
             {
-                if (typeof(IData).IsAssignableFrom(this.InterfaceType) == false)
+                if (!typeof(IData).IsAssignableFrom(this.InterfaceType))
                 {
                     AddValidationError("TreeValidationError.Common.NotImplementingIData", this.InterfaceType, typeof(IData));
                     return;
                 }
 
-                if ((parentNode != null) && (parentNode.InterfaceType != this.InterfaceType))
+                if (parentNode != null && parentNode.InterfaceType != this.InterfaceType)
                 {
                     AddValidationError("TreeValidationError.DataFolderElements.WrongInterfaceType", this.InterfaceType, parentNode.InterfaceType);
                     return;
@@ -954,12 +955,12 @@ namespace Composite.C1Console.Trees
 
 
             
-            if ((this.DateFormat != null) && (this.PropertyInfo.PropertyType != typeof(DateTime)))
+            if (this.DateFormat != null && this.PropertyInfo.PropertyType != typeof(DateTime))
             {
                 AddValidationError("TreeValidationError.DataFolderElements.DateFormetNotAllowed", this.FieldName, typeof(DateTime), this.PropertyInfo.PropertyType);
             }
 
-            if ((this.PropertyInfo.PropertyType == typeof(DateTime)) && (this.DateFormat == null))
+            if (this.PropertyInfo.PropertyType == typeof(DateTime) && this.DateFormat == null)
             {
                 AddValidationError("TreeValidationError.DataFolderElements.DateFormetIsMissing", this.FieldName);
                 return;
@@ -969,7 +970,7 @@ namespace Composite.C1Console.Trees
             this.DateTimeFormater = new DateTimeFormater(this.DateFormat);
 
 
-            if ((string.IsNullOrEmpty(this.Range) == false) && this.FirstLetterOnly)
+            if (!string.IsNullOrEmpty(this.Range) && this.FirstLetterOnly)
             {
                 AddValidationError("TreeValidationError.DataFolderElements.RangesAndFirstLetterOnlyNotAllowed");
             }
@@ -979,7 +980,7 @@ namespace Composite.C1Console.Trees
                 AddValidationError("TreeValidationError.DataFolderElements.WrongFirstLetterOnlyPropertyType", this.FieldName, typeof(string), this.PropertyInfo.PropertyType);
             }
 
-            if (string.IsNullOrEmpty(this.Range) == false)
+            if (!string.IsNullOrEmpty(this.Range))
             {
                 this.FolderRanges = FolderRangesCreator.Create(this, this.Range, this.FieldName, this.PropertyInfo.PropertyType);
             }
@@ -992,11 +993,14 @@ namespace Composite.C1Console.Trees
             this.SerializedInterfaceType = TypeManager.SerializeType(this.InterfaceType);
 
 
-            List<string> usedPropertyNames = new List<string>();
+            
             this.AllGroupingNodes = new List<DataFolderElementsTreeNode>();
-            List<Type> fieldTypes = new List<Type>();
+
+            var usedPropertyNames = new List<string>();
+            var fieldTypes = new List<Type>();
             DataFolderElementsTreeNode treeNode = this;
             int dataFolderElementCount = 0;
+
             while (treeNode != null)
             {
                 dataFolderElementCount++;
@@ -1081,7 +1085,7 @@ namespace Composite.C1Console.Trees
 
 
 
-        private bool LocalizationEndabled
+        private bool LocalizationEnabled
         {
             get
             {
@@ -1117,12 +1121,12 @@ namespace Composite.C1Console.Trees
                     throw new NotImplementedException();
             }
         }
-        private static Type TupleType1 = typeof(Tuple<>);
-        private static Type TupleType2 = typeof(Tuple<,>);
-        private static Type TupleType3 = typeof(Tuple<,,>);
-        private static Type TupleType4 = typeof(Tuple<,,,>);
-        private static Type TupleType5 = typeof(Tuple<,,,,>);
-        private static Type TupleType6 = typeof(Tuple<,,,,,>);
+        private static readonly Type TupleType1 = typeof(Tuple<>);
+        private static readonly Type TupleType2 = typeof(Tuple<,>);
+        private static readonly Type TupleType3 = typeof(Tuple<,,>);
+        private static readonly Type TupleType4 = typeof(Tuple<,,,>);
+        private static readonly Type TupleType5 = typeof(Tuple<,,,,>);
+        private static readonly Type TupleType6 = typeof(Tuple<,,,,,>);
 
 
 
