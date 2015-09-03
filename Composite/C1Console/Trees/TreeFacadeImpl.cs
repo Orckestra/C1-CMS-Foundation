@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading;
-using System.Transactions;
 using System.Web.Hosting;
 using System.Xml;
 using System.Xml.Linq;
@@ -23,7 +22,6 @@ using Composite.Core.Configuration;
 using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Core.Linq;
-using Composite.Core.Logging;
 using Composite.Core.ResourceSystem;
 using Composite.Core.Threading;
 using Composite.Core.Types;
@@ -41,6 +39,8 @@ namespace Composite.C1Console.Trees
     [FlushAttribute("ReloadAllTrees")]
     internal sealed class TreeFacadeImpl : ITreeFacade
     {
+        private static readonly string LogTitle = "TreeFacade";
+
         private const string XslFilename = "Tree.xsl";
 
         private static readonly ResourceLocker<Resources> _resourceLocker = new ResourceLocker<Resources>(new Resources(), Resources.Initialize, false);
@@ -59,7 +59,7 @@ namespace Composite.C1Console.Trees
 
                     GeneratedTypesFacade.SubscribeToUpdateTypeEvent(OnDataTypeChanged);
 
-                    TreeAuxiliaryAncestorProvider treeAuxiliaryAncestorProvider = new C1Console.Trees.TreeAuxiliaryAncestorProvider();
+                    var treeAuxiliaryAncestorProvider = new C1Console.Trees.TreeAuxiliaryAncestorProvider();
                     AuxiliarySecurityAncestorFacade.AddAuxiliaryAncestorProvider<TreeSimpleElementEntityToken>(treeAuxiliaryAncestorProvider, true);
                     AuxiliarySecurityAncestorFacade.AddAuxiliaryAncestorProvider<TreeFunctionElementGeneratorEntityToken>(treeAuxiliaryAncestorProvider, true);
                     AuxiliarySecurityAncestorFacade.AddAuxiliaryAncestorProvider<TreeDataFieldGroupingElementEntityToken>(treeAuxiliaryAncestorProvider, true);
@@ -72,12 +72,15 @@ namespace Composite.C1Console.Trees
                     InitializeTreeAttachmentPoints();
                     TreeSharedRootsFacade.Clear();
 
-                    _resourceLocker.Resources.FileSystemWatcher = new C1FileSystemWatcher(TreeDefinitionsFolder, "*.xml");
-                    _resourceLocker.Resources.FileSystemWatcher.Created += OnReloadTrees;
-                    _resourceLocker.Resources.FileSystemWatcher.Deleted += OnReloadTrees;
-                    _resourceLocker.Resources.FileSystemWatcher.Changed += OnReloadTrees;
-                    _resourceLocker.Resources.FileSystemWatcher.Renamed += OnReloadTrees;
-                    _resourceLocker.Resources.FileSystemWatcher.EnableRaisingEvents = true;
+                    var fileWatcher = new C1FileSystemWatcher(TreeDefinitionsFolder, "*.xml");
+                    fileWatcher.Created += OnReloadTrees;
+                    fileWatcher.Deleted += OnReloadTrees;
+                    fileWatcher.Changed += OnReloadTrees;
+                    fileWatcher.Renamed += OnReloadTrees;
+                    fileWatcher.EnableRaisingEvents = true;
+
+                    _resourceLocker.Resources.FileSystemWatcher = fileWatcher;
+
 
                     _resourceLocker.Resources.RootEntityToken = ElementFacade.GetRootsWithNoSecurity().First().ElementHandle.EntityToken;
                 }
@@ -148,7 +151,7 @@ namespace Composite.C1Console.Trees
             Tree tree = GetTree(treeId);
             if (tree == null) return new Element[] { };
 
-            TreeNodeDynamicContext dynamicContext = new TreeNodeDynamicContext(TreeNodeDynamicContextDirection.Down)
+            var dynamicContext = new TreeNodeDynamicContext(TreeNodeDynamicContextDirection.Down)
             {
                 Piggybag = piggybag,
                 CurrentEntityToken = parentEntityToken,
@@ -171,10 +174,10 @@ namespace Composite.C1Console.Trees
             {
                 try
                 {
-                    XDocument newDocument = new XDocument();
+                    var newDocument = new XDocument();
                     using (XmlWriter xmlWriter = newDocument.CreateWriter())
                     {
-                        XslCompiledTransform xslTransform = new XslCompiledTransform();
+                        var xslTransform = new XslCompiledTransform();
 
                         xslTransform.LoadFromPath(xslFilename);
 
@@ -185,7 +188,7 @@ namespace Composite.C1Console.Trees
                 }
                 catch (Exception ex)
                 {
-                    Log.LogCritical("TreeFacade", string.Format("Failed to apply xslt on the tree {0} with the following exception", treeId));
+                    Log.LogCritical("TreeFacade", "Failed to apply xslt on the tree {0} with the following exception", treeId);
                     Log.LogCritical("TreeFacade", ex);
                 }
             }
@@ -243,7 +246,7 @@ namespace Composite.C1Console.Trees
             {
                 _resourceLocker.Resources.Trees = new Dictionary<string, Tree>();
 
-                Log.LogVerbose("TreeFacade", string.Format("Loading all tree definitions from {0}", TreeDefinitionsFolder));
+                Log.LogVerbose(LogTitle, "Loading all tree definitions from {0}", TreeDefinitionsFolder);
 
                 foreach (string filename in C1Directory.GetFiles(TreeDefinitionsFolder, "*.xml"))
                 {
@@ -251,7 +254,7 @@ namespace Composite.C1Console.Trees
 
                     try
                     {
-                        LoggingService.LogVerbose("TreeFacade", "Loading tree from file: " + filename);
+                        Log.LogVerbose(LogTitle, "Loading tree from file: " + filename);
 
                         int t1 = Environment.TickCount;
 
@@ -259,8 +262,9 @@ namespace Composite.C1Console.Trees
 
                         if (tree.BuildResult.ValidationErrors.Any())
                         {
-                            StringBuilder sb = new StringBuilder();
-                            Log.LogError("TreeFacade", string.Format("Tree {0} was not loaded due to the following validation errors", treeId));
+                            Log.LogError(LogTitle, "Tree {0} was not loaded due to the following validation errors", treeId);
+
+                            var sb = new StringBuilder();
                             foreach (ValidationError validationError in tree.BuildResult.ValidationErrors)
                             {
                                 sb.AppendLine(string.Format("{0} at {1}", validationError.Message, validationError.XPath));
@@ -303,9 +307,12 @@ namespace Composite.C1Console.Trees
 
         private Tree CreateErrorTree(string treeId, string errorMessage)
         {
-            Tree tree = new Tree("ERRORTREE:" + treeId);
-            tree.BuildProcessContext = new BuildProcessContext();
-            tree.BuildResult = new BuildResult();
+            var tree = new Tree("ERRORTREE:" + treeId)
+            {
+                BuildProcessContext = new BuildProcessContext(),
+                BuildResult = new BuildResult()
+            };
+
             tree.AttachmentPoints.Add(
                 new EntityTokenAttachmentPoint
                 {
@@ -320,7 +327,7 @@ namespace Composite.C1Console.Trees
                 Tree = tree
             };
 
-            SimpleElementTreeNode simpleElementTreeNode = new SimpleElementTreeNode()
+            var simpleElementTreeNode = new SimpleElementTreeNode()
             {
                 Label = StringResourceSystemFacade.GetString("Composite.C1Console.Trees", "KeyFacade.ErrorTreeNode.Label"),
                 Id = "ERROR",
@@ -329,7 +336,7 @@ namespace Composite.C1Console.Trees
                 Tree = tree
             };
 
-            MessageBoxActionNode messageBoxActionNode = new MessageBoxActionNode
+            var messageBoxActionNode = new MessageBoxActionNode
             {
                 Id = 1,
                 OwnerNode = simpleElementTreeNode,
@@ -385,7 +392,7 @@ namespace Composite.C1Console.Trees
 
                 using (_resourceLocker.ReadLocker)
                 {
-                    RefreshTreeMessageQueueItem refreshTreeMessageQueueItem = new RefreshTreeMessageQueueItem
+                    var refreshTreeMessageQueueItem = new RefreshTreeMessageQueueItem
                     {
                         EntityToken = _resourceLocker.Resources.RootEntityToken
                     };
@@ -431,24 +438,24 @@ namespace Composite.C1Console.Trees
 
         public bool AddPersistedAttachmentPoint(string treeId, Type interfaceType, object keyValue, ElementAttachingProviderPosition position = ElementAttachingProviderPosition.Top)
         {
-            IDataItemTreeAttachmentPoint attechmentPoint = DataFacade.BuildNew<IDataItemTreeAttachmentPoint>();
-            attechmentPoint.Id = Guid.NewGuid();
-            attechmentPoint.TreeId = treeId;
-            attechmentPoint.Position = position.ToString();
-            attechmentPoint.InterfaceType = TypeManager.SerializeType(interfaceType);
-            attechmentPoint.KeyValue = ValueTypeConverter.Convert<string>(keyValue);
+            var attachmentPoint = DataFacade.BuildNew<IDataItemTreeAttachmentPoint>();
+            attachmentPoint.Id = Guid.NewGuid();
+            attachmentPoint.TreeId = treeId;
+            attachmentPoint.Position = position.ToString();
+            attachmentPoint.InterfaceType = TypeManager.SerializeType(interfaceType);
+            attachmentPoint.KeyValue = ValueTypeConverter.Convert<string>(keyValue);
 
             bool added = false;
-            using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope())
+            using (var transactionScope = TransactionsFacade.CreateNewScope())
             {
                 bool exist =
                     (from d in DataFacade.GetData<IDataItemTreeAttachmentPoint>()
-                     where d.InterfaceType == attechmentPoint.InterfaceType && d.KeyValue == attechmentPoint.KeyValue && d.TreeId == treeId
+                     where d.InterfaceType == attachmentPoint.InterfaceType && d.KeyValue == attachmentPoint.KeyValue && d.TreeId == treeId
                      select d).Any();
 
-                if (exist == false)
+                if (!exist)
                 {
-                    DataFacade.AddNew<IDataItemTreeAttachmentPoint>(attechmentPoint);
+                    DataFacade.AddNew<IDataItemTreeAttachmentPoint>(attachmentPoint);
                     added = true;
                 }
 
@@ -466,7 +473,7 @@ namespace Composite.C1Console.Trees
             string serializedKeyValue = ValueTypeConverter.Convert<string>(keyValue);
 
             bool removed = false;
-            using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope())
+            using (var transactionScope = TransactionsFacade.CreateNewScope())
             {
                 IEnumerable<IDataItemTreeAttachmentPoint> dataItemTreeAttachmentPoints =
                     (from d in DataFacade.GetData<IDataItemTreeAttachmentPoint>()
@@ -497,8 +504,8 @@ namespace Composite.C1Console.Trees
             Tree tree = GetTree(treeId);
             if (tree == null) return false;
 
-            CustomAttadchmentPoint customAttadchmentPoint = new CustomAttadchmentPoint(entityToken, position);
-            tree.AttachmentPoints.Add(customAttadchmentPoint);
+            var customAttachmentPoint = new CustomAttachmentPoint(entityToken, position);
+            tree.AttachmentPoints.Add(customAttachmentPoint);
 
             List<IAttachmentPoint> attachmentPoints;
             using (_resourceLocker.Locker)
@@ -510,7 +517,7 @@ namespace Composite.C1Console.Trees
                 }
             }
 
-            attachmentPoints.Add(customAttadchmentPoint);
+            attachmentPoints.Add(customAttachmentPoint);
 
             return true;
         }
@@ -545,12 +552,14 @@ namespace Composite.C1Console.Trees
                     if (tree == null)
                     {
                         string treePath = Path.Combine(TreeDefinitionsFolder, attachmentPoint.TreeId);
-                        if (C1File.Exists(treePath) == false) // This ensures that invalid, but existing trees does not remove these attachment points
+                        if (!C1File.Exists(treePath)) // This ensures that invalid, but existing trees does not remove these attachment points
                         {
                             if (DataFacade.WillDeleteSucceed(attachmentPoint))
                             {
-                                Log.LogWarning("TreeFacade", string.Format("A data item attachment points is referring a non existing tree '{0}' and is deleted", attachmentPoint.TreeId));
-                                DataFacade.Delete(attachmentPoint);
+                                Log.LogWarning("TreeFacade", "A data item attachment points is referring a non existing tree '{0}' and is deleted", attachmentPoint.TreeId);
+
+                                // Preventing events so this method won't call itself recursively
+                                DataFacade.Delete(attachmentPoint, true, CascadeDeleteType.Allow);
                             }
                         }
 
@@ -560,16 +569,16 @@ namespace Composite.C1Console.Trees
                     Type interfaceType = TypeManager.GetType(attachmentPoint.InterfaceType);
                     object keyValue = ValueTypeConverter.Convert(attachmentPoint.KeyValue, interfaceType.GetKeyProperties()[0].PropertyType);
 
-                    ElementAttachingProviderPosition position = (ElementAttachingProviderPosition)Enum.Parse(typeof(ElementAttachingProviderPosition), attachmentPoint.Position);
+                    var position = (ElementAttachingProviderPosition)Enum.Parse(typeof(ElementAttachingProviderPosition), attachmentPoint.Position);
 
-                    DynamicDataItemAttachmentPoint dataItemTreeAttachmentPoint = new DynamicDataItemAttachmentPoint
+                    var dataItemTreeAttachmentPoint = new DynamicDataItemAttachmentPoint
                     {
                         InterfaceType = interfaceType,
                         KeyValue = keyValue,
                         Position = position
                     };
 
-                    // Log.LogVerbose("TreeFacade", string.Format("Tree with id '{0}' is dynamicly attached to the data type '{1}' with key value of '{2}'", attachmentPoint.TreeId, interfaceType, keyValue));
+                    // Log.LogVerbose("TreeFacade", string.Format("Tree with id '{0}' is dynamically attached to the data type '{1}' with key value of '{2}'", attachmentPoint.TreeId, interfaceType, keyValue));
 
                     tree.AttachmentPoints.Add(dataItemTreeAttachmentPoint);
 
@@ -596,14 +605,14 @@ namespace Composite.C1Console.Trees
         {
             Type interfaceType = dataEventArgs.Data.DataSourceId.InterfaceType;
 
-            if ((typeof(IPublishControlled).IsAssignableFrom(interfaceType)) &&
-                (dataEventArgs.Data.DataSourceId.DataScopeIdentifier.Equals(DataScopeIdentifier.Administrated) == false))
+            if (typeof(IPublishControlled).IsAssignableFrom(interfaceType) &&
+                !dataEventArgs.Data.DataSourceId.DataScopeIdentifier.Equals(DataScopeIdentifier.Administrated))
             {
-                return; // Only remove attachemnt point if its the admin version of a publishable data item that have been delete
+                return; // Only remove attachment point if its the admin version of a publishable data item that have been delete
             }
 
-            if ((typeof(ILocalizedControlled).IsAssignableFrom(interfaceType)) &&
-                (DataFacade.ExistsInAnyLocale(interfaceType, dataEventArgs.Data.DataSourceId.LocaleScope)))
+            if (typeof(ILocalizedControlled).IsAssignableFrom(interfaceType) &&
+                DataFacade.ExistsInAnyLocale(interfaceType, dataEventArgs.Data.DataSourceId.LocaleScope))
             {
                 return; // Data exists in other locales, so do not remove this attachment point
             }

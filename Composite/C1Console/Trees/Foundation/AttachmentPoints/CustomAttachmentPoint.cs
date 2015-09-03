@@ -1,24 +1,23 @@
 ﻿using System.Collections.Generic;
 using Composite.C1Console.Elements.Plugins.ElementAttachingProvider;
-using Composite.Core.Logging;
 using Composite.C1Console.Security;
 
 
 namespace Composite.C1Console.Trees.Foundation.AttachmentPoints
 {
-    internal sealed class CustomAttadchmentPoint : BaseAttachmentPoint
+    internal sealed class CustomAttachmentPoint : BaseAttachmentPoint
     {
-        private EntityToken _parentEntityToken;
+        private readonly EntityToken _parentEntityToken;
 
 
-        public CustomAttadchmentPoint(EntityToken parentEntityToken)
+        public CustomAttachmentPoint(EntityToken parentEntityToken)
         {
             _parentEntityToken = parentEntityToken;
             this.Position = ElementAttachingProviderPosition.Top;
         }
 
 
-        public CustomAttadchmentPoint(EntityToken parentEntityToken, ElementAttachingProviderPosition position)
+        public CustomAttachmentPoint(EntityToken parentEntityToken, ElementAttachingProviderPosition position)
             :this(parentEntityToken)
         {
             this.Position = position;
@@ -41,7 +40,8 @@ namespace Composite.C1Console.Trees.Foundation.AttachmentPoints
 
         public override void Log(string title, string indention = "")
         {
-            LoggingService.LogVerbose(title, string.Format("{0}Custom: Position = {1}, EntityTokenType = {2}, EntityToken = {1}", indention, this.Position, _parentEntityToken.GetType(), _parentEntityToken));
+            Composite.Core.Log.LogVerbose(title, "{0}Custom: Position = {1}, EntityTokenType = {2}, EntityToken = {3}", 
+                indention, this.Position, _parentEntityToken.GetType(), _parentEntityToken);
         }
     }
 }

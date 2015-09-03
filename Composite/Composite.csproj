@@ -919,7 +919,7 @@
     <Compile Include="C1Console\Trees\CustomUrlActionNode.cs" />
     <Compile Include="C1Console\Trees\Foundation\AttachmentPoints\BaseAttachmentPoint.cs" />
     <Compile Include="C1Console\Trees\Foundation\AttachmentPoints\BasePossibleAttachmentPoint.cs" />
-    <Compile Include="C1Console\Trees\Foundation\AttachmentPoints\CustomAttadchmentPoint.cs" />
+    <Compile Include="C1Console\Trees\Foundation\AttachmentPoints\CustomAttachmentPoint.cs" />
     <Compile Include="C1Console\Trees\Foundation\AttachmentPoints\DataItemAttachmentPoint.cs" />
     <Compile Include="C1Console\Trees\Foundation\AttachmentPoints\DynamicDataItemAttachmentPoint.cs" />
     <Compile Include="C1Console\Trees\Foundation\AttachmentPoints\DataItemPossibleAttachmentPoint.cs" />
