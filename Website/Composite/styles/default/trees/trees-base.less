@@ -35,7 +35,7 @@ ui|treenode {
 
         &.image-and-text {
             ui|labeltext {
-				display:inline;
+                display: inline;
                 margin-left: 5px;
             }
         }
@@ -46,7 +46,7 @@ ui|treenode {
 
         ui|labelbody {
             height: 28px;
-			width:100%;
+            width: 100%;
         }
 
         ui|labeltext {
@@ -55,7 +55,6 @@ ui|treenode {
             border-radius: 2px;
             padding: 3px 4px 5px 4px;
             line-height: 24px;
-
         }
 
         &:before, &:after {
@@ -154,7 +153,7 @@ ui|tree ui|treebody > ui|treenode > ui|labelbox {
 
 ui|treecontent {
     padding-left: 40px;
-   .user-select(none); /* hope we don't need an input field */
+    .user-select(none); /* hope we don't need an input field */
 }
 
 
@@ -189,35 +188,39 @@ ui|tree#templatetree {
         }
 
         &:before {
-            box-sizing: border-box;
             content: '';
             position: absolute;
-            width: 16px;
-            height: 16px;
+            width: 14px;
+            height: 14px;
             border: 1px solid @field-border-color;
-            border-radius: 8px;
+            border-radius: 50%;
             left: 0px;
             top: 4px;
             background: #FFFFFF;
         }
     }
 
-    ui|labelbox.focused {
+    ui|labelbox {
         ui|labeltext {
-            background: transparent !important;
-            color: #000;
-			margin-left: 28px;
+            margin-left: 28px;
         }
 
-        ui|labelbody:after {
-            content: '';
-            position: absolute;
-            width: 8px;
-            height: 8px;
-            border-radius: 4px;
-            background: @primary-color;
-            left: 4px;
-            top: 8px;
+        &.focused {
+            ui|labeltext {
+                background: transparent;
+                color: #333;
+            }
+
+            ui|labelbody:after {
+                content: '';
+                position: absolute;
+                width: 8px;
+                height: 8px;
+                border-radius: 4px;
+                background: @primary-color;
+                left: 4px;
+                top: 8px;
+            }
         }
     }
 }
