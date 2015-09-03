@@ -81,7 +81,7 @@ ui|stagecontainer {
     display: block;
     overflow: hidden;
     padding-right: @explorer-width;
-    margin-right: -@explorer-width;
+    margin-right: -(@explorer-width + 1); // +1 to fix bug when Console disappear when ZOOM browser
     float: left;
 }
 
