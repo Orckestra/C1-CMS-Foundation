@@ -1022,7 +1022,9 @@ BrowserPageBinding.prototype.setScreen = function (dim, touch) {
             frameOverlay.style.display = "block";
         };
     }
-    frameOverlay.style.display = touch ? "block" : "none";
+    if (frameOverlay) {
+        frameOverlay.style.display = touch ? "block" : "none";
+    }
 
     if (touch) {
         frameOverlay.style.marginLeft = "-" + (this.getScrollbarWidth()/2) + "px";

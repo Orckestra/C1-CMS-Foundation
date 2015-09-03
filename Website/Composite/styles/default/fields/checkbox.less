@@ -4,6 +4,19 @@ ui|checkboxgroup {
     padding-bottom: 2px;
     margin-bottom: 3px;
     margin-left: 3px;
+
+    ui|labelbox {
+
+        &.invalid {
+            margin: 0 0 5px 3px;
+            width: 100%;
+
+            ui|labeltext {
+                font-weight: bold;
+                color: @field-error-color;
+            }
+        }
+    }
 }
 
 ui|checkbox {
@@ -17,29 +30,12 @@ ui|checkbox {
     }
 }
 
-
 ui|checkbutton {
 
     ui|labelbox {
         height: 18px;
         padding-left: 18px;
         position: relative;
-
-        &.invalid {
-            margin-bottom: 4px;
-            margin-left: 1px;
-            margin-top: 4px;
-            float: none;
-
-            * {
-                float: none;
-            }
-
-            ui|labeltext {
-                font-weight: bold;
-                color: @field-error-color;
-            }
-        }
     }
 
     ui|labelbody {
