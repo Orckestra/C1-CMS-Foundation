@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 using System.Xml.Linq;
 using Composite.Functions;
 using Composite.Core.ResourceSystem;
@@ -13,9 +10,6 @@ using Composite.Functions.Foundation;
 
 public partial class Composite_content_views_functioninfo_ShowFunctionInfo : System.Web.UI.Page
 {
-
-
-
     public string PageLabel { get; set; }
 
 
@@ -32,21 +26,20 @@ public partial class Composite_content_views_functioninfo_ShowFunctionInfo : Sys
 
         this.PageLabel = functionName;
 
-        IMetaFunction function;
-        if (!isWidget) function = FunctionFacade.GetFunction(functionName);
-        else function = FunctionFacade.GetWidgetFunction(functionName);
+        IMetaFunction function = isWidget ? FunctionFacade.GetWidgetFunction(functionName)
+                                           : (IMetaFunction) FunctionFacade.GetFunction(functionName);
 
-        XElement functionDescriptors = new XElement("ul", new XAttribute("id", "functionList"));
+        var functionDescriptors = new XElement("ul", new XAttribute("id", "functionList"));
         XElement descriptionElement = null;
         XElement parametersTable = null;
 
         XNamespace functionNamespace = FunctionTreeConfigurationNames.NamespaceName;
-        XElement codeElement = new XElement(functionNamespace + (isWidget ? "widgetfunction" : "function"),
+        var codeElement = new XElement(functionNamespace + (isWidget ? "widgetfunction" : "function"),
             new XAttribute("name", functionName),
             new XAttribute(XNamespace.Xmlns + "f", FunctionTreeConfigurationNames.NamespaceName));
 
 
-        if (string.IsNullOrEmpty(function.Description) == false)
+        if (!string.IsNullOrEmpty(function.Description))
         {
             descriptionElement = new XElement("div",
                 new XAttribute("class", "description"),
@@ -55,19 +48,19 @@ public partial class Composite_content_views_functioninfo_ShowFunctionInfo : Sys
 
 
 
-        if (function.ParameterProfiles.Any() == true)
+        if (function.ParameterProfiles.Any())
         {
             parametersTable = new XElement("table", new XAttribute("class", "parameters"));
             foreach (ParameterProfile parameterProfile in function.ParameterProfiles)
             {
                 string helpText = parameterProfile.HelpDefinition.GetLocalized().HelpText;
 
-                if (string.IsNullOrEmpty(helpText) == false)
+                if (!string.IsNullOrEmpty(helpText))
                 {
                     helpText = string.Format(" {0}", helpText);
                 }
 
-                XElement parameterRow = new XElement("tr",
+                var parameterRow = new XElement("tr",
                     new XAttribute("title", parameterProfile.LabelLocalized),
                     new XElement("td",
                         new XAttribute("class", string.Format("requiredInfo required{0}", parameterProfile.IsRequired))),
@@ -75,17 +68,20 @@ public partial class Composite_content_views_functioninfo_ShowFunctionInfo : Sys
                         new XAttribute("class", "name"),
                         parameterProfile.Name),
                     new XElement("td",
-                        new XAttribute("class", "description"),
+                        new XAttribute("class", "type"),
                         new XElement("span",
                             new XAttribute("class", "typeinfo"),
-                            string.Format("{0}", parameterProfile.Type.GetShortLabel())),
-                        (string.IsNullOrEmpty(helpText) ? "" : string.Format(" {0}", helpText)))
+                            parameterProfile.Type.GetShortLabel())),
+                    new XElement("td",
+                        new XAttribute("class", "description"),
+                            helpText
+                        )
                     );
                 parametersTable.Add(parameterRow);
 
 
 
-                XElement codeParameter = new XElement(functionNamespace + "param", new XAttribute("name", parameterProfile.Name));
+                var codeParameter = new XElement(functionNamespace + "param", new XAttribute("name", parameterProfile.Name));
 
                 string value = parameterProfile.IsRequired ? "[Required Value]" : "[Optional Value]";
 
@@ -105,7 +101,7 @@ public partial class Composite_content_views_functioninfo_ShowFunctionInfo : Sys
         }
 
 
-        XElement functionDescriptor = new XElement("li",
+        var functionDescriptor = new XElement("li",
             new XElement("div",
                 new XAttribute("class", "header"),
                 functionName,

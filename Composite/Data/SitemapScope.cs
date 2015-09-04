@@ -38,7 +38,7 @@
         SiblingsAndSelf = 21,
 
         /// <summary>
-        /// All ancenstor pages
+        /// All ancestor pages
         /// </summary>
         Ancestors = 3,
 

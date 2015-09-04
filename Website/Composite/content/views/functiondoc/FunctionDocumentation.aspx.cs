@@ -1,14 +1,6 @@
 ﻿using System;
-using System.Collections;
-using System.Configuration;
-using System.Data;
 using System.Linq;
-using System.Web;
-using System.Web.Security;
 using System.Web.UI;
-using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
 using Composite.Functions;
 using System.Collections.Generic;
@@ -23,23 +15,18 @@ public partial class Spikes_MAW_FunctionDocumentation : System.Web.UI.Page
         bool widgets = bool.Parse(Request.QueryString["widgets"] ?? "false");
 
 
-        List<string> functionNames;
-
-        if (widgets == false)
-            functionNames = FunctionFacade.FunctionNames.Where(f => f.StartsWith(functionPrefix)).OrderBy(f => f).ToList();
-        else
-            functionNames = FunctionFacade.WidgetFunctionNames.Where(f => f.StartsWith(functionPrefix)).OrderBy(f => f).ToList();
+        List<string> functionNames = widgets ? FunctionFacade.WidgetFunctionNames : FunctionFacade.FunctionNames;
 
         functionNames = functionNames.Where(f => f.StartsWith(functionPrefix)).OrderBy(f => f).ToList();
 
 
-        XElement functionDescriptors = new XElement("ul",
+        var functionDescriptors = new XElement("ul",
             new XAttribute("id", "functionList"));
 
         foreach (string functionName in functionNames)
         {
             IMetaFunction function;
-            if (widgets == false)
+            if (!widgets)
                 function = FunctionFacade.GetFunction(functionName);
             else
                 function = FunctionFacade.GetWidgetFunction(functionName);
@@ -47,26 +34,26 @@ public partial class Spikes_MAW_FunctionDocumentation : System.Web.UI.Page
             XElement descriptionElement = null;
             XElement parametersTable = null;
 
-            if (string.IsNullOrEmpty(function.Description) == false)
+            if (!string.IsNullOrEmpty(function.Description))
             {
                 descriptionElement = new XElement("div",
                     new XAttribute("class", "description"),
                     StringResourceSystemFacade.ParseString(function.Description));
             }
 
-            if (function.ParameterProfiles.Any() == true)
+            if (function.ParameterProfiles.Any())
             {
                 parametersTable = new XElement("table", new XAttribute("class", "parameters"));
                 foreach (ParameterProfile parameterProfile in function.ParameterProfiles)
                 {
                     string helpText = parameterProfile.HelpDefinition.GetLocalized().HelpText;
 
-                    if (string.IsNullOrEmpty(helpText) == false)
+                    if (!string.IsNullOrEmpty(helpText))
                     {
                         helpText = string.Format(" {0}", helpText);
                     }
 
-                    XElement parameterRow = new XElement("tr",
+                    var parameterRow = new XElement("tr",
                         new XAttribute("title", parameterProfile.LabelLocalized),
                         new XElement("td",
                             new XAttribute("class", string.Format("requiredInfo required{0}", parameterProfile.IsRequired))),
@@ -74,17 +61,19 @@ public partial class Spikes_MAW_FunctionDocumentation : System.Web.UI.Page
                             new XAttribute("class", "name"),
                             parameterProfile.Name),
                         new XElement("td",
+                            new XAttribute("class", "parameterType"),
+                            parameterProfile.Type.GetShortLabel()),
+                        new XElement("td",
                             new XAttribute("class", "description"),
                             new XElement("span",
                                 new XAttribute("class", "typeinfo"),
-                                string.Format("{0}", parameterProfile.Type.GetShortLabel())),
-                            (string.IsNullOrEmpty(helpText) ? "" : string.Format(" {0}", helpText)))
+                                helpText ?? ""))
                         );
                     parametersTable.Add(parameterRow);
                 }
             }
 
-            XElement functionDescriptor = new XElement("li",
+            var functionDescriptor = new XElement("li",
                 new XElement("div",
                     new XAttribute("class", "header"),
                     functionName,
