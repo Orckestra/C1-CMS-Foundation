@@ -1,7 +1,7 @@
 ﻿@namespace url("http://www.w3.org/1999/xhtml");
 @namespace ui url("http://www.w3.org/1999/xhtml");
 
-span.seoresult {
+.seoresult {
 	display: block;
 	float: left;
 	position: relative;
@@ -10,25 +10,25 @@ span.seoresult {
 
 }
 
-span.seoresult span {
+.seoresult span {
 	width: 7px;
 	height: 8px;
 	display: block;
 	float: left;		
 }
-span.seoresult span.true {
+.seoresult span.true {
 	background-color: #21B980;
 }
-span.seoresult span.false {
+.seoresult span.false {
 	background-color: #fff;
 }
 
 /* message ........................................................ */
 
-div#message {
+#message {
 	padding: 22px;
 }
-div#icon {
+#icon {
 	width: 32px;
 	height: 32px;
 	float: left;
@@ -36,40 +36,36 @@ div#icon {
 	top: 2px;
 	color: #5FC0DC;
 }
-div#text {
+#text {
 	padding-left: 44px;
 	-moz-user-select: none;
 }
-div#desc {
+#desc {
 	clear: both;
 	padding-top: 10px;
 	color: graytext;
 }
-img#warning {
+#warning {
 	padding-right: 3px;	
 }
 
 
-
-
 /* result table*/
-table.resulttable {
+.resulttable {
 	background: #EFEFEF;
 	border: 1px solid #D4D4D4;
 }
 
-table.resulttable ui|toolbarbutton {
+.resulttable ui|toolbarbutton {
     margin-left: 10px;
 }
 
 
-
-
-table.resulttable ui|datainput {
+.resulttable ui|datainput {
 	float: left;
 }
 
-table.resulttable thead th {
+.resulttable thead th {
 	height: 50px;
 	white-space: nowrap;
 	padding: 10px 35px 10px 10px;
@@ -81,24 +77,23 @@ table.resulttable thead th {
 
 }
 
-table.resulttable thead th:first-of-type > div{
+.resulttable thead th:first-of-type > div{
 	width: 250px;
 
 }
 
-table.resulttable thead th:last-child {
+.resulttable thead th:last-child {
 	width: 100%;
 }
-table.resulttable tbody td {
+.resulttable tbody td {
 	position: relative;
 	height: 30px;
 	border-top: 1px solid #ccc;
-	text-transform: capitalize;
 	font-size: 14px;
 	color: #000;
 }
 
-table.resulttable tbody td.true:after {
+.resulttable tbody td.true:after {
 	position: absolute;
 	content: "";
 	top: 5px;
@@ -111,7 +106,7 @@ table.resulttable tbody td.true:after {
 }
 
 
-table.resulttable tbody td.false:after {
+.resulttable tbody td.false:after {
 	position: absolute;
 	content: '×';
 	top: 4px;
@@ -119,14 +114,12 @@ table.resulttable tbody td.false:after {
 	width: 15px;
 	height: 15px;
 	color: #EA6458;
-    width: 15px;
-    height: 15px;
 	line-height: 15px;
     font-size: 24px;
     font-weight: bold;
 }
 
-table.resulttable tbody td.score {
+.resulttable tbody td.score {
 	padding-left: 30px;
 	width: 90px;
 }
