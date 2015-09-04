@@ -6,7 +6,7 @@ BrowserPageBinding.superclass = PageBinding.prototype;
 BrowserPageBinding.ACTION_ONLOAD = "browserpage loaded";
 BrowserPageBinding.ACTION_TABSHIFT = "browserpage tabshift";
 
-BrowserPageBinding.DEVICE_LIST = "${root}/content/views/browser/deviceoptions.xml";
+BrowserPageBinding.DEVICE_LIST = "${root}/content/views/browser/deviceoptions.xml?consoleId=" + Application.CONSOLE_ID;
 
 /**
  * @class
