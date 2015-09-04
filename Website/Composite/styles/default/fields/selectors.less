@@ -142,21 +142,26 @@ ui|urlinputdialog {
             padding: 0px;
         }
     }
+
+    input {
+        width: 100%;
+    }
 }
 
 
-ui|fielddata ui|datainputselector input,
-ui|fielddata ui|datainputdialog input,
-ui|fielddata ui|datainputbutton input,
-ui|fielddata ui|urlinputdialog input {
-    width: 100%;
-}
+ui|datainputselector {
+    &.with-image {
+        input {
+           padding-left: 30px;
+        }
 
-ui|fielddata ui|datainputselector.imagesizenormal input {
-    background: transparent none no-repeat 4px 4px;
-    padding-left: 24px;
+        ui|box ui|labelbox {
+            position: absolute;
+            left: 8px;
+            top: 8px;
+        }
+    }
 }
-
 ui|field.fieldhelp ui|fielddata {
     position: relative;
 }

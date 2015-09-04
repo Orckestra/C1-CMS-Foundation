@@ -2,7 +2,7 @@ DataInputSelectorBinding.prototype = new DataInputBinding;
 DataInputSelectorBinding.prototype.constructor = DataInputSelectorBinding;
 DataInputSelectorBinding.superclass = DataInputBinding.prototype;
 
-DataInputSelectorBinding.INDICATOR_IMAGE = null;
+DataInputSelectorBinding.INDICATOR_IMAGE = "${icon:popup}";
 DataInputSelectorBinding.ACTION_SELECTIONCHANGED = "datainputselectorselectionchanged";
 
 /**
@@ -514,45 +514,21 @@ DataInputSelectorBinding.prototype.getValue = function () {
 */
 DataInputSelectorBinding.prototype.setImage = function (url) {
 
-	var class1 = "imagesizenormal";
+	var className = "with-image";
 
 	if (url != false) {
-		url = url ? url : LabelBinding.DEFAULT_IMAGE;
-		this.setAlphaTransparentBackdrop(
-						Resolver.resolve(url)
-				);
+	    url = url ? url : LabelBinding.DEFAULT_IMAGE;
+	    var label = LabelBinding.newInstance(this.bindingDocument);
+	    label.setImage(url);
+	    this.shadowTree.box.appendChild(label.bindingElement);
+	    label.attach();
 		this.setProperty("image", url);
 		this.hasImage = true;
-		this.attachClassName(class1); 
+		this.attachClassName(className);
 	} else {
-		this.setAlphaTransparentBackdrop(false);
 		this.deleteProperty("image");
 		this.hasImage = false;
-		this.detachClassName(class1);
+		this.detachClassName(className);
 	}
 }
 
-/**
-* Attaches a background-image to the labelbody
-* element, supporting 24bit alphatransparency.
-* @param {string} url
-*/
-DataInputSelectorBinding.prototype.setAlphaTransparentBackdrop = function (url) {
-
-	if (this.shadowTree.input) { // sometimes it glitches in moz...
-		if (url != false) {
-			url = Resolver.resolve(url);
-			if (Client.isExplorer6) {
-				this.shadowTree.inputy.style.filter = LabelBinding.EXPLORER_IMAGE_FILTER.replace("${url}", url);
-			} else {
-				this.shadowTree.input.style.backgroundImage = "url('" + url + "')";
-			}
-		} else {
-			if (Client.isExplorer6) {
-				this.shadowTree.input.style.filter = "none";
-			} else {
-				this.shadowTree.input.style.backgroundImage = "none";
-			}
-		}
-	}
-}
