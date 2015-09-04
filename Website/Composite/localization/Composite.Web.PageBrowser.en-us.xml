@@ -2,7 +2,8 @@
 <strings>
 
   <!-- menus -->
-  <string key="Menu.ViewSource" value="Page Source" />
+  <string key="Menu.ViewSource" value="Page source" />
+  <string key="Menu.ViewMode" value="View mode" />
   <string key="ContextMenu.Back" value="Back" />
   <string key="ContextMenu.Forward" value="Forward" />
   <string key="ContextMenu.Refresh" value="Refresh" />
@@ -13,6 +14,7 @@
 	<string key="ToolBarButton.Back.ToolTip" value="Go back one page" />
 	<string key="ToolBarButton.Forward.ToolTip" value="Go forward one page" />
 	<string key="ToolBarButton.Refresh.ToolTip" value="Refresh page" />
+  <string key="ToolBarButton.TreeView.ToolTip" value="Show Tree" />
   <string key="ToolBarButton.Go.ToolTip" value="Go to the address in the location bar" />
   <string key="ToolBarButton.Home.ToolTip" value="Go to the Start page" /> <!-- TODO: Show URL instead! -->
 	

@@ -56,7 +56,7 @@
 		<ui:toolbar id="navbar" class="dark nav-toolbar" binding="BrowserToolBarBinding">
 			<ui:toolbarbody>
 				<ui:toolbargroup>
-					<ui:toolbarbutton id="toggletreebutton" cmd="toggletree" image="${icon:nodes}" binding="CheckButtonBinding" ischecked="true"/>
+					<ui:toolbarbutton id="toggletreebutton" cmd="toggletree" image="${icon:nodes}" binding="CheckButtonBinding" ischecked="true" tooltip="${string:Composite.Web.PageBrowser:ToolBarButton.TreeView.ToolTip}"/>
 					<ui:toolbarbutton class="btn-group-left" cmd="back" image="${icon:previous}" image-disabled="${icon:previous-disabled}" tooltip="${string:Composite.Web.PageBrowser:ToolBarButton.Back.ToolTip}" observes="broadcasterHistoryBack" />
 					<ui:toolbarbutton class="btn-group-right" cmd="forward" image="${icon:next}" image-disabled="${icon:next-disabled}" tooltip="${string:Composite.Web.PageBrowser:ToolBarButton.Forward.ToolTip}" observes="broadcasterHistoryForward" />
 					<ui:toolbarbutton cmd="refresh" image="${icon:refresh}" tooltip="${string:Composite.Web.PageBrowser:ToolBarButton.Refresh.ToolTip}" observes="broadcasterBrowserView"/>
@@ -69,9 +69,9 @@
 				</ui:toolbargroup>
 				<ui:toolbargroup id="addressrightgroup">
 					<ui:toolbarbutton id="go" image="${icon:input}" image-disabled="${icon:input-disabled}" isdisabled="true" tooltip="${string:Composite.Web.PageBrowser:ToolBarButton.Go.ToolTip}" />
-					<ui:toolbarbutton id="setscreenbutton" image="${icon:browsedevicetype}" popup="devicepopup"  observes="broadcasterBrowserView" />
+					<ui:toolbarbutton id="setscreenbutton" tooltip="${string:Composite.Web.PageBrowser:Menu.ViewMode}"  image="${icon:browsedevicetype}" popup="devicepopup"  observes="broadcasterBrowserView" />
 					<ui:toolbarbutton cmd="viewsource" tooltip="${string:Composite.Web.PageBrowser:Menu.ViewSource}" image="${icon:editor-sourceview}"  observes="broadcasterBrowserView" />
-					<ui:toolbarbutton cmd="seoassistant" image="${icon:seoassistant}"  observes="broadcasterBrowserView" />
+					<ui:toolbarbutton cmd="seoassistant" tooltip="${string:Composite.Web.SEOAssistant:SEOAssistant.ToolTip}" image="${icon:seoassistant}"  observes="broadcasterBrowserView" />
 				</ui:toolbargroup>
 			</ui:toolbarbody>
 		</ui:toolbar>
