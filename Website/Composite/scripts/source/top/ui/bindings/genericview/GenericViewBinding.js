@@ -12,6 +12,9 @@ GenericViewBinding.SINGLE_IMAGE_MAXWIDTH = 1000;
 GenericViewBinding.SINGLE_IMAGE_MAXHEIGHT = 1000;
 GenericViewBinding.LIST_IMAGE = "listimage";
 
+
+GenericViewBinding.ACTION_OPEN = "generic action open";
+
 /**
  * @class
  */
@@ -82,11 +85,13 @@ GenericViewBinding.prototype.handleAction = function (action) {
 	switch (action.type) {
 		case TreeNodeBinding.ACTION_COMMAND:
 		case TreeNodeBinding.ACTION_OPEN:
+			this.dispatchAction(new Action(action.target, GenericViewBinding.ACTION_OPEN));
+			
 
-			EventBroadcaster.broadcast(
-				BroadcastMessages.SYSTEMTREEBINDING_FOCUS,
-				action.target.node.getEntityToken()
-			);
+			//EventBroadcaster.broadcast(
+			//	BroadcastMessages.SYSTEMTREEBINDING_FOCUS,
+			//	action.target.node.getEntityToken()
+			//);
 			action.consume();
 			break;
 		case TreeNodeBinding.ACTION_COMMAND:
@@ -154,6 +159,24 @@ GenericViewBinding.prototype.addNode = function (child) {
 		treenode.setImage(imageProfile.getDefaultImage());
 	}
 
+
+	/*
+	 * Drag type and other stuff. All key-value pairs in the
+	 * propertybag object is assigned to element as attributes.
+	 */
+	if (bag) {
+		for (var key in bag) {
+			switch (key.toLowerCase()) {
+				case "id":
+				case "key":
+					break;
+				default:
+					treenode.setProperty(key, bag[key]);
+					break;
+			}
+		}
+	}
+
 	treenode.isContainer = treenode.node.hasChildren();
 	this.add(treenode);
 	treenode.attach();
@@ -163,7 +186,7 @@ GenericViewBinding.prototype.addNode = function (child) {
 /**
  * Return perspective handle for tree
  */
-GenericViewBinding.prototype.getPerspectiveHandle = function () {
+GenericViewBinding.prototype.getSyncHandle = function () {
 
 	return this.perspectiveNode.getHandle();
 }
@@ -180,7 +203,8 @@ GenericViewBinding.prototype._handleSystemTreeFocus = function () {
 				{
 					activePosition: this._activePosition,
 					actionProfile: this.getCompiledActionProfile(),
-					//perspectiveHandle: this.getPerspectiveHandle()
+					syncHandle: this.getSyncHandle(),
+					source: this
 				}
 			);
 	}
@@ -221,4 +245,17 @@ GenericViewBinding.newInstance = function (ownerDocument) {
 	var binding = UserInterface.registerBinding(element, GenericViewBinding);
 	binding.treeBodyBinding = TreeBodyBinding.newInstance(ownerDocument);
 	return binding;
+}
+
+/**
+ * Return perspective handle for tree
+ */
+GenericViewBinding.prototype.getSyncHandle = function () {
+
+	if (this.getProperty("treeselector") == true) {
+		return this.getAncestorBindingByType(PageBinding).getID();
+	} else {
+		return this.perspectiveNode.getHandle();
+	}
+
 }

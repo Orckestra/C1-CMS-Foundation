@@ -45,6 +45,11 @@ function SystemToolBarBinding () {
 	this._node = null;
 
 	/**
+	 * @type {string}
+	 */
+	this._syncHandle = null;
+
+	/**
 	* Tree position 
 	* @type {int}
 	*/
@@ -74,11 +79,15 @@ SystemToolBarBinding.prototype.onBindingAttach = function () {
 	
 	if ( System.hasActivePerspectives ) {
 		this.subscribe ( BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED );
-		this.subscribe ( this.bindingWindow.WindowManager.WINDOW_RESIZED_BROADCAST );
+		//this.subscribe ( this.bindingWindow.WindowManager.WINDOW_RESIZED_BROADCAST );
 		this.subscribe ( BroadcastMessages.INVOKE_DEFAULT_ACTION );
 		this.addActionListener ( ButtonBinding.ACTION_COMMAND );
 	} else {
 		this.hide ();
+	}
+
+	if (this.getProperty("target") === "perspective") {
+		this._syncHandle = StageBinding.perspectiveNode.getHandle();
 	}
 }
 
@@ -135,7 +144,7 @@ SystemToolBarBinding.prototype.handleBroadcast = function (broadcast, arg) {
 
 			var self = this;
 			if (arg != null) {
-				if (arg.activePosition == this.getActivePosition()) {
+				if (arg.syncHandle == this.getSyncHandle()) {
 					if (arg.actionProfile != null && arg.actionProfile.hasEntries()) {
 						this._actionProfile = arg.actionProfile;
 						//TODO: refactor with updating API
@@ -481,4 +490,21 @@ SystemToolBarBinding.prototype.setDimension = function (dimension) {
 	}
 	this.bindingElement.style.width = String(dimension.w) + "px";
 	this.bindingElement.style.height = String(dimension.h) + "px";
+}
+
+/**
+ * set SyncHandle
+ * @param {string} dimensionsyncHandle
+ */
+SystemToolBarBinding.prototype.setSyncHandle = function (syncHandle) {
+	this._syncHandle = syncHandle;
+
+}
+
+/**
+ * get SyncHandle
+ */
+SystemToolBarBinding.prototype.getSyncHandle = function () {
+	return this._syncHandle;
+
 }

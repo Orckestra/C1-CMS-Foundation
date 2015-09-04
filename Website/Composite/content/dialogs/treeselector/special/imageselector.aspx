@@ -20,8 +20,8 @@
     </ui:popupset>
     <ui:dialogpage binding="ImageSelectorDialogPageBinding"
         label="(title supplied as page argument!)"
-        width="600"
-        height="480"
+        width="1200"
+        height="750"
         resizable="false"
         class="with-top-toolbar">
         <ui:toolbar id="toolbar" binding="TreeSelectorToolBarBinding" imagesize="large" class="white">
@@ -33,22 +33,30 @@
             </ui:toolbarbody>
         </ui:toolbar>
         <ui:pagebody class="pad-0">
-            <ui:box id="treebox">
-                <ui:tree id="selectiontree" binding="SystemTreeBinding" selectiontype="single" actionaware="true" treeselector="true" locktoeditor="false">
-                    <ui:treebody />
-                </ui:tree>
-            </ui:box>
-            <ui:box id="infobox">
-                <div id="info">
-                    <ui:datainput readonly="true" isdisabled="true" id="treeselectionresult" name="treeselectionresult" />
-                    <div id="previewimage">
-                        <ui:labelbox class="icon-preview" image="${icon:folder-open-2}"></ui:labelbox>
-                    </div>
-                </div>
-            </ui:box>
+          
+				<ui:splitbox orient="horizontal" layout="2:3">
+					<ui:splitpanel>
+						<ui:tree id="selectiontree" binding="SystemTreeBinding" selectiontype="single" actionaware="true"
+							treeselector="true" locktoeditor="false">
+							<ui:treebody />
+						</ui:tree>
+					</ui:splitpanel>
+					<ui:splitter />
+					<ui:splitpanel>
+						<ui:tree id="genericview" treeselector="true" binding="GenericViewBinding" selectiontype="single"
+							locktoeditor="false">
+							<ui:treebody />
+						</ui:tree>
+					</ui:splitpanel>
+				</ui:splitbox>
         </ui:pagebody>
 
         <ui:dialogtoolbar>
+	        <ui:toolbarbody class="max">
+					<ui:toolbargroup class="max">
+						<ui:datainput readonly="true" isdisabled="true" id="treeselectionresult" name="treeselectionresult"/>
+					</ui:toolbargroup>
+				</ui:toolbarbody>
             <ui:toolbarbody align="right" equalsize="true" class="right">
                 <ui:toolbargroup>
                     <ui:clickbutton label="${string:Website.Dialogs.LabelAccept}" id="buttonAccept" response="accept" isdisabled="true" focusable="true" default="true" />

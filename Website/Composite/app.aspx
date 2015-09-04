@@ -95,15 +95,6 @@
 			</ui:menubody>
 		</ui:popup>
 	</ui:popupset>
-	
-	<ui:toolbar id="systemtoolbar" class="system-toolbar" binding="SystemToolBarBinding">
-			<ui:toolbarbody/>
-			<ui:toolbarbody id="moreactionstoolbargroup">
-				<ui:toolbargroup>
-					<ui:toolbarbutton id="moreactionsbutton" label="More ▼" popup="moreactionspopup"/>
-				</ui:toolbargroup>
-			</ui:toolbarbody>
-		</ui:toolbar>
 
 	<ui:balloonset id="balloonset" />
 	<ui:balloonset id="dialogballoonset" />

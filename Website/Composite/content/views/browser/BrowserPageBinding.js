@@ -106,6 +106,9 @@ BrowserPageBinding.prototype.onBindingRegister = function () {
     this.addActionListener(BrowserTabBinding.ACTIONVENT_CLOSE);
 
 
+
+
+
 }
 
 /**
@@ -119,7 +122,7 @@ BrowserPageBinding.prototype.handleBroadcast = function (broadcast, arg) {
 
     switch (broadcast) {
         case BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED:
-            if (arg.perspectiveHandle == this.getPerspectiveHandle()) {
+        	if (arg.syncHandle == this.getSyncHandle() && !(arg.source instanceof GenericViewBinding)) {
                 this.push(arg.actionProfile.Node, true);
             }
             break;
@@ -233,7 +236,10 @@ BrowserPageBinding.prototype.onAfterPageInitialize = function () {
     this.reflex(); //?
 
     this._clearHistory();
-	this._updateBroadcasters();
+    this._updateBroadcasters();
+
+	//TODO move this
+    this._box.getGeneticViewTabBinding().tree.addActionListener(GenericViewBinding.ACTION_OPEN, this);
 
 }
 
@@ -278,7 +284,7 @@ BrowserPageBinding.prototype.pushURL = function (url, isManual) {
 	if (url && url != this._box.getLocation()) {
     	this._isPushingUrl = isManual;
 	    if (this._customUrl) {
-		    this._targetUrl = url;
+	    	this._targetUrl = this.getAbsoluteUrl(url);
 		    this.setCustomUrl(this._customUrl);
 	    } else {
 		    this.setURL(url);
@@ -287,6 +293,12 @@ BrowserPageBinding.prototype.pushURL = function (url, isManual) {
         this.bindingWindow.bindingMap.addressbar.showAddreesbar();
     }
 
+}
+
+BrowserPageBinding.prototype.getAbsoluteUrl =  function(url) {
+	var a = document.createElement("a");
+	a.href = url;
+	return a.href;
 }
 
 
@@ -358,15 +370,17 @@ BrowserPageBinding.prototype.handleAction = function (action) {
             this._isDisposing = true;
             action.consume();
             break;
-        case FocusBinding.ACTION_BLUR:
-            //TODO add check target
-            if (action.target instanceof DockPanelBinding)
-                this.hideToolbar();
-            break;
-        case FocusBinding.ACTION_FOCUS:
-            //TODO add check target
-            if (action.target instanceof DockPanelBinding)
-                this.showToolbar();
+        //case FocusBinding.ACTION_BLUR:
+        //    //TODO add check target
+        //    if (action.target instanceof DockPanelBinding)
+        //        this.hideToolbar();
+        //    break;
+        //case FocusBinding.ACTION_FOCUS:
+        //    //TODO add check target
+        //    if (action.target instanceof DockPanelBinding)
+        	//        this.showToolbar();
+    	case GenericViewBinding.ACTION_OPEN:
+    		this.getSystemTree().handleBroadcast(BroadcastMessages.SYSTEMTREEBINDING_FOCUS, action.target.node.getEntityToken());
             break;
 
 
@@ -405,13 +419,7 @@ BrowserPageBinding.prototype._handleSelectedTab = function () {
     if (Types.isFunction(tab.getEntityToken)) {
         tab.dispatchAction(DockTabBinding.ACTION_UPDATE_TOKEN);
     }
-    //if (!this._currents.has(tab.key)) {
-    //    this._currents.set(tab.key, {
-    //        history: new List(),
-    //        index: parseInt(-1)
-    //    });
-    //}
-	//this._current = this._currents.get(tab.key);
+
 
     if (!this._current) {
 	    this._current = {
@@ -420,15 +428,6 @@ BrowserPageBinding.prototype._handleSelectedTab = function () {
 	    };
     }
 	this._updateBroadcasters();
-    //this._updateAddressBar(tab.url);
-
-    ///*
-	// * So that Page Browser remember it's location when closed and reopened.
-	// */
-    //if (tab.browserwindow != null && tab.browserwindow.getContentDocument() != null) {
-    //    var def = ViewDefinitions["Composite.Management.Browser"];
-    //    def.argument = { "URL": tab.url };
-    //}
 
     /*
 	 * Broadcast contained markup for various panels to intercept. Since the markup   
@@ -637,28 +636,12 @@ BrowserPageBinding.prototype._handleCommand = function (cmd, binding) {
         	this._isHistoryBrowsing = true;
         	var item = this._current.history.get(--this._current.index);
         	this.push(item && item.node ? item.node : item);
-	        //if (item && item.node) {
-	        //	EventBroadcaster.broadcast(
-			//		BroadcastMessages.SYSTEMTREEBINDING_FOCUS,
-			//		item.node.getEntityToken()
-			//	);
-	      
-	        //} else {
-	        //	this.setURL(item);
-	        //}
             break;
         case "forward":
         	this._isHistoryBrowsing = true;
         	var item = this._current.history.get(++this._current.index);
 	        this.push(item && item.node ? item.node : item);
-        	//if (item && item.node) {
-        	//	EventBroadcaster.broadcast(
-			//		BroadcastMessages.SYSTEMTREEBINDING_FOCUS,
-			//		item.node.getEntityToken()
-			//	);
-	        //} else {
-		    //    this.setURL(item);
-	        //}
+
 	        break;
         case "refresh":
             this._isHistoryBrowsing = true;
@@ -702,6 +685,13 @@ BrowserPageBinding.prototype._handleCommand = function (cmd, binding) {
             	this._box.select(browserView, true);
             }
             this.setScreen(new Dimension(w, h), touch);
+
+        	//set screen button image
+            var setscreenbutton = this.bindingWindow.bindingMap.setscreenbutton;
+            if (binding.image) {
+            	setscreenbutton.setImage(binding.image);
+            }
+
 	        break;
 
         case DockTabPopupBinding.CMD_VIEWSOURCE: /* notice dependencies */
@@ -856,45 +846,6 @@ BrowserPageBinding.prototype.handleEvent = function (e) {
     }
 }
 
-/**
- * @overloads {TabsBinding#flex}
- * @implements {IFlexible}
- */
-BrowserPageBinding.prototype.flex = function () {
-
-    BrowserPageBinding.superclass.flex.call(this);
-    this.showToolbar();
-}
-
-
-/**
- * Show toolbar
- */
-BrowserPageBinding.prototype.showToolbar = function () {
-    var snap = this.bindingWindow.bindingMap.toolbarplaceholder;
-
-    var position = snap.boxObject.getUniversalPosition();
-    var dimension = snap.boxObject.getDimension();
-
-
-    var systemtoolbar = top.app.bindingMap.systemtoolbar;
-
-    systemtoolbar.setPosition(position);
-    systemtoolbar.setDimension(dimension);
-    systemtoolbar.show();
-    //Update More button
-    systemtoolbar._toolBarBodyLeft.refreshToolBarGroups();
-    systemtoolbar._containAllButtons();
-}
-
-/**
- *  Hide toolbar
- */
-BrowserPageBinding.prototype.hideToolbar = function () {
-
-    var systemtoolbar = top.app.bindingMap.systemtoolbar;
-    systemtoolbar.hide();
-}
 
 BrowserPageBinding.prototype.loadDeviceList = function () {
     var request = DOMUtil.getXMLHTTPRequest();
@@ -954,9 +905,9 @@ BrowserPageBinding.prototype.loadDeviceList = function () {
  */
 BrowserPageBinding.prototype.setCustomUrl = function (url) {
 	var customView = this._box.getCustomViewTabBinding();
-	url = url.replace("{url}", this._targetUrl ? this._targetUrl : this._box.getLocation());
-	url = url.replace("{encodedurl}", encodeURIComponent(this._targetUrl ? this._targetUrl :
-		(this._isRequirePublicNet ? this._box.getLocation().replace(/\/c1mode\(unpublished\)$/,"") : this._box.getLocation())));
+	var targetUrl = this._targetUrl ? this._targetUrl : this._box.getLocation();
+	url = url.replace("{url}", targetUrl);
+	url = url.replace("{encodedurl}", encodeURIComponent(this._isRequirePublicNet ? targetUrl.replace(/\/c1mode\(unpublished\)/, "") : targetUrl));
 	//replace 2nd and next '?' to '&'
 	url = url.replace(/(\?)(.+)/g, function (a, b, c) { return b + c.replace(/\?/g, "&") });
 	customView.iframe.src = "about:blank";
@@ -1051,7 +1002,7 @@ BrowserPageBinding.prototype.getScrollbarWidth = function () {
 /**
  * Return perspective handle for browser
  */
-BrowserPageBinding.prototype.getPerspectiveHandle = function () {
+BrowserPageBinding.prototype.getSyncHandle = function () {
 
 	return this.systemViewDefinition.handle;
 }

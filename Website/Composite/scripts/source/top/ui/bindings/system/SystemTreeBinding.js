@@ -302,9 +302,14 @@ SystemTreeBinding.prototype._focusDefault = function () {
 /**
  * Return perspective handle for tree
  */
-SystemTreeBinding.prototype.getPerspectiveHandle = function () {
+SystemTreeBinding.prototype.getSyncHandle = function () {
 
-	return this.perspectiveNode.getHandle();
+	if (this.getProperty("treeselector") == true) {
+		return this.getAncestorBindingByType(PageBinding).getID();
+	} else {
+		return this.perspectiveNode.getHandle();
+	}
+	
 }
 
 
@@ -336,8 +341,9 @@ SystemTreeBinding.prototype._handleSystemTreeFocus = function () {
 				{
 					activePosition: this._activePosition,
 					actionProfile: this.getCompiledActionProfile(),
-					perspectiveHandle: this.getPerspectiveHandle()
-		}
+					syncHandle: this.getSyncHandle(),
+					source: this
+				}
 			);
 		}
 	}

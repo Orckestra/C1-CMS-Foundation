@@ -17,14 +17,26 @@
 			binding="TreeSelectorDialogPageBinding"
 			label="(title supplied as page argument!)"
 			image="${icon:default}" 
-			width="500"
-			height="500"
-			resizable="false">
-			
+			width="1200"
+			height="750"
+			resizable="true">
+
 			<ui:pagebody class="pad-0">
-				<ui:tree id="selectiontree" binding="SystemTreeBinding" selectiontype="single" actionaware="false" locktoeditor="false">
-					<ui:treebody/>
-				</ui:tree>
+				<ui:splitbox orient="horizontal" layout="2:3">
+					<ui:splitpanel>
+						<ui:tree id="selectiontree" binding="SystemTreeBinding" selectiontype="single" actionaware="true"
+							treeselector="true" locktoeditor="false">
+							<ui:treebody />
+						</ui:tree>
+					</ui:splitpanel>
+					<ui:splitter />
+					<ui:splitpanel>
+						<ui:tree id="genericview" treeselector="true" binding="GenericViewBinding" selectiontype="single"
+							locktoeditor="false">
+							<ui:treebody />
+						</ui:tree>
+					</ui:splitpanel>
+				</ui:splitbox>
 			</ui:pagebody>
 			
 			<ui:dialogtoolbar>

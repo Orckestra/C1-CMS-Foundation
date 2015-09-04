@@ -22,39 +22,12 @@ ImageSelectorDialogPageBinding.prototype.toString = function () {
 }
 
 /**
- * Update image preview.
- * @overloads {TreeSelectorDialogPageBinding#_updateDisplayAndResult}
+ * @overloads {TreeSelectorDialogPageBinding#onBeforePageInitialize}
  */
-ImageSelectorDialogPageBinding.prototype._updateDisplayAndResult = function () {
-	
-	ImageSelectorDialogPageBinding.superclass._updateDisplayAndResult.call ( this );
-	
-	var image 	= document.getElementById ( "previewimage" );
-	var info 	= document.getElementById ( "info" );
-	var disk 	= bindingMap.sizeondisk;
-	var size 	= bindingMap.sizeonscreen;
-	
-	var url = this.result.getFirst ();
-	
-	// Page id is in brackets, so getting subscring from opening bracket to closing bracket
-	var mediaItemId = new String(String(url).split("(")[1]).split(")")[0];
-	s = Resolver.resolve("${root}/../media(") + mediaItemId;
-	s += ")?action=fit&mw=220&mh=200";
-	
-	image.style.backgroundImage = "url('" + s + "')";
-	info.className = "image";
-}
+ImageSelectorDialogPageBinding.prototype.onBeforePageInitialize = function () {
 
-/**
- * Reset image preview.
- * @overloads {TreeSelectorDialogPageBinding#_clearDisplayAndResult}
- */
-ImageSelectorDialogPageBinding.prototype._clearDisplayAndResult = function () {
+	var toolbar = this.bindingWindow.bindingMap.toolbar;
+	toolbar.setSyncHandle(this.getSyncHandle());
 	
-	ImageSelectorDialogPageBinding.superclass._clearDisplayAndResult.call ( this );
-	
-	var image = document.getElementById ( "previewimage" );
-	var info = document.getElementById ( "info" );
-	image.style.backgroundImage = '';
-	info.className = "";
+	ImageSelectorDialogPageBinding.superclass.onBeforePageInitialize.call(this);
 }

@@ -49,9 +49,13 @@
 		</ui:popup>
 	</ui:popupset>
 	<ui:page id="browserpage" binding="BrowserPageBinding" image="${icon:browser}">
-		
-		<ui:toolbar id="toolbarplaceholder" class="explorertoolbar">
-			<ui:toolbarbody />
+		<ui:toolbar id="systemtoolbar" class="system-toolbar" binding="SystemToolBarBinding" target="perspective">
+			<ui:toolbarbody/>
+			<ui:toolbarbody id="moreactionstoolbargroup">
+				<ui:toolbargroup>
+					<ui:toolbarbutton id="moreactionsbutton" label="More ▼" popup="moreactionspopup"/>
+				</ui:toolbargroup>
+			</ui:toolbarbody>
 		</ui:toolbar>
 		<ui:toolbar id="navbar" class="dark nav-toolbar" binding="BrowserToolBarBinding">
 			<ui:toolbarbody>
