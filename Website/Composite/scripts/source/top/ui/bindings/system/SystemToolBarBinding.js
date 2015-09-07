@@ -295,12 +295,12 @@ SystemToolBarBinding.prototype.buildLeft = function () {
 
 /**
  * Contain all buttons. Overflowing buttons are moved to a popup. 
- * The margin between buttons and groups are not accounted for...
  */
 SystemToolBarBinding.prototype._containAllButtons = function () {
 	
-	var mores = this.bindingWindow.bindingMap.moreactionstoolbargroup;
-	var avail = this.bindingElement.offsetWidth - this._moreActionsWidth;
+    var mores = this.bindingWindow.bindingMap.moreactionstoolbargroup;
+    var paddings = CSSComputer.getPadding(this.bindingElement);
+    var avail = this.bindingElement.offsetWidth - this._moreActionsWidth - paddings.left - paddings.right;
 	if (Localization.isUIRtl) {
 		avail = this.bindingElement.offsetWidth - this._moreActionsWidth;
 	}
@@ -312,7 +312,8 @@ SystemToolBarBinding.prototype._containAllButtons = function () {
 		if ( !button.isVisible ) {
 			button.show ();
 		}
-		total += button.boxObject.getDimension ().w;
+	    var margin = CSSComputer._getMargin(button.bindingElement);
+	    total += button.boxObject.getDimension().w + margin.left + margin.right;
 		if ( total >= avail ) {
 			hides.add ( button );
 			button.hide ();

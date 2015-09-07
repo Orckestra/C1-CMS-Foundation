@@ -53,7 +53,7 @@
 			<ui:toolbarbody/>
 			<ui:toolbarbody id="moreactionstoolbargroup">
 				<ui:toolbargroup>
-					<ui:toolbarbutton id="moreactionsbutton" label="More ▼" popup="moreactionspopup"/>
+					<ui:toolbarbutton id="moreactionsbutton" label="More" image="${icon:chevron-right-circle}" popup="moreactionspopup" flip="true"/>
 				</ui:toolbargroup>
 			</ui:toolbarbody>
 		</ui:toolbar>
