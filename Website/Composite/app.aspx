@@ -151,7 +151,7 @@
 				</ui:menubody>
 			</ui:menupopup>
 		</ui:menu>--%>
-		<ui:menu image="${icon:help}" class="icon">
+		<ui:menu image="${icon:help}" class="icon" tooltip="${string:Website.App.LabelHelp}">
 			<ui:menupopup>
 				<ui:menubody>
 					<ui:menugroup>
@@ -174,7 +174,7 @@
 			</ui:menupopup>
 		</ui:menu>
 
-		<ui:menu image="${icon:settings}" class="icon">
+		<ui:menu image="${icon:settings}" class="icon" tooltip="${string:Website.App.LabelSettings}">
 			<ui:menupopup>
 				<ui:menubody>
 					<ui:menugroup>

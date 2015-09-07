@@ -527,6 +527,7 @@
 	<string key="Website.App.LabelDeveloperPanel" value="Developer Panel" />
 	<string key="Website.App.LabelTools" value="Tools" />
 	<string key="Website.App.LabelHelp" value="Help" />
+  <string key="Website.App.LabelSettings" value="Settings" />
 	<string key="Website.App.LabelHelpContents" value="Help Contents" />
 	<string key="Website.App.LabelFeedback" value="Provide Feedback..." />
 	<string key="Website.App.LabelAboutComposite" value="About Composite C1" />
