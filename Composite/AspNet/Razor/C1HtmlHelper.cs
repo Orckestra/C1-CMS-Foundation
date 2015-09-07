@@ -82,6 +82,31 @@ namespace Composite.AspNet.Razor
         /// <returns></returns>
         public IHtmlString PageUrl(string pageId, object querystring = null)
         {
+            return PageUrl(new Guid(pageId), querystring);
+        }
+
+
+
+        /// <summary>
+        /// Returns a URL for a specific C1 page
+        /// </summary>
+        /// <param name="pageId">The page id.</param>
+        /// <returns></returns>
+        public IHtmlString PageUrl(Guid pageId)
+        {
+            return PageUrl(pageId, null);
+        }
+
+
+
+        /// <summary>
+        /// Returns a URL for a specific C1 page
+        /// </summary>
+        /// <param name="pageId">The page id.</param>
+        /// <param name="querystring">The querystring.</param>
+        /// <returns></returns>
+        public IHtmlString PageUrl(Guid pageId, object querystring)
+        {
             var dict = Functions.ObjectToDictionary(querystring);
 
             return PageUrl(pageId, dict);
@@ -97,15 +122,27 @@ namespace Composite.AspNet.Razor
         /// <returns></returns>
         public IHtmlString PageUrl(string pageId, IDictionary<string, object> querystring)
         {
+            return PageUrl(new Guid(pageId), querystring);
+        }
+
+
+        /// <summary>
+        /// Returns a URL for a specific C1 page
+        /// </summary>
+        /// <param name="pageId">The page id.</param>
+        /// <param name="querystring">The querystring.</param>
+        /// <returns></returns>
+        public IHtmlString PageUrl(Guid pageId, IDictionary<string, object> querystring)
+        {
             string relativeUrl = "~/page(" + pageId + ")";
-            string absoulteUrl = VirtualPathUtility.ToAbsolute(relativeUrl);
+            string absoluteUrl = VirtualPathUtility.ToAbsolute(relativeUrl);
 
             if (querystring != null && querystring.Keys.Count > 0)
             {
-                absoulteUrl += "?" + SerializeQueryString(querystring);
+                absoluteUrl += "?" + SerializeQueryString(querystring);
             }
 
-            return _helper.Raw(absoulteUrl);
+            return _helper.Raw(absoluteUrl);
         }
 
 
