@@ -77,12 +77,16 @@ ui|editorpage {
 
     ui|fieldgroup {
         width: 430px;
-        display: inline-block;
+        display: table;
         overflow: visible;
         position: relative;
         -webkit-column-break-inside: avoid; /* Chrome, Safari, Opera */
         page-break-inside: avoid; /* Firefox */
         break-inside: avoid; /* IE 10+ */
+
+        @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+           display: inline-block; 
+        }  /* IE 10, 11 */
     }
 }
 
@@ -312,7 +316,6 @@ ui|datalabeltext {
 ui|toolbar ui|field {
     margin: 0;
     float: left;
-    /*#ie width: 1px !important;*/
 }
 
 ui|toolbar ui|fielddesc,
