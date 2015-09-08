@@ -1,29 +1,29 @@
 ﻿<svg width="18" height="18" xmlns="http://www.w3.org/2000/svg">
-  <g stroke="red" fill="red">
-    <g fill-rule="evenodd" id="media-edit-media-file" viewBox="0 0 18 18">
-      <g>
-        <path  stroke="none" d="m12,7l-1,0l0,1l1,0l0,-1z"/>
-        <path  stroke="none" d="m12,9l-1,0l0,1l1,0l0,-1z"/>
-        <path  stroke="none" d="m3,7l-1,0l0,1l1,0l0,-1z"/>
-        <path  stroke="none" d="m12,5l-1,0l0,1l1,0l0,-1z"/>
-        <path  stroke="none" d="m12,3l-1,0l0,1l1,0l0,-1z"/>
-        <path  stroke="none" d="m3,5l-1,0l0,1l1,0l0,-1z"/>
-        <path  stroke="none" d="m3,3l-1,0l0,1l1,0l0,-1z"/>
-        <path  stroke="none" d="m3,9l-1,0l0,1l1,0l0,-1z"/>
-        <path  stroke="none" d="m3,11l-1,0l0,1l1,0l0,-1z"/>
-        <path stroke-linejoin="round" stroke-linecap="round" fill="none"  d="m13.5,2.5l0,6.008423"/>
-        <path stroke-linejoin="round" stroke-linecap="round" fill="none"  d="m9.5,2.5l0,9.936615"/>
-        <path stroke-linejoin="round" stroke-linecap="round" fill="none" d="m4.5,2.5l0,9.936615"/>
-        <path stroke-linejoin="round" stroke-linecap="round" fill="none"  d="m0.5,2.5l0,9.936615"/>
-        <path stroke-linejoin="round" stroke-linecap="square" fill="none"  d="m4.519745,7.5l4.980255,0"/>
-        <path stroke-linejoin="round" stroke-linecap="square" fill="none" d="m4.60965,11.5l4.89035,0"/>
-        <path stroke-linejoin="round" stroke-linecap="square" fill="none" d="m4.51123,3.5l4.98877,0"/>
+  <g fill="#666" stroke="#666">
+      <g id="media-edit-media-file" fill-rule="evenodd"  viewBox="0 0 18 18">
+        <g id="Group">
+          <path id="Fill-1028" stroke="none" d="m12,7l-1,0l0,1l1,0l0,-1z"/>
+          <path id="Fill-1029" stroke="none" d="m12,9l-1,0l0,1l1,0l0,-1z"/>
+          <path id="Fill-1031" stroke="none" d="m3,7l-1,0l0,1l1,0l0,-1z"/>
+          <path id="Fill-1032" stroke="none" d="m12,5l-1,0l0,1l1,0l0,-1z"/>
+          <path id="Fill-1033" stroke="none" d="m12,3l-1,0l0,1l1,0l0,-1z"/>
+          <path id="Fill-1034" stroke="none" d="m3,5l-1,0l0,1l1,0l0,-1z"/>
+          <path id="Fill-1035" stroke="none" d="m3,3l-1,0l0,1l1,0l0,-1z"/>
+          <path id="Fill-1036" stroke="none" d="m3,9l-1,0l0,1l1,0l0,-1z"/>
+          <path id="Fill-1037" stroke="none" d="m3,11l-1,0l0,1l1,0l0,-1z"/>
+          <path stroke-linejoin="round" stroke-linecap="round" fill="none" id="Stroke-1043" d="m13.5,2.5l0,6.008423"/>
+          <path stroke-linejoin="round" stroke-linecap="round" fill="none" id="Stroke-1043-Copy" d="m9.5,2.5l0,9.936615"/>
+          <path stroke-linejoin="round" stroke-linecap="round" fill="none" id="Stroke-1043-Copy-3" d="m4.5,2.5l0,9.936615"/>
+          <path stroke-linejoin="round" stroke-linecap="round" fill="none" id="Stroke-1043-Copy-2" d="m0.5,2.5l0,9.936615"/>
+          <path stroke-linejoin="round" stroke-linecap="square" fill="none" id="Stroke-1044" d="m4.519745,7.5l4.980255,0"/>
+          <path stroke-linejoin="round" stroke-linecap="square" fill="none" id="Stroke-1045" d="m4.60965,11.5l4.89035,0"/>
+          <path stroke-linejoin="round" stroke-linecap="square" fill="none" id="Stroke-1046" d="m4.51123,3.5l4.98877,0"/>
+        </g>
+        <g stroke-linejoin="round" fill="none">
+          <path stroke-linecap="round" id="Stroke-3175" d="m9.84851,16.492401l0.728291,-2.700701l5.1542,-5.025041l1.7655,1.79865l-5.0795,5.20419l-2.56849,0.722901l0,0l0,0z"/>
+          <path id="Stroke-3176" d="m14.459198,10.269623l1.770813,1.770844"/>
+          <path stroke-linecap="round" id="Stroke-3177" d="m10.852173,13.881409l1.585205,1.669983"/>
+        </g>
       </g>
-      <g stroke-linejoin="round" fill="none">
-        <path stroke-linecap="round"  d="m9.84851,16.492401l0.728291,-2.700701l5.1542,-5.025041l1.7655,1.79865l-5.0795,5.20419l-2.56849,0.722901l0,0l0,0z"/>
-        <path  d="m14.459198,10.269623l1.770813,1.770844"/>
-        <path stroke-linecap="round" d="m10.852173,13.881409l1.585205,1.669983"/>
-      </g>
-    </g>
   </g>
 </svg>
