@@ -143,38 +143,37 @@ SystemToolBarBinding.prototype.handleBroadcast = function (broadcast, arg) {
 		case BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED:
 
 			var self = this;
-			if (arg != null) {
-				if (arg.syncHandle == this.getSyncHandle()) {
-					if (arg.actionProfile != null && arg.actionProfile.hasEntries()) {
-						this._actionProfile = arg.actionProfile;
-						//TODO: refactor with updating API
-						this._node = arg.actionProfile.Node;
-						var key = this._getProfileKey();
-						if (key != this._currentProfileKey) {
+			if (arg != null && arg.syncHandle == this.getSyncHandle()) {
+				if (arg.actionProfile != null && arg.actionProfile.hasEntries()) {
+					this._actionProfile = arg.actionProfile;
+					//TODO: refactor with updating API
+					this._node = arg.actionProfile.Node;
+					var key = this._getProfileKey();
+					if (key != this._currentProfileKey) {
 
-							/*
+						/*
 							* Timeout prevents "freezing" tree selection.
 							*/
-							setTimeout(function () {
-								self.emptyLeft();
-								self._actionFolderNames = {};
-								self.buildLeft();
-								self._currentProfileKey = key;
-							}, 0);
-						}
-					} else {
-						setTimeout(function () {
+						setTimeout(function() {
 							self.emptyLeft();
 							self._actionFolderNames = {};
-							self._currentProfileKey = null;
-							self._node = null;
-							var mores = self.bindingWindow.bindingMap.moreactionstoolbargroup;
-							if (mores != null) {
-								mores.hide();
-							}
+							self.buildLeft();
+							self._currentProfileKey = key;
 						}, 0);
 					}
+				} else {
+					setTimeout(function() {
+						self.emptyLeft();
+						self._actionFolderNames = {};
+						self._currentProfileKey = null;
+						self._node = null;
+						var mores = self.bindingWindow.bindingMap.moreactionstoolbargroup;
+						if (mores != null) {
+							mores.hide();
+						}
+					}, 0);
 				}
+
 			}
 			break;
 
@@ -187,9 +186,11 @@ SystemToolBarBinding.prototype.handleBroadcast = function (broadcast, arg) {
 
 		case BroadcastMessages.INVOKE_DEFAULT_ACTION:
 			var self = this;
-			setTimeout(function () { // timeout because binding attachment may happen now
-				self._invokeDefaultAction();
-			}, 0);
+			if (arg != null && arg.syncHandle == this.getSyncHandle()) {
+					setTimeout(function() { // timeout because binding attachment may happen now
+						self._invokeDefaultAction();
+					}, 0);
+			}
 			break;
 	}
 }

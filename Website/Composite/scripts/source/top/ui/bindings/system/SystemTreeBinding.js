@@ -269,7 +269,7 @@ SystemTreeBinding.prototype.handleAction = function (action) {
 			break;
 
 		case TreeNodeBinding.ACTION_COMMAND:
-			EventBroadcaster.broadcast(BroadcastMessages.INVOKE_DEFAULT_ACTION);
+			EventBroadcaster.broadcast(BroadcastMessages.INVOKE_DEFAULT_ACTION, { syncHandle: this.getSyncHandle()});
 			action.consume();
 			break;
 	}
