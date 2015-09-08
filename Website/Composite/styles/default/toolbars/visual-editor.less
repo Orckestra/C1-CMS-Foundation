@@ -1,11 +1,20 @@
 .visualeditor-toolbar {
     background: @visual-editor-toolbar-bg-color;
+    padding: 11px 20px;
 }
 
 .visualeditor-adv-toolbar {
+    padding: 11px 20px;
+
+    ui|selector {
+        margin: 2px 3px;
+    }
+
+    ui|toolbarbutton {
+        margin: 4px 5px;
+    }
 
     ui|selector, ui|toolbarbutton {
-        margin: 0px 5px 0px 5px;
         text-transform: none;
     }
 }
