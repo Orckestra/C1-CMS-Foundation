@@ -294,10 +294,10 @@ namespace Composite.Plugins.Elements.ElementProviders.AllFunctionsElementProvide
 
 
 
-        protected override TreeLockBehavior OnGetTreeLockBehavior()
-        {
-            return TreeLockBehavior.None;
-        }
+		//protected override TreeLockBehavior OnGetTreeLockBehavior()
+		//{
+		//	return TreeLockBehavior.None;
+		//}
 
 
 
