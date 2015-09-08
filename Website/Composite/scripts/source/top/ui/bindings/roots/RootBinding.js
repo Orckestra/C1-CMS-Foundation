@@ -22,6 +22,9 @@ RootBinding.ACTION_PHASE_3 = "root init phase 3";
 RootBinding.ACTION_ACTIVATED = "root activated";
 RootBinding.ACTION_DEACTIVATED = "root deactivated";
 
+
+RootBinding.CLASSNAME_WEBKIT = "webkit";
+
 /**
  * @class
  * This binds to the BODY tag!
@@ -72,27 +75,30 @@ RootBinding.prototype.toString = function () {
  * is always flexed up from the root element.
  * @overloads {Binding#onBindingRegister}.
  */
-RootBinding.prototype.onBindingRegister = function () {
-	
-	RootBinding.superclass.onBindingRegister.call ( this );
-	
-	this.logger = SystemLogger.getLogger ( this.bindingDocument.title.toString ());
-	
-	if ( this.bindingWindow.WindowManager ) {
-		this.subscribe ( this.bindingWindow.WindowManager.WINDOW_EVALUATED_BROADCAST );
+RootBinding.prototype.onBindingRegister = function() {
+
+	RootBinding.superclass.onBindingRegister.call(this);
+
+	this.logger = SystemLogger.getLogger(this.bindingDocument.title.toString());
+
+	if (this.bindingWindow.WindowManager) {
+		this.subscribe(this.bindingWindow.WindowManager.WINDOW_EVALUATED_BROADCAST);
 	}
-	
+
 	/*
 	 * Make activation aware.
 	 */
-	this._activationawares = new List ();
+	this._activationawares = new List();
 	this.isActivated = false;
-	this._setupActivationAwareness ( true );
+	this._setupActivationAwareness(true);
 
-	if (Localization.isUIRtl)
-	{
+	if (Localization.isUIRtl) {
 		this.setProperty("dir", "rtl");
 		this.attachClassName("rtl");
+	}
+
+	if (Client.isWebKit && !Client.isPad) {
+		this.attachClassName(RootBinding.CLASSNAME_WEBKIT);
 	}
 }
 
