@@ -101,17 +101,6 @@ namespace Composite.Core.WebClient
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class PageUrlHelper
     {
-        private static readonly string LogTitle = "PageUrlHelper";
-        // private static readonly string RenredingLinkRegExPattern = string.Format(@"{0}/Renderers/Page.aspx([^\""']*)", UrlUtils.PublicRootPath);
-        // private static readonly Regex RenredingLinkRegex = new Regex(RenredingLinkRegExPattern + "");
-
-        private static readonly string RendererUrlPrefix = UrlUtils.PublicRootPath + "/Renderers/Page.aspx";
-        private static readonly string InternalUrlPrefix = UrlUtils.PublicRootPath + "/page";
-        private static readonly string RawRendererUrlPrefix = "~/Renderers/Page.aspx";
-        private static readonly string RawInternalUrlPrefix = "~/page";
-
-
-
         /// <exclude />
         [Obsolete("Use Composite.Data.PageUrl instead")]
         public static PageUrlOptions ParseUrl(string url)
@@ -323,7 +312,7 @@ namespace Composite.Core.WebClient
             if(urlType == UrlType.Internal)
             {
                 string basePath = UrlUtils.ResolvePublicUrl("Renderers/Page.aspx");
-                UrlString result = new UrlString(basePath);
+                var result = new UrlString(basePath);
 
                 result["pageId"] = options.PageId.ToString();
                 result["cultureInfo"] = options.Locale.ToString();
@@ -390,7 +379,7 @@ namespace Composite.Core.WebClient
         /// <param name="queryString">Query string.</param>
         /// <param name="notUsedQueryParameters">Query string parameters that were not used.</param>
         /// <returns></returns>
-        [Obsolete("To be removed. Use Composite.Core.Routings.PageUrls instead.")]
+        [Obsolete("To be removed. Use Composite.Core.Routing.PageUrls instead.")]
         public static PageUrlOptions ParseQueryString(NameValueCollection queryString, out NameValueCollection notUsedQueryParameters)
         {
 			if (string.IsNullOrEmpty(queryString["pageId"])) throw new InvalidOperationException("Invalid query string. The 'pageId' parameter of the GUID type is expected.");

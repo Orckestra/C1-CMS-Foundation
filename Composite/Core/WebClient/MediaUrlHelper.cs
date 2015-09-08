@@ -22,9 +22,6 @@ namespace Composite.Core.WebClient
 	    private static readonly string DefaultMediaStore = "MediaArchive";
         private static readonly Regex GuidRegex = new Regex(@"^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$");
         //private static readonly string LogTitle = typeof(MediaUrlHelper).Name;
-        private static readonly string InternalMediaUrlPrefix = UrlUtils.PublicRootPath + "/media";
-        //private static readonly string DecodedFullInternalMediaUrlPrefix = InternalMediaUrlPrefix + "(";
-        private static readonly string RawMediaUrlPrefix = "~/media";
 
         /// <exclude />
         public static string GetUrl(IMediaFile file)
@@ -63,7 +60,7 @@ namespace Composite.Core.WebClient
 
             string idStr = queryParameters["id"];
 
-            // In order to suppurt old-style queries, checking composite path in "i" and "src" query parameters
+            // In order to support old-style queries, checking composite path in "i" and "src" query parameters
             string compositePath = queryParameters["i"];
             if(compositePath.IsNullOrEmpty())
             {

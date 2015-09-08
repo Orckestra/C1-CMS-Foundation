@@ -20,7 +20,6 @@ namespace Composite.Data
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class PageFolderFacade
     {
-        private static readonly string PageFolderType_IdFieldName = "Id";
         private static readonly string PageFolderType_PageReferenceFieldName = "PageId";
 
 

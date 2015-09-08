@@ -16,7 +16,7 @@ namespace Composite.Data
         Guid Id { get; set; }
 
         /// <exclude />
-        Guid PageId { get; set; } // Field is left in this interface for backward compatibility
+        new Guid PageId { get; set; } // Field is left in this interface for backward compatibility
     }
 
     /// <exclude />

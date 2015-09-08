@@ -68,7 +68,10 @@ namespace Composite.Core.WebClient.Services.TreeServiceObjects
         /// <exclude />
         public bool ContainsTaggedActions { get; set; } // CORE
 
-        /// <exclude />
+        /// <summary>
+        /// When client is searching through elements to find the element with the given entity token, 
+        /// the client should disregard elements with TreeLockEnabled == <value>true</value> and continue searching.
+        /// </summary>
         public bool TreeLockEnabled { get; set; }
     }
 }

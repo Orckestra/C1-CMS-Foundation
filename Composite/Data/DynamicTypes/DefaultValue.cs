@@ -495,6 +495,13 @@ namespace Composite.Data.DynamicTypes
         }
 
 
+        /// <exclude />
+        public override int GetHashCode()
+        {
+            return ToString().GetHashCode();
+        }
+
+
         [Serializable]
         private class RandomStringSettings
         {

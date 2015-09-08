@@ -133,6 +133,7 @@ namespace Composite.Core.Routing
         /// Tries to convert an internal url to a public one, returns the original value if failed.
         /// </summary>
         /// <param name="internalUrl">The internal url.</param>
+        /// <param name="urlSpace">The url space.</param>
         /// <returns></returns>
         public static string TryConvertInternalUrlToPublic(string internalUrl, UrlSpace urlSpace = null)
         {

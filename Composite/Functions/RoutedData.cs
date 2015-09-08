@@ -204,6 +204,9 @@ namespace Composite.Functions
     {
         private RoutedDataModel _model;
 
+        /// <summary>
+        /// Creates an instace of <see cref="PathInfoRoutedData{T}"/>
+        /// </summary>
         protected PathInfoRoutedData()
         {
             var urlMapper = GetUrlMapper();
