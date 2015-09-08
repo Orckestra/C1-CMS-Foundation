@@ -484,9 +484,23 @@
     </Compile>
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\Selectors\UrlComboBox.ascx" />
     <Content Include="Composite\grunt.html" />
+    <Content Include="Composite\images\icons\svg\books.svg" />
     <Content Include="Composite\images\icons\svg\bullist.svg" />
+    <Content Include="Composite\images\icons\svg\company-apple.svg" />
     <Content Include="Composite\images\icons\svg\data-awaiting-approval.svg" />
+    <Content Include="Composite\images\icons\svg\dollar-invoice.svg" />
     <Content Include="Composite\images\icons\svg\end.svg" />
+    <Content Include="Composite\images\icons\svg\puzzle.svg" />
+    <Content Include="Composite\images\icons\svg\puzzle-piece.svg" />
+    <Content Include="Composite\images\icons\svg\social-facebook.svg" />
+    <Content Include="Composite\images\icons\svg\social-googleplus.svg" />
+    <Content Include="Composite\images\icons\svg\social-twitter.svg" />
+    <Content Include="Composite\images\icons\svg\social-twitter-bird.svg" />
+    <Content Include="Composite\images\icons\svg\social-videmo.svg" />
+    <Content Include="Composite\images\icons\svg\social-youtube.svg" />
+    <Content Include="Composite\images\icons\svg\social-skype.svg" />
+    <Content Include="Composite\images\icons\svg\social-share.svg" />
+    <Content Include="Composite\images\icons\svg\social-vk.svg" />
     <Content Include="Composite\images\icons\svg\numlist.svg" />
     <Content Include="Composite\images\icons\svg\outdent.svg" />
     <Content Include="Composite\images\icons\svg\merge.svg" />
@@ -496,6 +510,8 @@
     <Content Include="Composite\images\icons\svg\resize-screen.svg" />
     <Content Include="Composite\images\icons\svg\seo.svg" />
     <Content Include="Composite\images\icons\svg\small-text.svg" />
+    <Content Include="Composite\images\icons\svg\social-instagram.svg" />
+    <Content Include="Composite\images\icons\svg\social-linkedin.svg" />
     <Content Include="Composite\images\icons\svg\split.svg" />
     <Content Include="Composite\images\icons\svg\selection.svg" />
     <Content Include="Composite\images\icons\svg\settings.svg" />
@@ -508,6 +524,8 @@
     <Content Include="Composite\images\icons\svg\folder-edit.svg" />
     <Content Include="Composite\images\icons\svg\perspective-functions.svg" />
     <Content Include="Composite\images\icons\svg\stop.svg" />
+    <Content Include="Composite\images\icons\svg\student.svg" />
+    <Content Include="Composite\images\icons\svg\cake.svg" />
     <Content Include="Composite\images\touch-cursor.png" />
     <Content Include="Composite\scripts\source\top\core\ImageProvider.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\genericview\GenericViewBinding.js" />
