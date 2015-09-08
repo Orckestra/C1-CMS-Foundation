@@ -23,7 +23,7 @@ RootBinding.ACTION_ACTIVATED = "root activated";
 RootBinding.ACTION_DEACTIVATED = "root deactivated";
 
 
-RootBinding.CLASSNAME_WEBKIT = "webkit";
+RootBinding.CLASSNAME_WEBKIT_DESKTOP = "webkit-d";
 
 /**
  * @class
@@ -98,7 +98,7 @@ RootBinding.prototype.onBindingRegister = function() {
 	}
 
 	if (Client.isWebKit && !Client.isPad) {
-		this.attachClassName(RootBinding.CLASSNAME_WEBKIT);
+		this.attachClassName(RootBinding.CLASSNAME_WEBKIT_DESKTOP);
 	}
 }
 

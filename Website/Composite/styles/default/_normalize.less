@@ -66,21 +66,22 @@ img {
 // ==========================================================================
 
 // Only Chrome support custom scrollbar styling
-body.webkit ::-webkit-scrollbar {
-    width: 13px;
-    height: 13px;
-    background: #FAFAFA;
-}
+.webkit-d {
+    ::-webkit-scrollbar {
+        width: 13px;
+        height: 13px;
+        background: #FAFAFA;
+    }
 
-body.webkit ::-webkit-scrollbar-thumb {
-    background: #CACACA;
-    border: 3px solid #FAFAFA;
-    border-radius: 7px;
-}
+    ::-webkit-scrollbar-thumb {
+        background: #CACACA;
+        border: 3px solid #FAFAFA;
+        border-radius: 7px;
 
-
-body.webkit ::-webkit-scrollbar-thumb:hover {
-        background: @primary-color;
+        &:hover {
+            background: @primary-color;
+        }
+    }
 }
 
 // Forms
