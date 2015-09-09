@@ -78,7 +78,7 @@ StyleBinding.prototype.updateElement = function (element) {
 
 	var href = element.getAttribute("link");
 
-	if (this.href != href) {
+	if (this.href != href && this.style) {
 		this.href = href;
 		this.style.href = Resolver.resolve(this.href);
 	}
