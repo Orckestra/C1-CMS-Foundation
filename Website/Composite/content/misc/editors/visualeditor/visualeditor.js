@@ -221,11 +221,6 @@ function onInstanceInitialize ( inst ) {
 		tinyInstance.getBody().lang = Localization.currentLang();
 	}
 
-	/*
-	 * Hacking!!! See notes below...
-	 */
-	tinyInstance.queryCommandState = queryCommandState_hacked;
-	
 	if ( top.EventBroadcaster != null ) {
 		
 		/*
@@ -244,32 +239,4 @@ function onInstanceInitialize ( inst ) {
 			}
 		);
 	}
-}
-
-/**
- * Something is wrong with TinyMCE the "queryCommandState" method. 
- * @see {http://tinymce.moxiecode.com/punbb/viewtopic.php?pid=35821}
- * @param {String} u
- * @returns {boolean}
- */
-function queryCommandState_hacked (u) {
-	
-    var q = this, v, r;
-    if (q._isHidden()) {
-        return;
-    }
-    if ((v = q.queryStateCommands[u])) {
-        r = v.func.call(v.scope);
-        if ( r == true ) {
-            return r;
-        }
-    }
-    v = q.editorCommands.queryCommandState(u);
-    if (v !== -1) {
-        return v;
-    }
-    try {
-        return this.getDoc().queryCommandState(u);
-    } catch (p) {
-    }
 }
