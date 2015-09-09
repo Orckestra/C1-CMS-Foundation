@@ -1,6 +1,4 @@
-﻿using System;
-using System.Text;
-using System.Web.Hosting;
+﻿using System.Text;
 
 namespace Composite.Core.WebClient
 {
@@ -11,21 +9,8 @@ namespace Composite.Core.WebClient
         /// <exclude />
         public static string Render(string directive = null)
         {
-            StringBuilder _builder = new StringBuilder();
+            var _builder = new StringBuilder();
             string root = UrlUtils.AdminRootPath;
-
-            /*
-            if (directive == "compile")
-            {
-                StyleCompiler.Compile(HostingEnvironment.MapPath(root + "/styles/styles.css"),
-                                      HostingEnvironment.MapPath(root + "/styles/styles_compiled.css"));
-
-                StyleCompiler.Compile(HostingEnvironment.MapPath(root + "/skins/skin.css"),
-                                      HostingEnvironment.MapPath(root + "/skins/skin_compiled.css"));
-
-                return string.Empty;
-            }
-             * */
 
             bool isInDevelopMode = CookieHandler.Get("mode") == "develop";
 
@@ -38,9 +23,7 @@ namespace Composite.Core.WebClient
                 _builder.AppendLine(stylesheet(root + "/styles/styles.min.css"));
             }
 
-
             return _builder.ToString();
-
         }
 
         private static string stylesheet(string url)
