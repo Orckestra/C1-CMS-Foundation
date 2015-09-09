@@ -46,7 +46,7 @@
 					<ui:tabpanel id="tabpanel0">
 						<table id="head0" class="table permissions-table hide" binding="PermissionEditorHeadBinding">
 							<thead>
-								<tr class="head">
+								<tr class="head text-center">
 									<th class="edit">&#160;</th>
 									<th class="index">&#160;</th>
 								</tr>

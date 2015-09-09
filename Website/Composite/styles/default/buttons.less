@@ -63,6 +63,21 @@ ui|clickbutton {
             }
         }
     }
+
+    &.simple-icon { // usage: in table reports, for example SEO
+        ui|labelbox {
+            border: none;
+            padding: 5px;
+            background: none;
+            color: #575757;
+        }
+
+        &.hover {
+            ui|labelbox {
+                color: @primary-color;
+            }
+        }
+    }
 }
 
 
@@ -181,5 +196,4 @@ ui|toolbarbutton {
             }
         }
     }
-
 }
