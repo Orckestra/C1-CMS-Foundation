@@ -17,17 +17,17 @@ ui|menupopup {
     visibility: hidden;
     display: none;
     .user-select(none);
+    background-color: #fff;
+    box-shadow: @base-box-shadow;
+    border-radius: @base-border-radius;
+    border: 1px solid @base-border-color;
 }
 
 ui|popupbody { /* NOT USED ON COMMON POPUPS! */
     display: block;
     padding: 10px 12px;
-    background-color: #FFF;
     color: @text-color;
     .user-select(none);
-    border: 1px solid @base-border-color;
-    border-radius: @base-border-radius;
-    box-shadow: 0px 0px 5px 0px rgba(97,97,97,0.25);
 }
 
 /* OVERFLOW ................................................ */
@@ -35,7 +35,6 @@ ui|popupbody { /* NOT USED ON COMMON POPUPS! */
 ui|popup.overflow {
     overflow-y: scroll;
     height: 211px; /* move this to script when separators are supported */
-    border-right: none;
 }
 
 ui|popup div.popupindicator {
