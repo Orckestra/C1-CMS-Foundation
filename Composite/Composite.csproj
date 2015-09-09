@@ -2446,7 +2446,6 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>LocalizationFiles.cs</LastGenOutput>
     </None>
-    <None Include="packages.config" />
     <None Include="Plugins\Functions\FunctionProviders\app.config" />
   </ItemGroup>
   <ItemGroup>
