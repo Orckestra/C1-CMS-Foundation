@@ -22,7 +22,7 @@
 			resizable="true">
 
 			<ui:pagebody class="pad-0">
-				<ui:splitbox orient="horizontal" layout="2:3">
+				<ui:splitbox orient="horizontal" layout="2:3" class="line">
 					<ui:splitpanel>
 						<ui:tree id="selectiontree" binding="SystemTreeBinding" selectiontype="single" actionaware="true"
 							treeselector="true" locktoeditor="false">

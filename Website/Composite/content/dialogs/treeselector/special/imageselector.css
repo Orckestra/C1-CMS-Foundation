@@ -1,9 +1,5 @@
 @namespace ui url("http://www.w3.org/1999/xhtml");
 
-ui|tree {
-    border-right: solid 1px #E1E1E1;
-}
-
 ui|box#treebox,
 ui|box#infobox {
     height: 100%;
@@ -12,11 +8,11 @@ ui|box#infobox {
     position: relative;
 }
 
-div#info.image .icon-preview {
+#info.image .icon-preview {
     display: none;
 }
 
-div#previewimage {
+#previewimage {
     width: 100%;
     height: 300px;
     background-repeat: no-repeat;
@@ -26,12 +22,12 @@ div#previewimage {
     left: 0;
 }
 
-    div#previewimage svg {
+   #previewimage svg {
         width: 150px;
         height: 150px;
         margin: 65px;
         float: none;
-        color: #999999;
+        color: #999;
     }
 
 ui|datainput#treeselectionresult {
