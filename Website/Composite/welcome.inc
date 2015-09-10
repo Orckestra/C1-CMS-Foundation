@@ -27,14 +27,14 @@
 						<p>Please wait while we test your installation.</p>
 						<ul id="introtest"/>
 						<p id="introtestsuccess">Your Composite C1 installation is operational.</p>
-						<p id="introtestfailure">
+						<p id="introtestfailure" class="hide">
 							Your Composite C1 installation has problems!<br/>
 							<a href="#" onclick="window.location.reload()">(check again)</a>
 						</p>
 					</div>
 					</ui:deck>
 					<ui:deck id="license">
-						<h1>License</h1>
+						<h1 class="simple-h1">License</h1>
 						<div id="licensetext" class="licensetext"/>
 						<form id="licenseform" action="javascript://" method="get">
 							<input id="licenseaccept" type="checkbox" class="checkbox" onclick="Welcome.acceptLicense(this)"/>
@@ -42,10 +42,10 @@
 						</form>
 					</ui:deck>
 					<ui:deck id="setup">
-						<h1>Setup</h1>
+						<h1 class="simple-h1">Setup</h1>
 						<div>
-							<div id="setuptext"/>
 							<div id="setupfields" class="setupfields"/>
+							<div id="setuptext"/>
 						</div>
 					</ui:deck>
 					<ui:deck id="language">

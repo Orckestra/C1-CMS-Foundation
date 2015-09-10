@@ -14,7 +14,7 @@ html, body {
 }
 
 .welcomepage .splash {
-    width: 480px;
+    width: 500px;
 }
 
 
@@ -33,7 +33,7 @@ html, body {
 
 .welcomepage ui|dialogtoolbar {
     padding: 20px 0 0 0;
-    margin-top: 15px;
+    margin-top: 10px;
 }
 
 .welcomepage .navdecks ui|toolbargroup {
@@ -42,15 +42,26 @@ html, body {
 
 .welcomepage .licensetext {
     padding: 10px;
-    height: 120px;
+    height: 140px;
     overflow: auto;
     border: 1px solid #E1E1E1;
     font-size: 14px;
     margin-bottom: 20px;
 }
 
+.welcomepage .simple-h1 {
+    border: 0;
+    padding: 0;
+}
+
 .welcomepage .setupfields {
+    max-height: 400px;
+    height: 45vh;
+    overflow: auto;
+    border: 1px solid #E1E1E1;
+    background: #F7F9FA;
     font-size: 14px;
+    padding-right: 10px;
 }
 
 
@@ -59,37 +70,35 @@ ui|clickbutton#introtestsuccessbutton {
     visibility: hidden;
 }
 
-p#introtestfailure {
-    display: none;
-}
 
-ul#introtest {
+#introtest {
     list-style: none;
     margin: 0 0 1em 0;
     padding: 0;
     line-height: 1.5em;
 }
 
-    ul#introtest li {
+    #introtest li {
         padding-left: 30px;
         background-repeat: no-repeat;
         color: #B2B2B2;
     }
 
-        ul#introtest li.on {
+        #introtest li.on {
             color: #333;
         }
 
-        ul#introtest li.ok {
+        #introtest li.ok {
             background-image: url("${root}/images/icons/svg/accept.svg");
             -moz-background-position-y: -2px;
             -o-background-position-y: -2px;
             background-position-y: -2px;
         }
 
-ul#introtest li.bad {
+        #introtest li.bad {
             background-image: url("${root}/images/icons/svg/cancel.svg");
         }
+
 
 
 .welcomepage ui|radio,
@@ -98,12 +107,13 @@ ul#introtest li.bad {
 }
 
     .welcomepage ui|radio ui|datalabeltext {
-        padding-top: 0;
+        margin-left: 21px;
     }
 
 .welcomepage ui|radiodatagroup p,
 .welcomepage ui|checkboxgroup p {
     padding-left: 25px;
+    margin: 4px 0 20px 0;
 }
 
 .welcomepage ui|checkboxgroup {
