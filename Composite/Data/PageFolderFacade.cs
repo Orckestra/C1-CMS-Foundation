@@ -20,7 +20,9 @@ namespace Composite.Data
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class PageFolderFacade
     {
-        private static readonly string PageFolderType_PageReferenceFieldName = "PageId";
+        private static readonly string PageFolderType_PageIdFieldName = "PageId";
+        private static readonly string PageFolderType_IdFieldName = "Id";
+        
 
 
         /// <summary>
@@ -237,7 +239,7 @@ namespace Composite.Data
         /// <param name="dataFolderTypeId"></param>
         public static void AddFolderDefinition(this IPage page, Guid dataFolderTypeId)
         {
-            IPageFolderDefinition pageFolderDefinition = DataFacade.BuildNew<IPageFolderDefinition>();
+            var pageFolderDefinition = DataFacade.BuildNew<IPageFolderDefinition>();
             pageFolderDefinition.Id = Guid.NewGuid();
             pageFolderDefinition.PageId = page.Id;
             pageFolderDefinition.FolderTypeId = dataFolderTypeId;
@@ -349,20 +351,38 @@ namespace Composite.Data
             {
                 pageRelatedData.PageId = definingPage.Id;
             }
+            else
+            {
+                // Backward compatibility
+                Type interfaceType = pageFolderData.DataSourceId.InterfaceType;
+                PropertyInfo pageReferencePropertyInfo = GetDefinitionPageReferencePropertyInfo(interfaceType);
+                pageReferencePropertyInfo.SetValue(pageFolderData, definingPage.Id, null);
+            }
 
             var pageData = pageFolderData as IPageData;
             if (pageData != null)
             {
                 pageData.Id = Guid.NewGuid();
             }
-        }
+            else
+            {
+                // Backward compatibility
+                Type interfaceType = pageFolderData.DataSourceId.InterfaceType;
+                PropertyInfo idPropertyInfo = interfaceType.GetPropertiesRecursively()
+                    .FirstOrDefault(f => f.Name == PageFolderType_IdFieldName);
 
+                if (idPropertyInfo != null && idPropertyInfo.PropertyType == typeof(Guid))
+                {
+                    idPropertyInfo.SetValue(pageFolderData, Guid.NewGuid(), null);
+                }
+            }
+        }
 
 
         /// <exclude />
         public static PropertyInfo GetDefinitionPageReferencePropertyInfo(Type pageFolderType)
         {
-            return pageFolderType.GetPropertiesRecursively().Last(f => f.Name == PageFolderType_PageReferenceFieldName);
+            return pageFolderType.GetPropertiesRecursively().Last(f => f.Name == PageFolderType_PageIdFieldName);
         }
     }
 }
