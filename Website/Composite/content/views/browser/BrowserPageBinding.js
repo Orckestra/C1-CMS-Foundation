@@ -281,6 +281,8 @@ BrowserPageBinding.prototype.push = function (node, isManual) {
  */
 BrowserPageBinding.prototype.pushURL = function (url, isManual) {
 
+	this.isBrowserTab = false;
+
 	if (url && url != this._box.getLocation()) {
     	this._isPushingUrl = isManual;
 	    if (this._customUrl) {
@@ -308,6 +310,9 @@ BrowserPageBinding.prototype.getAbsoluteUrl =  function(url) {
  * @return
  */
 BrowserPageBinding.prototype.pushToken = function (node, isManual) {
+
+	this.isBrowserTab = false;
+
     var tab = this._box.getGeneticViewTabBinding();
     this._box.select(tab, true);
     tab.tree.setNode(node);
@@ -327,6 +332,9 @@ BrowserPageBinding.prototype.pushToken = function (node, isManual) {
  * @return
  */
 BrowserPageBinding.prototype.setURL = function (url) {
+
+	this.isBrowserTab = true;
+
 	var cover = window.bindingMap.cover;
 	cover.show();
 	this._box.setURL(url);
@@ -537,6 +545,12 @@ BrowserPageBinding.prototype._handleDocumentLoad = function (binding) {
     this.dispatchAction(BrowserPageBinding.ACTION_ONLOAD);
 
     this._isPushingUrl = false;
+
+	if (this.isBrowserTab) {
+		var tab = this._box.getBrowserTabBinding();
+		this._box.select(tab);
+	}
+
 }
 
 /**
