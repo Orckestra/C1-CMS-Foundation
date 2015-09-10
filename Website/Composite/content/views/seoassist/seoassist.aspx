@@ -23,7 +23,7 @@
 							<th colspan="2">
 								<div>
 									<ui:fielddata>
-										<ui:datainput id="keywordinput" />
+										<ui:datainput id="keywordinput" placeholder="${string:Composite.Web.SEOAssistant:AddKeywordInputPlaceholder}"/>
 									</ui:fielddata>
 									
 									<ui:toolbarbutton image="add" id="addkeywordbutton" title="Add Keyword" />

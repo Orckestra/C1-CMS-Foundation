@@ -15,4 +15,5 @@
   <string key="isInContent" value="In content" />
   <string key="NoKeywords" value="No keywords found in page preview" />
 	<string key="IncorrectHtml" value="Failed to analyze the keywords because the markup is not valid" />
+  <string key="AddKeywordInputPlaceholder" value="Add SEO word .." />
 </strings>
