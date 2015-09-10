@@ -59,12 +59,12 @@ namespace Composite.Services
                 new KeyValuePair
                 {
                     Key = "Core Development",
-                    Value = "Marcus Wendt;Dmitry Dzygin;Taras Nakonechnyi"
+                    Value = "Marcus Wendt;Dmitry Dzygin;Taras Nakonechnyi;Inna Boitsun"
                 },
                 new KeyValuePair
                 {
-                    Key = "QA, Packages, Documentation & Support",
-                    Value = "Vitaly Vysotskyi;Inna Boitsun;Pavlo Kuzminskiy"
+                    Key = "QA, Documentation & Support",
+                    Value = "Vitaly Vysotskyi;Pavlo Kuzminskiy"
                 },
                 new KeyValuePair
                 {
@@ -72,17 +72,18 @@ namespace Composite.Services
                     Value = string.Join(";", new[]
                     {
                         "Martin Jensen for a solid codebase",
-                        "Jesper Moth for the C1 Console",
+                        "Jesper Moth for the first generation C1 Console",
+                        "Lamine N'Dao @ Orckestra for 2015 design",
+                        "@nufaqtz for awesome packages, inspiration and core contribs",
                         "Poul Kjeldager Sørensen for the Windows Azure support",
+                        "@burningice for CompositeC1Contrib",
                         "@thorstenh for German translation",
                         "huangpin@eov.cn for Chinese translation",
                         "@C1er for Russian & Ukrainian translations",
                         "Emelie Mikaelsson (Invinn AB) for Swedish translation",
                         "Erik Paquet for French translation",
                         "Volodymyr Muzyka for building our Kiev team",
-                        "@burningice for CompositeC1Contrib",
                         "HolisticWare team for contributions",
-                        "@nufaqtz for awesome packages and inspiration",
                         "Our community for help and cheering us on",
                         "Our paying customers which make this possible"
                     })

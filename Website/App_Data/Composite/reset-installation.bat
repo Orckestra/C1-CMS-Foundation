@@ -198,5 +198,6 @@ del ..\..\bin\Composite.Tools.*.*
 del ..\..\bin\Composite.Media.*.*
 del ..\..\bin\Composite.Forms.*.*
 del ..\..\bin\Composite.XmlSerializers.dll
+del ..\..\bin\WebGrease.dll
 
 
