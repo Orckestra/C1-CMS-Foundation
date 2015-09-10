@@ -406,20 +406,6 @@
     <Compile Include="Composite\controls\HttpHeadersControl.ascx.designer.cs">
       <DependentUpon>HttpHeadersControl.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Composite\controls\IconRendererControl.ascx.cs">
-      <DependentUpon>IconRendererControl.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Composite\controls\IconRendererControl.ascx.designer.cs">
-      <DependentUpon>IconRendererControl.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="Composite\controls\IconRendererHarmonyControl.ascx.cs">
-      <DependentUpon>IconRendererHarmonyControl.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Composite\controls\IconRendererHarmonyControl.ascx.designer.cs">
-      <DependentUpon>IconRendererHarmonyControl.ascx</DependentUpon>
-    </Compile>
     <Compile Include="Composite\controls\Misc\MarkupInOutView.ascx.cs">
       <DependentUpon>MarkupInOutView.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2249,8 +2235,6 @@
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\TypeSelectors\TypeSelector.ascx" />
     <Content Include="Composite\controls\FormsControls\Helpers\StyleFileLoaderControl.ascx" />
     <Content Include="Composite\controls\HttpHeadersControl.ascx" />
-    <Content Include="Composite\controls\IconRendererControl.ascx" />
-    <Content Include="Composite\controls\IconRendererHarmonyControl.ascx" />
     <Content Include="Composite\controls\Misc\MarkupInOutView.ascx" />
     <Content Include="Composite\controls\Misc\MarkupInOutView.css" />
     <Content Include="Composite\controls\RegisterOutputTransformation.ascx" />
