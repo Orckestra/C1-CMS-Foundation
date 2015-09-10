@@ -12,7 +12,7 @@ using System.Web.Hosting;
 using System.Xml.Linq;
 using Composite.Core.IO;
 using Composite.Core.Xml;
-using System.Net.Sockets;
+
 
 namespace Composite.Core.WebClient
 {
@@ -84,18 +84,18 @@ namespace Composite.Core.WebClient
         /// <exclude />
         public string Render()
         {
-            StringBuilder _builder = new StringBuilder();
+            var builder = new StringBuilder();
             switch (_mode)
             {
                 case CompositeScriptMode.OPERATE:
                 case CompositeScriptMode.DEVELOP:
-                    RenderMarkup(_builder);
+                    RenderMarkup(builder);
                     break;
                 case CompositeScriptMode.COMPILE:
-                    CompileScript(_builder);
+                    CompileScript(builder);
                     break;
             }
-            return _builder.ToString();
+            return builder.ToString();
         }
 
 
@@ -156,15 +156,21 @@ namespace Composite.Core.WebClient
                 _ctx.Response.Cache.SetExpires(DateTime.Now.AddYears(-10));
                 _ctx.Response.Cache.SetCacheability(HttpCacheability.Private);
 
-                bool isLocalHost = (_ctx.Request.Url.Host.ToLowerInvariant() == "localhost");
-                _hasServerToServerConnection = HasServerToServerConnection();
+                var url = _ctx.Request.Url;
+                bool isLocalHost = url.Host.ToLowerInvariant() == "localhost";
+
+                // Start page is temporarily disabled
+                // _hasServerToServerConnection = HasServerToServerConnection();
+                _hasServerToServerConnection = false; // HasServerToServerConnection();
 
                 builder.AppendLine(@"<script type=""text/javascript"">");
 
-                builder.AppendLine(string.Format(@"Application.hasExternalConnection = {0};", _hasServerToServerConnection.ToString().ToLower()));
-                builder.AppendLine(string.Format(@"Application.isDeveloperMode = {0};", (_mode == CompositeScriptMode.DEVELOP).ToString().ToLower()));
-                builder.AppendLine(string.Format(@"Application.isLocalHost = {0};", (_ctx.Request.Url.Host.ToLowerInvariant() == "localhost").ToString().ToLower()));
-                builder.AppendLine(string.Format(@"Application.isOnPublicNet = {0};", UrlIsOnPublicNet(_ctx.Request.Url).ToString().ToLower()));
+                Func<bool, string> toJson = b => b.ToString().ToLowerInvariant();
+
+                builder.AppendFormat(@"Application.hasExternalConnection = {0};", toJson(_hasServerToServerConnection));
+                builder.AppendFormat(@"Application.isDeveloperMode = {0};", toJson(_mode == CompositeScriptMode.DEVELOP));
+                builder.AppendFormat(@"Application.isLocalHost = {0};", toJson(isLocalHost));
+                builder.AppendFormat(@"Application.isOnPublicNet = {0};", toJson(UrlIsOnPublicNet(url)));
 
                 builder.AppendLine(@"</script>");
 
@@ -234,14 +240,13 @@ namespace Composite.Core.WebClient
             if (hostname.IndexOf('.') == -1) return false;
 
             var dnsResult = System.Net.Dns.GetHostEntry(hostname);
-            if ( dnsResult.AddressList.Length > 0)
+            if (dnsResult.AddressList.Length == 0)
             {
-                var addr = dnsResult.AddressList.First().MapToIPv6();
-                if (addr.IsIPv6SiteLocal || addr.IsIPv6LinkLocal) return false;
-                return true;
+                return false;
             }
 
-            return false;
+            var address = dnsResult.AddressList.First().MapToIPv6();
+            return !address.IsIPv6SiteLocal && !address.IsIPv6LinkLocal;
         }
 
         /// <exclude />
