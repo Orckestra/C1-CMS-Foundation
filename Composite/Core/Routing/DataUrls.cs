@@ -16,6 +16,8 @@ namespace Composite.Core.Routing
     /// </summary>
     public static class DataUrls
     {
+        private static readonly string LogTitle = typeof (DataUrls).FullName;
+
         private static readonly ConcurrentDictionary<Type, IDataUrlMapper> _globalDataUrlMappers =
             new ConcurrentDictionary<Type, IDataUrlMapper>();
 
@@ -62,8 +64,15 @@ namespace Composite.Core.Routing
 
             foreach (var globalDataUrlMapper in _globalDataUrlMappers)
             {
-                var data = globalDataUrlMapper.Value.GetData(pageUrlData);
-                if (data != null) return data;
+                try
+                {
+                    var data = globalDataUrlMapper.Value.GetData(pageUrlData);
+                    if (data != null) return data;
+                }
+                catch (Exception ex)
+                {
+                    Log.LogError(LogTitle, ex);
+                }
             }
 
             var page = pageUrlData.GetPage();
@@ -75,15 +84,29 @@ namespace Composite.Core.Routing
             var staticMappers = GetStaticMappers(page);
             foreach (var mapper in staticMappers)
             {
-                var data = mapper.Value.GetData(pageUrlData);
-                if (data != null) return data;
+                try
+                {
+                    var data = mapper.Value.GetData(pageUrlData);
+                    if (data != null) return data;
+                }
+                catch (Exception ex)
+                {
+                    Log.LogError(LogTitle, ex);
+                }
             }
 
             var dynamicMappers = GetDynamicMappers(page);
             foreach (var mapper in dynamicMappers)
             {
-                var data = mapper.Value.GetData(pageUrlData);
-                if (data != null) return data;
+                try
+                {
+                    var data = mapper.Value.GetData(pageUrlData);
+                    if (data != null) return data;
+                }
+                catch (Exception ex)
+                {
+                    Log.LogError(LogTitle, ex);
+                }
             }
 
             return null;
