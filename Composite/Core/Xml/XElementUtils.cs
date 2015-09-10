@@ -37,7 +37,7 @@ namespace Composite.Core.Xml
         /// </summary>
         public static void SaveToPath(this XElement element, string fileName)
         {
-            using (C1FileStream stream = new C1FileStream(fileName, FileMode.Create, FileAccess.Write))
+            using (var stream = new C1FileStream(fileName, FileMode.Create, FileAccess.Write))
             {                
                 element.Save(stream);
             }
@@ -52,7 +52,7 @@ namespace Composite.Core.Xml
 
             if (element.Parent == null) return false;
 
-            return element.Parent.Elements().Where(f => f.Name == element.Name).Count() > 1;
+            return element.Parent.Elements().Count(f => f.Name == element.Name) > 1;
         }
 
 
@@ -62,7 +62,7 @@ namespace Composite.Core.Xml
         {
             if (element == null) throw new ArgumentNullException("element");
 
-            return element.NodesBeforeSelf().Where(f => f is XElement && ((XElement)f).Name == element.Name).Count();
+            return element.NodesBeforeSelf().Count(f => f is XElement && ((XElement)f).Name == element.Name);
         }
 
 
@@ -91,25 +91,16 @@ namespace Composite.Core.Xml
         /// </returns>
         public static string GetAttributeValue(this XElement element, XName attributeXName)
         {
-            if (element == null) throw new ArgumentNullException("element");
-            if (attributeXName == null) throw new ArgumentNullException("attributeXName");
+            Verify.ArgumentNotNull(element, "element");
+            Verify.ArgumentNotNull(attributeXName, "attributeXName");
 
-            XAttribute valueAttribute = element.Attribute(attributeXName);
-
-            if (valueAttribute == null)
-            {
-                return null;
-            }
-            else
-            {
-                return valueAttribute.Value;
-            }
+            return  (string) element.Attribute(attributeXName);
         }
 
 
 
         /// <summary>
-        /// Merge in elements and attributes. New child elements and new attibutes are imported to the source. Conflicts are ignored (not merged).
+        /// Merge in elements and attributes. New child elements and new attributes are imported to the source. Conflicts are ignored (not merged).
         /// </summary>
         /// <param name="source">the structure to add new elements and attributes to</param>
         /// <param name="toBeImported">what to import</param>
@@ -150,7 +141,7 @@ namespace Composite.Core.Xml
 
 
         /// <summary>
-        /// Removes atributes and child elements from source which match ditto 100% in tatoBeExcludedget. Elements in source which has other child elements or attributes are not removed.
+        /// Removes attributes and child elements from source which match ditto 100% in tatoBeExcludedget. Elements in source which has other child elements or attributes are not removed.
         /// </summary>
         /// <param name="source">XElement to modify</param>
         /// <param name="toBeExcluded">what to locate and remove</param>

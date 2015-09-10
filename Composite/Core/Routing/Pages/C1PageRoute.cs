@@ -158,13 +158,15 @@ namespace Composite.Core.Routing.Pages
                 string correctFilePath = new UrlBuilder(correctUrl).RelativeFilePath;
 
                 string decodedOriginalPath = HttpUtility.UrlDecode(originalFilePath);
+                string decodedCorrectFilePath = HttpUtility.UrlDecode(correctFilePath);
 
                 if (!urlSpace.ForceRelativeUrls 
                     && (originalFilePath.Length != correctFilePath.Length
                         && decodedOriginalPath != correctFilePath
-                        && decodedOriginalPath != HttpUtility.UrlDecode(correctFilePath))
+                        && decodedOriginalPath != decodedCorrectFilePath)
                     || (string.Compare(originalFilePath, correctFilePath, false, CultureInfo.InvariantCulture) != 0 
-                        && string.Compare(originalFilePath, correctFilePath, true, CultureInfo.InvariantCulture) == 0))
+                        && string.Compare(originalFilePath, correctFilePath, true, CultureInfo.InvariantCulture) == 0)
+                        && decodedOriginalPath != decodedCorrectFilePath)
                 {
                     // redirect to a url with right casing
                     return GetRedirectRoute(correctUrl);
