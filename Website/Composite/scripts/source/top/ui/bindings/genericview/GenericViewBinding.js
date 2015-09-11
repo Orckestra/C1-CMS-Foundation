@@ -32,6 +32,12 @@ function GenericViewBinding() {
 	this.perspectiveNode = null;
 
 	/**
+	 * Current Node
+	 * @type {SystemNode}
+	 */
+	this.node = null;
+
+	/**
 	* Tree position 
 	* @type {int}
 	*/
@@ -106,15 +112,17 @@ GenericViewBinding.prototype.handleAction = function (action) {
  */
 GenericViewBinding.prototype.setNode = function (node) {
 
+	this.node = node;
+
 	this.empty();
 	this.detachClassName(GenericViewBinding.CLASSNAME_SINGLE);
 	this.detachClassName(GenericViewBinding.CLASSNAME_SINGLE_ICONSIZE);
 	this.detachClassName(GenericViewBinding.CLASSNAME_ICONSIZE);
 
-	if (node) {
-		if (node.hasChildren()) {
+	if (this.node) {
+		if (this.node.hasChildren()) {
 			
-			var children = node.getChildren();
+			var children = this.node.getChildren();
 
 			while (children.hasEntries()) {
 				var child = children.extractFirst();
@@ -124,7 +132,7 @@ GenericViewBinding.prototype.setNode = function (node) {
 		} else {
 		    this.attachClassName(GenericViewBinding.CLASSNAME_SINGLE);
 		    this.attachClassName(GenericViewBinding.CLASSNAME_SINGLE_ICONSIZE);
-			this.addNode(node);
+		    this.addNode(this.node);
 		}
 	}
 }

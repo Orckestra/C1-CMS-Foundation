@@ -100,6 +100,8 @@ BrowserPageBinding.prototype.onBindingRegister = function () {
 
     BrowserPageBinding.superclass.onBindingRegister.call(this);
     this.subscribe(BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED);
+    this.subscribe(BroadcastMessages.SYSTEMTREEBINDING_REFRESHED);
+    
     this.addActionListener(WindowBinding.ACTION_ONLOAD);
     this.addActionListener(TabBoxBinding.ACTION_SELECTED);
     this.addActionListener(TabBoxBinding.ACTION_UPDATED);
@@ -124,8 +126,16 @@ BrowserPageBinding.prototype.handleBroadcast = function (broadcast, arg) {
         case BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED:
         	if (arg.syncHandle == this.getSyncHandle() && !(arg.source instanceof GenericViewBinding)) {
                 this.push(arg.actionProfile.Node, true);
-            }
-            break;
+        	}
+			break;
+    	case BroadcastMessages.SYSTEMTREEBINDING_REFRESHED:
+    		var tab = this._box.getGeneticViewTabBinding();
+    		if (tab.isVisible && tab.tree.node) {
+			    var node = tab.tree.node;
+			    tab.tree.setNode(node);
+    			this.bindingWindow.bindingMap.addressbar.showBreadcrumb(node);
+		    }
+		    break;
     }
 }
 
