@@ -5,9 +5,9 @@
 	</group>
 	<group>
 		<device label="Desktop (1366x768)" w="1366" h="768" image="screen"/>
-		<device label="Tablet (1024x768)" w="1024" h="768" image="tablet" touch="true"/>
+		<device label="Tablet (1024x768)" w="1024" h="768" image="tablet-landscape" touch="true"/>
 		<device label="Tablet (Portrait)" w="768" h="1024" image="tablet" touch="true"/>
-		<device label="Small Tablet (800x600)" w="800" h="600" image="tablet" touch="true"/>
+		<device label="Small Tablet (800x600)" w="800" h="600" image="tablet-landscape" touch="true"/>
 		<device label="Small Tablet (Portrait)" w="600" h="800" image="tablet" touch="true"/>
 		<device label="Mobile" w="320" h="480" image="smartphone" touch="true"/>
 	</group>
