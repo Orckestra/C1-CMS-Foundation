@@ -27,7 +27,7 @@ ui|treenode {
 
     ui|labelbox {
         padding-bottom: 3px;
-        padding-left: 18px;
+        padding-left: 15px;
         float: none;
         height: 28px;
         position: relative;
@@ -35,7 +35,7 @@ ui|treenode {
         &.image-and-text {
             ui|labeltext {
                 display: inline;
-                margin-left: 5px;
+                margin-left: 4px;
             }
         }
 
@@ -59,7 +59,7 @@ ui|treenode {
 
         &:before, &:after {
             position: absolute;
-            left: 2px;
+            left: 0;
             display: block;
             content: "";
             border: 5px solid transparent;
@@ -108,7 +108,7 @@ ui|treenode {
     }
 
     ui|treenode {
-        padding-left: 50px;
+        padding-left: 45px;
 
         &::before, &::after {
             content: '';
@@ -118,9 +118,9 @@ ui|treenode {
         &::before {
             border-top: 1px solid #999;
             top: 12px;
-            width: 30px;
+            width: 25px;
             height: 0;
-            left: 27px;
+            left: 24px;
         }
 
         &::after {
@@ -128,12 +128,12 @@ ui|treenode {
             height: 100%;
             width: 0px;
             top: -3px;
-            left: 27px;
+            left: 24px;
         }
 
         &.open, &.closed {
             &::before {
-                width: 20px;
+                width: 15px;
             }
         }
 
