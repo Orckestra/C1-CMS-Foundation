@@ -14,7 +14,7 @@
 		<ui:dialogpage binding="StandardDialogPageBinding"
 			class="standard" 
 			resizable="false"
-			width="340">
+			width="440">
 			<ui:pagebody>
 				<table id="dialoglayout">
 					<tr>

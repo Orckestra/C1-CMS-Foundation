@@ -42,7 +42,7 @@
 			binding="EditFunctionCallDialogPageBinding"
 			id="renderingdialogpage"
 			image="${icon:parameter_overloaded}"
-			width="<% =ActiveTab == Tab.Basic? "340" : "820" %>"
+			width="<% =ActiveTab == Tab.Basic? "420" : "820" %>"
 			height="<% =ActiveTab == Tab.Basic? "100" : "410" %>"
 			resizable="false"
 			label="<%= this.DialogLabel %>"
