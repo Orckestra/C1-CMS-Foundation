@@ -6,7 +6,7 @@
 	float: left;
 	position: relative;
 	margin-right: 8px;
-	border: 1px solid #DDDDDD;
+	border: 1px solid #ddd;
 
 }
 
@@ -124,12 +124,3 @@
 	width: 90px;
 }
 
-.resulttable td ui|clickbutton ui|labelbox.imageonly {
-    background: none;
-    border: none;
-    color: #575757;
-}
-
-.resulttable td ui|clickbutton.hover ui|labelbox.imageonly {
-    color: #D2232A;
-}

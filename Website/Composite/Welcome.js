@@ -152,7 +152,7 @@ var Welcome = new function () {
 		var spans = new List(p.getElementsByTagName("span"));
 		spans.each(function (span) {
 			if (span.id == "crumb" + id) {
-				span.className = "selected";
+				span.className = "text-primary";
 			} else {
 				span.className = "";
 			}

@@ -35,19 +35,19 @@
     }
 
     a, a:focus, a:active {
-        color: #D2232A;
+        color: @primary-color;
         cursor: pointer;
     }
 
         a:hover {
-            color: #04A380;
+            color: darken( @primary-color, 10%);
             text-decoration: underline;
         }
 
     .clickbutton {
         display: block;
         text-decoration: none;
-        background: #D2232A;
+        background: @primary-color;
         color: #fff;
         -ms-border-radius: 20px;
         border-radius: 20px;
@@ -57,7 +57,7 @@
         text-align: center;
 
         &:hover, &:active, &:focus {
-            background: #04A380;
+            background: darken( @primary-color, 10%);
             color: #fff;
             text-decoration: none;
         }
@@ -80,7 +80,7 @@
         ui|labelbox {
             display: block;
             text-decoration: none;
-            background: #D2232A;
+            background: @primary-color;
             color: #fff;
             -ms-border-radius: 20px;
             border-radius: 20px;
@@ -102,7 +102,7 @@
 
         &.hover {
             ui|labelbox {
-                background: #04A380;
+                background: darken( @primary-color, 10%);
                 color: #fff;
             }
         }

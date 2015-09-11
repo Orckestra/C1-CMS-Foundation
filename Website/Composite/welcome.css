@@ -27,10 +27,6 @@ html, body {
         font-size: 10px;
     }
 
-    .welcomepage .crumbs span.selected {
-        color: #D2232A;
-    }
-
 .welcomepage ui|dialogtoolbar {
     padding: 20px 0 0 0;
     margin-top: 10px;
@@ -89,7 +85,7 @@ ui|clickbutton#introtestsuccessbutton {
         }
 
         #introtest li.ok {
-            background-image: url("${root}/images/icons/svg/accept.svg");
+            background-image: url("${root}/images/icons/svg/accept-green.svg");
             -moz-background-position-y: -2px;
             -o-background-position-y: -2px;
             background-position-y: -2px;

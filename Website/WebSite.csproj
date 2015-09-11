@@ -545,7 +545,6 @@
     <Content Include="Composite\images\icons\svg\balloon.svg" />
     <Content Include="Composite\images\icons\svg\base-function-function.svg" />
     <Content Include="Composite\images\icons\svg\bicycle.svg" />
-    <Content Include="Composite\images\icons\svg\blocks-blue.svg" />
     <Content Include="Composite\images\icons\svg\blocks.svg" />
     <Content Include="Composite\images\icons\svg\bold.svg" />
     <Content Include="Composite\images\icons\svg\book-open.svg" />
@@ -1135,7 +1134,6 @@
     <Content Include="Composite\images\icons\svg\usergroups-rootfolder-open.svg" />
     <Content Include="Composite\images\icons\svg\usergroups-usergroup.svg" />
     <Content Include="Composite\images\icons\svg\users-adduser.svg" />
-    <Content Include="Composite\images\icons\svg\users-blue.svg" />
     <Content Include="Composite\images\icons\svg\users-changeownculture.svg" />
     <Content Include="Composite\images\icons\svg\users-changeownpassword.svg" />
     <Content Include="Composite\images\icons\svg\users-changepublicculture.svg" />

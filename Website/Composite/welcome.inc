@@ -10,7 +10,7 @@
 			<div class="splash-inner">
 				<div id="intro" class="intro">
 					<p id="crumbs" class="crumbs">
-						<span id="crumbtest" class="selected">Welcome</span>
+						<span id="crumbtest" class="text-primary">Welcome</span>
 						<em>►</em>
 						<span id="crumblicense">License</span> 
 						<em>►</em> 

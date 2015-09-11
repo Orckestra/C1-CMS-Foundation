@@ -261,7 +261,7 @@ SEOAssistantPageBinding.prototype._addDeleteCell = function (tr) {
     td.appendChild(button.bindingElement);
     tr.appendChild(td);
     button.attach();
-
+    button.attachClassName("simple-icon");
     var self = this;
     button.oncommand = function () {
         self._deleteKeywordRow(tr);

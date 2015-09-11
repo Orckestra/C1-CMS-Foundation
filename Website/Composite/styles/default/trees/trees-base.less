@@ -30,7 +30,6 @@ ui|treenode {
         padding-left: 18px;
         float: none;
         height: 28px;
-        color: @tree-icon-color;
         position: relative;
 
         &.image-and-text {
@@ -42,6 +41,7 @@ ui|treenode {
 
         svg {
             margin-top: 3px;
+            color: @tree-icon-color;
         }
 
         ui|labelbody {
@@ -75,6 +75,10 @@ ui|treenode {
                 top: 10px;
                 border-top-color: @tree-bg-color;
             }
+
+            svg {
+                color: @tree-node-open-icon-color;
+            }
         }
 
         &.closed {
@@ -92,13 +96,13 @@ ui|treenode {
         }
 
         &.focused {
-            ui|labelbody {
-                color: @primary-color;
+            svg {
+                color: @tree-node-focused-icon-color;
             }
 
             ui|labeltext {
-                background-color: @primary-color;
-                color: #fff;
+                background-color: @tree-text-focused-bg-color;
+                color: @tree-text-focused-color;
             }
         }
     }
@@ -145,11 +149,13 @@ ui|treenode {
     }
 }
 
-ui|tree ui|treebody > ui|treenode > ui|labelbox {
-    &:before, &:after {
-        // display: none;
+ui|tree > ui|treebody > ui|treenode.open {
+
+    > ui|labelbox svg {
+        color: @tree-root-open-icon-color;
     }
 }
+
 
 ui|treecontent {
     padding-left: 40px;

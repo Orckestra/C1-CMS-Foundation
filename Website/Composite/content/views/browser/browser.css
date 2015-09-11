@@ -1,58 +1,14 @@
 @namespace url("http://www.w3.org/1999/xhtml");
 @namespace ui url("http://www.w3.org/1999/xhtml");
 
-ui|toolbar#navbar ui|toolbarbutton.hover,
-ui|toolbar#navbar ui|toolbarbutton.active {
-    background: #fff;
-    -webkit-filter: none;
-    -moz-filter: none;
-    -o-filter: none;
-    filter: none;
-    color: #D2232A;
-    border-color: #D2232A;
-}
-
-ui|tabbox ui|tabpanel {
-    background-color: white;
-}
-
-ui|tab ui|labeltext {
-    width: 110px;
-    overflow: hidden;
-}
-
-ui|tab ui|labelbox {
-    position: relative;
-    overflow: visible;
-}
-
-    ui|tab ui|labelbox img {
-        position: absolute;
-        margin-top: 2px;
-        right: -42px;
-    }
-
-    ui|tab ui|labelbox img {
-        visibility: hidden;
-    }
-
-ui|tab.selected ui|labelbox img,
-ui|tab.hover ui|labelbox img {
-    visibility: visible;
-}
-
-ui|tab.hover ui|labelbox img {
-    margin-top: 0;
-}
-
-ui|datainput#addressbar {
+#addressbar {
     float: left;
     margin-top: 2px;
     padding: 0;
 }
 
 
-    ui|datainput#addressbar input {
+#addressbar input {
         width: 100%;
         height: 100%;
         padding-top: 2px;
@@ -63,11 +19,11 @@ ui|cover#blocker {
     cursor: pointer !important;
 }
 
-div#message {
+#message {
     padding: 22px;
 }
 
-div#text {
+#text {
     padding-left: 44px;
     -moz-user-select: none;
     user-select: none;
@@ -132,8 +88,8 @@ ui|path {
             content: "/";
             display: block;
             position: absolute;
-            color: #DDDDDD;
-            left: 0px;
+            color: #ddd;
+            left: 0;
             top: 6px;
         }
 
@@ -145,7 +101,7 @@ ui|path {
             content: "...";
             display: block;
             position: absolute;
-            right: 0px;
+            right: 0;
             top: 6px;
         }
 

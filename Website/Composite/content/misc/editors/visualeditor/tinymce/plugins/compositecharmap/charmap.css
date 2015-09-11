@@ -17,8 +17,8 @@ ui|field a {
 	font-size: 16px;
 }
 ui|field a:hover {
-	background-color: #D2232A;
-	color: #fff;
+	background-color: Highlight;
+	color: HighlightText;
 }
 div#selection {
 	padding-top: 0;
