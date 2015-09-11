@@ -8,8 +8,8 @@ ui|toolbar#navbar ui|toolbarbutton.active {
     -moz-filter: none;
     -o-filter: none;
     filter: none;
-    color: #21B980;
-    border-color: #21B980;
+    color: #D2232A;
+    border-color: #D2232A;
 }
 
 ui|tabbox ui|tabpanel {

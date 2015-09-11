@@ -29,7 +29,7 @@
             }
 
             #__C1PerformanceTrace a {
-            color: #22b980;
+            color: #D2232A;
             }
 
             #__C1PerformanceTrace .dl {

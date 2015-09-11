@@ -17,7 +17,7 @@
 	float: left;		
 }
 .seoresult span.true {
-	background-color: #21B980;
+	background-color: #22D32A;
 }
 .seoresult span.false {
 	background-color: #fff;
@@ -100,7 +100,7 @@
 	left: 12px;
 	width: 14px;
 	height: 7px;
-	border: 1px solid #22B980;
+	border: 1px solid #D2232A;
 	border-width: 0 0 1px 1px;
 	transform:rotate(-40deg);
 }
@@ -131,5 +131,5 @@
 }
 
 .resulttable td ui|clickbutton.hover ui|labelbox.imageonly {
-    color: #22b980;
+    color: #D2232A;
 }
