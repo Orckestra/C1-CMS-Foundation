@@ -277,6 +277,10 @@ SelectorBinding.prototype.buildDOMContent = function () {
 	if ( Client.isExplorer == true ) {
 		this.bindingElement.hideFocus = true;
 	}
+
+	if (Client.isEdge) {
+		this.isSearchSelectionEnabled = false;
+	}
 }
 
 /**
