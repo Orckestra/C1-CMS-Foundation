@@ -193,7 +193,8 @@ var ViewDefinitions = {
 	 * Page Browser.
 	 */
 	"Composite.Management.Browser" : new HostedViewDefinition ({
-		isMutable	: false,
+		isMutable	: true,
+		isPinned	: true,
 		handle 		: "Composite.Management.Browser",
 		position	: DockBinding.MAIN,
 		perspective	: ExplorerBinding.PERSPECTIVE_CONTENT,

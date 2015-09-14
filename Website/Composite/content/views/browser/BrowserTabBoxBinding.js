@@ -45,7 +45,7 @@ BrowserTabBoxBinding.prototype.toString = function () {
  */
 BrowserTabBoxBinding.prototype.setURL = function ( url ) {
 	
-	var tab = this.getBrowserTabBinding();
+	var tab = this.getBrowserTabBinding();	
 	//this.select(tab);
 	//tab.select();
 	var win = tab.browserwindow;

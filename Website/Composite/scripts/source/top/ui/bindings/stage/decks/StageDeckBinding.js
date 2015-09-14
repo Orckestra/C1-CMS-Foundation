@@ -132,23 +132,24 @@ StageDeckBinding.prototype.handleAction = function ( action ) {
 
 
 				//NEWUI LOAD Browser to first tab
+				var browserViewDefinition = ViewDefinition.clone(
+                        "Composite.Management.Browser",
+                        "Composite.Management.Browser." + KeyMaster.getUniqueKey()
+                );
+				browserViewDefinition.image = this.definition.image;
+				browserViewDefinition.label = this.definition.label;
+				browserViewDefinition.toolTip = this.definition.toolTip;
 
-				var explorerdocument = this.windowBinding.getContentDocument();
-
-				var browserpanel = this.windowBinding.getContentWindow().bindingMap.browserpanel;
-
-				var viewBinding = ViewBinding.newInstance(explorerdocument);
-				viewBinding.setType(ViewBinding.TYPE_EXPLORERVIEW);
-				var browserViewDefinition = ViewDefinitions["Composite.Management.Browser"];
 				browserViewDefinition.argument["SystemViewDefinition"] = this.definition;
-				viewBinding.setDefinition(browserViewDefinition);
+				browserViewDefinition.argument.image = this.definition.image;
+				browserViewDefinition.argument.label = this.definition.label;
+				browserViewDefinition.argument.toolTip = this.definition.toolTip;
 
-				browserpanel.add(viewBinding);
 
-				viewBinding.attach();
-				viewBinding.initialize();
 
-				this._viewBinding = viewBinding;
+				var tab = this._dockBindings.get("main").prepareNewView(browserViewDefinition);
+
+				this._viewBinding = tab.getAssociatedView();
 
 				action.consume ();
 			}

@@ -213,6 +213,7 @@ DockBinding.prototype.interceptDisplayChange = function ( wasDisplayed ) {
 /**
  * Prepare new view.
  * @param {ViewDefinition} definition
+ * @return DockTabBinding
  */
 DockBinding.prototype.prepareNewView = function ( definition ) {
 	
@@ -228,6 +229,9 @@ DockBinding.prototype.prepareNewView = function ( definition ) {
 	tabBinding.setToolTip ( definition.toolTip );
 	tabBinding.setEntityToken ( definition.entityToken );
 	tabBinding.setAssociatedView ( viewBinding );
+	if (definition.isPinned) {
+		tabBinding.setProperty("pinned", true);
+	}
 	this.appendTabByBindings ( tabBinding, null );
 	
 	// listen for dirty events and loaded pages
@@ -253,7 +257,9 @@ DockBinding.prototype.prepareNewView = function ( definition ) {
 	 * Odd fact: if this is done on a timeout, mozilla will 
 	 * summon a bug that hides the dock after a few seconds.
 	 */
-	viewBinding.attach ();
+	viewBinding.attach();
+
+	return tabBinding;
 }
 
 /**
