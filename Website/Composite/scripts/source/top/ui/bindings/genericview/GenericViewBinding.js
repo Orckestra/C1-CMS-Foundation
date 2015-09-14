@@ -8,8 +8,8 @@ GenericViewBinding.CLASSNAME_ICONSIZE = "icons-s-170";
 GenericViewBinding.CLASSNAME_SINGLE_ICONSIZE = "icons-s-400";
 GenericViewBinding.IMAGE_MAXWIDTH = 300;
 GenericViewBinding.IMAGE_MAXHEIGHT = 170;
-GenericViewBinding.SINGLE_IMAGE_MAXWIDTH = 1000;
-GenericViewBinding.SINGLE_IMAGE_MAXHEIGHT = 1000;
+GenericViewBinding.SINGLE_IMAGE_MAXWIDTH = 400;
+GenericViewBinding.SINGLE_IMAGE_MAXHEIGHT = 400;
 GenericViewBinding.LIST_IMAGE = "listimage";
 
 
@@ -156,8 +156,8 @@ GenericViewBinding.prototype.addNode = function (child) {
 	if (bag && bag.ListViewImage) {
 		
 
-		if (this.hasClassName(GenericViewBinding.CLASSNAME_SINGLE)) {
-		    treenode.setImage(bag.ListViewImage.replace("{width}", GenericViewBinding.SINGLE_IMAGE_MAXWIDTH).replace("{height}", GenericViewBinding.SINGLE_IMAGE_MAXHEIGHT));
+	    if (this.hasClassName(GenericViewBinding.CLASSNAME_SINGLE)) {
+	        treenode.setImage(bag.ListViewImage.replace("{width}", this.bindingElement.offsetWidth - 60).replace("{height}", this.bindingElement.offsetHeight - 130));
 		} else {
 		    treenode.setImage(bag.ListViewImage.replace("{width}", GenericViewBinding.IMAGE_MAXWIDTH).replace("{height}", GenericViewBinding.IMAGE_MAXHEIGHT));
 			treenode.attachClassName(GenericViewBinding.LIST_IMAGE);
