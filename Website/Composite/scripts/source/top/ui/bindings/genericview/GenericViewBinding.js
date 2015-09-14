@@ -8,8 +8,6 @@ GenericViewBinding.CLASSNAME_ICONSIZE = "icons-s-170";
 GenericViewBinding.CLASSNAME_SINGLE_ICONSIZE = "icons-s-400";
 GenericViewBinding.IMAGE_MAXWIDTH = 300;
 GenericViewBinding.IMAGE_MAXHEIGHT = 170;
-GenericViewBinding.SINGLE_IMAGE_MAXWIDTH = 400;
-GenericViewBinding.SINGLE_IMAGE_MAXHEIGHT = 400;
 GenericViewBinding.LIST_IMAGE = "listimage";
 
 
