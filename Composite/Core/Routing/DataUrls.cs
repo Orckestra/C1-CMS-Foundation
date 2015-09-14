@@ -81,26 +81,11 @@ namespace Composite.Core.Routing
                 return null;
             }
 
-            var staticMappers = GetStaticMappers(page);
-            foreach (var mapper in staticMappers)
+            foreach (var mapper in GetMappersForPage(page.Id))
             {
                 try
                 {
-                    var data = mapper.Value.GetData(pageUrlData);
-                    if (data != null) return data;
-                }
-                catch (Exception ex)
-                {
-                    Log.LogError(LogTitle, ex);
-                }
-            }
-
-            var dynamicMappers = GetDynamicMappers(page);
-            foreach (var mapper in dynamicMappers)
-            {
-                try
-                {
-                    var data = mapper.Value.GetData(pageUrlData);
+                    var data = mapper.GetData(pageUrlData);
                     if (data != null) return data;
                 }
                 catch (Exception ex)
@@ -128,31 +113,80 @@ namespace Composite.Core.Routing
                 return dataUrlMapper.GetPageUrlData(dataReference);
             }
 
-            IData data = null;
-            if (typeof(IPageRelatedData).IsAssignableFrom(dataReference.ReferencedType))
+            if (typeof(IPageRelatedData).IsAssignableFrom(interfaceType))
             {
-                data = dataReference.Data;
+                IData data = dataReference.Data;
+                if (data == null)
+                {
+                    return null;
+                }
 
                 Guid pageId = (data as IPageRelatedData).PageId;
                 return TryGetPageUrlData(pageId, dataReference);
             }
-            
-            foreach (var propertyInfo in GetPageReferenceFields(dataReference.ReferencedType))
-            {
-                data = data ?? dataReference.Data;
 
-                Guid pageId = (Guid) propertyInfo.GetValue(data, null);
-                if (pageId != Guid.Empty)
+            foreach (var pageId in GetPageReferences(dataReference))
+            {
+                var pageUrlData = TryGetPageUrlData(pageId, dataReference);
+                if (pageUrlData != null)
                 {
-                    var pageUrlData = TryGetPageUrlData(pageId, dataReference);
-                    if (pageUrlData != null)
-                    {
-                        return pageUrlData;
-                    }
+                    return pageUrlData;
                 }
             }
 
             return null;
+        }
+
+
+        /// <summary>
+        /// Indicates whether there's a registered <see cref="IDataUrlMapper"/> that can build a url for a given data reference. 
+        /// </summary>
+        /// <param name="dataReference">The data reference.</param>
+        /// <returns></returns>
+        public static bool CanBuildUrlForData(IDataReference dataReference)
+        {
+            Verify.ArgumentNotNull(dataReference, "dataReference");
+            var interfaceType = dataReference.ReferencedType;
+
+            if (_globalDataUrlMappers.ContainsKey(interfaceType))
+            {
+                return true;
+            }
+
+            if (typeof(IPageRelatedData).IsAssignableFrom(interfaceType))
+            {
+                IData data = dataReference.Data;
+
+                Guid pageId = (data as IPageRelatedData).PageId;
+                return CanBuildUrlForData(interfaceType, pageId);
+            }
+
+            return GetPageReferences(dataReference).Any(pageId => CanBuildUrlForData(interfaceType, pageId));
+        }
+
+        private static bool CanBuildUrlForData(Type interfaceType, Guid pageId)
+        {
+            return GetMappersForPage(pageId, interfaceType).Any();
+        }
+
+        private static IEnumerable<Guid> GetPageReferences(IDataReference dataReference)
+        {
+            IData data = null;
+
+            foreach (var propertyInfo in GetPageReferenceFields(dataReference.ReferencedType))
+            {
+                data = data ?? dataReference.Data;
+                if (data == null)
+                {
+                    yield break;
+                }
+
+                Guid pageId = (Guid)propertyInfo.GetValue(data, null);
+                if (pageId != Guid.Empty)
+                {
+                    yield return pageId;
+                }
+            }
         }
 
         private static IEnumerable<PropertyInfo> GetPageReferenceFields(Type referencedType)
@@ -172,33 +206,39 @@ namespace Composite.Core.Routing
 
         private static PageUrlData TryGetPageUrlData(Guid pageId, IDataReference dataReference)
         {
-            if (pageId == Guid.Empty) return null;
-            var interfaceType = dataReference.ReferencedType;
+            foreach (var mapper in GetMappersForPage(pageId, dataReference.ReferencedType))
+            {
+                var pageUrlData = mapper.GetPageUrlData(dataReference);
+                if (pageUrlData != null) return pageUrlData;
+            }
+
+            return null;
+        }
+
+        private static IEnumerable<IDataUrlMapper> GetMappersForPage(Guid pageId, Type interfaceType = null)
+        {
+            if (pageId == Guid.Empty) yield break;
 
             var page = PageManager.GetPageById(pageId);
-            if (page == null) return null;
+            if (page == null) yield break;
 
             var staticMappers = GetStaticMappers(page);
             foreach (var mapper in staticMappers)
             {
-                if (mapper.Key.IsAssignableFrom(interfaceType))
+                if (interfaceType == null || mapper.Key.IsAssignableFrom(interfaceType))
                 {
-                    var pageUrlData = mapper.Value.GetPageUrlData(dataReference);
-                    if (pageUrlData != null) return pageUrlData;
+                    yield return mapper.Value;
                 }
             }
 
             var mappers = GetDynamicMappers(page);
             foreach (var mapper in mappers)
             {
-                if (mapper.Key.IsAssignableFrom(interfaceType))
+                if (interfaceType == null || mapper.Key.IsAssignableFrom(interfaceType))
                 {
-                    var pageUrlData = mapper.Value.GetPageUrlData(dataReference);
-                    if (pageUrlData != null) return pageUrlData;
+                    yield return mapper.Value;
                 }
             }
-
-            return null;
         }
 
         private static IEnumerable<KeyValuePair<Type, IDataUrlMapper>> GetStaticMappers(IPage page)

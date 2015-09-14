@@ -339,7 +339,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
 
                 Type interfaceType = dataEntityToken.InterfaceType;
 
-                if (PageFolderFacade.GetAllFolderTypes().Contains(interfaceType) == false) continue;
+                if (!PageFolderFacade.GetAllFolderTypes().Contains(interfaceType)) continue;
 
                 IData data = dataEntityToken.Data;
                 IPage referencedPage = PageFolderFacade.GetReferencedPage(data);
@@ -382,10 +382,15 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
 
             if (InternalUrls.DataTypeSupported(data.DataSourceId.InterfaceType))
             {
-                string internalUrl = InternalUrls.TryBuildInternalUrl(data.ToDataReference());
-                if (internalUrl != null)
+                var dataReference = data.ToDataReference();
+
+                if (DataUrls.CanBuildUrlForData(dataReference))
                 {
-                    element.PropertyBag.Add("Uri", internalUrl);
+                    string internalUrl = InternalUrls.TryBuildInternalUrl(dataReference);
+                    if (internalUrl != null)
+                    {
+                        element.PropertyBag.Add("Uri", internalUrl);
+                    }
                 }
             }
 

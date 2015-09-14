@@ -335,10 +335,16 @@ namespace Composite.C1Console.Trees
 
             if (InternalUrls.DataTypeSupported(data.DataSourceId.InterfaceType))
             {
-                string internalUrl = InternalUrls.TryBuildInternalUrl(data.ToDataReference());
-                if (internalUrl != null)
+                var dataReference = data.ToDataReference();
+
+                if (DataUrls.CanBuildUrlForData(dataReference))
                 {
-                    element.PropertyBag.Add("Uri", internalUrl);
+                    string internalUrl = InternalUrls.TryBuildInternalUrl(dataReference);
+
+                    if (internalUrl != null)
+                    {
+                        element.PropertyBag.Add("Uri", internalUrl);
+                    }
                 }
             }
 
