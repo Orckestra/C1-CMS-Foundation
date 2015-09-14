@@ -189,8 +189,11 @@ ui|fieldsbutton ui|clickbutton {
         }
     }
 
-    .isdisabled, .selected {
-        opacity: 0.75 !important;
+    [isdisabled="true"], .isdisabled, .selected {
+        opacity: 1 !important;
+    }
+
+    .selected, .isdisabled { //so the 'FunctionCallEditor - Advanced View' is using isdisabled to signal selection, which is lame
 
         &:after {
             content: "\2713";
