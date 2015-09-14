@@ -474,6 +474,8 @@
     <Content Include="Composite\images\icons\svg\data-awaiting-approval.svg" />
     <Content Include="Composite\images\icons\svg\dollar-invoice.svg" />
     <Content Include="Composite\images\icons\svg\end.svg" />
+    <Content Include="Composite\images\icons\svg\inbox-green.svg" />
+    <Content Include="Composite\images\icons\svg\log-showlog.svg" />
     <Content Include="Composite\images\icons\svg\puzzle.svg" />
     <Content Include="Composite\images\icons\svg\puzzle-piece.svg" />
     <Content Include="Composite\images\icons\svg\social-facebook.svg" />
