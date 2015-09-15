@@ -521,6 +521,7 @@
     <Content Include="Composite\styles\default\media-browser.less" />
     <Content Include="Composite\styles\default\fields\urlinputdialog.less" />
     <Content Include="Composite\styles\default\icons.less" />
+    <Content Include="Composite\styles\default\oldUI-fixes.less" />
     <None Include="Composite\styles\default\splash.less" />
     <Content Include="Composite\GenerateIconSprite.aspx" />
     <Content Include="Composite\images\editfunction.png" />

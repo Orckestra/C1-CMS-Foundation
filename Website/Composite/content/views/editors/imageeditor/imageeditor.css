@@ -91,6 +91,10 @@ ui|imagetoolbox ui|toolbar {
     box-shadow: none;
 }
 
+ui|imagetoolbox ui|toolbarbutton {
+    height: 32px;
+}
+
 ui|imagetoolboxdragger {
     display: block;
 	height: 20px;

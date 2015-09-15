@@ -1,4 +1,8 @@
-﻿.table {
+﻿/*****************
+#logtable, #versions, #headings - fix old UI table styles for Composite.Versioning.ContentVersioning
+******************/
+
+.table, table#logtable, table#versions, table#headings {
     width: 100%;
     max-width: 100%;
     margin: 0;
@@ -11,7 +15,7 @@
         .user-select(none);
         white-space: nowrap;
         border-bottom: 1px solid @table-border-color;
-        padding: 10px 13px;
+        padding: 10px 13px !important; // use !important to overwrite old package's CSS styles.
         text-align: left;
 
         &.icon-cell {
@@ -19,9 +23,10 @@
         }
     }
 
-    tr.head {
+    .head {
         th {
-            background: @table-header-bg-color;
+            background: @table-header-bg-color !important; // use !important to overwrite old package's CSS styles.
+            border-color: @table-border-color !important;
         }
     }
 
@@ -38,7 +43,7 @@
     }
 }
 
-.table-bordered {
+.table-bordered, table#logtable, table#versions, table#headings {
     border: 1px solid @table-border-color;
 
     > thead,
@@ -47,7 +52,7 @@
         > tr {
             > th,
             > td {
-                border: 1px solid @table-border-color;
+                border: 1px solid @table-border-color !important;
             }
         }
     }
@@ -58,6 +63,12 @@
                 border-bottom-width: 2px;
             }
         }
+}
+
+.table-hover, table#logtable, table#versions {
+    > tbody > tr:hover {
+        background-color: @table-bg-hover !important;
+    }
 }
 
 .permissions-table {
@@ -120,3 +131,4 @@
         border-radius: 3px;
     }
 }
+

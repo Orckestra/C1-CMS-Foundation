@@ -3,5 +3,5 @@
 
 ui|flexbox {
 	border: 1px solid;
-	border-color: $(color:threeddarkshadow) $(color:threedshadow) $(color:threedshadow) $(color:threeddarkshadow);
+	border-color: #ddd;
 }
