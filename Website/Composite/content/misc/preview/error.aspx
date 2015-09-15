@@ -14,7 +14,7 @@
 		<ui:page>
 			<div class="message">
 			    <div class="icon">
-			        <ui:labelbox image="${icon:stop}"></ui:labelbox>
+			        <ui:labelbox image="${icon:stop-red}"></ui:labelbox>
 			    </div>
 				<div class="text">
 					<ui:text label="Error in preview."/>

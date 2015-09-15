@@ -509,6 +509,7 @@
     <Content Include="Composite\images\icons\svg\folder-open-2.svg" />
     <Content Include="Composite\images\icons\svg\folder-edit.svg" />
     <Content Include="Composite\images\icons\svg\perspective-functions.svg" />
+    <Content Include="Composite\images\icons\svg\stop-red.svg" />
     <Content Include="Composite\images\icons\svg\stop.svg" />
     <Content Include="Composite\images\icons\svg\student.svg" />
     <Content Include="Composite\images\icons\svg\cake.svg" />
