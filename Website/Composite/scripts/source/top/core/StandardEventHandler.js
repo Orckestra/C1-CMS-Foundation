@@ -286,7 +286,7 @@ StandardEventHandler.prototype._handleTouchStart = function (e) {
 /**
  * @param {KeyEvent} e
  */
-StandardEventHandler.prototype._handleKeyDown = function ( e, isTabHandled ) {
+StandardEventHandler.prototype._handleKeyDown = function ( e, isTabHandled, fromNativeKeys ) {
 	
 	/*
 	 * This should only happen in the currently active window, 
@@ -312,7 +312,7 @@ StandardEventHandler.prototype._handleKeyDown = function ( e, isTabHandled ) {
 	 * reason, however, pressing these keys will switch the value of hasNativeKeys...
 	 * TODO: Investigate why!
 	 */
-	if ( !this.hasNativeKeys && !e.shiftKey && !e.ctrlKey ) {
+	if (!this.hasNativeKeys && !e.shiftKey && !e.ctrlKey && !fromNativeKeys) {
 		switch ( e.keyCode ) {
 			case KeyEventCodes.VK_UP :
 			case KeyEventCodes.VK_DOWN :
@@ -321,18 +321,8 @@ StandardEventHandler.prototype._handleKeyDown = function ( e, isTabHandled ) {
 			case KeyEventCodes.VK_SPACE :
 			case KeyEventCodes.VK_PAGE_UP :
 			case KeyEventCodes.VK_PAGE_DOWN :
-
-
-				/* TODO: this code have conflict with Code mirror */
-//				/*
-//				 * TODO: Investigate whether or not it is wise to EXCLUDE WebKit!
-//				 * Problem is that the Visual Editor get's locked while it shouldn't.
-//				 * Is something wrong with hasNativeKeys in WebKit?
-//				 */
-//				if ( !Client.isWebKit ) {
-//					DOMEvents.preventDefault ( e );
-//				}
-//			 	break;
+					DOMEvents.preventDefault ( e );
+			 	break;
 		} 
 	}
 
@@ -358,7 +348,7 @@ StandardEventHandler.prototype._handleKeyDown = function ( e, isTabHandled ) {
 				if ( frame != null ) {
 					var parent = DOMUtil.getParentWindow ( frame );
 					if ( parent.standardEventHandler != null ) {
-						parent.standardEventHandler._handleKeyDown ( e, isTabHandled );
+						parent.standardEventHandler._handleKeyDown(e, isTabHandled, fromNativeKeys ? fromNativeKeys : this.hasNativeKeys);
 					}
 				}
 				break;

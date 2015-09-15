@@ -919,8 +919,10 @@ TreeBinding.prototype._navigateByKey = function ( key ) {
 				break;
 			
 			case KeyEventCodes.VK_LEFT :
-				if ( node.isContainer && node.isOpen ) {
-					node.close ();
+				if (node.isContainer && node.isOpen) {
+					node.close();
+				} else {
+					next = node.getAncestorBindingByLocalName("treenode");
 				}
 				break;
 		}

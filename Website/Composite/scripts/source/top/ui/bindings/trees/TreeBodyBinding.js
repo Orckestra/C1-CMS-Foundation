@@ -57,54 +57,56 @@ TreeBodyBinding.prototype.accept = function ( binding ) {
 	}
 }
 
-///**
-// * @implements {IActionListener}
-// * @overloads {Binding#handleAction}
-// * @param {Action} action
-// */
-//TreeBodyBinding.prototype.handleAction = function ( action ) {
+/**
+ * @implements {IActionListener}
+ * @overloads {Binding#handleAction}
+ * @param {Action} action
+ */
+TreeBodyBinding.prototype.handleAction = function ( action ) {
 	
-//	TreeBodyBinding.superclass.handleAction.call ( this, action );
+	TreeBodyBinding.superclass.handleAction.call ( this, action );
 	
-//	switch ( action.type ) {
-//		case TreeNodeBinding.ACTION_FOCUSED :
-//			this._scrollIntoView ( action.target );
-//			action.consume ();
-//			break;
-//	}
-//}
+	switch ( action.type ) {
+		case TreeNodeBinding.ACTION_FOCUSED :
+			this._scrollIntoView ( action.target );
+			action.consume ();
+			break;
+		
+	}
+}
 
-///**
-// * Adjust scroll position so that focused treenodes are always visible.
-// * @param {TreeNodeBinding} treenode
-// */
-//TreeBodyBinding.prototype._scrollIntoView = function ( treenode ) {
+
+/**
+ * Adjust scroll position so that focused treenodes are always visible.
+ * @param {TreeNodeBinding} treenode
+ */
+TreeBodyBinding.prototype._scrollIntoView = function ( treenode ) {
 	
-//	var label = treenode.labelBinding.bindingElement;
-//	var a = this.bindingElement.clientHeight;
-//	var y = label.offsetTop;
-//	var h = label.offsetHeight;
-//	var t = this.bindingElement.scrollTop;
-//	var l = this.bindingElement.scrollLeft;
+	var label = treenode.labelBinding.bindingElement;
+	var a = this.bindingElement.clientHeight;
+	var y = treenode.boxObject.getGlobalPosition().y - this.boxObject.getGlobalPosition().y;
+	var h = label.offsetHeight;
+	var t = this.bindingElement.scrollTop;
+	var l = this.bindingElement.scrollLeft;
 	
-//	/*
-//	 * Scroll into view.
-//	 */
-//	if ( y - t < 0 ) {
-//		label.scrollIntoView ( true );
-//	} else if ( y - t + h > a ) {
-//		label.scrollIntoView ( false );
-//	}
+	/*
+	 * Scroll into view.
+	 */
+	if ( y - t < 0 ) {
+		label.scrollIntoView ( true );
+	} else if ( y - t + h > a ) {
+		label.scrollIntoView ( false );
+	}
 	
-//	/*
-//	 * IE may present an extreme horizontal scroll. 
-//	 * We hack it by locking scrollLeft completely. 
-//	 * Tough luck for deeply nested tree structures.
-//	 */
-//	if ( Client.isExplorer ) {
-//		this.bindingElement.scrollLeft = l;
-//	}
-//}
+	/*
+	 * IE may present an extreme horizontal scroll. 
+	 * We hack it by locking scrollLeft completely. 
+	 * Tough luck for deeply nested tree structures.
+	 */
+	if ( Client.isExplorer ) {
+		this.bindingElement.scrollLeft = l;
+	}
+}
 
 /**
  * @implements {IAcceptable}

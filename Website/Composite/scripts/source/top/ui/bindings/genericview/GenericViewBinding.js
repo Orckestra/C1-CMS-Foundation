@@ -228,6 +228,53 @@ GenericViewBinding.prototype.focusSingleTreeNodeBinding = function (binding) {
 	}
 };
 
+/**
+ * @overloads {TreeBinding#_navigateByKey}  
+ * @param {int} key
+ */
+GenericViewBinding.prototype._navigateByKey = function (key) {
+
+	var focused = this.getFocusedTreeNodeBindings()
+
+	if (focused.hasEntries()) {
+
+		var node = focused.getFirst();
+		var next = null;
+
+		switch (key) {
+			case KeyEventCodes.VK_LEFT:
+				next = node.getPreviousBindingByLocalName("treenode");
+				break;
+			case KeyEventCodes.VK_RIGHT:
+				next = node.getNextBindingByLocalName("treenode");
+				break;
+			case KeyEventCodes.VK_DOWN:
+				next = node.getNextBindingByLocalName("treenode");
+				while (next && next.bindingElement.offsetTop == node.bindingElement.offsetTop) {
+					next = next.getNextBindingByLocalName("treenode");
+				}
+				while (next && next.bindingElement.offsetLeft < node.bindingElement.offsetLeft) {
+					next = next.getNextBindingByLocalName("treenode");
+				}
+				break;
+
+			case KeyEventCodes.VK_UP:
+				next = node.getPreviousBindingByLocalName("treenode");
+				while (next && next.bindingElement.offsetTop == node.bindingElement.offsetTop) {
+					next = next.getPreviousBindingByLocalName("treenode");
+				}
+				while (next && next.bindingElement.offsetLeft > node.bindingElement.offsetLeft) {
+					next = next.getPreviousBindingByLocalName("treenode");
+				}
+				break;
+				break;
+		}
+
+		if (next != null) {
+			this.focusSingleTreeNodeBinding(next);
+		}
+	}
+}
 
 
 
