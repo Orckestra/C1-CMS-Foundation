@@ -9,6 +9,27 @@ using System.Linq;
 
 namespace Composite.Functions
 {
+
+    /// <summary>
+    /// Parameter return type for functions handling data references passed via url format, defined with attribute on the data types.
+    /// If none defined, it the url format will be the same as in <see cref="RoutedData.ById{T}"/>
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public class RoutedData<T> : PathInfoRoutedData<T> where T : class, IData
+    {
+        /// <exclude />
+        protected override IRoutedDataUrlMapper GetUrlMapper()
+        {
+            var pageId = PageRenderer.CurrentPageId;
+            Verify.That(pageId != Guid.Empty, "The current page is not set");
+
+            IRoutedDataUrlMapper mapper = AttributeBasedRoutedDataUrlMapper.FromDataType(typeof(T), pageId);
+
+            return mapper ?? new PathInfoRoutedDataUrlMapper<T>(pageId, RoutedData.DataRouteKind.Key);
+        }
+    }
+
+
     /// <summary>
     /// Contains subclasses that can be used as function parameters that provide data routing.
     /// </summary>
@@ -34,6 +55,7 @@ namespace Composite.Functions
             registerType(typeof(ById<>));
             registerType(typeof(ByIdAndLabel<>));
             registerType(typeof(ByLabel<>));
+            registerType(typeof(RoutedData<>));
         }
 
         /// <summary>
@@ -53,7 +75,7 @@ namespace Composite.Functions
         }
 
         /// <summary>
-        /// Parameter return type for functions handling data references passed via url {pageUrl}/{DataId}
+        /// Parameter return type for functions handling data references passed via url {pageUrl}/{DataId}/{data label}
         /// </summary>
         /// <typeparam name="T">The data type.</typeparam>
         public class ByIdAndLabel<T> : PathInfoRoutedData<T> where T : class, IData
@@ -69,7 +91,7 @@ namespace Composite.Functions
         }
 
         /// <summary>
-        /// Parameter return type for functions handling data references passed via url {pageUrl}/{DataId}
+        /// Parameter return type for functions handling data references passed via url {pageUrl}/{data label}
         /// </summary>
         /// <typeparam name="T">The data type.</typeparam>
         public class ByLabel<T> : PathInfoRoutedData<T> where T : class, IData
@@ -84,6 +106,7 @@ namespace Composite.Functions
                 return new PathInfoRoutedDataUrlMapper<T>(page.Id, DataRouteKind.Label);
             }
         }
+
 
         /// <summary>
         /// Gets a instance of a <see cref="IDataUrlMapper"/> that can map data references to URLs of with the following format &quot;/{page URL}/{data ID}&quot;
@@ -117,6 +140,25 @@ namespace Composite.Functions
         {
             return GetMapperByType(dataType, pageId, DataRouteKind.KeyAndLabel);
         }
+
+
+        /// <summary>
+        /// Get a default <see cref="IDataUrlMapper"/>  for the given data type.
+        /// </summary>
+        /// <param name="pageId">The page id.</param>
+        /// <param name="dataType">The data type.</param>
+        /// <returns></returns>
+        public static IDataUrlMapper GetDefaultDataUrlMapper(Guid pageId, Type dataType)
+        {
+            IRoutedDataUrlMapper mapper = AttributeBasedRoutedDataUrlMapper.FromDataType(dataType, pageId);
+            if (mapper == null)
+            {
+                return GetRoutedByIdDataUrlMapper(pageId, dataType);
+            }
+
+            return new RoutedDataUrlMapperAdapter(mapper);
+        }
+
 
         private static IDataUrlMapper GetMapperByType(Type dataType, Guid pageId, DataRouteKind routeKind)
         {
@@ -216,7 +258,9 @@ namespace Composite.Functions
 
             var pageUrlData = C1PageRoute.PageUrlData;
 
-            var model = urlMapper.GetRouteDataModel(pageUrlData);
+            var model = urlMapper.GetRouteDataModel(pageUrlData) ?? new RoutedDataModel();
+
+
             SetModel(model);
 
             if (!string.IsNullOrEmpty(pageUrlData.PathInfo) && model.IsRouteResolved)

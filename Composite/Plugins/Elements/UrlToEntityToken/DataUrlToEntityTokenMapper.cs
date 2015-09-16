@@ -70,7 +70,7 @@ namespace Composite.Plugins.Elements.UrlToEntityToken
                 pageUrlData.PublicationScope = PublicationScope.Unpublished;
             }
 
-            if (!string.IsNullOrEmpty(pageUrlData.PathInfo) || pageUrlData.QueryParameters.AllKeys.Any())
+            if (!string.IsNullOrEmpty(pageUrlData.PathInfo) || pageUrlData.HasQueryParameters)
             {
                 IData data;
                 var dataReference = DataUrls.TryGetData(pageUrlData);

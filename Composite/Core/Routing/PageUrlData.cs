@@ -88,5 +88,11 @@ namespace Composite.Core.Routing
         /// The query parameters.
         /// </value>
         public virtual NameValueCollection QueryParameters { get; set; }
+
+
+        internal bool HasQueryParameters
+        {
+            get { return QueryParameters != null && QueryParameters.HasKeys(); }
+        }
     }
 }

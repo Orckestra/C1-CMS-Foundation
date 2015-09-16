@@ -1,10 +1,8 @@
 using Composite.Functions;
 using System.Collections.Generic;
 using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
-using Composite.Core.ResourceSystem;
 using System.CodeDom;
 using Composite.Data.Validation;
-using System;
 using Composite.Data.Validation.Validators;
 
 
@@ -34,7 +32,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
 
         public override object Execute(ParameterList parameters, FunctionContextContainer context)
         {
-            CodeAttributeDeclaration codeAttributeDeclaration = new CodeAttributeDeclaration(new CodeTypeReference(typeof(StringSizeValidatorAttribute)));
+            var codeAttributeDeclaration = new CodeAttributeDeclaration(new CodeTypeReference(typeof(StringSizeValidatorAttribute)));
 
             int min = parameters.GetParameter<int>("min");
             int max = parameters.GetParameter<int>("max");
@@ -42,7 +40,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
             codeAttributeDeclaration.Arguments.Add(new CodeAttributeArgument(new CodePrimitiveExpression(min)));
             codeAttributeDeclaration.Arguments.Add(new CodeAttributeArgument(new CodePrimitiveExpression(max)));
 
-            return new ConstrucorBasedPropertyValidatorBuilder<string>(codeAttributeDeclaration, new StringSizeValidatorAttribute(min, max));
+            return new ConstructorBasedPropertyValidatorBuilder<string>(codeAttributeDeclaration, new StringSizeValidatorAttribute(min, max));
         }
 	}
 }

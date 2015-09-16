@@ -1,8 +1,6 @@
-using System;
 using System.CodeDom;
 using System.Collections.Generic;
 using Composite.Functions;
-using Composite.Core.ResourceSystem;
 using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
 using Composite.Data.Validation;
 using Composite.Data.Validation.Validators;
@@ -31,13 +29,13 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
 
         public override object Execute(ParameterList parameters, FunctionContextContainer context)
         {
-            CodeAttributeDeclaration codeAttributeDeclaration = new CodeAttributeDeclaration(new CodeTypeReference(typeof(RegexValidatorAttribute)));
+            var codeAttributeDeclaration = new CodeAttributeDeclaration(new CodeTypeReference(typeof(RegexValidatorAttribute)));
             
             string pattern = parameters.GetParameter<string>("pattern");
 
             codeAttributeDeclaration.Arguments.Add(new CodeAttributeArgument(new CodePrimitiveExpression(pattern)));
 
-            return new ConstrucorBasedPropertyValidatorBuilder<string>(codeAttributeDeclaration, new RegexValidatorAttribute(pattern));
+            return new ConstructorBasedPropertyValidatorBuilder<string>(codeAttributeDeclaration, new RegexValidatorAttribute(pattern));
         }
     }
 }

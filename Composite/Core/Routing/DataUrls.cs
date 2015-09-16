@@ -57,7 +57,7 @@ namespace Composite.Core.Routing
         {
             Verify.ArgumentNotNull(pageUrlData, "pageUrlData");
 
-            if (string.IsNullOrEmpty(pageUrlData.PathInfo) && (pageUrlData.QueryParameters == null || pageUrlData.QueryParameters.Count == 0))
+            if (string.IsNullOrEmpty(pageUrlData.PathInfo) && !pageUrlData.HasQueryParameters)
             {
                 return null;
             }

@@ -3,13 +3,13 @@ using System.CodeDom;
 
 namespace Composite.Data.Validation
 {
-    internal sealed class ConstrucorBasedPropertyValidatorBuilder<T> : PropertyValidatorBuilder<T>
+    internal sealed class ConstructorBasedPropertyValidatorBuilder<T> : PropertyValidatorBuilder<T>
     {
-        private CodeAttributeDeclaration _codeAttributeDeclaration;
-        private Attribute _attribute;
+        private readonly CodeAttributeDeclaration _codeAttributeDeclaration;
+        private readonly Attribute _attribute;
 
 
-        public ConstrucorBasedPropertyValidatorBuilder(CodeAttributeDeclaration codeAttributeDeclaration, Attribute attribute)
+        public ConstructorBasedPropertyValidatorBuilder(CodeAttributeDeclaration codeAttributeDeclaration, Attribute attribute)
         {
             _codeAttributeDeclaration = codeAttributeDeclaration;
             _attribute = attribute;

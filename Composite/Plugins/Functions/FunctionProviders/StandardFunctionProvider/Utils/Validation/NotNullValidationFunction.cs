@@ -1,8 +1,5 @@
-using System;
 using System.CodeDom;
-using System.Collections.Generic;
 using Composite.Functions;
-using Composite.Core.ResourceSystem;
 using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
 using Composite.Data.Validation;
 
@@ -20,9 +17,9 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
 
         public override object Execute(ParameterList parameters, FunctionContextContainer context)
         {
-            CodeAttributeDeclaration codeAttributeDeclaration = new CodeAttributeDeclaration(new CodeTypeReference(typeof(Microsoft.Practices.EnterpriseLibrary.Validation.Validators.NotNullValidatorAttribute)));
+            var codeAttributeDeclaration = new CodeAttributeDeclaration(new CodeTypeReference(typeof(Microsoft.Practices.EnterpriseLibrary.Validation.Validators.NotNullValidatorAttribute)));
 
-            return new ConstrucorBasedPropertyValidatorBuilder<string>(codeAttributeDeclaration, new Microsoft.Practices.EnterpriseLibrary.Validation.Validators.NotNullValidatorAttribute());
+            return new ConstructorBasedPropertyValidatorBuilder<string>(codeAttributeDeclaration, new Microsoft.Practices.EnterpriseLibrary.Validation.Validators.NotNullValidatorAttribute());
         }
     }
 }

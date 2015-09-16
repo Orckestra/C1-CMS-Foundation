@@ -12,7 +12,7 @@ namespace Composite.Data.Validation
 	{
         /// <summary>
         /// This method should return a CodeAttributeDeclaration that will beused for 
-        /// code genereting the correct attribute this class represents.
+        /// code generating the correct attribute this class represents.
         /// </summary>
         /// <returns></returns>
         public abstract CodeAttributeDeclaration GetCodeAttributeDeclaration();

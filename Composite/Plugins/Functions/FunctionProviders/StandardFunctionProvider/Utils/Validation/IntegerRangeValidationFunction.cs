@@ -32,7 +32,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
 
         public override object Execute(ParameterList parameters, FunctionContextContainer context)
         {
-            CodeAttributeDeclaration codeAttributeDeclaration = new CodeAttributeDeclaration(new CodeTypeReference(typeof(IntegerRangeValidatorAttribute)));
+            var codeAttributeDeclaration = new CodeAttributeDeclaration(new CodeTypeReference(typeof(IntegerRangeValidatorAttribute)));
 
             int min = parameters.GetParameter<int>("min");
             int max = parameters.GetParameter<int>("max");
@@ -40,7 +40,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
             codeAttributeDeclaration.Arguments.Add(new CodeAttributeArgument(new CodePrimitiveExpression(min)));
             codeAttributeDeclaration.Arguments.Add(new CodeAttributeArgument(new CodePrimitiveExpression(max)));
 
-            return new ConstrucorBasedPropertyValidatorBuilder<int>(codeAttributeDeclaration, new IntegerRangeValidatorAttribute(min, max));
+            return new ConstructorBasedPropertyValidatorBuilder<int>(codeAttributeDeclaration, new IntegerRangeValidatorAttribute(min, max));
         }
 	}
 }

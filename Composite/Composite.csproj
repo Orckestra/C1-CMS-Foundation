@@ -209,6 +209,8 @@
     <Compile Include="Core\Routing\DataUrls.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Core\Routing\DefaultRelativeRouteToPredicateMapper.cs" />
+    <Compile Include="Core\Routing\IRelativeRouteToPredicateMapper.cs" />
     <Compile Include="Core\Routing\IInternalUrlProvider.cs" />
     <Compile Include="Core\Routing\IDataUrlMapper.cs">
       <SubType>Code</SubType>
@@ -218,6 +220,10 @@
     <Compile Include="Core\Routing\InternalUrls.cs" />
     <Compile Include="Data\InternalUrlAttribute.cs" />
     <Compile Include="Data\PageRenderingHistory.cs" />
+    <Compile Include="Data\RouteDateSegmentAttribute.cs" />
+    <Compile Include="Data\RouteSegmentAttribute.cs" />
+    <Compile Include="Functions\AttributeBasedRoutedDataUrlMapper.cs" />
+    <Compile Include="Functions\IRoutedDataUrlMapper.cs" />
     <Compile Include="Functions\PathInfoRoutedDataUrlMapper.cs" />
     <Compile Include="Functions\RoutedData.cs" />
     <Compile Include="Core\Routing\Pages\SeoFriendlyRedirectHttpHandler.cs" />
@@ -2325,7 +2331,7 @@
     <Compile Include="Data\Validation\ClientValidationRules\NotNullClientValidationRule.cs" />
     <Compile Include="Data\Validation\ClientValidationRules\RegexClientValidationRule.cs" />
     <Compile Include="Data\Validation\ClientValidationRules\StringLengthClientValidationRule.cs" />
-    <Compile Include="Data\Validation\ConstrucorBasedPropertyValidatorBuilder.cs" />
+    <Compile Include="Data\Validation\ConstructorBasedPropertyValidatorBuilder.cs" />
     <Compile Include="Data\Validation\DataValidationResult.cs" />
     <Compile Include="Data\Validation\Foundation\ClientValidationRuleTranslatorRegistryImpl.cs" />
     <Compile Include="Data\Validation\Foundation\PluginFacades\ClientValidationRuleTranslatorPluginFacadeImpl.cs" />

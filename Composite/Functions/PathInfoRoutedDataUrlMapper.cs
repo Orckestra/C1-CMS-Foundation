@@ -13,16 +13,6 @@ using DataRouteKind = Composite.Functions.RoutedData.DataRouteKind;
 
 namespace Composite.Functions
 {
-    /// <exclude />
-    public interface IRoutedDataUrlMapper
-    {
-        /// <exclude />
-        RoutedDataModel GetRouteDataModel(PageUrlData pageUrlData);
-        /// <exclude />
-        PageUrlData BuildItemUrl(IData item);
-    }
-
-
     internal class PathInfoRoutedDataUrlMapper<T> : IRoutedDataUrlMapper where T : class, IData
     {
         private readonly Guid _pageId;
