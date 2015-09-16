@@ -55,7 +55,7 @@ html {
 
 
     .toppage .logo {
-        width: 138px;
+        width: 168px;
         height: 38px;
         background: url("${root}/images/logo.png") no-repeat 0 0;
         margin: 0 auto 40px auto;

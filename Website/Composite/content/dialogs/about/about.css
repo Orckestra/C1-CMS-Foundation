@@ -52,7 +52,7 @@ ui|toolbargroup {
 
 div.logo {
     cursor: pointer;
-    width: 138px;
+    width: 168px;
     height: 38px;
     background: url("${root}/images/logo.png") no-repeat 0 0;
     position: absolute;
