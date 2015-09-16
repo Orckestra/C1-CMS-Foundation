@@ -66,6 +66,10 @@ ui|toolbar#breadcrumbbar {
     padding: 0;
 }
 
+#browsertabbox ui|tabs{
+	display: none !important;
+}
+
 ui|path {
     width: 100%;
     float: left;
