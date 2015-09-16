@@ -669,7 +669,9 @@ DockBinding.prototype.deActivate = function () {
  * @param {DockTabBinding} tabBinding
  * @param {boolean} isForce
  */
-DockBinding.prototype.closeTab = function ( tabBinding, isForce ) {
+DockBinding.prototype.closeTab = function (tabBinding, isForce) {
+	if (tabBinding.isPinned)
+		return;
 	
 	if ( tabBinding.isDirty && !isForce ) { 
 		var resourcename = Resolver.resolve ( tabBinding.getLabel ());

@@ -47,6 +47,11 @@ function DockTabBinding () {
 	 * @type {boolean}
 	 */
 	this.isDirty = false;
+
+	/**
+	 * @type {boolean}
+	 */
+	this.isPinned = false;
 	
 	/**
 	 * Flipped when DockTabs have invoked the "manage" routine.
@@ -198,6 +203,8 @@ DockTabBinding.prototype.buildDOMContent = function () {
 		controlBinding.attachClassName("closecontrol");
 		this._controlGroupBinding.add(controlBinding);
 		this._controlGroupBinding.attachRecursive();
+	} else {
+		this.isPinned = true;
 	}
 }
 
@@ -600,7 +607,7 @@ DockTabBinding.prototype.select = function ( isManaged ) {
  */
 DockTabBinding.prototype.close = function () {
 	
-	if (this.getProperty("pinned") != true) {
+	if (!this.isPinned) {
 		this.containingTabBoxBinding.closeTab(this);
 	}
 }

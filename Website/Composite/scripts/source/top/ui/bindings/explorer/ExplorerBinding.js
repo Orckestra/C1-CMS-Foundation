@@ -33,8 +33,12 @@ ExplorerBinding.getFocusedTreeNodeBindings = function () {
 	var selectedView = selectedDeck._viewBinding;
 
 //	var selectedDeck = ExplorerBinding.bindingInstance.getSelectedDeckBinding();
-//	var selectedView = selectedDeck.getAssociatedView();
-	var selectedTree = selectedView.getContentWindow().bindingMap.browserpage._viewBinding.getContentWindow().bindingMap.tree;
+	//	var selectedView = selectedDeck.getAssociatedView();
+	var browserContentWindow = selectedView.getContentWindow();
+	if (!browserContentWindow) {
+		return new List();
+	}
+	var selectedTree = browserContentWindow.bindingMap.browserpage.getSystemTree();
 	var focusedTreeNodeBinding = selectedTree.getFocusedTreeNodeBindings();
 
 	//TODO: Refactor this
