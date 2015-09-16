@@ -12,7 +12,7 @@
     <script type="text/javascript" src="About.js"></script>
 </head>
 <body>
-    <ui:dialogpage label="${string:Website.Dialogs.About.Title}" image="${icon:composite}" height="auto" width="370" resizable="false">
+    <ui:dialogpage label="${string:Website.Dialogs.About.Title}" image="${icon:company-composite}" height="auto" width="370" resizable="false">
             <div id="about">
                 <div id="info">
                     <ui:cover id="infocover" busy="false" hidden="true" />

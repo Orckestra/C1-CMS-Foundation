@@ -90,7 +90,7 @@
 			<ui:menubody>
 				<ui:menugroup id="toolboxpopupgroup" />
 				<ui:menugroup>
-					<ui:menuitem binding="StartMenuItemBinding" label="${string:Website.App.LabelViewCompositeStart}" image="${icon:composite}" />
+					<ui:menuitem binding="StartMenuItemBinding" label="${string:Website.App.LabelViewCompositeStart}" image="${icon:company-composite}" />
 				</ui:menugroup>
 			</ui:menubody>
 		</ui:popup>
@@ -159,7 +159,7 @@
 						<ui:menuitem label="${string:Website.App.LabelFeedback}" image="${icon:feedback}" oncommand="window.open('http://users.composite.net/Feedback')" />
 					</ui:menugroup>
 					<ui:menugroup>
-						<ui:menuitem label="${string:Website.App.LabelAboutComposite}" oncommand="Commands.about()" image="${icon:composite}" />
+						<ui:menuitem label="${string:Website.App.LabelAboutComposite}" oncommand="Commands.about()" image="${icon:company-composite}" />
 					</ui:menugroup>
 				</ui:menubody>
 			</ui:menupopup>
@@ -191,7 +191,7 @@
 		<ui:explorertoolbar>
 			<ui:toolbarbody align="left">
 				<ui:toolbargroup>
-					<ui:toolbarbutton id="compositebutton" class="logo" image="${icon:composite}"  oncommand="/* nothing */" />
+					<ui:toolbarbutton id="compositebutton" class="logo" image="${icon:company-composite}"  oncommand="/* nothing */" />
 					<ui:toolbarbutton id="menutogglebutton" class="menu-toggle" image="${icon:menu}"  oncommand="top.app.bindingMap.explorermenu.toggle()" />
 				</ui:toolbargroup>
 			</ui:toolbarbody>

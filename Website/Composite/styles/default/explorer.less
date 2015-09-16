@@ -21,7 +21,7 @@ ui|explorermenu {
     width: @explorer-width;
     height: 100%;
     overflow: hidden;
-	margin-bottom: -30px;
+    margin-bottom: -30px;
 
     ui|toolbarbutton {
         background: none !important;
@@ -35,43 +35,45 @@ ui|explorermenu {
     }
 
     .logo {
-        padding-top: 10px;
+        padding: 10px 7px 21px 8px;
+
         ui|labelbox {
             color: #FFF;
             position: relative;
             padding: 0;
 
-            &:before {
-                content: "Composite";
+            &:before, &:after {
                 position: absolute;
-                top: 0;
-                left: 38px;
+                top: 1px;
                 text-transform: none;
                 font-size: 21px;
             }
 
+            &:before {
+                content: "Composite";
+                left: 45px;
+            }
+
             &:after {
                 content: "C1";
-                position: absolute;
-                top: 0;
-                left: 142px;
-                text-transform: none;
-                font-size: 21px;
+                left: 149px;
                 font-weight: bold;
             }
         }
 
         ui|labelbody {
             color: @primary-color;
+
             svg {
-                height: 28px !important;
-                width: 28px !important;
+                height: 34px !important;
+                width: 34px !important;
             }
         }
     }
 
     .menu-toggle {
         margin-top: 8px;
+
         ui|labelbox {
             padding: 0;
         }
@@ -121,7 +123,7 @@ ui|explorertoolbarbutton {
     }
 
     ui|labelbox {
- 
+
         &.image-and-text {
             ui|labeltext {
                 margin-left: 38px;
@@ -146,7 +148,6 @@ ui|explorertoolbarbutton {
             color: @explorer-text-active-color;
         }
     }
-
 }
 
 ui|explorerdecks {

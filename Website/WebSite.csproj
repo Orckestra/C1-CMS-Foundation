@@ -587,7 +587,7 @@
     <Content Include="Composite\images\icons\svg\code.svg" />
     <Content Include="Composite\images\icons\svg\coffee-cup.svg" />
     <Content Include="Composite\images\icons\svg\cog.svg" />
-    <Content Include="Composite\images\icons\svg\composite.svg" />
+    <Content Include="Composite\images\icons\svg\company-composite.svg" />
     <Content Include="Composite\images\icons\svg\configuration-root-closed.svg" />
     <Content Include="Composite\images\icons\svg\configuration-root-open.svg" />
     <Content Include="Composite\images\icons\svg\confirmaction-defaulticon.svg" />
