@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Workflow.Runtime;
 using System.Xml.Linq;
 using Composite.C1Console.Actions;
 using Composite.C1Console.Elements;
+using Composite.C1Console.Scheduling;
 using Composite.C1Console.Workflow;
 using Composite.Core.Serialization;
 using Composite.Core.Types;
@@ -25,16 +25,16 @@ namespace Composite.C1Console.Trees.Workflows
     public sealed partial class GenericAddDataWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         [NonSerialized]
-        private bool _doPublish = false;
+        private bool _doPublish;
 
         [NonSerialized]
-        private IDictionary<string, string> _dataPayload = null;
+        private IDictionary<string, string> _dataPayload;
 
         [NonSerialized]
-        private DataTypeDescriptorFormsHelper _dataTypeDescriptorFormsHelper = null;
+        private DataTypeDescriptorFormsHelper _dataTypeDescriptorFormsHelper;
 
         [NonSerialized]
-        private string _typeName = null;
+        private string _typeName;
         private string TypeName { get { return _typeName; } set { _typeName = value; } }
 
         private Type InterfaceType
@@ -74,7 +74,8 @@ namespace Composite.C1Console.Trees.Workflows
                 _dataPayload = serializedValues;
             }
 
-            if (!PermissionsFacade.GetPermissionsForCurrentUser(EntityToken).Contains(PermissionType.Publish) || !typeof(IPublishControlled).IsAssignableFrom(InterfaceType))
+            if (!PermissionsFacade.GetPermissionsForCurrentUser(EntityToken).Contains(PermissionType.Publish)
+                || !typeof(IPublishControlled).IsAssignableFrom(InterfaceType))
             {
                 FormData formData = WorkflowFacade.GetFormData(InstanceId, true);
 
@@ -148,7 +149,7 @@ namespace Composite.C1Console.Trees.Workflows
                 }
             }
 
-            IPublishControlled publishControlled = newData as IPublishControlled;
+            var publishControlled = newData as IPublishControlled;
             if (publishControlled != null)
             {
                 publishControlled.PublicationStatus = GenericPublishProcessController.Draft;
@@ -255,20 +256,9 @@ namespace Composite.C1Console.Trees.Workflows
                 SetSaveStatus(true);
             }
 
-            PublishIfNeeded(newData);
+            PublishControlledHelper.PublishIfNeeded(newData, _doPublish, Bindings, ShowMessage);
         }
 
-
-
-        private void PublishIfNeeded(IData newData)
-        {
-            if (newData is IPublishControlled && _doPublish)
-            {
-                var actionToken = new GenericPublishProcessController.PublishActionToken();
-                FlowControllerServicesContainer serviceContainer = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
-                ActionExecutorFacade.Execute(newData.GetDataEntityToken(), actionToken, serviceContainer);
-            }
-        }
 
 
         private void enablePublishCodeActivity_ExecuteCode(object sender, EventArgs e)

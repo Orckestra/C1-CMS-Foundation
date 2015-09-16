@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Workflow.Runtime;
 using System.Xml.Linq;
 using Composite.C1Console.Actions;
+using Composite.C1Console.Scheduling;
 using Composite.C1Console.Security;
 using Composite.C1Console.Workflow;
 using Composite.C1Console.Workflow.Foundation;
@@ -104,7 +104,8 @@ namespace Composite.C1Console.Trees.Workflows
         {
             IData data = ((DataEntityToken)this.EntityToken).Data;
 
-            if (!PermissionsFacade.GetPermissionsForCurrentUser(EntityToken).Contains(PermissionType.Publish) || !(data is IPublishControlled))
+            if (!PermissionsFacade.GetPermissionsForCurrentUser(EntityToken).Contains(PermissionType.Publish) 
+                || !(data is IPublishControlled))
             {
                 FormData formData = WorkflowFacade.GetFormData(InstanceId, true);
 
@@ -176,26 +177,13 @@ namespace Composite.C1Console.Trees.Workflows
                 EntityTokenCacheFacade.ClearCache(EntityToken);
 
                 updateTreeRefresher.PostRefreshMesseges(this.EntityToken);
-                
-                PublishIfNeeded(data);
+
+                PublishControlledHelper.PublishIfNeeded(data, _doPublish, Bindings, ShowMessage);
             }
 
             SetSaveStatus(isValid);
         }
 
-
-        private bool PublishIfNeeded(IData newData)
-        {
-            if (newData is IPublishControlled && _doPublish)
-            {
-                var actionToken = new GenericPublishProcessController.PublishActionToken();
-                FlowControllerServicesContainer serviceContainer = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
-                ActionExecutorFacade.Execute(newData.GetDataEntityToken(), actionToken, serviceContainer);
-                return true;
-            }
-
-            return false;
-        }
 
         private void enablePublishCodeActivity_ExecuteCode(object sender, EventArgs e)
         {
