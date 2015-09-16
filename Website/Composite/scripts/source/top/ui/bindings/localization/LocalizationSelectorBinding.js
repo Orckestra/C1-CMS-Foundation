@@ -10,7 +10,12 @@ function LocalizationSelectorBinding () {
 	/**
 	 * @type {SystemLogger}
 	 */
-	this.logger = SystemLogger.getLogger ( "LocalizationSelectorBinding" );
+	this.logger = SystemLogger.getLogger("LocalizationSelectorBinding");
+
+	/**
+	 * @type {EntityToken}
+	 */
+	this._token = null;
 	
 	/*
 	 * Returnable.
@@ -133,7 +138,7 @@ LocalizationSelectorBinding.prototype.populateFromList = function ( list ) {
 		//this.clear();
 
 		var self = this;
-		var menugroup = this.getDescendantBindingByLocalName("menugroup")
+		var menugroup = this.getDescendantBindingByLocalName("menugroup");
 		
 		menugroup.detachRecursive();
 		menugroup.bindingElement.innerHTML = "";
@@ -180,13 +185,14 @@ LocalizationSelectorBinding.prototype.onValueChange = function (token) {
 		Dialog.BUTTONS_ACCEPT_CANCEL, {
 		handleDialogResponse : function ( response ) {
 			switch ( response ) {
-				case Dialog.RESPONSE_ACCEPT :
+				case Dialog.RESPONSE_ACCEPT:
+					self._token = token;
 					if ( Application.hasDirtyDockTabs ()) {
 						self.subscribe ( BroadcastMessages.SAVE_ALL_DONE );
 						EventBroadcaster.broadcast ( BroadcastMessages.SAVE_ALL );
 					} else {
 						EventBroadcaster.broadcast ( BroadcastMessages.CLOSE_VIEWS );
-						self._invokeAction (token);
+						self._invokeAction ();
 					}
 					break;
 				case Dialog.RESPONSE_CANCEL :
@@ -199,12 +205,12 @@ LocalizationSelectorBinding.prototype.onValueChange = function (token) {
 /**
  * Invoke that action!
  */
-LocalizationSelectorBinding.prototype._invokeAction = function (token) {
+LocalizationSelectorBinding.prototype._invokeAction = function () {
 	
 	var root = SystemNode.taggedNodes.get ( "Root" );
 	var action = new SystemAction ({
 		Label : "Generated Action: Change Locale",
-		ActionToken : token
+		ActionToken : this._token
 	});
 	
 	SystemAction.invoke ( action, root );
