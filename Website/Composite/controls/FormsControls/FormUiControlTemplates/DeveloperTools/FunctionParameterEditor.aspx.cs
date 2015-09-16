@@ -5,7 +5,8 @@ using System.Text;
 using System.Web;
 using System.Web.UI.WebControls;
 using System.Xml.Linq;
-using Composite.C1Console.Forms;
+using Composite.Core;
+using Composite.Data.DynamicTypes;
 using Composite.Functions;
 using Composite.Functions.ManagedParameters;
 using Composite.Core.Types;
@@ -27,7 +28,7 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DeveloperTools
         private static readonly string StateIdQueryKey = "Handle";
 
         private const string _defaultFieldNamePrefix = "NewField";
-        private bool nameChanged = false;
+        private bool nameChanged;
 
 
         private List<ManagedParameterDefinition> Parameters { get; set; }
@@ -84,12 +85,12 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DeveloperTools
                 InitializeViewState();
             }
 
-            if (DetailsSplitPanelPlaceHolder.Visible == false && this.CurrentlySelectedFieldId != Guid.Empty)
+            if (!DetailsSplitPanelPlaceHolder.Visible && this.CurrentlySelectedFieldId != Guid.Empty)
             {
                 InitializeDetailsSplitPanel();
             }
 
-            if (Page.IsPostBack == false)
+            if (!Page.IsPostBack)
             {
                 DetailsSplitPanelPlaceHolder.Visible = false;
                 UpdateTypeList();
@@ -97,8 +98,7 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DeveloperTools
 
             if (this.ViewState["Fields"] == null)
             {
-                this.ViewState.Add("Fields", new List<ManagedParameterDefinition>());
-                this.ViewState.Add("editedPatameterId", null);
+                CurrentFields = new List<ManagedParameterDefinition>();
             }
 
             if (Page.IsPostBack
@@ -194,10 +194,7 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DeveloperTools
 
         private void UpdateDetailsSplitPanel(bool detailsSplitPanel )
         {
-            if (DetailsSplitPanelPlaceHolder.Visible != detailsSplitPanel)
-            {
-                DetailsSplitPanelPlaceHolder.Visible = detailsSplitPanel;
-            }
+            DetailsSplitPanelPlaceHolder.Visible = detailsSplitPanel;
         }
 
 
@@ -262,15 +259,15 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DeveloperTools
 
         protected void FieldDataList_ItemCommand(Object sender, EventArgs e)
         {
-            RepeaterCommandEventArgs repeaterEventArgs = (RepeaterCommandEventArgs)e;
-            Guid FieldId = new Guid(repeaterEventArgs.CommandArgument.ToString());
+            var repeaterEventArgs = (RepeaterCommandEventArgs)e;
+            Guid fieldId = new Guid(repeaterEventArgs.CommandArgument.ToString());
 
             if (ValidateSave())
             {
                 switch (repeaterEventArgs.CommandName)
                 {
                     case "Select":
-                        Field_Select(FieldId);
+                        Field_Select(fieldId);
                         break;
                     default:
                         throw new Exception("unhandled item command name: " + repeaterEventArgs.CommandName);
@@ -283,18 +280,17 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DeveloperTools
         }
 
 
-        private void Field_Delete(Guid FieldId)
+        private void Field_Delete(Guid fieldId)
         {
-            if (this.ViewState["Fields"] == null) throw new Exception("ViewState element 'Fields' does not exist");
-            var fields = (List<ManagedParameterDefinition>)this.ViewState["Fields"];
+            var fields = CurrentFields;
 
-            var field = fields.Single(f => f.Id == FieldId);
+            var field = fields.Single(f => f.Id == fieldId);
 
-            fields.RemoveAll(f => f.Id == FieldId);
+            fields.RemoveAll(f => f.Id == fieldId);
 
-            if (this.CurrentlySelectedFieldId != Guid.Empty)
+            if (CurrentlySelectedFieldId == fieldId)
             {
-                if (this.CurrentlySelectedFieldId == FieldId) this.CurrentlySelectedFieldId = Guid.Empty;
+                CurrentlySelectedFieldId = Guid.Empty;
             }
 
             foreach (ManagedParameterDefinition laterField in this.CurrentFields.Where(f => f.Position > field.Position))
@@ -326,17 +322,11 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DeveloperTools
             TypeSelector.DataTextField = "Label";
             TypeSelector.DataValueField = "HashCode";
             TypeSelector.DataBind();
-
         }
 
 
 
-        private string SerializeType(Type t)
-        {
-            return TypeManager.SerializeType(t);
-        }
-
-        private void Field_Select(Guid FieldId)
+        private void Field_Select(Guid fieldId)
         {
             if (ValidateSave())
             {
@@ -347,12 +337,9 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DeveloperTools
 
                 InitializeDetailsSplitPanel();
 
-                if (this.ViewState["Fields"] == null) throw new Exception("ViewState element 'Fields' does not exist");
-                var Fields = (List<ManagedParameterDefinition>)this.ViewState["Fields"];
+                var selectedField = CurrentFields.Single(f => f.Id == fieldId);
 
-                var selectedField = Fields.Single(f => f.Id == FieldId);
-
-                this.CurrentlySelectedFieldId = FieldId;
+                this.CurrentlySelectedFieldId = fieldId;
 
                 this.NameField.Text = selectedField.Name;
 
@@ -361,7 +348,7 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DeveloperTools
 
                 string typeName = selectedField.Type.FullName.GetHashCode().ToString();
 
-                if (typeName != null && this.TypeSelector.Items.FindByValue(typeName) != null)
+                if (this.TypeSelector.Items.FindByValue(typeName) != null)
                 {
                     this.TypeSelector.SelectedValue = typeName;
                 }
@@ -386,12 +373,8 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DeveloperTools
         {
             get
             {
-                if (this.ViewState["editedFieldId"] == null)
-                {
-                    return Guid.Empty;
-                }
-
-                return new Guid(this.ViewState["editedFieldId"].ToString());
+                var editedFieldId = ViewState["editedFieldId"];
+                return editedFieldId  == null ? Guid.Empty : (Guid) editedFieldId;
             }
             set
             {
@@ -403,10 +386,7 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DeveloperTools
 
         protected bool HasFields
         {
-            get
-            {
-                return this.CurrentFields.Count > 0;
-            }
+            get { return this.CurrentFields.Count > 0; }
         }
 
 
@@ -455,12 +435,12 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DeveloperTools
 
                 try
                 {
-                    BaseFunctionRuntimeTreeNode widgetNode = (BaseFunctionRuntimeTreeNode)FunctionFacade.BuildTree(functionElement);
+                    var widgetNode = (BaseFunctionRuntimeTreeNode)FunctionFacade.BuildTree(functionElement);
                     return widgetNode.GetName();
                 }
                 catch (Exception ex)
                 {
-                    Composite.Core.Log.LogError("FunctionParamter", ex);
+                    Log.LogError("FunctionParameter", ex);
                     Baloon(btnWidgetFunctionMarkup,"Error: "+ex.Message);
                     return GetString("NoWidgetSpecifiedLabel");
                 }
@@ -473,9 +453,8 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DeveloperTools
         {
             get
             {
-                Type selectedType = this.TypeOptions.Where(t => t.FullName.GetHashCode() == Int32.Parse(this.TypeSelector.SelectedValue)).First(); 
-
-                return selectedType;
+                var typeNameHash = Int32.Parse(this.TypeSelector.SelectedValue);
+                return this.TypeOptions.First(t => t.FullName.GetHashCode() == typeNameHash); 
             }
         }
 
@@ -483,8 +462,9 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DeveloperTools
 
         private void ShowMessage(string targetFieldName, string p)
         {
-            FieldMessage fm = new FieldMessage(targetFieldName, p);
+            var fm = new FieldMessage(targetFieldName, p);
 
+            // TODO: implement
         }
 
 
@@ -494,7 +474,9 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DeveloperTools
             if (ValidateSave())
             {
                 if (this.CurrentlySelectedFieldId != Guid.Empty)
+                {
                     Field_Save();
+                }
 
                 InitializeDetailsSplitPanel();
 
@@ -502,7 +484,7 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DeveloperTools
                 this.NameField.Text = _defaultFieldNamePrefix;
 
                 int i = 2;
-                while (this.CurrentFields.Where(f => f.Name == this.NameField.Text).Count() > 0)
+                while (this.CurrentFields.Any(f => f.Name == this.NameField.Text))
                 {
                     this.NameField.Text = _defaultFieldNamePrefix + i++;
                 }
@@ -542,15 +524,15 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DeveloperTools
                 return false;
             }
 
-            if (this.CurrentFields.Where(f=>f.Name == this.NameField.Text && f.Id != this.CurrentlySelectedFieldId ).Any())
+            if (this.CurrentFields.Any(f => f.Name == this.NameField.Text && f.Id != this.CurrentlySelectedFieldId))
             {
                 Baloon(this.NameField, GetString("NameAlreadyInUseError"));
                 return false;
             }
 
-            string toValidate = (this.NameField.Text.StartsWith("@") ? this.NameField.Text.Substring(1) : this.NameField.Text);
+            string toValidate = this.NameField.Text.StartsWith("@") ? this.NameField.Text.Substring(1) : this.NameField.Text;
             string err;
-            if (Composite.Data.DynamicTypes.NameValidation.TryValidateName(toValidate, out err)==false)
+            if (!NameValidation.TryValidateName(toValidate, out err))
             {
                 Baloon(this.NameField, err);
                 return false;
@@ -568,14 +550,14 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DeveloperTools
 
         private void Baloon(string fieldName, string message)
         {
-            FieldMessage fm = new FieldMessage(fieldName, message);
+            var fm = new FieldMessage(fieldName, message);
 
             MessagesPlaceHolder.Controls.Add(fm);
         }
 
         private void UpdateFieldsPanel()
         {
-            this.FieldListRepeater.DataSource = this.ViewState["Fields"];
+            this.FieldListRepeater.DataSource = CurrentFields;
             this.FieldListRepeater.DataBind();
         }
 
@@ -600,13 +582,14 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DeveloperTools
                 this.CurrentFields.Add(newField);
             }
 
-            if (FieldNameSyntaxValid(this.NameField.Text) == false)
+            if (!FieldNameSyntaxValid(this.NameField.Text))
             {
                 ShowMessage(this.NameField.ClientID, GetString("FieldNameSyntaxInvalid"));
                 return;
             }
 
-            if (this.CurrentFields.Count<ManagedParameterDefinition>(f => f.Name.ToLower() == this.NameField.Text.ToLower() && f.Id != this.CurrentlySelectedFieldId) > 0)
+            if (this.CurrentFields.Count(f => String.Equals(f.Name, this.NameField.Text, StringComparison.OrdinalIgnoreCase) 
+                                              && f.Id != this.CurrentlySelectedFieldId) > 0)
             {
                 ShowMessage(this.NameField.ClientID, GetString("CannotSave"));
                 return;
@@ -622,8 +605,8 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DeveloperTools
             field.Name = this.NameField.Text;
             field.Type = this.CurrentlySelectedType;
 
-            bool generateLabel = (this.LabelField.Text == "" && this.NameField.Text.StartsWith(_defaultFieldNamePrefix) == false);
-            string label = (generateLabel ? this.NameField.Text : this.LabelField.Text);
+            bool generateLabel = this.LabelField.Text == "" && !this.NameField.Text.StartsWith(_defaultFieldNamePrefix);
+            string label = generateLabel ? this.NameField.Text : this.LabelField.Text;
 
             field.Label = label;
             field.HelpText = this.HelpField.Text;
@@ -644,7 +627,7 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DeveloperTools
 
             if (!btnDefaultValueFunctionMarkup.Value.IsNullOrEmpty())
             {
-                XElement functionElement = XElement.Parse(btnDefaultValueFunctionMarkup.Value);
+                var functionElement = XElement.Parse(btnDefaultValueFunctionMarkup.Value);
                 if (functionElement.Name.Namespace != Namespaces.Function10)
                     functionElement = functionElement.Elements().First();
 
@@ -658,7 +641,7 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DeveloperTools
 
             if (!btnTestValueFunctionMarkup.Value.IsNullOrEmpty())
             {
-                XElement functionElement = XElement.Parse(btnTestValueFunctionMarkup.Value);
+                var functionElement = XElement.Parse(btnTestValueFunctionMarkup.Value);
                 if (functionElement.Name.Namespace != Namespaces.Function10)
                     functionElement = functionElement.Elements().First();
 
@@ -701,8 +684,7 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DeveloperTools
                 return;
             }
 
-            var fields = (List<ManagedParameterDefinition>)this.ViewState["Fields"];
-            List<Guid> fieldIDs = fields.Select(field => field.Id).ToList();
+            List<Guid> fieldIDs = CurrentFields.Select(field => field.Id).ToList();
 
             int currentFieldOffset = fieldIDs.IndexOf(CurrentlySelectedFieldId);
 
@@ -724,57 +706,11 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DeveloperTools
 
         private bool FieldNameSyntaxValid(string name)
         {
-            if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(name.Trim()))
-            {
-                return false;
-            }
-
-            return true;
+            return !string.IsNullOrWhiteSpace(name);
         }
 
 
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="uiControlMarkup">The visual content of the form. All namespaces that controls and functions belong to must be declared.</param>
-        /// <param name="bindingDeclarationMarkup">Bining declarations - a list of elements like &lt;binding name="..." type="..." optional="false" xmlns="http://www.composite.net/ns/management/bindingforms/1.0" /></param>
-        /// <returns></returns>
-        private FormDefinition BuildFormDefinition(XNode bindingsDeclarationMarkup, XNode uiControlMarkup, Dictionary<string, object> bindings)
-        {
-            XNamespace placeholderSpace = "#internal";
-            XNamespace stdControlLibSpace = Namespaces.BindingFormsStdUiControls10;
-
-            string formXml =
-            #region XML for form
- @"<?xml version='1.0' encoding='utf-8' ?>
-<cms:formdefinition
-  xmlns:internal='" + placeholderSpace + @"'
-  xmlns:cms='" + Namespaces.BindingForms10 + @"'>
-
-  <internal:bindingsDeclarationPlaceholder />
-
-  <cms:layout>
-    <!--FieldGroup xmlns='" + stdControlLibSpace + @"'-->
-      <internal:uiControlPlaceholder />
-    <!--/FieldGroup-->
-  </cms:layout>
-  
-</cms:formdefinition>";
-            #endregion
-
-            var formMarkup = XDocument.Parse(formXml);
-
-            XElement bindingDeclarationPlaceholder = formMarkup.Descendants(placeholderSpace + "bindingsDeclarationPlaceholder").First();
-
-            bindingDeclarationPlaceholder.ReplaceWith(bindingsDeclarationMarkup);
-
-            XElement uiControlPlaceholder = formMarkup.Descendants(placeholderSpace + "uiControlPlaceholder").First();
-            uiControlPlaceholder.ReplaceWith(uiControlMarkup);
-            return new FormDefinition(formMarkup.CreateReader(), bindings);
-        }
-
-
+ 
         // one of the "post backing" fields has been changed on the client
         protected void FieldSettingsChanged(object sender, EventArgs e)
         {
@@ -830,8 +766,7 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DeveloperTools
                 field.Position = position++;
             }
 
-            this.ViewState.Add("Fields", fields);
-            this.ViewState.Add("editedPatameterId", null);
+            CurrentFields = fields;
 
             UpdateFieldsPanel();
         }

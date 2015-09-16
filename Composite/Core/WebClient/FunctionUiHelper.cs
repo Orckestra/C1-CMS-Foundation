@@ -41,10 +41,10 @@ namespace Composite.Core.WebClient
         {
             XNamespace stdControlLibSpace = Namespaces.BindingFormsStdUiControls10;
 
-            XElement bindingsDeclaration = new XElement(Namespaces.BindingForms10 + "bindings");
-            XElement widgetPlaceholder = new XElement(stdControlLibSpace + "FieldGroup", new XAttribute("Label", panelLabel));
+            var bindingsDeclaration = new XElement(Namespaces.BindingForms10 + "bindings");
+            var widgetPlaceholder = new XElement(stdControlLibSpace + "FieldGroup", new XAttribute("Label", panelLabel));
 
-            Dictionary<string, List<ClientValidationRule>> bindingsValidationRules = new Dictionary<string, List<ClientValidationRule>>();
+            var bindingsValidationRules = new Dictionary<string, List<ClientValidationRule>>();
 
             foreach (ParameterProfile parameterProfile in parameterProfiles.Where(f=>f.WidgetFunction!=null))
             {
@@ -59,12 +59,12 @@ namespace Composite.Core.WebClient
                         new XAttribute("name", parameterProfile.Name),
                         new XAttribute("type", bindingType.AssemblyQualifiedName)));
 
-                FunctionContextContainer context = new FunctionContextContainer();
+                var context = new FunctionContextContainer();
                 XElement uiMarkup = FunctionFacade.GetWidgetMarkup(widgetFunction, parameterProfile.Type, parameterProfile.WidgetFunctionParameters, parameterProfile.Label, parameterProfile.HelpDefinition, parameterProfile.Name, context);
 
                 widgetPlaceholder.Add(uiMarkup);
 
-                if (bindings.ContainsKey(parameterProfile.Name) == false)
+                if (!bindings.ContainsKey(parameterProfile.Name))
                 {
                     bindings.Add(parameterProfile.Name, "");
                 }
@@ -77,7 +77,7 @@ namespace Composite.Core.WebClient
 
             FormDefinition widgetFormDefinition = BuildFormDefinition(bindingsDeclaration, widgetPlaceholder, bindings);
 
-            FormTreeCompiler compiler = new FormTreeCompiler();
+            var compiler = new FormTreeCompiler();
 
             using (XmlReader reader = widgetFormDefinition.FormMarkup)
             {
@@ -91,7 +91,7 @@ namespace Composite.Core.WebClient
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="bindingsDeclarationMarkup">Bining declarations - a list of elements like &lt;binding name="..." type="..." optional="false" xmlns="http://www.composite.net/ns/management/bindingforms/1.0" /></param>
+        /// <param name="bindingsDeclarationMarkup">Binding declarations - a list of elements like &lt;binding name="..." type="..." optional="false" xmlns="http://www.composite.net/ns/management/bindingforms/1.0" /></param>
         /// <param name="uiControlMarkup">The visual content of the form. All namespaces that controls and functions belong to must be declared.</param>
         /// <param name="bindings"></param>                
         /// <returns></returns>
