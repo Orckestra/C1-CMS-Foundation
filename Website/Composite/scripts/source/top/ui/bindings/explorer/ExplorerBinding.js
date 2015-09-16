@@ -224,6 +224,14 @@ ExplorerBinding.prototype.setSelectionDefault = function () {
 }
 
 /**
+ * get perspectives
+ */
+ExplorerBinding.prototype.getPerspectives = function () {
+
+	return this._menuBinding.getButtons();
+}
+
+/**
  * Get selected deck.
  * @return {DeckBinding}
  */

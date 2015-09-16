@@ -17,12 +17,12 @@ function ExplorerMenuBinding() {
 	 * Associating buttons to handles.
 	 * @type {Map<string><ToolBarButtonBinding>}
 	 */
-	this._minButtons = new Map();
+	this._buttons = new Map();
 
 	/**
 	 * @type {List<ToolBarButtonBinding}
 	 */
-	this._minList = new List();
+	this._list = new List();
 
 	/**
 	 * @type {int}
@@ -33,7 +33,7 @@ function ExplorerMenuBinding() {
 	 * The small toolbargroup
 	 * @type {ToolBarGroupBinding}
 	 */
-	this._minGroup = null;
+	this._group = null;
 
 	/**
 	 * @type {string}
@@ -82,7 +82,7 @@ ExplorerMenuBinding.prototype.onMemberInitialize = function (binding) {
 
 	switch (binding.constructor) {
 		case ExplorerToolBarBinding:
-			this._minGroup = binding.getToolBarGroupByIndex(0);
+			this._group = binding.getToolBarGroupByIndex(0);
 			break;
 	}
 	ExplorerMenuBinding.superclass.onMemberInitialize.call(this, binding);
@@ -94,8 +94,17 @@ ExplorerMenuBinding.prototype.onMemberInitialize = function (binding) {
  */
 ExplorerMenuBinding.prototype.mountDefinition = function (definition) {
 
-	this._minButtons.set(definition.handle, this._mountMinButton(definition));
+	this._buttons.set(definition.handle, this._mountMinButton(definition));
 	this._index++;
+}
+
+/**
+ * get buttons.
+ * @return Map<string><ToolBarButtonBinding>
+ */
+ExplorerMenuBinding.prototype.getButtons = function () {
+
+	return this._buttons;
 }
 
 /**
@@ -113,11 +122,9 @@ ExplorerMenuBinding.prototype._mountMinButton = function (definition) {
 	button.setToolTip(definition.label); // use label as tooltip
 	button.handle = definition.handle;
 	button.node = definition.node;
-	this._minGroup.add(button);
-	this._minList.add(button);
+	this._group.add(button);
+	this._list.add(button);
 	button.attach();
-	//if (!Client.isPad)
-	//        button.hide (); // note that we hide small buttons on startup!
 	return button;
 }
 
@@ -173,7 +180,7 @@ ExplorerMenuBinding.prototype.handleBroadcast = function (broadcast, arg) {
  */
 ExplorerMenuBinding.prototype.setSelectionByHandle = function (handle) {
 
-	var buttonBinding = this._minButtons.get(handle);
+	var buttonBinding = this._buttons.get(handle);
 
 	if (buttonBinding) {
 		buttonBinding.check();
@@ -205,8 +212,8 @@ ExplorerMenuBinding.prototype.getSelectionTag = function () {
  */
 ExplorerMenuBinding.prototype.setSelectionDefault = function () {
 
-	if (this._minList.hasEntries()) {
-		this._minList.getFirst().check();
+	if (this._list.hasEntries()) {
+		this._list.getFirst().check();
 	}
 }
 
