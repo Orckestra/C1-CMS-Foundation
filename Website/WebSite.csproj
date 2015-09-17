@@ -473,12 +473,14 @@
     <Content Include="Composite\images\icons\svg\bullist.svg" />
     <Content Include="Composite\images\icons\svg\company-apple.svg" />
     <Content Include="Composite\images\icons\svg\data-awaiting-approval.svg" />
+    <Content Include="Composite\images\icons\svg\delete-disabled.svg" />
     <Content Include="Composite\images\icons\svg\dollar-invoice.svg" />
     <Content Include="Composite\images\icons\svg\end.svg" />
     <Content Include="Composite\images\icons\svg\inbox-green.svg" />
     <Content Include="Composite\images\icons\svg\log-showlog.svg" />
     <Content Include="Composite\images\icons\svg\puzzle.svg" />
     <Content Include="Composite\images\icons\svg\puzzle-piece.svg" />
+    <Content Include="Composite\images\icons\svg\key.svg" />
     <Content Include="Composite\images\icons\svg\social-facebook.svg" />
     <Content Include="Composite\images\icons\svg\social-googleplus.svg" />
     <Content Include="Composite\images\icons\svg\social-twitter.svg" />
@@ -520,7 +522,6 @@
     <Content Include="Composite\scripts\source\top\ui\bindings\genericview\GenericViewBinding.js" />
     <Content Include="Composite\styles\default\fields\fields-base.less" />
     <Content Include="Composite\styles\default\dialogs\dialog-multiselector.less" />
-    <Content Include="Composite\styles\default\media-browser.less" />
     <Content Include="Composite\styles\default\fields\urlinputdialog.less" />
     <Content Include="Composite\styles\default\icons.less" />
     <Content Include="Composite\styles\default\oldUI-fixes.less" />
