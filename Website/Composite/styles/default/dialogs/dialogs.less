@@ -65,14 +65,19 @@ ui|dialogpage, ui|wizardpage {
     }
 
     ui|scrollbox {
-        padding: 20px 25px;
+        ui|fields {
+            padding: 20px 25px;
+        }
+
+        .padded ui|fields {
+            padding: 0;
+        }
     }
 
     ui|pagebody {
         padding: 20px 25px;
         border-top: 1px solid @dialog-border-color;
     }
-
 }
 
 ui|dialogpage {
@@ -100,12 +105,44 @@ ui|dialogpage {
             background: @dialog-header-bg-color;
         }
 
-        ui|tabbox {
+        ui|pagebody > ui|tabbox {
             margin: 0 -25px;
         }
 
         ui|tabpanels {
-            padding: 20px 25px;
+
+            ui|fields {
+                padding: 20px 25px;
+            }
+
+            .padded ui|fields {
+                padding: 0;
+            }
+        }
+    }
+}
+
+
+@media (min-width: 700px) { // usage: fix dialog UI for Compsoite.Forms.FormBuilder function properties
+    ui|dialogpage ui|field, .dialogsubpage ui|field {
+        width: 430px;
+         border: solid 1px @fields-group-border-color;
+        border-width: 0 1px;
+        background: @fields-group-bg-color;
+        padding: 0 17px;
+
+        &.first {
+            padding-top: 8px;
+            border-top-width: 1px;
+            border-top-left-radius: @base-border-radius;
+            border-top-right-radius: @base-border-radius;
+        }
+
+        &.last, &:last-of-type {
+            padding-bottom: 25px;
+            border-bottom-width: 1px;
+            border-bottom-left-radius: @base-border-radius;
+            border-bottom-right-radius: @base-border-radius;
         }
     }
 }
@@ -127,51 +164,54 @@ ui|dialogpage {
 
 
 ui|dialogborder {
-	position: absolute;
-	overflow: hidden;
-	z-index: 4;
+    position: absolute;
+    overflow: hidden;
+    z-index: 4;
 
-	&.n {
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 4px;
-	}
-	&.s {
-		bottom: 0;
-		left: 0;
-		width: 100%;
-		height: 4px;
-	}
-	&.w {
-		top: 0;
-		left: 0;
-		width: 4px;
-		height: 100%;
-	}
-	&.e {
-		top: 0;
-		right: 0;
-		width: 4px;
-		height: 100%;
-	}
+    &.n {
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+    }
 
+    &.s {
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+    }
+
+    &.w {
+        top: 0;
+        left: 0;
+        width: 4px;
+        height: 100%;
+    }
+
+    &.e {
+        top: 0;
+        right: 0;
+        width: 4px;
+        height: 100%;
+    }
 }
+
 ui|dialog.resizable ui|dialogborder {
 
-	&.n {
-		cursor: n-resize;
-	}
+    &.n {
+        cursor: n-resize;
+    }
 
-	&.s {
-		cursor: s-resize;
-	}
+    &.s {
+        cursor: s-resize;
+    }
 
-	&.w {
-		cursor: w-resize;
-	}
+    &.w {
+        cursor: w-resize;
+    }
 
-	&.e {
-		cursor: e-resize;
-	}
+    &.e {
+        cursor: e-resize;
+    }
 }
