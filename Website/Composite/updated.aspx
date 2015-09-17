@@ -6,7 +6,7 @@
 <head>
     <title>Composite C1 was updated</title>
     <link rel="stylesheet" type="text/css" href="updated.css.aspx" />
-    <link rel="shortcut icon" type="image/x-icon" href="images/icons/branding/favicon16.ico" />
+    <link rel="shortcut icon" type="image/x-icon" href="images/icons/branding/favicon.ico" />
     <control:styleloader runat="server" />
     <script type="text/javascript" src="updated.js"></script>
 </head>

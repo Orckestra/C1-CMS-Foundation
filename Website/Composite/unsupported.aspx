@@ -6,7 +6,7 @@
 <head>
     <title>Browser not supported</title>
     <control:styleloader runat="server" />
-    <link rel="shortcut icon" type="image/x-icon" href="images/icons/branding/favicon16.ico" />
+    <link rel="shortcut icon" type="image/x-icon" href="images/icons/branding/favicon.ico" />
 </head>
 <body>
     <div class="splash-cover">

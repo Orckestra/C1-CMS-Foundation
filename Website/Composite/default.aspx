@@ -17,7 +17,7 @@
     <title>Start Composite</title>
     <meta name="robots" content="noindex, nofollow" />
     <control:styleloader runat="server"/>
-    <link rel="shortcut icon" type="image/x-icon" href="images/icons/branding/favicon16.ico" />
+    <link rel="shortcut icon" type="image/x-icon" href="images/icons/branding/favicon.ico" />
     <script type="text/javascript" src="default.js"></script>
 </head>
 <body>

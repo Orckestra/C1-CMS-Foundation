@@ -17,7 +17,7 @@
 
     <control:styleloader runat="server" />
     <link rel="stylesheet" type="text/css" href="top.css.aspx" />
-    <link rel="shortcut icon" type="image/x-icon" href="images/icons/branding/favicon16.ico" />
+    <link rel="shortcut icon" type="image/x-icon" href="images/icons/branding/favicon.ico" />
     <control:scriptloader type="top" runat="server" />
 
     <ui:keyset>

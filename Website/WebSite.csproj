@@ -468,6 +468,7 @@
     </Compile>
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\Selectors\UrlComboBox.ascx" />
     <Content Include="Composite\grunt.html" />
+    <Content Include="Composite\images\icons\branding\favicon.ico" />
     <Content Include="Composite\images\icons\svg\books.svg" />
     <Content Include="Composite\images\icons\svg\bullist.svg" />
     <Content Include="Composite\images\icons\svg\company-apple.svg" />
@@ -2255,13 +2256,6 @@
     <Content Include="Composite\images\actionended.png" />
     <Content Include="Composite\images\blank.png" />
     <Content Include="Composite\images\fieldbox.png" />
-    <Content Include="Composite\images\icons\branding\16x16CompositeS.png" />
-    <Content Include="Composite\images\icons\branding\24x24CompositeS.png" />
-    <Content Include="Composite\images\icons\branding\32x32CompositeS.png" />
-    <Content Include="Composite\images\icons\branding\48x48CompositeS.png" />
-    <Content Include="Composite\images\icons\branding\composite_16.png" />
-    <Content Include="Composite\images\icons\branding\favicon16.ico" />
-    <Content Include="Composite\images\icons\branding\favicon32.ico" />
     <Content Include="Composite\images\logo.png" />
     <Content Include="Composite\images\progressbar.png" />
     <Content Include="Composite\images\unfortunateerror.png" />
