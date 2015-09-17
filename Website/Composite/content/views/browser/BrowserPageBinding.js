@@ -328,7 +328,12 @@ BrowserPageBinding.prototype.pushToken = function (node, isManual) {
     if (!isManual) {
 	    this.getSystemTree()._focusTreeNodeByEntityToken(node.getEntityToken());
     }
-
+	/*
+	 * Initialize on first load.
+	 */
+    if (!this._isPageBindingInitialized) {
+    	this.onPageInitialize();
+    }
 }
 
 
