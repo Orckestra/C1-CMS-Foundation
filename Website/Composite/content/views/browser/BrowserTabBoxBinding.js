@@ -114,6 +114,19 @@ BrowserTabBoxBinding.prototype.getCustomViewTabBinding = function () {
 	return this._customTabBinding;
 }
 
+
+
+/**
+ * Reload
+ */
+BrowserTabBoxBinding.prototype.reload = function() {
+	if (this.getBrowserTabBinding().isSelected) {
+		this.getContentDocument().location.reload();
+	} else if (this.getCustomViewTabBinding().isSelected) {
+		this.getCustomViewTabBinding().iframe.contentWindow.location.reload();
+	}
+}
+
 /**
  * Get URL from selected tab.
  * @return {string}

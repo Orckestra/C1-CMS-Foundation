@@ -131,7 +131,7 @@ BrowserPageBinding.prototype.handleBroadcast = function (broadcast, arg) {
 			break;
     	case BroadcastMessages.SYSTEMTREEBINDING_REFRESHED:
     		var tab = this._box.getGeneticViewTabBinding();
-    		if (tab.isVisible && tab.tree.node) {
+    		if (tab.isSelected && tab.tree.node) {
 			    var node = tab.tree.node;
 			    tab.tree.setNode(node);
     			this.bindingWindow.bindingMap.addressbar.showBreadcrumb(node);
@@ -456,27 +456,27 @@ BrowserPageBinding.prototype._handleSelectedTab = function () {
  */
 BrowserPageBinding.prototype._handleTabBoxUpdate = function () {
 
-    var box = this._box;
+    //var box = this._box;
 
-    switch (box.updateType) {
+    //switch (box.updateType) {
 
-        case TabBoxBinding.UPDATE_DETACH:
-        case TabBoxBinding.UPDATE_ATTACH:
+    //    case TabBoxBinding.UPDATE_DETACH:
+    //    case TabBoxBinding.UPDATE_ATTACH:
 
-            var tabs = UserInterface.getBinding(box.getTabsElement());
-            if (box.getTabBindings().getLength() == 1) {
-                if (tabs.isVisible) {
-                    tabs.hide();
-                    this.reflex();
-                }
-            } else {
-                if (!tabs.isVisible) {
-                    tabs.show();
-                    this.reflex();
-                }
-            }
-            break;
-    }
+    //        var tabs = UserInterface.getBinding(box.getTabsElement());
+    //        if (box.getTabBindings().getLength() == 1) {
+    //            if (tabs.isVisible) {
+    //                tabs.hide();
+    //                this.reflex();
+    //            }
+    //        } else {
+    //            if (!tabs.isVisible) {
+    //                tabs.show();
+    //                this.reflex();
+    //            }
+    //        }
+    //        break;
+    //}
 }
 
 /**
@@ -632,9 +632,9 @@ BrowserPageBinding.prototype._handleCommand = function (cmd, binding) {
 
 	        break;
         case "refresh":
-            this._isHistoryBrowsing = true;
-            this.getContentDocument().location.reload();
-            break;
+        	this._isHistoryBrowsing = true;
+	        this._box.reload();
+	        break;
     	case "home":
 		    this.push(this.getSystemPage().node);
             break;
