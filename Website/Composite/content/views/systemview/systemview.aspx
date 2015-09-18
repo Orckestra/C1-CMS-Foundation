@@ -11,7 +11,7 @@
 	</head>
 	<body>
 		<ui:page binding="SystemPageBinding" id="page">
-			<ui:tree id="tree" binding="SystemTreeBinding">
+			<ui:tree id="tree" binding="SystemTreeBinding" locktoeditor="true">
 				<ui:treebody/>
 			</ui:tree>
 		</ui:page>

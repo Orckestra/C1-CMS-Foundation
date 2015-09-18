@@ -137,7 +137,7 @@ DockBinding.prototype.onBindingRegister = function () {
 	this.addActionListener ( ViewBinding.ACTION_LOADED );
 	this.addActionListener ( ViewBinding.ACTION_CLOSED )
 	
-	this.subscribe ( BroadcastMessages.SYSTEMTREENODEBINDING_FOCUS );
+	//this.subscribe ( BroadcastMessages.SYSTEMTREENODEBINDING_FOCUS );
 	
 	this._viewBindingList = new List ();
 	
@@ -528,12 +528,12 @@ DockBinding.prototype.handleBroadcast = function ( broadcast, arg ) {
 	DockBinding.superclass.handleBroadcast.call ( this, broadcast, arg );
 	
 	switch ( broadcast ) {
-		case BroadcastMessages.SYSTEMTREENODEBINDING_FOCUS :
-			var treenode = arg;
-			if ( treenode.perspectiveNode == this.perspectiveNode ) {
-				this._selectTabByEntityToken ( treenode.node.getEntityToken ());
-			}
-			break;
+		//case BroadcastMessages.SYSTEMTREENODEBINDING_FOCUS :
+		//	var treenode = arg;
+		//	if ( treenode.perspectiveNode == this.perspectiveNode ) {
+		//		this._selectTabByEntityToken ( treenode.node.getEntityToken ());
+		//	}
+		//	break;
 	}
 }
 
