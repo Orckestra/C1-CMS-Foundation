@@ -101,7 +101,7 @@ BrowserPageBinding.prototype.onBindingRegister = function () {
 
     BrowserPageBinding.superclass.onBindingRegister.call(this);
     this.subscribe(BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED);
-    this.subscribe(BroadcastMessages.SYSTEMTREEBINDING_REFRESHED);
+    this.subscribe(BroadcastMessages.SYSTEMTREEBINDING_REFRESHED_AFTER);
     
     this.addActionListener(WindowBinding.ACTION_ONLOAD);
     this.addActionListener(TabBoxBinding.ACTION_SELECTED);
@@ -129,12 +129,18 @@ BrowserPageBinding.prototype.handleBroadcast = function (broadcast, arg) {
                 this.push(arg.actionProfile.Node, true);
         	}
 			break;
-    	case BroadcastMessages.SYSTEMTREEBINDING_REFRESHED:
-    		var tab = this._box.getGeneticViewTabBinding();
-    		if (tab.isSelected && tab.tree.node) {
-			    var node = tab.tree.node;
-			    tab.tree.setNode(node);
-    			this.bindingWindow.bindingMap.addressbar.showBreadcrumb(node);
+    	case BroadcastMessages.SYSTEMTREEBINDING_REFRESHED_AFTER:
+    		if (arg.syncHandle == this.getSyncHandle()) {
+			    var tab = this._box.getGeneticViewTabBinding();
+			    if (tab.isSelected) {
+
+			    	var selectedTreeNode = this.getSystemTree().getFocusedTreeNodeBindings().getFirst();
+				    if (selectedTreeNode) {
+					    this.push(selectedTreeNode.node, true, true);
+				    } else {
+				    	this.push(this.getSystemPage().node, true, true);
+				    }
+			    }
 		    }
 		    break;
     }
@@ -255,7 +261,7 @@ BrowserPageBinding.prototype.onAfterPageInitialize = function () {
  * @param {string} url
  * @return
  */
-BrowserPageBinding.prototype.push = function (node, isManual) {
+BrowserPageBinding.prototype.push = function (node, isManual, isForce) {
 	var self = this;
 	if (typeof (node) == "string" || node instanceof String) {
 		self.pushURL(node, isManual);
@@ -263,7 +269,7 @@ BrowserPageBinding.prototype.push = function (node, isManual) {
 	if (node instanceof SystemNode) {
 		var entityToken = node.getEntityToken();;
 		if (entityToken) {
-			if (this._entityToken != entityToken) {
+			if (this._entityToken != entityToken || isForce) {
                 TreeService.GetBrowserUrlByEntityToken(entityToken, function (result) {
                     setTimeout(function () {
 						if (result) {

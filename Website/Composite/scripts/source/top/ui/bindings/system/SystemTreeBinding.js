@@ -471,6 +471,11 @@ SystemTreeBinding.prototype._updateRefreshingTrees = function (key) {
 			);
 			this._refreshToken = null;
 			this._attemptRestorableFocus();
+
+			EventBroadcaster.broadcast(
+				BroadcastMessages.SYSTEMTREEBINDING_REFRESHED_AFTER, { syncHandle: this.getSyncHandle() }
+			);
+
 		}
 	}
 };
