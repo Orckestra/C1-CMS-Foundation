@@ -88,7 +88,7 @@ LabelBinding.setImageSvg = function (binding, image) {
 			} else {
 
 				if (LabelBinding.sprites) {
-					var g = LabelBinding.sprites.querySelector("#" + image);
+				    var g = LabelBinding.sprites.querySelector("#" + image.toLowerCase());
 					if (g) {
 						var xmlns = "http://www.w3.org/2000/svg";
 						if (!binding.shadowTree.svg) {
