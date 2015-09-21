@@ -130,27 +130,6 @@ StageDeckBinding.prototype.handleAction = function ( action ) {
 				this.addActionListener ( StageSplitBoxBinding.ACTION_DOCK_OPENED );
 				this.dispatchAction(StageDeckBinding.ACTION_LOADED);
 
-
-				//NEWUI LOAD Browser to first tab
-				var browserViewDefinition = ViewDefinition.clone(
-                        "Composite.Management.Browser",
-                        "Composite.Management.Browser." + KeyMaster.getUniqueKey()
-                );
-				browserViewDefinition.image = this.definition.image;
-				browserViewDefinition.label = this.definition.label;
-				browserViewDefinition.toolTip = this.definition.toolTip;
-
-				browserViewDefinition.argument["SystemViewDefinition"] = this.definition;
-				browserViewDefinition.argument.image = this.definition.image;
-				browserViewDefinition.argument.label = this.definition.label;
-				browserViewDefinition.argument.toolTip = this.definition.toolTip;
-
-
-
-				var tab = this._dockBindings.get("main").prepareNewView(browserViewDefinition);
-
-				this._viewBinding = tab.getAssociatedView();
-
 				action.consume ();
 			}
 			break;

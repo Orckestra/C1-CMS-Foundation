@@ -525,6 +525,22 @@ StageBinding.prototype.handleAction = function ( action ) {
 					this._onStageReady ();
 				}
 			}
+
+			//NEW UI: LOAD Browser to first tab
+			this._activeViewDefinitions["Composite.Management.Browser"] = action.target.definition;
+
+			var browserViewDefinition = ViewDefinitions["Composite.Management.Browser"];
+			browserViewDefinition.image = action.target.definition.image;
+			browserViewDefinition.label = action.target.definition.label;
+			browserViewDefinition.toolTip = action.target.definition.toolTip;
+
+			browserViewDefinition.argument["SystemViewDefinition"] = action.target.definition;
+			browserViewDefinition.argument.image = action.target.definition.image;
+			browserViewDefinition.argument.label = action.target.definition.label;
+			browserViewDefinition.argument.toolTip = action.target.definition.toolTip;
+			var tab = action.target._dockBindings.get("main").prepareNewView(browserViewDefinition);
+			action.target._viewBinding = tab.getAssociatedView();
+
 			break;
 		
 		/*

@@ -174,26 +174,28 @@ BrowserPageBinding.prototype.setPageArgument = function (map) {
     } else {
         this._startURL = url;
     }
+    if (!this.systemViewDefinition){
+  
+		this.systemViewDefinition = map["SystemViewDefinition"];
+		//NEWUI Add tree to Browser
+		var explorerdocument = this.bindingDocument;
+		var explorerpanel = this.bindingWindow.bindingMap.explorerpanel;
+		// construct ViewBinding
+		var viewBinding = ViewBinding.newInstance(explorerdocument);
+		viewBinding.setType(ViewBinding.TYPE_EXPLORERVIEW);
+		viewBinding.setDefinition(this.systemViewDefinition);
 
-    this.systemViewDefinition = map["SystemViewDefinition"];
+		explorerpanel.add(viewBinding);
 
-    //NEWUI Add tree to Browser
-    var explorerdocument = this.bindingDocument;
-    var explorerpanel = this.bindingWindow.bindingMap.explorerpanel;
-    // construct ViewBinding
-    var viewBinding = ViewBinding.newInstance(explorerdocument);
-    viewBinding.setType(ViewBinding.TYPE_EXPLORERVIEW);
-    viewBinding.setDefinition(this.systemViewDefinition);
+		viewBinding.attach();
+		viewBinding.initialize();
 
-    explorerpanel.add(viewBinding);
+		this._viewBinding = viewBinding;
+		if (map.image)
+			this.image = map.image;
+	}
 
-    viewBinding.attach();
-    viewBinding.initialize();
-
-    this._viewBinding = viewBinding;
-
-	if (map.image)
-		this.image = map.image;
+	
 }
 
 /**
@@ -213,12 +215,11 @@ BrowserPageBinding.prototype.onBeforePageInitialize = function () {
     var devicepopup = window.bindingMap.devicepopup;
     devicepopup.addActionListener(MenuItemBinding.ACTION_COMMAND, this);
 
+
     if (this._startURL) {
-        this.setURL(this._startURL);
-        this._startURL = null;
+    	this.setURL(this._startURL);
+    	this._startURL = null;
     }
-
-
 }
 
 /**
@@ -247,11 +248,18 @@ BrowserPageBinding.prototype.onAfterPageInitialize = function () {
 
     this.reflex(); //?
 
+    if (this._startURL) {
+    	this._isPushingUrl = false;
+    	this.setURL(this._startURL);
+    	this._startURL = null;
+    }
+
     this._clearHistory();
     this._updateBroadcasters();
 
 	//TODO move this
     this._box.getGeneticViewTabBinding().tree.addActionListener(GenericViewBinding.ACTION_OPEN, this);
+
 
 }
 
