@@ -6,7 +6,7 @@ using Composite.Core.Types;
 
 namespace Composite.Core.Routing
 {
-    public class DefaultRelativeRouteToPredicateMapper<TValue> : IRelativeRouteToPredicateMapper<TValue>
+    internal class DefaultRelativeRouteToPredicateMapper<TValue> : IRelativeRouteToPredicateMapper<TValue>
     {
         public int PathSegmentsCount { get { return 1; } }
 
