@@ -187,8 +187,6 @@ FlexBoxBinding.prototype._getSiblingsSpan = function ( isHorizontal ) {
 					height += ( rect.right - rect.left );
 				} else {
 				    result += (rect.bottom - rect.top);
-				   // var border = CSSComputer.getBorder(child);
-				  //  result -= (border.top + border.bottom);
 				}
 			}			
 		}
