@@ -47,7 +47,7 @@ namespace Composite.C1Console.Trees.Foundation
                 else
                 {
                     actionNode.InterfaceType = TypeManager.TryGetType(typeAttribute.Value);
-                    if (actionNode.InterfaceType == null) tree.AddValidationError(element.GetXPath(), "TreeValidationError.Common.UnkownInterfaceType", typeAttribute.Value);
+                    if (actionNode.InterfaceType == null) tree.AddValidationError(element.GetXPath(), "TreeValidationError.Common.UnknownInterfaceType", typeAttribute.Value);
                 }
 
                 actionNode.CustomFormMarkupPath = customFormMarkupAttribute.GetValueOrDefault(null);
@@ -302,7 +302,7 @@ namespace Composite.C1Console.Trees.Foundation
                 else
                 {
                     actionNode.WorkflowType = TypeManager.TryGetType(workflowTypeAttribute.Value);
-                    if (actionNode.WorkflowType == null) tree.AddValidationError(element.GetXPath(), "TreeValidationError.Common.UnkownInterfaceType", workflowTypeAttribute.Value);
+                    if (actionNode.WorkflowType == null) tree.AddValidationError(element.GetXPath(), "TreeValidationError.Common.UnknownInterfaceType", workflowTypeAttribute.Value);
                 }
                 
                 return actionNode;
@@ -352,13 +352,13 @@ namespace Composite.C1Console.Trees.Foundation
 
             string[] permissionTypesStrings = permissionTypesString.Split(',');
 
-            List<PermissionType> permissionTypes = new List<PermissionType>();
+            var permissionTypes = new List<PermissionType>();
             foreach (string permission in permissionTypesStrings)
             {                
                 PermissionType permissionType;
                 if (Enum.TryParse<PermissionType>(permission.Trim(), true, out permissionType) == false)
                 {
-                    tree.AddValidationError(element.GetXPath(), "TreeValidationError.Common.WrongPermissinValue", permission.Trim());
+                    tree.AddValidationError(element.GetXPath(), "TreeValidationError.Common.WrongPermissionValue", permission.Trim());
                     
                     continue;
                 }

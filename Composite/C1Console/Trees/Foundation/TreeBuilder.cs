@@ -237,7 +237,7 @@ namespace Composite.C1Console.Trees.Foundation
                 Type interfaceType = TypeManager.TryGetType(typeAttribute.Value);
                 if (interfaceType == null)
                 {
-                    tree.AddValidationError(dataTypeElement.GetXPath(), "TreeValidationError.Common.UnkownInterfaceType", typeAttribute.Value);
+                    tree.AddValidationError(dataTypeElement.GetXPath(), "TreeValidationError.Common.UnknownInterfaceType", typeAttribute.Value);
                     continue;
                 }
 

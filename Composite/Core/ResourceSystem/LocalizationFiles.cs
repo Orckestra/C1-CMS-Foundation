@@ -64,11 +64,11 @@ namespace Composite.Core.ResourceSystem
  /// <summary>&quot;The type &apos;{0}&apos; does not contain a property named &apos;{1}&apos;&quot;</summary> 
  public static string TreeValidationError_Common_MissingProperty(object parameter0,object parameter1) { return string.Format(T("TreeValidationError.Common.MissingProperty"), parameter0,parameter1); } 
  /// <summary>&quot;The type &apos;{0}&apos; could not be found&quot;</summary> 
- public static string TreeValidationError_Common_UnkownInterfaceType(object parameter0) { return string.Format(T("TreeValidationError.Common.UnkownInterfaceType"), parameter0); } 
+ public static string TreeValidationError_Common_UnknownInterfaceType(object parameter0) { return string.Format(T("TreeValidationError.Common.UnknownInterfaceType"), parameter0); } 
  /// <summary>&quot;The type &apos;{0}&apos; does not implement the interface &apos;{1}&apos;&quot;</summary> 
  public static string TreeValidationError_Common_NotImplementingIData(object parameter0,object parameter1) { return string.Format(T("TreeValidationError.Common.NotImplementingIData"), parameter0,parameter1); } 
  /// <summary>&quot;The value &apos;{0}&apos; is not allowed as a permission type value&quot;</summary> 
- public static string TreeValidationError_Common_WrongPermissinValue(object parameter0) { return string.Format(T("TreeValidationError.Common.WrongPermissinValue"), parameter0); } 
+ public static string TreeValidationError_Common_WrongPermissionValue(object parameter0) { return string.Format(T("TreeValidationError.Common.WrongPermissionValue"), parameter0); } 
  /// <summary>&quot;The value &apos;{0}&apos; is not allowed as a location value&quot;</summary> 
  public static string TreeValidationError_Common_WrongLocationValue(object parameter0) { return string.Format(T("TreeValidationError.Common.WrongLocationValue"), parameter0); } 
  /// <summary>&quot;No function markup provided as a child element&quot;</summary> 
@@ -2790,11 +2790,7 @@ namespace Composite.Core.ResourceSystem
  /// <summary>&quot;Error&quot;</summary> 
  public static string AddNewCompositionTypeWorkflow_ErrorTitle { get { return T("AddNewCompositionTypeWorkflow.ErrorTitle"); } } 
  /// <summary>&quot;Error&quot;</summary> 
- public static string AddNewAggregationTypeWorkflow_ErrorTitle { get { return T("AddNewAggregationTypeWorkflow.ErrorTitle"); } } 
- /// <summary>&quot;Error&quot;</summary> 
  public static string EditCompositionTypeWorkflow_ErrorTitle { get { return T("EditCompositionTypeWorkflow.ErrorTitle"); } } 
- /// <summary>&quot;Error&quot;</summary> 
- public static string EditAggregationTypeWorkflow_ErrorTitle { get { return T("EditAggregationTypeWorkflow.ErrorTitle"); } } 
  /// <summary>&quot;XML Result&quot;</summary> 
  public static string DataTypeDescriptorToXmlLabel { get { return T("DataTypeDescriptorToXmlLabel"); } } 
  /// <summary>&quot;This type has custom form markup&quot;</summary> 
@@ -5792,7 +5788,7 @@ namespace Composite.Core.ResourceSystem
  public static string KeyFieldDetailsGroupLabel { get { return T("KeyFieldDetailsGroupLabel"); } } 
  /// <summary>&quot;Key field type&quot;</summary> 
  public static string KeyFieldType { get { return T("KeyFieldType"); } } 
- /// <summary>&quot;Select a data type for the key field. Guid fields feature optimal performance, string key fields are usefull when the id values have to be exposed in urls.&quot;</summary> 
+ /// <summary>&quot;The data type of the key field. Guid fields feature optimal performance, string key fields are usefull when the id values have to be exposed in urls.&quot;</summary> 
  public static string KeyFieldTypeHelp { get { return T("KeyFieldTypeHelp"); } } 
  /// <summary>&quot;Field properties&quot;</summary> 
  public static string FieldDetailsGroupLabel { get { return T("FieldDetailsGroupLabel"); } } 

@@ -193,10 +193,10 @@ namespace Composite.Services
 
             public DiffState()
             {
-                SetToUnkown();
+                SetToUnknown();
             }
 
-            protected void SetToUnkown()
+            protected void SetToUnknown()
             {
                 _startIndex = BAD_INDEX;
                 _length = (int)DiffStatus.Unknown;
@@ -224,7 +224,7 @@ namespace Composite.Services
                     if ((maxPossibleDestLength < _length) ||
                         ((_startIndex < newStart) || (EndIndex > newEnd)))
                     {
-                        SetToUnkown();
+                        SetToUnknown();
                     }
                 }
                 return (_length != (int)DiffStatus.Unknown);

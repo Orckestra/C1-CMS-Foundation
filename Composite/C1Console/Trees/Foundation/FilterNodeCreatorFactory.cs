@@ -32,7 +32,7 @@ namespace Composite.C1Console.Trees.Foundation
                 Type parentInterfaceType = TypeManager.TryGetType(parentTypeAttribute.Value);
                 if (parentInterfaceType == null)
                 {
-                    tree.AddValidationError(filterElement.GetXPath(), "TreeValidationError.Common.UnkownInterfaceType", parentTypeAttribute.Value);
+                    tree.AddValidationError(filterElement.GetXPath(), "TreeValidationError.Common.UnknownInterfaceType", parentTypeAttribute.Value);
                     return null;
                 }
 
@@ -44,7 +44,8 @@ namespace Composite.C1Console.Trees.Foundation
                     ReferenceFieldName = referenceFieldNameAttribute.Value
                 };
             }
-            else if (filterElement.Name == TreeMarkupConstants.Namespace + "FieldFilter")
+
+            if (filterElement.Name == TreeMarkupConstants.Namespace + "FieldFilter")
             {
                 XAttribute fieldNameAttribute = filterElement.Attribute("FieldName");
                 XAttribute fieldValueAttribute = filterElement.Attribute("FieldValue");
@@ -104,7 +105,8 @@ namespace Composite.C1Console.Trees.Foundation
                     Operator = filterOperator
                 };
             }
-            else if (filterElement.Name == TreeMarkupConstants.Namespace + "FunctionFilter")
+
+            if (filterElement.Name == TreeMarkupConstants.Namespace + "FunctionFilter")
             {
                 XElement functionMarkupElement = filterElement.Element((XNamespace)FunctionTreeConfigurationNames.NamespaceName + FunctionTreeConfigurationNames.FunctionTagName);
 

@@ -75,7 +75,7 @@ namespace Composite.C1Console.Trees.Foundation
                 interfaceType = TypeManager.TryGetType(typeAttribute.Value);
                 if (interfaceType == null)
                 {
-                    tree.AddValidationError(element, "TreeValidationError.Common.UnkownInterfaceType", typeAttribute.Value);
+                    tree.AddValidationError(element, "TreeValidationError.Common.UnknownInterfaceType", typeAttribute.Value);
                     return null;
                 }
             }
@@ -144,7 +144,7 @@ namespace Composite.C1Console.Trees.Foundation
             Type interfaceType = TypeManager.TryGetType(typeAttribute.Value);
             if (interfaceType == null)
             {
-                tree.AddValidationError(element, "TreeValidationError.Common.UnkownInterfaceType",
+                tree.AddValidationError(element, "TreeValidationError.Common.UnknownInterfaceType",
                                         typeAttribute.Value);
                 return null;
             }

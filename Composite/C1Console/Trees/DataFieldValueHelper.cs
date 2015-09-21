@@ -110,7 +110,7 @@ namespace Composite.C1Console.Trees
                 Type interfaceType = TypeManager.TryGetType(typeName);
                 if (interfaceType == null)
                 {
-                    ownerTreeNode.AddValidationError("TreeValidationError.Common.UnkownInterfaceType", typeName);
+                    ownerTreeNode.AddValidationError("TreeValidationError.Common.UnknownInterfaceType", typeName);
                     return;
                 }
 
