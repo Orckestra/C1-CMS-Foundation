@@ -784,12 +784,6 @@
       <DependentUpon>EditXsltFunctionWorkflow.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\AddNewAggregationTypeWorkflow.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\AddNewAggregationTypeWorkflow.designer.cs">
-      <DependentUpon>AddNewAggregationTypeWorkflow.cs</DependentUpon>
-    </Compile>
     <Compile Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\AddNewCompositionTypeWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -837,12 +831,6 @@
     </Compile>
     <Compile Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\DisableTypeLocalizationWorkflow.designer.cs">
       <DependentUpon>DisableTypeLocalizationWorkflow.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\EditAggregationTypeWorkflow.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\EditAggregationTypeWorkflow.designer.cs">
-      <DependentUpon>EditAggregationTypeWorkflow.cs</DependentUpon>
     </Compile>
     <Compile Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\EditCompositionTypeWorkflow.cs">
       <SubType>Component</SubType>
@@ -1254,9 +1242,6 @@
     <EmbeddedResource Include="Plugins\Elements\ElementProviders\WebsiteFileElementProvider\UploadWebsiteFileWorkflow.layout">
       <DependentUpon>UploadWebsiteFileWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\AddNewAggregationTypeWorkflow.layout">
-      <DependentUpon>AddNewAggregationTypeWorkflow.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\AddNewCompositionTypeWorkflow.layout">
       <DependentUpon>AddNewCompositionTypeWorkflow.cs</DependentUpon>
     </EmbeddedResource>
@@ -1277,9 +1262,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\DisableTypeLocalizationWorkflow.layout">
       <DependentUpon>DisableTypeLocalizationWorkflow.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\EditAggregationTypeWorkflow.layout">
-      <DependentUpon>EditAggregationTypeWorkflow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\EditCompositionTypeWorkflow.layout">
       <DependentUpon>EditCompositionTypeWorkflow.cs</DependentUpon>

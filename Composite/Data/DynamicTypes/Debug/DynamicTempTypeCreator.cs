@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Composite.Data.DynamicTypes;
-using Composite.Data.Foundation;
 
 
 namespace Composite.Data.ExtendedDataType.Debug
@@ -14,7 +13,7 @@ namespace Composite.Data.ExtendedDataType.Debug
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class DynamicTempTypeCreator
     {
-        private string _namePrefix;
+        private readonly string _namePrefix;
         private List<DataFieldDescriptor> _dataFieldDescriptors;
 
 
@@ -74,96 +73,73 @@ namespace Composite.Data.ExtendedDataType.Debug
         private void Initialize()
         {
             int counter = 1;
-            string typeName = string.Format("{0}{1}", _namePrefix, counter);
             while (true)
             {
+                string typeName = string.Format("{0}{1}", _namePrefix, counter++);
 
-                DataTypeDescriptor dataTypeDescriptor =
-                    (from d in DataMetaDataFacade.GeneratedTypeDataTypeDescriptors
-                     where d.Name == typeName
-                     select d).FirstOrDefault();
-
-                if (dataTypeDescriptor == null)
+                if (!DataMetaDataFacade.GeneratedTypeDataTypeDescriptors.Any(d => d.Name == typeName))
                 {
-                    this.TypeName = typeName;
-                    this.TypeTitle = typeName;
+                    TypeName = TypeTitle = typeName;
                     break;
-                }
-                else
-                {
-                    typeName = string.Format("{0}{1}", _namePrefix, counter++);
                 }
             }
 
-            _dataFieldDescriptors = new List<DataFieldDescriptor>();
-
-            DataFieldDescriptor stringDataFieldDescriptor = new DataFieldDescriptor(
-                    Guid.NewGuid(),
-                    "MyStringField",
-                    StoreFieldType.String(64),
-                    typeof(string)
-                );            
-
-            stringDataFieldDescriptor.Position = 10;
-            stringDataFieldDescriptor.FormRenderingProfile = new DataFieldFormRenderingProfile
+            
+            _dataFieldDescriptors = new List<DataFieldDescriptor>
             {
-                Label = "MyStringField",
-                HelpText = "This is an auto-generated field.",
-                WidgetFunctionMarkup = @"<f:widgetfunction xmlns:f=""http://www.composite.net/ns/function/1.0"" name=""Composite.Widgets.String.TextBox"" label="""" bindingsourcename=""""><f:helpdefinition xmlns:f=""http://www.composite.net/ns/function/1.0"" helptext="""" /></f:widgetfunction>"
+                new DataFieldDescriptor(Guid.NewGuid(), "MyStringField", StoreFieldType.String(64), typeof(string))
+                {
+                    Position = 10,
+                    FormRenderingProfile = new DataFieldFormRenderingProfile
+                    {
+                        Label = "MyStringField",
+                        HelpText = "This is an auto-generated field.",
+                        WidgetFunctionMarkup = GetWidgetFunctionMarkup("Composite.Widgets.String.TextBox")
+                    },
+                    TreeOrderingProfile = new DataFieldTreeOrderingProfile
+                    {
+                        OrderPriority = 1,
+                        OrderDescending = false,
+                    }
+                }, 
+                new DataFieldDescriptor(Guid.NewGuid(), "MyIntField", StoreFieldType.Integer, typeof(int))
+                {
+                    Position = 11,
+                    FormRenderingProfile = new DataFieldFormRenderingProfile
+                    {
+                        Label = "MyIntField",
+                        HelpText = "This is an auto-generated field.",
+                        WidgetFunctionMarkup = GetWidgetFunctionMarkup("Composite.Widgets.String.TextBox")
+                    },
+                    TreeOrderingProfile = new DataFieldTreeOrderingProfile
+                    {
+                        OrderPriority = 2,
+                        OrderDescending = true,
+                    }
+                },
+                new DataFieldDescriptor(Guid.NewGuid(), "MyDateTimeField", StoreFieldType.DateTime, typeof(DateTime?))
+                {
+                    IsNullable = true,
+                    Position = 12,
+                    FormRenderingProfile = new DataFieldFormRenderingProfile
+                    {
+                        Label = "MyDateTimeField",
+                        HelpText = "This is an auto-generated field.",
+                        WidgetFunctionMarkup = GetWidgetFunctionMarkup("Composite.Widgets.Date.DateSelector")
+                    },
+                    TreeOrderingProfile = new DataFieldTreeOrderingProfile
+                    {
+                        OrderPriority = null,
+                    }
+                }
             };
+        }
 
-            stringDataFieldDescriptor.TreeOrderingProfile = new DataFieldTreeOrderingProfile
-            {
-                OrderPriority = 1,
-                OrderDescending = false,
-            };            
-
-            _dataFieldDescriptors.Add(stringDataFieldDescriptor);
-
-
-            DataFieldDescriptor intDataFieldDescriptor = new DataFieldDescriptor(
-                    Guid.NewGuid(),
-                    "MyIntField",
-                    StoreFieldType.Integer,
-                    typeof(int)
-                );
-            intDataFieldDescriptor.Position = 11;
-            intDataFieldDescriptor.FormRenderingProfile = new DataFieldFormRenderingProfile
-            {
-                Label = "MyIntField",
-                HelpText = "This is an auto-generated field.",
-                WidgetFunctionMarkup = @"<f:widgetfunction xmlns:f=""http://www.composite.net/ns/function/1.0"" name=""Composite.Widgets.String.TextBox"" label="""" bindingsourcename=""""><f:helpdefinition xmlns:f=""http://www.composite.net/ns/function/1.0"" helptext="""" /></f:widgetfunction>"
-            };
-            intDataFieldDescriptor.TreeOrderingProfile = new DataFieldTreeOrderingProfile
-            {
-                OrderPriority = 2,
-                OrderDescending = true,
-            };            
-
-
-            _dataFieldDescriptors.Add(intDataFieldDescriptor);
-
-
-            DataFieldDescriptor dateTimeDataFieldDescriptor = new DataFieldDescriptor(
-                    Guid.NewGuid(),
-                    "MyDateTimeField",
-                    StoreFieldType.DateTime,
-                    typeof(DateTime?)
-                );
-            dateTimeDataFieldDescriptor.IsNullable = true;
-            dateTimeDataFieldDescriptor.Position = 12;
-            dateTimeDataFieldDescriptor.FormRenderingProfile = new DataFieldFormRenderingProfile
-            {
-                Label = "MyDateTimeField",
-                HelpText = "This is an auto-generated field.",
-                WidgetFunctionMarkup = @"<f:widgetfunction xmlns:f=""http://www.composite.net/ns/function/1.0"" name=""Composite.Widgets.Date.DateSelector"" label="""" bindingsourcename=""""><f:helpdefinition xmlns:f=""http://www.composite.net/ns/function/1.0"" helptext="""" /></f:widgetfunction>"
-            };
-            intDataFieldDescriptor.TreeOrderingProfile = new DataFieldTreeOrderingProfile
-            {
-                OrderPriority = null,
-            };            
-
-            _dataFieldDescriptors.Add(dateTimeDataFieldDescriptor);
+        private static string GetWidgetFunctionMarkup(string widgetFunctionName)
+        {
+            return @"<f:widgetfunction xmlns:f=""http://www.composite.net/ns/function/1.0"" name=""{Name}"" label="""" bindingsourcename="""">
+                         <f:helpdefinition xmlns:f=""http://www.composite.net/ns/function/1.0"" helptext="""" />
+                     </f:widgetfunction>".Replace("{Name}", widgetFunctionName);
         }
     }
 }

@@ -30,7 +30,7 @@ namespace Composite.Core.ResourceSystem
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
-	internal static class LocalizationFiles
+	public static class LocalizationFiles
 	{
 		<#= GenerateCode(pathToLocalizationFiles) #>
 	}

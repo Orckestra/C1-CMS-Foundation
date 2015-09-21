@@ -12,6 +12,8 @@ using Composite.Core.WebClient;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
 using Composite.Core.Extensions;
+using Composite.Data.GeneratedTypes;
+using Composite.Plugins.Elements.ElementProviders.Common;
 using Composite.Plugins.Forms.WebChannel.UiControlFactories;
 using Composite.Functions;
 using Composite.Core.Types;
@@ -20,6 +22,7 @@ using Composite.Core.ResourceSystem;
 using Composite.Data.Validation;
 using Composite.Core.WebClient.UiControlLib;
 
+using Texts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_Web_FormControl_TypeFieldDesigner;
 
 namespace CompositeTypeFieldDesigner
 {
@@ -29,7 +32,7 @@ namespace CompositeTypeFieldDesigner
         private static readonly string LogTitle = typeof(TypeFieldDesigner).Name;
 
         private const string _defaultFieldNamePrefix = "NewField";
-        private bool nameChanged;
+        private bool _nameChanged;
 
         protected string GetString(string localPart)
         {
@@ -67,7 +70,7 @@ namespace CompositeTypeFieldDesigner
                     if (ValidateSave())
                     {
                         Field_Save();
-                        nameChanged = true;
+                        _nameChanged = true;
                     }
                 }
 
@@ -105,7 +108,7 @@ namespace CompositeTypeFieldDesigner
                     + "&multimode=false&functionmarkup=";
             }
 
-            if (nameChanged)
+            if (_nameChanged)
             {
                 UpdateFieldsPanel();
             }
@@ -114,10 +117,41 @@ namespace CompositeTypeFieldDesigner
         private void InitializeDetailsSplitPanel()
         {
             UpdateDetailsSplitPanel(true);
-            UpdatePositionFieldOptions();
-            UpdateGroupByPriorityFieldOptions();
-            UpdateTreeOrderingFieldOptions();
-            UpdateFieldTypeDetailsSelector();
+
+            if (SelectedFieldIsKeyField)
+            {
+                if (lstKeyType.Items.Count == 0)
+                {
+                    lstKeyType.Items.AddRange(KeyFieldHelper.GetKeyFieldOptions().Select(kvp => new ListItem(kvp.Value, kvp.Key)).ToArray());
+                }
+
+                Guid fieldId = CurrentlySelectedFieldId;
+                var field = CurrentFields.Single(f => f.Id == fieldId);
+
+                var keyType = KeyFieldHelper.GetKeyFieldType(field);
+                Verify.That(keyType != GeneratedTypesHelper.KeyFieldType.Undefined, "Failed to parse key field type");
+
+                lstKeyType.SelectedValue = keyType.ToString();
+
+                txtKeyFieldName.Text = CurrentKeyFieldName;
+
+                lstKeyType.IsDisabled = KeyFieldReadOnly;
+                txtKeyFieldName.Enabled = !KeyFieldReadOnly;
+            }
+            else
+            {
+                UpdatePositionFieldOptions();
+                UpdateGroupByPriorityFieldOptions();
+                UpdateTreeOrderingFieldOptions();
+                UpdateFieldTypeDetailsSelector();
+            }
+
+            DeleteButton.Enabled = !SelectedFieldIsKeyField;
+
+            // Databinding placeholders so they can change visibility
+            plhKeyFieldProperties.DataBind();
+            plhFieldProperties.DataBind();
+            plhAdvancedFieldProperties.DataBind();
         }
 
 
@@ -131,7 +165,7 @@ namespace CompositeTypeFieldDesigner
         {
             var positionOptions = new Dictionary<int, string>();
 
-            for (int i = 0; i < this.CurrentFields.Count; i++)
+            for (int i = 0; i < PositionableFieldsCount; i++)
             {
                 positionOptions.Add(i, (i + 1).ToString() + ".");
             }
@@ -244,14 +278,14 @@ namespace CompositeTypeFieldDesigner
                     TypeDetailsSelector.AutoPostBack = false; // this is a fix to plug bug in update manager (client)
                     TypeDetailsSelector.Items.AddRange(new []
                     {
-                        new ListItem(GetString("16CharMax"), "16"),
-                        new ListItem(GetString("32CharMax"), "32"),
-                        new ListItem(GetString("64CharMax"), "64"),
-                        new ListItem(GetString("128CharMax"), "128"),
-                        new ListItem(GetString("256CharMax"), "256"),
-                        new ListItem(GetString("512CharMax"), "512"),
-                        new ListItem(GetString("1024CharMax"), "1024"),
-                        new ListItem(GetString("Unlimited"), "max")
+                        new ListItem(Texts._16CharMax, "16"),
+                        new ListItem(Texts._32CharMax, "32"),
+                        new ListItem(Texts._64CharMax, "64"),
+                        new ListItem(Texts._128CharMax, "128"),
+                        new ListItem(Texts._256CharMax, "256"),
+                        new ListItem(Texts._512CharMax, "512"),
+                        new ListItem(Texts._1024CharMax, "1024"),
+                        new ListItem(Texts.Unlimited, "max")
                     });
                     
                     TypeDetailsSelector.SelectedValue = "64";
@@ -423,7 +457,7 @@ namespace CompositeTypeFieldDesigner
             if (this.OptionalSelector.SelectedValue == "true")
             {
                 this.OptionalSelector.SelectedValue = "false";
-                bool notOptional = (this.CurrentlySelectedType == typeof(bool) || this.TypeSelector.SelectedValue == "XHTML");
+                bool notOptional = this.CurrentlySelectedType == typeof(bool) || this.TypeSelector.SelectedValue == "XHTML";
 
                 if (notOptional)
                 {
@@ -513,11 +547,11 @@ namespace CompositeTypeFieldDesigner
                 Field_Save();
             }
 
-            InitializeDetailsSplitPanel();
-
             var selectedField = CurrentFields.Single(f => f.Id == fieldId);
 
             this.CurrentlySelectedFieldId = fieldId;
+
+            InitializeDetailsSplitPanel();
 
             this.NameField.Text = selectedField.Name;
 
@@ -614,12 +648,27 @@ namespace CompositeTypeFieldDesigner
                 }
             }
 
-            this.PositionField.SelectedValue = (selectedField.Position == this.CurrentFields.Count - 1 ? "-1" : selectedField.Position.ToString());
+            this.PositionField.SelectedValue = (selectedField.Position == PositionableFieldsCount - 1 ? "-1" : selectedField.Position.ToString());
 
             UpdateGroupByPriorityFieldOptions();
             UpdateTreeOrderingFieldOptions();
             this.GroupByPriorityField.SelectedValue = selectedField.GroupByPriority.ToString();
             this.TreeOrderingField.SelectedValue = selectedField.TreeOrderingProfile.ToString();
+        }
+
+
+
+        
+        private string CurrentKeyFieldName
+        {
+            get
+            {
+                return (string)this.ViewState["CurrentKeyFieldName"] ?? "";
+            }
+            set
+            {
+                this.ViewState["CurrentKeyFieldName"] = value;
+            }
         }
 
 
@@ -656,6 +705,22 @@ namespace CompositeTypeFieldDesigner
         protected bool HasFields
         {
             get { return this.CurrentFields.Count > 0; }
+        }
+
+
+        protected bool SelectedFieldIsKeyField
+        {
+            get
+            {
+                Guid fieldId = CurrentlySelectedFieldId;
+                return fieldId != Guid.Empty && CurrentFields.Any(f => f.Id == fieldId && f.Name == CurrentKeyFieldName);
+            }
+        }
+
+
+        protected int PositionableFieldsCount
+        {
+            get { return this.CurrentFields.Count(f => f.Name != CurrentKeyFieldName); }
         }
 
 
@@ -770,9 +835,8 @@ namespace CompositeTypeFieldDesigner
                 {
                     Type referencedType = TypeManager.GetType(this.CurrentForeignKeyReferenceTypeName);
                     if (referencedType == null) throw new InvalidOperationException("Missing value for referenced type!" + this.CurrentForeignKeyReferenceTypeName);
-                    Type[] typeArg = { referencedType };
 
-                    selectedType = typeof(DataReference<>).MakeGenericType(typeArg);
+                    selectedType = typeof(DataReference<>).MakeGenericType(new[]{ referencedType });
                 }
 
 
@@ -922,16 +986,6 @@ namespace CompositeTypeFieldDesigner
         }
 
 
-
-        private void ShowMessage(string targetFieldName, string p)
-        {
-            var fm = new FieldMessage(targetFieldName, p);
-
-            // TODO: implement the method properly
-        }
-
-
-
         protected void AddNewButton_Click(object sender, EventArgs e)
         {
             if (!ValidateSave())
@@ -963,7 +1017,7 @@ namespace CompositeTypeFieldDesigner
             this.HelpField.Text = "";
             this.PositionField.SelectedValue = "-1";
 
-            this.IsTitleFieldDateTimeSelector.Checked = (string.IsNullOrEmpty(this.CurrentLabelFieldName));
+            this.IsTitleFieldDateTimeSelector.Checked = string.IsNullOrEmpty(this.CurrentLabelFieldName);
 
             ResetWidgetSelector();
 
@@ -982,28 +1036,30 @@ namespace CompositeTypeFieldDesigner
         {
             if (this.CurrentlySelectedFieldId == Guid.Empty) return true;
 
-            if (this.NameField.Text.Contains(" "))
+            var nameField = SelectedFieldIsKeyField ? this.txtKeyFieldName : this.NameField;
+
+            if (nameField.Text.Contains(" "))
             {
-                Baloon(this.NameField, GetString("SpaceInNameError"));
+                Baloon(nameField, Texts.SpaceInNameError);
                 return false;
             }
 
             if (string.IsNullOrEmpty(this.NameField.Text))
             {
-                Baloon(this.NameField, GetString("NameEmptyError"));
+                Baloon(nameField, Texts.NameEmptyError);
                 return false;
             }
 
             if (this.CurrentFields.Any(f => f.Name == this.NameField.Text && f.Id != this.CurrentlySelectedFieldId))
             {
-                Baloon(this.NameField, GetString("NameAlreadyInUseError"));
+                Baloon(nameField, Texts.NameAlreadyInUseError);
                 return false;
             }
 
             string err;
-            if (!NameValidation.TryValidateName(this.NameField.Text, out err))
+            if (!NameValidation.TryValidateName(nameField.Text, out err))
             {
-                Baloon(this.NameField, err);
+                Baloon(nameField, err);
                 return false;
             }
 
@@ -1026,44 +1082,58 @@ namespace CompositeTypeFieldDesigner
 
         private void UpdateFieldsPanel()
         {
-            this.FieldListRepeater.DataSource = this.ViewState["Fields"];
+            this.FieldListRepeater.DataSource = CurrentFields;
             this.FieldListRepeater.DataBind();
         }
 
         private void Field_Save()
         {
-            if (this.CurrentFields.Count(f => f.Id == this.CurrentlySelectedFieldId) == 0)
+            // Adding a field if missing
+            if (!CurrentFields.Any(f => f.Id == this.CurrentlySelectedFieldId))
             {
                 var newField = new DataFieldDescriptor(this.CurrentlySelectedFieldId, this.NameField.Text, StoreFieldType.Boolean, this.CurrentlySelectedType)
                 {
-                    Position = this.CurrentFields.Count
+                    Position = PositionableFieldsCount
                 };
                 this.CurrentFields.Add(newField);
             }
 
-            if (!FieldNameSyntaxValid(this.NameField.Text))
-            {
-                ShowMessage(this.NameField.ClientID, GetString("FieldNameSyntaxInvalid"));
-                return;
-            }
-
             var field = this.CurrentFields.Single(f => f.Id == this.CurrentlySelectedFieldId);
 
-
-            if (field.Name != this.NameField.Text)
+            
+            if (SelectedFieldIsKeyField)
             {
-                nameChanged = true;
-            }
+                if (KeyFieldReadOnly)
+                {
+                    return;
+                }
 
+                if (!Field_Save_UpdateName(field, this.txtKeyFieldName))
+                {
+                    return;
+                }
 
-            if (this.CurrentFields.Count(f => String.Equals(f.Name, this.NameField.Text, StringComparison.InvariantCultureIgnoreCase) 
-                                              && f.Id != field.Id) > 0)
-            {
-                ShowMessage(this.NameField.ClientID, GetString("CannotSave"));
+                var currentFieldType = KeyFieldHelper.GetKeyFieldType(field);
+
+                GeneratedTypesHelper.KeyFieldType selectedFieldType;
+
+                bool parsedOk = Enum.TryParse(lstKeyType.SelectedValue, out selectedFieldType);
+                Verify.That(parsedOk, "Failed to parse key field type");
+
+                if (currentFieldType != selectedFieldType)
+                {
+                    KeyFieldHelper.UpdateKeyType(field, selectedFieldType);
+                }
+
                 return;
             }
 
-            field.Name = this.NameField.Text;
+
+            if (!Field_Save_UpdateName(field, this.NameField))
+            {
+                return;
+            }
+
             field.InstanceType = this.CurrentlySelectedType;
             field.ForeignKeyReferenceTypeName = this.CurrentForeignKeyReferenceTypeName;
 
@@ -1091,7 +1161,7 @@ namespace CompositeTypeFieldDesigner
 
             if (!btnWidgetFunctionMarkup.Value.IsNullOrEmpty())
             {
-                XElement functionElement = XElement.Parse(btnWidgetFunctionMarkup.Value);
+                var functionElement = XElement.Parse(btnWidgetFunctionMarkup.Value);
                 if (functionElement.Name.Namespace != Namespaces.Function10)
                 {
                     functionElement = functionElement.Elements().First();
@@ -1158,27 +1228,74 @@ namespace CompositeTypeFieldDesigner
                      select element.ToString()).ToList();
             }
 
+            Field_Save_UpdatePosition(field);
+
+            Field_Save_UpdateGroupByPriority(field);
+
+            Field_Save_UpdateTreeOrderingProfile(field);
+        }
+
+        private bool Field_Save_UpdateName(DataFieldDescriptor field, DataInput nameInput)
+        {
+            string newName = nameInput.Text;
+            if (!FieldNameSyntaxValid(newName))
+            {
+                Baloon(nameInput, Texts.FieldNameSyntaxInvalid);
+                return false;
+            }
+
+            if (this.CurrentFields.Any(f => String.Equals(f.Name, newName, StringComparison.InvariantCultureIgnoreCase)
+                                              && f.Id != field.Id))
+            {
+                Baloon(nameInput.ClientID, Texts.CannotSave);
+                return false;
+            }
+
+            if (field.Name != newName)
+            {
+                _nameChanged = true;
+            }
+
+            if (field.Name == CurrentKeyFieldName)
+            {
+                CurrentKeyFieldName = newName;
+            }
+
+            field.Name = newName;
+            return true;
+        }
+
+
+        private void Field_Save_UpdatePosition(DataFieldDescriptor field)
+        {
+            var visibleFields = CurrentFields.Where(f => f.Name != CurrentKeyFieldName).ToList();
+            int idFieldsCount = CurrentFields.Count(f => f.Name == CurrentKeyFieldName);
+
             int newPosition = int.Parse(this.PositionField.SelectedValue);
-            if (newPosition == -1) newPosition = this.CurrentFields.Count - 1;
+            if (newPosition == -1) newPosition = visibleFields.Count - 1;
 
             if (field.Position != newPosition)
             {
                 this.CurrentFields.Remove(field);
 
-                foreach (DataFieldDescriptor laterField in this.CurrentFields.Where(f => f.Position > field.Position))
+                foreach (DataFieldDescriptor laterField in visibleFields.Where(f => f.Position > field.Position))
                 {
                     laterField.Position--;
                 }
 
-                foreach (DataFieldDescriptor laterField in this.CurrentFields.Where(f => f.Position >= newPosition))
+                foreach (DataFieldDescriptor laterField in visibleFields.Where(f => f.Position >= newPosition))
                 {
                     laterField.Position++;
                 }
 
                 field.Position = newPosition;
-                this.CurrentFields.Insert(newPosition, field);
+                this.CurrentFields.Insert(newPosition + idFieldsCount, field);
             }
+        }
 
+
+        private void Field_Save_UpdateGroupByPriority(DataFieldDescriptor field)
+        {
             int newGroupByPriority = int.Parse(this.GroupByPriorityField.SelectedValue);
 
             if (field.GroupByPriority != newGroupByPriority)
@@ -1193,7 +1310,11 @@ namespace CompositeTypeFieldDesigner
             }
             field.GroupByPriority = newGroupByPriority;
             EnsureGroupByPrioritySequence();
+        }
 
+
+        private void Field_Save_UpdateTreeOrderingProfile(DataFieldDescriptor field)
+        {
             if (field.TreeOrderingProfile.ToString() != this.TreeOrderingField.SelectedValue)
             {
                 field.TreeOrderingProfile = DataFieldTreeOrderingProfile.FromString(this.TreeOrderingField.SelectedValue);
@@ -1206,7 +1327,6 @@ namespace CompositeTypeFieldDesigner
                 }
             }
             EnsureTreeOrderPrioritySequence();
-
         }
 
 
@@ -1234,19 +1354,20 @@ namespace CompositeTypeFieldDesigner
 
         protected void DeleteButton_Click(object sender, EventArgs e)
         {
-            if (this.CurrentlySelectedFieldId != Guid.Empty)
+            if (this.CurrentlySelectedFieldId == Guid.Empty)
             {
-                var fields = (List<DataFieldDescriptor>)this.ViewState["Fields"];
-                List<Guid> fieldIds = fields.Select(field => field.Id).ToList();
-                int fieldIndex = fieldIds.IndexOf(this.CurrentlySelectedFieldId);
+                return;
+            }
 
-                Field_Delete(this.CurrentlySelectedFieldId);
-                MakeClientDirty();
+            List<Guid> fieldIds = CurrentFields.Select(field => field.Id).ToList();
+            int fieldIndex = fieldIds.IndexOf(this.CurrentlySelectedFieldId);
 
-                if(fieldIndex < fieldIds.Count - 1 /* Not the last element */)
-                {
-                    Field_Select(fieldIds[fieldIndex + 1]); // Selecting the next element)
-                }
+            Field_Delete(this.CurrentlySelectedFieldId);
+            MakeClientDirty();
+
+            if(fieldIndex < fieldIds.Count - 1 /* Not the last element */)
+            {
+                Field_Select(fieldIds[fieldIndex + 1]); // Selecting the next element)
             }
         }
 
@@ -1316,6 +1437,7 @@ namespace CompositeTypeFieldDesigner
             }
 
             this.Fields = this.CurrentFields;
+            this.KeyFieldName = this.CurrentKeyFieldName;
             this.LabelFieldName = this.CurrentLabelFieldName;
         }
 
@@ -1329,12 +1451,13 @@ namespace CompositeTypeFieldDesigner
 
             // ensure positioning is in place
             int position = 0;
-            foreach (DataFieldDescriptor field in fields.OrderBy(f => f.Position))
+            foreach (DataFieldDescriptor field in fields.Where(f => f.Name != KeyFieldName).OrderBy(f => f.Position))
             {
                 field.Position = position++;
             }
 
             CurrentFields = fields;
+            CurrentKeyFieldName = KeyFieldName;
             CurrentLabelFieldName = LabelFieldName;
 
             UpdateFieldsPanel();
@@ -1344,6 +1467,11 @@ namespace CompositeTypeFieldDesigner
         public override string GetDataFieldClientName()
         {
             return null;
+        }
+
+        protected string GetTreeIcon(DataFieldDescriptor dataItem)
+        {
+            return "${icon:" + (dataItem.Name == CurrentKeyFieldName ? "key" : "parameter") + "}";
         }
     }
 }

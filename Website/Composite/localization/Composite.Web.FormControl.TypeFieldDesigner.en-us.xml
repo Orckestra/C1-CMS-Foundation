@@ -7,6 +7,10 @@
   <string key="AddNewButtonLabel" value="Add New" />
   <string key="DeleteButtonLabel" value="Delete" />
   <string key="LabelDataTypeFields" value="Datatype Fields" />
+
+  <string key="KeyFieldDetailsGroupLabel" value="Key field properties" />
+  <string key="KeyFieldType" value="Key field type" />
+  <string key="KeyFieldTypeHelp" value="The data type of the key field. Guid fields feature optimal performance, string key fields are usefull when the id values have to be exposed in urls." />
   
   <string key="FieldDetailsGroupLabel" value="Field properties" />
   <string key="Name" value="Name" />

@@ -80,9 +80,11 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 bool hasPublishing = this.GetBinding<bool>(this.HasPublishingBindingName);
                 bool hasLocalization = this.GetBinding<bool>("HasLocalization");
                 string labelFieldName = this.GetBinding<string>(this.LabelFieldNameBindingName);
-                List<DataFieldDescriptor> dataFieldDescriptors = this.GetBinding<List<DataFieldDescriptor>>(this.DataFieldDescriptorsBindingName);
+                var dataFieldDescriptors = this.GetBinding<List<DataFieldDescriptor>>(this.DataFieldDescriptorsBindingName);
 
-                GeneratedTypesHelper helper = new GeneratedTypesHelper();
+
+                GeneratedTypesHelper helper;
+
                 Type interfaceType = null;
                 if (this.BindingExist("InterfaceType"))
                 {
@@ -96,25 +98,25 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 }
 
                 string errorMessage;
-                if (helper.ValidateNewTypeName(typeName, out errorMessage) == false)
+                if (!helper.ValidateNewTypeName(typeName, out errorMessage))
                 {
                     this.ShowFieldMessage("NewTypeName", errorMessage);
                     return;
                 }
 
-                if (helper.ValidateNewTypeNamespace(typeNamespace, out errorMessage) == false)
+                if (!helper.ValidateNewTypeNamespace(typeNamespace, out errorMessage))
                 {
                     this.ShowFieldMessage("NewTypeNamespace", errorMessage);
                     return;
                 }
 
-                if (helper.ValidateNewTypeFullName(typeName, typeNamespace, out errorMessage) == false)
+                if (!helper.ValidateNewTypeFullName(typeName, typeNamespace, out errorMessage))
                 {
                     this.ShowFieldMessage("NewTypeName", errorMessage);
                     return;
                 }
 
-                if (helper.ValidateNewFieldDescriptors(dataFieldDescriptors, out errorMessage) == false)
+                if (!helper.ValidateNewFieldDescriptors(dataFieldDescriptors, null, out errorMessage))
                 {
                     this.ShowMessage(
                             DialogType.Warning,
@@ -133,9 +135,9 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 helper.SetCachable(hasCaching);
                 helper.SetNewTypeFullName(typeName, typeNamespace);
                 helper.SetNewTypeTitle(typeTitle);
-                helper.SetNewFieldDescriptors(dataFieldDescriptors, labelFieldName);
+                helper.SetNewFieldDescriptors(dataFieldDescriptors, null, labelFieldName);
 
-                if (this.BindingExist("InterfaceType") == false)
+                if (!this.BindingExist("InterfaceType"))
                 {
                     Type targetType = TypeManager.GetType(this.Payload);
 

@@ -1,6 +1,8 @@
 <%@ Control Language="C#" AutoEventWireup="true" Inherits="CompositeTypeFieldDesigner.TypeFieldDesigner"
     CodeFile="TypeFieldDesigner.ascx.cs" %>
+<%@ Import Namespace="System.ComponentModel" %>
 <%@ Import Namespace="Composite.Data.DynamicTypes" %>
+<%@ Import namespace="Texts=Composite.Core.ResourceSystem.LocalizationFiles.Composite_Web_FormControl_TypeFieldDesigner" %>
 
 <formscontrol:styleloader adminrelativepath="controls/FormsControls/FormUiControlTemplates/DeveloperTools/TypeFieldDesigner.css.aspx"
     runat="server" />
@@ -36,11 +38,17 @@
 		</ui:toolbar>
 		<ui:tree>
 			<ui:treebody id="typefielddesignertreebody">
-					<ui:treenode callbackid="folder" label="<%= GetString("LabelDataTypeFields") %>" open="true" image="${icon:<%= (this.HasFields ? "data-interface-open" : "data-interface-closed" ) %>}">
+					<ui:treenode callbackid="folder" label="<%= Texts.LabelDataTypeFields %>" open="true" image="${icon:<%= (this.HasFields ? "data-interface-open" : "data-interface-closed" ) %>}">
                        <asp:Repeater runat="server" ID="FieldListRepeater" OnItemCommand="FieldDataList_ItemCommand">
 							<ItemTemplate>
-							<aspui:TreeNode ImageUrl="${icon:parameter}" CommandName="Select" runat="server" ID="FieldSelectLinkButton" CommandArgument='<%# Eval("Id") %>' Text='<%# Server.HtmlEncode(((DataFieldDescriptor)Container.DataItem).Name) %>' Focused='<%# ((DataFieldDescriptor)Container.DataItem).Id == this.CurrentlySelectedFieldId %>' /> 
+							<aspui:TreeNode runat="server" ID="FieldSelectLinkButton" CommandName="Select" 
+                                ImageUrl='<%# GetTreeIcon((DataFieldDescriptor)Container.DataItem) %>'
+                                CommandArgument='<%# Eval("Id") %>' 
+                                Text='<%# Server.HtmlEncode(((DataFieldDescriptor)Container.DataItem).Name) %>' 
+                                Focused='<%# ((DataFieldDescriptor)Container.DataItem).Id == this.CurrentlySelectedFieldId %>' /> 
                               </ItemTemplate>
+                           
+                           <%--ImageUrl="<%# GetTreeIcon((DataFieldDescriptor)Container.DataItem) %>"--%>
 						</asp:Repeater>
 					</ui:treenode>
 			</ui:treebody>
@@ -56,17 +64,44 @@
 				<asp:PlaceHolder ID="DetailsSplitPanelPlaceHolder" runat="server">
 					<ui:tabbox>
 						<ui:tabs>
-							<ui:tab label="<%= GetString("BasicTabLabel") %>" />
-							<ui:tab label="<%= GetString("AdvancedTabLabel") %>" />
+							<ui:tab label="<%= Texts.BasicTabLabel %>" />
+							<ui:tab label="<%= Texts.AdvancedTabLabel %>" />
 						</ui:tabs>
 						<ui:tabpanels>
 							<ui:tabpanel>
 								<ui:scrollbox class="padded" forcefitness="true" id="typefielddesignerscrollboxleft">
 									<ui:fields id="typefielddesignerfieldsleft">
-											<ui:fieldgroup label="<%= GetString("FieldDetailsGroupLabel") %>">
+									    
+                                            <asp:PlaceHolder runat="server" Visible="<%# SelectedFieldIsKeyField %>" ID="plhKeyFieldProperties">
+                                                
+                                                 <ui:fieldgroup label="<%= Texts.KeyFieldDetailsGroupLabel %>">
+                                                     
+                                                    <ui:field>
+														<ui:fielddesc><%= Texts.Name %></ui:fielddesc>
+														<ui:fieldhelp><%= Texts.NameHelp %></ui:fieldhelp>
+														<ui:fielddata>
+                                                            <!-- <aspui:DataInput  ... InputType="ProgrammingIdentifier" ... /> -->
+															<aspui:DataInput ID="txtKeyFieldName" runat="server" InputType="ProgrammingIdentifier" Client_autopost="true"/>
+														</ui:fielddata>
+													</ui:field>
+
+                                                     <ui:field>
+														<ui:fielddesc><%= Texts.KeyFieldType %></ui:fielddesc>
+														<ui:fieldhelp><%= Texts.KeyFieldTypeHelp %></ui:fieldhelp>
+														<ui:fielddata>
+															<aspui:Selector ID="lstKeyType" runat="server">
+															</aspui:Selector>
+														</ui:fielddata>
+													</ui:field>
+
+                                                  </ui:fieldgroup>
+                                            </asp:PlaceHolder>
+                                        
+                                        <asp:PlaceHolder runat="server" Visible="<%# !SelectedFieldIsKeyField %>" ID="plhFieldProperties">
+											<ui:fieldgroup label="<%= Texts.FieldDetailsGroupLabel %>">
 													<ui:field>
-														<ui:fielddesc><%= GetString("Name") %></ui:fielddesc>
-														<ui:fieldhelp><%= GetString("NameHelp") %></ui:fieldhelp>
+														<ui:fielddesc><%= Texts.Name %></ui:fielddesc>
+														<ui:fieldhelp><%= Texts.NameHelp %></ui:fieldhelp>
 														<ui:fielddata>
                                                             <!-- <aspui:DataInput  ... InputType="ProgrammingIdentifier" ... /> -->
 															<aspui:DataInput ID="NameField" runat="server" InputType="ProgrammingIdentifier" Client_autopost="true"/>
@@ -74,24 +109,24 @@
 													</ui:field>
 	
 													<ui:field>
-														<ui:fielddesc><%= GetString("Label") %></ui:fielddesc>
-														<ui:fieldhelp><%= GetString("LabelHelp") %></ui:fieldhelp>
+														<ui:fielddesc><%= Texts.Label %></ui:fielddesc>
+														<ui:fieldhelp><%= Texts.LabelHelp %></ui:fieldhelp>
 														<ui:fielddata>
 															<aspui:DataInput ID="LabelField" runat="server"></aspui:DataInput>
 														</ui:fielddata>
 													</ui:field>
 	
 													<ui:field>
-														<ui:fielddesc><%= GetString("Help") %></ui:fielddesc>
-														<ui:fieldhelp><%= GetString("HelpHelp") %></ui:fieldhelp>
+														<ui:fielddesc><%= Texts.Help %></ui:fielddesc>
+														<ui:fieldhelp><%= Texts.HelpHelp %></ui:fieldhelp>
 														<ui:fielddata>
 															<aspui:DataInput ID="HelpField" runat="server"></aspui:DataInput>
 														</ui:fielddata>
 													</ui:field>
 	
 													<ui:field>
-														<ui:fielddesc><%= GetString("Position") %></ui:fielddesc>
-														<ui:fieldhelp><%= GetString("PositionHelp") %></ui:fieldhelp>
+														<ui:fielddesc><%= Texts.Position %></ui:fielddesc>
+														<ui:fieldhelp><%= Texts.PositionHelp %></ui:fieldhelp>
 														<ui:fielddata>
 																<aspui:Selector ID="PositionField" runat="server" AutoPostBack="True" OnSelectedIndexChanged="PositionField_SelectedIndexChanged" />
 														</ui:fielddata>
@@ -99,10 +134,10 @@
 	
 											</ui:fieldgroup>
 	
-											<ui:fieldgroup label="<%= GetString("FieldTypeGroupLabel") %>">
+											<ui:fieldgroup label="<%= Texts.FieldTypeGroupLabel %>">
 													<ui:field>
-														<ui:fielddesc><%= GetString("FieldType") %></ui:fielddesc>
-														<ui:fieldhelp><%= GetString("FieldTypeHelp") %></ui:fieldhelp>
+														<ui:fielddesc><%= Texts.FieldType %></ui:fielddesc>
+														<ui:fieldhelp><%= Texts.FieldTypeHelp %></ui:fieldhelp>
 														<ui:fielddata>
 															<aspui:Selector ID="TypeSelector" runat="server" AutoPostBack="True" OnSelectedIndexChanged="TypeSelector_SelectedIndexChanged">
 																<asp:ListItem value="System.String" Text="${Composite.Web.FormControl.TypeFieldDesigner, System.String}" />
@@ -122,7 +157,7 @@
 															<ui:fielddesc>
 																<asp:Label id="TypeDetailsLabel" runat="server" />
 															</ui:fielddesc>
-															<ui:fieldhelp><%= GetString("TypeDetailsHelp") %></ui:fieldhelp>
+															<ui:fieldhelp><%= Texts.TypeDetailsHelp %></ui:fieldhelp>
 															<ui:fielddata>
 																<aspui:Selector ID="TypeDetailsSelector" runat="server" OnSelectedIndexChanged="TypeDetailsSelector_Reference_SelectedIndexChanged">
 																</aspui:Selector>
@@ -132,8 +167,8 @@
 	
 													<asp:PlaceHolder ID="TypeDetailsOptionalPlaceHolder" runat="server">
 													    <ui:field>
-														    <ui:fielddesc><%= GetString("Optional") %></ui:fielddesc>
-														    <ui:fieldhelp><%= GetString("OptionalHelp") %></ui:fieldhelp>
+														    <ui:fielddesc><%= Texts.Optional %></ui:fielddesc>
+														    <ui:fieldhelp><%= Texts.OptionalHelp %></ui:fieldhelp>
 														    <ui:fielddata>
 															    <aspui:Selector ID="OptionalSelector" runat="server" AutoPostBack="true" OnSelectedIndexChanged="OptionalSelector_SelectedIndexChanged">
 																    <asp:ListItem value="false" Text="${Composite.Web.FormControl.TypeFieldDesigner, OptionalFalseLabel}" />
@@ -144,6 +179,7 @@
                                                     </asp:PlaceHolder>
 	
 											</ui:fieldgroup>
+                                        </asp:PlaceHolder>
 									</ui:fields>
 								</ui:scrollbox>
 							</ui:tabpanel>
@@ -152,31 +188,33 @@
 								<ui:scrollbox class="padded" forcefitness="true">
 									<ui:fields id="typefielddesignerfieldsright">
 	
-											<ui:fieldgroup label="<%= GetString("FieldPresentationGroupLabel") %>">
+                                        <asp:PlaceHolder runat="server" Visible="<%# !SelectedFieldIsKeyField %>" ID="plhAdvancedFieldProperties">
+
+											<ui:fieldgroup label="<%= Texts.FieldPresentationGroupLabel %>">
 									                
 													<ui:field>
-														<ui:fielddesc><%= GetString("Widget") %></ui:fielddesc>
-														<ui:fieldhelp><%= GetString("WidgetHelp") %></ui:fieldhelp>
+														<ui:fielddesc><%= Texts.Widget %></ui:fielddesc>
+														<ui:fieldhelp><%= Texts.WidgetHelp %></ui:fieldhelp>
 														<ui:fielddata>
                                                             <aspui:PostBackDialog runat="server" ID="btnWidgetFunctionMarkup" EncodeValue="True" />
 														</ui:fielddata>
 													</ui:field>
 											</ui:fieldgroup>
 	
-											<ui:fieldgroup label="<%= GetString("FieldValidationGroupLabel") %>">
+											<ui:fieldgroup label="<%= Texts.FieldValidationGroupLabel %>">
 													<ui:field>
-														<ui:fielddesc><%= GetString("ValidationRules") %></ui:fielddesc>
-														<ui:fieldhelp><%= GetString("ValidationRulesHelp")%></ui:fieldhelp>
+														<ui:fielddesc><%= Texts.ValidationRules %></ui:fielddesc>
+														<ui:fieldhelp><%= Texts.ValidationRulesHelp %></ui:fieldhelp>
 														<ui:fielddata>
                                                             <aspui:PostBackDialog runat="server" ID="btnValidationRulesFunctionMarkup" EncodeValue="True" />
 														</ui:fielddata>
 													</ui:field>
 											</ui:fieldgroup>
 	
-											<ui:fieldgroup label="<%= GetString("FieldStructureGroupLabel") %>">
+											<ui:fieldgroup label="<%= Texts.FieldStructureGroupLabel %>">
 						                                <ui:field>
-													<ui:fielddesc><%= GetString("IsTitleField") %></ui:fielddesc>
-													<ui:fieldhelp><%= GetString("IsTitleFieldHelp")%></ui:fieldhelp>
+													<ui:fielddesc><%= Texts.IsTitleField %></ui:fielddesc>
+													<ui:fieldhelp><%= Texts.IsTitleFieldHelp %></ui:fieldhelp>
 													<ui:fielddata>
 														<ui:checkboxgroup timestamp="<%= DateTime.Now.Ticks %>">
 															<aspui:CheckBox client_callbackid="IsTitleFieldDateTimeSelector" ItemLabel="${Composite.Web.FormControl.TypeFieldDesigner, IsTitleFieldLabel}" ID="IsTitleFieldDateTimeSelector" runat="server" OnCheckChanged="IsTitleFieldDateTimeSelector_OnCheckChanged" />
@@ -185,16 +223,16 @@
 												</ui:field>
 	
 												<ui:field>
-													<ui:fielddesc><%= GetString("TreeOrdering")%></ui:fielddesc>
-													<ui:fieldhelp><%= GetString("TreeOrderingHelp")%></ui:fieldhelp>
+													<ui:fielddesc><%= Texts.TreeOrdering %></ui:fielddesc>
+													<ui:fieldhelp><%= Texts.TreeOrderingHelp %></ui:fieldhelp>
 													<ui:fielddata>
 															<aspui:Selector ID="TreeOrderingField" runat="server" />
 													</ui:fielddata>
 												</ui:field>
 
 												<ui:field>
-													<ui:fielddesc><%= GetString("GroupByPriority") %></ui:fielddesc>
-													<ui:fieldhelp><%= GetString("GroupByPriorityHelp")%></ui:fieldhelp>
+													<ui:fielddesc><%= Texts.GroupByPriority %></ui:fielddesc>
+													<ui:fieldhelp><%= Texts.GroupByPriorityHelp %></ui:fieldhelp>
 													<ui:fielddata>
 															<aspui:Selector ID="GroupByPriorityField" runat="server" />
 													</ui:fielddata>
@@ -202,17 +240,17 @@
 
 											</ui:fieldgroup>
 	
-											<ui:fieldgroup label="<%= GetString("DefaultValueGroupLabel") %>">
+											<ui:fieldgroup label="<%= Texts.DefaultValueGroupLabel %>">
 									                
 													<ui:field>
-														<ui:fielddesc><%= GetString("DefaultValue")%></ui:fielddesc>
-														<ui:fieldhelp><%= GetString("DefaultValueHelp")%></ui:fieldhelp>
+														<ui:fielddesc><%= Texts.DefaultValue %></ui:fielddesc>
+														<ui:fieldhelp><%= Texts.DefaultValueHelp %></ui:fieldhelp>
 														<ui:fielddata>
                                                             <aspui:PostBackDialog runat="server" ID="btnDefaultValueFunctionMarkup" EncodeValue="True" />
 														</ui:fielddata>
 													</ui:field>
 											</ui:fieldgroup>
-	
+	                                    </asp:PlaceHolder>
 									</ui:fields>
 								</ui:scrollbox>
 							</ui:tabpanel>

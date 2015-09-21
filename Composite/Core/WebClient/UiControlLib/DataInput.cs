@@ -88,6 +88,11 @@ namespace Composite.Core.WebClient.UiControlLib
                 writer.AddAttribute("onvaluechange", "this.dispatchAction ( PageBinding.ACTION_DOPOSTBACK )");
             }
 
+            if (!Enabled)
+            {
+                writer.AddAttribute("isdisabled", "true");
+            }
+
             if (this.InputType != DataInputType.Default)
             {
                 switch (this.InputType)

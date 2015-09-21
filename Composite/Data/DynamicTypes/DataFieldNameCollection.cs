@@ -34,9 +34,9 @@ namespace Composite.Data.DynamicTypes
 
 
         /// <exclude />
-        public void Add(string dataFieldName, bool valideFieldMemberShip)
+        public void Add(string dataFieldName, bool validateFieldMemberShip)
         {
-            if (valideFieldMemberShip)
+            if (validateFieldMemberShip)
             {
                 ValidateFieldMembership(dataFieldName);
             }

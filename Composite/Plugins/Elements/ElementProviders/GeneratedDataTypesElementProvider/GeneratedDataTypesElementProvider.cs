@@ -334,7 +334,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             {
                 bool pageDataFolderHasChildren = PageFolderFacade.GetAllFolderTypes().Any();
 
-                Element pageDataFolderElement = new Element(_providerContext.CreateElementHandle(new GeneratedDataTypesElementProviderRootEntityToken(_providerContext.ProviderName, GeneratedDataTypesElementProviderRootEntityToken.PageDataFolderTypeFolderId)))
+                var pageDataFolderElement = new Element(_providerContext.CreateElementHandle(new GeneratedDataTypesElementProviderRootEntityToken(_providerContext.ProviderName, GeneratedDataTypesElementProviderRootEntityToken.PageDataFolderTypeFolderId)))
                 {
                     VisualData = new ElementVisualizedData
                     {
@@ -347,7 +347,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 };
 
                 pageDataFolderElement.AddAction(
-                    new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.AddNewAggregationTypeWorkflow"), _addNewInterfaceTypePermissionTypes) { Payload = TypeManager.SerializeType(typeof(IPage)) }))
+                    new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.AddNewInterfaceTypeWorkflow"), _addNewInterfaceTypePermissionTypes) { Payload = TypeManager.SerializeType(typeof(IPage)) }))
                     {
                         VisualData = new ActionVisualizedData
                         {
@@ -371,7 +371,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 bool pageMetaDataHasChildren = PageMetaDataFacade.GetAllMetaDataTypes().Any();
 
 
-                Element pageMetaDataElement = new Element(_providerContext.CreateElementHandle(new GeneratedDataTypesElementProviderRootEntityToken(_providerContext.ProviderName, GeneratedDataTypesElementProviderRootEntityToken.PageMetaDataTypeFolderId)))
+                var pageMetaDataElement = new Element(_providerContext.CreateElementHandle(new GeneratedDataTypesElementProviderRootEntityToken(_providerContext.ProviderName, GeneratedDataTypesElementProviderRootEntityToken.PageMetaDataTypeFolderId)))
                 {
                     VisualData = new ElementVisualizedData
                     {
@@ -832,7 +832,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
         private List<Element> GetPageFolderDataTypesElements(SearchToken searchToken)
         {
-            List<Element> elements = new List<Element>();
+            var elements = new List<Element>();
 
             IEnumerable<Type> types = PageFolderFacade.GetAllFolderTypes();
 
@@ -848,7 +848,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
                 string typeName = TypeManager.SerializeType(type);
 
-                Element element = new Element(_providerContext.CreateElementHandle(new GeneratedDataTypesElementProviderTypeEntityToken(typeName, _providerContext.ProviderName, GeneratedDataTypesElementProviderRootEntityToken.PageDataFolderTypeFolderId)))
+                var element = new Element(_providerContext.CreateElementHandle(new GeneratedDataTypesElementProviderTypeEntityToken(typeName, _providerContext.ProviderName, GeneratedDataTypesElementProviderRootEntityToken.PageDataFolderTypeFolderId)))
                 {
                     VisualData = new ElementVisualizedData
                     {
@@ -867,7 +867,8 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
 
                 element.AddAction(
-                    new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.EditAggregationTypeWorkflow"), _editInterfaceTypePermissionTypes) { Payload = typeName }))
+                    new ElementAction(new ActionHandle(new WorkflowActionToken(
+                        WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.EditInterfaceTypeWorkflow"), _editInterfaceTypePermissionTypes) { Payload = typeName }))
                     {
                         VisualData = new ActionVisualizedData
                         {

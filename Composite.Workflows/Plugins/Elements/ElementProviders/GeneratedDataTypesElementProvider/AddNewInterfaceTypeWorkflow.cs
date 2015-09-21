@@ -13,7 +13,6 @@ using Composite.Core.Types;
 using Composite.C1Console.Users;
 using Composite.Data.Validation.ClientValidationRules;
 using Composite.C1Console.Workflow;
-using Composite.Plugins.Elements.ElementProviders.Common;
 using Texts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_Plugins_GeneratedDataTypesElementProvider;
 
 namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider
@@ -28,46 +27,64 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
         private static class BindingNames
         {
+            public const string ViewLabel = "ViewLabel";
+            public const string InterfaceType = "InterfaceType";
+            public const string NewTypeName = "NewTypeName";
+            public const string NewTypeNamespace = "NewTypeNamespace";
+            public const string NewTypeTitle = "NewTypeTitle";
+            public const string DataFieldDescriptors = "DataFieldDescriptors";
+            public const string KeyFieldName = "KeyFieldName";
+            public const string LabelFieldName = "LabelFieldName";
             public const string InternalUrlPrefix = "InternalUrlPrefix";
-            public const string KeyFieldType = "KeyFieldType";
-            public const string KeyFieldTypeOptions = "KeyFieldTypeOptions";
+            public const string HasCaching = "HasCaching";
+            public const string HasPublishing = "HasPublishing";
+            public const string HasLocalization = "HasLocalization";
             public const string KeyFieldReadOnly = "KeyFieldReadOnly";
+        }
+
+        private bool IsPageDataFolder
+        {
+            get { return this.EntityToken.Id == GeneratedDataTypesElementProviderRootEntityToken.PageDataFolderTypeFolderId; }
         }
 
         private void initialStateCodeActivity_ExecuteCode(object sender, EventArgs e)
         {
+            var dataFieldDescriptors = new List<DataFieldDescriptor>
+            {
+                GeneratedTypesHelper.BuildIdField()
+            };
+
             this.Bindings = new Dictionary<string, object>
             {
-                {"ViewLabel", Texts.AddNewInterfaceTypeStep1_DocumentTitle},
-                {"NewTypeName", ""},
-                {"NewTypeNamespace", UserSettings.LastSpecifiedNamespace},
-                {"NewTypeTitle", ""},
-                {"DataFieldDescriptors", new List<DataFieldDescriptor>()},
-                {"HasCaching", false},
-                {"HasPublishing", false},
-                {"HasLocalization", false},
-                {"LabelFieldName", ""},
-                {BindingNames.KeyFieldType, GeneratedTypesHelper.KeyFieldType.Guid.ToString()},
-                {BindingNames.KeyFieldTypeOptions, KeyFieldHelper.GetKeyFieldOptions()},
+                {BindingNames.ViewLabel, IsPageDataFolder ? Texts.AddNewAggregationTypeWorkflow_DocumentTitle : Texts.AddNewInterfaceTypeStep1_DocumentTitle},
+                {BindingNames.NewTypeName, ""},
+                {BindingNames.NewTypeNamespace, UserSettings.LastSpecifiedNamespace},
+                {BindingNames.NewTypeTitle, ""},
+                {BindingNames.DataFieldDescriptors, dataFieldDescriptors},
+                {BindingNames.HasCaching, false},
+                {BindingNames.HasPublishing, false},
+                {BindingNames.HasLocalization, false},
+                {BindingNames.KeyFieldName, dataFieldDescriptors.First().Name},
+                {BindingNames.LabelFieldName, ""},
                 {BindingNames.KeyFieldReadOnly, false}
             };
 
             this.BindingsValidationRules = new Dictionary<string, List<ClientValidationRule>>
             {
-                {"NewTypeName", new List<ClientValidationRule> {new NotNullClientValidationRule()}},
-                {"NewTypeNamespace", new List<ClientValidationRule> {new NotNullClientValidationRule()}},
-                {"NewTypeTitle", new List<ClientValidationRule> {new NotNullClientValidationRule()}}
+                {BindingNames.NewTypeName, new List<ClientValidationRule> {new NotNullClientValidationRule()}},
+                {BindingNames.NewTypeNamespace, new List<ClientValidationRule> {new NotNullClientValidationRule()}},
+                {BindingNames.NewTypeTitle, new List<ClientValidationRule> {new NotNullClientValidationRule()}}
             };
 
             if (RuntimeInformation.IsDebugBuild && DynamicTempTypeCreator.UseTempTypeCreator)
             {
-                var dynamicTempTypeCreator = new DynamicTempTypeCreator("GlobalTest");
+                var dynamicTempTypeCreator = new DynamicTempTypeCreator(IsPageDataFolder ? "PageFolder" : "GlobalTest");
 
-                this.UpdateBinding("NewTypeName", dynamicTempTypeCreator.TypeName);
-                this.UpdateBinding("NewTypeTitle", dynamicTempTypeCreator.TypeTitle);
-                this.UpdateBinding("DataFieldDescriptors", dynamicTempTypeCreator.DataFieldDescriptors);
+                dataFieldDescriptors.AddRange(dynamicTempTypeCreator.DataFieldDescriptors);
 
-                this.UpdateBinding("LabelFieldName", dynamicTempTypeCreator.DataFieldDescriptors.First().Name);
+                this.UpdateBinding(BindingNames.NewTypeName, dynamicTempTypeCreator.TypeName);
+                this.UpdateBinding(BindingNames.NewTypeTitle, dynamicTempTypeCreator.TypeTitle);
+                this.UpdateBinding(BindingNames.LabelFieldName, dynamicTempTypeCreator.DataFieldDescriptors.First().Name);
             }
         }
 
@@ -77,53 +94,50 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
         {
             try
             {
-                string typeName = this.GetBinding<string>("NewTypeName");
-                string typeNamespace = this.GetBinding<string>("NewTypeNamespace");
-                string typeTitle = this.GetBinding<string>("NewTypeTitle");
-                bool hasCaching = this.GetBinding<bool>("HasCaching");
-                bool hasPublishing = this.GetBinding<bool>("HasPublishing");
-                bool hasLocalization = this.GetBinding<bool>("HasLocalization");
-                string labelFieldName = this.GetBinding<string>("LabelFieldName");
+                string typeName = this.GetBinding<string>(BindingNames.NewTypeName);
+                string typeNamespace = this.GetBinding<string>(BindingNames.NewTypeNamespace);
+                string typeTitle = this.GetBinding<string>(BindingNames.NewTypeTitle);
+                bool hasCaching = this.GetBinding<bool>(BindingNames.HasCaching);
+                bool hasPublishing = this.GetBinding<bool>(BindingNames.HasPublishing);
+                bool hasLocalization = this.GetBinding<bool>(BindingNames.HasLocalization);
+                string keyFieldName = this.GetBinding<string>(BindingNames.KeyFieldName);
+                string labelFieldName = this.GetBinding<string>(BindingNames.LabelFieldName);
                 string internalUrlPrefix = this.GetBinding<string>(BindingNames.InternalUrlPrefix);
-                var dataFieldDescriptors = this.GetBinding<List<DataFieldDescriptor>>("DataFieldDescriptors");
-
-                var keyFieldType = KeyFieldHelper.ParseKeyFieldType(GetBinding<string>(BindingNames.KeyFieldType));
-
+                var dataFieldDescriptors = this.GetBinding<List<DataFieldDescriptor>>(BindingNames.DataFieldDescriptors);
 
                 GeneratedTypesHelper helper;
                 Type interfaceType = null;
-                if (this.BindingExist("InterfaceType"))
+                if (this.BindingExist(BindingNames.InterfaceType))
                 {
-                    interfaceType = this.GetBinding<Type>("InterfaceType");
+                    interfaceType = this.GetBinding<Type>(BindingNames.InterfaceType);
 
                     helper = new GeneratedTypesHelper(interfaceType);
                 }
                 else
                 {
                     helper = new GeneratedTypesHelper();
-                    helper.SetKeyFieldType(keyFieldType);
                 }
 
                 string errorMessage;
                 if (!helper.ValidateNewTypeName(typeName, out errorMessage))
                 {
-                    this.ShowFieldMessage("NewTypeName", errorMessage);
+                    this.ShowFieldMessage(BindingNames.NewTypeName, errorMessage);
                     return;
                 }
 
                 if (!helper.ValidateNewTypeNamespace(typeNamespace, out errorMessage))
                 {
-                    this.ShowFieldMessage("NewTypeNamespace", errorMessage);
+                    this.ShowFieldMessage(BindingNames.NewTypeNamespace, errorMessage);
                     return;
                 }
 
                 if (!helper.ValidateNewTypeFullName(typeName, typeNamespace, out errorMessage))
                 {
-                    this.ShowFieldMessage("NewTypeName", errorMessage);
+                    this.ShowFieldMessage(BindingNames.NewTypeName, errorMessage);
                     return;
                 }
 
-                if (!helper.ValidateNewFieldDescriptors(dataFieldDescriptors, out errorMessage))
+                if (!helper.ValidateNewFieldDescriptors(dataFieldDescriptors, keyFieldName, out errorMessage))
                 {
                     this.ShowMessage(
                             DialogType.Warning,
@@ -158,7 +172,15 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 helper.SetNewTypeFullName(typeName, typeNamespace);
                 helper.SetNewTypeTitle(typeTitle);
                 helper.SetNewInternalUrlPrefix(internalUrlPrefix);
-                helper.SetNewFieldDescriptors(dataFieldDescriptors, labelFieldName);
+                helper.SetNewFieldDescriptors(dataFieldDescriptors, keyFieldName, labelFieldName);
+
+
+                if (IsPageDataFolder && !this.BindingExist(BindingNames.InterfaceType))
+                {
+                    Type targetType = TypeManager.GetType(this.Payload);
+
+                    helper.SetForeignKeyReference(targetType, Composite.Data.DataAssociationType.Aggregation);
+                }
 
                 bool originalTypeDataExists = false;
                 if (interfaceType != null)
@@ -184,7 +206,9 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 EntityToken entityToken = new GeneratedDataTypesElementProviderTypeEntityToken(
                     serializedTypeName, 
                     this.EntityToken.Source, 
-                    GeneratedDataTypesElementProviderRootEntityToken.GlobalDataTypeFolderId);
+                    IsPageDataFolder ? GeneratedDataTypesElementProviderRootEntityToken.PageDataFolderTypeFolderId
+                                     : GeneratedDataTypesElementProviderRootEntityToken.GlobalDataTypeFolderId
+                );
 
                 if(originalTypeDataExists)
                 {
@@ -196,30 +220,30 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 }
                 
 
-                if (!this.BindingExist("InterfaceType"))
+                if (!this.BindingExist(BindingNames.InterfaceType))
                 {                    
                     this.AcquireLock(entityToken);
                 }
 
-                this.UpdateBinding("InterfaceType", helper.InterfaceType);
+                this.UpdateBinding(BindingNames.InterfaceType, helper.InterfaceType);
                 this.UpdateBinding(BindingNames.KeyFieldReadOnly, true);
 
-                this.UpdateBinding("ViewLabel", typeTitle);
+                this.UpdateBinding(BindingNames.ViewLabel, typeTitle);
                 RerenderView();
+
+                //this.WorkflowResult = TypeManager.SerializeType(helper.InterfaceType);
+
 
                 UserSettings.LastSpecifiedNamespace = typeNamespace;
 
                 ParentTreeRefresher parentTreeRefresher = this.CreateParentTreeRefresher();
                 parentTreeRefresher.PostRefreshMesseges(this.EntityToken, 2);
-
-                
-               
             }
             catch (Exception ex)
             {
                 Log.LogCritical("Add New Interface Failed", ex);
 
-                this.ShowMessage(DialogType.Error, "Error", ex.Message);
+                this.ShowMessage(DialogType.Error, ex.Message, ex.Message);
             }
         }
     }

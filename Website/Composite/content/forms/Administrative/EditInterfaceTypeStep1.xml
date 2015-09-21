@@ -7,11 +7,9 @@
         <cms:binding name="DataFieldDescriptors" type="System.Object" />
         <cms:binding name="HasCaching" type="System.Boolean" />
         <cms:binding name="HasPublishing" type="System.Boolean" />
+        <cms:binding name="KeyFieldName" type="System.String" optional="true" />
         <cms:binding name="LabelFieldName" type="System.String" optional="true" />
         <cms:binding name="InternalUrlPrefix" type="System.String" optional="true" />
-        <cms:binding name="EditProcessControlledAllowed" type="System.Boolean" />
-        <cms:binding name="KeyFieldType" type="System.String" />
-        <cms:binding name="KeyFieldTypeOptions" type="System.Collections.IEnumerable" />
     </cms:bindings>
     <cms:layout iconhandle="generated-type-edit">
         <cms:layout.label>
@@ -40,17 +38,6 @@
                     <cms:bind source="InternalUrlPrefix" />
                   </TextBox>
 
-                  <KeySelector OptionsKeyField="Key" OptionsLabelField="Value" ReadOnly="true"
-                       Label="${Composite.Plugins.GeneratedDataTypesElementProvider, EditorCommon.KeyFieldTypeLabel}"
-                       Help="${Composite.Plugins.GeneratedDataTypesElementProvider, EditorCommon.KeyFieldTypeHelp}">
-                    <KeySelector.Selected>
-                      <cms:bind source="KeyFieldType" />
-                    </KeySelector.Selected>
-                    <KeySelector.Options>
-                      <cms:read source="KeyFieldTypeOptions" />
-                    </KeySelector.Options>
-                  </KeySelector>
-                  
                   <PlaceHolder Label="${Composite.Plugins.GeneratedDataTypesElementProvider, EditorCommon.ServicesLabel}">
                         <CheckBox Label="${Composite.Plugins.GeneratedDataTypesElementProvider, EditorCommon.HasCaching}" ItemLabel="${Composite.Plugins.GeneratedDataTypesElementProvider, EditorCommon.HasCaching}">
                             <CheckBox.Checked>
@@ -65,10 +52,13 @@
                     </PlaceHolder>
                 </FieldGroup>
             </PlaceHolder>
-            <internal:TypeFieldDesigner Label="${Composite.Plugins.GeneratedDataTypesElementProvider, EditorCommon.LabelFields}">
+            <internal:TypeFieldDesigner Label="${Composite.Plugins.GeneratedDataTypesElementProvider, EditorCommon.LabelFields}" KeyFieldReadOnly="true">
                 <internal:TypeFieldDesigner.Fields>
                     <cms:bind source="DataFieldDescriptors" />
                 </internal:TypeFieldDesigner.Fields>
+              <internal:TypeFieldDesigner.KeyFieldName>
+                <cms:bind source="KeyFieldName" />
+              </internal:TypeFieldDesigner.KeyFieldName>
                 <internal:TypeFieldDesigner.LabelFieldName>
                     <cms:bind source="LabelFieldName" />
                 </internal:TypeFieldDesigner.LabelFieldName>

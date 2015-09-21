@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Workflow.Activities;
 using Composite.C1Console.Events;
+using Composite.Core;
 using Composite.Data;
 using Composite.Core.Types;
 using Composite.C1Console.Workflow;
@@ -10,7 +11,6 @@ using Composite.C1Console.Actions;
 using Composite.Data.GeneratedTypes;
 using Composite.Data.DynamicTypes;
 using Composite.C1Console.Users;
-using Composite.Core.Logging;
 using Composite.Data.Validation.ClientValidationRules;
 using Composite.Data.Types;
 using Composite.Plugins.Elements.ElementProviders.PageElementProvider;
@@ -19,6 +19,7 @@ using Composite.Plugins.Elements.ElementProviders.PageElementProvider;
 namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper
 {
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
+    [Obsolete("To be removed")]
     public sealed partial class AddDataFolderExWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         private string TypesBindingName { get { return "Types"; } }
@@ -52,10 +53,10 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
         {
             Type associatedType = TypeManager.GetType(this.Payload);
 
-            IEnumerable<Type> accociationTypes = PageFolderFacade.GetAllFolderTypes();
-            IEnumerable<Type> usedAccociationTypes = PageFolderFacade.GetDefinedFolderTypes(this.GetDataItemFromEntityToken<IPage>());
+            IEnumerable<Type> associationTypes = PageFolderFacade.GetAllFolderTypes();
+            IEnumerable<Type> usedAssociationTypes = PageFolderFacade.GetDefinedFolderTypes(this.GetDataItemFromEntityToken<IPage>());
 
-            e.Result = accociationTypes.Except(usedAccociationTypes).Any();
+            e.Result = associationTypes.Except(usedAssociationTypes).Any();
         }
 
 
@@ -80,11 +81,11 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
         {
             Type associatedType = TypeManager.GetType(this.Payload);
 
-            IEnumerable<Type> accociationTypes = PageFolderFacade.GetAllFolderTypes();
+            IEnumerable<Type> associationTypes = PageFolderFacade.GetAllFolderTypes();
             IEnumerable<Type> usedAccociationTypes = PageFolderFacade.GetDefinedFolderTypes(this.GetDataItemFromEntityToken<IPage>());
 
-            Dictionary<Type, string> types = new Dictionary<Type, string>();
-            foreach (var kvp in accociationTypes.Except(usedAccociationTypes).ToDictionary(f => f, f => f.GetTypeTitle()))
+            var types = new Dictionary<Type, string>();
+            foreach (var kvp in associationTypes.Except(usedAccociationTypes).ToDictionary(f => f, f => f.GetTypeTitle()))
             {
                 types.Add(kvp.Key, kvp.Value);
             }
@@ -105,7 +106,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
 
         private void createNewTypeCodeActivity_Initialize_ExecuteCode(object sender, EventArgs e)
         {
-            if (this.BindingExist(this.NewTypeNameBindingName) == false)
+            if (!this.BindingExist(this.NewTypeNameBindingName))
             {
                 this.Bindings.Add(this.NewTypeNameBindingName, "");
                 this.Bindings.Add(this.NewTypeNamespaceBindingName, UserSettings.LastSpecifiedNamespace);
@@ -147,34 +148,34 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
                 bool hasPublishing = this.GetBinding<bool>(this.HasPublishingBindingName);
                 bool hasLocalization = this.GetBinding<bool>(this.HasLocalizationBindingName);
                 string labelFieldName = this.GetBinding<string>(this.LabelFieldNameBindingName);
-                List<DataFieldDescriptor> dataFieldDescriptors = this.GetBinding<List<DataFieldDescriptor>>(this.DataFieldDescriptorsBindingName);
+                var dataFieldDescriptors = this.GetBinding<List<DataFieldDescriptor>>(this.DataFieldDescriptorsBindingName);
 
-                GeneratedTypesHelper helper = new GeneratedTypesHelper();
+                var helper = new GeneratedTypesHelper();
                 helper = new GeneratedTypesHelper();
 
                 string errorMessage;
-                if (helper.ValidateNewTypeName(typeName, out errorMessage) == false)
+                if (!helper.ValidateNewTypeName(typeName, out errorMessage))
                 {
                     this.ShowFieldMessage("NewTypeName", errorMessage);
                     SetSaveStatus(false);
                     return;
                 }
 
-                if (helper.ValidateNewTypeNamespace(typeNamespace, out errorMessage) == false)
+                if (!helper.ValidateNewTypeNamespace(typeNamespace, out errorMessage))
                 {
                     this.ShowFieldMessage("NewTypeNamespace", errorMessage);
                     SetSaveStatus(false);
                     return;
                 }
 
-                if (helper.ValidateNewTypeFullName(typeName, typeNamespace, out errorMessage) == false)
+                if (!helper.ValidateNewTypeFullName(typeName, typeNamespace, out errorMessage))
                 {
                     this.ShowFieldMessage("NewTypeName", errorMessage);
                     SetSaveStatus(false);
                     return;
                 }
 
-                if (helper.ValidateNewFieldDescriptors(dataFieldDescriptors, out errorMessage) == false)
+                if (!helper.ValidateNewFieldDescriptors(dataFieldDescriptors, null, out errorMessage))
                 {
                     this.ShowMessage(
                             DialogType.Warning,
@@ -193,7 +194,9 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
 
                 helper.SetNewTypeFullName(typeName, typeNamespace);
                 helper.SetNewTypeTitle(typeTitle);
-                helper.SetNewFieldDescriptors(dataFieldDescriptors, labelFieldName);
+
+                // TODO: fix and check where the workflow is actually used
+                helper.SetNewFieldDescriptors(dataFieldDescriptors, null, labelFieldName);
 
                 Type targetType = TypeManager.GetType(this.Payload);
                 helper.SetForeignKeyReference(targetType, Composite.Data.DataAssociationType.Aggregation);
@@ -208,7 +211,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
             }
             catch (Exception ex)
             {
-                LoggingService.LogCritical("AddNewAggregationTypeWorkflow", ex);
+                Log.LogCritical("AddNewAggregationTypeWorkflow", ex);
 
                 this.ShowMessage(DialogType.Error, ex.Message, ex.Message);                
             }
@@ -220,7 +223,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
 
         private void finalizeCodeActivity_Finalize_ExecuteCode(object sender, EventArgs e)
         {
-            DataEntityToken dataEntityToken = (DataEntityToken)this.EntityToken;
+            var dataEntityToken = (DataEntityToken)this.EntityToken;
             Type type = this.GetBinding<Type>(SelectedTypeBindingName);
 
             IPage page = (IPage)dataEntityToken.Data;
@@ -244,9 +247,9 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
         private void noTypesToAddCodeActivity_ShowMessage_ExecuteCode(object sender, EventArgs e)
         {
             Type associatedType = TypeManager.GetType(this.Payload);
-            IEnumerable<Type> accociationTypes = PageFolderFacade.GetAllFolderTypes();
+            var associationTypes = PageFolderFacade.GetAllFolderTypes();
 
-            if (accociationTypes.Any() == false)
+            if (!associationTypes.Any())
             {
                 this.ShowMessage(
                     DialogType.Message,

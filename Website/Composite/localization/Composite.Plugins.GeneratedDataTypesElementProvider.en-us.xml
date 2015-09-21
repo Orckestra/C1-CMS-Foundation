@@ -126,11 +126,7 @@
   <string key="AddNewInterfaceTypeStep1.ErrorTitle" value="Error" />
   <string key="EditInterfaceTypeStep1.ErrorTitle" value="Error" />
   <string key="AddNewCompositionTypeWorkflow.ErrorTitle" value="Error" />
-  <string key="AddNewAggregationTypeWorkflow.ErrorTitle" value="Error" />
-
   <string key="EditCompositionTypeWorkflow.ErrorTitle" value="Error" />
-  <string key="EditAggregationTypeWorkflow.ErrorTitle" value="Error" />
-  
   <string key="DataTypeDescriptorToXmlLabel" value="XML Result" />
 
   <string key="FormMarkupInfo.Dialog.Label" value="This type has custom form markup" />

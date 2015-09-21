@@ -1850,7 +1850,6 @@
     <Content Include="Composite\content\forms\Administrative\AddMetaDataCreateFieldGroup.xml" />
     <Content Include="Composite\content\forms\Administrative\AddMetaDataNoTargetDataWarning.xml" />
     <Content Include="Composite\content\forms\Administrative\AddMetaDataSelectType.xml" />
-    <Content Include="Composite\content\forms\Administrative\AddNewAggregationTypeStep1.xml" />
     <Content Include="Composite\content\forms\Administrative\AddNewCompositionTypeStep1.xml">
       <SubType>Designer</SubType>
     </Content>
@@ -1902,7 +1901,6 @@
     <Content Include="Composite\content\forms\Administrative\DeleteXsltFunctionConfirm.xml" />
     <Content Include="Composite\content\forms\Administrative\DisableTypeLocalizationStep1.xml" />
     <Content Include="Composite\content\forms\Administrative\DisableTypeLocalizationStep2.xml" />
-    <Content Include="Composite\content\forms\Administrative\EditAggregationTypeStep1.xml" />
     <Content Include="Composite\content\forms\Administrative\EditCompositionTypeStep1.xml" />
     <Content Include="Composite\content\forms\Administrative\EditDynamicTypeFormMarkup.xml" />
     <Content Include="Composite\content\forms\Administrative\EditInterfaceTypeStep1.xml">

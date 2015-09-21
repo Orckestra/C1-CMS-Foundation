@@ -14,7 +14,11 @@ namespace Composite.Core.WebClient.UiControlLib
     {
         /// <exclude />
         [Category("Appearance"), DefaultValue(""), Description("Image to show as tree node bullet")]
-        public virtual string ImageUrl { get; set; }
+        public virtual string ImageUrl
+        {
+            get { return ViewState["imageUrl"] as string; }
+            set { ViewState["imageUrl"] = value; }
+        }
 
 
         /// <exclude />
@@ -44,7 +48,7 @@ namespace Composite.Core.WebClient.UiControlLib
                 writer.WriteAttribute("callbackid", this.ClientID);
             }
 
-            if (string.IsNullOrEmpty(this.ImageUrl) == false)
+            if (!string.IsNullOrEmpty(this.ImageUrl))
             {
                 writer.WriteAttribute("image", this.ImageUrl);
             }

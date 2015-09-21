@@ -45,16 +45,22 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
         public IEnumerable<DataFieldDescriptor> Fields { get; set; }
 
         /// <exclude />
+        public string KeyFieldName { get; set; }
+
+        /// <exclude />
         public string LabelFieldName { get; set; }
 
         /// <exclude />
         public string FormControlLabel { get; set; }
+
+        /// <exclude />
+        public bool KeyFieldReadOnly { get; set; }
     }
 
 
     internal sealed class TemplatedTypeFieldDesignerUiControl : TypeFieldDesignerUiControl, IWebUiControl
     {
-        private Type _userControlType;
+        private readonly Type _userControlType;
         private TypeFieldDesignerTemplateUserControlBase _userControl;
 
         internal TemplatedTypeFieldDesignerUiControl(Type userControlType)
@@ -66,6 +72,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
         {
             _userControl.BindStateToControlProperties();
             this.Fields = _userControl.Fields;
+            this.KeyFieldName = _userControl.KeyFieldName;
             this.LabelFieldName = _userControl.LabelFieldName;
         }
 
@@ -81,7 +88,9 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
 
             _userControl.FormControlLabel = this.Label;
             _userControl.Fields = this.Fields;
+            _userControl.KeyFieldName = KeyFieldName;
             _userControl.LabelFieldName = this.LabelFieldName;
+            _userControl.KeyFieldReadOnly = KeyFieldReadOnly;
 
             return _userControl;
         }
@@ -101,7 +110,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
 
         public override IUiControl CreateControl()
         {
-            TemplatedTypeFieldDesignerUiControl control = new TemplatedTypeFieldDesignerUiControl(this.UserControlType);
+            var control = new TemplatedTypeFieldDesignerUiControl(this.UserControlType);
 
             return control;
         }

@@ -120,7 +120,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                     return;
                 }
 
-                if (!helper.ValidateNewFieldDescriptors(dataFieldDescriptors, out errorMessage))
+                if (!helper.ValidateNewFieldDescriptors(dataFieldDescriptors, null, out errorMessage))
                 {
                     this.ShowMessage(
                             DialogType.Warning,
@@ -132,7 +132,8 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
                 helper.SetNewTypeFullName(typeName, typeNamespace);
                 helper.SetNewTypeTitle(typeTitle);
-                helper.SetNewFieldDescriptors(dataFieldDescriptors, labelFieldName);
+                // TODO: fix
+                helper.SetNewFieldDescriptors(dataFieldDescriptors, null, labelFieldName);
                 helper.SetCachable(hasCaching);
 
                 if (helper.IsEditProcessControlledAllowed)

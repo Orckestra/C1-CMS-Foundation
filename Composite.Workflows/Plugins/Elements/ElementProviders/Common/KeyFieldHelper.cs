@@ -8,14 +8,8 @@ using Texts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_Plugins_
 
 namespace Composite.Plugins.Elements.ElementProviders.Common
 {
-    internal static class KeyFieldHelper
+    public static class KeyFieldHelper
     {
-        private static class BindingNames
-        {
-            public const string KeyFieldType = "KeyFieldType";
-            public const string KeyFieldTypeOptions = "KeyFieldTypeOptions";
-        }
-
         public static Dictionary<string, string> GetKeyFieldOptions()
         {
             return new Dictionary<string, string>
@@ -26,36 +20,65 @@ namespace Composite.Plugins.Elements.ElementProviders.Common
             };
         }
 
-        public static GeneratedTypesHelper.KeyFieldType ParseKeyFieldType(string keyFieldTypeStr)
-        {
-            return (GeneratedTypesHelper.KeyFieldType) Enum.Parse(typeof (GeneratedTypesHelper.KeyFieldType), keyFieldTypeStr);
-        }
+        //public static GeneratedTypesHelper.KeyFieldType ParseKeyFieldType(string keyFieldTypeStr)
+        //{
+        //    return (GeneratedTypesHelper.KeyFieldType) Enum.Parse(typeof (GeneratedTypesHelper.KeyFieldType), keyFieldTypeStr);
+        //}
 
         public static GeneratedTypesHelper.KeyFieldType GetKeyFieldType(DataTypeDescriptor dataTypeDescriptor)
         {
             var idField = dataTypeDescriptor.Fields.Single(f => f.Name == "Id");
             if (idField != null)
             {
-                if (idField.InstanceType == typeof(Guid))
+                return GetKeyFieldType(idField);
+            }
+
+            return GeneratedTypesHelper.KeyFieldType.Undefined;
+        }
+
+        public static GeneratedTypesHelper.KeyFieldType GetKeyFieldType(DataFieldDescriptor field)
+        {
+            if (field.InstanceType == typeof(Guid))
+            {
+                return GeneratedTypesHelper.KeyFieldType.Guid;
+            }
+
+            if (field.InstanceType == typeof(string) && field.DefaultValue != null)
+            {
+                if (field.DefaultValue.Equals(DefaultValue.RandomString(4, true)))
                 {
-                    return GeneratedTypesHelper.KeyFieldType.Guid;
+                    return GeneratedTypesHelper.KeyFieldType.RandomString4;
                 }
 
-                if (idField.InstanceType == typeof(string) && idField.DefaultValue != null)
+                if (field.DefaultValue.Equals(DefaultValue.RandomString(8, false)))
                 {
-                    if (idField.DefaultValue.Equals(DefaultValue.RandomString(4, true)))
-                    {
-                        return GeneratedTypesHelper.KeyFieldType.RandomString4;
-                    }
-
-                    if (idField.DefaultValue.Equals(DefaultValue.RandomString(8, false)))
-                    {
-                        return GeneratedTypesHelper.KeyFieldType.RandomString8;
-                    }
+                    return GeneratedTypesHelper.KeyFieldType.RandomString8;
                 }
             }
             
             return GeneratedTypesHelper.KeyFieldType.Undefined;
+        }
+
+        public static void UpdateKeyType(DataFieldDescriptor idField, GeneratedTypesHelper.KeyFieldType selectedFieldType)
+        {
+            switch (selectedFieldType)
+            {
+                case GeneratedTypesHelper.KeyFieldType.Guid:
+                    idField.StoreType = StoreFieldType.Guid;
+                    idField.InstanceType = typeof(Guid);
+                    idField.DefaultValue = null;
+                    break;
+                case GeneratedTypesHelper.KeyFieldType.RandomString4:
+                    idField.StoreType = StoreFieldType.String(22);
+                    idField.InstanceType = typeof(string);
+                    idField.DefaultValue = DefaultValue.RandomString(4, true);
+                    break;
+                case GeneratedTypesHelper.KeyFieldType.RandomString8:
+                    idField.StoreType = StoreFieldType.String(22);
+                    idField.InstanceType = typeof(string);
+                    idField.DefaultValue = DefaultValue.RandomString(8, false);
+                    break;
+            }
         }
     }
 }
