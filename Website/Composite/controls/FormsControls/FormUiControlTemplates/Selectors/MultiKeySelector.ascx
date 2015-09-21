@@ -1,71 +1,23 @@
 <%@ Control Language="C#" Inherits="Composite.Plugins.Forms.WebChannel.UiControlFactories.SelectorTemplateUserControlBase" %>
-<%@ Import Namespace="System.Linq" %>
 
 <script runat="server">
 	private List<string> _selectedKeys = new List<string>();
 
-    protected void Page_Init(object sender, EventArgs e)
+
+    protected override void InitializeViewState()
     {
-        if (!this.CompactMode)
-        {
-            CheckBoxRepeater.ItemDataBound += CheckBoxRepeater_ItemDataBound;
+        compactModePlaceHolder.Visible = CompactMode;
+        verboseModePlaceHolder.Visible = !CompactMode;
 
-            CheckBoxRepeater.DataSource = this.GetOptions();
-            CheckBoxRepeater.DataBind();
-            verboseModePlaceHolder.Visible = true;
-            compactModePlaceHolder.Visible = false;
-            
-        }
-        else
-        {
-            // the list back-and-forth is intended to keep the sort order
-            var selectedKeys = new List<string>(this.SelectedKeys);
+        _selectedKeys = new List<string>(this.SelectedKeys);
 
-            var selectedOptions = new List<KeyLabelPair>();
-            foreach( string key in selectedKeys)
-            {
-                var selectedOption = this.GetOptions().FirstOrDefault(f => f.Key == key);
-                if (selectedOption != null)
-                {
-                    selectedOptions.Add(selectedOption);
-                }
-            }
+        var repeater = CompactMode ? optionsRepeater : CheckBoxRepeater;
 
-            var unselectedOptions = this.GetOptions().Where(o => selectedKeys.Contains(o.Key)==false);
-
-
-            // workaround
-            this._selectedKeys = selectedKeys;
-            string postBackName = this.ClientID;
-            if (!string.IsNullOrEmpty(Request.Form[postBackName]))
-            {
-                this._selectedKeys = new List<string>(Request.Form[postBackName].Split(','));
-            }
-            
-            optionsRepeater.DataSource = selectedOptions.Concat(unselectedOptions);
-            optionsRepeater.DataBind();
-            verboseModePlaceHolder.Visible = false;
-            compactModePlaceHolder.Visible = true;
-        }
+        repeater.DataSource = GetOptions();
+        repeater.DataBind();
     }
-
-    void CheckBoxRepeater_ItemDataBound(object sender, RepeaterItemEventArgs e)
-    {
-        var definition = (KeyLabelPair) e.Item.DataItem;
-        e.Item.ID = definition.Key.GetHashCode().ToString();
-        
-        Control control = e.Item.FindControl("CheckBox");
-
-        var checkBox = (Composite.Core.WebClient.UiControlLib.CheckBox)control;
-
-        string key = HttpUtility.HtmlDecode(checkBox.Text);
-        if (SelectedKeys.Contains(key))
-        {
-            checkBox.Checked = true;
-        }
-    }
-
-
+    
+    
     protected override void BindStateToProperties()
     {
         var result = new List<string>();
@@ -94,12 +46,6 @@
     }
 
 
-
-    protected override void InitializeViewState()
-    {
-    }
-
-
     public override string GetDataFieldClientName()
     {
         if (this.CompactMode)
@@ -118,26 +64,25 @@
 
     protected string CustomUiSelectorTagParams(KeyLabelPair keyLabelPair)
     {
-        string key = keyLabelPair.Key;
+        return IsChecked(keyLabelPair.Key) ? "selected=\"true\"" : "";
+    }
 
-        if (_selectedKeys.Contains(key))
-        {
-            return "selected=\"true\"";
-        }
-
-        return "";
+    protected bool IsChecked(string key)
+    {
+        return _selectedKeys.Contains(key);
     }
     
 </script>
 
 <asp:PlaceHolder ID="verboseModePlaceHolder" runat="server" Visible="false">
     <ui:checkboxgroup name="<%= this.ClientID %>" required="<%= Required ? "true" : "false" %>">
-    <asp:Repeater runat="server" ID="CheckBoxRepeater" ViewStateMode="Disabled">
+    <asp:Repeater runat="server" ID="CheckBoxRepeater">
         <ItemTemplate>
             <aspui:CheckBox ID="CheckBox" runat="server"
               ToolTip="<%# HttpUtility.HtmlAttributeEncode(((KeyLabelPair)Container.DataItem).Label) %>" 
               ItemLabel="<%# HttpUtility.HtmlAttributeEncode(((KeyLabelPair)Container.DataItem).Label) %>" 
-              Text="<%# HttpUtility.HtmlAttributeEncode(((KeyLabelPair)Container.DataItem).Key) %>" />
+              Text="<%# HttpUtility.HtmlAttributeEncode(((KeyLabelPair)Container.DataItem).Key) %>" 
+              Checked="<%# IsChecked(((KeyLabelPair)Container.DataItem).Key) %>"/>
         </ItemTemplate>
     </asp:Repeater>
 </ui:checkboxgroup>
@@ -145,7 +90,7 @@
 
 <asp:PlaceHolder ID="compactModePlaceHolder" runat="server" Visible="false">
     <ui:multiselector name="<%= this.ClientID %>" required="<%= Required ? "true" : "false" %>">
-        <asp:Repeater runat="server" ID="optionsRepeater" ViewStateMode="Disabled">
+        <asp:Repeater runat="server" ID="optionsRepeater">
             <ItemTemplate>
                       <ui:selection 
                           label="<%# Server.HtmlEncode(((KeyLabelPair)Container.DataItem).Label) %>" 

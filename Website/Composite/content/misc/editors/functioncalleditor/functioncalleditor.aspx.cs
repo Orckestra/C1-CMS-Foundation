@@ -757,18 +757,12 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
 
         // The control is temporary added to page, so it will get a correct ID
         var webUiControl = (IWebUiControl)formTreeCompiler.UiControl;
+        var webControl = webUiControl.BuildWebControl();
 
-        plhWidget.Controls.Add(webUiControl.BuildWebControl());
+        plhWidget.Controls.Add(webControl);
 
         // Loading control's post data
-        foreach (var key in Request.Form.AllKeys)
-        {
-            var control = Page.FindControl(key);
-            if (control is IPostBackDataHandler)
-            {
-                (control as IPostBackDataHandler).LoadPostData(key, Request.Form);
-            }
-        }
+        LoadPostBackData(webControl);
 
         formTreeCompiler.SaveControlProperties();
 
@@ -791,6 +785,21 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
 
         SaveChanges();
     }
+
+
+    private void LoadPostBackData(Control control)
+    {
+        if (control is IPostBackDataHandler)
+        {
+            (control as IPostBackDataHandler).LoadPostData(control.UniqueID, Request.Form);
+        }
+
+        foreach (Control childControl in control.Controls)
+        {
+            LoadPostBackData(childControl);
+        }
+    }
+
 
     private void BtnDefaultClicked(XElement parameterNode)
     {

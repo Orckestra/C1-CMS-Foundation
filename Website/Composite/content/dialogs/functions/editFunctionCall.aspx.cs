@@ -125,7 +125,7 @@ namespace CompositeEditFunctionCall
                 "",
                 WebManagementChannel.Identifier);
 
-            IWebUiControl webUiControl = (IWebUiControl)formTreeCompiler.UiControl;
+            var webUiControl = (IWebUiControl)formTreeCompiler.UiControl;
 
             var webControl = webUiControl.BuildWebControl();
 
@@ -138,14 +138,7 @@ namespace CompositeEditFunctionCall
 	        }
 
             // Loading control's post data
-	        foreach (var key in Request.Form.AllKeys)
-	        {
-	            var control = Page.FindControl(key);
-	            if (control is IPostBackDataHandler)
-	            {
-	                (control as IPostBackDataHandler).LoadPostData(key, Request.Form);
-	            }
-	        }
+	        LoadPostBackData(webControl);
 
 	        var validationErrors = formTreeCompiler.SaveAndValidateControlProperties();
 
@@ -206,6 +199,23 @@ namespace CompositeEditFunctionCall
 
             return true;
 	    }
+
+
+
+	    private void LoadPostBackData(Control control)
+	    {
+            if (control is IPostBackDataHandler)
+            {
+                (control as IPostBackDataHandler).LoadPostData(control.UniqueID, Request.Form);
+            }
+
+            foreach (Control childControl in control.Controls)
+            {
+                LoadPostBackData(childControl);
+            }
+	    }
+
+
 
         private void ShowServerValidationErrors(FormTreeCompiler formTreeCompiler, Dictionary<string, Exception> serverValidationErrors)
         {
