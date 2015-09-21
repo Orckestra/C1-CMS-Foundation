@@ -2,7 +2,6 @@
 using System.IO;
 using System.Linq;
 using Composite.Core.Configuration;
-using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
@@ -70,14 +69,19 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
         {
             lock (_syncRoot)
             {
+                var originalType = changeDescriptor.OriginalType;
+                var alteredType = changeDescriptor.AlteredType;
+
+                bool typeNameChanged = originalType.Namespace != alteredType.Namespace ||
+                                       originalType.Name != alteredType.Name;
+
                 if (!localeChanges &&
                     !changeDescriptor.AddedDataScopes.Any() &&
                     !changeDescriptor.DeletedDataScopes.Any() &&
                     !changeDescriptor.AddedKeyFields.Any() &&
                     !changeDescriptor.DeletedKeyFields.Any() &&
                     !changeDescriptor.KeyFieldsOrderChanged &&
-                    (changeDescriptor.OriginalType.Namespace == changeDescriptor.AlteredType.Namespace) &&
-                    (changeDescriptor.OriginalType.Name == changeDescriptor.AlteredType.Name))
+                    !typeNameChanged)
                 {
                     // No changes to the config is needed, lets not touch the file.
                     return null;
@@ -85,15 +89,15 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
 
                 var configuration = new SqlDataProviderConfiguration(providerName);
 
-                Guid dataTypeId = changeDescriptor.OriginalType.DataTypeId;
+                Guid dataTypeId = originalType.DataTypeId;
 
-                var existingElement = configuration.Section.Interfaces.Get(changeDescriptor.OriginalType);
+                var existingElement = configuration.Section.Interfaces.Get(originalType);
 
                 Verify.IsNotNull(existingElement, "Configuration does not contain the original interface with id '{0}'", dataTypeId);
 
-                configuration.Section.Interfaces.Remove(changeDescriptor.OriginalType);
+                configuration.Section.Interfaces.Remove(originalType);
 
-                InterfaceConfigurationElement newInterfaceConfig = BuildInterfaceConfigurationElement(changeDescriptor.AlteredType, existingElement);
+                InterfaceConfigurationElement newInterfaceConfig = BuildInterfaceConfigurationElement(alteredType, existingElement, typeNameChanged);
 
                 configuration.Section.Interfaces.Add(newInterfaceConfig);
 
@@ -121,27 +125,22 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
 
         private static InterfaceConfigurationElement BuildInterfaceConfigurationElement(
             DataTypeDescriptor dataTypeDescriptor, 
-            InterfaceConfigurationElement existingElement = null)
+            InterfaceConfigurationElement existingElement = null,
+            bool updateTableNames = false)
         {
-            var tableConfig = new InterfaceConfigurationElement();            
-
-            tableConfig.DataTypeId = dataTypeDescriptor.DataTypeId;
-            tableConfig.IsGeneratedType = dataTypeDescriptor.IsCodeGenerated;
-
             var propertyMappings = new PropertyNameMappingConfigurationElementCollection();
-            var keyInfo = new SimpleNameTypeConfigurationElementCollection();
-
             //foreach (DataFieldDescriptor field in dataTypeDescriptor.Fields)
             //{
             //    propertyMappings.Add(field.Name, field.Name);
             //}
 
+            var keyInfo = new SimpleNameTypeConfigurationElementCollection();
             foreach (DataFieldDescriptor field in dataTypeDescriptor.KeyFields)
             {
                 keyInfo.Add(field.Name, field.InstanceType);
             }
 
-            tableConfig.ConfigurationStores = new StoreConfigurationElementCollection();
+            var stores = new StoreConfigurationElementCollection();
             // Fix logic for the case of a localized interface without languages
             foreach (DataScopeIdentifier dataScope in dataTypeDescriptor.DataScopes)
             {
@@ -149,7 +148,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
                 {
                     string tableName = null;
 
-                    if (existingElement != null)
+                    if (!updateTableNames && existingElement != null)
                     {
                         foreach (StoreConfigurationElement table  in existingElement.ConfigurationStores)
                         {
@@ -164,16 +163,19 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
 
                     tableName = tableName ?? DynamicTypesCommon.GenerateTableName(dataTypeDescriptor, dataScope, culture);
 
-                    tableConfig.ConfigurationStores.Add(new StoreConfigurationElement
-                                                            {TableName = tableName, DataScope = dataScope.Name, CultureName = culture.Name});
+                    stores.Add(new StoreConfigurationElement {TableName = tableName, DataScope = dataScope.Name, CultureName = culture.Name});
                 }
             }
 
-            tableConfig.ConfigurationPropertyNameMappings = propertyMappings;
-            tableConfig.ConfigurationDataIdProperties = keyInfo;
-            tableConfig.ConfigurationPropertyInitializers = new SimpleNameTypeConfigurationElementCollection();
-
-            return tableConfig;
+            return new InterfaceConfigurationElement
+            {
+                DataTypeId = dataTypeDescriptor.DataTypeId,
+                IsGeneratedType = dataTypeDescriptor.IsCodeGenerated,
+                ConfigurationStores = stores,
+                ConfigurationPropertyNameMappings = propertyMappings,
+                ConfigurationDataIdProperties = keyInfo,
+                ConfigurationPropertyInitializers = new SimpleNameTypeConfigurationElementCollection()
+            };
         }
 
         private sealed class SqlDataProviderConfiguration
