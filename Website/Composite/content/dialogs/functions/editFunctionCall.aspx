@@ -43,7 +43,7 @@
 			id="renderingdialogpage"
 			image="${icon:parameter_overloaded}"
 			width="<% =ActiveTab == Tab.Basic? "820" : "865" %>"
-			height="<% =ActiveTab == Tab.Basic? "100" : "600" %>"
+			height="<% =ActiveTab == Tab.Basic? "100" : "610" %>"
 			resizable="false"
 			label="<%= this.DialogLabel %>"
             class="with-top-toolbar <% =ActiveTab == Tab.Basic? " functionview-basic" : " functionview-adv" %>">
