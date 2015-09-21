@@ -80,8 +80,11 @@ namespace Composite.Data
         /// <param name="data">The data item to reference.</param>
         public DataReference(T data)
         {
-            _keyValue = data.GetUniqueKey();
-            _cachedValue = data;
+            if (data != null)
+            {
+                _keyValue = data.GetUniqueKey();
+                _cachedValue = data;
+            }
         }
 
 
@@ -105,9 +108,9 @@ namespace Composite.Data
             get 
             {
                 if (_keyValue is Guid)
-                    return ((Guid)_keyValue) != Guid.Empty;
+                    return (Guid)_keyValue != Guid.Empty;
 
-                return (_keyValue != null); 
+                return _keyValue != null; 
             }
         }
 
@@ -233,10 +236,9 @@ namespace Composite.Data
                     value = null;
                 }
 
-                object[] activationParameters = new object[1];
-                activationParameters[0] = value;
+                object[] activationParameters = { value };
 
-                IDataReference dataReference = (IDataReference)Activator.CreateInstance(targetType, activationParameters);
+                var dataReference = (IDataReference)Activator.CreateInstance(targetType, activationParameters);
 
                 targetValue = dataReference;
 
