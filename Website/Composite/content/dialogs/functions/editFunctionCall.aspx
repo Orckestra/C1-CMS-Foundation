@@ -42,11 +42,11 @@
 			binding="EditFunctionCallDialogPageBinding"
 			id="renderingdialogpage"
 			image="${icon:parameter_overloaded}"
-			width="<% =ActiveTab == Tab.Basic? "420" : "820" %>"
-			height="<% =ActiveTab == Tab.Basic? "100" : "410" %>"
+			width="<% =ActiveTab == Tab.Basic? "820" : "865" %>"
+			height="<% =ActiveTab == Tab.Basic? "100" : "600" %>"
 			resizable="false"
 			label="<%= this.DialogLabel %>"
-            class="with-top-toolbar">
+            class="with-top-toolbar <% =ActiveTab == Tab.Basic? " functionview-basic" : " functionview-adv" %>">
 			<asp:HiddenField runat="server" ID="hdnActiveTab" Value="<%# hdnActiveTab.Value %>"></asp:HiddenField>
 			<asp:PlaceHolder runat="server" ID="BasicPanel">
 				<ui:toolbar id="toolbar">

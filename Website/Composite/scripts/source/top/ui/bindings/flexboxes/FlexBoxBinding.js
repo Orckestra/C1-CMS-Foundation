@@ -186,7 +186,9 @@ FlexBoxBinding.prototype._getSiblingsSpan = function ( isHorizontal ) {
 				if ( isHorizontal ) {
 					height += ( rect.right - rect.left );
 				} else {
-					result += ( rect.bottom - rect.top );
+				    result += (rect.bottom - rect.top);
+				   // var border = CSSComputer.getBorder(child);
+				  //  result -= (border.top + border.bottom);
 				}
 			}			
 		}
@@ -215,11 +217,6 @@ FlexBoxBinding.prototype._getCalculatedHeight = function () {
 	var parent	= this.bindingElement.parentNode;
 	var rect = parent.getBoundingClientRect ();
 	var result = rect.bottom - rect.top;
-	var padding	= CSSComputer.getPadding ( parent );
-	var border	= CSSComputer.getBorder ( parent );
-	
-	result -= ( padding.top + padding.bottom );
-	result -= ( border.top + border.bottom );
 
 	return result;
 }
@@ -311,33 +308,11 @@ FlexBoxBinding.prototype.fit = function ( isForce ) {
 
 /**
  * Hardwired for method fit. 
- * @return {int} 
- *
-FlexBoxBinding.prototype._getFitnessHeight = function () {
-	
-	var padding	= CSSComputer.getPadding ( this.bindingElement );
-	var border	= CSSComputer.getBorder ( this.bindingElement );
-	var height = this.bindingElement.offsetHeight;
-	
-	height += padding.top + padding.bottom;
-	height += border.top + border.bottom;
-	
-	return height;
-}
-*/
-
-/**
- * Hardwired for method fit. 
  * Note the {@link DialogPageBodyBinding} overwrites this!
  * @param {int} height
  */
 FlexBoxBinding.prototype._setFitnessHeight = function ( height ) {
 	
-	var padding	= CSSComputer.getPadding ( this.bindingElement );
-	var border	= CSSComputer.getBorder ( this.bindingElement );
-	
-	height += padding.top + padding.bottom;
-	height += border.top + border.bottom;
-	
+
 	this.bindingElement.style.height = height + "px";
 }

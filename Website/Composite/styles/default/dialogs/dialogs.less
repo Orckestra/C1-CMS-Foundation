@@ -126,7 +126,7 @@ ui|dialogpage {
 @media (min-width: 700px) { // usage: fix dialog UI for Compsoite.Forms.FormBuilder function properties
     ui|dialogpage ui|field, .dialogsubpage ui|field {
         width: 430px;
-         border: solid 1px @fields-group-border-color;
+        border: solid 1px @fields-group-border-color;
         border-width: 0 1px;
         background: @fields-group-bg-color;
         padding: 0 17px;
@@ -144,6 +144,40 @@ ui|dialogpage {
             border-bottom-left-radius: @base-border-radius;
             border-bottom-right-radius: @base-border-radius;
         }
+    }
+}
+
+// Basic Function View
+@functionsbasic-column-width: 365px;
+@functionsbasic-column-gap: 20px;
+
+ui|dialogpage.functionview-basic {
+
+    ui|field {
+        width: @functionsbasic-column-width;
+        border-radius: @base-border-radius;
+        border: 0;
+        padding: 0;
+        display: table;
+        overflow: visible;
+        position: relative;
+        -webkit-column-break-inside: avoid; /* Chrome, Safari, Opera */
+        page-break-inside: avoid; /* Firefox */
+        break-inside: avoid; /* IE 10+ */
+        @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+            display: inline-block;
+        }
+        /* IE 10, 11 */
+    }
+
+
+    ui|fieldgroup {
+        -webkit-column-width: @functionsbasic-column-width; /* Chrome, Safari, Opera */
+        -moz-column-width: @functionsbasic-column-width; /* Firefox */
+        column-width: @functionsbasic-column-width;
+        -moz-column-gap: @functionsbasic-column-gap;
+        -webkit-column-gap: @functionsbasic-column-gap;
+        column-gap: @functionsbasic-column-gap;
     }
 }
 
