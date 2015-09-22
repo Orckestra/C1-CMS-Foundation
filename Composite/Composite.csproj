@@ -1172,7 +1172,7 @@
     <Compile Include="Data\Types\IPackageServerSource.cs" />
     <Compile Include="Core\Extensions\ByteArrayExtensionMethods.cs" />
     <Compile Include="C1Console\Forms\BindablePropertyAttribute.cs" />
-    <Compile Include="C1Console\Forms\ControlVaulePropertyAttribute.cs" />
+    <Compile Include="C1Console\Forms\ControlValuePropertyAttribute.cs" />
     <Compile Include="C1Console\Forms\CoreFunctions\BooleanCheckFunctionFactory.cs" />
     <Compile Include="C1Console\Forms\CoreFunctions\CompositeFunctionCall.cs" />
     <Compile Include="C1Console\Forms\CoreFunctions\NamedValueFunctionFactory.cs" />

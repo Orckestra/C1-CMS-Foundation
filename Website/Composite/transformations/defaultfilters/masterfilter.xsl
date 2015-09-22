@@ -71,6 +71,9 @@
         <xsl:if test="not(contains(.,'?'))">
           <xsl:text>?c1=</xsl:text>
         </xsl:if>
+        <xsl:if test="contains(.,'?')">
+          <xsl:text>&amp;c1=</xsl:text>
+        </xsl:if>
         <xsl:value-of select="$version" />
       </xsl:if>
     </xsl:attribute>

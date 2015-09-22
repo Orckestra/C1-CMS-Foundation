@@ -143,10 +143,17 @@ namespace Composite.Core.WebClient
 
             foreach (string ss in _defaultscripts)
             {
-                string scriptsource = ss.Replace("${root}", root);
+                string relativeLink = ss.Replace("${root}", root);
+
+                string filePath = PathUtil.Resolve(ss.Replace("${root}", "~/Composite"));
+                if (C1File.Exists(filePath))
+                {
+                    DateTime lastModified = C1File.GetLastWriteTimeUtc(filePath);
+                    relativeLink += "?timestamp=" + lastModified.GetHashCode();
+                }
 
                 builder.AppendLine(
-                    scriptMarkup.Replace("${scriptsource}", scriptsource)
+                    scriptMarkup.Replace("${scriptsource}", relativeLink)
                 );
             }
 

@@ -14,7 +14,7 @@ namespace Composite.C1Console.Forms
             _propertyName = propertyName;
         }
 
-        private string _propertyName;
+        private readonly string _propertyName;
 
         public string PropertyName
         {
