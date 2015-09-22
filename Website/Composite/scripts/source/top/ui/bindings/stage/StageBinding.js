@@ -620,6 +620,7 @@ StageBinding.prototype.handleEvent = function (e) {
 					EventBroadcaster.broadcast(BroadcastMessages.COMPOSITE_STOP);
 				}
 			}
+			e.preventDefault();
 			break;
 	}
 }
