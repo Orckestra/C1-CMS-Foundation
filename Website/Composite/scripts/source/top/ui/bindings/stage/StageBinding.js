@@ -206,7 +206,9 @@ StageBinding.prototype.onBindingRegister = function () {
 	this.addActionListener ( ExplorerBinding.ACTION_DECK_LOADED );
 	this.addActionListener ( StageDeckBinding.ACTION_LOADED );
 	this.addActionListener ( ErrorBinding.ACTION_INITIALIZE );
-	
+
+	DOMEvents.addEventListener(top, DOMEvents.HASHCHANGE, this);
+
 	/*
 	 * File EventBroadcaster subscriptions.
 	 */
@@ -594,6 +596,30 @@ StageBinding.prototype.handleBroadcast = function ( broadcast, arg ) {
 		
 		case BroadcastMessages.DOCK_NORMALIZED :
 			this._stabilizeExplorer ();
+			break;
+	}
+}
+
+/**
+ * @implements {IEventListener}
+ * @overloads {Binding#handleEvent}
+ * @param {Event} e
+ */
+StageBinding.prototype.handleEvent = function (e) {
+
+	StageBinding.superclass.handleEvent.call(this, e);
+
+	switch (e.type) {
+		case DOMEvents.HASHCHANGE:
+			if (e.target && e.target.location && e.target.location.hash) {
+				var serializedMessage = window.location.hash.replace(/^#/, '');
+				if (serializedMessage) {
+					e.target.location.hash = "";
+					MessageQueue.placeConsoleCommand(serializedMessage);
+					MessageQueue.update();
+					EventBroadcaster.broadcast(BroadcastMessages.COMPOSITE_STOP);
+				}
+			}
 			break;
 	}
 }

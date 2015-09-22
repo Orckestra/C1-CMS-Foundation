@@ -37,6 +37,7 @@ _DOMEvents.prototype = {
     DRAGOVER: "dragover",
     DROP: "drop",
     WHEEL: "wheel",
+    HASHCHANGE: "hashchange",
 
     TOUCHSTART: "touchstart",
     TOUCHEND: "touchend",
