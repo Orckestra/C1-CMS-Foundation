@@ -80,6 +80,13 @@ function BrowserPageBinding() {
 	 */
     this._blockertimeout = null;
 
+
+	/**
+	 * Locker to validate that result of async request is actual
+	 * @type {string}
+	 */
+	this._asyncLocker = null;
+
     /*
 	 * Returnable.
 	 */
@@ -270,6 +277,9 @@ BrowserPageBinding.prototype.onAfterPageInitialize = function () {
  * @return
  */
 BrowserPageBinding.prototype.push = function (node, isManual, isForce) {
+
+	this._asyncLocker = null;
+
 	var self = this;
 	if (typeof (node) == "string" || node instanceof String) {
 		self.pushURL(node, isManual);
@@ -504,7 +514,9 @@ BrowserPageBinding.prototype._handleTabBoxUpdate = function () {
  */
 BrowserPageBinding.prototype._handleDocumentLoad = function (binding) {
 
-    var url = new String(binding.getContentDocument().location);
+	var url = new String(binding.getContentDocument().location);
+
+	this._asyncLocker = KeyMaster.getUniqueKey();
 
     /*
 	 * Update stuff.
@@ -547,12 +559,18 @@ BrowserPageBinding.prototype._handleDocumentLoad = function (binding) {
     }
 
     if (!this._isPushingUrl) {
-    	var entityToken = TreeService.GetEntityTokenByPageUrl(url);
-	    this._entityToken = entityToken;
-        EventBroadcaster.broadcast(
-			BroadcastMessages.SYSTEMTREEBINDING_FOCUS,
-			entityToken
-		);
+    	var self = this;
+	    var asyncLocker = this._asyncLocker;
+	    TreeService.GetEntityTokenByPageUrl(url, function (entityToken) {
+		    if (asyncLocker === self._asyncLocker) {
+			    self._entityToken = entityToken;
+			    EventBroadcaster.broadcast(
+				    BroadcastMessages.SYSTEMTREEBINDING_FOCUS,
+				    entityToken
+			    );
+		    }
+	    });
+	    
     }
 
     /*
@@ -576,8 +594,14 @@ BrowserPageBinding.prototype._updateAddressBar = function (url) {
 
     var bar = this.bindingWindow.bindingMap.addressbar;
     if (bar != null) {
-        url = PageService.ConvertRelativePageUrlToAbsolute(url);
-        bar.setValue(url);
+    	var asyncLocker = this._asyncLocker;
+	    var self = this;
+	    PageService.ConvertRelativePageUrlToAbsolute(url, function (result) {
+		    if (asyncLocker === self._asyncLocker) {
+			    bar.setValue(result);
+		    }
+	    });
+        
     }
 }
 
