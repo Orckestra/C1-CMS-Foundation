@@ -469,11 +469,12 @@
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\Selectors\UrlComboBox.ascx" />
     <Content Include="Composite\grunt.html" />
     <Content Include="Composite\images\icons\branding\favicon.ico" />
+    <Content Include="Composite\images\icons\svg\abc-book.svg" />
+    <Content Include="Composite\images\icons\svg\alphbeticindex.svg" />
     <Content Include="Composite\images\icons\svg\books.svg" />
     <Content Include="Composite\images\icons\svg\bullist.svg" />
     <Content Include="Composite\images\icons\svg\company-apple.svg" />
     <Content Include="Composite\images\icons\svg\data-awaiting-approval.svg" />
-    <Content Include="Composite\images\icons\svg\delete-disabled.svg" />
     <Content Include="Composite\images\icons\svg\dollar-invoice.svg" />
     <Content Include="Composite\images\icons\svg\end.svg" />
     <Content Include="Composite\images\icons\svg\inbox-green.svg" />

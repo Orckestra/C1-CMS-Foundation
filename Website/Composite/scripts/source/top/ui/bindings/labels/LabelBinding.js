@@ -87,8 +87,9 @@ LabelBinding.setImageSvg = function (binding, image) {
 				
 			} else {
 
-				if (LabelBinding.sprites) {
-				    var g = LabelBinding.sprites.querySelector("#" + image.toLowerCase());
+			    if (LabelBinding.sprites) {
+			        image = image.toLowerCase().replace('-disabled', ''); // 
+                    var g = LabelBinding.sprites.querySelector("#" + image);
 					if (g) {
 						var xmlns = "http://www.w3.org/2000/svg";
 						if (!binding.shadowTree.svg) {
