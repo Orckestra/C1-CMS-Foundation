@@ -149,9 +149,9 @@ StageDeckBinding.prototype.handleAction = function ( action ) {
 		 */
 		case StageSplitBoxBinding.ACTION_DOCK_OPENED : 
 			this._dockBindingCount ++;
-			if ( this._dockBindingCount == 2 ) {
-				this._dockBindings.get ( "main" ).showControls ( true );
-			}
+			//if ( this._dockBindingCount == 2 ) {
+			//	this._dockBindings.get ( "main" ).showControls ( true );
+			//}
 			action.consume (); // StageBinding is no longer listening!
 			break;
 		
@@ -160,9 +160,9 @@ StageDeckBinding.prototype.handleAction = function ( action ) {
 		 */	
 		case StageSplitBoxBinding.ACTION_DOCK_EMPTIED : 
 			this._dockBindingCount --;
-			if ( this._dockBindingCount == 1 ) {
-				this._dockBindings.get ( "main" ).showControls ( false );
-			}
+			//if ( this._dockBindingCount == 1 ) {
+			//	this._dockBindings.get ( "main" ).showControls ( false );
+			//}
 			action.consume ();
 			break;
 	}
