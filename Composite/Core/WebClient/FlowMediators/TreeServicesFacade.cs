@@ -440,6 +440,12 @@ namespace Composite.Core.WebClient.FlowMediators
                 yield break;
             }
 
+            // NOTE: A workaround which gives "AllFunctionElementProvider" search results less priority that other function element providers
+            if (parents.Count == 2 && parents[0].Id != null && parents[0].Id.StartsWith("ROOT:AllFunctionsElementProvider"))
+            {
+                parents.Reverse();
+            }
+
             foreach (var parent in parents)
             {                
                 foreach (List<EntityToken> chain in GetAncestorChains(parent, deep - 1, visitedParents))
