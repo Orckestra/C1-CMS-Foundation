@@ -35,7 +35,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
     internal sealed class MediaFileProviderElementProvider : IHooklessElementProvider, IDragAndDropElementProvider, ILabeledPropertiesElementProvider, IAuxiliarySecurityAncestorProvider
     {
         private ElementProviderContext _context;
-        private bool _showOnlyImages = false;
+        private readonly bool _showOnlyImages;
         private string _rootLabel;
         private ResourceHandle FolderIcon { get { return CommonElementIcons.Folder; } }
         private ResourceHandle OpenFolderIcon { get { return CommonElementIcons.FolderOpen; } }
@@ -82,11 +82,11 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
         {
             var mediaStores = DataFacade.GetData<IMediaFileStore>();
 
-            List<Element> elements = new List<Element>();
+            var elements = new List<Element>();
             foreach (IMediaFileStore store in mediaStores)
             {
 
-                Element element = new Element(_context.CreateElementHandle(new MediaRootFolderProviderEntityToken(store.Id)))
+                var element = new Element(_context.CreateElementHandle(new MediaRootFolderProviderEntityToken(store.Id)))
                 {
                     VisualData = new ElementVisualizedData()
                     {
@@ -248,10 +248,10 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
 
             foreach (EntityToken entityToken in entityTokens)
             {
-                DataEntityToken dataEntityToken = entityToken as DataEntityToken;
+                var dataEntityToken = entityToken as DataEntityToken;
 
                 Type type = dataEntityToken.InterfaceType;
-                if ((type != typeof(IMediaFile)) && (type != typeof(IMediaFileFolder))) continue;
+                if (type != typeof(IMediaFile) && type != typeof(IMediaFileFolder)) continue;
 
                 string storeId = null;
 
@@ -439,10 +439,12 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
                                f.FolderPath == path
                          select f.FileName).ToList();
 
-                    WorkflowMediaFile newWorkflowMediaFile = new WorkflowMediaFile(draggedFile);
-                    newWorkflowMediaFile.FolderPath = path;
+                    var newWorkflowMediaFile = new WorkflowMediaFile(draggedFile)
+                    {
+                        FolderPath = path
+                    };
 
-                    
+
                     string draggedFilenamePre = draggedFile.FileName;
                     string draggedFilenamePost = "";
 
@@ -724,6 +726,13 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
             if (file.MimeType.StartsWith("image/"))
             {
                 string previewImageUrl =  UrlUtils.ResolvePublicUrl(MediaUrls.BuildUrl(file, UrlKind.Internal) + "?mw={width}&mh={height}");
+
+                DateTime? modificationTime = file.LastWriteTime ?? file.CreationTime;
+                if (modificationTime != null)
+                {
+                    previewImageUrl += "&timestamp=" + modificationTime.GetHashCode();
+                }
+
                 element.PropertyBag.Add("ListViewImage", previewImageUrl);
                 element.PropertyBag.Add("DetailViewImage", previewImageUrl);
             }
