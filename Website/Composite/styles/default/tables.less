@@ -57,12 +57,12 @@
         }
     }
 
-        > thead > tr {
-            > th,
-            > td {
-                border-bottom-width: 2px;
-            }
+    > thead > tr {
+        > th,
+        > td {
+            border-bottom-width: 2px;
         }
+    }
 }
 
 .table-hover, table#logtable, table#versions {
@@ -109,16 +109,6 @@
         }
     }
 
-    .primary {
-        span.x {
-            border: 1px solid @base-border-color;
-
-            &:before {
-                color: @primary-color;
-            }
-        }
-    }
-
     td:empty:after {
         display: block;
         margin: 0 auto;
@@ -130,5 +120,18 @@
         border: 1px solid #ECECEC;
         border-radius: 3px;
     }
-}
 
+    .primary {
+        span.x {
+            border: 1px solid @base-border-color;
+
+            &:before {
+                color: @primary-color;
+            }
+        }
+
+        td:empty:after {
+            border: 1px solid  @base-border-color;
+        }
+    }
+}
