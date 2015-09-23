@@ -537,6 +537,7 @@ StageBinding.prototype.handleAction = function ( action ) {
 			browserViewDefinition.toolTip = action.target.definition.toolTip;
 
 			browserViewDefinition.argument["SystemViewDefinition"] = action.target.definition;
+			browserViewDefinition.argument["URL"] = null;
 			browserViewDefinition.argument.image = action.target.definition.image;
 			browserViewDefinition.argument.label = action.target.definition.label;
 			browserViewDefinition.argument.toolTip = action.target.definition.toolTip;

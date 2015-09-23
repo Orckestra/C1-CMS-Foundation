@@ -279,7 +279,7 @@ BrowserPageBinding.prototype.onAfterPageInitialize = function () {
 BrowserPageBinding.prototype.push = function (node, isManual, isForce) {
 
 	this._asyncLocker = null;
-
+	this.bindingWindow.bindingMap.cover.hide();
 	var self = this;
 	if (typeof (node) == "string" || node instanceof String) {
 		self.pushURL(node, isManual);
@@ -317,7 +317,7 @@ BrowserPageBinding.prototype.pushURL = function (url, isManual) {
     	this._isPushingUrl = isManual;
 	    if (this._customUrl) {
 	    	this._targetUrl = this.getAbsoluteUrl(url);
-		    this.setCustomUrl(this._customUrl);
+	    	this.setCustomUrl(this._customUrl);
 	    } else {
 		    this.setURL(url);
 	    }

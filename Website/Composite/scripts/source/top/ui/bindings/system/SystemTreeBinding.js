@@ -575,12 +575,14 @@ SystemTreeBinding.prototype.handleBroadcast = function (broadcast, arg) {
 			EventBroadcaster.broadcast(BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED, { activePosition: this._activePosition });
 			break;
 		case BroadcastMessages.SYSTEMTREEBINDING_FOCUS:
-			var self = this, token = arg;
-			setTimeout(function () { // timeout to minimize freezing sensation
-				if (token != null) {
-					self._focusTreeNodeByEntityToken(token);
-				}
-			}, 250); // zero not always enough...
+			if (StageBinding.perspectiveNode === this.perspectiveNode) {
+				var self = this, token = arg;
+				setTimeout(function() { // timeout to minimize freezing sensation
+					if (token != null) {
+						self._focusTreeNodeByEntityToken(token);
+					}
+				}, 250); // zero not always enough...
+			}
 			break;
 	}
 }
