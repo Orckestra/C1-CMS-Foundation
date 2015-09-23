@@ -193,12 +193,14 @@ namespace Composite.Data
 
 
         /// <summary>
-        /// Returns the data item's key field's value. If the key is compound, an exeption will be thrown.
+        /// Returns the data item's key field's value. If the key is compound, an exception will be thrown.
         /// </summary>
         /// <param name="data"></param>       
         /// <returns></returns>
         public static T GetUniqueKey<T>(this IData data)
         {
+            Verify.ArgumentNotNull(data, "data");
+
             return (T)data.GetUniqueKey();
         }
 

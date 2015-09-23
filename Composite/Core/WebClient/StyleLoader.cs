@@ -1,4 +1,4 @@
-﻿using System.Text;
+﻿using Composite.Core.IO;
 
 namespace Composite.Core.WebClient
 {
@@ -9,21 +9,23 @@ namespace Composite.Core.WebClient
         /// <exclude />
         public static string Render(string directive = null)
         {
-            var _builder = new StringBuilder();
             string root = UrlUtils.AdminRootPath;
 
             bool isInDevelopMode = CookieHandler.Get("mode") == "develop";
 
-            if (isInDevelopMode)
+            string styleFile = isInDevelopMode 
+                ? "/styles/styles.css" 
+                : "/styles/styles.min.css";
+
+            string cssLink = root + styleFile;
+
+            string filePath = PathUtil.Resolve("~/Composite" + styleFile);
+            if (C1File.Exists(filePath))
             {
-                _builder.AppendLine(stylesheet(root + "/styles/styles.css"));
-            }
-            else
-            {
-                _builder.AppendLine(stylesheet(root + "/styles/styles.min.css"));
+                cssLink += "?timestamp=" + C1File.GetLastWriteTimeUtc(filePath).GetHashCode();
             }
 
-            return _builder.ToString();
+            return stylesheet(cssLink);
         }
 
         private static string stylesheet(string url)
