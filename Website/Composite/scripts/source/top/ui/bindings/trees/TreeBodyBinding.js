@@ -84,27 +84,31 @@ TreeBodyBinding.prototype._scrollIntoView = function ( treenode ) {
 	
 	var label = treenode.labelBinding.bindingElement;
 	var a = this.bindingElement.clientHeight;
+	var b = this.bindingElement.clientWidth;
 	var y = treenode.boxObject.getGlobalPosition().y - this.boxObject.getGlobalPosition().y;
+	var x = DOMUtil.getGlobalPosition(label).x - this.boxObject.getGlobalPosition().x;
 	var h = label.offsetHeight;
+	var w = 100;
 	var t = this.bindingElement.scrollTop;
 	var l = this.bindingElement.scrollLeft;
+
 	
 	/*
-	 * Scroll into view.
+	 * Scroll top.
 	 */
 	if ( y - t < 0 ) {
-		label.scrollIntoView ( true );
+		this.bindingElement.scrollTop = y;
 	} else if ( y - t + h > a ) {
-		label.scrollIntoView ( false );
+		this.bindingElement.scrollTop = y + h - a;
+		//label.scrollIntoView ( false );
 	}
-	
 	/*
-	 * IE may present an extreme horizontal scroll. 
-	 * We hack it by locking scrollLeft completely. 
-	 * Tough luck for deeply nested tree structures.
+	 * Scroll left.
 	 */
-	if ( Client.isExplorer ) {
-		this.bindingElement.scrollLeft = l;
+	if (x - l < 0) {
+		this.bindingElement.scrollLeft = x;
+	}else if (x - l + w > b) {
+		this.bindingElement.scrollLeft = x + w - b;
 	}
 }
 
