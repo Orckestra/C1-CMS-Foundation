@@ -60,9 +60,9 @@
 				<ui:scrollbox>
 					<asp:PlaceHolder ID="BasicContentPanel" runat="server"></asp:PlaceHolder>
                     <asp:PlaceHolder ID="plhNoParameters" runat="server" Visible="false">
-                        <label>
+                        <div class="padded">
                             <%= StringResourceSystemFacade.GetString("Composite.Management", "Website.Dialogs.EditFunction.BasicView.NoParameters") %>
-                        </label>
+                        </div>
                     </asp:PlaceHolder>
 				</ui:scrollbox>
 				<div id="errors" style="display: none" class="updatezone">
