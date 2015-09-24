@@ -17,12 +17,24 @@ function BrowserTabBoxBinding () {
 	 * @type {TabBinding}
 	 */
 	this._browserTabBinding = null;
-	
 
 	/**
 	 * @type {TabBinding}
 	 */
 	this._genericViewTabBinding = null;
+
+	/**
+	 * @implements {IFocusable}
+	 * @type {boolean}
+	 */
+	this.isFocusable = true;
+
+	/**
+	 * @implements {IFocusable}
+	 * @type {boolean}
+	 */
+	this.isFocused = false;
+
 	/*
 	 * Returnable.
 	 */
@@ -183,3 +195,19 @@ BrowserTabBoxBinding.prototype.getFrameElement = function () {
 	var win = tab.browserwindow;
 	return win.getFrameElement();
 }
+
+/**
+* Focus.
+* @implements {IFocusable}
+*/
+BrowserTabBoxBinding.prototype.focus = function () {
+	this.dispatchAction(Binding.ACTION_FOCUSED);
+};
+
+/**
+* Blur.
+* @implements {IFocusable}
+*/
+BrowserTabBoxBinding.prototype.blur = function () {
+	this.dispatchAction(Binding.ACTION_BLURRED);
+};

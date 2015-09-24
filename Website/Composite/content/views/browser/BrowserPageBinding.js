@@ -699,7 +699,8 @@ BrowserPageBinding.prototype._handleCommand = function (cmd, binding) {
         	}, 250);
         	break;
             break;
-        case "setscreen":
+    	case "setscreen":
+    		this._box.focus();
             var w = binding.getProperty("w");
             var h = binding.getProperty("h");
             var touch = binding.getProperty("touch");
@@ -791,6 +792,7 @@ BrowserPageBinding.prototype._updateDocument = function () {
     if (!UserInterface.getBinding(doc.body))
 		DOMEvents.addEventListener(doc, DOMEvents.CONTEXTMENU, this);
     DOMEvents.addEventListener(win, DOMEvents.UNLOAD, this);
+    DOMEvents.addEventListener(win, DOMEvents.MOUSEDOWN, this);
 
     /*
 	 * Paralyze links leading to external websites.
@@ -875,10 +877,12 @@ BrowserPageBinding.prototype.handleEvent = function (e) {
                 }
             }
             break;
-
+    	case DOMEvents.MOUSEDOWN:
+		    this._box.focus();
         case DOMEvents.WHEEL:
 
-            if (element.id == BrowserPageBinding.DEVICE_TOUCHVIEW_FRAMEOVERLAY_ID) {
+        	if (element.id == BrowserPageBinding.DEVICE_TOUCHVIEW_FRAMEOVERLAY_ID) {
+        		this._box.focus();
                 var delta = e.deltaY || e.detail || e.wheelDelta;
                 delta = Math.abs(delta) < 50 ? 50 * Math.sign(delta) : delta;
                 var doc = this._box.getFrameElement().contentWindow.document;
@@ -887,8 +891,9 @@ BrowserPageBinding.prototype.handleEvent = function (e) {
     }
             break;
 
-        case DOMEvents.CLICK:
-            if (element.id == BrowserPageBinding.DEVICE_TOUCHVIEW_FRAMEOVERLAY_ID) {
+    	case DOMEvents.CLICK:
+    		if (element.id == BrowserPageBinding.DEVICE_TOUCHVIEW_FRAMEOVERLAY_ID) {
+    			this._box.focus();
                 element.style.display = "none";
                 var frame = this._box.getFrameElement();
                 var framePosition = frame.getBoundingClientRect();
