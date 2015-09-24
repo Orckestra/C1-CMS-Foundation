@@ -35,29 +35,21 @@ ui|explorermenu {
     }
 
     .logo {
-        padding: 10px 7px 21px 8px;
+        padding: 10px 12px 21px 12px;
 
         ui|labelbox {
             color: #FFF;
             position: relative;
             padding: 0;
 
-            &:before, &:after {
-                position: absolute;
-                top: 1px;
-                text-transform: none;
-                font-size: 21px;
-            }
-
-            &:before {
-                content: "Composite";
-                left: 45px;
-            }
-
             &:after {
-                content: "C1";
-                left: 149px;
-                font-weight: bold;
+                position: absolute;
+                top: 6px;
+                left: 42px;
+                content: " ";
+                width: 109px;
+                height: 12px;
+                background: url("@{images-root-path}/COMPOSITE_C1.png") no-repeat top left;
             }
         }
 
@@ -65,8 +57,8 @@ ui|explorermenu {
             color: @primary-color;
 
             svg {
-                height: 34px !important;
-                width: 34px !important;
+                height: 25px !important;
+                width: 25px !important;
             }
         }
     }

@@ -468,6 +468,7 @@
     </Compile>
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\Selectors\UrlComboBox.ascx" />
     <Content Include="Composite\grunt.html" />
+    <Content Include="Composite\images\COMPOSITE_C1.png" />
     <Content Include="Composite\images\icons\branding\favicon.ico" />
     <Content Include="Composite\images\icons\svg\abc-book.svg" />
     <Content Include="Composite\images\icons\svg\alphbeticindex.svg" />
