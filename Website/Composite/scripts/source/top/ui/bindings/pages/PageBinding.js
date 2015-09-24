@@ -432,7 +432,7 @@ PageBinding.prototype._setupDotNet = function () {
 		 * For non-AJAX pages (dialogs and wizards),  
 		 * this stunt will lock the UI on form submit.
 		 */
-		if ( !form.__isSetup && this.isNonAjaxPage) {
+		if ( !form.__isSetup && self.isNonAjaxPage) {
 			Application.lock ( self );
 			isLocked = true;
 		}
