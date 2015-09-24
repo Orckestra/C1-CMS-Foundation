@@ -71,7 +71,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
             var helper = new GeneratedTypesHelper(dataTypeDescriptor);
 
-            List<DataFieldDescriptor> fieldDescriptors = helper.EditableOwnDataFields.ToList();
+            List<DataFieldDescriptor> fieldDescriptors = helper.EditableInDesignerOwnDataFields.ToList();
 
             this.Bindings = new Dictionary<string, object>
             {

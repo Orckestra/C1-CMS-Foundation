@@ -128,7 +128,7 @@ namespace Composite.Data.GeneratedTypes
         }
 
         /// <exclude />
-        public IEnumerable<DataFieldDescriptor> EditableOwnDataFields
+        public IEnumerable<DataFieldDescriptor> EditableInDesignerOwnDataFields
         {
             get
             {
@@ -150,6 +150,7 @@ namespace Composite.Data.GeneratedTypes
 
                 return from field in _oldDataTypeDescriptor.Fields
                        where !IsDataFieldBindable(_oldDataTypeDescriptor, field)
+                             || _oldDataTypeDescriptor.KeyPropertyNames.FirstOrDefault() == field.Name
                        select field.Name;
             }
         }

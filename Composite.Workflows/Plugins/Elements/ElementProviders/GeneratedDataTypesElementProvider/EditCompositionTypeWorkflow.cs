@@ -17,7 +17,7 @@ using Texts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_Plugins_
 
 namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider
 {
-    [EntityTokenLock()]
+    [EntityTokenLock]
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
     public sealed partial class EditCompositionTypeWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
@@ -52,28 +52,29 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
         private void initializeStateCodeActivity_Initialize_ExecuteCode(object sender, EventArgs e)
         {
-            Type type = TypeManager.GetType(this.Payload);
-
             DataTypeDescriptor dataTypeDescriptor = GetDataTypeDescriptor();
-            GeneratedTypesHelper helper = new GeneratedTypesHelper(dataTypeDescriptor);
-            List<DataFieldDescriptor> fieldDescriptors = helper.EditableOwnDataFields.ToList();
+            var helper = new GeneratedTypesHelper(dataTypeDescriptor);
+            var fieldDescriptors = helper.EditableInDesignerOwnDataFields.ToList();
 
-            this.Bindings.Add("TypeName", dataTypeDescriptor.Name);
-            this.Bindings.Add("TypeNamespace", dataTypeDescriptor.Namespace);
-            this.Bindings.Add("TypeTitle", dataTypeDescriptor.Title);
-            this.Bindings.Add("LabelFieldName", dataTypeDescriptor.LabelFieldName);
+            this.Bindings = new Dictionary<string, object>
+            {
+                {"TypeName", dataTypeDescriptor.Name},
+                {"TypeNamespace", dataTypeDescriptor.Namespace},
+                {"TypeTitle", dataTypeDescriptor.Title},
+                {"LabelFieldName", dataTypeDescriptor.LabelFieldName},
+                {"HasCaching", helper.IsCachable},
+                {"HasPublishing", helper.IsPublishControlled},
+                {"DataFieldDescriptors", fieldDescriptors},
+                {"OldTypeName", dataTypeDescriptor.Name},
+                {"OldTypeNamespace", dataTypeDescriptor.Namespace}
+            };
 
-            this.Bindings.Add("HasCaching", helper.IsCachable);
-            this.Bindings.Add("HasPublishing", helper.IsPublishControlled);
-
-            this.Bindings.Add("DataFieldDescriptors", fieldDescriptors);
-
-            this.Bindings.Add("OldTypeName", dataTypeDescriptor.Name);
-            this.Bindings.Add("OldTypeNamespace", dataTypeDescriptor.Namespace);
-
-            this.BindingsValidationRules.Add(this.NewTypeNameBindingName, new List<ClientValidationRule> { new NotNullClientValidationRule() });
-            this.BindingsValidationRules.Add(this.NewTypeNamespaceBindingName, new List<ClientValidationRule> { new NotNullClientValidationRule() });
-            this.BindingsValidationRules.Add(this.NewTypeTitleBindingName, new List<ClientValidationRule> { new NotNullClientValidationRule() });           
+            this.BindingsValidationRules = new Dictionary<string, List<ClientValidationRule>>
+            {
+                {this.NewTypeNameBindingName, new List<ClientValidationRule> {new NotNullClientValidationRule()}},
+                {this.NewTypeNamespaceBindingName, new List<ClientValidationRule> {new NotNullClientValidationRule()}},
+                {this.NewTypeTitleBindingName, new List<ClientValidationRule> {new NotNullClientValidationRule()}}
+            };
         }
 
 
