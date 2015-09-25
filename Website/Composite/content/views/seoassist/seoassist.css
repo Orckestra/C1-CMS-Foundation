@@ -77,7 +77,7 @@
 
 }
 
-.resulttable thead th:first-of-type > div{
+.seoform {
 	width: 250px;
 
 }
@@ -102,6 +102,8 @@
 	height: 7px;
 	border: 1px solid #22D32A;
 	border-width: 0 0 1px 1px;
+    -ms-transform: rotate(-40deg); /* IE 9 */
+    -webkit-transform: rotate(-40deg); /* Chrome, Safari, Opera */
 	transform:rotate(-40deg);
 }
 
