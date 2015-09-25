@@ -83,15 +83,11 @@ var KickStart = new function () {
 				break;
 				
 			case BroadcastMessages.APPLICATION_OPERATIONAL:
-				var serializedMessage = window.location.hash.replace(/^#/, '');
-				if (serializedMessage) {
-					window.location.hash = "";
-					MessageQueue.placeConsoleCommand(serializedMessage);
-					MessageQueue.update();
-					EventBroadcaster.broadcast(BroadcastMessages.COMPOSITE_STOP);
-				}
+				showWorkbench();
 
-				showWorkbench ();
+				setTimeout(function() {
+					StageBinding.bindingInstance.handleHash(window);
+				}, 0);
 				break;
 				
 			case BroadcastMessages.APPLICATION_SHUTDOWN :

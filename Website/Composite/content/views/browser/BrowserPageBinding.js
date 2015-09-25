@@ -114,10 +114,8 @@ BrowserPageBinding.prototype.onBindingRegister = function () {
     this.addActionListener(TabBoxBinding.ACTION_SELECTED);
     this.addActionListener(TabBoxBinding.ACTION_UPDATED);
     this.addActionListener(BrowserTabBinding.ACTIONVENT_CLOSE);
-
-
-
-
+    this.addActionListener(ViewBinding.ACTION_LOADED);
+    this.addActionListener(PageBinding.ACTION_INITIALIZED);
 
 }
 
@@ -206,10 +204,11 @@ BrowserPageBinding.prototype.setPageArgument = function (map) {
 }
 
 /**
- * Delay onPageInitialize.
  * @overwrites {PageBinding#onBeforePageInitialize}
  */
 BrowserPageBinding.prototype.onBeforePageInitialize = function () {
+
+	BrowserPageBinding.superclass.onBeforePageInitialize.call(this);
 
     this._box = window.bindingMap.browsertabbox;
 
@@ -352,12 +351,6 @@ BrowserPageBinding.prototype.pushToken = function (node, isManual) {
     if (!isManual) {
 	    this.getSystemTree()._focusTreeNodeByEntityToken(node.getEntityToken());
     }
-	/*
-	 * Initialize on first load.
-	 */
-    if (!this._isPageBindingInitialized) {
-    	this.onPageInitialize();
-    }
 }
 
 
@@ -415,8 +408,18 @@ BrowserPageBinding.prototype.handleAction = function (action) {
             break;
     	case GenericViewBinding.ACTION_OPEN:
     		this.getSystemTree().handleBroadcast(BroadcastMessages.SYSTEMTREEBINDING_FOCUS, action.target.node.getEntityToken());
-            break;
-
+    		break;
+    	case ViewBinding.ACTION_LOADED:
+    		this.dispatchAction(StageBinding.ACTION_DECK_LOADED);
+    		action.consume();
+    		break;
+    	case PageBinding.ACTION_INITIALIZED:
+    		if (binding instanceof SystemPageBinding) {
+    			EventBroadcaster.broadcast(BroadcastMessages.STAGEDECK_CHANGED, this.getSyncHandle());
+    			this.removeActionListener(PageBinding.ACTION_INITIALIZED);
+    			action.consume();
+    		}
+			break;
 
     }
 }
@@ -534,12 +537,6 @@ BrowserPageBinding.prototype._handleDocumentLoad = function (binding) {
         Prism.enableCache();
     }
 
-    /*
-	 * Initialize on first load.
-	 */
-    if (!this._isPageBindingInitialized) {
-        this.onPageInitialize();
-    }
 
     /*
 	 * Broadcast contained markup for various panels to intercept. Since the markup   

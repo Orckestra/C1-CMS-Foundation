@@ -2,7 +2,7 @@ ExplorerBinding.prototype = new FlexBoxBinding;
 ExplorerBinding.prototype.constructor = ExplorerBinding;
 ExplorerBinding.superclass = FlexBoxBinding.prototype;
 ExplorerBinding.ACTION_INITIALIZED = "explorer initialized";
-ExplorerBinding.ACTION_DECK_LOADED = "explorer deck loaded";
+
 
 /*
  * Perspective tags.
@@ -29,16 +29,11 @@ ExplorerBinding.bindingInstance = null;
  */
 ExplorerBinding.getFocusedTreeNodeBindings = function () {
 
-	var selectedDeck = app.bindingMap.stagedecks.getSelectedDeckBinding();
-	var selectedView = selectedDeck._viewBinding;
-
-//	var selectedDeck = ExplorerBinding.bindingInstance.getSelectedDeckBinding();
-	//	var selectedView = selectedDeck.getAssociatedView();
-	var browserContentWindow = selectedView.getContentWindow();
-	if (!browserContentWindow) {
+	var selectedDeck = ExplorerBinding.bindingInstance.getSelectedDeckBinding();
+	var selectedTree = selectedDeck.getSystemTree();
+	if (!selectedTree) {
 		return new List();
 	}
-	var selectedTree = browserContentWindow.bindingMap.browserpage.getSystemTree();
 	var focusedTreeNodeBinding = selectedTree.getFocusedTreeNodeBindings();
 
 	//TODO: Refactor this
@@ -72,8 +67,7 @@ ExplorerBinding.restoreFocuseNodes = function () {
 	var entityTokens = LocalStore.focuseNodes.getEntityTokens();
 	
 	var selectedDeck = ExplorerBinding.bindingInstance.getSelectedDeckBinding();
-	var selectedView = selectedDeck.getAssociatedView();
-	var selectedTree = selectedView.getContentWindow().bindingMap.tree;
+	var selectedTree = selectedDeck.getSystemTree();
 	
 	entityTokens =  new List ( TreeService.GetCurrentLocaleEntityTokens(entityTokens.toArray()) );
 	
@@ -93,36 +87,11 @@ function ExplorerBinding () {
 	 * @type {SystemLogger}
 	 */
 	this.logger = SystemLogger.getLogger ( "ExplorerBinding" );
-
-	/**
-	 * @type {ExplorerDecksBinding}
-	 */
-	this._decksBinding = null;
 	
 	/**
 	 * @type {ExplorerMenuBinding}
 	 */
 	this._menuBinding = null;
-	
-	/**
-	 * @type {ExplorerSplitterBinding}
-	 */
-	this._splitterBinding = null;
-	
-	/**
-	 * @type {int}
-	 */
-	this._dragStart = 0;
-	
-	/**
-	 * @type {int}
-	 */
-	this._dragSlot = 0;
-	
-	/**
-	 * @type {int}
-	 */
-	this._dragHeight = 0;
 
 	/*
 	 * Returnable.
@@ -145,21 +114,9 @@ ExplorerBinding.prototype.onBindingAttach = function () {
 	
 	ExplorerBinding.superclass.onBindingAttach.call ( this );
 	
-	this.addActionListener ( ExplorerMenuBinding.ACTION_SELECTIONCHANGED );
-	this.addActionListener ( ViewBinding.ACTION_LOADED );
-	this.addActionListener ( Binding.ACTION_DRAG );
-
-	this._decksBinding = this.addMember ( 
-		this.getDescendantBindingByLocalName ( "explorerdecks" )
+	this._menuBinding = this.addMember ( 
+		this.getDescendantBindingByLocalName ( "explorermenu" )
 	);
-	//this._splitterBinding = this.addMember ( 
-	//	this.getDescendantBindingByLocalName ( "explorersplitter" )
-	//);
-	//this._menuBinding = this.addMember ( 
-	//	this.getDescendantBindingByLocalName ( "explorermenu" )
-	//);
-
-	this._menuBinding = this.addMember(app.bindingMap.explorermenu);
 }
 
 /**
@@ -173,46 +130,22 @@ ExplorerBinding.prototype.onBindingInitialize = function () {
 }
 
 /**
- * @implements {IActionListener}
- * @overloads {FlexBoxBinding#handleAction}
- * @param {Action} action
- */
-ExplorerBinding.prototype.handleAction = function ( action ) {
-	
-	ExplorerBinding.superclass.handleAction.call ( this, action );
-	
-	var binding = action.target;
-	
-	switch ( action.type ) {
-	
-		case ExplorerMenuBinding.ACTION_SELECTIONCHANGED :
-			this._decksBinding.setSelectionByHandle ( 
-				this._menuBinding.getSelectionHandle ()
-			);
-			var tag = this._menuBinding.getSelectionTag ();
-			EventBroadcaster.broadcast ( BroadcastMessages.PERSPECTIVE_CHANGED, tag );
-			break;
-			
-		case ViewBinding.ACTION_LOADED :
-			this.dispatchAction ( ExplorerBinding.ACTION_DECK_LOADED );
-			action.consume ();
-			break;
-			
-		case Binding.ACTION_DRAG :
-			if ( binding instanceof ExplorerSplitterBinding ) {
-				binding.dragger.registerHandler ( this );
-			}
-			action.consume ();
-	}
-}
-
-/**
  * Set selection by handle.
+ * public API
  * @param {string} handle
  */
 ExplorerBinding.prototype.setSelectionByHandle = function ( handle ) {
 
 	this._menuBinding.setSelectionByHandle ( handle );
+}
+
+/**
+ * Get selection handle.
+ * public API
+ */
+ExplorerBinding.prototype.getSelectionHandle = function () {
+
+	return this._menuBinding.getSelectionHandle();
 }
 
 /**
@@ -224,7 +157,8 @@ ExplorerBinding.prototype.setSelectionDefault = function () {
 }
 
 /**
- * get perspectives
+ * Get Perspectives
+ * public API
  */
 ExplorerBinding.prototype.getPerspectives = function () {
 
@@ -237,7 +171,7 @@ ExplorerBinding.prototype.getPerspectives = function () {
  */
 ExplorerBinding.prototype.getSelectedDeckBinding = function () {
 	
-	return this._decksBinding.getSelectedDeckBinding ();
+	return app.bindingMap.stagedecks.getSelectedDeckBinding();
 }
 
 /**
@@ -247,71 +181,6 @@ ExplorerBinding.prototype.getSelectedDeckBinding = function () {
 ExplorerBinding.prototype.mountDefinition = function ( definition ) {
 	
 	if ( definition instanceof SystemViewDefinition ) {
-		this._decksBinding.mountDefinition ( definition );
 		this._menuBinding.mountDefinition ( definition );
 	}
-}
-
-
-/**
- * Start splitter drag.
- * @implements {IDragHandler}
- * @param {Point} point
- */
-ExplorerBinding.prototype.onDragStart = function ( point ) {
-	
-	var buttons = this._menuBinding.getDescendantBindingsByLocalName ( "explorertoolbarbutton" );
-	
-	if ( buttons.hasEntries ()) {
-		
-		var button = buttons.getFirst ();
-		this._dragStart = button.boxObject.getLocalPosition ().y;
-		this._dragSlot = 0;
-		
-		if ( this._dragHeight == 0 ) {
-			this._dragHeight = button.boxObject.getDimension ().h;
-		}
-		
-		this.bindingWindow.bindingMap.explorercover.show ();
-	}
-}
-
-/**
- * On splitter drag.
- * @implements {IDragHandler}
- * @param {Point} diff
- */
-ExplorerBinding.prototype.onDrag = function ( diff ) {
-	
-	var y = this._dragStart + diff.y;
-	
-	/*
-	 * Show less?
-	 */
-	if ( y > this._dragStart + this._dragSlot + this._dragHeight ) {
-		if ( this._menuBinding.showLess ()) {
-			this._decksBinding.expandBy ( this._dragHeight);
-			this._dragSlot += this._dragHeight;
-		}
-	}
-	
-	/*
-	 * Show more?
-	 */
-	if ( y < this._dragStart + this._dragSlot ) {
-		if ( this._menuBinding.showMore ()) {
-			this._decksBinding.expandBy ( - this._dragHeight);
-			this._dragSlot -= this._dragHeight;
-		}
-	}
-}
-
-/**
- * Stop splitter drag.
- * @implements {IDragHandler}
- * @param {Point} diff
- */
-ExplorerBinding.prototype.onDragStop = function ( diff ) {
-
-	this.bindingWindow.bindingMap.explorercover.hide ();
 }

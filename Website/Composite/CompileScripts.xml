@@ -288,9 +288,6 @@
 			<Script filename="${root}/scripts/source/top/ui/bindings/stage/menus/StageViewMenuItemBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/stage/statusbar/StageStatusBarBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/explorer/ExplorerBinding.js"/>
-			<Script filename="${root}/scripts/source/top/ui/bindings/explorer/ExplorerDecksBinding.js"/>
-			<Script filename="${root}/scripts/source/top/ui/bindings/explorer/ExplorerDeckBinding.js"/>
-			<Script filename="${root}/scripts/source/top/ui/bindings/explorer/ExplorerSplitterBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/explorer/ExplorerMenuBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/explorer/ExplorerToolBarBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/explorer/ExplorerToolBarButtonBinding.js"/>

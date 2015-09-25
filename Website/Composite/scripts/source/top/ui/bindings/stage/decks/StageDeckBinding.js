@@ -99,6 +99,8 @@ StageDeckBinding.prototype.onBindingRegister = function () {
 	
 	this.addActionListener ( WindowBinding.ACTION_LOADED );
 	this.addActionListener ( TabBoxBinding.ACTION_ATTACHED );
+
+	this.subscribe(BroadcastMessages.SYSTEMTREEBINDING_REFRESHALL);
 }
 
 /**
@@ -194,10 +196,15 @@ StageDeckBinding.prototype.iterateContainedStageBoxBindings = function ( mode ) 
  */
 StageDeckBinding.prototype.select = function () {
 
-	if ( !this._isStageDeckBindingInitialized ) {
-		this.initialize ();
+	if (!this._isStageDeckBindingInitialized) {
+		this.initialize();
+	} else {
+		EventBroadcaster.broadcast(BroadcastMessages.STAGEDECK_CHANGED, this.handle);
 	}
-	StageDeckBinding.superclass.select.call ( this );
+	StageDeckBinding.superclass.select.call(this);
+
+
+	
 }
 
 /**
@@ -227,6 +234,66 @@ StageDeckBinding.prototype.initialize = function () {
 		this._isStageDeckBindingInitialized = true;
 	}
 }
+
+StageDeckBinding.prototype.getBrowserPage = function () {
+
+	return this._viewBinding.getContentWindow().bindingMap.browserpage;
+}
+
+StageDeckBinding.prototype.getSystemTree = function () {
+
+	var result = null;
+	var page = this.getBrowserPage();
+	if (page) {
+		result = page.getSystemTree();
+	}
+	return result;
+}
+
+//TODO: check this
+///**
+// * @implements {IBroadcastListener}
+// * @param {string} broadcast
+// * @param {object} arg
+// */
+//StageDeckBinding.prototype.handleBroadcast = function (broadcast, arg) {
+
+//	StageDeckBinding.superclass.handleBroadcast.call(this, broadcast, arg);
+
+//	switch (broadcast) {
+
+//		case BroadcastMessages.SYSTEMTREEBINDING_REFRESHALL:
+//			if (this.isSelected == true) {
+//				this._refreshTree();
+//			} else if (this._entityToken != null) {
+//				this._isRefreshRequired = true;
+//			}
+//			break;
+
+//		case BroadcastMessages.SYSTEMTREEBINDING_REFRESHED:
+//			this.unsubscribe(BroadcastMessages.SYSTEMTREEBINDING_REFRESHED);
+//			this.select();
+//			break;
+//	}
+//}
+
+///**
+// * Refresh the contained tree.
+// */
+//StageDeckBinding.prototype._refreshTree = function () {
+
+//	/*
+//	 * The broadcast will be intercepted by SystemPageBinding. 
+//	 */
+//	if (this._entityToken != null) {
+//		this.subscribe(BroadcastMessages.SYSTEMTREEBINDING_REFRESHED);
+//		EventBroadcaster.broadcast(
+//			BroadcastMessages.SYSTEMTREEBINDING_REFRESH,
+//			this._entityToken
+//		);
+//	}
+//}
+
 
 /**
  * StageDeckBinding factory.

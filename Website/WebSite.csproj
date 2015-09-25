@@ -1610,10 +1610,7 @@
     <Content Include="Composite\scripts\source\top\ui\bindings\editors\visualeditor\VisualEditorPopupBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\errors\ErrorBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\explorer\ExplorerBinding.js" />
-    <Content Include="Composite\scripts\source\top\ui\bindings\explorer\ExplorerDeckBinding.js" />
-    <Content Include="Composite\scripts\source\top\ui\bindings\explorer\ExplorerDecksBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\explorer\ExplorerMenuBinding.js" />
-    <Content Include="Composite\scripts\source\top\ui\bindings\explorer\ExplorerSplitterBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\explorer\ExplorerToolBarBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\explorer\ExplorerToolBarButtonBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\fields\FieldBinding.js" />
@@ -2080,7 +2077,6 @@
     <Content Include="Composite\content\views\editors\permissioneditor\PermissionEditorGridBinding.js" />
     <Content Include="Composite\content\views\editors\permissioneditor\PermissionEditorHeadBinding.js" />
     <Content Include="Composite\content\views\editors\permissioneditor\PermissionEditorPageBinding.js" />
-    <Content Include="Composite\content\views\explorer\explorer.aspx" />
     <Content Include="Composite\content\views\functiondoc\FunctionDocumentation-print.css" />
     <Content Include="Composite\content\views\functiondoc\FunctionDocumentation.aspx" />
     <Content Include="Composite\content\views\functiondoc\FunctionDocumentation.css" />

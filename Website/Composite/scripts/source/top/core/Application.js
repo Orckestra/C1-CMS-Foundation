@@ -500,10 +500,10 @@ _Application.prototype = {
 					bestBinding = nextBinding;
 				}
 			}
-			if ( !bestBinding ) {
-				bestBinding = app.bindingMap.explorerdock;
+			if ( bestBinding ) {
+				bestBinding.activate();
 			}
-			bestBinding.activate ();
+			
 		}
 	},
 	

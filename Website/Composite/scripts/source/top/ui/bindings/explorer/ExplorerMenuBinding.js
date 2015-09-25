@@ -148,10 +148,8 @@ ExplorerMenuBinding.prototype.handleAction = function (action) {
 			
 			this._selectedHandle = handle;
 			this._selectedTag = buttonBinding.node.getTag();
-			//this.dispatchAction ( ExplorerMenuBinding.ACTION_SELECTIONCHANGED );
-			app.bindingMap.explorerdocktab.getAssociatedView().getContentWindow().bindingMap.explorerdeckscover.dispatchAction(ExplorerMenuBinding.ACTION_SELECTIONCHANGED);
+			this.dispatchAction ( ExplorerMenuBinding.ACTION_SELECTIONCHANGED );
 
-			
 			action.consume();
 			break;
 	}

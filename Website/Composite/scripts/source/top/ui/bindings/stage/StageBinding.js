@@ -2,6 +2,8 @@ StageBinding.prototype = new FocusBinding;
 StageBinding.prototype.constructor = StageBinding;
 StageBinding.superclass = FocusBinding.prototype;
 
+StageBinding.ACTION_DECK_LOADED = "stage deck loaded";
+
 /**
  * Static reference to the single StageBinding instance. Assigned on startup.
  * @type {StageBinding}
@@ -63,9 +65,16 @@ StageBinding.isViewOpen = function ( handle ) {
 /**
  * @param {string} handle
  */
-StageBinding.selectPerspective = function (handle) {
-
+StageBinding.setSelectionByHandle = function (handle) {
+	//TODO refactor this
 	StageBinding.bindingInstance._explorerBinding.setSelectionByHandle(handle);
+}
+
+/**
+ */
+StageBinding.getSelectionHandle = function () {
+	//TODO refactor this
+	return StageBinding.bindingInstance._explorerBinding.getSelectionHandle();
 }
 
 /**
@@ -197,13 +206,12 @@ StageBinding.prototype.onBindingRegister = function () {
 	/*
 	 * Attach action listeners.
 	 */
-	this.addActionListener ( ExplorerBinding.ACTION_INITIALIZED );
+
 	this.addActionListener ( StageDecksBinding.ACTION_INITIALIZED );
-	this.addActionListener ( ExplorerMenuBinding.ACTION_SELECTIONCHANGED );
 	this.addActionListener ( TabBoxBinding.ACTION_ATTACHED );
 	this.addActionListener ( TabBoxBinding.ACTION_SELECTED );
 	this.addActionListener ( WindowBinding.ACTION_LOADED );
-	this.addActionListener ( ExplorerBinding.ACTION_DECK_LOADED );
+	this.addActionListener ( StageBinding.ACTION_DECK_LOADED );
 	this.addActionListener ( StageDeckBinding.ACTION_LOADED );
 	this.addActionListener ( ErrorBinding.ACTION_INITIALIZE );
 
@@ -219,6 +227,9 @@ StageBinding.prototype.onBindingRegister = function () {
 	this.subscribe ( BroadcastMessages.DOCK_MAXIMIZED );
 	this.subscribe ( BroadcastMessages.DOCK_NORMALIZED );
 	
+	app.bindingMap.explorer.addActionListener(ExplorerBinding.ACTION_INITIALIZED, this);
+	app.bindingMap.explorer.addActionListener(ExplorerMenuBinding.ACTION_SELECTIONCHANGED, this);
+
 	/*
 	 * Initialize root actions.
 	 */
@@ -226,7 +237,7 @@ StageBinding.prototype.onBindingRegister = function () {
 	this._initializeRootActions ( root );
 	
 	/*
-	 * Hookup root refresh. The broadcast is intercepted by ExplorerDeckBinding. 
+	 * Hookup root refresh. The broadcast is intercepted by StageDeckBinding. 
 	 * The associated tree is refreshed when deck gets selected.
 	 */
 	EventBroadcaster.subscribe ( BroadcastMessages.SYSTEMTREEBINDING_REFRESH, {
@@ -451,6 +462,9 @@ StageBinding.prototype.handleAction = function ( action ) {
 				ProgressBarBinding.notch ( 5 );
 			}
 			this.handlePerspectiveChange(app.bindingMap.explorermenu);
+			var tag = app.bindingMap.explorermenu.getSelectionTag();
+			EventBroadcaster.broadcast(BroadcastMessages.PERSPECTIVE_CHANGED, tag);
+
 			action.consume ();
 			break;
 			
@@ -485,7 +499,7 @@ StageBinding.prototype.handleAction = function ( action ) {
 			// this.logger.warn ( "window load intercepted by stage: " + binding.getURL ());
 			break;
 			
-		case ExplorerBinding.ACTION_DECK_LOADED :
+		case StageBinding.ACTION_DECK_LOADED :
 			this._isExplorerReady = true;
 			if ( this._isDecksReady == true ) {
 				if ( !this._isStageReady ) {
@@ -612,17 +626,22 @@ StageBinding.prototype.handleEvent = function (e) {
 
 	switch (e.type) {
 		case DOMEvents.HASHCHANGE:
-			if (e.target && e.target.location && e.target.location.hash) {
-				var serializedMessage = window.location.hash.replace(/^#/, '');
-				if (serializedMessage) {
-					e.target.location.hash = "";
-					MessageQueue.placeConsoleCommand(serializedMessage);
-					MessageQueue.update();
-					EventBroadcaster.broadcast(BroadcastMessages.COMPOSITE_STOP);
-				}
-			}
+			this.handleHash(e.target);
 			e.preventDefault();
 			break;
+	}
+}
+
+StageBinding.prototype.handleHash = function (target) {
+
+	if (target && target.location && target.location.hash) {
+		var serializedMessage = target.location.hash.replace(/^#/, '');
+		if (serializedMessage) {
+			target.location.hash = "";
+			MessageQueue.placeConsoleCommand(serializedMessage);
+			MessageQueue.update();
+			EventBroadcaster.broadcast(BroadcastMessages.COMPOSITE_STOP);
+		}
 	}
 }
 

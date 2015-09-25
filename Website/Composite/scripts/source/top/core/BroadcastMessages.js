@@ -172,7 +172,7 @@ _BroadcastMessages.prototype = {
 	BIND_TOKEN_TO_VIEW					: "bind entitytoken to view",
 	STAGEDIALOG_OPENED					: "stage dialog opened",
 	INVOKE_DEFAULT_ACTION				: "invoke default action",
-	EXPLORERDECK_CHANGED				: "explorer deck changed",
+	STAGEDECK_CHANGED					: "stage deck changed",
 	/*
 	 * Server messages for EventBroadcaster.
 	 */

@@ -186,20 +186,21 @@
 			</ui:menupopup>
 		</ui:menu>
 	</ui:menubar>
-
-	<ui:explorermenu id="explorermenu">
-		<ui:explorertoolbar>
-			<ui:toolbarbody align="left">
-				<ui:toolbargroup>
-					<ui:toolbarbutton id="compositebutton" class="logo" image="${icon:company-composite}"  oncommand="/* nothing */" />
-					<ui:toolbarbutton id="menutogglebutton" class="menu-toggle" image="${icon:menu}"  oncommand="top.app.bindingMap.explorermenu.toggle()" />
-				</ui:toolbargroup>
-			</ui:toolbarbody>
-			<ui:toolbarbody class="max">
-				<ui:toolbargroup class="max textonly" />
-			</ui:toolbarbody>
-		</ui:explorertoolbar>
-	</ui:explorermenu>
+	<ui:explorer id="explorer">
+		<ui:explorermenu id="explorermenu">
+			<ui:explorertoolbar>
+				<ui:toolbarbody align="left">
+					<ui:toolbargroup>
+						<ui:toolbarbutton id="compositebutton" class="logo" image="${icon:company-composite}"  oncommand="/* nothing */" />
+						<ui:toolbarbutton id="menutogglebutton" class="menu-toggle" image="${icon:menu}"  oncommand="top.app.bindingMap.explorermenu.toggle()" />
+					</ui:toolbargroup>
+				</ui:toolbarbody>
+				<ui:toolbarbody class="max">
+					<ui:toolbargroup class="max textonly" />
+				</ui:toolbarbody>
+			</ui:explorertoolbar>
+		</ui:explorermenu>
+	</ui:explorer>
 	<ui:cover id="explorermenucover" transparent="true" busy="false" class="explorermenucover" onclick="top.app.bindingMap.explorermenu.collapse()"/>
 
 	<ui:cover id="stagesplittercover" hidden="true" transparent="true" busy="false" />
@@ -214,8 +215,6 @@
 					<ui:splitpanel>
 						<ui:splitbox id="appverticalsplitbox" orient="vertical" layout="3:1" persist="layout">
 							<ui:splitpanel>
-								<ui:splitbox id="apphorizontalsplitbox" orient="horizontal" layout="7:0" persist="layout">
-									<ui:splitpanel id="stagedeckssplitpanel">
 										<ui:decks id="maindecks">
 											<ui:deck id="startdeck">
 												<ui:decks>
@@ -239,20 +238,6 @@
 												<ui:stagedecks id="stagedecks" />
 											</ui:deck>
 										</ui:decks>
-									</ui:splitpanel>
-									<ui:splitter style="display: none;"/>
-									<ui:splitpanel type="explorer">
-										<ui:dock id="explorerdock" reference="explorer" type="explorer" active="true">
-											<ui:docktabs>
-												<ui:docktab  id="explorerdocktab" handle="Composite.Management.Explorer" />
-											</ui:docktabs>
-											<ui:dockpanels>
-												<ui:dockpanel />
-											</ui:dockpanels>
-										</ui:dock>
-									</ui:splitpanel>
-									
-								</ui:splitbox>
 							</ui:splitpanel>
 							<ui:splitter />
 							<ui:splitpanel>

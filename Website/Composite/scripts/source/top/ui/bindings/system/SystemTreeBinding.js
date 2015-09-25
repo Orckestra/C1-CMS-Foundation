@@ -198,7 +198,7 @@ SystemTreeBinding.prototype.onBindingRegister = function () {
 SystemTreeBinding.prototype.add = function (binding) {
 
 	var returnable = SystemTreeBinding.superclass.add.call(this, binding);
-	if (!this._defaultTreeNode) {
+	if (this._defaultTreeNode === null) {
 		if (binding instanceof SystemTreeNodeBinding) {
 			this._defaultTreeNode = binding;
 		}
@@ -561,6 +561,7 @@ SystemTreeBinding.prototype.handleBroadcast = function (broadcast, arg) {
 		case BroadcastMessages.DOCKTABBINDING_SELECT:
 			if (this.isLockedToEditor) {
 				var tab = arg;
+				//TODO: check this
 				if (tab.getHandle() != "Composite.Management.Explorer") { // the tree dock!
 					this._handleDockTabSelect(tab);
 				}
@@ -1009,20 +1010,21 @@ SystemTreeBinding.prototype._performPaste = function (treenode) {
  * Focus the first treenode. This should only be called once.
  */
 SystemTreeBinding.prototype.selectDefault = function () {
-	var defaultEntityToken = System.getDefaultEntityToken(this.perspectiveNode.getEntityToken());
-	if (defaultEntityToken != null) {
-		this._focusTreeNodeByEntityToken(defaultEntityToken);
-	}
-	else if (this._defaultTreeNode) {
-		this._defaultTreeNode.focus();
-		if (this._defaultTreeNode.isContainer && !this._defaultTreeNode.isOpen) {
-			this._defaultTreeNode.open();
-		}
-		this._defaultTreeNode = null;
-	} else {
-		var node = this.getDescendantBindingByType(TreeNodeBinding);
-		if (node) {
-			node.focus();
+	if (this._defaultTreeNode !== false) {
+		var defaultEntityToken = System.getDefaultEntityToken(this.perspectiveNode.getEntityToken());
+		if (defaultEntityToken != null) {
+			this._focusTreeNodeByEntityToken(defaultEntityToken);
+		} else if (this._defaultTreeNode) {
+			this._defaultTreeNode.focus();
+			if (this._defaultTreeNode.isContainer && !this._defaultTreeNode.isOpen) {
+				this._defaultTreeNode.open();
+			}
+			this._defaultTreeNode = null;
+		} else {
+			var node = this.getDescendantBindingByType(TreeNodeBinding);
+			if (node) {
+				node.focus();
+			}
 		}
 	}
 }

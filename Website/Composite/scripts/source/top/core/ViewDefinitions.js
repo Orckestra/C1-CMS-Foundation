@@ -133,16 +133,6 @@ var ViewDefinitions = {
 	}),
 	
 	/*
-	 * Explorer.
-	 */
-	"Composite.Management.Explorer" : new HostedViewDefinition ({
-		handle 		: "Composite.Management.Explorer",
-		position 	: DockBinding.EXPLORER,
-		url 		: "${root}/content/views/explorer/explorer.aspx",
-		label 		: "Explorer"
-	}),
-	
-	/*
 	 * Options dialog.
 	 */
 	"Composite.Management.Options" : new DialogViewDefinition ({
