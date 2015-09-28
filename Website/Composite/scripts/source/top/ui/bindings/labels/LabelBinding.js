@@ -96,18 +96,21 @@ LabelBinding.setImageSvg = function (binding, image) {
 							binding.shadowTree.svg = binding.bindingDocument.createElementNS(xmlns, "svg");
 							binding.shadowTree.labelBody.insertBefore(binding.shadowTree.svg, binding.shadowTree.labelBody.firstChild);
 						}
+						var svg = binding.shadowTree.svg;
 						binding.shadowTree.svg.setAttribute("viewBox", "0 0 24 24");
 						var viewBox = g.getAttribute('viewBox'),
 							fragment = document.createDocumentFragment(),
 							clone = g.cloneNode(true);
 
 						if (viewBox) {
-							binding.shadowTree.svg.setAttribute('viewBox', viewBox);
+						    svg.setAttribute('viewBox', viewBox);
 						}
 
 						fragment.appendChild(clone);
-						binding.shadowTree.svg.innerHTML = "";
-						binding.shadowTree.svg.appendChild(fragment);
+						while (svg.lastChild) {
+						    svg.removeChild(svg.lastChild);
+						}
+						svg.appendChild(fragment);
 					}
 				} else {
 					LabelBinding.spritesQueue.set(binding.getID(), image);
@@ -116,9 +119,10 @@ LabelBinding.setImageSvg = function (binding, image) {
 			}
 		}
 	} else {
-		if (binding.shadowTree.svg) {
-			if (binding.shadowTree.svg.parentNode) {
-				binding.shadowTree.svg.parentNode.removeChild(binding.shadowTree.svg);
+        var svg = binding.shadowTree.svg;
+        if (svg) {
+            if (svg.parentNode) {
+				svg.parentNode.removeChild(svg);
 			}
 			binding.shadowTree.svg = null;
 		}
