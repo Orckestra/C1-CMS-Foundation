@@ -243,6 +243,7 @@ SplitterBinding.prototype.handleEvent = function ( e ) {
  */
 SplitterBinding.prototype.onDragStart = function ( point ) {
 	
+    this.dispatchAction ( SplitterBinding.ACTION_DRAGSTART );
 	this.attachClassName ( SplitterBinding.CLASSNAME_ACTIVE );
 	this.shadowTree.splitterBody.className = SplitterBinding.CLASSNAME_ACTIVE;
 	this.isDragging = true;

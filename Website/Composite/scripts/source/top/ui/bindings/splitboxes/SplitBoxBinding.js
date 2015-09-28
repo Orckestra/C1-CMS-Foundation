@@ -147,7 +147,6 @@ SplitBoxBinding.prototype.handleAction = function ( action ) {
 	switch ( action.type ) {
 		case SplitterBinding.ACTION_DRAGGED :
 			this.refreshLayout ();
-			action.consume ();
 			break;
 		case SplitterBinding.ACTION_COLLAPSE :
 			this.collapse ( action.target );

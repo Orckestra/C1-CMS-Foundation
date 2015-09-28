@@ -117,6 +117,11 @@ BrowserPageBinding.prototype.onBindingRegister = function () {
     this.addActionListener(ViewBinding.ACTION_LOADED);
     this.addActionListener(PageBinding.ACTION_INITIALIZED);
 
+    
+    this.addActionListener(SplitterBinding.ACTION_DRAGSTART);
+    this.addActionListener(SplitterBinding.ACTION_DRAGGED);
+    
+
 }
 
 /**
@@ -420,7 +425,12 @@ BrowserPageBinding.prototype.handleAction = function (action) {
     			action.consume();
     		}
 			break;
-
+        case SplitterBinding.ACTION_DRAGSTART:
+            window.bindingMap.cover.show();
+            break;
+        case SplitterBinding.ACTION_DRAGGED:
+            window.bindingMap.cover.hide();
+            break;
     }
 }
 
