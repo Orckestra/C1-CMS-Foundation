@@ -52,7 +52,7 @@
         <div class="splash-bg"></div>
         <div class="splash">
             <div class="splash-inner">
-                <div class="logo"></div>
+                <div class="logo"><img alt="logo" src="images/C1_logo.svg" /></div>
                 <div id="welcome">
                     <p>Welcome to your Composite C1 website. You can start the C1 Console or go back to your website <a href=".." title="Go to the main page">frontpage</a>.</p>
                 </div>

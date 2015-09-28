@@ -27,6 +27,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -468,6 +469,8 @@
     </Compile>
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\Selectors\UrlComboBox.ascx" />
     <Content Include="Composite\grunt.html" />
+    <Content Include="Composite\images\C1_logo.svg" />
+    <Content Include="Composite\images\C1_logo_text_small.svg" />
     <Content Include="Composite\images\icons\branding\favicon.ico" />
     <Content Include="Composite\images\icons\svg\abc-book.svg" />
     <Content Include="Composite\images\icons\svg\alphbeticindex.svg" />
@@ -2253,7 +2256,6 @@
     <Content Include="Composite\images\actionended.png" />
     <Content Include="Composite\images\blank.png" />
     <Content Include="Composite\images\fieldbox.png" />
-    <Content Include="Composite\images\logo.png" />
     <Content Include="Composite\images\progressbar.png" />
     <Content Include="Composite\images\unfortunateerror.png" />
     <Content Include="Composite\localization\Composite.Plugins.UserGroupElementProvider.en-us.xml" />

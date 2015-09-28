@@ -15,7 +15,7 @@
         <div class="splash-bg"></div>
         <div id="splash" class="splash">
             <div class="splash-inner">
-                <div class="logo"></div>
+                <div class="logo"><img alt="logo" src="images/C1_logo.svg" /></div>
                 <div id="updated">
                     <div id="head">
                         <div id="heading">
