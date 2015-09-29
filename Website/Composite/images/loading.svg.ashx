@@ -16,7 +16,7 @@ public class loading : IHttpHandler {
 
         HttpBrowserCapabilities browser = context.Request.Browser;
 
-		if (browser.Browser == "IE" || browser.Browser == "InternetExplorer")
+		if (browser.Browser == "IE" || browser.Browser == "InternetExplorer" || context.Request.UserAgent.IndexOf("Edge") > -1) // IE or Microsoft Edge
         {
             context.Response.ContentType = "image/gif";
             context.Response.WriteFile(context.Request.MapPath("loading.gif"));
