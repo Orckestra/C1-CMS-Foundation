@@ -191,7 +191,7 @@
 			<ui:explorertoolbar>
 				<ui:toolbarbody align="left">
 					<ui:toolbargroup>
-						<ui:toolbarbutton id="compositebutton" class="logo" image="${icon:company-composite}"  oncommand="/* nothing */" />
+						<ui:toolbarbutton id="compositebutton" class="logo" image="${icon:company-composite}"  oncommand="EventBroadcaster.broadcast ( BroadcastMessages.START_COMPOSITE );" />
 						<ui:toolbarbutton id="menutogglebutton" class="menu-toggle" image="${icon:menu}"  oncommand="top.app.bindingMap.explorermenu.toggle()" />
 					</ui:toolbargroup>
 				</ui:toolbarbody>

@@ -338,8 +338,7 @@ StageBinding.prototype._onStageReady = function () {
 		 * Broadcasting readystate. If no start 
 		 * page, show default start splash. 
 		 */
-		//NEWUI
-		if (!Application.hasStartPage || !Application.hasExternalConnection || Client.isPad || true) {
+		if (!Application.hasStartPage || !Application.hasExternalConnection || Client.isPad) {
 
 			top.app.bindingMap.maindecks.select ( "stagedeck" );
 			//this._isShowingDefaultStart = true;

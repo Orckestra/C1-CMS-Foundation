@@ -166,9 +166,7 @@ namespace Composite.Core.WebClient
                 var url = _ctx.Request.Url;
                 bool isLocalHost = url.Host.ToLowerInvariant() == "localhost";
 
-                // Start page is temporarily disabled
-                // _hasServerToServerConnection = HasServerToServerConnection();
-                _hasServerToServerConnection = false; // HasServerToServerConnection();
+                _hasServerToServerConnection = HasServerToServerConnection(); 
 
                 builder.AppendLine(@"<script type=""text/javascript"">");
 

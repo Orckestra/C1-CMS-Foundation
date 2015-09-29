@@ -128,3 +128,22 @@ ui|dockpanel { /* styles comparable to deck - please coordinate all changes! */
 ui|splitpanel.editors {
     box-shadow: inset 0px 5px 0px 0px rgba(51,51,51,1);
 }
+
+/* START DOCK ............................ */
+
+ui|dock.start {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width:100%;
+    height: 100%;
+    ui|docktab {
+        display: none;
+    }
+    ui|docktabs ui|controlgroup {
+        display: none;
+    }
+    ui|docktabs {
+        height: 2px;
+    }
+}

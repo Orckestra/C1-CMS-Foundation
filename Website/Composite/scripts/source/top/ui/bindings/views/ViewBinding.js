@@ -203,6 +203,11 @@ ViewBinding.prototype.onBindingAttach = function () {
 		);
 		this._coverBinding.attach ();
 	}
+
+	if (this._viewDefinition && this._viewDefinition.position == DockBinding.START)
+	{
+		this.setProperty("position", DockBinding.START);
+	}
 	
 	/*
 	 * Attach window.

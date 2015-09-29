@@ -23,3 +23,21 @@ ui|view.dockview ui|window { /* adjusted onload - fixes a moz display glitch */
 	position: absolute;
 	top: -10000px;
 }
+
+ui|view[position='start'] {
+	position:absolute;
+	top:0 !important;
+	right:0 !important;
+	bottom: 0 !important;
+	left:0 !important;
+	height: auto !important;
+	width: auto !important;
+	padding: 25px 30px;
+	background-color: rgba(0,0,0,0.3);
+
+	ui|window {
+		height: 100% !important;
+		border: solid 1px #cccccc;
+		border-radius: 5px;
+	}
+}

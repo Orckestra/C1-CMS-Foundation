@@ -305,6 +305,10 @@ SystemToolBarBinding.prototype._containAllButtons = function () {
 	if (Localization.isUIRtl) {
 		avail = this.bindingElement.offsetWidth - this._moreActionsWidth;
 	}
+    
+	if (avail <= 0)
+		return;
+
 	var total = 0;
 	var hides = new List ();
 	
