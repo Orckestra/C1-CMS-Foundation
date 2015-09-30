@@ -2,103 +2,104 @@
 @namespace ui url("http://www.w3.org/1999/xhtml");
 
 div#about {
-    height: 230px;
-    position: relative;
-    overflow: hidden;
-    border-top: solid 1px #ccc;
+	height: 230px;
+	position: relative;
+	overflow: hidden;
+	border-top: solid 1px #ccc;
 }
 
 div#info {
-    position: absolute;
-    z-index: 2;
-    bottom: 0;
-    line-height: 17px;
-    width: 100%;
-    padding: 0 25px 40px 25px;
+	position: absolute;
+	z-index: 2;
+	bottom: 0;
+	line-height: 17px;
+	width: 100%;
+	padding: 0 25px 40px 25px;
 }
 
 #infocover {
-    width: 348px;
-    height: 160px;
-    background: #f7f7f7;
+	width: 348px;
+	height: 160px;
+	background: #f7f7f7;
 }
 
 input#id {
-    float: right;
-    width: 235px;
-    padding: 3px 4px;
-    margin-top: -5px;
-    border: 1px solid #ccc;
-    background-color: transparent;
+	float: right;
+	width: 235px;
+	padding: 3px 4px;
+	margin-top: -5px;
+	border: 1px solid #ccc;
+	background-color: transparent;
 }
 
 div#version,
 div#copyright,
 ui|toolbarbody,
 ui|toolbargroup {
-    float: none;
+	float: none;
 }
 
 #roll {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    text-align: center;
-    line-height: 20px;
-    padding-top: 220px;
-    padding-bottom: 100px;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	text-align: center;
+	line-height: 20px;
+	padding-top: 220px;
+	padding-bottom: 100px;
 }
 
 div.logo {
-    cursor: pointer;
-    width: 305px;
-    height: 51px;
-    position: absolute;
-    top: 25px;
-    left: 95px;
-    margin-left: -69px;
+	cursor: pointer;
+	width: 168px;
+	height: 38px;
+	background: url("${root}/images/logo.png") no-repeat 0 0;
+	position: absolute;
+	top: 40px;
+	left: 50%;
+	margin-left: -69px;
 }
 
 #logo2 {
-    margin-top: 30px;
-    top: auto;
-    bottom: 0;
+	margin-top: 30px;
+	top: auto;
+	bottom: 0;
 }
 
 #credits ul,
 #credits p {
-    margin: 0 0 40px 0;
+	margin: 0 0 40px 0;
 }
 
 #credits h2 {
-    font-size: 100%;
-    margin: 40px 0 0 0;
+	font-size: 100%;
+	margin: 40px 0 0 0;
 }
 
 #credits ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+	list-style: none;
+	margin: 0;
+	padding: 0;
 }
 
 #credits li {
-    display: inline;
+	display: inline;
 }
 
 #credits a {
-    font-weight: bold;
-    cursor: pointer;
+	font-weight: bold;
+	cursor: pointer;
 }
 
 div#fade {
-    position: absolute;
-    width: 100%;
-    height: 230px;
-    bottom: 0;
-    left: 0;
-    z-index: 1;
-    -webkit-box-shadow: inset 0px 0px 72px 8px rgba(255,255,255,1);
-    -moz-box-shadow: inset 0px 0px 72px 8px rgba(255,255,255,1);
-    box-shadow: inset 0px 0px 72px 8px rgba(255,255,255,1);
+	position: absolute;
+	width: 100%;
+	height: 230px;
+	bottom: 0;
+	left: 0;
+	z-index: 1;
+	-webkit-box-shadow: inset 0px 0px 72px 8px rgba(255,255,255,1);
+	-moz-box-shadow: inset 0px 0px 72px 8px rgba(255,255,255,1);
+	box-shadow: inset 0px 0px 72px 8px rgba(255,255,255,1);
 }

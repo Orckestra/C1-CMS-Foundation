@@ -1,9 +1,7 @@
 <div class="loginpage">
   <ui:splash id="splash" class="splash">
     <ui:decks id="decks" flex="false" class="splash-inner">
-      <div class="logo">
-        <img alt="logo" src="images/C1_logo.svg" />
-      </div>
+      <div class="logo"></div>
       <ui:deck id="introdeck"/>
       <ui:deck id="logindeck">
         <div class="buzzwords hide">
