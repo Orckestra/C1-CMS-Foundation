@@ -1,46 +1,46 @@
 ui|popupset {
-    display: block;
-    overflow: visible;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 0;
-    height: 0;
-    z-index: @popupset-zindex; /* above dialogset */
+	display: block;
+	overflow: visible;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 0;
+	height: 0;
+	z-index: @popupset-zindex; /* above dialogset */
 }
 
 ui|popup,
 ui|menupopup {
-    position: absolute;
-    z-index: 6; /* above the shadow */
-    min-width: 160px;
-    visibility: hidden;
-    display: none;
-    .user-select(none);
-    background-color: #fff;
-    box-shadow: @base-box-shadow;
-    border-radius: @base-border-radius;
-    border: 1px solid @base-border-color;
+	position: absolute;
+	z-index: 6; /* above the shadow */
+	min-width: 160px;
+	visibility: hidden;
+	display: none;
+	.user-select(none);
+	background-color: #fff;
+	box-shadow: @base-box-shadow;
+	border-radius: @base-border-radius;
+	border: 1px solid @base-border-color;
 }
 
 ui|popupbody { /* NOT USED ON COMMON POPUPS! */
-    display: block;
-    padding: 10px 12px;
-    color: @text-color;
-    .user-select(none);
+	display: block;
+	padding: 10px 12px;
+	color: @text-color;
+	.user-select(none);
 }
 
 /* OVERFLOW ................................................ */
 
 ui|popup.overflow {
-    overflow-y: scroll;
-    height: 211px; /* move this to script when separators are supported */
+	overflow-y: scroll;
+	height: 211px; /* move this to script when separators are supported */
 }
 
 ui|popup div.popupindicator {
-    position: absolute;
-    width: 0;
-    height: 0;
-    top: 0px;
-    left: 0px;
+	position: absolute;
+	width: 0;
+	height: 0;
+	top: 0px;
+	left: 0px;
 }

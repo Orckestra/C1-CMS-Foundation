@@ -1,75 +1,75 @@
 ui|checkboxgroup {
-    display: block;
-    padding-bottom: 2px;
-    margin-bottom: 3px;
-    margin-left: 3px;
+	display: block;
+	padding-bottom: 2px;
+	margin-bottom: 3px;
+	margin-left: 3px;
 
-    ui|labelbox {
+	ui|labelbox {
 
-        &.invalid {
-            margin: 0 0 5px 3px;
-            width: 100%;
+		&.invalid {
+			margin: 0 0 5px 3px;
+			width: 100%;
 
-            ui|labeltext {
-                font-weight: bold;
-                color: @field-error-color;
-            }
-        }
-    }
+			ui|labeltext {
+				font-weight: bold;
+				color: @field-error-color;
+			}
+		}
+	}
 }
 
 ui|checkbox {
-    display: block;
-    width: 100%;
-    padding: 2px;
+	display: block;
+	width: 100%;
+	padding: 2px;
 
-    ui|datalabeltext {
-        float: none;
-        margin-left: 18px;
-    }
+	ui|datalabeltext {
+		float: none;
+		margin-left: 18px;
+	}
 }
 
 ui|checkbutton {
 
-    ui|labelbox {
-        height: 18px;
-        padding-left: 18px;
-        position: relative;
-    }
+	ui|labelbox {
+		height: 18px;
+		padding-left: 18px;
+		position: relative;
+	}
 
-    ui|labelbody {
-        &:before {
-            box-sizing: border-box;
-            position: absolute;
-            top: 0px;
-            left: 0px;
-            content: '';
-            width: 16px;
-            height: 16px;
-            background: #ffffff;
-            border: 1px solid @field-border-color;
-            border-radius: 3px;
-        }
-    }
+	ui|labelbody {
+		&:before {
+			box-sizing: border-box;
+			position: absolute;
+			top: 0px;
+			left: 0px;
+			content: '';
+			width: 16px;
+			height: 16px;
+			background: #ffffff;
+			border: 1px solid @field-border-color;
+			border-radius: 3px;
+		}
+	}
 
-    &.hover {
-        ui|labelbody:before {
-            border-color: @primary-color;
-        }
-    }
+	&.hover {
+		ui|labelbody:before {
+			border-color: @primary-color;
+		}
+	}
 
-    &[ischecked='true'] ui|labelbody:after {
-        position: absolute;
-        top: 0px;
-        left: 0px;
-        content: "\2713";
-        font-size: 12px;
-        font-weight: bold;
-        width: 16px;
-        height: 16px;
-        color: @primary-color;
-        text-align: center;
-        line-height: 13px;
-        padding-left: 1px;
-    }
+	&[ischecked='true'] ui|labelbody:after {
+		position: absolute;
+		top: 0px;
+		left: 0px;
+		content: "\2713";
+		font-size: 12px;
+		font-weight: bold;
+		width: 16px;
+		height: 16px;
+		color: @primary-color;
+		text-align: center;
+		line-height: 13px;
+		padding-left: 1px;
+	}
 }

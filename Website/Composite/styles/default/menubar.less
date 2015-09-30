@@ -1,29 +1,29 @@
 .menubar {
-    background: @menubar-bg-color;
+	background: @menubar-bg-color;
 
-    > ui|menu {
-        border: none;
+	> ui|menu {
+		border: none;
 
-        > ui|labelbox {
-            color: @menubar-text-color;
+		> ui|labelbox {
+			color: @menubar-text-color;
 
-            &.textonly {
-                &:after {
-                    border-color: @menubar-bg-color transparent transparent transparent;
-                }
-            }
-        }
+			&.textonly {
+				&:after {
+					border-color: @menubar-bg-color transparent transparent transparent;
+				}
+			}
+		}
 
-        &.hover {
-            > ui|labelbox {
-                color: @primary-color;
+		&.hover {
+			> ui|labelbox {
+				color: @primary-color;
 
-                &.textonly {
-                    &:after {
-                        border-color: transparent transparent @menubar-bg-color transparent;
-                    }
-                }
-            }
-        }
-    }
+				&.textonly {
+					&:after {
+						border-color: transparent transparent @menubar-bg-color transparent;
+					}
+				}
+			}
+		}
+	}
 }

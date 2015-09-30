@@ -1,186 +1,186 @@
 /* see also popups.css for shared visual styles!!!!!!! */
 ui|menubar {
-    display: block;
-    white-space: nowrap;
-    padding-right: 15px;
+	display: block;
+	white-space: nowrap;
+	padding-right: 15px;
 }
 
 
 ui|menu { //usage: top menubar and ImageEditor menubar
-    display: block;
-    margin: 0 2px;
-    padding: 0;
-    height: 30px;
-    float: right;
-    border: solid 1px @base-border-color;
-    border-radius: 3px;
+	display: block;
+	margin: 0 2px;
+	padding: 0;
+	height: 30px;
+	float: right;
+	border: solid 1px @base-border-color;
+	border-radius: 3px;
 
-    .menulabel {
-        padding: 7px 16px 1px 5px;
-        position: relative; /* ie something */
-        margin: 0 15px;
-        text-transform: uppercase;
+	.menulabel {
+		padding: 7px 16px 1px 5px;
+		position: relative; /* ie something */
+		margin: 0 15px;
+		text-transform: uppercase;
 
-        &.imageonly {
-            padding: 5px 0 1px 0;
-            margin: 0 12px;
-        }
-    }
+		&.imageonly {
+			padding: 5px 0 1px 0;
+			margin: 0 12px;
+		}
+	}
 
-    ui|clickbutton ui|labelbox {
-        border: 0 !important;
-        background-color: transparent;
-    }
+	ui|clickbutton ui|labelbox {
+		border: 0 !important;
+		background-color: transparent;
+	}
 
-    > ui|menupopup {
-        margin-top: 5px;
-        margin-left: -20px;
+	> ui|menupopup {
+		margin-top: 5px;
+		margin-left: -20px;
 
-        &:before, &:after {
-            content: "";
-            position: absolute;
-            width: 0;
-            height: 0;
-            left: 50%;
-            border-left: 9px solid transparent;
-            border-right: 9px solid transparent;
-            margin-left: -9px;
-        }
+		&:before, &:after {
+			content: "";
+			position: absolute;
+			width: 0;
+			height: 0;
+			left: 50%;
+			border-left: 9px solid transparent;
+			border-right: 9px solid transparent;
+			margin-left: -9px;
+		}
 
-        &:before {
-            top: -9px;
-            border-bottom: 9px solid @base-border-color;
-        }
+		&:before {
+			top: -9px;
+			border-bottom: 9px solid @base-border-color;
+		}
 
-        &:after {
-            top: -8px;
-            border-bottom: 9px solid #fff;
-        }
-    }
+		&:after {
+			top: -8px;
+			border-bottom: 9px solid #fff;
+		}
+	}
 
 
 
-    > ui|labelbox.textonly {
+	> ui|labelbox.textonly {
 
-        &:before {
-            content: "";
-            position: absolute;
-            top: 12px;
-            right: 0;
-            width: 0;
-            height: 0;
-            border-style: solid;
-            border-width: 5px 5px 0 5px;
-            border-color: @primary-color transparent transparent transparent;
-        }
+		&:before {
+			content: "";
+			position: absolute;
+			top: 12px;
+			right: 0;
+			width: 0;
+			height: 0;
+			border-style: solid;
+			border-width: 5px 5px 0 5px;
+			border-color: @primary-color transparent transparent transparent;
+		}
 
-        &:after {
-            content: "";
-            position: absolute;
-            top: 12px;
-            right: 1px;
-            width: 0;
-            height: 0;
-            border-style: solid;
-            border-width: 4px 4px 0 4px;
-            border-color: #fff transparent transparent transparent;
-        }
-    }
+		&:after {
+			content: "";
+			position: absolute;
+			top: 12px;
+			right: 1px;
+			width: 0;
+			height: 0;
+			border-style: solid;
+			border-width: 4px 4px 0 4px;
+			border-color: #fff transparent transparent transparent;
+		}
+	}
 
-    &.hover {
-        > ui|labelbox.textonly {
-            color: @primary-color;
+	&.hover {
+		> ui|labelbox.textonly {
+			color: @primary-color;
 
-            &:before {
-                top: 12px;
-                border-width: 0px 5px 5px 5px;
-                border-color: transparent transparent #909090 transparent;
-            }
+			&:before {
+				top: 12px;
+				border-width: 0px 5px 5px 5px;
+				border-color: transparent transparent #909090 transparent;
+			}
 
-            &:after {
-                top: 13px;
-                right: 1px;
-                border-width: 0px 4px 4px 4px;
-                border-color: transparent transparent #fff transparent;
-            }
-        }
-    }
+			&:after {
+				top: 13px;
+				right: 1px;
+				border-width: 0px 4px 4px 4px;
+				border-color: transparent transparent #fff transparent;
+			}
+		}
+	}
 
-    &.last {
-        > ui|menupopup {
-            margin-left: 0;
+	&.last {
+		> ui|menupopup {
+			margin-left: 0;
 
-            &:before, &:after {
-                left: 75%;
-            }
-        }
-    }
+			&:before, &:after {
+				left: 75%;
+			}
+		}
+	}
 
-    &.icon {
-        > ui|menupopup {
-            margin-left: -30px;
-        }
-    }
+	&.icon {
+		> ui|menupopup {
+			margin-left: -30px;
+		}
+	}
 }
 
 //usage: PopPup Menus on item right click
 ui|menubody {
-    display: block;
-    padding: 0;
+	display: block;
+	padding: 0;
 }
 
 ui|menugroup {
-    display: block;
-    padding: 0;
-    border-bottom: 1px solid @base-border-color;
+	display: block;
+	padding: 0;
+	border-bottom: 1px solid @base-border-color;
 
-    &.last {
-        border-bottom: none;
-    }
+	&.last {
+		border-bottom: none;
+	}
 }
 
 
 ui|menuitem {
-    white-space: nowrap;
-    display: block;
-    clear: both;
-    position: relative;
+	white-space: nowrap;
+	display: block;
+	clear: both;
+	position: relative;
 
-    ui|labelbox {
-        position: relative;
-        padding: 7px 8px 7px 8px;
+	ui|labelbox {
+		position: relative;
+		padding: 7px 8px 7px 8px;
 
-        &.hover {
-            background: @primary-color;
-            color: #fff;
-        }
-    }
+		&.hover {
+			background: @primary-color;
+			color: #fff;
+		}
+	}
 
-    ui|labeltext {
-        padding-left: 4px;
-        position: relative;
-    }
+	ui|labeltext {
+		padding-left: 4px;
+		position: relative;
+	}
 
-    .checkboxindicator {
-        font-family: Arial, sans-serif;
-        font-size: 11px;
-        position: absolute;
-        left: 10px;
-        top: 10px;
-    }
+	.checkboxindicator {
+		font-family: Arial, sans-serif;
+		font-size: 11px;
+		position: absolute;
+		left: 10px;
+		top: 10px;
+	}
 
-    .submenuindicator {
-        display: none;
-    }
+	.submenuindicator {
+		display: none;
+	}
 
-    ui|menupopup {
-        margin-top: -2px;
-        margin-left: -2px;
-    }
+	ui|menupopup {
+		margin-top: -2px;
+		margin-left: -2px;
+	}
 }
 
 ui|menubody.checkboxed ui|menuitem ui|labelbox {
-    padding: 7px 8px 7px 24px;
+	padding: 7px 8px 7px 24px;
 }
 
 
@@ -188,6 +188,6 @@ ui|menuitem ui|labelbox,
 ui|menuitem ui|labelbody,
 ui|menubody ui|labelbox,
 ui|menubody ui|labelbody {
-    float: none;
-    clear: both;
+	float: none;
+	clear: both;
 }

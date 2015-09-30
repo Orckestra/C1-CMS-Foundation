@@ -5,195 +5,195 @@ ui|clickbutton,
 ui|radiobutton,
 ui|checkbutton,
 ui|toolbarlabel {
-    display: block;
-    position: relative;
-    float: left;
-    margin: 2px;
+	display: block;
+	position: relative;
+	float: left;
+	margin: 2px;
 }
 
 // == ClickButton (usage: In dialogs )
 ui|clickbutton {
-    padding: 0;
-    margin: 0 6px;
+	padding: 0;
+	margin: 0 6px;
 
-    ui|labelbox {
-        float: none;
-        overflow: hidden;
-        padding: 6px 15px;
-        border-radius: @btn-border-radius;
-        border: solid 1px @btn-border-color;
-        color: @btn-color;
-        background-color: @btn-bg-color;
-        text-transform: uppercase;
-    }
+	ui|labelbox {
+		float: none;
+		overflow: hidden;
+		padding: 6px 15px;
+		border-radius: @btn-border-radius;
+		border: solid 1px @btn-border-color;
+		color: @btn-color;
+		background-color: @btn-bg-color;
+		text-transform: uppercase;
+	}
 
 
-    &.active {
-        ui|labelbox {
-            border-color: @btn-border-color;
-            background-color: @btn-bg-color;
-            background-image: @btn-bg-image;
-            color: @btn-color;
-        }
-    }
+	&.active {
+		ui|labelbox {
+			border-color: @btn-border-color;
+			background-color: @btn-bg-color;
+			background-image: @btn-bg-image;
+			color: @btn-color;
+		}
+	}
 
-    &.focused, &.primary {
-        ui|labelbox {
-            border-color: @btn-primary-border-color;
-            background-color: @btn-primary-bg-color;
-            background-image: @btn-primary-bg-image;
-            color: @btn-primary-color;
-        }
-    }
+	&.focused, &.primary {
+		ui|labelbox {
+			border-color: @btn-primary-border-color;
+			background-color: @btn-primary-bg-color;
+			background-image: @btn-primary-bg-image;
+			color: @btn-primary-color;
+		}
+	}
 
-    &.hover {
-        ui|labelbox {
-            border-color: @btn-hover-border-color;
-            background-color: @btn-hover-bg-color;
-            background-image: none;
-            color: @btn-hover-color;
-        }
+	&.hover {
+		ui|labelbox {
+			border-color: @btn-hover-border-color;
+			background-color: @btn-hover-bg-color;
+			background-image: none;
+			color: @btn-hover-color;
+		}
 
-        &.focused, &.primary {
-            ui|labelbox {
-                border-color: darken(@btn-primary-border-color, 5%);
-                background-color: @btn-primary-bg-color;
-                background-image: @btn-primary-bg-image;
-                color: @btn-primary-color;
-            }
-        }
-    }
+		&.focused, &.primary {
+			ui|labelbox {
+				border-color: darken(@btn-primary-border-color, 5%);
+				background-color: @btn-primary-bg-color;
+				background-image: @btn-primary-bg-image;
+				color: @btn-primary-color;
+			}
+		}
+	}
 
-    &.simple-icon { // usage: in table reports, for example SEO
-        ui|labelbox {
-            border: none;
-            padding: 5px;
-            background: none;
-            color: #575757;
-        }
+	&.simple-icon { // usage: in table reports, for example SEO
+		ui|labelbox {
+			border: none;
+			padding: 5px;
+			background: none;
+			color: #575757;
+		}
 
-        &.hover {
-            ui|labelbox {
-                color: @primary-color;
-            }
-        }
-    }
+		&.hover {
+			ui|labelbox {
+				color: @primary-color;
+			}
+		}
+	}
 }
 
 
 //== ToolbarButton
 ui|toolbarbutton {
-    border-radius: 4px;
-    text-transform: uppercase;
-    border: 1px solid @btn-toolbar-border-color;
-    border-radius: @btn-border-radius;
-    background: @btn-toolbar-bg-color;
-    color: @btn-toolbar-color;
-    margin: 2px 10px 2px 0;
-    box-shadow: 0 2px 2px -2px #ddd;
+	border-radius: 4px;
+	text-transform: uppercase;
+	border: 1px solid @btn-toolbar-border-color;
+	border-radius: @btn-border-radius;
+	background: @btn-toolbar-bg-color;
+	color: @btn-toolbar-color;
+	margin: 2px 10px 2px 0;
+	box-shadow: 0 2px 2px -2px #ddd;
 
-    ui|labelbody {
-        height: 18px;
-    }
+	ui|labelbody {
+		height: 18px;
+	}
 
-    ui|labelbox {
-        padding: 6px 11px;
-    }
+	ui|labelbox {
+		padding: 6px 11px;
+	}
 
-    &.btn-group-left {
-        margin-right: 0;
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
+	&.btn-group-left {
+		margin-right: 0;
+		border-top-right-radius: 0;
+		border-bottom-right-radius: 0;
 
-        &.hover {
-            border-right: 1px solid @btn-toolbar-border-color !important;
-        }
-    }
+		&.hover {
+			border-right: 1px solid @btn-toolbar-border-color !important;
+		}
+	}
 
-    &.btn-group-right {
-        margin-left: 0;
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
-        border-left: 0;
-    }
-
-
-    &.combobutton {
-        ui|combobox {
-            border-left: 1px solid transparent;
-            margin: 0;
-            display: block;
-            float: left;
-            line-height: 28px;
-            font-size: 9px;
-            padding: 0 10px;
-            .user-select(none);
-            position: relative;
-            color: transparent;
-
-            &:before, &:after {
-                content: "";
-                position: absolute;
-                width: 0;
-                height: 0;
-                border-style: solid;
-            }
-
-            &:before {
-                top: 12px;
-                right: 10px;
-                border-width: 5px 5px 0 5px;
-                border-color: @btn-hover-border-color transparent transparent transparent;
-            }
-
-            &:after {
-                top: 12px;
-                right: 11px;
-                border-width: 4px 4px 0 4px;
-                border-color: @btn-hover-bg-color transparent transparent transparent;
-            }
-        }
-    }
+	&.btn-group-right {
+		margin-left: 0;
+		border-top-left-radius: 0;
+		border-bottom-left-radius: 0;
+		border-left: 0;
+	}
 
 
-    &.hover, &.active {
-        border-color: @btn-toolbar-hover-border-color;
-        background-color: @btn-toolbar-hover-bg-color;
-        color: @btn-hover-color;
+	&.combobutton {
+		ui|combobox {
+			border-left: 1px solid transparent;
+			margin: 0;
+			display: block;
+			float: left;
+			line-height: 28px;
+			font-size: 9px;
+			padding: 0 10px;
+			.user-select(none);
+			position: relative;
+			color: transparent;
 
-        ui|combobox {
-            border-left: 1px solid @primary-color;
+			&:before, &:after {
+				content: "";
+				position: absolute;
+				width: 0;
+				height: 0;
+				border-style: solid;
+			}
 
-            &:before {
-                border-color: @btn-toolbar-hover-bg-color transparent transparent transparent;
-            }
+			&:before {
+				top: 12px;
+				right: 10px;
+				border-width: 5px 5px 0 5px;
+				border-color: @btn-hover-border-color transparent transparent transparent;
+			}
 
-            &:after {
-                border-color: @btn-toolbar-hover-border-color transparent transparent transparent;
-            }
-        }
-    }
+			&:after {
+				top: 12px;
+				right: 11px;
+				border-width: 4px 4px 0 4px;
+				border-color: @btn-hover-bg-color transparent transparent transparent;
+			}
+		}
+	}
 
-    &.tabbutton { //== usage: "More Tabs" buttons when browser width is small
-        position: absolute;
-        margin-top: 1px;
-        z-index: 400;
-        display: none;
-        background-color: transparent;
-        margin: 0;
-        padding: 0;
 
-        ui|labelbox {
-            padding: 8px 10px;
-            font-weight: bold;
+	&.hover, &.active {
+		border-color: @btn-toolbar-hover-border-color;
+		background-color: @btn-toolbar-hover-bg-color;
+		color: @btn-hover-color;
 
-            .arrow {
-                font-size: 120%;
-                font-family: "Courier New", monospace;
-                position: relative;
-                top: -1px;
-                left: 2px;
-            }
-        }
-    }
+		ui|combobox {
+			border-left: 1px solid @primary-color;
+
+			&:before {
+				border-color: @btn-toolbar-hover-bg-color transparent transparent transparent;
+			}
+
+			&:after {
+				border-color: @btn-toolbar-hover-border-color transparent transparent transparent;
+			}
+		}
+	}
+
+	&.tabbutton { //== usage: "More Tabs" buttons when browser width is small
+		position: absolute;
+		margin-top: 1px;
+		z-index: 400;
+		display: none;
+		background-color: transparent;
+		margin: 0;
+		padding: 0;
+
+		ui|labelbox {
+			padding: 8px 10px;
+			font-weight: bold;
+
+			.arrow {
+				font-size: 120%;
+				font-family: "Courier New", monospace;
+				position: relative;
+				top: -1px;
+				left: 2px;
+			}
+		}
+	}
 }

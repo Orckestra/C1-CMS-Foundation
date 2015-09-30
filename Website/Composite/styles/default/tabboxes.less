@@ -1,82 +1,79 @@
 ui|tabbox {
-    display: block;
-    overflow: hidden;
+	display: block;
+	overflow: hidden;
 
-    ui|tabbox { // usage: Edit Data Type -> Fields -> Tabs
-        margin-top: 39px;
-    }
+	ui|tabbox { // usage: Edit Data Type -> Fields -> Tabs
+		margin-top: 39px;
+	}
 }
 
 ui|tabs {
-    display: block;
-    position: relative !important;
-    overflow: hidden;
+	display: block;
+	position: relative !important;
+	overflow: hidden;
 }
 
 ui|tab {
-    display: block;
-    float: left;
-    position: relative;
-    white-space: nowrap;
-    border: solid 1px @tabs-border-color;
-    border-radius: @tabs-border-radius @tabs-border-radius 0 0;
-    background: @tabs-bg-color;
-    z-index: 2;
-    margin-right: -4px;
-    text-transform: uppercase;
-    font-family: @heading-font-family;
-    font-size: 13px;
-    line-height: 15px;
+	display: block;
+	float: left;
+	position: relative;
+	white-space: nowrap;
+	border: solid 1px @tabs-border-color;
+	border-radius: @tabs-border-radius @tabs-border-radius 0 0;
+	background: @tabs-bg-color;
+	z-index: 2;
+	margin-right: -4px;
+	text-transform: uppercase;
+	font-family: @heading-font-family;
+	font-size: 13px;
+	line-height: 15px;
 }
 
 ui|tabpanels {
-    display: block;
-    height: 100%;
-    clear: both;
-    overflow: hidden;
+	display: block;
+	height: 100%;
+	clear: both;
+	overflow: hidden;
 }
 
 ui|tabbox.boxed ui|tabpanels {
-    overflow: visible;
-    height: auto;
+	overflow: visible;
+	height: auto;
 }
 
 ui|tabbox.equalsize ui|tabpanels {
-    overflow: hidden;
-    height: 100%;
+	overflow: hidden;
+	height: 100%;
 }
 
 ui|tabpanel { /* styles comparable to deck - please coordinate all changes! */
-    display: block;
-    height: 100% !important;
-    overflow: hidden;
-    position: absolute;
-    top: -10000px;
+	display: block;
+	height: 100% !important;
+	overflow: hidden;
+	position: absolute;
+	top: -10000px;
 }
 
 ui|tabbox.equalsize ui|tabpanel {
-    overflow: visible;
-    height: auto !important;
+	overflow: visible;
+	height: auto !important;
 }
 
 ui|tabbox.tabsontop {
 
-    ui|tabs {
-        box-shadow: inset 0px -1px 0px 0px rgba(204,204,204,1);
-        padding: 0px 10px 0px 10px;
-    }
+	ui|tabs {
+		box-shadow: inset 0px -1px 0px 0px rgba(204,204,204,1);
+		padding: 0px 10px 0px 10px;
+	}
 
-    ui|tab {
-        padding: 5px 20px 5px 15px;
-        color: @tabs-text-color;
+	ui|tab {
+		padding: 5px 20px 5px 15px;
+		color: @tabs-text-color;
 
-        &.selected {
-             color: @tabs-active-text-color;
-            z-index: 3;
-            border-color: @tabs-active-border-color @tabs-active-border-color transparent @tabs-active-border-color;
-        }
-    }
+		&.selected {
+			color: @tabs-active-text-color;
+			z-index: 3;
+			border-color: @tabs-active-border-color @tabs-active-border-color transparent @tabs-active-border-color;
+		}
+	}
 }
-
-
-

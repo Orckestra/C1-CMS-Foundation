@@ -1,106 +1,105 @@
 ui|toolbar {
-    display: block;
-    clear: both;
-    white-space: nowrap;
-    box-shadow: inset 0px -1px 0px 0px rgba(204, 204, 204, 1);
-    padding: 15px 20px;
+	display: block;
+	clear: both;
+	white-space: nowrap;
+	box-shadow: inset 0px -1px 0px 0px rgba(204, 204, 204, 1);
+	padding: 15px 20px;
 
-    &.dark {
-        background: #EFEFEF;
-    }
+	&.dark {
+		background: #EFEFEF;
+	}
 
-    &.white {
-        background: #fff;
-    }
+	&.white {
+		background: #fff;
+	}
 
-    ui|selector {
-        float: left;
-        margin-right: 8px;
-    }
+	ui|selector {
+		float: left;
+		margin-right: 8px;
+	}
 }
 
 ui|editorpage > ui|toolbar {
-    box-shadow: none;
+	box-shadow: none;
 }
 
 ui|toolbarbody {
-    display: block;
-    float: left;
+	display: block;
+	float: left;
 
-    &.alignright {
-        ui|toolbarbutton, ui|clickbutton {
-            margin-right: 0;
-            margin-left: 12px;
-        }
-    }
-
+	&.alignright {
+		ui|toolbarbutton, ui|clickbutton {
+			margin-right: 0;
+			margin-left: 12px;
+		}
+	}
 }
 
 ui|toolbargroup {
-    display: block;
-    float: left;
-    padding-left: 1px;
+	display: block;
+	float: left;
+	padding-left: 1px;
 
-    &.max {
-        float: none;
-    }
+	&.max {
+		float: none;
+	}
 
-    &.first {
-        border-left: none;
-    }
+	&.first {
+		border-left: none;
+	}
 
-    &.last {
-        border-right: none;
-    }
+	&.last {
+		border-right: none;
+	}
 
-    &.defaultcontent {
-        width: 1px;
-        overflow: hidden;
-        margin-right: -1px;
-        visibility: hidden;
-        border: none;
-    }
+	&.defaultcontent {
+		width: 1px;
+		overflow: hidden;
+		margin-right: -1px;
+		visibility: hidden;
+		border: none;
+	}
 
-    > input {
-        border: 1px solid @btn-toolbar-border-color;
-        margin: 3px 10px 2px 0;
-        padding: 5px;
-    }
+	> input {
+		border: 1px solid @btn-toolbar-border-color;
+		margin: 3px 10px 2px 0;
+		padding: 5px;
+	}
 }
 
 ui|toolbar.btns-group {
-    ui|toolbargroup {
-        border: 1px solid @base-border-color;
-        border-radius: 3px;
-        margin: 4px 5px;
-        padding: 0;
-        overflow: hidden;
+	ui|toolbargroup {
+		border: 1px solid @base-border-color;
+		border-radius: 3px;
+		margin: 4px 5px;
+		padding: 0;
+		overflow: hidden;
 
-        &:empty {
-            display: none;
-        }
+		&:empty {
+			display: none;
+		}
 
-        ui|toolbarbutton {
-            border-color: transparent;
-            margin: 0;
-            border-radius: 0;
-            text-transform: none;
+		ui|toolbarbutton {
+			border-color: transparent;
+			margin: 0;
+			border-radius: 0;
+			text-transform: none;
 
-            + ui|toolbarbutton {
-                border-color: transparent transparent transparent @base-border-color;
-            }
+			+ ui|toolbarbutton {
+				border-color: transparent transparent transparent @base-border-color;
+			}
 
-            ui|labelbox {
-                padding: 5px 9px;
-            }
+			ui|labelbox {
+				padding: 5px 9px;
+			}
 
-            ui|labelbody {
-                min-width: 18px;
-            }
-        }
-    }
+			ui|labelbody {
+				min-width: 18px;
+			}
+		}
+	}
 }
 
 ui|toolbarlabel {
-    padding: 6px 0;
+	padding: 6px 0;
 }

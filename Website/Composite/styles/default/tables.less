@@ -3,137 +3,135 @@
 ******************/
 
 .table, table#logtable, table#versions, table#headings {
-    width: 100%;
-    max-width: 100%;
-    margin: 0;
-    border-collapse: collapse;
-    border-spacing: 0;
+	width: 100%;
+	max-width: 100%;
+	margin: 0;
+	border-collapse: collapse;
+	border-spacing: 0;
 
-    td, th {
-        overflow: hidden;
-        .user-select(none);
-        white-space: nowrap;
-        border-bottom: 1px solid @table-border-color !important;
-        padding: 10px 13px !important; // use !important to overwrite old package's CSS styles.
-        text-align: left;
+	td, th {
+		overflow: hidden;
+		.user-select(none);
+		white-space: nowrap;
+		border-bottom: 1px solid @table-border-color !important;
+		padding: 10px 13px !important; // use !important to overwrite old package's CSS styles.
+		text-align: left;
 
-        &.icon-cell {
-            width: 60px;
-        }
+		&.icon-cell {
+			width: 60px;
+		}
+	}
 
-    }
+	.head {
+		th {
+			background: @table-header-bg-color !important; // use !important to overwrite old package's CSS styles.
+			border-color: @table-border-color !important;
+		}
+	}
 
-    .head {
-        th {
-            background: @table-header-bg-color !important; // use !important to overwrite old package's CSS styles.
-            border-color: @table-border-color !important;
-        }
-    }
+	tr.primary {
+		td, th {
+			color: @primary-color;
+		}
+	}
 
-    tr.primary {
-        td, th {
-            color: @primary-color;
-        }
-    }
-
-    .text-center {
-        td, th {
-            text-align: center;
-        }
-    }
+	.text-center {
+		td, th {
+			text-align: center;
+		}
+	}
 }
 
 .table-bordered, table#logtable, table#versions, table#headings {
-    border: 1px solid @table-border-color;
+	border: 1px solid @table-border-color;
 
-    > thead,
-    > tbody,
-    > tfoot {
-        > tr {
-            > th,
-            > td {
-                border: 1px solid @table-border-color !important;
-            }
-        }
-    }
+	> thead,
+	> tbody,
+	> tfoot {
+		> tr {
+			> th,
+			> td {
+				border: 1px solid @table-border-color !important;
+			}
+		}
+	}
 
-    > thead > tr {
-        > th,
-        > td {
-            border-bottom-width: 2px;
-        }
-    }
+	> thead > tr {
+		> th,
+		> td {
+			border-bottom-width: 2px;
+		}
+	}
 }
 
 .table-hover, table#logtable, table#versions {
-    > tbody > tr:hover {
-        background-color: @table-bg-hover !important;
-    }
+	> tbody > tr:hover {
+		background-color: @table-bg-hover !important;
+	}
 }
 
 .permissions-table {
+	table-layout: fixed;
 
-    table-layout: fixed;
+	.index {
+		width: 20%;
+		text-align: left;
+		padding-left: 7px;
+	}
 
-    .index {
-        width: 20%;
-        text-align: left;
-        padding-left: 7px;
-    }
+	.edit {
+		width: 40px;
+	}
 
-    .edit {
-        width: 40px;
-    }
+	span.x {
+		display: block;
+		position: relative;
+		margin: 0 auto;
+		width: 16px;
+		height: 16px;
+		background: #fff;
+		border: 1px solid #ECECEC;
+		border-radius: 3px;
 
-    span.x {
-        display: block;
-        position: relative;
-        margin: 0 auto;
-        width: 16px;
-        height: 16px;
-        background: #fff;
-        border: 1px solid #ECECEC;
-        border-radius: 3px;
+		&:before {
+			position: absolute;
+			top: 0px;
+			left: 0px;
+			content: "\2713";
+			font-size: 12px;
+			font-weight: bold;
+			width: 16px;
+			height: 16px;
+			color: #ECECEC;
+			text-align: center;
+			line-height: 13px;
+			padding-left: 1px;
+		}
+	}
 
-        &:before {
-            position: absolute;
-            top: 0px;
-            left: 0px;
-            content: "\2713";
-            font-size: 12px;
-            font-weight: bold;
-            width: 16px;
-            height: 16px;
-            color: #ECECEC;
-            text-align: center;
-            line-height: 13px;
-            padding-left: 1px;
-        }
-    }
+	td:empty:after {
+		display: block;
+		margin: 0 auto;
+		position: relative;
+		content: "";
+		width: 16px;
+		height: 16px;
+		background: #ffffff;
+		border: 1px solid #ECECEC;
+		border-radius: 3px;
+	}
 
-    td:empty:after {
-        display: block;
-        margin: 0 auto;
-        position: relative;
-        content: "";
-        width: 16px;
-        height: 16px;
-        background: #ffffff;
-        border: 1px solid #ECECEC;
-        border-radius: 3px;
-    }
+	.primary {
+		span.x {
+			border: 1px solid @base-border-color;
 
-    .primary {
-        span.x {
-            border: 1px solid @base-border-color;
+			&:before {
+				color: @primary-color;
+			}
+		}
 
-            &:before {
-                color: @primary-color;
-            }
-        }
-
-        td:empty:after {
-            border: 1px solid  @base-border-color;
-        }
-    }
+		td:empty:after {
+			border: 1px solid @base-border-color;
+		}
+	}
 }

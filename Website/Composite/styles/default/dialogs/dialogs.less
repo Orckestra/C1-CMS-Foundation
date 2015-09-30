@@ -4,147 +4,147 @@ ui|dialoghead,
 ui|dialogbody,
 ui|dialogpage,
 ui|wizardpage {
-    display: block;
+	display: block;
 }
 
 ui|dialogcover {
-    position: absolute;
-    height: 100%; /* adjusted by script */
-    width: 100%; /* adjusted by script */
-    left: 0;
-    top: 0;
-    z-index: 2; /* adjusted by script */
-    background-color: #000;
-    .opacity(0.3);
+	position: absolute;
+	height: 100%; /* adjusted by script */
+	width: 100%; /* adjusted by script */
+	left: 0;
+	top: 0;
+	z-index: 2; /* adjusted by script */
+	background-color: #000;
+	.opacity(0.3);
 }
 
 ui|dialogset {
-    overflow: visible;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 0;
-    height: 0;
-    z-index: @dialogset-zindex; /* below popupset */
+	overflow: visible;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 0;
+	height: 0;
+	z-index: @dialogset-zindex; /* below popupset */
 }
 
 ui|dialog {
-    background-color: @dialog-bg-color;
-    overflow: hidden;
-    position: absolute;
-    z-index: @dialog-zindex; /* above shadow - adjusted by script */
-    margin-top: -10000px;
-    padding: 0px; /* override chrome user agent stylesheet 1em */
-    border-radius: @dialog-border-radius;
-    border: solid 1px @dialog-border-color;
+	background-color: @dialog-bg-color;
+	overflow: hidden;
+	position: absolute;
+	z-index: @dialog-zindex; /* above shadow - adjusted by script */
+	margin-top: -10000px;
+	padding: 0px; /* override chrome user agent stylesheet 1em */
+	border-radius: @dialog-border-radius;
+	border: solid 1px @dialog-border-color;
 }
 
 ui|dialoghead {
-    background: @dialog-header-bg-color;
+	background: @dialog-header-bg-color;
 
-    ui|titlebarbody {
-        padding: 20px 15px 18px 0px;
-    }
+	ui|titlebarbody {
+		padding: 20px 15px 18px 0px;
+	}
 }
 
 ui|dialogbody {
-    padding-top: 0 !important;
-    width: 100%; /* ie bug */
-    overflow: hidden;
+	padding-top: 0 !important;
+	width: 100%; /* ie bug */
+	overflow: hidden;
 }
 
 //== Dialog Page and Wizard Page
 ui|dialogpage, ui|wizardpage {
-    height: 100%;
-    width: 100%;
-    overflow: hidden;
-    visibility: hidden;
+	height: 100%;
+	width: 100%;
+	overflow: hidden;
+	visibility: hidden;
 
-    &.auto {
-        height: auto;
-    }
+	&.auto {
+		height: auto;
+	}
 
-    ui|scrollbox {
-        ui|fields {
-            padding: 20px 25px;
-        }
+	ui|scrollbox {
+		ui|fields {
+			padding: 20px 25px;
+		}
 
-        .padded ui|fields {
-            padding: 0;
-        }
-    }
+		.padded ui|fields {
+			padding: 0;
+		}
+	}
 
-    ui|pagebody {
-        padding: 20px 25px;
-        border-top: 1px solid @dialog-border-color;
-    }
+	ui|pagebody {
+		padding: 20px 25px;
+		border-top: 1px solid @dialog-border-color;
+	}
 }
 
 ui|dialogpage {
 
-    &.with-top-toolbar {
+	&.with-top-toolbar {
 
-        ui|toolbar {
-            padding-top: 0;
-            background: #fff;
-        }
+		ui|toolbar {
+			padding-top: 0;
+			background: #fff;
+		}
 
-        ui|pagebody {
-            border-top: 0;
-        }
-    }
+		ui|pagebody {
+			border-top: 0;
+		}
+	}
 
-    &.tabboxed {
+	&.tabboxed {
 
-        ui|pagebody {
-            padding-top: 0;
-            border-top: 0;
-        }
+		ui|pagebody {
+			padding-top: 0;
+			border-top: 0;
+		}
 
-        ui|tabs {
-            background: @dialog-header-bg-color;
-        }
+		ui|tabs {
+			background: @dialog-header-bg-color;
+		}
 
-        ui|pagebody > ui|tabbox {
-            margin: 0 -25px;
-        }
+		ui|pagebody > ui|tabbox {
+			margin: 0 -25px;
+		}
 
-        ui|tabpanels {
+		ui|tabpanels {
 
-            ui|fields {
-                padding: 20px 25px;
-            }
+			ui|fields {
+				padding: 20px 25px;
+			}
 
-            .padded ui|fields {
-                padding: 0;
-            }
-        }
-    }
+			.padded ui|fields {
+				padding: 0;
+			}
+		}
+	}
 }
 
 
 @media (min-width: 700px) { // usage: fix dialog UI for Compsoite.Forms.FormBuilder function properties
-    ui|dialogpage ui|field, .dialogsubpage ui|field {
-        width: 430px;
-        border: solid 1px @fields-group-border-color;
-        border-width: 0 1px;
-        background: @fields-group-bg-color;
-        padding: 0 17px;
+	ui|dialogpage ui|field, .dialogsubpage ui|field {
+		width: 430px;
+		border: solid 1px @fields-group-border-color;
+		border-width: 0 1px;
+		background: @fields-group-bg-color;
+		padding: 0 17px;
 
-        &.first {
-            padding-top: 8px;
-            border-top-width: 1px;
-            border-top-left-radius: @base-border-radius;
-            border-top-right-radius: @base-border-radius;
-        }
+		&.first {
+			padding-top: 8px;
+			border-top-width: 1px;
+			border-top-left-radius: @base-border-radius;
+			border-top-right-radius: @base-border-radius;
+		}
 
-        &.last, &:last-of-type {
-            padding-bottom: 25px;
-            border-bottom-width: 1px;
-            border-bottom-left-radius: @base-border-radius;
-            border-bottom-right-radius: @base-border-radius;
-        }
-    }
+		&.last, &:last-of-type {
+			padding-bottom: 25px;
+			border-bottom-width: 1px;
+			border-bottom-left-radius: @base-border-radius;
+			border-bottom-right-radius: @base-border-radius;
+		}
+	}
 }
 
 // Basic Function View
@@ -153,99 +153,99 @@ ui|dialogpage {
 
 ui|dialogpage.functionview-basic {
 
-    ui|field {
-        width: @functionsbasic-column-width;
-        border-radius: @base-border-radius;
-        border: 0;
-        padding: 0;
-        display: table;
-        overflow: visible;
-        position: relative;
-        -webkit-column-break-inside: avoid; /* Chrome, Safari, Opera */
-        page-break-inside: avoid; /* Firefox */
-        break-inside: avoid; /* IE 10+ */
-        @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
-            display: inline-block;
-        }
-        /* IE 10, 11 */
-    }
+	ui|field {
+		width: @functionsbasic-column-width;
+		border-radius: @base-border-radius;
+		border: 0;
+		padding: 0;
+		display: table;
+		overflow: visible;
+		position: relative;
+		-webkit-column-break-inside: avoid; /* Chrome, Safari, Opera */
+		page-break-inside: avoid; /* Firefox */
+		break-inside: avoid; /* IE 10+ */
+		@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+			display: inline-block;
+		}
+		/* IE 10, 11 */
+	}
 
 
-    ui|fieldgroup {
-        -webkit-column-width: @functionsbasic-column-width; /* Chrome, Safari, Opera */
-        -moz-column-width: @functionsbasic-column-width; /* Firefox */
-        column-width: @functionsbasic-column-width;
-        -moz-column-gap: @functionsbasic-column-gap;
-        -webkit-column-gap: @functionsbasic-column-gap;
-        column-gap: @functionsbasic-column-gap;
-    }
+	ui|fieldgroup {
+		-webkit-column-width: @functionsbasic-column-width; /* Chrome, Safari, Opera */
+		-moz-column-width: @functionsbasic-column-width; /* Firefox */
+		column-width: @functionsbasic-column-width;
+		-moz-column-gap: @functionsbasic-column-gap;
+		-webkit-column-gap: @functionsbasic-column-gap;
+		column-gap: @functionsbasic-column-gap;
+	}
 }
 
 .dialogsubpage {
-    height: auto;
-    min-height: 100%; /* IE relies on flexibility instead */
-    &.with-top-toolbar {
-        ui|toolbar {
-            padding-top: 0;
-            background: #fff;
-        }
-    }
+	height: auto;
+	min-height: 100%; /* IE relies on flexibility instead */
+	&.with-top-toolbar {
+		ui|toolbar {
+			padding-top: 0;
+			background: #fff;
+		}
+	}
 
-    ui|fieldgroup {
-        width: 100%;
-    }
+	ui|fieldgroup {
+		width: 100%;
+	}
 }
 
 
 ui|dialogborder {
-    position: absolute;
-    overflow: hidden;
-    z-index: 4;
+	position: absolute;
+	overflow: hidden;
+	z-index: 4;
 
-    &.n {
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 4px;
-    }
+	&.n {
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 4px;
+	}
 
-    &.s {
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 4px;
-    }
+	&.s {
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		height: 4px;
+	}
 
-    &.w {
-        top: 0;
-        left: 0;
-        width: 4px;
-        height: 100%;
-    }
+	&.w {
+		top: 0;
+		left: 0;
+		width: 4px;
+		height: 100%;
+	}
 
-    &.e {
-        top: 0;
-        right: 0;
-        width: 4px;
-        height: 100%;
-    }
+	&.e {
+		top: 0;
+		right: 0;
+		width: 4px;
+		height: 100%;
+	}
 }
 
 ui|dialog.resizable ui|dialogborder {
 
-    &.n {
-        cursor: n-resize;
-    }
+	&.n {
+		cursor: n-resize;
+	}
 
-    &.s {
-        cursor: s-resize;
-    }
+	&.s {
+		cursor: s-resize;
+	}
 
-    &.w {
-        cursor: w-resize;
-    }
+	&.w {
+		cursor: w-resize;
+	}
 
-    &.e {
-        cursor: e-resize;
-    }
+	&.e {
+		cursor: e-resize;
+	}
 }

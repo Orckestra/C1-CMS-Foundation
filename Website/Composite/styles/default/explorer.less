@@ -4,166 +4,166 @@ ui|explorertoolbar,
 ui|explorertoolbarbutton,
 ui|explorerbar,
 ui|explorerbarbutton {
-    display: block;
+	display: block;
 }
 
 .explorermenucover {
-    margin-left: @explorer-width;
-    display: none;
+	margin-left: @explorer-width;
+	display: none;
 }
 
 ui|explorer {
-    float: left;
+	float: left;
 }
 
 ui|explorermenu {
-    background: @explorer-bg-color;
-    float: left;
-    width: @explorer-width;
-    height: 100%;
-    overflow: hidden;
-    margin-bottom: -30px;
+	background: @explorer-bg-color;
+	float: left;
+	width: @explorer-width;
+	height: 100%;
+	overflow: hidden;
+	margin-bottom: -30px;
 
-    ui|toolbarbutton {
-        background: none !important;
-        filter: none;
-        color: @explorer-icon-color;
-        box-shadow: none;
-    }
+	ui|toolbarbutton {
+		background: none !important;
+		filter: none;
+		color: @explorer-icon-color;
+		box-shadow: none;
+	}
 
-    ui|toolbar {
-        border: none;
-    }
+	ui|toolbar {
+		border: none;
+	}
 
-    .logo {
-        padding: 10px 12px 21px 12px;
+	.logo {
+		padding: 10px 12px 21px 12px;
 
-        ui|labelbox {
-            color: #FFF;
-            position: relative;
-            padding: 0;
+		ui|labelbox {
+			color: #FFF;
+			position: relative;
+			padding: 0;
 
-            &:after {
-                position: absolute;
-                top: 6px;
-                left: 42px;
-                content: " ";
-                width: 109px;
-                height: 12px;
-                background: url("@{images-root-path}/C1_logo_text_small.svg") no-repeat top left;
-            }
-        }
+			&:after {
+				position: absolute;
+				top: 6px;
+				left: 42px;
+				content: " ";
+				width: 109px;
+				height: 12px;
+				background: url("@{images-root-path}/C1_logo_text_small.svg") no-repeat top left;
+			}
+		}
 
-        ui|labelbody {
-            color: @primary-color;
+		ui|labelbody {
+			color: @primary-color;
 
-            svg {
-                height: 25px !important;
-                width: 25px !important;
-            }
-        }
-    }
+			svg {
+				height: 25px !important;
+				width: 25px !important;
+			}
+		}
+	}
 
-    .menu-toggle {
-        margin-top: 8px;
+	.menu-toggle {
+		margin-top: 8px;
 
-        ui|labelbox {
-            padding: 0;
-        }
-    }
+		ui|labelbox {
+			padding: 0;
+		}
+	}
 }
 
 ui|explorerbody {
-    height: 100%;
-    overflow: hidden;
+	height: 100%;
+	overflow: hidden;
 }
 
 ui|explorertoolbar {
-    padding: 0;
+	padding: 0;
 
-    ui|toolbarbody, ui|toolbargroup {
-        float: none;
-    }
+	ui|toolbarbody, ui|toolbargroup {
+		float: none;
+	}
 
-    ui|toolbargroup {
-        margin: 0;
-        padding: 0;
-    }
+	ui|toolbargroup {
+		margin: 0;
+		padding: 0;
+	}
 }
 
 ui|explorertoolbarbutton {
-    filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale"); /* Firefox 10+, Firefox on Android */
-    filter: gray; /* IE6-9 */
-    filter: grayscale(100%); /* Chrome 19+, Safari 6+, Safari 6+ iOS */
-    &.hover, &.active {
-        filter: none;
-    }
+	filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale"); /* Firefox 10+, Firefox on Android */
+	filter: gray; /* IE6-9 */
+	filter: grayscale(100%); /* Chrome 19+, Safari 6+, Safari 6+ iOS */
+	&.hover, &.active {
+		filter: none;
+	}
 }
 
 ui|explorermenu ui|toolbarbutton,
 ui|explorertoolbarbutton {
-    float: left;
-    margin: 0;
-    padding: 21px 15px;
-    width: 100%;
-    border: none;
+	float: left;
+	margin: 0;
+	padding: 21px 15px;
+	width: 100%;
+	border: none;
 
-    ui|labelbody {
-        color: @explorer-icon-color;
-        text-transform: uppercase;
-        font-weight: bold;
-        font-family: Arial;
-    }
+	ui|labelbody {
+		color: @explorer-icon-color;
+		text-transform: uppercase;
+		font-weight: bold;
+		font-family: Arial;
+	}
 
-    ui|labelbox {
+	ui|labelbox {
 
-        &.image-and-text {
-            ui|labeltext {
-                margin-left: 38px;
-            }
-        }
-    }
+		&.image-and-text {
+			ui|labeltext {
+				margin-left: 38px;
+			}
+		}
+	}
 
-    ui|labeltext {
-        line-height: 24px;
-        font-weight: bold;
-        color: @explorer-text-color;
-    }
+	ui|labeltext {
+		line-height: 24px;
+		font-weight: bold;
+		color: @explorer-text-color;
+	}
 
-    &.active, &.hover {
-        border: none;
+	&.active, &.hover {
+		border: none;
 
-        ui|labelbody {
-            color: @explorer-text-active-color;
-        }
+		ui|labelbody {
+			color: @explorer-text-active-color;
+		}
 
-        ui|labeltext {
-            color: @explorer-text-active-color;
-        }
-    }
+		ui|labeltext {
+			color: @explorer-text-active-color;
+		}
+	}
 }
 
 ui|explorerdecks {
-    display: none;
+	display: none;
 }
 
 .exploler-expanded {
 
-    ui|explorermenu {
-        width: @explorer-expanded-width;
-    }
+	ui|explorermenu {
+		width: @explorer-expanded-width;
+	}
 
-    ui|stagecontainer {
-        padding-right: @explorer-expanded-width;
-        margin-right: -@explorer-expanded-width;
-    }
+	ui|stagecontainer {
+		padding-right: @explorer-expanded-width;
+		margin-right: -@explorer-expanded-width;
+	}
 
-    .system-toolbar {
-        left: @explorer-expanded-width !important;
-    }
+	.system-toolbar {
+		left: @explorer-expanded-width !important;
+	}
 
-    ui|cover.explorermenucover {
-        margin-left: @explorer-expanded-width;
-        display: block;
-    }
+	ui|cover.explorermenucover {
+		margin-left: @explorer-expanded-width;
+		display: block;
+	}
 }
