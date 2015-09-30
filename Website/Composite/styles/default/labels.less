@@ -1,96 +1,96 @@
 ui|labelbox, ui|labelbody {
-    display: block;
-    float: left;
+	display: block;
+	float: left;
 }
 
 ui|labelbox {
-    white-space: nowrap;
-    .user-select(none); /* See notes in DocumentManager.js */
-    max-width: 100%;
+	white-space: nowrap;
+	.user-select(none); /* See notes in DocumentManager.js */
+	max-width: 100%;
 
 
-    svg {
-        float: left;
-    }
+	svg {
+		float: left;
+	}
 
-    ui|labelbody {
-        margin-left: auto !important;
-        max-width: 100%;
-    }
+	ui|labelbody {
+		margin-left: auto !important;
+		max-width: 100%;
+	}
 
-    ui|labeltext {
-        display: block;
-        max-width: 100%;
-        overflow: hidden;
-    }
+	ui|labeltext {
+		display: block;
+		max-width: 100%;
+		overflow: hidden;
+	}
 
-    &.toolbartext {
-        margin-top: 4px;
-    }
+	&.toolbartext {
+		margin-top: 4px;
+	}
 
-    &.flipped {
-        ui|labelbody {
-            background-position: 100% 0;
-            padding-left: 0 !important;
-        }
+	&.flipped {
+		ui|labelbody {
+			background-position: 100% 0;
+			padding-left: 0 !important;
+		}
 
-        svg {
-            right: 8px;
-            position: absolute;
-        }
-    }
+		svg {
+			right: 8px;
+			position: absolute;
+		}
+	}
 
-    &.textonly {
+	&.textonly {
 
-        ui|labelbody {
-            padding-left: 0;
-        }
+		ui|labelbody {
+			padding-left: 0;
+		}
 
-        ui|labeltext {
-            padding-left: 0;
-        }
-    }
+		ui|labeltext {
+			padding-left: 0;
+		}
+	}
 
-    &.imageonly {
-        ui|labeltext {
-            display: none;
-        }
-    }
+	&.imageonly {
+		ui|labeltext {
+			display: none;
+		}
+	}
 
-    &.image-and-text {
+	&.image-and-text {
 
-        ui|labeltext {
-            margin-left: 28px;
-        }
+		ui|labeltext {
+			margin-left: 28px;
+		}
 
-        &.flipped {
-            ui|labelbody {
-                padding-right: 18px;
-            }
+		&.flipped {
+			ui|labelbody {
+				padding-right: 18px;
+			}
 
-            ui|labeltext {
-                margin-left: 0px;
-                margin-right: 6px;
-            }
-        }
-    }
+			ui|labeltext {
+				margin-left: 0px;
+				margin-right: 6px;
+			}
+		}
+	}
 
-    &.graytext ui|labeltext {
-        color: graytext;
-    }
+	&.graytext ui|labeltext {
+		color: graytext;
+	}
 }
 
 
 .imagesonly ui|labeltext {
-    display: none;
-    padding-left: 0 !important;
+	display: none;
+	padding-left: 0 !important;
 }
 
 
 ui|toolbarbutton.hover ui|labelbox svg g.hover {
-    visibility: visible;
+	visibility: visible;
 }
 
 ui|toolbarbutton.hover ui|labelbox svg g.default {
-    visibility: hidden;
+	visibility: hidden;
 }

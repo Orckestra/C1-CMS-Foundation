@@ -521,6 +521,7 @@
     <Content Include="Composite\images\icons\svg\student.svg" />
     <Content Include="Composite\images\icons\svg\cake.svg" />
     <Content Include="Composite\images\icons\svg\tablet-landscape.svg" />
+    <Content Include="Composite\images\logo.png" />
     <Content Include="Composite\images\touch-cursor.png" />
     <Content Include="Composite\scripts\source\top\core\ImageProvider.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\genericview\GenericViewBinding.js" />

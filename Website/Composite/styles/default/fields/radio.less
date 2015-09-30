@@ -1,68 +1,67 @@
 ui|radiodatagroup {
-    display: block;
-    margin-bottom: 3px;
-    padding: 2px;
-    padding-top: 4px;
-    margin-left: 3px;
+	display: block;
+	margin-bottom: 3px;
+	padding: 2px;
+	padding-top: 4px;
+	margin-left: 3px;
 }
 
 ui|radio {
-    display: block;
-    width: 100%;
-    padding-bottom: 1px;
-    padding-top: 1px;
+	display: block;
+	width: 100%;
+	padding-bottom: 1px;
+	padding-top: 1px;
 
-    ui|labelbody {
-        height: 20px;
-        padding-left: 18px;
-    }
+	ui|labelbody {
+		height: 20px;
+		padding-left: 18px;
+	}
 
-    ui|datalabeltext {
-        padding-top: 5px;
-        float: none;
-        margin-left :18px;
-    }
+	ui|datalabeltext {
+		padding-top: 5px;
+		float: none;
+		margin-left: 18px;
+	}
 
-    &.disabled {
-        color: @gray-color;
-    }
+	&.disabled {
+		color: @gray-color;
+	}
 }
 
 ui|radiobutton {
 
-    ui|labelbody {
-        position: relative;
+	ui|labelbody {
+		position: relative;
 
-        &:before {
-            box-sizing: border-box;
-            content: '';
-            position: absolute;
-            width: 16px;
-            height: 16px;
-            border: 1px solid @field-border-color;
-            border-radius: 8px;
-            left: 0px;
-            top: 4px;
-            background: #FFFFFF;
-        }
-    }
+		&:before {
+			box-sizing: border-box;
+			content: '';
+			position: absolute;
+			width: 16px;
+			height: 16px;
+			border: 1px solid @field-border-color;
+			border-radius: 8px;
+			left: 0px;
+			top: 4px;
+			background: #FFFFFF;
+		}
+	}
 
-    &.hover {
-        ui|labelbody:before {
-            border-color: @primary-color;
-        }
-    }
+	&.hover {
+		ui|labelbody:before {
+			border-color: @primary-color;
+		}
+	}
 
-    &[ischecked='true'] ui|labelbody:after {
-        content: '';
-        position: absolute;
-        width: 8px;
-        height: 8px;
-        border-radius: 4px;
-        background: @primary-color;
-        ;
-        left: 4px;
-        top: 8px;
-    }
+	&[ischecked='true'] ui|labelbody:after {
+		content: '';
+		position: absolute;
+		width: 8px;
+		height: 8px;
+		border-radius: 4px;
+		background: @primary-color;
+		;
+		left: 4px;
+		top: 8px;
+	}
 }
-

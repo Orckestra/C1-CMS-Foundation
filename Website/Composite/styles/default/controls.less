@@ -1,37 +1,37 @@
 ﻿ui|controlgroup, ui|control {
-    position: absolute;
-    display: block;
+	position: absolute;
+	display: block;
 }
 
 ui|controlgroup {
-    right: 0;
-    top: 0;
+	right: 0;
+	top: 0;
 }
 
 ui|control {
 
-    &[controltype="close"] {
-        right: 30px;
-        top: 7px;
+	&[controltype="close"] {
+		right: 30px;
+		top: 7px;
 
-        ui|labelbody {
+		ui|labelbody {
 
-            &:after {
-                content: '\00d7';
-                position: absolute;
-                width: 15px;
-                height: 15px;
-                color: @base-border-color;
-                font-size: 20px;
-                line-height: 15px;
-                font-weight: bold;
-            }
-        }
+			&:after {
+				content: '\00d7';
+				position: absolute;
+				width: 15px;
+				height: 15px;
+				color: @base-border-color;
+				font-size: 20px;
+				line-height: 15px;
+				font-weight: bold;
+			}
+		}
 
-        &.hover {
-            ui|labelbody:after {
-                color: darken(@base-border-color, 50%);
-            }
-        }
-    }
+		&.hover {
+			ui|labelbody:after {
+				color: darken(@base-border-color, 50%);
+			}
+		}
+	}
 }

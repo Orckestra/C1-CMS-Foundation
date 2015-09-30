@@ -1,123 +1,123 @@
 
-    ui|selection,
-    ui|selector input {
-        display: none;
-    }
+ui|selection,
+ui|selector input {
+	display: none;
+}
 
 ui|selector {
-    display: block;
+	display: block;
 
-    ui|clickbutton {
-        float: none;
-        margin: 0;
+	ui|clickbutton {
+		float: none;
+		margin: 0;
 
-        ui|labelbox {
-            padding: 6px 30px 8px 11px;
-            border-color: @field-border-color;
-            text-transform: none;
-            color: @btn-toolbar-color;
+		ui|labelbox {
+			padding: 6px 30px 8px 11px;
+			border-color: @field-border-color;
+			text-transform: none;
+			color: @btn-toolbar-color;
 
-            &:before, &:after {
-                content: "";
-                position: absolute;
-                width: 0;
-                height: 0;
-                border-style: solid;
-            }
+			&:before, &:after {
+				content: "";
+				position: absolute;
+				width: 0;
+				height: 0;
+				border-style: solid;
+			}
 
-            &:before {
-                top: 12px;
-                right: 10px;
-                border-width: 5px 5px 0 5px;
-                border-color: @btn-border-color transparent transparent transparent;
-            }
+			&:before {
+				top: 12px;
+				right: 10px;
+				border-width: 5px 5px 0 5px;
+				border-color: @btn-border-color transparent transparent transparent;
+			}
 
-            &:after {
-                top: 12px;
-                right: 11px;
-                border-width: 4px 4px 0 4px;
-                border-color: @btn-bg-color transparent transparent transparent;
-            }
-        }
+			&:after {
+				top: 12px;
+				right: 11px;
+				border-width: 4px 4px 0 4px;
+				border-color: @btn-bg-color transparent transparent transparent;
+			}
+		}
 
-        &.hover {
+		&.hover {
 
-            ui|labelbox:before {
-                border-color: @btn-hover-border-color transparent transparent transparent;
-            }
+			ui|labelbox:before {
+				border-color: @btn-hover-border-color transparent transparent transparent;
+			}
 
-            ui|labelbox:after {
-                border-color: @btn-hover-bg-color transparent transparent transparent;
-            }
-        }
+			ui|labelbox:after {
+				border-color: @btn-hover-bg-color transparent transparent transparent;
+			}
+		}
 
-        &.active {
-            ui|labelbox:before {
-                top: 12px;
-                border-width: 0px 5px 5px 5px;
-                border-color: transparent transparent @btn-hover-border-color transparent;
-            }
+		&.active {
+			ui|labelbox:before {
+				top: 12px;
+				border-width: 0px 5px 5px 5px;
+				border-color: transparent transparent @btn-hover-border-color transparent;
+			}
 
-            ui|labelbox:after {
-                top: 13px;
-                border-width: 0px 4px 4px 4px;
-                border-color: transparent transparent @btn-hover-bg-color transparent;
-            }
-        }
+			ui|labelbox:after {
+				top: 13px;
+				border-width: 0px 4px 4px 4px;
+				border-color: transparent transparent @btn-hover-bg-color transparent;
+			}
+		}
 
-        &.infobox {
-            ui|clickbutton ui|labeltext {
-                font-style: italic;
-            }
-        }
-    }
+		&.infobox {
+			ui|clickbutton ui|labeltext {
+				font-style: italic;
+			}
+		}
+	}
 }
 
 
 ui|fields ui|field.fieldhelp ui|selector ui|clickbutton ui|labelbox {
-    overflow: hidden;
-    float: none;
+	overflow: hidden;
+	float: none;
 }
 
 /* SIMPLESELECTORS ............................................ */
 
 ui|simpleselector {
-    display: block;
-    position: relative;
-    overflow: visible;
+	display: block;
+	position: relative;
+	overflow: visible;
 }
 
 
 /* MULTISELECTORS ............................................. */
 
 ui|multiselector {
-    padding: 0;
+	padding: 0;
 
-    ui|box {
-        display: block;
-        height: 100px;
-        .user-select(none);
-        padding: 5px 0 5px 0;
-        overflow: auto;
+	ui|box {
+		display: block;
+		height: 100px;
+		.user-select(none);
+		padding: 5px 0 5px 0;
+		overflow: auto;
 
-        div {
-            padding: 1px 5px 2px 7px;
-            width: 100%;
+		div {
+			padding: 1px 5px 2px 7px;
+			width: 100%;
 
-            &.selected {
-                background: @primary-color;
-                color: #FFF;
-            }
-        }
-    }
+			&.selected {
+				background: @primary-color;
+				color: #FFF;
+			}
+		}
+	}
 
-    input {
-        display: none;
-    }
+	input {
+		display: none;
+	}
 
-    ui|datadialog, ui|postbackdialog {
-        padding: 1px 0 2px 0;
-    }
+	ui|datadialog, ui|postbackdialog {
+		padding: 1px 0 2px 0;
+	}
 }
 
 /* DATAINPUTSELECTORS ......................................... */
@@ -125,45 +125,45 @@ ui|datainputselector,
 ui|datainputdialog,
 ui|datainputbutton,
 ui|urlinputdialog {
-    display: block;
-    position: relative;
+	display: block;
+	position: relative;
 
-    ui|toolbarbutton {
-        margin: 0;
-        padding: 5px;
-        border: none;
-        position: absolute;
-        right: 3px;
-        top: 3px;
+	ui|toolbarbutton {
+		margin: 0;
+		padding: 5px;
+		border: none;
+		position: absolute;
+		right: 3px;
+		top: 3px;
 
-        ui|labelbox {
-            padding: 0px;
-        }
-    }
-
+		ui|labelbox {
+			padding: 0px;
+		}
+	}
 }
 
 
 ui|datainputselector {
-    &.with-image {
-        input {
-           padding-left: 30px;
-        }
+	&.with-image {
+		input {
+			padding-left: 30px;
+		}
 
-        ui|box ui|labelbox {
-            position: absolute;
-            left: 8px;
-            top: 8px;
-        }
-    }
+		ui|box ui|labelbox {
+			position: absolute;
+			left: 8px;
+			top: 8px;
+		}
+	}
 }
+
 ui|field.fieldhelp ui|fielddata {
-    position: relative;
+	position: relative;
 }
 
-    ui|field.fieldhelp ui|fielddata ui|datainputselector input,
-    ui|field.fieldhelp ui|fielddata ui|datainputdialog input,
-    ui|field.fieldhelp ui|fielddata ui|datainputbutton input,
-    ui|field.fieldhelp ui|fielddata ui|urlinputdialog input {
-        width: 100%;
-    }
+ui|field.fieldhelp ui|fielddata ui|datainputselector input,
+ui|field.fieldhelp ui|fielddata ui|datainputdialog input,
+ui|field.fieldhelp ui|fielddata ui|datainputbutton input,
+ui|field.fieldhelp ui|fielddata ui|urlinputdialog input {
+	width: 100%;
+}

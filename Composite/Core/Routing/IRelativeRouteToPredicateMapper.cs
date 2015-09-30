@@ -5,13 +5,17 @@ using System.Linq.Expressions;
 
 namespace Composite.Core.Routing
 {
+    /// <exclude />
     public class RelativeRoute
     {
+        /// <exclude />
         public string[] PathSegments { get; set; }
+
+        /// <exclude />
         public NameValueCollection QueryString { get; set; }
     }
 
-
+    /// <exclude />
     public interface IRelativeRouteToPredicateMapper
     {
         /// <summary>
@@ -20,6 +24,7 @@ namespace Composite.Core.Routing
         int PathSegmentsCount { get; }
     }
 
+    /// <exclude />
     public interface IRelativeRouteToPredicateMapper<T> : IRelativeRouteToPredicateMapper
     {
         /// <summary>

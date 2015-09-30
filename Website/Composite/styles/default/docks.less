@@ -8,9 +8,9 @@
  * showing the dock overlaying other stuff. 
  */
 ui|dock {
-    display: block;
-    overflow: hidden;
-    /*
+	display: block;
+	overflow: hidden;
+	/*
 	#region ie
 		position: absolute;
 		top: 0;
@@ -19,131 +19,134 @@ ui|dock {
 		heigth: 100%;
 	#endregion
         */
-    &.editors {
-        border-radius: 5px 0 0 0;
-        box-shadow: inset 0px 0px 0px 1px rgba(204,204,204,1);
-        background: #fff;
-    }
+	&.editors {
+		border-radius: 5px 0 0 0;
+		box-shadow: inset 0px 0px 0px 1px rgba(204,204,204,1);
+		background: #fff;
+	}
 }
 
 ui|docktabs {
-    display: block;
-    position: relative !important;
-    overflow: hidden;
-    box-shadow: inset 0px -1px 0px 0px rgba(204,204,204,1);
-    padding: 10px 10px 0 10px;
-    background: #EFEFEF;
+	display: block;
+	position: relative !important;
+	overflow: hidden;
+	box-shadow: inset 0px -1px 0px 0px rgba(204,204,204,1);
+	padding: 10px 10px 0 10px;
+	background: #EFEFEF;
 
-    ui|toolbarbutton {
-        position: relative;
-    }
+	ui|toolbarbutton {
+		position: relative;
+	}
 }
 
 ui|docktab {
-    display: block;
-    float: left;
-    position: relative;
-    white-space: nowrap;
-    bottom: -100px; /* adjusted by script */
-    border: solid 1px #ddd;
-    border-radius: 5px 5px 0 0;
-    background: #fff;
-    z-index: 2;
-    margin-right: -4px;
-    text-transform: uppercase;
-    padding: 10px 30px 10px 19px;
+	display: block;
+	float: left;
+	position: relative;
+	white-space: nowrap;
+	bottom: -100px; /* adjusted by script */
+	border: solid 1px #ddd;
+	border-radius: 5px 5px 0 0;
+	background: #fff;
+	z-index: 2;
+	margin-right: -4px;
+	text-transform: uppercase;
+	padding: 10px 30px 10px 19px;
 
 
-    .closecontrol {
-        top: 12px;
-        right: 20px;
+	.closecontrol {
+		top: 12px;
+		right: 20px;
 
-        ui|labelbody:after {
-            font-weight: normal;
-            font-size: 12px;
-            line-height: 9px;
-            text-align: center;
-            color: #fff;
-            background: #D5D5D5;
-            width: 11px;
-            height: 11px;
-            border-radius: 50%;
-        }
+		ui|labelbody:after {
+			font-weight: normal;
+			font-size: 12px;
+			line-height: 9px;
+			text-align: center;
+			color: #fff;
+			background: #D5D5D5;
+			width: 11px;
+			height: 11px;
+			border-radius: 50%;
+		}
 
-        &.hover {
-            ui|labelbody:after {
-                background: #ABABAB;
-                color: #fff;
-            }
-        }
-    }
+		&.hover {
+			ui|labelbody:after {
+				background: #ABABAB;
+				color: #fff;
+			}
+		}
+	}
 
 
-    ui|labelbox {
-        color: #ADADAD;
-    }
+	ui|labelbox {
+		color: #ADADAD;
+	}
 
-    ui|labeltext {
-        position: relative;
-        width: 110px;
-        overflow: hidden;
-        font-family: @heading-font-family;
-        font-size: 13px;
-    }
+	ui|labeltext {
+		position: relative;
+		width: 110px;
+		overflow: hidden;
+		font-family: @heading-font-family;
+		font-size: 13px;
+	}
 
-    &.selected {
-        z-index: 3;
-        border-color: @base-border-color @base-border-color transparent @base-border-color;
+	&.selected {
+		z-index: 3;
+		border-color: @base-border-color @base-border-color transparent @base-border-color;
 
-        ui|labelbody {
-            color: @primary-color;
-        }
-    }
+		ui|labelbody {
+			color: @primary-color;
+		}
+	}
 
-    .default ui|controlgroup {
-        display: none;
-    }
+	.default ui|controlgroup {
+		display: none;
+	}
 }
 
 
 ui|dockpanels {
-    display: block;
-    height: 100%;
-    clear: both;
-    overflow: hidden;
-    width: auto;
+	display: block;
+	height: 100%;
+	clear: both;
+	overflow: hidden;
+	width: auto;
 }
 
 ui|dockpanel { /* styles comparable to deck - please coordinate all changes! */
-    display: block;
-    height: 100%;
-    clear: both;
-    overflow: hidden;
-    position: absolute;
-    top: -10000px;
+	display: block;
+	height: 100%;
+	clear: both;
+	overflow: hidden;
+	position: absolute;
+	top: -10000px;
 }
 
 
 /* EDITORS DOCK .......................... */
 ui|splitpanel.editors {
-    box-shadow: inset 0px 5px 0px 0px rgba(51,51,51,1);
+	box-shadow: inset 0px 5px 0px 0px rgba(51,51,51,1);
 }
 
 /* START DOCK ............................ */
 
 ui|dock.start {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width:100%;
-    height: 100%;
-    ui|docktab {
-        display: none;
-    }
-    ui|docktabs ui|controlgroup {
-        display: none;
-    }
-    ui|docktabs {
-        height: 2px;
-    }
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+
+	ui|docktab {
+		display: none;
+	}
+
+	ui|docktabs ui|controlgroup {
+		display: none;
+	}
+
+	ui|docktabs {
+		height: 2px;
+	}
 }

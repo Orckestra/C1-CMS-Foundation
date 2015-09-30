@@ -28,7 +28,7 @@
                 <div id="credits">
                     <div id="roll">
                         <a href="http://www.composite.net/" target="wwwcompositenet">
-                            <div class="logo" id="logo1" ><img alt="logo" src='<%= Composite.Core.WebClient.UrlUtils.AdminRootPath + "/images/C1_logo.svg"%>' /></div>
+                            <div class="logo" id="logo1" ></div>
                         </a>
                         <h2>Visual Editor</h2>
                         <p>
@@ -46,7 +46,7 @@
                             <a href="http://phantomjs.org/" title="Visit PhantomJS" target="_blank">PhantomJS</a>
                         </p>
                         <div id="names" />
-                        <div class="logo" id="logo2"><img alt="logo" src='<%= Composite.Core.WebClient.UrlUtils.AdminRootPath + "/images/C1_logo.svg"%>' /></div>
+                        <div class="logo" id="logo2"></div>
                     </div>
                 </div>
                  <div id="fade"></div>

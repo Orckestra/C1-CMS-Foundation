@@ -5,18 +5,38 @@ using Composite.Core.Routing;
 
 namespace Composite.Data
 {
+    /// <summary>
+    /// Describes which data format should be used while building a data url segment
+    /// </summary>
     public enum DateSegmentFormat
     {
+        /// <exclude />
         Undefined = 0,
+        /// <summary>
+        /// Date url segment: '/Year'
+        /// </summary>
         Year = 1,
+        /// <summary>
+        /// Date url segments: '/Year/Month'
+        /// </summary>
         YearMonth = 2,
+        /// <summary>
+        /// Date url segments: '/Year/Month/Day'
+        /// </summary>
         YearMonthDay = 3
     }
 
+
+    /// <summary>
+    /// Makes the data type property of type <see cref="DateTime"/> field appear in data url.
+    /// </summary>
     public sealed class RouteDateSegmentAttribute : RouteSegmentAttribute
     {
         private readonly DateSegmentFormat _format;
 
+        /// <summary>
+        /// Makes the data type property of type <see cref="DateTime"/> field appear in data url.
+        /// </summary>
         public RouteDateSegmentAttribute(int order, DateSegmentFormat format = DateSegmentFormat.YearMonthDay)
             : base(order)
         {
@@ -28,6 +48,7 @@ namespace Composite.Data
             _format = format;
         }
 
+        /// <exclude />
         public override IRelativeRouteToPredicateMapper BuildMapper(PropertyInfo propertyInfo)
         {
             Verify.That(propertyInfo.PropertyType == typeof(DateTime), 

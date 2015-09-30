@@ -409,13 +409,6 @@ namespace Composite.Data.GeneratedTypes
 
 
         /// <exclude />
-        //public void SetKeyFieldType(KeyFieldType keyFieldType)
-        //{
-        //    _keyFieldType = keyFieldType;
-        //}
-
-
-        /// <exclude />
         public void SetNewTypeFullName(string typeName, string typeNamespace)
         {
             Verify.ArgumentNotNullOrEmpty(typeName, "typeName");

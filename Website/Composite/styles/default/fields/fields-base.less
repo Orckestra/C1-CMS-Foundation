@@ -1,255 +1,259 @@
 ui|datacollectorset,
 ui|datacollector {
-    position: absolute;
-    visibility: hidden;
+	position: absolute;
+	visibility: hidden;
 }
 
 ui|fields {
-    display: none; /* adjusted by FieldsBinding.js */
-    position: relative; /* mostly because it fixes an ie bug where fieldgroup captions would hang on tabpanel changes */
+	display: none; /* adjusted by FieldsBinding.js */
+	position: relative; /* mostly because it fixes an ie bug where fieldgroup captions would hang on tabpanel changes */
 }
 
 ui|fieldgroup {
-    width: 100%;
-    display: block;
-    padding: 0px 0px 30px 0px;
+	width: 100%;
+	display: block;
+	padding: 0px 0px 30px 0px;
 
-    .fieldgrouplabel {
-        color: @heading-h1-color;
-        text-transform: uppercase;
-        font-style: italic;
-        font-size: 14px;
-        font-family: @heading-font-family;
-        margin-top: 0px;
-        margin-bottom: 18px;
+	.fieldgrouplabel {
+		color: @heading-h1-color;
+		text-transform: uppercase;
+		font-style: italic;
+		font-size: 14px;
+		font-family: @heading-font-family;
+		margin-top: 0px;
+		margin-bottom: 18px;
 
-        ui|labeltext {
-            padding-right: 5px;
-        }
+		ui|labeltext {
+			padding-right: 5px;
+		}
 
-        ui|labelbody {
-            float: left;
-        }
-    }
+		ui|labelbody {
+			float: left;
+		}
+	}
 
-    &:last-child {
-        padding-bottom: 0;
-    }
+	&:last-child {
+		padding-bottom: 0;
+	}
 }
 
 ui|fielddesc {
-    display: block;
-    padding: 8px 0 5px 5px;
-    white-space: normal;
-    .user-select(none);
-    color: @field-label-color;
+	display: block;
+	padding: 8px 0 5px 5px;
+	white-space: normal;
+	.user-select(none);
+	color: @field-label-color;
 }
 
 ui|field {
-    display: block;
-    margin: 0;
-    clear: both;
-    padding: 0;
+	display: block;
+	margin: 0;
+	clear: both;
+	padding: 0;
 
-    &.fieldhelp {
-        ui|fielddata {
-            margin-right: 30px;
+	&.fieldhelp {
+		ui|fielddata {
+			margin-right: 30px;
 
-            input, select, textarea, ui|simpleselector select {
-                width: 100%;
-            }
-        }
-    }
+			input, select, textarea, ui|simpleselector select {
+				width: 100%;
+			}
+		}
+	}
 
-    &.nodesc ui|fielddata {
-        width: auto;
-        float: none;
-    }
+	&.nodesc ui|fielddata {
+		width: auto;
+		float: none;
+	}
 }
 
 ui|editorpage {
 
-    ui|fields {
-        -webkit-column-width: 430px; /* Chrome, Safari, Opera */
-        -moz-column-width: 430px; /* Firefox */
-        column-width: 430px;
-    }
+	ui|fields {
+		-webkit-column-width: 430px; /* Chrome, Safari, Opera */
+		-moz-column-width: 430px; /* Firefox */
+		column-width: 430px;
+	}
 
-    ui|fieldgroup {
-        width: 430px;
-        display: table;
-        overflow: visible;
-        position: relative;
-        -webkit-column-break-inside: avoid; /* Chrome, Safari, Opera */
-        page-break-inside: avoid; /* Firefox */
-        break-inside: avoid; /* IE 10+ */
-
-        @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
-           display: inline-block; 
-        }  /* IE 10, 11 */
-    }
+	ui|fieldgroup {
+		width: 430px;
+		display: table;
+		overflow: visible;
+		position: relative;
+		-webkit-column-break-inside: avoid; /* Chrome, Safari, Opera */
+		page-break-inside: avoid; /* Firefox */
+		break-inside: avoid; /* IE 10+ */
+		@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) { /* IE 10, 11 */
+			display: inline-block;
+		}
+	}
 }
 
+@supports (-ms-accelerator:true) { /* Edge Browser for Windows 10 */
+	ui|editorpage ui|fieldgroup {
+		display: inline-block;
+	}
+}
 
-    ui|fieldgroup.boxed, ui|editorpage ui|fieldgroup {
+ui|fieldgroup.boxed, ui|editorpage ui|fieldgroup {
 
-        ui|field {
-            width: 430px;
-            border: solid 1px @fields-group-border-color;
-            border-width: 0 1px;
-            background: @fields-group-bg-color;
-            padding: 0 17px;
+	ui|field {
+		width: 430px;
+		border: solid 1px @fields-group-border-color;
+		border-width: 0 1px;
+		background: @fields-group-bg-color;
+		padding: 0 17px;
 
-            &.first {
-                padding-top: 8px;
-                border-top-width: 1px;
-                border-top-left-radius: @base-border-radius;
-                border-top-right-radius: @base-border-radius;
-            }
+		&.first {
+			padding-top: 8px;
+			border-top-width: 1px;
+			border-top-left-radius: @base-border-radius;
+			border-top-right-radius: @base-border-radius;
+		}
 
-            &.last, &:last-of-type {
-                padding-bottom: 25px;
-                border-bottom-width: 1px;
-                border-bottom-left-radius: @base-border-radius;
-                border-bottom-right-radius: @base-border-radius;
-            }
-        }
-    }
+		&.last, &:last-of-type {
+			padding-bottom: 25px;
+			border-bottom-width: 1px;
+			border-bottom-left-radius: @base-border-radius;
+			border-bottom-right-radius: @base-border-radius;
+		}
+	}
+}
 
 ui|fieldhelp {
-    overflow: visible;
-    float: right;
-    position: relative;
+	overflow: visible;
+	float: right;
+	position: relative;
 
-    ui|clickbutton.fieldhelp {
+	ui|clickbutton.fieldhelp {
 
-        ui|labelbox {
-            border-color: transparent;
-            background: transparent !important;
-        }
+		ui|labelbox {
+			border-color: transparent;
+			background: transparent !important;
+		}
 
-        &:after {
-            content: "?";
-            width: 16px;
-            height: 16px;
-            color: white;
-            position: absolute;
-            top: 4px;
-            left: 4px;
-            background: #CDCDCF;
-            border-radius: 8px;
-            font-size: 11px;
-            text-align: center;
-            line-height: 16px;
-            font-weight: normal;
-            font-family: Verdana;
-        }
+		&:after {
+			content: "?";
+			width: 16px;
+			height: 16px;
+			color: white;
+			position: absolute;
+			top: 4px;
+			left: 4px;
+			background: #CDCDCF;
+			border-radius: 8px;
+			font-size: 11px;
+			text-align: center;
+			line-height: 16px;
+			font-weight: normal;
+			font-family: Verdana;
+		}
 
-        &.active, &.hover {
-            &:after {
-                background: #808080;
-            }
-        }
-    }
+		&.active, &.hover {
+			&:after {
+				background: #808080;
+			}
+		}
+	}
 }
 
 ui|clickbutton {
-    &.fieldhelp { /* width and height needed for explorer vanishing dysfunction */
-        margin: 0;
-        top: 2px;
-        right: 2px;
-        position: absolute;
-        width: 20px;
-        height: 26px;
+	&.fieldhelp { /* width and height needed for explorer vanishing dysfunction */
+		margin: 0;
+		top: 2px;
+		right: 2px;
+		position: absolute;
+		width: 20px;
+		height: 26px;
 
-        ui|labelbox {
-            padding: 0;
-        }
-    }
+		ui|labelbox {
+			padding: 0;
+		}
+	}
 }
 
 ui|fieldsbutton ui|clickbutton {
-    float: none;
-    margin: 2px 0 10px 0;
+	float: none;
+	margin: 2px 0 10px 0;
 
-    ui|labelbox {
-        border-color: @field-border-color;
-        color: @text-color;
-    }
+	ui|labelbox {
+		border-color: @field-border-color;
+		color: @text-color;
+	}
 }
 
 .options-filedgroup { // usage: FunctionCallEditor - Advanced View
-    ui|clickbutton {
+	ui|clickbutton {
 
-        ui|labelbox {
-            padding-left: 28px;
-        }
-    }
+		ui|labelbox {
+			padding-left: 28px;
+		}
+	}
 
-    [isdisabled="true"], .isdisabled, .selected {
-        opacity: 1 !important;
-    }
+	[isdisabled="true"], .isdisabled, .selected {
+		opacity: 1 !important;
+	}
 
-    .selected, .isdisabled { //so the 'FunctionCallEditor - Advanced View' is using isdisabled to signal selection, which is lame
-
-        &:after {
-            content: "\2713";
-            font-size: 16px;
-            font-weight: bold;
-            position: absolute;
-            top: 4px;
-            left: 10px;
-            color: @primary-color;
-        }
-    }
+	.selected, .isdisabled { //so the 'FunctionCallEditor - Advanced View' is using isdisabled to signal selection, which is lame
+		&:after {
+			content: "\2713";
+			font-size: 16px;
+			font-weight: bold;
+			position: absolute;
+			top: 4px;
+			left: 10px;
+			color: @primary-color;
+		}
+	}
 }
 
 ui|popup.fieldhelppopup {
-    min-width: 220px;
+	min-width: 220px;
 }
 
 ui|fielddata {
-    display: block;
-    position: relative; /* because of strange fieldhelp setup for exploder */
-    padding-bottom: 5px;
-    input, select, textarea {
-        width: 100%;
-        padding: 0;
-        margin: 0;
-        border: none;
-        display: block;
-    }
+	display: block;
+	position: relative; /* because of strange fieldhelp setup for exploder */
+	padding-bottom: 5px;
 
-    input, textarea {
-        &.warning {
-            font-weight: bold;
-            color: @field-error-color;
-        }
-    }
+	input, select, textarea {
+		width: 100%;
+		padding: 0;
+		margin: 0;
+		border: none;
+		display: block;
+	}
 
-    .disabled, .readonly {
-        input, textarea {
-            cursor: default;
-            background-color: @field-readonly-bg-color;
-        }
-    }
+	input, textarea {
+		&.warning {
+			font-weight: bold;
+			color: @field-error-color;
+		}
+	}
 
-    .disabled {
+	.disabled, .readonly {
+		input, textarea {
+			cursor: default;
+			background-color: @field-readonly-bg-color;
+		}
+	}
 
-        input, textarea {
-            .user-select(none);
-            -moz-user-focus: none;
-            user-focus: none;
-        }
-    }
+	.disabled {
 
-    input {
-        padding: 5px 0 0 7px;
-    }
+		input, textarea {
+			.user-select(none);
+			-moz-user-focus: none;
+			user-focus: none;
+		}
+	}
+
+	input {
+		padding: 5px 0 0 7px;
+	}
 }
 
 ui|datainput {
-    display: block;
+	display: block;
 }
 
 ui|datainput,
@@ -265,52 +269,52 @@ ui|datadialog,
 ui|postbackdialog,
 ui|htmldatadialog,
 ui|editortextbox {
-    padding: 2px;
+	padding: 2px;
 
-    input {
-        border: none;
-    }
+	input {
+		border: none;
+	}
 
-    ui|box {
-        border: 1px solid @field-border-color;
-        border-radius: @field-border-radius;
-        background-color: @field-bg-color;
-        height: 32px;
-        overflow: hidden;
-    }
+	ui|box {
+		border: 1px solid @field-border-color;
+		border-radius: @field-border-radius;
+		background-color: @field-bg-color;
+		height: 32px;
+		overflow: hidden;
+	}
 
-    &.disabled, &.readonly {
+	&.disabled, &.readonly {
 
-        ui|box, ui|box input, ui|toolbarbutton {
-            background-color: @field-readonly-bg-color;
-        }
-    }
+		ui|box, ui|box input, ui|toolbarbutton {
+			background-color: @field-readonly-bg-color;
+		}
+	}
 
-    &.invalid {
-        ui|box {
-            border-color: @field-error-color;
-        }
+	&.invalid {
+		ui|box {
+			border-color: @field-error-color;
+		}
 
-        ui|labeltext {
-            font-weight: bold;
-            border-color: @field-error-color;
-        }
-    }
+		ui|labeltext {
+			font-weight: bold;
+			border-color: @field-error-color;
+		}
+	}
 }
 
 /* EXOTIC STUFF ................................... */
 
 ui|nullpostbackdatadialog {
-    display: block;
+	display: block;
 }
 
 
 ui|datalabeltext {
-    display: block;
-    float: left;
-    padding-left: 5px;
-    padding-top: 2px;
-    .user-select(none); /* See notes in DocumentManager.js */
+	display: block;
+	float: left;
+	padding-left: 5px;
+	padding-top: 2px;
+	.user-select(none); /* See notes in DocumentManager.js */
 }
 
 
@@ -318,20 +322,20 @@ ui|datalabeltext {
 /* TOOLBARS ........................................................... */
 
 ui|toolbar ui|field {
-    margin: 0;
-    float: left;
+	margin: 0;
+	float: left;
 }
 
 ui|toolbar ui|fielddesc,
 ui|toolbar ui|fielddata {
-    float: left;
-    width: auto;
+	float: left;
+	width: auto;
 }
 
-    ui|toolbar ui|fielddata input,
-    ui|toolbar ui|fielddata select {
-        width: 100px;
-    }
+ui|toolbar ui|fielddata input,
+ui|toolbar ui|fielddata select {
+	width: 100px;
+}
 
 ui|fields ui|datadialog ui|clickbutton ui|labeltext,
 ui|fields ui|postbackdialog ui|clickbutton ui|labeltext,
@@ -340,6 +344,6 @@ ui|fields ui|datainputdialog ui|clickbutton ui|labeltext,
 ui|fields ui|datainputbutton ui|clickbutton ui|labeltext,
 ui|fields ui|urlinputdialog ui|clickbutton ui|labeltext,
 ui|fields ui|selector ui|clickbutton ui|labeltext {
-    overflow: hidden;
-    text-overflow: ellipsis;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }

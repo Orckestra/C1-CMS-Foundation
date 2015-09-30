@@ -1,101 +1,101 @@
 ﻿.genericview {
 
-    ui|treebody {
-        padding: 30px;
-    }
+	ui|treebody {
+		padding: 30px;
+	}
 
-    ui|treenode {
-        float: left;
-        clear: none;
-        padding: 0 8px 40px 0;
-    }
+	ui|treenode {
+		float: left;
+		clear: none;
+		padding: 0 8px 40px 0;
+	}
 
-    ui|labelbox, ui|labelbody, ui|labeltext {
-        float: none;
-        padding: 0;
-        margin: 0;
-        height: auto;
-    }
+	ui|labelbox, ui|labelbody, ui|labeltext {
+		float: none;
+		padding: 0;
+		margin: 0;
+		height: auto;
+	}
 
-    svg {
-        float: none;
-        margin: 0 auto;
-    }
+	svg {
+		float: none;
+		margin: 0 auto;
+	}
 
 
-    ui|labelbox {
-        width: 300px;
-        height: 195px;
-        text-align: center;
-        overflow: hidden;
+	ui|labelbox {
+		width: 300px;
+		height: 195px;
+		text-align: center;
+		overflow: hidden;
 
-        &:before, &:after {
-            display: none;
-        }
+		&:before, &:after {
+			display: none;
+		}
 
-        &.focused {
-            ui|labeltext {
-                background-color: transparent;
-                color: @primary-color;
-            }
-        }
+		&.focused {
+			ui|labeltext {
+				background-color: transparent;
+				color: @primary-color;
+			}
+		}
 
-        &.image-and-text ui|labeltext {
-            margin-left: 0;
-            float: none;
-        }
+		&.image-and-text ui|labeltext {
+			margin-left: 0;
+			float: none;
+		}
 
-        ui|labeltext {
-            position: absolute;
-            bottom: -3px;
-            left: 0;
-            right: 0;
-            text-align: center;
-        }
+		ui|labeltext {
+			position: absolute;
+			bottom: -3px;
+			left: 0;
+			right: 0;
+			text-align: center;
+		}
 
-        &[image^="/"] {
-            ui|labelbody {
-                padding-top: 170px;
-                background-position: 50% 50%;
-            }
-        }
-    }
+		&[image^="/"] {
+			ui|labelbody {
+				padding-top: 170px;
+				background-position: 50% 50%;
+			}
+		}
+	}
 
-    ui|labelbody {
-        width: 100%;
-        background-position: top center;
-        background-repeat: no-repeat;
-    }
+	ui|labelbody {
+		width: 100%;
+		background-position: top center;
+		background-repeat: no-repeat;
+	}
 
-    &.single {
-        ui|treenode {
-            float: none;
-            height: 100%;
-        }
+	&.single {
+		ui|treenode {
+			float: none;
+			height: 100%;
+		}
 
-        ui|labelbox {
-            width: 100%;
-            height: auto;
-        }
+		ui|labelbox {
+			width: 100%;
+			height: auto;
+		}
 
-        svg {
-            margin-top: 50px;
-            pointer-events: none;
-        }
+		svg {
+			margin-top: 50px;
+			pointer-events: none;
+		}
 
-        ui|labeltext {
-            top: 0;
-            left: 0;
-            width: 100%;
-        }
+		ui|labeltext {
+			top: 0;
+			left: 0;
+			width: 100%;
+		}
 
-        ui|labelbox[image^="/"] {
-            height: 100%;
+		ui|labelbox[image^="/"] {
+			height: 100%;
 
-            ui|labelbody {
-                height: 100%;
-                background-position: center 40px;
-            }
-        }
-    }
+			ui|labelbody {
+				height: 100%;
+				background-position: center 40px;
+			}
+		}
+	}
 }

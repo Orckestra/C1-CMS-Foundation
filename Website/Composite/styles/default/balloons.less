@@ -1,90 +1,89 @@
 ui|balloonset {
-    display: block;
-    overflow: visible;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 0;
-    height: 0;
-    z-index: @balloonset-zindex; // below dialogs
+	display: block;
+	overflow: visible;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 0;
+	height: 0;
+	z-index: @balloonset-zindex; // below dialogs
 }
 
-    ui|balloonset#dialogballoonset {
-        z-index: @dialogballoonset-zindex; //above dialogs
-    }
+ui|balloonset#dialogballoonset {
+	z-index: @dialogballoonset-zindex; //above dialogs
+}
 
 ui|balloon {
-    min-width: 280px;
-    background: @balloons-bg-color;
-    border-radius: @base-border-radius;
-    border-bottom-left-radius: 0;
-    border: solid 1px @balloons-border-color;
-    display: block;
-    overflow: visible;
-    position: absolute;
-    transition-property: top, left;
-    transition-duration: 0.25s;
-    box-shadow: 0px 0px 12px -2px rgba(204,204,204,1);
+	min-width: 280px;
+	background: @balloons-bg-color;
+	border-radius: @base-border-radius;
+	border-bottom-left-radius: 0;
+	border: solid 1px @balloons-border-color;
+	display: block;
+	overflow: visible;
+	position: absolute;
+	transition-property: top, left;
+	transition-duration: 0.25s;
+	box-shadow: 0px 0px 12px -2px rgba(204,204,204,1);
 
-    &:after, &:before {
-        content: '';
-        position: absolute;
-        border-style: solid;
-        width: 0;
-        bottom: 0;
-        display: block;
-        border-width: 8px;
-    }
+	&:after, &:before {
+		content: '';
+		position: absolute;
+		border-style: solid;
+		width: 0;
+		bottom: 0;
+		display: block;
+		border-width: 8px;
+	}
 
-    &:after {
-        border-color: transparent @balloons-bg-color @balloons-bg-color transparent;
-        z-index: 1;
-        left: -14px;
-        border-width: 7px;
-    }
+	&:after {
+		border-color: transparent @balloons-bg-color @balloons-bg-color transparent;
+		z-index: 1;
+		left: -14px;
+		border-width: 7px;
+	}
 
-    &:before {
-        border-style: solid;
-        border-color: transparent @balloons-border-color @balloons-border-color transparent;
-        z-index: 0;
-        left: -16px;
-        bottom: -1px;
-    }
+	&:before {
+		border-style: solid;
+		border-color: transparent @balloons-border-color @balloons-border-color transparent;
+		z-index: 0;
+		left: -16px;
+		bottom: -1px;
+	}
 
-    &.left {
-        border-bottom-right-radius: 0;
-        border-bottom-left-radius: @base-border-radius;
+	&.left {
+		border-bottom-right-radius: 0;
+		border-bottom-left-radius: @base-border-radius;
 
-        &:after {
-            border-color: transparent transparent @balloons-bg-color @balloons-bg-color;
-            right: -14px;
-            left: auto;
-        }
+		&:after {
+			border-color: transparent transparent @balloons-bg-color @balloons-bg-color;
+			right: -14px;
+			left: auto;
+		}
 
-        &:before {
-            border-color: transparent transparent @balloons-border-color @balloons-border-color;
-            right: -16px;
-            left: auto;
-        }
-    }
+		&:before {
+			border-color: transparent transparent @balloons-border-color @balloons-border-color;
+			right: -16px;
+			left: auto;
+		}
+	}
 
-    ui|controlgroup {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-    }
+	ui|controlgroup {
+		position: absolute;
+		top: 10px;
+		right: 10px;
+	}
 }
 
 ui|balloontext {
-    display: block;
-    width: 100%;
-    .user-select(none);
-    position: relative;
-    z-index: 2;
-    padding: 15px;
+	display: block;
+	width: 100%;
+	.user-select(none);
+	position: relative;
+	z-index: 2;
+	padding: 15px;
 }
 
 ui|balloonspeak {
-    display: none;
+	display: none;
 }
-
