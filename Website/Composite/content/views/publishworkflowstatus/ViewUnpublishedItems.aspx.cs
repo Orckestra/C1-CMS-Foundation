@@ -64,21 +64,21 @@ public partial class ViewUnpublishedItems : System.Web.UI.Page
         foreach (var unpublishedDataGroup in unpublishedPageFolderData)
         {
             Type dataType = unpublishedDataGroup.Key;
-            if (PageFolderFacade.GetAllFolderTypes().Contains(dataType) == true)
+            if (PageFolderFacade.GetAllFolderTypes().Contains(dataType))
             {
-                if (dataType.GetDataPropertyRecursivly("IPageIdForeignKey") != null)
+                if (dataType.GetDataPropertyRecursively("IPageIdForeignKey") != null)
                 {
                     pageFolderTypes.Add(dataType);
 
                     foreach (IPublishControlled data in unpublishedDataGroup.Value)
                     {
                         IPage page = (IPage)data.GetReferenced("IPageIdForeignKey");
-                        if (actionRequiredPages.Any(f => f.Id == page.Id) == false)
+                        if (!actionRequiredPages.Any(f => f.Id == page.Id))
                         {
                             actionRequiredPages.Add(page);
                         }
 
-                        if (pageFolderDataItems.ContainsKey(page.Id) == false)
+                        if (!pageFolderDataItems.ContainsKey(page.Id))
                         {
                             pageFolderDataItems.Add(page.Id, new List<IPublishControlled>());
                         }
@@ -163,7 +163,7 @@ public partial class ViewUnpublishedItems : System.Web.UI.Page
             }
 
             // Inject page folder data
-            if (pageFolderDataItems.ContainsKey(pageId) == true)
+            if (pageFolderDataItems.ContainsKey(pageId))
             {
                 foreach (Type t in pageFolderDataItems[pageId].Select(f => f.GetType()).Distinct().OrderBy(f => f.GetTypeTitle()))
                 {
@@ -213,7 +213,7 @@ public partial class ViewUnpublishedItems : System.Web.UI.Page
             }
             dataGroupsElement.Add(dataGroupElement);
         }
-        if (dataGroupsElement.Elements().Any() == true)
+        if (dataGroupsElement.Elements().Any())
         {
             inputRoot.Add(dataGroupsElement);
         }
