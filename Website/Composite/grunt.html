@@ -30,6 +30,11 @@
             width: 300px;
             font-size: 14px;
         }
+
+        .small {
+            font-size: 80%;
+            margin-top: 5px;
+        }
     </style>
 </head>
 <body>
@@ -40,20 +45,28 @@
             <li>
                 You need to install Grunt globally which you do by running this command
                 <p class="command">npm install -g grunt-cli</p>
-                You can do that on your command shell as Administrator (for Windows).
-                For more details read here - <a href="http://gruntjs.com/getting-started">http://gruntjs.com/getting-started</a>
+                <p class="small">
+                    You can do that on your command shell as Administrator (for Windows).
+                    For more details read here - <a href="http://gruntjs.com/getting-started">http://gruntjs.com/getting-started</a>
+                </p>
             </li>
             <li>
-                Make sure that you have <strong>Web Essentials</strong> installed for Visual Studio<br />
-                <a href="http://vswebessentials.com/">http://vswebessentials.com/</a>
-                <p>You need to restart Visual Studio in order to get these extensions working.</p>
+                Open <strong>CompositeC1</strong> solution in Visual Studio.
+                <p class="small">
+                    The <strong>Website</strong> project contains NPM configuration file, called <code>package.json</code> and Grunt configuration file, called <code>gruntfile.js</code>.
+                    When you open a project with a <code>package.json</code> in Visual Studio 2015, an NPM installs packages automatically into the project folder <code>node_modules</code>.
+                </p>
             </li>
-            <li>Open "Task Runner Explorer". In Visual Studio open <br /><code>VIEW -> Other Windows -> Task Runner Explorer</code></li>
-            <li>On "Task Runner Explorer" window press "Refresh" button and run <strong>"build"</strong> task.</li>
-            <li>Build <strong>CompositeC1</strong> solution.</li>
             <li>
-                <strong>You are done</strong>. <code>CSS</code> is compiled.<br/>
-                <a href="top.aspx">Start Composite C1 console</a> and press F5 in your Browser.
+                On the <strong>Website</strong> project locate the file <code>gruntfile.js</code>, right click and select <code>Task Runner Explorer</code>.
+                <p class="small">On "Task Runner Explorer" window you will see the list of <code>Grunt</code> tasks, like <code>less, mergeSvg, uglifyCompileScripts ...</code></p>
+            </li>
+            <li>On "Task Runner Explorer" window run <strong><code>build</code></strong> task.</li>
+            <li>
+                <strong>You are done</strong>
+                <p>
+                    <a href="top.aspx">Start Composite C1 console</a> and press F5 in your Browser.
+                </p>
             </li>
 
         </ol>
