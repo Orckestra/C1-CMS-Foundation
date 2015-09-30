@@ -69,28 +69,58 @@ StartPageBinding.prototype.handleAction = function ( action ) {
 	switch ( action.type ) {
 	
 		case WindowBinding.ACTION_ONLOAD :
-		
 			if ( action.target == bindingMap.start ) {
 				this._starter = bindingMap.start.getContentWindow ().CompositeStart;
-				if ( this._starter ) {
-					this._starter.start ();
-				}
+				this.start();
 			}
 			break;
 			
 		case ControlBinding.ACTION_COMMAND :
-		
 			if ( action.target == bindingMap.closecontrol ) {
 				if ( bindingMap.cover ) {
 					bindingMap.cover.show ();
 				}
-				if ( this._starter ) {
-					this._starter.stop ();
-				}
+				this.stop();
 			}
 			break;
 	}
 }
+
+/**
+ * Open starter page
+ */
+StartPageBinding.prototype.start = function () {
+
+	//check that starter page have start function, otherwise send direct broadcast
+	if (this._starter && this._starter.start) {
+		try {
+			this._starter.start();
+		} catch (exception) {
+			SystemDebug.stack(arguments);
+		}
+	} else {
+		EventBroadcaster.broadcast(BroadcastMessages.COMPOSITE_START);
+	}
+}
+
+/**
+ * Close starter page
+ */
+StartPageBinding.prototype.stop = function () {
+
+	//check that starter page have stop function, otherwise send direct broadcast
+	if (this._starter) {
+		try {
+			this._starter.stop();
+		} catch (exception) {
+			SystemDebug.stack(arguments);
+			EventBroadcaster.broadcast(BroadcastMessages.COMPOSITE_STOP);
+		}
+	} else {
+		EventBroadcaster.broadcast(BroadcastMessages.COMPOSITE_STOP);
+	}
+}
+
 
 /**
  * @implements {IBroadcastListener}
@@ -105,15 +135,11 @@ StartPageBinding.prototype.handleBroadcast = function ( broadcast, arg ) {
 	switch ( broadcast ) {
 			
 		case BroadcastMessages.START_COMPOSITE :
-			if ( this._starter ) {
-				this._starter.start ();
-			}
+			this.start();
 			break;
 			
 		case BroadcastMessages.STOP_COMPOSITE :
-			if ( this._starter ) {
-				this._starter.stop ();
-			}
+			this.stop();
 			break;
 			
 		case BroadcastMessages.COMPOSITE_START : // broadcated by CompositeStart when ready
