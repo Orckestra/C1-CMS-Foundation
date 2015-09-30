@@ -69,27 +69,30 @@ ui|field {
 
 ui|editorpage {
 
-    ui|fields {
-        -webkit-column-width: 430px; /* Chrome, Safari, Opera */
-        -moz-column-width: 430px; /* Firefox */
-        column-width: 430px;
-    }
+	ui|fields {
+		-webkit-column-width: 430px; /* Chrome, Safari, Opera */
+		-moz-column-width: 430px; /* Firefox */
+		column-width: 430px;
+	}
 
-    ui|fieldgroup {
-        width: 430px;
-        display: table;
-        overflow: visible;
-        position: relative;
-        -webkit-column-break-inside: avoid; /* Chrome, Safari, Opera */
-        page-break-inside: avoid; /* Firefox */
-        break-inside: avoid; /* IE 10+ */
-
-        @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
-           display: inline-block; 
-        }  /* IE 10, 11 */
-    }
+	ui|fieldgroup {
+		width: 430px;
+		display: table;
+		overflow: visible;
+		position: relative;
+		-webkit-column-break-inside: avoid; /* Chrome, Safari, Opera */
+		page-break-inside: avoid; /* Firefox */
+		break-inside: avoid; /* IE 10+ */
+		@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) { /* IE 10, 11 */
+			display: inline-block;
+		}
+	}
 }
-
+@supports (-ms-accelerator:true) { /* Edge Browser for Windows 10 */
+	ui|editorpage ui|fieldgroup {
+		display: inline-block;
+	}
+}
 
     ui|fieldgroup.boxed, ui|editorpage ui|fieldgroup {
 
