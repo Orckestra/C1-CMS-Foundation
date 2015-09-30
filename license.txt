@@ -13,4 +13,4 @@ Section 11 of the License is EXPRESSLY amended to include a provision stating
 that any dispute, including but not limited to disputes related to the enforcement 
 of the License, to which Composite A/S as owner of the Original Code, as Initial 
 Developer or in any other role, becomes a part to shall be governed by Danish law 
-and be initiated before the Copenhagen City Court ("Københavns Byret")            
+and be initiated before the Copenhagen City Court ("KÃ¸benhavns Byret")
