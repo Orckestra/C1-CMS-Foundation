@@ -1,6 +1,5 @@
-<%@ Control Language="C#" AutoEventWireup="true" Inherits="CompositeTypeFieldDesigner.TypeFieldDesigner"
+<%@ Control Language="C#" AutoEventWireup="True" Inherits="CompositeTypeFieldDesigner.TypeFieldDesigner"
     CodeFile="TypeFieldDesigner.ascx.cs" %>
-<%@ Import Namespace="System.ComponentModel" %>
 <%@ Import Namespace="Composite.Data.DynamicTypes" %>
 <%@ Import namespace="Texts=Composite.Core.ResourceSystem.LocalizationFiles.Composite_Web_FormControl_TypeFieldDesigner" %>
 
@@ -212,7 +211,7 @@
 											</ui:fieldgroup>
 	
 											<ui:fieldgroup label="<%= Texts.FieldStructureGroupLabel %>">
-						                                <ui:field>
+						                        <ui:field>
 													<ui:fielddesc><%= Texts.IsTitleField %></ui:fielddesc>
 													<ui:fieldhelp><%= Texts.IsTitleFieldHelp %></ui:fieldhelp>
 													<ui:fielddata>
@@ -251,6 +250,45 @@
 													</ui:field>
 											</ui:fieldgroup>
 	                                    </asp:PlaceHolder>
+                                        
+                                        <asp:PlaceHolder runat="server" Visible="<%# CanAppearInDataRoute %>" ID="plhDataUrl">
+                                            <ui:fieldgroup label="<%= Texts.DataUrlGroupLabel %>">
+                                            	<ui:field>
+													<ui:fielddesc><%= Texts.AppearsInUrlLabel %></ui:fielddesc>
+													<ui:fieldhelp><%= Texts.AppearsInUrlHelp %></ui:fieldhelp>
+													<ui:fielddata>
+														<ui:checkboxgroup timestamp="<%= DateTime.Now.Ticks %>">
+															<aspui:CheckBox ID="chkShowInDataUrl" runat="server" AutoPostBack="True"
+                                                                ItemLabel="<%# Texts.AppearsInUrlItemLabel %>" />
+														</ui:checkboxgroup>
+													</ui:fielddata>
+												</ui:field>
+                                                
+                                                <asp:PlaceHolder runat="server" Visible="<%# chkShowInDataUrl.Checked %>">
+                                                    <ui:field>
+														<ui:fielddesc><%= Texts.DataUrlOrderLabel %></ui:fielddesc>
+														<ui:fieldhelp><%= Texts.DataUrlOrderHelp %></ui:fieldhelp>
+														<ui:fielddata>
+															<aspui:Selector ID="lstDataUrlOrder" runat="server" AutoPostBack="True">
+
+															</aspui:Selector>
+														</ui:fielddata>
+													</ui:field>
+                                                    
+                                                    <asp:PlaceHolder runat="server" Visible="<%# SelectedField.InstanceType == typeof(DateTime) %>">
+                                                        <ui:field>
+														    <ui:fielddesc><%= Texts.DataUrlDateFormatLabel%></ui:fielddesc>
+														    <ui:fieldhelp><%= Texts.DataUrlDateFormatHelp %></ui:fieldhelp>
+														    <ui:fielddata>
+															    <aspui:Selector ID="lstDataUrlDateFormat" runat="server" AutoPostBack="True">
+
+															    </aspui:Selector>
+														    </ui:fielddata>
+													    </ui:field>
+                                                    </asp:PlaceHolder>
+                                                </asp:PlaceHolder>
+                                            </ui:fieldgroup>
+                                        </asp:PlaceHolder>
 									</ui:fields>
 								</ui:scrollbox>
 							</ui:tabpanel>

@@ -16,3 +16,5 @@
 /Website/Composite/images/sprite.svg
 /Website/Blog*.ashx
 
+/Bin/Composite.dll
+/Bin/Composite.Workflows.dll

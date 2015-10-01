@@ -33,6 +33,7 @@ namespace CompositeTypeFieldDesigner
 
         private const string _defaultFieldNamePrefix = "NewField";
         private bool _nameChanged;
+        private bool _dataUrlOrderUpdated;
 
         protected string GetString(string localPart)
         {
@@ -84,28 +85,42 @@ namespace CompositeTypeFieldDesigner
                 }
 
                 // TODO: fix the type reference!
+
+                const string editFunctionUrl = "${root}/content/dialogs/functions/editFunctionCall.aspx";
+                Func<Type, string> zipType = type => UrlUtils.ZipContent(TypeManager.SerializeType(type));
+
                 btnWidgetFunctionMarkup.Attributes["label"] = CurrentlySelectedWidgetText;
-                btnWidgetFunctionMarkup.Attributes["url"] = "${root}/content/dialogs/functions/editFunctionCall.aspx?functiontype=widget&zip_type="
-                    + UrlUtils.ZipContent(TypeManager.SerializeType(CurrentlySelectedWidgetReturnType))
-                    + "&dialoglabel=" + HttpUtility.UrlEncode(GetString("WidgetDialogLabel"), Encoding.UTF8) + "&multimode=false&functionmarkup=";
+                btnWidgetFunctionMarkup.Attributes["url"] = editFunctionUrl +"?functiontype=widget&zip_type="
+                    + zipType(CurrentlySelectedWidgetReturnType)
+                    + "&dialoglabel=" + HttpUtility.UrlEncode(Texts.WidgetDialogLabel, Encoding.UTF8) + "&multimode=false&functionmarkup=";
 
                 btnValidationRulesFunctionMarkup.Attributes["label"] =
                     GetString(btnValidationRulesFunctionMarkup.Value.IsNullOrEmpty()
                                   ? "ValidationRulesAdd"
                                   : "ValidationRulesEdit");
                 // TODO: some of the query parameters may not be used at the moment
-                btnValidationRulesFunctionMarkup.Attributes["url"] = "${root}/content/dialogs/functions/editFunctionCall.aspx?zip_type="
-                     + UrlUtils.ZipContent(TypeManager.SerializeType(this.CurrentlySelectedTypeValidatorType))
-                     + "&dialoglabel=" + HttpUtility.UrlEncode(GetString("ValidationRulesDialogLabel"), Encoding.UTF8)
+                btnValidationRulesFunctionMarkup.Attributes["url"] = editFunctionUrl + "?zip_type="
+                     + zipType(this.CurrentlySelectedTypeValidatorType)
+                     + "&dialoglabel=" + HttpUtility.UrlEncode(Texts.ValidationRulesDialogLabel, Encoding.UTF8)
                      + "&multimode=true&addnewicon=Composite.Icons,validationrules-add&addnewicondisabled=Composite.Icons,validationrules-add-disabled"
                      + "&functionicon=Composite.Icons,validationrule&containericon=Composite.Icons,validationrules&functionmarkup=";
 
                 btnDefaultValueFunctionMarkup.Attributes["label"] = CurrentlySelectedDefaultValueText;
                 btnDefaultValueFunctionMarkup.Attributes["url"] =
-                    "${root}/content/dialogs/functions/editFunctionCall.aspx?zip_type="
-                    + UrlUtils.ZipContent(TypeManager.SerializeType(this.CurrentlySelectedDefaultValueFunctionReturnType))
-                    + "&dialoglabel=" + HttpUtility.UrlEncode(GetString("DefaultValueDialogLabel"), Encoding.UTF8)
+                    editFunctionUrl + "?zip_type="
+                    + zipType(this.CurrentlySelectedDefaultValueFunctionReturnType)
+                    + "&dialoglabel=" + HttpUtility.UrlEncode(Texts.DefaultValueDialogLabel, Encoding.UTF8)
                     + "&multimode=false&functionmarkup=";
+
+                if (eventTarget == chkShowInDataUrl.UniqueID)
+                {
+                    bool isChecked = chkShowInDataUrl.Checked;
+
+                    SelectedField.DataUrlProfile = isChecked ? new DataUrlProfile() : null;
+                }
+
+                RepopulateDataUrlSegmentOrder(false);
+                plhDataUrl.DataBind();
             }
 
             if (_nameChanged)
@@ -125,8 +140,7 @@ namespace CompositeTypeFieldDesigner
                     lstKeyType.Items.AddRange(KeyFieldHelper.GetKeyFieldOptions().Select(kvp => new ListItem(kvp.Value, kvp.Key)).ToArray());
                 }
 
-                Guid fieldId = CurrentlySelectedFieldId;
-                var field = CurrentFields.Single(f => f.Id == fieldId);
+                var field = SelectedField;
 
                 var keyType = KeyFieldHelper.GetKeyFieldType(field);
                 Verify.That(keyType != GeneratedTypesHelper.KeyFieldType.Undefined, "Failed to parse key field type");
@@ -146,11 +160,14 @@ namespace CompositeTypeFieldDesigner
                 UpdateFieldTypeDetailsSelector();
             }
 
+            InitDataUrlProperties();
+
             DeleteButton.Enabled = !SelectedFieldIsKeyField;
 
             // Databinding placeholders so they can change visibility
             plhKeyFieldProperties.DataBind();
             plhFieldProperties.DataBind();
+            plhDataUrl.DataBind();
             plhAdvancedFieldProperties.DataBind();
         }
 
@@ -291,17 +308,17 @@ namespace CompositeTypeFieldDesigner
                     TypeDetailsSelector.SelectedValue = "64";
                     break;
                 case "System.Decimal":
-                    TypeDetailsLabel.Text = GetString("DecimalNumberFormat");
+                    TypeDetailsLabel.Text = Texts.DecimalNumberFormat;
                     TypeDetailsSelector.AutoPostBack = false; // this is a fix to plug bug in update manager (client)
-                    TypeDetailsSelector.Items.Add(new ListItem(GetString("1DecimalPlace"), "1"));
+                    TypeDetailsSelector.Items.Add(new ListItem(Texts._1DecimalPlace, "1"));
                     for (int i = 1; i < 16; i++)
                     {
-                        TypeDetailsSelector.Items.Add(new ListItem(GetString("nDecimalPlaces").FormatWith(i), i.ToString()));
+                        TypeDetailsSelector.Items.Add(new ListItem(Texts.nDecimalPlaces(i), i.ToString()));
                     }
                     TypeDetailsSelector.SelectedValue = "2";
                     break;
                 case "Reference":
-                    TypeDetailsLabel.Text = GetString("ReferenceType"); ;
+                    TypeDetailsLabel.Text = Texts.ReferenceType;
                     TypeDetailsSelector.AutoPostBack = true;
 
                     var typeList =
@@ -330,6 +347,118 @@ namespace CompositeTypeFieldDesigner
             }
         }
 
+        private void InitDataUrlProperties()
+        {
+            var field = SelectedField;
+
+            if (field == null)
+            {
+                return;
+            }
+
+            chkShowInDataUrl.Checked = field.DataUrlProfile != null;
+
+            RepopulateDataUrlSegmentOrder(true);
+
+            if (lstDataUrlDateFormat.Items.Count == 0)
+            {
+                Func<string, string> format = s => string.Format(s, 
+                    Texts.DataUrlDateFormat_Year, Texts.DataUrlDateFormat_Month, Texts.DataUrlDateFormat_Day);
+
+                lstDataUrlDateFormat.Items.AddRange(new[]
+                {
+                    new ListItem(format("/{0}"), DataUrlSegmentFormat.DateTime_Year.ToString()),
+                    new ListItem(format("/{0}/{1}"), DataUrlSegmentFormat.DateTime_YearMonth.ToString()),
+                    new ListItem(format("/{0}/{1}/{2}"), DataUrlSegmentFormat.DateTime_YearMonthDay.ToString())
+                });
+            }
+
+            var selectedValue = field.DataUrlProfile != null && field.DataUrlProfile.Format != null
+                                ?  field.DataUrlProfile.Format.Value
+                                : DataUrlSegmentFormat.DateTime_YearMonthDay;
+
+            lstDataUrlDateFormat.SelectedValue = selectedValue.ToString();
+        }
+
+
+        private void RepopulateDataUrlSegmentOrder(bool updateSelection)
+        {
+            if (_dataUrlOrderUpdated)
+            {
+                return;
+            }
+
+            var field = SelectedField;
+
+            int existingSelection = lstDataUrlOrder.SelectedIndex;
+
+            var otherUrlSegments = CurrentFields.Where(f => f.DataUrlProfile != null && f.Id != field.Id).ToList();
+
+            lstDataUrlOrder.Items.Clear();
+            // Populating the selector
+            for (int i = 0; i <= otherUrlSegments.Count; i++)
+            {
+                var fieldsInUrlPreviewOrder =
+                    otherUrlSegments.Take(i)
+                    .Concat(new[] { field })
+                    .Concat(otherUrlSegments.Skip(i));
+
+                var previewStr = string.Join("/", fieldsInUrlPreviewOrder.Select(GetUrlSegmentPreview));
+
+                lstDataUrlOrder.Items.Add(new ListItem(previewStr, i.ToString()));
+            }
+
+            if (updateSelection)
+            {
+                int selectedIndex = otherUrlSegments.Count;
+
+                if (field.DataUrlProfile != null && field.DataUrlProfile.Order <= otherUrlSegments.Count)
+                {
+                    selectedIndex = field.DataUrlProfile.Order;
+                }
+
+                lstDataUrlOrder.SelectedIndex = selectedIndex;
+            }
+            else
+            {
+                lstDataUrlOrder.SelectedIndex = existingSelection;
+            }
+
+            _dataUrlOrderUpdated = true;
+        }
+
+        private string GetUrlSegmentPreview(DataFieldDescriptor field)
+        {
+            string formatString = "";
+
+            //if (field.InstanceType == typeof (DateTime))
+            //{
+            //    string year = Texts.DataUrlDateFormat_Year;
+            //    string month = Texts.DataUrlDateFormat_Month;
+            //    string day = Texts.DataUrlDateFormat_Day;
+
+            //    var format = DataUrlSegmentFormat.DateTime_YearMonthDay;
+            //    if (field.DataUrlProfile != null && field.DataUrlProfile.Format != null)
+            //    {
+            //        format = field.DataUrlProfile.Format.Value;
+            //    }
+
+            //    switch (format)
+            //    {
+            //        case DataUrlSegmentFormat.DateTime_Year:
+            //            formatString = ":" + year;
+            //            break;
+            //        case DataUrlSegmentFormat.DateTime_YearMonth:
+            //            formatString = ":" + year + "," + month;
+            //            break;
+            //        case DataUrlSegmentFormat.DateTime_YearMonthDay:
+            //            formatString = ":" + year + "," + month + "," + day;
+            //            break;
+            //    }
+            //}
+
+            return "{" + field.Name + formatString + "}";
+        }
 
 
         protected void TypeDetailsSelector_Reference_SelectedIndexChanged(object sender, EventArgs e)
@@ -692,7 +821,7 @@ namespace CompositeTypeFieldDesigner
             get
             {
                 object editorFieldId = this.ViewState["editedFieldId"];
-                return editorFieldId == null ? Guid.Empty : (Guid)editorFieldId;
+                return (Guid?) editorFieldId ?? Guid.Empty;
             }
             set
             {
@@ -707,6 +836,25 @@ namespace CompositeTypeFieldDesigner
             get { return this.CurrentFields.Count > 0; }
         }
 
+        protected bool CanAppearInDataRoute
+        {
+            get
+            {
+                var selectedField = SelectedField;
+
+                bool isNullable = selectedField.Inherited;
+                var instanceType = selectedField.InstanceType;
+                return !isNullable &&
+                       (instanceType == typeof (Guid)
+                        || instanceType == typeof (string)
+                        || instanceType == typeof (Int16)
+                        || instanceType == typeof (Int32)
+                        || instanceType == typeof (Int64)
+                        || instanceType == typeof (decimal)
+                        || instanceType == typeof (DateTime));
+            }
+        }
+
 
         protected bool SelectedFieldIsKeyField
         {
@@ -714,6 +862,16 @@ namespace CompositeTypeFieldDesigner
             {
                 Guid fieldId = CurrentlySelectedFieldId;
                 return fieldId != Guid.Empty && CurrentFields.Any(f => f.Id == fieldId && f.Name == CurrentKeyFieldName);
+            }
+        }
+
+
+        protected DataFieldDescriptor SelectedField
+        {
+            get
+            {
+                Guid fieldId = CurrentlySelectedFieldId;
+                return CurrentFields.FirstOrDefault(f => f.Id == fieldId);
             }
         }
 
@@ -963,7 +1121,7 @@ namespace CompositeTypeFieldDesigner
                         return StoreFieldType.Guid;
                     case "Reference":
                         Type referencedType = TypeManager.GetType(this.CurrentForeignKeyReferenceTypeName);
-                        var keyProperties = DataAttributeFacade.GetKeyProperties(referencedType);
+                        var keyProperties = referencedType.GetKeyProperties();
 
                         if (keyProperties.Count == 1)
                         {
@@ -1100,6 +1258,10 @@ namespace CompositeTypeFieldDesigner
 
             var field = this.CurrentFields.Single(f => f.Id == this.CurrentlySelectedFieldId);
 
+
+            bool dataUrlApplicable = SelectedFieldIsKeyField || !bool.Parse(this.OptionalSelector.SelectedValue);
+
+            Field_Save_UpdateDataUrl(field, dataUrlApplicable);
             
             if (SelectedFieldIsKeyField)
             {
@@ -1327,6 +1489,30 @@ namespace CompositeTypeFieldDesigner
                 }
             }
             EnsureTreeOrderPrioritySequence();
+        }
+
+        private void Field_Save_UpdateDataUrl(DataFieldDescriptor field, bool dataUrlApplicable)
+        {
+            bool enabled = chkShowInDataUrl.Checked;
+            if (!dataUrlApplicable || !enabled)
+            {
+                field.DataUrlProfile = null;
+                return;
+            }
+
+            int order = lstDataUrlOrder.SelectedIndex;
+
+            DataUrlSegmentFormat? format = null;
+
+            if (field.InstanceType == typeof (DateTime))
+            {
+                string selectedValue = lstDataUrlDateFormat.SelectedValue;
+                if (!string.IsNullOrEmpty(selectedValue))
+                {
+                    format = (DataUrlSegmentFormat)Enum.Parse(typeof(DataUrlSegmentFormat), selectedValue);
+                }
+            }
+            field.DataUrlProfile = new DataUrlProfile {Order = order, Format = format};
         }
 
 

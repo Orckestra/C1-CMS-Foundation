@@ -85,6 +85,11 @@ namespace Composite.Data.DynamicTypes
 
 
         /// <summary>
+        /// Describe how this field should be edited in a form view
+        /// </summary>
+        public DataUrlProfile DataUrlProfile { get; set; }
+
+        /// <summary>
         /// Describe how this field should influence ordering of items in a tree view
         /// </summary>
         public DataFieldTreeOrderingProfile TreeOrderingProfile { get; set; }
@@ -169,13 +174,12 @@ namespace Composite.Data.DynamicTypes
             {
                 if (value)
                 {
-                    if (this.InstanceType.IsEnum) throw new InvalidOperationException("The associated instance type is an enum, which is not nullable");
-                    if (this.InstanceType.IsValueType)
+                    var type = InstanceType;
+
+                    if (type.IsEnum) throw new InvalidOperationException("The associated instance type is an enum, which is not nullable");
+                    if (type.IsValueType && (!type.IsGenericType || type.GetGenericTypeDefinition() != typeof(Nullable<>)))
                     {
-                        if (this.InstanceType.IsGenericType == false || this.InstanceType.GetGenericTypeDefinition() != typeof(Nullable<>))
-                        {
-                            throw new InvalidOperationException(string.Format("The associated instante type '{0}' is a value type, which is not nullable", this.InstanceType.Name));
-                        }
+                        throw new InvalidOperationException(string.Format("The associated instante type '{0}' is a value type, which is not nullable", type.Name));
                     }
                 }
                 _isNullable = value;
@@ -233,7 +237,7 @@ namespace Composite.Data.DynamicTypes
         /// <returns>The clone.</returns>
         public DataFieldDescriptor Clone()
         {
-            var dataFieldDescriptor = new DataFieldDescriptor(this.Id, this.Name, this.StoreType, this.InstanceType)
+            return new DataFieldDescriptor(this.Id, this.Name, this.StoreType, this.InstanceType)
             {
                 ForeignKeyReferenceTypeName = this.ForeignKeyReferenceTypeName,
                 FormRenderingProfile = new DataFieldFormRenderingProfile
@@ -252,15 +256,10 @@ namespace Composite.Data.DynamicTypes
                 IsNullable = this.IsNullable,
                 Position = this.Position,
                 ValidationFunctionMarkup = this.ValidationFunctionMarkup != null ? new List<string>(this.ValidationFunctionMarkup) : null,
-                NewInstanceDefaultFieldValue = this.NewInstanceDefaultFieldValue
+                NewInstanceDefaultFieldValue = this.NewInstanceDefaultFieldValue,
+                DataUrlProfile = this.DataUrlProfile != null ? this.DataUrlProfile.Clone() : null,
+                DefaultValue = this.DefaultValue != null ? this.DefaultValue.Clone() : null
             };
-
-            if (this.DefaultValue != null)
-            {
-                dataFieldDescriptor.DefaultValue = this.DefaultValue.Clone();
-            }
-
-            return dataFieldDescriptor;
         }
 
 
@@ -315,6 +314,13 @@ namespace Composite.Data.DynamicTypes
                 element.Add(formRenderingProfileElement);
             }
 
+            if (this.DataUrlProfile != null)
+            {
+                element.Add(new XElement("DataUrlProfile",
+                    new XAttribute("Order", this.DataUrlProfile.Order),
+                    this.DataUrlProfile.Format != null ? new XAttribute("Format", this.DataUrlProfile.Format) : null));
+            }
+
             if (this.TreeOrderingProfile != null && this.TreeOrderingProfile.OrderPriority.HasValue)
             {
                 element.Add(new XElement("TreeOrderingProfile", 
@@ -367,6 +373,7 @@ namespace Composite.Data.DynamicTypes
             XElement formRenderingProfileElement = element.Element("FormRenderingProfile");
             XElement treeOrderingProfileElement = element.Element("TreeOrderingProfile");
             XElement validationFunctionMarkupsElement = element.Element("ValidationFunctionMarkups");
+            XElement dataUrlProfileElement = element.Element("DataUrlProfile");
 
             
             
@@ -426,6 +433,20 @@ namespace Composite.Data.DynamicTypes
                 }
 
                 dataFieldDescriptor.FormRenderingProfile = dataFieldFormRenderingProfile;
+            }
+
+            if (dataUrlProfileElement != null)
+            {
+                int order = (int)dataUrlProfileElement.GetRequiredAttribute("Order");
+                var formatStr = (string)dataUrlProfileElement.Attribute("Format");
+                DataUrlSegmentFormat? format = null;
+
+                if (formatStr != null)
+                {
+                    format = (DataUrlSegmentFormat) Enum.Parse(typeof(DataUrlSegmentFormat), formatStr);
+                }
+
+                dataFieldDescriptor.DataUrlProfile = new DataUrlProfile {Order = order, Format = format};
             }
 
             if (treeOrderingProfileElement != null)

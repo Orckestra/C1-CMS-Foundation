@@ -429,22 +429,18 @@ namespace Composite.Data.GeneratedTypes
             }
 
 
-            if (dataFieldDescriptor.StoreType.IsString && dataFieldDescriptor.StoreType.IsLargeString == false)
+            if (dataFieldDescriptor.StoreType.IsString && !dataFieldDescriptor.StoreType.IsLargeString)
             {
-                CodeAttributeDeclaration stringLengthAttribute;
-                if (!dataFieldDescriptor.IsNullable)
-                {
-                    stringLengthAttribute = new CodeAttributeDeclaration(new CodeTypeReference(typeof(StringSizeValidatorAttribute)));
-                }
-                else
-                {
-                    stringLengthAttribute = new CodeAttributeDeclaration(new CodeTypeReference(typeof(NullStringLengthValidatorAttribute)));
-                }
+                var attributeType = dataFieldDescriptor.IsNullable
+                    ? typeof (NullStringLengthValidatorAttribute)
+                    : typeof (StringSizeValidatorAttribute);
 
                 int max = dataFieldDescriptor.StoreType.MaximumLength;
 
-                stringLengthAttribute.Arguments.Add(new CodeAttributeArgument(new CodePrimitiveExpression(0)));
-                stringLengthAttribute.Arguments.Add(new CodeAttributeArgument(new CodePrimitiveExpression(max)));
+                var stringLengthAttribute = new CodeAttributeDeclaration(new CodeTypeReference(attributeType),
+                    new CodeAttributeArgument(new CodePrimitiveExpression(0)),
+                    new CodeAttributeArgument(new CodePrimitiveExpression(max)));
+
                 codeMemberProperty.CustomAttributes.Add(stringLengthAttribute);
             }
 
@@ -452,9 +448,9 @@ namespace Composite.Data.GeneratedTypes
             {
                 Type validatorAttributeType = dataFieldDescriptor.IsNullable ? typeof(NullIntegerRangeValidatorAttribute) : typeof(IntegerRangeValidatorAttribute);
 
-                var integerRangeValidatorAttribute = new CodeAttributeDeclaration(new CodeTypeReference(validatorAttributeType));
-                integerRangeValidatorAttribute.Arguments.Add(new CodeAttributeArgument(new CodePrimitiveExpression(Int32.MinValue)));
-                integerRangeValidatorAttribute.Arguments.Add(new CodeAttributeArgument(new CodePrimitiveExpression(Int32.MaxValue)));
+                var integerRangeValidatorAttribute = new CodeAttributeDeclaration(new CodeTypeReference(validatorAttributeType), 
+                    new CodeAttributeArgument(new CodePrimitiveExpression(Int32.MinValue)),
+                    new CodeAttributeArgument(new CodePrimitiveExpression(Int32.MaxValue)));
 
                 codeMemberProperty.CustomAttributes.Add(integerRangeValidatorAttribute);
             }
@@ -536,6 +532,12 @@ namespace Composite.Data.GeneratedTypes
                             args.ToArray()
                         ));
                 
+            }
+
+
+            if (dataFieldDescriptor.DataUrlProfile != null)
+            {
+                codeMemberProperty.CustomAttributes.Add(dataFieldDescriptor.DataUrlProfile.GetCodeAttributeDeclaration());
             }
 
 
