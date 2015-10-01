@@ -127,3 +127,5 @@
 @popupset-zindex: 5; /* above dialogset */
 @dialog-zindex: 6; /* above shadow - adjusted by script */
 
+//Cache buster - see http://www.bennadel.com/blog/2643-cache-busting-css-images-with-less-css.htm
+@cache-version: `( new Date() ).getTime()` ;
