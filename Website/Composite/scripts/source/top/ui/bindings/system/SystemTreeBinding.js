@@ -689,7 +689,7 @@ SystemTreeBinding.prototype._focusTreeNodeByEntityToken = function (entityToken,
 		this.getFocusedTreeNodeBindings().each(function(binding) {
 			binding.blur();
 		});
-		EventBroadcaster.broadcast(BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED, { activePosition: this._activePosition });
+		EventBroadcaster.broadcast(BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED, { activePosition: this._activePosition, syncHandle: this.getSyncHandle() });
 	}
 }
 

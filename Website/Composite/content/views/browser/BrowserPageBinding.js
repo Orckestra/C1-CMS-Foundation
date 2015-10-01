@@ -135,25 +135,33 @@ BrowserPageBinding.prototype.handleBroadcast = function (broadcast, arg) {
 
     switch (broadcast) {
         case BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED:
-        	if (arg.syncHandle == this.getSyncHandle() && !(arg.source instanceof GenericViewBinding)) {
+        	if (arg.syncHandle == this.getSyncHandle() && !(arg.source instanceof GenericViewBinding) && arg.actionProfile) {
                 this.push(arg.actionProfile.Node, true);
         	}
 			break;
     	case BroadcastMessages.SYSTEMTREEBINDING_REFRESHED_AFTER:
     		if (arg.syncHandle == this.getSyncHandle()) {
-			    var tab = this._box.getGeneticViewTabBinding();
-			    if (tab.isSelected) {
-
-			    	var selectedTreeNode = this.getSystemTree().getFocusedTreeNodeBindings().getFirst();
-				    if (selectedTreeNode) {
-					    this.push(selectedTreeNode.node, true, true);
-				    } else {
-				    	this.push(this.getSystemPage().node, true, true);
-				    }
-			    }
+    			this.refreshGenericView();
 		    }
 		    break;
     }
+}
+
+/**
+ * Refresh Generic View
+ */
+BrowserPageBinding.prototype.refreshGenericView = function () {
+
+	var tab = this._box.getGeneticViewTabBinding();
+	if (tab.isSelected) {
+		var selectedTreeNode = this.getSystemTree().getFocusedTreeNodeBindings().getFirst();
+		if (selectedTreeNode) {
+			selectedTreeNode.focus();
+			this.push(selectedTreeNode.node, true, true);
+		} else {
+			this.push(this.getSystemPage().node, false, true);
+		}
+	}
 }
 
 /**
@@ -289,7 +297,7 @@ BrowserPageBinding.prototype.push = function (node, isManual, isForce) {
 		self.pushURL(node, isManual);
 	}
 	if (node instanceof SystemNode) {
-		var entityToken = node.getEntityToken();;
+		var entityToken = node.getEntityToken();
 		if (entityToken) {
 			if (this._entityToken != entityToken || isForce) {
                 TreeService.GetBrowserUrlByEntityToken(entityToken, function (result) {
@@ -681,9 +689,13 @@ BrowserPageBinding.prototype._handleCommand = function (cmd, binding) {
 	        this.push(item && item.node ? item.node : item);
 
 	        break;
-        case "refresh":
-        	this._isHistoryBrowsing = true;
-	        this._box.reload();
+    	case "refresh":
+    		if (this._box.getGeneticViewTabBinding().isSelected) {
+    			this.refreshGenericView();
+    		} else {
+    			this._isHistoryBrowsing = true;
+    			this._box.reload();
+    		}
 	        break;
     	case "home":
 		    this.push(this.getSystemPage().node);
