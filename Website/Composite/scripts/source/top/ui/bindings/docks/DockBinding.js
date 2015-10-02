@@ -239,7 +239,7 @@ DockBinding.prototype.prepareNewView = function ( definition ) {
 	
 	// snap view to tabpanel position
 	var tabPanelBinding = this.getTabPanelBinding ( tabBinding );
-	viewBinding.snapToBinding ( tabPanelBinding );
+	viewBinding.snapToBinding ( tabPanelBinding, definition.isFloating );
 	
 	// TODO: construct a viewset binding for hosting this fellow?
 	/*
@@ -286,7 +286,7 @@ DockBinding.prototype.prepareOpenView = function ( definition, tabBinding ) {
 	
 	//tabPanelBinding.add ( viewBinding ); // this would create a non-floating view
 
-	viewBinding.snapToBinding ( tabPanelBinding );
+	viewBinding.snapToBinding(tabPanelBinding, definition.isFloating);
 	UserInterface.getBinding ( this.bindingDocument.body ).add ( viewBinding );
 	viewBinding.attach ();
 	

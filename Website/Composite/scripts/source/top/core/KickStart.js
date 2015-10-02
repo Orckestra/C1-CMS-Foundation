@@ -41,7 +41,10 @@ var KickStart = new function () {
 				Persistance.initialize(); // NOTE: We are not using this stuff!
 			}, 0);
 	};
-
+	/*
+	 * Indicate user just logged to console
+	 */
+	this.justLogged = false;
 	
 	/**
 	 * @implements {IBroadcastListener}
@@ -374,6 +377,7 @@ var KickStart = new function () {
 			changePasswordRequired();
 		}else if ( isAllowed ) {
 			EventBroadcaster.unsubscribe ( BroadcastMessages.KEY_ENTER, KickStart );
+			this.justLogged = true;
 			accessGranted ();
 		} else {
 			Application.unlock ( KickStart );

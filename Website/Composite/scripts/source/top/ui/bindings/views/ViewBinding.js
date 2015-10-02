@@ -776,7 +776,7 @@ ViewBinding.prototype.setDimension = function ( dimension ) {
  * TODO: create an interface to check for.
  * @param {Binding} binding
  */
-ViewBinding.prototype.snapToBinding = function ( binding ) {
+ViewBinding.prototype.snapToBinding = function (binding, floating) {
 	
 	// Disable standard flexbox behavior. 
 	// TODO: enable for floating docks????????????????????????????????????????????
@@ -796,7 +796,7 @@ ViewBinding.prototype.snapToBinding = function ( binding ) {
 	}
 	this._snapBinding = binding;
 	this._snapBinding.viewBinding = this;
-	this.isFreeFloating = true;
+	this.isFreeFloating = floating !== false; // dafault is true
 	
 	// Initialize when first shown, creating and loading the WindowBinding
 	if ( !this._isViewBindingInitialized ) {

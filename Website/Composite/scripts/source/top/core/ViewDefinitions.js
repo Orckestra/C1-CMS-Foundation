@@ -76,6 +76,7 @@ var ViewDefinitions = {
 		handle 		: "Composite.Management.Start",
 		position 	: DockBinding.START,
 		label 		: "Welcome Travellers", 
+		isFloating	: false,
 		url 		: "${root}/content/views/start/start.aspx"
 	}),
 	

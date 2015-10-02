@@ -334,14 +334,11 @@ StageBinding.prototype._onStageReady = function () {
 	
 	if ( !this._isStageReady ) {
 	
-		/*
-		 * Broadcasting readystate. If no start 
-		 * page, show default start splash. 
-		 */
-		if (!Application.hasStartPage || !Application.hasExternalConnection || Client.isPad) {
-
-			top.app.bindingMap.maindecks.select ( "stagedeck" );
-			//this._isShowingDefaultStart = true;
+		if (Application.hasStartPage && KickStart.justLogged && Application.hasExternalConnection && !Client.isPad) {
+			EventBroadcaster.broadcast(BroadcastMessages.START_COMPOSITE);
+		} else {
+			ViewBinding.getInstance("Composite.Management.Start").hide();
+			top.app.bindingMap.maindecks.select("stagedeck");
 		}
 		EventBroadcaster.broadcast ( BroadcastMessages.STAGE_INITIALIZED );
 		this._isStageReady = true;

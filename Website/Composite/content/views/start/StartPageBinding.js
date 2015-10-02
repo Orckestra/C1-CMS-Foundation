@@ -17,6 +17,12 @@ function StartPageBinding () {
 	 * @type {CompositeStart}
 	 */
 	this._starter = null;
+
+	/**
+	 * True when Start screen is visible.
+	 * @type {boolean}
+	 */
+	this._isShowingStart = false;
 }
 
 /**
@@ -31,13 +37,15 @@ StartPageBinding.prototype.toString = function () {
  * @overloads {PageBinding#onBindingRegister}
  */
 StartPageBinding.prototype.onBindingRegister = function () {
-	
+
 	StartPageBinding.superclass.onBindingRegister.call ( this );
 	this.addActionListener ( WindowBinding.ACTION_ONLOAD );
 	this.addActionListener ( ControlBinding.ACTION_COMMAND );
 	EventBroadcaster.subscribe ( BroadcastMessages.START_COMPOSITE, this );
 	EventBroadcaster.subscribe ( BroadcastMessages.STOP_COMPOSITE , this );
 	EventBroadcaster.subscribe ( BroadcastMessages.COMPOSITE_START, this );
+	EventBroadcaster.subscribe ( BroadcastMessages.COMPOSITE_STOP, this );
+	EventBroadcaster.subscribe ( BroadcastMessages.KEY_ESCAPE, this );
 }
 
 /**
@@ -71,7 +79,13 @@ StartPageBinding.prototype.handleAction = function ( action ) {
 		case WindowBinding.ACTION_ONLOAD :
 			if ( action.target == bindingMap.start ) {
 				this._starter = bindingMap.start.getContentWindow ().CompositeStart;
-				this.start();
+				if (this._starter && this._starter.hasCloseButton)
+				{
+					bindingMap.controlgroup.hide();
+				}
+				if (this._isShowingStart) {
+					this.start();
+				}
 			}
 			break;
 			
@@ -134,17 +148,25 @@ StartPageBinding.prototype.handleBroadcast = function ( broadcast, arg ) {
 	
 	switch ( broadcast ) {
 			
-		case BroadcastMessages.START_COMPOSITE :
+		case BroadcastMessages.START_COMPOSITE:
+			this._isShowingStart = true;
 			this.start();
 			break;
 			
 		case BroadcastMessages.STOP_COMPOSITE :
 			this.stop();
 			break;
-			
-		case BroadcastMessages.COMPOSITE_START : // broadcated by CompositeStart when ready
+		case BroadcastMessages.COMPOSITE_START: // broadcated by CompositeStart when ready
 			if ( bindingMap.cover ) {
 				bindingMap.cover.hide ();
+			}
+			break;
+		case BroadcastMessages.COMPOSITE_STOP:
+			this._isShowingStart = false;
+			break;
+		case BroadcastMessages.KEY_ESCAPE:
+			if (this._isShowingStart) {
+				this.stop();
 			}
 			break;
 	}

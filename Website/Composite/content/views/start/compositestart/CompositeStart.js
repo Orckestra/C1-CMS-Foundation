@@ -36,7 +36,13 @@ var CompositeStart = new function () {
 			EventBroadcaster.broadcast ( BroadcastMessages.COMPOSITE_STOP );
 		}
 	}
-	
+
+	/**
+	 * If this is set to true, the global close button will not be shown
+	 * Use CompositeStart.stop() to close starter page
+	 */
+	this.hasCloseButton = false;
+
 	/**
 	 * Startup stuff.
 	 */
