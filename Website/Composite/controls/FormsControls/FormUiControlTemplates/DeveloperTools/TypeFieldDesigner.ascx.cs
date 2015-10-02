@@ -383,16 +383,19 @@ namespace CompositeTypeFieldDesigner
 
         private void RepopulateDataUrlSegmentOrder(bool updateSelection)
         {
-            if (_dataUrlOrderUpdated)
+            var field = SelectedField;
+
+            if (_dataUrlOrderUpdated || field == null)
             {
                 return;
             }
 
-            var field = SelectedField;
-
             int existingSelection = lstDataUrlOrder.SelectedIndex;
 
-            var otherUrlSegments = CurrentFields.Where(f => f.DataUrlProfile != null && f.Id != field.Id).ToList();
+            var otherUrlSegments = CurrentFields
+                .Where(f => f.DataUrlProfile != null && f.Id != field.Id)
+                .OrderBy(f => f.DataUrlProfile.Order)
+                .ToList();
 
             lstDataUrlOrder.Items.Clear();
             // Populating the selector
@@ -1512,7 +1515,23 @@ namespace CompositeTypeFieldDesigner
                     format = (DataUrlSegmentFormat)Enum.Parse(typeof(DataUrlSegmentFormat), selectedValue);
                 }
             }
-            field.DataUrlProfile = new DataUrlProfile {Order = order, Format = format};
+
+            field.DataUrlProfile = new DataUrlProfile { Order = order, Format = format };
+
+            // Updating order of theother fields
+            var otherUrlSegments = CurrentFields
+                .Where(f => f.DataUrlProfile != null && f.Id != field.Id)
+                .OrderBy(f => f.DataUrlProfile.Order)
+                .ToList();
+
+            int index = 0;
+
+            foreach (var urlSegment in otherUrlSegments)
+            {
+                if (index == order) index++;
+
+                urlSegment.DataUrlProfile.Order = index++;
+            }
         }
 
 
