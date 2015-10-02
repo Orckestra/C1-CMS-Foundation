@@ -214,10 +214,18 @@ namespace CompositeTypeFieldDesigner {
 
         protected global::Composite.Core.WebClient.UiControlLib.DataInput txtKeyFieldName;
 
+        protected global::Composite.Core.WebClient.UiControlLib.CheckBox chkShowInDataUrl;
+
         protected global::System.Web.UI.WebControls.PlaceHolder plhKeyFieldProperties;
 
         protected global::System.Web.UI.WebControls.PlaceHolder plhFieldProperties;
 
+        protected global::System.Web.UI.WebControls.PlaceHolder plhDataUrl;
+
         protected global::System.Web.UI.WebControls.PlaceHolder plhAdvancedFieldProperties;
+
+        protected global::Composite.Core.WebClient.UiControlLib.Selector lstDataUrlOrder;
+
+        protected global::Composite.Core.WebClient.UiControlLib.Selector lstDataUrlDateFormat;
     }
 }

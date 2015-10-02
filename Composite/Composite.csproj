@@ -218,6 +218,7 @@
     <Compile Include="Core\Routing\IInternalUrlConverter.cs" />
     <Compile Include="Core\Routing\IMediaUrlProvider.cs" />
     <Compile Include="Core\Routing\InternalUrls.cs" />
+    <Compile Include="Data\DynamicTypes\DataUrlProfile.cs" />
     <Compile Include="Data\InternalUrlAttribute.cs" />
     <Compile Include="Data\PageRenderingHistory.cs" />
     <Compile Include="Data\RouteDateSegmentAttribute.cs" />
@@ -2207,9 +2208,7 @@
     <Compile Include="Plugins\Forms\WebChannel\UiControlFactories\TemplatedQueryCallDefinitionsEditorUiControlFactory.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Plugins\Forms\WebChannel\UiControlFactories\TemplatedSelectorUiControlFactory.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
+    <Compile Include="Plugins\Forms\WebChannel\UiControlFactories\TemplatedSelectorUiControlFactory.cs" />
     <Compile Include="Plugins\Forms\WebChannel\UiControlFactories\TemplatedTextInputUiControlFactory.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>

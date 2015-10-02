@@ -74,6 +74,21 @@
   <string key="DefaultValueHelp" value="You can define a default value for this field." />
   <string key="DefaultValueDialogLabel" value="Field default value configuration" />
 
+
+  <string key="DataUrlGroupLabel" value="Data url" />
+  <string key="AppearsInUrlLabel" value="Field appears in data url" />
+  <string key="AppearsInUrlItemLabel" value="Use in data urls" />
+  <string key="AppearsInUrlHelp" value="When checked the field will appear in data urls" />
+  <string key="DataUrlOrderLabel" value="Order" />
+  <string key="DataUrlOrderHelp" value="Order in which the field appear in data url route" />
+
+  <string key="DataUrlDateFormatLabel" value="Format" />
+  <string key="DataUrlDateFormatHelp" value="Chose in what format the date field will appear in url" />
+  <string key="DataUrlDateFormat_Year" value="Year" />
+  <string key="DataUrlDateFormat_Month" value="Month" />
+  <string key="DataUrlDateFormat_Day" value="Day" />
+  
+
   <string key="StringMaximumLength" value="String maximum length" />
   <string key="16CharMax" value="16 character maximum" />
   <string key="32CharMax" value="32 character maximum" />

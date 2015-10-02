@@ -5900,6 +5900,28 @@ namespace Composite.Core.ResourceSystem
  public static string DefaultValueHelp { get { return T("DefaultValueHelp"); } } 
  /// <summary>&quot;Field default value configuration&quot;</summary> 
  public static string DefaultValueDialogLabel { get { return T("DefaultValueDialogLabel"); } } 
+ /// <summary>&quot;Data url&quot;</summary> 
+ public static string DataUrlGroupLabel { get { return T("DataUrlGroupLabel"); } } 
+ /// <summary>&quot;Field appears in data url&quot;</summary> 
+ public static string AppearsInUrlLabel { get { return T("AppearsInUrlLabel"); } } 
+ /// <summary>&quot;Use in data urls&quot;</summary> 
+ public static string AppearsInUrlItemLabel { get { return T("AppearsInUrlItemLabel"); } } 
+ /// <summary>&quot;When checked the field will appear in data urls&quot;</summary> 
+ public static string AppearsInUrlHelp { get { return T("AppearsInUrlHelp"); } } 
+ /// <summary>&quot;Order&quot;</summary> 
+ public static string DataUrlOrderLabel { get { return T("DataUrlOrderLabel"); } } 
+ /// <summary>&quot;Order in which the field appear in data url route&quot;</summary> 
+ public static string DataUrlOrderHelp { get { return T("DataUrlOrderHelp"); } } 
+ /// <summary>&quot;Format&quot;</summary> 
+ public static string DataUrlDateFormatLabel { get { return T("DataUrlDateFormatLabel"); } } 
+ /// <summary>&quot;Chose in what format the date field will appear in url&quot;</summary> 
+ public static string DataUrlDateFormatHelp { get { return T("DataUrlDateFormatHelp"); } } 
+ /// <summary>&quot;Year&quot;</summary> 
+ public static string DataUrlDateFormat_Year { get { return T("DataUrlDateFormat_Year"); } } 
+ /// <summary>&quot;Month&quot;</summary> 
+ public static string DataUrlDateFormat_Month { get { return T("DataUrlDateFormat_Month"); } } 
+ /// <summary>&quot;Day&quot;</summary> 
+ public static string DataUrlDateFormat_Day { get { return T("DataUrlDateFormat_Day"); } } 
  /// <summary>&quot;String maximum length&quot;</summary> 
  public static string StringMaximumLength { get { return T("StringMaximumLength"); } } 
  /// <summary>&quot;16 character maximum&quot;</summary> 

@@ -72,6 +72,7 @@ del ..\..\Bin\dotless.Core.dll
 del ..\..\Bin\Antlr3.Runtime.dll
 del ..\..\Bin\WebGrease.dll
 del ..\..\Bin\System.Web.Optimization.dll
+del ..\..\Bin\Composite.Search.SimplePageSearch.dll
 
 rd /s /q ..\..\Frontend\Scripts
 rd /s /q ..\..\Frontend\Styles
