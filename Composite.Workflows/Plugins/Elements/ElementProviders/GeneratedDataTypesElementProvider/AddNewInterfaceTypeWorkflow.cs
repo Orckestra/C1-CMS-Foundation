@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Composite.C1Console.Actions;
 using Composite.C1Console.Events;
 using Composite.Core;
 using Composite.Data;
@@ -236,8 +235,8 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
                 UserSettings.LastSpecifiedNamespace = typeNamespace;
 
-                ParentTreeRefresher parentTreeRefresher = this.CreateParentTreeRefresher();
-                parentTreeRefresher.PostRefreshMesseges(this.EntityToken, 2);
+                var parentTreeRefresher = this.CreateParentTreeRefresher();
+                parentTreeRefresher.PostRefreshMessages(entityToken);
             }
             catch (Exception ex)
             {

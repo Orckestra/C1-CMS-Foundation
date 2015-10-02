@@ -2,6 +2,7 @@ using System;
 using Composite.C1Console.Events;
 using Composite.Core.Logging;
 using Composite.C1Console.Security;
+using Composite.Core;
 
 
 namespace Composite.C1Console.Actions
@@ -12,16 +13,16 @@ namespace Composite.C1Console.Actions
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class DeleteTreeRefresher
     {
-        private RelationshipGraph _beforeGraph;
-        private FlowControllerServicesContainer _flowControllerServicesContainer;
-        private bool _postRefreshMessegesCalled = false;
+        private readonly RelationshipGraph _beforeGraph;
+        private readonly FlowControllerServicesContainer _flowControllerServicesContainer;
+        private bool _postRefreshMessagesCalled;
 
 
         /// <exclude />
         public DeleteTreeRefresher(EntityToken beforeDeleteEntityToken, FlowControllerServicesContainer flowControllerServicesContainer)
         {
-            if (beforeDeleteEntityToken == null) throw new ArgumentNullException("beforeDeleteEntityToken");
-            if (flowControllerServicesContainer == null) throw new ArgumentNullException("flowControllerServicesContainer");
+            Verify.ArgumentNotNull(beforeDeleteEntityToken, "beforeDeleteEntityToken");
+            Verify.ArgumentNotNull(flowControllerServicesContainer, "flowControllerServicesContainer");
 
             _beforeGraph = new RelationshipGraph(beforeDeleteEntityToken, RelationshipGraphSearchOption.Both);
             _flowControllerServicesContainer = flowControllerServicesContainer;            
@@ -30,31 +31,37 @@ namespace Composite.C1Console.Actions
 
 
         /// <exclude />
+        [Obsolete("Use PostRefreshMessages instead")]
         public void PostRefreshMesseges()
         {
-            PostRefreshMesseges(false);
+            PostRefreshMessages(false);
         }
 
 
-
         /// <exclude />
+        [Obsolete("Use PostRefreshMessages instead")]
         public void PostRefreshMesseges(bool skipBeforeDeleteEntityToken)
         {
-            if (_postRefreshMessegesCalled)
+            PostRefreshMessages(skipBeforeDeleteEntityToken);
+        }
+
+
+        /// <exclude />
+        public void PostRefreshMessages(bool skipBeforeDeleteEntityToken = false)
+        {
+            if (_postRefreshMessagesCalled)
             {
-                throw new InvalidOperationException("Only one PostRefreshMesseges call is allowed");
+                throw new InvalidOperationException("Only one PostRefreshMessages call is allowed");
             }
-            else
+
+            _postRefreshMessagesCalled = true;
+
+            IManagementConsoleMessageService messageService = _flowControllerServicesContainer.GetService<IManagementConsoleMessageService>();
+
+            foreach (EntityToken entityToken in RefreshDeleteEntityTokenFinder.FindEntityTokens(_beforeGraph, skipBeforeDeleteEntityToken))
             {
-                _postRefreshMessegesCalled = true;
-
-                IManagementConsoleMessageService messageService = _flowControllerServicesContainer.GetService<IManagementConsoleMessageService>();
-
-                foreach (EntityToken entityToken in RefreshDeleteEntityTokenFinder.FindEntityTokens(_beforeGraph, skipBeforeDeleteEntityToken))
-                {
-                    messageService.RefreshTreeSection(entityToken);
-                    LoggingService.LogVerbose("DeleteTreeRefresher", string.Format("Refreshing EntityToken: Type = {0}, Source = {1}, Id = {2}, EntityTokenType = {3}", entityToken.Type, entityToken.Source, entityToken.Id, entityToken.GetType()));
-                }
+                messageService.RefreshTreeSection(entityToken);
+                Log.LogVerbose(this.GetType().Name, "Refreshing EntityToken: Type = {0}, Source = {1}, Id = {2}, EntityTokenType = {3}", entityToken.Type, entityToken.Source, entityToken.Id, entityToken.GetType());
             }
         }
     }

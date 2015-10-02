@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Linq;
 using Composite.C1Console.Events;
-using Composite.Core.Logging;
 using Composite.C1Console.Security;
+using Composite.Core;
+using Composite.Core.Linq;
 
 
 namespace Composite.C1Console.Actions
@@ -13,57 +14,67 @@ namespace Composite.C1Console.Actions
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class ParentTreeRefresher
 	{
-        private bool _postRefreshMessegesCalled = false;
-        private FlowControllerServicesContainer _flowControllerServicesContainer;
+        private bool _postRefreshMessagesCalled;
+        private readonly FlowControllerServicesContainer _flowControllerServicesContainer;
 
 
         /// <exclude />
         public ParentTreeRefresher(FlowControllerServicesContainer flowControllerServicesContainer)
         {
-            if (flowControllerServicesContainer == null) throw new ArgumentNullException("flowControllerServicesContainer");
+            Verify.ArgumentNotNull(flowControllerServicesContainer, "flowControllerServicesContainer");
 
             _flowControllerServicesContainer = flowControllerServicesContainer;
         }
 
 
         /// <exclude />
+        [Obsolete("Use PostRefreshMessages instead")]
         public void PostRefreshMesseges(EntityToken childEntityToken)
         {
-            PostRefreshMesseges(childEntityToken, 1);
+            PostRefreshMessages(childEntityToken);
+        }
+
+
+        /// <exclude />
+        [Obsolete("Use PostRefreshMessages instead")]
+        public void PostRefreshMesseges(EntityToken childEntityToken, int parentLevel)
+        {
+            PostRefreshMessages(childEntityToken, parentLevel);
         }
 
         /// <summary>
-        /// 
+        /// Posts refresh messages to the ancestors of the specified entityToken
         /// </summary>
         /// <param name="childEntityToken"></param>
         /// <param name="parentLevel">1 means the first parent, 2 means the second, etc.</param>
-        public void PostRefreshMesseges(EntityToken childEntityToken, int parentLevel)
+        public void PostRefreshMessages(EntityToken childEntityToken, int parentLevel = 1)
         {
-            if (childEntityToken == null) throw new ArgumentNullException("childEntityToken");
+            Verify.ArgumentNotNull(childEntityToken, "childEntityToken");
 
-
-            if (_postRefreshMessegesCalled)
+            if (_postRefreshMessagesCalled)
             {
-                throw new InvalidOperationException("Only one PostRefreshMesseges call is allowed");
+                throw new InvalidOperationException("Only one PostRefreshMessages call is allowed");
             }
-            else
+
+            _postRefreshMessagesCalled = true;
+
+            RelationshipGraph relationshipGraph = new RelationshipGraph(childEntityToken, RelationshipGraphSearchOption.Both);
+
+            var levels = relationshipGraph.Levels.Evaluate();
+
+            if (levels.Count <= parentLevel)
             {
-                _postRefreshMessegesCalled = true;
+                return;
+            }
 
-                RelationshipGraph relationshipGraph = new RelationshipGraph(childEntityToken, RelationshipGraphSearchOption.Both);
+            RelationshipGraphLevel relationshipGraphLevel = levels.ElementAt(parentLevel);
 
-                if (relationshipGraph.Levels.Count() > parentLevel)
-                {
-                    RelationshipGraphLevel relationshipGraphLevel = relationshipGraph.Levels.ElementAt(parentLevel);
+            IManagementConsoleMessageService messageService = _flowControllerServicesContainer.GetService<IManagementConsoleMessageService>();
 
-                    IManagementConsoleMessageService messageService = _flowControllerServicesContainer.GetService<IManagementConsoleMessageService>();
-
-                    foreach (EntityToken entityToken in relationshipGraphLevel.AllEntities)
-                    {
-                        messageService.RefreshTreeSection(entityToken);
-                        LoggingService.LogVerbose("FirstParentTreeRefresher", string.Format("Refreshing EntityToken: Type = {0}, Source = {1}, Id = {2}, EntityTokenType = {3}", entityToken.Type, entityToken.Source, entityToken.Id, entityToken.GetType()));
-                    }
-                }                
+            foreach (EntityToken entityToken in relationshipGraphLevel.AllEntities)
+            {
+                messageService.RefreshTreeSection(entityToken);
+                Log.LogVerbose(this.GetType().Name, "Refreshing EntityToken: Type = {0}, Source = {1}, Id = {2}, EntityTokenType = {3}", entityToken.Type, entityToken.Source, entityToken.Id, entityToken.GetType());
             }
         }
 	}

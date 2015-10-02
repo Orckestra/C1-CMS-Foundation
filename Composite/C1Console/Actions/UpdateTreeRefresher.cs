@@ -1,7 +1,7 @@
 using System;
 using Composite.C1Console.Events;
-using Composite.Core.Logging;
 using Composite.C1Console.Security;
+using Composite.Core;
 
 
 namespace Composite.C1Console.Actions
@@ -15,7 +15,7 @@ namespace Composite.C1Console.Actions
         private readonly FlowControllerServicesContainer _flowControllerServicesContainer;
         private readonly RelationshipGraph _beforeGraph;
         private RelationshipGraph _afterGraph;
-        private bool _postRefreshMessegesCalled;
+        private bool _postRefreshMessagesCalled;
 
 
         /// <exclude />
@@ -28,16 +28,22 @@ namespace Composite.C1Console.Actions
             _flowControllerServicesContainer = flowControllerServicesContainer;
         }
 
-
         /// <exclude />
+        [Obsolete("Use PostRefreshMessages instead")]
         public void PostRefreshMesseges(EntityToken afterUpdateEntityToken)
         {
-            if (_postRefreshMessegesCalled)
+            PostRefreshMessages(afterUpdateEntityToken);
+        }
+
+        /// <exclude />
+        public void PostRefreshMessages(EntityToken afterUpdateEntityToken)
+        {
+            if (_postRefreshMessagesCalled)
             {
-                throw new InvalidOperationException("Only one PostRefreshMesseges call is allowed");
+                throw new InvalidOperationException("Only one PostRefreshMessages call is allowed");
             }
-            
-            _postRefreshMessegesCalled = true;
+
+            _postRefreshMessagesCalled = true;
 
             _afterGraph = new RelationshipGraph(afterUpdateEntityToken, RelationshipGraphSearchOption.Both, false, false);
 
@@ -46,7 +52,7 @@ namespace Composite.C1Console.Actions
             foreach (EntityToken entityToken in RefreshBeforeAfterEntityTokenFinder.FindEntityTokens(_beforeGraph, _afterGraph))
             {
                 messageService.RefreshTreeSection(entityToken);
-                LoggingService.LogVerbose("UpdateTreeRefresher", string.Format("Refreshing EntityToken: Type = {0}, Source = {1}, Id = {2}, EntityTokenType = {3}", entityToken.Type, entityToken.Source, entityToken.Id, entityToken.GetType()));
+                Log.LogVerbose(this.GetType().Name, "Refreshing EntityToken: Type = {0}, Source = {1}, Id = {2}, EntityTokenType = {3}", entityToken.Type, entityToken.Source, entityToken.Id, entityToken.GetType());
             }
         }
     }

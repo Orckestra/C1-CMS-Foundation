@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Linq;
 using Composite.C1Console.Events;
-using Composite.Core.Logging;
 using Composite.C1Console.Security;
+using Composite.Core;
 
 
 namespace Composite.C1Console.Actions
@@ -13,37 +12,42 @@ namespace Composite.C1Console.Actions
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class SpecificTreeRefresher
     {
-        private bool _postRefreshMessegesCalled = false;
-        private FlowControllerServicesContainer _flowControllerServicesContainer;
+        private bool _postRefreshMessagesCalled = false;
+        private readonly FlowControllerServicesContainer _flowControllerServicesContainer;
 
 
         /// <exclude />
         public SpecificTreeRefresher(FlowControllerServicesContainer flowControllerServicesContainer)
         {
-            if (flowControllerServicesContainer == null) throw new ArgumentNullException("flowControllerServicesContainer");
+            Verify.ArgumentNotNull(flowControllerServicesContainer, "flowControllerServicesContainer");
 
             _flowControllerServicesContainer = flowControllerServicesContainer;
         }
 
 
         /// <exclude />
+        [Obsolete("Use PostRefreshMessages instead")]
         public void PostRefreshMesseges(EntityToken specificEntityToken)
         {
-            if (specificEntityToken == null) throw new ArgumentNullException("specificEntityToken");
+            PostRefreshMessages(specificEntityToken);
+        }
 
+        /// <exclude />
 
-            if (_postRefreshMessegesCalled)
+        public void PostRefreshMessages(EntityToken specificEntityToken)
+        {
+            Verify.ArgumentNotNull(specificEntityToken, "specificEntityToken");
+
+            if (_postRefreshMessagesCalled)
             {
-                throw new InvalidOperationException("Only one PostRefreshMesseges call is allowed");
+                throw new InvalidOperationException("Only one PostRefreshMessages call is allowed");
             }
-            else
-            {
-                IManagementConsoleMessageService messageService = _flowControllerServicesContainer.GetService<IManagementConsoleMessageService>();
 
-                messageService.RefreshTreeSection(specificEntityToken);
+            IManagementConsoleMessageService messageService = _flowControllerServicesContainer.GetService<IManagementConsoleMessageService>();
 
-                LoggingService.LogVerbose("SpecificTreeRefresher", string.Format("Refreshing EntityToken: Type = {0}, Source = {1}, Id = {2}, EntityTokenType = {3}", specificEntityToken.Type, specificEntityToken.Source, specificEntityToken.Id, specificEntityToken.GetType()));
-            }
+            messageService.RefreshTreeSection(specificEntityToken);
+
+            Log.LogVerbose(GetType().Name, "Refreshing EntityToken: Type = {0}, Source = {1}, Id = {2}, EntityTokenType = {3}", specificEntityToken.Type, specificEntityToken.Source, specificEntityToken.Id, specificEntityToken.GetType());
         }
     }
 }
