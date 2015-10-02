@@ -52,12 +52,8 @@ FieldGroupBinding.prototype._buildDOMContent = function () {
         fields = this.bindingElement.getElementsByTagName('ui:field'); // taht works for IE
     }
     var firstField = fields[0];
-    var lastField = fields[fields.length - 1];
     if (firstField) {
         firstField.className += " " + "first";
-    }
-    if (lastField) {
-        lastField.className += " " + "last";
     }
 }
 
