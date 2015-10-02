@@ -15,6 +15,7 @@ html, body {
 
 .welcomepage .splash {
     width: 500px;
+    min-height: 510px;
 }
 
 
