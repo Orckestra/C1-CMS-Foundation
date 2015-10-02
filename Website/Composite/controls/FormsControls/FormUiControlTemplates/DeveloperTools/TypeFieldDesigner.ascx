@@ -275,7 +275,7 @@
 														</ui:fielddata>
 													</ui:field>
                                                     
-                                                    <asp:PlaceHolder runat="server" Visible="<%# SelectedField.InstanceType == typeof(DateTime) %>">
+                                                    <asp:PlaceHolder runat="server" Visible="<%# SelectedField == null ? false : SelectedField.InstanceType == typeof(DateTime) %>">
                                                         <ui:field>
 														    <ui:fielddesc><%= Texts.DataUrlDateFormatLabel%></ui:fielddesc>
 														    <ui:fieldhelp><%= Texts.DataUrlDateFormatHelp %></ui:fieldhelp>
