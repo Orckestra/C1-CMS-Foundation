@@ -46,7 +46,7 @@ namespace Composite.Data
                 if (foreignKeyInfo != null)
                 {
                     var targetType = foreignKeyInfo.TargetType;
-                    var dataTypeMapper = AttributeBasedRoutingHelper.ForDataType(targetType);
+                    var dataTypeMapper = AttributeBasedRoutingHelper.GetPredicateMapper(targetType);
                     if (dataTypeMapper != null)
                     {
                         var typeConst = typeof (DataReferenceRelativeRouteToPredicateMapper<,>)

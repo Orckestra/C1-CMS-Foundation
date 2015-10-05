@@ -23,7 +23,7 @@ namespace Composite.Functions
             var pageId = PageRenderer.CurrentPageId;
             Verify.That(pageId != Guid.Empty, "The current page is not set");
 
-            IRoutedDataUrlMapper mapper = AttributeBasedRoutedDataUrlMapper.FromDataType(typeof(T), pageId);
+            IRoutedDataUrlMapper mapper = AttributeBasedRoutedDataUrlMapper.GetDataUrlMapper(typeof(T), pageId);
 
             return mapper ?? new PathInfoRoutedDataUrlMapper<T>(pageId, RoutedData.DataRouteKind.Key);
         }
@@ -150,7 +150,7 @@ namespace Composite.Functions
         /// <returns></returns>
         public static IDataUrlMapper GetDefaultDataUrlMapper(Guid pageId, Type dataType)
         {
-            IRoutedDataUrlMapper mapper = AttributeBasedRoutedDataUrlMapper.FromDataType(dataType, pageId);
+            IRoutedDataUrlMapper mapper = AttributeBasedRoutedDataUrlMapper.GetDataUrlMapper(dataType, pageId);
             if (mapper == null)
             {
                 return GetRoutedByIdDataUrlMapper(pageId, dataType);

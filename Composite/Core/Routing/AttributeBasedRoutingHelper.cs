@@ -19,13 +19,11 @@ namespace Composite.Core.Routing
         }
 
 
-        public static IRelativeRouteToPredicateMapper ForDataType(Type dataType)
+        public static IRelativeRouteToPredicateMapper GetPredicateMapper(Type dataType)
         {
             Verify.ArgumentNotNull(dataType, "dataType");
             Verify.ArgumentCondition(dataType.IsInterface && typeof(IData).IsAssignableFrom(dataType),
                 "dataType", "The data type have to an interface, inheriting {0}".FormatWith(typeof(IData).FullName));
-
-            // TODO: caching
 
             var mappings = dataType
                 .GetAllProperties()
@@ -120,7 +118,12 @@ namespace Composite.Core.Routing
 
                 if (typeof (IPageRelatedData).IsAssignableFrom(typeof (TDataType)))
                 {
-                    // TODO: filtering by pageId for page folder types
+                    var pageIdProperty = typeof (IPageRelatedData).GetProperty("PageId");
+
+                    var propertyExpr = Expression.Property(parameterExpression, pageIdProperty);
+                    var pageIdMatchExpr = Expression.Equal(propertyExpr, Expression.Constant(pageId));
+
+                    filterExpression = Expression.AndAlso(pageIdMatchExpr, filterExpression);
                 }
 
                 return Expression.Lambda<Func<TDataType, bool>>(filterExpression, parameterExpression);

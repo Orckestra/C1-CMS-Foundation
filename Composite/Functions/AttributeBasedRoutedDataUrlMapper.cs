@@ -30,9 +30,9 @@ namespace Composite.Functions
 
 
 
-        public static AttributeBasedRoutedDataUrlMapper FromDataType(Type dataType, Guid pageId)
+        public static AttributeBasedRoutedDataUrlMapper GetDataUrlMapper(Type dataType, Guid pageId)
         {
-            var mapper = AttributeBasedRoutingHelper.ForDataType(dataType);
+            var mapper = AttributeBasedRoutingHelper.GetPredicateMapper(dataType);
             if (mapper == null)
             {
                 return null;
@@ -50,7 +50,7 @@ namespace Composite.Functions
 
             if (pathIsEmpty && !pageUrlData.HasQueryParameters)
             {
-                return new RoutedDataModel(() => DataFacade.GetData(_dataType));
+                return new RoutedDataModel(GetDataQueryable);
             }
 
             int totalSegments = _mapper.PathSegmentsCount;
@@ -90,6 +90,23 @@ namespace Composite.Functions
             }
 
             return new RoutedDataModel(dataSet.First());
+        }
+
+        private IQueryable GetDataQueryable()
+        {
+            if (typeof (IPageRelatedData).IsAssignableFrom(_dataType))
+            {
+                var method = StaticReflection.GetGenericMethodInfo(a => GetFilteredDataQueryable<IPageRelatedData>(Guid.Empty));
+
+                return (IQueryable) method.MakeGenericMethod(_dataType).Invoke(null, new object[] { _pageId });
+            }
+
+            return DataFacade.GetData(_dataType);
+        }
+
+        private static IQueryable GetFilteredDataQueryable<TDataType>(Guid pageId) where TDataType: class, IPageRelatedData
+        {
+            return DataFacade.GetData<TDataType>().Where(data => data.PageId == pageId);
         }
 
         private static IReadOnlyCollection<IData> GetFilteredData<T>(Expression<Func<T, bool>> lambdaExpression)
