@@ -98,8 +98,8 @@ DecksBinding.prototype.select = function ( arg ) {
 			if ( this._selectedDeckBinding ) {
 				this._selectedDeckBinding.unselect ();
 			}
-			deckBinding.select ();
 			this._selectedDeckBinding = deckBinding;
+			deckBinding.select ();
 			var selectedindex = this.getProperty ( "selectedindex" );
 			if ( selectedindex != null ) {
 				this.setProperty ( 

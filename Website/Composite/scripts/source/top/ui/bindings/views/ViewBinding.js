@@ -54,14 +54,14 @@ ViewBinding.hasInstance = function (handle) {
 ViewBinding.getInstance = function ( handle ) {
 	
 	var result = ViewBinding._instances.get ( handle );
-	if ( !result ) {
-		var cry = "ViewBinding.getInstance: No such instance: " + handle;
-		SystemLogger.getLogger ( "ViewBinding [static]" ).error ( cry );
-		SystemDebug.stack ( arguments );
-		if ( Application.isDeveloperMode ) {
-			alert ( cry );
-		}
-	}
+	//if ( !result ) {
+	//	var cry = "ViewBinding.getInstance: No such instance: " + handle;
+	//	SystemLogger.getLogger ( "ViewBinding [static]" ).error ( cry );
+	//	SystemDebug.stack ( arguments );
+	//	if ( Application.isDeveloperMode ) {
+	//		alert ( cry );
+	//	}
+	//}
 	return result;
 }
 

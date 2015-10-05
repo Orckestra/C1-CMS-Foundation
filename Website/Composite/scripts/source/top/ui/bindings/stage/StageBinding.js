@@ -77,6 +77,12 @@ StageBinding.getSelectionHandle = function () {
 	return StageBinding.bindingInstance._explorerBinding.getSelectionHandle();
 }
 
+StageBinding.selectBrowserTab = function () {
+
+	StageBinding.bindingInstance.selectBrowserTab();
+}
+
+
 /**
  * Present ViewDefinition on stage.
  * @param {ViewDefinition} definition
@@ -545,21 +551,21 @@ StageBinding.prototype.handleAction = function ( action ) {
 			}
 
 			//NEW UI: LOAD Browser to first tab
-			this._activeViewDefinitions["Composite.Management.Browser"] = action.target.definition;
+			var deck = action.target;
+
+			this._activeViewDefinitions["Composite.Management.Browser"] = deck.definition;
 
 			var browserViewDefinition = ViewDefinitions["Composite.Management.Browser"];
-			browserViewDefinition.image = action.target.definition.image;
-			browserViewDefinition.label = action.target.definition.label;
-			browserViewDefinition.toolTip = action.target.definition.toolTip;
+			browserViewDefinition.image = deck.definition.image;
+			browserViewDefinition.label = deck.definition.label;
+			browserViewDefinition.toolTip = deck.definition.toolTip;
 
-			browserViewDefinition.argument["SystemViewDefinition"] = action.target.definition;
+			browserViewDefinition.argument["SystemViewDefinition"] = deck.definition;
 			browserViewDefinition.argument["URL"] = null;
-			browserViewDefinition.argument.image = action.target.definition.image;
-			browserViewDefinition.argument.label = action.target.definition.label;
-			browserViewDefinition.argument.toolTip = action.target.definition.toolTip;
-			var tab = action.target._dockBindings.get("main").prepareNewView(browserViewDefinition);
-			action.target._viewBinding = tab.getAssociatedView();
-
+			browserViewDefinition.argument.image = deck.definition.image;
+			browserViewDefinition.argument.label = deck.definition.label;
+			browserViewDefinition.argument.toolTip = deck.definition.toolTip;
+			deck._browserTab = deck._dockBindings.get("main").prepareNewView(browserViewDefinition);
 			break;
 		
 		/*
@@ -911,6 +917,18 @@ StageBinding.prototype._dontView = function ( handle ) {
 		delete this._activeViewDefinitions [ handle ];
 	} else {
 		this.logger.debug ( "Could not unregister active view: " + handle );
+	}
+}
+
+/**
+ * Select Browser tab
+ */
+StageBinding.prototype.selectBrowserTab = function () {
+
+	var deck = this._decksBinding.getSelectedDeckBinding();
+	var browserTab = deck.getBrowserTab();
+	if (browserTab && !browserTab.isSelected) {
+		browserTab.containingTabBoxBinding.select(browserTab, true);
 	}
 }
 

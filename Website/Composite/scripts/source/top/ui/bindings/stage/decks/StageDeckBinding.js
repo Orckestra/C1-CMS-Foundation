@@ -235,9 +235,14 @@ StageDeckBinding.prototype.initialize = function () {
 	}
 }
 
+StageDeckBinding.prototype.getBrowserTab = function () {
+
+	return this._browserTab;
+}
+
 StageDeckBinding.prototype.getBrowserPage = function () {
 
-	return this._viewBinding.getContentWindow().bindingMap.browserpage;
+	return this.getBrowserTab().getAssociatedView().getContentWindow().bindingMap.browserpage;
 }
 
 StageDeckBinding.prototype.getSystemTree = function () {

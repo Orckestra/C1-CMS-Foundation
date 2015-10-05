@@ -332,6 +332,7 @@ window.MessageQueue = new function () {
 								switch (broadcast) {
 								case BroadcastMessages.STAGEDECK_CHANGED:
 									if (arg == perspectiveElementKey) {
+										StageBinding.selectBrowserTab();
 										EventBroadcaster.broadcast(
 											BroadcastMessages.SYSTEMTREEBINDING_FOCUS,
 											action.SelectElementParams.EntityToken
