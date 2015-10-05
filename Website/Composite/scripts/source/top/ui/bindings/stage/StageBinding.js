@@ -340,7 +340,9 @@ StageBinding.prototype._onStageReady = function () {
 				EventBroadcaster.broadcast(BroadcastMessages.START_COMPOSITE);
 			}
 			else {
-				ViewBinding.getInstance("Composite.Management.Start").hide();
+				if(ViewBinding.hasInstance("Composite.Management.Start")){
+					ViewBinding.getInstance("Composite.Management.Start").hide();
+				}
 			}
 		}
 

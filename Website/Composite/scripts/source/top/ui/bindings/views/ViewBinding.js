@@ -37,9 +37,19 @@ ViewBinding.TIMEOUT = 15;
 ViewBinding._instances = new Map ();
 
 /**
+ * Has Instance?
+ * @param {string} handle
+ * @return {Boolean};
+ */
+ViewBinding.hasInstance = function (handle) {
+
+	return ViewBinding._instances.has(handle);
+}
+
+/**
  * Get instance by handle.
  * @param {string} handle
- * @return {ViewBinding}ViewBinding._instances.set ( this._viewDefinition.handle, this );
+ * @return {ViewBinding}
  */
 ViewBinding.getInstance = function ( handle ) {
 	

@@ -184,12 +184,10 @@ TreeSelectorDialogPageBinding.prototype.handleBroadcast = function (broadcast, a
 			break;
 		case BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED:
 			if (arg.syncHandle == this.getSyncHandle()) {
-				if (this._genericViewBinding && arg.source !== this._genericViewBinding) {
+				if (this._genericViewBinding && arg.source !== this._genericViewBinding && arg.actionProfile) {
 					var node = arg.actionProfile.Node;
 					this._genericViewBinding.setNode(node);
 				}
-				
-				console.log("refreshgenericView");
 			}
 			break;
 	}
