@@ -6,43 +6,50 @@ using System.Text;
 
 namespace Composite.C1Console.Trees.Foundation
 {
+    /// <exclude />
     [SecurityAncestorProvider(typeof(Composite.C1Console.Security.SecurityAncestorProviders.NoAncestorSecurityAncestorProvider))]
-    internal class TreePerspectiveEntityToken : EntityToken
+    public class TreePerspectiveEntityToken : EntityToken
     {
         private readonly string _id;
         private List<string> _childTrees = new List<string>();
 
 
+        /// <exclude />
         public TreePerspectiveEntityToken(string id)
         {
             _id = id;
         }
 
 
+        /// <exclude />
         public override string Id
         {
             get { return _id; }
         }
 
 
+        /// <exclude />
         public override string Type
         {
             get { return "C1Trees"; }
         }
 
 
+        /// <exclude />
         public override string Source
         {
             get { return "C1Trees"; }
         }
 
 
+        /// <exclude />
         public void AddChildTree(string treeId)
         {
             _childTrees.Add(treeId);
         }
 
 
+        /// <exclude />
         public override string Serialize()
         {
             return Id;
@@ -61,6 +68,7 @@ namespace Composite.C1Console.Trees.Foundation
         }
 
 
+        /// <exclude />
         public static EntityToken Deserialize(string serializedEntityToken)
         {
            /* Dictionary<string, string> dic = StringConversionServices.ParseKeyValueCollection(serializedEntityToken);
