@@ -843,11 +843,10 @@ namespace CompositeTypeFieldDesigner
         {
             get
             {
-                if (SelectedField== null) return false;
+                if (SelectedField == null) return false;
 
-                bool isNullable = SelectedField.Inherited;
                 var instanceType = SelectedField.InstanceType;
-                return !isNullable &&
+                return !SelectedField.IsNullable &&
                        (instanceType == typeof (Guid)
                         || instanceType == typeof (string)
                         || instanceType == typeof (Int16)

@@ -206,6 +206,8 @@
       <DependentUpon>LocalizationFiles.tt</DependentUpon>
     </Compile>
     <Compile Include="Core\ResourceSystem\Plugins\ResourceProvider\ILocalizationProvider.cs" />
+    <Compile Include="Core\Routing\AttributeBasedRoutingHelper.cs" />
+    <Compile Include="Core\Routing\DataReferenceRelativeRouteToPredicateMapper.cs" />
     <Compile Include="Core\Routing\DataUrls.cs">
       <SubType>Code</SubType>
     </Compile>

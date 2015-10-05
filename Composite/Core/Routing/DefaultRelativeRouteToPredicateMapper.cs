@@ -10,7 +10,7 @@ namespace Composite.Core.Routing
     {
         public int PathSegmentsCount { get { return 1; } }
 
-        public Expression<Func<TValue, bool>> GetPredicate(RelativeRoute route)
+        public Expression<Func<TValue, bool>> GetPredicate(Guid pageId, RelativeRoute route)
         {
             var stringValue = route.PathSegments.Single();
             if (IsStringField)

@@ -85,7 +85,7 @@ namespace Composite.Data
                 }
             }
 
-            public Expression<Func<DateTime, bool>> GetPredicate(RelativeRoute route)
+            public Expression<Func<DateTime, bool>> GetPredicate(Guid pageId, RelativeRoute route)
             {
                 int year, month, day;
 

@@ -28,11 +28,12 @@ namespace Composite.Core.Routing
     public interface IRelativeRouteToPredicateMapper<T> : IRelativeRouteToPredicateMapper
     {
         /// <summary>
-        /// 
+        /// Gets a predicate for filtering data based on a url segment
         /// </summary>
+        /// <param name="pageId"></param>
         /// <param name="route">The relative route</param>
         /// <returns></returns>
-        Expression<Func<T, bool>> GetPredicate(RelativeRoute route);
+        Expression<Func<T, bool>> GetPredicate(Guid pageId, RelativeRoute route);
 
         /// <summary>
         /// 

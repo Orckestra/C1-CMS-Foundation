@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 using Composite.Core.Routing;
 
@@ -35,6 +36,26 @@ namespace Composite.Data
             if (propertyInfo.PropertyType == typeof (DateTime))
             {
                 return new RouteDateSegmentAttribute.DateUrlSegmentMapper(DateSegmentFormat.YearMonthDay);
+            }
+
+            if (propertyInfo.GetCustomAttributes<ForeignKeyAttribute>().Any())
+            {
+                var foreignKeyInfo = DataReferenceFacade.GetForeignKeyProperties(propertyInfo.DeclaringType)
+                    .FirstOrDefault(p => p.SourcePropertyName == propertyInfo.Name);
+
+                if (foreignKeyInfo != null)
+                {
+                    var targetType = foreignKeyInfo.TargetType;
+                    var dataTypeMapper = AttributeBasedRoutingHelper.ForDataType(targetType);
+                    if (dataTypeMapper != null)
+                    {
+                        var typeConst = typeof (DataReferenceRelativeRouteToPredicateMapper<,>)
+                            .MakeGenericType(targetType, foreignKeyInfo.SourcePropertyInfo.PropertyType)
+                            .GetConstructors().Single();
+
+                        return (IRelativeRouteToPredicateMapper) typeConst.Invoke(new object[] { dataTypeMapper });
+                    }
+                }
             }
 
             var type = typeof (DefaultRelativeRouteToPredicateMapper<>).MakeGenericType(propertyInfo.PropertyType);
