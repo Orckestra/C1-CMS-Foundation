@@ -15,7 +15,6 @@ html, body {
 
 .welcomepage .splash {
     width: 500px;
-    min-height: 510px;
 }
 
 
@@ -29,7 +28,7 @@ html, body {
     }
 
    .welcomepage .intro {
-       min-height: 260px;
+       min-height: 380px;
    }
 
 .welcomepage ui|dialogtoolbar {
@@ -161,6 +160,9 @@ ui|clickbutton#introtestsuccessbutton {
     font-size: 14px;
 }
 
+#languageform {
+	margin-top: 40px;
+}
 
 p#loginok {
     visibility: hidden;
