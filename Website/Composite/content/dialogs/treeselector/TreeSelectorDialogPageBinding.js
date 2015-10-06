@@ -226,12 +226,12 @@ TreeSelectorDialogPageBinding.prototype.onBeforePageInitialize = function () {
 		this._genericViewBinding = this.bindingWindow.bindingMap.genericview;
 		this._genericViewBinding.addActionListener(TreeBinding.ACTION_SELECTIONCHANGED, this);
 		this._genericViewBinding.addActionListener(TreeBinding.ACTION_NOSELECTION, this);
-		this._genericViewBinding.addActionListener(GenericViewBinding.ACTION_OPEN, this);
+		this._genericViewBinding.addActionListener(GenericViewBinding.ACTION_COMMAND, this);
 
 		this._genericViewBinding.setSelectable(true);
 		this._genericViewBinding.setSelectionProperty(this._selectionProperty);
 		this._genericViewBinding.setSelectionValue(this._selectionValue);
-		//this._genericViewBinding.setActionGroup(this._actionGroup);
+		this._genericViewBinding.setActionGroup(this._actionGroup);
 
 	}
 
@@ -360,8 +360,13 @@ TreeSelectorDialogPageBinding.prototype.handleAction = function (action) {
 				this._clearDisplayAndResult ();
 				break;
 
-			case GenericViewBinding.ACTION_OPEN:
-				this._treeBinding.handleBroadcast(BroadcastMessages.SYSTEMTREEBINDING_FOCUS, action.target.node.getEntityToken());
+			case GenericViewBinding.ACTION_COMMAND:
+				if (action.target.node.hasChildren()) {
+					this._treeBinding.handleBroadcast(BroadcastMessages.SYSTEMTREEBINDING_FOCUS, action.target.node.getEntityToken());
+				} else {
+					bindingMap.buttonAccept.fireCommand();
+				}
+				
 				break;
 		}
 		

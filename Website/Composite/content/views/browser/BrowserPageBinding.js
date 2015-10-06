@@ -277,7 +277,7 @@ BrowserPageBinding.prototype.onAfterPageInitialize = function () {
     this._updateBroadcasters();
 
 	//TODO move this
-    this._box.getGeneticViewTabBinding().tree.addActionListener(GenericViewBinding.ACTION_OPEN, this);
+    this._box.getGeneticViewTabBinding().tree.addActionListener(GenericViewBinding.ACTION_COMMAND, this);
 
 
 }
@@ -419,7 +419,7 @@ BrowserPageBinding.prototype.handleAction = function (action) {
             this._isDisposing = true;
             action.consume();
             break;
-    	case GenericViewBinding.ACTION_OPEN:
+    	case GenericViewBinding.ACTION_COMMAND:
     		this.getSystemTree().handleBroadcast(BroadcastMessages.SYSTEMTREEBINDING_FOCUS, action.target.node.getEntityToken());
     		break;
     	case ViewBinding.ACTION_LOADED:

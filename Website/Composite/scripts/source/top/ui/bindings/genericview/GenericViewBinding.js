@@ -11,7 +11,7 @@ GenericViewBinding.IMAGE_MAXHEIGHT = 170;
 GenericViewBinding.LIST_IMAGE = "listimage";
 
 
-GenericViewBinding.ACTION_OPEN = "generic action open";
+GenericViewBinding.ACTION_COMMAND = "generic action open";
 
 /**
  * @class
@@ -41,6 +41,11 @@ function GenericViewBinding() {
 	*/
 	this._activePosition = SystemAction.activePositions.NavigatorTree;
 
+	/**
+	 * @type {HashMap<string><boolean>}
+	 */
+	this._actionGroup = null;
+
 }
 
 
@@ -62,7 +67,6 @@ GenericViewBinding.prototype.onBindingRegister = function () {
 
 
 	this.addActionListener(TreeNodeBinding.ACTION_COMMAND);
-	this.addActionListener(TreeNodeBinding.ACTION_OPEN);
 
 	this.attachClassName(GenericViewBinding.CLASSNAME);
 
@@ -82,26 +86,20 @@ GenericViewBinding.prototype.onBindingRegister = function () {
  */
 GenericViewBinding.prototype.handleAction = function (action) {
 
-	GenericViewBinding.superclass.handleAction.call(this, action);
-
 	var binding = action.target;
 
 	switch (action.type) {
 		case TreeNodeBinding.ACTION_COMMAND:
 		case TreeNodeBinding.ACTION_OPEN:
-			this.dispatchAction(new Action(action.target, GenericViewBinding.ACTION_OPEN));
-			
-
-			//EventBroadcaster.broadcast(
-			//	BroadcastMessages.SYSTEMTREEBINDING_FOCUS,
-			//	action.target.node.getEntityToken()
-			//);
+			this.dispatchAction(new Action(action.target, GenericViewBinding.ACTION_COMMAND));
 			action.consume();
 			break;
 		case TreeNodeBinding.ACTION_COMMAND:
 			action.consume();
 			break;
 	}
+
+	GenericViewBinding.superclass.handleAction.call(this, action);
 }
 
 /**
@@ -128,9 +126,9 @@ GenericViewBinding.prototype.setNode = function (node) {
 				this.attachClassName(GenericViewBinding.CLASSNAME_ICONSIZE);
 			}
 		} else {
-		    this.attachClassName(GenericViewBinding.CLASSNAME_SINGLE);
-		    this.attachClassName(GenericViewBinding.CLASSNAME_SINGLE_ICONSIZE);
-		    this.addNode(this.node);
+			this.attachClassName(GenericViewBinding.CLASSNAME_SINGLE);
+			this.attachClassName(GenericViewBinding.CLASSNAME_SINGLE_ICONSIZE);
+			this.addNode(this.node);
 		}
 	}
 }
@@ -276,8 +274,6 @@ GenericViewBinding.prototype._navigateByKey = function (key) {
 	}
 }
 
-
-
 /**
  * Compile actionprofile based on the individual actionprofile of all focused treenodes.
  * In case of multiple focused treenodes, only SystemActions relevant for *all* focused 
@@ -286,6 +282,11 @@ GenericViewBinding.prototype._navigateByKey = function (key) {
  */
 GenericViewBinding.prototype.getCompiledActionProfile = SystemTreeBinding.prototype.getCompiledActionProfile;
 
+/**
+ * Set Action Profile Group
+ * @param {function}
+ */
+GenericViewBinding.prototype.setActionGroup = SystemTreeBinding.prototype.setActionGroup;
 
 /**
  * TreeBinding factory.
@@ -310,5 +311,4 @@ GenericViewBinding.prototype.getSyncHandle = function () {
 	} else {
 		return this.perspectiveNode.getHandle();
 	}
-
 }
