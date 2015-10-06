@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
 using System.Text;
 using System.Web;
 //using System.Web.Instrumentation;
@@ -129,7 +126,7 @@ namespace Composite.AspNet.Razor
 
 				try
                 {
-                    return OutputToXhtmlDocument(output);
+                    return XhtmlDocument.ParseXhtmlFragment(output);
 				}
 				catch (XmlException ex)
 				{
@@ -145,43 +142,6 @@ namespace Composite.AspNet.Razor
         }
 
 
-        private static XhtmlDocument OutputToXhtmlDocument(string output)
-        {
-            var nodes = new List<XNode>();
-
-            using (var stringReader = new StringReader(output))
-            {
-                var xmlReaderSettings = new XmlReaderSettings
-                {
-                    IgnoreWhitespace = true,
-                    DtdProcessing = DtdProcessing.Parse,
-                    MaxCharactersFromEntities = 10000000,
-                    XmlResolver = null,
-                    ConformanceLevel = ConformanceLevel.Fragment // Allows multipe XNode-s
-                };
-
-                using (var xmlReader = XmlReader.Create(stringReader, xmlReaderSettings))
-                {
-                    xmlReader.MoveToContent();
-
-                    while (!xmlReader.EOF)
-                    {
-                        XNode node = XNode.ReadFrom(xmlReader);
-                        nodes.Add(node);
-                    }
-                }
-            }
-
-            if (nodes.Count == 1 && nodes[0] is XElement && (nodes[0] as XElement).Name.LocalName == "html")
-            {
-                return new XhtmlDocument(nodes[0] as XElement);
-            }
-
-            var document = new XhtmlDocument();
-            document.Body.Add(nodes);
-
-            return document;
-        }
 
         /// <summary>
         /// Executes the razor page.

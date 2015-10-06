@@ -143,6 +143,7 @@
     <Compile Include="Composite\content\views\functioninfo\ShowFunctionInfo.aspx.designer.cs">
       <DependentUpon>ShowFunctionInfo.aspx</DependentUpon>
     </Compile>
+    <Content Include="App_Data\Composite\Configuration\Entities.xml" />
     <Content Include="Composite\content\views\browser\BrowserPathBinding.js" />
     <Content Include="Composite\content\views\browser\deviceoptions.xml">
       <SubType>Designer</SubType>

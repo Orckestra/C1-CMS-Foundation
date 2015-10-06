@@ -3,6 +3,10 @@ using System;
 using Composite.Core.Types;
 using System.Linq;
 using System.Collections.Generic;
+using System.IO;
+using System.Text;
+using System.Xml;
+using Composite.Core.IO;
 
 
 namespace Composite.Core.Xml
@@ -20,6 +24,32 @@ namespace Composite.Core.Xml
         private static readonly XName _html_XName = Namespaces.Xhtml + "html";
         private static readonly XName _head_XName = Namespaces.Xhtml + "head";
         private static readonly XName _body_XName = Namespaces.Xhtml + "body";
+
+        private static readonly string XhtmlFragmentDtdInternalSubset = null;
+        private static readonly string EntityFileName = PathUtil.Resolve("~/App_Data/Composite/Configuration/Entities.xml");
+
+        static XhtmlDocument()
+        {
+            if (File.Exists(EntityFileName))
+            {
+                var doc = XDocument.Load(EntityFileName);
+
+                var sb = new StringBuilder();
+
+                foreach (var element in doc.Root.Elements())
+                {
+                    string name = (string) element.Attribute("name");
+                    string xmlsafe = (string) element.Attribute("xmlsafe");
+
+                    if (!string.IsNullOrEmpty(name) && xmlsafe != null)
+                    {
+                        sb.AppendFormat(@"<!ENTITY {0} '{1}'>", name, xmlsafe);
+                    }
+                }
+
+                XhtmlFragmentDtdInternalSubset = sb.ToString();
+            }
+        }
 
         /// <summary>
         /// Constructs an empty XhtmlDocument
@@ -153,6 +183,126 @@ namespace Composite.Core.Xml
         private static List<XElement> GetWhitespaceSensitiveElements(XhtmlDocument doc)
         {
             return doc.Descendants().Where(node => node.Name.Namespace == Namespaces.Xhtml && (node.Name.LocalName == "pre" || node.Name.LocalName == "textarea")).ToList();
+        }
+
+
+        /// <summary>
+        /// Parses an xhtml fragment of into an XhtmlDocument.
+        /// </summary>
+        /// <param name="fragment"></param>
+        /// <returns></returns>
+        public static XhtmlDocument ParseXhtmlFragment(string fragment)
+        {
+            if (string.IsNullOrEmpty(fragment))
+            {
+                return new XhtmlDocument();
+            }
+
+            var nodes = new List<XNode>();
+
+            using (var stringReader = new StringReader(fragment))
+            {
+                var xmlReaderSettings = new XmlReaderSettings
+                {
+                    IgnoreWhitespace = true,
+                    DtdProcessing = DtdProcessing.Parse,
+                    MaxCharactersFromEntities = 10000000,
+                    XmlResolver = null,
+                    ConformanceLevel = ConformanceLevel.Fragment // Allows multiple XNode-s
+                };
+
+                var inputContext = FragmentContainsHtmlEntities(fragment) ? GetXhtmlFragmentParserContext() : null;
+
+                using (var xmlReader = XmlReader.Create(stringReader, xmlReaderSettings, inputContext))
+                {
+                    xmlReader.MoveToContent();
+
+                    while (!xmlReader.EOF)
+                    {
+                        XNode node = XNode.ReadFrom(xmlReader);
+                        nodes.Add(node);
+                    }
+                }
+            }
+
+            if (nodes.Count == 1 && nodes[0] is XElement && (nodes[0] as XElement).Name.LocalName == "html")
+            {
+                return new XhtmlDocument(nodes[0] as XElement);
+            }
+
+            var document = new XhtmlDocument();
+            document.Body.Add(nodes);
+
+            return document;
+        }
+
+        private static bool FragmentContainsHtmlEntities(string fragment)
+        {
+            int searchOffset = 0;
+
+            while (searchOffset != -1)
+            {
+                int ampersandOffset = fragment.IndexOf("&", searchOffset, StringComparison.Ordinal);
+                if (ampersandOffset == -1)
+                {
+                    return false;
+                }
+
+                searchOffset = ampersandOffset + 1;
+
+                int symbolsLeft = fragment.Length - ampersandOffset - 1;
+                if ((symbolsLeft > 0 && fragment[ampersandOffset + 1] == '#')
+                    || (symbolsLeft >= 4
+                        && fragment[ampersandOffset + 1] == 'a'
+                        && fragment[ampersandOffset + 2] == 'm'
+                        && fragment[ampersandOffset + 3] == 'p'
+                        && fragment[ampersandOffset + 4] == ';')
+                    || (symbolsLeft >= 5
+                        && fragment[ampersandOffset + 1] == 'a'
+                        && fragment[ampersandOffset + 2] == 'p'
+                        && fragment[ampersandOffset + 3] == 'o'
+                        && fragment[ampersandOffset + 4] == 's'
+                        && fragment[ampersandOffset + 5] == ';')
+                    || (symbolsLeft >= 5
+                        && fragment[ampersandOffset + 1] == 'q'
+                        && fragment[ampersandOffset + 2] == 'u'
+                        && fragment[ampersandOffset + 3] == 'o'
+                        && fragment[ampersandOffset + 4] == 't'
+                        && fragment[ampersandOffset + 5] == ';')
+                    || (symbolsLeft >= 3
+                        && fragment[ampersandOffset + 1] == 'g'
+                        && fragment[ampersandOffset + 2] == 't'
+                        && fragment[ampersandOffset + 3] == ';')
+                    || (symbolsLeft >= 3
+                        && fragment[ampersandOffset + 1] == 'l'
+                        && fragment[ampersandOffset + 2] == 't'
+                        && fragment[ampersandOffset + 3] == ';'))
+                {
+                    continue;
+                }
+
+                return true;
+            }
+
+            // this line should not be reachable
+            return false;
+        }
+
+        private static XmlParserContext GetXhtmlFragmentParserContext()
+        {
+            if (XhtmlFragmentDtdInternalSubset == null)
+            {
+                return null;
+            }
+
+            return new XmlParserContext(null, null, "internal",
+                String.Empty,
+                String.Empty,
+                XhtmlFragmentDtdInternalSubset,
+                String.Empty,
+                String.Empty,
+                XmlSpace.Default,
+                Encoding.UTF8);
         }
     }
 
