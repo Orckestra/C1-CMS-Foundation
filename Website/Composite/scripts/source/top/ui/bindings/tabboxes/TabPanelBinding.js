@@ -51,6 +51,22 @@ TabPanelBinding.prototype.onBindingAttach = function () {
 }
 
 /**
+ * @overloads {Binding#onBindingRegister}
+ */
+TabPanelBinding.prototype.onBindingRegister = function () {
+
+	TabPanelBinding.superclass.onBindingRegister.call(this);
+	
+	//disable lazy if checkbox group exist in tab
+	if (this.isLazy && this.getDescendantElementsByLocalName("checkboxgroup").getLength() > 0)
+	{
+		this.deleteProperty("lazy");
+		this.isLazy = false;
+	}
+
+}
+
+/**
  * Select tabpanel.
  * @param {boolean} isManaged If set to true, application focus will not be updated.
  */
