@@ -11,7 +11,7 @@
 
         _selectedKeys = new List<string>(this.SelectedKeys);
 
-        var repeater = CompactMode ? optionsRepeater : CheckBoxRepeater;
+        var repeater = CompactMode ? OptionsRepeater : CheckBoxRepeater;
 
         repeater.DataSource = GetOptions();
         repeater.DataBind();
@@ -35,11 +35,16 @@
         }
         else
         {
-            string postBackName = this.ClientID; 
-            if (!string.IsNullOrEmpty(Request.Form[postBackName]))
+            string postedValue = Request.Form[this.ClientID];
+            if (!string.IsNullOrEmpty(postedValue))
             {
-                result = new List<string>(Request.Form[postBackName].Split(','));
+                result.AddRange(postedValue.Split(','));
             }
+
+            _selectedKeys = result;
+
+            OptionsRepeater.DataSource = GetOptions();
+            OptionsRepeater.DataBind();
         }
 
         this.SelectedKeys = result;
@@ -90,7 +95,7 @@
 
 <asp:PlaceHolder ID="compactModePlaceHolder" runat="server" Visible="false">
     <ui:multiselector name="<%= this.ClientID %>" required="<%= Required ? "true" : "false" %>">
-        <asp:Repeater runat="server" ID="optionsRepeater">
+        <asp:Repeater runat="server" ID="OptionsRepeater">
             <ItemTemplate>
                       <ui:selection 
                           label="<%# Server.HtmlEncode(((KeyLabelPair)Container.DataItem).Label) %>" 
