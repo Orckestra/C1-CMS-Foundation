@@ -591,9 +591,9 @@ DockTabBinding.prototype.select = function ( isManaged ) {
 	/*
 	 * Update tree focus.
 	 */
-	if ( isManaged != true ) {
+	//if ( isManaged != true ) {
 		this._updateTree ();
-	}
+	//}
 	
 	/*
 	 * TODO: Technically this should only be done when the dock is activated...

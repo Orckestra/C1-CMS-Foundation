@@ -566,6 +566,7 @@ StageBinding.prototype.handleAction = function ( action ) {
 			browserViewDefinition.argument.label = deck.definition.label;
 			browserViewDefinition.argument.toolTip = deck.definition.toolTip;
 			deck._browserTab = deck._dockBindings.get("main").prepareNewView(browserViewDefinition);
+			deck._browserTab.isExplorerTab = true;
 			break;
 		
 		/*

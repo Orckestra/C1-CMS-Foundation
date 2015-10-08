@@ -608,12 +608,20 @@ SystemTreeBinding.prototype._handleDockTabSelect = function (tab) {
 	 * find a matching treenode.
 	 */
 	if (isVisible) {
-		var self = this, token = tab.getEntityToken();
-		setTimeout(function () { // timeout to minimize freezing sensation
-			if (token != null) {
-				self._focusTreeNodeByEntityToken(token);
-			}
-		}, 250); // zero not always enough...
+		if (tab.isExplorerTab) {
+			var self = this, token = this._handleToken;
+			this._handleToken = null;
+			setTimeout(function () { // timeout to minimize freezing sensation
+				if (token != null) {
+					self._focusTreeNodeByEntityToken(token);
+				}
+			}, 250); // zero not always enough...
+		}
+		else {
+			var self = this, token = tab.getEntityToken();
+			this._handleToken = token;
+		}
+		
 	}
 }
 
