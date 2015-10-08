@@ -136,7 +136,11 @@ BrowserPageBinding.prototype.handleBroadcast = function (broadcast, arg) {
 	switch (broadcast) {
 		case BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED:
 			if (arg.syncHandle == this.getSyncHandle() && !(arg.source instanceof GenericViewBinding) && arg.actionProfile) {
-				this.push(arg.actionProfile.Node, true);
+				var self = this;
+				//IE Require timeout for first time
+				setTimeout(function () {
+					self.push(arg.actionProfile.Node, true);
+				}, 0);
 			}
 			break;
 		case BroadcastMessages.SYSTEMTREEBINDING_REFRESHED_AFTER:
