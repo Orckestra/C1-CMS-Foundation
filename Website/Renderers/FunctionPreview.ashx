@@ -55,18 +55,17 @@ namespace Composite.Renderers
                 ? new CultureInfo(cultureName)
                 : DataLocalizationFacade.DefaultLocalizationCulture;
             
-            IPage page;
+            IPage page = null;
 
             using (var c = new DataConnection(PublicationScope.Unpublished, culture))
             {
                 if (pageId != Guid.Empty)
                 {
-                    page = c.Get<IPage>().Single(p => p.Id == pageId);
+                    page = c.Get<IPage>().FirstOrDefault(p => p.Id == pageId);
                 }
-                else
+                
+                if(page == null)
                 {
-                    page = null;
-
                     if (templateId != Guid.Empty)
                     {
                         page = c.Get<IPage>().FirstOrDefault(p => p.TemplateId == templateId);

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Xml.Linq;
 using Composite.C1Console.Security;
+using Composite.C1Console.Users;
 using Composite.Core.PageTemplates;
 using Composite.Core.WebClient.Renderings.Page;
 using Composite.Core.Xml;
@@ -39,18 +40,17 @@ namespace Composite.Renderers
 				Guid.TryParse(pageIdStr, out pageId);
 				Guid.TryParse(templateIdStr, out templateId);
 
-				IPage page;
+				IPage page = null;
 
-				using (var c = new DataConnection(PublicationScope.Unpublished))
+				using (var c = new DataConnection(PublicationScope.Unpublished, UserSettings.ActiveLocaleCultureInfo))
 				{
 					if (pageId != Guid.Empty)
 					{
-						page = c.Get<IPage>().Single(p => p.Id == pageId);
+						page = c.Get<IPage>().FirstOrDefault(p => p.Id == pageId);
 					}
-					else
+					
+                    if(page == null)
 					{
-						page = null;
-
 						if (templateId != Guid.Empty)
 						{
 							page = c.Get<IPage>().FirstOrDefault(p => p.TemplateId == templateId);
