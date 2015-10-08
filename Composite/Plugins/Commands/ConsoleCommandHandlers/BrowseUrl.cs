@@ -20,12 +20,8 @@ namespace Composite.Plugins.Commands.ConsoleCommandHandlers
             if (entityToken == null)
             {
                 PageUrlData pageUrlData = PageUrls.ParseUrl(url);
-                if (pageUrlData == null)
-                {
-                    return;
-                }
 
-                var page = pageUrlData.GetPage();
+                var page = pageUrlData?.GetPage();
                 if (page == null)
                 {
                     return;
