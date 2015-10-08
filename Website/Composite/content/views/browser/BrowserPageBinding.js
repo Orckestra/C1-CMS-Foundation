@@ -145,7 +145,7 @@ BrowserPageBinding.prototype.handleBroadcast = function (broadcast, arg) {
 			break;
 		case BroadcastMessages.SYSTEMTREEBINDING_REFRESHED_AFTER:
 			if (arg.syncHandle == this.getSyncHandle()) {
-				this.refreshGenericView();
+				this.refreshView();
 			}
 			break;
 	}
@@ -154,10 +154,11 @@ BrowserPageBinding.prototype.handleBroadcast = function (broadcast, arg) {
 /**
  * Refresh Generic View
  */
-BrowserPageBinding.prototype.refreshGenericView = function () {
+BrowserPageBinding.prototype.refreshView = function () {
 
-	var tab = this._box.getGeneticViewTabBinding();
-	if (tab.isSelected) {
+	var genericViewTab = this._box.getGeneticViewTabBinding();
+	var browserTab = this._box.getBrowserTabBinding();
+	if (genericViewTab.isSelected) {
 		var selectedTreeNode = this.getSystemTree().getFocusedTreeNodeBindings().getFirst();
 		if (selectedTreeNode) {
 			selectedTreeNode.focus();
@@ -165,6 +166,9 @@ BrowserPageBinding.prototype.refreshGenericView = function () {
 		} else {
 			this.push(this.getSystemPage().node, false, true);
 		}
+	} else if (browserTab.isSelected) {
+		this._isHistoryBrowsing = true;
+		this._box.reload();
 	}
 }
 
@@ -694,12 +698,7 @@ BrowserPageBinding.prototype._handleCommand = function (cmd, binding) {
 
 			break;
 		case "refresh":
-			if (this._box.getGeneticViewTabBinding().isSelected) {
-				this.getSystemTree()._handleCommandBroadcast(BroadcastMessages.SYSTEMTREEBINDING_REFRESH);
-			} else {
-				this._isHistoryBrowsing = true;
-				this._box.reload();
-			}
+			this.getSystemTree()._handleCommandBroadcast(BroadcastMessages.SYSTEMTREEBINDING_REFRESH);
 			break;
 		case "home":
 			this.push(this.getSystemPage().node);
