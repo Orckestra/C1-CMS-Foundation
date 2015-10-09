@@ -650,6 +650,7 @@ namespace CompositeTypeFieldDesigner
             }
 
             EnsureGroupByPrioritySequence();
+            EnsureTreeOrderPrioritySequence();
 
             UpdatePositionFieldOptions();
             UpdateTreeOrderingFieldOptions();
@@ -669,123 +670,125 @@ namespace CompositeTypeFieldDesigner
 
         private void Field_Select(Guid fieldId)
         {
-            if (!ValidateSave())
-            {
-                return;
-            }
-
             if (this.CurrentlySelectedFieldId != Guid.Empty)
             {
+                if (!ValidateSave())
+                {
+                    return;
+                }
+
                 Field_Save();
             }
 
-            var selectedField = CurrentFields.Single(f => f.Id == fieldId);
-
             this.CurrentlySelectedFieldId = fieldId;
+            var selectedField = SelectedField;
 
             InitializeDetailsSplitPanel();
 
             this.NameField.Text = selectedField.Name;
 
-            this.IsTitleFieldDateTimeSelector.Checked = (this.CurrentLabelFieldName == selectedField.Name);
-
-            this.LabelField.Text = selectedField.FormRenderingProfile.Label;
-            this.HelpField.Text = selectedField.FormRenderingProfile.HelpText;
-            btnWidgetFunctionMarkup.Value = selectedField.FormRenderingProfile.WidgetFunctionMarkup;
-            btnDefaultValueFunctionMarkup.Value = selectedField.NewInstanceDefaultFieldValue;
-
-            if (string.IsNullOrEmpty(selectedField.ForeignKeyReferenceTypeName))
+            if (!SelectedFieldIsKeyField)
             {
-                if (selectedField.InstanceType.IsGenericType
-                    && selectedField.InstanceType.GetGenericTypeDefinition() == typeof(Nullable<>))
+                this.IsTitleFieldDateTimeSelector.Checked = (this.CurrentLabelFieldName == selectedField.Name);
+
+                this.LabelField.Text = selectedField.FormRenderingProfile.Label;
+                this.HelpField.Text = selectedField.FormRenderingProfile.HelpText;
+                btnWidgetFunctionMarkup.Value = selectedField.FormRenderingProfile.WidgetFunctionMarkup;
+                btnDefaultValueFunctionMarkup.Value = selectedField.NewInstanceDefaultFieldValue;
+
+                if (string.IsNullOrEmpty(selectedField.ForeignKeyReferenceTypeName))
                 {
-                    Type underlying = selectedField.InstanceType.GetGenericArguments()[0];
-                    this.TypeSelector.SelectedValue = underlying.FullName;
-                }
-                else
-                {
-                    this.TypeSelector.SelectedValue = selectedField.InstanceType.FullName;
-                }
-            }
-            else
-            {
-                this.TypeSelector.SelectedValue = "Reference";
-            }
-
-            // XHTML compensate
-            if (selectedField.InstanceType == typeof(string) && selectedField.StoreType.IsLargeString 
-                && !string.IsNullOrEmpty(selectedField.FormRenderingProfile.WidgetFunctionMarkup))
-            {
-                var visualEditorWidgetName = StandardWidgetFunctions.VisualXhtmlDocumentEditorWidget.WidgetFunctionCompositeName;
-                var widgetFunction = XElement.Parse(selectedField.FormRenderingProfile.WidgetFunctionMarkup);
-                if ((string)widgetFunction.Attribute("name") == visualEditorWidgetName)
-                {
-                    this.TypeSelector.SelectedValue = "XHTML";
-                }
-            }
-
-            this.OptionalSelector.SelectedValue = selectedField.IsNullable ? "true" : "false";
-
-            UpdateFieldTypeDetailsSelector();
-
-            btnValidationRulesFunctionMarkup.Value = "";
-
-            if (selectedField.ValidationFunctionMarkup != null && selectedField.ValidationFunctionMarkup.Count > 0)
-            {
-                btnValidationRulesFunctionMarkup.Value = string.Format("<functions>{0}</functions>", String.Concat(selectedField.ValidationFunctionMarkup.ToArray()));
-            }
-
-            if (this.TypeSelector.SelectedValue != "Reference")
-            {
-                if (selectedField.InstanceType == typeof(string))
-                {
-                    if (selectedField.StoreType.IsLargeString)
+                    if (selectedField.InstanceType.IsGenericType
+                        && selectedField.InstanceType.GetGenericTypeDefinition() == typeof(Nullable<>))
                     {
-                        this.TypeDetailsSelector.SelectedValue = "max";
+                        Type underlying = selectedField.InstanceType.GetGenericArguments()[0];
+                        this.TypeSelector.SelectedValue = underlying.FullName;
                     }
                     else
                     {
-                        ListItem selected = this.TypeDetailsSelector.Items.FindByValue(selectedField.StoreType.MaximumLength.ToString());
+                        this.TypeSelector.SelectedValue = selectedField.InstanceType.FullName;
+                    }
+                }
+                else
+                {
+                    this.TypeSelector.SelectedValue = "Reference";
+                }
+
+                // XHTML compensate
+                if (selectedField.InstanceType == typeof(string) && selectedField.StoreType.IsLargeString 
+                    && !string.IsNullOrEmpty(selectedField.FormRenderingProfile.WidgetFunctionMarkup))
+                {
+                    var visualEditorWidgetName = StandardWidgetFunctions.VisualXhtmlDocumentEditorWidget.WidgetFunctionCompositeName;
+                    var widgetFunction = XElement.Parse(selectedField.FormRenderingProfile.WidgetFunctionMarkup);
+                    if ((string)widgetFunction.Attribute("name") == visualEditorWidgetName)
+                    {
+                        this.TypeSelector.SelectedValue = "XHTML";
+                    }
+                }
+
+                this.OptionalSelector.SelectedValue = selectedField.IsNullable ? "true" : "false";
+
+                UpdateFieldTypeDetailsSelector();
+
+                btnValidationRulesFunctionMarkup.Value = "";
+
+                if (selectedField.ValidationFunctionMarkup != null && selectedField.ValidationFunctionMarkup.Count > 0)
+                {
+                    btnValidationRulesFunctionMarkup.Value = string.Format("<functions>{0}</functions>", String.Concat(selectedField.ValidationFunctionMarkup.ToArray()));
+                }
+
+                if (this.TypeSelector.SelectedValue != "Reference")
+                {
+                    if (selectedField.InstanceType == typeof(string))
+                    {
+                        if (selectedField.StoreType.IsLargeString)
+                        {
+                            this.TypeDetailsSelector.SelectedValue = "max";
+                        }
+                        else
+                        {
+                            ListItem selected = this.TypeDetailsSelector.Items.FindByValue(selectedField.StoreType.MaximumLength.ToString());
+                            if (selected == null)
+                            {
+                                selected = new ListItem(selectedField.StoreType.MaximumLength.ToString());
+                                this.TypeDetailsSelector.Items.Add(selected);
+                            }
+                            this.TypeDetailsSelector.ClearSelection();
+                            selected.Selected = true;
+                        }
+                    }
+                    if (selectedField.InstanceType == typeof(decimal) || selectedField.InstanceType == typeof(decimal?))
+                    {
+                        ListItem selected = this.TypeDetailsSelector.Items.FindByValue(selectedField.StoreType.NumericScale.ToString());
                         if (selected == null)
                         {
-                            selected = new ListItem(selectedField.StoreType.MaximumLength.ToString());
+                            selected = new ListItem(selectedField.StoreType.NumericScale.ToString());
                             this.TypeDetailsSelector.Items.Add(selected);
                         }
-                        this.TypeDetailsSelector.ClearSelection();
-                        selected.Selected = true;
+                        this.TypeDetailsSelector.SelectedValue = selected.Value;
+                        //selected.Selected = true;
                     }
                 }
-                if (selectedField.InstanceType == typeof(decimal) || selectedField.InstanceType == typeof(decimal?))
+
+                if (!string.IsNullOrEmpty(selectedField.ForeignKeyReferenceTypeName))
                 {
-                    ListItem selected = this.TypeDetailsSelector.Items.FindByValue(selectedField.StoreType.NumericScale.ToString());
-                    if (selected == null)
+                    try
                     {
-                        selected = new ListItem(selectedField.StoreType.NumericScale.ToString());
-                        this.TypeDetailsSelector.Items.Add(selected);
+                        this.TypeDetailsSelector.SelectedValue = selectedField.ForeignKeyReferenceTypeName;
                     }
-                    this.TypeDetailsSelector.SelectedValue = selected.Value;
-                    //selected.Selected = true;
+                    catch (Exception)
+                    {
+                        Baloon(this.TypeDetailsSelector, string.Format("Unable to set original value. '{0}' is not known.", selectedField.ForeignKeyReferenceTypeName));
+                    }
                 }
+
+                this.PositionField.SelectedValue = (selectedField.Position == PositionableFieldsCount - 1 ? "-1" : selectedField.Position.ToString());
+
+                UpdateGroupByPriorityFieldOptions();
+                UpdateTreeOrderingFieldOptions();
+                this.GroupByPriorityField.SelectedValue = selectedField.GroupByPriority.ToString();
+                this.TreeOrderingField.SelectedValue = selectedField.TreeOrderingProfile.ToString();
             }
-
-            if (!string.IsNullOrEmpty(selectedField.ForeignKeyReferenceTypeName))
-            {
-                try
-                {
-                    this.TypeDetailsSelector.SelectedValue = selectedField.ForeignKeyReferenceTypeName;
-                }
-                catch (Exception)
-                {
-                    Baloon(this.TypeDetailsSelector, string.Format("Unable to set original value. '{0}' is not known.", selectedField.ForeignKeyReferenceTypeName));
-                }
-            }
-
-            this.PositionField.SelectedValue = (selectedField.Position == PositionableFieldsCount - 1 ? "-1" : selectedField.Position.ToString());
-
-            UpdateGroupByPriorityFieldOptions();
-            UpdateTreeOrderingFieldOptions();
-            this.GroupByPriorityField.SelectedValue = selectedField.GroupByPriority.ToString();
-            this.TreeOrderingField.SelectedValue = selectedField.TreeOrderingProfile.ToString();
         }
 
 
@@ -1148,44 +1151,40 @@ namespace CompositeTypeFieldDesigner
 
         protected void AddNewButton_Click(object sender, EventArgs e)
         {
-            if (!ValidateSave())
-            {
-                return;
-            }
-
             if (this.CurrentlySelectedFieldId != Guid.Empty)
             {
+                if (!ValidateSave())
+                {
+                    return;
+                }
+
                 Field_Save();
+
+                CurrentlySelectedFieldId = Guid.Empty;
             }
 
-            InitializeDetailsSplitPanel();
-
-            this.CurrentlySelectedFieldId = Guid.NewGuid();
-            this.NameField.Text = _defaultFieldNamePrefix;
+            string newFieldName = _defaultFieldNamePrefix;
 
             int i = 2;
-            while (this.CurrentFields.Any(f => f.Name == this.NameField.Text))
+            while (this.CurrentFields.Any(f => f.Name == newFieldName))
             {
-                this.NameField.Text = _defaultFieldNamePrefix + i++;
+                newFieldName = _defaultFieldNamePrefix + i++;
             }
 
-            this.TypeSelector.SelectedValue = "System.String";
-            this.UpdateFieldTypeDetailsSelector();
-            btnValidationRulesFunctionMarkup.Value = "";
-            btnDefaultValueFunctionMarkup.Value = "";
-            this.LabelField.Text = "";
-            this.HelpField.Text = "";
-            this.PositionField.SelectedValue = "-1";
+            Guid newFieldId = Guid.NewGuid();
+            this.CurrentFields.Add(new DataFieldDescriptor(newFieldId, newFieldName, StoreFieldType.String(64), typeof(string))
+            {
+                Position = PositionableFieldsCount
+            });
 
-            this.IsTitleFieldDateTimeSelector.Checked = string.IsNullOrEmpty(this.CurrentLabelFieldName);
+            if (string.IsNullOrEmpty(this.CurrentLabelFieldName))
+            {
+                this.CurrentLabelFieldName = newFieldName;
+            }
 
-            ResetWidgetSelector();
 
-            Field_Save();
-
-            UpdatePositionFieldOptions();
-            UpdateTreeOrderingFieldOptions();
-            UpdateGroupByPriorityFieldOptions();
+            Field_Select(newFieldId);
+            
             UpdateFieldsPanel();
             MakeClientDirty();
         }
@@ -1248,16 +1247,6 @@ namespace CompositeTypeFieldDesigner
 
         private void Field_Save()
         {
-            // Adding a field if missing
-            if (!CurrentFields.Any(f => f.Id == this.CurrentlySelectedFieldId))
-            {
-                var newField = new DataFieldDescriptor(this.CurrentlySelectedFieldId, this.NameField.Text, StoreFieldType.Boolean, this.CurrentlySelectedType)
-                {
-                    Position = PositionableFieldsCount
-                };
-                this.CurrentFields.Add(newField);
-            }
-
             var field = this.CurrentFields.Single(f => f.Id == this.CurrentlySelectedFieldId);
 
 
