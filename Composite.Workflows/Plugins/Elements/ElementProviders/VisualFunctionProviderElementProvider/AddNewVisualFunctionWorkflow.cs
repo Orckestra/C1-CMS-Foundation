@@ -55,15 +55,14 @@ namespace Composite.Plugins.Elements.ElementProviders.VisualFunctionProviderElem
 
         private void stepInitialize_codeActivity_ExecuteCode(object sender, EventArgs e)
         {
-            Dictionary<string, object> bindings = new Dictionary<string, object>();
-
             List<Type> dataTypes = DataFacade.GetAllInterfaces(UserType.Developer);
             dataTypes.RemoveAll(t => t.FullName.StartsWith("Composite.Data.Types"));
 
-            bindings.Add("SelectedType", typeof(IData));
-            bindings.Add("TypeOptions", dataTypes);
-
-            this.Bindings = bindings;
+            this.Bindings = new Dictionary<string, object>
+            {
+                {"SelectedType", typeof (IData)},
+                {"TypeOptions", dataTypes}
+            };
         }
 
 
@@ -72,7 +71,7 @@ namespace Composite.Plugins.Elements.ElementProviders.VisualFunctionProviderElem
         {
             DataTypeDescriptor dataTypeDescriptor = GetDataTypeDescriptor();
 
-            IVisualFunction function = DataFacade.BuildNew<IVisualFunction>();
+            var function = DataFacade.BuildNew<IVisualFunction>();
 
             function.Id = Guid.NewGuid();
             function.Name = FunctionFacade.BuildUniqueFunctionName(dataTypeDescriptor.Namespace, string.Format("{0}Rendering", dataTypeDescriptor.Name));
@@ -136,7 +135,9 @@ namespace Composite.Plugins.Elements.ElementProviders.VisualFunctionProviderElem
             DataTypeDescriptor typeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(interfaceType);
             foreach (DataFieldDescriptor dataField in typeDescriptor.Fields.OrderBy(f => f.Position))
             {
-                if (dataField.Name != "Id" && dataField.FormRenderingProfile != null && string.IsNullOrEmpty(dataField.FormRenderingProfile.Label) == false)
+                if (!typeDescriptor.KeyPropertyNames.Contains(dataField.Name)
+                    && dataField.FormRenderingProfile != null 
+                    && !string.IsNullOrEmpty(dataField.FormRenderingProfile.Label))
                 {
                     string fieldMarkup = string.Format("<data:fieldreference fieldname=\"{0}\" typemanagername=\"{1}\" xmlns:data=\"{2}\" />", dataField.Name, newFunction.TypeManagerName, Namespaces.DynamicData10);
 
@@ -158,19 +159,9 @@ namespace Composite.Plugins.Elements.ElementProviders.VisualFunctionProviderElem
         {
             IVisualFunction function = this.GetBinding<IVisualFunction>("Function");
 
-            string functionName = function.Name;
-            string functionNamespace = function.Namespace;
+            string functionFullName = $"{function.Namespace}.{function.Name}";
 
-            string functionFullName = string.Format("{0}.{1}", functionNamespace, functionName);
-
-            if (FunctionFacade.FunctionNames.Contains(functionFullName))
-            {
-                e.Result = false;
-            }
-            else
-            {
-                e.Result = true;
-            }
+            e.Result = !FunctionFacade.FunctionNames.Contains(functionFullName);
         }
 
 
@@ -179,9 +170,9 @@ namespace Composite.Plugins.Elements.ElementProviders.VisualFunctionProviderElem
         {
             Type type = GetSourceDataType();
 
-            e.Result = DataFacade.GetData(type).Any(); 
-
+            e.Result = DataFacade.GetData(type).Any();
         }
+
 
         private void CheckTypesExists(object sender, ConditionalEventArgs e)
         {
@@ -193,26 +184,9 @@ namespace Composite.Plugins.Elements.ElementProviders.VisualFunctionProviderElem
         {
             Type type = GetSourceDataType();
 
-            if (type != null)
-            {
-                Guid immuteableTypeId;
-                if (type.TryGetImmutableTypeId(out immuteableTypeId))
-                {
-                    e.Result = true;
-                }
-                else
-                {
-                    e.Result = false;
-                }
-            }
-            else
-            {
-                e.Result = false;
-            }
+            Guid immutableTypeId;
+
+            e.Result = type != null && type.TryGetImmutableTypeId(out immutableTypeId);
         }
-
-
-
-
     }
 }
