@@ -158,17 +158,12 @@ BrowserPageBinding.prototype.refreshView = function () {
 
 	var genericViewTab = this._box.getGeneticViewTabBinding();
 	var browserTab = this._box.getBrowserTabBinding();
-	if (genericViewTab.isSelected) {
-		var selectedTreeNode = this.getSystemTree().getFocusedTreeNodeBindings().getFirst();
-		if (selectedTreeNode) {
-			selectedTreeNode.focus();
-			this.push(selectedTreeNode.node, true, true);
-		} else {
-			this.push(this.getSystemPage().node, false, true);
-		}
-	} else if (browserTab.isSelected) {
-		this._isHistoryBrowsing = true;
-		this._box.reload();
+	var selectedTreeNode = this.getSystemTree().getFocusedTreeNodeBindings().getFirst();
+	if (selectedTreeNode) {
+		selectedTreeNode.focus();
+		this.push(selectedTreeNode.node, true, true);
+	} else {
+		this.push(this.getSystemPage().node, false, true);
 	}
 }
 
