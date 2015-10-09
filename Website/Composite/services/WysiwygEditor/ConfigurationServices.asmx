@@ -21,28 +21,26 @@ namespace Composite.Services
         [WebMethod]
         public List<FieldGroup> GetEmbedableFieldGroupConfigurations(string embedableFieldsTypeNames)
         {
-            if (string.IsNullOrEmpty(embedableFieldsTypeNames) == false)
-            {
-                List<FieldGroup> fieldGroups = new List<FieldGroup>();
-
-                string[] serializedTypeManagerTypeNameArray = embedableFieldsTypeNames.Split('|');
-
-                foreach (string serializedTypeManagerTypeName in serializedTypeManagerTypeNameArray)
-                {
-                    Type sourceDataType = TypeManager.TryGetType(serializedTypeManagerTypeName);
-
-                    if (sourceDataType != null)
-                    {
-                        fieldGroups.Add(GetSingleFieldGroupByType(sourceDataType));
-                    }
-                }
-
-                return fieldGroups;
-            }
-            else
+            if (string.IsNullOrEmpty(embedableFieldsTypeNames))
             {
                 return new List<FieldGroup>();
             }
+
+            List<FieldGroup> fieldGroups = new List<FieldGroup>();
+
+            string[] serializedTypeManagerTypeNameArray = embedableFieldsTypeNames.Split('|');
+
+            foreach (string serializedTypeManagerTypeName in serializedTypeManagerTypeNameArray)
+            {
+                Type sourceDataType = TypeManager.TryGetType(serializedTypeManagerTypeName);
+
+                if (sourceDataType != null)
+                {
+                    fieldGroups.Add(GetSingleFieldGroupByType(sourceDataType));
+                }
+            }
+
+            return fieldGroups;
         }
 
 
@@ -53,11 +51,10 @@ namespace Composite.Services
 
             FieldGroup group = new FieldGroup();
 
-            // TODO: Fix the logic, this expression is always "false"
-            if (sourceDataType is IData)
+            if (typeof(IData).IsAssignableFrom(sourceDataType))
             {
-                DataTypeDescriptor dataTypeDescriptor = null;
-                if (DynamicTypeManager.TryGetDataTypeDescriptor(sourceDataType, out dataTypeDescriptor) == false)
+                DataTypeDescriptor dataTypeDescriptor;
+                if (!DynamicTypeManager.TryGetDataTypeDescriptor(sourceDataType, out dataTypeDescriptor))
                 {
                     dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(sourceDataType);
                 }
@@ -68,19 +65,17 @@ namespace Composite.Services
                 {
                     string label = dataField.Name;
 
-                    if (dataField.FormRenderingProfile != null && string.IsNullOrEmpty(dataField.FormRenderingProfile.Label) == false)
+                    if (dataField.FormRenderingProfile != null && !string.IsNullOrEmpty(dataField.FormRenderingProfile.Label))
                     {
                         label = dataField.FormRenderingProfile.Label;
                     }
 
-                    Field field = new Field
+                    group.Fields.Add(new Field
                     {
                         Name = label,
-                        XhtmlRepresentation = GetImageTagForDynamicDataFieldReference(dataField, dataTypeDescriptor).ToString(),
+                        XhtmlRepresentation = GetImageTagForDynamicDataFieldReference(label, dataField, dataTypeDescriptor).ToString(),
                         XmlRepresentation = dataField.GetReferenceElement(dataTypeDescriptor).ToString()
-                    };
-
-                    group.Fields.Add(field);
+                    });
                 }
             }
             else
@@ -89,17 +84,15 @@ namespace Composite.Services
 
                 foreach (var propertyInfo in sourceDataType.GetPropertiesRecursively())
                 {
-                    string label = propertyInfo.Name;
+                    string fieldName = propertyInfo.Name;
 
-                    Field field = new Field
+                    group.Fields.Add(new Field
                     {
-                        Name = propertyInfo.Name,
-                        XhtmlRepresentation = GetImageTagForDynamicDataFieldReference(propertyInfo.Name, sourceDataType).ToString(),
+                        Name = fieldName,
+                        XhtmlRepresentation = GetImageTagForDynamicDataFieldReference(fieldName, sourceDataType).ToString(),
 
-                        XmlRepresentation = DynamicTypeMarkupServices.GetReferenceElement(propertyInfo.Name, TypeManager.SerializeType(sourceDataType)).ToString()
-                    };
-
-                    group.Fields.Add(field);
+                        XmlRepresentation = DynamicTypeMarkupServices.GetReferenceElement(fieldName, TypeManager.SerializeType(sourceDataType)).ToString()
+                    });
                 }
             }
 
@@ -110,23 +103,23 @@ namespace Composite.Services
 
         private XElement GetImageTagForDynamicDataFieldReference(string fieldName, Type dataType)
         {
-			string imageUrl = string.Format("services/WysiwygEditor/FieldImage.ashx?name={0}&groupname={1}", HttpUtility.UrlEncode(fieldName, Encoding.UTF8), HttpUtility.UrlEncode(dataType.Name, Encoding.UTF8));
+            string imageUrl = string.Format("services/WysiwygEditor/FieldImage.ashx?name={0}&groupname={1}", HttpUtility.UrlEncode(fieldName, Encoding.UTF8), HttpUtility.UrlEncode(dataType.Name, Encoding.UTF8));
 
             return new XElement(Namespaces.Xhtml + "img",
                 new XAttribute("src", Composite.Core.WebClient.UrlUtils.ResolveAdminUrl(imageUrl)),
                 new XAttribute("class", "compositeFieldReferenceWysiwygRepresentation"),
-				new XAttribute("data-markup", HttpUtility.UrlEncode(string.Format("{0}\\{1}", TypeManager.SerializeType(dataType), fieldName), Encoding.UTF8)));
+                new XAttribute("data-markup", HttpUtility.UrlEncode(string.Format("{0}\\{1}", TypeManager.SerializeType(dataType), fieldName), Encoding.UTF8)));
         }
 
 
-        private XElement GetImageTagForDynamicDataFieldReference(DataFieldDescriptor dataField, DataTypeDescriptor dataTypeDescriptor)
+        private XElement GetImageTagForDynamicDataFieldReference(string label, DataFieldDescriptor dataField, DataTypeDescriptor dataTypeDescriptor)
         {
-			string imageUrl = string.Format("services/WysiwygEditor/FieldImage.ashx?name={0}&groupname={1}", HttpUtility.UrlEncode(dataField.Name, Encoding.UTF8), HttpUtility.UrlEncode(dataTypeDescriptor.Name, Encoding.UTF8));
+            string imageUrl = string.Format("services/WysiwygEditor/FieldImage.ashx?name={0}&groupname={1}", HttpUtility.UrlEncode(label, Encoding.UTF8), HttpUtility.UrlEncode(dataTypeDescriptor.Name, Encoding.UTF8));
 
             return new XElement(Namespaces.Xhtml + "img",
                 new XAttribute("src", Composite.Core.WebClient.UrlUtils.ResolveAdminUrl(imageUrl)),
                 new XAttribute("class", "compositeFieldReferenceWysiwygRepresentation"),
-				new XAttribute("data-markup", HttpUtility.UrlEncode(string.Format("{0}\\{1}", dataTypeDescriptor.TypeManagerTypeName, dataField.Name), Encoding.UTF8)));
+                new XAttribute("data-markup", HttpUtility.UrlEncode(string.Format("{0}\\{1}", dataTypeDescriptor.TypeManagerTypeName, dataField.Name), Encoding.UTF8)));
         }
 
 
