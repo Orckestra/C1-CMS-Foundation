@@ -283,15 +283,15 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
             var existingPagePublishSchedule = PublishScheduleHelper.GetPublishSchedule(typeof (IPage), 
                 selectedPage.Id.ToString(), 
-                UserSettings.CultureInfo.Name);
+                UserSettings.ActiveLocaleCultureInfo.Name);
 
-            UpdateBinding("PublishDate", existingPagePublishSchedule != null ? existingPagePublishSchedule.PublishDate : (object) null);
+            UpdateBinding("PublishDate", existingPagePublishSchedule?.PublishDate);
 
             var existingPageUnpublishSchedule = PublishScheduleHelper.GetUnpublishSchedule(typeof(IPage),
                 selectedPage.Id.ToString(),
-                UserSettings.CultureInfo.Name);
+                UserSettings.ActiveLocaleCultureInfo.Name);
 
-            UpdateBinding("UnpublishDate", existingPageUnpublishSchedule != null ? existingPageUnpublishSchedule.UnpublishDate : (object) null);
+            UpdateBinding("UnpublishDate", existingPageUnpublishSchedule?.UnpublishDate);
 
             var formDefinition = formDocument.GetDocumentAsString();
 

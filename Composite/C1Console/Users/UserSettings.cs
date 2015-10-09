@@ -27,7 +27,9 @@ namespace Composite.C1Console.Users
             }
         }
 
-        /// <exclude />
+        /// <summary>
+        /// A language to which C1 console UI is translated to.
+        /// </summary>
         public static CultureInfo C1ConsoleUiLanguage
         {
             get
@@ -40,7 +42,9 @@ namespace Composite.C1Console.Users
             }
         }
 
-        /// <exclude />
+        /// <summary>
+        /// Culture used in console UI for date/number formatting.
+        /// </summary>
         public static CultureInfo CultureInfo
         {
             get
