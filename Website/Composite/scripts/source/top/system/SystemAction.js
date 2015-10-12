@@ -8,6 +8,7 @@ SystemAction.OPEN_MODAL_DIALOG ="OpenModalDialog";
  * Action tags.
  */
 SystemAction.TAG_CHANGEFROMLANGUAGE = "ChangeFromLocale";
+SystemAction.TAG_USER = "User";
 
 /**
  * Determines allowed categories and category display order.isInToolBar

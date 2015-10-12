@@ -164,7 +164,13 @@
 				</ui:menubody>
 			</ui:menupopup>
 		</ui:menu>
-		
+		<ui:menu image="${icon:settings}" class="icon" tooltip="${string:Website.App.LabelSettings}">
+			<ui:menupopup>
+				<ui:menubody>
+					<ui:menugroup id="toolsmenugroup" />
+				</ui:menubody>
+			</ui:menupopup>
+		</ui:menu>
 		<ui:menu binding="LocalizationSelectorBinding">
 			<ui:menupopup>
 				<ui:menubody>
@@ -173,15 +179,14 @@
 				</ui:menubody>
 			</ui:menupopup>
 		</ui:menu>
-
-		<ui:menu image="${icon:settings}" class="icon" tooltip="${string:Website.App.LabelSettings}">
+		<ui:menu label="Username" id="usermenu">
 			<ui:menupopup>
 				<ui:menubody>
+					<ui:menugroup id="translationsmenugroup" />
+					<ui:menugroup id="usermenugroup" />
 					<ui:menugroup>
 						<ui:menuitem label="${string:Website.App.LabelFileExit}" image="${icon:exit}" oncommand="Application.quit ();" />
 					</ui:menugroup>
-					<ui:menugroup id="translationsmenugroup" />
-					<ui:menugroup id="toolsmenugroup" />
 				</ui:menubody>
 			</ui:menupopup>
 		</ui:menu>

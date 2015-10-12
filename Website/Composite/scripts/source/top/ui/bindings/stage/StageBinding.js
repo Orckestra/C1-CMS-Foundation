@@ -239,6 +239,7 @@ StageBinding.prototype.onBindingRegister = function () {
 	/*
 	 * Initialize root actions.
 	 */
+	this._initializeUsergroup();
 	var root = System.getRootNode ();
 	this._initializeRootActions ( root );
 	
@@ -358,6 +359,16 @@ StageBinding.prototype._onStageReady = function () {
 }
 
 /**
+ * Set label for usemenu group..
+ */
+StageBinding.prototype._initializeUsergroup = function (root) {
+
+	LoginService.GetUserDisplayName(true, function (name) {
+		top.app.bindingMap.usermenu.setLabel(name);
+	});
+}
+
+/**
  * Root actions relayed to Tools menu. At least for now...
  * @param {SystemNode} root 
  * @param {List<SystemNode>} perspectives
@@ -402,6 +413,8 @@ StageBinding.prototype._initializeRootActions = function ( root ) {
 						switch ( tag ) {
 							case SystemAction.TAG_CHANGEFROMLANGUAGE :
 								group = top.app.bindingMap.translationsmenugroup;
+							case SystemAction.TAG_USER:
+								group = top.app.bindingMap.usermenugroup;
 								break;
 						}
 					}
