@@ -1,4 +1,5 @@
-﻿using System.Web.UI;
+﻿using System;
+using System.Web.UI;
 using System.Collections.Generic;
 using Composite.C1Console.Forms.DataServices.UiControls;
 using Composite.C1Console.Forms.WebChannel;
@@ -45,9 +46,9 @@ namespace Composite.Plugins.Forms.WebChannel.UiContainerFactories
 
             FormFlowUiDefinitionRenderer.ResolveBindingPathToCliendIDMappings(container, mappings);
 
-            string cliendId = mappings.ContainsKey(_titleField) ? mappings[_titleField] : "";
+            string clientId = mappings.ContainsKey(_titleField) ? mappings[_titleField] : "";
 
-            return cliendId;
+            return clientId;
         }
 
         /// <exclude />
@@ -70,15 +71,19 @@ namespace Composite.Plugins.Forms.WebChannel.UiContainerFactories
                 _webUiControl.InitializeViewState();
                 return;
             }
-            
+        }
+
+        /// <exclude />
+        protected override void OnPreRender(EventArgs e)
+        {
+            // Initializing lazy controls, after PageLoad so the processed Post data will be overwritten
             if (_webUiControl is EmbeddedFormUiControl)
             {
                 var container = GetContainer();
-                if(container != null)
-                {
-                    container.InitializeLazyBindedControls();
-                }
+                container?.InitializeLazyBindedControls();
             }
+
+            base.OnPreRender(e);
         }
 
         private TemplatedContainerUiControl GetContainer()
