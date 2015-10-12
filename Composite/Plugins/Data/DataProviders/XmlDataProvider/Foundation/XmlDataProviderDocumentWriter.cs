@@ -114,15 +114,9 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
                 foreach (var fileRecord in fileRecords)
                 {
-                    bool doIoDelay = false;
                     try
                     {
-                        if (doIoDelay)
-                        {
-                            Thread.Sleep(_fileIoDelay);
-                        }
                         DoSave(fileRecord);
-                        doIoDelay = true;
                     }
                     catch (Exception ex)
                     {
