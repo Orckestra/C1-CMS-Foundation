@@ -660,7 +660,7 @@ StageBinding.prototype.handleHash = function (target) {
 		var serializedMessage = target.location.hash.replace(/^#/, '');
 		if (serializedMessage) {
 			target.location.hash = "";
-			MessageQueue.placeConsoleCommand(serializedMessage);
+			MessageQueue.placeConsoleCommand(decodeURIComponent(serializedMessage));
 			MessageQueue.update();
 			EventBroadcaster.broadcast(BroadcastMessages.COMPOSITE_STOP);
 		}
