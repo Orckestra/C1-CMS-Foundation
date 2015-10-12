@@ -20,6 +20,8 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 using Microsoft.Practices.ObjectBuilder;
 
+using UserTexts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_C1Console_Users;
+
 
 namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
 {
@@ -37,12 +39,12 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
 
         private List<EntityTokenHook> _currentEntityTokenHooks;
 
-        public static ResourceHandle ChangeOwnPasswordIcon { get { return GetIconHandle("users-changeownpassword"); } }
-        public static ResourceHandle ChangeOwnCultureIcon { get { return GetIconHandle("users-changeownculture"); } }
-        public static ResourceHandle SendMessageIcon { get { return GetIconHandle("balloon"); } }
-        public static ResourceHandle RestartApplicationIcon { get { return GetIconHandle("restart-application"); } }
-        public static ResourceHandle ManageSecurityIcon { get { return GetIconHandle("security-manage-permissions"); } }
-        public static ResourceHandle ChangeOwnActiveAndForeignLocaleIcon { get { return GetIconHandle("localization-changelocale"); } }
+        public static ResourceHandle ChangeOwnPasswordIcon => GetIconHandle("users-changeownpassword");
+        public static ResourceHandle ChangeOwnCultureIcon => GetIconHandle("users-changeownculture");
+        public static ResourceHandle SendMessageIcon => GetIconHandle("balloon");
+        public static ResourceHandle RestartApplicationIcon => GetIconHandle("restart-application");
+        public static ResourceHandle ManageSecurityIcon => GetIconHandle("security-manage-permissions");
+        public static ResourceHandle ChangeOwnActiveAndForeignLocaleIcon => GetIconHandle("localization-changelocale");
 
         private static readonly string LogTitle = typeof (VirtualElementProvider).Name;
         private static readonly HashSet<string> _notLoadedVirtualElements = new HashSet<string>(); 
@@ -80,17 +82,19 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
         {
             EntityToken entityToken = new VirtualElementProviderEntityToken(_context.ProviderName, RootElementId);
 
-            Element root = new Element(_context.CreateElementHandle(entityToken));
+            var root = new Element(_context.CreateElementHandle(entityToken))
+            {
+                VisualData = new ElementVisualizedData
+                {
+                    Label = "${Composite.Management, VirtualElementProviderElementProvider.ID01}",
+                    Icon = CommonElementIcons.Folder,
+                    OpenedIcon = CommonElementIcons.FolderOpen,
+                    ToolTip = ""
+                },
+                TagValue = "Root"
+            };
 
             root.ElementExternalActionAdding = root.ElementExternalActionAdding.Remove(ElementExternalActionAdding.AllowGlobal);
-            root.TagValue = "Root";
-            root.VisualData = new ElementVisualizedData
-                                  {
-                                      Label = "${Composite.Management, VirtualElementProviderElementProvider.ID01}",
-                                      Icon = CommonElementIcons.Folder,
-                                      OpenedIcon = CommonElementIcons.FolderOpen,
-                                      ToolTip = ""
-                                  };
             
             AddRootActions(root);
 
@@ -109,6 +113,83 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
 
         private void AddRootActions(Element element)
         {
+            // "User" actions
+            element.AddAction(new ElementAction(new ActionHandle(
+                new WorkflowActionToken(
+                    WorkflowFacade.GetWorkflowType("Composite.C1Console.Users.Workflows.ChangeOwnForeignLocaleWorkflow"),
+                    new PermissionType[] { }
+                )))
+            {
+                VisualData = new ActionVisualizedData
+                {
+                    Label = UserTexts.ChangeForeignLocaleWorkflow_ActionLabel,
+                    ToolTip = UserTexts.ChangeForeignLocaleWorkflow_ActionToolTip,
+                    Icon = VirtualElementProvider.ChangeOwnActiveAndForeignLocaleIcon,
+                    Disabled = false,
+                    ActionLocation = new ActionLocation
+                    {
+                        ActionType = ActionType.Add,
+                        IsInFolder = false,
+                        IsInToolbar = true,
+                        ActionGroup = PrimaryActionGroup
+                    }
+                },
+                TagValue = "User"
+            });
+
+
+            element.AddAction(new ElementAction(new ActionHandle(
+                new WorkflowActionToken(
+                    WorkflowFacade.GetWorkflowType("Composite.C1Console.Users.Workflows.ChangeOwnCultureWorkflow"),
+                    new PermissionType[] { }
+                )))
+            {
+                VisualData = new ActionVisualizedData
+                {
+                    Label = UserTexts.ChangeOwnCultureWorkflow_ElementActionLabel,
+                    ToolTip = UserTexts.ChangeOwnCultureWorkflow_ElementActionToolTip,
+                    Icon = VirtualElementProvider.ChangeOwnCultureIcon,
+                    Disabled = false,
+                    ActionLocation = new ActionLocation
+                    {
+                        ActionType = ActionType.Add,
+                        IsInFolder = false,
+                        IsInToolbar = true,
+                        ActionGroup = PrimaryActionGroup
+                    }
+                },
+                TagValue = "User"
+            });
+
+
+
+            element.AddAction(new ElementAction(new ActionHandle(
+                new WorkflowActionToken(
+                    WorkflowFacade.GetWorkflowType("Composite.C1Console.Users.Workflows.ChangeOwnPasswordWorkflow"),
+                    new PermissionType[] { }
+                )
+                { DoIgnoreEntityTokenLocking = true }))
+            {
+                VisualData = new ActionVisualizedData
+                {
+                    Label = UserTexts.ChangeOwnPasswordWorkflow_ElementActionLabel,
+                    ToolTip = UserTexts.ChangeOwnPasswordWorkflow_ElementActionToolTip,
+                    Icon = VirtualElementProvider.ChangeOwnPasswordIcon,
+                    Disabled = false,
+                    ActionLocation = new ActionLocation
+                    {
+                        ActionType = ActionType.Add,
+                        IsInFolder = false,
+                        IsInToolbar = true,
+                        ActionGroup = PrimaryActionGroup
+                    }
+                },
+                TagValue = "User"
+            });
+
+
+            // Other actions
+
             string manageGlobalUserPermissionsLabel = StringResourceSystemFacade.GetString("Composite.Management", "ManageUserPermissions.ManageGlobalUserPermissionsLabel");
             string manageUserPermissionsToolTip = StringResourceSystemFacade.GetString("Composite.Management", "ManageUserPermissions.ManageUserPermissionsToolTip");
 
@@ -131,80 +212,6 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
             });
 
 
-
-            element.AddAction(new ElementAction(new ActionHandle(
-                new WorkflowActionToken(
-                    WorkflowFacade.GetWorkflowType("Composite.C1Console.Users.Workflows.ChangeOwnPasswordWorkflow"),
-                    new PermissionType[] {  }
-                ) { DoIgnoreEntityTokenLocking = true }))
-            {
-                VisualData = new ActionVisualizedData
-                {
-                    Label = StringResourceSystemFacade.GetString("Composite.C1Console.Users", "ChangeOwnPasswordWorkflow.ElementActionLabel"),
-                    ToolTip = StringResourceSystemFacade.GetString("Composite.C1Console.Users", "ChangeOwnPasswordWorkflow.ElementActionToolTip"),
-                    Icon = VirtualElementProvider.ChangeOwnPasswordIcon,
-                    Disabled = false,
-                    ActionLocation = new ActionLocation
-                    {
-                        ActionType = ActionType.Add,
-                        IsInFolder = false,
-                        IsInToolbar = true,
-                        ActionGroup = PrimaryActionGroup
-                    }
-                }
-            });
-
-
-            element.AddAction(new ElementAction(new ActionHandle(
-                new WorkflowActionToken(
-                    WorkflowFacade.GetWorkflowType("Composite.C1Console.Users.Workflows.ChangeOwnCultureWorkflow"),
-                    new PermissionType[] {  }
-                )))
-            {
-                VisualData = new ActionVisualizedData
-                {
-                    Label = StringResourceSystemFacade.GetString("Composite.C1Console.Users", "ChangeOwnCultureWorkflow.ElementActionLabel"),
-                    ToolTip = StringResourceSystemFacade.GetString("Composite.C1Console.Users", "ChangeOwnCultureWorkflow.ElementActionToolTip"),
-                    Icon = VirtualElementProvider.ChangeOwnCultureIcon,
-                    Disabled = false,
-                    ActionLocation = new ActionLocation
-                    {
-                        ActionType = ActionType.Add,
-                        IsInFolder = false,
-                        IsInToolbar = true,
-                        ActionGroup = PrimaryActionGroup
-                    }
-                }
-            });
-
-
-
-
-            element.AddAction(new ElementAction(new ActionHandle(
-                new WorkflowActionToken(
-                    WorkflowFacade.GetWorkflowType("Composite.C1Console.Users.Workflows.ChangeOwnForeignLocaleWorkflow"),
-                    new PermissionType[] {  }
-                )))
-            {
-                VisualData = new ActionVisualizedData
-                {
-                    Label = StringResourceSystemFacade.GetString("Composite.C1Console.Users", "ChangeForeignLocaleWorkflow.ActionLabel"),
-                    ToolTip = StringResourceSystemFacade.GetString("Composite.C1Console.Users", "ChangeForeignLocaleWorkflow.ActionToolTip"),
-                    Icon = VirtualElementProvider.ChangeOwnActiveAndForeignLocaleIcon,
-                    Disabled = false,
-                    ActionLocation = new ActionLocation
-                    {
-                        ActionType = ActionType.Add,
-                        IsInFolder = false,
-                        IsInToolbar = true,
-                        ActionGroup = PrimaryActionGroup
-                    }
-                },
-                TagValue = "ChangeFromLocale"
-            });
-
-
-            
             element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.C1Console.Tools.SendMessageToConsolesWorkflow"))))
             {
                 VisualData = new ActionVisualizedData
@@ -487,14 +494,16 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
         {
             EntityToken entityToken = new VirtualElementProviderEntityToken(_context.ProviderName, simpleElementNode.Name);
 
-            Element element = new Element(_context.CreateElementHandle(entityToken));
-            element.TagValue = simpleElementNode.Tag;
-
-            element.VisualData = new ElementVisualizedData
+            Element element = new Element(_context.CreateElementHandle(entityToken))
+            {
+                TagValue = simpleElementNode.Tag,
+                VisualData = new ElementVisualizedData
                 {
                     Label = StringResourceSystemFacade.ParseString(simpleElementNode.Label),
                     HasChildren = true // fixing refresh problem easy way... was: HasChildren(baseElementNode) 
-                };
+                }
+            };
+
 
 
             Action<IEnumerable> collectProviders = null;

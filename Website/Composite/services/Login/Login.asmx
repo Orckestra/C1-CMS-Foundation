@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web.Services;
 using System.Web.Services.Protocols;
 using Composite.C1Console.Security;
+using Composite.C1Console.Users;
 using Composite.Core;
 using Composite.Core.ResourceSystem;
 using Composite.Data;
@@ -44,7 +45,7 @@ namespace Composite.Services
             {
                 return new[] {StringResourceSystemFacade.GetString("Composite.C1Console.Users", "ChangePasswordForm.IncorrectOldPassword")};
             }
-            
+
             Verify.That(result == LoginResult.PasswordUpdateRequired, "Password update has to be required.");
 
             if (newPassword == oldPassword)
@@ -55,7 +56,7 @@ namespace Composite.Services
             using (var c = new DataConnection())
             {
                 var user = c.Get<IUser>().Single(u => string.Compare(u.Username, username, StringComparison.InvariantCultureIgnoreCase) == 0);
-                
+
                 IList<string> errors;
                 if (!PasswordPolicyFacade.ValidatePassword(user, newPassword, out errors))
                 {
@@ -91,6 +92,28 @@ namespace Composite.Services
             }
 
             return UserValidationFacade.IsLoggedIn();
+        }
+
+        [WebMethod]
+        public string GetUserDisplayName(bool dummy)
+        {
+            string username = UserValidationFacade.GetUsername();
+            if (string.IsNullOrEmpty(username))
+            {
+                return null;
+            }
+
+            using (var c = new DataConnection())
+            {
+                var user = c.Get<IUser>().FirstOrDefault(u => string.Compare(u.Username, username, StringComparison.InvariantCultureIgnoreCase) == 0);
+
+                if (user != null && !string.IsNullOrEmpty(user.Name))
+                {
+                    return user.Name;
+                }
+            }
+
+            return username;
         }
     }
 }
