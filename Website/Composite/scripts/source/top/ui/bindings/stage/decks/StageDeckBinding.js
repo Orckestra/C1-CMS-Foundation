@@ -27,6 +27,12 @@ function StageDeckBinding () {
 	 * @type {string}
 	 */
 	this.handle = null;
+
+	/**
+	 * If true, contained tree needs to be refreshed.
+	 * @type {boolean}
+	 */
+	this._isRefreshRequired = false;
 	
 	/**
 	 * Associates the deck to the selected perspective.
@@ -203,7 +209,10 @@ StageDeckBinding.prototype.select = function () {
 	}
 	StageDeckBinding.superclass.select.call(this);
 
-
+	if (this._isRefreshRequired == true) {
+		this._refreshTree();
+		this._isRefreshRequired = false;
+	}
 	
 }
 
@@ -255,49 +264,48 @@ StageDeckBinding.prototype.getSystemTree = function () {
 	return result;
 }
 
-//TODO: check this
-///**
-// * @implements {IBroadcastListener}
-// * @param {string} broadcast
-// * @param {object} arg
-// */
-//StageDeckBinding.prototype.handleBroadcast = function (broadcast, arg) {
+/**
+ * @implements {IBroadcastListener}
+ * @param {string} broadcast
+ * @param {object} arg
+ */
+StageDeckBinding.prototype.handleBroadcast = function (broadcast, arg) {
 
-//	StageDeckBinding.superclass.handleBroadcast.call(this, broadcast, arg);
+	StageDeckBinding.superclass.handleBroadcast.call(this, broadcast, arg);
 
-//	switch (broadcast) {
+	switch (broadcast) {
 
-//		case BroadcastMessages.SYSTEMTREEBINDING_REFRESHALL:
-//			if (this.isSelected == true) {
-//				this._refreshTree();
-//			} else if (this._entityToken != null) {
-//				this._isRefreshRequired = true;
-//			}
-//			break;
+		case BroadcastMessages.SYSTEMTREEBINDING_REFRESHALL:
+			if (this.isSelected == true) {
+				this._refreshTree();
+			} else if (this.perspectiveNode != null) {
+				this._isRefreshRequired = true;
+			}
+			break;
 
-//		case BroadcastMessages.SYSTEMTREEBINDING_REFRESHED:
-//			this.unsubscribe(BroadcastMessages.SYSTEMTREEBINDING_REFRESHED);
-//			this.select();
-//			break;
-//	}
-//}
+		case BroadcastMessages.SYSTEMTREEBINDING_REFRESHED:
+			this.unsubscribe(BroadcastMessages.SYSTEMTREEBINDING_REFRESHED);
+			this.select();
+			break;
+	}
+}
 
-///**
-// * Refresh the contained tree.
-// */
-//StageDeckBinding.prototype._refreshTree = function () {
+/**
+ * Refresh the contained tree.
+ */
+StageDeckBinding.prototype._refreshTree = function () {
 
-//	/*
-//	 * The broadcast will be intercepted by SystemPageBinding. 
-//	 */
-//	if (this._entityToken != null) {
-//		this.subscribe(BroadcastMessages.SYSTEMTREEBINDING_REFRESHED);
-//		EventBroadcaster.broadcast(
-//			BroadcastMessages.SYSTEMTREEBINDING_REFRESH,
-//			this._entityToken
-//		);
-//	}
-//}
+	/*
+	 * The broadcast will be intercepted by SystemPageBinding. 
+	 */
+	if (this.perspectiveNode && this.perspectiveNode.getEntityToken) {
+		this.subscribe(BroadcastMessages.SYSTEMTREEBINDING_REFRESHED);
+		EventBroadcaster.broadcast(
+			BroadcastMessages.SYSTEMTREEBINDING_REFRESH,
+			this.perspectiveNode.getEntityToken()
+		);
+	}
+}
 
 
 /**
