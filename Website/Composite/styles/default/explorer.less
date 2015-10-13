@@ -71,6 +71,10 @@ ui|explorermenu {
 			padding: 0;
 		}
 	}
+
+	ui|labeltext {
+		display: none;
+	}
 }
 
 ui|explorerbody {
@@ -125,7 +129,7 @@ ui|explorertoolbarbutton {
 	}
 
 	ui|labeltext {
-		line-height: 24px;
+		line-height: 22px;
 		font-weight: bold;
 		color: @explorer-text-color;
 	}
@@ -151,6 +155,10 @@ ui|explorerdecks {
 
 	ui|explorermenu {
 		width: @explorer-expanded-width;
+
+		ui|labeltext {
+			display: block;
+		}
 	}
 
 	ui|stagecontainer {
