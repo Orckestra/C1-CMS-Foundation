@@ -76,11 +76,14 @@ namespace Composite.Plugins.Forms.WebChannel.UiContainerFactories
         /// <exclude />
         protected override void OnPreRender(EventArgs e)
         {
-            // Initializing lazy controls, after PageLoad so the processed Post data will be overwritten
-            if (_webUiControl is EmbeddedFormUiControl)
+            // Initializing lazy controls after PageLoad so the processed Post data will be overwritten
+            if (IsPostBack)
             {
-                var container = GetContainer();
-                container?.InitializeLazyBindedControls();
+                if (_webUiControl is EmbeddedFormUiControl)
+                {
+                    var container = GetContainer();
+                    container?.InitializeLazyBindedControls();
+                }
             }
 
             base.OnPreRender(e);
