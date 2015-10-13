@@ -23,6 +23,7 @@ namespace Composite.Core.WebClient.HttpModules
     {
         private static readonly List<string> _allAllowedPaths = new List<string>();
         private static string _adminRootPath;
+        private static string _servicesPath;
         private static string _loginPagePath;
         private static object _lock = new object();
         private static bool _allowC1ConsoleRequests;
@@ -109,6 +110,7 @@ namespace Composite.Core.WebClient.HttpModules
                 string iePadding = new String('!', 512);
                 context.Response.Write(string.Format(c1ConsoleRequestsNotAllowedHtmlTemplate, iePadding));
                 context.Response.End();
+                return;
             }
 
             // https check
@@ -123,11 +125,19 @@ namespace Composite.Core.WebClient.HttpModules
             // access check
             if (currentPath.Length > _adminRootPath.Length && !UserValidationFacade.IsLoggedIn())
             {
+                if (currentPath.StartsWith(_servicesPath))
+                {
+                    context.Response.StatusCode = 403;
+                    context.Response.End();
+                    return;
+                }
+
                 if (!_allAllowedPaths.Any(p => currentPath.StartsWith(p, StringComparison.OrdinalIgnoreCase)))
                 {
                     Log.LogWarning("Authorization", "DENIED {0} access to {1}", context.Request.UserHostAddress, currentPath);
                     string redirectUrl = string.Format("{0}?ReturnUrl={1}", _loginPagePath, HttpUtility.UrlEncode(context.Request.Url.PathAndQuery, Encoding.UTF8));
                     context.Response.Redirect(redirectUrl, true);
+                    return;
                 }
             }
 
@@ -162,9 +172,11 @@ namespace Composite.Core.WebClient.HttpModules
 
                 if (!_adminRootPath.EndsWith("/"))
                 {
-                    _adminRootPath = string.Format("{0}/", _adminRootPath);
+                    _adminRootPath = $"{_adminRootPath}/";
                 }
-                    
+
+                _servicesPath = _adminRootPath + "services/";
+
                 LoadAllowedPaths();
                 _allowC1ConsoleRequests = true;
                 LoadC1ConsoleAccessConfig();

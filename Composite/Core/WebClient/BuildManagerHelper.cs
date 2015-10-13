@@ -30,7 +30,8 @@ namespace Composite.Core.WebClient
         {
             try
             {
-                var config = XDocument.Load(PathUtil.Resolve("~/App_Data/Composite/Composite.config"));
+                const string configFileFilePath = "~/App_Data/Composite/Composite.config";
+                var config = XDocument.Load(PathUtil.Resolve(configFileFilePath));
 
                 var controlPathes = (from element in config.Descendants()
                     let userControlVirtualPath = (string) element.Attribute("userControlVirtualPath")
@@ -40,10 +41,16 @@ namespace Composite.Core.WebClient
                 var stopWatch = new Stopwatch();
                 stopWatch.Start();
 
-                Log.LogVerbose(LogTitle, "Preloading all the contorls, starting");
+                Log.LogVerbose(LogTitle, "Preloading all the controls, starting");
 
                 foreach (var controlPath in controlPathes)
                 {
+                    if (!C1File.Exists(PathUtil.Resolve(controlPath)))
+                    {
+                        Log.LogWarning(LogTitle, "Missing a control file '{0}' referenced in '{1}'", controlPath, configFileFilePath);
+                        continue;
+                    }
+
                     try
                     {
                         BuildManagerHelper.GetCompiledType(controlPath);
@@ -60,7 +67,7 @@ namespace Composite.Core.WebClient
 
                 stopWatch.Stop();
 
-                Log.LogVerbose(LogTitle, "Preloading all the contorls: " + stopWatch.ElapsedMilliseconds + "ms");
+                Log.LogVerbose(LogTitle, "Preloading all the controls: " + stopWatch.ElapsedMilliseconds + "ms");
 
                 Func<string, bool> isAshxAsmxPath = f => f == ".ashx" || f == ".asmx";
                 Func<string, bool> isAspNetPath = f => f == ".aspx" || isAshxAsmxPath(f);
