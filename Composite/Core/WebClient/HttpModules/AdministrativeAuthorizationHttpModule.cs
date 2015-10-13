@@ -123,7 +123,8 @@ namespace Composite.Core.WebClient.HttpModules
             }
 
             // access check
-            if (currentPath.Length > _adminRootPath.Length && !UserValidationFacade.IsLoggedIn())
+            if (currentPath.Length > _adminRootPath.Length && !UserValidationFacade.IsLoggedIn()
+                && !_allAllowedPaths.Any(p => currentPath.StartsWith(p, StringComparison.OrdinalIgnoreCase)))
             {
                 if (currentPath.StartsWith(_servicesPath))
                 {
@@ -132,13 +133,11 @@ namespace Composite.Core.WebClient.HttpModules
                     return;
                 }
 
-                if (!_allAllowedPaths.Any(p => currentPath.StartsWith(p, StringComparison.OrdinalIgnoreCase)))
-                {
-                    Log.LogWarning("Authorization", "DENIED {0} access to {1}", context.Request.UserHostAddress, currentPath);
-                    string redirectUrl = string.Format("{0}?ReturnUrl={1}", _loginPagePath, HttpUtility.UrlEncode(context.Request.Url.PathAndQuery, Encoding.UTF8));
-                    context.Response.Redirect(redirectUrl, true);
-                    return;
-                }
+                Log.LogWarning("Authorization", "DENIED {0} access to {1}", context.Request.UserHostAddress, currentPath);
+                string redirectUrl = string.Format("{0}?ReturnUrl={1}", _loginPagePath, HttpUtility.UrlEncode(context.Request.Url.PathAndQuery, Encoding.UTF8));
+                context.Response.Redirect(redirectUrl, true);
+                return;
+                
             }
 
             // On authenticated request make sure these resources gets compiled / launched. 
