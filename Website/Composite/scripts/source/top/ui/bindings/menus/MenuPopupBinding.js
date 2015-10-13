@@ -35,6 +35,37 @@ MenuPopupBinding.prototype._getElementPosition = function ( element ) {
 }
 
 /**
+ * @overwrites {PopupBinding#fitOnScreen}.
+ */
+MenuPopupBinding.prototype.fitOnScreen = function () {
+	switch (this.position) {
+		case PopupBinding.POSITION_BOTTOM:
+
+			var x = this.bindingElement.offsetLeft;
+			var y = this.bindingElement.offsetTop;
+			var w = this.bindingElement.offsetWidth;
+			var h = this.bindingElement.offsetHeight;
+			var dim = this.bindingWindow.WindowManager.getWindowDimensions();
+			var pos = this.boxObject.getGlobalPosition();
+
+			x = this.targetElement.offsetLeft + this.targetElement.offsetWidth / 2 - this.bindingElement.offsetWidth / 2;
+
+			this.detachClassName("bottomright");
+			if ( x + w >= dim.w ) {
+				x = this.targetElement.offsetLeft + this.targetElement.offsetWidth - this.bindingElement.offsetWidth;
+				this.attachClassName("bottomright");
+			}
+
+			this.setPosition(x, y);
+
+			break;
+		default:
+			MenuPopupBinding.superclass.fitOnScreen.call(this);
+			break;
+	}
+}
+
+/**
  * MenuPopupBinding factory.
  * @param {DOMDocument} ownerDocument
  * @return {MenuPopupBinding}

@@ -34,7 +34,7 @@ ui|menu { //usage: top menubar and ImageEditor menubar
 
 	> ui|menupopup {
 		margin-top: 5px;
-		margin-left: -20px;
+		margin-left: 0px;
 
 		&:before, &:after {
 			content: "";
@@ -50,6 +50,7 @@ ui|menu { //usage: top menubar and ImageEditor menubar
 		&:before {
 			top: -9px;
 			border-bottom: 9px solid @base-border-color;
+			
 		}
 
 		&:after {
@@ -106,21 +107,16 @@ ui|menu { //usage: top menubar and ImageEditor menubar
 		}
 	}
 
-	&.last {
-		> ui|menupopup {
-			margin-left: 0;
 
-			&:before, &:after {
-				left: 75%;
-			}
+	> ui|menupopup.bottomright {
+		margin-left: 0;
+
+		&:before, &:after {
+			left: auto;
+			right: 8px;
 		}
 	}
-
-	&.icon {
-		> ui|menupopup {
-			margin-left: -30px;
-		}
-	}
+	
 }
 
 //usage: PopPup Menus on item right click
@@ -134,7 +130,7 @@ ui|menugroup {
 	padding: 0;
 	border-bottom: 1px solid @base-border-color;
 
-	&.last {
+	&.last, &:empty {
 		border-bottom: none;
 	}
 }
