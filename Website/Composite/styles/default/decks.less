@@ -12,3 +12,39 @@
 	position: absolute;
 	top: -10000px;
 }
+
+.loading-deck {
+	.progressbar {
+		text-align: center;
+		font-size: 12px;
+	}
+
+	.progressbar-msg {
+		padding-bottom: 21px;
+		margin: 0 0 15px 0;
+		text-align: center;
+		border-bottom: solid 1px #ccc;
+	}
+
+	ui|progressbar {
+		overflow: hidden;
+		display: block;
+		width: 200px;
+		height: 23px;
+		margin: 10px auto 22px auto;
+		position: relative;
+		text-align: right;
+		padding-top: 2px;
+		padding-right: 5px;
+		background: url("@{images-root-path}/progressbar.png") no-repeat;
+
+		ui|cover {
+			background-color: white;
+			height: 19px;
+			width: 190px;
+			margin-left: auto;
+			margin-right: 0;
+			position: static;
+		}
+	}
+}

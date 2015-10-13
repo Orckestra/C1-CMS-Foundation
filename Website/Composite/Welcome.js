@@ -10,7 +10,8 @@ var Welcome = new function () {
 	var hasLength = false;
 
 	var tabindex = 0;
-
+	var progressNotchIndex = 1;
+	var progressLoading = null;
 	/**
 	* @type {String}
 	*/
@@ -143,6 +144,7 @@ var Welcome = new function () {
 				prepareForm("loginform");
 				setConsoleLanguage();
 				break;
+
 		}
 
 		bindingMap.introdecks.select(id);
@@ -510,9 +512,9 @@ var Welcome = new function () {
 	* Login!
 	*/
 	this.login = function () {
-
+	
+		var self = this;
 		var serial = DOMSerializer.serialize(clone, true);
-
 		var username = document.getElementById("username").value;
 		var password = document.getElementById("password").value;
 		var email = document.getElementById("email").value;
@@ -524,27 +526,64 @@ var Welcome = new function () {
 		select = document.getElementById("consolelanguage");
 		var consolelanguage = select.options[select.selectedIndex].value;
 
-		top.bindingMap.offlinetheatre.play();
-		if (Client.isExplorer) {
-			top.bindingMap.introcover.show();
-		} else {
-			CoverBinding.fadeIn(top.bindingMap.introcover);
-		}
-
-		setTimeout(function () {
-			SetupService.SetUp(serial, username, email, password, websitelanguage, consolelanguage, newsletter,
+		self.loading();
+		SetupService.SetUp(serial, username, email, password, websitelanguage, consolelanguage, newsletter,
 				function (response) {
-					if (response) {
-						Application.reload(true);
-					} else {
-						top.bindingMap.introcover.hide();
-						top.bindingMap.offlinetheatre.stop();
-						alert("An unfortunate error has occurred.");
-					}
+					self.finish_loading(function () {
+						if (response) {
+							Application.reload(true);
+						} else {
+							alert("An unfortunate error has occurred.");
+						}
+					});
 				}
 			);
-		}, Client.isExplorer ? 0 : 500);
+	}
 
+	/**
+	* Show Loading Deck with progress bar
+	* Progress bar goes from 0 to 100 in 30 seconds - and then restart after 5 seconds (if things are still working).
+	*/
+	this.loading = function () {
+		bindingMap.introdecks.select("loading");
+		bindingMap.cover.attachClassName("loading-cover");
+		bindingMap.navdecks.hide();
+		var current = new Date().getTime();
+		var end = current + 35000; 
+		ProgressBarBinding.notch(1);
+		progressLoading = setInterval(function () {
+			if (current > end) {
+				ProgressBarBinding.reload();
+				progressNotchIndex = 0;
+				end = current + 35000;
+			}
+			ProgressBarBinding.notch(1);
+			current = new Date().getTime();
+			progressNotchIndex++;
+		}, 1500); // 20 notches * 1.5 seconds = 30 seconds
+	}
 
+	this.finish_loading = function (callbackOnFinish) {
+		ProgressBarBinding.notch(1);
+		clearInterval(progressLoading);
+		var notchesLeft = 21 - progressNotchIndex; // progress bar contains 21 notches
+		if (notchesLeft < 2) {
+			if (callbackOnFinish) {
+				callbackOnFinish();
+			}
+			return;
+		}
+		var current = new Date().getTime();
+		var end = current + (notchesLeft * 15);
+		progressLoading = setInterval(function () {
+			if (current > end) {
+				clearInterval(progressLoading);
+				if (callbackOnFinish) {
+					callbackOnFinish();
+				}
+			}
+			ProgressBarBinding.notch(1);
+			current = new Date().getTime();
+		}, 15); 
 	}
 }
