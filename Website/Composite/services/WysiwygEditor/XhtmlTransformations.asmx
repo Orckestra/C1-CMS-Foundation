@@ -280,7 +280,8 @@ namespace Composite.Services
                                                         Namespaces.Xhtml + "object",
                                                         Namespaces.Xhtml + "script",
                                                         Namespaces.Xhtml + "noscript",
-                                                        Namespaces.Xhtml + "video"
+                                                        Namespaces.Xhtml + "video",
+                                                        Namespaces.Xhtml + "svg"
                                                     };
 
                 IEnumerable<XElement> langElements = xml.Descendants().Where(f => f.Name.Namespace == Namespaces.Localization10);
