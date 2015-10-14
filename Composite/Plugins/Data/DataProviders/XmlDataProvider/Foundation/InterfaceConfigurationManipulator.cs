@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using Composite.Core;
 using Composite.Core.Configuration;
-using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
@@ -15,6 +15,8 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 {
     internal static class InterfaceConfigurationManipulator
     {
+        private static readonly string LogTitle = typeof(InterfaceConfigurationManipulator).Name;
+
         /// <summary>
         /// Create an invariant store
         /// </summary>
@@ -24,8 +26,6 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
         {
             var xmlDataProviderConfiguration = new XmlDataProviderConfiguration(providerName);
 
-            XmlProviderInterfaceConfigurationElement configurationElement = BuildXmlProviderInterfaceConfigurationElement(dataTypeDescriptor);
-
             string interfaceType = dataTypeDescriptor.TypeManagerTypeName;
 
             if (interfaceType != null)
@@ -34,11 +34,15 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
                 if (key != null)
                 {
-                    throw new InvalidOperationException(
-                        "Configuration file '{0}' already contains an interface type with id '{1}'."
-                        .FormatWith(xmlDataProviderConfiguration.ConfigurationFilePath, configurationElement.DataTypeId));
+                    Log.LogWarning(LogTitle, 
+                        "Configuration file '{0}' already contains an interface type '{1} 'with id '{2}'. "
+                        + "Possibly there are multiple AppDomain-s running.",
+                        xmlDataProviderConfiguration.ConfigurationFilePath, dataTypeDescriptor, dataTypeDescriptor.DataTypeId);
+                    return;
                 }
             }
+
+            XmlProviderInterfaceConfigurationElement configurationElement = BuildXmlProviderInterfaceConfigurationElement(dataTypeDescriptor);
 
             XmlDataProviderStoreManipulator.CreateStore(providerName, configurationElement);
 
@@ -176,9 +180,11 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
             CultureInfo removedCultureInfo,
             XmlProviderInterfaceConfigurationElement existingElement)
         {
-            var configurationElement = new XmlProviderInterfaceConfigurationElement();
-            configurationElement.DataTypeId = dataTypeDescriptor.DataTypeId;
-            configurationElement.IsGeneratedType = dataTypeDescriptor.IsCodeGenerated;
+            var configurationElement = new XmlProviderInterfaceConfigurationElement
+            {
+                DataTypeId = dataTypeDescriptor.DataTypeId,
+                IsGeneratedType = dataTypeDescriptor.IsCodeGenerated
+            };
 
             bool isLocalized = dataTypeDescriptor.Localizeable;
             foreach (DataScopeIdentifier dataScopeIdentifier in dataTypeDescriptor.DataScopes)

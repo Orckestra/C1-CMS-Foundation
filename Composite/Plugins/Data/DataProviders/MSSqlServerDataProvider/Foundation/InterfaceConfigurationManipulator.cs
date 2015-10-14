@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using Composite.Core;
 using Composite.Core.Configuration;
 using Composite.Core.IO;
 using Composite.Data;
@@ -15,6 +16,8 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
     /// </summary>
     internal static class InterfaceConfigurationManipulator
     {
+        private static readonly string LogTitle = typeof(InterfaceConfigurationManipulator).Name;
+
         static readonly object _syncRoot = new object();
 
         internal static InterfaceConfigurationElement AddNew(string providerName, DataTypeDescriptor dataTypeDescriptor)
@@ -23,18 +26,19 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
             {
                 var configuration = new SqlDataProviderConfiguration(providerName);
 
-                InterfaceConfigurationElement interfaceConfig = BuildInterfaceConfigurationElement(dataTypeDescriptor);
-
-                if (configuration.Section.Interfaces.ContainsInterfaceType(interfaceConfig))
+                if (configuration.Section.Interfaces.ContainsInterfaceType(dataTypeDescriptor.DataTypeId))
                 {
-                    string typeFullName = (dataTypeDescriptor.Namespace ?? string.Empty) + "." + dataTypeDescriptor.Name;
-                
-                    throw new InvalidOperationException(
-                        string.Format("Configuration file '{0}' already contains an interface with data type ID '{1}', type name '{2}'",
-                                      configuration.ConfigurationFilePath,
-                                      interfaceConfig.DataTypeId,
-                                      typeFullName));
+                    Log.LogWarning(LogTitle, 
+                        "Configuration file '{0}' already contains an interface with data type ID '{1}', type name '{2}'. "
+                         + "Possibly there are multiple AppDomain-s running.",
+                            configuration.ConfigurationFilePath,
+                            dataTypeDescriptor.DataTypeId,
+                            dataTypeDescriptor);
+
+                    return configuration.Section.Interfaces.Get(dataTypeDescriptor);
                 }
+
+                InterfaceConfigurationElement interfaceConfig = BuildInterfaceConfigurationElement(dataTypeDescriptor);
 
                 configuration.Section.Interfaces.Add(interfaceConfig);
 
