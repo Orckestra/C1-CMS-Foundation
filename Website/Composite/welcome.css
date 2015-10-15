@@ -64,6 +64,18 @@ html, body {
     padding-right: 10px;
 }
 
+.loading-cover .welcomepage  .crumbs {
+	display: none;
+}
+
+.loading-cover .welcomepage .splash {
+	width: 312px;
+}
+
+.loading-cover .welcomepage  .intro {
+	min-height: 260px;
+}
+
 
 p#introtestsuccess,
 ui|clickbutton#introtestsuccessbutton {

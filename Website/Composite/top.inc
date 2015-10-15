@@ -82,7 +82,7 @@
           <ui:clickbutton label="${string:Composite.C1Console.Users:ChangePasswordForm.ChangePasswordButton}" image="${skin}/splash/button.png" focusable="true" oncommand="KickStart.changePassword()"/>
         </ui:dialogtoolbar>
       </ui:deck>
-      <ui:deck id="loadingdeck">
+      <ui:deck id="loadingdeck" class="loading-deck">
         <div class="progress">
           <p class="progressbar-msg">Depending on your internet connection speed, Composite C1 may take a few moments to load.</p>
           <div id="progressbar" class="progressbar">

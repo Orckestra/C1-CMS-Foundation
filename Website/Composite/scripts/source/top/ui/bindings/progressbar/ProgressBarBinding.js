@@ -24,6 +24,13 @@ ProgressBarBinding.notch = function ( notches ) {
 }
 
 /**
+ * Reload progress - start from begin
+ */
+ProgressBarBinding.reload = function () {
+	ProgressBarBinding._bindingInstance._cover.setWidth(ProgressBarBinding.WIDTH);
+}
+
+/**
  * @class
  * This is actually quite a fake progressbar, used only on app initialization.
  */
@@ -78,3 +85,4 @@ ProgressBarBinding.prototype.notch = function ( notches ) {
 	var width = this._cover.getWidth () - ( ProgressBarBinding.NOTCH * notches );
 	this._cover.setWidth ( width >= 0 ? width : 0 );
 }
+
