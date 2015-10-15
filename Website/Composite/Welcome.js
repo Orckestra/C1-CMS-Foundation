@@ -529,13 +529,12 @@ var Welcome = new function () {
 		self.loading();
 		SetupService.SetUp(serial, username, email, password, websitelanguage, consolelanguage, newsletter,
 				function (response) {
-					self.finish_loading(function () {
-						if (response) {
-							Application.reload(true);
-						} else {
-							alert("An unfortunate error has occurred.");
-						}
-					});
+					if (response) {
+						Application.reload(true);
+					} else {
+						clearInterval(progressLoading);
+						alert("An unfortunate error has occurred.");
+					}
 				}
 			);
 	}
@@ -561,29 +560,5 @@ var Welcome = new function () {
 			current = new Date().getTime();
 			progressNotchIndex++;
 		}, 1500); // 20 notches * 1.5 seconds = 30 seconds
-	}
-
-	this.finish_loading = function (callbackOnFinish) {
-		ProgressBarBinding.notch(1);
-		clearInterval(progressLoading);
-		var notchesLeft = 21 - progressNotchIndex; // progress bar contains 21 notches
-		if (notchesLeft < 2) {
-			if (callbackOnFinish) {
-				callbackOnFinish();
-			}
-			return;
-		}
-		var current = new Date().getTime();
-		var end = current + (notchesLeft * 15);
-		progressLoading = setInterval(function () {
-			if (current > end) {
-				clearInterval(progressLoading);
-				if (callbackOnFinish) {
-					callbackOnFinish();
-				}
-			}
-			ProgressBarBinding.notch(1);
-			current = new Date().getTime();
-		}, 15); 
 	}
 }
