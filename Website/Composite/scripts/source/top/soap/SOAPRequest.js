@@ -106,8 +106,17 @@ SOAPRequest._parseResponse = function ( request ) {
 			if (request.status == 503 || text.indexOf("id=\"offline\"") > -1) {
 			    isOffLine = true;
 			} else if (request.status == 403) {
-				if (confirm("You have been logged out")) {
-					window.location.reload();
+				if (Application.isLoggedIn) {
+					Application.isLoggedIn = false;
+					var title = "Warning";
+					var text = "You have been logged out";
+					Dialog.warning(title, text, Dialog.BUTTONS_ACCEPT, {
+						handleDialogResponse: function (response) {
+							//if (response == Dialog.RESPONSE_ACCEPT) {
+								window.location.reload();
+							//}
+						}
+					});
 				}
 			} else {
 				var cry = "Invalid SOAP response: \n\n" + request.responseText;
