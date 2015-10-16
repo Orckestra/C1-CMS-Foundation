@@ -79,7 +79,7 @@ SystemToolBarBinding.prototype.onBindingAttach = function () {
 	
 	if ( System.hasActivePerspectives ) {
 		this.subscribe ( BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED );
-		//this.subscribe ( this.bindingWindow.WindowManager.WINDOW_RESIZED_BROADCAST );
+		this.subscribe ( this.bindingWindow.WindowManager.WINDOW_RESIZED_BROADCAST );
 		this.subscribe ( BroadcastMessages.INVOKE_DEFAULT_ACTION );
 		this.addActionListener ( ButtonBinding.ACTION_COMMAND );
 	} else {
