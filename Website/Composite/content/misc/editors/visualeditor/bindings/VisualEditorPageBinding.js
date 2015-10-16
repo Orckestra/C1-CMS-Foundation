@@ -511,7 +511,7 @@ VisualEditorPageBinding.prototype.getCheckSum = function (checksum) {
 		}
 	} else {
 		// IE innerHTML - returns wrong quotes (' instead ") in attribute data-markup
-		if (Client.isExplorer || Client.isExplorer11) {
+		if (Client.isAnyExplorer) {
 			checksum = this._tinyInstance.getContent();
 		} else {
 			checksum = this._tinyInstance.getDoc().body.innerHTML;
