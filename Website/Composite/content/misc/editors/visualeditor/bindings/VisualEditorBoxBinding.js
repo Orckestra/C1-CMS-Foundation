@@ -22,6 +22,12 @@ function VisualEditorBoxBinding () {
 	 * @overwrites {Binding#isLazy}
 	 */
 	this.isLazy = true;
+
+
+	/**
+	 * @type {int}
+	 */
+	this.lastHeight = null;
 	
 	/*
 	 * Returnable.
@@ -73,7 +79,10 @@ VisualEditorBoxBinding.prototype.initializeComponent = function ( editor, engine
 
 	this._editorBinding = editor;
 	this._editorBinding.addActionListener ( VisualEditorBinding.ACTION_INITIALIZED, this );
+
+	theme.registerNodeChangeHandler(this);
 }
+
 
 /**
  * @implements {IActionListener}
@@ -102,6 +111,24 @@ VisualEditorBoxBinding.prototype.handleAction = function ( action ) {
 			break;
 	}
 }
+
+/**
+* Handle node change.
+* @implements {IWysiwygEditorNodeChangeHandler}
+* @param {DOMElement} element
+*/
+VisualEditorBoxBinding.prototype.handleNodeChange = function (element) {
+	var self = this;
+	setTimeout(
+		function () {
+			var height = self.bindingElement.offsetHeight;
+			if (self.lastHeight != height) {
+				self.lastHeight = height;
+				self.bindingWindow.bindingMap.tinyflexbox.flex();
+			}
+				
+		}, 0);
+};
 
 /**
  * Initialize. By default, this simply attaches subtree bindings.
