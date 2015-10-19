@@ -292,7 +292,7 @@ namespace CompositeTypeFieldDesigner
                 case "System.String":
                     TypeDetailsLabel.Text = GetString("StringMaximumLength");
 
-                    TypeDetailsSelector.AutoPostBack = false; // this is a fix to plug bug in update manager (client)
+                    TypeDetailsSelector.AutoPostBack = true;
                     TypeDetailsSelector.Items.AddRange(new []
                     {
                         new ListItem(Texts._16CharMax, "16"),
@@ -846,17 +846,24 @@ namespace CompositeTypeFieldDesigner
         {
             get
             {
-                if (SelectedField == null) return false;
+                var field = SelectedField;
+                if (field == null || field.IsNullable) return false;
 
-                var instanceType = SelectedField.InstanceType;
-                return !SelectedField.IsNullable &&
-                       (instanceType == typeof (Guid)
-                        || instanceType == typeof (string)
+                var instanceType = field.InstanceType;
+
+                if (instanceType == typeof (string))
+                {
+                    var selectedValue = TypeDetailsSelector.SelectedValue;
+
+                    return selectedValue != "max" && selectedValue != "" && int.Parse(selectedValue) <= 128;
+                }
+
+                return instanceType == typeof (Guid)
                         || instanceType == typeof (Int16)
                         || instanceType == typeof (Int32)
                         || instanceType == typeof (Int64)
                         || instanceType == typeof (decimal)
-                        || instanceType == typeof (DateTime));
+                        || instanceType == typeof (DateTime);
             }
         }
 
@@ -1258,10 +1265,6 @@ namespace CompositeTypeFieldDesigner
             var field = this.CurrentFields.Single(f => f.Id == this.CurrentlySelectedFieldId);
 
 
-            bool dataUrlApplicable = SelectedFieldIsKeyField || !bool.Parse(this.OptionalSelector.SelectedValue);
-
-            Field_Save_UpdateDataUrl(field, dataUrlApplicable);
-            
             if (SelectedFieldIsKeyField)
             {
                 if (KeyFieldReadOnly)
@@ -1273,6 +1276,8 @@ namespace CompositeTypeFieldDesigner
                 {
                     return;
                 }
+
+                Field_Save_UpdateDataUrl(field, true);
 
                 var currentFieldType = KeyFieldHelper.GetKeyFieldType(field);
 
@@ -1394,6 +1399,8 @@ namespace CompositeTypeFieldDesigner
             Field_Save_UpdateGroupByPriority(field);
 
             Field_Save_UpdateTreeOrderingProfile(field);
+
+            Field_Save_UpdateDataUrl(field, CanAppearInDataRoute);
         }
 
         private bool Field_Save_UpdateName(DataFieldDescriptor field, DataInput nameInput)
