@@ -1171,10 +1171,18 @@ namespace CompositeTypeFieldDesigner
                 newFieldName = _defaultFieldNamePrefix + i++;
             }
 
+            var stringSelectorWidgetFunctionMarkup =
+                StandardWidgetFunctions.GetDefaultWidgetFunctionProviderByType(typeof (string))
+                    .SerializedWidgetFunction.ToString(SaveOptions.DisableFormatting);
+
             Guid newFieldId = Guid.NewGuid();
             this.CurrentFields.Add(new DataFieldDescriptor(newFieldId, newFieldName, StoreFieldType.String(64), typeof(string))
             {
-                Position = PositionableFieldsCount
+                Position = PositionableFieldsCount,
+                FormRenderingProfile = new DataFieldFormRenderingProfile
+                {
+                    WidgetFunctionMarkup = stringSelectorWidgetFunctionMarkup
+                }
             });
 
             if (string.IsNullOrEmpty(this.CurrentLabelFieldName))
