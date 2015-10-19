@@ -120,6 +120,39 @@ BrowserTabBoxBinding.prototype.getCustomViewTabBinding = function () {
 		scrollbox.bindingElement.appendChild(iframe);
 		this._customTabBinding.iframe = iframe;
 		this.appendTabByBindings(this._customTabBinding, scrollbox);
+
+		//IE reload console on top location hash changed from iframe
+		//For IE - js replacement instead default click behevior
+		if (Client.isAnyExplorer) {
+			DOMEvents.addEventListener(iframe, DOMEvents.LOAD, {
+				handleEvent: function (e) {
+					if (iframe.src != "about:blank") {
+						var targethost = iframe.contentWindow.location.host;
+						if (targethost == window.location.host) {
+							//TODO: check perfomance and move to singleton handler
+							var handler = {
+								handleEvent: function (e) {
+									DOMEvents.preventDefault(e);
+									var link = DOMEvents.getTarget(e);
+									top.location.href = link.href;
+								}
+							}
+
+							doc = iframe.contentWindow.document;
+							if (doc.links.length > 0) {
+								var link, i = 0;
+								while ((link = doc.links[i++]) != null) {
+									if (link.target == "_top" && link.href.indexOf("#") > 1) {
+										DOMEvents.addEventListener(link, DOMEvents.CLICK, handler);
+									}
+								}
+							}
+						}
+					}
+				}
+			});
+		}
+
 	}
 	//hide tabs buttons
 	this.getTabsBinding().hide();
