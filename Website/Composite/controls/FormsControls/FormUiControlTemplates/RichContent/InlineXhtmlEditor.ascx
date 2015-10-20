@@ -71,4 +71,5 @@
     previewpageid="<%= PreviewPageId %>"
     previewtemplateid="<%= PreviewTemplateId %>"
     previewplaceholder="<%= PreviewPlaceholder %>"
+    image="${icon:edit}"
     />
