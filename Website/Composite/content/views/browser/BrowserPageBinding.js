@@ -991,11 +991,15 @@ BrowserPageBinding.prototype.setCustomUrl = function (url) {
 	url = url.replace("{encodedurl}", encodeURIComponent(this._isRequirePublicNet ? targetUrl.replace(/\/c1mode\(unpublished\)/, "") : targetUrl));
 	//replace 2nd and next '?' to '&'
 	url = url.replace(/(\?)(.+)/g, function (a, b, c) { return b + c.replace(/\?/g, "&") });
-	customView.iframe.src = "about:blank";
-	customView.iframe.onload = function () {
-		customView.iframe.onload = null;
+	if (customView.iframe.src) {
+		customView.iframe.src = "about:blank";
+		customView.iframe.onload = function () {
+			customView.iframe.onload = null;
+			customView.iframe.src = url;
+		};
+	} else {
 		customView.iframe.src = url;
-	};
+	}
 	this._box.select(customView, true);
 }
 
