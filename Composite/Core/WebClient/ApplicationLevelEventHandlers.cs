@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Text;
 using System.Web;
+using Composite.AspNet;
 using Composite.C1Console.Elements;
 using Composite.C1Console.Events;
 using Composite.Core.Application;
@@ -344,6 +345,7 @@ namespace Composite.Core.WebClient
             TempDirectoryFacade.OnApplicationStart();
 
             HostnameBindingsFacade.Initialize();
+            DisplayModeFacade.Initialize();
 
             ApplicationStartupFacade.FireSystemInitialized();
 

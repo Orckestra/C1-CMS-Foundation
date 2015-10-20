@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.WebPages;
 using System.Xml.Linq;
 using Composite.AspNet.Razor;
+using Composite.Core.Application;
 using Composite.Core.Collections.Generic;
 using Composite.Core.Extensions;
 using Composite.Core.Instrumentation;
@@ -58,26 +59,33 @@ namespace Composite.Plugins.PageTemplates.Razor
             string output;
             FunctionContextContainer functionContextContainer;
 
-            RazorPageTemplate webPage = null;
+            WebPageBase webPage = null;
             try
             {
-                webPage = WebPageBase.CreateInstanceFromVirtualPath(renderingInfo.ControlVirtualPath) as AspNet.Razor.RazorPageTemplate;
-                Verify.IsNotNull(webPage, "Razor compilation failed or base type does not inherit '{0}'",
-                                 typeof (AspNet.Razor.RazorPageTemplate).FullName);
+                var directory = Path.GetDirectoryName(renderingInfo.ControlVirtualPath);
+                var template = Path.GetFileNameWithoutExtension(renderingInfo.ControlVirtualPath);
+                var file = SpecialModesFileResolver.ResolveFileInInDirectory(directory, template, ".cshtml", new HttpContextWrapper(HttpContext.Current));
 
-                webPage.Configure();
+                webPage = WebPageBase.CreateInstanceFromVirtualPath(file);
+
+                var razorTemplate = webPage as RazorPageTemplate;
+                if (razorTemplate != null)
+                {
+                    razorTemplate.Configure();
+                }
+
+                Verify.IsNotNull(webPage, "Razor compilation failed or base type does not inherit '{0}'", typeof(RazorPageTemplate).FullName);
 
                 functionContextContainer = PageRenderer.GetPageRenderFunctionContextContainer();
 
                 using (Profiler.Measure("Evaluating placeholders"))
                 {
-                    TemplateDefinitionHelper.BindPlaceholders(webPage, _job, renderingInfo.PlaceholderProperties,
-                                                              functionContextContainer);
+                    TemplateDefinitionHelper.BindPlaceholders(webPage, _job, renderingInfo.PlaceholderProperties, functionContextContainer);
                 }
 
                 // Executing razor code
                 var httpContext = new HttpContextWrapper(HttpContext.Current);
-                var startPage = StartPage.GetStartPage(webPage, "_PageStart", new[] {"cshtml"});
+                var startPage = StartPage.GetStartPage(webPage, "_PageStart", new[] { "cshtml" });
                 var pageContext = new WebPageContext(httpContext, webPage, startPage);
                 pageContext.PageData.Add(RazorHelper.PageContext_FunctionContextContainer, functionContextContainer);
 
@@ -94,14 +102,15 @@ namespace Composite.Plugins.PageTemplates.Razor
             }
             finally
             {
-                if (webPage != null)
+                var razorTemplate = webPage as RazorPageTemplate;
+                if (razorTemplate != null)
                 {
-                    webPage.Dispose();
+                    razorTemplate.Dispose();
                 }
             }
 
             XDocument resultDocument = XDocument.Parse(output);
-            
+
             var controlMapper = (IXElementToControlMapper)functionContextContainer.XEmbedableMapper;
             Control control = PageRenderer.Render(resultDocument, functionContextContainer, controlMapper, _job.Page);
 
