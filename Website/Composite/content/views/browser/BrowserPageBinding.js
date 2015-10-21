@@ -237,6 +237,10 @@ BrowserPageBinding.prototype.onBeforePageInitialize = function () {
 	var devicepopup = window.bindingMap.devicepopup;
 	devicepopup.addActionListener(MenuItemBinding.ACTION_COMMAND, this);
 
+	// Subscribe to current tab selected
+	var dockPanelViewBinding = this.getAncestorBindingByType(ViewBinding, true);
+	var dockTabPanel =  UserInterface.getBinding(dockPanelViewBinding.getMigrationParent());
+	dockTabPanel.addActionListener(FocusBinding.ACTION_FOCUS, this);
 
 	if (this._startURL) {
 		this.setURL(this._startURL);
@@ -441,6 +445,12 @@ BrowserPageBinding.prototype.handleAction = function (action) {
 			break;
 		case SplitterBinding.ACTION_DRAGGED:
 			window.bindingMap.cover.hide();
+			break;
+		case FocusBinding.ACTION_FOCUS:
+			//TODO add check target
+			if (action.target instanceof DockPanelBinding){
+				this.onBrowserTabSelected();
+			}
 			break;
 	}
 }
@@ -1101,4 +1111,12 @@ BrowserPageBinding.prototype.getSystemTree = function () {
 BrowserPageBinding.prototype.getSystemPage = function () {
 
 	return this._viewBinding.getContentWindow().bindingMap.page;
+}
+
+/**
+ * handle browser tab selected
+ */
+BrowserPageBinding.prototype.onBrowserTabSelected = function () {
+
+	this.bindingWindow.bindingMap.systemtoolbar._containAllButtons();
 }
