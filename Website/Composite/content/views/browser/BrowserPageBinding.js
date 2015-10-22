@@ -1019,42 +1019,35 @@ BrowserPageBinding.prototype.setCustomUrl = function (url) {
  */
 BrowserPageBinding.prototype.setScreen = function (dim, touch) {
 
-	var frame = this._box.getFrameElement();
 	var win = this._box.getBrowserWindow().bindingElement;
+	var frame = this._box.getFrameElement();
+	var isFrameCenteredXY = dim.w && dim.h && dim.h < win.offsetHeight;
 
+	CSSUtil.attachClassName(win, "deviceWindow");
+	CSSUtil.attachClassName(frame, "deviceFrame");
+	CSSUtil.detachClassName(frame, "centeredXY");
 	frame.contentWindow.document.getElementsByTagName('body')[0].style.overflowX = "hidden";
-
-	win.style.background = "#444";
-
-	if (dim.w && dim.h && dim.h < win.offsetHeight) {
-		frame.className = "deviceframe centeredXY";
-	} else {
-		frame.className = 'deviceframe';
+	
+	if (isFrameCenteredXY) {
+		CSSUtil.attachClassName(frame, "centeredXY");
 	}
+
 	if (dim.w) {
-	   
-		if (touch) {
-			frame.style.width = dim.w + this.getScrollbarWidth() + "px";
-		} else {
-			frame.style.width = dim.w + "px";
-		}
-		win.style.overflowX = "auto";
+		var width = touch ? dim.w + this.getScrollbarWidth() : dim.w;
+		frame.style.width = width + "px";
 	} else {
 		frame.style.removeProperty("width");
-		win.style.removeProperty("overflow-x");
 	}
+
 	if (dim.h) {
 		frame.style.height = dim.h + "px";
-		win.style.overflowY = "auto";
 	} else {
 		frame.style.removeProperty("height");
-		win.style.removeProperty("overflow-y");
 	}
 
 	var frameOvl = document.getElementById(BrowserPageBinding.DEVICE_TOUCHVIEW_FRAMEOVERLAY_ID);
 
 	if (touch && !frameOvl) {
-
 		frameOvl = document.createElement('div');
 		frameOvl.id = BrowserPageBinding.DEVICE_TOUCHVIEW_FRAMEOVERLAY_ID;
 		win.appendChild(frameOvl);
@@ -1063,16 +1056,35 @@ BrowserPageBinding.prototype.setScreen = function (dim, touch) {
 		DOMEvents.addEventListener(frameOvl, DOMEvents.CLICK, this);
 	}
 
-	if (frameOvl) {
-		frameOvl.style.display = touch ? "block" : "none";
-	}
-
 	if (touch) {
 		frameOvl.style.marginLeft = "-" + (this.getScrollbarWidth() / 2) + "px";
 		frameOvl.style.width = dim.w + "px";
 		frameOvl.style.height = dim.h + "px";
-		frameOvl.className = frame.className.indexOf('centeredXY') > 0 ? 'centeredXY' : 'centeredX';
-	} 
+		frameOvl.className = isFrameCenteredXY ? 'centeredXY' : 'centeredX';
+	}
+
+	// Transform the frame if it doesn't fit the window area
+	frame.style.removeProperty("transform");
+	CSSUtil.detachClassName(frame, "transformed");
+	if (frameOvl) {
+		frameOvl.style.display = touch ? "block" : "none";
+		frameOvl.style.removeProperty("transform");
+		CSSUtil.detachClassName(frameOvl, "transformed");
+	}
+
+	var hRatio = win.offsetHeight / dim.h;
+	var wRatio = win.offsetWidth / dim.w;
+	var isTransform = hRatio < 1 || wRatio < 1;
+	if (isTransform) {
+		var transformIndex = hRatio < wRatio ? hRatio : wRatio;
+		frame.style.transform = "scale(" + transformIndex + "," + transformIndex + ") translate(-50%, -50%)";
+		CSSUtil.attachClassName(frame, "transformed");
+		if (touch) {
+			var translateStatement = isFrameCenteredXY ? "translate(-50%, -50%)" : "translate(-50%, 0)";
+			frameOvl.style.transform = "scale(" + transformIndex + "," + transformIndex + ")" + translateStatement;
+			CSSUtil.attachClassName(frameOvl, "transformed");
+		}
+	}
 }
 
 

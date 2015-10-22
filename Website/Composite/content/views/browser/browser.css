@@ -2,113 +2,128 @@
 @namespace ui url("http://www.w3.org/1999/xhtml");
 
 #addressbar {
-    float: left;
-    margin-top: 2px;
-    padding: 0;
+	float: left;
+	margin-top: 2px;
+	padding: 0;
 }
 
 
-#addressbar input {
-        width: 100%;
-        height: 100%;
-        padding-top: 2px;
-        padding-left: 5px;
-    }
+	#addressbar input {
+		width: 100%;
+		height: 100%;
+		padding-top: 2px;
+		padding-left: 5px;
+	}
 
 ui|cover#blocker {
-    cursor: pointer !important;
+	cursor: pointer !important;
 }
 
 #message {
-    padding: 22px;
+	padding: 22px;
 }
 
 #text {
-    padding-left: 44px;
-    -moz-user-select: none;
-    user-select: none;
-    padding-top: 8px;
+	padding-left: 44px;
+	-moz-user-select: none;
+	user-select: none;
+	padding-top: 8px;
 }
 
-.deviceframe {
-    margin: 0 auto;
-    overflow-x: hidden;
-    overflow-y: scroll;
+.deviceWindow {
+	overflow: hidden;
+	background: #444;
+}
+
+.deviceFrame {
+	margin: 0 auto;
+	overflow-x: hidden;
+	overflow-y: scroll;
 }
 
 #deviceframeoverlay {
-    position: absolute;
-    background: transparent;
-    cursor: pointer;
-    cursor: url('/Composite/images/touch-cursor.png') 13 6, pointer;
-    overflow: hidden;
+	position: absolute;
+	background: transparent;
+	cursor: pointer;
+	cursor: url('/Composite/images/touch-cursor.png') 13 6, pointer;
+	overflow: hidden;
+}
+
+.transformed {
+	margin: 0;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	-moz-transform-origin: 0 0;
+	transform-origin: 0 0;
+	-webkit-transform-origin: 0 0;
 }
 
 .centeredX {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    -webkit-transform: translateX(-50%);
-    -ms-transform: translateX(-50%);
-    transform: translateX(-50%);
+	position: absolute;
+	top: 0;
+	left: 50%;
+	-webkit-transform: translateX(-50%);
+	-ms-transform: translateX(-50%);
+	transform: translateX(-50%);
 }
 
 .centeredXY {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    -webkit-transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	-webkit-transform: translate(-50%, -50%);
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
 }
 
 ui|toolbar#breadcrumbbar {
-    padding: 0;
+	padding: 0;
 }
 
-#browsertabbox ui|tabs{
+#browsertabbox ui|tabs {
 	display: none !important;
 }
 
 ui|path {
-    width: 100%;
-    float: left;
-    height: 32px;
-    overflow: hidden;
+	width: 100%;
+	float: left;
+	height: 32px;
+	overflow: hidden;
 }
 
-    ui|path ui|toolbarbutton {
-        border: 0;
-        text-transform: none;
-        padding-right: 10px;
-        margin-right: -10px !important;
-    }
+	ui|path ui|toolbarbutton {
+		border: 0;
+		text-transform: none;
+		padding-right: 10px;
+		margin-right: -10px !important;
+	}
 
-        ui|path ui|toolbarbutton.isdisabled {
-            opacity: 1;
-        }
+		ui|path ui|toolbarbutton.isdisabled {
+			opacity: 1;
+		}
 
-        ui|path ui|toolbarbutton + ui|toolbarbutton:before {
-            content: "/";
-            display: block;
-            position: absolute;
-            color: #ddd;
-            left: 0;
-            top: 6px;
-        }
+		ui|path ui|toolbarbutton + ui|toolbarbutton:before {
+			content: "/";
+			display: block;
+			position: absolute;
+			color: #ddd;
+			left: 0;
+			top: 6px;
+		}
 
-        ui|path ui|toolbarbutton ui|labelbox {
-            padding: 6px 1px 6px 7px;
-        }
+		ui|path ui|toolbarbutton ui|labelbox {
+			padding: 6px 1px 6px 7px;
+		}
 
-        ui|path ui|toolbarbutton:after {
-            content: "...";
-            display: block;
-            position: absolute;
-            right: 0;
-            top: 6px;
-        }
+		ui|path ui|toolbarbutton:after {
+			content: "...";
+			display: block;
+			position: absolute;
+			right: 0;
+			top: 6px;
+		}
 
-        ui|path ui|toolbarbutton:last-child:after {
-            display: none;
-        }
+		ui|path ui|toolbarbutton:last-child:after {
+			display: none;
+		}
