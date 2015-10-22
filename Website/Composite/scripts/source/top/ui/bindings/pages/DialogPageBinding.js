@@ -2,7 +2,7 @@ DialogPageBinding.prototype = new PageBinding;
 DialogPageBinding.prototype.constructor = DialogPageBinding;
 DialogPageBinding.superclass = PageBinding.prototype;
 
-DialogPageBinding.DEFAULT_WIDTH = 443;
+DialogPageBinding.DEFAULT_WIDTH = 531;
 DialogPageBinding.DEFAULT_TABBOXED_WIDTH = 476;
 DialogPageBinding.DEFAULT_HEIGHT = "auto";
 DialogPageBinding.DEFAULT_CONTROLS = "close";
