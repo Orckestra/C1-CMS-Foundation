@@ -27,7 +27,7 @@ ui|treenode {
 
 	ui|labelbox {
 		padding-bottom: 3px;
-		padding-left: 15px;
+		padding-left: 12px;
 		float: none;
 		height: 28px;
 		position: relative;
@@ -59,7 +59,7 @@ ui|treenode {
 
 		&:before, &:after {
 			position: absolute;
-			left: 0;
+			left: -2px;
 			display: block;
 			content: "";
 			border: 5px solid transparent;
@@ -85,13 +85,13 @@ ui|treenode {
 			&:before {
 				top: 8px;
 				border-left-color: #999; /*Chevron Color*/
-				left: 4px;
+				left: 2px;
 			}
 
 			&:after {
 				top: 8px;
 				border-left-color: @tree-bg-color;
-				left: 2px;
+				left: 0px;
 			}
 		}
 
@@ -108,7 +108,7 @@ ui|treenode {
 	}
 
 	ui|treenode {
-		padding-left: 45px;
+		padding-left: 30px;
 
 		&::before, &::after {
 			content: '';
@@ -118,9 +118,9 @@ ui|treenode {
 		&::before {
 			border-top: 1px solid #999;
 			top: 12px;
-			width: 25px;
+			width: 15px;
 			height: 0;
-			left: 24px;
+			left: 17px;
 		}
 
 		&::after {
@@ -128,12 +128,12 @@ ui|treenode {
 			height: 100%;
 			width: 0px;
 			top: -3px;
-			left: 24px;
+			left: 17px;
 		}
 
 		&.open, &.closed {
 			&::before {
-				width: 15px;
+				width: 8px;
 			}
 		}
 
