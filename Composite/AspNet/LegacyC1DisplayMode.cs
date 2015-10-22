@@ -4,20 +4,13 @@ using System.Web.WebPages;
 
 namespace Composite.AspNet
 {
-    /// <summary>
-    /// 
-    /// </summary>
-    public class LegacyC1DisplayMode : DefaultDisplayMode
+    internal class LegacyC1DisplayMode : DefaultDisplayMode
     {
         public override string DisplayModeId
         {
             get { return base.DisplayModeId + "_c1_legacy"; }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="suffix"></param>
         public LegacyC1DisplayMode(string suffix) : base(suffix) { }
 
         protected override string TransformPath(string virtualPath, string suffix)

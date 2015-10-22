@@ -3,14 +3,8 @@ using System.Web.WebPages;
 
 namespace Composite.AspNet
 {
-    /// <summary>
-    /// 
-    /// </summary>
-    public static class DisplayModeFacade
+    internal static class DisplayModeFacade
     {
-        /// <summary>
-        /// 
-        /// </summary>
         public static void Initialize()
         {
             DisplayModeProvider.Instance.Modes.Insert(0, new LegacyC1DisplayMode("mobile")

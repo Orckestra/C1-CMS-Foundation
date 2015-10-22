@@ -6,19 +6,10 @@ using System.Web.WebPages;
 
 namespace Composite.Core.Application
 {
-    /// <summary>
-    /// 
-    /// </summary>
+    /// <exclude />
     public static class SpecialModesFileResolver
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="directory"></param>
-        /// <param name="file"></param>
-        /// <param name="extension"></param>
-        /// <param name="context"></param>
-        /// <returns></returns>
+        /// <exclude />
         public static string ResolveFileInInDirectory(string directory, string file, string extension, HttpContextBase context)
         {
             var pathProvider = HostingEnvironment.VirtualPathProvider;
@@ -36,12 +27,8 @@ namespace Composite.Core.Application
             }
 
             file = Path.Combine(directory, file + extension);
-            if (pathProvider.FileExists(file))
-            {
-                return file;
-            }
-
-            return null;
+            
+            return pathProvider.FileExists(file) ? file : null;
         }
     }
 }
