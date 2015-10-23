@@ -111,7 +111,12 @@ TabPanelBinding.prototype.unselect = function () {
  */
 TabPanelBinding.prototype._invokeManagedRecursiveFlex = function () {
 	
-	this.reflex ( true );
+	if (this.isAttached == true) {
+		this.reflex(true);
+	} else {
+		var tabpanels = UserInterface.getBinding(this.bindingElement.parentNode);
+		tabpanels.reflex();
+	}
 	
 	/*
 	 * There's an issue here with lazy panels waking up. 
