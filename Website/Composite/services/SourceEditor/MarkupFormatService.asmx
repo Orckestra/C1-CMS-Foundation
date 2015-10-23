@@ -71,47 +71,6 @@ namespace Composite.Services
             }
         }
 
-
-        [WebMethod]
-        public string HtmlToXhtml(string html)
-        {
-            string declarations = "";
-            string xhtml = "";
-            int htmlElementStart = xhtml.IndexOf("<html", StringComparison.InvariantCultureIgnoreCase);
-            if (htmlElementStart > 0) declarations = xhtml.Substring(0, htmlElementStart) + "\n";
-
-            Regex tagStarterRegEx = new Regex("</?([a-zA-Z1-9]+)");
-            MatchCollection tagStarterMatchCollection = tagStarterRegEx.Matches(html);
-            foreach (string tagStarter in tagStarterMatchCollection.OfType<Match>().Select(f => f.Value).Distinct().OrderBy(f => f.Length))
-            {
-                html = html.Replace(tagStarter, tagStarter.ToLowerInvariant());
-            }
-
-            byte[] htmlByteArray = Encoding.UTF8.GetBytes(html);
-            using (MemoryStream inputStream = new MemoryStream(htmlByteArray))
-            {
-                using (MemoryStream outputStream = new MemoryStream())
-                {
-                    Tidy tidy = GetXhtml5ConfiguredTidy();
-                    
-                    TidyMessageCollection tidyMessages = new TidyMessageCollection();
-
-                    tidy.Parse(inputStream, outputStream, tidyMessages);
-                    if (tidyMessages.Errors == 0)
-                    {
-                        outputStream.Position = 0;
-                        C1StreamReader sr = new C1StreamReader(outputStream);
-                        xhtml = declarations + sr.ReadToEnd();
-                    }
-                }
-            }
-
-            XElement xhtmlElement = XElement.Parse(xhtml);
-
-            return xhtml;
-        }
-
-
         private static Tidy GetXhtml5ConfiguredTidy()
         {
             Tidy t = new Tidy();

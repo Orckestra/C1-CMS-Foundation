@@ -188,9 +188,24 @@ SEOAssistantPageBinding.prototype._noKeyWords = function () {
  */
 SEOAssistantPageBinding.prototype._parseMarkup = function (markup) {
 
-    var dom = XMLParser.parse(markup, true);
+	var dom = null;
+	try {
+		dom = new DOMParser().parseFromString(markup, "text/html");
+		
+	} catch (Exception) {
+	}
 
-    if (dom != null) {
+	if (dom == null) // IE9
+	{
+		try {
+			var dom = document.implementation.createHTMLDocument("");
+			dom.body.innerHTML = markup;
+		} catch (Exception) {
+			
+		}
+	}
+
+	if (dom != null) {
 
         /*
 		 * Build the tree.
