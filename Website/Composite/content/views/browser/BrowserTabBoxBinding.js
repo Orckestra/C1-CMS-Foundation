@@ -235,6 +235,7 @@ BrowserTabBoxBinding.prototype.getFrameElement = function () {
 */
 BrowserTabBoxBinding.prototype.focus = function () {
 	this.dispatchAction(Binding.ACTION_FOCUSED);
+	this.isFocused = true;
 };
 
 /**
@@ -243,4 +244,5 @@ BrowserTabBoxBinding.prototype.focus = function () {
 */
 BrowserTabBoxBinding.prototype.blur = function () {
 	this.dispatchAction(Binding.ACTION_BLURRED);
+	this.isFocused = false;
 };

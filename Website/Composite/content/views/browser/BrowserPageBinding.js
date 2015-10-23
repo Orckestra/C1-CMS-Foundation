@@ -109,19 +109,16 @@ BrowserPageBinding.prototype.onBindingRegister = function () {
 	BrowserPageBinding.superclass.onBindingRegister.call(this);
 	this.subscribe(BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED);
 	this.subscribe(BroadcastMessages.SYSTEMTREEBINDING_REFRESHED_AFTER);
-	
+	this.subscribe(BroadcastMessages.KEY_ARROW);
+
 	this.addActionListener(WindowBinding.ACTION_ONLOAD);
 	this.addActionListener(TabBoxBinding.ACTION_SELECTED);
 	this.addActionListener(TabBoxBinding.ACTION_UPDATED);
 	this.addActionListener(BrowserTabBinding.ACTIONVENT_CLOSE);
 	this.addActionListener(ViewBinding.ACTION_LOADED);
 	this.addActionListener(PageBinding.ACTION_INITIALIZED);
-
-	
 	this.addActionListener(SplitterBinding.ACTION_DRAGSTART);
 	this.addActionListener(SplitterBinding.ACTION_DRAGGED);
-	
-
 }
 
 /**
@@ -146,6 +143,15 @@ BrowserPageBinding.prototype.handleBroadcast = function (broadcast, arg) {
 		case BroadcastMessages.SYSTEMTREEBINDING_REFRESHED_AFTER:
 			if (arg.syncHandle == this.getSyncHandle()) {
 				this.refreshView();
+			}
+			break;
+		case BroadcastMessages.KEY_ARROW:
+			if (this._box.isFocused) {
+				var frameOvl = document.getElementById(BrowserPageBinding.DEVICE_TOUCHVIEW_FRAMEOVERLAY_ID);
+				if(frameOvl && frameOvl.style.display == "block") { // Scroll Touch Device View on Key UP/DOWN
+					var delta = KeyEventCodes.VK_UP == arg ? -50 : 50;
+					this.scrollDeviceFrame(delta);
+				}
 			}
 			break;
 	}
@@ -195,8 +201,8 @@ BrowserPageBinding.prototype.setPageArgument = function (map) {
 	} else {
 		this._startURL = url;
 	}
-	if (!this.systemViewDefinition){
-  
+	if (!this.systemViewDefinition) {
+
 		this.systemViewDefinition = map["SystemViewDefinition"];
 		//NEWUI Add tree to Browser
 		var explorerdocument = this.bindingDocument;
@@ -216,7 +222,7 @@ BrowserPageBinding.prototype.setPageArgument = function (map) {
 			this.image = map.image;
 	}
 
-	
+
 }
 
 /**
@@ -239,7 +245,7 @@ BrowserPageBinding.prototype.onBeforePageInitialize = function () {
 
 	// Subscribe to current tab selected
 	var dockPanelViewBinding = this.getAncestorBindingByType(ViewBinding, true);
-	var dockTabPanel =  UserInterface.getBinding(dockPanelViewBinding.getMigrationParent());
+	var dockTabPanel = UserInterface.getBinding(dockPanelViewBinding.getMigrationParent());
 	dockTabPanel.addActionListener(FocusBinding.ACTION_FOCUS, this);
 
 	if (this._startURL) {
@@ -313,7 +319,7 @@ BrowserPageBinding.prototype.push = function (node, isManual, isForce) {
 							self.pushURL(result, isManual);
 						} else {
 							self.pushToken(node, isManual);
-						} 
+						}
 					}, 0);
 				});
 				this._entityToken = entityToken;
@@ -448,7 +454,7 @@ BrowserPageBinding.prototype.handleAction = function (action) {
 			break;
 		case FocusBinding.ACTION_FOCUS:
 			//TODO add check target
-			if (action.target instanceof DockPanelBinding){
+			if (action.target instanceof DockPanelBinding) {
 				this.onBrowserTabSelected();
 			}
 			break;
@@ -598,7 +604,7 @@ BrowserPageBinding.prototype._handleDocumentLoad = function (binding) {
 				);
 			}
 		});
-		
+
 	}
 
 	/*
@@ -629,7 +635,7 @@ BrowserPageBinding.prototype._updateAddressBar = function (url) {
 				bar.setValue(result);
 			}
 		});
-		
+
 	}
 }
 
@@ -802,9 +808,9 @@ BrowserPageBinding.prototype._updateBroadcasters = function () {
 		browserview.enable();
 	}
 
-	
 
-	
+
+
 }
 
 /**
@@ -906,18 +912,15 @@ BrowserPageBinding.prototype.handleEvent = function (e) {
 			break;
 		case DOMEvents.MOUSEDOWN:
 			this._box.focus();
-		case DOMEvents.WHEEL:
 
+		case DOMEvents.WHEEL:
 			if (element.id == BrowserPageBinding.DEVICE_TOUCHVIEW_FRAMEOVERLAY_ID) {
 				this._box.focus();
 				var delta = e.deltaY || e.detail || e.wheelDelta;
 				delta = Math.abs(delta) < 50 ? 50 * Math.sign(delta) : delta;
-				var doc = this._box.getFrameElement().contentWindow.document;
-				doc.documentElement.scrollTop += delta;
-				doc.body.scrollTop += delta; // Chrome
-	}
+				this.scrollDeviceFrame(delta);
+			}
 			break;
-
 		case DOMEvents.CLICK:
 			if (element.id == BrowserPageBinding.DEVICE_TOUCHVIEW_FRAMEOVERLAY_ID) {
 				this._box.focus();
@@ -928,7 +931,7 @@ BrowserPageBinding.prototype.handleEvent = function (e) {
 				if (el) {
 					if (el.tagName && ["input", "textarea"].indexOf(el.tagName.toLowerCase()) > -1 && ["text", "textarea", "email", "password", "url", "radio", "checkbox"].indexOf(el.type.toLowerCase()) > -1) {
 						el.focus();
-}
+					}
 					el.click();
 				}
 				element.style.display = "block";
@@ -962,7 +965,7 @@ BrowserPageBinding.prototype.loadDeviceList = function () {
 						var h = device.getAttribute("h");
 						var touch = device.getAttribute("touch");
 						var requirepublicnet = device.getAttribute("requirepublicnet");
-						
+
 						var urlProperty = device.getAttribute("url");
 
 						var itemBinding = MenuItemBinding.newInstance(bindingDocument);
@@ -1014,7 +1017,9 @@ BrowserPageBinding.prototype.setCustomUrl = function (url) {
 }
 
 /**
- * Set client width for browser iframe
+ * Set client width/height for browser iframe
+ * For touch device view the Frame Overlay is created to imitate touch device: hand cursor, skip hover effects. 
+ * For touch device view next should work: focus form fields, handle click events, scroll on MOUSE WHEEL, on KEY UP/DOWN, fit window area by using CSS transform.scale feature.
  * @param {int} width
  */
 BrowserPageBinding.prototype.setScreen = function (dim, touch) {
@@ -1027,7 +1032,7 @@ BrowserPageBinding.prototype.setScreen = function (dim, touch) {
 	CSSUtil.attachClassName(frame, "deviceFrame");
 	CSSUtil.detachClassName(frame, "centeredXY");
 	frame.contentWindow.document.getElementsByTagName('body')[0].style.overflowX = "hidden";
-	
+
 	if (isFrameCenteredXY) {
 		CSSUtil.attachClassName(frame, "centeredXY");
 	}
@@ -1087,7 +1092,9 @@ BrowserPageBinding.prototype.setScreen = function (dim, touch) {
 	}
 }
 
-
+/** 
+  Helper fucntions with Device Frame
+*/
 BrowserPageBinding.prototype.getScrollbarWidth = function () {
 	var div, width = this.getScrollbarWidth.width;
 	if (width === undefined) {
@@ -1100,6 +1107,12 @@ BrowserPageBinding.prototype.getScrollbarWidth = function () {
 	}
 	return width;
 };
+
+BrowserPageBinding.prototype.scrollDeviceFrame = function (delta) {
+	var doc = this._box.getFrameElement().contentWindow.document;
+	doc.documentElement.scrollTop += delta;
+	doc.body.scrollTop += delta; // Chrome
+}
 
 /**
  * Return perspective handle for browser
