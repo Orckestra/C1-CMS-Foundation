@@ -241,7 +241,7 @@ namespace Composite.Core.WebClient.Renderings
                 throw new HttpException(404, "Page not found - either this page has not been published yet or it has been deleted.");
             }
 
-            if (Page.DataSourceId.PublicationScope != PublicationScope.Published || request.IsSecureConnection)
+            if (Page.DataSourceId.PublicationScope != PublicationScope.Published)
             {
                 response.Cache.SetCacheability(HttpCacheability.NoCache);
                 CachingDisabled = true;
