@@ -87,6 +87,9 @@ function BrowserPageBinding() {
 	 */
 	this._asyncLocker = null;
 
+
+	this._frameTransformIndex = 1;
+
 	/*
 	 * Returnable.
 	 */
@@ -927,7 +930,7 @@ BrowserPageBinding.prototype.handleEvent = function (e) {
 				element.style.display = "none";
 				var frame = this._box.getFrameElement();
 				var framePosition = frame.getBoundingClientRect();
-				var el = frame.contentWindow.document.elementFromPoint(e.clientX - framePosition.left, e.clientY - framePosition.top);
+				var el = frame.contentWindow.document.elementFromPoint((e.clientX - framePosition.left) / this._frameTransformIndex, (e.clientY - framePosition.top) / this._frameTransformIndex);
 				if (el) {
 					if (el.tagName && ["input", "textarea"].indexOf(el.tagName.toLowerCase()) > -1 && ["text", "textarea", "email", "password", "url", "radio", "checkbox"].indexOf(el.type.toLowerCase()) > -1) {
 						el.focus();
@@ -1081,14 +1084,16 @@ BrowserPageBinding.prototype.setScreen = function (dim, touch) {
 	var wRatio = win.offsetWidth / dim.w;
 	var isTransform = hRatio < 1 || wRatio < 1;
 	if (isTransform) {
-		var transformIndex = hRatio < wRatio ? hRatio : wRatio;
-		frame.style.transform = "scale(" + transformIndex + "," + transformIndex + ") translate(-50%, -50%)";
+		this._frameTransformIndex = hRatio < wRatio ? hRatio : wRatio;
+		frame.style.transform = "scale(" + this._frameTransformIndex + "," + this._frameTransformIndex + ") translate(-50%, -50%)";
 		CSSUtil.attachClassName(frame, "transformed");
 		if (touch) {
 			var translateStatement = isFrameCenteredXY ? "translate(-50%, -50%)" : "translate(-50%, 0)";
-			frameOvl.style.transform = "scale(" + transformIndex + "," + transformIndex + ")" + translateStatement;
+			frameOvl.style.transform = "scale(" + this._frameTransformIndex + "," + this._frameTransformIndex + ")" + translateStatement;
 			CSSUtil.attachClassName(frameOvl, "transformed");
 		}
+	} else {
+		this._frameTransformIndex = 1;
 	}
 }
 
