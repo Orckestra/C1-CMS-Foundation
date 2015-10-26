@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Specialized;
+using System.Linq;
 using System.Linq.Expressions;
+using System.Web;
 
 
 namespace Composite.Core.Routing
@@ -13,6 +15,28 @@ namespace Composite.Core.Routing
 
         /// <exclude />
         public NameValueCollection QueryString { get; set; }
+
+        /// <exclude />
+        public override string ToString()
+        {
+            string result = PathSegments != null ? string.Join("/", PathSegments) : string.Empty;
+
+            if (result != string.Empty)
+            {
+                result = "/" + result;
+            }
+
+            if (QueryString != null && QueryString.Count > 0)
+            {
+                Func<string, string> encode = HttpUtility.HtmlAttributeEncode;
+
+                result += "?" + string.Join("&",
+                            QueryString.Cast<string>().Select(key => $"{encode(key)}={encode(QueryString[key])}"));
+
+            }
+
+            return result;
+        }
     }
 
     /// <exclude />

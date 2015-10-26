@@ -84,10 +84,16 @@ namespace Composite.Functions
             var dataSet = (IReadOnlyCollection<IData>) _getFilteredDataMethodInfo.MakeGenericMethod(_dataType)
                 .Invoke(null, new object[] {filterExpression});
 
-            if (dataSet.Count == 0 || dataSet.Count > 1)
+            if (dataSet.Count == 0)
             {
                 return null;
             }
+
+            if (dataSet.Count > 1)
+            {
+                throw new DataUrlCollisionException(_dataType, relativeRoute);
+            }
+            
 
             return new RoutedDataModel(dataSet.First());
         }

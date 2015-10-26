@@ -258,8 +258,17 @@ namespace Composite.Functions
 
             var pageUrlData = C1PageRoute.PageUrlData;
 
-            var model = urlMapper.GetRouteDataModel(pageUrlData) ?? new RoutedDataModel();
+            RoutedDataModel model;
 
+            try
+            {
+                model = urlMapper.GetRouteDataModel(pageUrlData) ?? new RoutedDataModel();
+            }
+            catch (DataUrlCollisionException)
+            {
+                C1PageRoute.RegisterPathInfoUsage();
+                throw;
+            }
 
             SetModel(model);
 

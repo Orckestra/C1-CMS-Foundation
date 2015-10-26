@@ -22,9 +22,9 @@ namespace Composite.Core.Routing
             get { return _dataTypeMapper.PathSegmentsCount; }
         }
 
-        public Expression<Func<TField, bool>> GetPredicate(Guid pageId, RelativeRoute route)
+        public Expression<Func<TField, bool>> GetPredicate(Guid pageId, RelativeRoute relativeRoute)
         {
-            var dataPredicate = _dataTypeMapper.GetPredicate(pageId, route);
+            var dataPredicate = _dataTypeMapper.GetPredicate(pageId, relativeRoute);
             if (dataPredicate == null) return null;
 
 
@@ -36,8 +36,7 @@ namespace Composite.Core.Routing
 
             if (data.Count > 1)
             {
-                // Multiple elements returned. Should we throw an exception here?
-                return null;
+                throw new DataUrlCollisionException(typeof(TDataType), relativeRoute);
             }
 
             var keyObject = data.First().GetUniqueKey();
