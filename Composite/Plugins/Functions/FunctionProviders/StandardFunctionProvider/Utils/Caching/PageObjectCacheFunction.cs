@@ -9,11 +9,14 @@ using Composite.Core.WebClient.Renderings.Page;
 using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
 using Composite.Data;
 using System.Threading;
+using Composite.Core.Xml;
 
 namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.Caching
 {
     internal sealed class PageObjectCacheFunction : DowncastableStandardFunctionBase
     {
+        private static readonly XName FunctionXName = Namespaces.Function10 + "function";
+
         public PageObjectCacheFunction(EntityTokenFactory entityTokenFactory)
             : base("PageObjectCache", "Composite.Utils.Caching", typeof(object), entityTokenFactory)
         {
@@ -89,27 +92,74 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
                                 null);
                         }
                     }
-
                 } 
             }
 
             return result;
         }
 
-
         private static object EvaluateLazyResult(object result, FunctionContextContainer context)
         {
-            if(result is IEnumerable<XElement>)
-            {
-                return (result as IEnumerable<XElement>).Evaluate();
-            }
-
-            if(result is XDocument)
+            if (result is XDocument)
             {
                 PageRenderer.ExecuteEmbeddedFunctions((result as XDocument).Root, context);
+                return result;
+            }
+
+            if (result is IEnumerable<XNode>)
+            {
+                return EvaluateLazyResult(result as IEnumerable<XNode>, context);
             }
 
             return result;
+        }
+
+        private static object EvaluateLazyResult(IEnumerable<XNode> xNodes, FunctionContextContainer context)
+        {
+            var resultList = new List<object>();
+
+            // Attaching the result to be cached to an XElement, so the cached XObject-s will not be later attached to 
+            // an XDocument and causing a bigger memory leak.
+            var tempParent = new XElement("t");
+
+            foreach (var node in xNodes.Evaluate())
+            {
+                node.Remove();
+
+                if (node is XElement)
+                {
+                    var element = (XElement)node;
+
+                    if (element.Name == FunctionXName)
+                    {
+                        var functionTreeNode = (FunctionRuntimeTreeNode)FunctionTreeBuilder.Build(element);
+
+                        var functionCallResult = functionTreeNode.GetValue(context);
+                        if (functionCallResult != null)
+                        {
+                            resultList.Add(functionCallResult);
+
+                            if (functionCallResult is XObject || functionCallResult is IEnumerable<XObject>)
+                            {
+                                tempParent.Add(functionCallResult);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        PageRenderer.ExecuteEmbeddedFunctions(element, context);
+                        resultList.Add(element);
+                        tempParent.Add(element);
+                    }
+                }
+                else
+                {
+                    resultList.Add(node);
+                    tempParent.Add(node);
+                }
+            }
+
+            return resultList.ToArray();
         }
 
         private static string BuildCacheKey(ParameterList parameters)
@@ -119,7 +169,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
             bool languageSpecific = parameters.GetParameter<bool>("LanguageSpecific");
             if (languageSpecific)
             {
-                cacheKey = string.Format("{0}:{1}", cacheKey, Thread.CurrentThread.CurrentCulture);
+                cacheKey = $"{cacheKey}:{Thread.CurrentThread.CurrentCulture}";
             }
 
             SitemapScope SitemapScope = parameters.GetParameter<SitemapScope>("SitemapScope");
@@ -127,7 +177,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
             {
                 Guid associatedPageId = PageStructureInfo.GetAssociatedPageIds(PageRenderer.CurrentPageId, SitemapScope).FirstOrDefault();
                 associatedPageId = (associatedPageId == Guid.Empty ? PageRenderer.CurrentPageId : associatedPageId);
-                cacheKey = string.Format("{0}:{1}", cacheKey, associatedPageId);
+                cacheKey = $"{cacheKey}:{associatedPageId}";
             }
             return cacheKey;
         }

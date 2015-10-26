@@ -548,11 +548,11 @@ namespace Composite.Core.WebClient.Renderings.Page
                 yield return (XElement)source;
             }
 
-            if (source is IEnumerable<XElement>)
+            if (source is IEnumerable<XNode>)
             {
-                foreach (XElement xelement in (IEnumerable<XElement>)source)
+                foreach (XElement xElement in ((IEnumerable<XNode>)source).OfType<XElement>())
                 {
-                    yield return xelement;
+                    yield return xElement;
                 }
             }
         }
