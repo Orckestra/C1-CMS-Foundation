@@ -45,6 +45,12 @@
                             powered by<br />
                             <a href="http://phantomjs.org/" title="Visit PhantomJS" target="_blank">PhantomJS</a>
                         </p>
+                        <h2>SVG Icons</h2>
+                        <p>
+                            designed by<br />
+                            <a href="http://www.orckestra.com/" title="Visit Orckestra" target="_blank">Orckestra</a><br />
+                            <a href="http://www.freepik.com/" title="Visit Freepik" target="_blank">Freepik</a>
+                        </p>
                         <div id="names" />
                         <div class="logo" id="logo2"></div>
                     </div>
