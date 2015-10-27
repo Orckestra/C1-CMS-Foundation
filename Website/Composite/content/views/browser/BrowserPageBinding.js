@@ -1148,5 +1148,10 @@ BrowserPageBinding.prototype.getSystemPage = function () {
  */
 BrowserPageBinding.prototype.onBrowserTabSelected = function () {
 
-	this.bindingWindow.bindingMap.systemtoolbar._containAllButtons();
+	if (Client.isEdge) {
+		var systemtoolbar = this.bindingWindow.bindingMap.systemtoolbar;
+		setTimeout(function () {
+			systemtoolbar._containAllButtons();
+		}, 0);
+	}
 }
