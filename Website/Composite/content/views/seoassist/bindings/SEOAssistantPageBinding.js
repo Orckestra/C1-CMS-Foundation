@@ -10,40 +10,40 @@ SEOAssistantPageBinding.LOCALIZATION = "Composite.Web.SEOAssistant";
  */
 function SEOAssistantPageBinding() {
 
-    /**
+	/**
 	 * @type {SystemLogger}
 	 */
-    this.logger = SystemLogger.getLogger("SEOAssistantPageBinding.");
+	this.logger = SystemLogger.getLogger("SEOAssistantPageBinding.");
 
-    /**
+	/**
 	 * @type {SEODOMParser}
 	 */
-    this._parser = new SEODOMParser();
+	this._parser = new SEODOMParser();
 
-    /**
+	/**
 	 * @type {HTMLInputElement}
 	 */
-    this._focusedInput = null;
+	this._focusedInput = null;
 
-    /**
+	/**
 	 * @type {boolean}
 	 */
-    this._isDirty = false;
+	this._isDirty = false;
 
-    /**
+	/**
 	 * @type {List<string>}
 	 */
-    this._keywords = null;
+	this._keywords = null;
 
-    /**
+	/**
 	 * @type {string}
 	 */
-    this._markup = null;
+	this._markup = null;
 
-    /*
+	/*
 	 * Returnable.
 	 */
-    return this;
+	return this;
 }
 
 /**
@@ -51,7 +51,7 @@ function SEOAssistantPageBinding() {
  */
 SEOAssistantPageBinding.prototype.toString = function () {
 
-    return "[SEOAssistantPageBinding.]";
+	return "[SEOAssistantPageBinding.]";
 }
 
 /**
@@ -60,22 +60,22 @@ SEOAssistantPageBinding.prototype.toString = function () {
  */
 SEOAssistantPageBinding.prototype.onBeforePageInitialize = function () {
 
-    SEOAssistantPageBinding.superclass.onBeforePageInitialize.call(this);
+	SEOAssistantPageBinding.superclass.onBeforePageInitialize.call(this);
 
 
-    this.addActionListener(ButtonBinding.ACTION_COMMAND);
+	this.addActionListener(ButtonBinding.ACTION_COMMAND);
 
-    this.subscribe(BroadcastMessages.TOLANGUAGE_UPDATED);
+	this.subscribe(BroadcastMessages.TOLANGUAGE_UPDATED);
 
-    this.addEventListener(DOMEvents.DOUBLECLICK);
+	this.addEventListener(DOMEvents.DOUBLECLICK);
 
-    /*
+	/*
 	 * Initialize the SEO service and retrieve keywords.
 	 */
-    if (top.SEOService == null) {
-        top.SEOService = WebServiceProxy.createProxy(Constants.URL_WSDL_SEOSERVICE);
-    }
-    this._getKeywords();
+	if (top.SEOService == null) {
+		top.SEOService = WebServiceProxy.createProxy(Constants.URL_WSDL_SEOSERVICE);
+	}
+	this._getKeywords();
 }
 
 /**
@@ -84,9 +84,9 @@ SEOAssistantPageBinding.prototype.onBeforePageInitialize = function () {
  */
 SEOAssistantPageBinding.prototype._getKeywords = function () {
 
-    var list = new List(top.SEOService.GetKeyWords(true));
-    this._parser.setKeys(list);
-    this._keywords = list;
+	var list = new List(top.SEOService.GetKeyWords(true));
+	this._parser.setKeys(list);
+	this._keywords = list;
 
 
 }
@@ -96,24 +96,24 @@ SEOAssistantPageBinding.prototype._getKeywords = function () {
  */
 SEOAssistantPageBinding.prototype._saveKeywords = function () {
 
-    var keywords = this._keywords;
+	var keywords = this._keywords;
 
-    /*
+	/*
 	 * Transmit to server.
 	 */
-    Application.lock(this);
-    top.SEOService.SaveKeyWords(keywords.toArray());
+	Application.lock(this);
+	top.SEOService.SaveKeyWords(keywords.toArray());
 
-    /*
+	/*
 	 * Update internally.
 	 */
-    var list = keywords;
-    this._parser.setKeys(list);
+	var list = keywords;
+	this._parser.setKeys(list);
 
-    var self = this;
-    setTimeout(function () {
-        Application.unlock(self);
-    }, 500);
+	var self = this;
+	setTimeout(function () {
+		Application.unlock(self);
+	}, 500);
 }
 
 /**
@@ -124,15 +124,15 @@ SEOAssistantPageBinding.prototype._saveKeywords = function () {
  */
 SEOAssistantPageBinding.prototype.handleBroadcast = function (broadcast, arg) {
 
-    SEOAssistantPageBinding.superclass.handleBroadcast.call(this, broadcast, arg);
+	SEOAssistantPageBinding.superclass.handleBroadcast.call(this, broadcast, arg);
 
-    switch (broadcast) {
+	switch (broadcast) {
 
-        case BroadcastMessages.TOLANGUAGE_UPDATED:
+		case BroadcastMessages.TOLANGUAGE_UPDATED:
 
-            this._getKeywords();
-            break;
-    }
+			this._getKeywords();
+			break;
+	}
 }
 
 /**
@@ -141,18 +141,18 @@ SEOAssistantPageBinding.prototype.handleBroadcast = function (broadcast, arg) {
  */
 SEOAssistantPageBinding.prototype._handleMarkup = function (markup) {
 
-    SEOAssistantPageBinding.superclass._handleMarkup.call(this, markup);
+	SEOAssistantPageBinding.superclass._handleMarkup.call(this, markup);
 
-    this._markup = markup;
+	this._markup = markup;
 
-    if (markup == null || markup == "") {
-        this._incorrectHtml();
-    }
-    else if (this._keywords.hasEntries()) {
-        this._parseMarkup(markup);
-    } else {
-        this._noKeyWords();
-    }
+	if (markup == null || markup == "") {
+		this._incorrectHtml();
+	}
+	else if (this._keywords.hasEntries()) {
+		this._parseMarkup(markup);
+	} else {
+		this._noKeyWords();
+	}
 }
 
 
@@ -162,12 +162,12 @@ SEOAssistantPageBinding.prototype._handleMarkup = function (markup) {
 */
 SEOAssistantPageBinding.prototype._incorrectHtml = function () {
 
-    //var tree = this.bindingWindow.bindingMap.tree;
-    //tree.empty();
-    //var node = tree.add(TreeNodeBinding.newInstance(tree.bindingDocument));
-    //node.setImage("${icon:warning}");
-    //node.setLabel(StringBundle.getString(SEOAssistantPageBinding.LOCALIZATION, "IncorrectHtml"));
-    //node.attach();
+	//var tree = this.bindingWindow.bindingMap.tree;
+	//tree.empty();
+	//var node = tree.add(TreeNodeBinding.newInstance(tree.bindingDocument));
+	//node.setImage("${icon:warning}");
+	//node.setLabel(StringBundle.getString(SEOAssistantPageBinding.LOCALIZATION, "IncorrectHtml"));
+	//node.attach();
 }
 
 /**
@@ -175,12 +175,12 @@ SEOAssistantPageBinding.prototype._incorrectHtml = function () {
  */
 SEOAssistantPageBinding.prototype._noKeyWords = function () {
 
-    //var tree = this.bindingWindow.bindingMap.tree;
-    //tree.empty ();
-    //var node = tree.add ( TreeNodeBinding.newInstance ( tree.bindingDocument ));
-    //node.setImage ( "${icon:warning}" );
-    //node.setLabel ( StringBundle.getString ( SEOAssistantPageBinding.LOCALIZATION, "NoKeywordsWarning" ));
-    //node.attach ();
+	//var tree = this.bindingWindow.bindingMap.tree;
+	//tree.empty ();
+	//var node = tree.add ( TreeNodeBinding.newInstance ( tree.bindingDocument ));
+	//node.setImage ( "${icon:warning}" );
+	//node.setLabel ( StringBundle.getString ( SEOAssistantPageBinding.LOCALIZATION, "NoKeywordsWarning" ));
+	//node.attach ();
 }
 
 /**
@@ -207,29 +207,29 @@ SEOAssistantPageBinding.prototype._parseMarkup = function (markup) {
 
 	if (dom != null) {
 
-        /*
+		/*
 		 * Build the tree.
 		 */
-        var list = this._parser.parse(dom);
-        if (list.hasEntries()) {
-            document.getElementById("resultcontaner").innerHTML = "";
+		var list = this._parser.parse(dom);
+		if (list.hasEntries()) {
+			document.getElementById("resultcontaner").innerHTML = "";
 
-            while (list.hasNext()) {
-                var item = list.getNext();
-                var tr = this._addKeywordRow(document.getElementById("resultcontaner"), item);
-                this._addResults(tr, item.isInTitle, item.isInURL, item.isInMenuTitle, item.isInDescription, item.isInHeading, item.isInContent);
-                this._addDeleteCell(tr);
-            }
-            document.getElementById("message").style.display = "none";
+			while (list.hasNext()) {
+				var item = list.getNext();
+				var tr = this._addKeywordRow(document.getElementById("resultcontaner"), item);
+				this._addResults(tr, item.isInTitle, item.isInURL, item.isInMenuTitle, item.isInDescription, item.isInHeading, item.isInContent);
+				this._addDeleteCell(tr);
+			}
+			document.getElementById("message").style.display = "none";
 
-        } else {
+		} else {
 
-        }
+		}
 
-    } else {
+	} else {
 
-        this.logger.error("Illformed markup:\n\n" + markup);
-    }
+		this.logger.error("Illformed markup:\n\n" + markup);
+	}
 }
 
 /**
@@ -237,50 +237,65 @@ SEOAssistantPageBinding.prototype._parseMarkup = function (markup) {
  */
 SEOAssistantPageBinding.prototype._addKeywordRow = function (tablebody, item) {
 
-    var tr = this.bindingDocument.createElement("tr");
-    tr.setAttribute("keyword", item.keyword);
-    tablebody.appendChild(tr);
-    var scoretd = this._addCell(tr);
-    scoretd.className = "score";
-    var span = DOMUtil.createElementNS(Constants.NS_XHTML, "span", this.bindingDocument);
-    var score = item.getScore();
+	var tr = this.bindingDocument.createElement("tr");
+	tr.setAttribute("keyword", item.keyword);
+	tablebody.appendChild(tr);
+	var scoretd = this._addCell(tr);
+	scoretd.className = "score";
+	var span = DOMUtil.createElementNS(Constants.NS_XHTML, "span", this.bindingDocument);
+	var score = item.getScore();
 
-    var i = 0; while (i++ < SEOResult.MAX_SCORE) {
-        var inc = span.cloneNode(false);
-        inc.className = i <= score ? "true" : "false";
-        span.appendChild(inc);
-    }
+	var i = 0; while (i++ < SEOResult.MAX_SCORE) {
+		var inc = span.cloneNode(false);
+		inc.className = i <= score ? "true" : "false";
+		span.appendChild(inc);
+	}
 
-    span.className = "seoresult";
-    scoretd.appendChild(span);
+	span.className = "seoresult";
+	scoretd.appendChild(span);
 
+	var keyword = item.keyword;
+	var button = ClickButtonBinding.newInstance(this.bindingDocument);
+	var keywordtd = this._addCell(tr);
+	keywordtd.appendChild(button.bindingElement);
+	button.addActionListener(
+		ButtonBinding.ACTION_COMMAND, {
+			handleAction: function (action) {
+				action.consume();
+				EventBroadcaster.broadcast(BroadcastMessages.HIGHLIGHT_KEYWORDS,
+				new List([keyword])
+				);
+			}
+		}
+	);
+	button.setLabel(keyword);
+	button.attach();
+	button.attachClassName("simple-text");
 
-    var keywordtd = this._addCell(tr);
-    keywordtd.innerHTML = item.keyword;
-    return tr;
+	return tr;
 }
 
 /**
  * @param {string} 
  */
 SEOAssistantPageBinding.prototype._addCell = function (tr) {
-    var td = this.bindingDocument.createElement("td");
-    return tr.appendChild(td);
+	var td = this.bindingDocument.createElement("td");
+	return tr.appendChild(td);
 }
 
 SEOAssistantPageBinding.prototype._addDeleteCell = function (tr) {
-    var td = this.bindingDocument.createElement("td");
-    var button = ClickButtonBinding.newInstance(this.bindingDocument);
-    button.setImage("${icon:delete}");
-    
-    td.appendChild(button.bindingElement);
-    tr.appendChild(td);
-    button.attach();
-    button.attachClassName("simple-icon");
-    var self = this;
-    button.oncommand = function () {
-        self._deleteKeywordRow(tr);
-    }
+	var td = this.bindingDocument.createElement("td");
+	var button = ClickButtonBinding.newInstance(this.bindingDocument);
+	button.setImage("${icon:delete}");
+	
+	td.appendChild(button.bindingElement);
+	tr.appendChild(td);
+	button.attach();
+	button.attachClassName("simple-icon");
+	var self = this;
+	button.oncommand = function () {
+		self._deleteKeywordRow(tr);
+	}
 
 }
 
@@ -288,21 +303,21 @@ SEOAssistantPageBinding.prototype._addDeleteCell = function (tr) {
  * @param {string} 
  */
 SEOAssistantPageBinding.prototype._addResults = function () {
-    if (arguments.length === 0)
-        return;
-    var tr = arguments[0];
-    var i;
-    for (i = 1; i < arguments.length; i++) {
-        var td = this._addCell(tr);
-        td.className = arguments[i];
-    }
+	if (arguments.length === 0)
+		return;
+	var tr = arguments[0];
+	var i;
+	for (i = 1; i < arguments.length; i++) {
+		var td = this._addCell(tr);
+		td.className = arguments[i];
+	}
 }
 
 SEOAssistantPageBinding.prototype._deleteKeywordRow = function (tr) {
-    var keyword = tr.getAttribute("keyword");
-    tr.parentNode.removeChild(tr);
-    this._removeKeyword(keyword);
-    this._saveKeywords();
+	var keyword = tr.getAttribute("keyword");
+	tr.parentNode.removeChild(tr);
+	this._removeKeyword(keyword);
+	this._saveKeywords();
 }
 
 /**
@@ -312,27 +327,27 @@ SEOAssistantPageBinding.prototype._deleteKeywordRow = function (tr) {
  */
 SEOAssistantPageBinding.prototype.handleAction = function (action) {
 
-    SEOAssistantPageBinding.superclass.handleAction.call(this, action);
+	SEOAssistantPageBinding.superclass.handleAction.call(this, action);
 
-    switch (action.type) {
-        case ButtonBinding.ACTION_COMMAND:
-            var button = action.target;
-            switch (button.getID()) {
-                case "addkeywordbutton":
-                    var input = this.bindingWindow.bindingMap.keywordinput;
-                    var value = input.getValue();
-                    if (!value) {
-                        break;
-                    }
-                    this._addKeyword(input.getValue());
-                    this._saveKeywords();
-                    input.setValue("");
-                    if (this._markup)
-                        this._parseMarkup(this._markup);
-                    break;
-            }
-            break;
-    }
+	switch (action.type) {
+		case ButtonBinding.ACTION_COMMAND:
+			var button = action.target;
+			switch (button.getID()) {
+				case "addkeywordbutton":
+					var input = this.bindingWindow.bindingMap.keywordinput;
+					var value = input.getValue();
+					if (!value) {
+						break;
+					}
+					this._addKeyword(input.getValue());
+					this._saveKeywords();
+					input.setValue("");
+					if (this._markup)
+						this._parseMarkup(this._markup);
+					break;
+			}
+			break;
+	}
 }
 
 /**
@@ -341,7 +356,7 @@ SEOAssistantPageBinding.prototype.handleAction = function (action) {
 SEOAssistantPageBinding.prototype._addKeyword = function (keyword) {
 
 
-    this._keywords.add(keyword);
+	this._keywords.add(keyword);
 
 }
 
@@ -351,6 +366,6 @@ SEOAssistantPageBinding.prototype._addKeyword = function (keyword) {
  */
 SEOAssistantPageBinding.prototype._removeKeyword = function (keyword) {
 
-    this._keywords.remove(keyword);
+	this._keywords.remove(keyword);
 
 }
