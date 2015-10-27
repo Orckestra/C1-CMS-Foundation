@@ -297,7 +297,7 @@ var Welcome = new function () {
 		if (username.value != "") {
 			if (password.value.length >= 6 && passcheck.value.length >= 6) {
 				if (password.value == passcheck.value) {
-					if (isRFC822ValidEmail(email.value) || newsletter.checked == false) {
+					if (isRFC822ValidEmail(email.value)) {
 						isValid = true;
 					}
 				}

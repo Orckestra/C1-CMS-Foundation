@@ -101,14 +101,14 @@ ui|clickbutton#introtestsuccessbutton {
         }
 
         #introtest li.ok {
-            background-image: url("${root}/images/icons/svg/accept-green.svg");
+            background-image: url("${root}/images/welcome/accept-green.svg");
             -moz-background-position-y: -2px;
             -o-background-position-y: -2px;
             background-position-y: -2px;
         }
 
         #introtest li.bad {
-            background-image: url("${root}/images/icons/svg/cancel.svg");
+            background-image: url("${root}/images/welcome/cancel.svg");
         }
 
 
