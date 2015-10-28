@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProviderHelper;
 using Composite.Core.Extensions;
@@ -7,6 +8,7 @@ using Composite.Core.Linq;
 using Composite.Core.Routing;
 using Composite.Core.Routing.Foundation.PluginFacades;
 using Composite.Core.Types;
+using Composite.Core.WebClient;
 using Composite.Data;
 
 using DataRouteKind = Composite.Functions.RoutedData.DataRouteKind;
@@ -36,7 +38,14 @@ namespace Composite.Functions
 
             if ((dataRouteKind & DataRouteKind.Label) > 0 && _labelPropertyInfo == null)
             {
-                _labelPropertyInfo = typeof(T).GetLabelPropertyInfo();
+                var labelPropertyInfo = typeof(T).GetLabelPropertyInfo();
+                Verify.IsNotNull(labelPropertyInfo, "No label property defined for type '{0}'", typeof(T));
+
+                Verify.That(labelPropertyInfo.PropertyType == typeof(string), 
+                    "Not string label fields aren't supported. Label property '{0}', data type '{1}'",
+                    labelPropertyInfo.Name, typeof(T));
+
+                _labelPropertyInfo = labelPropertyInfo;
             }
         }
 
@@ -97,7 +106,7 @@ namespace Composite.Functions
                             return new RoutedDataModel();
                         }
 
-                        string label = pathInfo.Substring(1);
+                        string label = UrlUtils.DecodeUrlInvalidCharacters(pathInfo.Substring(1));
 
                         var data = GetDataByLabel(label);
                         return new RoutedDataModel(data);
@@ -133,7 +142,7 @@ namespace Composite.Functions
 
             if ((_dataRouteKind & DataRouteKind.Label) > 0)
             {
-                labelUrlPart = GetUrlLabel(dataItem);
+                labelUrlPart = GetUrlLabel(dataItem, _dataRouteKind == DataRouteKind.KeyAndLabel);
             }
 
             string pathInfo;
@@ -159,26 +168,37 @@ namespace Composite.Functions
 
         private static T GetDataByLabel(string label)
         {
-            foreach (var data in DataFacade.GetData<T>())
-            {
-                string urlLabel = GetUrlLabel(data);
-                if (string.IsNullOrEmpty(urlLabel)) continue;
+            var query = DataFacade.GetData<T>();
 
-                if (label.Equals(urlLabel, StringComparison.OrdinalIgnoreCase))
-                {
-                    return data;
-                }
+            var parameterExpression = Expression.Parameter(typeof (T));
+            var labelPropertyExpression = Expression.Property(parameterExpression, _labelPropertyInfo);
+            var equalsExpression = Expression.Equal(labelPropertyExpression, Expression.Constant(label));
+
+            var lambdaExpression = Expression.Lambda<Func<T, bool>>(equalsExpression, parameterExpression);
+
+            var list = query.Where(lambdaExpression).Take(2).ToList();
+
+            if (list.Count == 0)
+            {
+                return null;
             }
 
-            return null;
+            if (list.Count > 1)
+            {
+                throw new DataUrlCollisionException(typeof(T), new RelativeRoute {PathSegments = new []{label}});
+            }
+
+            return list[0];
         }
 
-        private static string LabelToUrlPart(string partnerName)
+        private static string LabelToUrlPart(string label, bool allowDataLoss)
         {
-            return UrlFormattersPluginFacade.FormatUrl(partnerName, true);
+            return allowDataLoss 
+                ? UrlFormattersPluginFacade.FormatUrl(label, true)
+                : UrlUtils.EncodeUrlInvalidCharacters(label);
         }
 
-        private static string GetUrlLabel(IData data)
+        private static string GetUrlLabel(IData data, bool allowDataLoss)
         {
             object labelValue = _labelPropertyInfo.GetValue(data);
             if (labelValue == null)
@@ -188,7 +208,7 @@ namespace Composite.Functions
 
             string label = ValueTypeConverter.Convert<string>(labelValue);
 
-            return string.IsNullOrEmpty(label) ? null : LabelToUrlPart(label);
+            return string.IsNullOrEmpty(label) ? null : LabelToUrlPart(label, allowDataLoss);
         }
 
         private static string GetUrlKey(IData data)
