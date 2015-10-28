@@ -6,6 +6,7 @@ using System.Text;
 using System.Web;
 using System.Web.Hosting;
 using System.Collections.Generic;
+using Composite.Core.Collections.Generic;
 using Composite.Core.Extensions;
 using Composite.Core.WebClient.State;
 using Composite.Data;
@@ -370,5 +371,75 @@ namespace Composite.Core.WebClient
             }
         }
 
+
+        /// <exclude />
+        public static string EncodeUrlInvalidCharacters(string value)
+        {
+            const char separator = '|';
+            const char spaceReplacement = '-';
+
+            var symbolsToEncode = new Hashset<char>(new[] { '<', '>', '*', '%', '&', '\\', '?' });
+
+            symbolsToEncode.Add(separator);
+            symbolsToEncode.Add(spaceReplacement);
+
+            var sb = new StringBuilder(value.Length);
+
+            foreach (var ch in value)
+            {
+                if (!symbolsToEncode.Contains(ch))
+                {
+                    sb.Append(ch);
+                    continue;
+                }
+
+                int code = (int)ch;
+                Verify.That(code <= 256, "1 byte ASCII code expected");
+
+                sb.Append(separator).Append(code.ToString("X2"));
+            }
+
+            return sb.Replace(' ', spaceReplacement).ToString();
+        }
+
+
+        /// <exclude />
+        public static string DecodeUrlInvalidCharacters(string value)
+        {
+            const char separator = '|';
+            const char spaceReplacement = '-';
+
+            var sb = new StringBuilder(value.Length);
+            ;
+            for (int position = 0; position < value.Length; position++)
+            {
+                var ch = value[position];
+                if (ch == spaceReplacement)
+                {
+                    sb.Append(' ');
+                    continue;
+                }
+
+                if (ch == separator && position + 2 < value.Length)
+                {
+                    var hexCode = value.Substring(position + 1, 2).ToLowerInvariant();
+                    const string hexadecimalDigits = "0123456789abcdef";
+
+                    int firstDigit = hexadecimalDigits.IndexOf(hexCode[0]);
+                    int secondDigit = hexadecimalDigits.IndexOf(hexCode[1]);
+
+                    if (firstDigit > -1 && secondDigit > -1)
+                    {
+                        sb.Append((char) ((firstDigit << 4) + secondDigit));
+                        position += 2;
+                        continue;
+                    }
+                }
+
+                sb.Append(ch);
+            }
+
+            return sb.ToString();
+        }
     }
 }
