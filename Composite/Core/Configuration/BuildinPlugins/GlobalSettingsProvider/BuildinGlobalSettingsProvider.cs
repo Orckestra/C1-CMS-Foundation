@@ -29,6 +29,8 @@ namespace Composite.Core.Configuration.BuildinPlugins.GlobalSettingsProvider
         private readonly int _consoleMessageQueueSecondToLive = TimeSpan.FromMinutes(10).Seconds;
         private bool _enableDataTypesAutoUpdate = false;
         private bool _broadcastConsoleElementChanges = true;
+        private bool _setCmsBrandHeader = true;
+        private bool _prettifyRenderFunctionExceptions = true;
 
         public string ApplicationName
         {
@@ -251,6 +253,16 @@ namespace Composite.Core.Configuration.BuildinPlugins.GlobalSettingsProvider
             {
                 return 80;
             }
+        }
+
+        public bool SetCmsBrandHeader
+        {
+            get { return _setCmsBrandHeader; }
+        }
+
+        public bool PrettifyRenderFunctionExceptions
+        {
+            get { return _prettifyRenderFunctionExceptions; }
         }
     }
 }

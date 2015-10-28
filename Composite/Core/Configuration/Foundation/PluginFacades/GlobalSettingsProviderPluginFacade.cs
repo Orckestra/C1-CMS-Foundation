@@ -17,8 +17,6 @@ namespace Composite.Core.Configuration.Foundation.PluginFacades
         private static readonly ResourceLocker<Resources> _resourceLocker = 
             new ResourceLocker<Resources>(new Resources(), Resources.Initialize, false);
 
-
-
         static GlobalSettingsProviderPluginFacade()
         {
             GlobalEventSystemFacade.SubscribeToFlushEvent(OnFlush);
@@ -291,6 +289,24 @@ namespace Composite.Core.Configuration.Foundation.PluginFacades
             get
             {
                 return UseReaderLock(provider => provider.ImageQuality);
+            }
+        }
+
+
+        public static bool SetCmsBrandHeader
+        {
+            get
+            {
+                return UseReaderLock(provider => provider.SetCmsBrandHeader);
+            }
+        }
+
+
+        public static bool PrettifyRenderFunctionExceptions
+        {
+            get
+            {
+                return UseReaderLock(provider => provider.PrettifyRenderFunctionExceptions);
             }
         }
 

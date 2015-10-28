@@ -210,6 +210,22 @@ namespace Composite.Plugins.GlobalSettings.GlobalSettingsProviders
                 return _configurationData.ImageQuality;
             }
         }
+
+        public bool SetCmsBrandHeader
+        {
+            get
+            {
+                return _configurationData.SetCmsBrandHeader;
+            }
+        }
+        
+        public bool PrettifyRenderFunctionExceptions
+        {
+            get
+            {
+                return _configurationData.PrettifyRenderFunctionExceptions;
+            }
+        }
     }
 
     internal class ConfigCachingSettings: ICachingSettings
@@ -604,6 +620,24 @@ namespace Composite.Plugins.GlobalSettings.GlobalSettingsProviders
         {
             get { return (int)base[_imageQualityPropertyName]; }
             set { base[_imageQualityPropertyName] = value; }
+        }
+
+                
+        private const string _setCmsBrandHeaderPropertyName = "setCmsBrandHeader";
+        [ConfigurationProperty(_setCmsBrandHeaderPropertyName, DefaultValue = true)]
+        public bool SetCmsBrandHeader
+        {
+            get { return (bool)base[_setCmsBrandHeaderPropertyName]; }
+            set { base[_setCmsBrandHeaderPropertyName] = value; }
+        }
+
+
+        private const string _prettifyRenderFunctionExceptionsPropertyName = "prettifyRenderFunctionExceptions";
+        [ConfigurationProperty(_prettifyRenderFunctionExceptionsPropertyName, DefaultValue = true)]
+        public bool PrettifyRenderFunctionExceptions
+        {
+            get { return (bool)base[_prettifyRenderFunctionExceptionsPropertyName]; }
+            set { base[_prettifyRenderFunctionExceptionsPropertyName] = value; }
         }
     }
 

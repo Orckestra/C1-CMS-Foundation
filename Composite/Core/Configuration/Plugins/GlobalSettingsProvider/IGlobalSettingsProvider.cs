@@ -74,5 +74,9 @@ namespace Composite.Core.Configuration.Plugins.GlobalSettingsProvider
         ICachingSettings Caching { get; }
 
         int ImageQuality { get; }
+
+        bool SetCmsBrandHeader { get; }
+
+        bool PrettifyRenderFunctionExceptions { get; }
     }
 }

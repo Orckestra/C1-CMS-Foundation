@@ -321,5 +321,21 @@ namespace Composite.Core.Configuration
                 return GlobalSettingsProviderPluginFacade.ImageQuality;
             }
         }
+
+        public bool SetCmsBrandHeader
+        {
+            get
+            {
+                return GlobalSettingsProviderPluginFacade.SetCmsBrandHeader;
+            }
+        }
+
+        public bool PrettifyRenderFunctionExceptions
+        {
+            get
+            {
+                return GlobalSettingsProviderPluginFacade.PrettifyRenderFunctionExceptions;
+            }
+        }
     }
 }

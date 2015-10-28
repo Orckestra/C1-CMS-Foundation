@@ -433,8 +433,29 @@ namespace Composite.Core.Configuration
             }
         }
 
+        /// <summary>
+        /// When true responses will include a header indicating the brand of the CMS
+        /// </summary>
+        public static bool SetCmsBrandHeader
+        {
+            get
+            {
+                return _globalSettingsFacade.SetCmsBrandHeader;
+            }
+        }
 
-
+        /// <summary>
+        /// When true exceptions thrown by C1 Functions during a page rendering will be prettified - ensuring the rest of the page render okay.
+        /// For unauthenticated requests this will become "error", while authenticated users get error info.
+        /// </summary>
+        public static bool PrettifyRenderFunctionExceptions
+        {
+            get
+            {
+                return _globalSettingsFacade.PrettifyRenderFunctionExceptions;
+            }
+        }
+        
         // Overload
         /// <exclude />
         public static CachingSettings GetNamedCaching(string name)

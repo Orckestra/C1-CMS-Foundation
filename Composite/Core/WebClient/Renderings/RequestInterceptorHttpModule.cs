@@ -39,6 +39,8 @@ namespace Composite.Core.WebClient.Renderings
 
             SetCultureByHostname();
 
+            SetCmsBrandHeader(httpContext);
+
             HandleRootRequestInClassicMode(httpContext);
         }
 
@@ -51,6 +53,15 @@ namespace Composite.Core.WebClient.Renderings
                 var thread = System.Threading.Thread.CurrentThread;
                 thread.CurrentCulture = cultureInfo;
                 thread.CurrentUICulture = cultureInfo;
+            }
+        }
+
+
+        static void SetCmsBrandHeader(HttpContext httpContext)
+        {
+            if (GlobalSettingsFacade.SetCmsBrandHeader)
+            {
+                httpContext.Response.AppendHeader("X-CMS", GlobalSettingsFacade.ApplicationName);
             }
         }
 

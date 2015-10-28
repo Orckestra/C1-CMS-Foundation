@@ -16,7 +16,7 @@ using Composite.Core.Localization;
 using Composite.Core.WebClient.Renderings.Template;
 using Composite.Core.Xml;
 using Composite.C1Console.Security;
-
+using Composite.Core.Configuration;
 
 namespace Composite.Core.WebClient.Renderings.Page
 {
@@ -38,7 +38,8 @@ namespace Composite.Core.WebClient.Renderings.Page
             var contextContainer = new FunctionContextContainer
             {
                 XEmbedableMapper = mapper,
-                SuppressXhtmlExceptions = true
+                SuppressXhtmlExceptions = GlobalSettingsFacade.PrettifyRenderFunctionExceptions 
+                                            || PageRenderer.RenderingReason == RenderingReason.ScreenshotGeneration 
             };
 
             return contextContainer;
