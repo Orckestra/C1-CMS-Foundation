@@ -104,7 +104,7 @@ _BroadcastMessages.prototype = {
 	SYSTEMTREEBINDING_COPY				: "systemtree copy",
 	SYSTEMTREEBINDING_PASTE 			: "systemtree paste",
 	SYSTEMTREEBINDING_COLLAPSEALL		: "systemtree collapse all",
-//	SYSTEMTREENODEBINDING_FOCUS			: "systemtreenode focus",
+	SYSTEMTREENODEBINDING_FOCUS			: "systemtreenode focus",
 	SYSTEMTREEBINDING_LOCKTOEDITOR		: "systemtreenode lock to editor",
 	SYSTEMTREENODEBINDING_FORCE_OPEN	: "systemtreenode force open",
 	SYSTEMTREENODEBINDING_FORCING_OPEN	: "systemtreenode forcing open",

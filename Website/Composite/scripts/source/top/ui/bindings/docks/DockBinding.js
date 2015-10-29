@@ -137,7 +137,7 @@ DockBinding.prototype.onBindingRegister = function () {
 	this.addActionListener ( ViewBinding.ACTION_LOADED );
 	this.addActionListener ( ViewBinding.ACTION_CLOSED )
 	
-	//this.subscribe ( BroadcastMessages.SYSTEMTREENODEBINDING_FOCUS );
+	this.subscribe ( BroadcastMessages.SYSTEMTREENODEBINDING_FOCUS );
 	
 	this._viewBindingList = new List ();
 	
@@ -528,12 +528,30 @@ DockBinding.prototype.handleBroadcast = function ( broadcast, arg ) {
 	DockBinding.superclass.handleBroadcast.call ( this, broadcast, arg );
 	
 	switch ( broadcast ) {
-		//case BroadcastMessages.SYSTEMTREENODEBINDING_FOCUS :
-		//	var treenode = arg;
-		//	if ( treenode.perspectiveNode == this.perspectiveNode ) {
-		//		this._selectTabByEntityToken ( treenode.node.getEntityToken ());
-		//	}
-		//	break;
+		case BroadcastMessages.SYSTEMTREENODEBINDING_FOCUS :
+			var treenode = arg;
+			if ( treenode.perspectiveNode == this.perspectiveNode ) {
+				this._highlightTabByEntityToken(treenode.node.getEntityToken());
+			}
+			break;
+	}
+}
+
+/**
+ * Find a (more or less random) tab with a given entityToken and select it.
+ * @param {string} entityToken
+ */
+DockBinding.prototype._highlightTabByEntityToken = function (entityToken) {
+
+	var tabs = this.getTabBindings();
+	while (tabs.hasNext()){
+		var tab = tabs.getNext();
+		var token = tab.getEntityToken();
+		if (token != null && token == entityToken) {
+			tab.highlight(true);
+		} else {
+			tab.highlight(false);
+		}
 	}
 }
 

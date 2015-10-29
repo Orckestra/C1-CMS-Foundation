@@ -81,6 +81,12 @@ ui|docktab {
 
 	ui|labelbox {
 		color: #ADADAD;
+
+		&.highlighted{
+			ui|labelbody {
+			color: @primary-color;
+			}
+		}
 	}
 
 	ui|labeltext {
@@ -99,6 +105,7 @@ ui|docktab {
 			color: @primary-color;
 		}
 	}
+
 
 	.default ui|controlgroup {
 		display: none;

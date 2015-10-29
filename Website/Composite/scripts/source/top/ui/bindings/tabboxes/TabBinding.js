@@ -265,6 +265,17 @@ TabBinding.prototype.unselect = function () {
 }
 
 /**
+ * @param {boolean} isHighlight
+ */
+TabBinding.prototype.highlight = function (isHighlight) {
+	if (isHighlight) {
+		this.shadowTree.labelBinding.attachClassName("highlighted");
+	} else {
+		this.shadowTree.labelBinding.detachClassName("highlighted");
+	}
+}
+
+/**
  * Hide tab. Notice that we cannot simply use "display:none" because we need access 
  * to the offsetWidth property when managing tabstrip layout. Accessing style property 
  * directly instead of assigning a CSS classname is preferred because its faster.

@@ -547,18 +547,18 @@ SystemTreeNodeBinding.prototype.invokeManagedFocus = function ( e ) {
 	if ( !this.isFocused ) {
 		SystemTreeNodeBinding.superclass.invokeManagedFocus.call ( this );
 		
-		///*
-		// * This broadcast is intercepted by the DockBinding  
-		// * who then decides which corresponding tab to select.
-		// * @see {DockBinding#handleBroadcast}
-		// */
-		//var tree = this.containingTreeBinding;
-		//if ( tree.isLockedToEditor && !tree.isLockFeatureFocus ) {
-		//	EventBroadcaster.broadcast ( 
-		//		BroadcastMessages.SYSTEMTREENODEBINDING_FOCUS, 
-		//		this
-		//	);
-		//}
+		/*
+		 * This broadcast is intercepted by the DockBinding  
+		 * who then decides which corresponding tab to select.
+		 * @see {DockBinding#handleBroadcast}
+		 */
+		var tree = this.containingTreeBinding;
+		if ( tree.isLockedToEditor && !tree.isLockFeatureFocus ) {
+			EventBroadcaster.broadcast ( 
+				BroadcastMessages.SYSTEMTREENODEBINDING_FOCUS, 
+				this
+			);
+		}
 	}
 }
 
