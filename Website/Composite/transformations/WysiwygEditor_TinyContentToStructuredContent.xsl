@@ -193,20 +193,6 @@
     </td>
   </xsl:template>
 
-  <!-- convert b to strong -->
-  <xsl:template match="x:b">
-    <strong>
-      <xsl:apply-templates select="@*|*|node()|text()" />
-    </strong>
-  </xsl:template>
-
-  <!-- convert i to em -->
-  <xsl:template match="x:i">
-    <em>
-      <xsl:apply-templates select="@*|*|node()|text()" />
-    </em>
-  </xsl:template>
-
   <!-- when a formatblock change has been made to a media embed, the image remains -->
   <xsl:template match="x:img[@params]"></xsl:template>
 

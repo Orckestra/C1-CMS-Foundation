@@ -35,7 +35,7 @@ namespace Composite.Core.WebClient.Services.WysiwygEditor
     public static class MarkupTransformationServices
     {
         /// <exclude />
-        public static IEnumerable<string> Html5specificElementNames = new List<string> { "article", "aside", "audio", "canvas", "command", "datalist", "details", "embed", "figcaption", "figure", "footer", "header", "hgroup", "keygen", "mark", "meter", "nav", "output", "progress", "rp", "rt", "ruby", "section", "source", "summary", "time", "video", "wbr", "main" };
+        public static IEnumerable<string> Html5specificElementNames = new List<string> { "article", "aside", "audio", "canvas", "command", "datalist", "details", "embed", "figcaption", "figure", "footer", "header", "hgroup", "keygen", "mark", "meter", "nav", "output", "progress", "rp", "rt", "ruby", "section", "source", "summary", "time", "video", "wbr", "main", "link", "meta", "i" };
 
         static readonly Regex _duplicateAttributesRegex = new Regex(@"<([^>]*?) (?<attributeName>\w*?)=(?<quote>"")([^>]*?)(\k<quote>)([^>]*?) (\k<attributeName>)=(?<quote2>"")([^>]*?)(\k<quote2>)([^>]*?)>", RegexOptions.Compiled);
         static readonly Regex _namespacePrefixedElement = new Regex(@"<([a-zA-Z0-9\._]*?):([a-zA-Z0-9\._]*)([^>]*?)(/?)>", RegexOptions.Multiline | RegexOptions.Compiled);
@@ -396,6 +396,8 @@ namespace Composite.Core.WebClient.Services.WysiwygEditor
 
             t.Options.QuoteNbsp = false;
             t.Options.NumEntities = true;
+            t.Options.AllowElementPruning = false;
+            t.Options.LogicalEmphasis = true;
 
             return t;
         }
