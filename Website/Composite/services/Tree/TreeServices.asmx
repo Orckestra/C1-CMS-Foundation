@@ -35,7 +35,7 @@ namespace Composite.Services
     public class TreeServices : WebService
     {
         private const string LogTitle = "TreeService";
-        
+
         private void RemoveDuplicateActions(List<ClientElement> listToClean)
         {
             var knownActionKeys = new List<string>();
@@ -139,11 +139,11 @@ namespace Composite.Services
             {
                 return new List<ClientElement> { TreeServicesFacade.GetRoot() };
             }
-            
+
             List<ClientElement> clientElements = TreeServicesFacade.GetChildren(clientElement.ProviderName, clientElement.EntityToken, clientElement.Piggybag, serializedSearchToken);
             RemoveDuplicateActions(clientElements);
             return clientElements;
-            
+
         }
 
 
@@ -178,21 +178,48 @@ namespace Composite.Services
 
 
         [WebMethod]
-        public string GetBrowserUrlByEntityToken(string serializedEntityToken)
+        public string GetBrowserUrlByEntityToken(string serializedEntityToken, bool showPublished)
         {
+
             var entityToken = EntityTokenSerializer.Deserialize(serializedEntityToken);
 
-            return UrlToEntityTokenFacade.TryGetUrl(entityToken);
+            using (new DataScope(showPublished ? PublicationScope.Published : PublicationScope.Unpublished))
+            {
+                if (showPublished && entityToken is DataEntityToken)
+                {
+                    var dataEntityToken = entityToken as DataEntityToken;
+                    if (dataEntityToken.DataSourceId.PublicationScope == PublicationScope.Unpublished
+                        && DataFacade.GetSupportedDataScopes(dataEntityToken.InterfaceType)
+                            .Contains(DataScopeIdentifier.Public))
+                    {
+                        var data = dataEntityToken.Data;
+                        if (data != null)
+                        {
+                            var key = data.GetUniqueKey();
+                            var publicData = DataFacade.TryGetDataByUniqueKey(dataEntityToken.InterfaceType, key);
+                            if (publicData != null)
+                            {
+                                entityToken = publicData.GetDataEntityToken();
+                            }
+                            else
+                            {
+                                return null;
+                            }
+                        }
+                    }
+                }
+                return UrlToEntityTokenFacade.TryGetUrl(entityToken);
+            }
         }
-        
+
 
         [WebMethod]
         public List<ClientLabeledProperty> GetProperties(ClientElement clientElement)
         {
             VerifyClientElement(clientElement);
             return TreeServicesFacade.GetLabeledProperties(clientElement.ProviderName, clientElement.EntityToken, clientElement.Piggybag);
-        }              
-        
+        }
+
 
 
         [WebMethod]
@@ -250,11 +277,11 @@ namespace Composite.Services
 
             var imageMediaFileSearchToken = new MediaFileSearchToken
             {
-                MimeTypes = new[] {MimeTypeInfo.Gif, MimeTypeInfo.Jpeg, MimeTypeInfo.Png, MimeTypeInfo.Bmp, MimeTypeInfo.Svg}
+                MimeTypes = new[] { MimeTypeInfo.Gif, MimeTypeInfo.Jpeg, MimeTypeInfo.Png, MimeTypeInfo.Bmp, MimeTypeInfo.Svg }
             };
             tokens.Add(new KeyValuePair("MediaFileElementProvider.WebImages", imageMediaFileSearchToken.Serialize()));
 
-            var writableMediaFolderSearchToken = new MediaFileSearchToken {MimeTypes = new[] {"."}};
+            var writableMediaFolderSearchToken = new MediaFileSearchToken { MimeTypes = new[] { "." } };
             tokens.Add(new KeyValuePair("MediaFileElementProvider.WritableFolders", writableMediaFolderSearchToken.Serialize()));
 
             var xhtmlDocumentFunctionsSearchToken = AllFunctionsElementProviderSearchToken.Build(new[] { typeof(XhtmlDocument), typeof(System.Web.UI.Control) });
@@ -273,7 +300,7 @@ namespace Composite.Services
 
             return true;
         }
-        
+
 
 
         private void VerifyClientElement(ClientElement clientElement)
@@ -286,125 +313,125 @@ namespace Composite.Services
             }
         }
 
-		[WebMethod]
-		public List<KeyValuePair> GetDefaultEntityTokens(string dummy)
-		{
-			var tokens = new List<KeyValuePair>();
-			using (new DataConnection())
-			{
-			    var homepage = PageServices.GetChildren(Guid.Empty).FirstOrDefault();
-			    if (homepage != null)
-			    {
-			        tokens.Add(
-			            new KeyValuePair(
-			                EntityTokenSerializer.Serialize(AttachingPoint.ContentPerspective.EntityToken, true),
-			                EntityTokenSerializer.Serialize(homepage.GetDataEntityToken(), true)
-			                )
-			            );
-			    }
-			    tokens.Add(
-			        new KeyValuePair(
-			            EntityTokenSerializer.Serialize(AttachingPoint.SystemPerspective.EntityToken, true),
-			            EntityTokenSerializer.Serialize(new Composite.Plugins.Elements.ElementProviders.PackageElementProvider.PackageElementProviderAvailablePackagesFolderEntityToken(), true)
-			            )
-			        );
-					
-				
-			}
-			return tokens;
-		}
+        [WebMethod]
+        public List<KeyValuePair> GetDefaultEntityTokens(string dummy)
+        {
+            var tokens = new List<KeyValuePair>();
+            using (new DataConnection())
+            {
+                var homepage = PageServices.GetChildren(Guid.Empty).FirstOrDefault();
+                if (homepage != null)
+                {
+                    tokens.Add(
+                        new KeyValuePair(
+                            EntityTokenSerializer.Serialize(AttachingPoint.ContentPerspective.EntityToken, true),
+                            EntityTokenSerializer.Serialize(homepage.GetDataEntityToken(), true)
+                            )
+                        );
+                }
+                tokens.Add(
+                    new KeyValuePair(
+                        EntityTokenSerializer.Serialize(AttachingPoint.SystemPerspective.EntityToken, true),
+                        EntityTokenSerializer.Serialize(new Composite.Plugins.Elements.ElementProviders.PackageElementProvider.PackageElementProviderAvailablePackagesFolderEntityToken(), true)
+                        )
+                    );
 
-		[WebMethod]
-		public List<string> GetCurrentLocaleEntityTokens(List<string> serializedEntityTokens)
-		{
-			var currentLocaleEntityTokens = new List<string>();
-			foreach (var serializedEntityToken in serializedEntityTokens)
-			{
-				try
-				{
-					var entityToken = EntityTokenSerializer.Deserialize(serializedEntityToken);
-					if (entityToken is DataEntityToken)
-					{
-						var dataItem = (entityToken as DataEntityToken).Data;
-						if (dataItem is ILocalizedControlled)
-						{
-							var dataItemFromTheotherLocale = DataFacade.GetDataFromOtherLocale(dataItem, UserSettings.ActiveLocaleCultureInfo).ToList();
+
+            }
+            return tokens;
+        }
+
+        [WebMethod]
+        public List<string> GetCurrentLocaleEntityTokens(List<string> serializedEntityTokens)
+        {
+            var currentLocaleEntityTokens = new List<string>();
+            foreach (var serializedEntityToken in serializedEntityTokens)
+            {
+                try
+                {
+                    var entityToken = EntityTokenSerializer.Deserialize(serializedEntityToken);
+                    if (entityToken is DataEntityToken)
+                    {
+                        var dataItem = (entityToken as DataEntityToken).Data;
+                        if (dataItem is ILocalizedControlled)
+                        {
+                            var dataItemFromTheotherLocale = DataFacade.GetDataFromOtherLocale(dataItem, UserSettings.ActiveLocaleCultureInfo).ToList();
 
                             if (!dataItemFromTheotherLocale.Any() && UserSettings.ForeignLocaleCultureInfo != null)
-						    {
+                            {
                                 dataItemFromTheotherLocale = DataFacade.GetDataFromOtherLocale(dataItem, UserSettings.ForeignLocaleCultureInfo).ToList();
-						    }
-                            
-							if (dataItemFromTheotherLocale.Count == 1)
-							{
-							    var foreignEntityToken = dataItemFromTheotherLocale[0].GetDataEntityToken();
+                            }
+
+                            if (dataItemFromTheotherLocale.Count == 1)
+                            {
+                                var foreignEntityToken = dataItemFromTheotherLocale[0].GetDataEntityToken();
 
                                 currentLocaleEntityTokens.Add(EntityTokenSerializer.Serialize(foreignEntityToken, true));
-								continue;
-							}
-						}
-					}
-					currentLocaleEntityTokens.Add(serializedEntityToken);
-				}
-				catch
-				{
-				}
-			}
-			return currentLocaleEntityTokens;
-		}
+                                continue;
+                            }
+                        }
+                    }
+                    currentLocaleEntityTokens.Add(serializedEntityToken);
+                }
+                catch
+                {
+                }
+            }
+            return currentLocaleEntityTokens;
+        }
 
-		[WebMethod]
-		public List<string> GetAllParents(string serializedEntityToken)
-		{
-			var entityToken = EntityTokenSerializer.Deserialize(serializedEntityToken);
-			var graph = new RelationshipGraph(entityToken, RelationshipGraphSearchOption.Both, true);
-			var tokens = new HashSet<EntityToken>();
+        [WebMethod]
+        public List<string> GetAllParents(string serializedEntityToken)
+        {
+            var entityToken = EntityTokenSerializer.Deserialize(serializedEntityToken);
+            var graph = new RelationshipGraph(entityToken, RelationshipGraphSearchOption.Both, true);
+            var tokens = new HashSet<EntityToken>();
 
-			foreach (var level in graph.Levels)
-			{
-				tokens.UnionWith(level.AllEntities);
-			}
+            foreach (var level in graph.Levels)
+            {
+                tokens.UnionWith(level.AllEntities);
+            }
 
-			return tokens.Select(d => EntityTokenSerializer.Serialize(d,true)).ToList();
-		}
-		
-		
-		[WebMethod]
-		public string GetCompositeUrlLabel(string path)
-		{
-			var relativePath = Regex.Replace(path, @"^http://[\w\.\d:]+/", "/");
-			var mediaUrlData = MediaUrls.ParseUrl(relativePath);
+            return tokens.Select(d => EntityTokenSerializer.Serialize(d, true)).ToList();
+        }
 
-			using (var conn = new DataConnection())
-			{
-				if (mediaUrlData != null)
-				{
-					var mediaId = mediaUrlData.MediaId;
-					var store = mediaUrlData.MediaStore;
 
-					var matchingMedia = conn.Get<IMediaFile>().FirstOrDefault(media => media.Id == mediaId && media.StoreId == store);
+        [WebMethod]
+        public string GetCompositeUrlLabel(string path)
+        {
+            var relativePath = Regex.Replace(path, @"^http://[\w\.\d:]+/", "/");
+            var mediaUrlData = MediaUrls.ParseUrl(relativePath);
 
-					if (matchingMedia != null)
-					{
-						string label = string.Format("{0} ({1}:{2})", matchingMedia.FileName, matchingMedia.StoreId, matchingMedia.FolderPath);
-						return label;
-					}
-				}
+            using (var conn = new DataConnection())
+            {
+                if (mediaUrlData != null)
+                {
+                    var mediaId = mediaUrlData.MediaId;
+                    var store = mediaUrlData.MediaStore;
 
-				var pageUrlData = PageUrls.ParseUrl(relativePath);
-				if (pageUrlData != null)
-				{
-					var pageNode = conn.SitemapNavigator.GetPageNodeById(pageUrlData.PageId);
+                    var matchingMedia = conn.Get<IMediaFile>().FirstOrDefault(media => media.Id == mediaId && media.StoreId == store);
 
-					if (pageNode != null)
-					{
+                    if (matchingMedia != null)
+                    {
+                        string label = string.Format("{0} ({1}:{2})", matchingMedia.FileName, matchingMedia.StoreId, matchingMedia.FolderPath);
+                        return label;
+                    }
+                }
+
+                var pageUrlData = PageUrls.ParseUrl(relativePath);
+                if (pageUrlData != null)
+                {
+                    var pageNode = conn.SitemapNavigator.GetPageNodeById(pageUrlData.PageId);
+
+                    if (pageNode != null)
+                    {
                         string label = string.Format("{0} ( {1} )", pageNode.Title, RemovePreviewMarker(pageNode.Url));
-						return label;
-					}
-				}
+                        return label;
+                    }
+                }
 
-			    IDataReference dataReference = InternalUrls.TryParseInternalUrl(path);
-                if(dataReference != null)
+                IDataReference dataReference = InternalUrls.TryParseInternalUrl(path);
+                if (dataReference != null)
                 {
                     var data = dataReference.Data;
                     if (data != null)
@@ -420,52 +447,52 @@ namespace Composite.Services
                             {
                                 label += " ( " + RemovePreviewMarker(dataPublicUrl) + " )";
                             }
-                            
+
                             return label;
                         }
                     }
                 }
-			}
-			
-			return path;
-		}
+            }
+
+            return path;
+        }
 
         private static string RemovePreviewMarker(string url)
         {
             return url.Replace("/c1mode(unpublished)", "");
         }
 
-		[WebMethod]
-		public string GetCompositeEntityToken(string path)
-		{
-			var relativePath = Regex.Replace(path, @"^http://[\w\.\d:]+/", "/");
-			var mediaUrlData = MediaUrls.ParseUrl(relativePath);
+        [WebMethod]
+        public string GetCompositeEntityToken(string path)
+        {
+            var relativePath = Regex.Replace(path, @"^http://[\w\.\d:]+/", "/");
+            var mediaUrlData = MediaUrls.ParseUrl(relativePath);
 
-			using (var connection = new DataConnection())
-			{
-				if (mediaUrlData != null)
-				{
-					var mediaId = mediaUrlData.MediaId;
-					var store = mediaUrlData.MediaStore;
+            using (var connection = new DataConnection())
+            {
+                if (mediaUrlData != null)
+                {
+                    var mediaId = mediaUrlData.MediaId;
+                    var store = mediaUrlData.MediaStore;
 
-					var matchingMedia = connection.Get<IMediaFile>().FirstOrDefault(media => media.Id == mediaId && media.StoreId == store);
+                    var matchingMedia = connection.Get<IMediaFile>().FirstOrDefault(media => media.Id == mediaId && media.StoreId == store);
 
-					if (matchingMedia != null)
-					{
-						return EntityTokenSerializer.Serialize(matchingMedia.GetDataEntityToken(), true);
-					}
-				}
+                    if (matchingMedia != null)
+                    {
+                        return EntityTokenSerializer.Serialize(matchingMedia.GetDataEntityToken(), true);
+                    }
+                }
 
-				var pageUrlData = PageUrls.ParseUrl(relativePath);
-				if (pageUrlData != null)
-				{
-					var page = PageManager.GetPageById(pageUrlData.PageId);
+                var pageUrlData = PageUrls.ParseUrl(relativePath);
+                if (pageUrlData != null)
+                {
+                    var page = PageManager.GetPageById(pageUrlData.PageId);
 
-					if (page != null)
-					{
-						return EntityTokenSerializer.Serialize(page.GetDataEntityToken(), true);
-					}
-				}
+                    if (page != null)
+                    {
+                        return EntityTokenSerializer.Serialize(page.GetDataEntityToken(), true);
+                    }
+                }
 
                 IDataReference dataReference = InternalUrls.TryParseInternalUrl(path);
                 if (dataReference != null)
@@ -476,9 +503,9 @@ namespace Composite.Services
                         return EntityTokenSerializer.Serialize(data.GetDataEntityToken(), true);
                     }
                 }
-			}
+            }
 
-			return null;
-		}
-	}
+            return null;
+        }
+    }
 }

@@ -56,6 +56,7 @@
 			<Script filename="${root}/scripts/source/top/util/List.js"/>
 			<Script filename="${root}/scripts/source/top/util/Map.js"/>
 			<Script filename="${root}/scripts/source/top/util/SystemNodeList.js"/>
+			<Script filename="${root}/scripts/source/top/util/LocalStorage.js"/>
 			<Script filename="${root}/scripts/source/top/core/BroadcastMessages.js"/>
 			<Script filename="${root}/scripts/source/top/core/EventBroadcaster.js"/>
 			<Script filename="${root}/scripts/source/top/core/Constants.js"/>

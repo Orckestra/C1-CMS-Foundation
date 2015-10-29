@@ -9,6 +9,14 @@ BrowserPageBinding.ACTION_TABSHIFT = "browserpage tabshift";
 BrowserPageBinding.DEVICE_LIST = "${root}/content/views/browser/deviceoptions.xml?consoleId=" + Application.CONSOLE_ID;
 BrowserPageBinding.DEVICE_TOUCHVIEW_FRAMEOVERLAY_ID = "deviceframeoverlay";
 
+BrowserPageBinding.VIEWMODE_PUBLIC_ICON = "item-publish";
+BrowserPageBinding.VIEWMODE_LOCALSTORAGE_KEY = "COMPOSITE_BROWSERPAGEBINDING_VIEWMODE";
+BrowserPageBinding.VIEW_MODES = Object.freeze({
+	Unpublic: 1,
+	Public: 2
+})
+
+
 /**
  * @class
  */
@@ -38,6 +46,11 @@ function BrowserPageBinding() {
 	 */
 	this._current = null;
 
+	/**
+	* The Page View Mode - Public or Unpublic version
+	* @type {int}
+	**/
+	this._currentViewMode = BrowserPageBinding.VIEW_MODES.Unpublic;
 
 	/**
 	 * @type {string}
@@ -151,7 +164,7 @@ BrowserPageBinding.prototype.handleBroadcast = function (broadcast, arg) {
 		case BroadcastMessages.KEY_ARROW:
 			if (this._box.isFocused) {
 				var frameOvl = document.getElementById(BrowserPageBinding.DEVICE_TOUCHVIEW_FRAMEOVERLAY_ID);
-				if(frameOvl && frameOvl.style.display == "block") { // Scroll Touch Device View on Key UP/DOWN
+				if (frameOvl && frameOvl.style.display == "block") { // Scroll Touch Device View on Key UP/DOWN
 					var delta = KeyEventCodes.VK_UP == arg ? -50 : 50;
 					this.scrollDeviceFrame(delta);
 				}
@@ -295,7 +308,29 @@ BrowserPageBinding.prototype.onAfterPageInitialize = function () {
 	//TODO move this
 	this._box.getGeneticViewTabBinding().tree.addActionListener(GenericViewBinding.ACTION_COMMAND, this);
 
+	var _savedCurrentViewMode = LocalStorage.get_data(BrowserPageBinding.VIEWMODE_LOCALSTORAGE_KEY);
+	if (_savedCurrentViewMode) {
+		this._currentViewMode = _savedCurrentViewMode;
+		if (_savedCurrentViewMode = BrowserPageBinding.VIEW_MODES.Public) {
+			this.bindingWindow.bindingMap.setscreenbutton.setImage(BrowserPageBinding.VIEWMODE_PUBLIC_ICON);
+		}
+	}
 
+}
+
+
+/**
+* Set Current View Mode
+* @param {viewMode} 
+*/
+BrowserPageBinding.prototype.setCurrentViewMode = function (viewMode) {
+
+	var isNewValue = viewMode && viewMode != this._currentViewMode;
+	if (isNewValue) {
+		this._currentViewMode = viewMode;
+		LocalStorage.store_data(viewMode, BrowserPageBinding.VIEWMODE_LOCALSTORAGE_KEY);
+		this.refreshView();
+	}
 }
 
 
@@ -316,15 +351,19 @@ BrowserPageBinding.prototype.push = function (node, isManual, isForce) {
 		var entityToken = node.getEntityToken();
 		if (entityToken) {
 			if (this._entityToken != entityToken || isForce) {
-				TreeService.GetBrowserUrlByEntityToken(entityToken, function (result) {
+
+				var isPublic = self._currentViewMode == BrowserPageBinding.VIEW_MODES.Public;
+
+				TreeService.GetBrowserUrlByEntityToken(entityToken, isPublic, function (resultUrl) {
 					setTimeout(function () {
-						if (result) {
-							self.pushURL(result, isManual);
+						if (resultUrl) {
+							self.pushURL(resultUrl, isManual);
 						} else {
 							self.pushToken(node, isManual);
 						}
 					}, 0);
 				});
+
 				this._entityToken = entityToken;
 			}
 		}
@@ -338,7 +377,6 @@ BrowserPageBinding.prototype.push = function (node, isManual, isForce) {
  * @return
  */
 BrowserPageBinding.prototype.pushURL = function (url, isManual) {
-
 	this.isBrowserTab = false;
 
 	if (url && url != this._box.getLocation()) {
@@ -352,7 +390,6 @@ BrowserPageBinding.prototype.pushURL = function (url, isManual) {
 		this._updateAddressBar(url);
 		this.bindingWindow.bindingMap.addressbar.showAddreesbar();
 	}
-
 }
 
 BrowserPageBinding.prototype.getAbsoluteUrl = function (url) {
@@ -360,7 +397,6 @@ BrowserPageBinding.prototype.getAbsoluteUrl = function (url) {
 	a.href = url;
 	return a.href;
 }
-
 
 /**
  * Add Url to order
@@ -381,7 +417,6 @@ BrowserPageBinding.prototype.pushToken = function (node, isManual) {
 		this.getSystemTree()._focusTreeNodeByEntityToken(node.getEntityToken());
 	}
 }
-
 
 /**
  * Load URL in selected tab.
@@ -740,6 +775,10 @@ BrowserPageBinding.prototype._handleCommand = function (cmd, binding) {
 			var w = binding.getProperty("w");
 			var h = binding.getProperty("h");
 			var touch = binding.getProperty("touch");
+			var viewMode = binding.getProperty("viewmode");
+
+			this.setCurrentViewMode(viewMode);
+
 			this._customUrl = binding.getProperty("url");;
 			this._isRequirePublicNet = binding.getProperty("requirepublicnet");
 			if (this._customUrl) {
@@ -964,17 +1003,18 @@ BrowserPageBinding.prototype.loadDeviceList = function () {
 
 						var label = device.getAttribute("label");
 						var image = device.getAttribute("image");
+						var viewMode = device.getAttribute("viewmode");
 						var w = device.getAttribute("w");
 						var h = device.getAttribute("h");
 						var touch = device.getAttribute("touch");
 						var requirepublicnet = device.getAttribute("requirepublicnet");
-
 						var urlProperty = device.getAttribute("url");
 
 						var itemBinding = MenuItemBinding.newInstance(bindingDocument);
 						itemBinding.setImage(image);
 						itemBinding.setLabel(label);
 						itemBinding.setProperty("cmd", "setscreen");
+						itemBinding.setProperty("viewmode", viewMode);
 						itemBinding.setProperty("w", w);
 						itemBinding.setProperty("h", h);
 						itemBinding.setProperty("touch", touch);
@@ -995,10 +1035,9 @@ BrowserPageBinding.prototype.loadDeviceList = function () {
 	request.send(null);
 }
 
-
 /**
- * Set client width for browser iframe
- * @param {int} width
+ * Set Custom Url
+ * @param {string} url
  */
 BrowserPageBinding.prototype.setCustomUrl = function (url) {
 	var customView = this._box.getCustomViewTabBinding();
