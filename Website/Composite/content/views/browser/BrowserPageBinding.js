@@ -698,18 +698,6 @@ BrowserPageBinding.prototype._updateHistory = function (item) {
 		this._isHistoryBrowsing = false;
 	} else {
 
-		/*
-		 * Clicking the same link twice should not update history, so we 
-		 * made the code below. But since this would not enable user to 
-		 * go back after a HTTP POST submit, the fix was disabled again. 
-		 * Funny thing is - try uncomment this code and check it out... 
-		 *
-		var last = this._current.history.getLast ();
-		if ( last != null ) {
-			alert ( url.toString () + "\n" + last.toString () + "\n" + ( url == last ));
-		}
-		*/
-
 		while (this._current.history.getLength() - 1 > this._current.index) {
 			this._current.history.extractLast();
 		}
@@ -813,15 +801,16 @@ BrowserPageBinding.prototype._handleCommand = function (cmd, binding) {
  */
 BrowserPageBinding.prototype._viewSource = function (cmd) {
 
-	var doc = this.getContentDocument();
-	var def = ViewDefinitions["Composite.User.SourceCodeViewer"];
-
-	def.argument = {
-		action: cmd,
-		doc: doc
+	var tab = this._box.getSourceViewTabBinding();
+	if (this.isViewSource) {
+		this.isViewSource = false;
+		var browserTab = this._box.getBrowserTabBinding();
+		this._box.select(browserTab, true);
+	} else {
+		this.isViewSource = true;
+		tab.update(this.getUrl());
+		this._box.select(tab, true);
 	}
-	def.label = this.label;
-	StageBinding.presentViewDefinition(def);
 }
 
 /**
@@ -998,34 +987,44 @@ BrowserPageBinding.prototype.loadDeviceList = function () {
 					var groupBinding = MenuGroupBinding.newInstance(bindingDocument);
 					devicepopup.add(groupBinding);
 					groupBinding.attach();
-					new List(devicegroup.getElementsByTagName("device")).each(function (device) {
-
-
-						var label = device.getAttribute("label");
-						var image = device.getAttribute("image");
-						var viewMode = device.getAttribute("viewmode");
-						var w = device.getAttribute("w");
-						var h = device.getAttribute("h");
-						var touch = device.getAttribute("touch");
-						var requirepublicnet = device.getAttribute("requirepublicnet");
-						var urlProperty = device.getAttribute("url");
-
+					new List(devicegroup.children).each(function (element) {
 						var itemBinding = MenuItemBinding.newInstance(bindingDocument);
+						var label = element.getAttribute("label");
+						var image = element.getAttribute("image");
 						itemBinding.setImage(image);
 						itemBinding.setLabel(label);
-						itemBinding.setProperty("cmd", "setscreen");
-						itemBinding.setProperty("viewmode", viewMode);
-						itemBinding.setProperty("w", w);
-						itemBinding.setProperty("h", h);
-						itemBinding.setProperty("touch", touch);
-						itemBinding.setProperty("requirepublicnet", requirepublicnet);
-						itemBinding.setProperty("url", urlProperty);
+
+						switch(element.localName.toLowerCase())
+						{
+							case "sourceview":
+								itemBinding.setProperty("cmd", "viewsource");
+								break;
+							case "device":
+								var label = element.getAttribute("label");
+								var image = element.getAttribute("image");
+								var viewMode = element.getAttribute("viewmode");
+								var w = element.getAttribute("w");
+								var h = element.getAttribute("h");
+								var touch = element.getAttribute("touch");
+								var requirepublicnet = element.getAttribute("requirepublicnet");
+								var urlProperty = element.getAttribute("url");
+								itemBinding.setProperty("cmd", "setscreen");
+								itemBinding.setProperty("viewmode", viewMode);
+								itemBinding.setProperty("w", w);
+								itemBinding.setProperty("h", h);
+								itemBinding.setProperty("touch", touch);
+								itemBinding.setProperty("requirepublicnet", requirepublicnet);
+								itemBinding.setProperty("url", urlProperty);
+
+
+								if (!Application.isOnPublicNet && requirepublicnet) {
+									itemBinding.disable();
+								}
+								break;
+						}
 						groupBinding.add(itemBinding);
 						itemBinding.attach();
 
-						if (!Application.isOnPublicNet && requirepublicnet) {
-							itemBinding.disable();
-						}
 					});
 				});
 
@@ -1041,7 +1040,7 @@ BrowserPageBinding.prototype.loadDeviceList = function () {
  */
 BrowserPageBinding.prototype.setCustomUrl = function (url) {
 	var customView = this._box.getCustomViewTabBinding();
-	var targetUrl = this._targetUrl ? this._targetUrl : this._box.getLocation();
+	var targetUrl = this.getUrl();
 	url = url.replace("{url}", targetUrl);
 	url = url.replace("{encodedurl}", encodeURIComponent(this._isRequirePublicNet ? targetUrl.replace(/\/c1mode\(unpublished\)/, "") : targetUrl));
 	//replace 2nd and next '?' to '&'
@@ -1056,6 +1055,13 @@ BrowserPageBinding.prototype.setCustomUrl = function (url) {
 		customView.iframe.src = url;
 	}
 	this._box.select(customView, true);
+}
+
+/**
+ * Get Url
+ */
+BrowserPageBinding.prototype.getUrl = function (url) {
+	return this._targetUrl ? this._targetUrl : this._box.getLocation();
 }
 
 /**
