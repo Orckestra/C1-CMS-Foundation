@@ -138,11 +138,11 @@ BrowserTabBoxBinding.prototype.getSourceViewTabBinding = function () {
 		//viewBinding.initialize();
 		this._sourceViewTabBinding.viewBinding = viewBinding;
 		var self = this;
-		this._sourceViewTabBinding.update = function () {
+		this._sourceViewTabBinding.update = function (url) {
 			var doc = self.getContentDocument();
 			definition.argument = {
 				action: DockTabPopupBinding.CMD_VIEWSOURCE,
-				doc: doc
+				url: url
 			}
 
 			this.viewBinding.setDefinition(definition);
@@ -151,10 +151,7 @@ BrowserTabBoxBinding.prototype.getSourceViewTabBinding = function () {
 			} else {
 				this.viewBinding.update();
 			}
-
-			
 		}
-		this._sourceViewTabBinding.update();
 
 	}
 	//hide tabs buttons

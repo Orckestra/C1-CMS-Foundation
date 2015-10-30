@@ -802,15 +802,15 @@ BrowserPageBinding.prototype._handleCommand = function (cmd, binding) {
 BrowserPageBinding.prototype._viewSource = function (cmd) {
 
 	var tab = this._box.getSourceViewTabBinding();
-	if (tab.isSelected) {
+	if (this.isViewSource) {
+		this.isViewSource = false;
 		var browserTab = this._box.getBrowserTabBinding();
 		this._box.select(browserTab, true);
 	} else {
-		tab.update();
+		this.isViewSource = true;
+		tab.update(this.getUrl());
 		this._box.select(tab, true);
 	}
-	
-	
 }
 
 /**
@@ -1040,7 +1040,7 @@ BrowserPageBinding.prototype.loadDeviceList = function () {
  */
 BrowserPageBinding.prototype.setCustomUrl = function (url) {
 	var customView = this._box.getCustomViewTabBinding();
-	var targetUrl = this._targetUrl ? this._targetUrl : this._box.getLocation();
+	var targetUrl = this.getUrl();
 	url = url.replace("{url}", targetUrl);
 	url = url.replace("{encodedurl}", encodeURIComponent(this._isRequirePublicNet ? targetUrl.replace(/\/c1mode\(unpublished\)/, "") : targetUrl));
 	//replace 2nd and next '?' to '&'
@@ -1055,6 +1055,13 @@ BrowserPageBinding.prototype.setCustomUrl = function (url) {
 		customView.iframe.src = url;
 	}
 	this._box.select(customView, true);
+}
+
+/**
+ * Get Url
+ */
+BrowserPageBinding.prototype.getUrl = function (url) {
+	return this._targetUrl ? this._targetUrl : this._box.getLocation();
 }
 
 /**
