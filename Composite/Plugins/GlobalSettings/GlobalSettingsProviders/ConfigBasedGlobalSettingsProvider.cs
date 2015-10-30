@@ -211,11 +211,11 @@ namespace Composite.Plugins.GlobalSettings.GlobalSettingsProviders
             }
         }
 
-        public bool SetCmsBrandHeader
+        public bool PrettifyPublicMarkup
         {
             get
             {
-                return _configurationData.SetCmsBrandHeader;
+                return _configurationData.PrettifyPublicMarkup;
             }
         }
         
@@ -623,12 +623,12 @@ namespace Composite.Plugins.GlobalSettings.GlobalSettingsProviders
         }
 
                 
-        private const string _setCmsBrandHeaderPropertyName = "setCmsBrandHeader";
-        [ConfigurationProperty(_setCmsBrandHeaderPropertyName, DefaultValue = true)]
-        public bool SetCmsBrandHeader
+        private const string _prettifyPublicMarkupPropertyName = "prettifyPublicMarkup";
+        [ConfigurationProperty(_prettifyPublicMarkupPropertyName, DefaultValue = true)]
+        public bool PrettifyPublicMarkup
         {
-            get { return (bool)base[_setCmsBrandHeaderPropertyName]; }
-            set { base[_setCmsBrandHeaderPropertyName] = value; }
+            get { return (bool)base[_prettifyPublicMarkupPropertyName]; }
+            set { base[_prettifyPublicMarkupPropertyName] = value; }
         }
 
 

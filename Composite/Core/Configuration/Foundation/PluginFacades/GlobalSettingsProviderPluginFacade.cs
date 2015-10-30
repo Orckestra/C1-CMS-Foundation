@@ -293,11 +293,11 @@ namespace Composite.Core.Configuration.Foundation.PluginFacades
         }
 
 
-        public static bool SetCmsBrandHeader
+        public static bool PrettifyPublicMarkup
         {
             get
             {
-                return UseReaderLock(provider => provider.SetCmsBrandHeader);
+                return UseReaderLock(provider => provider.PrettifyPublicMarkup);
             }
         }
 

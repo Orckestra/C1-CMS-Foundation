@@ -39,7 +39,7 @@ namespace Composite.Core.WebClient.Renderings
 
             SetCultureByHostname();
 
-            SetCmsBrandHeader(httpContext);
+            PrettifyPublicMarkup(httpContext);
 
             HandleRootRequestInClassicMode(httpContext);
         }
@@ -57,12 +57,9 @@ namespace Composite.Core.WebClient.Renderings
         }
 
 
-        static void SetCmsBrandHeader(HttpContext httpContext)
+        static void PrettifyPublicMarkup(HttpContext httpContext)
         {
-            if (GlobalSettingsFacade.SetCmsBrandHeader)
-            {
-                httpContext.Response.AppendHeader("X-CMS", GlobalSettingsFacade.ApplicationName);
-            }
+            httpContext.Response.AppendHeader("X-Powered-By", GlobalSettingsFacade.ApplicationName);
         }
 
         static bool HandleMediaRequest(HttpContext httpContext)

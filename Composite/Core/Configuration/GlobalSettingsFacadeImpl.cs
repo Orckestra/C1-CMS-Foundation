@@ -322,11 +322,11 @@ namespace Composite.Core.Configuration
             }
         }
 
-        public bool SetCmsBrandHeader
+        public bool PrettifyPublicMarkup
         {
             get
             {
-                return GlobalSettingsProviderPluginFacade.SetCmsBrandHeader;
+                return GlobalSettingsProviderPluginFacade.PrettifyPublicMarkup;
             }
         }
 

@@ -5,6 +5,7 @@ using System.Text;
 using System.Web;
 using System.Web.Hosting;
 using System.Web.UI;
+using Composite.Core.Configuration;
 using Composite.Core.Instrumentation;
 using Composite.Core.WebClient;
 using Composite.Core.WebClient.Renderings;
@@ -95,7 +96,10 @@ public partial class Renderers_Page : System.Web.UI.Page
 
         string xhtml = _renderingContext.ConvertInternalLinks(markupBuilder.ToString());
 
-        xhtml = _renderingContext.FormatXhtml(xhtml);
+        if (GlobalSettingsFacade.PrettifyPublicMarkup)
+        {
+            xhtml = _renderingContext.FormatXhtml(xhtml);
+        }
 
         // Inserting perfomance profiling information
         if (_renderingContext.ProfilingEnabled)

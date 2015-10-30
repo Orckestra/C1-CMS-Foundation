@@ -436,11 +436,11 @@ namespace Composite.Core.Configuration
         /// <summary>
         /// When true responses will include a header indicating the brand of the CMS
         /// </summary>
-        public static bool SetCmsBrandHeader
+        public static bool PrettifyPublicMarkup
         {
             get
             {
-                return _globalSettingsFacade.SetCmsBrandHeader;
+                return _globalSettingsFacade.PrettifyPublicMarkup;
             }
         }
 

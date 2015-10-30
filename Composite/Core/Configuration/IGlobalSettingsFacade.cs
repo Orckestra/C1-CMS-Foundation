@@ -38,7 +38,7 @@ namespace Composite.Core.Configuration
         bool OnlyTranslateWhenApproved { get; }
         ICachingSettings Caching { get; }
         int ImageQuality { get; }
-        bool SetCmsBrandHeader { get; }
+        bool PrettifyPublicMarkup { get; }
         bool PrettifyRenderFunctionExceptions { get; }
     }
 }

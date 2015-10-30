@@ -75,7 +75,7 @@ namespace Composite.Core.Configuration.Plugins.GlobalSettingsProvider
 
         int ImageQuality { get; }
 
-        bool SetCmsBrandHeader { get; }
+        bool PrettifyPublicMarkup { get; }
 
         bool PrettifyRenderFunctionExceptions { get; }
     }
