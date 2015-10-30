@@ -275,33 +275,24 @@ namespace Composite.Core.WebClient
                 UrlKind urlKind;
                 var pageUrl = PageUrls.UrlProvider.ParseUrl(rawUrl, new UrlSpace(context), out urlKind);
 
-                if (pageUrl != null)
+                var page = pageUrl?.GetPage();
+                if (page != null)
                 {
-                    var page = pageUrl.GetPage();
-                    if (page != null)
+                    var pageCacheKey = new StringBuilder(page.ChangeDate.ToString(CultureInfo.InvariantCulture));
+
+                    if (context.Request.IsSecureConnection)
                     {
-                        StringBuilder pageCacheKey = new StringBuilder(page.ChangeDate.ToString(CultureInfo.InvariantCulture));
-
-                        // Adding the relative path from RawUrl as a part of cache key to make ASP.NET cache respect casing of urls
-                        pageCacheKey.Append(new UrlBuilder(rawUrl).RelativeFilePath);
-
-                        if(context.Request.IsSecureConnection)
-                        {
-                            pageCacheKey.Append("https");
-                        }
-
-                        if(!string.IsNullOrEmpty(pageUrl.PathInfo))
-                        {
-                            pageCacheKey.Append(pageUrl.PathInfo);
-                        }
-
-                        foreach (string key in _c1PageCustomStringProviders.Keys)
-                        {
-                            pageCacheKey.Append(_c1PageCustomStringProviders[key](context));
-                        }
-
-                        return pageCacheKey.ToString();
+                        pageCacheKey.Append("https");
                     }
+
+                    // Adding the relative path from RawUrl as a part of cache key to make ASP.NET cache respect casing of urls
+                    pageCacheKey.Append(new UrlBuilder(rawUrl).FullPath);
+                    foreach (string key in _c1PageCustomStringProviders.Keys)
+                    {
+                        pageCacheKey.Append(_c1PageCustomStringProviders[key](context));
+                    }
+
+                    return pageCacheKey.ToString();
                 }
                 return string.Empty;
             }
