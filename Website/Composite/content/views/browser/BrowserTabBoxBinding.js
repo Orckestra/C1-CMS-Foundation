@@ -24,6 +24,16 @@ function BrowserTabBoxBinding () {
 	this._genericViewTabBinding = null;
 
 	/**
+	 * @type {TabBinding}
+	 */
+	this._sourceViewTabBinding = null;
+
+	/**
+	 * @type {TabBinding}
+	 */
+	this._customTabBinding = null;
+
+	/**
 	 * @implements {IFocusable}
 	 * @type {boolean}
 	 */
@@ -83,8 +93,10 @@ BrowserTabBoxBinding.prototype.getBrowserTabBinding = function () {
 	return this._browserTabBinding;
 }
 
+
+
 /**
- * Get BrowserTabBinding
+ * Get Generic View TabBinding
  * @param {string} url.
  */
 BrowserTabBoxBinding.prototype.getGeneticViewTabBinding = function () {
@@ -101,9 +113,59 @@ BrowserTabBoxBinding.prototype.getGeneticViewTabBinding = function () {
 	return this._genericViewTabBinding;
 }
 
+/**
+ * Get Source View TabBinding
+ * @param {string} url.
+ */
+BrowserTabBoxBinding.prototype.getSourceViewTabBinding = function () {
+
+	if (!this._sourceViewTabBinding) {
+		this._sourceViewTabBinding = TabBinding.newInstance(this.bindingDocument);
+
+
+		var doc = this.getContentDocument();
+		var definition = ViewDefinitions["Composite.User.SourceCodeViewer"];
+		definition.argument = {
+			action: DockTabPopupBinding.CMD_VIEWSOURCE,
+			doc: doc
+		}
+		var viewBinding = ViewBinding.newInstance(this.bindingDocument);
+		//viewBinding.setDefinition(definition);
+		viewBinding.setType(ViewBinding.TYPE_EXPLORERVIEW);
+		var tree = GenericViewBinding.newInstance(this.bindingDocument);
+		this.appendTabByBindings(this._sourceViewTabBinding, viewBinding);
+		viewBinding.attach();
+		//viewBinding.initialize();
+		this._sourceViewTabBinding.viewBinding = viewBinding;
+		var self = this;
+		this._sourceViewTabBinding.update = function () {
+			var doc = self.getContentDocument();
+			definition.argument = {
+				action: DockTabPopupBinding.CMD_VIEWSOURCE,
+				doc: doc
+			}
+
+			this.viewBinding.setDefinition(definition);
+			if (!this.viewBinding._isViewBindingInitialized) {
+				this.viewBinding.initialize();
+			} else {
+				this.viewBinding.update();
+			}
+
+			
+		}
+		this._sourceViewTabBinding.update();
+
+	}
+	//hide tabs buttons
+	this.getTabsBinding().hide();
+	return this._sourceViewTabBinding;
+}
+
+
 
 /**
- * Get BrowserTabBinding
+ * Get Custom View TabBinding
  * @param {string} url.
  */
 BrowserTabBoxBinding.prototype.getCustomViewTabBinding = function () {
