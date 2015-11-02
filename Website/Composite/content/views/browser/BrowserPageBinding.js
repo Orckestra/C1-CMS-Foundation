@@ -985,14 +985,14 @@ BrowserPageBinding.prototype.loadDeviceList = function () {
 					var groupBinding = MenuGroupBinding.newInstance(bindingDocument);
 					devicepopup.add(groupBinding);
 					groupBinding.attach();
-					new List(devicegroup.children).each(function (element) {
+					new List(devicegroup.getElementsByTagName("*")).each(function (element) {
 						var itemBinding = MenuItemBinding.newInstance(bindingDocument);
 						var label = element.getAttribute("label");
 						var image = element.getAttribute("image");
 						itemBinding.setImage(image);
 						itemBinding.setLabel(label);
 
-						switch(element.localName.toLowerCase())
+						switch(element.nodeName.toLowerCase())
 						{
 							case "device":
 								var label = element.getAttribute("label");
