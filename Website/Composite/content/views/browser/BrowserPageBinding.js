@@ -941,7 +941,8 @@ BrowserPageBinding.prototype.handleEvent = function (e) {
 			break;
 		case DOMEvents.MOUSEDOWN:
 			this._box.focus();
-
+			EventBroadcaster.broadcast ( BroadcastMessages.MOUSEEVENT_MOUSEDOWN );
+			break;
 		case DOMEvents.WHEEL:
 			if (element.id == BrowserPageBinding.DEVICE_TOUCHVIEW_FRAMEOVERLAY_ID) {
 				this._box.focus();
