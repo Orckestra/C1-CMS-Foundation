@@ -63,6 +63,12 @@ ViewSourcePageBinding.prototype.onBindingRegister = function () {
 	
 	this._transformer = new XSLTransformer ();
 	this._transformer.importStylesheet ( ViewSourcePageBinding.XSLT );
+
+	var url = this._getParameterByName("url");
+	if(url) {
+		this._url = url;
+		this._action = DockTabPopupBinding.CMD_VIEWSOURCE;
+	}
 }
 
 /**
@@ -108,6 +114,11 @@ ViewSourcePageBinding.prototype.handleAction = function ( action ) {
 			this._inject ();
 			break;
 	}
+}
+
+ViewSourcePageBinding.prototype._getParameterByName = function ( name ) {
+	var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+	return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
 }
 
 /** 

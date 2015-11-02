@@ -26,11 +26,6 @@ function BrowserTabBoxBinding () {
 	/**
 	 * @type {TabBinding}
 	 */
-	this._sourceViewTabBinding = null;
-
-	/**
-	 * @type {TabBinding}
-	 */
 	this._customTabBinding = null;
 
 	/**
@@ -112,54 +107,6 @@ BrowserTabBoxBinding.prototype.getGeneticViewTabBinding = function () {
 	this.getTabsBinding().hide();
 	return this._genericViewTabBinding;
 }
-
-/**
- * Get Source View TabBinding
- * @param {string} url.
- */
-BrowserTabBoxBinding.prototype.getSourceViewTabBinding = function () {
-
-	if (!this._sourceViewTabBinding) {
-		this._sourceViewTabBinding = TabBinding.newInstance(this.bindingDocument);
-
-
-		var doc = this.getContentDocument();
-		var definition = ViewDefinitions["Composite.User.SourceCodeViewer"];
-		definition.argument = {
-			action: DockTabPopupBinding.CMD_VIEWSOURCE,
-			doc: doc
-		}
-		var viewBinding = ViewBinding.newInstance(this.bindingDocument);
-		//viewBinding.setDefinition(definition);
-		viewBinding.setType(ViewBinding.TYPE_EXPLORERVIEW);
-		var tree = GenericViewBinding.newInstance(this.bindingDocument);
-		this.appendTabByBindings(this._sourceViewTabBinding, viewBinding);
-		viewBinding.attach();
-		//viewBinding.initialize();
-		this._sourceViewTabBinding.viewBinding = viewBinding;
-		var self = this;
-		this._sourceViewTabBinding.update = function (url) {
-			var doc = self.getContentDocument();
-			definition.argument = {
-				action: DockTabPopupBinding.CMD_VIEWSOURCE,
-				url: url
-			}
-
-			this.viewBinding.setDefinition(definition);
-			if (!this.viewBinding._isViewBindingInitialized) {
-				this.viewBinding.initialize();
-			} else {
-				this.viewBinding.update();
-			}
-		}
-
-	}
-	//hide tabs buttons
-	this.getTabsBinding().hide();
-	return this._sourceViewTabBinding;
-}
-
-
 
 /**
  * Get Custom View TabBinding

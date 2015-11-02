@@ -32,7 +32,7 @@
 					<ui:menuitem cmd="forward" label="${string:Composite.Web.PageBrowser:ContextMenu.Forward}" image="${icon:next}" image-disabled="${icon:next-disabled}" tooltip="${string:Website.Content.Views.Help.ToolTipForward}" observes="broadcasterHistoryForward" />
 					<ui:menuitem cmd="refresh" label="${string:Composite.Web.PageBrowser:ContextMenu.Refresh}" image="${icon:refresh}" tooltip="${string:Website.Content.Views.Help.ToolTipRefresh}" />
 				</ui:menugroup>
-				<ui:menugroup>
+				<ui:menugroup id="viewsourcegroup">
 					<ui:menuitem cmd="viewsource" label="${string:Composite.Web.PageBrowser:ContextMenu.ViewSource}" image="${icon:editor-sourceview}" />
 				</ui:menugroup>
 			</ui:menubody>
@@ -74,7 +74,6 @@
 				<ui:toolbargroup id="addressrightgroup">
 					<ui:toolbarbutton id="go" image="${icon:input}" image-disabled="${icon:input-disabled}" isdisabled="true" tooltip="${string:Composite.Web.PageBrowser:ToolBarButton.Go.ToolTip}" />
 					<ui:toolbarbutton id="setscreenbutton" tooltip="${string:Composite.Web.PageBrowser:Menu.ViewMode}"  image="${icon:browsedevicetype}" popup="devicepopup"  observes="broadcasterBrowserView" />
-					<ui:toolbarbutton cmd="viewsource" tooltip="${string:Composite.Web.PageBrowser:Menu.ViewSource}" image="${icon:editor-sourceview}"  observes="broadcasterBrowserView" />
 					<ui:toolbarbutton cmd="seoassistant" tooltip="${string:Composite.Web.SEOAssistant:SEOAssistant.ToolTip}" image="${icon:seoassistant}"  observes="broadcasterBrowserView" />
 				</ui:toolbargroup>
 			</ui:toolbarbody>

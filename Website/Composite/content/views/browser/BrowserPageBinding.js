@@ -268,6 +268,10 @@ BrowserPageBinding.prototype.onBeforePageInitialize = function () {
 		this.setURL(this._startURL);
 		this._startURL = null;
 	}
+
+	if (Client.isAnyExplorer) {
+		window.bindingMap.viewsourcegroup.hide();
+	}
 }
 
 /**
@@ -446,8 +450,10 @@ BrowserPageBinding.prototype.handleAction = function (action) {
 	switch (action.type) {
 
 		case WindowBinding.ACTION_ONLOAD:
-			this._handleDocumentLoad(binding);
-			action.consume();
+			if (this._box.getBrowserWindow() == binding) {
+				this._handleDocumentLoad(binding);
+				action.consume();
+			}
 			break;
 
 		case ButtonBinding.ACTION_COMMAND:
@@ -800,16 +806,8 @@ BrowserPageBinding.prototype._handleCommand = function (cmd, binding) {
  * @param {string} cmd
  */
 BrowserPageBinding.prototype._viewSource = function (cmd) {
-
-	var tab = this._box.getSourceViewTabBinding();
-	if (this.isViewSource) {
-		this.isViewSource = false;
-		var browserTab = this._box.getBrowserTabBinding();
-		this._box.select(browserTab, true);
-	} else {
-		this.isViewSource = true;
-		tab.update(this.getUrl());
-		this._box.select(tab, true);
+	if (!Client.isAnyExplorer) {
+		window.open('view-source:' + this._box.getContentWindow().location.href);
 	}
 }
 
@@ -996,9 +994,6 @@ BrowserPageBinding.prototype.loadDeviceList = function () {
 
 						switch(element.localName.toLowerCase())
 						{
-							case "sourceview":
-								itemBinding.setProperty("cmd", "viewsource");
-								break;
 							case "device":
 								var label = element.getAttribute("label");
 								var image = element.getAttribute("image");
@@ -1041,6 +1036,7 @@ BrowserPageBinding.prototype.loadDeviceList = function () {
 BrowserPageBinding.prototype.setCustomUrl = function (url) {
 	var customView = this._box.getCustomViewTabBinding();
 	var targetUrl = this.getUrl();
+	url = Resolver.resolve(url);
 	url = url.replace("{url}", targetUrl);
 	url = url.replace("{encodedurl}", encodeURIComponent(this._isRequirePublicNet ? targetUrl.replace(/\/c1mode\(unpublished\)/, "") : targetUrl));
 	//replace 2nd and next '?' to '&'

@@ -3,7 +3,7 @@
 	<group>
 		<device label="Auto" image="eye" viewmode="1"/>
 		<device label="Public Version" image="item-publish" viewmode="2"/>
-		<sourceview label="Page Source" image="editor-sourceview" />
+		<device label="Page Source" image="editor-sourceview" url="${root}/content/views/dev/viewsource/viewsource.aspx?url={encodedurl}"/>
 	</group>
 	<group>
 		<device label="Desktop (1366x768)" w="1366" h="768" image="screen"/>
