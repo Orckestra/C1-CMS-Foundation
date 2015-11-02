@@ -4,9 +4,9 @@
 <%@ Page Language="C#" %>
 
 <head>
-    <title>Composite C1 was updated</title>
+    <title><%= Composite.Core.Configuration.GlobalSettingsFacade.ApplicationName %> was updated</title>
     <link rel="stylesheet" type="text/css" href="updated.css.aspx" />
-    <link rel="shortcut icon" type="image/x-icon" href="images/icons/branding/favicon.ico" />
+     <% Response.WriteFile("favicon.inc"); %>
     <control:styleloader runat="server" />
     <script type="text/javascript" src="updated.js"></script>
 </head>
@@ -20,12 +20,12 @@
                     <div id="head">
                         <div id="heading">
                             <div id="vignette"></div>
-                            <h3>Composite C1 
+                            <h3><%= Composite.Core.Configuration.GlobalSettingsFacade.ApplicationName %> 
                                 <span>was updated</span></h3>
                         </div>
                     </div>
                     <p>
-                        Your Composite C1 installation has successfully been updated. Enjoy!
+                        Your <%= Composite.Core.Configuration.GlobalSettingsFacade.ApplicationName %> installation has successfully been updated. Enjoy!
                     </p>
                     <div id="start">
                         <a id="continuelink" href="top.aspx" class="clickbutton mt-40">Continue</a>

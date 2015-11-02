@@ -4,17 +4,6 @@
       <div class="logo"></div>
       <ui:deck id="introdeck"/>
       <ui:deck id="logindeck">
-        <div class="buzzwords hide">
-          <div id="version">
-            <ui:text label="${version}"/>
-          </div>
-          <div id="build">
-            <ui:text label="Build ${build}"/>
-          </div>
-          <div>
-            <ui:text label="© 2014 Composite A/S"/>
-          </div>
-        </div>
         <ui:fields id="loginfields" >
           <div id="loginerror" class="text-error hide">
             <ui:text label="Username or password incorrect!"/>
@@ -84,9 +73,9 @@
       </ui:deck>
       <ui:deck id="loadingdeck" class="loading-deck">
         <div class="progress">
-          <p class="progressbar-msg">Depending on your internet connection speed, Composite C1 may take a few moments to load.</p>
+          <p class="progressbar-msg">Depending on your internet connection speed, <span class="js-applicationname"></span> may take a few moments to load.</p>
           <div id="progressbar" class="progressbar">
-            <ui:text label="Initializing Composite C1"/>
+            Initializing <span class="js-applicationname"></span>
             <ui:progressbar/>
           </div>
         </div>

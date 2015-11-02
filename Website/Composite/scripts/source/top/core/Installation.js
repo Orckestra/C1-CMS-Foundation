@@ -8,6 +8,11 @@ function _Installation () {
 
 _Installation.prototype = {
 
+	/** Application Name like "Composite C1"
+	* @type {string}
+	*/
+	applicationName: null,
+
     /**
     * Robot readable build version "1.2.3505.18361".
     * @type {string}
@@ -41,7 +46,10 @@ _Installation.prototype = {
             case BroadcastMessages.APPLICATION_KICKSTART:
                 var list = new List(InstallationService.GetInstallationInfo(true));
                 list.each(function (entry) {
-                    switch (entry.Key) {
+                	switch (entry.Key) {
+                		case "ApplicationName":
+                			this.applicationName = entry.Value;
+                			break;
                         case "ProductVersion":
                             this.versionString = entry.Value;
                             break;

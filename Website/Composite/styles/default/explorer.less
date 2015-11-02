@@ -36,32 +36,18 @@ ui|explorermenu {
 		border: none;
 	}
 
-	.logo {
-		padding: 10px 12px 21px 12px;
+	.brand-name {
+		position: relative;
 
-		ui|labelbox {
-			color: #FFF;
-			position: relative;
-			padding: 0;
-
-			&:after {
-				position: absolute;
-				top: 6px;
-				left: 38px;
-				content: " ";
-				width: 121px;
-				height: 13px;
-				background: url("@{images-root-path}/C1_logo_text_small.svg?cacheversion=@{cache-version}") no-repeat top left;
-			}
+		.brand-icon {
+			width: 50px;
+			text-align: center;
 		}
 
-		ui|labelbody {
-			color: @primary-color;
-
-			svg {
-				height: 25px !important;
-				width: 25px !important;
-			}
+		.brand-text {
+			position: absolute;
+			top: 30%;
+			left: 50px;
 		}
 	}
 

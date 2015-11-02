@@ -6,7 +6,7 @@
 <head>
     <title>Browser unknown</title>
     <control:styleloader runat="server" />
-    <link rel="shortcut icon" type="image/x-icon" href="images/icons/branding/favicon.ico" />
+     <% Response.WriteFile("favicon.inc"); %>
 </head>
 <body>
     <div class="splash-cover">

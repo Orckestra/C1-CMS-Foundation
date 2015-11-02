@@ -5,7 +5,7 @@
     <title>Composite.Management</title>
     <meta name="robots" content="noindex, nofollow" />
     <meta http-equiv="X-UA-Compatible" content="IE=9" />
-    <link rel="shortcut icon" type="image/x-icon" href="images/icons/branding/favicon.ico" />
+    <% Response.WriteFile("favicon.inc"); %>
     <control:styleloader runat="server"/>
     <style type="text/css">
         

@@ -470,9 +470,10 @@
     </Compile>
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\Selectors\UrlComboBox.ascx" />
     <Content Include="Composite\grunt.html" />
+    <Content Include="Composite\images\branding\brand-icon.svg" />
     <Content Include="Composite\images\C1_logo.svg" />
-    <Content Include="Composite\images\C1_logo_text_small.svg" />
-    <Content Include="Composite\images\icons\branding\favicon.ico" />
+    <Content Include="Composite\images\branding\brand-text.svg" />
+    <Content Include="Composite\images\branding\favicon.ico" />
     <Content Include="Composite\images\icons\svg\abc-book.svg" />
     <Content Include="Composite\images\icons\svg\alphbeticindex.svg" />
     <Content Include="Composite\images\icons\svg\books.svg" />
@@ -599,7 +600,6 @@
     <Content Include="Composite\images\icons\svg\code.svg" />
     <Content Include="Composite\images\icons\svg\coffee-cup.svg" />
     <Content Include="Composite\images\icons\svg\cog.svg" />
-    <Content Include="Composite\images\icons\svg\company-composite.svg" />
     <Content Include="Composite\images\icons\svg\configuration-root-closed.svg" />
     <Content Include="Composite\images\icons\svg\configuration-root-open.svg" />
     <Content Include="Composite\images\icons\svg\confirmaction-defaulticon.svg" />
@@ -1214,6 +1214,7 @@
     <Content Include="Composite\styles\default\_mixins.less" />
     <None Include="Composite\styles\default\rtl.less" />
     <Content Include="Composite\grunt.inc" />
+    <Content Include="Composite\favicon.inc" />
     <Content Include="Composite\unsecure.js" />
     <Content Include="Composite\unsecure.css" />
     <Content Include="Composite\images\loading.gif" />
@@ -2500,7 +2501,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Composite\styles\default\_variables.less" />
-    <None Include="Composite\top.inc" />
+    <None Include="Composite\top.inc">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Composite\welcome.inc" />
     <Content Include="Renderers\FunctionPreview.ashx" />
     <Content Include="Renderers\TemplatePreview.ashx" />
@@ -2512,6 +2515,7 @@
     <Folder Include="Composite\content\dialogs\querytreeeditor\" />
     <Folder Include="Composite\content\views\mediabrowser\" />
     <Folder Include="Composite\controls\FormsControls\FormUiControlTemplates\ElementSelectors\" />
+    <Folder Include="Composite\images\icons\branding\" />
     <Folder Include="Frontend\Controls\" />
     <Folder Include="Frontend\Images\" />
     <Folder Include="Frontend\Scripts\" />

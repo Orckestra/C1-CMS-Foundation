@@ -46,19 +46,19 @@ ui|toolbargroup {
 	width: 100%;
 	text-align: center;
 	line-height: 20px;
-	padding-top: 220px;
+	padding-top: 200px;
 	padding-bottom: 100px;
 }
 
 div.logo {
 	cursor: pointer;
-	width: 168px;
-	height: 38px;
-	background: url("${root}/images/logo.png") no-repeat 0 0;
+	width: 250px;
+	height: 50px;
+	background: url("${root}/images/logo.png") no-repeat center center;
 	position: absolute;
-	top: 40px;
+	top: 20px;
 	left: 50%;
-	margin-left: -69px;
+	margin-left: -125px;
 }
 
 #logo2 {

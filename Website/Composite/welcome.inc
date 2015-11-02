@@ -26,9 +26,9 @@
 					<div>
 						<p>Please wait while we test your installation.</p>
 						<ul id="introtest"/>
-						<p id="introtestsuccess">Your Composite C1 installation is operational.</p>
+						<p id="introtestsuccess">Your installation is operational.</p>
 						<p id="introtestfailure" class="hide">
-							Your Composite C1 installation has problems!<br/>
+							Your installation has problems!<br/>
 							<a href="#" onclick="window.location.reload()">(check again)</a>
 						</p>
 					</div>

@@ -50,7 +50,6 @@ ui|menu { //usage: top menubar and ImageEditor menubar
 		&:before {
 			top: -9px;
 			border-bottom: 9px solid @base-border-color;
-			
 		}
 
 		&:after {
@@ -116,7 +115,6 @@ ui|menu { //usage: top menubar and ImageEditor menubar
 			right: 8px;
 		}
 	}
-	
 }
 
 //usage: PopPup Menus on item right click
@@ -186,4 +184,26 @@ ui|menubody ui|labelbox,
 ui|menubody ui|labelbody {
 	float: none;
 	clear: both;
+}
+
+
+.brand-about-menuitem {
+	padding: 7px 8px;
+	height: 32px;
+	line-height: 18px;
+
+	img {
+		width: 18px;
+		height: 18px;
+		float: left;
+	}
+
+	.menuitem-text {
+		margin-left: 30px;
+	}
+
+	&:hover {
+		background: @primary-color;
+		color: #fff;
+	}
 }

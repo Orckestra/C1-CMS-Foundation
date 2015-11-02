@@ -55,7 +55,7 @@
 			</ui:menubody>
 		</ui:popup>
 		<ui:popup id="docktabpopup" binding="DockTabPopupBinding">
-				<ui:menubody>
+			<ui:menubody>
 				<ui:menugroup>
 					<ui:menuitem label="${string:Website.App.LabelCloseTab}" cmd="closetab" />
 					<ui:menuitem label="${string:Website.App.LabelCloseOthers}" cmd="closeothers" />
@@ -63,12 +63,12 @@
 				<ui:menugroup rel="developermode">
 					<ui:menuitem label="${string:Website.App.LabelRefreshView}" cmd="refreshview" />
 					<ui:menuitem label="${string:Website.App.LabelMakeDirty}" cmd="makedirty" />
-					</ui:menugroup>
+				</ui:menugroup>
 				<ui:menugroup rel="developermode">
 					<ui:menuitem label="${string:Website.App.LabelViewSource}" cmd="viewsource" />
 					<ui:menuitem label="${string:Website.App.LabelViewGenerated}" cmd="viewgenerated" />
 					<ui:menuitem label="${string:Website.App.LabelViewSerialized}" cmd="viewserialized" />
-					</ui:menugroup>
+				</ui:menugroup>
 			</ui:menubody>
 		</ui:popup>
 		<ui:popup id="dialogtitlebarpopup" binding="DialogTitleBarPopupBinding">
@@ -100,8 +100,8 @@
 	<ui:balloonset id="dialogballoonset" />
 
 	<ui:menubar id="menubar" class="menubar" binding="StageMenuBarBinding">
-		
-<%--		<ui:menu label="${string:Website.App.LabelFile}" >
+
+		<%--		<ui:menu label="${string:Website.App.LabelFile}" >
 			<ui:menupopup>
 				<ui:menubody>
 					<ui:menugroup>
@@ -115,7 +115,7 @@
 				</ui:menubody>
 			</ui:menupopup>
 		</ui:menu>--%>
-<%--		<ui:menu label="${string:Website.App.LabelView}">
+		<%--		<ui:menu label="${string:Website.App.LabelView}">
 			<ui:menupopup>
 				<ui:menubody>
 					
@@ -144,7 +144,7 @@
 				</ui:menubody>
 			</ui:menupopup>
 		</ui:menu>
-<%--		<ui:menu label="${string:Website.App.LabelTools}">
+		<%--		<ui:menu label="${string:Website.App.LabelTools}">
 			<ui:menupopup>
 				<ui:menubody>
 					
@@ -159,7 +159,12 @@
 						<ui:menuitem label="${string:Website.App.LabelFeedback}" image="${icon:feedback}" oncommand="window.open('http://users.composite.net/Feedback')" />
 					</ui:menugroup>
 					<ui:menugroup>
-						<ui:menuitem label="${string:Website.App.LabelAboutComposite}" oncommand="Commands.about()" image="${icon:company-composite}" />
+						<div class="brand-about-menuitem" onclick="Commands.about()">
+							<img alt="brand" src="images/branding/brand-icon.svg" />
+							<div class="menuitem-text">
+								<ui:text label="${string:Website.App.LabelAbout}"></ui:text><%=Composite.Core.Configuration.GlobalSettingsFacade.ApplicationName%>
+							</div>
+						</div>
 					</ui:menugroup>
 				</ui:menubody>
 			</ui:menupopup>
@@ -196,8 +201,15 @@
 			<ui:explorertoolbar>
 				<ui:toolbarbody align="left">
 					<ui:toolbargroup>
-						<ui:toolbarbutton id="compositebutton" class="logo" image="${icon:company-composite}"  oncommand="EventBroadcaster.broadcast ( BroadcastMessages.START_COMPOSITE );" />
-						<ui:toolbarbutton id="menutogglebutton" class="menu-toggle" image="${icon:menu}"  oncommand="top.app.bindingMap.explorermenu.toggle()" />
+						<div class="brand-name">
+							<div class="brand-icon">
+								<img src="images/branding/brand-icon.svg" alt="brand" onclick="EventBroadcaster.broadcast(BroadcastMessages.START_COMPOSITE);" />
+							</div>
+							<div class="brand-text">
+								<img src="images/branding/brand-text.svg" alt="brand" />
+							</div>
+						</div>
+						<ui:toolbarbutton id="menutogglebutton" class="menu-toggle" image="${icon:menu}" oncommand="top.app.bindingMap.explorermenu.toggle()" />
 					</ui:toolbargroup>
 				</ui:toolbarbody>
 				<ui:toolbarbody class="max">
@@ -206,7 +218,7 @@
 			</ui:explorertoolbar>
 		</ui:explorermenu>
 	</ui:explorer>
-	<ui:cover id="explorermenucover" transparent="true" busy="false" class="explorermenucover" onclick="top.app.bindingMap.explorermenu.collapse()"/>
+	<ui:cover id="explorermenucover" transparent="true" busy="false" class="explorermenucover" onclick="top.app.bindingMap.explorermenu.collapse()" />
 
 	<ui:cover id="stagesplittercover" hidden="true" transparent="true" busy="false" />
 	<ui:stagesplitterbody id="stagesplitterbody" class="binding" binding="StageSplitterBodyBinding" />
@@ -220,29 +232,29 @@
 					<ui:splitpanel>
 						<ui:splitbox id="appverticalsplitbox" orient="vertical" layout="3:1" persist="layout">
 							<ui:splitpanel>
-										<ui:decks id="maindecks">
-											<ui:deck id="startdeck">
-												<ui:decks>
-													<ui:deck>
-														<ui:dock id="startdock" reference="start" type="start">
-															<ui:docktabs>
-																<ui:docktab handle="Composite.Management.Start" />
-															</ui:docktabs>
-															<ui:dockpanels>
-																<ui:dockpanel />
-															</ui:dockpanels>
-														</ui:dock>
-													</ui:deck>
-													<ui:deck id="defaultstartdeck">
-														<ui:window id="defaultstartwindow" url="${root}/content/misc/defaultstart/defaultstart.aspx" />
-													</ui:deck>
-												</ui:decks>
+								<ui:decks id="maindecks">
+									<ui:deck id="startdeck">
+										<ui:decks>
+											<ui:deck>
+												<ui:dock id="startdock" reference="start" type="start">
+													<ui:docktabs>
+														<ui:docktab handle="Composite.Management.Start" />
+													</ui:docktabs>
+													<ui:dockpanels>
+														<ui:dockpanel />
+													</ui:dockpanels>
+												</ui:dock>
 											</ui:deck>
-											<ui:deck id="stagedeck">
-												<ui:cover id="stagedeckscover" busy="false" />
-												<ui:stagedecks id="stagedecks" />
+											<ui:deck id="defaultstartdeck">
+												<ui:window id="defaultstartwindow" url="${root}/content/misc/defaultstart/defaultstart.aspx" />
 											</ui:deck>
 										</ui:decks>
+									</ui:deck>
+									<ui:deck id="stagedeck">
+										<ui:cover id="stagedeckscover" busy="false" />
+										<ui:stagedecks id="stagedecks" />
+									</ui:deck>
+								</ui:decks>
 							</ui:splitpanel>
 							<ui:splitter />
 							<ui:splitpanel>
@@ -285,7 +297,7 @@
 				</ui:splitbox>
 			</ui:stage>
 		</ui:flexbox>
-	<%--	<ui:toolbar id="statusbar" binding="StageStatusBarBinding">
+		<%--	<ui:toolbar id="statusbar" binding="StageStatusBarBinding">
 			<ui:toolbarbody>
 				<ui:toolbargroup>
 					<ui:toolbarlabel id="statusbarlabel" />

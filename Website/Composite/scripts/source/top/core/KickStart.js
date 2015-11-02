@@ -144,26 +144,25 @@ var KickStart = new function () {
 				accessGranted ();
 			} else {
 				if ( bindingMap.decks != null ) {
-					splashScreenData ();
 					showLogin ();
 				} else {
 					showWelcome ();
 				}
 			}
 		}
+
+		splashScreenData();
 	}
 	
 	/**
 	 * Splash screen data.
 	 */
 	function splashScreenData () {
-		
-		var ver = document.getElementById ( "version" );	
-		ver.firstChild.data = ver.firstChild.data.replace ( "${version}", Installation.versionPrettyString );
-		
-		var build = document.getElementById ( "build" );
-		build.firstChild.data = build.firstChild.data.replace("${build}", Installation.versionString);
-
+		var elems = document.getElementsByClassName("js-applicationname");
+		for(var  index = 0; index < elems.length; ++index)
+		{
+			elems[index].innerHTML = Installation.applicationName;
+		}
 	}
 	
 	/*
@@ -395,7 +394,6 @@ var KickStart = new function () {
 	 * Access granted.
 	 */
 	function accessGranted () {
-		
 		setTimeout ( function () {
 			if ( bindingMap.decks != null ) {
 				bindingMap.decks.select ( "loadingdeck" );

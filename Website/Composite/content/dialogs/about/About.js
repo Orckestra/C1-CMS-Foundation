@@ -21,7 +21,7 @@ var About = new function () {
 		var div1 = document.getElementById ( "version" );
 		var idfield = document.getElementById ( "id" );
 		
-		div0.firstChild.data = div0.firstChild.data.replace ( "${pretty}", Installation.versionPrettyString );
+		div0.firstChild.data = div0.firstChild.data.replace ( "${pretty}", Installation.applicationName );
 		div1.firstChild.data = div1.firstChild.data.replace ( "${version}", Installation.versionString );
 		idfield.value = idfield.value.replace("${id}", Installation.installationID);
 		
