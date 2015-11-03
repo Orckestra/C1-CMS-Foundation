@@ -109,14 +109,6 @@ function SystemTreeBinding() {
 	this.isLockedToEditor = false;
 
 	/**
-	 * Because we execute lock-tree focus on a timeout, 
-	 * this flag will instruct the treenode no to init 
-	 * an eternal selection loop.
-	 * @type {boolean}
-	 */
-	this.isLockFeatureFocus = false;
-
-	/**
 	 * Points to the last treenode that was blurred in an   
 	 * attempt, always to offer a sensible treenode focus.
 	 * @type {string}
@@ -611,11 +603,19 @@ SystemTreeBinding.prototype._handleDockTabSelect = function (tab) {
 		if (tab.isExplorerTab) {
 			var self = this, token = this._handleToken;
 			this._handleToken = null;
-			setTimeout(function () { // timeout to minimize freezing sensation
-				if (token != null) {
-					self._focusTreeNodeByEntityToken(token);
-				}
-			}, 250); // zero not always enough...
+			var selectedTreeNode = this.getFocusedTreeNodeBindings().getFirst();
+			if (selectedTreeNode && selectedTreeNode.node.getEntityToken() == token) {
+				EventBroadcaster.broadcast(
+					BroadcastMessages.SYSTEMTREENODEBINDING_FOCUS,
+					selectedTreeNode
+				);
+			} else {
+				setTimeout(function () { // timeout to minimize freezing sensation
+					if (token != null) {
+						self._focusTreeNodeByEntityToken(token);
+					}
+				}, 250); // zero not always enough...
+			}
 		}
 		else {
 			var self = this, token = tab.getEntityToken();
@@ -633,12 +633,6 @@ SystemTreeBinding.prototype._handleDockTabSelect = function (tab) {
  * @return
  */
 SystemTreeBinding.prototype._focusTreeNodeByEntityToken = function (entityToken, isSecondAttempt) {
-
-	/*
-	 * Mark this focus so that it won't trigger a new tab  
-	 * focus in some kind of eternal feedback process.
-	 */
-	this.isLockFeatureFocus = true;
 
 	/*
 	 * Let's find the treenode to focues...
@@ -667,11 +661,6 @@ SystemTreeBinding.prototype._focusTreeNodeByEntityToken = function (entityToken,
 			}
 		}
 	}
-
-	/*
-	 * Re-enable normal focus.
-	 */
-	this.isLockFeatureFocus = false;
 
 	/*
 	 * But if no focusable treenode was found, we ask the server for more treenodes.

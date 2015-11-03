@@ -137,11 +137,15 @@ DockBinding.prototype.onBindingRegister = function () {
 	this.addActionListener ( ViewBinding.ACTION_LOADED );
 	this.addActionListener ( ViewBinding.ACTION_CLOSED )
 	
-	this.subscribe ( BroadcastMessages.SYSTEMTREENODEBINDING_FOCUS );
+
 	
 	this._viewBindingList = new List ();
 	
-	this.reference = this.getProperty ( "reference" );
+	this.reference = this.getProperty("reference");
+
+	if (this.reference == DockBinding.MAIN) {
+		this.subscribe(BroadcastMessages.SYSTEMTREENODEBINDING_FOCUS);
+	}
 }
 
 /**
@@ -530,7 +534,9 @@ DockBinding.prototype.handleBroadcast = function ( broadcast, arg ) {
 	switch ( broadcast ) {
 		case BroadcastMessages.SYSTEMTREENODEBINDING_FOCUS :
 			var treenode = arg;
-			if ( treenode.perspectiveNode == this.perspectiveNode ) {
+			if (arg == this.perspectiveNode) {
+				this._highlightTabByEntityToken()
+			} else if (treenode.perspectiveNode && treenode.perspectiveNode == this.perspectiveNode ) {
 				this._highlightTabByEntityToken(treenode.node.getEntityToken());
 			}
 			break;
@@ -538,7 +544,7 @@ DockBinding.prototype.handleBroadcast = function ( broadcast, arg ) {
 }
 
 /**
- * Find a (more or less random) tab with a given entityToken and select it.
+ * Find a tab with a given entityToken and highlight it.
  * @param {string} entityToken
  */
 DockBinding.prototype._highlightTabByEntityToken = function (entityToken) {
@@ -547,7 +553,7 @@ DockBinding.prototype._highlightTabByEntityToken = function (entityToken) {
 	while (tabs.hasNext()){
 		var tab = tabs.getNext();
 		var token = tab.getEntityToken();
-		if (token != null && token == entityToken) {
+		if (entityToken && token != null && token == entityToken) {
 			tab.highlight(true);
 		} else {
 			tab.highlight(false);
@@ -555,26 +561,26 @@ DockBinding.prototype._highlightTabByEntityToken = function (entityToken) {
 	}
 }
 
-/**
- * Find a (more or less random) tab with a given entityToken and select it.
- * @param {string} entityToken
- */
-DockBinding.prototype._selectTabByEntityToken = function ( entityToken ) {
+///**
+// * Find a (more or less random) tab with a given entityToken and select it.
+// * @param {string} entityToken
+// */
+//DockBinding.prototype._selectTabByEntityToken = function ( entityToken ) {
 	
-	var tabs = this.getTabBindings (); 
-	var hasSelected = false;
+//	var tabs = this.getTabBindings (); 
+//	var hasSelected = false;
 	
-	while ( tabs.hasNext () && !hasSelected ) {
-		var tab = tabs.getNext ();
-		var token = tab.getEntityToken ();
-		if ( token != null && token == entityToken ) {
-			if ( !tab.isSelected ) {
-				this.select ( tab, true );
-				hasSelected = true;
-			}
-		}
-	}
-}
+//	while ( tabs.hasNext () && !hasSelected ) {
+//		var tab = tabs.getNext ();
+//		var token = tab.getEntityToken ();
+//		if ( token != null && token == entityToken ) {
+//			if ( !tab.isSelected ) {
+//				this.select ( tab, true );
+//				hasSelected = true;
+//			}
+//		}
+//	}
+//}
 
 /**
  * Collapse tabpanels. Invoked by the {@link StageSplitPanelBinding}

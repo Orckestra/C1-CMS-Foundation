@@ -549,11 +549,11 @@ SystemTreeNodeBinding.prototype.invokeManagedFocus = function ( e ) {
 		
 		/*
 		 * This broadcast is intercepted by the DockBinding  
-		 * who then decides which corresponding tab to select.
+		 * who then decides which corresponding tab to highlight.
 		 * @see {DockBinding#handleBroadcast}
 		 */
 		var tree = this.containingTreeBinding;
-		if ( tree.isLockedToEditor && !tree.isLockFeatureFocus ) {
+		if ( tree.isLockedToEditor ) {
 			EventBroadcaster.broadcast ( 
 				BroadcastMessages.SYSTEMTREENODEBINDING_FOCUS, 
 				this

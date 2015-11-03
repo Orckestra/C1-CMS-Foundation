@@ -263,6 +263,7 @@ BrowserPageBinding.prototype.onBeforePageInitialize = function () {
 	var dockPanelViewBinding = this.getAncestorBindingByType(ViewBinding, true);
 	var dockTabPanel = UserInterface.getBinding(dockPanelViewBinding.getMigrationParent());
 	dockTabPanel.addActionListener(FocusBinding.ACTION_FOCUS, this);
+	dockTabPanel.addActionListener(FocusBinding.ACTION_BLUR, this);
 
 	if (this._startURL) {
 		this.setURL(this._startURL);
@@ -500,6 +501,12 @@ BrowserPageBinding.prototype.handleAction = function (action) {
 			//TODO add check target
 			if (action.target instanceof DockPanelBinding) {
 				this.onBrowserTabSelected();
+			}
+			break;
+		case FocusBinding.ACTION_BLUR:
+			//TODO add check target
+			if (action.target instanceof DockPanelBinding) {
+				this.onBrowserTabUnselected();
 			}
 			break;
 	}
@@ -1196,4 +1203,15 @@ BrowserPageBinding.prototype.onBrowserTabSelected = function () {
 			systemtoolbar._containAllButtons();
 		}, 0);
 	}
+}
+
+/**
+ * handle browser tab selected
+ */
+BrowserPageBinding.prototype.onBrowserTabUnselected = function () {
+
+	EventBroadcaster.broadcast(
+		BroadcastMessages.SYSTEMTREENODEBINDING_FOCUS,
+		 this.getSystemPage().node
+	);
 }
