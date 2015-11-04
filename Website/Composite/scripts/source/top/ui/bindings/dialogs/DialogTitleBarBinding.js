@@ -85,9 +85,7 @@ DialogTitleBarBinding.prototype.setLabel = function ( label ) {
  */
 DialogTitleBarBinding.prototype.setImage = function ( url ) {
 
-	if ( this.isAttached && Client.isWindows ) { // NO IMAGE ON OSX!
-		this.labelBinding.setImage ( url ) 
-	};
+	this.labelBinding.setImage ( url ) 
 	this.setProperty ( "image", url );
 }
 
