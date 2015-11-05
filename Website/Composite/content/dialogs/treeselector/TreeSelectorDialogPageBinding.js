@@ -156,8 +156,9 @@ TreeSelectorDialogPageBinding.prototype.onBindingRegister = function () {
 	* File subscriptions.
 	*/
 	this.subscribe(BroadcastMessages.SYSTEMTREEBINDING_REFRESH);
-
+	this.subscribe(BroadcastMessages.SYSTEMTREEBINDING_REFRESHED_AFTER);
 	this.subscribe(BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED);
+
 }
 
 /**
@@ -180,13 +181,25 @@ TreeSelectorDialogPageBinding.prototype.handleBroadcast = function (broadcast, a
 					return;
 				}
 			}
-
 			break;
+
+		case BroadcastMessages.SYSTEMTREEBINDING_REFRESHED_AFTER:
+			if (arg.syncHandle == this.getSyncHandle()) {
+				this.refreshView();
+			}
+			break;
+
 		case BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED:
 			if (arg.syncHandle == this.getSyncHandle()) {
 				if (this._genericViewBinding && arg.source !== this._genericViewBinding && arg.actionProfile) {
 					var node = arg.actionProfile.Node;
-					this._genericViewBinding.setNode(node);
+					var entityToken = node.getEntityToken();
+					if (entityToken) {
+						if (this._entityToken != entityToken) {
+							this._entityToken = entityToken;
+							this._genericViewBinding.setNode(node);
+						}
+					}
 				}
 			}
 			break;
@@ -238,7 +251,21 @@ TreeSelectorDialogPageBinding.prototype.onBeforePageInitialize = function () {
 	TreeSelectorDialogPageBinding.superclass.onBeforePageInitialize.call ( this );
 }
 
+/**
+ * Refresh Generic View
+ */
+TreeSelectorDialogPageBinding.prototype.refreshView = function () {
 
+	if (this._genericViewBinding);
+	{
+		var selectedTreeNode = this._treeBinding.getFocusedTreeNodeBindings().getFirst();
+		if (selectedTreeNode) {
+			this._genericViewBinding.setNode(selectedTreeNode.node);
+		} else {
+			this._genericViewBinding.setNode(undefined);
+		}
+	}
+}
 
 /**
  * Inject root nodes in tree.

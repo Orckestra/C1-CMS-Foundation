@@ -178,8 +178,6 @@ BrowserPageBinding.prototype.handleBroadcast = function (broadcast, arg) {
  */
 BrowserPageBinding.prototype.refreshView = function () {
 
-	var genericViewTab = this._box.getGeneticViewTabBinding();
-	var browserTab = this._box.getBrowserTabBinding();
 	var selectedTreeNode = this.getSystemTree().getFocusedTreeNodeBindings().getFirst();
 	if (selectedTreeNode) {
 		selectedTreeNode.focus();
