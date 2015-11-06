@@ -1,135 +1,139 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <strings>
-  <string key="GlobalDataFolderLabel" value="Global Datatypes" />
-  <string key="GlobalDataFolderToolTip" value="Global datatypes" />
-  <string key="GlobalDataFolderLabel_OnlyGlobalData" value="Website Items" />
-  <string key="GlobalDataFolderToolTip_OnlyGlobalData" value="Website Items (Data)" />
-  <string key="PageDataFolderDataFolderLabel" value="Page Datafolders" />
-  <string key="PageDataFolderDataFolderToolTip" value="Page datafolders" />
-  <string key="PageMetaDataFolderLabel" value="Page Metatypes" />
-  <string key="PageMetaDataFolderToolTip" value="Page metatypes" />
-  <string key="Add" value="Add Datatype" />
-  <string key="AddToolTip" value="Add new global datatype" />
-  <string key="ViewUnpublishedItems" value="List Unpublished Data" />
-  <string key="ViewUnpublishedItemsToolTip" value="Get an overview of data that haven't been published yet" />
-  <string key="ViewUnpublishedItems-document-title" value="Unpublished data" />
-  <string key="ViewUnpublishedItems-document-description" value="The list below display data items which are currently being edited or are ready to be approved / published." />
-  <string key="ViewUnpublishedItems-document-empty-label" value="No unpublished data." />
-  <string key="AddDataFolder" value="Add Datafolder" />
-  <string key="AddDataFolderToolTip" value="Add new datafolder" />
-  <string key="AddMetaDataLabel" value="Add Metatype" />
-  <string key="AddMetaDataToolTip" value="Add metatype" />
-  <string key="Edit" value="Edit Datatype" />
-  <string key="EditToolTip" value="Edit selected datatype" />
-  <string key="EditDataFolderTypeLabel" value="Edit" />
-  <string key="EditDataFolderTypeToolTip" value="Edit selected datafolder" />
-  <string key="EditMetaDataTypeLabel" value="Edit" />
-  <string key="EditMetaDataTypeToolTip" value="Edit selected metadata" />
-  <string key="Delete" value="Delete Datatype" />
-  <string key="DeleteToolTip" value="Delete selected datatype" />
-  <string key="DeleteDataFolderTypeLabel" value="Delete" />
-  <string key="DeleteDataFolderTypeToolTip" value="Delete selected datafolder" />
-  <string key="DeleteMetaDataTypeLabel" value="Delete" />
-  <string key="DeleteMetaDataTypeToolTip" value="Delete selected metadata" />
-  <string key="EditFormMarkup" value="Edit Form Markup" />
-  <string key="EditFormMarkupToolTip" value="Modify the layout of the data form using markup" />
-  <string key="EnableLocalization" value="Enable Localization" />
-  <string key="EnableLocalizationToolTip" value="Enable localization" />
-  <string key="DisableLocalization" value="Disable Localization" />
-  <string key="DisableLocalizationToolTip" value="Disable localization" />
-  <string key="DisabledData" value="Not yet approved or published" />
-  <string key="UndefinedLabelTemplate" value="(undefined [{0}])" />
-  <string key="UndefinedDataLavelTemplate" value="(undefined)" />
-  <string key="ShowInContent" value="Show in Content perspective" />
-  <string key="ShowInContentToolTip" value="Show in Content perspective" />
-  <string key="AddData" value="Add Data" />
-  <string key="AddDataToolTip" value="Add new data" />
-  <string key="EditData" value="Edit Data" />
-  <string key="EditDataToolTip" value="Edit selected data" />
-  <string key="DeleteData" value="Delete Data" />
-  <string key="DeleteDataToolTip" value="Delete selected data" />
-  <string key="LocalizeData" value="Translate Data" />
-  <string key="LocalizeDataToolTip" value="Translate selected data" />
-  <string key="DraftTransition" value="Draft" />
-  <string key="AwaitingApprovalTransition" value="Awaiting Approval" />
-  <string key="PublicationSettings.FieldGroupLabel" value="Publication settings" />
-  <string key="PublicationStatus.Label" value="Status" />
-  <string key="PublicationStatus.Help" value="Send the data to another publication status." />
-  <string key="PublishDate.Label" value="Publish date" />
-  <string key="PublishDate.Help" value="Specify at which date and time you want the data to be published automatically." />
-  <string key="UnpublishDate.Label" value="Unpublish date" />
-  <string key="UnpublishDate.Help" value="Specify at which date and time you want the data to be unpublished automatically." />
-  <string key="AddNewInterfaceTypeStep1.DocumentTitle" value="New Datatype" />
-  <string key="AddNewCompositionTypeWorkflow.DocumentTitle" value="New Page Metatype" />
-  <string key="AddNewAggregationTypeWorkflow.DocumentTitle" value="New Page Datafolder" />
-  <string key="EditorCommon.SettingsTab" value="Settings" />
-  <string key="EditorCommon.LabelTitleGroup" value="Type title" />
-  <string key="EditorCommon.LabelProgrammaticNamingAndServices" value="Programmatic naming and services" />
-  <string key="EditorCommon.LabelProgrammaticNaming" value="Programmatic naming" />
-  <string key="EditorCommon.LabelTypeName" value="Type name" />
-  <string key="EditorCommon.HelpTypeName" value="The technical name of the data type (ex. Product). This is used to identify this type in code and should not be changed once used externally." />
-  <string key="EditorCommon.LabelTypeNamespace" value="Type namespace" />
-  <string key="EditorCommon.HelpTypeNamespace" value="The namespace (module / category name) of the type. This is used to identify this type in code and should not be changed once used externally." />
-  <string key="EditorCommon.LabelTitle" value="Title" />
-  <string key="EditorCommon.HelpTitle" value="Use this entry to specify a user friendly name. This name is used in most UI." />
-  <string key="EditorCommon.LabelFields" value="Fields" />
-  <string key="EditorCommon.KeyFieldTypeLabel" value="Key field type"/>
-  <string key="EditorCommon.KeyFieldTypeHelp" value="The type of the primary key. Use the default 'Guid' type for optimal performance and 'RandomString' for shorter data urls."/>
-  <string key="EditorCommon.KeyFieldType.Guid" value="Guid"/>
-  <string key="EditorCommon.KeyFieldType.RandomString4" value="Random String, 4 characters long"/>
-  <string key="EditorCommon.KeyFieldType.RandomString8" value="Random String, 8 characters long"/>
-  <string key="EditorCommon.ServicesLabel" value="Services" />
-  <string key="EditorCommon.InternalUrlPrefixLabel" value="Short URL name" />
-  <string key="EditorCommon.InternalUrlPrefixHelp" value="When specified, allows data items of the current type to be referenced in content. The internal links will have format '~/{ShortURLName}({id})', f.e. '~/product(aIkH34F)" />
-  <string key="EditorCommon.HasCaching" value="Has caching" />
-  <string key="EditorCommon.HasPublishing" value="Has publishing" />
-  <string key="EditorCommon.HasLocalization" value="Is localizable data" />
-  <string key="DeleteGeneratedDataStep1.LabelFieldGroup" value="Delete Data?" />
-  <string key="DeleteGeneratedDataStep1.Text" value="Delete data?" />
-  <string key="DeleteDataConfirmationText" value="There is some referenced data that will also be deleted, do you want to continue?" />
-  <string key="DeleteGeneratedInterfaceStep1.LabelFieldGroup" value="Delete Datatype" />
-  <string key="DeleteGeneratedInterfaceStep1.Text" value="Delete the datatype" />
-  <string key="CascadeDeleteErrorTitle" value="Cascade delete error" />
-  <string key="CascadeDeleteErrorMessage" value="The type is referenced by another type that does not allow cascade deletes. This operation is halted" />
-  <string key="DeleteAggregationTypeWorkflow.LabelFieldGroup" value="Delete Datatype" />
-  <string key="DeleteAggregationTypeWorkflow.Text" value="Delete the datatype" />
-  <string key="DeleteAggregationTypeWorkflow.ErrorTitle" value="Error" />
-  <string key="DeleteAggregationTypeWorkflow.IsUsedByPageType" value="Cannot delete type '{0}' since it is used by a page type." />  
-  <string key="DeleteCompositionTypeWorkflow.LabelFieldGroup" value="Delete Datatype" />
-  <string key="DeleteCompositionTypeWorkflow.Text" value="Delete the datatype" />
-  <string key="DeleteCompositionTypeWorkflow.ErrorTitle" value="Error" />
-  <string key="DeleteCompositionTypeWorkflow.TypeIsReferenced" value="Cannot delete type '{0}' since there're types that referenced to it." />
-  <string key="DeleteCompositionTypeWorkflow.IsUsedByPageType" value="Cannot delete type '{0}' since it is used by a page type." />  
-  <string key="ToXmlLabel" value="To Xml" />
-  <string key="ToXmlToolTip" value="To Xml" />
-  <string key="EnableTypeLocalizationWorkflow.Dialog.Label" value="Enable Localization" />
-  <string key="EnableTypeLocalizationWorkflow.Step1.FieldGroup.Label" value="Enable localization" />
-  <string key="EnableTypeLocalizationWorkflow.Step1.CultureSelector.Label" value="Move existing data to ..." />
-  <string key="EnableTypeLocalizationWorkflow.Step1.CultureSelector.Help" value="When you enable 'localization' on a data type, all data must belong to a language. Select the language existing data should now be moved to." />
-  <string key="EnableTypeLocalizationWorkflow.Step2.Title" value="Confirmation" />
-  <string key="EnableTypeLocalizationWorkflow.Step2.Description" value="Data type will be localized and data copied to selected locale. Click Finish to continue." />
-  <string key="EnableTypeLocalizationWorkflow.Step3.Title" value="Warning" />
-  <string key="EnableTypeLocalizationWorkflow.Step3.Description" value="There's some datatypes which have references to the type. While localizing the data will be copied to all languages in order to prevent appearing of broken references." />
-  <string key="EnableTypeLocalizationWorkflow.Abort.Title" value="Missing active locales" />
-  <string key="EnableTypeLocalizationWorkflow.Abort.Description" value="There are no added active locales. Add at least one before localization this datatype." />
-  <string key="DisableTypeLocalizationWorkflow.Dialog.Label" value="Disable Localization" />
-  <string key="DisableTypeLocalizationWorkflow.Step1.FieldGroup.Label" value="Disable localization" />
-  <string key="DisableTypeLocalizationWorkflow.Step1.CultureSelector.Label" value="Keep data from ..." />
-  <string key="DisableTypeLocalizationWorkflow.Step1.CultureSelector.Help" value="When localization is disabled on a datatype only one translation can be kept. Data from other languages will be lost." />
-  <string key="DisableTypeLocalizationWorkflow.Step2.Title" value="Confirmation" />
-  <string key="DisableTypeLocalizationWorkflow.Step2.Description" value="All data from other locales than the one selected will be lost. Click Finish to continue." />
-  <string key="LocalizeDataWorkflow.ShowError.LayoutLabel" value="Failed to translate data" />
-  <string key="LocalizeDataWorkflow.ShowError.InfoTableCaption" value="Translation errors" />
-  <string key="LocalizeDataWorkflow.ShowError.AlreadyTranslated" value="This data has already been translated. The translated version belongs to a different group." />
-  <string key="LocalizeDataWorkflow.ShowError.Description" value="The following fields has a reference to a data type. You should translate these data items before you can translate this data item" />
-  <string key="LocalizeDataWorkflow.ShowError.FieldErrorFormat" value="The field '{0}' is referencing data of type '{1}' with the label '{2}'" />
-  <string key="AddNewInterfaceTypeStep1.ErrorTitle" value="Error" />
-  <string key="EditInterfaceTypeStep1.ErrorTitle" value="Error" />
-  <string key="AddNewCompositionTypeWorkflow.ErrorTitle" value="Error" />
-  <string key="EditCompositionTypeWorkflow.ErrorTitle" value="Error" />
-  <string key="DataTypeDescriptorToXmlLabel" value="XML Result" />
+	<string key="GlobalDataFolderLabel" value="Global Datatypes" />
+	<string key="GlobalDataFolderToolTip" value="Global datatypes" />
+	<string key="GlobalDataFolderLabel_OnlyGlobalData" value="Website Items" />
+	<string key="GlobalDataFolderToolTip_OnlyGlobalData" value="Website Items (Data)" />
+	<string key="PageDataFolderDataFolderLabel" value="Page Datafolders" />
+	<string key="PageDataFolderDataFolderToolTip" value="Page datafolders" />
+	<string key="PageMetaDataFolderLabel" value="Page Metatypes" />
+	<string key="PageMetaDataFolderToolTip" value="Page metatypes" />
+	<string key="Add" value="Add Datatype" />
+	<string key="AddToolTip" value="Add new global datatype" />
+	<string key="ViewUnpublishedItems" value="List Unpublished Data" />
+	<string key="ViewUnpublishedItemsToolTip" value="Get an overview of data that haven't been published yet" />
+	<string key="ViewUnpublishedItems-document-title" value="Unpublished data" />
+	<string key="ViewUnpublishedItems-document-description" value="The list below display data items which are currently being edited or are ready to be approved / published." />
+	<string key="ViewUnpublishedItems-document-empty-label" value="No unpublished data." />
+	<string key="AddDataFolder" value="Add Datafolder" />
+	<string key="AddDataFolderToolTip" value="Add new datafolder" />
+	<string key="AddMetaDataLabel" value="Add Metatype" />
+	<string key="AddMetaDataToolTip" value="Add metatype" />
+	<string key="Edit" value="Edit Datatype" />
+	<string key="EditToolTip" value="Edit selected datatype" />
+	<string key="EditDataFolderTypeLabel" value="Edit" />
+	<string key="EditDataFolderTypeToolTip" value="Edit selected datafolder" />
+	<string key="EditMetaDataTypeLabel" value="Edit" />
+	<string key="EditMetaDataTypeToolTip" value="Edit selected metadata" />
+	<string key="Delete" value="Delete Datatype" />
+	<string key="DeleteToolTip" value="Delete selected datatype" />
+	<string key="DeleteDataFolderTypeLabel" value="Delete" />
+	<string key="DeleteDataFolderTypeToolTip" value="Delete selected datafolder" />
+	<string key="DeleteMetaDataTypeLabel" value="Delete" />
+	<string key="DeleteMetaDataTypeToolTip" value="Delete selected metadata" />
+	<string key="EditFormMarkup" value="Edit Form Markup" />
+	<string key="EditFormMarkupToolTip" value="Modify the layout of the data form using markup" />
+	<string key="EnableLocalization" value="Enable Localization" />
+	<string key="EnableLocalizationToolTip" value="Enable localization" />
+	<string key="DisableLocalization" value="Disable Localization" />
+	<string key="DisableLocalizationToolTip" value="Disable localization" />
+	<string key="DisabledData" value="Not yet approved or published" />
+	<string key="UndefinedLabelTemplate" value="(undefined [{0}])" />
+	<string key="UndefinedDataLavelTemplate" value="(undefined)" />
+	<string key="ShowInContent" value="Show in Content perspective" />
+	<string key="ShowInContentToolTip" value="Show in Content perspective" />
+	<string key="AddData" value="Add Data" />
+	<string key="AddDataToolTip" value="Add new data" />
+	<string key="EditData" value="Edit Data" />
+	<string key="EditDataToolTip" value="Edit selected data" />
+	<string key="DeleteData" value="Delete Data" />
+	<string key="DeleteDataToolTip" value="Delete selected data" />
+	<string key="LocalizeData" value="Translate Data" />
+	<string key="LocalizeDataToolTip" value="Translate selected data" />
+	<string key="DraftTransition" value="Draft" />
+	<string key="AwaitingApprovalTransition" value="Awaiting Approval" />
+	<string key="PublicationSettings.FieldGroupLabel" value="Publication settings" />
+	<string key="PublicationStatus.Label" value="Status" />
+	<string key="PublicationStatus.Help" value="Send the data to another publication status." />
+	<string key="PublishDate.Label" value="Publish date" />
+	<string key="PublishDate.Help" value="Specify at which date and time you want the data to be published automatically." />
+	<string key="UnpublishDate.Label" value="Unpublish date" />
+	<string key="UnpublishDate.Help" value="Specify at which date and time you want the data to be unpublished automatically." />
+	<string key="LocalOrdering.FieldGroupLabel" value="Sorting settings" />
+	<string key="LocalOrdering.Label" value="Local ordering" />
+	<string key="LocalOrdering.Help" value="Specify the ordering of the element related to other data items on the same level. Lowest is first." />
+	<string key="AddNewInterfaceTypeStep1.DocumentTitle" value="New Datatype" />
+	<string key="AddNewCompositionTypeWorkflow.DocumentTitle" value="New Page Metatype" />
+	<string key="AddNewAggregationTypeWorkflow.DocumentTitle" value="New Page Datafolder" />
+	<string key="EditorCommon.SettingsTab" value="Settings" />
+	<string key="EditorCommon.LabelTitleGroup" value="Type title" />
+	<string key="EditorCommon.LabelProgrammaticNamingAndServices" value="Programmatic naming and services" />
+	<string key="EditorCommon.LabelProgrammaticNaming" value="Programmatic naming" />
+	<string key="EditorCommon.LabelTypeName" value="Type name" />
+	<string key="EditorCommon.HelpTypeName" value="The technical name of the data type (ex. Product). This is used to identify this type in code and should not be changed once used externally." />
+	<string key="EditorCommon.LabelTypeNamespace" value="Type namespace" />
+	<string key="EditorCommon.HelpTypeNamespace" value="The namespace (module / category name) of the type. This is used to identify this type in code and should not be changed once used externally." />
+	<string key="EditorCommon.LabelTitle" value="Title" />
+	<string key="EditorCommon.HelpTitle" value="Use this entry to specify a user friendly name. This name is used in most UI." />
+	<string key="EditorCommon.LabelFields" value="Fields" />
+	<string key="EditorCommon.KeyFieldTypeLabel" value="Key field type"/>
+	<string key="EditorCommon.KeyFieldTypeHelp" value="The type of the primary key. Use the default 'Guid' type for optimal performance and 'RandomString' for shorter data urls."/>
+	<string key="EditorCommon.KeyFieldType.Guid" value="Guid"/>
+	<string key="EditorCommon.KeyFieldType.RandomString4" value="Random String, 4 characters long"/>
+	<string key="EditorCommon.KeyFieldType.RandomString8" value="Random String, 8 characters long"/>
+	<string key="EditorCommon.ServicesLabel" value="Services" />
+	<string key="EditorCommon.InternalUrlPrefixLabel" value="Short URL name" />
+	<string key="EditorCommon.InternalUrlPrefixHelp" value="When specified, allows data items of the current type to be referenced in content. The internal links will have format '~/{ShortURLName}({id})', f.e. '~/product(aIkH34F)" />
+	<string key="EditorCommon.HasCaching" value="Has caching" />
+	<string key="EditorCommon.HasPublishing" value="Has publishing" />
+	<string key="EditorCommon.HasLocalization" value="Is localizable data" />
+	<string key="EditorCommon.HasSorting" value="Has sorting" />
+	<string key="DeleteGeneratedDataStep1.LabelFieldGroup" value="Delete Data?" />
+	<string key="DeleteGeneratedDataStep1.Text" value="Delete data?" />
+	<string key="DeleteDataConfirmationText" value="There is some referenced data that will also be deleted, do you want to continue?" />
+	<string key="DeleteGeneratedInterfaceStep1.LabelFieldGroup" value="Delete Datatype" />
+	<string key="DeleteGeneratedInterfaceStep1.Text" value="Delete the datatype" />
+	<string key="CascadeDeleteErrorTitle" value="Cascade delete error" />
+	<string key="CascadeDeleteErrorMessage" value="The type is referenced by another type that does not allow cascade deletes. This operation is halted" />
+	<string key="DeleteAggregationTypeWorkflow.LabelFieldGroup" value="Delete Datatype" />
+	<string key="DeleteAggregationTypeWorkflow.Text" value="Delete the datatype" />
+	<string key="DeleteAggregationTypeWorkflow.ErrorTitle" value="Error" />
+	<string key="DeleteAggregationTypeWorkflow.IsUsedByPageType" value="Cannot delete type '{0}' since it is used by a page type." />
+	<string key="DeleteCompositionTypeWorkflow.LabelFieldGroup" value="Delete Datatype" />
+	<string key="DeleteCompositionTypeWorkflow.Text" value="Delete the datatype" />
+	<string key="DeleteCompositionTypeWorkflow.ErrorTitle" value="Error" />
+	<string key="DeleteCompositionTypeWorkflow.TypeIsReferenced" value="Cannot delete type '{0}' since there're types that referenced to it." />
+	<string key="DeleteCompositionTypeWorkflow.IsUsedByPageType" value="Cannot delete type '{0}' since it is used by a page type." />
+	<string key="ToXmlLabel" value="To Xml" />
+	<string key="ToXmlToolTip" value="To Xml" />
+	<string key="EnableTypeLocalizationWorkflow.Dialog.Label" value="Enable Localization" />
+	<string key="EnableTypeLocalizationWorkflow.Step1.FieldGroup.Label" value="Enable localization" />
+	<string key="EnableTypeLocalizationWorkflow.Step1.CultureSelector.Label" value="Move existing data to ..." />
+	<string key="EnableTypeLocalizationWorkflow.Step1.CultureSelector.Help" value="When you enable 'localization' on a data type, all data must belong to a language. Select the language existing data should now be moved to." />
+	<string key="EnableTypeLocalizationWorkflow.Step2.Title" value="Confirmation" />
+	<string key="EnableTypeLocalizationWorkflow.Step2.Description" value="Data type will be localized and data copied to selected locale. Click Finish to continue." />
+	<string key="EnableTypeLocalizationWorkflow.Step3.Title" value="Warning" />
+	<string key="EnableTypeLocalizationWorkflow.Step3.Description" value="There's some datatypes which have references to the type. While localizing the data will be copied to all languages in order to prevent appearing of broken references." />
+	<string key="EnableTypeLocalizationWorkflow.Abort.Title" value="Missing active locales" />
+	<string key="EnableTypeLocalizationWorkflow.Abort.Description" value="There are no added active locales. Add at least one before localization this datatype." />
+	<string key="DisableTypeLocalizationWorkflow.Dialog.Label" value="Disable Localization" />
+	<string key="DisableTypeLocalizationWorkflow.Step1.FieldGroup.Label" value="Disable localization" />
+	<string key="DisableTypeLocalizationWorkflow.Step1.CultureSelector.Label" value="Keep data from ..." />
+	<string key="DisableTypeLocalizationWorkflow.Step1.CultureSelector.Help" value="When localization is disabled on a datatype only one translation can be kept. Data from other languages will be lost." />
+	<string key="DisableTypeLocalizationWorkflow.Step2.Title" value="Confirmation" />
+	<string key="DisableTypeLocalizationWorkflow.Step2.Description" value="All data from other locales than the one selected will be lost. Click Finish to continue." />
+	<string key="LocalizeDataWorkflow.ShowError.LayoutLabel" value="Failed to translate data" />
+	<string key="LocalizeDataWorkflow.ShowError.InfoTableCaption" value="Translation errors" />
+	<string key="LocalizeDataWorkflow.ShowError.AlreadyTranslated" value="This data has already been translated. The translated version belongs to a different group." />
+	<string key="LocalizeDataWorkflow.ShowError.Description" value="The following fields has a reference to a data type. You should translate these data items before you can translate this data item" />
+	<string key="LocalizeDataWorkflow.ShowError.FieldErrorFormat" value="The field '{0}' is referencing data of type '{1}' with the label '{2}'" />
+	<string key="AddNewInterfaceTypeStep1.ErrorTitle" value="Error" />
+	<string key="EditInterfaceTypeStep1.ErrorTitle" value="Error" />
+	<string key="AddNewCompositionTypeWorkflow.ErrorTitle" value="Error" />
+	<string key="EditCompositionTypeWorkflow.ErrorTitle" value="Error" />
+	<string key="DataTypeDescriptorToXmlLabel" value="XML Result" />
 
-  <string key="FormMarkupInfo.Dialog.Label" value="This type has custom form markup" />
-  <string key="FormMarkupInfo.Message" value="Your field changes will not affect the form for editing data.
+	<string key="FormMarkupInfo.Dialog.Label" value="This type has custom form markup" />
+	<string key="FormMarkupInfo.Message" value="Your field changes will not affect the form for editing data.
 Do '{0}' to change the form or delete the file '{1}'." />
 </strings>

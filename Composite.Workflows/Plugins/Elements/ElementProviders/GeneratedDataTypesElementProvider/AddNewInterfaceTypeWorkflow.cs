@@ -37,6 +37,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             public const string InternalUrlPrefix = "InternalUrlPrefix";
             public const string HasCaching = "HasCaching";
             public const string HasPublishing = "HasPublishing";
+            public const string HasSorting = "HasSorting";
             public const string HasLocalization = "HasLocalization";
             public const string KeyFieldReadOnly = "KeyFieldReadOnly";
         }
@@ -62,6 +63,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 {BindingNames.DataFieldDescriptors, dataFieldDescriptors},
                 {BindingNames.HasCaching, false},
                 {BindingNames.HasPublishing, false},
+                {BindingNames.HasSorting, false},
                 {BindingNames.HasLocalization, false},
                 {BindingNames.KeyFieldName, dataFieldDescriptors.First().Name},
                 {BindingNames.LabelFieldName, ""},
@@ -98,6 +100,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 string typeTitle = this.GetBinding<string>(BindingNames.NewTypeTitle);
                 bool hasCaching = this.GetBinding<bool>(BindingNames.HasCaching);
                 bool hasPublishing = this.GetBinding<bool>(BindingNames.HasPublishing);
+                bool hasSorting = this.GetBinding<bool>(BindingNames.HasSorting);
                 bool hasLocalization = this.GetBinding<bool>(BindingNames.HasLocalization);
                 string keyFieldName = this.GetBinding<string>(BindingNames.KeyFieldName);
                 string labelFieldName = this.GetBinding<string>(BindingNames.LabelFieldName);
@@ -156,7 +159,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                             Texts.AddNewInterfaceTypeStep1_ErrorTitle,
                             "It's not possible to change localization through the current tab"
                         );
-                        return;             
+                        return;
                     }
                 }
 
@@ -165,8 +168,9 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 {
                     helper.SetCachable(hasCaching);
                     helper.SetPublishControlled(hasPublishing);
+                    helper.SetSortable(hasSorting);
                     helper.SetLocalizedControlled(hasLocalization);
-                }   
+                }
 
                 helper.SetNewTypeFullName(typeName, typeNamespace);
                 helper.SetNewTypeTitle(typeTitle);
@@ -203,8 +207,8 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 string serializedTypeName = TypeManager.SerializeType(helper.InterfaceType);
 
                 EntityToken entityToken = new GeneratedDataTypesElementProviderTypeEntityToken(
-                    serializedTypeName, 
-                    this.EntityToken.Source, 
+                    serializedTypeName,
+                    this.EntityToken.Source,
                     IsPageDataFolder ? GeneratedDataTypesElementProviderRootEntityToken.PageDataFolderTypeFolderId
                                      : GeneratedDataTypesElementProviderRootEntityToken.GlobalDataTypeFolderId
                 );
@@ -217,10 +221,10 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 {
                     SetSaveStatus(true, entityToken);
                 }
-                
+
 
                 if (!this.BindingExist(BindingNames.InterfaceType))
-                {                    
+                {
                     this.AcquireLock(entityToken);
                 }
 

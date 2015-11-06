@@ -43,6 +43,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             public const string InternalUrlPrefix = "InternalUrlPrefix";
             public const string HasCaching = "HasCaching";
             public const string HasPublishing = "HasPublishing";
+            public const string HasSorting = "HasSorting";
 
             public const string OldTypeName = "OldTypeName";
             public const string OldTypeNamespace = "OldTypeNamespace";
@@ -83,6 +84,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 {BindingNames.InternalUrlPrefix, dataTypeDescriptor.InternalUrlPrefix},
                 {BindingNames.HasCaching, helper.IsCachable},
                 {BindingNames.HasPublishing, helper.IsPublishControlled},
+                {BindingNames.HasSorting, helper.IsSortable},
                 {BindingNames.DataFieldDescriptors, fieldDescriptors},
                 {BindingNames.OldTypeName, dataTypeDescriptor.Name},
                 {BindingNames.OldTypeNamespace, dataTypeDescriptor.Namespace}
@@ -115,6 +117,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 string typeTitle = this.GetBinding<string>(BindingNames.TypeTitle);
                 bool hasCaching = this.GetBinding<bool>(BindingNames.HasCaching);
                 bool hasPublishing = this.GetBinding<bool>(BindingNames.HasPublishing);
+                bool hasSorting = this.GetBinding<bool>(BindingNames.HasSorting);
                 string keyFieldName = this.GetBinding<string>(BindingNames.KeyFieldName);
                 string labelFieldName = this.GetBinding<string>(BindingNames.LabelFieldName);
                 string internalUrlPrefix = this.GetBinding<string>(BindingNames.InternalUrlPrefix);
@@ -156,13 +159,14 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 helper.SetNewTypeFullName(typeName, typeNamespace);
                 helper.SetNewTypeTitle(typeTitle);
                 helper.SetNewInternalUrlPrefix(internalUrlPrefix);
-                
+
                 helper.SetNewFieldDescriptors(dataFieldDescriptors, keyFieldName, labelFieldName);
 
                 if (helper.IsEditProcessControlledAllowed)
                 {
                     helper.SetCachable(hasCaching);
                     helper.SetPublishControlled(hasPublishing);
+                    helper.SetSortable(hasSorting);
                     helper.SetLocalizedControlled(hasLocalization);
                 }
 
@@ -196,7 +200,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
                 SetSaveStatus(true);
 
-                var rootEntityToken = new GeneratedDataTypesElementProviderRootEntityToken(this.EntityToken.Source, 
+                var rootEntityToken = new GeneratedDataTypesElementProviderRootEntityToken(this.EntityToken.Source,
                     IsPageFolder ? GeneratedDataTypesElementProviderRootEntityToken.PageDataFolderTypeFolderId
                                  : GeneratedDataTypesElementProviderRootEntityToken.GlobalDataTypeFolderId);
 
@@ -206,7 +210,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 IFile markupFile = DynamicTypesAlternateFormFacade.GetAlternateFormMarkupFile(typeNamespace, typeName);
                 if (markupFile != null)
                 {
-                    ShowMessage(DialogType.Message, 
+                    ShowMessage(DialogType.Message,
                         Texts.FormMarkupInfo_Dialog_Label,
                         Texts.FormMarkupInfo_Message(Texts.EditFormMarkup, markupFile.GetRelativeFilePath()));
                 }

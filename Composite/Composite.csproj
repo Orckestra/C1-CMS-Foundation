@@ -226,6 +226,7 @@
     <Compile Include="Data\PageRenderingHistory.cs" />
     <Compile Include="Data\RouteDateSegmentAttribute.cs" />
     <Compile Include="Data\RouteSegmentAttribute.cs" />
+    <Compile Include="Data\Types\IGenericSortable.cs" />
     <Compile Include="Functions\AttributeBasedRoutedDataUrlMapper.cs" />
     <Compile Include="Functions\IRoutedDataUrlMapper.cs" />
     <Compile Include="Functions\PathInfoRoutedDataUrlMapper.cs" />

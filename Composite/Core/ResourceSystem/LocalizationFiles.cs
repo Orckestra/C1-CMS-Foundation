@@ -2655,6 +2655,12 @@ namespace Composite.Core.ResourceSystem
  public static string UnpublishDate_Label { get { return T("UnpublishDate.Label"); } } 
  /// <summary>&quot;Specify at which date and time you want the data to be unpublished automatically.&quot;</summary> 
  public static string UnpublishDate_Help { get { return T("UnpublishDate.Help"); } } 
+ /// <summary>&quot;Sorting settings&quot;</summary> 
+ public static string LocalOrdering_FieldGroupLabel { get { return T("LocalOrdering.FieldGroupLabel"); } } 
+ /// <summary>&quot;Local ordering&quot;</summary> 
+ public static string LocalOrdering_Label { get { return T("LocalOrdering.Label"); } } 
+ /// <summary>&quot;Specify the ordering of the element related to other data items on the same level. Lowest is first.&quot;</summary> 
+ public static string LocalOrdering_Help { get { return T("LocalOrdering.Help"); } } 
  /// <summary>&quot;New Datatype&quot;</summary> 
  public static string AddNewInterfaceTypeStep1_DocumentTitle { get { return T("AddNewInterfaceTypeStep1.DocumentTitle"); } } 
  /// <summary>&quot;New Page Metatype&quot;</summary> 
@@ -2705,6 +2711,8 @@ namespace Composite.Core.ResourceSystem
  public static string EditorCommon_HasPublishing { get { return T("EditorCommon.HasPublishing"); } } 
  /// <summary>&quot;Is localizable data&quot;</summary> 
  public static string EditorCommon_HasLocalization { get { return T("EditorCommon.HasLocalization"); } } 
+ /// <summary>&quot;Is sortable&quot;</summary> 
+ public static string EditorCommon_HasSorting { get { return T("EditorCommon.HasSorting"); } } 
  /// <summary>&quot;Delete Data?&quot;</summary> 
  public static string DeleteGeneratedDataStep1_LabelFieldGroup { get { return T("DeleteGeneratedDataStep1.LabelFieldGroup"); } } 
  /// <summary>&quot;Delete data?&quot;</summary> 

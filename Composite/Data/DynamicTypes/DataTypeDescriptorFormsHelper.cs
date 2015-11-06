@@ -15,6 +15,7 @@ using Composite.Data.DynamicTypes.Foundation;
 using Composite.Data.ProcessControlled;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
 using Composite.Data.PublishScheduling;
+using Composite.Data.Types;
 using Composite.Data.Validation;
 using Composite.Data.Validation.ClientValidationRules;
 using Composite.Functions;
@@ -24,7 +25,7 @@ using Texts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_Plugins_
 
 namespace Composite.Data.DynamicTypes
 {
-    /// <summary>    
+    /// <summary>
     /// </summary>
     /// <exclude />
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -43,6 +44,8 @@ namespace Composite.Data.DynamicTypes
 
         private const string PublicationStatusPostFixBindingName = "PublicationStatus";
         private const string PublicationStatusOptionsPostFixBindingName = "PublicationStatusOptions";
+
+        private const string LocalOrderingPostFixBindingName = "LocalOrdering";
 
         private static readonly XElement CmsFormElementTemplate;
         private static readonly XElement CmsBindingsElementTemplate;
@@ -364,10 +367,15 @@ namespace Composite.Data.DynamicTypes
                 var locale = dataObject.DataSourceId.LocaleScope.Name;
 
                 var existingPublishSchedule = PublishScheduleHelper.GetPublishSchedule(intefaceType, stringKey, locale);
-                bindings.Add("PublishDate", existingPublishSchedule != null ? existingPublishSchedule.PublishDate : (DateTime?) null);
+                bindings.Add("PublishDate", existingPublishSchedule != null ? existingPublishSchedule.PublishDate : (DateTime?)null);
 
                 var existingUnpublishSchedule = PublishScheduleHelper.GetUnpublishSchedule(intefaceType, stringKey, locale);
-                bindings.Add("UnpublishDate", existingUnpublishSchedule != null ? existingUnpublishSchedule.UnpublishDate : (DateTime?) null);
+                bindings.Add("UnpublishDate", existingUnpublishSchedule != null ? existingUnpublishSchedule.UnpublishDate : (DateTime?)null);
+            }
+
+            if (_dataTypeDescriptor.SuperInterfaces.Contains(typeof(IGenericSortable)))
+            {
+                bindings[LocalOrderingBindingName] = ((IGenericSortable)dataObject).LocalOrdering;
             }
 
             return bindings;
@@ -443,6 +451,13 @@ namespace Composite.Data.DynamicTypes
                 var publishControlled = dataObject as IPublishControlled;
 
                 publishControlled.PublicationStatus = (string)bindings[PublicationStatusBindingName];
+            }
+
+            if (_dataTypeDescriptor.SuperInterfaces.Contains(typeof(IGenericSortable)))
+            {
+                var genericSortable = dataObject as IGenericSortable;
+
+                genericSortable.LocalOrdering = (int)bindings[LocalOrderingBindingName];
             }
 
             if (errorMessages.Count > 0)
@@ -625,7 +640,7 @@ namespace Composite.Data.DynamicTypes
             {
                 _panelXml.Add(new XAttribute("Label", formLabel));
             }
-            
+
             layout.Add(_panelXml);
 
             foreach (var fieldDescriptor in _dataTypeDescriptor.Fields)
@@ -713,14 +728,16 @@ namespace Composite.Data.DynamicTypes
                 }
             }
 
+            XElement placeholder = null;
+
             if (_showPublicationStatusSelector && _dataTypeDescriptor.SuperInterfaces.Contains(typeof(IPublishControlled)))
             {
-                var placeholder = new XElement(MainNamespace + "PlaceHolder");
+                placeholder = new XElement(MainNamespace + "PlaceHolder");
                 _panelXml.Remove();
 
                 placeholder.Add(_panelXml);
                 layout.Add(placeholder);
-                
+
                 var publishFieldsXml = new XElement(MainNamespace + "FieldGroup", new XAttribute("Label", Texts.PublicationSettings_FieldGroupLabel));
                 placeholder.Add(publishFieldsXml);
 
@@ -744,7 +761,7 @@ namespace Composite.Data.DynamicTypes
 
 
                 publishFieldsXml.Add(element);
-                
+
 
                 var publishDateBinding = new XElement(CmsNamespace + FormKeyTagNames.Binding,
                     new XAttribute("name", "PublishDate"),
@@ -773,6 +790,29 @@ namespace Composite.Data.DynamicTypes
                         new XAttribute("Help", Texts.UnpublishDate_Help),
                         new XElement(CmsNamespace + "bind",
                                 new XAttribute("source", "UnpublishDate"))));
+            }
+
+            if (_dataTypeDescriptor.SuperInterfaces.Contains(typeof(IGenericSortable)))
+            {
+                if (placeholder == null)
+                {
+                    placeholder = new XElement(MainNamespace + "PlaceHolder");
+                    _panelXml.Remove();
+
+                    placeholder.Add(_panelXml);
+                    layout.Add(placeholder);
+                }
+
+                var sortingFieldsXml = new XElement(MainNamespace + "FieldGroup", new XAttribute("Label", Texts.LocalOrdering_FieldGroupLabel));
+                placeholder.Add(sortingFieldsXml);
+
+                sortingFieldsXml.Add(
+                    new XElement(MainNamespace + "TextBox",
+                        new XAttribute("Label", Texts.LocalOrdering_Label),
+                        new XAttribute("Help", Texts.LocalOrdering_Help),
+                        new XAttribute("Type", "Integer"),
+                        new XElement(CmsNamespace + "bind",
+                            new XAttribute("source", LocalOrderingBindingName))));
             }
 
             var formDefinition = new XElement(CmsFormElementTemplate);
@@ -869,6 +909,14 @@ namespace Composite.Data.DynamicTypes
             get
             {
                 return GetBindingName(_bindingNamesPrefix, PublicationStatusOptionsPostFixBindingName);
+            }
+        }
+
+        private string LocalOrderingBindingName
+        {
+            get
+            {
+                return GetBindingName(_bindingNamesPrefix, LocalOrderingPostFixBindingName);
             }
         }
 

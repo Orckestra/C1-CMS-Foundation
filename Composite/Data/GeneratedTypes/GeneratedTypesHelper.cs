@@ -17,7 +17,7 @@ using Texts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_Generate
 
 namespace Composite.Data.GeneratedTypes
 {
-    /// <summary>    
+    /// <summary>
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
@@ -49,6 +49,7 @@ namespace Composite.Data.GeneratedTypes
         private string _newTypeNamespace;
         private string _newTypeTitle;
         private bool _cachable;
+        private bool _sortable;
         private bool _publishControlled;
         private bool _localizedControlled;
 
@@ -69,7 +70,7 @@ namespace Composite.Data.GeneratedTypes
         private static readonly string CompositionDescriptionFieldName = "FieldName";
 
         //private KeyFieldType _keyFieldType = KeyFieldType.Guid;
-        
+
 
         /// <exclude />
         public GeneratedTypesHelper()
@@ -181,7 +182,16 @@ namespace Composite.Data.GeneratedTypes
             }
         }
 
+        /// <exclude />
+        public bool IsSortable
+        {
+            get
+            {
+                Verify.IsNotNull(_oldDataTypeDescriptor, "No old data type specified");
 
+                return _oldDataTypeDescriptor.SuperInterfaces.Contains(typeof(IGenericSortable));
+            }
+        }
 
         /// <exclude />
         public bool IsLocalizedControlled
@@ -444,7 +454,11 @@ namespace Composite.Data.GeneratedTypes
             _cachable = cachable;
         }
 
-
+        /// <exclude />
+        public void SetSortable(bool sortable)
+        {
+            _sortable = sortable;
+        }
 
         /// <exclude />
         public void SetPublishControlled(bool isPublishControlled)
@@ -453,8 +467,6 @@ namespace Composite.Data.GeneratedTypes
 
             _publishControlled = isPublishControlled;
         }
-
-
 
         /// <exclude />
         public void SetLocalizedControlled(bool isLocalizedControlled)
@@ -720,7 +732,7 @@ namespace Composite.Data.GeneratedTypes
 
             GeneratedTypesFacade.UpdateType(new UpdateDataTypeDescriptor(_oldDataTypeDescriptor, _newDataTypeDescriptor, originalTypeDataExists));
 
-            return true;   
+            return true;
         }
 
 
@@ -735,6 +747,7 @@ namespace Composite.Data.GeneratedTypes
                 _newInternalUrlPrefix,
                 _cachable,
                 _publishControlled,
+                _sortable,
                 _localizedControlled,
                 _newDataFieldDescriptors,
                 _foreignKeyDataFieldDescriptor,
@@ -752,6 +765,7 @@ namespace Composite.Data.GeneratedTypes
             string internalUrlPrefix,
             bool cachable,
             bool publishControlled,
+            bool sortable,
             bool localizedControlled,
             IEnumerable<DataFieldDescriptor> dataFieldDescriptors,
             DataFieldDescriptor foreignKeyDataFieldDescriptor,
@@ -772,6 +786,11 @@ namespace Composite.Data.GeneratedTypes
             if (publishControlled && _dataAssociationType != DataAssociationType.Composition)
             {
                 dataTypeDescriptor.AddSuperInterface(typeof(IPublishControlled));
+            }
+
+            if (sortable)
+            {
+                dataTypeDescriptor.AddSuperInterface(typeof(IGenericSortable));
             }
 
             if (localizedControlled)
@@ -882,7 +901,7 @@ namespace Composite.Data.GeneratedTypes
 
             Type[] indirectlyInheritedInterfaces =
             {
-                typeof(IPublishControlled), typeof(ILocalizedControlled), 
+                typeof(IPublishControlled), typeof(ILocalizedControlled), typeof(IGenericSortable),
                 typeof(IPageData), typeof(IPageFolderData), typeof(IPageMetaData)
             };
 
@@ -906,6 +925,10 @@ namespace Composite.Data.GeneratedTypes
                 dataTypeDescriptor.AddSuperInterface(typeof(ILocalizedControlled));
             }
 
+            if (_sortable)
+            {
+                dataTypeDescriptor.AddSuperInterface(typeof(IGenericSortable));
+            }
 
             if (_oldDataTypeDescriptor.SuperInterfaces.Contains(typeof(IPageFolderData)))
             {
@@ -926,7 +949,7 @@ namespace Composite.Data.GeneratedTypes
 
                 //dataTypeDescriptor.Fields.Add(idDataFieldDescriptor);
                 //dataTypeDescriptor.KeyPropertyNames.Add(KeyFieldName);
-                
+
             }
 
             dataTypeDescriptor.Title = _newTypeTitle;
@@ -1029,7 +1052,7 @@ namespace Composite.Data.GeneratedTypes
             if (dataFieldDescriptor.Inherited)
             {
                 Type superInterface = dataTypeDescriptor.SuperInterfaces.FirstOrDefault(type => type.GetProperty(dataFieldDescriptor.Name) != null);
-                
+
                 if(superInterface != null && superInterface.Assembly == typeof(IData).Assembly)
                 {
                     return false;
