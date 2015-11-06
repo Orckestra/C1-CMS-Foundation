@@ -182,6 +182,13 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
             };
         }
 
+        internal static string GetConfigurationFilePath(string dataProviderName)
+        {
+            return Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.ConfigurationDirectory), 
+                                $"{dataProviderName}.config");
+        }
+
+
         private sealed class SqlDataProviderConfiguration
         {
             readonly string _configurationFilePath;
@@ -189,8 +196,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
 
             public SqlDataProviderConfiguration(string providerName)
             {
-                _configurationFilePath = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.ConfigurationDirectory), 
-                                                      string.Format("{0}.config", providerName));
+                _configurationFilePath = GetConfigurationFilePath(providerName);
                 _configuration = new C1Configuration(_configurationFilePath);
 
                 Section = _configuration.GetSection(SqlDataProviderConfigurationSection.SectionName) as SqlDataProviderConfigurationSection;

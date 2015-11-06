@@ -41,7 +41,10 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
             {
                 if (InterfaceConfigurationManipulator.ConfigurationExists(_dataProviderContext.ProviderName, dataTypeDescriptor))
                 {
-                    throw new InvalidOperationException(string.Format("SqlDataProvider configuration already contains a interface named '{0}'. Remove it from the configuration and restart the application.", dataTypeDescriptor.TypeManagerTypeName));
+                    var filePath = InterfaceConfigurationManipulator.GetConfigurationFilePath(_dataProviderContext.ProviderName);
+
+                    throw new InvalidOperationException(
+                        $"SqlDataProvider configuration already contains a interface named '{dataTypeDescriptor.TypeManagerTypeName}', Id: '{dataTypeDescriptor.DataTypeId}'. Remove it from the configuration file '{filePath}' and restart the application.");
                 }
             }
 

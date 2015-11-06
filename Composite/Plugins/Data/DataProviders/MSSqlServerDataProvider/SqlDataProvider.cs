@@ -2,12 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using Composite.Core;
 using Composite.Core.Configuration;
 using Composite.Core.Instrumentation;
-using Composite.Core.IO;
 using Composite.Core.Types;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
@@ -337,7 +335,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
         {
             var sqlDataProviderData = (SqlDataProviderData)objectConfiguration;
 
-            string configFilePath = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.ConfigurationDirectory), string.Format("{0}.config", sqlDataProviderData.Name));
+            string  configFilePath = InterfaceConfigurationManipulator.GetConfigurationFilePath(sqlDataProviderData.Name);
             var configuration = new C1Configuration(configFilePath);
 
             var section = configuration.GetSection(SqlDataProviderConfigurationSection.SectionName) as SqlDataProviderConfigurationSection;
