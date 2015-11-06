@@ -515,9 +515,9 @@ StageDialogBinding.prototype._fixAutoHeight = function ( pageBinding ) {
 	height = pageBinding.bindingElement.offsetHeight;
 	height += this._titlebar.bindingElement.offsetHeight;
 	
-	if ( height < dim.h ) { // never shrink the dialog - only expand it.
-		height = dim.h;
-	}
+	//if ( height < dim.h ) { // never shrink the dialog - only expand it.
+	//	height = dim.h;
+	//}
 	if ( pageBinding.minheight != null ) { // consider minheight!
 		if ( height < pageBinding.minheight ) {
 			height = pageBinding.minheight;
