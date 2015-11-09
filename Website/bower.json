@@ -1,0 +1,7 @@
+{
+	"name": "ASP.NET",
+	"private": true,
+	"dependencies": {
+		"codemirror": "5.8.0"
+	}
+}

@@ -194,12 +194,8 @@
     <Content Include="Composite\content\forms\Administrative\DeleteUserControlFunctionConfirm.xml" />
     <Content Include="Composite\content\forms\Administrative\PageTemplate\EditMasterPage.xml" />
     <Content Include="Composite\content\forms\Administrative\PageTemplate\AddNewPageTemplate.xml" />
-    <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\addon\dropmedia\dropmedia.js" />
-    <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\addon\selection\active-line.js" />
-    <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\addon\selection\mark-selection.js" />
-    <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\mode\htmlembedded\htmlembedded.js" />
-    <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\mode\razor\razor.js" />
-    <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\mode\sass\sass.js" />
+    <Content Include="Composite\lib\codemirror\addon\dropmedia\dropmedia.js" />
+    <Content Include="Composite\lib\codemirror\mode\razor\razor.js" />
     <Content Include="Composite\content\misc\editors\codemirroreditor\theme\composite.css" />
     <Content Include="Composite\content\misc\editors\visualeditor\bindings\BlockSelectorBinding.js" />
     <Content Include="Composite\content\misc\editors\visualeditor\ie.css" />
@@ -548,6 +544,8 @@
     <Content Include="Composite\styles\default\icons.less" />
     <Content Include="Composite\styles\default\oldUI-fixes.less" />
     <Content Include="Composite\styles\default\forms.less" />
+    <Content Include=".bowerrc" />
+    <Content Include="bower.json" />
     <None Include="Composite\styles\default\splash.less" />
     <Content Include="Composite\GenerateIconSprite.aspx" />
     <Content Include="Composite\images\editfunction.png" />
@@ -1334,13 +1332,6 @@
     <Content Include="Composite\content\misc\editors\codemirroreditor\codemirror.js" />
     <Content Include="Composite\content\misc\editors\codemirroreditor\codemirroreditor.aspx" />
     <Content Include="Composite\content\misc\editors\codemirroreditor\codemirroreditor.css" />
-    <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\lib\codemirror.css" />
-    <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\lib\codemirror.js" />
-    <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\mode\clike\clike.js" />
-    <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\mode\css\css.js" />
-    <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\mode\htmlmixed\htmlmixed.js" />
-    <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\mode\javascript\javascript.js" />
-    <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\mode\xml\xml.js" />
     <Content Include="Composite\content\misc\editors\functioncalleditor\bindings\ToolBarButtonDataBindingAddNew.js" />
     <Content Include="Composite\content\misc\editors\visualeditor\bindings\ClassNameSelectorBinding.js" />
     <Content Include="Composite\content\misc\editors\visualeditor\bindings\FormatSelectorBinding.js" />
