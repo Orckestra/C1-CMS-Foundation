@@ -2106,7 +2106,6 @@
     <Content Include="Composite\content\views\help\HelpPageBinding.js" />
     <Content Include="Composite\content\views\log\log.aspx" />
     <Content Include="Composite\content\views\log\log.css" />
-    <Content Include="Composite\content\views\publishworkflowstatus\BACKUP.xslt" />
     <Content Include="Composite\content\views\publishworkflowstatus\ViewUnpublishedItems.aspx" />
     <Content Include="Composite\content\views\publishworkflowstatus\ViewUnpublishedItems.css" />
     <Content Include="Composite\content\views\publishworkflowstatus\ViewUnpublishedItems.xslt" />
