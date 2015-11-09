@@ -194,6 +194,8 @@
     <Content Include="Composite\content\forms\Administrative\DeleteUserControlFunctionConfirm.xml" />
     <Content Include="Composite\content\forms\Administrative\PageTemplate\EditMasterPage.xml" />
     <Content Include="Composite\content\forms\Administrative\PageTemplate\AddNewPageTemplate.xml" />
+    <Content Include="Composite\images\icons\svg\website-remove-folder-from-whitelist.svg" />
+    <Content Include="Composite\images\icons\svg\website-add-folder-to-whitelist.svg" />
     <Content Include="Composite\lib\codemirror\addon\dropmedia\dropmedia.js" />
     <Content Include="Composite\lib\codemirror\mode\razor\razor.js" />
     <Content Include="Composite\content\misc\editors\codemirroreditor\theme\composite.css" />
