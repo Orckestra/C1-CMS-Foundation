@@ -20,6 +20,8 @@
 			<Directory path="\Composite\images\icons\republic" />
 			<Directory path="\Composite\images\originals" />
       <Directory path="\Composite\transformations\temp" />
+      <Directory path="\Composite\lib\codemirror\keymap" />
+      <Directory path="\Composite\lib\codemirror\theme" />
     </Directories>
 		<Files>
 			<File path="\App_Data\Composite\clean.bat" />
@@ -45,6 +47,8 @@
 		<Files>
 			<File path="\Composite\scripts\compressed\sub-uncompressed.js" />
 			<File path="\Composite\scripts\compressed\top-uncompressed.js" />
+      <File path="\.bowerrc" />
+      <File path="\bower.json" />
       <File path="\gruntfile.js" />
       <File path="\package.json" />
 			<File path="\ReleaseCleanupConfiguration.xml" />
