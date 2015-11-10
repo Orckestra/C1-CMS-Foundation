@@ -54,7 +54,6 @@ namespace Composite.Functions
             }
 
             int totalSegments = _mapper.PathSegmentsCount;
-
             if (pathIsEmpty != (totalSegments == 0))
             {
                 return null;
@@ -68,6 +67,7 @@ namespace Composite.Functions
             {
                 return null;
             }
+
 
             var relativeRoute = new RelativeRoute
             {
@@ -118,7 +118,7 @@ namespace Composite.Functions
         private static IReadOnlyCollection<IData> GetFilteredData<T>(Expression<Func<T, bool>> lambdaExpression)
             where T : class, IData
         {
-            return DataFacade.GetData<T>().ToList().AsQueryable().Where(lambdaExpression).Take(2).ToList();
+            return DataFacade.GetData<T>().Where(lambdaExpression).Take(2).ToList();
         }
 
         public PageUrlData BuildItemUrl(IData item)

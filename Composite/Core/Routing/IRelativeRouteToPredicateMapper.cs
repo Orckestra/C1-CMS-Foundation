@@ -55,9 +55,9 @@ namespace Composite.Core.Routing
         /// Gets a predicate for filtering data based on a url segment
         /// </summary>
         /// <param name="pageId"></param>
-        /// <param name="route">The relative route</param>
+        /// <param name="routePart">The relative route</param>
         /// <returns></returns>
-        Expression<Func<T, bool>> GetPredicate(Guid pageId, RelativeRoute route);
+        Expression<Func<T, bool>> GetPredicate(Guid pageId, RelativeRoute routePart);
 
         /// <summary>
         /// 
@@ -65,5 +65,12 @@ namespace Composite.Core.Routing
         /// <param name="fieldValue"></param>
         /// <returns></returns>
         RelativeRoute GetRoute(T fieldValue);
+    }
+
+    /// <exclude />
+    public interface IRelativeRouteValueProvider<T> : IRelativeRouteToPredicateMapper
+    {
+        /// <exclude />
+        bool TryGetValue(RelativeRoute routePart, out T value);
     }
 }

@@ -1,25 +1,26 @@
 ﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
-using Composite.Core.Routing.Foundation.PluginFacades;
 using Composite.Core.Types;
+using Composite.Core.WebClient;
 
 namespace Composite.Core.Routing
 {
-    internal class DefaultRelativeRouteToPredicateMapper<TValue> : IRelativeRouteToPredicateMapper<TValue>
+    internal class DefaultRelativeRouteToPredicateMapper<TValue> 
+        : IRelativeRouteToPredicateMapper<TValue>, IRelativeRouteValueProvider<TValue>
     {
-        public int PathSegmentsCount { get { return 1; } }
+        public int PathSegmentsCount => 1;
 
-        public Expression<Func<TValue, bool>> GetPredicate(Guid pageId, RelativeRoute route)
+        public Expression<Func<TValue, bool>> GetPredicate(Guid pageId, RelativeRoute routePart)
         {
-            var stringValue = route.PathSegments.Single();
-            if (IsStringField)
+            TValue fieldValue;
+
+            if (!TryGetValue(routePart, out fieldValue))
             {
-                return field => field != null && StringToUrlPart(field as string) == stringValue;
+                return null;
             }
 
-            var value = ValueTypeConverter.Convert<TValue>(stringValue);
-            return field => field.Equals(value);
+            return field => field.Equals(fieldValue);
         }
 
         public RelativeRoute GetRoute(TValue fieldValue)
@@ -29,23 +30,71 @@ namespace Composite.Core.Routing
                 return null;
             }
 
-            string stringValue = ValueTypeConverter.Convert<string>(fieldValue);
-            if (IsStringField)
+            string stringValue;
+            if (IsGuidField)
             {
-                stringValue = StringToUrlPart(stringValue);
+                stringValue = UrlUtils.CompressGuid((fieldValue as Guid?).Value);
             }
+            else if (IsStringField)
+            {
+                stringValue = UrlUtils.EncodeUrlInvalidCharacters(fieldValue as string);
+            }
+            else
+            {
+                stringValue = ValueTypeConverter.Convert<string>(fieldValue);
+            }
+            
 
             return new RelativeRoute {PathSegments = new[] {stringValue}};
         }
 
-        private static string StringToUrlPart(string partnerName)
+        //private static string StringToUrlPart(string partnerName)
+        //{
+        //    return UrlFormattersPluginFacade.FormatUrl(partnerName, true);
+        //}
+
+        public bool TryGetValue(RelativeRoute routePart, out TValue value)
         {
-            return UrlFormattersPluginFacade.FormatUrl(partnerName, true);
+            var stringValue = routePart.PathSegments.Single();
+
+            if (string.IsNullOrEmpty(stringValue))
+            {
+                value = default(TValue);
+                return false;
+            }
+
+            if (IsGuidField)
+            {
+                Guid tempGuid;
+
+                if (!UrlUtils.TryExpandGuid(stringValue, out tempGuid) && !Guid.TryParse(stringValue, out tempGuid))
+                {
+                    value = default(TValue);
+                    return false;
+                }
+
+                value = (TValue)(tempGuid as object);
+                return true;
+            }
+
+            if (IsStringField)
+            {
+                value = (TValue) (UrlUtils.DecodeUrlInvalidCharacters(stringValue) as object);
+                return true;
+            }
+
+            Exception exception;
+            object valueObj = ValueTypeConverter.TryConvert(stringValue, typeof(TValue), out exception);
+
+            bool success = valueObj != null;
+            value = success ? (TValue) valueObj : default(TValue);
+
+            return success;
         }
 
-        private bool IsStringField
-        {
-            get { return typeof(TValue) == typeof(string); }
-        }
+
+        private bool IsStringField => typeof(TValue) == typeof(string);
+
+        private bool IsGuidField => typeof(TValue) == typeof(Guid);
     }
 }
