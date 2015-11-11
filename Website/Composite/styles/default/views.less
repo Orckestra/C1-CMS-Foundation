@@ -8,31 +8,35 @@ ui|viewset {
 	height: 0;
 	overflow: visible;
 }
+
 ui|view {
 	display: block;
 	overflow: hidden;
 }
+
 ui|dialogset ui|view {
 	z-index: 5; /* above the dialog */
 }
+
 ui|view.dockview { /* is this ever assigned? */
 	position: absolute;
 	z-index: 1;
 }
+
 ui|view.dockview ui|window { /* adjusted onload - fixes a moz display glitch */
 	position: absolute;
 	top: -10000px;
 }
 
 ui|view[position='start'] {
-	position:absolute;
-	top:0;
-	right:0;
+	position: absolute;
+	top: 0;
+	right: 0;
 	bottom: 0;
-	left:0;
+	left: 0;
 	height: auto;
 	width: auto;
-	padding: 25px 30px;
+	padding: 40px 10px 10px 60px;
 	background-color: rgba(0,0,0,0.3);
 
 	ui|window {
@@ -40,5 +44,11 @@ ui|view[position='start'] {
 		height: 100%;
 		border: solid 1px #cccccc;
 		border-radius: 5px;
+	}
+}
+
+@media (min-width: 1200px) {
+	ui|view[position='start'] {
+		padding: 50px 200px;
 	}
 }

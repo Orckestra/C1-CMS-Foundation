@@ -1,8 +1,0 @@
-@namespace ui url("http://www.w3.org/1999/xhtml");
-
-ui|controlgroup#controlgroup {
-	position: absolute;
-	top: 6px;
-	right: 2px;
-	z-index: 6; /* above cover */
-}

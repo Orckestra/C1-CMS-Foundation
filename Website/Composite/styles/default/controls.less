@@ -6,24 +6,26 @@
 ui|controlgroup {
 	right: 0;
 	top: 0;
+	z-index: 6; 
 }
 
 ui|control {
 
 	&[controltype="close"] {
-		right: 30px;
-		top: 7px;
+		right: 35px;
+		top: 6px;
 
 		ui|labelbody {
 
 			&:after {
 				content: '\00d7';
 				position: absolute;
-				width: 15px;
-				height: 15px;
-				color: @base-border-color;
-				font-size: 20px;
-				line-height: 15px;
+				text-align: center;
+				width: 30px;
+				height: 30px;
+				color: darken(@base-border-color, 25%);
+				font-size: 30px;
+				line-height: 25px;
 				font-weight: bold;
 			}
 		}

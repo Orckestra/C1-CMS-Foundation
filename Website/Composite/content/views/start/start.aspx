@@ -9,7 +9,6 @@
 		<control:styleloader runat="server"/>
 		<control:scriptloader type="sub" runat="server" />
 		<script type="text/javascript" src="StartPageBinding.js"></script>
-		<link rel="stylesheet" type="text/css" href="start.css.aspx"/>
 	</head>
 	<body>
 		<ui:page binding="StartPageBinding">

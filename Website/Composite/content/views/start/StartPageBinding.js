@@ -45,7 +45,11 @@ StartPageBinding.prototype.onBindingRegister = function () {
 	EventBroadcaster.subscribe ( BroadcastMessages.STOP_COMPOSITE , this );
 	EventBroadcaster.subscribe ( BroadcastMessages.COMPOSITE_START, this );
 	EventBroadcaster.subscribe ( BroadcastMessages.COMPOSITE_STOP, this );
-	EventBroadcaster.subscribe ( BroadcastMessages.KEY_ESCAPE, this );
+	EventBroadcaster.subscribe(BroadcastMessages.KEY_ESCAPE, this);
+	var viewBinding = this.getAncestorBindingByType(ViewBinding, true);
+	if (viewBinding) {
+		DOMEvents.addEventListener(viewBinding.bindingElement, DOMEvents.CLICK, this);
+	}
 }
 
 /**
@@ -61,6 +65,24 @@ StartPageBinding.prototype.onBindingAttach = function () {
 	this.bindingWindow.bindingMap.start.setURL ( 
 		"GetStartPage.ashx?random=" + KeyMaster.getUniqueKey ()
 	);
+}
+
+/**
+ * @overloads {PageBinding#handleEvent}
+ * @implements {IEventListener}
+ * @param {Event} e
+ */
+StartPageBinding.prototype.handleEvent = function (e) {
+
+	StartPageBinding.superclass.handleEvent.call(this, e);
+	var element = DOMEvents.getTarget(e);
+	switch (e.type) {
+		case DOMEvents.CLICK:
+			if (element.tagName == "ui:view") {
+				this.stop();
+			}
+			break;
+	}
 }
 
 /**
