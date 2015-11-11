@@ -6,7 +6,7 @@ LabelBinding.superclass = Binding.prototype;
  * Can be used to indicate that a dialog window will 
  * open. Looks more elegant than three regular dots.
  */
-LabelBinding.DIALOG_INDECATOR_SUFFIX = String.fromCharCode ( 8230 ); // "…".charCodeAt ( 0 );
+LabelBinding.DIALOG_INDECATOR_SUFFIX = String.fromCharCode(8230); // "…".charCodeAt ( 0 );
 LabelBinding.DEFAULT_IMAGE = "blank";
 LabelBinding.SPRITE_PATH = "${root}/images/sprite.svg";
 LabelBinding.CLASSNAME_GRAYTEXT = "graytext";
@@ -57,7 +57,7 @@ LabelBinding.spriteLoad = function () {
 
 		LabelBinding.spritesQueue.each(function (key, image) {
 			var binding = UserInterface.getBindingByKey(key);
-			if(binding != null ) {
+			if (binding != null) {
 				LabelBinding.setImageSvg(binding, image);
 			}
 		});
@@ -84,12 +84,13 @@ LabelBinding.setImageSvg = function (binding, image) {
 	if (image && typeof image == "string" && /^[A-Za-z]+[\w\-\.]*$/.test(image)) {
 		if (binding.shadowTree.labelBody) {
 			if (!image) {
-				
+
 			} else {
 
-			    if (LabelBinding.sprites) {
-			        image = image.toLowerCase().replace('-disabled', ''); // 
-                    var g = LabelBinding.sprites.querySelector("#" + image);
+				if (LabelBinding.sprites) {
+					var isDisabled = image.toLowerCase().indexOf('-disabled') > 0;
+					image = image.toLowerCase().replace('-disabled', '');
+					var g = LabelBinding.sprites.querySelector("#" + image);
 					if (g) {
 						var xmlns = "http://www.w3.org/2000/svg";
 						if (!binding.shadowTree.svg) {
@@ -97,18 +98,22 @@ LabelBinding.setImageSvg = function (binding, image) {
 							binding.shadowTree.labelBody.insertBefore(binding.shadowTree.svg, binding.shadowTree.labelBody.firstChild);
 						}
 						var svg = binding.shadowTree.svg;
-						binding.shadowTree.svg.setAttribute("viewBox", "0 0 24 24");
+						svg.setAttribute("viewBox", "0 0 24 24");
+						if (isDisabled)
+						{
+							svg.setAttribute("class", "disabled");
+						}
 						var viewBox = g.getAttribute('viewBox'),
 							fragment = document.createDocumentFragment(),
 							clone = g.cloneNode(true);
 
 						if (viewBox) {
-						    svg.setAttribute('viewBox', viewBox);
+							svg.setAttribute('viewBox', viewBox);
 						}
 
 						fragment.appendChild(clone);
 						while (svg.lastChild) {
-						    svg.removeChild(svg.lastChild);
+							svg.removeChild(svg.lastChild);
 						}
 						svg.appendChild(fragment);
 					}
@@ -119,9 +124,9 @@ LabelBinding.setImageSvg = function (binding, image) {
 			}
 		}
 	} else {
-        var svg = binding.shadowTree.svg;
-        if (svg) {
-            if (svg.parentNode) {
+		var svg = binding.shadowTree.svg;
+		if (svg) {
+			if (svg.parentNode) {
 				svg.parentNode.removeChild(svg);
 			}
 			binding.shadowTree.svg = null;
@@ -132,13 +137,13 @@ LabelBinding.setImageSvg = function (binding, image) {
 /**
  * @class
  */
-function LabelBinding () {
-	
+function LabelBinding() {
+
 	/**
 	 * @type {SystemLogger}
 	 */
-	this.logger = SystemLogger.getLogger ( "LabelBinding" );
-	
+	this.logger = SystemLogger.getLogger("LabelBinding");
+
 	/**
 	 * @type {boolean}
 	 */
@@ -154,14 +159,14 @@ function LabelBinding () {
 	 * @type {boolean}
 	 */
 	this.isFlipped = false;
-	
+
 	/**
 	 * Block common crawlers.
 	 * @overwrites {Binding#crawlerFilters}
 	 * @type {List<string>}
 	 */
-	this.crawlerFilters	= new List ([ DocumentCrawler.ID, FlexBoxCrawler.ID, FocusCrawler.ID ]);
-	
+	this.crawlerFilters = new List([DocumentCrawler.ID, FlexBoxCrawler.ID, FocusCrawler.ID]);
+
 	/*
 	 * Returnable.
 	 */
@@ -182,16 +187,16 @@ LabelBinding.prototype.toString = function () {
  * @overloads {Binding#onBindingRegister}
  */
 LabelBinding.prototype.onBindingRegister = function () {
-	
-	LabelBinding.superclass.onBindingRegister.call ( this );
-	
-	if ( this.isBindingBuild ) {
-		this.shadowTree.labelBody = this._getBuildElement ( "labelbody" );
+
+	LabelBinding.superclass.onBindingRegister.call(this);
+
+	if (this.isBindingBuild) {
+		this.shadowTree.labelBody = this._getBuildElement("labelbody");
 	} else {
-		this.shadowTree.labelBody = DOMUtil.createElementNS ( 
-			Constants.NS_UI, "ui:labelbody", this.bindingDocument 
+		this.shadowTree.labelBody = DOMUtil.createElementNS(
+			Constants.NS_UI, "ui:labelbody", this.bindingDocument
 		);
-		this.bindingElement.appendChild ( this.shadowTree.labelBody );
+		this.bindingElement.appendChild(this.shadowTree.labelBody);
 	}
 }
 
@@ -199,32 +204,32 @@ LabelBinding.prototype.onBindingRegister = function () {
  * @overloads {Binding#onBindingAttach}
  */
 LabelBinding.prototype.onBindingAttach = function () {
-	
-	LabelBinding.superclass.onBindingAttach.call ( this );
-	
-	if ( this.isBindingBuild ) {
-		var element = this._getBuildElement ( "labeltext" );
-		if ( element ) {
+
+	LabelBinding.superclass.onBindingAttach.call(this);
+
+	if (this.isBindingBuild) {
+		var element = this._getBuildElement("labeltext");
+		if (element) {
 			this.shadowTree.labelText = element;
 			this.shadowTree.text = element.firstChild;
 			this.hasLabel = true;
 		}
 	} else {
-		
-		var label = this.getProperty ( "label" );
-		var image = this.getProperty ( "image" );
-		var tooltip = this.getProperty ( "tooltip" );
-		
-		if ( label ) {
-			this.setLabel ( label, false );
+
+		var label = this.getProperty("label");
+		var image = this.getProperty("image");
+		var tooltip = this.getProperty("tooltip");
+
+		if (label) {
+			this.setLabel(label, false);
 		}
-		if ( image ) {
-			this.setImage ( image, false );
+		if (image) {
+			this.setImage(image, false);
 		}
-		if ( tooltip ) {
-			this.setToolTip ( tooltip );
+		if (tooltip) {
+			this.setToolTip(tooltip);
 		}
-		this.buildClassName ();
+		this.buildClassName();
 	}
 }
 
@@ -232,17 +237,17 @@ LabelBinding.prototype.onBindingAttach = function () {
  * @param {string} label
  * @param {boolean} isNotBuildingClassName Set to true for faster screen update.
  */
-LabelBinding.prototype.setLabel = function ( label, isNotBuildingClassName ) {
+LabelBinding.prototype.setLabel = function (label, isNotBuildingClassName) {
 
 	label = label != null ? label : "";
-	
-	if ( !this.hasLabel ) {
-		this.buildLabel ();
+
+	if (!this.hasLabel) {
+		this.buildLabel();
 	}
-	this.shadowTree.text.data = Resolver.resolve ( label );
-	this.setProperty ( "label", label );
-	if ( !isNotBuildingClassName ) {
-		this.buildClassName ();
+	this.shadowTree.text.data = Resolver.resolve(label);
+	this.setProperty("label", label);
+	if (!isNotBuildingClassName) {
+		this.buildClassName();
 	}
 }
 
@@ -251,7 +256,7 @@ LabelBinding.prototype.setLabel = function ( label, isNotBuildingClassName ) {
  */
 LabelBinding.prototype.getLabel = function () {
 
-	return this.getProperty ( "label" );
+	return this.getProperty("label");
 }
 
 /**
@@ -259,9 +264,9 @@ LabelBinding.prototype.getLabel = function () {
  * @param {string} url Eh - this could be a boolean!
  * @param {boolean} isNotBuildingClassName Set to true for faster screen update.
  */
-LabelBinding.prototype.setImage = function ( url, isNotBuildingClassName ) {
-	
-	if ( url != false && url != undefined) {
+LabelBinding.prototype.setImage = function (url, isNotBuildingClassName) {
+
+	if (url != false && url != undefined) {
 		url = url ? url : LabelBinding.DEFAULT_IMAGE;
 		var resolverUrl = Resolver.resolve(url);
 		if (resolverUrl.classes) {
@@ -278,18 +283,18 @@ LabelBinding.prototype.setImage = function ( url, isNotBuildingClassName ) {
 			this.setImageClasses();
 		}
 		if (typeof resolverUrl == "string") {
-			this.setProperty ( "image", url );
+			this.setProperty("image", url);
 		}
 		this.hasImage = true;
-		if ( !isNotBuildingClassName ) {
-			this.buildClassName ();
+		if (!isNotBuildingClassName) {
+			this.buildClassName();
 		}
 	} else {
 		this.setImageSvg();
 		this.setImageClasses();
-		this.deleteProperty ( "image" );
+		this.deleteProperty("image");
 		this.hasImage = false;
-		this.buildClassName ();
+		this.buildClassName();
 	}
 }
 
@@ -333,9 +338,9 @@ LabelBinding.prototype.setImageSvg = function (svg) {
  * Set image.
  * @param {string} url
  */
-LabelBinding.prototype.setDefaultImage = function ( url ) {
-	
-	this.setImage ( LabelBinding.DEFAULT_IMAGE );
+LabelBinding.prototype.setDefaultImage = function (url) {
+
+	this.setImage(LabelBinding.DEFAULT_IMAGE);
 }
 
 /**
@@ -343,13 +348,13 @@ LabelBinding.prototype.setDefaultImage = function ( url ) {
  * element, supporting 24bit alphatransparency.
  * @param {string} url
  */
-LabelBinding.prototype.setAlphaTransparentBackdrop = function ( url ) {
-	
-	if ( this.shadowTree.labelBody ) { // sometimes it glitches in moz...
-		if ( url ) {
-			url = Resolver.resolve ( url );
+LabelBinding.prototype.setAlphaTransparentBackdrop = function (url) {
+
+	if (this.shadowTree.labelBody) { // sometimes it glitches in moz...
+		if (url) {
+			url = Resolver.resolve(url);
 			this.shadowTree.labelBody.style.backgroundImage = "url('" + url + "')";
-			
+
 		} else {
 			this.shadowTree.labelBody.style.removeProperty("background-image");
 		}
@@ -361,7 +366,7 @@ LabelBinding.prototype.setAlphaTransparentBackdrop = function ( url ) {
  */
 LabelBinding.prototype.getImage = function () {
 
-	return this.getProperty ( "image" );
+	return this.getProperty("image");
 }
 
 /**
@@ -369,44 +374,44 @@ LabelBinding.prototype.getImage = function () {
  * in Explorer. Always check the result if you use this method.
  * @param {string} tooltip
  */
-LabelBinding.prototype.setToolTip = function ( tooltip ) {
-	
-	this.setProperty ( "tooltip", tooltip );
-	
+LabelBinding.prototype.setToolTip = function (tooltip) {
+
+	this.setProperty("tooltip", tooltip);
+
 	/*
 	 * Some guy keeps setting tooltips equal to the labels of things. 
 	 * If a tooltip has nothing new to say, it's better not to show it,  
 	 * since the tooltip may obscure the view while navigating trees etc. 
 	 * TODO: fix that guy instead!
 	 */
-	if ( tooltip != this.getLabel ()) {
-		this.setProperty ( "title", Resolver.resolve ( tooltip ));
+	if (tooltip != this.getLabel()) {
+		this.setProperty("title", Resolver.resolve(tooltip));
 	}
 }
 
 /**
  * @return {string}
  */
-LabelBinding.prototype.getToolTip = function ( tooltip ) {
+LabelBinding.prototype.getToolTip = function (tooltip) {
 
-	return this.getProperty ( "tooltip" );
+	return this.getProperty("tooltip");
 }
 
 /**
  * Flip image and text position. This is not supported in IE6.
  * @param @optional {boolean} isFlipped.
  */
-LabelBinding.prototype.flip = function ( isFlipped ) {
-	
-	isFlipped = isFlipped == null ? true : isFlipped; 
+LabelBinding.prototype.flip = function (isFlipped) {
+
+	isFlipped = isFlipped == null ? true : isFlipped;
 	var classname = LabelBinding.CLASSNAME_FLIPPED;
-	
-	if ( !Client.isExplorer6 ) {
+
+	if (!Client.isExplorer6) {
 		this.isFlipped = isFlipped;
-		if ( isFlipped ) {
-			this.attachClassName ( classname );
+		if (isFlipped) {
+			this.attachClassName(classname);
 		} else {
-			this.detachClassName ( classname );
+			this.detachClassName(classname);
 		}
 	}
 }
@@ -417,14 +422,14 @@ LabelBinding.prototype.flip = function ( isFlipped ) {
  * These extra elements will come in handy for CSS purposes.
  */
 LabelBinding.prototype.buildLabel = function () {
-	
-	if ( !this.hasLabel ) {
-		this.shadowTree.labelText = DOMUtil.createElementNS ( 
-			Constants.NS_UI, "ui:labeltext", this.bindingDocument 
+
+	if (!this.hasLabel) {
+		this.shadowTree.labelText = DOMUtil.createElementNS(
+			Constants.NS_UI, "ui:labeltext", this.bindingDocument
 		);
-		this.shadowTree.text = this.bindingDocument.createTextNode ( "" );
-		this.shadowTree.labelText.appendChild ( this.shadowTree.text );
-		this.shadowTree.labelBody.appendChild ( this.shadowTree.labelText );
+		this.shadowTree.text = this.bindingDocument.createTextNode("");
+		this.shadowTree.labelText.appendChild(this.shadowTree.text);
+		this.shadowTree.labelBody.appendChild(this.shadowTree.labelText);
 		this.hasLabel = true;
 	}
 }
@@ -433,23 +438,23 @@ LabelBinding.prototype.buildLabel = function () {
  * Builds the CSS classname, taking care to preserve externally applied classnames.
  */
 LabelBinding.prototype.buildClassName = function () {
-	
+
 	var class1 = "textonly";
 	var class2 = "imageonly";
 	var class3 = "image-and-text";
-	
-	if ( this.hasLabel && this.hasImage ) {
-		this.detachClassName ( class1 );	
-		this.detachClassName ( class2 );	
-		this.attachClassName ( class3 );
-	} else if ( this.hasLabel ) {
-		this.detachClassName ( class3 );	
-		this.detachClassName ( class2 );	
-		this.attachClassName ( class1 );
-	} else if ( this.hasImage ) {
-		this.detachClassName ( class3 );	
-		this.detachClassName ( class1 );	
-		this.attachClassName ( class2 );
+
+	if (this.hasLabel && this.hasImage) {
+		this.detachClassName(class1);
+		this.detachClassName(class2);
+		this.attachClassName(class3);
+	} else if (this.hasLabel) {
+		this.detachClassName(class3);
+		this.detachClassName(class2);
+		this.attachClassName(class1);
+	} else if (this.hasImage) {
+		this.detachClassName(class3);
+		this.detachClassName(class1);
+		this.attachClassName(class2);
 	}
 }
 
@@ -458,8 +463,8 @@ LabelBinding.prototype.buildClassName = function () {
  * @param {DOMDocument} ownerDocument
  * @return {LabelBinding}
  */
-LabelBinding.newInstance = function ( ownerDocument ) {
+LabelBinding.newInstance = function (ownerDocument) {
 
-	var element = DOMUtil.createElementNS ( Constants.NS_UI, "ui:labelbox", ownerDocument );
-	return UserInterface.registerBinding ( element, LabelBinding );
+	var element = DOMUtil.createElementNS(Constants.NS_UI, "ui:labelbox", ownerDocument);
+	return UserInterface.registerBinding(element, LabelBinding);
 }

@@ -42,6 +42,10 @@ ui|treenode {
 		svg {
 			margin-top: 3px;
 			color: @tree-icon-color;
+
+			&.disabled {
+				color: lighten(@tree-icon-color, 20%);
+			}
 		}
 
 		ui|labelbody {
