@@ -53,7 +53,7 @@ _DOMUtil.prototype = {
 	getDOMDocument : function ( isFreeThreaded ) {
 	
 		var result = null;
-		if (Client.isExplorer || Client.isExplorer11) {
+		if (Client.isAnyExplorer) {
 			result = this.getMSComponent ( isFreeThreaded ? this.MSXML_FREETHREADED : this.MSXML_DOMDOCUMENT );
 		} else {
 			/*
@@ -74,7 +74,7 @@ _DOMUtil.prototype = {
 	getMSXMLXSLTemplate : function () {
 		
 		var result = null;
-		if (Client.isExplorer || Client.isExplorer11) {
+		if (Client.isAnyExplorer) {
 			result = this.getMSComponent ( this.MSXML_XSLTEMPLATE );
 		}
 		return result;

@@ -14,10 +14,10 @@
 	<body>
 		<ui:page binding="ViewSourcePageBinding">
 			<ui:cover id="cover"/>
-			<ui:tabbox>
+			<ui:tabbox id="tabbox">
 				<ui:tabs>
 					<ui:tab label="${string:Website.Content.Views.ViewSource.LabelFormatted}"/>
-					<ui:tab label="${string:Website.Content.Views.ViewSource.LabelRaw}"/>
+					<ui:tab id="rawtab" label="${string:Website.Content.Views.ViewSource.LabelRaw}"/>
 				</ui:tabs>
 				<ui:tabpanels>
 					<ui:tabpanel id="fancypanel">
