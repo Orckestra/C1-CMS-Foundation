@@ -2111,9 +2111,6 @@
     <Content Include="Composite\content\views\seoassist\scripts\SEOResult.js" />
     <Content Include="Composite\content\views\seoassist\seoassist.aspx" />
     <Content Include="Composite\content\views\seoassist\seoassist.css" />
-    <Content Include="Composite\content\views\start\compositestart\CompositeStart.aspx" />
-    <Content Include="Composite\content\views\start\compositestart\CompositeStart.css" />
-    <Content Include="Composite\content\views\start\compositestart\CompositeStart.js" />
     <Content Include="Composite\content\views\start\start.aspx" />
     <Content Include="Composite\content\views\start\StartPageBinding.js" />
     <Content Include="Composite\content\views\systemview\systemview.aspx" />
