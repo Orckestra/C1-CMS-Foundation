@@ -6,11 +6,13 @@
 /Composite.Workflows/obj
 /Website/App_Data
 /Website/App_GlobalResources
+/Website/bower_components
 /Website/bin
 /Website/obj
 /Website/Composite/InstalledPackages
 /Website/Composite/scripts/compressed
 /Website/Composite/styles/styles.*
+/Website/Composite/lib
 /Website/Frontend
 /Website/node_modules
 /Website/Composite/images/sprite.svg

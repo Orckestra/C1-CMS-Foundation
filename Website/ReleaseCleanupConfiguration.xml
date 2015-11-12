@@ -20,8 +20,6 @@
 			<Directory path="\Composite\images\icons\republic" />
 			<Directory path="\Composite\images\originals" />
       <Directory path="\Composite\transformations\temp" />
-      <Directory path="\Composite\lib\codemirror\keymap" />
-      <Directory path="\Composite\lib\codemirror\theme" />
     </Directories>
 		<Files>
 			<File path="\App_Data\Composite\clean.bat" />
@@ -43,6 +41,7 @@
 		<Directories>
 			<Directory path="\Composite\scripts\source" />
 			<Directory path="\Composite\applets" />
+      <Directory path="\bower_components" />
 		</Directories>
 		<Files>
 			<File path="\Composite\scripts\compressed\sub-uncompressed.js" />

@@ -17,6 +17,30 @@ module.exports = function (grunt) {
 	});
 
 	//************************************************************************************************************************************************
+	// COPYING FROM BOWER COMPONENTS
+	//************************************************************************************************************************************************
+
+	grunt.loadNpmTasks('grunt-contrib-copy');
+	grunt.config("copy", {
+		codemirror: {
+			files: [
+				{ expand: true, cwd: 'bower_components/codemirror/addon/dropmedia', src: ['*.*'], dest: 'Composite/lib/codemirror/addon/dropmedia' },
+				{ expand: true, cwd: 'bower_components/codemirror/addon/mode', src: ['*.*'], dest: 'Composite/lib/codemirror/addon/mode' },
+				{ expand: true, cwd: 'bower_components/codemirror/addon/selection', src: ['*.*'], dest: 'Composite/lib/codemirror/addon/selection' },
+				{ expand: true, cwd: 'bower_components/codemirror/lib', src: ['*.*'], dest: 'Composite/lib/codemirror/lib' },
+				{ expand: true, cwd: 'bower_components/codemirror/mode/clike', src: ['*.*'], dest: 'Composite/lib/codemirror/mode/clike' },
+				{ expand: true, cwd: 'bower_components/codemirror/mode/css', src: ['*.*'], dest: 'Composite/lib/codemirror/mode/css' },
+				{ expand: true, cwd: 'bower_components/codemirror/mode/htmlembedded', src: ['*.*'], dest: 'Composite/lib/codemirror/mode/htmlembedded' },
+				{ expand: true, cwd: 'bower_components/codemirror/mode/htmlmixed', src: ['*.*'], dest: 'Composite/lib/codemirror/mode/htmlmixed' },
+				{ expand: true, cwd: 'bower_components/codemirror/mode/javascript', src: ['*.*'], dest: 'Composite/lib/codemirror/mode/javascript' },
+				{ expand: true, cwd: 'bower_components/codemirror/mode/razor', src: ['*.*'], dest: 'Composite/lib/codemirror/mode/razor' },
+				{ expand: true, cwd: 'bower_components/codemirror/mode/sass', src: ['*.*'], dest: 'Composite/lib/codemirror/mode/sass' },
+				{ expand: true, cwd: 'bower_components/codemirror/mode/xml', src: ['*.*'], dest: 'Composite/lib/codemirror/mode/xml' }
+			]
+		}
+	});
+
+	//************************************************************************************************************************************************
 	// STYLES
 	//************************************************************************************************************************************************
 	grunt.loadNpmTasks('grunt-contrib-less');
@@ -200,6 +224,6 @@ module.exports = function (grunt) {
 
 	grunt.registerTask('watchAll', ['watch']);
 	// Register the default tasks.
-	grunt.registerTask('build', ['less', 'postcss', 'uglifyCompileScripts', 'mergeSvg']);
+	grunt.registerTask('build', ['copy', 'less', 'postcss', 'uglifyCompileScripts', 'mergeSvg']);
 	grunt.registerTask('default', ['build']);
 };
