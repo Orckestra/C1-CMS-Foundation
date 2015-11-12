@@ -10,7 +10,7 @@ namespace Composite.Core.IO.Zip
     {
         private const int CopyBufferSize = 4096;
 
-        private readonly Dictionary<string, ZipArchiveEntry> _existingFilenamesInZip = new Dictionary<string, ZipArchiveEntry>();
+        private readonly HashSet<string> _entryNames = new HashSet<string>();
         private string ZipFilename { get; set; }
 
         public ZipFileSystem(string zipFilename)
@@ -44,9 +44,9 @@ namespace Composite.Core.IO.Zip
 
         public IEnumerable<string> GetFilenames()
         {
-            foreach (var filename in _existingFilenamesInZip.Values.Select(f => f.Name).Where(s => !s.EndsWith("/")))
+            foreach (var filename in _entryNames.Where(s => !s.EndsWith("/")))
             {
-                yield return string.Format("~/{0}", filename);
+                yield return $"~/{filename}";
             }
         }
 
@@ -56,13 +56,11 @@ namespace Composite.Core.IO.Zip
         {
             directoryName = directoryName.Replace('\\', '/');
 
-            foreach (var filename in _existingFilenamesInZip.Values.Select(f => f.Name).Where(s => !s.EndsWith("/")))
+            foreach (var filename in GetFilenames())
             {
-                var resultFilename = string.Format("~/{0}", filename);
-
-                if (resultFilename.StartsWith(directoryName))
+                if (filename.StartsWith(directoryName))
                 {
-                    yield return resultFilename;
+                    yield return filename;
                 }
             }
         }
@@ -71,9 +69,9 @@ namespace Composite.Core.IO.Zip
 
         public IEnumerable<string> GetDirectoryNames()
         {
-            foreach (string directoryName in _existingFilenamesInZip.Values.Where(f => f.IsDirectory).Select(f => f.Name))
+            foreach (string directoryName in _entryNames.Where(e => e.EndsWith("/")))
             {
-                yield return string.Format("~/{0}", directoryName);
+                yield return $"~/{directoryName}";
             }
         }
 
@@ -94,14 +92,24 @@ namespace Composite.Core.IO.Zip
         {
             var parstedFilename = ParseFilename(filename);
 
-            if (!_existingFilenamesInZip.ContainsKey(parstedFilename))
+            if (!_entryNames.Contains(parstedFilename))
             {
-                throw new ArgumentException(string.Format("The file {0} does not exist in the zip", filename));
+                throw new ArgumentException($"The file {filename} does not exist in the zip");
             }
 
             var zipArchive = new ZipArchive(C1File.Open(ZipFilename, FileMode.Open, FileAccess.Read));
 
-            return zipArchive.GetEntry(filename).Open();
+            var entryPath = filename.Substring(2).Replace('\\', '/');
+
+            var entry = zipArchive.GetEntry(entryPath);
+            if (entry == null)
+            {
+                zipArchive.Dispose();
+
+                throw new InvalidOperationException($"Entry '{entryPath}' not found");
+            }
+            
+            return new StreamWrapper(entry.Open(), () => zipArchive.Dispose());
         }
 
         /// <summary>
@@ -144,7 +152,7 @@ namespace Composite.Core.IO.Zip
                 {
                     foreach (var entry in zipArchive.Entries)
                     {
-                        _existingFilenamesInZip.Add(entry.FullName, entry);
+                        _entryNames.Add(entry.FullName);
                     }
                 }
             }
@@ -170,6 +178,63 @@ namespace Composite.Core.IO.Zip
             filename = filename.Remove(0, 1);
 
             return filename;
+        }
+
+        private class StreamWrapper : Stream, IDisposable
+        {
+            private readonly Stream _innerStream;
+            private readonly Action _disposeAction;
+
+            public StreamWrapper(Stream innerStream, Action disposeAction)
+            {
+                _innerStream = innerStream;
+                _disposeAction = disposeAction;
+            }
+
+
+            public override void Flush()
+            {
+                _innerStream.Flush();
+            }
+
+            public override long Seek(long offset, SeekOrigin origin)
+            {
+                return _innerStream.Seek(offset, origin);
+            }
+
+            public override void SetLength(long value)
+            {
+                _innerStream.SetLength(value);
+            }
+
+            public override int Read(byte[] buffer, int offset, int count)
+            {
+                return _innerStream.Read(buffer, offset, count);
+            }
+
+            public override void Write(byte[] buffer, int offset, int count)
+            {
+                _innerStream.Write(buffer, offset, count);
+            }
+
+            public override bool CanRead => _innerStream.CanRead;
+            public override bool CanSeek => _innerStream.CanSeek;
+            public override bool CanWrite => _innerStream.CanWrite;
+            public override long Length => _innerStream.Length;
+
+            public override long Position
+            {
+                get {  return _innerStream.Position; }
+                set { _innerStream.Position = value; }
+            } 
+
+
+            void IDisposable.Dispose()
+            {
+                _innerStream.Dispose();
+
+                _disposeAction();
+            }
         }
     }
 }
