@@ -158,12 +158,6 @@ function StageBinding () {
 	this._isShowingStart = false;
 	
 	/**
-	 * True when default start stuff is visible.
-	 * @type {boolean}
-	 */
-	this._isShowingDefaultStart = false;
-	
-	/**
 	 * Makes no sense to handle activation in the app root.
 	 * @implements {IActivationAware}
 	 * @overwrites {FocusBinding#isActivationAware}
@@ -844,10 +838,6 @@ StageBinding.prototype._presentViewDefinition = function ( viewDefinition ) {
 						// hide start stuff if present.
 						if ( this._isShowingStart ) {
 							EventBroadcaster.broadcast ( BroadcastMessages.STOP_COMPOSITE );
-						}  else if ( this._isShowingDefaultStart ) {
-							var decks = this.bindingWindow.bindingMap.maindecks;
-							decks.select ( "stagedeck" );
-							this._isShowingDefaultStart = false;
 						}
 						break;
 				}

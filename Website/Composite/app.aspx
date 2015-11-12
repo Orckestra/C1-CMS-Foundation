@@ -245,9 +245,6 @@
 													</ui:dockpanels>
 												</ui:dock>
 											</ui:deck>
-											<ui:deck id="defaultstartdeck">
-												<ui:window id="defaultstartwindow" url="${root}/content/misc/defaultstart/defaultstart.aspx" />
-											</ui:deck>
 										</ui:decks>
 									</ui:deck>
 									<ui:deck id="stagedeck">

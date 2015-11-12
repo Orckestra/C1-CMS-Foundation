@@ -1991,9 +1991,6 @@
     <Content Include="Composite\content\forms\Administrative\WebsiteFileElementProviderDeleteFolder.xml" />
     <Content Include="Composite\content\forms\Administrative\WebsiteFileElementProviderEditTextContentFile.xml" />
     <Content Include="Composite\content\forms\Administrative\WebsiteFileElementProviderUploadNewWebsiteFile.xml" />
-    <Content Include="Composite\content\misc\defaultstart\defaultstart.aspx" />
-    <Content Include="Composite\content\misc\defaultstart\defaultstart.css" />
-    <Content Include="Composite\content\misc\defaultstart\DefaultStart.js" />
     <Content Include="Composite\content\misc\errors\error.aspx" />
     <Content Include="Composite\content\misc\errors\error.css" />
     <Content Include="Composite\content\misc\errors\error_dialog.aspx" />
