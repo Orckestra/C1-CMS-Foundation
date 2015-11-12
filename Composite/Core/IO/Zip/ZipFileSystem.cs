@@ -1,24 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
-using ICSharpCode.SharpZipLib.Zip;
-
 
 namespace Composite.Core.IO.Zip
 {
     internal sealed class ZipFileSystem : IZipFileSystem
     {
         private const int CopyBufferSize = 4096;
-        private Dictionary<string, ZipEntry> _existingFilenamesInZip = new Dictionary<string, ZipEntry>();
-        private string ZipFilename { get; set; }
 
+        private readonly Dictionary<string, ZipArchiveEntry> _existingFilenamesInZip = new Dictionary<string, ZipArchiveEntry>();
+        private string ZipFilename { get; set; }
 
         public ZipFileSystem(string zipFilename)
         {
-            if (string.IsNullOrEmpty(zipFilename)) throw new ArgumentNullException("zipFilename");
+            Verify.ArgumentNotNullOrEmpty(zipFilename, "zipFilename");
 
-            this.ZipFilename = zipFilename;
+            ZipFilename = zipFilename;
 
             Initialize();
         }
@@ -45,7 +44,7 @@ namespace Composite.Core.IO.Zip
 
         public IEnumerable<string> GetFilenames()
         {
-            foreach (string filename in _existingFilenamesInZip.Values.Where(f => f.IsDirectory == false).Select(f => f.Name))
+            foreach (var filename in _existingFilenamesInZip.Values.Select(f => f.Name).Where(s => !s.EndsWith("/")))
             {
                 yield return string.Format("~/{0}", filename);
             }
@@ -57,9 +56,9 @@ namespace Composite.Core.IO.Zip
         {
             directoryName = directoryName.Replace('\\', '/');
 
-            foreach (string filename in _existingFilenamesInZip.Values.Where(f => f.IsDirectory == false).Select(f => f.Name))
+            foreach (var filename in _existingFilenamesInZip.Values.Select(f => f.Name).Where(s => !s.EndsWith("/")))
             {
-                string resultFilename = string.Format("~/{0}", filename);
+                var resultFilename = string.Format("~/{0}", filename);
 
                 if (resultFilename.StartsWith(directoryName))
                 {
@@ -81,10 +80,10 @@ namespace Composite.Core.IO.Zip
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="filename">
-        /// Format: 
+        /// Format:
         ///     ~\Filename.txt
         ///     ~\Directory1\Directory2\Filename.txt
         ///     ~/Filename.txt
@@ -93,28 +92,23 @@ namespace Composite.Core.IO.Zip
         /// <returns></returns>
         public Stream GetFileStream(string filename)
         {
-            string parstedFilename = ParseFilename(filename);
+            var parstedFilename = ParseFilename(filename);
 
-            if (!_existingFilenamesInZip.ContainsKey(parstedFilename)) throw new ArgumentException(string.Format("The file {0} does not exist in the zip", filename));
-
-            var zipInputStream = new ZipInputStream(C1File.Open(this.ZipFilename, FileMode.Open, FileAccess.Read));
-
-            ZipEntry zipEntry;
-            while ((zipEntry = zipInputStream.GetNextEntry()) != null)
+            if (!_existingFilenamesInZip.ContainsKey(parstedFilename))
             {
-                if (zipEntry.Name == parstedFilename) break;
+                throw new ArgumentException(string.Format("The file {0} does not exist in the zip", filename));
             }
 
-            return zipInputStream;
+            var zipArchive = new ZipArchive(C1File.Open(ZipFilename, FileMode.Open, FileAccess.Read));
+
+            return zipArchive.GetEntry(filename).Open();
         }
 
-
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="filename">
-        /// Format: 
+        /// Format:
         ///     ~\Filename.txt
         ///     ~\Directory1\Directory2\Filename.txt
         ///     ~/Filename.txt
@@ -125,11 +119,11 @@ namespace Composite.Core.IO.Zip
         /// <returns></returns>
         public void WriteFileToDisk(string filename, string targetFilename)
         {
-            using (Stream stream = GetFileStream(filename))
+            using (var stream = GetFileStream(filename))
             {
                 using (var fileStream = new C1FileStream(targetFilename, FileMode.Create, FileAccess.Write))
                 {
-                    byte[] buffer = new byte[CopyBufferSize];
+                    var buffer = new byte[CopyBufferSize];
 
                     int readBytes;
                     while ((readBytes = stream.Read(buffer, 0, CopyBufferSize)) > 0)
@@ -144,14 +138,13 @@ namespace Composite.Core.IO.Zip
 
         private void Initialize()
         {
-            using (C1FileStream fileStream = C1File.Open(this.ZipFilename, FileMode.Open, FileAccess.Read))
+            using (var fileStream = C1File.Open(ZipFilename, FileMode.Open, FileAccess.Read))
             {
-                using (var zipInputStream = new ZipInputStream(fileStream))
+                using (var zipArchive = new ZipArchive(fileStream))
                 {
-                    ZipEntry zipEntry;
-                    while ((zipEntry = zipInputStream.GetNextEntry()) != null)
+                    foreach (var entry in zipArchive.Entries)
                     {
-                        _existingFilenamesInZip.Add(zipEntry.Name, zipEntry);
+                        _existingFilenamesInZip.Add(entry.FullName, entry);
                     }
                 }
             }
@@ -161,12 +154,18 @@ namespace Composite.Core.IO.Zip
 
         private static string ParseFilename(string filename)
         {
-            if (filename.StartsWith("~") == false) throw new ArgumentException("filename should start with a '~/' or '~\\'");
+            if (!filename.StartsWith("~"))
+            {
+                throw new ArgumentException("filename should start with a '~/' or '~\\'");
+            }
 
             filename = filename.Remove(0, 1);
             filename = filename.Replace('\\', '/');
 
-            if (filename.StartsWith("/") == false) throw new ArgumentException("filename should start with a '~/' or '~\\'");
+            if (!filename.StartsWith("/"))
+            {
+                throw new ArgumentException("filename should start with a '~/' or '~\\'");
+            }
 
             filename = filename.Remove(0, 1);
 
