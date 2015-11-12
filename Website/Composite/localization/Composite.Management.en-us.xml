@@ -276,7 +276,7 @@
 	<string key="VirtualElementProviderElementProvider.RootActions.SendMessageTooltip" value="Send a message to all running consoles" />
 	<string key="VirtualElementProviderElementProvider.RootActions.RestartApplicationLabel" value="Restart server" />
 	<string key="VirtualElementProviderElementProvider.RootActions.RestartApplicationTooltip" value="Restart the server" />
-	<string key="SendMessageToConsolesWorkflow.Layout.Label" value="Broadcast Message to All C1 Consoles" />
+	<string key="SendMessageToConsolesWorkflow.Layout.Label" value="Broadcast Message to All {applicationname} Consoles" />
 	<string key="SendMessageToConsolesWorkflow.TitleTextBox.Label" value="Title" />
 	<string key="SendMessageToConsolesWorkflow.TitleTextBox.Help" value="Dialog title of broadcast message" />
 	<string key="SendMessageToConsolesWorkflow.MessageTextArea.Label" value="Message" />
@@ -339,7 +339,7 @@
 	<!-- WEBSITE -->
 	<string key="Website.General.LabelVersionNumber" value="Version No." />
 	<string key="Website.Application.DialogReload.Title" value="Restart?" />
-	<string key="Website.Application.DialogReload.Text" value="Restart Composite C1? All unsaved changes will be lost." />
+	<string key="Website.Application.DialogReload.Text" value="Restart {applicationname}? All unsaved changes will be lost." />
 	<string key="WebSite.Application.DialogSaveResource.Title" value="Save Resource?" />
 	<string key="WebSite.Application.DialogSaveResource.Text" value="&quot;${resourcename}&quot; has been modified. Save changes?" />
 	<string key="Website.Dialogs.SaveAll.LabelSaveResources" value="Save Resources?" />

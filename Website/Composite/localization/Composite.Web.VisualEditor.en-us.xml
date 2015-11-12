@@ -84,7 +84,7 @@
   <string key="LabelId" value="ID" />
   <string key="HelpId" value="The id attribute can be used by JavaScript or CSS to make changes to an element." />
   <string key="MozSecurityNote.LabelSecurityStuff" value="Clipboard disabled" />
-  <string key="MozSecurityNote.TextSecurityStuff" value="For security reasons, access to the clipboard was blocked by your browser. Please use standard keyboard shortcuts. For a technical description of, how to configure your browser for use with Composite C1, press the &quot;More Info&quot; button." />
+  <string key="MozSecurityNote.TextSecurityStuff" value="For security reasons, access to the clipboard was blocked by your browser. Please use standard keyboard shortcuts. For a technical description of, how to configure your browser for use with {applicationname}, press the &quot;More Info&quot; button." />
   <!-- link -->
   <string key="Link.LabelInsertLink" value="Insert Link" />
   <string key="Link.LabelLinkProperties" value="Link Properties" />

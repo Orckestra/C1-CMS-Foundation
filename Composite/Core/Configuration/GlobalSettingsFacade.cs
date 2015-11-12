@@ -434,7 +434,7 @@ namespace Composite.Core.Configuration
         }
 
         /// <summary>
-        /// When true responses will include a header indicating the brand of the CMS
+        /// When <value>true</value> the output XHTML markup  will be formatted. 
         /// </summary>
         public static bool PrettifyPublicMarkup
         {

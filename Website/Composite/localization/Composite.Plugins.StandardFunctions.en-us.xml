@@ -266,7 +266,7 @@
 	<string key="Composite.Web.Client.EcmaScriptVersion.description" value="" />
 	<string key="Composite.Web.Client.IsCrawler.description" value="True if the current request is identified as coming from a crawler (search engine)." />
 	<string key="Composite.Web.Client.IsMobileDevice.description" value="True if the current request is identified as coming from a mobile device." />
-	<string key="Composite.Web.Html.Template.CommonMetaTags.description" value="Common HTML meta tags you probably want in yout html head" />
+	<string key="Composite.Web.Html.Template.CommonMetaTags.description" value="Common HTML meta tags you probably want in your html head" />
 	<string key="Composite.Web.Html.Template.CommonMetaTags.param.ContentType.label" value="Content-Type" />
 	<string key="Composite.Web.Html.Template.CommonMetaTags.param.ContentType.help" value="By default this is 'text/html; charset=utf-8'. If you serve something else you should overwrite this." />
 	<string key="Composite.Web.Html.Template.CommonMetaTags.param.Designer.label" value="Designer" />
@@ -355,21 +355,21 @@
 	<string key="Composite.Web.Request.PathInfo.description" value="Returns additional information passed in a URL along with the page link." />
 	<string key="Composite.Web.Request.PathInfo.param.Segment.help" value="The segment of the path info to retrieve, using the format '/(0)/(1)/(2)/...'. Specify -1 to get the entire string." />
 	<string key="Composite.Web.Request.PathInfo.param.Segment.label" value="Segment" />
-	<string key="Composite.Web.Request.PathInfo.param.AutoApprove.help" value="When true, Composite C1 will be instructed to accept any path info string. Default is true." />
+	<string key="Composite.Web.Request.PathInfo.param.AutoApprove.help" value="When true, any path info string will be accepted. Default is true." />
 	<string key="Composite.Web.Request.PathInfo.param.AutoApprove.label" value="AutoApprove" />
 	<string key="Composite.Web.Request.PathInfo.param.FallbackValue.help" value="" />
 	<string key="Composite.Web.Request.PathInfo.param.FallbackValue.label" value="Fallback value" />
 	<string key="Composite.Web.Request.PathInfoInt.description" value="Extracts an integer value from a PathInfo segment." />
 	<string key="Composite.Web.Request.PathInfoInt.param.Segment.help" value="The segment of the path info to retrieve, using the format '/(0)/(1)/(2)/...'." />
 	<string key="Composite.Web.Request.PathInfoInt.param.Segment.label" value="Segment" />
-	<string key="Composite.Web.Request.PathInfoInt.param.AutoApprove.help" value="When true, Composite C1 will be instructed to accept any path info string. Default is true." />
+	<string key="Composite.Web.Request.PathInfoInt.param.AutoApprove.help" value="When true, any path info string will be accepted. Default is true." />
 	<string key="Composite.Web.Request.PathInfoInt.param.AutoApprove.label" value="AutoApprove" />
 	<string key="Composite.Web.Request.PathInfoInt.param.FallbackValue.help" value="" />
 	<string key="Composite.Web.Request.PathInfoInt.param.FallbackValue.label" value="Fallback value" />
 	<string key="Composite.Web.Request.PathInfoGuid.description" value="Extracts a GUID from a PathInfo segment." />
 	<string key="Composite.Web.Request.PathInfoGuid.param.Segment.help" value="The segment of the path info to retrieve, using the format '/(0)/(1)/(2)/...'. " />
 	<string key="Composite.Web.Request.PathInfoGuid.param.Segment.label" value="Segment" />
-	<string key="Composite.Web.Request.PathInfoGuid.param.AutoApprove.help" value="When true, Composite C1 will be instructed to accept any path info string. Default is true." />
+	<string key="Composite.Web.Request.PathInfoGuid.param.AutoApprove.help" value="When true, accept any path info string will be accepted. Default is true." />
 	<string key="Composite.Web.Request.PathInfoGuid.param.AutoApprove.label" value="AutoApprove" />
 	<string key="Composite.Web.Request.PathInfoGuid.param.FallbackValue.help" value="" />
 	<string key="Composite.Web.Request.PathInfoGuid.param.FallbackValue.label" value="Fallback value" />
@@ -399,7 +399,7 @@
 	<string key="Composite.Web.Response.SetSessionVariable.param.Value.label" value="Value" />
 	<string key="Composite.Web.Response.SetSessionVariable.param.VariableName.help" value="The name of the session variable to set." />
 	<string key="Composite.Web.Response.SetSessionVariable.param.VariableName.label" value="Variable name" />
-	<string key="Composite.Web.Server.ApplicationPath.description" value="Gets the web application virtual path. Typically this is '' - the empty string, when running in the website root, but if Composite C1 is running in a sub folder this can be '/MySubfolder'. You can use this value to prefix URL's so they will work no matter is Composite C1 is running is a subfolder or not. Sample XSLT usage: &lt;img src=&quot;{/in:inputs/in:result[@name='ApplicationPath']}/images/myImage.png&quot; /&gt;" />
+	<string key="Composite.Web.Server.ApplicationPath.description" value="Gets the web application virtual path. Typically this is '' - the empty string, when running in the website root, but if {applicationname} is running in a sub folder this can be '/MySubfolder'. You can use this value to prefix URL's so they will work no matter is {applicationname} is running is a subfolder or not. Sample XSLT usage: &lt;img src=&quot;{/in:inputs/in:result[@name='ApplicationPath']}/images/myImage.png&quot; /&gt;" />
 	<string key="Composite.Web.Server.ApplicationVariable.description" value="Gets an IIS application variable" />
 	<string key="Composite.Web.Server.ApplicationVariable.param.FallbackValue.help" value="Value to use if the application variable was not located" />
 	<string key="Composite.Web.Server.ApplicationVariable.param.FallbackValue.label" value="Fallback value" />
