@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Transactions;
 using Composite.Core.Extensions;
@@ -8,15 +9,14 @@ using Composite.Core.IO;
 using Composite.Data;
 using Composite.Data.Transactions;
 using Composite.Data.Types;
-using ICSharpCode.SharpZipLib.Zip;
 
 
 namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementProvider
 {
-    /// <summary>    
+    /// <summary>
     /// </summary>
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public sealed class ZipMediaFileExtractor
     {
         private static readonly TimeSpan extrationTimeout = TimeSpan.FromMinutes(15);
@@ -123,23 +123,22 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
             folders = new List<IMediaFileFolder>();
             files = new List<IMediaFile>();
 
-            using (ZipInputStream zipInputStream = new ZipInputStream(compressedStream))
+            using (var zipArchive = new ZipArchive(compressedStream))
             {
-                ZipEntry theEntry;
-                while ((theEntry = zipInputStream.GetNextEntry()) != null)
+                foreach (var entry in zipArchive.Entries)
                 {
-                    if (theEntry.IsDirectory)
+                    if (entry.FullName.EndsWith("/"))
                     {
-                        CreateFoldersRec(folders, parentPath, theEntry.Name);
+                        CreateFoldersRec(folders, parentPath, entry.Name);
                     }
                     else
                     {
-                        string directory = theEntry.Name.GetDirectory('/');
+                        var directory = entry.Name.GetDirectory('/');
 
-                        WorkflowMediaFile mediaFile = new WorkflowMediaFile();
-                        int length = CopyZipData(zipInputStream, mediaFile);
+                        var mediaFile = new WorkflowMediaFile();
+                        int length = CopyZipData(entry.Open(), mediaFile);
 
-                        mediaFile.FileName = Path.GetFileName(theEntry.Name);
+                        mediaFile.FileName = Path.GetFileName(entry.Name);
                         mediaFile.Title = mediaFile.FileName.GetNameWithoutExtension();
                         mediaFile.FolderPath = parentPath.Combine(directory, '/');
 
@@ -147,10 +146,10 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
                         mediaFile.Culture = C1Console.Users.UserSettings.ActiveLocaleCultureInfo.Name;
                         mediaFile.LastWriteTime = DateTime.Now;
                         mediaFile.Length = length;
-                        mediaFile.MimeType = MimeTypeInfo.GetCanonicalFromExtension(Path.GetExtension(theEntry.Name));
+                        mediaFile.MimeType = MimeTypeInfo.GetCanonicalFromExtension(Path.GetExtension(entry.Name));
 
                         files.Add(mediaFile);
-                        
+
                         if (directory != "")
                         {
                             CreateFoldersRec(folders, parentPath, directory);
@@ -184,21 +183,21 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
 
         private static string ReduceFolderPath(string folderPath)
         {
-            int offset = folderPath.LastIndexOf("/", folderPath.Length - 2, StringComparison.Ordinal);
+            var offset = folderPath.LastIndexOf("/", folderPath.Length - 2, StringComparison.Ordinal);
+
             return (offset > 0) ? folderPath.Substring(0, offset) : null;
         }
 
         private static int CopyZipData(Stream from, WorkflowMediaFile mediaFile)
         {
-            int fileSize = 0;
+            var fileSize = 0;
 
-            using (Stream streamWriter = mediaFile.GetNewWriteStream())
+            using (var streamWriter = mediaFile.GetNewWriteStream())
             {
-                int size = 2048;
-                byte[] data = new byte[2048];
+                var data = new byte[2048];
                 while (true)
                 {
-                    size = from.Read(data, 0, data.Length);
+                    var size = @from.Read(data, 0, data.Length);
                     if (size > 0)
                     {
                         streamWriter.Write(data, 0, size);

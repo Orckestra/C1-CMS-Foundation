@@ -1,24 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
-using ICSharpCode.SharpZipLib.Zip;
-
 
 namespace Composite.Core.IO.Zip
 {
     internal sealed class ZipFileSystem : IZipFileSystem
     {
         private const int CopyBufferSize = 4096;
-        private Dictionary<string, ZipEntry> _existingFilenamesInZip = new Dictionary<string, ZipEntry>();
-        private string ZipFilename { get; set; }
 
+        private readonly HashSet<string> _entryNames = new HashSet<string>();
+        private string ZipFilename { get; set; }
 
         public ZipFileSystem(string zipFilename)
         {
-            if (string.IsNullOrEmpty(zipFilename)) throw new ArgumentNullException("zipFilename");
+            Verify.ArgumentNotNullOrEmpty(zipFilename, "zipFilename");
 
-            this.ZipFilename = zipFilename;
+            ZipFilename = zipFilename;
 
             Initialize();
         }
@@ -45,9 +44,9 @@ namespace Composite.Core.IO.Zip
 
         public IEnumerable<string> GetFilenames()
         {
-            foreach (string filename in _existingFilenamesInZip.Values.Where(f => f.IsDirectory == false).Select(f => f.Name))
+            foreach (var filename in _entryNames.Where(s => !s.EndsWith("/")))
             {
-                yield return string.Format("~/{0}", filename);
+                yield return $"~/{filename}";
             }
         }
 
@@ -57,13 +56,11 @@ namespace Composite.Core.IO.Zip
         {
             directoryName = directoryName.Replace('\\', '/');
 
-            foreach (string filename in _existingFilenamesInZip.Values.Where(f => f.IsDirectory == false).Select(f => f.Name))
+            foreach (var filename in GetFilenames())
             {
-                string resultFilename = string.Format("~/{0}", filename);
-
-                if (resultFilename.StartsWith(directoryName))
+                if (filename.StartsWith(directoryName))
                 {
-                    yield return resultFilename;
+                    yield return filename;
                 }
             }
         }
@@ -72,19 +69,19 @@ namespace Composite.Core.IO.Zip
 
         public IEnumerable<string> GetDirectoryNames()
         {
-            foreach (string directoryName in _existingFilenamesInZip.Values.Where(f => f.IsDirectory).Select(f => f.Name))
+            foreach (string directoryName in _entryNames.Where(e => e.EndsWith("/")))
             {
-                yield return string.Format("~/{0}", directoryName);
+                yield return $"~/{directoryName}";
             }
         }
 
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="filename">
-        /// Format: 
+        /// Format:
         ///     ~\Filename.txt
         ///     ~\Directory1\Directory2\Filename.txt
         ///     ~/Filename.txt
@@ -93,28 +90,33 @@ namespace Composite.Core.IO.Zip
         /// <returns></returns>
         public Stream GetFileStream(string filename)
         {
-            string parstedFilename = ParseFilename(filename);
+            var parstedFilename = ParseFilename(filename);
 
-            if (!_existingFilenamesInZip.ContainsKey(parstedFilename)) throw new ArgumentException(string.Format("The file {0} does not exist in the zip", filename));
-
-            var zipInputStream = new ZipInputStream(C1File.Open(this.ZipFilename, FileMode.Open, FileAccess.Read));
-
-            ZipEntry zipEntry;
-            while ((zipEntry = zipInputStream.GetNextEntry()) != null)
+            if (!_entryNames.Contains(parstedFilename))
             {
-                if (zipEntry.Name == parstedFilename) break;
+                throw new ArgumentException($"The file {filename} does not exist in the zip");
             }
 
-            return zipInputStream;
+            var zipArchive = new ZipArchive(C1File.Open(ZipFilename, FileMode.Open, FileAccess.Read));
+
+            var entryPath = filename.Substring(2).Replace('\\', '/');
+
+            var entry = zipArchive.GetEntry(entryPath);
+            if (entry == null)
+            {
+                zipArchive.Dispose();
+
+                throw new InvalidOperationException($"Entry '{entryPath}' not found");
+            }
+            
+            return new StreamWrapper(entry.Open(), () => zipArchive.Dispose());
         }
 
-
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="filename">
-        /// Format: 
+        /// Format:
         ///     ~\Filename.txt
         ///     ~\Directory1\Directory2\Filename.txt
         ///     ~/Filename.txt
@@ -125,11 +127,11 @@ namespace Composite.Core.IO.Zip
         /// <returns></returns>
         public void WriteFileToDisk(string filename, string targetFilename)
         {
-            using (Stream stream = GetFileStream(filename))
+            using (var stream = GetFileStream(filename))
             {
                 using (var fileStream = new C1FileStream(targetFilename, FileMode.Create, FileAccess.Write))
                 {
-                    byte[] buffer = new byte[CopyBufferSize];
+                    var buffer = new byte[CopyBufferSize];
 
                     int readBytes;
                     while ((readBytes = stream.Read(buffer, 0, CopyBufferSize)) > 0)
@@ -144,14 +146,13 @@ namespace Composite.Core.IO.Zip
 
         private void Initialize()
         {
-            using (C1FileStream fileStream = C1File.Open(this.ZipFilename, FileMode.Open, FileAccess.Read))
+            using (var fileStream = C1File.Open(ZipFilename, FileMode.Open, FileAccess.Read))
             {
-                using (var zipInputStream = new ZipInputStream(fileStream))
+                using (var zipArchive = new ZipArchive(fileStream))
                 {
-                    ZipEntry zipEntry;
-                    while ((zipEntry = zipInputStream.GetNextEntry()) != null)
+                    foreach (var entry in zipArchive.Entries)
                     {
-                        _existingFilenamesInZip.Add(zipEntry.Name, zipEntry);
+                        _entryNames.Add(entry.FullName);
                     }
                 }
             }
@@ -161,16 +162,79 @@ namespace Composite.Core.IO.Zip
 
         private static string ParseFilename(string filename)
         {
-            if (filename.StartsWith("~") == false) throw new ArgumentException("filename should start with a '~/' or '~\\'");
+            if (!filename.StartsWith("~"))
+            {
+                throw new ArgumentException("filename should start with a '~/' or '~\\'");
+            }
 
             filename = filename.Remove(0, 1);
             filename = filename.Replace('\\', '/');
 
-            if (filename.StartsWith("/") == false) throw new ArgumentException("filename should start with a '~/' or '~\\'");
+            if (!filename.StartsWith("/"))
+            {
+                throw new ArgumentException("filename should start with a '~/' or '~\\'");
+            }
 
             filename = filename.Remove(0, 1);
 
             return filename;
+        }
+
+        private class StreamWrapper : Stream, IDisposable
+        {
+            private readonly Stream _innerStream;
+            private readonly Action _disposeAction;
+
+            public StreamWrapper(Stream innerStream, Action disposeAction)
+            {
+                _innerStream = innerStream;
+                _disposeAction = disposeAction;
+            }
+
+
+            public override void Flush()
+            {
+                _innerStream.Flush();
+            }
+
+            public override long Seek(long offset, SeekOrigin origin)
+            {
+                return _innerStream.Seek(offset, origin);
+            }
+
+            public override void SetLength(long value)
+            {
+                _innerStream.SetLength(value);
+            }
+
+            public override int Read(byte[] buffer, int offset, int count)
+            {
+                return _innerStream.Read(buffer, offset, count);
+            }
+
+            public override void Write(byte[] buffer, int offset, int count)
+            {
+                _innerStream.Write(buffer, offset, count);
+            }
+
+            public override bool CanRead => _innerStream.CanRead;
+            public override bool CanSeek => _innerStream.CanSeek;
+            public override bool CanWrite => _innerStream.CanWrite;
+            public override long Length => _innerStream.Length;
+
+            public override long Position
+            {
+                get {  return _innerStream.Position; }
+                set { _innerStream.Position = value; }
+            } 
+
+
+            void IDisposable.Dispose()
+            {
+                _innerStream.Dispose();
+
+                _disposeAction();
+            }
         }
     }
 }

@@ -305,7 +305,8 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     XDocument doc;
                     try
                     {
-                        using (var reader = new C1StreamReader(this.InstallerContext.ZipFileSystem.GetFileStream(dataFilenameAttribute.Value)))
+                        using (var stream = this.InstallerContext.ZipFileSystem.GetFileStream(dataFilenameAttribute.Value))
+                        using (var reader = new C1StreamReader(stream))
                         {
                             doc = XDocument.Load(reader);
                         }

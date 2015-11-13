@@ -8,7 +8,6 @@ using Composite.C1Console.Workflow;
 using Composite.C1Console.Workflow.Activities;
 using Composite.Data;
 using Composite.Data.Types;
-using ICSharpCode.SharpZipLib.Zip;
 
 
 namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementProvider
@@ -82,7 +81,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
                         ZipMediaFileExtractor.AddZip(providerName, parentFolderPath, readStream, recreateFolders, overwrite);
                         _zipHasBeenUploaded = true;
                     }
-                    catch (ZipException)
+                    catch (Exception)
                     {
                     }
                 }
@@ -129,9 +128,9 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
 
         private void ShowUploadError(string message)
         {
-            //TODO: Cannot show an error bubble on file selector since the control doesn't support it. Should be fixed on client js 
+            //TODO: Cannot show an error bubble on file selector since the control doesn't support it. Should be fixed on client js
             //this.ShowFieldMessage("UploadedFile", "${Composite.Management, Website.Forms.Administrative.AddZipMediaFile.MissingUploadedFile.Message}");
-            this.ShowMessage(DialogType.Error, 
+            this.ShowMessage(DialogType.Error,
                 "${Composite.Management, Website.Forms.Administrative.AddZipMediaFile.Error.Title}",
                 message);
         }
