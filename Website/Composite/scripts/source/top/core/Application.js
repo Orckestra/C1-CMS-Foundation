@@ -913,8 +913,8 @@ _Application.prototype = {
 			FlowControllerService.ReleaseAllConsoleResources ( Application.CONSOLE_ID );
 		}
 		if ( this.logout ()) {
-			top.close ();
-			top.bindingMap.logoutcover.show ();
+			top.close();
+			location.reload();
 		}
 	},
 	
