@@ -50,13 +50,10 @@ ui|toolbargroup {
 	padding-bottom: 100px;
 }
 
-div.logo {
+.brand-logo {
 	cursor: pointer;
-	width: 250px;
-	height: 100px;
-	background: url("${root}/images/logo.png") no-repeat center center;
 	position: absolute;
-	top: 10px;
+	top: 0;
 	left: 50%;
 	margin-left: -125px;
 }
@@ -103,3 +100,4 @@ div#fade {
 	-moz-box-shadow: inset 0px 0px 72px 8px rgba(255,255,255,1);
 	box-shadow: inset 0px 0px 72px 8px rgba(255,255,255,1);
 }
+

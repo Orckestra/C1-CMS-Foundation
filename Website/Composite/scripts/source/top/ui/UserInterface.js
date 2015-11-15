@@ -18,6 +18,7 @@ var UserInterface = new function () {
 		"body"							: RootBinding,
 		"ui:binding"					: Binding,
 		"ui:box"						: Binding,
+		"ui:brandsnippet"				: BrandSnippetBinding,
 		"ui:dialog"						: DialogBinding,
 		"ui:dialoghead"					: DialogHeadBinding,
 		"ui:dialogbody"					: DialogBodyBinding,

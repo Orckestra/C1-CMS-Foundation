@@ -53,7 +53,7 @@
         <div class="splash-bg"></div>
         <div id="splash" class="splash">
             <div class="splash-inner">
-                <div class="logo"></div>
+                <control:brandingSnippet runat="server" SnippetName="logo" />
                 <div id="splashcontent">
                     <form id="form_login" method="post">
                         <!-- action="Login.aspx"  -->

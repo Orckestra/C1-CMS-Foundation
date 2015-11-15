@@ -25,7 +25,7 @@
         <div class="splash-bg"></div>
         <div class="splash">
             <div class="splash-inner">
-                <div class="logo"></div>
+                <control:brandingSnippet runat="server" SnippetName="logo" />
                 <div id="welcome">
                     <p>Welcome to your <%= Composite.Core.Configuration.GlobalSettingsFacade.ApplicationName %> website. You can start the Console or go back to your website <a href=".." title="Go to the main page">frontpage</a>.</p>
                 </div>

@@ -349,7 +349,7 @@
 	<string key="Website.Dialogs.LabelAccept" value="OK" />
 	<string key="Website.Dialogs.LabelCancel" value="Cancel" />
 	<string key="Website.Dialogs.LabelDisclosure" value="More Info" />
-	<string key="Website.Dialogs.About.Title" value="About" />
+	<string key="Website.Dialogs.About.Title" value="About {applicationname}" />
 	<string key="Website.Dialogs.About.LabelCredits" value="Credits" />
 	<string key="Website.Dialogs.About.LabelBack" value="Back" />
 	<string key="Website.Dialogs.About.LabelCredits2" value="Credits" />
@@ -530,7 +530,7 @@
   <string key="Website.App.LabelSettings" value="Settings" />
 	<string key="Website.App.LabelHelpContents" value="Help Contents" />
 	<string key="Website.App.LabelFeedback" value="Provide Feedback..." />
-	<string key="Website.App.LabelAbout" value="About " />
+	<string key="Website.App.LabelAbout" value="About {applicationname}" />
 	<string key="Website.App.LabelCut" value="Cut" />
 	<string key="Website.App.LabelCopy" value="Copy" />
 	<string key="Website.App.LabelPaste" value="Paste" />

@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-
 <%@ Page Language="C#" AutoEventWireup="true" Inherits="Composite_Management_Top" CodeFile="Top.aspx.cs" %>
-
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://www.w3.org/1999/xhtml" xmlns:control="http://www.composite.net/ns/uicontrol">
 <control:appinitializer runat="server" />
 <control:httpheaders runat="server" />
@@ -10,13 +8,14 @@
     <%--<meta http-equiv="x-ua-compatible" content="IE=EmulateIE9" >--%>
     <%--<meta http-equiv="X-UA-Compatible" content="IE=5">--%>
 
-    <title>C1: <%=Request.Url.Host%></title>
+    <title>C1: <%= Request.Url.Host%></title>
     <meta name="robots" content="noindex, nofollow" />
     <meta name="google" value="notranslate" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
 
     <control:styleloader runat="server" />
     <link rel="stylesheet" type="text/css" href="top.css.aspx" />
+	<control:brandingSnippet runat="server" SnippetName="includes" />
      <% Response.WriteFile("favicon.inc"); %>
     <control:scriptloader type="top" runat="server" />
 
@@ -69,16 +68,8 @@
         <!-- show intro splash or normal splash? -->
         <ui:cover id="cover" class="splash-cover" busy="false">
             <div class="splash-bg"></div>
-            <asp:PlaceHolder ID="introholder" runat="server" Visible="False">
-                <% Response.WriteFile("welcome.inc"); %>
-            </asp:PlaceHolder>
-            <asp:PlaceHolder ID="splashholder" runat="server" Visible="False">
-                <% Response.WriteFile("top.inc"); %>
-            </asp:PlaceHolder>
-            <asp:PlaceHolder ID="gruntholder" runat="server" Visible="False">
-                <% Response.WriteFile("grunt.inc"); %>
-            </asp:PlaceHolder>
-        </ui:cover>
+			<asp:Literal ID="contentHolder" runat="server" />
+		</ui:cover>
 
         <!-- app loaded here! -->
         <ui:window id="appwindow" />

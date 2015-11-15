@@ -102,7 +102,7 @@
 						</form>
 					</ui:deck>
 					<ui:deck id="loading" class="loading-deck">
-						<div class="logo"></div>
+						<div class="brand-logo"></div>
 						<div class="progress">
 							<p class="progressbar-msg">Your starter site is being downloaded and installed. This may take up to 30 seconds...</p>
 							<div id="progressbar" class="progressbar">

@@ -19,11 +19,13 @@ var About = new function () {
 		
 		var div0 = document.getElementById ( "prettyversion" );
 		var div1 = document.getElementById ( "version" );
-		var idfield = document.getElementById ( "id" );
+		var idfield = document.getElementById("id");
+		var copyright = document.getElementById("copyright");
 		
 		div0.firstChild.data = div0.firstChild.data.replace ( "${pretty}", Installation.applicationName );
 		div1.firstChild.data = div1.firstChild.data.replace ( "${version}", Installation.versionString );
 		idfield.value = idfield.value.replace("${id}", Installation.installationID);
+		copyright.firstChild.data = copyright.firstChild.data.replace("${year}", new Date().getFullYear());
 		
 		DOMEvents.addEventListener ( window, DOMEvents.UNLOAD, this );
 		DOMEvents.addEventListener ( document, DOMEvents.MOUSEOVER, this );

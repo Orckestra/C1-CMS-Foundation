@@ -37,21 +37,6 @@ ui|explorermenu {
 		border: none;
 	}
 
-	.brand-name {
-		position: relative;
-
-		.brand-icon {
-			width: 50px;
-			text-align: center;
-		}
-
-		.brand-text {
-			position: absolute;
-			top: 30%;
-			left: 50px;
-		}
-	}
-
 	.menu-toggle {
 		margin-top: 8px;
 
@@ -138,8 +123,24 @@ ui|explorertoolbarbutton {
 ui|explorerdecks {
 	display: none;
 }
+.exploler-expanded-visible {
+	display: none;
+}
+
+.exploler-expanded-hide {
+	display: block;
+}
 
 .exploler-expanded {
+
+	.exploler-expanded-visible {
+		display: block;
+	}
+
+	.exploler-expanded-hide { 
+		display: none;
+	}
+
 
 	ui|explorermenu {
 		width: @explorer-expanded-width;

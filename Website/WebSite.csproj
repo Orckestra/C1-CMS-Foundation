@@ -156,6 +156,30 @@
       <DependentUpon>ShowFunctionInfo.aspx</DependentUpon>
     </Compile>
     <Content Include="App_Data\Composite\Configuration\Entities.xml" />
+    <Content Include="Composite\content\branding\about-company.inc">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Composite\content\branding\about-company-branded.inc">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Composite\content\branding\brand-main-branded.inc">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Composite\content\branding\brand-main.inc">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Composite\content\branding\includes-branded.inc">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Composite\content\branding\includes.inc">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Composite\content\branding\logo.inc">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Composite\content\branding\logo-branded.inc">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Composite\content\views\browser\BrowserPathBinding.js" />
     <Content Include="Composite\content\views\browser\deviceoptions.xml">
       <SubType>Designer</SubType>
@@ -194,6 +218,8 @@
     <Content Include="Composite\content\forms\Administrative\DeleteUserControlFunctionConfirm.xml" />
     <Content Include="Composite\content\forms\Administrative\PageTemplate\EditMasterPage.xml" />
     <Content Include="Composite\content\forms\Administrative\PageTemplate\AddNewPageTemplate.xml" />
+    <Content Include="Composite\controls\BrandingSnippet.ascx" />
+    <Content Include="Composite\images\branding\brand-icon.png" />
     <Content Include="Composite\images\icons\svg\website-remove-folder-from-whitelist.svg" />
     <Content Include="Composite\images\icons\svg\website-add-folder-to-whitelist.svg" />
     <Content Include="Composite\lib\codemirror\addon\dropmedia\dropmedia.js" />
@@ -480,7 +506,6 @@
     </Compile>
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\Selectors\UrlComboBox.ascx" />
     <Content Include="Composite\grunt.html" />
-    <Content Include="Composite\images\branding\brand-icon.svg" />
     <Content Include="Composite\images\C1_logo.svg" />
     <Content Include="Composite\images\branding\brand-text.svg" />
     <Content Include="Composite\images\branding\favicon.ico" />
@@ -538,6 +563,7 @@
     <Content Include="Composite\images\welcome\accept-green.svg" />
     <Content Include="Composite\images\welcome\cancel.svg" />
     <Content Include="Composite\scripts\source\top\core\ImageProvider.js" />
+    <Content Include="Composite\scripts\source\top\ui\bindings\branding\BrandSnippetBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\genericview\GenericViewBinding.js" />
     <Content Include="Composite\scripts\source\top\util\LocalStorage.js" />
     <Content Include="Composite\styles\default\fields\fields-base.less" />
@@ -548,6 +574,7 @@
     <Content Include="Composite\styles\default\forms.less" />
     <Content Include=".bowerrc" />
     <Content Include="bower.json" />
+    <Content Include="Composite\styles\default\branding.less" />
     <None Include="Composite\styles\default\splash.less" />
     <Content Include="Composite\GenerateIconSprite.aspx" />
     <Content Include="Composite\images\editfunction.png" />
@@ -1227,6 +1254,9 @@
     <None Include="Composite\styles\default\rtl.less" />
     <Content Include="Composite\grunt.inc" />
     <Content Include="Composite\favicon.inc" />
+    <Content Include="Composite\login.inc">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Composite\unsecure.js" />
     <Content Include="Composite\unsecure.css" />
     <Content Include="Composite\images\loading.gif" />
@@ -2445,7 +2475,9 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="ReleaseCleanupConfiguration.xml" />
-    <Content Include="Composite\webauthorization.config" />
+    <Content Include="Composite\webauthorization.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="ReleaseBuild.Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -2499,9 +2531,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Composite\styles\default\_variables.less" />
-    <None Include="Composite\top.inc">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Composite\welcome.inc" />
     <Content Include="Renderers\FunctionPreview.ashx" />
     <Content Include="Renderers\TemplatePreview.ashx" />

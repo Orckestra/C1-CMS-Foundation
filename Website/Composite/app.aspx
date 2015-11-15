@@ -13,7 +13,7 @@
 
 	<control:scriptloader type="sub" runat="server" />
 	<control:styleloader runat="server" />
-
+	<control:brandingSnippet runat="server" SnippetName="includes" />
 	<ui:bindingmappingset>
 		<ui:bindingmapping element="ui:splitbox" binding="StageSplitBoxBinding" />
 		<ui:bindingmapping element="ui:splitpanel" binding="StageSplitPanelBinding" />
@@ -26,7 +26,7 @@
 		<ui:broadcaster id="broadcasterCurrentTabDirty" isdisabled="true" />
 		<ui:broadcaster id="broadcasterHasDirtyTabs" isdisabled="true" />
 	</ui:broadcasterset>
-
+	
 </head>
 <body id="app">
 
@@ -160,9 +160,9 @@
 					</ui:menugroup>
 					<ui:menugroup>
 						<div class="brand-about-menuitem" onclick="Commands.about()">
-							<img alt="brand" src="images/branding/brand-icon.svg" />
+							<img alt="brand" src="images/branding/brand-icon.png?cacheversion=<%= DateTime.Now.TimeOfDay %>" />
 							<div class="menuitem-text">
-								<ui:text label="${string:Website.App.LabelAbout}"></ui:text><%=Composite.Core.Configuration.GlobalSettingsFacade.ApplicationName%>
+								<ui:text label="${string:Website.App.LabelAbout}"></ui:text>
 							</div>
 						</div>
 					</ui:menugroup>
@@ -200,13 +200,13 @@
 		<ui:explorermenu id="explorermenu">
 			<ui:explorertoolbar>
 				<ui:toolbarbody align="left">
-					<ui:toolbargroup>
+					<ui:toolbargroup class="clearfix">
 						<div class="brand-name">
 							<div class="brand-icon">
-								<img src="images/branding/brand-icon.svg" alt="brand" onclick="EventBroadcaster.broadcast(BroadcastMessages.START_COMPOSITE);" />
+								<img src="images/branding/brand-icon.png?cacheversion=<%= DateTime.Now.TimeOfDay %>" alt="brand" onclick="EventBroadcaster.broadcast(BroadcastMessages.START_COMPOSITE);" />
 							</div>
 							<div class="brand-text">
-								<img src="images/branding/brand-text.svg" alt="brand" />
+								<img src="images/branding/brand-text.svg?cacheversion=<%= DateTime.Now.TimeOfDay %>" alt="brand" />
 							</div>
 						</div>
 						<ui:toolbarbutton id="menutogglebutton" class="menu-toggle" image="${icon:menu}" oncommand="top.app.bindingMap.explorermenu.toggle()" />
@@ -214,6 +214,9 @@
 				</ui:toolbarbody>
 				<ui:toolbarbody class="max">
 					<ui:toolbargroup class="max textonly" />
+				</ui:toolbarbody>
+				<ui:toolbarbody class="brand-main">
+					<ui:brandsnippet snippetName="brand-main" />
 				</ui:toolbarbody>
 			</ui:explorertoolbar>
 		</ui:explorermenu>
