@@ -75,6 +75,13 @@ namespace Composite.Functions
                 QueryString = pageUrlData.QueryParameters
             };
 
+            var valueProvider = _mapper as AttributeBasedRoutingHelper.IRelativeRouteResover;
+            if (valueProvider != null)
+            {
+                var data = valueProvider.TryGetData(pageUrlData.PageId, relativeRoute);
+                return data != null ? new RoutedDataModel(data) : null;
+            }
+
             var filterExpression = GetPredicate(_pageId, relativeRoute);
             if (filterExpression == null)
             {
@@ -152,7 +159,7 @@ namespace Composite.Functions
         private RelativeRoute GetRoute(IData data)
         {
             var @interface = typeof(IRelativeRouteToPredicateMapper<>).MakeGenericType(_dataType);
-            return @interface.GetMethod("GetRoute").Invoke(_mapper, new[] { data }) as RelativeRoute;
+            return @interface.GetMethod("GetRoute").Invoke(_mapper, new object[] { data, true }) as RelativeRoute;
         }
 
 

@@ -46,4 +46,6 @@ public partial class Composite_Management_Top {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::System.Web.UI.WebControls.PlaceHolder gruntholder;
+
+    protected global::System.Web.UI.WebControls.Literal contentHolder;
 }

@@ -1267,6 +1267,8 @@ namespace CompositeTypeFieldDesigner
 
             if (SelectedFieldIsKeyField)
             {
+                Field_Save_UpdateDataUrl(field, true);
+
                 if (KeyFieldReadOnly)
                 {
                     return;
@@ -1276,8 +1278,6 @@ namespace CompositeTypeFieldDesigner
                 {
                     return;
                 }
-
-                Field_Save_UpdateDataUrl(field, true);
 
                 var currentFieldType = KeyFieldHelper.GetKeyFieldType(field);
 

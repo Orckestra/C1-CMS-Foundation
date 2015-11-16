@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
+using Composite.Core.Routing.Foundation.PluginFacades;
 using Composite.Core.Types;
 using Composite.Core.WebClient;
 
@@ -23,7 +24,7 @@ namespace Composite.Core.Routing
             return field => field.Equals(fieldValue);
         }
 
-        public RelativeRoute GetRoute(TValue fieldValue)
+        public RelativeRoute GetRoute(TValue fieldValue, bool searchSignificant)
         {
             if (!typeof(TValue).IsValueType && fieldValue == null)
             {
@@ -37,7 +38,8 @@ namespace Composite.Core.Routing
             }
             else if (IsStringField)
             {
-                stringValue = UrlUtils.EncodeUrlInvalidCharacters(fieldValue as string);
+                stringValue = searchSignificant ? UrlUtils.EncodeUrlInvalidCharacters(fieldValue as string)
+                                                : StringToUrlPart(fieldValue as string);
             }
             else
             {
@@ -48,10 +50,10 @@ namespace Composite.Core.Routing
             return new RelativeRoute {PathSegments = new[] {stringValue}};
         }
 
-        //private static string StringToUrlPart(string partnerName)
-        //{
-        //    return UrlFormattersPluginFacade.FormatUrl(partnerName, true);
-        //}
+        private static string StringToUrlPart(string partnerName)
+        {
+            return UrlFormattersPluginFacade.FormatUrl(partnerName, true);
+        }
 
         public bool TryGetValue(RelativeRoute routePart, out TValue value)
         {
