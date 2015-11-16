@@ -47,7 +47,7 @@ namespace Composite.Core.Routing
             return Expression.Lambda<Func<TField, bool>>(body, paramExpr);
         }
 
-        public RelativeRoute GetRoute(TField fieldValue)
+        public RelativeRoute GetRoute(TField fieldValue, bool fieldSearchSignificant)
         {
             var data = DataFacade.TryGetDataByUniqueKey<TDataType>((object)fieldValue);
             if (data == null)
@@ -55,7 +55,7 @@ namespace Composite.Core.Routing
                 return null;
             }
 
-            return _dataTypeMapper.GetRoute(data);
+            return _dataTypeMapper.GetRoute(data, fieldSearchSignificant);
         }
     }
 }

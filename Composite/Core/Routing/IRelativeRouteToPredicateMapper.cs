@@ -63,14 +63,20 @@ namespace Composite.Core.Routing
         /// 
         /// </summary>
         /// <param name="fieldValue"></param>
+        /// <param name="searchSignificant">When <value>false</value>, the generated relative route will not be used for database querying.</param>
         /// <returns></returns>
-        RelativeRoute GetRoute(T fieldValue);
+        RelativeRoute GetRoute(T fieldValue, bool searchSignificant);
     }
 
     /// <exclude />
     public interface IRelativeRouteValueProvider<T> : IRelativeRouteToPredicateMapper
     {
-        /// <exclude />
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="routePart"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
         bool TryGetValue(RelativeRoute routePart, out T value);
     }
 }
