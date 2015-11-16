@@ -2,7 +2,7 @@ StartPageBinding.prototype = new PageBinding;
 StartPageBinding.prototype.constructor = StartPageBinding;
 StartPageBinding.superclass = PageBinding.prototype;
 
-StartPageBinding.VIEW_CLASSNAME = "spartpage-view";
+StartPageBinding.VIEW_CLASSNAME = "startpage-view";
 /**
  * @class
  */
