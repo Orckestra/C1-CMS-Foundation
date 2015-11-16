@@ -216,7 +216,7 @@
 					<ui:toolbargroup class="max textonly" />
 				</ui:toolbarbody>
 				<ui:toolbarbody class="brand-main">
-					<ui:brandsnippet snippetName="brand-main" />
+					<control:brandingSnippet SnippetName="brand-main" runat="server" />
 				</ui:toolbarbody>
 			</ui:explorertoolbar>
 		</ui:explorermenu>

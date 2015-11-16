@@ -8,15 +8,9 @@
 		<title>Composite.Management.Start</title>
 		<control:styleloader runat="server"/>
 		<control:scriptloader type="sub" runat="server" />
-		<script type="text/javascript" src="StartPageBinding.js"></script>
+		<control:brandingSnippet SnippetName="start-page-js" runat="server" />
 	</head>
 	<body>
-		<ui:page binding="StartPageBinding">
-			<ui:controlgroup id="controlgroup">
-				<ui:control binding="DialogControlBinding" id="closecontrol" controltype="close"/>
-			</ui:controlgroup>
-			<ui:cover id="cover" busy="false" transparent="true"/>
-			<ui:window id="start"/>
-		</ui:page>
+		<control:brandingSnippet SnippetName="start-page-content" runat="server" />
 	</body>
 </html>
