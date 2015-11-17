@@ -159,16 +159,7 @@
     <Content Include="Composite\content\branding\about-company.inc">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Composite\content\branding\about-company-branded.inc">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Composite\content\branding\brand-main-branded.inc">
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="Composite\content\branding\brand-main.inc">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Composite\content\branding\includes-branded.inc">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Composite\content\branding\includes.inc">
@@ -180,6 +171,8 @@
     <Content Include="Composite\content\branding\logo-branded.inc">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Composite\content\branding\start-page-content.inc" />
+    <Content Include="Composite\content\branding\start-page-js.inc" />
     <Content Include="Composite\content\views\browser\BrowserPathBinding.js" />
     <Content Include="Composite\content\views\browser\deviceoptions.xml">
       <SubType>Designer</SubType>
@@ -218,6 +211,7 @@
     <Content Include="Composite\content\forms\Administrative\DeleteUserControlFunctionConfirm.xml" />
     <Content Include="Composite\content\forms\Administrative\PageTemplate\EditMasterPage.xml" />
     <Content Include="Composite\content\forms\Administrative\PageTemplate\AddNewPageTemplate.xml" />
+    <Content Include="Composite\content\views\start\AppSelectorBinding.js" />
     <Content Include="Composite\controls\BrandingSnippet.ascx" />
     <Content Include="Composite\images\branding\brand-icon.png" />
     <Content Include="Composite\images\icons\svg\website-remove-folder-from-whitelist.svg" />

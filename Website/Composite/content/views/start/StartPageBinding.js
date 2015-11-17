@@ -2,6 +2,7 @@ StartPageBinding.prototype = new PageBinding;
 StartPageBinding.prototype.constructor = StartPageBinding;
 StartPageBinding.superclass = PageBinding.prototype;
 
+StartPageBinding.VIEW_CLASSNAME = "startpage-view";
 /**
  * @class
  */
@@ -49,6 +50,7 @@ StartPageBinding.prototype.onBindingRegister = function () {
 	var viewBinding = this.getAncestorBindingByType(ViewBinding, true);
 	if (viewBinding) {
 		DOMEvents.addEventListener(viewBinding.bindingElement, DOMEvents.CLICK, this);
+		viewBinding.attachClassName(StartPageBinding.VIEW_CLASSNAME);
 	}
 }
 
