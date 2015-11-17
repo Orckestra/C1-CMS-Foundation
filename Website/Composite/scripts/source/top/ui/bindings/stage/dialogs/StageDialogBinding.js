@@ -514,6 +514,13 @@ StageDialogBinding.prototype._fixAutoHeight = function ( pageBinding ) {
 	}
 	height = pageBinding.bindingElement.offsetHeight;
 	height += this._titlebar.bindingElement.offsetHeight;
+
+	var padding = CSSComputer.getPadding(this.bindingElement);
+	var border = CSSComputer.getBorder(this.bindingElement);
+	height += padding.top + padding.bottom;
+	height += border.top + border.bottom;
+
+
 	
 	//if ( height < dim.h ) { // never shrink the dialog - only expand it.
 	//	height = dim.h;

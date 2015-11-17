@@ -13,10 +13,10 @@
 		<ui:dialogpage binding="TextDialogPageBinding"
 			label="${string:Composite.Web.VisualEditor:TextPaste.Label}" 
 			image="${icon:page}" 
-			height="auto"
+			height="300"
 			resizable="true">
 			
-			<ui:pagebody style="height:150px;">
+			<ui:pagebody>
 				<ui:flexbox>
 					<ui:editortextbox id="text" autoselect="true">
 						<textarea><%= Composite.Core.ResourceSystem.StringResourceSystemFacade.GetString("Composite.Web.VisualEditor","TextPaste.PasteHereContent") %></textarea>
