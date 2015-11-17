@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Linq;
 using Composite.Core.IO;
 using System.Reflection;
+using Composite.Core;
+using Composite.Core.Configuration;
 
 
 namespace Composite
@@ -15,6 +18,7 @@ namespace Composite
         private static bool _isUnitTest = false;
         private static string _uniqueInstanceName = null;
         private static string _uniqueInstanceNameSafe = null;
+        private static Lazy<Version> _brandedAssemblyName = new Lazy<Version>(GetBrandedProductVersion);
 
         /// <exclude />
         public static bool IsDebugBuild
@@ -45,7 +49,7 @@ namespace Composite
         {
             get
             {
-                if (_isUnitTestDetermined==false)
+                if (!_isUnitTestDetermined)
                 {
                     _isUnitTest = RuntimeInformation.IsUnittestImpl;
                     _isUnitTestDetermined = true;
@@ -60,17 +64,9 @@ namespace Composite
         {
             get
             {
-                if (AppDomain.CurrentDomain.SetupInformation.ApplicationName == null)
-                {
-                    return true;
-                }
+                string applicationName = AppDomain.CurrentDomain.SetupInformation.ApplicationName;
 
-                if (AppDomain.CurrentDomain.SetupInformation.ApplicationName == "vstesthost.exe")
-                {
-                    return true;
-                }
-
-                return false;
+                return applicationName == null || applicationName == "vstesthost.exe";
             }
         }
 
@@ -85,6 +81,45 @@ namespace Composite
             }
         }
 
+
+        /// <summary>
+        /// A version number to be shown in UI.
+        /// </summary>
+        public static Version BrandedProductVersion
+        {
+            get
+            {
+                return _brandedAssemblyName.Value ?? ProductVersion;
+            }
+        }
+
+
+        private static Version GetBrandedProductVersion()
+        {
+            try
+            {
+                string assemblyName = GlobalSettingsFacade.BrandedVersionAssemblySource;
+                if (assemblyName == null)
+                {
+                    return null;
+                }
+
+                var asm = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a.GetName().Name == assemblyName);
+                if (asm == null)
+                {
+                    Log.LogWarning(nameof(RuntimeInformation),
+                        $"Failed to find branded product version source assembly by name '{assemblyName}'");
+                    return null;
+                }
+
+                return asm.GetName().Version;
+            }
+            catch (Exception ex)
+            {
+                Log.LogError(nameof(RuntimeInformation),  ex);
+                return null;
+            }
+        }
 
 
         /// <exclude />

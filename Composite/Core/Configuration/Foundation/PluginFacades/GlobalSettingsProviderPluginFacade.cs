@@ -34,6 +34,16 @@ namespace Composite.Core.Configuration.Foundation.PluginFacades
 
 
 
+        public static string BrandedVersionAssemblySource
+        {
+            get
+            {
+                return UseReaderLock(provider => provider.BrandedVersionAssemblySource);
+            }
+        }
+
+
+
         public static string AutoCreatedAdministratorUserName
         {
             get

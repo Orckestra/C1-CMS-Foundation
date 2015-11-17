@@ -37,7 +37,7 @@ namespace Composite.Services
 				new KeyValuePair
 				{
 					Key = "ProductVersion",
-					Value = Composite.RuntimeInformation.ProductVersion.ToString()
+					Value = Composite.RuntimeInformation.BrandedProductVersion.ToString()
 				},
 				new KeyValuePair
 				{

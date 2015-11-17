@@ -9,7 +9,9 @@ namespace Composite.Core.Configuration.Plugins.GlobalSettingsProvider
     [ConfigurationNameMapper(typeof(GlobalSettingsProviderDefaultNameRetriever))]
     internal interface IGlobalSettingsProvider
     {        
-        string ApplicationName { get; } 
+        string ApplicationName { get; }
+
+        string BrandedVersionAssemblySource { get; }
 
         string DefaultCultureName { get; }
 

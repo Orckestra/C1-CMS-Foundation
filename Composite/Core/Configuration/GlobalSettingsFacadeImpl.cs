@@ -20,6 +20,10 @@ namespace Composite.Core.Configuration
             }
         }
 
+        public string BrandedVersionAssemblySource
+        {
+            get { return GlobalSettingsProviderPluginFacade.BrandedVersionAssemblySource; }
+        }
 
 
         public CultureInfo DefaultCultureInfo
