@@ -34,7 +34,7 @@ namespace Composite.Core.Configuration
         /// One of three values:
         /// NoCacheSize: The caller should use not use caching
         /// DefaultCacheSize: The caller should use its own default size
-        /// All other values (> 0): The caller should use this sizee
+        /// All other values (> 0): The caller should use this size
         /// See <see cref="GetSize"/>
         /// </summary>
         public int Size { get; private set; }        
@@ -68,7 +68,9 @@ namespace Composite.Core.Configuration
         internal static IGlobalSettingsFacade Implementation { get { return _globalSettingsFacade; } set { _globalSettingsFacade = value; } }
 
 
-        /// <exclude />
+        /// <summary>
+        /// The name of the application to be displayed in the UI.
+        /// </summary>
         public static string ApplicationName
         {
             get
@@ -77,6 +79,10 @@ namespace Composite.Core.Configuration
             }
         }
 
+        /// <summary>
+        /// Name of an assembly file, which version should displayed as a product version in UI.
+        /// </summary>
+        public static string BrandedVersionAssemblySource => _globalSettingsFacade.BrandedVersionAssemblySource;
 
 
         /// <exclude />

@@ -146,6 +146,10 @@ Changes in 4.2
 - Removed "LogElementProvider" element - hasn't been used for years
 - Added <add userControlVirtualPath="~/Composite/controls/FormsControls/FormUiControlTemplates/Selectors/FontIconSelector.ascx" cacheCompiledUserControlType="true" type="Composite.Plugins.Forms.WebChannel.UiControlFactories.TemplatedFontIconSelectorUiControlFactory, Composite" name="FontIconSelector" />
  
- Changes in 4.2 Update 2 (or later)
-  - Removed InlineFunctionCallsDesigner.ascx - <add userControlVirtualPath="~/Composite/controls/FormsControls/FormUiControlTemplates/DeveloperTools/InlineFunctionCallsDesigner.ascx" cacheCompiledUserControlType="true" type="Composite.Plugins.Forms.WebChannel.UiControlFactories.TemplatedFunctionCallsDesignerUiControlFactory, Composite" name="InlineFunctionCallsDesigner" />
-  - Added Composite.C1Console.Security.Plugins.PasswordPolicy section
+Changes in 4.2 Update 2 (or later)
+- Removed InlineFunctionCallsDesigner.ascx - <add userControlVirtualPath="~/Composite/controls/FormsControls/FormUiControlTemplates/DeveloperTools/InlineFunctionCallsDesigner.ascx" cacheCompiledUserControlType="true" type="Composite.Plugins.Forms.WebChannel.UiControlFactories.TemplatedFunctionCallsDesignerUiControlFactory, Composite" name="InlineFunctionCallsDesigner" />
+- Added Composite.C1Console.Security.Plugins.PasswordPolicy section
+
+Changes in 5.0 or later
+- Added Composite.C1Console.Commands.Plugins.ConsoleCommandHandlerConfiguration section for console commands
+- Added a global configuration settings @brandedVersionAssemblySource, @prettifyPublicMarkup, @prettifyRenderFunctionExceptions

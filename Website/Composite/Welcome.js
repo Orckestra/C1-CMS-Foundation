@@ -527,6 +527,7 @@ var Welcome = new function () {
 		var consolelanguage = select.options[select.selectedIndex].value;
 
 		self.loading();
+
 		SetupService.SetUp(serial, username, email, password, websitelanguage, consolelanguage, newsletter,
 				function (response) {
 					if (response) {
@@ -541,24 +542,24 @@ var Welcome = new function () {
 
 	/**
 	* Show Loading Deck with progress bar
-	* Progress bar goes from 0 to 100 in 30 seconds - and then restart after 5 seconds (if things are still working).
+	* Progress bar goes from 0 to 100 in 45 seconds - and then restart after 5 seconds (if things are still working).
 	*/
 	this.loading = function () {
 		bindingMap.introdecks.select("loading");
 		bindingMap.cover.attachClassName("loading-cover");
 		bindingMap.navdecks.hide();
 		var current = new Date().getTime();
-		var end = current + 35000; 
+		var end = current + 50000; // total 45 seconds + wait 5 seconds
 		ProgressBarBinding.notch(1);
 		progressLoading = setInterval(function () {
 			if (current > end) {
 				ProgressBarBinding.reload();
 				progressNotchIndex = 0;
-				end = current + 35000;
+				end = current + 50000;
 			}
 			ProgressBarBinding.notch(1);
 			current = new Date().getTime();
 			progressNotchIndex++;
-		}, 1500); // 20 notches * 1.5 seconds = 30 seconds
+		}, 2250); // 20 notches * 2.25 seconds = 45 seconds
 	}
 }
