@@ -69,6 +69,8 @@
   <string key="FilePackageFragmentInstaller.AssemblyLoadNotAllowed" value="The 'assemblyLoad' attribute can only be applied to files, not directories" />
   <string key="FilePackageFragmentInstaller.OnlyUpdateNotAllowed" value="The 'onlyUpdate' attribute can only be applied to files, not directories" />
   <string key="FilePackageFragmentInstaller.OnlyUpdateNotAllowedWithLoadAssemlby" value="The 'onlyUpdate' attribute is not allowed in combination with the 'loadAssembly' attribute" />
+  <string key="FilePackageFragmentInstaller.OnlyUpdateAndOnlyAddNotAllowed" value="The 'onlyUpdate' and 'onlyAdd' attributes are now allowed on the same element" />
+  <string key="FilePackageFragmentInstaller.OnlyAddAndAllowOverwriteNotAllowed" value="The 'onlyAdd' and 'allowOverwrite' attributes are now allowed on the same element" />
   <string key="FilePackageFragmentInstaller.MissingDirectory" value="The install zip-file does not contain the directory '{0}'" />
   <string key="FilePackageFragmentInstaller.WrongBasePath" value="Uninstall.xml contains file pathes, binded to the original website location, and therefore the package cannot be uninstalled safely." />
   <string key="FilePackageFragmentUninstaller.OnlyOneFilesElement" value="Only one 'Files' element allowed" />

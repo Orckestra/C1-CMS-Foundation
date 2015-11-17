@@ -545,6 +545,10 @@ namespace Composite.Core.ResourceSystem
  public static string FilePackageFragmentInstaller_OnlyUpdateNotAllowed { get { return T("FilePackageFragmentInstaller.OnlyUpdateNotAllowed"); } } 
  /// <summary>&quot;The &apos;onlyUpdate&apos; attribute is not allowed in combination with the &apos;loadAssembly&apos; attribute&quot;</summary> 
  public static string FilePackageFragmentInstaller_OnlyUpdateNotAllowedWithLoadAssemlby { get { return T("FilePackageFragmentInstaller.OnlyUpdateNotAllowedWithLoadAssemlby"); } } 
+ /// <summary>&quot;The &apos;onlyUpdate&apos; and &apos;onlyAdd&apos; attributes are now allowed on the same element&quot;</summary> 
+ public static string FilePackageFragmentInstaller_OnlyUpdateAndOnlyAddNotAllowed { get { return T("FilePackageFragmentInstaller.OnlyUpdateAndOnlyAddNotAllowed"); } } 
+ /// <summary>&quot;The &apos;onlyAdd&apos; and &apos;allowOverwrite&apos; attributes are now allowed on the same element&quot;</summary> 
+ public static string FilePackageFragmentInstaller_OnlyAddAndAllowOverwriteNotAllowed { get { return T("FilePackageFragmentInstaller.OnlyAddAndAllowOverwriteNotAllowed"); } } 
  /// <summary>&quot;The install zip-file does not contain the directory &apos;{0}&apos;&quot;</summary> 
  public static string FilePackageFragmentInstaller_MissingDirectory(object parameter0) { return string.Format(T("FilePackageFragmentInstaller.MissingDirectory"), parameter0); } 
  /// <summary>&quot;Uninstall.xml contains file pathes, binded to the original website location, and therefore the package cannot be uninstalled safely.&quot;</summary> 
@@ -1651,7 +1655,7 @@ namespace Composite.Core.ResourceSystem
  public static string VirtualElementProviderElementProvider_RootActions_RestartApplicationLabel { get { return T("VirtualElementProviderElementProvider.RootActions.RestartApplicationLabel"); } } 
  /// <summary>&quot;Restart the server&quot;</summary> 
  public static string VirtualElementProviderElementProvider_RootActions_RestartApplicationTooltip { get { return T("VirtualElementProviderElementProvider.RootActions.RestartApplicationTooltip"); } } 
- /// <summary>&quot;Broadcast Message to All C1 Consoles&quot;</summary> 
+ /// <summary>&quot;Broadcast Message to All {applicationname} Consoles&quot;</summary> 
  public static string SendMessageToConsolesWorkflow_Layout_Label { get { return T("SendMessageToConsolesWorkflow.Layout.Label"); } } 
  /// <summary>&quot;Title&quot;</summary> 
  public static string SendMessageToConsolesWorkflow_TitleTextBox_Label { get { return T("SendMessageToConsolesWorkflow.TitleTextBox.Label"); } } 
@@ -1775,7 +1779,7 @@ namespace Composite.Core.ResourceSystem
  public static string Website_General_LabelVersionNumber { get { return T("Website.General.LabelVersionNumber"); } } 
  /// <summary>&quot;Restart?&quot;</summary> 
  public static string Website_Application_DialogReload_Title { get { return T("Website.Application.DialogReload.Title"); } } 
- /// <summary>&quot;Restart Composite C1? All unsaved changes will be lost.&quot;</summary> 
+ /// <summary>&quot;Restart {applicationname}? All unsaved changes will be lost.&quot;</summary> 
  public static string Website_Application_DialogReload_Text { get { return T("Website.Application.DialogReload.Text"); } } 
  /// <summary>&quot;Save Resource?&quot;</summary> 
  public static string WebSite_Application_DialogSaveResource_Title { get { return T("WebSite.Application.DialogSaveResource.Title"); } } 
@@ -1795,7 +1799,7 @@ namespace Composite.Core.ResourceSystem
  public static string Website_Dialogs_LabelCancel { get { return T("Website.Dialogs.LabelCancel"); } } 
  /// <summary>&quot;More Info&quot;</summary> 
  public static string Website_Dialogs_LabelDisclosure { get { return T("Website.Dialogs.LabelDisclosure"); } } 
- /// <summary>&quot;About Composite C1&quot;</summary> 
+ /// <summary>&quot;About {applicationname}&quot;</summary> 
  public static string Website_Dialogs_About_Title { get { return T("Website.Dialogs.About.Title"); } } 
  /// <summary>&quot;Credits&quot;</summary> 
  public static string Website_Dialogs_About_LabelCredits { get { return T("Website.Dialogs.About.LabelCredits"); } } 
@@ -2135,7 +2139,7 @@ namespace Composite.Core.ResourceSystem
  public static string Website_App_LabelFileCloseAll { get { return T("Website.App.LabelFileCloseAll"); } } 
  /// <summary>&quot;Save All...&quot;</summary> 
  public static string Website_App_LabelFileSaveAll { get { return T("Website.App.LabelFileSaveAll"); } } 
- /// <summary>&quot;Exit&quot;</summary> 
+ /// <summary>&quot;Sign out&quot;</summary> 
  public static string Website_App_LabelFileExit { get { return T("Website.App.LabelFileExit"); } } 
  /// <summary>&quot;View&quot;</summary> 
  public static string Website_App_LabelView { get { return T("Website.App.LabelView"); } } 
@@ -2155,8 +2159,8 @@ namespace Composite.Core.ResourceSystem
  public static string Website_App_LabelHelpContents { get { return T("Website.App.LabelHelpContents"); } } 
  /// <summary>&quot;Provide Feedback...&quot;</summary> 
  public static string Website_App_LabelFeedback { get { return T("Website.App.LabelFeedback"); } } 
- /// <summary>&quot;About Composite C1&quot;</summary> 
- public static string Website_App_LabelAboutComposite { get { return T("Website.App.LabelAboutComposite"); } } 
+ /// <summary>&quot;About {applicationname}&quot;</summary> 
+ public static string Website_App_LabelAbout { get { return T("Website.App.LabelAbout"); } } 
  /// <summary>&quot;Cut&quot;</summary> 
  public static string Website_App_LabelCut { get { return T("Website.App.LabelCut"); } } 
  /// <summary>&quot;Copy&quot;</summary> 
@@ -4742,7 +4746,7 @@ namespace Composite.Core.ResourceSystem
  public static string Composite_Web_Client_IsCrawler_description { get { return T("Composite.Web.Client.IsCrawler.description"); } } 
  /// <summary>&quot;True if the current request is identified as coming from a mobile device.&quot;</summary> 
  public static string Composite_Web_Client_IsMobileDevice_description { get { return T("Composite.Web.Client.IsMobileDevice.description"); } } 
- /// <summary>&quot;Common HTML meta tags you probably want in yout html head&quot;</summary> 
+ /// <summary>&quot;Common HTML meta tags you probably want in your html head&quot;</summary> 
  public static string Composite_Web_Html_Template_CommonMetaTags_description { get { return T("Composite.Web.Html.Template.CommonMetaTags.description"); } } 
  /// <summary>&quot;Content-Type&quot;</summary> 
  public static string Composite_Web_Html_Template_CommonMetaTags_param_ContentType_label { get { return T("Composite.Web.Html.Template.CommonMetaTags.param.ContentType.label"); } } 
@@ -4916,7 +4920,7 @@ namespace Composite.Core.ResourceSystem
  public static string Composite_Web_Request_PathInfo_param_Segment_help { get { return T("Composite.Web.Request.PathInfo.param.Segment.help"); } } 
  /// <summary>&quot;Segment&quot;</summary> 
  public static string Composite_Web_Request_PathInfo_param_Segment_label { get { return T("Composite.Web.Request.PathInfo.param.Segment.label"); } } 
- /// <summary>&quot;When true, Composite C1 will be instructed to accept any path info string. Default is true.&quot;</summary> 
+ /// <summary>&quot;When true, any path info string will be accepted. Default is true.&quot;</summary> 
  public static string Composite_Web_Request_PathInfo_param_AutoApprove_help { get { return T("Composite.Web.Request.PathInfo.param.AutoApprove.help"); } } 
  /// <summary>&quot;AutoApprove&quot;</summary> 
  public static string Composite_Web_Request_PathInfo_param_AutoApprove_label { get { return T("Composite.Web.Request.PathInfo.param.AutoApprove.label"); } } 
@@ -4930,7 +4934,7 @@ namespace Composite.Core.ResourceSystem
  public static string Composite_Web_Request_PathInfoInt_param_Segment_help { get { return T("Composite.Web.Request.PathInfoInt.param.Segment.help"); } } 
  /// <summary>&quot;Segment&quot;</summary> 
  public static string Composite_Web_Request_PathInfoInt_param_Segment_label { get { return T("Composite.Web.Request.PathInfoInt.param.Segment.label"); } } 
- /// <summary>&quot;When true, Composite C1 will be instructed to accept any path info string. Default is true.&quot;</summary> 
+ /// <summary>&quot;When true, any path info string will be accepted. Default is true.&quot;</summary> 
  public static string Composite_Web_Request_PathInfoInt_param_AutoApprove_help { get { return T("Composite.Web.Request.PathInfoInt.param.AutoApprove.help"); } } 
  /// <summary>&quot;AutoApprove&quot;</summary> 
  public static string Composite_Web_Request_PathInfoInt_param_AutoApprove_label { get { return T("Composite.Web.Request.PathInfoInt.param.AutoApprove.label"); } } 
@@ -4944,7 +4948,7 @@ namespace Composite.Core.ResourceSystem
  public static string Composite_Web_Request_PathInfoGuid_param_Segment_help { get { return T("Composite.Web.Request.PathInfoGuid.param.Segment.help"); } } 
  /// <summary>&quot;Segment&quot;</summary> 
  public static string Composite_Web_Request_PathInfoGuid_param_Segment_label { get { return T("Composite.Web.Request.PathInfoGuid.param.Segment.label"); } } 
- /// <summary>&quot;When true, Composite C1 will be instructed to accept any path info string. Default is true.&quot;</summary> 
+ /// <summary>&quot;When true, accept any path info string will be accepted. Default is true.&quot;</summary> 
  public static string Composite_Web_Request_PathInfoGuid_param_AutoApprove_help { get { return T("Composite.Web.Request.PathInfoGuid.param.AutoApprove.help"); } } 
  /// <summary>&quot;AutoApprove&quot;</summary> 
  public static string Composite_Web_Request_PathInfoGuid_param_AutoApprove_label { get { return T("Composite.Web.Request.PathInfoGuid.param.AutoApprove.label"); } } 
@@ -5000,7 +5004,7 @@ namespace Composite.Core.ResourceSystem
  public static string Composite_Web_Response_SetSessionVariable_param_VariableName_help { get { return T("Composite.Web.Response.SetSessionVariable.param.VariableName.help"); } } 
  /// <summary>&quot;Variable name&quot;</summary> 
  public static string Composite_Web_Response_SetSessionVariable_param_VariableName_label { get { return T("Composite.Web.Response.SetSessionVariable.param.VariableName.label"); } } 
- /// <summary>&quot;Gets the web application virtual path. Typically this is &apos;&apos; - the empty string, when running in the website root, but if Composite C1 is running in a sub folder this can be &apos;/MySubfolder&apos;. You can use this value to prefix URL&apos;s so they will work no matter is Composite C1 is running is a subfolder or not. Sample XSLT usage: &lt;img src=&quot;{/in:inputs/in:result[@name=&apos;ApplicationPath&apos;]}/images/myImage.png&quot; /&gt;&quot;</summary> 
+ /// <summary>&quot;Gets the web application virtual path. Typically this is &apos;&apos; - the empty string, when running in the website root, but if {applicationname} is running in a sub folder this can be &apos;/MySubfolder&apos;. You can use this value to prefix URL&apos;s so they will work no matter is {applicationname} is running is a subfolder or not. Sample XSLT usage: &lt;img src=&quot;{/in:inputs/in:result[@name=&apos;ApplicationPath&apos;]}/images/myImage.png&quot; /&gt;&quot;</summary> 
  public static string Composite_Web_Server_ApplicationPath_description { get { return T("Composite.Web.Server.ApplicationPath.description"); } } 
  /// <summary>&quot;Gets an IIS application variable&quot;</summary> 
  public static string Composite_Web_Server_ApplicationVariable_description { get { return T("Composite.Web.Server.ApplicationVariable.description"); } } 
@@ -6347,7 +6351,7 @@ namespace Composite.Core.ResourceSystem
  public static string HelpId { get { return T("HelpId"); } } 
  /// <summary>&quot;Clipboard disabled&quot;</summary> 
  public static string MozSecurityNote_LabelSecurityStuff { get { return T("MozSecurityNote.LabelSecurityStuff"); } } 
- /// <summary>&quot;For security reasons, access to the clipboard was blocked by your browser. Please use standard keyboard shortcuts. For a technical description of, how to configure your browser for use with Composite C1, press the &quot;More Info&quot; button.&quot;</summary> 
+ /// <summary>&quot;For security reasons, access to the clipboard was blocked by your browser. Please use standard keyboard shortcuts. For a technical description of, how to configure your browser for use with {applicationname}, press the &quot;More Info&quot; button.&quot;</summary> 
  public static string MozSecurityNote_TextSecurityStuff { get { return T("MozSecurityNote.TextSecurityStuff"); } } 
  /// <summary>&quot;Insert Link&quot;</summary> 
  public static string Link_LabelInsertLink { get { return T("Link.LabelInsertLink"); } } 

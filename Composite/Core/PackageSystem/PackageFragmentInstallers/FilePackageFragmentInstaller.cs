@@ -74,6 +74,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     XAttribute assemblyLoadAttribute = fileElement.Attribute("assemblyLoad");
                     XAttribute deleteTargetDirectoryAttribute = fileElement.Attribute("deleteTargetDirectory");
                     XAttribute onlyUpdateAttribute = fileElement.Attribute("onlyUpdate");
+                    XAttribute onlyAddAttribute = fileElement.Attribute("onlyAdd");
 
                     if (deleteTargetDirectoryAttribute != null)
                     {
@@ -99,6 +100,12 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                         continue;
                     }
 
+                    bool onlyAdd = false;
+                    if (!ParseBoolAttribute(onlyAddAttribute, validationResult, ref onlyAdd))
+                    {
+                        continue;
+                    }
+
                     string sourceFilename = sourceFilenameAttribute.Value;
                     if (!this.InstallerContext.ZipFileSystem.ContainsFile(sourceFilename))
                     {
@@ -112,9 +119,27 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                         continue;
                     }
 
+                    if (onlyAdd && onlyUpdate)
+                    {
+                        validationResult.AddFatal(Texts.FilePackageFragmentInstaller_OnlyUpdateAndOnlyAddNotAllowed, onlyUpdateAttribute);
+                        continue;
+                    }
+
+                    if (onlyAdd && allowOverwrite)
+                    {
+                        validationResult.AddFatal(Texts.FilePackageFragmentInstaller_OnlyAddAndAllowOverwriteNotAllowed, onlyAddAttribute);
+                        continue;
+                    }
+
                     string targetFilename = PathUtil.Resolve(targetFilenameAttribute.Value);
                     if (C1File.Exists(targetFilename))
                     {
+                        if (onlyAdd)
+                        {
+                            Log.LogVerbose(LogTitle, "Skipping adding of the file '{0}' because it already exist and is marked 'onlyAdd'", targetFilename);
+                            continue; // Target file does not, so skip this
+                        }
+
                         if (!allowOverwrite && !onlyUpdate)
                         {
                             validationResult.AddFatal(Texts.FilePackageFragmentInstaller_FileExists(targetFilename), targetFilenameAttribute);
