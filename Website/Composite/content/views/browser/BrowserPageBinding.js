@@ -355,17 +355,27 @@ BrowserPageBinding.prototype.push = function (node, isManual, isForce) {
 		if (entityToken) {
 			if (this._entityToken != entityToken || isForce) {
 
-				var isPublic = self._currentViewMode == BrowserPageBinding.VIEW_MODES.Public;
+				var propertyBag = node.getPropertyBag();
+				if (propertyBag && propertyBag.BrowserUrl) {
+					var isExternalUrl = propertyBag.BrowserUrl.indexOf("//") > -1 && propertyBag.BrowserUrl.split("//")[1].split("/")[0] == window.location.host;
+					if (isExternalUrl || propertyBag.BrowserToolingOn === "false") {
+						self.pushExternalURL(propertyBag.BrowserUrl, node, isManual);
+					} else {
+						self.pushURL(propertyBag.BrowseUrl, isManual);
+					}
+				} else {
+					var isPublic = self._currentViewMode == BrowserPageBinding.VIEW_MODES.Public;
 
-				TreeService.GetBrowserUrlByEntityToken(entityToken, isPublic, function (resultUrl) {
-					setTimeout(function () {
-						if (resultUrl) {
-							self.pushURL(resultUrl, isManual);
-						} else {
-							self.pushToken(node, isManual);
-						}
-					}, 0);
-				});
+					TreeService.GetBrowserUrlByEntityToken(entityToken, isPublic, function (resultUrl) {
+						setTimeout(function () {
+							if (resultUrl) {
+								self.pushURL(resultUrl, isManual);
+							} else {
+								self.pushToken(node, isManual);
+							}
+						}, 0);
+					});
+				}
 
 				this._entityToken = entityToken;
 			}
@@ -375,7 +385,7 @@ BrowserPageBinding.prototype.push = function (node, isManual, isForce) {
 }
 
 /**
- * Add Url to order
+ * Add Url to view
  * @param {string} url
  * @return
  */
@@ -402,7 +412,7 @@ BrowserPageBinding.prototype.getAbsoluteUrl = function (url) {
 }
 
 /**
- * Add Url to order
+ * Add Node to view
  * @param {string} url
  * @return
  */
@@ -416,6 +426,37 @@ BrowserPageBinding.prototype.pushToken = function (node, isManual) {
 	this._updateHistory({ node: node });
 	this._updateBroadcasters();
 	this.bindingWindow.bindingMap.addressbar.showBreadcrumb(node);
+	if (!isManual) {
+		this.getSystemTree()._focusTreeNodeByEntityToken(node.getEntityToken());
+	}
+}
+
+
+/**
+ * Add External url to view
+ * @param {string} url
+ * @return
+ */
+BrowserPageBinding.prototype.pushExternalURL = function (url, node, isManual) {
+	var customView = this._box.getCustomViewTabBinding();
+	url = Resolver.resolve(url);
+	if (customView.iframe.src) {
+		customView.iframe.src = "about:blank";
+		customView.iframe.onload = function () {
+			customView.iframe.onload = null;
+			customView.iframe.src = url;
+		};
+	} else {
+		customView.iframe.src = url;
+	}
+	if (node) {
+		this._updateHistory({ node: node });
+		this.bindingWindow.bindingMap.addressbar.showBreadcrumb(node);
+	}
+	this._box.select(customView, true);
+	this._updateBroadcasters();
+	window.bindingMap.broadcasterBrowserView.disable();;
+
 	if (!isManual) {
 		this.getSystemTree()._focusTreeNodeByEntityToken(node.getEntityToken());
 	}
