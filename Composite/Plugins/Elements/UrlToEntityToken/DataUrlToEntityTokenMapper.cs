@@ -43,6 +43,47 @@ namespace Composite.Plugins.Elements.UrlToEntityToken
             return pageUrlData != null ? GetPagePreviewUrl(pageUrlData) : null;
         }
 
+
+        public BrowserViewSettings TryGetBrowserViewSettings(EntityToken entityToken, bool showPublishedView)
+        {
+            var dataEntityToken = entityToken as DataEntityToken;
+
+            if (dataEntityToken == null)
+            {
+                return null;
+            }
+
+            if (showPublishedView)
+            {
+                using (new DataScope(PublicationScope.Published))
+                {
+                    if (dataEntityToken.DataSourceId.PublicationScope == PublicationScope.Unpublished
+                    && DataFacade.GetSupportedDataScopes(dataEntityToken.InterfaceType)
+                        .Contains(DataScopeIdentifier.Public))
+                    {
+                        var data = dataEntityToken.Data;
+                        if (data != null)
+                        {
+                            var key = data.GetUniqueKey();
+                            var publicData = DataFacade.TryGetDataByUniqueKey(dataEntityToken.InterfaceType, key);
+                            if (publicData != null)
+                            {
+                                entityToken = publicData.GetDataEntityToken();
+                            }
+                            else
+                            {
+                                return null;
+                            }
+                        }
+                    }
+                }
+
+            }
+
+            string url = TryGetUrl(entityToken);
+            return (url == null ? null : new BrowserViewSettings { Url = url, ToolingOn = true });
+        }
+
         private static string GetPagePreviewUrl(PageUrlData pageUrlData)
         {
             var httpContext = HttpContext.Current;

@@ -185,31 +185,18 @@ namespace Composite.Services
 
             using (new DataScope(showPublished ? PublicationScope.Published : PublicationScope.Unpublished))
             {
-                if (showPublished && entityToken is DataEntityToken)
+                var browserViewSettings = UrlToEntityTokenFacade.TryGetBrowserViewSettings(entityToken, showPublished);
+
+                if (browserViewSettings != null)
                 {
-                    var dataEntityToken = entityToken as DataEntityToken;
-                    if (dataEntityToken.DataSourceId.PublicationScope == PublicationScope.Unpublished
-                        && DataFacade.GetSupportedDataScopes(dataEntityToken.InterfaceType)
-                            .Contains(DataScopeIdentifier.Public))
-                    {
-                        var data = dataEntityToken.Data;
-                        if (data != null)
-                        {
-                            var key = data.GetUniqueKey();
-                            var publicData = DataFacade.TryGetDataByUniqueKey(dataEntityToken.InterfaceType, key);
-                            if (publicData != null)
-                            {
-                                entityToken = publicData.GetDataEntityToken();
-                            }
-                            else
-                            {
-                                return null;
-                            }
-                        }
-                    }
+                    // Taras - change this methods return value to type ClientBrowserViewSettings, introduce next line and kill second return - when client is ready.
+                    //                    return new ClientBrowserViewSettings { Url = browserViewSettings.Url, ToolingOn = browserViewSettings.ToolingOn };
+                    return browserViewSettings.Url;
                 }
-                return UrlToEntityTokenFacade.TryGetUrl(entityToken);
+
             }
+
+            return null;
         }
 
 

@@ -7,7 +7,7 @@ using Composite.Core;
 namespace Composite.C1Console.Elements
 {
     /// <summary>
-    /// Associates C1 console tree elements with a url-s to be showing in the C1 console browser.
+    /// Associates C1 console tree elements with a url to be used for public consumption or showing in the C1 console browser.
     /// </summary>
     public static class UrlToEntityTokenFacade
     {
@@ -17,11 +17,22 @@ namespace Composite.C1Console.Elements
         /// Returns a url associated with an entity token, or null if current entity token does not support this kind of entity token.
         /// </summary>
         /// <param name="entityToken">The entity token.</param>
-        /// <returns></returns>
+        /// <returns>URL for public consumption</returns>
         public static string TryGetUrl(EntityToken entityToken)
         {
             return _mappers.Select(mapper => mapper.TryGetUrl(entityToken)).FirstOrDefault(url => url != null);
         }
+
+        /// <summary>
+        /// Returns a url / tooling settings associated with an entity token to be used in the C1 Console browser, or null if current entity token does not support this kind of entity token.
+        /// </summary>
+        /// <param name="entityToken">The entity token.</param>
+        /// <returns>URL for public consumption</returns>
+        public static BrowserViewSettings TryGetBrowserViewSettings(EntityToken entityToken, bool showPublishedView)
+        {
+            return _mappers.Select(mapper => mapper.TryGetBrowserViewSettings(entityToken, showPublishedView)).FirstOrDefault(url => url != null);
+        }
+
 
         /// <summary>
         /// Returns an entity token associated with a url, or null if current <see cref="IUrlToEntityTokenMapper"/> does not support this kind of entity token.

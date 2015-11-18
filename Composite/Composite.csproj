@@ -216,6 +216,7 @@
     <Compile Include="Core\Routing\IInternalUrlConverter.cs" />
     <Compile Include="Core\Routing\IMediaUrlProvider.cs" />
     <Compile Include="Core\Routing\InternalUrls.cs" />
+    <Compile Include="Core\WebClient\Services\TreeServiceObjects\ClientBrowserViewSettings.cs" />
     <Compile Include="Data\DynamicTypes\DataUrlProfile.cs" />
     <Compile Include="Data\InternalUrlAttribute.cs" />
     <Compile Include="Data\PageRenderingHistory.cs" />
