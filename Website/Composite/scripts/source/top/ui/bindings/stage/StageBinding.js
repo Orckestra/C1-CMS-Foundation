@@ -772,16 +772,12 @@ StageBinding.prototype.handleAttachedDock = function ( dockBinding ) {
 			var tabBinding = tabBindings.getNext ();
 			var handle = tabBinding.getHandle ();
 			if ( handle ) {
-				if ( handle == "Composite.Management.Start" && ( !Application.hasStartPage || !Application.hasExternalConnection )) {
-					// do nothing - although maybe this check should not be performed here...
-				} else {
 					var viewDefinition = ViewDefinitions [ handle ];
 					if ( viewDefinition ) {
 						this._view ( dockBinding, tabBinding, viewDefinition, false );
 					} else {
 						alert ( "StageBinding: no such predefined viewdefinition (" + handle + ")" );
 					}
-				}
 			}
 		};
 	}
