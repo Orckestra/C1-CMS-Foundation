@@ -345,7 +345,7 @@ namespace Composite.C1Console.Security
         {
             get
             {
-                Verify.That(!_excludeReoccuringNodes, "It is neccessary to set 'excludeReoccuringNodes' to 'false' to enable TopNodes calculation.");
+                Verify.That(!_excludeReoccuringNodes, "It is necessary to set 'excludeReoccuringNodes' to 'false' to enable TopNodes calculation.");
 
                 foreach (List<RelationshipGraphNode> nodes in _levels.Values)
                 {
@@ -442,12 +442,18 @@ namespace Composite.C1Console.Security
 
             if (levelNumber > 1000)
             {
-                throw new InvalidOperationException(string.Format("The entity token '{0}' has more than 1000 levels of parents, this might be a infinit loop", _levels[0][0].EntityToken));
+                throw new InvalidOperationException( $"The entity token '{_levels[0][0].EntityToken}' has more than 1000 levels of parents, this might be an infinite loop");
             }
 
             _moreLevelsToExpend = false;
 
             List<RelationshipGraphNode> nodes = _levels[levelNumber];
+
+            if (nodes.Count > 1000)
+            {
+                throw new InvalidOperationException($"The entity token '{_levels[0][0].EntityToken}' has more than 1000 nodes at the level {levelNumber}, this might be an infinite loop");
+            }
+
 
             foreach (RelationshipGraphNode node in nodes)
             {
@@ -514,7 +520,7 @@ namespace Composite.C1Console.Security
                 {
                     if (_excludeReoccuringNodes)
                     {
-                        continue; // We have already visisted this entity token, no new information here
+                        continue; // We have already visited this entity token, no new information here
                     }
                 }
                 else
