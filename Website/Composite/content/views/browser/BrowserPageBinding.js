@@ -366,10 +366,10 @@ BrowserPageBinding.prototype.push = function (node, isManual, isForce) {
 				} else {
 					var isPublic = self._currentViewMode == BrowserPageBinding.VIEW_MODES.Public;
 
-					TreeService.GetBrowserUrlByEntityToken(entityToken, isPublic, function (resultUrl) {
+					TreeService.GetBrowserUrlByEntityToken(entityToken, isPublic, function (result) {
 						setTimeout(function () {
-							if (resultUrl) {
-								self.pushURL(resultUrl, isManual);
+							if (result && result.Url) {
+								self.pushURL(result, isManual);
 							} else {
 								self.pushToken(node, isManual);
 							}
@@ -390,6 +390,12 @@ BrowserPageBinding.prototype.push = function (node, isManual, isForce) {
  * @return
  */
 BrowserPageBinding.prototype.pushURL = function (url, isManual) {
+	if (url && url.Url) {
+		this.toolingOn = url.ToolingOn === true;
+		url = url.Url;
+	} else {
+		this.toolingOn = true;
+	}
 	this.isBrowserTab = false;
 
 	if (url && url != this._box.getLocation()) {
@@ -438,24 +444,15 @@ BrowserPageBinding.prototype.pushToken = function (node, isManual) {
  * @return
  */
 BrowserPageBinding.prototype.pushExternalURL = function (url, node, isManual) {
-	var customView = this._box.getCustomViewTabBinding();
 	url = Resolver.resolve(url);
-	if (customView.iframe.src) {
-		customView.iframe.src = "about:blank";
-		customView.iframe.onload = function () {
-			customView.iframe.onload = null;
-			customView.iframe.src = url;
-		};
-	} else {
-		customView.iframe.src = url;
-	}
+	
+	this.toolingOn = false;
 	if (node) {
 		this._updateHistory({ node: node });
 		this.bindingWindow.bindingMap.addressbar.showBreadcrumb(node);
 	}
-	this._box.select(customView, true);
+	this.setFrameURL(url);
 	this._updateBroadcasters();
-	window.bindingMap.broadcasterBrowserView.disable();;
 
 	if (!isManual) {
 		this.getSystemTree()._focusTreeNodeByEntityToken(node.getEntityToken());
@@ -463,7 +460,7 @@ BrowserPageBinding.prototype.pushExternalURL = function (url, node, isManual) {
 }
 
 /**
- * Load URL in selected tab.
+ * Load URL in browser frame.
  * @param {string} url
  * @return
  */
@@ -474,6 +471,26 @@ BrowserPageBinding.prototype.setURL = function (url) {
 	var cover = window.bindingMap.cover;
 	cover.show();
 	this._box.setURL(url);
+}
+
+/**
+ * Load  URL in simple frame.
+ * @param {string} url
+ * @return
+ */
+
+BrowserPageBinding.prototype.setFrameURL = function (url) {
+	var customView = this._box.getCustomViewTabBinding();
+		if (customView.iframe.src) {
+		customView.iframe.src = "about:blank";
+		customView.iframe.onload = function () {
+			customView.iframe.onload = null;
+			customView.iframe.src = url;
+		};
+	} else {
+		customView.iframe.src = url;
+	}
+	this._box.select(customView, true);
 }
 
 /**
@@ -877,7 +894,7 @@ BrowserPageBinding.prototype._updateBroadcasters = function () {
 		forward.disable();
 	}
 
-	if (this._box.getGeneticViewTabBinding().isSelected) {
+	if (!this.toolingOn || this._box.getGeneticViewTabBinding().isSelected) {
 		browserview.disable();
 	} else {
 		browserview.enable();
@@ -1081,23 +1098,13 @@ BrowserPageBinding.prototype.loadDeviceList = function () {
  * @param {string} url
  */
 BrowserPageBinding.prototype.setCustomUrl = function (url) {
-	var customView = this._box.getCustomViewTabBinding();
 	var targetUrl = this.getUrl();
 	url = Resolver.resolve(url);
 	url = url.replace("{url}", targetUrl);
 	url = url.replace("{encodedurl}", encodeURIComponent(this._isRequirePublicNet ? targetUrl.replace(/\/c1mode\(unpublished\)/, "") : targetUrl));
 	//replace 2nd and next '?' to '&'
 	url = url.replace(/(\?)(.+)/g, function (a, b, c) { return b + c.replace(/\?/g, "&") });
-	if (customView.iframe.src) {
-		customView.iframe.src = "about:blank";
-		customView.iframe.onload = function () {
-			customView.iframe.onload = null;
-			customView.iframe.src = url;
-		};
-	} else {
-		customView.iframe.src = url;
-	}
-	this._box.select(customView, true);
+	this.setFrameURL(url);
 }
 
 /**

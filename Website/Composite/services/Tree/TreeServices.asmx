@@ -178,7 +178,7 @@ namespace Composite.Services
 
 
         [WebMethod]
-        public string GetBrowserUrlByEntityToken(string serializedEntityToken, bool showPublished)
+        public ClientBrowserViewSettings GetBrowserUrlByEntityToken(string serializedEntityToken, bool showPublished)
         {
 
             var entityToken = EntityTokenSerializer.Deserialize(serializedEntityToken);
@@ -189,9 +189,7 @@ namespace Composite.Services
 
                 if (browserViewSettings != null)
                 {
-                    // Taras - change this methods return value to type ClientBrowserViewSettings, introduce next line and kill second return - when client is ready.
-                    //                    return new ClientBrowserViewSettings { Url = browserViewSettings.Url, ToolingOn = browserViewSettings.ToolingOn };
-                    return browserViewSettings.Url;
+                    return new ClientBrowserViewSettings { Url = browserViewSettings.Url, ToolingOn = browserViewSettings.ToolingOn };
                 }
 
             }
