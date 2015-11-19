@@ -687,20 +687,14 @@ StageBinding.prototype._showStart = function ( isShow ) {
 		
 		var view = ViewBinding.getInstance ( "Composite.Management.Start" );
 		var dock = this._dockBindings.get ( DockBinding.START );
-		var decks = this.bindingWindow.bindingMap.maindecks;
-		
-		
 		if ( isShow ) {
-			decks.select ( "startdeck" );
 			view.show ();
 		} else {
 			view.hide ();
-			decks.select ( "stagedeck" );
 			if ( dock != null && dock.isActive ) {
 				dock.deActivate ();
 			}
 		}
-		
 		this._isShowingStart = isShow;
 	}
 }
