@@ -101,6 +101,17 @@ ui|docktab {
 		overflow: hidden;
 		font-family: @heading-font-family;
 		font-size: 13px;
+
+		&:after {
+			position: absolute;
+			top: 0;
+			right: 0;
+			width: 30px;
+			height: 100%;
+			display: block;
+			content: ' ';
+			box-shadow: inset -20px 0 39px -7px rgba(255,255,255,1);
+		}
 	}
 
 	&.selected {
