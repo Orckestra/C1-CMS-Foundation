@@ -406,7 +406,7 @@ BrowserPageBinding.prototype.pushURL = function (url, isManual) {
 		} else {
 			this.setURL(url);
 		}
-		this._updateAddressBar((node && !this.toolingOn)? node: url);
+		this._updateAddressBar(url);
 	}
 }
 
