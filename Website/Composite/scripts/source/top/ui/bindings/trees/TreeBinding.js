@@ -1102,6 +1102,14 @@ TreeBinding.prototype.getRootTreeNodeBindings = function () {
 }
 
 /**
+ * Get tree body binding.
+ */
+TreeBinding.prototype.getTreeBodyBinding = function () {
+
+	return this._treeBodyBinding;
+}
+
+/**
  * TreeBinding factory.
  * @param {DOMDocument} ownerDocument
  * @return {TreeBinding}

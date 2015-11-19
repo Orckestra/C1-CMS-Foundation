@@ -78,7 +78,7 @@
 				</ui:toolbargroup>
 			</ui:toolbarbody>
 		</ui:toolbar>
-		<ui:splitbox id="app1horizontalsplitbox" orient="horizontal" layout="2:7" class="line" >
+		<ui:splitbox id="browsersplitbox" orient="horizontal" layout="2:7" class="line" >
 			<ui:splitpanel type="explorer" id="explorerpanel">
 				<div style="width:100%" ></div>
 			</ui:splitpanel>

@@ -134,7 +134,8 @@ BrowserPageBinding.prototype.onBindingRegister = function () {
 	this.addActionListener(ViewBinding.ACTION_LOADED);
 	this.addActionListener(PageBinding.ACTION_INITIALIZED);
 	this.addActionListener(SplitterBinding.ACTION_DRAGSTART);
-	this.addActionListener(SplitterBinding.ACTION_DRAGGED);
+	this.addActionListener(SplitterBinding.ACTION_DRAGGED); 
+	this.addActionListener(SystemTreeNodeBinding.ACTION_REFRESHED);
 }
 
 /**
@@ -563,6 +564,10 @@ BrowserPageBinding.prototype.handleAction = function (action) {
 			if (action.target instanceof DockPanelBinding) {
 				this.onBrowserTabUnselected();
 			}
+			break;
+		case SystemTreeNodeBinding.ACTION_REFRESHED:
+			this._autoExpand();
+			action.consume();
 			break;
 	}
 }
@@ -1268,3 +1273,26 @@ BrowserPageBinding.prototype.onBrowserTabUnselected = function () {
 		 this.getSystemPage().node
 	);
 }
+
+/**
+ * Auto expand tree
+ */
+BrowserPageBinding.prototype._autoExpand = function () {
+
+	var tree = this.getSystemTree();
+	var treebody = tree.getTreeBodyBinding();
+	var width = treebody.bindingElement.clientWidth;
+	var scrollWidth = treebody.bindingElement.scrollWidth;
+	if (scrollWidth > width)
+	{
+		var splitbox = this.bindingWindow.bindingMap.browsersplitbox;
+		var splitter = splitbox.getSplitterBindings().getFirst();
+		var maxwidth = Math.floor(splitbox.getInnerWidth() / 2);
+		var offset = Math.min(maxwidth, scrollWidth) - width;
+		if(offset > 0){
+			splitter.offset = offset;
+			splitbox.refreshLayout();
+		}
+	}
+}
+
