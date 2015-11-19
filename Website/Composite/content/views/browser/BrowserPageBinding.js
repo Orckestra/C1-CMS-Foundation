@@ -359,7 +359,7 @@ BrowserPageBinding.prototype.push = function (node, isManual, isForce) {
 				if (propertyBag && propertyBag.BrowserUrl) {
 					var isExternalUrl = propertyBag.BrowserUrl.indexOf("//") > -1 && propertyBag.BrowserUrl.split("//")[1].split("/")[0] == window.location.host;
 					if (isExternalUrl || propertyBag.BrowserToolingOn === "false") {
-						self.pushExternalURL(propertyBag.BrowserUrl, node, isManual);
+						self.pushNodeURL(node, propertyBag.BrowserUrl, isManual);
 					} else {
 						self.pushURL(propertyBag.BrowseUrl, isManual);
 					}
@@ -369,7 +369,11 @@ BrowserPageBinding.prototype.push = function (node, isManual, isForce) {
 					TreeService.GetBrowserUrlByEntityToken(entityToken, isPublic, function (result) {
 						setTimeout(function () {
 							if (result && result.Url) {
-								self.pushURL(result, isManual);
+								if (result.ToolingOn) {
+									self.pushURL(result.Url, isManual);
+								} else {
+									self.pushNodeURL(node, result.Url, isManual);
+								}
 							} else {
 								self.pushToken(node, isManual);
 							}
@@ -390,12 +394,8 @@ BrowserPageBinding.prototype.push = function (node, isManual, isForce) {
  * @return
  */
 BrowserPageBinding.prototype.pushURL = function (url, isManual) {
-	if (url && url.Url) {
-		this.toolingOn = url.ToolingOn === true;
-		url = url.Url;
-	} else {
-		this.toolingOn = true;
-	}
+
+	this.toolingOn = true;
 	this.isBrowserTab = false;
 
 	if (url && url != this._box.getLocation()) {
@@ -406,8 +406,7 @@ BrowserPageBinding.prototype.pushURL = function (url, isManual) {
 		} else {
 			this.setURL(url);
 		}
-		this._updateAddressBar(url);
-		this.bindingWindow.bindingMap.addressbar.showAddreesbar();
+		this._updateAddressBar((node && !this.toolingOn)? node: url);
 	}
 }
 
@@ -431,7 +430,7 @@ BrowserPageBinding.prototype.pushToken = function (node, isManual) {
 	tab.tree.setNode(node);
 	this._updateHistory({ node: node });
 	this._updateBroadcasters();
-	this.bindingWindow.bindingMap.addressbar.showBreadcrumb(node);
+	this._updateAddressBar(node);
 	if (!isManual) {
 		this.getSystemTree()._focusTreeNodeByEntityToken(node.getEntityToken());
 	}
@@ -443,16 +442,16 @@ BrowserPageBinding.prototype.pushToken = function (node, isManual) {
  * @param {string} url
  * @return
  */
-BrowserPageBinding.prototype.pushExternalURL = function (url, node, isManual) {
+BrowserPageBinding.prototype.pushNodeURL = function (node, url, isManual) {
 	url = Resolver.resolve(url);
 	
 	this.toolingOn = false;
-	if (node) {
-		this._updateHistory({ node: node });
-		this.bindingWindow.bindingMap.addressbar.showBreadcrumb(node);
-	}
-	this.setFrameURL(url);
+
+	this._updateHistory({ node: node });
 	this._updateBroadcasters();
+	this._updateAddressBar(node);
+
+	this.setFrameURL(url);
 
 	if (!isManual) {
 		this.getSystemTree()._focusTreeNodeByEntityToken(node.getEntityToken());
@@ -735,14 +734,22 @@ BrowserPageBinding.prototype._updateAddressBar = function (url) {
 
 	var bar = this.bindingWindow.bindingMap.addressbar;
 	if (bar != null) {
-		var asyncLocker = this._asyncLocker;
-		var self = this;
-		PageService.ConvertRelativePageUrlToAbsolute(url, function (result) {
-			if (asyncLocker === self._asyncLocker) {
-				bar.setValue(result);
-			}
-		});
 
+		if (typeof (url) == "string" || url instanceof String) {
+
+
+			var asyncLocker = this._asyncLocker;
+			var self = this;
+			PageService.ConvertRelativePageUrlToAbsolute(url, function (result) {
+				if (asyncLocker === self._asyncLocker) {
+					bar.setValue(result);
+				}
+			});
+			bar.showAddreesbar();
+
+		} else if (url instanceof SystemNode) {
+			bar.showBreadcrumb(url);
+		}
 	}
 }
 
