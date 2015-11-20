@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProviderHelper;
 using Composite.Core.Routing;
 using Composite.Core.Types;
 using Composite.Data;
@@ -14,11 +15,14 @@ namespace Composite.Functions
         private readonly Guid _pageId;
         private readonly Type _dataType;
         private static readonly MethodInfo _getFilteredDataMethodInfo;
+        private static readonly MethodInfo _getFilteredDataQueryableMethodInfo;
         private readonly IRelativeRouteToPredicateMapper _mapper;
 
         static AttributeBasedRoutedDataUrlMapper()
         {
             _getFilteredDataMethodInfo = StaticReflection.GetGenericMethodInfo(() => GetFilteredData<IData>(null));
+            _getFilteredDataQueryableMethodInfo =
+                StaticReflection.GetGenericMethodInfo(a => GetFilteredDataQueryable<IPageRelatedData>(Guid.Empty));
         }
 
         protected AttributeBasedRoutedDataUrlMapper(Type dataType, Guid pageId, IRelativeRouteToPredicateMapper mapper)
@@ -107,14 +111,19 @@ namespace Composite.Functions
 
         private IQueryable GetDataQueryable()
         {
+            IQueryable unorderedQuery;
+
             if (typeof (IPageRelatedData).IsAssignableFrom(_dataType))
             {
-                var method = StaticReflection.GetGenericMethodInfo(a => GetFilteredDataQueryable<IPageRelatedData>(Guid.Empty));
-
-                return (IQueryable) method.MakeGenericMethod(_dataType).Invoke(null, new object[] { _pageId });
+                unorderedQuery = (IQueryable)_getFilteredDataQueryableMethodInfo.MakeGenericMethod(_dataType)
+                                                                                .Invoke(null, new object[] {_pageId});
+            }
+            else
+            {
+                unorderedQuery = DataFacade.GetData(_dataType);
             }
 
-            return DataFacade.GetData(_dataType);
+            return DataGroupingProviderHelper.OrderData(unorderedQuery, _dataType);
         }
 
         private static IQueryable GetFilteredDataQueryable<TDataType>(Guid pageId) where TDataType: class, IPageRelatedData
