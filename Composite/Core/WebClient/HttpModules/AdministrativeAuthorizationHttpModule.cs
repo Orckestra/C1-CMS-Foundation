@@ -52,13 +52,24 @@ namespace Composite.Core.WebClient.HttpModules
 
         static AdministrativeAuthorizationHttpModule()
         {
-            if (C1Directory.Exists(HostingEnvironment.MapPath(UrlUtils.AdminRootPath)))
+            _allowC1ConsoleRequests = false;
+            string adminRootPath = HostingEnvironment.MapPath(UrlUtils.AdminRootPath);
+            bool adminFolderExists = false;
+
+            try
+            {
+                adminFolderExists = C1Directory.Exists(adminRootPath);
+            }
+            catch (Exception)
+            {
+                // we fail misserably here when write permissions are missing, also the default exception is exceptionally crappy
+                throw new IOException("Please ensure that the web application process has permissions to read and modify the entire web app directory structure.");
+            }
+
+            if (adminFolderExists)
             {
                 LoadConfiguration();
-            }
-            else
-            {
-                _allowC1ConsoleRequests = false;
+                _allowC1ConsoleRequests = true;
             }
         }
 
