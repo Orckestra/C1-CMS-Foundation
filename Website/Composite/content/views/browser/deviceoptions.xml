@@ -1,22 +1,24 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <devices>
-	<group>
-		<device label="Auto" image="eye" viewmode="1"/>
-		<device label="Public Version" image="item-publish" viewmode="2"/>
-		<device label="Page Source" image="editor-sourceview" url="${root}/content/views/dev/viewsource/viewsource.aspx?url={encodedurl}"/>
-	</group>
-	<group>
-		<device label="Desktop (1366x768)" w="1366" h="768" image="screen"/>
-		<device label="Tablet (1024x768)" w="1024" h="768" image="tablet-landscape" touch="true"/>
-		<device label="Tablet (Portrait)" w="768" h="1024" image="tablet" touch="true"/>
-		<device label="Small Tablet (800x600)" w="800" h="600" image="tablet-landscape" touch="true"/>
-		<device label="Small Tablet (Portrait)" w="600" h="800" image="tablet" touch="true"/>
-		<device label="Mobile" w="320" h="480" image="smartphone" touch="true"/>
-	</group>
-	<group>
+  <group>
+    <device label="Auto" image="eye" viewmode="1"/>
+    <device label="Public Version" image="item-publish" viewmode="2"/>
+  </group>
+  <group>
+    <device label="Desktop (1366x768)" w="1366" h="768" image="screen"/>
+    <device label="Tablet (1024x768)" w="1024" h="768" image="tablet-landscape" touch="true"/>
+    <device label="Tablet (Portrait)" w="768" h="1024" image="tablet" touch="true"/>
+    <device label="Small Tablet (800x600)" w="800" h="600" image="tablet-landscape" touch="true"/>
+    <device label="Small Tablet (Portrait)" w="600" h="800" image="tablet" touch="true"/>
+    <device label="Mobile" w="320" h="480" image="smartphone" touch="true"/>
+  </group>
+  <group>
     <device label="C1 Page Speed" image="functioncall" url="{url}?c1mode=perf" />
     <device label="Google PageSpeed Insights" image="chart-bars" url="https://developers.google.com/speed/pagespeed/insights/?tab=desktop&amp;url={encodedurl}" requirepublicnet="true" />
     <device label="W3C Markup Validation" image="editor-formatsource" url="https://validator.w3.org/nu/?async=true&amp;doc={encodedurl}" requirepublicnet="true" />
     <device label="W3C Mobile OK" image="smartphone" url="https://validator.w3.org/mobile/check?task=20150903145258140.mobile1&amp;async=true&amp;docAddr={encodedurl}" requirepublicnet="true" />
+  </group>
+  <group>
+    <device label="Page Source" image="editor-sourceview" url="${root}/content/views/dev/viewsource/viewsource.aspx?url={encodedurl}"/>
   </group>
 </devices>
