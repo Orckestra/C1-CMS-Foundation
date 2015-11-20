@@ -33,10 +33,13 @@
             case "text/javascript":
             case "text/js":
                 return "js";
+            case "application/x-ashx":
             case "text/x-csharp":
                 return "cs";
             case "application/x-cshtml":
                 return "cshtml";
+            case "application/x-aspx":
+            case "application/x-asax":
             case "application/x-ascx":
             case "application/x-master-page":
                 return "aspx";
