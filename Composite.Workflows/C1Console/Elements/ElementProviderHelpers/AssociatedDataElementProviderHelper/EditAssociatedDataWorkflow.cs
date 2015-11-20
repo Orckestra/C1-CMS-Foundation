@@ -118,13 +118,11 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
 
                 DataFacade.Update(data);
 
-                EntityTokenCacheFacade.ClearCache(data.GetDataEntityToken());
+                EntityTokenCacheFacade.ClearCache(EntityToken);
 
-                var published = PublishControlledHelper.PublishIfNeeded(data, _doPublish, Bindings, ShowMessage);
-                if (!published)
-                {
-                    updateTreeRefresher.PostRefreshMesseges(EntityToken);
-                }
+                updateTreeRefresher.PostRefreshMessages(EntityToken);
+
+                PublishControlledHelper.PublishIfNeeded(data, _doPublish, Bindings, ShowMessage);
 
                 SetSaveStatus(true);
             }
