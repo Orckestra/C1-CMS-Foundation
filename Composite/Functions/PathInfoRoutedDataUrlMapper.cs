@@ -86,10 +86,22 @@ namespace Composite.Functions
                         }
 
                         var keyType = _keyPropertyInfo.PropertyType;
-                        object keyValue = ValueTypeConverter.Convert(key, keyType);
+
+                        bool keyParsed;
+                        object keyValue;
+                        if (keyType == typeof (Guid))
+                        {
+                            Guid guid;
+                            keyParsed = UrlUtils.TryExpandGuid(key, out guid) && guid != Guid.Empty;
+                            keyValue = guid;
+                        }
+                        else
+                        {
+                            keyValue = ValueTypeConverter.Convert(key, keyType);
+                            keyParsed = keyValue != null;
+                        }
                         
-                        if(keyValue == null 
-                           || (keyValue is Guid && (Guid)keyValue == Guid.Empty && key != Guid.Empty.ToString()))
+                        if(!keyParsed)
                         {
                             return new RoutedDataModel();
                         }
@@ -218,6 +230,11 @@ namespace Composite.Functions
             if (keyValue == null)
             {
                 return null;
+            }
+
+            if (keyValue is Guid)
+            {
+                return UrlUtils.CompressGuid((Guid) keyValue);
             }
 
             string urlKey = keyValue.ToString();
