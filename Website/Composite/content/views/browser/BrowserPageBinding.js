@@ -1288,7 +1288,7 @@ BrowserPageBinding.prototype._autoExpand = function () {
 		var splitbox = this.bindingWindow.bindingMap.browsersplitbox;
 		var splitter = splitbox.getSplitterBindings().getFirst();
 		var maxwidth = Math.floor(splitbox.getInnerWidth() / 2);
-		var offset = Math.min(maxwidth, scrollWidth) - width;
+		var offset = Math.min(maxwidth, scrollWidth + 10) - width;
 		if(offset > 0){
 			splitter.offset = offset;
 			splitbox.refreshLayout();
