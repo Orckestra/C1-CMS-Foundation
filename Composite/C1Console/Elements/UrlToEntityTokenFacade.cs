@@ -30,7 +30,7 @@ namespace Composite.C1Console.Elements
         /// <returns>URL for public consumption</returns>
         public static BrowserViewSettings TryGetBrowserViewSettings(EntityToken entityToken, bool showPublishedView)
         {
-            return _mappers.Select(mapper => mapper.TryGetBrowserViewSettings(entityToken, showPublishedView)).FirstOrDefault(url => url != null);
+            return _mappers.Select(mapper => mapper.TryGetBrowserViewSettings(entityToken, showPublishedView)).FirstOrDefault(settings => settings != null && settings.Url != null);
         }
 
 

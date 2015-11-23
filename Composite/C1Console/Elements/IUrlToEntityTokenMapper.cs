@@ -1,4 +1,5 @@
-﻿using Composite.C1Console.Security;
+﻿using System;
+using Composite.C1Console.Security;
 
 namespace Composite.C1Console.Elements
 {
@@ -35,6 +36,26 @@ namespace Composite.C1Console.Elements
     /// </summary>
     public sealed class BrowserViewSettings
     {
+        /// <summary>
+        /// Constructs a new instance on the BrowserViewSettings class.
+        /// </summary>
+        public BrowserViewSettings()
+        {
+        }
+
+        /// <summary>
+        /// Constructs a new instance on the BrowserViewSettings class.
+        /// </summary>
+        /// <param name="url">Url to load in browser</param>
+        /// <param name="toolingOn">True if tooling (view, SEO tools etc) should be active for URL</param>
+        public BrowserViewSettings(string url, bool toolingOn)
+        {
+            if (string.IsNullOrEmpty(url)) throw new ArgumentException("URL not set", "url");
+
+            Url = url;
+            ToolingOn = toolingOn;
+        }
+
         /// <summary>
         /// Url to load in browser
         /// </summary>
