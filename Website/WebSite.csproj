@@ -211,7 +211,6 @@
     <Content Include="Composite\content\forms\Administrative\DeleteUserControlFunctionConfirm.xml" />
     <Content Include="Composite\content\forms\Administrative\PageTemplate\EditMasterPage.xml" />
     <Content Include="Composite\content\forms\Administrative\PageTemplate\AddNewPageTemplate.xml" />
-    <Content Include="Composite\content\views\start\AppSelectorBinding.js" />
     <Content Include="Composite\controls\BrandingSnippet.ascx" />
     <Content Include="Composite\images\branding\brand-icon.png" />
     <Content Include="Composite\images\icons\svg\website-remove-folder-from-whitelist.svg" />
