@@ -26,6 +26,8 @@ namespace Composite.Data.Validation.Validators
         /// <param name="scale">Digits after decimal point</param>
         public DecimalPrecisionValidatorAttribute(int precision, int scale)
         {
+            if (precision < scale) throw new ArgumentException("Precision cannot be less than scale", "precision");
+
             this.Precision = precision;
             this.Scale = scale;
         }
