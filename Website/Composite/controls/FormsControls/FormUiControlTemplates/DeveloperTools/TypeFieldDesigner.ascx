@@ -251,7 +251,7 @@
 											</ui:fieldgroup>
 	                                    </asp:PlaceHolder>
                                         
-                                        <asp:PlaceHolder runat="server" Visible="<%# CanAppearInDataRoute %>" ID="plhDataUrl">
+                                        <asp:PlaceHolder runat="server" ID="plhDataUrl">
                                             <ui:fieldgroup label="<%= Texts.DataUrlGroupLabel %>">
                                             	<ui:field>
 													<ui:fielddesc><%= Texts.AppearsInUrlLabel %></ui:fielddesc>

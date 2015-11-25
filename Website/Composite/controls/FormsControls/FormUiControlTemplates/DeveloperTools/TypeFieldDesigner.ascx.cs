@@ -127,6 +127,8 @@ namespace CompositeTypeFieldDesigner
             {
                 UpdateFieldsPanel();
             }
+
+            plhDataUrl.Visible = CanAppearInDataRoute;
         }
 
         private void InitializeDetailsSplitPanel()
