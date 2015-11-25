@@ -90,9 +90,10 @@ namespace Composite.Core.PackageSystem
                             PriceCurrency = packageDescriptor.PriceCurrency,
                             ReadMoreUrl = packageDescriptor.ReadMoreUrl,
                             TechicalDetails = packageDescriptor.TechicalDetails,
-                            TrialPeriodDays = packageDescriptor.TrialPeriodDays,
+                            TrialPeriodDays = packageDescriptor.TrialPeriodDays ?? 0,
                             UpgradeAgreementMandatory = packageDescriptor.UpgradeAgreementMandatory,
-                            Vendor = packageDescriptor.Author
+                            Vendor = packageDescriptor.Author,
+                            ConsoleBrowserUrl = packageDescriptor.ConsoleBrowserUrl
                         });
                     }
                 }
