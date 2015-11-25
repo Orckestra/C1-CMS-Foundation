@@ -492,5 +492,17 @@ namespace Composite.Services
 
             return null;
         }
+
+        [WebMethod]
+        public string GetWidgetEntityToken(string name)
+        {
+            Functions.IWidgetFunction function;
+            if (Functions.FunctionFacade.TryGetWidgetFunction(out function, name))
+            {
+                return EntityTokenSerializer.Serialize(function.EntityToken, true);
+            }
+
+            return null;
+        }
     }
 }
