@@ -12,7 +12,7 @@ using Composite.C1Console.Security;
 using Composite.C1Console.Workflow;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
-
+using Composite.Core.Extensions;
 
 namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 {
@@ -44,6 +44,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
         private static ResourceHandle ClearServerCacheIcon = GetIconHandle("package-clear-servercache");
         private static ResourceHandle ViewAvailableInformationIcon = GetIconHandle("package-view-availableinfo");
         private static ResourceHandle ViewInstalledInformationIcon = GetIconHandle("package-view-installedinfo");
+        private static ResourceHandle InstallIcon = GetIconHandle("package-install-package");
+        
         private static ResourceHandle InstallLocalPackageIcon = GetIconHandle("package-install-local-package");
         private static ResourceHandle AddPackageSourceIcon = GetIconHandle("package-add-source");
         private static ResourceHandle DeletePackageSourceIcon = GetIconHandle("package-delete-source");
@@ -294,6 +296,12 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
                     Icon = packageIcon,
                 };
 
+                if (!string.IsNullOrEmpty(packageDescription.ConsoleBrowserUrl))
+                {
+                    element.PropertyBag.Add("BrowserUrl", packageDescription.ConsoleBrowserUrl);
+                    element.PropertyBag.Add("BrowserToolingOn", "false");
+                }
+
                 element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PackageElementProvider.ViewAvailablePackageInfoWorkflowWorkflow"), ActionPermissions)))
                 {
                     VisualData = new ActionVisualizedData
@@ -305,6 +313,25 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
                         ActionLocation = new ActionLocation
                         {
                             ActionType = ActionType.Edit,
+                            IsInFolder = false,
+                            IsInToolbar = true,
+                            ActionGroup = PrimaryActionGroup
+                        }
+
+                    }
+                });
+
+                element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PackageElementProvider.InstallRemotePackageWorkflow"), ActionPermissions)))
+                {
+                    VisualData = new ActionVisualizedData
+                    {
+                        Label = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "InstallLabel"),
+                        ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "InstallToolTip"),
+                        Icon = InstallIcon,
+                        Disabled = false,
+                        ActionLocation = new ActionLocation
+                        {
+                            ActionType = ActionType.Add,
                             IsInFolder = false,
                             IsInToolbar = true,
                             ActionGroup = PrimaryActionGroup

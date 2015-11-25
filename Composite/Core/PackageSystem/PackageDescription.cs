@@ -1,6 +1,6 @@
 ﻿using System;
 using Composite.Core.Serialization;
-
+using System.Collections.Generic;
 
 namespace Composite.Core.PackageSystem
 {
@@ -73,5 +73,20 @@ namespace Composite.Core.PackageSystem
 
         /// <exclude />
         public string ConsoleBrowserUrl { get; set; }
+
+        /// <exclude />
+        public List<Subscription> AvailableInSubscriptions { get; set; }
+    }
+
+
+    /// <exclude />
+    public sealed class Subscription
+    {
+        /// <exclude />
+        public string Name { get; set; }
+        /// <exclude />
+        public string DetailsUrl { get; set; }
+        /// <exclude />
+        public bool Purchasable { get; set; }
     }
 }

@@ -4,6 +4,10 @@
     <cms:binding name="DocumentTitle" type="System.String" />
     <cms:binding name="PackageDescription" type="Composite.Core.PackageSystem.PackageDescription" />
     <cms:binding name="AddOnServerSource" type="System.String" />
+    <cms:binding name="HasOwnPrice" type="System.Boolean" />
+    <cms:binding name="PriceText" type="System.String" />
+    <cms:binding name="IsInPurchasableSubscriptions" type="System.Boolean" />
+    <cms:binding name="PurchasableSubscriptions" type="System.String" />
   </cms:bindings>
   <cms:layout iconhandle="package-view-availableinfo">
     <cms:layout.label>
@@ -53,11 +57,33 @@
                 </TextBox.Text>
               </TextBox>
 
-              <TextBox Type="ReadOnly" Label="${Composite.Plugins.PackageElementProvider, ViewAvailableInformation.PriceTextLabel}">
-                <TextBox.Text>
-                  <cms:read source="PackageDescription.PriceAmmount" />
-                </TextBox.Text>
-              </TextBox>
+              <f:BooleanCheck>
+                <f:BooleanCheck.CheckValue>
+                  <cms:read source="HasOwnPrice" />
+                </f:BooleanCheck.CheckValue>
+                <f:BooleanCheck.WhenTrue>
+                  <TextBox Type="ReadOnly" Label="${Composite.Plugins.PackageElementProvider, ViewAvailableInformation.PriceTextLabel}">
+                    <TextBox.Text>
+                      <cms:read source="PriceText" />
+                    </TextBox.Text>
+                  </TextBox>
+                </f:BooleanCheck.WhenTrue>
+              </f:BooleanCheck>
+
+              <f:BooleanCheck>
+                <f:BooleanCheck.CheckValue>
+                  <cms:read source="IsInPurchasableSubscriptions" />
+                </f:BooleanCheck.CheckValue>
+                <f:BooleanCheck.WhenTrue>
+                  <TextArea Type="ReadOnly" Label="${Composite.Plugins.PackageElementProvider, ViewAvailableInformation.SubscriptionListLabel}">
+                    <TextArea.Text>
+                      <cms:read source="PurchasableSubscriptions" />
+                    </TextArea.Text>
+                  </TextArea>
+                </f:BooleanCheck.WhenTrue>
+              </f:BooleanCheck>
+
+
             </FieldGroup>
           </f:BooleanCheck.WhenTrue>
         </f:BooleanCheck>

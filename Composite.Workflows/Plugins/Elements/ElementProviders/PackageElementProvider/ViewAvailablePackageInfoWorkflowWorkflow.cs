@@ -53,7 +53,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 
                     string documentTitle = name;
 
-                    if(name.Contains(".") && !name.EndsWith("."))
+                    if (name.Contains(".") && !name.EndsWith("."))
                     {
                         string packageName = name.Substring(name.LastIndexOf('.') + 1);
                         string packageNamespace = name.Substring(0, name.LastIndexOf('.'));
@@ -67,6 +67,11 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 
                     this.Bindings.Add("DocumentTitle", documentTitle);
                     this.Bindings.Add("AddOnServerSource", PackageSystemServices.GetPackageSourceNameByPackageId(packageDescription.Id, InstallationInformationFacade.InstallationId, UserSettings.CultureInfo));
+                    this.Bindings.Add("HasOwnPrice", packageDescription.PriceAmmount > 0);
+                    this.Bindings.Add("PriceText", string.Format("{0} {1}", packageDescription.PriceAmmount, packageDescription.PriceCurrency));
+                    this.Bindings.Add("IsInPurchasableSubscriptions", packageDescription.AvailableInSubscriptions.Any(f => f.Purchasable));
+                    this.Bindings.Add("PurchasableSubscriptions", 
+                        string.Join(", \n", packageDescription.AvailableInSubscriptions.Where(f => f.Purchasable).Select(f => f.Name)));
                 }
             }
 
