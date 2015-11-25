@@ -53,7 +53,7 @@ _DOMUtil.prototype = {
 	getDOMDocument : function ( isFreeThreaded ) {
 	
 		var result = null;
-		if (Client.isAnyExplorer) {
+		if (Client.isExplorer || Client.isExplorer11) {
 			result = this.getMSComponent ( isFreeThreaded ? this.MSXML_FREETHREADED : this.MSXML_DOMDOCUMENT );
 		} else {
 			/*
