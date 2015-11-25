@@ -70,5 +70,8 @@ namespace Composite.Core.PackageSystem
 
         /// <exclude />
         public string Vendor { get; set; }
+
+        /// <exclude />
+        public string ConsoleBrowserUrl { get; set; }
     }
 }
