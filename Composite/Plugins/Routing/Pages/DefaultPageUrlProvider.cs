@@ -33,7 +33,7 @@ namespace Composite.Plugins.Routing.Pages
          private static readonly Hashtable<Tuple<DataScopeIdentifier, string>, Hashtable<string, Guid>> _friendlyUrls
             = new Hashtable<Tuple<DataScopeIdentifier, string>, Hashtable<string, Guid>>();
 
-        public string UrlSuffix { get; private set;}
+        public static string UrlSuffix { get; private set;}
 
         static DefaultPageUrlProvider()
         {
@@ -43,11 +43,19 @@ namespace Composite.Plugins.Routing.Pages
             DataEvents<IHostnameBinding>.OnAfterAdd += (a, b) => _hostnameBindings = null;
             DataEvents<IHostnameBinding>.OnAfterUpdate += (a, b) => _hostnameBindings = null;
             DataEvents<IHostnameBinding>.OnDeleted += (a, b) => _hostnameBindings = null;
+
+            DataEvents<IUrlConfiguration>.OnStoreChanged += (a, b) => LoadUrlSuffix();
         }
 
         public DefaultPageUrlProvider()
         {
-            UrlSuffix = DataFacade.GetData<IUrlConfiguration>().Select(c => c.PageUrlSuffix).FirstOrDefault() ?? string.Empty;
+            LoadUrlSuffix();
+        }
+
+        private static void LoadUrlSuffix()
+        {
+            UrlSuffix = DataFacade.GetData<IUrlConfiguration>()
+                                  .Select(c => c.PageUrlSuffix).FirstOrDefault() ?? string.Empty;
         }
 
         [Obsolete]
