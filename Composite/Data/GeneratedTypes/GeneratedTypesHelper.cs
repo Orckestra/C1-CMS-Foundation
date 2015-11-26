@@ -832,7 +832,9 @@ namespace Composite.Data.GeneratedTypes
         /// <returns></returns>
         public static DataFieldDescriptor BuildIdField()
         {
-            return new DataFieldDescriptor(Guid.NewGuid(), IdFieldName, StoreFieldType.Guid, typeof (Guid));
+            var idFieldDescriptor = new DataFieldDescriptor(Guid.NewGuid(), IdFieldName, StoreFieldType.Guid, typeof (Guid));
+            idFieldDescriptor.DataUrlProfile = new DataUrlProfile { Order = 0 };
+            return idFieldDescriptor;
         }
 
         private string KeyFieldName

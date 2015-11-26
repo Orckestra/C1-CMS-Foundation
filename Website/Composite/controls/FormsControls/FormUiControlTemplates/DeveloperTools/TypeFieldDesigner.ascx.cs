@@ -851,8 +851,13 @@ namespace CompositeTypeFieldDesigner
                 var field = SelectedField;
                 if (field == null || field.IsNullable) return false;
 
-                var instanceType = field.InstanceType;
+                if (TypeSelector.SelectedValue == "Reference")
+                {
+                    return false;
+                }
 
+                var instanceType = field.InstanceType;
+                
                 if (instanceType == typeof (string))
                 {
                     var selectedValue = TypeDetailsSelector.SelectedValue;

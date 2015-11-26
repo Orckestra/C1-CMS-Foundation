@@ -85,7 +85,7 @@ namespace Composite.Data.DynamicTypes
 
 
         /// <summary>
-        /// Describe how this field should be edited in a form view
+        /// Describe how this field should be part of a URL
         /// </summary>
         public DataUrlProfile DataUrlProfile { get; set; }
 
