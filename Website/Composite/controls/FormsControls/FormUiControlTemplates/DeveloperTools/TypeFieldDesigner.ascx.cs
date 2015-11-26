@@ -853,7 +853,7 @@ namespace CompositeTypeFieldDesigner
 
                 if (TypeSelector.SelectedValue == "Reference")
                 {
-                    return false;
+                    return true;
                 }
 
                 var instanceType = field.InstanceType;
