@@ -27,6 +27,7 @@ namespace Composite.C1Console.Elements
         /// Returns a url / tooling settings associated with an entity token to be used in the C1 Console browser, or null if current entity token does not support this kind of entity token.
         /// </summary>
         /// <param name="entityToken">The entity token.</param>
+        /// <param name="showPublishedView">When <value>true</value> will show a published version of the page/data item.</param>
         /// <returns>URL for public consumption</returns>
         public static BrowserViewSettings TryGetBrowserViewSettings(EntityToken entityToken, bool showPublishedView)
         {
