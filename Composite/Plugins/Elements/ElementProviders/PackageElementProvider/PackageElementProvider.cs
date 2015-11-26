@@ -283,7 +283,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 
             foreach (PackageDescription packageDescription in packageDescriptions)
             {
-                ResourceHandle packageIcon = (packageDescription.PriceAmmount > 0 ? AvailableCommercialPackageItemIcon : AvailablePackageItemIcon);
+                ResourceHandle packageIcon = (packageDescription.PriceAmmount > 0 || packageDescription.AvailableInSubscriptions.Any( f=>f.Purchasable )
+                    ? AvailableCommercialPackageItemIcon : AvailablePackageItemIcon);
 
                 Element element = new Element(_context.CreateElementHandle(new PackageElementProviderAvailablePackagesItemEntityToken(
                     packageDescription.Id.ToString(),

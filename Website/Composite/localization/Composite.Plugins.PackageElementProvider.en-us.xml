@@ -12,6 +12,8 @@
   <string key="PackageSourcesFolderToolTip" value="Package sources" />
   <string key="ViewAvailableInformationLabel" value="Package Info" />
   <string key="ViewAvailableInformationToolTip" value="View package information" />
+  <string key="InstallLabel" value="Install" />
+  <string key="InstallToolTip" value="Install this C1 Package on your system" />
   <string key="ViewInstalledInformationLabel" value="Package Info" />
   <string key="ViewInstalledInformationToolTip" value="View package information" />
   <string key="InstallLocalPackageLabel" value="Install Local Package..." />
@@ -39,7 +41,8 @@
   <string key="ViewAvailableInformation.PackageSourceTextLabel" value="Source" />
 
 
-  <string key="ViewAvailableInformation.PriceTextLabel" value="Price (USD)" />
+  <string key="ViewAvailableInformation.PriceTextLabel" value="Price" />
+  <string key="ViewAvailableInformation.SubscriptionListLabel" value="Subscriptions that include this package" />
   <string key="ViewAvailableInformation.Toolbar.InstallLabel" value="Install" />
   <string key="ViewAvailableInformation.Toolbar.ReadMoreLabel" value="Read more" />
   <string key="ViewAvailableInformation.ShowError.MessageTitle" value="Already Installed" />
