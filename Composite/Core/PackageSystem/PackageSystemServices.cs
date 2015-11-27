@@ -19,6 +19,14 @@ namespace Composite.Core.PackageSystem
     public static class PackageSystemServices
     {
         /// <exclude />
+        public static IEnumerable<PackageDescription> GetAllAvailablePackages()
+        {
+            return PackageServerFacade.GetAllPackageDescriptions(InstallationInformationFacade.InstallationId, UserSettings.CultureInfo);
+        }
+
+
+
+        /// <exclude />
         public static IEnumerable<PackageDescription> GetFilteredAllAvailablePackages()
         {
             List<InstalledPackageInformation> installedPackageInformation = PackageManager.GetInstalledPackages().ToList();

@@ -444,6 +444,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
                 orderby info.Name
                 select info;
 
+            var allServerPackages = PackageSystemServices.GetAllAvailablePackages();
+
             foreach (InstalledPackageInformation installedPackageInformation in installedPackageInformations)
             {
                 Element element = new Element(_context.CreateElementHandle(new PackageElementProviderInstalledPackageItemEntityToken(
@@ -451,6 +453,14 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
                     installedPackageInformation.GroupName,
                     installedPackageInformation.IsLocalInstalled,
                     installedPackageInformation.CanBeUninstalled)));
+
+                PackageDescription serverPackageDescription = allServerPackages.Where(f => f.Id == installedPackageInformation.Id).FirstOrDefault();
+
+                if (serverPackageDescription != null && !string.IsNullOrEmpty(serverPackageDescription.ConsoleBrowserUrl))
+                {
+                    element.PropertyBag.Add("BrowserUrl", serverPackageDescription.ConsoleBrowserUrl);
+                    element.PropertyBag.Add("BrowserToolingOn", "false");
+                }
 
                 element.VisualData = new ElementVisualizedData
                 {
@@ -505,6 +515,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
                 orderby info.Name
                 select info;
 
+            var allServerPackages = PackageSystemServices.GetAllAvailablePackages();
+
             foreach (InstalledPackageInformation installedPackageInformation in installedPackageInformations)
             {
                 Element element = new Element(_context.CreateElementHandle(new PackageElementProviderInstalledPackageItemEntityToken(
@@ -512,6 +524,14 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
                     installedPackageInformation.GroupName,
                     installedPackageInformation.IsLocalInstalled,
                     installedPackageInformation.CanBeUninstalled)));
+
+                PackageDescription serverPackageDescription = allServerPackages.Where(f => f.Id == installedPackageInformation.Id).FirstOrDefault();
+
+                if (serverPackageDescription != null && !string.IsNullOrEmpty(serverPackageDescription.ConsoleBrowserUrl))
+                {
+                    element.PropertyBag.Add("BrowserUrl", serverPackageDescription.ConsoleBrowserUrl);
+                    element.PropertyBag.Add("BrowserToolingOn", "false");
+                }
 
                 element.VisualData = new ElementVisualizedData
                 {
