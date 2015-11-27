@@ -24,6 +24,12 @@ function StartPageBinding () {
 	 * @type {boolean}
 	 */
 	this._isShowingStart = false;
+
+	/**
+	 * Container ViewBinding.
+	 * @type {ViewBinding}
+	 */
+	this._viewBinding = null;
 }
 
 /**
@@ -47,10 +53,10 @@ StartPageBinding.prototype.onBindingRegister = function () {
 	EventBroadcaster.subscribe ( BroadcastMessages.COMPOSITE_START, this );
 	EventBroadcaster.subscribe ( BroadcastMessages.COMPOSITE_STOP, this );
 	EventBroadcaster.subscribe(BroadcastMessages.KEY_ESCAPE, this);
-	var viewBinding = this.getAncestorBindingByType(ViewBinding, true);
-	if (viewBinding) {
-		DOMEvents.addEventListener(viewBinding.bindingElement, DOMEvents.CLICK, this);
-		viewBinding.attachClassName(StartPageBinding.VIEW_CLASSNAME);
+	this._viewBinding = this.getAncestorBindingByType(ViewBinding, true);
+	if (this._viewBinding) {
+		DOMEvents.addEventListener(this._viewBinding.bindingElement, DOMEvents.CLICK, this);
+		this._viewBinding.attachClassName(StartPageBinding.VIEW_CLASSNAME);
 	}
 }
 
@@ -80,7 +86,7 @@ StartPageBinding.prototype.handleEvent = function (e) {
 	var element = DOMEvents.getTarget(e);
 	switch (e.type) {
 		case DOMEvents.CLICK:
-			if (element.tagName == "ui:view") {
+			if (this._viewBinding && this._viewBinding.bindingElement == element) {
 				this.stop();
 			}
 			break;
