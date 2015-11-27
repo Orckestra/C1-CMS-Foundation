@@ -37,13 +37,16 @@ namespace Composite.Data.Plugins.DataProvider.Streams
                     return;
                 }
 
-                _fileWatcher = new C1FileSystemWatcher(AppDomain.CurrentDomain.BaseDirectory);
+                _fileWatcher = new C1FileSystemWatcher(AppDomain.CurrentDomain.BaseDirectory)
+                {
+                    IncludeSubdirectories = true,
+                    NotifyFilter = NotifyFilters.FileName | NotifyFilters.LastWrite,
+                    InternalBufferSize = 32768
+                };
+
                 // _fileWatcher.Created += FileWatcher_Created;
                 _fileWatcher.Changed += FileWatcher_Changed;
                 _fileWatcher.Deleted += FileWatcher_Deleted;
-
-                _fileWatcher.IncludeSubdirectories = true;
-                _fileWatcher.NotifyFilter = NotifyFilters.FileName | NotifyFilters.LastWrite;
 
                 _fileWatcher.EnableRaisingEvents = true;
             }

@@ -104,6 +104,21 @@ namespace Composite.Core.IO
         }
 
 
+        /// <summary>
+        /// Gets or sets the size of an internal buffer.
+        /// </summary>
+        public int InternalBufferSize
+        {
+            get
+            {
+                return this.Implementation.InternalBufferSize;
+            }
+            set
+            {
+                this.Implementation.InternalBufferSize = value;
+            }
+        }
+
 
         /// <summary>
         /// Adds or removes an event handler when new items are created.
@@ -174,7 +189,7 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// Adds or removes an event handler when an error occure.
+        /// Adds or removes an event handler when an error occur.
         /// </summary>
         public event ErrorEventHandler Error
         {
@@ -256,7 +271,7 @@ namespace Composite.Core.IO
         }
 
         /// <summary>
-        /// Desctructor.
+        /// Destructor.
         /// </summary>
         ~C1FileSystemWatcher()
         {
