@@ -1275,11 +1275,6 @@
     <Content Include="Composite\content\dialogs\treeselector\special\treeactionselector.aspx" />
     <Content Include="Composite\content\dialogs\treeselector\TreeSelectorToolBarBinding.js" />
     <Content Include="Composite\content\forms\Administrative\FunctionTesterEditFunction.xml" />
-    <Content Include="Composite\content\forms\Administrative\UrlConfiguration.xml" />
-    <Content Include="Composite\content\forms\Administrative\Hostnames.xml" />
-    <Content Include="App_Data\Composite\TreeDefinitions\UrlConfiguration.xml">
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="App_Data\Composite\TreeDefinitions\PageType.xml" />
     <Content Include="Composite\content\forms\AdministrativeTemplates\EmptyDocument.xml" />
     <Content Include="Composite\content\forms\Administrative\AddMediaFileStep1.xml">
@@ -1426,7 +1421,6 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Composite\localization\Composite.Plugins.RazorPageTemplate.en-us.xml" />
-    <Content Include="Composite\localization\Composite.Web.UrlConfiguration.en-us.xml" />
     <Content Include="Composite\localization\Composite.Plugins.RazorFunction.en-us.xml" />
     <Content Include="Composite\localization\Composite.Plugins.UserControlFunction.en-us.xml" />
     <Content Include="Composite\localization\Composite.Plugins.MasterPagePageTemplate.en-us.xml" />
