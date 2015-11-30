@@ -277,6 +277,8 @@
     <Compile Include="Plugins\Commands\ConsoleCommandHandlers\ConsoleCommandHelper.cs" />
     <Compile Include="Plugins\Commands\ConsoleCommandHandlers\FocusElement.cs" />
     <Compile Include="Plugins\Commands\ConsoleCommandHandlers\FocusData.cs" />
+    <Compile Include="Plugins\Logging\LogTraceListeners\FileLogTraceListener\CircullarList.cs" />
+    <Compile Include="Plugins\Logging\LogTraceListeners\FileLogTraceListener\LogReaderHelper.cs" />
     <Compile Include="Plugins\Routing\InternalUrlConverters\DataInternalUrlConverter.cs" />
     <Compile Include="Plugins\Routing\InternalUrlProviders\DataInternalUrlProvider.cs" />
     <Compile Include="Plugins\Routing\MediaUrlProviders\DefaultMediaUrlProvider.cs" />

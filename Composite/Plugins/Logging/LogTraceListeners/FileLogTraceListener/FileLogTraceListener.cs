@@ -19,7 +19,7 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
 
         public FileLogTraceListener(string initializeData)
         {
-            Verify.ArgumentNotNullOrEmpty(initializeData, "initializeData");
+            Verify.ArgumentNotNullOrEmpty(initializeData, nameof(initializeData));
 
             string[] parts = initializeData.Split(new[] {','});
             Verify.ArgumentCondition(parts.Length == 2, "initializeData", "Wrong configuration parameters");
@@ -30,10 +30,10 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
                 bool flushAfterEveryLine;
                 if (!bool.TryParse(parts[1], out flushAfterEveryLine))
                 {
-                    throw new ArgumentException(initializeData, "initializeData");
+                    throw new ArgumentException(initializeData, nameof(initializeData));
                 }
 
-                // Setting public proberty, so it can be used by a webservice
+                // Setting public property, so it can be used by a webservice
                 LoggerInstance = new FileLogger(logFolderPath, flushAfterEveryLine);
             }
         }
@@ -52,12 +52,12 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
             };
 
             string title = logEntry.Title;
-            title = title.Substring(title.IndexOf(")") + 2); // Removing ({AppDomainId} - {ThreadId}}) prefix.
+            title = title.Substring(title.IndexOf(')') + 2); // Removing ({AppDomainId} - {ThreadId}}) prefix.
 
             // Extracting display options from title
             if (title.StartsWith("RGB("))
             {
-                fileLogEntry.DisplayOptions = title.Substring(0, title.IndexOf(")") + 1);
+                fileLogEntry.DisplayOptions = title.Substring(0, title.IndexOf(')') + 1);
                 title = title.Substring(fileLogEntry.DisplayOptions.Length);
             }
             fileLogEntry.Title = title;
