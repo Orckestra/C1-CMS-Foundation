@@ -82,6 +82,10 @@ var KickStart = new function () {
 				
 			case BroadcastMessages.APPLICATION_LOGIN :
 				var appwindow = window.bindingMap.appwindow;
+				//Workarrond for iPad - "div layout creashed on some reflex"
+				if (Client.isPad) {
+					appwindow.bindingElement.style.borderLeft = "1px solid #333";
+				}
 				appwindow.setURL ( "app.aspx" );
 				break;
 				
