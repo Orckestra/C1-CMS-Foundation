@@ -8,6 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+#pragma warning disable 1591
 namespace Composite.Core.PackageSystem.WebServiceClient
 {
     using System.Runtime.Serialization;
