@@ -92,7 +92,7 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
                 filePath = fileConn.FilePath;
             }
 
-            DateTime readUntil = newEntries.First()?.TimeStamp.AddMilliseconds(-1) ?? DateTime.Now;
+            DateTime readUntil = newEntries.FirstOrDefault()?.TimeStamp.AddMilliseconds(-1) ?? DateTime.Now;
 
             if (timeFrom <= readUntil)
             {
