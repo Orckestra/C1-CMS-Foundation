@@ -2412,7 +2412,7 @@
     <Compile Include="C1Console\Workflow\ActivityExtensionMethods.cs" />
     <Compile Include="C1Console\Workflow\AllowPersistingWorkflowAttribute.cs" />
     <Compile Include="C1Console\Workflow\EntityTokenLockAttribute.cs" />
-    <Compile Include="C1Console\Workflow\FilePersisetenceService.cs" />
+    <Compile Include="C1Console\Workflow\FilePersistenceService.cs" />
     <Compile Include="C1Console\Workflow\FormsEventArgs.cs" />
     <Compile Include="C1Console\Workflow\Foundation\FormData.cs" />
     <Compile Include="C1Console\Workflow\Foundation\FormsWorkflowActivityService.cs" />

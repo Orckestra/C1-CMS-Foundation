@@ -159,9 +159,9 @@ namespace Composite.C1Console.Workflow
 
 
         /// <exclude />
-        public static void AcquireLock(Guid isntanceId, EntityToken entityToken)
+        public static void AcquireLock(Guid instanceId, EntityToken entityToken)
         {
-           _workflowFacade.AcquireLock(isntanceId, entityToken);
+           _workflowFacade.AcquireLock(instanceId, entityToken);
         }        
         #endregion
 
