@@ -193,130 +193,133 @@ VisualEditorSimpleToolBarBinding.prototype._getButton = function ( format ) {
  */
 VisualEditorSimpleToolBarBinding.prototype.handleNodeChange = function ( element ) {
 	
-    if ( !this._isToolBarUpdate ) {
+	if ( !this._isToolBarUpdate ) {
 		
-        var hasSelection = this._editorBinding.hasSelection ();
-				
-        // uncheck buttons and disable some buttons
-        this._buttons.each ( function ( key, button ) {
-            if ( button.isChecked ) {
-                button.uncheck ( true );
-            }
-            var format = button.format;
-            if ( format != null ) {
-                if ( format.props.inline != null ) {
-                    button.setDisabled ( !hasSelection );
-                } else if ( format.props.block != null ) {
-                    button.setDisabled ( hasSelection );
-                } else {
-                    button.enable ();
-                }
-            }
-        }, this )
+		var hasSelection = this._editorBinding.hasSelection();
+		//Buttons should be always enabled for ipad, becouse iPad does not always handle selection changes.
+		if (Client.isPad) {
+			hasSelection = true;
+		}
+		// uncheck buttons and disable some buttons
+		this._buttons.each ( function ( key, button ) {
+			if ( button.isChecked ) {
+				button.uncheck ( true );
+			}
+			var format = button.format;
+			if ( format != null ) {
+				if ( format.props.inline != null ) {
+					button.setDisabled ( !hasSelection );
+				} else if ( format.props.block != null ) {
+					button.setDisabled ( hasSelection );
+				} else {
+					button.enable ();
+				}
+			}
+		}, this )
 		
-        var tiny = this._tinyInstance;
+		var tiny = this._tinyInstance;
 
-        //skip rendering functions objects
-        if (VisualEditorBinding.isReservedElement(element)) {
-            this._buttons.each(function (key, button) {
-                var format = button.format;
-                if (format != null) {
-                    if (!button.isDisabled) {
-                        button.disable();
-                    }
-                }
-            })
-        } 
-        else
-            // disable more buttons
-            this._buttons.each ( function ( key, button ) {
-                if ( !button.isDisabled ) {
-                    var format = button.format;
-                    if ( format != null ) {
-                        if ( tiny.formatter.canApply ( format.id )) {
-                            button.enable ();
-                        } else {
-                            button.disable ();
-                        }
-                    }
-                }
-            })
+		//skip rendering functions objects
+		if (VisualEditorBinding.isReservedElement(element)) {
+			this._buttons.each(function (key, button) {
+				var format = button.format;
+				if (format != null) {
+					if (!button.isDisabled) {
+						button.disable();
+					}
+				}
+			})
+		} 
+		else
+			// disable more buttons
+			this._buttons.each ( function ( key, button ) {
+				if ( !button.isDisabled ) {
+					var format = button.format;
+					if ( format != null ) {
+						if ( tiny.formatter.canApply ( format.id )) {
+							button.enable ();
+						} else {
+							button.disable ();
+						}
+					}
+				}
+			})
 		
-        // check buttons
-        this.priorities.each ( function ( button ) {
-            var result = true;
-            if ( !button.isDisabled ) {
-                if ( tiny.queryCommandState ( button.cmd )) {
-                    button.check ( true );
-                    result = false;
-                } else {
-                    button.uncheck ( true );
-                }
-            }
-            return result;
-        }, this );
+		// check buttons
+		this.priorities.each ( function ( button ) {
+			var result = true;
+			if ( !button.isDisabled ) {
+				if ( tiny.queryCommandState ( button.cmd )) {
+					button.check ( true );
+					result = false;
+				} else {
+					button.uncheck ( true );
+				}
+			}
+			return result;
+		}, this );
 		
 
-        if (this._buttons.has("InsertUnorderedList"))  {
-            // hack this button
-            // TODO: less hacking
-            var b1 = this._buttons.get ( "InsertUnorderedList" );
-            if ( tiny.queryCommandState ( b1.cmd )) {
-                b1.check ( true );
-            }
-        }
+		if (this._buttons.has("InsertUnorderedList"))  {
+			// hack this button
+			// TODO: less hacking
+			var b1 = this._buttons.get ( "InsertUnorderedList" );
+			if ( tiny.queryCommandState ( b1.cmd )) {
+				b1.check ( true );
+			}
+		}
 
-        if (this._buttons.has("InsertUnorderedList")) {
-            // hack this button
-            // TODO: less hacking
-            var b2 = this._buttons.get("InsertOrderedList");
-            if (tiny.queryCommandState(b2.cmd)) {
-                b2.check(true);
-            }
-        }
+		if (this._buttons.has("InsertUnorderedList")) {
+			// hack this button
+			// TODO: less hacking
+			var b2 = this._buttons.get("InsertOrderedList");
+			if (tiny.queryCommandState(b2.cmd)) {
+				b2.check(true);
+			}
+		}
 		
 
 		if (this._buttons.has("Indent") && this._buttons.has("Outdent")) {
-		    var indentButton = this._buttons.get("Indent");
-		    var outdentButton = this._buttons.get("Outdent");
-		    var isEnableIndent = false;
-		    var isEnableOutdent = false;
-		    var node = element;
-		    do {
-		        if (node.nodeType == Node.ELEMENT_NODE) {
-		            if (node.nodeName.toLowerCase() == "ul" || node.nodeName.toLowerCase() == "ol") {
-		                isEnableIndent = true;
-		                isEnableOutdent = true;
-		                break;
-		            }
-		        }
-		    } while ((node = node.parentNode) != null);
+			var indentButton = this._buttons.get("Indent");
+			var outdentButton = this._buttons.get("Outdent");
+			var isEnableIndent = false;
+			var isEnableOutdent = false;
+			var node = element;
+			do {
+				if (node.nodeType == Node.ELEMENT_NODE) {
+					if (node.nodeName.toLowerCase() == "ul" || node.nodeName.toLowerCase() == "ol") {
+						isEnableIndent = true;
+						isEnableOutdent = true;
+						break;
+					}
+				}
+			} while ((node = node.parentNode) != null);
 
-		    indentButton.setDisabled(!isEnableIndent);
-		    outdentButton.setDisabled(!isEnableOutdent);
+			indentButton.setDisabled(!isEnableIndent);
+			outdentButton.setDisabled(!isEnableOutdent);
 		}
 
 		if (this._buttons.has("compositeInsertLink")) {
 
-		    var linkButton = this._buttons.get("compositeInsertLink");
-		    var unLinkButton = this._buttons.get("unlink");
-		    var isEnableLink = hasSelection;
+			var linkButton = this._buttons.get("compositeInsertLink");
+			var unLinkButton = this._buttons.get("unlink");
+			var isEnableLink = hasSelection;
 
-		    var isEnableUnlink = false;
+			var isEnableUnlink = false;
 
-		    var node = element;
-		    do {
-		        if (node.nodeType == Node.ELEMENT_NODE) {
-		            if (node.nodeName.toLowerCase() == "a") {
-		                isEnableLink = true;
-		                isEnableUnlink = true;
-		                break;
-		            }
-		        }
-		    } while ((node = node.parentNode) != null);
+			var node = element;
+			do {
+				if (node.nodeType == Node.ELEMENT_NODE) {
+					if (node.nodeName.toLowerCase() == "a") {
+						isEnableLink = true;
+						isEnableUnlink = true;
+						break;
+					}
+				}
+			} while ((node = node.parentNode) != null);
 
-		    linkButton.setDisabled(!isEnableLink);
-		    unLinkButton.setDisabled(!isEnableUnlink);
+			linkButton.setDisabled(!isEnableLink);
+			unLinkButton.setDisabled(!isEnableUnlink);
 		}
 	}
 }
