@@ -255,20 +255,25 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
         {
             List<Element> roots = new List<Element>();
 
-            Element globalDataElement;
+            Element globalDataElement = null;
             if (_websiteItemsView)
             {
-                globalDataElement = new Element(_providerContext.CreateElementHandle(new GeneratedDataTypesElementProviderRootEntityToken(_providerContext.ProviderName, GeneratedDataTypesElementProviderRootEntityToken.GlobalDataTypeFolderId)))
-                {
-                    VisualData = new ElementVisualizedData
+                // Do we have website items present?
+				var websiteItems = DataFacade.GetData<IGeneratedTypeWhiteList>().Any();
+                if (websiteItems)
+				{
+                    globalDataElement = new Element(_providerContext.CreateElementHandle(new GeneratedDataTypesElementProviderRootEntityToken(_providerContext.ProviderName, GeneratedDataTypesElementProviderRootEntityToken.GlobalDataTypeFolderId)))
                     {
-                        Label = Texts.GlobalDataFolderLabel_OnlyGlobalData,
-                        ToolTip = Texts.GlobalDataFolderToolTip_OnlyGlobalData,
-                        HasChildren = true,
-                        Icon = GeneratedDataTypesElementProvider.InterfaceClosed,
-                        OpenedIcon = GeneratedDataTypesElementProvider.InterfaceOpen
-                    }
-                };
+                        VisualData = new ElementVisualizedData
+                        {
+                            Label = Texts.GlobalDataFolderLabel_OnlyGlobalData,
+                            ToolTip = Texts.GlobalDataFolderToolTip_OnlyGlobalData,
+                            HasChildren = true,
+                            Icon = GeneratedDataTypesElementProvider.InterfaceClosed,
+                            OpenedIcon = GeneratedDataTypesElementProvider.InterfaceOpen
+                        }
+                    };
+				}
             }
             else
             {
@@ -285,50 +290,52 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                     };
             }
 
-            if (!_websiteItemsView)
-            {
+            // Defensive: Is the global data element created
+			if (globalDataElement != null)
+			{
+                if (!_websiteItemsView)
+                {
+                    globalDataElement.AddAction(
+                        new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.AddNewInterfaceTypeWorkflow"), _addNewInterfaceTypePermissionTypes) { Payload = _providerContext.ProviderName }))
+                        {
+                            VisualData = new ActionVisualizedData
+                            {
+                                Label = GetText("Add"),
+                                ToolTip = GetText("AddToolTip"),
+                                Icon = GeneratedDataTypesElementProvider.AddDataTypeIcon,
+                                Disabled = false,
+                                ActionLocation = new ActionLocation
+                                {
+                                    ActionType = ActionType.Edit,
+                                    IsInFolder = false,
+                                    IsInToolbar = true,
+                                    ActionGroup = PrimaryActionGroup
+                                }
+                            }
+                        });
+                }
+
                 globalDataElement.AddAction(
-                    new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.AddNewInterfaceTypeWorkflow"), _addNewInterfaceTypePermissionTypes) { Payload = _providerContext.ProviderName }))
+                    new ElementAction(new ActionHandle(new ViewUnpublishedItemsActionToken()))
                     {
                         VisualData = new ActionVisualizedData
                         {
-                            Label = GetText("Add"),
-                            ToolTip = GetText("AddToolTip"),
-                            Icon = GeneratedDataTypesElementProvider.AddDataTypeIcon,
+                            Label = GetText("ViewUnpublishedItems"),
+                            ToolTip = GetText("ViewUnpublishedItemsToolTip"),
+                            Icon = GeneratedDataTypesElementProvider.ListUnpublishedItemsIcon,
                             Disabled = false,
                             ActionLocation = new ActionLocation
                             {
-                                ActionType = ActionType.Edit,
+                                ActionType = ActionType.Other,
                                 IsInFolder = false,
                                 IsInToolbar = true,
-                                ActionGroup = PrimaryActionGroup
+                                ActionGroup = ViewActionGroup
                             }
                         }
                     });
-            }
-
-            globalDataElement.AddAction(
-                new ElementAction(new ActionHandle(new ViewUnpublishedItemsActionToken()))
-                {
-                    VisualData = new ActionVisualizedData
-                    {
-                        Label = GetText("ViewUnpublishedItems"),
-                        ToolTip = GetText("ViewUnpublishedItemsToolTip"),
-                        Icon = GeneratedDataTypesElementProvider.ListUnpublishedItemsIcon,
-                        Disabled = false,
-                        ActionLocation = new ActionLocation
-                        {
-                            ActionType = ActionType.Other,
-                            IsInFolder = false,
-                            IsInToolbar = true,
-                            ActionGroup = ViewActionGroup
-                        }
-                    }
-                });
-
-
-            roots.Add(globalDataElement);
-
+                    
+                roots.Add(globalDataElement);
+			}
 
             if (!_websiteItemsView)
             {
