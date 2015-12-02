@@ -19,34 +19,20 @@ module.exports = function (grunt) {
 	//************************************************************************************************************************************************
 	// COPYING FROM BOWER COMPONENTS
 	//************************************************************************************************************************************************
-	function fileExists(target, index) {
-		// NPM load file path module. 
-		var path = require('path');
-		// Return the callback function for each file check - used in the task
-		return function (src) {
-			// Get the target directory from the task info (property and file index)
-			var dest = grunt.config(target).files[index].dest;
-			// Construct the destination file path.
-			var destFile = path.join(dest, path.basename(src));
-			// Return false if the file exists.
-			return !(grunt.file.exists(destFile));
-		};
-	}
-
 	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.config("copy", {
 		codemirror: {
 			files: [
-				{ expand: true, cwd: 'bower_components/codemirror/addon/mode', src: ['*.*'], dest: 'Composite/lib/codemirror/addon/mode', filter: fileExists(['copy', 'codemirror'], 0) },
-				{ expand: true, cwd: 'bower_components/codemirror/addon/selection', src: ['*.*'], dest: 'Composite/lib/codemirror/addon/selection', filter: fileExists(['copy', 'codemirror'], 1) },
-				{ expand: true, cwd: 'bower_components/codemirror/lib', src: ['*.*'], dest: 'Composite/lib/codemirror/lib', filter: fileExists(['copy', 'codemirror'], 2) },
-				{ expand: true, cwd: 'bower_components/codemirror/mode/clike', src: ['*.*'], dest: 'Composite/lib/codemirror/mode/clike', filter: fileExists(['copy', 'codemirror'], 3) },
-				{ expand: true, cwd: 'bower_components/codemirror/mode/css', src: ['*.*'], dest: 'Composite/lib/codemirror/mode/css', filter: fileExists(['copy', 'codemirror'], 4) },
-				{ expand: true, cwd: 'bower_components/codemirror/mode/htmlembedded', src: ['*.*'], dest: 'Composite/lib/codemirror/mode/htmlembedded', filter: fileExists(['copy', 'codemirror'], 5) },
-				{ expand: true, cwd: 'bower_components/codemirror/mode/htmlmixed', src: ['*.*'], dest: 'Composite/lib/codemirror/mode/htmlmixed', filter: fileExists(['copy', 'codemirror'], 6) },
-				{ expand: true, cwd: 'bower_components/codemirror/mode/javascript', src: ['*.*'], dest: 'Composite/lib/codemirror/mode/javascript', filter: fileExists(['copy', 'codemirror'], 7) },
-				{ expand: true, cwd: 'bower_components/codemirror/mode/sass', src: ['*.*'], dest: 'Composite/lib/codemirror/mode/sass', filter: fileExists(['copy', 'codemirror'], 8) },
-				{ expand: true, cwd: 'bower_components/codemirror/mode/xml', src: ['*.*'], dest: 'Composite/lib/codemirror/mode/xml', filter: fileExists(['copy', 'codemirror'], 9) }
+				{ expand: true, cwd: 'bower_components/codemirror/addon/mode', src: ['*.*'], dest: 'Composite/lib/codemirror/addon/mode' },
+				{ expand: true, cwd: 'bower_components/codemirror/addon/selection', src: ['*.*'], dest: 'Composite/lib/codemirror/addon/selection' },
+				{ expand: true, cwd: 'bower_components/codemirror/lib', src: ['*.*'], dest: 'Composite/lib/codemirror/lib' },
+				{ expand: true, cwd: 'bower_components/codemirror/mode/clike', src: ['*.*'], dest: 'Composite/lib/codemirror/mode/clike' },
+				{ expand: true, cwd: 'bower_components/codemirror/mode/css', src: ['*.*'], dest: 'Composite/lib/codemirror/mode/css' },
+				{ expand: true, cwd: 'bower_components/codemirror/mode/htmlembedded', src: ['*.*'], dest: 'Composite/lib/codemirror/mode/htmlembedded' },
+				{ expand: true, cwd: 'bower_components/codemirror/mode/htmlmixed', src: ['*.*'], dest: 'Composite/lib/codemirror/mode/htmlmixed' },
+				{ expand: true, cwd: 'bower_components/codemirror/mode/javascript', src: ['*.*'], dest: 'Composite/lib/codemirror/mode/javascript' },
+				{ expand: true, cwd: 'bower_components/codemirror/mode/sass', src: ['*.*'], dest: 'Composite/lib/codemirror/mode/sass' },
+				{ expand: true, cwd: 'bower_components/codemirror/mode/xml', src: ['*.*'], dest: 'Composite/lib/codemirror/mode/xml' }
 			]
 		}
 	});
