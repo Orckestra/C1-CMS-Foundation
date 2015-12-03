@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <strings>
-	<string key="WebsiteFilesRootElement.Label" value="/" />
-	<string key="LayoutResourcesRootElement.Label" value="/" /> <!-- Layout Resources -->
+	<string key="WebsiteFilesRootElement.Label" value="Root" />
+	<string key="LayoutResourcesRootElement.Label" value="Root" /> <!-- Layout Resources -->
 	<string key="LayoutResourcesKeyNameLabel" value="Layout" />
 	
 	<string key="DeleteFile.LabelFieldGroup" value="Delete File?" />
