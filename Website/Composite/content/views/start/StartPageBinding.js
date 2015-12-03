@@ -46,17 +46,22 @@ StartPageBinding.prototype.toString = function () {
 StartPageBinding.prototype.onBindingRegister = function () {
 
 	StartPageBinding.superclass.onBindingRegister.call ( this );
-	this.addActionListener ( WindowBinding.ACTION_ONLOAD );
-	this.addActionListener ( ControlBinding.ACTION_COMMAND );
-	EventBroadcaster.subscribe ( BroadcastMessages.START_COMPOSITE, this );
-	EventBroadcaster.subscribe ( BroadcastMessages.STOP_COMPOSITE , this );
-	EventBroadcaster.subscribe ( BroadcastMessages.COMPOSITE_START, this );
-	EventBroadcaster.subscribe ( BroadcastMessages.COMPOSITE_STOP, this );
-	EventBroadcaster.subscribe(BroadcastMessages.KEY_ESCAPE, this);
-	this._viewBinding = this.getAncestorBindingByType(ViewBinding, true);
-	if (this._viewBinding) {
-		DOMEvents.addEventListener(this._viewBinding.bindingElement, DOMEvents.CLICK, this);
-		this._viewBinding.attachClassName(StartPageBinding.VIEW_CLASSNAME);
+
+	Application.hasStartPage = Application.hasExternalConnection;
+
+	if (Application.hasStartPage) {
+		this.addActionListener(WindowBinding.ACTION_ONLOAD);
+		this.addActionListener(ControlBinding.ACTION_COMMAND);
+		EventBroadcaster.subscribe(BroadcastMessages.START_COMPOSITE, this);
+		EventBroadcaster.subscribe(BroadcastMessages.STOP_COMPOSITE, this);
+		EventBroadcaster.subscribe(BroadcastMessages.COMPOSITE_START, this);
+		EventBroadcaster.subscribe(BroadcastMessages.COMPOSITE_STOP, this);
+		EventBroadcaster.subscribe(BroadcastMessages.KEY_ESCAPE, this);
+		this._viewBinding = this.getAncestorBindingByType(ViewBinding, true);
+		if (this._viewBinding) {
+			DOMEvents.addEventListener(this._viewBinding.bindingElement, DOMEvents.CLICK, this);
+			this._viewBinding.attachClassName(StartPageBinding.VIEW_CLASSNAME);
+		}
 	}
 }
 
@@ -69,10 +74,12 @@ StartPageBinding.prototype.onBindingAttach = function () {
 	/*
 	 * compositestart/CompositeStart.aspx
 	 */
-	StartPageBinding.superclass.onBindingAttach.call ( this );
-	this.bindingWindow.bindingMap.start.setURL ( 
-		"GetStartPage.ashx?random=" + KeyMaster.getUniqueKey ()
-	);
+	StartPageBinding.superclass.onBindingAttach.call(this);
+	if (Application.hasStartPage) {
+		this.bindingWindow.bindingMap.start.setURL(
+			"GetStartPage.ashx?random=" + KeyMaster.getUniqueKey()
+		);
+	}
 }
 
 /**

@@ -237,18 +237,14 @@
 							<ui:splitpanel>
 								<ui:decks id="maindecks">
 									<ui:deck id="startdeck">
-										<ui:decks>
-											<ui:deck>
-												<ui:dock id="startdock" reference="start" type="start">
-													<ui:docktabs>
-														<ui:docktab handle="Composite.Management.Start" />
-													</ui:docktabs>
-													<ui:dockpanels>
-														<ui:dockpanel />
-													</ui:dockpanels>
-												</ui:dock>
-											</ui:deck>
-										</ui:decks>
+										<ui:dock id="startdock" reference="start" type="start">
+											<ui:docktabs>
+												<ui:docktab handle="Composite.Management.Start" />
+											</ui:docktabs>
+											<ui:dockpanels>
+												<ui:dockpanel />
+											</ui:dockpanels>
+										</ui:dock>
 									</ui:deck>
 									<ui:deck id="stagedeck">
 										<ui:cover id="stagedeckscover" busy="false" />

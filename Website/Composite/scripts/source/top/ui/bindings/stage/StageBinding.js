@@ -336,16 +336,14 @@ StageBinding.prototype._onStageReady = function () {
 	if ( !this._isStageReady ) {
 	
 		top.app.bindingMap.maindecks.select("stagedeck");
-		if (Application.hasStartPage && Application.hasExternalConnection) {
-			if (KickStart.justLogged && !Client.isPad) {
-				EventBroadcaster.broadcast(BroadcastMessages.START_COMPOSITE);
-			}
-			else {
-				if(ViewBinding.hasInstance("Composite.Management.Start")){
-					ViewBinding.getInstance("Composite.Management.Start").hide();
-				}
+		if (Application.hasStartPage && KickStart.justLogged && !Client.isPad) {
+			EventBroadcaster.broadcast(BroadcastMessages.START_COMPOSITE);
+		} else {
+			if(ViewBinding.hasInstance("Composite.Management.Start")){
+				ViewBinding.getInstance("Composite.Management.Start").hide();
 			}
 		}
+		
 
 		EventBroadcaster.broadcast ( BroadcastMessages.STAGE_INITIALIZED );
 		this._isStageReady = true;
