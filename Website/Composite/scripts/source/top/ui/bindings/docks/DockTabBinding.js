@@ -11,6 +11,7 @@ DockTabBinding.NODENAME_TABBOX = "dock";
 DockTabBinding.LABEL_TABLOADING = "${string:Website.App.LabelLoading}";
 DockTabBinding.LABEL_TABDEFAULT = "${string:Website.App.LabelLoaded}";
 DockTabBinding.LABEL_TABSAVED = "${string:Website.App.LabelSaved}";
+DockTabBinding.LABEL_OVERFLOWED_CLASSNAME = "overflowed";
 
 DockTabBinding.IMG_TABLOADING = "${icon:loading}";
 DockTabBinding.IMG_TABDEFAULT = "${icon:default}";
@@ -343,6 +344,11 @@ DockTabBinding.prototype.setLabel = function ( label ) {
 		}
 	}
 	label = this.isDirty ? "*" + label : label;
+	label = this.isDirty ? "*" + label : label;
+	var resolvedLabel = Resolver.resolve(label);
+	if (resolvedLabel && resolvedLabel.length > 17 && Binding.exists(this.labelBinding)) {
+		this.labelBinding.attachClassName(DockTabBinding.LABEL_OVERFLOWED_CLASSNAME);
+	}
 	DockTabBinding.superclass.setLabel.call ( this, label );
 }
 
