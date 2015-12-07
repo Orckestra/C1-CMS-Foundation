@@ -262,7 +262,7 @@ CodeMirrorEditorBinding.prototype.handleBroadcast = function (broadcast, arg) {
 							this._codemirrorEditor.setOption("mode", "text/x-sass");
 							break;
 					    case CodeMirrorEditorBinding.syntax.SQL:
-					        this._codemirrorEditor.setOption("mode", "");
+					    	this._codemirrorEditor.setOption("mode", "text/x-mssql");
 					        break;
 						case CodeMirrorEditorBinding.syntax.TEXT:
 							this._codemirrorEditor.setOption("mode", "");

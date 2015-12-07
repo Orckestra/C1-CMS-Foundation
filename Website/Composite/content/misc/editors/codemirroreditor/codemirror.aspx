@@ -18,6 +18,7 @@
 	<script type="text/javascript" src="../../../../lib/codemirror/mode/clike/clike.js"></script>
 	<script type="text/javascript" src="../../../../lib/codemirror/mode/razor/razor.js"></script>
 	<script type="text/javascript" src="../../../../lib/codemirror/mode/sass/sass.js"></script>
+    <script type="text/javascript" src="../../../../lib/codemirror/mode/sql/sql.js"></script>
 	<script type="text/javascript" src="../../../../lib/codemirror/addon/dropmedia/dropmedia.js"></script>
 	<link rel="stylesheet" type="text/css" href="../../../../lib/codemirror/lib/codemirror.css" />
 	<link rel="stylesheet" type="text/css" href="codemirror.css" />
