@@ -50,7 +50,7 @@ _CSSComputer.prototype = {
 	 * @param {DOMElement} element
 	 * @return {object}
 	 */
-	_getMargin : function ( element ) {
+	getMargin : function ( element ) {
 		return this._getComplexResult ( this._margins, element );
 	},
 	

@@ -317,7 +317,7 @@ SystemToolBarBinding.prototype._containAllButtons = function () {
 		if ( !button.isVisible ) {
 			button.show ();
 		}
-		var margin = CSSComputer._getMargin(button.bindingElement);
+		var margin = CSSComputer.getMargin(button.bindingElement);
 		total += button.boxObject.getDimension().w + margin.left + margin.right;
 		if (total >= avail || (total + this._moreActionsWidth >= avail && buttons.hasNext())) {
 			hides.add ( button );

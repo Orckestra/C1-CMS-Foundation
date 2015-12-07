@@ -222,6 +222,10 @@ FlexBoxBinding.prototype._getCalculatedHeight = function () {
 	result -= ( padding.top + padding.bottom );
 	result -= ( border.top + border.bottom );
 
+	var margin = CSSComputer.getMargin(this.bindingElement);
+
+	result -= (margin.top + margin.bottom);
+
 	return result;
 }
 
