@@ -39,6 +39,7 @@ ui|cover#blocker {
 	margin: 0 auto;
 	overflow-x: hidden;
 	overflow-y: scroll;
+	background: #fff;
 }
 
 #deviceframeoverlay {
