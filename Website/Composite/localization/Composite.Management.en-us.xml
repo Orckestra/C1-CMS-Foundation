@@ -436,7 +436,9 @@
 	<string key="ServerLog.LabelButtonDeleteOld" value="Delete old" />
 	<string key="ServerLog.LabelButtonRefresh" value="Refresh" />
 	<string key="ServerLog.EmptyLabel" value="No log data available..." />
-	<string key="ServerLog.LogEntry.DateLabel" value="Date" />
+  <string key="ServerLog.LogEntriesRemovedBrowserViewLabel" value="Only the {0} most recent log entries are shown. Open the log for more entries." />
+  <string key="ServerLog.LogEntriesRemovedLabel" value="Only the {0} most recent log entries are shown. {1} entries exists for the current search. Either narrow the search or use the log viewer tool from http://docs.composite.net/Configuration/Logging for full log access." />
+  <string key="ServerLog.LogEntry.DateLabel" value="Date" />
 	<string key="ServerLog.LogEntry.MessageLabel" value="Message" />
 	<string key="ServerLog.LogEntry.TitleLabel" value="Title" />
 	<string key="ServerLog.LogEntry.EventTypeLabel" value="EventType" />

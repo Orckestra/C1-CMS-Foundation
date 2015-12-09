@@ -20,7 +20,7 @@ namespace Composite.Plugins.Elements.UrlToEntityToken
                 return null;
             }
 
-            return new BrowserViewSettings { Url = UrlUtils.Combine(UrlUtils.AdminRootPath, "/content/views/log/log.aspx?hideToolbar=true"), ToolingOn = false };
+            return new BrowserViewSettings { Url = UrlUtils.Combine(UrlUtils.AdminRootPath, "/content/views/log/log.aspx?browserView=true"), ToolingOn = false };
         }
 
         public EntityToken TryGetEntityToken(string url)
