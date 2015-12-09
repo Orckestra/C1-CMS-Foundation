@@ -344,11 +344,6 @@ DockTabBinding.prototype.setLabel = function ( label ) {
 		}
 	}
 	label = this.isDirty ? "*" + label : label;
-	label = this.isDirty ? "*" + label : label;
-	var resolvedLabel = Resolver.resolve(label);
-	if (resolvedLabel && resolvedLabel.length > 17 && Binding.exists(this.labelBinding)) {
-		this.labelBinding.attachClassName(DockTabBinding.LABEL_OVERFLOWED_CLASSNAME);
-	}
 	DockTabBinding.superclass.setLabel.call ( this, label );
 }
 

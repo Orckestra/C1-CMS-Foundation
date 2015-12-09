@@ -107,6 +107,14 @@ _CSSComputer.prototype = {
 	 */
 	getBackgroundColor : function ( element ) {
 		return DOMUtil.getComputedStyle ( element, Client.isExplorer ? "backgroundColor" : "background-color" );
+	},
+
+	/**
+ * @param {DOMElement} element
+ * @return {string}
+ */
+	getWidth : function(element) {
+		return DOMUtil.getComputedStyle(element, "width");
 	}
 }
 

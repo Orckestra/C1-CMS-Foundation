@@ -12,6 +12,8 @@ LabelBinding.SPRITE_PATH = "${root}/images/sprite.svg";
 LabelBinding.CLASSNAME_GRAYTEXT = "graytext";
 LabelBinding.CLASSNAME_FLIPPED = "flipped";
 
+LabelBinding.DOCKTABLABEL_OVERFLOWED_CLASSNAME = "overflowed";
+LabelBinding.DOCKTABLABEL_WIDTH = 110; // If value is changed, then also make fix in css. See file docks.less
 
 /**
  * SVG Images
@@ -249,6 +251,20 @@ LabelBinding.prototype.setLabel = function (label, isNotBuildingClassName) {
 	if (!isNotBuildingClassName) {
 		this.buildClassName();
 	}
+
+	var dockTabBinding = this.getAncestorBindingByType(DockTabBinding, true);
+	if (dockTabBinding != null) {
+		var textEl = this.shadowTree.labelText;
+		var cssWidthStr = CSSComputer.getWidth(textEl);
+		textEl.style.width = "auto";
+		var actualWidth = textEl.clientWidth;
+		var cssWidth = Number(cssWidthStr.replace(/[^\d\.\-]/g, ''));
+		if (actualWidth > cssWidth) {
+			this.attachClassName(LabelBinding.DOCKTABLABEL_OVERFLOWED_CLASSNAME);
+		}
+		textEl.style.width = cssWidthStr;
+	}
+
 }
 
 /**

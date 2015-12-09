@@ -10,15 +10,7 @@
 ui|dock {
 	display: block;
 	overflow: hidden;
-	/*
-	#region ie
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-		heigth: 100%;
-	#endregion
-        */
+
 	&.editors {
 		border-radius: 5px 0 0 0;
 		box-shadow: inset 0px 0px 0px 1px rgba(204,204,204,1);
@@ -106,14 +98,21 @@ ui|docktab {
 				box-shadow: inset -20px 0 39px -7px rgba(255,255,255,1);
 			}
 		}
+
+		&.image-and-text {
+			ui|labeltext { 
+				float: left;
+				margin-left: 8px;
+			}
+		}
 	}
 
 	ui|labeltext {
 		position: relative;
-		width: 110px;
 		overflow: hidden;
 		font-family: @heading-font-family;
 		font-size: 13px;
+		width: 110px;
 	}
 
 	&.selected {
