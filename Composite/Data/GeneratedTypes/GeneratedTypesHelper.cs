@@ -465,6 +465,18 @@ namespace Composite.Data.GeneratedTypes
         }
 
 
+        /// <exclude />
+        [Obsolete("Left for backward compatibility")]
+        public void SetNewFieldDescriptors(IEnumerable<DataFieldDescriptor> newDataFieldDescriptors, string labelFieldName)
+        {
+            var idField = BuildIdField();
+
+            var fields = new[] { idField };
+
+            SetNewFieldDescriptors(fields.Concat(newDataFieldDescriptors), IdFieldName, labelFieldName);
+        }
+
+
 
         /// <exclude />
         public void SetNewFieldDescriptors(IEnumerable<DataFieldDescriptor> newDataFieldDescriptors, string keyFieldName, string labelFieldName)
