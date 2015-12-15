@@ -864,7 +864,8 @@ StageBinding.prototype._view = function ( target, dockTabBinding, viewDefinition
 		 * Update already open view.
 		 */
 		var viewBinding = ViewBinding.getInstance ( handle );
-		if ( viewBinding != null ) {
+		if (viewBinding != null) {
+			target._selectTabByView(viewBinding);
 			viewBinding.update ();
 		} else {
 			this.logger.error ( "Could not update ViewBinding (declared open): \n" + handle );
