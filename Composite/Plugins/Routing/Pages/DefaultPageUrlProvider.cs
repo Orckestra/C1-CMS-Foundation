@@ -145,6 +145,10 @@ namespace Composite.Plugins.Routing.Pages
             }
 
             string pathInfo = decodedPath.Substring(closingBracketOffset + 1);
+            if (pathInfo.Length > 0 && pathInfo[0] != '/')
+            {
+                return null;
+            }
 
             bool isUnpublished = pathInfo.Contains(UrlMarker_Unpublished);
             if (isUnpublished)
