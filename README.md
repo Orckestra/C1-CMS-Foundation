@@ -3,7 +3,7 @@ Composite C1 Web Content Management System - .NET based, open source and a bundl
 
 [![screen shots from the new Composite C1 user interface (the C1 Console)](http://hackathon.composite.net/maw/github/6-pack-screenshots-small.png)](http://hackathon.composite.net/maw/github/6-pack-screenshots.png)
 
-This project has moved from https://compositec1.codeplex.com/ (September 29th 2015). You can still use the forums and downloads a CodePlex, but we encourage you submit issues here.
+This project has moved from https://compositec1.codeplex.com/ (September 29th 2015). You can still use the forums at CodePlex, but we encourage you submit issues here.
 
 ## Getting started ##
 Visit http://docs.composite.net/Getting-started/Guide
