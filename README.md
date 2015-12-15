@@ -9,7 +9,7 @@ This project has moved from https://compositec1.codeplex.com/ (September 29th 20
 Visit http://docs.composite.net/Getting-started/Guide
 
 ## Download ##
-Download binaries from https://compositec1.codeplex.com/releases/
+Download binaries from https://github.com/Orckestra/C1-CMS/releases/latest
 
 ## Forums ##
 Head over to https://compositec1.codeplex.com/discussions to ask questions
