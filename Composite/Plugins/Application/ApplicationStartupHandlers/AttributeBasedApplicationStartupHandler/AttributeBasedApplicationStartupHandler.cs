@@ -15,7 +15,7 @@ using Composite.Core.Configuration;
 using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Core.Types;
-using Microsoft.Framework.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
 
