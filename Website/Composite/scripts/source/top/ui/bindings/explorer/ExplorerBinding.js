@@ -126,7 +126,9 @@ ExplorerBinding.prototype.onBindingInitialize = function () {
 	
 	ExplorerBinding.bindingInstance = this;
 	ExplorerBinding.superclass.onBindingInitialize.call ( this );
-	this.dispatchAction ( ExplorerBinding.ACTION_INITIALIZED );
+	this.dispatchAction(ExplorerBinding.ACTION_INITIALIZED);
+	//update scroll after init
+	this._menuBinding.updateScroll();
 }
 
 /**
