@@ -14,7 +14,7 @@ namespace Composite.Data.DynamicTypes.Configuration
 
             if (result == null)
             {
-                ThrowConfiguraitonError("Missing required attribute '{0}'".FormatWith(attributeName), configurationElement);
+                ThrowConfigurationError("Missing required attribute '{0}'".FormatWith(attributeName), configurationElement);
             }
 
             return result;
@@ -26,7 +26,7 @@ namespace Composite.Data.DynamicTypes.Configuration
 
             if (element == null)
             {
-                ThrowConfiguraitonError("Missing required element <{0}>".FormatWith(elementName), configurationElement);
+                ThrowConfigurationError("Missing required element <{0}>".FormatWith(elementName), configurationElement);
             }
 
             return element;
@@ -38,13 +38,13 @@ namespace Composite.Data.DynamicTypes.Configuration
 
             if (string.IsNullOrEmpty(result))
             {
-                ThrowConfiguraitonError("Required attribute '{0}' is missing or empty".FormatWith(attributeName), configurationElement);
+                ThrowConfigurationError("Required attribute '{0}' is missing or empty".FormatWith(attributeName), configurationElement);
             }
 
             return result;
         }
 
-        public static void ThrowConfiguraitonError(string message, XObject configurationXObject)
+        public static void ThrowConfigurationError(string message, XObject configurationXObject)
         {
             var document = configurationXObject.Document;
             if (document != null && !string.IsNullOrEmpty(document.BaseUri) && (configurationXObject as IXmlLineInfo).HasLineInfo())

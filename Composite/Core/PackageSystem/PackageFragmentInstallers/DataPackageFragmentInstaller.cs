@@ -25,6 +25,8 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class DataPackageFragmentInstaller : BasePackageFragmentInstaller
     {
+        private static readonly string LogTitle = nameof(DataPackageFragmentInstaller);
+
         private List<DataType> _dataTypes;
         private List<PackageFragmentValidationResult> _validationResult;
 
@@ -40,13 +42,13 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
             if (this.Configuration.Count(f => f.Name == "Types") > 1)
             {
-                _validationResult.AddFatal(GetText("DataPackageFragmentInstaller.OnlyOneElement"));
+                _validationResult.AddFatal(Texts.DataPackageFragmentInstaller_OnlyOneElement);
                 return _validationResult;
             }
 
             _dataTypes = new List<DataType>();
 
-            ValidateConfiguration();
+            ValidateAndLoadConfiguration();
 
             foreach (DataType dataType in _dataTypes)
             {
@@ -81,7 +83,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
             List<XElement> typeElements = new List<XElement>();
             foreach (DataType dataType in _dataTypes)
             {
-                Log.LogVerbose("DataPackageFragmentInstaller", string.Format("Installing data for the type '{0}'", dataType.InterfaceType));
+                Log.LogVerbose(LogTitle, $"Installing data for the type '{dataType.InterfaceType}'");
 
                 if (dataType.IsDynamicAdded || dataType.InterfaceType == null)
                 {
@@ -170,19 +172,25 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     dataType.InterfaceType = GetInstalledVersionOfPendingType(dataType.InterfaceType, data);
                 }
 
-                var properties = GetDataTypeProperties(dataType.InterfaceType);
 
-                foreach (XAttribute attribute in addElement.Attributes())
+                var dataKey = CopyFieldValues(dataType, data, addElement);
+
+                if (dataType.AllowOverwrite || dataType.OnlyUpdate)
                 {
-                    string fieldName = attribute.Name.LocalName;
-                    if (IsObsoleteField(dataType, fieldName))
+                    IData existingData = DataFacade.TryGetDataByUniqueKey(dataType.InterfaceType, dataKey);
+
+                    if (data != null)
                     {
+                        CopyFieldValues(dataType, existingData, addElement);
+                        DataFacade.Update(existingData, false, true, false);
+
                         continue;
                     }
 
-                    PropertyInfo propertyInfo = properties[fieldName];
-
-                    propertyInfo.SetValue(data, ValueTypeConverter.Convert(attribute.Value, propertyInfo.PropertyType), null);
+                    if (dataType.OnlyUpdate)
+                    {
+                        continue;
+                    }
                 }
 
                 ILocalizedControlled localizedControlled = data as ILocalizedControlled;
@@ -213,7 +221,35 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
             return datasElement;
         }
 
-        private void ValidateConfiguration()
+        private static DataKeyPropertyCollection CopyFieldValues(DataType dataType, IData data, XElement addElement)
+        {
+            var dataKeyPropertyCollection = new DataKeyPropertyCollection();
+
+            var properties = GetDataTypeProperties(dataType.InterfaceType);
+
+            foreach (XAttribute attribute in addElement.Attributes())
+            {
+                string fieldName = attribute.Name.LocalName;
+                if (IsObsoleteField(dataType, fieldName))
+                {
+                    continue;
+                }
+
+                PropertyInfo propertyInfo = properties[fieldName];
+
+                object fieldValue = ValueTypeConverter.Convert(attribute.Value, propertyInfo.PropertyType);
+                propertyInfo.SetValue(data, fieldValue, null);
+
+                if (dataType.InterfaceType.GetKeyPropertyNames().Contains(fieldName))
+                {
+                    dataKeyPropertyCollection.AddKeyProperty(fieldName, fieldValue);
+                }
+            }
+
+            return dataKeyPropertyCollection;
+        } 
+
+        private void ValidateAndLoadConfiguration()
         {
             XElement typesElement = this.Configuration.SingleOrDefault(f => f.Name == "Types");
             if (typesElement == null)
@@ -225,13 +261,19 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
             foreach (XElement typeElement in typesElement.Elements("Type"))
             {
-                XAttribute typeAttribute = typeElement.Attribute("type");
+                var typeAttribute = typeElement.Attribute("type");
                 if (typeAttribute == null)
                 {
-                    _validationResult.AddFatal(GetText("DataPackageFragmentInstaller.MissingAttribute").FormatWith("type"), typeElement);
+                    _validationResult.AddFatal(Texts.DataPackageFragmentInstaller_MissingAttribute("type"), typeElement);
                     continue;
                 }
-                
+
+                XAttribute allowOverwriteAttribute = typeElement.Attribute("allowOverwrite");
+                XAttribute onlyUpdateAttribute = typeElement.Attribute("onlyUpdate");
+
+                bool allowOverwrite = allowOverwriteAttribute != null && (bool)allowOverwriteAttribute;
+                bool onlyUpdate = onlyUpdateAttribute != null && (bool)onlyUpdateAttribute;
+
                 string interfaceTypeName = typeAttribute.Value;
 
                 interfaceTypeName = TypeManager.FixLegasyTypeName(interfaceTypeName);
@@ -241,7 +283,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     XAttribute dataScopeIdentifierAttribute = dataElement.Attribute("dataScopeIdentifier");
                     if (dataScopeIdentifierAttribute == null)
                     {
-                        _validationResult.AddFatal(GetText("DataPackageFragmentInstaller.MissingAttribute").FormatWith("dataScopeIdentifier"), typeElement);
+                        _validationResult.AddFatal(Texts.DataPackageFragmentInstaller_MissingAttribute("dataScopeIdentifier"), typeElement);
                         continue;
                     }
 
@@ -290,7 +332,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     XAttribute dataFilenameAttribute = dataElement.Attribute("dataFilename");
                     if (dataFilenameAttribute == null)
                     {
-                        _validationResult.AddFatal(GetText("DataPackageFragmentInstaller.MissingAttribute").FormatWith("dataFilename"), typeElement);
+                        _validationResult.AddFatal(Texts.DataPackageFragmentInstaller_MissingAttribute("dataFilename"), typeElement);
                         continue;
                     }
 
@@ -330,6 +372,8 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                         AddToAllLocales = allLocales,
                         AddToCurrentLocale = currentLocale,
                         IsDynamicAdded = isDynamicAdded,
+                        AllowOverwrite = allowOverwrite,
+                        OnlyUpdate = onlyUpdate,
                         Dataset = doc.Root.Elements("Add")
                     };
 
@@ -465,7 +509,8 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
 
                 // Validating keys already present    
-                if (!DataLocalizationFacade.IsLocalized(dataType.InterfaceType) 
+                if (!dataType.AllowOverwrite && !dataType.OnlyUpdate
+                    && !DataLocalizationFacade.IsLocalized(dataType.InterfaceType) 
                     || (!dataType.AddToAllLocales && !dataType.AddToCurrentLocale) 
                     || (dataType.Locale != null && !this.InstallerContext.IsLocalePending(dataType.Locale)))
                 {
@@ -638,7 +683,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
                     if (dataFieldDescriptor == null)
                     {
-                        _validationResult.AddFatal(GetText("DataPackageFragmentInstaller.MissingProperty").FormatWith(dataTypeDescriptor, fieldName));
+                        _validationResult.AddFatal(Texts.DataPackageFragmentInstaller_MissingProperty(dataTypeDescriptor, fieldName));
                         propertyValidationPassed = false;
                         continue;
                     }
@@ -650,7 +695,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     }
                     catch (Exception)
                     {
-                        _validationResult.AddFatal(GetText("DataPackageFragmentInstaller.ConversionFailed").FormatWith(attribute.Value, dataFieldDescriptor.InstanceType));
+                        _validationResult.AddFatal(Texts.DataPackageFragmentInstaller_ConversionFailed(attribute.Value, dataFieldDescriptor.InstanceType));
                         propertyValidationPassed = false;
                         continue;
                     }
@@ -668,7 +713,10 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     continue;
                 }
 
-                // TODO: implement check if the same key has already been added
+                if (!dataType.AllowOverwrite && !dataType.OnlyUpdate)
+                {
+                    // TODO: implement check if the same key has already been added
+                }
 
                 // TODO: to be implemented for dynamic types
                 // RegisterKeyToBeAdded(dataType, dataKeyPropertyCollection);
@@ -706,13 +754,13 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
             if (dataTypeLocalized && !localeInfoSpecified)
             {
-                _validationResult.AddFatal(GetText("DataPackageFragmentInstaller.TypeLocalizedWithoutLocale").FormatWith(dataType.InterfaceType));
+                _validationResult.AddFatal(Texts.DataPackageFragmentInstaller_TypeLocalizedWithoutLocale(dataType.InterfaceType));
                 return false;
             }
             
             if (!dataTypeLocalized && localeInfoSpecified)
             {
-                _validationResult.AddFatal(GetText("DataPackageFragmentInstaller.TypeNonLocalizedWithLocale").FormatWith(dataType.InterfaceType));
+                _validationResult.AddFatal(Texts.DataPackageFragmentInstaller_TypeNonLocalizedWithLocale(dataType.InterfaceType));
                 return false;
             }
 
@@ -729,11 +777,13 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
             public bool AddToAllLocales { get; set; }
             public bool AddToCurrentLocale { get; set; }
             public bool IsDynamicAdded { get; set; }
+            public bool OnlyUpdate { get; set; }
+            public bool AllowOverwrite { get; set; }
             public IEnumerable<XElement> Dataset { get; set; }
         }
 
         /// <summary>
-        /// Information about data keys to be installed for a gived data type
+        /// Information about data keys to be installed for a given data type
         /// </summary>
         [DebuggerDisplay("TypeKeyInstallationData {_type.FullName} . DataScopes: {_dataScopes.Count}")]
         private class TypeKeyInstallationData
