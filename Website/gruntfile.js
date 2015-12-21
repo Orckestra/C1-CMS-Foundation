@@ -1,4 +1,4 @@
-/// <vs BeforeBuild='less' AfterBuild='less, cssmin' />
+/// <vs BeforeBuild='less' AfterBuild='less, postcss' />
 module.exports = function (grunt) {
 
 	'use strict';
@@ -19,12 +19,10 @@ module.exports = function (grunt) {
 	//************************************************************************************************************************************************
 	// COPYING FROM BOWER COMPONENTS
 	//************************************************************************************************************************************************
-
 	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.config("copy", {
 		codemirror: {
 			files: [
-				{ expand: true, cwd: 'bower_components/codemirror/addon/dropmedia', src: ['*.*'], dest: 'Composite/lib/codemirror/addon/dropmedia' },
 				{ expand: true, cwd: 'bower_components/codemirror/addon/mode', src: ['*.*'], dest: 'Composite/lib/codemirror/addon/mode' },
 				{ expand: true, cwd: 'bower_components/codemirror/addon/selection', src: ['*.*'], dest: 'Composite/lib/codemirror/addon/selection' },
 				{ expand: true, cwd: 'bower_components/codemirror/lib', src: ['*.*'], dest: 'Composite/lib/codemirror/lib' },
@@ -33,7 +31,6 @@ module.exports = function (grunt) {
 				{ expand: true, cwd: 'bower_components/codemirror/mode/htmlembedded', src: ['*.*'], dest: 'Composite/lib/codemirror/mode/htmlembedded' },
 				{ expand: true, cwd: 'bower_components/codemirror/mode/htmlmixed', src: ['*.*'], dest: 'Composite/lib/codemirror/mode/htmlmixed' },
 				{ expand: true, cwd: 'bower_components/codemirror/mode/javascript', src: ['*.*'], dest: 'Composite/lib/codemirror/mode/javascript' },
-				{ expand: true, cwd: 'bower_components/codemirror/mode/razor', src: ['*.*'], dest: 'Composite/lib/codemirror/mode/razor' },
 				{ expand: true, cwd: 'bower_components/codemirror/mode/sass', src: ['*.*'], dest: 'Composite/lib/codemirror/mode/sass' },
 				{ expand: true, cwd: 'bower_components/codemirror/mode/sql', src: ['*.*'], dest: 'Composite/lib/codemirror/mode/sql' },
 				{ expand: true, cwd: 'bower_components/codemirror/mode/xml', src: ['*.*'], dest: 'Composite/lib/codemirror/mode/xml' }
