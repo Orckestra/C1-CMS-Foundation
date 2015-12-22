@@ -1,7 +1,7 @@
 ﻿using System;
 using Composite.Core.WebClient.Renderings.Page;
 using Composite.Data;
-using Microsoft.Framework.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using Composite.Core.Routing;
 using Composite.Core.Routing.Pages;
 using System.Web;
