@@ -284,7 +284,7 @@ var KickStart = new function () {
 		errors.each(function(error) {
 			var errorElement = document.createElement("div");
 			errorElement.textContent = error;
-			errorElement.className = "errortext";
+			errorElement.className = "text-error text-sm";
 			errorsElement.appendChild(errorElement);
 
 		});
