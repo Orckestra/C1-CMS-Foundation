@@ -38,6 +38,7 @@
   <string key="AddNewSqlFunctionConnection.HelpConnectionString" value="" />
   <string key="AddNewSqlFunctionConnection.LabelIsMSSQL" value="MS SQL Server" />
   <string key="AddNewSqlFunctionConnection.LabelIsMSSQLCheckBox" value="Database is a MS SQL Server" />
+  <string key="EditSqlFunctionConnection.LabelFieldGroup" value="SQL Connection settings" />
   <string key="EditSqlFunction.LabelInputParameters" value="Input Parameters" />
   <string key="EditSqlFunction.LabelSettings" value="Settings" />
   <string key="EditSqlFunction.LabelNamingAndDescription" value="Function name and description" />
