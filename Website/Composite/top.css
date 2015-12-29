@@ -58,6 +58,7 @@ div#offlinetext {
         .loginpage ui|fielddata .icon svg {
             width: 20px;
             height: 26px;
+	        margin-left: 2px;
         }
 
     .loginpage  ui|fielddata ui|datainput {
