@@ -76,6 +76,10 @@ GenericViewBinding.prototype.onBindingRegister = function () {
 	 * Mark the tree as resident on the currently selected perspective.
 	 */
 	this.perspectiveNode = StageBinding.perspectiveNode;
+
+	if (this.getProperty("treeselector") == true) {
+		this._activePosition = SystemAction.activePositions.SelectorTree;
+	}
 }
 
 

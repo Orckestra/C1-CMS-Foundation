@@ -152,6 +152,8 @@ TreeSelectorDialogPageBinding.prototype.onBindingRegister = function () {
 	//Subscribe to double click action
 	this.addActionListener(TreeNodeBinding.ACTION_COMMAND);
 
+	this.addActionListener(PathBinding.ACTION_COMMAND);
+
 	/*
 	* File subscriptions.
 	*/
@@ -201,6 +203,10 @@ TreeSelectorDialogPageBinding.prototype.handleBroadcast = function (broadcast, a
 						}
 					}
 				}
+
+				if (arg.source && arg.source == this._treeBinding) {
+					this._updateAddressBar(arg.source);
+				}
 			}
 			break;
 	}
@@ -246,6 +252,11 @@ TreeSelectorDialogPageBinding.prototype.onBeforePageInitialize = function () {
 		this._genericViewBinding.setSelectionValue(this._selectionValue);
 		this._genericViewBinding.setActionGroup(this._actionGroup);
 
+	}
+
+	var toolbar = this.bindingWindow.bindingMap.toolbar;
+	if (toolbar) {
+		toolbar.setSyncHandle(this.getSyncHandle());
 	}
 
 	TreeSelectorDialogPageBinding.superclass.onBeforePageInitialize.call ( this );
@@ -371,6 +382,9 @@ TreeSelectorDialogPageBinding.prototype.handleAction = function (action) {
 			case ButtonBinding.ACTION_COMMAND:
 				if (action.target && action.target.response == Dialog.RESPONSE_ACCEPT) {
 					this._saveOpenedSystemNodes();
+				} else {
+					this._handleCommand(action.target.getProperty("cmd"), action.target);
+					action.consume();
 				}
 				//Disable bindingMap.buttonAccept after first invoke
 				if (action.target == bindingMap.buttonAccept) {
@@ -380,11 +394,12 @@ TreeSelectorDialogPageBinding.prototype.handleAction = function (action) {
 			case TreeNodeBinding.ACTION_COMMAND:
 				bindingMap.buttonAccept.fireCommand();
 				break;
-			case TreeBinding.ACTION_SELECTIONCHANGED :
-				this._updateDisplayAndResult (action.target);
+			case TreeBinding.ACTION_SELECTIONCHANGED:
+				this._updateDisplayAndResult(action.target);
+				
 				break;
 			case TreeBinding.ACTION_NOSELECTION :
-				this._clearDisplayAndResult ();
+				this._clearDisplayAndResult();
 				break;
 
 			case GenericViewBinding.ACTION_COMMAND:
@@ -394,6 +409,9 @@ TreeSelectorDialogPageBinding.prototype.handleAction = function (action) {
 					bindingMap.buttonAccept.fireCommand();
 				}
 				
+				break;
+			case PathBinding.ACTION_COMMAND:
+				this._treeBinding.handleBroadcast(BroadcastMessages.SYSTEMTREEBINDING_FOCUS, action.target.entityToken);
 				break;
 		}
 		
@@ -468,6 +486,78 @@ TreeSelectorDialogPageBinding.prototype._clearDisplayAndResult = function () {
 	
 	dataInput.setValue ( "" );
 	this.result = null;
+}
+
+/**
+ * @param {string} url
+ */
+TreeSelectorDialogPageBinding.prototype._updateAddressBar = function (binding) {
+	var bar = this.bindingWindow.bindingMap.addressbar;
+	if (bar != null) {
+		if (binding instanceof SystemTreeBinding) {
+			var treenode = binding.getFocusedTreeNodeBindings().getFirst();
+			if (treenode) {
+				var parents = new List();
+				var element = treenode.bindingElement;
+				while ((element = element.parentNode) != null) {
+					var parent = UserInterface.getBinding(element);
+					if (parent instanceof SystemTreeNodeBinding) {
+						parents.add(parent.node);
+					} else {
+						break;
+					}
+				}
+				bar.showBreadcrumb(treenode.node, parents);
+			}
+		}
+	}
+}
+
+/**
+ * Handle command (navbar or contextmenu).
+ * @param {string} cmd
+ * @param {Binding} binding
+ */
+TreeSelectorDialogPageBinding.prototype._handleCommand = function (cmd, binding) {
+
+	/*
+	 * Because of a bug in the history object in Prism 0.91,
+	 * we cannot invoke history.back and stuff. We have
+	 * to load new URLs from our own history. This will
+	 * destroy native history.back in document, so please
+	 * fix at some point...
+	 * @see https://bugzilla.mozilla.org/show_bug.cgi?id=429550
+	 */
+	switch (cmd) {
+		case "back":
+			break;
+
+		case "forward":
+			break;
+
+		case "refresh":
+			this._treeBinding._handleCommandBroadcast(BroadcastMessages.SYSTEMTREEBINDING_REFRESH);
+			break;
+
+		case "home":
+			var rootNode = this._treeBinding.getRootTreeNodeBindings().getFirst();
+			if (rootNode) {
+				this._treeBinding.focusSingleTreeNodeBinding(rootNode);
+			}
+			break;
+
+		case "toggletree":
+			var toggletreebutton = this.bindingWindow.bindingMap.toggletreebutton;
+			var explorerpanel = this.bindingWindow.bindingMap.explorerpanel;
+			if (toggletreebutton.isChecked) {
+				explorerpanel.show();
+			} else {
+				explorerpanel.hide();
+			}
+			this.reflex();
+			break;
+
+	}
 }
 
 

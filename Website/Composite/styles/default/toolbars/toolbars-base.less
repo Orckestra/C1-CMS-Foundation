@@ -102,3 +102,47 @@ ui|toolbar.btns-group {
 ui|toolbarlabel {
 	padding: 6px 0;
 }
+
+ui|path {
+	width: 100%;
+	float: left;
+	height: 32px;
+	overflow: hidden;
+}
+
+ui|path ui|toolbarbutton {
+	border: 0;
+	text-transform: none;
+	padding-right: 10px;
+	margin-right: -10px !important;
+	margin-left: 2px !important;
+}
+
+ui|path ui|toolbarbutton.isdisabled {
+	opacity: 1;
+}
+
+ui|path ui|toolbarbutton + ui|toolbarbutton:before {
+	content: "/";
+	display: block;
+	position: absolute;
+	color: #ddd;
+	left: 0;
+	top: 6px;
+}
+
+ui|path ui|toolbarbutton ui|labelbox {
+	padding: 6px 1px 6px 7px;
+}
+
+ui|path ui|toolbarbutton:after {
+	content: "...";
+	display: block;
+	position: absolute;
+	right: 0;
+	top: 6px;
+}
+
+ui|path ui|toolbarbutton:last-child:after {
+	display: none;
+}

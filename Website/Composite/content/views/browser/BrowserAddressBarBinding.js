@@ -1,6 +1,6 @@
-BrowserAddressBarBinding.prototype = new DataInputBinding;
+BrowserAddressBarBinding.prototype = new AddressBarBinding;
 BrowserAddressBarBinding.prototype.constructor = BrowserAddressBarBinding;
-BrowserAddressBarBinding.superclass = DataInputBinding.prototype;
+BrowserAddressBarBinding.superclass = AddressBarBinding.prototype;
 
 BrowserAddressBarBinding.URL_404 = "${root}/content/views/browser/errors/404.aspx";
 
@@ -13,11 +13,6 @@ function BrowserAddressBarBinding () {
 	 * @type {SystemLogger}
 	 */
 	this.logger = SystemLogger.getLogger ( "BrowserAddressBarBinding" );
-	
-	/**
-	* @type {BrowserPathBinding}
-	*/
-	this.pathBinding = null;
 
 	/*
 	 * Returnable.
@@ -54,17 +49,8 @@ BrowserAddressBarBinding.prototype.onBindingAttach = function () {
 	//Hide go button as obsolute
 	//TODO remove button
 	go.hide();
-
-
-
-	this.pathBinding = BrowserPathBinding.newInstance(this.bindingDocument);
-	this.shadowTree.box.appendChild(this.pathBinding.bindingElement);
-	this.pathBinding.attach();
-
-	this.shadowTree.path = BrowserPathBinding;
-
-
 }
+
 
 /**
  * @overloads {Binding#onBindingRegister}
@@ -75,6 +61,39 @@ BrowserAddressBarBinding.prototype.onBindingRegister = function () {
 
 	this.addEventListener(DOMEvents.CLICK);
 
+}
+
+/**
+ * @overwrites {DataInputBinding#onfocus}
+ */
+BrowserAddressBarBinding.prototype.onfocus = function () {
+
+	this.subscribe(BroadcastMessages.KEY_ENTER);
+}
+
+/**
+ * @overwrites {DataInputBinding#onfocus}
+ */
+BrowserAddressBarBinding.prototype.onblur = function () {
+
+	this.unsubscribe(BroadcastMessages.KEY_ENTER);
+}
+
+/**
+ * @implements {IBroadcastListener}
+ * @overloads {DataInputBinding#handleBroadcast}
+ * @param {string} broadcast
+ * @param {object} arg
+ */
+BrowserAddressBarBinding.prototype.handleBroadcast = function (broadcast, arg) {
+
+	BrowserAddressBarBinding.superclass.handleBroadcast.call(this, broadcast, arg);
+
+	switch (broadcast) {
+		case BroadcastMessages.KEY_ENTER:
+			this.go();
+			break;
+	}
 }
 
 
@@ -93,38 +112,7 @@ BrowserAddressBarBinding.prototype.maximize = function ( avail ) {
 	this.bindingElement.parentNode.style.width = (width - 8) + "px";
 }
 
-/**
- * @overwrites {DataInputBinding#onfocus}
- */
-BrowserAddressBarBinding.prototype.onfocus = function () {
-	
-	this.subscribe ( BroadcastMessages.KEY_ENTER );
-}
 
-/**
- * @overwrites {DataInputBinding#onfocus}
- */
-BrowserAddressBarBinding.prototype.onblur = function () {
-	
-	this.unsubscribe ( BroadcastMessages.KEY_ENTER );
-}
-
-/**
- * @implements {IBroadcastListener}
- * @overloads {DataInputBinding#handleBroadcast}
- * @param {string} broadcast
- * @param {object} arg
- */
-BrowserAddressBarBinding.prototype.handleBroadcast = function ( broadcast, arg ) {
-	
-	BrowserAddressBarBinding.superclass.handleBroadcast.call ( this, broadcast, arg );
-	
-	switch ( broadcast ) {
-		case BroadcastMessages.KEY_ENTER :
-			this.go ();
-			break;
-	}
-}
  
 /**
  * @implements {IActionHandler}
@@ -144,26 +132,6 @@ BrowserAddressBarBinding.prototype.handleAction = function ( action ) {
 	}
 }
 
-/**
- * @implements {IEventListener}
- * @overloads {Binding#handleEvent}
- * @param {MouseEvent} e
- */
-BrowserAddressBarBinding.prototype.handleEvent = function (e) {
-
-	BrowserAddressBarBinding.superclass.handleEvent.call(this, e);
-
-	switch (e.type) {
-		case DOMEvents.CLICK:
-			if (e.target === this.pathBinding.bindingElement) {
-				this._hideBreadcrumb();
-				this.shadowTree.input.value = "";
-				this.shadowTree.input.focus();
-				
-			}
-			break;
-	}
-}
 
 
 /**
@@ -307,81 +275,3 @@ BrowserAddressBarBinding.prototype._getRequestStatus = function ( url ) {
 	return result;
 }
 
-/**
- * Blur.
- * @implements {IData}
- */
-BrowserAddressBarBinding.prototype.blur = function () {
-
-	BrowserAddressBarBinding.superclass.blur.call(this);
-	if (this.isBreadcrumb && !this.shadowTree.input.value && !this.pathBinding.isVisible)
-		this._showBreadcrumb();
-}
-
-
-/**
- * Show breadcrumb
- */
-BrowserAddressBarBinding.prototype.showBreadcrumb = function (node) {
-
-	var pathBinding = this.pathBinding;
-	pathBinding.detachRecursive();
-	pathBinding.bindingElement.innerHTML = "";
-	var self = this;
-	System.getParents(node.getHandle()).reverse().each(
-		function (parent) {
-			var button = ToolBarButtonBinding.newInstance(pathBinding.bindingDocument);
-
-			button.setLabel(parent.getLabel());
-
-			pathBinding.add(button);
-			button.attach();
-
-			button.entityToken = parent.getEntityToken();
-			button.oncommand = function () {
-
-				self.bindingWindow.bindingMap.browserpage.push(parent);
-
-			}
-
-		}, this
-	);
-
-
-	var button = ToolBarButtonBinding.newInstance(pathBinding.bindingDocument);
-	button.setLabel(node.getLabel());
-	pathBinding.add(button);
-	button.attach();
-	this.shadowTree.input.value = "";
-	this.shadowTree.input.style.display = "none";
-	this.pathBinding.show();
-	this.isBreadcrumb = true;
-}
-
-
-/**
- * Hide breadcrumb
- */
-BrowserAddressBarBinding.prototype.showAddreesbar = function () {
-
-	this._hideBreadcrumb();
-	this.isBreadcrumb = true;
-}
-
-
-/**
- * Hide breadcrumb
- */
-BrowserAddressBarBinding.prototype._hideBreadcrumb = function () {
-	this.pathBinding.hide();
-	this.shadowTree.input.style.display = "block";
-}
-
-
-/**
- * Hide breadcrumb
- */
-BrowserAddressBarBinding.prototype._showBreadcrumb = function () {
-	this.shadowTree.input.style.display = "none";
-	this.pathBinding.show();
-}

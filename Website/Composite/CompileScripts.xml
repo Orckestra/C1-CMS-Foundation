@@ -317,7 +317,9 @@
 			<Script filename="${root}/scripts/source/top/ui/bindings/persistance/PersistanceBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/localization/LocalizationSelectorBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/response/ResponseBinding.js"/>
-			<Script filename="${root}/scripts/source/top/ui/bindings/genericview/GenericViewBinding.js"/>
+			<Script filename="${root}/scripts/source/top/ui/bindings/genericview/AddressBarBinding.js"/>
+      <Script filename="${root}/scripts/source/top/ui/bindings/genericview/GenericViewBinding.js"/>
+      <Script filename="${root}/scripts/source/top/ui/bindings/genericview/PathBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/branding/BrandSnippetBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/UserInterfaceMapping.js"/>
 			<Script filename="${root}/scripts/source/top/ui/UserInterface.js"/>

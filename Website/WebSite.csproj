@@ -173,7 +173,6 @@
     </Content>
     <Content Include="Composite\content\branding\start-page-content.inc" />
     <Content Include="Composite\content\branding\start-page-js.inc" />
-    <Content Include="Composite\content\views\browser\BrowserPathBinding.js" />
     <Content Include="Composite\content\views\browser\deviceoptions.xml">
       <SubType>Designer</SubType>
     </Content>
@@ -557,7 +556,9 @@
     <Content Include="Composite\images\welcome\cancel.svg" />
     <Content Include="Composite\scripts\source\top\core\ImageProvider.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\branding\BrandSnippetBinding.js" />
+    <Content Include="Composite\scripts\source\top\ui\bindings\genericview\AddressBarBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\genericview\GenericViewBinding.js" />
+    <Content Include="Composite\scripts\source\top\ui\bindings\genericview\PathBinding.js" />
     <Content Include="Composite\scripts\source\top\util\LocalStorage.js" />
     <Content Include="Composite\styles\default\fields\fields-base.less" />
     <Content Include="Composite\styles\default\dialogs\dialog-multiselector.less" />
@@ -1272,7 +1273,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\Composite\Configuration\UrlFormatting.xml" />
-    <Content Include="Composite\content\dialogs\treeselector\special\treeactionselector.aspx" />
     <Content Include="Composite\content\dialogs\treeselector\TreeSelectorToolBarBinding.js" />
     <Content Include="Composite\content\forms\Administrative\FunctionTesterEditFunction.xml" />
     <Content Include="App_Data\Composite\TreeDefinitions\PageType.xml" />
@@ -1842,9 +1842,6 @@
     <Content Include="Composite\content\dialogs\translations\TranslationsDialogPageBinding.js" />
     <Content Include="Composite\content\dialogs\treeselector\special\imageselector.aspx" />
     <Content Include="Composite\content\dialogs\treeselector\special\imageselector.css" />
-    <Content Include="Composite\content\dialogs\treeselector\special\ImageSelectorDialogPageBinding.js" />
-    <Content Include="Composite\content\dialogs\treeselector\treeselector.aspx" />
-    <Content Include="Composite\content\dialogs\treeselector\treeselector.css" />
     <Content Include="Composite\content\dialogs\treeselector\TreeSelectorDialogPageBinding.js" />
     <Content Include="Composite\content\dialogs\webservices\error.aspx" />
     <Content Include="Composite\content\dialogs\webservices\error.css" />

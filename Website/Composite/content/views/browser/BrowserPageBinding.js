@@ -258,6 +258,8 @@ BrowserPageBinding.prototype.onBeforePageInitialize = function () {
 	var devicepopup = window.bindingMap.devicepopup;
 	devicepopup.addActionListener(MenuItemBinding.ACTION_COMMAND, this);
 
+	this.addActionListener(PathBinding.ACTION_COMMAND);
+
 	// Subscribe to current tab selected
 	var dockPanelViewBinding = this.getAncestorBindingByType(ViewBinding, true);
 	var dockTabPanel = UserInterface.getBinding(dockPanelViewBinding.getMigrationParent());
@@ -568,6 +570,9 @@ BrowserPageBinding.prototype.handleAction = function (action) {
 		case SystemTreeNodeBinding.ACTION_REFRESHED:
 			this._autoExpand();
 			action.consume();
+		case PathBinding.ACTION_COMMAND:
+			this.push(binding.node);
+			action.consume();
 			break;
 	}
 }
@@ -753,7 +758,7 @@ BrowserPageBinding.prototype._updateAddressBar = function (url) {
 			bar.showAddreesbar();
 
 		} else if (url instanceof SystemNode) {
-			bar.showBreadcrumb(url);
+			bar.showBreadcrumb(url, System.getParents(url.getHandle()));
 		}
 	}
 }
