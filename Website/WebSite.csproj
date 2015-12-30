@@ -1840,8 +1840,8 @@
     <Content Include="Composite\content\dialogs\tests\wizard\wizard4.aspx" />
     <Content Include="Composite\content\dialogs\translations\translations.aspx" />
     <Content Include="Composite\content\dialogs\translations\TranslationsDialogPageBinding.js" />
-    <Content Include="Composite\content\dialogs\treeselector\special\imageselector.aspx" />
-    <Content Include="Composite\content\dialogs\treeselector\special\imageselector.css" />
+    <Content Include="Composite\content\dialogs\treeselector\treeselector.aspx" />
+    <Content Include="Composite\content\dialogs\treeselector\treeselector.css" />
     <Content Include="Composite\content\dialogs\treeselector\TreeSelectorDialogPageBinding.js" />
     <Content Include="Composite\content\dialogs\webservices\error.aspx" />
     <Content Include="Composite\content\dialogs\webservices\error.css" />

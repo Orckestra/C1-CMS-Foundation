@@ -199,7 +199,7 @@ TreeSelectorDialogPageBinding.prototype.handleBroadcast = function (broadcast, a
 					if (entityToken) {
 						if (this._entityToken != entityToken) {
 							this._entityToken = entityToken;
-							this._genericViewBinding.setNode(node);
+							this.push(node);
 						}
 					}
 				}
@@ -262,19 +262,65 @@ TreeSelectorDialogPageBinding.prototype.onBeforePageInitialize = function () {
 	TreeSelectorDialogPageBinding.superclass.onBeforePageInitialize.call ( this );
 }
 
+
+/**
+ * Push Node
+ * @param {SystemNode} node
+ */
+TreeSelectorDialogPageBinding.prototype.push = function (node) {
+
+	if (this._genericViewBinding) {
+		//TODO:
+		if (node && node.getPropertyBag() && node.getPropertyBag().Uri && new Uri(node.getPropertyBag().Uri).isPage) {
+			var entityToken = node.getEntityToken();
+			var self = this;
+			TreeService.GetBrowserUrlByEntityToken(entityToken, false, function (result) {
+				if (result && result.Url) {
+					self.setPreview(result.Url);
+				} else {
+					self.setNode(node);
+				}
+			});
+		} else {
+			this.setNode(node);
+		}
+	}
+}
+
+/**
+ * Set Node
+ * @param {SystemNode} node
+ */
+TreeSelectorDialogPageBinding.prototype.setNode = function (node) {
+
+	this._genericViewBinding.setNode(node);
+	var generictab = this.bindingWindow.bindingMap.generictab;
+	generictab.containingTabBoxBinding.select(generictab);
+}
+
+
+/**
+ * Set preview
+ * @param {string} url
+ */
+TreeSelectorDialogPageBinding.prototype.setPreview = function (url) {
+
+	var previewframe = document.getElementById("previewframe");
+	var previewtab = this.bindingWindow.bindingMap.previewtab;
+	previewframe.src = url;
+	previewtab.containingTabBoxBinding.select(previewtab);
+}
+
 /**
  * Refresh Generic View
  */
 TreeSelectorDialogPageBinding.prototype.refreshView = function () {
 
-	if (this._genericViewBinding);
-	{
-		var selectedTreeNode = this._treeBinding.getFocusedTreeNodeBindings().getFirst();
-		if (selectedTreeNode) {
-			this._genericViewBinding.setNode(selectedTreeNode.node);
-		} else {
-			this._genericViewBinding.setNode(undefined);
-		}
+	var selectedTreeNode = this._treeBinding.getFocusedTreeNodeBindings().getFirst();
+	if (selectedTreeNode) {
+		this.push(selectedTreeNode.node);
+	} else {
+		this.push(undefined);
 	}
 }
 
