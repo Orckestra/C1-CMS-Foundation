@@ -443,7 +443,7 @@ namespace Composite.Plugins.Routing.Pages
                 int suffixOffset = pagePath.IndexOf(urlSuffixPlusSlash, StringComparison.OrdinalIgnoreCase);
                 if (suffixOffset > 0)
                 {
-                    pathInfo = pagePath.Substring(suffixOffset + urlSuffixPlusSlash.Length);
+                    pathInfo = pagePath.Substring(suffixOffset + UrlSuffix.Length);
                     pagePath = pagePath.Substring(0, suffixOffset);
 
                     pathInfoExctracted = true;
