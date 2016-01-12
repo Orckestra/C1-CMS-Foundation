@@ -13,10 +13,7 @@
 	<script type="text/javascript" src="BrowserPathBinding.js"></script>
 	<script type="text/javascript" src="BrowserToolBarBinding.js"></script>
 	<script type="text/javascript" src="BrowserTabBoxBinding.js"></script>
-	<script type="text/javascript" src="BrowserTabBinding.js"></script>
 	<script type="text/javascript" src="LanguageSelectorBinding.js"></script>
-
-	
 </head>
 <body>
 	<ui:broadcasterset>

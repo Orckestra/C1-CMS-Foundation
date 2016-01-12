@@ -47,7 +47,7 @@
 			</ui:toolbarbody>
 			<ui:toolbarbody align="right" class="max" style="overflow: hidden;">
 				<ui:toolbargroup class="max">
-					<ui:datainput id="addressbar" name="addressbar" autoselect="true" binding="AddressBarBinding" />
+					<ui:datainput id="addressbar" name="addressbar" autoselect="true" binding="AddressBarBinding" readonly="true"/>
 				</ui:toolbargroup>
 			</ui:toolbarbody>
 		</ui:toolbar>
@@ -75,7 +75,7 @@
 								</ui:tree>
 							</ui:tabpanel>
 							<ui:tabpanel>
-								<iframe id="previewframe" />
+								<ui:window id="previewframe" />
 							</ui:tabpanel>
 						</ui:tabpanels>
 					</ui:tabbox>

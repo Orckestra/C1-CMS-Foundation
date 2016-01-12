@@ -50,7 +50,17 @@ function TreeSelectorDialogPageBinding () {
 	 * @type {GenericViewBinding}
 	 */
 	this._genericViewBinding = null;
+
+	/**
+	 * @type {TabBinding}
+	 */
+	this._previewTab = null;
 	
+	/**
+	 * @type {TabBinding}
+	 */
+	this._genericTab = null;
+
 	/**
 	 * The name of the treenode property on which to base tree selection.
 	 * @type {string}
@@ -75,6 +85,11 @@ function TreeSelectorDialogPageBinding () {
 	 * @type {tring}}
 	 */
 	this._actionGroup = null;
+
+	/**
+	 * @type {boolean}
+	 */
+	this._isPushingUrl = false;
 	
 	/**
 	 * Search token.
@@ -153,6 +168,7 @@ TreeSelectorDialogPageBinding.prototype.onBindingRegister = function () {
 	this.addActionListener(TreeNodeBinding.ACTION_COMMAND);
 
 	this.addActionListener(PathBinding.ACTION_COMMAND);
+	this.addActionListener(WindowBinding.ACTION_ONLOAD);
 
 	/*
 	* File subscriptions.
@@ -193,7 +209,7 @@ TreeSelectorDialogPageBinding.prototype.handleBroadcast = function (broadcast, a
 
 		case BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED:
 			if (arg.syncHandle == this.getSyncHandle()) {
-				if (this._genericViewBinding && arg.source !== this._genericViewBinding && arg.actionProfile) {
+				if (arg.source && arg.source == this._treeBinding && arg.actionProfile) {
 					var node = arg.actionProfile.Node;
 					var entityToken = node.getEntityToken();
 					if (entityToken) {
@@ -202,10 +218,6 @@ TreeSelectorDialogPageBinding.prototype.handleBroadcast = function (broadcast, a
 							this.push(node);
 						}
 					}
-				}
-
-				if (arg.source && arg.source == this._treeBinding) {
-					this._updateAddressBar(arg.source);
 				}
 			}
 			break;
@@ -241,18 +253,20 @@ TreeSelectorDialogPageBinding.prototype.onBeforePageInitialize = function () {
 	StageBinding.treeSelector = this._treeBinding;
 
 
-	if (this.bindingWindow.bindingMap.genericview) {
-		this._genericViewBinding = this.bindingWindow.bindingMap.genericview;
-		this._genericViewBinding.addActionListener(TreeBinding.ACTION_SELECTIONCHANGED, this);
-		this._genericViewBinding.addActionListener(TreeBinding.ACTION_NOSELECTION, this);
-		this._genericViewBinding.addActionListener(GenericViewBinding.ACTION_COMMAND, this);
+	
+	this._genericViewBinding = this.bindingWindow.bindingMap.genericview;
+	this._genericViewBinding.addActionListener(TreeBinding.ACTION_SELECTIONCHANGED, this);
+	this._genericViewBinding.addActionListener(TreeBinding.ACTION_NOSELECTION, this);
+	this._genericViewBinding.addActionListener(GenericViewBinding.ACTION_COMMAND, this);
 
-		this._genericViewBinding.setSelectable(true);
-		this._genericViewBinding.setSelectionProperty(this._selectionProperty);
-		this._genericViewBinding.setSelectionValue(this._selectionValue);
-		this._genericViewBinding.setActionGroup(this._actionGroup);
+	this._genericViewBinding.setSelectable(true);
+	this._genericViewBinding.setSelectionProperty(this._selectionProperty);
+	this._genericViewBinding.setSelectionValue(this._selectionValue);
+	this._genericViewBinding.setActionGroup(this._actionGroup);
 
-	}
+
+	this._previewTab = this.bindingWindow.bindingMap.previewtab;
+	this._genericTab = this.bindingWindow.bindingMap.generictab;
 
 	var toolbar = this.bindingWindow.bindingMap.toolbar;
 	if (toolbar) {
@@ -269,21 +283,20 @@ TreeSelectorDialogPageBinding.prototype.onBeforePageInitialize = function () {
  */
 TreeSelectorDialogPageBinding.prototype.push = function (node) {
 
-	if (this._genericViewBinding) {
-		//TODO:
-		if (node && node.getPropertyBag() && node.getPropertyBag().Uri && new Uri(node.getPropertyBag().Uri).isPage) {
-			var entityToken = node.getEntityToken();
-			var self = this;
-			TreeService.GetBrowserUrlByEntityToken(entityToken, false, function (result) {
-				if (result && result.Url) {
-					self.setPreview(result.Url);
-				} else {
-					self.setNode(node);
-				}
-			});
-		} else {
-			this.setNode(node);
-		}
+	//TODO:
+	if (node && node.getPropertyBag() && node.getPropertyBag().Uri && new Uri(node.getPropertyBag().Uri).isPage) {
+		var entityToken = node.getEntityToken();
+		var self = this;
+		TreeService.GetBrowserUrlByEntityToken(entityToken, false, function (result) {
+			if (result && result.Url) {
+				self.setPreview(result.Url);
+			} else {
+				self.setNode(node);
+				
+			}
+		});
+	} else {
+		this.setNode(node);
 	}
 }
 
@@ -296,6 +309,7 @@ TreeSelectorDialogPageBinding.prototype.setNode = function (node) {
 	this._genericViewBinding.setNode(node);
 	var generictab = this.bindingWindow.bindingMap.generictab;
 	generictab.containingTabBoxBinding.select(generictab);
+	this._updateAddressBar(node);
 }
 
 
@@ -305,9 +319,10 @@ TreeSelectorDialogPageBinding.prototype.setNode = function (node) {
  */
 TreeSelectorDialogPageBinding.prototype.setPreview = function (url) {
 
-	var previewframe = document.getElementById("previewframe");
+	this._isPushingUrl = true;
+	var previewframe = this.bindingWindow.bindingMap.previewframe;
 	var previewtab = this.bindingWindow.bindingMap.previewtab;
-	previewframe.src = url;
+	previewframe.setURL(url);
 	previewtab.containingTabBoxBinding.select(previewtab);
 }
 
@@ -418,13 +433,16 @@ TreeSelectorDialogPageBinding.prototype.onAfterPageInitialize = function () {
  * @param {Action} action
  */
 TreeSelectorDialogPageBinding.prototype.handleAction = function (action) {
-	
-
-
 
 	if ( window.TreeSelectorDialogPageBinding && window.TreeBinding ) {  // huh?
 
 		switch (action.type) {
+			case WindowBinding.ACTION_ONLOAD:
+				if (this.bindingWindow.bindingMap.previewframe == action.target) {
+					this._handleDocumentLoad(action.target);
+					action.consume();
+				}
+				break;
 			case ButtonBinding.ACTION_COMMAND:
 				if (action.target && action.target.response == Dialog.RESPONSE_ACCEPT) {
 					this._saveOpenedSystemNodes();
@@ -463,6 +481,37 @@ TreeSelectorDialogPageBinding.prototype.handleAction = function (action) {
 		
 		TreeSelectorDialogPageBinding.superclass.handleAction.call ( this, action );
 	}
+}
+
+
+/**
+ * Handle loaded document.
+ * @param {WindowBinding} binding
+ */
+TreeSelectorDialogPageBinding.prototype._handleDocumentLoad = function (binding) {
+
+	var url = new String(binding.getContentDocument().location);
+
+	this._asyncLocker = KeyMaster.getUniqueKey();
+
+	/*
+	 * Update stuff.
+	 */
+	this._updateAddressBar(url);
+
+	if (!this._isPushingUrl) {
+		var self = this;
+		var asyncLocker = this._asyncLocker;
+		TreeService.GetEntityTokenByPageUrl(url, function (entityToken) {
+			if (asyncLocker === self._asyncLocker) {
+				self._entityToken = entityToken;
+				self._treeBinding.handleBroadcast(BroadcastMessages.SYSTEMTREEBINDING_FOCUS, entityToken);
+			}
+		});
+
+	}
+
+	this._isPushingUrl = false;
 }
 
 /**
@@ -537,11 +586,14 @@ TreeSelectorDialogPageBinding.prototype._clearDisplayAndResult = function () {
 /**
  * @param {string} url
  */
-TreeSelectorDialogPageBinding.prototype._updateAddressBar = function (binding) {
+TreeSelectorDialogPageBinding.prototype._updateAddressBar = function (address) {
 	var bar = this.bindingWindow.bindingMap.addressbar;
 	if (bar != null) {
-		if (binding instanceof SystemTreeBinding) {
-			var treenode = binding.getFocusedTreeNodeBindings().getFirst();
+		if (typeof (address) == "string" || address instanceof String) {
+			var url = address;
+			bar.showAddreesbar(url);
+		} else {
+			var treenode = this._treeBinding.getFocusedTreeNodeBindings().getFirst();
 			if (treenode) {
 				var parents = new List();
 				var element = treenode.bindingElement;

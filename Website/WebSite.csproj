@@ -2028,7 +2028,6 @@
     <Content Include="Composite\content\views\browser\browser.aspx" />
     <Content Include="Composite\content\views\browser\browser.css" />
     <Content Include="Composite\content\views\browser\BrowserPageBinding.js" />
-    <Content Include="Composite\content\views\browser\BrowserTabBinding.js" />
     <Content Include="Composite\content\views\browser\BrowserTabBoxBinding.js" />
     <Content Include="Composite\content\views\browser\LanguageSelectorBinding.js" />
     <Content Include="Composite\content\views\datatypedescriptor\ToXml.aspx" />

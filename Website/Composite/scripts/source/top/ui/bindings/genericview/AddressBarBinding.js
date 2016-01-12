@@ -17,6 +17,12 @@ function AddressBarBinding() {
 	*/
 	this.pathBinding = null;
 
+	/**
+	 * Key to validate that result of async request is actual
+	 * @type {string}
+	 */
+	this._stateKey = null;
+
 	/*
 	 * Returnable.
 	 */
@@ -84,6 +90,8 @@ AddressBarBinding.prototype.blur = function () {
  */
 AddressBarBinding.prototype.showBreadcrumb = function (node, parents) {
 
+	this._stateKey = KeyMaster.getUniqueKey();
+
 	var pathBinding = this.pathBinding;
 	pathBinding.detachRecursive();
 	pathBinding.bindingElement.innerHTML = "";
@@ -120,8 +128,17 @@ AddressBarBinding.prototype.showBreadcrumb = function (node, parents) {
 /**
  * Hide breadcrumb
  */
-AddressBarBinding.prototype.showAddreesbar = function () {
+AddressBarBinding.prototype.showAddreesbar = function (url) {
 
+	this.newState();
+
+	var stateKey = this.getState();
+	var self = this;
+	PageService.ConvertRelativePageUrlToAbsolute(url, function (result) {
+		if (stateKey === self.getState()) {
+			self.setValue(result);
+		}
+	});
 	this._hideBreadcrumb();
 	this.isBreadcrumb = true;
 }
@@ -142,4 +159,22 @@ AddressBarBinding.prototype._hideBreadcrumb = function () {
 AddressBarBinding.prototype._showBreadcrumb = function () {
 	this.shadowTree.input.style.display = "none";
 	this.pathBinding.show();
+}
+
+
+/**
+ * new State
+ */
+AddressBarBinding.prototype.newState = function () {
+
+	this._stateKey = KeyMaster.getUniqueKey();
+	return this._stateKey;
+}
+
+/**
+ * new State
+ */
+AddressBarBinding.prototype.getState = function () {
+
+	return this._stateKey;
 }

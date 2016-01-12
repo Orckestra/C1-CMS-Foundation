@@ -77,7 +77,7 @@ BrowserTabBoxBinding.prototype.setURL = function ( url ) {
 BrowserTabBoxBinding.prototype.getBrowserTabBinding = function () {
 
 	if (!this._browserTabBinding) {
-		this._browserTabBinding = BrowserTabBinding.newInstance ( this.bindingDocument );
+		this._browserTabBinding = TabBinding.newInstance ( this.bindingDocument );
 		var win = WindowBinding.newInstance(this.bindingDocument);
 		win.setProperty("native", "true");
 		this._browserTabBinding.browserwindow = win;
@@ -115,7 +115,7 @@ BrowserTabBoxBinding.prototype.getGeneticViewTabBinding = function () {
 BrowserTabBoxBinding.prototype.getCustomViewTabBinding = function () {
 
 	if (!this._customTabBinding) {
-		this._customTabBinding = BrowserTabBinding.newInstance(this.bindingDocument);
+		this._customTabBinding = TabBinding.newInstance(this.bindingDocument);
 		var element = DOMUtil.createElementNS(Constants.NS_UI, "ui:scrollbox", this.bindingDocument);
 		var scrollbox = UserInterface.registerBinding(element, ScrollBoxBinding);
 

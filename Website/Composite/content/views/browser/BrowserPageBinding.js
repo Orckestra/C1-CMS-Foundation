@@ -78,11 +78,6 @@ function BrowserPageBinding() {
 	this._isPushingUrl = false;
 
 	/**
-	 * @type {boolean}
-	 */
-	this._isDisposing = false;
-
-	/**
 	 * @type {BrowserTabBoxBinding}
 	 */
 	this._box = null;
@@ -95,10 +90,10 @@ function BrowserPageBinding() {
 
 
 	/**
-	 * Locker to validate that result of async request is actual
+	 * Key to validate that result of async request is actual
 	 * @type {string}
 	 */
-	this._asyncLocker = null;
+	this._stateKey = null;
 
 
 	this._frameTransformIndex = 1;
@@ -129,8 +124,6 @@ BrowserPageBinding.prototype.onBindingRegister = function () {
 
 	this.addActionListener(WindowBinding.ACTION_ONLOAD);
 	this.addActionListener(TabBoxBinding.ACTION_SELECTED);
-	this.addActionListener(TabBoxBinding.ACTION_UPDATED);
-	this.addActionListener(BrowserTabBinding.ACTIONVENT_CLOSE);
 	this.addActionListener(ViewBinding.ACTION_LOADED);
 	this.addActionListener(PageBinding.ACTION_INITIALIZED);
 	this.addActionListener(SplitterBinding.ACTION_DRAGSTART);
@@ -186,20 +179,6 @@ BrowserPageBinding.prototype.refreshView = function () {
 	} else {
 		this.push(this.getSystemPage().node, false, true);
 	}
-}
-
-/**
- * @overloads {Binding#onBindingDispose}
- */
-BrowserPageBinding.prototype.onBindingDispose = function () {
-
-	/*
-	 * This will instruct Prism not to  
-	 * disable forced cache when closing.
-	 * @see {BrowserPageBinding#handleEvent}
-	 */
-	BrowserPageBinding.superclass.onBindingDispose.call(this);
-	this._isDisposing = true;
 }
 
 /**
@@ -347,7 +326,8 @@ BrowserPageBinding.prototype.setCurrentViewMode = function (viewMode) {
  */
 BrowserPageBinding.prototype.push = function (node, isManual, isForce) {
 
-	this._asyncLocker = null;
+	this.newState();
+
 	this.bindingWindow.bindingMap.cover.hide();
 	var self = this;
 	if (typeof (node) == "string" || node instanceof String) {
@@ -526,22 +506,15 @@ BrowserPageBinding.prototype.handleAction = function (action) {
 			action.consume();
 			break;
 
-		case TabBoxBinding.ACTION_UPDATED:
-			this._handleTabBoxUpdate();
-			action.consume();
-			break;
-
-		case BrowserTabBinding.ACTIONVENT_CLOSE:
-			this._isDisposing = true;
-			action.consume();
-			break;
 		case GenericViewBinding.ACTION_COMMAND:
 			this.getSystemTree().handleBroadcast(BroadcastMessages.SYSTEMTREEBINDING_FOCUS, action.target.node.getEntityToken());
 			break;
+
 		case ViewBinding.ACTION_LOADED:
 			this.dispatchAction(StageBinding.ACTION_DECK_LOADED);
 			action.consume();
 			break;
+
 		case PageBinding.ACTION_INITIALIZED:
 			if (binding instanceof SystemPageBinding) {
 				EventBroadcaster.broadcast(BroadcastMessages.STAGEDECK_CHANGED, this.getSyncHandle());
@@ -549,27 +522,33 @@ BrowserPageBinding.prototype.handleAction = function (action) {
 				action.consume();
 			}
 			break;
+
 		case SplitterBinding.ACTION_DRAGSTART:
 			window.bindingMap.cover.show();
 			break;
+
 		case SplitterBinding.ACTION_DRAGGED:
 			window.bindingMap.cover.hide();
 			break;
+
 		case FocusBinding.ACTION_FOCUS:
 			//TODO add check target
 			if (action.target instanceof DockPanelBinding) {
 				this.onBrowserTabSelected();
 			}
 			break;
+
 		case FocusBinding.ACTION_BLUR:
 			//TODO add check target
 			if (action.target instanceof DockPanelBinding) {
 				this.onBrowserTabUnselected();
 			}
 			break;
+
 		case SystemTreeNodeBinding.ACTION_REFRESHED:
 			this._autoExpand();
 			action.consume();
+
 		case PathBinding.ACTION_COMMAND:
 			this.push(binding.node);
 			action.consume();
@@ -637,34 +616,6 @@ BrowserPageBinding.prototype._handleSelectedTab = function () {
 }
 
 /**
- * @param {BrowserTabBoxBinding} tabbox
- */
-BrowserPageBinding.prototype._handleTabBoxUpdate = function () {
-
-	//var box = this._box;
-
-	//switch (box.updateType) {
-
-	//    case TabBoxBinding.UPDATE_DETACH:
-	//    case TabBoxBinding.UPDATE_ATTACH:
-
-	//        var tabs = UserInterface.getBinding(box.getTabsElement());
-	//        if (box.getTabBindings().getLength() == 1) {
-	//            if (tabs.isVisible) {
-	//                tabs.hide();
-	//                this.reflex();
-	//            }
-	//        } else {
-	//            if (!tabs.isVisible) {
-	//                tabs.show();
-	//                this.reflex();
-	//            }
-	//        }
-	//        break;
-	//}
-}
-
-/**
  * Handle loaded document.
  * @param {WindowBinding} binding
  */
@@ -672,7 +623,7 @@ BrowserPageBinding.prototype._handleDocumentLoad = function (binding) {
 
 	var url = new String(binding.getContentDocument().location);
 
-	this._asyncLocker = KeyMaster.getUniqueKey();
+	this.newState();
 
 	/*
 	 * Update stuff.
@@ -682,14 +633,6 @@ BrowserPageBinding.prototype._handleDocumentLoad = function (binding) {
 	this._updateBroadcasters();
 	this._updateDocument();
 	this._updateTabBox(url);
-
-	/*
-	 * Cache control.
-	 */
-	if (Client.isPrism == true) {
-		Prism.enableCache();
-	}
-
 
 	/*
 	 * Broadcast contained markup for various panels to intercept. Since the markup   
@@ -710,9 +653,9 @@ BrowserPageBinding.prototype._handleDocumentLoad = function (binding) {
 
 	if (!this._isPushingUrl) {
 		var self = this;
-		var asyncLocker = this._asyncLocker;
+		var stateKey = self.getState();
 		TreeService.GetEntityTokenByPageUrl(url, function (entityToken) {
-			if (asyncLocker === self._asyncLocker) {
+			if (stateKey === self.getState()) {
 				self._entityToken = entityToken;
 				EventBroadcaster.broadcast(
 					BroadcastMessages.SYSTEMTREEBINDING_FOCUS,
@@ -746,17 +689,7 @@ BrowserPageBinding.prototype._updateAddressBar = function (url) {
 	if (bar != null) {
 
 		if (typeof (url) == "string" || url instanceof String) {
-
-
-			var asyncLocker = this._asyncLocker;
-			var self = this;
-			PageService.ConvertRelativePageUrlToAbsolute(url, function (result) {
-				if (asyncLocker === self._asyncLocker) {
-					bar.setValue(result);
-				}
-			});
-			bar.showAddreesbar();
-
+			bar.showAddreesbar(url);
 		} else if (url instanceof SystemNode) {
 			bar.showBreadcrumb(url, System.getParents(url.getHandle()));
 		}
@@ -800,14 +733,6 @@ BrowserPageBinding.prototype._updateHistory = function (item) {
  */
 BrowserPageBinding.prototype._handleCommand = function (cmd, binding) {
 
-	/*
-	 * Because of a bug in the history object in Prism 0.91,
-	 * we cannot invoke history.back and stuff. We have 
-	 * to load new URLs from our own history. This will 
-	 * destroy native history.back in document, so please 
-	 * fix at some point... 
-	 * @see https://bugzilla.mozilla.org/show_bug.cgi?id=429550
-	 */
 	switch (cmd) {
 		case "back":
 			this._isHistoryBrowsing = true;
@@ -1012,12 +937,6 @@ BrowserPageBinding.prototype.handleEvent = function (e) {
 
 		case DOMEvents.UNLOAD:
 
-			if (!this._isDisposing) {
-				cover.show();
-				if (Client.isPrism) {
-					Prism.disableCache();
-				}
-			}
 			break;
 		case DOMEvents.MOUSEDOWN:
 			this._box.focus();
@@ -1278,6 +1197,24 @@ BrowserPageBinding.prototype.onBrowserTabUnselected = function () {
 		 this.getSystemPage().node
 	);
 }
+
+/**
+ * new State
+ */
+BrowserPageBinding.prototype.newState = function () {
+
+	this._stateKey = KeyMaster.getUniqueKey();
+	return this._stateKey;
+}
+
+/**
+ * new State
+ */
+BrowserPageBinding.prototype.getState = function () {
+
+	return this._stateKey;
+}
+
 
 /**
  * Auto expand tree
