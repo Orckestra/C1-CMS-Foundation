@@ -310,6 +310,12 @@ ui|editortextbox {
 			border-color: @field-error-color;
 		}
 	}
+	
+	&.focused, :focus, :hover {
+		ui|box, ui|labelbox {
+			border: 1px solid @primary-color !important;
+		}
+	}
 }
 
 /* EXOTIC STUFF ................................... */
