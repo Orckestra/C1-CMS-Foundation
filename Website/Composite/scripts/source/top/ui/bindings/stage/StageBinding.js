@@ -3,6 +3,7 @@ StageBinding.prototype.constructor = StageBinding;
 StageBinding.superclass = FocusBinding.prototype;
 
 StageBinding.ACTION_DECK_LOADED = "stage deck loaded";
+StageBinding.CLASSNAME_EMPTY = "empty";
 
 /**
  * Static reference to the single StageBinding instance. Assigned on startup.
@@ -257,6 +258,7 @@ StageBinding.prototype.onBindingRegister = function () {
 		this._initializeSystemViewDefinitions ( perspectives );
 	} else {
 		top.app.bindingMap.stagecontainer.hide ();
+		top.app.bindingMap.app.attachClassName(StageBinding.CLASSNAME_EMPTY);
 		this._onStageReady ();
 		Dialog.message ( 
 			StringBundle.getString ( "ui", "Website.Dialogs.NoAccessTitle" ), 
@@ -334,16 +336,16 @@ StageBinding.prototype._initializeWorkbenchLayout = function () {
 StageBinding.prototype._onStageReady = function () {
 	
 	if ( !this._isStageReady ) {
-	
-		top.app.bindingMap.maindecks.select("stagedeck");
-		if (Application.hasStartPage && KickStart.justLogged && !Client.isPad) {
-			EventBroadcaster.broadcast(BroadcastMessages.START_COMPOSITE);
-		} else {
-			if(ViewBinding.hasInstance("Composite.Management.Start")){
-				ViewBinding.getInstance("Composite.Management.Start").hide();
+		if (top.app.bindingMap.maindecks) {
+			top.app.bindingMap.maindecks.select("stagedeck");
+			if (Application.hasStartPage && KickStart.justLogged && !Client.isPad) {
+				EventBroadcaster.broadcast(BroadcastMessages.START_COMPOSITE);
+			} else {
+				if (ViewBinding.hasInstance("Composite.Management.Start")) {
+					ViewBinding.getInstance("Composite.Management.Start").hide();
+				}
 			}
 		}
-		
 
 		EventBroadcaster.broadcast ( BroadcastMessages.STAGE_INITIALIZED );
 		this._isStageReady = true;

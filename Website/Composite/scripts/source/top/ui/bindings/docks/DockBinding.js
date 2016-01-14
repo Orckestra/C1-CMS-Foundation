@@ -288,8 +288,6 @@ DockBinding.prototype.prepareOpenView = function ( definition, tabBinding ) {
 	var viewBinding = this._getBindingForDefinition ( definition );
 	tabBinding.setAssociatedView ( viewBinding );
 	
-	//tabPanelBinding.add ( viewBinding ); // this would create a non-floating view
-
 	viewBinding.snapToBinding(tabPanelBinding, definition.isFloating);
 	UserInterface.getBinding ( this.bindingDocument.body ).add ( viewBinding );
 	viewBinding.attach ();
