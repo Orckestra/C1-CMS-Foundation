@@ -110,6 +110,20 @@ function TreeSelectorDialogPageBinding () {
 	 * @type {List}
 	 */
 	this._parents = null;
+
+
+	/**
+	 * This will be set to an index in the map declared above. it has two properties:
+	 *     history {List<string>}
+	 *     index {int}
+	 * @type {object}
+	 */
+	this._current = null;
+
+	/**
+	 * @type {boolean}
+	 */
+	this._isHistoryBrowsing = false;
 }
 
 /**
@@ -273,9 +287,20 @@ TreeSelectorDialogPageBinding.prototype.onBeforePageInitialize = function () {
 		toolbar.setSyncHandle(this.getSyncHandle());
 	}
 
+	this._clearHistory();
+
 	TreeSelectorDialogPageBinding.superclass.onBeforePageInitialize.call ( this );
 }
 
+
+/**
+ * Select Node by Entitytoken
+ * @param {EntityToken} entityToken
+ */
+TreeSelectorDialogPageBinding.prototype.select = function (entityToken) {
+
+	this._treeBinding.handleBroadcast(BroadcastMessages.SYSTEMTREEBINDING_FOCUS, entityToken);
+}
 
 /**
  * Push Node
@@ -290,6 +315,8 @@ TreeSelectorDialogPageBinding.prototype.push = function (node) {
 		TreeService.GetBrowserUrlByEntityToken(entityToken, false, function (result) {
 			if (result && result.Url) {
 				self.setPreview(result.Url);
+				self._updateHistory(entityToken);
+				self._updateBroadcasters();
 			} else {
 				self.setNode(node);
 				
@@ -309,6 +336,8 @@ TreeSelectorDialogPageBinding.prototype.setNode = function (node) {
 	this._genericViewBinding.setNode(node);
 	var generictab = this.bindingWindow.bindingMap.generictab;
 	generictab.containingTabBoxBinding.select(generictab);
+	this._updateHistory(node.getEntityToken());
+	this._updateBroadcasters();
 	this._updateAddressBar(node);
 }
 
@@ -468,14 +497,14 @@ TreeSelectorDialogPageBinding.prototype.handleAction = function (action) {
 
 			case GenericViewBinding.ACTION_COMMAND:
 				if (action.target.node.hasChildren()) {
-					this._treeBinding.handleBroadcast(BroadcastMessages.SYSTEMTREEBINDING_FOCUS, action.target.node.getEntityToken());
+					this.select(action.target.node.getEntityToken());
 				} else {
 					bindingMap.buttonAccept.fireCommand();
 				}
 				
 				break;
 			case PathBinding.ACTION_COMMAND:
-				this._treeBinding.handleBroadcast(BroadcastMessages.SYSTEMTREEBINDING_FOCUS, action.target.entityToken);
+				this.select(action.target.entityToken);
 				break;
 		}
 		
@@ -492,7 +521,7 @@ TreeSelectorDialogPageBinding.prototype._handleDocumentLoad = function (binding)
 
 	var url = new String(binding.getContentDocument().location);
 
-	this._asyncLocker = KeyMaster.getUniqueKey();
+	this._stateKey = KeyMaster.getUniqueKey();
 
 	/*
 	 * Update stuff.
@@ -501,11 +530,13 @@ TreeSelectorDialogPageBinding.prototype._handleDocumentLoad = function (binding)
 
 	if (!this._isPushingUrl) {
 		var self = this;
-		var asyncLocker = this._asyncLocker;
+		var stateKey = this._stateKey;
 		TreeService.GetEntityTokenByPageUrl(url, function (entityToken) {
-			if (asyncLocker === self._asyncLocker) {
+			if (stateKey === self._stateKey) {
 				self._entityToken = entityToken;
-				self._treeBinding.handleBroadcast(BroadcastMessages.SYSTEMTREEBINDING_FOCUS, entityToken);
+				self.select(entityToken);
+				self._updateHistory(entityToken);
+				self._updateBroadcasters();
 			}
 		});
 
@@ -628,9 +659,14 @@ TreeSelectorDialogPageBinding.prototype._handleCommand = function (cmd, binding)
 	 */
 	switch (cmd) {
 		case "back":
+			this._isHistoryBrowsing = true;
+			var item = this._current.history.get(--this._current.index);
+			this.select(item);
 			break;
-
 		case "forward":
+			this._isHistoryBrowsing = true;
+			var item = this._current.history.get(++this._current.index);
+			this.select(item);
 			break;
 
 		case "refresh":
@@ -658,6 +694,63 @@ TreeSelectorDialogPageBinding.prototype._handleCommand = function (cmd, binding)
 	}
 }
 
+/*
+ * Update history.
+ * @param {object} item
+ */
+TreeSelectorDialogPageBinding.prototype._updateHistory = function (item) {
+
+	if (this._isHistoryBrowsing == true) {
+		this._isHistoryBrowsing = false;
+	} else {
+
+		while (this._current.history.getLength() - 1 > this._current.index) {
+			this._current.history.extractLast();
+		}
+		this._current.history.add(item);
+		this._current.index++;
+
+	}
+}
+
+/*
+ * Clear history
+ */
+TreeSelectorDialogPageBinding.prototype._clearHistory = function () {
+
+	if (!this._current) {
+		this._current = {
+			history: new List(),
+			index: parseInt(-1)
+		};
+	}
+
+	while (this._current.history.getLength() > 1) {
+		this._current.history.del(0);
+		this._current.index = this._current.history.getLength() - 1;
+	}
+}
+
+
+/**
+ * Update broadcasters.
+ */
+TreeSelectorDialogPageBinding.prototype._updateBroadcasters = function () {
+
+	var back = window.bindingMap.broadcasterHistoryBack;
+	var forward = window.bindingMap.broadcasterHistoryForward;
+
+	if (this._current.index > 0) {
+		back.enable();
+	} else {
+		back.disable();
+	}
+	if (this._current.index < this._current.history.getLength() - 1) {
+		forward.enable();
+	} else {
+		forward.disable();
+	}
+}
 
 /**
  * @overloads {DialogPageBinding#onDialogResponse}

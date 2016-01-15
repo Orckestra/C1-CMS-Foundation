@@ -33,12 +33,6 @@ function BrowserPageBinding() {
 	this._startURL = null;
 
 	/**
-	 * See below...
-	 * @type {Map<string><object>}
-	 */
-	this._currents = new Map();
-
-	/**
 	 * This will be set to an index in the map declared above. it has two properties: 
 	 *     history {List<string>}
 	 *     index {int}
@@ -560,8 +554,8 @@ BrowserPageBinding.prototype.handleAction = function (action) {
  * Clear history
  */
 BrowserPageBinding.prototype._clearHistory = function () {
-	if (!this._current) {
 
+	if (!this._current) {
 		this._current = {
 			history: new List(),
 			index: parseInt(-1)
