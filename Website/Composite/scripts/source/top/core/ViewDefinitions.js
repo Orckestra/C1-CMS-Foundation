@@ -358,6 +358,7 @@ var ViewDefinitions = {
 			selectionProperty 	: "Uri",
 			selectionValue		: null, // MimeTypes.COMPOSITEPAGES
 			selectionResult		: "Uri",
+			hasPreview: true,
 			nodes : [{
 				key : "PageElementProvider"
 			}]
@@ -398,6 +399,7 @@ var ViewDefinitions = {
 			selectionProperty 	: "Uri",
 			selectionValue		: null,
 			selectionResult		: "Uri",
+			hasPreview			: true,
 			nodes : [
 				{ key : "PageElementProvider" },
 				{ key : "MediaFileElementProvider" }

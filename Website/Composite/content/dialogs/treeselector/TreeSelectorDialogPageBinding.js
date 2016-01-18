@@ -79,6 +79,12 @@ function TreeSelectorDialogPageBinding () {
 	 * @type {string}
 	 */
 	this._selectionResult = null;
+
+	/**
+	 * Does the dialog have the preview tab?
+	 * @type {boolean}
+	 */
+	this._hasPreview = false;
 	
 	/**
 	 *  The (optional) action groups.
@@ -149,6 +155,7 @@ TreeSelectorDialogPageBinding.prototype.setPageArgument = function (arg) {
 	this._selectionProperty = arg.selectionProperty;
 	this._selectionValue = arg.selectionValue;
 	this._selectionResult = arg.selectionResult;
+	this._hasPreview = arg.hasPreview;
 	this._actionGroup = arg.actionGroup;
 
 	if (arg.selectedToken) {
@@ -308,8 +315,7 @@ TreeSelectorDialogPageBinding.prototype.select = function (entityToken) {
  */
 TreeSelectorDialogPageBinding.prototype.push = function (node) {
 
-	//TODO:
-	if (node && node.getPropertyBag() && node.getPropertyBag().Uri && new Uri(node.getPropertyBag().Uri).isPage) {
+	if (this._hasPreview) {
 		var entityToken = node.getEntityToken();
 		var self = this;
 		TreeService.GetBrowserUrlByEntityToken(entityToken, false, function (result) {
