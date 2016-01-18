@@ -3,25 +3,16 @@
 <%@ Import Namespace="Composite.Core.Application" %>
 <%@ Import Namespace="Composite.Core.Routing" %>
 <%@ Import Namespace="Composite.Core.WebClient" %>
-<%@ Import Namespace="Microsoft.Framework.DependencyInjection" %>
 
 <script RunAt="server">
     void Application_Start(object sender, EventArgs e)
     {
-        ConfigureServices(ServiceLocator.ServiceCollection);
-
         ApplicationLevelEventHandlers.LogRequestDetails = false;
         ApplicationLevelEventHandlers.LogApplicationLevelErrors = false;
         
         ApplicationLevelEventHandlers.Application_Start(sender, e);
 
         RegisterRoutes(RouteTable.Routes);
-    }
-
-
-    void ConfigureServices(IServiceCollection serviceCollection)
-    {
-        // Define your dependencies here
     }
 
 
