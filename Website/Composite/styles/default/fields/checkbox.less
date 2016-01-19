@@ -73,3 +73,11 @@ ui|checkbutton {
 		padding-left: 1px;
 	}
 }
+
+ui|checkbox {
+	&.focused{
+		ui|checkbutton ui|labelbody:before {
+			border-color: @primary-color;
+		}
+	}
+}
