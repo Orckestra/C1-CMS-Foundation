@@ -17,6 +17,7 @@
     <title>Start Composite</title>
     <meta name="robots" content="noindex, nofollow" />
     <control:styleloader runat="server"/>
+    <control:brandingSnippet runat="server" SnippetName="includes" />
      <% Response.WriteFile("favicon.inc"); %>
     <script type="text/javascript" src="default.js"></script>
 </head>
