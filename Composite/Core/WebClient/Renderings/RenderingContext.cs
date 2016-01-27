@@ -258,23 +258,35 @@ namespace Composite.Core.WebClient.Renderings
             Verify.IsNotNull(httpContext.Handler, "HttpHandler isn't defined");
 
             var aspnetPage = (System.Web.UI.Page)httpContext.Handler;
-            var qs = request.QueryString;
+            
+            OverrideDisplayMode(httpContext);
+
+            var pageRenderer = PageTemplateFacade.BuildPageRenderer(Page.TemplateId);
+            pageRenderer.AttachToPage(aspnetPage, pageRenderingJob);
+        }
+
+        private static void OverrideDisplayMode(HttpContextBase httpContext)
+        {
+            var qs = httpContext.Request.QueryString;
+            var displayMode = qs["c1displaymode"];
 
             if (qs.AllKeys.Length > 0 && qs.Keys[0] == null)
             {
-                if (qs[0] == "mobile")
+                displayMode = qs[0];
+            }
+
+            if (!String.IsNullOrEmpty(displayMode))
+            {
+                if (displayMode.Equals("mobile", StringComparison.OrdinalIgnoreCase))
                 {
                     httpContext.SetOverriddenBrowser(BrowserOverride.Mobile);
                 }
 
-                if (qs[0] == "desktop")
+                if (displayMode.Equals("desktop", StringComparison.OrdinalIgnoreCase))
                 {
                     httpContext.SetOverriddenBrowser(BrowserOverride.Desktop);
                 }
             }
-            
-            var pageRenderer = PageTemplateFacade.BuildPageRenderer(Page.TemplateId);
-            pageRenderer.AttachToPage(aspnetPage, pageRenderingJob);
         }
 
         private void ValidateViewUnpublishedRequest(HttpContextBase httpContext)
