@@ -14,12 +14,12 @@
 
 	protected override void BindStateToProperties()
 	{
-		this.SelectedSvgId = _currentStringValue;
+		this.Selected = _currentStringValue;
 	}
 
 	protected override void InitializeViewState()
 	{
-		_currentStringValue = this.SelectedSvgId;
+		_currentStringValue = this.Selected;
 	}
 
 	public override string GetDataFieldClientName()

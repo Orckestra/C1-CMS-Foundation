@@ -7,16 +7,15 @@ namespace Composite.C1Console.Forms.CoreUiControls
     {
         public SvgIconSelectorUiControl()
         {
-            this.SelectedSvgId = "";
+            this.Selected = "";
             this.Required = false;
         }
 
         [BindableProperty]
         [FormsProperty]
-        public string SelectedSvgId { get; set; }
+        public string Selected { get; set; }
 
         [FormsProperty]
-        [RequiredValue]
         public string SvgSpritePath { get; set; }
 
         [FormsProperty]

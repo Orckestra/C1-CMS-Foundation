@@ -37,6 +37,7 @@
   <xsd:element name="MultiContentXhtmlEditor" type="MultiContentXhtmlEditor" />
   <xsd:element name="InlineXhtmlEditor" type="InlineXhtmlEditor" />
   <xsd:element name="FontIconSelector" type="FontIconSelector" />
+  <xsd:element name="SvgIconSelector" type="SvgIconSelector" />
   <xsd:group name="ElementList">
     <xsd:sequence>
       <xsd:choice minOccurs="0">
@@ -75,6 +76,7 @@
         <xsd:element name="MultiContentXhtmlEditor" type="MultiContentXhtmlEditor" />
         <xsd:element name="InlineXhtmlEditor" type="InlineXhtmlEditor" />
         <xsd:element name="FontIconSelector" type="FontIconSelector" />
+        <xsd:element name="SvgIconSelector" type="SvgIconSelector" />
       </xsd:choice>
     </xsd:sequence>
   </xsd:group>
@@ -2577,6 +2579,68 @@
     <xsd:attribute name="ClassNameOptions" type="xsd:string" use="optional" />
     <xsd:attribute name="StylesheetPath" type="xsd:string" use="optional" />
     <xsd:attribute name="ClassNamePrefix" type="xsd:string" use="optional" />
+    <xsd:attribute name="Required" type="xsd:boolean" use="optional" />
+    <xsd:attribute name="Label" type="xsd:string" use="optional" />
+    <xsd:attribute name="Help" type="xsd:string" use="optional" />
+  </xsd:complexType>
+  <xsd:complexType name="SvgIconSelector" mixed="true">
+    <xsd:sequence maxOccurs="unbounded" minOccurs="0">
+      <xsd:choice>
+        <xsd:element name="SvgIconSelector.SelectedSvgId">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:bind" />
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="SvgIconSelector.SvgSpritePath">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="SvgIconSelector.Required">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="SvgIconSelector.Label">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="SvgIconSelector.Help">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:choice>
+    </xsd:sequence>
+    <xsd:attribute name="SelectedSvgId" type="xsd:string" use="optional" />
+    <xsd:attribute name="SvgSpritePath" type="xsd:string" use="optional" />
     <xsd:attribute name="Required" type="xsd:boolean" use="optional" />
     <xsd:attribute name="Label" type="xsd:string" use="optional" />
     <xsd:attribute name="Help" type="xsd:string" use="optional" />

@@ -46,7 +46,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
         }
 
         /// <exclude />
-        public string SelectedSvgId { get; set; }
+        public string Selected { get; set; }
 
         /// <exclude />
         public Dictionary<string,string> SvgIdsOptions { get; set; }
@@ -79,7 +79,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
         public override void BindStateToControlProperties()
         {
             _userControl.BindStateToControlProperties();
-            this.SelectedSvgId = _userControl.SelectedSvgId;
+            this.Selected = _userControl.Selected;
         }
 
         public void InitializeViewState()
@@ -93,7 +93,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
             _userControl = _userControlType.ActivateAsUserControl<SvgIconSelectorTemplateUserControlBase>(this.UiControlID);
 
             _userControl.FormControlLabel = this.Label;
-            _userControl.SelectedSvgId = this.SelectedSvgId;
+            _userControl.Selected = this.Selected;
             _userControl.ClientValidationRules = this.ClientValidationRules;
             _userControl.SvgSpritePath = this.SvgSpritePath;
             _userControl.Required = this.Required;
@@ -133,13 +133,19 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
     [ConfigurationElementType(typeof(TemplatedSvgIconSelectorUiControlFactoryData))]
     internal sealed class TemplatedSvgIconSelectorUiControlFactory : Base.BaseTemplatedUiControlFactory
     {
+        private string _configuredSvgSpritePath;
+
         public TemplatedSvgIconSelectorUiControlFactory(TemplatedSvgIconSelectorUiControlFactoryData data)
             : base(data)
-        { }
+        {
+            _configuredSvgSpritePath = data.SvgSpritePath;
+        }
 
         public override IUiControl CreateControl()
         {
             TemplatedSvgIconSelectorUiControl control = new TemplatedSvgIconSelectorUiControl(this.UserControlType);
+
+            control.SvgSpritePath = _configuredSvgSpritePath;
 
             return control;
         }
@@ -150,8 +156,16 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
     [Assembler(typeof(TemplatedSvgIconSelectorUiControlFactoryAssembler))]
     internal sealed class TemplatedSvgIconSelectorUiControlFactoryData : UiControlFactoryData, Base.ITemplatedUiControlFactoryData
     {
+        private const string _svgSpritePathPropertyName = "svgSpritePath";
         private const string _userControlVirtualPathPropertyName = "userControlVirtualPath";
         private const string _cacheCompiledUserControlTypePropertyName = "cacheCompiledUserControlType";
+
+        [ConfigurationProperty(_svgSpritePathPropertyName, IsRequired = false)]
+        public string SvgSpritePath
+        {
+            get { return (string)base[_svgSpritePathPropertyName]; }
+            set { base[_svgSpritePathPropertyName] = value; }
+        }
 
         [ConfigurationProperty(_userControlVirtualPathPropertyName, IsRequired = true)]
         public string UserControlVirtualPath

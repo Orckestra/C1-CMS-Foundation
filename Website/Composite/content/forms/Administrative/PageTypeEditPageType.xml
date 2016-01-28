@@ -34,6 +34,9 @@
               <cms:bind source="PageType.Name" />
             </TextBox.Text>
           </TextBox>
+          <SvgIconSelector Label="Icon" SvgSpritePath="~/Composite/images/sprite.svg">
+            
+          </SvgIconSelector>
 
 
           <TextArea Label="${Composite.Plugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.DescriptionTextArea.Label}"

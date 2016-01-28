@@ -1,20 +1,17 @@
-using System;
 using System.Xml.Linq;
-using System.Collections.Generic;
 
 using Composite.Functions;
 using Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Foundation;
-using Composite.Core.Xml;
 
 
-namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.String
+namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Utils
 {
-	internal sealed class SvgIconSelectorWidgetFuntion : CompositeWidgetFunctionBase
+    internal sealed class SvgIconSelectorWidgetFuntion : CompositeWidgetFunctionBase
     {
         private const string _functionName = "SvgIconSelector";
 
         /// <exclude />
-        public const string CompositeName = CompositeWidgetFunctionBase.CommonNamespace + ".String." + _functionName;
+        public const string CompositeName = CompositeWidgetFunctionBase.CommonNamespace + ".Utils." + _functionName;
 
         /// <exclude />
         public const string SvgSpritePathParameterName = "SvgSpritePath";
@@ -36,7 +33,7 @@ namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunc
         {
             string spritePath = parameters.GetParameter<string>(SvgIconSelectorWidgetFuntion.SvgSpritePathParameterName);
 
-            XElement formElement = base.BuildBasicWidgetMarkup("SvgIconSelector", "SelectedSvgId", label, help, bindingSourceName);
+            XElement formElement = base.BuildBasicWidgetMarkup("SvgIconSelector", "Selected", label, help, bindingSourceName);
             formElement.Add(new XAttribute("SvgSpritePath", spritePath));
             return formElement;
         }

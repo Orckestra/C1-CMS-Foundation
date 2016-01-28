@@ -281,7 +281,8 @@
     <Compile Include="Plugins\Forms\WebChannel\UiControlFactories\TemplatedSvgIconSelectorUiControlFactory.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Plugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\String\SvgIconSelectorWidgetFuntion.cs" />
+    <Compile Include="Plugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\Utils\ConsoleIconSelectorWidgetFuntion.cs" />
+    <Compile Include="Plugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\Utils\SvgIconSelectorWidgetFuntion.cs" />
     <Compile Include="Plugins\Logging\LogTraceListeners\FileLogTraceListener\CircullarList.cs" />
     <Compile Include="Plugins\Logging\LogTraceListeners\FileLogTraceListener\LogReaderHelper.cs" />
     <Compile Include="Plugins\Routing\InternalUrlConverters\DataInternalUrlConverter.cs" />

@@ -153,3 +153,7 @@ Changes in 4.2 Update 2 (or later)
 Changes in 5.0 or later
 - Added Composite.C1Console.Commands.Plugins.ConsoleCommandHandlerConfiguration section for console commands
 - Added a global configuration settings @brandedVersionAssemblySource, @prettifyPublicMarkup, @prettifyRenderFunctionExceptions
+
+Changes in 5.1 or later
+              <add userControlVirtualPath="~/Composite/controls/FormsControls/FormUiControlTemplates/Selectors/SvgIconSelector.ascx" cacheCompiledUserControlType="true" type="Composite.Plugins.Forms.WebChannel.UiControlFactories.TemplatedSvgIconSelectorUiControlFactory, Composite" name="SvgIconSelector" />
+              <add userControlVirtualPath="~/Composite/controls/FormsControls/FormUiControlTemplates/Selectors/SvgIconSelector.ascx" cacheCompiledUserControlType="true" type="Composite.Plugins.Forms.WebChannel.UiControlFactories.TemplatedSvgIconSelectorUiControlFactory, Composite" name="ConsoleIconSelector" svgSpritePath="~/Composite/images/sprite.svg" />
