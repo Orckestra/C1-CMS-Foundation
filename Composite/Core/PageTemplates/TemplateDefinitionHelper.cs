@@ -103,7 +103,7 @@ namespace Composite.Core.PageTemplates
         /// <param name="pageContentToRender">The page rendering job.</param>
         /// <param name="placeholderProperties">The placeholder properties.</param>
         /// <param name="functionContextContainer">The function context container, if not null, nested functions fill be evaluated.</param>
-        public static void BindPlaceholders(IPageTemplate template, 
+        public static void BindPlaceholders(object template,
                                      PageContentToRender pageContentToRender,
                                      IDictionary<string, PropertyInfo> placeholderProperties,
                                      FunctionContextContainer functionContextContainer)

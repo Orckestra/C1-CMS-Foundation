@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.WebPages;
 using System.Xml;
 using System.Xml.Linq;
+using Composite.Core.Application;
 //using Composite.Core.Extensions;
 //using Composite.Core.IO;
 using Composite.Core.Types;
@@ -38,6 +39,15 @@ namespace Composite.AspNet.Razor
             WebPageBase webPage = null;
             try
             {
+                var currentContext = HttpContext.Current;
+                if (currentContext != null)
+                {
+                    var directory = Path.GetDirectoryName(virtualPath);
+                    var function = Path.GetFileNameWithoutExtension(virtualPath);
+
+                    virtualPath = SpecialModesFileResolver.ResolveFileInInDirectory(directory, function, ".cshtml", new HttpContextWrapper(currentContext));
+                }
+
                 webPage = WebPageBase.CreateInstanceFromVirtualPath(virtualPath);
 
                 return ExecuteRazorPage(webPage, setParameters, resultType, functionContextContainer);

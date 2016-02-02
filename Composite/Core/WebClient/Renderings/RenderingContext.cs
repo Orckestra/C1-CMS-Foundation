@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Web;
+using System.Web.WebPages;
 using System.Xml.Linq;
 using Composite.C1Console.Security;
 using Composite.Core.Extensions;
@@ -193,7 +194,7 @@ namespace Composite.Core.WebClient.Renderings
 
         private void InitializeFromHttpContextInternal()
         {
-            HttpContext httpContext = HttpContext.Current;
+            var httpContext = new HttpContextWrapper(HttpContext.Current);
             var request = httpContext.Request;
             var response = httpContext.Response;
 
@@ -258,11 +259,37 @@ namespace Composite.Core.WebClient.Renderings
 
             var aspnetPage = (System.Web.UI.Page)httpContext.Handler;
             
+            OverrideDisplayMode(httpContext);
+
             var pageRenderer = PageTemplateFacade.BuildPageRenderer(Page.TemplateId);
             pageRenderer.AttachToPage(aspnetPage, pageRenderingJob);
         }
 
-        private void ValidateViewUnpublishedRequest(HttpContext httpContext)
+        private static void OverrideDisplayMode(HttpContextBase httpContext)
+        {
+            var qs = httpContext.Request.QueryString;
+            var displayMode = qs["c1displaymode"];
+
+            if (qs.AllKeys.Length > 0 && qs.Keys[0] == null)
+            {
+                displayMode = qs[0];
+            }
+
+            if (!String.IsNullOrEmpty(displayMode))
+            {
+                if (displayMode.Equals("mobile", StringComparison.OrdinalIgnoreCase))
+                {
+                    httpContext.SetOverriddenBrowser(BrowserOverride.Mobile);
+                }
+
+                if (displayMode.Equals("desktop", StringComparison.OrdinalIgnoreCase))
+                {
+                    httpContext.SetOverriddenBrowser(BrowserOverride.Desktop);
+                }
+            }
+        }
+
+        private void ValidateViewUnpublishedRequest(HttpContextBase httpContext)
         {
             bool isPreviewingUrl = httpContext.Request.Url.OriginalString.Contains(DefaultPageUrlProvider.UrlMarker_RelativeUrl);
             bool isUnpublishedPage = Page != null && Page.DataSourceId.PublicationScope != PublicationScope.Published;
