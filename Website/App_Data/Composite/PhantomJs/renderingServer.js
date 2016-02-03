@@ -12,7 +12,7 @@ function getPlaceholdersLocationInfo(placeholderElementName) {
     return ret.join('|');
 };
 
-function BuildFunctionPreview(system, console, address, output, authCookie, mode) {
+function BuildFunctionPreview(system, console, address, output, cookies, mode) {
     var globalTimeout = null;
 
     var clearGlobalTimeout = function() {
@@ -22,13 +22,30 @@ function BuildFunctionPreview(system, console, address, output, authCookie, mode
         }
     };
 
-	if(authCookie != null) {
-		phantom.deleteCookie(authCookie.name);
-		
-		var cookieAdded = phantom.addCookie(authCookie);
-		if(!cookieAdded) {
+    if (cookies != null) {
+	    var customCookieHeader = null;
+
+	    for (var i = 0; i < cookies.length; i++) {
+		    var cookie = cookies[i];
+
+			phantom.deleteCookie(cookie.name);
+
+			var cookieAdded = phantom.addCookie(cookie);
+			if (!cookieAdded) {
+
+				var cookieString = cookie.name + '=' + cookie.value;
+				if (customCookieHeader == null) {
+					customCookieHeader = cookieString;
+				} 
+				else {
+					customCookieHeader += "; " + cookieString;
+				}
+			}
+		}
+    	
+		if (customCookieHeader != null) {
 			// Adding the cookie header manually, if PhantomJs fails to add because of a custom domain name used (f.e. "local" instead of "localhost")
-			page.customHeaders = { 'Cookie' : authCookie.name + '=' + authCookie.value };
+			page.customHeaders = { 'Cookie': customCookieHeader };
 		}
 	}	
 		
@@ -181,8 +198,8 @@ function WaitForInput(system, console) {
 			phantom.exit(0);
 			return;
 	   }
-	   
-	   var parameters = line.split("|");
+
+	   var parameters = line.split(";");
 	   if(parameters.length == 4) {
 	   
 		  var cookieInfo = parameters[0];
@@ -190,32 +207,37 @@ function WaitForInput(system, console) {
 		  var outputFilePath = parameters[2];
 		  var mode = parameters[3];
 		  
-		  var cookie = null;
-		  
-		  if(cookieInfo != "") {
+		  var cookies = null;
+
+		  if(cookieInfo !== "") {
 			var cookieInfoParts = cookieInfo.split(",");
 			
-			if(cookieInfoParts.length != 3) {
-				console.log('Invalid cookie information, correct format is {name},{value},{domain}');
+			if(cookieInfoParts.length % 3 !== 0) {
+				console.log('Invalid cookie information, correct format is {name},{value},{domain}[,{name},{value},{domain}]*');
 				continue;
 			}
 		
-			cookie = {
-				'name': cookieInfoParts[0],
-				'value': cookieInfoParts[1],
-				'domain': cookieInfoParts[2],
-				'path': '/',
-				'httponly': true,
-				'secure':   false,
-				'expires':  (new Date()).getTime() + (1000 * 60 * 60)
-			};
+			cookies = [];
+			for (var i = 0; i < cookieInfoParts.length / 3; i++) {
+				var cookie = {
+					'name': cookieInfoParts[i*3],
+					'value': cookieInfoParts[i * 3 + 1],
+					'domain': cookieInfoParts[i * 3 + 2],
+					'path': '/',
+					'httponly': true,
+					'secure': false,
+					'expires': (new Date()).getTime() + (1000 * 60 * 60)
+				};
+
+				cookies.push(cookie);
+			}
 		  }
 		  		  	   
-		  BuildFunctionPreview(system, console, url, outputFilePath, cookie, mode);
+		  BuildFunctionPreview(system, console, url, outputFilePath, cookies, mode);
 		  return;
 	   }
 	   else {
-		  console.log('Usage: {Authentication cookie information}|{url}|{out put file name}|{mode}. Where {Authentication cookie information} = {name},{value},{domain}');
+	   	console.log('Usage: {Authentication cookie information};{url};{out put file name};{mode}. Where {Authentication cookie information} = {name},{value},{domain}[,{name},{value},{domain}]*');
 	   }
    }
 }

@@ -1,6 +1,7 @@
 ﻿// #define BrowserRender_NoCache
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Web;
 using Composite.C1Console.Events;
@@ -10,7 +11,6 @@ using Composite.Core.IO;
 using Composite.Core.PackageSystem;
 using Composite.Core.Parallelization;
 using Composite.Data.Plugins.DataProvider.Streams;
-using Composite.Plugins.Security.LoginSessionStores.HttpContextBasedLoginSessionStore;
 using Timer = System.Timers.Timer;
 using System.Threading.Tasks;
 
@@ -67,11 +67,11 @@ namespace Composite.Core.WebClient
 
             var context = HttpContext.Current;
 
-            HttpCookie authenticationCookie = GetAuthenticationCooke(context);
+            HttpCookie[] cookies = GetAuthenticationCookies(context);
             Task.Factory.StartNew(async () =>
             {
                 await Task.Delay(EnsureReadinessDelay_ms);
-                await CheckServerAvailabilityAsync(context, authenticationCookie);
+                await CheckServerAvailabilityAsync(context, cookies);
             });
         }
 
@@ -161,8 +161,8 @@ namespace Composite.Core.WebClient
 
         private static async Task<RenderingResult> MakePreviewRequestAsync(HttpContext context, string url, string outputFileName, string mode)
         {
-            var authenticationCookie = GetAuthenticationCooke(context);
-            await CheckServerAvailabilityAsync(context, authenticationCookie);
+            var cookies = GetAuthenticationCookies(context);
+            await CheckServerAvailabilityAsync(context, cookies);
 
             if (!Enabled)
             {
@@ -171,15 +171,21 @@ namespace Composite.Core.WebClient
 
             _lastUsageDate = DateTime.Now;
 
-            return await PhantomServer.RenderUrlAsync(authenticationCookie, url, outputFileName, mode);
+            return await PhantomServer.RenderUrlAsync(cookies, url, outputFileName, mode);
         }
 
-        private static HttpCookie GetAuthenticationCooke(HttpContext context)
+        private static HttpCookie[] GetAuthenticationCookies(HttpContext context)
         {
-            // TODO: generate a short life cookie
-            string authenticationCookieName = CookieHandler.GetApplicationSpecificCookieName(HttpContextBasedLoginSessionStore.AuthCookieName);
+            var allCookies = context.Request.Cookies;
+            var result = new List<HttpCookie>();
 
-            return context.Request.Cookies[authenticationCookieName];
+            foreach (string cookieName in allCookies)
+            {
+                var cookie = allCookies[cookieName];
+                result.Add(cookie);
+            }
+
+            return result.ToArray();
         }
 
 
@@ -192,9 +198,9 @@ namespace Composite.Core.WebClient
         }
 
 
-        private static async Task CheckServerAvailabilityAsync(HttpContext context, HttpCookie authenticationCookie)
+        private static async Task CheckServerAvailabilityAsync(HttpContext context, HttpCookie[] cookies)
         {
-            if (ServerAvailabilityChecked || authenticationCookie == null) return;
+            if (ServerAvailabilityChecked || cookies == null) return;
 
             using (await _serverAvailabilityCheckLock.LockAsync())
             {
@@ -210,7 +216,7 @@ namespace Composite.Core.WebClient
 
                     string outputFileName = Path.Combine(TempDirectoryFacade.TempDirectoryPath, "phantomtest.png");
 
-                    await PhantomServer.RenderUrlAsync(authenticationCookie, testUrl, outputFileName, "test");
+                    await PhantomServer.RenderUrlAsync(cookies, testUrl, outputFileName, "test");
                 }
                 catch (Exception ex)
                 {

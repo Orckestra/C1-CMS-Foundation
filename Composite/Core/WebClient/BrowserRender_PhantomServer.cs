@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -107,12 +108,12 @@ namespace Composite.Core.WebClient
             }
 
 
-            public static async Task<RenderingResult> RenderUrlAsync(HttpCookie authenticationCookie, string url, string outputImageFilePath, string mode)
+            public static async Task<RenderingResult> RenderUrlAsync(HttpCookie[] cookies, string url, string outputImageFilePath, string mode)
             {
                 using (await _instanceAsyncLock.LockAsync())
                 {
                     _lastUsageDate = DateTime.Now;
-                    var renderingResult = Instance.RenderUrlImpl(authenticationCookie, url, outputImageFilePath, mode);
+                    var renderingResult = Instance.RenderUrlImpl(cookies, url, outputImageFilePath, mode);
 
                     if (renderingResult.Status == RenderingResultStatus.PhantomServerTimeout
                         || renderingResult.Status == RenderingResultStatus.PhantomServerIncorrectResponse)
@@ -134,14 +135,15 @@ namespace Composite.Core.WebClient
             }
 
 
-            private RenderingResult RenderUrlImpl(HttpCookie authenticationCookie, string url, string outputImageFilePath, string mode)
+            private RenderingResult RenderUrlImpl(HttpCookie[] cookies, string url, string outputImageFilePath, string mode)
             {
-                Verify.ArgumentNotNull(authenticationCookie, "authenticationCookie");
+                Verify.ArgumentNotNull(cookies, nameof(cookies));
 
                 string cookieDomain = new Uri(url).Host;
-                string cookieInfo = authenticationCookie.Name + "," + authenticationCookie.Value + "," + cookieDomain;
+                string cookieInfo = string.Join(",",
+                    cookies.Select(cookie => cookie.Name + "," + cookie.Value + "," + cookieDomain));
 
-                string requestLine = cookieInfo + "|" + url + "|" + outputImageFilePath + "|" + mode;
+                string requestLine = cookieInfo + ";" + url + ";" + outputImageFilePath + ";" + mode;
 
                 // Async way:
                 //Task<string> readerTask = Task.Run(async () =>
