@@ -309,7 +309,7 @@ namespace Composite.Core.IO
             AddExtensionMapping("ogv", "video/ogg");
             AddExtensionMapping("webm", "video/webm");
             AddExtensionMapping("svg", "image/svg+xml");
-            AddExtensionMapping("svgz", "mage/svg+xml");
+            AddExtensionMapping("svgz", "image/svg+xml");
             AddExtensionMapping("flv4", "video/mp4");
             AddExtensionMapping("eot", "application/vnd.ms-fontobject");
 
