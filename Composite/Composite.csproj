@@ -173,6 +173,8 @@
     <Compile Include="C1Console\Elements\ElementProviderHelpers\DataGroupingProviderHelper\ElipsisEntityToken.cs" />
     <Compile Include="C1Console\Forms\CoreUiControls\SvgIconSelectorUiControl.cs" />
     <Compile Include="C1Console\Forms\CoreUiControls\FontIconSelectorUiControl.cs" />
+    <Compile Include="C1Console\Forms\CoreUiControls\HierarchicalSelectorUiControl.cs" />
+    <Compile Include="C1Console\Forms\CoreUiControls\HierarchicalSelectorUiControlFactoryData.cs" />
     <Compile Include="C1Console\Security\Foundation\PluginFacades\PasswordRulePluginFacade.cs" />
     <Compile Include="C1Console\Security\PasswordPolicyFacade.cs" />
     <Compile Include="C1Console\Security\Plugins\PasswordPolicy\IPasswordRule.cs" />
@@ -278,6 +280,9 @@
     <Compile Include="Plugins\Commands\ConsoleCommandHandlers\ConsoleCommandHelper.cs" />
     <Compile Include="Plugins\Commands\ConsoleCommandHandlers\FocusElement.cs" />
     <Compile Include="Plugins\Commands\ConsoleCommandHandlers\FocusData.cs" />
+    <Compile Include="Plugins\Forms\WebChannel\UiControlFactories\TemplatedHierarchicalSelectorUiControlFactory.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Plugins\Forms\WebChannel\UiControlFactories\TemplatedSvgIconSelectorUiControlFactory.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
