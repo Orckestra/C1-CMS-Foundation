@@ -11,7 +11,7 @@ ui|selector {
 		float: none;
 		margin: 0;
 
-		ui|labelbox {
+		>ui|labelbox {
 			padding: 6px 30px 8px 11px;
 			border-color: @field-border-color;
 			text-transform: none;
@@ -42,23 +42,23 @@ ui|selector {
 
 		&.hover {
 
-			ui|labelbox:before {
+			>ui|labelbox:before {
 				border-color: @btn-hover-border-color transparent transparent transparent;
 			}
 
-			ui|labelbox:after {
+			>ui|labelbox:after {
 				border-color: @btn-hover-bg-color transparent transparent transparent;
 			}
 		}
 
 		&.active {
-			ui|labelbox:before {
+			>ui|labelbox:before {
 				top: 12px;
 				border-width: 0px 5px 5px 5px;
 				border-color: transparent transparent @btn-hover-border-color transparent;
 			}
 
-			ui|labelbox:after {
+			>ui|labelbox:after {
 				top: 13px;
 				border-width: 0px 4px 4px 4px;
 				border-color: transparent transparent @btn-hover-bg-color transparent;
@@ -166,4 +166,34 @@ ui|field.fieldhelp ui|fielddata ui|datainputdialog input,
 ui|field.fieldhelp ui|fielddata ui|datainputbutton input,
 ui|field.fieldhelp ui|fielddata ui|urlinputdialog input {
 	width: 100%;
+}
+
+
+/* Hierarchical Selector */
+ui|hierarchicalselector{
+	ui|treenode{
+		&.checkbox{
+
+			ui|labelbox{
+				padding-left: 30px;
+			}
+
+			ui|checkbutton{
+				position: absolute;
+				float: none;
+				top: 2px;
+				left: 18px;
+			}
+		}
+		ui|treenode {
+			&.checkbox{
+				ui|checkbutton{
+					left: 40px;
+				}
+			}
+		}
+	}
+	> input{
+		display: none;
+	}
 }

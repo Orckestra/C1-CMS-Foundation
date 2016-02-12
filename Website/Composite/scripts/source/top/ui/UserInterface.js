@@ -3,18 +3,18 @@
  * UserInterface.
  */
 var UserInterface = new function () {
-	
+
 	/*
 	 * This binding implementation is browser specific!
 	 */
 	var editortextboximpl = ( Client.isMozilla ? MozEditorTextBoxBinding : IEEditorTextBoxBinding );
-	
+
 	/*
-	 * Application scope binding mappings. 
+	 * Application scope binding mappings.
 	 * These may be overruled locally.
 	 */
 	var mapping = new UserInterfaceMapping ({
-	
+
 		"body"							: RootBinding,
 		"ui:binding"					: Binding,
 		"ui:box"						: Binding,
@@ -98,6 +98,7 @@ var UserInterface = new function () {
 		"ui:selector"					: SelectorBinding,
 		"ui:simpleselector"				: SimpleSelectorBinding,
 		"ui:multiselector"				: MultiSelectorBinding,
+		"ui:hierarchicalselector"		: HierarchicalSelectorBinding,
 		"ui:datainputselector"			: DataInputSelectorBinding,
 		"ui:datainputdialog"			: DataInputDialogBinding,
 		"ui:urlinputdialog"				: UrlInputDialogBinding,
@@ -134,36 +135,36 @@ var UserInterface = new function () {
 		"ui:response"					: ResponseBinding,
 		"ui:stylesheet"					: StyleBinding
 	});
-	
+
 	/*
 	 * @type {SystemLogger}
 	 */
 	var logger = SystemLogger.getLogger ( "UserInterface" );
-	
+
 	/*
 	 * Indexing an object with two properties, "element" and "binding".
 	 * @type {HashMap<string><object>}
 	 */
 	var keys = {};
-	
+
 	/**
-	 * Regsiter element with binding implementation. If you omit the binding 
-	 * implementation, we will search the element environment for the most 
+	 * Regsiter element with binding implementation. If you omit the binding
+	 * implementation, we will search the element environment for the most
 	 * likely binding to register with.
 	 * @param {DOMElement} element
 	 * @param {Binding} impl Optional
 	 * @return {Binding} Returns null if no suitable Binding was found.
 	 */
 	this.registerBinding = function ( element, impl ) {
-		
+
 		var binding = null;
-		
+
 		if ( !this.hasBinding ( element )) {
-		
+
 			var parentWindow = DOMUtil.getParentWindow ( element );
-			
+
 			if ( DOMUtil.getLocalName ( element ) != "bindingmapping" ) {
-				
+
 				// setup the quick and dirty way of assigning a custom binding
 				if ( !impl && element.getAttribute ( "binding" ) != null ) {
 					var bindingstring = element.getAttribute ( "binding" );
@@ -172,7 +173,7 @@ var UserInterface = new function () {
 						throw "No such binding in scope: " + bindingstring;
 					}
 				}
-				
+
 				// check for local scope binding mapping
 				if ( !impl ) {
 					var manager = parentWindow.DocumentManager;
@@ -183,12 +184,12 @@ var UserInterface = new function () {
 						}
 					}
 				}
-				
+
 				// check for global scope binding mapping
 				if ( !impl ) {
 					impl = mapping.getBindingImplementation ( element );
 				}
-				
+
 				// instantiate new binding
 				if ( impl != null && !Application.isMalFunctional ) {
 					try {
@@ -199,10 +200,10 @@ var UserInterface = new function () {
 						throw ( exception );
 					}
 				}
-				
-				// register element and binding, invoking the bindings onBindingRegister method. 
+
+				// register element and binding, invoking the bindings onBindingRegister method.
 				if ( binding ) {
-				
+
 					var key = KeyMaster.getUniqueKey ();
 					element.setAttribute ( "key", key );
 					binding.key = key;
@@ -217,29 +218,29 @@ var UserInterface = new function () {
 				}
 			}
 		}
-		
+
 		/*
 		 * Finally return the binding.
 		 */
 		return binding;
 	}
-	
+
 	/**
 	 * Unregister binding. This will destroy the binding.
 	 * @param {Binding} binding
 	 */
 	this.unRegisterBinding = function ( binding ) {
-		
+
 		terminate ( binding );
 	}
-	
+
 	/**
 	 * Terminate Binding.
 	 */
 	function terminate ( binding ) {
-		
+
 		if ( Binding.exists ( binding ) == true ) {
-			var key = binding.key; 
+			var key = binding.key;
 			Binding.destroy ( binding );
 			if ( key ) {
 				if ( keys [ key ]) {
@@ -253,28 +254,28 @@ var UserInterface = new function () {
 			}
 		}
 	}
-	
+
 	/**
 	 * @param {Binding} binding
 	 * @return {DOMElement}
 	 * @deprecated
 	 */
 	this.getElement = function ( binding ) {
-	
+
 		var result = null;
 		if ( keys [ binding.key ]) {
 			result = keys [ binding.key ].element;
 		}
 		return result;
 	}
-	
+
 	/**
 	 * Get binding by bound element.
 	 * @param {DOMElement} element
 	 * @return {Binding}
 	 */
 	this.getBinding = function ( element ) {
-	
+
 		var result = null;
 		if ( element && element.nodeType == Node.ELEMENT_NODE ) {
 			try {
@@ -291,43 +292,43 @@ var UserInterface = new function () {
 		}
 		return result;
 	}
-	
+
 	/**
 	 * Get binding by key.
 	 * @param {string} key
 	 * @return {Binding}
 	 */
 	this.getBindingByKey = function ( key ) {
-		
+
 		var result = null;
 		if ( keys [ key ]) {
 			result = keys [ key ].binding;
 		}
 		return result;
 	}
-	
+
 	/**
 	 * @param {DOMElement} element
 	 * @return {boolean}
 	 */
 	this.hasBinding = function ( element ) {
-	
+
 		return this.getBinding ( element ) != null;
 	}
-	
+
 	/**
 	 * TODO: explain this!
 	 */
 	this.isBindingVisible = function ( binding ) {
-		
+
 		/*
-		 * Note that we return false while startup up 
+		 * Note that we return false while startup up
 		 * for reasons of very small performance gain.
 		 */
 		var result = Application.isOperational;
-		
+
 		if ( result == true ) {
-			
+
 			/*
 			 * TODO: construct this crawler only once!
 			 */
@@ -348,42 +349,42 @@ var UserInterface = new function () {
 		}
 		return result;
 	}
-	
+
 	// DEBUG STUFF ................................................................
-	
+
 	var debugKeys = null;
-	
+
 	/**
 	 * Counting active Binding instances.
 	 * @return {int}
 	 */
 	this.getBindingCount = function () {
-	
+
 		var count = 0;
 		for ( var key in keys ) {
 			count ++;
 		}
 		return count;
 	}
-	
+
 	/*
 	 * Copy all keys to a reference hashmap.
 	 */
 	this.setPoint = function () {
-	
+
 		debugKeys = {};
 		for ( var key in keys ) {
 			debugKeys [ key ] = true;
 		}
 	}
-	
+
 	/*
-	 * Return list of NEW keys since point was set (see setPoint). 
+	 * Return list of NEW keys since point was set (see setPoint).
 	 * This can be used to pinpoint bindings not properly disposed.
 	 * @return {List<string>}
 	 */
 	this.getPoint = function () {
-		
+
 		var result = null;
 		if ( debugKeys ) {
 			result = new List ();
@@ -395,22 +396,22 @@ var UserInterface = new function () {
 		}
 		return result;
 	}
-	
+
 	/*
 	 * Enough point.
 	 */
 	this.clearPoint = function () {
-		
+
 		debugKeys = null;
 	}
-	
+
 	/**
 	 * Tracking undisposed bindings.
 	 */
 	this.trackUndisposedBindings = function () {
-		
+
 		var report = null;
-		
+
 		for ( var key in keys ) {
 			var entry = keys [ key ];
 			if ( !entry.binding || !entry.element || !Binding.exists ( entry.binding )) {
@@ -424,17 +425,17 @@ var UserInterface = new function () {
 			logger.error ( report );
 		}
 	}
-	
+
 	/**
 	 * Autotrack.
 	 * @param {boolean} isTrack
 	 */
 	this.autoTrackDisposedBindings = function ( isTrack ) {
-		
+
 		if ( isTrack ) {
 			if ( !window.disposedbindingtrackinterval ) {
-				window.disposedbindingtrackinterval = window.setInterval ( 
-					UserInterface.trackUndisposedBindings, 10000 
+				window.disposedbindingtrackinterval = window.setInterval (
+					UserInterface.trackUndisposedBindings, 10000
 				);
 				this.trackUndisposedBindings ();
 			}
