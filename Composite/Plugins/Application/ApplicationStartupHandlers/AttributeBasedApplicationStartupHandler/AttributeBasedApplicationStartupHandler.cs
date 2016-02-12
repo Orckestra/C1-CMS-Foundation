@@ -71,7 +71,7 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
         private readonly List<MethodInfo> _onInitializedMethods = new List<MethodInfo>();
         private static readonly string[] AssembliesToIgnore =
             {
-                "Composite", 
+                //"Composite", 
                 "Composite.Workflows", 
                 "Composite.Generated", 
                 "ICSharpCode.SharpZipLib", 

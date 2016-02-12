@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Transactions;
 using Composite.C1Console.Actions;
+using Composite.C1Console.Actions.Data;
 using Composite.C1Console.Events;
 using Composite.C1Console.Elements;
 using Composite.Core.Linq;
@@ -112,7 +113,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
                 {Published, "Published"}
             };
 
-            Func<ElementAction> sendBackToDraftAction = () => new ElementAction(new ActionHandle(new DraftActionToken()))
+            Func<ElementAction> sendBackToDraftAction = () => new ElementAction(new ActionHandle(new ProxyDataActionToken(ActionIdentifier.SendToDraft)))
             {
                 VisualData = new ActionVisualizedData
                 {
@@ -131,7 +132,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
             };
 
 
-            Func<ElementAction> sendForwardToAwaitingApprovalAction = () => new ElementAction(new ActionHandle(new AwaitingApprovalActionToken()))
+            Func<ElementAction> sendForwardToAwaitingApprovalAction = () => new ElementAction(new ActionHandle(new ProxyDataActionToken(ActionIdentifier.SendForApproval)))
             {
                 VisualData = new ActionVisualizedData
                 {
@@ -150,7 +151,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
             };
 
 
-            Func<ElementAction> sendForwardToAwaitingPublicationAction = () => new ElementAction(new ActionHandle(new AwaitingPublicationActionToken()))
+            Func<ElementAction> sendForwardToAwaitingPublicationAction = () => new ElementAction(new ActionHandle(new ProxyDataActionToken(ActionIdentifier.SendForPublication)))
             {
                 VisualData = new ActionVisualizedData
                 {
@@ -169,7 +170,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
             };
 
 
-            Func<ElementAction> publishAction = () => new ElementAction(new ActionHandle(new PublishActionToken()))
+            Func<ElementAction> publishAction = () => new ElementAction(new ActionHandle(new ProxyDataActionToken(ActionIdentifier.Publish)))
             {
                 VisualData = new ActionVisualizedData
                 {
@@ -189,7 +190,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
 
 
             // "arrow pointing left when state change is going backwards" actions
-            Func<ElementAction> sendBackToAwaitingApprovalAction = () => new ElementAction(new ActionHandle(new AwaitingApprovalActionToken()))
+            Func<ElementAction> sendBackToAwaitingApprovalAction = () => new ElementAction(new ActionHandle(new ProxyDataActionToken(ActionIdentifier.SendForApproval)))
             {
                 VisualData = new ActionVisualizedData
                 {
@@ -208,7 +209,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
             };
 
 
-            Func<ElementAction> sendBackToAwaitingPublicationAction = () => new ElementAction(new ActionHandle(new AwaitingPublicationActionToken()))
+            Func<ElementAction> sendBackToAwaitingPublicationAction = () => new ElementAction(new ActionHandle(new ProxyDataActionToken(ActionIdentifier.SendForPublication)))
             {
                 VisualData = new ActionVisualizedData
                 {
@@ -228,7 +229,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
 
 
             // disabled actions 
-            Func<ElementAction> draftActionDisabled = () => new ElementAction(new ActionHandle(new DraftActionToken()))
+            Func<ElementAction> draftActionDisabled = () => new ElementAction(new ActionHandle(new ProxyDataActionToken(ActionIdentifier.SendToDraft)))
             {
                 VisualData = new ActionVisualizedData
                 {
@@ -247,7 +248,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
             };
 
 
-            Func<ElementAction> awaitingApprovalActionDisabled = () => new ElementAction(new ActionHandle(new AwaitingApprovalActionToken()))
+            Func<ElementAction> awaitingApprovalActionDisabled = () => new ElementAction(new ActionHandle(new ProxyDataActionToken(ActionIdentifier.SendForApproval)))
             {
                 VisualData = new ActionVisualizedData
                 {
@@ -264,9 +265,9 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
                     }
                 }
             };
-                               
 
-            Func<ElementAction> awaitingPublicationActionDisabled = () => new ElementAction(new ActionHandle(new AwaitingPublicationActionToken()))
+
+            Func<ElementAction> awaitingPublicationActionDisabled = () => new ElementAction(new ActionHandle(new ProxyDataActionToken(ActionIdentifier.SendForPublication)))
             {
                 VisualData = new ActionVisualizedData
                 {
@@ -346,7 +347,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
             IData publicData = DataFacade.GetDataFromOtherScope(data, DataScopeIdentifier.Public, true).FirstOrDefault();
             if (publicData != null)
             {
-                var unpublishAction = new ElementAction(new ActionHandle(new UnpublishActionToken()))
+                var unpublishAction = new ElementAction(new ActionHandle(new ProxyDataActionToken(ActionIdentifier.Unpublish)))
                 {
                     VisualData = new ActionVisualizedData()
                     {
@@ -695,7 +696,8 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
 
             public static ActionToken Deserialize(string serializedData)
             {
-                return new UnpublishActionToken();
+                //return new UnpublishActionToken();
+                return new ProxyDataActionToken(ActionIdentifier.Unpublish);
             }
         }
 

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using Composite.C1Console.Actions;
+using Composite.C1Console.Actions.Data;
 using Composite.C1Console.Elements;
 using Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProviderHelper;
 using Composite.C1Console.Elements.Plugins.ElementProvider;
@@ -1057,7 +1058,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             if (PageMetaDataFacade.GetAllMetaDataTypes().Contains(type) == false)
             {
                 element.AddAction(
-                    new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.EditDataWorkflow"), _editDataPermissionTypes)))
+                    new ElementAction(new ActionHandle(new ProxyDataActionToken(ActionIdentifier.Edit, _editDataPermissionTypes)))
                     {
                         VisualData = new ActionVisualizedData
                         {
@@ -1077,7 +1078,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
 
                 element.AddAction(
-                    new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.DeleteDataWorkflow"), _deleteDataPermissionTypes)))
+                    new ElementAction(new ActionHandle(new ProxyDataActionToken(ActionIdentifier.Delete,_deleteDataPermissionTypes)))
                     {
                         VisualData = new ActionVisualizedData
                         {
@@ -1103,8 +1104,6 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
         private Element GetGhostedElementFromData(IData data)
         {
-            Type type = data.DataSourceId.InterfaceType;
-
             string label = string.Format("{0} ({1})", data.GetLabel(true), DataLocalizationFacade.GetCultureTitle(UserSettings.ForeignLocaleCultureInfo));
 
             Element element = new Element(_providerContext.CreateElementHandle(data.GetDataEntityToken()))

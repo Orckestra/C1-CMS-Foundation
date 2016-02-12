@@ -22,7 +22,7 @@ using Composite.C1Console.Workflow;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 using Microsoft.Practices.ObjectBuilder;
-
+using Composite.C1Console.Actions.Data;
 
 namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 {
@@ -132,7 +132,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 }
             };
 
-            element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PageElementProvider.AddNewPageWorkflow"), AddWebsitePermissionTypes) { DoIgnoreEntityTokenLocking = true }))
+            element.AddAction(new ElementAction(new ActionHandle(new ProxyDataActionToken(ActionIdentifier.Add, AddWebsitePermissionTypes) ))
             {
                 VisualData = new ActionVisualizedData
                 {
@@ -171,7 +171,6 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 }
             });
 
-
             element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper.AddMetaDataWorkflow"), AssociatedDataElementProviderHelper<IPage>.AddAssociatedTypePermissionTypes) { DoIgnoreEntityTokenLocking = true }))
             {
                 VisualData = new ActionVisualizedData
@@ -190,7 +189,6 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 }
             });
 
-
             element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper.EditMetaDataWorkflow"), AssociatedDataElementProviderHelper<IPage>.EditAssociatedTypePermissionTypes)))
             {
                 VisualData = new ActionVisualizedData
@@ -208,7 +206,6 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                     }
                 }
             });
-
 
             element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper.DeleteMetaDataWorkflow"), AssociatedDataElementProviderHelper<IPage>.RemoveAssociatedTypePermissionTypes)))
             {
@@ -678,7 +675,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 if (kvp.Key == PageLocaleState.Own)
                 {
                     // Normal actions
-                    element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PageElementProvider.EditPageWorkflow"), EditPermissionTypes)))
+                    element.AddAction(new ElementAction(new ActionHandle(new ProxyDataActionToken(ActionIdentifier.Edit,EditPermissionTypes)))
                     {
                         VisualData = new ActionVisualizedData
                         {
@@ -696,7 +693,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                         }
                     });
 
-                    element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PageElementProvider.AddNewPageWorkflow"), AddPermissionTypes) { DoIgnoreEntityTokenLocking = true }))
+                    element.AddAction(new ElementAction(new ActionHandle(new ProxyDataActionToken(ActionIdentifier.Add,AddPermissionTypes)))
                     {
                         VisualData = new ActionVisualizedData
                         {
@@ -714,7 +711,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                         }
                     });
 
-                    element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PageElementProvider.DeletePageWorkflow"), DeletePermissionTypes)))
+                    element.AddAction(new ElementAction(new ActionHandle(new ProxyDataActionToken(ActionIdentifier.Delete,DeletePermissionTypes)))
                     {
                         VisualData = new ActionVisualizedData
                         {

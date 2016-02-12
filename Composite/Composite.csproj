@@ -159,6 +159,16 @@
     <Compile Include="AspNet\UserControlFunction.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="C1Console\Actions\Data\ActionIdentifier.cs" />
+    <Compile Include="C1Console\Actions\Data\DataActionTokenRegisterHandler.cs" />
+    <Compile Include="C1Console\Actions\Data\DataActionTokenResolver.cs" />
+    <Compile Include="C1Console\Actions\Data\DataActionTokenResolverFacade.cs" />
+    <Compile Include="C1Console\Actions\Data\DataActionTokenResolverRegistery.cs" />
+    <Compile Include="C1Console\Actions\Data\ProxyDataActionExecuter.cs" />
+    <Compile Include="C1Console\Actions\Data\ProxyDataActionToken.cs" />
+    <Compile Include="Data\ProcessControlled\ProcessControllers\GenericPublishProcessController\GenericPublishProcessDynamicActionTokens.cs" />
+    <Compile Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\GeneratedDataTypesElementDynamicActionTokens.cs" />
+    <Compile Include="Plugins\Elements\ElementProviders\PageElementProvider\PageElementDynamicActionTokens.cs" />
     <Compile Include="C1Console\Elements\IUrlToEntityTokenMapper.cs" />
     <Compile Include="C1Console\Elements\UrlToEntityTokenFacade.cs" />
     <Compile Include="C1Console\Commands\ConsoleCommandFacade.cs" />
