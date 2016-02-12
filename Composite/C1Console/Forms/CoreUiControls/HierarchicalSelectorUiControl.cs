@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Composite.C1Console.Forms.Foundation;
 
 namespace Composite.C1Console.Forms.CoreUiControls
@@ -21,6 +22,7 @@ namespace Composite.C1Console.Forms.CoreUiControls
     }
 
     /// <exclude />
+    [Serializable]
     public sealed class SelectionTreeNode
     {
         /// <exclude />

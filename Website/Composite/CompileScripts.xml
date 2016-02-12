@@ -200,6 +200,7 @@
 			<Script filename="${root}/scripts/source/top/ui/bindings/data/dialogs/NullPostBackDataDialogBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/data/dialogs/NullPostBackDataDialogSelectorBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/data/selectors/MultiSelectorBinding.js"/>
+      <Script filename="${root}/scripts/source/top/ui/bindings/data/selectors/HierarchicalSelectorBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/data/dialogs/HTMLDataDialogBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/data/dialogs/MultiSelectorDataDialogBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/data/lazy/LazyBindingSetBinding.js"/>
@@ -249,6 +250,8 @@
 			<Script filename="${root}/scripts/source/top/ui/bindings/trees/TreeContentBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/trees/TreePositionIndicatorBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/trees/TreeCrawler.js"/>
+			<Script filename="${root}/scripts/source/top/ui/bindings/data/radiocheck/CheckTreeBinding.js"/>
+			<Script filename="${root}/scripts/source/top/ui/bindings/data/radiocheck/CheckTreeNodeBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/docks/DockTabsButtonBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/docks/DockBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/docks/DockTabsBinding.js"/>

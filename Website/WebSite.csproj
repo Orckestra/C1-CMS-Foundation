@@ -211,6 +211,7 @@
     <Content Include="Composite\content\forms\Administrative\PageTemplate\EditMasterPage.xml" />
     <Content Include="Composite\content\forms\Administrative\PageTemplate\AddNewPageTemplate.xml" />
     <Content Include="Composite\controls\BrandingSnippet.ascx" />
+    <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\Selectors\HierarchicalSelector.ascx" />
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\Selectors\SvgIconSelector.ascx" />
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\Selectors\FontIconSelector.ascx" />
     <Content Include="Composite\images\branding\brand-icon.png" />
@@ -558,6 +559,9 @@
     <Content Include="Composite\images\welcome\cancel.svg" />
     <Content Include="Composite\scripts\source\top\core\ImageProvider.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\branding\BrandSnippetBinding.js" />
+    <Content Include="Composite\scripts\source\top\ui\bindings\data\radiocheck\CheckTreeBinding.js" />
+    <Content Include="Composite\scripts\source\top\ui\bindings\data\radiocheck\CheckTreeNodeBinding.js" />
+    <Content Include="Composite\scripts\source\top\ui\bindings\data\selectors\HierarchicalSelectorBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\genericview\AddressBarBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\genericview\GenericViewBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\genericview\PathBinding.js" />
