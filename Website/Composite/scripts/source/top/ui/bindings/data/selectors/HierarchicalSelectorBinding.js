@@ -84,25 +84,13 @@ HierarchicalSelectorBinding.prototype._populate = function () {
 
 HierarchicalSelectorBinding.prototype._getTreeNode = function (selection) {
 
-	var treenode = CheckTreeNodeBinding.newInstance(this.bindingDocument);
-	var label 			= selection.getAttribute ( "label" );
-	var value 			= selection.getAttribute ( "value" );
-	var isSelected 		= selection.getAttribute ( "selected" );
-	var image			= selection.getAttribute ( "image" );
-
-	treenode.setLabel(label);
-	treenode.setImage(image);
-	treenode.setProperty("selected", isSelected);
-	treenode.selectionElement = selection;
-	treenode.selectionValue = value;
 
 	return treenode;
 }
 
-HierarchicalSelectorBinding.prototype._getTreeNodes = function (element) {
+HierarchicalSelectorBinding.prototype._getTreeNodes = function (selections) {
 
 	var list = new List ();
-	var selections = DOMUtil.getChildElementsByLocalName(element, "selection");
 	selections.each(function(selection) {
 		list.add(this._getTreeNode(selection));
 	}, this);
@@ -112,11 +100,32 @@ HierarchicalSelectorBinding.prototype._getTreeNodes = function (element) {
 
 HierarchicalSelectorBinding.prototype._populateFromSelections = function (treeNodeContainer, selectionContainer) {
 
-	this._getTreeNodes(selectionContainer).each(function (treeNode) {
+	var hasSelected = false;
+	DOMUtil.getChildElementsByLocalName(selectionContainer, "selection").each(function (selection) {
 
-		treeNodeContainer.add(treeNode);
-		this._populateFromSelections(treeNode, treeNode.selectionElement);
+		var treenode = CheckTreeNodeBinding.newInstance(this.bindingDocument);
+		var label = selection.getAttribute("label");
+		var value = selection.getAttribute("value");
+		var isSelected = selection.getAttribute("selected") === "true";
+		var image = selection.getAttribute("image");
+
+		treenode.setLabel(label);
+		treenode.setImage(image);
+		treenode.setProperty("selected", isSelected);
+		treenode.selectionElement = selection;
+		treenode.selectionValue = value;
+		treeNodeContainer.add(treenode);
+
+		if (this._populateFromSelections(treenode, treenode.selectionElement)) {
+			treenode.setProperty("open", true);
+			hasSelected = true;
+		} else {
+			hasSelected = hasSelected ? hasSelected : isSelected;
+		}
+
 	}, this);
+
+	return hasSelected;
 
 }
 
