@@ -18,7 +18,6 @@ using Composite.Core.Types;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
-
 namespace Composite.Core.Application
 {
     /// <summary>    
@@ -50,7 +49,11 @@ namespace Composite.Core.Application
     /// </example>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public sealed class ApplicationStartupAttribute : Attribute
-    {        
+    {
+        /// <summary>
+        /// If set to <value>True</value>, the exceptions will not be muted and the website will fail to start.
+        /// </summary>
+        public bool AbortStartupOnException { get; set; }
     }
 }
 
@@ -64,11 +67,29 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
     [ConfigurationElementType(typeof(NonConfigurableApplicationStartupHandler))]
     public sealed class AttributeBasedApplicationStartupHandler : IApplicationStartupHandler
     {
+        private class StartupHandlerInfo
+        {
+            public StartupHandlerInfo(Type type, ApplicationStartupAttribute attribute)
+            {
+                Type = type;
+                Attribute = attribute;
+            }
+
+            public Type Type { get; }
+            public ApplicationStartupAttribute Attribute { get; }
+
+            public MethodInfo OnBeforeInitialeMethod { get; set; }
+            public MethodInfo OnInitializedMethod { get; set; }
+        }
+
         private static readonly string LogTitle = typeof (AttributeBasedApplicationStartupHandler).Name;
         private static readonly string CacheFileName = "StartupHandlersCache.xml";
 
-        private readonly List<MethodInfo> _onBeforeInitializeMethods = new List<MethodInfo>();
-        private readonly List<MethodInfo> _onInitializedMethods = new List<MethodInfo>();
+        private static readonly string OnBeforeInitializeMethodName = "OnBeforeInitialize";
+        private static readonly string OnInitializedMethodName = "OnInitialized";
+
+        private readonly List<StartupHandlerInfo> _startupHandlers = new List<StartupHandlerInfo>();
+
         private static readonly string[] AssembliesToIgnore =
             {
                 "Composite", 
@@ -94,7 +115,7 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
             
             foreach(string filePath in AssemblyFacade.GetAssembliesFromBin())
             {
-                Type[] types = null;
+                StartupHandlerInfo[] types = null;
                 try
                 {
                     types = GetSubscribedTypes(filePath, cachedTypesInfo, ref cacheHasBeenUpdated);
@@ -122,39 +143,38 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
             }
         }
 
-        private void Subscribe(Type[] types)
+        private void Subscribe(StartupHandlerInfo[] startupHandlers)
         {
-            foreach (Type type in types)
+            foreach (StartupHandlerInfo startupHandler in startupHandlers)
             {
-                MethodInfo onBeforeInitializeMethod, onInitializedMethod;
-                
-                if(!TryGetPublicStaticMethod(type, "OnBeforeInitialize", out onBeforeInitializeMethod)
-                   || !TryGetPublicStaticMethod(type, "OnInitialized", out onInitializedMethod))
-                {
-                    continue;
-                }
+                var type = startupHandler.Type;
 
-                _onBeforeInitializeMethods.Add(onBeforeInitializeMethod);
-                _onInitializedMethods.Add(onInitializedMethod);
+                MethodInfo onBeforeInitializeMethod, onInitializedMethod;
+
+                GetPublicStaticMethod(type, OnBeforeInitializeMethodName, out onBeforeInitializeMethod);
+                GetPublicStaticMethod(type, OnInitializedMethodName, out onInitializedMethod);
+
+                startupHandler.OnBeforeInitialeMethod = onBeforeInitializeMethod;
+                startupHandler.OnInitializedMethod = onInitializedMethod;
+                
+                _startupHandlers.Add(startupHandler);
             }
         }
 
-        private static bool TryGetPublicStaticMethod(Type type, string methodName, out MethodInfo methodInfo)
+        private static void GetPublicStaticMethod(Type type, string methodName, out MethodInfo methodInfo)
         {
             methodInfo = type.GetMethods().FirstOrDefault(m => m.Name == methodName);
             if (methodInfo == null)
             {
-                Log.LogError(LogTitle, "The type '{0}' is a missing public static method named '{1}', taking no arguments".FormatWith(type, methodName));
-                return false;
+                throw new InvalidOperationException(
+                    $"The type '{type}' is a missing public static method named '{methodName}'," 
+                    + $" taking no arguments or accepting a parameter of type {nameof(IServiceCollection)}");
             }
 
             if(!methodInfo.IsStatic)
             {
-                Log.LogError(LogTitle, "Method '{1}' in type '{0}' should be static".FormatWith(type, methodName));
-                return false;
+                throw new InvalidOperationException($"Method '{type}' in type '{methodName}' should be static");
             }
-
-            return true;
         }
 
 
@@ -211,7 +231,8 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
             return result;
         }
 
-        private static Type[] GetSubscribedTypes(string filePath, List<AssemblyInfo> cachedTypesInfo, ref bool cacheHasBeenUpdated)
+        private static StartupHandlerInfo[] GetSubscribedTypes(
+            string filePath, List<AssemblyInfo> cachedTypesInfo, ref bool cacheHasBeenUpdated)
         {
             string assemblyName = Path.GetFileNameWithoutExtension(filePath);
 
@@ -234,11 +255,18 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
                     string[] subscribedTypesNames = cachedInfo.SubscribedTypes;
                     if(subscribedTypesNames.Length == 0)
                     {
-                        return new Type[0];
+                        return new StartupHandlerInfo[0];
                     }
 
-                    Assembly asm = Assembly.LoadFrom(filePath);
-                    return subscribedTypesNames.Select(asm.GetType).ToArray();
+                    var asm = Assembly.LoadFrom(filePath);
+                    return (from typeName in subscribedTypesNames
+                           let type = asm.GetType(typeName)
+                           where  type != null
+                           let attribute = type.GetCustomAttributes(false)
+                                               .OfType<ApplicationStartupAttribute>()
+                                               .FirstOrDefault()
+                           where attribute != null
+                           select new StartupHandlerInfo(type, attribute)).ToArray();
                 }
 
                 // Removing cache entry if it is obsolete
@@ -266,16 +294,16 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
 
             if (!TryGetTypes(assembly, out types))
             {
-                return new Type[0];
+                return new StartupHandlerInfo[0];
             }
 
-            Type[] result = GetSubscribedTypes(types);
+            var result = GetSubscribedTypes(types);
 
             var newCacheEntry = new AssemblyInfo
             {
                 AssemblyName = assembly.GetName().Name,
                 LastModified = modificationDate,
-                SubscribedTypes = result.Select(type => type.FullName).ToArray()
+                SubscribedTypes = result.Select(sh => sh.Type.FullName).ToArray()
             };
 
             cachedTypesInfo.Add(newCacheEntry);
@@ -285,18 +313,20 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
             return result;
         }
 
-        private static Type[] GetSubscribedTypes(Type[] types)
+        private static StartupHandlerInfo[] GetSubscribedTypes(Type[] types)
         {
-            List<Type> result = new List<Type>();
+            var result = new List<StartupHandlerInfo>();
             foreach (Type type in types)
             {
                 try
                 {
-                    bool hasAttribute = type.GetCustomAttributes(false).Any(f => f is ApplicationStartupAttribute);
+                    var attribute = type.GetCustomAttributes(false)
+                            .OfType<ApplicationStartupAttribute>()
+                            .FirstOrDefault();
 
-                    if (hasAttribute)
+                    if (attribute != null)
                     {
-                        result.Add(type);
+                        result.Add(new StartupHandlerInfo(type, attribute));
                     }
                 }
                 catch(SecurityException)
@@ -435,8 +465,9 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
         /// <exclude />
         public void OnBeforeInitialize()
         {
-            foreach (MethodInfo methodInfo in _onBeforeInitializeMethods)
+            foreach (var startupHandler in _startupHandlers)
             {
+                var methodInfo = startupHandler.OnBeforeInitialeMethod;
                 methodInfo.Invoke(null, GetParameters(methodInfo));
             }
         }
@@ -445,14 +476,21 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
         /// <exclude />
         public void OnInitialized()
         {
-            foreach (MethodInfo methodInfo in _onInitializedMethods)
+            foreach (var startupHandler in _startupHandlers)
             {
+                MethodInfo methodInfo = startupHandler.OnInitializedMethod;
+
                 try
                 {
                     methodInfo.Invoke(null, GetParameters(methodInfo));
                 }
                 catch (TargetInvocationException ex)
                 {
+                    if (startupHandler.Attribute.AbortStartupOnException)
+                    {
+                        throw;
+                    }
+
                     Log.LogError(LogTitle, "Failed to execute startup handler. Type: '{0}', Assembly: '{1}'",
                                            methodInfo.DeclaringType.FullName, methodInfo.DeclaringType.Assembly.FullName);
 
