@@ -54,6 +54,8 @@ namespace Composite.Core.WebClient
 
             SystemSetupFacade.SetFirstTimeStart();
 
+            InitializeServices();
+
             if (!SystemSetupFacade.IsSystemFirstTimeInitialized)
             {
                 return;
@@ -71,8 +73,6 @@ namespace Composite.Core.WebClient
 
             
             AppDomain.CurrentDomain.DomainUnload += CurrentDomain_DomainUnload;
-
-            InitializeServices();
 
             lock (_syncRoot)
             {

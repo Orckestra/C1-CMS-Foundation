@@ -696,7 +696,6 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
 
             public static ActionToken Deserialize(string serializedData)
             {
-                //return new UnpublishActionToken();
                 return new ProxyDataActionToken(ActionIdentifier.Unpublish);
             }
         }

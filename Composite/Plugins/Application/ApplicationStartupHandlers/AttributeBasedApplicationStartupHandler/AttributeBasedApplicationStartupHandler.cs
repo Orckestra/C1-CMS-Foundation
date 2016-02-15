@@ -92,7 +92,6 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
 
         private static readonly string[] AssembliesToIgnore =
             {
-                //"Composite", 
                 "Composite.Workflows", 
                 "Composite.Generated", 
                 "ICSharpCode.SharpZipLib", 
