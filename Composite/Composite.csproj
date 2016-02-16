@@ -152,8 +152,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AspNet\CompositeC1SiteMapProvider.cs" />
-    <Compile Include="AspNet\DisplayModeFacade.cs" />
-    <Compile Include="AspNet\LegacyC1DisplayMode.cs" />
     <Compile Include="AspNet\Razor\RazorFunction.cs" />
     <Compile Include="AspNet\Razor\RazorHelper.cs" />
     <Compile Include="AspNet\Razor\RazorPageTemplate.cs" />
@@ -191,7 +189,7 @@
     <Compile Include="C1Console\Trees\SortDirection.cs" />
     <Compile Include="Core\Application\ServiceLocator.cs" />
     <Compile Include="Core\Application\Job.cs" />
-    <Compile Include="Core\Application\SpecialModesFileResolver.cs" />
+    <Compile Include="Core\IO\SpecialModesFileResolver.cs" />
     <Compile Include="Core\Caching\FileRelatedDataCache.cs" />
     <Compile Include="Core\Extensions\StackTraceExtensionMethods.cs" />
     <Compile Include="Core\Instrumentation\LogExecutionTime.cs" />

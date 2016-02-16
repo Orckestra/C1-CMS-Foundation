@@ -4,7 +4,7 @@ using System.Web;
 using System.Web.Hosting;
 using System.Web.WebPages;
 
-namespace Composite.Core.Application
+namespace Composite.Core.IO
 {
     /// <exclude />
     public static class SpecialModesFileResolver

@@ -6,7 +6,7 @@ using System.Web;
 using System.Web.WebPages;
 using System.Xml;
 using System.Xml.Linq;
-using Composite.Core.Application;
+using Composite.Core.IO;
 //using Composite.Core.Extensions;
 //using Composite.Core.IO;
 using Composite.Core.Types;
