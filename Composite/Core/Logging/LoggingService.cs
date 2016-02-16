@@ -259,6 +259,15 @@ namespace Composite.Core.Logging
                 return PrettyExceptionCallStack(ex.InnerException) + Environment.NewLine + cleanException;
             }
 
+            var loaderException = ex as ReflectionTypeLoadException;
+            if (loaderException?.LoaderExceptions != null)
+            {
+                foreach (var innerEx in loaderException.LoaderExceptions)
+                {
+                    serializedException += Environment.NewLine + PrettyExceptionCallStack(innerEx);
+                }
+            }
+
             return serializedException;
         }
 
