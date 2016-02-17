@@ -196,9 +196,17 @@ namespace Composite.Data
 
             if (!allowDataTypeCreation) return null;
 
+            var compositeAssemblyName = typeof(IData).Assembly.GetName().Name;
 
             foreach (Assembly assembly in AssemblyFacade.GetLoadedAssembliesFromBin())
             {
+                if (assembly != typeof(IData).Assembly
+                    && !assembly.GetReferencedAssemblies().Any(r => r.Name == compositeAssemblyName))
+                {
+                    // Ignoring assemblies that aren't referencing Composite.dll
+                    continue;
+                }
+
                 Type[] types;
                 try
                 {
@@ -206,15 +214,15 @@ namespace Composite.Data
                 }
                 catch(ReflectionTypeLoadException ex)
                 {
-                    throw new InvalidOperationException("Failed to get types from assembly '{0}'".FormatWith(assembly.FullName), ex);
+                    throw new InvalidOperationException($"Failed to get types from assembly '{assembly.FullName}'", ex);
                 }
 
-                foreach (Type type in types )
+                foreach (Type type in types)
                 {
                     if (type.GetInterfaces().Contains(typeof(IData)))
                     {
                         ImmutableTypeIdAttribute attribute = type.GetCustomAttributes(false).OfType<ImmutableTypeIdAttribute>().SingleOrDefault();
-                        if ((attribute == null) || (attribute.ImmutableTypeId != dataTypeId)) continue;
+                        if (attribute == null || attribute.ImmutableTypeId != dataTypeId) continue;
 
                         DataTypeDescriptor newDataTypeDescriptor = ReflectionBasedDescriptorBuilder.Build(type);
                         PersistMetaData(newDataTypeDescriptor);
@@ -225,7 +233,7 @@ namespace Composite.Data
             }
 
 
-            Log.LogError(LogTitle, string.Format("No data type found with the given data type id '{0}'", dataTypeId));
+            Log.LogError(LogTitle, $"No data type found with the given data type id '{dataTypeId}'");
 
             return null;
         }
