@@ -9,7 +9,9 @@ using System.Web;
 
 namespace Composite.C1Console.Actions
 {
-    /// <exclude />
+    /// <summary>
+    /// To add a custom URL action
+    /// </summary>
     [ActionExecutor(typeof(UrlActionTokenActionExecutor))]
     public sealed class UrlActionToken : ActionToken
     {

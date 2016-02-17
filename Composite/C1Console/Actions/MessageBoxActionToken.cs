@@ -23,7 +23,9 @@ namespace Composite.C1Console.Actions
         }
     }
 
-    /// <exclude />
+    /// <summary>
+    /// To add a message box action
+    /// </summary>
     [ActionExecutor(typeof(MessageBoxActionTokenActionExecutor))]
     public sealed class MessageBoxActionToken : ActionToken
     {
