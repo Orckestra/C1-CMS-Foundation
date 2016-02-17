@@ -9,35 +9,42 @@ using System.Web;
 
 namespace Composite.C1Console.Actions
 {
+    /// <exclude />
     [ActionExecutor(typeof(UrlActionTokenActionExecutor))]
-    internal sealed class UrlActionToken : ActionToken
+    public sealed class UrlActionToken : ActionToken
     {
-        private IEnumerable<PermissionType> _permissionTypes;
-
+        private readonly IEnumerable<PermissionType> _permissionTypes;
+        /// <summary>
+        /// To add a custom URL action
+        /// </summary>
+        /// <param name="label"></param>
+        /// <param name="url"></param>
+        /// <param name="permissionTypes"></param>
         public UrlActionToken(string label, string url, IEnumerable<PermissionType> permissionTypes)
         {
             this.Url = url;
             _permissionTypes = permissionTypes;
         }
 
-
+        /// <exclude />
         public string Label { get; private set; }
+        /// <exclude />
         public string Url { get; private set; }
 
-
+        /// <exclude />
         public override IEnumerable<PermissionType> PermissionTypes
         {
             get { return _permissionTypes; }
         }
 
-
+        /// <exclude />
         public override string Serialize()
         {
             return this.Label + "·" + this.Url + "·" + this.PermissionTypes.SerializePermissionTypes();
         }
 
 
-        
+        /// <exclude />
         public static ActionToken Deserialize(string serializedData)
         {
             string[] s = serializedData.Split('·');
