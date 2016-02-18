@@ -8,7 +8,8 @@ namespace Composite.Core.Configuration.BuildinPlugins.GlobalSettingsProvider
 {
     internal sealed class BuildinGlobalSettingsProvider : IGlobalSettingsProvider
     {
-        private string _applicationName = "Freja";
+        private string _applicationName = "Composite C1";
+        private string _applicationShortName = "C1";
         private string _brandedVersionAssemblySource = "Composite";
         private string _configurationDirectory = "~";
         private string _generatedAssembliesDirectory = "~";
@@ -36,6 +37,11 @@ namespace Composite.Core.Configuration.BuildinPlugins.GlobalSettingsProvider
         public string ApplicationName
         {
             get { return _applicationName; }
+        }
+
+        public string ApplicationShortName
+        {
+            get { return _applicationShortName; }
         }
 
         public string BrandedVersionAssemblySource

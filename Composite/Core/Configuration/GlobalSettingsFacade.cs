@@ -80,6 +80,17 @@ namespace Composite.Core.Configuration
         }
 
         /// <summary>
+        /// The short name of the application to be displayed in the UI.
+        /// </summary>
+        public static string ApplicationShortName
+        {
+            get
+            {
+                return _globalSettingsFacade.ApplicationShortName;
+            }
+        }
+
+        /// <summary>
         /// Name of an assembly file, which version should displayed as a product version in UI.
         /// </summary>
         public static string BrandedVersionAssemblySource => _globalSettingsFacade.BrandedVersionAssemblySource;

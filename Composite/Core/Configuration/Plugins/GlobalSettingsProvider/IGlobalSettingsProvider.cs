@@ -11,6 +11,8 @@ namespace Composite.Core.Configuration.Plugins.GlobalSettingsProvider
     {        
         string ApplicationName { get; }
 
+        string ApplicationShortName { get; }
+
         string BrandedVersionAssemblySource { get; }
 
         string DefaultCultureName { get; }

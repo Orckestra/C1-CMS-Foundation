@@ -8,7 +8,7 @@
     <%--<meta http-equiv="x-ua-compatible" content="IE=EmulateIE9" >--%>
     <%--<meta http-equiv="X-UA-Compatible" content="IE=5">--%>
 
-    <title>C1: <%= Request.Url.Host%></title>
+    <title><%= Composite.Core.Configuration.GlobalSettingsFacade.ApplicationShortName %>: <%= Request.Url.Host%></title>
     <meta name="robots" content="noindex, nofollow" />
     <meta name="google" value="notranslate" />
     <meta name="apple-mobile-web-app-capable" content="yes" />

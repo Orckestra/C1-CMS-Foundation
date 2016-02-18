@@ -157,3 +157,4 @@ Changes in 5.0 or later
 Changes in 5.1 or later
               <add userControlVirtualPath="~/Composite/controls/FormsControls/FormUiControlTemplates/Selectors/SvgIconSelector.ascx" cacheCompiledUserControlType="true" type="Composite.Plugins.Forms.WebChannel.UiControlFactories.TemplatedSvgIconSelectorUiControlFactory, Composite" name="SvgIconSelector" />
               <add userControlVirtualPath="~/Composite/controls/FormsControls/FormUiControlTemplates/Selectors/SvgIconSelector.ascx" cacheCompiledUserControlType="true" type="Composite.Plugins.Forms.WebChannel.UiControlFactories.TemplatedSvgIconSelectorUiControlFactory, Composite" name="ConsoleIconSelector" svgSpritePath="~/Composite/images/sprite.svg" />
+- Added a global configuration settings @applicationShortName
