@@ -4,7 +4,6 @@ using System.IO;
 using System.Web;
 using System.Web.UI;
 using Composite.AspNet;
-using Composite.Core.Application;
 using Composite.Core.IO;
 using Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvider;
 
@@ -56,9 +55,9 @@ namespace Composite.Plugins.Functions.FunctionProviders.UserControlFunctionProvi
 
             var directory = Path.GetDirectoryName(VirtualPath);
             var function = Path.GetFileNameWithoutExtension(VirtualPath);
-            var virtualPath = SpecialModesFileResolver.ResolveFileInInDirectory(directory, function, ".ascx", new HttpContextWrapper(httpContext));
+            var virtualPath = DisplayModesFileResolver.ResolveFileInInDirectory(directory, function, ".ascx", new HttpContextWrapper(httpContext));
 
-            var userControl = currentPage.LoadControl(VirtualPath);
+            var userControl = currentPage.LoadControl(virtualPath);
 
 
             foreach (var param in parameters.AllParameterNames)

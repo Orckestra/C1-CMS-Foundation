@@ -2,18 +2,16 @@
 using System.IO;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Xml.Linq;
 using System.Linq;
 using System.Web;
+using Composite.AspNet;
 using Composite.C1Console.Security;
 using Composite.Core.Collections.Generic;
 using Composite.Core.Extensions;
-using Composite.Core.IO;
 using Composite.Core.PageTemplates;
 using Composite.Core.WebClient.Renderings.Page;
 using Composite.Core.Xml;
 using Composite.Data.Types;
-
 
 namespace Composite.Plugins.PageTemplates.MasterPages
 {
@@ -57,7 +55,7 @@ namespace Composite.Plugins.PageTemplates.MasterPages
 
             var dir = Path.GetDirectoryName(rendering.VirtualPath);
             var template = Path.GetFileNameWithoutExtension(rendering.VirtualPath);
-            var file = SpecialModesFileResolver.ResolveFileInInDirectory(dir, template, ".master", new HttpContextWrapper(HttpContext.Current));
+            var file = DisplayModesFileResolver.ResolveFileInInDirectory(dir, template, ".master", new HttpContextWrapper(HttpContext.Current));
 
             aspnetPage.MasterPageFile = file;
             aspnetPage.PreRender += (e, args) => PageOnPreRender(aspnetPage, contentToRender.Page);

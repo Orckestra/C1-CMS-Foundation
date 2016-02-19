@@ -189,7 +189,7 @@
     <Compile Include="C1Console\Trees\SortDirection.cs" />
     <Compile Include="Core\Application\ServiceLocator.cs" />
     <Compile Include="Core\Application\Job.cs" />
-    <Compile Include="Core\IO\SpecialModesFileResolver.cs" />
+    <Compile Include="AspNet\DisplayModesFileResolver.cs" />
     <Compile Include="Core\Caching\FileRelatedDataCache.cs" />
     <Compile Include="Core\Extensions\StackTraceExtensionMethods.cs" />
     <Compile Include="Core\Instrumentation\LogExecutionTime.cs" />

@@ -5,11 +5,11 @@ using System.Web;
 using System.Web.UI;
 using System.Web.WebPages;
 using System.Xml.Linq;
+using Composite.AspNet;
 using Composite.AspNet.Razor;
 using Composite.Core.Collections.Generic;
 using Composite.Core.Extensions;
 using Composite.Core.Instrumentation;
-using Composite.Core.IO;
 using Composite.Core.PageTemplates;
 using Composite.Core.WebClient.Renderings.Page;
 using Composite.Functions;
@@ -64,7 +64,7 @@ namespace Composite.Plugins.PageTemplates.Razor
             {
                 var directory = Path.GetDirectoryName(renderingInfo.ControlVirtualPath);
                 var template = Path.GetFileNameWithoutExtension(renderingInfo.ControlVirtualPath);
-                var file = SpecialModesFileResolver.ResolveFileInInDirectory(directory, template, ".cshtml", new HttpContextWrapper(HttpContext.Current));
+                var file = DisplayModesFileResolver.ResolveFileInInDirectory(directory, template, ".cshtml", new HttpContextWrapper(HttpContext.Current));
 
                 webPage = WebPageBase.CreateInstanceFromVirtualPath(file);
 

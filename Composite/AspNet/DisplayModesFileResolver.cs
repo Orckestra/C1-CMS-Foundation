@@ -1,13 +1,12 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Web;
 using System.Web.Hosting;
 using System.Web.WebPages;
 
-namespace Composite.Core.IO
+namespace Composite.AspNet
 {
     /// <exclude />
-    public static class SpecialModesFileResolver
+    public static class DisplayModesFileResolver
     {
         /// <exclude />
         public static string ResolveFileInInDirectory(string directory, string file, string extension, HttpContextBase context)
@@ -17,7 +16,7 @@ namespace Composite.Core.IO
 
             foreach (var mode in modes)
             {
-                var specialFile = Path.Combine(directory, String.Format("{0}{1}", file, extension));
+                var specialFile = Path.Combine(directory, $"{file}{extension}");
 
                 var displayInfo = mode.GetDisplayInfo(context, specialFile, pathProvider.FileExists);
                 if (displayInfo != null)
