@@ -6,9 +6,9 @@ function Map ( map ) {
 
 	/**
 	 * @type {HashMap<object><object>
-	 */	
+	 */
 	this._map = {};
-	
+
 	/*
 	 * Populate from optional constructor object.
 	 */
@@ -22,12 +22,12 @@ function Map ( map ) {
 Map.prototype._map = {};
 
 /**
- * Get entry. Notice that an invalid key will not be tolerated 
+ * Get entry. Notice that an invalid key will not be tolerated
  * here. Always use method "has" to check for key existance first.
  * @param {object} key
  */
 Map.prototype.get = function ( key ) {
-	
+
 	var result = null;
 	if ( this.has ( key )) {
 		result = this._map [ key ];
@@ -49,7 +49,7 @@ Map.prototype.get = function ( key ) {
  * @param {object} value
  */
 Map.prototype.set = function ( key, value ) {
-	
+
 	this._map [ key ] = value;
 }
 
@@ -58,7 +58,7 @@ Map.prototype.set = function ( key, value ) {
  * @param {object} key
  */
 Map.prototype.del = function ( key ) {
-	
+
 	delete this._map [ key ];
 }
 
@@ -68,7 +68,7 @@ Map.prototype.del = function ( key ) {
  * @return {boolean}
  */
 Map.prototype.has = function ( key ) {
-	
+
 	return typeof this._map [ key ] != "undefined";
 }
 
@@ -76,11 +76,11 @@ Map.prototype.has = function ( key ) {
  * Each entry.
  * @param {function} action
  */
-Map.prototype.each = function ( action ) {
-	
+Map.prototype.each = function ( action, thisp ) {
+
 	for ( var key in this._map ) {
-		var isContinue = action ( 
-			key, 
+		var isContinue = action.call ( thisp,
+			key,
 			this._map [ key ]
 		);
 		if ( isContinue == false ) {
@@ -94,7 +94,7 @@ Map.prototype.each = function ( action ) {
  * @retun {boolean}
  */
 Map.prototype.hasEntries = function () {
-	
+
 	var result = false;
 	for ( var key in this._map ) {
 		result = true;
@@ -108,7 +108,7 @@ Map.prototype.hasEntries = function () {
  * @retun {int}
  */
 Map.prototype.countEntries = function () {
-	
+
 	var result = 0;
 	for ( var key in this._map ) {
 		result ++;
@@ -116,12 +116,12 @@ Map.prototype.countEntries = function () {
 	return result;
 }
 
-/** 
+/**
  * Convert to list (listing keys or values).
  * @param {boolean} isKey
  */
 Map.prototype.toList = function ( isKey ) {
-	
+
 	var list = new List ();
 	for ( var key in this._map ) {
 		list.add (
@@ -136,7 +136,7 @@ Map.prototype.toList = function ( isKey ) {
  * @return {Map}
  */
 Map.prototype.copy = function () {
-	
+
 	var map = new Map ();
 	for ( var key in this._map ) {
 		map.set ( key, this._map [ key ]);
@@ -149,7 +149,7 @@ Map.prototype.copy = function () {
  * @return {Map}
  */
 Map.prototype.inverse = function () {
-	
+
 	var map = new Map ();
 	for ( var key in this._map ) {
 		map.set ( this._map [ key ], key );
@@ -161,7 +161,7 @@ Map.prototype.inverse = function () {
  * Empty map.
  */
 Map.prototype.empty = function () {
-	
+
 	for ( var key in this._map ) {
 		delete this._map [ key ];
 	}
@@ -172,7 +172,7 @@ Map.prototype.empty = function () {
  * TODO: Invoke "dispose" on entries?
  */
 Map.prototype.dispose = function () {
-	
+
 	for ( var key in this._map ) {
 		this._map [ key ] = null;
 	}

@@ -27,6 +27,11 @@ function ToolBarComboButtonBinding() {
 	*/
 	this.isCheckButton = true;
 
+	/**
+	* @type {string}
+	*/
+	this.bundleName = null;
+
 	/*
 	* Returnable.
 	*/
@@ -53,10 +58,12 @@ ToolBarComboButtonBinding.prototype.onBindingAttach = function () {
 	this.comboBoxBinding.attach();
 
 	this.attachClassName(ToolBarComboButtonBinding.CLASSNAME_COMBOBUTTON);
+
+	this.bundleName = this.getProperty("bundle") ? this.getProperty("bundle") : this.getProperty("id");
 };
 
 /**
-* Build popup when perspective changes. If no 
+* Build popup when perspective changes. If no
 * views are associated, the button will disable.
 * @overloads {ToolBarButtonBinding#handleBroadcast}
 * @param {string} broadcast
@@ -87,20 +94,16 @@ ToolBarComboButtonBinding.prototype.setPopup = function (arg) {
 			};
 		}
 	);
-	var activeMenu = null;
-	var activeMenuId = this.getActiveMenuItemId();
+	var activeMenu = menuitems.hasEntries() ? menuitems.getFirst() : null ;
+	var activeMenuHandle = this.getActiveMenuHandle();
 
 	menuitems.reset();
 	while (menuitems.hasNext()) {
 		var menuitem = menuitems.getNext();
-		if (menuitem.getProperty("id") == activeMenuId) {
+		if (this.getMenuHandle(menuitem) === activeMenuHandle) {
 			activeMenu = menuitem;
 			break;
 		}
-	}
-
-	if (activeMenu == null && menuitems.hasEntries()) {
-		activeMenu = menuitems.getFirst();
 	}
 
 	if (activeMenu != null)
@@ -133,6 +136,8 @@ ToolBarComboButtonBinding.prototype.setButton = function (menuitem) {
 
 		this.setImage(this.imageProfile.getDefaultImage());
 
+		this.associatedSystemAction = menuitem.associatedSystemAction;
+
 		this.oncommand = function () {
 			Binding.evaluate(hiddenCommand, this);
 		};
@@ -149,7 +154,7 @@ ToolBarComboButtonBinding.prototype.setAndFireButton = function (menuitem) {
 
 	if (menuitem instanceof MenuItemBinding) {
 		this.setButton(menuitem);
-		this.setActiveMenuItemId(menuitem.getProperty("id"));
+		this.setActiveMenuHandle(this.getMenuHandle(menuitem));
 		this.fireCommand();
 	}
 }
@@ -161,7 +166,7 @@ ToolBarComboButtonBinding.prototype.setAndFireButton = function (menuitem) {
 ToolBarComboButtonBinding.prototype.hideActiveItem = function (activeMenuitem) {
 	this.popupBinding.getDescendantBindingsByType(MenuItemBinding).each(
 		function (menuitem) {
-			if (menuitem == activeMenuitem) {
+			if (menuitem === activeMenuitem) {
 				Binding.prototype.hide.call(menuitem);
 			} else {
 				Binding.prototype.show.call(menuitem);
@@ -172,17 +177,33 @@ ToolBarComboButtonBinding.prototype.hideActiveItem = function (activeMenuitem) {
 
 
 /**
-* Set active menuitem id
+* Set active menuitem handle
 * @param {MenuItemBinding} menuitem id
 */
-ToolBarComboButtonBinding.prototype.setActiveMenuItemId = function (id) {
-	Cookies.createCookie(this.getProperty("id"), id, 365);
+ToolBarComboButtonBinding.prototype.setActiveMenuHandle = function (id) {
+
+	Cookies.createCookie(this.bundleName, id, 365);
 }
 
 /**
-* Get active menuitem id
+* Get active menuitem handle
 */
-ToolBarComboButtonBinding.prototype.getActiveMenuItemId = function () {
-	return Cookies.readCookie(this.getProperty("id"));
+ToolBarComboButtonBinding.prototype.getActiveMenuHandle = function () {
+	return Cookies.readCookie(this.bundleName);
 }
 
+ToolBarComboButtonBinding.prototype.getMenuHandle = function (menuitem) {
+
+	return menuitem.menuHandle ? menuitem.menuHandle : this.getProperty("id");
+}
+
+/**
+ * ToolBarButtonBinding factory.
+ * @param {DOMDocument} ownerDocument
+ * @return {ToolBarButtonBinding}
+ */
+ToolBarComboButtonBinding.newInstance = function (ownerDocument) {
+
+	var element = DOMUtil.createElementNS(Constants.NS_UI, "ui:toolbarbutton", ownerDocument);
+	return UserInterface.registerBinding(element, ToolBarComboButtonBinding);
+}
