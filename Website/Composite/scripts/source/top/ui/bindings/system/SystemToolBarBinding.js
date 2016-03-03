@@ -354,7 +354,13 @@ SystemToolBarBinding.prototype._containAllButtons = function () {
 
 		this._moreActions = new List ();
 		while (( button = hides.getNext ()) != null ) {
-			this._moreActions.add ( button.associatedSystemAction );
+			if (button instanceof ToolBarComboButtonBinding) {
+				button.getAssociatedSystemActions().each(function(associatedSystemAction) {
+					this._moreActions.add(associatedSystemAction);
+				}, this);
+			} else {
+				this._moreActions.add(button.associatedSystemAction);
+			}
 		}
 		mores.show ();
 
