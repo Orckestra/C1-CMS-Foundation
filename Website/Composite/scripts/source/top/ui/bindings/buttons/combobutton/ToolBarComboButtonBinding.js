@@ -3,6 +3,7 @@ ToolBarComboButtonBinding.prototype.constructor = ToolBarComboButtonBinding;
 ToolBarComboButtonBinding.superclass = ToolBarButtonBinding.prototype;
 
 ToolBarComboButtonBinding.CLASSNAME_COMBOBUTTON = "combobutton";
+ToolBarComboButtonBinding.STORAGE_PREFFIX = "STORAGEBUTTONHANDLE";
 
 /**
 * @class
@@ -72,7 +73,6 @@ ToolBarComboButtonBinding.prototype.onBindingAttach = function () {
 ToolBarComboButtonBinding.prototype.handleBroadcast = function (broadcast, arg) {
 
 	ToolBarComboButtonBinding.superclass.handleBroadcast.call(this, broadcast, arg);
-
 }
 
 /**
@@ -108,6 +108,14 @@ ToolBarComboButtonBinding.prototype.setPopup = function (arg) {
 
 	if (activeMenu != null)
 		this.setButton(activeMenu);
+
+	if (this.comboBoxBinding) {
+		if (menuitems.getLength() <= 1) {
+			this.comboBoxBinding.hide();
+		} else {
+			this.comboBoxBinding.show();
+		}
+	}
 }
 
 /**
@@ -146,6 +154,19 @@ ToolBarComboButtonBinding.prototype.setButton = function (menuitem) {
 	}
 }
 
+ToolBarComboButtonBinding.prototype.getAssociatedSystemActions = function () {
+
+	var result = new List();
+
+	this.popupBinding.getDescendantBindingsByType(MenuItemBinding).each(function(menuitem) {
+		if (menuitem.associatedSystemAction) {
+			result.add(menuitem.associatedSystemAction);
+		}
+	});
+
+	return result;
+}
+
 /**
 * Set and Fire Commmand from MenuItem
 * @param {MenuItemBinding} menuitem
@@ -175,21 +196,19 @@ ToolBarComboButtonBinding.prototype.hideActiveItem = function (activeMenuitem) {
 	);
 }
 
-
 /**
 * Set active menuitem handle
 * @param {MenuItemBinding} menuitem id
 */
-ToolBarComboButtonBinding.prototype.setActiveMenuHandle = function (id) {
-
-	Cookies.createCookie(this.bundleName, id, 365);
+ToolBarComboButtonBinding.prototype.setActiveMenuHandle = function (handle) {
+	LocalStorage.set(ToolBarComboButtonBinding.STORAGE_PREFFIX + this.bundleName, handle);
 }
 
 /**
 * Get active menuitem handle
 */
 ToolBarComboButtonBinding.prototype.getActiveMenuHandle = function () {
-	return Cookies.readCookie(this.bundleName);
+	return LocalStorage.get(ToolBarComboButtonBinding.STORAGE_PREFFIX + this.bundleName);
 }
 
 ToolBarComboButtonBinding.prototype.getMenuHandle = function (menuitem) {
