@@ -82,35 +82,45 @@ ToolBarComboButtonBinding.prototype.handleBroadcast = function (broadcast, arg) 
 ToolBarComboButtonBinding.prototype.setPopup = function (arg) {
 
 	ToolBarComboButtonBinding.superclass.setPopup.call(this, arg);
+
 	var self = this;
-	var menuitems = this.popupBinding.getDescendantBindingsByType(MenuItemBinding);
-	menuitems.each(
-		function (menuitem) {
-			var hiddenCommand = menuitem.getProperty("oncommand");
-			menuitem.setProperty("hiddencommand", hiddenCommand);
-			menuitem.deleteProperty("oncommand");
-			menuitem.oncommand = function () {
+	var menuItemBindings = this.popupBinding.getDescendantBindingsByType(MenuItemBinding);
+	menuItemBindings.each(
+		function (menuItemBinding) {
+			var hiddenCommand = menuItemBinding.getProperty("oncommand");
+			menuItemBinding.setProperty("hiddencommand", hiddenCommand);
+			menuItemBinding.deleteProperty("oncommand");
+			menuItemBinding.oncommand = function () {
 				self.setAndFireButton(this);
 			};
-		}
+		}, this
 	);
-	var activeMenu = menuitems.hasEntries() ? menuitems.getFirst() : null ;
-	var activeMenuHandle = this.getActiveMenuHandle();
+	var latestMenuItemBinding = null;
+	var latestMenuItemHandle = this.getActiveMenuHandle();
 
-	menuitems.reset();
-	while (menuitems.hasNext()) {
-		var menuitem = menuitems.getNext();
-		if (this.getMenuHandle(menuitem) === activeMenuHandle) {
-			activeMenu = menuitem;
-			break;
+	menuItemBindings.each(function (menuItemBinding) {
+		if (this.getMenuHandle(menuItemBinding) === latestMenuItemHandle && !menuItemBinding.isDisabled) {
+			latestMenuItemBinding = menuItemBinding;
+			return false;
 		}
+		return true;
+	}, this);
+
+	if (latestMenuItemBinding == null) {
+		menuItemBindings.each(function (menuItemBinding) {
+			if (!menuItemBinding.isDisabled) {
+				latestMenuItemBinding = menuItemBinding;
+				return false;
+			}
+			return true;
+		}, this);
 	}
 
-	if (activeMenu != null)
-		this.setButton(activeMenu);
+	if (latestMenuItemBinding != null)
+		this.setButton(latestMenuItemBinding);
 
 	if (this.comboBoxBinding) {
-		if (menuitems.getLength() <= 1) {
+		if (menuItemBindings.getLength() <= 1) {
 			this.comboBoxBinding.hide();
 		} else {
 			this.comboBoxBinding.show();
@@ -127,24 +137,20 @@ ToolBarComboButtonBinding.prototype.setButton = function (menuitem) {
 	if (menuitem instanceof MenuItemBinding) {
 		var label = menuitem.getProperty("label");
 		var image = menuitem.getProperty("image");
-		var imageHover = menuitem.getProperty("image-hover");
-		var imageActive = menuitem.getProperty("image-active");
-		var imageDisabled = menuitem.getProperty("image-disabled");
 		var hiddenCommand = menuitem.getProperty("hiddencommand");
-
 
 		this.setLabel(label ? label : "");
 
-		this.image = image;
-		this.imageHover = image;
-		this.imageActive = imageActive;
-		this.imageDisabled = imageDisabled;
-		this.imageProfile = new ImageProfile(this);
-		this._stateManager.imageProfile = this.imageProfile;
+		this.setImage(image);
+		if (!this.isDisabled && menuitem.isDisabled) {
+			this.setDisabled(true);
+		} else if (this.isDisabled && !menuitem.isDisabled) {
+			this.setDisabled(false);
+		}
 
-		this.setImage(this.imageProfile.getDefaultImage());
-
-		this.associatedSystemAction = menuitem.associatedSystemAction;
+		if (menuitem.associatedSystemAction) {
+			this.associatedSystemAction = menuitem.associatedSystemAction;
+		}
 
 		this.oncommand = function () {
 			Binding.evaluate(hiddenCommand, this);
@@ -175,7 +181,7 @@ ToolBarComboButtonBinding.prototype.setAndFireButton = function (menuitem) {
 
 	if (menuitem instanceof MenuItemBinding) {
 		this.setButton(menuitem);
-		this.setActiveMenuHandle(this.getMenuHandle(menuitem));
+		this.saveActiveMenuHandle(this.getMenuHandle(menuitem));
 		this.fireCommand();
 	}
 }
@@ -200,7 +206,7 @@ ToolBarComboButtonBinding.prototype.hideActiveItem = function (activeMenuitem) {
 * Set active menuitem handle
 * @param {MenuItemBinding} menuitem id
 */
-ToolBarComboButtonBinding.prototype.setActiveMenuHandle = function (handle) {
+ToolBarComboButtonBinding.prototype.saveActiveMenuHandle = function (handle) {
 	LocalStorage.set(ToolBarComboButtonBinding.STORAGE_PREFFIX + this.bundleName, handle);
 }
 

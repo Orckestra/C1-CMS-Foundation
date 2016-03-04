@@ -379,17 +379,9 @@ SystemToolBarBinding.prototype._showMoreActions = function () {
 		var popup = this.bindingWindow.bindingMap.moreactionspopup;
 		popup.empty ();
 		while (( action = this._moreActions.getNext ()) != null ) {
-			var item = MenuItemBinding.newInstance ( popup.bindingDocument );
-			item.setLabel ( action.getLabel ());
-			item.setToolTip ( action.getToolTip ());
-			item.imageProfile = new ImageProfile ({
-				image : action.getImage (),
-				imageDisabled : action.getDisabledImage ()
-			});
-			if ( action.isDisabled ()) {
-				item.disable ();
-			}
-			item.associatedSystemAction = action;
+			var item = MenuItemBinding.newInstance(popup.bindingDocument);
+
+			SystemTreePopupBinding.prototype.setSystemAction.call(this, item, action);
 			popup.add ( item );
 		}
 		popup.attachRecursive ();

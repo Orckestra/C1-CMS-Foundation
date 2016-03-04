@@ -287,15 +287,30 @@ SystemTreePopupBinding.prototype.constructContent = function () {
 		bundles.each(function (bundleName, bundleMenuItemBinding) {
 			if (bundleMenuItemBinding.isMenuContainer) {
 				var bundleMenuItemsBinding = bundleMenuItemBinding.getDescendantBindingsByType(MenuItemBinding);
-				var latestBundleMenuItem = bundleMenuItemsBinding.getFirst();
+				var latestBundleMenuItem = null;
+
 				var latestBundleHandle = LocalStorage.get(ToolBarComboButtonBinding.STORAGE_PREFFIX + bundleName);
 				bundleMenuItemsBinding.each(function (menuItemBinding) {
-					if (menuItemBinding.associatedSystemAction && menuItemBinding.associatedSystemAction.getHandle() === latestBundleHandle) {
+					if (menuItemBinding.associatedSystemAction && menuItemBinding.associatedSystemAction.getHandle() === latestBundleHandle && !menuItemBinding.isDisabled) {
 						latestBundleMenuItem = menuItemBinding;
 						return false;
 					}
 					return true;
 				});
+
+				if (latestBundleMenuItem == null) {
+					bundleMenuItemsBinding.each(function(menuItemBinding) {
+						if (!menuItemBinding.isDisabled) {
+							latestBundleMenuItem = menuItemBinding;
+							return false;
+						}
+						return true;
+					});
+				}
+
+				if (latestBundleMenuItem == null) {
+					latestBundleMenuItem = bundleMenuItemsBinding.getFirst();
+				}
 
 				this.setSystemAction(bundleMenuItemBinding, latestBundleMenuItem.associatedSystemAction);
 				Binding.prototype.hide.call(latestBundleMenuItem);
@@ -340,10 +355,14 @@ SystemTreePopupBinding.prototype.setSystemAction = function (binding, action) {
 		binding.setType(MenuItemBinding.TYPE_CHECKBOX);
 		if (action.isChecked()) {
 			binding.check(true);
+		} else {
+			binding.check(false);
 		}
 	}
 	if (action.isDisabled()) {
 		binding.disable();
+	} else if(binding.isDisabled) {
+		binding.enable();
 	}
 
 	/*
