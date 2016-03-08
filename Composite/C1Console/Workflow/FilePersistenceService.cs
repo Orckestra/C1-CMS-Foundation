@@ -178,10 +178,17 @@ namespace Composite.C1Console.Workflow
             IFormatter formatter = new BinaryFormatter();
             formatter.SurrogateSelector = ActivitySurrogateSelector.Default;
 
-            using (C1FileStream stream = new C1FileStream(filename, FileMode.OpenOrCreate))
+            using (var stream = new C1FileStream(filename, FileMode.OpenOrCreate))
             {
-                rootActivity.Save(stream, formatter);
-                stream.Close();
+                try
+                {
+                    rootActivity.Save(stream, formatter);
+                    stream.Close();
+                }
+                catch (SerializationException ex)
+                {
+                    Log.LogError(LogTitle, ex);
+                }
             }
 
             // Log.LogVerbose(LogTitle, $"Workflow persisted. Id = {id}, Type = {rootActivity.GetType()}");
