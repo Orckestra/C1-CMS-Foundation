@@ -1,13 +1,12 @@
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
 using System.Threading;
+using System.Web;
 using System.Web.UI;
+using System.Xml.Linq;
 using Composite.Core;
 using Composite.Core.Types;
-using System.Xml.Linq;
 using Composite.Core.Xml;
-using Composite.Plugins.PageTemplates.MasterPages.Controls.Functions;
-
 
 namespace Composite.Functions
 {
@@ -134,7 +133,8 @@ namespace Composite.Functions
                 || exception is ThreadAbortException 
                 || exception is ThreadInterruptedException 
                 || exception is AppDomainUnloadedException
-                || exception is OutOfMemoryException)
+                || exception is OutOfMemoryException
+                || IsHttpException(exception))
             {
                 errorBoxHtml = null;
                 return false;
@@ -145,6 +145,11 @@ namespace Composite.Functions
             errorBoxHtml = XhtmlErrorFormatter.GetErrorDescriptionHtmlElement(exception, functionName);
 
             return true;
+        }
+
+        private bool IsHttpException(Exception exception)
+        {
+            return exception is HttpException || (exception.InnerException != null && IsHttpException(exception.InnerException));
         }
     }
 }
