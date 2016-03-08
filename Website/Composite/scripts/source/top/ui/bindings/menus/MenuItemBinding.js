@@ -21,75 +21,80 @@ function MenuItemBinding () {
 	 * @type {SystemLogger}
 	 */
 	this.logger = SystemLogger.getLogger ( "MenuItemBinding" );
-	
+
 	/**
 	 * @type {string}
 	 */
 	this.type = null;
-	
+
 	/**
-	 * User can implement this. 
+	 * User can implement this.
 	 * @type {function}
 	 */
 	this.oncommand = null;
-	
+
 	/**
 	 * @type {boolean}
 	 */
 	this.isDisabled = false;
-	
+
 	/**
 	 * @type {LabelBinding}
 	 */
 	this.labelBinding = null;
-	
+
 	/**
 	 * @type {string}
 	 */
 	this.image = null;
-	
+
 	/**
 	 * @type {string}
 	 */
 	this.imageHover = null;
-	
+
 	/**
 	 * @type {string}
 	 */
 	this.imageActive = null;
-	
+
 	/**
 	 * @type {string}
 	 */
 	this.imageDisabled = null;
-	
+
 	/**setDisabled
 	 */
 	this.imageProfile = null;
-	
+
 	/**
 	 * @type {boolean}
 	 */
 	this.isMenuContainer = false;
-	
+
+	/**
+	 * @type {boolean}
+	 */
+	this.hasAction = true;
+
 	/**
 	 * @type {boolean}
 	 */
 	this.isTypeSet = false;
-	
+
 	/**
 	 * @type {boolean}
 	 */
 	this.isChecked = false;
-	
+
 	/**
 	 * Flipped by either mouse or keyboard navigation.
 	 * @type {boolean}
 	 */
 	this.isFocused = false;
-	
+
 	/**
-	 * The containing menubody handles blur whenever a new item is focused. 
+	 * The containing menubody handles blur whenever a new item is focused.
 	 * This is done by direct method invokation because of maxed performance.
 	 * @type {MenuBodyBinding}
 	 */
@@ -100,7 +105,7 @@ function MenuItemBinding () {
  * Identifies binding.
  */
 MenuItemBinding.prototype.toString = function () {
-	
+
 	return "[MenuItemBinding]";
 }
 
@@ -122,26 +127,26 @@ MenuItemBinding.prototype.onBindingRegister = function () {
 MenuItemBinding.prototype.onBindingAttach = function () {
 
 	MenuItemBinding.superclass.onBindingAttach.call ( this );
-	
+
 	/*
-	 * Locate menubody and set a dirty flag. This 
+	 * Locate menubody and set a dirty flag. This
 	 * will force menubody to reindex menuitems.
 	 */
 	this._containingMenuBodyBinding = this.getAncestorBindingByLocalName ( "menubody" );
 	this._containingMenuBodyBinding.isDirty = true;
-	
+
 	/*
 	 * Build.
 	 */
 	this.parseDOMProperties ();
 	this.buildDOMContent ();
 	this.assignDOMEvents ();
-	
+
 	/**
 	 * Intercepted by PopupBinding in order to control overflow.
 	 */
 	this.dispatchAction ( Binding.ACTION_ATTACHED );
-	
+
 }
 
 
@@ -155,7 +160,7 @@ MenuItemBinding.prototype.parseDOMProperties = function () {
 	var imageHover = this.getProperty ( "image-hover" );
 	var imageActive = this.getProperty ( "image-active" );
 	var imageDisabled = this.getProperty ( "image-disabled" );
-	
+
 	if ( !this.image && image ) {
 		this.image = image;
 	}
@@ -182,22 +187,24 @@ MenuItemBinding.prototype.buildDOMContent = function () {
 	var image 			= this.getProperty ( "image" );
 	var imageHover 		= this.getProperty ( "image-hover" );
 	var imageActive 	= this.getProperty ( "image-active" );
-	var imageDisabled 	= this.getProperty ( "image-disabled" );
+	var imageDisabled = this.getProperty("image-disabled");
+	var hasAction = this.getProperty("hasaction");
 
 	this.labelBinding = LabelBinding.newInstance ( this.bindingDocument );
 	this.labelBinding.attachClassName ( "menuitemlabel" );
 	this.add ( this.labelBinding );
-	
+
 	// assign menupopup
 	var menuPopup = this.getMenuPopupBinding ();
 	if ( menuPopup ) {
 		this.isMenuContainer = true;
 		this.setType ( MenuItemBinding.TYPE_MENUCONTAINER );
+		this.hasAction = hasAction === true;
 	}
-	
+
 	// compute image profile
 	if ( !this.imageProfile ) {
-	
+
 		if ( !this.image && image ) {
 			this.image = image;
 		}
@@ -214,14 +221,14 @@ MenuItemBinding.prototype.buildDOMContent = function () {
 			this.imageProfile = new ImageProfile ( this );
 		}
 	}
-	
+
 	if ( this.imageProfile ) {
 		this.setImage ( this.imageProfile.getDefaultImage ());
 		/*this._containingMenuBodyBinding.invokeImageLayout ();*/
 	} else {
 		this.setImage ( null );
 	}
-		
+
 	if ( label != null ) {
 		this.setLabel ( label );
 	}
@@ -239,38 +246,23 @@ MenuItemBinding.prototype.buildDOMContent = function () {
 	if ( disabled == true ) {
 		this.disable ();
 	}
-	
+
 	/*
 	 * Setup command
 	 */
 	var oncommand = this.getProperty ( "oncommand" );
 	if ( oncommand ) {
-		if ( this.isMenuContainer ) {
-			throw new Error ( "MenuItemBinding with contained menuitems cannot fire commands." );
-		} else {
-			this.oncommand = function () {
-				this.bindingWindow.eval ( oncommand );
-			}
+		this.oncommand = function () {
+			this.bindingWindow.eval ( oncommand );
 		}
 	}
-	
-	/*
-	 * So that scrollbarred menus can be keyboard navigated. 
-	 * The tabIndex is set to zero when containing popup opens.
-	 * @see {PopupBinding#show}
-	 *
-	this.bindingElement.tabIndex = -1;
-	if ( Client.isExplorer ) {
-		this.bindingElement.hideFocus = true;
-	}
-	*/
 }
 
 /**
  * Assign DOM events.
  */
 MenuItemBinding.prototype.assignDOMEvents = function () {
-	
+
 	/*
 	 * Rebember that menubody handles blur!
 	 */
@@ -286,18 +278,18 @@ MenuItemBinding.prototype.assignDOMEvents = function () {
 MenuItemBinding.prototype.handleEvent = function ( e ) {
 
 	MenuItemBinding.superclass.handleEvent.call ( this, e );
-	
+
 	if ( !this.isDisabled && !BindingDragger.isDragging ) {
-	
+
 		switch ( e.type ) {
-			
+
 			case DOMEvents.MOUSEOVER :
 				this.focus ( e );
 				break;
-			
+
 			case DOMEvents.MOUSEUP :
 				DOMEvents.stopPropagation ( e );
-				if ( !this.isMenuContainer ) {
+				if (this.hasAction) {
 					if ( this.type == MenuItemBinding.TYPE_CHECKBOX ) {
 						this.setChecked ( !this.isChecked );
 					} else {
@@ -306,8 +298,8 @@ MenuItemBinding.prototype.handleEvent = function ( e ) {
 					EventBroadcaster.broadcast(
 						BroadcastMessages.MOUSEEVENT_MOUSEDOWN, this
 					);
-					EventBroadcaster.broadcast ( 
-						BroadcastMessages.MOUSEEVENT_MOUSEUP, this 
+					EventBroadcaster.broadcast (
+						BroadcastMessages.MOUSEEVENT_MOUSEUP, this
 					);
 				}
 				break;
@@ -319,8 +311,8 @@ MenuItemBinding.prototype.handleEvent = function ( e ) {
  * Fire command.
  */
 MenuItemBinding.prototype.fireCommand = function () {
-	
-	if ( !this.isMenuContainer ) {
+
+	if ( this.hasAction ) {
 		if ( this.oncommand ) {
 			// TODO: Timeout to close first? Animation.DEFAULT_TIMEOUT?
 			this.oncommand ();
@@ -339,7 +331,7 @@ MenuItemBinding.prototype.setImage = function ( url ) {
 	url = url ? url : LabelBinding.DEFAULT_IMAGE;
 	this.setProperty ( "image", url );
 	if ( this.isAttached ) {
-		this.labelBinding.setImage ( 
+		this.labelBinding.setImage (
 			url
 		);
 	}
@@ -367,14 +359,14 @@ MenuItemBinding.prototype.setToolTip = function ( tooltip ) {
 
 	this.setProperty ( "tooltip", tooltip );
 	if ( this.isAttached ) {
-		this.labelBinding.setToolTip ( 
+		this.labelBinding.setToolTip (
 			Resolver.resolve ( tooltip )
 		);
 	}
 }
 
 /**
- * Reset visual appearance when menus are closed. 
+ * Reset visual appearance when menus are closed.
  */
 MenuItemBinding.prototype.reset = function () {
 
@@ -388,17 +380,17 @@ MenuItemBinding.prototype.reset = function () {
  * @param {string} type
  */
 MenuItemBinding.prototype.setType = function ( type ) {
-	
+
 	if ( this.isAttached ) {
 		if ( !this.isTypeSet ) {
 			switch ( type ) {
 				case MenuItemBinding.TYPE_CHECKBOX :
-					
-					if ( !this.isMenuContainer ) {
-					
+
+					if ( this.hasAction ) {
+
 						// update container appearance
 						this._containingMenuBodyBinding.invokeCheckBoxLayout ();
-											
+
 						// append checkbox symbol
 						var element = this.bindingDocument.createElement ( "div" );
 						element.className = MenuItemBinding.CLASSNAME_CHECKBOX;
@@ -407,14 +399,14 @@ MenuItemBinding.prototype.setType = function ( type ) {
 						label.insertBefore ( element, label.firstChild );
 						element.style.display = "none";
 						this.shadowTree.checkBoxIndicator = element;
-						
+
 					} else {
 						throw new Error ( "MenuItemBinding: checkboxes cannot contain menus" );
 					}
 					break;
-					
+
 				case MenuItemBinding.TYPE_MENUCONTAINER :
-					
+
 					// append arrow symbol
 					var element = this.bindingDocument.createElement ( "div" );
 					element.className = MenuItemBinding.CLASSNAME_SUBMENU;
@@ -423,15 +415,15 @@ MenuItemBinding.prototype.setType = function ( type ) {
 					label.insertBefore ( element, label.firstChild );
 					break;
 			}
-			
+
 			this.type = type;
 			this.isTypeSet = true;
-			
+
 		} else {
 			throw new Error ( "MenuItemBinding: Cannot set type twice." );
 		}
 	}
-	
+
 	this.setProperty ( "type", type );
 }
 
@@ -484,15 +476,15 @@ MenuItemBinding.prototype.enable = function () {
  * @param {boolean} bool
  */
 MenuItemBinding.prototype.setDisabled = function ( bool ) {
-	
+
 	this.isDisabled = bool;
-	
+
 	if ( this.isDisabled ) {
 		this.setProperty ( "isdisabled", true );
 	} else {
 		this.deleteProperty ( "isdisabled" );
-	}	
-	
+	}
+
 	if ( this.isAttached ) {
 		if ( this.isDisabled ) {
 			this.labelBinding.detachClassName ( "hover" );
@@ -520,23 +512,23 @@ MenuItemBinding.prototype.setDisabled = function ( bool ) {
  * @param {MouseEvent} e
  */
 MenuItemBinding.prototype.focus = function ( e ) {
-	
+
 	/*
 	 * Notice that only the label gets a classname assigned here!
 	 */
 	this.labelBinding.attachClassName ( MenuItemBinding.CLASSNAME_HOVER );
-	
+
 	var container = this.getMenuContainerBinding ();
 	if ( container.isOpen () && !container.isOpen ( this )) {
 		container._openElement.hide ();
 		container.setOpenElement ( false );
 	}
-	
+
 	/*
 	 * Open submenu after short timeout (when mouse-navigating).
 	 */
 	if ( this.isMenuContainer && e && e.type == DOMEvents.MOUSEOVER ) {
-		var container = this.getMenuContainerBinding ();	
+		var container = this.getMenuContainerBinding ();
 		if ( !container.isOpen ( this )) {
 			var self = this;
 			this._showSubMenuTimeout = window.setTimeout ( function () {
@@ -545,7 +537,7 @@ MenuItemBinding.prototype.focus = function ( e ) {
 			}, MenuItemBinding.TIMEOUT );
 		};
 	}
-	
+
 	/**
 	 * When keyboard navigating, this will adjust any visible scrollbar.
 	 */
@@ -561,7 +553,7 @@ MenuItemBinding.prototype.focus = function ( e ) {
 			}
 		}
 	}
-	
+
 	this.isFocused = true;
 	this._containingMenuBodyBinding.handleFocusedItem ( this );
 }
@@ -571,7 +563,7 @@ MenuItemBinding.prototype.focus = function ( e ) {
  * @param {boolean} isForceBlur
  */
 MenuItemBinding.prototype.blur = function ( isForceBlur ) {
-	
+
 	/*
 	 * Clear submenu timeout.
 	 */
@@ -579,7 +571,7 @@ MenuItemBinding.prototype.blur = function ( isForceBlur ) {
 		window.clearTimeout ( this._showSubMenuTimeout );
 		this._showSubMenuTimeout = null;
 	}
-	
+
 	if ( this.isFocused ) {
 		var container = this.getMenuContainerBinding ();
 		if ( !container || !container.isOpen ( this ) || isForceBlur ) {
@@ -595,7 +587,7 @@ MenuItemBinding.prototype.blur = function ( isForceBlur ) {
  * @param {boolean} isPreventCommand
  */
 MenuItemBinding.prototype.check = function ( isPreventCommand ) {
-	
+
 	this.setChecked ( true, isPreventCommand );
 }
 
@@ -613,7 +605,7 @@ MenuItemBinding.prototype.uncheck = function ( isPreventCommand ) {
  * @overloads {MenuContainerBinding#show}
  */
 MenuItemBinding.prototype.show = function () {
-	
+
 	this.menuPopupBinding.position = PopupBinding.POSITION_RIGHT;
 	MenuItemBinding.superclass.show.call ( this );
 }
@@ -624,13 +616,13 @@ MenuItemBinding.prototype.show = function () {
  * @param {boolean} isPreventCommand
  */
 MenuItemBinding.prototype.setChecked = function ( isChecked, isPreventCommand ) {
-	
+
 	this.setProperty ( "ischecked", isChecked );
 	if ( this.isAttached ) {
 		if ( this.type == MenuItemBinding.TYPE_CHECKBOX ) {
 			if ( this.isChecked != isChecked ) {
 				this.isChecked = isChecked;
-				this.shadowTree.checkBoxIndicator.style.display = 
+				this.shadowTree.checkBoxIndicator.style.display =
 					isChecked ? "block" : "none";
 				if ( !isPreventCommand ) {
 					this.fireCommand ();
