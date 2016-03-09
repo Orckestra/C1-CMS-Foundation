@@ -46,7 +46,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
         public IEnumerable<SelectionTreeNode> TreeNodes { get; set; }
 
         /// <exclude />
-        public bool MultiSelection { get; set; }
+        public bool AutoSelectChildren { get; set; }
 
         /// <exclude />
         public bool Required { get; set; }
@@ -83,7 +83,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
 
             _userControl.SelectedKeys = this.SelectedKeys;
             _userControl.TreeNodes = this.TreeNodes;
-            _userControl.MultiSelection = this.MultiSelection;
+            _userControl.AutoSelectChildren = this.AutoSelectChildren;
             _userControl.Required = this.Required;
 
             return _userControl;

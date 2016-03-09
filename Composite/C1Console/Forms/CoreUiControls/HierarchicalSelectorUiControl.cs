@@ -15,7 +15,7 @@ namespace Composite.C1Console.Forms.CoreUiControls
         public IEnumerable<SelectionTreeNode> TreeNodes { get; set; }
 
         [FormsProperty]
-        public bool MultiSelection { get; set; }
+        public bool AutoSelectChildren { get; set; }
 
         [FormsProperty]
         public bool Required { get; set; }
