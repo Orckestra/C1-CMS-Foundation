@@ -192,6 +192,27 @@ HierarchicalSelectorBinding.prototype.handleAction = function ( action ) {
 	}
 }
 
+/**
+ * @implements {IUpdateHandler}
+ * @overwrites {Binding#handleElement}
+ * @param {Element} element
+ */
+HierarchicalSelectorBinding.prototype.handleElement = function (element) {
+
+	return true; // do handle element update
+}
+
+/**
+ * @implements {IUpdateHandler}
+ * @overwrites {Binding#updateElement}
+ * @param {Element} element
+ */
+HierarchicalSelectorBinding.prototype.updateElement = function (element) {
+
+	return true; // stop crawling descendants
+}
+
+
 // IMPLEMENT IDATA ...........................................................
 
 /**
@@ -204,7 +225,7 @@ HierarchicalSelectorBinding.prototype.validate = function () {
 	if (this.isRequired) {
 		isValid = false;
 		this.getDescendantBindingsByType(CheckTreeNodeBinding).each(function(treenode) {
-			if (treenode.isSelectable && treenode.isChecked()) {
+			if (treenode.isSelectable && !treenode.isReadOnly && treenode.isChecked()) {
 				isValid = true;
 				return false;
 			}
