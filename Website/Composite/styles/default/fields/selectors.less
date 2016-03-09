@@ -170,30 +170,50 @@ ui|field.fieldhelp ui|fielddata ui|urlinputdialog input {
 
 
 /* Hierarchical Selector */
-ui|hierarchicalselector{
-	ui|treenode{
-		&.checkbox{
+ui|hierarchicalselector {
+	ui|treenode {
+		&.checkbox {
 
-			ui|labelbox{
+			> ui|labelbox {
 				padding-left: 30px;
 			}
 
-			ui|checkbutton{
+			> ui|checkbutton {
 				position: absolute;
 				float: none;
 				top: 2px;
 				left: 18px;
+				height: 20px;
 			}
 		}
 		ui|treenode {
-			&.checkbox{
-				ui|checkbutton{
+			&.checkbox {
+				ui|checkbutton {
 					left: 40px;
 				}
 			}
 		}
 	}
-	> input{
+	> input {
 		display: none;
+	}
+
+	ui|box {
+		height: auto;
+	}
+
+	&.invalid {
+		ui|labeltext {
+			font-weight: inherit;
+		}
+	}
+}
+
+ui|wizardpage,
+ui|dialogpage {
+	ui|hierarchicalselector{
+		ui|box {
+			height: 600px;
+		}
 	}
 }
