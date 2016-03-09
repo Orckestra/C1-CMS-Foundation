@@ -141,7 +141,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             {
                 element.AddAction(
                     new ElementAction(
-                        new ActionHandle(new PageAddActionToken(pageType.Id, ActionIdentifier.Add, AddPermissionTypes) {} ))
+                        new ActionHandle(new PageAddActionToken(pageType.Id, ActionIdentifier.Add, AddPermissionTypes) {DoIgnoreEntityTokenLocking = true} ))
                     {
                         VisualData = new ActionVisualizedData
                         {
@@ -713,7 +713,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
                     foreach (var pageType in page.GetChildPageSelectablePageTypes().OrderByDescending(pt => pt.Id == parentPageType.DefaultChildPageType))
                     {
-                        element.AddAction(new ElementAction(new ActionHandle(new PageAddActionToken(pageType.Id,ActionIdentifier.Add, AddPermissionTypes)))
+                        element.AddAction(new ElementAction(new ActionHandle(new PageAddActionToken(pageType.Id,ActionIdentifier.Add, AddPermissionTypes) { DoIgnoreEntityTokenLocking = true }))
                         {
                             VisualData = new ActionVisualizedData
                             {

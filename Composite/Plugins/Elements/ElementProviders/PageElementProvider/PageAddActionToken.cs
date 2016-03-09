@@ -26,8 +26,6 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
         /// <exclude />
         public Guid PageTypeId => _pageTypeId;
 
-        public override bool IgnoreEntityTokenLocking => true;
-
         public override string Serialize()
         {
             StringBuilder stringBuilder = new StringBuilder(base.Serialize());
@@ -45,7 +43,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
             var baseProxyDataActionToken = (ProxyDataActionToken)ProxyDataActionToken.Deserialize(serializedData);
 
-            var result = new PageAddActionToken(pageTypeId, baseProxyDataActionToken.ActionIdentifier, baseProxyDataActionToken.PermissionTypes);
+            var result = new PageAddActionToken(pageTypeId, baseProxyDataActionToken.ActionIdentifier, baseProxyDataActionToken.PermissionTypes) { DoIgnoreEntityTokenLocking = baseProxyDataActionToken.IgnoreEntityTokenLocking };
 
             return result;
         }

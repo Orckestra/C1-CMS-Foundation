@@ -31,21 +31,11 @@ namespace Composite.C1Console.Security
 
         public static bool IsIgnoreEntityTokenLocking(this ActionToken actionToken)
         {
-            if (actionToken == null) throw new ArgumentNullException("actionToken");
+            if (actionToken == null) throw new ArgumentNullException(nameof(actionToken));
             
-            Type type = actionToken.GetType();
-
             lock (_lock)
             {
-                bool ignoreLocking;
-                if (_ignoreEntityTokenLockingCache.TryGetValue(type, out ignoreLocking) == false)
-                {
-                    ignoreLocking = type.GetCustomAttributesRecursively<IgnoreEntityTokenLocking>().Any() ;
-
-                    _ignoreEntityTokenLockingCache.Add(type, ignoreLocking);
-                }
-
-                return ignoreLocking | actionToken.IgnoreEntityTokenLocking;
+                return actionToken.IgnoreEntityTokenLocking;
             }
         }
     }

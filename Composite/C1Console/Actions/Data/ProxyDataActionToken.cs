@@ -21,19 +21,19 @@ namespace Composite.C1Console.Actions.Data
         /// <exclude />
         public ProxyDataActionToken(ActionIdentifier actionIdentifier, IEnumerable<PermissionType> permissionTypes) : this(actionIdentifier)
         {
-            this._permissionTypes = permissionTypes;
+            _permissionTypes = permissionTypes;
         }
         /// <exclude />
         public ActionIdentifier ActionIdentifier => _actionIdentifier;
 
         /// <exclude />
-        public override IEnumerable<PermissionType> PermissionTypes
-        {
-            get
-            {
-                return _permissionTypes ?? _actionIdentifier.Permissions();
-            }
-        }
+        public bool DoIgnoreEntityTokenLocking { get; set;}
+
+        /// <exclude />
+        public override bool IgnoreEntityTokenLocking => DoIgnoreEntityTokenLocking;
+
+        /// <exclude />
+        public override IEnumerable<PermissionType> PermissionTypes => _permissionTypes ?? _actionIdentifier.Permissions();
 
         /// <exclude />
         public override string Serialize()
@@ -42,6 +42,7 @@ namespace Composite.C1Console.Actions.Data
 
             StringConversionServices.SerializeKeyValuePair(stringBuilder, "_ActionIdentifier_", ActionIdentifier.Serialize());
             StringConversionServices.SerializeKeyValuePair(stringBuilder, "_PermissionTypes_", PermissionTypes.SerializePermissionTypes());
+            StringConversionServices.SerializeKeyValuePair(stringBuilder, "_DoIgnoreEntityTokenLocking_", DoIgnoreEntityTokenLocking);
 
             return stringBuilder.ToString();
         }
@@ -59,7 +60,9 @@ namespace Composite.C1Console.Actions.Data
             
             string permissionTypesString = StringConversionServices.DeserializeValueString(dic["_PermissionTypes_"]);
 
-            var result = new ProxyDataActionToken(ActionIdentifier.Deserialize(serializedType), permissionTypesString.DesrializePermissionTypes());
+            bool doIgnoreEntityTokenLocking = StringConversionServices.DeserializeValueBool(dic["_DoIgnoreEntityTokenLocking_"]);
+
+            var result = new ProxyDataActionToken(ActionIdentifier.Deserialize(serializedType), permissionTypesString.DesrializePermissionTypes()) {DoIgnoreEntityTokenLocking = doIgnoreEntityTokenLocking};
 
             return result;
         }

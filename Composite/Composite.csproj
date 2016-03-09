@@ -1627,7 +1627,6 @@
     <Compile Include="C1Console\Security\BuildinPlugins\BuildinUserPermissionDefinitionProvider\BuildinUserRoleDefinitionProvider.cs" />
     <Compile Include="C1Console\Security\ConstructorBasedUserPermissionDefinition.cs" />
     <Compile Include="C1Console\Security\Foundation\PluginFacades\UserRoleDefinitionProviderPluginFacade.cs" />
-    <Compile Include="C1Console\Security\IgnoreEntityTokenLocking.cs" />
     <Compile Include="C1Console\Security\ParentsFacade.cs" />
     <Compile Include="C1Console\Security\PermissionDescriptor.cs" />
     <Compile Include="C1Console\Security\PermissionType.cs" />
