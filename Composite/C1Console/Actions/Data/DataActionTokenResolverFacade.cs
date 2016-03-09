@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Composite.C1Console.Security;
 using Composite.Core.Application;
 using Composite.Data;
@@ -26,7 +22,7 @@ namespace Composite.C1Console.Actions.Data
         /// <typeparam name="T"></typeparam>
         /// <param name="actionIdentifier"></param>
         /// <param name="dataActionToken"></param>
-        public static void RegisterDefault<T>(ActionIdentifier actionIdentifier, ActionToken dataActionToken) where T : IData
+        public static void RegisterDefault<T>(ActionIdentifier actionIdentifier, Func<T, ActionToken> dataActionToken) where T : IData
         {
             GetDataActionTokenResolverService().RegisterDefault<T>(actionIdentifier, dataActionToken);
         }
@@ -37,7 +33,7 @@ namespace Composite.C1Console.Actions.Data
         /// <param name="actionIdentifier"></param>
         /// <param name="actionValidPredicate"></param>
         /// <param name="dataActionToken"></param>
-        public static void RegisterConditional<T>(ActionIdentifier actionIdentifier, Func<T, bool> actionValidPredicate, ActionToken dataActionToken) where T : IData
+        public static void RegisterConditional<T>(ActionIdentifier actionIdentifier, Func<T, bool> actionValidPredicate, Func<T, ActionToken> dataActionToken) where T : IData
         {
             GetDataActionTokenResolverService().RegisterConditional<T>(actionIdentifier, actionValidPredicate, dataActionToken);
         }

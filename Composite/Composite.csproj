@@ -164,6 +164,8 @@
     <Compile Include="C1Console\Actions\Data\DataActionTokenResolver.cs" />
     <Compile Include="C1Console\Actions\Data\DataActionTokenResolverFacade.cs" />
     <Compile Include="C1Console\Actions\Data\DataActionTokenResolverRegistery.cs" />
+    <Compile Include="Plugins\Elements\ElementProviders\PageElementProvider\PageAddActionExecuter.cs" />
+    <Compile Include="Plugins\Elements\ElementProviders\PageElementProvider\PageAddActionToken.cs" />
     <Compile Include="C1Console\Actions\Data\ProxyDataActionExecuter.cs" />
     <Compile Include="C1Console\Actions\Data\ProxyDataActionToken.cs" />
     <Compile Include="Data\ProcessControlled\ProcessControllers\GenericPublishProcessController\GenericPublishProcessDynamicActionTokens.cs" />

@@ -6,31 +6,31 @@ namespace Composite.C1Console.Actions.Data
 {
     abstract class DataActionTokenRegisterHandler
     {
-        public abstract ActionToken GetActionToken();
+        public abstract ActionToken GetActionToken(IData data);
 
         public abstract bool Check(Type type,IData data, ActionIdentifier actionIdentifier);
     }
 
     class DataActionTokenRegisterHandler<T> : DataActionTokenRegisterHandler where T : IData
     {
-        private readonly ActionToken _actionToken;
+        private readonly Func<T, ActionToken> _actionTokenFunc;
         private readonly ActionIdentifier _actionIdentifier;
         private readonly Func<T, bool> _actionValidPredicate;
 
-        public DataActionTokenRegisterHandler(ActionIdentifier actionIdentifier, ActionToken dataActionToken)
+        public DataActionTokenRegisterHandler(ActionIdentifier actionIdentifier, Func<T, ActionToken> dataActionToken)
         {
-            _actionToken = dataActionToken;
+            _actionTokenFunc = dataActionToken;
             _actionIdentifier = actionIdentifier;
         }
 
-        public DataActionTokenRegisterHandler(ActionIdentifier actionIdentifier, ActionToken dataActionToken, Func<T, bool> actionValidPredicate) : this(actionIdentifier, dataActionToken)
+        public DataActionTokenRegisterHandler(ActionIdentifier actionIdentifier, Func<T, ActionToken> dataActionToken, Func<T, bool> actionValidPredicate) : this(actionIdentifier, dataActionToken)
         {
             _actionValidPredicate = actionValidPredicate;
         }
 
-        public override ActionToken GetActionToken()
+        public override ActionToken GetActionToken(IData data)
         {
-            return _actionToken;
+            return _actionTokenFunc((T)data);
         }
 
         public override bool Check(Type type, IData data, ActionIdentifier actionIdentifier)

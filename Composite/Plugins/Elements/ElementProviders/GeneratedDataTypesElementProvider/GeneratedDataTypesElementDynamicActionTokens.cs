@@ -15,8 +15,8 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
         /// <exclude />
         public static void OnBeforeInitialize()
         {
-            DataActionTokenResolverFacade.RegisterDefault<IData>(ActionIdentifier.Edit, new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.EditDataWorkflow")));
-            DataActionTokenResolverFacade.RegisterDefault<IData>(ActionIdentifier.Delete, new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.DeleteDataWorkflow")));
+            DataActionTokenResolverFacade.RegisterDefault<IData>(ActionIdentifier.Edit, f => new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.EditDataWorkflow")));
+            DataActionTokenResolverFacade.RegisterDefault<IData>(ActionIdentifier.Delete, f => new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.DeleteDataWorkflow")));
         }
         /// <exclude />
         public static void OnInitialized()

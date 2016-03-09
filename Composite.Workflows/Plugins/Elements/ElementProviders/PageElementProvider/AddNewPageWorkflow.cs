@@ -18,7 +18,7 @@ using Composite.Core.Extensions;
 using Composite.C1Console.Users;
 using Composite.C1Console.Trees;
 using Composite.C1Console.Workflow;
-
+using Composite.Core.Serialization;
 using Microsoft.Practices.EnterpriseLibrary.Validation;
 
 
@@ -86,6 +86,10 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
         private Guid? GetDefaultPageTypeId(IEnumerable<IPageType> selectablePageTypes)
         {
+            if (!string.IsNullOrEmpty(Payload))
+            {
+                return ((IPage)SerializerHandlerFacade.Deserialize(Payload)).PageTypeId;
+            }
             if (!(this.EntityToken is PageElementProviderEntityToken))
             {
                 IPage parentPage = this.GetDataItemFromEntityToken<IPage>();
@@ -259,15 +263,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
             Dictionary<string, object> bindings = new Dictionary<string, object>();
 
-
-
-            List<KeyValuePair<Guid, string>> pageTypeOptions =
-                selectablePageTypes.
-                Select(f => new KeyValuePair<Guid, string>(f.Id, f.Name)).
-                ToList();
-
-            bindings.Add("PageTypeOptions", pageTypeOptions);
-
+            string pageType = selectablePageTypes.First(f => f.Id == pageTypeId).Name;
 
             IPage newPage = DataFacade.BuildNew<IPage>();
             newPage.Id = Guid.NewGuid();
@@ -280,6 +276,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             newPage.PublicationStatus = GenericPublishProcessController.Draft;
 
             bindings.Add("NewPage", newPage);
+
+            bindings.Add("Title", string.Format(GetText("AddNewPageStep1.DialogLabel"), pageType));
 
             bindings.Add("UrlTitleIsRequired", true /* ThereAreOtherPages()*/);
 

@@ -132,23 +132,38 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 }
             };
 
-            element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PageElementProvider.AddNewPageWorkflow"), AddWebsitePermissionTypes) { DoIgnoreEntityTokenLocking = true }))
+            var allPageTypes = DataFacade.GetData<IPageType>();
+
+            foreach (
+                var pageType in
+                    allPageTypes.Where(f => f.HomepageRelation == PageTypeHomepageRelation.OnlyHomePages.ToPageTypeHomepageRelationString())
+                        .OrderByDescending(f=>f.Id))
             {
-                VisualData = new ActionVisualizedData
-                {
-                    Label = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.AddPageAtRoot"),
-                    ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.AddPageAtRootToolTip"),
-                    Icon = PageElementProvider.AddPage,
-                    Disabled = false,
-                    ActionLocation = new ActionLocation
+                element.AddAction(
+                    new ElementAction(
+                        new ActionHandle(new PageAddActionToken(pageType.Id, ActionIdentifier.Add, AddPermissionTypes) {} ))
                     {
-                        ActionType = ActionType.Add,
-                        IsInFolder = false,
-                        IsInToolbar = true,
-                        ActionGroup = PrimaryActionGroup
-                    }
-                }
-            });
+                        VisualData = new ActionVisualizedData
+                        {
+                            Label = string.Format(StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider",
+                                    "PageElementProvider.AddPageAtRoot"), pageType.Name),
+                            ToolTip =
+                                StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider",
+                                    "PageElementProvider.AddPageAtRootToolTip"),
+                            Icon = PageElementProvider.AddPage,
+                            Disabled = false,
+                            ActionLocation = new ActionLocation
+                            {
+                                ActionType = ActionType.Add,
+                                IsInFolder = false,
+                                IsInToolbar = true,
+                                ActionGroup = PrimaryActionGroup,
+                                ActionBundle = "AddWebsite"
+                            }
+                        }
+
+                    });
+            }
 
 
             element.AddAction(new ElementAction(new ActionHandle(new ViewUnpublishedItemsActionToken()))
@@ -654,6 +669,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             }
 
             var elements = new Element[pages.Count];
+            var allPageTypes = DataFacade.GetData<IPageType>();
 
             ParallelFacade.For("PageElementProvider. Getting elements", 0, pages.Count, i =>
             {
@@ -693,23 +709,30 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                         }
                     });
 
-                    element.AddAction(new ElementAction(new ActionHandle(new ProxyDataActionToken(ActionIdentifier.Add,AddPermissionTypes)))
+                    IPageType parentPageType = allPageTypes.First(f => f.Id == page.PageTypeId);
+
+                    foreach (var pageType in page.GetChildPageSelectablePageTypes().OrderByDescending(pt => pt.Id == parentPageType.DefaultChildPageType))
                     {
-                        VisualData = new ActionVisualizedData
+                        element.AddAction(new ElementAction(new ActionHandle(new PageAddActionToken(pageType.Id,ActionIdentifier.Add, AddPermissionTypes)))
                         {
-                            Label = addNewPageLabel,
-                            ToolTip = addNewPageToolTip,
-                            Icon = PageElementProvider.AddPage,
-                            Disabled = false,
-                            ActionLocation = new ActionLocation
+                            VisualData = new ActionVisualizedData
                             {
-                                ActionType = ActionType.Add,
-                                IsInFolder = false,
-                                IsInToolbar = true,
-                                ActionGroup = PrimaryActionGroup
+                                Label = string.Format(addNewPageLabel, pageType.Name),
+                                ToolTip = pageType.Description,
+                                Icon = PageElementProvider.AddPage,
+                                Disabled = false,
+                                ActionLocation = new ActionLocation
+                                {
+                                    ActionType = ActionType.Add,
+                                    IsInFolder = false,
+                                    IsInToolbar = true,
+                                    ActionGroup = PrimaryActionGroup,
+                                    ActionBundle = "AddPage"
+                                }
                             }
-                        }
-                    });
+                        });
+                    }
+
 
                     element.AddAction(new ElementAction(new ActionHandle(new ProxyDataActionToken(ActionIdentifier.Delete,DeletePermissionTypes)))
                     {
