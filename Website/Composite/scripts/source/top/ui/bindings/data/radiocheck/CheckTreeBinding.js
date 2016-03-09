@@ -61,7 +61,9 @@ CheckTreeBinding.prototype.handleBroadcast = function (broadcast, arg) {
 			if (focused.hasEntries()) {
 				var node = focused.getFirst();
 				if (node instanceof CheckTreeNodeBinding) {
-					node.invoke();
+					if (!node.isReadOnly) {
+						node.invoke();
+					}
 				}
 			}
 			break;

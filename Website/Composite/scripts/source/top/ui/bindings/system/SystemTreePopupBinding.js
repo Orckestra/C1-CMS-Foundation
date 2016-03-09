@@ -157,18 +157,19 @@ SystemTreePopupBinding.prototype.handleAction = function ( action ) {
 		case MenuItemBinding.ACTION_COMMAND :
 			var menuitemBinding = action.target;
 			var systemAction = menuitemBinding.associatedSystemAction;
-			var bundleName = systemAction.getBundleName();
+
 			if ( systemAction ) {
 				SystemAction.invoke(systemAction, this._node);
+
+				var bundleName = systemAction.getBundleName();
+				if (bundleName != null) {
+					LocalStorage.set(ToolBarComboButtonBinding.STORAGE_PREFFIX + bundleName, systemAction.getHandle());
+				}
 			} else {
 				var cmd = menuitemBinding.getProperty ( "cmd" );
 				if ( cmd ) {
 					this._handleCommand ( cmd );
 				}
-			}
-
-			if (systemAction && bundleName) {
-				LocalStorage.set(ToolBarComboButtonBinding.STORAGE_PREFFIX + bundleName, systemAction.getHandle());
 			}
 
 			// Clean current profile key

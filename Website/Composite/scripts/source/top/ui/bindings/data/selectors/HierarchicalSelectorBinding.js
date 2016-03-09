@@ -23,7 +23,22 @@ function HierarchicalSelectorBinding () {
 	 * @overwrites {Binding#crawlerFilters}
 	 * @type {List<string>}
 	 */
-	this.crawlerFilters	= new List ([ DocumentCrawler.ID, FocusCrawler.ID ]);
+	this.crawlerFilters = new List([DocumentCrawler.ID, FocusCrawler.ID]);
+
+	/**
+	* @type {boolean}
+	*/
+	this.autoSelectChildren = false;
+
+	/**
+	* @type {boolean}
+	*/
+	this.autoSelectParents = true;
+
+	/**
+	 * @type {boolean}
+	 */
+	this.isRequired = false;
 }
 
 /**
@@ -46,6 +61,7 @@ HierarchicalSelectorBinding.prototype.onBindingAttach = function () {
 	this._buildDOMContent ();
 	this._parseDOMProperties ();
 	this._populate();
+
 }
 
 /**
@@ -72,6 +88,8 @@ HierarchicalSelectorBinding.prototype._buildDOMContent = function () {
  */
 HierarchicalSelectorBinding.prototype._parseDOMProperties = function () {
 
+	this.autoSelectChildren = this.getProperty("autoselectchildren") === true;
+	this.isRequired = this.getProperty("required") === true;
 }
 
 HierarchicalSelectorBinding.prototype._populate = function () {
@@ -80,40 +98,33 @@ HierarchicalSelectorBinding.prototype._populate = function () {
 	this.shadowTree.box.appendChild(this.shadowTree.tree.bindingElement);
 	this._populateFromSelections(this.shadowTree.tree, this.bindingElement);
 	this.shadowTree.tree.attachRecursive();
-}
 
-HierarchicalSelectorBinding.prototype._getTreeNode = function (selection) {
-
-
-	return treenode;
-}
-
-HierarchicalSelectorBinding.prototype._getTreeNodes = function (selections) {
-
-	var list = new List ();
-	selections.each(function(selection) {
-		list.add(this._getTreeNode(selection));
-	}, this);
-
-	return list;
 }
 
 HierarchicalSelectorBinding.prototype._populateFromSelections = function (treeNodeContainer, selectionContainer) {
 
 	var hasSelected = false;
-	DOMUtil.getChildElementsByLocalName(selectionContainer, "selection").each(function (selection) {
+	var selections = DOMUtil.getChildElementsByLocalName(selectionContainer, "selection");
+	var treenode = null;;
 
-		var treenode = CheckTreeNodeBinding.newInstance(this.bindingDocument);
+	selections.each(function (selection) {
+
+		treenode = CheckTreeNodeBinding.newInstance(this.bindingDocument);
 		var label = selection.getAttribute("label");
 		var value = selection.getAttribute("value");
 		var isSelected = selection.getAttribute("selected") === "true";
 		var image = selection.getAttribute("image");
+		var isSelectable = selection.getAttribute("selectable") === "true";
+		var isReadonly = selection.getAttribute("readonly") === "true";
 
 		treenode.setLabel(label);
-		treenode.setImage(image);
+		treenode.setImage(image ? image : "blank");
 		treenode.setProperty("selected", isSelected);
 		treenode.selectionElement = selection;
 		treenode.selectionValue = value;
+		treenode.isSelectable = isSelectable;
+		treenode.isReadOnly = isReadonly;
+
 		treeNodeContainer.add(treenode);
 
 		if (this._populateFromSelections(treenode, treenode.selectionElement)) {
@@ -124,6 +135,11 @@ HierarchicalSelectorBinding.prototype._populateFromSelections = function (treeNo
 		}
 
 	}, this);
+
+	if (treeNodeContainer instanceof CheckTreeBinding && selections.getLength() === 1) {
+		treenode.setProperty("open", true);
+		treenode.setProperty("pin", true);
+	}
 
 	return hasSelected;
 
@@ -144,7 +160,33 @@ HierarchicalSelectorBinding.prototype.handleAction = function ( action ) {
 	switch ( action.type ) {
 
 		case CheckTreeNodeBinding.ACTION_COMMAND:
-			this.dirty ();
+
+			this.dirty();
+
+			var checkTreeNode = action.target;
+			var isChecked = checkTreeNode.isChecked();
+
+			if (this.autoSelectChildren) {
+				checkTreeNode.getDescendantBindingsByType(CheckTreeNodeBinding).each(function (child) {
+					if (child.isSelectable && !child.isReadOnly) {
+						child.setChecked(isChecked, true);
+					}
+				});
+			}
+
+			if (this.autoSelectParents && isChecked) {
+				var parent = checkTreeNode;
+				while (((parent = UserInterface.getBinding(parent.bindingElement.parentNode)) && parent instanceof CheckTreeNodeBinding)) {
+					if (parent.isSelectable && !parent.isReadOnly) {
+						parent.setChecked(isChecked, true);
+					}
+				}
+			}
+
+			if (this.hasClassName(DataBinding.CLASSNAME_INVALID)) {
+				this.detachClassName(DataBinding.CLASSNAME_INVALID);
+			}
+
 			action.consume ();
 			break;
 	}
@@ -158,8 +200,23 @@ HierarchicalSelectorBinding.prototype.handleAction = function ( action ) {
  * @return {boolean}
  */
 HierarchicalSelectorBinding.prototype.validate = function () {
+	var isValid = true;
+	if (this.isRequired) {
+		isValid = false;
+		this.getDescendantBindingsByType(CheckTreeNodeBinding).each(function(treenode) {
+			if (treenode.isSelectable && treenode.isChecked()) {
+				isValid = true;
+				return false;
+			}
+			return true;
+		});
 
-	return true;
+		if (isValid === false) {
+			this.attachClassName(DataBinding.CLASSNAME_INVALID);
+		}
+
+	}
+	return isValid;
 }
 
 /**
@@ -184,7 +241,7 @@ HierarchicalSelectorBinding.prototype.manifest = function() {
 	 * Build inputs for selected selections.
 	 */
 	this.getDescendantBindingsByType(CheckTreeNodeBinding).each(function(treenode) {
-		if (treenode.isChecked()) {
+		if (treenode.isSelectable && treenode.isChecked()) {
 			var input = DOMUtil.createElementNS(Constants.NS_XHTML, "input", this.bindingDocument);
 			input.name = this._name;
 			input.value = treenode.selectionValue;

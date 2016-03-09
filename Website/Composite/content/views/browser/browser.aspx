@@ -10,7 +10,6 @@
 	<link rel="stylesheet" type="text/css" href="browser.css.aspx" />
 	<script type="text/javascript" src="BrowserAddressBarBinding.js"></script>
 	<script type="text/javascript" src="BrowserPageBinding.js"></script>
-	<script type="text/javascript" src="BrowserPathBinding.js"></script>
 	<script type="text/javascript" src="BrowserToolBarBinding.js"></script>
 	<script type="text/javascript" src="BrowserTabBoxBinding.js"></script>
 	<script type="text/javascript" src="LanguageSelectorBinding.js"></script>

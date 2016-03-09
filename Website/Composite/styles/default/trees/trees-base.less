@@ -151,6 +151,20 @@ ui|treenode {
 			display: none;
 		}
 	}
+
+	&[pin='true'] {
+		> ui|labelbox {
+			&.open{
+				&:before {
+					display: none;
+				}
+
+				&:after {
+					display: none;
+				}
+			}
+		}
+	}
 }
 
 ui|tree > ui|treebody > ui|treenode.open {
