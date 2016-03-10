@@ -26,17 +26,11 @@ namespace Composite.C1Console.Security
 
     internal static class ActionTokenExtensionMethods
     {
-        private static Dictionary<Type, bool> _ignoreEntityTokenLockingCache = new Dictionary<Type, bool>();
-        private static readonly object _lock = new object();
-
         public static bool IsIgnoreEntityTokenLocking(this ActionToken actionToken)
         {
             if (actionToken == null) throw new ArgumentNullException(nameof(actionToken));
             
-            lock (_lock)
-            {
-                return actionToken.IgnoreEntityTokenLocking;
-            }
+            return actionToken.IgnoreEntityTokenLocking;
         }
     }
 }

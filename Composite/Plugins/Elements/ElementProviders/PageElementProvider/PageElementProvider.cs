@@ -146,7 +146,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                         VisualData = new ActionVisualizedData
                         {
                             Label = string.Format(StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider",
-                                    "PageElementProvider.AddPageAtRoot"), pageType.Name),
+                                    "PageElementProvider.AddPageAtRootFormat"), pageType.Name),
                             ToolTip =
                                 StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider",
                                     "PageElementProvider.AddPageAtRootToolTip"),

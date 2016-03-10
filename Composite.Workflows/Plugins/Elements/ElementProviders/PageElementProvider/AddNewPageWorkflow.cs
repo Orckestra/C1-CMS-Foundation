@@ -277,7 +277,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
             bindings.Add("NewPage", newPage);
 
-            bindings.Add("Title", string.Format(GetText("AddNewPageStep1.DialogLabel"), pageType));
+            bindings.Add("Title", string.Format(GetText("AddNewPageStep1.DialogLabelFormat"), pageType));
 
             bindings.Add("UrlTitleIsRequired", true /* ThereAreOtherPages()*/);
 

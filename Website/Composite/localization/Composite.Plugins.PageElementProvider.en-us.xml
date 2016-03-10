@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <strings>
-  <string key="AddNewPageStep1.DialogLabel" value="Add New {0}" />
+  <string key="AddNewPageStep1.DialogLabel" value="Add New Page" />
+  <string key="AddNewPageStep1.DialogLabelFormat" value="Add New {0}" />
   <string key="GeneralSettings.FieldGroupLabel" value="General settings" />
   <string key="PublicationSettings.FieldGroupLabel" value="Publication settings" />
   <string key="AdvancedSettings.FieldGroupLabel" value="Advanced settings" />
@@ -62,7 +63,8 @@
   <string key="PageSaveValidationFailedMessage" value="The page did not validate and has not been saved. Please examine field messages." />
   <string key="PageElementProvider.RootLabel" value="Websites" />
   <string key="PageElementProvider.RootLabelToolTip" value="Websites" />
-  <string key="PageElementProvider.AddPageAtRoot" value="Add {0}..." />
+  <string key="PageElementProvider.AddPageAtRoot" value="Add Website..." />
+  <string key="PageElementProvider.AddPageAtRootFormat" value="Add {0}..." />
   <string key="PageElementProvider.AddPageAtRootToolTip" value="Add new homepage" />
   <string key="PageElementProvider.ViewUnpublishedItems" value="List Unpublished Pages" />
   <string key="PageElementProvider.ViewUnpublishedItemsToolTip" value="Get an overview of pages and page folder data that haven't been published yet." />
