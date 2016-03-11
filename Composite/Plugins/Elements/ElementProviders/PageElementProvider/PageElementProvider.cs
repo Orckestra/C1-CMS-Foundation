@@ -2,27 +2,29 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Composite.C1Console.Actions;
+using Composite.C1Console.Actions.Data;
 using Composite.C1Console.Elements;
 using Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper;
 using Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProviderHelper;
 using Composite.C1Console.Elements.Plugins.ElementProvider;
+using Composite.C1Console.Events;
+using Composite.C1Console.Security;
+using Composite.C1Console.Users;
+using Composite.C1Console.Workflow;
 using Composite.Core.Extensions;
 using Composite.Core.Linq;
-using Composite.Data;
-using Composite.Data.ProcessControlled;
-using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
-using Composite.Data.Types;
 using Composite.Core.Parallelization;
 using Composite.Core.ResourceSystem;
 using Composite.Core.ResourceSystem.Icons;
-using Composite.C1Console.Security;
+using Composite.Data;
+using Composite.Data.ProcessControlled;
+using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
 using Composite.Data.Transactions;
-using Composite.C1Console.Users;
-using Composite.C1Console.Workflow;
+using Composite.Data.Types;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 using Microsoft.Practices.ObjectBuilder;
-using Composite.C1Console.Actions.Data;
+using Composite.C1Console.Security.Foundation;
 
 namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 {
@@ -77,6 +79,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
         public PageElementProvider()
         {
             AuxiliarySecurityAncestorFacade.AddAuxiliaryAncestorProvider<DataEntityToken>(this);
+            DataEvents<IPageType>.OnStoreChanged += new StoreEventHandler(DataEvents_IPageType_OnStoreChanged);
         }
 
 
@@ -103,7 +106,6 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 return true;
             }
         }
-
 
 
         public IEnumerable<Element> GetRoots(SearchToken searchToken)
@@ -136,7 +138,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
             foreach (
                 var pageType in
-                    allPageTypes.Where(f => f.HomepageRelation == PageTypeHomepageRelation.OnlyHomePages.ToPageTypeHomepageRelationString())
+                    allPageTypes.Where(f => f.HomepageRelation != PageTypeHomepageRelation.OnlySubPages.ToPageTypeHomepageRelationString())
                         .OrderByDescending(f=>f.Id))
             {
                 element.AddAction(
@@ -859,6 +861,24 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             }
 
             return visualizedElement;
+        }
+
+
+
+
+        private void DataEvents_IPageType_OnStoreChanged(object sender, StoreEventArgs storeEventArgs)
+        {
+            EntityToken entityToken = new PageElementProviderEntityToken(_context.ProviderName);
+
+            var parents = HookingFacade.GetHookies(entityToken);
+
+            if (parents != null)
+            {
+                foreach (var parentEntityToken in parents)
+                {
+                    ConsoleMessageQueueFacade.Enqueue(new RefreshTreeMessageQueueItem { EntityToken = parentEntityToken }, null);
+                }
+            }
         }
 
 

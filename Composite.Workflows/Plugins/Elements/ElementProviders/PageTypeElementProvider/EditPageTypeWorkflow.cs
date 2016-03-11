@@ -201,6 +201,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTypeElementProvider
 
                 DataFacade.Update(pageType);
 
+                this.RefreshParentEntityToken();
+
                 transactionScope.Complete();
             }
 
