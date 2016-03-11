@@ -46,13 +46,17 @@ namespace Composite.Data.Types
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class IPageTypeDataFolderTypeLinkExtensionMethods
     {
-        /// <exclude />
+        /// <summary>
+        /// Removes data items that refer to data types that are not registered, and returns an enumeration of valid links.
+        /// </summary>
+        /// <param name="pageTypeDataFolderTypeLinks"></param>
+        /// <returns></returns>
         public static IEnumerable<IPageTypeDataFolderTypeLink> RemoveDeadLinks(this IEnumerable<IPageTypeDataFolderTypeLink> pageTypeDataFolderTypeLinks)
         {
             foreach (IPageTypeDataFolderTypeLink pageTypeDataFolderTypeLink in pageTypeDataFolderTypeLinks)
             {
                 DataTypeDescriptor dataTypeDescriptor;
-                if (DynamicTypeManager.TryGetDataTypeDescriptor(pageTypeDataFolderTypeLink.DataTypeId, out dataTypeDescriptor) == false)
+                if (!DynamicTypeManager.TryGetDataTypeDescriptor(pageTypeDataFolderTypeLink.DataTypeId, out dataTypeDescriptor))
                 {
                     DataFacade.Delete<IPageTypeDataFolderTypeLink>(pageTypeDataFolderTypeLink);
                 }

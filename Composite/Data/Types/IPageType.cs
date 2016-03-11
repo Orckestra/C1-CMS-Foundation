@@ -72,54 +72,51 @@ namespace Composite.Data.Types
             {
                 return
                     DataFacade.GetData<IPageType>().
-                    Where(f => (f.Available) && (f.HomepageRelation != PageTypeHomepageRelation.OnlySubPages.ToString())).
+                    Where(f => f.Available && f.HomepageRelation != PageTypeHomepageRelation.OnlySubPages.ToString()).
                     OrderBy(f => f.Name).
                     Evaluate();
             }
+
+            IEnumerable<IPageType> pageTypes;
+            if (childPage == null)
+            {
+                pageTypes =
+                    DataFacade.GetData<IPageType>().
+                        Where(f => f.Available && f.HomepageRelation != PageTypeHomepageRelation.OnlyHomePages.ToString()).
+                        OrderBy(f => f.Name).
+                        Evaluate();
+            }
             else
             {
-                IEnumerable<IPageType> pageTypes;
-                if (childPage == null)
-                {
-                    pageTypes =
-                        DataFacade.GetData<IPageType>().
-                        Where(f => (f.Available) && (f.HomepageRelation != PageTypeHomepageRelation.OnlyHomePages.ToString())).
-                        OrderBy(f => f.Name).
-                        Evaluate();
-                }
-                else
-                {
-                    pageTypes =
-                        DataFacade.GetData<IPageType>().
+                pageTypes =
+                    DataFacade.GetData<IPageType>().
                         Where(f => 
-                            (f.Available) && 
-                            ((f.HomepageRelation != PageTypeHomepageRelation.OnlyHomePages.ToString()) || (f.Id == childPage.PageTypeId))).
+                            f.Available && 
+                            (f.HomepageRelation != PageTypeHomepageRelation.OnlyHomePages.ToString() || f.Id == childPage.PageTypeId)).
                         OrderBy(f => f.Name).
                         Evaluate();
-                }
-
-                List<IPageType> result = new List<IPageType>();
-                foreach (IPageType pageType in pageTypes)
-                {
-                    if ((childPage != null) && (pageType.Id == childPage.PageTypeId))
-                    {
-                        result.Add(pageType); 
-                    }
-                    else if (DataFacade.GetData<IPageTypeParentRestriction>().Where(f => f.PageTypeId == pageType.Id).Any())
-                    {
-                        if (DataFacade.GetData<IPageTypeParentRestriction>().Where(f => f.PageTypeId == pageType.Id && f.AllowedParentPageTypeId == parentPage.PageTypeId).Any())
-                        {
-                            result.Add(pageType);
-                        }
-                    }
-                    else
-                    {
-                        result.Add(pageType);
-                    }
-                }
-
-                return result;
             }
+
+            var result = new List<IPageType>();
+            foreach (IPageType pageType in pageTypes)
+            {
+                if (childPage != null && pageType.Id == childPage.PageTypeId)
+                {
+                    result.Add(pageType); 
+                    continue;
+                }
+
+                var parentRestrictions = DataFacade.GetData<IPageTypeParentRestriction>()
+                    .Where(f => f.PageTypeId == pageType.Id)
+                    .ToList();
+
+                if (parentRestrictions.Count == 0 || parentRestrictions.Any(f => f.AllowedParentPageTypeId == parentPage.PageTypeId))
+                {
+                    result.Add(pageType);
+                }
+            }
+
+            return result;
         }
     }
 

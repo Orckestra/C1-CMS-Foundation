@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Composite.C1Console.Trees;
 using Composite.C1Console.Users;
+using Composite.Core.Linq;
 
 
 namespace Composite.Data.Types
@@ -10,7 +12,7 @@ namespace Composite.Data.Types
     /// <summary>    
     /// </summary>
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public static class PageServices
     {
         private static readonly object _lock = new object();
@@ -18,8 +20,9 @@ namespace Composite.Data.Types
         /// <exclude />
         public static Guid GetParentId(this IPage page)
         {
-            Verify.ArgumentNotNull(page, "page");
-            Verify.ArgumentCondition(page.DataSourceId.ExistsInStore, "page", "The given data have not been added yet");
+            Verify.ArgumentNotNull(page, nameof(page));
+            Verify.ArgumentCondition(page.DataSourceId.ExistsInStore, nameof(page),
+                "The given data have not been added yet");
 
             return PageManager.GetParentId(page.Id);
         }
@@ -28,8 +31,9 @@ namespace Composite.Data.Types
         /// <exclude />
         public static int GetLocalOrdering(this IPage page)
         {
-            Verify.ArgumentNotNull(page, "page");
-            Verify.ArgumentCondition(page.DataSourceId.ExistsInStore, "page", "The given data have not been added yet");
+            Verify.ArgumentNotNull(page, nameof(page));
+            Verify.ArgumentCondition(page.DataSourceId.ExistsInStore, nameof(page),
+                "The given data have not been added yet");
 
             using (new DataScope(DataScopeIdentifier.Administrated))
             {
@@ -41,8 +45,9 @@ namespace Composite.Data.Types
         /// <exclude />
         public static IQueryable<IPage> GetChildren(this IPage page)
         {
-            Verify.ArgumentNotNull(page, "page");
-            Verify.ArgumentCondition(page.DataSourceId.ExistsInStore, "page", "The given data have not been added yet");
+            Verify.ArgumentNotNull(page, nameof(page));
+            Verify.ArgumentCondition(page.DataSourceId.ExistsInStore, nameof(page),
+                "The given data have not been added yet");
 
             return GetChildren(page.Id);
         }
@@ -54,9 +59,9 @@ namespace Composite.Data.Types
             var pageIDs = PageManager.GetChildrenIDs(parentId);
 
             var result = new List<IPage>();
-            foreach(var id in pageIDs)
+            foreach (var id in pageIDs)
             {
-                var page =  PageManager.GetPageById(id);
+                var page = PageManager.GetPageById(id);
                 // A page can de deleted after getting the child list, in a separate thread
                 if (page != null)
                 {
@@ -114,17 +119,17 @@ namespace Composite.Data.Types
         public static IPage GetPageFromLocalOrder(Guid parentId, int localOrder)
         {
             Guid pageId;
-            using (DataScope dataScope = new DataScope(DataScopeIdentifier.Administrated))
+            using (new DataScope(DataScopeIdentifier.Administrated))
             {
 // FirstOrDefault used here because local ordering could be "corrupt"
                 IPageStructure pageStructure =
                     (from ps in DataFacade.GetData<IPageStructure>()
-                     where ps.ParentId == parentId &&
-                           ps.LocalOrdering == localOrder
-                     select ps).FirstOrDefault();
+                        where ps.ParentId == parentId &&
+                              ps.LocalOrdering == localOrder
+                        select ps).FirstOrDefault();
 
                 if (pageStructure == null) return null;
-                
+
                 pageId = pageStructure.Id;
             }
 
@@ -134,6 +139,7 @@ namespace Composite.Data.Types
 
 
         /// <exclude />
+        [Obsolete("Use Add() method instead")]
         public static IPage AddPageAtTop(this IPage newPage, Guid parentId)
         {
             return AddPageAtTop(newPage, parentId, true);
@@ -142,6 +148,7 @@ namespace Composite.Data.Types
 
 
         /// <exclude />
+        [Obsolete("Use Add() method instead")]
         public static IPage AddPageAtTop(this IPage newPage, Guid parentId, bool addNewPage)
         {
             return newPage.InsertIntoPosition(parentId, 0, addNewPage);
@@ -150,6 +157,7 @@ namespace Composite.Data.Types
 
 
         /// <exclude />
+        [Obsolete("Use Add() method instead")]
         public static IPage AddPageAtBottom(this IPage newPage, Guid parentId)
         {
             return AddPageAtBottom(newPage, parentId, true);
@@ -158,85 +166,54 @@ namespace Composite.Data.Types
 
 
         /// <exclude />
+        [Obsolete("Use Add() method instead")]
         public static IPage AddPageAtBottom(this IPage newPage, Guid parentId, bool addNewPage)
         {
-            if (newPage == null) throw new ArgumentNullException("newPage");
+            Verify.ArgumentNotNull(newPage, nameof(newPage));
 
             lock (_lock)
             {
-                int siblingPageCount =
-                    (from ps in DataFacade.GetData<IPageStructure>()
-                     where ps.ParentId == parentId
-                     select ps).Count();
-
-                IPageStructure newPageStructure = DataFacade.BuildNew<IPageStructure>();
-                newPageStructure.ParentId = parentId;
-                newPageStructure.Id = newPage.Id;
-                newPageStructure.LocalOrdering = siblingPageCount;
-                DataFacade.AddNew<IPageStructure>(newPageStructure);
+                PageInsertPosition.Bottom.CreatePageStructure(newPage, parentId);
 
                 return addNewPage ? DataFacade.AddNew<IPage>(newPage) : newPage;
             }
         }
 
 
-
-        /// <exclude />
-        public static IPage AddPageAlphabetic(this IPage newPage, Guid parentId)
+        /// <summary>
+        /// Adds a page to the specified position.
+        /// </summary>
+        /// <param name="newPage">The new page to be added.</param>
+        /// <param name="parentId">The parent id.</param>
+        /// <param name="pageInsertionPosition">The page insertion position</param>
+        /// <returns></returns>
+        public static IPage Add(this IPage newPage, Guid parentId, IPageInsertionPosition pageInsertionPosition)
         {
-            if (newPage == null) throw new ArgumentNullException("newPage");
+            Verify.ArgumentNotNull(newPage, nameof(newPage));
+            Verify.ArgumentNotNull(pageInsertionPosition, nameof(pageInsertionPosition));
 
             lock (_lock)
             {
-                List<IPageStructure> pageStructures =
-                    (from ps in DataFacade.GetData<IPageStructure>()
-                     where ps.ParentId == parentId
-                     orderby ps.LocalOrdering
-                     select ps).ToList();
+                pageInsertionPosition.CreatePageStructure(newPage, parentId);
 
-                CultureInfo cultureInfo = UserSettings.CultureInfo;
+                newPage = DataFacade.AddNew<IPage>(newPage);
 
-                int targetLocalOrdering = -1;
+                AddPageTypeRelatedData(newPage);
+            }
 
-                foreach (IPageStructure pageStructure in pageStructures)
-                {
-                    if(targetLocalOrdering != -1)
-                    {
-                        pageStructure.LocalOrdering++;
-                        continue;
-                    }
+            return newPage;
+        }
 
-                    IPage page =
-                        (from p in DataFacade.GetData<IPage>()
-                         where p.Id == pageStructure.Id
-                         select p).SingleOrDefault();
 
-                    if (page == null)
-                    {
-                        continue;
-                    }
+        /// <exclude />
+        [Obsolete("Use Add() method instead")]
+        public static IPage AddPageAlphabetic(this IPage newPage, Guid parentId)
+        {
+            Verify.ArgumentNotNull(newPage, nameof(newPage));
 
-                    if (string.Compare(page.Title, newPage.Title, true, cultureInfo) > 0)
-                    {
-                        targetLocalOrdering = pageStructure.LocalOrdering;
-                        pageStructure.LocalOrdering++;
-                    }
-                }
-
-                if(targetLocalOrdering == -1)
-                {
-                    targetLocalOrdering = pageStructures.Last().LocalOrdering + 1;
-                } 
-                else
-                {
-                    DataFacade.Update(pageStructures.Where(page => page.LocalOrdering > targetLocalOrdering).Cast<IData>());
-                }
-
-                IPageStructure newPageStructure = DataFacade.BuildNew<IPageStructure>();
-                newPageStructure.ParentId = parentId;
-                newPageStructure.Id = newPage.Id;
-                newPageStructure.LocalOrdering = targetLocalOrdering;
-                DataFacade.AddNew<IPageStructure>(newPageStructure);
+            lock (_lock)
+            {
+                PageInsertPosition.Alphabetic.CreatePageStructure(newPage, parentId);
 
                 return DataFacade.AddNew<IPage>(newPage);
             }
@@ -245,6 +222,7 @@ namespace Composite.Data.Types
 
 
         /// <exclude />
+        [Obsolete("Use Add() method instead")]
         public static IPage AddPageAfter(this IPage newPage, Guid parentId, Guid existingPageId)
         {
             return AddPageAfter(newPage, parentId, existingPageId, true);
@@ -255,29 +233,29 @@ namespace Composite.Data.Types
         /// <exclude />
         public static IPage MoveTo(this IPage page, Guid parentId, int localOrder, bool addNewPage)
         {
-            Verify.ArgumentNotNull(page, "page");
+            Verify.ArgumentNotNull(page, nameof(page));
 
             lock (_lock)
             {
                 IPageStructure pageStructure = DataFacade.GetData<IPageStructure>(f => f.Id == page.Id).FirstOrDefault();
 
-                if(pageStructure != null)
+                if (pageStructure != null)
                 {
                     if (pageStructure.ParentId == parentId)
                     {
-                        if(localOrder == pageStructure.LocalOrdering)
+                        if (localOrder == pageStructure.LocalOrdering)
                         {
                             // If page is already has the right order - don't do anything
                             return page;
                         }
-                        if(localOrder > pageStructure.LocalOrdering)
+                        if (localOrder > pageStructure.LocalOrdering)
                         {
                             localOrder--;
                         }
                     }
                     DataFacade.Delete(pageStructure);
 
-                    if(pageStructure.ParentId != parentId)
+                    if (pageStructure.ParentId != parentId)
                     {
                         FixOrder(pageStructure.ParentId);
                     }
@@ -289,13 +267,14 @@ namespace Composite.Data.Types
 
         private static void FixOrder(Guid parentId)
         {
-            List<IPageStructure> pageStructures = DataFacade.GetData<IPageStructure>(ps => ps.ParentId == parentId).ToList();
+            List<IPageStructure> pageStructures =
+                DataFacade.GetData<IPageStructure>(ps => ps.ParentId == parentId).ToList();
 
             pageStructures = pageStructures.OrderBy(ps => ps.LocalOrdering).ToList();
 
             for (int i = pageStructures.Count - 1; i >= 0; i--)
             {
-                if(pageStructures[i].LocalOrdering == i) // If order is correct, skipping the page structure object
+                if (pageStructures[i].LocalOrdering == i) // If order is correct, skipping the page structure object
                 {
                     pageStructures.RemoveAt(i);
                     continue;
@@ -304,7 +283,7 @@ namespace Composite.Data.Types
                 pageStructures[i].LocalOrdering = i;
             }
 
-            if(pageStructures.Count == 0) return;
+            if (pageStructures.Count == 0) return;
 
             DataFacade.Update(pageStructures);
         }
@@ -312,92 +291,66 @@ namespace Composite.Data.Types
         /// <exclude />
         public static IPage InsertIntoPosition(this IPage newPage, Guid parentId, int localOrder, bool addNewPage)
         {
-            Verify.ArgumentNotNull(newPage, "newPage");
+            Verify.ArgumentNotNull(newPage, nameof(newPage));
 
             lock (_lock)
             {
-                List<IPageStructure> pageStructures =
-                    (from ps in DataFacade.GetData<IPageStructure>(false)
-                     where ps.ParentId == parentId
-                     orderby ps.LocalOrdering
-                     select ps).ToList();
-
-                var toBeUpdated = new List<IData>();
-                for(int i=0; i < pageStructures.Count; i++)
-                {
-                    int newSortOrder = i < localOrder ? i : i + 1;
-                    if(pageStructures[i].LocalOrdering != newSortOrder)
-                    {
-                        pageStructures[i].LocalOrdering = newSortOrder;
-                        toBeUpdated.Add(pageStructures[i]);
-                    }
-                }
-
-                DataFacade.Update(toBeUpdated);
-
-                if(localOrder > pageStructures.Count)
-                {
-                    localOrder = pageStructures.Count;
-                }
-
-                var newPageStructure = DataFacade.BuildNew<IPageStructure>();
-                newPageStructure.Id = newPage.Id;
-                newPageStructure.ParentId = parentId;
-                newPageStructure.LocalOrdering = localOrder;
-
-                DataFacade.AddNew(newPageStructure);
+                InsertIntoPositionInternal(newPage.Id, parentId, localOrder);
 
                 return addNewPage ? DataFacade.AddNew(newPage) : newPage;
             }
         }
 
 
-
-        /// <exclude />
-        public static IPage AddPageAfter(this IPage newPage, Guid parentId, Guid existingPageId, bool addNewPage)
+        internal static void InsertIntoPositionInternal(Guid newPageId, Guid parentId, int localOrder)
         {
-            if (newPage == null) throw new ArgumentNullException("newPage");
-
-            lock (_lock)
-            {
-                List<IPageStructure> pageStructures =
-                    (from ps in DataFacade.GetData<IPageStructure>()
+            List<IPageStructure> pageStructures =
+                    (from ps in DataFacade.GetData<IPageStructure>(false)
                      where ps.ParentId == parentId
                      orderby ps.LocalOrdering
                      select ps).ToList();
 
-                bool pageInserted = false;
-                foreach (IPageStructure pageStructure in pageStructures)
+            var toBeUpdated = new List<IData>();
+            for (int i = 0; i < pageStructures.Count; i++)
+            {
+                int newSortOrder = i < localOrder ? i : i + 1;
+                if (pageStructures[i].LocalOrdering != newSortOrder)
                 {
-                    if (pageInserted == false)
-                    {
-                        if (pageStructure.Id == existingPageId)
-                        {
-                            IPageStructure newPageStructure = DataFacade.BuildNew<IPageStructure>();
-                            newPageStructure.ParentId = parentId;
-                            newPageStructure.Id = newPage.Id;
-                            newPageStructure.LocalOrdering = pageStructure.LocalOrdering + 1;
-                            DataFacade.AddNew<IPageStructure>(newPageStructure);
-
-                            pageInserted = true;
-                        }
-                    }
-                    else
-                    {
-                        pageStructure.LocalOrdering += 1;
-                    }
+                    pageStructures[i].LocalOrdering = newSortOrder;
+                    toBeUpdated.Add(pageStructures[i]);
                 }
+            }
 
-                DataFacade.Update(pageStructures.Cast<IData>());
+            DataFacade.Update(toBeUpdated);
+
+            if (localOrder > pageStructures.Count)
+            {
+                localOrder = pageStructures.Count;
+            }
+
+            var newPageStructure = DataFacade.BuildNew<IPageStructure>();
+            newPageStructure.Id = newPageId;
+            newPageStructure.ParentId = parentId;
+            newPageStructure.LocalOrdering = localOrder;
+
+            DataFacade.AddNew(newPageStructure);
+        }
+
+
+        /// <exclude />
+        public static IPage AddPageAfter(this IPage newPage, Guid parentId, Guid existingPageId, bool addNewPage)
+        {
+            Verify.ArgumentNotNull(newPage, nameof(newPage));
+
+            lock (_lock)
+            {
+                PageInsertPosition.After(existingPageId).CreatePageStructure(newPage, parentId);
 
                 if (addNewPage)
                 {
                     return DataFacade.AddNew<IPage>(newPage);
                 }
-                else
-                {
-                    return newPage;
-                }
+                return newPage;
             }
         }
 
@@ -406,7 +359,7 @@ namespace Composite.Data.Types
         /// <exclude />
         public static IEnumerable<IPage> GetSubChildren(this IPage parentPage)
         {
-            if (parentPage == null) throw new ArgumentNullException("parentPage");
+            Verify.ArgumentNotNull(parentPage, nameof(parentPage));
 
             lock (_lock)
             {
@@ -418,7 +371,7 @@ namespace Composite.Data.Types
                     {
                         yield return subPage;
                     }
-                }                
+                }
             }
         }
 
@@ -445,7 +398,9 @@ namespace Composite.Data.Types
             int localOrdering = structureInfo.LocalOrdering;
             DataFacade.Delete<IPageStructure>(structureInfo);
 
-            List<IPageStructure> siblings = DataFacade.GetData<IPageStructure>(f => f.ParentId == structureInfo.ParentId && f.LocalOrdering >= localOrdering).ToList();
+            List<IPageStructure> siblings =
+                DataFacade.GetData<IPageStructure>(
+                    f => f.ParentId == structureInfo.ParentId && f.LocalOrdering >= localOrdering).ToList();
 
             // If there's a page with the same local ordering - we're not changing anything
             if (siblings.Count == 0
@@ -466,9 +421,11 @@ namespace Composite.Data.Types
 
         private static bool ExistsInOtherLocale(IPage page)
         {
-            foreach (CultureInfo cultureInfo in DataLocalizationFacade.ActiveLocalizationCultures.Except(new CultureInfo[] { page.DataSourceId.LocaleScope }))
+            var otherLocales =
+                DataLocalizationFacade.ActiveLocalizationCultures.Except(new[] {page.DataSourceId.LocaleScope});
+            foreach (CultureInfo cultureInfo in otherLocales)
             {
-                using (DataScope dataScope = new DataScope(cultureInfo))
+                using (new DataScope(cultureInfo))
                 {
                     bool exists = DataFacade.GetData<IPage>(f => f.Id == page.Id).Any();
                     if (exists)
@@ -479,6 +436,96 @@ namespace Composite.Data.Types
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Gets a default page type id for a given page type, if available.
+        /// </summary>
+        /// <param name="pageTypeId"></param>
+        public static Guid? GetDefaultPageTemplateId(Guid pageTypeId)
+        {
+            IPageType pageType = DataFacade.GetData<IPageType>().Single(f => f.Id == pageTypeId);
+
+            if (pageType.DefaultTemplateId != Guid.Empty)
+            {
+                return pageType.DefaultTemplateId;
+            }
+            var templateRestrictions = DataFacade.GetData<IPageTypePageTemplateRestriction>()
+                .Where(f => f.PageTypeId == pageTypeId);
+
+            return templateRestrictions.FirstOrDefault()?.PageTemplateId;
+        }
+
+
+        /// <summary>
+        /// Creates page type related data for a newly created IPage, based on a given page type id.
+        /// Including: default placeholder content, page folders, page applications.
+        /// </summary>
+        /// <param name="page"></param>
+        public static void AddPageTypeRelatedData(IPage page)
+        {
+            Guid pageTypeId = page.PageTypeId;
+
+            Verify.That(pageTypeId != Guid.Empty, "PageTypeId field should not be Guid.Empty");
+
+            // Adding default page content
+            IEnumerable<IPageTypeDefaultPageContent> pageTypeDefaultPageContents =
+                DataFacade.GetData<IPageTypeDefaultPageContent>().
+                    Where(f => f.PageTypeId == pageTypeId).
+                    Evaluate();
+
+            foreach (IPageTypeDefaultPageContent pageTypeDefaultPageContent in pageTypeDefaultPageContents)
+            {
+                IPagePlaceholderContent pagePlaceholderContent = DataFacade.BuildNew<IPagePlaceholderContent>();
+                pagePlaceholderContent.PageId = page.Id;
+                pagePlaceholderContent.PlaceHolderId = pageTypeDefaultPageContent.PlaceHolderId;
+                pagePlaceholderContent.Content = pageTypeDefaultPageContent.Content;
+                DataFacade.AddNew<IPagePlaceholderContent>(pagePlaceholderContent);
+            }
+
+            AddPageTypePageFoldersAndApplications(page);
+        }
+
+
+        internal static bool AddPageTypePageFoldersAndApplications(IPage page)
+        {
+            Guid pageTypeId = page.PageTypeId;
+
+            bool treeRefreshindNeeded = false;
+
+            // Adding page folders
+            IEnumerable<IPageTypeDataFolderTypeLink> pageTypeDataFolderTypeLinks =
+                DataFacade.GetData<IPageTypeDataFolderTypeLink>().
+                    Where(f => f.PageTypeId == pageTypeId).
+                    Evaluate().
+                    RemoveDeadLinks();
+
+            foreach (IPageTypeDataFolderTypeLink pageTypeDataFolderTypeLink in pageTypeDataFolderTypeLinks)
+            {
+                page.AddFolderDefinition(pageTypeDataFolderTypeLink.DataTypeId);
+                treeRefreshindNeeded = true;
+            }
+
+
+            // Adding applications
+            IEnumerable<IPageTypeTreeLink> pageTypeTreeLinks =
+                DataFacade.GetData<IPageTypeTreeLink>().
+                    Where(f => f.PageTypeId == pageTypeId).
+                    Evaluate().
+                    RemoveDeadLinks();
+
+
+            var entityToken = page.GetDataEntityToken();
+            foreach (IPageTypeTreeLink pageTypeTreeLink in pageTypeTreeLinks)
+            {
+                var tree = TreeFacade.GetTree(pageTypeTreeLink.TreeId);
+                if (tree.HasAttachmentPoints(entityToken)) continue;
+
+                TreeFacade.AddPersistedAttachmentPoint(pageTypeTreeLink.TreeId, typeof(IPage), page.Id);
+                treeRefreshindNeeded = true;
+            }
+
+            return treeRefreshindNeeded;
         }
     }
 }
