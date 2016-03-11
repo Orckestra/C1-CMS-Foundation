@@ -357,7 +357,7 @@ SystemTreePopupBinding.prototype.setSystemAction = function (binding, action) {
 		if (action.isChecked()) {
 			binding.check(true);
 		} else {
-			binding.check(false);
+			binding.uncheck(true);
 		}
 	}
 	if (action.isDisabled()) {
