@@ -6,10 +6,8 @@ MenuItemBinding.ACTION_COMMAND		= "menuitemcommand";
 MenuItemBinding.TYPE_CHECKBOX 		= "checkbox";
 MenuItemBinding.TYPE_MENUCONTAINER 	= "menucontainer";
 MenuItemBinding.CLASSNAME_CHECKBOX 	= "checkboxindicator";
-MenuItemBinding.CLASSNAME_SUBMENU 	= "submenuindicator";
 MenuItemBinding.CLASSNAME_HOVER 	= "hover";
 MenuItemBinding.CHAR_CHECKBOX 		= "V";
-MenuItemBinding.CHAR_SUBMENU 		= String.fromCharCode ( 9658 );
 MenuItemBinding.TIMEOUT				= 150;
 
 /**
@@ -406,13 +404,6 @@ MenuItemBinding.prototype.setType = function ( type ) {
 					break;
 
 				case MenuItemBinding.TYPE_MENUCONTAINER :
-
-					// append arrow symbol
-					var element = this.bindingDocument.createElement ( "div" );
-					element.className = MenuItemBinding.CLASSNAME_SUBMENU;
-					element.appendChild ( this.bindingDocument.createTextNode ( MenuItemBinding.CHAR_SUBMENU ));
-					var label = this.labelBinding.bindingElement;
-					label.insertBefore ( element, label.firstChild );
 					break;
 			}
 
