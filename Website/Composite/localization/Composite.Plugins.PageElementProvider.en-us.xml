@@ -63,8 +63,8 @@
   <string key="PageSaveValidationFailedMessage" value="The page did not validate and has not been saved. Please examine field messages." />
   <string key="PageElementProvider.RootLabel" value="Websites" />
   <string key="PageElementProvider.RootLabelToolTip" value="Websites" />
-  <string key="PageElementProvider.AddPageAtRoot" value="Add Website..." />
-  <string key="PageElementProvider.AddPageAtRootFormat" value="Add {0}..." />
+  <string key="PageElementProvider.AddPageAtRoot" value="Add Website" />
+  <string key="PageElementProvider.AddPageAtRootFormat" value="Add {0}" />
   <string key="PageElementProvider.AddPageAtRootToolTip" value="Add new homepage" />
   <string key="PageElementProvider.ViewUnpublishedItems" value="List Unpublished Pages" />
   <string key="PageElementProvider.ViewUnpublishedItemsToolTip" value="Get an overview of pages and page folder data that haven't been published yet." />
@@ -76,7 +76,7 @@
   <string key="PageElementProvider.DeleteToolTip" value="Delete the selected page" />
   <string key="PageElementProvider.LocalizePage" value="Translate Page" />
   <string key="PageElementProvider.LocalizePageToolTip" value="Translate selected page" />
-  <string key="PageElementProvider.AddSubPage" value="Add {0}..." />
+  <string key="PageElementProvider.AddSubPage" value="Add {0}" />
   <string key="PageElementProvider.AddSubPageToolTip" value="Add new page below the selected" />
   <string key="PageElementProvider.DisplayLocalOrderingLabel" value="Show page local orderings" />
   <string key="PageElementProvider.DisplayLocalOrderingToolTip" value="Show page local orderings" />

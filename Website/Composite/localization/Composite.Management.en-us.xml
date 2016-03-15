@@ -65,7 +65,7 @@
   <string key="EditUserWorkflow.LockingOwnUserAccount" value="You can not lock your own account." />
 	<string key="UserElementProvider.RootLabel" value="Users" />
 	<string key="UserElementProvider.RootToolTip" value="Users" />
-	<string key="UserElementProvider.AddUserLabel" value="Add User..." />
+	<string key="UserElementProvider.AddUserLabel" value="Add User" />
 	<string key="UserElementProvider.AddUserToolTip" value="Add new user" />
 	<string key="UserElementProvider.EditUserLabel" value="Edit User" />
 	<string key="UserElementProvider.EditUserToolTip" value="Edit selected user" />
@@ -655,7 +655,7 @@
 	<string key="Website.Misc.MultiSelector.LabelEditSelections" value="Edit Selections" />
 	<string key="GenericVersionProcessController.Version" value="Version information" />
 	<string key="GenericVersionProcessController.VersionToolTip" value="Show version information" />
-	<string key="AspNetUiControl.Selector.SelectValueLabel" value="Select a value..." />
+	<string key="AspNetUiControl.Selector.SelectValueLabel" value="Select a value" />
 	<string key="AspNetUiControl.Selector.BrokenReference" value="&lt; broken reference &gt;..." />
 	<string key="AspNetUiControl.Selector.NoSelection" value="(no selection)" />
 	<string key="AspNetUiControl.Selector.NoMatchesFor" value="No matches for '{0}'" />
