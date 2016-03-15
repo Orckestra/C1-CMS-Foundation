@@ -193,6 +193,17 @@ ui|hierarchicalselector {
 				}
 			}
 		}
+
+		ui|labelbox {
+			&.graytext {
+				color: #A0E1C8;
+
+				svg,
+				ui|labeltext{
+					color: #A0E1C8;
+				}
+			}
+		}
 	}
 	> input {
 		display: none;
@@ -214,6 +225,19 @@ ui|dialogpage {
 	ui|hierarchicalselector{
 		ui|box {
 			height: 600px;
+		}
+	}
+
+	ui|pagebody {
+		&.filled {
+			padding: 0;
+			> ui|hierarchicalselector{
+				padding: 0;
+
+				ui|box{
+					border: none;
+				}
+			}
 		}
 	}
 }

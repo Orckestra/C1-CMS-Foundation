@@ -62,6 +62,11 @@ HierarchicalSelectorBinding.prototype.onBindingAttach = function () {
 	this._parseDOMProperties ();
 	this._populate();
 
+	var parent = UserInterface.getBinding(this.bindingElement.parentNode);
+	if (parent != null && parent instanceof DialogPageBodyBinding && parent.bindingElement.children.length === 1) {
+		parent.attachClassName(DialogPageBodyBinding.FILLED_CLASSNAME);
+	}
+
 }
 
 /**

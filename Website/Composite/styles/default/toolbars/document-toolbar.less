@@ -28,9 +28,17 @@
 		color: @btn-primary-color;
 		margin: 15px 10px -15px 0;
 
+		ui|combobox {
+			border-left: 1px solid transparent;
+		}
+
 		&.hover {
 			border: 1px solid darken(@btn-primary-border-color, 5%);
 			color: @btn-primary-color;
+
+			ui|combobox {
+				border-left: 1px solid @btn-primary-border-color;
+			}
 		}
 	}
 }

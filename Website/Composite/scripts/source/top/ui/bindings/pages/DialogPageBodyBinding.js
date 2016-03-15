@@ -2,6 +2,8 @@ DialogPageBodyBinding.prototype = new FlexBoxBinding;
 DialogPageBodyBinding.prototype.constructor = DialogPageBodyBinding;
 DialogPageBodyBinding.superclass = FlexBoxBinding.prototype;
 
+DialogPageBodyBinding.FILLED_CLASSNAME = "filled";
+
 /**
  * @class
  */
@@ -17,18 +19,18 @@ function DialogPageBodyBinding () {
  * Identifies binding.
  */
 DialogPageBodyBinding.prototype.toString = function () {
-	
+
 	return "[DialogPageBodyBinding]";
 };
 
 /**
  * Hardwired for method fit.
- * @overwrites {FlexBoxBinding#_setFitnessHeight} 
+ * @overwrites {FlexBoxBinding#_setFitnessHeight}
  * @param {int} height
  */
 DialogPageBodyBinding.prototype._setFitnessHeight = function ( height ) {
-	
-	
+
+
 	if ( height > this.bindingElement.offsetHeight ) {
 		this.bindingElement.style.height = height + "px";
 	}
