@@ -94,7 +94,17 @@ namespace Composite.Core.IO.Zip
 
             if (!_entryNames.Contains(parstedFilename))
             {
-                throw new ArgumentException($"The file {filename} does not exist in the zip");
+                string note = "";
+
+                var entryWithAnotherCasing = _entryNames
+                    .FirstOrDefault(en => en.Equals(parstedFilename, StringComparison.InvariantCultureIgnoreCase));
+
+                if (entryWithAnotherCasing != null)
+                {
+                    note =  $" There's another entry with different casing '{entryWithAnotherCasing}'.";
+                }
+
+                throw new ArgumentException($"The file '{filename}' does not exist in the zip." + note);
             }
 
             var zipArchive = new ZipArchive(C1File.Open(ZipFilename, FileMode.Open, FileAccess.Read));
