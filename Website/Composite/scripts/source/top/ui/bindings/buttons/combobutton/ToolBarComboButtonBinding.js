@@ -185,8 +185,11 @@ ToolBarComboButtonBinding.prototype.setAndFireButton = function (menuitem) {
 		if (this.keepState) {
 			this.setButton(menuitem);
 			this.saveActiveMenuHandle(this.getMenuHandle(menuitem));
+			this.fireCommand();
+		} else {
+			this.dispatchAction( new Action (menuitem, this.commandAction));
 		}
-		this.fireCommand();
+
 	}
 }
 
