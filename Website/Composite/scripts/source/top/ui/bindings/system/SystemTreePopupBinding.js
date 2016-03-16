@@ -40,6 +40,11 @@ function SystemTreePopupBinding () {
 	this._node = null;
 
 	/**
+	 * @type {boolean}
+	 */
+	this._keepBundleState = false;
+
+	/**
 	 * @type {TreeNodeBinding}
 	 */
 	this.selectedTreeNodeBinding = null;
@@ -161,9 +166,11 @@ SystemTreePopupBinding.prototype.handleAction = function ( action ) {
 			if ( systemAction ) {
 				SystemAction.invoke(systemAction, this._node);
 
-				var bundleName = systemAction.getBundleName();
-				if (bundleName != null) {
-					LocalStorage.set(ToolBarComboButtonBinding.STORAGE_PREFFIX + bundleName, systemAction.getHandle());
+				if(this._keepBundleState) {
+					var bundleName = systemAction.getBundleName();
+					if (bundleName != null) {
+						LocalStorage.set(ToolBarComboButtonBinding.STORAGE_PREFFIX + bundleName, systemAction.getHandle());
+					}
 				}
 			} else {
 				var cmd = menuitemBinding.getProperty ( "cmd" );
@@ -254,7 +261,9 @@ SystemTreePopupBinding.prototype.constructContent = function () {
 							var body = popup.add(MenuBodyBinding.newInstance(doc));
 							var group = body.add(MenuGroupBinding.newInstance(doc));
 							bundleMenuItemBinding.add(popup);
-							group.add(self.getMenuItemBinding(bundleMenuItemBinding.associatedSystemAction));
+							if (this._keepBundleState) {
+								group.add(self.getMenuItemBinding(bundleMenuItemBinding.associatedSystemAction));
+							}
 						}
 						var bundleGroupMenuBinding = bundleMenuItemBinding.getDescendantBindingByType(MenuGroupBinding);
 						if (bundleGroupMenuBinding) {
@@ -271,9 +280,9 @@ SystemTreePopupBinding.prototype.constructContent = function () {
 				}
 
 
-			});
+			}, this);
 			groups.add ( groupBinding );
-		});
+		},this);
 
 		/*
 		 * Build in reverse order, so that clipboardoperations appear last.
@@ -285,38 +294,41 @@ SystemTreePopupBinding.prototype.constructContent = function () {
 		}
 		this._bodyBinding.attachRecursive();
 
-		bundles.each(function (bundleName, bundleMenuItemBinding) {
-			if (bundleMenuItemBinding.isMenuContainer) {
-				var bundleMenuItemsBinding = bundleMenuItemBinding.getDescendantBindingsByType(MenuItemBinding);
-				var latestBundleMenuItem = null;
+		if (this._keepBundleState) {
 
-				var latestBundleHandle = LocalStorage.get(ToolBarComboButtonBinding.STORAGE_PREFFIX + bundleName);
-				bundleMenuItemsBinding.each(function (menuItemBinding) {
-					if (menuItemBinding.associatedSystemAction && menuItemBinding.associatedSystemAction.getHandle() === latestBundleHandle && !menuItemBinding.isDisabled) {
-						latestBundleMenuItem = menuItemBinding;
-						return false;
-					}
-					return true;
-				});
+			bundles.each(function(bundleName, bundleMenuItemBinding) {
+				if (bundleMenuItemBinding.isMenuContainer) {
+					var bundleMenuItemsBinding = bundleMenuItemBinding.getDescendantBindingsByType(MenuItemBinding);
+					var latestBundleMenuItem = null;
 
-				if (latestBundleMenuItem == null) {
+					var latestBundleHandle = LocalStorage.get(ToolBarComboButtonBinding.STORAGE_PREFFIX + bundleName);
 					bundleMenuItemsBinding.each(function(menuItemBinding) {
-						if (!menuItemBinding.isDisabled) {
+						if (menuItemBinding.associatedSystemAction && menuItemBinding.associatedSystemAction.getHandle() === latestBundleHandle && !menuItemBinding.isDisabled) {
 							latestBundleMenuItem = menuItemBinding;
 							return false;
 						}
 						return true;
 					});
-				}
 
-				if (latestBundleMenuItem == null) {
-					latestBundleMenuItem = bundleMenuItemsBinding.getFirst();
-				}
+					if (latestBundleMenuItem == null) {
+						bundleMenuItemsBinding.each(function(menuItemBinding) {
+							if (!menuItemBinding.isDisabled) {
+								latestBundleMenuItem = menuItemBinding;
+								return false;
+							}
+							return true;
+						});
+					}
 
-				this.setSystemAction(bundleMenuItemBinding, latestBundleMenuItem.associatedSystemAction);
-				Binding.prototype.hide.call(latestBundleMenuItem);
-			}
-		}, this);
+					if (latestBundleMenuItem == null) {
+						latestBundleMenuItem = bundleMenuItemsBinding.getFirst();
+					}
+
+					this.setSystemAction(bundleMenuItemBinding, latestBundleMenuItem.associatedSystemAction);
+					Binding.prototype.hide.call(latestBundleMenuItem);
+				}
+			}, this);
+		}
 	}
 }
 

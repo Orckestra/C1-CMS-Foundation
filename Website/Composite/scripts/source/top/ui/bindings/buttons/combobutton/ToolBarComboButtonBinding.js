@@ -29,9 +29,9 @@ function ToolBarComboButtonBinding() {
 	this.isCheckButton = true;
 
 	/**
-	* @type {string}
-	*/
-	this.bundleName = null;
+	 * @type {boolean}
+	 */
+	this.keepState = true;
 
 	/*
 	* Returnable.
@@ -60,7 +60,7 @@ ToolBarComboButtonBinding.prototype.onBindingAttach = function () {
 
 	this.attachClassName(ToolBarComboButtonBinding.CLASSNAME_COMBOBUTTON);
 
-	this.bundleName = this.getProperty("bundle") ? this.getProperty("bundle") : this.getProperty("id");
+	this.keepState = this.getProperty("keepstate") !== false;
 };
 
 /**
@@ -96,15 +96,17 @@ ToolBarComboButtonBinding.prototype.setPopup = function (arg) {
 		}, this
 	);
 	var latestMenuItemBinding = null;
-	var latestMenuItemHandle = this.getActiveMenuHandle();
+	if (this.keepState) {
+		var latestMenuItemHandle = this.getActiveMenuHandle();
 
-	menuItemBindings.each(function (menuItemBinding) {
-		if (this.getMenuHandle(menuItemBinding) === latestMenuItemHandle && !menuItemBinding.isDisabled) {
-			latestMenuItemBinding = menuItemBinding;
-			return false;
-		}
-		return true;
-	}, this);
+		menuItemBindings.each(function (menuItemBinding) {
+			if (this.getMenuHandle(menuItemBinding) === latestMenuItemHandle && !menuItemBinding.isDisabled) {
+				latestMenuItemBinding = menuItemBinding;
+				return false;
+			}
+			return true;
+		}, this);
+	}
 
 	if (latestMenuItemBinding == null) {
 		menuItemBindings.each(function (menuItemBinding) {
@@ -180,8 +182,10 @@ ToolBarComboButtonBinding.prototype.getAssociatedSystemActions = function () {
 ToolBarComboButtonBinding.prototype.setAndFireButton = function (menuitem) {
 
 	if (menuitem instanceof MenuItemBinding) {
-		this.setButton(menuitem);
-		this.saveActiveMenuHandle(this.getMenuHandle(menuitem));
+		if (this.keepState) {
+			this.setButton(menuitem);
+			this.saveActiveMenuHandle(this.getMenuHandle(menuitem));
+		}
 		this.fireCommand();
 	}
 }
@@ -191,6 +195,7 @@ ToolBarComboButtonBinding.prototype.setAndFireButton = function (menuitem) {
 * @param {MenuItemBinding} menuitem
 */
 ToolBarComboButtonBinding.prototype.hideActiveItem = function (activeMenuitem) {
+
 	this.popupBinding.getDescendantBindingsByType(MenuItemBinding).each(
 		function (menuitem) {
 			if (menuitem === activeMenuitem) {
@@ -207,19 +212,26 @@ ToolBarComboButtonBinding.prototype.hideActiveItem = function (activeMenuitem) {
 * @param {MenuItemBinding} menuitem id
 */
 ToolBarComboButtonBinding.prototype.saveActiveMenuHandle = function (handle) {
-	LocalStorage.set(ToolBarComboButtonBinding.STORAGE_PREFFIX + this.bundleName, handle);
+
+	LocalStorage.set(ToolBarComboButtonBinding.STORAGE_PREFFIX + this.getBundleName(), handle);
 }
 
 /**
 * Get active menuitem handle
 */
 ToolBarComboButtonBinding.prototype.getActiveMenuHandle = function () {
-	return LocalStorage.get(ToolBarComboButtonBinding.STORAGE_PREFFIX + this.bundleName);
+
+	return LocalStorage.get(ToolBarComboButtonBinding.STORAGE_PREFFIX + this.getBundleName());
 }
 
 ToolBarComboButtonBinding.prototype.getMenuHandle = function (menuitem) {
 
-	return menuitem.menuHandle ? menuitem.menuHandle : this.getProperty("id");
+	return menuitem.menuHandle ? menuitem.menuHandle : menuitem.getProperty("id");
+}
+
+ToolBarComboButtonBinding.prototype.getBundleName = function () {
+
+	return this.getProperty("bundle") ? this.getProperty("bundle") : this.getProperty("id");
 }
 
 /**

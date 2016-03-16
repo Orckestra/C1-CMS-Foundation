@@ -55,6 +55,11 @@ function SystemToolBarBinding () {
 	*/
 	this._activePosition = SystemAction.activePositions.NavigatorTree;
 
+	/**
+	 * @type {boolean}
+	 */
+	this._keepBundleState = false;
+
 	/*
 	 * Returnable.
 	 */
@@ -277,6 +282,7 @@ SystemToolBarBinding.prototype.buildLeft = function () {
 						} else {
 							buttonBinding = ToolBarComboButtonBinding.newInstance(doc);
 							buttonBinding.setProperty("bundle", bundleName);
+							buttonBinding.setProperty("keepstate", this._keepBundleState);
 							bundles.set(bundleName, buttonBinding);
 							popupBinding = popupSetBinding.createNewPopupByRel(bundleName);
 						}

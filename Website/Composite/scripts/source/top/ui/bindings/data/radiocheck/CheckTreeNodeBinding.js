@@ -85,8 +85,10 @@ CheckTreeNodeBinding.prototype._parseDOMProperties = function () {
 CheckTreeNodeBinding.prototype._buildCheckButtonBinding = function () {
 
 	if (this.isSelectable) {
-		this._buttonBinding = this.add(
-			CheckButtonBinding.newInstance(this.bindingDocument)
+		this._buttonBinding = CheckButtonBinding.newInstance(this.bindingDocument);
+		this.bindingElement.insertBefore(
+			this._buttonBinding.bindingElement,
+			this.labelBinding.bindingElement.nextSibling
 		);
 		if (this.getProperty("selected") === true) {
 			this._buttonBinding.check(true);

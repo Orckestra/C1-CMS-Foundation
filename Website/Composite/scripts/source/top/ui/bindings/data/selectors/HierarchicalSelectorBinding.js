@@ -108,7 +108,7 @@ HierarchicalSelectorBinding.prototype._populate = function () {
 
 HierarchicalSelectorBinding.prototype._populateFromSelections = function (treeNodeContainer, selectionContainer) {
 
-	var hasSelected = false;
+	var openParent = false;
 	var selections = DOMUtil.getChildElementsByLocalName(selectionContainer, "selection");
 	var treenode = null;;
 
@@ -123,7 +123,13 @@ HierarchicalSelectorBinding.prototype._populateFromSelections = function (treeNo
 		var isReadonly = selection.getAttribute("readonly") === "true";
 
 		treenode.setLabel(label);
-		treenode.setImage(image ? image : "blank");
+		treenode.setImage( image);
+		treenode.imageProfile = new ImageProfile({
+			image: image,
+			imageHover: null,
+			imageActive: null,
+			imageDisabled: null
+		});
 		treenode.setProperty("selected", isSelected);
 		treenode.selectionElement = selection;
 		treenode.selectionValue = value;
@@ -134,9 +140,9 @@ HierarchicalSelectorBinding.prototype._populateFromSelections = function (treeNo
 
 		if (this._populateFromSelections(treenode, treenode.selectionElement)) {
 			treenode.setProperty("open", true);
-			hasSelected = true;
+			openParent = true;
 		} else {
-			hasSelected = hasSelected ? hasSelected : isSelected;
+			openParent = openParent ? openParent : isSelected && !isReadonly;
 		}
 
 	}, this);
@@ -146,7 +152,7 @@ HierarchicalSelectorBinding.prototype._populateFromSelections = function (treeNo
 		treenode.setProperty("pin", true);
 	}
 
-	return hasSelected;
+	return openParent;
 
 }
 
@@ -171,7 +177,7 @@ HierarchicalSelectorBinding.prototype.handleAction = function ( action ) {
 			var checkTreeNode = action.target;
 			var isChecked = checkTreeNode.isChecked();
 
-			if (this.autoSelectChildren) {
+			if (this.autoSelectChildren || this.autoSelectParents && !isChecked) {
 				checkTreeNode.getDescendantBindingsByType(CheckTreeNodeBinding).each(function (child) {
 					if (child.isSelectable && !child.isReadOnly) {
 						child.setChecked(isChecked, true);
