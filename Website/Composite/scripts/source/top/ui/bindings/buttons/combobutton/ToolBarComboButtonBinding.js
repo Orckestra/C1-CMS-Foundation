@@ -33,6 +33,11 @@ function ToolBarComboButtonBinding() {
 	 */
 	this.keepState = true;
 
+	/**
+	 * @type {boolean}
+	 */
+	this.alignWidth = false;
+
 	/*
 	* Returnable.
 	*/
