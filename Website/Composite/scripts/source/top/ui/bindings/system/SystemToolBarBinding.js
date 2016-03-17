@@ -285,6 +285,7 @@ SystemToolBarBinding.prototype.buildLeft = function () {
 							buttonBinding.setProperty("keepstate", this._keepBundleState);
 							bundles.set(bundleName, buttonBinding);
 							popupBinding = popupSetBinding.createNewPopupByRel(bundleName);
+							popupBinding.showTextOnly();
 						}
 
 						var item = SystemTreePopupBinding.prototype.getMenuItemBinding.call(this, action);

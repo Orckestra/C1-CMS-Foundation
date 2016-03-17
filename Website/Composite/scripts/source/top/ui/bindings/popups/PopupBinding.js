@@ -13,7 +13,8 @@ PopupBinding.POSITION_LEFT 		= "left";
 PopupBinding.TYPE_NORMAL		= "normal";
 PopupBinding.TYPE_FIXED			= "fixed"; // scrollbars on overflow
 PopupBinding.FIXED_MAX			= 12;
-PopupBinding.CLASSNAME_OVERFLOW	= "overflow";
+PopupBinding.CLASSNAME_OVERFLOW = "overflow";
+PopupBinding.CLASSNAME_TEXTONLY = "textonly";
 
 /**
  * Indexing open popups.
@@ -22,21 +23,21 @@ PopupBinding.CLASSNAME_OVERFLOW	= "overflow";
 PopupBinding.activeInstances = new Map ();
 
 /**
- * Any popups open? Note that this method is only accurate 
+ * Any popups open? Note that this method is only accurate
  * within an error margin of zero milliseconds.
  * @see {PopupBinding#hide}
  * @return {boolean}
  */
 PopupBinding.hasActiveInstances = function () {
-	
+
 	return PopupBinding.activeInstances.hasEntries ();
 }
 
 /**
- * Close active popups when a mousedown or mouseup is broadcasted globally. When the 
- * popup is associated to a ButtonBinding, an intricate setup prevents the popup 
- * from closing as soon as it opens (since the mouse event will both open and 
- * close the popup). Not pretty, but timing bugs were encoutered with other 
+ * Close active popups when a mousedown or mouseup is broadcasted globally. When the
+ * popup is associated to a ButtonBinding, an intricate setup prevents the popup
+ * from closing as soon as it opens (since the mouse event will both open and
+ * close the popup). Not pretty, but timing bugs were encoutered with other
  * methods of handling this.
  * @see {ButtonStateManager#handleEvent}
  * @implements {IBroadcastListener}
@@ -44,7 +45,7 @@ PopupBinding.hasActiveInstances = function () {
  * @param {object} arg This is usually a MouseEvent but it can also be a Binding.
  */
 PopupBinding.handleBroadcast = function ( broadcast, arg ) {
-	
+
 	switch ( broadcast ) {
 		case BroadcastMessages.MOUSEEVENT_MOUSEDOWN:
 		case BroadcastMessages.TOUCHEVENT_TOUCHSTART:
@@ -100,59 +101,64 @@ function PopupBinding () {
 	 * @type {string}
 	 */
 	this.position = null;
-	
+
 	/**
 	 * @type {boolean}
 	 * @private
 	 */
 	this.isVisible = false;
-	
+
 	/**
 	 * TODO: parse from markup
 	 * @type {function}
 	 */
 	this.onshow = null;
-	
+
 	/**
 	 * TODO: parse from markup
 	 * @type {function}
 	 */
 	this.onhide = null;
-	
+
 	/**
 	 * @type {object}
 	 */
 	this.geometry = null;
-	
+
 	/**
 	 * @see {PopupBinding#_indexMenuContent}
 	 * @type {HashMap<string><MenuItemBinding>}
 	 */
 	this._menuItems = null;
-	
+
 	/**
 	 * @see {PopupBinding#_indexMenuContent}
 	 * @type {HashMap<string><List<MenuGroupBinding>>}
 	 */
 	this._menuGroups = null;
-	
+
 	/**
 	 * @type {int}
 	 */
 	this._menuItemCount = 0;
-	
+
 	/**
 	 * If set to fixed, scrollbars may appear.
 	 * @type {string}
 	 */
 	this.type = PopupBinding.TYPE_NORMAL;
-	
-	/** 
+
+	/**
 	 * Scrollbars are go?
 	 * @type {boolean}
 	 */
 	this._isOverflow = false;
-	
+
+	/**
+	 * @type {boolean}
+	 */
+	this.hasImages = true;
+
 	/*
 	 * Returnable.
 	 */
@@ -174,25 +180,25 @@ PopupBinding.prototype.onBindingAttach = function () {
 
 	PopupBinding.superclass.onBindingAttach.call ( this );
 	this.addActionListener ( Binding.ACTION_ATTACHED );
-	
+
 	this.geometry = { // please consider erecting a class for this!
 		x : 0,
 		y : 0,
 		w : 0,
 		h : 0
 	}
-	
+
 	this.buildDOMContent ();
 	this.parseDOMProperties ();
 	this.assignDOMEvents ();
-	
+
 }
 
 /**
  * @overloads {Binding#onBindingDispose}
  */
 PopupBinding.prototype.onBindingDispose = function () {
-	
+
 	PopupBinding.superclass.onBindingDispose.call ( this );
 	if ( PopupBinding.activeInstances.has ( this.key )) {
 		PopupBinding.activeInstances.del ( this.key );
@@ -206,7 +212,7 @@ PopupBinding.prototype.buildDOMContent = function () {
 
 	var menubody = DOMUtil.getElementsByTagName ( this.bindingElement, "menubody" ).item ( 0 );
 	var popupbody = DOMUtil.getElementsByTagName ( this.bindingElement, "popupbody" ).item ( 0 );
-	
+
 	if ( menubody ) {
 		this._bodyBinding = UserInterface.getBinding ( menubody );
 	} else if ( popupbody ) {
@@ -215,7 +221,7 @@ PopupBinding.prototype.buildDOMContent = function () {
 		if (this.bindingElement.childElementCount > 0) {
 			throw new Error ( this + ": DOM structure invalid." );
 		} else {
-			this._bodyBinding = this.add ( 
+			this._bodyBinding = this.add (
 				MenuBodyBinding.newInstance ( this.bindingDocument )
 			).attach ();
 		}
@@ -249,7 +255,7 @@ PopupBinding.prototype.assignDOMEvents = function () {
  * @returns {Binding}
  */
 PopupBinding.prototype.add = function ( binding ) {
-	
+
 	var returnable = null;
 	if ( this._bodyBinding ) {
 		this._bodyBinding.add ( binding );
@@ -266,7 +272,7 @@ PopupBinding.prototype.add = function ( binding ) {
  * @returns {Binding}
  */
 PopupBinding.prototype.addFirst = function ( binding ) {
-	
+
 	var returnable = null;
 	if ( this._bodyBinding ) {
 		this._bodyBinding.addFirst ( binding );
@@ -283,11 +289,11 @@ PopupBinding.prototype.addFirst = function ( binding ) {
  * @param {Action} action
  */
 PopupBinding.prototype.handleAction = function ( action ) {
-	
+
 	PopupBinding.superclass.handleAction.call ( this, action );
-	
+
 	var binding = action.target;
-	
+
 	switch ( action.type ) {
 		case Binding.ACTION_ATTACHED :
 			if ( binding instanceof MenuItemBinding ) {
@@ -309,7 +315,7 @@ PopupBinding.prototype.handleAction = function ( action ) {
  * @param {boolean} isPlus
  */
 PopupBinding.prototype._count = function ( isPlus ) {
-	
+
 	if ( this.type == PopupBinding.TYPE_FIXED ) {
 		this._menuItemCount = this._menuItemCount +  ( isPlus ? 1 : -1 );
 		if ( !this._isOverflow ) {
@@ -333,9 +339,9 @@ PopupBinding.prototype._count = function ( isPlus ) {
  * @param {DOMElement} element
  */
 PopupBinding.prototype.snapTo = function ( element ) {
-	
+
 	var point = this._getElementPosition ( element );
-	
+
 	switch ( this.position ) {
 		case PopupBinding.POSITION_TOP :
 			point.y -= this.bindingElement.offsetHeight;
@@ -350,7 +356,7 @@ PopupBinding.prototype.snapTo = function ( element ) {
 			point.x -= this.bindingElement.offsetWidth;
 			break;
 	}
-	
+
 	this.targetElement = element;
 	this.bindingElement.style.display = "block";
 	this.setPosition ( point.x, point.y );
@@ -384,7 +390,7 @@ PopupBinding.prototype.setPosition = function ( x, y ) {
 
 	this.geometry.x = x;
 	this.geometry.y = y;
-	
+
 	this.bindingElement.style.left = this.geometry.x + "px";
 	this.bindingElement.style.top = this.geometry.y + "px";
 }
@@ -394,9 +400,9 @@ PopupBinding.prototype.setPosition = function ( x, y ) {
  */
 PopupBinding.prototype.getPosition = function ( x, y ) {
 
-	return new Point ( 
-		this.geometry.x, 
-		this.geometry.y 
+	return new Point (
+		this.geometry.x,
+		this.geometry.y
 	);
 }
 
@@ -405,7 +411,7 @@ PopupBinding.prototype.getPosition = function ( x, y ) {
  */
 PopupBinding.prototype.getDimension = function () {
 
-	return new Dimension ( 
+	return new Dimension (
 		this.bindingElement.offsetWidth,
 		this.bindingElement.offsetHeight
 	);
@@ -413,9 +419,9 @@ PopupBinding.prototype.getDimension = function () {
 
 
 /**
- * Calculate position of target element. Result depends on whether or not 
- * the target element is located in the same document as the popup element. 
- * If not, we assume that the popup is located in the top frameset and use 
+ * Calculate position of target element. Result depends on whether or not
+ * the target element is located in the same document as the popup element.
+ * If not, we assume that the popup is located in the top frameset and use
  * universal positioning.
  * TODO: MenuPopupBinding overwrites this method - eliminate the _underscore!
  * @param {DOMElement} element
@@ -429,7 +435,7 @@ PopupBinding.prototype._getElementPosition = function ( element ) {
 }
 
 /**
- * Calculate mouse position on click. To save calculations, result depends on whether 
+ * Calculate mouse position on click. To save calculations, result depends on whether
  * or not the clicked element is located in the same document as the popup element.
  * @param {MouseEvent} e
  */
@@ -446,20 +452,20 @@ PopupBinding.prototype._getMousePosition = function ( e ) {
  * @overwrites {Binding#show}
  */
 PopupBinding.prototype.show = function () {
-	
+
 	if ( this.isVisible == true) { // don't open an already open popup!
-		
+
 		this.hide (); // why does this make sense?
 	}
 	if ( !this.isVisible ) {
-		
+
 		PopupBinding.activeInstances.set ( this.key, this );
 		this.bindingElement.style.display = "block";
-		
+
 		this.dispatchAction ( PopupBinding.ACTION_SHOW );
 		this.fitOnScreen ();
 		this._makeVisible ( true );
-		
+
 		if ( this._bodyBinding instanceof MenuBodyBinding ) {
 			this._bodyBinding.refreshMenuGroups ();
 		}
@@ -477,9 +483,9 @@ PopupBinding.prototype.show = function () {
  * @param {boolean} isVisible
  */
 PopupBinding.prototype._makeVisible = function ( isVisible ) {
-	
+
 	var element = this.bindingElement;
-	
+
 	if ( isVisible ) {
 		element.style.visibility = "visible";
 
@@ -487,7 +493,7 @@ PopupBinding.prototype._makeVisible = function ( isVisible ) {
 		element.style.visibility = "hidden";
 		element.style.display = "none";
 	}
-	
+
 	this.isVisible = isVisible;
 }
 
@@ -498,10 +504,10 @@ PopupBinding.prototype._makeVisible = function ( isVisible ) {
  * @param {boolean} isEnable
  */
 PopupBinding.prototype._enableTab = function ( isEnable ) {
-	
+
 	var self = this;
 	var menuItems = this.getDescendantBindingsByLocalName ( "menuitem" );
-	
+
 	setTimeout ( function () {
 		if ( Binding.exists ( self ) == true ) {
 			menuItems.each ( function ( menuItem ) {
@@ -514,32 +520,32 @@ PopupBinding.prototype._enableTab = function ( isEnable ) {
 /**
  * Hide.
  * @overwrites {Binding#hide}
- 
+
  */
 PopupBinding.prototype.hide = function () {
-	
+
 	this.releaseKeyboard ();
-	
+
 	if ( this.isVisible ) {
-		
+
 		/*
 		this.bindingElement.style.visibility = "hidden";
 		this.bindingElement.style.display = "none";
 		*/
 		this._makeVisible ( false );
 		this.targetElement = null;
-		
+
 		this.dispatchAction ( Binding.ACTION_VISIBILITYCHANGED );
 		this.dispatchAction ( PopupBinding.ACTION_HIDE );
-		
+
 		/**
 		 * Disable keyboard navigation.
 		 */
 		this._enableTab ( false );
-		
+
 		/*
-		 * This hacky timeout prevents a dialog from closing on return keypress 
-		 * while a selector or a dialog is being handled inside the dialog. 
+		 * This hacky timeout prevents a dialog from closing on return keypress
+		 * while a selector or a dialog is being handled inside the dialog.
 		 * @see {DialogToolBarBinding#handleBroadcast}
 		 */
 		var self = this;
@@ -557,25 +563,25 @@ PopupBinding.prototype.hide = function () {
  * TODO: this adjusts position at odd times in Explorer!
  */
 PopupBinding.prototype.fitOnScreen = function () {
-	
+
 	var x = this.bindingElement.offsetLeft;
 	var y = this.bindingElement.offsetTop;
 	var w = this.bindingElement.offsetWidth;
 	var h = this.bindingElement.offsetHeight;
-	
+
 	var dim	= this.bindingWindow.WindowManager.getWindowDimensions ();
 	var pos = this.boxObject.getGlobalPosition();
-	
-	
-	
+
+
+
 	/*
-	 * Snap to element. 
+	 * Snap to element.
 	 */
 	if ( this.targetElement != null ) {
-		
+
 		if ( pos.y + h >= dim.h ) {
 			/*
-			 * This is somewhat hacky - but the "relative" switch 
+			 * This is somewhat hacky - but the "relative" switch
 			 * is effective (for now) in order to hack menupopups
 			 */
 			switch ( CSSComputer.getPosition ( this.bindingElement.offsetParent )) {
@@ -607,7 +613,7 @@ PopupBinding.prototype.fitOnScreen = function () {
 					break;
 			}
 		}
-	} 
+	}
 	/*
 	 * Snap to mouse.
 	 */
@@ -629,9 +635,9 @@ PopupBinding.prototype.fitOnScreen = function () {
 }
 
 /**
- * Mousevents will be consumed in order not to close 
- * the popup while handling menuitems. When clicking 
- * a MenuItem, the mouseup event is broadcasted via 
+ * Mousevents will be consumed in order not to close
+ * the popup while handling menuitems. When clicking
+ * a MenuItem, the mouseup event is broadcasted via
  * the EventBroadcaster, effectively closing the Popup.
  * @implements {IEventListener}
  * @overloads {Binding#handleEvent}
@@ -653,16 +659,16 @@ PopupBinding.prototype.empty = function () {
 }
 
 /**
- * Grab keyboard control. This could theoretically be done automatically when 
- * popup is opened, but this would conflict with keyboard navigation in menus 
+ * Grab keyboard control. This could theoretically be done automatically when
+ * popup is opened, but this would conflict with keyboard navigation in menus
  * supposing it should work like os native menus.
  * @see {MenuBodyBinding#grabKeyboard}
  * @param {boolean} isDefaultAction
  */
 PopupBinding.prototype.grabKeyboard = function ( isDefaultAction ) {
-	
+
 	// EHM - WHO IS SUPPOSED TO CALL THIS METHOD?
-	
+
 	/*
 	 * Simpley relay keyboard control to the contained MenuBodyBinding.
 	 *
@@ -678,7 +684,7 @@ PopupBinding.prototype.grabKeyboard = function ( isDefaultAction ) {
 PopupBinding.prototype.releaseKeyboard = function () {
 
 	// alert ( "PopupBinding.prototype.releaseKeyboard was deprecated - it seems we still use it!" );
-	
+
 	if ( this._bodyBinding != null && this._bodyBinding instanceof MenuBodyBinding ) {
 		this._bodyBinding.releaseKeyboard ();
 	}
@@ -704,7 +710,7 @@ PopupBinding.prototype._indexMenuContent = function () {
 			this._menuGroups [ rel ].add ( item );
 		}
 	}
-	
+
 	// indexing menuitems
 	list = this.getDescendantBindingsByLocalName ( "menuitem" );
 	while ( list.hasNext ()) {
@@ -734,13 +740,35 @@ PopupBinding.prototype.getMenuItemForCommand = function ( cmd ) {
 	return result;
 }
 
-/* 
- * Remembering that bindings may not be 
- * attached we carefully avoid using the 
+/**
+ * Show text only.
+ */
+PopupBinding.prototype.showTextOnly = function () {
+
+	if (this._bodyBinding) {
+		this._bodyBinding.attachClassName(PopupBinding.CLASSNAME_TEXTONLY);
+		this.hasImages = false;
+	}
+}
+
+/**
+ * Show both images and text.
+ */
+PopupBinding.prototype.showBoth = function () {
+
+	if (this._bodyBinding) {
+		this._bodyBinding.detachClassName(PopupBinding.CLASSNAME_TEXTONLY);
+		this.hasImages = true;
+	}
+}
+
+/*
+ * Remembering that bindings may not be
+ * attached we carefully avoid using the
  * getChildBindingsByLocalName method.
  */
-PopupBinding.prototype.clear = function () { 
-	
+PopupBinding.prototype.clear = function () {
+
 	var bodyBinding = this._bodyBinding;
 	if ( bodyBinding ) {
 		bodyBinding.detachRecursive ();

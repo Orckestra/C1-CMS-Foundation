@@ -315,7 +315,13 @@ ui|dialogpage {
 				padding: 0;
 
 				ui|box {
-					border: none;
+					border-color: transparent;
+				}
+
+				&.invalid{
+					ui|box {
+						border-color: @field-error-color;
+					}
 				}
 			}
 		}

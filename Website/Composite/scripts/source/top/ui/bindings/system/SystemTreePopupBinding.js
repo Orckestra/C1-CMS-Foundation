@@ -261,7 +261,7 @@ SystemTreePopupBinding.prototype.constructContent = function () {
 							var body = popup.add(MenuBodyBinding.newInstance(doc));
 							var group = body.add(MenuGroupBinding.newInstance(doc));
 							bundleMenuItemBinding.add(popup);
-							if (this._keepBundleState) {
+							if (this._keepBundleState || bundleMenuItemBinding.isDisabled) {
 								group.add(self.getMenuItemBinding(bundleMenuItemBinding.associatedSystemAction));
 							}
 						}
@@ -294,21 +294,23 @@ SystemTreePopupBinding.prototype.constructContent = function () {
 		}
 		this._bodyBinding.attachRecursive();
 
-		if (this._keepBundleState) {
+		bundles.each(function(bundleName, bundleMenuItemBinding) {
+			if (bundleMenuItemBinding.isMenuContainer) {
+				if (this._keepBundleState || bundleMenuItemBinding.isDisabled) {
 
-			bundles.each(function(bundleName, bundleMenuItemBinding) {
-				if (bundleMenuItemBinding.isMenuContainer) {
 					var bundleMenuItemsBinding = bundleMenuItemBinding.getDescendantBindingsByType(MenuItemBinding);
 					var latestBundleMenuItem = null;
 
-					var latestBundleHandle = LocalStorage.get(ToolBarComboButtonBinding.STORAGE_PREFFIX + bundleName);
-					bundleMenuItemsBinding.each(function(menuItemBinding) {
-						if (menuItemBinding.associatedSystemAction && menuItemBinding.associatedSystemAction.getHandle() === latestBundleHandle && !menuItemBinding.isDisabled) {
-							latestBundleMenuItem = menuItemBinding;
-							return false;
-						}
-						return true;
-					});
+					if (this._keepBundleState) {
+						var latestBundleHandle = LocalStorage.get(ToolBarComboButtonBinding.STORAGE_PREFFIX + bundleName);
+						bundleMenuItemsBinding.each(function(menuItemBinding) {
+							if (menuItemBinding.associatedSystemAction && menuItemBinding.associatedSystemAction.getHandle() === latestBundleHandle && !menuItemBinding.isDisabled) {
+								latestBundleMenuItem = menuItemBinding;
+								return false;
+							}
+							return true;
+						});
+					}
 
 					if (latestBundleMenuItem == null) {
 						bundleMenuItemsBinding.each(function(menuItemBinding) {
@@ -327,8 +329,9 @@ SystemTreePopupBinding.prototype.constructContent = function () {
 					this.setSystemAction(bundleMenuItemBinding, latestBundleMenuItem.associatedSystemAction);
 					Binding.prototype.hide.call(latestBundleMenuItem);
 				}
-			}, this);
-		}
+			}
+		}, this);
+
 	}
 }
 

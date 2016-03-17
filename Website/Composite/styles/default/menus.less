@@ -121,6 +121,19 @@ ui|menu { //usage: top menubar and ImageEditor menubar
 ui|menubody {
 	display: block;
 	padding: 0;
+
+	&.textonly {
+		ui|labelbox{
+			svg {
+				display: none;
+			}
+			&.image-and-text {
+				ui|labeltext{
+					margin-left: 0;
+				}
+			}
+		}
+	}
 }
 
 ui|menugroup {
