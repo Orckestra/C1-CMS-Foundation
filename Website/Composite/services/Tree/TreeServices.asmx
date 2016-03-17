@@ -90,7 +90,15 @@ namespace Composite.Services
         [WebMethod]
         public List<ClientElement> GetRootElements(string dummy)
         {
-            return GetElementsBySearchToken(null, null);
+            try
+            {
+                return GetElementsBySearchToken(null, null);
+            }
+            catch (Exception ex)
+            {
+                Log.LogCritical(LogTitle, ex);
+                throw;
+            }
         }
 
 
@@ -133,17 +141,25 @@ namespace Composite.Services
         [WebMethod]
         public List<ClientElement> GetElementsBySearchToken(ClientElement clientElement, string serializedSearchToken)
         {
-            VerifyClientElement(clientElement);
-
-            if (clientElement == null || string.IsNullOrEmpty(clientElement.ProviderName))
+            try
             {
-                return new List<ClientElement> { TreeServicesFacade.GetRoot() };
+
+                VerifyClientElement(clientElement);
+
+                if (clientElement == null || string.IsNullOrEmpty(clientElement.ProviderName))
+                {
+                    return new List<ClientElement> { TreeServicesFacade.GetRoot() };
+                }
+
+                List<ClientElement> clientElements = TreeServicesFacade.GetChildren(clientElement.ProviderName, clientElement.EntityToken, clientElement.Piggybag, serializedSearchToken);
+                RemoveDuplicateActions(clientElements);
+                return clientElements;
             }
-
-            List<ClientElement> clientElements = TreeServicesFacade.GetChildren(clientElement.ProviderName, clientElement.EntityToken, clientElement.Piggybag, serializedSearchToken);
-            RemoveDuplicateActions(clientElements);
-            return clientElements;
-
+            catch (Exception ex)
+            {
+                Log.LogCritical(LogTitle, ex);
+                throw;
+            }
         }
 
 
@@ -151,7 +167,15 @@ namespace Composite.Services
         [WebMethod]
         public List<ClientElement> GetNamedRoots(string name)
         {
-            return GetNamedRootsBySearchToken(name, null);
+            try
+            {
+                return GetNamedRootsBySearchToken(name, null);
+            }
+            catch (Exception ex)
+            {
+                Log.LogCritical(LogTitle, ex);
+                throw;
+            }
         }
 
 
