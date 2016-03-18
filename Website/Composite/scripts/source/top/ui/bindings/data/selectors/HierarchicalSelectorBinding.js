@@ -11,12 +11,12 @@ HierarchicalSelectorBinding.ACTION_SELECTIONCHANGED = "HierarchicalSelector sele
  * @class
  * @implements {IData}
  */
-function HierarchicalSelectorBinding () {
+function HierarchicalSelectorBinding() {
 
 	/**
 	 * @type {SystemLogger}
 	 */
-	this.logger = SystemLogger.getLogger ( "HierarchicalSelectorBinding" );
+	this.logger = SystemLogger.getLogger("HierarchicalSelectorBinding");
 
 	/**
 	 * Block common crawlers.
@@ -54,12 +54,12 @@ HierarchicalSelectorBinding.prototype.toString = function () {
  */
 HierarchicalSelectorBinding.prototype.onBindingAttach = function () {
 
-	HierarchicalSelectorBinding.superclass.onBindingAttach.call ( this );
+	HierarchicalSelectorBinding.superclass.onBindingAttach.call(this);
 
 	this.addActionListener(CheckTreeNodeBinding.ACTION_COMMAND);
 
-	this._buildDOMContent ();
-	this._parseDOMProperties ();
+	this._buildDOMContent();
+	this._parseDOMProperties();
 	this._populate();
 
 	var parent = UserInterface.getBinding(this.bindingElement.parentNode);
@@ -84,7 +84,7 @@ HierarchicalSelectorBinding.prototype.onBindingInitialize = function () {
 HierarchicalSelectorBinding.prototype._buildDOMContent = function () {
 
 	// build box for result display
-	this.shadowTree.box = DOMUtil.createElementNS ( Constants.NS_UI, "ui:box", this.bindingDocument );
+	this.shadowTree.box = DOMUtil.createElementNS(Constants.NS_UI, "ui:box", this.bindingDocument);
 	this.bindingElement.appendChild(this.shadowTree.box);
 }
 
@@ -104,11 +104,12 @@ HierarchicalSelectorBinding.prototype._populate = function () {
 	this._populateFromSelections(this.shadowTree.tree, this.bindingElement);
 	this.shadowTree.tree.attachRecursive();
 
+	this.shadowTree.tree.addActionListener(TreeNodeBinding.ACTION_OPEN, this);
+
 }
 
 HierarchicalSelectorBinding.prototype._populateFromSelections = function (treeNodeContainer, selectionContainer) {
 
-	var openParent = false;
 	var selections = DOMUtil.getChildElementsByLocalName(selectionContainer, "selection");
 	var treenode = null;;
 
@@ -123,7 +124,7 @@ HierarchicalSelectorBinding.prototype._populateFromSelections = function (treeNo
 		var isReadonly = selection.getAttribute("readonly") === "true";
 
 		treenode.setLabel(label);
-		treenode.setImage( image);
+		treenode.setImage(image);
 		treenode.imageProfile = new ImageProfile({
 			image: image,
 			imageHover: null,
@@ -136,24 +137,18 @@ HierarchicalSelectorBinding.prototype._populateFromSelections = function (treeNo
 		treenode.isSelectable = isSelectable;
 		treenode.isReadOnly = isReadonly;
 
-		treeNodeContainer.add(treenode);
+		treenode.isContainer = selection.hasChildNodes();
 
-		if (this._populateFromSelections(treenode, treenode.selectionElement)) {
-			treenode.setProperty("open", true);
-			openParent = true;
-		} else {
-			openParent = openParent ? openParent : isSelected && !isReadonly;
-		}
+		treeNodeContainer.add(treenode);
 
 	}, this);
 
 	if (treeNodeContainer instanceof CheckTreeBinding && selections.getLength() === 1) {
 		treenode.setProperty("open", true);
 		treenode.setProperty("pin", true);
+		this._populateFromSelections(treenode, treenode.selectionElement);
+		treenode.hasBeenOpened = true;
 	}
-
-	return openParent;
-
 }
 
 /**
@@ -162,13 +157,13 @@ HierarchicalSelectorBinding.prototype._populateFromSelections = function (treeNo
  * @overloads {Binding#handleAction}
  * @param {Action} action
  */
-HierarchicalSelectorBinding.prototype.handleAction = function ( action ) {
+HierarchicalSelectorBinding.prototype.handleAction = function (action) {
 
-	HierarchicalSelectorBinding.superclass.handleAction.call ( this, action );
+	HierarchicalSelectorBinding.superclass.handleAction.call(this, action);
 
 	var binding = action.target;
 
-	switch ( action.type ) {
+	switch (action.type) {
 
 		case CheckTreeNodeBinding.ACTION_COMMAND:
 
@@ -177,12 +172,18 @@ HierarchicalSelectorBinding.prototype.handleAction = function ( action ) {
 			var checkTreeNode = action.target;
 			var isChecked = checkTreeNode.isChecked();
 
+			checkTreeNode.selectionElement.setAttribute("selected", isChecked);
+
 			if (this.autoSelectChildren || this.autoSelectParents && !isChecked) {
+
+				this.checkChildrenLazySelections(checkTreeNode, isChecked);
+
 				checkTreeNode.getDescendantBindingsByType(CheckTreeNodeBinding).each(function (child) {
 					if (child.isSelectable && !child.isReadOnly) {
 						child.setChecked(isChecked, true);
+						this.checkChildrenLazySelections(child, isChecked);
 					}
-				});
+				}, this);
 			}
 
 			if (this.autoSelectParents && isChecked) {
@@ -190,6 +191,7 @@ HierarchicalSelectorBinding.prototype.handleAction = function ( action ) {
 				while (((parent = UserInterface.getBinding(parent.bindingElement.parentNode)) && parent instanceof CheckTreeNodeBinding)) {
 					if (parent.isSelectable && !parent.isReadOnly) {
 						parent.setChecked(isChecked, true);
+						parent.selectionElement.setAttribute("selected", isChecked);
 					}
 				}
 			}
@@ -198,8 +200,32 @@ HierarchicalSelectorBinding.prototype.handleAction = function ( action ) {
 				this.detachClassName(DataBinding.CLASSNAME_INVALID);
 			}
 
-			action.consume ();
+			action.consume();
 			break;
+
+		case TreeNodeBinding.ACTION_OPEN:
+			console.log(action);
+			var treenode = action.target;
+			if (!treenode.hasBeenOpened) {
+				this._populateFromSelections(treenode, treenode.selectionElement);
+				treenode.attachRecursive();
+			}
+			action.consume();
+			break;
+	}
+}
+
+HierarchicalSelectorBinding.prototype.checkChildrenLazySelections = function (treenode, isChecked) {
+
+	if (treenode.isContainer && !treenode.hasBeenOpened) {
+		var selections = DOMUtil.getElementsByTagName(treenode.selectionElement, "selection");
+		new List(selections).each(function (selection) {
+			var isSelectable = selection.getAttribute("selectable") === "true";
+			var isReadonly = selection.getAttribute("readonly") === "true";
+			if (isSelectable && !isReadonly) {
+				selection.setAttribute("selected", isChecked);
+			}
+		});
 	}
 }
 
@@ -235,7 +261,7 @@ HierarchicalSelectorBinding.prototype.validate = function () {
 	var isValid = true;
 	if (this.isRequired) {
 		isValid = false;
-		this.getDescendantBindingsByType(CheckTreeNodeBinding).each(function(treenode) {
+		this.getDescendantBindingsByType(CheckTreeNodeBinding).each(function (treenode) {
 			if (treenode.isSelectable && !treenode.isReadOnly && treenode.isChecked()) {
 				isValid = true;
 				return false;
@@ -256,7 +282,7 @@ HierarchicalSelectorBinding.prototype.validate = function () {
  * so that the server recieves something on form submit.
  * @implements {IData}
  */
-HierarchicalSelectorBinding.prototype.manifest = function() {
+HierarchicalSelectorBinding.prototype.manifest = function () {
 
 	/*
 	 * We need to submit an "array" sort of thing.
@@ -264,7 +290,7 @@ HierarchicalSelectorBinding.prototype.manifest = function() {
 	 */
 	var inputs = new List(DOMUtil.getElementsByTagName(this.bindingElement, "input"));
 	if (inputs.hasEntries()) {
-		inputs.each(function(input) {
+		inputs.each(function (input) {
 			input.parentNode.removeChild(input);
 		});
 	}
@@ -272,11 +298,15 @@ HierarchicalSelectorBinding.prototype.manifest = function() {
 	/*
 	 * Build inputs for selected selections.
 	 */
-	this.getDescendantBindingsByType(CheckTreeNodeBinding).each(function(treenode) {
-		if (treenode.isSelectable && treenode.isChecked()) {
+	var selections = DOMUtil.getElementsByTagName(this.bindingElement, "selection");
+	new List(selections).each(function (selection) {
+		var isSelectable = selection.getAttribute("selectable") === "true";
+		var isSelected = selection.getAttribute("selected") === "true";
+		var value = selection.getAttribute("value");
+		if (isSelectable && isSelected) {
 			var input = DOMUtil.createElementNS(Constants.NS_XHTML, "input", this.bindingDocument);
 			input.name = this._name;
-			input.value = treenode.selectionValue;
+			input.value = value;
 			this.bindingElement.appendChild(input);
 		}
 	}, this);
@@ -297,7 +327,7 @@ HierarchicalSelectorBinding.prototype.getValue = function () {
  * @implements {IData}
  * @param {string} value
  */
-HierarchicalSelectorBinding.prototype.setValue = function ( value ) {
+HierarchicalSelectorBinding.prototype.setValue = function (value) {
 
 }
 
@@ -308,7 +338,7 @@ HierarchicalSelectorBinding.prototype.setValue = function ( value ) {
  */
 HierarchicalSelectorBinding.prototype.getResult = function () {
 
-	return new Array ();
+	return new Array();
 }
 
 /**
@@ -316,6 +346,6 @@ HierarchicalSelectorBinding.prototype.getResult = function () {
  * @implements {IData}
  * @param {array} array
  */
-HierarchicalSelectorBinding.prototype.setResult = function ( array ) {
+HierarchicalSelectorBinding.prototype.setResult = function (array) {
 
 }
