@@ -287,7 +287,11 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
 
                 return null;
             }
-            
+
+            if (!AssemblyFacade.AssemblyPotentiallyUsesType(assembly, typeof (ApplicationStartupAttribute)))
+            {
+                return null;
+            }
 
             Type[] types;
 

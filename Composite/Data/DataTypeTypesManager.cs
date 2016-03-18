@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Composite.Core;
-using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Core.Types;
 using Composite.Data.DynamicTypes;
@@ -34,7 +33,7 @@ namespace Composite.Data
         /// <returns>Returns the data type. Never null.</returns>
         public static Type GetDataType(Guid dataTypeId)
         {
-            DataTypeDescriptor dataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(dataTypeId);
+            var dataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(dataTypeId);
             if (dataTypeDescriptor == null) throw new InvalidOperationException("No data type exists with the given data type id: " + dataTypeId);
 
             return GetDataType(dataTypeDescriptor);
@@ -105,6 +104,11 @@ namespace Composite.Data
         /// <param name="logTypeLoadErrors"></param>
         public static void AddNewAssembly(Assembly assembly, bool logTypeLoadErrors)
         {
+            if (!AssemblyFacade.AssemblyPotentiallyUsesType(assembly, typeof (IData)))
+            {
+                return;
+            }
+
             try
             {
                 var types = assembly.GetTypes();
@@ -117,7 +121,7 @@ namespace Composite.Data
                 {
                     var exceptionToLog = exception.LoaderExceptions != null ? exception.LoaderExceptions.First() : exception;
 
-                    Log.LogError(LogTitle, new Exception("Failed to load assebmly '{0}'".FormatWith(assembly.FullName), exceptionToLog));
+                    Log.LogError(LogTitle, new Exception($"Failed to load assembly '{assembly.FullName}'", exceptionToLog));
                 }
             }
         }
