@@ -1,6 +1,6 @@
 /**
  * @class
- * Gateway for common DOM event management, emulating   
+ * Gateway for common DOM event management, emulating
  * DOM2 EventListener interface for Internet Explorer
  */
 function _DOMEvents() { }
@@ -44,7 +44,7 @@ _DOMEvents.prototype = {
 	TOUCHMOVE: "touchmove",
 
 	/*
-	* Explorer specific events. Note that "mouseenter" and 
+	* Explorer specific events. Note that "mouseenter" and
 	* "mouseleave" pseudosupport has been hacked into Mozilla.
 	*/
 	ACTIVATE: "activate",
@@ -86,32 +86,6 @@ _DOMEvents.prototype = {
 			handler,
 			isReverse
 		);
-
-		/*
-		* Clearing eventlisteners on unload. This should 
-		* in theory minimize memory leaks (clearly not!).
-		*/
-		if (!Client.isExplorer && !Client.isExplorer11) {
-			if (target && typeof target.nodeType != Types.UNDEFINED) {
-				if (target.nodeType == Node.ELEMENT_NODE) {
-					var win = DOMUtil.getParentWindow(target);
-					if (win) {
-						var unleaker = {
-							handleEvent: function () {
-								DOMEvents.removeEventListener(
-									target,
-									event,
-									handler,
-									isReverse
-								);
-								DOMEvents.removeEventListener(win, DOMEvents.UNLOAD, unleaker);
-							}
-						}
-						DOMEvents.addEventListener(win, DOMEvents.UNLOAD, unleaker);
-					}
-				}
-			}
-		}
 	},
 
 	/**
@@ -231,7 +205,7 @@ _DOMEvents.prototype = {
 	// PRIVATE FUNCTIONS ......................................................
 
 	/**
-	* Is node child of parent? Used to emulate 
+	* Is node child of parent? Used to emulate
 	* IE native "mouseenter" and "mouseleave".
 	* TODO: Move to DOMUtil?
 	* @param {DOMElement} parent
@@ -302,10 +276,10 @@ _DOMEvents.prototype = {
 					} else {
 						switch (event) {
 							/*
-							* Note that the "mouseenter" and "mouseleave" events are 
-							* registered in Mozilla as "mouseover" and "mouseout"  
-							* event though the IE native behavior is emulated. This 
-							* implies that you have to listen for both "mouseover" 
+							* Note that the "mouseenter" and "mouseleave" events are
+							* registered in Mozilla as "mouseover" and "mouseout"
+							* event though the IE native behavior is emulated. This
+							* implies that you have to listen for both "mouseover"
 							* and "mouseenter" event event though only the latter was added!
 							*/
 							case DOMEvents.MOUSEENTER:
@@ -355,9 +329,9 @@ _DOMEvents.prototype = {
 	// EXPLORER SPECIFIC ...............................................
 
 	/**
-	* Explorer expects functions, not objects, as event handlers. 
-	* This fellow will return a function which in turn invokes the 
-	* designated method <code>handleEvent</code> on the object. 
+	* Explorer expects functions, not objects, as event handlers.
+	* This fellow will return a function which in turn invokes the
+	* designated method <code>handleEvent</code> on the object.
 	* The error handling is especially elaborate around here.
 	* @param {DOMElement} target
 	* @param {string} event
