@@ -68,8 +68,8 @@ namespace Composite.Core.WebClient.HttpModules
 
             if (adminFolderExists)
             {
-                LoadConfiguration();
                 _allowC1ConsoleRequests = true;
+                LoadConfiguration();
             }
         }
 
