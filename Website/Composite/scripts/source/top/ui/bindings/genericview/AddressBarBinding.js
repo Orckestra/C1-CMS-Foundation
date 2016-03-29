@@ -95,29 +95,33 @@ AddressBarBinding.prototype.showBreadcrumb = function (node, parents) {
 	var pathBinding = this.pathBinding;
 	pathBinding.detachRecursive();
 	pathBinding.bindingElement.innerHTML = "";
-	var self = this;
-	parents.reverse().each(
-		function (parent) {
-			var button = ToolBarButtonBinding.newInstance(pathBinding.bindingDocument);
 
-			button.setLabel(parent.getLabel());
+	if (parents != undefined) {
+		parents.reverse().each(
+			function(parent) {
+				var button = ToolBarButtonBinding.newInstance(pathBinding.bindingDocument);
 
-			pathBinding.add(button);
-			button.attach();
-			button.entityToken = parent.getEntityToken();
-			button.node = parent; //?
-			button.oncommand = function () {
-				this.dispatchAction(PathBinding.ACTION_COMMAND);
-			}
+				button.setLabel(parent.getLabel());
 
-		}, this
-	);
+				pathBinding.add(button);
+				button.attach();
+				button.entityToken = parent.getEntityToken();
+				button.node = parent; //?
+				button.oncommand = function() {
+					this.dispatchAction(PathBinding.ACTION_COMMAND);
+				}
 
+			}, this
+		);
+	}
 
-	var button = ToolBarButtonBinding.newInstance(pathBinding.bindingDocument);
-	button.setLabel(node.getLabel());
-	pathBinding.add(button);
-	button.attach();
+	if (node != undefined) {
+		var button = ToolBarButtonBinding.newInstance(pathBinding.bindingDocument);
+		button.setLabel(node.getLabel());
+		pathBinding.add(button);
+		button.attach();
+	}
+
 	this.shadowTree.input.value = "";
 	this.shadowTree.input.style.display = "none";
 	this.pathBinding.show();
