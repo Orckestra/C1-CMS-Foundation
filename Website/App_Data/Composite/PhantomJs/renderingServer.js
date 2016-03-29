@@ -49,11 +49,12 @@ function BuildFunctionPreview(system, console, address, output, cookies, mode) {
 		}
 	}	
 		
-	if (mode == "template") {
-	    page.viewportSize = { width: 1920, height: 600 };
-	} else {
-	    page.viewportSize = { width: 1920, height: 600 };
-	}
+    if (mode == "test") {
+    	page.viewportSize = { width: 320, height: 200 };
+    	page.clipRect = { top: 0, left: 0, height: 320, width: 200 };
+    } else {
+    	page.viewportSize = { width: 1920, height: 600 };
+    }
 
     page.settings.resourceTimeout = (mode == "test") ? 15000 : 30000;
     
