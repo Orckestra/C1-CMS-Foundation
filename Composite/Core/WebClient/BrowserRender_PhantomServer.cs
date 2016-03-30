@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Hosting;
 using Composite.Core.Application;
+using Composite.Core.Configuration;
 using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Core.Parallelization;
@@ -40,13 +41,17 @@ namespace Composite.Core.WebClient
             [SuppressMessage("Composite.IO", "Composite.DotNotUseStreamWriterClass:DotNotUseStreamWriterClass")]
             private PhantomServer()
             {
+                var tempDirectory = PathUtil.Resolve(GlobalSettingsFacade.TempDirectory);
+                var cachePath = Path.Combine(tempDirectory, "phantomjs_cache");
+                var localStoragePath = Path.Combine(tempDirectory, "phantomjs_ls");
+
                 _process = new Process
                 {
                     StartInfo =
                     {
                         WorkingDirectory = _phantomJsFolder,
                         FileName = "\"" + _phantomJsPath + "\"",
-                        Arguments = string.Format("--config={0} {1}", ConfigFileName, ScriptFileName),
+                        Arguments = $"\"--local-storage-path={localStoragePath}\" \"--disk-cache-path={cachePath}\" --config={ConfigFileName} {ScriptFileName}",
                         RedirectStandardOutput = true,
                         RedirectStandardError = true,
                         RedirectStandardInput = true,
@@ -158,7 +163,8 @@ namespace Composite.Core.WebClient
                     return _stdout.ReadLine();
                 });
 
-                double timeout = (DateTime.Now - _process.StartTime).TotalSeconds < 120 ? 65 : 30;
+                var secondsSinceStartup = (DateTime.Now - _process.StartTime).TotalSeconds;
+                double timeout = secondsSinceStartup < 120 || mode == "test" ? 65 : 30;
 
                 readerTask.Wait(TimeSpan.FromSeconds(timeout));
 

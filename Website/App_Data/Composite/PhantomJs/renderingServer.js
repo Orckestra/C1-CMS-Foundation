@@ -56,7 +56,7 @@ function BuildFunctionPreview(system, console, address, output, cookies, mode) {
     	page.viewportSize = { width: 1920, height: 600 };
     }
 
-    page.settings.resourceTimeout = (mode == "test") ? 15000 : 30000;
+    page.settings.resourceTimeout = 30000;
     
 	page.onResourceTimeout = function (request) {
 	    if (request.id == 1) {

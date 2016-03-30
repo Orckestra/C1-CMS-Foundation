@@ -105,7 +105,7 @@ namespace Composite.Core.WebClient
                         }
                         catch (Exception ex)
                         {
-                            Log.LogError("Function preview", ex.Message);
+                            Log.LogError("Function preview", ex);
                         }
                     }
 
@@ -132,10 +132,7 @@ namespace Composite.Core.WebClient
                 }
                 finally
                 {
-                    if (previewImage != null)
-                    {
-                        previewImage.Dispose();
-                    }
+                    previewImage?.Dispose();
                 }
             }
             catch (Exception ex)
@@ -166,12 +163,14 @@ namespace Composite.Core.WebClient
         private static void GenerateBoxImage(HttpContext context, string boxtype, string title, Bitmap previewImage,
             List<string> textLines)
         {
-            string filePath = context.Server.MapPath(UrlUtils.ResolveAdminUrl(string.Format("images/{0}box.png", boxtype)));
-            using (Bitmap bitmap = (Bitmap) Bitmap.FromFile(filePath))
+            string filePath = context.Server.MapPath(UrlUtils.ResolveAdminUrl($"images/{boxtype}box.png"));
+            using (var bitmap = (Bitmap) Bitmap.FromFile(filePath))
             {
-                var imageCreator = new ImageTemplatedBoxCreator(bitmap, new Point(55, 40), new Point(176, 78));
+                var imageCreator = new ImageTemplatedBoxCreator(bitmap, new Point(55, 40), new Point(176, 78))
+                {
+                    MinHeight = 50
+                };
 
-                imageCreator.MinHeight = 50;
 
                 int textLeftPadding = (boxtype == "function" ? 30 : 36);
 
@@ -240,9 +239,6 @@ namespace Composite.Core.WebClient
 
 
         /// <exclude />
-        public override bool IsReusable
-        {
-            get { return true; }
-        }
+        public override bool IsReusable => true;
     }
 }

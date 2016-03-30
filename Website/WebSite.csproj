@@ -575,6 +575,7 @@
     <Content Include=".bowerrc" />
     <Content Include="bower.json" />
     <Content Include="Composite\styles\default\branding.less" />
+    <Content Include="App_Data\Composite\PhantomJs\config.json" />
     <None Include="Composite\styles\default\splash.less" />
     <Content Include="Composite\GenerateIconSprite.aspx" />
     <Content Include="Composite\images\editfunction.png" />
@@ -1275,7 +1276,9 @@
       <DependentUpon>Page.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Content Include="packages.config" />
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\Composite\Configuration\UrlFormatting.xml" />
@@ -2577,7 +2580,7 @@
   </ProjectExtensions>
   <PropertyGroup>
     <PreBuildEvent>if not exist "$(ProjectDir)App_Data\Composite\PhantomJs\phantomjs.exe" (
-    copy /Y "$(ProjectDir)\..\Packages\PhantomJS.1.9.7\tools\phantomjs\phantomjs.exe" "$(ProjectDir)App_Data\Composite\PhantomJs\phantomjs.exe"
+    copy /Y "$(ProjectDir)\..\Packages\PhantomJS.2.1.1\tools\phantomjs\phantomjs.exe" "$(ProjectDir)App_Data\Composite\PhantomJs\phantomjs.exe"
 )</PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
