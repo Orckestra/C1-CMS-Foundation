@@ -36,7 +36,8 @@ namespace Composite.Core.WebClient.Services.WysiwygEditor
         public static bool GetPreviewInformation(HttpContext context, Guid pageId, Guid templateId, out string imageFilePath, out PlaceholderInformation[] placeholders)
         {
             int updateHash = BrowserRender.GetLastCacheUpdateTime(RenderingMode).GetHashCode();
-            string requestUrl = new UrlBuilder(context.Request.Url.ToString()).ServerUrl + ServiceUrl + "?p=" + pageId + "&t=" + templateId + "&hash=" + updateHash;
+            string requestUrl = new UrlBuilder(context.Request.Url.ToString()).ServerUrl 
+                + ServiceUrl + $"?p={pageId}&t={templateId}&hash={updateHash}";
 
             BrowserRender.RenderingResult result = null;
 
@@ -76,19 +77,24 @@ namespace Composite.Core.WebClient.Services.WysiwygEditor
                 foreach (var infoPart in output.Substring(templateInfoPrefix.Length).Split('|'))
                 {
                     string[] parts = infoPart.Split(',');
-                    Verify.That(parts.Length == 5, "Incorrectly serialized template part info: " + infoPart);
 
-                    int left = Int32.Parse(parts[1]);
-                    int top = Int32.Parse(parts[2]);
-                    int width = Int32.Parse(parts[3]);
-                    int height = Int32.Parse(parts[4]);
+                    double left, top, width, height;
+
+                    if (parts.Length != 5
+                        || !double.TryParse(parts[1], out left)
+                        || !double.TryParse(parts[2], out top)
+                        || !double.TryParse(parts[3], out width)
+                        || !double.TryParse(parts[4], out height))
+                    {
+                        throw new InvalidOperationException($"Incorrectly serialized template part info: {infoPart}");
+                    }
 
                     var zoom = 1.0;
 
                     pList.Add(new PlaceholderInformation
                     {
                         PlaceholderId = parts[0], 
-                        ClientRectangle = new Rectangle(left, top, width, height),
+                        ClientRectangle = new Rectangle((int)left, (int)top, (int)width, (int)height),
                         ClientRectangleWithZoom = new Rectangle(
                             (int)Math.Round(zoom * left), 
                             (int)Math.Round(zoom * top),
