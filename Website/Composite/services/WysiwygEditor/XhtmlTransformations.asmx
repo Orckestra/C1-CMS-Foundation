@@ -521,7 +521,7 @@ namespace Composite.Services
             string type,
             string title,
             string description,
-            string markup,
+            XElement functionElement,
             Guid functionPreviewPageId,
             Guid functionPreviewTemplatePageId,
             string functionPreviewPlaceholderName,
@@ -529,6 +529,8 @@ namespace Composite.Services
             int viewWidth,
             bool editable)
         {
+			string markup = XhtmlPrettifier.Prettify(functionElement.ToString(), "");
+
             // TODO: cache ZipContent calls?
             string imageUrl = "~/Renderers/FunctionBox?type={0}&title={1}&description={2}&markup={3}&lang={4}&hash={5}".FormatWith(
                 HttpUtility.UrlEncode(type, Encoding.UTF8),
@@ -575,9 +577,10 @@ namespace Composite.Services
         {
             string fieldLabel = dataField.Name;
 
-            if (dataField.FormRenderingProfile != null && dataField.FormRenderingProfile.Label != null)
+            var profile = dataField.FormRenderingProfile;
+            if (profile != null && profile.Label != null)
             {
-                fieldLabel = StringResourceSystemFacade.ParseString(dataField.FormRenderingProfile.Label);
+                fieldLabel = StringResourceSystemFacade.ParseString(profile.Label);
             }
 
             return GetImageTagForDynamicDataFieldReference(dataField.Name, fieldLabel, dataTypeDescriptor.Name, dataTypeDescriptor.TypeManagerTypeName);
@@ -590,7 +593,7 @@ namespace Composite.Services
                 HttpUtility.UrlEncode(typeName, Encoding.UTF8));
 
             return new XElement(Namespaces.Xhtml + "img",
-                new XAttribute("alt", string.Format("{0}", fieldName)),
+                new XAttribute("alt", fieldName),
                 new XAttribute("src", Composite.Core.WebClient.UrlUtils.ResolveAdminUrl(imageUrl)),
                 new XAttribute("class", "compositeFieldReferenceWysiwygRepresentation"),
                 new XAttribute("data-markup", HttpUtility.UrlEncode(string.Format("{0}\\{1}", uiFriendlyTypeName, fieldName), Encoding.UTF8))
@@ -654,14 +657,15 @@ namespace Composite.Services
                 error = true;
             }
 
-            string functionBoxUrl = error ? GetFunctionBoxImageUrl("warning", title, description.ToString())
-                                          : GetFunctionBoxImageUrl_Markup("function", title, description.ToString(), functionElement.ToString(),
-                                                                           pageId,
-                                                                           pageTemplateId,
-                                                                           functionPreviewPlaceholderName,
-                                                                           functionPreviewCssSelector,
-                                                                           viewWidth,
-                                                                           hasParameters);
+            string functionBoxUrl = error 
+                ? GetFunctionBoxImageUrl("warning", title, description.ToString())
+                : GetFunctionBoxImageUrl_Markup("function", title, description.ToString(), functionElement,
+                                                pageId,
+                                                pageTemplateId,
+                                                functionPreviewPlaceholderName,
+                                                functionPreviewCssSelector,
+                                                viewWidth,
+                                                hasParameters);
 
             XElement imagetag = new XElement(Namespaces.Xhtml + "img"
                 , new XAttribute("alt", _markupWysiwygRepresentationAlt)
