@@ -71,8 +71,12 @@ function BuildFunctionPreview(system, console, address, output, cookies, mode) {
 
     // if js errors happen on the page 
 	page.onError = function (msg, trace) {
-	    // ignore in page js errors - some dev writing sloppy js, should not affect us
+		// ignore in page js errors - some dev writing sloppy js, should not affect us
 	}
+
+	page.onResourceError = function (resourceError) {
+		page.fail_reason = "Error opening url '" + resourceError.url + "'; Error code: " + resourceError.errorCode + ". Description: " + resourceError.errorString;
+	};
 
     // redirects ...
 	page.onResourceReceived = function (response) {
@@ -150,11 +154,12 @@ function BuildFunctionPreview(system, console, address, output, cookies, mode) {
         page.open(address, function (status) {
             if (status !== 'success') {
                 clearGlobalTimeout();
-                console.log('ERROR, page.open: ' + status);
+            	console.log('ERROR, page.open: ' + status 
+					+ "; " + page.fail_reason);
 
                 WaitForInput(system, console);
             } else {
-                if (mode == "test") {
+                if (mode === "test") {
                     clearGlobalTimeout();
 
                     page.render(output);
