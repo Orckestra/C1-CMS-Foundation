@@ -269,6 +269,8 @@ TreeSelectorDialogPageBinding.prototype.onBeforePageInitialize = function () {
 	//Remove default double click action
 	this._treeBinding.removeActionListener(TreeNodeBinding.ACTION_COMMAND);
 
+	this._treeBinding.unsubscribe(BroadcastMessages.SYSTEMTREEBINDING_REFRESH);
+
 	/*
 	 * Build root nodes.
 	 */
@@ -351,13 +353,15 @@ TreeSelectorDialogPageBinding.prototype.setNode = function (node) {
 	this._updateBroadcasters();
 	this._updateAddressBar(node);
 
-	if (this._toolbarBinding && !node) {
-		this._toolbarBinding.handleBroadcast(BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED, {
-			activePosition: this._activePosition,
-			actionProfile: null,
-			syncHandle: this.getSyncHandle(),
-			source: this
-		});
+	if (node == undefined) {
+		if (this._toolbarBinding) {
+			this._toolbarBinding.handleBroadcast(BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED, {
+				activePosition: this._activePosition,
+				actionProfile: null,
+				syncHandle: this.getSyncHandle(),
+				source: this
+			});
+		}
 	}
 }
 
@@ -383,8 +387,10 @@ TreeSelectorDialogPageBinding.prototype.refreshView = function () {
 	var selectedTreeNode = this._treeBinding.getFocusedTreeNodeBindings().getFirst();
 	if (selectedTreeNode) {
 		this.push(selectedTreeNode.node);
+		this._updateDisplayAndResult(this._treeBinding);
 	} else {
 		this.push(undefined);
+		this._clearDisplayAndResult();
 	}
 }
 
