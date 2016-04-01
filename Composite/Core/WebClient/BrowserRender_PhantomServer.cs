@@ -121,7 +121,8 @@ namespace Composite.Core.WebClient
                     var renderingResult = Instance.RenderUrlImpl(cookies, url, outputImageFilePath, mode);
 
                     if (renderingResult.Status == RenderingResultStatus.PhantomServerTimeout
-                        || renderingResult.Status == RenderingResultStatus.PhantomServerIncorrectResponse)
+                        || renderingResult.Status == RenderingResultStatus.PhantomServerIncorrectResponse
+                        || renderingResult.Status == RenderingResultStatus.PhantomServerNoOutput)
                     {
                         Log.LogWarning("PhantomServer", "Shutting down PhantomJs server. Reason: {0}, Output: {1}", renderingResult.Status, renderingResult.Output);
 
@@ -174,6 +175,14 @@ namespace Composite.Core.WebClient
                 {
                     case TaskStatus.RanToCompletion:
                         output = readerTask.Result;
+                        if (output == null)
+                        {
+                            return new RenderingResult
+                            {
+                                Status = RenderingResultStatus.PhantomServerNoOutput,
+                                Output = "(null)"
+                            };
+                        }
                         break;
                     default:
                         return new RenderingResult
@@ -283,34 +292,48 @@ namespace Composite.Core.WebClient
                     _stdin.WriteLine("exit");
                 }
 
-                Task<string> errorFeedbackTask = Task.Factory.StartNew(() =>
+                bool streamsClosed = false;
+
+                Task<string> errorFeedbackTask = null;
+                string processOutputSummary = null;
+
+                if (!silent)
                 {
-                    try
+                    errorFeedbackTask = Task.Factory.StartNew(() =>
                     {
-                        string stdOut = _stdout.ReadToEnd();
-                        string stdError = _stderror.ReadToEnd();
-
-                        string result = !string.IsNullOrEmpty(stdOut) ? "output: '{0}'".FormatWith(stdOut) : "";
-
-                        if (!string.IsNullOrEmpty(stdError))
+                        try
                         {
-                            if (result.Length > 0) { result += ", ";}
+                            if (streamsClosed)
+                            {
+                                // Simplifies debugging
+                                return null;
+                            }
 
-                            result += string.Format("error: '{0}'", stdError);
+                            string stdOut = _stdout.ReadToEnd();
+                            string stdError = _stderror.ReadToEnd();
+
+                            string result = !string.IsNullOrEmpty(stdOut) ? $"stdout: '{stdOut}'" : "";
+
+                            if (!string.IsNullOrWhiteSpace(stdError))
+                            {
+                                if (result.Length > 0) { result += Environment.NewLine; }
+
+                                result += $"stderr: {stdError}";
+                            }
+
+                            return result;
                         }
+                        catch (Exception ex)
+                        {
+                            return ex.Message;
+                        }
+                    });
 
-                        return result;
-                    }
-                    catch (Exception ex)
-                    {
-                        return ex.Message;
-                    }
-                });
 
-                
-                errorFeedbackTask.Wait(500);
+                    errorFeedbackTask.Wait(500);
 
-                string errorFeedback = errorFeedbackTask.Status == TaskStatus.RanToCompletion ? errorFeedbackTask.Result : "Process Hang";
+                    processOutputSummary = errorFeedbackTask.Status == TaskStatus.RanToCompletion ? errorFeedbackTask.Result : "Process Hang";
+                }
 
                 if (!processHasExited)
                 {
@@ -325,6 +348,8 @@ namespace Composite.Core.WebClient
 
                     if (!processHasExited)
                     {
+                        streamsClosed = true;
+
                         _stdin.Close();
                         _stdout.Close();
                         _stderror.Close();
@@ -335,6 +360,8 @@ namespace Composite.Core.WebClient
 
                 int exitCode = _process.ExitCode;
 
+                streamsClosed = true;
+
                 _stdin.Dispose();
                 _stdout.Dispose();
                 _stderror.Dispose();
@@ -344,14 +371,21 @@ namespace Composite.Core.WebClient
 
                 bool meaningfullExitCode = exitCode != 0 && exitCode != -1073741819 /* Access violation, the ExitCode property returns this value by default for some reason */;
 
-                if (!silent && (meaningfullExitCode || errorFeedbackTask.Status != TaskStatus.RanToCompletion))
+                if (silent)
+                {
+                    return;
+                }
+
+                if (meaningfullExitCode
+                    || errorFeedbackTask.Status != TaskStatus.RanToCompletion
+                    || !string.IsNullOrEmpty(processOutputSummary))
                 {
                     string errorMessage = "Error executing PhantomJs.exe";
                     if (meaningfullExitCode) errorMessage += "; Exit code: {0}".FormatWith(exitCode);
 
-                    if (!string.IsNullOrEmpty(errorFeedback))
+                    if (!string.IsNullOrEmpty(processOutputSummary))
                     {
-                        errorMessage += ", " + errorMessage;
+                        errorMessage += Environment.NewLine + processOutputSummary;
                     }
                     throw new InvalidOperationException(errorMessage);
                 }
