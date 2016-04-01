@@ -27,15 +27,15 @@ namespace Composite.Data
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public sealed class ForeignKeyAttribute : Attribute
     {
-        private string _interfaceTypeManagerName = null;
+        private string _interfaceTypeManagerName;
 
-        private Type _interfaceType = null;
-        private string _keyPropertyName = null;
+        private Type _interfaceType;
+        private string _keyPropertyName;
 
         private object _nullReferenceValue;
-        private bool _isNullReferenceValueSet = false;
+        private bool _isNullReferenceValueSet;
 
-        private object _lock = new object();
+        private readonly object _lock = new object();
 
 
 
@@ -57,7 +57,7 @@ namespace Composite.Data
         /// <param name="interfaceTypeManagerName">A string that will yield a type from the TypeManager.</param>
         public ForeignKeyAttribute(string interfaceTypeManagerName)
         {
-            if (string.IsNullOrEmpty(interfaceTypeManagerName)) throw new ArgumentNullException("interfaceTypeManagerName");
+            Verify.ArgumentNotNullOrEmpty(interfaceTypeManagerName, nameof(interfaceTypeManagerName));
 
             _interfaceTypeManagerName = interfaceTypeManagerName;
         }
@@ -65,15 +65,15 @@ namespace Composite.Data
 
 
         /// <summary>
-        /// If the "parent" data is deleted and this is set to true, then the datas that 
-        /// references the parent is also deleted.
+        /// If the "parent" data is deleted and this is set to true, then the data that 
+        /// refer to the parent is also deleted.
         /// </summary>
         public bool AllowCascadeDeletes { get; set; }
 
 
         /// <summary>
         /// This value is used when foreign key integrity is performed.
-        /// If this is not set, the data that the foreign key is pointing to must always exists.        
+        /// If this is not set, the data that the foreign key is pointing to must always exists.
         /// </summary>
         public object NullReferenceValue
         {
