@@ -125,6 +125,10 @@ namespace Composite.Core.WebClient.Setup
 
                 UserSettings.SetUserCultureInfo(username, userCulture);
 
+                CultureInfo installedLanguagePackageCulture = InstallLanguagePackage(userCulture);
+
+                UserSettings.SetUserC1ConsoleUiLanguage(username, installedLanguagePackageCulture ?? StringResourceSystemFacade.GetDefaultStringCulture());
+
                 using (new DataScope(locale))
                 {
                     for (int i = 0; i < packageUrls.Length; i++)
@@ -137,10 +141,6 @@ namespace Composite.Core.WebClient.Setup
                         packages[i] = null;
                     }
                 }
-
-                CultureInfo installedLanguagePackageCulture = InstallLanguagePackage(userCulture);
-
-                UserSettings.SetUserC1ConsoleUiLanguage(username, installedLanguagePackageCulture ?? StringResourceSystemFacade.GetDefaultStringCulture());
 
                 RegisterSetup(setupRegistrationDescription.ToString(), "");
 
