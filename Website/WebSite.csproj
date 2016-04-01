@@ -2579,9 +2579,8 @@
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>
-    <PreBuildEvent>if not exist "$(ProjectDir)App_Data\Composite\PhantomJs\phantomjs.exe" (
-    copy /Y "$(ProjectDir)\..\Packages\PhantomJS.2.1.1\tools\phantomjs\phantomjs.exe" "$(ProjectDir)App_Data\Composite\PhantomJs\phantomjs.exe"
-)</PreBuildEvent>
+    <PreBuildEvent>robocopy "$(ProjectDir)\..\Packages\PhantomJS.2.1.1\tools\phantomjs" "$(ProjectDir)App_Data\Composite\PhantomJs" "phantomjs.exe"
+</PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PostBuildEvent>
