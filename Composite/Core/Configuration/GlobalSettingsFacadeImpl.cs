@@ -349,5 +349,7 @@ namespace Composite.Core.Configuration
                 return GlobalSettingsProviderPluginFacade.PrettifyRenderFunctionExceptions;
             }
         }
+
+        public bool FunctionPreviewEnabled => GlobalSettingsProviderPluginFacade.FunctionPreviewEnabled;
     }
 }

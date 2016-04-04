@@ -82,5 +82,7 @@ namespace Composite.Core.Configuration.Plugins.GlobalSettingsProvider
         bool PrettifyPublicMarkup { get; }
 
         bool PrettifyRenderFunctionExceptions { get; }
+
+        bool FunctionPreviewEnabled { get; }
     }
 }

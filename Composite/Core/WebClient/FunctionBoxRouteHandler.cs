@@ -10,6 +10,7 @@ using System.Web;
 using System.Web.Routing;
 using Composite.C1Console.Drawing;
 using Composite.C1Console.Security;
+using Composite.Core.Configuration;
 using Composite.Core.Extensions;
 using Composite.Core.WebClient.Renderings;
 
@@ -82,7 +83,7 @@ namespace Composite.Core.WebClient
 
                 try
                 {
-                    if (encodedMarkup != null)
+                    if (GlobalSettingsFacade.FunctionPreviewEnabled && encodedMarkup != null)
                     {
                         try
                         {

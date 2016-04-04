@@ -237,6 +237,8 @@ namespace Composite.Plugins.GlobalSettings.GlobalSettingsProviders
                 return _configurationData.PrettifyRenderFunctionExceptions;
             }
         }
+
+        public bool FunctionPreviewEnabled => _configurationData.FunctionPreviewEnabled;
     }
 
     internal class ConfigCachingSettings: ICachingSettings
@@ -666,6 +668,14 @@ namespace Composite.Plugins.GlobalSettings.GlobalSettingsProviders
         {
             get { return (bool)base[_prettifyRenderFunctionExceptionsPropertyName]; }
             set { base[_prettifyRenderFunctionExceptionsPropertyName] = value; }
+        }
+
+        private const string _functionPreviewEnabledPropertyName = "functionPreviewEnabled";
+        [ConfigurationProperty(_functionPreviewEnabledPropertyName, DefaultValue = true)]
+        public bool FunctionPreviewEnabled
+        {
+            get { return (bool)base[_functionPreviewEnabledPropertyName]; }
+            set { base[_functionPreviewEnabledPropertyName] = value; }
         }
     }
 
