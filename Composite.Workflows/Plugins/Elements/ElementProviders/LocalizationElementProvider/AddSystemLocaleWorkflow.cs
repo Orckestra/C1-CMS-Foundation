@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Workflow.Activities;
-using Composite.C1Console.Actions;
 using Composite.C1Console.Events;
 using Composite.C1Console.Workflow;
 using Composite.Core.Localization;
@@ -14,7 +13,7 @@ using Composite.Data.Types;
 
 namespace Composite.Plugins.Elements.ElementProviders.LocalizationElementProvider
 {
-    [EntityTokenLock()]
+    [EntityTokenLock]
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
     public sealed partial class AddSystemLocaleWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
@@ -33,7 +32,7 @@ namespace Composite.Plugins.Elements.ElementProviders.LocalizationElementProvide
 
             IEnumerable<CultureInfo> cultures =
                 from cul in DataLocalizationFacade.WhiteListedLocales
-                where alreadyAddedCultureNames.Contains(cul.Name) == false
+                where !alreadyAddedCultureNames.Contains(cul.Name)
                 orderby cul.DisplayName
                 select cul;
 
@@ -63,12 +62,15 @@ namespace Composite.Plugins.Elements.ElementProviders.LocalizationElementProvide
                 orderby cul.DisplayName
                 select cul;
 
-            Dictionary<string, string> culturesDictionary = cultures.ToDictionary(f => f.Name, DataLocalizationFacade.GetCultureTitle);
+            var culturesDictionary = cultures.ToDictionary(f => f.Name, DataLocalizationFacade.GetCultureTitle);
 
-            this.Bindings.Add("CultureName", "");
-            this.Bindings.Add("RegionLanguageList", culturesDictionary);
-            this.Bindings.Add("UrlMappingName", "");
-            this.Bindings.Add("AccessToAllUsers", true);
+            this.Bindings = new Dictionary<string, object>
+            {
+                {"CultureName", ""},
+                {"RegionLanguageList", culturesDictionary},
+                {"UrlMappingName", ""},
+                {"AccessToAllUsers", true}
+            };
         }
 
 
@@ -79,16 +81,22 @@ namespace Composite.Plugins.Elements.ElementProviders.LocalizationElementProvide
             string urlMappingName = this.GetBinding<string>("UrlMappingName");
             bool accessToAllUsers = this.GetBinding<bool>("AccessToAllUsers");
 
-            LocalizationFacade.AddLocale(cultureName, urlMappingName, accessToAllUsers);    
+            LocalizationFacade.AddLocale(cultureName, urlMappingName, accessToAllUsers);
 
             this.CloseCurrentView();
 
-            ConsoleMessageQueueFacade.Enqueue(new CollapseAndRefreshConsoleMessageQueueItem(), null);
             ConsoleMessageQueueFacade.Enqueue(new BroadcastMessageQueueItem { Name = "LocalesUpdated", Value = "" }, null);
 
 
-            SpecificTreeRefresher specificTreeRefresher = this.CreateSpecificTreeRefresher();
+            var specificTreeRefresher = this.CreateSpecificTreeRefresher();
             specificTreeRefresher.PostRefreshMesseges(this.EntityToken);
+
+            var newLocaleDataItem = DataFacade.GetData<ISystemActiveLocale>().FirstOrDefault(l => l.CultureName == cultureName);
+
+            if (newLocaleDataItem != null)
+            {
+                SelectElement(newLocaleDataItem.GetDataEntityToken());
+            }
         }
 
 
@@ -107,7 +115,7 @@ namespace Composite.Plugins.Elements.ElementProviders.LocalizationElementProvide
             string urlMappingName = cultureName;
             if (urlMappingName.Contains("-"))
             {
-                urlMappingName = urlMappingName.Substring(0, urlMappingName.IndexOf("-"));
+                urlMappingName = urlMappingName.Substring(0, urlMappingName.IndexOf("-", StringComparison.Ordinal));
             }
             return urlMappingName;
         }
