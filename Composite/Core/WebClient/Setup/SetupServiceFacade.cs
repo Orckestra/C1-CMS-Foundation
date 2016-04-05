@@ -133,7 +133,7 @@ namespace Composite.Core.WebClient.Setup
                     for (int i = 0; i < packageUrls.Length; i++)
                     {
                         Log.LogVerbose(VerboseLogTitle, "Installing package from url " + packageUrls[i]);
-                        bool packageValidationSucceded = InstallPackage(packageUrls[i], packages[i]);
+                        InstallPackage(packageUrls[i], packages[i]);
 
                         // Releasing a reference to reduce memory usage
                         packages[i].Dispose();
@@ -319,40 +319,25 @@ namespace Composite.Core.WebClient.Setup
         }
 
 
-        private static bool InstallPackage(string packageUrl, Stream packageStream)
+        private static void InstallPackage(string packageUrl, Stream packageStream)
         {
-            try
+            PackageManagerInstallProcess packageManagerInstallProcess = PackageManager.Install(packageStream, true);
+            if (packageManagerInstallProcess.PreInstallValidationResult.Count > 0)
             {
-                PackageManagerInstallProcess packageManagerInstallProcess = PackageManager.Install(packageStream, true);
-                if (packageManagerInstallProcess.PreInstallValidationResult.Count > 0)
-                {
-                    LogValidationResults(packageManagerInstallProcess.PreInstallValidationResult);
-                    return false;
-                }
-                
-                List<PackageFragmentValidationResult> validationResult = packageManagerInstallProcess.Validate();
-
-                if (validationResult.Count > 0)
-                {
-                    LogValidationResults(validationResult);
-                    return false;
-                }
-                
-                List<PackageFragmentValidationResult> installResult = packageManagerInstallProcess.Install();
-                if (installResult.Count > 0)
-                {
-                    LogValidationResults(installResult);
-                    return false;
-                }
-                
-                return true;
+                throw WrapFirstValidationException(packageUrl, packageManagerInstallProcess.PreInstallValidationResult);
             }
-            catch (Exception ex)
-            {
-                Log.LogCritical(LogTitle, "Error installing package: " + packageUrl);
-                Log.LogCritical(LogTitle, ex);
+                
+            List<PackageFragmentValidationResult> validationResult = packageManagerInstallProcess.Validate();
 
-                throw;
+            if (validationResult.Count > 0)
+            {
+                throw WrapFirstValidationException(packageUrl, validationResult);
+            }
+                
+            List<PackageFragmentValidationResult> installResult = packageManagerInstallProcess.Install();
+            if (installResult.Count > 0)
+            {
+                throw WrapFirstValidationException(packageUrl, installResult);
             }
         }
         
@@ -405,7 +390,10 @@ namespace Composite.Core.WebClient.Setup
             foreach (XElement packageElement in setupDescription.Descendants(PackageElementName))
             {
                 XAttribute idAttribute = packageElement.Attribute(IdAttributeName);
-                if (idAttribute == null) throw new InvalidOperationException("Setup XML malformed");
+                if (idAttribute == null)
+                {
+                    throw new InvalidOperationException($"Setup XML malformed, '{IdAttributeName}' is missing on a '{PackageElementName}' element");
+                }
 
                 string url =
                     (from elm in element.Descendants(PackageElementName)
@@ -427,12 +415,12 @@ namespace Composite.Core.WebClient.Setup
         }
 
 
-        private static void LogValidationResults(IEnumerable<PackageFragmentValidationResult> packageFragmentValidationResults)
+        private static Exception WrapFirstValidationException(string packageUrl, IEnumerable<PackageFragmentValidationResult> packageFragmentValidationResults)
         {
-            foreach (PackageFragmentValidationResult packageFragmentValidationResult in packageFragmentValidationResults)
-            {
-                throw new InvalidOperationException(packageFragmentValidationResult.Message);
-            }
+            var firstError = packageFragmentValidationResults.First();
+            var innerException = firstError.Exception ?? new InvalidOperationException(firstError.Message);
+            
+            throw new InvalidOperationException($"Failed to install package '{packageUrl}'", innerException);
         }
     }
 }
