@@ -17,30 +17,33 @@ namespace Composite.Core.PackageSystem
 
         public ServerUrlValidationResult ValidateServerUrl(string packageServerUrl)
         {
-            try
+            using (new DisableExpect100ContinueHeaderScope())
             {
-                var basicHttpBinding = new BasicHttpBinding { MaxReceivedMessageSize = int.MaxValue };
-                basicHttpBinding.Security.Mode = BasicHttpSecurityMode.Transport;
+                try
+                {
+                    var basicHttpBinding = new BasicHttpBinding { MaxReceivedMessageSize = int.MaxValue };
+                    basicHttpBinding.Security.Mode = BasicHttpSecurityMode.Transport;
 
-                var client = new PackagesSoapClient(basicHttpBinding, new EndpointAddress(string.Format("https://{0}", packageServerUrl)));
+                    var client = new PackagesSoapClient(basicHttpBinding, new EndpointAddress($"https://{packageServerUrl}"));
 
-                client.IsOperational();
-                return ServerUrlValidationResult.Https;
-            }
-            catch (Exception)
-            {
-            }
+                    client.IsOperational();
+                    return ServerUrlValidationResult.Https;
+                }
+                catch (Exception)
+                {
+                }
 
-            try
-            {
-                var basicHttpBinding = new BasicHttpBinding { MaxReceivedMessageSize = int.MaxValue };
-                var client = new PackagesSoapClient(basicHttpBinding, new EndpointAddress(string.Format("http://{0}", packageServerUrl)));
+                try
+                {
+                    var basicHttpBinding = new BasicHttpBinding { MaxReceivedMessageSize = int.MaxValue };
+                    var client = new PackagesSoapClient(basicHttpBinding, new EndpointAddress($"http://{packageServerUrl}"));
 
-                client.IsOperational();
-                return ServerUrlValidationResult.Http;
-            }
-            catch (Exception)
-            {
+                    client.IsOperational();
+                    return ServerUrlValidationResult.Http;
+                }
+                catch (Exception)
+                {
+                }
             }
 
             return ServerUrlValidationResult.Invalid;
@@ -58,7 +61,11 @@ namespace Composite.Core.PackageSystem
             {
                 PackagesSoapClient client = CreateClient(packageServerUrl);
 
-                packageDescriptors = client.GetPackageList(installationId, userCulture.ToString());
+                using (new DisableExpect100ContinueHeaderScope())
+                {
+                    packageDescriptors = client.GetPackageList(installationId, userCulture.ToString());
+                }
+                
             }
             catch (Exception ex)
             {
@@ -118,9 +125,10 @@ namespace Composite.Core.PackageSystem
         {
             PackagesSoapClient client = CreateClient(packageServerUrl);
 
-            string eulaText = client.GetEulaText(eulaId, userCulture.ToString());
-
-            return eulaText;
+            using (new DisableExpect100ContinueHeaderScope())
+            {
+                return client.GetEulaText(eulaId, userCulture.ToString());
+            }
         }
 
 
@@ -139,7 +147,10 @@ namespace Composite.Core.PackageSystem
         {
             PackagesSoapClient client = CreateClient(packageServerUrl);
 
-            client.RegisterPackageInstallationCompletion(installationId, packageId, localUserName, localUserIp);
+            using (new DisableExpect100ContinueHeaderScope())
+            {
+                client.RegisterPackageInstallationCompletion(installationId, packageId, localUserName, localUserIp);
+            }
         }
 
 
@@ -148,7 +159,10 @@ namespace Composite.Core.PackageSystem
         {
             PackagesSoapClient client = CreateClient(packageServerUrl);
 
-            client.RegisterPackageInstallationFailure(installationId, packageId, localUserName, localUserIp, exceptionString);
+            using (new DisableExpect100ContinueHeaderScope())
+            {
+                client.RegisterPackageInstallationFailure(installationId, packageId, localUserName, localUserIp, exceptionString);
+            }
         }
 
 
@@ -157,7 +171,10 @@ namespace Composite.Core.PackageSystem
         {
             PackagesSoapClient client = CreateClient(packageServerUrl);
 
-            client.RegisterPackageUninstall(installationId, packageId, localUserName, localUserIp);
+            using (new DisableExpect100ContinueHeaderScope())
+            {
+                client.RegisterPackageUninstall(installationId, packageId, localUserName, localUserIp);
+            }
         }
 
 
@@ -219,7 +236,7 @@ namespace Composite.Core.PackageSystem
             }
 
             basicHttpBinding.MaxReceivedMessageSize = int.MaxValue;
-
+            
             return new PackagesSoapClient(basicHttpBinding, new EndpointAddress(packageServerUrl));
         }
     }

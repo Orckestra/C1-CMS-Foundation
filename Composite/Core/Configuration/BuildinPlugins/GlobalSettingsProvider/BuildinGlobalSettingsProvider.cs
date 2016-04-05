@@ -33,7 +33,7 @@ namespace Composite.Core.Configuration.BuildinPlugins.GlobalSettingsProvider
         private bool _broadcastConsoleElementChanges = true;
         private bool _prettifyPublicMarkup = true;
         private bool _prettifyRenderFunctionExceptions = true;
-        private bool _functionPreviewEnabled;
+        private bool _functionPreviewEnabled = false;
 
         public string ApplicationName
         {

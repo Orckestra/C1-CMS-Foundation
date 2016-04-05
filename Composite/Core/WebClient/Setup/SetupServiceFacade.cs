@@ -12,7 +12,6 @@ using System.Xml.Linq;
 using Composite.C1Console.Security;
 using Composite.Core.Application;
 using Composite.Core.Configuration;
-using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Core.Localization;
 using Composite.Core.PackageSystem;
@@ -172,7 +171,10 @@ namespace Composite.Core.WebClient.Setup
         {
             SetupSoapClient client = CreateClient();
 
-            return client.Ping();
+            using (new DisableExpect100ContinueHeaderScope())
+            {
+                return client.Ping();
+            }
         }
 
 
@@ -182,9 +184,12 @@ namespace Composite.Core.WebClient.Setup
         {
             SetupSoapClient client = CreateClient();
 
-            XElement xml = client.GetSetupDescription(RuntimeInformation.ProductVersion.ToString(), InstallationInformationFacade.InstallationId.ToString());
-
-            return xml;
+            using (new DisableExpect100ContinueHeaderScope())
+            {
+                return client.GetSetupDescription(
+                    RuntimeInformation.ProductVersion.ToString(),
+                    InstallationInformationFacade.InstallationId.ToString());
+            }
         }
 
 
@@ -194,9 +199,11 @@ namespace Composite.Core.WebClient.Setup
         {
             SetupSoapClient client = CreateClient();
 
-            XElement xml = client.GetLanguages(RuntimeInformation.ProductVersion.ToString(), InstallationInformationFacade.InstallationId.ToString());
-
-            return xml;
+            using (new DisableExpect100ContinueHeaderScope())
+            {
+                return client.GetLanguages(RuntimeInformation.ProductVersion.ToString(),
+                    InstallationInformationFacade.InstallationId.ToString());
+            }
         }
 
 
@@ -206,9 +213,14 @@ namespace Composite.Core.WebClient.Setup
         {
             SetupSoapClient client = CreateClient();
 
-            XElement xml = client.GetLanguagePackages(RuntimeInformation.ProductVersion.ToString(), InstallationInformationFacade.InstallationId.ToString());
+            using (new DisableExpect100ContinueHeaderScope())
+            {
+                XElement xml = client.GetLanguagePackages(RuntimeInformation.ProductVersion.ToString(),
+                    InstallationInformationFacade.InstallationId.ToString());
 
-            return xml.Descendants("Language").ToDictionary(f => new CultureInfo(f.Attribute("key").Value), f =>f.Attribute("url").Value);
+                return xml.Descendants("Language")
+                    .ToDictionary(f => new CultureInfo(f.Attribute("key").Value), f => f.Attribute("url").Value);
+            }
         }
 
 
@@ -217,10 +229,15 @@ namespace Composite.Core.WebClient.Setup
         {
             SetupSoapClient client = CreateClient();
 
-            XElement xml = client.GetGetLicense(RuntimeInformation.ProductVersion.ToString(), InstallationInformationFacade.InstallationId.ToString());
+            XElement xml;
+            using (new DisableExpect100ContinueHeaderScope())
+            {
+                xml = client.GetGetLicense(RuntimeInformation.ProductVersion.ToString(),
+                    InstallationInformationFacade.InstallationId.ToString());
+            }
 
-            XmlDocument doc = new XmlDocument();
-            using (XmlReader reader = xml.CreateReader())
+            var doc = new XmlDocument();
+            using (var reader = xml.CreateReader())
             {
                 doc.Load(reader);
             }
@@ -234,7 +251,11 @@ namespace Composite.Core.WebClient.Setup
         {
             SetupSoapClient client = CreateClient();
 
-            client.RegisterSetup(RuntimeInformation.ProductVersion.ToString(), InstallationInformationFacade.InstallationId.ToString(), setupDescriptionXml, exception);
+            using (new DisableExpect100ContinueHeaderScope())
+            {
+                client.RegisterSetup(RuntimeInformation.ProductVersion.ToString(),
+                    InstallationInformationFacade.InstallationId.ToString(), setupDescriptionXml, exception);
+            }
         }
 
 
@@ -270,15 +291,16 @@ namespace Composite.Core.WebClient.Setup
 
             try
             {
-                HttpWebRequest request = (HttpWebRequest) WebRequest.Create(packageUrl);
-                HttpWebResponse response = (HttpWebResponse) request.GetResponse();
+                var request = (HttpWebRequest) WebRequest.Create(packageUrl);
+                var response = (HttpWebResponse) request.GetResponse();
 
-                byte[] buffer = new byte[32768];
+                const int bufferSize = 32768;
+                byte[] buffer = new byte[bufferSize];
 
                 using (Stream inputStream = response.GetResponseStream())
                 {
                     int read;
-                    while ((read = inputStream.Read(buffer, 0, 32768)) > 0)
+                    while ((read = inputStream.Read(buffer, 0, bufferSize)) > 0)
                     {
                         packageStream.Write(buffer, 0, read);
                     }
@@ -289,7 +311,7 @@ namespace Composite.Core.WebClient.Setup
             catch(ThreadAbortException) {}
             catch(Exception ex)
             {
-                throw new InvalidOperationException("Failed to download package '{0}'".FormatWith(packageUrl), ex);
+                throw new InvalidOperationException($"Failed to download package '{packageUrl}'", ex);
             }
 
             packageStream.Seek(0, SeekOrigin.Begin);
@@ -339,15 +361,17 @@ namespace Composite.Core.WebClient.Setup
 
         private static SetupSoapClient CreateClient()
         {
-            var basicHttpBinding = new BasicHttpBinding();
             var timeout = TimeSpan.FromMinutes(RuntimeInformation.IsDebugBuild ? 2 : 1);
 
-            basicHttpBinding.CloseTimeout = timeout;
-            basicHttpBinding.OpenTimeout = timeout;
-            basicHttpBinding.ReceiveTimeout = timeout;
-            basicHttpBinding.SendTimeout = timeout;
+            var basicHttpBinding = new BasicHttpBinding
+            {
+                CloseTimeout = timeout,
+                OpenTimeout = timeout,
+                ReceiveTimeout = timeout,
+                SendTimeout = timeout,
+                MaxReceivedMessageSize = int.MaxValue
+            };
 
-            basicHttpBinding.MaxReceivedMessageSize = int.MaxValue;
 
             if (PackageServerUrl.StartsWith("https://"))
             {
@@ -365,11 +389,17 @@ namespace Composite.Core.WebClient.Setup
 
             SetupSoapClient client = CreateClient();
             
-            XElement originalSetupDescription = client.GetSetupDescription(RuntimeInformation.ProductVersion.ToString(), InstallationInformationFacade.InstallationId.ToString());
+            XElement originalSetupDescription;
+            using (new DisableExpect100ContinueHeaderScope())
+            {
+                originalSetupDescription = client.GetSetupDescription(RuntimeInformation.ProductVersion.ToString(),
+                    InstallationInformationFacade.InstallationId.ToString());
+            }
 
             var element =
                 (from elm in originalSetupDescription.Descendants()
-                 where elm.Attribute(KeyAttributeName) != null && (int)elm.Attribute(KeyAttributeName) == maxkey
+                 let keyAttr = elm.Attribute(KeyAttributeName)
+                 where keyAttr != null && (int)keyAttr == maxkey
                  select elm).Single();
 
             foreach (XElement packageElement in setupDescription.Descendants(PackageElementName))
