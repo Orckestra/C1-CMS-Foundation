@@ -297,7 +297,7 @@ namespace Composite.Core.WebClient.Setup
                 GetDiskFreeSpaceEx(diskRoot, out lpFreeBytesAvailable, out lpTotalNumberOfBytes, out lpTotalNumberOfFreeBytes);
 
                 // lpFreeBytesAvailable can be zero in certain hosting situations - the 0 check is a temp work around
-                return (lpFreeBytesAvailable == 0) || (lpFreeBytesAvailable > 20 * 1024 * 1024);
+                return (lpFreeBytesAvailable == 0) || (lpFreeBytesAvailable > 40 * 1024 * 1024);
             }
             catch (Exception)
             {

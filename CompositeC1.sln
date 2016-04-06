@@ -1,8 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
-MinimumVisualStudioVersion = 10.0.40219.1
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
+MinimumVisualStudioVersion = 14.0.0.0
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{44113BBC-CB18-41CF-AB26-6D190BA4E117}"
 	ProjectSection(SolutionItems) = preProject
 		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
@@ -15,26 +15,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Composite", "Composite\Composite.csproj", "{F8D87A5F-D090-4D24-80C1-DBCD938C6CAB}"
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 3
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = http://core03:8080/tfs/compositecore03
-		SccProjectUniqueName0 = Composite\\Composite.csproj
-		SccProjectName0 = Composite
-		SccAuxPath0 = http://core03:8080/tfs/compositecore03
-		SccLocalPath0 = Composite
-		SccProvider0 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccProjectUniqueName1 = Composite.Workflows\\Composite.Workflows.csproj
-		SccProjectName1 = Composite.Workflows
-		SccAuxPath1 = http://core03:8080/tfs/compositecore03
-		SccLocalPath1 = Composite.Workflows
-		SccProvider1 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccProjectUniqueName2 = Website\\WebSite.csproj
-		SccProjectName2 = Website
-		SccAuxPath2 = http://core03:8080/tfs/compositecore03
-		SccLocalPath2 = Website
-		SccProvider2 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|.NET = Debug|.NET
 		Debug|Any CPU = Debug|Any CPU
