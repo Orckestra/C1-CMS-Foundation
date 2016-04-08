@@ -13,10 +13,7 @@ namespace Composite.Core.PackageSystem
         {
             var client = CreateClient();
 
-            using (new DisableExpect100ContinueHeaderScope())
-            {
-                return client.ValidateTrialLicenseDefinitionRequest(installationId, productId, publicKeyXml);
-            }
+            return client.ValidateTrialLicenseDefinitionRequest(installationId, productId, publicKeyXml);
         }
 
 
@@ -25,16 +22,13 @@ namespace Composite.Core.PackageSystem
         {
             var client = CreateClient();
 
-            using (new DisableExpect100ContinueHeaderScope())
-            {
-                return client.GetTrialLicenseDefinition(installationId, productId, publicKeyXml);
-            }
+            return client.GetTrialLicenseDefinition(installationId, productId, publicKeyXml);
         }
         
 
         
         private static string LicenseServerUrl
-            => "http://package.composite.net/PackageLicense/LicenseDefinitionService.asmx";
+            => "https://package.composite.net/PackageLicense/LicenseDefinitionService.asmx";
 
 
         private static LicenseDefinitionServiceSoapClient CreateClient()

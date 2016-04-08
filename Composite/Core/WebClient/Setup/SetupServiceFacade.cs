@@ -171,10 +171,7 @@ namespace Composite.Core.WebClient.Setup
         {
             SetupSoapClient client = CreateClient();
 
-            using (new DisableExpect100ContinueHeaderScope())
-            {
-                return client.Ping();
-            }
+            return client.Ping();
         }
 
 
@@ -184,12 +181,9 @@ namespace Composite.Core.WebClient.Setup
         {
             SetupSoapClient client = CreateClient();
 
-            using (new DisableExpect100ContinueHeaderScope())
-            {
-                return client.GetSetupDescription(
-                    RuntimeInformation.ProductVersion.ToString(),
-                    InstallationInformationFacade.InstallationId.ToString());
-            }
+            return client.GetSetupDescription(
+                RuntimeInformation.ProductVersion.ToString(),
+                InstallationInformationFacade.InstallationId.ToString());
         }
 
 
@@ -199,11 +193,8 @@ namespace Composite.Core.WebClient.Setup
         {
             SetupSoapClient client = CreateClient();
 
-            using (new DisableExpect100ContinueHeaderScope())
-            {
-                return client.GetLanguages(RuntimeInformation.ProductVersion.ToString(),
-                    InstallationInformationFacade.InstallationId.ToString());
-            }
+            return client.GetLanguages(RuntimeInformation.ProductVersion.ToString(),
+                InstallationInformationFacade.InstallationId.ToString());
         }
 
 
@@ -213,14 +204,11 @@ namespace Composite.Core.WebClient.Setup
         {
             SetupSoapClient client = CreateClient();
 
-            using (new DisableExpect100ContinueHeaderScope())
-            {
-                XElement xml = client.GetLanguagePackages(RuntimeInformation.ProductVersion.ToString(),
-                    InstallationInformationFacade.InstallationId.ToString());
+            XElement xml = client.GetLanguagePackages(RuntimeInformation.ProductVersion.ToString(),
+                InstallationInformationFacade.InstallationId.ToString());
 
-                return xml.Descendants("Language")
-                    .ToDictionary(f => new CultureInfo(f.Attribute("key").Value), f => f.Attribute("url").Value);
-            }
+            return xml.Descendants("Language")
+                .ToDictionary(f => new CultureInfo(f.Attribute("key").Value), f => f.Attribute("url").Value);
         }
 
 
@@ -229,12 +217,8 @@ namespace Composite.Core.WebClient.Setup
         {
             SetupSoapClient client = CreateClient();
 
-            XElement xml;
-            using (new DisableExpect100ContinueHeaderScope())
-            {
-                xml = client.GetGetLicense(RuntimeInformation.ProductVersion.ToString(),
+            XElement xml = client.GetGetLicense(RuntimeInformation.ProductVersion.ToString(),
                     InstallationInformationFacade.InstallationId.ToString());
-            }
 
             var doc = new XmlDocument();
             using (var reader = xml.CreateReader())
@@ -251,11 +235,8 @@ namespace Composite.Core.WebClient.Setup
         {
             SetupSoapClient client = CreateClient();
 
-            using (new DisableExpect100ContinueHeaderScope())
-            {
-                client.RegisterSetup(RuntimeInformation.ProductVersion.ToString(),
-                    InstallationInformationFacade.InstallationId.ToString(), setupDescriptionXml, exception);
-            }
+            client.RegisterSetup(RuntimeInformation.ProductVersion.ToString(),
+                InstallationInformationFacade.InstallationId.ToString(), setupDescriptionXml, exception);
         }
 
 
@@ -374,12 +355,8 @@ namespace Composite.Core.WebClient.Setup
 
             SetupSoapClient client = CreateClient();
             
-            XElement originalSetupDescription;
-            using (new DisableExpect100ContinueHeaderScope())
-            {
-                originalSetupDescription = client.GetSetupDescription(RuntimeInformation.ProductVersion.ToString(),
+            XElement originalSetupDescription = client.GetSetupDescription(RuntimeInformation.ProductVersion.ToString(),
                     InstallationInformationFacade.InstallationId.ToString());
-            }
 
             var element =
                 (from elm in originalSetupDescription.Descendants()

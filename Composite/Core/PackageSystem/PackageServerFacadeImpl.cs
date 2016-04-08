@@ -17,33 +17,30 @@ namespace Composite.Core.PackageSystem
 
         public ServerUrlValidationResult ValidateServerUrl(string packageServerUrl)
         {
-            using (new DisableExpect100ContinueHeaderScope())
+            try
             {
-                try
-                {
-                    var basicHttpBinding = new BasicHttpBinding { MaxReceivedMessageSize = int.MaxValue };
-                    basicHttpBinding.Security.Mode = BasicHttpSecurityMode.Transport;
+                var basicHttpBinding = new BasicHttpBinding { MaxReceivedMessageSize = int.MaxValue };
+                basicHttpBinding.Security.Mode = BasicHttpSecurityMode.Transport;
 
-                    var client = new PackagesSoapClient(basicHttpBinding, new EndpointAddress($"https://{packageServerUrl}"));
+                var client = new PackagesSoapClient(basicHttpBinding, new EndpointAddress($"https://{packageServerUrl}"));
 
-                    client.IsOperational();
-                    return ServerUrlValidationResult.Https;
-                }
-                catch (Exception)
-                {
-                }
+                client.IsOperational();
+                return ServerUrlValidationResult.Https;
+            }
+            catch (Exception)
+            {
+            }
 
-                try
-                {
-                    var basicHttpBinding = new BasicHttpBinding { MaxReceivedMessageSize = int.MaxValue };
-                    var client = new PackagesSoapClient(basicHttpBinding, new EndpointAddress($"http://{packageServerUrl}"));
+            try
+            {
+                var basicHttpBinding = new BasicHttpBinding { MaxReceivedMessageSize = int.MaxValue };
+                var client = new PackagesSoapClient(basicHttpBinding, new EndpointAddress($"http://{packageServerUrl}"));
 
-                    client.IsOperational();
-                    return ServerUrlValidationResult.Http;
-                }
-                catch (Exception)
-                {
-                }
+                client.IsOperational();
+                return ServerUrlValidationResult.Http;
+            }
+            catch (Exception)
+            {
             }
 
             return ServerUrlValidationResult.Invalid;
@@ -61,11 +58,7 @@ namespace Composite.Core.PackageSystem
             {
                 PackagesSoapClient client = CreateClient(packageServerUrl);
 
-                using (new DisableExpect100ContinueHeaderScope())
-                {
-                    packageDescriptors = client.GetPackageList(installationId, userCulture.ToString());
-                }
-                
+                packageDescriptors = client.GetPackageList(installationId, userCulture.ToString());
             }
             catch (Exception ex)
             {
@@ -125,17 +118,14 @@ namespace Composite.Core.PackageSystem
         {
             PackagesSoapClient client = CreateClient(packageServerUrl);
 
-            using (new DisableExpect100ContinueHeaderScope())
-            {
-                return client.GetEulaText(eulaId, userCulture.ToString());
-            }
+            return client.GetEulaText(eulaId, userCulture.ToString());
         }
 
 
 
         public Stream GetInstallFileStream(string packageFileDownloadUrl)
         {
-            Log.LogVerbose("PackageServerFacade", string.Format("Downloading file: {0}", packageFileDownloadUrl));
+            Log.LogVerbose("PackageServerFacade", $"Downloading file: {packageFileDownloadUrl}");
 
             var client = new System.Net.WebClient();
             return client.OpenRead(packageFileDownloadUrl);
@@ -147,10 +137,7 @@ namespace Composite.Core.PackageSystem
         {
             PackagesSoapClient client = CreateClient(packageServerUrl);
 
-            using (new DisableExpect100ContinueHeaderScope())
-            {
-                client.RegisterPackageInstallationCompletion(installationId, packageId, localUserName, localUserIp);
-            }
+            client.RegisterPackageInstallationCompletion(installationId, packageId, localUserName, localUserIp);
         }
 
 
@@ -159,10 +146,7 @@ namespace Composite.Core.PackageSystem
         {
             PackagesSoapClient client = CreateClient(packageServerUrl);
 
-            using (new DisableExpect100ContinueHeaderScope())
-            {
-                client.RegisterPackageInstallationFailure(installationId, packageId, localUserName, localUserIp, exceptionString);
-            }
+            client.RegisterPackageInstallationFailure(installationId, packageId, localUserName, localUserIp, exceptionString);
         }
 
 
@@ -171,10 +155,7 @@ namespace Composite.Core.PackageSystem
         {
             PackagesSoapClient client = CreateClient(packageServerUrl);
 
-            using (new DisableExpect100ContinueHeaderScope())
-            {
-                client.RegisterPackageUninstall(installationId, packageId, localUserName, localUserIp);
-            }
+            client.RegisterPackageUninstall(installationId, packageId, localUserName, localUserIp);
         }
 
 
@@ -191,7 +172,8 @@ namespace Composite.Core.PackageSystem
             string newVersion;
             if (!VersionStringHelper.ValidateVersion(packageDescriptor.PackageVersion, out newVersion))
             {
-                Log.LogWarning("PackageServerFacade", string.Format("The package '{0}' ({1}) did not validate and is skipped", packageDescriptor.Name, packageDescriptor.Id));
+                Log.LogWarning("PackageServerFacade",
+                    $"The package '{packageDescriptor.Name}' ({packageDescriptor.Id}) did not validate and is skipped");
                 return false;
             }
 
@@ -199,7 +181,8 @@ namespace Composite.Core.PackageSystem
 
             if (!VersionStringHelper.ValidateVersion(packageDescriptor.MinCompositeVersionSupported, out newVersion))
             {
-                Log.LogWarning("PackageServerFacade", string.Format("The package '{0}' ({1}) did not validate and is skipped", packageDescriptor.Name, packageDescriptor.Id));
+                Log.LogWarning("PackageServerFacade",
+                    $"The package '{packageDescriptor.Name}' ({packageDescriptor.Id}) did not validate and is skipped");
                 return false;
             }
 
@@ -207,7 +190,8 @@ namespace Composite.Core.PackageSystem
 
             if (!VersionStringHelper.ValidateVersion(packageDescriptor.MaxCompositeVersionSupported, out newVersion))
             {
-                Log.LogWarning("PackageServerFacade", string.Format("The package '{0}' ({1}) did not validate and is skipped", packageDescriptor.Name, packageDescriptor.Id));
+                Log.LogWarning("PackageServerFacade",
+                    $"The package '{packageDescriptor.Name}' ({packageDescriptor.Id}) did not validate and is skipped");
                 return false;
             }
 
