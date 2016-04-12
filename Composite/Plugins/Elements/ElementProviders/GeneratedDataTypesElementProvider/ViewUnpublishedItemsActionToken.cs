@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text;
 using System.Web;
 using Composite.C1Console.Actions;
@@ -46,15 +45,11 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             string documentTitle = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "ViewUnpublishedItems-document-title");
             string description = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "ViewUnpublishedItems-document-description");
             string emptyLabel = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "ViewUnpublishedItems-document-empty-label");
-
-            
-            Func<string, string> encode = str => HttpUtility.UrlEncode(str, Encoding.UTF8);
-            string url = string.Format("{0}?showglobaldata=true&title={1}&description={2}&emptyLabel={3}&entityToken={4}",
-                UrlUtils.ResolveAdminUrl("content/views/publishworkflowstatus/ViewUnpublishedItems.aspx"),
-                encode(documentTitle),
-                encode(description),
-                encode(emptyLabel),
-                encode(EntityTokenSerializer.Serialize(entityToken, true)));
+            string url = string.Format("{0}?showglobaldata=true&title={1}&description={2}&emptyLabel={3}",
+                UrlUtils.ResolveAdminUrl(string.Format("content/views/publishworkflowstatus/ViewUnpublishedItems.aspx")),
+                HttpUtility.UrlEncode(documentTitle, Encoding.UTF8),
+                HttpUtility.UrlEncode(description, Encoding.UTF8),
+                HttpUtility.UrlEncode(emptyLabel, Encoding.UTF8));
 
             IManagementConsoleMessageService consoleServices = flowControllerServicesContainer.GetService<IManagementConsoleMessageService>();
             OpenViewMessageQueueItem openViewMsg = new OpenViewMessageQueueItem

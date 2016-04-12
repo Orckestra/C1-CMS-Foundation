@@ -78,7 +78,49 @@ namespace Composite.Services
             }
         }
 
+        [WebMethod]
+        public List<ClientElement> GetUnpublishedElements(string dummy)
+        {
 
+            var rootElements = ElementFacade.GetPerspectiveElements(false).First();
+            var rootChildren = ElementFacade.GetChildren(rootElements.ElementHandle, new SearchToken());
+            var allElements = getall(rootChildren);
+
+            List<Element> actionRequiredPages =
+                (from element in allElements
+                 where ((IPublishControlled)((DataEntityToken)element.ElementHandle.EntityToken).Data).PublicationStatus != "published"
+                 select element).ToList();
+
+            return actionRequiredPages.ToClientElementList();
+        }
+
+        IEnumerable<Element> getall(IEnumerable<Element> a)
+        {
+            foreach (var element in a)
+            {
+                var temp = ElementFacade.GetChildren(element.ElementHandle, new SearchToken());
+                if (temp != null)
+                {
+
+                    foreach (var element2 in getall(temp))
+                    {
+                        if (check(element2))
+                            yield return element2;
+                    }
+
+                }
+                if (check(element))
+                    yield return element;
+            }
+        }
+
+        private bool check(Element v)
+        {
+            if (v.ElementHandle.EntityToken is DataEntityToken)
+                if (((DataEntityToken)v.ElementHandle.EntityToken).Data is IPublishControlled)
+                    return true;
+            return false;
+        }
 
         [WebMethod]
         public List<ClientElement> GetElements(ClientElement clientElement)
