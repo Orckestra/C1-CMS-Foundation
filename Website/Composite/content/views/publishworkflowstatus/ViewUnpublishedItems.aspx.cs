@@ -5,9 +5,14 @@ using System.Web.UI;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Xsl;
+using Composite.C1Console.Elements;
+using Composite.C1Console.Elements.Foundation.PluginFacades;
+using Composite.C1Console.Events;
 using Composite.C1Console.Security;
 using Composite.C1Console.Users;
+using Composite.Core.Linq;
 using Composite.Core.WebClient.Renderings.Page;
+using Composite.Core.WebClient.Services.TreeServiceObjects.ExtensionMethods;
 using Composite.Core.Xml;
 using Composite.Data;
 using Composite.Data.ProcessControlled;
@@ -18,20 +23,26 @@ public partial class ViewUnpublishedItems : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        using (DataScope dataScope = new DataScope(DataScopeIdentifier.Administrated, UserSettings.ActiveLocaleCultureInfo))
+        using (
+            DataScope dataScope = new DataScope(DataScopeIdentifier.Administrated, UserSettings.ActiveLocaleCultureInfo)
+            )
         {
             XElement infoDocumentRoot = new XElement("ActionItems");
 
-            if (Request.QueryString["showpagedata"]=="true")
+            if (Request.QueryString["showpagedata"] == "true")
             {
-                AttachPageElements(infoDocumentRoot);
+                var serializedEntityToken = Request.QueryString["entityToken"];
+
+                var entityToken =EntityTokenSerializer.Deserialize(serializedEntityToken);
+
+                AttachPageElements(infoDocumentRoot,entityToken);
             }
             if (Request.QueryString["showglobaldata"] == "true")
             {
                 AttachGlobalDataElements(infoDocumentRoot);
             }
 
-            if (infoDocumentRoot.Elements().Any()==true)
+            if (infoDocumentRoot.Elements().Any() == true)
             {
                 XDocument newTree = TransformMarkup(infoDocumentRoot);
 
@@ -44,15 +55,75 @@ public partial class ViewUnpublishedItems : System.Web.UI.Page
         }
     }
 
+    private void AttachPageElements2(XElement infoDocumentRoot)
+    {
+        var aa = ElementFacade.GetPerspectiveElements(false).First();
+        var b = ElementFacade.GetChildren(aa.ElementHandle, new SearchToken());
+        var bb = getall(b);
+        
+        List<Element> actionRequiredPages =
+            (from page in bb
+             where ((IPublishControlled)((DataEntityToken)page.ElementHandle.EntityToken).Data).PublicationStatus != "published"
+             select page).ToList();
 
-    private void AttachPageElements(XElement infoDocumentRoot)
+        var actionPage = new XElement("Pages",
+            (from file in actionRequiredPages
+                select new XElement("tr",
+                    new XElement("td",new XElement("a", new XAttribute("href", file), new XAttribute("target", "_new"),new XElement("img", new XAttribute("src", file), new XAttribute("width", "100"))),
+                    new XElement("td", (IPublishControlled) ((DataEntityToken) file.ElementHandle.EntityToken).Data)
+                            .Name),
+                    new XElement("td", (IPublishControlled) ((DataEntityToken) file.ElementHandle.EntityToken).Data)
+                        .Document)));
+
+        Stack<XElement> workingContainerStack = new Stack<XElement>();
+        workingContainerStack.Push(infoDocumentRoot);
+        workingContainerStack.Peek().Add(actionPage);
+
+    }
+
+    IEnumerable<Element> getall(IEnumerable<Element> a)
+    {
+        foreach (var element in a)
+        {
+            var temp = ElementFacade.GetChildren(element.ElementHandle, new SearchToken());
+            if (temp!=null)
+            {
+
+                foreach (var element2 in getall(temp))
+                {
+                    if(check(element2))
+                    yield return element2;
+                }
+                
+            }
+            if (check(element))
+                yield return element;
+        }
+    }
+
+    private bool check(Element v)
+    {
+        if(v.ElementHandle.EntityToken is DataEntityToken)
+            if(((DataEntityToken)v.ElementHandle.EntityToken).Data is IPage)
+                return true;
+        return false;
+    }
+
+    private void AttachPageElements(XElement infoDocumentRoot,EntityToken en)
     {
         XName pageName = "Page";
 
+        List<Element> unpublishedElements =
+            (from element in getall(ElementFacade.GetChildren(new ElementHandle(en.Source, en), new SearchToken()))
+             where ((IPage)((DataEntityToken)element.ElementHandle.EntityToken).Data).PublicationStatus != "published"
+             select element).ToList();
+
+        unpublishedElements.ToClientElementList();
+
         List<IPage> actionRequiredPages =
-            (from page in DataFacade.GetData<IPage>()
-             where page.PublicationStatus != "published"
-             select page).ToList();
+            (from page in unpublishedElements
+             select (IPage)((DataEntityToken)page.ElementHandle.EntityToken).Data).ToList();
+
 
         //            Dictionary<Type, List<IPublishControlled>> unpublishedData = GetDataRequiringAction();
         List<Type> pageFolderTypes = new List<Type>();

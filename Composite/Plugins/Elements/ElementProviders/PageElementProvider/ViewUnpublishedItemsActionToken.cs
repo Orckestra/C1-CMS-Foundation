@@ -47,11 +47,12 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             string documentTitle = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.ViewUnpublishedItems-document-title");
             string description = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.ViewUnpublishedItems-document-description");
             string emptyLabel = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "ViewUnpublishedItems-document-empty-label");
-            string url = string.Format("{0}?showpagedata=true&title={1}&description={2}&emptyLabel={3}",
+            string url = string.Format("{0}?showpagedata=true&title={1}&description={2}&emptyLabel={3}&entityToken={4}",
                 UrlUtils.ResolveAdminUrl(string.Format("content/views/publishworkflowstatus/ViewUnpublishedItems.aspx")),
                 HttpUtility.UrlEncode(documentTitle, Encoding.UTF8),
                 HttpUtility.UrlEncode(description, Encoding.UTF8),
-                HttpUtility.UrlEncode(emptyLabel, Encoding.UTF8));
+                HttpUtility.UrlEncode(emptyLabel, Encoding.UTF8),
+                HttpUtility.UrlEncode(EntityTokenSerializer.Serialize(entityToken, true),Encoding.UTF8));
 
             IManagementConsoleMessageService consoleServices = flowControllerServicesContainer.GetService<IManagementConsoleMessageService>();
             OpenViewMessageQueueItem openViewMsg = new OpenViewMessageQueueItem
