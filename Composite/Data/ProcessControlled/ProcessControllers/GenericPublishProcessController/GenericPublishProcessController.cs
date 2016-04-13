@@ -107,10 +107,10 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
 
             _transitionNames = new Dictionary<string, string>
             {
-                {Draft, "Draft"},
-                {AwaitingApproval, "Awaiting Approval"},
-                {AwaitingPublication, "Awaiting Publication"},
-                {Published, "Published"}
+                {Draft, StringResourceSystemFacade.GetString("Composite.Management", "PublishingStatus.draft")},
+                {AwaitingApproval, StringResourceSystemFacade.GetString("Composite.Management", "PublishingStatus.awaitingApproval")},
+                {AwaitingPublication, StringResourceSystemFacade.GetString("Composite.Management", "PublishingStatus.awaitingPublication")},
+                {Published, StringResourceSystemFacade.GetString("Composite.Management", "PublishingStatus.published")}
             };
 
             Func<ElementAction> sendBackToDraftAction = () => new ElementAction(new ActionHandle(new ProxyDataActionToken(ActionIdentifier.SendToDraft) { DoIgnoreEntityTokenLocking = true }))
