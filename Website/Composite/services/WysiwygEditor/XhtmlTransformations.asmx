@@ -14,6 +14,7 @@ using System.Xml.Linq;
 using Composite.C1Console.Security;
 using Composite.C1Console.Users;
 using Composite.Core;
+using Composite.Core.Configuration;
 using Composite.Core.Extensions;
 using Composite.Core.Linq;
 using Composite.Core.WebClient.Renderings;
@@ -541,28 +542,32 @@ namespace Composite.Services
 				UrlUtils.ZipContent(markup.Trim()),
 				UserSettings.GetCurrentActiveLocaleCultureInfo(UserValidationFacade.GetUsername()));
 
-			if (functionPreviewPageId != Guid.Empty)
+			if (GlobalSettingsFacade.FunctionPreviewEnabled)
 			{
-				imageUrl += "&p=" + functionPreviewPageId;
-			}
+				if (functionPreviewPageId != Guid.Empty)
+				{
+					imageUrl += "&p=" + functionPreviewPageId;
+				}
 
-			if (functionPreviewTemplatePageId != Guid.Empty)
-			{
-				imageUrl += "&t=" + functionPreviewTemplatePageId;
-			}
+				if (functionPreviewTemplatePageId != Guid.Empty)
+				{
+					imageUrl += "&t=" + functionPreviewTemplatePageId;
+				}
 
-			if (!string.IsNullOrEmpty(functionPreviewPlaceholderName))
-			{
-				imageUrl += "&ph=" + functionPreviewPlaceholderName;
-			}
+				if (!string.IsNullOrEmpty(functionPreviewPlaceholderName))
+				{
+					imageUrl += "&ph=" + functionPreviewPlaceholderName;
+				}
 
-			if (!string.IsNullOrEmpty(functionPreviewCssSelector))
-			{
-				imageUrl += "&css=" + functionPreviewCssSelector;
-			}
-			if (viewWidth > 0)
-			{
-				imageUrl += "&width=" + viewWidth;
+				if (!string.IsNullOrEmpty(functionPreviewCssSelector))
+				{
+					imageUrl += "&css=" + functionPreviewCssSelector;
+				}
+
+				if (viewWidth > 0)
+				{
+					imageUrl += "&width=" + viewWidth;
+				}
 			}
 
 			if (editable)
@@ -690,11 +695,11 @@ namespace Composite.Services
 				imagetag.Add(new XAttribute("src", cachedImageUrl));
 			}
 
-		    if (functionBoxUrl != cachedImageUrl)
-		    {
-		        imagetag.Add(new XAttribute("data-src", functionBoxUrl));
-		    }
-			
+			if (functionBoxUrl != cachedImageUrl)
+			{
+				imagetag.Add(new XAttribute("data-src", functionBoxUrl));
+			}
+
 			PreviewImageCache[previewImageHashCode] = functionBoxUrl;
 
 			return imagetag;

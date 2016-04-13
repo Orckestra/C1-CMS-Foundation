@@ -104,7 +104,7 @@
 					<ui:deck id="loading" class="loading-deck">
 						<div class="brand-logo"></div>
 						<div class="progress">
-							<p class="progressbar-msg">Your starter site is being downloaded and installed. This may take up to 45 seconds...</p>
+							<p class="progressbar-msg">Your starter site is being downloaded and installed. This may take a few minutes...</p>
 							<div id="progressbar" class="progressbar">
 								<ui:text label="Installing"/>
 								<ui:progressbar/>

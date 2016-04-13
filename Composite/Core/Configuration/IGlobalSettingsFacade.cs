@@ -42,5 +42,6 @@ namespace Composite.Core.Configuration
         int ImageQuality { get; }
         bool PrettifyPublicMarkup { get; }
         bool PrettifyRenderFunctionExceptions { get; }
+        bool FunctionPreviewEnabled { get; }
     }
 }

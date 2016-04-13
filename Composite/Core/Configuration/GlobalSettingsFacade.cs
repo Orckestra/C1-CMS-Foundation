@@ -472,7 +472,10 @@ namespace Composite.Core.Configuration
                 return _globalSettingsFacade.PrettifyRenderFunctionExceptions;
             }
         }
-        
+
+        /// <exclude />
+        public static bool FunctionPreviewEnabled => _globalSettingsFacade.FunctionPreviewEnabled;
+
         // Overload
         /// <exclude />
         public static CachingSettings GetNamedCaching(string name)

@@ -5,7 +5,6 @@ using System.Linq;
 using System.Xml.Linq;
 using Composite.Core.Application;
 using Composite.Core.Configuration;
-using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Core.IO.Zip;
 using Composite.Core.Logging;
@@ -332,7 +331,7 @@ namespace Composite.Core.PackageSystem
                 ZipFileSystem zipFileSystem = new ZipFileSystem(this.ZipFilename);
                 if (!zipFileSystem.ContainsFile(sourceFilename))
                 {
-                    result.AddFatal(string.Format("The file '{0}' is missing from the zipfile", sourceFilename));
+                    result.AddFatal($"The file '{sourceFilename}' is missing from the zip file");
                     continue;
                 }
 
@@ -349,7 +348,7 @@ namespace Composite.Core.PackageSystem
 
                     if(!success)
                     {
-                        result.AddFatal("Access denied to file '{0}'".FormatWith(targetFilename));
+                        result.AddFatal($"Access denied to file '{targetFilename}'");
                         continue;
                     }
                 }
@@ -379,14 +378,14 @@ namespace Composite.Core.PackageSystem
                 XAttribute installerTypeAttribute = element.Attribute(PackageSystemSettings.InstallerTypeAttributeName);
                 if (installerTypeAttribute == null)
                 {
-                    result.AddFatal(string.Format("Missing attribute '{0}'", PackageSystemSettings.InstallerTypeAttributeName), element);
+                    result.AddFatal($"Missing attribute '{PackageSystemSettings.InstallerTypeAttributeName}'", element);
                     continue;
                 }
 
                 Type installerType = TypeManager.TryGetType(installerTypeAttribute.Value);
                 if (installerType == null)
                 {
-                    result.AddFatal(string.Format("Could not find install fragment type '{0}'", installerTypeAttribute.Value), installerTypeAttribute);
+                    result.AddFatal($"Could not find install fragment type '{installerTypeAttribute.Value}'", installerTypeAttribute);
                     continue;
                 }
 
@@ -403,7 +402,7 @@ namespace Composite.Core.PackageSystem
 
                 if (packageFragmentInstaller == null)
                 {
-                    result.AddFatal(string.Format("The type '{0}' does not implement {1}", installerTypeAttribute.Value, typeof(IPackageFragmentInstaller)), installerTypeAttribute); 
+                    result.AddFatal($"The type '{installerTypeAttribute.Value}' does not implement {typeof (IPackageFragmentInstaller)}", installerTypeAttribute); 
                     continue;
                 }
 
@@ -413,14 +412,14 @@ namespace Composite.Core.PackageSystem
                     XAttribute uninstallerTypeAttribute = element.Attribute(PackageSystemSettings.UninstallerTypeAttributeName);
                     if (uninstallerTypeAttribute == null)
                     {
-                        result.AddFatal(string.Format("Missing attribute '{0}'", PackageSystemSettings.UninstallerTypeAttributeName), element); 
+                        result.AddFatal($"Missing attribute '{PackageSystemSettings.UninstallerTypeAttributeName}'", element); 
                         continue;
                     }
 
                     uninstallerType = TypeManager.TryGetType(uninstallerTypeAttribute.Value);
                     if (uninstallerType == null)
                     {
-                        result.AddFatal(string.Format("Could not find uninstall fragment type '{0}'", uninstallerTypeAttribute.Value), uninstallerTypeAttribute); 
+                        result.AddFatal($"Could not find uninstall fragment type '{uninstallerTypeAttribute.Value}'", uninstallerTypeAttribute); 
                         continue; 
                     }
 
@@ -437,7 +436,7 @@ namespace Composite.Core.PackageSystem
 
                     if (packageFragmentUninstaller == null)
                     {
-                        result.AddFatal(string.Format("The type '{0}' does not implement {1}", uninstallerTypeAttribute.Value, typeof(IPackageFragmentUninstaller)), uninstallerTypeAttribute); 
+                        result.AddFatal($"The type '{uninstallerTypeAttribute.Value}' does not implement {typeof (IPackageFragmentUninstaller)}", uninstallerTypeAttribute); 
                         continue;
                     }
                 }

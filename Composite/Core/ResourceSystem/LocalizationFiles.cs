@@ -407,8 +407,8 @@ public static string ChangePasswordForm_IncorrectOldPassword=>T("ChangePasswordF
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	   public static class Composite_Core_PackageSystem_PackageFragmentInstallers {
-///<summary>&quot;The package composite version requirements does not match the current composite version&quot;</summary> 
-public static string PackageManager_CompositeVersionMisMatch=>T("PackageManager.CompositeVersionMisMatch");
+///<summary>&quot;The package composite version requirements does not match the current composite version &apos;{0}&apos;. Expected versions [{1} - {2}]&quot;</summary> 
+public static string PackageManager_CompositeVersionMisMatch(object parameter0,object parameter1,object parameter2)=>string.Format(T("PackageManager.CompositeVersionMisMatch"), parameter0,parameter1,parameter2);
 ///<summary>&quot;Package is already installed&quot;</summary> 
 public static string PackageManager_PackageAlreadyInstalled=>T("PackageManager.PackageAlreadyInstalled");
 ///<summary>&quot;A newer version of the package is already installed&quot;</summary> 
@@ -1233,7 +1233,7 @@ public static string EditUserWorkflow_LockingOwnUserAccount=>T("EditUserWorkflow
 public static string UserElementProvider_RootLabel=>T("UserElementProvider.RootLabel");
 ///<summary>&quot;Users&quot;</summary> 
 public static string UserElementProvider_RootToolTip=>T("UserElementProvider.RootToolTip");
-///<summary>&quot;Add User...&quot;</summary> 
+///<summary>&quot;Add User&quot;</summary> 
 public static string UserElementProvider_AddUserLabel=>T("UserElementProvider.AddUserLabel");
 ///<summary>&quot;Add new user&quot;</summary> 
 public static string UserElementProvider_AddUserToolTip=>T("UserElementProvider.AddUserToolTip");
@@ -2409,7 +2409,7 @@ public static string Website_Misc_MultiSelector_LabelEditSelections=>T("Website.
 public static string GenericVersionProcessController_Version=>T("GenericVersionProcessController.Version");
 ///<summary>&quot;Show version information&quot;</summary> 
 public static string GenericVersionProcessController_VersionToolTip=>T("GenericVersionProcessController.VersionToolTip");
-///<summary>&quot;Select a value...&quot;</summary> 
+///<summary>&quot;Select a value&quot;</summary> 
 public static string AspNetUiControl_Selector_SelectValueLabel=>T("AspNetUiControl.Selector.SelectValueLabel");
 ///<summary>&quot;&lt; broken reference &gt;...&quot;</summary> 
 public static string AspNetUiControl_Selector_BrokenReference=>T("AspNetUiControl.Selector.BrokenReference");
@@ -3553,9 +3553,9 @@ public static string PageSaveValidationFailedMessage=>T("PageSaveValidationFaile
 public static string PageElementProvider_RootLabel=>T("PageElementProvider.RootLabel");
 ///<summary>&quot;Websites&quot;</summary> 
 public static string PageElementProvider_RootLabelToolTip=>T("PageElementProvider.RootLabelToolTip");
-///<summary>&quot;Add Website...&quot;</summary> 
+///<summary>&quot;Add Website&quot;</summary> 
 public static string PageElementProvider_AddPageAtRoot=>T("PageElementProvider.AddPageAtRoot");
-///<summary>&quot;Add {0}...&quot;</summary> 
+///<summary>&quot;Add {0}&quot;</summary> 
 public static string PageElementProvider_AddPageAtRootFormat(object parameter0)=>string.Format(T("PageElementProvider.AddPageAtRootFormat"), parameter0);
 ///<summary>&quot;Add new homepage&quot;</summary> 
 public static string PageElementProvider_AddPageAtRootToolTip=>T("PageElementProvider.AddPageAtRootToolTip");
@@ -3579,7 +3579,7 @@ public static string PageElementProvider_DeleteToolTip=>T("PageElementProvider.D
 public static string PageElementProvider_LocalizePage=>T("PageElementProvider.LocalizePage");
 ///<summary>&quot;Translate selected page&quot;</summary> 
 public static string PageElementProvider_LocalizePageToolTip=>T("PageElementProvider.LocalizePageToolTip");
-///<summary>&quot;Add {0}...&quot;</summary> 
+///<summary>&quot;Add {0}&quot;</summary> 
 public static string PageElementProvider_AddSubPage(object parameter0)=>string.Format(T("PageElementProvider.AddSubPage"), parameter0);
 ///<summary>&quot;Add new page below the selected&quot;</summary> 
 public static string PageElementProvider_AddSubPageToolTip=>T("PageElementProvider.AddSubPageToolTip");
@@ -5230,7 +5230,7 @@ public static string DeleteUserControlFunctionWorkflow_ConfirmDeleteMessage=>T("
 public static string UserGroupElementProvider_RootLabel=>T("UserGroupElementProvider.RootLabel");
 ///<summary>&quot;User Groups&quot;</summary> 
 public static string UserGroupElementProvider_RootToolTip=>T("UserGroupElementProvider.RootToolTip");
-///<summary>&quot;Add User Group...&quot;</summary> 
+///<summary>&quot;Add User Group&quot;</summary> 
 public static string UserGroupElementProvider_AddNewUserGroupLabel=>T("UserGroupElementProvider.AddNewUserGroupLabel");
 ///<summary>&quot;Add new User Group&quot;</summary> 
 public static string UserGroupElementProvider_AddNewUserGroupToolTip=>T("UserGroupElementProvider.AddNewUserGroupToolTip");

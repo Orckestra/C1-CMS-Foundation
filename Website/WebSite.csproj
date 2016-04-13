@@ -576,6 +576,7 @@
     <Content Include="bower.json" />
     <Content Include="Composite\styles\default\branding.less" />
     <Content Include="App_Data\Composite\PhantomJs\config.json" />
+    <Content Include="Composite\services\Setup\web.config" />
     <None Include="Composite\styles\default\splash.less" />
     <Content Include="Composite\GenerateIconSprite.aspx" />
     <Content Include="Composite\images\editfunction.png" />

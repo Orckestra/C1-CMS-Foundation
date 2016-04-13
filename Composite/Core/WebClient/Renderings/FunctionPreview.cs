@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using System.Web;
 using Composite.C1Console.Events;
+using Composite.Core.Configuration;
 
 namespace Composite.Core.WebClient.Renderings
 {
@@ -41,6 +42,11 @@ namespace Composite.Core.WebClient.Renderings
         /// <exclude />
         public static int GetFunctionPreviewHash()
         {
+            if (!GlobalSettingsFacade.FunctionPreviewEnabled)
+            {
+                return 0;
+            }
+
             return BrowserRender.GetLastCacheUpdateTime(RenderingMode).GetHashCode();
         }
     }

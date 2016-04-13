@@ -33,6 +33,7 @@ namespace Composite.Core.Configuration.BuildinPlugins.GlobalSettingsProvider
         private bool _broadcastConsoleElementChanges = true;
         private bool _prettifyPublicMarkup = true;
         private bool _prettifyRenderFunctionExceptions = true;
+        private bool _functionPreviewEnabled = false;
 
         public string ApplicationName
         {
@@ -266,14 +267,10 @@ namespace Composite.Core.Configuration.BuildinPlugins.GlobalSettingsProvider
             }
         }
 
-        public bool PrettifyPublicMarkup
-        {
-            get { return _prettifyPublicMarkup; }
-        }
+        public bool PrettifyPublicMarkup => _prettifyPublicMarkup;
 
-        public bool PrettifyRenderFunctionExceptions
-        {
-            get { return _prettifyRenderFunctionExceptions; }
-        }
+        public bool PrettifyRenderFunctionExceptions => _prettifyRenderFunctionExceptions;
+
+        public bool FunctionPreviewEnabled => _functionPreviewEnabled;
     }
 }
