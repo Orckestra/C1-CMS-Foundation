@@ -32,11 +32,10 @@ namespace Composite.Data
             DataEventSystemFacade.SubscribeToDataAfterUpdate<IData>(OnDataChanged, true);
             DataEventSystemFacade.SubscribeToDataDeleted<IData>(OnDataChanged, true);
 
+            DataEventSystemFacade.SubscribeToDataBeforeAdd<IData>(SetCreationHistoryInformation, true);
             DataEventSystemFacade.SubscribeToDataBeforeAdd<IData>(SetChangeHistoryInformation, true);
             DataEventSystemFacade.SubscribeToDataBeforeUpdate<IData>(SetChangeHistoryInformation, true);
         }
-
-
 
         public IQueryable<T> GetData<T>(bool useCaching, IEnumerable<string> providerNames)
             where T : class, IData
@@ -654,6 +653,27 @@ namespace Composite.Data
                     // silent
                 }
             }
-        }        
+        }
+
+        private static void SetCreationHistoryInformation(object sender, DataEventArgs dataEventArgs)
+        {
+            IData data = dataEventArgs.Data;
+            if (data != null && data is ICreationHistory)
+            {
+                (data as ICreationHistory).CreationDate = DateTime.Now;
+
+                try
+                {
+                    if (UserValidationFacade.IsLoggedIn())
+                    {
+                        (data as ICreationHistory).CreatedBy = UserValidationFacade.GetUsername();
+                    }
+                }
+                catch
+                {
+                    // silent
+                }
+            }
+        }
     }
 }
