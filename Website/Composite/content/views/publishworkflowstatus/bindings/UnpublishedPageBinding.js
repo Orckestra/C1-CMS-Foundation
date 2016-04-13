@@ -61,8 +61,8 @@ UnpublishedPageBinding.prototype.renderActions = function (nodes) {
 	var actions = new Map();
 	nodes.each(function (node) {
 		this.getWorkflowActions(node).each(function (action) {
-			if (!actions.has(action.getKey())) {
-				actions.set(action.getKey(), action);
+			if (!actions.has(action.getHandle())) {
+				actions.set(action.getHandle(), action);
 			}
 		});
 
@@ -95,7 +95,7 @@ UnpublishedPageBinding.prototype.updateActions = function () {
 	actionButtons.each(function (actionButton) {
 		var action = actionButton.associatedSystemAction;
 		if (action) {
-			var key = action.getKey();
+			var key = action.getHandle();
 			if (requiredActionKeys.has(key) && requiredActionKeys.get(key) === selected.getLength()) {
 				actionButton.enable();
 			} else {
@@ -146,7 +146,7 @@ UnpublishedPageBinding.prototype.getAllowedActionKeys = function (node) {
 	var result = new List();
 	this.getWorkflowActions(node).each(function (action) {
 		if (!action.isDisabled()) {
-			result.add(action.getKey());
+			result.add(action.getHandle());
 		}
 	}, this);
 	return result;
@@ -216,7 +216,7 @@ UnpublishedPageBinding.prototype._handleSystemAction = function (action) {
 		this.getSelectedCheckboxes().each(function (check) {
 			var node = check.associatedNode;
 			var allowedActionKeys = this.getAllowedActionKeys(node);
-			if (allowedActionKeys.has(action.getKey())) {
+			if (allowedActionKeys.has(action.getHandle())) {
 				SystemAction.invoke(action, node);
 			}
 		}, this);
