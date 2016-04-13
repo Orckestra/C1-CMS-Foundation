@@ -3,6 +3,7 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Web.Services;
 using System.Web.Services.Protocols;
@@ -14,6 +15,7 @@ using Composite.C1Console.Security;
 using Composite.C1Console.Users;
 using Composite.Core;
 using Composite.Core.IO;
+using Composite.Core.ResourceSystem;
 using Composite.Core.Routing;
 using Composite.Core.Xml;
 using Composite.Core.Types;
@@ -84,17 +86,44 @@ namespace Composite.Services
 
             var rootElements = ElementFacade.GetPerspectiveElements(false).First();
             var rootChildren = ElementFacade.GetChildren(rootElements.ElementHandle, new SearchToken());
-            var allElements = getall(rootChildren);
+            var allElements = Getall(rootChildren);
 
             List<Element> actionRequiredPages =
                 (from element in allElements
                  where ((IPublishControlled)((DataEntityToken)element.ElementHandle.EntityToken).Data).PublicationStatus != "published"
                  select element).ToList();
 
+            foreach (var actionRequiredPage in actionRequiredPages)
+            {
+                actionRequiredPage.PropertyBag["Title"] =
+                    DataAttributeFacade.GetLabel(((DataEntityToken) actionRequiredPage.ElementHandle.EntityToken).Data);
+                actionRequiredPage.PropertyBag["Type"] =
+                    DataAttributeFacade.GetTypeTitle(((DataEntityToken) actionRequiredPage.ElementHandle.EntityToken).Data);
+
+                     var transitions = ProcessControllerFacade.GetValidTransitions(((DataEntityToken) actionRequiredPage.ElementHandle.EntityToken).Data);
+                var publicationStatus =
+                    (((IPublishControlled) ((DataEntityToken) actionRequiredPage.ElementHandle.EntityToken).Data)
+                        .PublicationStatus);
+                actionRequiredPage.PropertyBag["Status"] = (transitions.ContainsKey(publicationStatus)
+                    ? transitions[publicationStatus]
+                    : "Unknown State");
+                
+                if (((DataEntityToken) actionRequiredPage.ElementHandle.EntityToken).Data is IChangeHistory)
+                {
+                    actionRequiredPage.PropertyBag["Modified"] =
+                        ((IChangeHistory) ((DataEntityToken) actionRequiredPage.ElementHandle.EntityToken).Data).ChangeDate.ToString(CultureInfo.CurrentCulture);
+                }
+                if (((DataEntityToken) actionRequiredPage.ElementHandle.EntityToken).Data is ICreationHistory)
+                {
+                    actionRequiredPage.PropertyBag["Created"] =
+                        ((ICreationHistory) ((DataEntityToken) actionRequiredPage.ElementHandle.EntityToken).Data).CreationDate.ToString(CultureInfo.CurrentCulture);
+                }
+                actionRequiredPage.PropertyBag["Version"] = "dummy";
+            }
             return actionRequiredPages.ToClientElementList();
         }
 
-        IEnumerable<Element> getall(IEnumerable<Element> a)
+        IEnumerable<Element> Getall(IEnumerable<Element> a)
         {
             foreach (var element in a)
             {
@@ -102,19 +131,19 @@ namespace Composite.Services
                 if (temp != null)
                 {
 
-                    foreach (var element2 in getall(temp))
+                    foreach (var element2 in Getall(temp))
                     {
-                        if (check(element2))
+                        if (Check(element2))
                             yield return element2;
                     }
 
                 }
-                if (check(element))
+                if (Check(element))
                     yield return element;
             }
         }
 
-        private bool check(Element v)
+        private bool Check(Element v)
         {
             if (v.ElementHandle.EntityToken is DataEntityToken)
                 if (((DataEntityToken)v.ElementHandle.EntityToken).Data is IPublishControlled)
