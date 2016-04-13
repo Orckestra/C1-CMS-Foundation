@@ -67,9 +67,10 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
 
         private void AddProperties(CodeTypeDeclaration declaration)
         {
-            foreach (string keyPropertyName in _dataTypeDescriptor.KeyPropertyNames)
+            foreach (var keyProperty in _dataTypeDescriptor.KeyFields)
             {
-                Type keyPropertyType = _dataTypeDescriptor.Fields[keyPropertyName].InstanceType;
+                string keyPropertyName = keyProperty.Name;
+                Type keyPropertyType = keyProperty.InstanceType;
                 string propertyFieldName = MakePropertyFieldName(keyPropertyName);
 
                 declaration.Members.Add(new CodeMemberField(keyPropertyType, propertyFieldName));

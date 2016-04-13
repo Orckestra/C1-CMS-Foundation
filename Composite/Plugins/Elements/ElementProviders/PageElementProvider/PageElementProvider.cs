@@ -382,12 +382,12 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
             foreach (EntityToken entityToken in entityTokens)
             {
-                DataEntityToken dataEntityToken = entityToken as DataEntityToken;
-
+                var dataEntityToken = (DataEntityToken) entityToken;
                 Type type = dataEntityToken.InterfaceType;
+
                 if (type != typeof(IPage)) continue;
 
-                Guid pageId = (Guid) dataEntityToken.DataSourceId.GetKeyValue();
+                Guid pageId = (Guid) dataEntityToken.DataSourceId.GetKeyValue(nameof(IPage.Id));
                 Guid parentPageId = PageManager.GetParentId(pageId);
 
                 if (parentPageId != Guid.Empty) continue;
@@ -402,7 +402,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
         private IEnumerable<Element> GetChildElements(EntityToken entityToken, IEnumerable<Element> childPageElements)
         {
             Guid? itemId = GetParentPageId(entityToken);
-            if (itemId.HasValue == false) return new Element[] { };
+            if (!itemId.HasValue) return new Element[] { };
 
             List<Element> associatedChildElements;
             if (itemId.Value != Guid.Empty)
@@ -444,9 +444,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             {
                 IPage parentPage = ((DataEntityToken)entityToken).Data as IPage;
 
-                if (parentPage == null) return null;
-
-                return parentPage.Id;
+                return parentPage?.Id;
             }
 
             throw new NotImplementedException();

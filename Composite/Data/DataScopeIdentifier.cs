@@ -18,10 +18,10 @@ namespace Composite.Data
         public const string AdministratedName = "administrated";
 
         /// <exclude />
-        public static DataScopeIdentifier Public { get { return new DataScopeIdentifier(PublicName); } }
+        public static DataScopeIdentifier Public { get; } = new DataScopeIdentifier(PublicName);
 
         /// <exclude />
-        public static DataScopeIdentifier Administrated { get { return new DataScopeIdentifier(AdministratedName); } }
+        public static DataScopeIdentifier Administrated { get; } = new DataScopeIdentifier(AdministratedName);
 
         /// <exclude />
         public static DataScopeIdentifier GetDefault()
@@ -54,7 +54,7 @@ namespace Composite.Data
         /// <exclude />
         public static DataScopeIdentifier Deserialize(string serializedData)
         {
-            if (serializedData == null) throw new ArgumentNullException("serializedData");
+            Verify.ArgumentNotNull(serializedData, nameof(serializedData));
 
             switch (serializedData)
             {
@@ -95,9 +95,7 @@ namespace Composite.Data
         /// <exclude />
         public override bool Equals(object obj)
         {
-            if (obj == null) return false;
-
-            return Equals(obj as DataScopeIdentifier);
+            return obj != null && Equals(obj as DataScopeIdentifier);
         }
 
 
