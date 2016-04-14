@@ -496,17 +496,6 @@ namespace Composite.Data.DynamicTypes
                 if (this.DataScopes.Count == 0) throw new InvalidOperationException("The DataScopes list containing the list of data scopes this type must support can not be empty. Please provide at least one data scopes.");
                 if (this.DataScopes.Select(f => f.Name).Distinct().Count() != this.DataScopes.Count) throw new InvalidOperationException("The DataScopes list contains redundant data scopes");
 
-                if (this.DataScopes.Any(f => f.Equals(DataScopeIdentifier.Public)))
-                {
-                    foreach (PropertyInfo propertyInfo in typeof(IPublishControlled).GetProperties())
-                    {
-                        if (!this.Fields.Any(f => f.Name == propertyInfo.Name))
-                        {
-                            throw new InvalidOperationException($"DataScope '{DataScopeIdentifier.Public}' require you to implement '{typeof (IPublishControlled)}' and a field named '{propertyInfo.Name} is missing");
-                        }
-                    }
-                }
-
                 this.KeyPropertyNames.ValidateMembers();
                 this.StoreSortOrderFieldNames.ValidateMembers();
 

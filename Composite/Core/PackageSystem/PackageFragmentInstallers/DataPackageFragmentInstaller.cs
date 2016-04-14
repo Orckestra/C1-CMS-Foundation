@@ -413,15 +413,16 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
             DataTypeDescriptor dataTypeDescriptor = DynamicTypeManager.BuildNewDataTypeDescriptor(dataType.InterfaceType);
 
-            List<string> requiredPropertyNames =
+
+            bool isVersionedDataType = typeof (IVersioned).IsAssignableFrom(dataType.InterfaceType);
+
+            var requiredPropertyNames = 
                 (from dfd in dataTypeDescriptor.Fields
-                where !dfd.IsNullable
+                where !dfd.IsNullable && !(isVersionedDataType && dfd.Name == nameof(IVersioned.VersionId)) // Compatibility fix
                 select dfd.Name).ToList();
 
-            List<string> nonRequiredPropertyNames =
-                (from dfd in dataTypeDescriptor.Fields
-                where dfd.IsNullable
-                select dfd.Name).ToList();
+            var nonRequiredPropertyNames = dataTypeDescriptor.Fields.Select(f => f.Name)
+                                            .Except(requiredPropertyNames).ToList();
 
 
             foreach (XElement addElement in dataType.Dataset)
@@ -589,6 +590,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         {
             return typeof(ILocalizedControlled).IsAssignableFrom(dataType.InterfaceType) && fieldName == "CultureName";
         }
+
 
         private static Dictionary<string, PropertyInfo> GetDataTypeProperties(Type type)
         {

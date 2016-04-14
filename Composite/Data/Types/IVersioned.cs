@@ -12,6 +12,6 @@ namespace Composite.Data.Types
         [StoreFieldType(PhysicalStoreFieldType.Guid)]
         [ImmutableFieldId("{f42d511b-1d76-4c05-a895-99f23b757e1e}")]
         [DefaultFieldNewGuidValue]
-        Guid VersionId { get; }
+        Guid VersionId { get; set; }
     }
 }
