@@ -10,6 +10,7 @@
 	<title><%= Request["title"] %></title>
 	<link rel="stylesheet" type="text/css" href="ViewUnpublishedItems.css.aspx" />
 	<script type="text/javascript" src="bindings/UnpublishedPageBinding.js"></script>
+	<script type="text/javascript" src="bindings/SortButtonBinding.js"></script>
 </head>
 <body>
 	<ui:page label="Unpublished" image="${icon:page-list-unpublished-items}" binding="UnpublishedPageBinding" showpagedata="<%=Request["showpagedata"] %>" showglobaldata="<%=Request["showglobaldata"]%>">
@@ -26,11 +27,14 @@
 			<thead>
 				<tr class="head">
 					<th>
+						<ui:checkbox id="checkallbox" oncommand="this.dispatchAction(UnpublishedPageBinding.ACTION_CHECK_ALL)" />
 					</th>
-					<th>Page Title</th>
-					<th>Version</th>
-					<th>Status</th>
-					<th>Page Type</th>
+					<th><ui:clickbutton label="${string:Composite.Plugins.PageElementProvider:ViewUnpublishedItems.LabelPageTitle}" binding="SortButtonBinding"/></th>
+					<th><ui:clickbutton label="${string:Composite.Plugins.PageElementProvider:ViewUnpublishedItems.LabelVersion}" binding="SortButtonBinding" /></th>
+					<th><ui:clickbutton label="${string:Composite.Plugins.PageElementProvider:ViewUnpublishedItems.LabelStatus}" binding="SortButtonBinding" /></th>
+					<th><ui:clickbutton label="${string:Composite.Plugins.PageElementProvider:ViewUnpublishedItems.LabelType}" binding="SortButtonBinding" /></th>
+					<th><ui:clickbutton label="${string:Composite.Plugins.PageElementProvider:ViewUnpublishedItems.LabelDateCreated}" binding="SortButtonBinding" /></th>
+					<th><ui:clickbutton label="${string:Composite.Plugins.PageElementProvider:ViewUnpublishedItems.LabelDateModified}" binding="SortButtonBinding" /></th>
 					<th></th>
 				</tr>
 			</thead>

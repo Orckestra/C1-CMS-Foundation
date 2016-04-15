@@ -4,3 +4,42 @@
 .table thead th:last-child {
 	width: 100%;
 }
+
+.table ui|clickbutton.sortbutton {
+	margin: 0 10px 0 0;
+	cursor: pointer;
+}
+.table ui|clickbutton.sortbutton * {
+	cursor: pointer;
+}
+
+.table ui|clickbutton.sortbutton ui|labelbox {
+	border: inherit;
+	color: inherit;
+	background: inherit;
+	text-transform: inherit;
+	padding: inherit;
+	cursor: pointer;
+}
+
+.table ui|clickbutton.sortbutton.hover ui|labelbox {
+	color: #22B980;
+}
+
+.table ui|clickbutton.sortbutton[direction='asc']:after,
+.table ui|clickbutton.sortbutton[direction='desc']:after {
+	position: absolute;
+	content: "";
+	width: 0;
+	height: 0;
+	right: -14px;
+	top: 7px;
+	border-style: solid;
+	border-width: 0 4px 4px 4px;
+	border-color: transparent transparent #989898 transparent;
+}
+
+.table ui|clickbutton.sortbutton[direction='desc']:after {
+	border-width: 4px 4px 0 4px;
+	border-color: #989898 transparent transparent transparent;
+}

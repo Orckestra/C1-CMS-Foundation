@@ -2,6 +2,8 @@
 UnpublishedPageBinding.prototype.constructor = UnpublishedPageBinding;
 UnpublishedPageBinding.superclass = PageBinding.prototype;
 
+UnpublishedPageBinding.ACTION_CHECK_ALL = "unpublished check all";
+
 /**
  * @class
  */
@@ -41,9 +43,29 @@ UnpublishedPageBinding.prototype.onBindingAttach = function () {
 
 	this.addActionListener(CheckBoxBinding.ACTION_COMMAND);
 	this.addActionListener(ButtonBinding.ACTION_COMMAND);
+	this.addActionListener(UnpublishedPageBinding.ACTION_CHECK_ALL);
+
+	this.addEventListener(DOMEvents.DOUBLECLICK);
+
 
 	this.tablebody = this.bindingWindow.bindingMap.tablebody;
 	this.actionGroup = this.bindingWindow.bindingMap.actiongroup;
+
+
+	DOMEvents.addEventListener(this.tablebody, DOMEvents.DOUBLECLICK, {
+		handleEvent: function (e) {
+			var target = e.target;
+			var row = DOMUtil.getAncestorByLocalName("tr", target);
+			if (row != null && row.hasAttribute("entitytoken")) {
+				var entityToken = row.getAttribute("entitytoken");
+				StageBinding.selectBrowserTab();
+				EventBroadcaster.broadcast(
+					BroadcastMessages.SYSTEMTREEBINDING_FOCUS,
+					entityToken
+				);
+			}
+		}
+	});
 
 	TreeService.GetUnpublishedElements(true, (function (response) {
 		var nodes = new List();
@@ -118,12 +140,15 @@ UnpublishedPageBinding.prototype.renderTable = function (nodes) {
 		checkbox.associatedNode = node;
 		row.appendChild(cell);
 
+		row.setAttribute("entitytoken", node.getEntityToken());
+
 		this.addTextCell(row, node.getLabel());
 		this.addTextCell(row, node.getPropertyBag().Version);
 		this.addTextCell(row, node.getPropertyBag().Status);
-		this.addTextCell(row, node.getPropertyBag().PageType);
-		this.addTextCell(row, node.getPropertyBag().DateCreated);
-		this.addTextCell(row, node.getPropertyBag().DateModified);
+		this.addTextCell(row, node.getPropertyBag().Type);
+		this.addTextCell(row, node.getPropertyBag().Created);
+		this.addTextCell(row, node.getPropertyBag().Modified);
+		this.addTextCell(row, "");
 
 	}, this);
 }
@@ -196,12 +221,32 @@ UnpublishedPageBinding.prototype.handleAction = function (action) {
 			var node = checkbox.associatedNode;
 			if (node instanceof SystemNode) {
 				this.updateActions();
+
+				//Update 'check all' button
+				if (!checkbox.isChecked || this.tablebody.getDescendantBindingsByType(CheckBoxBinding).toArray().filter(function(item) {
+					return item.associatedNode && !item.isChecked;
+				}).length === 0) {
+					this.bindingWindow.bindingMap.checkallbox.setChecked(checkbox.isChecked, true);
+				}
 			}
 			action.consume();
 			break;
+
 		case ButtonBinding.ACTION_COMMAND:
 			var button = action.target;
 			this._handleSystemAction(button.associatedSystemAction);
+			break;
+
+		case UnpublishedPageBinding.ACTION_CHECK_ALL:
+			this.tablebody.getDescendantBindingsByType(CheckBoxBinding).each(function (checkbox) {
+				if (checkbox.associatedNode) {
+					checkbox.setChecked(binding.isChecked, true);
+				}
+			}, this);
+
+			this.updateActions();
+			action.consume();
+			break;
 	}
 }
 
