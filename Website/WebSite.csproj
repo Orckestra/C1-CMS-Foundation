@@ -210,6 +210,7 @@
     <Content Include="Composite\content\forms\Administrative\DeleteUserControlFunctionConfirm.xml" />
     <Content Include="Composite\content\forms\Administrative\PageTemplate\EditMasterPage.xml" />
     <Content Include="Composite\content\forms\Administrative\PageTemplate\AddNewPageTemplate.xml" />
+    <Content Include="Composite\content\views\publishworkflowstatus\bindings\SortButtonBinding.js" />
     <Content Include="Composite\content\views\publishworkflowstatus\bindings\UnpublishedPageBinding.js" />
     <Content Include="Composite\controls\BrandingSnippet.ascx" />
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\Selectors\HierarchicalSelector.ascx" />
