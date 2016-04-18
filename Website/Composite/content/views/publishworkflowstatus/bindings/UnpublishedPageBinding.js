@@ -146,8 +146,8 @@ UnpublishedPageBinding.prototype.renderTable = function (nodes) {
 		this.addTextCell(row, node.getPropertyBag().Version);
 		this.addTextCell(row, node.getPropertyBag().Status);
 		this.addTextCell(row, node.getPropertyBag().Type);
-		this.addTextCell(row, node.getPropertyBag().Created);
-		this.addTextCell(row, node.getPropertyBag().Modified);
+		this.addTextCell(row, node.getPropertyBag().Created).setAttribute("data-sort-value", node.getPropertyBag().SortableCreated);
+		this.addTextCell(row, node.getPropertyBag().Modified).setAttribute("data-sort-value", node.getPropertyBag().SortableModified);
 		this.addTextCell(row, "");
 
 	}, this);
@@ -217,6 +217,7 @@ UnpublishedPageBinding.prototype.handleAction = function (action) {
 	switch (action.type) {
 
 		case CheckBoxBinding.ACTION_COMMAND:
+
 			var checkbox = action.target;
 			var node = checkbox.associatedNode;
 			if (node instanceof SystemNode) {
@@ -233,11 +234,13 @@ UnpublishedPageBinding.prototype.handleAction = function (action) {
 			break;
 
 		case ButtonBinding.ACTION_COMMAND:
+
 			var button = action.target;
 			this._handleSystemAction(button.associatedSystemAction);
 			break;
 
 		case UnpublishedPageBinding.ACTION_CHECK_ALL:
+
 			this.tablebody.getDescendantBindingsByType(CheckBoxBinding).each(function (checkbox) {
 				if (checkbox.associatedNode) {
 					checkbox.setChecked(binding.isChecked, true);
@@ -245,6 +248,7 @@ UnpublishedPageBinding.prototype.handleAction = function (action) {
 			}, this);
 
 			this.updateActions();
+
 			action.consume();
 			break;
 	}

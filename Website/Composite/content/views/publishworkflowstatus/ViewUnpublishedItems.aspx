@@ -17,7 +17,7 @@
 		<ui:toolbar id="toolbar">
 			<ui:toolbarbody>
 				<ui:toolbargroup>
-					<ui:toolbarbutton oncommand="window.location.reload()" id="refreshbutton" image="${icon:refresh}" label="Refresh" />
+					<ui:toolbarbutton oncommand="window.location.reload()" id="refreshbutton" image="${icon:refresh}" label="${string:Website.App.LabelRefresh}" />
 				</ui:toolbargroup>
 				<ui:toolbargroup id="actiongroup">
 				</ui:toolbargroup>
