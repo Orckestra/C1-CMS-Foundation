@@ -112,11 +112,15 @@ namespace Composite.Services
                 {
                     actionRequiredPage.PropertyBag["Modified"] =
                         ((IChangeHistory) ((DataEntityToken) actionRequiredPage.ElementHandle.EntityToken).Data).ChangeDate.ToString(CultureInfo.CurrentCulture);
+                    actionRequiredPage.PropertyBag["SortableModified"] =
+                        String.Format("{0:s}", ((IChangeHistory) ((DataEntityToken) actionRequiredPage.ElementHandle.EntityToken).Data).ChangeDate);
                 }
                 if (((DataEntityToken) actionRequiredPage.ElementHandle.EntityToken).Data is ICreationHistory)
                 {
                     actionRequiredPage.PropertyBag["Created"] =
                         ((ICreationHistory) ((DataEntityToken) actionRequiredPage.ElementHandle.EntityToken).Data).CreationDate.ToString(CultureInfo.CurrentCulture);
+                    actionRequiredPage.PropertyBag["SortableCreated"] =
+                        String.Format("{0:s}", ((ICreationHistory) ((DataEntityToken) actionRequiredPage.ElementHandle.EntityToken).Data).CreationDate);
                 }
                 actionRequiredPage.PropertyBag["Version"] = "dummy";
             }
