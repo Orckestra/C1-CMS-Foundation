@@ -1,6 +1,10 @@
 ﻿@namespace url("http://www.w3.org/1999/xhtml");
 @namespace ui url("http://www.w3.org/1999/xhtml");
 
+a {
+	cursor: pointer;
+}
+
 .table thead th:last-child {
 	width: 100%;
 }

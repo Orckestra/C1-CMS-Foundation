@@ -51,22 +51,6 @@ UnpublishedPageBinding.prototype.onBindingAttach = function () {
 	this.tablebody = this.bindingWindow.bindingMap.tablebody;
 	this.actionGroup = this.bindingWindow.bindingMap.actiongroup;
 
-
-	DOMEvents.addEventListener(this.tablebody, DOMEvents.DOUBLECLICK, {
-		handleEvent: function (e) {
-			var target = e.target;
-			var row = DOMUtil.getAncestorByLocalName("tr", target);
-			if (row != null && row.hasAttribute("entitytoken")) {
-				var entityToken = row.getAttribute("entitytoken");
-				StageBinding.selectBrowserTab();
-				EventBroadcaster.broadcast(
-					BroadcastMessages.SYSTEMTREEBINDING_FOCUS,
-					entityToken
-				);
-			}
-		}
-	});
-
 	TreeService.GetUnpublishedElements(true, (function (response) {
 		var nodes = new List();
 		new List(response).each(function (element) {
@@ -142,7 +126,19 @@ UnpublishedPageBinding.prototype.renderTable = function (nodes) {
 
 		row.setAttribute("entitytoken", node.getEntityToken());
 
-		this.addTextCell(row, node.getLabel());
+		var linkcell = this.addTextCell(row);
+		var link = this.bindingDocument.createElement("a");
+		link.appendChild(this.bindingDocument.createTextNode(node.getLabel()));
+		link.onclick = function () {
+			var entityToken = row.getAttribute("entitytoken");
+			StageBinding.selectBrowserTab();
+			EventBroadcaster.broadcast(
+				BroadcastMessages.SYSTEMTREEBINDING_FOCUS,
+				entityToken
+			);
+		}
+		linkcell.appendChild(link);
+
 		this.addTextCell(row, node.getPropertyBag().Version);
 		this.addTextCell(row, node.getPropertyBag().Status);
 		this.addTextCell(row, node.getPropertyBag().Type);
@@ -191,7 +187,9 @@ UnpublishedPageBinding.prototype.getSelectedCheckboxes = function() {
 UnpublishedPageBinding.prototype.addTextCell = function (row, value) {
 
 	var cell = this.bindingDocument.createElement("td");
-	cell.appendChild(this.bindingDocument.createTextNode(value == undefined ? " " : value));
+	if (value != undefined) {
+		cell.appendChild(this.bindingDocument.createTextNode(value));
+	}
 	return row.appendChild(cell);
 }
 
