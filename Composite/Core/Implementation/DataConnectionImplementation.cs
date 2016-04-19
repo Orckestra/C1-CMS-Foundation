@@ -16,7 +16,7 @@ namespace Composite.Core.Implementation
         private IDisposable _threadDataManager;
         private readonly DataScope _dataScope;
 
-
+        internal DataScope DataScope => _dataScope;
         /// <summary>
         /// Stateless constructor. This is used when implementations of static methods needs to be called
         /// Used when New and AllLocales are called

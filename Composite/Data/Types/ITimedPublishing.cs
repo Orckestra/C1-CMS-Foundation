@@ -24,6 +24,6 @@ namespace Composite.Data.Types
         /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.String, 128, IsNullable = true)]
         [ImmutableFieldId("{70b53ac6-d58e-4624-ab47-975e80853673}")]
-        string VersionTag { get; set; }
+        string VersionName { get; set; }
     }
 }

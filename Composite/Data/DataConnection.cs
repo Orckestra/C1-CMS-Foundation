@@ -27,7 +27,26 @@ namespace Composite.Data
         //private ImplementationContainer<PageDataConnection> _pageDataConnection;
         private ImplementationContainer<SitemapNavigator> _sitemapNavigator;
 
+        private static DataConnectionImplementation _connectionImplementation;
+        
+        /// <summary>
+        /// Resolve service of a specific type that is attached to connection's data scope
+        /// </summary>
+        /// <param name="t"></param>
+        /// <returns></returns>
+        public object GetService(Type t)
+        {
+            return ImplementationFactory.CurrentFactory.ResolveService(t);
+        }
 
+        /// <summary>
+        /// attach service to data connection
+        /// </summary>
+        /// <param name="service"></param>
+        public void AddService(object service)
+        {
+            _connectionImplementation.DataScope.AddService(service);
+        }
 
         /// <summary>
         /// Creates a new <see cref="DataConnection"/> instance inheriting the <see cref="Composite.Data.PublicationScope"/>
@@ -48,7 +67,7 @@ namespace Composite.Data
         /// </code>
         /// </example>
         public DataConnection()
-            : base(() => ImplementationFactory.CurrentFactory.CreateDataConnection(null, null))
+            : base(() => _connectionImplementation = ImplementationFactory.CurrentFactory.CreateDataConnection(null, null))
         {
             CreateImplementation();
 
@@ -76,7 +95,7 @@ namespace Composite.Data
         /// </code>
         /// </example>
         public DataConnection(PublicationScope scope)
-            : base(() => ImplementationFactory.CurrentFactory.CreateDataConnection(scope, null))
+            : base(() => _connectionImplementation = ImplementationFactory.CurrentFactory.CreateDataConnection(scope, null))
         {
             if ((scope < PublicationScope.Unpublished) || (scope > PublicationScope.Published)) throw new ArgumentOutOfRangeException("scope");
 
@@ -106,7 +125,7 @@ namespace Composite.Data
         /// </code>
         /// </example>
         public DataConnection(CultureInfo locale)
-            : base(() => ImplementationFactory.CurrentFactory.CreateDataConnection(null, locale))
+            : base(() => _connectionImplementation = ImplementationFactory.CurrentFactory.CreateDataConnection(null, locale))
         {
             CreateImplementation();
 
@@ -135,7 +154,7 @@ namespace Composite.Data
         /// </code>
         /// </example>
         public DataConnection(PublicationScope scope, CultureInfo locale)
-            : base(() => ImplementationFactory.CurrentFactory.CreateDataConnection(scope, locale))
+            : base(() => _connectionImplementation = ImplementationFactory.CurrentFactory.CreateDataConnection(scope, locale))
         {
             if ((scope < PublicationScope.Unpublished) || (scope > PublicationScope.Published)) throw new ArgumentOutOfRangeException("scope");
 

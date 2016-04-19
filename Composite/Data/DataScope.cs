@@ -12,7 +12,18 @@ namespace Composite.Data
     {
         private readonly bool _dataScopePushed = false;
         private readonly bool _cultureInfoPushed = false;
+        private bool _dataServicePushed = false;
 
+        /// <exclude />
+        public void AddService(object service)
+        {
+            if (!_dataServicePushed)
+            {
+                DataServiceScopeManager.PushDataServiceScope();
+                _dataServicePushed = true;
+            }
+            DataServiceScopeManager.AddService(service);
+        }
 
         /// <exclude />
         public DataScope(DataScopeIdentifier dataScope)
@@ -92,6 +103,11 @@ namespace Composite.Data
             if (_cultureInfoPushed)
             {
                 LocalizationScopeManager.PopLocalizationScope();
+            }
+
+            if (_dataServicePushed)
+            {
+                DataServiceScopeManager.PopDataServiceScope();
             }
         }
     }
