@@ -270,7 +270,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             }
 
 
-            var contents = DataFacade.GetData<IPagePlaceholderContent>(f => f.PageId == selectedPage.Id).ToList();
+            var contents = DataFacade.GetData<IPagePlaceholderContent>(f => f.PageId == selectedPage.Id && f.VersionId == selectedPage.VersionId).ToList();
             var namedXhtmlFragments = contents.ToDictionary(content => content.PlaceHolderId, content => content.Content ?? "");
 
 
@@ -317,7 +317,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             var updateTreeRefresher = CreateUpdateTreeRefresher(EntityToken);
 
             var selectedPage = GetBinding<IPage>("SelectedPage");
-            var originalPage = DataFacade.GetData<IPage>(f => f.Id == selectedPage.Id).SingleOrDefault();
+            var originalPage = DataFacade.GetData<IPage>(f => f.Id == selectedPage.Id && f.VersionId == selectedPage.VersionId).SingleOrDefault();
 
             var viewLabelUpdated = originalPage == null
                 || selectedPage.MenuTitle != originalPage.MenuTitle
@@ -396,7 +396,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                         DataFacade.Update(originalPage);
 
                         var contentDictionary = GetBinding<Dictionary<string, string>>("NamedXhtmlFragments");
-                        var existingContents = DataFacade.GetData<IPagePlaceholderContent>(f => f.PageId == selectedPage.Id).ToList();
+                        var existingContents = DataFacade.GetData<IPagePlaceholderContent>(f => f.PageId == selectedPage.Id && f.VersionId == selectedPage.VersionId).ToList();
 
                         foreach (var existingContent in existingContents)
                         {
@@ -416,6 +416,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                         {
                             var newContent = DataFacade.BuildNew<IPagePlaceholderContent>();
                             newContent.PageId = selectedPage.Id;
+                            newContent.VersionId = selectedPage.VersionId;
                             newContent.PlaceHolderId = contentDictionaryElement.Key;
                             newContent.Content = contentDictionaryElement.Value;
                             newContent.SourceCultureName = UserSettings.ActiveLocaleCultureInfo.Name;
@@ -711,7 +712,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
         private void PageStillExists(object sender, ConditionalEventArgs e)
         {
             var selectedPage = GetBinding<IPage>("SelectedPage");
-            var originalPage = DataFacade.GetData<IPage>(f => f.Id == selectedPage.Id).SingleOrDefault();
+            var originalPage = DataFacade.GetData<IPage>(f => f.Id == selectedPage.Id && f.VersionId == selectedPage.VersionId).SingleOrDefault();
 
             e.Result = originalPage != null;
         }
