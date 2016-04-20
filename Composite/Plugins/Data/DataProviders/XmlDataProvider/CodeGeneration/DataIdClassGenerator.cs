@@ -275,7 +275,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
 
             CodeExpression hashCodeExpression = null;
 
-#warnign We DO want IDataId classes to reflect both id and VersionId for data, right?
+#warning We DO want IDataId classes to reflect both id and VersionId for data, right?
             foreach (string keyPropertyName in _dataTypeDescriptor.PhysicalKeyFields.Select(f=>f.Name))
             {
                 string propertyFieldName = MakePropertyFieldName(_dataTypeDescriptor.Fields[keyPropertyName].Name);
