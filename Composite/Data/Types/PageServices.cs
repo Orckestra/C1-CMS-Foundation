@@ -478,6 +478,7 @@ namespace Composite.Data.Types
             {
                 IPagePlaceholderContent pagePlaceholderContent = DataFacade.BuildNew<IPagePlaceholderContent>();
                 pagePlaceholderContent.PageId = page.Id;
+                pagePlaceholderContent.VersionId = page.VersionId;
                 pagePlaceholderContent.PlaceHolderId = pageTypeDefaultPageContent.PlaceHolderId;
                 pagePlaceholderContent.Content = pageTypeDefaultPageContent.Content;
                 DataFacade.AddNew<IPagePlaceholderContent>(pagePlaceholderContent);
@@ -489,6 +490,8 @@ namespace Composite.Data.Types
 
         internal static bool AddPageTypePageFoldersAndApplications(IPage page)
         {
+#warning Validate that having a page type with associated PageType PageFolders or Applications does not break on 2nd add for same page id
+
             Guid pageTypeId = page.PageTypeId;
 
             bool treeRefreshindNeeded = false;
