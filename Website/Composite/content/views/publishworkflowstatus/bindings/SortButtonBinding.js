@@ -85,7 +85,7 @@ SortButtonBinding.prototype.fireCommand = function () {
 	new List(this.tablebody.querySelectorAll("tr")).each(function (row) {
 		var sortcell = row.querySelector("td:nth-of-type(" + (cellIndex + 1) + ")");
 		var sortvalue = this.getSortValue(sortcell);
-		items.push({row, sortvalue});
+		items.push({ row: row, sortvalue: sortvalue });
 	}, this);
 
 	items.sort(direction === SortButtonBinding.DIRECTION_ASC ? SortButtonBinding.ascDirection : SortButtonBinding.descDirection);

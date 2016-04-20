@@ -129,7 +129,9 @@ UnpublishedPageBinding.prototype.renderTable = function (nodes) {
 		var linkcell = this.addTextCell(row);
 		var link = this.bindingDocument.createElement("a");
 		link.appendChild(this.bindingDocument.createTextNode(node.getLabel()));
-		link.onclick = function () {
+		link.onclick = function (e) {
+			DOMEvents.preventDefault(e);
+			DOMEvents.stopPropagation(e);
 			var entityToken = row.getAttribute("entitytoken");
 			StageBinding.selectBrowserTab();
 			EventBroadcaster.broadcast(
