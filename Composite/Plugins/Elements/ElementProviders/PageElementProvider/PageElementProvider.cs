@@ -816,7 +816,9 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             {
                 HasChildren = hasChildren,
                 Label = (isRootPage || string.IsNullOrWhiteSpace(page.MenuTitle)) ? page.Title : page.MenuTitle,
-                ToolTip = page.Description
+                ToolTip = page.Description,
+                ElementBundle = page.Id.ToString(),
+                BundleElementName = page.VersionName
             };
 
             if (pageLocaleState == PageLocaleState.Own)

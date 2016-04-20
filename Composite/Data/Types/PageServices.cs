@@ -56,20 +56,13 @@ namespace Composite.Data.Types
         /// <exclude />
         public static IQueryable<IPage> GetChildren(Guid parentId)
         {
-            var pageIDs = PageManager.GetChildrenIDs(parentId);
+            return from ps in DataFacade.GetData<IPageStructure>()
+                   join p in DataFacade.GetData<IPage>() on ps.Id equals p.Id
+                   where ps.ParentId == parentId
+                   orderby ps.LocalOrdering
+                   select p;
 
-            var result = new List<IPage>();
-            foreach (var id in pageIDs)
-            {
-                var page = PageManager.GetPageById(id);
-                // A page can de deleted after getting the child list, in a separate thread
-                if (page != null)
-                {
-                    result.Add(page);
-                }
-            }
-
-            return result.AsQueryable();
+#warning revisit this - we return all versions (by design so far). Any ordering on page versions? - check history for original intent
         }
 
 
