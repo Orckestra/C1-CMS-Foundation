@@ -165,7 +165,6 @@
     <Compile Include="C1Console\Actions\Data\DataActionTokenResolverFacade.cs" />
     <Compile Include="C1Console\Actions\Data\DataActionTokenResolverRegistery.cs" />
     <Compile Include="Data\DataServiceScopeManager.cs" />
-    <Compile Include="Data\IScopeSettings.cs" />
     <Compile Include="Data\Types\ITimedPublishing.cs" />
     <Compile Include="Data\Types\IVersioned.cs" />
     <Compile Include="Data\Types\PageInsertPosition.cs" />

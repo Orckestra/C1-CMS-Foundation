@@ -164,9 +164,10 @@ namespace Composite.Data.DynamicTypes
         public DataFieldDescriptorCollection Fields { get; set; }
 
         /// <summary>
-        /// Key fields. Note that the order of the fields is important.
+        /// Physical key fields. Note that the order of the fields is important.
+        /// The physical key ensure that storage identity is unique across different versions of data with shared id.
         /// </summary>
-        internal IEnumerable<DataFieldDescriptor> KeyFields
+        internal IEnumerable<DataFieldDescriptor> PhysicalKeyFields
         {
             get
             {

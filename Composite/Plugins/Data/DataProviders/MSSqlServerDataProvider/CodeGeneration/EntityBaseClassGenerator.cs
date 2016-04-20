@@ -163,8 +163,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
             };
 
             var dataIdConstructorParms = new List<CodeExpression>();
-            foreach (string propertyName in _dataTypeDescriptor.KeyPropertyNames
-                                            .Concat(_dataTypeDescriptor.VersionKeyPropertyNames))
+            foreach (string propertyName in _dataTypeDescriptor.PhysicalKeyFields.Select(f=>f.Name))
             {
                 dataIdConstructorParms.Add(
                     new CodePropertyReferenceExpression(
