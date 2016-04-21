@@ -108,6 +108,7 @@ namespace Composite.Data
             if (_dataServicePushed)
             {
                 DataServiceScopeManager.PopDataServiceScope();
+                _dataServicePushed = false;
             }
         }
     }
