@@ -114,6 +114,8 @@ namespace Composite.Services
                         ((IChangeHistory) ((DataEntityToken) actionRequiredPage.ElementHandle.EntityToken).Data).ChangeDate.ToString(CultureInfo.CurrentCulture);
                     actionRequiredPage.PropertyBag["SortableModified"] =
                         String.Format("{0:s}", ((IChangeHistory) ((DataEntityToken) actionRequiredPage.ElementHandle.EntityToken).Data).ChangeDate);
+                    actionRequiredPage.PropertyBag["ChangedBy"] =
+                        ((IChangeHistory) ((DataEntityToken) actionRequiredPage.ElementHandle.EntityToken).Data).ChangedBy;
                 }
                 if (((DataEntityToken) actionRequiredPage.ElementHandle.EntityToken).Data is ICreationHistory)
                 {
@@ -123,6 +125,8 @@ namespace Composite.Services
                         String.Format("{0:s}", ((ICreationHistory) ((DataEntityToken) actionRequiredPage.ElementHandle.EntityToken).Data).CreationDate);
                 }
                 actionRequiredPage.PropertyBag["Version"] = "dummy";
+
+                
             }
             return actionRequiredPages.ToClientElementList();
         }
