@@ -14,6 +14,9 @@ function UnpublishedPageBinding() {
 	 */
 	this.logger = SystemLogger.getLogger("UnpublishedPageBinding");
 
+
+	this.table = null;
+
 	this.tablebody = null;
 
 	this.actionGroup = null;
@@ -49,20 +52,15 @@ UnpublishedPageBinding.prototype.onBindingAttach = function () {
 
 
 	this.tablebody = this.bindingWindow.bindingMap.tablebody;
+	this.table = DOMUtil.getAncestorByLocalName("table", this.tablebody.bindingElement);
 	this.actionGroup = this.bindingWindow.bindingMap.actiongroup;
 
-	TreeService.GetUnpublishedElements(true, (function (response) {
-		var nodes = new List();
-		new List(response).each(function (element) {
-			var newnode = new SystemNode(element);
-			nodes.add(newnode);
-		});
-		this.renderActions(nodes);
-		this.renderTable(nodes);
-	}).bind(this));
+	this.refresh();
 }
 
 UnpublishedPageBinding.prototype.renderActions = function (nodes) {
+
+	this.actionGroup.empty();
 
 	var actions = new Map();
 	nodes.each(function (node) {
@@ -113,6 +111,10 @@ UnpublishedPageBinding.prototype.updateActions = function () {
 
 UnpublishedPageBinding.prototype.renderTable = function (nodes) {
 
+	while (this.tablebody.bindingElement.firstChild) {
+		this.tablebody.bindingElement.removeChild(this.tablebody.bindingElement.firstChild);
+	}
+
 	nodes.each(function (node) {
 		var row = this.bindingDocument.createElement('tr');
 		this.tablebody.bindingElement.appendChild(row);
@@ -144,11 +146,35 @@ UnpublishedPageBinding.prototype.renderTable = function (nodes) {
 		this.addTextCell(row, node.getPropertyBag().Version);
 		this.addTextCell(row, node.getPropertyBag().Status);
 		this.addTextCell(row, node.getPropertyBag().Type);
+		this.addTextCell(row, node.getPropertyBag().ChangedBy);
 		this.addTextCell(row, node.getPropertyBag().Created).setAttribute("data-sort-value", node.getPropertyBag().SortableCreated);
 		this.addTextCell(row, node.getPropertyBag().Modified).setAttribute("data-sort-value", node.getPropertyBag().SortableModified);
 		this.addTextCell(row, "");
 
 	}, this);
+
+
+	var sortButton = UserInterface.getBinding(this.table.querySelector(".sortbutton[direction]"));
+	if(sortButton != null && sortButton instanceof SortButtonBinding){
+		sortButton.sort(sortButton.getDirection());
+	}
+}
+
+
+UnpublishedPageBinding.prototype.refresh = function () {
+
+	TreeService.GetUnpublishedElements(true, (function (response) {
+
+		var nodes = new List();
+		new List(response).each(function (element) {
+			var newnode = new SystemNode(element);
+			nodes.add(newnode);
+		});
+		this.renderActions(nodes);
+		this.renderTable(nodes);
+		this.bindingWindow.bindingMap.checkallbox.setChecked(false, true);
+
+	}).bind(this));
 }
 
 UnpublishedPageBinding.prototype.getWorkflowActions = function (node) {
@@ -262,14 +288,22 @@ UnpublishedPageBinding.prototype._handleSystemAction = function (action) {
 
 	if (action != null) {
 
+		Application.lock(SystemAction);
 		this.getSelectedCheckboxes().each(function (check) {
 			var node = check.associatedNode;
-			var allowedActionKeys = this.getAllowedActionKeys(node);
-			if (allowedActionKeys.has(action.getHandle())) {
-				SystemAction.invoke(action, node);
+			if (node instanceof SystemNode) {
+				var allowedActionKeys = this.getAllowedActionKeys(node);
+				if (allowedActionKeys.has(action.getHandle())) {
+					TreeService.ExecuteSingleElementAction(
+						node.getData(),
+						action.getHandle(),
+						Application.CONSOLE_ID
+					);
+				}
 			}
 		}, this);
-
-		window.location.reload();
+		MessageQueue.update();
+		Application.unlock(SystemAction);
+		this.refresh();
 	}
 }
