@@ -138,6 +138,72 @@ BrowserPageBinding.prototype.handleBroadcast = function (broadcast, arg) {
 		case BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED:
 			if (arg.syncHandle == this.getSyncHandle() && !(arg.source instanceof GenericViewBinding) && arg.actionProfile) {
 				var self = this;
+
+				//TODO move this
+
+				if (!this.shadowTree.bundleselector) {
+					var addressbar = this.bindingWindow.bindingMap.addressbar;
+					var selector = SelectorBinding.newInstance(this.bindingDocument);
+					addressbar.bindingElement.parentNode.appendChild(selector.bindingElement);
+					selector.attach();
+					this.shadowTree.bundleselector = selector;
+
+					//TODO Stub for CSS move to style
+					selector.bindingElement.style.position = "absolute";
+					selector.bindingElement.style.right = "0";
+					selector.bindingElement.parentNode.style.position = "relative";
+
+
+
+					selector.addActionListener(SelectorBinding.ACTION_SELECTIONCHANGED, {
+						handleAction: (function(action) {
+							var binding = action.target;
+
+							switch (action.type) {
+							case SelectorBinding.ACTION_SELECTIONCHANGED:
+								var bundleValue = binding.getValue();
+								var selectedTreeNode = this.getSystemTree().getFocusedTreeNodeBindings().getFirst();
+								var selectedBundleNode = null;
+
+								selectedTreeNode.nodes.each(function(node) {
+									if (bundleValue == node.getHandle()) {
+										selectedBundleNode = node;
+										return false;
+									}
+									return true;
+								}, this);
+
+								if (selectedBundleNode) {
+									selectedTreeNode.node = selectedBundleNode;
+									selectedTreeNode.isDisabled = selectedBundleNode.isDisabled();
+									selectedTreeNode.setLabel(selectedBundleNode.getLabel());
+									selectedTreeNode.setToolTip(selectedBundleNode.getToolTip());
+									selectedTreeNode.setImage ( selectedTreeNode.computeImage ());
+								}
+
+								this.getSystemTree().focusSingleTreeNodeBinding(selectedTreeNode);
+								break;
+							}
+						}).bind(this)
+					});
+
+				}
+
+				var selectedTreeNode = this.getSystemTree().getFocusedTreeNodeBindings().getFirst();
+				if (selectedTreeNode.nodes && selectedTreeNode.nodes.getLength() > 1) {
+					var list = new List();
+					selectedTreeNode.nodes.each(function(node) {
+						list.add(new SelectorBindingSelection(node.getLabel(), node.getHandle(), node.getHandle() === selectedTreeNode.node.getHandle()));
+					});
+					this.shadowTree.bundleselector.populateFromList(list);
+					this.shadowTree.bundleselector.show();
+				} else {
+					this.shadowTree.bundleselector.hide();
+				}
+
+				//TODO end move this
+
+
 				//IE Require timeout for first time
 				setTimeout(function () {
 					self.push(arg.actionProfile.Node, true);
