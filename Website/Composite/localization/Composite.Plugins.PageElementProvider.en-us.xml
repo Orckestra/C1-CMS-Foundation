@@ -76,7 +76,8 @@
   <string key="PageElementProvider.DeleteToolTip" value="Delete the selected page" />
   <string key="PageElementProvider.LocalizePage" value="Translate Page" />
   <string key="PageElementProvider.LocalizePageToolTip" value="Translate selected page" />
-  <string key="PageElementProvider.AddSubPage" value="Add {0}" />
+  <string key="PageElementProvider.AddSubPage" value="Add page" />
+  <string key="PageElementProvider.AddSubPageFormat" value="Add {0}" />
   <string key="PageElementProvider.AddSubPageToolTip" value="Add new page below the selected" />
   <string key="PageElementProvider.DisplayLocalOrderingLabel" value="Show page local orderings" />
   <string key="PageElementProvider.DisplayLocalOrderingToolTip" value="Show page local orderings" />
