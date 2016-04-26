@@ -30,6 +30,7 @@ namespace Composite.Data
 
         internal static readonly string MetaDataType_IdFieldName = "Id";
         internal static readonly string MetaDataType_PageReferenceFieldName = "PageId";
+        internal static readonly string MetaDataType_PageReferenceFieldVersionName = "VersionId";
         internal static readonly string MetaDataType_MetaDataDefinitionFieldName = "FieldName";
 
         /// <summary>
@@ -337,18 +338,19 @@ namespace Composite.Data
         /// <exclude />
         public static IData GetMetaData(this IPage page, string definitionName, Type metaDataType)
         {
-            return GetMetaData(page.Id, definitionName, metaDataType);
+            return GetMetaData(page.Id,page.VersionId, definitionName, metaDataType);
         }
 
 
 
         /// <exclude />
-        public static IData GetMetaData(Guid pageId, string definitionName, Type metaDataType)
+        public static IData GetMetaData(Guid pageId,Guid pageVersionId, string definitionName, Type metaDataType)
         {
             //TODO: Consider caching here            
             ParameterExpression parameterExpression = Expression.Parameter(metaDataType);
 
             LambdaExpression lambdaExpression = Expression.Lambda(
+                Expression.And(
                 Expression.And(
                     Expression.Equal(
                         Expression.Property(
@@ -367,6 +369,17 @@ namespace Composite.Data
                         ),
                         Expression.Constant(
                             pageId,
+                            typeof(Guid)
+                        )
+                    )
+                ),
+                    Expression.Equal(
+                        Expression.Property(
+                            parameterExpression,
+                            GetDefinitionPageReferencePropertyVersionInfo(metaDataType)
+                        ),
+                        Expression.Constant(
+                            pageVersionId,
                             typeof(Guid)
                         )
                     )
@@ -899,6 +912,9 @@ namespace Composite.Data
 
             PropertyInfo pageReferencePropertyInfo = GetDefinitionPageReferencePropertyInfo(interfaceType);
             pageReferencePropertyInfo.SetValue(metaData, definingPage.Id, null);
+
+            PropertyInfo pageReferencePropertyVersionInfo = GetDefinitionPageReferencePropertyVersionInfo(interfaceType);
+            pageReferencePropertyVersionInfo.SetValue(metaData, definingPage.VersionId, null);
         }
 
 
@@ -917,6 +933,11 @@ namespace Composite.Data
             return metaDataType.GetPropertiesRecursively().Last(f => f.Name == MetaDataType_PageReferenceFieldName);
         }
 
+        /// <exclude />
+        public static PropertyInfo GetDefinitionPageReferencePropertyVersionInfo(Type metaDataType)
+        {
+            return metaDataType.GetPropertiesRecursively().Last(f => f.Name == MetaDataType_PageReferenceFieldVersionName);
+        }
 
 
         /// <exclude />
