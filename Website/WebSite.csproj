@@ -2580,7 +2580,19 @@
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>
-    <PreBuildEvent>robocopy "$(ProjectDir)\..\Packages\PhantomJS.2.1.1\tools\phantomjs" "$(ProjectDir)App_Data\Composite\PhantomJs" "phantomjs.exe"
+    <PreBuildEvent>if not exist "$(ProjectDir)web.config" (
+   copy "$(ProjectDir)DebugBuild.Web.config" "$(ProjectDir)Web.config"
+)
+
+if not exist "$(ProjectDir)App_Data\Composite\Composite.config" (
+   copy "$(ProjectDir)App_Data\Composite\DebugBuild.Composite.config" "$(ProjectDir)App_Data\Composite\Composite.config"
+)
+
+if not exist "$(ProjectDir)Frontend\Config\VisualEditor\common.xml" (
+   copy "$(ProjectDir)Frontend\Config\VisualEditor\Default.common.xml" "$(ProjectDir)Frontend\Config\VisualEditor\common.xml"
+)
+
+robocopy "$(ProjectDir)\..\Packages\PhantomJS.2.1.1\tools\phantomjs" "$(ProjectDir)App_Data\Composite\PhantomJs" "phantomjs.exe"
 set rce=%25errorlevel%25
 if not %25rce%25==1 exit %25rce%25 else exit 0</PreBuildEvent>
   </PropertyGroup>
