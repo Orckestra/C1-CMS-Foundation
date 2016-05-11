@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using System.Linq;
 using Composite.C1Console.Security;
 using Composite.Core;
@@ -12,6 +11,7 @@ namespace Composite.C1Console.Elements
     public static class UrlToEntityTokenFacade
     {
         private static readonly ConcurrentBag<IUrlToEntityTokenMapper> _mappers = new ConcurrentBag<IUrlToEntityTokenMapper>();
+        private static readonly ConcurrentBag<IServiceUrlToEntityTokenMapper> _serviceMappers = new ConcurrentBag<IServiceUrlToEntityTokenMapper>();
 
         /// <summary>
         /// Returns a url associated with an entity token, or null if current entity token does not support this kind of entity token.
@@ -20,7 +20,8 @@ namespace Composite.C1Console.Elements
         /// <returns>URL for public consumption</returns>
         public static string TryGetUrl(EntityToken entityToken)
         {
-            return _mappers.Select(mapper => mapper.TryGetUrl(entityToken)).FirstOrDefault(url => url != null);
+            var theurl = _mappers.Select(mapper => mapper.TryGetUrl(entityToken)).FirstOrDefault(url => url != null);
+            return _serviceMappers.Select(f => f.TryGetUrl(ref theurl, entityToken)).Last();
         }
 
         /// <summary>
@@ -31,7 +32,11 @@ namespace Composite.C1Console.Elements
         /// <returns>URL for public consumption</returns>
         public static BrowserViewSettings TryGetBrowserViewSettings(EntityToken entityToken, bool showPublishedView)
         {
-            return _mappers.Select(mapper => mapper.TryGetBrowserViewSettings(entityToken, showPublishedView)).FirstOrDefault(settings => settings != null && settings.Url != null);
+            var theBrowserSetting = _mappers.Select(mapper => mapper.TryGetBrowserViewSettings(entityToken, showPublishedView)).FirstOrDefault(settings => settings?.Url != null);
+            if (theBrowserSetting == null) return null;
+            var originalUrl = theBrowserSetting.Url;
+            theBrowserSetting.Url = _serviceMappers.Select(f => f.TryGetUrl(ref originalUrl, entityToken)).Last();
+            return theBrowserSetting;
         }
 
 
@@ -42,7 +47,10 @@ namespace Composite.C1Console.Elements
         /// <returns></returns>
         public static EntityToken TryGetEntityToken(string url)
         {
-            return _mappers.Select(mapper => mapper.TryGetEntityToken(url)).FirstOrDefault(entityToken => entityToken != null);
+            var originalUrl = url;
+            url = _serviceMappers.Select(sm => sm.CleanUrl(ref url)).Last();
+            var baseEntityToken = _mappers.Select(mapper => mapper.TryGetEntityToken(url)).FirstOrDefault(entityToken => entityToken != null);
+            return _serviceMappers.Select(sm => sm.TryGetEntityToken(originalUrl, ref baseEntityToken)).Last();
         }
 
         /// <summary>
@@ -61,6 +69,24 @@ namespace Composite.C1Console.Elements
             }
 
             _mappers.Add(mapper);
+        }
+
+        /// <summary>
+        /// Register an implementation of <see cref="IUrlToEntityTokenMapper" />
+        /// </summary>
+        /// <param name="serviceMapper"></param>
+        public static void Register(IServiceUrlToEntityTokenMapper serviceMapper)
+        {
+            Verify.ArgumentNotNull(serviceMapper, "mapper");
+
+            if (_serviceMappers.Count > 100)
+            {
+                Log.LogWarning("UrlToEntityTokenFacade", "More than 100 implementations of {0}-s registered: possible memory leak. Registered type: {1}",
+                    typeof(IServiceUrlToEntityTokenMapper).Name, serviceMapper.GetType().FullName);
+                return;
+            }
+
+            _serviceMappers.Add(serviceMapper);
         }
     }
 }
