@@ -47,3 +47,7 @@ a {
 	border-width: 4px 4px 0 4px;
 	border-color: #989898 transparent transparent transparent;
 }
+
+.table tbody tr.selected {
+	background: #E8F8F2;
+}

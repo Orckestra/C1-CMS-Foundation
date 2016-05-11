@@ -16,9 +16,6 @@
 	<ui:page label="Unpublished" image="${icon:page-list-unpublished-items}" id="page" binding="UnpublishedPageBinding" showpagedata="<%=Request["showpagedata"] %>" showglobaldata="<%=Request["showglobaldata"]%>">
 		<ui:toolbar id="toolbar">
 			<ui:toolbarbody>
-				<ui:toolbargroup>
-					<ui:toolbarbutton oncommand="bindingMap.page.refresh()" id="refreshbutton" image="${icon:refresh}" label="${string:Website.App.LabelRefresh}" />
-				</ui:toolbargroup>
 				<ui:toolbargroup id="actiongroup">
 				</ui:toolbargroup>
 			</ui:toolbarbody>
