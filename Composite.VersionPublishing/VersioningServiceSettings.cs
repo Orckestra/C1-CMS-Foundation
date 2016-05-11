@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Composite.Data;
 using Composite.Data.Types;
 
@@ -45,8 +41,8 @@ namespace Composite.VersionPublishing
 
         private VersioningServiceSettings(string versionName)
         {
-            if (!DataFacade.HasDataInterceptor<IPage>())//TODO: should I care
-                DataFacade.SetDataInterceptor<IPage>(new PageVersionFilteringDataInterceptor());
+            if (!DataFacade.HasGlobalDataInterceptor<IVersioned>())
+                DataFacade.SetGlobalDataInterceptor<IVersioned>(new PageVersionFilteringDataInterceptor());
 
             _versionFilteringSettings = new VersionFilteringSettings
             {
@@ -57,8 +53,8 @@ namespace Composite.VersionPublishing
 
         private VersioningServiceSettings(VersionFilteringMode filteringMode, DateTime time)
         {
-            if(!DataFacade.HasDataInterceptor<IPage>())//TODO: should I care
-                DataFacade.SetDataInterceptor<IPage>(new PageVersionFilteringDataInterceptor());
+            if(!DataFacade.HasGlobalDataInterceptor<IVersioned>())
+                DataFacade.SetGlobalDataInterceptor<IVersioned>(new PageVersionFilteringDataInterceptor());
 
             _versionFilteringSettings = new VersionFilteringSettings
             {
