@@ -81,11 +81,15 @@ namespace Composite.Data
             }
             else
             {
-                result = (from page in DataFacade.GetData<IPage>(false)
-                          where page.Id == id
-                          select page).FirstOrDefault();
+                using (var con = new DataConnection())
+                {
+                    result = (from page in con.Get<IPage>()
+                              where page.Id == id
+                              select page).FirstOrDefault();
 
-                _pageCache.Add(cacheKey, new ExtendedNullable<IPage> { Value = result });
+                    _pageCache.Add(cacheKey, new ExtendedNullable<IPage> { Value = result });
+                }
+
             }
 
             if (result == null)
@@ -162,13 +166,17 @@ namespace Composite.Data
                 return cachedValue;
             }
 
-            var list = DataFacade.GetData<IPagePlaceholderContent>(f => f.PageId == pageId).ToList();
+            using (var con = new DataConnection())
+            {
+                var list = (con.Get<IPagePlaceholderContent>().Where(f => f.PageId == pageId)).ToList();
 
-            var readonlyList = new ReadOnlyCollection<IPagePlaceholderContent>(list);
+                var readonlyList = new ReadOnlyCollection<IPagePlaceholderContent>(list);
 
-            _placeholderCache.Add(cacheKey, readonlyList);
+                _placeholderCache.Add(cacheKey, readonlyList);
 
-            return readonlyList;
+                return readonlyList;
+            }
+
         }
 
         #endregion Public
@@ -364,6 +372,6 @@ namespace Composite.Data
             DataEventSystemFacade.SubscribeToStoreChanged<IPageStructure>(OnPageStructureStoreChanged, true);
         }
 
-        #endregion Private
+       #endregion Private
     }
 }
