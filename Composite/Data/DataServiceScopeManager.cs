@@ -14,7 +14,21 @@ namespace Composite.Data
     {
         internal static void AddService(object service)
         {
-            DataServiceScopeStack.Peek().Add(service);
+            if (DataServiceScopeStack?.Peek() != null)
+            {
+                DataServiceScopeStack.Peek().Add(service);
+            }
+            else
+            {
+                var message =
+                    "The data service stack is not pushed befor use";
+                throw new InvalidOperationException(message);
+            }
+        }
+
+        internal static void AddDefaultService(object service)
+        {
+            DataServiceDefaultList.Add(service);
         }
 
         internal static object GetService(Type t)
@@ -27,9 +41,12 @@ namespace Composite.Data
                     return stack.Current.Last(f => f.GetType() == t);
                 }
             }
-            return null;
+
+            return DataServiceDefaultList.Last(f=>f.GetType()==t);
         }
 
+        private static readonly List<object> DataServiceDefaultList = new List<object>();
+         
         private static Stack<List<object>> DataServiceScopeStack
         {
             get
@@ -51,7 +68,8 @@ namespace Composite.Data
 
         internal static void PopDataServiceScope()
         {
-            DataServiceScopeStack.Pop();
+            if(DataServiceScopeStack.Count>0) 
+                DataServiceScopeStack.Pop();
         }
         internal static void PushDataServiceScope()
         {

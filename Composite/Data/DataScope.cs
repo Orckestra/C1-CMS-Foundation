@@ -26,6 +26,12 @@ namespace Composite.Data
         }
 
         /// <exclude />
+        public void AddDefaultService(object service)
+        {
+            DataServiceScopeManager.AddDefaultService(service);
+        }
+
+        /// <exclude />
         public DataScope(DataScopeIdentifier dataScope)
             : this(dataScope, null)
         {
