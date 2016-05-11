@@ -53,5 +53,9 @@ namespace Composite.Data
         /// <param name="errorMessage"></param>
         /// <returns></returns>
         bool ValidatePath<TFile>(TFile file, string providerName, out string errorMessage) where TFile : IFile;
+
+        void SetGlobalDataInterceptor<T>(DataInterceptor dataInterceptor) where T : class, IData;
+        bool HasGlobalDataInterceptor<T>() where T : class, IData;
+        void ClearGlobalDataInterceptor<T>() where T : class, IData;
     }
 }

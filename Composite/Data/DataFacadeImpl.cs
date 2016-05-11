@@ -24,6 +24,8 @@ namespace Composite.Data
     {
         private static readonly string LogTitle = "DataFacade";
 
+        public Dictionary<Type, DataInterceptor> GlobalDataInterceptors = new Dictionary<Type, DataInterceptor>();
+
         static readonly Cache<string, IData> _dataBySourceIdCache = new Cache<string, IData>("Data by sourceId", 2000);
         private static readonly object _storeCreationLock = new object();
 
@@ -90,20 +92,30 @@ namespace Composite.Data
 
                 resultQueryable = new List<T>().AsQueryable();
             }
+
+
+            DataInterceptor threadeddataInterceptor;
+            this.DataInterceptors.TryGetValue(typeof(T), out threadeddataInterceptor);
+
+            DataInterceptor globaDataInterceptor = GlobalDataInterceptors.FirstOrDefault(f => GlobalDataInterceptors.First().Key.IsAssignableFrom(typeof(T))).Value;
             
 
-            DataInterceptor dataInterceptor;
-            this.DataInterceptors.TryGetValue(typeof(T), out dataInterceptor);
-            if (dataInterceptor != null)
+            List<DataInterceptor> dataInterceptors = new List<DataInterceptor> { threadeddataInterceptor, globaDataInterceptor };
+
+
+            foreach (var dataInterceptor in dataInterceptors)
             {
-                try
+                if (dataInterceptor != null)
                 {
-                    resultQueryable = dataInterceptor.InterceptGetData<T>(resultQueryable);
-                }
-                catch (Exception ex)
-                {
-                    Log.LogError(LogTitle, "Calling data interceptor failed with the following exception");
-                    Log.LogError(LogTitle, ex);
+                    try
+                    {
+                        resultQueryable = dataInterceptor.InterceptGetData<T>(resultQueryable);
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.LogError(LogTitle, "Calling data interceptor failed with the following exception");
+                        Log.LogError(LogTitle, ex);
+                    }
                 }
             }
 
@@ -146,19 +158,28 @@ namespace Composite.Data
                 {
                     resultData = DataWrappingFacade.Wrap(resultData);
                 }
+                DataInterceptor threadeddataInterceptor;
 
-                DataInterceptor dataInterceptor;
-                this.DataInterceptors.TryGetValue(typeof(T), out dataInterceptor);
-                if (dataInterceptor != null)
+                DataInterceptor globaDataInterceptor = GlobalDataInterceptors.FirstOrDefault(f => GlobalDataInterceptors.First().Key.IsAssignableFrom(typeof(T))).Value;
+
+                this.DataInterceptors.TryGetValue(typeof(T), out threadeddataInterceptor);
+
+                List<DataInterceptor> dataInterceptors = new List<DataInterceptor>{threadeddataInterceptor,globaDataInterceptor};
+                
+                
+                foreach (var dataInterceptor in dataInterceptors)
                 {
-                    try
+                    if (dataInterceptor != null)
                     {
-                        resultData = dataInterceptor.InterceptGetDataFromDataSourceId<T>(resultData);
-                    }
-                    catch (Exception ex)
-                    {
-                        Log.LogError(LogTitle, "Calling data interceptor failed with the following exception");
-                        Log.LogError(LogTitle, ex);
+                        try
+                        {
+                            resultData = dataInterceptor.InterceptGetDataFromDataSourceId<T>(resultData);
+                        }
+                        catch (Exception ex)
+                        {
+                            Log.LogError(LogTitle, "Calling data interceptor failed with the following exception");
+                            Log.LogError(LogTitle, ex);
+                        }
                     }
                 }
 
@@ -196,7 +217,32 @@ namespace Composite.Data
             }
         }
 
+        public void SetGlobalDataInterceptor<T>(DataInterceptor dataInterceptor) where T : class, IData
+        {
+            if (GlobalDataInterceptors.ContainsKey(typeof(T))) throw new InvalidOperationException("A data interceptor has already been set");
 
+            GlobalDataInterceptors.Add(typeof(T), dataInterceptor);
+
+            Log.LogVerbose(LogTitle,
+                $"Global Data interception added to the data type '{typeof (T)}' with interceptor type '{dataInterceptor.GetType()}'");
+        }
+
+        public bool HasGlobalDataInterceptor<T>() where T : class, IData
+        {
+            return GlobalDataInterceptors.ContainsKey(typeof(T));
+        }
+
+
+
+        public void ClearGlobalDataInterceptor<T>() where T : class, IData
+        {
+            if (GlobalDataInterceptors.ContainsKey(typeof(T)))
+            {
+                GlobalDataInterceptors.Remove(typeof(T));
+
+                Log.LogVerbose(LogTitle, $"Global Data interception cleared for the data type '{typeof (T)}'");
+            }
+        }
 
         private Dictionary<Type, DataInterceptor> DataInterceptors
         {
@@ -218,7 +264,7 @@ namespace Composite.Data
             }
         }
 
-
+        
 
         public void Update(IEnumerable<IData> dataset, bool suppressEventing, bool performForeignKeyIntegrityCheck, bool performValidation)
         {

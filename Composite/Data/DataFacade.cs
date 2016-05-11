@@ -162,6 +162,34 @@ namespace Composite.Data
             methodInfo.Invoke(null, new object[] { });
         }
 
+        /// <exclude />
+        public static void SetGlobalDataInterceptor<T>(DataInterceptor dataInterceptor)
+            where T : class, IData
+        {
+            _dataFacade.SetGlobalDataInterceptor<T>(dataInterceptor);
+        }
+
+
+
+        /// <exclude />
+        public static bool HasGlobalDataInterceptor<T>()
+            where T : class, IData
+        {
+            return _dataFacade.HasGlobalDataInterceptor<T>();
+        }
+
+
+
+        /// <exclude />
+        public static void ClearGlobalDataInterceptor<T>()
+            where T : class, IData
+        {
+            _dataFacade.ClearGlobalDataInterceptor<T>();
+        }
+
+
+
+        
         #endregion
 
 
