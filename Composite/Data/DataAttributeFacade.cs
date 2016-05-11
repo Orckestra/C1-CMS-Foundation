@@ -9,6 +9,7 @@ using Composite.C1Console.Events;
 using Composite.Core.Linq;
 using Composite.Core.ResourceSystem;
 using Composite.Core.Types;
+using Composite.Data.Types;
 
 
 namespace Composite.Data
@@ -457,6 +458,23 @@ namespace Composite.Data
         public static List<PropertyInfo> GetKeyPropertyInfoes(this Type interfaceType)
         {
             return new List<PropertyInfo>(GetKeyProperties(interfaceType)); 
+        }
+
+        /// <exclude />
+        public static IReadOnlyList<PropertyInfo> GetPhysicalKeyProperties(this Type interfaceType)
+        {
+            var versionKeyAttributes = interfaceType.GetCustomAttributes<VersionKeyPropertyNameAttribute>();
+            
+            var versionproperty = (from v in versionKeyAttributes
+                select v.GetType().GetProperty(v.VersionKeyPropertyName));
+
+            var res = new List<PropertyInfo>();
+            res.AddRange(GetKeyProperties(interfaceType));
+
+            res.AddRange(versionproperty); 
+
+            return res;
+            
         }
 
         /// <exclude />
