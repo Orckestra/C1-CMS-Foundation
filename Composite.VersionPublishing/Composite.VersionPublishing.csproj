@@ -33,6 +33,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -44,8 +45,12 @@
     <Compile Include="IVersionFilteringSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StartupHandler.cs" />
+    <Compile Include="VersionHttpModule.cs" />
+    <Compile Include="VersionedDataUrlToEntityTokenMapper.cs" />
     <Compile Include="VersionFilteringDataInterceptor.cs" />
     <Compile Include="VersioningServiceSettings.cs" />
+    <Compile Include="VersionNameUrlHelper.cs" />
+    <Compile Include="VersionPublishingFacade.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Composite\Composite.csproj">

@@ -14,7 +14,8 @@ namespace Composite.VersionPublishing
                 return FilterPages((IQueryable<IPage>) query) as IQueryable<T>;
             }
 
-            return query;
+            return FilterOtherVersionedPages(query);
+            
         }
 
         private static IQueryable<IPage> FilterPages(IQueryable<IPage> query)
@@ -32,7 +33,8 @@ namespace Composite.VersionPublishing
                         Where(
                             page =>
                                 page.VersionName == vfs.VersionName ||
-                                (page.PublishTime <= DateTime.Now && page.UnpublishTime >= DateTime.Now))
+                                ((page.PublishTime ?? DateTime.MinValue) <= DateTime.Now &&
+                                 (page.UnpublishTime ?? DateTime.MaxValue) >= DateTime.Now))
                         .GroupBy(p => p.Id)
                         .Select(
                             g =>
@@ -49,13 +51,42 @@ namespace Composite.VersionPublishing
                             .GroupBy(p => p.Id)
                             .Select(g => g.OrderByDescending(page => page.PublishTime ?? DateTime.MinValue).First());
                     case VersionFilteringMode.None:
-                        return query;
+                        return query.OrderByDescending(page => page.PublishTime ?? DateTime.MinValue);
                     case VersionFilteringMode.Relevant:
                         return query
                             .GroupBy(p => p.Id)
                             .Select(g => g.OrderByDescending(page => page.PublishTime ?? DateTime.MinValue).First());
                 }
 
+                return query;
+            }
+        }
+
+        private static IQueryable<T> FilterOtherVersionedPages<T>(IQueryable<T> query)
+        {
+            using (DataConnection dataConnection = new DataConnection())
+            {
+                var setting = dataConnection.GetService(typeof(VersioningServiceSettings));
+                if ((setting as VersioningServiceSettings) == null)
+                    return query;
+                var vfs = (setting as VersioningServiceSettings).VersionFilteringSettings;
+
+                
+                    //var relatedPages = dataConnection.Get<IPage>().Where(f => f.VersionName == vfs.VersionName);
+                    var relatedPages = FilterPages(dataConnection.Get<IPage>());
+
+                    if (relatedPages != null)
+                    {
+                        var a = (from versioned in query
+                            join page in relatedPages on (versioned as IVersioned).VersionId equals page.VersionId
+                            select versioned).Union(from versioned in query
+                                where (versioned as IVersioned).VersionId == Guid.Empty
+                                select versioned);
+                        return a;
+                    }
+                
+                
+                
                 return query;
             }
         }
