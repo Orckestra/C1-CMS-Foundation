@@ -75,6 +75,17 @@ SortButtonBinding.prototype.fireCommand = function () {
 	new List(this.table.querySelectorAll(".sortbutton[direction]")).each(function (sortbutton) {
 		sortbutton.removeAttribute("direction");
 	});
+
+	this.sort(direction);
+}
+
+SortButtonBinding.prototype.getDirection = function() {
+
+	return this.getProperty("direction");
+}
+
+SortButtonBinding.prototype.sort = function (direction) {
+
 	this.setProperty("direction", direction);
 
 	var cell = DOMUtil.getAncestorByLocalName("th", this.bindingElement);
@@ -90,7 +101,7 @@ SortButtonBinding.prototype.fireCommand = function () {
 
 	items.sort(direction === SortButtonBinding.DIRECTION_ASC ? SortButtonBinding.ascDirection : SortButtonBinding.descDirection);
 
-	new List(items).each(function(item) {
+	new List(items).each(function (item) {
 		this.tablebody.appendChild(item.row);
 	}, this);
 

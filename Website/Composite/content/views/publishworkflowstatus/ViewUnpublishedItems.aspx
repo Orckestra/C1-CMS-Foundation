@@ -13,12 +13,9 @@
 	<script type="text/javascript" src="bindings/SortButtonBinding.js"></script>
 </head>
 <body>
-	<ui:page label="Unpublished" image="${icon:page-list-unpublished-items}" binding="UnpublishedPageBinding" showpagedata="<%=Request["showpagedata"] %>" showglobaldata="<%=Request["showglobaldata"]%>">
+	<ui:page label="Unpublished" image="${icon:page-list-unpublished-items}" id="page" binding="UnpublishedPageBinding" showpagedata="<%=Request["showpagedata"] %>" showglobaldata="<%=Request["showglobaldata"]%>">
 		<ui:toolbar id="toolbar">
 			<ui:toolbarbody>
-				<ui:toolbargroup>
-					<ui:toolbarbutton oncommand="window.location.reload()" id="refreshbutton" image="${icon:refresh}" label="${string:Website.App.LabelRefresh}" />
-				</ui:toolbargroup>
 				<ui:toolbargroup id="actiongroup">
 				</ui:toolbargroup>
 			</ui:toolbarbody>
@@ -33,6 +30,7 @@
 					<th><ui:clickbutton label="${string:Composite.Plugins.PageElementProvider:ViewUnpublishedItems.LabelVersion}" binding="SortButtonBinding" /></th>
 					<th><ui:clickbutton label="${string:Composite.Plugins.PageElementProvider:ViewUnpublishedItems.LabelStatus}" binding="SortButtonBinding" /></th>
 					<th><ui:clickbutton label="${string:Composite.Plugins.PageElementProvider:ViewUnpublishedItems.LabelType}" binding="SortButtonBinding" /></th>
+					<th><ui:clickbutton label="${string:Composite.Plugins.PageElementProvider:ViewUnpublishedItems.LabelChangedBy}" binding="SortButtonBinding" /></th>
 					<th><ui:clickbutton label="${string:Composite.Plugins.PageElementProvider:ViewUnpublishedItems.LabelDateCreated}" binding="SortButtonBinding" /></th>
 					<th><ui:clickbutton label="${string:Composite.Plugins.PageElementProvider:ViewUnpublishedItems.LabelDateModified}" binding="SortButtonBinding" /></th>
 					<th></th>
