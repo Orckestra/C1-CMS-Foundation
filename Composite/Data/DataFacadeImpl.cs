@@ -32,9 +32,9 @@ namespace Composite.Data
             DataEventSystemFacade.SubscribeToDataAfterUpdate<IData>(OnDataChanged, true);
             DataEventSystemFacade.SubscribeToDataDeleted<IData>(OnDataChanged, true);
 
-            DataEventSystemFacade.SubscribeToDataBeforeAdd<IData>(SetCreationHistoryInformation, true);
-            DataEventSystemFacade.SubscribeToDataBeforeAdd<IData>(SetChangeHistoryInformation, true);
-            DataEventSystemFacade.SubscribeToDataBeforeUpdate<IData>(SetChangeHistoryInformation, true);
+            DataEventSystemFacade.SubscribeToDataBeforeAdd<ICreationHistory>(SetCreationHistoryInformation, true);
+            DataEventSystemFacade.SubscribeToDataBeforeAdd<IChangeHistory>(SetChangeHistoryInformation, true);
+            DataEventSystemFacade.SubscribeToDataBeforeUpdate<IChangeHistory>(SetChangeHistoryInformation, true);
         }
 
         public IQueryable<T> GetData<T>(bool useCaching, IEnumerable<string> providerNames)
@@ -636,16 +636,16 @@ namespace Composite.Data
 
         private static void SetChangeHistoryInformation(object sender, DataEventArgs dataEventArgs)
         {
-            IData data = dataEventArgs.Data;
-            if (data != null && data is IChangeHistory)
+            IChangeHistory data = dataEventArgs.Data as IChangeHistory;
+            if (data != null)
             {
-                (data as IChangeHistory).ChangeDate = DateTime.Now;
+                data.ChangeDate = DateTime.Now;
 
                 try
                 {
                     if (UserValidationFacade.IsLoggedIn())
                     {
-                        (data as IChangeHistory).ChangedBy = UserValidationFacade.GetUsername();
+                        data.ChangedBy = UserValidationFacade.GetUsername();
                     }
                 }
                 catch
@@ -657,16 +657,16 @@ namespace Composite.Data
 
         private static void SetCreationHistoryInformation(object sender, DataEventArgs dataEventArgs)
         {
-            IData data = dataEventArgs.Data;
-            if (data != null && data is ICreationHistory)
+            ICreationHistory data = dataEventArgs.Data as ICreationHistory;
+            if (data != null)
             {
-                (data as ICreationHistory).CreationDate = DateTime.Now;
+                data.CreationDate = DateTime.Now;
 
                 try
                 {
                     if (UserValidationFacade.IsLoggedIn())
                     {
-                        (data as ICreationHistory).CreatedBy = UserValidationFacade.GetUsername();
+                        data.CreatedBy = UserValidationFacade.GetUsername();
                     }
                 }
                 catch
