@@ -112,8 +112,9 @@
   <string key="ViewUnpublishedItems.LabelPageTitle" value="Page Title" />
   <string key="ViewUnpublishedItems.LabelVersion" value="Version" />
   <string key="ViewUnpublishedItems.LabelStatus" value="Status" />
-  <string key="ViewUnpublishedItems.LabelType" value="Page Type" />
   <string key="ViewUnpublishedItems.LabelChangedBy" value="Author" />
+  <string key="ViewUnpublishedItems.LabelPublishDate" value="Publish Date" />
+  <string key="ViewUnpublishedItems.LabelUnpublishDate" value="Unpublish Date" />
   <string key="ViewUnpublishedItems.LabelDateCreated" value="Date Created" />
   <string key="ViewUnpublishedItems.LabelDateModified" value="Date Modified" />
 

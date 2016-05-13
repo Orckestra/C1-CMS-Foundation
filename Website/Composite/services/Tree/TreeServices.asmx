@@ -24,6 +24,7 @@ using Composite.Core.WebClient.FlowMediators;
 using Composite.Core.WebClient.Services.TreeServiceObjects.ExtensionMethods;
 using Composite.Data;
 using Composite.Data.ProcessControlled;
+using Composite.Data.PublishScheduling;
 using Composite.Data.Types;
 
 // Search token stuff
@@ -97,8 +98,8 @@ namespace Composite.Services
             {
                 actionRequiredPage.PropertyBag["Title"] =
                     DataAttributeFacade.GetLabel(((DataEntityToken) actionRequiredPage.ElementHandle.EntityToken).Data);
-                actionRequiredPage.PropertyBag["Type"] =
-                    DataAttributeFacade.GetTypeTitle(((DataEntityToken) actionRequiredPage.ElementHandle.EntityToken).Data);
+                //actionRequiredPage.PropertyBag["Type"] =
+                //    DataAttributeFacade.GetTypeTitle(((DataEntityToken) actionRequiredPage.ElementHandle.EntityToken).Data);
 
                      var transitions = ProcessControllerFacade.GetValidTransitions(((DataEntityToken) actionRequiredPage.ElementHandle.EntityToken).Data);
                 var publicationStatus =
@@ -107,7 +108,7 @@ namespace Composite.Services
                 actionRequiredPage.PropertyBag["Status"] = (transitions.ContainsKey(publicationStatus)
                     ? transitions[publicationStatus]
                     : "Unknown State");
-                
+
                 if (((DataEntityToken) actionRequiredPage.ElementHandle.EntityToken).Data is IChangeHistory)
                 {
                     actionRequiredPage.PropertyBag["Modified"] =
@@ -126,7 +127,27 @@ namespace Composite.Services
                 }
                 actionRequiredPage.PropertyBag["Version"] = "dummy";
 
-                
+                if (((DataEntityToken) actionRequiredPage.ElementHandle.EntityToken).Data is IPage)
+                {
+                    var selectedPage =(IPage) ((DataEntityToken) actionRequiredPage.ElementHandle.EntityToken).Data;
+                    var existingPagePublishSchedule = PublishScheduleHelper.GetPublishSchedule(typeof (IPage),
+                            selectedPage.Id.ToString(),
+                            UserSettings.ActiveLocaleCultureInfo.Name);
+                    if (existingPagePublishSchedule != null)
+                    {
+                        actionRequiredPage.PropertyBag["PublishDate"] = existingPagePublishSchedule.PublishDate.ToString(CultureInfo.CurrentCulture);
+                        actionRequiredPage.PropertyBag["SortablePublishDate"] = String.Format("{0:s}", existingPagePublishSchedule.PublishDate);
+                    }
+                    var existingPageUnpublishSchedule = PublishScheduleHelper.GetUnpublishSchedule(typeof(IPage),
+                        selectedPage.Id.ToString(),
+                        UserSettings.ActiveLocaleCultureInfo.Name);
+                    if (existingPageUnpublishSchedule != null)
+                    {
+                        actionRequiredPage.PropertyBag["UnpublishDate"] = existingPageUnpublishSchedule.UnpublishDate.ToString(CultureInfo.CurrentCulture);
+                        actionRequiredPage.PropertyBag["SortableUnpublishDate"] = String.Format("{0:s}", existingPageUnpublishSchedule.UnpublishDate);
+                    }
+
+                }
             }
             return actionRequiredPages.ToClientElementList();
         }

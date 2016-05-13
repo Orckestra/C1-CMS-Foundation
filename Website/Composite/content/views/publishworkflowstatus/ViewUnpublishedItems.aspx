@@ -29,8 +29,10 @@
 					<th><ui:clickbutton label="${string:Composite.Plugins.PageElementProvider:ViewUnpublishedItems.LabelPageTitle}" binding="SortButtonBinding"/></th>
 					<th><ui:clickbutton label="${string:Composite.Plugins.PageElementProvider:ViewUnpublishedItems.LabelVersion}" binding="SortButtonBinding" /></th>
 					<th><ui:clickbutton label="${string:Composite.Plugins.PageElementProvider:ViewUnpublishedItems.LabelStatus}" binding="SortButtonBinding" /></th>
-					<th><ui:clickbutton label="${string:Composite.Plugins.PageElementProvider:ViewUnpublishedItems.LabelType}" binding="SortButtonBinding" /></th>
+
 					<th><ui:clickbutton label="${string:Composite.Plugins.PageElementProvider:ViewUnpublishedItems.LabelChangedBy}" binding="SortButtonBinding" /></th>
+					<th><ui:clickbutton label="${string:Composite.Plugins.PageElementProvider:ViewUnpublishedItems.LabelPublishDate}" binding="SortButtonBinding" /></th>
+					<th><ui:clickbutton label="${string:Composite.Plugins.PageElementProvider:ViewUnpublishedItems.LabelUnpublishDate}" binding="SortButtonBinding" /></th>
 					<th><ui:clickbutton label="${string:Composite.Plugins.PageElementProvider:ViewUnpublishedItems.LabelDateCreated}" binding="SortButtonBinding" /></th>
 					<th><ui:clickbutton label="${string:Composite.Plugins.PageElementProvider:ViewUnpublishedItems.LabelDateModified}" binding="SortButtonBinding" /></th>
 					<th></th>
