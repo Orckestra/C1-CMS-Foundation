@@ -509,21 +509,27 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
 
                 // Validating keys already present    
-                if (!dataType.AllowOverwrite && !dataType.OnlyUpdate
-                    && !DataLocalizationFacade.IsLocalized(dataType.InterfaceType) 
-                    || (!dataType.AddToAllLocales && !dataType.AddToCurrentLocale) 
-                    || (dataType.Locale != null && !this.InstallerContext.IsLocalePending(dataType.Locale)))
+                if (!dataType.AllowOverwrite && !dataType.OnlyUpdate)
                 {
-                    using (new DataScope(dataType.DataScopeIdentifier, dataType.Locale))
-                    {
-                        IData data = DataFacade.TryGetDataByUniqueKey(dataType.InterfaceType, dataKeyPropertyCollection);
+                    bool dataLocaleExists = 
+                        !DataLocalizationFacade.IsLocalized(dataType.InterfaceType)
+                        || (!dataType.AddToAllLocales && !dataType.AddToCurrentLocale)
+                        || (dataType.Locale != null && !this.InstallerContext.IsLocalePending(dataType.Locale));
 
-                        if (data != null)
+                    if(dataLocaleExists)
+                    {
+                        using (new DataScope(dataType.DataScopeIdentifier, dataType.Locale))
                         {
-                            itemsAlreadyPresentInDatabase++;
+                            IData data = DataFacade.TryGetDataByUniqueKey(dataType.InterfaceType, dataKeyPropertyCollection);
+
+                            if (data != null)
+                            {
+                                itemsAlreadyPresentInDatabase++;
+                            }
                         }
                     }
                 }
+
 
                 RegisterKeyToBeAdded(dataType, dataKeyPropertyCollection);
 

@@ -181,6 +181,7 @@ HierarchicalSelectorBinding.prototype.handleAction = function (action) {
 				checkTreeNode.getDescendantBindingsByType(CheckTreeNodeBinding).each(function (child) {
 					if (child.isSelectable && !child.isReadOnly) {
 						child.setChecked(isChecked, true);
+						child.selectionElement.setAttribute("selected", isChecked);
 						this.checkChildrenLazySelections(child, isChecked);
 					}
 				}, this);
@@ -204,7 +205,6 @@ HierarchicalSelectorBinding.prototype.handleAction = function (action) {
 			break;
 
 		case TreeNodeBinding.ACTION_OPEN:
-			console.log(action);
 			var treenode = action.target;
 			if (!treenode.hasBeenOpened) {
 				this._populateFromSelections(treenode, treenode.selectionElement);

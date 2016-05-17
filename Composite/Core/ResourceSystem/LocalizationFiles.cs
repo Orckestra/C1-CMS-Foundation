@@ -3577,8 +3577,10 @@ public static string PageElementProvider_DeleteToolTip=>T("PageElementProvider.D
 public static string PageElementProvider_LocalizePage=>T("PageElementProvider.LocalizePage");
 ///<summary>&quot;Translate selected page&quot;</summary> 
 public static string PageElementProvider_LocalizePageToolTip=>T("PageElementProvider.LocalizePageToolTip");
+///<summary>&quot;Add page&quot;</summary> 
+public static string PageElementProvider_AddSubPage=>T("PageElementProvider.AddSubPage");
 ///<summary>&quot;Add {0}&quot;</summary> 
-public static string PageElementProvider_AddSubPage(object parameter0)=>string.Format(T("PageElementProvider.AddSubPage"), parameter0);
+public static string PageElementProvider_AddSubPageFormat(object parameter0)=>string.Format(T("PageElementProvider.AddSubPageFormat"), parameter0);
 ///<summary>&quot;Add new page below the selected&quot;</summary> 
 public static string PageElementProvider_AddSubPageToolTip=>T("PageElementProvider.AddSubPageToolTip");
 ///<summary>&quot;Show page local orderings&quot;</summary> 

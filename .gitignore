@@ -12,11 +12,17 @@
 /Website/Composite/InstalledPackages
 /Website/Composite/scripts/compressed
 /Website/Composite/styles/styles.*
+/Website/Composite/content/forms/InstalledPackages
 /Website/Composite/lib
 /Website/Frontend
 /Website/node_modules
 /Website/Composite/images/sprite.svg
+/Website/Views
+/Website/Web.config
+
 /Website/Blog*.ashx
+/Website/Newsletter.ashx
+
 
 /Bin/Composite.dll
 /Bin/Composite.Workflows.dll
