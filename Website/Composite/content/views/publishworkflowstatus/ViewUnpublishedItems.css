@@ -48,6 +48,13 @@ a {
 	border-color: #989898 transparent transparent transparent;
 }
 
-.table tbody tr.selected {
-	background: #E8F8F2;
+ui|toolbarbutton[image='item-publish'] {
+	border-color: #22B980;
+}
+
+ui|toolbarbutton[image='item-publish'] ui|labelbox {
+	border-color: #22B980;
+	background-color: #22B980;
+	background-image: linear-gradient(to bottom, #22B980 0%, #1ea371 100%);
+	color: #fff;
 }
