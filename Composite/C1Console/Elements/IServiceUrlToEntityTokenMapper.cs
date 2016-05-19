@@ -13,7 +13,7 @@ namespace Composite.C1Console.Elements
         /// <param name="url">The url.</param>
         /// <param name="entityToken">The entity token.</param>
         /// <returns>A URL that will display the data item - this can be an "internal" URL which is later transformed by a IInternalUrlConverter. Intended for public consumption.</returns>
-        string TryGetUrl(ref string url, EntityToken entityToken);
+        string ProcessUrl(string url, EntityToken entityToken);
 
         /// <summary>
         /// Updates an entity token according to a url.
@@ -29,6 +29,5 @@ namespace Composite.C1Console.Elements
         /// <param name="url">The url.</param>
         /// <returns></returns>
         string CleanUrl(ref string url);
-
     }
 }

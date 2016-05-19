@@ -14,16 +14,10 @@ namespace Composite.Data
     {
         internal static void AddService(object service)
         {
-            if (DataServiceScopeStack?.Peek() != null)
-            {
-                DataServiceScopeStack.Peek().Add(service);
-            }
-            else
-            {
-                var message =
-                    "The data service stack is not pushed befor use";
-                throw new InvalidOperationException(message);
-            }
+            var serviceStack = DataServiceScopeStack?.Peek();
+            Verify.IsNotNull(serviceStack, "The data service stack was not pushed before use");
+
+            serviceStack.Add(service);
         }
 
         internal static void AddDefaultService(object service)
@@ -33,16 +27,16 @@ namespace Composite.Data
 
         internal static object GetService(Type t)
         {
-            var stack = DataServiceScopeStack.GetEnumerator();
-            while (stack.MoveNext())
+            foreach(var serviceList in DataServiceScopeStack)
             {
-                if (stack.Current?.Find(f => f.GetType() == t) != null)
+                var match = serviceList?.FindLast(f => f.GetType() == t);
+                if (match != null)
                 {
-                    return stack.Current.Last(f => f.GetType() == t);
+                    return match;
                 }
             }
 
-            return DataServiceDefaultList.Last(f=>f.GetType()==t);
+            return DataServiceDefaultList.Last(f => f.GetType() == t);
         }
 
         private static readonly List<object> DataServiceDefaultList = new List<object>();
@@ -68,9 +62,11 @@ namespace Composite.Data
 
         internal static void PopDataServiceScope()
         {
-            if(DataServiceScopeStack.Count>0) 
-                DataServiceScopeStack.Pop();
+            Verify.That(DataServiceScopeStack.Count > 0, nameof(DataServiceScopeStack) + " underflow");
+            
+            DataServiceScopeStack.Pop();
         }
+
         internal static void PushDataServiceScope()
         {
             DataServiceScopeStack.Push(new List<object>());

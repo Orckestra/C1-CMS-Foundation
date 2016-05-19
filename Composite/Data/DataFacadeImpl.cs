@@ -24,7 +24,7 @@ namespace Composite.Data
     {
         private static readonly string LogTitle = "DataFacade";
 
-        public Dictionary<Type, DataInterceptor> GlobalDataInterceptors = new Dictionary<Type, DataInterceptor>();
+        internal Dictionary<Type, DataInterceptor> GlobalDataInterceptors = new Dictionary<Type, DataInterceptor>();
 
         static readonly Cache<string, IData> _dataBySourceIdCache = new Cache<string, IData>("Data by sourceId", 2000);
         private static readonly object _storeCreationLock = new object();
@@ -86,36 +86,22 @@ namespace Composite.Data
 
                 if (!typeof(T).GetCustomInterfaceAttributes<AutoUpdatebleAttribute>().Any())
                 {
-                    throw new ArgumentException(string.Format("The given interface type ({0}) is not supported by any data providers", typeof(T)));
+                    throw new ArgumentException($"The given interface type ({typeof (T)}) is not supported by any data providers");
                     
                 }
 
                 resultQueryable = new List<T>().AsQueryable();
             }
 
-
-            DataInterceptor threadeddataInterceptor;
-            this.DataInterceptors.TryGetValue(typeof(T), out threadeddataInterceptor);
-
-            DataInterceptor globaDataInterceptor = GlobalDataInterceptors.FirstOrDefault(f => GlobalDataInterceptors.First().Key.IsAssignableFrom(typeof(T))).Value;
-            
-
-            List<DataInterceptor> dataInterceptors = new List<DataInterceptor> { threadeddataInterceptor, globaDataInterceptor };
-
-
-            foreach (var dataInterceptor in dataInterceptors)
+            foreach (var dataInterceptor in GetDataInterceptors(typeof(T)))
             {
-                if (dataInterceptor != null)
+                try
                 {
-                    try
-                    {
-                        resultQueryable = dataInterceptor.InterceptGetData<T>(resultQueryable);
-                    }
-                    catch (Exception ex)
-                    {
-                        Log.LogError(LogTitle, "Calling data interceptor failed with the following exception");
-                        Log.LogError(LogTitle, ex);
-                    }
+                    resultQueryable = dataInterceptor.InterceptGetData<T>(resultQueryable);
+                }
+                catch (Exception ex)
+                {
+                    Log.LogError(LogTitle, ex);
                 }
             }
 
@@ -124,12 +110,10 @@ namespace Composite.Data
 
 
 
-
-
         public T GetDataFromDataSourceId<T>(DataSourceId dataSourceId, bool useCaching)
             where T : class, IData
         {
-            if (null == dataSourceId) throw new ArgumentNullException("dataSourceId");
+            Verify.ArgumentNotNull(dataSourceId, nameof(dataSourceId));
 
             useCaching = useCaching && DataCachingFacade.IsTypeCacheable(typeof(T));
 
@@ -158,28 +142,16 @@ namespace Composite.Data
                 {
                     resultData = DataWrappingFacade.Wrap(resultData);
                 }
-                DataInterceptor threadeddataInterceptor;
-
-                DataInterceptor globaDataInterceptor = GlobalDataInterceptors.FirstOrDefault(f => GlobalDataInterceptors.First().Key.IsAssignableFrom(typeof(T))).Value;
-
-                this.DataInterceptors.TryGetValue(typeof(T), out threadeddataInterceptor);
-
-                List<DataInterceptor> dataInterceptors = new List<DataInterceptor>{threadeddataInterceptor,globaDataInterceptor};
                 
-                
-                foreach (var dataInterceptor in dataInterceptors)
+                foreach (var dataInterceptor in GetDataInterceptors(typeof(T)))
                 {
-                    if (dataInterceptor != null)
+                    try
                     {
-                        try
-                        {
-                            resultData = dataInterceptor.InterceptGetDataFromDataSourceId<T>(resultData);
-                        }
-                        catch (Exception ex)
-                        {
-                            Log.LogError(LogTitle, "Calling data interceptor failed with the following exception");
-                            Log.LogError(LogTitle, ex);
-                        }
+                        resultData = dataInterceptor.InterceptGetDataFromDataSourceId<T>(resultData);
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.LogError(LogTitle, ex);
                     }
                 }
 
@@ -188,6 +160,20 @@ namespace Composite.Data
         }
 
 
+        private IEnumerable<DataInterceptor> GetDataInterceptors(Type dataType)
+        {
+            DataInterceptor threadedDataInterceptor;
+
+            DataInterceptor globaDataInterceptor = GlobalDataInterceptors
+                .FirstOrDefault(f => GlobalDataInterceptors.First().Key.IsAssignableFrom(dataType)).Value;
+
+            this.DataInterceptors.TryGetValue(dataType, out threadedDataInterceptor);
+
+            var dataInterceptors = new List<DataInterceptor> { threadedDataInterceptor, globaDataInterceptor };
+
+            return dataInterceptors.Where(d => d != null);
+        } 
+
 
         public void SetDataInterceptor<T>(DataInterceptor dataInterceptor) where T : class, IData
         {
@@ -195,7 +181,7 @@ namespace Composite.Data
 
             this.DataInterceptors.Add(typeof(T), dataInterceptor);
 
-            Log.LogVerbose(LogTitle, string.Format("Data interception added to the data type '{0}' with interceptor type '{1}'", typeof(T), dataInterceptor.GetType()));
+            Log.LogVerbose(LogTitle, $"Data interception added to the data type '{typeof (T)}' with interceptor type '{dataInterceptor.GetType()}'");
         }
 
 
@@ -213,7 +199,7 @@ namespace Composite.Data
             {
                 this.DataInterceptors.Remove(typeof(T));
 
-                Log.LogVerbose(LogTitle, string.Format("Data interception cleared for the data type '{0}'", typeof(T)));
+                Log.LogVerbose(LogTitle, $"Data interception cleared for the data type '{typeof (T)}'");
             }
         }
 

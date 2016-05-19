@@ -41,8 +41,7 @@ namespace Composite.VersionPublishing
 
         private VersioningServiceSettings(string versionName)
         {
-            if (!DataFacade.HasGlobalDataInterceptor<IVersioned>())
-                DataFacade.SetGlobalDataInterceptor<IVersioned>(new PageVersionFilteringDataInterceptor());
+            SetupDataInterceptor();
 
             _versionFilteringSettings = new VersionFilteringSettings
             {
@@ -53,14 +52,21 @@ namespace Composite.VersionPublishing
 
         private VersioningServiceSettings(VersionFilteringMode filteringMode, DateTime time)
         {
-            if(!DataFacade.HasGlobalDataInterceptor<IVersioned>())
-                DataFacade.SetGlobalDataInterceptor<IVersioned>(new PageVersionFilteringDataInterceptor());
+            SetupDataInterceptor();
 
             _versionFilteringSettings = new VersionFilteringSettings
             {
                 FilteringMode = filteringMode,
                 Time = time
             };
+        }
+
+        private void SetupDataInterceptor()
+        {
+            if (!DataFacade.HasGlobalDataInterceptor<IVersioned>())
+            {
+                DataFacade.SetGlobalDataInterceptor<IVersioned>(new PageVersionFilteringDataInterceptor());
+            }
         }
 
         public void ChangeProperties(VersionFilteringMode filteringMode, DateTime? time)

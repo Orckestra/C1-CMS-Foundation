@@ -10,7 +10,7 @@ namespace Composite.VersionPublishing
     {
         private DataConnection _dataConnection;
 
-        private void SetVersioningServicefromUrlPath(string pathInfo)
+        private void SetVersioningServiceFromUrlPath(string pathInfo)
         {
             if (VersionNameUrlHelper.CheckIfAdminUrl(pathInfo))
             {
@@ -43,7 +43,7 @@ namespace Composite.VersionPublishing
 
             _dataConnection = new DataConnection();
             var httpContext = httpApplication.Context;
-            SetVersioningServicefromUrlPath(httpContext.Request.Path);
+            SetVersioningServiceFromUrlPath(httpContext.Request.Path);
         }
 
         public void Dispose()

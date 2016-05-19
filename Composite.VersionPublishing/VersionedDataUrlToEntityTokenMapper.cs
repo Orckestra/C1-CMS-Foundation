@@ -10,7 +10,7 @@ namespace Composite.VersionPublishing
 {
    class VersionedDataUrlToEntityTokenMapper : IServiceUrlToEntityTokenMapper
     {
-       public string TryGetUrl(ref string url,EntityToken entityToken)
+       public string ProcessUrl(string url, EntityToken entityToken)
         {
             var dataEntityToken = entityToken as DataEntityToken;
 
@@ -21,9 +21,9 @@ namespace Composite.VersionPublishing
             {
                 if (!page.VersionName.IsNullOrEmpty())
                 {
-                    var biultUrl = new UrlBuilder(url);
-                    url = biultUrl.FilePath + VersionNameUrlHelper.VersionNameToUrl(page.VersionName) +
-                          biultUrl.QueryString;
+                    var urlBuilder = new UrlBuilder(url);
+                    url = urlBuilder.FilePath + VersionNameUrlHelper.VersionNameToUrl(page.VersionName) +
+                          urlBuilder.QueryString;
                 }
 
             }
