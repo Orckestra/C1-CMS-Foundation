@@ -657,7 +657,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             string editPageToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.EditPageToolTip");
             string localizePageLabel = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.LocalizePage");
             string localizePageToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.LocalizePageToolTip");
-            string addNewPageLabel = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.AddSubPage");
+            string addNewPageLabel = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.AddSubPageFormat");
             string addNewPageToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.AddSubPageToolTip");
             string deletePageLabel = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.Delete");
             string deletePageToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.DeleteToolTip");

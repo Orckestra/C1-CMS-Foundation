@@ -65,7 +65,7 @@ namespace Composite.Services
 				new KeyValuePair
 				{
 					Key = "Core Development",
-					Value = "Marcus Wendt;Dmitry Dzygin;Taras Nakonechnyi;Inna Boitsun"
+					Value = "Marcus Wendt;Dmitry Dzygin;Taras Nakonechnyi;Morteza Kasravi;Inna Boitsun"
 				},
 				new KeyValuePair
 				{

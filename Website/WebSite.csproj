@@ -577,6 +577,7 @@
     <Content Include="Composite\styles\default\branding.less" />
     <Content Include="App_Data\Composite\PhantomJs\config.json" />
     <Content Include="Composite\services\Setup\web.config" />
+    <Content Include="App_Data\Composite\DebugBuild.Composite.config" />
     <None Include="Composite\styles\default\splash.less" />
     <Content Include="Composite\GenerateIconSprite.aspx" />
     <Content Include="Composite\images\editfunction.png" />
@@ -1277,9 +1278,11 @@
       <DependentUpon>Page.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Content Include="Frontend\Config\VisualEditor\Default.common.xml" />
     <Content Include="packages.config">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="DebugBuild.Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\Composite\Configuration\UrlFormatting.xml" />
@@ -2580,7 +2583,19 @@
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>
-    <PreBuildEvent>robocopy "$(ProjectDir)\..\Packages\PhantomJS.2.1.1\tools\phantomjs" "$(ProjectDir)App_Data\Composite\PhantomJs" "phantomjs.exe"
+    <PreBuildEvent>if not exist "$(ProjectDir)web.config" (
+   copy "$(ProjectDir)DebugBuild.Web.config" "$(ProjectDir)Web.config"
+)
+
+if not exist "$(ProjectDir)App_Data\Composite\Composite.config" (
+   copy "$(ProjectDir)App_Data\Composite\DebugBuild.Composite.config" "$(ProjectDir)App_Data\Composite\Composite.config"
+)
+
+if not exist "$(ProjectDir)Frontend\Config\VisualEditor\common.xml" (
+   copy "$(ProjectDir)Frontend\Config\VisualEditor\Default.common.xml" "$(ProjectDir)Frontend\Config\VisualEditor\common.xml"
+)
+
+robocopy "$(ProjectDir)\..\Packages\PhantomJS.2.1.1\tools\phantomjs" "$(ProjectDir)App_Data\Composite\PhantomJs" "phantomjs.exe"
 set rce=%25errorlevel%25
 if not %25rce%25==1 exit %25rce%25 else exit 0</PreBuildEvent>
   </PropertyGroup>

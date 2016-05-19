@@ -407,7 +407,7 @@ public static string ChangePasswordForm_IncorrectOldPassword=>T("ChangePasswordF
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	   public static class Composite_Core_PackageSystem_PackageFragmentInstallers {
-///<summary>&quot;The package composite version requirements does not match the current composite version &apos;{0}&apos;. Expected versions [{1} - {2}]&quot;</summary> 
+///<summary>&quot;The package composite version requirements does not match the current composite version &apos;{0}&apos;. Expected version range [{1} - {2}]&quot;</summary> 
 public static string PackageManager_CompositeVersionMisMatch(object parameter0,object parameter1,object parameter2)=>string.Format(T("PackageManager.CompositeVersionMisMatch"), parameter0,parameter1,parameter2);
 ///<summary>&quot;Package is already installed&quot;</summary> 
 public static string PackageManager_PackageAlreadyInstalled=>T("PackageManager.PackageAlreadyInstalled");
@@ -3579,8 +3579,10 @@ public static string PageElementProvider_DeleteToolTip=>T("PageElementProvider.D
 public static string PageElementProvider_LocalizePage=>T("PageElementProvider.LocalizePage");
 ///<summary>&quot;Translate selected page&quot;</summary> 
 public static string PageElementProvider_LocalizePageToolTip=>T("PageElementProvider.LocalizePageToolTip");
+///<summary>&quot;Add page&quot;</summary> 
+public static string PageElementProvider_AddSubPage=>T("PageElementProvider.AddSubPage");
 ///<summary>&quot;Add {0}&quot;</summary> 
-public static string PageElementProvider_AddSubPage(object parameter0)=>string.Format(T("PageElementProvider.AddSubPage"), parameter0);
+public static string PageElementProvider_AddSubPageFormat(object parameter0)=>string.Format(T("PageElementProvider.AddSubPageFormat"), parameter0);
 ///<summary>&quot;Add new page below the selected&quot;</summary> 
 public static string PageElementProvider_AddSubPageToolTip=>T("PageElementProvider.AddSubPageToolTip");
 ///<summary>&quot;Show page local orderings&quot;</summary> 
