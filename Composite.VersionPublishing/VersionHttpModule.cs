@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Web;
 using Composite.Core.Extensions;
 using Composite.Core.Routing.Pages;
@@ -8,20 +9,21 @@ namespace Composite.VersionPublishing
 {
     class VersionHttpModule : IHttpModule
     {
-        private DataConnection _dataConnection;
+        private const string HttpContextItemsKey = nameof(VersionHttpModule) + ":DataScope";
 
-        private void SetVersioningServiceFromUrlPath(string pathInfo)
+        private void SetVersioningServiceFromUrlPath(DataScope dataScope, string pathInfo)
         {
             if (VersionNameUrlHelper.CheckIfAdminUrl(pathInfo))
             {
-                _dataConnection.AddService(VersioningServiceSettings.NoFiltering());
+                dataScope.AddService(VersioningServiceSettings.NoFiltering());
                 return;
             }
+
             var versionName = VersionNameUrlHelper.ResolveVersionName(pathInfo);
             if (!versionName.IsNullOrEmpty())
             {
                 C1PageRoute.RegisterPathInfoUsage();
-                _dataConnection.AddService(VersioningServiceSettings.ByName(versionName));
+                dataScope.AddService(VersioningServiceSettings.ByName(versionName));
             }
         }
 
@@ -33,17 +35,20 @@ namespace Composite.VersionPublishing
 
         private void context_EndRequest(object sender, EventArgs e)
         {
-            _dataConnection.Dispose();
+            var httpContext = ((HttpApplication)sender).Context;
+
+            var dataScope = (DataScope) httpContext.Items[HttpContextItemsKey];
+            dataScope.Dispose();
         }
 
         private void context_BeginRequest(object sender, EventArgs e)
         {
-            var httpApplication = sender as HttpApplication;
-            if (httpApplication == null) return;
+            var httpContext = ((HttpApplication)sender).Context;
 
-            _dataConnection = new DataConnection();
-            var httpContext = httpApplication.Context;
-            SetVersioningServiceFromUrlPath(httpContext.Request.Path);
+            var dataScope = new DataScope(null as CultureInfo);
+            httpContext.Items[HttpContextItemsKey] = dataScope;
+
+            SetVersioningServiceFromUrlPath(dataScope, httpContext.Request.Path);
         }
 
         public void Dispose()

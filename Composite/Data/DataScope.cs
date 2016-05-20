@@ -10,9 +10,10 @@ namespace Composite.Data
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class DataScope : IDisposable
     {
-        private readonly bool _dataScopePushed = false;
-        private readonly bool _cultureInfoPushed = false;
-        private bool _dataServicePushed = false;
+        private readonly bool _dataScopePushed;
+        private readonly bool _cultureInfoPushed;
+        private bool _dataServicePushed;
+        private bool _disposed;
 
         /// <exclude />
         public void AddService(object service)
@@ -93,14 +94,28 @@ namespace Composite.Data
         /// <exclude />
         ~DataScope()
         {
-            Dispose();
+            Dispose(false);
         }
-
-
 
         /// <exclude />
         public void Dispose()
         {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        void Dispose(bool disposing)
+        {
+            if (!disposing)
+            {
+                return;
+            }
+
+            if (_disposed)
+            {
+                throw new ObjectDisposedException(nameof(DataScope));
+            }
+
             if (_dataScopePushed)
             {
                 DataScopeManager.PopDataScope();
@@ -114,8 +129,9 @@ namespace Composite.Data
             if (_dataServicePushed)
             {
                 DataServiceScopeManager.PopDataServiceScope();
-                _dataServicePushed = false;
             }
+
+            _disposed = true;
         }
     }
 }

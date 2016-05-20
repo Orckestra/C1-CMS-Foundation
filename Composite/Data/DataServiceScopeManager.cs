@@ -45,13 +45,32 @@ namespace Composite.Data
         {
             get
             {
-                var threadLocalStack = CallContext.GetData(ThreadLocalCacheKey) as Stack<List<object>>;
-                if (threadLocalStack != null)
-                {
-                    return threadLocalStack;
-                }
+                return CallContext.GetData(ThreadLocalCacheKey) as Stack<List<object>>
+                    ?? RequestLifetimeCache.GetCachedOrNew<Stack<List<object>>>("DataServiceScopeManager:Stack");
+            }
+        }
 
-                return RequestLifetimeCache.GetCachedOrNew<Stack<List<object>>>("DataServiceScopeManager:Stack");
+        /// <summary>
+        /// Move the stack handling scope to a thread local store, enabling simultaneous threads to mutate (their own) scope. This will be in effect untill the thread has completed.
+        /// </summary>
+        public static void EnterThreadLocal()
+        {
+            if (CallContext.GetData(ThreadLocalCacheKey) == null)
+            {
+                var threadLocalStack = new Stack<List<object>>(DataServiceScopeStack);
+                CallContext.SetData(ThreadLocalCacheKey, threadLocalStack);
+            }
+        }
+
+
+        /// <summary>
+        /// Move the stack handling to request scope.
+        /// </summary>
+        public static void ExitThreadLocal()
+        {
+            if (CallContext.GetData(ThreadLocalCacheKey) != null)
+            {
+                CallContext.SetData(ThreadLocalCacheKey, null);
             }
         }
 
@@ -63,7 +82,7 @@ namespace Composite.Data
         internal static void PopDataServiceScope()
         {
             Verify.That(DataServiceScopeStack.Count > 0, nameof(DataServiceScopeStack) + " underflow");
-            
+
             DataServiceScopeStack.Pop();
         }
 
