@@ -25,9 +25,10 @@ namespace Composite.Data
     public class DataConnection : ImplementationContainer<DataConnectionImplementation>, IDisposable
     {
         //private ImplementationContainer<PageDataConnection> _pageDataConnection;
-        private ImplementationContainer<SitemapNavigator> _sitemapNavigator;
+        private readonly ImplementationContainer<SitemapNavigator> _sitemapNavigator;
 
-        private static DataConnectionImplementation _connectionImplementation;
+        private bool _disposed;
+
         
         /// <summary>
         /// Resolve service of a specific type that is attached to connection's data scope
@@ -45,7 +46,7 @@ namespace Composite.Data
         /// <param name="service"></param>
         public void AddService(object service)
         {
-            _connectionImplementation.DataScope.AddService(service);
+            Implementation.DataScope.AddService(service);
         }
 
         /// <summary>
@@ -67,7 +68,7 @@ namespace Composite.Data
         /// </code>
         /// </example>
         public DataConnection()
-            : base(() => _connectionImplementation = ImplementationFactory.CurrentFactory.CreateDataConnection(null, null))
+            : base(() => ImplementationFactory.CurrentFactory.CreateDataConnection(null, null))
         {
             CreateImplementation();
 
@@ -95,7 +96,7 @@ namespace Composite.Data
         /// </code>
         /// </example>
         public DataConnection(PublicationScope scope)
-            : base(() => _connectionImplementation = ImplementationFactory.CurrentFactory.CreateDataConnection(scope, null))
+            : base(() => ImplementationFactory.CurrentFactory.CreateDataConnection(scope, null))
         {
             if ((scope < PublicationScope.Unpublished) || (scope > PublicationScope.Published)) throw new ArgumentOutOfRangeException("scope");
 
@@ -125,7 +126,7 @@ namespace Composite.Data
         /// </code>
         /// </example>
         public DataConnection(CultureInfo locale)
-            : base(() => _connectionImplementation = ImplementationFactory.CurrentFactory.CreateDataConnection(null, locale))
+            : base(() => ImplementationFactory.CurrentFactory.CreateDataConnection(null, locale))
         {
             CreateImplementation();
 
@@ -154,7 +155,7 @@ namespace Composite.Data
         /// </code>
         /// </example>
         public DataConnection(PublicationScope scope, CultureInfo locale)
-            : base(() => _connectionImplementation = ImplementationFactory.CurrentFactory.CreateDataConnection(scope, locale))
+            : base(() => ImplementationFactory.CurrentFactory.CreateDataConnection(scope, locale))
         {
             if ((scope < PublicationScope.Unpublished) || (scope > PublicationScope.Published)) throw new ArgumentOutOfRangeException("scope");
 
@@ -522,12 +523,18 @@ namespace Composite.Data
         /// <exclude />
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing)
+            if (!disposing) return;
+
+            if (_disposed)
             {
-                this.DisposeImplementation();
-                //_pageDataConnection.Implementation.DisposeImplementation();
-                _sitemapNavigator.Implementation.DisposeImplementation();
+                throw new ObjectDisposedException(nameof(DataConnection));
             }
+
+            this.DisposeImplementation();
+            
+            _sitemapNavigator.Implementation.DisposeImplementation();
+
+            _disposed = true;
         }
     }
 }
