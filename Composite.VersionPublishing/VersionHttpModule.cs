@@ -37,8 +37,8 @@ namespace Composite.VersionPublishing
         {
             var httpContext = ((HttpApplication)sender).Context;
 
-            var dataScope = (DataScope) httpContext.Items[HttpContextItemsKey];
-            dataScope.Dispose();
+            var dataScope = httpContext.Items[HttpContextItemsKey] as DataScope;
+            dataScope?.Dispose();
         }
 
         private void context_BeginRequest(object sender, EventArgs e)
