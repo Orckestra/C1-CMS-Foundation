@@ -29,7 +29,7 @@ using Microsoft.Practices.EnterpriseLibrary.Validation;
 
 namespace Composite.C1Console.Workflow.Activities
 {
-    /// <summary>    
+    /// <summary>
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
@@ -243,7 +243,7 @@ namespace Composite.C1Console.Workflow.Activities
             object obj;
             if (!Bindings.TryGetValue(name, out obj))
             {
-                throw new InvalidOperationException(string.Format("The binding named '{0}' was not found", name));
+                throw new InvalidOperationException($"The binding named '{name}' was not found");
             }
 
             return (T)obj;
@@ -315,7 +315,7 @@ namespace Composite.C1Console.Workflow.Activities
                     _workflowActionToken = this.ActionToken as WorkflowActionToken;
                 }
 
-                return _workflowActionToken == null ? null : _workflowActionToken.Payload;
+                return _workflowActionToken?.Payload;
             }
         }
 
@@ -331,32 +331,30 @@ namespace Composite.C1Console.Workflow.Activities
                     _workflowActionToken = this.ActionToken as WorkflowActionToken;
                 }
 
-                return _workflowActionToken == null ? null : _workflowActionToken.ExtraPayload;
+                return _workflowActionToken?.ExtraPayload;
             }
         }
 
 
 
-        internal Guid InstanceId
+        internal Guid InstanceId => _instanceId;
+
+
+        private static FlowControllerServicesContainer GetFlowControllerServicesContainer()
         {
-            get
-            {
-                return _instanceId;
-            }
+            return WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
         }
-
-
 
         /// <exclude />
         protected void ReportException(Exception ex)
         {
-            if (ex == null) throw new ArgumentNullException("ex");
+            Verify.ArgumentNotNull(ex, nameof(ex));
 
-            this.ShowMessage(DialogType.Error, "An unfortunate error occurred", string.Format("Sorry, but an error has occurred, preventing the opperation from completing as expected. The error has been documented in details so a technican may follow up on this issue.\n\nThe error message is: {0}", ex.Message));
+            this.ShowMessage(DialogType.Error, "An unfortunate error occurred", $"Sorry, but an error has occurred, preventing the opperation from completing as expected. The error has been documented in details so a technican may follow up on this issue.\n\nThe error message is: {ex.Message}");
 
             Log.LogCritical(this.GetType().Name, ex);
 
-            FlowControllerServicesContainer container = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
+            var container = GetFlowControllerServicesContainer();
             IManagementConsoleMessageService service = container.GetService<IManagementConsoleMessageService>();
             service.ShowLogEntry(this.GetType(), ex);
         }
@@ -366,7 +364,7 @@ namespace Composite.C1Console.Workflow.Activities
         /// <exclude />
         protected void LogMessage(LogLevel logLevel, string message)
         {
-            FlowControllerServicesContainer container = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
+            var container = GetFlowControllerServicesContainer();
             IManagementConsoleMessageService service = container.GetService<IManagementConsoleMessageService>();
             service.ShowLogEntry(this.GetType(), logLevel, message);
 
@@ -396,7 +394,7 @@ namespace Composite.C1Console.Workflow.Activities
         /// <exclude />
         protected void ShowMessage(DialogType dialogType, string title, string message)
         {
-            FlowControllerServicesContainer container = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
+            var container = GetFlowControllerServicesContainer();
 
             IManagementConsoleMessageService service = container.GetService<IManagementConsoleMessageService>();
 
@@ -415,7 +413,7 @@ namespace Composite.C1Console.Workflow.Activities
         /// <exclude />
         protected void SelectElement(EntityToken entityToken)
         {
-            FlowControllerServicesContainer container = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
+            var container = GetFlowControllerServicesContainer();
 
             IManagementConsoleMessageService service = container.GetService<IManagementConsoleMessageService>();
             
@@ -427,7 +425,7 @@ namespace Composite.C1Console.Workflow.Activities
         /// <exclude />
         protected void RebootConsole()
         {
-            FlowControllerServicesContainer container = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
+            var container = GetFlowControllerServicesContainer();
 
             IManagementConsoleMessageService service = container.GetService<IManagementConsoleMessageService>();
 
@@ -439,9 +437,9 @@ namespace Composite.C1Console.Workflow.Activities
         /// <exclude />
         protected void ShowFieldMessage(string fieldBindingPath, string message)
         {
-            FlowControllerServicesContainer flowControllerServicesContainer = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
+            var flowControllerServicesContainer = GetFlowControllerServicesContainer();
 
-            IFormFlowRenderingService formFlowRenderingService = flowControllerServicesContainer.GetService<IFormFlowRenderingService>();
+            var formFlowRenderingService = flowControllerServicesContainer.GetService<IFormFlowRenderingService>();
 
             formFlowRenderingService.ShowFieldMessage(fieldBindingPath, StringResourceSystemFacade.ParseString(message));
         }
@@ -476,25 +474,22 @@ namespace Composite.C1Console.Workflow.Activities
         /// <exclude />
         protected void SetSaveStatus(bool succeeded, string serializedEntityToken)
         {
-            SaveWorklowTaskManagerEvent saveWorklowTaskManagerEvent = new SaveWorklowTaskManagerEvent
-                (
-                    new WorkflowFlowToken(this.InstanceId),
-                    this.WorkflowInstanceId,
-                    succeeded
-                );
+            var saveWorklowTaskManagerEvent = new SaveWorklowTaskManagerEvent
+            (
+                new WorkflowFlowToken(this.InstanceId),
+                this.WorkflowInstanceId,
+                succeeded
+            );
 
-            FlowControllerServicesContainer container = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
-            ITaskManagerFlowControllerService service = container.GetService<ITaskManagerFlowControllerService>();
+            var container = GetFlowControllerServicesContainer();
+            var service = container.GetService<ITaskManagerFlowControllerService>();
             service.OnStatus(saveWorklowTaskManagerEvent);
 
             var flowRenderingService = container.GetService<IFormFlowRenderingService>();
-            if(flowRenderingService != null)
-            {
-                flowRenderingService.SetSaveStatus(succeeded);
-            }
+            flowRenderingService?.SetSaveStatus(succeeded);
 
-            
-            IManagementConsoleMessageService managementConsoleMessageService = container.GetService<IManagementConsoleMessageService>();
+
+            var managementConsoleMessageService = container.GetService<IManagementConsoleMessageService>();
             managementConsoleMessageService.SaveStatus(succeeded); // TO BE REMOVED
 
             if (serializedEntityToken != null)
@@ -509,7 +504,7 @@ namespace Composite.C1Console.Workflow.Activities
         /// <exclude />
         protected void CloseCurrentView()
         {
-            FlowControllerServicesContainer flowControllerServicesContainer = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
+            var flowControllerServicesContainer = GetFlowControllerServicesContainer();
 
             var managementConsoleMessageService = flowControllerServicesContainer.GetService<IManagementConsoleMessageService>();
 
@@ -524,7 +519,7 @@ namespace Composite.C1Console.Workflow.Activities
         /// <exclude />
         protected void LockTheSystem()
         {
-            FlowControllerServicesContainer flowControllerServicesContainer = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
+            var flowControllerServicesContainer = GetFlowControllerServicesContainer();
 
             IManagementConsoleMessageService managementConsoleMessageService = flowControllerServicesContainer.GetService<IManagementConsoleMessageService>();
 
@@ -536,7 +531,7 @@ namespace Composite.C1Console.Workflow.Activities
         /// <exclude />
         protected void RerenderView()
         {
-            FlowControllerServicesContainer flowControllerServicesContainer = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
+            var flowControllerServicesContainer = GetFlowControllerServicesContainer();
             IFormFlowRenderingService formFlowRenderingService = flowControllerServicesContainer.GetService<IFormFlowRenderingService>();
             formFlowRenderingService.RerenderView();
         }
@@ -546,8 +541,8 @@ namespace Composite.C1Console.Workflow.Activities
         /// <exclude />
         protected void CollapseAndRefresh()
         {
-            FlowControllerServicesContainer container = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
-            IManagementConsoleMessageService service = container.GetService<IManagementConsoleMessageService>();
+            var container = GetFlowControllerServicesContainer();
+            var service = container.GetService<IManagementConsoleMessageService>();
             service.CollapseAndRefresh();
         }
 
@@ -556,7 +551,7 @@ namespace Composite.C1Console.Workflow.Activities
         /// <exclude />
         protected string GetCurrentConsoleId()
         {
-            FlowControllerServicesContainer flowControllerServicesContainer = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
+            var flowControllerServicesContainer = GetFlowControllerServicesContainer();
 
             IManagementConsoleMessageService managementConsoleMessageService = flowControllerServicesContainer.GetService<IManagementConsoleMessageService>();
 
@@ -576,7 +571,7 @@ namespace Composite.C1Console.Workflow.Activities
         /// <exclude />
         protected void ExecuteAction(EntityToken entityToken, ActionToken actionToken)
         {
-            FlowControllerServicesContainer flowControllerServicesContainer = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
+            var flowControllerServicesContainer = GetFlowControllerServicesContainer();
 
             IActionExecutionService actionExecutionService = flowControllerServicesContainer.GetService<IActionExecutionService>();
 
@@ -637,7 +632,7 @@ namespace Composite.C1Console.Workflow.Activities
         protected void SetCustomToolbarDefinition(IFormMarkupProvider customToolbarMarkupProvider)
         {
             ExternalDataExchangeService externalDataExchangeService = WorkflowFacade.WorkflowRuntime.GetService<ExternalDataExchangeService>();
-            IFormsWorkflowActivityService formsWorkflowActivityService = externalDataExchangeService.GetService(typeof(IFormsWorkflowActivityService)) as IFormsWorkflowActivityService;
+            var formsWorkflowActivityService = externalDataExchangeService.GetService(typeof(IFormsWorkflowActivityService)) as IFormsWorkflowActivityService;
             formsWorkflowActivityService.DeliverCustomToolbarDefinition(WorkflowEnvironment.WorkflowInstanceId, customToolbarMarkupProvider);
         }
 
@@ -839,7 +834,7 @@ namespace Composite.C1Console.Workflow.Activities
                     && (fieldValue as string) == string.Empty
                     && !helper.BindingIsOptional(bindingName))
                 {
-                    this.ShowFieldMessage(bindingName, StringResourceSystemFacade.GetString("Composite.Management", "Validation.RequiredField"));
+                    this.ShowFieldMessage(bindingName, LocalizationFiles.Composite_Management.Validation_RequiredField);
 
                     isValid = false;
                 }
