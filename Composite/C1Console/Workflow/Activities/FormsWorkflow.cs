@@ -70,6 +70,19 @@ namespace Composite.C1Console.Workflow.Activities
         }
 
 
+        /// <exclude />
+        protected void InitializeExtensions()
+        {
+            CanModifyActivities = true;
+
+            foreach (var extension in FormsWorkflowExtensions.GetExtensions())
+            {
+                extension.Initialize(this);
+            }
+
+            CanModifyActivities = false;
+        }
+
 
         /// <exclude />
         protected override void Initialize(IServiceProvider provider)
@@ -592,6 +605,8 @@ namespace Composite.C1Console.Workflow.Activities
         /// <exclude />
         protected void DeliverFormData(string containerLabel, IFlowUiContainerType containerType, string formDefinition, Dictionary<string, object> bindings, Dictionary<string, List<ClientValidationRule>> bindingsValidationRules)
         {
+            OnDeliverFormData(bindings, bindingsValidationRules);
+
             ExternalDataExchangeService externalDataExchangeService = WorkflowFacade.WorkflowRuntime.GetService<ExternalDataExchangeService>();
 
             IFormsWorkflowActivityService formsWorkflowActivityService = externalDataExchangeService.GetService(typeof(IFormsWorkflowActivityService)) as IFormsWorkflowActivityService;
@@ -604,21 +619,43 @@ namespace Composite.C1Console.Workflow.Activities
         /// <exclude />
         protected void DeliverFormData(string containerLabel, IFlowUiContainerType containerType, IFormMarkupProvider formMarkupProvider, Dictionary<string, object> bindings, Dictionary<string, List<ClientValidationRule>> bindingsValidationRules)
         {
-            ExternalDataExchangeService externalDataExchangeService = WorkflowFacade.WorkflowRuntime.GetService<ExternalDataExchangeService>();
+            OnDeliverFormData(bindings, bindingsValidationRules);
 
-            IFormsWorkflowActivityService formsWorkflowActivityService = externalDataExchangeService.GetService(typeof(IFormsWorkflowActivityService)) as IFormsWorkflowActivityService;
+            var externalDataExchangeService = WorkflowFacade.WorkflowRuntime.GetService<ExternalDataExchangeService>();
+
+            var formsWorkflowActivityService = externalDataExchangeService.GetService(typeof(IFormsWorkflowActivityService)) as IFormsWorkflowActivityService;
 
             formsWorkflowActivityService.DeliverFormData(WorkflowEnvironment.WorkflowInstanceId, containerLabel, containerType, formMarkupProvider, bindings, bindingsValidationRules);
         }
+
+
+
+        private void OnDeliverFormData(Dictionary<string, object> bindings, Dictionary<string, List<ClientValidationRule>> bindingsValidationRules)
+        {
+            var parameters = new OnDeliverFormDataParameters()
+            {
+                Bindings = bindings,
+                BindingsValidationRules = bindingsValidationRules
+            };
+
+            foreach (var extension in FormsWorkflowExtensions.GetExtensions())
+            {
+                extension.OnDeliverFormData(this, parameters);
+            }
+        }
+
+
+
 
 
         /// <summary>
         /// Adds the cms:layout elements Form Definition to the UI toolbar. 
         /// </summary>
         /// <param name="customToolbarDefinition">String containing a valid Form Definition markup document</param>
-        protected void SetCustomToolbarDefinition(string customToolbarDefinition)
+        public void SetCustomToolbarDefinition(string customToolbarDefinition)
         {
             ExternalDataExchangeService externalDataExchangeService = WorkflowFacade.WorkflowRuntime.GetService<ExternalDataExchangeService>();
+
             IFormsWorkflowActivityService formsWorkflowActivityService = externalDataExchangeService.GetService(typeof(IFormsWorkflowActivityService)) as IFormsWorkflowActivityService;
             formsWorkflowActivityService.DeliverCustomToolbarDefinition(WorkflowEnvironment.WorkflowInstanceId, customToolbarDefinition);
         }
