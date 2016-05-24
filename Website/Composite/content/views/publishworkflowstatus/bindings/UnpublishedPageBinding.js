@@ -163,8 +163,16 @@ UnpublishedPageBinding.prototype.renderTable = function (nodes, selected) {
 
 		this.addTextCell(row, node.getPropertyBag().Version);
 		this.addTextCell(row, node.getPropertyBag().Status);
-		this.addTextCell(row, node.getPropertyBag().PublishDate).setAttribute("data-sort-value", node.getPropertyBag().SortablePublishDate);
-		this.addTextCell(row, node.getPropertyBag().UnpublishDate).setAttribute("data-sort-value", node.getPropertyBag().SortableUnpublishDate);
+		this.addTextCell(row, node.getPropertyBag().PublishDate,
+			{
+				"data-sort-value": node.getPropertyBag().SortablePublishDate ,
+				"class": "date"
+			}
+		);
+		this.addTextCell(row, node.getPropertyBag().UnpublishDate, {
+			"data-sort-value": node.getPropertyBag().SortableUnpublishDate,
+			"class": "date"
+		});
 		this.addTextCell(row, node.getPropertyBag().Created).setAttribute("data-sort-value", node.getPropertyBag().SortableCreated);
 		this.addTextCell(row, node.getPropertyBag().Modified).setAttribute("data-sort-value", node.getPropertyBag().SortableModified);
 		this.addTextCell(row, "");
@@ -240,12 +248,20 @@ UnpublishedPageBinding.prototype.getSelectedCheckboxes = function() {
 	return selected;
 }
 
-UnpublishedPageBinding.prototype.addTextCell = function (row, value) {
+UnpublishedPageBinding.prototype.addTextCell = function (row, value, attributes) {
 
 	var cell = this.bindingDocument.createElement("td");
 	if (value != undefined) {
-		cell.appendChild(this.bindingDocument.createTextNode(value));
+		var span = this.bindingDocument.createElement("span");
+		span.appendChild(this.bindingDocument.createTextNode(value));
+		cell.appendChild(span);
 	}
+	if (attributes != undefined) {
+		for (var name in attributes) {
+			cell.setAttribute(name, attributes[name]);
+		}
+	}
+
 	return row.appendChild(cell);
 }
 

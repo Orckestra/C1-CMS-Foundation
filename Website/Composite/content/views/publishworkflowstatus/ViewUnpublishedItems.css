@@ -48,6 +48,18 @@ a {
 	border-color: #989898 transparent transparent transparent;
 }
 
+.table td.date {
+	padding: 0 13px 0 0 !important;
+}
+.table td.date span{
+	display: block;
+	background: #EFEFEF;
+	margin: 9px 9px 9px 10px;
+	padding: 6px 6px 7px 10px;
+	border-radius: 5px;
+	min-width: 190px;
+}
+
 ui|toolbarbutton[image='item-publish'] {
 	border-color: #22B980;
 }
