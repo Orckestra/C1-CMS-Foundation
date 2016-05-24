@@ -43,5 +43,6 @@ namespace Composite.Core.Configuration
         bool PrettifyPublicMarkup { get; }
         bool PrettifyRenderFunctionExceptions { get; }
         bool FunctionPreviewEnabled { get; }
+        TimeZoneInfo TimeZone { get; }
     }
 }
