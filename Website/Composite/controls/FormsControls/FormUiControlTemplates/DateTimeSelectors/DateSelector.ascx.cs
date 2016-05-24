@@ -5,6 +5,8 @@ using Composite.Core.ResourceSystem;
 using Composite.Core.WebClient.UiControlLib;
 using Composite.Plugins.Forms.WebChannel.UiControlFactories;
 using System.Web.UI;
+using System.Linq;
+using Composite.Core.Configuration;
 
 namespace Composite.controls.FormsControls.FormUiControlTemplates.DateTimeSelectors
 {
@@ -36,15 +38,17 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DateTimeSelect
 
         private void InsertSelectedDate(DateTime? toShow)
         {
+            DateTime convertedToShow = TimeZoneInfo.ConvertTimeFromUtc(toShow.Value, GlobalSettingsFacade.TimeZone);
             if (toShow.HasValue && toShow.Value != DateTime.MinValue)
             {
                 if (!ShowHours)
                 {
-                    this.CurrentStringValue = toShow.Value.ToShortDateString();
+                    this.CurrentStringValue = convertedToShow.ToShortDateString();
                 }
                 else
                 {
-                    this.CurrentStringValue = string.Format("{0} {1}", toShow.Value.ToShortDateString(), toShow.Value.ToShortTimeString());
+                    this.CurrentStringValue = string.Format("{0} {1} {2}", convertedToShow.ToShortDateString(),
+                        convertedToShow.ToShortTimeString(), GlobalSettingsFacade.TimeZoneAbbriviatedName(convertedToShow));
                 }
             }
             else
@@ -66,7 +70,10 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DateTimeSelect
                 }
                 else
                 {
-                    this.Date = DateTime.Parse(this.CurrentStringValue);
+                    string stringValueWithoutTimezone = this.CurrentStringValue;
+                    if(!((ShowHours&&stringValueWithoutTimezone.Split(' ').Last()=="PM") || (ShowHours && stringValueWithoutTimezone.Split(' ').Last() == "AM")))
+                        stringValueWithoutTimezone = stringValueWithoutTimezone.Replace(this.CurrentStringValue.Split(' ').Last(), "");
+                    this.Date = TimeZoneInfo.ConvertTimeToUtc(DateTime.Parse(stringValueWithoutTimezone),GlobalSettingsFacade.TimeZone);
                     if (!ShowHours)
                         this.Date -= this.Date.Value.TimeOfDay;
                 }
@@ -86,7 +93,7 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DateTimeSelect
             { 
                 if(ShowHours)
                 {
-                    return string.Format("{0} {1}", DateTime.Now.ToShortDateString(), DateTime.Now.ToShortTimeString());
+                    return string.Format("{0} {1} {2}", DateTime.Now.ToShortDateString(), DateTime.Now.ToShortTimeString(),GlobalSettingsFacade.TimeZoneAbbriviatedName(DateTime.Now));
                 }
                 else
                 {
@@ -105,7 +112,7 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DateTimeSelect
         {
             if (date.HasValue == true && date.Value > DateTime.MinValue)
             {
-                DateTimeSelector.SelectedDate = date.Value - date.Value.TimeOfDay;
+                DateTimeSelector.SelectedDate = TimeZoneInfo.ConvertTimeFromUtc(date.Value - date.Value.TimeOfDay, GlobalSettingsFacade.TimeZone);
                 DateTimeSelector.VisibleDate = DateTimeSelector.SelectedDate;
             }
             else

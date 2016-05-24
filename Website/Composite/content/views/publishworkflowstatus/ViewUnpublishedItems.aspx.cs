@@ -7,6 +7,7 @@ using System.Xml.Linq;
 using System.Xml.Xsl;
 using Composite.C1Console.Security;
 using Composite.C1Console.Users;
+using Composite.Core.Configuration;
 using Composite.Core.WebClient.Renderings.Page;
 using Composite.Core.Xml;
 using Composite.Data;
@@ -158,7 +159,7 @@ public partial class ViewUnpublishedItems : System.Web.UI.Page
             if (statusInfo != null)
             {
                 actionPage.Add(
-                    new XAttribute("changedate", statusInfo.ChangeDate.ToShortDateString() + " " + statusInfo.ChangeDate.ToShortTimeString()),
+                    new XAttribute("changedate", TimeZoneInfo.ConvertTime(statusInfo.ChangeDate,GlobalSettingsFacade.TimeZone).ToShortDateString() + " " + TimeZoneInfo.ConvertTime(statusInfo.ChangeDate, GlobalSettingsFacade.TimeZone).ToShortTimeString()+" "+GlobalSettingsFacade.TimeZoneAbbriviatedName(TimeZoneInfo.ConvertTime(statusInfo.ChangeDate, GlobalSettingsFacade.TimeZone))),
                     new XAttribute("changedby", statusInfo.ChangedBy ?? "?"));
             }
 
