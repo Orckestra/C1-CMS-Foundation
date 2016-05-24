@@ -34,6 +34,8 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Workflow.Activities" />
+    <Reference Include="System.Workflow.ComponentModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -42,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EditPageWorkflowExtension.cs" />
     <Compile Include="IVersionFilteringSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StartupHandler.cs" />
@@ -53,6 +56,10 @@
     <Compile Include="VersionPublishingFacade.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Composite.Workflows\Composite.Workflows.csproj">
+      <Project>{1fe08476-346a-4053-813d-8807c0e0fc36}</Project>
+      <Name>Composite.Workflows</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Composite\Composite.csproj">
       <Project>{f8d87a5f-d090-4d24-80c1-dbcd938c6cab}</Project>
       <Name>Composite</Name>
