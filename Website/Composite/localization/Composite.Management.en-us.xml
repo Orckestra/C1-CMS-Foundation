@@ -274,7 +274,12 @@
 	<string key="VirtualElementProviderElementProvider.XsltBasedFunctionPerspective" value="Xslt Based Functions" />
 	<string key="VirtualElementProviderElementProvider.RootActions.SendMessageLabel" value="Broadcast Message" />
 	<string key="VirtualElementProviderElementProvider.RootActions.SendMessageTooltip" value="Send a message to all running consoles" />
-	<string key="VirtualElementProviderElementProvider.RootActions.RestartApplicationLabel" value="Restart server" />
+  <string key="VirtualElementProviderElementProvider.RootActions.SetTimezoneLabel" value="Set Time Zone" />
+  <string key="VirtualElementProviderElementProvider.RootActions.SetTimezoneTooltip" value="Change the Time Zone of the Consoles" />
+  <string key="VirtualElementProviderElementProvider.RootActions.TimezoneChangedTitle" value="Time Zone Changed" />
+  <string key="VirtualElementProviderElementProvider.RootActions.TimezoneChangedMessage" value="Consoles' Time Zone Are Changed Successfully" />
+  <string key="VirtualElementProviderElementProvider.RootActions.GlobalSetting" value="Global Settings" />
+  <string key="VirtualElementProviderElementProvider.RootActions.RestartApplicationLabel" value="Restart server" />
 	<string key="VirtualElementProviderElementProvider.RootActions.RestartApplicationTooltip" value="Restart the server" />
 	<string key="SendMessageToConsolesWorkflow.Layout.Label" value="Broadcast Message to All {applicationname} Consoles" />
 	<string key="SendMessageToConsolesWorkflow.TitleTextBox.Label" value="Title" />
