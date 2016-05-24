@@ -595,7 +595,7 @@ namespace Composite.C1Console.Workflow.Activities
 
 
         /// <exclude />
-        protected void ExecuteWorklow(EntityToken entityToken, Type workflowType)
+        public void ExecuteWorklow(EntityToken entityToken, Type workflowType)
         {
             ExecuteAction(entityToken, new WorkflowActionToken(workflowType));
         }
