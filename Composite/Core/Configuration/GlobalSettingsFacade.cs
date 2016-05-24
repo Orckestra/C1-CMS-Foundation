@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Globalization;
+using Composite.Core.ResourceSystem;
 
 
 namespace Composite.Core.Configuration
@@ -478,6 +479,14 @@ namespace Composite.Core.Configuration
 
         /// <exclude />
         public static TimeZoneInfo TimeZone => _globalSettingsFacade.TimeZone;
+
+        /// <exclude />
+        public static string TimeZoneAbbriviatedName(DateTime dateTime)
+        {
+            return StringResourceSystemFacade.GetString("Composite.Plugins.TimezoneAbbriviations",
+                "TimezoneAbbriviations." + (dateTime.IsDaylightSavingTime() ? "Daylight." : "Standard.") +
+                _globalSettingsFacade.TimeZone.Id);
+        }
 
         // Overload
         /// <exclude />

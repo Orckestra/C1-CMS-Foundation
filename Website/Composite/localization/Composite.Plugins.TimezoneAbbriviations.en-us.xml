@@ -1,0 +1,233 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<strings>
+  <string key = "TimezoneAbbriviations.Daylight.Dateline Standard Time" value = "Etc/GMT+12" />
+  <string key = "TimezoneAbbriviations.Standard.Dateline Standard Time" value = "Etc/GMT+12" />
+  <string key = "TimezoneAbbriviations.Daylight.UTC-11" value = "Etc/GMT+11" />
+  <string key = "TimezoneAbbriviations.Standard.UTC-11" value = "Etc/GMT+11" />
+  <string key = "TimezoneAbbriviations.Daylight.Hawaiian Standard Time" value = "HST" />
+  <string key = "TimezoneAbbriviations.Standard.Hawaiian Standard Time" value = "HST" />
+  <string key = "TimezoneAbbriviations.Daylight.Alaskan Standard Time" value = "AKDT" />
+  <string key = "TimezoneAbbriviations.Standard.Alaskan Standard Time" value = "AKST" />
+  <string key = "TimezoneAbbriviations.Daylight.Pacific Standard Time (Mexico)" value = "PDT" />
+  <string key = "TimezoneAbbriviations.Standard.Pacific Standard Time (Mexico)" value = "PST" />
+  <string key = "TimezoneAbbriviations.Daylight.Pacific Standard Time" value = "PDT" />
+  <string key = "TimezoneAbbriviations.Standard.Pacific Standard Time" value = "PST" />
+  <string key = "TimezoneAbbriviations.Daylight.US Mountain Standard Time" value = "MST" />
+  <string key = "TimezoneAbbriviations.Standard.US Mountain Standard Time" value = "MST" />
+  <string key = "TimezoneAbbriviations.Daylight.Mountain Standard Time (Mexico)" value = "MDT" />
+  <string key = "TimezoneAbbriviations.Standard.Mountain Standard Time (Mexico)" value = "MST" />
+  <string key = "TimezoneAbbriviations.Daylight.Mountain Standard Time" value = "MDT" />
+  <string key = "TimezoneAbbriviations.Standard.Mountain Standard Time" value = "MST" />
+  <string key = "TimezoneAbbriviations.Daylight.Central America Standard Time" value = "CST" />
+  <string key = "TimezoneAbbriviations.Standard.Central America Standard Time" value = "CST" />
+  <string key = "TimezoneAbbriviations.Daylight.Central Standard Time" value = "CDT" />
+  <string key = "TimezoneAbbriviations.Standard.Central Standard Time" value = "CST" />
+  <string key = "TimezoneAbbriviations.Daylight.Easter Island Standard Time" value = "EAST" />
+  <string key = "TimezoneAbbriviations.Standard.Easter Island Standard Time" value = "EASST" />
+  <string key = "TimezoneAbbriviations.Daylight.Central Standard Time (Mexico)" value = "CDT" />
+  <string key = "TimezoneAbbriviations.Standard.Central Standard Time (Mexico)" value = "CST" />
+  <string key = "TimezoneAbbriviations.Daylight.Canada Central Standard Time" value = "CST" />
+  <string key = "TimezoneAbbriviations.Standard.Canada Central Standard Time" value = "CST" />
+  <string key = "TimezoneAbbriviations.Daylight.SA Pacific Standard Time" value = "COT" />
+  <string key = "TimezoneAbbriviations.Standard.SA Pacific Standard Time" value = "COT" />
+  <string key = "TimezoneAbbriviations.Daylight.Eastern Standard Time (Mexico)" value = "EST" />
+  <string key = "TimezoneAbbriviations.Standard.Eastern Standard Time (Mexico)" value = "EST" />
+  <string key = "TimezoneAbbriviations.Daylight.Eastern Standard Time" value = "EDT" />
+  <string key = "TimezoneAbbriviations.Standard.Eastern Standard Time" value = "EST" />
+  <string key = "TimezoneAbbriviations.Daylight.Haiti Standard Time" value = "EDT" />
+  <string key = "TimezoneAbbriviations.Standard.Haiti Standard Time" value = "EST" />
+  <string key = "TimezoneAbbriviations.Daylight.US Eastern Standard Time" value = "EDT" />
+  <string key = "TimezoneAbbriviations.Standard.US Eastern Standard Time" value = "EST" />
+  <string key = "TimezoneAbbriviations.Daylight.Venezuela Standard Time" value = "VET" />
+  <string key = "TimezoneAbbriviations.Standard.Venezuela Standard Time" value = "VET" />
+  <string key = "TimezoneAbbriviations.Daylight.Paraguay Standard Time" value = "PYT" />
+  <string key = "TimezoneAbbriviations.Standard.Paraguay Standard Time" value = "PYST" />
+  <string key = "TimezoneAbbriviations.Daylight.Atlantic Standard Time" value = "ADT" />
+  <string key = "TimezoneAbbriviations.Standard.Atlantic Standard Time" value = "AST" />
+  <string key = "TimezoneAbbriviations.Daylight.Central Brazilian Standard Time" value = "AMT" />
+  <string key = "TimezoneAbbriviations.Standard.Central Brazilian Standard Time" value = "AMST" />
+  <string key = "TimezoneAbbriviations.Daylight.SA Western Standard Time" value = "BOT" />
+  <string key = "TimezoneAbbriviations.Standard.SA Western Standard Time" value = "BOT" />
+  <string key = "TimezoneAbbriviations.Daylight.Pacific SA Standard Time" value = "CLT" />
+  <string key = "TimezoneAbbriviations.Standard.Pacific SA Standard Time" value = "CLST" />
+  <string key = "TimezoneAbbriviations.Daylight.Newfoundland Standard Time" value = "NDT" />
+  <string key = "TimezoneAbbriviations.Standard.Newfoundland Standard Time" value = "NST" />
+  <string key = "TimezoneAbbriviations.Daylight.E. South America Standard Time" value = "BRT" />
+  <string key = "TimezoneAbbriviations.Standard.E. South America Standard Time" value = "BRST" />
+  <string key = "TimezoneAbbriviations.Daylight.SA Eastern Standard Time" value = "GFT" />
+  <string key = "TimezoneAbbriviations.Standard.SA Eastern Standard Time" value = "GFT" />
+  <string key = "TimezoneAbbriviations.Daylight.Argentina Standard Time" value = "ART" />
+  <string key = "TimezoneAbbriviations.Standard.Argentina Standard Time" value = "ART" />
+  <string key = "TimezoneAbbriviations.Daylight.Greenland Standard Time" value = "WGST" />
+  <string key = "TimezoneAbbriviations.Standard.Greenland Standard Time" value = "WGT" />
+  <string key = "TimezoneAbbriviations.Daylight.Montevideo Standard Time" value = "UYT" />
+  <string key = "TimezoneAbbriviations.Standard.Montevideo Standard Time" value = "UYT" />
+  <string key = "TimezoneAbbriviations.Daylight.Bahia Standard Time" value = "BRT" />
+  <string key = "TimezoneAbbriviations.Standard.Bahia Standard Time" value = "BRT" />
+  <string key = "TimezoneAbbriviations.Daylight.UTC-02" value = "Etc/GMT+2" />
+  <string key = "TimezoneAbbriviations.Standard.UTC-02" value = "Etc/GMT+2" />
+  <string key = "TimezoneAbbriviations.Daylight.Mid-Atlantic Standard Time" value = "ADT" />
+  <string key = "TimezoneAbbriviations.Standard.Mid-Atlantic Standard Time" value = "AST" />
+  <string key = "TimezoneAbbriviations.Daylight.Azores Standard Time" value = "AZOST" />
+  <string key = "TimezoneAbbriviations.Standard.Azores Standard Time" value = "AZOT" />
+  <string key = "TimezoneAbbriviations.Daylight.Cape Verde Standard Time" value = "CVT" />
+  <string key = "TimezoneAbbriviations.Standard.Cape Verde Standard Time" value = "CVT" />
+  <string key = "TimezoneAbbriviations.Daylight.Morocco Standard Time" value = "WEST" />
+  <string key = "TimezoneAbbriviations.Standard.Morocco Standard Time" value = "WET" />
+  <string key = "TimezoneAbbriviations.Daylight.UTC" value = "Etc/GMT" />
+  <string key = "TimezoneAbbriviations.Standard.UTC" value = "Etc/GMT" />
+  <string key = "TimezoneAbbriviations.Daylight.GMT Standard Time" value = "BST" />
+  <string key = "TimezoneAbbriviations.Standard.GMT Standard Time" value = "GMT" />
+  <string key = "TimezoneAbbriviations.Daylight.Greenwich Standard Time" value = "GMT" />
+  <string key = "TimezoneAbbriviations.Standard.Greenwich Standard Time" value = "GMT" />
+  <string key = "TimezoneAbbriviations.Daylight.W. Europe Standard Time" value = "CEST" />
+  <string key = "TimezoneAbbriviations.Standard.W. Europe Standard Time" value = "CET" />
+  <string key = "TimezoneAbbriviations.Daylight.Central Europe Standard Time" value = "CEST" />
+  <string key = "TimezoneAbbriviations.Standard.Central Europe Standard Time" value = "CET" />
+  <string key = "TimezoneAbbriviations.Daylight.Romance Standard Time" value = "CEST" />
+  <string key = "TimezoneAbbriviations.Standard.Romance Standard Time" value = "CET" />
+  <string key = "TimezoneAbbriviations.Daylight.Central European Standard Time" value = "CEST" />
+  <string key = "TimezoneAbbriviations.Standard.Central European Standard Time" value = "CET" />
+  <string key = "TimezoneAbbriviations.Daylight.W. Central Africa Standard Time" value = "WAT" />
+  <string key = "TimezoneAbbriviations.Standard.W. Central Africa Standard Time" value = "WAT" />
+  <string key = "TimezoneAbbriviations.Daylight.Namibia Standard Time" value = "WAT" />
+  <string key = "TimezoneAbbriviations.Standard.Namibia Standard Time" value = "WAST" />
+  <string key = "TimezoneAbbriviations.Daylight.Jordan Standard Time" value = "EEST" />
+  <string key = "TimezoneAbbriviations.Standard.Jordan Standard Time" value = "EET" />
+  <string key = "TimezoneAbbriviations.Daylight.GTB Standard Time" value = "EEST" />
+  <string key = "TimezoneAbbriviations.Standard.GTB Standard Time" value = "EET" />
+  <string key = "TimezoneAbbriviations.Daylight.Middle East Standard Time" value = "EEST" />
+  <string key = "TimezoneAbbriviations.Standard.Middle East Standard Time" value = "EET" />
+  <string key = "TimezoneAbbriviations.Daylight.Egypt Standard Time" value = "EET" />
+  <string key = "TimezoneAbbriviations.Standard.Egypt Standard Time" value = "EET" />
+  <string key = "TimezoneAbbriviations.Daylight.Syria Standard Time" value = "EEST" />
+  <string key = "TimezoneAbbriviations.Standard.Syria Standard Time" value = "EET" />
+  <string key = "TimezoneAbbriviations.Daylight.E. Europe Standard Time" value = "EEST" />
+  <string key = "TimezoneAbbriviations.Standard.E. Europe Standard Time" value = "EET" />
+  <string key = "TimezoneAbbriviations.Daylight.South Africa Standard Time" value = "SAST" />
+  <string key = "TimezoneAbbriviations.Standard.South Africa Standard Time" value = "SAST" />
+  <string key = "TimezoneAbbriviations.Daylight.FLE Standard Time" value = "EEST" />
+  <string key = "TimezoneAbbriviations.Standard.FLE Standard Time" value = "EET" />
+  <string key = "TimezoneAbbriviations.Daylight.Turkey Standard Time" value = "EEST" />
+  <string key = "TimezoneAbbriviations.Standard.Turkey Standard Time" value = "EET" />
+  <string key = "TimezoneAbbriviations.Daylight.Israel Standard Time" value = "IDT" />
+  <string key = "TimezoneAbbriviations.Standard.Israel Standard Time" value = "IST" />
+  <string key = "TimezoneAbbriviations.Daylight.Kaliningrad Standard Time" value = "EET" />
+  <string key = "TimezoneAbbriviations.Standard.Kaliningrad Standard Time" value = "EET" />
+  <string key = "TimezoneAbbriviations.Daylight.Libya Standard Time" value = "EET" />
+  <string key = "TimezoneAbbriviations.Standard.Libya Standard Time" value = "EET" />
+  <string key = "TimezoneAbbriviations.Daylight.Arabic Standard Time" value = "AST" />
+  <string key = "TimezoneAbbriviations.Standard.Arabic Standard Time" value = "AST" />
+  <string key = "TimezoneAbbriviations.Daylight.Arab Standard Time" value = "AST" />
+  <string key = "TimezoneAbbriviations.Standard.Arab Standard Time" value = "AST" />
+  <string key = "TimezoneAbbriviations.Daylight.Belarus Standard Time" value = "MSK" />
+  <string key = "TimezoneAbbriviations.Standard.Belarus Standard Time" value = "MSK" />
+  <string key = "TimezoneAbbriviations.Daylight.Russian Standard Time" value = "MSK" />
+  <string key = "TimezoneAbbriviations.Standard.Russian Standard Time" value = "MSK" />
+  <string key = "TimezoneAbbriviations.Daylight.E. Africa Standard Time" value = "EAT" />
+  <string key = "TimezoneAbbriviations.Standard.E. Africa Standard Time" value = "EAT" />
+  <string key = "TimezoneAbbriviations.Daylight.Astrakhan Standard Time" value = "MSK+1" />
+  <string key = "TimezoneAbbriviations.Standard.Astrakhan Standard Time" value = "MSK" />
+  <string key = "TimezoneAbbriviations.Daylight.Iran Standard Time" value = "IRDT" />
+  <string key = "TimezoneAbbriviations.Standard.Iran Standard Time" value = "IRST" />
+  <string key = "TimezoneAbbriviations.Daylight.Arabian Standard Time" value = "GST" />
+  <string key = "TimezoneAbbriviations.Standard.Arabian Standard Time" value = "GST" />
+  <string key = "TimezoneAbbriviations.Daylight.Azerbaijan Standard Time" value = "AZT" />
+  <string key = "TimezoneAbbriviations.Standard.Azerbaijan Standard Time" value = "AZT" />
+  <string key = "TimezoneAbbriviations.Daylight.Russia Time Zone 3" value = "SAMT" />
+  <string key = "TimezoneAbbriviations.Standard.Russia Time Zone 3" value = "SAMT" />
+  <string key = "TimezoneAbbriviations.Daylight.Mauritius Standard Time" value = "MUT" />
+  <string key = "TimezoneAbbriviations.Standard.Mauritius Standard Time" value = "MUT" />
+  <string key = "TimezoneAbbriviations.Daylight.Georgian Standard Time" value = "GET" />
+  <string key = "TimezoneAbbriviations.Standard.Georgian Standard Time" value = "GET" />
+  <string key = "TimezoneAbbriviations.Daylight.Caucasus Standard Time" value = "AMT" />
+  <string key = "TimezoneAbbriviations.Standard.Caucasus Standard Time" value = "AMT" />
+  <string key = "TimezoneAbbriviations.Daylight.Afghanistan Standard Time" value = "AFT" />
+  <string key = "TimezoneAbbriviations.Standard.Afghanistan Standard Time" value = "AFT" />
+  <string key = "TimezoneAbbriviations.Daylight.West Asia Standard Time" value = "UZT" />
+  <string key = "TimezoneAbbriviations.Standard.West Asia Standard Time" value = "UZT" />
+  <string key = "TimezoneAbbriviations.Daylight.Ekaterinburg Standard Time" value = "YEKT" />
+  <string key = "TimezoneAbbriviations.Standard.Ekaterinburg Standard Time" value = "YEKT" />
+  <string key = "TimezoneAbbriviations.Daylight.Pakistan Standard Time" value = "PKT" />
+  <string key = "TimezoneAbbriviations.Standard.Pakistan Standard Time" value = "PKT" />
+  <string key = "TimezoneAbbriviations.Daylight.India Standard Time" value = "IST" />
+  <string key = "TimezoneAbbriviations.Standard.India Standard Time" value = "IST" />
+  <string key = "TimezoneAbbriviations.Daylight.Sri Lanka Standard Time" value = "IST" />
+  <string key = "TimezoneAbbriviations.Standard.Sri Lanka Standard Time" value = "IST" />
+  <string key = "TimezoneAbbriviations.Daylight.Nepal Standard Time" value = "NPT" />
+  <string key = "TimezoneAbbriviations.Standard.Nepal Standard Time" value = "NPT" />
+  <string key = "TimezoneAbbriviations.Daylight.Central Asia Standard Time" value = "ALMT" />
+  <string key = "TimezoneAbbriviations.Standard.Central Asia Standard Time" value = "ALMT" />
+  <string key = "TimezoneAbbriviations.Daylight.Bangladesh Standard Time" value = "BDT" />
+  <string key = "TimezoneAbbriviations.Standard.Bangladesh Standard Time" value = "BDT" />
+  <string key = "TimezoneAbbriviations.Daylight.N. Central Asia Standard Time" value = "NOVT" />
+  <string key = "TimezoneAbbriviations.Standard.N. Central Asia Standard Time" value = "NOVT" />
+  <string key = "TimezoneAbbriviations.Daylight.Altai Standard Time" value = "MSK+4" />
+  <string key = "TimezoneAbbriviations.Standard.Altai Standard Time" value = "MSK+3" />
+  <string key = "TimezoneAbbriviations.Daylight.Myanmar Standard Time" value = "MMT" />
+  <string key = "TimezoneAbbriviations.Standard.Myanmar Standard Time" value = "MMT" />
+  <string key = "TimezoneAbbriviations.Daylight.SE Asia Standard Time" value = "ICT" />
+  <string key = "TimezoneAbbriviations.Standard.SE Asia Standard Time" value = "ICT" />
+  <string key = "TimezoneAbbriviations.Daylight.North Asia Standard Time" value = "KRAT" />
+  <string key = "TimezoneAbbriviations.Standard.North Asia Standard Time" value = "KRAT" />
+  <string key = "TimezoneAbbriviations.Daylight.China Standard Time" value = "CST" />
+  <string key = "TimezoneAbbriviations.Standard.China Standard Time" value = "CST" />
+  <string key = "TimezoneAbbriviations.Daylight.North Asia East Standard Time" value = "IRKT" />
+  <string key = "TimezoneAbbriviations.Standard.North Asia East Standard Time" value = "IRKT" />
+  <string key = "TimezoneAbbriviations.Daylight.Singapore Standard Time" value = "SGT" />
+  <string key = "TimezoneAbbriviations.Standard.Singapore Standard Time" value = "SGT" />
+  <string key = "TimezoneAbbriviations.Daylight.W. Australia Standard Time" value = "AWST" />
+  <string key = "TimezoneAbbriviations.Standard.W. Australia Standard Time" value = "AWST" />
+  <string key = "TimezoneAbbriviations.Daylight.Taipei Standard Time" value = "CST" />
+  <string key = "TimezoneAbbriviations.Standard.Taipei Standard Time" value = "CST" />
+  <string key = "TimezoneAbbriviations.Daylight.Ulaanbaatar Standard Time" value = "ULAST" />
+  <string key = "TimezoneAbbriviations.Standard.Ulaanbaatar Standard Time" value = "ULAT" />
+  <string key = "TimezoneAbbriviations.Daylight.Transbaikal Standard Time" value = "TDT" />
+  <string key = "TimezoneAbbriviations.Standard.Transbaikal Standard Time" value = "TST" />
+  <string key = "TimezoneAbbriviations.Daylight.North Korea Standard Time" value = "KST" />
+  <string key = "TimezoneAbbriviations.Standard.North Korea Standard Time" value = "KST" />
+  <string key = "TimezoneAbbriviations.Daylight.Tokyo Standard Time" value = "JST" />
+  <string key = "TimezoneAbbriviations.Standard.Tokyo Standard Time" value = "JST" />
+  <string key = "TimezoneAbbriviations.Daylight.Korea Standard Time" value = "KST" />
+  <string key = "TimezoneAbbriviations.Standard.Korea Standard Time" value = "KST" />
+  <string key = "TimezoneAbbriviations.Daylight.Yakutsk Standard Time" value = "YAKT" />
+  <string key = "TimezoneAbbriviations.Standard.Yakutsk Standard Time" value = "YAKT" />
+  <string key = "TimezoneAbbriviations.Daylight.Cen. Australia Standard Time" value = "ACST" />
+  <string key = "TimezoneAbbriviations.Standard.Cen. Australia Standard Time" value = "ACDT" />
+  <string key = "TimezoneAbbriviations.Daylight.AUS Central Standard Time" value = "ACST" />
+  <string key = "TimezoneAbbriviations.Standard.AUS Central Standard Time" value = "ACST" />
+  <string key = "TimezoneAbbriviations.Daylight.E. Australia Standard Time" value = "AEST" />
+  <string key = "TimezoneAbbriviations.Standard.E. Australia Standard Time" value = "AEST" />
+  <string key = "TimezoneAbbriviations.Daylight.AUS Eastern Standard Time" value = "AEST" />
+  <string key = "TimezoneAbbriviations.Standard.AUS Eastern Standard Time" value = "AEDT" />
+  <string key = "TimezoneAbbriviations.Daylight.West Pacific Standard Time" value = "PGT" />
+  <string key = "TimezoneAbbriviations.Standard.West Pacific Standard Time" value = "PGT" />
+  <string key = "TimezoneAbbriviations.Daylight.Tasmania Standard Time" value = "AEST" />
+  <string key = "TimezoneAbbriviations.Standard.Tasmania Standard Time" value = "AEDT" />
+  <string key = "TimezoneAbbriviations.Daylight.Magadan Standard Time" value = "MAGT" />
+  <string key = "TimezoneAbbriviations.Standard.Magadan Standard Time" value = "MAGT" />
+  <string key = "TimezoneAbbriviations.Daylight.Vladivostok Standard Time" value = "VLAT" />
+  <string key = "TimezoneAbbriviations.Standard.Vladivostok Standard Time" value = "VLAT" />
+  <string key = "TimezoneAbbriviations.Daylight.Sakhalin Standard Time" value = "SAKT" />
+  <string key = "TimezoneAbbriviations.Standard.Sakhalin Standard Time" value = "SAKT" />
+  <string key = "TimezoneAbbriviations.Daylight.Russia Time Zone 10" value = "SRET" />
+  <string key = "TimezoneAbbriviations.Standard.Russia Time Zone 10" value = "SRET" />
+  <string key = "TimezoneAbbriviations.Daylight.Central Pacific Standard Time" value = "SBT" />
+  <string key = "TimezoneAbbriviations.Standard.Central Pacific Standard Time" value = "SBT" />
+  <string key = "TimezoneAbbriviations.Daylight.Russia Time Zone 11" value = "PETT" />
+  <string key = "TimezoneAbbriviations.Standard.Russia Time Zone 11" value = "PETT" />
+  <string key = "TimezoneAbbriviations.Daylight.New Zealand Standard Time" value = "NZST" />
+  <string key = "TimezoneAbbriviations.Standard.New Zealand Standard Time" value = "NZDT" />
+  <string key = "TimezoneAbbriviations.Daylight.UTC+12" value = "Etc/GMT-12" />
+  <string key = "TimezoneAbbriviations.Standard.UTC+12" value = "Etc/GMT-12" />
+  <string key = "TimezoneAbbriviations.Daylight.Fiji Standard Time" value = "FJT" />
+  <string key = "TimezoneAbbriviations.Standard.Fiji Standard Time" value = "FJST" />
+  <string key = "TimezoneAbbriviations.Daylight.Kamchatka Standard Time" value = "PETT" />
+  <string key = "TimezoneAbbriviations.Standard.Kamchatka Standard Time" value = "PETT" />
+  <string key = "TimezoneAbbriviations.Daylight.Tonga Standard Time" value = "TOT" />
+  <string key = "TimezoneAbbriviations.Standard.Tonga Standard Time" value = "TOT" />
+  <string key = "TimezoneAbbriviations.Daylight.Samoa Standard Time" value = "WSST" />
+  <string key = "TimezoneAbbriviations.Standard.Samoa Standard Time" value = "WSDT" />
+  <string key = "TimezoneAbbriviations.Daylight.Line Islands Standard Time" value = "LINT" />
+  <string key = "TimezoneAbbriviations.Standard.Line Islands Standard Time" value = "LINT" />
+</strings>

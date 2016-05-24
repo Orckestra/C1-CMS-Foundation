@@ -407,7 +407,7 @@ public static string ChangePasswordForm_IncorrectOldPassword=>T("ChangePasswordF
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	   public static class Composite_Core_PackageSystem_PackageFragmentInstallers {
-///<summary>&quot;The package composite version requirements does not match the current composite version &apos;{0}&apos;. Expected versions [{1} - {2}]&quot;</summary> 
+///<summary>&quot;The package composite version requirements does not match the current composite version &apos;{0}&apos;. Expected version range [{1} - {2}]&quot;</summary> 
 public static string PackageManager_CompositeVersionMisMatch(object parameter0,object parameter1,object parameter2)=>string.Format(T("PackageManager.CompositeVersionMisMatch"), parameter0,parameter1,parameter2);
 ///<summary>&quot;Package is already installed&quot;</summary> 
 public static string PackageManager_PackageAlreadyInstalled=>T("PackageManager.PackageAlreadyInstalled");
@@ -1651,6 +1651,16 @@ public static string VirtualElementProviderElementProvider_XsltBasedFunctionPers
 public static string VirtualElementProviderElementProvider_RootActions_SendMessageLabel=>T("VirtualElementProviderElementProvider.RootActions.SendMessageLabel");
 ///<summary>&quot;Send a message to all running consoles&quot;</summary> 
 public static string VirtualElementProviderElementProvider_RootActions_SendMessageTooltip=>T("VirtualElementProviderElementProvider.RootActions.SendMessageTooltip");
+///<summary>&quot;Set Time Zone&quot;</summary> 
+public static string VirtualElementProviderElementProvider_RootActions_SetTimezoneLabel=>T("VirtualElementProviderElementProvider.RootActions.SetTimezoneLabel");
+///<summary>&quot;Change the Time Zone of the Consoles&quot;</summary> 
+public static string VirtualElementProviderElementProvider_RootActions_SetTimezoneTooltip=>T("VirtualElementProviderElementProvider.RootActions.SetTimezoneTooltip");
+///<summary>&quot;Time Zone Changed&quot;</summary> 
+public static string VirtualElementProviderElementProvider_RootActions_TimezoneChangedTitle=>T("VirtualElementProviderElementProvider.RootActions.TimezoneChangedTitle");
+///<summary>&quot;Consoles&apos; Time Zone Are Changed Successfully&quot;</summary> 
+public static string VirtualElementProviderElementProvider_RootActions_TimezoneChangedMessage=>T("VirtualElementProviderElementProvider.RootActions.TimezoneChangedMessage");
+///<summary>&quot;Global Settings&quot;</summary> 
+public static string VirtualElementProviderElementProvider_RootActions_GlobalSetting=>T("VirtualElementProviderElementProvider.RootActions.GlobalSetting");
 ///<summary>&quot;Restart server&quot;</summary> 
 public static string VirtualElementProviderElementProvider_RootActions_RestartApplicationLabel=>T("VirtualElementProviderElementProvider.RootActions.RestartApplicationLabel");
 ///<summary>&quot;Restart the server&quot;</summary> 
@@ -5159,6 +5169,714 @@ public static string Composite_Utils_Dictionary_EnumerableToDictionary_param_Val
      private static string T(string key) 
        { 
             return StringResourceSystemFacade.GetString("Composite.Plugins.StandardFunctions", key);
+        }
+} 
+
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+	   public static class Composite_Plugins_TimezoneAbbriviations {
+///<summary>&quot;Etc/GMT+12&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Dateline_Standard_Time=>T("TimezoneAbbriviations.Daylight.Dateline Standard Time");
+///<summary>&quot;Etc/GMT+12&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Dateline_Standard_Time=>T("TimezoneAbbriviations.Standard.Dateline Standard Time");
+///<summary>&quot;Etc/GMT+11&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_UTC_11=>T("TimezoneAbbriviations.Daylight.UTC-11");
+///<summary>&quot;Etc/GMT+11&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_UTC_11=>T("TimezoneAbbriviations.Standard.UTC-11");
+///<summary>&quot;HST&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Hawaiian_Standard_Time=>T("TimezoneAbbriviations.Daylight.Hawaiian Standard Time");
+///<summary>&quot;HST&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Hawaiian_Standard_Time=>T("TimezoneAbbriviations.Standard.Hawaiian Standard Time");
+///<summary>&quot;AKDT&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Alaskan_Standard_Time=>T("TimezoneAbbriviations.Daylight.Alaskan Standard Time");
+///<summary>&quot;AKST&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Alaskan_Standard_Time=>T("TimezoneAbbriviations.Standard.Alaskan Standard Time");
+///<summary>&quot;PDT&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Pacific_Standard_Time_Mexico=>T("TimezoneAbbriviations.Daylight.Pacific Standard Time (Mexico)");
+///<summary>&quot;PST&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Pacific_Standard_Time_Mexico=>T("TimezoneAbbriviations.Standard.Pacific Standard Time (Mexico)");
+///<summary>&quot;PDT&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Pacific_Standard_Time=>T("TimezoneAbbriviations.Daylight.Pacific Standard Time");
+///<summary>&quot;PST&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Pacific_Standard_Time=>T("TimezoneAbbriviations.Standard.Pacific Standard Time");
+///<summary>&quot;MST&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_US_Mountain_Standard_Time=>T("TimezoneAbbriviations.Daylight.US Mountain Standard Time");
+///<summary>&quot;MST&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_US_Mountain_Standard_Time=>T("TimezoneAbbriviations.Standard.US Mountain Standard Time");
+///<summary>&quot;MDT&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Mountain_Standard_Time_Mexico=>T("TimezoneAbbriviations.Daylight.Mountain Standard Time (Mexico)");
+///<summary>&quot;MST&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Mountain_Standard_Time_Mexico=>T("TimezoneAbbriviations.Standard.Mountain Standard Time (Mexico)");
+///<summary>&quot;MDT&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Mountain_Standard_Time=>T("TimezoneAbbriviations.Daylight.Mountain Standard Time");
+///<summary>&quot;MST&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Mountain_Standard_Time=>T("TimezoneAbbriviations.Standard.Mountain Standard Time");
+///<summary>&quot;CST&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Central_America_Standard_Time=>T("TimezoneAbbriviations.Daylight.Central America Standard Time");
+///<summary>&quot;CST&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Central_America_Standard_Time=>T("TimezoneAbbriviations.Standard.Central America Standard Time");
+///<summary>&quot;CDT&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Central_Standard_Time=>T("TimezoneAbbriviations.Daylight.Central Standard Time");
+///<summary>&quot;CST&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Central_Standard_Time=>T("TimezoneAbbriviations.Standard.Central Standard Time");
+///<summary>&quot;EAST&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Easter_Island_Standard_Time=>T("TimezoneAbbriviations.Daylight.Easter Island Standard Time");
+///<summary>&quot;EASST&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Easter_Island_Standard_Time=>T("TimezoneAbbriviations.Standard.Easter Island Standard Time");
+///<summary>&quot;CDT&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Central_Standard_Time_Mexico=>T("TimezoneAbbriviations.Daylight.Central Standard Time (Mexico)");
+///<summary>&quot;CST&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Central_Standard_Time_Mexico=>T("TimezoneAbbriviations.Standard.Central Standard Time (Mexico)");
+///<summary>&quot;CST&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Canada_Central_Standard_Time=>T("TimezoneAbbriviations.Daylight.Canada Central Standard Time");
+///<summary>&quot;CST&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Canada_Central_Standard_Time=>T("TimezoneAbbriviations.Standard.Canada Central Standard Time");
+///<summary>&quot;COT&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_SA_Pacific_Standard_Time=>T("TimezoneAbbriviations.Daylight.SA Pacific Standard Time");
+///<summary>&quot;COT&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_SA_Pacific_Standard_Time=>T("TimezoneAbbriviations.Standard.SA Pacific Standard Time");
+///<summary>&quot;EST&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Eastern_Standard_Time_Mexico=>T("TimezoneAbbriviations.Daylight.Eastern Standard Time (Mexico)");
+///<summary>&quot;EST&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Eastern_Standard_Time_Mexico=>T("TimezoneAbbriviations.Standard.Eastern Standard Time (Mexico)");
+///<summary>&quot;EDT&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Eastern_Standard_Time=>T("TimezoneAbbriviations.Daylight.Eastern Standard Time");
+///<summary>&quot;EST&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Eastern_Standard_Time=>T("TimezoneAbbriviations.Standard.Eastern Standard Time");
+///<summary>&quot;EDT&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Haiti_Standard_Time=>T("TimezoneAbbriviations.Daylight.Haiti Standard Time");
+///<summary>&quot;EST&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Haiti_Standard_Time=>T("TimezoneAbbriviations.Standard.Haiti Standard Time");
+///<summary>&quot;EDT&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_US_Eastern_Standard_Time=>T("TimezoneAbbriviations.Daylight.US Eastern Standard Time");
+///<summary>&quot;EST&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_US_Eastern_Standard_Time=>T("TimezoneAbbriviations.Standard.US Eastern Standard Time");
+///<summary>&quot;VET&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Venezuela_Standard_Time=>T("TimezoneAbbriviations.Daylight.Venezuela Standard Time");
+///<summary>&quot;VET&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Venezuela_Standard_Time=>T("TimezoneAbbriviations.Standard.Venezuela Standard Time");
+///<summary>&quot;PYT&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Paraguay_Standard_Time=>T("TimezoneAbbriviations.Daylight.Paraguay Standard Time");
+///<summary>&quot;PYST&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Paraguay_Standard_Time=>T("TimezoneAbbriviations.Standard.Paraguay Standard Time");
+///<summary>&quot;ADT&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Atlantic_Standard_Time=>T("TimezoneAbbriviations.Daylight.Atlantic Standard Time");
+///<summary>&quot;AST&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Atlantic_Standard_Time=>T("TimezoneAbbriviations.Standard.Atlantic Standard Time");
+///<summary>&quot;AMT&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Central_Brazilian_Standard_Time=>T("TimezoneAbbriviations.Daylight.Central Brazilian Standard Time");
+///<summary>&quot;AMST&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Central_Brazilian_Standard_Time=>T("TimezoneAbbriviations.Standard.Central Brazilian Standard Time");
+///<summary>&quot;BOT&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_SA_Western_Standard_Time=>T("TimezoneAbbriviations.Daylight.SA Western Standard Time");
+///<summary>&quot;BOT&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_SA_Western_Standard_Time=>T("TimezoneAbbriviations.Standard.SA Western Standard Time");
+///<summary>&quot;CLT&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Pacific_SA_Standard_Time=>T("TimezoneAbbriviations.Daylight.Pacific SA Standard Time");
+///<summary>&quot;CLST&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Pacific_SA_Standard_Time=>T("TimezoneAbbriviations.Standard.Pacific SA Standard Time");
+///<summary>&quot;NDT&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Newfoundland_Standard_Time=>T("TimezoneAbbriviations.Daylight.Newfoundland Standard Time");
+///<summary>&quot;NST&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Newfoundland_Standard_Time=>T("TimezoneAbbriviations.Standard.Newfoundland Standard Time");
+///<summary>&quot;BRT&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_E__South_America_Standard_Time=>T("TimezoneAbbriviations.Daylight.E. South America Standard Time");
+///<summary>&quot;BRST&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_E__South_America_Standard_Time=>T("TimezoneAbbriviations.Standard.E. South America Standard Time");
+///<summary>&quot;GFT&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_SA_Eastern_Standard_Time=>T("TimezoneAbbriviations.Daylight.SA Eastern Standard Time");
+///<summary>&quot;GFT&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_SA_Eastern_Standard_Time=>T("TimezoneAbbriviations.Standard.SA Eastern Standard Time");
+///<summary>&quot;ART&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Argentina_Standard_Time=>T("TimezoneAbbriviations.Daylight.Argentina Standard Time");
+///<summary>&quot;ART&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Argentina_Standard_Time=>T("TimezoneAbbriviations.Standard.Argentina Standard Time");
+///<summary>&quot;WGST&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Greenland_Standard_Time=>T("TimezoneAbbriviations.Daylight.Greenland Standard Time");
+///<summary>&quot;WGT&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Greenland_Standard_Time=>T("TimezoneAbbriviations.Standard.Greenland Standard Time");
+///<summary>&quot;UYT&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Montevideo_Standard_Time=>T("TimezoneAbbriviations.Daylight.Montevideo Standard Time");
+///<summary>&quot;UYT&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Montevideo_Standard_Time=>T("TimezoneAbbriviations.Standard.Montevideo Standard Time");
+///<summary>&quot;BRT&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Bahia_Standard_Time=>T("TimezoneAbbriviations.Daylight.Bahia Standard Time");
+///<summary>&quot;BRT&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Bahia_Standard_Time=>T("TimezoneAbbriviations.Standard.Bahia Standard Time");
+///<summary>&quot;Etc/GMT+2&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_UTC_02=>T("TimezoneAbbriviations.Daylight.UTC-02");
+///<summary>&quot;Etc/GMT+2&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_UTC_02=>T("TimezoneAbbriviations.Standard.UTC-02");
+///<summary>&quot;ADT&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Mid_Atlantic_Standard_Time=>T("TimezoneAbbriviations.Daylight.Mid-Atlantic Standard Time");
+///<summary>&quot;AST&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Mid_Atlantic_Standard_Time=>T("TimezoneAbbriviations.Standard.Mid-Atlantic Standard Time");
+///<summary>&quot;AZOST&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Azores_Standard_Time=>T("TimezoneAbbriviations.Daylight.Azores Standard Time");
+///<summary>&quot;AZOT&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Azores_Standard_Time=>T("TimezoneAbbriviations.Standard.Azores Standard Time");
+///<summary>&quot;CVT&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Cape_Verde_Standard_Time=>T("TimezoneAbbriviations.Daylight.Cape Verde Standard Time");
+///<summary>&quot;CVT&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Cape_Verde_Standard_Time=>T("TimezoneAbbriviations.Standard.Cape Verde Standard Time");
+///<summary>&quot;WEST&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Morocco_Standard_Time=>T("TimezoneAbbriviations.Daylight.Morocco Standard Time");
+///<summary>&quot;WET&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Morocco_Standard_Time=>T("TimezoneAbbriviations.Standard.Morocco Standard Time");
+///<summary>&quot;Etc/GMT&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_UTC=>T("TimezoneAbbriviations.Daylight.UTC");
+///<summary>&quot;Etc/GMT&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_UTC=>T("TimezoneAbbriviations.Standard.UTC");
+///<summary>&quot;BST&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_GMT_Standard_Time=>T("TimezoneAbbriviations.Daylight.GMT Standard Time");
+///<summary>&quot;GMT&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_GMT_Standard_Time=>T("TimezoneAbbriviations.Standard.GMT Standard Time");
+///<summary>&quot;GMT&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Greenwich_Standard_Time=>T("TimezoneAbbriviations.Daylight.Greenwich Standard Time");
+///<summary>&quot;GMT&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Greenwich_Standard_Time=>T("TimezoneAbbriviations.Standard.Greenwich Standard Time");
+///<summary>&quot;CEST&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_W__Europe_Standard_Time=>T("TimezoneAbbriviations.Daylight.W. Europe Standard Time");
+///<summary>&quot;CET&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_W__Europe_Standard_Time=>T("TimezoneAbbriviations.Standard.W. Europe Standard Time");
+///<summary>&quot;CEST&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Central_Europe_Standard_Time=>T("TimezoneAbbriviations.Daylight.Central Europe Standard Time");
+///<summary>&quot;CET&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Central_Europe_Standard_Time=>T("TimezoneAbbriviations.Standard.Central Europe Standard Time");
+///<summary>&quot;CEST&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Romance_Standard_Time=>T("TimezoneAbbriviations.Daylight.Romance Standard Time");
+///<summary>&quot;CET&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Romance_Standard_Time=>T("TimezoneAbbriviations.Standard.Romance Standard Time");
+///<summary>&quot;CEST&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Central_European_Standard_Time=>T("TimezoneAbbriviations.Daylight.Central European Standard Time");
+///<summary>&quot;CET&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Central_European_Standard_Time=>T("TimezoneAbbriviations.Standard.Central European Standard Time");
+///<summary>&quot;WAT&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_W__Central_Africa_Standard_Time=>T("TimezoneAbbriviations.Daylight.W. Central Africa Standard Time");
+///<summary>&quot;WAT&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_W__Central_Africa_Standard_Time=>T("TimezoneAbbriviations.Standard.W. Central Africa Standard Time");
+///<summary>&quot;WAT&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Namibia_Standard_Time=>T("TimezoneAbbriviations.Daylight.Namibia Standard Time");
+///<summary>&quot;WAST&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Namibia_Standard_Time=>T("TimezoneAbbriviations.Standard.Namibia Standard Time");
+///<summary>&quot;EEST&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Jordan_Standard_Time=>T("TimezoneAbbriviations.Daylight.Jordan Standard Time");
+///<summary>&quot;EET&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Jordan_Standard_Time=>T("TimezoneAbbriviations.Standard.Jordan Standard Time");
+///<summary>&quot;EEST&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_GTB_Standard_Time=>T("TimezoneAbbriviations.Daylight.GTB Standard Time");
+///<summary>&quot;EET&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_GTB_Standard_Time=>T("TimezoneAbbriviations.Standard.GTB Standard Time");
+///<summary>&quot;EEST&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Middle_East_Standard_Time=>T("TimezoneAbbriviations.Daylight.Middle East Standard Time");
+///<summary>&quot;EET&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Middle_East_Standard_Time=>T("TimezoneAbbriviations.Standard.Middle East Standard Time");
+///<summary>&quot;EET&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Egypt_Standard_Time=>T("TimezoneAbbriviations.Daylight.Egypt Standard Time");
+///<summary>&quot;EET&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Egypt_Standard_Time=>T("TimezoneAbbriviations.Standard.Egypt Standard Time");
+///<summary>&quot;EEST&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Syria_Standard_Time=>T("TimezoneAbbriviations.Daylight.Syria Standard Time");
+///<summary>&quot;EET&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Syria_Standard_Time=>T("TimezoneAbbriviations.Standard.Syria Standard Time");
+///<summary>&quot;EEST&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_E__Europe_Standard_Time=>T("TimezoneAbbriviations.Daylight.E. Europe Standard Time");
+///<summary>&quot;EET&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_E__Europe_Standard_Time=>T("TimezoneAbbriviations.Standard.E. Europe Standard Time");
+///<summary>&quot;SAST&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_South_Africa_Standard_Time=>T("TimezoneAbbriviations.Daylight.South Africa Standard Time");
+///<summary>&quot;SAST&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_South_Africa_Standard_Time=>T("TimezoneAbbriviations.Standard.South Africa Standard Time");
+///<summary>&quot;EEST&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_FLE_Standard_Time=>T("TimezoneAbbriviations.Daylight.FLE Standard Time");
+///<summary>&quot;EET&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_FLE_Standard_Time=>T("TimezoneAbbriviations.Standard.FLE Standard Time");
+///<summary>&quot;EEST&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Turkey_Standard_Time=>T("TimezoneAbbriviations.Daylight.Turkey Standard Time");
+///<summary>&quot;EET&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Turkey_Standard_Time=>T("TimezoneAbbriviations.Standard.Turkey Standard Time");
+///<summary>&quot;IDT&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Israel_Standard_Time=>T("TimezoneAbbriviations.Daylight.Israel Standard Time");
+///<summary>&quot;IST&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Israel_Standard_Time=>T("TimezoneAbbriviations.Standard.Israel Standard Time");
+///<summary>&quot;EET&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Kaliningrad_Standard_Time=>T("TimezoneAbbriviations.Daylight.Kaliningrad Standard Time");
+///<summary>&quot;EET&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Kaliningrad_Standard_Time=>T("TimezoneAbbriviations.Standard.Kaliningrad Standard Time");
+///<summary>&quot;EET&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Libya_Standard_Time=>T("TimezoneAbbriviations.Daylight.Libya Standard Time");
+///<summary>&quot;EET&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Libya_Standard_Time=>T("TimezoneAbbriviations.Standard.Libya Standard Time");
+///<summary>&quot;AST&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Arabic_Standard_Time=>T("TimezoneAbbriviations.Daylight.Arabic Standard Time");
+///<summary>&quot;AST&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Arabic_Standard_Time=>T("TimezoneAbbriviations.Standard.Arabic Standard Time");
+///<summary>&quot;AST&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Arab_Standard_Time=>T("TimezoneAbbriviations.Daylight.Arab Standard Time");
+///<summary>&quot;AST&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Arab_Standard_Time=>T("TimezoneAbbriviations.Standard.Arab Standard Time");
+///<summary>&quot;MSK&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Belarus_Standard_Time=>T("TimezoneAbbriviations.Daylight.Belarus Standard Time");
+///<summary>&quot;MSK&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Belarus_Standard_Time=>T("TimezoneAbbriviations.Standard.Belarus Standard Time");
+///<summary>&quot;MSK&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Russian_Standard_Time=>T("TimezoneAbbriviations.Daylight.Russian Standard Time");
+///<summary>&quot;MSK&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Russian_Standard_Time=>T("TimezoneAbbriviations.Standard.Russian Standard Time");
+///<summary>&quot;EAT&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_E__Africa_Standard_Time=>T("TimezoneAbbriviations.Daylight.E. Africa Standard Time");
+///<summary>&quot;EAT&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_E__Africa_Standard_Time=>T("TimezoneAbbriviations.Standard.E. Africa Standard Time");
+///<summary>&quot;MSK+1&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Astrakhan_Standard_Time=>T("TimezoneAbbriviations.Daylight.Astrakhan Standard Time");
+///<summary>&quot;MSK&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Astrakhan_Standard_Time=>T("TimezoneAbbriviations.Standard.Astrakhan Standard Time");
+///<summary>&quot;IRDT&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Iran_Standard_Time=>T("TimezoneAbbriviations.Daylight.Iran Standard Time");
+///<summary>&quot;IRST&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Iran_Standard_Time=>T("TimezoneAbbriviations.Standard.Iran Standard Time");
+///<summary>&quot;GST&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Arabian_Standard_Time=>T("TimezoneAbbriviations.Daylight.Arabian Standard Time");
+///<summary>&quot;GST&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Arabian_Standard_Time=>T("TimezoneAbbriviations.Standard.Arabian Standard Time");
+///<summary>&quot;AZT&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Azerbaijan_Standard_Time=>T("TimezoneAbbriviations.Daylight.Azerbaijan Standard Time");
+///<summary>&quot;AZT&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Azerbaijan_Standard_Time=>T("TimezoneAbbriviations.Standard.Azerbaijan Standard Time");
+///<summary>&quot;SAMT&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Russia_Time_Zone_3=>T("TimezoneAbbriviations.Daylight.Russia Time Zone 3");
+///<summary>&quot;SAMT&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Russia_Time_Zone_3=>T("TimezoneAbbriviations.Standard.Russia Time Zone 3");
+///<summary>&quot;MUT&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Mauritius_Standard_Time=>T("TimezoneAbbriviations.Daylight.Mauritius Standard Time");
+///<summary>&quot;MUT&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Mauritius_Standard_Time=>T("TimezoneAbbriviations.Standard.Mauritius Standard Time");
+///<summary>&quot;GET&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Georgian_Standard_Time=>T("TimezoneAbbriviations.Daylight.Georgian Standard Time");
+///<summary>&quot;GET&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Georgian_Standard_Time=>T("TimezoneAbbriviations.Standard.Georgian Standard Time");
+///<summary>&quot;AMT&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Caucasus_Standard_Time=>T("TimezoneAbbriviations.Daylight.Caucasus Standard Time");
+///<summary>&quot;AMT&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Caucasus_Standard_Time=>T("TimezoneAbbriviations.Standard.Caucasus Standard Time");
+///<summary>&quot;AFT&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Afghanistan_Standard_Time=>T("TimezoneAbbriviations.Daylight.Afghanistan Standard Time");
+///<summary>&quot;AFT&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Afghanistan_Standard_Time=>T("TimezoneAbbriviations.Standard.Afghanistan Standard Time");
+///<summary>&quot;UZT&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_West_Asia_Standard_Time=>T("TimezoneAbbriviations.Daylight.West Asia Standard Time");
+///<summary>&quot;UZT&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_West_Asia_Standard_Time=>T("TimezoneAbbriviations.Standard.West Asia Standard Time");
+///<summary>&quot;YEKT&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Ekaterinburg_Standard_Time=>T("TimezoneAbbriviations.Daylight.Ekaterinburg Standard Time");
+///<summary>&quot;YEKT&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Ekaterinburg_Standard_Time=>T("TimezoneAbbriviations.Standard.Ekaterinburg Standard Time");
+///<summary>&quot;PKT&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Pakistan_Standard_Time=>T("TimezoneAbbriviations.Daylight.Pakistan Standard Time");
+///<summary>&quot;PKT&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Pakistan_Standard_Time=>T("TimezoneAbbriviations.Standard.Pakistan Standard Time");
+///<summary>&quot;IST&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_India_Standard_Time=>T("TimezoneAbbriviations.Daylight.India Standard Time");
+///<summary>&quot;IST&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_India_Standard_Time=>T("TimezoneAbbriviations.Standard.India Standard Time");
+///<summary>&quot;IST&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Sri_Lanka_Standard_Time=>T("TimezoneAbbriviations.Daylight.Sri Lanka Standard Time");
+///<summary>&quot;IST&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Sri_Lanka_Standard_Time=>T("TimezoneAbbriviations.Standard.Sri Lanka Standard Time");
+///<summary>&quot;NPT&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Nepal_Standard_Time=>T("TimezoneAbbriviations.Daylight.Nepal Standard Time");
+///<summary>&quot;NPT&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Nepal_Standard_Time=>T("TimezoneAbbriviations.Standard.Nepal Standard Time");
+///<summary>&quot;ALMT&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Central_Asia_Standard_Time=>T("TimezoneAbbriviations.Daylight.Central Asia Standard Time");
+///<summary>&quot;ALMT&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Central_Asia_Standard_Time=>T("TimezoneAbbriviations.Standard.Central Asia Standard Time");
+///<summary>&quot;BDT&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Bangladesh_Standard_Time=>T("TimezoneAbbriviations.Daylight.Bangladesh Standard Time");
+///<summary>&quot;BDT&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Bangladesh_Standard_Time=>T("TimezoneAbbriviations.Standard.Bangladesh Standard Time");
+///<summary>&quot;NOVT&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_N__Central_Asia_Standard_Time=>T("TimezoneAbbriviations.Daylight.N. Central Asia Standard Time");
+///<summary>&quot;NOVT&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_N__Central_Asia_Standard_Time=>T("TimezoneAbbriviations.Standard.N. Central Asia Standard Time");
+///<summary>&quot;MSK+4&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Altai_Standard_Time=>T("TimezoneAbbriviations.Daylight.Altai Standard Time");
+///<summary>&quot;MSK+3&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Altai_Standard_Time=>T("TimezoneAbbriviations.Standard.Altai Standard Time");
+///<summary>&quot;MMT&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Myanmar_Standard_Time=>T("TimezoneAbbriviations.Daylight.Myanmar Standard Time");
+///<summary>&quot;MMT&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Myanmar_Standard_Time=>T("TimezoneAbbriviations.Standard.Myanmar Standard Time");
+///<summary>&quot;ICT&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_SE_Asia_Standard_Time=>T("TimezoneAbbriviations.Daylight.SE Asia Standard Time");
+///<summary>&quot;ICT&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_SE_Asia_Standard_Time=>T("TimezoneAbbriviations.Standard.SE Asia Standard Time");
+///<summary>&quot;KRAT&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_North_Asia_Standard_Time=>T("TimezoneAbbriviations.Daylight.North Asia Standard Time");
+///<summary>&quot;KRAT&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_North_Asia_Standard_Time=>T("TimezoneAbbriviations.Standard.North Asia Standard Time");
+///<summary>&quot;CST&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_China_Standard_Time=>T("TimezoneAbbriviations.Daylight.China Standard Time");
+///<summary>&quot;CST&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_China_Standard_Time=>T("TimezoneAbbriviations.Standard.China Standard Time");
+///<summary>&quot;IRKT&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_North_Asia_East_Standard_Time=>T("TimezoneAbbriviations.Daylight.North Asia East Standard Time");
+///<summary>&quot;IRKT&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_North_Asia_East_Standard_Time=>T("TimezoneAbbriviations.Standard.North Asia East Standard Time");
+///<summary>&quot;SGT&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Singapore_Standard_Time=>T("TimezoneAbbriviations.Daylight.Singapore Standard Time");
+///<summary>&quot;SGT&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Singapore_Standard_Time=>T("TimezoneAbbriviations.Standard.Singapore Standard Time");
+///<summary>&quot;AWST&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_W__Australia_Standard_Time=>T("TimezoneAbbriviations.Daylight.W. Australia Standard Time");
+///<summary>&quot;AWST&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_W__Australia_Standard_Time=>T("TimezoneAbbriviations.Standard.W. Australia Standard Time");
+///<summary>&quot;CST&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Taipei_Standard_Time=>T("TimezoneAbbriviations.Daylight.Taipei Standard Time");
+///<summary>&quot;CST&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Taipei_Standard_Time=>T("TimezoneAbbriviations.Standard.Taipei Standard Time");
+///<summary>&quot;ULAST&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Ulaanbaatar_Standard_Time=>T("TimezoneAbbriviations.Daylight.Ulaanbaatar Standard Time");
+///<summary>&quot;ULAT&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Ulaanbaatar_Standard_Time=>T("TimezoneAbbriviations.Standard.Ulaanbaatar Standard Time");
+///<summary>&quot;TDT&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Transbaikal_Standard_Time=>T("TimezoneAbbriviations.Daylight.Transbaikal Standard Time");
+///<summary>&quot;TST&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Transbaikal_Standard_Time=>T("TimezoneAbbriviations.Standard.Transbaikal Standard Time");
+///<summary>&quot;KST&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_North_Korea_Standard_Time=>T("TimezoneAbbriviations.Daylight.North Korea Standard Time");
+///<summary>&quot;KST&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_North_Korea_Standard_Time=>T("TimezoneAbbriviations.Standard.North Korea Standard Time");
+///<summary>&quot;JST&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Tokyo_Standard_Time=>T("TimezoneAbbriviations.Daylight.Tokyo Standard Time");
+///<summary>&quot;JST&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Tokyo_Standard_Time=>T("TimezoneAbbriviations.Standard.Tokyo Standard Time");
+///<summary>&quot;KST&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Korea_Standard_Time=>T("TimezoneAbbriviations.Daylight.Korea Standard Time");
+///<summary>&quot;KST&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Korea_Standard_Time=>T("TimezoneAbbriviations.Standard.Korea Standard Time");
+///<summary>&quot;YAKT&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Yakutsk_Standard_Time=>T("TimezoneAbbriviations.Daylight.Yakutsk Standard Time");
+///<summary>&quot;YAKT&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Yakutsk_Standard_Time=>T("TimezoneAbbriviations.Standard.Yakutsk Standard Time");
+///<summary>&quot;ACST&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Cen__Australia_Standard_Time=>T("TimezoneAbbriviations.Daylight.Cen. Australia Standard Time");
+///<summary>&quot;ACDT&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Cen__Australia_Standard_Time=>T("TimezoneAbbriviations.Standard.Cen. Australia Standard Time");
+///<summary>&quot;ACST&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_AUS_Central_Standard_Time=>T("TimezoneAbbriviations.Daylight.AUS Central Standard Time");
+///<summary>&quot;ACST&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_AUS_Central_Standard_Time=>T("TimezoneAbbriviations.Standard.AUS Central Standard Time");
+///<summary>&quot;AEST&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_E__Australia_Standard_Time=>T("TimezoneAbbriviations.Daylight.E. Australia Standard Time");
+///<summary>&quot;AEST&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_E__Australia_Standard_Time=>T("TimezoneAbbriviations.Standard.E. Australia Standard Time");
+///<summary>&quot;AEST&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_AUS_Eastern_Standard_Time=>T("TimezoneAbbriviations.Daylight.AUS Eastern Standard Time");
+///<summary>&quot;AEDT&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_AUS_Eastern_Standard_Time=>T("TimezoneAbbriviations.Standard.AUS Eastern Standard Time");
+///<summary>&quot;PGT&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_West_Pacific_Standard_Time=>T("TimezoneAbbriviations.Daylight.West Pacific Standard Time");
+///<summary>&quot;PGT&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_West_Pacific_Standard_Time=>T("TimezoneAbbriviations.Standard.West Pacific Standard Time");
+///<summary>&quot;AEST&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Tasmania_Standard_Time=>T("TimezoneAbbriviations.Daylight.Tasmania Standard Time");
+///<summary>&quot;AEDT&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Tasmania_Standard_Time=>T("TimezoneAbbriviations.Standard.Tasmania Standard Time");
+///<summary>&quot;MAGT&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Magadan_Standard_Time=>T("TimezoneAbbriviations.Daylight.Magadan Standard Time");
+///<summary>&quot;MAGT&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Magadan_Standard_Time=>T("TimezoneAbbriviations.Standard.Magadan Standard Time");
+///<summary>&quot;VLAT&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Vladivostok_Standard_Time=>T("TimezoneAbbriviations.Daylight.Vladivostok Standard Time");
+///<summary>&quot;VLAT&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Vladivostok_Standard_Time=>T("TimezoneAbbriviations.Standard.Vladivostok Standard Time");
+///<summary>&quot;SAKT&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Sakhalin_Standard_Time=>T("TimezoneAbbriviations.Daylight.Sakhalin Standard Time");
+///<summary>&quot;SAKT&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Sakhalin_Standard_Time=>T("TimezoneAbbriviations.Standard.Sakhalin Standard Time");
+///<summary>&quot;SRET&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Russia_Time_Zone_10=>T("TimezoneAbbriviations.Daylight.Russia Time Zone 10");
+///<summary>&quot;SRET&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Russia_Time_Zone_10=>T("TimezoneAbbriviations.Standard.Russia Time Zone 10");
+///<summary>&quot;SBT&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Central_Pacific_Standard_Time=>T("TimezoneAbbriviations.Daylight.Central Pacific Standard Time");
+///<summary>&quot;SBT&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Central_Pacific_Standard_Time=>T("TimezoneAbbriviations.Standard.Central Pacific Standard Time");
+///<summary>&quot;PETT&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Russia_Time_Zone_11=>T("TimezoneAbbriviations.Daylight.Russia Time Zone 11");
+///<summary>&quot;PETT&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Russia_Time_Zone_11=>T("TimezoneAbbriviations.Standard.Russia Time Zone 11");
+///<summary>&quot;NZST&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_New_Zealand_Standard_Time=>T("TimezoneAbbriviations.Daylight.New Zealand Standard Time");
+///<summary>&quot;NZDT&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_New_Zealand_Standard_Time=>T("TimezoneAbbriviations.Standard.New Zealand Standard Time");
+///<summary>&quot;Etc/GMT-12&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_UTC12=>T("TimezoneAbbriviations.Daylight.UTC+12");
+///<summary>&quot;Etc/GMT-12&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_UTC12=>T("TimezoneAbbriviations.Standard.UTC+12");
+///<summary>&quot;FJT&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Fiji_Standard_Time=>T("TimezoneAbbriviations.Daylight.Fiji Standard Time");
+///<summary>&quot;FJST&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Fiji_Standard_Time=>T("TimezoneAbbriviations.Standard.Fiji Standard Time");
+///<summary>&quot;PETT&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Kamchatka_Standard_Time=>T("TimezoneAbbriviations.Daylight.Kamchatka Standard Time");
+///<summary>&quot;PETT&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Kamchatka_Standard_Time=>T("TimezoneAbbriviations.Standard.Kamchatka Standard Time");
+///<summary>&quot;TOT&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Tonga_Standard_Time=>T("TimezoneAbbriviations.Daylight.Tonga Standard Time");
+///<summary>&quot;TOT&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Tonga_Standard_Time=>T("TimezoneAbbriviations.Standard.Tonga Standard Time");
+///<summary>&quot;WSST&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Samoa_Standard_Time=>T("TimezoneAbbriviations.Daylight.Samoa Standard Time");
+///<summary>&quot;WSDT&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Samoa_Standard_Time=>T("TimezoneAbbriviations.Standard.Samoa Standard Time");
+///<summary>&quot;LINT&quot;</summary> 
+public static string TimezoneAbbriviations_Daylight_Line_Islands_Standard_Time=>T("TimezoneAbbriviations.Daylight.Line Islands Standard Time");
+///<summary>&quot;LINT&quot;</summary> 
+public static string TimezoneAbbriviations_Standard_Line_Islands_Standard_Time=>T("TimezoneAbbriviations.Standard.Line Islands Standard Time");
+     private static string T(string key) 
+       { 
+            return StringResourceSystemFacade.GetString("Composite.Plugins.TimezoneAbbriviations", key);
+        }
+} 
+
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+	   public static class Composite_Plugins_TimezoneDisplayNames {
+///<summary>&quot;(UTC-12:00) International Date Line West&quot;</summary> 
+public static string TimezoneDisplayName_Dateline_Standard_Time=>T("TimezoneDisplayName.Dateline Standard Time");
+///<summary>&quot;(UTC-11:00) Coordinated Universal Time-11&quot;</summary> 
+public static string TimezoneDisplayName_UTC_11=>T("TimezoneDisplayName.UTC-11");
+///<summary>&quot;(UTC-10:00) Hawaii&quot;</summary> 
+public static string TimezoneDisplayName_Hawaiian_Standard_Time=>T("TimezoneDisplayName.Hawaiian Standard Time");
+///<summary>&quot;(UTC-09:00) Alaska&quot;</summary> 
+public static string TimezoneDisplayName_Alaskan_Standard_Time=>T("TimezoneDisplayName.Alaskan Standard Time");
+///<summary>&quot;(UTC-08:00) Baja California&quot;</summary> 
+public static string TimezoneDisplayName_Pacific_Standard_Time_Mexico=>T("TimezoneDisplayName.Pacific Standard Time (Mexico)");
+///<summary>&quot;(UTC-08:00) Pacific Time (US &amp; Canada)&quot;</summary> 
+public static string TimezoneDisplayName_Pacific_Standard_Time=>T("TimezoneDisplayName.Pacific Standard Time");
+///<summary>&quot;(UTC-07:00) Arizona&quot;</summary> 
+public static string TimezoneDisplayName_US_Mountain_Standard_Time=>T("TimezoneDisplayName.US Mountain Standard Time");
+///<summary>&quot;(UTC-07:00) Chihuahua, La Paz, Mazatlan&quot;</summary> 
+public static string TimezoneDisplayName_Mountain_Standard_Time_Mexico=>T("TimezoneDisplayName.Mountain Standard Time (Mexico)");
+///<summary>&quot;(UTC-07:00) Mountain Time (US &amp; Canada)&quot;</summary> 
+public static string TimezoneDisplayName_Mountain_Standard_Time=>T("TimezoneDisplayName.Mountain Standard Time");
+///<summary>&quot;(UTC-06:00) Central America&quot;</summary> 
+public static string TimezoneDisplayName_Central_America_Standard_Time=>T("TimezoneDisplayName.Central America Standard Time");
+///<summary>&quot;(UTC-06:00) Central Time (US &amp; Canada)&quot;</summary> 
+public static string TimezoneDisplayName_Central_Standard_Time=>T("TimezoneDisplayName.Central Standard Time");
+///<summary>&quot;(UTC-06:00) Easter Island&quot;</summary> 
+public static string TimezoneDisplayName_Easter_Island_Standard_Time=>T("TimezoneDisplayName.Easter Island Standard Time");
+///<summary>&quot;(UTC-06:00) Guadalajara, Mexico City, Monterrey&quot;</summary> 
+public static string TimezoneDisplayName_Central_Standard_Time_Mexico=>T("TimezoneDisplayName.Central Standard Time (Mexico)");
+///<summary>&quot;(UTC-06:00) Saskatchewan&quot;</summary> 
+public static string TimezoneDisplayName_Canada_Central_Standard_Time=>T("TimezoneDisplayName.Canada Central Standard Time");
+///<summary>&quot;(UTC-05:00) Bogota, Lima, Quito, Rio Branco&quot;</summary> 
+public static string TimezoneDisplayName_SA_Pacific_Standard_Time=>T("TimezoneDisplayName.SA Pacific Standard Time");
+///<summary>&quot;(UTC-05:00) Chetumal&quot;</summary> 
+public static string TimezoneDisplayName_Eastern_Standard_Time_Mexico=>T("TimezoneDisplayName.Eastern Standard Time (Mexico)");
+///<summary>&quot;(UTC-05:00) Eastern Time (US &amp; Canada)&quot;</summary> 
+public static string TimezoneDisplayName_Eastern_Standard_Time=>T("TimezoneDisplayName.Eastern Standard Time");
+///<summary>&quot;(UTC-05:00) Haiti&quot;</summary> 
+public static string TimezoneDisplayName_Haiti_Standard_Time=>T("TimezoneDisplayName.Haiti Standard Time");
+///<summary>&quot;(UTC-05:00) Indiana (East)&quot;</summary> 
+public static string TimezoneDisplayName_US_Eastern_Standard_Time=>T("TimezoneDisplayName.US Eastern Standard Time");
+///<summary>&quot;(UTC-04:30) Caracas&quot;</summary> 
+public static string TimezoneDisplayName_Venezuela_Standard_Time=>T("TimezoneDisplayName.Venezuela Standard Time");
+///<summary>&quot;(UTC-04:00) Asuncion&quot;</summary> 
+public static string TimezoneDisplayName_Paraguay_Standard_Time=>T("TimezoneDisplayName.Paraguay Standard Time");
+///<summary>&quot;(UTC-04:00) Atlantic Time (Canada)&quot;</summary> 
+public static string TimezoneDisplayName_Atlantic_Standard_Time=>T("TimezoneDisplayName.Atlantic Standard Time");
+///<summary>&quot;(UTC-04:00) Cuiaba&quot;</summary> 
+public static string TimezoneDisplayName_Central_Brazilian_Standard_Time=>T("TimezoneDisplayName.Central Brazilian Standard Time");
+///<summary>&quot;(UTC-04:00) Georgetown, La Paz, Manaus, San Juan&quot;</summary> 
+public static string TimezoneDisplayName_SA_Western_Standard_Time=>T("TimezoneDisplayName.SA Western Standard Time");
+///<summary>&quot;(UTC-04:00) Santiago&quot;</summary> 
+public static string TimezoneDisplayName_Pacific_SA_Standard_Time=>T("TimezoneDisplayName.Pacific SA Standard Time");
+///<summary>&quot;(UTC-03:30) Newfoundland&quot;</summary> 
+public static string TimezoneDisplayName_Newfoundland_Standard_Time=>T("TimezoneDisplayName.Newfoundland Standard Time");
+///<summary>&quot;(UTC-03:00) Brasilia&quot;</summary> 
+public static string TimezoneDisplayName_E__South_America_Standard_Time=>T("TimezoneDisplayName.E. South America Standard Time");
+///<summary>&quot;(UTC-03:00) Cayenne, Fortaleza&quot;</summary> 
+public static string TimezoneDisplayName_SA_Eastern_Standard_Time=>T("TimezoneDisplayName.SA Eastern Standard Time");
+///<summary>&quot;(UTC-03:00) City of Buenos Aires&quot;</summary> 
+public static string TimezoneDisplayName_Argentina_Standard_Time=>T("TimezoneDisplayName.Argentina Standard Time");
+///<summary>&quot;(UTC-03:00) Greenland&quot;</summary> 
+public static string TimezoneDisplayName_Greenland_Standard_Time=>T("TimezoneDisplayName.Greenland Standard Time");
+///<summary>&quot;(UTC-03:00) Montevideo&quot;</summary> 
+public static string TimezoneDisplayName_Montevideo_Standard_Time=>T("TimezoneDisplayName.Montevideo Standard Time");
+///<summary>&quot;(UTC-03:00) Salvador&quot;</summary> 
+public static string TimezoneDisplayName_Bahia_Standard_Time=>T("TimezoneDisplayName.Bahia Standard Time");
+///<summary>&quot;(UTC-02:00) Coordinated Universal Time-02&quot;</summary> 
+public static string TimezoneDisplayName_UTC_02=>T("TimezoneDisplayName.UTC-02");
+///<summary>&quot;(UTC-02:00) Mid-Atlantic - Old&quot;</summary> 
+public static string TimezoneDisplayName_Mid_Atlantic_Standard_Time=>T("TimezoneDisplayName.Mid-Atlantic Standard Time");
+///<summary>&quot;(UTC-01:00) Azores&quot;</summary> 
+public static string TimezoneDisplayName_Azores_Standard_Time=>T("TimezoneDisplayName.Azores Standard Time");
+///<summary>&quot;(UTC-01:00) Cabo Verde Is.&quot;</summary> 
+public static string TimezoneDisplayName_Cape_Verde_Standard_Time=>T("TimezoneDisplayName.Cape Verde Standard Time");
+///<summary>&quot;(UTC) Casablanca&quot;</summary> 
+public static string TimezoneDisplayName_Morocco_Standard_Time=>T("TimezoneDisplayName.Morocco Standard Time");
+///<summary>&quot;(UTC) Coordinated Universal Time&quot;</summary> 
+public static string TimezoneDisplayName_UTC=>T("TimezoneDisplayName.UTC");
+///<summary>&quot;(UTC) Dublin, Edinburgh, Lisbon, London&quot;</summary> 
+public static string TimezoneDisplayName_GMT_Standard_Time=>T("TimezoneDisplayName.GMT Standard Time");
+///<summary>&quot;(UTC) Monrovia, Reykjavik&quot;</summary> 
+public static string TimezoneDisplayName_Greenwich_Standard_Time=>T("TimezoneDisplayName.Greenwich Standard Time");
+///<summary>&quot;(UTC+01:00) Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna&quot;</summary> 
+public static string TimezoneDisplayName_W__Europe_Standard_Time=>T("TimezoneDisplayName.W. Europe Standard Time");
+///<summary>&quot;(UTC+01:00) Belgrade, Bratislava, Budapest, Ljubljana, Prague&quot;</summary> 
+public static string TimezoneDisplayName_Central_Europe_Standard_Time=>T("TimezoneDisplayName.Central Europe Standard Time");
+///<summary>&quot;(UTC+01:00) Brussels, Copenhagen, Madrid, Paris&quot;</summary> 
+public static string TimezoneDisplayName_Romance_Standard_Time=>T("TimezoneDisplayName.Romance Standard Time");
+///<summary>&quot;(UTC+01:00) Sarajevo, Skopje, Warsaw, Zagreb&quot;</summary> 
+public static string TimezoneDisplayName_Central_European_Standard_Time=>T("TimezoneDisplayName.Central European Standard Time");
+///<summary>&quot;(UTC+01:00) West Central Africa&quot;</summary> 
+public static string TimezoneDisplayName_W__Central_Africa_Standard_Time=>T("TimezoneDisplayName.W. Central Africa Standard Time");
+///<summary>&quot;(UTC+01:00) Windhoek&quot;</summary> 
+public static string TimezoneDisplayName_Namibia_Standard_Time=>T("TimezoneDisplayName.Namibia Standard Time");
+///<summary>&quot;(UTC+02:00) Amman&quot;</summary> 
+public static string TimezoneDisplayName_Jordan_Standard_Time=>T("TimezoneDisplayName.Jordan Standard Time");
+///<summary>&quot;(UTC+02:00) Athens, Bucharest&quot;</summary> 
+public static string TimezoneDisplayName_GTB_Standard_Time=>T("TimezoneDisplayName.GTB Standard Time");
+///<summary>&quot;(UTC+02:00) Beirut&quot;</summary> 
+public static string TimezoneDisplayName_Middle_East_Standard_Time=>T("TimezoneDisplayName.Middle East Standard Time");
+///<summary>&quot;(UTC+02:00) Cairo&quot;</summary> 
+public static string TimezoneDisplayName_Egypt_Standard_Time=>T("TimezoneDisplayName.Egypt Standard Time");
+///<summary>&quot;(UTC+02:00) Damascus&quot;</summary> 
+public static string TimezoneDisplayName_Syria_Standard_Time=>T("TimezoneDisplayName.Syria Standard Time");
+///<summary>&quot;(UTC+02:00) E. Europe&quot;</summary> 
+public static string TimezoneDisplayName_E__Europe_Standard_Time=>T("TimezoneDisplayName.E. Europe Standard Time");
+///<summary>&quot;(UTC+02:00) Harare, Pretoria&quot;</summary> 
+public static string TimezoneDisplayName_South_Africa_Standard_Time=>T("TimezoneDisplayName.South Africa Standard Time");
+///<summary>&quot;(UTC+02:00) Helsinki, Kyiv, Riga, Sofia, Tallinn, Vilnius&quot;</summary> 
+public static string TimezoneDisplayName_FLE_Standard_Time=>T("TimezoneDisplayName.FLE Standard Time");
+///<summary>&quot;(UTC+02:00) Istanbul&quot;</summary> 
+public static string TimezoneDisplayName_Turkey_Standard_Time=>T("TimezoneDisplayName.Turkey Standard Time");
+///<summary>&quot;(UTC+02:00) Jerusalem&quot;</summary> 
+public static string TimezoneDisplayName_Israel_Standard_Time=>T("TimezoneDisplayName.Israel Standard Time");
+///<summary>&quot;(UTC+02:00) Kaliningrad&quot;</summary> 
+public static string TimezoneDisplayName_Kaliningrad_Standard_Time=>T("TimezoneDisplayName.Kaliningrad Standard Time");
+///<summary>&quot;(UTC+02:00) Tripoli&quot;</summary> 
+public static string TimezoneDisplayName_Libya_Standard_Time=>T("TimezoneDisplayName.Libya Standard Time");
+///<summary>&quot;(UTC+03:00) Baghdad&quot;</summary> 
+public static string TimezoneDisplayName_Arabic_Standard_Time=>T("TimezoneDisplayName.Arabic Standard Time");
+///<summary>&quot;(UTC+03:00) Kuwait, Riyadh&quot;</summary> 
+public static string TimezoneDisplayName_Arab_Standard_Time=>T("TimezoneDisplayName.Arab Standard Time");
+///<summary>&quot;(UTC+03:00) Minsk&quot;</summary> 
+public static string TimezoneDisplayName_Belarus_Standard_Time=>T("TimezoneDisplayName.Belarus Standard Time");
+///<summary>&quot;(UTC+03:00) Moscow, St. Petersburg, Volgograd&quot;</summary> 
+public static string TimezoneDisplayName_Russian_Standard_Time=>T("TimezoneDisplayName.Russian Standard Time");
+///<summary>&quot;(UTC+03:00) Nairobi&quot;</summary> 
+public static string TimezoneDisplayName_E__Africa_Standard_Time=>T("TimezoneDisplayName.E. Africa Standard Time");
+///<summary>&quot;(UTC+04:00) Astrakhan, Ulyanovsk&quot;</summary> 
+public static string TimezoneDisplayName_Astrakhan_Standard_Time=>T("TimezoneDisplayName.Astrakhan Standard Time");
+///<summary>&quot;(UTC+03:30) Tehran&quot;</summary> 
+public static string TimezoneDisplayName_Iran_Standard_Time=>T("TimezoneDisplayName.Iran Standard Time");
+///<summary>&quot;(UTC+04:00) Abu Dhabi, Muscat&quot;</summary> 
+public static string TimezoneDisplayName_Arabian_Standard_Time=>T("TimezoneDisplayName.Arabian Standard Time");
+///<summary>&quot;(UTC+04:00) Baku&quot;</summary> 
+public static string TimezoneDisplayName_Azerbaijan_Standard_Time=>T("TimezoneDisplayName.Azerbaijan Standard Time");
+///<summary>&quot;(UTC+04:00) Izhevsk, Samara&quot;</summary> 
+public static string TimezoneDisplayName_Russia_Time_Zone_3=>T("TimezoneDisplayName.Russia Time Zone 3");
+///<summary>&quot;(UTC+04:00) Port Louis&quot;</summary> 
+public static string TimezoneDisplayName_Mauritius_Standard_Time=>T("TimezoneDisplayName.Mauritius Standard Time");
+///<summary>&quot;(UTC+04:00) Tbilisi&quot;</summary> 
+public static string TimezoneDisplayName_Georgian_Standard_Time=>T("TimezoneDisplayName.Georgian Standard Time");
+///<summary>&quot;(UTC+04:00) Yerevan&quot;</summary> 
+public static string TimezoneDisplayName_Caucasus_Standard_Time=>T("TimezoneDisplayName.Caucasus Standard Time");
+///<summary>&quot;(UTC+04:30) Kabul&quot;</summary> 
+public static string TimezoneDisplayName_Afghanistan_Standard_Time=>T("TimezoneDisplayName.Afghanistan Standard Time");
+///<summary>&quot;(UTC+05:00) Ashgabat, Tashkent&quot;</summary> 
+public static string TimezoneDisplayName_West_Asia_Standard_Time=>T("TimezoneDisplayName.West Asia Standard Time");
+///<summary>&quot;(UTC+05:00) Ekaterinburg&quot;</summary> 
+public static string TimezoneDisplayName_Ekaterinburg_Standard_Time=>T("TimezoneDisplayName.Ekaterinburg Standard Time");
+///<summary>&quot;(UTC+05:00) Islamabad, Karachi&quot;</summary> 
+public static string TimezoneDisplayName_Pakistan_Standard_Time=>T("TimezoneDisplayName.Pakistan Standard Time");
+///<summary>&quot;(UTC+05:30) Chennai, Kolkata, Mumbai, New Delhi&quot;</summary> 
+public static string TimezoneDisplayName_India_Standard_Time=>T("TimezoneDisplayName.India Standard Time");
+///<summary>&quot;(UTC+05:30) Sri Jayawardenepura&quot;</summary> 
+public static string TimezoneDisplayName_Sri_Lanka_Standard_Time=>T("TimezoneDisplayName.Sri Lanka Standard Time");
+///<summary>&quot;(UTC+05:45) Kathmandu&quot;</summary> 
+public static string TimezoneDisplayName_Nepal_Standard_Time=>T("TimezoneDisplayName.Nepal Standard Time");
+///<summary>&quot;(UTC+06:00) Astana&quot;</summary> 
+public static string TimezoneDisplayName_Central_Asia_Standard_Time=>T("TimezoneDisplayName.Central Asia Standard Time");
+///<summary>&quot;(UTC+06:00) Dhaka&quot;</summary> 
+public static string TimezoneDisplayName_Bangladesh_Standard_Time=>T("TimezoneDisplayName.Bangladesh Standard Time");
+///<summary>&quot;(UTC+06:00) Novosibirsk&quot;</summary> 
+public static string TimezoneDisplayName_N__Central_Asia_Standard_Time=>T("TimezoneDisplayName.N. Central Asia Standard Time");
+///<summary>&quot;(UTC+07:00) Barnaul, Gorno-Altaysk&quot;</summary> 
+public static string TimezoneDisplayName_Altai_Standard_Time=>T("TimezoneDisplayName.Altai Standard Time");
+///<summary>&quot;(UTC+06:30) Yangon (Rangoon)&quot;</summary> 
+public static string TimezoneDisplayName_Myanmar_Standard_Time=>T("TimezoneDisplayName.Myanmar Standard Time");
+///<summary>&quot;(UTC+07:00) Bangkok, Hanoi, Jakarta&quot;</summary> 
+public static string TimezoneDisplayName_SE_Asia_Standard_Time=>T("TimezoneDisplayName.SE Asia Standard Time");
+///<summary>&quot;(UTC+07:00) Krasnoyarsk&quot;</summary> 
+public static string TimezoneDisplayName_North_Asia_Standard_Time=>T("TimezoneDisplayName.North Asia Standard Time");
+///<summary>&quot;(UTC+08:00) Beijing, Chongqing, Hong Kong, Urumqi&quot;</summary> 
+public static string TimezoneDisplayName_China_Standard_Time=>T("TimezoneDisplayName.China Standard Time");
+///<summary>&quot;(UTC+08:00) Irkutsk&quot;</summary> 
+public static string TimezoneDisplayName_North_Asia_East_Standard_Time=>T("TimezoneDisplayName.North Asia East Standard Time");
+///<summary>&quot;(UTC+08:00) Kuala Lumpur, Singapore&quot;</summary> 
+public static string TimezoneDisplayName_Singapore_Standard_Time=>T("TimezoneDisplayName.Singapore Standard Time");
+///<summary>&quot;(UTC+08:00) Perth&quot;</summary> 
+public static string TimezoneDisplayName_W__Australia_Standard_Time=>T("TimezoneDisplayName.W. Australia Standard Time");
+///<summary>&quot;(UTC+08:00) Taipei&quot;</summary> 
+public static string TimezoneDisplayName_Taipei_Standard_Time=>T("TimezoneDisplayName.Taipei Standard Time");
+///<summary>&quot;(UTC+08:00) Ulaanbaatar&quot;</summary> 
+public static string TimezoneDisplayName_Ulaanbaatar_Standard_Time=>T("TimezoneDisplayName.Ulaanbaatar Standard Time");
+///<summary>&quot;(UTC+09:00) Chita&quot;</summary> 
+public static string TimezoneDisplayName_Transbaikal_Standard_Time=>T("TimezoneDisplayName.Transbaikal Standard Time");
+///<summary>&quot;(UTC+08:30) Pyongyang&quot;</summary> 
+public static string TimezoneDisplayName_North_Korea_Standard_Time=>T("TimezoneDisplayName.North Korea Standard Time");
+///<summary>&quot;(UTC+09:00) Osaka, Sapporo, Tokyo&quot;</summary> 
+public static string TimezoneDisplayName_Tokyo_Standard_Time=>T("TimezoneDisplayName.Tokyo Standard Time");
+///<summary>&quot;(UTC+09:00) Seoul&quot;</summary> 
+public static string TimezoneDisplayName_Korea_Standard_Time=>T("TimezoneDisplayName.Korea Standard Time");
+///<summary>&quot;(UTC+09:00) Yakutsk&quot;</summary> 
+public static string TimezoneDisplayName_Yakutsk_Standard_Time=>T("TimezoneDisplayName.Yakutsk Standard Time");
+///<summary>&quot;(UTC+09:30) Adelaide&quot;</summary> 
+public static string TimezoneDisplayName_Cen__Australia_Standard_Time=>T("TimezoneDisplayName.Cen. Australia Standard Time");
+///<summary>&quot;(UTC+09:30) Darwin&quot;</summary> 
+public static string TimezoneDisplayName_AUS_Central_Standard_Time=>T("TimezoneDisplayName.AUS Central Standard Time");
+///<summary>&quot;(UTC+10:00) Brisbane&quot;</summary> 
+public static string TimezoneDisplayName_E__Australia_Standard_Time=>T("TimezoneDisplayName.E. Australia Standard Time");
+///<summary>&quot;(UTC+10:00) Canberra, Melbourne, Sydney&quot;</summary> 
+public static string TimezoneDisplayName_AUS_Eastern_Standard_Time=>T("TimezoneDisplayName.AUS Eastern Standard Time");
+///<summary>&quot;(UTC+10:00) Guam, Port Moresby&quot;</summary> 
+public static string TimezoneDisplayName_West_Pacific_Standard_Time=>T("TimezoneDisplayName.West Pacific Standard Time");
+///<summary>&quot;(UTC+10:00) Hobart&quot;</summary> 
+public static string TimezoneDisplayName_Tasmania_Standard_Time=>T("TimezoneDisplayName.Tasmania Standard Time");
+///<summary>&quot;(UTC+10:00) Magadan&quot;</summary> 
+public static string TimezoneDisplayName_Magadan_Standard_Time=>T("TimezoneDisplayName.Magadan Standard Time");
+///<summary>&quot;(UTC+10:00) Vladivostok&quot;</summary> 
+public static string TimezoneDisplayName_Vladivostok_Standard_Time=>T("TimezoneDisplayName.Vladivostok Standard Time");
+///<summary>&quot;(UTC+11:00) Sakhalin&quot;</summary> 
+public static string TimezoneDisplayName_Sakhalin_Standard_Time=>T("TimezoneDisplayName.Sakhalin Standard Time");
+///<summary>&quot;(UTC+11:00) Chokurdakh&quot;</summary> 
+public static string TimezoneDisplayName_Russia_Time_Zone_10=>T("TimezoneDisplayName.Russia Time Zone 10");
+///<summary>&quot;(UTC+11:00) Solomon Is., New Caledonia&quot;</summary> 
+public static string TimezoneDisplayName_Central_Pacific_Standard_Time=>T("TimezoneDisplayName.Central Pacific Standard Time");
+///<summary>&quot;(UTC+12:00) Anadyr, Petropavlovsk-Kamchatsky&quot;</summary> 
+public static string TimezoneDisplayName_Russia_Time_Zone_11=>T("TimezoneDisplayName.Russia Time Zone 11");
+///<summary>&quot;(UTC+12:00) Auckland, Wellington&quot;</summary> 
+public static string TimezoneDisplayName_New_Zealand_Standard_Time=>T("TimezoneDisplayName.New Zealand Standard Time");
+///<summary>&quot;(UTC+12:00) Coordinated Universal Time+12&quot;</summary> 
+public static string TimezoneDisplayName_UTC12=>T("TimezoneDisplayName.UTC+12");
+///<summary>&quot;(UTC+12:00) Fiji&quot;</summary> 
+public static string TimezoneDisplayName_Fiji_Standard_Time=>T("TimezoneDisplayName.Fiji Standard Time");
+///<summary>&quot;(UTC+12:00) Petropavlovsk-Kamchatsky - Old&quot;</summary> 
+public static string TimezoneDisplayName_Kamchatka_Standard_Time=>T("TimezoneDisplayName.Kamchatka Standard Time");
+///<summary>&quot;(UTC+13:00) Nuku&apos;alofa&quot;</summary> 
+public static string TimezoneDisplayName_Tonga_Standard_Time=>T("TimezoneDisplayName.Tonga Standard Time");
+///<summary>&quot;(UTC+13:00) Samoa&quot;</summary> 
+public static string TimezoneDisplayName_Samoa_Standard_Time=>T("TimezoneDisplayName.Samoa Standard Time");
+///<summary>&quot;(UTC+14:00) Kiritimati Island&quot;</summary> 
+public static string TimezoneDisplayName_Line_Islands_Standard_Time=>T("TimezoneDisplayName.Line Islands Standard Time");
+     private static string T(string key) 
+       { 
+            return StringResourceSystemFacade.GetString("Composite.Plugins.TimezoneDisplayNames", key);
         }
 } 
 

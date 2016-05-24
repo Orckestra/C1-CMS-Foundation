@@ -99,7 +99,7 @@ namespace Composite.Core.ResourceSystem
                 string key = keyAttr.Value;
 				string value = valueAttr.Value;
 
-                string propertyName = key.Replace(".", "_").Replace("-", "_");
+                string propertyName = key.Replace(".", "_").Replace("-", "_").Replace(" ", "_").Replace("(", "").Replace(")", "").Replace("+", "");
 				if (char.IsDigit(propertyName[0])) propertyName = "_" + propertyName;
 
 				int parametersCount = 0;
