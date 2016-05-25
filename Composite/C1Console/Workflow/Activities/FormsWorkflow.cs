@@ -542,7 +542,7 @@ namespace Composite.C1Console.Workflow.Activities
 
 
         /// <exclude />
-        protected void RerenderView()
+        public void RerenderView()
         {
             var flowControllerServicesContainer = GetFlowControllerServicesContainer();
             IFormFlowRenderingService formFlowRenderingService = flowControllerServicesContainer.GetService<IFormFlowRenderingService>();
