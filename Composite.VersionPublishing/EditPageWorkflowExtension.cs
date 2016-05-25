@@ -8,13 +8,16 @@ using Composite.C1Console.Workflow.Activities;
 using Composite.Core.IO;
 using Composite.Data;
 using Composite.Data.Types;
+using Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementProvider;
 using Composite.Plugins.Elements.ElementProviders.PageElementProvider;
 
 namespace Composite.VersionPublishing
 {
     internal class EditPageWorkflowExtension : IFormsWorkflowExtension
     {
-        private class BindingNames
+        private static readonly Guid AddNewVersionOptionId = new Guid("46e22dca-c772-44e9-b80b-34fd49fd86bf");
+
+        private static class BindingNames
         {
             public const string SelectedPage = "SelectedPage";
 
@@ -44,7 +47,7 @@ namespace Composite.VersionPublishing
             };
 
             var codeActivity = new CodeActivity();
-            var handler = new VersionChangeHandler();
+            var handler = new EventHandlers();
             codeActivity.ExecuteCode += handler.OpenNewEditingWorkflow;
 
             var versionChange_EventDrivenActivity = new EventDrivenActivity
@@ -57,8 +60,8 @@ namespace Composite.VersionPublishing
                     new SetStateActivity("versionChange_setState")
                     {
                         TargetStateName = EditStateActivityName
-                    },
-                    new CloseCurrentViewActivity()
+                    }
+                    //, new CloseCurrentViewActivity()
                 }
             };
 
@@ -91,9 +94,14 @@ namespace Composite.VersionPublishing
             {
                 var allPageVersions = dc.Get<IPage>().Where(p => p.Id == pageId).ToList();
 
-                var versions = allPageVersions.
-                    Select(f => new KeyValuePair<Guid, string>(f.VersionId, f.VersionName ?? "")).
-                    ToList();
+                var versions = allPageVersions
+                    .Select(v => new KeyValuePair<Guid, string>(v.VersionId, v.VersionName ?? ""))
+                    .OrderBy(v => v.Value)
+                    .ToList();
+
+                versions.Insert(0, new KeyValuePair<Guid, string>(
+                    AddNewVersionOptionId,
+                    "Add new version")); // TODO: localize
 
                 parameters.Bindings[BindingNames.PageVersions] = versions;
                 parameters.Bindings[BindingNames.PageVersionId] = page.VersionId;
@@ -114,35 +122,36 @@ namespace Composite.VersionPublishing
 
 
         [Serializable]
-        public class VersionChangeHandler
+        public class EventHandlers
         {
             public void OpenNewEditingWorkflow(object sender, EventArgs args)
             {
-                var workflow = GetWorkflow((CodeActivity) sender);
+                var workflow = ((CodeActivity) sender).GetRoot<EditPageWorkflow>();
 
-                var pageId = ((IPage) workflow.Bindings[BindingNames.SelectedPage]).Id;
-                var newVersionId = (Guid) workflow.Bindings[BindingNames.PageVersionId];
+                var newVersionId = (Guid)workflow.Bindings[BindingNames.PageVersionId];
+                var page = (IPage)workflow.Bindings[BindingNames.SelectedPage];
+
+                // Returning version selector to its previous value
+                workflow.Bindings[BindingNames.PageVersionId] = page.VersionId;
+                workflow.RerenderView();
+
+                if (newVersionId == AddNewVersionOptionId)
+                {
+                    workflow.ExecuteWorklow(workflow.EntityToken, typeof(AddNewPageVersionWorkflow));
+                    return;
+                }
+
 
                 EntityToken targetEntityToken;
                 using (var dc = new DataConnection())
                 {
+                    var pageId = page.Id;
                     var targetPage = dc.Get<IPage>().Single(p => p.Id == pageId && p.VersionId == newVersionId);
 
                     targetEntityToken = targetPage.GetDataEntityToken();
                 }
 
                 workflow.ExecuteWorklow(targetEntityToken, typeof(EditPageWorkflow));
-            }
-
-            private static FormsWorkflow GetWorkflow(CodeActivity codeActivity)
-            {
-                var pointer = codeActivity.Parent;
-                while(pointer != null && !(pointer is FormsWorkflow))
-                {
-                    pointer = pointer.Parent;
-                }
-
-                return pointer as FormsWorkflow;
             }
         }
     }
