@@ -5,16 +5,33 @@ a {
 	cursor: pointer;
 }
 
+.table td, .table th {
+	font-family: Calibri, Candara, Segoe, 'Segoe UI', Optima, Arial, sans-serif;
+	font-size: 15px;
+}
+
 .table thead th:last-child {
 	width: 100%;
 }
 
+.table ui|fieldhelp {
+	float: left;
+	width: 20px;
+	margin-top: -6px;
+	margin-left: -20px;
+}
+
 .table ui|clickbutton.sortbutton {
-	margin: 0 10px 0 0;
+	margin: 0 30px 0 0;
 	cursor: pointer;
 }
 .table ui|clickbutton.sortbutton * {
 	cursor: pointer;
+}
+
+.table.noversion th.version,
+.table.noversion td.version {
+	display: none;
 }
 
 .table ui|clickbutton.sortbutton ui|labelbox {

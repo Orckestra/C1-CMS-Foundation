@@ -5,6 +5,9 @@ UnpublishedPageBinding.superclass = PageBinding.prototype;
 UnpublishedPageBinding.ACTION_CHECK_ALL = "unpublished check all";
 
 UnpublishedPageBinding.SELECTED_CLASSNAME = "selected";
+UnpublishedPageBinding.NOVERSION_CLASSNAME = "noversion";
+
+UnpublishedPageBinding.BULK_PUBLISHING_COMMANDS = "BulkPublishingCommands";
 
 /**
  * @class
@@ -128,6 +131,19 @@ UnpublishedPageBinding.prototype.renderTable = function (nodes, selected) {
 		this.tablebody.bindingElement.removeChild(this.tablebody.bindingElement.firstChild);
 	}
 
+	var hasVersion = false;
+	nodes.each(function(node) {
+		if (node.getPropertyBag().Version != undefined) {
+			hasVersion = true;
+		}
+		return hasVersion;
+	}, this);
+	if (hasVersion) {
+		CSSUtil.detachClassName(this.table, UnpublishedPageBinding.NOVERSION_CLASSNAME);
+	} else {
+		CSSUtil.attachClassName(this.table, UnpublishedPageBinding.NOVERSION_CLASSNAME);
+	}
+
 	nodes.each(function (node) {
 		var handle = node.getHandle();
 		var row = this.bindingDocument.createElement('tr');
@@ -161,7 +177,10 @@ UnpublishedPageBinding.prototype.renderTable = function (nodes, selected) {
 		}
 		linkcell.appendChild(link);
 
-		this.addTextCell(row, node.getPropertyBag().Version);
+		this.addTextCell(row, node.getPropertyBag().Version,
+			{
+				"class": "version"
+			});
 		this.addTextCell(row, node.getPropertyBag().Status);
 		this.addTextCell(row, node.getPropertyBag().PublishDate,
 			{
@@ -218,7 +237,7 @@ UnpublishedPageBinding.prototype.getWorkflowActions = function (node) {
 	var result = new List();
 	node.getActionProfile().each(function (group, list) {
 		list.each(function (action) {
-			if (action.getGroupName() === "Workflow") {
+			if (action.getTag() === UnpublishedPageBinding.BULK_PUBLISHING_COMMANDS) {
 				result.add(action);
 			}
 		}, this);

@@ -26,13 +26,19 @@
 					<th>
 						<ui:checkbox id="checkallbox" oncommand="this.dispatchAction(UnpublishedPageBinding.ACTION_CHECK_ALL)" />
 					</th>
-					<th><ui:clickbutton label="${string:Composite.Plugins.PageElementProvider:ViewUnpublishedItems.LabelPageTitle}" binding="SortButtonBinding"/></th>
-					<th><ui:clickbutton label="${string:Composite.Plugins.PageElementProvider:ViewUnpublishedItems.LabelVersion}" binding="SortButtonBinding" /></th>
-					<th><ui:clickbutton label="${string:Composite.Plugins.PageElementProvider:ViewUnpublishedItems.LabelStatus}" binding="SortButtonBinding" /></th>
-					<th><ui:clickbutton label="${string:Composite.Plugins.PageElementProvider:ViewUnpublishedItems.LabelPublishDate}" binding="SortButtonBinding" /></th>
-					<th><ui:clickbutton label="${string:Composite.Plugins.PageElementProvider:ViewUnpublishedItems.LabelUnpublishDate}" binding="SortButtonBinding" /></th>
-					<th><ui:clickbutton label="${string:Composite.Plugins.PageElementProvider:ViewUnpublishedItems.LabelDateCreated}" binding="SortButtonBinding" /></th>
-					<th><ui:clickbutton label="${string:Composite.Plugins.PageElementProvider:ViewUnpublishedItems.LabelDateModified}" binding="SortButtonBinding" /></th>
+					<th><ui:clickbutton label="${string:Composite.Plugins.PageElementProvider:ViewUnpublishedItems.PageTitleLabel}" binding="SortButtonBinding"/></th>
+					<th class="version"><ui:clickbutton label="${string:Composite.Plugins.PageElementProvider:ViewUnpublishedItems.VersionLabel}" binding="SortButtonBinding" /></th>
+					<th><ui:clickbutton label="${string:Composite.Plugins.PageElementProvider:ViewUnpublishedItems.StatusLabel}" binding="SortButtonBinding" /></th>
+					<th>
+						<ui:clickbutton label="${string:Composite.Plugins.PageElementProvider:ViewUnpublishedItems.PublishDateLabel}" binding="SortButtonBinding" />
+						<ui:fieldhelp label="${string:Composite.Plugins.PageElementProvider:ViewUnpublishedItems.PublishDateHelp}"/>
+					</th>
+					<th>
+						<ui:clickbutton label="${string:Composite.Plugins.PageElementProvider:ViewUnpublishedItems.UnpublishDateLabel}" binding="SortButtonBinding" />
+						<ui:fieldhelp label="${string:Composite.Plugins.PageElementProvider:ViewUnpublishedItems.UnpublishDateHelp}"/>
+					</th>
+					<th><ui:clickbutton label="${string:Composite.Plugins.PageElementProvider:ViewUnpublishedItems.DateCreatedLabel}" binding="SortButtonBinding" /></th>
+					<th><ui:clickbutton label="${string:Composite.Plugins.PageElementProvider:ViewUnpublishedItems.DateModifiedLabel}" binding="SortButtonBinding" /></th>
 					<th></th>
 				</tr>
 			</thead>

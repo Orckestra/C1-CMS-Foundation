@@ -125,7 +125,6 @@ namespace Composite.Services
                     actionRequiredPage.PropertyBag["SortableCreated"] =
                         String.Format("{0:s}", ((ICreationHistory) ((DataEntityToken) actionRequiredPage.ElementHandle.EntityToken).Data).CreationDate);
                 }
-                actionRequiredPage.PropertyBag["Version"] = "dummy";
 
                 if (((DataEntityToken) actionRequiredPage.ElementHandle.EntityToken).Data is IPage)
                 {
