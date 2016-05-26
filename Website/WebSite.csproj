@@ -215,6 +215,7 @@
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\Selectors\SvgIconSelector.ascx" />
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\Selectors\FontIconSelector.ascx" />
     <Content Include="Composite\images\branding\brand-icon.png" />
+    <Content Include="Composite\images\icons\svg\optimizely.svg" />
     <Content Include="Composite\images\icons\svg\website-remove-folder-from-whitelist.svg" />
     <Content Include="Composite\images\icons\svg\website-add-folder-to-whitelist.svg" />
     <Content Include="Composite\lib\codemirror\addon\dropmedia\dropmedia.js" />
