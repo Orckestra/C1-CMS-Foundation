@@ -50,11 +50,12 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
         public EditPageWorkflow()
         {
             InitializeComponent();
+            InitializeExtensions();
         }
 
         private static DataTypeDescriptorFormsHelper CreateDataTypeDescriptorFormsHelper(IPageMetaDataDefinition pageMetaDataDefinition, DataTypeDescriptor dataTypeDescriptor)
         {
-            var bindingPrefix = string.Format("{0}:{1}.{2}", pageMetaDataDefinition.Name, dataTypeDescriptor.Namespace, dataTypeDescriptor.Name);
+            var bindingPrefix = $"{pageMetaDataDefinition.Name}:{dataTypeDescriptor.Namespace}.{dataTypeDescriptor.Name}";
 
             var helper = new DataTypeDescriptorFormsHelper(dataTypeDescriptor, bindingPrefix);
 
@@ -149,7 +150,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             if (!BindingExist("SelectedPage"))
             {
                 selectedPage = GetDataItemFromEntityToken<IPage>();
-                
+
                 if (selectedPage.PublicationStatus == GenericPublishProcessController.Published)
                 {
                     selectedPage.PublicationStatus = GenericPublishProcessController.Draft;
@@ -280,8 +281,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             UpdateBinding("StateOptions", transitionNames);
 
 
-            var existingPagePublishSchedule = PublishScheduleHelper.GetPublishSchedule(typeof (IPage), 
-                selectedPage.Id.ToString(), 
+            var existingPagePublishSchedule = PublishScheduleHelper.GetPublishSchedule(typeof(IPage),
+                selectedPage.Id.ToString(),
                 UserSettings.ActiveLocaleCultureInfo.Name);
 
             UpdateBinding("PublishDate", existingPagePublishSchedule?.PublishDate);

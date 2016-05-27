@@ -165,6 +165,8 @@
     <Compile Include="C1Console\Actions\Data\DataActionTokenResolverFacade.cs" />
     <Compile Include="C1Console\Actions\Data\DataActionTokenResolverRegistery.cs" />
     <Compile Include="C1Console\Elements\IServiceUrlToEntityTokenMapper.cs" />
+    <Compile Include="C1Console\Workflow\FormsWorkflowExtensions.cs" />
+    <Compile Include="C1Console\Workflow\IFormsWorkflowExtension.cs" />
     <Compile Include="Data\DataScopeServicesFacade.cs" />
     <Compile Include="Data\DataServiceScopeManager.cs" />
     <Compile Include="Data\Types\ITimedPublishing.cs" />

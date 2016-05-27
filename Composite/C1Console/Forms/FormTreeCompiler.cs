@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
 using Composite.C1Console.Forms.Foundation.FormTreeCompiler;
@@ -81,11 +82,13 @@ namespace Composite.C1Console.Forms
         {
             _bindingObjects = bindingObjects;
 
-            _context = new CompileContext();
-            _context.BindingObjects = bindingObjects;
-            _context.BindingsValidationRules = bindingsValidationRules;
-            _context.CurrentChannel = channel;
-            _context.CustomControlIdPrefix = customControlIdPrefix;
+            _context = new CompileContext
+            {
+                BindingObjects = bindingObjects,
+                BindingsValidationRules = bindingsValidationRules,
+                CurrentChannel = channel,
+                CustomControlIdPrefix = customControlIdPrefix
+            };
 
             _rootCompilerNode = BuildFromXmlPhase.BuildTree(doc);
 
@@ -141,10 +144,7 @@ namespace Composite.C1Console.Forms
         } 
 
         /// <exclude />
-        public IUiControl UiControl
-        {
-            get { return _uiControl; }
-        }
+        public IUiControl UiControl => _uiControl;
 
 
         /// <exclude />
@@ -175,22 +175,16 @@ namespace Composite.C1Console.Forms
                 string[] resourceParts = _iconHandle.Split(',');
                 if (resourceParts.Length != 2)
                     throw new InvalidOperationException(
-                        string.Format("Invalid icon resource name '{0}'. Only one comma expected.", _iconHandle));
+                        $"Invalid icon resource name '{_iconHandle}'. Only one comma expected.");
 
                 return new ResourceHandle(resourceParts[0].Trim(), resourceParts[1].Trim());
             }
         }
 
         /// <exclude />
-        public Dictionary<string, object> BindingObjects
-        {
-            get { return _bindingObjects; }
-        }
+        public Dictionary<string, object> BindingObjects => _bindingObjects;
 
         /// <exclude />
-        public CompileTreeNode RootCompileTreeNode
-        {
-            get { return _rootCompilerNode; }
-        }
+        public CompileTreeNode RootCompileTreeNode => _rootCompilerNode;
     }
 }
