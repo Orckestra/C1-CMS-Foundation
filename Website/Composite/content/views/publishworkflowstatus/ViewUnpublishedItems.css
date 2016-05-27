@@ -17,12 +17,12 @@ a {
 .table ui|fieldhelp {
 	float: left;
 	width: 20px;
-	margin-top: -6px;
+	margin-top: -4px;
 	margin-left: -20px;
 }
 
 .table ui|clickbutton.sortbutton {
-	margin: 0 30px 0 0;
+	margin: 0 54px 0 0;
 	cursor: pointer;
 }
 .table ui|clickbutton.sortbutton * {
@@ -53,7 +53,7 @@ a {
 	content: "";
 	width: 0;
 	height: 0;
-	right: -14px;
+	right: -20px;
 	top: 7px;
 	border-style: solid;
 	border-width: 0 4px 4px 4px;
