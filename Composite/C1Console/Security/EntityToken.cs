@@ -164,6 +164,14 @@ namespace Composite.C1Console.Security
         {
             EntityToken entityToken = obj as EntityToken;
 
+            return EqualsWithVersionIgnore(entityToken) && entityToken.VersionId == this.VersionId;
+        }
+
+        /// <exclude />
+        public bool EqualsWithVersionIgnore(object obj)
+        {
+            EntityToken entityToken = obj as EntityToken;
+
             if (entityToken == null) return false;
 
 
@@ -177,6 +185,8 @@ namespace Composite.C1Console.Security
                    entityToken.GetType() == this.GetType();
         }
 
+        /// <exclude />
+        public virtual string VersionId { get;  }
 
 
         /// <exclude />
