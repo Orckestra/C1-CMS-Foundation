@@ -582,7 +582,7 @@ namespace Composite.C1Console.Workflow.Activities
 
 
         /// <exclude />
-        protected void ExecuteAction(EntityToken entityToken, ActionToken actionToken)
+        public void ExecuteAction(EntityToken entityToken, ActionToken actionToken)
         {
             var flowControllerServicesContainer = GetFlowControllerServicesContainer();
 
