@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using Composite.C1Console.Security;
@@ -17,7 +18,8 @@ namespace Composite.Data
         private IData _data;
         private bool _dataInitialized;
         private string _serializedDataSourceId;
-        private string _serializedDataId = null;
+        private string _serializedId = null; 
+        private string _serializedVersionId = null;
         private string _serializedInterfaceType = null;
         private Type _interfaceType = null;
         private DataSourceId _dataSourceId = null;
@@ -68,7 +70,7 @@ namespace Composite.Data
         public override string Source
         {
             get
-            {              
+            {
                 return this.DataSourceId.ProviderName;
             }
         }
@@ -76,12 +78,10 @@ namespace Composite.Data
 
 
         /// <exclude />
-        public override string Id
-        {
-            get { return this.SerializedDataId; }
-        }
+        public override string Id => this.SerializedId;
 
-
+        /// <exclude />
+        public override string VersionId => this.SerializedVersionId;
 
         /// <exclude />
         public override bool IsValid()
@@ -184,7 +184,7 @@ namespace Composite.Data
         {
             prettyfier.OnWriteId = (token, helper) =>
             {
-                IDataId dataId = DataIdSerializer.Deserialize(this.Id);
+                IDataId dataId = DataIdSerializer.Deserialize(this.Id,this.VersionId);
 
                 StringBuilder sb = new StringBuilder();
                 sb.Append("<b>DataId</b><br />");
@@ -215,21 +215,36 @@ namespace Composite.Data
 
 
 
-        private string SerializedDataId
+        private string SerializedId
         {
             get
             {
-                if (_serializedDataId == null)
+                if (_serializedId == null)
                 {
-                    _serializedDataId = this.DataSourceId.DataId.Serialize();
+                    var keyPropertyNames = this.Data.GetType().GetCustomAttributesRecursively<KeyPropertyNameAttribute>().Select(f=>f.KeyPropertyName);
+
+                    _serializedId = this.DataSourceId.DataId.Serialize(keyPropertyNames);
                 }
 
-                return _serializedDataId;
+                return _serializedId;
             }
         }
 
+        private string SerializedVersionId
+        {
+            get
+            {
+                if (_serializedVersionId == null)
+                {
+                    var versionKeyPropertyNames = this.Data.GetType().GetCustomAttributesRecursively<VersionKeyPropertyNameAttribute>().Select(f=>f.VersionKeyPropertyName);
+                    
+                    _serializedVersionId = this.DataSourceId.DataId.Serialize(versionKeyPropertyNames);
+                }
 
-
+                return _serializedVersionId;
+            }
+        }
+        
         private void CheckValidity()
         {
             Verify.That(IsValid(), "Failed to deserialize data from serialized data source identifier. Probably the data has been removed from data source.");
