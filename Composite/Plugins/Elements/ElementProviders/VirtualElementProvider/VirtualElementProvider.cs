@@ -222,7 +222,7 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
                         VisualData = new ActionVisualizedData
                         {
                             Label = StringResourceSystemFacade.GetString("Composite.Management", "VirtualElementProviderElementProvider.RootActions.SetTimezoneLabel"),
-                            ToolTip = StringResourceSystemFacade.GetString("Composite.Management", "VirtualElementProviderElementProvider.RootActions.SetTimeZoneTooltip"),
+                            ToolTip = StringResourceSystemFacade.GetString("Composite.Management", "VirtualElementProviderElementProvider.RootActions.SetTimezoneTooltip"),
                             Icon = VirtualElementProvider.ChangeOwnCultureIcon,
                             Disabled = false,
                             ActionLocation = new ActionLocation
