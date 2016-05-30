@@ -146,7 +146,7 @@ BrowserPageBinding.prototype.handleBroadcast = function (broadcast, arg) {
 				if (selectedTreeNode.nodes && selectedTreeNode.nodes.getLength() > 1) {
 					var list = new List();
 					selectedTreeNode.nodes.each(function(node) {
-						list.add(new SelectorBindingSelection(node.getLabel(), node.getHandle(), node.getHandle() === selectedTreeNode.node.getHandle()));
+						list.add(new SelectorBindingSelection(node.getData().BundleElementName, node.getHandle(), node.getHandle() === selectedTreeNode.node.getHandle()));
 					});
 					bundleselector.populateFromList(list);
 					bundleselector.show();

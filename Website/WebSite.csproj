@@ -559,6 +559,7 @@
     <Content Include="Composite\images\welcome\cancel.svg" />
     <Content Include="Composite\scripts\source\top\core\ImageProvider.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\branding\BrandSnippetBinding.js" />
+    <Content Include="Composite\scripts\source\top\ui\bindings\buttons\combobutton\SelectorButtonBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\data\radiocheck\CheckTreeBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\data\radiocheck\CheckTreeNodeBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\data\selectors\HierarchicalSelectorBinding.js" />

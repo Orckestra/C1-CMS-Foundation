@@ -86,3 +86,6 @@ ui|toolbar#breadcrumbbar {
 	display: none !important;
 }
 
+.selectorpopup ui|labelbox.image-and-text ui|labeltext {
+	margin-left: 4px;
+}
