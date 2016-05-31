@@ -2,17 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Transactions;
 using System.Workflow.Activities;
-using Composite.C1Console.Actions;
 using Composite.C1Console.Events;
 using Composite.Data;
 using Composite.Data.ProcessControlled;
 using Composite.Data.Types;
-using Composite.Core.ResourceSystem;
 using Composite.Data.Transactions;
 using Composite.C1Console.Workflow;
 
+using Texts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_Plugins_PageElementProvider;
 
 namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 {
@@ -23,6 +21,11 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
         public DeletePageWorkflow()
         {
             InitializeComponent();
+        }
+
+        private static class BindingNames
+        {
+            public const string DeleteAllVersionsConfirmed = nameof(DeleteAllVersionsConfirmed);
         }
 
 
@@ -93,11 +96,13 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
             bool hasChildren = PageServices.GetChildren(selectedPage.Id).Any();
 
-            Dictionary<string, object> bindings = new Dictionary<string, object>();
-            bindings.Add("HasSubPages", hasChildren);
-            bindings.Add("DeleteAllSubPages", false);
-            bindings.Add("DeleteMessageText", string.Format(StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "DeletePageStep2.Text"), selectedPage.Title));
-            this.Bindings = bindings;
+            this.Bindings = new Dictionary<string, object>
+            {
+                {"HasSubPages", hasChildren},
+                {"DeleteAllSubPages", false},
+                {BindingNames.DeleteAllVersionsConfirmed, false},
+                {"DeleteMessageText", Texts.DeletePageStep2_Text(selectedPage.Title)}
+            };
         }
 
 
@@ -108,14 +113,14 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             DataEntityToken dataEntityToken = (DataEntityToken)this.EntityToken;
             IPage selectedPage = (IPage)dataEntityToken.Data;
 
-            using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope())
+            using (var transactionScope = TransactionsFacade.CreateNewScope())
             {
-                if (DataFacade.WillDeleteSucceed<IPage>(selectedPage) == false)
+                if (!DataFacade.WillDeleteSucceed<IPage>(selectedPage))
                 {
                     this.ShowMessage(
                         DialogType.Error,
-                        StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "DeletePageWorkflow.CascadeDeleteErrorTitle"),
-                        StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "DeletePageWorkflow.CascadeDeleteErrorMessage")
+                        Texts.DeletePageWorkflow_CascadeDeleteErrorTitle,
+                        Texts.DeletePageWorkflow_CascadeDeleteErrorMessage
                     );
 
                     return;
@@ -128,23 +133,18 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 {
                     List<IPage> pagesToDelete = selectedPage.GetSubChildren().ToList();
 
-                    foreach (IPage page in pagesToDelete)
+                    if (pagesToDelete.Any(page => !DataFacade.WillDeleteSucceed<IPage>(page)))
                     {
-                        if (DataFacade.WillDeleteSucceed<IPage>(page) == false)
-                        {
-                            this.ShowMessage(
-                                DialogType.Error,
-                                StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "DeletePageWorkflow.CascadeDeleteErrorTitle"),
-                                StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "DeletePageWorkflow.CascadeDeleteErrorMessage")
-                            );
+                        this.ShowMessage(DialogType.Error,
+                            Texts.DeletePageWorkflow_CascadeDeleteErrorTitle,
+                            Texts.DeletePageWorkflow_CascadeDeleteErrorMessage);
 
-                            return;
-                        }
+                        return;
                     }
 
                     foreach (IPage page in pagesToDelete)
                     {
-                        if (ExistInOtherLocale(cultures, page) == false)
+                        if (!ExistInOtherLocale(cultures, page))
                         {
                             RemoveAllFolderAndMetaDataDefinitions(page);
                         }
@@ -154,16 +154,20 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                     }
                 }
 
-                if (ExistInOtherLocale(cultures, selectedPage) == false)
+                if (!ExistInOtherLocale(cultures, selectedPage))
                 {
                     RemoveAllFolderAndMetaDataDefinitions(selectedPage);
                 }
 
-                ParentTreeRefresher parentTreeRefresher = this.CreateParentTreeRefresher();
+                var parentTreeRefresher = this.CreateParentTreeRefresher();
                 parentTreeRefresher.PostRefreshMesseges(selectedPage.GetDataEntityToken(), 2);
 
                 selectedPage.DeletePageStructure();
-                ProcessControllerFacade.FullDelete(selectedPage);
+
+                Guid pageId = selectedPage.Id;
+                var pageVersions = DataFacade.GetData<IPage>(p => p.Id == pageId).ToList();
+
+                ProcessControllerFacade.FullDelete(pageVersions);
 
                 transactionScope.Complete();
             }
@@ -205,13 +209,29 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
         {
             this.ShowMessage(
                 DialogType.Error,
-                "${Composite.Plugins.PageElementProvider, DeletePageWorkflow.HasCompositionsTitle}",
-                "${Composite.Plugins.PageElementProvider, DeletePageWorkflow.HasCompositionsMessage}"
+                Texts.DeletePageWorkflow_HasCompositionsTitle,
+                Texts.DeletePageWorkflow_HasCompositionsMessage
             );
         }
 
-        private void confDeleteDataCodeActivity_execute(object sender, EventArgs e)
+        private void PageHasMultpleVersions(object sender, ConditionalEventArgs e)
         {
+            DataEntityToken dataEntityToken = (DataEntityToken)this.EntityToken;
+            IPage selectedPage = (IPage)dataEntityToken.Data;
+
+            Guid pageId = selectedPage.Id;
+
+            e.Result = DataFacade.GetData<IPage>().Count(p => p.Id == pageId) > 1;
+        }
+
+        private void codeActivity_MultipleVersionsDeletionConfirmedExecute(object sender, EventArgs e)
+        {
+            Bindings[BindingNames.DeleteAllVersionsConfirmed] = true;
+        }
+
+        private void HasPageDeletionBeenConfirmed(object sender, ConditionalEventArgs e)
+        {
+            e.Result = (bool)Bindings[BindingNames.DeleteAllVersionsConfirmed];
         }
     }
 }

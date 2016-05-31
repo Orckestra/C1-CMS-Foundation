@@ -173,6 +173,7 @@
     </Content>
     <Content Include="Composite\content\branding\start-page-content.inc" />
     <Content Include="Composite\content\branding\start-page-js.inc" />
+    <Content Include="Composite\content\forms\Administrative\DeletePage_ConfirmAllVersionsDeletion.xml" />
     <Content Include="Composite\content\views\browser\deviceoptions.xml">
       <SubType>Designer</SubType>
     </Content>
