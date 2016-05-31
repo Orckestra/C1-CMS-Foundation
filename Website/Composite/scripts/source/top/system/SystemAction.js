@@ -60,7 +60,7 @@ SystemAction.invoke = function ( action, arg ) {
 				action.getHandle (),
 				Application.CONSOLE_ID
 			);
-			MessageQueue.update ();
+			MessageQueue.update(action.isSyncedRequest());
 			Application.unlock ( SystemAction );
 		}, 0 );
 	} else {
@@ -288,6 +288,15 @@ SystemAction.prototype.isInToolBar = function () {
 SystemAction.prototype.isInFolder = function () {
 
 	return this._data.ActionCategory.IsInFolder;
+}
+
+/**
+ * Is require sync requests for invoke action?
+ * @return {boolean}
+ */
+SystemAction.prototype.isSyncedRequest = function () {
+
+	return true;
 }
 
 
