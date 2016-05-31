@@ -36,8 +36,6 @@ SelectorButtonBinding.prototype.onBindingAttach = function () {
 	SelectorButtonBinding.superclass.onBindingAttach.call(this);
 
 	this.isSearchSelectionEnabled = false;
-
-
 };
 
 /**
@@ -60,9 +58,6 @@ SelectorButtonBinding.prototype.handleAction = function (action) {
 
 	if (action.type === ButtonBinding.ACTION_COMMAND && this.isSingle) {
 		this.onValueChange();
-		//this.dispatchAction(
-		//	SelectorBinding.ACTION_SELECTIONCHANGED
-		//);
 	} else {
 		SelectorButtonBinding.superclass.handleAction.call(this, action);
 	}

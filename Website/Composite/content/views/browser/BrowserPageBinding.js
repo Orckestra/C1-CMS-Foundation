@@ -1237,6 +1237,7 @@ BrowserPageBinding.prototype.getBundleSelector = function () {
 	if (!this.shadowTree.bundleselector) {
 		var addressrightgroup = this.bindingWindow.bindingMap.addressrightgroup;
 		var selector = SelectorBinding.newInstance(this.bindingDocument);
+		selector.setProperty("textonly", true);
 		addressrightgroup.bindingElement.insertBefore(selector.bindingElement, addressrightgroup.bindingElement.firstChild);
 		selector.attach();
 		this.shadowTree.bundleselector = selector;
