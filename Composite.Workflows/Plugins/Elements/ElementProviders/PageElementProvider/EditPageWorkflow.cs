@@ -580,6 +580,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 {
                     var content = DataFacade.BuildNew<IPagePlaceholderContent>();
                     content.PageId = selectedPage.Id;
+                    content.VersionId = selectedPage.VersionId;
                     content.PlaceHolderId = placeHolderContent.Key;
                     content.Content = placeHolderContent.Value;
                     contents.Add(content);
