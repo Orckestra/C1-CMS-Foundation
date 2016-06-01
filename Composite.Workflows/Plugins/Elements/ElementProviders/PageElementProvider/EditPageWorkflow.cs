@@ -11,7 +11,6 @@ using Composite.C1Console.Events;
 using Composite.C1Console.Forms;
 using Composite.C1Console.Forms.DataServices;
 using Composite.C1Console.Forms.Flows;
-using Composite.C1Console.Scheduling;
 using Composite.C1Console.Security;
 using Composite.C1Console.Users;
 using Composite.C1Console.Workflow;
@@ -32,7 +31,6 @@ using Composite.Data.DynamicTypes;
 using Composite.Data.GeneratedTypes;
 using Composite.Data.ProcessControlled;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
-using Composite.Data.PublishScheduling;
 using Composite.Data.Transactions;
 using Composite.Data.Types;
 using Composite.Data.Validation;
@@ -281,18 +279,6 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             UpdateBinding("StateOptions", transitionNames);
 
 
-            var existingPagePublishSchedule = PublishScheduleHelper.GetPublishSchedule(typeof(IPage),
-                selectedPage.Id.ToString(),
-                UserSettings.ActiveLocaleCultureInfo.Name);
-
-            UpdateBinding("PublishDate", existingPagePublishSchedule?.PublishDate);
-
-            var existingPageUnpublishSchedule = PublishScheduleHelper.GetUnpublishSchedule(typeof(IPage),
-                selectedPage.Id.ToString(),
-                UserSettings.ActiveLocaleCultureInfo.Name);
-
-            UpdateBinding("UnpublishDate", existingPageUnpublishSchedule?.UnpublishDate);
-
             var formDefinition = formDocument.GetDocumentAsString();
 
             DeliverFormData(
@@ -331,9 +317,6 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
             var dataValidated = true;
 
-            WorkflowInstance publishWorkflowInstance = null;
-            WorkflowInstance unpublishWorkflowInstance = null;
-
             try
             {
                 using (var transactionScope = TransactionsFacade.CreateNewScope())
@@ -342,8 +325,6 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
                     if (dataValidated)
                     {
-                        PublishControlledHelper.HandlePublishUnpublishWorkflows(selectedPage, UserSettings.ActiveLocaleCultureInfo.Name, PublishDate, UnpublishDate, ref publishWorkflowInstance, ref unpublishWorkflowInstance);
-
                         if (selectedPage.PageTypeId != originalPage.PageTypeId)
                         {
                             // Adding metadata fields
@@ -430,36 +411,15 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                     transactionScope.Complete();
                 }
 
-                if (publishWorkflowInstance != null)
-                {
-                    publishWorkflowInstance.Start();
-                    WorkflowFacade.RunWorkflow(publishWorkflowInstance);
-                }
-
-                if (unpublishWorkflowInstance != null)
-                {
-                    unpublishWorkflowInstance.Start();
-                    WorkflowFacade.RunWorkflow(unpublishWorkflowInstance);
-                }
-
                 if (_doPublish)
                 {
-                    if (publishWorkflowInstance == null || PublishDate < DateTime.Now)
-                    {
-                        var actionToken = new GenericPublishProcessController.PublishActionToken();
+                    var actionToken = new GenericPublishProcessController.PublishActionToken();
 
-                        var serviceContainer = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
+                    var serviceContainer = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
 
-                        ActionExecutorFacade.Execute(EntityToken, actionToken, serviceContainer);
+                    ActionExecutorFacade.Execute(EntityToken, actionToken, serviceContainer);
 
-                        treeviewRequiresRefreshing = false;
-                    }
-                    else
-                    {
-                        var title = StringResourceSystemFacade.GetString("Composite.Management", "Website.Forms.Administrative.EditPage.PublishDatePreventPublishTitle");
-                        var message = StringResourceSystemFacade.GetString("Composite.Management", "Website.Forms.Administrative.EditPage.PublishDatePreventPublish");
-                        ShowMessage(DialogType.Warning, title, message);
-                    }
+                    treeviewRequiresRefreshing = false;
                 }
 
                 if (treeviewRequiresRefreshing)
@@ -561,10 +521,6 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
         }
 
 
-        private DateTime? PublishDate => GetBinding<DateTime?>("PublishDate");
-
-        private DateTime? UnpublishDate => GetBinding<DateTime?>("UnpublishDate");
-
         private void editPreviewCodeActivity_ExecuteCode(object sender, EventArgs e)
         {
             var serviceContainer = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
@@ -603,9 +559,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             page.Title = page.Title.Trim();
             page.MenuTitle = page.MenuTitle.Trim();
             page.UrlTitle = page.UrlTitle.Trim();
-
-            var friendlyURL = page.FriendlyUrl;
-            page.FriendlyUrl = friendlyURL != null ? friendlyURL.Trim() : null;
+            page.FriendlyUrl = page.FriendlyUrl?.Trim();
         }
 
 

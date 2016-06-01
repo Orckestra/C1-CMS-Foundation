@@ -623,8 +623,6 @@
 	<string key="Website.Forms.Administrative.EditPage.DraftTransition" value="Draft" />
 	<string key="Website.Forms.Administrative.EditPage.AwaitingApprovalTransition" value="Awaiting Approval" />
 	<string key="Website.Forms.Administrative.EditPage.AwaitingPublicationTransition" value="Awaiting Publication" />
-  <string key="Website.Forms.Administrative.EditPage.PublishDatePreventPublishTitle" value="Saved, but not published" />
-  <string key="Website.Forms.Administrative.EditPage.PublishDatePreventPublish" value="Your page has been saved, but not published since you have a future publish date set on the 'Settings' tab." />
   <string key="Website.Forms.Administrative.ElementKeywordSearch.LabelFieldGroup" value="Search" />
 	<string key="Website.Forms.Administrative.ElementKeywordSearch.LabelKeyword" value="Keyword" />
 	<string key="Website.Forms.Administrative.ElementKeywordSearch.LabelSearchKeyword" value="Write a keyword to search for." />
