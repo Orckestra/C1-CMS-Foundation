@@ -3,9 +3,9 @@
   <cms:bindings>
     <cms:binding name="DeleteAllSubPages" type="System.Boolean" />
   </cms:bindings>
-  <cms:layout iconhandle="page-delete-page" label="${Composite.Plugins.PageElementProvider, DeletePage.LabelFieldGroup}">
+  <cms:layout iconhandle="page-delete-page" label="${Composite.Plugins.PageElementProvider, DeletePageWorkflow.ConfirmAllVersionsDeletion.DialogLabel}">
 		<Heading
-        Title="${Composite.Plugins.PageElementProvider, DeletePageWorkflow.ConfirmAllVersionsDeletion.Title}"
+				Title="${Composite.Plugins.PageElementProvider, DeletePageWorkflow.ConfirmAllVersionsDeletion.Title}"
         Description="${Composite.Plugins.PageElementProvider, DeletePageWorkflow.ConfirmAllVersionsDeletion.Description}" />
 	</cms:layout>
 </cms:formdefinition>
