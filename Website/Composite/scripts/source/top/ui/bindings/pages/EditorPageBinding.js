@@ -535,16 +535,18 @@ EditorPageBinding.prototype._saveAndPublishEditorPage = function () {
 
 	while (dataBindings.hasNext()) {
 		var binding = dataBindings.getNext();
-		while (binding && !binding.isLazy) {
-			binding = binding.getAncestorBindingByType(Binding);
-		}
-		if (!binding) {
-			// Not lazy
-			awakeCallback();
-		} else {
-			binding.wakeUp(function () {
+		if (binding.isRequired || binding.getProperty('required')) {
+			while (binding && !binding.isLazy) {
+				binding = binding.getAncestorBindingByType(Binding);
+			}
+			if (!binding) {
+				// No lazy ancestor
 				awakeCallback();
-			});
+			} else {
+				binding.wakeUp(awakeCallback);
+			}
+		} else {
+			awakeCallback();
 		}
 	}
 };
