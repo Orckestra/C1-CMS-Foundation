@@ -529,15 +529,19 @@ EditorPageBinding.prototype._wakeAndValidateAllDataBindings = function (callback
 /**
  * Performs the final save transaction.
  */
-EditorPageBinding.prototype._saveEditorPage = function () {
+EditorPageBinding.prototype._saveEditorPage = function (publish) {
 
 	this._wakeAndValidateAllDataBindings(function () {
 		this.bindingWindow.DataManager.isDirty = false;
 		var postback = this.bindingWindow.bindingMap.__REQUEST;
-		if ( postback != null ) {
-			postback.postback ( EditorPageBinding.MESSAGE_SAVE );
+		if (postback != null) {
+			var signal = publish ?
+				EditorPageBinding.MESSAGE_SAVE_AND_PUBLISH :
+				EditorPageBinding.MESSAGE_SAVE;
+			postback.postback(signal);
 		} else {
-			this.logger.error ( "Save aborted: Could not locate RequestBinding" );
+			this.logger.error("Save " + publish ? "and publish " : "" + "aborted: " +
+				"Could not locate RequestBinding");
 		}
 	}.bind(this));
 };
@@ -546,16 +550,7 @@ EditorPageBinding.prototype._saveEditorPage = function () {
 * Performs the final save and publish transaction.
 */
 EditorPageBinding.prototype._saveAndPublishEditorPage = function () {
-
-	this._wakeAndValidateAllDataBindings(function () {
-		this.bindingWindow.DataManager.isDirty = false;
-		var postback = this.bindingWindow.bindingMap.__REQUEST;
-		if (postback != null) {
-			postback.postback(EditorPageBinding.MESSAGE_SAVE_AND_PUBLISH);
-		} else {
-			this.logger.error("Save and publish aborted: Could not locate RequestBinding");
-		}
-	}.bind(this));
+	this._saveEditorPage(true);
 };
 
 /**
