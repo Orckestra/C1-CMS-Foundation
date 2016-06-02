@@ -10,8 +10,8 @@ Binding.CALLBACKID = "callbackid"; // __EVENTTARGET
 Binding.CALLBACKARG = "callbackarg"; // __EVENTARGUMENT
 
 /*
- * Special classname to clear the float using CSS hacks. 
- * These are added dynamically, although it is not the 
+ * Special classname to clear the float using CSS hacks.
+ * These are added dynamically, although it is not the
  * best way to performance-optimize Internet Explorer.
  * @see "base.css"
  */
@@ -19,8 +19,8 @@ Binding.CLASSNAME_CLEARFLOAT = "clearfix";
 Binding.CLASSNAME_FOCUSED = "focused";
 
 /*
- * Standard timeout in milliseconds before a lazy binding 
- * wakes up properly. This prevents jumping layouts. The 
+ * Standard timeout in milliseconds before a lazy binding
+ * wakes up properly. This prevents jumping layouts. The
  * binding may define a different timeout if desired.
  * @see {Binding#wakeUp}
  */
@@ -51,12 +51,12 @@ Binding.ACTION_DIMENSIONCHANGED = "bindingdimensionchanged";
 Binding.ACTION_VISIBILITYCHANGED = "bindingvisibilitychanged";
 
 /**
- * Abstract method "placeholder" function. Indicates  
+ * Abstract method "placeholder" function. Indicates
  * that subclasses should overwrite the particular method.
  * @type {function}
  */
 Binding.ABSTRACT_METHOD = function () {
-	
+
 	SystemDebug.stack ( arguments );
 	throw ( this.toString () + " abstract method not implemented" );
 }
@@ -68,7 +68,7 @@ Binding.ABSTRACT_METHOD = function () {
  * @return {object}
  */
 Binding.evaluate = function ( script, binding ) {
-	
+
 	var result = null;
 	var manager = binding.bindingWindow.WindowManager;
 	if ( manager != null ) {
@@ -79,8 +79,8 @@ Binding.evaluate = function ( script, binding ) {
 }
 
 /**
- * Due to differences in the implementation of "eval" in different browsers, it may be 
- * nescessary to replace the "this" keyword in a script string with a global pointer. 
+ * Due to differences in the implementation of "eval" in different browsers, it may be
+ * nescessary to replace the "this" keyword in a script string with a global pointer.
  * This is needed for all versions of IE and for Firefox starting from version 3.7
  * TODO: Doesn't handle string "alert(this)" !!!
  * @see {ButtonBinding}
@@ -89,7 +89,7 @@ Binding.evaluate = function ( script, binding ) {
  * @param {String} key
  */
 Binding.parseScriptStatement = function ( script, key ) {
-	
+
 	if ( script != null && key != null ) {
 		var replacement = "UserInterface.getBindingByKey ( \"" + key + "\" )";
 		script = script.replace ( /(\W|^)this(,| +|\)|;)/g, replacement );
@@ -99,15 +99,15 @@ Binding.parseScriptStatement = function ( script, key ) {
 }
 
 /**
- * Nowadays, with Dot Net Ajax and what, you can never 
- * be sure that your Binding hasn't been spirited away behind 
- * your back. This method will verify the integrity of your 
- * binding before you attempt to invoke it's methods. 
- * @param {Binding} binding 
+ * Nowadays, with Dot Net Ajax and what, you can never
+ * be sure that your Binding hasn't been spirited away behind
+ * your back. This method will verify the integrity of your
+ * binding before you attempt to invoke it's methods.
+ * @param {Binding} binding
  * @return {boolean}
  */
 Binding.exists = function ( binding ) {
-	
+
 	var result = false;
 	try {
 		if ( binding && binding.bindingElement && binding.bindingElement.nodeType && binding.isDisposed == false ) {
@@ -126,9 +126,9 @@ Binding.exists = function ( binding ) {
  * @param {Binding} binding
  */
 Binding.destroy = function ( binding ) {
-	
+
 	if ( !binding.isDisposed ) {
-		
+
 		if ( binding.acceptor != null ) {
 			binding.acceptor.dispose ();
 		}
@@ -155,7 +155,7 @@ Binding.destroy = function ( binding ) {
 
 /**
  * Inject the binding with a hidden field so that the ASP.NET server may recognize it.
- * The binding may access the field as "this.shadowTree.dotnetinput" to mofify its value. 
+ * The binding may access the field as "this.shadowTree.dotnetinput" to mofify its value.
  * Note this: The ID attribute is for the client while the callbackid is for the server.
  * @param {Binding} binding
  * @param {String} value
@@ -164,7 +164,7 @@ Binding.destroy = function ( binding ) {
 Binding.dotnetify = function ( binding, value ) {
 
 	var callbackid = binding.getCallBackID ();
-	
+
 	if ( callbackid != null ) {
 		var input = DOMUtil.createElementNS ( Constants.NS_XHTML, "input", binding.bindingDocument );
 		input.type = "hidden";
@@ -179,18 +179,18 @@ Binding.dotnetify = function ( binding, value ) {
 }
 
 /**
- * Build image profile. 
+ * Build image profile.
  * @param {Binding} binding
  */
 Binding.imageProfile = function ( binding ) {
-	
+
 	var image = binding.getProperty ( "image" );
 	var imageHover = binding.getProperty ( "image-hover" );
 	var imageActive = binding.getProperty ( "image-active" );
 	var imageDisabled = binding.getProperty ( "image-disabled" );
-	
+
 	/*
-	 * Note that we don't overwrite properties 
+	 * Note that we don't overwrite properties
 	 * that were already assigned programatically.
 	 */
 	if ( binding.imageProfile == null ) {
@@ -216,162 +216,162 @@ Binding.imageProfile = function ( binding ) {
 
 /**
  * @class
- * The <code>Binding</code> is the base class for all objects 
+ * The <code>Binding</code> is the base class for all objects
  * that control UI namespaced DOM elements on the rendering canvas.
  * @implements {IEventListener}
  * @implements {IActionListener}
  * @implements {IBroadcastListener}
  */
 function Binding () {
-	
+
 	/**
 	 * @type {SystemLogger}
 	 */
 	this.logger = SystemLogger.getLogger ( "binding" );
-	
+
 	/**
-	 * This property is set by {@link UserInterface} when the binding 
-	 * is registered. The bound element is assigned a DOM attribute 
+	 * This property is set by {@link UserInterface} when the binding
+	 * is registered. The bound element is assigned a DOM attribute
 	 * "key" with a corresponding value.
 	 * @type {string}
 	 */
 	this.key = null;
 
 	/**
-	 * The DOM element wrapped by the Binding. 
+	 * The DOM element wrapped by the Binding.
 	 * @type {DOMElement}
 	 */
 	this.bindingElement	= null;
-	
-	/** 
-	 * The ownerDocument of the bound element. 
+
+	/**
+	 * The ownerDocument of the bound element.
 	 * @type {DOMDocument}
 	 */
 	this.bindingDocument = null;
-	
+
 	/**
-	 * The parent window of the bound element. 
+	 * The parent window of the bound element.
 	 * @type {DocumentView}
 	 */
 	this.bindingWindow = null;
-	
+
 	/**
-	 * Pointers to DOMElements generated by the Binding. 
+	 * Pointers to DOMElements generated by the Binding.
 	 * @type {HashMap<string><DOMElement>}
 	 */
 	this.shadowTree = null;
-	
-	/** 
+
+	/**
 	 * A collection of actionlisteners.
 	 * @type {HashMap<string><array>}
-	 * @private 
+	 * @private
 	 */
 	this.actionListeners = null;
-	
+
 	/**
 	 * @type {PopupBinding}
 	 * @private
 	 */
 	this.contextMenuBinding = null;
-	
+
 	/**
 	 * Switched to true when the bindings <code>onBindingRegister</code> method executes.
 	 * @type {boolean}
 	 */
 	this.isRegistered = false;
-	
+
 	/**
 	 * Switched to true when the bindings <code>onBindingAttach</code> method executes.
 	 * @type {boolean}
 	 */
 	this.isAttached = false;
-	
+
 	/**
 	 * Switched to true when the bindings <code>onBindingInitialize</code> method executes.
 	 * @type {boolean}
 	 */
 	this.isInitialized = false;
-	
+
 	/**
-	 * Switched to true when the bindings <code>onBindingDispose</code> method executes 
+	 * Switched to true when the bindings <code>onBindingDispose</code> method executes
 	 * (although technically the switch is performed elsewhere).
-	 * @see {Binding#dispose} 
+	 * @see {Binding#dispose}
 	 * @type {boolean}
 	 */
 	this.isDisposed = false;
-	
+
 	/**
 	 * If set to true, the binding element will dispatch a special action on drag gesture.
 	 * @type {boolean}
 	 */
 	this.isDraggable = false;
-	
+
 	/**
 	 * This one handles dragging action.
 	 * @type {Dragger}
 	 */
 	this.dragger = null;
-	
+
 	/**
 	 * This depends on...
 	 * @type {HashMap<string><boolean>}
 	 */
 	this.memberDependencies = null;
-	
+
 	/**
 	 * Depends on this...
 	 * @type {HashMap<string><Binding>}
 	 */
 	this.dependentBindings = null;
-	
-	/** 
-	 * This maps binding DOM properties to binding methods. When the property 
-	 * is modified, the method will be invoked with the property value as an 
-	 * argument. To avoid an excessive amount of mutation event listeners, 
-	 * you *must* change the property using the setProperty method. This property   
+
+	/**
+	 * This maps binding DOM properties to binding methods. When the property
+	 * is modified, the method will be invoked with the property value as an
+	 * argument. To avoid an excessive amount of mutation event listeners,
+	 * you *must* change the property using the setProperty method. This property
 	 * should be specified when you wire the binding to a {@link BroadcasterBinding}
 	 * @type {HashMap<string><function>}
 	 */
 	this.propertyMethodMap = null;
-	
+
 	/**
-	 * If set to true, this binding may still dispatch an {@link Action} but 
+	 * If set to true, this binding may still dispatch an {@link Action} but
 	 * it will not relay events dispatched by any descendant binding.
 	 * @type {boolean}
 	 */
 	this.isBlockingActions = false;
-	
+
 	/**
 	 * @type {boolean}
 	 */
 	this.isVisible = true;
-	
+
 	/**
 	 * Presents a simpliefied API for dealing with this bindings size and position on stage.
 	 * @type {BindingBoxObject}
 	 */
 	this.boxObject = null;
-	
+
 	/**
 	 * Identifies the type of this binding while dragging.
 	 * @see {Binding#dragAccept}
 	 * @type {string}
 	 */
 	this.dragType = null;
-	
+
 	/**
 	 * Whitespace-separated list of draggable types to accept.
 	 * @see {Binding#dragType}
 	 * @type {string}
 	 */
 	this.dragAccept = null;
-	
+
 	/**
 	 * If set to true, this binding will not accept any dragged bindings.
 	 * @type {boolean}
 	 */
 	this.dragReject = false;
-	
+
 	/**
 	 * Handles binding acceptance end rejection while dragging.
 	 * @type {BindingAcceptor}
@@ -383,42 +383,42 @@ function Binding () {
 	 * @type {boolean}
 	 */
 	this.isLazy = false;
-	
+
 	/**
-	 * The property "persistance" must be markup up as a whitespace 
+	 * The property "persistance" must be markup up as a whitespace
 	 * separated list of persisted properties. Internally we use a hashmap.
 	 * @type {HashMap<string><string>}
 	 */
 	this._persist = null;
-	
+
 	/**
 	 * True if DOM content was expanded server side.
 	 * @type {boolean}
 	 */
 	this.isBindingBuild = false;
-	
+
 	/**
 	 * Used to cleanup activationaware bindings.
 	 * @type {boolean}
 	 */
 	this._hasActivationAwareness = false;
-	
+
 	/**
 	 * While flexing, minimize the amount of DOM iterations by flipping this.
 	 * @see {FlexBoxCrawler}
 	 * @type {boolean}
 	 */
 	this.isFlexSuspended = false;
-	
+
 	/**
-	 * Blocking crawler progression by matching the crawler ID with a list.   
-	 * This way, bindings may fasttrack simple rejection of common crawlers. 
+	 * Blocking crawler progression by matching the crawler ID with a list.
+	 * This way, bindings may fasttrack simple rejection of common crawlers.
 	 * Advanced handling of crawlers should be done with method handleCrawler.
 	 * Note that the crawler filter property is null untill subclass constructs it.
 	 * @type {List<string>}
 	 */
 	this.crawlerFilters = null;
-	
+
 	/**
 	 * EventBroadcaster subscriptions.
 	 * @type {Map<string><boolean>}
@@ -440,7 +440,7 @@ Binding.prototype.toString = function () {
 Binding.prototype.onBindingRegister = function () {
 
 	if ( !this.isRegistered ) {
-		
+
 		this.bindingElement			= UserInterface.getElement ( this );
 		this.bindingDocument 		= this.bindingElement.ownerDocument;
 		this.bindingWindow			= DOMUtil.getParentWindow ( this.bindingDocument );
@@ -449,7 +449,7 @@ Binding.prototype.onBindingRegister = function () {
 		this.propertyMethodMap		= {};
 		this.isRegistered 			= true;
 		this._subscriptions			= new Map ();
-		
+
 		this._updateBindingMap ( true );
 		if ( this.getProperty ( "lazy" )) {
 			this.isLazy = true;
@@ -480,18 +480,18 @@ Binding.prototype.onBindingAttach = function () {
  * Initialize binding. Must only be invoked by the DocumentManager or via the attach method.
  */
 Binding.prototype.onBindingInitialize = function () {
-	
+
 	/*
 	 * When overloading, place your code here!!!!
-	 */ 
-	
+	 */
+
 	if ( this.dependentBindings != null ) {
 		for ( var key in this.dependentBindings ) {
 			var dependentBinding = this.dependentBindings [ key ];
 			dependentBinding.onMemberInitialize ( this );
 		}
 	}
-	
+
 	/*
 	 * Flag initialized status.
 	 */
@@ -530,7 +530,7 @@ Binding.prototype.onMemberInitialize = function ( binding ) {
  * @return {Binding}
  */
 Binding.prototype.attach = function () {
-	
+
 	if ( !this.isAttached ) {
 		this.onBindingAttach ();
 		if ( this.memberDependencies == null ) {
@@ -541,7 +541,7 @@ Binding.prototype.attach = function () {
 }
 
 /**
- * Recursivley attach this and any descendant binding not already attached. 
+ * Recursivley attach this and any descendant binding not already attached.
  */
 Binding.prototype.attachRecursive = function () {
 
@@ -554,12 +554,12 @@ Binding.prototype.attachRecursive = function () {
  * @param {boolean} isDetachMyself If set to true, dispose this binding.
  */
 Binding.prototype.detachRecursive = function ( isDetachMyself ) {
-	
+
 	if ( isDetachMyself == null ) {
 		isDetachMyself = false;
 	}
-	this.bindingWindow.DocumentManager.detachBindings ( 
-		this.bindingElement, !isDetachMyself 
+	this.bindingWindow.DocumentManager.detachBindings (
+		this.bindingElement, !isDetachMyself
 	);
 }
 
@@ -569,7 +569,7 @@ Binding.prototype.detachRecursive = function ( isDetachMyself ) {
  * @return {Binding}
  */
 Binding.prototype.addMember = function ( binding ) {
-	
+
 	if ( !this.isAttached ) {
 		throw "Cannot add members to unattached binding";
 	} else if ( !binding.isInitialized ){
@@ -588,7 +588,7 @@ Binding.prototype.addMember = function ( binding ) {
  * @return {List}
  */
 Binding.prototype.addMembers = function ( bindings ) {
-	
+
 	while ( bindings.hasNext ()) {
 		var binding = bindings.getNext ();
 		if ( !binding.isInitialized ) {
@@ -603,7 +603,7 @@ Binding.prototype.addMembers = function ( bindings ) {
  * @param {Binding} binding
  */
 Binding.prototype.registerDependentBinding = function ( binding ) {
-	
+
 	if ( !this.dependentBindings ) {
 		this.dependentBindings = {};
 	}
@@ -614,9 +614,9 @@ Binding.prototype.registerDependentBinding = function ( binding ) {
  * Initialize persistance.
  */
 Binding.prototype._initializeBindingPersistanceFeatures = function () {
-	
+
 	var persist = this.getProperty ( "persist" );
-	
+
 	if ( persist && Persistance.isEnabled ) {
 		var id = this.bindingElement.id;
 		if ( !KeyMaster.hasKey ( id )) {
@@ -648,12 +648,12 @@ Binding.prototype._initializeBindingPersistanceFeatures = function () {
 Binding.prototype._initializeBindingGeneralFeatures = function () {
 
 	var disabled 			= this.getProperty 	( "disabled" );
-	var contextmenu 		= this.getProperty 	( "contextmenu" );				
+	var contextmenu 		= this.getProperty 	( "contextmenu" );
 	var observes 			= this.getProperty 	( "observes" );
 	var onattach 			= this.getProperty 	( "onattach" );
 	var hidden				= this.getProperty 	( "hidden" );
 	var isBlocking 			= this.getProperty 	( "blockactionevents" );
-	
+
 	if ( hidden == true && this.isVisible == true ) {
 		this.hide ();
 	}
@@ -664,7 +664,7 @@ Binding.prototype._initializeBindingGeneralFeatures = function () {
 		this.setContextMenu ( contextmenu );
 	}
 	if ( observes ) {
-		this.observe ( 
+		this.observe (
 			this.getBindingForArgument ( observes )
 		);
 	}
@@ -679,13 +679,13 @@ Binding.prototype._initializeBindingGeneralFeatures = function () {
 	if ( onattach != null ) {
 		Binding.evaluate ( onattach, this );
 	}
-	
+
 	// TODO: investigate why explorer apparently stops evaluating statements at this point!
 }
 
 /**
- * Intitialize drag and drop features. Notice that a dragtype 
- * implies that the binding is draggable unless specifically 
+ * Intitialize drag and drop features. Notice that a dragtype
+ * implies that the binding is draggable unless specifically
  * stated otherwise (draggable property set to false).
  * TODO: This may not be a good idea regarding persistance!
  * TODO: require draggable set to true!
@@ -696,7 +696,7 @@ Binding.prototype._initializeBindingDragAndDropFeatures = function () {
 	var dragtype	= this.getProperty 	( "dragtype" );
 	var dragaccept	= this.getProperty 	( "dragaccept" );
 	var dragreject	= this.getProperty 	( "dragreject" );
-	
+
 	if ( isDraggable != null ) {
 		this.isDraggable = isDraggable; // but see below...
 	}
@@ -706,7 +706,7 @@ Binding.prototype._initializeBindingDragAndDropFeatures = function () {
 			this.isDraggable = true; // dragtype enables drag, unless explicitely denied.
 		}
 	}
-	if ( dragaccept != null ){ 
+	if ( dragaccept != null ){
 		this.dragAccept = dragaccept;
 	}
 	if ( dragreject	!= null ) {
@@ -720,11 +720,11 @@ Binding.prototype._initializeBindingDragAndDropFeatures = function () {
 		this.enableDragging ();
 	}
 	if ( this.dragger != null && this.dragType != null ) {
-		this.dragger.registerHandler ( 
-			Application 
+		this.dragger.registerHandler (
+			Application
 		);
 	}
-	
+
 	/*
 	 * Note that we construct a BindingAcceptor even for rejecting bindings!
 	 */
@@ -736,19 +736,19 @@ Binding.prototype._initializeBindingDragAndDropFeatures = function () {
 }
 
 /**
- * Update bindingMap (see WindowManager). Notice that this method gets invoked 
+ * Update bindingMap (see WindowManager). Notice that this method gets invoked
  * from both onBindingRegister, onBindingAttach and onBindingDispose methods.
  * @param {boolean} isRegistration
  */
 Binding.prototype._updateBindingMap = function ( isRegistration ) {
-	
+
 	try {
 		if ( this.bindingWindow != null ) {
-		
+
 			var id = this.bindingElement.id;
 			var map = this.bindingWindow.bindingMap;
 			var registered = null;
-		
+
 			if ( isRegistration ) {
 				registered = map [ id ];
 				if ( registered != null && registered != this ) {
@@ -780,7 +780,7 @@ Binding.prototype._updateBindingMap = function ( isRegistration ) {
 }
 
 /**
- * Handle DOM event. To eliminate doubts when subclassing, 
+ * Handle DOM event. To eliminate doubts when subclassing,
  * all bindings have been fitted with this method to overload.
  * @implements {IEventListener}
  * @param {Event} e
@@ -788,20 +788,20 @@ Binding.prototype._updateBindingMap = function ( isRegistration ) {
 Binding.prototype.handleEvent = function ( e ) {};
 
 /**
- * Handle Action. To eliminate doubts when subclassing, 
+ * Handle Action. To eliminate doubts when subclassing,
  * all bindings have been fitted with this method to overload.
  * @implements {IActionListener}
- * @param {Action} action 
+ * @param {Action} action
  */
 Binding.prototype.handleAction = function ( action ) {};
 
 /**
- * Handle broadcast. To eliminate doubts when subclassing, 
+ * Handle broadcast. To eliminate doubts when subclassing,
  * all bindings have been fitted with this method to overload.
  * @see {EventBroadcaster}
  * @implements {IBroadcastListener}
  * @param {string} broadcast
- * @param {object] arg 
+ * @param {object] arg
  */
 Binding.prototype.handleBroadcast = function ( broadcast, arg ) {};
 
@@ -812,7 +812,7 @@ Binding.prototype.handleBroadcast = function ( broadcast, arg ) {};
  * @returns {boolean} Return true to trigger method handleElement.
  */
 Binding.prototype.handleElement = function ( element ) {
-	
+
 	return false;
 }
 
@@ -823,21 +823,21 @@ Binding.prototype.handleElement = function ( element ) {
  * @returns {boolean} Return true to stop crawling.
  */
 Binding.prototype.updateElement = function ( element ) {
-	
+
 	return false;
 }
 
 /**
- * This utility function allows you to address a binding instance using 
- * a number of argument types. If you provide an element or a binding 
- * there's no trick to it. But if you provide a string it will either resolve 
- * to the id of an element in the current document context OR be evaluated  
- * as a javascript call which can retrieve a binding from somewhere in the  
+ * This utility function allows you to address a binding instance using
+ * a number of argument types. If you provide an element or a binding
+ * there's no trick to it. But if you provide a string it will either resolve
+ * to the id of an element in the current document context OR be evaluated
+ * as a javascript call which can retrieve a binding from somewhere in the
  * application hierarchy.
  * @param {object} arg
  */
 Binding.prototype.getBindingForArgument = function ( arg ) {
-	
+
 	var result = null;
 
 	switch ( typeof arg ) {
@@ -845,17 +845,17 @@ Binding.prototype.getBindingForArgument = function ( arg ) {
 			result = arg;
 			break;
 		case "string" : // the result was declared in inline markup
-		
+
 			// fetch binding by simple id in current document scope
 			result = this.bindingDocument.getElementById ( arg );
-			
+
 			// or evaluate the attribute as some kind of javascript
 			if ( result == null ) {
 				result = Binding.evaluate ( arg, this );
 			}
 			break;
 	}
-	
+
 	// at this point, the result can be either a DOMElement or a Binding.
 	if ( result != null && result.nodeType != null ) {
 		result = UserInterface.getBinding ( result );
@@ -864,19 +864,19 @@ Binding.prototype.getBindingForArgument = function ( arg ) {
 }
 
 /**
- * Serialize binding. Returns a hashmap of properties to be included in the 
- * serialization result tree. Return false to prevent binding entirely from 
+ * Serialize binding. Returns a hashmap of properties to be included in the
+ * serialization result tree. Return false to prevent binding entirely from
  * appearing in the result tree (anonymously generated shadow content).
  * @return {HashMap<string><object>} well - could also return null or false!
  */
 Binding.prototype.serialize = function () {
 
 	/*
-	 * All properties of this object will be translated  
+	 * All properties of this object will be translated
 	 * to attributes on the serialized result element.
 	 */
 	var result = {};
-	
+
 	/**
 	 * Always include non-autogenerated id attribute.
 	 */
@@ -884,12 +884,12 @@ Binding.prototype.serialize = function () {
 	if ( id && id != this.key ) {
 		result.id = id;
 	}
-	
+
 	var binding = this.getProperty ( "binding" );
 	if ( binding ) {
 		result.binding = binding;
 	}
-	
+
 	return result;
 }
 
@@ -897,7 +897,7 @@ Binding.prototype.serialize = function () {
  * @return {string}
  */
 Binding.prototype.serializeToString = function () {
-	
+
 	var result = null;
 	if ( this.isAttached ) {
 		result = new BindingSerializer ().serializeBinding ( this );
@@ -920,13 +920,13 @@ Binding.prototype.subTreeFromString = function ( markup ) {
 }
 
 /**
- * Get bound element attribute. The attribute value (in DOM always a string) is 
- * analyzed  and converted to an appropriate js primitive of type number, 
- * string or boolean, making it simpler to work with in a scripting environment. 
+ * Get bound element attribute. The attribute value (in DOM always a string) is
+ * analyzed  and converted to an appropriate js primitive of type number,
+ * string or boolean, making it simpler to work with in a scripting environment.
  * @param {string} attname
  */
 Binding.prototype.getProperty = function ( attname ) {
-	
+
 	var value = this.bindingElement.getAttribute ( attname );
 	if ( value ) {
 		value = Types.castFromString ( value );
@@ -935,45 +935,45 @@ Binding.prototype.getProperty = function ( attname ) {
 }
 
 /**
- * Set bound element attribute. The value is converted to a string. 
- * If set to a null value, the property will be removed. By specifying 
- * the propertyMethodMap, this method can automatically invoke a specified 
- * method on the binding using the formatted value as an argument. This setup 
+ * Set bound element attribute. The value is converted to a string.
+ * If set to a null value, the property will be removed. By specifying
+ * the propertyMethodMap, this method can automatically invoke a specified
+ * method on the binding using the formatted value as an argument. This setup
  * was engineered specifically to support the {@link BroadcasterBinding}.
  * @param {string} attname The name of the attribute
  * @param {object} value The attribute value.
  */
 Binding.prototype.setProperty = function ( prop, value ) {
-	
+
 	if ( value != null ) {
-	
+
 		// DOM attributes are always stored as strings
 		value = value.toString ();
-		
+
 		/*
 		 * Dont't do anything unless the property is actually changed.
-		 * This will prevent recursive calls to methods which in turn 
+		 * This will prevent recursive calls to methods which in turn
 		 * modifies the properties of the binding.
 		 */
 		if ( String ( this.bindingElement.getAttribute ( prop )) != value ) {
-			
+
 			this.bindingElement.setAttribute ( prop, value );
 			if ( this.isAttached == true ) {
-				
+
 				/*
 				 * Handle persistance.
 				 */
 				if ( Persistance.isEnabled && value != null ) {
 					if ( this._persist != null && this._persist [ prop ]) {
 						this._persist [ prop ] = value;
-						Persistance.setPersistedProperty ( 
-							this.bindingElement.id, 
-							prop, 
-							value 
+						Persistance.setPersistedProperty (
+							this.bindingElement.id,
+							prop,
+							value
 						);
 					}
 				}
-				
+
 				/*
 				 * Handle "setters" (methods invoked when setting the property).
 				 */
@@ -993,7 +993,7 @@ Binding.prototype.setProperty = function ( prop, value ) {
  * @param {string} prop The name of the attribute
  */
 Binding.prototype.deleteProperty = function ( prop ) {
-	
+
 	this.bindingElement.removeAttribute ( prop );
 }
 
@@ -1002,7 +1002,7 @@ Binding.prototype.deleteProperty = function ( prop ) {
  * @return {string}
  */
 Binding.prototype.getID = function () {
-	
+
 	var result = null;
 	if ( Binding.exists ( this )) {
 		result = this.bindingElement.id;
@@ -1017,7 +1017,7 @@ Binding.prototype.getID = function () {
  * @param {string} classname
  */
 Binding.prototype.attachClassName = function ( classname ) {
-	
+
 	CSSUtil.attachClassName ( this.bindingElement, classname );
 }
 
@@ -1026,7 +1026,7 @@ Binding.prototype.attachClassName = function ( classname ) {
  * @param {string} classname
  */
 Binding.prototype.detachClassName = function ( classname ) {
-	
+
 	CSSUtil.detachClassName ( this.bindingElement, classname );
 }
 
@@ -1036,7 +1036,7 @@ Binding.prototype.detachClassName = function ( classname ) {
  * @return {boolean}
  */
 Binding.prototype.hasClassName = function ( classname ) {
-	
+
 	return CSSUtil.hasClassName ( this.bindingElement, classname );
 }
 
@@ -1055,8 +1055,8 @@ Binding.prototype.addActionListener = function ( type, listener ) {
 				this.actionListeners [ type ] = [];
 			}
 			this.actionListeners [ type ].push ( listener );
-		} else throw new Error ( 
-			"Could not add action-event listener. Method handleAction not implemented." 
+		} else throw new Error (
+			"Could not add action-event listener. Method handleAction not implemented."
 		);
 	} else {
 		alert ( this + "\nCould not add undefined Action (" + listener + ")" );
@@ -1073,7 +1073,7 @@ Binding.prototype.removeActionListener = function ( type, unListener ) {
 	unListener = unListener ? unListener : this;
 
 	if ( Action.isValid ( type )) {
-		var listeners = this.actionListeners [ type ];	
+		var listeners = this.actionListeners [ type ];
 		if ( listeners ) {
 			var i = 0, listener;
 			while (( listener = listeners [ i ]) != null ) {
@@ -1089,16 +1089,16 @@ Binding.prototype.removeActionListener = function ( type, unListener ) {
 
 /**
  * Add DOM event listener, not to be confused with Action listeners,
- * to this bindingElement. If handler argument is omitted, the handler 
+ * to this bindingElement. If handler argument is omitted, the handler
  * defaults to the binding itself.
  * @param {string} type
- * @param {IEventListener} handler Optional. 
+ * @param {IEventListener} handler Optional.
  */
 Binding.prototype.addEventListener = function ( type, handler ) {
-	
+
 	handler = handler ? handler : this;
 	DOMEvents.addEventListener ( this.bindingElement, type, handler );
-	
+
 }
 
 /**
@@ -1107,10 +1107,10 @@ Binding.prototype.addEventListener = function ( type, handler ) {
  * @param {IEventListener} handler Optional.
  */
 Binding.prototype.removeEventListener = function ( type, handler ) {
-	
+
 	handler = handler ? handler : this;
 	DOMEvents.removeEventListener ( this.bindingElement, type, handler );
-	
+
 }
 
 /**
@@ -1118,7 +1118,7 @@ Binding.prototype.removeEventListener = function ( type, handler ) {
  * @param {string} broadcast
  */
 Binding.prototype.subscribe = function ( broadcast ) {
-	
+
 	if ( !this.hasSubscription ( broadcast )) {
 		this._subscriptions.set ( broadcast, true );
 		EventBroadcaster.subscribe ( broadcast, this );
@@ -1132,7 +1132,7 @@ Binding.prototype.subscribe = function ( broadcast ) {
  * @param {string} broadcast
  */
 Binding.prototype.unsubscribe = function ( broadcast ) {
-	
+
 	if ( this.hasSubscription ( broadcast )) {
 		this._subscriptions.del ( broadcast );
 		EventBroadcaster.unsubscribe ( broadcast, this );
@@ -1144,7 +1144,7 @@ Binding.prototype.unsubscribe = function ( broadcast ) {
  * @return {boolean}
  */
 Binding.prototype.hasSubscription = function ( broadcast ) {
-	
+
 	return this._subscriptions.has ( broadcast );
 }
 
@@ -1154,7 +1154,7 @@ Binding.prototype.hasSubscription = function ( broadcast ) {
  * @param {string} properties
  */
 Binding.prototype.observe = function ( broadcaster, properties ) {
-	
+
 	broadcaster.addObserver ( this, properties );
 }
 
@@ -1164,12 +1164,12 @@ Binding.prototype.observe = function ( broadcaster, properties ) {
  * @param {string} properties
  */
 Binding.prototype.unObserve = function ( broadcaster, properties ) {
-	
+
 	broadcaster.removeObserver ( this, properties );
 }
 
 /**
- * Setup the contextmenu. For binding to handle contextmenu 
+ * Setup the contextmenu. For binding to handle contextmenu
  * selection, it should implement the handleAction method.
  * @param {object} arg
  */
@@ -1190,18 +1190,18 @@ Binding.prototype.handleContextEvent = function (e) {
 }
 
 /**
- * Setup the contextmenu. For binding to handle contextmenu 
+ * Setup the contextmenu. For binding to handle contextmenu
  * selection, it should implement the handleAction method.
  * @param {object} arg
  */
 Binding.prototype.setContextMenu = function ( arg ) {
-	
+
 	this.contextMenuBinding = this.getBindingForArgument ( arg );
-	
+
 	if ( this.contextMenuBinding ) {
-		
+
 		var self = this;
-		
+
 		if (Client.isPad) {
 			var touchStart = false;
 			var touchTimeout = false;
@@ -1238,23 +1238,23 @@ Binding.prototype.setContextMenu = function ( arg ) {
 				}
 			});
 		}
-		
+
 	} else {
 		throw "No such contextmenu: " + arg;
 	}
-	
+
 }
 
 /**
  * @return {PopupBinding}
  */
 Binding.prototype.getContextMenu = function () {
-	
+
 	return this.contextMenuBinding;
 }
 
 /**
- * Dispatch event, triggering actionlisteners associated to event type. 
+ * Dispatch event, triggering actionlisteners associated to event type.
  * The event "bubbles up" to parent Bindings in a DOM-like way.
  * @param {object} arg This can be either a string or an {@link Action}.
  * @return {Action}
@@ -1292,16 +1292,16 @@ Binding.prototype.dispatchAction = function ( arg ) {
 					}
 				}
 			}
-			 
+
 			/*
-			 * Migrate action? 
+			 * Migrate action?
 			 */
 			var isMigrate = true;
-			
+
 			/*
-			 * Note that selected actions are allowed to bypass the  
+			 * Note that selected actions are allowed to bypass the
 			 * action block system, notably the "activated" action.
-			 * The postback action was added to please the 
+			 * The postback action was added to please the
 			 * wysiwygeditor (template update selector).
 			 */
 			if ( this.isBlockingActions == true ) {
@@ -1317,10 +1317,10 @@ Binding.prototype.dispatchAction = function ( arg ) {
 						if ( !isMyAction ) {
 							isMigrate = false;
 						}
-						break;		
+						break;
 				}
 			}
-			
+
 			if ( isMigrate ) {
 				result = this.migrateAction ( action );
 			} else {
@@ -1337,11 +1337,11 @@ Binding.prototype.dispatchAction = function ( arg ) {
  * @return {Action}
  */
 Binding.prototype.migrateAction = function ( action ) {
-	
+
 	var binding	= null;
 	var result 	= null;
 	var node 	= this.getMigrationParent ();
-	
+
 	if ( node ) {
 		while ( node && !binding && node.nodeType != Node.DOCUMENT_NODE ) {
 			binding = UserInterface.getBinding ( node );
@@ -1361,14 +1361,14 @@ Binding.prototype.migrateAction = function ( action ) {
  * @param @optional {boolean} isForce
  */
 Binding.prototype.reflex = function ( isForce ) {
-	
+
 	if ( Application.isOperational == true ) {
 		FlexBoxBinding.reflex ( this, isForce );
 	}
 }
 
 /**
- * Note that the {@link RootBinding} overwrites this method 
+ * Note that the {@link RootBinding} overwrites this method
  * in order to migrate the event across iframe boundaries.
  * @return {DOMElement}
  */
@@ -1397,8 +1397,8 @@ Binding.prototype.getMigrationParent = function () {
 Binding.prototype.add = function ( binding ) {
 
 	if ( binding.bindingDocument == this.bindingDocument ) {
-		this.bindingElement.appendChild ( 
-			binding.bindingElement 
+		this.bindingElement.appendChild (
+			binding.bindingElement
 		);
 	} else {
 		throw "Could not add " + binding.toString () + " of different document origin.";
@@ -1413,9 +1413,9 @@ Binding.prototype.add = function ( binding ) {
 Binding.prototype.addFirst = function ( binding ) {
 
 	if ( binding.bindingDocument == this.bindingDocument ) {
-		this.bindingElement.insertBefore ( 
-			binding.bindingElement, 
-			this.bindingElement.firstChild 
+		this.bindingElement.insertBefore (
+			binding.bindingElement,
+			this.bindingElement.firstChild
 		);
 	} else {
 		throw "Could not add " + binding.toString () + " of different document origin.";
@@ -1429,7 +1429,7 @@ Binding.prototype.addFirst = function ( binding ) {
  * @return {Binding}
  */
 Binding.prototype.getAncestorBindingByLocalName = function ( nodeName, isTraverse ) {
-	
+
 	return BindingFinder.getAncestorBindingByLocalName ( this, nodeName, isTraverse );
 }
 
@@ -1440,7 +1440,7 @@ Binding.prototype.getAncestorBindingByLocalName = function ( nodeName, isTravers
  * @return {Binding}
  */
 Binding.prototype.getAncestorBindingByType = function ( impl, isTraverse ) {
-	
+
 	return BindingFinder.getAncestorBindingByType ( this, impl, isTraverse );
 }
 
@@ -1450,7 +1450,7 @@ Binding.prototype.getAncestorBindingByType = function ( impl, isTraverse ) {
  * @return {Binding}
  */
 Binding.prototype.getChildBindingByType = function ( impl ) {
-	
+
 	return BindingFinder.getChildBindingByType ( this, impl );
 }
 
@@ -1460,7 +1460,7 @@ Binding.prototype.getChildBindingByType = function ( impl ) {
  * @return {List<DOMElement>}
  */
 Binding.prototype.getChildElementsByLocalName = function ( nodeName ) {
-	
+
 	return BindingFinder.getChildElementsByLocalName ( this, nodeName );
 }
 /**
@@ -1479,9 +1479,9 @@ Binding.prototype.getChildElementByLocalName = function ( nodeName ) {
  * @return {List<Binding>}
  */
 Binding.prototype.getDescendantElementsByLocalName = function ( nodeName ) {
-	
-	return new List ( 
-		DOMUtil.getElementsByTagName ( this.bindingElement, nodeName ) 
+
+	return new List (
+		DOMUtil.getElementsByTagName ( this.bindingElement, nodeName )
 	);
 }
 
@@ -1512,7 +1512,7 @@ Binding.prototype.getChildBindingByLocalName = function ( nodeName ) {
  * @return {List<Binding>}
  */
 Binding.prototype.getDescendantBindingsByLocalName = function ( nodeName, isChildrenOnly ) {
-	
+
 	return BindingFinder.getDescendantBindingsByLocalName ( this, nodeName, isChildrenOnly );
 }
 
@@ -1523,7 +1523,7 @@ Binding.prototype.getDescendantBindingsByLocalName = function ( nodeName, isChil
  * @return {Binding}
  */
 Binding.prototype.getDescendantBindingByLocalName = function ( nodeName ) {
-	
+
 	return this.getDescendantBindingsByLocalName ( nodeName, false ).getFirst ();
 }
 
@@ -1533,7 +1533,7 @@ Binding.prototype.getDescendantBindingByLocalName = function ( nodeName ) {
  * @return {List<Binding>}
  */
 Binding.prototype.getDescendantBindingsByType = function ( impl ) {
-	
+
 	return BindingFinder.getDescendantBindingsByType ( this, impl );
 }
 
@@ -1543,7 +1543,7 @@ Binding.prototype.getDescendantBindingsByType = function ( impl ) {
  * @return {Binding}
  */
 Binding.prototype.getDescendantBindingByType = function ( impl ) {
-	
+
 	return BindingFinder.getDescendantBindingByType ( this, impl );
 }
 
@@ -1553,7 +1553,7 @@ Binding.prototype.getDescendantBindingByType = function ( impl ) {
  * @return {Binding}
  */
 Binding.prototype.getNextBindingByLocalName = function ( nodeName ) {
-	
+
 	return BindingFinder.getNextBindingByLocalName ( this, nodeName );
 };
 
@@ -1563,14 +1563,14 @@ Binding.prototype.getNextBindingByLocalName = function ( nodeName ) {
  * @return {Binding}
  */
 Binding.prototype.getPreviousBindingByLocalName = function ( nodeName ) {
-	
+
 	return BindingFinder.getPreviousBindingByLocalName ( this, nodeName );
 };
 
 /**
- * Because of a seriously weird bug in Explorer, this may be 
- * the preferred way to obtain a handle on the bound element. 
- * @return {DOMElement} 
+ * Because of a seriously weird bug in Explorer, this may be
+ * the preferred way to obtain a handle on the bound element.
+ * @return {DOMElement}
  */
 Binding.prototype.getBindingElement = function () {
 
@@ -1578,7 +1578,7 @@ Binding.prototype.getBindingElement = function () {
 }
 
 /**
- * Get the ordinal position of a Binding within it's container (skipping textnodes). 
+ * Get the ordinal position of a Binding within it's container (skipping textnodes).
  * @param {DOMElement} element
  * @param {boolean} isSimilar If set to true, count only similar bindings.
  * @return {int}
@@ -1597,7 +1597,7 @@ Binding.prototype.isFirstBinding = function ( isSimilar ) {
 
 	return ( this.getOrdinalPosition ( isSimilar ) == 0 );
 }
-	
+
 /**
  * Is last child of container?
  * @param {boolean} isSimilar If set to true, count only similar bindings.
@@ -1605,7 +1605,7 @@ Binding.prototype.isFirstBinding = function ( isSimilar ) {
  */
 Binding.prototype.isLastBinding = function ( isSimilar ) {
 
-	return DOMUtil.isLastElement ( this.bindingElement, isSimilar );	
+	return DOMUtil.isLastElement ( this.bindingElement, isSimilar );
 }
 
 /**
@@ -1613,7 +1613,7 @@ Binding.prototype.isLastBinding = function ( isSimilar ) {
  * @return {boolean}
  */
 Binding.prototype.hasCallBackID = function () {
-	
+
 	return this.getProperty ( Binding.CALLBACKID ) != null;
 }
 
@@ -1622,7 +1622,7 @@ Binding.prototype.hasCallBackID = function () {
  * @return {String}
  */
 Binding.prototype.getCallBackID = function () {
-	
+
 	return this.getProperty ( Binding.CALLBACKID );
 }
 
@@ -1631,7 +1631,7 @@ Binding.prototype.getCallBackID = function () {
  * @param {String} id
  */
 Binding.prototype.setCallBackID = function ( id ) {
-	
+
 	this.setProperty ( Binding.CALLBACKID, id );
 }
 
@@ -1640,7 +1640,7 @@ Binding.prototype.setCallBackID = function ( id ) {
  * @return {boolean}
  */
 Binding.prototype.hasCallBackArg = function () {
-	
+
 	return this.getCallBackArg () != null;
 }
 
@@ -1649,7 +1649,7 @@ Binding.prototype.hasCallBackArg = function () {
  * @return {String}
  */
 Binding.prototype.getCallBackArg = function () {
-	
+
 	return this.getProperty ( Binding.CALLBACKARG );
 }
 
@@ -1658,29 +1658,29 @@ Binding.prototype.getCallBackArg = function () {
  * @param {String} argument
  */
 Binding.prototype.setCallBackArg = function ( string ) {
-	
+
 	this.setProperty ( Binding.CALLBACKARG, string );
 }
 
 /**
- * Removes the bindingElement from stage and nulls all Binding properties, 
+ * Removes the bindingElement from stage and nulls all Binding properties,
  * freeing delicious memory. Recursively destroys bindings withind DOM subtree.
  * @param {boolean} isDerivedDisposal
  */
 Binding.prototype.dispose = function ( isDerivedDisposal ) {
-	
+
 	if ( !this.isDisposed ) {
-	
+
 		if ( !isDerivedDisposal ) {
-	
+
 			/*
-			 * Destroy Binding objects recursively, starting from 
+			 * Destroy Binding objects recursively, starting from
 			 * the deepest position in descendant DOM structure.
-			 * The DocumentManager will invoke this method again, 
+			 * The DocumentManager will invoke this method again,
 			 * this time with the method argument set to true.
 			 */
 			this.bindingWindow.DocumentManager.detachBindings ( this.bindingElement );
-		
+
 			/*
 			 * If this is the first Binding being disposed, remove bindingElement from DOM.
 			 * We need to use getElementById here because explorer gets it fugged.
@@ -1693,9 +1693,9 @@ Binding.prototype.dispose = function ( isDerivedDisposal ) {
 					bindingElement.parentNode.removeChild ( bindingElement );
 				}
 			}
-			
+
 		} else {
-			
+
 			/*
 			 * Unregister EventBroadcaster subscriptions.
 			 */
@@ -1709,21 +1709,21 @@ Binding.prototype.dispose = function ( isDerivedDisposal ) {
 					self.unsubscribe ( broadcast );
 				});
 			}
-			
+
 			/*
-			 * Note that even on the first disposed binding, the DocumentManager re-invokes 
-			 * this method with an argument value of true, triggering the onBindingDispose. 
+			 * Note that even on the first disposed binding, the DocumentManager re-invokes
+			 * this method with an argument value of true, triggering the onBindingDispose.
 			 */
 			this.onBindingDispose ();
-			
+
 			/*
-			 * This will attempt to kill the binding for good. 
+			 * This will attempt to kill the binding for good.
 			 * Currently, though, it doesn't release memory!
 			 */
 			UserInterface.unRegisterBinding ( this );
 		}
 	}
-	
+
 	// Note that the property "isDisposed" is finally set
 	// to true around the static method Binding.destroy...
 }
@@ -1732,16 +1732,16 @@ Binding.prototype.dispose = function ( isDerivedDisposal ) {
  * Place your cleanup code around here.
  */
 Binding.prototype.onBindingDispose = function () {
-	
+
 	/**
-	 * Cleanup activation awareness. 
+	 * Cleanup activation awareness.
 	 */
 	if ( this._hasActivationAwareness ) {
 		var root = UserInterface.getBinding ( this.bindingDocument.body );
 		root.makeActivationAware ( this, false );
 		this._hasActivationAwareness = false;
 	}
-	
+
 	/**
 	 * Delete from window scope bindingMap.
 	 */
@@ -1752,7 +1752,7 @@ Binding.prototype.onBindingDispose = function () {
  * Enable dragging.
  */
 Binding.prototype.enableDragging = function () {
-	
+
 	if ( this.dragger == null ) {
 		this.dragger = new BindingDragger ( this );
 		this.addEventListener ( DOMEvents.MOUSEDOWN, this.dragger );
@@ -1767,7 +1767,7 @@ Binding.prototype.enableDragging = function () {
  */
 Binding.prototype.disableDragging = function () {
 
-	if ( this.dragger != null ) {	
+	if ( this.dragger != null ) {
 		this.removeEventListener ( DOMEvents.MOUSEDOWN, this.dragger );
 		this.removeEventListener ( DOMEvents.MOUSEMOVE, this.dragger );
 		this.removeEventListener ( DOMEvents.MOUSEUP, this.dragger );
@@ -1779,9 +1779,9 @@ Binding.prototype.disableDragging = function () {
 
 /**
  * Show.
- */ 
+ */
 Binding.prototype.show = function () {
-	
+
 	if ( !this.isVisible ) {
 		this.bindingElement.style.display = "block";
 		this.setProperty ( "hidden", true );
@@ -1793,7 +1793,7 @@ Binding.prototype.show = function () {
  * Hide.
  */
 Binding.prototype.hide = function () {
-	
+
 	if ( this.isVisible == true ) {
 		this.bindingElement.style.display = "none";
 		this.deleteProperty ( "hidden" );
@@ -1803,23 +1803,23 @@ Binding.prototype.hide = function () {
 
 /**
  * Wake up lazy binding (and perform the action provided as argument).
- * @param @optional {string} action The action to take when awoke.
+ * @param @optional {string|function} action The action to take when awoke.
  */
 Binding.prototype.wakeUp = function ( action, timeout ) {
-	
+
 	timeout = timeout ? timeout : Binding.SNOOZE;
-	
+
 	if ( this.isLazy == true ) {
-		
+
 		this.deleteProperty ( "lazy" );
 		this.isLazy = false;
 		Application.lock ( this );
-		
+
 		/*
 		 * Force new indexation of focusable elements.
 		 */
 		this.dispatchAction ( FocusBinding.ACTION_UPDATE );
-		
+
 		/*
 		 * Timeout fixes freezing sensation.
 		 */
@@ -1827,8 +1827,10 @@ Binding.prototype.wakeUp = function ( action, timeout ) {
 		setTimeout ( function () {
 			self.attachRecursive ();
 			setTimeout ( function () {
-				if ( action !== undefined ) {
+				if ( typeof action === 'string' ) {
 					self [ action ] ();
+				} else if (typeof action === 'function') {
+					action();
 				}
 				// Update any related LazyBindingDataBinding so that the server knows we are awake.
 				LazyBindingBinding.wakeUp ( self );
@@ -1844,15 +1846,15 @@ Binding.prototype.wakeUp = function ( action, timeout ) {
 }
 
 /**
- * Handle crawler. 
+ * Handle crawler.
  * @implements {ICrawlerHandler}
  * @param {Crawler} crawler
  */
 Binding.prototype.handleCrawler = function ( crawler ) {
-	
+
 	/*
-	 * Lazy bindings will accept the DocumentCrawler   
-	 * for purposes of binding registration only. 
+	 * Lazy bindings will accept the DocumentCrawler
+	 * for purposes of binding registration only.
 	 */
 	if ( crawler.response == null && this.isLazy == true ) {
 		if ( crawler.id == DocumentCrawler.ID && crawler.mode == DocumentCrawler.MODE_REGISTER ) {
@@ -1861,7 +1863,7 @@ Binding.prototype.handleCrawler = function ( crawler ) {
 			crawler.response = NodeCrawler.SKIP_CHILDREN;
 		}
 	}
-	
+
 	/*
 	 * Search binding crawler filters.
 	 */
@@ -1870,12 +1872,12 @@ Binding.prototype.handleCrawler = function ( crawler ) {
 			crawler.response = NodeCrawler.SKIP_CHILDREN;
 		}
 	}
-	
+
 	/*
 	 * These common crawlers should no iterate into hidden bindings.
 	 */
 	if ( crawler.response == null ) {
-		switch ( crawler.id ) {	
+		switch ( crawler.id ) {
 			case FlexBoxCrawler.ID :
 			case FocusCrawler.ID :
 				if ( !this.isVisible ) {
@@ -1892,7 +1894,7 @@ Binding.prototype.handleCrawler = function ( crawler ) {
  * @return {Binding}
  */
 Binding.newInstance = function ( ownerDocument ) {
-	
+
 	var element = DOMUtil.createElementNS ( Constants.NS_UI, "ui:binding", ownerDocument );
 	return UserInterface.registerBinding ( element, Binding );
 }
