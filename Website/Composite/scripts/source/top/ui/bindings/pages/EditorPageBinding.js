@@ -8,7 +8,7 @@ EditorPageBinding.ACTION_CLEAN		= "editorpage clean";
 EditorPageBinding.ACTION_SAVE		= "editorpage save";
 EditorPageBinding.ACTION_SAVE_AND_PUBLISH = "editorpage save and publish";
 
-/* 
+/*
  * Special binding IDs, hardcoded by the server goo.
  */
 EditorPageBinding.ID_SAVEASBUTTON 	= "saveasbutton";
@@ -47,7 +47,7 @@ EditorPageBinding._registry = new Map ();
  * @param {EditorPagebinding}
  */
 EditorPageBinding.register = function ( page ) {
-	
+
 	var map = EditorPageBinding._registry;
 	if ( !map.hasEntries ()) {
 		top.app.bindingMap.broadcasterHasOpenEditors.enable ();
@@ -60,7 +60,7 @@ EditorPageBinding.register = function ( page ) {
  * @param {EditorPagebinding}
  */
 EditorPageBinding.unregister = function ( page ) {
-	
+
 	var map = EditorPageBinding._registry;
 	map.del ( page.key );
 	if ( !map.hasEntries ()) {
@@ -72,72 +72,72 @@ EditorPageBinding.unregister = function ( page ) {
  * @class
  */
 function EditorPageBinding () {
-	
+
 	/**
 	 * @type {SystemLogger}
 	 */
 	this.logger = SystemLogger.getLogger ( "EditorPageBinding" );
-	
+
 	/**
 	 * @type {boolean}
 	 */
 	this.isDirty = false;
-	
+
 	/** The main tabbox!
 	 * @type {TabBoxBinding}
 	 */
 	this._tabBoxBinding = null;
-	
+
 	/**
 	 * The preview tab!
 	 * @type {TabBinding}
 	 */
 	this._tabBinding = null;
-	
+
 	/**
 	 * The preview window!
 	 * @type {WindowBinding}
 	 */
 	this._windowBinding = null;
-	
+
 	/**
 	 * @type {boolean}
 	 */
 	this._isGeneratingPreview = false;
-	
+
 	/**
 	 * @type {boolean}
 	 */
 	this._isPreviewWindowVisible = false;
-	
+
 	/**
-	 * The current postMessage string matching "save" or "persist". 
+	 * The current postMessage string matching "save" or "persist".
 	 */
 	this._message = null;
-	
+
 	/**
-	 * Messages waiting to be executed as soon 
+	 * Messages waiting to be executed as soon
 	 * as this._messengers has been emptied.
 	 * @deprecated
 	 * @type {List<String>}
 	 */
 	this._messages = null;
-	
+
 	/**
-	 * While not empty, incoming postMessages 
-	 * will be collected in this._messages. 
+	 * While not empty, incoming postMessages
+	 * will be collected in this._messages.
 	 * @type {List<PageBinding>}
 	 */
 	this._messengers = null;
-	
+
 	/**
 	 * Hack the preview setup - don't instigate preview while persisting.
 	 * @type {boolean}
 	 */
 	this._isWaitingForPreview = false;
-	
+
 	/**
-	 * True while the preview tab is selected. Note that there may not 
+	 * True while the preview tab is selected. Note that there may not
 	 * be a preview window in editor, but only the backend knows this.
 	 * @type {boolean}
 	 */
@@ -153,41 +153,41 @@ EditorPageBinding.prototype.toString = function () {
 }
 
 /**
- * @overloads {PageBinding#onBindingRegister} 
+ * @overloads {PageBinding#onBindingRegister}
  */
 EditorPageBinding.prototype.onBindingRegister = function () {
 
 	EditorPageBinding.superclass.onBindingRegister.call ( this );
-	
+
 	this.addActionListener ( Binding.ACTION_DIRTY );
 	this.addActionListener ( Binding.ACTION_VALID );
 	this.addActionListener ( Binding.ACTION_INVALID );
 	this.addActionListener ( EditorPageBinding.ACTION_SAVE );
 	this.addActionListener ( EditorPageBinding.ACTION_SAVE_AND_PUBLISH );
-	
+
 	this.addActionListener ( ResponseBinding.ACTION_SUCCESS );
 	this.addActionListener ( ResponseBinding.ACTION_FAILURE );
 	this.addActionListener ( ResponseBinding.ACTION_OOOOKAY );
-	
+
 	EditorPageBinding.register ( this );
-	
+
 	this._invalidBindings = new Map ();
 	this._messengers = new List ();
 	this._messages = new List ();
 }
 
-/** 
- * 
+/**
+ *
  * @overloads {FocusBinding#onBindingDispose}
  */
 EditorPageBinding.prototype.onBindingDispose = function () {
-	
+
 	/*
-	 * If editor documents gets replaced for whatever reason, this will make 
+	 * If editor documents gets replaced for whatever reason, this will make
 	 * sure that the tab can be closed without prompting a save dialog.
 	 */
 	this.dispatchAction ( EditorPageBinding.ACTION_CLEAN );
-	
+
 	/*
 	 * Cleaning up for various XHTML-aware panels.
 	 */
@@ -196,7 +196,7 @@ EditorPageBinding.prototype.onBindingDispose = function () {
 			EventBroadcaster.broadcast ( BroadcastMessages.XHTML_MARKUP_OFF );
 		}, 250 );
 	}
-	
+
 	EditorPageBinding.unregister ( this );
 	EditorPageBinding.superclass.onBindingDispose.call ( this );
 }
@@ -205,7 +205,7 @@ EditorPageBinding.prototype.onBindingDispose = function () {
  * @overwrites {PageBinding#onPageInitialize}
  */
 EditorPageBinding.prototype.onBeforePageInitialize = function () {
-	
+
 	this._setupPreviewListeners ();
 	EditorPageBinding.superclass.onBeforePageInitialize.call ( this );
 }
@@ -215,38 +215,38 @@ EditorPageBinding.prototype.onBeforePageInitialize = function () {
  * @overloads {PageBinding#onPageInitialize}
  */
 EditorPageBinding.prototype.onPageInitialize = function () {
-	
+
 	EditorPageBinding.superclass.onPageInitialize.call ( this );
 	this.enableSaveAs ();
 }
 
 /**
- * Setup stuff to generate a preview when the related tab is selected. 
- * This should really not be done on a general EditorPageBinding... 
+ * Setup stuff to generate a preview when the related tab is selected.
+ * This should really not be done on a general EditorPageBinding...
  * but we are trapped by the DocumentExecutionContainer.aspx hardcode.
  */
 EditorPageBinding.prototype._setupPreviewListeners = function () {
-	
+
 	var box = this.bindingDocument.getElementById ( EditorPageBinding.ID_MAINTABBOX );
 	var tab = this.bindingDocument.getElementById ( EditorPageBinding.ID_PREVIEWTAB );
 	var win = this.bindingDocument.getElementById ( EditorPageBinding.ID_PREVIEWWINDOW );
 
 	if ( box != null ) {
-	
+
 		this._tabBoxBinding = UserInterface.getBinding ( box );
 		this._tabBoxBinding.addActionListener ( TabBoxBinding.ACTION_SELECTED, this );
 		this._tabBoxBinding.addActionListener ( TabBoxBinding.ACTION_UNSELECTED, this );
-		
+
 		if ( tab != null && win != null ) { // preview generating stuff
-			
+
 			this._tabBinding	= UserInterface.getBinding ( tab );
 			this._windowBinding = UserInterface.getBinding ( win );
-			
+
 			this._windowBinding.addActionListener ( WindowBinding.ACTION_LOADED, this );
 			this._windowBinding.addActionListener ( WindowBinding.ACTION_ONLOAD, this );
-			
+
 			this.subscribe ( BroadcastMessages.HIGHLIGHT_KEYWORDS );
-			
+
 			if ( this._tabBinding.isSelected ) {
 				this._startPreview ();
 			}
@@ -255,12 +255,12 @@ EditorPageBinding.prototype._setupPreviewListeners = function () {
 }
 
 /**
- * This gets invoked by the associated {@link DockTabBinding} 
- * when a save was successfull. This is probably determined by a 
+ * This gets invoked by the associated {@link DockTabBinding}
+ * when a save was successfull. This is probably determined by a
  * message on the {@link MessageQueue}.
  */
 EditorPageBinding.prototype.onSaveSuccess = function () {
-	
+
 	this.enableSave ( false );
 	this.enableSaveAs ();
 	this.cleanAllDataBindings ();
@@ -270,7 +270,7 @@ EditorPageBinding.prototype.onSaveSuccess = function () {
 }
 
 /**
- * When a dirty event is registered, update the relevant {@link BroadcasterBinding}. 
+ * When a dirty event is registered, update the relevant {@link BroadcasterBinding}.
  * A specialized dirty event is passed on to the containing {@link DockBinding}.
  * @implements {IActionListener}
  * @overloads {PageBinding#handleAction}
@@ -436,7 +436,7 @@ EditorPageBinding.prototype.handleAction = function (action) {
 				if (binding.getContentWindow().isPostBackDocument != true) {
 
 					/*
-					* Disable new-version lookup. Cache enabled by 
+					* Disable new-version lookup. Cache enabled by
 					* {@link EditorPageBinding#_startPreview}
 					*/
 					if (Client.isPrism) {
@@ -444,7 +444,7 @@ EditorPageBinding.prototype.handleAction = function (action) {
 					}
 
 					/*
-					* Note that this here code is invoked twice 
+					* Note that this here code is invoked twice
 					* when the preview is first generated!
 					*/
 					var self = this;
@@ -453,7 +453,7 @@ EditorPageBinding.prototype.handleAction = function (action) {
 					}, 100);
 
 					/*
-					* Broadcast contained markup for 
+					* Broadcast contained markup for
 					* various panels to intercept.
 					*/
 					if (EventBroadcaster.hasSubscribers(BroadcastMessages.XHTML_MARKUP_ON)) {
@@ -467,59 +467,90 @@ EditorPageBinding.prototype.handleAction = function (action) {
 }
 
 /**
- * Can we save? This question has been made dependant on 
- * the existance of a save-button inside the document. 
+ * Can we save? This question has been made dependant on
+ * the existance of a save-button inside the document.
  * TODO: should this reflect thie buttons isDisabled state?
  * @return {boolean}
  */
 EditorPageBinding.prototype.canSave = function () {
-	
+
 	return this.bindingWindow.bindingMap.savebutton != null;
 }
 
 /**
- * Ignite the save routine. For reasons of NET postback drama, 
+ * Ignite the save routine. For reasons of NET postback drama,
  * this must be delegated by emulating a click on the save button.
  */
 EditorPageBinding.prototype.doSave = function () {
-	
+
 	var button = this.bindingWindow.bindingMap.savebutton;
 	if ( button != null && !button.isDisabled ) {
 		button.fireCommand ();
 	}
 }
 
+EditorPageBinding.prototype._wakeAndValidateAllDataBindings = function (callback) {
+
+	var dataBindings = this.bindingWindow.DataManager.getAllDataBindings();
+	var listLength = dataBindings.getLength();
+	var wokenBindings = 0;
+
+	var validateCallback = function () {
+		if (this.validateAllDataBindings( true )) {
+			callback();
+		}
+	}.bind(this);
+
+	function awakeCallback() {
+		wokenBindings += 1;
+		if (wokenBindings === listLength) {
+			validateCallback();
+		}
+	}
+
+	while (dataBindings.hasNext()) {
+		var binding = dataBindings.getNext();
+		if (binding.isRequired || binding.getProperty('required')) {
+			while (binding && !binding.isLazy) {
+				binding = binding.getAncestorBindingByType(Binding);
+			}
+			if (!binding) {
+				// No lazy ancestor
+				awakeCallback();
+			} else {
+				binding.wakeUp(awakeCallback);
+			}
+		} else {
+			awakeCallback();
+		}
+	}
+};
+
 /**
  * Performs the final save transaction.
  */
-EditorPageBinding.prototype._saveEditorPage = function () {
+EditorPageBinding.prototype._saveEditorPage = function (publish) {
 
-	if ( this.validateAllDataBindings ( true )) {
+	this._wakeAndValidateAllDataBindings(function () {
 		this.bindingWindow.DataManager.isDirty = false;
 		var postback = this.bindingWindow.bindingMap.__REQUEST;
-		if ( postback != null ) {
-			postback.postback ( EditorPageBinding.MESSAGE_SAVE );
+		if (postback != null) {
+			var signal = publish ?
+				EditorPageBinding.MESSAGE_SAVE_AND_PUBLISH :
+				EditorPageBinding.MESSAGE_SAVE;
+			postback.postback(signal);
 		} else {
-			this.logger.error ( "Save aborted: Could not locate RequestBinding" );
+			this.logger.error("Save " + publish ? "and publish " : "" + "aborted: " +
+				"Could not locate RequestBinding");
 		}
-	}
+	}.bind(this));
 };
 
 /**
 * Performs the final save and publish transaction.
 */
 EditorPageBinding.prototype._saveAndPublishEditorPage = function () {
-
-
-	if (this.validateAllDataBindings( true )) {
-		this.bindingWindow.DataManager.isDirty = false;
-		var postback = this.bindingWindow.bindingMap.__REQUEST;
-		if (postback != null) {
-			postback.postback(EditorPageBinding.MESSAGE_SAVE_AND_PUBLISH);
-		} else {
-			this.logger.error("Save and publish aborted: Could not locate RequestBinding");
-		}
-	}
+	this._saveEditorPage(true);
 };
 
 /**
@@ -579,9 +610,9 @@ EditorPageBinding.prototype.postMessage = function (message) {
  * @param {object} arg
  */
 EditorPageBinding.prototype.handleBroadcast = function ( broadcast, arg ) {
-	
+
 	EditorPageBinding.superclass.handleBroadcast.call ( this, broadcast, arg );
-	
+
 	switch ( broadcast ) {
 		case BroadcastMessages.HIGHLIGHT_KEYWORDS :
 			var keywords = arg;
@@ -593,39 +624,39 @@ EditorPageBinding.prototype.handleBroadcast = function ( broadcast, arg ) {
 }
 
 /**
- * Invoked be ancestor {IActivatable} when activated. 
+ * Invoked be ancestor {IActivatable} when activated.
  * @overloads {FocusBinding#onActivate}
  */
 EditorPageBinding.prototype.onActivate = function () {
-	
+
 	EditorPageBinding.superclass.onActivate.call ( this );
-	
+
 	if ( this._isPreviewWindowVisible == true ) {
 		EventBroadcaster.broadcast ( BroadcastMessages.XHTML_MARKUP_ACTIVATE );
 	}
 }
 
 /**
- * Invoked be ancestor {IActivatable} when deactivated. 
+ * Invoked be ancestor {IActivatable} when deactivated.
  * @overloads {FocusBinding#onDectivate}
  */
 EditorPageBinding.prototype.onDeactivate = function () {
-	
+
 	EditorPageBinding.superclass.onDeactivate.call ( this );
-	
+
 	if ( this._isPreviewWindowVisible == true ) {
 		EventBroadcaster.broadcast ( BroadcastMessages.XHTML_MARKUP_DEACTIVATE );
 	}
 }
 
 /**
- * Display invalid labels in statusbar. The backend spawns a FieldsBinding 
- * for each FieldGroupBinding, so this has been made slightly complicated. 
+ * Display invalid labels in statusbar. The backend spawns a FieldsBinding
+ * for each FieldGroupBinding, so this has been made slightly complicated.
  * This method is invoked whenever a FieldsBinding reports invalid or valid.
  * @param {boolean} isShow
  */
 EditorPageBinding.prototype._updateStatusBar = function () {
-	
+
 	var labels = new List ();
 	this._invalidBindings.each ( function ( key, binding ) {
 		var list = binding.getInvalidLabels ();
@@ -634,7 +665,7 @@ EditorPageBinding.prototype._updateStatusBar = function () {
 				labels.add ( label );
 			});
 		}
-	}); 
+	});
 	if ( labels.hasEntries ()) {
 		var output = "";
 		while ( labels.hasNext ()) {
@@ -653,18 +684,18 @@ EditorPageBinding.prototype._updateStatusBar = function () {
 }
 
 /**
- * Start preview process. This can be invoked by either a tab selection 
+ * Start preview process. This can be invoked by either a tab selection
  * or when the page inititalizes (if the tab is preselected).
  */
 EditorPageBinding.prototype._startPreview = function () {
-	
+
 	//Application.lock ( this ); // unlocked when preview is loaded
 	this._isGeneratingPreview = true;
-	
+
 	if ( Client.isPrism ) {
 		Prism.disableCache (); // enable new-version lookup!
 	}
-	
+
 	this._windowBinding.setURL ( WindowBinding.POSTBACK_URL );
 }
 
@@ -672,7 +703,7 @@ EditorPageBinding.prototype._startPreview = function () {
  * Stop preview.
  */
 EditorPageBinding.prototype._stopPreview = function () {
-	
+
 	this._windowBinding.reset ();
 	//if ( Application.isLocked ) { // occurs on rapid tabshift using keyboard
 	//	Application.unlock ( this );
@@ -684,7 +715,7 @@ EditorPageBinding.prototype._stopPreview = function () {
  * @param {boolean} isEnable
  */
 EditorPageBinding.prototype.enableSave = function ( isEnable ) {
-	
+
 	var broadcasterElement = this.bindingDocument.getElementById ( "broadcasterCanSave" );
 	if ( broadcasterElement ) {
 		var broadcasterBinding = UserInterface.getBinding ( broadcasterElement );
@@ -702,9 +733,9 @@ EditorPageBinding.prototype.enableSave = function ( isEnable ) {
  * Manually enable saveas button (observes same broadcaster as save button).
  */
 EditorPageBinding.prototype.enableSaveAs = function () {
-	
-	var button = this.bindingDocument.getElementById ( 
-		EditorPageBinding.ID_SAVEASBUTTON 
+
+	var button = this.bindingDocument.getElementById (
+		EditorPageBinding.ID_SAVEASBUTTON
 	);
 	if ( button != null ) {
 		UserInterface.getBinding ( button ).enable ();
@@ -716,7 +747,7 @@ EditorPageBinding.prototype.enableSaveAs = function () {
  * TODO: Something intelligent.
  */
 EditorPageBinding.prototype.handleInvalidData = function () {
-	
+
 	this.logger.error ( "INVALID DATA :(" );
 	if ( this._isGeneratingPreview ) {
 		this._isGeneratingPreview = false;
@@ -731,23 +762,23 @@ EditorPageBinding.prototype.handleInvalidData = function () {
  * Generate preview.
  */
 EditorPageBinding.prototype._generatePreview = function () {
-	
+
 	var title = this._windowBinding.getContentDocument ().title;
-	
+
 	if ( title == WindowBinding.POSTBACK_TITLE ) {
-		
+
 		if ( this.validateAllDataBindings ()) {
-			
+
 			this.manifestAllDataBindings ();
-			
+
 			/*
-			 * Collect form data for postback into alien document. 
+			 * Collect form data for postback into alien document.
 			 * Notice that __EVENTTARGET data is handled manually.
 			 */
 			var callbackid = this._tabBinding.getCallBackID ();
-			
+
 			var list = new List ();
-			new List ( this.bindingDocument.forms [ 0 ].elements ).each ( 
+			new List ( this.bindingDocument.forms [ 0 ].elements ).each (
 				function ( element ) {
 					if ( element.name == "__EVENTTARGET" && callbackid ) {
 						element.value = callbackid;
@@ -758,17 +789,17 @@ EditorPageBinding.prototype._generatePreview = function () {
 					});
 				}
 			);
-			
+
 			/*
-			 * Submit to iframe. Note that we store the 
+			 * Submit to iframe. Note that we store the
 			 * list in a variable for later use.
 			 */
 			var url = String ( this.bindingDocument.location );
 			this._windowBinding.getContentWindow ().submit ( list, url );
 			this._latestPostbackList = list.reset ();
-			
+
 		} else {
-			
+
 			this.handleInvalidData ();
 		}
 	}
