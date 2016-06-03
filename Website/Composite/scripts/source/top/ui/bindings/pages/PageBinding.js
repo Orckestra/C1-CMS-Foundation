@@ -13,15 +13,16 @@ PageBinding.ACTION_UNBLOCK_INIT				= "page unblock init";
 PageBinding.ACTION_UPDATING					= "page updating";
 PageBinding.ACTION_UPDATED					= "page updated";
 PageBinding.ACTION_GETMESSAGES				= "page poll messagequeue";
+PageBinding.ACTION_RESPONSE					= "page response";
 
 /**
  * Classname to be attached when page is framed inside a dialog.
- * @type {String} 
+ * @type {String}
  */
 PageBinding.CLASSNAME_SUBPAGE = "dialogsubpage";
 
 /**
- * Timeout in milliseconds before an initialized page is made 
+ * Timeout in milliseconds before an initialized page is made
  * interactive. Prevents flex malfunctions and stabilizes layout.
  */
 PageBinding.TIMEOUT = 250;
@@ -37,66 +38,66 @@ function PageBinding () { // Note to self: This class can safely descend from Fl
 	 * @type {SystemLogger}
 	 */
 	this.logger = SystemLogger.getLogger ( "PageBinding" );
-	
+
 	/**
 	 * @type {string}
 	 */
 	this.label = null;
-	
+
 	/**
 	 * @type {string}
 	 */
 	this.image = null;
-	
+
 	/**
 	 * @type {string}
 	 */
 	this.toolTip = null;
-	
+
 	/**
 	 * Flippen on inititalization.
-	 * @type {boolean} 
+	 * @type {boolean}
 	 */
 	this._isPageBindingInitialized = false;
-	
+
 	/**
-	 * Stuff can set this property so that the  
+	 * Stuff can set this property so that the
 	 * PageBinding doesn't have to go look for it.
 	 * @type {object}
 	 */
 	this.pageArgument = null;
-	
+
 	/**
-	 * When loaded inside a dialog, this property will be switched 
+	 * When loaded inside a dialog, this property will be switched
 	 * by the containing {@link DialogPageBinding} in ancestor frame.
 	 * @see {DialogPageBinding#handleAction}
 	 * @see {PageBinding#makeDialogSubPage}
 	 * @type {boolean}
 	 */
 	this.isDialogSubPage = false;
-	
+
 	/**
-	 * This will override the setup mentioned above. 
+	 * This will override the setup mentioned above.
 	 * Please consider how to refactor this stuff!
 	 * @type {boolean}
 	 */
 	this.isFitAsDialogSubPage = true;
-	
-	/** 
-	 * Collecting complex bindings while page initializes. 
+
+	/**
+	 * Collecting complex bindings while page initializes.
 	 * Won't show the the page until this map is empty.
 	 * @type {Map<Binding><boolean>}
 	 */
 	this._initBlockers = null;
-	
+
 	/**Binding.ACTION_UPDATED
 	 * Flipped when the page is ready to initialize.
 	 * @type {boolean}
 	 */
 	this._isReadyForInitialize = false;
-	
+
 	/**
-	 * The PageBinding WILL be made activation aware,  
+	 * The PageBinding WILL be made activation aware,
 	 * but not until all content is loaded.
 	 * @see {PageBinding#onAfterPageInitialize}
 	 * @implements {IActivationAware}
@@ -104,7 +105,7 @@ function PageBinding () { // Note to self: This class can safely descend from Fl
 	 * @type {boolean}
 	 */
 	this.isActivationAware = false;
-	
+
 	/**
 	 * @implements {IActivationAware}
 	 * @overwrites {Binding#isActivationAware}
@@ -117,20 +118,20 @@ function PageBinding () { // Note to self: This class can safely descend from Fl
 	 * @type {boolean}
 	 */
 	this.isNonAjaxPage = false;
-	
+
 	/**
-	 * When a server postback is fired, this flag will be reversed to 
-	 * prevent further postback. The flag is reversed again as soon as  
+	 * When a server postback is fired, this flag will be reversed to
+	 * prevent further postback. The flag is reversed again as soon as
 	 * the MesssageQueue is updated manually (not on timed interval).
 	 */
 	this._canPostBack = true;
-	
+
 	/**
 	 * Dissecting a simulated postback response.
-	 * @type {XPathResolver} 
+	 * @type {XPathResolver}
 	 */
 	this._responseResolver = null;
-	
+
 	/**
 	 * True while the UpdateManager is busy doing updates.
 	 * @type {boolean}
@@ -152,10 +153,10 @@ PageBinding.prototype.toString = function () {
 PageBinding.prototype.onBindingRegister = function () {
 
 	PageBinding.superclass.onBindingRegister.call ( this );
-	
+
 	var root = UserInterface.getBinding ( this.bindingDocument.body );
 	root.addActionListener ( RootBinding.ACTION_PHASE_3, this );
-	
+
 	this.addActionListener ( PageBinding.ACTION_DOPOSTBACK );
 	this.addActionListener ( PageBinding.ACTION_DOVALIDATEDPOSTBACK );
 	this.addActionListener ( BalloonBinding.ACTION_INITIALIZE );
@@ -171,7 +172,7 @@ PageBinding.prototype.onBindingRegister = function () {
 PageBinding.prototype.onBindingAttach = function () {
 
 	PageBinding.superclass.onBindingAttach.call ( this );
-	
+
 	Application.lock ( this ); // unlocked onAfterPageInitialize
 	this.parseDOMProperties ();
 	this.dispatchAction ( PageBinding.ACTION_ATTACHED ); // for ViewBinding!
@@ -182,10 +183,10 @@ PageBinding.prototype.onBindingAttach = function () {
  * @overloads {FocusBinding#onBindingDispose}
  */
 PageBinding.prototype.onBindingDispose = function () {
-	
+
 	var root = UserInterface.getBinding ( this.bindingDocument.body );
 	root.removeActionListener ( RootBinding.ACTION_PHASE_3, this );
-	
+
 	/*
 	 * Unlock GUI before we die!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	 *
@@ -193,7 +194,7 @@ PageBinding.prototype.onBindingDispose = function () {
 		Application.unlock ( this );
 	}
 	*/
-	
+
 	/*
 	 * Die.
 	 */
@@ -204,9 +205,9 @@ PageBinding.prototype.onBindingDispose = function () {
  * Parse DOM properties.
  */
 PageBinding.prototype.parseDOMProperties = function () {
-	
+
 	/*
-	 * These values may have been defined already, 
+	 * These values may have been defined already,
 	 * for example in the setPageArgument method.
 	 */
 	if (this.getProperty("label"))
@@ -216,7 +217,7 @@ PageBinding.prototype.parseDOMProperties = function () {
 	if (this.getProperty("image"))
 		this.image = this.getProperty("image");
 	this.toolTip = this.getProperty ( "tooltip" );
-	
+
 	/*
 	 * Hacked setup. Please consider how to refactor this!
 	 */
@@ -225,16 +226,16 @@ PageBinding.prototype.parseDOMProperties = function () {
 	}
 }
 
-/** 
- * Stuff can provide this property so that the PageBinding doesn't have to 
- * go look for it. Note that bindings *may not* have been attached when 
+/**
+ * Stuff can provide this property so that the PageBinding doesn't have to
+ * go look for it. Note that bindings *may not* have been attached when
  * this method is invoked.
  * @param {object} arg
  */
 PageBinding.prototype.setPageArgument = function ( arg ) {
-	
+
 	/*
-	 * Note that any associated dock-tab is automatically selected  
+	 * Note that any associated dock-tab is automatically selected
 	 * by this. This is usually desired, but who knows...
 	 */
 	if ( Application.isOperational ) {
@@ -243,18 +244,18 @@ PageBinding.prototype.setPageArgument = function ( arg ) {
 	this.pageArgument = arg;
 };
 
-/** 
- * For subclasses to overload. Primarily with the intention of 
- * prolonging the invocation of <code>onPageInitialize</code> 
+/**
+ * For subclasses to overload. Primarily with the intention of
+ * prolonging the invocation of <code>onPageInitialize</code>
  * for some reason (waiting for iframes to load and stuff).
- * Note that all bindings (in this bindingWindow) has been 
+ * Note that all bindings (in this bindingWindow) has been
  * fully attached when this method is invoked.
  * @param {object} arg
  */
 PageBinding.prototype.onBeforePageInitialize = function () {
-	
+
 	/*
-	 * When overloading, place your code around 
+	 * When overloading, place your code around
 	 * here and invoke the super method lastly.
 	 */
 	this._isReadyForInitialize = true;
@@ -263,27 +264,27 @@ PageBinding.prototype.onBeforePageInitialize = function () {
 	}
 };
 
-/** 
- * Invoked when everything is loaded satisfactorily. 
+/**
+ * Invoked when everything is loaded satisfactorily.
  * @see {StageDialogBinding#_handleInitializedPageBinding}
  * @see {DockBinding#_setupPageBindingListeners}
  */
 PageBinding.prototype.onPageInitialize = function () {
-	
+
 	if ( !this._isPageBindingInitialized ) {
-	
+
 		/*
 		 * Flag initialized.
 		 */
 		this._isPageBindingInitialized = true;
-		
+
 		/*
 		 * Modify dot net setup.
 		 */
 		if ( this._isDotNet ()) {
 			this._setupDotNet ();
 		}
-		
+
 		/*
 		 * Populate DataBindings from DataBindingMap.
 		 * TODO: move this to separate method?
@@ -291,11 +292,11 @@ PageBinding.prototype.onPageInitialize = function () {
 		if ( this.pageArgument && this.pageArgument instanceof DataBindingMap ) {
 			this.bindingWindow.DataManager.populateDataBindings ( this.pageArgument );
 		}
-		
+
 		/*
-		 * Dispatching an Action to be intercepted by ancestor bindings. 
-		 * The ancestor will then invoke the reflex method on the page. 
-		 * Timeouts stabilize the layout while page initializes. Be careful 
+		 * Dispatching an Action to be intercepted by ancestor bindings.
+		 * The ancestor will then invoke the reflex method on the page.
+		 * Timeouts stabilize the layout while page initializes. Be careful
 		 * not to dispose the PageBinding during timeouts!
 		 * TODO: move to special method so that DialogPageBinding can handle itself!
 		 */
@@ -308,8 +309,8 @@ PageBinding.prototype.onPageInitialize = function () {
 					self.onAfterPageInitialize ();
 				} else {
 					Application.unlock ( Application, true ); // something wrong - force unlock
-					SystemLogger.getLogger ( "PageBinding" ).warn ( 
-						"Premature PageBinding dispose? Please consult your developer." 
+					SystemLogger.getLogger ( "PageBinding" ).warn (
+						"Premature PageBinding dispose? Please consult your developer."
 					);
 				}
 			} catch ( exception ) {
@@ -318,9 +319,9 @@ PageBinding.prototype.onPageInitialize = function () {
 				throw exception;
 			}
 		}, PageBinding.TIMEOUT );
-		
+
 	} else {
-		
+
 		if ( Client.isExplorer == true ) {
 			this.logger.error ( "PageBinding: Somehow initialized twice" );
 			this.logger.error ( arguments.caller.callee.toString ());
@@ -330,30 +331,30 @@ PageBinding.prototype.onPageInitialize = function () {
 	}
 };
 
-/** 
+/**
  * After page initialize. Focus first focusable binding and unlock Application.
  * @see {FocusBinding#_initializeFocus}
  */
 PageBinding.prototype.onAfterPageInitialize = function () {
-	
+
 	this.removeActionListener ( PageBinding.ACTION_BLOCK_INIT );
 	this.removeActionListener ( PageBinding.ACTION_UNBLOCK_INIT );
-	
+
 	/*
 	 * Must unlock first so that Explorer can handle focus properly.
 	 */
 	Application.unlock ( this );
-	
+
 	/*
 	 * Enable activation awareness.
 	 */
 	this.isActivationAware = true;
 	var root = UserInterface.getBinding ( this.bindingDocument.body );
 	root.makeActivationAware ( this );
-	
+
 	/*
-	 * When loaded, this will force any ancestor FocusBinding to move focus 
-	 * to us. For this to make sense, this PageBinding should be loaded inside 
+	 * When loaded, this will force any ancestor FocusBinding to move focus
+	 * to us. For this to make sense, this PageBinding should be loaded inside
 	 * a WindowBinding occupying ALL visible space. This may need rethinking.
 	 */
 	if ( UserInterface.isBindingVisible ( this )) {
@@ -365,7 +366,7 @@ PageBinding.prototype.onAfterPageInitialize = function () {
  * Invoked by the DocumentUpdatePlugin before any updates are applied.
  */
 PageBinding.prototype.onBeforeUpdates = function () {
-	
+
 	this._isUpdating = true;
 	this.dispatchAction ( PageBinding.ACTION_UPDATING );
 };
@@ -374,7 +375,7 @@ PageBinding.prototype.onBeforeUpdates = function () {
  * Invoked by the DocumentUpdatePlugin after all updates are applied.
  */
 PageBinding.prototype.onAfterUpdates = function () {
-	
+
 	this.parseDOMProperties();
 	this._isUpdating = false;
 	this.dispatchAction ( PageBinding.ACTION_UPDATED );
@@ -385,7 +386,7 @@ PageBinding.prototype.onAfterUpdates = function () {
  * Invoked by the {@link DialogPageBinding}.
  */
 PageBinding.prototype.makeDialogSubPage = function () {
-	
+
 	if ( this.isFitAsDialogSubPage ) {
 		if ( Client.isExplorer ) {
 			this.setFlexibility ( true ); // since IE has no min-height...
@@ -396,7 +397,7 @@ PageBinding.prototype.makeDialogSubPage = function () {
 };
 
 /**
- * The global function "doPostBack" is overloaded in order 
+ * The global function "doPostBack" is overloaded in order
  * to manifest databindings reliably on every scripted submit.
  */
 PageBinding.prototype._setupDotNet = function () {
@@ -405,9 +406,9 @@ PageBinding.prototype._setupDotNet = function () {
 	var form = this.bindingDocument.forms [ 0 ];
 	var oldPostBack = this.bindingWindow.__doPostBack;
 	var isLocked = false;
-	
+
 	/*
-	 * Unlock UI when page unloads (see below). 
+	 * Unlock UI when page unloads (see below).
 	 * TODO: Remove this when dialogs go AJAX.
 	 * form.__isSetup was set by UpdateManager.
 	 */
@@ -420,23 +421,23 @@ PageBinding.prototype._setupDotNet = function () {
 			}
 		});
 	}
-	
+
 	/*
 	 * Setup postback.
 	 * @param {string} eventTarget
 	 * @param {string} eventArgument
 	 */
 	this.bindingWindow.__doPostBack = function ( eventTarget, eventArgument ) {
-		
+
 		/*
-		 * For non-AJAX pages (dialogs and wizards),  
+		 * For non-AJAX pages (dialogs and wizards),
 		 * this stunt will lock the UI on form submit.
 		 */
 		if ( !form.__isSetup && self.isNonAjaxPage) {
 			Application.lock ( self );
 			isLocked = true;
 		}
-		
+
 		self.manifestAllDataBindings ();
 		oldPostBack ( eventTarget, eventArgument );
 		if ( Application.isDeveloperMode ) {
@@ -451,11 +452,11 @@ PageBinding.prototype._setupDotNet = function () {
  * @param {List<Binding>} list Collected by the EditorPageBinding.
  */
 PageBinding.prototype.postMessage = function ( message, list ) {
-	
+
 	var postback = this.bindingWindow.bindingMap.__REQUEST;
-		
+
 	if ( postback != null && this._isDotNet ()) {
-		
+
 		switch ( message ) {
 			case EditorPageBinding.MESSAGE_SAVE :
 			case EditorPageBinding.MESSAGE_PERSIST :
@@ -464,7 +465,7 @@ PageBinding.prototype.postMessage = function ( message, list ) {
 						if ( list != null ) {
 							/*
 							if ( Application.isDeveloperMode ) {
-								var action = message == EditorPageBinding.MESSAGE_SAVE ? "SAVING " : "PERSISTING ";  
+								var action = message == EditorPageBinding.MESSAGE_SAVE ? "SAVING " : "PERSISTING ";
 								alert ( action + this.bindingDocument.title );
 							}
 							*/
@@ -477,13 +478,13 @@ PageBinding.prototype.postMessage = function ( message, list ) {
 			default :
 				postback.postback ( message );
 				break;
-			
+
 		}
 	}
-	
+
 	/*
-	 * If the List was contained in argument, the post was 
-	 * initiated by the EditorPageBinding, in which case 
+	 * If the List was contained in argument, the post was
+	 * initiated by the EditorPageBinding, in which case
 	 * we must repost the message to descendant windows...
 	 */
 	if ( list != null ) {
@@ -497,11 +498,11 @@ PageBinding.prototype.postMessage = function ( message, list ) {
  * @param {List<Binding>} list Collected by the EditorPageBinding.
  */
 PageBinding.prototype._postMessageToDescendants = function ( message, list ) {
-	
+
 	// TODO: getElementsByTagName ( "iframe" ).parentNode to improve performance?
 	var windows = this.getDescendantBindingsByType ( WindowBinding );
 	windows.each ( function ( win ) {
-		var page = win.getPageBinding (); 
+		var page = win.getPageBinding ();
 		if ( page != null ) {
 			page.postMessage ( message, list );
 		}
@@ -513,7 +514,7 @@ PageBinding.prototype._postMessageToDescendants = function ( message, list ) {
  * Log postback entries.
  */
 PageBinding.prototype._debugDotNetPostback = function () {
-	
+
 	var list = new List ();
 	new List ( this.bindingDocument.forms [ 0 ].elements ).each (
 		function (element) {
@@ -537,12 +538,12 @@ PageBinding.prototype._debugDotNetPostback = function () {
  * @param {Action} action
  */
 PageBinding.prototype.handleAction = function ( action ) {
-	
+
 	PageBinding.superclass.handleAction.call ( this, action );
-	
+
 	var binding = action.target;
 	switch ( action.type ) {
-	
+
 		case RootBinding.ACTION_PHASE_3 :
 			if ( binding == UserInterface.getBinding ( this.bindingDocument.body )) {
 				binding.removeActionListener ( RootBinding.ACTION_PHASE_3, this );
@@ -557,17 +558,17 @@ PageBinding.prototype.handleAction = function ( action ) {
 				}
 			}
 			break;
-			
+
 		case PageBinding.ACTION_DOPOSTBACK :
-			
+
 		 	if ( this._isDotNet ()) {
 				this.doPostBack ( binding );
 			}
 			action.consume ();
 			break;
-			
+
 		case PageBinding.ACTION_DOVALIDATEDPOSTBACK :
-			
+
 			if ( this._isDotNet ()) {
 				var isValid = this.validateAllDataBindings ();
 				if ( isValid ) {
@@ -576,22 +577,22 @@ PageBinding.prototype.handleAction = function ( action ) {
 			}
 			action.consume ();
 			break;
-			
+
 		case BalloonBinding.ACTION_INITIALIZE :
-			
+
 			// TODO: note here...
 			action.consume ();
 			break;
-		
+
 		case PageBinding.ACTION_BLOCK_INIT :
 			if ( this._initBlockers == null ) {
 				this._initBlockers = new Map ();
 			}
 			this._initBlockers.set ( binding.key, true );
 			break;
-			
+
 		case PageBinding.ACTION_UNBLOCK_INIT :
-			
+
 			if ( this._initBlockers != null ) {
 				if ( this._initBlockers.has ( binding.key )) {
 					this._initBlockers.del ( binding.key );
@@ -606,10 +607,10 @@ PageBinding.prototype.handleAction = function ( action ) {
 					}
 				}
 			}
-			
+
 			/*
 			 * WAS THIS
-			 * 
+			 *
 			if ( this._initBlockers.has ( binding.key )) {
 				this._initBlockers.del ( binding.key );
 			}
@@ -624,7 +625,7 @@ PageBinding.prototype.handleAction = function ( action ) {
 			}
 			*/
 			break;
-		
+
 		/*
 		 * TODO: move this stuff into proper methods.
 		 */
@@ -654,13 +655,13 @@ PageBinding.prototype.handleAction = function ( action ) {
  * @param {object} arg
  */
 PageBinding.prototype.handleBroadcast = function ( broadcast, arg ) {
-	
+
 	PageBinding.superclass.handleBroadcast.call ( this, broadcast, arg );
-	
+
 	switch ( broadcast ) {
-		
+
 		/*
-		 * This broadcast means that we can unlock a  
+		 * This broadcast means that we can unlock a
 		 * page that was performing a postback.
 		 */
 		case BroadcastMessages.MESSAGEQUEUE_REQUESTED :
@@ -673,16 +674,16 @@ PageBinding.prototype.handleBroadcast = function ( broadcast, arg ) {
 	}
 };
 
-/** 
+/**
  * To dot or not dot net.
  * @return {boolean}
  */
 PageBinding.prototype._isDotNet = function () {
-	
+
 	var form = this.bindingDocument.forms [ 0 ];
-	
-	return ( 
-		form != null && 
+
+	return (
+		form != null &&
 		typeof this.bindingWindow.__doPostBack != "undefined"
 	);
 };
@@ -692,13 +693,13 @@ PageBinding.prototype._isDotNet = function () {
  * @param {binding} binding This lucky bindings callbackid will be transmitted to server.
  */
 PageBinding.prototype.doPostBack = function ( binding ) {
-	
+
 	if ( this._canPostBack ) {
 		if ( binding != null && this._isDotNet ()) {
-			
+
 			var callbackid = binding.getCallBackID ();
 			var callbackarg = binding.getCallBackArg ();
-			
+
 			/*
 			 * Did some guy use ClientID instead of UniqueID?
 			 */
@@ -707,18 +708,18 @@ PageBinding.prototype.doPostBack = function ( binding ) {
 			} else {
 				callbackid = "";
 			}
-			
+
 			if ( callbackarg == null ) {
 				callbackarg = "";
 			}
-			
+
 			this.bindingWindow.__doPostBack ( callbackid, callbackarg );
 		}
 	}
 };
 
 /**
- * Validate all attached DataBindings. Discontinue validation 
+ * Validate all attached DataBindings. Discontinue validation
  * as soon as the first invalid binding is encountered.
  * @return {boolean}
  */
@@ -752,7 +753,7 @@ PageBinding.prototype.validateAllDataBindings = function (activateTabWidthError)
 };
 
 /**
- * Manifest all attached DataBindings. 
+ * Manifest all attached DataBindings.
  * This should always be invoked preceding server postback.
  * @return {List}
  */
@@ -760,7 +761,7 @@ PageBinding.prototype.manifestAllDataBindings = function () {
 
 	var list = new List ();
 	var dataBindings = this.bindingWindow.DataManager.getAllDataBindings ();
-	
+
 	while ( dataBindings.hasNext ()) {
 		var dataBinding = dataBindings.getNext ();
 		if ( dataBinding.isAttached ) { // could be nested in lazy binding
@@ -777,9 +778,9 @@ PageBinding.prototype.manifestAllDataBindings = function () {
  * Clean all DataBindings.
  */
 PageBinding.prototype.cleanAllDataBindings = function () {
-	
+
 	// this.bindingWindow.DataManager.isDirty = false;
-	
+
 	var dataBindings = this.bindingWindow.DataManager.getAllDataBindings ();
 	while ( dataBindings.hasNext ()) {
 		var dataBinding = dataBindings.getNext ();
@@ -802,7 +803,7 @@ PageBinding.prototype.getLabel = function () {
 			label = binding.getLabel();
 		} else if (binding != null && binding.getValue) {
 			label = binding.getValue();
-		} 
+		}
 	}
 	if (!label && this.label) {
 		label = this.label;
@@ -816,7 +817,7 @@ PageBinding.prototype.getLabel = function () {
  * @return {string}
  */
 PageBinding.prototype.getImage = function () {
-	
+
 	return this.image;
 };
 
@@ -825,7 +826,7 @@ PageBinding.prototype.getImage = function () {
  * @return {string}
  */
 PageBinding.prototype.getToolTip = function () {
-	
+
 	return this.toolTip;
 };
 
@@ -845,15 +846,15 @@ PageBinding.prototype.getHeight = function () {
  * @see {FocusBinding#setActiveInstance}
  */
 PageBinding.prototype.onActivate = function () {
-	
+
 	if ( Binding.exists ( this )) { // the devils!
 		if ( !this.isActivated ) {
 			this.isActivated = true;
 			if ( this._isFocusManager ) {
 				if ( UserInterface.isBindingVisible ( this )) {
 				    /*
-				    * For some strange reason, Explorer has lost 
-				    * the ability to focus inputs reliably unless 
+				    * For some strange reason, Explorer has lost
+				    * the ability to focus inputs reliably unless
 				    * focus was moved to something else first...
 				    */
 				    try {
@@ -864,7 +865,7 @@ PageBinding.prototype.onActivate = function () {
 				    }
 					if ( this._cachedFocus != null ) {
 						/*
-						 * Timeout allows any mouse-targetted 
+						 * Timeout allows any mouse-targetted
 						 * focusable to focus first.
 						 */
 						var self = this;
@@ -889,7 +890,7 @@ PageBinding.prototype.onActivate = function () {
  * @see {FocusBinding#setActiveInstance}
  */
 PageBinding.prototype.onDeactivate = function () {
-	
+
 	if ( this.isActivated == true ) {
 		this.isActivated = false;
 		if ( this._cachedFocus != null ) {

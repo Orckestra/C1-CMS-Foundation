@@ -362,6 +362,7 @@
 			<Script filename="${root}/scripts/source/top/core/ViewDefinitions.js"/>
 			<Script filename="${root}/scripts/source/top/core/KickStart.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/buttons/combobutton/SelectorButtonBinding.js"/>
+			<Script filename="${root}/scripts/source/top/ui/bindings/buttons/viewbutton/SlideInButtonBinding.js"/>
 		</Mode>
 	</Type>
 </Scripts>
