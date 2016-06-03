@@ -16,6 +16,13 @@ namespace Composite.C1Console.Actions.Data
         {
             return GetDataActionTokenResolverService().Resolve(data, actionIdentifier);
         }
+
+        /// <exclude />
+        public static ActionToken ResolveDefault(IData data, ActionIdentifier actionIdentifier)
+        {
+            return GetDataActionTokenResolverService().ResolveDefault(data, actionIdentifier);
+        }
+
         /// <summary>
         /// Use this to assign a deafult action to a certain data type
         /// </summary>
