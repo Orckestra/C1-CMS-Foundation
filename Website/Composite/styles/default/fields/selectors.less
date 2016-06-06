@@ -74,9 +74,14 @@ ui|selector {
 
 	&[single='true'] {
 		ui|clickbutton {
-			>ui|labelbox:before,
-			>ui|labelbox:after {
-				display:none;
+
+			> ui|labelbox{
+				text-transform: uppercase;
+
+				&:before,
+				&:after {
+					display:none;
+				}
 			}
 		}
 	}
