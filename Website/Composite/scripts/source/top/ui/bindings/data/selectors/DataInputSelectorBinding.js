@@ -15,48 +15,48 @@ function DataInputSelectorBinding () {
 	 * @type {SystemLogger}
 	 */
 	this.logger = SystemLogger.getLogger ( "DataInputSelectorBinding" );
-	
+
 	/**
 	 * @type {ToolBarButtonBinding}
 	 */
 	this._buttonBinding = null;
-	
+
 	/**
 	 * @type {PopupBinding}
 	 */
 	this._popupBinding = null;
-	
+
 	/**
 	 * @type {MenuBodyBinding}
 	 */
 	this._menuBodyBinding = null;
-	
+
 	/**
 	 * @type {string}
 	 */
 	this._selectionValue = null;
-	
+
 	/**
 	 * @type {boolean}
 	 */
 	this.isDirty = false;
-		
+
 	/**
 	 * @type {boolean}
 	 */
 	this._hasKeyboard = false;
-	
+
 	/**
 	 * Flipped when menitems need to be reattached.
 	 * @type {boolean}
 	 */
 	this._isUpToDate = false;
-	
+
 	/**
 	 * @type {MenuItemBinding}
 	 */
 	this._selectedItemBinding = null;
-	
+
 	/**
 	 * Block common crawlers.
 	 * @type {Map<string><boolean>}
@@ -90,12 +90,12 @@ DataInputSelectorBinding.prototype.onBindingDispose = SelectorBinding.prototype.
  * @overloads {DataBinding#_buildDOMContent}
  */
 DataInputSelectorBinding.prototype._buildDOMContent = function () {
-	 
+
+	this.buildButton();
+	this.buildPopup();
+	this.buildSelections();
+
 	DataInputSelectorBinding.superclass._buildDOMContent.call ( this );
-	
-	this.buildButton ();
-	this.buildPopup ();
-	this.buildSelections ();
 }
 
 
@@ -109,6 +109,13 @@ DataInputSelectorBinding.prototype.onBindingAttach = function () {
 	var image = this.getProperty("image");
 	if (image) {
 		this.setImage(image);
+	}
+
+	var onchange = this.getProperty("onchange");
+	if (onchange) {
+		this.onValueChange = function () {
+			Binding.evaluate(onchange, this);
+		};
 	}
 
 	var self = this;
@@ -128,18 +135,18 @@ DataInputSelectorBinding.prototype.onBindingAttach = function () {
  */
 DataInputSelectorBinding.prototype.buildButton = function () {
 
-	var button = this.addFirst ( 
+	var button = this.addFirst (
 		ToolBarButtonBinding.newInstance ( this.bindingDocument )
-	); 
-	button.popupBindingTargetElement = this.shadowTree.input; 
+	);
+	button.popupBindingTargetElement = this.shadowTree.input;
 	button.setImage ( DataInputSelectorBinding.INDICATOR_IMAGE );
 	button.attach ();
-	 
+
 	var self = this;
 	button.oncommand = function () {
 	 	self._attachSelections ();
 	}
-	 
+
 	this._buttonBinding = button;
 }
 
@@ -147,7 +154,7 @@ DataInputSelectorBinding.prototype.buildButton = function () {
  * Build popup.
  * @see {SelectorBinding#buildPopup}
  */
-DataInputSelectorBinding.prototype.buildPopup = SelectorBinding.prototype.buildPopup; 
+DataInputSelectorBinding.prototype.buildPopup = SelectorBinding.prototype.buildPopup;
 
 
 /**
@@ -155,7 +162,7 @@ DataInputSelectorBinding.prototype.buildPopup = SelectorBinding.prototype.buildP
  */
 DataInputSelectorBinding.prototype.buildSelections = function () {
 
-	/* 
+	/*
 	 * Parse DOM content.
 	 */
 	var list = new List ();
@@ -187,8 +194,8 @@ DataInputSelectorBinding.prototype.populateFromList = function (list) {
 	var bodyBinding = this._menuBodyBinding;
 	var bodyDocument = bodyBinding.bindingDocument;
 
-	/* 
-	* Dispose existing content, remembering that bindings 
+	/*
+	* Dispose existing content, remembering that bindings
 	* may not be attached (before the button is pressed).
 	*/
 	while (bodyBinding.bindingElement.hasChildNodes()) {
@@ -245,7 +252,7 @@ DataInputSelectorBinding.prototype.populateFromList = function (list) {
  * @see {SelectorBinding#handleAction}
  * @param {Action} action
  */
-DataInputSelectorBinding.prototype.handleAction = SelectorBinding.prototype.handleAction; 
+DataInputSelectorBinding.prototype.handleAction = SelectorBinding.prototype.handleAction;
 
 /**
  * On button command.
@@ -282,7 +289,7 @@ DataInputSelectorBinding.prototype._onMenuItemCommand = function ( binding ) {
 }
 
 /**
- * Note that we evaluate this method in the context of 
+ * Note that we evaluate this method in the context of
  * both the superclass and the SelectorBinding class.
  * @implements {IBroadcastListener}
  * @see {SelectorBinding#handleAction}
@@ -290,11 +297,11 @@ DataInputSelectorBinding.prototype._onMenuItemCommand = function ( binding ) {
  * @param {object} arg
  */
 DataInputSelectorBinding.prototype.handleBroadcast = function ( broadcast, arg ) {
-	
+
 	SelectorBinding.prototype.handleBroadcast.call ( this, broadcast, arg );
-	
+
 	/*
-	 * The DataInputBinding has been hacked to blur when a mousedown 
+	 * The DataInputBinding has been hacked to blur when a mousedown
 	 * is registered. This should obviously not extend to our button.
 	 */
 	switch ( broadcast ) {
@@ -304,7 +311,7 @@ DataInputSelectorBinding.prototype.handleBroadcast = function ( broadcast, arg )
 			}
 			break;
 	}
-	
+
 }
 
 /**
@@ -332,16 +339,16 @@ DataInputSelectorBinding.prototype._handleArrowKey = SelectorBinding.prototype._
  * @param {boolean} isDomEvent
  */
 DataInputSelectorBinding.prototype.focus = function ( isDomEvent ) {
-	
+
 	if ( !this.isFocused ) {
 		DataInputSelectorBinding.superclass.focus.call ( this, isDomEvent );
 		if ( this.isFocused == true ) {
 			this._grabKeyboard ();
-		}	
+		}
 	}
-	
+
 	/*
-	if ( !this._hasKeyboard ) {	
+	if ( !this._hasKeyboard ) {
 		this._grabKeyboard ();
 	}
 	DataInputSelectorBinding.superclass.focus.call ( this, isDomEvent );
@@ -354,11 +361,11 @@ DataInputSelectorBinding.prototype.focus = function ( isDomEvent ) {
  * @param {boolean} isDomEvent
  */
 DataInputSelectorBinding.prototype.blur = function ( isDomEvent ) {
-	
+
 	if ( this.isFocused == true ) {
 		DataInputSelectorBinding.superclass.blur.call ( this, isDomEvent );
 		this._releaseKeyboard ();
-		if ( this._popupBinding.isVisible ) {		
+		if ( this._popupBinding.isVisible ) {
 			this._popupBinding.hide ();
 		}
 	}
@@ -366,7 +373,7 @@ DataInputSelectorBinding.prototype.blur = function ( isDomEvent ) {
 	if ( this._hasKeyboard ) {
 		this._releaseKeyboard ();
 	}
-	if ( this._popupBinding.isVisible ) {		
+	if ( this._popupBinding.isVisible ) {
 		this._popupBinding.hide ();
 	}
 	DataInputSelectorBinding.superclass.blur.call ( this, isDomEvent );
@@ -374,15 +381,15 @@ DataInputSelectorBinding.prototype.blur = function ( isDomEvent ) {
 }
 
 /**
- * For cosmetic reasons, attempting to make 
+ * For cosmetic reasons, attempting to make
  * the opening menu as wide as the selector.
  * @see {SelectorBinding#handleAction}
  */
 DataInputSelectorBinding.prototype._fitMenuToSelector = function () {
-	
+
 	var selectorWidth = this.bindingElement.offsetWidth + "px";
 	var popupElement = this._popupBinding.bindingElement;
-	
+
 	popupElement.style.minWidth = selectorWidth;
 }
 
@@ -390,15 +397,15 @@ DataInputSelectorBinding.prototype._fitMenuToSelector = function () {
  * Restore selection.
  */
 DataInputSelectorBinding.prototype._restoreSelection = function () {
-	
+
 	if ( !this._isUpToDate ) {
 		this._attachSelections ();
 	}
-	
+
 	var items = this._menuBodyBinding.getDescendantBindingsByLocalName ( "menuitem" );
 	var value = this.getValue ();
 	var selected = null;
-	
+
 	items.each ( function ( item ) {
 		if ( item.getLabel () == value ) {
 			selected = item;
@@ -407,7 +414,7 @@ DataInputSelectorBinding.prototype._restoreSelection = function () {
 	if ( selected ) {
 		selected.focus ();
 	}
-	
+
 }
 
 /**
@@ -415,16 +422,17 @@ DataInputSelectorBinding.prototype._restoreSelection = function () {
  * @param {boolean} isDefault Set while initializing to block action.
  */
 DataInputSelectorBinding.prototype.select = function ( item, isDefault ) {
-	
+
 	if ( item != this._selectedItemBinding ) {
-		
+
 		this._selectedItemBinding = item;
-		
+
 		this.setValue ( item.selectionValue );
-		
+
 		if ( !isDefault ) {
-			this.dirty ();
-			this.dispatchAction ( 
+			this.dirty();
+			this.onValueChange();
+			this.dispatchAction (
 				DataInputSelectorBinding.ACTION_SELECTIONCHANGED
 			);
 		}
@@ -433,7 +441,7 @@ DataInputSelectorBinding.prototype.select = function ( item, isDefault ) {
 }
 
 /**
- * Build selections. For faster page load time, the popup bindings 
+ * Build selections. For faster page load time, the popup bindings
  * get attached only when user handles the selector button.
  */
 DataInputSelectorBinding.prototype._attachSelections = SelectorBinding.prototype._attachSelections;
