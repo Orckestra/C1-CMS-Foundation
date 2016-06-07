@@ -143,27 +143,33 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
             {
                 foreach (string selectedAsString in selectedAsStrings)
                 {
-                    if (selectedAsString != _noneSelectionKey)
+                    if (selectedAsString == _noneSelectionKey)
                     {
-                        if (_selectorObjects.ContainsKey(selectedAsString))
-                        {
-                            object key;
-
-                            var @object = _selectorObjects[selectedAsString];
-
-                            if (@object is XElement)
-                            {
-                                key = (@object as XElement).Attribute(this.OptionsKeyField).Value;
-                            }
-                            else
-                            {
-                                PropertyInfo keyPropertyInfo = @object.GetType().GetProperty(this.OptionsKeyField);
-                                key = keyPropertyInfo.GetValue(@object, null);
-                            }
-
-                            this.SelectedObjects.Add(key);
-                        }
+                        continue;
                     }
+
+                    if (!_selectorObjects.ContainsKey(selectedAsString))
+                    {
+                        // ComboBox
+                        SelectedObjects.Add(selectedAsString);
+                        continue;
+                    }
+
+                    object key;
+
+                    var @object = _selectorObjects[selectedAsString];
+
+                    if (@object is XElement)
+                    {
+                        key = (@object as XElement).Attribute(this.OptionsKeyField).Value;
+                    }
+                    else
+                    {
+                        PropertyInfo keyPropertyInfo = @object.GetType().GetProperty(this.OptionsKeyField);
+                        key = keyPropertyInfo.GetValue(@object, null);
+                    }
+
+                    this.SelectedObjects.Add(key);
                 }
 
                 return;
