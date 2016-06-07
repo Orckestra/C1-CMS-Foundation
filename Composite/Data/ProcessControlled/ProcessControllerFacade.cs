@@ -54,18 +54,18 @@ namespace Composite.Data.ProcessControlled
             {
                 foreach (var data in dataset)
                 {
+                    if (data is IPublishControlled)
+                    {
+                        using (new DataScope(DataScopeIdentifier.Public))
+                        {
+                            IEnumerable<IData> datasDelete = DataFacade.GetDataFromOtherScope(data, DataScopeIdentifier.Public).Evaluate();
+
+                            DataFacade.Delete(datasDelete, CascadeDeleteType.Disable);
+                        }
+                    }
+
                     using (new DataScope(DataScopeIdentifier.Administrated))
                     {
-                        if (data is IPublishControlled)
-                        {
-                            using (new DataScope(DataScopeIdentifier.Public))
-                            {
-                                IEnumerable<IData> datasDelete = DataFacade.GetDataFromOtherScope(data, DataScopeIdentifier.Public).Evaluate();
-
-                                DataFacade.Delete(datasDelete, CascadeDeleteType.Disable);
-                            }
-                        }
-
                         DataFacade.Delete(data);
                     }
                 }

@@ -463,18 +463,15 @@ namespace Composite.Data
         /// <exclude />
         public static IReadOnlyList<PropertyInfo> GetPhysicalKeyProperties(this Type interfaceType)
         {
-            var versionKeyAttributes = interfaceType.GetCustomAttributes<VersionKeyPropertyNameAttribute>();
+            var versionKeyAttributes = interfaceType
+                .GetCustomAttributesRecursively<VersionKeyPropertyNameAttribute>();
             
-            var versionproperty = (from v in versionKeyAttributes
-                select v.GetType().GetProperty(v.VersionKeyPropertyName));
+            var versionProperties = versionKeyAttributes
+                .Select(v => interfaceType.GetDataPropertyRecursively(v.VersionKeyPropertyName));
 
-            var res = new List<PropertyInfo>();
-            res.AddRange(GetKeyProperties(interfaceType));
+            var keyProperties = GetKeyProperties(interfaceType);
 
-            res.AddRange(versionproperty); 
-
-            return res;
-            
+            return keyProperties.Concat(versionProperties).ToList();
         }
 
         /// <exclude />
@@ -482,7 +479,10 @@ namespace Composite.Data
         {
             Verify.ArgumentNotNull(interfaceType, "interfaceType");
 
-            if (!typeof(IData).IsAssignableFrom(interfaceType)) throw new ArgumentException(string.Format("The specified type must inherit from '{0}", typeof(IData)));
+            if (!typeof(IData).IsAssignableFrom(interfaceType))
+            {
+                throw new ArgumentException($"The specified type must inherit from '{typeof (IData)}");
+            }
 
             var map = _resourceLocker.Resources.InterfaceTypeToKeyPropertyInfo;
 

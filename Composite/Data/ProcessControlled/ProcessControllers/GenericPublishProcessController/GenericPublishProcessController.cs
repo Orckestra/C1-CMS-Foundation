@@ -344,12 +344,12 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
             var clientActions = visualTrans.Select(newState => _visualTransitionsActions[newState]()).ToList();
 
 
-            IData publicData = DataFacade.GetDataFromOtherScope(data, DataScopeIdentifier.Public, true).FirstOrDefault();
+            IData publicData = DataFacade.GetDataFromOtherScope(data, DataScopeIdentifier.Public, true, false).FirstOrDefault();
             if (publicData != null)
             {
                 var unpublishAction = new ElementAction(new ActionHandle(new ProxyDataActionToken(ActionIdentifier.Unpublish) { DoIgnoreEntityTokenLocking = true }))
                 {
-                    VisualData = new ActionVisualizedData()
+                    VisualData = new ActionVisualizedData
                     {
                         Label = StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "Unpublish"),
                         ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "UnpublishToolTip"),
