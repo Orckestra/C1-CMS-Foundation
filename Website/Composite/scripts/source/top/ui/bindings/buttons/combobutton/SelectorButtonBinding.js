@@ -14,6 +14,8 @@ function SelectorButtonBinding() {
 
 	this.isSingle = false;
 
+	this.singleValue = null;
+
 	/*
 	* Returnable.
 	*/
@@ -57,6 +59,7 @@ SelectorButtonBinding.prototype.handleBroadcast = function (broadcast, arg) {
 SelectorButtonBinding.prototype.handleAction = function (action) {
 
 	if (action.type === ButtonBinding.ACTION_COMMAND && this.isSingle) {
+		this._selectionValue = this.singleValue;
 		this.onValueChange();
 	} else {
 		SelectorButtonBinding.superclass.handleAction.call(this, action);
@@ -84,8 +87,8 @@ SelectorButtonBinding.prototype.populateFromList = function (list) {
 	if (singleunselected != null) {
 		this.isSingle = true;
 		this._buttonBinding.setLabel(singleunselected.label);
-		this._selectionValue = singleunselected.value;
-		this._selectionLabel = singleunselected.label;
+		this.singleValue = singleunselected.value;
+
 		this._buttonBinding.setPopup();
 		this.setProperty("single", true);
 	} else {
