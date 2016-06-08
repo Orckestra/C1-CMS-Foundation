@@ -50,6 +50,14 @@ namespace Composite.Data
         }
 
         /// <summary>
+        /// disable all services in the data connection
+        /// </summary>
+        public void DisableServices()
+        {
+            Implementation.DataScope.DisableServices();
+        }
+
+        /// <summary>
         /// Creates a new <see cref="DataConnection"/> instance inheriting the <see cref="Composite.Data.PublicationScope"/>
         /// and locale set on the call stack. When outside an existing scope this default to PublicationScope,Published and the
         /// default language on the website. You should use this constructure unless you need to force data to come from an alternative 

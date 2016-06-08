@@ -133,5 +133,10 @@ namespace Composite.Data
 
             _disposed = true;
         }
+
+        internal void DisableServices()
+        {
+            DataServiceScopeManager.DisableServices();
+        }
     }
 }

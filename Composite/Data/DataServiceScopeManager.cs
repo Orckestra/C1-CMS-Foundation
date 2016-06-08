@@ -25,8 +25,16 @@ namespace Composite.Data
             DataServiceDefaultList.Add(service);
         }
 
+        internal static void DisableServices()
+        {
+            CallContext.SetData(DisableServicesCacheKey, true);
+        }
+
         internal static object GetService(Type t)
         {
+            if (DisableServicesFlag.HasValue && DisableServicesFlag.Value)
+                return null;
+
             foreach(var serviceList in DataServiceScopeStack)
             {
                 var match = serviceList?.FindLast(f => f.GetType() == t);
@@ -40,13 +48,22 @@ namespace Composite.Data
         }
 
         private static readonly List<object> DataServiceDefaultList = new List<object>();
-         
+
         private static Stack<List<object>> DataServiceScopeStack
         {
             get
             {
-                return CallContext.GetData(ThreadLocalCacheKey) as Stack<List<object>>
+                return CallContext.GetData(ServiceStackCacheKey) as Stack<List<object>>
                     ?? RequestLifetimeCache.GetCachedOrNew<Stack<List<object>>>("DataServiceScopeManager:Stack");
+            }
+        }
+
+        private static bool? DisableServicesFlag
+        {
+            get
+            {
+                return CallContext.GetData(DisableServicesCacheKey) as bool?
+                    ?? RequestLifetimeCache.GetCachedOrNew<bool?>("DataServiceScopeManagerServiceDisabled:Bool");
             }
         }
 
@@ -55,29 +72,40 @@ namespace Composite.Data
         /// </summary>
         public static void EnterThreadLocal()
         {
-            if (CallContext.GetData(ThreadLocalCacheKey) == null)
+            if (CallContext.GetData(ServiceStackCacheKey) == null)
             {
                 var threadLocalStack = new Stack<List<object>>(DataServiceScopeStack);
-                CallContext.SetData(ThreadLocalCacheKey, threadLocalStack);
+                CallContext.SetData(ServiceStackCacheKey, threadLocalStack);
+            }
+
+            if (CallContext.GetData(DisableServicesCacheKey) == null)
+            {
+                var threadLocalStackFlag = DisableServicesFlag;
+                CallContext.SetData(DisableServicesCacheKey, threadLocalStackFlag);
             }
         }
-
 
         /// <summary>
         /// Move the stack handling to request scope.
         /// </summary>
         public static void ExitThreadLocal()
         {
-            if (CallContext.GetData(ThreadLocalCacheKey) != null)
+            if (CallContext.GetData(ServiceStackCacheKey) != null)
             {
-                CallContext.SetData(ThreadLocalCacheKey, null);
+                CallContext.SetData(ServiceStackCacheKey, null);
+            }
+
+            if (CallContext.GetData(DisableServicesCacheKey) != null)
+            {
+                CallContext.SetData(DisableServicesCacheKey, null);
             }
         }
 
-        private const string ThreadLocalCacheKey = "DataServiceScopeManager:ThreadLocal";
+        private const string ServiceStackCacheKey = "DataServiceScopeManager:ThreadLocal";
+        private const string DisableServicesCacheKey = "DataServiceScopeManagerDisableServiceFlag:ThreadLocal";
 
 
-        
+
 
         internal static void PopDataServiceScope()
         {
