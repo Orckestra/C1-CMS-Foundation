@@ -546,7 +546,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             Guid oldParentId = draggedPage.GetParentId();
             if (oldParentId != Guid.Empty)
             {
-                oldParent = DataFacade.GetData<IPage>(f => f.Id == oldParentId).Single();
+                oldParent = DataFacade.GetData<IPage>(f => f.Id == oldParentId).FirstOrDefault();
             }
 
             if (dragAndDropType == DragAndDropType.Move)
@@ -569,7 +569,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                             break;
                         }
 
-                        urlTitle = string.Format("{0}{1}", draggedPage.UrlTitle, counter++);
+                        urlTitle = $"{draggedPage.UrlTitle}{counter++}";
                     }
 
                     draggedPage.UrlTitle = urlTitle;
