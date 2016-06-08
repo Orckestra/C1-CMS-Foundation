@@ -678,7 +678,7 @@ namespace Composite.Plugins.Routing.Pages
 
             using (new DataScope(publicationScope, cultureInfo))
             {
-                if (!BuildPageUrlPath(pageUrlData.PageId, cultureInfo, urlSpace, pageUrlPath))
+                if (!BuildPageUrlPath(pageUrlData.PageId, pageUrlData.VersionId, cultureInfo, urlSpace, pageUrlPath))
                 {
                     return null;
                 }
@@ -719,9 +719,19 @@ namespace Composite.Plugins.Routing.Pages
             return url;
         }
 
-        private bool BuildPageUrlPath(Guid pageId, CultureInfo culture, UrlSpace urlSpace, StringBuilder result)
+        private bool BuildPageUrlPath(Guid pageId, Guid? versionId, CultureInfo culture, UrlSpace urlSpace, StringBuilder result)
         {
-            IPage page = PageManager.GetPageById(pageId);
+            IPage page;
+            if (versionId != null)
+            {
+                // TODO: add caching
+                page = DataFacade.GetData<IPage>().FirstOrDefault(p => p.Id == pageId && p.VersionId == versionId);
+            }
+            else
+            {
+                page = PageManager.GetPageById(pageId);
+            }
+
             if (page == null)
             {
                 return false;
@@ -733,7 +743,7 @@ namespace Composite.Plugins.Routing.Pages
                 return BuildRootPageUrl(page, culture, urlSpace, result);
             }
 
-            if (!BuildPageUrlPath(parentPageId, culture, urlSpace, result))
+            if (!BuildPageUrlPath(parentPageId, null, culture, urlSpace, result))
             {
                 return false;
             }

@@ -26,6 +26,7 @@ namespace Composite.Core.Routing
             Verify.ArgumentNotNull(page, "page");
 
             PageId = page.Id;
+            VersionId = page.VersionId;
             this.PublicationScope = page.DataSourceId.PublicationScope;
             this.LocalizationScope = page.DataSourceId.LocaleScope;
         }
