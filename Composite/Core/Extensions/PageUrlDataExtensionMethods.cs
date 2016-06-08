@@ -16,15 +16,19 @@ namespace Composite.Core.Extensions
         /// <exclude />
         public static IPage GetPage(this PageUrlData pageUrlData)
         {
-            Verify.ArgumentNotNull(pageUrlData, "pageUrlData");
+            Verify.ArgumentNotNull(pageUrlData, nameof(pageUrlData));
 
             using (new DataScope(pageUrlData.PublicationScope, pageUrlData.LocalizationScope))
             {
-                string pathInfo = pageUrlData.PathInfo;
-                if (pathInfo != null && pathInfo.Contains("/c1version("))
+                if (pageUrlData.VersionId != null)
                 {
                     Guid pageId = pageUrlData.PageId;
-                    return DataFacade.GetData<IPage>().FirstOrDefault(p => p.Id == pageId);
+                    Guid versionId = pageUrlData.VersionId.Value;
+
+                    // TODO: add caching here
+                    return DataFacade.GetData<IPage>().FirstOrDefault(p => 
+                        p.Id == pageId 
+                        && p.VersionId == versionId);
                 }
 
                 return PageManager.GetPageById(pageUrlData.PageId);

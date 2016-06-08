@@ -53,6 +53,14 @@ namespace Composite.Core.Routing
         /// </value>
         public Guid PageId { get; set; }
 
+        /// <summary>
+        /// Gets or sets the page version id.
+        /// </summary>
+        /// <value>
+        /// The page id.
+        /// </value>
+        public Guid? VersionId { get; set; }
+
 
         /// <summary>
         /// Gets or sets the publication scope.
