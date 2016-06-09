@@ -54,15 +54,14 @@ SystemAction.invoke = function ( action, arg ) {
 	if ( node instanceof SystemNode ) {
 		Application.lock ( SystemAction );
 		action.logger.debug ( "Execute \"" + action.getLabel () + "\" on \"" + node.getLabel () + "\"." );
-		setTimeout ( function () { // timeout allow pressed buttons to unpress
-			TreeService.ExecuteSingleElementAction (
-				node.getData (),
-				action.getHandle (),
-				Application.CONSOLE_ID
-			);
-			MessageQueue.update(action.isSyncedRequest());
-			Application.unlock ( SystemAction );
-		}, 0 );
+
+		TreeService.ExecuteSingleElementAction (
+			node.getData (),
+			action.getHandle (),
+			Application.CONSOLE_ID
+		);
+		MessageQueue.update(action.isSyncedRequest());
+		Application.unlock ( SystemAction );
 	} else {
 		throw "Multiple actiontargets not supported.";
 	}
