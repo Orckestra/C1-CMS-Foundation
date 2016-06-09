@@ -160,14 +160,18 @@ namespace Composite.Data
         }
 
 
-        private IEnumerable<DataInterceptor> GetDataInterceptors(Type dataType)
+        public IEnumerable<DataInterceptor> GetDataInterceptors(Type dataType)
         {
-            DataInterceptor threadedDataInterceptor;
-
             DataInterceptor globaDataInterceptor = GlobalDataInterceptors
-                .FirstOrDefault(f => GlobalDataInterceptors.First().Key.IsAssignableFrom(dataType)).Value;
+                .FirstOrDefault(kvp => kvp.Key.IsAssignableFrom(dataType)).Value;
 
+            DataInterceptor threadedDataInterceptor;
             this.DataInterceptors.TryGetValue(dataType, out threadedDataInterceptor);
+
+            if (threadedDataInterceptor == null && globaDataInterceptor == null)
+            {
+                return Enumerable.Empty<DataInterceptor>();
+            }
 
             var dataInterceptors = new List<DataInterceptor> { threadedDataInterceptor, globaDataInterceptor };
 

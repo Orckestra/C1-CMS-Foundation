@@ -128,6 +128,12 @@ namespace Composite.Data
         }
 
 
+        /// <exclude />
+        internal static IEnumerable<DataInterceptor> GetDataInterceptors(Type interfaceType)
+        {
+            return _dataFacade.GetDataInterceptors(interfaceType);
+        }
+
 
         // Overload
         /// <exclude />

@@ -13,6 +13,7 @@ namespace Composite.Data
         void SetDataInterceptor<T>(DataInterceptor dataInterceptor) where T : class, IData;
         bool HasDataInterceptor<T>() where T : class, IData;
         void ClearDataInterceptor<T>() where T : class, IData;
+        IEnumerable<DataInterceptor> GetDataInterceptors(Type interfaceType);
 
 
         IQueryable<T> GetData<T>(bool useCaching, IEnumerable<string> providerNames) where T : class, IData;

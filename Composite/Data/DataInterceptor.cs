@@ -1,30 +1,38 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 
 namespace Composite.Data
 {
-    /// <summary>    
+    /// <summary>
+    /// Let you transform queries before data providers. Enable you to augment queries from alternate sources.
     /// </summary>
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
-    public class DataInterceptor
+    public abstract class DataInterceptor
     {
-        /// <exclude />
-        public DataInterceptor()
-        {
-        }
-
-
-
-        /// <exclude />
-        public virtual IQueryable<T> InterceptGetData<T>(IQueryable<T> datas)
+        /// <summary>
+        /// Let you transform queries before data providers. Enable you to augment queries from alternate sources.
+        /// </summary>
+        public virtual IQueryable<T> InterceptGetData<T>(IQueryable<T> dataset)
             where T : class, IData
         {
-            return datas;
+            return dataset;
         }
 
 
-        /// <exclude />
+        /// <summary>
+        /// Let you transform an in-memory result-set. 
+        /// This transformation should behave exactly as the IQueryable equivalent.
+        /// </summary>
+        public virtual IEnumerable<T> InterceptGetData<T>(IEnumerable<T> dataset)
+            where T : class, IData
+        {
+            return InterceptGetData(dataset.AsQueryable());
+        }
+
+
+        /// <summary>
+        /// Enable you to intercept queries for a single data item.
+        /// </summary>
         public virtual T InterceptGetDataFromDataSourceId<T>(T data)
             where T : class, IData
         {

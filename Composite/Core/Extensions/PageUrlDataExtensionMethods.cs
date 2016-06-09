@@ -1,5 +1,3 @@
-using System;
-using System.Linq;
 using Composite.Core.Routing;
 using Composite.Data;
 using Composite.Data.Types;
@@ -22,13 +20,7 @@ namespace Composite.Core.Extensions
             {
                 if (pageUrlData.VersionId != null)
                 {
-                    Guid pageId = pageUrlData.PageId;
-                    Guid versionId = pageUrlData.VersionId.Value;
-
-                    // TODO: add caching here
-                    return DataFacade.GetData<IPage>().FirstOrDefault(p => 
-                        p.Id == pageId 
-                        && p.VersionId == versionId);
+                    return PageManager.GetPageById(pageUrlData.PageId, pageUrlData.VersionId.Value);
                 }
 
                 return PageManager.GetPageById(pageUrlData.PageId);

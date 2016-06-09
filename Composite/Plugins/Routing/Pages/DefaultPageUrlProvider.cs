@@ -485,7 +485,7 @@ namespace Composite.Plugins.Routing.Pages
             {
                 if (hostnameBinding != null)
                 {
-                    IPage rootPage = PageManager.GetPageById(hostnameBinding.HomePageId);
+                    IPage rootPage = PageManager.GetPageById(hostnameBinding.HomePageId, true);
                     if (rootPage != null && 
                         (!hostnameBinding.IncludeHomePageInUrl || string.IsNullOrEmpty(rootPage.UrlTitle)))
                     {
@@ -508,7 +508,7 @@ namespace Composite.Plugins.Routing.Pages
 
             if (hostnameBinding != null)
             {
-                IPage rootPage = PageManager.GetPageById(hostnameBinding.HomePageId);
+                IPage rootPage = PageManager.GetPageById(hostnameBinding.HomePageId, true);
 
                 bool rootPageIsOmmited = rootPage != null && !hostnameBinding.IncludeHomePageInUrl || string.IsNullOrEmpty(rootPage.UrlTitle);
                 if (rootPageIsOmmited)
@@ -724,12 +724,11 @@ namespace Composite.Plugins.Routing.Pages
             IPage page;
             if (versionId != null)
             {
-                // TODO: add caching
-                page = DataFacade.GetData<IPage>().FirstOrDefault(p => p.Id == pageId && p.VersionId == versionId);
+                page = PageManager.GetPageById(pageId, versionId.Value, true);
             }
             else
             {
-                page = PageManager.GetPageById(pageId);
+                page = PageManager.GetPageById(pageId, true);
             }
 
             if (page == null)
