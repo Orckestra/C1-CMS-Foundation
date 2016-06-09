@@ -357,7 +357,7 @@ SystemTreeNodeBinding.prototype._performRefresh = function (branch) {
 SystemTreeNodeBinding.prototype._refreshChildren = function () {
 
 	var buffer = new List ();
-	var children = this.node.getChildren();
+	var children = this.node.getChildren(true);
 
 	this.empty ();
 	if ( children.hasEntries ()) {
@@ -373,8 +373,6 @@ SystemTreeNodeBinding.prototype._insertTreeNodesRegulated = function ( children 
 
 	var count = 0;
 	var expandNodes = new List([]);
-
-	children = this.groupByBundles(children);
 
 	/*
 	 * Constantly shortening the children list while
@@ -440,36 +438,7 @@ SystemTreeNodeBinding.prototype._insertTreeNodesRegulated = function ( children 
 	});
 }
 
-/**
- * Group by bundles
- * @param {List<SystemNode>} nodes
- */
-SystemTreeNodeBinding.prototype.groupByBundles = function (nodes) {
-	var result = new List();
-	var bundles = new Map();
 
-	while ( nodes.hasEntries ()) {
-		var node = nodes.extractFirst();
-		var elementBundle = node._data.ElementBundle;
-		if (elementBundle) {
-			var bundle = null;
-			if (bundles.has(elementBundle)) {
-				bundle = bundles.get(elementBundle);
-			} else {
-				bundle = new List();
-				result.add(bundle);
-				bundles.set(elementBundle, bundle);
-			}
-			bundle.add(node);
-		} else {
-			result.add(node);
-		}
-	}
-
-	//bundles.empty();  ??
-
-	return result;
-}
 
 /**
  * Insert buffer node. This will expand to a number of treenodes when navigated.
@@ -513,7 +482,7 @@ SystemTreeNodeBinding.prototype.XXX = function ( branch ) {
 		var bundles = new Map();
 
 		if (nodes.hasEntries()) {
-			nodes = this.groupByBundles(nodes);
+			nodes = SystemNode.groupByBundles(nodes);
 			nodes.each(function (item) {
 				var node = null;
 				var nodes = null;
