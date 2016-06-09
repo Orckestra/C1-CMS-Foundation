@@ -116,6 +116,8 @@ namespace Composite.Data
                 throw new ObjectDisposedException(nameof(DataScope));
             }
 
+            EnableServices();
+
             if (_dataScopePushed)
             {
                 DataScopeManager.PopDataScope();
@@ -137,6 +139,11 @@ namespace Composite.Data
         internal void DisableServices()
         {
             DataServiceScopeManager.DisableServices();
+        }
+
+        internal void EnableServices()
+        {
+            DataServiceScopeManager.EnableServices();
         }
     }
 }

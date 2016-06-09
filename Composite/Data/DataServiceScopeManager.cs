@@ -30,6 +30,11 @@ namespace Composite.Data
             CallContext.SetData(DisableServicesCacheKey, true);
         }
 
+        internal static void EnableServices()
+        {
+            CallContext.SetData(DisableServicesCacheKey,false);
+        }
+
         internal static object GetService(Type t)
         {
             if (DisableServicesFlag.HasValue && DisableServicesFlag.Value)
