@@ -324,7 +324,7 @@ UnpublishedPageBinding.prototype.handleAction = function (action) {
 			var button = action.target;
 			var systemAction = button.associatedSystemAction;
 			if (systemAction != null) {
-				if (systemAction.getTag() === UnpublishedPageBinding.PUBLISHING_COMMAND) {
+				if (systemAction.getTag() === UnpublishedPageBinding.PUBLISHING_COMMAND && this.getSelectedCheckboxes().getLength() > 1) {
 					Dialog.question(
 						StringBundle.getString("Composite.Plugins.PageElementProvider", "ViewUnpublishedItems.PublishConfirmTitle"),
 						StringBundle.getString("Composite.Plugins.PageElementProvider", "ViewUnpublishedItems.PublishConfirmText"),
