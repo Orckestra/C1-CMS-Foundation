@@ -190,11 +190,8 @@ SystemToolBarBinding.prototype.handleBroadcast = function (broadcast, arg) {
 			break;
 
 		case BroadcastMessages.INVOKE_DEFAULT_ACTION:
-			var self = this;
 			if (arg != null && arg.syncHandle == this.getSyncHandle()) {
-					setTimeout(function() { // timeout because binding attachment may happen now
-						self._invokeDefaultAction();
-					}, 0);
+				this._invokeDefaultAction();
 			}
 			break;
 	}
