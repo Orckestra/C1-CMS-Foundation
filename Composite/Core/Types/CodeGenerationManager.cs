@@ -393,7 +393,9 @@ namespace Composite.Core.Types
         {
             get
             {
-                return Path.Combine(PathUtil.BaseDirectory, "Bin");
+                return RuntimeInformation.IsUnittest 
+                    ? PathUtil.BaseDirectory
+                    : Path.Combine(PathUtil.BaseDirectory, "Bin");
             }
         }
 
