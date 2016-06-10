@@ -8,7 +8,6 @@ UnpublishedPageBinding.SELECTED_CLASSNAME = "selected";
 UnpublishedPageBinding.NOVERSION_CLASSNAME = "noversion";
 
 UnpublishedPageBinding.BULK_PUBLISHING_COMMANDS = "BulkPublishingCommands";
-UnpublishedPageBinding.PUBLISHING_COMMAND = "PublishingCommand";
 
 /**
  * @class
@@ -238,8 +237,7 @@ UnpublishedPageBinding.prototype.getWorkflowActions = function (node) {
 	var result = new List();
 	node.getActionProfile().each(function (group, list) {
 		list.each(function (action) {
-			if (action.getTag() === UnpublishedPageBinding.BULK_PUBLISHING_COMMANDS
-				|| action.getTag() === UnpublishedPageBinding.PUBLISHING_COMMAND) {
+			if (action.getTag() === UnpublishedPageBinding.BULK_PUBLISHING_COMMANDS) {
 				result.add(action);
 			}
 		}, this);
@@ -324,10 +322,11 @@ UnpublishedPageBinding.prototype.handleAction = function (action) {
 			var button = action.target;
 			var systemAction = button.associatedSystemAction;
 			if (systemAction != null) {
-				if (systemAction.getTag() === UnpublishedPageBinding.PUBLISHING_COMMAND && this.getSelectedCheckboxes().getLength() > 1) {
+				var bulkExecutionDialog = systemAction.getBulkExecutionDialog();
+				if (bulkExecutionDialog != null && this.getSelectedCheckboxes().getLength() > 1) {
 					Dialog.question(
-						StringBundle.getString("Composite.Plugins.PageElementProvider", "ViewUnpublishedItems.PublishConfirmTitle"),
-						StringBundle.getString("Composite.Plugins.PageElementProvider", "ViewUnpublishedItems.PublishConfirmText"),
+						bulkExecutionDialog.Title,
+						bulkExecutionDialog.Text,
 						Dialog.BUTTONS_ACCEPT_CANCEL,
 						{
 							handleDialogResponse: (function(response) {

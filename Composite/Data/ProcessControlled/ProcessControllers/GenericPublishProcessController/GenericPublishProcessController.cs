@@ -41,9 +41,8 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
         public const string Published = "published";
 
         private static readonly string _bulkPublishingCommands = "BulkPublishingCommands";
-		private static readonly string _publishingCommand = "PublishingCommand";
 
-		private static readonly string _backToAwaitingApproval = "awaitingApprovalBack";
+        private static readonly string _backToAwaitingApproval = "awaitingApprovalBack";
         private static readonly string _forwardToAwaitingApproval = "awaitingApprovalForward";
         private static readonly string _backToAwaitingPublication = "awaitingPublicationBack";
         private static readonly string _forwardToAwaitingPublication = "awaitingPublicationForward";
@@ -197,8 +196,8 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
                         ActionGroup = WorkflowActionGroup
                     }
                 },
-                TagValue = _publishingCommand
-            };
+                TagValue = _bulkPublishingCommands
+			};
 
 
             // "arrow pointing left when state change is going backwards" actions
@@ -319,7 +318,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
                         ActionGroup = WorkflowActionGroup
                     }
                 },
-                TagValue = _publishingCommand
+                TagValue = _bulkPublishingCommands
             };
 
             _visualTransitionsActions = new Dictionary<string, Func<ElementAction>>
