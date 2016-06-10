@@ -184,6 +184,11 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
                     ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "PublishToolTip"),
                     Icon = GenericPublishProcessController.Publish,
                     Disabled = false,
+                    BulkExecutionDialog = new DialogStrings
+                    {
+                        Title = LocalizationFiles.Composite_Plugins_PageElementProvider.ViewUnpublishedItems_PublishConfirmTitle,
+                        Text = LocalizationFiles.Composite_Plugins_PageElementProvider.ViewUnpublishedItems_PublishConfirmText
+                    },
                     ActionLocation = new ActionLocation
                     {
                         ActionType = ActionType.Other,

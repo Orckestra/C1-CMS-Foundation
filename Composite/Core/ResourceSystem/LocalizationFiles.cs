@@ -2411,7 +2411,7 @@ public static string Website_Misc_MultiSelector_LabelEditSelections=>T("Website.
 public static string GenericVersionProcessController_Version=>T("GenericVersionProcessController.Version");
 ///<summary>&quot;Show version information&quot;</summary> 
 public static string GenericVersionProcessController_VersionToolTip=>T("GenericVersionProcessController.VersionToolTip");
-///<summary>&quot;Select a value...&quot;</summary> 
+///<summary>&quot;Select a value&quot;</summary> 
 public static string AspNetUiControl_Selector_SelectValueLabel=>T("AspNetUiControl.Selector.SelectValueLabel");
 ///<summary>&quot;&lt; broken reference &gt;...&quot;</summary> 
 public static string AspNetUiControl_Selector_BrokenReference=>T("AspNetUiControl.Selector.BrokenReference");
@@ -3645,6 +3645,28 @@ public static string DeletePageWorkflow_CascadeDeleteErrorMessage=>T("DeletePage
 public static string DeletePageWorkflow_HasCompositionsTitle=>T("DeletePageWorkflow.HasCompositionsTitle");
 ///<summary>&quot;This page has one or more page folders or metadata fields defined on it. Delete these first.&quot;</summary> 
 public static string DeletePageWorkflow_HasCompositionsMessage=>T("DeletePageWorkflow.HasCompositionsMessage");
+///<summary>&quot;Page Title&quot;</summary> 
+public static string ViewUnpublishedItems_PageTitleLabel=>T("ViewUnpublishedItems.PageTitleLabel");
+///<summary>&quot;Version&quot;</summary> 
+public static string ViewUnpublishedItems_VersionLabel=>T("ViewUnpublishedItems.VersionLabel");
+///<summary>&quot;Status&quot;</summary> 
+public static string ViewUnpublishedItems_StatusLabel=>T("ViewUnpublishedItems.StatusLabel");
+///<summary>&quot;Publish Date&quot;</summary> 
+public static string ViewUnpublishedItems_PublishDateLabel=>T("ViewUnpublishedItems.PublishDateLabel");
+///<summary>&quot;This is the date and time that has been set for the page to be published automatically. To update or remove, see the Publication Schedule in Edit Page mode. Otherwise you can override these dates by publishing manually from this view.&quot;</summary> 
+public static string ViewUnpublishedItems_PublishDateHelp=>T("ViewUnpublishedItems.PublishDateHelp");
+///<summary>&quot;Unpublish Date&quot;</summary> 
+public static string ViewUnpublishedItems_UnpublishDateLabel=>T("ViewUnpublishedItems.UnpublishDateLabel");
+///<summary>&quot;This is the date and time that has been set for the page to be unpublished automatically. To update or remove, see the Publication Schedule in Edit Page mode.&quot;</summary> 
+public static string ViewUnpublishedItems_UnpublishDateHelp=>T("ViewUnpublishedItems.UnpublishDateHelp");
+///<summary>&quot;Date Created&quot;</summary> 
+public static string ViewUnpublishedItems_DateCreatedLabel=>T("ViewUnpublishedItems.DateCreatedLabel");
+///<summary>&quot;Date Modified&quot;</summary> 
+public static string ViewUnpublishedItems_DateModifiedLabel=>T("ViewUnpublishedItems.DateModifiedLabel");
+///<summary>&quot;Publish Pages&quot;</summary> 
+public static string ViewUnpublishedItems_PublishConfirmTitle=>T("ViewUnpublishedItems.PublishConfirmTitle");
+///<summary>&quot;You are about to publish these pages. Continue?&quot;</summary> 
+public static string ViewUnpublishedItems_PublishConfirmText=>T("ViewUnpublishedItems.PublishConfirmText");
      private static string T(string key) 
        { 
             return StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", key);
