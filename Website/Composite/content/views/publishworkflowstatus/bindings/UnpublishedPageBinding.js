@@ -8,6 +8,7 @@ UnpublishedPageBinding.SELECTED_CLASSNAME = "selected";
 UnpublishedPageBinding.NOVERSION_CLASSNAME = "noversion";
 
 UnpublishedPageBinding.BULK_PUBLISHING_COMMANDS = "BulkPublishingCommands";
+UnpublishedPageBinding.PUBLISHING_COMMAND = "PublishingCommand";
 
 /**
  * @class
@@ -237,7 +238,8 @@ UnpublishedPageBinding.prototype.getWorkflowActions = function (node) {
 	var result = new List();
 	node.getActionProfile().each(function (group, list) {
 		list.each(function (action) {
-			if (action.getTag() === UnpublishedPageBinding.BULK_PUBLISHING_COMMANDS) {
+			if (action.getTag() === UnpublishedPageBinding.BULK_PUBLISHING_COMMANDS
+				|| action.getTag() === UnpublishedPageBinding.PUBLISHING_COMMAND) {
 				result.add(action);
 			}
 		}, this);
@@ -320,7 +322,25 @@ UnpublishedPageBinding.prototype.handleAction = function (action) {
 		case ButtonBinding.ACTION_COMMAND:
 
 			var button = action.target;
-			this._handleSystemAction(button.associatedSystemAction);
+			var systemAction = button.associatedSystemAction;
+			if (systemAction != null) {
+				if (systemAction.getTag() === UnpublishedPageBinding.PUBLISHING_COMMAND) {
+					Dialog.question(
+						StringBundle.getString("Composite.Plugins.PageElementProvider", "ViewUnpublishedItems.PublishConfirmTitle"),
+						StringBundle.getString("Composite.Plugins.PageElementProvider", "ViewUnpublishedItems.PublishConfirmText"),
+						Dialog.BUTTONS_ACCEPT_CANCEL,
+						{
+							handleDialogResponse: (function(response) {
+								if (response === Dialog.RESPONSE_ACCEPT) {
+									this._handleSystemAction(systemAction);
+								}
+							}).bind(this)
+						}
+					);
+				} else {
+					this._handleSystemAction(systemAction);
+				}
+			}
 			break;
 
 		case UnpublishedPageBinding.ACTION_CHECK_ALL:

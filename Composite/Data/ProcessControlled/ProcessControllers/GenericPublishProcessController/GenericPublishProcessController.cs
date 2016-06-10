@@ -41,8 +41,9 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
         public const string Published = "published";
 
         private static readonly string _bulkPublishingCommands = "BulkPublishingCommands";
+		private static readonly string _publishingCommand = "PublishingCommand";
 
-        private static readonly string _backToAwaitingApproval = "awaitingApprovalBack";
+		private static readonly string _backToAwaitingApproval = "awaitingApprovalBack";
         private static readonly string _forwardToAwaitingApproval = "awaitingApprovalForward";
         private static readonly string _backToAwaitingPublication = "awaitingPublicationBack";
         private static readonly string _forwardToAwaitingPublication = "awaitingPublicationForward";
@@ -191,7 +192,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
                         ActionGroup = WorkflowActionGroup
                     }
                 },
-                TagValue = _bulkPublishingCommands
+                TagValue = _publishingCommand
             };
 
 
@@ -232,7 +233,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
                         ActionGroup = WorkflowActionGroup
                     }
                 },
-                TagValue = _bulkPublishingCommands
+                TagValue = _bulkPublishingCommands,
             };
 
 
@@ -313,7 +314,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
                         ActionGroup = WorkflowActionGroup
                     }
                 },
-                TagValue = _bulkPublishingCommands
+                TagValue = _publishingCommand
             };
 
             _visualTransitionsActions = new Dictionary<string, Func<ElementAction>>
