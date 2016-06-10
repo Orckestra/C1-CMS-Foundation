@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites errors="0"
+            failures="1"
+            tests="1">
+
+  <testsuite name="min.e2e"
+    errors="0" failures="1" hostname="" id="" package="min.e2e" skipped="0"
+    tests="1" time="20.29" timestamp="Fri, 10 Jun 2016 14:59:06 GMT">
+  
+    <testcase name="Demo test Google" time="20.29" assertions="1">  <failure message="Timed out while waiting for element &lt;body&gt; to be visible for 1000 milliseconds.">    at Object.module.exports.Demo test Google (C:\Users\gert.sonderby\Documents\Source\C1-CMS\Website\test\minimal\min.e2e.js:5:8)</failure>
+
+    
+    </testcase>
+  
+  
+  </testsuite>
+</testsuites>
