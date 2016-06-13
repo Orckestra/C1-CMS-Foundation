@@ -1532,9 +1532,9 @@ Binding.prototype.getDescendantBindingByLocalName = function ( nodeName ) {
  * @param {Class} impl
  * @return {List<Binding>}
  */
-Binding.prototype.getDescendantBindingsByType = function ( impl ) {
+Binding.prototype.getDescendantBindingsByType = function ( impl, isTraverse ) {
 
-	return BindingFinder.getDescendantBindingsByType ( this, impl );
+	return BindingFinder.getDescendantBindingsByType ( this, impl, isTraverse );
 }
 
 /**

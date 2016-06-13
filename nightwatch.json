@@ -30,6 +30,7 @@
       },
       "desiredCapabilities": {
         "browserName": "firefox",
+        "loggingPrefs": { "browser": "ALL" } ,
         "javascriptEnabled": true,
         "acceptSslCerts": true
       }
@@ -38,6 +39,7 @@
     "chrome" : {
       "desiredCapabilities": {
         "browserName": "chrome",
+        "loggingPrefs": { "browser": "ALL" } ,
         "javascriptEnabled": true,
         "acceptSslCerts": true
       }
@@ -46,6 +48,7 @@
     "ie" : {
       "desiredCapabilities": {
         "browserName": "internet explorer",
+        "loggingPrefs": { "browser": "ALL" } ,
         "javascriptEnabled": true,
         "acceptSslCerts": true
       }
@@ -54,6 +57,7 @@
     "edge" : {
       "desiredCapabilities": {
         "browserName": "edge",
+        "loggingPrefs": { "browser": "ALL" } ,
         "javascriptEnabled": true,
         "acceptSslCerts": true
       }
