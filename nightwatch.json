@@ -49,6 +49,14 @@
         "javascriptEnabled": true,
         "acceptSslCerts": true
       }
+    },
+
+    "edge" : {
+      "desiredCapabilities": {
+        "browserName": "edge",
+        "javascriptEnabled": true,
+        "acceptSslCerts": true
+      }
     }
   }
 }
