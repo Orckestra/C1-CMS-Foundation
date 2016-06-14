@@ -1,6 +1,4 @@
-var clickButton = require('../findButton.js').click;
-var tmpActionHandle = "actionTokenType='Composite\\.C1Console\\.Actions\\.Data\\.ProxyDataActionToken,Composite'actionToken='_ActionIdentifier_=\\'_ActionIdentifier_=\\\\\\'Edit\\\\\\'\\'_PermissionTypes_=\\'Edit\\'_DoIgnoreEntityTokenLocking_=\\'False\\''actionTokenHash='-1425725536'";
-
+var selectFrame = require('../selectFrame.js');
 
 module.exports = {
 	'Demo test login' : function (browser) {
@@ -18,13 +16,13 @@ module.exports = {
 					EventBroadcaster.broadcast ( BroadcastMessages.STOP_COMPOSITE );
 			}).pause(1000);
 
-		clickButton(browser, tmpActionHandle);
-
-		browser.pause(5000);
+		selectFrame(browser, '#tree treenode labelbox', function () {
+			browser.click('#tree treenode labelbox').pause(5000);
+		});
 
 		// browser.getLog('browser', function(logEntriesArray) {
   	// 	logEntriesArray.forEach(function(log) {
-    // 		console.log('[' + log.level + '] ' + log.timestamp + ' : ' + log.message);
+    // 		console.log('[' + log.level + ']: ' + log.timestamp + ':\n' + log.message + '\n');
 		// 	})
 		// });
 		browser
