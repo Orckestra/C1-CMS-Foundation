@@ -78,8 +78,8 @@ namespace Composite.C1Console.Tools
             IManagementConsoleMessageService managementConsoleMessageService = flowControllerServicesContainer.GetService<IManagementConsoleMessageService>();
             
             managementConsoleMessageService.ShowGlobalMessage(DialogType.Message,
-                    StringResourceSystemFacade.GetString("Composite.Management", "VirtualElementProviderElementProvider.RootActions.TimezoneChangedTitle"),
-                    StringResourceSystemFacade.GetString("Composite.Management", "VirtualElementProviderElementProvider.RootActions.TimezoneChangedMessage"));
+                    StringResourceSystemFacade.GetString("Composite.Management", "SendMessageToConsolesWorkflow.SuccessMessage.TimezoneChangedTitle"),
+                    StringResourceSystemFacade.GetString("Composite.Management", "SendMessageToConsolesWorkflow.SuccessMessage.TimezoneChangedMessage"));
 
             managementConsoleMessageService.RebootConsole();
 

@@ -4,10 +4,11 @@
     <cms:binding name="TimeZonesSelected" type="System.String" />
     <cms:binding name="TimeZones" type="System.Object" />
   </cms:bindings>
-  <cms:layout iconhandle="balloon" label="Set TimeZone">
+  <cms:layout iconhandle="balloon" label="${Composite.Management, SetTimezoneWorkflow.Layout.Label}">
     <FieldGroup>
 
-      <KeySelector OptionsKeyField="Key" OptionsLabelField="Value" Help="Select Timezones" Label="TimeZones">
+      <KeySelector OptionsKeyField="Key" OptionsLabelField="Value" Label="${Composite.Management, SetTimezoneWorkflow.TitleTextBox.Label}"
+               Help="${Composite.Management, SetTimezoneWorkflow.TitleTextBox.Help}">
         <KeySelector.Selected>
           <cms:bind source="TimeZonesSelected" />
         </KeySelector.Selected>
@@ -15,7 +16,7 @@
           <cms:read source="TimeZones" />
         </KeySelector.Options>
       </KeySelector>
-
+      <Text Text="${Composite.Management, SetTimezoneWorkflow.WarningText.Text}"/>
     </FieldGroup>
   </cms:layout>
 </cms:formdefinition>

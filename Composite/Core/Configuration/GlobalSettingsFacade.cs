@@ -481,13 +481,9 @@ namespace Composite.Core.Configuration
         public static TimeZoneInfo TimeZone => _globalSettingsFacade.TimeZone;
 
         /// <exclude />
-        public static string TimeZoneAbbriviatedName(DateTime dateTime)
-        {
-            return StringResourceSystemFacade.GetString("Composite.Plugins.TimezoneAbbriviations",
-                "TimezoneAbbriviations." + (dateTime.IsDaylightSavingTime() ? "Daylight." : "Standard.") +
-                _globalSettingsFacade.TimeZone.Id);
-        }
-
+        public static string TimeZoneAbbriviatedName => StringResourceSystemFacade.GetString("Composite.Plugins.TimezoneAbbriviations",
+                "TimezoneAbbriviations." + _globalSettingsFacade.TimeZone.Id);
+        
         // Overload
         /// <exclude />
         public static CachingSettings GetNamedCaching(string name)
