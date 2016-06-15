@@ -6,7 +6,7 @@
 ui|controlgroup {
 	right: 0;
 	top: 0;
-	z-index: 6; 
+	z-index: 6;
 }
 
 ui|control {
@@ -15,12 +15,15 @@ ui|control {
 	&[controltype="close"] {
 		right: 35px;
 		top: 6px;
+		height: 30px;
+		width: 30px;
 
 		ui|labelbody {
 
 			&:after {
 				content: '\00d7';
 				position: absolute;
+				right: -30px;
 				text-align: center;
 				width: 30px;
 				height: 30px;

@@ -3,19 +3,13 @@ var selectFrame = require('../selectFrame.js');
 module.exports = {
 	'Demo test login' : function (browser) {
     browser
-      .url('http://localhost:57917/Composite/top.aspx?mode=develop')
-    	.page.login()
-			.isShown()
-			.setUsername('admin')
-			.setPassword('123456')
-			.click('@submitButton')
-			.waitForElementNotVisible('@usernameField', 1000);
-		browser
-			.assert.visible('#appwindow')
-			.execute(function () {
-				EventBroadcaster.broadcast ( BroadcastMessages.STOP_COMPOSITE );
-			})
-			.pause(1000);
+      .url('http://localhost:57917/Composite/top.aspx');
+    browser.page.login().fullLogin();
+		browser.page.startScreen().close();
+
+		browser.pause(1000);
+		browser.page.appWindow().enter();
+		browser.assert.hidden('window[url="/Composite/content/views/start/start.aspx"] iframe');
 
 		var treeNode;
 		selectFrame(browser, '#tree treenode labelbox', function () {
@@ -24,7 +18,7 @@ module.exports = {
 
 		// browser.getLog('browser', function(logEntriesArray) {
   	// 	logEntriesArray.forEach(function(log) {
-    // 		console.log('[' + log.level + ']: ' + log.timestamp + ':\n' + log.message + '\n');
+    // 		console.log('[' + log.level + ']: ' + log.timestamp + ':\n' + log.message);
 		// 	})
 		// });
 		browser
