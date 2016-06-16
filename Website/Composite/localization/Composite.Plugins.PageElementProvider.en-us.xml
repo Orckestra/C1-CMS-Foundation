@@ -114,9 +114,9 @@
   <string key="ViewUnpublishedItems.VersionLabel" value="Version" />
   <string key="ViewUnpublishedItems.StatusLabel" value="Status" />
   <string key="ViewUnpublishedItems.PublishDateLabel" value="Publish Date" />
-  <string key="ViewUnpublishedItems.PublishDateHelp" value="This is the date and time that has been set for the page to be published automatically. To update or remove, see the Publication Schedule in Edit Page mode. Otherwise you can override these dates by publishing manually from this view." />
+  <string key="ViewUnpublishedItems.PublishDateHelp" value="Date and time the page has been scheduled to publish automatically. To edit, see the Publication Schedule in Edit Page mode." />
   <string key="ViewUnpublishedItems.UnpublishDateLabel" value="Unpublish Date" />
-  <string key="ViewUnpublishedItems.UnpublishDateHelp" value="This is the date and time that has been set for the page to be unpublished automatically. To update or remove, see the Publication Schedule in Edit Page mode." />
+  <string key="ViewUnpublishedItems.UnpublishDateHelp" value="Date and time the page has been scheduled to unpublish automatically. To edit, see the Publication Schedule in Edit Page mode." />
   <string key="ViewUnpublishedItems.DateCreatedLabel" value="Date Created" />
   <string key="ViewUnpublishedItems.DateModifiedLabel" value="Date Modified" />
   <string key="ViewUnpublishedItems.PublishConfirmTitle" value="Publish Pages" />
