@@ -314,7 +314,7 @@ SystemTreeNodeBinding.prototype._performRefresh = function (branch) {
 	this.activeBundles = new List();
 	this.getDescendantBindingsByType(SystemTreeNodeBinding).each(function (treenode) {
 		//TODO refactor
-		if (treenode.nodes && treenode.nodes.getLength() > 1) {
+		if (treenode.node.isMultiple()) {
 			this.activeBundles.add(treenode.node.getHandle());
 		}
 	},this);
@@ -357,7 +357,7 @@ SystemTreeNodeBinding.prototype._performRefresh = function (branch) {
 SystemTreeNodeBinding.prototype._refreshChildren = function () {
 
 	var buffer = new List ();
-	var children = this.node.getChildren(true);
+	var children = this.node.getChildren();
 
 	this.empty ();
 	if ( children.hasEntries ()) {
@@ -381,31 +381,24 @@ SystemTreeNodeBinding.prototype._insertTreeNodesRegulated = function ( children 
 	 * is reached.
 	 */
 	while ( children.hasEntries () && count <= SystemTreeNodeBinding.MAX_CHILD_IMPORT ) {
-		var item = children.extractFirst();
-		var nodes = null;
-		var child = null;
-
-		if (item instanceof SystemNode) {
-			child = item;
-		} else if (item instanceof List) {
-			nodes = item;
-			nodes.each(function(bundlenode) {
-				if (this.activeBundles.has(bundlenode.getHandle())) {
-					child = bundlenode;
+		var treenode = SystemTreeNodeBinding.newInstance(
+			children.extractFirst(),
+			this.bindingDocument
+		);
+		if (treenode.node.isMultiple()) {
+			treenode.node.getDatas().each(function (data) {
+				if (this.activeBundles.has(data.ElementKey)) {
+					treenode.node.select(data.ElementKey);
 					return false;
 				}
 				return true;
 			}, this);
-			child = child ? child : nodes.getFirst();
+
 		}
 
-		var treenode = SystemTreeNodeBinding.newInstance(
-			child,
-			this.bindingDocument
-		);
 		treenode.autoExpand = this.autoExpand;
 		this.add(treenode);
-		//treenode.attach();
+		treenode.attach();
 		count++;
 
 		// Auto expand tree folders in selection dialogs, when only one folder can be expanded.
@@ -415,18 +408,13 @@ SystemTreeNodeBinding.prototype._insertTreeNodesRegulated = function ( children 
 				expandNodes.add(treenode);
 			}
 		}
-
-		if (nodes) {
-			treenode.nodes = nodes;
-		}
-
 	}
 
 	if ( children.hasEntries ()) {
 		this._insertBufferTreeNode ( children );
 	}
 
-	this.attachRecursive();
+
 
 	expandNodes.each(function (node) {
 		if (node.isContainer && !node.isOpen) {
@@ -482,28 +470,21 @@ SystemTreeNodeBinding.prototype.XXX = function ( branch ) {
 		var bundles = new Map();
 
 		if (nodes.hasEntries()) {
-			nodes = SystemNode.groupByBundles(nodes);
-			nodes.each(function (item) {
-				var node = null;
-				var nodes = null;
 
+			nodes.each(function (node) {
 
-				if (item instanceof SystemNode) {
-					node = item;
-				} else if (item instanceof List) {
-					nodes = item;
-					nodes.each(function (bundlenode) {
-						if (this.activeBundles.has(bundlenode.getHandle())) {
-							node = bundlenode;
+				var treenode = SystemTreeNodeBinding.newInstance(node, self.bindingDocument);
+
+				if (treenode.node.isMultiple()) {
+					treenode.node.getDatas().each(function (data) {
+						if (this.activeBundles.has(data.ElementKey)) {
+							treenode.node.select(data.ElementKey);
 							return false;
 						}
 						return true;
 					}, this);
-					node = node ? node : nodes.getFirst();
 				}
 
-				var treenode = SystemTreeNodeBinding.newInstance(node, self.bindingDocument);
-				treenode.nodes = nodes;
 				map.set ( node.getHandle (), treenode );
 				if ( map.has ( key )) {
 					var parent = map.get ( key );

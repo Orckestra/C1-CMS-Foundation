@@ -10,57 +10,6 @@ SystemNode.dispose = function ( node ) {
 }
 
 /**
- * Group by bundles
- * @param {List<SystemNode>} nodes
- */
-SystemNode.groupByBundles = function (nodes) {
-	var result = new List();
-	var bundles = new Map();
-
-	while ( nodes.hasEntries ()) {
-		var node = nodes.extractFirst();
-		var elementBundle = node._data.ElementBundle;
-		if (elementBundle) {
-			var bundle = null;
-			if (bundles.has(elementBundle)) {
-				bundle = bundles.get(elementBundle);
-			} else {
-				bundle = new List();
-				result.add(bundle);
-				bundles.set(elementBundle, bundle);
-			}
-			bundle.add(node);
-		} else {
-			result.add(node);
-		}
-	}
-	return result;
-}
-
-/**
- * Slice bundles
- * @param {List<SystemNode>} nodes
- */
-SystemNode.sliceBundles = function (nodes) {
-	var result = new List();
-	var bundles = new List();
-
-	while ( nodes.hasEntries ()) {
-		var node = nodes.extractFirst();
-		var elementBundle = node._data.ElementBundle;
-		if (elementBundle) {
-			if (!bundles.has(elementBundle)) {
-				result.add(node);
-				bundles.add(elementBundle);
-			}
-		} else {
-			result.add(node);
-		}
-	}
-	return result;
-}
-
-/**
  * Tagged actions go here.
  * @type {Map<string><SystemNode>}
  */
@@ -82,6 +31,12 @@ function SystemNode ( data ) {
 	 * @private
 	 */
 	this._data = data;
+
+	/**
+	 * @type {List<object>}
+	 * @private
+	 */
+	this._datas = null;
 
 	/**
 	 * Exposes associated actions ordered by group name.
@@ -161,22 +116,15 @@ SystemNode.prototype.getData = function () {
 
 /**
  * Get children. Notice that searchTokens are automatically inherited by child nodes!
- * @param {Boolean} bundle
  * @return {List<object>} where object is SystemNode or SystemNode
  */
-SystemNode.prototype.getChildren = function (groupByBundles) {
+SystemNode.prototype.getChildren = function () {
 
 	var result = null;
 	if ( this.searchToken ) {
 		result = System.getChildNodesBySearchToken ( this, this.searchToken );
 	} else {
 		result = System.getChildNodes ( this );
-	}
-
-	if (groupByBundles) {
-		result = SystemNode.groupByBundles(result);
-	} else {
-		result = SystemNode.sliceBundles(result);
 	}
 
 	return result;
@@ -425,6 +373,74 @@ SystemNode.prototype.isTreeLockEnabled = function () {
 
 	return this._data.TreeLockEnabled == true;
 }
+
+/**
+ * @return {Boolean}
+ */
+SystemNode.prototype.isMultiple = function () {
+
+	return (this._datas != null);
+}
+
+/**
+ * @return {Boolean}
+ */
+SystemNode.prototype.getDatas = function () {
+
+	return this._datas;
+}
+
+/**
+ * @param {string} handle
+ * @return {void}
+ */
+SystemNode.prototype.select = function (handle) {
+	
+	if (this._datas != null) {
+		this._datas.each(function (data) {
+			if (data.ElementKey == handle) {
+				this._data = data;
+				this._actionProfile = null;
+				this._registerSystemActions();
+				return false;
+			}
+		}, this);
+	}
+}
+
+/**
+ * @return {List<string>}
+ */
+SystemNode.prototype.getEntityTokens = function () {
+
+	var result = new List();
+	if (this._datas != null) {
+		this._datas.each(function (data) {
+			result.add(data.EntityToken);
+		});
+	} else {
+		result.add(this._data.EntityToken)
+	}
+	return result;
+}
+
+
+/**
+ * @param {SystemNode} node
+ * @return {SystemNode}
+ */
+SystemNode.prototype.add = function (node) {
+
+	if (this._datas == null) {
+		this._datas = new List();
+		this._datas.add(this._data);
+	}
+
+	this._datas.add(node.getData());
+
+	return this;
+}
+
 
 /**
  * Dispose. INVOKING THIS MAY INTRODUCE ERRORS!

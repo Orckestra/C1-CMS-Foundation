@@ -120,7 +120,7 @@ var System = new function () {
 		//} else {
 		//	result = this.nodes.get(handle).copy();
 		//}
-		return result;
+		return this.groupListByBundles(result);
 	}
 
 	this.getParents = function (handle) {
@@ -164,7 +164,7 @@ var System = new function () {
 			this._listNodesInMap(triples.getNext(), map);
 		}
 
-		return map;
+		return this.groupMapByBundles(map);
 	}
 
 	/**
@@ -206,7 +206,7 @@ var System = new function () {
 			};
 		}
 
-		return map;
+		return this.groupMapByBundles(map);
 	}
 
 	/**
@@ -301,5 +301,44 @@ var System = new function () {
 				);
 			}
 		}
+	}
+
+	/**
+	 * Group by bundles
+	 * @param {List<SystemNode>} nodes
+	 */
+	this.groupListByBundles = function (nodes) {
+		var result = new List();
+		var bundles = new Map();
+
+		while (nodes.hasEntries()) {
+			var node = nodes.extractFirst();
+			var elementBundle = node.getData().ElementBundle;
+			if (elementBundle) {
+				var bundle = null;
+				if (bundles.has(elementBundle)) {
+					bundle = bundles.get(elementBundle);
+					bundle.add(node);
+				} else {
+					result.add(node);
+					bundles.set(elementBundle, node);
+				}
+			} else {
+				result.add(node);
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * Group by bundles
+	 * @param {Map<string><List<SystemNode>>} nodes
+	 */
+	this.groupMapByBundles = function (map) {
+		var result = new Map();
+		map.each(function (key) {
+			result.set(key, this.groupListByBundles(map.get(key)));
+		}, this);
+		return result;
 	}
 }

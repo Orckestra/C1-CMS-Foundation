@@ -142,11 +142,11 @@ BrowserPageBinding.prototype.handleBroadcast = function (broadcast, arg) {
 				var bundleselector = this.getBundleSelector();
 				//TODO move this
 
-				var selectedTreeNode = this.getSystemTree().getFocusedTreeNodeBindings().getFirst();
-				if (selectedTreeNode.nodes && selectedTreeNode.nodes.getLength() > 1) {
+				var treenode = this.getSystemTree().getFocusedTreeNodeBindings().getFirst();
+				if (treenode.node.isMultiple()) {
 					var list = new List();
-					selectedTreeNode.nodes.each(function(node) {
-						list.add(new SelectorBindingSelection(node.getData().BundleElementName, node.getHandle(), node.getHandle() === selectedTreeNode.node.getHandle()));
+					treenode.node.getDatas().each(function(data) {
+						list.add(new SelectorBindingSelection(data.BundleElementName, data.ElementKey, data.ElementKey === treenode.node.getHandle()));
 					});
 					bundleselector.populateFromList(list);
 					bundleselector.show();
@@ -187,10 +187,10 @@ BrowserPageBinding.prototype.handleBroadcast = function (broadcast, arg) {
  */
 BrowserPageBinding.prototype.refreshView = function () {
 
-	var selectedTreeNode = this.getSystemTree().getFocusedTreeNodeBindings().getFirst();
-	if (selectedTreeNode) {
-		selectedTreeNode.focus();
-		this.push(selectedTreeNode.node, true, true);
+	var treenode = this.getSystemTree().getFocusedTreeNodeBindings().getFirst();
+	if (treenode) {
+		treenode.focus();
+		this.push(treenode.node, true, true);
 	} else {
 		this.push(this.getSystemPage().node, false, true);
 	}
@@ -1249,26 +1249,16 @@ BrowserPageBinding.prototype.getBundleSelector = function () {
 				switch (action.type) {
 					case SelectorBinding.ACTION_SELECTIONCHANGED:
 						var bundleValue = binding.getValue();
-						var selectedTreeNode = this.getSystemTree().getFocusedTreeNodeBindings().getFirst();
-						var selectedBundleNode = null;
-
-						selectedTreeNode.nodes.each(function (node) {
-							if (bundleValue == node.getHandle()) {
-								selectedBundleNode = node;
-								return false;
-							}
-							return true;
-						}, this);
-
-						if (selectedBundleNode) {
-							selectedTreeNode.node = selectedBundleNode;
-							selectedTreeNode.isDisabled = selectedBundleNode.isDisabled();
-							selectedTreeNode.setLabel(selectedBundleNode.getLabel());
-							selectedTreeNode.setToolTip(selectedBundleNode.getToolTip());
-							selectedTreeNode.setImage(selectedTreeNode.computeImage());
+						var treenode = this.getSystemTree().getFocusedTreeNodeBindings().getFirst();
+						if (treenode) {
+							var selectedBundleNode = treenode.node;
+							treenode.node.select(bundleValue);
+							treenode.isDisabled = treenode.node.isDisabled();
+							treenode.setLabel(treenode.node.getLabel());
+							treenode.setToolTip(treenode.node.getToolTip());
+							treenode.setImage(treenode.computeImage());
+							this.getSystemTree().focusSingleTreeNodeBinding(treenode);
 						}
-
-						this.getSystemTree().focusSingleTreeNodeBinding(selectedTreeNode);
 						break;
 				}
 			}).bind(this)
