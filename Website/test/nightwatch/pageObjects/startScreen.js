@@ -11,12 +11,20 @@ module.exports = {
 				this.api.pause(1000);
 				// Enter the frame containing it
 				this.getAttribute('@startFrame', 'id', function (result) {
-					this.api.frame(result.value)
+					this.api.frame(result.value);
 				}.bind(this));
 			},
 			close: function () {
 				this.enter();
 				this.click('@closeButton');
+			},
+			isShown: function () {
+				this.api.page.appWindow().enter(); // Start page shows inside appwindow.
+				this.assert.visible('@startFrame');
+			},
+			isHidden: function () {
+				this.api.page.appWindow().enter(); // Start page shows inside appwindow.
+				this.assert.hidden('@startFrame');
 			}
 		}
 	]

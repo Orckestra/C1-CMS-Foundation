@@ -2,14 +2,14 @@ var selectFrame = require('../selectFrame.js');
 
 module.exports = {
 	'Demo test login' : function (browser) {
-    browser
-      .url('http://localhost:57917/Composite/top.aspx');
+    browser.url('http://localhost:57917/Composite/top.aspx');
     browser.page.login().fullLogin();
-		browser.page.startScreen().close();
+		var startScreen = browser.page.startScreen()
+		startScreen.isShown();
+		startScreen.close();
 
 		browser.pause(1000);
-		browser.page.appWindow().enter();
-		browser.assert.hidden('window[url="/Composite/content/views/start/start.aspx"] iframe');
+		startScreen.isHidden();
 
 		var treeNode;
 		selectFrame(browser, '#tree treenode labelbox', function () {
