@@ -346,15 +346,7 @@ SystemTreeBinding.prototype._handleSystemTreeFocus = function () {
  */
 SystemTreeBinding.prototype.getTokens = function (treenode) {
 
-	var tokens = new List();
-	if (treenode.nodes) {
-		treenode.nodes.each(function (node) {
-			tokens.add(node.getEntityToken());
-		});
-	} else {
-		tokens.add(treenode.node.getEntityToken());
-	}
-	return tokens;
+	return treenode.node.getEntityTokens();
 }
 
 /**

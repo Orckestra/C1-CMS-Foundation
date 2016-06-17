@@ -45,7 +45,7 @@ DataInputButtonBinding.prototype.onBindingAttach = function () {
 */
 DataInputButtonBinding.prototype._buildDOMContent = function () {
 
-	DataInputSelectorBinding.superclass._buildDOMContent.call(this);
+	DataInputButtonBinding.superclass._buildDOMContent.call(this);
 	this.buildButton();
 }
 
@@ -83,3 +83,21 @@ DataInputButtonBinding.prototype.oncommand = function () {
 		button.oncommand();
 	}
 };
+
+/**
+* @param {boolean} isReadOnly
+* @overloads {DataInputBinding#_buildDOMContent}
+*/
+DataInputButtonBinding.prototype.setReadOnly = function (isReadOnly) {
+
+	DataInputButtonBinding.superclass.setReadOnly.call(this, isReadOnly);
+
+	var button = this._dialogButtonBinding;
+	if (button != null) {
+		if (isReadOnly) {
+			button.hide();
+		} else {
+			button.show();
+		}
+	}
+}
