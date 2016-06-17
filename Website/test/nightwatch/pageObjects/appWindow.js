@@ -5,6 +5,11 @@ module.exports = {
 	],
 	commands: [
 		{
+			prepare: function () {
+				this.api.page.login().fullLogin();
+				this.api.page.startScreen().close();
+				return this;
+			},
 			enter: function () {
 				this.api
 					.frame(null);
