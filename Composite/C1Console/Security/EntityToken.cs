@@ -164,7 +164,11 @@ namespace Composite.C1Console.Security
         {
             EntityToken entityToken = obj as EntityToken;
 
-            return EqualsWithVersionIgnore(entityToken) && entityToken.VersionId == this.VersionId;
+            if (entityToken == null) return false;
+
+            if (entityToken.GetVersionHashCode() != GetVersionHashCode()) return false;
+
+            return entityToken.VersionId == this.VersionId && EqualsWithVersionIgnore(entityToken);
         }
 
         /// <exclude />
@@ -186,7 +190,7 @@ namespace Composite.C1Console.Security
         }
 
         /// <exclude />
-        public virtual string VersionId { get;  }
+        public virtual string VersionId { get;  } = "";
 
 
         /// <exclude />
@@ -208,6 +212,19 @@ namespace Composite.C1Console.Security
             return this.HashCode;
         }
 
+        /// <exclude />
+        public int GetVersionHashCode()
+        {
+            if (this.VersionHashCode == 0)
+            {
+                this.VersionHashCode = this.VersionId.GetHashCode();
+            }
+
+            return this.VersionHashCode;
+        }
+
+        /// <exclude />
+        protected int VersionHashCode { get; set; }
 
         /// <exclude />
         public override string ToString()

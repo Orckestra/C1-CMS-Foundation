@@ -10,28 +10,18 @@ namespace Composite.Data
 {
 	internal static class DataIdSerializer
 	{
-        public static string Serialize(this IDataId dataId,IEnumerable<string> propertyNames)
+        public static string Serialize(this IDataId dataId, IEnumerable<string> propertyNames)
         {
             if (dataId == null) throw new ArgumentNullException("dataId");
 
             StringBuilder sb = new StringBuilder();
             StringConversionServices.SerializeKeyValuePair(sb, "_dataIdType_", TypeManager.SerializeType(dataId.GetType()));
-            StringConversionServices.SerializeKeyValuePair(sb, "_dataId_", SerializePart(dataId, propertyNames));
+            StringConversionServices.SerializeKeyValuePair(sb, "_dataId_", SerializationFacade.Serialize(dataId, propertyNames));
 
             return sb.ToString();
         }
 
-	    private static string SerializePart(IDataId dataId, IEnumerable<string> properyNames)
-	    {
-            StringBuilder sb = new StringBuilder();
-	        foreach (var properyName in properyNames)
-	        {
-                StringConversionServices.SerializeKeyValuePair(sb, properyName, dataId?.GetType().GetProperty(properyName)?.GetValue(dataId));
-            }
-	        return sb.ToString();
-	    }
-
-	    public static IDataId Deserialize(string serializedId, string serializedVersionId)
+        public static IDataId Deserialize(string serializedId, string serializedVersionId)
         {
             Dictionary<string, string> dicid = StringConversionServices.ParseKeyValueCollection(serializedId);
 
