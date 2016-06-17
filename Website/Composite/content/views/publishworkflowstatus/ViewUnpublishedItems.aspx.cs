@@ -159,7 +159,7 @@ public partial class ViewUnpublishedItems : System.Web.UI.Page
             if (statusInfo != null)
             {
                 actionPage.Add(
-                    new XAttribute("changedate", statusInfo.ChangeDate.ToShortDateString() + " " + statusInfo.ChangeDate.ToShortTimeString()+" "+GlobalSettingsFacade.TimeZoneAbbriviatedName),
+                    new XAttribute("changedate", statusInfo.ChangeDate.ToShortDateString() + " " + statusInfo.ChangeDate.ToShortTimeString()),
                     new XAttribute("changedby", statusInfo.ChangedBy ?? "?"));
             }
 

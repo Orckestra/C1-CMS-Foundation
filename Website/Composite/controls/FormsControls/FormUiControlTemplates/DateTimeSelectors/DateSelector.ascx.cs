@@ -23,6 +23,12 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DateTimeSelect
         public PlaceHolder MessagesPlaceHolder;
         public string CurrentStringValue;
 
+        private static string TimeZoneAbbriviatedName()
+        {
+            return StringResourceSystemFacade.GetString("Composite.Plugins.TimezoneAbbriviations",
+                "TimezoneAbbriviations." + GlobalSettingsFacade.TimeZone.Id);
+        }
+
         protected void Page_Init(object sender, EventArgs e)
         {
             if (ReadOnly)
@@ -49,7 +55,7 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DateTimeSelect
                 else
                 {
                     this.CurrentStringValue = string.Format("{0} {1} {2}", convertedToShow.ToShortDateString(),
-                        convertedToShow.ToShortTimeString(), GlobalSettingsFacade.TimeZoneAbbriviatedName);
+                        convertedToShow.ToShortTimeString(), TimeZoneAbbriviatedName());
                 }
             }
             else
@@ -71,13 +77,14 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DateTimeSelect
                 }
                 else
                 {
-                    string stringValueWithoutTimezone = this.CurrentStringValue;
-                    if(!((ShowHours&&stringValueWithoutTimezone.Split(' ').Last()=="PM") || (ShowHours && stringValueWithoutTimezone.Split(' ').Last() == "AM")))
-                        stringValueWithoutTimezone = stringValueWithoutTimezone.Replace(this.CurrentStringValue.Split(' ').Last(), "");
-                    
-                    this.Date = TimeZoneInfo.ConvertTime(DateTime.Parse(stringValueWithoutTimezone),GlobalSettingsFacade.TimeZone,TimeZoneInfo.Local).ToLocalTime();
+                    string stringValueWithoutTimezone = this.CurrentStringValue.Replace(TimeZoneAbbriviatedName(),"");
+
+                    DateTime parsedTime = DateTime.Parse(stringValueWithoutTimezone);
+
                     if (!ShowHours)
-                        this.Date -= this.Date.Value.TimeOfDay;
+                        parsedTime -= parsedTime.TimeOfDay;
+
+                    this.Date = TimeZoneInfo.ConvertTime(parsedTime, GlobalSettingsFacade.TimeZone,TimeZoneInfo.Utc).ToLocalTime();
                 }
                 this.IsValid = true;
             }
@@ -95,7 +102,7 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DateTimeSelect
             { 
                 if(ShowHours)
                 {
-                    return string.Format("{0} {1} {2}", DateTime.Now.ToShortDateString(), DateTime.Now.ToShortTimeString(),GlobalSettingsFacade.TimeZoneAbbriviatedName);
+                    return string.Format("{0} {1} {2}", DateTime.Now.ToShortDateString(), DateTime.Now.ToShortTimeString(),TimeZoneAbbriviatedName());
                 }
                 else
                 {
@@ -114,7 +121,7 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DateTimeSelect
         {
             if (date.HasValue == true && date.Value > DateTime.MinValue)
             {
-                DateTimeSelector.SelectedDate = TimeZoneInfo.ConvertTime(date.Value - date.Value.TimeOfDay, GlobalSettingsFacade.TimeZone);
+                DateTimeSelector.SelectedDate = date.Value - date.Value.TimeOfDay;
                 DateTimeSelector.VisibleDate = DateTimeSelector.SelectedDate;
             }
             else
@@ -152,11 +159,11 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DateTimeSelect
             if (ShowHours)
             {
                 DateTime oldDateTime;
-                if (DateTime.TryParse(this.CurrentStringValue, out oldDateTime))
+                if (DateTime.TryParse(this.CurrentStringValue.Replace(TimeZoneAbbriviatedName(), ""), out oldDateTime))
                     toShow += oldDateTime.TimeOfDay;
             }
 
-            InsertSelectedDate(toShow);
+            InsertSelectedDate(TimeZoneInfo.ConvertTime(toShow, TimeZoneInfo.Utc, GlobalSettingsFacade.TimeZone));
             this.MessagesPlaceHolder.Controls.Add(new DocumentDirtyEvent());
         }
 

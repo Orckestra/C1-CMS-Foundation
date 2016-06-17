@@ -289,7 +289,7 @@
   <string key="SetTimezoneWorkflow.Layout.Label" value="Set Time Zone" />
   <string key="SetTimezoneWorkflow.TitleTextBox.Label" value="Time Zones" />
   <string key="SetTimezoneWorkflow.TitleTextBox.Help" value="Select Time Zone" />
-  <string key="SetTimezoneWorkflow.WarningText.Text" value="*Changing time zone would restart your console. Consider saving your changes before head." />
+  <string key="SetTimezoneWorkflow.WarningText.Text" value="Changing time zone will restart your console. Consider saving your changes before making this change." />
   <string key="LoginWebRequestHandler.Login" value="Login" />
 	<string key="LoginWebRequestHandler.Header" value="Login to {0}" />
 	<string key="LoginWebRequestHandler.LoginFailed" value="Incorrect user name or password" />
