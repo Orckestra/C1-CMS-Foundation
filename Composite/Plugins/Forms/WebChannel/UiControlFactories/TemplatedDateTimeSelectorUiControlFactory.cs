@@ -23,10 +23,10 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
         private DateTime? _date;
 
         /// <exclude />
-        protected abstract void BindStateToProperties();
+        public abstract void BindStateToProperties();
 
         /// <exclude />
-        protected abstract void InitializeViewState();
+        public abstract void InitializeViewState();
 
         /// <exclude />
         public abstract string GetDataFieldClientName();

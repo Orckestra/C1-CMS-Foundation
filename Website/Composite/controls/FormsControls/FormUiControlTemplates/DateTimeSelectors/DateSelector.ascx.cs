@@ -53,7 +53,7 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DateTimeSelect
             }
         }
 
-        protected override void BindStateToProperties()
+        public override void BindStateToProperties()
         {
             if (this.ReadOnly)
                 return;
@@ -95,7 +95,7 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DateTimeSelect
             }
         }
 
-        protected override void InitializeViewState()
+        public override void InitializeViewState()
         {
             SetCalendar(this.Date);
             InsertSelectedDate(this.Date);

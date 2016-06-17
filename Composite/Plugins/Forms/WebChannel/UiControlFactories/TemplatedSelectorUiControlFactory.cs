@@ -57,11 +57,13 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
 
         private const string _noneSelectionKey = "***C1.NONE***";
 
-        /// <exclude />
-        protected abstract void BindStateToProperties();
+        /// <summary>
+        /// To be overridden in the controls
+        /// </summary>
+        public abstract void BindStateToProperties();
 
         /// <exclude />
-        protected abstract void InitializeViewState();
+        public abstract void InitializeViewState();
 
 
         /// <exclude />
@@ -83,10 +85,15 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
         /// <exclude />
         public bool ReadOnly { get; set; }
 
+        /// <exclude />
+        public string OptionsKeyField { get; set; }
 
-        internal string OptionsKeyField { get; set; }
-        internal string OptionsLabelField { get; set; }
-        internal IEnumerable Options { get; set; }
+        /// <exclude />
+        public string OptionsLabelField { get; set; }
+
+        /// <exclude />
+        public IEnumerable Options { get; set; }
+
         internal SelectorBindingType BindingType { get; set; }
 
 
@@ -98,7 +105,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
         }
 
 
-        internal void BindStateToControlProperties()
+        public void BindStateToControlProperties()
         {
             InitializeSelectorElements();
 
@@ -132,9 +139,17 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
 
             if (bindToObject)
             {
-                foreach (string selectedAsString in selectedAsStrings.Where(_selectorObjects.ContainsKey))
+                foreach (string selectedAsString in selectedAsStrings)
                 {
-                    this.SelectedObjects.Add(_selectorObjects[selectedAsString]);
+                    if (_selectorObjects.ContainsKey(selectedAsString))
+                    {
+                        this.SelectedObjects.Add(_selectorObjects[selectedAsString]);
+                    }
+                    else if(selectedAsString != _noneSelectionKey)
+                    {
+                        // ComboBox
+                        this.SelectedObjects.Add(selectedAsString);
+                    }
                 }
                 return;
             }
@@ -207,16 +222,19 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
                             }
                             else
                             {
-                                PropertyInfo keyPropertyInfo = this.SelectedObjects.First().GetType().GetProperty(this.OptionsKeyField);
-                                if (keyPropertyInfo == null) throw new InvalidOperationException(string.Format("Malformed Selection configuration. The Selected binding type '{0}' does not have a property named '{1}'", this.SelectedObjects.First().GetType(), this.OptionsKeyField));
-
+                                var objectType = this.SelectedObjects.First().GetType();
+                                PropertyInfo keyPropertyInfo = objectType.GetProperty(this.OptionsKeyField);
+                                if (keyPropertyInfo == null) {
+                                    throw new InvalidOperationException($"Malformed Selection configuration. The Selected binding type '{objectType}' does not have a property named '{this.OptionsKeyField}'");
+                                }
+                                
                                 foreach (object selectedObject in this.SelectedObjects)
                                 {
                                     string selectedObjectKey = keyPropertyInfo.GetValue(selectedObject, null).ToString();
 
                                     if (_selectorObjects.ContainsKey(selectedObjectKey))
                                     {
-                                        _selectedAsStrings.Add(selectedObject.ToString());
+                                        _selectedAsStrings.Add(selectedObjectKey);
                                     }
                                 }
                             }
@@ -245,8 +263,8 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
         }
 
 
-
-        internal List<object> SelectedObjects
+        /// <exclude />
+        public List<object> SelectedObjects
         {
             get
             {
@@ -276,6 +294,11 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
             {
                 Verify.That(OptionsKeyField != "" && OptionsKeyField != ".", "Key attribute name is not defined");
                 Verify.That(OptionsLabelField != "" && OptionsLabelField != ".", "Label attribute name is not defined");
+            }
+            else
+            {
+                Verify.IsNotNull(OptionsKeyField, $"{nameof(OptionsKeyField)} is null");
+                Verify.IsNotNull(OptionsLabelField, $"{nameof(OptionsLabelField)} is null");
             }
 
             _selectorObjects = new Dictionary<string, object>();
@@ -421,9 +444,9 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
             return _userControl;
         }
 
-        public bool IsFullWidthControl { get { return false; } }
+        public bool IsFullWidthControl => false;
 
-        public string ClientName { get { return _userControl.GetDataFieldClientName(); } }
+        public string ClientName => _userControl.GetDataFieldClientName();
     }
 
 
