@@ -1,6 +1,6 @@
 module.exports = {
 	'Normal mode does not have prefilled credentials': function (browser) {
-		browser.url('http://localhost:57917/Composite/top.aspx');
+		browser.url(browser.launchUrl + '/Composite/top.aspx');
 		login = browser.page.login();
 		login.getAttribute('@usernameInput', 'value', function (result) {
 			browser.assert.equal(result.value, '');

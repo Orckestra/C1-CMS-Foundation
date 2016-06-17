@@ -1,6 +1,6 @@
 module.exports = {
 	'Can log in with correct credentials': function (browser) {
-		browser.url('http://localhost:57917/Composite/top.aspx');
+		browser.url(browser.launchUrl + '/Composite/top.aspx');
 		login = browser.page.login();
 		startScreen = browser.page.startScreen();
 		login
