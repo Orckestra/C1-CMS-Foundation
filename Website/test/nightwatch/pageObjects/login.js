@@ -17,22 +17,21 @@ module.exports = {
 				this
 					.clearValue('@usernameInput') // There may be a default value, clear it
 					.setValue('@usernameInput', username);
-					return this;
+				return this;
 			},
 			setPassword: function (password) {
 				this
 					.clearValue('@passwordInput') // There may be a default value, clear it
 					.setValue('@passwordInput', password);
-					return this;
+				return this;
 			},
 			fullLogin: function (username, password) {
-				this
+				return this
 					.isShown()
 					.setUsername(username || 'admin')
 					.setPassword(password || '123456')
 					.click('@submitButton')
 					.waitForElementNotVisible('@usernameField', 1000);
-				return this;
 			}
 		}
 	]
