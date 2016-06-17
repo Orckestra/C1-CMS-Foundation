@@ -5,6 +5,11 @@ module.exports = {
 	],
 	commands: [
 		{
+			prepare: function () {
+				this.api.page.login().fullLogin();
+				this.api.page.appWindow().enter(); // Start page shows inside appwindow.
+				return this;
+			},
 			enter: function () {
 				this.api.page.appWindow().enter(); // Start page shows inside appwindow.
 				this.waitForElementPresent('@startFrame', 1000);
@@ -13,18 +18,11 @@ module.exports = {
 				this.getAttribute('@startFrame', 'id', function (result) {
 					this.api.frame(result.value);
 				}.bind(this));
+				return this;
 			},
 			close: function () {
 				this.enter();
 				this.click('@closeButton');
-			},
-			isShown: function () {
-				this.api.page.appWindow().enter(); // Start page shows inside appwindow.
-				this.assert.visible('@startFrame');
-			},
-			isHidden: function () {
-				this.api.page.appWindow().enter(); // Start page shows inside appwindow.
-				this.assert.hidden('@startFrame');
 			}
 		}
 	]
