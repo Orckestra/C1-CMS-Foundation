@@ -18,11 +18,11 @@ namespace Composite.Data
         private IData _data;
         private bool _dataInitialized;
         private string _serializedDataSourceId;
-        private string _serializedId = null; 
-        private string _serializedVersionId = null;
-        private string _serializedInterfaceType = null;
-        private Type _interfaceType = null;
-        private DataSourceId _dataSourceId = null;
+        private string _serializedId; 
+        private string _serializedVersionId;
+        private string _serializedInterfaceType;
+        private Type _interfaceType;
+        private DataSourceId _dataSourceId;
 
 
         internal DataEntityToken(IData data)
@@ -30,7 +30,7 @@ namespace Composite.Data
             Verify.ArgumentNotNull(data, "data");
 
             _data = data;
-            _dataInitialized = true;            
+            _dataInitialized = true;
             _serializedDataSourceId = null;
             _dataSourceId = _data.DataSourceId;
             Verify.ArgumentCondition(_dataSourceId != null, "data", "DataSourceId can not be null");
@@ -67,14 +67,7 @@ namespace Composite.Data
 
 
         /// <exclude />
-        public override string Source
-        {
-            get
-            {
-                return this.DataSourceId.ProviderName;
-            }
-        }
-
+        public override string Source => this.DataSourceId.ProviderName;
 
 
         /// <exclude />
@@ -155,7 +148,7 @@ namespace Composite.Data
         {
             get
             {
-                if (_dataInitialized == false)
+                if (!_dataInitialized)
                 {
                     try
                     {
@@ -186,7 +179,7 @@ namespace Composite.Data
             {
                 IDataId dataId = DataIdSerializer.Deserialize(this.Id,this.VersionId);
 
-                StringBuilder sb = new StringBuilder();
+                var sb = new StringBuilder();
                 sb.Append("<b>DataId</b><br />");
                 sb.Append("<b>Type:</b> " + dataId.GetType() + "<br />");
                 foreach (PropertyInfo propertyInfo in dataId.GetType().GetPropertiesRecursively())
@@ -221,7 +214,7 @@ namespace Composite.Data
             {
                 if (_serializedId == null)
                 {
-                    var keyPropertyNames = this.Data.GetType().GetCustomAttributesRecursively<KeyPropertyNameAttribute>().Select(f=>f.KeyPropertyName);
+                    var keyPropertyNames = this.InterfaceType.GetCustomAttributesRecursively<KeyPropertyNameAttribute>().Select(f=>f.KeyPropertyName);
 
                     _serializedId = this.DataSourceId.DataId.Serialize(keyPropertyNames);
                 }
@@ -236,7 +229,7 @@ namespace Composite.Data
             {
                 if (_serializedVersionId == null)
                 {
-                    var versionKeyPropertyNames = this.Data.GetType().GetCustomAttributesRecursively<VersionKeyPropertyNameAttribute>().Select(f=>f.VersionKeyPropertyName);
+                    var versionKeyPropertyNames = this.InterfaceType.GetCustomAttributesRecursively<VersionKeyPropertyNameAttribute>().Select(f=>f.VersionKeyPropertyName);
                     
                     _serializedVersionId = this.DataSourceId.DataId.Serialize(versionKeyPropertyNames);
                 }
