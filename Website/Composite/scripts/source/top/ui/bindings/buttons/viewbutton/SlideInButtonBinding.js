@@ -90,7 +90,8 @@ SlideInButtonBinding.prototype.oncommand = function () {
 			viewset.attach();
 		}
 
-		this._viewBinding = ViewBinding.newInstance(this.bindingDocument);
+		this._viewBinding = SlideInViewBinding.newInstance(this.bindingDocument);
+
 		this._viewBinding.setDefinition(definition);
 		viewset.add(this._viewBinding);
 

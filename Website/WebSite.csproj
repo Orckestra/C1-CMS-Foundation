@@ -568,6 +568,7 @@
     <Content Include="Composite\scripts\source\top\ui\bindings\genericview\GenericViewBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\genericview\PathBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\buttons\viewbutton\SlideInButtonBinding.js" />
+    <Content Include="Composite\scripts\source\top\ui\bindings\views\SlideInViewBinding.js" />
     <Content Include="Composite\scripts\source\top\util\LocalStorage.js" />
     <Content Include="Composite\styles\default\fields\fields-base.less" />
     <Content Include="Composite\styles\default\dialogs\dialog-multiselector.less" />
