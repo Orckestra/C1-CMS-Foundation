@@ -30,4 +30,4 @@
 /Packages/
 
 selenium-debug.log
-reports/
+/Website/test/e2e/reports/

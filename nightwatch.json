@@ -1,23 +1,22 @@
 {
   "src_folders" : [
-    "Website/test/nightwatch/login",
-    "Website/test/nightwatch/startScreen"
+    "Website/test/e2e/suite"
   ],
-  "output_folder" : "reports",
+	"output_folder" : "Website/test/e2e/reports",
   "custom_commands_path" : "",
   "custom_assertions_path" : "",
-  "page_objects_path" : "Website/test/nightwatch/pageObjects",
+  "page_objects_path" : "Website/test/e2e/pageObjects",
   "globals_path" : "",
 
   "selenium" : {
     "start_process" : true,
-    "server_path" : "Website/test/selenium/selenium-server-standalone-2.53.0.jar",
+    "server_path" : "Website/node_modules/selenium-server-standalone-jar/jar/selenium-server-standalone-2.53.1.jar",
     "log_path" : "",
     "host" : "127.0.0.1",
     "port" : 4444,
     "cli_args" : {
-      "webdriver.chrome.driver" : "Website/test/selenium/chromedriver.exe",
-      "webdriver.ie.driver" : "Website/test/selenium/IEDriverServer.exe"
+      "webdriver.chrome.driver" : "Website/node_modules/chromedriver/lib/chromedriver/chromedriver.exe",
+      "webdriver.ie.driver" : "Website/node_modules/iedriver/lib/iedriver/IEdriverServer.exe"
     }
   },
 
