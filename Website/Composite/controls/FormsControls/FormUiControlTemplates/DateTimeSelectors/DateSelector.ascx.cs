@@ -163,7 +163,7 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DateTimeSelect
                     toShow += oldDateTime.TimeOfDay;
             }
 
-            InsertSelectedDate(TimeZoneInfo.ConvertTime(toShow, TimeZoneInfo.Utc, GlobalSettingsFacade.TimeZone));
+            InsertSelectedDate(TimeZoneInfo.ConvertTime(toShow, GlobalSettingsFacade.TimeZone, TimeZoneInfo.Utc));
             this.MessagesPlaceHolder.Controls.Add(new DocumentDirtyEvent());
         }
 
