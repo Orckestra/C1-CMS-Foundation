@@ -1,7 +1,10 @@
 module.exports = {
 	elements: [
 		{ appWindow: '#appwindow' },
-		{ appFrame: '#appwindow iframe' }
+		{ appFrame: '#appwindow iframe' },
+		{ menu: '#menubar' },
+		{ explorer: '#explorer' },
+		{ stage: '#stage' }
 	],
 	commands: [
 		{
@@ -16,7 +19,7 @@ module.exports = {
 				this
 					.waitForElementPresent('@appWindow', 1000)
 					.getAttribute('@appFrame', 'id', function (result) {
-						this.api.frame(result.value)
+						this.api.frame(result.value);
 					}.bind(this));
 				return this;
 			}
