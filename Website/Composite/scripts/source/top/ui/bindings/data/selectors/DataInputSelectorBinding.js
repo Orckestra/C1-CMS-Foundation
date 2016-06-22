@@ -91,11 +91,11 @@ DataInputSelectorBinding.prototype.onBindingDispose = SelectorBinding.prototype.
  */
 DataInputSelectorBinding.prototype._buildDOMContent = function () {
 
+	DataInputSelectorBinding.superclass._buildDOMContent.call(this);
+
 	this.buildButton();
 	this.buildPopup();
 	this.buildSelections();
-
-	DataInputSelectorBinding.superclass._buildDOMContent.call ( this );
 }
 
 
@@ -109,13 +109,6 @@ DataInputSelectorBinding.prototype.onBindingAttach = function () {
 	var image = this.getProperty("image");
 	if (image) {
 		this.setImage(image);
-	}
-
-	var onchange = this.getProperty("onchange");
-	if (onchange) {
-		this.onValueChange = function () {
-			Binding.evaluate(onchange, this);
-		};
 	}
 
 	var self = this;
@@ -431,7 +424,10 @@ DataInputSelectorBinding.prototype.select = function ( item, isDefault ) {
 
 		if ( !isDefault ) {
 			this.dirty();
-			this.onValueChange();
+			var onselectionchange = this.getProperty("onselectionchange");
+			if (onselectionchange) {
+				Binding.evaluate(onselectionchange, this);
+			}
 			this.dispatchAction (
 				DataInputSelectorBinding.ACTION_SELECTIONCHANGED
 			);

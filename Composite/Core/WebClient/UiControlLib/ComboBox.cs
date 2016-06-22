@@ -44,7 +44,7 @@ namespace Composite.Core.WebClient.UiControlLib
 
             if (this.AutoPostBack)
             {
-                writer.AddAttribute("onchange", "this.dispatchAction(PageBinding.ACTION_DOPOSTBACK)");
+                writer.AddAttribute("onselectionchange", "this.dispatchAction(PageBinding.ACTION_DOPOSTBACK)");
             }
             if (this.SelectionRequired)
             {

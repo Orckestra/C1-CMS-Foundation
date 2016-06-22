@@ -1,5 +1,6 @@
 <%@ Control Language="C#" Inherits="Composite.Plugins.Forms.WebChannel.UiControlFactories.SelectorTemplateUserControlBase"  %>
 <%@ Import Namespace="System.Linq" %>
+<%@ Import Namespace="Composite.Core.WebClient.UiControlLib.Foundation" %>
 
 <script runat="server">
 
@@ -11,6 +12,8 @@
 
     protected override void OnLoad(EventArgs e)
     {
+        this.CopyClientAttributesTo(clientSelector);
+
         base.OnLoad(e);
 
         if (this.SelectedIndexChangedEventHandler != null)
@@ -29,7 +32,7 @@
         clientSelector.DataTextField = "Label";
         clientSelector.DataValueField = "Key";
         clientSelector.DataBind();
-        
+
         string key = this.SelectedKeys.FirstOrDefault();
         if (key != null)
         {
@@ -48,4 +51,4 @@
     }
 </script>
 
-<aspui:ComboBox ID="clientSelector" runat="server" />
+<aspui:ComboBox ID="clientSelector" runat="server" SelectionRequired="False" />
