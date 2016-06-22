@@ -24,7 +24,7 @@ using Composite.Data.Types;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 using Microsoft.Practices.ObjectBuilder;
-using Composite.C1Console.Security.Foundation;
+
 
 namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 {
@@ -79,7 +79,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
         public PageElementProvider()
         {
             AuxiliarySecurityAncestorFacade.AddAuxiliaryAncestorProvider<DataEntityToken>(this);
-            DataEvents<IPageType>.OnStoreChanged += new StoreEventHandler(DataEvents_IPageType_OnStoreChanged);
+            DataEvents<IPageType>.OnStoreChanged += DataEvents_IPageType_OnStoreChanged;
         }
 
 
@@ -99,13 +99,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
 
 
-        public bool ContainsLocalizedData
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public bool ContainsLocalizedData => true;
 
 
         public IEnumerable<Element> GetRoots(SearchToken searchToken)
@@ -849,7 +843,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 visualizedElement.Icon = PageElementProvider.PageGhosted;
                 visualizedElement.OpenedIcon = PageElementProvider.PageGhosted;
                 visualizedElement.IsDisabled = false;
-                visualizedElement.Label = string.Format("{0} ({1})", visualizedElement.Label, urlMappingName);
+                visualizedElement.Label = $"{visualizedElement.Label} ({urlMappingName})";
             }
             else
             {
@@ -857,7 +851,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 visualizedElement.OpenedIcon = PageElementProvider.PageDisabled;
                 visualizedElement.IsDisabled = true;
                 visualizedElement.ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.DisabledPage");
-                visualizedElement.Label = string.Format("{0} ({1})", visualizedElement.Label, urlMappingName);
+                visualizedElement.Label = $"{visualizedElement.Label} ({urlMappingName})";
             }
 
             return visualizedElement;
@@ -897,10 +891,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
     {
         private static readonly PermissionType[] _permissionTypes = { PermissionType.Administrate, PermissionType.Edit };
 
-        public override IEnumerable<PermissionType> PermissionTypes
-        {
-            get { return _permissionTypes; }
-        }
+        public override IEnumerable<PermissionType> PermissionTypes => _permissionTypes;
     }
 
 
