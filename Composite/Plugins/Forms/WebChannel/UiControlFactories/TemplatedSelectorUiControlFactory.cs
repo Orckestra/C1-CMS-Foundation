@@ -49,13 +49,12 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public abstract class SelectorTemplateUserControlBase : UserControl
     {
-        private Dictionary<string, object> _selectorObjects = null;
-        private List<KeyLabelPair> _keyLabelPairList = null;
-        private List<string> _selectedAsStrings = null;
-        private List<object> _selectedObjects = null;
-        private EventHandler _changeEventHandler;
+        private Dictionary<string, object> _selectorObjects;
+        private List<KeyLabelPair> _keyLabelPairList;
+        private List<string> _selectedAsStrings;
 
         private const string _noneSelectionKey = "***C1.NONE***";
+        private const string _noneSelectionLabel = "<NONE>";
 
         /// <summary>
         /// To be overridden in the controls
@@ -76,8 +75,10 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
         /// <exclude />
         public bool Required { get; set; }
 
-        /// <exclude />
-        public bool MultiSelector { get; set; }
+        /// <summary>
+        /// When the selection is not required, the property will define if a "no selection" option should be added.
+        /// </summary>
+        public bool ProvideNoSelectionOption { get; set; }
 
         /// <exclude />
         public bool CompactMode { get; set; }
@@ -98,13 +99,10 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
 
 
         /// <exclude />
-        public EventHandler SelectedIndexChangedEventHandler
-        {
-            get { return _changeEventHandler; }
-            set { _changeEventHandler = value; }
-        }
+        public EventHandler SelectedIndexChangedEventHandler { get; set; }
 
 
+        /// <exclude />
         public void BindStateToControlProperties()
         {
             InitializeSelectorElements();
@@ -264,17 +262,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
 
 
         /// <exclude />
-        public List<object> SelectedObjects
-        {
-            get
-            {
-                return _selectedObjects;
-            }
-            set
-            {
-                _selectedObjects = value;
-            }
-        }
+        public List<object> SelectedObjects { get; set; }
 
 
         /// <exclude />
@@ -304,9 +292,9 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
             _selectorObjects = new Dictionary<string, object>();
             _keyLabelPairList = new List<KeyLabelPair>();
 
-            if (!Required && !MultiSelector)
+            if (!Required && ProvideNoSelectionOption)
             {
-                _keyLabelPairList.Add(new KeyLabelPair(_noneSelectionKey, "<NONE>"));
+                _keyLabelPairList.Add(new KeyLabelPair(_noneSelectionKey, _noneSelectionLabel));
             }
 
             PropertyInfo keyPropertyInfo = null;
@@ -439,7 +427,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
             _userControl.BindingType = this.BindingType;
             _userControl.Required = this.Required;
             _userControl.ReadOnly = this.ReadOnly;
-            _userControl.MultiSelector = false;
+            _userControl.ProvideNoSelectionOption = true;
 
             return _userControl;
         }
@@ -452,7 +440,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
 
     internal sealed class TemplatedMultiSelectorUiControl : MultiSelectorUiControl, IWebUiControl
     {
-        private Type _userControlType;
+        private readonly Type _userControlType;
         private SelectorTemplateUserControlBase _userControl;
 
 
@@ -500,14 +488,13 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
             _userControl.OptionsKeyField = this.OptionsKeyField;
             _userControl.BindingType = this.BindingType;
             _userControl.Required = this.Required;
-            _userControl.MultiSelector = true;
             _userControl.CompactMode = this.CompactMode;
 
             _userControl.SelectedObjects = new List<object>();
 
             if (this.Selected != null)
             {
-                if (string.IsNullOrEmpty(this.SelectedAsString) == false)
+                if (!string.IsNullOrEmpty(this.SelectedAsString))
                 {
                     throw new InvalidOperationException("Binding properties 'Selected' and 'SelectedAsString' can not be set at the same time.");
                 }
@@ -519,7 +506,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
             }
             else
             {
-                if (string.IsNullOrEmpty(this.SelectedAsString) == false)
+                if (!string.IsNullOrEmpty(this.SelectedAsString))
                 {
                     _userControl.SetSelectedObjectsFromStringList(this.SelectedAsString.Split(','));
                 }
@@ -528,9 +515,9 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
             return _userControl;
         }
 
-        public bool IsFullWidthControl { get { return false; } }
+        public bool IsFullWidthControl => false;
 
-        public string ClientName { get { return _userControl.GetDataFieldClientName(); } }
+        public string ClientName => _userControl.GetDataFieldClientName();
     }
 
 
@@ -548,7 +535,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
 
         public override IUiControl CreateControl()
         {
-            if (_data.MultiSelector == false)
+            if (!_data.MultiSelector)
             {
                 TemplatedSelectorUiControl control = new TemplatedSelectorUiControl(this.UserControlType);
                 control.BindingType = _data.BindingType;
