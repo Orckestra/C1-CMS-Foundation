@@ -4,7 +4,7 @@
 	private List<string> _selectedKeys = new List<string>();
 
 
-    protected override void InitializeViewState()
+    public override void InitializeViewState()
     {
         compactModePlaceHolder.Visible = CompactMode;
         verboseModePlaceHolder.Visible = !CompactMode;
@@ -18,7 +18,7 @@
     }
     
     
-    protected override void BindStateToProperties()
+    public override void BindStateToProperties()
     {
         var result = new List<string>();
 

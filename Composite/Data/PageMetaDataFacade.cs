@@ -28,10 +28,10 @@ namespace Composite.Data
     {
         private static readonly Guid DefaultCompositionContainerId = new Guid("eb210a75-be25-401f-b0d4-b3787bce36fa");
 
-        internal static readonly string MetaDataType_IdFieldName = "Id";
-        internal static readonly string MetaDataType_PageReferenceFieldName = "PageId";
-        internal static readonly string MetaDataType_PageReferenceFieldVersionName = "VersionId";
-        internal static readonly string MetaDataType_MetaDataDefinitionFieldName = "FieldName";
+        internal static readonly string MetaDataType_IdFieldName = nameof(IPageMetaData.Id);
+        internal static readonly string MetaDataType_PageReferenceFieldName = nameof(IPageMetaData.PageId);
+        internal static readonly string MetaDataType_PageReferenceFieldVersionName = nameof(IPageMetaData.VersionId);
+        internal static readonly string MetaDataType_MetaDataDefinitionFieldName = nameof(IPageMetaData.FieldName);
 
         /// <summary>
         /// Returns all possible meta data types. This is NOT types that only have been defined on any pages or page type
@@ -344,7 +344,7 @@ namespace Composite.Data
 
 
         /// <exclude />
-        public static IData GetMetaData(Guid pageId,Guid pageVersionId, string definitionName, Type metaDataType)
+        public static IData GetMetaData(Guid pageId, Guid pageVersionId, string definitionName, Type metaDataType)
         {
             //TODO: Consider caching here            
             ParameterExpression parameterExpression = Expression.Parameter(metaDataType);
@@ -521,17 +521,15 @@ namespace Composite.Data
         /// <exclude />
         public static bool IsNewContainerIdAllowed(Guid definingItemId, string name, Guid newMetaDataContainerName)
         {
-            IEnumerable<IPageMetaDataDefinition> pageMetaDataDefinitions = DataFacade.GetData<IPageMetaDataDefinition>().Where(f => f.Name == name).Evaluate();
+            var pageMetaDataDefinitions = DataFacade.GetData<IPageMetaDataDefinition>().Where(f => f.Name == name).Evaluate();
 
-            IPageMetaDataDefinition pageMetaDataDefinition = pageMetaDataDefinitions.Where(f => f.DefiningItemId == definingItemId).SingleOrDefault();
-            if ((pageMetaDataDefinition != null) && (pageMetaDataDefinition.MetaDataContainerId == newMetaDataContainerName)) 
+            var pageMetaDataDefinition = pageMetaDataDefinitions.SingleOrDefault(f => f.DefiningItemId == definingItemId);
+            if (pageMetaDataDefinition != null && pageMetaDataDefinition.MetaDataContainerId == newMetaDataContainerName) 
             {
                 return true; // Return true if no changes are made
             }
 
-            if (pageMetaDataDefinitions.Count() > 1) return false;            
-
-            return true;
+            return pageMetaDataDefinitions.Count <= 1;
         }
 
 
@@ -839,7 +837,7 @@ namespace Composite.Data
 
 
 
-        private static void RemoveDefinitionDeleteData(string definitionName, Type metaDataType, IEnumerable<IPageMetaDataDefinition> otherPageMetaDataDefintions)
+        private static void RemoveDefinitionDeleteData(string definitionName, Type metaDataType, IEnumerable<IPageMetaDataDefinition> otherPageMetaDataDefinitions)
         {
             IEnumerable<IData> dataToDelete = PageMetaDataFacade.GetMetaData(definitionName, metaDataType).Evaluate();
 
@@ -852,7 +850,7 @@ namespace Composite.Data
                     continue;
                 }
 
-                bool existsINOtherScope = ExistInOtherScope(page, otherPageMetaDataDefintions);
+                bool existsINOtherScope = ExistInOtherScope(page, otherPageMetaDataDefinitions);
                 if (existsINOtherScope)
                 {
                     datasNotToDelete.Add(data);
@@ -964,7 +962,7 @@ namespace Composite.Data
 
         private static Guid GetPageIdOrNull(this IPage page)
         {
-            return page != null ? page.Id : Guid.Empty;
+            return page?.Id ?? Guid.Empty;
         }
     }
 }
