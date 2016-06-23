@@ -115,95 +115,36 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             DataEntityToken dataEntityToken = (DataEntityToken)this.EntityToken;
             IPage selectedPage = (IPage)dataEntityToken.Data;
 
-            using (var transactionScope = TransactionsFacade.CreateNewScope())
+
+            if (!DataFacade.WillDeleteSucceed<IPage>(selectedPage))
             {
-                if (!DataFacade.WillDeleteSucceed<IPage>(selectedPage))
+                this.ShowMessage(
+                    DialogType.Error,
+                    Texts.DeletePageWorkflow_CascadeDeleteErrorTitle,
+                    Texts.DeletePageWorkflow_CascadeDeleteErrorMessage
+                );
+
+                return;
+            }
+
+            if (hasSubPages)
+            {
+                List<IPage> pagesToDelete = selectedPage.GetSubChildren().ToList();
+
+                if (pagesToDelete.Any(page => !DataFacade.WillDeleteSucceed<IPage>(page)))
                 {
-                    this.ShowMessage(
-                        DialogType.Error,
+                    this.ShowMessage(DialogType.Error,
                         Texts.DeletePageWorkflow_CascadeDeleteErrorTitle,
-                        Texts.DeletePageWorkflow_CascadeDeleteErrorMessage
-                    );
+                        Texts.DeletePageWorkflow_CascadeDeleteErrorMessage);
 
                     return;
                 }
-
-                List<CultureInfo> cultures = DataLocalizationFacade.ActiveLocalizationCultures.ToList();
-                cultures.Remove(selectedPage.DataSourceId.LocaleScope);
-
-                if (hasSubPages)
-                {
-                    List<IPage> pagesToDelete = selectedPage.GetSubChildren().ToList();
-
-                    if (pagesToDelete.Any(page => !DataFacade.WillDeleteSucceed<IPage>(page)))
-                    {
-                        this.ShowMessage(DialogType.Error,
-                            Texts.DeletePageWorkflow_CascadeDeleteErrorTitle,
-                            Texts.DeletePageWorkflow_CascadeDeleteErrorMessage);
-
-                        return;
-                    }
-
-                    foreach (IPage page in pagesToDelete)
-                    {
-                        if (!ExistInOtherLocale(cultures, page))
-                        {
-                            RemoveAllFolderAndMetaDataDefinitions(page);
-                        }
-
-                        page.DeletePageStructure();
-                        ProcessControllerFacade.FullDelete(page);
-                    }
-                }
-
-                if (!ExistInOtherLocale(cultures, selectedPage))
-                {
-                    RemoveAllFolderAndMetaDataDefinitions(selectedPage);
-                }
-
-                var parentTreeRefresher = this.CreateParentTreeRefresher();
-                parentTreeRefresher.PostRefreshMessages(selectedPage.GetDataEntityToken(), 2);
-
-                selectedPage.DeletePageStructure();
-
-                Guid pageId = selectedPage.Id;
-                var pageVersions = DataFacade.GetData<IPage>(p => p.Id == pageId).ToList();
-
-                ProcessControllerFacade.FullDelete(pageVersions);
-
-                transactionScope.Complete();
-            }
-        }
-
-
-        private bool ExistInOtherLocale(List<CultureInfo> cultures, IPage page)
-        {
-            foreach (CultureInfo localeCultureInfo in cultures)
-            {
-                using (new DataScope(localeCultureInfo))
-                {
-                    if (Composite.Data.PageManager.GetPageById(page.Id) != null)
-                    {
-                        return true;
-                    }
-                }
             }
 
-            return false;
-        }
+            var parentTreeRefresher = this.CreateParentTreeRefresher();
+            parentTreeRefresher.PostRefreshMessages(selectedPage.GetDataEntityToken(), 2);
 
-
-        private void RemoveAllFolderAndMetaDataDefinitions(IPage page)
-        {
-            foreach (Type folderType in page.GetDefinedFolderTypes())
-            {
-                page.RemoveFolderDefinition(folderType, true);
-            }
-
-            foreach (Tuple<Type, string> metaDataTypeAndName in page.GetDefinedMetaDataTypeAndNames())
-            {
-                page.RemoveMetaDataDefinition(metaDataTypeAndName.Item2, true);
-            }
+            PageServices.DeletePage(selectedPage);
         }
 
 
@@ -241,20 +182,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             var dataEntityToken = (DataEntityToken)this.EntityToken;
             IPage selectedPage = (IPage)dataEntityToken.Data;
 
-            Guid pageId = selectedPage.Id;
-            Guid versionId = selectedPage.VersionId;
-
-            using (var conn = new DataConnection())
-            using (var scope = TransactionsFacade.CreateNewScope())
-            {
-                var pageToDelete = conn.Get<IPage>().Single(p => p.Id == pageId && p.VersionId == versionId);
-                var placeholders = conn.Get<IPagePlaceholderContent>().Where(p => p.PageId == pageId && p.VersionId == versionId).ToList();
-
-                DataFacade.Delete(placeholders, false, false);
-                DataFacade.Delete(pageToDelete);
-
-                scope.Complete();
-            }
+            PageServices.DeletePage(selectedPage.Id, selectedPage.VersionId, selectedPage.DataSourceId.LocaleScope);
 
             var parentTreeRefresher = this.CreateParentTreeRefresher();
             parentTreeRefresher.PostRefreshMessages(selectedPage.GetDataEntityToken(), 2);
