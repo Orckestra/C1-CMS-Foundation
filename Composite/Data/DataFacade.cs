@@ -489,7 +489,7 @@ namespace Composite.Data
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");
             if (dataKeyPropertyCollection == null) throw new ArgumentNullException("dataKeyPropertyCollection");
 
-            var keyProperties = DataAttributeFacade.GetKeyProperties(interfaceType);
+            var keyProperties = DataAttributeFacade.GetPhysicalKeyProperties(interfaceType);
 
             ParameterExpression parameterExpression = Expression.Parameter(interfaceType, "data");
 
@@ -510,10 +510,13 @@ namespace Composite.Data
         {
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");
 
-            PropertyInfo propertyInfo = DataAttributeFacade.GetKeyProperties(interfaceType).Single();
-
+            var propertyInfos = DataAttributeFacade.GetPhysicalKeyProperties(interfaceType);
             var dataKeyPropertyCollection = new DataKeyPropertyCollection();
-            dataKeyPropertyCollection.AddKeyProperty(propertyInfo, dataKeyValue);
+            foreach (var propertyInfo in propertyInfos)
+            {
+                dataKeyPropertyCollection.AddKeyProperty(propertyInfo, dataKeyValue);
+            }
+            
 
             return GetPredicateExpressionByUniqueKey(interfaceType, dataKeyPropertyCollection);
         }
@@ -607,10 +610,14 @@ namespace Composite.Data
             }
            
 
-            PropertyInfo propertyInfo = DataAttributeFacade.GetKeyProperties(interfaceType).Single();
+            var propertyInfos = DataAttributeFacade.GetPhysicalKeyProperties(interfaceType);
 
             DataKeyPropertyCollection dataKeyPropertyCollection = new DataKeyPropertyCollection();
-            dataKeyPropertyCollection.AddKeyProperty(propertyInfo, dataKeyValue);
+            foreach (var propertyInfo in propertyInfos)
+            {
+                dataKeyPropertyCollection.AddKeyProperty(propertyInfo, dataKeyValue);
+            }
+            
 
             return TryGetDataByUniqueKey(interfaceType, dataKeyPropertyCollection);
         }
