@@ -105,7 +105,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
                 ).ToList();
 
             sql.AppendFormat("CREATE TABLE dbo.[{0}]({1});", tableName, string.Join(",", sqlColumns));
-            sql.Append(SetPrimaryKey(tableName, typeDescriptor.KeyPropertyNames, typeDescriptor.PrimaryKeyIsClusteredIndex));
+            sql.Append(SetPrimaryKey(tableName, typeDescriptor.PhysicalKeyPropertyNames, typeDescriptor.PrimaryKeyIsClusteredIndex));
 
             try
             {
@@ -464,7 +464,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
                     bool isClusteredIndex = changeDescriptor.AlteredType.PrimaryKeyIsClusteredIndex;
 
                     createIndexActions.Add(new Tuple<bool, Action>(isClusteredIndex,
-                        () => ExecuteNonQuery(SetPrimaryKey(alteredTableName, changeDescriptor.AlteredType.KeyPropertyNames, isClusteredIndex))
+                        () => ExecuteNonQuery(SetPrimaryKey(alteredTableName, changeDescriptor.AlteredType.PhysicalKeyPropertyNames, isClusteredIndex))
                     ));
                 }
 

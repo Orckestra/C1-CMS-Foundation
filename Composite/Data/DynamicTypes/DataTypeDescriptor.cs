@@ -130,6 +130,12 @@ namespace Composite.Data.DynamicTypes
         /// </summary>
         public DataFieldNameCollection VersionKeyPropertyNames { get; set; }
 
+
+        /// <summary>
+        /// Version keys, appear in the physical order but not included in data references.
+        /// </summary>
+        internal IEnumerable<string> PhysicalKeyPropertyNames => KeyPropertyNames.Concat(VersionKeyPropertyNames);
+
         /// <summary>
         /// Returns the CLT Type for this data type description.
         /// </summary>
@@ -175,7 +181,7 @@ namespace Composite.Data.DynamicTypes
                     this.Fields.Where(field => field.Name == fieldName)
                         .SingleOrException("Missing a field '{0}'", "Multiple fields with name '{0}'", fieldName);
 
-                return this.KeyPropertyNames.Concat(VersionKeyPropertyNames).Select(getField);
+                return PhysicalKeyPropertyNames.Select(getField);
             }
         }
 
