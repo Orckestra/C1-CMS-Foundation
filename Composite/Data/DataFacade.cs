@@ -600,7 +600,11 @@ namespace Composite.Data
         {
             Verify.ArgumentNotNull(interfaceType, "interfaceType");
 
-            if(DataCachingFacade.IsDataAccessCacheEnabled(interfaceType))
+            var properties = interfaceType.GetPhysicalKeyProperties();
+
+            // TODO: implemented cached lookup for versioned data types
+            if (DataCachingFacade.IsDataAccessCacheEnabled(interfaceType)
+                && properties.Count == 1)
             {
                 var cachedByKey = DataFacade.GetData(interfaceType) as CachingQueryable_CachedByKey;
                 if(cachedByKey != null)
@@ -608,12 +612,10 @@ namespace Composite.Data
                     return cachedByKey.GetCachedValueByKey(dataKeyValue);
                 }
             }
-           
 
-            var propertyInfos = DataAttributeFacade.GetPhysicalKeyProperties(interfaceType);
 
-            DataKeyPropertyCollection dataKeyPropertyCollection = new DataKeyPropertyCollection();
-            foreach (var propertyInfo in propertyInfos)
+            var dataKeyPropertyCollection = new DataKeyPropertyCollection();
+            foreach (var propertyInfo in properties)
             {
                 dataKeyPropertyCollection.AddKeyProperty(propertyInfo, dataKeyValue);
             }
