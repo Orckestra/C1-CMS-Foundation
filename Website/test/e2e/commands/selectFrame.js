@@ -1,6 +1,15 @@
-module.exports = function (browser, selector, activity) {
-	browser
-		.frame(null)
+var util = require('util');
+var events = require('events');
+
+function SelectFrame() {
+  events.EventEmitter.call(this);
+}
+
+util.inherits(SelectFrame, events.EventEmitter);
+
+SelectFrame.prototype.command = function(selector) {
+	this.client.api
+		.topFrame()
 		.execute(function (selector) {
 			function checkFrame(frame) {
 				var node = frame.document.querySelector(selector);
@@ -11,7 +20,7 @@ module.exports = function (browser, selector, activity) {
 						try {
 							var frameResult = checkFrame(frame[i]);
 							if (frameResult) {
-								frameResult.unshift(frame[i].name);
+								frameResult.unshift(i);
 								return frameResult;
 							}
 						} catch (_) {}
@@ -22,15 +31,15 @@ module.exports = function (browser, selector, activity) {
 			return checkFrame(window);
 		},
 		[selector],
-		function (result) {
+		result => {
 			if (result.value) {
-				result.value.forEach(function (key) {
-					browser.frame(key);
-				});
-				activity();
-				browser.frame(null);
+				result.value.forEach(key => this.client.api.frame(key));
+				this.emit('complete');
 			} else {
 				throw new Error('Did not find selector "' + selector + '" in any frame.');
 			}
 		});
-}
+	return this.client.api;
+};
+
+module.exports = SelectFrame;
