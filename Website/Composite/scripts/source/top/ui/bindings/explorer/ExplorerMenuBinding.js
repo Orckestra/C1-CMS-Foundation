@@ -127,7 +127,7 @@ ExplorerMenuBinding.prototype._mountMinButton = function (definition) {
 	button.handle = definition.handle;
 	button.node = definition.node;
 	if (Application.isTestEnvironment) {
-		button.setProperty("data-qa-perspective", definition.node.getTag());
+		button.setProperty("data-qa", definition.node.getTag());
 	}
 	this._group.add(button);
 	this._list.add(button);

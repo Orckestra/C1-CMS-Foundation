@@ -420,7 +420,7 @@ SystemToolBarBinding.prototype.getToolBarButtonBinding = function ( action) {
 		binding.disable ();
 	}
 	if (Application.isTestEnvironment) {
-		binding.setProperty("data-qa-key", action.getKey());
+		binding.setProperty("data-qa", action.getKey());
 	}
 
 	/*
