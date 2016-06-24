@@ -131,7 +131,7 @@ DataInputSelectorBinding.prototype.buildButton = function () {
 	var button = this.addFirst (
 		ToolBarButtonBinding.newInstance ( this.bindingDocument )
 	);
-	button.popupBindingTargetElement = this.shadowTree.input;
+	button.popupBindingTargetElement = this.shadowTree.box;
 	button.setImage ( DataInputSelectorBinding.INDICATOR_IMAGE );
 	button.attach ();
 
@@ -174,9 +174,8 @@ DataInputSelectorBinding.prototype.buildSelections = function () {
 			});
 		}
 	});
-	if ( list.hasEntries ()) {
-		this.populateFromList ( list );
-	}
+
+	this.populateFromList ( list );
 }
 
 /**
