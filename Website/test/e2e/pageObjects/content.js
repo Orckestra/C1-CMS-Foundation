@@ -1,17 +1,31 @@
 module.exports = {
+	sections: {
+		docktabs: {
+			selector: 'dock[reference="main"] docktabs',
+			commands: [{
+				closeTab: function (index) {
+					this.click('docktab:nth-of-type(' + index + ') control[controltype="close"]');
+				}
+			}]
+		}
+	},
 	elements: [
-		{ browserFrame: 'iframe[src="/Composite/content/views/browser/browser.aspx"]' },
-		{ treeFrame: 'iframe[src="/Composite/content/views/systemview/systemview.aspx"]' }
+		{ browserFrame: 'iframe[src="/Composite/content/views/browser/browser.aspx"]' }
 	],
 	commands: [
 		{
-			prepare: function () {
-				var app = this.api.page.appWindow();
-				app.prepare()
+			enter: function () {
+				this.api.page.appWindow()
+					.enter()
 					.enterPerspective('content');
+				return this;
+			},
+			prepare: function () {
+				this.api.page.appWindow().prepare();
 				this
-					.waitForElementVisible('@browserFrame', 2000)
-					.enterFrame('@browserFrame');
+					.enter()
+					.waitForElementVisible('@browserFrame', 2000);
+				return this;
 			}
 		}
 	]

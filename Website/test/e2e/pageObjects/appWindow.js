@@ -20,17 +20,15 @@ module.exports = {
 			prepare: function () {
 				this.api.page.login().fullLogin();
 				this.api.page.startScreen().close();
-				this.api.frame(null);
-				this.waitForElementPresent('@appWindow', 1000)
+				this
+					.topFrame()
+					.waitForElementPresent('@appWindow', 1000)
 				return this;
 			},
 			enter: function () {
-				this.api
-					.frame(null);
 				this
-					.getAttribute('@appFrame', 'id', function (result) {
-						this.api.frame(result.value);
-					}.bind(this));
+					.topFrame()
+					.enterFrame('@appFrame');
 				return this;
 			},
 			enterPerspective: function (id) {
