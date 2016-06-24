@@ -236,6 +236,9 @@ DockBinding.prototype.prepareNewView = function ( definition ) {
 	if (definition.isPinned) {
 		tabBinding.setProperty("pinned", true);
 	}
+	if (Application.isTestEnvironment) {
+		tabBinding.setProperty("data-qa-token", definition.entityToken);
+	}
 	this.appendTabByBindings ( tabBinding, null );
 	
 	// listen for dirty events and loaded pages

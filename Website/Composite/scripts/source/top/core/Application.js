@@ -127,8 +127,12 @@ _Application.prototype = {
  	 * Be advised, however, that this setup is highly dysfunctional in IE.
  	 * @type {boolean}
  	 */
- 	isBlurred : false,
+ 	isBlurred: false,
 
+	/**
+	 * @type {boolean} 
+	 */
+ 	isTestEnvironment: true,
 
  	// PRIVATE ..........................................................
 
