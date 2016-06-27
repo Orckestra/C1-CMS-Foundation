@@ -7,9 +7,11 @@ function SelectFrame() {
 
 util.inherits(SelectFrame, events.EventEmitter);
 
-SelectFrame.prototype.command = function(selector) {
+SelectFrame.prototype.command = function(selector, noReset) {
+	if (!noReset) {
+		this.client.api.topFrame()
+	}
 	this.client.api
-		.topFrame()
 		.execute(function (selector) {
 			function checkFrame(frame) {
 				var node = frame.document.querySelector(selector);
@@ -32,7 +34,7 @@ SelectFrame.prototype.command = function(selector) {
 		},
 		[selector],
 		result => {
-			if (result.value) {
+			if (Array.isArray(result.value)) {
 				result.value.forEach(key => this.client.api.frame(key));
 				this.emit('complete');
 			} else {

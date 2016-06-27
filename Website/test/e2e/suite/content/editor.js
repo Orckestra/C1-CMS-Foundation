@@ -22,14 +22,49 @@ module.exports = {
 			.selectFrame('#tinymce > img:nth-child(1)')
 			// Check that it has more than just one entry
 			.verify.visible('#tinymce > img:nth-child(2)')
-			// Enter the element
-			.click('#tinymce > img:nth-child(2)')
-		browser
-			.pause(3000)
+			// Select the first element
+			.click('#tinymce > img:nth-child(1)')
+			// Click the toolbar button for properties
+			.selectFrame('toolbarbutton[cmd="compositeInsertRendering"]')
+			.click('toolbarbutton[cmd="compositeInsertRendering"]')
+			.api.pause(1000);
+			// Click the edit HTML button
 		content
-			// Close editor after you
-			.enter()
-			.section.docktabs.closeTab(2);
-		browser.end();
+			.selectFrame('#renderingdialogpage')
+			.click('htmldatadialog')
+			.api.pause(1000);
+			// Find and enter the editor in the dialog that just appeared
+		content
+			.selectFrame('#masterdialogset')
+			.selectFrame('#visualeditor', true)
+			.selectFrame('body#tinymce', true);
+		browser
+			.execute(function () {
+				var element = document.querySelector('#tinymce > h1 > em');
+				element.innerHTML = 'Jupiter';
+			}, [], () => {
+				// Approve the change
+				content
+					.selectFrame('#masterdialogset')
+					.selectFrame('#visualeditor', true)
+					.click('clickbutton[response="accept"]');
+				// Close the properties dialog
+				browser.topFrame();
+				content
+					.selectFrame('#renderingdialogpage')
+					.verify.elementPresent('#renderingdialogpage')
+					.verify.elementPresent('clickbutton[callbackid="buttonAccept"]')
+					.verify.visible('#renderingdialogpage')
+					.verify.visible('clickbutton[callbackid="buttonAccept"]')
+					.click('clickbutton[callbackid="buttonAccept"]')
+				browser
+					.pause(3000)
+				content
+					// Close editor after you
+					.enter()
+					.section.docktabs.closeTab(2);
+				// Check that the change is made
+				browser.end();
+			})
 	}
 };
