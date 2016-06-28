@@ -16,7 +16,6 @@ module.exports = {
 		{
 			enter: function () {
 				this.api.page.appWindow()
-					.enter()
 					.enterPerspective('content');
 				return this;
 			},
