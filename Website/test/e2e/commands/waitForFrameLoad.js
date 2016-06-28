@@ -17,11 +17,14 @@ WaitForFrameLoad.prototype.command = function(selector, timeout) {
 	var isTimedOut = false;
 	var interval = Math.max(Math.floor(timeout / 10), 5);
 	var timeElapsed = interval;
+	var timedRecheck, timeoutTimer;
 
 	const client = this.client;
 
-	var timer = setTimeout(() => {
-		isTimedOut = true;
+	timeoutTimer = setTimeout(() => {
+		clearTimeout(timedRecheck);
+		client.assertion(false, null, null, 'Frame <' + selector + '> did not load within ' + timeout + 'ms', this.abortOnFailure, this._stackTrace);
+		complete();
 	}, timeout);
 
 	function checkFrameLoaded() {
@@ -29,19 +32,14 @@ WaitForFrameLoad.prototype.command = function(selector, timeout) {
 			var frame = document.querySelector(selector);
 			return frame.contentDocument.readyState === 'complete';
 		}, [selector], (result) => {
-			console.log(result.value);
-			if (result.value) {
-				clearTimeout(timer);
-				client.assertion(true, null, null, 'Frame "' + selector + '" loaded within ' + timeElapsed + 'ms', this.abortOnFailure);
+			if (result.value === true) {
+				clearTimeout(timeoutTimer);
+				client.assertion(true, null, null, 'Frame <' + selector + '> loaded within ' + timeElapsed + 'ms', this.abortOnFailure);
 				complete();
 			} else {
-				if (isTimedOut) {
-					client.assertion(false, null, null, 'Frame "' + selector + '" did not load within ' + timeout + 'ms', this.abortOnFailure, this._stackTrace);
-				} else {
-					console.log('not yet', timeElapsed);
-					setTimeout(checkFrameLoaded, interval);
-					timeElapsed += interval;
-				}
+				timedRecheck = setTimeout(checkFrameLoaded, interval);
+				timeElapsed += interval;
+				console.log('waiting:', timeElapsed);
 			}
 		});
 	};

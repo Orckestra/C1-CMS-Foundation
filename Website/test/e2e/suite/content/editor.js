@@ -1,11 +1,12 @@
 module.exports = {
-	'can open editor': function (browser) {
+	'can edit front page': function (browser) {
 		browser.url(browser.launchUrl + '/Composite/top.aspx');
 		var content = browser.page.content();
 		content
 			.prepare()
-			// Select first tab
-			.section.docktabs.click('docktab:nth-of-type(1)');
+			// Default situation: One open docktab showing content browser, with tab view.
+			// Select the one open tab
+			.section.docktabs.clickTab(1);
 		content
 			.enterFrame('@browserFrame')
 			// Click edit button (identified by icon name)
@@ -14,14 +15,17 @@ module.exports = {
 			// Locate and check editor screen
 			// relies on it being inside the second ui:view tag in existence in the content frame.
 			.waitForElementPresent('view:nth-of-type(2) window', 1000)
+			.waitForFrameLoad('view:nth-of-type(2) window iframe', 1000)
 			.enterFrame('view:nth-of-type(2) window iframe')
 			.waitForElementVisible('iframe[src="/Composite/content/misc/editors/visualeditor/visualeditor.aspx?config=common"]', 1000)
 			.waitForFrameLoad('iframe[src="/Composite/content/misc/editors/visualeditor/visualeditor.aspx?config=common"]', 1000);
+		// Enter frame with editor content
 		content
-			// Find frame with editor content
-			.selectFrame('#tinymce > img:nth-child(1)')
+			.enterFrame('iframe[src="/Composite/content/misc/editors/visualeditor/visualeditor.aspx?config=common"]')
+			.enterFrame('iframe[src="tinymce.aspx?config=common"]')
+			.enterFrame('#editor_ifr')
 			// Check that it has more than just one entry
-			.verify.visible('#tinymce > img:nth-child(2)')
+			.assert.visible('#tinymce > img:nth-child(2)')
 			// Select the first element
 			.click('#tinymce > img:nth-child(1)')
 			// Click the toolbar button for properties
@@ -67,13 +71,13 @@ module.exports = {
 			.getAttribute('#savebutton', 'isdisabled', function (result) {
 				browser.verify.equal('true', result.value);
 			});
+		// Close editor after you
 		content
-			// Close editor after you
 			.enter()
 			.section.docktabs.closeTab(2);
 		// Check that the change is made
-		browser
-			.pause(3000)
+		// browser
+		// 	.pause(3000)
 		content
 			.enterFrame('@browserFrame')
 			.waitForElementVisible('#browsertabbox iframe', 1000)
