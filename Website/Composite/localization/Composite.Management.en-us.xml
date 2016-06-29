@@ -274,8 +274,8 @@
 	<string key="VirtualElementProviderElementProvider.XsltBasedFunctionPerspective" value="Xslt Based Functions" />
 	<string key="VirtualElementProviderElementProvider.RootActions.SendMessageLabel" value="Broadcast Message" />
 	<string key="VirtualElementProviderElementProvider.RootActions.SendMessageTooltip" value="Send a message to all running consoles" />
-  <string key="VirtualElementProviderElementProvider.RootActions.SetTimezoneLabel" value="Set Time Zone" />
-  <string key="VirtualElementProviderElementProvider.RootActions.SetTimezoneTooltip" value="Change the Time Zone of the Consoles" />
+  <string key="VirtualElementProviderElementProvider.RootActions.SetTimezoneLabel" value="Time Zone Settings" />
+  <string key="VirtualElementProviderElementProvider.RootActions.SetTimezoneTooltip" value="Time zone to be displayed for all users within the console" />
   <string key="VirtualElementProviderElementProvider.RootActions.GlobalSetting" value="Global Settings" />
   <string key="VirtualElementProviderElementProvider.RootActions.RestartApplicationLabel" value="Restart server" />
 	<string key="VirtualElementProviderElementProvider.RootActions.RestartApplicationTooltip" value="Restart the server" />
@@ -284,12 +284,12 @@
   <string key="SendMessageToConsolesWorkflow.TitleTextBox.Help" value="Dialog title of broadcast message" />
 	<string key="SendMessageToConsolesWorkflow.MessageTextArea.Label" value="Message" />
 	<string key="SendMessageToConsolesWorkflow.MessageTextArea.Help" value="The message to broadcast" />
-  <string key="SendMessageToConsolesWorkflow.SuccessMessage.TimezoneChangedTitle" value="Time Zone Changed" />
-  <string key="SendMessageToConsolesWorkflow.SuccessMessage.TimezoneChangedMessage" value="Consoles' Time Zone Are Changed Successfully" />
-  <string key="SetTimezoneWorkflow.Layout.Label" value="Set Time Zone" />
-  <string key="SetTimezoneWorkflow.TitleTextBox.Label" value="Time Zones" />
-  <string key="SetTimezoneWorkflow.TitleTextBox.Help" value="Select Time Zone" />
-  <string key="SetTimezoneWorkflow.WarningText.Text" value="Changing time zone will restart your console. Consider saving your changes before making this change." />
+  <string key="SendMessageToConsolesWorkflow.SuccessMessage.TimezoneChangedTitle" value="Time Zone Updated" />
+  <string key="SendMessageToConsolesWorkflow.SuccessMessage.TimezoneChangedMessage" value="Time zone has been successfully updated" />
+  <string key="SetTimezoneWorkflow.Layout.Label" value="Set Time Zone Display" />
+  <string key="SetTimezoneWorkflow.TitleTextBox.Label" value="Select Time Zone" />
+  <string key="SetTimezoneWorkflow.TitleTextBox.Help" value="Time zone to be displayed for all users within the console" />
+  <string key="SetTimezoneWorkflow.WarningText.Text" value="Time zone update requires a console restart. Any unsaved changes will be lost." />
   <string key="LoginWebRequestHandler.Login" value="Login" />
 	<string key="LoginWebRequestHandler.Header" value="Login to {0}" />
 	<string key="LoginWebRequestHandler.LoginFailed" value="Incorrect user name or password" />
