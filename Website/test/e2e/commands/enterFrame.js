@@ -9,9 +9,15 @@ util.inherits(EnterFrame, events.EventEmitter);
 
 EnterFrame.prototype.command = function(selector) {
 	this.client.api.element('css selector', selector, result => {
+		if (!result.value.ELEMENT) {
+			this.client.assertion(false, null, null, 'Frame <' + selector + '> was not found', this.abortOnFailure, this._stackTrace);
+		}
 		this.client.api.frame(
 			result.value,
-			() => this.emit('complete')
+			() => {
+				// this.client.assertion(true, null, null, 'Entered frame <' + selector + '>', this.abortOnFailure);
+				this.emit('complete');
+			}
 		);
 	});
   return this.client.api;

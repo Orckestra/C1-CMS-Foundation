@@ -39,7 +39,6 @@ WaitForFrameLoad.prototype.command = function(selector, timeout) {
 			} else {
 				timedRecheck = setTimeout(checkFrameLoaded, interval);
 				timeElapsed += interval;
-				console.log('waiting:', timeElapsed);
 			}
 		});
 	};

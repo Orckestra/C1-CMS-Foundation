@@ -2,6 +2,7 @@ module.exports = {
 	'can edit front page': function (browser) {
 		browser.url(browser.launchUrl + '/Composite/top.aspx');
 		var content = browser.page.content();
+		var editor = browser.page.editor();
 		content
 			.prepare()
 			// Default situation: One open docktab showing content browser, with tab view.
@@ -11,39 +12,39 @@ module.exports = {
 			.enterFrame('@browserFrame')
 			// Click edit button (identified by icon name)
 			.click('toolbarbutton[image="page-edit-page"]')
-			.leaveFrame()
 			// Locate and check editor screen
-			// relies on it being inside the second ui:view tag in existence in the content frame.
-			.waitForElementPresent('view:nth-of-type(2) window', 1000)
-			.waitForFrameLoad('view:nth-of-type(2) window iframe', 1000)
-			.enterFrame('view:nth-of-type(2) window iframe')
-			.waitForElementVisible('iframe[src="/Composite/content/misc/editors/visualeditor/visualeditor.aspx?config=common"]', 1000)
-			.waitForFrameLoad('iframe[src="/Composite/content/misc/editors/visualeditor/visualeditor.aspx?config=common"]', 1000);
+			// Relies on it being inside the second docktab frame in existence.
+			.enterTabFrame(2)
 		// Enter frame with editor content
-		content
-			.enterFrame('iframe[src="/Composite/content/misc/editors/visualeditor/visualeditor.aspx?config=common"]')
-			.enterFrame('iframe[src="tinymce.aspx?config=common"]')
-			.enterFrame('#editor_ifr')
+		editor
+			.enter()
 			// Check that it has more than just one entry
-			.assert.visible('#tinymce > img:nth-child(2)')
+			.section.editorBody
+			.assert.visible('img:nth-child(2)')
 			// Select the first element
-			.click('#tinymce > img:nth-child(1)')
+			.click('img:nth-child(1)')
 			// Click the toolbar button for properties
+		browser
 			.selectFrame('toolbarbutton[cmd="compositeInsertRendering"]')
 			.click('toolbarbutton[cmd="compositeInsertRendering"]')
-			.api.pause(1000);
+			.pause(1000);
 		// Click the edit HTML button
 		content
 			.selectFrame('#renderingdialogpage')
 			.click('htmldatadialog')
-			.api.pause(1000);
-		// Find and enter the editor in the dialog that just appeared
-		content
+		browser
+			.pause(1000)
+			// Find the editor in the dialog that just appeared
 			.selectFrame('#masterdialogset')
-			.selectFrame('#visualeditor', true)
-			.selectFrame('body#tinymce', true);
+			.enterFrame('iframe[src^="/Composite/content/dialogs/wysiwygeditor/wysiwygeditordialog.aspx"]')
+		editor
+			.selectFrame('@editorFrame', true)
+			// Enter the editor frame
+			.enter();
 		// Edit its contents
-		browser.replaceContent('#tinymce > h1 > em', 'Jupiter');
+		browser
+			.assert.elementPresent('#tinymce > h1 > em')
+			.replaceContent('#tinymce > h1 > em', 'Jupiter');
 		// Approve the change
 		content
 			.selectFrame('#masterdialogset')
@@ -58,32 +59,34 @@ module.exports = {
 		browser.pause(500)
 		// Save change.
 		content
-			.selectFrame('#savebutton');
-		content
-			.getAttribute('#savebutton', 'isdisabled', function (result) {
-				browser.verify.equal(null, result.value);
-			});
-		content
+			.selectFrame('#savebutton')
+			.verify.cssClassNotPresent('#savebutton', 'isdisabled')
 			.click('#savebutton > labelbox');
 		browser
 			.pause(1000)
 		content
-			.getAttribute('#savebutton', 'isdisabled', function (result) {
-				browser.verify.equal('true', result.value);
-			});
-		// Close editor after you
-		content
-			.enter()
+			.verify.cssClassPresent('#savebutton', 'isdisabled')
+			// Close editor after you
+			.enter() // Reset to content frame
 			.section.docktabs.closeTab(2);
 		// Check that the change is made
-		// browser
-		// 	.pause(3000)
 		content
 			.enterFrame('@browserFrame')
 			.waitForElementVisible('#browsertabbox iframe', 1000)
+			.waitForFrameLoad('#browsertabbox iframe', 1000)
 			.enterFrame('#browsertabbox iframe')
 			// The below fails if page starts out with unpublished changes.
 			.assert.containsText('div.jumbotron-content > h1 > em', 'Jupiter');
+	},
+	after: function (browser) {
+		var content = browser.page.content();
+		// Revert changes
+		content
+			.enter()
+			.enterFrame('@browserFrame')
+			.click('#moreactionsbutton')
+			.click('menuitem[image="item-undo-unpublished-changes"]')
+			.click('toolbarbutton[image="item-publish"]')
 		browser.end();
 	}
 };

@@ -36,10 +36,11 @@ SelectFrame.prototype.command = function(selector, noReset) {
 		result => {
 			if (Array.isArray(result.value)) {
 				result.value.forEach(key => this.client.api.frame(key));
-				this.emit('complete');
+				// this.client.assertion(true, null, null, 'Found element <' + selector + '> and entered frame containing it' + (noReset ? ' without resetting to top frame' : ''), this.abortOnFailure);
 			} else {
-				throw new Error('Did not find selector "' + selector + '" in any frame.');
+				this.client.assertion(false, null, null, 'Did not find selector <' + selector + '> in any frame.', this.abortOnFailure, this._stackTrace);
 			}
+			this.emit('complete');
 		});
 	return this.client.api;
 };

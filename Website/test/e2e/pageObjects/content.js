@@ -29,6 +29,14 @@ module.exports = {
 					.waitForElementVisible('@browserFrame', 2000)
 					.waitForFrameLoad('@browserFrame', 1000);
 				return this;
+			},
+			enterTabFrame: function (index) {
+				this
+					.enter()
+					.waitForElementPresent('view:nth-of-type(' + index + ') window', 1000)
+					.waitForFrameLoad('view:nth-of-type(' + index + ') window iframe', 1000)
+					.enterFrame('view:nth-of-type(' + index + ') window iframe')
+				return this;
 			}
 		}
 	]
