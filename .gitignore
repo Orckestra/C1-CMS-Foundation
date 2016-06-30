@@ -16,6 +16,7 @@
 /Website/Composite/lib
 /Website/Frontend
 /Website/node_modules
+/Website/jspm_packages
 /Website/Composite/images/sprite.svg
 /Website/Views
 /Website/Web.config
