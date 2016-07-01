@@ -3,9 +3,10 @@ import ActionButton from './ActionButton.js';
 
 export default class Toolbar extends React.Component {
 	render() {
-		let buttons = [];
+		let buttons = this.props.buttons.map(
+			(button, index) => <ActionButton key={index} {...button} getState={this.props.getState}/>
+		);
 		// For each button in state, create matching ActionButton
-		buttons.push(<ActionButton key={1}/>);
 		return (
 			<div className="toolbar">
 				{buttons}

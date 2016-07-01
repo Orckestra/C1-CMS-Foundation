@@ -1,9 +1,17 @@
 {
   "name": "CompositeC1",
   "version": "1.0.0",
+  "scripts": {
+    "test": "npm run unittest",
+    "unittest": "./node_modules/.bin/mocha --compilers js:babel-register test/unit/runner"
+  },
   "devDependencies": {
     "JSONPath": "^0.10.0",
     "autoprefixer-core": "^5.2.1",
+    "babel-core": "6.10.4",
+    "babel-preset-es2015": "6.9.0",
+    "babel-preset-react": "6.11.1",
+    "babel-register": "6.9.0",
     "csswring": "^3.0.5",
     "grunt": "~0.4.5",
     "grunt-contrib-copy": "0.8.2",
@@ -11,13 +19,22 @@
     "grunt-contrib-uglify": "^0.9.1",
     "grunt-contrib-watch": "~0.6.1",
     "grunt-postcss": "^0.5.5",
+    "jsdom": "9.3.0",
     "jspm": "0.16.39",
     "less": "^2.1.2",
+    "mocha": "2.5.3",
+    "react": "15.1.0",
+    "react-addons-test-utils": "15.1.0",
+    "react-dom": "15.1.0",
+    "systemjs": "0.19.31",
+    "unexpected": "10.14.2",
+    "unexpected-react": "3.2.3",
     "xml2js": "^0.4.10"
   },
   "jspm": {
     "dependencies": {
       "react": "npm:react@^15.1.0",
+      "react-addons-update": "npm:react-addons-update@^15.1.0",
       "react-dom": "npm:react-dom@^15.1.0"
     },
     "devDependencies": {

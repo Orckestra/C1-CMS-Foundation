@@ -18,6 +18,7 @@ System.config({
     "babel-runtime": "npm:babel-runtime@5.8.38",
     "core-js": "npm:core-js@1.2.6",
     "react": "npm:react@15.1.0",
+    "react-addons-update": "npm:react-addons-update@15.1.0",
     "react-dom": "npm:react-dom@15.1.0",
     "github:jspm/nodelibs-assert@0.1.0": {
       "assert": "npm:assert@1.4.1"
@@ -180,6 +181,9 @@ System.config({
     },
     "npm:punycode@1.3.2": {
       "process": "github:jspm/nodelibs-process@0.1.2"
+    },
+    "npm:react-addons-update@15.1.0": {
+      "react": "npm:react@15.1.0"
     },
     "npm:react-dom@15.1.0": {
       "react": "npm:react@15.1.0"

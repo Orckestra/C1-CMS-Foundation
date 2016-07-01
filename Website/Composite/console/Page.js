@@ -2,15 +2,38 @@
 import React from 'react';
 import Toolbar from './Toolbar.js';
 import Fieldset from './Fieldset.js';
+import update from 'react-addons-update';
 
 export default class Page extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			fieldsets: {}
+		};
+		this.props.fieldsets.forEach(fieldset => {
+			this.state.fieldsets[fieldset.name] = {};
+			fieldset.fields.forEach(field => {
+				this.state.fieldsets[fieldset.name][field.name] = 'initialValue' in field ? field.initialValue : '';
+				field.changeValue = newValue => {
+					let change = { fieldsets: {} };
+					change.fieldsets[fieldset.name] = {};
+					change.fieldsets[fieldset.name][field.name] = { $set: newValue };
+					let newState = update(this.state, change);
+					this.setState(newState);
+				}
+			});
+		});
+  }
+
+	getState() {return this.state }
+
 	render() {
-		let fieldSets = [];
-		// For each fieldset in state, render a fieldSet
-		fieldSets.push(<Fieldset key={1}/>);
+		let fieldSets = this.props.fieldsets.map(
+			(fieldset, index) => <Fieldset key={index} {...fieldset} values={this.state.fieldsets[fieldset.name]}/>
+		);
 		return (
 			<div className="page">
-				<Toolbar/>
+				<Toolbar buttons={this.props.buttons} getState={this.getState.bind(this)}/>
 				{fieldSets}
 			</div>
 		);
