@@ -489,7 +489,7 @@ namespace Composite.Data
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");
             if (dataKeyPropertyCollection == null) throw new ArgumentNullException("dataKeyPropertyCollection");
 
-            var keyProperties = DataAttributeFacade.GetPhysicalKeyProperties(interfaceType);
+            var keyProperties = DataAttributeFacade.GetKeyProperties(interfaceType);
 
             ParameterExpression parameterExpression = Expression.Parameter(interfaceType, "data");
 
@@ -510,13 +510,10 @@ namespace Composite.Data
         {
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");
 
-            var propertyInfos = DataAttributeFacade.GetPhysicalKeyProperties(interfaceType);
+            PropertyInfo propertyInfo = DataAttributeFacade.GetKeyProperties(interfaceType).Single();
+
             var dataKeyPropertyCollection = new DataKeyPropertyCollection();
-            foreach (var propertyInfo in propertyInfos)
-            {
                 dataKeyPropertyCollection.AddKeyProperty(propertyInfo, dataKeyValue);
-            }
-            
 
             return GetPredicateExpressionByUniqueKey(interfaceType, dataKeyPropertyCollection);
         }
@@ -600,11 +597,7 @@ namespace Composite.Data
         {
             Verify.ArgumentNotNull(interfaceType, "interfaceType");
 
-            var properties = interfaceType.GetPhysicalKeyProperties();
-
-            // TODO: implemented cached lookup for versioned data types
-            if (DataCachingFacade.IsDataAccessCacheEnabled(interfaceType)
-                && properties.Count == 1)
+            if(DataCachingFacade.IsDataAccessCacheEnabled(interfaceType))
             {
                 var cachedByKey = DataFacade.GetData(interfaceType) as CachingQueryable_CachedByKey;
                 if(cachedByKey != null)
@@ -612,14 +605,12 @@ namespace Composite.Data
                     return cachedByKey.GetCachedValueByKey(dataKeyValue);
                 }
             }
+           
 
+            PropertyInfo propertyInfo = DataAttributeFacade.GetKeyProperties(interfaceType).Single();
 
-            var dataKeyPropertyCollection = new DataKeyPropertyCollection();
-            foreach (var propertyInfo in properties)
-            {
+            DataKeyPropertyCollection dataKeyPropertyCollection = new DataKeyPropertyCollection();
                 dataKeyPropertyCollection.AddKeyProperty(propertyInfo, dataKeyValue);
-            }
-            
 
             return TryGetDataByUniqueKey(interfaceType, dataKeyPropertyCollection);
         }

@@ -508,11 +508,8 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     continue;
                 }
 
-                // Backward compatibility
-                AddDefaultVersionId(dataKeyPropertyCollection, dataType.InterfaceType);
 
-
-                // Validating keys already present
+                // Validating keys already present    
                 if (!dataType.AllowOverwrite && !dataType.OnlyUpdate)
                 {
                     bool dataLocaleExists = 
@@ -558,16 +555,6 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 _validationResult.AddFatal(GetText("DataPackageFragmentInstaller.DataExists").FormatWith(dataType.InterfaceType, itemsAlreadyPresentInDatabase));
             }
         }
-
-        private void AddDefaultVersionId(DataKeyPropertyCollection keyCollection, Type dataType)
-        {
-            if (typeof(IVersioned).IsAssignableFrom(dataType)
-                    && !keyCollection.KeyProperties.Any(k => k.Key == nameof(IVersioned.VersionId)))
-            {
-                keyCollection.AddKeyProperty(nameof(IVersioned.VersionId), Guid.Empty);
-            }
-        }
-
 
         private void CheckForBrokenReference(DataType refereeType, Type type, string propertyName, object propertyValue)
         {
