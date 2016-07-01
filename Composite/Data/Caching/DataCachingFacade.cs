@@ -111,7 +111,7 @@ namespace Composite.Data.Caching
 
 
         /// <exclude />
-        internal static IQueryable<T> GetDataFromCache<T>()
+        internal static IQueryable<T> GetDataFromCache<T>(Func<IQueryable<T>> getQueryFunc)
             where T : class, IData
         {
             Verify.That(_isEnabled, "The cache is disabled.");
@@ -151,7 +151,7 @@ namespace Composite.Data.Caching
             CachedTable cachedTable;
             if (!localizationScopeData.TryGetValue(localizationScope, out cachedTable))
             {
-                IQueryable<T> wholeTable = DataFacade.GetData<T>(false, null);
+                IQueryable<T> wholeTable = getQueryFunc();
 
                 if(!DataProvidersSupportDataWrapping(typeof(T)))
                 {

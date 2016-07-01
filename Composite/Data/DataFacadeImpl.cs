@@ -22,7 +22,7 @@ namespace Composite.Data
 {
     internal class DataFacadeImpl : IDataFacade
     {
-        private static readonly string LogTitle = "DataFacade";
+        private static readonly string LogTitle = nameof(DataFacade);
 
         internal Dictionary<Type, DataInterceptor> GlobalDataInterceptors = new Dictionary<Type, DataInterceptor>();
 
@@ -47,37 +47,16 @@ namespace Composite.Data
 
             if (DataProviderRegistry.AllInterfaces.Contains(typeof (T)))
             {
-                if (useCaching && DataCachingFacade.IsDataAccessCacheEnabled(typeof (T)))
+                if (useCaching 
+                    && providerNames == null
+                    && DataCachingFacade.IsDataAccessCacheEnabled(typeof (T)))
                 {
-                    resultQueryable = DataCachingFacade.GetDataFromCache<T>();
+                    resultQueryable = DataCachingFacade.GetDataFromCache<T>(
+                        () => BuildQueryFromProviders<T>(null));
                 }
                 else
                 {
-                    if (providerNames == null)
-                    {
-                        providerNames = DataProviderRegistry.GetDataProviderNamesByInterfaceType(typeof (T));
-                    }
-
-                    List<IQueryable<T>> queryables = new List<IQueryable<T>>();
-                    foreach (string providerName in providerNames)
-                    {
-                        IQueryable<T> queryable = DataProviderPluginFacade.GetData<T>(providerName);
-
-                        queryables.Add(queryable);
-                    }
-
-                    bool resultIsCached = queryables.Count == 1 && queryables[0] is ICachedQuery;
-
-                    if (resultIsCached)
-                    {
-                        resultQueryable = queryables[0];
-                    }
-                    else
-                    {
-                        var multipleSourceQueryable = new DataFacadeQueryable<T>(queryables);
-
-                        resultQueryable = multipleSourceQueryable;
-                    }
+                    resultQueryable = BuildQueryFromProviders<T>(providerNames);
                 }
             }
             else
@@ -108,6 +87,31 @@ namespace Composite.Data
             return resultQueryable;
         }
 
+
+        private IQueryable<T> BuildQueryFromProviders<T>(IEnumerable<string> providerNames) where T : class, IData
+        {
+            if (providerNames == null)
+            {
+                providerNames = DataProviderRegistry.GetDataProviderNamesByInterfaceType(typeof(T));
+            }
+
+            var queries = new List<IQueryable<T>>();
+            foreach (string providerName in providerNames)
+            {
+                IQueryable<T> query = DataProviderPluginFacade.GetData<T>(providerName);
+
+                queries.Add(query);
+            }
+
+            bool resultIsCached = queries.Count == 1 && queries[0] is ICachedQuery;
+
+            if (resultIsCached)
+            {
+                return queries[0];
+            }
+            
+            return  new DataFacadeQueryable<T>(queries);
+        }
 
 
         public T GetDataFromDataSourceId<T>(DataSourceId dataSourceId, bool useCaching)
@@ -162,18 +166,18 @@ namespace Composite.Data
 
         public IEnumerable<DataInterceptor> GetDataInterceptors(Type dataType)
         {
-            DataInterceptor globaDataInterceptor = GlobalDataInterceptors
+            DataInterceptor globalDataInterceptor = GlobalDataInterceptors
                 .FirstOrDefault(kvp => kvp.Key.IsAssignableFrom(dataType)).Value;
 
             DataInterceptor threadedDataInterceptor;
             this.DataInterceptors.TryGetValue(dataType, out threadedDataInterceptor);
 
-            if (threadedDataInterceptor == null && globaDataInterceptor == null)
+            if (threadedDataInterceptor == null && globalDataInterceptor == null)
             {
                 return Enumerable.Empty<DataInterceptor>();
             }
 
-            var dataInterceptors = new List<DataInterceptor> { threadedDataInterceptor, globaDataInterceptor };
+            var dataInterceptors = new List<DataInterceptor> { threadedDataInterceptor, globalDataInterceptor };
 
             return dataInterceptors.Where(d => d != null);
         } 
@@ -242,7 +246,7 @@ namespace Composite.Data
 
                 var threadData = ThreadDataManager.GetCurrentNotNull();
 
-                Dictionary<Type, DataInterceptor> dataInterceptors = threadData.GetValue(threadDataKey) as Dictionary<Type, DataInterceptor>;
+                var dataInterceptors = threadData.GetValue(threadDataKey) as Dictionary<Type, DataInterceptor>;
 
                 if (dataInterceptors == null)
                 {
@@ -260,7 +264,7 @@ namespace Composite.Data
         {
             Verify.ArgumentNotNull(dataset, "dataset");
 
-            Dictionary<string, Dictionary<Type, List<IData>>> sortedDataset = dataset.ToDataProviderAndInterfaceTypeSortedDictionary();
+            var sortedDataset = dataset.ToDataProviderAndInterfaceTypeSortedDictionary();
 
             if (!suppressEventing)
             {
