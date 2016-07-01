@@ -6,7 +6,7 @@ var unexpected = require('unexpected');
 var unexpectedReact = require('unexpected-react');
 
 // then react
-var React = require('react/addons');
+var React = require('react');
 
 // define our instance of the `expect` function to use
 const expect = unexpected.clone()

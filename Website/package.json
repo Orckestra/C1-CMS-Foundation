@@ -13,6 +13,7 @@
     "babel-preset-react": "6.11.1",
     "babel-register": "6.9.0",
     "csswring": "^3.0.5",
+    "glob": "7.0.5",
     "grunt": "~0.4.5",
     "grunt-contrib-copy": "0.8.2",
     "grunt-contrib-less": "^1.0.0",
