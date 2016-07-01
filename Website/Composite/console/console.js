@@ -1,10 +1,14 @@
 import React from 'react';
 import { render } from 'react-dom';
 import Page from './Page.js';
+import './console.scss!';
 
 let pageProps = {
 	buttons: [
-		{ label: 'Save', action: data => console.log('actionkey', data) }
+		{
+			label: 'Save',
+			action: data => console.log('actionkey', data)
+		}
 	],
 	fieldsets: [
 		{

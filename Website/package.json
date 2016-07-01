@@ -36,7 +36,8 @@
     "dependencies": {
       "react": "npm:react@^15.1.0",
       "react-addons-update": "npm:react-addons-update@^15.1.0",
-      "react-dom": "npm:react-dom@^15.1.0"
+      "react-dom": "npm:react-dom@^15.1.0",
+      "scss": "github:mobilexag/plugin-sass@^0.4.6"
     },
     "devDependencies": {
       "babel": "npm:babel-core@^5.8.24",

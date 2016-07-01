@@ -1,0 +1,37 @@
+$buttonTextColor: #575757;
+$borderColor: #ccc;
+$buttonShadowColor: #ddd;
+$highlightColor: #1ea371;
+
+$toolbarVerticalPadding: 15px;
+
+body {
+	margin: 0;
+	height: 100%;
+}
+
+body, input, textarea, select, button {
+	font-size: 12px;
+	font-family: "Segoe UI", Tahoma, sans-serif;
+}
+
+div.toolbar {
+	padding: $toolbarVerticalPadding 20px;
+}
+
+button {
+	text-transform: uppercase;
+	border: 1px solid $borderColor;
+	border-radius: 4px;
+	background: #fff;
+	color: $buttonTextColor;
+	margin: 2px 10px 2px 0;
+	padding: 6px 11px;
+	line-height: 18px;
+	box-shadow: 0 2px 2px -2px $buttonShadowColor;
+}
+
+div.scrollbox {
+	border-top: 1px solid $borderColor;
+	height: calc(100% - 66px);
+}

@@ -34,7 +34,9 @@ export default class Page extends React.Component {
 		return (
 			<div className="page">
 				<Toolbar buttons={this.props.buttons} getState={this.getState.bind(this)}/>
-				{fieldSets}
+				<div className="scrollbox">
+					{fieldSets}
+				</div>
 			</div>
 		);
 	}
