@@ -1,8 +1,8 @@
-import expect from '../helpers/expect.js';
+import expect from '../helpers/expect';
 import sinon from 'sinon';
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
-import ActionButton from '../../../Composite/console/ActionButton.js';
+import ActionButton from '../../../Composite/console/ActionButton';
 
 describe('ActionButton', () => {
 	let renderer, props, state;
