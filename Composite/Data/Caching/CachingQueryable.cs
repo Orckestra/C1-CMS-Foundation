@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
-using Composite.Core.Collections.Generic;
 using Composite.Core.Types;
 using Composite.Data.Caching.Foundation;
 using System.Reflection;
@@ -57,7 +56,7 @@ namespace Composite.Data.Caching
         private readonly CachingEnumerable<T> _wrappedEnumerable;
         private readonly Func<IQueryable> _getQueryFunc;
 
-        private readonly DataCachingFacade.CachedTable _cachedTable;
+        private volatile DataCachingFacade.CachedTable _cachedTable;
         private static readonly MethodInfo _wrappingMethodInfo;
 
         private IEnumerable<T> _innerEnumerable;
@@ -202,66 +201,84 @@ namespace Composite.Data.Caching
 
         public IData GetCachedValueByKey(object key)
         {
-            if (_cachedTable.RowByKey == null)
+            IEnumerable<IData> cachedRows = GetRowsByKeyTable()[key];
+            if (cachedRows == null) return null;
+
+            IEnumerable<T> filteredData = cachedRows.Cast<T>();
+
+            var filterMethodInfo = StaticReflection.GetGenericMethodInfo(
+                    () => ((DataInterceptor)null).InterceptGetData((IEnumerable<IData>)null))
+                    .MakeGenericMethod(typeof(T));
+
+            foreach (var dataInterceptor in DataFacade.GetDataInterceptors(typeof(T)))
             {
-                lock(_cachedTable)
+                filteredData = (IEnumerable<T>)filterMethodInfo.Invoke(dataInterceptor, new object[] { filteredData });
+            }
+
+            var result = filteredData.FirstOrDefault();
+            if (result == null)
+            {
+                return null;
+            }
+
+            return _wrappingMethodInfo.Invoke(null, new object[] { result }) as IData;
+        }
+
+
+        Dictionary<object, IEnumerable<IData>> GetRowsByKeyTable()
+        {
+            var cachedTable = GetCachedTable();
+
+            var result = cachedTable.RowsByKey;
+            if (result != null)
+            {
+                return result;
+            }
+
+            lock (cachedTable)
+            {
+                result = cachedTable.RowsByKey;
+                if (result != null)
                 {
-                    if (_cachedTable.RowByKey == null)
+                    return result;
+                }
+
+                PropertyInfo keyPropertyInfo = typeof(T).GetKeyProperties().Single();
+
+                result = BuildEnumerable()
+                    .GroupBy(data => keyPropertyInfo.GetValue(data, null))
+                    .ToDictionary(group => group.Key, group => group.ToArray() as IEnumerable<IData>);
+
+                return cachedTable.RowsByKey = result;
+            }
+        }
+
+
+        private DataCachingFacade.CachedTable GetCachedTable()
+        {
+            if (_cachedTable == null)
+            {
+                lock (this)
+                {
+                    if (_cachedTable == null)
                     {
-                        var table = new Hashtable<object, object>();
-
-                        PropertyInfo keyPropertyInfo = DataAttributeFacade.GetKeyProperties(typeof(T)).Single();
-
-                        IEnumerable<T> enumerable = BuildEnumerable();
-
-                        var emptyIndexCollection = new object[0];
-
-                        foreach(T row in enumerable)
-                        {
-                            object rowKey = keyPropertyInfo.GetValue(row, emptyIndexCollection);
-
-                            table.Add(rowKey, row);
-                        }
-
-                        _cachedTable.RowByKey = table;
+                        _cachedTable = new DataCachingFacade.CachedTable(GetOriginalQuery());
                     }
                 }
             }
 
-            object cachedRow = _cachedTable.RowByKey[key];
-            if (cachedRow == null) return null;
-
-            return _wrappingMethodInfo.Invoke(null, new object[] { cachedRow }) as IData;
+            return _cachedTable;
         }
 
 
-        public Expression Expression
-        {
-            get { return _currentExpression; }
-        }
+        public Expression Expression => _currentExpression;
 
+        public Type ElementType => typeof(T);
 
+        public IQueryProvider Provider => this;
 
-        public Type ElementType
-        {
-            get { return typeof(T); }
-        }
+        public IQueryable Source => _source;
 
-
-
-        public IQueryProvider Provider
-        {
-            get { return this; }
-        }
-
-        public IQueryable Source
-        {
-            get { return _source; }
-        }
-
-        public IQueryable GetOriginalQuery()
-        {
-            return _getQueryFunc();
-        }
+        public IQueryable GetOriginalQuery() => _getQueryFunc();
     }
 }

@@ -65,21 +65,15 @@ namespace Composite.Data.Caching
             /// <summary>
             /// Row by key table
             /// </summary>
-            public Hashtable<object, object> RowByKey;
+            public Dictionary<object, IEnumerable<IData>> RowsByKey;
         }
 
         /// <summary>
         /// Gets a value indicating if data caching is enabled
         /// </summary>
-        public static bool Enabled
-        {
-            get
-            {
-                return _isEnabled;
-            }
-        }
+        public static bool Enabled => _isEnabled;
 
-        
+
         /// <summary>
         /// Gets a value indicating if data caching is possible for a specific data type
         /// </summary>
@@ -194,7 +188,7 @@ namespace Composite.Data.Caching
             {
                 using (new DataScope(dataScopeIdentifier, localizationScope))
                 {
-                    return DataFacade.GetData<T>(false);
+                    return getQueryFunc();
                 }
             };
 
@@ -303,7 +297,7 @@ namespace Composite.Data.Caching
             if(_queryableTakeMathodInfo == null)
             {
                 _queryableTakeMathodInfo = (from method in typeof(Queryable).GetMethods(BindingFlags.Static | BindingFlags.Public)
-                              where method.Name == "Take" &&
+                              where method.Name == nameof(Queryable.Take) &&
                               method.IsGenericMethod
                               select method).First();
             }
