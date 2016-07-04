@@ -14,8 +14,7 @@ export default class DataField extends React.Component {
 					id={this.props.name}
 					value={this.props.value}
 					ref="input"
-					onChange={this.handleChange.bind(this)}>
-				</input>
+					onChange={this.handleChange.bind(this)}/>
 				<span className="helper">{this.props.help}</span>
 			</div>
 		);
