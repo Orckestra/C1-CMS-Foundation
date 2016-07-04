@@ -1651,9 +1651,9 @@ public static string VirtualElementProviderElementProvider_XsltBasedFunctionPers
 public static string VirtualElementProviderElementProvider_RootActions_SendMessageLabel=>T("VirtualElementProviderElementProvider.RootActions.SendMessageLabel");
 ///<summary>&quot;Send a message to all running consoles&quot;</summary> 
 public static string VirtualElementProviderElementProvider_RootActions_SendMessageTooltip=>T("VirtualElementProviderElementProvider.RootActions.SendMessageTooltip");
-///<summary>&quot;Set Time Zone&quot;</summary> 
+///<summary>&quot;Time Zone Settings&quot;</summary> 
 public static string VirtualElementProviderElementProvider_RootActions_SetTimezoneLabel=>T("VirtualElementProviderElementProvider.RootActions.SetTimezoneLabel");
-///<summary>&quot;Change the Time Zone of the Consoles&quot;</summary> 
+///<summary>&quot;Time zone to be displayed for all users within the console&quot;</summary> 
 public static string VirtualElementProviderElementProvider_RootActions_SetTimezoneTooltip=>T("VirtualElementProviderElementProvider.RootActions.SetTimezoneTooltip");
 ///<summary>&quot;Global Settings&quot;</summary> 
 public static string VirtualElementProviderElementProvider_RootActions_GlobalSetting=>T("VirtualElementProviderElementProvider.RootActions.GlobalSetting");
@@ -1671,17 +1671,17 @@ public static string SendMessageToConsolesWorkflow_TitleTextBox_Help=>T("SendMes
 public static string SendMessageToConsolesWorkflow_MessageTextArea_Label=>T("SendMessageToConsolesWorkflow.MessageTextArea.Label");
 ///<summary>&quot;The message to broadcast&quot;</summary> 
 public static string SendMessageToConsolesWorkflow_MessageTextArea_Help=>T("SendMessageToConsolesWorkflow.MessageTextArea.Help");
-///<summary>&quot;Time Zone Changed&quot;</summary> 
+///<summary>&quot;Time Zone Updated&quot;</summary> 
 public static string SendMessageToConsolesWorkflow_SuccessMessage_TimezoneChangedTitle=>T("SendMessageToConsolesWorkflow.SuccessMessage.TimezoneChangedTitle");
-///<summary>&quot;Consoles&apos; Time Zone Are Changed Successfully&quot;</summary> 
+///<summary>&quot;Time zone has been successfully updated&quot;</summary> 
 public static string SendMessageToConsolesWorkflow_SuccessMessage_TimezoneChangedMessage=>T("SendMessageToConsolesWorkflow.SuccessMessage.TimezoneChangedMessage");
-///<summary>&quot;Set Time Zone&quot;</summary> 
+///<summary>&quot;Set Time Zone Display&quot;</summary> 
 public static string SetTimezoneWorkflow_Layout_Label=>T("SetTimezoneWorkflow.Layout.Label");
-///<summary>&quot;Time Zones&quot;</summary> 
-public static string SetTimezoneWorkflow_TitleTextBox_Label=>T("SetTimezoneWorkflow.TitleTextBox.Label");
 ///<summary>&quot;Select Time Zone&quot;</summary> 
+public static string SetTimezoneWorkflow_TitleTextBox_Label=>T("SetTimezoneWorkflow.TitleTextBox.Label");
+///<summary>&quot;Time zone to be displayed for all users within the console&quot;</summary> 
 public static string SetTimezoneWorkflow_TitleTextBox_Help=>T("SetTimezoneWorkflow.TitleTextBox.Help");
-///<summary>&quot;Changing time zone will restart your console. Consider saving your changes before making this change.&quot;</summary> 
+///<summary>&quot;Time zone update requires a console restart. Any unsaved changes will be lost.&quot;</summary> 
 public static string SetTimezoneWorkflow_WarningText_Text=>T("SetTimezoneWorkflow.WarningText.Text");
 ///<summary>&quot;Login&quot;</summary> 
 public static string LoginWebRequestHandler_Login=>T("LoginWebRequestHandler.Login");
@@ -5219,7 +5219,7 @@ public static string TimezoneAbbriviations_Easter_Island_Standard_Time=>T("Timez
 public static string TimezoneAbbriviations_Central_Standard_Time_Mexico=>T("TimezoneAbbriviations.Central Standard Time (Mexico)");
 ///<summary>&quot;CST&quot;</summary> 
 public static string TimezoneAbbriviations_Canada_Central_Standard_Time=>T("TimezoneAbbriviations.Canada Central Standard Time");
-///<summary>&quot;COT&quot;</summary> 
+///<summary>&quot;SAPST&quot;</summary> 
 public static string TimezoneAbbriviations_SA_Pacific_Standard_Time=>T("TimezoneAbbriviations.SA Pacific Standard Time");
 ///<summary>&quot;EST&quot;</summary> 
 public static string TimezoneAbbriviations_Eastern_Standard_Time_Mexico=>T("TimezoneAbbriviations.Eastern Standard Time (Mexico)");
@@ -5239,7 +5239,7 @@ public static string TimezoneAbbriviations_Paraguay_Standard_Time=>T("TimezoneAb
 public static string TimezoneAbbriviations_Atlantic_Standard_Time=>T("TimezoneAbbriviations.Atlantic Standard Time");
 ///<summary>&quot;AMST&quot;</summary> 
 public static string TimezoneAbbriviations_Central_Brazilian_Standard_Time=>T("TimezoneAbbriviations.Central Brazilian Standard Time");
-///<summary>&quot;BOT&quot;</summary> 
+///<summary>&quot;SAWST&quot;</summary> 
 public static string TimezoneAbbriviations_SA_Western_Standard_Time=>T("TimezoneAbbriviations.SA Western Standard Time");
 ///<summary>&quot;CLST&quot;</summary> 
 public static string TimezoneAbbriviations_Pacific_SA_Standard_Time=>T("TimezoneAbbriviations.Pacific SA Standard Time");

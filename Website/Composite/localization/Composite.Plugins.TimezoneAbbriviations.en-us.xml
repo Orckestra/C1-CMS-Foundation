@@ -18,7 +18,7 @@
   <string key = "TimezoneAbbriviations.Easter Island Standard Time" value = "EASST" />
   <string key = "TimezoneAbbriviations.Central Standard Time (Mexico)" value = "CST" />
   <string key = "TimezoneAbbriviations.Canada Central Standard Time" value = "CST" />
-  <string key = "TimezoneAbbriviations.SA Pacific Standard Time" value = "COT" />
+  <string key = "TimezoneAbbriviations.SA Pacific Standard Time" value = "SAPST" />
   <string key = "TimezoneAbbriviations.Eastern Standard Time (Mexico)" value = "EST" />
   <string key = "TimezoneAbbriviations.Eastern Standard Time" value = "EST" />
   <string key = "TimezoneAbbriviations.Haiti Standard Time" value = "EST" />
@@ -28,7 +28,7 @@
   <string key = "TimezoneAbbriviations.Paraguay Standard Time" value = "PYST" />
   <string key = "TimezoneAbbriviations.Atlantic Standard Time" value = "AST" />
   <string key = "TimezoneAbbriviations.Central Brazilian Standard Time" value = "AMST" />
-  <string key = "TimezoneAbbriviations.SA Western Standard Time" value = "BOT" />
+  <string key = "TimezoneAbbriviations.SA Western Standard Time" value = "SAWST" />
   <string key = "TimezoneAbbriviations.Pacific SA Standard Time" value = "CLST" />
   <string key = "TimezoneAbbriviations.Turks And Caicos Standard Time" value = "UTC-04" />
   <string key = "TimezoneAbbriviations.Newfoundland Standard Time" value = "NST" />
