@@ -7,7 +7,8 @@ using Composite.C1Console.Forms;
 using Composite.C1Console.Forms.Flows;
 using Composite.C1Console.Forms.WebChannel;
 using Composite.Core.WebClient.FlowMediators.FormFlowRendering;
-
+using System.Linq;
+using System.Web.UI.HtmlControls;
 
 namespace Composite.Core.WebClient.FlowMediators
 {
@@ -43,6 +44,17 @@ namespace Composite.Core.WebClient.FlowMediators
                     webControl = webForm.BuildWebControl();
 
                     if (string.IsNullOrEmpty(webControl.ID)) webControl.ID = "FlowUI";
+
+                    if (RuntimeInformation.IsTestEnvironment)
+                    {
+                        var testAutomationLocatorInformation = formFlowUiDefinition.MarkupProvider as ITestAutomationLocatorInformation;
+                        if (testAutomationLocatorInformation != null) {
+                            var htmlform = webControl.Controls.OfType<HtmlForm>().FirstOrDefault();
+                            if (htmlform != null) {
+                                htmlform.Attributes.Add("data-qa", testAutomationLocatorInformation.TestAutomationLocator);
+                            }
+                        }
+                    }
                 }
 
                 return webControl;
