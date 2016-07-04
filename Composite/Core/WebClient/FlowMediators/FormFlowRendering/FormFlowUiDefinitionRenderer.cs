@@ -308,7 +308,7 @@ namespace Composite.Core.WebClient.FlowMediators.FormFlowRendering
         private static void ShowFieldMessages(IWebUiControl webUiControlTreeRoot, Dictionary<string, string> bindingPathedMessages, IWebUiContainer container, FlowControllerServicesContainer servicesContainer)
         {
             var pathToClientIDMappings = new Dictionary<string, string>();
-            ResolveBindingPathToCliendIDMappings(webUiControlTreeRoot, pathToClientIDMappings);
+            ResolveBindingPathToClientIDMappings(webUiControlTreeRoot, pathToClientIDMappings);
 
             var cliendIDPathedMessages = new Dictionary<string, string>();
             var homelessMessages = new Dictionary<string, string>();
@@ -344,14 +344,14 @@ namespace Composite.Core.WebClient.FlowMediators.FormFlowRendering
         }
 
 
-        internal static void ResolveBindingPathToCliendIDMappings(IWebUiControl webUiControl, Dictionary<string, string> resolvedMappings)
+        internal static void ResolveBindingPathToClientIDMappings(IWebUiControl webUiControl, Dictionary<string, string> resolvedMappings)
         {
             var container = webUiControl as ContainerUiControlBase;
             if (container != null)
             {
                 foreach (IUiControl child in container.UiControls)
                 {
-                    ResolveBindingPathToCliendIDMappings((IWebUiControl)child, resolvedMappings);
+                    ResolveBindingPathToClientIDMappings((IWebUiControl)child, resolvedMappings);
                 }
             }
 

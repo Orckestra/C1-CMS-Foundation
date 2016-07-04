@@ -138,7 +138,7 @@ namespace Composite.C1Console.Forms
         public Dictionary<string, string> GetBindingToClientIDMapping()
         {
             var result = new Dictionary<string, string>();
-            FormFlowUiDefinitionRenderer.ResolveBindingPathToCliendIDMappings(_uiControl as IWebUiControl, result);
+            FormFlowUiDefinitionRenderer.ResolveBindingPathToClientIDMappings(_uiControl as IWebUiControl, result);
 
             return result;
         } 

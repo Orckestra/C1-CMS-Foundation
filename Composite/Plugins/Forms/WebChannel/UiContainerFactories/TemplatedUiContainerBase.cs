@@ -44,7 +44,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiContainerFactories
 
             var mappings = new Dictionary<string, string>();
 
-            FormFlowUiDefinitionRenderer.ResolveBindingPathToCliendIDMappings(container, mappings);
+            FormFlowUiDefinitionRenderer.ResolveBindingPathToClientIDMappings(container, mappings);
 
             string clientId = mappings.ContainsKey(_titleField) ? mappings[_titleField] : "";
 
