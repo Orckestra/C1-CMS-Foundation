@@ -1,16 +1,17 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import ActionButton from './ActionButton.js';
 
-export default class Toolbar extends React.Component {
-	render() {
-		let buttons = this.props.buttons.map(
-			(button, index) => <ActionButton key={index} {...button} getState={this.props.getState}/>
-		);
-		// For each button in state, create matching ActionButton
-		return (
-			<div className="toolbar">
-				{buttons}
-			</div>
-		);
-	}
-}
+const Toolbar = ({ buttons, getState }) => (
+	<div className="toolbar">
+		{buttons.map(
+			(button, index) => <ActionButton key={index} {...button} getState={getState}/>
+		)}
+	</div>
+);
+
+Toolbar.propTypes = {
+	buttons: PropTypes.array.isRequired,
+	getState: PropTypes.func.isRequired
+};
+
+export default Toolbar;

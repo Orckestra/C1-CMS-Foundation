@@ -1,13 +1,13 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 
-export default class ActionButton extends React.Component {
-	actionWrapper() {
-		this.props.action(this.props.getState());
-	}
+const ActionButton = ({ label, action, getState }) => (
+	<button onClick={() => action(getState())}>{label}</button>
+);
 
-	render() {
-		return (
-			<button onClick={this.actionWrapper.bind(this)}>{this.props.label}</button>
-		);
-	}
-}
+ActionButton.propTypes = {
+	label: PropTypes.string.isRequired,
+	action: PropTypes.func.isRequired,
+	getState: PropTypes.func.isRequired
+};
+
+export default ActionButton;

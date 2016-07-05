@@ -1,16 +1,19 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import DataField from './DataField.js';
 
-export default class Fieldset extends React.Component {
-	render() {
-		let fields = this.props.fields.map(
-			(field, index) => <DataField key={index} {...field} value={this.props.values[field.name]}/>
-		);
-		return (
-			<fieldset>
-				<legend>{this.props.label}</legend>
-				{fields}
-			</fieldset>
-		);
-	}
-}
+const Fieldset = ({ label, fields, values }) => (
+	<fieldset>
+		{label ? <legend>{label}</legend> : null}
+		{fields.map(
+			(field, index) => <DataField key={index} {...field} value={values[field.name]}/>
+		)}
+	</fieldset>
+)
+
+Fieldset.propTypes = {
+	label: PropTypes.string,
+	fields: PropTypes.array.isRequired,
+	values: PropTypes.object.isRequired
+};
+
+export default Fieldset;
