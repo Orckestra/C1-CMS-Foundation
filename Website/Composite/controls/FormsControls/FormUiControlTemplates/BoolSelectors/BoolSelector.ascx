@@ -44,7 +44,7 @@
 	}
 </script>
 
-<ui:radiodatagroup name="<%= this.ClientID %>" >
+<ui:radiodatagroup name="<%= this.ClientID %>" callbackid="<%= this.UniqueID %>" onchange="this.dispatchAction(PageBinding.ACTION_DOPOSTBACK)" >
 	<ui:radio label="<%= Server.HtmlEncode(this.TrueLabel) %>" value="true" ischecked="<%= this.IsTrue.ToString().ToLower() %>" />
 	<ui:radio label="<%= Server.HtmlEncode(this.FalseLabel) %>" value="false" ischecked="<%= (!this.IsTrue).ToString().ToLower() %>" />
 </ui:radiodatagroup>
