@@ -1,34 +1,50 @@
 <%@ Control Language="C#" Inherits="Composite.Plugins.Forms.WebChannel.UiControlFactories.BoolSelectorTemplateUserControlBase"  %>
-<%@ Import Namespace="Composite.Plugins.Forms.WebChannel.UiControlFactories" %>
 
 <script runat="server">
-    bool _isTrue = false;
+	private bool ViewState_IsTrue
+	{
+		get { return (bool) ViewState["IsTrue"]; }
+		set { ViewState["IsTrue"] = value; }
+	}
 
-    protected void Page_Init(object sender, EventArgs e)
-    {
-        if (string.IsNullOrEmpty(HttpContext.Current.Request.Form[this.ClientID]) == false)
-        {
-            _isTrue = ("true" == HttpContext.Current.Request.Form[this.ClientID]);
-        }
-    }
-    
-    protected override void BindStateToProperties()
-    {
-        this.IsTrue = _isTrue; 
-    }
+	protected void Page_Init(object sender, EventArgs e)
+	{
+	}
 
-    protected override void InitializeViewState()
-    {
-        _isTrue = this.IsTrue;
-    }
+	protected override void BindStateToProperties()
+	{
+		this.IsTrue = ViewState_IsTrue;
+	}
 
-    public override string GetDataFieldClientName()
-    {
-        return this.ClientID;
-    }
+	protected override void InitializeViewState()
+	{
+		ViewState_IsTrue = this.IsTrue;
+	}
+
+	public override string GetDataFieldClientName()
+	{
+		return this.ClientID;
+	}
+
+	public override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
+	{
+		bool previousValue = ViewState_IsTrue;
+
+		ViewState_IsTrue = postCollection[postDataKey] == "true";
+
+		return ViewState_IsTrue != previousValue;
+	}
+
+	public override void RaisePostDataChangedEvent()
+	{
+		if (this.SelectionChangedEventHandler != null)
+		{
+			this.SelectionChangedEventHandler(this, EventArgs.Empty);
+		}
+	}
 </script>
 
-<ui:radiodatagroup name="<%= this.ClientID %>">
-	<ui:radio label="<%= this.TrueLabel %>" value="true" ischecked="<%= this.IsTrue.ToString().ToLower() %>" />
-	<ui:radio label="<%= this.FalseLabel %>" value="false" ischecked="<%= (this.IsTrue==false).ToString().ToLower() %>" />
+<ui:radiodatagroup name="<%= this.ClientID %>" >
+	<ui:radio label="<%= Server.HtmlEncode(this.TrueLabel) %>" value="true" ischecked="<%= this.IsTrue.ToString().ToLower() %>" />
+	<ui:radio label="<%= Server.HtmlEncode(this.FalseLabel) %>" value="false" ischecked="<%= (!this.IsTrue).ToString().ToLower() %>" />
 </ui:radiodatagroup>

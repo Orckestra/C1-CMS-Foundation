@@ -8,16 +8,20 @@ namespace Composite.C1Console.Forms.CoreUiControls
     [ControlValueProperty("IsTrue")]
     internal abstract class BoolSelectorUiControl : UiControl
     {
-        [BindableProperty()]
-        [FormsProperty()]
+        [BindableProperty]
+        [FormsProperty]
         public bool IsTrue { get; set; }
 
 
-        [FormsProperty()]
+        [FormsProperty]
         public string TrueLabel { get; set; }
 
 
-        [FormsProperty()]
+        [FormsProperty]
         public string FalseLabel { get; set; }
+
+        [BindableProperty]
+        [FormsProperty]
+        public EventHandler SelectionChangedEventHandler { get; set; }
     }
 }
