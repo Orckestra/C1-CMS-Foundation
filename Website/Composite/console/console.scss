@@ -1,9 +1,19 @@
+$baseFontColor: #333;
 $buttonTextColor: #575757;
 $borderColor: #ccc;
-$buttonShadowColor: #ddd;
-$highlightColor: #1ea371;
+$buttonDropShadowColor: #ddd;
+$buttonHighlightColor: #22B980;
+$buttonShadingColor: #1ea371;
+$fieldsetBackgroundColor: #F7F7F7;
+$fieldsetLegendColor: #22B980;
+$fieldFocusColor: #22B980;
+$fieldLabelColor: #999;
 
-$toolbarVerticalPadding: 15px;
+@import url('https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700,400italic');
+
+*:focus {
+	outline: 0;
+}
 
 body {
 	margin: 0;
@@ -13,25 +23,97 @@ body {
 body, input, textarea, select, button {
 	font-size: 12px;
 	font-family: "Segoe UI", Tahoma, sans-serif;
+	color: $baseFontColor;
 }
 
 div.toolbar {
-	padding: $toolbarVerticalPadding 20px;
+	padding: 15px 20px;
 }
 
 button {
 	text-transform: uppercase;
 	border: 1px solid $borderColor;
 	border-radius: 4px;
-	background: #fff;
+	background: white;
 	color: $buttonTextColor;
 	margin: 2px 10px 2px 0;
 	padding: 6px 11px;
 	line-height: 18px;
-	box-shadow: 0 2px 2px -2px $buttonShadowColor;
+	box-shadow: 0 2px 2px -2px $buttonDropShadowColor;
+
+	&:hover {
+		color: $buttonHighlightColor;
+		border-color: $buttonHighlightColor;
+	}
+}
+
+div.toolbar.document-toolbar {
+	text-align: right;
+
+	button {
+		border: 1px solid $buttonHighlightColor;
+		background-image: linear-gradient(to bottom, $buttonHighlightColor 0%, $buttonShadingColor 100%);
+		color: white;
+	}
 }
 
 div.scrollbox {
 	border-top: 1px solid $borderColor;
+	padding: 30px 30px 0 40px;
 	height: calc(100% - 66px);
+}
+
+fieldset {
+	position: relative;
+	border: 1px solid $borderColor;
+	border-radius: 4px;
+	margin: 0;
+	margin-top: 35px;
+	padding: 8px 17px 25px;
+	width: 394px;
+	background-color: $fieldsetBackgroundColor;
+
+	legend {
+		position: absolute;
+		top: -35px;
+		left: 0;
+		background: transparent;
+		color: $fieldsetLegendColor;
+		font-family: 'Roboto Condensed', sans-serif;
+		font-style: italic;
+		font-size: 14px;
+		text-transform: uppercase;
+	}
+}
+
+.datafield {
+	label {
+		display: block;
+		padding: 8px 0 5px 5px;
+		color: $fieldLabelColor;
+	}
+
+	input {
+		border: 1px solid #ccc;
+    border-radius: 5px;
+		padding: 5px 7px;
+		margin: 2px 32px 7px 2px;
+    background-color: #fff;
+		width: calc(100% - 42px);
+    height: 20px;
+    overflow: hidden;
+
+		&:focus {
+			border-color: $fieldFocusColor;
+		}
+	}
+
+	.helper {
+		background-color: #fff;
+		box-shadow: 0px 0px 12px -1px rgba(204, 204, 204, 0.75);
+		border-radius: 5px;
+		border: 1px solid #ccc;
+		padding: 10px 12px;
+		display: none;
+	}
 }
