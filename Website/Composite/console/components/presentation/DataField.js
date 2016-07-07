@@ -1,5 +1,6 @@
 import React from 'react';
 import Icon from './Icon';
+import HelpIcon from './HelpIcon';
 
 const DataField = props => {
 	let type = props.type;
@@ -7,21 +8,9 @@ const DataField = props => {
 		type = 'text';
 	}
 
-	let input, helper;
+	let input;
 	function handleChange() {
 		props.changeValue(input.value);
-	}
-
-	function showHelper() {
-		helper.style.visibility = 'visible';
-		helper.style.opacity = 1;
-	}
-
-	function hideHelper() {
-		setTimeout(() => {
-			helper.style.visibility = '';
-			helper.style.opacity = '';
-		}, 2000);
 	}
 
 	return (
@@ -35,13 +24,7 @@ const DataField = props => {
 				value={props.value}
 				ref={comp => { input = comp; }}
 				onChange={handleChange}/>
-			{props.help ?
-				<span className="helperIcon"
-					onClick={showHelper}
-					onMouseOut={hideHelper}>
-					<div ref={comp => { helper = comp; }} className="helper">{props.help}</div>
-				</span> :
-				null}
+			{props.help ? <HelpIcon text={props.help} /> : null}
 		</div>
 	);
 }
