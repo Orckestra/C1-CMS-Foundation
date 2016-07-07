@@ -66,6 +66,8 @@ UnpublishedPageBinding.prototype.onBindingAttach = function () {
 
 	this.tablebody = this.bindingWindow.bindingMap.tablebody;
 	this.table = DOMUtil.getAncestorByLocalName("table", this.tablebody.bindingElement);
+	this.table.style.display = "none";
+
 	this.actionGroup = this.bindingWindow.bindingMap.actiongroup;
 
 	this.containingViewBinding = this.getAncestorBindingByType(ViewBinding, true);
@@ -138,11 +140,13 @@ UnpublishedPageBinding.prototype.renderTable = function (nodes, selected) {
 		}
 		return hasVersion;
 	}, this);
+
 	if (hasVersion) {
 		CSSUtil.detachClassName(this.table, UnpublishedPageBinding.NOVERSION_CLASSNAME);
 	} else {
 		CSSUtil.attachClassName(this.table, UnpublishedPageBinding.NOVERSION_CLASSNAME);
 	}
+	this.table.style.display = "";
 
 	nodes.each(function (node) {
 		var handle = node.getHandle();
