@@ -20,9 +20,11 @@
     "grunt-contrib-uglify": "^0.9.1",
     "grunt-contrib-watch": "~0.6.1",
     "grunt-postcss": "^0.5.5",
+    "grunt-svgmin": "3.2.0",
     "jsdom": "9.3.0",
     "jspm": "0.16.39",
     "less": "^2.1.2",
+    "load-grunt-tasks": "3.5.0",
     "mocha": "2.5.3",
     "react": "15.1.0",
     "react-addons-test-utils": "15.1.0",
@@ -41,7 +43,8 @@
       "react-dom": "npm:react-dom@^15.1.0",
       "react-redux": "npm:react-redux@^4.4.5",
       "redux": "npm:redux@^3.5.2",
-      "scss": "github:mobilexag/plugin-sass@^0.4.6"
+      "scss": "github:mobilexag/plugin-sass@^0.4.6",
+      "svg": "github:npbenjohnson/plugin-svg@^0.1.0"
     },
     "devDependencies": {
       "babel": "npm:babel-core@^5.8.24",

@@ -1,15 +1,17 @@
-import 'systemjs-hot-reloader/default-listener.js';
+import 'systemjs-hot-reloader/default-listener';
 
 import React from 'react';
 import { render } from 'react-dom';
-import Page from './Page.js';
+import Page from './Page';
 import './console.scss!';
+import './iconIndex'
 
 let pageProps = {
 	buttons: [
 		{
 			label: 'Save',
-			action: data => console.log('actionkey', data)
+			action: data => console.log('actionkey', data),
+			icon: { id :'save' }
 		}
 	],
 	fieldsets: [

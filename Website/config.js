@@ -24,6 +24,7 @@ System.config({
     "react-redux": "npm:react-redux@4.4.5",
     "redux": "npm:redux@3.5.2",
     "scss": "github:mobilexag/plugin-sass@0.4.6",
+    "svg": "github:npbenjohnson/plugin-svg@0.1.0",
     "systemjs-hot-reloader": "github:capaj/systemjs-hot-reloader@0.6.0",
     "github:capaj/systemjs-hot-reloader@0.6.0": {
       "debug": "npm:debug@2.2.0",
