@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "test": "npm run unittest",
-    "unittest": "./node_modules/.bin/mocha --compilers js:babel-register test/unit/runner"
+    "unittest": "./node_modules/.bin/mocha"
   },
   "devDependencies": {
     "JSONPath": "^0.10.0",
