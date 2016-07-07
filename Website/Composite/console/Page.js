@@ -1,6 +1,6 @@
 import React from 'react';
-import Toolbar from './Toolbar.js';
-import Fieldset from './Fieldset.js';
+import Toolbar from './components/presentation/Toolbar.js';
+import Fieldset from './components/presentation/Fieldset.js';
 import update from 'react-addons-update';
 
 export default class Page extends React.Component {
