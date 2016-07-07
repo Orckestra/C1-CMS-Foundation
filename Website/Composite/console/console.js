@@ -20,7 +20,6 @@ let pageProps = {
 			name: 'language-properties',
 			fields: [
 				{
-					type: 'text',
 					name: 'url-mapping-name',
 					label: 'URL mapping name',
 					help: 'Base name in URLs'
