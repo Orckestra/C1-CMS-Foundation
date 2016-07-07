@@ -1,10 +1,13 @@
-<%@ Control Language="C#" Inherits="Composite.Plugins.Forms.WebChannel.UiControlFactories.BoolSelectorTemplateUserControlBase"  %>
+<%@ Control Language="C#" EnableViewState="true" Inherits="Composite.Plugins.Forms.WebChannel.UiControlFactories.BoolSelectorTemplateUserControlBase"  %>
 
 <script runat="server">
+	const string ViewStateKey = "BoolSelector.IsTrue";
+
+
 	private bool ViewState_IsTrue
 	{
-		get { return (bool) ViewState["IsTrue"]; }
-		set { ViewState["IsTrue"] = value; }
+		get { return (bool) ViewState[ViewStateKey]; }
+		set { ViewState[ViewStateKey] = value; }
 	}
 
 	protected void Page_Init(object sender, EventArgs e)
@@ -23,7 +26,7 @@
 
 	public override string GetDataFieldClientName()
 	{
-		return this.ClientID;
+		return this.UniqueID;
 	}
 
 	public override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
@@ -42,9 +45,20 @@
 			this.SelectionChangedEventHandler(this, EventArgs.Empty);
 		}
 	}
+
+	private string ExtraAttributes()
+	{
+		if (this.SelectionChangedEventHandler != null)
+		{
+			return string.Format(@"callbackid=""{0}"" onchange=""this.dispatchAction(PageBinding.ACTION_DOPOSTBACK)""", this.UniqueID);
+		}
+
+		return null;
+	}
+
 </script>
 
-<ui:radiodatagroup name="<%= this.ClientID %>" callbackid="<%= this.UniqueID %>" onchange="this.dispatchAction(PageBinding.ACTION_DOPOSTBACK)" >
+<ui:radiodatagroup name="<%= this.UniqueID %>" <%= ExtraAttributes() %> >
 	<ui:radio label="<%= Server.HtmlEncode(this.TrueLabel) %>" value="true" ischecked="<%= this.IsTrue.ToString().ToLower() %>" />
 	<ui:radio label="<%= Server.HtmlEncode(this.FalseLabel) %>" value="false" ischecked="<%= (!this.IsTrue).ToString().ToLower() %>" />
 </ui:radiodatagroup>
