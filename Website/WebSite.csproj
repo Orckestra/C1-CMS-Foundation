@@ -563,6 +563,7 @@
     <Content Include="Composite\scripts\source\top\ui\bindings\data\radiocheck\CheckTreeBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\data\radiocheck\CheckTreeNodeBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\data\selectors\HierarchicalSelectorBinding.js" />
+    <Content Include="Composite\scripts\source\top\ui\bindings\fields\ResolverContainerBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\genericview\AddressBarBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\genericview\GenericViewBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\genericview\PathBinding.js" />

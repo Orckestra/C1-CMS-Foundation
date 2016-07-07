@@ -93,11 +93,11 @@ namespace Composite.Plugins.Forms.WebChannel.UiContainerFactories
                 {
                     var mappings = new Dictionary<string, string>();
                     FormFlowUiDefinitionRenderer.ResolveBindingPathToCliendIDMappings(GetContainer(), mappings);
-                    var control = new HtmlGenericControl("div");
-                    control.Attributes.Add("class", "qacontainer hide");
+                    var control = new HtmlGenericControl("ui:resolvercontainer");
+                    control.Attributes.Add("class", "resolvercontainer hide");
                     foreach (var mapping in mappings)
                     {
-                        control.Attributes.Add($"data-{mapping.Key}", mapping.Value.Replace('$', '_'));
+                        control.Attributes.Add($"data-{mapping.Key}", mapping.Value);
                     }
                     GetFormPlaceHolder().Controls.Add(control);
                 }

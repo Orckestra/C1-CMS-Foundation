@@ -133,7 +133,8 @@ var UserInterface = new function () {
 		"ui:filepicker"					: FilePickerBinding,
 		"ui:request"					: RequestBinding,
 		"ui:response"					: ResponseBinding,
-		"ui:stylesheet"					: StyleBinding
+		"ui:stylesheet"					: StyleBinding,
+		"ui:resolvercontainer"			: ResolverContainerBinding
 	});
 
 	/*
