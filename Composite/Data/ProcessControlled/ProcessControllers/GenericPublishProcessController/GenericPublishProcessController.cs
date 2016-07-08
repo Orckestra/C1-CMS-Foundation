@@ -183,7 +183,8 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
                         ActionType = ActionType.Other,
                         IsInFolder = false,
                         IsInToolbar = true,
-                        ActionGroup = WorkflowActionGroup
+                        ActionGroup = WorkflowActionGroup,
+                        ActionBundle = "Publish"
                     }
                 }
             };

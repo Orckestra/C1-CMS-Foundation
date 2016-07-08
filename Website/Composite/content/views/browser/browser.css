@@ -89,3 +89,7 @@ ui|toolbar#breadcrumbbar {
 .selectorpopup ui|labelbox.image-and-text ui|labeltext {
 	margin-left: 4px;
 }
+
+ui|selector.bundleselector {
+    min-width: 200px;
+}

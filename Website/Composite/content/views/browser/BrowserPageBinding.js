@@ -14,7 +14,9 @@ BrowserPageBinding.VIEWMODE_LOCALSTORAGE_KEY = "COMPOSITE_BROWSERPAGEBINDING_VIE
 BrowserPageBinding.VIEW_MODES = Object.freeze({
 	Unpublic: 1,
 	Public: 2
-})
+});
+
+BrowserPageBinding.BUNDLE_CLASSNAME = "bundleselector";
 
 
 /**
@@ -146,7 +148,7 @@ BrowserPageBinding.prototype.handleBroadcast = function (broadcast, arg) {
 				if (treenode.node.isMultiple()) {
 					var list = new List();
 					treenode.node.getDatas().each(function(data) {
-						list.add(new SelectorBindingSelection(data.BundleElementName, data.ElementKey, data.ElementKey === treenode.node.getHandle()));
+						list.add(new SelectorBindingSelection(data.BundleElementName ? data.BundleElementName : data.Label, data.ElementKey, data.ElementKey === treenode.node.getHandle()));
 					});
 					bundleselector.populateFromList(list);
 					bundleselector.show();
@@ -1240,6 +1242,7 @@ BrowserPageBinding.prototype.getBundleSelector = function () {
 		selector.setProperty("textonly", true);
 		addressrightgroup.bindingElement.insertBefore(selector.bindingElement, addressrightgroup.bindingElement.firstChild);
 		selector.attach();
+		selector.attachClassName(BrowserPageBinding.BUNDLE_CLASSNAME);
 		this.shadowTree.bundleselector = selector;
 
 		selector.addActionListener(SelectorBinding.ACTION_SELECTIONCHANGED, {
