@@ -2,7 +2,7 @@ import expect from '../helpers/expect';
 import sinon from 'sinon';
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
-import DataField from '../../../Composite/console/DataField';
+import DataField from '../../../Composite/console/components/presentation/DataField';
 
 describe('DataField', () => {
 	let renderer, props, state;

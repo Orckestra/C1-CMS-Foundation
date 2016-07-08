@@ -2,7 +2,7 @@ import expect from '../helpers/expect';
 import sinon from 'sinon';
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
-import ActionButton from '../../../Composite/console/ActionButton';
+import ActionButton from '../../../Composite/console/components/presentation/ActionButton';
 
 describe('ActionButton', () => {
 	let renderer, props, state;
@@ -11,7 +11,6 @@ describe('ActionButton', () => {
 		state = { state: true };
 		props = {
 			label: "Label",
-			getState: sinon.spy(() => state),
 			action: sinon.spy()
 		}
 		renderer.render(
@@ -25,12 +24,6 @@ describe('ActionButton', () => {
 		);
 	});
 
-	it('should get state when clicked', () => {
-		return expect(renderer, 'with event', 'click')
-			.then(() => {
-				return expect(props.getState, 'was called');
-			});
-	});
 
 	it('should call handler with state contents when clicked', () => {
 		return expect(renderer, 'with event', 'click')

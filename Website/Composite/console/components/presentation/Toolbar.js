@@ -7,16 +7,15 @@ const typeClassName = {
 
 const Toolbar = ({ type, buttons, getState }) => (
 	<div className={"toolbar" + (typeClassName[type] || '')}>
-		{buttons.map(
-			(button, index) => <ActionButton key={index} {...button} getState={getState}/>
+		{Object.keys(buttons).map(
+			name => <ActionButton key={name} {...buttons[name]}/>
 		)}
 	</div>
 );
 
 Toolbar.propTypes = {
 	type: PropTypes.string,
-	buttons: PropTypes.array.isRequired,
-	getState: PropTypes.func.isRequired
+	buttons: PropTypes.object.isRequired
 };
 
 export default Toolbar;

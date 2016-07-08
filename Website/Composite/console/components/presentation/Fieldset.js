@@ -1,19 +1,21 @@
 import React, { PropTypes } from 'react';
 import DataField from './DataField.js';
 
-const Fieldset = ({ label, fields, values }) => (
+const Fieldset = ({ label, fields }) => (
 	<fieldset>
 		{label ? <legend>{label}</legend> : null}
-		{fields.map(
-			(field, index) => <DataField key={index} {...field} value={values[field.name]}/>
-		)}
+		{
+			Object.keys(fields).map(name => {
+				let field = fields[name];
+				return (<DataField key={name} {...field}/>);
+			})
+		}
 	</fieldset>
 )
 
 Fieldset.propTypes = {
 	label: PropTypes.string,
-	fields: PropTypes.array.isRequired,
-	values: PropTypes.object.isRequired
+	fields: PropTypes.object.isRequired
 };
 
 export default Fieldset;

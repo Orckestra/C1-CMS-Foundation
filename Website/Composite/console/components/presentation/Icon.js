@@ -1,7 +1,6 @@
 import React from 'react';
 
-export default props => {
-	let { id, ...others } = props;
+export default ({ id, ...others }) => {
 	return (
 		<svg { ...others }>
       <use xlinkHref={'#icon-' + id}/>

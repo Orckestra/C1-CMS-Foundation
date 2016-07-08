@@ -2,41 +2,45 @@ import 'systemjs-hot-reloader/default-listener';
 
 import React from 'react';
 import { render } from 'react-dom';
-import Page from './Page';
+import { Provider } from 'react-redux'
+import configureStore from './state/store';
+import DocumentPage from './components/container/DocumentPage';
 import './console.scss!';
 import './iconIndex'
 
 let pageProps = {
-	buttons: [
-		{
+	buttons: {
+		save: {
 			label: 'Save',
-			action: data => console.log('actionkey', data),
 			icon: { id :'save' }
 		}
-	],
-	fieldsets: [
-		{
+	},
+	fieldsets: {
+		'language-properties': {
 			label: 'Language Properties',
 			name: 'language-properties',
-			fields: [
-				{
-					name: 'url-mapping-name',
+			fields: {
+				'url-mapping-name': {
 					label: 'URL mapping name',
 					help: 'Base name in URLs'
 				},
-				{
+				'test': {
 					type: 'number',
-					name: 'test',
 					label: 'Number of beers',
 					help: 'How drunk you want to get',
-					initialValue: 0
+					value: 0
 				}
-			]
+			}
 		}
-	]
+	}
 };
 
+const store = configureStore();
+window.store = store;
+
 render(
-	<Page {...pageProps}/>,
+	<Provider store={store}>
+		<DocumentPage {...pageProps}/>
+	</Provider>,
 	document.querySelector('body > div.entry')
 );
