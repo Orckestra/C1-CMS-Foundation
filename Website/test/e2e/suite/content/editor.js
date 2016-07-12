@@ -1,10 +1,14 @@
 module.exports = {
-	'can edit front page': function (browser) {
+	before: function (browser) {
 		browser.url(browser.launchUrl + '/Composite/top.aspx');
+		var content = browser.page.content();
+		content
+			.prepare();
+	},
+	'can edit front page': function (browser) {
 		var content = browser.page.content();
 		var editor = browser.page.editor();
 		content
-			.prepare()
 			// Default situation: One open docktab showing content browser, with tab view.
 			// Select the one open tab
 			.section.docktabs.clickTab(1);
@@ -86,7 +90,7 @@ module.exports = {
 			.enterFrame('@browserFrame')
 			.click('#moreactionsbutton')
 			.click('menuitem[image="item-undo-unpublished-changes"]')
-			.click('toolbarbutton[image="item-publish"]')
+			.click('toolbarbutton[image="item-publish"]');
 		browser.end();
 	}
 };
