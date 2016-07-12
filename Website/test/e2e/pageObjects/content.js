@@ -19,7 +19,10 @@ module.exports = {
 		{
 			enter: function () {
 				this.api.page.appWindow()
-					.enterPerspective('content');
+					.enter()
+					.click('#explorer explorertoolbarbutton[data-qa="Content"]')
+					.waitForFrameLoad('#stagedecks stagedeck[data-qa="perspectiveContent"] iframe', 1000)
+					.enterFrame('#stagedecks stagedeck[data-qa="perspectiveContent"] iframe');
 				return this;
 			},
 			prepare: function () {
