@@ -10,7 +10,7 @@ util.inherits(WaitForFrameLoad, events.EventEmitter);
 
 WaitForFrameLoad.prototype.command = function(selector, timeout) {
 	if (!timeout) {
-		throw new Error('waitForFrameLoaded() must have timeout.');
+		throw new Error('waitForFrameLoad() must have timeout.');
 	}
 
 	const complete = () => this.emit('complete');
