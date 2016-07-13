@@ -40,6 +40,16 @@ module.exports = {
 					.waitForFrameLoad('view:nth-of-type(' + index + ') window iframe', 1000)
 					.enterFrame('view:nth-of-type(' + index + ') window iframe')
 				return this;
+			},
+			assertBrowserContains: function (selector, value) {
+				this
+					.enter()
+					.enterFrame('@browserFrame')
+					.waitForElementVisible('#browsertabbox iframe', 1000)
+					.waitForFrameLoad('#browsertabbox iframe', 1000)
+					.enterFrame('#browsertabbox iframe')
+					.assert.containsText(selector, value);
+				return this;
 			}
 		}
 	]

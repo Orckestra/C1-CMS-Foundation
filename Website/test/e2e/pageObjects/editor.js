@@ -18,6 +18,16 @@ module.exports = {
 					.enterFrame('iframe[src^="tinymce.aspx"]')
 					.enterFrame('#editor_ifr')
 				return this;
+			},
+			save: function () {
+				this
+					.selectFrame('#savebutton')
+					.verify.cssClassNotPresent('#savebutton', 'isdisabled')
+					.click('#savebutton > labelbox');
+				this.api.pause(1000)
+				this
+					.verify.cssClassPresent('#savebutton', 'isdisabled')
+				return this;
 			}
 		}
 	],

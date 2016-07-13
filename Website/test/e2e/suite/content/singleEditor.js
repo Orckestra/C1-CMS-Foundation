@@ -32,27 +32,15 @@ module.exports = {
 			// Change header
 			.replaceContent('h1', 'Moving forward')
 		// Save change.
+		editor
+			.save()
 		content
-			.selectFrame('#savebutton')
-			.verify.cssClassNotPresent('#savebutton', 'isdisabled')
-			.click('#savebutton > labelbox');
-		browser
-			.pause(1000)
-		content
-			.verify.cssClassPresent('#savebutton', 'isdisabled')
 			// Close editor after you
 			.enter() // Reset to content frame
 			.section.docktabs.closeTab(2);
 		// Check that the change is made
 		content
-			.enterFrame('@browserFrame')
-			.waitForElementVisible('#browsertabbox iframe', 1000)
-			.waitForFrameLoad('#browsertabbox iframe', 1000)
-			.enterFrame('#browsertabbox iframe')
-			// The below fails if page starts out with unpublished changes.
-			.assert.containsText('div.content-column > h1', 'Moving forward');
-		browser
-			.pause(2000);
+			.assertBrowserContains('div.content-column > h1', 'Moving forward');
 	},
 	after: function (browser) {
 		var content = browser.page.content();

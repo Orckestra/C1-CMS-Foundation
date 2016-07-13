@@ -60,27 +60,16 @@ module.exports = {
 			.selectFrame('#renderingdialogpage')
 			.waitForElementVisible('clickbutton[callbackid="buttonAccept"]', 1000)
 			.click('clickbutton[callbackid="buttonAccept"] labelbox')
-		browser.pause(500)
 		// Save change.
+		editor
+			.save()
+		// Close editor after you
 		content
-			.selectFrame('#savebutton')
-			.verify.cssClassNotPresent('#savebutton', 'isdisabled')
-			.click('#savebutton > labelbox');
-		browser
-			.pause(1000)
-		content
-			.verify.cssClassPresent('#savebutton', 'isdisabled')
-			// Close editor after you
 			.enter() // Reset to content frame
 			.section.docktabs.closeTab(2);
 		// Check that the change is made
 		content
-			.enterFrame('@browserFrame')
-			.waitForElementVisible('#browsertabbox iframe', 1000)
-			.waitForFrameLoad('#browsertabbox iframe', 1000)
-			.enterFrame('#browsertabbox iframe')
-			// The below fails if page starts out with unpublished changes.
-			.assert.containsText('div.jumbotron-content > h1 > em', 'Jupiter');
+			.assertBrowserContains('div.jumbotron-content > h1 > em', 'Jupiter');
 	},
 	after: function (browser) {
 		var content = browser.page.content();
