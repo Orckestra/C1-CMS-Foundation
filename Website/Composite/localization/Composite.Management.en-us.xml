@@ -2,7 +2,7 @@
 <strings>
 	<string key="ManageUserPermissions.ManageUserPermissionsOnBranchLabel" value="Edit Permissions" />
 	<string key="ManageUserPermissions.ManageUserPermissionsOnItemLabel" value="Edit Permissions" />
-	<string key="ManageUserPermissions.ManageGlobalUserPermissionsLabel" value="Global Permissions" />
+	<string key="ManageUserPermissions.ManageGlobalUserPermissionsLabel" value="User Permission Settings" />
 	<string key="ManageUserPermissions.ManageUserPermissionsToolTip" value="Manage user permissions" />
 	<string key="DataCompositionVisabilityFacade.DefaultContainerLabel" value="Metadata" />
 	<string key="Website.Forms.Administrative.DeleteUserStep1.LabelFieldGroup" value="Delete User?" />
@@ -288,7 +288,7 @@
   <string key="SendMessageToConsolesWorkflow.SuccessMessage.TimezoneChangedMessage" value="Time zone has been successfully updated" />
   <string key="SetTimezoneWorkflow.Layout.Label" value="Set Time Zone Display" />
   <string key="SetTimezoneWorkflow.TitleTextBox.Label" value="Select Time Zone" />
-  <string key="SetTimezoneWorkflow.TitleTextBox.Help" value="Time zone to be displayed for all users within the console" />
+  <string key="SetTimezoneWorkflow.TitleTextBox.Help" value="Time zone to be displayed for all users within the console. The console will restart once time zone updated. Any unsaved changes will be lost." />
   <string key="SetTimezoneWorkflow.WarningText.Text" value="Time zone update requires a console restart. Any unsaved changes will be lost." />
   <string key="LoginWebRequestHandler.Login" value="Login" />
 	<string key="LoginWebRequestHandler.Header" value="Login to {0}" />

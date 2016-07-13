@@ -334,17 +334,17 @@ public static string ChangeOwnPasswordWorkflow_Dialog_Validation_NewPasswordTooS
 public static string ChangeOwnPasswordWorkflow_NotSupportedErrorLabel=>T("ChangeOwnPasswordWorkflow.NotSupportedErrorLabel");
 ///<summary>&quot;Password change isn&apos;t supported in current configuration.&quot;</summary> 
 public static string ChangeOwnPasswordWorkflow_NotSupportedErrorText=>T("ChangeOwnPasswordWorkflow.NotSupportedErrorText");
-///<summary>&quot;Regional Settings...&quot;</summary> 
+///<summary>&quot;Profile Settings...&quot;</summary> 
 public static string ChangeOwnCultureWorkflow_ElementActionLabel=>T("ChangeOwnCultureWorkflow.ElementActionLabel");
 ///<summary>&quot;Set the C1 Console language and formatting of numbers, times and dates&quot;</summary> 
 public static string ChangeOwnCultureWorkflow_ElementActionToolTip=>T("ChangeOwnCultureWorkflow.ElementActionToolTip");
 ///<summary>&quot;Regional Settings and Language&quot;</summary> 
 public static string ChangeOwnCultureWorkflow_Dialog_Label=>T("ChangeOwnCultureWorkflow.Dialog.Label");
-///<summary>&quot;Regional settings&quot;</summary> 
+///<summary>&quot;Display Preferences&quot;</summary> 
 public static string ChangeOwnCultureWorkflow_Dialog_CultureSelector_Label=>T("ChangeOwnCultureWorkflow.Dialog.CultureSelector.Label");
-///<summary>&quot;To change the way numbers, dates, and hours are displayed, select an entry from the list.&quot;</summary> 
+///<summary>&quot;Select from the list of options to update how time, date, and number formats are displayed within the console.&quot;</summary> 
 public static string ChangeOwnCultureWorkflow_Dialog_CultureSelector_Help=>T("ChangeOwnCultureWorkflow.Dialog.CultureSelector.Help");
-///<summary>&quot;C1 Console language&quot;</summary> 
+///<summary>&quot;Console Language Preferences&quot;</summary> 
 public static string ChangeOwnCultureWorkflow_Dialog_C1ConsoleLanguageSelector_Label=>T("ChangeOwnCultureWorkflow.Dialog.C1ConsoleLanguageSelector.Label");
 ///<summary>&quot;Select the language to be used for labels, help texts, dialogs etc. The available options here are limited to languages installed. You may install more languages via the Package system, see Composite.Localization.&quot;</summary> 
 public static string ChangeOwnCultureWorkflow_Dialog_C1ConsoleLanguageSelector_Help=>T("ChangeOwnCultureWorkflow.Dialog.C1ConsoleLanguageSelector.Help");
@@ -1113,7 +1113,7 @@ public static string CompileErrorWhileChangingType=>T("CompileErrorWhileChanging
 public static string ManageUserPermissions_ManageUserPermissionsOnBranchLabel=>T("ManageUserPermissions.ManageUserPermissionsOnBranchLabel");
 ///<summary>&quot;Edit Permissions&quot;</summary> 
 public static string ManageUserPermissions_ManageUserPermissionsOnItemLabel=>T("ManageUserPermissions.ManageUserPermissionsOnItemLabel");
-///<summary>&quot;Global Permissions&quot;</summary> 
+///<summary>&quot;User Permission Settings&quot;</summary> 
 public static string ManageUserPermissions_ManageGlobalUserPermissionsLabel=>T("ManageUserPermissions.ManageGlobalUserPermissionsLabel");
 ///<summary>&quot;Manage user permissions&quot;</summary> 
 public static string ManageUserPermissions_ManageUserPermissionsToolTip=>T("ManageUserPermissions.ManageUserPermissionsToolTip");
@@ -1679,7 +1679,7 @@ public static string SendMessageToConsolesWorkflow_SuccessMessage_TimezoneChange
 public static string SetTimezoneWorkflow_Layout_Label=>T("SetTimezoneWorkflow.Layout.Label");
 ///<summary>&quot;Select Time Zone&quot;</summary> 
 public static string SetTimezoneWorkflow_TitleTextBox_Label=>T("SetTimezoneWorkflow.TitleTextBox.Label");
-///<summary>&quot;Time zone to be displayed for all users within the console&quot;</summary> 
+///<summary>&quot;Time zone to be displayed for all users within the console. The console will restart once time zone updated. Any unsaved changes will be lost.&quot;</summary> 
 public static string SetTimezoneWorkflow_TitleTextBox_Help=>T("SetTimezoneWorkflow.TitleTextBox.Help");
 ///<summary>&quot;Time zone update requires a console restart. Any unsaved changes will be lost.&quot;</summary> 
 public static string SetTimezoneWorkflow_WarningText_Text=>T("SetTimezoneWorkflow.WarningText.Text");
