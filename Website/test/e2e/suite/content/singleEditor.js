@@ -1,36 +1,33 @@
 module.exports = {
 	before: function (browser) {
 		browser.url(browser.launchUrl + '/Composite/top.aspx');
-		var systemView = browser.page.systemView();
-		systemView
+		var content = browser.page.content();
+		content
 			.prepare();
 	},
 	'can edit simple page': function (browser) {
 		var content = browser.page.content();
-		var systemView = browser.page.systemView();
 		var editor = browser.page.editor();
-		systemView
-			.enterFrame('@systemFrame')
-			.openTreeNode('Venus Starter Site')
-			.selectTreeNode('Getting Started');
+		var systemView = browser.page.systemView();
+		// Default situation: One open docktab showing content browser, with tab view.
+		// Select the one open tab
 		content
+			.section.docktabs.clickTab(1);
+		// Find the 'getting started' page in the system tree.
+		systemView
 			.enter()
-			.enterFrame('@browserFrame')
-			// Click edit button (identified by icon name)
-			.click('toolbarbutton[image="page-edit-page"]')
+			.openTreeNode('Venus Starter Site')
+			.selectTreeNode('Getting Started')
+			.leaveFrame()
+		content
+			// Click edit button
+			.click('toolbarbutton[label="Edit Page"]')
 			// Locate and check editor screen
 			// Relies on it being inside the second docktab frame in existence.
 			.enterTabFrame(2)
-		// Enter frame with editor content
+		// Change header in editor
 		editor
-			.enter()
-			// Chack that it is editable
-			.assert.attributeEquals('body', 'contenteditable', 'true')
-			// Check that it has content
-			.section.editorBody
-			.assert.visible('h1')
-			// Change header
-			.replaceContent('h1', 'Moving forward')
+			.changeElementContent('h1', 'Moving forward')
 		// Save change.
 		editor
 			.save()

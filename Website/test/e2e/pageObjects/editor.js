@@ -6,6 +6,7 @@
 
 module.exports = {
 	elements: [
+		{ wysiwygFrame: 'iframe[src^="/Composite/content/dialogs/wysiwygeditor/wysiwygeditordialog.aspx"]' },
 		{ editorFrame: 'iframe[src^="/Composite/content/misc/editors/visualeditor/visualeditor.aspx"]' }
 	],
 	commands: [
@@ -15,8 +16,23 @@ module.exports = {
 					.waitForElementVisible('@editorFrame', 1000)
 					.waitForFrameLoad('@editorFrame', 1000)
 					.enterFrame('@editorFrame')
+					.waitForFrameLoad('iframe[src^="tinymce.aspx"]', 1000)
 					.enterFrame('iframe[src^="tinymce.aspx"]')
+					.waitForFrameLoad('#editor_ifr', 1000)
 					.enterFrame('#editor_ifr')
+				return this;
+			},
+			changeElementContent: function (selector, newContent) {
+				// Enter frame with editor content
+				this
+					.enter()
+					// Check that it is editable
+					.assert.attributeEquals('body', 'contenteditable', 'true')
+					// Check that it has content
+					.section.editorBody
+					.assert.visible(selector)
+					// Change header
+					.replaceContent(selector, newContent)
 				return this;
 			},
 			save: function () {

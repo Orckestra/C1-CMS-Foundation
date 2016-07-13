@@ -3,14 +3,6 @@ module.exports = {
 		{ systemFrame: 'iframe[src="/Composite/content/views/systemview/systemview.aspx"]'}
 	],
 	commands: [{
-		prepare: function () {
-			this.api.page.content()
-				.prepare()
-				.enter()
-				.enterFrame('@browserFrame');
-			this
-				.waitForFrameLoad('@systemFrame', 1000);
-		},
 		enter: function () {
 			this.api.page.content()
 				.enter()
@@ -18,6 +10,7 @@ module.exports = {
 			this
 				.waitForFrameLoad('@systemFrame', 1000)
 				.enterFrame('@systemFrame');
+			return this;
 		},
 		openTreeNode: function (label) {
 			var selector = 'treenode[label="' + label + '"] > labelbox';

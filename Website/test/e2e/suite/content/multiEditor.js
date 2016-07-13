@@ -8,14 +8,19 @@ module.exports = {
 	'can edit front page': function (browser) {
 		var content = browser.page.content();
 		var editor = browser.page.editor();
+		var systemView = browser.page.systemView();
+		// Default situation: One open docktab showing content browser, with tab view.
+		// Select the one open tab
 		content
-			// Default situation: One open docktab showing content browser, with tab view.
-			// Select the one open tab
 			.section.docktabs.clickTab(1);
+		// Find the home page in the system tree.
+		systemView
+			.enter()
+			.selectTreeNode('Venus Starter Site')
+			.leaveFrame()
 		content
-			.enterFrame('@browserFrame')
-			// Click edit button (identified by icon name)
-			.click('toolbarbutton[image="page-edit-page"]')
+			// Click edit button
+			.click('toolbarbutton[label="Edit Page"]')
 			// Locate and check editor screen
 			// Relies on it being inside the second docktab frame in existence.
 			.enterTabFrame(2)
@@ -27,39 +32,26 @@ module.exports = {
 			.assert.visible('img:nth-child(2)')
 			// Select the first element
 			.click('img:nth-child(1)')
+		browser
 			// Click the toolbar button for properties
-		browser
-			.selectFrame('toolbarbutton[cmd="compositeInsertRendering"]')
-			.click('toolbarbutton[cmd="compositeInsertRendering"]')
-			.pause(1000);
-		// Click the edit HTML button
-		content
-			.selectFrame('#renderingdialogpage')
-			.click('htmldatadialog')
-		browser
-			.pause(1000)
-			// Find the editor in the dialog that just appeared
-			.selectFrame('#masterdialogset')
-			.enterFrame('iframe[src^="/Composite/content/dialogs/wysiwygeditor/wysiwygeditordialog.aspx"]')
+			.clickInFrame('toolbarbutton[cmd="compositeInsertRendering"]', 1000)
+			// Click the edit HTML button
+			.clickInFrame('#renderingdialogpage', 'htmldatadialog', 1000)
+		// Find the editor in the dialog that just appeared
 		editor
+			.selectFrame('#masterdialogset')
+			.enterFrame('@wysiwygFrame')
 			.selectFrame('@editorFrame', true)
-			// Enter the editor frame
-			.enter();
-		// Edit its contents
-		browser
-			.assert.elementPresent('#tinymce > h1 > em')
-			.replaceContent('#tinymce > h1 > em', 'Jupiter');
+			// Change the content
+			.changeElementContent('h1 > em', 'Jupiter');
 		// Approve the change
-		content
+		browser
 			.selectFrame('#masterdialogset')
 			.selectFrame('#visualeditor', true)
 			.click('clickbutton[response="accept"]');
 		// Close the properties dialog
-		browser.topFrame();
-		content
-			.selectFrame('#renderingdialogpage')
-			.waitForElementVisible('clickbutton[callbackid="buttonAccept"]', 1000)
-			.click('clickbutton[callbackid="buttonAccept"] labelbox')
+		browser
+			.clickInFrame('#renderingdialogpage', 'clickbutton[callbackid="buttonAccept"]', 1000);
 		// Save change.
 		editor
 			.save()
