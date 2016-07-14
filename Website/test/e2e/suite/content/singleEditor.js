@@ -1,5 +1,5 @@
 module.exports = {
-	before: function (browser) {
+	beforeEach: function (browser) {
 		browser.url(browser.launchUrl + '/Composite/top.aspx');
 		var content = browser.page.content();
 		content
@@ -39,7 +39,7 @@ module.exports = {
 		content
 			.assertBrowserContains('div.content-column > h1', 'Moving forward');
 	},
-	after: function (browser) {
+	afterEach: function (browser, done) {
 		var content = browser.page.content();
 		// Revert changes
 		content
@@ -47,6 +47,6 @@ module.exports = {
 			.enterFrame('@browserFrame')
 			.click('#moreactionsbutton')
 			.click('menuitem[image="item-undo-unpublished-changes"]')
-			.click('toolbarbutton[image="item-publish"]');
+			.click('toolbarbutton[image="item-publish"]', done);
 	}
 }

@@ -1,5 +1,5 @@
 module.exports = {
-	before: function (browser) {
+	beforeEach: function (browser) {
 		browser.url(browser.launchUrl + '/Composite/top.aspx');
 		var content = browser.page.content();
 		content
@@ -63,7 +63,7 @@ module.exports = {
 		content
 			.assertBrowserContains('div.jumbotron-content > h1 > em', 'Jupiter');
 	},
-	after: function (browser) {
+	afterEach: function (browser, done) {
 		var content = browser.page.content();
 		// Revert changes
 		content
@@ -71,6 +71,6 @@ module.exports = {
 			.enterFrame('@browserFrame')
 			.click('#moreactionsbutton')
 			.click('menuitem[image="item-undo-unpublished-changes"]')
-			.click('toolbarbutton[image="item-publish"]');
+			.click('toolbarbutton[image="item-publish"]', done);
 	}
 };
