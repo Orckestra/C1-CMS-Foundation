@@ -4,7 +4,5 @@ module.exports = {
 		login = browser.page.login();
 		login.assert.value('@usernameInput', '');
 		login.assert.value('@passwordInput', '');
-
-		browser.end();
 	}
 };

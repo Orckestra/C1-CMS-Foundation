@@ -6,6 +6,5 @@ module.exports = {
 		browser.page.appWindow().enter();
 		browser.page.startScreen()
 			.assert.elementNotPresent('@startFrame');
-		browser.end();
 	}
 };

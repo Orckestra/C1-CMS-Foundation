@@ -7,7 +7,5 @@ module.exports = {
 			.assert.visible('@menu')
 			.assert.visible('@explorer')
 			.assert.visible('@stage');
-
-		browser.end();
 	}
 };

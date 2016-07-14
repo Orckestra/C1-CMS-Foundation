@@ -5,6 +5,5 @@ module.exports = {
 		startScreen.prepare()
 			.enter()
 			.assert.visible('@closeButton');
-		browser.end();
 	}
 };

@@ -11,6 +11,5 @@ module.exports = {
 		// Check that start screen is shown
 		browser.page.appWindow().enter();
 		startScreen.waitForElementVisible('@startFrame', 2000);
-		browser.end();
 	}
 };

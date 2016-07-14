@@ -72,6 +72,5 @@ module.exports = {
 			.click('#moreactionsbutton')
 			.click('menuitem[image="item-undo-unpublished-changes"]')
 			.click('toolbarbutton[image="item-publish"]');
-		browser.end();
 	}
 };

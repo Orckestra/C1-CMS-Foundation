@@ -6,7 +6,7 @@
   "custom_commands_path" : "Website/test/e2e/commands",
   "custom_assertions_path" : "",
   "page_objects_path" : "Website/test/e2e/pageObjects",
-  "globals_path" : "",
+  "globals_path" : "Website/test/e2e/globals",
 
   "selenium" : {
     "start_process" : true,

@@ -21,7 +21,5 @@ module.exports = {
 				.click(buttonSelector)
 				.waitForElementVisible(stageSelector, 2000);
 		});
-
-		browser.end();
 	}
 };
