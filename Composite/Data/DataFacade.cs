@@ -83,7 +83,7 @@ namespace Composite.Data
             GlobalEventSystemFacade.SubscribeToFlushEvent(OnFlushEvent);
         }
 
-
+        
         internal static IDataFacade Implementation { get { return _dataFacade; } set { _dataFacade = value; } }
 
 
@@ -615,7 +615,29 @@ namespace Composite.Data
             return TryGetDataByUniqueKey(interfaceType, dataKeyPropertyCollection);
         }
 
+        // Overload
+        /// <exclude />
+        public static IEnumerable<IData> TryGetDataVersionsByUniqueKey(Type interfaceType, object dataKeyValue)
+        {
+            Verify.ArgumentNotNull(interfaceType, "interfaceType");
 
+            if (DataCachingFacade.IsDataAccessCacheEnabled(interfaceType))
+            {
+                var cachedByKey = DataFacade.GetData(interfaceType) as CachingQueryable_CachedByKey;
+                if (cachedByKey != null)
+                {
+                    return cachedByKey.GetCachedVersionValuesByKey(dataKeyValue);
+                }
+            }
+
+
+            PropertyInfo propertyInfo = DataAttributeFacade.GetKeyProperties(interfaceType).Single();
+
+            DataKeyPropertyCollection dataKeyPropertyCollection = new DataKeyPropertyCollection();
+            dataKeyPropertyCollection.AddKeyProperty(propertyInfo, dataKeyValue);
+
+            return TryGetDataVersionsByUniqueKey(interfaceType, dataKeyPropertyCollection);
+        }
 
         /// <exclude />
         public static IData TryGetDataByUniqueKey(Type interfaceType, DataKeyPropertyCollection dataKeyPropertyCollection)
@@ -634,7 +656,22 @@ namespace Composite.Data
             return data;
         }
 
+        /// <exclude />
+        public static IEnumerable<IData> TryGetDataVersionsByUniqueKey(Type interfaceType, DataKeyPropertyCollection dataKeyPropertyCollection)
+        {
+            if (interfaceType == null) throw new ArgumentNullException("interfaceType");
+            if (dataKeyPropertyCollection == null) throw new ArgumentNullException("dataKeyPropertyCollection");
 
+            LambdaExpression lambdaExpression = GetPredicateExpressionByUniqueKey(interfaceType, dataKeyPropertyCollection);
+
+            MethodInfo methodInfo = GetGetDataWithPredicatMethodInfo(interfaceType);
+
+            IQueryable queryable = (IQueryable)methodInfo.Invoke(null, new object[] { lambdaExpression });
+
+            var datas = queryable.OfType<IData>();
+
+            return datas;
+        }
 
         // Overload
         /// <exclude />

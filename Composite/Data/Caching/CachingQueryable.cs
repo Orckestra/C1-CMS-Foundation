@@ -46,6 +46,7 @@ namespace Composite.Data.Caching
     internal interface CachingQueryable_CachedByKey
     {
         IData GetCachedValueByKey(object key);
+        IEnumerable<IData> GetCachedVersionValuesByKey(object key);
     }
 
 
@@ -222,6 +223,31 @@ namespace Composite.Data.Caching
             }
 
             return _wrappingMethodInfo.Invoke(null, new object[] { result }) as IData;
+        }
+
+        public IEnumerable<IData> GetCachedVersionValuesByKey(object key)
+        {
+            IEnumerable<IData> cachedRows = GetRowsByKeyTable()[key];
+            if (cachedRows == null) return null;
+
+            IEnumerable<T> filteredData = cachedRows.Cast<T>();
+
+            var filterMethodInfo = StaticReflection.GetGenericMethodInfo(
+                    () => ((DataInterceptor)null).InterceptGetData((IEnumerable<IData>)null))
+                    .MakeGenericMethod(typeof(T));
+
+            foreach (var dataInterceptor in DataFacade.GetDataInterceptors(typeof(T)))
+            {
+                filteredData = (IEnumerable<T>)filterMethodInfo.Invoke(dataInterceptor, new object[] { filteredData });
+            }
+
+            var result = filteredData;
+            if (result == null)
+            {
+                return null;
+            }
+
+            return _wrappingMethodInfo.Invoke(null, new object[] { result }) as IEnumerable<IData>;
         }
 
 
