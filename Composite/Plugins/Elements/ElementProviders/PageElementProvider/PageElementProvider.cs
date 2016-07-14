@@ -310,23 +310,23 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 return _pageAssociatedHelper.GetChildren((DataGroupingProviderHelperEntityToken)entityToken, true);
             }
 
-            Dictionary<Guid, IPage> pages;
+            IEnumerable<IPage> pages;
             using (new DataScope(DataScopeIdentifier.Administrated))
             {
-                pages = GetChildrenPages(entityToken, searchToken).ToDictionary(f => f.Id);
+                pages = GetChildrenPages(entityToken, searchToken).ToList();//.ToDictionary(f => f.Id);
             }
 
 
-            Dictionary<Guid, IPage> foreignAdministratedPages;
+            IEnumerable<IPage> foreignAdministratedPages;
             using (new DataScope(DataScopeIdentifier.Administrated, UserSettings.ForeignLocaleCultureInfo))
             {
-                foreignAdministratedPages = GetChildrenPages(entityToken, searchToken).ToDictionary(f => f.Id);
+                foreignAdministratedPages = GetChildrenPages(entityToken, searchToken).ToList();//.ToDictionary(f => f.Id);
             }
 
-            Dictionary<Guid, IPage> foreignPublicPages;
+            IEnumerable<IPage> foreignPublicPages;
             using (new DataScope(DataScopeIdentifier.Public, UserSettings.ForeignLocaleCultureInfo))
             {
-                foreignPublicPages = GetChildrenPages(entityToken, searchToken).ToList().ToDictionary(f => f.Id);
+                foreignPublicPages = GetChildrenPages(entityToken, searchToken).ToList();//.ToDictionary(f => f.Id);
             }
 
 
@@ -343,24 +343,31 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             var resultPages = new List<KeyValuePair<PageLocaleState, IPage>>();
             foreach (Guid pageId in childPageIds)
             {
-                IPage page;
-                if (pages.TryGetValue(pageId, out page))
+                if (pages.Any(f => f.Id == pageId))
                 {
-                    resultPages.Add(new KeyValuePair<PageLocaleState, IPage>(PageLocaleState.Own, page));
+                    resultPages.AddRange(
+                        pages.Where(f => f.Id == pageId)
+                            .Select(p => new KeyValuePair<PageLocaleState, IPage>(PageLocaleState.Own, p)));
                 }
-                else if (foreignAdministratedPages.TryGetValue(pageId, out page)
-                         && page.IsTranslatable())
+                else if (foreignAdministratedPages.Any(f => f.Id == pageId && f.IsTranslatable()))
                 {
-                    resultPages.Add(new KeyValuePair<PageLocaleState, IPage>(PageLocaleState.ForeignActive, page));
+                    resultPages.AddRange(
+                        foreignAdministratedPages.Where(f => f.Id == pageId && f.IsTranslatable())
+                            .Select(p => new KeyValuePair<PageLocaleState, IPage>(PageLocaleState.ForeignActive, p)));
                 }
-                else if (foreignPublicPages.TryGetValue(pageId, out page))
+                else if (foreignPublicPages.Any(f => f.Id == pageId))
                 {
-                    resultPages.Add(new KeyValuePair<PageLocaleState, IPage>(PageLocaleState.ForeignActive, page));
+                    resultPages.AddRange(
+                        foreignPublicPages.Where(f => f.Id == pageId)
+                            .Select(p => new KeyValuePair<PageLocaleState, IPage>(PageLocaleState.ForeignActive, p)));
                 }
-                else if (foreignAdministratedPages.TryGetValue(pageId, out page))
+                else if (foreignAdministratedPages.Any(f => f.Id == pageId))
                 {
-                    resultPages.Add(new KeyValuePair<PageLocaleState, IPage>(PageLocaleState.ForeignDisabled, page));
+                    resultPages.AddRange(
+                        foreignAdministratedPages.Where(f => f.Id == pageId)
+                            .Select(p => new KeyValuePair<PageLocaleState, IPage>(PageLocaleState.ForeignDisabled, p)));
                 }
+
             }
 
             List<Element> childPageElements = GetElements(resultPages, entityToken is PageElementProviderEntityToken);
