@@ -27,6 +27,7 @@
       "selenium_host"  : "localhost",
       "silent": true,
 			"end_session_on_fail": false,
+			"skip_testcases_on_fail": false,
       "screenshots" : {
         "enabled" : false,
         "path" : ""
