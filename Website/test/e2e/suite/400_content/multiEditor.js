@@ -29,7 +29,7 @@ module.exports = {
 			.enter()
 			// Check that it has more than just one entry
 			.section.editorBody
-			.assert.visible('img:nth-child(2)')
+			.waitForElementVisible('img:nth-child(2)', 1000)
 			// Select the first element
 			.click('img:nth-child(1)')
 		browser

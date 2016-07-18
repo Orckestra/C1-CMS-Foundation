@@ -13,12 +13,12 @@ module.exports = {
 		{
 			enter: function () {
 				this
-					.waitForElementVisible('@editorFrame', 1000)
-					.waitForFrameLoad('@editorFrame', 1000)
+					.waitForElementVisible('@editorFrame', 2000)
+					.waitForFrameLoad('@editorFrame', 2000)
 					.enterFrame('@editorFrame')
-					.waitForFrameLoad('iframe[src^="tinymce.aspx"]', 1000)
+					.waitForFrameLoad('iframe[src^="tinymce.aspx"]', 3000)
 					.enterFrame('iframe[src^="tinymce.aspx"]')
-					.waitForFrameLoad('#editor_ifr', 1000)
+					.waitForFrameLoad('#editor_ifr', 2000)
 					.enterFrame('#editor_ifr')
 				return this;
 			},
@@ -36,13 +36,11 @@ module.exports = {
 				return this;
 			},
 			save: function () {
-				this
-					.selectFrame('#savebutton')
-					.verify.cssClassNotPresent('#savebutton', 'isdisabled')
-					.click('#savebutton > labelbox');
+				this.selectFrame('#savebutton')
+				this.expect.element('#savebutton').to.not.have.attribute('isdisabled');
+				this.click('#savebutton > labelbox');
 				this.api.pause(1000)
-				this
-					.verify.cssClassPresent('#savebutton', 'isdisabled')
+				this.expect.element('#savebutton').to.have.attribute('isdisabled');
 				return this;
 			}
 		}

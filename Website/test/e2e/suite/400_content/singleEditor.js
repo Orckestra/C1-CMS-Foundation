@@ -28,6 +28,7 @@ module.exports = {
 		// Change header in editor
 		editor
 			.changeElementContent('h1', 'Moving forward')
+		browser.pause(100);
 		// Save change.
 		editor
 			.save()
