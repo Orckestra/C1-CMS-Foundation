@@ -7,7 +7,18 @@ const decks = [
 	'loading'
 ];
 
+var resetSite = require('../../reset.js');
+
 module.exports = {
+	before: function (_, done) {
+		resetSite(function (err) {
+			if (err) {
+				console.error(err);
+				process.exit(1);
+			}
+			done();
+		});
+	},
 	beforeEach: function (browser) {
 		browser.url(browser.launchUrl + '/Composite/top.aspx?mode=develop');
 	},
