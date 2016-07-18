@@ -16,9 +16,9 @@ const removePaths = [
 	'Website/App_Data/Media/',
 	'Website/App_Data/PageTemplateFeatures/',
 	'Website/App_Data/PageTemplates/*.cshtml',
-  'Website/App_Data/Razor/Composite/',
-  'Website/App_Data/Razor/Layout/',
-  'Website/App_Data/Razor/PageBlocks/',
+	'Website/App_Data/Razor/Composite/',
+	'Website/App_Data/Razor/Layout/',
+	'Website/App_Data/Razor/PageBlocks/',
 	'Website/App_GlobalResources/',
 	'Website/BlogMetaWeblog.ashx',
 	'Website/BlogRssFeed.ashx',
@@ -61,14 +61,14 @@ const fs = require('fs');
 const basepath = process.cwd();
 
 function copyFile(source, target) {
-		return new Promise(function(resolve, reject) {
-				var reader = fs.createReadStream(source);
-				reader.on('error', reject);
-				var writer = fs.createWriteStream(target);
-				writer.on('error', reject);
-				writer.on('finish', resolve);
-				reader.pipe(writer);
-		});
+	return new Promise(function(resolve, reject) {
+		var reader = fs.createReadStream(source);
+		reader.on('error', reject);
+		var writer = fs.createWriteStream(target);
+		writer.on('error', reject);
+		writer.on('finish', resolve);
+		reader.pipe(writer);
+	});
 }
 
 module.exports = function reset(callback) {
