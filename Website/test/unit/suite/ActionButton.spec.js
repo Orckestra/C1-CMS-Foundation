@@ -5,10 +5,9 @@ import TestUtils from 'react-addons-test-utils';
 import ActionButton from '../../../Composite/console/components/presentation/ActionButton';
 
 describe('ActionButton', () => {
-	let renderer, props, state;
+	let renderer, props;
 	beforeEach(() => {
 		renderer = TestUtils.createRenderer();
-		state = { state: true };
 		props = {
 			label: "Label",
 			action: sinon.spy()
@@ -25,10 +24,10 @@ describe('ActionButton', () => {
 	});
 
 
-	it('should call handler with state contents when clicked', () => {
+	it('should call handler when clicked', () => {
 		return expect(renderer, 'with event', 'click')
 			.then(() => {
-				return expect(props.action, 'was called with', state);
+				return expect(props.action, 'was called once');
 			});
 	});
 })

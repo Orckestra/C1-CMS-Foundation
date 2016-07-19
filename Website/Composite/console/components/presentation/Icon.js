@@ -1,9 +1,9 @@
 import React from 'react';
 
-export default ({ id, ...others }) => {
+export default (id, ...others) => {
 	return (
 		<svg { ...others }>
-      <use xlinkHref={'#icon-' + id}/>
+			<use xlinkHref={'#icon-' + id}/>
 		</svg>
 	)
 }

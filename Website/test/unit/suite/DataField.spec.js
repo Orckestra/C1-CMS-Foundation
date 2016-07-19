@@ -2,6 +2,7 @@ import expect from '../helpers/expect';
 import sinon from 'sinon';
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
+import HelpIcon from '../../../Composite/console/components/presentation/HelpIcon';
 import DataField from '../../../Composite/console/components/presentation/DataField';
 
 describe('DataField', () => {
@@ -33,7 +34,7 @@ describe('DataField', () => {
 					type={props.type}
 					id={props.name}
 					value={state.value}/>
-				<span className="helper">{props.help}</span>
+				<HelpIcon text={props.help}/>
 			</div>
 			);
 		});
@@ -51,7 +52,7 @@ describe('DataField', () => {
 							value={state.value}/>
 					</div>
 				),
-				expect(renderer, 'not to contain', <span className="helper"/>)
+				expect(renderer, 'not to contain', <HelpIcon/>)
 			]);
 		});
 
@@ -65,7 +66,7 @@ describe('DataField', () => {
 							type={props.type}
 							id={props.name}
 							value={state.value}/>
-						<span className="helper">{props.help}</span>
+						<HelpIcon text={props.help}/>
 					</div>
 				),
 				expect(renderer, 'not to contain', <label/>)
