@@ -313,20 +313,20 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             IEnumerable<IPage> pages;
             using (new DataScope(DataScopeIdentifier.Administrated))
             {
-                pages = GetChildrenPages(entityToken, searchToken).ToList();//.ToDictionary(f => f.Id);
+                pages = GetChildrenPages(entityToken, searchToken).ToList();
             }
 
 
             IEnumerable<IPage> foreignAdministratedPages;
             using (new DataScope(DataScopeIdentifier.Administrated, UserSettings.ForeignLocaleCultureInfo))
             {
-                foreignAdministratedPages = GetChildrenPages(entityToken, searchToken).ToList();//.ToDictionary(f => f.Id);
+                foreignAdministratedPages = GetChildrenPages(entityToken, searchToken).ToList();
             }
 
             IEnumerable<IPage> foreignPublicPages;
             using (new DataScope(DataScopeIdentifier.Public, UserSettings.ForeignLocaleCultureInfo))
             {
-                foreignPublicPages = GetChildrenPages(entityToken, searchToken).ToList();//.ToDictionary(f => f.Id);
+                foreignPublicPages = GetChildrenPages(entityToken, searchToken).ToList();
             }
 
 
@@ -810,7 +810,6 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
         private ElementVisualizedData MakeVisualData(IPage page, PageLocaleState pageLocaleState, string urlMappingName, bool isRootPage)
         {
-
             bool hasChildren = PageServices.GetChildrenCount(page.Id) > 0 || _pageAssociatedHelper.HasChildren(page);
 
             var visualizedElement = new ElementVisualizedData
@@ -819,7 +818,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 Label = (isRootPage || string.IsNullOrWhiteSpace(page.MenuTitle)) ? page.Title : page.MenuTitle,
                 ToolTip = page.Description,
                 ElementBundle = page.Id.ToString(),
-                BundleElementName = page.VersionName
+                BundleElementName = page.LocalizedVersionName()
             };
 
             if (pageLocaleState == PageLocaleState.Own)
