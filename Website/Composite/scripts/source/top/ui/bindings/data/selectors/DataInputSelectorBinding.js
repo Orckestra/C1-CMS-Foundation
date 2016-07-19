@@ -231,7 +231,11 @@ DataInputSelectorBinding.prototype.populateFromList = function (list) {
 				itemBinding.setToolTip(entry.toolTip);
 			}
 			if (entry.isSelected) {
-				this.select(itemBinding, true);
+				this.select(_selectedItemBinding, true);
+			} else {
+				if (entry.value && entry.value === this.getValue()) {
+					this._selectedItemBinding = itemBinding;
+				}
 			}
 			bodyBinding.add(itemBinding);
 		}
@@ -472,12 +476,14 @@ DataInputSelectorBinding.prototype.setValue = function (value) {
 	var label = null;
 
 	if (value != null && value != "") {
-		var items = this._menuBodyBinding.getDescendantBindingsByLocalName("menuitem");
-		while (items.hasNext()) {
-			var item = items.getNext();
-			if (item.selectionValue == value) {
-				label = item.getLabel();
-				break;
+		if (this._menuBodyBinding) {
+			var items = this._menuBodyBinding.getDescendantBindingsByLocalName("menuitem");
+			while (items.hasNext()) {
+				var item = items.getNext();
+				if (item.selectionValue === value) {
+					label = item.getLabel();
+					break;
+				}
 			}
 		}
 	}

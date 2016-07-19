@@ -10,7 +10,7 @@
 	    <asp:PlaceHolder ID="HeaderPlaceHolder" runat="server" />
 	</head>
 	<body>
-	    <form id="form1" runat="server" class="updateform updatezone">
+	    <form id="form1" runat="server" class="updateDISABLEDform updatezone">
 		    <ui:dialogpage
 		    	id="formcontrolpage"
 		    	label="<%= Server.HtmlEncode( this.ContainerLabel )%>"
