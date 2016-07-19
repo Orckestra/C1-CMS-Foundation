@@ -7,6 +7,7 @@ using System.Threading;
 using Composite.Core.Types;
 using Composite.Data.Caching.Foundation;
 using System.Reflection;
+using Composite.Core.Extensions;
 using Composite.Core.Linq;
 using Composite.Data.Foundation;
 
@@ -59,6 +60,7 @@ namespace Composite.Data.Caching
 
         private volatile DataCachingFacade.CachedTable _cachedTable;
         private static readonly MethodInfo _wrappingMethodInfo;
+        private static readonly MethodInfo _listwrappingMethodInfo;
 
         private IEnumerable<T> _innerEnumerable;
 
@@ -68,6 +70,11 @@ namespace Composite.Data.Caching
             {
                 _wrappingMethodInfo = StaticReflection.GetGenericMethodInfo(a => DataWrappingFacade.Wrap((IData) a))
                                                       .MakeGenericMethod(new[] {typeof (T)});
+            }
+            if (typeof(IData).IsAssignableFrom(typeof(T)))
+            {
+                _listwrappingMethodInfo = StaticReflection.GetGenericMethodInfo(a => ((IEnumerable<IData>)a).ForEach(b=>DataWrappingFacade.Wrap(b)))
+                                                      .MakeGenericMethod(new[] { typeof(IEnumerable<T>) });
             }
         } 
 
@@ -247,7 +254,7 @@ namespace Composite.Data.Caching
                 return null;
             }
 
-            return _wrappingMethodInfo.Invoke(null, new object[] { result }) as IEnumerable<IData>;
+            return _listwrappingMethodInfo.Invoke(null, new object[] { result }) as IEnumerable<IData>;
         }
 
 

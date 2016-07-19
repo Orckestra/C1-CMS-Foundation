@@ -57,7 +57,7 @@ namespace Composite.Plugins.Elements.UrlToEntityToken
                         if (data != null)
                         {
                             var key = data.GetUniqueKey();
-                            var publicData = DataFacade.TryGetDataByUniqueKey(dataEntityToken.InterfaceType, key);
+                            var publicData = DataFacade.TryGetDataVersionsByUniqueKey(dataEntityToken.InterfaceType, key).FirstOrDefault();
                             if (publicData != null)
                             {
                                 entityToken = publicData.GetDataEntityToken();
