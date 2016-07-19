@@ -50,6 +50,15 @@ module.exports = {
 					.enterFrame('#browsertabbox iframe')
 					.assert.containsText(selector, value);
 				return this;
+			},
+			assertBrowserUrl: function (url) {
+				var urlRegex = new RegExp(url.replace(/[-\\^$*+?.()|[\]{}]/g, '\\$&') + '$');
+				this
+					.enter()
+					.enterFrame('@browserFrame')
+					.expect.element('#addressbar input').value
+					.to.match(urlRegex);
+				return this;
 			}
 		}
 	]
