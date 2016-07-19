@@ -16,7 +16,8 @@ describe('Toolbar', () => {
 		props = {
 			buttons: {
 				first: {
-					label: "Label1"
+					label: "Label1",
+					icon: 'save'
 				},
 				second: {
 					label: "Label2"
@@ -32,7 +33,7 @@ describe('Toolbar', () => {
 	it('renders buttons', () => {
 		return expect(renderer, 'to have rendered',
 			<div className="toolbar">
-				<ActionButton label="Label1" action={actions.first}/>
+				<ActionButton label="Label1" action={actions.first} icon="save"/>
 				<ActionButton label="Label2" action={actions.second}/>
 				<ActionButton label="Label3" action={actions.third}/>
 			</div>

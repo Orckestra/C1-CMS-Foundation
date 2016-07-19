@@ -8,9 +8,10 @@ const DataField = props => {
 		type = 'text';
 	}
 
-	let input;
-	function handleChange() {
-		props.changeValue(input.value);
+	// console.log(props);
+
+	function handleChange(event) {
+		props.updateValue(props.name, event.target.value);
 	}
 
 	return (
@@ -22,7 +23,6 @@ const DataField = props => {
 				type={type}
 				id={props.name}
 				value={props.value}
-				ref={comp => { input = comp; }}
 				onChange={handleChange}/>
 			{props.help ? <HelpIcon text={props.help} /> : null}
 		</div>

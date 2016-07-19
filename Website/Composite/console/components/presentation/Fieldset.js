@@ -5,10 +5,9 @@ const Fieldset = ({ label, fields }) => (
 	<fieldset>
 		{label ? <legend>{label}</legend> : null}
 		{
-			Object.keys(fields).map(name => {
-				let field = fields[name];
-				return (<DataField key={name} {...field}/>);
-			})
+			Object.keys(fields).map(name => (
+				<DataField key={name} name={name} {...fields[name]}/>
+			))
 		}
 	</fieldset>
 )

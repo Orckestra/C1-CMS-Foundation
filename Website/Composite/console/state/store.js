@@ -9,7 +9,8 @@ export default function configureStore(initialState) {
 	if (store && store.replaceReducer) {
 		store.replaceReducer(consoleReducers);
 	} else {
-		store = createStore(consoleReducers, initialState);
+		store = createStore(consoleReducers, initialState,
+			window.devToolsExtension && window.devToolsExtension());
 		hotStore.prevStore = store;
 	}
 	return store;

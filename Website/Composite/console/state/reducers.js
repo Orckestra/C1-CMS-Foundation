@@ -2,15 +2,14 @@ import { combineReducers } from 'redux'
 import { UPDATE_VALUE } from './actions';
 
 let initialState = {
-	fieldsets: {}
+	fields: {}
 }
 
-function fieldsets(state = initialState.fieldsets, action) {
+function fields(state = initialState.fields, action) {
 	switch (action.type) {
 		case UPDATE_VALUE:
 			let update = {};
-			update[action.fieldset] = {};
-			update[action.fieldset][action.field] = action.newValue;
+			update[action.field] = action.newValue;
 			return Object.assign({}, state, update);
 		default:
 			return state;
@@ -18,6 +17,6 @@ function fieldsets(state = initialState.fieldsets, action) {
 }
 
 const consoleReducers = combineReducers({
-	fieldsets
+	fields
 });
 export default consoleReducers;

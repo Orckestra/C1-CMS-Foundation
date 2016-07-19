@@ -1,9 +1,9 @@
 import React, { PropTypes } from 'react';
 import Icon from './Icon';
 
-const ActionButton = ({ label, action, getState, icon }) => (
+const ActionButton = ({ label, action, icon }) => (
 	<button onClick={() => action()}>
-		{icon ? <Icon {...icon}/> : null}
+		{icon ? <Icon id={icon}/> : null}
 		<span>{label}</span>
 	</button>
 );

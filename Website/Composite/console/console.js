@@ -12,25 +12,29 @@ let pageProps = {
 	buttons: {
 		save: {
 			label: 'Save',
-			icon: { id :'save' }
+			icon: 'save'
 		}
 	},
 	fieldsets: {
 		'language-properties': {
 			label: 'Language Properties',
 			name: 'language-properties',
-			fields: {
-				'url-mapping-name': {
-					label: 'URL mapping name',
-					help: 'Base name in URLs'
-				},
-				'test': {
-					type: 'number',
-					label: 'Number of beers',
-					help: 'How drunk you want to get',
-					value: 0
-				}
-			}
+			fields: [
+				'url-mapping-name',
+				'test'
+			]
+		}
+	},
+	fields: {
+		'url-mapping-name': {
+			label: 'URL mapping name',
+			help: 'Base name in URLs'
+		},
+		'test': {
+			type: 'number',
+			label: 'Number of beers',
+			help: 'How drunk you want to get',
+			value: 0
 		}
 	}
 };

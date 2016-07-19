@@ -3,17 +3,26 @@ import Toolbar from './components/presentation/Toolbar.js';
 import Fieldset from './components/presentation/Fieldset.js';
 import update from 'react-addons-update';
 
-export default class Page extends React.Component {
-	render() {
-		return (
-			<div className="page">
-				<Toolbar type="document" buttons={this.props.buttons}/>
-				<div className="scrollbox">
-					{Object.values(this.props.fieldsets).map(fieldset => <Fieldset
+const Page = props => (
+	<div className="page">
+		<Toolbar type="document" buttons={props.buttons} actions={props.actions}/>
+		<div className="scrollbox">
+			{Object.values(props.fieldsets).map(fieldset => {
+				console.log(props)
+				let fields = {};
+				fieldset.fields.forEach(fieldName => {
+					fields[fieldName] = props.fields[fieldName];
+					fields[fieldName].updateValue = props.actions.updateValue;
+				});
+				return (
+					<Fieldset
 						{...fieldset}
-						key={fieldset.name}/>)}
-				</div>
-			</div>
-		);
-	}
-}
+						fields={fields}
+						key={fieldset.name}/>
+				)}
+			)}
+		</div>
+	</div>
+);
+
+export default Page;

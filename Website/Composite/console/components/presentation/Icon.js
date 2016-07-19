@@ -1,9 +1,11 @@
 import React from 'react';
 
-export default (id, ...others) => {
+const Icon = ({id}) => {
 	return (
-		<svg { ...others }>
+		<svg>
 			<use xlinkHref={'#icon-' + id}/>
 		</svg>
 	)
 }
+
+export default Icon;

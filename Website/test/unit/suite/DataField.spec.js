@@ -18,7 +18,7 @@ describe('DataField', () => {
 				name: 'test',
 				label: 'Text label',
 				help: 'Help text',
-				changeValue: sinon.spy()
+				updateValue: sinon.spy(value => { state.value = value; })
 			};
 			state = {
 				value: 'Init'
@@ -71,6 +71,19 @@ describe('DataField', () => {
 				),
 				expect(renderer, 'not to contain', <label/>)
 			]);
+		});
+
+		it('can change the value of its content', () => {
+			renderer.render(<DataField {...props} {...state}/> );
+			return expect(
+				renderer, 'queried for', <input/>,
+				'to have rendered', <input value="Init"/>
+			).then(() => expect(renderer,
+					'with event change', {target: {value: 'New' } }, 'on', <input/>,
+					'queried for', <input/>,
+					'to have rendered', <input value="New"/>
+				)
+			);
 		});
 	});
 });

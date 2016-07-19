@@ -7,8 +7,8 @@ export const SAVE_STATE = 'SAVE_STATE';
 /*
 * action creators
 */
-export function updateFieldValue(fieldset, field, newValue) {
-	return { type: UPDATE_VALUE, fieldset, field, newValue };
+export function updateFieldValue(field, newValue) {
+	return { type: UPDATE_VALUE, field, newValue };
 }
 export function saveState() {
 	return { type: SAVE_STATE };
