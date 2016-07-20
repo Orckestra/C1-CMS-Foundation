@@ -11,5 +11,6 @@ export function updateFieldValue(field, newValue) {
 	return { type: UPDATE_VALUE, field, newValue };
 }
 export function saveState() {
+	console.log('simulate save');
 	return { type: SAVE_STATE };
 }

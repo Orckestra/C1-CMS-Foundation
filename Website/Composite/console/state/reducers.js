@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-import { UPDATE_VALUE } from './actions';
+import { UPDATE_VALUE, SAVE_STATE } from './actions';
 
 let initialState = {
 	fields: {}
@@ -11,6 +11,7 @@ function fields(state = initialState.fields, action) {
 			let update = {};
 			update[action.field] = action.newValue;
 			return Object.assign({}, state, update);
+		case SAVE_STATE:
 		default:
 			return state;
 	}
@@ -19,4 +20,5 @@ function fields(state = initialState.fields, action) {
 const consoleReducers = combineReducers({
 	fields
 });
+
 export default consoleReducers;
