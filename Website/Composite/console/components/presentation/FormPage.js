@@ -1,28 +1,27 @@
 import React from 'react';
-import Toolbar from './components/presentation/Toolbar.js';
-import Fieldset from './components/presentation/Fieldset.js';
-import update from 'react-addons-update';
+import Toolbar from './Toolbar.js';
+import Fieldset from './Fieldset.js';
 
-const Page = props => (
+const FormPage = props => (
 	<div className="page">
 		<Toolbar type="document" buttons={props.buttons} actions={props.actions}/>
 		<div className="scrollbox">
-			{Object.values(props.fieldsets).map(fieldset => {
-				console.log(props)
+			{Object.keys(props.fieldsets).map(fieldsetName => {
+				let fieldset = props.fieldsets[fieldsetName];
 				let fields = {};
 				fieldset.fields.forEach(fieldName => {
-					fields[fieldName] = props.fields[fieldName];
+					fields[fieldName] = Object.assign({}, props.fields[fieldName]);
 					fields[fieldName].updateValue = props.actions.updateValue;
 				});
 				return (
 					<Fieldset
 						{...fieldset}
 						fields={fields}
-						key={fieldset.name}/>
+						key={name}/>
 				)}
 			)}
 		</div>
 	</div>
 );
 
-export default Page;
+export default FormPage;

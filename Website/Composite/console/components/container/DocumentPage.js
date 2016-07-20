@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import Page from '../../Page';
+import FormPage from '../presentation/FormPage';
 import { saveState, updateFieldValue }from './../../state/actions';
 
 // Sets up a page that allows editing of a document consisting of sets of fields.
@@ -16,4 +16,4 @@ function mapDispatchToProps(dispatch) {
 	};
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Page);
+export default connect(mapStateToProps, mapDispatchToProps)(FormPage);
