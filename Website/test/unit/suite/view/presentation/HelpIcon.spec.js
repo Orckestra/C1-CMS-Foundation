@@ -1,8 +1,8 @@
-import expect from '../helpers/expect';
+import expect from '../../../helpers/expect';
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
-import HelpIcon from '../../../Composite/console/components/presentation/HelpIcon';
-import StatelessWrapper from '../helpers/StatelessWrapper';
+import HelpIcon from '../../../../../Composite/console/components/presentation/HelpIcon';
+import StatelessWrapper from '../../../helpers/StatelessWrapper';
 import sinon from 'sinon';
 
 describe('HelpIcon', () => {

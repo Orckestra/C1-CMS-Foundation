@@ -1,10 +1,10 @@
-import expect from '../helpers/expect';
+import expect from '../../../helpers/expect';
 import sinon from 'sinon';
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
-import HelpIcon from '../../../Composite/console/components/presentation/HelpIcon';
-import DataField from '../../../Composite/console/components/presentation/DataField';
-import StatelessWrapper from '../helpers/StatelessWrapper';
+import HelpIcon from '../../../../../Composite/console/components/presentation/HelpIcon';
+import DataField from '../../../../../Composite/console/components/presentation/DataField';
+import StatelessWrapper from '../../../helpers/StatelessWrapper';
 
 describe('DataField', () => {
 	let renderer, props, state;

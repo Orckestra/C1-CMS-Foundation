@@ -1,8 +1,8 @@
-import expect from '../helpers/expect';
+import expect from '../../../helpers/expect';
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
-import Toolbar from '../../../Composite/console/components/presentation/Toolbar';
-import ActionButton from '../../../Composite/console/components/presentation/ActionButton';
+import Toolbar from '../../../../../Composite/console/components/presentation/Toolbar';
+import ActionButton from '../../../../../Composite/console/components/presentation/ActionButton';
 
 describe('Toolbar', () => {
 	let renderer, props, actions;
