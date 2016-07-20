@@ -3,6 +3,7 @@ import React from 'react';
 import TestUtils from 'react-addons-test-utils';
 import HelpIcon from '../../../Composite/console/components/presentation/HelpIcon';
 import StatelessWrapper from '../helpers/StatelessWrapper';
+import sinon from 'sinon';
 
 describe('HelpIcon', () => {
 	let renderer, text;
@@ -24,24 +25,49 @@ describe('HelpIcon', () => {
 		)
 	);
 
-	it('displays help when clicked', () => {
-		var component = TestUtils.renderIntoDocument(
-			<StatelessWrapper>
-				<HelpIcon text={text}/>
-			</StatelessWrapper>
-		);
-		return expect(
-			component,
-			'with event', 'click')
-		.then(() => expect(
-			component,
-			'finding DOM tag', 'div',
-			'to have attributes', {
-				style: {
-					visibility: 'visible',
-					opacity: '1'
+	describe('show and hide', () => {
+		let component, clock;
+		beforeEach(() => {
+			component = TestUtils.renderIntoDocument(
+				<StatelessWrapper>
+					<HelpIcon text={text}/>
+				</StatelessWrapper>
+			);
+			clock = sinon.useFakeTimers();
+		});
+		afterEach(() => {
+			clock.restore();
+		});
+
+		it('displays help when clicked', () =>
+			expect(component, 'with event', 'click')
+			.then(() => expect(
+				component,
+				'finding DOM tag', 'div',
+				'to have attributes', {
+					style: {
+						visibility: 'visible',
+						opacity: '1'
+					}
 				}
-			}
-		));
+			))
+		);
+
+		it('hides help on mouse out with a delay', () =>
+			expect(component, 'with event', 'click', 'with event', 'mouseOut')
+			.then(() => clock.tick(2001))
+			.then(() =>
+				expect(
+					component,
+					'finding DOM tag', 'div',
+					'to have attributes', {
+						style: {
+							visibility: 'hidden',
+							opacity: '0'
+						}
+					}
+				)
+			)
+		);
 	});
 });
