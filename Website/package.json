@@ -32,6 +32,7 @@
     "sinon": "1.17.4",
     "systemjs": "0.19.31",
     "unexpected": "10.14.2",
+    "unexpected-dom": "3.1.0",
     "unexpected-react": "3.2.3",
     "unexpected-sinon": "10.2.1",
     "xml2js": "^0.4.10"

@@ -10,8 +10,8 @@ const HelpIcon = ({text}) => {
 
 	function hideHelper() {
 		setTimeout(() => {
-			helper.style.visibility = '';
-			helper.style.opacity = '';
+			helper.style.visibility = 'hidden';
+			helper.style.opacity = 0;
 		}, 2000);
 	}
 
@@ -19,7 +19,12 @@ const HelpIcon = ({text}) => {
 		<span className="helperIcon"
 			onClick={showHelper}
 			onMouseOut={hideHelper}>
-			<div ref={comp => { helper = comp; }} className="helper">{text}</div>
+			<div
+				ref={comp => { helper = comp; }}
+				style={{visibility: 'hidden', opacity: 0}}
+				className="helper">
+				{text}
+			</div>
 		</span>
 	)
 }

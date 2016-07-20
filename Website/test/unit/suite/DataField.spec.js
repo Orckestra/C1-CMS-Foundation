@@ -4,6 +4,7 @@ import React from 'react';
 import TestUtils from 'react-addons-test-utils';
 import HelpIcon from '../../../Composite/console/components/presentation/HelpIcon';
 import DataField from '../../../Composite/console/components/presentation/DataField';
+import StatelessWrapper from '../helpers/StatelessWrapper';
 
 describe('DataField', () => {
 	let renderer, props, state;
@@ -18,7 +19,7 @@ describe('DataField', () => {
 				name: 'test',
 				label: 'Text label',
 				help: 'Help text',
-				updateValue: sinon.spy(value => { state.value = value; })
+				updateValue: sinon.spy()
 			};
 			state = {
 				value: 'Init'
@@ -73,17 +74,18 @@ describe('DataField', () => {
 			]);
 		});
 
-		it('can change the value of its content', () => {
-			renderer.render(<DataField {...props} {...state}/> );
-			return expect(
-				renderer, 'queried for', <input/>,
-				'to have rendered', <input value="Init"/>
-			).then(() => expect(renderer,
-					'with event change', {target: {value: 'New' } }, 'on', <input/>,
-					'queried for', <input/>,
-					'to have rendered', <input value="New"/>
-				)
+		it('calls its update callback', () => {
+			var component = TestUtils.renderIntoDocument(
+				<StatelessWrapper>
+					<DataField {...props} {...state}/>
+				</StatelessWrapper>
 			);
+			return expect(
+				component, 'queried for', <input/>,
+				'to have rendered', <input value="Init"/>
+			)
+			.then(() => expect(component,'with event change', 'on', <input/>))
+			.then(() => expect(props.updateValue, 'was called'));
 		});
 	});
 });
