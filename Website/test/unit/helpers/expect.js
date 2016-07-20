@@ -18,7 +18,4 @@ expect.addAssertion('<RenderedReactElement> finding DOM tag <string> <assertion?
 	return expect.shift(element);
 })
 
-// Ensure that React gets cleaned up between tests.
-beforeEach(() => unexpectedReact.clearAll());
-
 export default expect;
