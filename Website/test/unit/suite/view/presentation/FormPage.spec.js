@@ -6,7 +6,7 @@ import Fieldset from '../../../../../Composite/console/components/presentation/F
 import Toolbar from '../../../../../Composite/console/components/presentation/Toolbar';
 
 describe('FormPage', () => {
-	let renderer, props;
+	let renderer, props, state;
 	beforeEach(() => {
 		renderer = TestUtils.createRenderer();
 		props = {
@@ -29,7 +29,9 @@ describe('FormPage', () => {
 				onefield: {},
 				twofield: { defaultValue: 'a default' },
 				threefield: { defaultValue: 'overwritten' }
-			},
+			}
+		};
+		state = {
 			actions: {
 				onebutton: () => {},
 				twobutton: () => {},
@@ -42,21 +44,21 @@ describe('FormPage', () => {
 	});
 
 	it('renders a form page with a toolbar and field sets', () => {
-		renderer.render(<FormPage {...props}/>);
+		renderer.render(<FormPage {...props} {...state}/>);
 		return expect(
 			renderer, 'to have rendered',
 			<div className="page">
-				<Toolbar type="document" buttons={props.buttons} actions={props.actions}/>
+				<Toolbar type="document" buttons={props.buttons} actions={state.actions}/>
 				<div className="scrollbox">
 					<Fieldset
 						fields={{
-							onefield: { updateValue: props.actions.updateValue },
-							twofield: { value: 'a default', updateValue: props.actions.updateValue }
+							onefield: { updateValue: state.actions.updateValue },
+							twofield: { value: 'a default', updateValue: state.actions.updateValue }
 						}}/>
 					<Fieldset
-						fields={{ threefield: { value: 'different', updateValue: props.actions.updateValue } }}/>
+						fields={{ threefield: { value: 'different', updateValue: state.actions.updateValue } }}/>
 				</div>
 			</div>
-		)
+		);
 	});
 });

@@ -1,13 +1,7 @@
-import React from 'react';
-import Icon from './Icon';
+import React, { PropTypes } from 'react';
 import HelpIcon from './HelpIcon';
 
 const DataField = props => {
-	let type = props.type;
-	if (!type) {
-		type = 'text';
-	}
-
 	let input;
 	function handleChange() {
 		props.updateValue(props.name, input.value);
@@ -19,7 +13,7 @@ const DataField = props => {
 				<label htmlFor={props.name}>{props.label}</label> :
 				null}
 			<input
-				type={type}
+				type={props.type}
 				id={props.name}
 				value={props.value}
 				ref={comp => { input = comp; }}
@@ -27,6 +21,15 @@ const DataField = props => {
 			{props.help ? <HelpIcon text={props.help} /> : null}
 		</div>
 	);
-}
+};
 
+DataField.propTypes = {
+	type: PropTypes.string,
+	updateValue: PropTypes.func.isRequired,
+	name: PropTypes.string.isRequired,
+	label: PropTypes.string,
+	help: PropTypes.string,
+	value: PropTypes.any
+};
+DataField.defaultProps = { type: 'text' };
 export default DataField;

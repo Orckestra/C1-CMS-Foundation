@@ -11,11 +11,11 @@ import TestUtils from 'react-addons-test-utils';
 const expect = unexpected.clone()
 	.use(unexpectedDom)
 	.use(unexpectedReact)
-	.use(unexpectedSinon)
+	.use(unexpectedSinon);
 
 expect.addAssertion('<RenderedReactElement> finding DOM tag <string> <assertion?>', function (expect, subject, tagName) {
 	let element = TestUtils.findRenderedDOMComponentWithTag(subject, tagName);
 	return expect.shift(element);
-})
+});
 
 export default expect;

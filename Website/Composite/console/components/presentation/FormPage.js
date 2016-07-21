@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import Toolbar from './Toolbar.js';
 import Fieldset from './Fieldset.js';
 
@@ -23,10 +23,18 @@ const FormPage = props => (
 						{...fieldset}
 						fields={fields}
 						key={name}/>
-				)}
-			)}
+				);
+			})}
 		</div>
 	</div>
 );
+
+FormPage.propTypes = {
+	buttons: PropTypes.object.isRequired,
+	actions: PropTypes.object.isRequired,
+	fieldsets: PropTypes.object.isRequired,
+	dataFields: PropTypes.object.isRequired,
+	values: PropTypes.object.isRequired
+};
 
 export default FormPage;

@@ -53,7 +53,7 @@ describe('DataField', () => {
 							value={state.value}/>
 					</div>
 				),
-				expect(renderer, 'not to contain', <HelpIcon/>)
+				expect(renderer, 'not to contain', <HelpIcon text=""/>)
 			]);
 		});
 

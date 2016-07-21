@@ -1,6 +1,6 @@
 import getHotReloadStore from 'systemjs-hot-reloader-store';
-import { createStore } from 'redux'
-import consoleReducers from './reducers'
+import { createStore } from 'redux';
+import consoleReducers from './reducers';
 
 const hotStore = getHotReloadStore('console:store');
 

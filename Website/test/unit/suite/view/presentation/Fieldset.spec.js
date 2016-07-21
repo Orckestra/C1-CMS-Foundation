@@ -5,18 +5,18 @@ import Fieldset from '../../../../../Composite/console/components/presentation/F
 import DataField from '../../../../../Composite/console/components/presentation/DataField';
 
 describe('Fieldset', () => {
-	let renderer, props;
+	let renderer, props, updater;
 	beforeEach(() => {
 		renderer = TestUtils.createRenderer();
+		updater = () => {};
 		props = {
 			label: 'Here be fields',
 			fields: {
-				first: {},
-				second: {},
-				third: {}
+				first: { updateValue: updater },
+				second: { updateValue: updater },
+				third: { updateValue: updater }
 			}
-		}
-
+		};
 	});
 
 	it('renders a labeled set of data fields', () => {
@@ -25,20 +25,20 @@ describe('Fieldset', () => {
 		return expect(renderer, 'to have rendered',
 			<fieldset>
 				<legend>Here be fields</legend>
-				<DataField/>
-				<DataField/>
-				<DataField/>
+				<DataField name="first" updateValue={updater}/>
+				<DataField name="second" updateValue={updater}/>
+				<DataField name="third" updateValue={updater}/>
 			</fieldset>
-		)
+		);
 	});
 	it('renders an unlabeled set of data fields', () => {
 		renderer.render(<Fieldset {...props}/>);
 		return expect(renderer, 'to have rendered',
 			<fieldset>
-				<DataField/>
-				<DataField/>
-				<DataField/>
+				<DataField name="first" updateValue={updater}/>
+				<DataField name="second" updateValue={updater}/>
+				<DataField name="third" updateValue={updater}/>
 			</fieldset>
-		)
-	})
+		);
+	});
 });

@@ -9,12 +9,12 @@ describe('ActionButton', () => {
 	beforeEach(() => {
 		renderer = TestUtils.createRenderer();
 		props = {
-			label: "Label",
+			label: 'Label',
 			action: sinon.spy()
-		}
+		};
 		renderer.render(
 			<ActionButton {...props}/>
-		)
+		);
 	});
 
 	it('should render a button', () => {

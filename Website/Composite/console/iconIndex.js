@@ -5,7 +5,7 @@ spriteSheet.id = 'spritesheet';
 // support hot reloading
 var oldSheet = document.getElementById('spritesheet');
 if (oldSheet) {
-	document.body.replaceChild(spriteSheet, oldSheet)
+	document.body.replaceChild(spriteSheet, oldSheet);
 } else {
 	document.body.appendChild(spriteSheet);
 }

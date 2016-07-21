@@ -10,7 +10,7 @@ const Fieldset = ({ label, fields }) => (
 			))
 		}
 	</fieldset>
-)
+);
 
 Fieldset.propTypes = {
 	label: PropTypes.string,

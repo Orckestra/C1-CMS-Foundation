@@ -2,11 +2,11 @@ import 'systemjs-hot-reloader/default-listener';
 
 import React from 'react';
 import { render } from 'react-dom';
-import { Provider } from 'react-redux'
+import { Provider } from 'react-redux';
 import configureStore from './state/store';
 import DocumentPage from './components/container/DocumentPage';
 import './console.scss!';
-import './iconIndex'
+import './iconIndex';
 
 let pageProps = {
 	buttons: {

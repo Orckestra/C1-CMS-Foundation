@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 
 const HelpIcon = ({text}) => {
 	let helper;
@@ -26,7 +26,11 @@ const HelpIcon = ({text}) => {
 				{text}
 			</div>
 		</span>
-	)
-}
+	);
+};
+
+HelpIcon.propTypes = {
+	text: PropTypes.string.isRequired
+};
 
 export default HelpIcon;

@@ -16,26 +16,26 @@ describe('Toolbar', () => {
 		props = {
 			buttons: {
 				first: {
-					label: "Label1",
+					label: 'Label1',
 					icon: 'save'
 				},
 				second: {
-					label: "Label2"
+					label: 'Label2'
 				},
 				third: {
-					label: "Label3"
+					label: 'Label3'
 				}
 			}
-		}
-		renderer.render(<Toolbar actions={actions} {...props}/>)
+		};
+		renderer.render(<Toolbar actions={actions} {...props}/>);
 	});
 
 	it('renders buttons', () => {
 		return expect(renderer, 'to have rendered',
-			<div className="toolbar">
-				<ActionButton label="Label1" action={actions.first} icon="save"/>
-				<ActionButton label="Label2" action={actions.second}/>
-				<ActionButton label="Label3" action={actions.third}/>
+			<div className='toolbar'>
+				<ActionButton label='Label1' action={actions.first} icon='save'/>
+				<ActionButton label='Label2' action={actions.second}/>
+				<ActionButton label='Label3' action={actions.third}/>
 			</div>
 		);
 	});
