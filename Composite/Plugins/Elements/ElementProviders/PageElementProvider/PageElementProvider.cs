@@ -823,7 +823,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
             if (pageLocaleState == PageLocaleState.Own)
             {
-                if (page.PublicationStatus == GenericPublishProcessController.Draft)
+                if ((page.PublicationStatus == GenericPublishProcessController.Draft)|| (page.PublicationStatus == GenericPublishProcessController.SentToDraft))
                 {
                     visualizedElement.Icon = PageElementProvider.PageDraft;
                     visualizedElement.OpenedIcon = PageElementProvider.PageDraft;

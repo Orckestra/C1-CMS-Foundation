@@ -40,6 +40,9 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
         /// <exclude />
         public const string Published = "published";
 
+        /// <exclude />
+        public const string SentToDraft = "sentToDraft";
+
         private static readonly string _backToAwaitingApproval = "awaitingApprovalBack";
         private static readonly string _forwardToAwaitingApproval = "awaitingApprovalForward";
         private static readonly string _backToAwaitingPublication = "awaitingPublicationBack";
@@ -92,6 +95,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
             _transitions = new Dictionary<string, IList<string>>
             {
                 {Draft, new List<string> {AwaitingApproval, AwaitingPublication, Published}},
+                {SentToDraft, new List<string> {AwaitingApproval, AwaitingPublication, Published}},
                 {AwaitingApproval, new List<string> {Draft, AwaitingPublication, Published}},
                 {AwaitingPublication, new List<string> {Draft, AwaitingApproval, Published}},
                 {Published, new List<string> {Draft, AwaitingApproval, AwaitingPublication}}
@@ -100,6 +104,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
             _visualTransitions = new Dictionary<string, IList<string>>
             {
                 {Draft, new List<string> { _draftDisabled, _forwardToAwaitingApproval, _forwardToAwaitingPublication, Published }},
+                {SentToDraft, new List<string> { _draftDisabled, _forwardToAwaitingApproval, _forwardToAwaitingPublication, Published }},
                 {AwaitingApproval, new List<string> { Draft, _awaitingApprovalDisabled, _forwardToAwaitingPublication, Published }},
                 {AwaitingPublication, new List<string> { Draft, _backToAwaitingApproval, _awaitingPublicationDisabled, Published }},
                 {Published, new List<string>()} // when public, no "send to" available.
@@ -108,6 +113,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
             _transitionNames = new Dictionary<string, string>
             {
                 {Draft, "Draft"},
+                {SentToDraft, "Sent to Draft"},
                 {AwaitingApproval, "Awaiting Approval"},
                 {AwaitingPublication, "Awaiting Publication"},
                 {Published, "Published"}
@@ -370,7 +376,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
 
 
 
-                if (publishControlled.PublicationStatus == Draft)
+                if ((publishControlled.PublicationStatus == Draft)|| (publishControlled.PublicationStatus == SentToDraft))
                 {
                     if (ProcessControllerAttributesFacade.IsActionIgnored(elementProviderType, GenericPublishProcessControllerActionTypeNames.UndoUnpublishedChanges) == false)
                     {
@@ -545,7 +551,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
                     }
                     else if (actionToken is DraftActionToken)
                     {
-                        publishControlled.PublicationStatus = Draft;
+                        publishControlled.PublicationStatus = SentToDraft;
                     }
                     else if (actionToken is AwaitingApprovalActionToken)
                     {
