@@ -1,7 +1,7 @@
 namespace Composite.Core.WebClient.Services.ConsoleMessageService
 {
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public enum ActionType
     {
         /// <exclude />
@@ -56,6 +56,9 @@ namespace Composite.Core.WebClient.Services.ConsoleMessageService
         ExpandTreeNode = 15,
 
         /// <exclude />
-        SelectElement = 16
+        SelectElement = 16,
+
+        /// <exclude />
+        OpenSlideView = 18,
     }
 }

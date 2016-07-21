@@ -13,13 +13,13 @@ StageBinding.bindingInstance = null;
 
 /**
  * The {@link SystemNode} hat build the currently selected perspective.
- * Updated by method {@link StageDecksBinding#setSelectionByHandle} 
+ * Updated by method {@link StageDecksBinding#setSelectionByHandle}
  * @type {SystemNode}
  */
 StageBinding.perspectiveNode = null;
 
 /**
- * The serializedEntityToken associated to the {@link DockTabBinding} 
+ * The serializedEntityToken associated to the {@link DockTabBinding}
  * that is selected AND activated on the current perspective. May be null.
  * Updated by method {@link DockTabBinding#_updateGlobalEntityToken}
  * @type {string}
@@ -59,7 +59,7 @@ StageBinding.handleViewPresentation = function ( handle ) {
  * @param {string} handle
  */
 StageBinding.isViewOpen = function ( handle ) {
-	
+
 	return StageBinding.bindingInstance._activeViewDefinitions [ handle ] != null;
 }
 
@@ -89,7 +89,7 @@ StageBinding.selectBrowserTab = function () {
  * @param {ViewDefinition} definition
  */
 StageBinding.presentViewDefinition = function ( definition ) {
-	
+
 	if ( definition.label != null ) {
 		var string = StringBundle.getString ( "ui", "Website.App.StatusBar.Opening" );
 		StatusBar.busy ( string, [ definition.label ]);
@@ -121,43 +121,43 @@ function StageBinding () {
 	 * @private
 	 */
 	this._decksBinding = null;
-	
+
 	/**
 	 * @type {ExplorerBinding}
 	 * @private
 	 */
 	this._explorerBinding = null;
-	
+
 	/**
-	 * Flipped when both explorer and decks are loaded. 
+	 * Flipped when both explorer and decks are loaded.
 	 * @type {boolean}
 	 */
 	this._isStageReady = false;
-	
+
 	/**
-	 * Flipped when a "page" is loaded in {@link ExplorerBinding}. 
+	 * Flipped when a "page" is loaded in {@link ExplorerBinding}.
 	 * @type {boolean}
 	 */
 	this._isExplorerReady = false;
-	
+
 	/**
-	 * Flipped when a deck is loaded in the {@link StageDecksBinding}. 
+	 * Flipped when a deck is loaded in the {@link StageDecksBinding}.
 	 * @type {boolean}
 	 */
 	this._isDecksReady = false;
-	
+
 	/**
 	 * Indexing system docks by reference property.
 	 * @type {Map<string><DockBinding>}
 	 */
 	this._dockBindings = new Map ();
-	
+
 	/**
 	 * True when Start screen is visible.
 	 * @type {boolean}
 	 */
 	this._isShowingStart = false;
-	
+
 	/**
 	 * Makes no sense to handle activation in the app root.
 	 * @implements {IActivationAware}
@@ -165,8 +165,8 @@ function StageBinding () {
 	 * @type {boolean}
 	 */
 	this.isActivationAware = false;
-	
-	/* 
+
+	/*
 	 * Returnable.
 	 */
 	return this;
@@ -185,16 +185,16 @@ StageBinding.prototype.toString = function () {
 // INITIALIZATION ................................................................
 
 /**
- * Notice that we are simulating a {@link StageBoxHandlerAbstraction} in 
- * the inheritance chain. That's because the {@link StageDeckBinding} is 
+ * Notice that we are simulating a {@link StageBoxHandlerAbstraction} in
+ * the inheritance chain. That's because the {@link StageDeckBinding} is
  * interested in some of these functionalities as well.
  * Overloads {FlexBoxBinding#onBindingRegister}
  */
 StageBinding.prototype.onBindingRegister = function () {
-	
+
 	StageBinding.superclass.onBindingRegister.call ( this );
 	StageBinding.bindingInstance = this;
-	
+
 	/*
 	 * This will add action listeners for:
 	 * ControlBoxBinding.ACTION_MAXIMIZE
@@ -203,7 +203,7 @@ StageBinding.prototype.onBindingRegister = function () {
 	 * StageSplitPanelBinding.ACTION_LAYOUTUPDATE
 	 */
 	StageBoxHandlerAbstraction.onBindingRegister.call ( this );
-	
+
 	/*
 	 * Attach action listeners.
 	 */
@@ -227,7 +227,7 @@ StageBinding.prototype.onBindingRegister = function () {
 	this.subscribe ( BroadcastMessages.COMPOSITE_STOP );
 	this.subscribe ( BroadcastMessages.DOCK_MAXIMIZED );
 	this.subscribe ( BroadcastMessages.DOCK_NORMALIZED );
-	
+
 	app.bindingMap.explorer.addActionListener(ExplorerBinding.ACTION_INITIALIZED, this);
 	app.bindingMap.explorer.addActionListener(ExplorerMenuBinding.ACTION_SELECTIONCHANGED, this);
 
@@ -237,9 +237,9 @@ StageBinding.prototype.onBindingRegister = function () {
 	this._initializeUsergroup();
 	var root = System.getRootNode ();
 	this._initializeRootActions ( root );
-	
+
 	/*
-	 * Hookup root refresh. The broadcast is intercepted by StageDeckBinding. 
+	 * Hookup root refresh. The broadcast is intercepted by StageDeckBinding.
 	 * The associated tree is refreshed when deck gets selected.
 	 */
 	EventBroadcaster.subscribe ( BroadcastMessages.SYSTEMTREEBINDING_REFRESH, {
@@ -249,7 +249,7 @@ StageBinding.prototype.onBindingRegister = function () {
 			}
 		}
 	})
-	
+
 	/*
 	 * Initialize perspectives (they may not be available for new user with no rights).
 	 */
@@ -260,12 +260,12 @@ StageBinding.prototype.onBindingRegister = function () {
 		top.app.bindingMap.stagecontainer.hide ();
 		top.app.bindingMap.app.attachClassName(StageBinding.CLASSNAME_EMPTY);
 		this._onStageReady ();
-		Dialog.message ( 
-			StringBundle.getString ( "ui", "Website.Dialogs.NoAccessTitle" ), 
+		Dialog.message (
+			StringBundle.getString ( "ui", "Website.Dialogs.NoAccessTitle" ),
 			StringBundle.getString ( "ui", "Website.Dialogs.NoAccessText" )
 		);
 	}
-	
+
 	/*
 	var self = this;
 	setTimeout ( function () {
@@ -275,23 +275,23 @@ StageBinding.prototype.onBindingRegister = function () {
 		//tab  = UserInterface.getBinding ( document.getElementById ( "temp" ));
 		//self._editorDockBinding.importTabBinding ( tab );
 		//document.getElementById ( "john" ).appendChild ( document.getElementById ( "aage" ));
-		
+
 	}, 3500 );
 	*/
 }
 
 /**
- * Fires when both members - ExplorerBinding and StageDecksBinding - are initialized. 
- * When no Flash is installed, the workbench is ready to be initialized right now. 
+ * Fires when both members - ExplorerBinding and StageDecksBinding - are initialized.
+ * When no Flash is installed, the workbench is ready to be initialized right now.
  * Otherwise we wait for the {@link LocalStore} to report readystate.
  */
 StageBinding.prototype._renameThisMethod = function () {
-	
+
 	if ( LocalStore.isInitialized ) {
 		this._initializeWorkbenchLayout ();
 	} else {
 		var self = this;
-		EventBroadcaster.subscribe ( 
+		EventBroadcaster.subscribe (
 			BroadcastMessages.LOCALSTORE_INITIALIZED, {
 				handleBroadcast : function () {
 					self._initializeWorkbenchLayout ();
@@ -305,20 +305,20 @@ StageBinding.prototype._renameThisMethod = function () {
  * Initialize workbench layout.
  */
 StageBinding.prototype._initializeWorkbenchLayout = function () {
-	
+
 	/**
 	 * If LocalStore is operative, attempt to default select last edited perspective.
 	 */
 	if ( this._explorerBinding ) {
 		var persistedHandle = null;
 		if ( LocalStore.isEnabled ) {
-			persistedHandle = LocalStore.getProperty ( 
+			persistedHandle = LocalStore.getProperty (
 				LocalStore.SELECTED_PERSPECTIVE_HANDLE
 			);
 		}
 		if ( persistedHandle && ViewDefinitions [ persistedHandle ]) { // perspective may be gone since last!
 			alert ( "StageBinding#_initializeWorkbenchLayout !!!!" );
-			this._explorerBinding.setSelectionByHandle ( 
+			this._explorerBinding.setSelectionByHandle (
 				unescape ( persistedHandle )
 			);
 		} else {
@@ -334,7 +334,7 @@ StageBinding.prototype._initializeWorkbenchLayout = function () {
  * TODO: The stage may not nescessarily be interactive here!
  */
 StageBinding.prototype._onStageReady = function () {
-	
+
 	if ( !this._isStageReady ) {
 		if (top.app.bindingMap.maindecks) {
 			top.app.bindingMap.maindecks.select("stagedeck");
@@ -364,25 +364,25 @@ StageBinding.prototype._initializeUsergroup = function (root) {
 
 /**
  * Root actions relayed to Tools menu. At least for now...
- * @param {SystemNode} root 
+ * @param {SystemNode} root
  * @param {List<SystemNode>} perspectives
  */
 StageBinding.prototype._initializeRootActions = function ( root ) {
 
 	var actions = root.getActionProfile ();
-	
+
 	if ( actions && actions.hasEntries ()) {
-		
+
 		/*
-		 * The default menugroup 
+		 * The default menugroup
 		 * for root actions.
 		 */
 		var menugroup = top.app.bindingMap.toolsmenugroup;
-		
+
 		if ( menugroup ) {
 			actions.each ( function ( groupid, list ) {
 				list.each ( function ( action ) {
-					
+
 					/*
 					 * Build menuitem.
 					 */
@@ -391,14 +391,14 @@ StageBinding.prototype._initializeRootActions = function ( root ) {
 					item.setToolTip ( action.getToolTip ());
 					item.setImage ( action.getImage ());
 					item.setDisabled ( action.isDisabled ());
-					
+
 					/*
 					 * Stamp action on menuitem.
 					 */
 					item.associatedSystemAction = action;
-					
+
 					/*
-					 * Brialliant hardcoded setup for dispersing  
+					 * Brialliant hardcoded setup for dispersing
 					 * root actions all over the main menubar.
 					 */
 					var group = menugroup;
@@ -425,7 +425,7 @@ StageBinding.prototype._initializeRootActions = function ( root ) {
  * @param {List<SystemNode>} nodes
  */
 StageBinding.prototype._initializeSystemViewDefinitions = function ( nodes ) {
-	
+
 	while ( nodes.hasNext ()) {
 		var node = nodes.getNext ();
 		var handle = node.getHandle ();
@@ -436,18 +436,18 @@ StageBinding.prototype._initializeSystemViewDefinitions = function ( nodes ) {
 // STARTUP ................................................................
 
 /**
- * @implements {IActionListener} 
+ * @implements {IActionListener}
  * @overloads {FocusBinding#handleAction}
  * @param {Action} action
  */
 StageBinding.prototype.handleAction = function ( action ) {
-	
+
 	StageBinding.superclass.handleAction.call ( this, action );
-	
+
 	var binding = action.target;
-	
+
 	switch ( action.type ) {
-		
+
 		/*
 		 * See also next case.
 		 */
@@ -459,7 +459,7 @@ StageBinding.prototype.handleAction = function ( action ) {
 			this._inflateBinding ( binding );
 			action.consume ();
 			break;
-			
+
 		/*
 		 * See also previous case.
 		 */
@@ -471,7 +471,7 @@ StageBinding.prototype.handleAction = function ( action ) {
 			this._inflateBinding ( binding );
 			action.consume ();
 			break;
-			
+
 		case ExplorerMenuBinding.ACTION_SELECTIONCHANGED :
 			if ( !Application.isOperational ) {
 				ProgressBarBinding.notch ( 5 );
@@ -482,7 +482,7 @@ StageBinding.prototype.handleAction = function ( action ) {
 
 			action.consume ();
 			break;
-			
+
 		case TabBoxBinding.ACTION_ATTACHED :
 			if ( binding instanceof DockBinding ) {
 				switch ( binding.reference ) {
@@ -498,22 +498,22 @@ StageBinding.prototype.handleAction = function ( action ) {
 				action.consume ();
 			}
 			break;
-			
+
 		case TabBoxBinding.ACTION_SELECTED :
 			if ( binding instanceof DockBinding ) {
-				this.handleSelectedDockTab ( 
+				this.handleSelectedDockTab (
 					binding.getSelectedTabBinding ()
 				);
 				action.consume ();
 			}
 			break;
-			
+
 		case WindowBinding.ACTION_LOADED :
-			
+
 			// this should really be handled on a lower level, but in case we forget...
 			// this.logger.warn ( "window load intercepted by stage: " + binding.getURL ());
 			break;
-			
+
 		case StageBinding.ACTION_DECK_LOADED :
 			this._isExplorerReady = true;
 			if ( this._isDecksReady == true ) {
@@ -523,19 +523,19 @@ StageBinding.prototype.handleAction = function ( action ) {
 				}
 			}
 			break;
-		
+
 		/**
 		 * @see {StageBoxHandlerAbstraction#handleAction}
 		 */
 		case StageSplitPanelBinding.ACTION_LAYOUTUPDATE :
-			
+
 			/*
 		 	 * Theoretically, this could be done at a much lower level.
 		 	 * This should be considered if panel handling gets too slow.
 		 	 * Explorer has some rendering update disabilities, though.
 		 	 */
 		 	if ( !this._isFlexAbort && Application.isOperational ) {
-		 		
+
 		 		this._isFlexAbort = true;
 		 		this.reflex ( true );
 		 		var self = this;
@@ -548,7 +548,7 @@ StageBinding.prototype.handleAction = function ( action ) {
 			}
 			action.consume ();
 			break;
-			
+
 		case StageDeckBinding.ACTION_LOADED :
 			this._isDecksReady = true;
 			if ( this._isExplorerReady == true ) {
@@ -575,15 +575,15 @@ StageBinding.prototype.handleAction = function ( action ) {
 			deck._browserTab = deck._dockBindings.get("main").prepareNewView(browserViewDefinition);
 			deck._browserTab.isExplorerTab = true;
 			break;
-		
+
 		/*
 		 * The ErrorBinding needs a consumer.
-		 */ 
+		 */
 		case ErrorBinding.ACTION_INITIALIZE :
 			action.consume ();
 			break;
 	}
-	
+
 	/*
 	 * Notice this hack!
 	 */
@@ -598,33 +598,33 @@ StageBinding.prototype.handleAction = function ( action ) {
 StageBinding.prototype.handleBroadcast = function ( broadcast, arg ) {
 
 	StageBinding.superclass.handleBroadcast.call ( this, broadcast, arg );
-	
+
 	switch ( broadcast ) {
-	
+
 		case BroadcastMessages.VIEW_OPENED :
 			Application.unlock ( this );
 			break;
-			
+
 		case BroadcastMessages.VIEW_CLOSED :
 		 	var handle = arg;
 			this._dontView ( handle );
 			break;
-			
+
 		case BroadcastMessages.COMPOSITE_START :
 			this._showStart ( true );
 			break;
-			
+
 		case BroadcastMessages.COMPOSITE_STOP :
 			this._showStart ( false );
 			break;
-			
+
 		case BroadcastMessages.DOCK_MAXIMIZED :
 			this._stabilizeExplorer ();
 			if ( this._isShowingStart ) {
 				EventBroadcaster.broadcast ( BroadcastMessages.STOP_COMPOSITE );
 			}
 			break;
-		
+
 		case BroadcastMessages.DOCK_NORMALIZED :
 			this._stabilizeExplorer ();
 			break;
@@ -662,11 +662,11 @@ StageBinding.prototype.handleHash = function (target) {
 }
 
 /**
- * Explorer may have difficulties computing stage layout 
- * when docks are maximized and normalized. Let's hack it. 
+ * Explorer may have difficulties computing stage layout
+ * when docks are maximized and normalized. Let's hack it.
  */
 StageBinding.prototype._stabilizeExplorer = function () {
-	
+
 	if ( Client.isExplorer == true ) {
 		var self = this;
 		if  ( Client.isExplorer == true ) {
@@ -684,7 +684,7 @@ StageBinding.prototype._stabilizeExplorer = function () {
 StageBinding.prototype._showStart = function ( isShow ) {
 
 	if ( isShow != this._isShowingStart ) {
-		
+
 		var view = ViewBinding.getInstance ( "Composite.Management.Start" );
 		var dock = this._dockBindings.get ( DockBinding.START );
 		if ( isShow ) {
@@ -711,7 +711,7 @@ StageBinding.prototype._inflateBinding = function ( binding ) {
 			binding.mountDefinition ( definition );
 		}
 	}
-	var isReady = ( this._decksBinding != null && this._explorerBinding != null ); 
+	var isReady = ( this._decksBinding != null && this._explorerBinding != null );
 	if ( isReady ) {
 		var self = this;
 		setTimeout ( function () {
@@ -726,7 +726,7 @@ StageBinding.prototype._inflateBinding = function ( binding ) {
  * @param {string} mode
  */
 StageBinding.prototype.iterateContainedStageBoxBindings = function ( mode ) {
-	
+
 	var crawler = new StageCrawler ();
 	crawler.mode = mode;
 	crawler.crawl ( this.bindingElement );
@@ -734,7 +734,7 @@ StageBinding.prototype.iterateContainedStageBoxBindings = function ( mode ) {
 }
 
 /**
- * Fires when the ExplorerBinding selection changes, selecting associated StageDeckBinding. 
+ * Fires when the ExplorerBinding selection changes, selecting associated StageDeckBinding.
  * @see {ExplorerBinding#handleSelectionChange}
  * @param {ExplorerMenuBinding} explorerMenuBinding
  */
@@ -743,8 +743,8 @@ StageBinding.prototype.handlePerspectiveChange = function ( explorerMenuBinding 
 	var handle = explorerMenuBinding.getSelectionHandle ();
 	this._decksBinding.setSelectionByHandle ( handle );
 	if ( LocalStore.isEnabled ) {
-		LocalStore.setProperty ( 
-			LocalStore.SELECTED_PERSPECTIVE_HANDLE, 
+		LocalStore.setProperty (
+			LocalStore.SELECTED_PERSPECTIVE_HANDLE,
 			escape ( handle )
 		);
 	}
@@ -755,9 +755,9 @@ StageBinding.prototype.handlePerspectiveChange = function ( explorerMenuBinding 
  * @param {DockBinding} dockBinding
  */
 StageBinding.prototype.handleAttachedDock = function ( dockBinding ) {
-	
+
 	/*
-	 * Initialize open views. Initialization of the 
+	 * Initialize open views. Initialization of the
 	 * Start view is dependant on application settings.
 	 */
 	var tabBindings = dockBinding.getTabBindings ();
@@ -783,48 +783,60 @@ StageBinding.prototype.handleAttachedDock = function ( dockBinding ) {
  * @param {ViewDefinition} viewDefinition
  */
 StageBinding.prototype._presentViewDefinition = function ( viewDefinition ) {
-	
+
 	var target = null;
 	var isAbort = false;
-		
+
 	switch ( viewDefinition.position ) {
-		
+
 		case Dialog.MODAL :
 			target = app.bindingMap.masterdialogset.getModalInstance ();
 			break;
 		case Dialog.NON_MODAL :
 			target = app.bindingMap.masterdialogset.getInstance ();
 			break;
-			
+
 		default :
 			if ( this._dockBindings.hasEntries ()) { // somehow no docks when user has no perspectives mounted...
 				switch ( viewDefinition.position ) {
-					
+
 					case DockBinding.ABSBOTTOMLEFT :
 					case DockBinding.ABSBOTTOMRIGHT :
 					case DockBinding.ABSRIGHTTOP :
 					case DockBinding.ABSRIGHTBOTTOM :
-						
+
 						// targetting the developer docks.
 						target = this._dockBindings.get ( viewDefinition.position );
 						break;
 
-		            case DockBinding.EXTERNAL:
+					case DockBinding.EXTERNAL:
 
-		                // Open a new window/tab with the provided url
-		                window.open(viewDefinition.url);
-		                isAbort = true;
-		                break;
+						// Open a new window/tab with the provided url
+						window.open(viewDefinition.url);
+						isAbort = true;
+						break;
 
+					case DockBinding.SLIDE:
+						var selectedDeck = this._decksBinding.getSelectedDeckBinding();
 
+						var dock = selectedDeck.getDockBindingByReference(DockBinding.MAIN);
+						var panel = dock.getSelectedTabPanelBinding();
+
+						var viewBinding = SlideInViewBinding.newInstance(panel.viewBinding.getContentDocument());
+						viewBinding.setDefinition(viewDefinition);
+						viewBinding.attach();
+						viewBinding.snapToBinding(panel.viewBinding.getRootBinding());
+
+						isAbort = true;
+						break;
 					default :
-						
+
 						// targetting the main stage.
 						var selectedDeck = this._decksBinding.getSelectedDeckBinding ();
-						target = selectedDeck.getDockBindingByReference ( 
-							viewDefinition.position 
+						target = selectedDeck.getDockBindingByReference (
+							viewDefinition.position
 						);
-						
+
 						// hide start stuff if present.
 						if ( this._isShowingStart ) {
 							EventBroadcaster.broadcast ( BroadcastMessages.STOP_COMPOSITE );
@@ -836,7 +848,7 @@ StageBinding.prototype._presentViewDefinition = function ( viewDefinition ) {
 			}
 			break;
 	}
-	
+
 	if ( !isAbort ) {
 		if ( target != null ) {
 			this._view ( target, null, viewDefinition, true );
@@ -852,16 +864,16 @@ StageBinding.prototype._presentViewDefinition = function ( viewDefinition ) {
  * @param {DockTabBinding} dockTabBinding Required when launching open views.
  * @param {ViewDefinition} viewDefinition
  * @param {boolean} isNewView True for newly launched views, false for views opened at startup.
- */ 
+ */
 StageBinding.prototype._view = function ( target, dockTabBinding, viewDefinition, isNewView ) {
-	
+
 	var handle = viewDefinition.handle;
 	if ( viewDefinition.isMutable ) {
 		handle += KeyMaster.getUniqueKey ();
 	}
-	
+
 	if ( this._activeViewDefinitions [ handle ] ) {
-		
+
 		/*
 		 * Update already open view.
 		 */
@@ -872,19 +884,19 @@ StageBinding.prototype._view = function ( target, dockTabBinding, viewDefinition
 		} else {
 			this.logger.error ( "Could not update ViewBinding (declared open): \n" + handle );
 		}
-		
+
 	} else {
-	
+
 		/*
 		 * Initialize new view.
 		 */
 		this._activeViewDefinitions [ handle ] = viewDefinition;
-		
+
 		/*
 		 * Lock interface. Unlocked around method handleBroadcast.
 		 */
 		Application.lock ( this );
-		
+
 		switch ( target.constructor ) {
 			case DockBinding :
 				if ( isNewView ) {
@@ -907,7 +919,7 @@ StageBinding.prototype._view = function ( target, dockTabBinding, viewDefinition
  * @param {string} handle
  */
 StageBinding.prototype._dontView = function ( handle ) {
-	
+
 	if ( this._activeViewDefinitions [ handle ] != null ) {
 		delete this._activeViewDefinitions [ handle ];
 	} else {
@@ -928,12 +940,12 @@ StageBinding.prototype.selectBrowserTab = function () {
 }
 
 /**
- * Fires when a DockTabBinding get's selected. During 
+ * Fires when a DockTabBinding get's selected. During
  * startup, the visible tab get's selected by default.
  * @param {DockTabBinding} tabBinding
  */
 StageBinding.prototype.handleSelectedDockTab = function ( tabBinding ) {
-	
+
 	// this.logger.warn ( "TODO: StageBinding#handleSelectedDockTab" );
 	/*
 	var viewBinding = tabBinding.getAssociatedView ();

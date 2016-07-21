@@ -2543,6 +2543,7 @@
     <Folder Include="Composite\content\views\mediabrowser\" />
     <Folder Include="Composite\controls\FormsControls\FormUiControlTemplates\ElementSelectors\" />
     <Folder Include="Composite\images\icons\branding\" />
+    <Folder Include="Composite\InstalledPackages\content\views\Orckestra.Versioning.VersionPublication\Bindings\" />
     <Folder Include="Frontend\Controls\" />
     <Folder Include="Frontend\Images\" />
     <Folder Include="Frontend\Scripts\" />

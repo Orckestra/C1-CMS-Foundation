@@ -165,12 +165,15 @@
     <Compile Include="C1Console\Actions\Data\DataActionTokenResolverFacade.cs" />
     <Compile Include="C1Console\Actions\Data\DataActionTokenResolverRegistery.cs" />
     <Compile Include="C1Console\Elements\IServiceUrlToEntityTokenMapper.cs" />
+    <Compile Include="C1Console\Events\OpenSlideViewQueueItem.cs" />
     <Compile Include="C1Console\Workflow\FormsWorkflowExtensions.cs" />
     <Compile Include="C1Console\Workflow\IFormsWorkflowExtension.cs" />
+    <Compile Include="Core\WebClient\Services\ConsoleMessageService\OpenSlideViewParams.cs" />
     <Compile Include="Data\DataScopeServicesFacade.cs" />
     <Compile Include="Data\DataServiceScopeManager.cs" />
     <Compile Include="Data\Types\ITimedPublishing.cs" />
     <Compile Include="Data\Types\IVersioned.cs" />
+    <Compile Include="Data\Types\IVersionedDataHelper.cs" />
     <Compile Include="Data\Types\PageInsertPosition.cs" />
     <Compile Include="Data\VersionKeyPropertyName.cs" />
     <Compile Include="Plugins\Elements\ElementProviders\PageElementProvider\PageAddActionExecuter.cs" />
