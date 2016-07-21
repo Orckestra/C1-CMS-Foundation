@@ -27,13 +27,16 @@ describe('FormPage', () => {
 			},
 			fields: {
 				onefield: {},
-				twofield: {},
-				threefield: {}
+				twofield: { defaultValue: 'a default' },
+				threefield: { defaultValue: 'overwritten' }
 			},
 			actions: {
 				onebutton: () => {},
 				twobutton: () => {},
 				updateValue: () => {}
+			},
+			values: {
+				threefield: 'different'
 			}
 		};
 	});
@@ -48,10 +51,10 @@ describe('FormPage', () => {
 					<Fieldset
 						fields={{
 							onefield: { updateValue: props.actions.updateValue },
-							twofield: { updateValue: props.actions.updateValue }
+							twofield: { value: 'a default', updateValue: props.actions.updateValue }
 						}}/>
 					<Fieldset
-						fields={{ threefield: { updateValue: props.actions.updateValue } }}/>
+						fields={{ threefield: { value: 'different', updateValue: props.actions.updateValue } }}/>
 				</div>
 			</div>
 		)

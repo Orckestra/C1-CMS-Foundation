@@ -14,6 +14,8 @@ const FormPage = props => (
 					fields[fieldName].updateValue = props.actions.updateValue;
 					if (props.values && props.values[fieldName]) {
 						fields[fieldName].value = props.values[fieldName];
+					} else {
+						fields[fieldName].value = fields[fieldName].defaultValue;
 					}
 				});
 				return (

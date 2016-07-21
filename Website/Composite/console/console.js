@@ -34,13 +34,22 @@ let pageProps = {
 			type: 'number',
 			label: 'Number of beers',
 			help: 'How drunk you want to get',
-			value: 0
+			defaultValue: 0
 		}
 	}
 };
 
+/*
+App structure:
+
+Frame with menubar + explorer, contains split view - State: Selected perspective, open menus
+Split view defaults to a single view - state: Shown views, splitter position
+Tab view - state: open tabs, selected tab
+	First tab is browser (default)- state: complex? TBD
+	Subsequent tabs can contain any page (incl. DocumentPage) - state: As already done
+*/
+
 const store = configureStore();
-window.store = store;
 
 render(
 	<Provider store={store}>
