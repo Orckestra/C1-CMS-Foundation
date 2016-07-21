@@ -18,19 +18,18 @@ let pageProps = {
 	fieldsets: {
 		'language-properties': {
 			label: 'Language Properties',
-			name: 'language-properties',
 			fields: [
-				'url-mapping-name',
-				'test'
+				'language-properties.url-mapping-name',
+				'language-properties.test'
 			]
 		}
 	},
-	fields: {
-		'url-mapping-name': {
+	dataFields: {
+		'language-properties.url-mapping-name': {
 			label: 'URL mapping name',
 			help: 'Base name in URLs'
 		},
-		'test': {
+		'language-properties.test': {
 			type: 'number',
 			label: 'Number of beers',
 			help: 'How drunk you want to get',
@@ -47,6 +46,9 @@ Split view defaults to a single view - state: Shown views, splitter position
 Tab view - state: open tabs, selected tab
 	First tab is browser (default)- state: complex? TBD
 	Subsequent tabs can contain any page (incl. DocumentPage) - state: As already done
+
+
+
 */
 
 const store = configureStore();

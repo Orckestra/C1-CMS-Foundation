@@ -25,7 +25,7 @@ describe('FormPage', () => {
 					fields: [ 'threefield' ]
 				}
 			},
-			fields: {
+			dataFields: {
 				onefield: {},
 				twofield: { defaultValue: 'a default' },
 				threefield: { defaultValue: 'overwritten' }

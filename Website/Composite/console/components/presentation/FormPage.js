@@ -10,7 +10,7 @@ const FormPage = props => (
 				let fieldset = props.fieldsets[fieldsetName];
 				let fields = {};
 				fieldset.fields.forEach(fieldName => {
-					fields[fieldName] = Object.assign({}, props.fields[fieldName]);
+					fields[fieldName] = Object.assign({}, props.dataFields[fieldName]);
 					fields[fieldName].updateValue = props.actions.updateValue;
 					if (props.values && props.values[fieldName]) {
 						fields[fieldName].value = props.values[fieldName];

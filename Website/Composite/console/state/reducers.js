@@ -2,10 +2,10 @@ import { combineReducers } from 'redux'
 import { UPDATE_VALUE, SAVE_STATE } from './actions';
 
 let initialState = {
-	fields: {}
+	dataFields: {}
 }
 
-function fields(state = initialState.fields, action) {
+function dataFields(state = initialState.dataFields, action) {
 	switch (action.type) {
 		case UPDATE_VALUE:
 			let update = {};
@@ -18,7 +18,7 @@ function fields(state = initialState.fields, action) {
 }
 
 const consoleReducers = combineReducers({
-	fields
+	dataFields
 });
 
 export default consoleReducers;
