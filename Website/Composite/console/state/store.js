@@ -1,6 +1,10 @@
 import getHotReloadStore from 'systemjs-hot-reloader-store';
-import { createStore } from 'redux';
-import consoleReducers from './reducers';
+import { createStore, combineReducers } from 'redux';
+import dataFields from './reducers/dataFields';
+
+const consoleReducers = combineReducers({
+	dataFields
+});
 
 const hotStore = getHotReloadStore('console:store');
 

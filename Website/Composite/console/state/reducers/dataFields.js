@@ -1,4 +1,4 @@
-import { UPDATE_VALUE, SAVE_STATE } from '../actions';
+import { UPDATE_VALUE, SAVE_STATE } from '../actions/documentPage';
 
 const initialState = {};
 
@@ -9,7 +9,7 @@ export default function dataFields(state = initialState, action) {
 		update = {};
 		update[action.field] = action.newValue;
 		return Object.assign({}, state, update);
-	case SAVE_STATE:
+	case SAVE_STATE: // Async, will save state.
 	default:
 		return state;
 	}
