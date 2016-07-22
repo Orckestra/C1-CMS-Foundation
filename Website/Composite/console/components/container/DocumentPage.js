@@ -14,8 +14,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
 	return {
 		actions: {
-			save: () => dispatch(saveState()),
-			updateValue: (fieldName, value) => dispatch(updateFieldValue(fieldName, value))
+			save: pageName => () => dispatch(saveState(pageName)),
+			updateValue: fieldName => value => dispatch(updateFieldValue(fieldName, value))
 		}
 	};
 }

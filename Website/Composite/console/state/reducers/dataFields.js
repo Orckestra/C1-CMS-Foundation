@@ -7,7 +7,7 @@ export default function dataFields(state = initialState, action) {
 	switch (action.type) {
 	case UPDATE_VALUE:
 		update = {};
-		update[action.field] = action.newValue;
+		update[action.fieldName] = action.newValue;
 		return Object.assign({}, state, update);
 	case SAVE_STATE: // Async, will save state.
 	default:

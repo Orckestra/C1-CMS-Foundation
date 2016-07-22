@@ -18,4 +18,9 @@ expect.addAssertion('<RenderedReactElement> finding DOM tag <string> <assertion?
 	return expect.shift(element);
 });
 
+expect.addAssertion('<ReactElement> to have props satisfying <any>', function (expect, subject, model) {
+	let props = subject.props;
+	expect(props, 'to satisfy', model);
+});
+
 export default expect;

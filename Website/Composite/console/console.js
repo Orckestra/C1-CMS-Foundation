@@ -9,27 +9,38 @@ import './console.scss!';
 import './iconIndex';
 
 let pageProps = {
+	pages: {
+		'edit-language': {
+			fieldsets: [
+				'edit-language/properties'
+			],
+			actions: [
+				'updateField',
+				'save'
+			]
+		}
+	},
 	buttons: {
-		save: {
+		'edit-language/save': {
 			label: 'Save',
 			icon: 'save'
 		}
 	},
 	fieldsets: {
-		'language-properties': {
+		'edit-language/properties': {
 			label: 'Language Properties',
 			fields: [
-				'language-properties.url-mapping-name',
-				'language-properties.test'
+				'edit-language/properties/url-mapping-name',
+				'edit-language/properties/test'
 			]
 		}
 	},
 	dataFields: {
-		'language-properties.url-mapping-name': {
+		'edit-language/properties/url-mapping-name': {
 			label: 'URL mapping name',
 			help: 'Base name in URLs'
 		},
-		'language-properties.test': {
+		'edit-language/properties/test': {
 			type: 'number',
 			label: 'Number of beers',
 			help: 'How drunk you want to get',
@@ -55,7 +66,7 @@ const store = configureStore();
 
 render(
 	<Provider store={store}>
-		<DocumentPage {...pageProps}/>
+		<DocumentPage name='edit-language' {...pageProps}/>
 	</Provider>,
 	document.querySelector('body > div.entry')
 );

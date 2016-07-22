@@ -4,7 +4,7 @@ import HelpIcon from './HelpIcon';
 const DataField = props => {
 	let input;
 	function handleChange() {
-		props.updateValue(props.name, input.value);
+		props.updateValue(input.value);
 	}
 
 	return (
