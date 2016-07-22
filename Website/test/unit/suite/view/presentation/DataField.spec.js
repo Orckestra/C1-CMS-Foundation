@@ -43,35 +43,31 @@ describe('DataField', () => {
 		it('renders a text field with label but no helper', () => {
 			delete props.help;
 			renderer.render(<DataField {...props} {...state}/> );
-			return Promise.all([
-				expect(renderer, 'to have rendered',
-					<div className="datafield">
-						<label htmlFor={props.name}>{props.label}</label>
-						<input
-							type={props.type}
-							id={props.name}
-							value={state.value}/>
-					</div>
-				),
-				expect(renderer, 'not to contain', <HelpIcon text=""/>)
-			]);
+			return expect(renderer, 'to have rendered',
+				<div className="datafield">
+					<label htmlFor={props.name}>{props.label}</label>
+					<input
+						type={props.type}
+						id={props.name}
+						value={state.value}/>
+				</div>
+			)
+			.and('not to contain', <HelpIcon text=""/>);
 		});
 
 		it('renders a text field with helper but no label', () => {
 			delete props.label;
 			renderer.render(<DataField {...props} {...state}/> );
-			return Promise.all([
-				expect(renderer, 'to have rendered',
-					<div className="datafield">
-						<input
-							type={props.type}
-							id={props.name}
-							value={state.value}/>
-						<HelpIcon text={props.help}/>
-					</div>
-				),
-				expect(renderer, 'not to contain', <label/>)
-			]);
+			return expect(renderer, 'to have rendered',
+				<div className="datafield">
+					<input
+						type={props.type}
+						id={props.name}
+						value={state.value}/>
+					<HelpIcon text={props.help}/>
+				</div>
+			)
+			.and('not to contain', <label/>);
 		});
 
 		it('calls its update callback', () => {
