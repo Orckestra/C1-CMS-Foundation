@@ -11,6 +11,7 @@ import './iconIndex';
 let pageProps = {
 	pages: {
 		'edit-language': {
+			type: 'document',
 			fieldsets: [
 				'edit-language/properties'
 			],

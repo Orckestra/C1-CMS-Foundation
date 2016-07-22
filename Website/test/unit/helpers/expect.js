@@ -13,6 +13,7 @@ const expect = unexpected.clone()
 	.use(unexpectedReact)
 	.use(unexpectedSinon);
 
+// Custom assertions
 expect.addAssertion('<RenderedReactElement> finding DOM tag <string> <assertion?>', function (expect, subject, tagName) {
 	let element = TestUtils.findRenderedDOMComponentWithTag(subject, tagName);
 	return expect.shift(element);
@@ -20,7 +21,11 @@ expect.addAssertion('<RenderedReactElement> finding DOM tag <string> <assertion?
 
 expect.addAssertion('<ReactElement> to have props satisfying <any>', function (expect, subject, model) {
 	let props = subject.props;
-	expect(props, 'to satisfy', model);
+	return expect(props, 'to satisfy', model);
+});
+
+expect.addAssertion('<object> to be an action of type <string>', function (expect, subject, actionName) {
+	return expect(subject, 'to have own property', 'type', actionName);
 });
 
 export default expect;
