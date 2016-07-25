@@ -60,7 +60,7 @@ namespace Composite.Data.Caching
 
         private volatile DataCachingFacade.CachedTable _cachedTable;
         private static readonly MethodInfo _wrappingMethodInfo;
-        private static readonly MethodInfo _listwrappingMethodInfo;
+        private static readonly MethodInfo _listWrappingMethodInfo;
 
         private IEnumerable<T> _innerEnumerable;
 
@@ -73,10 +73,15 @@ namespace Composite.Data.Caching
             }
             if (typeof(IData).IsAssignableFrom(typeof(T)))
             {
-                _listwrappingMethodInfo = StaticReflection.GetGenericMethodInfo(a => ((IEnumerable<IData>)a).ForEach(b=>DataWrappingFacade.Wrap(b)))
-                                                      .MakeGenericMethod(new[] { typeof(IEnumerable<T>) });
+                _listWrappingMethodInfo = StaticReflection.GetGenericMethodInfo(a => WrapData((IEnumerable<IData>)a))
+                                                      .MakeGenericMethod(typeof(T));
             }
-        } 
+        }
+
+        private static IEnumerable<T> WrapData<T>(IEnumerable<T> input) where T : class, IData
+        {
+            return input.Select(DataWrappingFacade.Wrap<T>);
+        }
 
         public CachingQueryable(DataCachingFacade.CachedTable cachedTable, Func<IQueryable> originalQueryGetter)
         {
@@ -254,7 +259,7 @@ namespace Composite.Data.Caching
                 return null;
             }
 
-            return _listwrappingMethodInfo.Invoke(null, new object[] { result }) as IEnumerable<IData>;
+            return _listWrappingMethodInfo.Invoke(null, new object[] { result }) as IEnumerable<IData>;
         }
 
 
