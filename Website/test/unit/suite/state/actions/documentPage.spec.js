@@ -3,20 +3,16 @@ import * as actions from '../../../../../Composite/console/state/actions/documen
 
 describe('Document page actions', () => {
 	it('has action descriptors', () =>
-		Promise.all([
-			expect(actions, 'to have property', 'SAVE_STATE'),
-			expect(actions, 'to have property', 'UPDATE_VALUE')
-		])
+		expect(actions, 'to have property', 'SAVE_STATE')
+		.and('to have property', 'UPDATE_VALUE')
 	);
 
 	describe('Save state', () => {
 		let saveState = actions.saveState;
 		it('creates action for saving state', () => {
 			let action = saveState('testpage');
-			return Promise.all([
-				expect(action, 'to be an action of type', actions.SAVE_STATE),
-				expect(action, 'to have property', 'pageName', 'testpage')
-			]);
+			return expect(action, 'to be an action of type', actions.SAVE_STATE)
+				.and('to have property', 'pageName', 'testpage');
 		});
 	});
 

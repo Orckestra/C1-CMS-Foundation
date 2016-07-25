@@ -1,9 +1,11 @@
 import getHotReloadStore from 'systemjs-hot-reloader-store';
 import { createStore, combineReducers } from 'redux';
 import dataFields from './reducers/dataFields';
+import pages from './reducers/pages';
 
 const consoleReducers = combineReducers({
-	dataFields
+	dataFields,
+	pages
 });
 
 const hotStore = getHotReloadStore('console:store');
