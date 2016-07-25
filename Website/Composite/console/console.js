@@ -4,48 +4,41 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import configureStore from './state/store';
+import ShownTab from './components/container/ShownTab';
 import DocumentPage from './components/container/DocumentPage';
 import './console.scss!';
 import './iconIndex';
 
 let pageProps = {
-	pages: {
+	pageDefs: {
 		'edit-language': {
-			type: 'document',
+			type: DocumentPage,
 			fieldsets: [
 				'edit-language/properties'
 			],
-			actions: [
-				'updateField',
-				'save'
+			buttons: [
+				'edit-language/save'
 			]
 		}
 	},
-	buttons: {
+	buttonDefs: {
 		'edit-language/save': {
 			label: 'Save',
 			icon: 'save'
 		}
 	},
-	fieldsets: {
+	fieldsetDefs: {
 		'edit-language/properties': {
 			label: 'Language Properties',
 			fields: [
-				'edit-language/properties/url-mapping-name',
-				'edit-language/properties/test'
+				'edit-language/properties/url-mapping-name'
 			]
 		}
 	},
-	dataFields: {
+	dataFieldDefs: {
 		'edit-language/properties/url-mapping-name': {
 			label: 'URL mapping name',
 			help: 'Base name in URLs'
-		},
-		'edit-language/properties/test': {
-			type: 'number',
-			label: 'Number of beers',
-			help: 'How drunk you want to get',
-			defaultValue: 0
 		}
 	}
 };
@@ -56,18 +49,21 @@ App structure:
 Frame with menubar + explorer, contains split view - State: Selected perspective, open menus
 Split view defaults to a single view - state: Shown views, splitter position
 Tab view - state: open tabs, selected tab
-	First tab is browser (default)- state: complex? TBD
+	First tab is browser (default) state: complex? TBD
 	Subsequent tabs can contain any page (incl. DocumentPage) - state: As already done
 
-
-
 */
-
-const store = configureStore();
+const initialState = {
+	pages: {
+		pages: ['edit-language'],
+		currentPage: 'edit-language'
+	}
+};
+const store = configureStore(initialState);
 
 render(
 	<Provider store={store}>
-		<DocumentPage name='edit-language' {...pageProps}/>
+		<ShownTab {...pageProps}/>
 	</Provider>,
 	document.querySelector('body > div.entry')
 );

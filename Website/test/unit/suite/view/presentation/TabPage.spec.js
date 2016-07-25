@@ -6,29 +6,25 @@ import TabPage from '../../../../../Composite/console/components/presentation/Ta
 const TestComponent = props => (<div {...props}/>);
 
 describe('TabPage', () => {
-	let renderer, name;
+	let renderer, name, pageDefs;
 	beforeEach(() => {
 		renderer = TestUtils.createRenderer();
+		pageDefs = { testpage: {type: TestComponent }};
 		name = 'testpage';
 	});
 
 	it('should render the type it\'s given', () => {
-		renderer.render(<TabPage name={name} Type={TestComponent}/>);
+		renderer.render(<TabPage name={name} pageDefs={pageDefs}/>);
 		expect(renderer, 'to have rendered', <TestComponent name={name}/>);
 	});
 
 	it('should render an empty element if given no name', () => {
-		renderer.render(<TabPage Type={TestComponent}/>);
+		renderer.render(<TabPage pageDefs={pageDefs}/>);
 		expect(renderer, 'to have exactly rendered', <div/>);
 	});
 
-	it('should render an empty element if given no type', () => {
-		renderer.render(<TabPage name={name}/>);
-		expect(renderer, 'to have exactly rendered', <div/>);
-	});
-
-	it('should render an empty element if given neither name or type', () => {
-		renderer.render(<TabPage/>);
+	it('should render an empty element if name not found in pageDefs', () => {
+		renderer.render(<TabPage name="wrongname" pageDefs={pageDefs}/>);
 		expect(renderer, 'to have exactly rendered', <div/>);
 	});
 });

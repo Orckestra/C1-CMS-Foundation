@@ -1,17 +1,21 @@
 // Shows page if given name and type, else shows nothing.
 import React, { PropTypes } from 'react';
 
-const TabPage = ({name, Type}) => {
-	if (!name ||!Type) {
+const TabPage = props => {
+	let pageDef = props.pageDefs[props.name];
+	if (!props.name || !pageDef) {
 		return <div/>;
 	} else {
-		return (<Type name={name}/>);
+		let Type = props.pageDefs[props.name].type;
+		let otherProps = Object.assign({}, props);
+		delete otherProps.pageDefs;
+		return (<Type {...otherProps} pageDef={pageDef}/>);
 	}
 };
 
 TabPage.propTypes = {
 	name: PropTypes.string,
-	Type: PropTypes.func
+	pageDefs: PropTypes.object.isRequired
 };
 
 export default TabPage;

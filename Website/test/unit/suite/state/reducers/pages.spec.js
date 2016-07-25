@@ -67,7 +67,7 @@ describe('Page reducer', () => {
 			});
 
 			it('requires an array of strings', () => {
-				expect.promise.all([
+				Promise.all([
 					expect(() => pages(oldState, { type: REPLACE_PAGES, pages: {}}), 'to throw'),
 					expect(() => pages(oldState, { type: REPLACE_PAGES, pages: [1,2,3]}), 'to throw'),
 					expect(() => pages(oldState, { type: REPLACE_PAGES, pages: ['test',{}]}), 'to throw'),

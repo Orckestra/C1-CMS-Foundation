@@ -19,9 +19,9 @@ expect.addAssertion('<RenderedReactElement> finding DOM tag <string> <assertion?
 	return expect.shift(element);
 });
 
-expect.addAssertion('<ReactElement> to have props satisfying <any>', function (expect, subject, model) {
+expect.addAssertion('<ReactElement> to have props [exhaustively] satisfying <any>', function (expect, subject, model) {
 	let props = subject.props;
-	return expect(props, 'to satisfy', model);
+	return expect(props, 'to [exhaustively] satisfy', model);
 });
 
 expect.addAssertion('<object> to be an action of type <string>', function (expect, subject, actionName) {

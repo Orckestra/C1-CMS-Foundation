@@ -16,4 +16,14 @@ describe('Page selection actions', () => {
 				.and('to have property', 'pageName', 'testpage');
 		});
 	});
+
+	describe('Replace page list', () => {
+		let replacePages = actions.replacePages;
+
+		it('creates action for replacing the list of available pages', () => {
+			let action = replacePages(['test1', 'test2']);
+			return expect(action, 'to be an action of type', actions.REPLACE_PAGES)
+			.and('to have property', 'pages', ['test1', 'test2']);
+		});
+	});
 });

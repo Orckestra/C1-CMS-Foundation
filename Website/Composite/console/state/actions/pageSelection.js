@@ -6,3 +6,6 @@ export function selectShownPage(pageName) {
 }
 
 export const REPLACE_PAGES = prefix + 'REPLACE';
+export function replacePages(pages) {
+	return {type: REPLACE_PAGES, pages};
+}

@@ -2,46 +2,33 @@ import React, { PropTypes } from 'react';
 import Toolbar from './Toolbar.js';
 import Fieldset from './Fieldset.js';
 
-function transformButtonActions(pageName, rawActions, buttons) {
-	let actions = {};
-	Object.keys(rawActions).forEach(actionName => {
-		let buttonName = pageName + '/' + actionName;
-		if (buttons[buttonName]) {
-			actions[buttonName] = rawActions[actionName](pageName);
-		}
-	});
-	return actions;
-}
-
-function transformFields(fieldset, dataFields, rawActions, values) {
-	let fields = {};
-	fieldset.fields.forEach(fieldName => {
-		fields[fieldName] = Object.assign({}, dataFields[fieldName]);
-		fields[fieldName].updateValue = rawActions.updateValue(fieldName);
-		if (values && values[fieldName]) {
-			fields[fieldName].value = values[fieldName];
-		} else {
-			fields[fieldName].value = fields[fieldName].defaultValue;
-		}
-	});
-	return fields;
-}
-
 const FormPage = props => (
 	<div className='page'>
 		<Toolbar
 			type='document'
-			buttons={props.buttons}
-			actions={transformButtonActions(props.name, props.actions, props.buttons)}/>
+			buttons={props.pageDef.buttons.reduce((buttons, buttonName) => {
+				buttons[buttonName] = props.buttonDefs[buttonName];
+				return buttons;
+			}, {})}
+			actions={props.pageDef.buttons.reduce((actions, buttonName) => {
+				let actionName = buttonName.replace(props.name + '/', '');
+				actions[buttonName] = props.actions[actionName](props.name);
+				return actions;
+			}, {})}/>
 		<div className='scrollbox'>
-			{Object.keys(props.fieldsets).map(fieldsetName => {
-				let fieldset = props.fieldsets[fieldsetName];
-				let fields = transformFields(fieldset, props.dataFields, props.actions, props.values);
+			{props.pageDef.fieldsets.map(fieldsetName => {
+				let fieldset = props.fieldsetDefs[fieldsetName];
+				let fields = fieldset.fields.reduce((fields, fieldName) => {
+					fields[fieldName] = Object.assign({}, props.dataFieldDefs[fieldName]);
+					fields[fieldName].updateValue = props.actions.updateValue(fieldName);
+					fields[fieldName].value = props.values[fieldName] || fields[fieldName].defaultValue;
+					return fields;
+				}, {});
 				return (
 					<Fieldset
 						{...fieldset}
 						fields={fields}
-						key={name}/>
+						key={fieldsetName}/>
 				);
 			})}
 		</div>
@@ -50,11 +37,12 @@ const FormPage = props => (
 
 FormPage.propTypes = {
 	name: PropTypes.string.isRequired,
-	buttons: PropTypes.object.isRequired,
+	buttonDefs: PropTypes.object.isRequired,
 	actions: PropTypes.object.isRequired,
-	fieldsets: PropTypes.object.isRequired,
-	dataFields: PropTypes.object.isRequired,
-	values: PropTypes.object.isRequired
+	fieldsetDefs: PropTypes.object.isRequired,
+	dataFieldDefs: PropTypes.object.isRequired,
+	values: PropTypes.object.isRequired,
+	pageDef: PropTypes.object.isRequired
 };
 
 export default FormPage;
