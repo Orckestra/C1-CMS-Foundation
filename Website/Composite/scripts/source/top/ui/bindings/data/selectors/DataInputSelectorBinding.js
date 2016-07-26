@@ -2,7 +2,7 @@ DataInputSelectorBinding.prototype = new DataInputBinding;
 DataInputSelectorBinding.prototype.constructor = DataInputSelectorBinding;
 DataInputSelectorBinding.superclass = DataInputBinding.prototype;
 
-DataInputSelectorBinding.INDICATOR_IMAGE = "${icon:popup}";
+DataInputSelectorBinding.INDICATOR_IMAGE = "popup";
 DataInputSelectorBinding.ACTION_SELECTIONCHANGED = "datainputselectorselectionchanged";
 
 /**
