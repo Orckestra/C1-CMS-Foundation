@@ -117,7 +117,7 @@ namespace Composite.Core.WebClient.FlowMediators.FormFlowRendering
             string labelField = GetFormLabelField(document);
             ResourceHandle containerIcon = formCompiler.Icon;
 
-            return renderingContainer.Render(formCompiler.UiControl, customToolbarItems, channel, containerEventHandlerStubs, label, labelField, containerIcon);
+            return renderingContainer.Render(formCompiler.UiControl, customToolbarItems, channel, containerEventHandlerStubs, label, labelField, formCompiler.Tooltip, containerIcon);
         }
 
         private static void BaseEventHandler(string consoleId, 

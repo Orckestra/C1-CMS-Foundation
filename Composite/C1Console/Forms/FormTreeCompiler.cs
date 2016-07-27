@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
 using Composite.C1Console.Forms.Foundation.FormTreeCompiler;
@@ -24,10 +23,11 @@ namespace Composite.C1Console.Forms
         private CompileContext _context;
         private Dictionary<string, object> _bindingObjects;
 
-        private IUiControl _uiControl = null;
-        private CompileTreeNode _rootCompilerNode = null;
+        private IUiControl _uiControl;
+        private CompileTreeNode _rootCompilerNode;
 
         private string _label;
+        private string _tooltip;
         private string _iconHandle;
 
 
@@ -103,7 +103,7 @@ namespace Composite.C1Console.Forms
 
             ExtractUiArtifactsPhase extractUiArtifacts = new ExtractUiArtifactsPhase();
 
-            extractUiArtifacts.ExtractUiArtifacts(_rootCompilerNode, out _uiControl, out _label, out _iconHandle);
+            extractUiArtifacts.ExtractUiArtifacts(_rootCompilerNode, out _uiControl, out _label, out _tooltip, out _iconHandle);
         }
 
         /// <summary>
@@ -155,6 +155,10 @@ namespace Composite.C1Console.Forms
                 return !string.IsNullOrEmpty(_label) ? _label : _uiControl.Label;
             }
         }
+
+
+        /// <exclude />
+        public string Tooltip => _tooltip;
 
 
         /// <exclude />

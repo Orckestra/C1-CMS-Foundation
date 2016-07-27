@@ -12,6 +12,7 @@ public partial class Composite_Forms_DocumentExecutionContainer : TemplatedUiCon
     private readonly PlaceHolder messagePlaceHolder2 = new PlaceHolder();
 
     protected string ContainerLabel { get; private set; }
+    protected string ContainerTooltip { get; private set; }
     protected ResourceHandle ContainerIcon { get; private set; }
 
     protected string ContainerIconClientString
@@ -41,6 +42,11 @@ public partial class Composite_Forms_DocumentExecutionContainer : TemplatedUiCon
     public override void SetContainerTitle(string containerTitle)
     {
         this.ContainerLabel = containerTitle;
+    }
+
+    public override void SetContainerTooltip(string containerTooltip)
+    {
+        this.ContainerTooltip = containerTooltip;
     }
 
     public override void SetContainerIcon(ResourceHandle icon)

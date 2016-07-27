@@ -10,8 +10,13 @@
 		<cms:binding name="CustomEvent01Handler" type="System.EventHandler" />
 		<cms:binding name="UrlTitleIsRequired" type="System.Boolean"/>
     <cms:binding name="IsRootPage" type="System.Boolean"/>
+		<cms:binding name="Tooltip" type="System.String" optional="true" />
 	</cms:bindings>
 	<cms:layout iconhandle="page-edit-page">
+		<cms:layout.tooltip>
+			<cms:read source="Tooltip" />
+		</cms:layout.tooltip>
+		
 		<TabPanels PreSelectedIndex="1">
 			<TabPanels.Label>
         <f:BooleanCheck>

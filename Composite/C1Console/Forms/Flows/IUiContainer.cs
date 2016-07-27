@@ -12,6 +12,7 @@ namespace Composite.C1Console.Forms.Flows
             IDictionary<string, object> eventHandlerBindings, 
             string containerLabel,
             string containerLabelField,
+            string containerTooltip,
             ResourceHandle containerIcon);
     }
 }
