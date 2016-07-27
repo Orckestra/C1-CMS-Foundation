@@ -2,7 +2,7 @@ import expect from '../../../helpers/expect';
 import dataFields from '../../../../../Composite/console/state/reducers/dataFields';
 import { UPDATE_VALUE } from '../../../../../Composite/console/state/actions/documentPage';
 
-describe('Data field reducer', () => {
+describe('Data fields', () => {
 	it('outputs an intial state if no action and no previous state', () => {
 		let state = dataFields(undefined, {});
 		return expect(state, 'to equal', {});

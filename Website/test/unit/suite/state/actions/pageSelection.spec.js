@@ -1,7 +1,7 @@
 import expect from '../../../helpers/expect';
 import * as actions from '../../../../../Composite/console/state/actions/pageSelection';
 
-describe('Page selection actions', () => {
+describe('Page selection', () => {
 	it('has action descriptors', () =>
 		expect(actions, 'to have property', 'SELECT_PAGE', 'PAGES.SELECT')
 		.and('to have property', 'REPLACE_PAGES', 'PAGES.REPLACE')

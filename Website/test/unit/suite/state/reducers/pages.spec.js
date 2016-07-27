@@ -2,7 +2,7 @@ import expect from '../../../helpers/expect';
 import pages from '../../../../../Composite/console/state/reducers/pages';
 import { SELECT_PAGE, REPLACE_PAGES } from '../../../../../Composite/console/state/actions/pageSelection';
 
-describe('Page reducer', () => {
+describe('Pages', () => {
 	it('outputs an intial state if no action and no previous state', () => {
 		let state = pages(undefined, {});
 		return expect(state, 'to equal', {

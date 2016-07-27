@@ -1,7 +1,7 @@
 import expect from '../../../helpers/expect';
 import * as actions from '../../../../../Composite/console/state/actions/documentPage';
 
-describe('Document page actions', () => {
+describe('Document page', () => {
 	it('has action descriptors', () =>
 		expect(actions, 'to have property', 'SAVE_STATE')
 		.and('to have property', 'UPDATE_VALUE')
