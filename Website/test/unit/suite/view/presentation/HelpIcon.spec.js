@@ -55,7 +55,20 @@ describe('HelpIcon', () => {
 
 		it('hides help on mouse out with a delay', () =>
 			expect(component, 'with event', 'click', 'with event', 'mouseOut')
-			.then(() => clock.tick(2001))
+			.then(() => clock.tick(1999))
+			.then(() =>
+				expect(
+					component,
+					'finding DOM tag', 'div',
+					'to have attributes', {
+						style: {
+							visibility: 'visible',
+							opacity: '1'
+						}
+					}
+				)
+			)
+			.then(() => clock.tick(2))
 			.then(() =>
 				expect(
 					component,

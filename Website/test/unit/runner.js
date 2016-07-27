@@ -1,5 +1,5 @@
 // Set up and run the test suite
-import System from 'systemjs';
+import System from 'systemjs'; //eslint-disable-line no-unused-vars
 import '../../config.js';
 import glob from 'glob';
 import globals from './helpers/globals';
@@ -18,5 +18,5 @@ dirs.forEach(dir => {
 	describe(groupName, () => {
 		let files = glob.sync('./suite/' + dir + '/**/*.spec.js', { cwd: './test/unit' });
 		files.forEach(file => require(file));
-	})
+	});
 });
