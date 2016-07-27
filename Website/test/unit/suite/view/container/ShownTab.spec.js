@@ -1,0 +1,38 @@
+import expect from '../../../helpers/expect';
+import sinon from 'sinon';
+import React from 'react';
+import TestUtils from 'react-addons-test-utils';
+import ShownTab from '../../../../../Composite/console/components/container/ShownTab';
+import TabPage from '../../../../../Composite/console/components/presentation/TabPage';
+
+describe('ShownTab', () => {
+	let renderer, state, store, props;
+	beforeEach(() => {
+		renderer = TestUtils.createRenderer();
+		state = {
+			pages: {
+				currentPage: 'test1',
+				pages: ['test1', 'test2']
+			}
+		};
+		store = {
+			subscribe: sinon.spy().named('subscribe'),
+			dispatch: sinon.spy().named('dispatch'),
+			getState: sinon.spy(() => state).named('getState')
+		};
+		props = {
+			test: 'value',
+			pageDefs: {} // required for TabPage
+		};
+	});
+
+	it('renders a TabPage with props and page name to show', () => {
+		renderer.render(<ShownTab store={store} {...props}/>);
+		return Promise.all([
+			expect(renderer, 'to have rendered', <TabPage {...props} name='test1'/>),
+			expect(store.dispatch, 'was not called'),
+			expect(store.subscribe, 'was not called'),
+			expect(store.getState, 'was called')
+		]);
+	});
+});
