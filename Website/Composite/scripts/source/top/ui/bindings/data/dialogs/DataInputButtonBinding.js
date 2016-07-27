@@ -70,6 +70,10 @@ DataInputButtonBinding.prototype.buildButton = function () {
 		self.dispatchAction(PageBinding.ACTION_DOPOSTBACK);
 	}
 
+	if (this.isReadOnly) {
+		button.hide();
+	}
+
 	this._dialogButtonBinding = button;
 };
 
