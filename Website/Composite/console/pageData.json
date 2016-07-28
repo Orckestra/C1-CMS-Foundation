@@ -1,0 +1,26 @@
+[
+  {
+    "name":"edit-language",
+    "type": "DocumentPage",
+    "fieldsets": [
+      {
+        "name":"properties",
+        "label": "Language Properties",
+        "fields": [
+          {
+            "name":"url-mapping-name",
+            "label": "URL mapping name",
+            "help": "Base name in URLs"
+          }
+        ]
+      }
+    ],
+    "buttons": [
+      {
+        "name": "save",
+        "label": "Save",
+        "icon": "save"
+      }
+    ]
+  }
+]

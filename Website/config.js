@@ -23,10 +23,12 @@ System.config({
     "react-dom": "npm:react-dom@15.1.0",
     "react-redux": "npm:react-redux@4.4.5",
     "redux": "npm:redux@3.5.2",
+    "redux-thunk": "npm:redux-thunk@2.1.0",
     "scss": "github:mobilexag/plugin-sass@0.4.6",
     "svg": "github:npbenjohnson/plugin-svg@0.1.0",
     "systemjs-hot-reloader": "github:capaj/systemjs-hot-reloader@0.6.0",
     "systemjs-hot-reloader-store": "github:peteruithoven/systemjs-hot-reloader-store@1.0.0",
+    "whatwg-fetch": "npm:whatwg-fetch@1.0.0",
     "github:capaj/systemjs-hot-reloader@0.6.0": {
       "debug": "npm:debug@2.2.0",
       "socket.io-client": "github:socketio/socket.io-client@1.4.8",
