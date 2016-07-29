@@ -1,8 +1,8 @@
 // emulateDom.js - jsdom variant
 
 if (typeof document === 'undefined') {
-	const jsdom = require('jsdom').jsdom;
-	global.document = jsdom('');
+	const jsdom = require('jsdom');
+	global.document = jsdom.jsdom('');
 	global.window = global.document.defaultView;
 
 	for (let key in global.window) {
@@ -10,4 +10,5 @@ if (typeof document === 'undefined') {
 			global[key] = global.window[key];
 		}
 	}
+	jsdom.changeURL(global.window, 'http://localhost/');
 }
