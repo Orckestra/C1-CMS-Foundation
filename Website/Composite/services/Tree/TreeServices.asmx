@@ -85,15 +85,16 @@ namespace Composite.Services
         [WebMethod]
         public List<ClientElement> GetUnpublishedElements(string dummy)
         {
-
             var rootElements = ElementFacade.GetPerspectiveElements(false).First();
             var rootChildren = ElementFacade.GetChildren(rootElements.ElementHandle, new SearchToken());
-            var allElements = Getall(rootChildren);
+            var allElements = GetPublishControlledDescendants(rootChildren);
 
-            IDictionary<string, string> transitions = new Dictionary<string, string>();
-            transitions.Add(GenericPublishProcessController.Draft, StringResourceSystemFacade.GetString("Composite.Management", "PublishingStatus.draft"));
-            transitions.Add(GenericPublishProcessController.AwaitingApproval, StringResourceSystemFacade.GetString("Composite.Management", "PublishingStatus.awaitingApproval"));
-            transitions.Add(GenericPublishProcessController.AwaitingPublication, StringResourceSystemFacade.GetString("Composite.Management", "PublishingStatus.awaitingPublication"));
+            var transitions = new Dictionary<string, string>
+            {
+                {GenericPublishProcessController.Draft, StringResourceSystemFacade.GetString("Composite.Management", "PublishingStatus.draft")},
+                {GenericPublishProcessController.AwaitingApproval, StringResourceSystemFacade.GetString("Composite.Management", "PublishingStatus.awaitingApproval")},
+                {GenericPublishProcessController.AwaitingPublication, StringResourceSystemFacade.GetString("Composite.Management", "PublishingStatus.awaitingPublication")}
+            };
 
             List<Element> actionRequiredPages =
                 (from element in allElements
@@ -102,36 +103,37 @@ namespace Composite.Services
 
             foreach (var actionRequiredPage in actionRequiredPages)
             {
-                actionRequiredPage.PropertyBag["Title"] =
-                    DataAttributeFacade.GetLabel(((DataEntityToken) actionRequiredPage.ElementHandle.EntityToken).Data);
+                var data = (IPublishControlled)((DataEntityToken) actionRequiredPage.ElementHandle.EntityToken).Data;
 
-                var publicationStatus =
-                    (((IPublishControlled) ((DataEntityToken) actionRequiredPage.ElementHandle.EntityToken).Data)
-                        .PublicationStatus);
+                actionRequiredPage.PropertyBag["Title"] = data.GetLabel();
+
+                var publicationStatus = data.PublicationStatus;
                 actionRequiredPage.PropertyBag["Status"] = (transitions.ContainsKey(publicationStatus)
                     ? transitions[publicationStatus]
                     : "Unknown State");
 
-                var changeHistory = ((DataEntityToken) actionRequiredPage.ElementHandle.EntityToken).Data as IChangeHistory;
+                Func<DateTime, string> toSortableString = date => String.Format("{0:s}", date);
+
+                var changeHistory = data as IChangeHistory;
                 if (changeHistory != null)
                 {
                     actionRequiredPage.PropertyBag["Modified"] =
                         changeHistory.ChangeDate.ToString(CultureInfo.CurrentCulture);
                     actionRequiredPage.PropertyBag["SortableModified"] =
-                        String.Format("{0:s}", changeHistory.ChangeDate);
+                        toSortableString(changeHistory.ChangeDate);
                     actionRequiredPage.PropertyBag["ChangedBy"] =
                         changeHistory.ChangedBy;
                 }
-                var creationHistory = ((DataEntityToken) actionRequiredPage.ElementHandle.EntityToken).Data as ICreationHistory;
+                var creationHistory = data as ICreationHistory;
                 if (creationHistory != null)
                 {
                     actionRequiredPage.PropertyBag["Created"] =
                         creationHistory.CreationDate.ToString(CultureInfo.CurrentCulture);
                     actionRequiredPage.PropertyBag["SortableCreated"] =
-                        String.Format("{0:s}", creationHistory.CreationDate);
+                        toSortableString(creationHistory.CreationDate);
                 }
 
-                var selectedPage = ((DataEntityToken) actionRequiredPage.ElementHandle.EntityToken).Data as IPage;
+                var selectedPage = data as IPage;
                 if (selectedPage != null)
                 {
                     var existingPagePublishSchedule = PublishScheduleHelper.GetPublishSchedule(typeof (IPage),
@@ -140,15 +142,16 @@ namespace Composite.Services
                     if (existingPagePublishSchedule != null)
                     {
                         actionRequiredPage.PropertyBag["PublishDate"] = existingPagePublishSchedule.PublishDate.ToString(CultureInfo.CurrentCulture);
-                        actionRequiredPage.PropertyBag["SortablePublishDate"] = String.Format("{0:s}", existingPagePublishSchedule.PublishDate);
+                        actionRequiredPage.PropertyBag["SortablePublishDate"] = toSortableString(existingPagePublishSchedule.PublishDate);
                     }
+
                     var existingPageUnpublishSchedule = PublishScheduleHelper.GetUnpublishSchedule(typeof(IPage),
                         selectedPage.Id.ToString(),
                         UserSettings.ActiveLocaleCultureInfo.Name);
                     if (existingPageUnpublishSchedule != null)
                     {
                         actionRequiredPage.PropertyBag["UnpublishDate"] = existingPageUnpublishSchedule.UnpublishDate.ToString(CultureInfo.CurrentCulture);
-                        actionRequiredPage.PropertyBag["SortableUnpublishDate"] = String.Format("{0:s}", existingPageUnpublishSchedule.UnpublishDate);
+                        actionRequiredPage.PropertyBag["SortableUnpublishDate"] = toSortableString(existingPageUnpublishSchedule.UnpublishDate);
                     }
 
                 }
@@ -156,32 +159,31 @@ namespace Composite.Services
             return actionRequiredPages.ToClientElementList();
         }
 
-        IEnumerable<Element> Getall(IEnumerable<Element> a)
+        IEnumerable<Element> GetPublishControlledDescendants(IEnumerable<Element> a)
         {
             foreach (var element in a)
             {
                 var temp = ElementFacade.GetChildren(element.ElementHandle, new SearchToken());
                 if (temp != null)
                 {
-
-                    foreach (var element2 in Getall(temp))
+                    foreach (var element2 in GetPublishControlledDescendants(temp))
                     {
-                        if (Check(element2))
-                            yield return element2;
+                        yield return element2;
                     }
 
                 }
-                if (Check(element))
+                if (IsPublishControlled(element))
+                {
                     yield return element;
+                }
             }
         }
 
-        private bool Check(Element v)
+        private bool IsPublishControlled(Element v)
         {
-            if (v.ElementHandle.EntityToken is DataEntityToken)
-                if (((DataEntityToken)v.ElementHandle.EntityToken).Data is IPublishControlled)
-                    return true;
-            return false;
+            var entityToken = v.ElementHandle.EntityToken as DataEntityToken;
+            return entityToken != null
+                   && typeof (IPublishControlled).IsAssignableFrom(entityToken.InterfaceType);
         }
 
         [WebMethod]

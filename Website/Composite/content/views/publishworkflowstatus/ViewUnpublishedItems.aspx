@@ -13,7 +13,10 @@
 	<script type="text/javascript" src="bindings/SortButtonBinding.js"></script>
 </head>
 <body>
-	<ui:page label="Unpublished" image="${icon:page-list-unpublished-items}" id="page" binding="UnpublishedPageBinding" showpagedata="<%=Request["showpagedata"] %>" showglobaldata="<%=Request["showglobaldata"]%>">
+	<ui:page label="${string:Composite.Plugins.PageElementProvider:PageElementProvider.ViewUnpublishedItems-document-title}"
+		tooltip="${string:Composite.Plugins.PageElementProvider:PageElementProvider.ViewUnpublishedItems-document-description}"
+		image="${icon:page-list-unpublished-items}" id="page" binding="UnpublishedPageBinding" 
+		showpagedata="<%=Request["showpagedata"] %>" showglobaldata="<%=Request["showglobaldata"]%>">
 		<ui:toolbar id="toolbar">
 			<ui:toolbarbody>
 				<ui:toolbargroup id="actiongroup">
