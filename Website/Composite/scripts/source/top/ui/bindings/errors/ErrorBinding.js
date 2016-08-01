@@ -97,10 +97,10 @@ ErrorBinding.prototype.onBindingAttach = function () {
 		ErrorBinding.presentError ({
 			text : text
 		}, binding );
-	} else {
-		alert ( "ErrorBinding dysfunction: No such DataBinding!\n" + name );
+	} else if (window.console) {
+		console.error ( "ErrorBinding dysfunction: No such DataBinding!\n" + name );
 		if ( name.indexOf ( "_" ) >-1 ) {
-			alert ( "Name contaings '_' - replace with '$' ?" );
+			console.error ( "Name contains '_' - replace with '$' ?" );
 		}
 	}
 	this.dispose ();

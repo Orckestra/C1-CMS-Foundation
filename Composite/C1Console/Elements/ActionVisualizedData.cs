@@ -64,6 +64,11 @@ namespace Composite.C1Console.Elements
         public ActionLocation ActionLocation { get; set; }
 
         /// <summary>
+        /// The string to be shown in a confirm dialog when executing the action for multiple elements.
+        /// </summary>
+        public DialogStrings BulkExecutionDialog { get; set; }
+
+        /// <summary>
         /// Where the action should be shown - when elements are shown in a selection tree (as opposed to the normal navigation tree) some actions may be desired.
         /// Default is <value>ElementActionActivePosition.NavigatorTree</value> only.
         /// </summary>

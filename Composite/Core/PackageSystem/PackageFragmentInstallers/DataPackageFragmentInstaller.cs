@@ -490,22 +490,22 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 var notAssignedRequiredProperties = requiredPropertyNames.Except(assignedPropertyNames.Except(nonRequiredPropertyNames)).ToArray();
                 if (notAssignedRequiredProperties.Any())
                 {
+                    bool missingValues = false;
                     foreach (string propertyName in notAssignedRequiredProperties)
                     {
                         PropertyInfo propertyInfo = dataType.InterfaceType.GetPropertiesRecursively().Single(f => f.Name == propertyName);
 
-                        // Made for backward compatibility
-                        if (propertyInfo.ReflectedType == typeof(IChangeHistory))
-                        {
-                            continue;
-                        }
-
                         if (propertyInfo.CanWrite)
                         {
-                            _validationResult.AddFatal(GetText("DataPackageFragmentInstaller.MissingPropertyVaule").FormatWith(propertyName, dataType.InterfaceType));
+                            var defaultValueAttribute = propertyInfo.GetCustomAttributesRecursively<NewInstanceDefaultFieldValueAttribute>().SingleOrDefault();
+                            if (defaultValueAttribute == null || !defaultValueAttribute.HasValue)
+                            {
+                                _validationResult.AddFatal(GetText("DataPackageFragmentInstaller.MissingPropertyVaule").FormatWith(propertyName, dataType.InterfaceType));
+                                missingValues = true;
+                            }
                         }
                     }
-                    continue;
+                    if (missingValues) continue;
                 }
 
 

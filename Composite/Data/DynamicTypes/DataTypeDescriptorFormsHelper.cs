@@ -262,8 +262,8 @@ namespace Composite.Data.DynamicTypes
         {
             var transitionNames = new Dictionary<string, string>
                 {
-                    {GenericPublishProcessController.Draft, Texts.DraftTransition},
-                    {GenericPublishProcessController.AwaitingApproval, Texts.AwaitingApprovalTransition}
+                    {GenericPublishProcessController.Draft, LocalizationFiles.Composite_Management.PublishingStatus_draft},
+                    {GenericPublishProcessController.AwaitingApproval,  LocalizationFiles.Composite_Management.PublishingStatus_awaitingApproval}
                 };
 
             var username = UserValidationFacade.GetUsername();
@@ -275,7 +275,7 @@ namespace Composite.Data.DynamicTypes
                 if (GenericPublishProcessController.AwaitingPublicationActionPermissionType.Contains(permissionType))
                 {
                     transitionNames.Add(GenericPublishProcessController.AwaitingPublication,
-                        LocalizationFiles.Composite_Management.Website_Forms_Administrative_EditPage_AwaitingPublicationTransition);
+                        LocalizationFiles.Composite_Management.PublishingStatus_awaitingPublication);
                     break;
                 }
             }

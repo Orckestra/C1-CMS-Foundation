@@ -21,6 +21,10 @@
 	<string key="Website.Image.SelectDialog.Title" value="Select Image" />
 	<string key="Website.Folder.SelectDialog.Title" value="Select Folder" />
 
+  <string key="PublishingStatus.draft" value="Draft" />
+  <string key="PublishingStatus.awaitingApproval" value="Awaiting Approval" />
+  <string key="PublishingStatus.awaitingPublication" value="Awaiting Publication" />
+  <string key="PublishingStatus.published" value="Published" />
 
 	<string key="Website.Forms.Administrative.EditUserStep1.LabelFieldGroup" value="General settings" />
 	<string key="Website.Forms.Administrative.EditUserStep1.UserNameLabel" value="User name" />
@@ -620,10 +624,10 @@
 	<string key="Website.Forms.Administrative.EditMediaFolder.LabelDescription" value="Description" />
 	<string key="Website.Forms.Administrative.EditMediaFolder.HelpDescription" value="" />
 	<string key="Website.Forms.Administrative.EditMediaFolder.TotalFilenameToLong.Message" value="The folder contains a file where the total length of the filename and the new folder name is too long" />
-	<string key="Website.Forms.Administrative.EditPage.DraftTransition" value="Draft" />
-	<string key="Website.Forms.Administrative.EditPage.AwaitingApprovalTransition" value="Awaiting Approval" />
-	<string key="Website.Forms.Administrative.EditPage.AwaitingPublicationTransition" value="Awaiting Publication" />
-  <string key="Website.Forms.Administrative.EditPage.SentToDraftTransition" value="Sent to Draft" />
+	<string key="Website.Forms.Administrative.EditPage.SentToDraftTransition" value="Sent to Draft" />
+	<string key="Website.Forms.Administrative.EditPage.PublishDatePreventPublishTitle" value="Saved, but not published" />
+	<string key="Website.Forms.Administrative.EditPage.PublishDatePreventPublish" value="Your page has been saved, but not published since you have a future publish date set on the 'Settings' tab." />
+
   <string key="Website.Forms.Administrative.ElementKeywordSearch.LabelFieldGroup" value="Search" />
 	<string key="Website.Forms.Administrative.ElementKeywordSearch.LabelKeyword" value="Keyword" />
 	<string key="Website.Forms.Administrative.ElementKeywordSearch.LabelSearchKeyword" value="Write a keyword to search for." />

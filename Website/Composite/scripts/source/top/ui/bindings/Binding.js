@@ -1805,7 +1805,7 @@ Binding.prototype.hide = function () {
 
 /**
  * Wake up lazy binding (and perform the action provided as argument).
- * @param @optional {string} action The action to take when awoke.
+ * @param @optional {string|function} action The action to take when awoke.
  */
 Binding.prototype.wakeUp = function ( action, timeout ) {
 
@@ -1829,8 +1829,10 @@ Binding.prototype.wakeUp = function ( action, timeout ) {
 		setTimeout ( function () {
 			self.attachRecursive ();
 			setTimeout ( function () {
-				if ( action !== undefined ) {
+				if ( typeof action === 'string' ) {
 					self [ action ] ();
+				} else if (typeof action === 'function') {
+					action();
 				}
 				// Update any related LazyBindingDataBinding so that the server knows we are awake.
 				LazyBindingBinding.wakeUp ( self );

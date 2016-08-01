@@ -211,11 +211,14 @@
     <Content Include="Composite\content\forms\Administrative\DeleteUserControlFunctionConfirm.xml" />
     <Content Include="Composite\content\forms\Administrative\PageTemplate\EditMasterPage.xml" />
     <Content Include="Composite\content\forms\Administrative\PageTemplate\AddNewPageTemplate.xml" />
+    <Content Include="Composite\content\views\publishworkflowstatus\bindings\SortButtonBinding.js" />
+    <Content Include="Composite\content\views\publishworkflowstatus\bindings\UnpublishedPageBinding.js" />
     <Content Include="Composite\controls\BrandingSnippet.ascx" />
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\Selectors\HierarchicalSelector.ascx" />
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\Selectors\SvgIconSelector.ascx" />
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\Selectors\FontIconSelector.ascx" />
     <Content Include="Composite\images\branding\brand-icon.png" />
+    <Content Include="Composite\images\icons\svg\optimizely.svg" />
     <Content Include="Composite\images\icons\svg\website-remove-folder-from-whitelist.svg" />
     <Content Include="Composite\images\icons\svg\website-add-folder-to-whitelist.svg" />
     <Content Include="Composite\lib\codemirror\addon\dropmedia\dropmedia.js" />
@@ -323,9 +326,6 @@
     <Compile Include="Composite\content\views\publishworkflowstatus\ViewUnpublishedItems.aspx.cs">
       <DependentUpon>ViewUnpublishedItems.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Composite\content\views\publishworkflowstatus\ViewUnpublishedItems.aspx.designer.cs">
-      <DependentUpon>ViewUnpublishedItems.aspx</DependentUpon>
     </Compile>
     <Compile Include="Composite\content\views\relationshipgraph\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
