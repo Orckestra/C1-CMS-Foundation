@@ -31,6 +31,7 @@
     "magicpen-media": "1.5.1",
     "messy": "6.10.1",
     "mocha": "2.5.3",
+    "normalizr": "2.2.1",
     "react": "15.1.0",
     "react-addons-test-utils": "15.1.0",
     "react-dom": "15.1.0",
@@ -50,6 +51,7 @@
   },
   "jspm": {
     "dependencies": {
+      "normalizr": "npm:normalizr@^2.2.1",
       "react": "npm:react@^15.1.0",
       "react-addons-update": "npm:react-addons-update@^15.1.0",
       "react-dom": "npm:react-dom@^15.1.0",

@@ -1,18 +1,38 @@
 import requestJSON from '../../access/requestJSON';
+import { normalize, Schema, arrayOf } from 'normalizr';
+import {addDefinition }from './componentDefinitions';
+const dataFieldSchema = new Schema('dataFieldDefs', { idAttribute: 'name' });
+const fieldsetSchema = new Schema('fieldsetDefs', { idAttribute: 'name' });
+fieldsetSchema.define({
+	fields: arrayOf(dataFieldSchema)
+});
+const buttonSchema = new Schema('buttonDefs', { idAttribute: 'name' });
+const pageSchema = new Schema('pageDefs', { idAttribute: 'name' });
+pageSchema.define({
+	fieldsets: arrayOf(fieldsetSchema),
+	buttons: arrayOf(buttonSchema)
+});
 
 const prefix = 'PAGE_DEF.';
-export const GET_PAGE_DEF = prefix + 'GET';
-export const GET_PAGE_DEF_DONE = prefix + 'GET.DONE';
-export const GET_PAGE_DEF_FAILED = prefix + 'GET.FAIL';
+export const LOAD_PAGE_DEF = prefix + 'GET';
+export const LOAD_PAGE_DEF_DONE = prefix + 'GET.DONE';
+export const LOAD_PAGE_DEF_FAILED = prefix + 'GET.FAIL';
 
 // Better input: Page identity/-ies (perspective, parentage, page name - path object of some kind?)
-export function getPageDef(pageName) {
+export function loadPageDef(pageName) {
 	return dispatch => {
-		dispatch({ type: GET_PAGE_DEF, name: pageName });
+		dispatch({ type: LOAD_PAGE_DEF, name: pageName });
 		return requestJSON('/Composite/console/pageData.json')
 		.then(response => {
-			dispatch({ type: GET_PAGE_DEF_DONE, name: pageName });
-			return response;
+			let defs = normalize(response, arrayOf(pageSchema)).entities;
+			Object.keys(defs).forEach(defType => {
+				let defSet = defs[defType];
+				let typeName = defType.replace(/Defs$/, '');
+				Object.keys(defSet).forEach(defName => {
+					dispatch(addDefinition(typeName, defSet[defName]));
+				});
+			});
+			dispatch({ type: LOAD_PAGE_DEF_DONE, name: pageName });
 		});
 		// Transform page type into component function, normalize data, insert into state
 	};

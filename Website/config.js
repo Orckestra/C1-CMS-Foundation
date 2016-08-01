@@ -18,6 +18,7 @@ System.config({
     "babel": "npm:babel-core@5.8.38",
     "babel-runtime": "npm:babel-runtime@5.8.38",
     "core-js": "npm:core-js@1.2.6",
+    "normalizr": "npm:normalizr@2.2.1",
     "react": "npm:react@15.2.0",
     "react-addons-update": "npm:react-addons-update@15.1.0",
     "react-dom": "npm:react-dom@15.1.0",
@@ -354,6 +355,9 @@ System.config({
       "url": "github:jspm/nodelibs-url@0.1.0",
       "util": "github:jspm/nodelibs-util@0.1.0",
       "zlib": "github:jspm/nodelibs-zlib@0.1.0"
+    },
+    "npm:normalizr@2.2.1": {
+      "lodash": "npm:lodash@4.14.1"
     },
     "npm:pako@0.2.8": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",

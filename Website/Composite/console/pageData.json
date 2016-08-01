@@ -1,14 +1,14 @@
 [
   {
-    "name":"edit-language",
+    "name": "edit-language",
     "type": "DocumentPage",
     "fieldsets": [
       {
-        "name":"properties",
+        "name": "properties",
         "label": "Language Properties",
         "fields": [
           {
-            "name":"url-mapping-name",
+            "name": "url-mapping-name",
             "label": "URL mapping name",
             "help": "Base name in URLs"
           }
