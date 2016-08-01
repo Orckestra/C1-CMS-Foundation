@@ -18,6 +18,8 @@ using Microsoft.Practices.EnterpriseLibrary.Validation;
 using Composite.Data.Types;
 
 
+using ManagementStrings = Composite.Core.ResourceSystem.LocalizationFiles.Composite_Management;
+
 namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController
 {
     /// <summary>
@@ -43,7 +45,9 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
         /// <exclude />
         public const string SentToDraft = "sentToDraft";
 
-        private static readonly string _bulkPublishingCommands = "BulkPublishingCommands";        private static readonly string _backToAwaitingApproval = "awaitingApprovalBack";
+        private static readonly string _bulkPublishingCommands = "BulkPublishingCommands";
+
+        private static readonly string _backToAwaitingApproval = "awaitingApprovalBack";
         private static readonly string _forwardToAwaitingApproval = "awaitingApprovalForward";
         private static readonly string _backToAwaitingPublication = "awaitingPublicationBack";
         private static readonly string _forwardToAwaitingPublication = "awaitingPublicationForward";
@@ -112,11 +116,11 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
 
             _transitionNames = new Dictionary<string, string>
             {
-                {Draft, StringResourceSystemFacade.GetString("Composite.Management", "PublishingStatus.draft")},
-                {SentToDraft, "Sent to Draft"}, // TODO: localize
-                {AwaitingApproval, StringResourceSystemFacade.GetString("Composite.Management", "PublishingStatus.awaitingApproval")},
-                {AwaitingPublication, StringResourceSystemFacade.GetString("Composite.Management", "PublishingStatus.awaitingPublication")},
-                {Published, StringResourceSystemFacade.GetString("Composite.Management", "PublishingStatus.published")}
+                {Draft, ManagementStrings.PublishingStatus_draft},
+                {SentToDraft, ManagementStrings.PublishingStatus_sentToDraft},
+                {AwaitingApproval, ManagementStrings.PublishingStatus_awaitingApproval},
+                {AwaitingPublication, ManagementStrings.PublishingStatus_awaitingPublication},
+                {Published, ManagementStrings.PublishingStatus_published}
             };
 
             Func<ElementAction> sendBackToDraftAction = () => new ElementAction(new ActionHandle(new ProxyDataActionToken(ActionIdentifier.SendToDraft) { DoIgnoreEntityTokenLocking = true }))

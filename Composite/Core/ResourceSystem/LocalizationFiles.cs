@@ -1149,6 +1149,8 @@ public static string Website_Image_SelectDialog_Title=>T("Website.Image.SelectDi
 public static string Website_Folder_SelectDialog_Title=>T("Website.Folder.SelectDialog.Title");
 ///<summary>&quot;Draft&quot;</summary> 
 public static string PublishingStatus_draft=>T("PublishingStatus.draft");
+///<summary>&quot;Sent to Draft&quot;</summary> 
+public static string PublishingStatus_sentToDraft=>T("PublishingStatus.sentToDraft");
 ///<summary>&quot;Awaiting Approval&quot;</summary> 
 public static string PublishingStatus_awaitingApproval=>T("PublishingStatus.awaitingApproval");
 ///<summary>&quot;Awaiting Publication&quot;</summary> 
@@ -2657,6 +2659,14 @@ public static string PublicationStatus_Help=>T("PublicationStatus.Help");
 public static string PublishDate_Label=>T("PublishDate.Label");
 ///<summary>&quot;Specify at which date and time you want the data to be published automatically.&quot;</summary> 
 public static string PublishDate_Help=>T("PublishDate.Help");
+///<summary>&quot;Date Created&quot;</summary> 
+public static string DateCreated_Label=>T("DateCreated.Label");
+///<summary>&quot;Date Modified&quot;</summary> 
+public static string DateModified_Label=>T("DateModified.Label");
+///<summary>&quot;Author&quot;</summary> 
+public static string CreatedBy_Label=>T("CreatedBy.Label");
+///<summary>&quot;Author&quot;</summary> 
+public static string ChangedBy_Label=>T("ChangedBy.Label");
 ///<summary>&quot;Unpublish date&quot;</summary> 
 public static string UnpublishDate_Label=>T("UnpublishDate.Label");
 ///<summary>&quot;Specify at which date and time you want the data to be unpublished automatically.&quot;</summary> 
@@ -3507,14 +3517,6 @@ public static string EditPage_HelpFriendlyUrl=>T("EditPage.HelpFriendlyUrl");
 public static string EditPage_LabelAbstract=>T("EditPage.LabelAbstract");
 ///<summary>&quot;Use this field for a short description of the page&quot;</summary> 
 public static string EditPage_LabelAbstractHelp=>T("EditPage.LabelAbstractHelp");
-///<summary>&quot;Publish date&quot;</summary> 
-public static string EditPage_LabelPublishDate=>T("EditPage.LabelPublishDate");
-///<summary>&quot;Specify at which date and time you want the page to be published automatically.&quot;</summary> 
-public static string EditPage_HelpPublishDate=>T("EditPage.HelpPublishDate");
-///<summary>&quot;Unpublish date&quot;</summary> 
-public static string EditPage_LabelUnpublishDate=>T("EditPage.LabelUnpublishDate");
-///<summary>&quot;Specify at which date and time you want the page to be unpublished automatically.&quot;</summary> 
-public static string EditPage_HelpUnpublishDate=>T("EditPage.HelpUnpublishDate");
 ///<summary>&quot;Content&quot;</summary> 
 public static string EditPage_LabelContent=>T("EditPage.LabelContent");
 ///<summary>&quot;Preview&quot;</summary> 
@@ -3643,8 +3645,14 @@ public static string DeletePageWorkflow_CascadeDeleteErrorTitle=>T("DeletePageWo
 public static string DeletePageWorkflow_CascadeDeleteErrorMessage=>T("DeletePageWorkflow.CascadeDeleteErrorMessage");
 ///<summary>&quot;Can not delete page&quot;</summary> 
 public static string DeletePageWorkflow_HasCompositionsTitle=>T("DeletePageWorkflow.HasCompositionsTitle");
-///<summary>&quot;This page has one or more page folders or metadata fields defined on it. Delete these first.&quot;</summary> 
-public static string DeletePageWorkflow_HasCompositionsMessage=>T("DeletePageWorkflow.HasCompositionsMessage");
+///<summary>&quot;Delete page versions&quot;</summary> 
+public static string DeletePageWorkflow_ConfirmAllVersionsDeletion_DialogLabel=>T("DeletePageWorkflow.ConfirmAllVersionsDeletion.DialogLabel");
+///<summary>&quot;This page contains multiple versions&quot;</summary> 
+public static string DeletePageWorkflow_ConfirmAllVersionsDeletion_Text=>T("DeletePageWorkflow.ConfirmAllVersionsDeletion.Text");
+///<summary>&quot;Delete all versions&quot;</summary> 
+public static string DeletePageWorkflow_ConfirmAllVersionsDeletion_DeleteAllVersions=>T("DeletePageWorkflow.ConfirmAllVersionsDeletion.DeleteAllVersions");
+///<summary>&quot;Delete only current version&quot;</summary> 
+public static string DeletePageWorkflow_ConfirmAllVersionsDeletion_DeleteCurrentVersion=>T("DeletePageWorkflow.ConfirmAllVersionsDeletion.DeleteCurrentVersion");
 ///<summary>&quot;Page Title&quot;</summary> 
 public static string ViewUnpublishedItems_PageTitleLabel=>T("ViewUnpublishedItems.PageTitleLabel");
 ///<summary>&quot;Version&quot;</summary> 
@@ -3653,11 +3661,11 @@ public static string ViewUnpublishedItems_VersionLabel=>T("ViewUnpublishedItems.
 public static string ViewUnpublishedItems_StatusLabel=>T("ViewUnpublishedItems.StatusLabel");
 ///<summary>&quot;Publish Date&quot;</summary> 
 public static string ViewUnpublishedItems_PublishDateLabel=>T("ViewUnpublishedItems.PublishDateLabel");
-///<summary>&quot;This is the date and time that has been set for the page to be published automatically. To update or remove, see the Publication Schedule in Edit Page mode. Otherwise you can override these dates by publishing manually from this view.&quot;</summary> 
+///<summary>&quot;Date and time the page has been scheduled to publish automatically. To edit, see the Publication Schedule in Edit Page mode.&quot;</summary> 
 public static string ViewUnpublishedItems_PublishDateHelp=>T("ViewUnpublishedItems.PublishDateHelp");
 ///<summary>&quot;Unpublish Date&quot;</summary> 
 public static string ViewUnpublishedItems_UnpublishDateLabel=>T("ViewUnpublishedItems.UnpublishDateLabel");
-///<summary>&quot;This is the date and time that has been set for the page to be unpublished automatically. To update or remove, see the Publication Schedule in Edit Page mode.&quot;</summary> 
+///<summary>&quot;Date and time the page has been scheduled to unpublish automatically. To edit, see the Publication Schedule in Edit Page mode.&quot;</summary> 
 public static string ViewUnpublishedItems_UnpublishDateHelp=>T("ViewUnpublishedItems.UnpublishDateHelp");
 ///<summary>&quot;Date Created&quot;</summary> 
 public static string ViewUnpublishedItems_DateCreatedLabel=>T("ViewUnpublishedItems.DateCreatedLabel");

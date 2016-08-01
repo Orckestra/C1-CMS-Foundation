@@ -22,6 +22,7 @@
 	<string key="Website.Folder.SelectDialog.Title" value="Select Folder" />
 
   <string key="PublishingStatus.draft" value="Draft" />
+  <string key="PublishingStatus.sentToDraft" value="Sent to Draft" />
   <string key="PublishingStatus.awaitingApproval" value="Awaiting Approval" />
   <string key="PublishingStatus.awaitingPublication" value="Awaiting Publication" />
   <string key="PublishingStatus.published" value="Published" />
@@ -624,7 +625,6 @@
 	<string key="Website.Forms.Administrative.EditMediaFolder.LabelDescription" value="Description" />
 	<string key="Website.Forms.Administrative.EditMediaFolder.HelpDescription" value="" />
 	<string key="Website.Forms.Administrative.EditMediaFolder.TotalFilenameToLong.Message" value="The folder contains a file where the total length of the filename and the new folder name is too long" />
-	<string key="Website.Forms.Administrative.EditPage.SentToDraftTransition" value="Sent to Draft" />
 	<string key="Website.Forms.Administrative.EditPage.PublishDatePreventPublishTitle" value="Saved, but not published" />
 	<string key="Website.Forms.Administrative.EditPage.PublishDatePreventPublish" value="Your page has been saved, but not published since you have a future publish date set on the 'Settings' tab." />
 
