@@ -34,10 +34,10 @@
 	<string key="Website.Forms.Administrative.EditUserStep1.GroupLabel" value="Folder" />
 	<string key="Website.Forms.Administrative.EditUserStep1.GroupHelp" value="If you enter a folder name that does not already exist a new folder will be created." />
   <string key="Website.Forms.Administrative.EditUserStep1.LabelLocalizationFieldGroup" value="C1 Console Localization" />
-  <string key="Website.Forms.Administrative.EditUserStep1.CultureLabel" value="Regional settings" />
-	<string key="Website.Forms.Administrative.EditUserStep1.CultureHelp" value="To change the way numbers, dates, and hours are displayed, select an entry from the list." />
-  <string key="Website.Forms.Administrative.EditUserStep1.C1ConsoleLanguageLabel" value="C1 Console Language" />
-  <string key="Website.Forms.Administrative.EditUserStep1.C1ConsoleLanguageHelp" value="Select the language to be used for labels, help texts, dialogs etc. The available options here are limited to languages installed. You may install more languages via the Package system, see Composite.Localization." />
+  <string key="Website.Forms.Administrative.EditUserStep1.CultureLabel" value="Display Preferences" />
+	<string key="Website.Forms.Administrative.EditUserStep1.CultureHelp" value="Display for time, date, and number formats within the console" />
+  <string key="Website.Forms.Administrative.EditUserStep1.C1ConsoleLanguageLabel" value="Console Language Preferences" />
+  <string key="Website.Forms.Administrative.EditUserStep1.C1ConsoleLanguageHelp" value="Language displayed within your console for labels, help texts, dialogs, etc. The available options are limited to language packages installed. See Composite.Localization package for more language options." />
   <string key="Website.Forms.Administrative.EditUserStep1.ActivePerspectiveFieldLabel" value="Perspectives" />
 	<string key="Website.Forms.Administrative.EditUserStep1.ActivePerspectiveMultiSelectLabel" value="Visible perspectives" />
 	<string key="Website.Forms.Administrative.EditUserStep1.ActivePerspectiveMultiSelectHelp" value="Select which perspectives should be visible when the user starts the C1 Console." />
@@ -87,10 +87,10 @@
 	<string key="Website.Forms.Administrative.AddNewUserStep1.EmailHelp" value="The e-mail address of the user (optional)." />
 	<string key="Website.Forms.Administrative.AddNewUserStep1.GroupLabel" value="Folder" />
 	<string key="Website.Forms.Administrative.AddNewUserStep1.GroupHelp" value="If you enter a folder name that does not already exist a new folder will be created." />
-	<string key="Website.Forms.Administrative.AddNewUserStep1.CultureLabel" value="Regional settings" />
-	<string key="Website.Forms.Administrative.AddNewUserStep1.CultureHelp" value="To change the way numbers, dates, and hours are displayed, select an entry from the list." />
-  <string key="Website.Forms.Administrative.AddNewUserStep1.C1ConsoleLanguageLabel" value="C1 Console Language" />
-  <string key="Website.Forms.Administrative.AddNewUserStep1.C1ConsoleLanguageHelp" value="Select the language to be used for labels, help texts, dialogs etc. The available options here are limited to languages installed. You may install more languages via the Package system, see Composite.Localization." />
+	<string key="Website.Forms.Administrative.AddNewUserStep1.CultureLabel" value="Display Preferences" />
+	<string key="Website.Forms.Administrative.AddNewUserStep1.CultureHelp" value="Display for time, date, and number formats within the console" />
+  <string key="Website.Forms.Administrative.AddNewUserStep1.C1ConsoleLanguageLabel" value="Console Language Preferences" />
+  <string key="Website.Forms.Administrative.AddNewUserStep1.C1ConsoleLanguageHelp" value="Language displayed within your console for labels, help texts, dialogs, etc. The available options are limited to language packages installed. See Composite.Localization package for more language options." />
   <string key="UserElementProvider.MissingActiveLanguageTitle" value="A language is required" />
 	<string key="UserElementProvider.MissingActiveLanguageMessage" value="To create a user a language is required, but no languages have been added yet. You can add one under the System perspective." />
 	<string key="UserElementProvider.UserLoginIsAlreadyUsed" value="User with the same login already exist" />
