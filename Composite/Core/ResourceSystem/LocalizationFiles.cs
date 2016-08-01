@@ -3645,6 +3645,8 @@ public static string DeletePageWorkflow_CascadeDeleteErrorTitle=>T("DeletePageWo
 public static string DeletePageWorkflow_CascadeDeleteErrorMessage=>T("DeletePageWorkflow.CascadeDeleteErrorMessage");
 ///<summary>&quot;Can not delete page&quot;</summary> 
 public static string DeletePageWorkflow_HasCompositionsTitle=>T("DeletePageWorkflow.HasCompositionsTitle");
+///<summary>&quot;This page has one or more page folders or metadata fields defined on it. Delete these first.&quot;</summary> 
+public static string DeletePageWorkflow_HasCompositionsMessage=>T("DeletePageWorkflow.HasCompositionsMessage");
 ///<summary>&quot;Delete page versions&quot;</summary> 
 public static string DeletePageWorkflow_ConfirmAllVersionsDeletion_DialogLabel=>T("DeletePageWorkflow.ConfirmAllVersionsDeletion.DialogLabel");
 ///<summary>&quot;This page contains multiple versions&quot;</summary> 

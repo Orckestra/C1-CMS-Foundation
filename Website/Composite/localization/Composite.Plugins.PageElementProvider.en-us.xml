@@ -105,6 +105,7 @@
   <string key="DeletePageWorkflow.CascadeDeleteErrorTitle" value="Cascade delete error" />
   <string key="DeletePageWorkflow.CascadeDeleteErrorMessage" value="The page is referenced by another type that does not allow cascade deletes. This operation is halted" />
   <string key="DeletePageWorkflow.HasCompositionsTitle" value="Can not delete page" />
+	<string key="DeletePageWorkflow.HasCompositionsMessage" value="This page has one or more page folders or metadata fields defined on it. Delete these first." />
 	<string key="DeletePageWorkflow.ConfirmAllVersionsDeletion.DialogLabel" value="Delete page versions" />
 	<string key="DeletePageWorkflow.ConfirmAllVersionsDeletion.Text" value="This page contains multiple versions" />
 	<string key="DeletePageWorkflow.ConfirmAllVersionsDeletion.DeleteAllVersions" value="Delete all versions" />
