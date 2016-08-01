@@ -50,8 +50,6 @@
   <string key="DeleteDataToolTip" value="Delete selected data" />
   <string key="LocalizeData" value="Translate Data" />
   <string key="LocalizeDataToolTip" value="Translate selected data" />
-  <string key="DraftTransition" value="Draft" />
-  <string key="AwaitingApprovalTransition" value="Awaiting Approval" />
   <string key="PublicationSettings.FieldGroupLabel" value="Publication settings" />
   <string key="PublicationStatus.Label" value="Status" />
   <string key="PublicationStatus.Help" value="Send the data to another publication status." />

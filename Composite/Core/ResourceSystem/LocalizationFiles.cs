@@ -1147,6 +1147,14 @@ public static string Website_Media_SelectDialog_Title=>T("Website.Media.SelectDi
 public static string Website_Image_SelectDialog_Title=>T("Website.Image.SelectDialog.Title");
 ///<summary>&quot;Select Folder&quot;</summary> 
 public static string Website_Folder_SelectDialog_Title=>T("Website.Folder.SelectDialog.Title");
+///<summary>&quot;Draft&quot;</summary> 
+public static string PublishingStatus_draft=>T("PublishingStatus.draft");
+///<summary>&quot;Awaiting Approval&quot;</summary> 
+public static string PublishingStatus_awaitingApproval=>T("PublishingStatus.awaitingApproval");
+///<summary>&quot;Awaiting Publication&quot;</summary> 
+public static string PublishingStatus_awaitingPublication=>T("PublishingStatus.awaitingPublication");
+///<summary>&quot;Published&quot;</summary> 
+public static string PublishingStatus_published=>T("PublishingStatus.published");
 ///<summary>&quot;General settings&quot;</summary> 
 public static string Website_Forms_Administrative_EditUserStep1_LabelFieldGroup=>T("Website.Forms.Administrative.EditUserStep1.LabelFieldGroup");
 ///<summary>&quot;User name&quot;</summary> 
@@ -2339,12 +2347,6 @@ public static string Website_Forms_Administrative_EditMediaFolder_LabelDescripti
 public static string Website_Forms_Administrative_EditMediaFolder_HelpDescription=>T("Website.Forms.Administrative.EditMediaFolder.HelpDescription");
 ///<summary>&quot;The folder contains a file where the total length of the filename and the new folder name is too long&quot;</summary> 
 public static string Website_Forms_Administrative_EditMediaFolder_TotalFilenameToLong_Message=>T("Website.Forms.Administrative.EditMediaFolder.TotalFilenameToLong.Message");
-///<summary>&quot;Draft&quot;</summary> 
-public static string Website_Forms_Administrative_EditPage_DraftTransition=>T("Website.Forms.Administrative.EditPage.DraftTransition");
-///<summary>&quot;Awaiting Approval&quot;</summary> 
-public static string Website_Forms_Administrative_EditPage_AwaitingApprovalTransition=>T("Website.Forms.Administrative.EditPage.AwaitingApprovalTransition");
-///<summary>&quot;Awaiting Publication&quot;</summary> 
-public static string Website_Forms_Administrative_EditPage_AwaitingPublicationTransition=>T("Website.Forms.Administrative.EditPage.AwaitingPublicationTransition");
 ///<summary>&quot;Saved, but not published&quot;</summary> 
 public static string Website_Forms_Administrative_EditPage_PublishDatePreventPublishTitle=>T("Website.Forms.Administrative.EditPage.PublishDatePreventPublishTitle");
 ///<summary>&quot;Your page has been saved, but not published since you have a future publish date set on the &apos;Settings&apos; tab.&quot;</summary> 
@@ -2645,10 +2647,6 @@ public static string DeleteDataToolTip=>T("DeleteDataToolTip");
 public static string LocalizeData=>T("LocalizeData");
 ///<summary>&quot;Translate selected data&quot;</summary> 
 public static string LocalizeDataToolTip=>T("LocalizeDataToolTip");
-///<summary>&quot;Draft&quot;</summary> 
-public static string DraftTransition=>T("DraftTransition");
-///<summary>&quot;Awaiting Approval&quot;</summary> 
-public static string AwaitingApprovalTransition=>T("AwaitingApprovalTransition");
 ///<summary>&quot;Publication settings&quot;</summary> 
 public static string PublicationSettings_FieldGroupLabel=>T("PublicationSettings.FieldGroupLabel");
 ///<summary>&quot;Status&quot;</summary> 
@@ -3647,6 +3645,28 @@ public static string DeletePageWorkflow_CascadeDeleteErrorMessage=>T("DeletePage
 public static string DeletePageWorkflow_HasCompositionsTitle=>T("DeletePageWorkflow.HasCompositionsTitle");
 ///<summary>&quot;This page has one or more page folders or metadata fields defined on it. Delete these first.&quot;</summary> 
 public static string DeletePageWorkflow_HasCompositionsMessage=>T("DeletePageWorkflow.HasCompositionsMessage");
+///<summary>&quot;Page Title&quot;</summary> 
+public static string ViewUnpublishedItems_PageTitleLabel=>T("ViewUnpublishedItems.PageTitleLabel");
+///<summary>&quot;Version&quot;</summary> 
+public static string ViewUnpublishedItems_VersionLabel=>T("ViewUnpublishedItems.VersionLabel");
+///<summary>&quot;Status&quot;</summary> 
+public static string ViewUnpublishedItems_StatusLabel=>T("ViewUnpublishedItems.StatusLabel");
+///<summary>&quot;Publish Date&quot;</summary> 
+public static string ViewUnpublishedItems_PublishDateLabel=>T("ViewUnpublishedItems.PublishDateLabel");
+///<summary>&quot;This is the date and time that has been set for the page to be published automatically. To update or remove, see the Publication Schedule in Edit Page mode. Otherwise you can override these dates by publishing manually from this view.&quot;</summary> 
+public static string ViewUnpublishedItems_PublishDateHelp=>T("ViewUnpublishedItems.PublishDateHelp");
+///<summary>&quot;Unpublish Date&quot;</summary> 
+public static string ViewUnpublishedItems_UnpublishDateLabel=>T("ViewUnpublishedItems.UnpublishDateLabel");
+///<summary>&quot;This is the date and time that has been set for the page to be unpublished automatically. To update or remove, see the Publication Schedule in Edit Page mode.&quot;</summary> 
+public static string ViewUnpublishedItems_UnpublishDateHelp=>T("ViewUnpublishedItems.UnpublishDateHelp");
+///<summary>&quot;Date Created&quot;</summary> 
+public static string ViewUnpublishedItems_DateCreatedLabel=>T("ViewUnpublishedItems.DateCreatedLabel");
+///<summary>&quot;Date Modified&quot;</summary> 
+public static string ViewUnpublishedItems_DateModifiedLabel=>T("ViewUnpublishedItems.DateModifiedLabel");
+///<summary>&quot;Publish Pages&quot;</summary> 
+public static string ViewUnpublishedItems_PublishConfirmTitle=>T("ViewUnpublishedItems.PublishConfirmTitle");
+///<summary>&quot;You are about to publish these pages. Continue?&quot;</summary> 
+public static string ViewUnpublishedItems_PublishConfirmText=>T("ViewUnpublishedItems.PublishConfirmText");
      private static string T(string key) 
        { 
             return StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", key);

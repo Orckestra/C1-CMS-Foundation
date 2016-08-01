@@ -309,6 +309,15 @@ SystemAction.prototype.getBundleName = function () {
 }
 
 /**
+ * Get dialog information for bulk execution
+ * @return {boolean}
+ */
+SystemAction.prototype.getBulkExecutionDialog = function () {
+
+	return this._data.BulkExecutionDialog;
+}
+
+/**
  * @return {string}
  */
 SystemAction.prototype.getFolderName = function () {
