@@ -4,8 +4,8 @@ import { UPDATE_VALUE } from '../../../../../Composite/console/state/actions/doc
 
 describe('Data fields', () => {
 	it('outputs an intial state if no action and no previous state', () => {
-		let state = dataFields(undefined, {});
-		return expect(state, 'to equal', {});
+		let newState = dataFields(undefined, {});
+		return expect(newState, 'to equal', {});
 	});
 
 	it('outputs the same state object if no action', () => {
