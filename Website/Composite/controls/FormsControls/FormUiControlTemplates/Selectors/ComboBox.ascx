@@ -1,5 +1,6 @@
 <%@ Control Language="C#" Inherits="Composite.Plugins.Forms.WebChannel.UiControlFactories.SelectorTemplateUserControlBase"  %>
 <%@ Import Namespace="System.Linq" %>
+<%@ Import Namespace="System.Security.Policy" %>
 <%@ Import Namespace="Composite.Core.WebClient.UiControlLib.Foundation" %>
 
 <script runat="server">
@@ -38,10 +39,8 @@
         {
             clientSelector.SelectedValue = key;
         }
-        else
-        {
-            clientSelector.SelectionRequired = this.Required;
-        }
+
+        clientSelector.SelectionRequired = this.Required;
     }
 
 
@@ -51,4 +50,4 @@
     }
 </script>
 
-<aspui:ComboBox ID="clientSelector" runat="server" SelectionRequired="False" />
+<aspui:ComboBox ID="clientSelector" runat="server" />

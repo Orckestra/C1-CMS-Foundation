@@ -423,7 +423,8 @@ DataInputSelectorBinding.prototype.select = function ( item, isDefault ) {
 
 		this._selectedItemBinding = item;
 
-		this.setValue ( item.selectionValue );
+		this.setValue(item.selectionValue);
+		this.validate(true);
 
 		if ( !isDefault ) {
 			this.dirty();
