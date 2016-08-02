@@ -173,6 +173,7 @@
     </Content>
     <Content Include="Composite\content\branding\start-page-content.inc" />
     <Content Include="Composite\content\branding\start-page-js.inc" />
+    <Content Include="Composite\content\forms\Administrative\SetTimeZone_select.xml" />
     <Content Include="Composite\content\forms\Administrative\DeletePage_ConfirmAllVersionsDeletion.xml" />
     <Content Include="Composite\content\views\browser\deviceoptions.xml">
       <SubType>Designer</SubType>
@@ -558,6 +559,8 @@
     <Content Include="Composite\images\touch-cursor.png" />
     <Content Include="Composite\images\welcome\accept-green.svg" />
     <Content Include="Composite\images\welcome\cancel.svg" />
+    <Content Include="Composite\localization\Composite.Plugins.TimezoneDisplayNames.en-us.xml" />
+    <Content Include="Composite\localization\Composite.Plugins.TimezoneAbbriviations.en-us.xml" />
     <Content Include="Composite\scripts\source\top\core\ImageProvider.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\branding\BrandSnippetBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\buttons\combobutton\SelectorButtonBinding.js" />
@@ -2543,7 +2546,6 @@
     <Folder Include="Composite\content\views\mediabrowser\" />
     <Folder Include="Composite\controls\FormsControls\FormUiControlTemplates\ElementSelectors\" />
     <Folder Include="Composite\images\icons\branding\" />
-    <Folder Include="Composite\InstalledPackages\content\views\Orckestra.Versioning.VersionPublication\Bindings\" />
     <Folder Include="Frontend\Controls\" />
     <Folder Include="Frontend\Images\" />
     <Folder Include="Frontend\Scripts\" />

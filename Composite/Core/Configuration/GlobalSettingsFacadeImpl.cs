@@ -351,5 +351,7 @@ namespace Composite.Core.Configuration
         }
 
         public bool FunctionPreviewEnabled => GlobalSettingsProviderPluginFacade.FunctionPreviewEnabled;
+
+        public TimeZoneInfo TimeZone => GlobalSettingsProviderPluginFacade.TimeZone;
     }
 }

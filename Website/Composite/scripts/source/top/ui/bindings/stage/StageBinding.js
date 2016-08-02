@@ -379,6 +379,8 @@ StageBinding.prototype._initializeRootActions = function ( root ) {
 		 */
 		var menugroup = top.app.bindingMap.toolsmenugroup;
 
+		var bundles = new Map();
+
 		if ( menugroup ) {
 			actions.each ( function ( groupid, list ) {
 				list.each ( function ( action ) {
@@ -412,6 +414,25 @@ StageBinding.prototype._initializeRootActions = function ( root ) {
 								break;
 						}
 					}
+
+					var bundleName = action.getBundleName();
+					if (bundleName) {
+						if (!bundles.has(bundleName)) {
+							var bundleItem = MenuItemBinding.newInstance(menugroup.bindingDocument);
+							bundleItem.setLabel(bundleName);
+							bundleItem.setImage(action.getImage());
+							group.add(bundleItem);
+
+							var popup = MenuPopupBinding.newInstance(menugroup.bindingDocument);
+							var body = popup.add(MenuBodyBinding.newInstance(menugroup.bindingDocument));
+							var menuitemgroup = body.add(MenuGroupBinding.newInstance(menugroup.bindingDocument));
+							bundleItem.add(popup);
+
+							bundles.set(bundleName, menuitemgroup);
+						}
+						group = bundles.get(bundleName);;
+					}
+
 					group.add ( item );
 				});
 			});

@@ -34,6 +34,7 @@ namespace Composite.Core.Configuration.BuildinPlugins.GlobalSettingsProvider
         private bool _prettifyPublicMarkup = true;
         private bool _prettifyRenderFunctionExceptions = true;
         private bool _functionPreviewEnabled = false;
+        private TimeZoneInfo _timezone = TimeZoneInfo.Local;
 
         public string ApplicationName => _applicationName;
 
@@ -138,5 +139,7 @@ namespace Composite.Core.Configuration.BuildinPlugins.GlobalSettingsProvider
         public bool PrettifyRenderFunctionExceptions => _prettifyRenderFunctionExceptions;
 
         public bool FunctionPreviewEnabled => _functionPreviewEnabled;
+
+        public TimeZoneInfo TimeZone => _timezone;
     }
 }

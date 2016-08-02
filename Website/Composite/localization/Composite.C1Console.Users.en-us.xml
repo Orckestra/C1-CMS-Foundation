@@ -20,13 +20,13 @@
 
 
   <!-- change culture -->
-	<string key="ChangeOwnCultureWorkflow.ElementActionLabel" value="Regional Settings..."/>
+	<string key="ChangeOwnCultureWorkflow.ElementActionLabel" value="Profile Settings..."/>
 	<string key="ChangeOwnCultureWorkflow.ElementActionToolTip" value="Set the C1 Console language and formatting of numbers, times and dates"/>
-	<string key="ChangeOwnCultureWorkflow.Dialog.Label" value="Regional Settings and Language"/>
-	<string key="ChangeOwnCultureWorkflow.Dialog.CultureSelector.Label" value="Regional settings"/>
-	<string key="ChangeOwnCultureWorkflow.Dialog.CultureSelector.Help" value="To change the way numbers, dates, and hours are displayed, select an entry from the list." />
-  <string key="ChangeOwnCultureWorkflow.Dialog.C1ConsoleLanguageSelector.Label" value="C1 Console language"/>
-  <string key="ChangeOwnCultureWorkflow.Dialog.C1ConsoleLanguageSelector.Help" value="Select the language to be used for labels, help texts, dialogs etc. The available options here are limited to languages installed. You may install more languages via the Package system, see Composite.Localization." />
+	<string key="ChangeOwnCultureWorkflow.Dialog.Label" value="Profile Settings"/>
+	<string key="ChangeOwnCultureWorkflow.Dialog.CultureSelector.Label" value="Display Preferences"/>
+	<string key="ChangeOwnCultureWorkflow.Dialog.CultureSelector.Help" value="Display for time, date, and number formats within the console" />
+  <string key="ChangeOwnCultureWorkflow.Dialog.C1ConsoleLanguageSelector.Label" value="Console Language Preferences"/>
+  <string key="ChangeOwnCultureWorkflow.Dialog.C1ConsoleLanguageSelector.Help" value="Language displayed within your console for labels, help texts, dialogs, etc. The available options are limited to language packages installed. See Composite.Localization package for more language options." />
   <string key="ChangeOwnCultureWorkflow.Dialog.Confirm.Title" value="Change application language"/>
   <string key="ChangeOwnCultureWorkflow.Dialog.Confirm.Text" value="Are your sure you wish to change the settings? The application will restart and all your unsaved changes will be lost."/>
 	<string key="AdministratorAutoCreator.DefaultGroupName" value="Administrators"/>

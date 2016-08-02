@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Globalization;
+using Composite.Core.ResourceSystem;
 
 
 namespace Composite.Core.Configuration
@@ -475,6 +476,9 @@ namespace Composite.Core.Configuration
 
         /// <exclude />
         public static bool FunctionPreviewEnabled => _globalSettingsFacade.FunctionPreviewEnabled;
+
+        /// <exclude />
+        public static TimeZoneInfo TimeZone => _globalSettingsFacade.TimeZone;
 
         // Overload
         /// <exclude />
