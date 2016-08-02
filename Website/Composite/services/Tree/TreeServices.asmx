@@ -85,9 +85,8 @@ namespace Composite.Services
         [WebMethod]
         public List<ClientElement> GetUnpublishedElements(string dummy)
         {
-            var rootElements = ElementFacade.GetPerspectiveElements(false).First();
-            var rootChildren = ElementFacade.GetChildren(rootElements.ElementHandle, new SearchToken());
-            var allElements = GetPublishControlledDescendants(rootChildren);
+            var rootElement = ElementFacade.GetPerspectiveElements(false).First();
+            var allElements = GetPublishControlledDescendants(rootElement.ElementHandle);
 
             var publicationStates = new Dictionary<string, string>
             {
@@ -168,25 +167,36 @@ namespace Composite.Services
             return actionRequiredPages.Select(pair => pair.Item1).ToList().ToClientElementList();
         }
 
-        IEnumerable<Element> GetPublishControlledDescendants(IEnumerable<Element> a)
-        {
-            foreach (var element in a)
-            {
-                var temp = ElementFacade.GetChildren(element.ElementHandle, new SearchToken());
-                if (temp != null)
-                {
-                    foreach (var element2 in GetPublishControlledDescendants(temp))
-                    {
-                        yield return element2;
-                    }
+        IEnumerable<Element> GetPublishControlledDescendants(ElementHandle elementHandle)
+		{
+			HashSet<string> elementBundles = null;
 
-                }
-                if (IsPublishControlled(element))
-                {
-                    yield return element;
-                }
-            }
-        }
+			var children = ElementFacade.GetChildren(elementHandle, new SearchToken()) ?? Enumerable.Empty<Element>();
+			foreach (var child in children)
+			{
+				if (IsPublishControlled(child))
+				{
+					yield return child;
+				}
+
+				string elementBundle = child.VisualData.ElementBundle;
+				if (elementBundle != null)
+				{
+					elementBundles = elementBundles ?? new HashSet<string>();
+				    if (elementBundles.Contains(elementBundle))
+				    {
+				        continue;
+				    }
+
+				    elementBundles.Add(elementBundle);
+				}
+
+				foreach (var element in GetPublishControlledDescendants(child.ElementHandle))
+				{
+					yield return element;
+				}
+			}
+		}
 
         private bool IsPublishControlled(Element v)
         {
