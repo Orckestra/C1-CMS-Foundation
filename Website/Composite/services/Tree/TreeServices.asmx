@@ -89,47 +89,56 @@ namespace Composite.Services
             var rootChildren = ElementFacade.GetChildren(rootElements.ElementHandle, new SearchToken());
             var allElements = GetPublishControlledDescendants(rootChildren);
 
-            var transitions = new Dictionary<string, string>
+            var publicationStates = new Dictionary<string, string>
             {
                 {GenericPublishProcessController.Draft, StringResourceSystemFacade.GetString("Composite.Management", "PublishingStatus.draft")},
                 {GenericPublishProcessController.AwaitingApproval, StringResourceSystemFacade.GetString("Composite.Management", "PublishingStatus.awaitingApproval")},
                 {GenericPublishProcessController.AwaitingPublication, StringResourceSystemFacade.GetString("Composite.Management", "PublishingStatus.awaitingPublication")}
             };
 
-            List<Element> actionRequiredPages =
-                (from element in allElements
-                 where ((IPublishControlled)((DataEntityToken)element.ElementHandle.EntityToken).Data).PublicationStatus != "published"
-                 select element).ToList();
+            List<Tuple<Element, IPublishControlled>> actionRequiredPages =
+                 (from element in allElements
+				 let publishControlledData = (IPublishControlled)((DataEntityToken)element.ElementHandle.EntityToken).Data
+                 where publishControlledData.PublicationStatus != "published"
+                 select new Tuple<Element, IPublishControlled>(element, publishControlledData)).ToList();
 
             foreach (var actionRequiredPage in actionRequiredPages)
             {
-                var data = (IPublishControlled)((DataEntityToken) actionRequiredPage.ElementHandle.EntityToken).Data;
+                var propertyBag = actionRequiredPage.Item1.PropertyBag;
+                var data = actionRequiredPage.Item2;
 
-                actionRequiredPage.PropertyBag["Title"] = data.GetLabel();
+                propertyBag["Title"] = data.GetLabel();
 
                 var publicationStatus = data.PublicationStatus;
-                actionRequiredPage.PropertyBag["Status"] = (transitions.ContainsKey(publicationStatus)
-                    ? transitions[publicationStatus]
-                    : "Unknown State");
+                propertyBag["Status"] = publicationStates.ContainsKey(publicationStatus)
+                    ? publicationStates[publicationStatus]
+                    : "Unknown State";
+
+                var versionedData = data as IVersioned;
+			    if (versionedData != null)
+			    {
+			        string versionName = versionedData.LocalizedVersionName(); // TODO: type cast?
+					if (!string.IsNullOrEmpty(versionName))
+					{
+					    propertyBag["Version"] = versionName;
+					}
+			    }
 
                 Func<DateTime, string> toSortableString = date => String.Format("{0:s}", date);
 
                 var changeHistory = data as IChangeHistory;
                 if (changeHistory != null)
                 {
-                    actionRequiredPage.PropertyBag["Modified"] =
-                        changeHistory.ChangeDate.ToString(CultureInfo.CurrentCulture);
-                    actionRequiredPage.PropertyBag["SortableModified"] =
-                        toSortableString(changeHistory.ChangeDate);
-                    actionRequiredPage.PropertyBag["ChangedBy"] =
-                        changeHistory.ChangedBy;
+                    propertyBag["Modified"] = changeHistory.ChangeDate.ToString(CultureInfo.CurrentCulture);
+                    propertyBag["SortableModified"] = toSortableString(changeHistory.ChangeDate);
+                    propertyBag["ChangedBy"] = changeHistory.ChangedBy;
                 }
                 var creationHistory = data as ICreationHistory;
                 if (creationHistory != null)
                 {
-                    actionRequiredPage.PropertyBag["Created"] =
+                    propertyBag["Created"] =
                         creationHistory.CreationDate.ToString(CultureInfo.CurrentCulture);
-                    actionRequiredPage.PropertyBag["SortableCreated"] =
+                    propertyBag["SortableCreated"] =
                         toSortableString(creationHistory.CreationDate);
                 }
 
@@ -141,8 +150,8 @@ namespace Composite.Services
                             UserSettings.ActiveLocaleCultureInfo.Name);
                     if (existingPagePublishSchedule != null)
                     {
-                        actionRequiredPage.PropertyBag["PublishDate"] = existingPagePublishSchedule.PublishDate.ToString(CultureInfo.CurrentCulture);
-                        actionRequiredPage.PropertyBag["SortablePublishDate"] = toSortableString(existingPagePublishSchedule.PublishDate);
+                        propertyBag["PublishDate"] = existingPagePublishSchedule.PublishDate.ToString(CultureInfo.CurrentCulture);
+                        propertyBag["SortablePublishDate"] = toSortableString(existingPagePublishSchedule.PublishDate);
                     }
 
                     var existingPageUnpublishSchedule = PublishScheduleHelper.GetUnpublishSchedule(typeof(IPage),
@@ -150,13 +159,13 @@ namespace Composite.Services
                         UserSettings.ActiveLocaleCultureInfo.Name);
                     if (existingPageUnpublishSchedule != null)
                     {
-                        actionRequiredPage.PropertyBag["UnpublishDate"] = existingPageUnpublishSchedule.UnpublishDate.ToString(CultureInfo.CurrentCulture);
-                        actionRequiredPage.PropertyBag["SortableUnpublishDate"] = toSortableString(existingPageUnpublishSchedule.UnpublishDate);
+                        propertyBag["UnpublishDate"] = existingPageUnpublishSchedule.UnpublishDate.ToString(CultureInfo.CurrentCulture);
+                        propertyBag["SortableUnpublishDate"] = toSortableString(existingPageUnpublishSchedule.UnpublishDate);
                     }
 
                 }
             }
-            return actionRequiredPages.ToClientElementList();
+            return actionRequiredPages.Select(pair => pair.Item1).ToList().ToClientElementList();
         }
 
         IEnumerable<Element> GetPublishControlledDescendants(IEnumerable<Element> a)
