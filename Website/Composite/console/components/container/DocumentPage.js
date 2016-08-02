@@ -4,7 +4,12 @@ import { saveState, updateFieldValue } from './../../state/actions/documentPage'
 
 // Sets up a page that allows editing of a document consisting of sets of fields.
 function mapStateToProps(state) {
-	let update = { values: {} };
+	let update = {
+		buttonDefs: state.buttonDefs,
+		fieldsetDefs: state.fieldsetDefs,
+		dataFieldDefs: state.dataFieldDefs,
+		values: {}
+	};
 	Object.keys(state.dataFields).forEach(fieldName => {
 		update.values[fieldName] = state.dataFields[fieldName];
 	});

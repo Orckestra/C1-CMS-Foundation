@@ -11,14 +11,14 @@ describe('Get page definitions', () => {
 	);
 
 	describe('loadPageDef', () => {
-		let dispatch, loadPageDef, rawPageDef, normDefs;
+		let dispatch, loadPageDef, rawPageDef;
 		beforeEach(() => {
 			loadPageDef = actions.loadPageDef;
 			dispatch = sinon.spy().named('dispatch');
 			rawPageDef = [
 				{
 					name: 'testPage',
-					type: 'TestComponent',
+					type: 'test',
 					fieldsets: [
 						{
 							name: 'testFieldSet',
@@ -39,35 +39,6 @@ describe('Get page definitions', () => {
 					]
 				}
 			];
-			normDefs = {
-				pageDefs: {
-					testPage: {
-						name: 'testPage',
-						fieldsets: ['testFieldSet'],
-						buttons: ['testButton'],
-						type: 'TestComponent'
-					}
-				},
-				fieldsetDefs: {
-					testFieldSet: {
-						name: 'testFieldSet',
-						label: 'A test',
-						fields: ['testDataField']
-					}
-				},
-				dataFieldDefs: {
-					testDataField: {
-						name: 'testDataField',
-						label: 'A field'
-					}
-				},
-				buttonDefs: {
-					testButton: {
-						name: 'testButton',
-						label: 'Test it'
-					}
-				}
-			};
 		});
 
 		it('creates a thunk that dispatches actions', () => {
@@ -85,10 +56,25 @@ describe('Get page definitions', () => {
 			.then(() =>
 				expect([dispatch], 'to have calls satisfying', [
 					{ spy: dispatch, args: [{ type: actions.LOAD_PAGE_DEF, name: 'testPage' }] },
-					{ spy: dispatch, args: [{ type: STORE_DEF, defType: 'page', definition: normDefs.pageDefs.testPage }]},
-					{ spy: dispatch, args: [{ type: STORE_DEF, defType: 'fieldset', definition: normDefs.fieldsetDefs.testFieldSet }]},
-					{ spy: dispatch, args: [{ type: STORE_DEF, defType: 'dataField', definition: normDefs.dataFieldDefs.testDataField }]},
-					{ spy: dispatch, args: [{ type: STORE_DEF, defType: 'button', definition: normDefs.buttonDefs.testButton }]},
+					{ spy: dispatch, args: [{ type: STORE_DEF, defType: 'page', definition: {
+						name: 'testPage',
+						fieldsets: ['testFieldSet'],
+						buttons: ['testButton'],
+						type: 'test'
+					}}]},
+					{ spy: dispatch, args: [{ type: STORE_DEF, defType: 'fieldset', definition: {
+						name: 'testFieldSet',
+						label: 'A test',
+						fields: ['testDataField']
+					}}]},
+					{ spy: dispatch, args: [{ type: STORE_DEF, defType: 'dataField', definition: {
+						name: 'testDataField',
+						label: 'A field'
+					}}]},
+					{ spy: dispatch, args: [{ type: STORE_DEF, defType: 'button', definition: {
+						name: 'testButton',
+						label: 'Test it'
+					}}]},
 					{ spy: dispatch, args: [{ type: actions.LOAD_PAGE_DEF_DONE, name: 'testPage' }] }
 				])
 			);

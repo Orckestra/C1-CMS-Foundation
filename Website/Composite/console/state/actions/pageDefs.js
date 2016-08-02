@@ -1,6 +1,7 @@
 import requestJSON from '../../access/requestJSON';
 import { normalize, Schema, arrayOf } from 'normalizr';
-import {addDefinition }from './componentDefinitions';
+import { addDefinition } from './componentDefinitions';
+
 const dataFieldSchema = new Schema('dataFieldDefs', { idAttribute: 'name' });
 const fieldsetSchema = new Schema('fieldsetDefs', { idAttribute: 'name' });
 fieldsetSchema.define({
@@ -14,9 +15,9 @@ pageSchema.define({
 });
 
 const prefix = 'PAGE_DEF.';
-export const LOAD_PAGE_DEF = prefix + 'GET';
-export const LOAD_PAGE_DEF_DONE = prefix + 'GET.DONE';
-export const LOAD_PAGE_DEF_FAILED = prefix + 'GET.FAIL';
+export const LOAD_PAGE_DEF = prefix + 'LOAD';
+export const LOAD_PAGE_DEF_DONE = prefix + 'LOAD.DONE';
+export const LOAD_PAGE_DEF_FAILED = prefix + 'LOAD.FAIL';
 
 // Better input: Page identity/-ies (perspective, parentage, page name - path object of some kind?)
 export function loadPageDef(pageName) {
@@ -34,6 +35,5 @@ export function loadPageDef(pageName) {
 			});
 			dispatch({ type: LOAD_PAGE_DEF_DONE, name: pageName });
 		});
-		// Transform page type into component function, normalize data, insert into state
 	};
 }

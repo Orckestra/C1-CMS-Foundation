@@ -13,7 +13,10 @@ describe('DocumentPage', () => {
 			dataFields: {
 				'one': 1,
 				'two': 2
-			}
+			},
+			buttonDefs: {}, // required for FormPage
+			fieldsetDefs: {}, // required for FormPage
+			dataFieldDefs: {}, // required for FormPage
 		};
 		store = {
 			subscribe: sinon.spy().named('subscribe'),
@@ -23,12 +26,9 @@ describe('DocumentPage', () => {
 		props = {
 			test: 'value', // Not required - should be there anyway when passed through
 			name: 'testName', // required for FormPage
-			buttonDefs: {}, // required for FormPage
 			actions: {}, // required for FormPage
-			fieldsetDefs: {}, // required for FormPage
-			dataFieldDefs: {}, // required for FormPage
-			values: {}, // required for FormPage
-			pageDef: {} // required for FormPage
+			pageDef: {}, // required for FormPage
+			values: {} // required for FormPage
 		};
 	});
 
@@ -38,6 +38,9 @@ describe('DocumentPage', () => {
 			expect(renderer, 'to have rendered', <FormPage
 				{...props}
 				values={state.dataFields}
+				buttonDefs={{}}
+				fieldsetDefs={{}}
+				dataFieldDefs={{}}
 				actions={{
 					save: expect.it('to be a function'),
 					updateValue: expect.it('to be a function')}

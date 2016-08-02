@@ -4,6 +4,7 @@ import dataFields from './reducers/dataFields';
 import pages from './reducers/pages';
 import getDefinitionReducer from './reducers/definitions';
 import ReduxThunk from 'redux-thunk';
+import initState from './initState';
 
 let reducers = {
 	dataFields,
@@ -27,6 +28,7 @@ export default function configureStore(initialState) {
 			window.devToolsExtension && window.devToolsExtension()
 		));
 		hotStore.prevStore = store;
+		initState(store);
 	}
 	return store;
 }

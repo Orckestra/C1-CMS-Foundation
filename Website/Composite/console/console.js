@@ -10,36 +10,8 @@ import './console.scss!';
 import './iconIndex';
 
 let pageProps = {
-	pageDefs: {
-		'edit-language': {
-			type: DocumentPage,
-			fieldsets: [
-				'edit-language/properties'
-			],
-			buttons: [
-				'edit-language/save'
-			]
-		}
-	},
-	buttonDefs: {
-		'edit-language/save': {
-			label: 'Save',
-			icon: 'save'
-		}
-	},
-	fieldsetDefs: {
-		'edit-language/properties': {
-			label: 'Language Properties',
-			fields: [
-				'edit-language/properties/url-mapping-name'
-			]
-		}
-	},
-	dataFieldDefs: {
-		'edit-language/properties/url-mapping-name': {
-			label: 'URL mapping name',
-			help: 'Base name in URLs'
-		}
+	pageTypes: {
+		document: DocumentPage
 	}
 };
 

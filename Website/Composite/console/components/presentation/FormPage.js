@@ -18,6 +18,7 @@ const FormPage = props => (
 		<div className='scrollbox'>
 			{props.pageDef.fieldsets.map(fieldsetName => {
 				let fieldset = props.fieldsetDefs[fieldsetName];
+				if (!fieldset) return null;
 				let fields = fieldset.fields.reduce((fields, fieldName) => {
 					fields[fieldName] = Object.assign({}, props.dataFieldDefs[fieldName]);
 					fields[fieldName].updateValue = props.actions.updateValue(fieldName);

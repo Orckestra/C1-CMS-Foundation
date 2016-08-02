@@ -2,7 +2,10 @@ import { connect } from 'react-redux';
 import TabPage from '../presentation/TabPage';
 
 function mapStateToProps(state) {
-	return { name: state.pages.currentPage };
+	return {
+		pageDefs: state.pageDefs,
+		name: state.pages.currentPage
+	};
 }
 
 const ShownTab = connect(mapStateToProps)(TabPage);
