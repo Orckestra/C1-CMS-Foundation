@@ -4,6 +4,7 @@ import React from 'react';
 import TestUtils from 'react-addons-test-utils';
 import DocumentPage from '../../../../../Composite/console/components/container/DocumentPage';
 import FormPage from '../../../../../Composite/console/components/presentation/FormPage';
+import { SAVE_STATE, UPDATE_VALUE } from '../../../../../Composite/console/state/actions/documentPage';
 
 describe('DocumentPage', () => {
 	let renderer, state, store, props;
@@ -42,10 +43,17 @@ describe('DocumentPage', () => {
 				fieldsetDefs={{}}
 				dataFieldDefs={{}}
 				actions={{
-					save: expect.it('to be a function'),
-					updateValue: expect.it('to be a function')}
-				}/>),
-			expect(store.dispatch, 'was not called'),
+					save: expect.it('to be a function')
+						.and('when called with', ['pagename'], 'to be a function')
+						.and('when called with', ['pagename'], 'when called', 'to be undefined'), // Result is call to store.dispatch
+					updateValue: expect.it('to be a function')
+						.and('when called with', ['fieldname'], 'to be a function')
+						.and('when called with', ['fieldname'], 'when called with', ['value'], 'to be undefined') // Result is call to store.dispatch
+				}}/>),
+			expect(store.dispatch, 'to have calls satisfying', [
+				{ args: [{ type: SAVE_STATE, pageName: 'pagename' }]},
+				{ args: [{ type: UPDATE_VALUE, fieldName: 'fieldname', newValue: 'value' }]}
+			]),
 			expect(store.subscribe, 'was not called'),
 			expect(store.getState, 'was called')
 		]);
