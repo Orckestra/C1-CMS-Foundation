@@ -395,15 +395,36 @@ SystemNode.prototype.getDatas = function () {
  * @return {void}
  */
 SystemNode.prototype.select = function (handle) {
-	
+
 	if (this._datas != null) {
 		this._datas.each(function (data) {
-			if (data.ElementKey == handle) {
+			if (data.ElementKey === handle) {
 				this._data = data;
 				this._actionProfile = null;
 				this._registerSystemActions();
 				return false;
 			}
+			return true;
+		}, this);
+	}
+}
+
+
+/**
+ * @param {string} entityToken
+ * @return {void}
+ */
+SystemNode.prototype.selectByToken = function (entityToken) {
+
+	if (this._datas != null) {
+		this._datas.each(function (data) {
+			if (data.EntityToken === entityToken) {
+				this._data = data;
+				this._actionProfile = null;
+				this._registerSystemActions();
+				return false;
+			}
+			return true;
 		}, this);
 	}
 }
@@ -419,7 +440,7 @@ SystemNode.prototype.getEntityTokens = function () {
 			result.add(data.EntityToken);
 		});
 	} else {
-		result.add(this._data.EntityToken)
+		result.add(this._data.EntityToken);
 	}
 	return result;
 }

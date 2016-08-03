@@ -956,6 +956,10 @@ StageBinding.prototype.selectBrowserTab = function () {
 	var deck = this._decksBinding.getSelectedDeckBinding();
 	var browserTab = deck.getBrowserTab();
 	if (browserTab && !browserTab.isSelected) {
+		var tree = deck.getSystemTree();
+		if (tree != null) {
+			tree.setHandleToken(null);
+		}
 		browserTab.containingTabBoxBinding.select(browserTab, true);
 	}
 }

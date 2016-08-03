@@ -148,7 +148,7 @@ BrowserPageBinding.prototype.handleBroadcast = function (broadcast, arg) {
 				if (treenode.node.isMultiple()) {
 					var list = new List();
 					treenode.node.getDatas().each(function(data) {
-						list.add(new SelectorBindingSelection(data.BundleElementName ? data.BundleElementName : data.Label, data.ElementKey, data.ElementKey === treenode.node.getHandle()));
+						list.add(new SelectorBindingSelection(data.BundleElementName ? data.BundleElementName : data.Label, data.EntityToken, data.EntityToken === treenode.node.getEntityToken()));
 					});
 					bundleselector.populateFromList(list);
 					bundleselector.show();
@@ -1251,16 +1251,9 @@ BrowserPageBinding.prototype.getBundleSelector = function () {
 
 				switch (action.type) {
 					case SelectorBinding.ACTION_SELECTIONCHANGED:
-						var bundleValue = binding.getValue();
-						var treenode = this.getSystemTree().getFocusedTreeNodeBindings().getFirst();
-						if (treenode) {
-							var selectedBundleNode = treenode.node;
-							treenode.node.select(bundleValue);
-							treenode.isDisabled = treenode.node.isDisabled();
-							treenode.setLabel(treenode.node.getLabel());
-							treenode.setToolTip(treenode.node.getToolTip());
-							treenode.setImage(treenode.computeImage());
-							this.getSystemTree().focusSingleTreeNodeBinding(treenode);
+						if (selector === binding) {
+							var entityToken = binding.getValue();
+							this.getSystemTree()._focusTreeNodeByEntityToken(entityToken);
 						}
 						break;
 				}

@@ -613,11 +613,13 @@ SystemTreeBinding.prototype._handleDockTabSelect = function (tab) {
 	 * find a matching treenode.
 	 */
 	if (isVisible) {
+
 		if (tab.isExplorerTab) {
-			var self = this, token = this._handleToken;
-			this._handleToken = null;
+			var token = this.getHandleToken();
+			var self = this;
+			this.setHandleToken(null);
 			var selectedTreeNode = this.getFocusedTreeNodeBindings().getFirst();
-			if (selectedTreeNode && selectedTreeNode.node.getEntityToken() == token) {
+			if (selectedTreeNode && selectedTreeNode.node.getEntityToken() === token) {
 				EventBroadcaster.broadcast(
 					BroadcastMessages.SYSTEMTREENODEBINDING_FOCUS,
 					selectedTreeNode
@@ -631,12 +633,22 @@ SystemTreeBinding.prototype._handleDockTabSelect = function (tab) {
 			}
 		}
 		else {
-			var self = this, token = tab.getEntityToken();
-			this._handleToken = token;
+			this.setHandleToken(tab.getEntityToken());
 		}
 
 	}
 }
+
+SystemTreeBinding.prototype.setHandleToken = function (token) {
+
+	this._handleToken = token;
+}
+
+SystemTreeBinding.prototype.getHandleToken = function () {
+
+	return this._handleToken;
+}
+
 
 /**
  * Focus the first encountered treenode with a given entityToken
@@ -667,7 +679,9 @@ SystemTreeBinding.prototype._focusTreeNodeByEntityToken = function (entityToken,
 			return result;
 		});
 		if (treenode != null) {
-			if (!treenode.isFocused) {
+
+			if (!treenode.isFocused || treenode.node.getEntityToken() !== entityToken) {
+				treenode.selectToken(entityToken);
 				this.focusSingleTreeNodeBinding(treenode, true);
 			} else {
 				treenode.dispatchAction(TreeNodeBinding.ACTION_FOCUSED); // to reveal it!

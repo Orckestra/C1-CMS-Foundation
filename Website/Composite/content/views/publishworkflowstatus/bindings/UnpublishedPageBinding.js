@@ -383,7 +383,6 @@ UnpublishedPageBinding.prototype.handleBroadcast = function (broadcast, arg) {
 			} else {
 				this.isSelectedTab = false;
 			}
-			console.log(arg);
 			break;
 
 		case BroadcastMessages.SYSTEMTREEBINDING_REFRESH:

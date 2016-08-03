@@ -616,6 +616,18 @@ SystemTreeNodeBinding.prototype.hasChildren = function () {
 };
 
 /**
+  * @param {string} entityToken
+ */
+SystemTreeNodeBinding.prototype.selectToken = function (entityToken) {
+
+	this.node.selectByToken(entityToken);
+	this.isDisabled = this.node.isDisabled();
+	this.setLabel(this.node.getLabel());
+	this.setToolTip(this.node.getToolTip());
+	this.setImage(this.computeImage());
+}
+
+/**
  * SystemTreeNodeBinding factory. Notice that we supply a {@link SystemNode} as argument here!
  * @param {SystemNode} node
  * @param {DOMDocument} ownerDocument
