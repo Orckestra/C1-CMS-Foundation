@@ -45,7 +45,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
         /// <exclude />
         public const string SentToDraft = "sentToDraft";
 
-        private static readonly string _bulkPublishingCommands = "BulkPublishingCommands";
+        public static string BulkPublishingCommandsTag { get; } = "BulkPublishingCommands";
 
         private static readonly string _backToAwaitingApproval = "awaitingApprovalBack";
         private static readonly string _forwardToAwaitingApproval = "awaitingApprovalForward";
@@ -139,7 +139,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
                         ActionGroup = WorkflowActionGroup
                     }
                 },
-                TagValue = _bulkPublishingCommands
+                TagValue = BulkPublishingCommandsTag
             };
 
 
@@ -159,7 +159,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
                         ActionGroup = WorkflowActionGroup
                     }
                 },
-                TagValue = _bulkPublishingCommands
+                TagValue = BulkPublishingCommandsTag
             };
 
 
@@ -179,7 +179,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
                         ActionGroup = WorkflowActionGroup
                     }
                 },
-                TagValue = _bulkPublishingCommands
+                TagValue = BulkPublishingCommandsTag
             };
 
 
@@ -205,7 +205,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
                         ActionBundle = "Publish"
                     }
                 },
-                TagValue = _bulkPublishingCommands
+                TagValue = BulkPublishingCommandsTag
             };
 
 
@@ -226,7 +226,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
                         ActionGroup = WorkflowActionGroup
                     }
                 },
-                TagValue = _bulkPublishingCommands
+                TagValue = BulkPublishingCommandsTag
             };
 
 
@@ -246,7 +246,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
                         ActionGroup = WorkflowActionGroup
                     }
                 },
-                TagValue = _bulkPublishingCommands,
+                TagValue = BulkPublishingCommandsTag,
             };
 
 
@@ -267,7 +267,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
                         ActionGroup = WorkflowActionGroup
                     }
                 },
-                TagValue = _bulkPublishingCommands
+                TagValue = BulkPublishingCommandsTag
             };
 
 
@@ -287,7 +287,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
                         ActionGroup = WorkflowActionGroup
                     }
                 },
-                TagValue = _bulkPublishingCommands
+                TagValue = BulkPublishingCommandsTag
             };
 
 
@@ -307,7 +307,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
                         ActionGroup = WorkflowActionGroup
                     }
                 },
-                TagValue = _bulkPublishingCommands
+                TagValue = BulkPublishingCommandsTag
             };
 
 
@@ -328,7 +328,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
                         ActionGroup = WorkflowActionGroup
                     }
                 },
-                TagValue = _bulkPublishingCommands
+                TagValue = BulkPublishingCommandsTag
             };
 
             _visualTransitionsActions = new Dictionary<string, Func<ElementAction>>
