@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Globalization;
-using System.IO;
-using System.Text;
 using Composite.Core.Configuration;
 using Composite.Core.ResourceSystem;
-using JetBrains.Annotations;
 
 
 namespace Composite.Core.Extensions
@@ -13,14 +9,14 @@ namespace Composite.Core.Extensions
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-    public static class DateExtensionMethods
+    public static class DateTimeExtensionMethods
     {
 
         /// <exclude />
-        private static string TimeZoneAbbriviatedName()
+        private static string TimeZoneAbbreviatedName()
         {
-            return StringResourceSystemFacade.GetString("Composite.Plugins.TimezoneAbbriviations",
-                "TimezoneAbbriviations." + GlobalSettingsFacade.TimeZone.Id);
+            return StringResourceSystemFacade.GetString("Composite.Plugins.TimezoneAbbreviations",
+                "TimezoneAbbreviations." + GlobalSettingsFacade.TimeZone.Id);
         }
 
 
@@ -37,7 +33,7 @@ namespace Composite.Core.Extensions
             var convertedToShow = dateTime.ToTimeZone();
 
             return
-                $"{convertedToShow.ToShortDateString()} {convertedToShow.ToShortTimeString()} {TimeZoneAbbriviatedName()}";
+                $"{convertedToShow.ToShortDateString()} {convertedToShow.ToShortTimeString()} {TimeZoneAbbreviatedName()}";
         }
 
         /// <exclude />
@@ -69,7 +65,7 @@ namespace Composite.Core.Extensions
         /// <exclude />
         public static bool TryParseInTimeZone(string s, out DateTime result)
         {
-            return DateTime.TryParse(s.Replace(TimeZoneAbbriviatedName(), ""), out result);
+            return DateTime.TryParse(s.Replace(TimeZoneAbbreviatedName(), ""), out result);
         }
 
     }

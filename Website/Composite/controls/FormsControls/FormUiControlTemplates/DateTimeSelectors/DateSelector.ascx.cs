@@ -71,7 +71,7 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DateTimeSelect
                 else
                 {
                     DateTime parsedTime;
-                    if (!DateExtensionMethods.TryParseInTimeZone(this.CurrentStringValue, out parsedTime))
+                    if (!DateTimeExtensionMethods.TryParseInTimeZone(this.CurrentStringValue, out parsedTime))
                     {
                         throw new FormatException();
                     }
@@ -154,7 +154,7 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DateTimeSelect
             if (ShowHours)
             {
                 DateTime oldDateTime;
-                if (DateExtensionMethods.TryParseInTimeZone(this.CurrentStringValue, out oldDateTime))
+                if (DateTimeExtensionMethods.TryParseInTimeZone(this.CurrentStringValue, out oldDateTime))
                     toShow += oldDateTime.TimeOfDay;
             }
 
