@@ -173,6 +173,7 @@
     <Compile Include="C1Console\Events\OpenSlideViewQueueItem.cs" />
     <Compile Include="C1Console\Workflow\FormsWorkflowExtensions.cs" />
     <Compile Include="C1Console\Workflow\IFormsWorkflowExtension.cs" />
+    <Compile Include="Core\Extensions\DateExtensionMethods.cs" />
     <Compile Include="Core\WebClient\Services\ConsoleMessageService\OpenSlideViewParams.cs" />
     <Compile Include="Data\DataScopeServicesFacade.cs" />
     <Compile Include="Data\DataServiceScopeManager.cs" />

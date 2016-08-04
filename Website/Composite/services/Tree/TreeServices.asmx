@@ -27,6 +27,7 @@ using Composite.Data.ProcessControlled;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
 using Composite.Data.PublishScheduling;
 using Composite.Data.Types;
+using Composite.Core.Extensions;
 
 // Search token stuff
 using Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementProvider;
@@ -128,7 +129,7 @@ namespace Composite.Services
                 var changeHistory = data as IChangeHistory;
                 if (changeHistory != null)
                 {
-                    propertyBag["Modified"] = changeHistory.ChangeDate.ToString(CultureInfo.CurrentCulture);
+                    propertyBag["Modified"] = changeHistory.ChangeDate.ToTimeZoneDateTimeString();
                     propertyBag["SortableModified"] = toSortableString(changeHistory.ChangeDate);
                     propertyBag["ChangedBy"] = changeHistory.ChangedBy;
                 }
@@ -136,7 +137,7 @@ namespace Composite.Services
                 if (creationHistory != null)
                 {
                     propertyBag["Created"] =
-                        creationHistory.CreationDate.ToString(CultureInfo.CurrentCulture);
+                        creationHistory.CreationDate.ToTimeZoneDateTimeString();
                     propertyBag["SortableCreated"] =
                         toSortableString(creationHistory.CreationDate);
                 }
@@ -149,7 +150,7 @@ namespace Composite.Services
                             UserSettings.ActiveLocaleCultureInfo.Name);
                     if (existingPagePublishSchedule != null)
                     {
-                        propertyBag["PublishDate"] = existingPagePublishSchedule.PublishDate.ToString(CultureInfo.CurrentCulture);
+                        propertyBag["PublishDate"] = existingPagePublishSchedule.PublishDate.ToTimeZoneDateTimeString();
                         propertyBag["SortablePublishDate"] = toSortableString(existingPagePublishSchedule.PublishDate);
                     }
 
@@ -158,7 +159,7 @@ namespace Composite.Services
                         UserSettings.ActiveLocaleCultureInfo.Name);
                     if (existingPageUnpublishSchedule != null)
                     {
-                        propertyBag["UnpublishDate"] = existingPageUnpublishSchedule.UnpublishDate.ToString(CultureInfo.CurrentCulture);
+                        propertyBag["UnpublishDate"] = existingPageUnpublishSchedule.UnpublishDate.ToTimeZoneDateTimeString();
                         propertyBag["SortableUnpublishDate"] = toSortableString(existingPageUnpublishSchedule.UnpublishDate);
                     }
 
