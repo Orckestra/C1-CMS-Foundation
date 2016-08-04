@@ -142,31 +142,51 @@ namespace Composite.Services
                         toSortableString(creationHistory.CreationDate);
                 }
 
-                var selectedPage = data as IPage;
-                if (selectedPage != null)
-                {
-                    var existingPagePublishSchedule = PublishScheduleHelper.GetPublishSchedule(typeof (IPage),
-                            selectedPage.Id.ToString(),
-                            UserSettings.ActiveLocaleCultureInfo.Name);
-                    if (existingPagePublishSchedule != null)
-                    {
-                        propertyBag["PublishDate"] = existingPagePublishSchedule.PublishDate.ToTimeZoneDateTimeString();
-                        propertyBag["SortablePublishDate"] = toSortableString(existingPagePublishSchedule.PublishDate);
-                    }
+                DateTime? publishDate, unpublishDate;
+			    GetPublicationDates(data, out publishDate, out unpublishDate);
 
-                    var existingPageUnpublishSchedule = PublishScheduleHelper.GetUnpublishSchedule(typeof(IPage),
-                        selectedPage.Id.ToString(),
-                        UserSettings.ActiveLocaleCultureInfo.Name);
-                    if (existingPageUnpublishSchedule != null)
-                    {
-                        propertyBag["UnpublishDate"] = existingPageUnpublishSchedule.UnpublishDate.ToTimeZoneDateTimeString();
-                        propertyBag["SortableUnpublishDate"] = toSortableString(existingPageUnpublishSchedule.UnpublishDate);
-                    }
+				if (publishDate != null)
+				{
+					propertyBag["PublishDate"] = publishDate.ToTimeZoneDateTimeString();
+				}
+				propertyBag["SortablePublishDate"] = toSortableString(publishDate ?? DateTime.MinValue);
+				
 
-                }
+				if (unpublishDate != null)
+				{
+					propertyBag["UnpublishDate"] = unpublishDate.ToTimeZoneDateTimeString();
+				}
+				propertyBag["SortableUnpublishDate"] = toSortableString(unpublishDate ?? DateTime.MinValue);
             }
             return actionRequiredPages.Select(pair => pair.Item1).ToList().ToClientElementList();
         }
+
+		private void GetPublicationDates(IData data, out DateTime? publicationDate, out DateTime? unpublicationDate)
+		{
+			var versionedData = data as IVersioned;
+
+			if (versionedData != null)
+			{
+				publicationDate = versionedData.GetPublishDate();
+				unpublicationDate = versionedData.GetUnpublishDate();
+			}
+			else
+			{
+				var interfaceType = data.DataSourceId.InterfaceType;
+				string key = data.GetUniqueKey().ToString();
+				string cultureName = UserSettings.ActiveLocaleCultureInfo.Name;
+
+				var publishSchedule = PublishScheduleHelper.GetPublishSchedule(
+					interfaceType, key, cultureName);
+
+				publicationDate = publishSchedule != null ? (DateTime?)publishSchedule.PublishDate : null;
+
+				var unpublishSchedule = PublishScheduleHelper.GetUnpublishSchedule(
+					interfaceType, key, cultureName);
+
+				unpublicationDate = unpublishSchedule != null ? (DateTime?)unpublishSchedule.UnpublishDate : null;
+			}
+		}
 
         IEnumerable<Element> GetPublishControlledDescendants(ElementHandle elementHandle)
 		{
