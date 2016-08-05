@@ -1,4 +1,4 @@
-import { UPDATE_VALUE, SAVE_STATE } from '../actions/documentPage';
+import { UPDATE_VALUE, SAVE_STATE } from '../actions/documentPage.js';
 
 const initialState = {};
 

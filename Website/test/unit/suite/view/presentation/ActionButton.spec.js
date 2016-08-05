@@ -30,4 +30,4 @@ describe('ActionButton', () => {
 				return expect(props.action, 'was called once');
 			});
 	});
-})
+});

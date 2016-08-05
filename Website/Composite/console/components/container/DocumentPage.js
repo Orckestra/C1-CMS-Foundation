@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
-import FormPage from '../presentation/FormPage';
-import { saveState, updateFieldValue } from './../../state/actions/documentPage';
+import FormPage from '../presentation/FormPage.js';
+import { saveState, updateFieldValue } from './../../state/actions/documentPage.js';
 
 // Sets up a page that allows editing of a document consisting of sets of fields.
 function mapStateToProps(state) {

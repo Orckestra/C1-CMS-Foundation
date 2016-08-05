@@ -1,4 +1,4 @@
-import { SELECT_PAGE, REPLACE_PAGES } from '../actions/pageSelection';
+import { SELECT_PAGE, REPLACE_PAGES } from '../actions/pageSelection.js';
 
 const initialState = {
 	pages: [],

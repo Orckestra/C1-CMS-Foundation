@@ -47,7 +47,7 @@ describe('Get page definitions', () => {
 				expect(thunk, 'to be a function')
 				.and('when called with', [dispatch])
 			),
-			'with xhr mocked out', {
+			'with http mocked out', {
 				request: 'GET /Composite/console/pageData.json',
 				response: {
 					body: JSON.stringify(rawPageDef)

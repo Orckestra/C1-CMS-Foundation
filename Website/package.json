@@ -3,22 +3,17 @@
   "version": "1.0.0",
   "scripts": {
     "test": "npm run unit:test",
-	"coverage": "npm run unit:cov",
+    "coverage": "npm run unit:cov",
     "unit:test": "./node_modules/.bin/mocha",
-	"unit:cov": "node_modules/.bin/istanbul cover node_modules/mocha/bin/_mocha --root Composite/console/ --include-all-sources"
+    "unit:cov": "node_modules/.bin/istanbul cover node_modules/mocha/bin/_mocha --root Composite/console/ --include-all-sources"
   },
   "devDependencies": {
     "JSONPath": "^0.10.0",
     "autoprefixer-core": "^5.2.1",
-    "babel-core": "6.10.4",
-    "babel-preset-es2015": "6.9.0",
-    "babel-preset-react": "6.11.1",
-    "babel-register": "6.9.0",
     "csswring": "^3.0.5",
     "eslint": "3.1.1",
     "eslint-plugin-mocha": "4.0.0",
     "eslint-plugin-react": "5.2.2",
-    "glob": "7.0.5",
     "grunt": "~0.4.5",
     "grunt-contrib-copy": "0.8.2",
     "grunt-contrib-less": "^1.0.0",
@@ -27,50 +22,145 @@
     "grunt-postcss": "^0.5.5",
     "grunt-svgmin": "3.2.0",
     "istanbul": "1.1.0-alpha.1",
-    "jsdom": "9.3.0",
-    "jspm": "0.16.39",
+    "jsdom": "9.4.1",
+    "jspm": "0.17.0-beta.25",
     "less": "^2.1.2",
     "load-grunt-tasks": "3.5.0",
-    "magicpen-media": "1.5.1",
-    "messy": "6.10.1",
-    "mocha": "2.5.3",
-    "normalizr": "2.2.1",
-    "react": "15.1.0",
-    "react-addons-test-utils": "15.1.0",
-    "react-dom": "15.1.0",
-    "react-redux": "4.4.5",
-    "redux": "3.5.2",
-    "sinon": "1.17.4",
-    "systemjs": "0.19.31",
-    "unexpected": "10.14.2",
-    "unexpected-dom": "3.1.0",
-    "unexpected-messy": "6.1.1",
-    "unexpected-mitm": "9.1.2",
-    "unexpected-mxhr": "0.2.0",
-    "unexpected-react": "3.2.3",
-    "unexpected-sinon": "10.2.1",
-    "whatwg-fetch": "1.0.0",
+    "mocha": "3.0.1",
+    "node-fetch": "1.6.0",
+    "source-map-support": "0.4.2",
+    "systemjs": "0.19.36",
     "xml2js": "^0.4.10"
   },
   "jspm": {
+    "main": "Composite/console/console.js",
     "dependencies": {
       "normalizr": "npm:normalizr@^2.2.1",
-      "react": "npm:react@^15.1.0",
-      "react-addons-update": "npm:react-addons-update@^15.1.0",
       "react-dom": "npm:react-dom@^15.1.0",
       "react-redux": "npm:react-redux@^4.4.5",
-      "redux": "npm:redux@^3.5.2",
       "redux-thunk": "npm:redux-thunk@^2.1.0",
       "scss": "github:mobilexag/plugin-sass@^0.4.6",
       "svg": "github:npbenjohnson/plugin-svg@^0.1.0",
-      "systemjs-hot-reloader-store": "github:peteruithoven/systemjs-hot-reloader-store@^1.0.0",
       "whatwg-fetch": "npm:whatwg-fetch@^1.0.0"
     },
     "devDependencies": {
-      "babel": "npm:babel-core@^5.8.24",
+      "babel-plugin-transform-react-jsx": "npm:babel-plugin-transform-react-jsx@^6.8.0",
       "babel-runtime": "npm:babel-runtime@^5.8.24",
-      "core-js": "npm:core-js@^1.1.4",
-      "systemjs-hot-reloader": "github:capaj/systemjs-hot-reloader@^0.6.0"
+      "core-js": "npm:core-js@^2.4.1",
+      "dgram": "github:jspm/nodelibs-dgram@^0.2.0-alpha",
+      "dns": "github:jspm/nodelibs-dns@^0.2.0-alpha",
+      "ecc-jsbn": "npm:ecc-jsbn@~0.1.1",
+      "glob": "npm:glob@^7.0.5",
+      "jodid25519": "npm:jodid25519@^1.0.0",
+      "jsbn": "npm:jsbn@0.1",
+      "magicpen-media": "npm:magicpen-media@^1.5.0",
+      "messy": "npm:messy@^6.7.1",
+      "module": "github:jspm/nodelibs-module@^0.2.0-alpha",
+      "net": "github:jspm/nodelibs-net@^0.2.0-alpha",
+      "os": "github:jspm/nodelibs-os@^0.2.0-alpha",
+      "plugin-babel": "npm:systemjs-plugin-babel@^0.0.13",
+      "punycode": "github:jspm/nodelibs-punycode@^0.2.0-alpha",
+      "querystring": "github:jspm/nodelibs-querystring@^0.2.0-alpha",
+      "react-addons-test-utils": "npm:react-addons-test-utils@^15.3.0",
+      "sinon": "npm:sinon@^1.17.5",
+      "source-map": "npm:source-map@0.2",
+      "systemjs-hot-reloader": "github:capaj/systemjs-hot-reloader@^0.6.0",
+      "systemjs-hot-reloader-store": "github:peteruithoven/systemjs-hot-reloader-store@^1.0.0",
+      "tls": "github:jspm/nodelibs-tls@^0.2.0-alpha",
+      "tty": "github:jspm/nodelibs-tty@^0.2.0-alpha",
+      "tweetnacl": "npm:tweetnacl@0.13",
+      "unexpected": "npm:unexpected@^10.15.1",
+      "unexpected-dom": "npm:unexpected-dom@^3.1.0",
+      "unexpected-messy": "npm:unexpected-messy@^6.0.0",
+      "unexpected-mitm": "npm:unexpected-mitm@^9.1.2",
+      "unexpected-mxhr": "npm:unexpected-mxhr@^0.2.0",
+      "unexpected-react": "npm:unexpected-react@^3.2.3",
+      "unexpected-sinon": "npm:unexpected-sinon@^10.2.1"
+    },
+    "peerDependencies": {
+      "assert": "github:jspm/nodelibs-assert@^0.2.0-alpha",
+      "buffer": "github:jspm/nodelibs-buffer@^0.2.0-alpha",
+      "child_process": "github:jspm/nodelibs-child_process@^0.2.0-alpha",
+      "constants": "github:jspm/nodelibs-constants@^0.2.0-alpha",
+      "crypto": "github:jspm/nodelibs-crypto@^0.2.0-alpha",
+      "domain": "github:jspm/nodelibs-domain@^0.2.0-alpha",
+      "events": "github:jspm/nodelibs-events@^0.2.0-alpha",
+      "fs": "github:jspm/nodelibs-fs@^0.2.0-alpha",
+      "http": "github:jspm/nodelibs-http@^0.2.0-alpha",
+      "https": "github:jspm/nodelibs-https@^0.2.0-alpha",
+      "path": "github:jspm/nodelibs-path@^0.2.0-alpha",
+      "process": "github:jspm/nodelibs-process@^0.2.0-alpha",
+      "react": "npm:react@^15.3.0",
+      "redux": "npm:redux@^3.5.2",
+      "stream": "github:jspm/nodelibs-stream@^0.2.0-alpha",
+      "string_decoder": "github:jspm/nodelibs-string_decoder@^0.2.0-alpha",
+      "url": "github:jspm/nodelibs-url@^0.2.0-alpha",
+      "util": "github:jspm/nodelibs-util@^0.2.0-alpha",
+      "vm": "github:jspm/nodelibs-vm@^0.2.0-alpha",
+      "zlib": "github:jspm/nodelibs-zlib@^0.2.0-alpha"
+    },
+    "overrides": {
+      "npm:babel-runtime@5.8.38": {
+        "main": false,
+        "dependencies": {},
+        "optionalDependencies": {
+          "core-js": "^1.2.0"
+        }
+      },
+      "npm:browserify-zlib@0.1.4": {
+        "dependencies": {
+          "readable-stream": "^2.0.2",
+          "pako": "~0.2.0"
+        },
+        "map": {
+          "_stream_transform": "readable-stream/transform"
+        }
+      },
+      "npm:debug@2.2.0": {
+        "main": "browser.js",
+        "jspmNodeConversion": false,
+        "format": "cjs",
+        "map": {
+          "./browser.js": {
+            "node": "./node.js"
+          },
+          "fs": "@node/fs",
+          "net": "@node/net",
+          "tty": "@node/tty",
+          "util": "@node/util"
+        }
+      },
+      "npm:inherits@2.0.1": {
+        "ignore": [
+          "test.js"
+        ]
+      },
+      "npm:lodash@4.13.1": {
+        "map": {
+          "buffer": "@empty",
+          "process": "@empty"
+        }
+      },
+      "npm:lodash@4.14.1": {
+        "map": {
+          "buffer": "@empty",
+          "process": "@empty"
+        }
+      },
+      "npm:ms@0.7.1": {
+        "jspmNodeConversion": false,
+        "format": "cjs"
+      },
+      "npm:sass.js@0.9.10": {
+        "map": {
+          "ws": "@empty"
+        },
+        "meta": {
+          "dist/sass.worker.js": {
+            "format": "global"
+          }
+        }
+      }
     }
   }
 }

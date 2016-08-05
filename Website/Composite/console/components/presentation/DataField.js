@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import HelpIcon from './HelpIcon';
+import HelpIcon from './HelpIcon.js';
 
 const DataField = props => {
 	let input;

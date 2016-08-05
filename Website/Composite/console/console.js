@@ -3,11 +3,11 @@ import 'systemjs-hot-reloader/default-listener';
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
-import configureStore from './state/store';
-import ShownTab from './components/container/ShownTab';
-import DocumentPage from './components/container/DocumentPage';
+import configureStore from './state/store.js';
+import ShownTab from './components/container/ShownTab.js';
+import DocumentPage from './components/container/DocumentPage.js';
 import './console.scss!';
-import './iconIndex';
+import './iconIndex.js';
 
 let pageProps = {
 	pageTypes: {

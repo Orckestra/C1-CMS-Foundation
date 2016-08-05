@@ -1,10 +1,10 @@
 import getHotReloadStore from 'systemjs-hot-reloader-store';
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
-import dataFields from './reducers/dataFields';
-import pages from './reducers/pages';
-import getDefinitionReducer from './reducers/definitions';
+import dataFields from './reducers/dataFields.js';
+import pages from './reducers/pages.js';
+import getDefinitionReducer from './reducers/definitions.js';
 import ReduxThunk from 'redux-thunk';
-import initState from './initState';
+import initState from './initState.js';
 
 let reducers = {
 	dataFields,
@@ -25,7 +25,7 @@ export default function configureStore(initialState) {
 	} else {
 		store = createStore(consoleReducers, initialState, compose(
 			applyMiddleware(ReduxThunk),
-			window.devToolsExtension && window.devToolsExtension()
+			window.devToolsExtension ? window.devToolsExtension() : f => f
 		));
 		hotStore.prevStore = store;
 		initState(store);

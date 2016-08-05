@@ -5,7 +5,7 @@ describe('requestJSON', () => {
 	it('is asynchronous', () =>
 		expect(() =>
 			requestJSON('/').then(result => expect(result, 'to be an object')),
-		'with xhr mocked out', {
+		'with http mocked out', {
 			request: 'GET /',
 			response: { body: '{}' }
 		},
@@ -29,7 +29,7 @@ describe('requestJSON', () => {
 					url,
 					list: [1,2,3]
 				})),
-			'with xhr mocked out', {
+			'with http mocked out', {
 				request: 'GET ' + url,
 				response: { body }
 			},

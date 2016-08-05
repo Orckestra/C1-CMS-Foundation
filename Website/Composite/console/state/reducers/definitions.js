@@ -1,4 +1,4 @@
-import { STORE_DEF } from '../actions/componentDefinitions';
+import { STORE_DEF } from '../actions/componentDefinitions.js';
 
 const initialState = {};
 

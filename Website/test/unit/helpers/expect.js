@@ -1,17 +1,17 @@
-import './emulateDom';
+import './emulateDom.js';
 
 
 import unexpected from 'unexpected';
 import unexpectedReact from 'unexpected-react';
 import unexpectedSinon from 'unexpected-sinon';
 import unexpectedDom from 'unexpected-dom';
-import unexpectedMxhr from 'unexpected-mxhr';
+import unexpectedMitm from 'unexpected-mitm';
 import TestUtils from 'react-addons-test-utils';
 
 // define our instance of the `expect` function to use
 const expect = unexpected.clone()
 	.use(unexpectedDom)
-	.use(unexpectedMxhr)
+	.use(unexpectedMitm)
 	.use(unexpectedReact)
 	.use(unexpectedSinon);
 
@@ -29,5 +29,6 @@ expect.addAssertion('<ReactElement> to have props [exhaustively] satisfying <any
 expect.addAssertion('<object> to be an action of type <string>', function (expect, subject, actionName) {
 	return expect(subject, 'to have own property', 'type', actionName);
 });
-
+console.log(expect.outputFormat()); // eslint-disable-line no-console
+// expect.outputFormat('ansi'); // eslint-disable-line no-console
 export default expect;

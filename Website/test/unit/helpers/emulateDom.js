@@ -1,9 +1,12 @@
-// emulateDom.js - jsdom variant
+import jsdom from '@node/jsdom';
+import fetch from '@node/node-fetch';
 
+// emulateDom.js - jsdom variant
 if (typeof document === 'undefined') {
-	const jsdom = require('jsdom');
+
 	global.document = jsdom.jsdom('');
 	global.window = global.document.defaultView;
+	global.window.fetch = fetch;
 
 	for (let key in global.window) {
 		if (!global[key]) {

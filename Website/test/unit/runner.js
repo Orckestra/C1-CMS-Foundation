@@ -1,6 +1,4 @@
 // Set up and run the test suite
-import System from 'systemjs'; //eslint-disable-line no-unused-vars
-import '../../config.js';
 import glob from 'glob';
 
 const jsFileEx = /.js$/;

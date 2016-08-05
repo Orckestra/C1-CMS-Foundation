@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import Icon from './Icon';
+import Icon from './Icon.js';
 
 const ActionButton = ({ label, action, icon }) => (
 	<button onClick={() => action()}>
