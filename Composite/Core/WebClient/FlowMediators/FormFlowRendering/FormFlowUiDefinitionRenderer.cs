@@ -155,7 +155,7 @@ namespace Composite.Core.WebClient.FlowMediators.FormFlowRendering
                 return;
             }
             
-            var formFlowService = (FormFlowRenderingService) formServicesContainer.GetService<IFormFlowRenderingService>();
+            var formFlowService = formServicesContainer.GetService<IFormFlowRenderingService>();
             bool replacePageOutput = (formServicesContainer.GetService<IFormFlowWebRenderingService>().NewPageOutput != null);
 
             bool rerenderView = formFlowService.RerenderViewRequested;
