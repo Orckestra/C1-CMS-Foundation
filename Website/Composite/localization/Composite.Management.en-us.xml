@@ -681,4 +681,6 @@
 
   <string key="Browser.Label" value="Page Browser" />
   <string key="Browser.ToolTip" value="Browse unpublished pages" />
+
+  <string key="DefaultVersionName" value="Original" />
 </strings>
