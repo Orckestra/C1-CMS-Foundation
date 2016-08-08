@@ -227,6 +227,12 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="C1Console\Scheduling\PublishControlledHelper.cs" />
+    <Compile Include="C1Console\Tools\SetTimeZoneWorkflow.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="C1Console\Tools\SetTimeZoneWorkflow.designer.cs">
+      <DependentUpon>SetTimeZoneWorkflow.cs</DependentUpon>
+    </Compile>
     <Compile Include="Plugins\Elements\ElementProviders\AllFunctionsElementProvider\FunctionTesterWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>

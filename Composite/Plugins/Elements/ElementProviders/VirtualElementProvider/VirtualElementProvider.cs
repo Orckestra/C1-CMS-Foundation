@@ -207,11 +207,34 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
                         ActionType = ActionType.Other,
                         IsInFolder = false,
                         IsInToolbar = false,
-                        ActionGroup = PrimaryActionGroup
+                        ActionGroup = PrimaryActionGroup,
+                        ActionBundle = StringResourceSystemFacade.GetString("Composite.Management", "VirtualElementProviderElementProvider.RootActions.GlobalSetting")
                     }
                 }
             });
 
+            element.AddAction(
+                    new ElementAction(
+                        new ActionHandle(
+                            new WorkflowActionToken(
+                                WorkflowFacade.GetWorkflowType("Composite.C1Console.Tools.SetTimeZoneWorkflow"))))
+                    {
+                        VisualData = new ActionVisualizedData
+                        {
+                            Label = StringResourceSystemFacade.GetString("Composite.Management", "VirtualElementProviderElementProvider.RootActions.SetTimezoneLabel"),
+                            ToolTip = StringResourceSystemFacade.GetString("Composite.Management", "VirtualElementProviderElementProvider.RootActions.SetTimezoneTooltip"),
+                            Icon = VirtualElementProvider.ChangeOwnCultureIcon,
+                            Disabled = false,
+                            ActionLocation = new ActionLocation
+                            {
+                                ActionType = ActionType.Other,
+                                IsInFolder = false,
+                                IsInToolbar = false,
+                                ActionGroup = PrimaryActionGroup,
+                                ActionBundle = StringResourceSystemFacade.GetString("Composite.Management", "VirtualElementProviderElementProvider.RootActions.GlobalSetting")
+                            }
+                        }
+                    });
 
             element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.C1Console.Tools.SendMessageToConsolesWorkflow"))))
             {
@@ -230,8 +253,9 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
                     }
                 }
             });
-
-
+            
+                
+            
             element.AddAction(new ElementAction(new ActionHandle(new RestartApplicationActionToken()))
             {
                 VisualData = new ActionVisualizedData
