@@ -3,7 +3,6 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Web.Services;
 using System.Web.Services.Protocols;
@@ -15,7 +14,6 @@ using Composite.C1Console.Security;
 using Composite.C1Console.Users;
 using Composite.Core;
 using Composite.Core.IO;
-using Composite.Core.ResourceSystem;
 using Composite.Core.Routing;
 using Composite.Core.Xml;
 using Composite.Core.Types;
@@ -32,6 +30,8 @@ using Composite.Core.Extensions;
 // Search token stuff
 using Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementProvider;
 using Composite.Plugins.Elements.ElementProviders.AllFunctionsElementProvider;
+
+using Texts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_Management;
 
 namespace Composite.Services
 {
@@ -91,9 +91,10 @@ namespace Composite.Services
 
             var publicationStates = new Dictionary<string, string>
             {
-                {GenericPublishProcessController.Draft, StringResourceSystemFacade.GetString("Composite.Management", "PublishingStatus.draft")},
-                {GenericPublishProcessController.AwaitingApproval, StringResourceSystemFacade.GetString("Composite.Management", "PublishingStatus.awaitingApproval")},
-                {GenericPublishProcessController.AwaitingPublication, StringResourceSystemFacade.GetString("Composite.Management", "PublishingStatus.awaitingPublication")}
+                {GenericPublishProcessController.Draft, Texts.PublishingStatus_draft},
+                {GenericPublishProcessController.AwaitingApproval, Texts.PublishingStatus_awaitingApproval},
+                {GenericPublishProcessController.AwaitingPublication, Texts.PublishingStatus_awaitingPublication},
+				{GenericPublishProcessController.SentToDraft, Texts.PublishingStatus_sentToDraft}
             };
 
             List<Tuple<Element, IPublishControlled>> actionRequiredPages =
