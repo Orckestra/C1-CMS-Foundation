@@ -17,37 +17,29 @@ SystemJS.config({
   devConfig: {
     "map": {
       "babel-runtime": "npm:babel-runtime@5.8.38",
-      "core-js": "npm:core-js@2.4.1",
+      "core-js": "npm:core-js@1.2.7",
       "glob": "npm:glob@7.0.5",
       "react-addons-test-utils": "npm:react-addons-test-utils@15.3.0",
       "sinon": "npm:sinon@1.17.5",
       "systemjs-hot-reloader": "github:capaj/systemjs-hot-reloader@0.6.0",
       "systemjs-hot-reloader-store": "github:peteruithoven/systemjs-hot-reloader-store@1.0.0",
       "unexpected-dom": "npm:unexpected-dom@3.1.0",
-      "unexpected-mxhr": "npm:unexpected-mxhr@0.2.0",
+      "unexpected-mxhr": "npm:unexpected-mxhr@0.2.1",
       "unexpected-react": "npm:unexpected-react@3.2.3",
       "unexpected-sinon": "npm:unexpected-sinon@10.2.1",
-      "unexpected-messy": "npm:unexpected-messy@6.1.1",
       "source-map": "npm:source-map@0.2.0",
-      "messy": "npm:messy@6.11.0",
-      "magicpen-media": "npm:magicpen-media@1.5.1",
       "jsbn": "npm:jsbn@0.1.0",
       "tweetnacl": "npm:tweetnacl@0.13.3",
       "jodid25519": "npm:jodid25519@1.0.2",
       "ecc-jsbn": "npm:ecc-jsbn@0.1.1",
-      "net": "github:jspm/nodelibs-net@0.2.0-alpha",
       "module": "github:jspm/nodelibs-module@0.2.0-alpha",
       "querystring": "github:jspm/nodelibs-querystring@0.2.0-alpha",
-      "tls": "github:jspm/nodelibs-tls@0.2.0-alpha",
-      "os": "github:jspm/nodelibs-os@0.2.0-alpha",
       "dns": "github:jspm/nodelibs-dns@0.2.0-alpha",
       "dgram": "github:jspm/nodelibs-dgram@0.2.0-alpha",
       "tty": "github:jspm/nodelibs-tty@0.2.0-alpha",
       "punycode": "github:jspm/nodelibs-punycode@0.2.0-alpha",
       "plugin-babel": "npm:systemjs-plugin-babel@0.0.13",
-      "babel-plugin-transform-react-jsx": "npm:babel-plugin-transform-react-jsx@6.8.0",
-      "unexpected-mitm": "npm:unexpected-mitm@9.1.2",
-      "unexpected": "npm:unexpected@10.15.1"
+      "babel-plugin-transform-react-jsx": "npm:babel-plugin-transform-react-jsx@6.8.0"
     },
     "packages": {
       "github:capaj/systemjs-hot-reloader@0.6.0": {
@@ -184,7 +176,7 @@ SystemJS.config({
       },
       "npm:formatio@1.1.1": {
         "map": {
-          "samsam": "npm:samsam@1.1.2"
+          "samsam": "npm:samsam@1.1.3"
         }
       },
       "npm:fs-extra@0.26.7": {
@@ -211,9 +203,6 @@ SystemJS.config({
         "map": {
           "assert-plus": "npm:assert-plus@1.0.0"
         }
-      },
-      "npm:gettemporaryfilepath@0.0.1": {
-        "map": {}
       },
       "npm:glob@7.0.5": {
         "map": {
@@ -268,9 +257,6 @@ SystemJS.config({
           "sshpk": "npm:sshpk@1.9.2"
         }
       },
-      "npm:iconv-lite@0.4.5": {
-        "map": {}
-      },
       "npm:inflight@1.0.5": {
         "map": {
           "once": "npm:once@1.3.3",
@@ -315,25 +301,8 @@ SystemJS.config({
       "npm:klaw@1.3.0": {
         "map": {}
       },
-      "npm:lodash@3.10.0": {
-        "map": {}
-      },
-      "npm:magicpen-media@1.5.1": {
-        "map": {
-          "gettemporaryfilepath": "npm:gettemporaryfilepath@0.0.1",
-          "lodash": "npm:lodash@3.10.0",
-          "mime": "npm:mime@1.3.4"
-        }
-      },
       "npm:magicpen-prism@2.2.1": {
         "map": {}
-      },
-      "npm:magicpen@4.12.0": {
-        "map": {
-          "ansi-styles": "npm:ansi-styles@2.0.0",
-          "color-diff": "npm:color-diff@0.1.7",
-          "supports-color": "npm:supports-color@1.2.0"
-        }
       },
       "npm:mime-db@1.23.0": {
         "map": {}
@@ -342,9 +311,6 @@ SystemJS.config({
         "map": {
           "mime-db": "npm:mime-db@1.23.0"
         }
-      },
-      "npm:mime@1.3.4": {
-        "map": {}
       },
       "npm:minimatch@3.0.2": {
         "map": {
@@ -393,11 +359,6 @@ SystemJS.config({
       "npm:progress@1.1.8": {
         "map": {}
       },
-      "npm:quoted-printable@1.0.0": {
-        "map": {
-          "utf8": "npm:utf8@2.1.1"
-        }
-      },
       "npm:react-addons-test-utils@15.3.0": {
         "map": {}
       },
@@ -428,11 +389,6 @@ SystemJS.config({
           "stringstream": "npm:stringstream@0.0.5",
           "tough-cookie": "npm:tough-cookie@2.2.2",
           "tunnel-agent": "npm:tunnel-agent@0.4.3"
-        }
-      },
-      "npm:rfc2047@2.0.0": {
-        "map": {
-          "iconv-lite": "npm:iconv-lite@0.4.5"
         }
       },
       "npm:rimraf@2.5.4": {
@@ -482,9 +438,6 @@ SystemJS.config({
           "ansi-regex": "npm:ansi-regex@2.0.0"
         }
       },
-      "npm:supports-color@1.2.0": {
-        "map": {}
-      },
       "npm:supports-color@2.0.0": {
         "map": {}
       },
@@ -521,21 +474,6 @@ SystemJS.config({
           "object-assign": "npm:object-assign@4.1.0"
         }
       },
-      "npm:unexpected-messy@6.1.1": {
-        "map": {
-          "magicpen": "npm:magicpen@4.12.0",
-          "minimist": "npm:minimist@1.1.1",
-          "underscore": "npm:underscore@1.7.0"
-        }
-      },
-      "npm:unexpected-mxhr@0.2.0": {
-        "map": {
-          "messy": "npm:messy@6.11.0",
-          "phantomjs-prebuilt": "npm:phantomjs-prebuilt@2.1.7",
-          "sinon": "npm:sinon@1.17.4",
-          "underscore": "npm:underscore@1.8.3"
-        }
-      },
       "npm:unexpected-react@3.2.3": {
         "map": {
           "magicpen-prism": "npm:magicpen-prism@2.2.1",
@@ -568,11 +506,6 @@ SystemJS.config({
           "fd-slicer": "npm:fd-slicer@1.0.1"
         }
       },
-      "github:jspm/nodelibs-os@0.2.0-alpha": {
-        "map": {
-          "os-browserify": "npm:os-browserify@0.2.1"
-        }
-      },
       "github:jspm/nodelibs-punycode@0.2.0-alpha": {
         "map": {
           "punycode-browserify": "npm:punycode@1.4.1"
@@ -581,7 +514,7 @@ SystemJS.config({
       "npm:babel-plugin-transform-react-jsx@6.8.0": {
         "map": {
           "babel-runtime": "npm:babel-runtime@6.11.6",
-          "babel-plugin-syntax-jsx": "npm:babel-plugin-syntax-jsx@6.8.0",
+          "babel-plugin-syntax-jsx": "npm:babel-plugin-syntax-jsx@6.13.0",
           "babel-helper-builder-react-jsx": "npm:babel-helper-builder-react-jsx@6.9.0"
         }
       },
@@ -591,39 +524,12 @@ SystemJS.config({
           "regenerator-runtime": "npm:regenerator-runtime@0.9.5"
         }
       },
-      "npm:babel-plugin-syntax-jsx@6.8.0": {
-        "map": {
-          "babel-runtime": "npm:babel-runtime@6.11.6"
-        }
-      },
       "npm:babel-helper-builder-react-jsx@6.9.0": {
         "map": {
           "babel-runtime": "npm:babel-runtime@6.11.6",
           "esutils": "npm:esutils@2.0.2",
-          "babel-types": "npm:babel-types@6.11.1",
+          "babel-types": "npm:babel-types@6.13.0",
           "lodash": "npm:lodash@4.14.1"
-        }
-      },
-      "npm:babel-types@6.11.1": {
-        "map": {
-          "esutils": "npm:esutils@2.0.2",
-          "lodash": "npm:lodash@4.14.1",
-          "babel-runtime": "npm:babel-runtime@6.11.6",
-          "to-fast-properties": "npm:to-fast-properties@1.0.2",
-          "babel-traverse": "npm:babel-traverse@6.12.0"
-        }
-      },
-      "npm:babel-traverse@6.12.0": {
-        "map": {
-          "lodash": "npm:lodash@4.14.1",
-          "babel-runtime": "npm:babel-runtime@6.11.6",
-          "babel-types": "npm:babel-types@6.11.1",
-          "invariant": "npm:invariant@2.2.1",
-          "babel-messages": "npm:babel-messages@6.8.0",
-          "babel-code-frame": "npm:babel-code-frame@6.11.0",
-          "globals": "npm:globals@8.18.0",
-          "debug": "npm:debug@2.2.0",
-          "babylon": "npm:babylon@6.8.4"
         }
       },
       "npm:babel-code-frame@6.11.0": {
@@ -654,55 +560,34 @@ SystemJS.config({
           "util-deprecate": "npm:util-deprecate@1.0.2"
         }
       },
-      "npm:unexpected-mitm@9.1.2": {
+      "npm:unexpected-mxhr@0.2.1": {
         "map": {
-          "underscore": "npm:underscore@1.7.0",
-          "callsite": "npm:callsite@1.0.0",
-          "detect-indent": "npm:detect-indent@3.0.0",
           "messy": "npm:messy@6.11.0",
-          "memoizesync": "npm:memoizesync@0.5.0",
-          "mitm": "npm:mitm@1.2.1"
+          "sinon": "npm:sinon@1.17.4",
+          "phantomjs-prebuilt": "npm:phantomjs-prebuilt@2.1.7",
+          "underscore": "npm:underscore@1.8.3"
         }
       },
-      "npm:detect-indent@3.0.0": {
+      "npm:babel-types@6.13.0": {
         "map": {
-          "repeating": "npm:repeating@1.1.3",
-          "minimist": "npm:minimist@1.2.0",
-          "get-stdin": "npm:get-stdin@3.0.2"
+          "babel-runtime": "npm:babel-runtime@6.11.6",
+          "esutils": "npm:esutils@2.0.2",
+          "lodash": "npm:lodash@4.14.1",
+          "to-fast-properties": "npm:to-fast-properties@1.0.2",
+          "babel-traverse": "npm:babel-traverse@6.13.0"
         }
       },
-      "npm:messy@6.11.0": {
+      "npm:babel-traverse@6.13.0": {
         "map": {
-          "underscore": "npm:underscore@1.8.3",
-          "iconv-lite": "npm:iconv-lite@0.4.13",
-          "rfc2047": "npm:rfc2047@2.0.0",
-          "rfc2231": "npm:rfc2231@1.3.0",
-          "quoted-printable": "npm:quoted-printable@1.0.0"
-        }
-      },
-      "npm:repeating@1.1.3": {
-        "map": {
-          "is-finite": "npm:is-finite@1.0.1"
-        }
-      },
-      "npm:mitm@1.2.1": {
-        "map": {
-          "underscore": "npm:underscore@1.5.2"
-        }
-      },
-      "npm:is-finite@1.0.1": {
-        "map": {
-          "number-is-nan": "npm:number-is-nan@1.0.0"
-        }
-      },
-      "npm:memoizesync@0.5.0": {
-        "map": {
-          "lru-cache": "npm:lru-cache@2.3.1"
-        }
-      },
-      "npm:rfc2231@1.3.0": {
-        "map": {
-          "iconv-lite": "npm:iconv-lite@0.4.5"
+          "babel-runtime": "npm:babel-runtime@6.11.6",
+          "debug": "npm:debug@2.2.0",
+          "invariant": "npm:invariant@2.2.1",
+          "lodash": "npm:lodash@4.14.1",
+          "babel-types": "npm:babel-types@6.13.0",
+          "babel-messages": "npm:babel-messages@6.8.0",
+          "globals": "npm:globals@8.18.0",
+          "babylon": "npm:babylon@6.8.4",
+          "babel-code-frame": "npm:babel-code-frame@6.11.0"
         }
       }
     }
@@ -739,6 +624,14 @@ SystemJS.config({
     "github:*/*.json"
   ],
   map: {
+    "magicpen-media": "npm:magicpen-media@1.5.1",
+    "messy": "npm:messy@6.11.0",
+    "net": "github:jspm/nodelibs-net@0.2.0-alpha",
+    "os": "github:jspm/nodelibs-os@0.2.0-alpha",
+    "tls": "github:jspm/nodelibs-tls@0.2.0-alpha",
+    "unexpected": "npm:unexpected@10.15.1",
+    "unexpected-messy": "npm:unexpected-messy@6.1.2",
+    "unexpected-mitm": "npm:unexpected-mitm@9.1.2",
     "constants": "github:jspm/nodelibs-constants@0.2.0-alpha",
     "assert": "github:jspm/nodelibs-assert@0.2.0-alpha",
     "buffer": "github:jspm/nodelibs-buffer@0.2.0-alpha",
@@ -780,11 +673,11 @@ SystemJS.config({
     },
     "github:mobilexag/plugin-sass@0.4.6": {
       "map": {
-        "autoprefixer": "npm:autoprefixer@6.3.6",
-        "lodash": "npm:lodash@4.13.1",
-        "postcss": "npm:postcss@5.0.21",
+        "autoprefixer": "npm:autoprefixer@6.4.0",
+        "lodash": "npm:lodash@4.14.1",
+        "postcss": "npm:postcss@5.1.2",
         "reqwest": "github:ded/reqwest@2.0.5",
-        "sass.js": "npm:sass.js@0.9.10",
+        "sass.js": "npm:sass.js@0.9.11",
         "path": "github:jspm/nodelibs-path@0.1.0",
         "fs": "github:jspm/nodelibs-fs@0.1.2",
         "url": "github:jspm/nodelibs-url@0.1.0"
@@ -798,16 +691,6 @@ SystemJS.config({
         "bn.js": "npm:bn.js@4.11.6",
         "inherits": "npm:inherits@2.0.1",
         "minimalistic-assert": "npm:minimalistic-assert@1.0.0"
-      }
-    },
-    "npm:autoprefixer@6.3.6": {
-      "map": {
-        "browserslist": "npm:browserslist@1.3.4",
-        "caniuse-db": "npm:caniuse-db@1.0.30000488",
-        "normalize-range": "npm:normalize-range@0.1.2",
-        "num2fraction": "npm:num2fraction@1.2.2",
-        "postcss": "npm:postcss@5.0.21",
-        "postcss-value-parser": "npm:postcss-value-parser@3.3.0"
       }
     },
     "npm:bn.js@4.11.6": {
@@ -857,11 +740,6 @@ SystemJS.config({
       "map": {
         "pako": "npm:pako@0.2.9",
         "readable-stream": "npm:readable-stream@2.1.4"
-      }
-    },
-    "npm:browserslist@1.3.4": {
-      "map": {
-        "caniuse-db": "npm:caniuse-db@1.0.30000488"
       }
     },
     "npm:buffer-xor@1.0.3": {
@@ -1027,13 +905,6 @@ SystemJS.config({
         "create-hmac": "npm:create-hmac@1.1.4"
       }
     },
-    "npm:postcss@5.0.21": {
-      "map": {
-        "js-base64": "npm:js-base64@2.1.9",
-        "source-map": "npm:source-map@0.5.6",
-        "supports-color": "npm:supports-color@3.1.2"
-      }
-    },
     "npm:process-nextick-args@1.0.7": {
       "map": {}
     },
@@ -1064,7 +935,7 @@ SystemJS.config({
       "map": {
         "hoist-non-react-statics": "npm:hoist-non-react-statics@1.2.0",
         "invariant": "npm:invariant@2.2.1",
-        "lodash": "npm:lodash@4.13.1",
+        "lodash": "npm:lodash@4.14.1",
         "loose-envify": "npm:loose-envify@1.2.0"
       }
     },
@@ -1077,16 +948,13 @@ SystemJS.config({
     },
     "npm:redux@3.5.2": {
       "map": {
-        "lodash": "npm:lodash@4.13.1",
-        "lodash-es": "npm:lodash-es@4.13.1",
+        "lodash": "npm:lodash@4.14.1",
+        "lodash-es": "npm:lodash-es@4.14.1",
         "loose-envify": "npm:loose-envify@1.2.0",
         "symbol-observable": "npm:symbol-observable@0.2.4"
       }
     },
     "npm:ripemd160@1.0.1": {
-      "map": {}
-    },
-    "npm:sass.js@0.9.10": {
       "map": {}
     },
     "npm:sha.js@2.4.5": {
@@ -1151,14 +1019,7 @@ SystemJS.config({
     },
     "github:jspm/nodelibs-buffer@0.2.0-alpha": {
       "map": {
-        "buffer-browserify": "npm:buffer@4.7.1"
-      }
-    },
-    "npm:buffer@4.7.1": {
-      "map": {
-        "ieee754": "npm:ieee754@1.1.6",
-        "isarray": "npm:isarray@1.0.0",
-        "base64-js": "npm:base64-js@1.1.2"
+        "buffer-browserify": "npm:buffer@4.9.0"
       }
     },
     "github:jspm/nodelibs-http@0.2.0-alpha": {
@@ -1194,6 +1055,126 @@ SystemJS.config({
     "github:jspm/nodelibs-domain@0.2.0-alpha": {
       "map": {
         "domain-browserify": "npm:domain-browser@1.1.7"
+      }
+    },
+    "npm:gettemporaryfilepath@0.0.1": {
+      "map": {}
+    },
+    "npm:iconv-lite@0.4.5": {
+      "map": {}
+    },
+    "npm:lodash@3.10.0": {
+      "map": {}
+    },
+    "npm:magicpen-media@1.5.1": {
+      "map": {
+        "gettemporaryfilepath": "npm:gettemporaryfilepath@0.0.1",
+        "lodash": "npm:lodash@3.10.0",
+        "mime": "npm:mime@1.3.4"
+      }
+    },
+    "npm:mime@1.3.4": {
+      "map": {}
+    },
+    "npm:quoted-printable@1.0.0": {
+      "map": {
+        "utf8": "npm:utf8@2.1.1"
+      }
+    },
+    "npm:rfc2047@2.0.0": {
+      "map": {
+        "iconv-lite": "npm:iconv-lite@0.4.5"
+      }
+    },
+    "github:jspm/nodelibs-os@0.2.0-alpha": {
+      "map": {
+        "os-browserify": "npm:os-browserify@0.2.1"
+      }
+    },
+    "npm:unexpected-mitm@9.1.2": {
+      "map": {
+        "underscore": "npm:underscore@1.7.0",
+        "callsite": "npm:callsite@1.0.0",
+        "detect-indent": "npm:detect-indent@3.0.0",
+        "messy": "npm:messy@6.11.0",
+        "memoizesync": "npm:memoizesync@0.5.0",
+        "mitm": "npm:mitm@1.2.1"
+      }
+    },
+    "npm:detect-indent@3.0.0": {
+      "map": {
+        "repeating": "npm:repeating@1.1.3",
+        "minimist": "npm:minimist@1.2.0",
+        "get-stdin": "npm:get-stdin@3.0.2"
+      }
+    },
+    "npm:messy@6.11.0": {
+      "map": {
+        "underscore": "npm:underscore@1.8.3",
+        "iconv-lite": "npm:iconv-lite@0.4.13",
+        "rfc2047": "npm:rfc2047@2.0.0",
+        "rfc2231": "npm:rfc2231@1.3.0",
+        "quoted-printable": "npm:quoted-printable@1.0.0"
+      }
+    },
+    "npm:repeating@1.1.3": {
+      "map": {
+        "is-finite": "npm:is-finite@1.0.1"
+      }
+    },
+    "npm:mitm@1.2.1": {
+      "map": {
+        "underscore": "npm:underscore@1.5.2"
+      }
+    },
+    "npm:is-finite@1.0.1": {
+      "map": {
+        "number-is-nan": "npm:number-is-nan@1.0.0"
+      }
+    },
+    "npm:memoizesync@0.5.0": {
+      "map": {
+        "lru-cache": "npm:lru-cache@2.3.1"
+      }
+    },
+    "npm:rfc2231@1.3.0": {
+      "map": {
+        "iconv-lite": "npm:iconv-lite@0.4.5"
+      }
+    },
+    "npm:buffer@4.9.0": {
+      "map": {
+        "ieee754": "npm:ieee754@1.1.6",
+        "isarray": "npm:isarray@1.0.0",
+        "base64-js": "npm:base64-js@1.1.2"
+      }
+    },
+    "npm:unexpected-messy@6.1.2": {
+      "map": {
+        "underscore": "npm:underscore@1.7.0",
+        "minimist": "npm:minimist@1.1.1"
+      }
+    },
+    "npm:postcss@5.1.2": {
+      "map": {
+        "supports-color": "npm:supports-color@3.1.2",
+        "source-map": "npm:source-map@0.5.6",
+        "js-base64": "npm:js-base64@2.1.9"
+      }
+    },
+    "npm:autoprefixer@6.4.0": {
+      "map": {
+        "postcss": "npm:postcss@5.1.2",
+        "caniuse-db": "npm:caniuse-db@1.0.30000519",
+        "browserslist": "npm:browserslist@1.3.5",
+        "postcss-value-parser": "npm:postcss-value-parser@3.3.0",
+        "normalize-range": "npm:normalize-range@0.1.2",
+        "num2fraction": "npm:num2fraction@1.2.2"
+      }
+    },
+    "npm:browserslist@1.3.5": {
+      "map": {
+        "caniuse-db": "npm:caniuse-db@1.0.30000519"
       }
     }
   }

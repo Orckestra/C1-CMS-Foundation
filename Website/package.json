@@ -30,6 +30,7 @@
     "node-fetch": "1.6.0",
     "source-map-support": "0.4.2",
     "systemjs": "0.19.36",
+    "systemjs-istanbul-hook": "0.1.0",
     "xml2js": "^0.4.10"
   },
   "jspm": {
@@ -41,23 +42,20 @@
       "redux-thunk": "npm:redux-thunk@^2.1.0",
       "scss": "github:mobilexag/plugin-sass@^0.4.6",
       "svg": "github:npbenjohnson/plugin-svg@^0.1.0",
+      "unexpected-mitm": "npm:unexpected-mitm@^9.1.2",
       "whatwg-fetch": "npm:whatwg-fetch@^1.0.0"
     },
     "devDependencies": {
       "babel-plugin-transform-react-jsx": "npm:babel-plugin-transform-react-jsx@^6.8.0",
       "babel-runtime": "npm:babel-runtime@^5.8.24",
-      "core-js": "npm:core-js@^2.4.1",
+      "core-js": "npm:core-js@^1.2.0",
       "dgram": "github:jspm/nodelibs-dgram@^0.2.0-alpha",
       "dns": "github:jspm/nodelibs-dns@^0.2.0-alpha",
       "ecc-jsbn": "npm:ecc-jsbn@~0.1.1",
       "glob": "npm:glob@^7.0.5",
       "jodid25519": "npm:jodid25519@^1.0.0",
       "jsbn": "npm:jsbn@0.1",
-      "magicpen-media": "npm:magicpen-media@^1.5.0",
-      "messy": "npm:messy@^6.7.1",
       "module": "github:jspm/nodelibs-module@^0.2.0-alpha",
-      "net": "github:jspm/nodelibs-net@^0.2.0-alpha",
-      "os": "github:jspm/nodelibs-os@^0.2.0-alpha",
       "plugin-babel": "npm:systemjs-plugin-babel@^0.0.13",
       "punycode": "github:jspm/nodelibs-punycode@^0.2.0-alpha",
       "querystring": "github:jspm/nodelibs-querystring@^0.2.0-alpha",
@@ -66,13 +64,9 @@
       "source-map": "npm:source-map@0.2",
       "systemjs-hot-reloader": "github:capaj/systemjs-hot-reloader@^0.6.0",
       "systemjs-hot-reloader-store": "github:peteruithoven/systemjs-hot-reloader-store@^1.0.0",
-      "tls": "github:jspm/nodelibs-tls@^0.2.0-alpha",
       "tty": "github:jspm/nodelibs-tty@^0.2.0-alpha",
       "tweetnacl": "npm:tweetnacl@0.13",
-      "unexpected": "npm:unexpected@^10.15.1",
       "unexpected-dom": "npm:unexpected-dom@^3.1.0",
-      "unexpected-messy": "npm:unexpected-messy@^6.0.0",
-      "unexpected-mitm": "npm:unexpected-mitm@^9.1.2",
       "unexpected-mxhr": "npm:unexpected-mxhr@^0.2.0",
       "unexpected-react": "npm:unexpected-react@^3.2.3",
       "unexpected-sinon": "npm:unexpected-sinon@^10.2.1"
@@ -88,12 +82,19 @@
       "fs": "github:jspm/nodelibs-fs@^0.2.0-alpha",
       "http": "github:jspm/nodelibs-http@^0.2.0-alpha",
       "https": "github:jspm/nodelibs-https@^0.2.0-alpha",
+      "magicpen-media": "npm:magicpen-media@^1.5.0",
+      "messy": "npm:messy@^6.7.1",
+      "net": "github:jspm/nodelibs-net@^0.2.0-alpha",
+      "os": "github:jspm/nodelibs-os@^0.2.0-alpha",
       "path": "github:jspm/nodelibs-path@^0.2.0-alpha",
       "process": "github:jspm/nodelibs-process@^0.2.0-alpha",
       "react": "npm:react@^15.3.0",
       "redux": "npm:redux@^3.5.2",
       "stream": "github:jspm/nodelibs-stream@^0.2.0-alpha",
       "string_decoder": "github:jspm/nodelibs-string_decoder@^0.2.0-alpha",
+      "tls": "github:jspm/nodelibs-tls@^0.2.0-alpha",
+      "unexpected": "npm:unexpected@^10.10.0",
+      "unexpected-messy": "npm:unexpected-messy@^6.0.0",
       "url": "github:jspm/nodelibs-url@^0.2.0-alpha",
       "util": "github:jspm/nodelibs-util@^0.2.0-alpha",
       "vm": "github:jspm/nodelibs-vm@^0.2.0-alpha",
@@ -135,12 +136,6 @@
           "test.js"
         ]
       },
-      "npm:lodash@4.13.1": {
-        "map": {
-          "buffer": "@empty",
-          "process": "@empty"
-        }
-      },
       "npm:lodash@4.14.1": {
         "map": {
           "buffer": "@empty",
@@ -151,7 +146,7 @@
         "jspmNodeConversion": false,
         "format": "cjs"
       },
-      "npm:sass.js@0.9.10": {
+      "npm:sass.js@0.9.11": {
         "map": {
           "ws": "@empty"
         },

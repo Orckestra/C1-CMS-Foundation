@@ -1,6 +1,5 @@
 import './emulateDom.js';
 
-
 import unexpected from 'unexpected';
 import unexpectedReact from 'unexpected-react';
 import unexpectedSinon from 'unexpected-sinon';
@@ -29,6 +28,6 @@ expect.addAssertion('<ReactElement> to have props [exhaustively] satisfying <any
 expect.addAssertion('<object> to be an action of type <string>', function (expect, subject, actionName) {
 	return expect(subject, 'to have own property', 'type', actionName);
 });
-console.log(expect.outputFormat()); // eslint-disable-line no-console
-// expect.outputFormat('ansi'); // eslint-disable-line no-console
+// console.log(expect.outputFormat());
+// expect.outputFormat('ansi');
 export default expect;
