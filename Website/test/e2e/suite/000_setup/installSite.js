@@ -3,6 +3,7 @@ var resetSite = require('../../reset.js');
 var expectedLanguage = 'en-US';
 
 module.exports = {
+	'@tags': ['install'],
 	before: function (_, done) {
 		resetSite(function (err) {
 			if (err) {

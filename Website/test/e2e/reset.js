@@ -62,10 +62,13 @@ function copyFile(source, target) {
 	return new Promise(function(resolve, reject) {
 		var reader = fs.createReadStream(source);
 		reader.on('error', reject);
-		var writer = fs.createWriteStream(target, { flags: 'r+' });
+		var id = Math.ceil(10000 * Math.random());
+		var writer = fs.createWriteStream('tmp' + id);
 		writer.on('error', reject);
-		writer.on('finish', resolve);
+		writer.on('finish', function () { resolve(id); });
 		reader.pipe(writer);
+	}).then(function (id) {
+		fs.renameSync('tmp' + id, target);
 	});
 }
 
