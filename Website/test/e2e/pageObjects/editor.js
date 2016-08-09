@@ -13,12 +13,12 @@ module.exports = {
 		{
 			enter: function () {
 				this
-					.waitForElementVisible('@editorFrame', 2000)
-					.waitForFrameLoad('@editorFrame', 2000)
+					.waitForElementVisible('@editorFrame', 3000)
+					.waitForFrameLoad('@editorFrame', 3000)
 					.enterFrame('@editorFrame')
-					.waitForFrameLoad('iframe[src^="tinymce.aspx"]', 3000)
+					.waitForFrameLoad('iframe[src^="tinymce.aspx"]', 10000) // Potentially v. slow
 					.enterFrame('iframe[src^="tinymce.aspx"]')
-					.waitForFrameLoad('#editor_ifr', 2000)
+					.waitForFrameLoad('#editor_ifr', 3000)
 					.enterFrame('#editor_ifr')
 				return this;
 			},
