@@ -10,7 +10,7 @@ module.exports = {
 	commands: [
 		{
 			isShown: function () {
-				this.waitForElementVisible('@usernameField', 1500);
+				this.waitForElementVisible('@usernameField', 2500);
 				return this;
 			},
 			setUsername: function (username) {

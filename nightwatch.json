@@ -2,7 +2,7 @@
   "src_folders" : [
     "Website/test/e2e/suite"
   ],
-	"output_folder" : "Website/test/e2e/reports",
+  "output_folder" : "Website/test/e2e/reports",
   "custom_commands_path" : "Website/test/e2e/commands",
   "custom_assertions_path" : "",
   "page_objects_path" : "Website/test/e2e/pageObjects",
@@ -26,8 +26,8 @@
       "selenium_port"  : 4444,
       "selenium_host"  : "localhost",
       "silent": true,
-			"end_session_on_fail": false,
-			"skip_testcases_on_fail": false,
+      "end_session_on_fail": false,
+      "skip_testcases_on_fail": false,
       "screenshots" : {
         "enabled" : false,
         "path" : ""

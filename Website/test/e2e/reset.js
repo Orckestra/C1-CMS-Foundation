@@ -51,9 +51,7 @@ const removePaths = [
 	'Website/bin/CookComputing.XmlRpcV2.dll',
 	'Website/bin/ICSharpCode.SharpZipLib.dll',
 	'Website/bin/System.Web.Optimization.dll',
-	'Website/bin/WebGrease.dll',
-	'Website/Web.config',
-	'Website/App_Data/Composite/Composite.config'
+	'Website/bin/WebGrease.dll'
 ]
 const rimraf = require('rimraf');
 const fs = require('fs');
@@ -64,7 +62,7 @@ function copyFile(source, target) {
 	return new Promise(function(resolve, reject) {
 		var reader = fs.createReadStream(source);
 		reader.on('error', reject);
-		var writer = fs.createWriteStream(target);
+		var writer = fs.createWriteStream(target, { flags: 'r+' });
 		writer.on('error', reject);
 		writer.on('finish', resolve);
 		reader.pipe(writer);
