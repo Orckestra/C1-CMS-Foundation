@@ -1,9 +1,10 @@
 # Composite C1 CMS
 
-[![Join the chat at https://gitter.im/Orckestra/C1-CMS](https://badges.gitter.im/Orckestra/C1-CMS.svg)](https://gitter.im/Orckestra/C1-CMS?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 Composite C1 Web Content Management System - .NET based, open source and a bundle of joy!
 
 [![screen shots from the new Composite C1 user interface (the C1 Console)](http://hackathon.composite.net/maw/github/6-pack-screenshots-small.png)](http://hackathon.composite.net/maw/github/6-pack-screenshots.png)
+
+[![Join the chat at https://gitter.im/Orckestra/C1-CMS](https://badges.gitter.im/Orckestra/C1-CMS.svg)](https://gitter.im/Orckestra/C1-CMS?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 This project has moved from https://compositec1.codeplex.com/ (September 29th 2015). You can still use the forums at CodePlex, but we encourage you submit issues here.
 
