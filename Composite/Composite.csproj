@@ -177,7 +177,6 @@
     <Compile Include="Core\WebClient\Services\ConsoleMessageService\OpenSlideViewParams.cs" />
     <Compile Include="Data\DataScopeServicesFacade.cs" />
     <Compile Include="Data\DataServiceScopeManager.cs" />
-    <Compile Include="Data\Types\ITimedPublishing.cs" />
     <Compile Include="Data\Types\IVersioned.cs" />
     <Compile Include="Data\Types\IVersionedDataHelper.cs" />
     <Compile Include="Data\Types\PageInsertPosition.cs" />

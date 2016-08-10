@@ -3,7 +3,7 @@
 namespace Composite.Data.Types
 {
     /// <summary>
-    /// Represends a data type that supports multiple versions of the same data type
+    /// Represents a data type that supports multiple versions of the same data item
     /// </summary>
     [VersionKeyPropertyName(nameof(VersionId))]
     public interface IVersioned : IData

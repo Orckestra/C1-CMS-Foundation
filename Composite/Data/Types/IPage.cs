@@ -28,7 +28,7 @@ namespace Composite.Data.Types
     [PublishControlledAuxiliary(typeof(PagePublishControlledAuxiliary))]
     [PublishProcessControllerTypeAttribute(typeof(GenericPublishProcessController))]
     [KeyTemplatedXhtmlRenderer(XhtmlRenderingType.Embedable, "<a href='~/page({id})'>{label}</a>")]
-    public interface IPage : IData, IChangeHistory, ICreationHistory, IPublishControlled, ILocalizedControlled, ITimedPublishing
+    public interface IPage : IData, IChangeHistory, ICreationHistory, IPublishControlled, ILocalizedControlled, IVersioned
     {
         /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.Guid)]
