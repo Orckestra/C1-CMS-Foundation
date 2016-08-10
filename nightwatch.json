@@ -33,16 +33,16 @@
         "path" : ""
       },
       "desiredCapabilities": {
-        "browserName": "firefox",
+        "browserName": "chrome",
         "loggingPrefs": { "browser": "ALL" } ,
         "javascriptEnabled": true,
         "acceptSslCerts": true
       }
     },
 
-    "chrome" : {
+    "firefox" : {
       "desiredCapabilities": {
-        "browserName": "chrome",
+        "browserName": "firefox",
         "loggingPrefs": { "browser": "ALL" } ,
         "javascriptEnabled": true,
         "acceptSslCerts": true

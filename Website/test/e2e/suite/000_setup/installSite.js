@@ -80,15 +80,20 @@ module.exports = {
 		//    The “Regional settings” field is set to the same language as in Step 5.
     browser.expect.element('#consolelanguage').value.to.equal(expectedLanguage);
 		// 7  Fill the “Email” field. Value: “john.doe@contoso.com”
+	browser.click('#email');
     browser.setValue('#email', 'john.doe@contoso.com');
 		//    The field is filled with the value.
+	browser.expect.element('#email').value.to.equal('john.doe@contoso.com')
 		//    The “Start C1” button is still disabled.
     browser.expect
       .element('#navlogin clickbutton[label="Start C1"]')
       .to.have.attribute('isdisabled');
 		// 8  Fill the “Password” field. Value: “123456”
+	browser.click('#password');
     browser.setValue('#password', '123456')
 		//    The field is filled with the value.
+	browser.expect.element('#password')
+		.value.to.equal('123456');
 		//    The value is masked.
     browser.expect.element('#password')
       .to.have.attribute('type', 'password')
@@ -97,8 +102,11 @@ module.exports = {
       .element('#navlogin clickbutton[label="Start C1"]')
       .to.have.attribute('isdisabled');
 		// 9  Fill the “Repeat Password” field. Value: “123456”
+	browser.click('#passcheck');
     browser.setValue('#passcheck', '123456')
 		//    The field is filled with the value.
+	browser.expect.element('#passcheck')
+		.value.to.equal('123456');
 		//    The value is masked.
     browser.expect.element('#passcheck')
       .to.have.attribute('type', 'password')
