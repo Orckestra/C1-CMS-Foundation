@@ -38,12 +38,16 @@ namespace Composite.Data.Types
         /// <exclude />
         public static string LocalizedVersionName<T>(this T str) where T : IVersioned
         {
+            var defaultVersionName =
+                Core.ResourceSystem.LocalizationFiles.Composite_Management.DefaultVersionName;
+
             if (_instances == null)
             {
-                return "";
+                return defaultVersionName;
             }
 
-            return _instances.Select(p => p.LocalizedVersionName(str)).Single(name => name != null);
+            return _instances.Select(p => p.LocalizedVersionName(str)).Any(name => name != null)?
+                string.Join(",", _instances.Select(p => p.LocalizedVersionName(str)).Where(name => name != null)): defaultVersionName;
         }
 
         /// <exclude />
