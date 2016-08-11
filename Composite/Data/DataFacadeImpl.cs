@@ -460,7 +460,7 @@ namespace Composite.Data
         private void Delete<T>(IEnumerable<T> dataset, bool suppressEventing, CascadeDeleteType cascadeDeleteType, bool referencesFromAllScopes, HashSet<DataSourceId> dataPendingDeletion)
             where T : class, IData
         {
-            Verify.ArgumentNotNull(dataset, "dataset");
+            Verify.ArgumentNotNull(dataset, nameof(dataset));
 
             dataset = dataset.Evaluate();
 
@@ -477,32 +477,50 @@ namespace Composite.Data
             {
                 foreach (IData element in dataset)
                 {
-                    Verify.ArgumentCondition(element != null, "dataset", "datas may not contain nulls");
+                    Verify.ArgumentCondition(element != null, nameof(dataset), "dataset may not contain nulls");
 
-                    if (element.IsDataReferred())
+                    if (!element.IsDataReferred()) continue;
+
+                    Type interfaceType = element.DataSourceId.InterfaceType;
+
+                    // Not deleting references if the data is versioned and not all of the 
+                    // versions of the element are to be deleted
+                    if (element is IVersioned)
                     {
-                        Verify.IsTrue(cascadeDeleteType != CascadeDeleteType.Disallow, "One of the given datas is referenced by one or more datas");
+                        var key = element.GetUniqueKey();
+                        var versions = DataFacade.TryGetDataVersionsByUniqueKey(interfaceType, key).ToList();
 
-                        element.RemoveOptionalReferences();
-
-                        IEnumerable<IData> referees;
-                        using (new DataScope(element.DataSourceId.DataScopeIdentifier))
+                        if (versions.Count > 1 
+                            && (dataset.Count() < versions.Count
+                                || !versions.All(v => dataPendingDeletion.Contains(v.DataSourceId))))
                         {
-                            // For some wierd reason, this line does not work.... /MRJ
-                            // IEnumerable<IData> referees = dataset.GetRefereesRecursively();
-                            referees = element.GetReferees(referencesFromAllScopes).Where(reference => !dataPendingDeletion.Contains(reference.DataSourceId));
+                            continue;
                         }
-
-                        foreach (IData referee in referees)
-                        {
-                            if (referee.CascadeDeleteAllowed(element.DataSourceId.InterfaceType) == false)
-                            {
-                                throw new InvalidOperationException("One of the given datas is referenced by one or more datas that does not allow cascade delete");
-                            }
-                        }
-
-                        Delete<IData>(referees, suppressEventing, cascadeDeleteType, referencesFromAllScopes);
                     }
+
+                    Verify.IsTrue(cascadeDeleteType != CascadeDeleteType.Disallow, "One of the given datas is referenced by one or more datas");
+
+                    element.RemoveOptionalReferences();
+
+                    IEnumerable<IData> referees;
+                    using (new DataScope(element.DataSourceId.DataScopeIdentifier))
+                    {
+                        // For some weird reason, this line does not work.... /MRJ
+                        // IEnumerable<IData> referees = dataset.GetRefereesRecursively();
+                        referees = element.GetReferees(referencesFromAllScopes)
+                                           .Where(reference => !dataPendingDeletion.Contains(reference.DataSourceId))
+                                           .Evaluate();
+                    }
+
+                    foreach (IData referee in referees)
+                    {
+                        if (!referee.CascadeDeleteAllowed(interfaceType))
+                        {
+                            throw new InvalidOperationException("One of the given datas is referenced by one or more datas that does not allow cascade delete");
+                        }
+                    }
+
+                    Delete<IData>(referees, suppressEventing, cascadeDeleteType, referencesFromAllScopes);
                 }
             }
 
@@ -523,7 +541,7 @@ namespace Composite.Data
             }
 
 
-            if (suppressEventing == false)
+            if (!suppressEventing)
             {
                 foreach (IData element in dataset)
                 {
