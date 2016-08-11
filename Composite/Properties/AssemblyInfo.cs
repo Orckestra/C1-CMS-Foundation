@@ -8,16 +8,16 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 
 #if !InternalBuild
-[assembly: AssemblyTitle("Composite C1 5.0")] 
+[assembly: AssemblyTitle("Composite C1 5.1")] 
 #else
-[assembly: AssemblyTitle("Composite C1 5.0 (Internal Build)")]
+[assembly: AssemblyTitle("Composite C1 5.1 (Internal Build)")]
 #endif
 
 [assembly: AssemblyDescription("Composite C1 Core classes")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Composite A/S")]
 [assembly: AssemblyProduct("Composite C1")]
-[assembly: AssemblyCopyright("Copyright © Composite A/S 2015")]
+[assembly: AssemblyCopyright("Copyright © Composite A/S 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -39,7 +39,7 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
 
-[assembly: AssemblyVersion("5.0.*")]
+[assembly: AssemblyVersion("5.1.*")]
 
 [assembly: InternalsVisibleTo("UpgradePackage")]
 [assembly: InternalsVisibleTo("Composite.Workflows")]
