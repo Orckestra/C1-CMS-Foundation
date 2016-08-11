@@ -189,12 +189,10 @@ UnpublishedPageBinding.prototype.renderTable = function (nodes, selected) {
 		this.addTextCell(row, node.getPropertyBag().PublishDate,
 			{
 				"data-sort-value": node.getPropertyBag().SortablePublishDate ,
-				"class": "date"
 			}
 		);
 		this.addTextCell(row, node.getPropertyBag().UnpublishDate, {
 			"data-sort-value": node.getPropertyBag().SortableUnpublishDate,
-			"class": "date"
 		});
 		this.addTextCell(row, node.getPropertyBag().Created).setAttribute("data-sort-value", node.getPropertyBag().SortableCreated);
 		this.addTextCell(row, node.getPropertyBag().Modified).setAttribute("data-sort-value", node.getPropertyBag().SortableModified);
