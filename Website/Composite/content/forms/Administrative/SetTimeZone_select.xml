@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
+  <cms:bindings>
+    <cms:binding name="TimeZonesSelected" type="System.String" />
+    <cms:binding name="TimeZones" type="System.Object" />
+  </cms:bindings>
+  <cms:layout iconhandle="balloon" label="${Composite.Management, SetTimezoneWorkflow.Layout.Label}">
+    <FieldGroup>
+
+      <KeySelector OptionsKeyField="Key" OptionsLabelField="Value" Label="${Composite.Management, SetTimezoneWorkflow.TitleTextBox.Label}"
+               Help="${Composite.Management, SetTimezoneWorkflow.TitleTextBox.Help}">
+        <KeySelector.Selected>
+          <cms:bind source="TimeZonesSelected" />
+        </KeySelector.Selected>
+        <KeySelector.Options>
+          <cms:read source="TimeZones" />
+        </KeySelector.Options>
+      </KeySelector>
+      <Text Text="${Composite.Management, SetTimezoneWorkflow.WarningText.Text}"/>
+    </FieldGroup>
+  </cms:layout>
+</cms:formdefinition>

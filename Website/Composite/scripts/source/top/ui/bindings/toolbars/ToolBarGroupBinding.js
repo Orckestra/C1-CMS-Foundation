@@ -13,12 +13,12 @@ ToolBarGroupBinding.CLASSNAME_DEFAULTCONTENT = "defaultcontent";
  */
 function ToolBarGroupBinding () {
 
-	/** 
-	 * @type {SystemLogger} 
+	/**
+	 * @type {SystemLogger}
 	 */
 	this.logger = SystemLogger.getLogger ( "ToolBarGroupBinding" );
-	
-	/** 
+
+	/**
 	 * @type {boolean}
 	 */
 	this.isDefaultContent = false;
@@ -33,14 +33,14 @@ ToolBarGroupBinding.prototype.toString = function () {
 }
 
 /**
- * Assign special classname to defaultcontent toolbargroup. 
+ * Assign special classname to defaultcontent toolbargroup.
  * Overloads {Binding#onBindingAttach}
  * @see {ToolBarBinding#addDefaultContent}
  */
 ToolBarGroupBinding.prototype.onBindingAttach = function () {
-	
+
 	ToolBarGroupBinding.superclass.onBindingAttach.call ( this );
-	
+
 	this.addMembers (
 		this.getDescendantBindingsByLocalName ( "toolbarbutton" )
 	);
@@ -68,7 +68,7 @@ ToolBarGroupBinding.prototype.setLayout = function ( layout ) {
 			break;
 		case ToolBarGroupBinding.LAYOUT_FIRST :
 			this.attachClassName ( "first" );
-			break;	
+			break;
 		case ToolBarGroupBinding.LAYOUT_LAST :
 			this.attachClassName ( "last" );
 			break;
@@ -80,11 +80,11 @@ ToolBarGroupBinding.prototype.setLayout = function ( layout ) {
  * @overloads {Binding#show}
  */
 ToolBarGroupBinding.prototype.show = function () {
-	
+
 	ToolBarGroupBinding.superclass.show.call ( this );
 	var parent = this.bindingElement.parentNode;
 	if ( DOMUtil.getLocalName ( parent ) == "toolbarbody" ) {
-		UserInterface.getBinding ( parent ).refreshToolBarGroups ();		
+		UserInterface.getBinding ( parent ).refreshToolBarGroups ();
 	}
 }
 
@@ -93,12 +93,21 @@ ToolBarGroupBinding.prototype.show = function () {
  * @overloads {Binding#hide}
  */
 ToolBarGroupBinding.prototype.hide = function () {
-	
+
 	ToolBarGroupBinding.superclass.hide.call ( this );
 	var parent = this.bindingElement.parentNode;
 	if ( DOMUtil.getLocalName ( parent ) == "toolbarbody" ) {
-		UserInterface.getBinding ( parent ).refreshToolBarGroups ();		
+		UserInterface.getBinding ( parent ).refreshToolBarGroups ();
 	}
+}
+
+/**
+ * Dispose toolbargroup content.
+ */
+ToolBarGroupBinding.prototype.empty = function () {
+
+	this.detachRecursive();
+	this.bindingElement.innerHTML = "";
 }
 
 /**

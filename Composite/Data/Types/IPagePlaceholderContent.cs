@@ -23,7 +23,7 @@ namespace Composite.Data.Types
     [CachingAttribute(CachingType.Full)]
     [PublishProcessControllerTypeAttribute(typeof(GenericPublishProcessController))]
     [Title("C1 Page Content")]
-    public interface IPagePlaceholderContent : IData, IChangeHistory, IPublishControlled, ILocalizedControlled
+    public interface IPagePlaceholderContent : IData, IChangeHistory,ICreationHistory, IPublishControlled, ILocalizedControlled
     {
         /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.Guid)]

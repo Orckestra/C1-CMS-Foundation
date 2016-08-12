@@ -253,8 +253,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
 
             IDictionary<string, string> transitionNames = new Dictionary<string, string>();
-            transitionNames.Add(GenericPublishProcessController.Draft, StringResourceSystemFacade.GetString("Composite.Management", "Website.Forms.Administrative.EditPage.DraftTransition"));
-            transitionNames.Add(GenericPublishProcessController.AwaitingApproval, StringResourceSystemFacade.GetString("Composite.Management", "Website.Forms.Administrative.EditPage.AwaitingApprovalTransition"));
+            transitionNames.Add(GenericPublishProcessController.Draft, StringResourceSystemFacade.GetString("Composite.Management", "PublishingStatus.draft"));
+            transitionNames.Add(GenericPublishProcessController.AwaitingApproval, StringResourceSystemFacade.GetString("Composite.Management", "PublishingStatus.awaitingApproval"));
 
             var username = UserValidationFacade.GetUsername();
             var userPermissionDefinitions = PermissionTypeFacade.GetUserPermissionDefinitions(username);
@@ -264,7 +264,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             {
                 if (GenericPublishProcessController.AwaitingPublicationActionPermissionType.Contains(permissionType))
                 {
-                    transitionNames.Add(GenericPublishProcessController.AwaitingPublication, StringResourceSystemFacade.GetString("Composite.Management", "Website.Forms.Administrative.EditPage.AwaitingPublicationTransition"));
+                    transitionNames.Add(GenericPublishProcessController.AwaitingPublication, StringResourceSystemFacade.GetString("Composite.Management", "PublishingStatus.awaitingPublication"));
                     break;
                 }
             }
