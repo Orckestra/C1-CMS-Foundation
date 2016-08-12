@@ -557,24 +557,50 @@ namespace Composite.Data.Types
         /// </summary>
         /// <param name="pageId"></param>
         /// <param name="versionId"></param>
+        /// <param name="locale"></param>
         public static void DeletePage(Guid pageId, Guid versionId, CultureInfo locale)
         {
-            using (var conn = new DataConnection(locale))
-            using (var scope = TransactionsFacade.CreateNewScope())
+            Verify.ArgumentNotNull(locale, nameof(locale));
+
+            using (var conn = new DataConnection(PublicationScope.Unpublished, locale))
             {
-                var pageToDelete = conn.Get<IPage>()
-                    .Single(p => p.Id == pageId && p.VersionId == versionId);
+                var pages = conn.Get<IPage>().Where(p => p.Id == pageId).ToList();
+                if (pages.Count == 1 && pages[0].VersionId == versionId)
+                {
+                    DeletePage(pages[0]);
+                    return;
+                }
+            }
 
-                var placeholders = conn.Get<IPagePlaceholderContent>()
-                    .Where(p => p.PageId == pageId && p.VersionId == versionId).ToList();
+            var publicationScopes = new[] {PublicationScope.Published, PublicationScope.Unpublished};
 
-                DataFacade.Delete(placeholders, false, false);
-                DataFacade.Delete(pageToDelete);
+            using (var transactionScope = TransactionsFacade.CreateNewScope())
+            {
+                foreach (var publicationScope in publicationScopes)
+                {
+                    using (var conn = new DataConnection(publicationScope, locale))
+                    {
+                        var pageToDelete = conn.Get<IPage>()
+                            .SingleOrDefault(p => p.Id == pageId && p.VersionId == versionId);
 
-                scope.Complete();
+                        var placeholders = conn.Get<IPagePlaceholderContent>()
+                            .Where(p => p.PageId == pageId && p.VersionId == versionId).ToList();
+
+                        if (placeholders.Any())
+                        {
+                            DataFacade.Delete(placeholders, false, false);
+                        }
+
+                        if (pageToDelete != null)
+                        {
+                            DataFacade.Delete(pageToDelete);
+                        }
+                    }
+                }
+
+                transactionScope.Complete();
             }
         }
-
 
 
         internal static bool AddPageTypePageFoldersAndApplications(IPage page)
