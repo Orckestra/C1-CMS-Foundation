@@ -29,7 +29,7 @@
     "less": "^2.1.2",
     "load-grunt-tasks": "3.5.0",
     "mocha": "3.0.1",
-	"nightwatch": "0.9.3",
+    "nightwatch": "0.9.3",
     "node-fetch": "1.6.0",
     "rimraf": "2.5.4",
     "selenium-server-standalone-jar": "2.53.1",
@@ -42,6 +42,7 @@
     "main": "Composite/console/console.js",
     "dependencies": {
       "normalizr": "npm:normalizr@^2.2.1",
+      "plugin-babel": "npm:systemjs-plugin-babel@^0.0.13",
       "react-dom": "npm:react-dom@^15.1.0",
       "react-redux": "npm:react-redux@^4.4.5",
       "redux-thunk": "npm:redux-thunk@^2.1.0",
@@ -61,7 +62,6 @@
       "jodid25519": "npm:jodid25519@^1.0.0",
       "jsbn": "npm:jsbn@0.1",
       "module": "github:jspm/nodelibs-module@^0.2.0-alpha",
-      "plugin-babel": "npm:systemjs-plugin-babel@^0.0.13",
       "punycode": "github:jspm/nodelibs-punycode@^0.2.0-alpha",
       "querystring": "github:jspm/nodelibs-querystring@^0.2.0-alpha",
       "react-addons-test-utils": "npm:react-addons-test-utils@^15.3.0",
@@ -163,4 +163,4 @@
       }
     }
   }
-}
+}

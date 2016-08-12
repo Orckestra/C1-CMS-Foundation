@@ -38,7 +38,6 @@ SystemJS.config({
       "dgram": "github:jspm/nodelibs-dgram@0.2.0-alpha",
       "tty": "github:jspm/nodelibs-tty@0.2.0-alpha",
       "punycode": "github:jspm/nodelibs-punycode@0.2.0-alpha",
-      "plugin-babel": "npm:systemjs-plugin-babel@0.0.13",
       "babel-plugin-transform-react-jsx": "npm:babel-plugin-transform-react-jsx@6.8.0"
     },
     "packages": {
@@ -624,6 +623,7 @@ SystemJS.config({
     "github:*/*.json"
   ],
   map: {
+    "plugin-babel": "npm:systemjs-plugin-babel@0.0.13",
     "magicpen-media": "npm:magicpen-media@1.5.1",
     "messy": "npm:messy@6.11.0",
     "net": "github:jspm/nodelibs-net@0.2.0-alpha",
