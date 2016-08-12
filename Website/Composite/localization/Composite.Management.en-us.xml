@@ -22,7 +22,6 @@
 	<string key="Website.Folder.SelectDialog.Title" value="Select Folder" />
 
   <string key="PublishingStatus.draft" value="Draft" />
-  <string key="PublishingStatus.sentToDraft" value="Sent to Draft" />
   <string key="PublishingStatus.awaitingApproval" value="Awaiting Approval" />
   <string key="PublishingStatus.awaitingPublication" value="Awaiting Publication" />
   <string key="PublishingStatus.published" value="Published" />

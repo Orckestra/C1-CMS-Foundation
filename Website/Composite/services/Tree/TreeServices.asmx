@@ -94,7 +94,6 @@ namespace Composite.Services
                 {GenericPublishProcessController.Draft, Texts.PublishingStatus_draft},
                 {GenericPublishProcessController.AwaitingApproval, Texts.PublishingStatus_awaitingApproval},
                 {GenericPublishProcessController.AwaitingPublication, Texts.PublishingStatus_awaitingPublication},
-				{GenericPublishProcessController.SentToDraft, Texts.PublishingStatus_sentToDraft}
             };
 
             List<Tuple<Element, IPublishControlled>> actionRequiredPages =

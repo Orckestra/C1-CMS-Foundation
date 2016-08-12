@@ -42,9 +42,6 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
         /// <exclude />
         public const string Published = "published";
 
-        /// <exclude />
-        public const string SentToDraft = "sentToDraft";
-
         public static string BulkPublishingCommandsTag { get; } = "BulkPublishingCommands";
 
         private static readonly string _backToAwaitingApproval = "awaitingApprovalBack";
@@ -99,7 +96,6 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
             _transitions = new Dictionary<string, IList<string>>
             {
                 {Draft, new List<string> {AwaitingApproval, AwaitingPublication, Published}},
-                {SentToDraft, new List<string> {AwaitingApproval, AwaitingPublication, Published}},
                 {AwaitingApproval, new List<string> {Draft, AwaitingPublication, Published}},
                 {AwaitingPublication, new List<string> {Draft, AwaitingApproval, Published}},
                 {Published, new List<string> {Draft, AwaitingApproval, AwaitingPublication}}
@@ -108,7 +104,6 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
             _visualTransitions = new Dictionary<string, IList<string>>
             {
                 {Draft, new List<string> { _draftDisabled, _forwardToAwaitingApproval, _forwardToAwaitingPublication, Published }},
-                {SentToDraft, new List<string> { _draftDisabled, _forwardToAwaitingApproval, _forwardToAwaitingPublication, Published }},
                 {AwaitingApproval, new List<string> { Draft, _awaitingApprovalDisabled, _forwardToAwaitingPublication, Published }},
                 {AwaitingPublication, new List<string> { Draft, _backToAwaitingApproval, _awaitingPublicationDisabled, Published }},
                 {Published, new List<string>()} // when public, no "send to" available.
@@ -117,7 +112,6 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
             _transitionNames = new Dictionary<string, string>
             {
                 {Draft, ManagementStrings.PublishingStatus_draft},
-                {SentToDraft, ManagementStrings.PublishingStatus_sentToDraft},
                 {AwaitingApproval, ManagementStrings.PublishingStatus_awaitingApproval},
                 {AwaitingPublication, ManagementStrings.PublishingStatus_awaitingPublication},
                 {Published, ManagementStrings.PublishingStatus_published}
@@ -366,7 +360,11 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
 
             var publishControlled = (IPublishControlled)data;
 
-            IList<string> visualTrans = _visualTransitions[publishControlled.PublicationStatus];
+            IList<string> visualTrans;
+            if (!_visualTransitions.TryGetValue(publishControlled.PublicationStatus, out visualTrans))
+            {
+                throw new InvalidOperationException($"Unknown publication state '{publishControlled.PublicationStatus}'");
+            }
 
             var clientActions = visualTrans.Select(newState => _visualTransitionsActions[newState]()).ToList();
 
@@ -396,7 +394,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
 
 
 
-                if (publishControlled.PublicationStatus == Draft || publishControlled.PublicationStatus == SentToDraft)
+                if (publishControlled.PublicationStatus == Draft)
                 {
                     if (ProcessControllerAttributesFacade.IsActionIgnored(elementProviderType, GenericPublishProcessControllerActionTypeNames.UndoUnpublishedChanges) == false)
                     {
@@ -571,7 +569,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
                     }
                     else if (actionToken is DraftActionToken)
                     {
-                        publishControlled.PublicationStatus = SentToDraft;
+                        publishControlled.PublicationStatus = Draft;
                     }
                     else if (actionToken is AwaitingApprovalActionToken)
                     {
