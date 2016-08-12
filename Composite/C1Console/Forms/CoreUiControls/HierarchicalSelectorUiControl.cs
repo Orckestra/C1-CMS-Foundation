@@ -15,7 +15,7 @@ namespace Composite.C1Console.Forms.CoreUiControls
         public IEnumerable<SelectionTreeNode> TreeNodes { get; set; }
 
         [FormsProperty]
-        public bool MultiSelection { get; set; }
+        public bool AutoSelectChildren { get; set; }
 
         [FormsProperty]
         public bool Required { get; set; }
@@ -31,8 +31,15 @@ namespace Composite.C1Console.Forms.CoreUiControls
         /// <exclude />
         public string Label { get; set; }
 
-        /// <exclude />
+        /// <summary>
+        /// Determines whether a tree element should feature a checkbox.
+        /// </summary>
         public bool Selectable { get; set; }
+
+        /// <summary>
+        /// Determines whether the tree element's checkbox is readonly.
+        /// </summary>
+        public bool Readonly { get; set; }
 
         /// <exclude />
         public string Icon { get; set; }

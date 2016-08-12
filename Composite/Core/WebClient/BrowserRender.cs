@@ -46,7 +46,8 @@ namespace Composite.Core.WebClient
             Error = 2,
             Timeout = 3,
             PhantomServerTimeout = 4,
-            PhantomServerIncorrectResponse = 5
+            PhantomServerIncorrectResponse = 5,
+            PhantomServerNoOutput = 6
         }
 
         public class RenderingResult
@@ -193,7 +194,10 @@ namespace Composite.Core.WebClient
         {
             get
             {
-                return (ApplicationOnlineHandlerFacade.IsApplicationOnline && GlobalInitializerFacade.SystemCoreInitialized && !GlobalInitializerFacade.SystemCoreInitializing && SystemSetupFacade.IsSystemFirstTimeInitialized);
+                return ApplicationOnlineHandlerFacade.IsApplicationOnline 
+                    && GlobalInitializerFacade.SystemCoreInitialized 
+                    && !GlobalInitializerFacade.SystemCoreInitializing 
+                    && SystemSetupFacade.IsSystemFirstTimeInitialized;
             }
         }
 
@@ -216,7 +220,15 @@ namespace Composite.Core.WebClient
 
                     string outputFileName = Path.Combine(TempDirectoryFacade.TempDirectoryPath, "phantomtest.png");
 
-                    await PhantomServer.RenderUrlAsync(cookies, testUrl, outputFileName, "test");
+                    var result = await PhantomServer.RenderUrlAsync(cookies, testUrl, outputFileName, "test");
+
+                    if (result.Status == RenderingResultStatus.PhantomServerTimeout
+                        || result.Status == RenderingResultStatus.PhantomServerIncorrectResponse
+                        || result.Status == RenderingResultStatus.PhantomServerNoOutput)
+                    {
+                        Enabled = false;
+                        Log.LogWarning(LogTitle, "The function preview feature will be turned off as PhantomJs server failed to complete a test HTTP request");
+                    }
                 }
                 catch (Exception ex)
                 {

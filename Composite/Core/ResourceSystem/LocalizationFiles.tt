@@ -99,7 +99,7 @@ namespace Composite.Core.ResourceSystem
                 string key = keyAttr.Value;
 				string value = valueAttr.Value;
 
-                string propertyName = key.Replace(".", "_").Replace("-", "_");
+                string propertyName = key.Replace(".", "_").Replace("-", "_").Replace(" ", "_").Replace("(", "").Replace(")", "").Replace("+", "");
 				if (char.IsDigit(propertyName[0])) propertyName = "_" + propertyName;
 
 				int parametersCount = 0;
@@ -109,12 +109,12 @@ namespace Composite.Core.ResourceSystem
 				}
 
 
-				output.Append(" /// <summary>&quot;%comment%&quot;</summary> \r\n"
+				output.Append("///<summary>&quot;%comment%&quot;</summary> \r\n"
 							   .Replace("%comment%", XmlEncode(value).Replace("\r\n", "\r\n ///")));
 
 
 				if( parametersCount == 0 ) {
-					output.Append(" public static string %property% { get { return T(\"%key%\"); } } \r\n"
+					output.Append("public static string %property%=>T(\"%key%\");\r\n"
 								   .Replace("%comment%", XmlEncode(value).Replace("\r\n", "\r\n ///"))
 								   .Replace("%key%", key)
 								   .Replace("%property%", propertyName));
@@ -131,7 +131,7 @@ namespace Composite.Core.ResourceSystem
 					string parametersDefinitionsStr = string.Join(",", parametersDefinitions);
 					string parametersReferencesStr = string.Join(",", parametersReferences);
 
-					output.Append(" public static string %property%(%parametersDef%) { return string.Format(T(\"%key%\"), %parametersRef%); } \r\n"
+					output.Append("public static string %property%(%parametersDef%)=>string.Format(T(\"%key%\"), %parametersRef%);\r\n"
 								   .Replace("%key%", key)
 								   .Replace("%property%", propertyName)
 								   .Replace("%parametersDef%", parametersDefinitionsStr)

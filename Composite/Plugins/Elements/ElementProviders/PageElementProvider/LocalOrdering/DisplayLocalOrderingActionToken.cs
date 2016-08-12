@@ -6,7 +6,6 @@ using Composite.C1Console.Security;
 
 namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider.LocalOrdering
 {
-    [IgnoreEntityTokenLocking()]
     [ActionExecutor(typeof(DisplayLocalOrderingActionExecutor))]
     internal sealed class DisplayLocalOrderingActionToken : ActionToken
 	{
@@ -25,6 +24,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider.LocalO
             private set;
         }
 
+        public override bool IgnoreEntityTokenLocking => true;
 
         public override IEnumerable<PermissionType> PermissionTypes
         {

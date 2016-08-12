@@ -170,30 +170,160 @@ ui|field.fieldhelp ui|fielddata ui|urlinputdialog input {
 
 
 /* Hierarchical Selector */
-ui|hierarchicalselector{
-	ui|treenode{
-		&.checkbox{
+ui|hierarchicalselector {
+	ui|treenode {
 
-			ui|labelbox{
-				padding-left: 30px;
+		ui|treenode {
+			padding-left: 46px;
+
+			&.checkbox {
+				ui|checkbutton {
+					left: 59px;
+				}
 			}
 
-			ui|checkbutton{
+			&.open::before,
+			&.closed::before {
+				width: 20px;
+			}
+
+			ui|treenode {
+				&::before,
+				&::after {
+					left: 25px;
+				}
+
+				ui|labelbox {
+					&:before,
+					&:after {
+						left: 1px;
+					}
+				}
+			}
+
+			> ui|labelbox {
+				svg {
+					margin-left: 4px;
+				}
+			}
+		}
+
+		> ui|labelbox {
+			ui|labeltext{
+				display: inline;
+			}
+
+			&.textonly {
+				ui|labeltext{
+					padding-left: 4px;
+				}
+			}
+
+			&.open:after {
+				border-top-color: @dialog-bg-color;
+			}
+
+			&.closed:after {
+				border-left-color: @dialog-bg-color;
+			}
+
+			svg {
+				margin-right: 2px;
+			}
+		}
+
+		&::before{
+			width: 30px;
+		}
+
+
+		&::before,
+		&::after {
+			border-color: #D5D5D5;
+			left: 21px;
+		}
+
+		&.checkbox {
+
+			> ui|labelbox {
+				padding-left: 40px;
+			}
+
+			> ui|checkbutton {
 				position: absolute;
 				float: none;
 				top: 2px;
 				left: 18px;
-			}
-		}
-		ui|treenode {
-			&.checkbox{
-				ui|checkbutton{
-					left: 40px;
+				height: 20px;
+
+				&[ischecked='true'] {
+					ui|labelbody {
+						&:before {
+							background: @primary-color;
+							border-color: @primary-color;
+						}
+
+						&:after {
+							content: "";
+							top: 1px;
+							left: 5px;
+							height: 8px;
+							width: 4px;
+							border-bottom: 2px solid @btn-primary-color;
+							border-right: 2px solid @btn-primary-color;
+							-ms-transform: scale(0.9, 1) rotate(40deg);
+							transform: scale(0.9, 1) rotate(40deg);
+						}
+					}
 				}
+
 			}
 		}
 	}
-	> input{
+
+	ui|treebody {
+		background: @dialog-bg-color;
+		padding-top: 22px;
+	}
+
+	> input {
 		display: none;
+	}
+
+	ui|box {
+		height: auto;
+	}
+
+	&.invalid {
+		ui|labeltext {
+			font-weight: inherit;
+		}
+	}
+}
+
+ui|wizardpage,
+ui|dialogpage {
+	ui|hierarchicalselector {
+		ui|box {
+			height: 530px;
+		}
+	}
+
+	ui|pagebody {
+		&.filled {
+			> ui|hierarchicalselector{
+				padding: 0;
+
+				ui|box {
+					border-color: transparent;
+				}
+
+				&.invalid{
+					ui|box {
+						border-color: @field-error-color;
+					}
+				}
+			}
+		}
 	}
 }

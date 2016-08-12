@@ -13,7 +13,6 @@ using Composite.C1Console.Forms.DataServices;
 using Composite.C1Console.Forms.Flows;
 using Composite.C1Console.Scheduling;
 using Composite.C1Console.Security;
-using Composite.C1Console.Trees;
 using Composite.C1Console.Users;
 using Composite.C1Console.Workflow;
 using Composite.C1Console.Workflow.Activities;
@@ -254,8 +253,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
 
             IDictionary<string, string> transitionNames = new Dictionary<string, string>();
-            transitionNames.Add(GenericPublishProcessController.Draft, StringResourceSystemFacade.GetString("Composite.Management", "Website.Forms.Administrative.EditPage.DraftTransition"));
-            transitionNames.Add(GenericPublishProcessController.AwaitingApproval, StringResourceSystemFacade.GetString("Composite.Management", "Website.Forms.Administrative.EditPage.AwaitingApprovalTransition"));
+            transitionNames.Add(GenericPublishProcessController.Draft, StringResourceSystemFacade.GetString("Composite.Management", "PublishingStatus.draft"));
+            transitionNames.Add(GenericPublishProcessController.AwaitingApproval, StringResourceSystemFacade.GetString("Composite.Management", "PublishingStatus.awaitingApproval"));
 
             var username = UserValidationFacade.GetUsername();
             var userPermissionDefinitions = PermissionTypeFacade.GetUserPermissionDefinitions(username);
@@ -265,7 +264,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             {
                 if (GenericPublishProcessController.AwaitingPublicationActionPermissionType.Contains(permissionType))
                 {
-                    transitionNames.Add(GenericPublishProcessController.AwaitingPublication, StringResourceSystemFacade.GetString("Composite.Management", "Website.Forms.Administrative.EditPage.AwaitingPublicationTransition"));
+                    transitionNames.Add(GenericPublishProcessController.AwaitingPublication, StringResourceSystemFacade.GetString("Composite.Management", "PublishingStatus.awaitingPublication"));
                     break;
                 }
             }
@@ -358,37 +357,10 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                                 }
                             }
 
+                            bool newDataAdded = PageServices.AddPageTypePageFoldersAndApplications(selectedPage);
 
-                            // Adding page folders
-                            var pageTypeDataFolderTypeLinks =
-                                DataFacade.GetData<IPageTypeDataFolderTypeLink>().
-                                Where(f => f.PageTypeId == selectedPage.PageTypeId).
-                                Evaluate().
-                                RemoveDeadLinks();
-
-                            foreach (var pageTypeDataFolderTypeLink in pageTypeDataFolderTypeLinks)
+                            if (newDataAdded)
                             {
-                                if (selectedPage.GetFolderDefinitionId(pageTypeDataFolderTypeLink.DataTypeId) != Guid.Empty) continue;
-
-                                selectedPage.AddFolderDefinition(pageTypeDataFolderTypeLink.DataTypeId);
-                                treeviewRequiresRefreshing = true;
-                            }
-
-
-
-                            // Adding applications
-                            var pageTypeTreeLinks =
-                                DataFacade.GetData<IPageTypeTreeLink>().
-                                Where(f => f.PageTypeId == selectedPage.PageTypeId).
-                                Evaluate().
-                                RemoveDeadLinks();
-
-                            foreach (var pageTypeTreeLink in pageTypeTreeLinks)
-                            {
-                                var tree = TreeFacade.GetTree(pageTypeTreeLink.TreeId);
-                                if (tree.HasAttachmentPoints(selectedPage.GetDataEntityToken())) continue;
-
-                                TreeFacade.AddPersistedAttachmentPoint(pageTypeTreeLink.TreeId, typeof(IPage), selectedPage.Id);
                                 treeviewRequiresRefreshing = true;
                             }
                         }
@@ -504,7 +476,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             {
                 var mostSpecificException = ex;
                 while (mostSpecificException.InnerException != null) mostSpecificException = mostSpecificException.InnerException;
-                ShowMessage(DialogType.Error, "Save failed", string.Format("Save failed: {0}", mostSpecificException.Message));
+                ShowMessage(DialogType.Error, "Save failed", $"Save failed: {mostSpecificException.Message}");
                 Log.LogError("Page save", ex);
             }
             finally
@@ -587,15 +559,9 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
         }
 
 
-        private DateTime? PublishDate
-        {
-            get { return GetBinding<DateTime?>("PublishDate"); }
-        }
+        private DateTime? PublishDate => GetBinding<DateTime?>("PublishDate");
 
-        private DateTime? UnpublishDate
-        {
-            get { return GetBinding<DateTime?>("UnpublishDate"); }
-        }
+        private DateTime? UnpublishDate => GetBinding<DateTime?>("UnpublishDate");
 
         private void editPreviewCodeActivity_ExecuteCode(object sender, EventArgs e)
         {

@@ -26,6 +26,16 @@ function CheckTreeNodeBinding() {
 	 */
 	this.selectionValue = null;
 
+	/**
+	 * @type {boolean}
+	 */
+	this.isSelectable = true;
+
+	/**
+	 * @type {boolean}
+	 */
+	this.isReadOnly = false;
+
 	return this;
 }
 
@@ -53,47 +63,78 @@ CheckTreeNodeBinding.prototype.onBindingAttach = function () {
 
 	CheckTreeNodeBinding.superclass.onBindingAttach.call(this);
 
+	this._parseDOMProperties();
 	this._buildCheckButtonBinding();
+
+	if (this.isReadOnly) {
+		this.labelBinding.attachClassName(LabelBinding.CLASSNAME_GRAYTEXT);
+	}
 }
 
+/**
+ * Parse DOM properties, instantiating editation and selectation.
+ */
+CheckTreeNodeBinding.prototype._parseDOMProperties = function () {
+
+	this.isSelectable = this.isSelectable ? true : this.getProperty("selectable");
+}
 
 /**
  * Build button.
  */
 CheckTreeNodeBinding.prototype._buildCheckButtonBinding = function () {
 
-	this._buttonBinding = this.add(
-		CheckButtonBinding.newInstance(this.bindingDocument)
-	);
-	if (this.getProperty("selected") === true) {
-		this._buttonBinding.check(true);
-	}
+	if (this.isSelectable) {
+		this._buttonBinding = CheckButtonBinding.newInstance(this.bindingDocument);
+		this.bindingElement.insertBefore(
+			this._buttonBinding.bindingElement,
+			this.labelBinding.bindingElement.nextSibling
+		);
+		if (this.getProperty("selected") === true) {
+			this._buttonBinding.check(true);
+		}
+		if (this.isReadOnly) {
+			this._buttonBinding.setDisabled(true);
+		}
 
-	var self = this;
-	this._buttonBinding.addActionListener(
+		var self = this;
+		this._buttonBinding.addActionListener(
 			ButtonBinding.ACTION_COMMAND, {
-				handleAction: function (action) {
+				handleAction: function(action) {
 					action.consume();
 					self.dispatchAction(
-							CheckTreeNodeBinding.ACTION_COMMAND
+						CheckTreeNodeBinding.ACTION_COMMAND
 					);
 				}
 			}
-	);
+		);
 
-	this._buttonBinding.attach();
+		this._buttonBinding.attach();
 
-	this.attachClassName(CheckTreeNodeBinding.CLASS_NAME);
+		this.attachClassName(CheckTreeNodeBinding.CLASS_NAME);
+	}
 }
 
 CheckTreeNodeBinding.prototype.isChecked = function () {
 
-	return this._buttonBinding.isChecked;
+	if (this.isSelectable) {
+		return this._buttonBinding.isChecked;
+	}
+	return undefined;
+}
+
+CheckTreeNodeBinding.prototype.setChecked = function (isChecked, isDisableCommand) {
+
+	if (this.isSelectable) {
+		this._buttonBinding.setChecked(isChecked, isDisableCommand);
+	}
 }
 
 CheckTreeNodeBinding.prototype.invoke = function () {
 
-	this._buttonBinding.invoke();
+	if (this.isSelectable) {
+		this._buttonBinding.invoke();
+	}
 }
 
 /**

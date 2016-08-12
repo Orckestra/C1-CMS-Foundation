@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using System.Security.Principal;
 using System.Threading;
 using System.Web;
 using Composite.Core.Instrumentation;
@@ -139,10 +140,7 @@ namespace Composite.Core.Parallelization
             {
                 object synchronizedCollection = Hashtable.Synchronized((Hashtable) items);
 
-                if(HttpContext_ItemsFieldInfo != null)
-                {
-                    HttpContext_ItemsFieldInfo.SetValue(context, synchronizedCollection);
-                }
+                HttpContext_ItemsFieldInfo?.SetValue(context, synchronizedCollection);
             }
         }
 
@@ -164,6 +162,7 @@ namespace Composite.Core.Parallelization
             private readonly CultureInfo _parentThreadLocale;
             private readonly DataScopeIdentifier _parentThreadDataScope;
             private readonly HttpContext _parentThreadHttpContext;
+            private readonly IPrincipal _parentThreadPrincipal;
 
             private readonly CultureInfo _parentThreadCulture;
             private readonly CultureInfo _parentThreadUiCulture;
@@ -176,6 +175,7 @@ namespace Composite.Core.Parallelization
                 _parentThreadLocale = LocalizationScopeManager.CurrentLocalizationScope;
                 _parentThreadDataScope = DataScopeManager.CurrentDataScope;
                 _parentThreadHttpContext = HttpContext.Current;
+                _parentThreadPrincipal = Thread.CurrentPrincipal;
 
                 var currentThread = System.Threading.Thread.CurrentThread;
 
@@ -194,6 +194,7 @@ namespace Composite.Core.Parallelization
 
                 CultureInfo originalCulture = currentThread.CurrentCulture;
                 CultureInfo originalUiCulture = currentThread.CurrentUICulture;
+                var originalPrincipal = Thread.CurrentPrincipal;
                 
                 using (ThreadDataManager.Initialize(_parentData))
                 {
@@ -219,6 +220,7 @@ namespace Composite.Core.Parallelization
 
                         currentThread.CurrentCulture = _parentThreadCulture;
                         currentThread.CurrentUICulture = _parentThreadUiCulture;
+                        Thread.CurrentPrincipal = _parentThreadPrincipal;
 
                         try
                         {
@@ -242,6 +244,7 @@ namespace Composite.Core.Parallelization
                     {
                         currentThread.CurrentCulture = originalCulture;
                         currentThread.CurrentUICulture = originalUiCulture;
+                        Thread.CurrentPrincipal = originalPrincipal;
 
                         HttpContext.Current = originalHttpContext;
 

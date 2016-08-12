@@ -19,110 +19,110 @@ function DialogBinding () {
 	 * @type {SystemLogger}
 	 */
 	this.logger = SystemLogger.getLogger ( "DialogBinding" );
-	
+
 	/**
 	 * Don't flex unless maximized - and we do not yet support maximization.
 	 * @overloads {FlexBoxBinding#isFlexible}
 	 */
 	this.isFlexible = false;
-	
+
 	/**
 	 * @type {DialogHeadBinding}
 	 */
 	this._head = null;
-	
+
 	/**
 	 * @type {DialogBodyBinding}
 	 */
 	this._body = null;
-	
+
 	/**
 	 * @type {DialogCoverBinding}
 	 */
 	this._cover = null;
-	
+
 	/**
 	 * @type {TitleBarBinding}
 	 */
 	this._titlebar = null;
-	
+
 	/**
 	 * This property is set to an instance of {@link DialogBorderBinding} when resizing.
 	 * @type {DialogBorderBinding}
 	 */
 	this._border = null;
-	
+
 	/**
 	 * Relevant for dragging scenario.
 	 * @type {Point}
 	 */
 	this.startPoint = null;
-	
+
 	/**
 	 * Stores position and dimension data.
 	 * @type {object}
 	 */
 	this.geometry = null;
-	
+
 	/**
 	 * @type {boolean}
 	 */
 	this.isActive = false;
-	
+
 	/**
 	 * @type {boolean}
 	 */
 	this.isActivatable = false;
-	
+
 	/**
 	 * TODO: RENAME ISOPEN!
 	 * @type {boolean}
 	 */
 	this.isVisible = false;
-	
+
 	/**
 	 * @type {boolean}
 	 */
 	this._isResizable = true;
-	
+
 	/**
 	 * @type {boolean}
 	 */
 	this.isDialogResizable = true;
-	
+
 	/**
 	 * @type {boolean}
 	 */
 	this.isModal = false;
-	
+
 	/**
 	 * @type {string}
 	 */
 	this.mode = null;
-	
+
 	/**
 	 * @type {HashMap<string><ControlBinding>}
 	 */
 	this.controlBindings = {};
-	
+
 	/**
 	 * @type {int}
 	 */
 	this._index = null;
-	
+
 	/**
 	 * THIS SHOULD BE DECLARED
 	 * @type {Dimension}
 	 *
 	this.startDimension = null;
 	*/
-	
+
 	/**
 	 * Use fancy CSS transitions? Disabled for now...
 	 * @type {boolean}
 	 */
 	this._hasTransitions = false; // Client.hasTransitions
-	
+
 	/*
 	 * Returnable.
 	 */
@@ -142,12 +142,12 @@ DialogBinding.prototype.toString = function () {
  */
 DialogBinding.prototype.onBindingRegister = function () {
 
-	DialogBinding.superclass.onBindingRegister.call ( this ); 
-	
+	DialogBinding.superclass.onBindingRegister.call ( this );
+
 	this.addActionListener ( Binding.ACTION_DRAG, this );
 	this.addActionListener ( FocusBinding.ACTION_ACTIVATED );
 	this.subscribe ( this.bindingWindow.WindowManager.WINDOW_RESIZED_BROADCAST );
-	
+
 	this.buildDescendantBindings ();
 }
 
@@ -158,20 +158,20 @@ DialogBinding.prototype.onBindingAttach = function () {
 
 	DialogBinding.superclass.onBindingAttach.call ( this );
 	this.geometry = this.computeDefaultGeometry ();
-	
+
 	this.parseDOMProperties ();
 	this.buildControlBindings ();
 	this.buildBorderBindings ();
 	this.attachRecursive ();
-	
+
 	if ( this._isResizable ) {
-		this.attachClassName ( "resizable" );	
+		this.attachClassName ( "resizable" );
 	}
-	
+
 	if ( this._hasTransitions ) {
 		this.bindingElement.style.opacity = "0";
 	}
-	
+
 	this.setPosition ( new Point ( 0, 0 ));
 	this.setDimension ( new Dimension ( DialogBinding.DEFAULT_WIDTH, DialogBinding.DEFAULT_HEIGHT ));
 	if ( this.getProperty ( "open" )) {
@@ -193,7 +193,7 @@ DialogBinding.prototype.buildDescendantBindings = function () {
 	this._head.add ( this._titlebar );
 
 	// the dialog body may be declared; if not, we append it dynamically
-	var dialogbody = DOMUtil.getElementsByTagName ( this.bindingElement, "dialogbody" ).item ( 0 );	
+	var dialogbody = DOMUtil.getElementsByTagName ( this.bindingElement, "dialogbody" ).item ( 0 );
 	if ( dialogbody ) {
 		this._body = UserInterface.getBinding ( dialogbody );
 	} else {
@@ -207,7 +207,7 @@ DialogBinding.prototype.buildDescendantBindings = function () {
  */
 DialogBinding.prototype.buildBorderBindings = function () {
 
-	var directions = new List ([ 
+	var directions = new List ([
 		DialogBorderBinding.TYPE_NORTH,
 		DialogBorderBinding.TYPE_SOUTH,
 		DialogBorderBinding.TYPE_EAST,
@@ -224,7 +224,7 @@ DialogBinding.prototype.buildBorderBindings = function () {
  * Build dialog controls.
  */
 DialogBinding.prototype.buildControlBindings = function () {
-	
+
 	var controls = this.getProperty ( "controls" );
 	if ( controls ) {
 		var types = new List ( controls.split ( " " ));
@@ -240,7 +240,7 @@ DialogBinding.prototype.buildControlBindings = function () {
 					this.controlBindings [ type ] = controlBinding;
 					break;
 				default :
-					throw new Error ( 
+					throw new Error (
 						"DialogBinding: Control not added: " + type
 					);
 					break;
@@ -253,7 +253,7 @@ DialogBinding.prototype.buildControlBindings = function () {
  * Build and configure a {@link DialogCoverBinding}
  */
 DialogBinding.prototype.buildDialogCoverBinding = function () {
-	
+
 	this._cover = DialogCoverBinding.newInstance ( this.bindingDocument );
 	this.getAncestorBindingByLocalName ( "dialogset" ).add ( this._cover );
 	this._cover.cover ( this);
@@ -269,7 +269,7 @@ DialogBinding.prototype.parseDOMProperties = function () {
 	var draggable 	= this.getProperty ( "draggable" );
 	var resizable 	= this.getProperty ( "resizable" );
 	var modal 		= this.getProperty ( "modal" );
-	
+
 	if ( image ) {
 		this.setImage ( image );
 	}
@@ -292,7 +292,7 @@ DialogBinding.prototype.parseDOMProperties = function () {
  * @param {boolean} isModal
  */
 DialogBinding.prototype.setModal = function ( isModal ) {
-	
+
 	this.isModal = isModal;
 }
 
@@ -304,9 +304,9 @@ DialogBinding.prototype.setLabel = function ( label ) {
 
 	this.setProperty ( "label", label );
 	if ( this.isAttached == true ) {
-		this._titlebar.setLabel ( 
+		this._titlebar.setLabel (
 			Resolver.resolve ( label )
-		) 
+		)
 	};
 }
 
@@ -327,9 +327,9 @@ DialogBinding.prototype.setImage = function ( url ) {
 
 	this.setProperty ( "image", url );
 	if ( this.isAttached ) {
-		this._titlebar.setImage ( 
+		this._titlebar.setImage (
 			Resolver.resolve ( url )
-		) 
+		)
 	};
 }
 
@@ -339,17 +339,17 @@ DialogBinding.prototype.setImage = function ( url ) {
  * @param {Action} action
  */
 DialogBinding.prototype.handleAction = function ( action ) {
-	
+
 	DialogBinding.superclass.handleAction.call ( this, action );
-		
+
 	switch ( action.type ) {
-	
+
 		case Binding.ACTION_DRAG :
-			
-			var binding = action.target;		
+
+			var binding = action.target;
 			if ( this.getState () == ControlBoxBinding.STATE_NORMAL ) {
 				switch ( binding.constructor ) {
-					case DialogTitleBarBinding :	
+					case DialogTitleBarBinding :
 						this.mode = DialogBinding.MODE_DRAGGING;
 						binding.dragger.registerHandler ( this );
 						break;
@@ -364,20 +364,20 @@ DialogBinding.prototype.handleAction = function ( action ) {
 			}
 			action.consume ();
 			break;
-		
-		case Binding.ACTION_ACTIVATED : 
+
+		case Binding.ACTION_ACTIVATED :
 			if ( !this.isActive ) {
 				this.activate ();
 			}
 			action.consume ();
 			break;
-			
+
 		/*
 		case FocusBinding.ACTION_ACTIVATED :
-			
+
 			/*
-			 * Simply consume the action. The FocusBinding 
-			 * can now analyze the action to get a handle on 
+			 * Simply consume the action. The FocusBinding
+			 * can now analyze the action to get a handle on
 			 * this DialogBinding.
 			 *
 			this.focusBinding = binding;
@@ -395,11 +395,11 @@ DialogBinding.prototype.handleAction = function ( action ) {
 DialogBinding.prototype.handleBroadcast = function ( broadcast, arg ) {
 
 	DialogBinding.superclass.handleBroadcast.call ( this, broadcast, arg );
-	
+
 	switch ( broadcast ) {
 		case this.bindingWindow.WindowManager.WINDOW_RESIZED_BROADCAST :
 			this.startPoint = this.getPosition ();
-			this._setComputedPosition ( 
+			this._setComputedPosition (
 				new Point ( 0, 0 )
 			);
 			break;
@@ -412,9 +412,9 @@ DialogBinding.prototype.handleBroadcast = function ( broadcast, arg ) {
  * @param {ControlBinding} control
  */
 DialogBinding.prototype.handleInvokedControl = function ( control ) {
-	
+
 	DialogBinding.superclass.handleInvokedControl.call ( this, control );
-	
+
 	switch ( control.controlType ) {
 		case ControlBinding.TYPE_CLOSE :
 			this.close ();
@@ -424,34 +424,34 @@ DialogBinding.prototype.handleInvokedControl = function ( control ) {
 
 /**
  * Open dialog.
- * @param {boolean} isAutoHeight Needed to fix an IE bug, see {@link StageDialogBinding#_parsePageBinding} 
+ * @param {boolean} isAutoHeight Needed to fix an IE bug, see {@link StageDialogBinding#_parsePageBinding}
  */
 DialogBinding.prototype.open = function ( isAutoHeight ) {
-	
+
 	if ( this.isModal && this._cover == null ) {
 		this.buildDialogCoverBinding ();
 	}
 	if ( !this.isVisible ) { // WHEN RENAMING THIS TO ISOPEN, SEE STAGEDIALOGBINDING ESCAPE STUFF
-	
+
 		this.setProperty ( "open", "true" );
 		this.isVisible = true;
 		this.isActivatable = true;
 		this.activate ();
-		
+
 		if ( isAutoHeight ) {
 			/*
-			 * centering and flexing needs to be performed 
+			 * centering and flexing needs to be performed
 			 * after this method, see StageDialogBinding
 			 */
 		} else {
 			this.centerOnScreen ();
 			this.reflex ( true );
 		}
-		
+
 		this.bindingElement.style.marginTop = "0";
 		this.dispatchAction ( DialogBinding.ACTION_OPEN );
 		this.dispatchAction ( Binding.ACTION_VISIBILITYCHANGED );
-		
+
 		if ( this._hasTransitions ) {
 			this.bindingElement.style.opacity = "1";
 		}
@@ -462,24 +462,25 @@ DialogBinding.prototype.open = function ( isAutoHeight ) {
  * Close dialog.
  */
 DialogBinding.prototype.close = function () {
-	
+
 	if ( this.isVisible ) {
-		
+
 		this.isActivatable = false;
 		this.deActivate ();
-		
+
 		var self = this;
 		function doit () {
-			
+
+			self.dispatchAction(DialogBinding.ACTION_CLOSE);
+
 			self.isVisible = false;
 			self.deleteProperty ( "open" );
-			
+
 			self.bindingElement.style.marginTop = "-10000px";
-			self.dispatchAction ( DialogBinding.ACTION_CLOSE );
 		}
-		
+
 		if ( !this._hasTransitions ) {
-			setTimeout ( function () { doit (); }, 0);
+			setTimeout(function () { doit(); }, 0);
 		} else {
 			var element = self.bindingElement;
 			setTimeout ( function () {
@@ -513,7 +514,7 @@ DialogBinding.prototype.activate = function () {
  */
 DialogBinding.prototype.deActivate = function () {
 
-	if ( this.isActive == true ) {			
+	if ( this.isActive == true ) {
 		this.isActive = false;
 		this.detachClassName ( "active" );
 		this._titlebar.onDeactivate ();
@@ -525,7 +526,7 @@ DialogBinding.prototype.deActivate = function () {
  * Move panel to highest z-index. Invoked when dialog is activated.
  */
 DialogBinding.prototype.moveToTop = function () {
-	
+
 	/*
 	 * First event intercepted by the DialogSetBinding.
 	 * Second event intercepted by the DialogCoverBinding (if present).
@@ -534,21 +535,21 @@ DialogBinding.prototype.moveToTop = function () {
 	this.dispatchAction ( Binding.ACTION_MOVEDONTOP );
 }
 
-/** 
+/**
  * Get z-index.
  * @return {int}
  */
 DialogBinding.prototype.getZIndex = function () {
-	
+
 	return CSSComputer.getZIndex ( this.bindingElement );
 }
 
-/** 
+/**
  * Set z-index.
  * @param {int} index
  */
 DialogBinding.prototype.setZIndex = function ( index ) {
-	
+
 	this.bindingElement.style.zIndex = new String ( index );
 }
 
@@ -576,7 +577,7 @@ DialogBinding.prototype.onDragStart = function ( point ) {
  * @param {Point} diff
  */
 DialogBinding.prototype.onDrag = function ( diff ) {
-	
+
 	switch ( this.mode ) {
 		case DialogBinding.MODE_DRAGGING :
 			this._setComputedPosition ( diff );
@@ -596,10 +597,10 @@ DialogBinding.prototype.onDrag = function ( diff ) {
 					this.resizeWest ( diff );
 					break;
 			}
-			
+
 			/*
-			 * notice the boolean parameter, invoking fast screen update. 
-			 * This could potentially threaten Explorer if the dialog 
+			 * notice the boolean parameter, invoking fast screen update.
+			 * This could potentially threaten Explorer if the dialog
 			 * contains lots of stuff. This works terrible in Mozilla!
 			 */
 			this.reflex ( true );
@@ -658,7 +659,7 @@ DialogBinding.prototype.resizeWest = function ( diff ) {
 
 	this.setPosition ( new Point ( this.startPoint.x + diff.x, this.startPoint.y ));
 	this.setDimension ( new Dimension ( this.startDimension.w - diff.x, this.startDimension.h ));
-	
+
 }
 
 /**
@@ -669,25 +670,25 @@ DialogBinding.prototype._setComputedPosition = function ( diff ) {
 
  	var win = this.bindingWindow.WindowManager.getWindowDimensions ();
  	var dim = this.getDimension ();
- 	
+
 	var x = this.startPoint.x + diff.x;
 	var y = this.startPoint.y + diff.y;
-	
+
 	x = x < 0 ? 0 : x + dim.w > win.w ? win.w - dim.w : x;
 	y = y < 0 ? 0 : y + dim.h > win.h ? win.h - dim.h : y;
-	
+
 	this.setPosition ( new Point (  x, y ));
 }
 
 /**
  * Set position.
- * @param {Point} p 
+ * @param {Point} p
  */
 DialogBinding.prototype.setPosition = function ( p ) {
-	
+
 	var x = p.x;
 	var y = p.y;
-	
+
 	x = Math.round ( x );
 	this.bindingElement.style.left = x + "px";
 	this.geometry.x = x;
@@ -704,9 +705,9 @@ DialogBinding.prototype.setPosition = function ( p ) {
  */
 DialogBinding.prototype.getPosition = function () {
 
-	return new Point ( 
+	return new Point (
 		this.geometry.x,
-		this.geometry.y 
+		this.geometry.y
 	);
 }
 
@@ -716,14 +717,14 @@ DialogBinding.prototype.getPosition = function () {
  * @param {number} h
  */
 DialogBinding.prototype.setDimension = function ( dim ) {
-	
+
 	if ( !dim ) {
 		SystemDebug.stack ( arguments );
 	}
-	
+
 	var w = dim.w;
 	var h = dim.h;
-	
+
 	w = Math.round ( w );
 	this.bindingElement.style.width = w + "px";
 	this.geometry.w = w;
@@ -739,9 +740,9 @@ DialogBinding.prototype.setDimension = function ( dim ) {
  */
 DialogBinding.prototype.getDimension = function () {
 
-	return new Dimension ( 
+	return new Dimension (
 		this.geometry.w,
-		this.geometry.h 
+		this.geometry.h
 	);
 }
 
@@ -750,7 +751,7 @@ DialogBinding.prototype.getDimension = function () {
  * @param {boolean} isResizable
  */
 DialogBinding.prototype.setResizable = function ( isResizable ) {
-	
+
 	if ( this._isResizable != isResizable ) {
 		if ( isResizable ) {
 			this.attachClassName ( "resizable" );
@@ -766,11 +767,11 @@ DialogBinding.prototype.setResizable = function ( isResizable ) {
  * @return {object}
  */
 DialogBinding.prototype.computeDefaultGeometry = function () {
-	
+
 	var result	= null;
 	var width 	= this.bindingDocument.body.offsetWidth;
 	var height 	= this.bindingDocument.body.offsetHeight;
-	
+
 	result = {
 		x : 0.125 * width,
 		y : 0.125 * height,
@@ -784,10 +785,10 @@ DialogBinding.prototype.computeDefaultGeometry = function () {
  * This actually centers the dialog in the containing *window*.
  */
 DialogBinding.prototype.centerOnScreen = function () {
-	
+
 	var winDim = this.bindingWindow.WindowManager.getWindowDimensions ();
 	var dim = this.getDimension ();
-	
+
 	this.setPosition ( new Point (
 			0.5 * ( winDim.w - dim.w ),
 			0.5 * ( winDim.h - dim.h )
@@ -799,10 +800,10 @@ DialogBinding.prototype.centerOnScreen = function () {
  * This method is invoked on modal panels by the {@link DialogCoverBinding}.
  */
 DialogBinding.prototype.alert = function () {
-	
+
 	var binding = this;
 	var i = 0;
-	
+
 	function blink () {
 		if ( i % 2 == 0 ) {
 			binding.detachClassName ( "active" );
@@ -822,7 +823,7 @@ DialogBinding.prototype.alert = function () {
  * @param {List<string>} list
  */
 DialogBinding.prototype.setControls = function ( list ) {
-	
+
 	for ( var type in this.controlBindings ) {
 		this.controlBindings [ type ].dispose ();
 	}
@@ -832,7 +833,7 @@ DialogBinding.prototype.setControls = function ( list ) {
 		controls += type + list.hasNext () ? " " : "";
 	}
 	this.setProperty ( "controls", controls );
-	
+
 	if ( this.isAttached ) {
 		this.buildControlBindings ();
 	}

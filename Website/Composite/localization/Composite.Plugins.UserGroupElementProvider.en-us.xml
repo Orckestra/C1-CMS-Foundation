@@ -2,7 +2,7 @@
 <strings>
 	<string key="UserGroupElementProvider.RootLabel" value="User Groups"/>
   <string key="UserGroupElementProvider.RootToolTip" value="User Groups"/>
-  <string key="UserGroupElementProvider.AddNewUserGroupLabel" value="Add User Group..."/>  
+  <string key="UserGroupElementProvider.AddNewUserGroupLabel" value="Add User Group"/>  
   <string key="UserGroupElementProvider.AddNewUserGroupToolTip" value="Add new User Group"/>
   <string key="UserGroupElementProvider.EditUserGroupLabel" value="Edit User Group"/>
   <string key="UserGroupElementProvider.EditUserGroupToolTip" value="Edit User Group"/>

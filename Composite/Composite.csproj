@@ -91,6 +91,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\bin\Microsoft.Practices.ObjectBuilder.dll</HintPath>
     </Reference>
+    <Reference Include="NodaTime, Version=1.3.0.0, Culture=neutral, PublicKeyToken=4226afe0d9b296d1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NodaTime.1.3.2\lib\net35-Client\NodaTime.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Configuration.Install" />
@@ -164,6 +168,11 @@
     <Compile Include="C1Console\Actions\Data\DataActionTokenResolver.cs" />
     <Compile Include="C1Console\Actions\Data\DataActionTokenResolverFacade.cs" />
     <Compile Include="C1Console\Actions\Data\DataActionTokenResolverRegistery.cs" />
+    <Compile Include="C1Console\Elements\DialogStrings.cs" />
+    <Compile Include="Data\ICreationHistory.cs" />
+    <Compile Include="Data\Types\PageInsertPosition.cs" />
+    <Compile Include="Plugins\Elements\ElementProviders\PageElementProvider\PageAddActionExecuter.cs" />
+    <Compile Include="Plugins\Elements\ElementProviders\PageElementProvider\PageAddActionToken.cs" />
     <Compile Include="C1Console\Actions\Data\ProxyDataActionExecuter.cs" />
     <Compile Include="C1Console\Actions\Data\ProxyDataActionToken.cs" />
     <Compile Include="Data\ProcessControlled\ProcessControllers\GenericPublishProcessController\GenericPublishProcessDynamicActionTokens.cs" />
@@ -1625,7 +1634,6 @@
     <Compile Include="C1Console\Security\BuildinPlugins\BuildinUserPermissionDefinitionProvider\BuildinUserRoleDefinitionProvider.cs" />
     <Compile Include="C1Console\Security\ConstructorBasedUserPermissionDefinition.cs" />
     <Compile Include="C1Console\Security\Foundation\PluginFacades\UserRoleDefinitionProviderPluginFacade.cs" />
-    <Compile Include="C1Console\Security\IgnoreEntityTokenLocking.cs" />
     <Compile Include="C1Console\Security\ParentsFacade.cs" />
     <Compile Include="C1Console\Security\PermissionDescriptor.cs" />
     <Compile Include="C1Console\Security\PermissionType.cs" />
@@ -2459,7 +2467,9 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>LocalizationFiles.cs</LastGenOutput>
     </None>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Plugins\Functions\FunctionProviders\app.config" />
   </ItemGroup>
   <ItemGroup>

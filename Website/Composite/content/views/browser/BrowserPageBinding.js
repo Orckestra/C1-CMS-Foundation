@@ -33,7 +33,7 @@ function BrowserPageBinding() {
 	this._startURL = null;
 
 	/**
-	 * This will be set to an index in the map declared above. it has two properties: 
+	 * This will be set to an index in the map declared above. it has two properties:
 	 *     history {List<string>}
 	 *     index {int}
 	 * @type {object}
@@ -121,7 +121,7 @@ BrowserPageBinding.prototype.onBindingRegister = function () {
 	this.addActionListener(ViewBinding.ACTION_LOADED);
 	this.addActionListener(PageBinding.ACTION_INITIALIZED);
 	this.addActionListener(SplitterBinding.ACTION_DRAGSTART);
-	this.addActionListener(SplitterBinding.ACTION_DRAGGED); 
+	this.addActionListener(SplitterBinding.ACTION_DRAGGED);
 	this.addActionListener(SystemTreeNodeBinding.ACTION_REFRESHED);
 }
 
@@ -300,7 +300,7 @@ BrowserPageBinding.prototype.onAfterPageInitialize = function () {
 
 /**
 * Set Current View Mode
-* @param {viewMode} 
+* @param {viewMode}
 */
 BrowserPageBinding.prototype.setCurrentViewMode = function (viewMode) {
 
@@ -421,7 +421,7 @@ BrowserPageBinding.prototype.pushToken = function (node, isManual) {
  */
 BrowserPageBinding.prototype.pushNodeURL = function (node, url, isManual) {
 	url = Resolver.resolve(url);
-	
+
 	this.toolingOn = false;
 
 	this._updateHistory({ node: node });
@@ -542,6 +542,7 @@ BrowserPageBinding.prototype.handleAction = function (action) {
 		case SystemTreeNodeBinding.ACTION_REFRESHED:
 			this._autoExpand();
 			action.consume();
+			break;
 
 		case PathBinding.ACTION_COMMAND:
 			this.push(binding.node);
@@ -593,7 +594,7 @@ BrowserPageBinding.prototype._handleSelectedTab = function () {
 	this._updateBroadcasters();
 
 	/*
-	 * Broadcast contained markup for various panels to intercept. Since the markup   
+	 * Broadcast contained markup for various panels to intercept. Since the markup
 	 * extraction requires a server roundtrip, we check for subscribers first.
 	 */
 	if (EventBroadcaster.hasSubscribers(BroadcastMessages.XHTML_MARKUP_ON)) {
@@ -629,7 +630,7 @@ BrowserPageBinding.prototype._handleDocumentLoad = function (binding) {
 	this._updateTabBox(url);
 
 	/*
-	 * Broadcast contained markup for various panels to intercept. Since the markup   
+	 * Broadcast contained markup for various panels to intercept. Since the markup
 	 * extraction requires a server roundtrip, we check for subscribers first.
 	 */
 	if (EventBroadcaster.hasSubscribers(BroadcastMessages.XHTML_MARKUP_ON)) {
@@ -1046,7 +1047,7 @@ BrowserPageBinding.prototype.getUrl = function (url) {
 
 /**
  * Set client width/height for browser iframe
- * For touch device view the Frame Overlay is created to imitate touch device: hand cursor, skip hover effects. 
+ * For touch device view the Frame Overlay is created to imitate touch device: hand cursor, skip hover effects.
  * For touch device view next should work: focus form fields, handle click events, scroll on MOUSE WHEEL, on KEY UP/DOWN, fit window area by using CSS transform.scale feature.
  * @param {int} width
  */
@@ -1122,7 +1123,7 @@ BrowserPageBinding.prototype.setScreen = function (dim, touch) {
 	}
 }
 
-/** 
+/**
   Helper fucntions with Device Frame
 */
 BrowserPageBinding.prototype.getScrollbarWidth = function () {

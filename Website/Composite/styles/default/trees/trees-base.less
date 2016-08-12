@@ -25,7 +25,7 @@ ui|treenode {
 	padding: 0 8px;
 	position: relative;
 
-	ui|labelbox {
+	> ui|labelbox {
 		padding-bottom: 3px;
 		padding-left: 12px;
 		float: none;
@@ -72,7 +72,7 @@ ui|treenode {
 		&.open {
 			&:before {
 				top: 11px;
-				border-top-color: @primary-color; /*Chevron Color*/
+				border-top-color: #999; /*Chevron Color*/
 			}
 
 			&:after {
@@ -88,14 +88,14 @@ ui|treenode {
 		&.closed {
 			&:before {
 				top: 8px;
-				border-left-color: #999; /*Chevron Color*/
+				border-left-color: @primary-color; /*Chevron Color*/
 				left: 2px;
 			}
 
 			&:after {
 				top: 8px;
 				border-left-color: @tree-bg-color;
-				left: 0px;
+				left: 1px;
 			}
 		}
 
@@ -149,6 +149,20 @@ ui|treenode {
 	&.closed {
 		ui|treenode, ui|treecontent {
 			display: none;
+		}
+	}
+
+	&[pin='true'] {
+		> ui|labelbox {
+			&.open{
+				&:before {
+					display: none;
+				}
+
+				&:after {
+					display: none;
+				}
+			}
 		}
 	}
 }

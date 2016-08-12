@@ -2,7 +2,7 @@
 <strings>
 	<string key="ManageUserPermissions.ManageUserPermissionsOnBranchLabel" value="Edit Permissions" />
 	<string key="ManageUserPermissions.ManageUserPermissionsOnItemLabel" value="Edit Permissions" />
-	<string key="ManageUserPermissions.ManageGlobalUserPermissionsLabel" value="Global Permissions" />
+	<string key="ManageUserPermissions.ManageGlobalUserPermissionsLabel" value="User Permission Settings" />
 	<string key="ManageUserPermissions.ManageUserPermissionsToolTip" value="Manage user permissions" />
 	<string key="DataCompositionVisabilityFacade.DefaultContainerLabel" value="Metadata" />
 	<string key="Website.Forms.Administrative.DeleteUserStep1.LabelFieldGroup" value="Delete User?" />
@@ -21,8 +21,12 @@
 	<string key="Website.Image.SelectDialog.Title" value="Select Image" />
 	<string key="Website.Folder.SelectDialog.Title" value="Select Folder" />
 
+  <string key="PublishingStatus.draft" value="Draft" />
+  <string key="PublishingStatus.awaitingApproval" value="Awaiting Approval" />
+  <string key="PublishingStatus.awaitingPublication" value="Awaiting Publication" />
+  <string key="PublishingStatus.published" value="Published" />
 
-	<string key="Website.Forms.Administrative.EditUserStep1.LabelFieldGroup" value="General settings" />
+  <string key="Website.Forms.Administrative.EditUserStep1.LabelFieldGroup" value="General settings" />
 	<string key="Website.Forms.Administrative.EditUserStep1.UserNameLabel" value="User name" />
 	<string key="Website.Forms.Administrative.EditUserStep1.UserNameHelp" value="User names can not be changed. This is a 'read only' field." />
 	<string key="Website.Forms.Administrative.EditUserStep1.PasswordLabel" value="Password" />
@@ -34,10 +38,10 @@
 	<string key="Website.Forms.Administrative.EditUserStep1.GroupLabel" value="Folder" />
 	<string key="Website.Forms.Administrative.EditUserStep1.GroupHelp" value="If you enter a folder name that does not already exist a new folder will be created." />
   <string key="Website.Forms.Administrative.EditUserStep1.LabelLocalizationFieldGroup" value="C1 Console Localization" />
-  <string key="Website.Forms.Administrative.EditUserStep1.CultureLabel" value="Regional settings" />
-	<string key="Website.Forms.Administrative.EditUserStep1.CultureHelp" value="To change the way numbers, dates, and hours are displayed, select an entry from the list." />
-  <string key="Website.Forms.Administrative.EditUserStep1.C1ConsoleLanguageLabel" value="C1 Console Language" />
-  <string key="Website.Forms.Administrative.EditUserStep1.C1ConsoleLanguageHelp" value="Select the language to be used for labels, help texts, dialogs etc. The available options here are limited to languages installed. You may install more languages via the Package system, see Composite.Localization." />
+  <string key="Website.Forms.Administrative.EditUserStep1.CultureLabel" value="Display Preferences" />
+	<string key="Website.Forms.Administrative.EditUserStep1.CultureHelp" value="Display for time, date, and number formats within the console" />
+  <string key="Website.Forms.Administrative.EditUserStep1.C1ConsoleLanguageLabel" value="Console Language Preferences" />
+  <string key="Website.Forms.Administrative.EditUserStep1.C1ConsoleLanguageHelp" value="Language displayed within your console for labels, help texts, dialogs, etc. The available options are limited to language packages installed. See Composite.Localization package for more language options." />
   <string key="Website.Forms.Administrative.EditUserStep1.ActivePerspectiveFieldLabel" value="Perspectives" />
 	<string key="Website.Forms.Administrative.EditUserStep1.ActivePerspectiveMultiSelectLabel" value="Visible perspectives" />
 	<string key="Website.Forms.Administrative.EditUserStep1.ActivePerspectiveMultiSelectHelp" value="Select which perspectives should be visible when the user starts the C1 Console." />
@@ -65,7 +69,7 @@
   <string key="EditUserWorkflow.LockingOwnUserAccount" value="You can not lock your own account." />
 	<string key="UserElementProvider.RootLabel" value="Users" />
 	<string key="UserElementProvider.RootToolTip" value="Users" />
-	<string key="UserElementProvider.AddUserLabel" value="Add User..." />
+	<string key="UserElementProvider.AddUserLabel" value="Add User" />
 	<string key="UserElementProvider.AddUserToolTip" value="Add new user" />
 	<string key="UserElementProvider.EditUserLabel" value="Edit User" />
 	<string key="UserElementProvider.EditUserToolTip" value="Edit selected user" />
@@ -87,10 +91,10 @@
 	<string key="Website.Forms.Administrative.AddNewUserStep1.EmailHelp" value="The e-mail address of the user (optional)." />
 	<string key="Website.Forms.Administrative.AddNewUserStep1.GroupLabel" value="Folder" />
 	<string key="Website.Forms.Administrative.AddNewUserStep1.GroupHelp" value="If you enter a folder name that does not already exist a new folder will be created." />
-	<string key="Website.Forms.Administrative.AddNewUserStep1.CultureLabel" value="Regional settings" />
-	<string key="Website.Forms.Administrative.AddNewUserStep1.CultureHelp" value="To change the way numbers, dates, and hours are displayed, select an entry from the list." />
-  <string key="Website.Forms.Administrative.AddNewUserStep1.C1ConsoleLanguageLabel" value="C1 Console Language" />
-  <string key="Website.Forms.Administrative.AddNewUserStep1.C1ConsoleLanguageHelp" value="Select the language to be used for labels, help texts, dialogs etc. The available options here are limited to languages installed. You may install more languages via the Package system, see Composite.Localization." />
+	<string key="Website.Forms.Administrative.AddNewUserStep1.CultureLabel" value="Display Preferences" />
+	<string key="Website.Forms.Administrative.AddNewUserStep1.CultureHelp" value="Display for time, date, and number formats within the console" />
+  <string key="Website.Forms.Administrative.AddNewUserStep1.C1ConsoleLanguageLabel" value="Console Language Preferences" />
+  <string key="Website.Forms.Administrative.AddNewUserStep1.C1ConsoleLanguageHelp" value="Language displayed within your console for labels, help texts, dialogs, etc. The available options are limited to language packages installed. See Composite.Localization package for more language options." />
   <string key="UserElementProvider.MissingActiveLanguageTitle" value="A language is required" />
 	<string key="UserElementProvider.MissingActiveLanguageMessage" value="To create a user a language is required, but no languages have been added yet. You can add one under the System perspective." />
 	<string key="UserElementProvider.UserLoginIsAlreadyUsed" value="User with the same login already exist" />
@@ -274,14 +278,23 @@
 	<string key="VirtualElementProviderElementProvider.XsltBasedFunctionPerspective" value="Xslt Based Functions" />
 	<string key="VirtualElementProviderElementProvider.RootActions.SendMessageLabel" value="Broadcast Message" />
 	<string key="VirtualElementProviderElementProvider.RootActions.SendMessageTooltip" value="Send a message to all running consoles" />
-	<string key="VirtualElementProviderElementProvider.RootActions.RestartApplicationLabel" value="Restart server" />
+  <string key="VirtualElementProviderElementProvider.RootActions.SetTimezoneLabel" value="Time Zone Settings" />
+  <string key="VirtualElementProviderElementProvider.RootActions.SetTimezoneTooltip" value="Time zone to be displayed for all users within the console" />
+  <string key="VirtualElementProviderElementProvider.RootActions.GlobalSetting" value="Global Settings" />
+  <string key="VirtualElementProviderElementProvider.RootActions.RestartApplicationLabel" value="Restart server" />
 	<string key="VirtualElementProviderElementProvider.RootActions.RestartApplicationTooltip" value="Restart the server" />
 	<string key="SendMessageToConsolesWorkflow.Layout.Label" value="Broadcast Message to All {applicationname} Consoles" />
 	<string key="SendMessageToConsolesWorkflow.TitleTextBox.Label" value="Title" />
-	<string key="SendMessageToConsolesWorkflow.TitleTextBox.Help" value="Dialog title of broadcast message" />
+  <string key="SendMessageToConsolesWorkflow.TitleTextBox.Help" value="Dialog title of broadcast message" />
 	<string key="SendMessageToConsolesWorkflow.MessageTextArea.Label" value="Message" />
 	<string key="SendMessageToConsolesWorkflow.MessageTextArea.Help" value="The message to broadcast" />
-	<string key="LoginWebRequestHandler.Login" value="Login" />
+  <string key="SendMessageToConsolesWorkflow.SuccessMessage.TimezoneChangedTitle" value="Time Zone Updated" />
+  <string key="SendMessageToConsolesWorkflow.SuccessMessage.TimezoneChangedMessage" value="Time zone has been successfully updated" />
+  <string key="SetTimezoneWorkflow.Layout.Label" value="Set Time Zone Display" />
+  <string key="SetTimezoneWorkflow.TitleTextBox.Label" value="Select Time Zone" />
+  <string key="SetTimezoneWorkflow.TitleTextBox.Help" value="Time zone to be displayed for all users within the console. The console will restart once time zone updated. Any unsaved changes will be lost." />
+  <string key="SetTimezoneWorkflow.WarningText.Text" value="Time zone update requires a console restart. Any unsaved changes will be lost." />
+  <string key="LoginWebRequestHandler.Login" value="Login" />
 	<string key="LoginWebRequestHandler.Header" value="Login to {0}" />
 	<string key="LoginWebRequestHandler.LoginFailed" value="Incorrect user name or password" />
 	<string key="LoginWebRequestHandler.Password" value="Password" />
@@ -620,11 +633,8 @@
 	<string key="Website.Forms.Administrative.EditMediaFolder.LabelDescription" value="Description" />
 	<string key="Website.Forms.Administrative.EditMediaFolder.HelpDescription" value="" />
 	<string key="Website.Forms.Administrative.EditMediaFolder.TotalFilenameToLong.Message" value="The folder contains a file where the total length of the filename and the new folder name is too long" />
-	<string key="Website.Forms.Administrative.EditPage.DraftTransition" value="Draft" />
-	<string key="Website.Forms.Administrative.EditPage.AwaitingApprovalTransition" value="Awaiting Approval" />
-	<string key="Website.Forms.Administrative.EditPage.AwaitingPublicationTransition" value="Awaiting Publication" />
-  <string key="Website.Forms.Administrative.EditPage.PublishDatePreventPublishTitle" value="Saved, but not published" />
-  <string key="Website.Forms.Administrative.EditPage.PublishDatePreventPublish" value="Your page has been saved, but not published since you have a future publish date set on the 'Settings' tab." />
+	<string key="Website.Forms.Administrative.EditPage.PublishDatePreventPublishTitle" value="Saved, but not published" />
+	<string key="Website.Forms.Administrative.EditPage.PublishDatePreventPublish" value="Your page has been saved, but not published since you have a future publish date set on the 'Settings' tab." />
   <string key="Website.Forms.Administrative.ElementKeywordSearch.LabelFieldGroup" value="Search" />
 	<string key="Website.Forms.Administrative.ElementKeywordSearch.LabelKeyword" value="Keyword" />
 	<string key="Website.Forms.Administrative.ElementKeywordSearch.LabelSearchKeyword" value="Write a keyword to search for." />
@@ -655,7 +665,7 @@
 	<string key="Website.Misc.MultiSelector.LabelEditSelections" value="Edit Selections" />
 	<string key="GenericVersionProcessController.Version" value="Version information" />
 	<string key="GenericVersionProcessController.VersionToolTip" value="Show version information" />
-	<string key="AspNetUiControl.Selector.SelectValueLabel" value="Select a value..." />
+	<string key="AspNetUiControl.Selector.SelectValueLabel" value="Select a value" />
 	<string key="AspNetUiControl.Selector.BrokenReference" value="&lt; broken reference &gt;..." />
 	<string key="AspNetUiControl.Selector.NoSelection" value="(no selection)" />
 	<string key="AspNetUiControl.Selector.NoMatchesFor" value="No matches for '{0}'" />

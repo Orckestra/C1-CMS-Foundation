@@ -1,5 +1,6 @@
 <%@ Control Language="C#" Inherits="Composite.Plugins.Forms.WebChannel.UiControlFactories.HierarchicalSelectorTemplateUserControlBase" %>
 <%@ Import Namespace="Composite.C1Console.Forms.CoreUiControls" %>
+<%@ Import Namespace="Composite.Core.Extensions" %>
 <%@ Import Namespace="Composite.Core.Types" %>
 <%@ Import Namespace="Composite.Plugins.Forms.WebChannel.UiControlFactories" %>
 
@@ -19,7 +20,6 @@
 		{
 			result.AddRange(postedValue.Split(','));
 		}
-
 		this.SelectedKeys = result;
 
 
@@ -57,6 +57,20 @@
 				sb.AppendFormat(" selected=\"true\"");
 			}
 
+			if (treeNode.Selectable)
+			{
+				sb.AppendFormat(" selectable=\"true\"");
+			}
+		}
+
+		if (!treeNode.Icon.IsNullOrEmpty())
+		{
+			sb.AppendFormat(" image=\"{0}\"", treeNode.Icon);
+		}
+
+		if (treeNode.Readonly)
+		{
+			sb.AppendFormat(" readonly=\"true\"");
 		}
 
 		if (treeNode.Children == null || !treeNode.Children.Any())
@@ -78,6 +92,8 @@
 </script>
 
 
-<ui:hierarchicalselector name="<%= this.ClientID %>" required="<%= Required ? "true" : "false" %>">
+<ui:hierarchicalselector name="<%= this.ClientID %>"
+	 required="<%= Required ? "true" : "false" %>"
+	 autoselectchildren="<%= AutoSelectChildren ? "true" : "false" %>">
 	<%= _treeXhml %>
 </ui:hierarchicalselector>

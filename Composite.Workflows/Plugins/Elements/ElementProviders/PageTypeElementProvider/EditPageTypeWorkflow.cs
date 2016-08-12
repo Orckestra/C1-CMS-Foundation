@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Transactions;
 using System.Workflow.Activities;
 using Composite.Core.PageTemplates;
 using Composite.Data;
@@ -12,6 +11,7 @@ using Composite.Data.Transactions;
 using Composite.C1Console.Trees;
 using Composite.C1Console.Workflow;
 
+using Texts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_Plugins_PageTypeElementProvider;
 
 namespace Composite.Plugins.Elements.ElementProviders.PageTypeElementProvider
 {
@@ -28,24 +28,20 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTypeElementProvider
 
         private void CleanDeadLinks(Guid pageTypeId)
         {
-            IEnumerable<IPageTypeMetaDataTypeLink> pageTypeMetaDataTypeLinks =
-                DataFacade.GetData<IPageTypeMetaDataTypeLink>().
-                Where(f => f.PageTypeId == pageTypeId).
-                Evaluate().
-                RemoveDeadLinks();
+            DataFacade.GetData<IPageTypeMetaDataTypeLink>()
+                .Where(f => f.PageTypeId == pageTypeId)
+                .Evaluate()
+                .RemoveDeadLinks();
 
-            IEnumerable<IPageTypeDataFolderTypeLink> pageTypeDataFolderTypeLinks =
-                DataFacade.GetData<IPageTypeDataFolderTypeLink>().
-                Where(f => f.PageTypeId == pageTypeId).
-                Evaluate().
-                RemoveDeadLinks();
+            DataFacade.GetData<IPageTypeDataFolderTypeLink>()
+                .Where(f => f.PageTypeId == pageTypeId)
+                .Evaluate()
+                .RemoveDeadLinks();
 
-
-            IEnumerable<IPageTypeTreeLink> pageTypeTreeLinks =
-                DataFacade.GetData<IPageTypeTreeLink>().
-                Where(f => f.PageTypeId == pageTypeId).
-                Evaluate().
-                RemoveDeadLinks();
+            DataFacade.GetData<IPageTypeTreeLink>()
+                .Where(f => f.PageTypeId == pageTypeId)
+                .Evaluate()
+                .RemoveDeadLinks();
         }
 
 
@@ -63,19 +59,27 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTypeElementProvider
                 OrderBy(f => f.Name).
                 ToList(f => new KeyValuePair<Guid, string>(f.Id, f.Name));
 
-            List<KeyValuePair<Guid, string>> defaultPageTypeOptions = new List<KeyValuePair<Guid, string>>();
-            defaultPageTypeOptions.Add(new KeyValuePair<Guid, string>(Guid.Empty, StringResourceSystemFacade.GetString("Composite.Plugins.PageTypeElementProvider", "PageType.EditPageTypeWorkflow.DefaultChildPageTypeKeySelector.NoneSelectedLabel")));
+            var defaultPageTypeOptions = new List<KeyValuePair<Guid, string>>
+            {
+                new KeyValuePair<Guid, string>(Guid.Empty,
+                   Texts.PageType_EditPageTypeWorkflow_DefaultChildPageTypeKeySelector_NoneSelectedLabel)
+            };
+
             defaultPageTypeOptions.AddRange(pageTypes);
 
             this.Bindings.Add("DefaultChildPageTypeOptions", defaultPageTypeOptions);
 
-                
 
+            Func<PageTypeHomepageRelation, KeyValuePair<string, string> > getOption =
+                relation =>
+                    new KeyValuePair<string, string>(
+                        relation.ToPageTypeHomepageRelationString(),
+                        GetText($"PageType.EditPageTypeWorkflow.HomepageRelationKeySelector.{relation}Label"));
 
-            this.Bindings.Add("HomepageRelationOptions", new List<KeyValuePair<string, string>> { 
-               new KeyValuePair<string, string>(PageTypeHomepageRelation.NoRestriction.ToPageTypeHomepageRelationString(), StringResourceSystemFacade.GetString("Composite.Plugins.PageTypeElementProvider", string.Format("PageType.EditPageTypeWorkflow.HomepageRelationKeySelector.{0}Label", PageTypeHomepageRelation.NoRestriction))),
-               new KeyValuePair<string, string>(PageTypeHomepageRelation.OnlyHomePages.ToPageTypeHomepageRelationString(), StringResourceSystemFacade.GetString("Composite.Plugins.PageTypeElementProvider", string.Format("PageType.EditPageTypeWorkflow.HomepageRelationKeySelector.{0}Label", PageTypeHomepageRelation.OnlyHomePages))),
-               new KeyValuePair<string, string>(PageTypeHomepageRelation.OnlySubPages.ToPageTypeHomepageRelationString(), StringResourceSystemFacade.GetString("Composite.Plugins.PageTypeElementProvider", string.Format("PageType.EditPageTypeWorkflow.HomepageRelationKeySelector.{0}Label", PageTypeHomepageRelation.OnlySubPages))),
+            this.Bindings.Add("HomepageRelationOptions", new List<KeyValuePair<string, string>> {
+               getOption(PageTypeHomepageRelation.NoRestriction),
+               getOption(PageTypeHomepageRelation.OnlyHomePages),
+               getOption(PageTypeHomepageRelation.OnlySubPages),
             });
 
 
@@ -84,8 +88,11 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTypeElementProvider
                 OrderBy(f => f.Title).
                 ToList(f => new KeyValuePair<Guid, string>(f.Id, f.Title));
 
-            List<KeyValuePair<Guid, string>> defaultPageTempatesOptions = new List<KeyValuePair<Guid, string>>();
-            defaultPageTempatesOptions.Add(new KeyValuePair<Guid, string>(Guid.Empty, StringResourceSystemFacade.GetString("Composite.Plugins.PageTypeElementProvider", "PageType.EditPageTypeWorkflow.DefaultPageTemplateKeySelector.NoneSelectedLabel")));
+            var defaultPageTempatesOptions = new List<KeyValuePair<Guid, string>>
+            {
+                new KeyValuePair<Guid, string>(Guid.Empty,
+                    Texts.PageType_EditPageTypeWorkflow_DefaultPageTemplateKeySelector_NoneSelectedLabel)
+            };
             defaultPageTempatesOptions.AddRange(pageTemplates);
 
             this.Bindings.Add("DefaultTemplateOptions", defaultPageTempatesOptions);
@@ -101,10 +108,10 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTypeElementProvider
                 ToList();
 
             this.Bindings.Add("TemplateRestrictionSelected", selectedPageTemplateIds);
-         
-   
-            List<KeyValuePair<Guid, string>> parentRestrictingPageTypes = 
-                DataFacade.GetData<IPageType>().              
+
+
+            List<KeyValuePair<Guid, string>> parentRestrictingPageTypes =
+                DataFacade.GetData<IPageType>().
                 OrderBy(f => f.Name).
                 ToList(f => new KeyValuePair<Guid, string>(f.Id, f.Name));
 
@@ -119,9 +126,9 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTypeElementProvider
 
             this.Bindings.Add("PageTypeChildRestrictionSelected", selectedPageTypeParentRestrictions);
 
-            
-            List<KeyValuePair<Guid, string>> dataFolderTypes = 
-                PageFolderFacade.GetAllFolderTypes().                
+
+            List<KeyValuePair<Guid, string>> dataFolderTypes =
+                PageFolderFacade.GetAllFolderTypes().
                 OrderBy(f => f.FullName).
                 ToList(f => new KeyValuePair<Guid, string>(f.GetImmutableTypeId(), f.GetTypeTitle()));
 
@@ -135,11 +142,11 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTypeElementProvider
                 ToList();
 
             this.Bindings.Add("DataFolderSelected", selectedDataFolderTypes);
-            
+
 
             List<KeyValuePair<string, string>> applications =
                 TreeFacade.AllTrees.
-                Where(f => string.IsNullOrEmpty(f.AllowedAttachmentApplicationName) == false).
+                Where(f => !string.IsNullOrEmpty(f.AllowedAttachmentApplicationName)).
                 OrderBy(f => f.TreeId).
                 ToList(f => new KeyValuePair<string, string>(f.TreeId, f.AllowedAttachmentApplicationName));
 
@@ -152,7 +159,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTypeElementProvider
                 Select(f => f.TreeId).
                 ToList();
 
-            this.Bindings.Add("ApplicationSelected", selectedApplications);           
+            this.Bindings.Add("ApplicationSelected", selectedApplications);
         }
 
 
@@ -163,9 +170,11 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTypeElementProvider
             List<Guid> selectedPageTemplateIds = this.GetBinding<List<Guid>>("TemplateRestrictionSelected");
             List<Guid> selectedPageTypeParentRestrictions = this.GetBinding<List<Guid>>("PageTypeChildRestrictionSelected");
 
-            if ((pageType.DefaultTemplateId != Guid.Empty) && (selectedPageTemplateIds.Count > 0) && (selectedPageTemplateIds.Contains(pageType.DefaultTemplateId) == false))
+            if (pageType.DefaultTemplateId != Guid.Empty 
+                && selectedPageTemplateIds.Count > 0 
+                && !selectedPageTemplateIds.Contains(pageType.DefaultTemplateId))
             {
-                this.ShowFieldMessage("DefaultTemplateSelected", "${Composite.Plugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.ValidationError.DefaultTemplateNotInRestrictions}");
+                this.ShowFieldMessage("DefaultTemplateSelected", Texts.PageType_EditPageTypeWorkflow_ValidationError_DefaultTemplateNotInRestrictions);
                 SetSaveStatus(false);
                 e.Result = false;
                 return;
@@ -173,7 +182,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTypeElementProvider
 
             if ((pageType.HomepageRelation == PageTypeHomepageRelation.OnlyHomePages.ToPageTypeHomepageRelationString()) && (selectedPageTypeParentRestrictions.Count > 0))
             {
-                this.ShowFieldMessage("PageType.HomepageRelation", "${Composite.Plugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.ValidationError.HomepageRelationConflictsWithParentRestrictions}");
+                this.ShowFieldMessage("PageType.HomepageRelation", Texts.PageType_EditPageTypeWorkflow_ValidationError_HomepageRelationConflictsWithParentRestrictions);
                 SetSaveStatus(false);
                 e.Result = false;
                 return;
@@ -186,11 +195,11 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTypeElementProvider
 
         private void saveCodeActivity_Save_ExecuteCode(object sender, EventArgs e)
         {
-            using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope())
+            using (var transactionScope = TransactionsFacade.CreateNewScope())
             {
-                ConditionalEventArgs args = new ConditionalEventArgs();
+                var args = new ConditionalEventArgs();
                 editCodeActivity_ValidateBindings(this, args);
-                if (args.Result == false) return;
+                if (!args.Result) return;
 
                 IPageType pageType = this.GetBinding<IPageType>("PageType");
 
@@ -204,6 +213,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTypeElementProvider
                 transactionScope.Complete();
             }
 
+            this.RefreshParentEntityToken();
+
             SetSaveStatus(true);
         }
 
@@ -213,28 +224,29 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTypeElementProvider
         {
             List<Guid> selectedPageTemplateIds = this.GetBinding<List<Guid>>("TemplateRestrictionSelected");
 
-            IEnumerable<IPageTypePageTemplateRestriction> pageTypePageTemplateRestrictions = DataFacade.GetData<IPageTypePageTemplateRestriction>().Where(f => f.PageTypeId == pageType.Id).Evaluate();
+            var pageTypePageTemplateRestrictions = DataFacade.GetData<IPageTypePageTemplateRestriction>()
+                .Where(f => f.PageTypeId == pageType.Id).Evaluate();
 
             // Remove deselected
             foreach (IPageTypePageTemplateRestriction restriction in pageTypePageTemplateRestrictions)
             {
-                if (selectedPageTemplateIds.Contains(restriction.PageTemplateId) == false)
+                if (!selectedPageTemplateIds.Contains(restriction.PageTemplateId))
                 {
-                    DataFacade.Delete<IPageTypePageTemplateRestriction>(restriction);
+                    DataFacade.Delete(restriction);
                 }
             }
 
             // Add newly selected
             foreach (Guid templateId in selectedPageTemplateIds)
             {
-                if (pageTypePageTemplateRestrictions.Where(f => f.PageTemplateId == templateId).Any() == false)
+                if (!pageTypePageTemplateRestrictions.Any(f => f.PageTemplateId == templateId))
                 {
-                    IPageTypePageTemplateRestriction pageTypePageTemplateRestriction = DataFacade.BuildNew<IPageTypePageTemplateRestriction>();
+                    var pageTypePageTemplateRestriction = DataFacade.BuildNew<IPageTypePageTemplateRestriction>();
                     pageTypePageTemplateRestriction.Id = Guid.NewGuid();
                     pageTypePageTemplateRestriction.PageTypeId = pageType.Id;
                     pageTypePageTemplateRestriction.PageTemplateId = templateId;
 
-                    DataFacade.AddNew<IPageTypePageTemplateRestriction>(pageTypePageTemplateRestriction);
+                    DataFacade.AddNew(pageTypePageTemplateRestriction);
                 }
             }
         }
@@ -245,28 +257,29 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTypeElementProvider
         {
             List<Guid> selectedPageTypeParentRestrictions = this.GetBinding<List<Guid>>("PageTypeChildRestrictionSelected");
 
-            IEnumerable<IPageTypeParentRestriction> pageTypeParentRestrictions = DataFacade.GetData<IPageTypeParentRestriction>().Where(f => f.PageTypeId == pageType.Id).Evaluate();
+            var pageTypeParentRestrictions = DataFacade.GetData<IPageTypeParentRestriction>()
+                .Where(f => f.PageTypeId == pageType.Id).Evaluate();
 
             // Remove deselected
             foreach (IPageTypeParentRestriction restriction in pageTypeParentRestrictions)
             {
-                if (selectedPageTypeParentRestrictions.Contains(restriction.AllowedParentPageTypeId) == false)
+                if (!selectedPageTypeParentRestrictions.Contains(restriction.AllowedParentPageTypeId))
                 {
-                    DataFacade.Delete<IPageTypeParentRestriction>(restriction);
+                    DataFacade.Delete(restriction);
                 }
             }
 
             // Add newly selected
             foreach (Guid templateId in selectedPageTypeParentRestrictions)
             {
-                if (pageTypeParentRestrictions.Where(f => f.AllowedParentPageTypeId == templateId).Any() == false)
+                if (!pageTypeParentRestrictions.Any(f => f.AllowedParentPageTypeId == templateId))
                 {
-                    IPageTypeParentRestriction pageTypeParentRestriction = DataFacade.BuildNew<IPageTypeParentRestriction>();
+                    var pageTypeParentRestriction = DataFacade.BuildNew<IPageTypeParentRestriction>();
                     pageTypeParentRestriction.Id = Guid.NewGuid();
                     pageTypeParentRestriction.PageTypeId = pageType.Id;
                     pageTypeParentRestriction.AllowedParentPageTypeId = templateId;
 
-                    DataFacade.AddNew<IPageTypeParentRestriction>(pageTypeParentRestriction);
+                    DataFacade.AddNew(pageTypeParentRestriction);
                 }
             }
         }
@@ -277,28 +290,29 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTypeElementProvider
         {
             List<Guid> selectedDataFolderTypeIds = this.GetBinding<List<Guid>>("DataFolderSelected");
 
-            IEnumerable<IPageTypeDataFolderTypeLink> pageTypeDateFolderTypeLinks = DataFacade.GetData<IPageTypeDataFolderTypeLink>().Where(f => f.PageTypeId == pageType.Id).Evaluate();
+            var pageTypeDateFolderTypeLinks = DataFacade.GetData<IPageTypeDataFolderTypeLink>()
+                .Where(f => f.PageTypeId == pageType.Id).Evaluate();
 
             // Remove deselected
             foreach (IPageTypeDataFolderTypeLink dataFolderTypeLink in pageTypeDateFolderTypeLinks)
             {
-                if (selectedDataFolderTypeIds.Contains(dataFolderTypeLink.DataTypeId) == false)
+                if (!selectedDataFolderTypeIds.Contains(dataFolderTypeLink.DataTypeId))
                 {
-                    DataFacade.Delete<IPageTypeDataFolderTypeLink>(dataFolderTypeLink);
+                    DataFacade.Delete(dataFolderTypeLink);
                 }
             }
 
             // Add newly selected
             foreach (Guid dataFolderTypeId in selectedDataFolderTypeIds)
             {
-                if (pageTypeDateFolderTypeLinks.Where(f => f.DataTypeId == dataFolderTypeId).Any() == false)
+                if (!pageTypeDateFolderTypeLinks.Any(f => f.DataTypeId == dataFolderTypeId))
                 {
                     IPageTypeDataFolderTypeLink pageTypeDateFolderTypeLink = DataFacade.BuildNew<IPageTypeDataFolderTypeLink>();
                     pageTypeDateFolderTypeLink.Id = Guid.NewGuid();
                     pageTypeDateFolderTypeLink.PageTypeId = pageType.Id;
                     pageTypeDateFolderTypeLink.DataTypeId = dataFolderTypeId;
 
-                    DataFacade.AddNew<IPageTypeDataFolderTypeLink>(pageTypeDateFolderTypeLink);
+                    DataFacade.AddNew(pageTypeDateFolderTypeLink);
                 }
             }
         }
@@ -309,21 +323,22 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTypeElementProvider
         {
             List<string> selectedTreeIds = this.GetBinding<List<string>>("ApplicationSelected");
 
-            IEnumerable<IPageTypeTreeLink> pageTypeTreeLinks = DataFacade.GetData<IPageTypeTreeLink>().Where(f => f.PageTypeId == pageType.Id).Evaluate();
+            var pageTypeTreeLinks = DataFacade.GetData<IPageTypeTreeLink>()
+                .Where(f => f.PageTypeId == pageType.Id).Evaluate();
 
             // Remove deselected
             foreach (IPageTypeTreeLink treeLink in pageTypeTreeLinks)
             {
-                if (selectedTreeIds.Contains(treeLink.TreeId) == false)
+                if (!selectedTreeIds.Contains(treeLink.TreeId))
                 {
-                    DataFacade.Delete<IPageTypeTreeLink>(treeLink);                        
+                    DataFacade.Delete<IPageTypeTreeLink>(treeLink);
                 }
             }
 
             // Add newly selected
             foreach (string treeId in selectedTreeIds)
             {
-                if (pageTypeTreeLinks.Where(f => f.TreeId == treeId).Any() == false)
+                if (!pageTypeTreeLinks.Any(f => f.TreeId == treeId))
                 {
                     IPageTypeTreeLink pageTypeTreeLink = DataFacade.BuildNew<IPageTypeTreeLink>();
                     pageTypeTreeLink.Id = Guid.NewGuid();
@@ -333,6 +348,11 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTypeElementProvider
                     DataFacade.AddNew<IPageTypeTreeLink>(pageTypeTreeLink);
                 }
             }
-        }        
+        }
+
+        private static string GetText(string key)
+        {
+            return StringResourceSystemFacade.GetString("Composite.Plugins.PageTypeElementProvider", key);
+        }
     }
 }

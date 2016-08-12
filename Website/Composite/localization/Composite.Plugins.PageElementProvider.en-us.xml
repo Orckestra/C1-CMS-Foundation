@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <strings>
   <string key="AddNewPageStep1.DialogLabel" value="Add New Page" />
+  <string key="AddNewPageStep1.DialogLabelFormat" value="Add New {0}" />
   <string key="GeneralSettings.FieldGroupLabel" value="General settings" />
   <string key="PublicationSettings.FieldGroupLabel" value="Publication settings" />
   <string key="AdvancedSettings.FieldGroupLabel" value="Advanced settings" />
@@ -33,7 +34,7 @@
   <string key="EditPage.LabelMenuTitle" value="Menu title" />
   <string key="EditPage.HelpMenuTitle" value="The entry specified in this field can be used in the navigation on the website" />
   <string key="EditPage.LabelUrlTitle" value="URL title" />
-  <string key="EditPage.UrlTitleFormattedTitle" value="URL title was rewritten" />	
+  <string key="EditPage.UrlTitleFormattedTitle" value="URL title was rewritten" />
   <string key="EditPage.UrlTitleFormattedMessage" value="According to the current URL replacement rules, URL title was changed to '{0}'" />
   <string key="EditPage.HelpUrlTitle" value="The entry specified in this field is shown in the browser address bar as a part of the URL address. The field is used by search engines" />
   <string key="EditPage.LabelFriendlyUrl" value="Friendly URL" />
@@ -62,7 +63,8 @@
   <string key="PageSaveValidationFailedMessage" value="The page did not validate and has not been saved. Please examine field messages." />
   <string key="PageElementProvider.RootLabel" value="Websites" />
   <string key="PageElementProvider.RootLabelToolTip" value="Websites" />
-  <string key="PageElementProvider.AddPageAtRoot" value="Add Website..." />
+  <string key="PageElementProvider.AddPageAtRoot" value="Add Website" />
+  <string key="PageElementProvider.AddPageAtRootFormat" value="Add {0}" />
   <string key="PageElementProvider.AddPageAtRootToolTip" value="Add new homepage" />
   <string key="PageElementProvider.ViewUnpublishedItems" value="List Unpublished Pages" />
   <string key="PageElementProvider.ViewUnpublishedItemsToolTip" value="Get an overview of pages and page folder data that haven't been published yet." />
@@ -74,7 +76,8 @@
   <string key="PageElementProvider.DeleteToolTip" value="Delete the selected page" />
   <string key="PageElementProvider.LocalizePage" value="Translate Page" />
   <string key="PageElementProvider.LocalizePageToolTip" value="Translate selected page" />
-  <string key="PageElementProvider.AddSubPage" value="Add Page..." />
+  <string key="PageElementProvider.AddSubPage" value="Add page" />
+  <string key="PageElementProvider.AddSubPageFormat" value="Add {0}" />
   <string key="PageElementProvider.AddSubPageToolTip" value="Add new page below the selected" />
   <string key="PageElementProvider.DisplayLocalOrderingLabel" value="Show page local orderings" />
   <string key="PageElementProvider.DisplayLocalOrderingToolTip" value="Show page local orderings" />
@@ -87,7 +90,7 @@
   <string key="PageElementProvider.NoPageTypesAvailableMessage" value="You should create a 'Page Type' first. Go to the 'Layout' perspective and create one." />
   <string key="PageElementProvider.MissingPageTypeTitle" value="Page type required" />
   <string key="PageElementProvider.MissingPageTypeHomepageMessage" value="To create a homepage, a page type without the &quot;only subpages&quot; restriction is required, but none have been added yet. You can add one under the Layout perspective." />
-  <string key="PageElementProvider.MissingPageTypeSubpageMessage" value="To create a subpage, a page type without the the only homepages restriction is required, but none have been added yet. You can add one under the Layout perspective." />  
+  <string key="PageElementProvider.MissingPageTypeSubpageMessage" value="To create a subpage, a page type without the the only homepages restriction is required, but none have been added yet. You can add one under the Layout perspective." />
   <string key="PageElementProvider.RuleDontAllowPageAddTitle" value="Unable to add a page!" />
   <string key="PageElementProvider.RuleDontAllowPageAddMessage" value="The rules that define availability for Page Types prohibit adding a page here." />
   <string key="ManageHostNames.Add.DialogLabel" value="Manage host name" />
@@ -107,4 +110,17 @@
   <string key="DeletePageWorkflow.CascadeDeleteErrorMessage" value="The page is referenced by another type that does not allow cascade deletes. This operation is halted" />
   <string key="DeletePageWorkflow.HasCompositionsTitle" value="Can not delete page" />
   <string key="DeletePageWorkflow.HasCompositionsMessage" value="This page has one or more page folders or metadata fields defined on it. Delete these first." />
+  <string key="ViewUnpublishedItems.PageTitleLabel" value="Page Title" />
+  <string key="ViewUnpublishedItems.VersionLabel" value="Version" />
+  <string key="ViewUnpublishedItems.StatusLabel" value="Status" />
+  <string key="ViewUnpublishedItems.PublishDateLabel" value="Publish Date" />
+  <string key="ViewUnpublishedItems.PublishDateHelp" value="Date and time the page has been scheduled to publish automatically. To edit, see the Publication Schedule in Edit Page mode." />
+  <string key="ViewUnpublishedItems.UnpublishDateLabel" value="Unpublish Date" />
+  <string key="ViewUnpublishedItems.UnpublishDateHelp" value="Date and time the page has been scheduled to unpublish automatically. To edit, see the Publication Schedule in Edit Page mode." />
+  <string key="ViewUnpublishedItems.DateCreatedLabel" value="Date Created" />
+  <string key="ViewUnpublishedItems.DateModifiedLabel" value="Date Modified" />
+  <string key="ViewUnpublishedItems.PublishConfirmTitle" value="Publish Pages" />
+  <string key="ViewUnpublishedItems.PublishConfirmText" value="You are about to publish these pages. Continue?" />
+
+
 </strings>

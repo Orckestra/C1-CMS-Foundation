@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Web;
+﻿using System.Linq;
 using Composite.C1Console.Elements;
 using Composite.C1Console.Security;
 using Composite.Core.Extensions;
@@ -16,12 +14,7 @@ namespace Composite.Plugins.Elements.UrlToEntityToken
         {
             var dataEntityToken = entityToken as DataEntityToken;
 
-            if (dataEntityToken == null)
-            {
-                return null;
-            }
-
-            var data = dataEntityToken.Data;
+            var data = dataEntityToken?.Data;
             if (data == null) 
             {
                 return null;
@@ -47,7 +40,6 @@ namespace Composite.Plugins.Elements.UrlToEntityToken
         public BrowserViewSettings TryGetBrowserViewSettings(EntityToken entityToken, bool showPublishedView)
         {
             var dataEntityToken = entityToken as DataEntityToken;
-
             if (dataEntityToken == null)
             {
                 return null;
@@ -81,19 +73,12 @@ namespace Composite.Plugins.Elements.UrlToEntityToken
             }
 
             string url = TryGetUrl(entityToken);
-            return (url == null ? null : new BrowserViewSettings { Url = url, ToolingOn = true });
+            return url == null ? null : new BrowserViewSettings { Url = url, ToolingOn = true };
         }
 
         private static string GetPagePreviewUrl(PageUrlData pageUrlData)
         {
-            var httpContext = HttpContext.Current;
-
-            var urlSpace = new UrlSpace();
-            if (HostnameBindingsFacade.GetBindingForCurrentRequest() != null
-                || HostnameBindingsFacade.GetAliasBinding(httpContext) != null)
-            {
-                urlSpace.ForceRelativeUrls = true;
-            }
+            var urlSpace = new UrlSpace {ForceRelativeUrls = true};
 
             return PageUrls.BuildUrl(pageUrlData, UrlKind.Public, urlSpace)
                       ?? PageUrls.BuildUrl(pageUrlData, UrlKind.Renderer, urlSpace);
@@ -122,9 +107,8 @@ namespace Composite.Plugins.Elements.UrlToEntityToken
             }
 
             IPage page = pageUrlData.GetPage();
-            if (page == null) return null;
 
-            return page.GetDataEntityToken();
+            return page?.GetDataEntityToken();
         }
     }
 }

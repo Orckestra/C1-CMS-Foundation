@@ -48,66 +48,65 @@ SystemAction.actionMap = new Map ();
  * @param {object} arg This can be either a SystemNode or a List of SystemNodes.
  */
 SystemAction.invoke = function ( action, arg ) {
-	
+
 	var node = arg;
-	
+
 	if ( node instanceof SystemNode ) {
 		Application.lock ( SystemAction );
 		action.logger.debug ( "Execute \"" + action.getLabel () + "\" on \"" + node.getLabel () + "\"." );
-		setTimeout ( function () { // timeout allow pressed buttons to unpress
-			TreeService.ExecuteSingleElementAction ( 
-				node.getData (),
-				action.getHandle (),
-				Application.CONSOLE_ID
-			);
-			MessageQueue.update ();
-			Application.unlock ( SystemAction );
-		}, 0 );
+
+		TreeService.ExecuteSingleElementAction (
+			node.getData (),
+			action.getHandle (),
+			Application.CONSOLE_ID
+		);
+		MessageQueue.update(action.isSyncedRequest());
+		Application.unlock ( SystemAction );
 	} else {
 		throw "Multiple actiontargets not supported.";
 	}
-	
+
 	/*
 	 * A list of nodehandles.
 	 * @type {array<object>}
 	 *
 	var nodeHandleList = [];
-	
+
 	MULTIPLE SELECTIONS SETUP!
-	
-	ExplorerBinding.getFocusedTreeNodeBindings ().each ( 
+
+	ExplorerBinding.getFocusedTreeNodeBindings ().each (
 		function ( treeNodeBinding ) {
 			var systemNode = treeNodeBinding.node;
-			nodeHandleList.push ( 
+			nodeHandleList.push (
 				systemNode.getHandle ()
 			);
 		}
 	);
-	
+
 	if ( nodeHandleList.length > 0 ) {
-		
+
 		var actionHandle = action.getHandle ();
-		var serviceResponse = TreeService.ExecuteElementAction ( 
+		var serviceResponse = TreeService.ExecuteElementAction (
 			nodeHandleList,
 			actionHandle,
 			Application.CONSOLE_ID
 		);
-		
+
 		MessageQueue.update ();
 	}
 	*/
-	
+
 	/*
 	var systemNode = null;
-	
+
 	var list = ExplorerBinding.getFocusedTreeNodeBindings ();
 	if ( list.hasEntries ()) {
 		var treeNodeBinding = list.getFirst ();
 		var systemNode = treeNodeBinding.node;
 	}
-		
+
 	if ( systemNode ) {
-		var serviceResponse = TreeService.ExecuteSingleElementAction ( 
+		var serviceResponse = TreeService.ExecuteSingleElementAction (
 			node.getData (),
 			action.getHandle (),
 			Application.CONSOLE_ID
@@ -123,14 +122,14 @@ SystemAction.invoke = function ( action, arg ) {
  * @param {string} taggedaction
  */
 SystemAction.invokeTagged = function ( taggedaction, taggednode ) {
-	
+
 	action = SystemAction.taggedActions.get ( taggedaction );
 	node = SystemNode.taggedNodes.get ( taggednode );
 	SystemAction.invoke ( action, node );
 }
 
 /**
- * Check action category before displaying in GUI. So that we 
+ * Check action category before displaying in GUI. So that we
  * don't wonder what happens to newly introduced categories.
  * @param {string} string
  * @return {boolean}
@@ -149,13 +148,13 @@ function SystemAction ( object ) {
 	 * @type {SystemLogger}
 	 */
 	this.logger = SystemLogger.getLogger ( "SystemAction" );
-	
+
 	/**
 	 * @type {object}
 	 * @private
 	 */
 	this._data = object;
-	
+
 	/*
 	 * Register tagged action.
 	 */
@@ -171,7 +170,7 @@ function SystemAction ( object ) {
  * Identifies object.
  */
 SystemAction.prototype.toString = function () {
-	
+
 	return "[SystemAction]";
 }
 
@@ -249,7 +248,7 @@ SystemAction.prototype.getCategory = function () {
  * @return {string}
  */
 SystemAction.prototype.getGroupID = function () {
-	
+
 	return this._data.ActionCategory.GroupId;
 }
 
@@ -291,6 +290,34 @@ SystemAction.prototype.isInFolder = function () {
 }
 
 /**
+ * Is require sync requests for invoke action?
+ * @return {boolean}
+ */
+SystemAction.prototype.isSyncedRequest = function () {
+
+	return true;
+}
+
+
+/**
+ * Get Bundle Name
+ * @return {boolean}
+ */
+SystemAction.prototype.getBundleName = function () {
+
+	return this._data.ActionCategory.ActionBundle;
+}
+
+/**
+ * Get dialog information for bulk execution
+ * @return {boolean}
+ */
+SystemAction.prototype.getBulkExecutionDialog = function () {
+
+	return this._data.BulkExecutionDialog;
+}
+
+/**
  * @return {string}
  */
 SystemAction.prototype.getFolderName = function () {
@@ -316,7 +343,7 @@ SystemAction.prototype.isDisabled = function () {
  * @return {boolean}
  */
 SystemAction.prototype.isCheckBox = function () {
-	
+
 	return typeof this._data.CheckboxStatus != Types.UNDEFINED;
 }
 
@@ -325,7 +352,7 @@ SystemAction.prototype.isCheckBox = function () {
  * @return {string}
  */
 SystemAction.prototype.getTag = function () {
-	
+
 	var result = null;
 	if ( typeof this._data.TagValue != "undefined" ) {
 		result = this._data.TagValue;
@@ -338,7 +365,7 @@ SystemAction.prototype.getTag = function () {
  * @return {boolean}
  */
 SystemAction.prototype.isChecked = function () {
-	
+
 	var result = null;
 	if ( this.isCheckBox ()) {
 		result = this._data.CheckboxStatus == "Checked";

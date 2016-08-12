@@ -68,8 +68,8 @@ namespace Composite.Core.WebClient.HttpModules
 
             if (adminFolderExists)
             {
-                LoadConfiguration();
                 _allowC1ConsoleRequests = true;
+                LoadConfiguration();
             }
         }
 
@@ -145,14 +145,14 @@ namespace Composite.Core.WebClient.HttpModules
                 }
 
                 Log.LogWarning("Authorization", "DENIED {0} access to {1}", context.Request.UserHostAddress, currentPath);
-                string redirectUrl = string.Format("{0}?ReturnUrl={1}", _loginPagePath, HttpUtility.UrlEncode(context.Request.Url.PathAndQuery, Encoding.UTF8));
+                string redirectUrl =$"{_loginPagePath}?ReturnUrl={HttpUtility.UrlEncode(context.Request.Url.PathAndQuery, Encoding.UTF8)}";
                 context.Response.Redirect(redirectUrl, true);
                 return;
                 
             }
 
             // On authenticated request make sure these resources gets compiled / launched. 
-            if (ApplicationOnlineHandlerFacade.IsApplicationOnline && GlobalInitializerFacade.SystemCoreInitialized && !GlobalInitializerFacade.SystemCoreInitializing && SystemSetupFacade.IsSystemFirstTimeInitialized)
+            if (IsConsoleOnline)
             {
                 BrowserRender.EnsureReadiness();
                 BuildManagerHelper.InitializeControlPreLoading();
@@ -160,6 +160,11 @@ namespace Composite.Core.WebClient.HttpModules
         }
 
 
+        private bool IsConsoleOnline =>
+            ApplicationOnlineHandlerFacade.IsApplicationOnline
+            && GlobalInitializerFacade.SystemCoreInitialized
+            && !GlobalInitializerFacade.SystemCoreInitializing
+            && SystemSetupFacade.IsSystemFirstTimeInitialized;
 
         private bool UserOptedOutOfHttps(HttpContext context)
         {

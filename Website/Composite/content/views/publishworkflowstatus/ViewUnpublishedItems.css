@@ -1,21 +1,89 @@
 ﻿@namespace url("http://www.w3.org/1999/xhtml");
 @namespace ui url("http://www.w3.org/1999/xhtml");
 
-ui|pagehead,
-div#emptylabel {
-	padding: 1em;
-	border-top: 1px solid $(color:threedhighlight);
+a {
+	cursor: pointer;
 }
-ui|pagehead {
-	border-bottom: 1px solid $(color:threedlightshadow);
+
+.table td, .table th {
+	font-family: Calibri, Candara, Segoe, 'Segoe UI', Optima, Arial, sans-serif;
+	font-size: 15px;
 }
-ui|tree {
-	border-top: 1px solid $(color:threedhighlight);
+
+.table thead th:last-child {
+	width: 100%;
 }
-ui|treebody {
-	background-color: $(color:threedface);
-	#alphabackdrop: url("${root}/images/ui/lighten.png");
+
+.table ui|fieldhelp {
+	float: left;
+	width: 20px;
+	margin-top: -4px;
+	margin-left: -20px;
 }
-div#description {
-	padding-top: 1em;	
+
+.table ui|clickbutton.sortbutton {
+	margin: 0 54px 0 0;
+	cursor: pointer;
+}
+.table ui|clickbutton.sortbutton * {
+	cursor: pointer;
+}
+
+.table.noversion th.version,
+.table.noversion td.version {
+	display: none;
+}
+
+.table ui|clickbutton.sortbutton ui|labelbox {
+	border: inherit;
+	color: inherit;
+	background: inherit;
+	text-transform: inherit;
+	padding: inherit;
+	cursor: pointer;
+}
+
+.table ui|clickbutton.sortbutton.hover ui|labelbox {
+	color: #22B980;
+}
+
+.table ui|clickbutton.sortbutton[direction='asc']:after,
+.table ui|clickbutton.sortbutton[direction='desc']:after {
+	position: absolute;
+	content: "";
+	width: 0;
+	height: 0;
+	right: -20px;
+	top: 7px;
+	border-style: solid;
+	border-width: 0 4px 4px 4px;
+	border-color: transparent transparent #989898 transparent;
+}
+
+.table ui|clickbutton.sortbutton[direction='desc']:after {
+	border-width: 4px 4px 0 4px;
+	border-color: #989898 transparent transparent transparent;
+}
+
+.table td.date {
+	padding: 0 13px 0 0 !important;
+}
+.table td.date span{
+	display: block;
+	background: #EFEFEF;
+	margin: 9px 9px 9px 10px;
+	padding: 6px 6px 7px 10px;
+	border-radius: 5px;
+	min-width: 190px;
+}
+
+ui|toolbarbutton[image='item-publish'] {
+	border-color: #22B980;
+}
+
+ui|toolbarbutton[image='item-publish'] ui|labelbox {
+	border-color: #22B980;
+	background-color: #22B980;
+	background-image: linear-gradient(to bottom, #22B980 0%, #1ea371 100%);
+	color: #fff;
 }

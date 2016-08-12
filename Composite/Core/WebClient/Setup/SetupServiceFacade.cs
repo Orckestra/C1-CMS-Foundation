@@ -12,7 +12,6 @@ using System.Xml.Linq;
 using Composite.C1Console.Security;
 using Composite.Core.Application;
 using Composite.Core.Configuration;
-using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Core.Localization;
 using Composite.Core.PackageSystem;
@@ -125,22 +124,22 @@ namespace Composite.Core.WebClient.Setup
 
                 UserSettings.SetUserCultureInfo(username, userCulture);
 
+                CultureInfo installedLanguagePackageCulture = InstallLanguagePackage(userCulture);
+
+                UserSettings.SetUserC1ConsoleUiLanguage(username, installedLanguagePackageCulture ?? StringResourceSystemFacade.GetDefaultStringCulture());
+
                 using (new DataScope(locale))
                 {
                     for (int i = 0; i < packageUrls.Length; i++)
                     {
                         Log.LogVerbose(VerboseLogTitle, "Installing package from url " + packageUrls[i]);
-                        bool packageValidationSucceded = InstallPackage(packageUrls[i], packages[i]);
+                        InstallPackage(packageUrls[i], packages[i]);
 
                         // Releasing a reference to reduce memory usage
                         packages[i].Dispose();
                         packages[i] = null;
                     }
                 }
-
-                CultureInfo installedLanguagePackageCulture = InstallLanguagePackage(userCulture);
-
-                UserSettings.SetUserC1ConsoleUiLanguage(username, installedLanguagePackageCulture ?? StringResourceSystemFacade.GetDefaultStringCulture());
 
                 RegisterSetup(setupRegistrationDescription.ToString(), "");
 
@@ -182,9 +181,9 @@ namespace Composite.Core.WebClient.Setup
         {
             SetupSoapClient client = CreateClient();
 
-            XElement xml = client.GetSetupDescription(RuntimeInformation.ProductVersion.ToString(), InstallationInformationFacade.InstallationId.ToString());
-
-            return xml;
+            return client.GetSetupDescription(
+                RuntimeInformation.ProductVersion.ToString(),
+                InstallationInformationFacade.InstallationId.ToString());
         }
 
 
@@ -194,9 +193,8 @@ namespace Composite.Core.WebClient.Setup
         {
             SetupSoapClient client = CreateClient();
 
-            XElement xml = client.GetLanguages(RuntimeInformation.ProductVersion.ToString(), InstallationInformationFacade.InstallationId.ToString());
-
-            return xml;
+            return client.GetLanguages(RuntimeInformation.ProductVersion.ToString(),
+                InstallationInformationFacade.InstallationId.ToString());
         }
 
 
@@ -206,9 +204,11 @@ namespace Composite.Core.WebClient.Setup
         {
             SetupSoapClient client = CreateClient();
 
-            XElement xml = client.GetLanguagePackages(RuntimeInformation.ProductVersion.ToString(), InstallationInformationFacade.InstallationId.ToString());
+            XElement xml = client.GetLanguagePackages(RuntimeInformation.ProductVersion.ToString(),
+                InstallationInformationFacade.InstallationId.ToString());
 
-            return xml.Descendants("Language").ToDictionary(f => new CultureInfo(f.Attribute("key").Value), f =>f.Attribute("url").Value);
+            return xml.Descendants("Language")
+                .ToDictionary(f => new CultureInfo(f.Attribute("key").Value), f => f.Attribute("url").Value);
         }
 
 
@@ -217,10 +217,11 @@ namespace Composite.Core.WebClient.Setup
         {
             SetupSoapClient client = CreateClient();
 
-            XElement xml = client.GetGetLicense(RuntimeInformation.ProductVersion.ToString(), InstallationInformationFacade.InstallationId.ToString());
+            XElement xml = client.GetGetLicense(RuntimeInformation.ProductVersion.ToString(),
+                    InstallationInformationFacade.InstallationId.ToString());
 
-            XmlDocument doc = new XmlDocument();
-            using (XmlReader reader = xml.CreateReader())
+            var doc = new XmlDocument();
+            using (var reader = xml.CreateReader())
             {
                 doc.Load(reader);
             }
@@ -234,7 +235,8 @@ namespace Composite.Core.WebClient.Setup
         {
             SetupSoapClient client = CreateClient();
 
-            client.RegisterSetup(RuntimeInformation.ProductVersion.ToString(), InstallationInformationFacade.InstallationId.ToString(), setupDescriptionXml, exception);
+            client.RegisterSetup(RuntimeInformation.ProductVersion.ToString(),
+                InstallationInformationFacade.InstallationId.ToString(), setupDescriptionXml, exception);
         }
 
 
@@ -270,15 +272,16 @@ namespace Composite.Core.WebClient.Setup
 
             try
             {
-                HttpWebRequest request = (HttpWebRequest) WebRequest.Create(packageUrl);
-                HttpWebResponse response = (HttpWebResponse) request.GetResponse();
+                var request = (HttpWebRequest) WebRequest.Create(packageUrl);
+                var response = (HttpWebResponse) request.GetResponse();
 
-                byte[] buffer = new byte[32768];
+                const int bufferSize = 32768;
+                byte[] buffer = new byte[bufferSize];
 
                 using (Stream inputStream = response.GetResponseStream())
                 {
                     int read;
-                    while ((read = inputStream.Read(buffer, 0, 32768)) > 0)
+                    while ((read = inputStream.Read(buffer, 0, bufferSize)) > 0)
                     {
                         packageStream.Write(buffer, 0, read);
                     }
@@ -289,7 +292,7 @@ namespace Composite.Core.WebClient.Setup
             catch(ThreadAbortException) {}
             catch(Exception ex)
             {
-                throw new InvalidOperationException("Failed to download package '{0}'".FormatWith(packageUrl), ex);
+                throw new InvalidOperationException($"Failed to download package '{packageUrl}'", ex);
             }
 
             packageStream.Seek(0, SeekOrigin.Begin);
@@ -297,40 +300,25 @@ namespace Composite.Core.WebClient.Setup
         }
 
 
-        private static bool InstallPackage(string packageUrl, Stream packageStream)
+        private static void InstallPackage(string packageUrl, Stream packageStream)
         {
-            try
+            PackageManagerInstallProcess packageManagerInstallProcess = PackageManager.Install(packageStream, true);
+            if (packageManagerInstallProcess.PreInstallValidationResult.Count > 0)
             {
-                PackageManagerInstallProcess packageManagerInstallProcess = PackageManager.Install(packageStream, true);
-                if (packageManagerInstallProcess.PreInstallValidationResult.Count > 0)
-                {
-                    LogValidationResults(packageManagerInstallProcess.PreInstallValidationResult);
-                    return false;
-                }
-                
-                List<PackageFragmentValidationResult> validationResult = packageManagerInstallProcess.Validate();
-
-                if (validationResult.Count > 0)
-                {
-                    LogValidationResults(validationResult);
-                    return false;
-                }
-                
-                List<PackageFragmentValidationResult> installResult = packageManagerInstallProcess.Install();
-                if (installResult.Count > 0)
-                {
-                    LogValidationResults(installResult);
-                    return false;
-                }
-                
-                return true;
+                throw WrapFirstValidationException(packageUrl, packageManagerInstallProcess.PreInstallValidationResult);
             }
-            catch (Exception ex)
-            {
-                Log.LogCritical(LogTitle, "Error installing package: " + packageUrl);
-                Log.LogCritical(LogTitle, ex);
+                
+            List<PackageFragmentValidationResult> validationResult = packageManagerInstallProcess.Validate();
 
-                throw;
+            if (validationResult.Count > 0)
+            {
+                throw WrapFirstValidationException(packageUrl, validationResult);
+            }
+                
+            List<PackageFragmentValidationResult> installResult = packageManagerInstallProcess.Install();
+            if (installResult.Count > 0)
+            {
+                throw WrapFirstValidationException(packageUrl, installResult);
             }
         }
         
@@ -339,15 +327,17 @@ namespace Composite.Core.WebClient.Setup
 
         private static SetupSoapClient CreateClient()
         {
-            var basicHttpBinding = new BasicHttpBinding();
             var timeout = TimeSpan.FromMinutes(RuntimeInformation.IsDebugBuild ? 2 : 1);
 
-            basicHttpBinding.CloseTimeout = timeout;
-            basicHttpBinding.OpenTimeout = timeout;
-            basicHttpBinding.ReceiveTimeout = timeout;
-            basicHttpBinding.SendTimeout = timeout;
+            var basicHttpBinding = new BasicHttpBinding
+            {
+                CloseTimeout = timeout,
+                OpenTimeout = timeout,
+                ReceiveTimeout = timeout,
+                SendTimeout = timeout,
+                MaxReceivedMessageSize = int.MaxValue
+            };
 
-            basicHttpBinding.MaxReceivedMessageSize = int.MaxValue;
 
             if (PackageServerUrl.StartsWith("https://"))
             {
@@ -365,17 +355,22 @@ namespace Composite.Core.WebClient.Setup
 
             SetupSoapClient client = CreateClient();
             
-            XElement originalSetupDescription = client.GetSetupDescription(RuntimeInformation.ProductVersion.ToString(), InstallationInformationFacade.InstallationId.ToString());
+            XElement originalSetupDescription = client.GetSetupDescription(RuntimeInformation.ProductVersion.ToString(),
+                    InstallationInformationFacade.InstallationId.ToString());
 
             var element =
                 (from elm in originalSetupDescription.Descendants()
-                 where elm.Attribute(KeyAttributeName) != null && (int)elm.Attribute(KeyAttributeName) == maxkey
+                 let keyAttr = elm.Attribute(KeyAttributeName)
+                 where keyAttr != null && (int)keyAttr == maxkey
                  select elm).Single();
 
             foreach (XElement packageElement in setupDescription.Descendants(PackageElementName))
             {
                 XAttribute idAttribute = packageElement.Attribute(IdAttributeName);
-                if (idAttribute == null) throw new InvalidOperationException("Setup XML malformed");
+                if (idAttribute == null)
+                {
+                    throw new InvalidOperationException($"Setup XML malformed, '{IdAttributeName}' is missing on a '{PackageElementName}' element");
+                }
 
                 string url =
                     (from elm in element.Descendants(PackageElementName)
@@ -397,12 +392,12 @@ namespace Composite.Core.WebClient.Setup
         }
 
 
-        private static void LogValidationResults(IEnumerable<PackageFragmentValidationResult> packageFragmentValidationResults)
+        private static Exception WrapFirstValidationException(string packageUrl, IEnumerable<PackageFragmentValidationResult> packageFragmentValidationResults)
         {
-            foreach (PackageFragmentValidationResult packageFragmentValidationResult in packageFragmentValidationResults)
-            {
-                throw new InvalidOperationException(packageFragmentValidationResult.Message);
-            }
+            var firstError = packageFragmentValidationResults.First();
+            var innerException = firstError.Exception ?? new InvalidOperationException(firstError.Message);
+            
+            throw new InvalidOperationException($"Failed to install package '{packageUrl}'", innerException);
         }
     }
 }

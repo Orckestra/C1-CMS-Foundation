@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <strings>
-  <string key="PackageManager.CompositeVersionMisMatch" value="The package composite version requirements does not match the current composite version" />
+  <string key="PackageManager.CompositeVersionMisMatch" value="The package composite version requirements does not match the current composite version '{0}'. Expected version range [{1} - {2}]" />
   <string key="PackageManager.PackageAlreadyInstalled" value="Package is already installed" />
   <string key="PackageManager.NewerVersionInstalled" value="A newer version of the package is already installed" />	
   <string key="PackageManager.MissingPackageDirectory" value="Could not locate the package directory path '{0}'" />

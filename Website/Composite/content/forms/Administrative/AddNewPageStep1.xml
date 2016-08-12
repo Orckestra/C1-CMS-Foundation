@@ -5,8 +5,13 @@
     <cms:binding name="SortOrder" type="System.Object" />
     <cms:binding name="SelectedSortOrder" type="System.String" />
     <cms:binding name="PageTypeOptions" type="System.Collections.IEnumerable" />
+    <cms:binding name="Title" type="System.String"/>
+    <cms:binding name="Label" type="System.String"/>
   </cms:bindings>
-  <cms:layout iconhandle="page-add-page" label="${Composite.Plugins.PageElementProvider, AddNewPageStep1.DialogLabel}">
+  <cms:layout iconhandle="page-add-page">
+    <cms:layout.label>
+      <cms:read source="Title"/>
+    </cms:layout.label>
     <FieldGroup>
       <TextBox Label="${Composite.Plugins.PageElementProvider, AddNewPageStep1.LabelTitle}" Help="${Composite.Plugins.PageElementProvider, AddNewPageStep1.LabelTitleHelp}">
         <TextBox.Text>
@@ -18,17 +23,6 @@
           <cms:bind source="NewPage.Description" />
         </TextArea.Text>
       </TextArea>
-      
-      <KeySelector OptionsKeyField="Key" OptionsLabelField="Value"                    
-                   Label="${Composite.Plugins.PageElementProvider, AddNewPageStep1.LabelTemplate}"
-                   Help="${Composite.Plugins.PageElementProvider, AddNewPageStep1.HelpTemplate}">
-        <KeySelector.Selected>
-          <cms:bind source="NewPage.PageTypeId" />
-        </KeySelector.Selected>
-        <KeySelector.Options>
-          <cms:read source="PageTypeOptions" />
-        </KeySelector.Options>
-      </KeySelector>
       
       <KeySelector OptionsKeyField="Key" OptionsLabelField="Value" Help="${Composite.Plugins.PageElementProvider, AddNewPageStep1.HelpPosition}" Label="${Composite.Plugins.PageElementProvider, AddNewPageStep1.LabelPosition}">
         <KeySelector.Selected>

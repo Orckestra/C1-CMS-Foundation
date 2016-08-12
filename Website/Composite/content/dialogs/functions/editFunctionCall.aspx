@@ -47,7 +47,6 @@
 			resizable="false"
 			label="<%= this.DialogLabel %>"
             class="with-top-toolbar <% =ActiveTab == Tab.Basic? " functionview-basic" : " functionview-adv" %>">
-			<asp:HiddenField runat="server" ID="hdnActiveTab" Value="<%# hdnActiveTab.Value %>"></asp:HiddenField>
 			<asp:PlaceHolder runat="server" ID="BasicPanel">
 				<ui:toolbar id="toolbar">
 					<ui:toolbarbody />
@@ -69,6 +68,7 @@
 					<asp:PlaceHolder runat="server" ID="plhErrors"></asp:PlaceHolder>
 				</div>
 			</asp:PlaceHolder>
+			<asp:HiddenField runat="server" ID="hdnActiveTab" Value="<%# hdnActiveTab.Value %>"></asp:HiddenField>
 			<asp:PlaceHolder ID="AdvancedPanel" runat="server">
 				<control1:FunctionCallDesigner ID="FunctionCallDesigner" runat="server" />
 			</asp:PlaceHolder>

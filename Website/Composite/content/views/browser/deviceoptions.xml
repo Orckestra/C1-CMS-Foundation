@@ -15,8 +15,7 @@
   <group>
     <device label="C1 Page Speed" image="functioncall" url="{url}?c1mode=perf" />
     <device label="Google PageSpeed Insights" image="chart-bars" url="https://developers.google.com/speed/pagespeed/insights/?tab=desktop&amp;url={encodedurl}" requirepublicnet="true" />
-    <device label="W3C Markup Validation" image="editor-formatsource" url="https://validator.w3.org/nu/?async=true&amp;doc={encodedurl}" requirepublicnet="true" />
-    <device label="W3C Mobile OK" image="smartphone" url="https://validator.w3.org/mobile/check?task=20150903145258140.mobile1&amp;async=true&amp;docAddr={encodedurl}" requirepublicnet="true" />
+    <device label="Markup Validation" image="editor-formatsource" url="https://validator.nu/?doc={encodedurl}" requirepublicnet="true" />
   </group>
   <group>
     <device label="Page Source" image="editor-sourceview" url="${root}/content/views/dev/viewsource/viewsource.aspx?url={encodedurl}"/>

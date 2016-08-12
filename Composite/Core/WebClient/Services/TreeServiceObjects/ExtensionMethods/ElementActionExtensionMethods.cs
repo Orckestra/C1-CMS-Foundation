@@ -21,6 +21,7 @@ namespace Composite.Core.WebClient.Services.TreeServiceObjects.ExtensionMethods
                           ToolTip = action.VisualData.ToolTip,
                           Disabled = action.VisualData.Disabled,
                           Icon = action.VisualData.Icon,
+                          BulkExecutionDialog = action.VisualData.BulkExecutionDialog,
                           CheckboxStatus = GetCheckboxStatusString(action.VisualData.ActionCheckedStatus),
                           ActivePositions = (int)action.VisualData.ActivePositions,
                           TagValue = action.TagValue,                          

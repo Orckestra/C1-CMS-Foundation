@@ -18,7 +18,7 @@ namespace Composite.C1Console.Actions.Data
         /// <typeparam name="T"></typeparam>
         /// <param name="actionIdentifier"></param>
         /// <param name="dataActionToken"></param>
-        public void RegisterDefault<T>(ActionIdentifier actionIdentifier, ActionToken dataActionToken) where T : IData
+        public void RegisterDefault<T>(ActionIdentifier actionIdentifier, Func<T, ActionToken> dataActionToken) where T : IData
         {
             Verify.ArgumentNotNull(actionIdentifier, nameof(actionIdentifier));
             Verify.ArgumentNotNull(dataActionToken, nameof(dataActionToken));
@@ -37,7 +37,7 @@ namespace Composite.C1Console.Actions.Data
         /// <param name="actionIdentifier"></param>
         /// <param name="actionValidPredicate"></param>
         /// <param name="dataActionToken"></param>
-        public void RegisterConditional<T>(ActionIdentifier actionIdentifier, Func<T, bool> actionValidPredicate, ActionToken dataActionToken) where T : IData
+        public void RegisterConditional<T>(ActionIdentifier actionIdentifier, Func<T, bool> actionValidPredicate, Func<T, ActionToken> dataActionToken) where T : IData
         {
             Verify.ArgumentNotNull(actionIdentifier, nameof(actionIdentifier));
             Verify.ArgumentNotNull(actionValidPredicate, nameof(actionValidPredicate));
@@ -61,7 +61,7 @@ namespace Composite.C1Console.Actions.Data
                 var conditionalAction = _conditionalActions?.FirstOrDefault(f => f.Check(type, data, actionIdentifier));
                 if (conditionalAction != null)
                 {
-                    return conditionalAction.GetActionToken();
+                    return conditionalAction.GetActionToken(data);
                 }
             }
             
@@ -70,7 +70,7 @@ namespace Composite.C1Console.Actions.Data
                 var defaultAction = _defaultActions?.LastOrDefault(f => f.Check(type, data, actionIdentifier));
                 if (defaultAction != null)
                 {
-                    return defaultAction.GetActionToken();
+                    return defaultAction.GetActionToken(data);
                 }
             }
             return null;

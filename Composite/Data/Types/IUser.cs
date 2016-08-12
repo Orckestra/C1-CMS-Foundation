@@ -12,8 +12,8 @@ namespace Composite.Data.Types
     /// This data interface represents a administrative user in Composite C1. This can be used to query users through a <see cref="Composite.Data.DataConnection"/>. 
     /// </summary>
     [AutoUpdateble]
-    [KeyPropertyName("Id")]
-    [LabelPropertyName("Username")]
+    [KeyPropertyName(nameof(Id))]
+    [LabelPropertyName(nameof(Username))]
     [DataScope(DataScopeIdentifier.PublicName)]
     [ImmutableTypeId("{AA086DC1-E5F6-4568-8BED-460D3275380F}")]
     [Caching(CachingType.Full)]    
@@ -50,7 +50,7 @@ namespace Composite.Data.Types
         /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.String, 64, IsNullable = true)]
         [ImmutableFieldId("{C7A7D63C-EA87-48ac-B009-5D4050A2F248}")]
-        [Obsolete("User IUserFormLogin type instead. Will be removed in future releases.")]
+        [Obsolete("Use IUserFormLogin data type instead (new name is 'IUserFormLogin.Folder'). Will be removed in future releases.")]
         string Group { get; set; }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace Composite.Data.Types
         [StoreFieldType(PhysicalStoreFieldType.Boolean)]
         [DefaultFieldBoolValue(false)]
         [ImmutableFieldId("{72BFFBDC-E4FF-4BD4-9BB1-B86FAEA39468}")]
-        [Obsolete("User IUserFormLogin type instead. Will be removed in future releases.")]
+        [Obsolete("Use IUserFormLogin data type instead. Will be removed in future releases.")]
         bool IsLocked { get; set; }
 
         /// <summary>
@@ -69,26 +69,26 @@ namespace Composite.Data.Types
         [StoreFieldType(PhysicalStoreFieldType.Integer)]
         [DefaultFieldIntValue(0)]
         [ImmutableFieldId("{39CBCCFA-CFB2-4E79-9204-C9596A3FC0E9}")]
-        [Obsolete("User IUserFormLogin type instead. Will be removed in future releases.")]
+        [Obsolete("Use IUserFormLogin data type instead. Will be removed in future releases.")]
         int LockoutReason { get; set; }
 
         /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.String, 256, IsNullable = true)]
         [ImmutableFieldId("{C0230DEB-5394-4819-BE18-A60CF5FA69F0}")]
-        [Obsolete("User IUserFormLogin type instead. Will be removed in future releases.")]
+        [Obsolete("Use IUserFormLogin data type instead. Will be removed in future releases.")]
         string EncryptedPassword { get; set; }
 
         /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.String, 128, IsNullable = true)]
         [ImmutableFieldId("{CA2CF6F8-489B-4D60-B3C3-AF46D1259647}")]
-        [Obsolete("User IUserFormLogin type instead. Will be removed in future releases.")]
+        [Obsolete("Use IUserFormLogin data type instead. Will be removed in future releases.")]
         string PasswordHashSalt { get; set; }
 
         /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.DateTime)]
         [ImmutableFieldId("{35457DA7-A13E-4A6C-9008-3D619A519F2B}")]
         [DefaultFieldNowDateTimeValue]
-        [Obsolete("User IUserFormLogin type instead. Will be removed in future releases.")]
+        [Obsolete("Use IUserFormLogin data type instead. Will be removed in future releases.")]
         DateTime LastPasswordChangeDate { get; set; }
     }
 }

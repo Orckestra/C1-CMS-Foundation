@@ -22,7 +22,7 @@ namespace Composite.Core.PackageSystem
                 var basicHttpBinding = new BasicHttpBinding { MaxReceivedMessageSize = int.MaxValue };
                 basicHttpBinding.Security.Mode = BasicHttpSecurityMode.Transport;
 
-                var client = new PackagesSoapClient(basicHttpBinding, new EndpointAddress(string.Format("https://{0}", packageServerUrl)));
+                var client = new PackagesSoapClient(basicHttpBinding, new EndpointAddress($"https://{packageServerUrl}"));
 
                 client.IsOperational();
                 return ServerUrlValidationResult.Https;
@@ -34,7 +34,7 @@ namespace Composite.Core.PackageSystem
             try
             {
                 var basicHttpBinding = new BasicHttpBinding { MaxReceivedMessageSize = int.MaxValue };
-                var client = new PackagesSoapClient(basicHttpBinding, new EndpointAddress(string.Format("http://{0}", packageServerUrl)));
+                var client = new PackagesSoapClient(basicHttpBinding, new EndpointAddress($"http://{packageServerUrl}"));
 
                 client.IsOperational();
                 return ServerUrlValidationResult.Http;
@@ -118,16 +118,14 @@ namespace Composite.Core.PackageSystem
         {
             PackagesSoapClient client = CreateClient(packageServerUrl);
 
-            string eulaText = client.GetEulaText(eulaId, userCulture.ToString());
-
-            return eulaText;
+            return client.GetEulaText(eulaId, userCulture.ToString());
         }
 
 
 
         public Stream GetInstallFileStream(string packageFileDownloadUrl)
         {
-            Log.LogVerbose("PackageServerFacade", string.Format("Downloading file: {0}", packageFileDownloadUrl));
+            Log.LogVerbose("PackageServerFacade", $"Downloading file: {packageFileDownloadUrl}");
 
             var client = new System.Net.WebClient();
             return client.OpenRead(packageFileDownloadUrl);
@@ -174,7 +172,8 @@ namespace Composite.Core.PackageSystem
             string newVersion;
             if (!VersionStringHelper.ValidateVersion(packageDescriptor.PackageVersion, out newVersion))
             {
-                Log.LogWarning("PackageServerFacade", string.Format("The package '{0}' ({1}) did not validate and is skipped", packageDescriptor.Name, packageDescriptor.Id));
+                Log.LogWarning("PackageServerFacade",
+                    $"The package '{packageDescriptor.Name}' ({packageDescriptor.Id}) did not validate and is skipped");
                 return false;
             }
 
@@ -182,7 +181,8 @@ namespace Composite.Core.PackageSystem
 
             if (!VersionStringHelper.ValidateVersion(packageDescriptor.MinCompositeVersionSupported, out newVersion))
             {
-                Log.LogWarning("PackageServerFacade", string.Format("The package '{0}' ({1}) did not validate and is skipped", packageDescriptor.Name, packageDescriptor.Id));
+                Log.LogWarning("PackageServerFacade",
+                    $"The package '{packageDescriptor.Name}' ({packageDescriptor.Id}) did not validate and is skipped");
                 return false;
             }
 
@@ -190,7 +190,8 @@ namespace Composite.Core.PackageSystem
 
             if (!VersionStringHelper.ValidateVersion(packageDescriptor.MaxCompositeVersionSupported, out newVersion))
             {
-                Log.LogWarning("PackageServerFacade", string.Format("The package '{0}' ({1}) did not validate and is skipped", packageDescriptor.Name, packageDescriptor.Id));
+                Log.LogWarning("PackageServerFacade",
+                    $"The package '{packageDescriptor.Name}' ({packageDescriptor.Id}) did not validate and is skipped");
                 return false;
             }
 
@@ -219,7 +220,7 @@ namespace Composite.Core.PackageSystem
             }
 
             basicHttpBinding.MaxReceivedMessageSize = int.MaxValue;
-
+            
             return new PackagesSoapClient(basicHttpBinding, new EndpointAddress(packageServerUrl));
         }
     }

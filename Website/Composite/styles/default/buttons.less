@@ -126,12 +126,14 @@ ui|toolbarbutton {
 			margin: 0;
 			display: block;
 			float: left;
-			line-height: 28px;
+			line-height: 30px;
 			font-size: 9px;
 			padding: 0 10px;
 			.user-select(none);
 			position: relative;
 			color: transparent;
+			width: 28px;
+			height: 30px;
 
 			&:before, &:after {
 				content: "";
@@ -155,25 +157,34 @@ ui|toolbarbutton {
 				border-color: @btn-hover-bg-color transparent transparent transparent;
 			}
 		}
-	}
 
+		&[ischecked='true'] {
+			ui|combobox {
+				&:before {
+					top: 11px;
+					right: 10px;
+					border-width: 0 5px 5px 5px;
+					border-color: transparent transparent @gray-color transparent;
 
-	&.hover, &.active {
-		border-color: @btn-toolbar-hover-border-color;
-		background-color: @btn-toolbar-hover-bg-color;
-		color: @btn-hover-color;
+				}
 
-		ui|combobox {
-			border-left: 1px solid @primary-color;
-
-			&:before {
-				border-color: @btn-toolbar-hover-bg-color transparent transparent transparent;
-			}
-
-			&:after {
-				border-color: @btn-toolbar-hover-border-color transparent transparent transparent;
+				&:after {
+					top: 12px;
+					right: 11px;
+					border-width: 0 4px 4px 4px;
+					border-color: transparent transparent @btn-hover-bg-color transparent;
+				}
 			}
 		}
+	}
+
+	&.hover, &.active, &[ischecked='true'] {
+		border-color: @btn-toolbar-hover-border-color;
+	}
+
+	&.hover, &.active {
+		background-color: @btn-toolbar-hover-bg-color;
+		color: @btn-hover-color;
 	}
 
 	&.tabbutton { //== usage: "More Tabs" buttons when browser width is small

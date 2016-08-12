@@ -196,12 +196,9 @@ namespace Composite.Data
 
             if (!allowDataTypeCreation) return null;
 
-            var compositeAssemblyName = typeof(IData).Assembly.GetName().Name;
-
             foreach (Assembly assembly in AssemblyFacade.GetLoadedAssembliesFromBin())
             {
-                if (assembly != typeof(IData).Assembly
-                    && !assembly.GetReferencedAssemblies().Any(r => r.Name == compositeAssemblyName))
+                if (!AssemblyFacade.AssemblyPotentiallyUsesType(assembly, typeof(IData)))
                 {
                     // Ignoring assemblies that aren't referencing Composite.dll
                     continue;

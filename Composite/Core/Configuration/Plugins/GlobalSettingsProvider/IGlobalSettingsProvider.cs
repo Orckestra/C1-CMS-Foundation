@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Composite.Core.Configuration.Plugins.GlobalSettingsProvider.Runtime;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
@@ -82,5 +83,9 @@ namespace Composite.Core.Configuration.Plugins.GlobalSettingsProvider
         bool PrettifyPublicMarkup { get; }
 
         bool PrettifyRenderFunctionExceptions { get; }
+
+        bool FunctionPreviewEnabled { get; }
+
+        TimeZoneInfo TimeZone { get; }
     }
 }
