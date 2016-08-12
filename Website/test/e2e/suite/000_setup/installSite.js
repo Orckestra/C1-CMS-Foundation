@@ -4,9 +4,10 @@ var expectedLanguage = 'en-US';
 
 module.exports = {
 	'@tags': ['install'],
-	before: function (_, done) {
+	before: function (browser, done) {
 		resetSite(function (err) {
 			if (err) {
+				browser.end();
 				console.error(err);
 				process.exit(1);
 			}
