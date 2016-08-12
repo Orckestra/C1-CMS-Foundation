@@ -36,8 +36,7 @@ module.exports = {
 				return this;
 			},
 			save: function () {
-				this.selectFrame('#savebutton')
-				this.api.pause(500);
+                this.selectFrame('#savebutton');
 				this.expect.element('#savebutton').to.not.have.attribute('isdisabled');
 				this.click('#savebutton > labelbox');
 				this.api.pause(1000)

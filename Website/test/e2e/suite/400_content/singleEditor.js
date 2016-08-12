@@ -30,7 +30,7 @@ module.exports = {
 			.changeElementContent('h1', 'Moving forward')
 		browser.pause(100);
 		// Save change.
-		editor
+        editor
 			.save()
 		content
 			// Close editor after you
@@ -46,8 +46,8 @@ module.exports = {
 		content
 			.enter()
 			.enterFrame('@browserFrame')
-			.click('#moreactionsbutton')
-			.click('menuitem[image="item-undo-unpublished-changes"]')
+			// .click('#moreactionsbutton')
+			.click('toolbarbutton[image="item-undo-unpublished-changes"]')
 			.click('toolbarbutton[image="item-publish"]', done);
 	}
 }

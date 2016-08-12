@@ -53,8 +53,7 @@ module.exports = {
 		browser
 			.clickInFrame('#renderingdialogpage', 'clickbutton[callbackid="buttonAccept"]', 1000);
 		// Save change.
-		editor
-			.save()
+		editor.save()
 		// Close editor after you
 		content
 			.enter() // Reset to content frame
@@ -69,8 +68,8 @@ module.exports = {
 		content
 			.enter()
 			.enterFrame('@browserFrame')
-			.click('#moreactionsbutton')
-			.click('menuitem[image="item-undo-unpublished-changes"]')
+			// .click('#moreactionsbutton')
+			.click('toolbarbutton[image="item-undo-unpublished-changes"]')
 			.click('toolbarbutton[image="item-publish"]', done);
 	}
 };
