@@ -48,7 +48,8 @@
       "scss": "github:mobilexag/plugin-sass@^0.4.6",
       "svg": "github:npbenjohnson/plugin-svg@^0.1.0",
       "unexpected-mitm": "npm:unexpected-mitm@^9.1.2",
-      "whatwg-fetch": "npm:whatwg-fetch@^1.0.0"
+      "whatwg-fetch": "npm:whatwg-fetch@^1.0.0",
+      "zurvan": "npm:zurvan@^0.3.2"
     },
     "devDependencies": {
       "babel-plugin-transform-react-jsx": "npm:babel-plugin-transform-react-jsx@^6.8.0",
@@ -77,6 +78,7 @@
     },
     "peerDependencies": {
       "assert": "github:jspm/nodelibs-assert@^0.2.0-alpha",
+      "bluebird": "npm:bluebird@^3.0.0",
       "buffer": "github:jspm/nodelibs-buffer@^0.2.0-alpha",
       "child_process": "github:jspm/nodelibs-child_process@^0.2.0-alpha",
       "constants": "github:jspm/nodelibs-constants@^0.2.0-alpha",
@@ -110,6 +112,16 @@
         "dependencies": {},
         "optionalDependencies": {
           "core-js": "^1.2.0"
+        }
+      },
+      "npm:bluebird@3.4.1": {
+        "meta": {
+          "js/browser/bluebird.js": {
+            "format": "global"
+          },
+          "js/browser/bluebird.min.js": {
+            "format": "global"
+          }
         }
       },
       "npm:browserify-zlib@0.1.4": {
@@ -162,4 +174,4 @@
       }
     }
   }
-}
+}

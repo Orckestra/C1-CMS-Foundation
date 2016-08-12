@@ -16,7 +16,3 @@ export default SystemJS.import('./test/unit/suite.js').then(i => i.importSuite()
 		});
 	});
 })
-.catch(err => {
-	console.error(err); // eslint-disable-line no-console
-	console.error(err.stack); // eslint-disable-line no-console
-});

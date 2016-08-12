@@ -3,7 +3,7 @@ import React from 'react';
 import TestUtils from 'react-addons-test-utils';
 import HelpIcon from '../../../../../Composite/console/components/presentation/HelpIcon';
 import StatelessWrapper from '../../../helpers/StatelessWrapper';
-import sinon from 'sinon';
+import zurvan from 'zurvan';
 
 describe('HelpIcon', () => {
 	let renderer, text;
@@ -25,19 +25,18 @@ describe('HelpIcon', () => {
 		)
 	);
 
-	describe.skip('show and hide', () => {
-		// Need to figure out if sinon fake timers will work.
-		let component, clock;
+	describe('show and hide', () => {
+		let component;
 		beforeEach(() => {
 			component = TestUtils.renderIntoDocument(
 				<StatelessWrapper>
 					<HelpIcon text={text}/>
 				</StatelessWrapper>
 			);
-			// clock = sinon.useFakeTimers();
+			zurvan.interceptTimers();
 		});
 		afterEach(() => {
-			// clock.restore();
+			zurvan.releaseTimers();
 		});
 
 		it('displays help when clicked', () =>
@@ -56,7 +55,7 @@ describe('HelpIcon', () => {
 
 		it('hides help on mouse out with a delay', () =>
 			expect(component, 'with event', 'click', 'with event', 'mouseOut')
-			// .then(() => clock.tick(1999))
+			.then(() => zurvan.advanceTime(1999))
 			.then(() =>
 				expect(
 					component,
@@ -69,7 +68,7 @@ describe('HelpIcon', () => {
 					}
 				)
 			)
-			// .then(() => clock.tick(2))
+			.then(() => zurvan.advanceTime(2))
 			.then(() =>
 				expect(
 					component,

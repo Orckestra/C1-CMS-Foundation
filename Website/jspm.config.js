@@ -623,6 +623,7 @@ SystemJS.config({
     "github:*/*.json"
   ],
   map: {
+    "bluebird": "npm:bluebird@3.4.1",
     "plugin-babel": "npm:systemjs-plugin-babel@0.0.13",
     "magicpen-media": "npm:magicpen-media@1.5.1",
     "messy": "npm:messy@6.11.0",
@@ -658,7 +659,8 @@ SystemJS.config({
     "util": "github:jspm/nodelibs-util@0.2.0-alpha",
     "vm": "github:jspm/nodelibs-vm@0.2.0-alpha",
     "whatwg-fetch": "npm:whatwg-fetch@1.0.0",
-    "zlib": "github:jspm/nodelibs-zlib@0.2.0-alpha"
+    "zlib": "github:jspm/nodelibs-zlib@0.2.0-alpha",
+    "zurvan": "npm:zurvan@0.3.2"
   },
   packages: {
     "github:jspm/nodelibs-path@0.1.0": {
