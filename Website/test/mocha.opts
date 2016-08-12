@@ -1,4 +1,0 @@
---compilers js:babel-register
---require babel-polyfill
---delay
-test/unit/runner

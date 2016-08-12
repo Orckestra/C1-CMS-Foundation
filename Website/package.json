@@ -4,8 +4,8 @@
   "scripts": {
     "test": "npm run unit:test",
     "coverage": "npm run unit:cov",
-    "unit:test": "./node_modules/.bin/mocha",
-    "unit:cov": "node_modules/.bin/istanbul cover node_modules/mocha/bin/_mocha --root Composite/console/ --include-all-sources"
+    "unit:test": "jspm run test/unit/runner.js",
+    "unit:cov": "jspm run test/unit/coverage.js && istanbul report && rm coverage.json"
   },
   "devDependencies": {
     "JSONPath": "^0.10.0",

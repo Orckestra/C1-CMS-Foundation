@@ -15,4 +15,4 @@ export default SystemJS.import('./test/unit/suite.js').then(i => i.importSuite()
 			}
 		});
 	});
-})
+});
