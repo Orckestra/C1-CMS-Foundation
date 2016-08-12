@@ -31,3 +31,5 @@
 /Bin/Composite.Workflows.dll
 
 /Packages/
+selenium-debug.log
+/Website/test/e2e/reports/

@@ -7,7 +7,8 @@ using Composite.Core.Extensions;
 using Composite.Core.ResourceSystem;
 using Composite.Core.WebClient.FlowMediators.FormFlowRendering;
 using Composite.Plugins.Forms.WebChannel.UiControlFactories;
-
+using System.Web.UI.HtmlControls;
+using System.Linq;
 
 namespace Composite.Plugins.Forms.WebChannel.UiContainerFactories
 {
@@ -83,6 +84,25 @@ namespace Composite.Plugins.Forms.WebChannel.UiContainerFactories
                 {
                     var container = GetContainer();
                     container?.InitializeLazyBindedControls();
+                }
+            }
+
+            if (RuntimeInformation.IsTestEnvironment) {
+
+                try
+                {
+                    var mappings = new Dictionary<string, string>();
+                    FormFlowUiDefinitionRenderer.ResolveBindingPathToCliendIDMappings(GetContainer(), mappings);
+                    var control = new HtmlGenericControl("ui:resolvercontainer");
+                    control.Attributes.Add("class", "resolvercontainer hide");
+                    foreach (var mapping in mappings)
+                    {
+                        control.Attributes.Add($"data-{mapping.Key}", mapping.Value);
+                    }
+                    GetFormPlaceHolder().Controls.Add(control);
+                }
+                catch {
+                    //Nothing
                 }
             }
 

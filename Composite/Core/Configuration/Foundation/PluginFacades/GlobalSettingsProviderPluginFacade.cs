@@ -331,7 +331,7 @@ namespace Composite.Core.Configuration.Foundation.PluginFacades
 
         public static bool FunctionPreviewEnabled => UseReaderLock(p => p.FunctionPreviewEnabled);
 
-
+        public static TimeZoneInfo TimeZone => UseReaderLock(p => p.TimeZone);
 
 
         private static void Flush()

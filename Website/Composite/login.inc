@@ -22,7 +22,7 @@
 					</ui:field>
 				</ui:fields>
 				<ui:dialogtoolbar>
-					<ui:clickbutton label="SIGN IN" focusable="true" oncommand="KickStart.login()"/>
+					<ui:clickbutton label="SIGN IN" id="loginButton" focusable="true" oncommand="KickStart.login()"/>
 				</ui:dialogtoolbar>
 			</ui:deck>
 			<ui:deck id="changepassworddeck" lazy="true">
