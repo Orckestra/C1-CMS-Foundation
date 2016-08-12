@@ -214,33 +214,34 @@ namespace Composite.Data.Caching
 
         public IData GetCachedValueByKey(object key)
         {
-            IEnumerable<IData> cachedRows = GetRowsByKeyTable()[key];
-            if (cachedRows == null) return null;
-
-            IEnumerable<T> filteredData = cachedRows.Cast<T>();
-
-            var filterMethodInfo = StaticReflection.GetGenericMethodInfo(
-                    () => ((DataInterceptor)null).InterceptGetData((IEnumerable<IData>)null))
-                    .MakeGenericMethod(typeof(T));
-
-            foreach (var dataInterceptor in DataFacade.GetDataInterceptors(typeof(T)))
-            {
-                filteredData = (IEnumerable<T>)filterMethodInfo.Invoke(dataInterceptor, new object[] { filteredData });
-            }
+            var filteredData = GetFromCacheFiltered(key);
+            if (filteredData == null) return null;
 
             var result = filteredData.FirstOrDefault();
-            if (result == null)
-            {
-                return null;
-            }
+            if (result == null) return null;
 
             return _wrappingMethodInfo.Invoke(null, new object[] { result }) as IData;
         }
 
+
         public IEnumerable<IData> GetCachedVersionValuesByKey(object key)
         {
-            IEnumerable<IData> cachedRows = GetRowsByKeyTable()[key];
-            if (cachedRows == null) return null;
+            var result = GetFromCacheFiltered(key);
+            if (result == null) return Enumerable.Empty<IData>();
+
+            return _listWrappingMethodInfo.Invoke(null, new object[] { result }) as IEnumerable<IData>;
+        }
+
+
+        private IEnumerable<T> GetFromCacheFiltered(object key)
+        {
+            var cachedTable = GetRowsByKeyTable();
+            IEnumerable<IData> cachedRows;
+
+            if (!cachedTable.TryGetValue(key, out cachedRows))
+            {
+                return null;
+            }
 
             IEnumerable<T> filteredData = cachedRows.Cast<T>();
 
@@ -253,13 +254,7 @@ namespace Composite.Data.Caching
                 filteredData = (IEnumerable<T>)filterMethodInfo.Invoke(dataInterceptor, new object[] { filteredData });
             }
 
-            var result = filteredData;
-            if (result == null)
-            {
-                return null;
-            }
-
-            return _listWrappingMethodInfo.Invoke(null, new object[] { result }) as IEnumerable<IData>;
+            return filteredData;
         }
 
 
