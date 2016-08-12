@@ -33,7 +33,6 @@
     "node-fetch": "1.6.0",
     "rimraf": "2.5.4",
     "selenium-server-standalone-jar": "2.53.1",
-    "source-map-support": "0.4.2",
     "systemjs": "0.19.36",
     "systemjs-istanbul-hook": "0.1.0",
     "xml2js": "^0.4.10"
