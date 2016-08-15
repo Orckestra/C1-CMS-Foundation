@@ -678,7 +678,19 @@
   <string key="Validation.DateTime.InvalidDateFormat" value="Invalid date string: '{0}'. Use the format '{1}'." />
 	<string key="Validation.Int32.Overflow" value="The specified value is either too big or too small. The acceptable range is from -2,147,483,648 to 2,147,483,647" />
 
-  <string key="Browser.Label" value="Page Browser" />
+	<string key="Validation.Required" value="Required" />
+	<string key="Validation.InvalidField.Number" value="Numbers only" />
+	<string key="Validation.InvalidField.Integer" value="Integers only" />
+	<string key="Validation.InvalidField.ProgrammingIdentifier" value="Invalid identifier" />
+	<string key="Validation.InvalidField.ProgrammingNamespace" value="Invalid namespace" />
+	<string key="Validation.InvalidField.Url" value="Invalid URL" />
+	<string key="Validation.InvalidField.Currency" value="Invalid notation" />
+	<string key="Validation.InvalidField.Email" value="Invalid e-mail" />
+	<string key="Validation.InvalidField.Guid" value="Invalid GUID" />
+	<string key="Validation.StringLength.Min" value="{0} characters minimum" />
+	<string key="Validation.StringLength.Max" value="{0} characters maximum" />
+
+	<string key="Browser.Label" value="Page Browser" />
   <string key="Browser.ToolTip" value="Browse unpublished pages" />
 
   <string key="DefaultVersionName" value="Original" />

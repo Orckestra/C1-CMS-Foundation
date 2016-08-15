@@ -723,10 +723,10 @@ DataInputBinding.prototype.validate = function ( isInternal ) {
 						message = DataBinding.warnings [ "required" ];
 					} else if ( this._isInvalidBecauseMinLength == true ) {
 						message = DataBinding.warnings [ "minlength" ];
-						message = message.replace ( "${count}", String ( this.minlength ));
+						message = message.replace ( "{0}", String ( this.minlength ));
 					} else if ( this._isInvalidBecauseMaxLength == true ) {
 						message = DataBinding.warnings [ "maxlength" ];
-						message = message.replace ( "${count}", String ( this.maxlength ));
+						message = message.replace ( "{0}", String ( this.maxlength ));
 					} else {
 						message = DataBinding.warnings [ this.type ];
 					}
