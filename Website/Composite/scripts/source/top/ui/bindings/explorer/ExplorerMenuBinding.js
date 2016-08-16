@@ -126,6 +126,9 @@ ExplorerMenuBinding.prototype._mountMinButton = function (definition) {
 	button.setToolTip(definition.label); // use label as tooltip
 	button.handle = definition.handle;
 	button.node = definition.node;
+	if (Application.isTestEnvironment) {
+		button.setProperty("data-qa", definition.node.getTag());
+	}
 	this._group.add(button);
 	this._list.add(button);
 	button.attach();

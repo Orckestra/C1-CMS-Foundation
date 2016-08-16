@@ -26,7 +26,7 @@
 		<ui:broadcaster id="broadcasterCurrentTabDirty" isdisabled="true" />
 		<ui:broadcaster id="broadcasterHasDirtyTabs" isdisabled="true" />
 	</ui:broadcasterset>
-	
+
 </head>
 <body id="app">
 
@@ -118,14 +118,14 @@
 		<%--		<ui:menu label="${string:Website.App.LabelView}">
 			<ui:menupopup>
 				<ui:menubody>
-					
+
 					<ui:menugroup>
 						<ui:menuitem binding="StartMenuItemBinding" label="${string:Website.App.LabelViewCompositeStart}" image="${icon:composite}" />
 					</ui:menugroup>
 				</ui:menubody>
 			</ui:menupopup>
 		</ui:menu>--%>
-		<ui:menu label="Developer" rel="developermode" class="last">
+		<ui:menu label="Developer" rel="developermode" id="developermenu" class="last">
 			<ui:menupopup>
 				<ui:menubody>
 					<ui:menugroup>
@@ -147,11 +147,11 @@
 		<%--		<ui:menu label="${string:Website.App.LabelTools}">
 			<ui:menupopup>
 				<ui:menubody>
-					
+
 				</ui:menubody>
 			</ui:menupopup>
 		</ui:menu>--%>
-		<ui:menu image="${icon:help}" class="icon" tooltip="${string:Website.App.LabelHelp}">
+		<ui:menu image="${icon:help}" id="helpmenu" class="icon" tooltip="${string:Website.App.LabelHelp}">
 			<ui:menupopup>
 				<ui:menubody>
 					<ui:menugroup>
@@ -169,14 +169,14 @@
 				</ui:menubody>
 			</ui:menupopup>
 		</ui:menu>
-		<ui:menu image="${icon:settings}" class="icon" tooltip="${string:Website.App.LabelSettings}">
+		<ui:menu image="${icon:settings}" id="settingsmenu" class="icon" tooltip="${string:Website.App.LabelSettings}">
 			<ui:menupopup>
 				<ui:menubody>
 					<ui:menugroup id="toolsmenugroup" />
 				</ui:menubody>
 			</ui:menupopup>
 		</ui:menu>
-		<ui:menu binding="LocalizationSelectorBinding">
+		<ui:menu id="localizationmenu" binding="LocalizationSelectorBinding">
 			<ui:menupopup>
 				<ui:menubody>
 					<ui:menugroup>

@@ -419,6 +419,9 @@ SystemToolBarBinding.prototype.getToolBarButtonBinding = function ( action) {
 	if ( action.isDisabled ()) {
 		binding.disable ();
 	}
+	if (Application.isTestEnvironment) {
+		binding.setProperty("data-qa", action.getKey());
+	}
 
 	/*
 	 * Stamp the action as a property on the buttonbinding
