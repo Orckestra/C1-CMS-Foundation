@@ -29,4 +29,10 @@ describe('TabPage', () => {
 		renderer.render(<TabPage name="wrongname" pageDefs={pageDefs} pageTypes={pageTypes}/>);
 		expect(renderer, 'to have exactly rendered', <div/>);
 	});
+
+	it('should error if referencing an invalid page type', () => {
+		expect(() => {
+			renderer.render(<TabPage name={name} pageDefs={{ testpage: { type: 'wrongtype' }}} pageTypes={pageTypes}/>);
+		}, 'to throw');
+	});
 });
