@@ -97,7 +97,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiContainerFactories
                 try
                 {
                     var mappings = new Dictionary<string, string>();
-                    FormFlowUiDefinitionRenderer.ResolveBindingPathToCliendIDMappings(GetContainer(), mappings);
+                    FormFlowUiDefinitionRenderer.ResolveBindingPathToClientIDMappings(GetContainer(), mappings);
                     var control = new HtmlGenericControl("ui:resolvercontainer");
                     control.Attributes.Add("class", "resolvercontainer hide");
                     foreach (var mapping in mappings)
