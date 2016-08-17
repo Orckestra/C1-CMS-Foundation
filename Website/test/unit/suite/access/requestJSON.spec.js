@@ -38,6 +38,13 @@ describe('requestJSON', () => {
 	});
 
 	describe('Error handling', () => {
+		it('rejects if called with a non-compliant URL', () =>
+			expect(requestJSON,
+				'when called with', ['this/is/wrong'],
+				'to be rejected with', 'Paths requested must either be absolute or begin with a slash'
+			)
+		);
+
 		it('rejects on unrecoverable errors', () =>
 			expect(() => requestJSON('/failure.json'), 'to error')
 		);
