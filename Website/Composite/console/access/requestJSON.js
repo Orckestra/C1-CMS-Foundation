@@ -1,5 +1,4 @@
 import 'whatwg-fetch';
-// let fetch = window.fetch;
 
 export default function requestJSON(path, inputData) {
 	if (typeof inputData === 'object') {
@@ -16,10 +15,6 @@ export default function requestJSON(path, inputData) {
 		path = location.origin + path;
 	}
 	return fetch(path, inputData)
-	// .then(response => {
-	// 	console.log(response);
-	// 	return response;
-	// })
 	.then(response => response.json());
 	// Provide basic error handling, maybe retry logic?
 	// Catch 503s with Retry-After header and wait, then retry.

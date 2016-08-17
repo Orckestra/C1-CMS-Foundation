@@ -17,7 +17,7 @@ runner
 	let reporter = new Reporter();
 	reporter.add('html'); // FIXME: Should be 'lcov', but that causes an error. For now, HTML report works.
 	reporter.write(coverageMap, {});
-	console.log('Coverage report written to /coverage/lcov-report'); // eslint-disable-line no-console
+	console.log('Coverage report written to ' + reporter.dir); // eslint-disable-line no-console
 })
 .catch(err => {
 	console.error(err); // eslint-disable-line no-console
