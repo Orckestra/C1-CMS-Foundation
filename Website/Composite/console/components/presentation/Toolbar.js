@@ -8,8 +8,10 @@ const typeClassName = {
 const Toolbar = ({ type, actions, buttons }) => (
 	<div className={'toolbar' + (typeClassName[type] || '')}>
 		{Object.keys(buttons).map(
-			name => buttons[name] && actions[name] ? <ActionButton key={name} action={actions[name]} {...buttons[name]}/> : null
-		)}
+			name => (buttons[name] && actions[name]) ?
+				<ActionButton key={name} action={actions[name]} {...buttons[name]}/> :
+				null
+		).filter(button => !!button)}
 	</div>
 );
 

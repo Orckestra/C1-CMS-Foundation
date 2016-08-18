@@ -20,7 +20,14 @@ export default function requestJSON(path, inputData) {
 		path = location.origin + path;
 	}
 	return fetch(path, inputData)
-	.then(response => response.json());
 	// Provide basic error handling, maybe retry logic?
-	// Catch 503s with Retry-After header and wait, then retry.
+	.then(response => {
+		if (!response.ok) {
+			// Catch 503s with Retry-After header and wait, then retry.
+			throw new Error(response.status + ' ' + response.statusText);
+		} else {
+			return response;
+		}
+	})
+	.then(response => response.json());
 }
