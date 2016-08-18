@@ -18,7 +18,6 @@
 /Website/node_modules
 /Website/jspm_packages
 /Website/coverage
-/Website/coverage.json
 /Website/Composite/images/sprite.svg
 /Website/Composite/console/icons.svg
 /Website/Views

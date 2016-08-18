@@ -4,20 +4,27 @@ systemIstanbul.hookSystemJS(SystemJS, address => {
 	// Only files in Composite/console should be instrumented
 	return !address.startsWith(SystemJS.baseURL + 'Composite/console');
 });
-import Reporter from '@node/istanbul-api/lib/reporter';
-import libCoverage from '@node/istanbul-lib-coverage';
+import istanbul from '@node/istanbul';
 import runner from '/test/unit/runner.js';
 
 runner
 // after running the tests, save the coverage file
 .then(function() {
 	let coverage = systemIstanbul.remapCoverage();
-	let coverageMap = libCoverage.createCoverageMap();
-	coverageMap.merge(coverage);
-	let reporter = new Reporter();
-	reporter.add('html'); // FIXME: Should be 'lcov', but that causes an error. For now, HTML report works.
-	reporter.write(coverageMap, {});
-	console.log('Coverage report written to ' + reporter.dir); // eslint-disable-line no-console
+	let collector = new istanbul.Collector();
+	collector.add(coverage);
+	let reporter = new istanbul.Reporter();
+	reporter.add('lcov');
+	return new Promise((resolve, reject) => {
+		try {
+			reporter.write(collector, true, () => {
+				console.log('Coverage report written to ' + reporter.dir); // eslint-disable-line no-console
+				resolve();
+			});
+		} catch (err) {
+			reject(err);
+		}
+	});
 })
 .catch(err => {
 	console.error(err); // eslint-disable-line no-console
