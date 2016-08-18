@@ -181,22 +181,20 @@ UnpublishedPageBinding.prototype.renderTable = function (nodes, selected) {
 		}
 		linkcell.appendChild(link);
 
-		this.addTextCell(row, node.getPropertyBag().Version,
-			{
-				"class": "version"
-			});
-		this.addTextCell(row, node.getPropertyBag().Status);
-		this.addTextCell(row, node.getPropertyBag().PublishDate,
-			{
-				"data-sort-value": node.getPropertyBag().SortablePublishDate ,
-			}
-		);
-		this.addTextCell(row, node.getPropertyBag().UnpublishDate, {
-			"data-sort-value": node.getPropertyBag().SortableUnpublishDate,
-		});
-		this.addTextCell(row, node.getPropertyBag().Created).setAttribute("data-sort-value", node.getPropertyBag().SortableCreated);
-		this.addTextCell(row, node.getPropertyBag().Modified).setAttribute("data-sort-value", node.getPropertyBag().SortableModified);
-		this.addTextCell(row, "");
+		var headers = this.table.firstElementChild.firstElementChild.cells;
+		var propertybag = node.getPropertyBag();
+
+		for (var i = 2; i < headers.length; i++) {
+		    var propertyName = headers[i].innerText.trim();
+		    if (propertyName in propertybag) {
+		        this.addTextCell(row, propertybag[propertyName]).
+                    setAttribute("data-sort-value", ((propertyName + "Sortable") in propertybag) ?
+                    propertybag[propertyName + "Sortable"] :
+                    propertybag[propertyName]);
+		    } else {
+		        this.addTextCell(row, "");
+		    }
+		}
 
 	}, this);
 

@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
 
 <%@ Page Language="C#" AutoEventWireup="true" CodeFile="ViewUnpublishedItems.aspx.cs" Inherits="ViewUnpublishedItems" %>
+<%@ Import Namespace="Composite.Data.Types" %>
 
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://www.w3.org/1999/xhtml" xmlns:control="http://www.composite.net/ns/uicontrol">
 <control:httpheaders runat="server" />
@@ -31,16 +32,20 @@
 							<ui:checkbox id="checkallbox" oncommand="this.dispatchAction(UnpublishedPageBinding.ACTION_CHECK_ALL)" />
 						</th>
 						<th><ui:clickbutton label="${string:Composite.Plugins.PageElementProvider:ViewUnpublishedItems.PageTitleLabel}" binding="SortButtonBinding"/></th>
-						<th class="version"><ui:clickbutton label="${string:Composite.Plugins.PageElementProvider:ViewUnpublishedItems.VersionLabel}" binding="SortButtonBinding" /></th>
-						<th><ui:clickbutton label="${string:Composite.Plugins.PageElementProvider:ViewUnpublishedItems.StatusLabel}" binding="SortButtonBinding" /></th>
-						<th>
-							<ui:clickbutton label="${string:Composite.Plugins.PageElementProvider:ViewUnpublishedItems.PublishDateLabel}" binding="SortButtonBinding" />
-							<ui:fieldhelp label="${string:Composite.Plugins.PageElementProvider:ViewUnpublishedItems.PublishDateHelp}"/>
-						</th>
-						<th>
-							<ui:clickbutton label="${string:Composite.Plugins.PageElementProvider:ViewUnpublishedItems.UnpublishDateLabel}" binding="SortButtonBinding" />
-							<ui:fieldhelp label="${string:Composite.Plugins.PageElementProvider:ViewUnpublishedItems.UnpublishDateHelp}"/>
-						</th>
+						<% if (VersionedDataHelper.IsThereAnyVersioningServices)
+						   { %>
+                        <th class="version"><ui:clickbutton label="${string:Composite.Plugins.PageElementProvider:ViewUnpublishedItems.VersionLabel}" binding="SortButtonBinding" /></th>
+						<% } %>
+                        <th><ui:clickbutton label="${string:Composite.Plugins.PageElementProvider:ViewUnpublishedItems.StatusLabel}" binding="SortButtonBinding" /></th>
+						<asp:Repeater runat="server" ID="headerRepeater">
+                            <ItemTemplate>
+                                <th>
+                                    <ui:clickbutton label="<%# (Container.DataItem as VersionedExtraPropertiesColumnInfo).ColumnName %>" binding="SortButtonBinding" />
+							        <ui:fieldhelp label="<%# (Container.DataItem as VersionedExtraPropertiesColumnInfo).ColumnTooltip %>"/>
+                                    
+                                </th>
+                            </ItemTemplate>
+                        </asp:Repeater>
 						<th><ui:clickbutton label="${string:Composite.Plugins.PageElementProvider:ViewUnpublishedItems.DateCreatedLabel}" binding="SortButtonBinding" /></th>
 						<th><ui:clickbutton label="${string:Composite.Plugins.PageElementProvider:ViewUnpublishedItems.DateModifiedLabel}" binding="SortButtonBinding" /></th>
 						<th></th>

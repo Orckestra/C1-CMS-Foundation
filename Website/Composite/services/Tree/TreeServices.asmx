@@ -14,6 +14,7 @@ using Composite.C1Console.Security;
 using Composite.C1Console.Users;
 using Composite.Core;
 using Composite.Core.IO;
+using Composite.Core.ResourceSystem;
 using Composite.Core.Routing;
 using Composite.Core.Xml;
 using Composite.Core.Types;
@@ -23,15 +24,13 @@ using Composite.Core.WebClient.Services.TreeServiceObjects.ExtensionMethods;
 using Composite.Data;
 using Composite.Data.ProcessControlled;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
-using Composite.Data.PublishScheduling;
 using Composite.Data.Types;
 using Composite.Core.Extensions;
+using Texts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_Plugins_PageElementProvider;
 
 // Search token stuff
 using Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementProvider;
 using Composite.Plugins.Elements.ElementProviders.AllFunctionsElementProvider;
-
-using Texts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_Management;
 
 namespace Composite.Services
 {
@@ -91,133 +90,101 @@ namespace Composite.Services
 
             var publicationStates = new Dictionary<string, string>
             {
-                {GenericPublishProcessController.Draft, Texts.PublishingStatus_draft},
-                {GenericPublishProcessController.AwaitingApproval, Texts.PublishingStatus_awaitingApproval},
-                {GenericPublishProcessController.AwaitingPublication, Texts.PublishingStatus_awaitingPublication},
+                {GenericPublishProcessController.Draft, StringResourceSystemFacade.GetString("Composite.Management", "PublishingStatus.draft")},
+                {GenericPublishProcessController.AwaitingApproval, StringResourceSystemFacade.GetString("Composite.Management", "PublishingStatus.awaitingApproval")},
+                {GenericPublishProcessController.AwaitingPublication, StringResourceSystemFacade.GetString("Composite.Management", "PublishingStatus.awaitingPublication")}
             };
 
             List<Tuple<Element, IPublishControlled>> actionRequiredPages =
                  (from element in allElements
-				 let publishControlledData = (IPublishControlled)((DataEntityToken)element.ElementHandle.EntityToken).Data
-                 where publishControlledData.PublicationStatus != "published"
-                 select new Tuple<Element, IPublishControlled>(element, publishControlledData)).ToList();
+                  let publishControlledData = (IPublishControlled)((DataEntityToken)element.ElementHandle.EntityToken).Data
+                  where publishControlledData.PublicationStatus != "published"
+                  select new Tuple<Element, IPublishControlled>(element, publishControlledData)).ToList();
 
             foreach (var actionRequiredPage in actionRequiredPages)
             {
                 var propertyBag = actionRequiredPage.Item1.PropertyBag;
                 var data = actionRequiredPage.Item2;
 
-                propertyBag["Title"] = data.GetLabel();
+                  
+                propertyBag[Texts.ViewUnpublishedItems_PageTitleLabel] = data.GetLabel();
 
                 var publicationStatus = data.PublicationStatus;
-                propertyBag["Status"] = publicationStates.ContainsKey(publicationStatus)
+                propertyBag[Texts.ViewUnpublishedItems_StatusLabel] = publicationStates.ContainsKey(publicationStatus)
                     ? publicationStates[publicationStatus]
                     : "Unknown State";
 
                 var versionedData = data as IVersioned;
-			    if (versionedData != null)
-			    {
-			        string versionName = versionedData.LocalizedVersionName(); // TODO: type cast?
-					if (!string.IsNullOrEmpty(versionName))
-					{
-					    propertyBag["Version"] = versionName;
-					}
-			    }
+                if (versionedData != null)
+                {
+                    string versionName = versionedData.LocalizedVersionName(); // TODO: type cast?
+                    if (!string.IsNullOrEmpty(versionName))
+                    {
+                        propertyBag[Texts.ViewUnpublishedItems_VersionLabel] = versionName;
+                    }
+                }
 
                 Func<DateTime, string> toSortableString = date => String.Format("{0:s}", date);
 
                 var changeHistory = data as IChangeHistory;
                 if (changeHistory != null)
                 {
-                    propertyBag["Modified"] = changeHistory.ChangeDate.ToTimeZoneDateTimeString();
-                    propertyBag["SortableModified"] = toSortableString(changeHistory.ChangeDate);
-                    propertyBag["ChangedBy"] = changeHistory.ChangedBy;
+                    propertyBag[Texts.ViewUnpublishedItems_DateModifiedLabel] = changeHistory.ChangeDate.ToTimeZoneDateTimeString();
+                    propertyBag[Texts.ViewUnpublishedItems_DateModifiedLabel+"Sortable"] = toSortableString(changeHistory.ChangeDate);
                 }
                 var creationHistory = data as ICreationHistory;
                 if (creationHistory != null)
                 {
-                    propertyBag["Created"] =
+                    propertyBag[Texts.ViewUnpublishedItems_DateCreatedLabel] =
                         creationHistory.CreationDate.ToTimeZoneDateTimeString();
-                    propertyBag["SortableCreated"] =
+                    propertyBag[Texts.ViewUnpublishedItems_DateCreatedLabel+"Sortable"] =
                         toSortableString(creationHistory.CreationDate);
                 }
 
-                DateTime? publishDate, unpublishDate;
-			    GetPublicationDates(data, out publishDate, out unpublishDate);
+                if (data is IVersioned)
+                {
+                    foreach (var x in (data as IVersioned).GetExtraProperties() ?? new List<VersionedExtraProperties>())
+                    {
+                        propertyBag[x.ColumnName] = x.Value;
+                        propertyBag[x.ColumnName + "Sortable"] = x.SortableValue;
 
-				if (publishDate != null)
-				{
-					propertyBag["PublishDate"] = publishDate.ToTimeZoneDateTimeString();
-				}
-				propertyBag["SortablePublishDate"] = toSortableString(publishDate ?? DateTime.MinValue);
-				
+                    }
+                }
 
-				if (unpublishDate != null)
-				{
-					propertyBag["UnpublishDate"] = unpublishDate.ToTimeZoneDateTimeString();
-				}
-				propertyBag["SortableUnpublishDate"] = toSortableString(unpublishDate ?? DateTime.MinValue);
             }
             return actionRequiredPages.Select(pair => pair.Item1).ToList().ToClientElementList();
         }
 
-		private void GetPublicationDates(IData data, out DateTime? publicationDate, out DateTime? unpublicationDate)
-		{
-			var versionedData = data as IVersioned;
-
-			if (versionedData != null)
-			{
-				publicationDate = versionedData.GetPublishDate();
-				unpublicationDate = versionedData.GetUnpublishDate();
-			}
-			else
-			{
-				var interfaceType = data.DataSourceId.InterfaceType;
-				string key = data.GetUniqueKey().ToString();
-				string cultureName = UserSettings.ActiveLocaleCultureInfo.Name;
-
-				var publishSchedule = PublishScheduleHelper.GetPublishSchedule(
-					interfaceType, key, cultureName);
-
-				publicationDate = publishSchedule != null ? (DateTime?)publishSchedule.PublishDate : null;
-
-				var unpublishSchedule = PublishScheduleHelper.GetUnpublishSchedule(
-					interfaceType, key, cultureName);
-
-				unpublicationDate = unpublishSchedule != null ? (DateTime?)unpublishSchedule.UnpublishDate : null;
-			}
-		}
-
         IEnumerable<Element> GetPublishControlledDescendants(ElementHandle elementHandle)
-		{
-			HashSet<string> elementBundles = null;
+        {
+            HashSet<string> elementBundles = null;
 
-			var children = ElementFacade.GetChildren(elementHandle, new SearchToken()) ?? Enumerable.Empty<Element>();
-			foreach (var child in children)
-			{
-				if (IsPublishControlled(child))
-				{
-					yield return child;
-				}
+            var children = ElementFacade.GetChildren(elementHandle, new SearchToken()) ?? Enumerable.Empty<Element>();
+            foreach (var child in children)
+            {
+                if (IsPublishControlled(child))
+                {
+                    yield return child;
+                }
 
-				string elementBundle = child.VisualData.ElementBundle;
-				if (elementBundle != null)
-				{
-					elementBundles = elementBundles ?? new HashSet<string>();
-				    if (elementBundles.Contains(elementBundle))
-				    {
-				        continue;
-				    }
+                string elementBundle = child.VisualData.ElementBundle;
+                if (elementBundle != null)
+                {
+                    elementBundles = elementBundles ?? new HashSet<string>();
+                    if (elementBundles.Contains(elementBundle))
+                    {
+                        continue;
+                    }
 
-				    elementBundles.Add(elementBundle);
-				}
+                    elementBundles.Add(elementBundle);
+                }
 
-				foreach (var element in GetPublishControlledDescendants(child.ElementHandle))
-				{
-					yield return element;
-				}
-			}
-		}
+                foreach (var element in GetPublishControlledDescendants(child.ElementHandle))
+                {
+                    yield return element;
+                }
+            }
+        }
 
         private bool IsPublishControlled(Element v)
         {
