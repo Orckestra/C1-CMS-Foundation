@@ -5,37 +5,60 @@ using System.Linq;
 namespace Composite.Data.Types
 {
     /// <summary>
-    /// Represents a data item with timed publishing
+    /// Contract for defining IVersioned extra methods and helper functions
     /// </summary>
-    public abstract class VersionedPageHelperContract
+    public abstract class VersionedDataHelperContract
     {
-        /// <exclude />
+        /// <summary>
+        /// Returns version name for the IVersioned data if it could otherwise returns null
+        /// </summary>
         public abstract string LocalizedVersionName<T>(T data) where T : IVersioned;
 
-        /// <exclude />
-        public abstract DateTime? GetPublishDate<T>(T data) where T : IVersioned;
+        /// <summary>
+        /// Returns currently live version name for the IVersioned data if it could otherwise returns null
+        /// </summary>
+        public abstract string GetLiveVersionName<T>(T data) where T : IVersioned;
 
-        /// <exclude />
-        public abstract DateTime? GetUnpublishDate<T>(T data) where T : IVersioned;
+        /// <summary>
+        /// Returns column name and tooltip for the extra fields in publication overview, if no extra fields needed returns null
+        /// </summary>
+        public abstract List<VersionedExtraPropertiesColumnInfo> GetExtraPropertiesNames();
+
+        /// <summary>
+        /// Returns values for the extra fields in publication overview, if no extra fields needed returns null
+        /// </summary>
+        public abstract List<VersionedExtraProperties> GetExtraProperties<T>(T data) where T : IVersioned;
+
     }
 
-    /// <exclude />
-    public static class VersionedPageHelper
+    /// <summary>
+    /// This class should be used in every versioning package to register it's naming and detecting of live versions
+    /// </summary>
+    public static class VersionedDataHelper
     {
-        private static List<VersionedPageHelperContract> _instances;
+        private static List<VersionedDataHelperContract> _instances;
 
-        /// <exclude />
-        public static void RegisterVersionHelper(VersionedPageHelperContract vpc)
+        /// <summary>
+        /// Returns if there are any versioning package instances available
+        /// </summary>
+        public static bool IsThereAnyVersioningServices => _instances!=null && _instances.Count > 0;
+
+        /// <summary>
+        /// Registers instances of versioning packages
+        /// </summary>
+        public static void RegisterVersionHelper(VersionedDataHelperContract vpc)
         {
             if (_instances == null)
             {
-                _instances = new List<VersionedPageHelperContract>();
+                _instances = new List<VersionedDataHelperContract>();
             }
 
             _instances.Add(vpc);
         }
 
-        /// <exclude />
+        /// <summary>
+        /// Returns version name for the IVersioned data
+        /// </summary>
         public static string LocalizedVersionName<T>(this T str) where T : IVersioned
         {
             var defaultVersionName =
@@ -50,16 +73,59 @@ namespace Composite.Data.Types
                 string.Join(",", _instances.Select(p => p.LocalizedVersionName(str)).Where(name => name != null)): defaultVersionName;
         }
 
-        /// <exclude />
-        public static DateTime? GetPublishDate(this IVersioned data)
+        /// <summary>
+        /// Returns column name and tooltip for the extra fields in publication overview
+        /// </summary>
+        public static List<VersionedExtraPropertiesColumnInfo> GetExtraPropertiesNames()
         {
-            return _instances?.Select(p => p.GetPublishDate(data)).FirstOrDefault(date => date != null);
+            return _instances?.SelectMany(p => p.GetExtraPropertiesNames()).ToList();
         }
 
-        /// <exclude />
-        public static DateTime? GetUnpublishDate(this IVersioned data)
+        /// <summary>
+        /// Returns values for the extra fields in publication overview
+        /// </summary>
+        public static List<VersionedExtraProperties> GetExtraProperties<T>(this T str) where T : IVersioned
         {
-            return _instances?.Select(p => p.GetUnpublishDate(data)).FirstOrDefault(date => date != null);
+            return _instances?.SelectMany(p => p.GetExtraProperties(str)).ToList();
         }
+
+        /// <summary>
+        /// Returns currently live version name for the IVersioned data
+        /// </summary>
+        public static string GetLiveVersionName<T>(this T str) where T : IVersioned
+        {
+            if (_instances == null)
+            {
+                return null;
+            }
+
+            return _instances.Select(p => p.GetLiveVersionName(str)).Any(name => name != null) ?
+                string.Join(",", _instances.Select(p => p.GetLiveVersionName(str)).Where(name => name != null)) : null;
+        }
+
+    }
+
+    /// <summary>
+    /// Represents Extra fields that a Versioning package needs to insert to the publication overview
+    /// </summary>
+    public class VersionedExtraProperties
+    {
+        /// <exclude />
+        public string ColumnName;
+        /// <exclude />
+        public string Value;
+        /// <exclude />
+        public string SortableValue;
+    }
+
+    /// <summary>
+    /// Represents column title and tooltip for the Extra fields that a Versioning package needs to insert to the publication overview
+    /// </summary>
+    public class VersionedExtraPropertiesColumnInfo
+    {
+        /// <exclude />
+        public string ColumnName;
+        /// <exclude />
+        public string ColumnTooltip;
     }
 }

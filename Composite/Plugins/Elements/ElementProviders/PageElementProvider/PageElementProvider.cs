@@ -462,7 +462,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
             if (!searchToken.IsValidKeyword())
             {
-                return PageServices.GetChildren(itemId.Value).Evaluate().AsQueryable();
+                return PageServices.GetChildren(itemId.Value).Evaluate().AsQueryable().OrderByDescending(f => f.LocalizedVersionName() == f.GetLiveVersionName());
             }
 
             string keyword = searchToken.Keyword.ToLowerInvariant();
@@ -495,7 +495,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 }
             }
 
-            return pages.AsQueryable();
+            return pages.AsQueryable().OrderByDescending(f => f.LocalizedVersionName() == f.GetLiveVersionName());
         }
 
 
