@@ -3,6 +3,11 @@ import 'whatwg-fetch';
 export default function requestJSON(path, inputData) {
 	if (typeof inputData === 'object') {
 		inputData.credentials = 'same-origin';
+		if (typeof inputData.body === 'object') {
+			inputData.headers = inputData.headers || {};
+			inputData.headers['Content-Type'] = 'application/json';
+			inputData.body = JSON.stringify(inputData.body);
+		}
 	} else {
 		inputData = {
 			credentials: 'same-origin'
@@ -10,7 +15,7 @@ export default function requestJSON(path, inputData) {
 	}
 	if (!/^http/.test(path)) {
 		if (!/^\//.test(path)) {
-			return Promise.reject(new Error('Paths requested must either be absolute or begin with a slash'));
+			return Promise.reject(new Error('URLs may not be relative'));
 		}
 		path = location.origin + path;
 	}

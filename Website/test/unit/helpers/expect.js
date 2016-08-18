@@ -29,5 +29,5 @@ expect.addAssertion('<object> to be an action of type <string>', function (expec
 	return expect(subject, 'to have own property', 'type', actionName);
 });
 // console.log(expect.outputFormat());
-// expect.outputFormat('ansi');
+expect.outputFormat('ansi');
 export default expect;
