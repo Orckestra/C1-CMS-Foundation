@@ -1,5 +1,5 @@
 import expect from '../../../helpers/expect';
-import * as actions from '../../../../../Composite/console/state/actions/componentDefinitions';
+import * as actions from 'console/state/actions/componentDefinitions.js';
 
 describe('Component definitions', () => {
 	it('has action descriptors', () =>

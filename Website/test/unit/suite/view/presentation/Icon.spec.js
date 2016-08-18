@@ -1,7 +1,7 @@
 import expect from '../../../helpers/expect';
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
-import Icon from '../../../../../Composite/console/components/presentation/Icon';
+import Icon from 'console/components/presentation/Icon.js';
 
 describe('Icon', () => {
 	let renderer;

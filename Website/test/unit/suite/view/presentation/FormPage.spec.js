@@ -2,9 +2,9 @@ import expect from '../../../helpers/expect';
 import sinon from 'sinon';
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
-import FormPage from '../../../../../Composite/console/components/presentation/FormPage';
-import Fieldset from '../../../../../Composite/console/components/presentation/Fieldset';
-import Toolbar from '../../../../../Composite/console/components/presentation/Toolbar';
+import FormPage from 'console/components/presentation/FormPage.js';
+import Fieldset from 'console/components/presentation/Fieldset.js';
+import Toolbar from 'console/components/presentation/Toolbar.js';
 
 describe('FormPage', () => {
 	let renderer, props, state, pageActions;
@@ -14,7 +14,8 @@ describe('FormPage', () => {
 			pageDef: {
 				fieldsets: [
 					'test/oneset',
-					'test/twoset'
+					'test/twoset',
+					'test/fourset'
 				],
 				buttons: [
 					'test/onebutton',

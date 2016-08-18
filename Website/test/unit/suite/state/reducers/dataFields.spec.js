@@ -1,6 +1,6 @@
 import expect from '../../../helpers/expect';
-import dataFields from '../../../../../Composite/console/state/reducers/dataFields';
-import { UPDATE_VALUE } from '../../../../../Composite/console/state/actions/documentPage';
+import dataFields from 'console/state/reducers/dataFields.js';
+import { UPDATE_VALUE } from 'console/state/actions/documentPage.js';
 
 describe('Data fields', () => {
 	it('outputs an intial state if no action and no previous state', () => {

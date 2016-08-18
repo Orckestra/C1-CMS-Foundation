@@ -1,5 +1,5 @@
 import expect from '../../../helpers/expect';
-import * as actions from '../../../../../Composite/console/state/actions/pageSelection';
+import * as actions from 'console/state/actions/pageSelection.js';
 
 describe('Page selection', () => {
 	it('has action descriptors', () =>

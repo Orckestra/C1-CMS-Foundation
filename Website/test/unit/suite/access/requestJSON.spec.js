@@ -1,5 +1,5 @@
 import expect from '../../helpers/expect';
-import requestJSON from '../../../../Composite/console/access/requestJSON';
+import requestJSON from 'console/access/requestJSON.js';
 
 describe('requestJSON', () => {
 	it('is asynchronous', () =>
@@ -100,7 +100,10 @@ describe('requestJSON', () => {
 		);
 
 		it('rejects on unrecoverable errors', () =>
-			expect(requestJSON, 'when called with', ['/failure.json'], 'to be rejected')
+			expect(
+				requestJSON, 'when called with', ['/failure.json'],
+				'to be rejected with', '404 Not Found'
+			)
 		);
 	});
 });

@@ -1,5 +1,5 @@
 import expect from '../../../helpers/expect';
-import * as actions from '../../../../../Composite/console/state/actions/documentPage';
+import * as actions from 'console/state/actions/documentPage.js';
 
 describe('Document page', () => {
 	it('has action descriptors', () =>

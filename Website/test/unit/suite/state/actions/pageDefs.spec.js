@@ -1,7 +1,7 @@
 import expect from '../../../helpers/expect';
 import sinon from 'sinon';
-import * as actions from '../../../../../Composite/console/state/actions/pageDefs';
-import { STORE_DEF } from  '../../../../../Composite/console/state/actions/componentDefinitions';
+import * as actions from 'console/state/actions/pageDefs.js';
+import { STORE_DEF } from  'console/state/actions/componentDefinitions.js';
 
 describe('Get page definitions', () => {
 	it('has action descriptors', () =>

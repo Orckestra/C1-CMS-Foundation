@@ -1,6 +1,6 @@
 import expect from '../../../helpers/expect';
-import pages from '../../../../../Composite/console/state/reducers/pages';
-import { SELECT_PAGE, REPLACE_PAGES } from '../../../../../Composite/console/state/actions/pageSelection';
+import pages from 'console/state/reducers/pages.js';
+import { SELECT_PAGE, REPLACE_PAGES } from 'console/state/actions/pageSelection.js';
 
 describe('Pages', () => {
 	it('outputs an intial state if no action and no previous state', () => {

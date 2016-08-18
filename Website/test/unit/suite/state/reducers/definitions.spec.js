@@ -1,6 +1,6 @@
 import expect from '../../../helpers/expect';
-import getDefinitionReducer from '../../../../../Composite/console/state/reducers/definitions';
-import { STORE_DEF } from '../../../../../Composite/console/state/actions/componentDefinitions';
+import getDefinitionReducer from 'console/state/reducers/definitions.js';
+import { STORE_DEF } from 'console/state/actions/componentDefinitions.js';
 
 describe('Component definitions', () => {
 	['page', 'button', 'fieldset', 'dataField'].forEach(typeName => {

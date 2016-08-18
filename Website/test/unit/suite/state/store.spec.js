@@ -1,5 +1,5 @@
 import expect from '../../helpers/expect';
-import configureStore from '../../../../Composite/console/state/store';
+import configureStore from 'console/state/store.js';
 // import getHotReloadStore from 'systemjs-hot-reloader-store';
 
 describe('configureStore', () => {

@@ -2,7 +2,8 @@ import expect from '../../../helpers/expect';
 import sinon from 'sinon';
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
-import ActionButton from '../../../../../Composite/console/components/presentation/ActionButton';
+import ActionButton from 'console/components/presentation/ActionButton.js';
+import Icon from 'console/components/presentation/Icon.js';
 
 describe('ActionButton', () => {
 	let renderer, props;
@@ -12,19 +13,34 @@ describe('ActionButton', () => {
 			label: 'Label',
 			action: sinon.spy()
 		};
-		renderer.render(
-			<ActionButton {...props}/>
-		);
 	});
 
 	it('should render a button', () => {
+		renderer.render(
+			<ActionButton {...props}/>
+		);
 		return expect(renderer, 'to have rendered',
 			<button>{props.label}</button>
 		);
 	});
 
+	it('should render a button with icon', () => {
+		props.icon = 'test';
+		renderer.render(
+			<ActionButton {...props}/>
+		);
+		return expect(renderer, 'to have rendered',
+			<button>
+				<Icon id='test'/>
+				{props.label}
+			</button>
+		);
+	});
 
 	it('should call handler when clicked', () => {
+		renderer.render(
+			<ActionButton {...props}/>
+		);
 		return expect(renderer, 'with event', 'click')
 			.then(() => {
 				return expect(props.action, 'was called once');

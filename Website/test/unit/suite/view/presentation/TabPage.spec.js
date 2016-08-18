@@ -2,7 +2,7 @@ import expect from '../../../helpers/expect';
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
 import TestComponent from '../../../helpers/TestComponent';
-import TabPage from '../../../../../Composite/console/components/presentation/TabPage';
+import TabPage from 'console/components/presentation/TabPage.js';
 
 describe('TabPage', () => {
 	let renderer, name, pageDefs, pageTypes;

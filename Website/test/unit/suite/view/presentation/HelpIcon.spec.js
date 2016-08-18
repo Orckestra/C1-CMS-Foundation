@@ -1,7 +1,7 @@
 import expect from '../../../helpers/expect';
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
-import HelpIcon from '../../../../../Composite/console/components/presentation/HelpIcon';
+import HelpIcon from 'console/components/presentation/HelpIcon.js';
 import StatelessWrapper from '../../../helpers/StatelessWrapper';
 import zurvan from 'zurvan';
 

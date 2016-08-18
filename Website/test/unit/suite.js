@@ -3,7 +3,11 @@ import glob from 'glob';
 import { Suite } from '@node/mocha';
 
 export function importSuite() {
-	return describeDirs();
+	return describeDirs()
+	.catch(err => {
+		console.error(err); // eslint-disable-line no-console
+		console.error(err.stack); // eslint-disable-line no-console
+	});
 }
 
 function forEachPromise(items, iterator) {

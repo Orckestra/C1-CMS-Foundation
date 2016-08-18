@@ -1,8 +1,8 @@
 import expect from '../../../helpers/expect';
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
-import Fieldset from '../../../../../Composite/console/components/presentation/Fieldset';
-import DataField from '../../../../../Composite/console/components/presentation/DataField';
+import Fieldset from 'console/components/presentation/Fieldset.js';
+import DataField from 'console/components/presentation/DataField.js';
 
 describe('Fieldset', () => {
 	let renderer, props, updater;
@@ -10,7 +10,6 @@ describe('Fieldset', () => {
 		renderer = TestUtils.createRenderer();
 		updater = () => {};
 		props = {
-			label: 'Here be fields',
 			fields: {
 				first: { updateValue: updater },
 				second: { updateValue: updater },
@@ -33,7 +32,7 @@ describe('Fieldset', () => {
 	});
 	it('renders an unlabeled set of data fields', () => {
 		renderer.render(<Fieldset {...props}/>);
-		return expect(renderer, 'to have rendered',
+		return expect(renderer, 'to have exactly rendered',
 			<fieldset>
 				<DataField name="first" updateValue={updater}/>
 				<DataField name="second" updateValue={updater}/>

@@ -2,8 +2,8 @@ import expect from '../../../helpers/expect';
 import sinon from 'sinon';
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
-import ShownTab from '../../../../../Composite/console/components/container/ShownTab';
-import TabPage from '../../../../../Composite/console/components/presentation/TabPage';
+import ShownTab from 'console/components/container/ShownTab.js';
+import TabPage from 'console/components/presentation/TabPage.js';
 
 describe('ShownTab', () => {
 	let renderer, state, store, props;

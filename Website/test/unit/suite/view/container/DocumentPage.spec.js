@@ -2,9 +2,9 @@ import expect from '../../../helpers/expect';
 import sinon from 'sinon';
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
-import DocumentPage from '../../../../../Composite/console/components/container/DocumentPage';
-import FormPage from '../../../../../Composite/console/components/presentation/FormPage';
-import { SAVE_STATE, UPDATE_VALUE } from '../../../../../Composite/console/state/actions/documentPage';
+import DocumentPage from 'console/components/container/DocumentPage.js';
+import FormPage from 'console/components/presentation/FormPage.js';
+import { SAVE_STATE, UPDATE_VALUE } from 'console/state/actions/documentPage.js';
 
 describe('DocumentPage', () => {
 	let renderer, state, store, props;

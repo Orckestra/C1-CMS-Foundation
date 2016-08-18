@@ -1,5 +1,6 @@
 SystemJS.config({
   paths: {
+    "console/": "Composite/console/",
     "github:": "jspm_packages/github/",
     "npm:": "jspm_packages/npm/"
   },
