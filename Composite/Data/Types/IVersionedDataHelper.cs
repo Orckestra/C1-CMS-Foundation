@@ -78,7 +78,7 @@ namespace Composite.Data.Types
         /// </summary>
         public static List<VersionedExtraPropertiesColumnInfo> GetExtraPropertiesNames()
         {
-            return _instances?.SelectMany(p => p.GetExtraPropertiesNames()).ToList();
+            return _instances?.SelectMany(p => p.GetExtraPropertiesNames() ?? new List<VersionedExtraPropertiesColumnInfo>()).ToList();
         }
 
         /// <summary>
@@ -86,7 +86,7 @@ namespace Composite.Data.Types
         /// </summary>
         public static List<VersionedExtraProperties> GetExtraProperties<T>(this T str) where T : IVersioned
         {
-            return _instances?.SelectMany(p => p.GetExtraProperties(str)).ToList();
+            return _instances?.SelectMany(p => p.GetExtraProperties(str) ?? new List<VersionedExtraProperties>()).ToList();
         }
 
         /// <summary>

@@ -141,14 +141,24 @@ namespace Composite.Services
                         toSortableString(creationHistory.CreationDate);
                 }
 
-                if (data is IVersioned)
+                try
                 {
-                    foreach (var x in (data as IVersioned).GetExtraProperties() ?? new List<VersionedExtraProperties>())
+                    if (data is IVersioned)
                     {
-                        propertyBag[x.ColumnName] = x.Value;
-                        propertyBag[x.ColumnName + "Sortable"] = x.SortableValue;
+                        foreach (
+                            var x in (data as IVersioned).GetExtraProperties() ?? new List<VersionedExtraProperties>())
+                        {
+                            propertyBag[x.ColumnName] = x.Value;
+                            propertyBag[x.ColumnName + "Sortable"] = x.SortableValue;
 
+                        }
                     }
+                }
+                catch (Exception ex)
+                {
+                    Log.LogCritical(LogTitle, "Problem getting extra properties from version packages");
+                    Log.LogCritical(LogTitle, ex);
+                    throw;
                 }
 
             }
