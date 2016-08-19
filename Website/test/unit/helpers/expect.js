@@ -1,4 +1,4 @@
-import './emulateDom.js';
+import 'unittest/helpers/emulateDom.js';
 
 import unexpected from 'unexpected';
 import unexpectedReact from 'unexpected-react';

@@ -1,5 +1,5 @@
-import { loadPageDef } from './actions/pageDefs.js';
-import { selectShownPage, replacePages } from './actions/pageSelection.js';
+import { loadPageDef } from 'console/state/actions/pageDefs.js';
+import { selectShownPage, replacePages } from 'console/state/actions/pageSelection.js';
 
 export default function initState(store) {
 	store.dispatch(loadPageDef('edit-language'));

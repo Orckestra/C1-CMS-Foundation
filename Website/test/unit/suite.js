@@ -7,6 +7,7 @@ export function importSuite() {
 	.catch(err => {
 		console.error(err); // eslint-disable-line no-console
 		console.error(err.stack); // eslint-disable-line no-console
+		process.exit(1);
 	});
 }
 

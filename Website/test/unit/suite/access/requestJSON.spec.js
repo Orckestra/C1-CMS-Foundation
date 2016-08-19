@@ -1,4 +1,4 @@
-import expect from '../../helpers/expect';
+import expect from 'unittest/helpers/expect.js';
 import requestJSON from 'console/access/requestJSON.js';
 
 describe('requestJSON', () => {

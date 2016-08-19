@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import ActionButton from './ActionButton.js';
+import ActionButton from 'console/components/presentation/ActionButton.js';
 
 const typeClassName = {
 	document: ' document-toolbar'

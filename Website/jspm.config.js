@@ -16,6 +16,9 @@ SystemJS.config({
     }
   },
   devConfig: {
+    paths: {
+      "unittest/": "test/unit/"
+    },
     "map": {
       "babel-runtime": "npm:babel-runtime@5.8.38",
       "core-js": "npm:core-js@1.2.7",

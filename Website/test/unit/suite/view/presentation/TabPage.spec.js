@@ -1,7 +1,7 @@
-import expect from '../../../helpers/expect';
+import expect from 'unittest/helpers/expect.js';
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
-import TestComponent from '../../../helpers/TestComponent';
+import TestComponent from 'unittest/helpers/TestComponent.js';
 import TabPage from 'console/components/presentation/TabPage.js';
 
 describe('TabPage', () => {

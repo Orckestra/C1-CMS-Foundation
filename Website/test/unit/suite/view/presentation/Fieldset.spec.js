@@ -1,4 +1,4 @@
-import expect from '../../../helpers/expect';
+import expect from 'unittest/helpers/expect.js';
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
 import Fieldset from 'console/components/presentation/Fieldset.js';

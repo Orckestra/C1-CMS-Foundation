@@ -1,4 +1,4 @@
-import expect from '../../helpers/expect';
+import expect from 'unittest/helpers/expect.js';
 import configureStore from 'console/state/store.js';
 // import getHotReloadStore from 'systemjs-hot-reloader-store';
 

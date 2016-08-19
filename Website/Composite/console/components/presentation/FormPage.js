@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
-import Toolbar from './Toolbar.js';
-import Fieldset from './Fieldset.js';
+import Toolbar from 'console/components/presentation/Toolbar.js';
+import Fieldset from 'console/components/presentation/Fieldset.js';
 
 const FormPage = props => (
 	<div className='page'>

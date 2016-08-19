@@ -1,10 +1,10 @@
 import getHotReloadStore from 'systemjs-hot-reloader-store';
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
-import dataFields from './reducers/dataFields.js';
-import pages from './reducers/pages.js';
-import getDefinitionReducer from './reducers/definitions.js';
+import dataFields from 'console/state/reducers/dataFields.js';
+import pages from 'console/state/reducers/pages.js';
+import getDefinitionReducer from 'console/state/reducers/definitions.js';
 import ReduxThunk from 'redux-thunk';
-import initState from './initState.js';
+import initState from 'console/state/initState.js';
 
 let reducers = {
 	dataFields,

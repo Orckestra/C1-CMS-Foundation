@@ -1,4 +1,4 @@
-import expect from '../../../helpers/expect';
+import expect from 'unittest/helpers/expect.js';
 import getDefinitionReducer from 'console/state/reducers/definitions.js';
 import { STORE_DEF } from 'console/state/actions/componentDefinitions.js';
 

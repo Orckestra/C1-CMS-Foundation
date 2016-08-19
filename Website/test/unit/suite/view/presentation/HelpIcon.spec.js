@@ -1,8 +1,8 @@
-import expect from '../../../helpers/expect';
+import expect from 'unittest/helpers/expect.js';
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
 import HelpIcon from 'console/components/presentation/HelpIcon.js';
-import StatelessWrapper from '../../../helpers/StatelessWrapper';
+import StatelessWrapper from 'unittest/helpers/StatelessWrapper.js';
 import zurvan from 'zurvan';
 
 describe('HelpIcon', () => {

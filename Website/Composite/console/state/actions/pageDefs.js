@@ -1,6 +1,6 @@
-import requestJSON from '../../access/requestJSON.js';
+import requestJSON from 'console/access/requestJSON.js';
 import { normalize, Schema, arrayOf } from 'normalizr';
-import { addDefinition } from './componentDefinitions.js';
+import { addDefinition } from 'console/state/actions/componentDefinitions.js';
 
 const dataFieldSchema = new Schema('dataFieldDefs', { idAttribute: 'name' });
 const fieldsetSchema = new Schema('fieldsetDefs', { idAttribute: 'name' });

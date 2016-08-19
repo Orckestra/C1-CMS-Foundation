@@ -1,4 +1,4 @@
-import expect from '../../../helpers/expect';
+import expect from 'unittest/helpers/expect.js';
 import * as actions from 'console/state/actions/componentDefinitions.js';
 
 describe('Component definitions', () => {

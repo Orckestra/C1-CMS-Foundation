@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import DataField from './DataField.js';
+import DataField from 'console/components/presentation/DataField.js';
 
 const Fieldset = ({ label, fields }) => (
 	<fieldset>

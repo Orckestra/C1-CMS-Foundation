@@ -1,4 +1,4 @@
-import expect from '../../../helpers/expect';
+import expect from 'unittest/helpers/expect.js';
 import dataFields from 'console/state/reducers/dataFields.js';
 import { UPDATE_VALUE } from 'console/state/actions/documentPage.js';
 

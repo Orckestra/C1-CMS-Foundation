@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import TabPage from '../presentation/TabPage.js';
+import TabPage from 'console/components/presentation/TabPage.js';
 
 function mapStateToProps(state) {
 	return {

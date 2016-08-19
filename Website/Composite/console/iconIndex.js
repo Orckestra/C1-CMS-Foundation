@@ -1,4 +1,4 @@
-import spriteSheet from './icons.svg!';
+import spriteSheet from 'console/icons.svg!';
 
 spriteSheet.style.display = 'none';
 spriteSheet.id = 'spritesheet';

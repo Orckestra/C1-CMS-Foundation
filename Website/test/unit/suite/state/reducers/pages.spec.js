@@ -1,4 +1,4 @@
-import expect from '../../../helpers/expect';
+import expect from 'unittest/helpers/expect.js';
 import pages from 'console/state/reducers/pages.js';
 import { SELECT_PAGE, REPLACE_PAGES } from 'console/state/actions/pageSelection.js';
 

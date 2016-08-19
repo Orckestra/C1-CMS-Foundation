@@ -1,4 +1,4 @@
-import { UPDATE_VALUE } from '../actions/documentPage.js';
+import { UPDATE_VALUE } from 'console/state/actions/documentPage.js';
 
 const initialState = {};
 

@@ -1,10 +1,10 @@
-import expect from '../../../helpers/expect';
+import expect from 'unittest/helpers/expect.js';
 import sinon from 'sinon';
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
 import HelpIcon from 'console/components/presentation/HelpIcon.js';
 import DataField from 'console/components/presentation/DataField.js';
-import StatelessWrapper from '../../../helpers/StatelessWrapper';
+import StatelessWrapper from 'unittest/helpers/StatelessWrapper.js';
 
 describe('DataField', () => {
 	let renderer, props, state;
