@@ -4,6 +4,11 @@ SystemJS.config({
     "github:": "jspm_packages/github/",
     "npm:": "jspm_packages/npm/"
   },
+  meta: {
+    "console/*": {
+      format: 'esm'
+    }
+  },
   browserConfig: {
     "baseURL": "/",
     "paths": {
@@ -18,6 +23,11 @@ SystemJS.config({
   devConfig: {
     paths: {
       "unittest/": "test/unit/"
+    },
+    meta: {
+      "unittest/*": {
+        format: 'esm'
+      }
     },
     "map": {
       "babel-runtime": "npm:babel-runtime@5.8.38",
@@ -609,12 +619,10 @@ SystemJS.config({
   trace: true,
   map: {
     "jsdom": "node_modules/jsdom/lib/jsdom.js",
-    "unittest": "/test/unit",
-    "console": "/Composite/console"
   },
   packages: {
     "CompositeC1": {
-      "main": "Composite/console/console.js",
+      "main": "console/console.js",
       "format": "esm"
     }
   }
