@@ -14,6 +14,7 @@ namespace Composite.Data
         private readonly bool _cultureInfoPushed;
         private bool _dataServicePushed;
         private bool _disposed;
+        private bool _servicesDisabled;
 
         /// <exclude />
         public void AddService(object service)
@@ -116,7 +117,10 @@ namespace Composite.Data
                 throw new ObjectDisposedException(nameof(DataScope));
             }
 
-            EnableServices();
+            if (_servicesDisabled)
+            {
+                EnableServices();
+            }
 
             if (_dataScopePushed)
             {
@@ -139,11 +143,15 @@ namespace Composite.Data
         internal void DisableServices()
         {
             DataServiceScopeManager.DisableServices();
+
+            _servicesDisabled = true;
         }
 
         internal void EnableServices()
         {
             DataServiceScopeManager.EnableServices();
+
+            _servicesDisabled = false;
         }
     }
 }
