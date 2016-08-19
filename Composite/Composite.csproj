@@ -168,6 +168,7 @@
     <Compile Include="C1Console\Actions\Data\DataActionTokenResolver.cs" />
     <Compile Include="C1Console\Actions\Data\DataActionTokenResolverFacade.cs" />
     <Compile Include="C1Console\Actions\Data\DataActionTokenResolverRegistery.cs" />
+    <Compile Include="C1Console\Forms\ITestAutomationLocatorInformation.cs" />
     <Compile Include="C1Console\Elements\DialogStrings.cs" />
     <Compile Include="Data\ICreationHistory.cs" />
     <Compile Include="Data\Types\PageInsertPosition.cs" />
@@ -2510,12 +2511,12 @@
     </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Windows Workflow Foundation\v3.5\Workflow.Targets" />
   <Target Name="BeforeBuild">
   </Target>
-  <Target Name="AfterBuild">    
+  <Target Name="AfterBuild">
   </Target>
   -->
   <PropertyGroup>

@@ -70,6 +70,14 @@ namespace Composite
             }
         }
 
+        internal static bool IsTestEnvironment
+        {
+            get
+            {
+                return true;
+            }
+        }
+
 
 
         /// <exclude />

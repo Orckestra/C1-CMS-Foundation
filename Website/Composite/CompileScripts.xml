@@ -216,6 +216,7 @@
 			<Script filename="${root}/scripts/source/top/ui/bindings/fields/FieldDescBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/fields/FieldDataBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/fields/FieldHelpBinding.js"/>
+			<Script filename="${root}/scripts/source/top/ui/bindings/fields/ResolverContainerBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/data/radiocheck/RadioDataGroupBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/data/radiocheck/RadioDataBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/data/radiocheck/CheckBoxBinding.js"/>
