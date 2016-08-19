@@ -324,10 +324,10 @@
     <Compile Include="Composite\content\views\log\log.aspx.designer.cs">
       <DependentUpon>log.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Composite\content\views\publishworkflowstatus\ViewUnpublishedItems.aspx.cs">
+    <Content Include="Composite\content\views\publishworkflowstatus\ViewUnpublishedItems.aspx.cs">
       <DependentUpon>ViewUnpublishedItems.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
-    </Compile>
+    </Content>
     <Compile Include="Composite\content\views\relationshipgraph\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
