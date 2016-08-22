@@ -38,6 +38,23 @@ namespace Composite.Data.Types
     {
         private static List<VersionedDataHelperContract> _instances;
 
+        static VersionedDataHelper()
+        {
+            DataEvents<IPage>.OnBeforeAdd += (sender, args) =>
+            {
+                var page = (IPage) args.Data;
+                if (page.VersionId == Guid.Empty)
+                {
+                    page.VersionId = Guid.NewGuid();
+                }
+            };
+        }
+
+        internal static void Initialize()
+        {
+            // The initialization code is in the static constructor
+        }
+
         /// <summary>
         /// Returns if there are any versioning package instances available
         /// </summary>
