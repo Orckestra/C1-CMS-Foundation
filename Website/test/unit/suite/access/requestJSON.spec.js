@@ -1,5 +1,7 @@
 import expect from 'unittest/helpers/expect.js';
 import requestJSON from 'console/access/requestJSON.js';
+import sinon from 'sinon';
+// import zurvan from 'zurvan';
 
 describe('requestJSON', () => {
 	it('is asynchronous', () =>
@@ -92,6 +94,23 @@ describe('requestJSON', () => {
 	});
 
 	describe('Error handling', () => {
+		let url, body;
+		beforeEach(() => {
+			// zurvan.interceptTimers();
+			url = 'http://example.org/fixture.json';
+			body = {
+				url,
+				list: [1,2,3]
+			};
+			// Spy on fetch
+			sinon.spy(global, 'fetch');
+		});
+
+		afterEach(() => {
+			// zurvan.releaseTimers();
+			global.fetch.restore();
+		});
+
 		it('rejects if called with a non-compliant URL', () =>
 			expect(requestJSON,
 				'when called with', ['about:blank/this/is/wrong'],
@@ -103,6 +122,34 @@ describe('requestJSON', () => {
 			expect(
 				requestJSON, 'when called with', ['/failure.json'],
 				'to be rejected with', '404 Not Found'
+			)
+		);
+
+		it('retries if given a Retry-After header', () =>
+			expect(() => {
+				let request = requestJSON(url, {});
+				// zurvan.advanceTime(3000);
+				return request
+				.then(result => expect(result, 'to satisfy', { url, list: [1,2,3] }));
+			},
+			'with http mocked out', [
+				{
+					request: 'GET ' + url,
+					response: {
+						statusCode: 503,
+						headers: {
+							'Retry-After': 1
+						}
+					}
+				},
+				{
+					request: 'GET ' + url,
+					response: { body }
+				}
+			],
+			'not to error')
+			.then(() =>
+				expect(global.fetch, 'was called twice')
 			)
 		);
 	});
