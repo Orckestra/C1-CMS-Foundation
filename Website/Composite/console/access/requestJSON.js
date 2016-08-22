@@ -1,4 +1,5 @@
 import 'whatwg-fetch';
+import 'url-polyfill';
 
 export default function requestJSON(path, inputData) {
 	if (typeof inputData === 'object') {
@@ -13,17 +14,12 @@ export default function requestJSON(path, inputData) {
 			credentials: 'same-origin'
 		};
 	}
-	if (!/^http/.test(path)) {
-		if (!/^\//.test(path)) {
-			return Promise.reject(new Error('URLs may not be relative'));
-		}
-		path = location.origin + path;
-	}
-	return fetch(path, inputData)
+	let url = new URL(path, location.href);
+	return fetch(url.href, inputData)
 	// Provide basic error handling, maybe retry logic?
 	.then(response => {
 		if (!response.ok) {
-			// Catch 503s with Retry-After header and wait, then retry.
+			// Catch 503s (with Retry-After?) header and wait, then retry.
 			throw new Error(response.status + ' ' + response.statusText);
 		} else {
 			return response;

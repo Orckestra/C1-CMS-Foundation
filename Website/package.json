@@ -5,11 +5,13 @@
     "test": "npm run unit:test",
     "coverage": "npm run unit:cov",
     "unit:test": "jspm run test/unit/runner.js",
-    "unit:cov": "jspm run test/unit/coverage.js"
+    "unit:cov": "jspm run test/unit/coverage.js",
+    "watch": "chokidar-socket-emitter -p Composite/console/"
   },
   "devDependencies": {
     "JSONPath": "^0.10.0",
     "autoprefixer-core": "^5.2.1",
+    "chokidar-socket-emitter": "0.5.4",
     "chromedriver": "2.21.2",
     "csswring": "^3.0.5",
     "eslint": "3.1.1",
@@ -41,6 +43,7 @@
   "jspm": {
     "main": "Composite/console/console.js",
     "dependencies": {
+      "github/url-polyfill": "github:github/url-polyfill@^0.5.6",
       "normalizr": "npm:normalizr@^2.2.1",
       "plugin-babel": "npm:systemjs-plugin-babel@^0.0.13",
       "react-dom": "npm:react-dom@^15.1.0",
@@ -49,6 +52,7 @@
       "scss": "github:mobilexag/plugin-sass@^0.4.6",
       "svg": "github:npbenjohnson/plugin-svg@^0.1.0",
       "unexpected-mitm": "npm:unexpected-mitm@^9.1.2",
+      "url-polyfill": "github:github/url-polyfill@^0.5.6",
       "whatwg-fetch": "npm:whatwg-fetch@^1.0.0",
       "zurvan": "npm:zurvan@^0.3.2"
     },
@@ -63,7 +67,6 @@
       "jodid25519": "npm:jodid25519@^1.0.0",
       "jsbn": "npm:jsbn@0.1",
       "module": "github:jspm/nodelibs-module@^0.2.0-alpha",
-      "punycode": "github:jspm/nodelibs-punycode@^0.2.0-alpha",
       "querystring": "github:jspm/nodelibs-querystring@^0.2.0-alpha",
       "react-addons-test-utils": "npm:react-addons-test-utils@^15.3.0",
       "sinon": "npm:sinon@^1.17.5",
@@ -95,6 +98,7 @@
       "os": "github:jspm/nodelibs-os@^0.2.0-alpha",
       "path": "github:jspm/nodelibs-path@^0.2.0-alpha",
       "process": "github:jspm/nodelibs-process@^0.2.0-alpha",
+      "punycode": "github:jspm/nodelibs-punycode@^0.2.0-alpha",
       "react": "npm:react@^15.3.0",
       "redux": "npm:redux@^3.5.2",
       "stream": "github:jspm/nodelibs-stream@^0.2.0-alpha",
@@ -108,6 +112,9 @@
       "zlib": "github:jspm/nodelibs-zlib@^0.2.0-alpha"
     },
     "overrides": {
+      "github:github/url-polyfill@0.5.6": {
+        "main": "url.js"
+      },
       "npm:babel-runtime@5.8.38": {
         "main": false,
         "dependencies": {},

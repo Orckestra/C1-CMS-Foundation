@@ -6,7 +6,7 @@ SystemJS.config({
   },
   meta: {
     "console/*": {
-      format: 'esm'
+      "format": "esm"
     }
   },
   browserConfig: {
@@ -21,12 +21,12 @@ SystemJS.config({
     }
   },
   devConfig: {
-    paths: {
+    "paths": {
       "unittest/": "test/unit/"
     },
-    meta: {
+    "meta": {
       "unittest/*": {
-        format: 'esm'
+        "format": "esm"
       }
     },
     "map": {
@@ -51,7 +51,6 @@ SystemJS.config({
       "dns": "github:jspm/nodelibs-dns@0.2.0-alpha",
       "dgram": "github:jspm/nodelibs-dgram@0.2.0-alpha",
       "tty": "github:jspm/nodelibs-tty@0.2.0-alpha",
-      "punycode": "github:jspm/nodelibs-punycode@0.2.0-alpha",
       "babel-plugin-transform-react-jsx": "npm:babel-plugin-transform-react-jsx@6.8.0"
     },
     "packages": {
@@ -519,11 +518,6 @@ SystemJS.config({
           "fd-slicer": "npm:fd-slicer@1.0.1"
         }
       },
-      "github:jspm/nodelibs-punycode@0.2.0-alpha": {
-        "map": {
-          "punycode-browserify": "npm:punycode@1.4.1"
-        }
-      },
       "npm:babel-plugin-transform-react-jsx@6.8.0": {
         "map": {
           "babel-runtime": "npm:babel-runtime@6.11.6",
@@ -618,7 +612,7 @@ SystemJS.config({
   },
   trace: true,
   map: {
-    "jsdom": "node_modules/jsdom/lib/jsdom.js",
+    "jsdom": "node_modules/jsdom/lib/jsdom.js"
   },
   packages: {
     "CompositeC1": {
@@ -635,12 +629,14 @@ SystemJS.config({
     "github:*/*.json"
   ],
   map: {
+    "github/url-polyfill": "github:github/url-polyfill@0.5.6",
     "bluebird": "npm:bluebird@3.4.1",
     "plugin-babel": "npm:systemjs-plugin-babel@0.0.13",
     "magicpen-media": "npm:magicpen-media@1.5.1",
     "messy": "npm:messy@6.11.0",
     "net": "github:jspm/nodelibs-net@0.2.0-alpha",
     "os": "github:jspm/nodelibs-os@0.2.0-alpha",
+    "punycode": "github:jspm/nodelibs-punycode@0.2.0-alpha",
     "tls": "github:jspm/nodelibs-tls@0.2.0-alpha",
     "unexpected": "npm:unexpected@10.15.1",
     "unexpected-messy": "npm:unexpected-messy@6.1.2",
@@ -668,6 +664,7 @@ SystemJS.config({
     "scss": "github:mobilexag/plugin-sass@0.4.6",
     "svg": "github:npbenjohnson/plugin-svg@0.1.0",
     "url": "github:jspm/nodelibs-url@0.2.0-alpha",
+    "url-polyfill": "github:github/url-polyfill@0.5.6",
     "util": "github:jspm/nodelibs-util@0.2.0-alpha",
     "vm": "github:jspm/nodelibs-vm@0.2.0-alpha",
     "whatwg-fetch": "npm:whatwg-fetch@1.0.0",
@@ -1028,12 +1025,12 @@ SystemJS.config({
     "npm:stream-browserify@2.0.1": {
       "map": {
         "inherits": "npm:inherits@2.0.1",
-        "readable-stream": "npm:readable-stream@2.1.4"
+        "readable-stream": "npm:readable-stream@2.1.5"
       }
     },
     "github:jspm/nodelibs-buffer@0.2.0-alpha": {
       "map": {
-        "buffer-browserify": "npm:buffer@4.9.0"
+        "buffer-browserify": "npm:buffer@4.9.1"
       }
     },
     "github:jspm/nodelibs-http@0.2.0-alpha": {
@@ -1156,13 +1153,6 @@ SystemJS.config({
         "iconv-lite": "npm:iconv-lite@0.4.5"
       }
     },
-    "npm:buffer@4.9.0": {
-      "map": {
-        "ieee754": "npm:ieee754@1.1.6",
-        "isarray": "npm:isarray@1.0.0",
-        "base64-js": "npm:base64-js@1.1.2"
-      }
-    },
     "npm:unexpected-messy@6.1.2": {
       "map": {
         "underscore": "npm:underscore@1.7.0",
@@ -1189,6 +1179,29 @@ SystemJS.config({
     "npm:browserslist@1.3.5": {
       "map": {
         "caniuse-db": "npm:caniuse-db@1.0.30000519"
+      }
+    },
+    "github:jspm/nodelibs-punycode@0.2.0-alpha": {
+      "map": {
+        "punycode-browserify": "npm:punycode@1.4.1"
+      }
+    },
+    "npm:buffer@4.9.1": {
+      "map": {
+        "base64-js": "npm:base64-js@1.1.2",
+        "ieee754": "npm:ieee754@1.1.6",
+        "isarray": "npm:isarray@1.0.0"
+      }
+    },
+    "npm:readable-stream@2.1.5": {
+      "map": {
+        "inherits": "npm:inherits@2.0.1",
+        "isarray": "npm:isarray@1.0.0",
+        "string_decoder": "npm:string_decoder@0.10.31",
+        "buffer-shims": "npm:buffer-shims@1.0.0",
+        "process-nextick-args": "npm:process-nextick-args@1.0.7",
+        "util-deprecate": "npm:util-deprecate@1.0.2",
+        "core-util-is": "npm:core-util-is@1.0.2"
       }
     }
   }

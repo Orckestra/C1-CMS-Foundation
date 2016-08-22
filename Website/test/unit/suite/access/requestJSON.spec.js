@@ -94,8 +94,8 @@ describe('requestJSON', () => {
 	describe('Error handling', () => {
 		it('rejects if called with a non-compliant URL', () =>
 			expect(requestJSON,
-				'when called with', ['this/is/wrong'],
-				'to be rejected with', 'URLs may not be relative'
+				'when called with', ['about:blank/this/is/wrong'],
+				'to be rejected'
 			)
 		);
 
