@@ -232,12 +232,15 @@ namespace Composite.Data
                             conn.DisableServices();
 
                             var pages = DataFacade.GetData<IPage>().GroupBy(p => p.Id).Evaluate();
-                            var dataSourceId = pages.First().First().DataSourceId;
-
-                            foreach (var pageVersionsGroup in pages)
+                            if (pages.Count > 0)
                             {
-                                string pageKey = GetCacheKey(pageVersionsGroup.Key, dataSourceId);
-                                _pageCache.Add(pageKey, new ReadOnlyCollection<IPage>(pageVersionsGroup.ToList()));
+                                var dataSourceId = pages.First().First().DataSourceId;
+
+                                foreach (var pageVersionsGroup in pages)
+                                {
+                                    string pageKey = GetCacheKey(pageVersionsGroup.Key, dataSourceId);
+                                    _pageCache.Add(pageKey, new ReadOnlyCollection<IPage>(pageVersionsGroup.ToList()));
+                                }
                             }
                         }
 
