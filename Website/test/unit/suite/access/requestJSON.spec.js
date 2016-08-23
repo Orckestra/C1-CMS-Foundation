@@ -126,12 +126,9 @@ describe('requestJSON', () => {
 		);
 
 		it('retries if given a Retry-After header', () =>
-			expect(() => {
-				let request = requestJSON(url, {});
-				// zurvan.advanceTime(3000);
-				return request
-				.then(result => expect(result, 'to satisfy', { url, list: [1,2,3] }));
-			},
+			expect(() =>
+				requestJSON(url, {})
+				.then(result => expect(result, 'to satisfy', { url, list: [1,2,3] })),
 			'with http mocked out', [
 				{
 					request: 'GET ' + url,
