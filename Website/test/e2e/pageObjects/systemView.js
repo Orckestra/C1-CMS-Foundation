@@ -33,6 +33,15 @@ module.exports = {
 			this.expect
 				.element(selector)
 				.to.be.present;
+		},
+		assertTreeNodeHasNoChild: function (parentLabel, childLabel) {
+			var selector = 'treenode[label="' + parentLabel + '"] > treenode';
+			if (childLabel) {
+				selector += '[label="' + childLabel + '"]';
+			}
+			this.expect
+				.element(selector)
+				.to.not.be.present;
 		}
 	}]
 };

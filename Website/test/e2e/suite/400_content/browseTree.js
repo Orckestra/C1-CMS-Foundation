@@ -29,6 +29,8 @@ module.exports = {
 		systemView.assertTreeNodeHasChild('Getting Started', 'Tests');
 		// 7  Select the “Tests” page The “Test” page gets selected in the tree.
 		systemView.openTreeNode('Tests')
+		systemView.assertTreeNodeHasNoChild('Tests', 'Foo')
+		systemView.assertTreeNodeHasNoChild('Features')
 		//     The “Test” page’s content loads in the browser view.
 		content
 			.assertBrowserContains('div.content-column > h1', 'Test the design')
