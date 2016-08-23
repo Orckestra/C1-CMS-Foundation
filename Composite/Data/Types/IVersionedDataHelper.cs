@@ -116,8 +116,8 @@ namespace Composite.Data.Types
                 return null;
             }
 
-            return _instances.Select(p => p.GetLiveVersionName(str)).Any(name => name != null) ?
-                string.Join(",", _instances.Select(p => p.GetLiveVersionName(str)).Where(name => name != null)) : null;
+            var versionNames = _instances.Select(p => p.GetLiveVersionName(str)).Where(name => name != null).ToList();
+            return versionNames.Any() ? string.Join(",", versionNames) : null;
         }
 
     }

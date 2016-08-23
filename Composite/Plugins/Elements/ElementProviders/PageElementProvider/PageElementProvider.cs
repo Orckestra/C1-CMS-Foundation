@@ -462,7 +462,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
             if (!searchToken.IsValidKeyword())
             {
-                return PageServices.GetChildren(itemId.Value).Evaluate().AsQueryable().OrderByDescending(f => f.LocalizedVersionName() == f.GetLiveVersionName());
+                return OrderByVersions(PageServices.GetChildren(itemId.Value).Evaluate());
             }
 
             string keyword = searchToken.Keyword.ToLowerInvariant();
@@ -495,7 +495,18 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 }
             }
 
-            return pages.AsQueryable().OrderByDescending(f => f.LocalizedVersionName() == f.GetLiveVersionName());
+            return OrderByVersions(pages);
+        }
+
+        private IEnumerable<IPage> OrderByVersions(IEnumerable<IPage> pages)
+        {
+            return (from page in pages
+                group page by page.Id
+                into pageVersionGroups
+                let versions = pageVersionGroups.ToList()
+                let liveVersionName = versions.Count == 1 ? null : versions[0].GetLiveVersionName()
+                select pageVersionGroups.OrderByDescending(v => v.LocalizedVersionName() == liveVersionName).ToList())
+                    .SelectMany(v => v);
         }
 
 
