@@ -51,10 +51,8 @@
       "redux-thunk": "npm:redux-thunk@^2.1.0",
       "scss": "github:mobilexag/plugin-sass@^0.4.6",
       "svg": "github:npbenjohnson/plugin-svg@^0.1.0",
-      "unexpected-mitm": "npm:unexpected-mitm@^9.1.2",
       "url-polyfill": "github:github/url-polyfill@^0.5.6",
-      "whatwg-fetch": "npm:whatwg-fetch@^1.0.0",
-      "zurvan": "npm:zurvan@^0.3.2"
+      "whatwg-fetch": "npm:whatwg-fetch@^1.0.0"
     },
     "devDependencies": {
       "babel-plugin-transform-react-jsx": "npm:babel-plugin-transform-react-jsx@^6.8.0",
@@ -76,9 +74,11 @@
       "tty": "github:jspm/nodelibs-tty@^0.2.0-alpha",
       "tweetnacl": "npm:tweetnacl@0.13",
       "unexpected-dom": "npm:unexpected-dom@^3.1.0",
-      "unexpected-mxhr": "npm:unexpected-mxhr@^0.2.0",
+      "unexpected-mitm": "npm:unexpected-mitm@^9.1.6",
       "unexpected-react": "npm:unexpected-react@^3.2.3",
-      "unexpected-sinon": "npm:unexpected-sinon@^10.2.1"
+      "unexpected-sinon": "npm:unexpected-sinon@^10.2.1",
+      "unexpected-zurvan": "npm:unexpected-zurvan@^0.1.0",
+      "zurvan": "npm:zurvan@^0.3.2"
     },
     "peerDependencies": {
       "assert": "github:jspm/nodelibs-assert@^0.2.0-alpha",
@@ -182,4 +182,4 @@
       }
     }
   }
-}
+}

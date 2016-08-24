@@ -5,12 +5,14 @@ import unexpectedReact from 'unexpected-react';
 import unexpectedSinon from 'unexpected-sinon';
 import unexpectedDom from 'unexpected-dom';
 import unexpectedMitm from 'unexpected-mitm';
+import unexpectedZurvan from 'unexpected-zurvan';
 import TestUtils from 'react-addons-test-utils';
 
 // define our instance of the `expect` function to use
 const expect = unexpected.clone()
 	.use(unexpectedDom)
 	.use(unexpectedMitm)
+	.use(unexpectedZurvan)
 	.use(unexpectedReact)
 	.use(unexpectedSinon);
 

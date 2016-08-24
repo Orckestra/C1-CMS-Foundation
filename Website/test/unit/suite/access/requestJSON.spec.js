@@ -1,7 +1,7 @@
 import expect from 'unittest/helpers/expect.js';
 import requestJSON from 'console/access/requestJSON.js';
 import sinon from 'sinon';
-// import zurvan from 'zurvan';
+import zurvan from 'zurvan';
 
 describe('requestJSON', () => {
 	it('is asynchronous', () =>
@@ -96,7 +96,6 @@ describe('requestJSON', () => {
 	describe('Error handling', () => {
 		let url, body;
 		beforeEach(() => {
-			// zurvan.interceptTimers();
 			url = 'http://example.org/fixture.json';
 			body = {
 				url,
@@ -104,11 +103,12 @@ describe('requestJSON', () => {
 			};
 			// Spy on fetch
 			sinon.spy(global, 'fetch');
+			return zurvan.interceptTimers();
 		});
 
 		afterEach(() => {
-			// zurvan.releaseTimers();
 			global.fetch.restore();
+			return zurvan.releaseTimers();
 		});
 
 		it('rejects if called with a non-compliant URL', () =>
@@ -135,7 +135,7 @@ describe('requestJSON', () => {
 					response: {
 						statusCode: 503,
 						headers: {
-							'Retry-After': 1
+							'Retry-After': 5
 						}
 					}
 				},
@@ -144,6 +144,7 @@ describe('requestJSON', () => {
 					response: { body }
 				}
 			],
+			'while waiting for', 6000,
 			'not to error')
 			.then(() =>
 				expect(global.fetch, 'was called twice')

@@ -54,33 +54,36 @@ describe('HelpIcon', () => {
 		);
 
 		it('hides help on mouse out with a delay', () =>
-			expect(component, 'with event', 'click', 'with event', 'mouseOut')
-			.then(() => zurvan.advanceTime(1999))
-			.then(() =>
-				expect(
-					component,
-					'finding DOM tag', 'div',
-					'to have attributes', {
-						style: {
-							visibility: 'visible',
-							opacity: '1'
-						}
+			expect(component,
+				'with event', 'click',
+				'with event', 'mouseOut')
+			.then(() => expect(component,
+				'finding DOM tag', 'div',
+				'to have attributes', {
+					style: {
+						visibility: 'visible',
+						opacity: '1'
 					}
-				)
-			)
-			.then(() => zurvan.advanceTime(2))
-			.then(() =>
-				expect(
-					component,
-					'finding DOM tag', 'div',
-					'to have attributes', {
-						style: {
-							visibility: 'hidden',
-							opacity: '0'
-						}
+				}))
+			.then(() => expect(component,
+				'finding DOM tag', 'div',
+				'then wait for', 1999,
+				'to have attributes', {
+					style: {
+						visibility: 'visible',
+						opacity: '1'
 					}
-				)
+				}))
+			.then(() => expect(component,
+				'finding DOM tag', 'div',
+				'then wait for', 2,
+				'to have attributes', {
+					style: {
+						visibility: 'hidden',
+						opacity: '0'
+					}
+				}
 			)
-		);
+		));
 	});
 });
