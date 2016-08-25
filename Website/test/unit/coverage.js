@@ -5,7 +5,7 @@ systemIstanbul.hookSystemJS(SystemJS, address => {
 	return !address.startsWith(SystemJS.baseURL + 'Composite/console');
 });
 import istanbul from '@node/istanbul';
-import runner from '/test/unit/runner.js';
+import runner from 'unittest/runner.js';
 
 runner
 // after running the tests, save the coverage file

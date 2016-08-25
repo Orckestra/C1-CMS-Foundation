@@ -18,7 +18,7 @@ function forEachPromise(items, iterator) {
 	return items.reduce((promise, item) => promise.then(() => iterator(item)), p);
 }
 
-const baseDir = './test/unit/suite';
+const baseDir = './test/unit/suite'; // Can't use SystemJS paths
 const jsFileEx = /.js$/;
 function describeDirs(testDir) {
 	let cwd = baseDir + (testDir ? '/' + testDir : '');
