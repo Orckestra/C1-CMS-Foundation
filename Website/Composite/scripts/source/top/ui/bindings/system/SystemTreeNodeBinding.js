@@ -615,6 +615,11 @@ SystemTreeNodeBinding.prototype.hasChildren = function () {
 	return this.node.hasChildren ();
 };
 
+SystemTreeNodeBinding.prototype.getHandles = function () {
+
+	return this.node.getHandles();
+}
+
 /**
   * @param {string} entityToken
  */
@@ -625,6 +630,7 @@ SystemTreeNodeBinding.prototype.selectToken = function (entityToken) {
 	this.setLabel(this.node.getLabel());
 	this.setToolTip(this.node.getToolTip());
 	this.setImage(this.computeImage());
+	this.setHandle(this.node.getHandle());
 }
 
 /**

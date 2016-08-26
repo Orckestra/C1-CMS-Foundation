@@ -355,7 +355,17 @@ SystemTreeBinding.prototype.getTokens = function (treenode) {
  */
 SystemTreeBinding.prototype.registerTreeNodeBinding = function (treenode) {
 
-	SystemTreeBinding.superclass.registerTreeNodeBinding.call(this, treenode);
+	treenode.getHandles().each(function(handle) {
+		if (this._treeNodeBindings.has(handle)) {
+			throw "Duplicate treenodehandles registered: " + treenode.getLabel();
+		} else {
+			this._treeNodeBindings.set(handle, treenode);
+			var map = this._openTreeNodesBackupMap;
+			if (map != null && map.has(handle)) {
+				treenode.open();
+			}
+		}
+	}, this);
 
 	/*
 	 * Update entityToken registry so that we may quickly
@@ -423,7 +433,9 @@ SystemTreeBinding.prototype.registerTreeNodeBinding = function (treenode) {
  */
 SystemTreeBinding.prototype.unRegisterTreeNodeBinding = function (treenode) {
 
-	SystemTreeBinding.superclass.unRegisterTreeNodeBinding.call(this, treenode);
+	treenode.getHandles().each(function(handle) {
+		this._treeNodeBindings.del(handle);
+	}, this);
 
 	/*
 	 * Unregister from entityToken registry.

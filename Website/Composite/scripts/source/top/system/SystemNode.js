@@ -190,6 +190,22 @@ SystemNode.prototype.getHandle = function () {
 }
 
 /**
+ * @return {List<string>}
+ */
+SystemNode.prototype.getHandles = function () {
+
+	var result = new List();
+	if (this._datas != null) {
+		this._datas.each(function (data) {
+			result.add(data.ElementKey);
+		});
+	} else {
+		result.add(this._data.ElementKey);
+	}
+	return result;
+}
+
+/**
  * Not all nodes may be tagged!
  * @return {string}
  */
