@@ -359,6 +359,7 @@ SystemJS.config({
     "net": "github:jspm/nodelibs-net@0.2.0-alpha",
     "os": "github:jspm/nodelibs-os@0.2.0-alpha",
     "punycode": "github:jspm/nodelibs-punycode@0.2.0-alpha",
+    "react-select": "npm:react-select@1.0.0-beta14",
     "tls": "github:jspm/nodelibs-tls@0.2.0-alpha",
     "unexpected": "npm:unexpected@10.15.1",
     "unexpected-messy": "npm:unexpected-messy@6.1.2",
@@ -377,7 +378,7 @@ SystemJS.config({
     "stream": "github:jspm/nodelibs-stream@0.2.0-alpha",
     "string_decoder": "github:jspm/nodelibs-string_decoder@0.2.0-alpha",
     "normalizr": "npm:normalizr@2.2.1",
-    "react": "npm:react@15.3.0",
+    "react": "npm:react@15.3.1",
     "react-dom": "npm:react-dom@15.3.0",
     "react-redux": "npm:react-redux@4.4.5",
     "redux": "npm:redux@3.5.2",
@@ -555,17 +556,6 @@ SystemJS.config({
         "create-hash": "npm:create-hash@1.1.2"
       }
     },
-    "npm:fbjs@0.8.3": {
-      "map": {
-        "core-js": "npm:core-js@1.2.7",
-        "immutable": "npm:immutable@3.8.1",
-        "isomorphic-fetch": "npm:isomorphic-fetch@2.2.1",
-        "loose-envify": "npm:loose-envify@1.2.0",
-        "object-assign": "npm:object-assign@4.1.0",
-        "promise": "npm:promise@7.1.1",
-        "ua-parser-js": "npm:ua-parser-js@0.7.10"
-      }
-    },
     "npm:has-flag@1.0.0": {
       "map": {}
     },
@@ -668,13 +658,6 @@ SystemJS.config({
         "invariant": "npm:invariant@2.2.1",
         "lodash": "npm:lodash@4.14.1",
         "loose-envify": "npm:loose-envify@1.2.0"
-      }
-    },
-    "npm:react@15.3.0": {
-      "map": {
-        "fbjs": "npm:fbjs@0.8.3",
-        "loose-envify": "npm:loose-envify@1.2.0",
-        "object-assign": "npm:object-assign@4.1.0"
       }
     },
     "npm:redux@3.5.2": {
@@ -874,6 +857,31 @@ SystemJS.config({
         "process-nextick-args": "npm:process-nextick-args@1.0.7",
         "util-deprecate": "npm:util-deprecate@1.0.2",
         "core-util-is": "npm:core-util-is@1.0.2"
+      }
+    },
+    "npm:react@15.3.1": {
+      "map": {
+        "loose-envify": "npm:loose-envify@1.2.0",
+        "object-assign": "npm:object-assign@4.1.0",
+        "fbjs": "npm:fbjs@0.8.4"
+      }
+    },
+    "npm:fbjs@0.8.4": {
+      "map": {
+        "loose-envify": "npm:loose-envify@1.2.0",
+        "object-assign": "npm:object-assign@4.1.0",
+        "ua-parser-js": "npm:ua-parser-js@0.7.10",
+        "isomorphic-fetch": "npm:isomorphic-fetch@2.2.1",
+        "promise": "npm:promise@7.1.1",
+        "immutable": "npm:immutable@3.8.1",
+        "core-js": "npm:core-js@1.2.7"
+      }
+    },
+    "npm:react-select@1.0.0-beta14": {
+      "map": {
+        "classnames": "npm:classnames@2.2.5",
+        "react-input-autosize": "npm:react-input-autosize@1.1.0",
+        "blacklist": "npm:blacklist@1.1.4"
       }
     }
   }

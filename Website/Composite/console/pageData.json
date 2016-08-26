@@ -7,10 +7,22 @@
         "name": "edit-language/properties",
         "label": "Language Properties",
         "fields": [
-          {
+					{
             "name": "edit-language/properties/url-mapping-name",
             "label": "URL mapping name",
             "help": "Base name in URLs"
+          },
+					{
+            "name": "edit-language/properties/pimp-my-select",
+            "label": "Xzibit says",
+						"type": "select",
+						"options": [
+							{ "value": "yo", "label": "Yo dawg," },
+							{ "value": "herd", "label": "I herd u like selects" },
+							{ "value": "put", "label": "So I put a select in ur datafield" },
+							{ "value": "react", "label": "so u can select in React" }
+						],
+            "help": "Wise words from a man who knows about putting things in other things"
           }
         ]
       }

@@ -46,8 +46,8 @@
       "github/url-polyfill": "github:github/url-polyfill@^0.5.6",
       "normalizr": "npm:normalizr@^2.2.1",
       "plugin-babel": "npm:systemjs-plugin-babel@^0.0.13",
-      "react-dom": "npm:react-dom@^15.1.0",
       "react-redux": "npm:react-redux@^4.4.5",
+      "react-select": "npm:react-select@^1.0.0-beta14",
       "redux-thunk": "npm:redux-thunk@^2.1.0",
       "scss": "github:mobilexag/plugin-sass@^0.4.6",
       "svg": "github:npbenjohnson/plugin-svg@^0.1.0",
@@ -100,6 +100,7 @@
       "process": "github:jspm/nodelibs-process@^0.2.0-alpha",
       "punycode": "github:jspm/nodelibs-punycode@^0.2.0-alpha",
       "react": "npm:react@^15.3.0",
+      "react-dom": "npm:react-dom@^15.1.0",
       "redux": "npm:redux@^3.5.2",
       "stream": "github:jspm/nodelibs-stream@^0.2.0-alpha",
       "string_decoder": "github:jspm/nodelibs-string_decoder@^0.2.0-alpha",
@@ -182,4 +183,4 @@
       }
     }
   }
-}
+}

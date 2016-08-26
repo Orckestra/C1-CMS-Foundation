@@ -7,6 +7,7 @@ import configureStore from 'console/state/store.js';
 import ShownTab from 'console/components/container/ShownTab.js';
 import DocumentPage from 'console/components/container/DocumentPage.js';
 import 'console/console.scss!';
+import 'react-select/scss/default.scss!';
 import 'console/iconIndex.js';
 
 let pageProps = {

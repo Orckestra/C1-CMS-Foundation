@@ -110,49 +110,144 @@ fieldset {
 	}
 
 	input {
+		display: inline-block;
 		border: 1px solid #ccc;
-    border-radius: 5px;
+		border-radius: 5px;
 		padding: 5px 7px;
 		margin: 2px 1px 7px 2px;
-    background-color: #fff;
+		background-color: #fff;
 		width: calc(100% - 42px);
-    height: 20px;
-    overflow: hidden;
+		height: 20px;
+		overflow: hidden;
 
 		&:focus {
 			border-color: $fieldFocusColor;
 		}
 	}
 
-	.helperIcon::after {
-    content: "?";
-    width: 16px;
-    height: 16px;
-    color: white;
-    position: absolute;
-    bottom: 16px;
-    right: -4px;
-    background: #CDCDCF;
-    border-radius: 8px;
-    font-size: 11px;
-    text-align: center;
-    line-height: 16px;
-    font-weight: normal;
-    font-family: Verdana;
+	.Select {
+		display: inline-block;
+		width: calc(100% - 26px);
+		margin: 2px 1px 4px 2px;
+
+		.Select-input {
+			height: 30px;
+
+			input {
+				border: 0 none transparent;
+				margin: 0;
+				padding: 5px 0 9px;
+			}
+		}
+
+		.Select-control {
+			border: 1px solid #ccc;
+			border-radius: 5px;
+			height: 20px;
+
+			.Select-value {
+				line-height: 30px;
+				color: $baseFontColor;
+			}
+		}
+		&.is-focused .Select-control {
+			border-color: $fieldFocusColor;
+		}
+
+		.Select-arrow {
+			border: 0 none transparent;
+		}
+		.Select-arrow:before, .Select-arrow:after {
+			content: "";
+			position: absolute;
+			width: 0;
+			height: 0;
+			border-style: solid;
+		}
+		.Select-arrow:after {
+			top: 14px;
+			right: 11px;
+			border-width: 4px 4px 0 4px;
+			border-color: white transparent transparent transparent;
+		}
+		.Select-arrow:before {
+			top: 14px;
+			right: 10px;
+			border-width: 5px 5px 0 5px;
+			border-color: $fieldFocusColor transparent transparent transparent;
+		}
+		&.is-open {
+			.Select-arrow:after {
+				top: 15px;
+				border-width: 0px 4px 4px 4px;
+				border-color: transparent transparent white transparent;
+			}
+			.Select-arrow:before {
+				top: 14px;
+				border-width: 0px 5px 5px 5px;
+				border-color: transparent transparent $buttonShadingColor transparent;
+			}
+		}
+
+		.Select-menu-outer {
+			position: absolute;
+			border: 1px solid $borderColor;
+			border-radius: 5px;
+			margin: 1px 1px 7px 0;
+			background-color: white;
+			width: calc(100% - 0px);
+			overflow: hidden;
+
+			.Select-option {
+				padding: 7px 8px;
+
+				&.is-focused {
+					color: inherit;
+					background-color: inherit;
+				}
+				&:hover {
+					background-color: $fieldFocusColor;
+					color: white;
+				}
+
+				.is-selected {
+					background-color: inherit;
+				}
+			}
+		}
 	}
 
-	.helper {
-		position: absolute;
-		top: 28px;
-		left: calc(100% + 10px);
-		width: max-content;
-		background-color: #fff;
-		box-shadow: 0px 0px 12px -1px rgba(204, 204, 204, 0.75);
-		border-radius: 5px;
-		border: 1px solid #ccc;
-		padding: 10px 12px;
-		visibility: hidden;
-		opacity: 0;
-		transition: opacity 0.2s, visibility 0.2s
+	.helperIcon{
+		&::after {
+			content: "?";
+			width: 16px;
+			height: 16px;
+			color: white;
+			position: absolute;
+			bottom: 16px;
+			right: -4px;
+			background: #CDCDCF;
+			border-radius: 8px;
+			font-size: 11px;
+			text-align: center;
+			line-height: 16px;
+			font-weight: normal;
+			font-family: Verdana;
+		}
+
+		.helper {
+			position: absolute;
+			top: 28px;
+			left: calc(100% + 10px);
+			width: max-content;
+			background-color: #fff;
+			box-shadow: 0px 0px 12px -1px rgba(204, 204, 204, 0.75);
+			border-radius: 5px;
+			border: 1px solid #ccc;
+			padding: 10px 12px;
+			visibility: hidden;
+			opacity: 0;
+			transition: opacity 0.2s, visibility 0.2s
+		}
 	}
 }
