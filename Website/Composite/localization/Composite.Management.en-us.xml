@@ -664,6 +664,7 @@
 	<string key="Website.Misc.Trees.DialogTitle.PasteTypeNotAllowed" value="Not allowed" />
 	<string key="Website.Misc.Trees.DialogText.PasteTypeNotAllowed" value="Folder won't accept document type." />
 	<string key="Website.Misc.MultiSelector.LabelEditSelections" value="Edit Selections" />
+	<string key="Website.Misc.Toolbar.LabelShowMoreActions" value="More" />
 	<string key="GenericVersionProcessController.Version" value="Version information" />
 	<string key="GenericVersionProcessController.VersionToolTip" value="Show version information" />
 	<string key="AspNetUiControl.Selector.SelectValueLabel" value="Select a value" />
