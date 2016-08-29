@@ -159,6 +159,7 @@
       <xs:element name="AddDataAction" type="AddDataActionType" minOccurs="0" maxOccurs="unbounded" />
       <xs:element name="EditDataAction" type="EditDataActionType" minOccurs="0" maxOccurs="1" />
       <xs:element name="DeleteDataAction" type="DeleteDataActionType" minOccurs="0" maxOccurs="1" />
+      <xs:element name="DuplicateDataAction" type="DuplicateDataActionType" minOccurs="0" maxOccurs="1" />
       <xs:element name="ReportFunctionAction" type="ReportFunctionActionType" minOccurs="0" maxOccurs="unbounded" />
       <xs:element name="MessageBoxAction" type="MessageBoxActionType" minOccurs="0" maxOccurs="unbounded" />
       <xs:element name="CustomUrlAction" type="CustomUrlActionType" minOccurs="0" maxOccurs="unbounded" />
@@ -1014,6 +1015,26 @@
 
 
   <xs:complexType name="DeleteDataActionType">
+    <xs:annotation>
+      <xs:documentation>This defines a simple element (or folder)</xs:documentation>
+    </xs:annotation>
+
+    <xs:attribute name="Label" use="optional" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>The label of the action. Defaults to the localized version of the string 'delete'</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+
+    <xs:attribute name="ToolTip" use="optional" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>The tool tip of the action. Defaults to the label</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+
+    <xs:attributeGroup ref="IconGroup" />
+  </xs:complexType>
+
+  <xs:complexType name="DuplicateDataActionType">
     <xs:annotation>
       <xs:documentation>This defines a simple element (or folder)</xs:documentation>
     </xs:annotation>
