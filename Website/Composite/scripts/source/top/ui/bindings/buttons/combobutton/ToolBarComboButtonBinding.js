@@ -36,6 +36,11 @@ function ToolBarComboButtonBinding() {
 	/**
 	 * @type {boolean}
 	 */
+	this.hasPopupItems = false;
+
+	/**
+	 * @type {boolean}
+	 */
 	this.alignWidth = false;
 
 	/*
@@ -59,9 +64,7 @@ ToolBarComboButtonBinding.prototype.onBindingAttach = function () {
 
 	ToolBarComboButtonBinding.superclass.onBindingAttach.call(this);
 
-	this.comboBoxBinding = ComboBoxBinding.newInstance(this.bindingDocument);
-	this.add(this.comboBoxBinding);
-	this.comboBoxBinding.attach();
+	this.buildCombobox();
 
 	this.attachClassName(ToolBarComboButtonBinding.CLASSNAME_COMBOBUTTON);
 
@@ -126,11 +129,31 @@ ToolBarComboButtonBinding.prototype.setPopup = function (arg) {
 	if (latestMenuItemBinding != null)
 		this.setButton(latestMenuItemBinding);
 
+	this.updateCombobox(menuItemBindings.getLength() > 1);
+}
+
+
+ToolBarComboButtonBinding.prototype.buildCombobox = function () {
+
+	if (!this.comboBoxBinding) {
+		this.comboBoxBinding = ComboBoxBinding.newInstance(this.bindingDocument);
+		this.add(this.comboBoxBinding);
+		this.comboBoxBinding.attach();
+		this.updateCombobox();
+	}
+}
+
+ToolBarComboButtonBinding.prototype.updateCombobox = function (hasPopupItems) {
+
+	if (hasPopupItems != undefined) {
+		this.hasPopupItems = hasPopupItems;
+	}
+
 	if (this.comboBoxBinding) {
-		if (menuItemBindings.getLength() <= 1) {
-			this.comboBoxBinding.hide();
-		} else {
+		if (this.hasPopupItems) {
 			this.comboBoxBinding.show();
+		} else {
+			this.comboBoxBinding.hide();
 		}
 	}
 }
