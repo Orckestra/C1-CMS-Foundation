@@ -21,6 +21,9 @@ SystemJS.config({
       "CompositeC1/": ""
     }
   },
+  sassPluginOptions: {
+    "autoprefixer": true
+  },
   devConfig: {
     "paths": {
       "unittest/": "test/unit/"
