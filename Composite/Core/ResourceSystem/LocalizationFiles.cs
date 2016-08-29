@@ -195,6 +195,8 @@ public static string GenericAddDataAction_DefaultLabel=>T("GenericAddDataAction.
 public static string GenericEditDataAction_DefaultLabel=>T("GenericEditDataAction.DefaultLabel");
 ///<summary>&quot;Delete&quot;</summary> 
 public static string GenericDeleteDataAction_DefaultLabel=>T("GenericDeleteDataAction.DefaultLabel");
+///<summary>&quot;Duplicate&quot;</summary> 
+public static string GenericDuplicateDataAction_DefaultLabel=>T("GenericDuplicateDataAction.DefaultLabel");
 ///<summary>&quot;Cascade delete error&quot;</summary> 
 public static string TreeGenericDelete_CascadeDeleteErrorTitle=>T("TreeGenericDelete.CascadeDeleteErrorTitle");
 ///<summary>&quot;The type is referenced by another type that does not allow cascade deletes. This operation is halted&quot;</summary> 
@@ -338,15 +340,15 @@ public static string ChangeOwnPasswordWorkflow_NotSupportedErrorText=>T("ChangeO
 public static string ChangeOwnCultureWorkflow_ElementActionLabel=>T("ChangeOwnCultureWorkflow.ElementActionLabel");
 ///<summary>&quot;Set the C1 Console language and formatting of numbers, times and dates&quot;</summary> 
 public static string ChangeOwnCultureWorkflow_ElementActionToolTip=>T("ChangeOwnCultureWorkflow.ElementActionToolTip");
-///<summary>&quot;Regional Settings and Language&quot;</summary> 
+///<summary>&quot;Profile Settings&quot;</summary> 
 public static string ChangeOwnCultureWorkflow_Dialog_Label=>T("ChangeOwnCultureWorkflow.Dialog.Label");
 ///<summary>&quot;Display Preferences&quot;</summary> 
 public static string ChangeOwnCultureWorkflow_Dialog_CultureSelector_Label=>T("ChangeOwnCultureWorkflow.Dialog.CultureSelector.Label");
-///<summary>&quot;Select from the list of options to update how time, date, and number formats are displayed within the console.&quot;</summary> 
+///<summary>&quot;Display for time, date, and number formats within the console&quot;</summary> 
 public static string ChangeOwnCultureWorkflow_Dialog_CultureSelector_Help=>T("ChangeOwnCultureWorkflow.Dialog.CultureSelector.Help");
 ///<summary>&quot;Console Language Preferences&quot;</summary> 
 public static string ChangeOwnCultureWorkflow_Dialog_C1ConsoleLanguageSelector_Label=>T("ChangeOwnCultureWorkflow.Dialog.C1ConsoleLanguageSelector.Label");
-///<summary>&quot;Select the language to be used for labels, help texts, dialogs etc. The available options here are limited to languages installed. You may install more languages via the Package system, see Composite.Localization.&quot;</summary> 
+///<summary>&quot;Language displayed within your console for labels, help texts, dialogs, etc. The available options are limited to language packages installed. See Composite.Localization package for more language options.&quot;</summary> 
 public static string ChangeOwnCultureWorkflow_Dialog_C1ConsoleLanguageSelector_Help=>T("ChangeOwnCultureWorkflow.Dialog.C1ConsoleLanguageSelector.Help");
 ///<summary>&quot;Change application language&quot;</summary> 
 public static string ChangeOwnCultureWorkflow_Dialog_Confirm_Title=>T("ChangeOwnCultureWorkflow.Dialog.Confirm.Title");
@@ -1179,13 +1181,13 @@ public static string Website_Forms_Administrative_EditUserStep1_GroupLabel=>T("W
 public static string Website_Forms_Administrative_EditUserStep1_GroupHelp=>T("Website.Forms.Administrative.EditUserStep1.GroupHelp");
 ///<summary>&quot;C1 Console Localization&quot;</summary> 
 public static string Website_Forms_Administrative_EditUserStep1_LabelLocalizationFieldGroup=>T("Website.Forms.Administrative.EditUserStep1.LabelLocalizationFieldGroup");
-///<summary>&quot;Regional settings&quot;</summary> 
+///<summary>&quot;Display Preferences&quot;</summary> 
 public static string Website_Forms_Administrative_EditUserStep1_CultureLabel=>T("Website.Forms.Administrative.EditUserStep1.CultureLabel");
-///<summary>&quot;To change the way numbers, dates, and hours are displayed, select an entry from the list.&quot;</summary> 
+///<summary>&quot;Display for time, date, and number formats within the console&quot;</summary> 
 public static string Website_Forms_Administrative_EditUserStep1_CultureHelp=>T("Website.Forms.Administrative.EditUserStep1.CultureHelp");
-///<summary>&quot;C1 Console Language&quot;</summary> 
+///<summary>&quot;Console Language Preferences&quot;</summary> 
 public static string Website_Forms_Administrative_EditUserStep1_C1ConsoleLanguageLabel=>T("Website.Forms.Administrative.EditUserStep1.C1ConsoleLanguageLabel");
-///<summary>&quot;Select the language to be used for labels, help texts, dialogs etc. The available options here are limited to languages installed. You may install more languages via the Package system, see Composite.Localization.&quot;</summary> 
+///<summary>&quot;Language displayed within your console for labels, help texts, dialogs, etc. The available options are limited to language packages installed. See Composite.Localization package for more language options.&quot;</summary> 
 public static string Website_Forms_Administrative_EditUserStep1_C1ConsoleLanguageHelp=>T("Website.Forms.Administrative.EditUserStep1.C1ConsoleLanguageHelp");
 ///<summary>&quot;Perspectives&quot;</summary> 
 public static string Website_Forms_Administrative_EditUserStep1_ActivePerspectiveFieldLabel=>T("Website.Forms.Administrative.EditUserStep1.ActivePerspectiveFieldLabel");
@@ -1285,13 +1287,13 @@ public static string Website_Forms_Administrative_AddNewUserStep1_EmailHelp=>T("
 public static string Website_Forms_Administrative_AddNewUserStep1_GroupLabel=>T("Website.Forms.Administrative.AddNewUserStep1.GroupLabel");
 ///<summary>&quot;If you enter a folder name that does not already exist a new folder will be created.&quot;</summary> 
 public static string Website_Forms_Administrative_AddNewUserStep1_GroupHelp=>T("Website.Forms.Administrative.AddNewUserStep1.GroupHelp");
-///<summary>&quot;Regional settings&quot;</summary> 
+///<summary>&quot;Display Preferences&quot;</summary> 
 public static string Website_Forms_Administrative_AddNewUserStep1_CultureLabel=>T("Website.Forms.Administrative.AddNewUserStep1.CultureLabel");
-///<summary>&quot;To change the way numbers, dates, and hours are displayed, select an entry from the list.&quot;</summary> 
+///<summary>&quot;Display for time, date, and number formats within the console&quot;</summary> 
 public static string Website_Forms_Administrative_AddNewUserStep1_CultureHelp=>T("Website.Forms.Administrative.AddNewUserStep1.CultureHelp");
-///<summary>&quot;C1 Console Language&quot;</summary> 
+///<summary>&quot;Console Language Preferences&quot;</summary> 
 public static string Website_Forms_Administrative_AddNewUserStep1_C1ConsoleLanguageLabel=>T("Website.Forms.Administrative.AddNewUserStep1.C1ConsoleLanguageLabel");
-///<summary>&quot;Select the language to be used for labels, help texts, dialogs etc. The available options here are limited to languages installed. You may install more languages via the Package system, see Composite.Localization.&quot;</summary> 
+///<summary>&quot;Language displayed within your console for labels, help texts, dialogs, etc. The available options are limited to language packages installed. See Composite.Localization package for more language options.&quot;</summary> 
 public static string Website_Forms_Administrative_AddNewUserStep1_C1ConsoleLanguageHelp=>T("Website.Forms.Administrative.AddNewUserStep1.C1ConsoleLanguageHelp");
 ///<summary>&quot;A language is required&quot;</summary> 
 public static string UserElementProvider_MissingActiveLanguageTitle=>T("UserElementProvider.MissingActiveLanguageTitle");
@@ -1315,6 +1317,10 @@ public static string AssociatedDataElementProviderHelper_EditAssociatedDataToolT
 public static string AssociatedDataElementProviderHelper_DeleteAssociatedDataLabel=>T("AssociatedDataElementProviderHelper.DeleteAssociatedDataLabel");
 ///<summary>&quot;Delete data&quot;</summary> 
 public static string AssociatedDataElementProviderHelper_DeleteAssociatedDataToolTip=>T("AssociatedDataElementProviderHelper.DeleteAssociatedDataToolTip");
+///<summary>&quot;Duplicate Data&quot;</summary> 
+public static string AssociatedDataElementProviderHelper_DuplicateAssociatedDataLabel=>T("AssociatedDataElementProviderHelper.DuplicateAssociatedDataLabel");
+///<summary>&quot;Duplicate data&quot;</summary> 
+public static string AssociatedDataElementProviderHelper_DuplicateAssociatedDataToolTip=>T("AssociatedDataElementProviderHelper.DuplicateAssociatedDataToolTip");
 ///<summary>&quot;Localize&quot;</summary> 
 public static string AssociatedDataElementProviderHelper_LocalizeData=>T("AssociatedDataElementProviderHelper.LocalizeData");
 ///<summary>&quot;Localize data&quot;</summary> 
@@ -2453,6 +2459,8 @@ public static string Validation_Int32_Overflow=>T("Validation.Int32.Overflow");
 public static string Browser_Label=>T("Browser.Label");
 ///<summary>&quot;Browse unpublished pages&quot;</summary> 
 public static string Browser_ToolTip=>T("Browser.ToolTip");
+///<summary>&quot;Copy{count} of {0}&quot;</summary> 
+public static string Duplication_Text(object parameter0)=>string.Format(T("Duplication.Text"), parameter0);
      private static string T(string key) 
        { 
             return StringResourceSystemFacade.GetString("Composite.Management", key);
@@ -2661,6 +2669,10 @@ public static string EditDataToolTip=>T("EditDataToolTip");
 public static string DeleteData=>T("DeleteData");
 ///<summary>&quot;Delete selected data&quot;</summary> 
 public static string DeleteDataToolTip=>T("DeleteDataToolTip");
+///<summary>&quot;Duplicate Data&quot;</summary> 
+public static string DuplicateData=>T("DuplicateData");
+///<summary>&quot;Duplicate selected data&quot;</summary> 
+public static string DuplicateDataToolTip=>T("DuplicateDataToolTip");
 ///<summary>&quot;Translate Data&quot;</summary> 
 public static string LocalizeData=>T("LocalizeData");
 ///<summary>&quot;Translate selected data&quot;</summary> 
@@ -3591,6 +3603,10 @@ public static string PageElementProvider_EditPageToolTip=>T("PageElementProvider
 public static string PageElementProvider_Delete=>T("PageElementProvider.Delete");
 ///<summary>&quot;Delete the selected page&quot;</summary> 
 public static string PageElementProvider_DeleteToolTip=>T("PageElementProvider.DeleteToolTip");
+///<summary>&quot;Duplicate&quot;</summary> 
+public static string PageElementProvider_Duplicate=>T("PageElementProvider.Duplicate");
+///<summary>&quot;Duplicate the selected page&quot;</summary> 
+public static string PageElementProvider_DuplicateToolTip=>T("PageElementProvider.DuplicateToolTip");
 ///<summary>&quot;Translate Page&quot;</summary> 
 public static string PageElementProvider_LocalizePage=>T("PageElementProvider.LocalizePage");
 ///<summary>&quot;Translate selected page&quot;</summary> 
@@ -3671,11 +3687,11 @@ public static string ViewUnpublishedItems_VersionLabel=>T("ViewUnpublishedItems.
 public static string ViewUnpublishedItems_StatusLabel=>T("ViewUnpublishedItems.StatusLabel");
 ///<summary>&quot;Publish Date&quot;</summary> 
 public static string ViewUnpublishedItems_PublishDateLabel=>T("ViewUnpublishedItems.PublishDateLabel");
-///<summary>&quot;This is the date and time that has been set for the page to be published automatically. To update or remove, see the Publication Schedule in Edit Page mode. Otherwise you can override these dates by publishing manually from this view.&quot;</summary> 
+///<summary>&quot;Date and time the page has been scheduled to publish automatically. To edit, see the Publication Schedule in Edit Page mode.&quot;</summary> 
 public static string ViewUnpublishedItems_PublishDateHelp=>T("ViewUnpublishedItems.PublishDateHelp");
 ///<summary>&quot;Unpublish Date&quot;</summary> 
 public static string ViewUnpublishedItems_UnpublishDateLabel=>T("ViewUnpublishedItems.UnpublishDateLabel");
-///<summary>&quot;This is the date and time that has been set for the page to be unpublished automatically. To update or remove, see the Publication Schedule in Edit Page mode.&quot;</summary> 
+///<summary>&quot;Date and time the page has been scheduled to unpublish automatically. To edit, see the Publication Schedule in Edit Page mode.&quot;</summary> 
 public static string ViewUnpublishedItems_UnpublishDateHelp=>T("ViewUnpublishedItems.UnpublishDateHelp");
 ///<summary>&quot;Date Created&quot;</summary> 
 public static string ViewUnpublishedItems_DateCreatedLabel=>T("ViewUnpublishedItems.DateCreatedLabel");

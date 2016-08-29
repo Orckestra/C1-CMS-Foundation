@@ -106,6 +106,8 @@
 	<string key="AssociatedDataElementProviderHelper.EditAssociatedDataToolTip" value="Edit data" />
 	<string key="AssociatedDataElementProviderHelper.DeleteAssociatedDataLabel" value="Delete Data" />
 	<string key="AssociatedDataElementProviderHelper.DeleteAssociatedDataToolTip" value="Delete data" />
+  <string key="AssociatedDataElementProviderHelper.DuplicateAssociatedDataLabel" value="Duplicate Data" />
+  <string key="AssociatedDataElementProviderHelper.DuplicateAssociatedDataToolTip" value="Duplicate data" />
 	<string key="AssociatedDataElementProviderHelper.LocalizeData" value="Localize" />
 	<string key="AssociatedDataElementProviderHelper.LocalizeDataToolTip" value="Localize data" />
 	<string key="AssociatedDataElementProviderHelper.DisabledData" value="Not yet approved or published" />
@@ -679,4 +681,6 @@
 
   <string key="Browser.Label" value="Page Browser" />
   <string key="Browser.ToolTip" value="Browse unpublished pages" />
+  
+  <string key="Duplication.Text" value="Copy{count} of {0}" />
 </strings>
