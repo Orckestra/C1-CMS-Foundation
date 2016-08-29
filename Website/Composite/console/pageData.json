@@ -9,12 +9,12 @@
         "fields": [
 					{
             "name": "edit-language/properties/url-mapping-name",
-            "label": "URL mapping name",
+            "headline": "URL mapping name",
             "help": "Base name in URLs"
           },
 					{
             "name": "edit-language/properties/pimp-my-select",
-            "label": "Xzibit says",
+            "headline": "Xzibit says",
 						"type": "select",
 						"options": [
 							{ "value": "yo", "label": "Yo dawg," },
@@ -23,6 +23,25 @@
 							{ "value": "react", "label": "so u can select in React" }
 						],
             "help": "Wise words from a man who knows about putting things in other things"
+          },
+          {
+            "name": "edit-language/properties/check-one",
+            "headline": "Some checkboxes",
+            "type": "checkbox",
+            "help": "Check it #1",
+            "label": "The First"
+          },
+          {
+            "name": "edit-language/properties/check-two",
+            "type": "checkbox",
+            "help": "Check it #2",
+            "label": "The Last"
+          },
+          {
+            "name": "edit-language/properties/check-three",
+            "type": "checkbox",
+            "help": "Check it #3",
+            "label": "The Everything"
           }
         ]
       }

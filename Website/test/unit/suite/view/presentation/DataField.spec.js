@@ -18,7 +18,7 @@ describe('DataField', () => {
 			props = {
 				type: 'text',
 				name: 'test',
-				label: 'Text label',
+				headline: 'Text headline',
 				help: 'Help text',
 				updateValue: sinon.spy().named('updateValue')
 			};
@@ -27,11 +27,11 @@ describe('DataField', () => {
 			};
 		});
 
-		it('renders a text field with label and helper', () => {
+		it('renders a text field with headline and helper', () => {
 			renderer.render(<DataField {...props} {...state}/> );
 			return expect(renderer, 'to have rendered',
 			<div className="datafield">
-				<label htmlFor={props.name}>{props.label}</label>
+				<h4>{props.headline}</h4>
 				<input
 					type={props.type}
 					id={props.name}
@@ -41,12 +41,12 @@ describe('DataField', () => {
 			);
 		});
 
-		it('renders a text field with label but no helper', () => {
+		it('renders a text field with headline but no helper', () => {
 			delete props.help;
 			renderer.render(<DataField {...props} {...state}/> );
 			return expect(renderer, 'to have rendered',
 				<div className="datafield">
-					<label htmlFor={props.name}>{props.label}</label>
+					<h4>{props.headline}</h4>
 					<input
 						type={props.type}
 						id={props.name}
@@ -56,8 +56,8 @@ describe('DataField', () => {
 			.and('not to contain', <HelpIcon text=""/>);
 		});
 
-		it('renders a text field with helper but no label', () => {
-			delete props.label;
+		it('renders a text field with helper but no headline', () => {
+			delete props.headline;
 			renderer.render(<DataField {...props} {...state}/> );
 			return expect(renderer, 'to have rendered',
 				<div className="datafield">
@@ -68,7 +68,7 @@ describe('DataField', () => {
 					<HelpIcon text={props.help}/>
 				</div>
 			)
-			.and('not to contain', <label/>);
+			.and('not to contain', <h4/>);
 		});
 
 		it('calls its update callback', () => {
@@ -91,7 +91,7 @@ describe('DataField', () => {
 			props = {
 				type: 'password',
 				name: 'test',
-				label: 'Text label',
+				headline: 'Text headline',
 				help: 'Help text',
 				updateValue: sinon.spy().named('updateValue')
 			};
@@ -100,11 +100,11 @@ describe('DataField', () => {
 			};
 		});
 
-		it('renders a password field with label and helper', () => {
+		it('renders a password field with headline and helper', () => {
 			renderer.render(<DataField {...props} {...state}/> );
 			return expect(renderer, 'to have rendered',
 			<div className="datafield">
-				<label htmlFor={props.name}>{props.label}</label>
+				<h4>{props.headline}</h4>
 				<input
 					type={props.type}
 					id={props.name}
@@ -114,12 +114,12 @@ describe('DataField', () => {
 			);
 		});
 
-		it('renders a password field with label but no helper', () => {
+		it('renders a password field with headline but no helper', () => {
 			delete props.help;
 			renderer.render(<DataField {...props} {...state}/> );
 			return expect(renderer, 'to have rendered',
 				<div className="datafield">
-					<label htmlFor={props.name}>{props.label}</label>
+					<h4>{props.headline}</h4>
 					<input
 						type={props.type}
 						id={props.name}
@@ -129,8 +129,8 @@ describe('DataField', () => {
 			.and('not to contain', <HelpIcon text=""/>);
 		});
 
-		it('renders a password field with helper but no label', () => {
-			delete props.label;
+		it('renders a password field with helper but no headline', () => {
+			delete props.headline;
 			renderer.render(<DataField {...props} {...state}/> );
 			return expect(renderer, 'to have rendered',
 				<div className="datafield">
@@ -141,7 +141,7 @@ describe('DataField', () => {
 					<HelpIcon text={props.help}/>
 				</div>
 			)
-			.and('not to contain', <label/>);
+			.and('not to contain', <h4/>);
 		});
 
 		it('calls its update callback', () => {
@@ -164,7 +164,7 @@ describe('DataField', () => {
 			props = {
 				type: 'select',
 				name: 'test',
-				label: 'Text label',
+				headline: 'Text headline',
 				help: 'Help text',
 				updateValue: sinon.spy().named('updateValue')
 			};
@@ -183,11 +183,11 @@ describe('DataField', () => {
 				];
 			});
 
-			it('renders a dropdown with label and helper', () => {
+			it('renders a dropdown with headline and helper', () => {
 				renderer.render(<DataField {...props} {...state}/> );
 				return expect(renderer, 'to have rendered',
 					<div className="datafield">
-						<label htmlFor={props.name}>{props.label}</label>
+						<h4>{props.headline}</h4>
 							<Select id="test" value={{ value: 2, label: 'Two' }} options={[
 									{ value: 1, label: 'One' },
 									{ value: 2, label: 'Two' },
@@ -200,12 +200,12 @@ describe('DataField', () => {
 				);
 			});
 
-			it('renders a dropdown with label but no helper', () => {
+			it('renders a dropdown with headline but no helper', () => {
 				delete props.help;
 				renderer.render(<DataField {...props} {...state}/> );
 				return expect(renderer, 'to have rendered',
 					<div className="datafield">
-						<label htmlFor={props.name}>{props.label}</label>
+						<h4>{props.headline}</h4>
 							<Select id="test" value={{ value: 2, label: 'Two' }} options={[
 									{ value: 1, label: 'One' },
 									{ value: 2, label: 'Two' },
@@ -218,8 +218,8 @@ describe('DataField', () => {
 				.and('not to contain', <HelpIcon text=""/>);
 			});
 
-			it('renders a dropdown with helper but no label', () => {
-				delete props.label;
+			it('renders a dropdown with helper but no headline', () => {
+				delete props.headline;
 				renderer.render(<DataField {...props} {...state}/> );
 				return expect(renderer, 'to have rendered',
 					<div className="datafield">
@@ -233,7 +233,7 @@ describe('DataField', () => {
 						<HelpIcon text={props.help}/>
 					</div>
 				)
-				.and('not to contain', <label/>);
+				.and('not to contain', <h4/>);
 			});
 
 			it.skip('calls its update callback', () => {
@@ -257,6 +257,83 @@ describe('DataField', () => {
 				)
 				.then(() => expect(props.updateValue, 'to have a call satisfying', {args: [3]}));
 			});
+		});
+	});
+
+	describe('with checkbox type', () => {
+		beforeEach(() => {
+			props = {
+				type: 'checkbox',
+				name: 'test',
+				headline: 'Text headline',
+				help: 'Help text',
+				label: 'Label text',
+				updateValue: sinon.spy().named('updateValue')
+			};
+			state = {
+				value: true
+			};
+		});
+
+		it('renders a checkbox field with headline, label and helper', () => {
+			renderer.render(<DataField {...props} {...state}/> );
+			return expect(renderer, 'to have rendered',
+			<div className="datafield">
+				<h4>{props.headline}</h4>
+				<input
+					type={props.type}
+					id={props.name}
+					checked={state.value}/>
+				<label htmlFor={props.name}>{props.label}</label>
+				<HelpIcon text={props.help}/>
+			</div>
+			);
+		});
+
+		it('defaults to unchecked', () => {
+			state.value = undefined;
+			renderer.render(<DataField {...props} {...state}/> );
+			return expect(renderer, 'to have rendered',
+			<div className="datafield">
+				<h4>{props.headline}</h4>
+				<input
+					type={props.type}
+					id={props.name}
+					checked={false}/>
+				<label htmlFor={props.name}>{props.label}</label>
+				<HelpIcon text={props.help}/>
+			</div>
+			);
+		});
+
+		it('renders a checkbox field with headline and helper, but no label', () => {
+			delete props.label;
+			renderer.render(<DataField {...props} {...state}/> );
+			return expect(renderer, 'to have rendered',
+			<div className="datafield">
+				<h4>{props.headline}</h4>
+				<input
+					type={props.type}
+					id={props.name}
+					checked={state.value}/>
+				<HelpIcon text={props.help}/>
+			</div>
+			)
+			.and('not to contain', <label/>);
+		});
+
+		it('calls its update callback', () => {
+			var component = TestUtils.renderIntoDocument(
+				<StatelessWrapper>
+					<DataField {...props} {...state}/>
+				</StatelessWrapper>
+			);
+			return expect(
+				component, 'queried for', <input/>,
+				'to have rendered', <input checked={true}/>
+			)
+			.then(() => expect(component,'with event change', 'on', <input/>))
+			.then(() => expect(props.updateValue, 'was called'));
 		});
 	});
 });

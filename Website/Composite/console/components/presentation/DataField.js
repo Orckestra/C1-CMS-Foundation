@@ -5,18 +5,27 @@ import Select from 'react-select';
 const DataField = props => {
 	let input, handleChange, defaultOption, inputElement;
 	switch (props.type) {
+	case 'checkbox':
+		handleChange = function (event) {
+			props.updateValue(event.target.checked);
+		};
+		inputElement = <input
+			type={props.type}
+			id={props.name}
+			value={props.value || false}
+			checked={props.value || false}
+			onChange={handleChange}/>;
+		break;
 	case 'select':
 		handleChange = function (option) {
 			props.updateValue(option.value);
 		};
 		defaultOption = props.options.filter(option => option.value === props.value)[0];
-		inputElement =
-			<Select
+		inputElement = <Select
 				id={props.name}
 				value={defaultOption}
 				clearable={false}
 				multi={false}
-				isOpen={true}
 				options={props.options}
 				onChange={handleChange}
 				placeholder={props.placeholder}>
@@ -36,10 +45,13 @@ const DataField = props => {
 
 	return (
 		<div className="datafield">
+			{props.headline ?
+				<h4>{props.headline}</h4> :
+				null}
+			{inputElement}
 			{props.label ?
 				<label htmlFor={props.name}>{props.label}</label> :
 				null}
-			{inputElement}
 			{props.help ? <HelpIcon text={props.help} /> : null}
 		</div>
 	);
@@ -50,6 +62,7 @@ DataField.propTypes = {
 	options: PropTypes.arrayOf(PropTypes.object),
 	updateValue: PropTypes.func.isRequired,
 	name: PropTypes.string.isRequired,
+	headline: PropTypes.string,
 	label: PropTypes.string,
 	help: PropTypes.string,
 	value: PropTypes.any,
