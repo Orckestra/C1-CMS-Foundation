@@ -29,12 +29,19 @@ namespace Composite.C1Console.Actions
         }
 
 
-
         /// <exclude />
+        [Obsolete("Use PostRefreshMessages instead")]
         public void PostRefreshMesseges(EntityToken newChildEntityToken)
         {
+            PostRefreshMessages(newChildEntityToken);
+        }
+
+
+        /// <exclude />
+        public void PostRefreshMessages(EntityToken newChildEntityToken)
+        {
             Verify.ArgumentNotNull(newChildEntityToken, "newChildEntityToken");
-            Verify.That(!_postRefreshMessegesCalled, "Only one PostRefreshMesseges call is allowed");
+            Verify.That(!_postRefreshMessegesCalled, "Only one PostRefreshMessages call is allowed");
 
             _postRefreshMessegesCalled = true;
 
@@ -45,7 +52,8 @@ namespace Composite.C1Console.Actions
             foreach (EntityToken entityToken in RefreshBeforeAfterEntityTokenFinder.FindEntityTokens(_beforeGraph, _afterGraph))
             {
                 messageService.RefreshTreeSection(entityToken);
-                Log.LogVerbose("AddNewTreeRefresher", string.Format("Refreshing EntityToken: Type = {0}, Source = {1}, Id = {2}, EntityTokenType = {3}", entityToken.Type, entityToken.Source, entityToken.Id, entityToken.GetType()));
+                Log.LogVerbose("AddNewTreeRefresher",
+                    $"Refreshing EntityToken: Type = {entityToken.Type}, Source = {entityToken.Source}, Id = {entityToken.Id}, EntityTokenType = {entityToken.GetType()}");
             }
         }
     }
