@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using System.Xml.Linq;
+using Composite.C1Console.Actions.Data;
 using Composite.C1Console.Elements;
 using Composite.C1Console.Security;
 using Composite.C1Console.Workflow;
@@ -32,15 +33,22 @@ namespace Composite.C1Console.Trees
             if (!String.IsNullOrEmpty(CustomFormMarkupPath))
             {
                 StringConversionServices.SerializeKeyValuePair(payload, "_CustomFormMarkupPath_", CustomFormMarkupPath);
-            }
 
-            actionAdder(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.C1Console.Trees.Workflows.GenericEditDataWorkflow"), this.PermissionTypes)
+                actionAdder(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.C1Console.Trees.Workflows.GenericEditDataWorkflow"), this.PermissionTypes)
+                            {
+                                Payload = payload.ToString()
+                            }))
+                    {
+                        VisualData = CreateActionVisualizedData(dynamicValuesHelperReplaceContext)
+                    });
+            }
+            else
             {
-                Payload = payload.ToString()
-            }))
-            {
-                VisualData = CreateActionVisualizedData(dynamicValuesHelperReplaceContext)
-            });
+                actionAdder(new ElementAction(new ActionHandle(new ProxyDataActionToken(ActionIdentifier.Edit, this.PermissionTypes)))
+                {
+                    VisualData = CreateActionVisualizedData(dynamicValuesHelperReplaceContext)
+                });
+            }
         }
 
 
