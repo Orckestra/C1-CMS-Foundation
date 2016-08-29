@@ -10,7 +10,9 @@ export function saveState(pageName) {
 	return { type: SAVE_STATE, pageName };
 }
 
-const initialState = {};
+const initialState = {
+	dirtyFields: []
+};
 
 export default function dataFields(state = initialState, action) {
 	let update;
@@ -18,7 +20,12 @@ export default function dataFields(state = initialState, action) {
 	case UPDATE_VALUE:
 		update = {};
 		update[action.fieldName] = action.newValue;
+		if (state.dirtyFields.indexOf(action.fieldName) === -1) {
+			update.dirtyFields = state.dirtyFields.concat([action.fieldName]);
+		}
 		return Object.assign({}, state, update);
+	case SAVE_STATE:
+		return Object.assign({}, state, { dirtyFields: [] });
 	default:
 		return state;
 	}

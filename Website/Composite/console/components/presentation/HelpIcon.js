@@ -9,9 +9,10 @@ const HelpIcon = ({text}) => {
 	}
 
 	function hideHelper() {
+		let savedHelper = helper;
 		setTimeout(() => {
-			helper.style.visibility = 'hidden';
-			helper.style.opacity = 0;
+			savedHelper.style.visibility = 'hidden';
+			savedHelper.style.opacity = 0;
 		}, 2000);
 	}
 

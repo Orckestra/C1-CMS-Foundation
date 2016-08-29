@@ -11,6 +11,7 @@ describe('ActionButton', () => {
 		renderer = TestUtils.createRenderer();
 		props = {
 			label: 'Label',
+			disabled: false,
 			action: sinon.spy()
 		};
 	});
@@ -21,6 +22,16 @@ describe('ActionButton', () => {
 		);
 		return expect(renderer, 'to have rendered',
 			<button>{props.label}</button>
+		);
+	});
+
+	it('should render a disabled button', () => {
+		props.disabled = true;
+		renderer.render(
+			<ActionButton {...props}/>
+		);
+		return expect(renderer, 'to have rendered',
+			<button disabled={true}>{props.label}</button>
 		);
 	});
 

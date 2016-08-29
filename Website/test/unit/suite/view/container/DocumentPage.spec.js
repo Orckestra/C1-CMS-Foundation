@@ -12,6 +12,7 @@ describe('DocumentPage', () => {
 		renderer = TestUtils.createRenderer();
 		state = {
 			dataFields: {
+				dirtyFields: [],
 				'one': 1,
 				'two': 2
 			},
@@ -35,27 +36,24 @@ describe('DocumentPage', () => {
 
 	it('renders a FormPage with props, values and actions', () => {
 		renderer.render(<DocumentPage store={store} {...props}/>);
-		return Promise.all([
-			expect(renderer, 'to have rendered', <FormPage
-				{...props}
-				values={state.dataFields}
-				buttonDefs={{}}
-				fieldsetDefs={{}}
-				dataFieldDefs={{}}
-				actions={{
-					save: expect.it('to be a function')
-						.and('when called with', ['pagename'], 'to be a function')
-						.and('when called with', ['pagename'], 'when called', 'to be undefined'), // Result is call to store.dispatch
-					updateValue: expect.it('to be a function')
-						.and('when called with', ['fieldname'], 'to be a function')
-						.and('when called with', ['fieldname'], 'when called with', ['value'], 'to be undefined') // Result is call to store.dispatch
-				}}/>),
-			expect(store.dispatch, 'to have calls satisfying', [
-				{ args: [{ type: SAVE_STATE, pageName: 'pagename' }]},
-				{ args: [{ type: UPDATE_VALUE, fieldName: 'fieldname', newValue: 'value' }]}
-			]),
-			expect(store.subscribe, 'was not called'),
-			expect(store.getState, 'was called')
-		]);
+		return expect(renderer, 'to have rendered', <FormPage
+			{...props}
+			values={state.dataFields}
+			buttonDefs={{}}
+			fieldsetDefs={{}}
+			dataFieldDefs={{}}
+			actions={{
+				updateValue: expect.it('to be a function')
+					.and('when called with', ['fieldname'], 'to be a function')
+					.and('when called with', ['fieldname'], 'when called with', ['value'], 'to be undefined'), // Result is call to store.dispatch
+				save: expect.it('to be a function')
+					.and('when called with', ['pagename'], 'to be a function')
+					.and('when called with', ['pagename'], 'when called', 'to be undefined') // Result is call to store.dispatch
+			}}
+			hasDirtyFields={false}/>)
+		.then(() => expect(store.dispatch, 'to have calls satisfying', [
+			{ args: [{ type: UPDATE_VALUE, fieldName: 'fieldname', newValue: 'value' }]},
+			{ args: [{ type: SAVE_STATE, pageName: 'pagename' }]}
+		]));
 	});
 });

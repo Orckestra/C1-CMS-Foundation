@@ -14,6 +14,7 @@ describe('Toolbar', () => {
 		};
 		renderer = TestUtils.createRenderer();
 		props = {
+			canSave: false,
 			buttons: {
 				first: {
 					label: 'Label1',
@@ -23,7 +24,8 @@ describe('Toolbar', () => {
 					label: 'Label2'
 				},
 				third: {
-					label: 'Label3'
+					label: 'Label3',
+					saveButton: true
 				}
 			}
 		};
@@ -35,7 +37,7 @@ describe('Toolbar', () => {
 			<div className='toolbar'>
 				<ActionButton label='Label1' action={actions.first} icon='save'/>
 				<ActionButton label='Label2' action={actions.second}/>
-				<ActionButton label='Label3' action={actions.third}/>
+				<ActionButton label='Label3' action={actions.third} disabled={true}/>
 			</div>
 		);
 	});

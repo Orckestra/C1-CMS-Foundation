@@ -6,6 +6,7 @@ const FormPage = props => (
 	<div className='page'>
 		<Toolbar
 			type='document'
+			canSave={props.hasDirtyFields}
 			buttons={props.pageDef.buttons.reduce((buttons, buttonName) => {
 				buttons[buttonName] = props.buttonDefs[buttonName];
 				return buttons;
@@ -40,6 +41,7 @@ FormPage.propTypes = {
 	name: PropTypes.string.isRequired,
 	buttonDefs: PropTypes.object.isRequired,
 	actions: PropTypes.object.isRequired,
+	hasDirtyFields: PropTypes.bool.isRequired,
 	fieldsetDefs: PropTypes.object.isRequired,
 	dataFieldDefs: PropTypes.object.isRequired,
 	values: PropTypes.object.isRequired,

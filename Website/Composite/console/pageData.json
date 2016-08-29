@@ -50,7 +50,8 @@
       {
         "name": "edit-language/save",
         "label": "Save",
-        "icon": "save"
+        "icon": "save",
+        "saveButton": true
       }
     ]
   }

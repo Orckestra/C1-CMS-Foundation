@@ -59,6 +59,7 @@ describe('FormPage', () => {
 				'do-not-render-button': () => () => {},
 				updateValue: sinon.spy(() => pageActions.update)
 			},
+			hasDirtyFields: false,
 			values: {
 				'test/twoset/threefield': 'different'
 			}
@@ -70,6 +71,7 @@ describe('FormPage', () => {
 		renderer, 'to have exactly rendered',
 		<div className='page'>
 			<Toolbar
+				canSave={false}
 				type='document'
 				buttons={{}}
 				actions={{}}/>
@@ -87,9 +89,10 @@ describe('FormPage', () => {
 		</div>
 	)
 	.and(
-		'queried for', <Toolbar type='document' buttons={{}} actions={{}}/>,
+		'queried for', <Toolbar type='document' canSave={false} buttons={{}} actions={{}}/>,
 		'to have props exhaustively satisfying', {
 			type: 'document',
+			canSave: false,
 			buttons: {
 				'test/onebutton': { label: 'One' },
 				'test/twobutton': { label: 'Two' }
@@ -103,7 +106,7 @@ describe('FormPage', () => {
 
 	it('passes named actions to the toolbar', () => Promise.all([
 		expect(renderer,
-			'queried for', <Toolbar type='document' actions={{}} buttons={{}}/>,
+			'queried for', <Toolbar type='document' canSave={false} actions={{}} buttons={{}}/>,
 		'to have props satisfying', {
 			type: 'document',
 			buttons: expect.it('to be an', 'object'),

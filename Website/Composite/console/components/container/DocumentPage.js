@@ -13,6 +13,7 @@ function mapStateToProps(state) {
 	Object.keys(state.dataFields).forEach(fieldName => {
 		update.values[fieldName] = state.dataFields[fieldName];
 	});
+	update.hasDirtyFields = !!(state.dataFields && state.dataFields.dirtyFields.length);
 	return update;
 }
 
