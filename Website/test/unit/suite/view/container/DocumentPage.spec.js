@@ -4,7 +4,7 @@ import React from 'react';
 import TestUtils from 'react-addons-test-utils';
 import DocumentPage from 'console/components/container/DocumentPage.js';
 import FormPage from 'console/components/presentation/FormPage.js';
-import { SAVE_STATE, UPDATE_VALUE } from 'console/state/actions/documentPage.js';
+import { SAVE_STATE, UPDATE_VALUE } from 'console/state/reducers/dataFields.js';
 
 describe('DocumentPage', () => {
 	let renderer, state, store, props;
