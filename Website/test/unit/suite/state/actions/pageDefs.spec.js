@@ -1,7 +1,7 @@
 import expect from 'unittest/helpers/expect.js';
 import sinon from 'sinon';
 import * as actions from 'console/state/actions/pageDefs.js';
-import { STORE_DEF } from  'console/state/actions/componentDefinitions.js';
+import { STORE_DEF } from  'console/state/reducers/definitions.js';
 
 describe('Get page definitions', () => {
 	it('has action descriptors', () =>

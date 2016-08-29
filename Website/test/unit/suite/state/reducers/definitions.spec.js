@@ -1,8 +1,34 @@
 import expect from 'unittest/helpers/expect.js';
-import getDefinitionReducer from 'console/state/reducers/definitions.js';
-import { STORE_DEF } from 'console/state/actions/componentDefinitions.js';
+import getDefinitionReducer, * as actions from 'console/state/reducers/definitions.js';
 
 describe('Component definitions', () => {
+	it('has action descriptors', () =>
+		expect(actions, 'to have property', 'STORE_DEF', 'DEFINITIONS.STORE')
+	);
+
+	describe('addDefinition', () => {
+		let addDefinition, pageDef;
+		beforeEach(() => {
+			addDefinition = actions.addDefinition;
+			pageDef = {
+				name: 'testPage',
+				type: 'TestComponent',
+				fieldsets: [],
+				buttons: []
+			};
+		});
+
+		it('is an action creator', () =>
+			expect(addDefinition, 'to be a function')
+			.then(() => {
+				let action = addDefinition('page', pageDef);
+				return expect(action, 'to be an action of type', actions.STORE_DEF)
+				.and('to have property', 'defType', 'page')
+				.and('to have property', 'definition', pageDef);
+			})
+		);
+	});
+
 	['page', 'button', 'fieldset', 'dataField'].forEach(typeName => {
 		describe(typeName, () => {
 			let reducer;
@@ -24,7 +50,7 @@ describe('Component definitions', () => {
 			it('updates state when given update action', () => {
 				let oldState = { thing: 'do not touch' };
 				let newState = reducer(oldState, {
-					type: STORE_DEF,
+					type: actions.STORE_DEF,
 					defType: typeName,
 					definition: {
 						name: 'testEntity'
