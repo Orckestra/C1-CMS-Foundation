@@ -48,6 +48,8 @@
   <string key="EditDataToolTip" value="Edit selected data" />
   <string key="DeleteData" value="Delete Data" />
   <string key="DeleteDataToolTip" value="Delete selected data" />
+  <string key="DuplicateData" value="Duplicate Data" />
+  <string key="DuplicateDataToolTip" value="Duplicate selected data" />
   <string key="LocalizeData" value="Translate Data" />
   <string key="LocalizeDataToolTip" value="Translate selected data" />
   <string key="PublicationSettings.FieldGroupLabel" value="Publication settings" />

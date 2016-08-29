@@ -98,6 +98,7 @@
   <string key="GenericAddDataAction.DefaultLabel" value="Add" />
   <string key="GenericEditDataAction.DefaultLabel" value="Edit" />
   <string key="GenericDeleteDataAction.DefaultLabel" value="Delete" />
+  <string key="GenericDuplicateDataAction.DefaultLabel" value="Duplicate" />
   
   
   <string key="TreeGenericDelete.CascadeDeleteErrorTitle" value="Cascade delete error" />
