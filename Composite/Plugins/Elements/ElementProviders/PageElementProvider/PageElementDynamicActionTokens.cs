@@ -1,3 +1,4 @@
+using Composite.C1Console.Actions;
 using Composite.C1Console.Actions.Data;
 using Composite.C1Console.Workflow;
 using Composite.Core.Application;
@@ -18,6 +19,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             DataActionTokenResolverFacade.RegisterDefault<IPage>(ActionIdentifier.Add, f => new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PageElementProvider.AddNewPageWorkflow")) { DoIgnoreEntityTokenLocking = true, Payload = SerializerHandlerFacade.Serialize(f) });
             DataActionTokenResolverFacade.RegisterDefault<IPage>(ActionIdentifier.Edit, f => new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PageElementProvider.EditPageWorkflow")));
             DataActionTokenResolverFacade.RegisterDefault<IPage>(ActionIdentifier.Delete, f => new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PageElementProvider.DeletePageWorkflow")));
+            DataActionTokenResolverFacade.RegisterDefault<IPage>(ActionIdentifier.Duplicate, f => new DuplicateActionToken());
         }
 
         /// <exclude />

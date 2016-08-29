@@ -36,6 +36,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
         private AssociatedDataElementProviderHelper<IPage> _pageAssociatedHelper;
 
 
+        public static ResourceHandle DuplicatePage = GetIconHandle("copy");
         public static ResourceHandle EditPage = GetIconHandle("page-edit-page");
         public static ResourceHandle LocalizePage = GetIconHandle("page-localize-page");
         public static ResourceHandle ManageHostNames = GetIconHandle("page-manage-host-names");
@@ -63,6 +64,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
         private static readonly ActionGroup MetaDataAppendedActionGroup = new ActionGroup("Associated data", ActionGroupPriority.PrimaryMedium);
         internal static readonly List<PermissionType> AddWebsitePermissionTypes = new List<PermissionType> { PermissionType.Configure, PermissionType.Administrate };
         internal static readonly List<PermissionType> EditPermissionTypes = new List<PermissionType> { PermissionType.Edit };
+        internal static readonly List<PermissionType> DuplicatePermissionTypes = new List<PermissionType> { PermissionType.Add };
         internal static readonly List<PermissionType> LocalizePermissionTypes = new List<PermissionType> { PermissionType.Edit };
         internal static readonly List<PermissionType> AddPermissionTypes = new List<PermissionType> { PermissionType.Add };
         internal static readonly List<PermissionType> DeletePermissionTypes = new List<PermissionType> { PermissionType.Delete };
@@ -663,6 +665,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             string addNewPageToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.AddSubPageToolTip");
             string deletePageLabel = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.Delete");
             string deletePageToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.DeleteToolTip");
+            string duplicatePageLabel = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.Duplicate");
+            string duplicatePageToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.DuplicateToolTip");
 
             string urlMappingName = null;
             if (UserSettings.ForeignLocaleCultureInfo != null)
@@ -704,6 +708,24 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                             ActionLocation = new ActionLocation
                             {
                                 ActionType = ActionType.Edit,
+                                IsInFolder = false,
+                                IsInToolbar = true,
+                                ActionGroup = PrimaryActionGroup
+                            }
+                        }
+                    });
+
+                    element.AddAction(new ElementAction(new ActionHandle(new ProxyDataActionToken(ActionIdentifier.Duplicate, DuplicatePermissionTypes)))
+                    {
+                        VisualData = new ActionVisualizedData
+                        {
+                            Label = duplicatePageLabel,
+                            ToolTip = duplicatePageToolTip,
+                            Icon = PageElementProvider.DuplicatePage,
+                            Disabled = false,
+                            ActionLocation = new ActionLocation
+                            {
+                                ActionType = ActionType.Add,
                                 IsInFolder = false,
                                 IsInToolbar = true,
                                 ActionGroup = PrimaryActionGroup

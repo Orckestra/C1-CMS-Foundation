@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Composite.C1Console.Actions.Data;
 using Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProviderHelper;
 using Composite.C1Console.Security;
 using Composite.C1Console.Users;
@@ -43,6 +44,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
         private ResourceHandle AddAssociatedDataIcon { get { return GetIconHandle("associated-data-add"); } }
         private ResourceHandle EditAssociatedDataIcon { get { return GetIconHandle("associated-data-edit"); } }
         private ResourceHandle DeleteAssociatedDataIcon { get { return GetIconHandle("associated-data-delete"); } }
+        private ResourceHandle DuplicateAssociatedDataIcon { get { return GetIconHandle("copy"); } }
         public static ResourceHandle LocalizeDataIcon { get { return GetIconHandle("generated-type-data-localize"); } }
 
 
@@ -379,6 +381,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
 
             AddEditAssociatedDataAction(element);
             AddDeleteAssociatedDataAction(element);
+            AddDuplicateAssociatedDataAction(element);
 
             if (InternalUrls.DataTypeSupported(data.DataSourceId.InterfaceType))
             {
@@ -515,6 +518,33 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
                         ActionGroup = PrimaryActionGroup
                     }
             });
+        }
+
+        private void AddDuplicateAssociatedDataAction(Element element)
+        {
+            element.AddAction(new ElementAction(new ActionHandle(new ProxyDataActionToken(ActionIdentifier.Duplicate,
+                _addAssociatedDataPermissionTypes)))
+            {
+                VisualData = new ActionVisualizedData
+                {
+                    Label =
+                        StringResourceSystemFacade.GetString("Composite.Management",
+                            "AssociatedDataElementProviderHelper.DuplicateAssociatedDataLabel"),
+                    ToolTip =
+                        StringResourceSystemFacade.GetString("Composite.Management",
+                            "AssociatedDataElementProviderHelper.DuplicateAssociatedDataToolTip"),
+                    Icon = this.DuplicateAssociatedDataIcon,
+                    Disabled = false,
+                    ActionLocation = new ActionLocation
+                    {
+                        ActionType = ActionType.Add,
+                        IsInFolder = false,
+                        IsInToolbar = true,
+                        ActionGroup = PrimaryActionGroup
+                    }
+                }
+            });
+
         }
         #endregion
 
