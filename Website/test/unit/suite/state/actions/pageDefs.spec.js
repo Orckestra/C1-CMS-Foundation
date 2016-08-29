@@ -79,5 +79,25 @@ describe('Get page definitions', () => {
 				])
 			);
 		});
+
+		it('sends word of unhandled errors', () => {
+			return expect(() => expect(loadPageDef, 'when called with', ['testPage'])
+			.then(thunk =>
+				expect(thunk, 'to be a function')
+				.and('when called with', [dispatch])
+			),
+			'with http mocked out', {
+				request: 'GET /Composite/console/pageData.json',
+				response: {
+					statusCode: 404
+				}
+			}, 'not to error')
+			.then(() =>
+				expect([dispatch], 'to have calls satisfying', [
+					{ spy: dispatch, args: [{ type: actions.LOAD_PAGE_DEF, name: 'testPage' }] },
+					{ spy: dispatch, args: [{ type: actions.LOAD_PAGE_DEF_FAILED, error: '404 Not Found' }] }
+				])
+			);
+		});
 	});
 });

@@ -34,6 +34,9 @@ export function loadPageDef(pageName) {
 				});
 			});
 			dispatch({ type: LOAD_PAGE_DEF_DONE, name: pageName });
+		})
+		.catch(err => {
+			dispatch({ type: LOAD_PAGE_DEF_FAILED, error: err });
 		});
 	};
 }
