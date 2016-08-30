@@ -13,7 +13,7 @@ function mapStateToProps(state) {
 	Object.keys(state.dataFields).forEach(fieldName => {
 		update.values[fieldName] = state.dataFields[fieldName];
 	});
-	update.hasDirtyFields = !!(state.dataFields && state.dataFields.dirtyFields.length);
+	update.dirtyPages = state.dataFields && state.dataFields.dirtyPages || [];
 	return update;
 }
 
@@ -21,7 +21,7 @@ function mapDispatchToProps(dispatch) {
 	return {
 		actions: {
 			save: pageName => () => dispatch(saveState(pageName)),
-			updateValue: fieldName => value => dispatch(updateFieldValue(fieldName, value))
+			updateValue: (pageName, fieldName) => value => dispatch(updateFieldValue(pageName, fieldName, value))
 		}
 	};
 }

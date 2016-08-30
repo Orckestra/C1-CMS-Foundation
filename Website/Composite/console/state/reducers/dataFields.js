@@ -1,8 +1,8 @@
 const prefix = 'DOCUMENTPAGE.';
 
 export const UPDATE_VALUE = prefix + 'UPDATE_VALUE';
-export function updateFieldValue(fieldName, newValue) {
-	return { type: UPDATE_VALUE, fieldName, newValue };
+export function updateFieldValue(pageName, fieldName, newValue) {
+	return { type: UPDATE_VALUE, pageName, fieldName, newValue };
 }
 
 export const SAVE_STATE = prefix + 'SAVE_STATE';
@@ -11,7 +11,7 @@ export function saveState(pageName) {
 }
 
 const initialState = {
-	dirtyFields: []
+	dirtyPages: {}
 };
 
 export default function dataFields(state = initialState, action) {
@@ -20,12 +20,21 @@ export default function dataFields(state = initialState, action) {
 	case UPDATE_VALUE:
 		update = {};
 		update[action.fieldName] = action.newValue;
-		if (state.dirtyFields.indexOf(action.fieldName) === -1) {
-			update.dirtyFields = state.dirtyFields.concat([action.fieldName]);
+		update.dirtyPages = Object.assign({}, state.dirtyPages);
+		if (state.dirtyPages[action.pageName]) {
+			update.dirtyPages[action.pageName] = [].concat(state.dirtyPages[action.pageName]);
+			if (update.dirtyPages[action.pageName].indexOf(action.fieldName) === -1) {
+				update.dirtyPages[action.pageName].push(action.fieldName);
+			}
+		} else {
+			update.dirtyPages[action.pageName] = [action.fieldName];
 		}
 		return Object.assign({}, state, update);
 	case SAVE_STATE:
-		return Object.assign({}, state, { dirtyFields: [] });
+		update = { dirtyPages: Object.assign({}, state.dirtyPages) };
+		// Dispatch an action saving the key/value pairs of the page's dirty fields
+		delete update.dirtyPages[action.pageName];
+		return Object.assign({}, state, update);
 	default:
 		return state;
 	}

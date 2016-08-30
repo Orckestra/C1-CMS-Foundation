@@ -54,12 +54,12 @@ describe('FormPage', () => {
 		};
 		state = {
 			actions: {
-				onebutton: sinon.spy(() => pageActions.onebutton),
-				twobutton: sinon.spy(() => pageActions.twobutton),
+				onebutton: sinon.spy(() => pageActions.onebutton).named('onebutton'),
+				twobutton: sinon.spy(() => pageActions.twobutton).named('twobutton'),
 				'do-not-render-button': () => () => {},
-				updateValue: sinon.spy(() => pageActions.update)
+				updateValue: sinon.spy(() => pageActions.update).named('threebutton')
 			},
-			hasDirtyFields: false,
+			dirtyPages: [],
 			values: {
 				'test/twoset/threefield': 'different'
 			}
@@ -124,9 +124,9 @@ describe('FormPage', () => {
 			}
 		),
 		expect(state.actions.updateValue, 'to have calls satisfying', [
-			{args: ['test/oneset/onefield']},
-			{args: ['test/oneset/twofield']},
-			{args: ['test/twoset/threefield']}
+			{args: ['test', 'test/oneset/onefield']},
+			{args: ['test', 'test/oneset/twofield']},
+			{args: ['test', 'test/twoset/threefield']}
 		])
 	]));
 });

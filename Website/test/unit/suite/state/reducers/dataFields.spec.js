@@ -21,9 +21,10 @@ describe('Data fields', () => {
 		describe('Update field value', () => {
 			let updateFieldValue = actions.updateFieldValue;
 			it('creates action for updating a field value', () => {
-				let action = updateFieldValue('testfield', 'testvalue');
+				let action = updateFieldValue('testpage', 'testfield', 'testvalue');
 				return expect(action, 'to be an action of type', actions.UPDATE_VALUE)
 				.and('to have properties', {
+					pageName: 'testpage',
 					fieldName: 'testfield',
 					newValue: 'testvalue'
 				});
@@ -34,11 +35,11 @@ describe('Data fields', () => {
 	describe('reducer', () => {
 		it('outputs an intial state if no action and no previous state', () => {
 			let newState = dataFields(undefined, {});
-			return expect(newState, 'to equal', { dirtyFields: [] });
+			return expect(newState, 'to equal', { dirtyPages: {} });
 		});
 
 		it('outputs the same state object if no action', () => {
-			let oldState = { thing: 'do not touch', dirtyFields: [] };
+			let oldState = { thing: 'do not touch', dirtyPages: {} };
 			let newState = dataFields(oldState, {});
 			return expect(newState, 'to be', oldState);
 		});
@@ -48,34 +49,35 @@ describe('Data fields', () => {
 			beforeEach(() => {
 				action = {
 					type: actions.UPDATE_VALUE,
+					pageName: 'testpage',
 					fieldName: 'testfield',
 					newValue: 'testvalue'
 				};
 			});
 
 			it('updates a field value', () => {
-				let oldState = { thing: 'do not touch', dirtyFields: [] };
+				let oldState = { thing: 'do not touch', dirtyPages: {} };
 				let newState = dataFields(oldState, action);
 				return expect(newState, 'not to be', oldState)
 				.and('to equal', {
 					thing: 'do not touch',
 					testfield: 'testvalue',
-					dirtyFields: [ 'testfield' ]
+					dirtyPages: { testpage: ['testfield'] }
 				});
 			});
 
-			it('only adds field to dirty list if not already on it', () => {
+			it('only adds page to dirty list if not already on it', () => {
 				let oldState = {
 					thing: 'do not touch',
 					testfield: 'old',
-					dirtyFields: [ 'testfield' ]
+					dirtyPages: { testpage: ['testfield'] }
 				};
 				let newState = dataFields(oldState, action);
 				return expect(newState, 'not to be', oldState)
 				.and('to equal', {
 					thing: 'do not touch',
 					testfield: 'testvalue',
-					dirtyFields: [ 'testfield' ]
+					dirtyPages: { testpage: ['testfield'] }
 				});
 			});
 		});
@@ -84,22 +86,23 @@ describe('Data fields', () => {
 			let action;
 			beforeEach(() => {
 				action = {
-					type: actions.SAVE_STATE
+					type: actions.SAVE_STATE,
+					pageName: 'testpage'
 				};
 			});
 
-			it('clears the dirty list', () => {
+			it('clears the saved page from the dirty list', () => {
 				let oldState = {
 					thing: 'do not touch',
 					testfield: 'testvalue',
-					dirtyFields: [ 'testfield' ]
+					dirtyPages: { testpage: ['testfield'], otherpage: ['somefield'] }
 				};
 				let newState = dataFields(oldState, action);
 				return expect(newState, 'not to be', oldState)
 				.and('to equal', {
 					thing: 'do not touch',
 					testfield: 'testvalue',
-					dirtyFields: []
+					dirtyPages: { otherpage: ['somefield'] }
 				});
 			});
 		});

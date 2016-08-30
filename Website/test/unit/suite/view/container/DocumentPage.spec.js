@@ -44,15 +44,15 @@ describe('DocumentPage', () => {
 			dataFieldDefs={{}}
 			actions={{
 				updateValue: expect.it('to be a function')
-					.and('when called with', ['fieldname'], 'to be a function')
-					.and('when called with', ['fieldname'], 'when called with', ['value'], 'to be undefined'), // Result is call to store.dispatch
+					.and('when called with', ['pagename', 'fieldname'], 'to be a function')
+					.and('when called with', ['pagename', 'fieldname'], 'when called with', ['value'], 'to be undefined'), // Result is call to store.dispatch
 				save: expect.it('to be a function')
 					.and('when called with', ['pagename'], 'to be a function')
 					.and('when called with', ['pagename'], 'when called', 'to be undefined') // Result is call to store.dispatch
 			}}
-			hasDirtyFields={false}/>)
+			dirtyPages={[]}/>)
 		.then(() => expect(store.dispatch, 'to have calls satisfying', [
-			{ args: [{ type: UPDATE_VALUE, fieldName: 'fieldname', newValue: 'value' }]},
+			{ args: [{ type: UPDATE_VALUE, pageName: 'pagename', fieldName: 'fieldname', newValue: 'value' }]},
 			{ args: [{ type: SAVE_STATE, pageName: 'pagename' }]}
 		]));
 	});

@@ -6,7 +6,7 @@ const FormPage = props => (
 	<div className='page'>
 		<Toolbar
 			type='document'
-			canSave={props.hasDirtyFields}
+			canSave={!!props.dirtyPages[props.name]}
 			buttons={props.pageDef.buttons.reduce((buttons, buttonName) => {
 				let button = Object.assign({}, props.buttonDefs[buttonName]);
 				let actionName = buttonName.replace(props.name + '/', '');
@@ -20,7 +20,7 @@ const FormPage = props => (
 				if (!fieldset) return null;
 				let fields = fieldset.fields.reduce((fields, fieldName) => {
 					fields[fieldName] = Object.assign({}, props.dataFieldDefs[fieldName]);
-					fields[fieldName].updateValue = props.actions.updateValue(fieldName);
+					fields[fieldName].updateValue = props.actions.updateValue(props.name, fieldName);
 					fields[fieldName].value = props.values[fieldName] || fields[fieldName].defaultValue;
 					return fields;
 				}, {});
@@ -39,7 +39,7 @@ FormPage.propTypes = {
 	name: PropTypes.string.isRequired,
 	buttonDefs: PropTypes.object.isRequired,
 	actions: PropTypes.object.isRequired,
-	hasDirtyFields: PropTypes.bool.isRequired,
+	dirtyPages: PropTypes.objectOf(PropTypes.arrayOf(PropTypes.string)).isRequired,
 	fieldsetDefs: PropTypes.object.isRequired,
 	dataFieldDefs: PropTypes.object.isRequired,
 	values: PropTypes.object.isRequired,
