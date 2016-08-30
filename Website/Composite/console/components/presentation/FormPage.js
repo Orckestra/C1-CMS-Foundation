@@ -8,13 +8,11 @@ const FormPage = props => (
 			type='document'
 			canSave={props.hasDirtyFields}
 			buttons={props.pageDef.buttons.reduce((buttons, buttonName) => {
-				buttons[buttonName] = props.buttonDefs[buttonName];
-				return buttons;
-			}, {})}
-			actions={props.pageDef.buttons.reduce((actions, buttonName) => {
+				let button = Object.assign({}, props.buttonDefs[buttonName]);
 				let actionName = buttonName.replace(props.name + '/', '');
-				actions[buttonName] = props.actions[actionName](props.name);
-				return actions;
+				button.action = props.actions[actionName](props.name);
+				buttons[buttonName] = button;
+				return buttons;
 			}, {})}/>
 		<div className='scrollbox'>
 			{props.pageDef.fieldsets.map(fieldsetName => {

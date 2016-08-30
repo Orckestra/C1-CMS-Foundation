@@ -73,8 +73,7 @@ describe('FormPage', () => {
 			<Toolbar
 				canSave={false}
 				type='document'
-				buttons={{}}
-				actions={{}}/>
+				buttons={{}}/>
 			<div className='scrollbox'>
 				<Fieldset
 					label='First set'
@@ -89,30 +88,25 @@ describe('FormPage', () => {
 		</div>
 	)
 	.and(
-		'queried for', <Toolbar type='document' canSave={false} buttons={{}} actions={{}}/>,
+		'queried for', <Toolbar type='document' canSave={false} buttons={{}}/>,
 		'to have props exhaustively satisfying', {
 			type: 'document',
 			canSave: false,
 			buttons: {
-				'test/onebutton': { label: 'One' },
-				'test/twobutton': { label: 'Two' }
-			},
-			actions: {
-				'test/onebutton': pageActions.onebutton,
-				'test/twobutton': pageActions.twobutton
+				'test/onebutton': { label: 'One', action: pageActions.onebutton },
+				'test/twobutton': { label: 'Two', action: pageActions.twobutton }
 			}
 		}
 	));
 
 	it('passes named actions to the toolbar', () => Promise.all([
 		expect(renderer,
-			'queried for', <Toolbar type='document' canSave={false} actions={{}} buttons={{}}/>,
+			'queried for', <Toolbar type='document' canSave={false} buttons={{}}/>,
 		'to have props satisfying', {
 			type: 'document',
-			buttons: expect.it('to be an', 'object'),
-			actions: {
-				'test/onebutton': expect.it('to be', pageActions.onebutton),
-				'test/twobutton': expect.it('to be', pageActions.twobutton)
+			buttons: {
+				'test/onebutton': { action: expect.it('to be', pageActions.onebutton) },
+				'test/twobutton': { action: expect.it('to be', pageActions.twobutton) }
 			}
 		}),
 		expect(state.actions.onebutton, 'was called with', 'test'),

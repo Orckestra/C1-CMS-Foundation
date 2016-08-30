@@ -1,6 +1,7 @@
 [
   {
     "name": "edit-language",
+    "label": "Edit language",
     "type": "document",
     "fieldsets": [
       {
@@ -49,6 +50,31 @@
     "buttons": [
       {
         "name": "edit-language/save",
+        "label": "Save",
+        "icon": "save",
+        "saveButton": true
+      }
+    ]
+  },
+  {
+    "name": "other-page",
+    "label": "Other page",
+    "type": "document",
+    "fieldsets": [
+      {
+        "name": "other-page/stuff",
+        "label": "Some things",
+        "fields": [
+          {
+            "name": "other-page/stuff/thing",
+            "headline": "A value"
+          }
+        ]
+      }
+    ],
+    "buttons": [
+      {
+        "name": "other-page/save",
         "label": "Save",
         "icon": "save",
         "saveButton": true
