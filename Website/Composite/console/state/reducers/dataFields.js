@@ -11,6 +11,11 @@ export function saveState(pageName) {
 	return { type: SAVE_STATE, pageName };
 }
 
+export const STORE_VALUES = prefix + 'STORE_VALUES';
+export function storeValues(values) {
+	return {type: STORE_VALUES, values };
+}
+
 const initialState = {
 	dirtyPages: {}
 };

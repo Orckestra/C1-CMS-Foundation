@@ -30,6 +30,17 @@ describe('Data fields', () => {
 				});
 			});
 		});
+
+		describe('Store value set', () => {
+			let storeValues = actions.storeValues;
+			it('creates action for storing multiple values', () => {
+				let action = storeValues({ a: 1, b: true, c: 'foo', d: { bar: 'baz' } });
+				return expect(action, 'to be an action of type', actions.STORE_VALUES)
+				.and('to have properties', {
+					values: { a: 1, b: true, c: 'foo', d: { bar: 'baz' } }
+				});
+			});
+		});
 	});
 
 	describe('reducer', () => {
