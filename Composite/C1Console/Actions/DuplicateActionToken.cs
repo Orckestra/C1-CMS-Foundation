@@ -15,6 +15,7 @@ using Composite.Core.Extensions;
 using Composite.Core.ResourceSystem;
 using Composite.Core.Types;
 using Composite.Data;
+using Composite.Data.DynamicTypes;
 using Composite.Data.DynamicTypes.Foundation;
 using Composite.Data.ProcessControlled;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
@@ -137,11 +138,14 @@ namespace Composite.C1Console.Actions
             var value = isUrl? (string)property.GetValue(sourceData):
                                 GetStringWithoutCopyOf((string) property.GetValue(sourceData));
 
+            var storeFieldType = property.GetCustomAttributes(true).FirstOrDefault(f=>f is StoreFieldTypeAttribute);
+            var maxLength = (storeFieldType as StoreFieldTypeAttribute)?.StoreFieldType.MaximumLength;
+
             if (!isUrl && value.IsNullOrEmpty())
                 return false;
             for (var count = 1;; count++)
             {
-                var str = GenerateCopyOfName(value, count,isUrl);
+                var str = GenerateCopyOfName(value, count, maxLength, isUrl);
                 if (DataFacade.GetData<T>().Any(GetLambda<T>(property, str))) continue;
                 property.SetValue(newData, str);
                 break;
@@ -159,12 +163,12 @@ namespace Composite.C1Console.Actions
 
         private static string GetStringWithoutCopyOf(string source)
         {
-            Regex regexInstance = new Regex(StringResourceSystemFacade.GetString("Composite.Management", "Duplication.Text").Replace("{count}", ".*")+ " ");
+            Regex regexInstance = new Regex(StringResourceSystemFacade.GetString("Composite.Management", "Duplication.Text").Replace("{0}","").Replace("{count}", @"(\(.*\))*"));
             return regexInstance.Replace(source, "");
 
         }
 
-        private string GenerateCopyOfName(string source, int count,bool isUrl=false)
+        private string GenerateCopyOfName(string source, int count, int? maxLength, bool isUrl=false )
         {
             if (isUrl)
             {
@@ -173,7 +177,8 @@ namespace Composite.C1Console.Actions
 
             Func <int, string> copyText = i => StringResourceSystemFacade.GetString("Composite.Management", "Duplication.Text")
                                     .Replace("{count}", i == 1 ? "" : $"({i})");
-            return string.Format(copyText(count), source);
+            var result = string.Format(copyText(count), source);
+            return (maxLength!=null)?result.Substring(0, Math.Min(result.Length, maxLength.Value)):result;
         }
 
         internal void CopyPageData(IPage sourcePage, IPage newPage)
@@ -223,10 +228,14 @@ namespace Composite.C1Console.Actions
                 newDataItem.Id = Guid.NewGuid();
                 newDataItem.PageId = newPageId;
                 newDataItem.PublicationStatus = GenericPublishProcessController.Draft;
-                DataFacade.AddNew((IData)newDataItem);
+                newDataItem = (IPageMetaData)DataFacade.AddNew((IData)newDataItem);
 
-                string title = newDataItem.GetTypeTitle();
-                newPage.AddMetaDataDefinition(title, title, newDataItem.GetImmutableTypeId(), definition.MetaDataContainerId);
+                if (definition != null)
+                {
+                    string title = newDataItem.GetTypeTitle();
+                    newPage.AddMetaDataDefinition(title, title, newDataItem.GetImmutableTypeId(),
+                        definition.MetaDataContainerId);
+                }
             }
 
             List<string> selectableTreeIds = TreeFacade.AllTrees.Where(
