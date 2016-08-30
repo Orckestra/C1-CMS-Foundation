@@ -8,9 +8,9 @@ const typeClassName = {
 const Toolbar = ({ type, actions, buttons, canSave }) => (
 	<div className={'toolbar' + (typeClassName[type] || '')}>
 		{Object.keys(buttons).map(name => {
+			if (!(buttons[name] && actions[name])) return null;
 			let button = Object.assign({}, buttons[name]);
 			button.action = actions[name];
-			if (!(button && button.action)) return null;
 			button.disabled = button.saveButton && !canSave;
 			delete button.saveButton;
 			return <ActionButton
