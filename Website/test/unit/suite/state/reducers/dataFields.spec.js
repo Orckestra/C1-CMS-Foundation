@@ -80,6 +80,21 @@ describe('Data fields', () => {
 					dirtyPages: { testpage: ['testfield'] }
 				});
 			});
+
+			it('adds field name to dirty list if not already on it', () => {
+				let oldState = {
+					thing: 'do not touch',
+					testfield: 'old',
+					dirtyPages: { testpage: ['otherfield'] }
+				};
+				let newState = dataFields(oldState, action);
+				return expect(newState, 'not to be', oldState)
+				.and('to equal', {
+					thing: 'do not touch',
+					testfield: 'testvalue',
+					dirtyPages: { testpage: ['otherfield', 'testfield'] }
+				});
+			});
 		});
 
 		describe('save', () => {

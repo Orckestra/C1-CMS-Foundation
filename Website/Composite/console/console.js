@@ -26,12 +26,7 @@ Tab view - state: open tabs, selected tab
 	Subsequent tabs can contain any page (incl. DocumentPage) - state: As already done
 
 */
-const initialState = {
-	pages: {
-		pages: ['edit-language'],
-		currentPage: 'edit-language'
-	}
-};
+const initialState = {};
 const store = configureStore(initialState);
 
 render(

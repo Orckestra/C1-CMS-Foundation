@@ -46,7 +46,18 @@ describe('Toolbar', () => {
 	});
 
 	it('does not render buttons where action is missing', () => {
-		delete actions.third;
+		delete props.buttons.third.action;
+		renderer.render(<Toolbar {...props}/>);
+		return expect(renderer, 'to have rendered',
+			<div className='toolbar'>
+				<ActionButton label='Label1' action={actions.first} icon='save'/>
+				<ActionButton label='Label2' action={actions.second}/>
+			</div>
+		);
+	});
+
+	it('does not render buttons where label is missing', () => {
+		delete props.buttons.third.label;
 		renderer.render(<Toolbar {...props}/>);
 		return expect(renderer, 'to have rendered',
 			<div className='toolbar'>

@@ -7,6 +7,7 @@ export function updateFieldValue(pageName, fieldName, newValue) {
 
 export const SAVE_STATE = prefix + 'SAVE_STATE';
 export function saveState(pageName) {
+	// Dispatch an action saving the key/value pairs of the page's dirty fields?
 	return { type: SAVE_STATE, pageName };
 }
 
@@ -32,7 +33,6 @@ export default function dataFields(state = initialState, action) {
 		return Object.assign({}, state, update);
 	case SAVE_STATE:
 		update = { dirtyPages: Object.assign({}, state.dirtyPages) };
-		// Dispatch an action saving the key/value pairs of the page's dirty fields
 		delete update.dirtyPages[action.pageName];
 		return Object.assign({}, state, update);
 	default:
