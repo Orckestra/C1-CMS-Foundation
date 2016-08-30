@@ -230,7 +230,7 @@ namespace Composite.C1Console.Actions
             }
 
             List<string> selectableTreeIds = TreeFacade.AllTrees.Where(
-                tree => tree.HasPossibleAttachmentPoints(sourcePage.GetDataEntityToken()))
+                tree => tree.HasAttachmentPoints(sourcePage.GetDataEntityToken()))
                 .Where(tree => !tree.HasAttachmentPoints(newPage.GetDataEntityToken()))
                 .Select(tree => tree.TreeId).ToList();
 
