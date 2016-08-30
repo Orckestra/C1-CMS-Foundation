@@ -4,7 +4,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import configureStore from 'console/state/store.js';
-import ShownTab from 'console/components/container/ShownTab.js';
+import DockTab from 'console/components/container/DockTab.js';
 import DocumentPage from 'console/components/container/DocumentPage.js';
 import 'console/console.scss!';
 import 'react-select/scss/default.scss!';
@@ -31,7 +31,7 @@ const store = configureStore(initialState);
 
 render(
 	<Provider store={store}>
-		<ShownTab {...pageProps}/>
+		<DockTab {...pageProps}/>
 	</Provider>,
 	document.querySelector('body > div.entry')
 );

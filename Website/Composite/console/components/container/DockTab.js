@@ -8,6 +8,6 @@ function mapStateToProps(state) {
 	};
 }
 
-const ShownTab = connect(mapStateToProps)(TabPage);
+const DockTab = connect(mapStateToProps)(TabPage);
 
-export default ShownTab;
+export default DockTab;

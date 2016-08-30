@@ -2,10 +2,10 @@ import expect from 'unittest/helpers/expect.js';
 import sinon from 'sinon';
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
-import ShownTab from 'console/components/container/ShownTab.js';
+import DockTab from 'console/components/container/DockTab.js';
 import TabPage from 'console/components/presentation/TabPage.js';
 
-describe('ShownTab', () => {
+describe('DockTab', () => {
 	let renderer, state, store, props;
 	beforeEach(() => {
 		renderer = TestUtils.createRenderer();
@@ -30,7 +30,7 @@ describe('ShownTab', () => {
 	});
 
 	it('renders a TabPage with props and page name to show', () => {
-		renderer.render(<ShownTab store={store} {...props}/>);
+		renderer.render(<DockTab store={store} {...props}/>);
 		return Promise.all([
 			expect(renderer, 'to have exactly rendered', <TabPage name='test1' test='value' pageDefs={state.pageDefs} pageTypes={{}} dispatch={store.dispatch} store={store}/>),
 			expect(store.dispatch, 'was not called'),
