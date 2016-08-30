@@ -37,7 +37,7 @@
     "rimraf": "2.5.4",
     "selenium-server-standalone-jar": "2.53.1",
     "systemjs": "0.19.36",
-    "systemjs-istanbul-hook": "0.1.0",
+    "systemjs-istanbul-hook": "0.1.1",
     "xml2js": "^0.4.10"
   },
   "jspm": {
