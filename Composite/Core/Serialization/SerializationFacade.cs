@@ -35,7 +35,16 @@ namespace Composite.Core.Serialization
             return sb.ToString();
         }
 
+        public static string Serialize(object propertyClass, IEnumerable<string> propertyNames)
+        {
+            ISerializer serializer = GetSerializer(propertyClass.GetType());
 
+            StringBuilder sb = new StringBuilder();
+
+            serializer.Serialize(propertyClass, sb, propertyNames);
+
+            return sb.ToString();
+        }
 
         public static object Deserialize(Type propertyClassType, string serializedProperties)
         {

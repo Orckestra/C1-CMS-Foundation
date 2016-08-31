@@ -31,7 +31,7 @@
 			<ui:toolbarbody />
 			<ui:toolbarbody id="moreactionstoolbargroup">
 				<ui:toolbargroup>
-					<ui:toolbarbutton id="moreactionsbutton" label="More" popup="moreactionspopup" />
+					<ui:toolbarbutton id="moreactionsbutton" label="${string:Composite.Management:Website.Misc.Toolbar.LabelShowMoreActions}" popup="moreactionspopup" />
 				</ui:toolbargroup>
 			</ui:toolbarbody>
 		</ui:toolbar>

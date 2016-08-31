@@ -88,7 +88,7 @@ namespace Composite.Data.Foundation
 
         private static LambdaExpression GetWhereLambdaExpression(IData data, bool ignoreVersioning)
         {
-            var propertyInfoes = data.DataSourceId.InterfaceType.GetKeyProperties();
+            var propertyInfoes = data.DataSourceId.InterfaceType.GetPhysicalKeyProperties();
 
             if (propertyInfoes.Count == 0)
             {

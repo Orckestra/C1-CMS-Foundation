@@ -7,6 +7,8 @@ using Composite.Plugins.Forms.WebChannel.UiControlFactories;
 using System.Web.UI;
 using System.Linq;
 using Composite.Core.Configuration;
+using Composite.Core.Extensions;
+
 
 namespace Composite.controls.FormsControls.FormUiControlTemplates.DateTimeSelectors
 {
@@ -22,12 +24,6 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DateTimeSelect
         public PlaceHolder CalendarPlaceHolder;
         public PlaceHolder MessagesPlaceHolder;
         public string CurrentStringValue;
-
-        private static string TimeZoneAbbriviatedName()
-        {
-            return StringResourceSystemFacade.GetString("Composite.Plugins.TimezoneAbbriviations",
-                "TimezoneAbbriviations." + GlobalSettingsFacade.TimeZone.Id);
-        }
 
         protected void Page_Init(object sender, EventArgs e)
         {
@@ -46,16 +42,13 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DateTimeSelect
         {
             if (toShow.HasValue && toShow.Value != DateTime.MinValue)
             {
-                DateTime convertedToShow = TimeZoneInfo.ConvertTime(toShow.Value, GlobalSettingsFacade.TimeZone);
-
                 if (!ShowHours)
                 {
-                    this.CurrentStringValue = convertedToShow.ToShortDateString();
+                    this.CurrentStringValue = toShow.Value.ToTimeZoneDateString();
                 }
                 else
                 {
-                    this.CurrentStringValue = string.Format("{0} {1} {2}", convertedToShow.ToShortDateString(),
-                        convertedToShow.ToShortTimeString(), TimeZoneAbbriviatedName());
+                    this.CurrentStringValue = toShow.Value.ToTimeZoneDateTimeString();
                 }
             }
             else
@@ -64,7 +57,7 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DateTimeSelect
             }
         }
 
-        protected override void BindStateToProperties()
+        public override void BindStateToProperties()
         {
             if (this.ReadOnly)
                 return;
@@ -77,14 +70,16 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DateTimeSelect
                 }
                 else
                 {
-                    string stringValueWithoutTimezone = this.CurrentStringValue.Replace(TimeZoneAbbriviatedName(),"");
-
-                    DateTime parsedTime = DateTime.Parse(stringValueWithoutTimezone);
+                    DateTime parsedTime;
+                    if (!DateTimeExtensionMethods.TryParseInTimeZone(this.CurrentStringValue, out parsedTime))
+                    {
+                        throw new FormatException();
+                    }
 
                     if (!ShowHours)
                         parsedTime -= parsedTime.TimeOfDay;
 
-                    this.Date = TimeZoneInfo.ConvertTime(parsedTime, GlobalSettingsFacade.TimeZone,TimeZoneInfo.Utc).ToLocalTime();
+                    this.Date = parsedTime.FromTimeZoneToUtc().ToLocalTime();
                 }
                 this.IsValid = true;
             }
@@ -98,20 +93,20 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DateTimeSelect
 
         private string SampleDateString
         {
-            get 
-            { 
+            get
+            {
                 if(ShowHours)
                 {
-                    return string.Format("{0} {1} {2}", DateTime.Now.ToShortDateString(), DateTime.Now.ToShortTimeString(),TimeZoneAbbriviatedName());
+                    return DateTime.Now.ToTimeZoneDateTimeString();
                 }
                 else
                 {
-                    return DateTime.Now.ToShortDateString();
-                } 
+                    return DateTime.Now.ToTimeZoneDateString();
+                }
             }
         }
 
-        protected override void InitializeViewState()
+        public override void InitializeViewState()
         {
             SetCalendar(this.Date);
             InsertSelectedDate(this.Date);
@@ -159,11 +154,11 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DateTimeSelect
             if (ShowHours)
             {
                 DateTime oldDateTime;
-                if (DateTime.TryParse(this.CurrentStringValue.Replace(TimeZoneAbbriviatedName(), ""), out oldDateTime))
+                if (DateTimeExtensionMethods.TryParseInTimeZone(this.CurrentStringValue, out oldDateTime))
                     toShow += oldDateTime.TimeOfDay;
             }
 
-            InsertSelectedDate(TimeZoneInfo.ConvertTime(toShow, GlobalSettingsFacade.TimeZone, TimeZoneInfo.Utc));
+            InsertSelectedDate(toShow.FromTimeZoneToUtc());
             this.MessagesPlaceHolder.Controls.Add(new DocumentDirtyEvent());
         }
 

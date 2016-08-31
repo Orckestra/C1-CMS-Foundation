@@ -462,18 +462,22 @@ namespace Composite.Plugins.Routing.Pages
 
             if (canBePublicUrl)
             {
-                Guid? pageId = TryGetPageByUrlTitlePath(pagePath, pathInfoExctracted, hostnameBinding, ref pathInfo);
+                IPage page = TryGetPageByUrlTitlePath(pagePath, pathInfoExctracted, hostnameBinding, ref pathInfo);
 
-                if (pageId != null && pageId != Guid.Empty)
+                if (page != null)
                 {
-                    return new PageUrlData(pageId.Value, publicationScope, locale) { PathInfo = pathInfo};
+                    return new PageUrlData(page.Id, publicationScope, locale)
+                    {
+                        VersionId = page.VersionId,
+                        PathInfo = pathInfo
+                    };
                 }
             }
 
             return null;
         }
 
-        private static Guid? TryGetPageByUrlTitlePath(string pagePath, bool pathInfoExtracted, IHostnameBinding hostnameBinding, ref string pathInfo)
+        private static IPage TryGetPageByUrlTitlePath(string pagePath, bool pathInfoExtracted, IHostnameBinding hostnameBinding, ref string pathInfo)
         {
             string[] pageUrlTitles = pagePath.Split(new[] {'/'}, StringSplitOptions.RemoveEmptyEntries);
 
@@ -481,12 +485,11 @@ namespace Composite.Plugins.Routing.Pages
             {
                 if (hostnameBinding != null)
                 {
-                    if (!hostnameBinding.IncludeHomePageInUrl) return hostnameBinding.HomePageId;
-
-                    IPage rootPage = PageManager.GetPageById(hostnameBinding.HomePageId);
-                    if (rootPage != null && string.IsNullOrEmpty(rootPage.UrlTitle))
+                    IPage rootPage = PageManager.GetPageById(hostnameBinding.HomePageId, true);
+                    if (rootPage != null && 
+                        (!hostnameBinding.IncludeHomePageInUrl || string.IsNullOrEmpty(rootPage.UrlTitle)))
                     {
-                        return hostnameBinding.HomePageId;
+                        return rootPage;
                     }
 
                     return null;
@@ -496,69 +499,69 @@ namespace Composite.Plugins.Routing.Pages
             IEnumerable<IPage> rootPages = GetChildPages(Guid.Empty);
             if (pageUrlTitles.Length == 0)
             {
-                return rootPages.Where(p => string.IsNullOrEmpty(p.UrlTitle)).Select(p => p.Id).FirstOrDefault();
+                return rootPages.FirstOrDefault(p => string.IsNullOrEmpty(p.UrlTitle));
             }
 
             string firstUrlTitle = pageUrlTitles[0];
 
-            Guid? firstPageId = null;
+            IPage firstPage = null;
 
             if (hostnameBinding != null)
             {
-                IPage rootPage = PageManager.GetPageById(hostnameBinding.HomePageId);
+                IPage rootPage = PageManager.GetPageById(hostnameBinding.HomePageId, true);
 
                 bool rootPageIsOmmited = rootPage != null && !hostnameBinding.IncludeHomePageInUrl || string.IsNullOrEmpty(rootPage.UrlTitle);
                 if (rootPageIsOmmited)
                 {
-                    firstPageId = FindMatchingPage(rootPage.Id, firstUrlTitle);
+                    firstPage = FindMatchingPage(rootPage.Id, firstUrlTitle);
                 }
             }
 
-            if (firstPageId == null)
+            if (firstPage == null)
             {
                 IPage defaultRootPage = rootPages.FirstOrDefault(p => string.IsNullOrEmpty(p.UrlTitle));
                 if (defaultRootPage != null)
                 {
-                    firstPageId = FindMatchingPage(defaultRootPage.Id, firstUrlTitle);
+                    firstPage = FindMatchingPage(defaultRootPage.Id, firstUrlTitle);
                 }
 
-                if (firstPageId == null)
+                if (firstPage == null)
                 {
                     // Searching the first pageId among root pages
-                    firstPageId = FindMatchingPage(Guid.Empty, firstUrlTitle);
+                    firstPage = FindMatchingPage(Guid.Empty, firstUrlTitle);
                 }
                 
-                if (firstPageId == null) return null;
+                if (firstPage == null) return null;
             }
 
-            Guid currentPageId = firstPageId.Value;
+            IPage currentPage = firstPage;
 
-            if (pageUrlTitles.Length == 1) return currentPageId;
+            if (pageUrlTitles.Length == 1) return currentPage;
 
             for (int i = 1; i < pageUrlTitles.Length; i++)
             {
-                Guid? nextPage = FindMatchingPage(currentPageId, pageUrlTitles[i]);
+                IPage nextPage = FindMatchingPage(currentPage.Id, pageUrlTitles[i]);
                 if (nextPage == null)
                 {
                     if (pathInfoExtracted) return null;
 
                     pathInfo = "/" + string.Join("/", pageUrlTitles.Skip(i));
-                    return currentPageId;
+                    return currentPage;
                 }
 
-                currentPageId = nextPage.Value;
+                currentPage = nextPage;
             }
 
-            return currentPageId;
+            return currentPage;
         }
 
-        private static Guid? FindMatchingPage(Guid parentId, string urlTitle)
+        private static IPage FindMatchingPage(Guid parentId, string urlTitle)
         {
             foreach (var page in GetChildPages(parentId))
             {
                 if(string.Equals(page.UrlTitle, urlTitle, StringComparison.OrdinalIgnoreCase))
                 {
-                    return page.Id;
+                    return page;
                 }
             }
 
@@ -571,7 +574,7 @@ namespace Composite.Plugins.Routing.Pages
 
             for (int i=0; i<children.Count; i++)
             {
-                var page = PageManager.GetPageById(children[i]);
+                var page = PageManager.GetPageById(children[i], true);
 
                 if (page != null)
                 {
@@ -675,7 +678,7 @@ namespace Composite.Plugins.Routing.Pages
 
             using (new DataScope(publicationScope, cultureInfo))
             {
-                if (!BuildPageUrlPath(pageUrlData.PageId, cultureInfo, urlSpace, pageUrlPath))
+                if (!BuildPageUrlPath(pageUrlData.PageId, pageUrlData.VersionId, cultureInfo, urlSpace, pageUrlPath))
                 {
                     return null;
                 }
@@ -716,9 +719,18 @@ namespace Composite.Plugins.Routing.Pages
             return url;
         }
 
-        private bool BuildPageUrlPath(Guid pageId, CultureInfo culture, UrlSpace urlSpace, StringBuilder result)
+        private bool BuildPageUrlPath(Guid pageId, Guid? versionId, CultureInfo culture, UrlSpace urlSpace, StringBuilder result)
         {
-            IPage page = PageManager.GetPageById(pageId);
+            IPage page;
+            if (versionId != null)
+            {
+                page = PageManager.GetPageById(pageId, versionId.Value, true);
+            }
+            else
+            {
+                page = PageManager.GetPageById(pageId, true);
+            }
+
             if (page == null)
             {
                 return false;
@@ -730,7 +742,7 @@ namespace Composite.Plugins.Routing.Pages
                 return BuildRootPageUrl(page, culture, urlSpace, result);
             }
 
-            if (!BuildPageUrlPath(parentPageId, culture, urlSpace, result))
+            if (!BuildPageUrlPath(parentPageId, null, culture, urlSpace, result))
             {
                 return false;
             }

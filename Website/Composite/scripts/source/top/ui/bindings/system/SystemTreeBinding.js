@@ -46,7 +46,7 @@ function SystemTreeBinding() {
 	this._defaultTreeNode = null;
 
 	/**
-	 * Publishing actionprofiles when treenodes get selected? 
+	 * Publishing actionprofiles when treenodes get selected?
 	 * If set to false, no commands will be relayed to main toolbar.
 	 * TODO: Filter commands on server instead!
 	 * @type {boolean}
@@ -54,7 +54,7 @@ function SystemTreeBinding() {
 	this._isActionProfileAware = true;
 
 	/**
-	* Tree position 
+	* Tree position
 	* @type {int}
 	*/
 	this._activePosition = SystemAction.activePositions.NavigatorTree;
@@ -83,14 +83,14 @@ function SystemTreeBinding() {
 	this._tempSelectionTimeout = false;
 
 	/**
-	 * While this._treeNodeBindings index treenodes by unique handle (ElementKey), 
+	 * While this._treeNodeBindings index treenodes by unique handle (ElementKey),
 	 * this will index groups of treenodes sharing the same EntityToken.
 	 * @type {Map<string><List<SystemTreeNodeBinding>>}
 	 */
 	this._entityTokenRegistry = null;
 
 	/**
-	 * Counting refreshing treenodes so that we may poke the MessageQueue 
+	 * Counting refreshing treenodes so that we may poke the MessageQueue
 	 * once all nodes are finished (some timeouts involved here).
 	 * @type {Map<string><boolean>}
 	 */
@@ -109,7 +109,7 @@ function SystemTreeBinding() {
 	this.isLockedToEditor = false;
 
 	/**
-	 * Points to the last treenode that was blurred in an   
+	 * Points to the last treenode that was blurred in an
 	 * attempt, always to offer a sensible treenode focus.
 	 * @type {string}
 	 */
@@ -235,9 +235,9 @@ SystemTreeBinding.prototype.handleAction = function (action) {
 		case TreeNodeBinding.ACTION_BLUR:
 
 			/*
-			* This should probably be refactored along with the whole 
-			* _focusedTreeNodeBindings setup, but at least we clear 
-			* the toolbar when tree has no focused nodes... 
+			* This should probably be refactored along with the whole
+			* _focusedTreeNodeBindings setup, but at least we clear
+			* the toolbar when tree has no focused nodes...
 			*/
 			var self = this;
 			setTimeout(function () {
@@ -250,8 +250,8 @@ SystemTreeBinding.prototype.handleAction = function (action) {
 			}, 0);
 
 			/*
-			* Backup the node that blurred. This will allow us to 
-			* focus an appropriate treenode on tree focus, even 
+			* Backup the node that blurred. This will allow us to
+			* focus an appropriate treenode on tree focus, even
 			* when some feature destroyed all tree selection.
 			* @see {SystemTreeBinding#focus}
 			*/
@@ -301,13 +301,13 @@ SystemTreeBinding.prototype.getSyncHandle = function () {
 	} else {
 		return this.perspectiveNode.getHandle();
 	}
-	
+
 }
 
 
 /**
- * By now, something has probably eliminated all tree focus. But since   
- * we back up the last blurred node, we can restore a sensible focus. 
+ * By now, something has probably eliminated all tree focus. But since
+ * we back up the last blurred node, we can restore a sensible focus.
  */
 SystemTreeBinding.prototype._attemptRestorableFocus = function () {
 
@@ -319,7 +319,7 @@ SystemTreeBinding.prototype._attemptRestorableFocus = function () {
 }
 
 /**
- * Invoked when tree focus changes AND when tree itself recieves the focus  
+ * Invoked when tree focus changes AND when tree itself recieves the focus
  * AND when lock-tree-to-editor feature updates the treenode focus.
  */
 SystemTreeBinding.prototype._handleSystemTreeFocus = function () {
@@ -342,25 +342,47 @@ SystemTreeBinding.prototype._handleSystemTreeFocus = function () {
 }
 
 /**
+ * @param {SystemTreeNodeBinding} treenode
+ */
+SystemTreeBinding.prototype.getTokens = function (treenode) {
+
+	return treenode.node.getEntityTokens();
+}
+
+/**
  * Register treenode.
  * @param {SystemTreeNodeBinding} treenode
  */
 SystemTreeBinding.prototype.registerTreeNodeBinding = function (treenode) {
 
-	SystemTreeBinding.superclass.registerTreeNodeBinding.call(this, treenode);
+	treenode.getHandles().each(function(handle) {
+		if (this._treeNodeBindings.has(handle)) {
+			throw "Duplicate treenodehandles registered: " + treenode.getLabel();
+		} else {
+			this._treeNodeBindings.set(handle, treenode);
+			var map = this._openTreeNodesBackupMap;
+			if (map != null && map.has(handle)) {
+				treenode.open();
+			}
+		}
+	}, this);
 
 	/*
-	 * Update entityToken registry so that we may quickly 
+	 * Update entityToken registry so that we may quickly
 	 * find the treenode(s) based on this property.
 	 */
 	var reg = this._entityTokenRegistry;
+	this.getTokens(treenode).each(function (token) {
+
+		if (reg.has(token)) {
+			reg.get(token).add(treenode);
+		} else {
+			reg.set(token, new List([treenode]));
+		}
+	}, this);
+
 	var token = treenode.node.getEntityToken();
 
-	if (reg.has(token)) {
-		reg.get(token).add(treenode);
-	} else {
-		reg.set(token, new List([treenode]));
-	}
 
 	/*
 	 * This will attempt to restore treenode selection when tree is refreshed.
@@ -368,10 +390,10 @@ SystemTreeBinding.prototype.registerTreeNodeBinding = function (treenode) {
 	var focusnode = null;
 	if (this.isLockedToEditor) {
 
-		/* 
-		 * Treenode re-focus should be determined by the 
-		 * entityToken of the selected DockTabBinding. 
-		 * Note that unlike the handle (the ElementKey), an 
+		/*
+		 * Treenode re-focus should be determined by the
+		 * entityToken of the selected DockTabBinding.
+		 * Note that unlike the handle (the ElementKey), an
 		 * entityToken may occur multiple times in the same tree.
 		 */
 		if (token == StageBinding.entityToken) {
@@ -383,7 +405,7 @@ SystemTreeBinding.prototype.registerTreeNodeBinding = function (treenode) {
 	} else {
 
 		/*
-		 * Treenode gets focused when it matches a previously 
+		 * Treenode gets focused when it matches a previously
 		 * unregistered, focused treenode.
 		 * @see {SystemTreeBinding#unRegisterTreeNodeBinding}
 		 */
@@ -402,35 +424,38 @@ SystemTreeBinding.prototype.registerTreeNodeBinding = function (treenode) {
 	}
 }
 
-/** 
- * Unregister treenode. If no selected treenodes are left after whatever operation 
- * occurred, we empty the toolbar and contextmenu. This should be considered a 
+/**
+ * Unregister treenode. If no selected treenodes are left after whatever operation
+ * occurred, we empty the toolbar and contextmenu. This should be considered a
  * temporary hack until we implement serverside treeselection.
  * @overloads {TreeBinding#unRegisterTreeNodeBinding}
  * @param {SystemTreeNodeBinding} treeNodeBinding
  */
 SystemTreeBinding.prototype.unRegisterTreeNodeBinding = function (treenode) {
 
-	SystemTreeBinding.superclass.unRegisterTreeNodeBinding.call(this, treenode);
+	treenode.getHandles().each(function(handle) {
+		this._treeNodeBindings.del(handle);
+	}, this);
 
 	/*
 	 * Unregister from entityToken registry.
 	 */
 	var reg = this._entityTokenRegistry;
-	var token = treenode.node.getEntityToken();
+	this.getTokens(treenode).each(function (token) {
 
-	if (reg.has(token)) {
-		var list = reg.get(token);
-		list.del(treenode);
-		if (!list.hasEntries()) {
-			reg.del(token);
+		if (reg.has(token)) {
+			var list = reg.get(token);
+			list.del(treenode);
+			if (!list.hasEntries()) {
+				reg.del(token);
+			}
+		} else {
+			this.logger.fatal("SystemTreeBinding out of synch: unRegisterTreeNodeBinding");
+			if (Application.isDeveloperMode) {
+				Dialog.error("Attention Developer", "Tree is out of synch. Please reproduce this bug and file a report.");
+			}
 		}
-	} else {
-		this.logger.fatal("SystemTreeBinding out of synch: unRegisterTreeNodeBinding");
-		if (Application.isDeveloperMode) {
-			Dialog.error("Attention Developer", "Tree is out of synch. Please reproduce this bug and file a report.");
-		}
-	}
+	}, this);
 
 	/*
 	 * This relates to the treenode re-selection hack.
@@ -508,7 +533,7 @@ SystemTreeBinding.prototype._computeClipboardSetup = function () {
 }
 
 /**
- * Disabling refresh when clipboard is full. Otherwise, a refresh may cause tests   
+ * Disabling refresh when clipboard is full. Otherwise, a refresh may cause tests
  * for treenode nesting to be corrupted; and parents can be moved to children nodes.
  * TODO: Fix nesting test instead?
  */
@@ -527,7 +552,7 @@ SystemTreeBinding.prototype.handleBroadcast = function (broadcast, arg) {
 	SystemTreeBinding.superclass.handleBroadcast.call(this, broadcast, arg);
 
 	/**
-	* Doublecheck that this tree is actually focused. Although if 
+	* Doublecheck that this tree is actually focused. Although if
 	* the server transmits a refresh signal, this is not required.
 	*/
 	switch (broadcast) {
@@ -581,7 +606,7 @@ SystemTreeBinding.prototype.handleBroadcast = function (broadcast, arg) {
 }
 
 /**
- * A tab was activated somewhere on screen. This should  
+ * A tab was activated somewhere on screen. This should
  * update tree selection and thus toolbar actions.
  * @param {DockTabBinding} tab
  */
@@ -596,15 +621,17 @@ SystemTreeBinding.prototype._handleDockTabSelect = function (tab) {
 	}
 
 	/*
-	 * If the tab was launched by the server, there is a chance we might 
+	 * If the tab was launched by the server, there is a chance we might
 	 * find a matching treenode.
 	 */
 	if (isVisible) {
+
 		if (tab.isExplorerTab) {
-			var self = this, token = this._handleToken;
-			this._handleToken = null;
+			var token = this.getHandleToken();
+			var self = this;
+			this.setHandleToken(null);
 			var selectedTreeNode = this.getFocusedTreeNodeBindings().getFirst();
-			if (selectedTreeNode && selectedTreeNode.node.getEntityToken() == token) {
+			if (selectedTreeNode && selectedTreeNode.node.getEntityToken() === token) {
 				EventBroadcaster.broadcast(
 					BroadcastMessages.SYSTEMTREENODEBINDING_FOCUS,
 					selectedTreeNode
@@ -618,15 +645,25 @@ SystemTreeBinding.prototype._handleDockTabSelect = function (tab) {
 			}
 		}
 		else {
-			var self = this, token = tab.getEntityToken();
-			this._handleToken = token;
+			this.setHandleToken(tab.getEntityToken());
 		}
-		
+
 	}
 }
 
+SystemTreeBinding.prototype.setHandleToken = function (token) {
+
+	this._handleToken = token;
+}
+
+SystemTreeBinding.prototype.getHandleToken = function () {
+
+	return this._handleToken;
+}
+
+
 /**
- * Focus the first encountered treenode with a given entityToken 
+ * Focus the first encountered treenode with a given entityToken
  * in support of the lock-tree-to-editor feature.
  * @param {string} entityToken
  * @param {boolean} isSecondAttempt Discourage endless looping
@@ -640,7 +677,7 @@ SystemTreeBinding.prototype._focusTreeNodeByEntityToken = function (entityToken,
 	var treenode = null;
 
 	/*
-	 * Note that we simply select the first available treenode with the given   
+	 * Note that we simply select the first available treenode with the given
 	 * entityToken MARKED AS FOCUSABLE. This may not be the best, though...
 	 */
 	if (this._entityTokenRegistry.has(entityToken)) {
@@ -654,7 +691,9 @@ SystemTreeBinding.prototype._focusTreeNodeByEntityToken = function (entityToken,
 			return result;
 		});
 		if (treenode != null) {
-			if (!treenode.isFocused) {
+
+			if (!treenode.isFocused || treenode.node.getEntityToken() !== entityToken) {
+				treenode.selectToken(entityToken);
 				this.focusSingleTreeNodeBinding(treenode, true);
 			} else {
 				treenode.dispatchAction(TreeNodeBinding.ACTION_FOCUSED); // to reveal it!
@@ -671,7 +710,7 @@ SystemTreeBinding.prototype._focusTreeNodeByEntityToken = function (entityToken,
 		StatusBar.busy();
 
 		/*
-		 * We timeout to lock the GUI while tree is refreshed; this can take some time. 
+		 * We timeout to lock the GUI while tree is refreshed; this can take some time.
 		 */
 		var self = this;
 		setTimeout(function() {
@@ -697,7 +736,7 @@ SystemTreeBinding.prototype._focusTreeNodeByEntityToken = function (entityToken,
 SystemTreeBinding.prototype._fetchTreeForEntityToken = function (entityToken) {
 
 	/*
-	* Summon fresh nodes from server. 
+	* Summon fresh nodes from server.
 	*/
 	var perspectiveEntityTokens = new List();
 	if (this._activePosition == SystemAction.activePositions.SelectorTree) {
@@ -734,7 +773,7 @@ SystemTreeBinding.prototype._fetchTreeForEntityToken = function (entityToken) {
 		}
 
 			/*
-			* Controversially, the TreeService exposes no nested tree   
+			* Controversially, the TreeService exposes no nested tree
 			* structure, so the parsing code can get a little complicated.
 			*/
 		else if (map.hasEntries()) {
@@ -743,7 +782,7 @@ SystemTreeBinding.prototype._fetchTreeForEntityToken = function (entityToken) {
 			var oldnodes = this._treeNodeBindings;
 			var newnodes = new Map();
 
-			/* 
+			/*
 			* Handy treenodebuilder function.
 			* @param {TreeNodeBinding} treenode
 			* @param {List<SystemNode>} list
@@ -754,7 +793,7 @@ SystemTreeBinding.prototype._fetchTreeForEntityToken = function (entityToken) {
 					if (list.hasEntries()) {
 
 						/*
-						* TODO: Since the oldnodes check is needed here, 
+						* TODO: Since the oldnodes check is needed here,
 						* do we risk fogging up the display order of nodes?
 						*/
 						list.each(function (node) {
@@ -771,9 +810,9 @@ SystemTreeBinding.prototype._fetchTreeForEntityToken = function (entityToken) {
 			}
 
 			/*
-			* Iterate map, building treenodes. Fortunately, 
-			* each sequential entry in the map lists nodes that  
-			* must be appended to a *previously* build node... 
+			* Iterate map, building treenodes. Fortunately,
+			* each sequential entry in the map lists nodes that
+			* must be appended to a *previously* build node...
 			*/
 			map.each(function (handle, list) {
 				if (oldnodes.has(handle)) {
@@ -802,12 +841,12 @@ SystemTreeBinding.prototype._handleCommandBroadcast = function (broadcast, arg) 
 	switch (broadcast) {
 
 		/*
-		 * Note that this broadcast can also be intercepted by the 
+		 * Note that this broadcast can also be intercepted by the
 		 * {@link SystemPageBinding} in order to refresh the tree root.
 		 */
 		case BroadcastMessages.SYSTEMTREEBINDING_REFRESH:
 
-			/* 
+			/*
 			 * If arg is present, it implies that MessageQueue invoked the refresh.
 			 * Otherwise the action was instantiated by the user (eg contextmenu).
 			 */
@@ -864,8 +903,8 @@ SystemTreeBinding.prototype._invokeServerRefresh = function (token) {
 		var list = this._entityTokenRegistry.get(token).reset();
 
 		/*
-		 * Broadcast instructs the MessageQueue to delay 
-	 	 * action execution until tree is refreshed. 
+		 * Broadcast instructs the MessageQueue to delay
+	 	 * action execution until tree is refreshed.
 	 	 */
 		this._refreshToken = token;
 		EventBroadcaster.broadcast(BroadcastMessages.SYSTEMTREEBINDING_REFRESHING, this._refreshToken);
@@ -875,9 +914,9 @@ SystemTreeBinding.prototype._invokeServerRefresh = function (token) {
 			this._refreshingTreeNodes.set(treenode.key, true);
 
 			/*
-			 * Push to next thread in order to give MessageQueue a chance 
-			 * to detect whether or not any trees are actually refreshing 
-			 * (because if not, it needs to execute the next action now). 
+			 * Push to next thread in order to give MessageQueue a chance
+			 * to detect whether or not any trees are actually refreshing
+			 * (because if not, it needs to execute the next action now).
 			 */
 			setTimeout(function () {
 				treenode.refresh(true);
@@ -888,8 +927,8 @@ SystemTreeBinding.prototype._invokeServerRefresh = function (token) {
 
 
 /**
- * Invoke manual refresh. This was probably caused 
- * by user clicking the contextmenu refresh item. 
+ * Invoke manual refresh. This was probably caused
+ * by user clicking the contextmenu refresh item.
  * Note that we actually refresh the PARENT treenode.
  * @param {string} token
  */
@@ -1071,7 +1110,7 @@ SystemTreeBinding.prototype.setLockToEditor = function (isLocked) {
 SystemTreeBinding.prototype.getOpenSystemNodes = function () {
 
 	/*
-	* Add perspective node, ie. this tree (since the 
+	* Add perspective node, ie. this tree (since the
 	* perspective corresponds to this tree in the hierarchy).
 	*/
 	var list = new List([StageBinding.perspectiveNode]);
@@ -1112,7 +1151,7 @@ SystemTreeBinding.prototype.focusSingleTreeNodeBinding = function (binding) {
 
 /**
  * Set Action Profile Group
- * @param {function} 
+ * @param {function}
  */
 SystemTreeBinding.prototype.setActionGroup = function (value) {
 
@@ -1130,7 +1169,7 @@ SystemTreeBinding.prototype.setActionGroup = function (value) {
 
 /**
  * Compile actionprofile based on the individual actionprofile of all focused treenodes.
- * In case of multiple focused treenodes, only SystemActions relevant for *all* focused 
+ * In case of multiple focused treenodes, only SystemActions relevant for *all* focused
  * treenodes will be included in the result.
  * @return {Map<string><List<SystemAction>>}
  */

@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using Composite.Core.Types;
 using Composite.Data;
+using Composite.Data.Caching;
 using Composite.Data.Foundation;
 
 namespace Composite.Core.Extensions
@@ -46,7 +47,12 @@ namespace Composite.Core.Extensions
                 return (query as DataFacadeQueryable<T>).IsEnumerableQuery;
             }
 
-            return query.GetType().GetGenericTypeDefinition().FullName.StartsWith("System.Linq.EnumerableQuery");
+            if (query is CachingQueryable<T>)
+            {
+                return true;
+            }
+
+            return query.GetType().GetGenericTypeDefinition() == typeof(EnumerableQuery<>);
         }
 
 

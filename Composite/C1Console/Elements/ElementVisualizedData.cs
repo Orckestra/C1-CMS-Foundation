@@ -37,5 +37,16 @@ namespace Composite.C1Console.Elements
         /// Tooltip for the element - typically shown when hovering the element
         /// </summary>
         public string ToolTip { get; set; }
+
+        /// <summary>
+        /// Having a common ElementBundle across elements will make the client bundle them up as a single node, and allow the user to select a specific element via a drop down, showing individual BundleElementName values
+        /// </summary>
+        public string ElementBundle { get; set; }
+
+        /// <summary>
+        /// When bundling elements this field is used to identify this specific element for selection
+        /// </summary>
+        public string BundleElementName { get; set; }
+
     }
 }

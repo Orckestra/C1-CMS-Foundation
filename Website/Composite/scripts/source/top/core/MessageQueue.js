@@ -4,7 +4,7 @@
 window.MessageQueue = new function () {
 
 	/**
-	* Update interval in milliseconds when server is online.	 
+	* Update interval in milliseconds when server is online.
 	* @type {int}
 	*/
 	this.INTERVAL_ONLINE = 5 * 1000;
@@ -22,7 +22,7 @@ window.MessageQueue = new function () {
 	this._actions = new List();
 
 	/**
-	* Indexing action ID's to make sure we don't execute the same action twice.  
+	* Indexing action ID's to make sure we don't execute the same action twice.
 	* This would happen on server restart, where server resets the sequencenumber.
 	* @type {HashMap<String><boolean>}
 	*/
@@ -49,7 +49,7 @@ window.MessageQueue = new function () {
 	var orderMessages = false;
 
 	/*
-	* Mapping dock locations. Hashmap keys correspond 
+	* Mapping dock locations. Hashmap keys correspond
 	* to values of the servers "ViewType" property.
 	*/
 	var docklocation = {
@@ -61,7 +61,8 @@ window.MessageQueue = new function () {
 		"RightTop": DockBinding.RIGHTTOP,
 		"RightBottom": DockBinding.RIGHTBOTTOM,
 		"AbsBottomLeft": DockBinding.ABSBOTTOMLEFT,
-		"AbsBottomRight": DockBinding.ABSBOTTOMRIGHT
+		"AbsBottomRight": DockBinding.ABSBOTTOMRIGHT,
+		"Slide": DockBinding.SLIDE,
 	}
 
 	/**
@@ -86,20 +87,20 @@ window.MessageQueue = new function () {
 	};
 
 	/**
-	* Fetching actions from server. Note that  
-	* we don't request new actions while we are 
+	* Fetching actions from server. Note that
+	* we don't request new actions while we are
 	* already executing a list of actions.
 	*/
 	this._autoupdate = function () {
 
-		/* 
-		* Note that you should not use the "this" keyword 
+		/*
+		* Note that you should not use the "this" keyword
 		* around here since we are executed on a setInterval.
 		*/
 		if (!isOffline) {
 
 			/*
-			* While an action sequence is being evaluated, 
+			* While an action sequence is being evaluated,
 			* to further actions are retrieved from server.
 			*/
 			if (!MessageQueue._actions.hasEntries()) {
@@ -116,7 +117,7 @@ window.MessageQueue = new function () {
 	};
 
 	/**
-	* When server is offline, this will be executed 
+	* When server is offline, this will be executed
 	* on an interval to unlock GUI when ready.
 	* @see {MessageQueue#_lockSystem}
 	*/
@@ -138,7 +139,7 @@ window.MessageQueue = new function () {
 		if (Application.isLoggedIn) { // otherwise no service...
 
 			/*
-			* Note that we broadcast the boolean argument: isAutoUpdate 
+			* Note that we broadcast the boolean argument: isAutoUpdate
 			*/
 			EventBroadcaster.broadcast(BroadcastMessages.MESSAGEQUEUE_REQUESTED, isAutoUpdate);
 
@@ -158,9 +159,9 @@ window.MessageQueue = new function () {
 			var self = this;
 			/*
 			* Fetch new actions; append them to current actions in execution chain.
-			* Response has two properties: The servers highest known action number 
-			* and a list of actions. The first property is needed because the server 
-			* will RESET the actionindex on restart.  
+			* Response has two properties: The servers highest known action number
+			* and a list of actions. The first property is needed because the server
+			* will RESET the actionindex on restart.
 			*/
 			var handleResponce = function(response) {
 				if (response != null) {
@@ -198,7 +199,7 @@ window.MessageQueue = new function () {
 	}
 
 	/**
-	* Evaluate a list of actions. These will be appended 
+	* Evaluate a list of actions. These will be appended
 	* to any actions currently scheduled for execution.
 	* @param {List} actions
 	*/
@@ -209,7 +210,7 @@ window.MessageQueue = new function () {
 		if (actions.hasEntries()) {
 
 			/*
-			* Filter out actions that were already queued  
+			* Filter out actions that were already queued
 			* up for evaluation (server restart scenario).
 			*/
 			actions.each(function (action) {
@@ -312,8 +313,8 @@ window.MessageQueue = new function () {
 					logger.debug(debug);
 
 					/*
-					* The trees perform a timeout before refreshing 
-					* so that this code gets evaluted straight away 
+					* The trees perform a timeout before refreshing
+					* so that this code gets evaluted straight away
 					* and not when the trees are done refreshing.
 					*/
 					if (!refreshingtrees.hasEntries()) {
@@ -412,13 +413,13 @@ window.MessageQueue = new function () {
 					this._nextAction();
 					break;
 
-				case "ExpandTreeNode": // TODO: CLEAR THIS! 
+				case "ExpandTreeNode": // TODO: CLEAR THIS!
 					this._nextAction();
 					/*
 					EventBroadcaster.subscribe ( BroadcastMessages.SYSTEMTREENODEBINDING_FORCING_OPEN, this );
 					EventBroadcaster.subscribe ( BroadcastMessages.SYSTEMTREENODEBINDING_FORCED_OPEN, this );
 					EventBroadcaster.broadcast (
-					BroadcastMessages.SYSTEMTREENODEBINDING_FORCE_OPEN, 
+					BroadcastMessages.SYSTEMTREENODEBINDING_FORCE_OPEN,
 					action.ExpandTreeNodeParams.EntityToken
 					);
 					if ( !openingtreenodes.hasEntries ()) {
@@ -448,6 +449,11 @@ window.MessageQueue = new function () {
 					openExternalView(params);
 					break;
 
+				case "OpenSlideView":
+					params = action.OpenSlideViewParams;
+					openSlideView(params);
+					break;
+
 				default:
 					Dialog.error("Dysfunction", "Unhandled action: " + action.ActionType);
 					break;
@@ -466,7 +472,7 @@ window.MessageQueue = new function () {
 		EventBroadcaster.broadcast(BroadcastMessages.MESSAGEQUEUE_EVALUATED, isAutoUpdate);
 	}
 
-	/** 
+	/**
 	* Parse log entry.
 	* @param {object} params
 	*/
@@ -476,9 +482,9 @@ window.MessageQueue = new function () {
 		SystemLogger.getLogger(params.SenderId)[method](params.Message);
 	}
 
-	/** 
-	* Parse view opening. Views targeted for editors dock 
-	* are presented with a "Loading..." label on startup, 
+	/**
+	* Parse view opening. Views targeted for editors dock
+	* are presented with a "Loading..." label on startup,
 	* this is handled by the DockTabBinding.
 	* @param {object} params
 	*/
@@ -542,8 +548,8 @@ window.MessageQueue = new function () {
 	}
 
 	/**
-	* Open standard dialog of type error, info or warning. 
-	* Question type dialogs not supported here. This will 
+	* Open standard dialog of type error, info or warning.
+	* Question type dialogs not supported here. This will
 	* delay next action until the dialog is closed!
 	* @param {object} params
 	*/
@@ -563,7 +569,7 @@ window.MessageQueue = new function () {
 		}
 	}
 
-	/** 
+	/**
 	* Open ViewDefinition.
 	* @param {object} params
 	*/
@@ -581,9 +587,9 @@ window.MessageQueue = new function () {
 			hasMap = true;
 		});
 
-		/* 
-		* Determine whether or not to open a new view or to reuse any opened view. 
-		* The Page Browser is a view-reuse example - it opens new tabs INSIDE a 
+		/*
+		* Determine whether or not to open a new view or to reuse any opened view.
+		* The Page Browser is a view-reuse example - it opens new tabs INSIDE a
 		* singluar open instance.
 		*/
 		var proto = ViewDefinitions[params.Handle];
@@ -615,7 +621,7 @@ window.MessageQueue = new function () {
 	}
 
 	/**
-	* Open generic view. That is, a PageBinding with a WindowBinding that will 
+	* Open generic view. That is, a PageBinding with a WindowBinding that will
 	* 1) Open a given URL - or, if params are specified...
 	* 2) Polulate a form with given params and post to a given URL
 	*/
@@ -634,7 +640,7 @@ window.MessageQueue = new function () {
 	}
 
 	/**
-	* Open external view. That is, a PageBinding with a WindowBinding that will 
+	* Open external view. That is, a PageBinding with a WindowBinding that will
 	* 1) Open a given URL ...
 	*/
 	function openExternalView(params) {
@@ -647,7 +653,25 @@ window.MessageQueue = new function () {
 
 		StageBinding.presentViewDefinition(def);
 	}
-	/** 
+
+	/**
+	* Open slide view.
+	*/
+	function openSlideView(params) {
+		try {
+
+
+			var def = ViewDefinition.clone("Composite.Management.SlideView", params.ViewId);
+			def.label = params.Label;
+			def.toolTip = params.ToolTip;
+			def.image = params.Image;
+			def.url = params.Url,
+				StageBinding.presentViewDefinition(def);
+		} catch (e) {
+		};
+	}
+
+	/**
 	* Close view.
 	* @param {object} params
 	*/
@@ -657,20 +681,20 @@ window.MessageQueue = new function () {
 			// This broadcast will be intercepted by the ViewBinding.
 			EventBroadcaster.broadcast(BroadcastMessages.CLOSE_VIEW, params.ViewId);
 		} else {
-			// If the view is a dialog, user may have cancelled it already. 
+			// If the view is a dialog, user may have cancelled it already.
 			// In that case, we execute the next action straight away...
 			MessageQueue._nextAction();
 		}
 	}
 
-	/** 
+	/**
 	* Handle save status.
 	* @param {object} params
 	*/
 	function saveStatus(params) {
 
-		/* 
-		* This broadcast will be intercepted by the DockTabBinding and 
+		/*
+		* This broadcast will be intercepted by the DockTabBinding and
 		* possibly the DockBinding.
 		*/
 		EventBroadcaster.broadcast(BroadcastMessages.CURRENT_SAVED, {
@@ -680,7 +704,7 @@ window.MessageQueue = new function () {
 	}
 
 	/**
-	* Lock and unlock the system when  
+	* Lock and unlock the system when
 	* server goes offline and online.
 	* @param {boolean} isLock
 	*/
@@ -703,8 +727,8 @@ window.MessageQueue = new function () {
 				MessageQueue.INTERVAL_ONLINE
 			);
 			/*
-			* Note that we now execute any actions that were 
-			* stacked on the list BEFORE offline mode started. 
+			* Note that we now execute any actions that were
+			* stacked on the list BEFORE offline mode started.
 			*/
 			var self = this;
 			setTimeout(function () {
@@ -746,9 +770,9 @@ window.MessageQueue = new function () {
 				break;
 
 			/*
-			* Multiple trees may report in on this. We count 
+			* Multiple trees may report in on this. We count
 			* them all and await the broadcast seen below.
-			*/ 
+			*/
 			case BroadcastMessages.SYSTEMTREEBINDING_REFRESHING:
 
 				if (arg != null) {
@@ -762,7 +786,7 @@ window.MessageQueue = new function () {
 
 			/*
 			* Continue when all trees are reported refreshed.
-			*/ 
+			*/
 			case BroadcastMessages.SYSTEMTREEBINDING_REFRESHED:
 
 				//logger.debug ( "REFRESHED! ... " + refreshingtrees.countEntries ());
@@ -784,7 +808,7 @@ window.MessageQueue = new function () {
 						EventBroadcaster.unsubscribe(BroadcastMessages.SYSTEMTREEBINDING_REFRESHED, this);
 
 						/*
-						* This timeout allows trees to calm down in case 
+						* This timeout allows trees to calm down in case
 						* the next action is another refreshtree request.
 						*/
 						setTimeout(function () {
@@ -795,7 +819,7 @@ window.MessageQueue = new function () {
 				break
 
 				/*
-				* Multiple treenodes may report in on this. We count 
+				* Multiple treenodes may report in on this. We count
 				* them all and await the broadcast seen below.
 				*/
 			case BroadcastMessages.SYSTEMTREENODEBINDING_FORCING_OPEN:
@@ -805,7 +829,7 @@ window.MessageQueue = new function () {
 
 			/*
 			* Continue only when all treenodes are reported open.
-			*/ 
+			*/
 			case BroadcastMessages.SYSTEMTREENODEBINDING_FORCED_OPEN:
 
 				if (openingtreenodes.hasEntries() == true) {
@@ -819,15 +843,15 @@ window.MessageQueue = new function () {
 				break
 
 				/*
-				* Probably broadcasted by a {@link SOAPRequest}. 
+				* Probably broadcasted by a {@link SOAPRequest}.
 				*/
 			case BroadcastMessages.SERVER_OFFLINE:
 				MessageQueue._lockSystem(true);
 				break;
 
 			/*
-			* Probably broadcasted by a {@link SOAPRequest}. 
-			*/ 
+			* Probably broadcasted by a {@link SOAPRequest}.
+			*/
 			case BroadcastMessages.SERVER_ONLINE:
 				MessageQueue._lockSystem(false);
 				break;
@@ -852,10 +876,10 @@ window.MessageQueue = new function () {
 		return list;
 	}
 
-	/* 
+	/*
 	* File subscriptions.
 	*/
 	EventBroadcaster.subscribe(BroadcastMessages.APPLICATION_LOGIN, this);
 }
 
-    
+

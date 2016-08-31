@@ -49,7 +49,7 @@
 			<ui:toolbarbody/>
 			<ui:toolbarbody id="moreactionstoolbargroup">
 				<ui:toolbargroup>
-					<ui:toolbarbutton id="moreactionsbutton" label="More" image="${icon:chevron-right-circle}" popup="moreactionspopup" flip="true"/>
+					<ui:toolbarbutton id="moreactionsbutton" label="${string:Composite.Management:Website.Misc.Toolbar.LabelShowMoreActions}" image="${icon:chevron-right-circle}" popup="moreactionspopup" flip="true"/>
 				</ui:toolbargroup>
 			</ui:toolbarbody>
 		</ui:toolbar>
