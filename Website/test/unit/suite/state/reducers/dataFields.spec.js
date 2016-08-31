@@ -4,15 +4,17 @@ import dataFields, * as actions from 'console/state/reducers/dataFields.js';
 describe('Data fields', () => {
 	describe('actions', () => {
 		it('has action descriptors', () =>
-			expect(actions, 'to have property', 'SAVE_STATE')
+			expect(actions, 'to have property', 'FLAG_PAGE_CLEAN')
 			.and('to have property', 'UPDATE_VALUE')
+			.and('to have property', 'STORE_VALUES')
+			.and('to have property', 'FLAG_FIELDS_DIRTY')
 		);
 
 		describe('Save state', () => {
-			let saveState = actions.saveState;
+			let commitPage = actions.commitPage;
 			it('creates action for saving state', () => {
-				let action = saveState('testpage');
-				return expect(action, 'to be an action of type', actions.SAVE_STATE)
+				let action = commitPage('testpage');
+				return expect(action, 'to be an action of type', actions.FLAG_PAGE_CLEAN)
 					.and('to have property', 'pageName', 'testpage');
 			});
 			// Should also send fields to value end point
@@ -39,6 +41,18 @@ describe('Data fields', () => {
 				.and('to have properties', {
 					values: { a: 1, b: true, c: 'foo', d: { bar: 'baz' } }
 				});
+			});
+		});
+	});
+
+	describe('Flag fields dirty', () => {
+		let flagDirty = actions.flagDirty;
+		it('creates action that sets a list of dirty fields on a page', () => {
+			let action = flagDirty('testpage', ['field1', 'field2', 'field3']);
+			return expect(action, 'to be an action of type', actions.FLAG_FIELDS_DIRTY)
+			.and('to have properties', {
+				pageName: 'testpage',
+				fieldNames: ['field1', 'field2', 'field3']
 			});
 		});
 	});
@@ -112,7 +126,7 @@ describe('Data fields', () => {
 			let action;
 			beforeEach(() => {
 				action = {
-					type: actions.SAVE_STATE,
+					type: actions.FLAG_PAGE_CLEAN,
 					pageName: 'testpage'
 				};
 			});
@@ -167,6 +181,41 @@ describe('Data fields', () => {
 					dirtyPages: {
 						page2: [ 'field3' ],
 						page3: [ 'field4' ]
+					}
+				});
+			});
+		});
+
+		describe('flag fields', () => {
+			let action;
+			beforeEach(() => {
+				action = {
+					type: actions.FLAG_FIELDS_DIRTY,
+					pageName: 'page1',
+					fieldNames: ['field1', 'field2']
+				};
+			});
+
+			it('flags fields on a page dirty without changing their values', () => {
+				let oldState = {
+					field1: 202,
+					field2: 'some text',
+					field3: false,
+					field4: '',
+					dirtyPages: {
+						page2: [ 'field3' ]
+					}
+				};
+				let newState = dataFields(oldState, action);
+				expect(newState, 'not to be', oldState)
+				.and('to equal', {
+					field1: 202,
+					field2: 'some text',
+					field3: false,
+					field4: '',
+					dirtyPages: {
+						page1: ['field1', 'field2'],
+						page2: [ 'field3' ]
 					}
 				});
 			});

@@ -4,7 +4,7 @@ import React from 'react';
 import TestUtils from 'react-addons-test-utils';
 import DocumentPage from 'console/components/container/DocumentPage.js';
 import FormPage from 'console/components/presentation/FormPage.js';
-import { SAVE_STATE, UPDATE_VALUE } from 'console/state/reducers/dataFields.js';
+import { FLAG_PAGE_CLEAN, UPDATE_VALUE } from 'console/state/reducers/dataFields.js';
 
 describe('DocumentPage', () => {
 	let renderer, state, store, props;
@@ -53,7 +53,7 @@ describe('DocumentPage', () => {
 			dirtyPages={[]}/>)
 		.then(() => expect(store.dispatch, 'to have calls satisfying', [
 			{ args: [{ type: UPDATE_VALUE, pageName: 'pagename', fieldName: 'fieldname', newValue: 'value' }]},
-			{ args: [{ type: SAVE_STATE, pageName: 'pagename' }]}
+			{ args: [{ type: FLAG_PAGE_CLEAN, pageName: 'pagename' }]}
 		]));
 	});
 });

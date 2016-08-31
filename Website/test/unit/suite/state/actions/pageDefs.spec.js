@@ -41,7 +41,7 @@ describe('Get page definitions', () => {
 			];
 		});
 
-		it('creates a thunk that dispatches actions', () => {
+		it('creates a thunk that loads definitions and dispatches actions', () => {
 			return expect(() => expect(loadPageDef, 'when called with', ['testPage'])
 			.then(thunk =>
 				expect(thunk, 'to be a function')

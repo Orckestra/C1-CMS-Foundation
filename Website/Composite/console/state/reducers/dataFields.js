@@ -1,19 +1,24 @@
-const prefix = 'DOCUMENTPAGE.';
+const prefix = 'DATAFIELDS.';
 
 export const UPDATE_VALUE = prefix + 'UPDATE_VALUE';
 export function updateFieldValue(pageName, fieldName, newValue) {
 	return { type: UPDATE_VALUE, pageName, fieldName, newValue };
 }
 
-export const SAVE_STATE = prefix + 'SAVE_STATE';
-export function saveState(pageName) {
+export const FLAG_PAGE_CLEAN = prefix + 'FLAG_CLEAN';
+export function commitPage(pageName) {
 	// Dispatch an action saving the key/value pairs of the page's dirty fields?
-	return { type: SAVE_STATE, pageName };
+	return { type: FLAG_PAGE_CLEAN, pageName };
 }
 
 export const STORE_VALUES = prefix + 'STORE_VALUES';
 export function storeValues(values) {
 	return { type: STORE_VALUES, values };
+}
+
+export const FLAG_FIELDS_DIRTY = prefix + 'FLAG_DIRTY';
+export function flagDirty(pageName, fieldNames) {
+	return { type: FLAG_FIELDS_DIRTY, pageName, fieldNames };
 }
 
 const initialState = {
@@ -36,7 +41,7 @@ export default function dataFields(state = initialState, action) {
 			update.dirtyPages[action.pageName] = [action.fieldName];
 		}
 		return Object.assign({}, state, update);
-	case SAVE_STATE:
+	case FLAG_PAGE_CLEAN:
 		update = { dirtyPages: Object.assign({}, state.dirtyPages) };
 		delete update.dirtyPages[action.pageName];
 		return Object.assign({}, state, update);
@@ -56,6 +61,10 @@ export default function dataFields(state = initialState, action) {
 			});
 		});
 		return update;
+	case FLAG_FIELDS_DIRTY:
+		update = {dirtyPages: Object.assign({}, state.dirtyPages) };
+		update.dirtyPages[action.pageName] = action.fieldNames;
+		return Object.assign({}, state, update);
 	default:
 		return state;
 	}

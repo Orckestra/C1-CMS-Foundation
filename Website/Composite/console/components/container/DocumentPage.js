@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import FormPage from 'console/components/presentation/FormPage.js';
-import { saveState, updateFieldValue } from 'console/state/reducers/dataFields.js';
+import { saveValues } from 'console/state/actions/values.js';
+import { updateFieldValue } from 'console/state/reducers/dataFields.js';
 
 // Sets up a page that allows editing of a document consisting of sets of fields.
 function mapStateToProps(state) {
@@ -20,7 +21,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
 	return {
 		actions: {
-			save: pageName => () => dispatch(saveState(pageName)),
+			save: pageName => () => dispatch(saveValues(pageName)),
 			updateValue: (pageName, fieldName) => value => dispatch(updateFieldValue(pageName, fieldName, value))
 		}
 	};

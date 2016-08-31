@@ -19,11 +19,13 @@ export const LOAD_PAGE_DEF = prefix + 'LOAD';
 export const LOAD_PAGE_DEF_DONE = prefix + 'LOAD.DONE';
 export const LOAD_PAGE_DEF_FAILED = prefix + 'LOAD.FAIL';
 
+const pageDefEndpointURL = '/Composite/console/pageData.json';
+
 // Better input: Page identity/-ies (perspective, parentage, page name - path object of some kind?)
 export function loadPageDef(pageName) {
 	return dispatch => {
 		dispatch({ type: LOAD_PAGE_DEF, name: pageName });
-		return requestJSON('/Composite/console/pageData.json')
+		return requestJSON(pageDefEndpointURL)
 		.then(response => {
 			let defs = normalize(response, arrayOf(pageSchema)).entities;
 			Object.keys(defs).forEach(defType => {
