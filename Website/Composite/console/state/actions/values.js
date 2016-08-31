@@ -14,6 +14,9 @@ export function loadValues(pageName) {
 		.then(valueData => {
 			dispatch(storeValues(valueData));
 			dispatch({ type: LOAD_VALUES_DONE, pageName });
+		})
+		.catch(err => {
+			dispatch({ type: LOAD_VALUES_FAILED, error: err });
 		});
 	};
 }

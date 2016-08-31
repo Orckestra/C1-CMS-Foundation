@@ -42,5 +42,25 @@ describe('Load/save values', () => {
 				])
 			);
 		});
+
+		it('sends word of unhandled errors', () => {
+			return expect(() => expect(loadValues, 'when called with', ['testpage'])
+			.then(thunk =>
+				expect(thunk, 'to be a function')
+				.and('when called with', [dispatch])
+			),
+			'with http mocked out', {
+				request: 'GET /Composite/console/values.json?page=' + 'testpage',
+				response: {
+					statusCode: 404
+				}
+			}, 'not to error')
+			.then(() =>
+				expect([dispatch], 'to have calls satisfying', [
+					{ spy: dispatch, args: [{ type: actions.LOAD_VALUES, pageName: 'testpage' }] },
+					{ spy: dispatch, args: [{ type: actions.LOAD_VALUES_FAILED, error: '404 Not Found' }] }
+				])
+			);
+		});
 	});
 });
