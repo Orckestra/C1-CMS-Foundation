@@ -132,5 +132,44 @@ describe('Data fields', () => {
 				});
 			});
 		});
+
+		describe('store', () => {
+			let action;
+			beforeEach(() => {
+				action = {
+					type: actions.STORE_VALUES,
+					values: {
+						field1: 202,
+						field2: 'some text'
+					}
+				};
+			});
+
+			it('stores the passed values in state and resets dirty fields and pages', () => {
+				let oldState = {
+					field1: 0,
+					field2: 'no',
+					field3: false,
+					field4: '',
+					dirtyPages: {
+						page1: [ 'field1' ],
+						page2: [ 'field2', 'field3' ],
+						page3: [ 'field4' ]
+					}
+				};
+				let newState = dataFields(oldState, action);
+				return expect(newState, 'not to be', oldState)
+				.and('to equal', {
+					field1: 202,
+					field2: 'some text',
+					field3: false,
+					field4: '',
+					dirtyPages: {
+						page2: [ 'field3' ],
+						page3: [ 'field4' ]
+					}
+				});
+			});
+		});
 	});
 });

@@ -40,6 +40,22 @@ export default function dataFields(state = initialState, action) {
 		update = { dirtyPages: Object.assign({}, state.dirtyPages) };
 		delete update.dirtyPages[action.pageName];
 		return Object.assign({}, state, update);
+	case STORE_VALUES:
+		update = Object.assign({}, state, action.values);
+		Object.keys(action.values).forEach(fieldName => {
+			Object.keys(state.dirtyPages).forEach(pageName => {
+				let fields = update.dirtyPages[pageName];
+				let fieldIndex = fields.indexOf(fieldName);
+				if (fieldIndex !== -1) {
+					fields.splice(fieldIndex, 1);
+					if (fields.length === 0) {
+						// Remove the page if it has no dirty fields
+						delete update.dirtyPages[pageName];
+					}
+				}
+			});
+		});
+		return update;
 	default:
 		return state;
 	}
