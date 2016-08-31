@@ -13,7 +13,7 @@ export function saveState(pageName) {
 
 export const STORE_VALUES = prefix + 'STORE_VALUES';
 export function storeValues(values) {
-	return {type: STORE_VALUES, values };
+	return { type: STORE_VALUES, values };
 }
 
 const initialState = {
