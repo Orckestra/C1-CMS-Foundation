@@ -16,6 +16,7 @@ describe('initState', () => {
 		.then(() =>
 			expect(store.dispatch, 'to have calls satisfying', [
 				{ spy: store.dispatch, args: [expect.it('to be a function')]},
+				{ spy: store.dispatch, args: [expect.it('to be a function')]},
 				{ spy: store.dispatch, args: [{ type: REPLACE_PAGES }]},
 				{ spy: store.dispatch, args: [{ type: SELECT_PAGE }]}
 			])
