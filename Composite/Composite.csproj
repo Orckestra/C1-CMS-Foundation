@@ -1437,7 +1437,6 @@
     <Compile Include="Core\WebClient\HttpModules\AdministrativeAuthorizationHttpModule.cs" />
     <Compile Include="Core\WebClient\HttpModules\AdministrativeCultureSetterHttpModule.cs" />
     <Compile Include="Core\WebClient\HttpModules\AdministrativeDataScopeSetterHttpModule.cs" />
-    <Compile Include="Core\WebClient\HttpModules\AdministrativeOutputGZipperHttpModule.cs" />
     <Compile Include="Core\WebClient\HttpModules\AdministrativeResponseFilterHttpModule.cs" />
     <Compile Include="Core\WebClient\MediaUrlHelper.cs" />
     <Compile Include="Core\WebClient\PageUrlHelper.cs" />
