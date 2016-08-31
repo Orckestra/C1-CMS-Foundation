@@ -26,7 +26,7 @@
 	<string key="ChangeOwnCultureWorkflow.Dialog.CultureSelector.Label" value="Display Preferences"/>
 	<string key="ChangeOwnCultureWorkflow.Dialog.CultureSelector.Help" value="Display for time, date, and number formats within the console" />
   <string key="ChangeOwnCultureWorkflow.Dialog.C1ConsoleLanguageSelector.Label" value="Console Language Preferences"/>
-  <string key="ChangeOwnCultureWorkflow.Dialog.C1ConsoleLanguageSelector.Help" value="Language displayed within your console for labels, help texts, dialogs, etc. The available options are limited to language packages installed. See Composite.Localization package for more language options." />
+  <string key="ChangeOwnCultureWorkflow.Dialog.C1ConsoleLanguageSelector.Help" value="Language displayed within your console for labels, help texts, dialogs, etc. The available options are limited to language packages installed. See Composite.Localization packages for more language options." />
   <string key="ChangeOwnCultureWorkflow.Dialog.Confirm.Title" value="Change application language"/>
   <string key="ChangeOwnCultureWorkflow.Dialog.Confirm.Text" value="Are your sure you wish to change the settings? The application will restart and all your unsaved changes will be lost."/>
 	<string key="AdministratorAutoCreator.DefaultGroupName" value="Administrators"/>

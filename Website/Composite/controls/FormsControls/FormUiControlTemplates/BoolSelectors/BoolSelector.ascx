@@ -1,34 +1,64 @@
-<%@ Control Language="C#" Inherits="Composite.Plugins.Forms.WebChannel.UiControlFactories.BoolSelectorTemplateUserControlBase"  %>
-<%@ Import Namespace="Composite.Plugins.Forms.WebChannel.UiControlFactories" %>
+<%@ Control Language="C#" EnableViewState="true" Inherits="Composite.Plugins.Forms.WebChannel.UiControlFactories.BoolSelectorTemplateUserControlBase"  %>
 
 <script runat="server">
-    bool _isTrue = false;
+	const string ViewStateKey = "BoolSelector.IsTrue";
 
-    protected void Page_Init(object sender, EventArgs e)
-    {
-        if (string.IsNullOrEmpty(HttpContext.Current.Request.Form[this.ClientID]) == false)
-        {
-            _isTrue = ("true" == HttpContext.Current.Request.Form[this.ClientID]);
-        }
-    }
-    
-    protected override void BindStateToProperties()
-    {
-        this.IsTrue = _isTrue; 
-    }
 
-    protected override void InitializeViewState()
-    {
-        _isTrue = this.IsTrue;
-    }
+	private bool ViewState_IsTrue
+	{
+		get { return (bool) ViewState[ViewStateKey]; }
+		set { ViewState[ViewStateKey] = value; }
+	}
 
-    public override string GetDataFieldClientName()
-    {
-        return this.ClientID;
-    }
+	protected void Page_Init(object sender, EventArgs e)
+	{
+	}
+
+	protected override void BindStateToProperties()
+	{
+		this.IsTrue = ViewState_IsTrue;
+	}
+
+	protected override void InitializeViewState()
+	{
+		ViewState_IsTrue = this.IsTrue;
+	}
+
+	public override string GetDataFieldClientName()
+	{
+		return this.UniqueID;
+	}
+
+	public override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
+	{
+		bool previousValue = ViewState_IsTrue;
+
+		ViewState_IsTrue = postCollection[postDataKey] == "true";
+
+		return ViewState_IsTrue != previousValue;
+	}
+
+	public override void RaisePostDataChangedEvent()
+	{
+		if (this.SelectionChangedEventHandler != null)
+		{
+			this.SelectionChangedEventHandler(this, EventArgs.Empty);
+		}
+	}
+
+	private string ExtraAttributes()
+	{
+		if (this.SelectionChangedEventHandler != null)
+		{
+			return string.Format(@"callbackid=""{0}"" onchange=""this.dispatchAction(PageBinding.ACTION_DOPOSTBACK)""", this.UniqueID);
+		}
+
+		return null;
+	}
+
 </script>
 
-<ui:radiodatagroup name="<%= this.ClientID %>">
-	<ui:radio label="<%= this.TrueLabel %>" value="true" ischecked="<%= this.IsTrue.ToString().ToLower() %>" />
-	<ui:radio label="<%= this.FalseLabel %>" value="false" ischecked="<%= (this.IsTrue==false).ToString().ToLower() %>" />
+<ui:radiodatagroup name="<%= this.UniqueID %>" <%= ExtraAttributes() %> >
+	<ui:radio label="<%= Server.HtmlEncode(this.TrueLabel) %>" value="true" ischecked="<%= this.IsTrue.ToString().ToLower() %>" />
+	<ui:radio label="<%= Server.HtmlEncode(this.FalseLabel) %>" value="false" ischecked="<%= (!this.IsTrue).ToString().ToLower() %>" />
 </ui:radiodatagroup>

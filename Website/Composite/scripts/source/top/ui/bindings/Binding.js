@@ -466,7 +466,8 @@ Binding.prototype.onBindingAttach = function () {
 		if ( !this.bindingElement.parentNode ) {
 			alert ( this + " onBindingAttach: Binding must be positioned in document structure before attachment can be invoked." );
 		} else {
-			this.boxObject = new BindingBoxObject ( this );
+			this.boxObject = new BindingBoxObject(this);
+			this._initializeBindingTestFeatures();
 			this._initializeBindingPersistanceFeatures ();
 			this._initializeBindingGeneralFeatures ();
 			this._initializeBindingDragAndDropFeatures ();
@@ -608,6 +609,19 @@ Binding.prototype.registerDependentBinding = function ( binding ) {
 		this.dependentBindings = {};
 	}
 	this.dependentBindings [ binding.key ] = binding;
+}
+
+/**
+ * Initialize attributes for test.
+ */
+Binding.prototype._initializeBindingTestFeatures = function () {
+
+	if (Application.isTestEnvironment) {
+		var label = this.getProperty("label");
+		if (label && label.indexOf("${string:") > -1) {
+			this.setProperty("data-qa", label);
+		}
+	}
 }
 
 /**
@@ -1259,7 +1273,9 @@ Binding.prototype.getContextMenu = function () {
  * @param {object} arg This can be either a string or an {@link Action}.
  * @return {Action}
  */
-Binding.prototype.dispatchAction = function ( arg ) {
+Binding.prototype.dispatchAction = function (arg) {
+
+	//console.log(arg);
 
 	var action = null;
 	var result = null;
@@ -1532,9 +1548,9 @@ Binding.prototype.getDescendantBindingByLocalName = function ( nodeName ) {
  * @param {Class} impl
  * @return {List<Binding>}
  */
-Binding.prototype.getDescendantBindingsByType = function ( impl ) {
+Binding.prototype.getDescendantBindingsByType = function ( impl, isTraverse ) {
 
-	return BindingFinder.getDescendantBindingsByType ( this, impl );
+	return BindingFinder.getDescendantBindingsByType ( this, impl, isTraverse );
 }
 
 /**

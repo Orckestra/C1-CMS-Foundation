@@ -1,5 +1,6 @@
 ﻿using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
 using Composite.Data.ProcessControlled;
+using Composite.Data.Types;
 
 
 namespace Composite.Data
@@ -12,7 +13,7 @@ namespace Composite.Data
     [DataScope(DataScopeIdentifier.AdministratedName)]
     [PublishProcessControllerType(typeof(GenericPublishProcessController))]
     [DataAssociationAttribute(typeof(Composite.Data.Types.IPage), "PageId", DataAssociationType.Composition)]
-    public interface IPageMetaData : IPageData, IPublishControlled 
+    public interface IPageMetaData : IPageData, IPublishControlled, IVersioned
     {
         /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.String, 128)]

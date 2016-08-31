@@ -12,15 +12,15 @@ namespace Composite.Core.WebClient.UiControlLib
     public class ToolbarButton : LinkButton
     {
         /// <exclude />
-        [Category("Behavior"), DefaultValue(""), Description("The id as the ui client should see")]
+        [Category("Behavior"), DefaultValue(""), Description("The id as the UI client should see")]
         public virtual string CustomClientId { get; set; }
 
         /// <exclude />
-        [Category("Appearance"), DefaultValue(""), Description("Image to show in the buttom")]
+        [Category("Appearance"), DefaultValue(""), Description("Image to show on the button")]
         public virtual string ImageUrl { get; set; }
 
         /// <exclude />
-        [Category("Appearance"), DefaultValue(""), Description("Image to show in the buttom when the button is disabled")]
+        [Category("Appearance"), DefaultValue(""), Description("Image to show on the button when it is disabled")]
         public virtual string ImageUrlWhenDisabled { get; set; }
 
         /// <exclude />

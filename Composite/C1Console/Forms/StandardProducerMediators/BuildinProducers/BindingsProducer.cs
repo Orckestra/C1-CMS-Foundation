@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 
 namespace Composite.C1Console.Forms.StandardProducerMediators.BuildinProducers
@@ -19,22 +20,12 @@ namespace Composite.C1Console.Forms.StandardProducerMediators.BuildinProducers
 
         public string GetTypeNameByName(string name)
         {
-            foreach (BindingProducer bp in _bindings)
-            {
-                if (bp.name == name) return bp.type;
-            }
-
-            return null;
+            return _bindings.FirstOrDefault(bp => bp.name == name)?.type;
         }
 
         public bool? GetOptionalValueByName(string name)
         {
-            foreach (BindingProducer bp in _bindings)
-            {
-                if (bp.name == name) return bp.optional;
-            }
-
-            return null;
+            return _bindings.FirstOrDefault(bp => bp.name == name)?.optional;
         }
     }
 }

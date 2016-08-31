@@ -41,14 +41,9 @@ namespace Composite.Data.Foundation
         /// <returns>The empty class type for the given data interface type.</returns>
         public static Type GetEmptyDataClassType(Type interfaceType, bool forceReCompilation = false)
         {
-            if (!DataTypeTypesManager.IsAllowedDataTypeAssembly(interfaceType))
-            {
-                string message = string.Format("The data interface '{0}' is not located in an assembly in the website Bin folder. Please move it to that location", interfaceType);
-                Log.LogError("EmptyDataClassTypeManager", message);
-                throw new InvalidOperationException(message);
-            }
+            VerifyAssemblyLocation(interfaceType);
 
-            DataTypeDescriptor dataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(interfaceType.GetImmutableTypeId(), true);
+            var dataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(interfaceType.GetImmutableTypeId(), true);
 
             return GetEmptyDataClassType(dataTypeDescriptor, forceReCompilation);
         }
@@ -124,22 +119,26 @@ namespace Composite.Data.Foundation
 
             Type dataType = DataTypeTypesManager.GetDataType(dataTypeDescriptor);
 
-            if (!DataTypeTypesManager.IsAllowedDataTypeAssembly(dataType))
-            {
-                string message = string.Format("The data interface '{0}' is not located in an assembly in the website Bin folder. Please move it to that location", dataType);
-                Log.LogError("EmptyDataClassTypeManager", message);
-                throw new InvalidOperationException(message);
-            }
+            VerifyAssemblyLocation(dataType);
 
             return buildNewHandler.GetTypeToBuild(dataType);
         }
-       
 
+
+        private static void VerifyAssemblyLocation(Type interfaceType)
+        {
+            if (!DataTypeTypesManager.IsAllowedDataTypeAssembly(interfaceType))
+            {
+                string message = $"The data interface '{interfaceType}' is not located in an assembly in the website Bin folder. Please move it to that location";
+                Log.LogError(nameof(EmptyDataClassTypeManager), message);
+                throw new InvalidOperationException(message);
+            }
+        }
 
 
         internal static Type CreateEmptyDataClassType(DataTypeDescriptor dataTypeDescriptor, Type baseClassType = null, CodeAttributeDeclaration codeAttributeDeclaration = null)
         {
-            CodeGenerationBuilder codeGenerationBuilder = new CodeGenerationBuilder("EmptyDataClass: " + dataTypeDescriptor.Name);
+            var codeGenerationBuilder = new CodeGenerationBuilder("EmptyDataClass: " + dataTypeDescriptor.Name);
             EmptyDataClassCodeGenerator.AddAssemblyReferences(codeGenerationBuilder, dataTypeDescriptor);
             EmptyDataClassCodeGenerator.AddEmptyDataClassTypeCode(codeGenerationBuilder, dataTypeDescriptor, baseClassType, codeAttributeDeclaration);
 

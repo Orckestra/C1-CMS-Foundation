@@ -44,7 +44,7 @@ namespace Composite.Core.WebClient.UiControlLib
 
             if (this.AutoPostBack)
             {
-                writer.AddAttribute("onchange", "this.dispatchAction(PageBinding.ACTION_DOPOSTBACK)");
+                writer.AddAttribute("onselectionchange", "this.dispatchAction(PageBinding.ACTION_DOPOSTBACK)");
             }
             if (this.SelectionRequired)
             {
@@ -86,6 +86,11 @@ namespace Composite.Core.WebClient.UiControlLib
         {
             for (int i = 0; i < this.Items.Count; i++)
             {
+                if (Items[i].Text == ReservedKey)
+                {
+                    continue;
+                }
+
                 string label = StringResourceSystemFacade.ParseString(this.Items[i].Text);
 
                 int firstNonSpaceSpacePosition = 0;
@@ -105,7 +110,7 @@ namespace Composite.Core.WebClient.UiControlLib
 
             foreach(ListItem item in items)
             {
-                if (!item.Enabled)
+                if (!item.Enabled || item.Text == ReservedKey)
                 {
                     continue;
                 }

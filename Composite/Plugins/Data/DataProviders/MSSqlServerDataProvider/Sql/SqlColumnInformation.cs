@@ -1,6 +1,7 @@
 using System;
 using System.Data;
 using System.ComponentModel;
+using System.Linq;
 using Composite.Data.DynamicTypes;
 using Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundation;
 
@@ -15,7 +16,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Sql
 
             return new SqlColumnInformation(
                 dataFieldDescriptor.Name,
-                dataTypeDescriptor.KeyPropertyNames.Contains(dataFieldDescriptor.Name),
+                dataTypeDescriptor.PhysicalKeyPropertyNames.Contains(dataFieldDescriptor.Name),
                 false,
                 false,
                 dataFieldDescriptor.IsNullable,
@@ -42,7 +43,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Sql
         private readonly Type _type;
         private readonly SqlDbType _sqlDbType;
 
-        private int? _hasCode = null;
+        private int? _hashCode;
 
         internal SqlColumnInformation(
             string columnName,
@@ -54,7 +55,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Sql
             SqlDbType sqlDbType)
         {
             _columnName = columnName;
-            _trimmedColumnName = _columnName.Replace(" ", "");            
+            _trimmedColumnName = _columnName.Replace(" ", "");
             _isPrimaryKey = isPrimaryKey;
             _isIdentity = isIdentity;
             _isComputed = isComputed;
@@ -65,67 +66,43 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Sql
 
 
         /// <exclude />
-        public string ColumnName
-        {
-            get { return _columnName; }
-        }
+        public string ColumnName => _columnName;
 
 
         /// <exclude />
-        public string TrimmedColumnName
-        {
-            get { return _trimmedColumnName; }
-        }
+        public string TrimmedColumnName => _trimmedColumnName;
 
 
         /// <exclude />
-        public bool IsPrimaryKey
-        {
-            get { return _isPrimaryKey; }
-        }
+        public bool IsPrimaryKey => _isPrimaryKey;
 
 
         /// <exclude />
-        public bool IsIdentity
-        {
-            get { return _isIdentity; }
-        }
+        public bool IsIdentity => _isIdentity;
 
 
         /// <exclude />
-        public bool IsComputed
-        {
-            get { return _isComputed; }
-        }
+        public bool IsComputed => _isComputed;
 
 
         /// <exclude />
-        public bool IsNullable
-        {
-            get { return _isNullable; }
-        }
+        public bool IsNullable => _isNullable;
 
 
         /// <exclude />
-        public Type Type
-        {
-            get { return _type; }   
-        }
+        public Type Type => _type;
 
 
         /// <exclude />
-        public SqlDbType SqlDbType
-        {
-            get { return _sqlDbType; }
-        }
+        public SqlDbType SqlDbType => _sqlDbType;
 
 
         /// <exclude />
         public override int GetHashCode()
         {
-            if (false == _hasCode.HasValue)
+            if (!_hashCode.HasValue)
             {
-                _hasCode = _columnName.GetHashCode() ^
+                _hashCode = _columnName.GetHashCode() ^
                            _trimmedColumnName.GetHashCode() ^
                            _isPrimaryKey.GetHashCode() ^
                            _isIdentity.GetHashCode() ^
@@ -135,7 +112,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Sql
                            _sqlDbType.GetHashCode();
             }
 
-            return _hasCode.Value;
+            return _hashCode.Value;
         }
     }
 }

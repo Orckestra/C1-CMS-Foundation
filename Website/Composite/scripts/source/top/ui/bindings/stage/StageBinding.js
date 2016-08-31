@@ -830,14 +830,26 @@ StageBinding.prototype._presentViewDefinition = function ( viewDefinition ) {
 						target = this._dockBindings.get ( viewDefinition.position );
 						break;
 
-		            case DockBinding.EXTERNAL:
+					case DockBinding.EXTERNAL:
 
-		                // Open a new window/tab with the provided url
-		                window.open(viewDefinition.url);
-		                isAbort = true;
-		                break;
+						// Open a new window/tab with the provided url
+						window.open(viewDefinition.url);
+						isAbort = true;
+						break;
 
+					case DockBinding.SLIDE:
+						var selectedDeck = this._decksBinding.getSelectedDeckBinding();
 
+						var dock = selectedDeck.getDockBindingByReference(DockBinding.MAIN);
+						var panel = dock.getSelectedTabPanelBinding();
+
+						var viewBinding = SlideInViewBinding.newInstance(panel.viewBinding.getContentDocument());
+						viewBinding.setDefinition(viewDefinition);
+						viewBinding.attach();
+						viewBinding.snapToBinding(panel.viewBinding.getRootBinding());
+
+						isAbort = true;
+						break;
 					default :
 
 						// targetting the main stage.
@@ -944,6 +956,10 @@ StageBinding.prototype.selectBrowserTab = function () {
 	var deck = this._decksBinding.getSelectedDeckBinding();
 	var browserTab = deck.getBrowserTab();
 	if (browserTab && !browserTab.isSelected) {
+		var tree = deck.getSystemTree();
+		if (tree != null) {
+			tree.setHandleToken(null);
+		}
 		browserTab.containingTabBoxBinding.select(browserTab, true);
 	}
 }

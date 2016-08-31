@@ -8,7 +8,6 @@ using Composite.Data.Caching;
 using Composite.Data.Foundation;
 using Composite.Core.Extensions;
 using Composite.Core.Types;
-using NullableGuid = Composite.Core.Types.ExtendedNullable<System.Guid>;
 using Composite.Data.Types;
 
 namespace Composite.Data
@@ -42,7 +41,7 @@ namespace Composite.Data
         private static readonly int ChildrenCacheSize = 2000;
         private static readonly int PagePlaceholderCacheSize = 500;
 
-        private static readonly Cache<string, ExtendedNullable<IPage>> _pageCache = new Cache<string, ExtendedNullable<IPage>>("Pages", PageCacheSize);
+        private static readonly Cache<string, IReadOnlyCollection<IPage>> _pageCache = new Cache<string, IReadOnlyCollection<IPage>>("Pages", PageCacheSize);
         private static readonly Cache<string, ReadOnlyCollection<IPagePlaceholderContent>> _placeholderCache = new Cache<string, ReadOnlyCollection<IPagePlaceholderContent>>("Page placeholders", PagePlaceholderCacheSize);
         private static readonly Cache<Guid, ExtendedNullable<PageStructureRecord>> _pageStructureCache = new Cache<Guid, ExtendedNullable<PageStructureRecord>>("Page structure", PageStructureCacheSize);
         private static readonly Cache<Guid, ReadOnlyCollection<Guid>> _childrenCache = new Cache<Guid, ReadOnlyCollection<Guid>>("Child pages", ChildrenCacheSize);
@@ -50,7 +49,7 @@ namespace Composite.Data
         private static readonly object _preloadingSyncRoot = new object();
         private static bool _pageStructurePreloaded;
         private static readonly HashSet<string> _preloadedPageDataScopes = new HashSet<string>();
-        
+
 
         static PageManager()
         {
@@ -58,7 +57,6 @@ namespace Composite.Data
         }
 
         #region Public methods
-
 
         /// <exclude />
         public static IPage GetPageById(Guid id)
@@ -70,30 +68,65 @@ namespace Composite.Data
         /// <exclude />
         public static IPage GetPageById(Guid id, bool readonlyValue)
         {
-            IPage result;
-
-            string cacheKey = GetCacheKey<IPage>(id);
-            var cachedValue = _pageCache.Get(cacheKey);
-
-            if (cachedValue != null)
+            var versions = GetAllPageVersions(id);
+            if (versions == null || versions.Count == 0)
             {
-                result = cachedValue.Value;
-            }
-            else
-            {
-                result = (from page in DataFacade.GetData<IPage>(false)
-                          where page.Id == id
-                          select page).FirstOrDefault();
-
-                _pageCache.Add(cacheKey, new ExtendedNullable<IPage> { Value = result });
+                return null;
             }
 
+            IEnumerable<IPage> filteredVersions = versions;
+            foreach (var dataInterceptor in DataFacade.GetDataInterceptors(typeof(IPage)))
+            {
+                filteredVersions = dataInterceptor.InterceptGetData(filteredVersions);
+            }
+
+            var result = filteredVersions.FirstOrDefault();
             if (result == null)
             {
                 return null;
             }
 
             return readonlyValue ? result : CreateWrapper(result);
+        }
+
+        /// <exclude />
+        public static IPage GetPageById(Guid id, Guid versionId, bool readonlyValue = false)
+        {
+            var versions = GetAllPageVersions(id);
+            if (versions == null || versions.Count == 0)
+            {
+                return null;
+            }
+
+            var result = versions.FirstOrDefault(v => v.VersionId == versionId);
+            if (result == null)
+            {
+                return null;
+            }
+
+            return readonlyValue ? result : CreateWrapper(result);
+        }
+
+        private static IReadOnlyCollection<IPage> GetAllPageVersions(Guid pageId)
+        {
+            string cacheKey = GetCacheKey<IPage>(pageId, Guid.Empty);
+            IReadOnlyCollection<IPage> allPageVersions = _pageCache.Get(cacheKey);
+
+            if (allPageVersions == null)
+            {
+                using (var conn = new DataConnection())
+                {
+                    conn.DisableServices();
+
+                    allPageVersions = new ReadOnlyCollection<IPage>(
+                        conn.Get<IPage>().Where(p => p.Id == pageId).ToList()
+                    );
+                }
+
+                _pageCache.Add(cacheKey, allPageVersions);
+            }
+            
+            return allPageVersions;
         }
 
 
@@ -109,7 +142,7 @@ namespace Composite.Data
         public static Guid GetParentId(Guid pageId)
         {
             PageStructureRecord pageStructure = GetPageStructureRecord(pageId);
-            return pageStructure != null ? pageStructure.ParentId : Guid.Empty;
+            return pageStructure?.ParentId ?? Guid.Empty;
         }
 
 
@@ -117,7 +150,7 @@ namespace Composite.Data
         public static int GetLocalOrdering(Guid pageId)
         {
             PageStructureRecord pageStructure = GetPageStructureRecord(pageId);
-            return pageStructure != null ? pageStructure.LocalOrdering : 0;
+            return pageStructure?.LocalOrdering ?? 0;
         }
 
 
@@ -151,18 +184,29 @@ namespace Composite.Data
         }
 
 
-
         /// <exclude />
+        [Obsolete("Use an overload also accepting a version id")]
         public static ReadOnlyCollection<IPagePlaceholderContent> GetPlaceholderContent(Guid pageId)
         {
-            string cacheKey = GetCacheKey<IPagePlaceholderContent>(pageId);
+            IPage page = GetPageById(pageId);
+
+            return GetPlaceholderContent(pageId, page.VersionId);
+        }
+
+
+        /// <exclude />
+        public static ReadOnlyCollection<IPagePlaceholderContent> GetPlaceholderContent(Guid pageId, Guid versionId)
+        {
+            string cacheKey = GetCacheKey<IPagePlaceholderContent>(pageId, versionId);
             var cachedValue = _placeholderCache.Get(cacheKey);
             if (cachedValue != null)
             {
                 return cachedValue;
             }
 
-            var list = DataFacade.GetData<IPagePlaceholderContent>(f => f.PageId == pageId).ToList();
+            var list = DataFacade.GetData<IPagePlaceholderContent>()
+                .Where(f => f.PageId == pageId 
+                            && f.VersionId == versionId).ToList();
 
             var readonlyList = new ReadOnlyCollection<IPagePlaceholderContent>(list);
 
@@ -183,12 +227,21 @@ namespace Composite.Data
                 {
                     if (!_preloadedPageDataScopes.Contains(key))
                     {
-                        var pages = DataFacade.GetData<IPage>().Evaluate();
-
-                        foreach (var page in pages)
+                        using (var conn = new DataConnection())
                         {
-                            string pageKey = GetCacheKey(page.Id, page.DataSourceId);
-                            _pageCache.Add(pageKey, new ExtendedNullable<IPage> { Value = page });
+                            conn.DisableServices();
+
+                            var pages = DataFacade.GetData<IPage>().GroupBy(p => p.Id).Evaluate();
+                            if (pages.Count > 0)
+                            {
+                                var dataSourceId = pages.First().First().DataSourceId;
+
+                                foreach (var pageVersionsGroup in pages)
+                                {
+                                    string pageKey = GetCacheKey(pageVersionsGroup.Key, dataSourceId);
+                                    _pageCache.Add(pageKey, new ReadOnlyCollection<IPage>(pageVersionsGroup.ToList()));
+                                }
+                            }
                         }
 
                         _preloadedPageDataScopes.Add(key);
@@ -256,7 +309,7 @@ namespace Composite.Data
             return result;
         }
 
-        private static string GetCacheKey<T>(Guid id)
+        private static string GetCacheKey<T>(Guid id, Guid versionId)
         {
             var cultureInfo = LocalizationScopeManager.MapByType(typeof (T));
             Verify.IsNotNull(cultureInfo, "Localization culture is not set");
@@ -264,14 +317,20 @@ namespace Composite.Data
             var dataScope = DataScopeManager.MapByType(typeof (T));
             Verify.IsNotNull(dataScope, "Publication scope is not set");
 
-            return id + dataScope.Name + cultureInfo;
+            return id + dataScope.Name + cultureInfo + (versionId != Guid.Empty ? versionId.ToString() : "");
         }
 
         private static string GetCacheKey(Guid id, DataSourceId dataSourceId)
         {
+            return GetCacheKey(id, Guid.Empty, dataSourceId);
+        }
+
+        private static string GetCacheKey(Guid id, Guid versionId, DataSourceId dataSourceId)
+        {
             string localizationInfo = dataSourceId.LocaleScope.ToString();
             string dataScope = dataSourceId.DataScopeIdentifier.Name;
-            return id + dataScope + localizationInfo;
+            string versionIdStr = versionId != Guid.Empty ? versionId.ToString() : "";
+            return id + dataScope + localizationInfo + versionIdStr;
         }
 
         private static void OnPageStoreChanged(object sender, StoreEventArgs storeEventArgs)
@@ -315,7 +374,7 @@ namespace Composite.Data
                 return;
             }
 
-            _placeholderCache.Remove(GetCacheKey(placeHolder.PageId, placeHolder.DataSourceId));
+            _placeholderCache.Remove(GetCacheKey(placeHolder.PageId, placeHolder.VersionId, placeHolder.DataSourceId));
         }
 
 
@@ -364,6 +423,6 @@ namespace Composite.Data
             DataEventSystemFacade.SubscribeToStoreChanged<IPageStructure>(OnPageStructureStoreChanged, true);
         }
 
-        #endregion Private
+       #endregion Private
     }
 }

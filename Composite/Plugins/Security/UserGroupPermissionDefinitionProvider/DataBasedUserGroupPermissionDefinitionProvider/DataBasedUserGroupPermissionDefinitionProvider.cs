@@ -93,7 +93,7 @@ namespace Composite.Plugins.Security.UserGroupPermissionDefinitionProvider.DataB
                         DataFacade.GetData<IUserGroupPermissionDefinition>()
                                   .Where(d => d.UserGroupId == userGroupId)
                                   .ToList()
-                                  .Where(d => userGroupPermissionDefinition.EntityToken.Equals(DeserializeSilent(d.SerializedEntityToken)))
+                                  .Where(d => userGroupPermissionDefinition.EntityToken.EqualsWithVersionIgnore(DeserializeSilent(d.SerializedEntityToken)))
                                   .ToList();
 
                 DataFacade.Delete(existingPermissionDefinitions);
@@ -135,7 +135,7 @@ namespace Composite.Plugins.Security.UserGroupPermissionDefinitionProvider.DataB
                     toDelete = DataFacade.GetData<IUserGroupPermissionDefinition>()
                         .Where(ugpd => ugpd.UserGroupId == userGroupId)
                         .ToList()
-                        .Where(d => entityToken.Equals(DeserializeSilent(d.SerializedEntityToken)))
+                        .Where(d => entityToken.EqualsWithVersionIgnore(DeserializeSilent(d.SerializedEntityToken)))
                         .ToList();
                 }
                 else

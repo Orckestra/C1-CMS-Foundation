@@ -448,18 +448,6 @@
     <Compile Include="Plugins\Elements\ElementProviders\PageElementProvider\LocalizePageWorkflow.designer.cs">
       <DependentUpon>LocalizePageWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Plugins\Elements\ElementProviders\PageElementProvider\PagePublishSchedulerWorkflow.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Plugins\Elements\ElementProviders\PageElementProvider\PagePublishSchedulerWorkflow.designer.cs">
-      <DependentUpon>PagePublishSchedulerWorkflow.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Plugins\Elements\ElementProviders\PageElementProvider\PageUnpublishSchedulerWorkflow.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Plugins\Elements\ElementProviders\PageElementProvider\PageUnpublishSchedulerWorkflow.designer.cs">
-      <DependentUpon>PageUnpublishSchedulerWorkflow.cs</DependentUpon>
-    </Compile>
     <Compile Include="Plugins\Elements\ElementProviders\PageElementProvider\UndoUnpublishedChangesWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -1108,12 +1096,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Plugins\Elements\ElementProviders\PageElementProvider\LocalizePageWorkflow.layout">
       <DependentUpon>LocalizePageWorkflow.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Plugins\Elements\ElementProviders\PageElementProvider\PagePublishSchedulerWorkflow.layout">
-      <DependentUpon>PagePublishSchedulerWorkflow.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Plugins\Elements\ElementProviders\PageElementProvider\PageUnpublishSchedulerWorkflow.layout">
-      <DependentUpon>PageUnpublishSchedulerWorkflow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Plugins\Elements\ElementProviders\PageElementProvider\UndoUnpublishedChangesWorkflow.layout">
       <DependentUpon>UndoUnpublishedChangesWorkflow.cs</DependentUpon>

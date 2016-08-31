@@ -187,7 +187,7 @@ namespace Composite.Data
         {
             Verify.ArgumentNotNull(data, "data");
 
-            return data.DataSourceId.InterfaceType.GetKeyProperties().Single().GetValue(data, null);
+            return data.DataSourceId.InterfaceType.GetSingleKeyProperty().GetValue(data, null);
         }
 
 

@@ -216,6 +216,7 @@
 			<Script filename="${root}/scripts/source/top/ui/bindings/fields/FieldDescBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/fields/FieldDataBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/fields/FieldHelpBinding.js"/>
+			<Script filename="${root}/scripts/source/top/ui/bindings/fields/ResolverContainerBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/data/radiocheck/RadioDataGroupBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/data/radiocheck/RadioDataBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/data/radiocheck/CheckBoxBinding.js"/>
@@ -361,6 +362,9 @@
 			<Script filename="${root}/scripts/source/top/core/MessageQueue.js"/>
 			<Script filename="${root}/scripts/source/top/core/ViewDefinitions.js"/>
 			<Script filename="${root}/scripts/source/top/core/KickStart.js"/>
+			<Script filename="${root}/scripts/source/top/ui/bindings/buttons/combobutton/SelectorButtonBinding.js"/>
+			<Script filename="${root}/scripts/source/top/ui/bindings/views/SlideInViewBinding.js"/>
+			<Script filename="${root}/scripts/source/top/ui/bindings/buttons/viewbutton/SlideInButtonBinding.js"/>
 		</Mode>
 	</Type>
 </Scripts>

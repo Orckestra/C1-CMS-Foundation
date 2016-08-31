@@ -6,8 +6,10 @@ using System.Reflection;
 using Composite.Core;
 using Composite.Core.Collections.Generic;
 using Composite.C1Console.Events;
+using Composite.Core.Linq;
 using Composite.Core.ResourceSystem;
 using Composite.Core.Types;
+using Composite.Data.Types;
 
 
 namespace Composite.Data
@@ -359,17 +361,16 @@ namespace Composite.Data
                         {
                             if (attr.InterfaceType == null)
                             {
-                                throw new InvalidOperationException(string.Format("Null argument is not allowed for the attribute '{0}' on the property '{1}'", 
-                                    typeof(ForeignKeyAttribute), propertyInfo));
+                                throw new InvalidOperationException(
+                                    $"Null argument is not allowed for the attribute '{typeof (ForeignKeyAttribute)}' on the property '{propertyInfo}'");
                             }
                                 
 
                             if (!typeof (IData).IsAssignableFrom(attr.InterfaceType))
                             {
-                                throw new InvalidOperationException(string.Format("The argument should inherit the type '{0}' for the attribute '{1}' on the property '{2}'", 
-                                    typeof(IData), typeof(ForeignKeyAttribute), propertyInfo));
+                                throw new InvalidOperationException(
+                                    $"The argument should inherit the type '{typeof (IData)}' for the attribute '{typeof (ForeignKeyAttribute)}' on the property '{propertyInfo}'");
                             }
-                                
 
                             if (attr.IsNullReferenceValueSet)
                             {
@@ -422,6 +423,19 @@ namespace Composite.Data
 
 
         /// <exclude />
+        public static IReadOnlyList<string> GetVersionKeyPropertyNames(this Type interfaceType)
+        {
+            Verify.ArgumentNotNull(interfaceType, "interfaceType");
+
+            var map = _resourceLocker.Resources.InterfaceTypeToVersionKeyPropertyNames;
+
+            return map.GetOrAdd(interfaceType, type => 
+                (from kpn in type.GetCustomAttributesRecursively<VersionKeyPropertyNameAttribute>()
+                 orderby kpn.VersionKeyPropertyName
+                 select kpn.VersionKeyPropertyName).ToList());
+        }
+
+        /// <exclude />
         [Obsolete("Use GetKeyProperties() instead")]
         public static List<PropertyInfo> GetKeyPropertyInfoes(this IData data)
         {
@@ -447,11 +461,28 @@ namespace Composite.Data
         }
 
         /// <exclude />
+        public static IReadOnlyList<PropertyInfo> GetPhysicalKeyProperties(this Type interfaceType)
+        {
+            var versionKeyAttributes = interfaceType
+                .GetCustomAttributesRecursively<VersionKeyPropertyNameAttribute>();
+            
+            var versionProperties = versionKeyAttributes
+                .Select(v => interfaceType.GetDataPropertyRecursively(v.VersionKeyPropertyName));
+
+            var keyProperties = GetKeyProperties(interfaceType);
+
+            return keyProperties.Concat(versionProperties).ToList();
+        }
+
+        /// <exclude />
         public static IReadOnlyList<PropertyInfo> GetKeyProperties(this Type interfaceType)
         {
             Verify.ArgumentNotNull(interfaceType, "interfaceType");
 
-            if (!typeof(IData).IsAssignableFrom(interfaceType)) throw new ArgumentException(string.Format("The specified type must inherit from '{0}", typeof(IData)));
+            if (!typeof(IData).IsAssignableFrom(interfaceType))
+            {
+                throw new ArgumentException($"The specified type must inherit from '{typeof (IData)}");
+            }
 
             var map = _resourceLocker.Resources.InterfaceTypeToKeyPropertyInfo;
 
@@ -475,6 +506,12 @@ namespace Composite.Data
             });
         }
 
+        internal static PropertyInfo GetSingleKeyProperty(this Type interfaceType)
+        {
+            return interfaceType.GetKeyProperties().SingleOrException(
+                "No key properties defined on data type '{0}'",
+                "Multiple key proterties defined for data type '{0}'", interfaceType);
+        }
 
 
         /// <exclude />
@@ -491,7 +528,7 @@ namespace Composite.Data
         public static string GetTypeTitle(this Type interfaceType)
         {
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");
-            if (typeof(IData).IsAssignableFrom(interfaceType) == false) throw new ArgumentException(string.Format("The specified type must inherit from '{0}", typeof(IData)));
+            if (!typeof(IData).IsAssignableFrom(interfaceType)) throw new ArgumentException($"The specified type must inherit from '{typeof (IData)}");
 
             string title;
 
@@ -511,7 +548,8 @@ namespace Composite.Data
                     }
                     else
                     {
-                        throw new InvalidOperationException(string.Format("More than one '{0}' defined on the type '{1}'", typeof(TitleAttribute), interfaceType));
+                        throw new InvalidOperationException(
+                            $"More than one '{typeof (TitleAttribute)}' defined on the type '{interfaceType}'");
                     }
 
                     _resourceLocker.Resources.InterfaceTypeToTypeTitle.Add(interfaceType, title);
@@ -550,6 +588,7 @@ namespace Composite.Data
             public ConcurrentDictionary<Type, IReadOnlyList<PropertyInfo>> InterfaceTypeToKeyPropertyInfo { get; set; }
             public Dictionary<Type, string> InterfaceTypeToTypeTitle { get; set; }
             public ConcurrentDictionary<Type, IReadOnlyList<string>> InterfaceTypeToKeyPropertyNames { get; set; }
+            public ConcurrentDictionary<Type, IReadOnlyList<string>> InterfaceTypeToVersionKeyPropertyNames { get; set; }
 
             public static void Initialize(Resources resources)
             {
@@ -565,6 +604,7 @@ namespace Composite.Data
                 resources.InterfaceTypeToKeyPropertyInfo = new ConcurrentDictionary<Type, IReadOnlyList<PropertyInfo>>();
                 resources.InterfaceTypeToTypeTitle = new Dictionary<Type, string>();
                 resources.InterfaceTypeToKeyPropertyNames = new ConcurrentDictionary<Type, IReadOnlyList<string>>();
+                resources.InterfaceTypeToVersionKeyPropertyNames = new ConcurrentDictionary<Type, IReadOnlyList<string>>();
             }
         }
     }

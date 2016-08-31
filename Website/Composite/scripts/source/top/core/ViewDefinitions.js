@@ -69,6 +69,16 @@ var ViewDefinitions = {
 		toolTip		: null
 	}),
 
+	"Composite.Management.SlideView": new HostedViewDefinition({
+		handle: "Composite.Management.SlideView",
+		isMutable: true,
+		position: DockBinding.SLIDE,
+		url: null,
+		label: null,
+		image: null,
+		toolTip: null
+	}),
+
 	/*
 	 * Start.
 	 */
