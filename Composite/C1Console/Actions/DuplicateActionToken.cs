@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using Composite.C1Console.Elements.Plugins.ElementAttachingProvider;
 using Composite.C1Console.Security;
 using Composite.C1Console.Events;
 using Composite.C1Console.Trees;
@@ -15,8 +12,8 @@ using Composite.Core.Extensions;
 using Composite.Core.ResourceSystem;
 using Composite.Core.Types;
 using Composite.Data;
-using Composite.Data.DynamicTypes;
 using Composite.Data.DynamicTypes.Foundation;
+using Composite.Data.Hierarchy;
 using Composite.Data.ProcessControlled;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
 using Composite.Data.Types;
@@ -24,9 +21,13 @@ using Composite.Plugins.Commands.ConsoleCommandHandlers;
 
 namespace Composite.C1Console.Actions
 {
+    /// <summary>
+    /// Action to duplicate data
+    /// </summary>
     [ActionExecutor(typeof(DuplicateActionExecuter))]
-    internal class DuplicateActionToken : ActionToken
+    public sealed class DuplicateActionToken : ActionToken
     {
+        /// <exclude />
         public override IEnumerable<PermissionType> PermissionTypes => new[] { PermissionType.Add };
 
         /// <exclude />
@@ -70,6 +71,8 @@ namespace Composite.C1Console.Actions
             return null;
         }
 
+        private static readonly Func<IPage, bool> IsRootPage = f => f.GetParent() == null;
+
         private IData CloneData<T>(T data) where T : class, IData
         {
             IData newdata = DataFacade.BuildNew<T>();
@@ -92,11 +95,15 @@ namespace Composite.C1Console.Actions
             var page = data as IPage;
             if (page != null)
             {
-                if(!SetNewValue<T>(page,newdata, dataProperties.First(p => p.Name == nameof(IPage.MenuTitle))))
+                if (IsRootPage(page))
                 {
                     SetNewValue<T>(page, newdata, dataProperties.First(p => p.Name == nameof(IPage.Title)));
                 }
-               
+                else if (!SetNewValue<T>(page, newdata, dataProperties.First(p => p.Name == nameof(IPage.MenuTitle))))
+                {
+                    SetNewValue<T>(page, newdata, dataProperties.First(p => p.Name == nameof(IPage.Title)));
+                }
+
                 SetNewValue<T>(page, newdata, dataProperties.First(p => p.Name == nameof(IPage.UrlTitle)), isUrl:true);
                 
                 PageInsertPosition.After(page.Id).CreatePageStructure(newdata as IPage, page.GetParentId());
@@ -138,7 +145,7 @@ namespace Composite.C1Console.Actions
             var value = isUrl? (string)property.GetValue(sourceData):
                                 GetStringWithoutCopyOf((string) property.GetValue(sourceData));
 
-            var storeFieldType = property.GetCustomAttributes(true).FirstOrDefault(f=>f is StoreFieldTypeAttribute);
+            var storeFieldType = property.GetCustomAttributes(typeof(StoreFieldTypeAttribute),true).FirstOrDefault();
             var maxLength = (storeFieldType as StoreFieldTypeAttribute)?.StoreFieldType.MaximumLength;
 
             if (!isUrl && value.IsNullOrEmpty())
@@ -172,7 +179,13 @@ namespace Composite.C1Console.Actions
         {
             if (isUrl)
             {
-                return string.Join("-", source, count.ToString());
+                if (!source.IsNullOrEmpty())
+                {
+                    return string.Join("-", source, count.ToString());
+                }
+
+                return GenerateCopyOfName(source,count,maxLength).Trim().Replace(" ","-").Replace("(","").Replace(")","");
+                
             }
 
             Func <int, string> copyText = i => StringResourceSystemFacade.GetString("Composite.Management", "Duplication.Text")
