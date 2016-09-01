@@ -5,7 +5,9 @@
     <cms:binding name="InstalledPackageInformation" type="Composite.Core.PackageSystem.InstalledPackageInformation" />
     <cms:binding name="InstallDate" type="System.String" />
     <cms:binding name="IsTrial" type="System.Boolean" />
-    <cms:binding name="TrialExpire" type="System.String" optional="true" />
+		<cms:binding name="IsSubscription" type="System.Boolean"  />
+		<cms:binding name="SubscriptionName" type="System.String" optional="true" />
+		<cms:binding name="LicenseExpirationDate" type="System.String" optional="true" />
   </cms:bindings>
   <cms:layout iconhandle="package-view-installedinfo">
     <cms:layout.label>
@@ -53,13 +55,33 @@
             <TextArea Type="ReadOnly" Label="${Composite.Plugins.PackageElementProvider, ViewInstalledInformation.TrialInformationLabel}" Text="${Composite.Plugins.PackageElementProvider, ViewInstalledInformation.TrialInformationText}" />
             <TextBox Type="ReadOnly" Label="${Composite.Plugins.PackageElementProvider, ViewInstalledInformation.TrialExpireLabel}">
               <TextBox.Text>
-                <cms:read source="TrialExpire" />
+                <cms:read source="LicenseExpirationDate" />
               </TextBox.Text>
             </TextBox>
           </FieldGroup>
         </f:BooleanCheck.WhenTrue>
       </f:BooleanCheck>
 
-    </PlaceHolder>
+			<f:BooleanCheck>
+				<f:BooleanCheck.CheckValue>
+					<cms:read source="IsSubscription" />
+				</f:BooleanCheck.CheckValue>
+				<f:BooleanCheck.WhenTrue>
+					<FieldGroup Label="${Composite.Plugins.PackageElementProvider, ViewInstalledInformation.LicenseInformationGroupLabel}">
+						<TextBox Type="ReadOnly" Label="${Composite.Plugins.PackageElementProvider, ViewInstalledInformation.SubscriptionNameLabel}">
+							<TextBox.Text>
+								<cms:read source="SubscriptionName" />
+							</TextBox.Text>
+						</TextBox>
+						<TextBox Type="ReadOnly" Label="${Composite.Plugins.PackageElementProvider, ViewInstalledInformation.LicenseExpirationDateLabel}">
+							<TextBox.Text>
+								<cms:read source="LicenseExpirationDate" />
+							</TextBox.Text>
+						</TextBox>
+					</FieldGroup>
+				</f:BooleanCheck.WhenTrue>
+			</f:BooleanCheck>
+
+		</PlaceHolder>
   </cms:layout>
 </cms:formdefinition>
