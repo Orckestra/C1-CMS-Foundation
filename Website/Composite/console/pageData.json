@@ -52,8 +52,7 @@
         "name": "edit-language/save",
         "label": "Save",
         "icon": "save",
-        "action": "save",
-        "saveButton": true
+        "action": "save"
       }
     ]
   },

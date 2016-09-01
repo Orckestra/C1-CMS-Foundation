@@ -9,8 +9,12 @@ const FormPage = props => (
 			canSave={!!props.dirtyPages[props.name]}
 			buttons={props.pageDef.buttons.reduce((buttons, buttonName) => {
 				let button = Object.assign({}, props.buttonDefs[buttonName]);
-				let actionName = buttonName.replace(props.name + '/', '');
-				button.action = props.actions[actionName](props.name);
+				if (button.action === 'save') {
+					button.action = props.actions.save(props.name);
+					button.saveButton = true;
+				} else {
+					button.action = props.actions.fireAction(button.action, props.name);
+				}
 				buttons[buttonName] = button;
 				return buttons;
 			}, {})}/>

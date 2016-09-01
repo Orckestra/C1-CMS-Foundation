@@ -15,6 +15,9 @@ export function fireAction(actionId, pageName, values) {
 		})
 		.then(() => {
 			dispatch({ type: FIRE_ACTION_DONE, actionId, pageName });
+		})
+		.catch(err => {
+			dispatch({ type: FIRE_ACTION_FAILED, actionId, pageName, error: err });
 		});
 	};
 }

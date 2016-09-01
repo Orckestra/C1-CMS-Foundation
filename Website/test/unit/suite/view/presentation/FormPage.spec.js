@@ -24,10 +24,10 @@ describe('FormPage', () => {
 				]
 			},
 			buttonDefs: {
-				'test/onebutton': { label: 'One' },
-				'test/twobutton': { label: 'Two' },
-				'test/save': {label: 'Save', action: 'save' },
-				'do-not-render-button': {label: 'Must not be shown'}
+				'test/onebutton': { label: 'One', action: 'oneaction' },
+				'test/twobutton': { label: 'Two', action: 'twoaction' },
+				'test/save': { label: 'Save', action: 'save' },
+				'do-not-render-button': { label: 'Must not be shown' }
 			},
 			fieldsetDefs: {
 				'test/oneset': {
@@ -50,17 +50,14 @@ describe('FormPage', () => {
 			}
 		};
 		pageActions = {
-			onebutton: () => {},
-			twobutton: () => {},
+			fireAction: () => {},
 			update: () => {},
 			save: () => {}
 		};
 		state = {
 			actions: {
 				save: sinon.spy(() => pageActions.save).named('save'),
-				onebutton: sinon.spy(() => pageActions.onebutton).named('onebutton'),
-				twobutton: sinon.spy(() => pageActions.twobutton).named('twobutton'),
-				'do-not-render-button': () => () => {},
+				fireAction: sinon.spy(() => pageActions.fireAction).named('fireAction'),
 				updateValue: sinon.spy(() => pageActions.update).named('threebutton')
 			},
 			dirtyPages: [],
@@ -97,9 +94,9 @@ describe('FormPage', () => {
 			type: 'document',
 			canSave: false,
 			buttons: {
-				'test/save': { label: 'Save', action: pageActions.save },
-				'test/onebutton': { label: 'One', action: pageActions.onebutton },
-				'test/twobutton': { label: 'Two', action: pageActions.twobutton }
+				'test/save': { label: 'Save', action: pageActions.save, saveButton: true },
+				'test/onebutton': { label: 'One', action: pageActions.fireAction },
+				'test/twobutton': { label: 'Two', action: pageActions.fireAction }
 			}
 		}
 	));
@@ -110,13 +107,15 @@ describe('FormPage', () => {
 		'to have props satisfying', {
 			type: 'document',
 			buttons: {
-				'test/onebutton': { action: expect.it('to be', pageActions.onebutton) },
-				'test/twobutton': { action: expect.it('to be', pageActions.twobutton) }
+				'test/onebutton': { action: expect.it('to be', pageActions.fireAction) },
+				'test/twobutton': { action: expect.it('to be', pageActions.fireAction) }
 			}
 		}),
-		expect(state.actions.save, 'was called with', 'test'),
-		expect(state.actions.onebutton, 'was called with', 'test'),
-		expect(state.actions.twobutton, 'was called with', 'test')
+		expect(state.actions.save, 'to have a call satisfying', { args: ['test'] }),
+		expect(state.actions.fireAction, 'to have calls exhaustively satisfying', [
+			{ args: ['oneaction', 'test'] },
+			{ args: ['twoaction', 'test'] },
+		])
 	]));
 
 	it('passes a nametagged update function to fields', () => Promise.all([
