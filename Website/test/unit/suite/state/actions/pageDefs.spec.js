@@ -11,9 +11,8 @@ describe('Get page definitions', () => {
 	);
 
 	describe('loadPageDef', () => {
-		let dispatch, loadPageDef, rawPageDef;
+		let dispatch, rawPageDef, loadPageDef = actions.loadPageDef;
 		beforeEach(() => {
-			loadPageDef = actions.loadPageDef;
 			dispatch = sinon.spy().named('dispatch');
 			rawPageDef = [
 				{

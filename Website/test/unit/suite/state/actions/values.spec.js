@@ -14,9 +14,8 @@ describe('Load/save values', () => {
 	);
 
 	describe('loadValues', () => {
-		let loadValues, dispatch, rawValues;
+		let dispatch, rawValues, loadValues = actions.loadValues;
 		beforeEach(() => {
-			loadValues = actions.loadValues;
 			dispatch = sinon.spy().named('dispatch');
 			rawValues = {
 				field1: 10,

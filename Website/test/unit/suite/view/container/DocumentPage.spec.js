@@ -48,11 +48,15 @@ describe('DocumentPage', () => {
 					.and('when called with', ['pagename', 'fieldname'], 'when called with', ['value'], 'to be undefined'), // Result is call to store.dispatch
 				save: expect.it('to be a function')
 					.and('when called with', ['pagename'], 'to be a function')
-					.and('when called with', ['pagename'], 'when called', 'to be undefined') // Result is call to store.dispatch
+					.and('when called with', ['pagename'], 'when called', 'to be undefined'), // Result is call to store.dispatch
+				fireAction: expect.it('to be a function')
+					.and('when called with', ['pagename', 'actionId'], 'to be a function')
+					.and('when called with', ['pagename', 'actionId'], 'when called with', [['val1', 'val2']], 'to be undefined') // Result is call to store.dispatch
 			}}
 			dirtyPages={[]}/>)
 		.then(() => expect(store.dispatch, 'to have calls satisfying', [
 			{ args: [{ type: UPDATE_VALUE, pageName: 'pagename', fieldName: 'fieldname', newValue: 'value' }]},
+			{ args: [expect.it('to be a function')]},
 			{ args: [expect.it('to be a function')]}
 		]));
 	});

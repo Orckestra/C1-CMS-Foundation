@@ -18,6 +18,7 @@ describe('FormPage', () => {
 					'test/fourset'
 				],
 				buttons: [
+					'test/save',
 					'test/onebutton',
 					'test/twobutton'
 				]
@@ -25,6 +26,7 @@ describe('FormPage', () => {
 			buttonDefs: {
 				'test/onebutton': { label: 'One' },
 				'test/twobutton': { label: 'Two' },
+				'test/save': {label: 'Save', action: 'save' },
 				'do-not-render-button': {label: 'Must not be shown'}
 			},
 			fieldsetDefs: {
@@ -50,10 +52,12 @@ describe('FormPage', () => {
 		pageActions = {
 			onebutton: () => {},
 			twobutton: () => {},
-			update: () => {}
+			update: () => {},
+			save: () => {}
 		};
 		state = {
 			actions: {
+				save: sinon.spy(() => pageActions.save).named('save'),
 				onebutton: sinon.spy(() => pageActions.onebutton).named('onebutton'),
 				twobutton: sinon.spy(() => pageActions.twobutton).named('twobutton'),
 				'do-not-render-button': () => () => {},
@@ -93,6 +97,7 @@ describe('FormPage', () => {
 			type: 'document',
 			canSave: false,
 			buttons: {
+				'test/save': { label: 'Save', action: pageActions.save },
 				'test/onebutton': { label: 'One', action: pageActions.onebutton },
 				'test/twobutton': { label: 'Two', action: pageActions.twobutton }
 			}
@@ -109,6 +114,7 @@ describe('FormPage', () => {
 				'test/twobutton': { action: expect.it('to be', pageActions.twobutton) }
 			}
 		}),
+		expect(state.actions.save, 'was called with', 'test'),
 		expect(state.actions.onebutton, 'was called with', 'test'),
 		expect(state.actions.twobutton, 'was called with', 'test')
 	]));

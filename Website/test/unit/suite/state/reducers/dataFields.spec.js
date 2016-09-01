@@ -10,14 +10,13 @@ describe('Data fields', () => {
 			.and('to have property', 'FLAG_FIELDS_DIRTY')
 		);
 
-		describe('Save state', () => {
+		describe('Commit page', () => {
 			let commitPage = actions.commitPage;
-			it('creates action for saving state', () => {
+			it('creates action for clearing a page\'s dirty flag', () => {
 				let action = commitPage('testpage');
 				return expect(action, 'to be an action of type', actions.FLAG_PAGE_CLEAN)
 					.and('to have property', 'pageName', 'testpage');
 			});
-			// Should also send fields to value end point
 		});
 
 		describe('Update field value', () => {
