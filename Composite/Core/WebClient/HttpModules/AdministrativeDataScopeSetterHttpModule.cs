@@ -39,6 +39,7 @@ namespace Composite.Core.WebClient.HttpModules
             public void EndRequest(object sender, EventArgs e)
             {
                 _dataScope?.Dispose();
+                _dataScope = null;
             }
         }
 
