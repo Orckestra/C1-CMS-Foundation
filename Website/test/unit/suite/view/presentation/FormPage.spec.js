@@ -107,6 +107,7 @@ describe('FormPage', () => {
 		'to have props satisfying', {
 			type: 'document',
 			buttons: {
+				'test/save': { action: expect.it('to be', pageActions.save) },
 				'test/onebutton': { action: expect.it('to be', pageActions.fireAction) },
 				'test/twobutton': { action: expect.it('to be', pageActions.fireAction) }
 			}
