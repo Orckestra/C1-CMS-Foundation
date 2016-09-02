@@ -88,6 +88,7 @@ namespace Composite.Renderers
 
 					var content = DataFacade.BuildNew<IPagePlaceholderContent>();
 					content.PageId = page.Id;
+				    content.VersionId = page.VersionId;
 					content.PlaceHolderId = placeholder.Id;
 					content.Content = placeholderDocument.ToString();
 					contents.Add(content);

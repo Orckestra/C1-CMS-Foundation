@@ -14,7 +14,7 @@ namespace Composite.Core.Threading
         private const string c_HttpContextItemsId = "ThreadDataManager";
 
         [ThreadStatic]
-        private static ThreadDataManagerData _threadDataManagerData = null;
+        private static ThreadDataManagerData _threadDataManagerData;
 
         /// <summary>
         /// Gets <see cref="Composite.Core.Threading.ThreadDataManagerData" /> object for the current thread
@@ -88,10 +88,7 @@ using(Composite.Core.Threading.ThreadDataManager.EnsureInitialize())
         public static ThreadDataManagerData CreateNew()
         {
             var current = Current;
-            if(current != null)
-            {
-                current.CheckNotDisposed();
-            }
+            current?.CheckNotDisposed();
 
             return new ThreadDataManagerData(current);
         }
@@ -111,10 +108,7 @@ using(Composite.Core.Threading.ThreadDataManager.EnsureInitialize())
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
         public static IDisposable Initialize(ThreadDataManagerData parentThreadData)
         {
-            if(parentThreadData != null)
-            {
-                parentThreadData.CheckNotDisposed();
-            }
+            parentThreadData?.CheckNotDisposed();
 
             return new ThreadDataManagerScope(new ThreadDataManagerData(parentThreadData), true);
         }
@@ -262,7 +256,7 @@ using(Composite.Core.Threading.ThreadDataManager.EnsureInitialize())
                         }
                         catch(Exception e)
                         {
-                            Core.Logging.LoggingService.LogError(LogTitle, e);
+                            Log.LogError(LogTitle, e);
                         }
 
                         Verify.IsTrue(Current == _threadData, "ThreadDataManager.Current points to a different thread data object!!!");

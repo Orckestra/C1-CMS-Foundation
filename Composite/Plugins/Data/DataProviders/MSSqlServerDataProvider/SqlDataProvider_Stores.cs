@@ -508,11 +508,16 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
             try
             {
-                interfaceType = dataTypes != null ? dataTypes[dataTypeId] : DataTypeTypesManager.GetDataType(dataTypeDescriptor);
+                if (dataTypes == null
+                    || !dataTypes.TryGetValue(dataTypeId, out interfaceType)
+                    || interfaceType == null)
+                {
+                    interfaceType = DataTypeTypesManager.GetDataType(dataTypeDescriptor);
+                }
 
                 if (interfaceType == null)
                 {
-                    Log.LogError(LogTitle, "The data interface type '{0}' does not exists and is not code generated. It will not be unusable", dataTypeDescriptor.TypeManagerTypeName);
+                    Log.LogWarning(LogTitle, "The data interface type '{0}' does not exists and is not code generated. It will not be unusable", dataTypeDescriptor.TypeManagerTypeName);
                     return result;
                 }
 

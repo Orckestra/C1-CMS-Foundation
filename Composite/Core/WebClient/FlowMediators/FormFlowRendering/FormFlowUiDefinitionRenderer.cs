@@ -96,7 +96,9 @@ namespace Composite.Core.WebClient.FlowMediators.FormFlowRendering
             IUiControl customToolbarItems = null;
             if (customToolbarItemsMarkupProvider != null)
             {
-                FormTreeCompiler toolbarCompiler = new FormTreeCompiler();
+                var toolbarCompiler = new FormTreeCompiler();
+                CurrentCustomToolbarFormTreeCompiler = toolbarCompiler;
+
                 using (XmlReader formMarkupReader = customToolbarItemsMarkupProvider.GetReader())
                 {
                     toolbarCompiler.Compile(formMarkupReader, channel, innerFormBindings, debugMode, bindingsValidationRules);
@@ -115,7 +117,7 @@ namespace Composite.Core.WebClient.FlowMediators.FormFlowRendering
             string labelField = GetFormLabelField(document);
             ResourceHandle containerIcon = formCompiler.Icon;
 
-            return renderingContainer.Render(formCompiler.UiControl, customToolbarItems, channel, containerEventHandlerStubs, label, labelField, containerIcon);
+            return renderingContainer.Render(formCompiler.UiControl, customToolbarItems, channel, containerEventHandlerStubs, label, labelField, formCompiler.Tooltip, containerIcon);
         }
 
         private static void BaseEventHandler(string consoleId, 
@@ -133,6 +135,16 @@ namespace Composite.Core.WebClient.FlowMediators.FormFlowRendering
             FormFlowEventHandler handler = eventHandlers[localScopeEventIdentifier];
             Dictionary<string, Exception> bindingErrors = activeFormTreeCompiler.SaveAndValidateControlProperties();
 
+            FormTreeCompiler activeCustomToolbarFormTreeCompiler = CurrentCustomToolbarFormTreeCompiler;
+            if (activeCustomToolbarFormTreeCompiler != null)
+            {
+                var toolbarBindingErrors = activeCustomToolbarFormTreeCompiler.SaveAndValidateControlProperties();
+                foreach (var pair in toolbarBindingErrors)
+                {
+                    bindingErrors.Add(pair.Key, pair.Value);
+                }
+            }
+
             formServicesContainer.AddService(new BindingValidationService(bindingErrors));
 
             handler.Invoke(flowToken, activeInnerFormBindings, formServicesContainer);
@@ -143,7 +155,7 @@ namespace Composite.Core.WebClient.FlowMediators.FormFlowRendering
                 return;
             }
             
-            var formFlowService = (FormFlowRenderingService) formServicesContainer.GetService<IFormFlowRenderingService>();
+            var formFlowService = formServicesContainer.GetService<IFormFlowRenderingService>();
             bool replacePageOutput = (formServicesContainer.GetService<IFormFlowWebRenderingService>().NewPageOutput != null);
 
             bool rerenderView = formFlowService.RerenderViewRequested;
@@ -237,17 +249,10 @@ namespace Composite.Core.WebClient.FlowMediators.FormFlowRendering
 
         private static string GetFormLabelField(XDocument formMarkup)
         {
-            var labelElement = formMarkup.Descendants(Namespaces.BindingForms10 + "layout.label").FirstOrDefault();
-            if (labelElement == null)
-            {
-                labelElement = formMarkup.Descendants().FirstOrDefault(e => e.Name.LocalName == "TabPanels.Label");
-            }
+            var labelElement = formMarkup.Descendants(Namespaces.BindingForms10 + "layout.label").FirstOrDefault() 
+                            ?? formMarkup.Descendants().FirstOrDefault(e => e.Name.LocalName == "TabPanels.Label");
 
-            if (labelElement == null) return null;
-
-            
-
-            var readBinding = labelElement.Element(Namespaces.BindingForms10 + "read");
+            var readBinding = labelElement?.Element(Namespaces.BindingForms10 + "read");
             if(readBinding == null) return null;
 
             return (string)readBinding.Attribute("source");
@@ -261,6 +266,7 @@ namespace Composite.Core.WebClient.FlowMediators.FormFlowRendering
 
 
         private static readonly string _formTreeCompilerLookupKey = typeof(FormFlowUiDefinitionRenderer).FullName + "FormTreeCompiler";
+        private static readonly string _customToolbarFormTreeCompilerLookupKey = typeof(FormFlowUiDefinitionRenderer).FullName + "CustomToolbarFormTreeCompiler";
         private static readonly string _innerFormBindingsLookupKey = typeof(FormFlowUiDefinitionRenderer).FullName + "InnerFormBindings";
         private static readonly string _currentControlTreeRoot = typeof(FormFlowUiDefinitionRenderer).FullName + "ControlTreeRoot";
         private static readonly string _currentControlContainer = typeof(FormFlowUiDefinitionRenderer).FullName + "ControlContainer";
@@ -271,6 +277,12 @@ namespace Composite.Core.WebClient.FlowMediators.FormFlowRendering
         {
             get { return HttpContext.Current.Items[_formTreeCompilerLookupKey] as FormTreeCompiler; }
             set { HttpContext.Current.Items[_formTreeCompilerLookupKey] = value; }
+        }
+
+        private static FormTreeCompiler CurrentCustomToolbarFormTreeCompiler
+        {
+            get { return HttpContext.Current.Items[_customToolbarFormTreeCompilerLookupKey] as FormTreeCompiler; }
+            set { HttpContext.Current.Items[_customToolbarFormTreeCompilerLookupKey] = value; }
         }
 
         private static Dictionary<string, object> CurrentInnerFormBindings
@@ -295,11 +307,11 @@ namespace Composite.Core.WebClient.FlowMediators.FormFlowRendering
 
         private static void ShowFieldMessages(IWebUiControl webUiControlTreeRoot, Dictionary<string, string> bindingPathedMessages, IWebUiContainer container, FlowControllerServicesContainer servicesContainer)
         {
-            Dictionary<string, string> pathToClientIDMappings = new Dictionary<string, string>();
-            ResolveBindingPathToCliendIDMappings(webUiControlTreeRoot, pathToClientIDMappings);
+            var pathToClientIDMappings = new Dictionary<string, string>();
+            ResolveBindingPathToClientIDMappings(webUiControlTreeRoot, pathToClientIDMappings);
 
-            Dictionary<string, string> cliendIDPathedMessages = new Dictionary<string, string>();
-            Dictionary<string, string> homelessMessages = new Dictionary<string, string>();
+            var cliendIDPathedMessages = new Dictionary<string, string>();
+            var homelessMessages = new Dictionary<string, string>();
 
             foreach (var msgElement in bindingPathedMessages)
             {
@@ -332,14 +344,14 @@ namespace Composite.Core.WebClient.FlowMediators.FormFlowRendering
         }
 
 
-        internal static void ResolveBindingPathToCliendIDMappings(IWebUiControl webUiControl, Dictionary<string, string> resolvedMappings)
+        internal static void ResolveBindingPathToClientIDMappings(IWebUiControl webUiControl, Dictionary<string, string> resolvedMappings)
         {
-            if (webUiControl is ContainerUiControlBase)
+            var container = webUiControl as ContainerUiControlBase;
+            if (container != null)
             {
-                ContainerUiControlBase container = (ContainerUiControlBase)webUiControl;
                 foreach (IUiControl child in container.UiControls)
                 {
-                    ResolveBindingPathToCliendIDMappings((IWebUiControl)child, resolvedMappings);
+                    ResolveBindingPathToClientIDMappings((IWebUiControl)child, resolvedMappings);
                 }
             }
 

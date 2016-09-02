@@ -216,6 +216,8 @@ namespace Composite.Core.Parallelization
                             languageScopePushed = true;
                         }
 
+                        DataServiceScopeManager.EnterThreadLocal();
+
                         HttpContext.Current = _parentThreadHttpContext;
 
                         currentThread.CurrentCulture = _parentThreadCulture;
@@ -259,6 +261,7 @@ namespace Composite.Core.Parallelization
 
                         DataScopeManager.ExitThreadLocal();
                         LocalizationScopeManager.ExitThreadLocal();
+                        DataServiceScopeManager.ExitThreadLocal();
                     }
                 }
             }

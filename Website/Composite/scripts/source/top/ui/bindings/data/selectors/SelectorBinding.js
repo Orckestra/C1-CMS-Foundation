@@ -16,17 +16,17 @@ function SelectorBinding () {
 	 * @type {SystemLogger}
 	 */
 	this.logger = SystemLogger.getLogger ( "SelectorBinding" );
-	
+
 	/**
 	 * @type {string}
 	 */
 	this.type = null;
-	
+
 	/**
 	 * @type {ToolBarButtonBinding}
 	 */
 	this._buttonBinding = null;
-	
+
 	/**
 	 * @type {PopupBinding}
 	 */
@@ -41,7 +41,7 @@ function SelectorBinding () {
 	 * @type {MenuBodyBinding}
 	 */
 	this._menuBodyBinding = null;
-	
+
 	/**
 	 * @type {string}
 	 */
@@ -63,7 +63,7 @@ function SelectorBinding () {
 	*/
 	this.isSearchSelectionEnabled = true;
 
-	
+
 	/**
 	 * @type {List<SelectorBindingSelection>}
 	 */
@@ -73,89 +73,89 @@ function SelectorBinding () {
 	 * @type {boolean}
 	 */
 	this.isDisabled = false;
-	
+
 	/**
 	 * This will be used as default label.
 	 * @type {string}
 	 */
 	this.label = null;
-	
+
 	/**
 	 * This will be used as default value.
 	 * @type {string}
 	 */
 	this.value = null;
-	
+
 	/**
 	 * @type {int}
 	 */
 	this.width = null;
-	
+
 	/**
 	 * @type {SelectorBindingSelection}
 	 */
 	this.defaultSelection = null;
-	
+
 	/**
 	 * @type {string}
 	 */
 	this.image = null;
-	
+
 	/**
 	 * @type {string}
 	 */
 	this.imageHover = null;
-	
+
 	/**
 	 * @type {string}
 	 */
 	this.imageActive = null;
-	
+
 	/**
 	 * @type {string}
 	 */
 	this.imageDisabled = null;
-	
+
 	/**
 	 * @type {boolean}
 	 */
 	this.isDirty = false;
-	
+
 	/**
 	 * Flipped when menitems need to be reindexed.
 	 * @type {boolean}
 	 */
 	this._isUpToDate = false;
-	
+
 	/**
 	 * @type {boolean}
 	 */
 	this._hasKeyboard = false;
-	
+
 	/*
 	 * Overwritable button implementation.
 	 * @see {EditorSelectorBinding}
 	 * @type {class}
 	 */
 	this.BUTTON_IMPLEMENTATION = ClickButtonBinding;
-	
+
 	/*
 	 * Overwritable menuitem implementation.
 	 * @see {EditorSelectorBinding}
 	 * @type {class}
 	 */
 	this.MENUITEM_IMPLEMENTATION = MenuItemBinding;
-	
+
 	/**
 	 * @type {boolean}
 	 */
 	this._isImageLayout = true;
-	
+
 	/**
 	 * @type {boolean}
 	 */
 	this.isRequired = false;
-	
+
 	/**
 	 * @type {boolean}
 	 */
@@ -204,9 +204,9 @@ SelectorBinding.prototype.onBindingAttach = function () {
  * @overloads {DataBinding#onBindingDispose}
  */
 SelectorBinding.prototype.onBindingDispose = function () {
-		
+
 	SelectorBinding.superclass.onBindingDispose.call ( this );
-	
+
 	if ( this._popupBinding && Binding.exists ( this._popupBinding )) {
 		this._popupBinding.dispose ();
 	}
@@ -228,7 +228,7 @@ SelectorBinding.prototype.parseDOMProperties = function () {
 	var onchange		= this.getProperty ( "onchange" );
 	var isRequired		= this.getProperty ( "required" ) == true;
 	var isLocal = this.getProperty("local");
-	
+
 	if ( !this.type && type ) {
 		this.type = type;
 	}
@@ -236,7 +236,7 @@ SelectorBinding.prototype.parseDOMProperties = function () {
 		this.label = label;
 	}
 	if ( !this.value && value != null ) {
-		this.value = value;	
+		this.value = value;
 	}
 	if ( !this.width && width ) {
 		this.width = width;
@@ -272,7 +272,7 @@ SelectorBinding.prototype.buildDOMContent = function () {
 	this.buildButton ();
 	this.buildPopup ();
 	this.buildSelections ();
-	
+
 	this.bindingElement.tabIndex = 0;
 	if ( Client.isExplorer == true ) {
 		this.bindingElement.hideFocus = true;
@@ -292,11 +292,11 @@ SelectorBinding.prototype.buildFormField = function () {
 	input.name = this.getName ();
 	input.value	= this.getValue ();
 	input.type = "hidden";
-	
+
 	if ( this.hasCallBackID ()) {
 		input.id = this.getCallBackID ();
 	}
-	
+
 	this.shadowTree.input = input;
 	this.bindingElement.appendChild ( input );
 }
@@ -311,7 +311,7 @@ SelectorBinding.prototype.buildButton = function () {
 	 */
 	var buttonImplementation = this.BUTTON_IMPLEMENTATION;
 
-	var button = this.add ( 
+	var button = this.add (
 		buttonImplementation.newInstance ( this.bindingDocument )
 	);
 	if ( this.imageProfile != null ) {
@@ -329,7 +329,7 @@ SelectorBinding.prototype.buildButton = function () {
  * Build selections.
  */
 SelectorBinding.prototype.buildPopup = function () {
-	
+
 	/*
 	 * Build the popup.
 	 */
@@ -353,19 +353,27 @@ SelectorBinding.prototype.buildPopup = function () {
 	var popupBinding = popupSetBinding.add (
 		PopupBinding.newInstance ( doc )
 	);
+	var popupclassname = this.getProperty("popupclass");
+	if (popupclassname) {
+		popupBinding.setProperty("class", popupclassname);
+	}
 	var bodyBinding = popupBinding.add (
 		MenuBodyBinding.newInstance ( doc )
 	);
 	this._popupBinding = popupBinding;
 	this._menuBodyBinding = bodyBinding;
 	this._popupBinding.attachClassName ( SelectorBinding.CLASSNAME_POPUP );
-	this._popupBinding.attachRecursive (); // TODO: not yet?
-	
+	this._popupBinding.attachRecursive(); // TODO: not yet?
+
+	if (this.getProperty("textonly") === true) {
+		this._popupBinding.showTextOnly();
+	}
+
 	/*
 	 * Unhardcode this when we decide to support submenus in popup.
 	 */
 	this._popupBinding.type = PopupBinding.TYPE_FIXED;
-	
+
 	/*
 	 * Assigninging popup to button.
 	 */
@@ -380,7 +388,7 @@ SelectorBinding.prototype.buildPopup = function () {
  * Build selections.
  */
 SelectorBinding.prototype.buildSelections = function () {
-	
+
 	/*
 	 * Compute default selection.
 	 */
@@ -392,21 +400,21 @@ SelectorBinding.prototype.buildSelections = function () {
 			null // this.imageprofile!
 		);
 	}
-	
+
 	/*
 	 * Retrieve selections from markup.
 	 */
 	var list = this._getSelectionsList ();
-	
+
 	/*
-	 * Even if list is empty, this will 
+	 * Even if list is empty, this will
 	 * still build the default selection.
 	 */
 	this.populateFromList ( list );
 }
 
 /**
- * Parse ui:selection elements into instances of SelectorBindingSelection. 
+ * Parse ui:selection elements into instances of SelectorBindingSelection.
  * This will be used to populate the selector.
  * @return {List<SelectorBindingSelection>}
  */
@@ -415,7 +423,7 @@ SelectorBinding.prototype._getSelectionsList = function () {
 	var list = new List ();
 	var selections = DOMUtil.getElementsByTagName ( this.bindingElement, "selection" );
 	new List ( selections ).each ( function ( selection ) {
-	
+
 		var label 			= selection.getAttribute ( "label" );
 		var value 			= selection.getAttribute ( "value" );
 		var isSelected 		= selection.getAttribute ( "selected" );
@@ -423,10 +431,10 @@ SelectorBinding.prototype._getSelectionsList = function () {
 		var imageHover		= selection.getAttribute ( "image-hover" );
 		var imageActive		= selection.getAttribute ( "image-active" );
 		var imageDisabled	= selection.getAttribute ( "image-disabled" );
-		
+
 		var imageProfile = null;
-		
-		if ( image || imageHover || imageActive || imageDisabled ) {  
+
+		if ( image || imageHover || imageActive || imageDisabled ) {
 			imageProfile = new ImageProfile ({
 				image : image,
 				imageHover : imageHover,
@@ -434,9 +442,9 @@ SelectorBinding.prototype._getSelectionsList = function () {
 				imageDisabled : imageDisabled
 			});
 		}
-		
-		list.add ( 
-			new SelectorBindingSelection ( 
+
+		list.add (
+			new SelectorBindingSelection (
 				label ? label : null,
 				value ? value : null,
 				isSelected && isSelected == "true",
@@ -444,7 +452,7 @@ SelectorBinding.prototype._getSelectionsList = function () {
 			)
 		);
 	});
-	
+
 	return list;
 }
 
@@ -452,17 +460,17 @@ SelectorBinding.prototype._getSelectionsList = function () {
  * @param {List<SelectorBindingSelection>} list
  */
 SelectorBinding.prototype.populateFromList = function ( list ) {
-	
+
 	if ( this.isAttached ) {
-	
+
 		/*
 		 * Clear existing content, leaving only the default selection.
 		 */
 		this.clear ();
-		
+
 		/*
 		 * Add new content.
-		 */	
+		 */
 		if ( list.hasEntries ()) {
 			var firstItem = null;
 			while ( list.hasNext ()) {
@@ -482,7 +490,7 @@ SelectorBinding.prototype.populateFromList = function ( list ) {
 
 		}
 	} else {
-		
+
 		throw "Could not populate unattached selector"; // TODO: Cache the list and wait?
 	}
 }
@@ -494,12 +502,12 @@ SelectorBinding.prototype.populateFromList = function ( list ) {
  * @return {MenuItemBinding}
  */
 SelectorBinding.prototype.addSelection = function ( selection, isPositionFirst ) {
-	
+
 	var menuItemImplementation = this.MENUITEM_IMPLEMENTATION;
-	
+
 	var bodyBinding = this._menuBodyBinding;
 	var bodyDocument = bodyBinding.bindingDocument;
-	
+
 	var itemBinding = menuItemImplementation.newInstance ( bodyDocument );
 	itemBinding.imageProfile = selection.imageProfile;
 	itemBinding.setLabel ( selection.label );
@@ -507,7 +515,7 @@ SelectorBinding.prototype.addSelection = function ( selection, isPositionFirst )
 		itemBinding.setToolTip ( selection.tooltip )
 	}
 	itemBinding.selectionValue = selection.value;
-	
+
 	selection.menuItemBinding = itemBinding;
 	if ( isPositionFirst ) {
 		bodyBinding.addFirst ( itemBinding );
@@ -516,7 +524,7 @@ SelectorBinding.prototype.addSelection = function ( selection, isPositionFirst )
 		bodyBinding.add ( itemBinding );
 		this.selections.add ( selection );
 	}
-	
+
 	this._isUpToDate = false;
 	return itemBinding;
 }
@@ -530,27 +538,27 @@ SelectorBinding.prototype.addSelectionFirst = function ( selection ) {
 
 	return this.addSelection ( selection, true );
 }
-/** 
+/**
  * Dispose existing content. Leave default selection.
  * @param {boolean} isClearAll
- */ 
+ */
 SelectorBinding.prototype.clear = function ( isClearAll ) {
 
 	this._selectedItemBinding = null;
 
 	if ( this._popupBinding ) {
-		
+
 		this._popupBinding.clear ();
 		this.selections.clear ();
-		
+
 		/*
-		 * If not clear all, add default selection. 
-		 * Checking that multiple calls to clear 
+		 * If not clear all, add default selection.
+		 * Checking that multiple calls to clear
 		 * will not add multiple default selections.
 		 */
 		if ( !isClearAll && this.defaultSelection != null ) {
-			var menuItemBinding = this.addSelection ( 
-				this.defaultSelection 
+			var menuItemBinding = this.addSelection (
+				this.defaultSelection
 			);
 			this.select ( menuItemBinding, true );
 		}
@@ -561,7 +569,7 @@ SelectorBinding.prototype.clear = function ( isClearAll ) {
  * Clear all.
  */
 SelectorBinding.prototype.clearAll = function () {
-	
+
 	this.clear ( true );
 }
 
@@ -569,7 +577,7 @@ SelectorBinding.prototype.clearAll = function () {
  * Disable.
  */
 SelectorBinding.prototype.disable = function () {
-	
+
 	this.setDisabled ( true );
 }
 
@@ -577,7 +585,7 @@ SelectorBinding.prototype.disable = function () {
  * Enable.
  */
 SelectorBinding.prototype.enable = function () {
-	
+
 	this.setDisabled ( false );
 }
 
@@ -586,13 +594,13 @@ SelectorBinding.prototype.enable = function () {
  * @implements {IData}
  */
 SelectorBinding.prototype.focus = function () {
-	
+
 	if ( !this.isFocused ) {
 		DataBinding.prototype.focus.call ( this );
 		if ( this.isFocused == true ) {
 			FocusBinding.focusElement ( this.bindingElement );
 			this._grabKeyboard ();
-		}	
+		}
 	}
 }
 
@@ -605,7 +613,7 @@ SelectorBinding.prototype.blur = function () {
 	if ( this.isFocused == true ) {
 		DataBinding.prototype.blur.call ( this );
 		this._releaseKeyboard ();
-		if ( this._popupBinding.isVisible ) {		
+		if ( this._popupBinding.isVisible ) {
 			this._popupBinding.hide ();
 		}
 	}
@@ -615,7 +623,7 @@ SelectorBinding.prototype.blur = function () {
  * Grab keyboard.
  */
 SelectorBinding.prototype._grabKeyboard = function () {
-	
+
 	if ( !this._hasKeyboard ) {
 		this.subscribe ( BroadcastMessages.KEY_ARROW );
 		this._hasKeyboard = true;
@@ -626,7 +634,7 @@ SelectorBinding.prototype._grabKeyboard = function () {
  * Release keyboard.
  */
 SelectorBinding.prototype._releaseKeyboard = function () {
-	
+
 	if ( this._hasKeyboard == true ) {
 		this.unsubscribe ( BroadcastMessages.KEY_ARROW );
 		this._hasKeyboard = false;
@@ -638,11 +646,11 @@ SelectorBinding.prototype._releaseKeyboard = function () {
  * @param {boolean} isDisabled
  */
 SelectorBinding.prototype.setDisabled = function ( isDisabled ) {
-	
-	if ( this.isAttached == true ) {	
+
+	if ( this.isAttached == true ) {
 		var button = this._buttonBinding;
 		button.setDisabled ( isDisabled );
-	}	
+	}
 	if ( isDisabled ) {
 		this.setProperty ( "isdisabled", true );
 	} else {
@@ -655,9 +663,9 @@ SelectorBinding.prototype.setDisabled = function ( isDisabled ) {
  * @param {boolean} isActionBlocked
  */
 SelectorBinding.prototype.reset = function ( isActionBlocked ) {
-	
+
 	if ( this.defaultSelection != null ) {
-		this.selectByValue ( 
+		this.selectByValue (
 			this.defaultSelection.value,
 			isActionBlocked
 		);
@@ -689,7 +697,7 @@ SelectorBinding.prototype.handleAction = function (action) {
 			break;
 		case PopupBinding.ACTION_HIDE:
 			/*
-			* If TAB key was pressed, closing the popup, we no  
+			* If TAB key was pressed, closing the popup, we no
 			* longer have focus and should not grab the keyboard.
 			*/
 			var self = this;
@@ -739,26 +747,26 @@ SelectorBinding.prototype._onMenuItemCommand = function ( binding ) {
  * Restore selection.
  */
 SelectorBinding.prototype._restoreSelection = function () {
-	
+
 	if ( this._selectedItemBinding ) {
 		this._selectedItemBinding.focus ();
 	}
 }
 
 /**
- * For cosmetic reasons, attempting to make 
+ * For cosmetic reasons, attempting to make
  * the opening menu as wide as the selector.
  */
 SelectorBinding.prototype._fitMenuToSelector = function () {
-	
+
 	var selectorWidth = this._buttonBinding.bindingElement.offsetWidth + "px";
 	var popupElement = this._popupBinding.bindingElement;
-	
+
 	popupElement.style.minWidth = selectorWidth;
 }
 
 /**
- * 
+ *
  * @param {Event} e
  */
 SelectorBinding.prototype.handleEvent = function (e) {
@@ -921,9 +929,9 @@ SelectorBinding.prototype._applySearchSelection = function () {
  * @param {object} arg
  */
 SelectorBinding.prototype.handleBroadcast = function ( broadcast, arg ) {
-	
+
 	SelectorBinding.superclass.handleBroadcast.call ( this, broadcast, arg );
-	
+
 	switch ( broadcast ) {
 		case BroadcastMessages.KEY_ARROW :
 			this.logger.debug ( this._buttonBinding.getLabel ());
@@ -937,7 +945,7 @@ SelectorBinding.prototype.handleBroadcast = function ( broadcast, arg ) {
  * @param {int} key
  */
 SelectorBinding.prototype._handleArrowKey = function ( key ) {
-	
+
 	if ( !this._popupBinding.isVisible ) {
 		switch ( key ) {
 			case KeyEventCodes.VK_DOWN :
@@ -955,41 +963,41 @@ SelectorBinding.prototype._handleArrowKey = function ( key ) {
  * @return {boolean} True if something (new) was selected
  */
 SelectorBinding.prototype.select = function ( itemBinding, isActionBlocked ) {
-	
+
 	var isSuccess = false;
-	
+
 	if ( itemBinding != this._selectedItemBinding ) {
-		
+
 		this._selectedItemBinding = itemBinding;
 		isSuccess = true;
-	
+
 		var button = this._buttonBinding;
 		this._selectionValue = itemBinding.selectionValue;
 		this._selectionLabel = itemBinding.getLabel();
 		button.setLabel ( itemBinding.getLabel ());
-		
+
 		if ( itemBinding.imageProfile != null ) {
 			button.imageProfile = itemBinding.imageProfile;
 		}
 		if ( button.imageProfile != null ) {
-			button.setImage ( 
+			button.setImage (
 				this.isDisabled == true ?
 					button.imageProfile.getDisabledImage () :
 					button.imageProfile.getDefaultImage ()
 			);
 		}
-		
+
 		this._updateImageLayout ();
-	
+
 		if ( !isActionBlocked ) {
 			this.onValueChange ();
-			this.dispatchAction ( 
+			this.dispatchAction (
 				SelectorBinding.ACTION_SELECTIONCHANGED
 			);
-			
+
 			/*
 			 * TODO: Enable this when dialogs and wizards go AJAX!
-			 * 
+			 *
 			if ( this.getProperty ( "callbackid" ) != null ) {
 				var self = this;
 				setTimeout ( function () { // allow selector to close...
@@ -997,9 +1005,9 @@ SelectorBinding.prototype.select = function ( itemBinding, isActionBlocked ) {
 				}, 0 );
 			}
 			*/
-			
+
 			this.dirty ();
-		}	
+		}
 		if ( !this._isValid || ( this.isRequired && !isActionBlocked )) {
 			this.validate ();
 		}
@@ -1012,9 +1020,9 @@ SelectorBinding.prototype.select = function ( itemBinding, isActionBlocked ) {
  * Hide or show related binding.
  */
 SelectorBinding.prototype._relate = function () {
-	
+
 	var relate = this.getProperty ( "relate" );
-	
+
 	if ( relate ) {
 		var element = this.bindingDocument.getElementById ( relate );
 		if ( element ) {
@@ -1034,7 +1042,7 @@ SelectorBinding.prototype._relate = function () {
  * Update image layput.
  */
 SelectorBinding.prototype._updateImageLayout = function () {
-	
+
 	if ( this._buttonBinding.getImage () == null ) {
 		if ( this._isImageLayout == true ) {
 			this._buttonBinding.attachClassName ( ToolBarBinding.CLASSNAME_TEXTONLY );
@@ -1049,7 +1057,7 @@ SelectorBinding.prototype._updateImageLayout = function () {
 }
 
 /**
- * Fires when selection changes. Does nothing by default. Feel free 
+ * Fires when selection changes. Does nothing by default. Feel free
  * to overwrite. And maybe refactor this methods name some day...
  */
 SelectorBinding.prototype.onValueChange = function () {}
@@ -1061,16 +1069,16 @@ SelectorBinding.prototype.onValueChange = function () {}
  * @return {boolean} True if something (new) was selected
  */
 SelectorBinding.prototype.selectByValue = function ( value, isActionBlocked ) {
-	
+
 	var isSuccess = false;
 	var bodyBinding = this._menuBodyBinding;
-	
+
 	/*
 	 * Remember that bindings may not have been attached.
 	 */
 	var itemElementList = bodyBinding.getDescendantElementsByLocalName ( "menuitem" );
 	while ( itemElementList.hasNext ()) {
-		var itemBinding = UserInterface.getBinding ( 
+		var itemBinding = UserInterface.getBinding (
 			itemElementList.getNext ()
 		);
 		if ( itemBinding.selectionValue == value ) {
@@ -1078,7 +1086,7 @@ SelectorBinding.prototype.selectByValue = function ( value, isActionBlocked ) {
 			break;
 		}
 	}
-	
+
 	return isSuccess;
 }
 
@@ -1087,7 +1095,7 @@ SelectorBinding.prototype.selectByValue = function ( value, isActionBlocked ) {
  * @return {string}
  */
 SelectorBinding.prototype.getValue = function () {
-	
+
 	var result = this._selectionValue;
 	if ( result != null ) {
 		result = String ( result );
@@ -1097,24 +1105,24 @@ SelectorBinding.prototype.getValue = function () {
 
 /**
  * Set value. This will change the selectbox selection.
- * @implements {IData}  
+ * @implements {IData}
  * @param {object} value
  */
 SelectorBinding.prototype.setValue = function ( value ) {
-	
+
 	this.selectByValue ( String ( value ), true );
 }
 
 
 /**
  * Get result. Unlike getValue, the result may be any object (though only numbers for now).
- * @implements {IData}  
+ * @implements {IData}
  * @return {object}
  */
 SelectorBinding.prototype.getResult = function () {
-	
+
 	var result = this._selectionValue;
-	
+
 	if ( result == "null" ) { // javascript apocalypse!
 		result = null;
 	}
@@ -1131,11 +1139,11 @@ SelectorBinding.prototype.getResult = function () {
 
 /**
  * Set result. This will change the selectbox selection.
- * @implements {IData}  
+ * @implements {IData}
  * @param {object} result
  */
 SelectorBinding.prototype.setResult = function ( result ) {
-	
+
 	this.selectByValue ( result, true );
 }
 
@@ -1145,7 +1153,7 @@ SelectorBinding.prototype.setResult = function ( result ) {
  * @return {boolean}
  */
 SelectorBinding.prototype.validate = function () {
-	
+
 	var isValid = true;
 	if ( this.isRequired == true && this.defaultSelection != null ) {
 		var value = this.getValue ();
@@ -1172,7 +1180,7 @@ SelectorBinding.prototype.validate = function () {
  * @implements {IData}
  */
 SelectorBinding.prototype.manifest = function () {
-	
+
 	if ( this.isAttached == true ) {
 		if ( this.getResult ()) {
 			if ( !this.shadowTree.input ) {
@@ -1187,12 +1195,12 @@ SelectorBinding.prototype.manifest = function () {
 }
 
 /**
- * Build selections. For faster page load time, the popup bindings 
- * get attached only when user handles the selector button or presses 
+ * Build selections. For faster page load time, the popup bindings
+ * get attached only when user handles the selector button or presses
  * the enter key.
  */
 SelectorBinding.prototype._attachSelections = function () {
-	
+
 	var popup = this._popupBinding;
 	if ( !this._isUpToDate ) {
 		popup.attachRecursive ();
@@ -1201,7 +1209,7 @@ SelectorBinding.prototype._attachSelections = function () {
 }
 
 /**
- * Always update selector!  
+ * Always update selector!
  * TODO: Not a good idea, since this control is pretty render-heavy...
  * @overwrites {Binding#handleElement}
  * @implements {IUpdateHandler}
@@ -1209,14 +1217,14 @@ SelectorBinding.prototype._attachSelections = function () {
  * @returns {boolean} Return true to trigger method handleElement.
  */
 SelectorBinding.prototype.handleElement = function () {
-	
+
 	return true;
 }
 
 /**
  * Always update selector!
  * TODO: Check for changes by comparing curent CLIENTSIDE value (selection) with server response!!!
- * TODO: See Bug 3115. 
+ * TODO: See Bug 3115.
  * @implements {IUpdateHandler}
  * @overwrites {Binding#updateElement}
  * @param {Element} element
@@ -1224,11 +1232,11 @@ SelectorBinding.prototype.handleElement = function () {
  * @returns {boolean} Return true to stop crawling.
  */
 SelectorBinding.prototype.updateElement = function ( element, oldelement ) {
-	
+
 	/*
 	 * ALWAYS update selector (full replace)
-	 */ 
-	this.bindingWindow.UpdateManager.addUpdate ( 
+	 */
+	this.bindingWindow.UpdateManager.addUpdate (
 		new this.bindingWindow.ReplaceUpdate ( this.getID (), element )
 	);
 	return true;

@@ -87,6 +87,13 @@ namespace Composite.Core.Serialization
             builder.Append(_unencodedValueMarker);
         }
 
+        /// <exclude />
+        public static void SerializeKeyValuePair<PT>(StringBuilder builder, string propertyName, PT propertyValue, IEnumerable<string> filterProperties)
+        {
+            if (filterProperties != null && !filterProperties.Contains(propertyName))
+                return;
+            SerializeKeyValuePair<PT>(builder, propertyName, propertyValue);
+        }
 
         /// <exclude />
         public static void SerializeKeyValuePair(StringBuilder builder, string propertyName, int propertyValue)
@@ -443,6 +450,13 @@ namespace Composite.Core.Serialization
             }
         }
 
+        /// <exclude />
+        public static void SerializeKeyValueArrayPair<PT>(StringBuilder builder, string propertyName, PT[] propertyValue,IEnumerable<string> filterProperties)
+        {
+            if (filterProperties != null && !filterProperties.Contains(propertyName))
+                return;
+            SerializeKeyValueArrayPair<PT>(builder, propertyName, propertyValue);
+        }
 
         /// <exclude />
         public static PT[] DeserializeValueArray<PT>(string stringRepresentation, PT[] deserializationTarget)

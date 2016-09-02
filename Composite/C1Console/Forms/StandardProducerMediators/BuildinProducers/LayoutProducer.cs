@@ -1,19 +1,13 @@
 namespace Composite.C1Console.Forms.StandardProducerMediators.BuildinProducers
 {
-    [ControlValueProperty("UiControl")]
+    [ControlValueProperty(nameof(UiControl))]
     internal sealed class LayoutProducer : IBuildinProducer
     {
-        private IUiControl _uiControl;
-
-        internal LayoutProducer() { }
-
-        public IUiControl UiControl
-        {
-            get { return _uiControl; }
-            set { _uiControl = value; }
-        }
+        public IUiControl UiControl { get; set; }
 
         public string label { get; set; }
+
+        public string tooltip { get; set; }
 
         public string iconhandle { get; set; }
     }

@@ -42,7 +42,9 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
                 using (new DataScope(sourceCultureInfo))
                 {
-                    Guid sourcePageId = ((IPage)castedEntityToken.Data).Id;
+                    var pageFromEntityToken = (IPage) castedEntityToken.Data;
+                    Guid sourcePageId = pageFromEntityToken.Id;
+                    Guid sourcePageVersionId = pageFromEntityToken.VersionId;
 
                     using (new DataScope(DataScopeIdentifier.Administrated))
                     {
@@ -51,7 +53,9 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
                         using (new DataScope(sourcePage.DataSourceId.DataScopeIdentifier))
                         {
-                            sourcePagePlaceholders = DataFacade.GetData<IPagePlaceholderContent>(f => f.PageId == sourcePageId).ToList();
+                            sourcePagePlaceholders = DataFacade
+                                .GetData<IPagePlaceholderContent>(f => f.PageId == sourcePageId && f.VersionId == sourcePageVersionId)
+                                .ToList();
                             sourceMetaDataSet = sourcePage.GetMetaData().ToList();
                         }
                     }

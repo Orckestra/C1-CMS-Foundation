@@ -117,7 +117,7 @@ namespace Composite.C1Console.Workflow
 
             foreach (string eventName in eventNames)
             {
-                if (formData != null && formData.ExcludedEvents != null && formData.ExcludedEvents.Contains(eventName)) continue;
+                if (formData?.ExcludedEvents != null && formData.ExcludedEvents.Contains(eventName)) continue;
 
                 switch (eventName)
                 {
@@ -172,10 +172,7 @@ namespace Composite.C1Console.Workflow
             }
 
             IEventHandleFilter eventHandlerFilter = WorkflowFacade.GetEventHandleFilter(instanceId);
-            if (eventHandlerFilter != null)
-            {
-                eventHandlerFilter.Filter(formFlowUiDefinition.EventHandlers);
-            }
+            eventHandlerFilter?.Filter(formFlowUiDefinition.EventHandlers);
         }
 
 

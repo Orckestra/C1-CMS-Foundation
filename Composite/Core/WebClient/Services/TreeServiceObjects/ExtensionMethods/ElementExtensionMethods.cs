@@ -41,7 +41,9 @@ namespace Composite.Core.WebClient.Services.TreeServiceObjects.ExtensionMethods
                        PropertyBag = element.PropertyBag.ToClientPropertyBag(),
                        TagValue = element.TagValue,
                        ContainsTaggedActions = element.Actions.Any(f => f.TagValue != null),
-                       TreeLockEnabled = element.TreeLockBehavior == TreeLockBehavior.Normal
+                       TreeLockEnabled = element.TreeLockBehavior == TreeLockBehavior.Normal,
+                       ElementBundle = element.VisualData.ElementBundle,
+                       BundleElementName = element.VisualData.BundleElementName
                    };
 
             clientElement.ActionKeys =

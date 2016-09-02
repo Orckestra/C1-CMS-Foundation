@@ -3,7 +3,7 @@ using System;
 namespace Composite.Core.WebClient.Services.ConsoleMessageService
 {
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public enum ViewType
     {
         /// <exclude />

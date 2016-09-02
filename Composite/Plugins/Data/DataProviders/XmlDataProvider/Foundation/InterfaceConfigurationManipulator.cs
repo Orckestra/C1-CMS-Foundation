@@ -247,7 +247,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
             }
 
             configurationElement.ConfigurationDataIdProperties = new SimpleNameTypeConfigurationElementCollection();
-            foreach (DataFieldDescriptor field in dataTypeDescriptor.KeyFields)
+            foreach (DataFieldDescriptor field in dataTypeDescriptor.PhysicalKeyFields)
             {
                 configurationElement.ConfigurationDataIdProperties.Add(field.Name, field.InstanceType);
             }

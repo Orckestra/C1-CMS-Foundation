@@ -58,7 +58,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
             AddGetHashCodeMethod(declaration);
 
 
-            foreach (DataFieldDescriptor field in _dataTypeDescriptor.KeyFields)
+            foreach (DataFieldDescriptor field in _dataTypeDescriptor.PhysicalKeyFields)
             {
                 AddProperty(declaration, field.Name, field.InstanceType);
             }
@@ -73,7 +73,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
         {
             get
             {
-                return _dataTypeDescriptor.KeyFields.ToDictionary(field => field.Name, field => field.InstanceType);
+                return _dataTypeDescriptor.PhysicalKeyFields.ToDictionary(field => field.Name, field => field.InstanceType);
             }
         }
 
@@ -98,7 +98,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
 
 
 
-            foreach (var keyField in _dataTypeDescriptor.KeyFields)
+            foreach (var keyField in _dataTypeDescriptor.PhysicalKeyFields)
             {
                 string propertyFieldName = MakePropertyFieldName(keyField.Name);
                 string attributeVariableName = "attr" + keyField.Name;
@@ -275,7 +275,8 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
 
             CodeExpression hashCodeExpression = null;
 
-            foreach (string keyPropertyName in _dataTypeDescriptor.KeyPropertyNames)
+#warning We DO want IDataId classes to reflect both id and VersionId for data, right?
+            foreach (string keyPropertyName in _dataTypeDescriptor.PhysicalKeyFields.Select(f=>f.Name))
             {
                 string propertyFieldName = MakePropertyFieldName(_dataTypeDescriptor.Fields[keyPropertyName].Name);
 

@@ -46,6 +46,9 @@ namespace Composite.Data.Types
         {
             public void CreatePageStructure(IPage page, Guid parentPageId)
             {
+                if (DataFacade.GetData<IPageStructure>(f => f.Id == page.Id).Any())
+                    return;
+
                 int siblingPageCount =
                         (from ps in DataFacade.GetData<IPageStructure>()
                          where ps.ParentId == parentPageId
@@ -64,6 +67,9 @@ namespace Composite.Data.Types
         {
             public void CreatePageStructure(IPage page, Guid parentPageId)
             {
+                if (DataFacade.GetData<IPageStructure>(f => f.Id == page.Id).Any())
+                    return;
+
                 PageServices.InsertIntoPositionInternal(page.Id, parentPageId, 0);
             }
         }
@@ -72,6 +78,9 @@ namespace Composite.Data.Types
         {
             public void CreatePageStructure(IPage newPage, Guid parentPageId)
             {
+                if (DataFacade.GetData<IPageStructure>(f => f.Id == newPage.Id).Any())
+                    return;
+
                 List<IPageStructure> pageStructures =
                         (from ps in DataFacade.GetData<IPageStructure>()
                          where ps.ParentId == parentPageId
@@ -135,6 +144,9 @@ namespace Composite.Data.Types
 
             public void CreatePageStructure(IPage newPage, Guid parentPageId)
             {
+                if (DataFacade.GetData<IPageStructure>(f => f.Id == newPage.Id).Any())
+                    return;
+
                 var pageStructures =
                     (from ps in DataFacade.GetData<IPageStructure>()
                      where ps.ParentId == parentPageId
