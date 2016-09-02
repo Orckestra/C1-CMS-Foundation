@@ -348,7 +348,7 @@ public static string ChangeOwnCultureWorkflow_Dialog_CultureSelector_Label=>T("C
 public static string ChangeOwnCultureWorkflow_Dialog_CultureSelector_Help=>T("ChangeOwnCultureWorkflow.Dialog.CultureSelector.Help");
 ///<summary>&quot;Console Language Preferences&quot;</summary> 
 public static string ChangeOwnCultureWorkflow_Dialog_C1ConsoleLanguageSelector_Label=>T("ChangeOwnCultureWorkflow.Dialog.C1ConsoleLanguageSelector.Label");
-///<summary>&quot;Language displayed within your console for labels, help texts, dialogs, etc. The available options are limited to language packages installed. See Composite.Localization package for more language options.&quot;</summary> 
+///<summary>&quot;Language displayed within your console for labels, help texts, dialogs, etc. The available options are limited to language packages installed. See Composite.Localization packages for more language options.&quot;</summary> 
 public static string ChangeOwnCultureWorkflow_Dialog_C1ConsoleLanguageSelector_Help=>T("ChangeOwnCultureWorkflow.Dialog.C1ConsoleLanguageSelector.Help");
 ///<summary>&quot;Change application language&quot;</summary> 
 public static string ChangeOwnCultureWorkflow_Dialog_Confirm_Title=>T("ChangeOwnCultureWorkflow.Dialog.Confirm.Title");
@@ -1187,7 +1187,7 @@ public static string Website_Forms_Administrative_EditUserStep1_CultureLabel=>T(
 public static string Website_Forms_Administrative_EditUserStep1_CultureHelp=>T("Website.Forms.Administrative.EditUserStep1.CultureHelp");
 ///<summary>&quot;Console Language Preferences&quot;</summary> 
 public static string Website_Forms_Administrative_EditUserStep1_C1ConsoleLanguageLabel=>T("Website.Forms.Administrative.EditUserStep1.C1ConsoleLanguageLabel");
-///<summary>&quot;Language displayed within your console for labels, help texts, dialogs, etc. The available options are limited to language packages installed. See Composite.Localization package for more language options.&quot;</summary> 
+///<summary>&quot;Language displayed within your console for labels, help texts, dialogs, etc. The available options are limited to language packages installed. See Composite.Localization packages for more language options.&quot;</summary> 
 public static string Website_Forms_Administrative_EditUserStep1_C1ConsoleLanguageHelp=>T("Website.Forms.Administrative.EditUserStep1.C1ConsoleLanguageHelp");
 ///<summary>&quot;Perspectives&quot;</summary> 
 public static string Website_Forms_Administrative_EditUserStep1_ActivePerspectiveFieldLabel=>T("Website.Forms.Administrative.EditUserStep1.ActivePerspectiveFieldLabel");
@@ -1293,7 +1293,7 @@ public static string Website_Forms_Administrative_AddNewUserStep1_CultureLabel=>
 public static string Website_Forms_Administrative_AddNewUserStep1_CultureHelp=>T("Website.Forms.Administrative.AddNewUserStep1.CultureHelp");
 ///<summary>&quot;Console Language Preferences&quot;</summary> 
 public static string Website_Forms_Administrative_AddNewUserStep1_C1ConsoleLanguageLabel=>T("Website.Forms.Administrative.AddNewUserStep1.C1ConsoleLanguageLabel");
-///<summary>&quot;Language displayed within your console for labels, help texts, dialogs, etc. The available options are limited to language packages installed. See Composite.Localization package for more language options.&quot;</summary> 
+///<summary>&quot;Language displayed within your console for labels, help texts, dialogs, etc. The available options are limited to language packages installed. See Composite.Localization packages for more language options.&quot;</summary> 
 public static string Website_Forms_Administrative_AddNewUserStep1_C1ConsoleLanguageHelp=>T("Website.Forms.Administrative.AddNewUserStep1.C1ConsoleLanguageHelp");
 ///<summary>&quot;A language is required&quot;</summary> 
 public static string UserElementProvider_MissingActiveLanguageTitle=>T("UserElementProvider.MissingActiveLanguageTitle");
@@ -2431,6 +2431,8 @@ public static string Website_Misc_Trees_DialogTitle_PasteTypeNotAllowed=>T("Webs
 public static string Website_Misc_Trees_DialogText_PasteTypeNotAllowed=>T("Website.Misc.Trees.DialogText.PasteTypeNotAllowed");
 ///<summary>&quot;Edit Selections&quot;</summary> 
 public static string Website_Misc_MultiSelector_LabelEditSelections=>T("Website.Misc.MultiSelector.LabelEditSelections");
+///<summary>&quot;More&quot;</summary> 
+public static string Website_Misc_Toolbar_LabelShowMoreActions=>T("Website.Misc.Toolbar.LabelShowMoreActions");
 ///<summary>&quot;Version information&quot;</summary> 
 public static string GenericVersionProcessController_Version=>T("GenericVersionProcessController.Version");
 ///<summary>&quot;Show version information&quot;</summary> 
@@ -2455,12 +2457,36 @@ public static string Validation_Decimal_SymbolsBeforePointAllowed(object paramet
 public static string Validation_DateTime_InvalidDateFormat(object parameter0,object parameter1)=>string.Format(T("Validation.DateTime.InvalidDateFormat"), parameter0,parameter1);
 ///<summary>&quot;The specified value is either too big or too small. The acceptable range is from -2,147,483,648 to 2,147,483,647&quot;</summary> 
 public static string Validation_Int32_Overflow=>T("Validation.Int32.Overflow");
+///<summary>&quot;Required&quot;</summary> 
+public static string Validation_Required=>T("Validation.Required");
+///<summary>&quot;Numbers only&quot;</summary> 
+public static string Validation_InvalidField_Number=>T("Validation.InvalidField.Number");
+///<summary>&quot;Integers only&quot;</summary> 
+public static string Validation_InvalidField_Integer=>T("Validation.InvalidField.Integer");
+///<summary>&quot;Invalid identifier&quot;</summary> 
+public static string Validation_InvalidField_ProgrammingIdentifier=>T("Validation.InvalidField.ProgrammingIdentifier");
+///<summary>&quot;Invalid namespace&quot;</summary> 
+public static string Validation_InvalidField_ProgrammingNamespace=>T("Validation.InvalidField.ProgrammingNamespace");
+///<summary>&quot;Invalid URL&quot;</summary> 
+public static string Validation_InvalidField_Url=>T("Validation.InvalidField.Url");
+///<summary>&quot;Invalid notation&quot;</summary> 
+public static string Validation_InvalidField_Currency=>T("Validation.InvalidField.Currency");
+///<summary>&quot;Invalid e-mail&quot;</summary> 
+public static string Validation_InvalidField_Email=>T("Validation.InvalidField.Email");
+///<summary>&quot;Invalid GUID&quot;</summary> 
+public static string Validation_InvalidField_Guid=>T("Validation.InvalidField.Guid");
+///<summary>&quot;{0} characters minimum&quot;</summary> 
+public static string Validation_StringLength_Min(object parameter0)=>string.Format(T("Validation.StringLength.Min"), parameter0);
+///<summary>&quot;{0} characters maximum&quot;</summary> 
+public static string Validation_StringLength_Max(object parameter0)=>string.Format(T("Validation.StringLength.Max"), parameter0);
 ///<summary>&quot;Page Browser&quot;</summary> 
 public static string Browser_Label=>T("Browser.Label");
 ///<summary>&quot;Browse unpublished pages&quot;</summary> 
 public static string Browser_ToolTip=>T("Browser.ToolTip");
 ///<summary>&quot;Copy{count} of {0}&quot;</summary> 
 public static string Duplication_Text(object parameter0)=>string.Format(T("Duplication.Text"), parameter0);
+///<summary>&quot;Original&quot;</summary> 
+public static string DefaultVersionName=>T("DefaultVersionName");
      private static string T(string key) 
        { 
             return StringResourceSystemFacade.GetString("Composite.Management", key);
@@ -2687,6 +2713,14 @@ public static string PublicationStatus_Help=>T("PublicationStatus.Help");
 public static string PublishDate_Label=>T("PublishDate.Label");
 ///<summary>&quot;Specify at which date and time you want the data to be published automatically.&quot;</summary> 
 public static string PublishDate_Help=>T("PublishDate.Help");
+///<summary>&quot;Date Created&quot;</summary> 
+public static string DateCreated_Label=>T("DateCreated.Label");
+///<summary>&quot;Date Modified&quot;</summary> 
+public static string DateModified_Label=>T("DateModified.Label");
+///<summary>&quot;Author&quot;</summary> 
+public static string CreatedBy_Label=>T("CreatedBy.Label");
+///<summary>&quot;Author&quot;</summary> 
+public static string ChangedBy_Label=>T("ChangedBy.Label");
 ///<summary>&quot;Unpublish date&quot;</summary> 
 public static string UnpublishDate_Label=>T("UnpublishDate.Label");
 ///<summary>&quot;Specify at which date and time you want the data to be unpublished automatically.&quot;</summary> 
@@ -3537,14 +3571,6 @@ public static string EditPage_HelpFriendlyUrl=>T("EditPage.HelpFriendlyUrl");
 public static string EditPage_LabelAbstract=>T("EditPage.LabelAbstract");
 ///<summary>&quot;Use this field for a short description of the page&quot;</summary> 
 public static string EditPage_LabelAbstractHelp=>T("EditPage.LabelAbstractHelp");
-///<summary>&quot;Publish date&quot;</summary> 
-public static string EditPage_LabelPublishDate=>T("EditPage.LabelPublishDate");
-///<summary>&quot;Specify at which date and time you want the page to be published automatically.&quot;</summary> 
-public static string EditPage_HelpPublishDate=>T("EditPage.HelpPublishDate");
-///<summary>&quot;Unpublish date&quot;</summary> 
-public static string EditPage_LabelUnpublishDate=>T("EditPage.LabelUnpublishDate");
-///<summary>&quot;Specify at which date and time you want the page to be unpublished automatically.&quot;</summary> 
-public static string EditPage_HelpUnpublishDate=>T("EditPage.HelpUnpublishDate");
 ///<summary>&quot;Content&quot;</summary> 
 public static string EditPage_LabelContent=>T("EditPage.LabelContent");
 ///<summary>&quot;Preview&quot;</summary> 
@@ -3603,7 +3629,7 @@ public static string PageElementProvider_EditPageToolTip=>T("PageElementProvider
 public static string PageElementProvider_Delete=>T("PageElementProvider.Delete");
 ///<summary>&quot;Delete the selected page&quot;</summary> 
 public static string PageElementProvider_DeleteToolTip=>T("PageElementProvider.DeleteToolTip");
-///<summary>&quot;Duplicate&quot;</summary> 
+///<summary>&quot;Duplicate Page&quot;</summary> 
 public static string PageElementProvider_Duplicate=>T("PageElementProvider.Duplicate");
 ///<summary>&quot;Duplicate the selected page&quot;</summary> 
 public static string PageElementProvider_DuplicateToolTip=>T("PageElementProvider.DuplicateToolTip");
@@ -3679,6 +3705,14 @@ public static string DeletePageWorkflow_CascadeDeleteErrorMessage=>T("DeletePage
 public static string DeletePageWorkflow_HasCompositionsTitle=>T("DeletePageWorkflow.HasCompositionsTitle");
 ///<summary>&quot;This page has one or more page folders or metadata fields defined on it. Delete these first.&quot;</summary> 
 public static string DeletePageWorkflow_HasCompositionsMessage=>T("DeletePageWorkflow.HasCompositionsMessage");
+///<summary>&quot;Delete page versions&quot;</summary> 
+public static string DeletePageWorkflow_ConfirmAllVersionsDeletion_DialogLabel=>T("DeletePageWorkflow.ConfirmAllVersionsDeletion.DialogLabel");
+///<summary>&quot;This page contains multiple versions&quot;</summary> 
+public static string DeletePageWorkflow_ConfirmAllVersionsDeletion_Text=>T("DeletePageWorkflow.ConfirmAllVersionsDeletion.Text");
+///<summary>&quot;Delete all versions&quot;</summary> 
+public static string DeletePageWorkflow_ConfirmAllVersionsDeletion_DeleteAllVersions=>T("DeletePageWorkflow.ConfirmAllVersionsDeletion.DeleteAllVersions");
+///<summary>&quot;Delete only current version&quot;</summary> 
+public static string DeletePageWorkflow_ConfirmAllVersionsDeletion_DeleteCurrentVersion=>T("DeletePageWorkflow.ConfirmAllVersionsDeletion.DeleteCurrentVersion");
 ///<summary>&quot;Page Title&quot;</summary> 
 public static string ViewUnpublishedItems_PageTitleLabel=>T("ViewUnpublishedItems.PageTitleLabel");
 ///<summary>&quot;Version&quot;</summary> 
@@ -5220,266 +5254,266 @@ public static string Composite_Utils_Dictionary_EnumerableToDictionary_param_Val
 
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
-	   public static class Composite_Plugins_TimezoneAbbriviations {
+	   public static class Composite_Plugins_TimezoneAbbreviations {
 ///<summary>&quot;Etc/GMT+12&quot;</summary> 
-public static string TimezoneAbbriviations_Dateline_Standard_Time=>T("TimezoneAbbriviations.Dateline Standard Time");
+public static string TimezoneAbbreviations_Dateline_Standard_Time=>T("TimezoneAbbreviations.Dateline Standard Time");
 ///<summary>&quot;Etc/GMT+11&quot;</summary> 
-public static string TimezoneAbbriviations_UTC_11=>T("TimezoneAbbriviations.UTC-11");
+public static string TimezoneAbbreviations_UTC_11=>T("TimezoneAbbreviations.UTC-11");
 ///<summary>&quot;UTC-10&quot;</summary> 
-public static string TimezoneAbbriviations_Aleutian_Standard_Time=>T("TimezoneAbbriviations.Aleutian Standard Time");
+public static string TimezoneAbbreviations_Aleutian_Standard_Time=>T("TimezoneAbbreviations.Aleutian Standard Time");
 ///<summary>&quot;HST&quot;</summary> 
-public static string TimezoneAbbriviations_Hawaiian_Standard_Time=>T("TimezoneAbbriviations.Hawaiian Standard Time");
+public static string TimezoneAbbreviations_Hawaiian_Standard_Time=>T("TimezoneAbbreviations.Hawaiian Standard Time");
 ///<summary>&quot;MART&quot;</summary> 
-public static string TimezoneAbbriviations_Marquesas_Standard_Time=>T("TimezoneAbbriviations.Marquesas Standard Time");
+public static string TimezoneAbbreviations_Marquesas_Standard_Time=>T("TimezoneAbbreviations.Marquesas Standard Time");
 ///<summary>&quot;AKST&quot;</summary> 
-public static string TimezoneAbbriviations_Alaskan_Standard_Time=>T("TimezoneAbbriviations.Alaskan Standard Time");
+public static string TimezoneAbbreviations_Alaskan_Standard_Time=>T("TimezoneAbbreviations.Alaskan Standard Time");
 ///<summary>&quot;UTC-09&quot;</summary> 
-public static string TimezoneAbbriviations_UTC_09=>T("TimezoneAbbriviations.UTC-09");
+public static string TimezoneAbbreviations_UTC_09=>T("TimezoneAbbreviations.UTC-09");
 ///<summary>&quot;PST&quot;</summary> 
-public static string TimezoneAbbriviations_Pacific_Standard_Time_Mexico=>T("TimezoneAbbriviations.Pacific Standard Time (Mexico)");
+public static string TimezoneAbbreviations_Pacific_Standard_Time_Mexico=>T("TimezoneAbbreviations.Pacific Standard Time (Mexico)");
 ///<summary>&quot;UTC-08&quot;</summary> 
-public static string TimezoneAbbriviations_UTC_08=>T("TimezoneAbbriviations.UTC-08");
+public static string TimezoneAbbreviations_UTC_08=>T("TimezoneAbbreviations.UTC-08");
 ///<summary>&quot;PST&quot;</summary> 
-public static string TimezoneAbbriviations_Pacific_Standard_Time=>T("TimezoneAbbriviations.Pacific Standard Time");
+public static string TimezoneAbbreviations_Pacific_Standard_Time=>T("TimezoneAbbreviations.Pacific Standard Time");
 ///<summary>&quot;MST&quot;</summary> 
-public static string TimezoneAbbriviations_US_Mountain_Standard_Time=>T("TimezoneAbbriviations.US Mountain Standard Time");
+public static string TimezoneAbbreviations_US_Mountain_Standard_Time=>T("TimezoneAbbreviations.US Mountain Standard Time");
 ///<summary>&quot;MST&quot;</summary> 
-public static string TimezoneAbbriviations_Mountain_Standard_Time_Mexico=>T("TimezoneAbbriviations.Mountain Standard Time (Mexico)");
+public static string TimezoneAbbreviations_Mountain_Standard_Time_Mexico=>T("TimezoneAbbreviations.Mountain Standard Time (Mexico)");
 ///<summary>&quot;MST&quot;</summary> 
-public static string TimezoneAbbriviations_Mountain_Standard_Time=>T("TimezoneAbbriviations.Mountain Standard Time");
+public static string TimezoneAbbreviations_Mountain_Standard_Time=>T("TimezoneAbbreviations.Mountain Standard Time");
 ///<summary>&quot;CST&quot;</summary> 
-public static string TimezoneAbbriviations_Central_America_Standard_Time=>T("TimezoneAbbriviations.Central America Standard Time");
+public static string TimezoneAbbreviations_Central_America_Standard_Time=>T("TimezoneAbbreviations.Central America Standard Time");
 ///<summary>&quot;CST&quot;</summary> 
-public static string TimezoneAbbriviations_Central_Standard_Time=>T("TimezoneAbbriviations.Central Standard Time");
+public static string TimezoneAbbreviations_Central_Standard_Time=>T("TimezoneAbbreviations.Central Standard Time");
 ///<summary>&quot;EASST&quot;</summary> 
-public static string TimezoneAbbriviations_Easter_Island_Standard_Time=>T("TimezoneAbbriviations.Easter Island Standard Time");
+public static string TimezoneAbbreviations_Easter_Island_Standard_Time=>T("TimezoneAbbreviations.Easter Island Standard Time");
 ///<summary>&quot;CST&quot;</summary> 
-public static string TimezoneAbbriviations_Central_Standard_Time_Mexico=>T("TimezoneAbbriviations.Central Standard Time (Mexico)");
+public static string TimezoneAbbreviations_Central_Standard_Time_Mexico=>T("TimezoneAbbreviations.Central Standard Time (Mexico)");
 ///<summary>&quot;CST&quot;</summary> 
-public static string TimezoneAbbriviations_Canada_Central_Standard_Time=>T("TimezoneAbbriviations.Canada Central Standard Time");
+public static string TimezoneAbbreviations_Canada_Central_Standard_Time=>T("TimezoneAbbreviations.Canada Central Standard Time");
 ///<summary>&quot;SAPST&quot;</summary> 
-public static string TimezoneAbbriviations_SA_Pacific_Standard_Time=>T("TimezoneAbbriviations.SA Pacific Standard Time");
+public static string TimezoneAbbreviations_SA_Pacific_Standard_Time=>T("TimezoneAbbreviations.SA Pacific Standard Time");
 ///<summary>&quot;EST&quot;</summary> 
-public static string TimezoneAbbriviations_Eastern_Standard_Time_Mexico=>T("TimezoneAbbriviations.Eastern Standard Time (Mexico)");
+public static string TimezoneAbbreviations_Eastern_Standard_Time_Mexico=>T("TimezoneAbbreviations.Eastern Standard Time (Mexico)");
 ///<summary>&quot;EST&quot;</summary> 
-public static string TimezoneAbbriviations_Eastern_Standard_Time=>T("TimezoneAbbriviations.Eastern Standard Time");
+public static string TimezoneAbbreviations_Eastern_Standard_Time=>T("TimezoneAbbreviations.Eastern Standard Time");
 ///<summary>&quot;EST&quot;</summary> 
-public static string TimezoneAbbriviations_Haiti_Standard_Time=>T("TimezoneAbbriviations.Haiti Standard Time");
+public static string TimezoneAbbreviations_Haiti_Standard_Time=>T("TimezoneAbbreviations.Haiti Standard Time");
 ///<summary>&quot;UTC-05&quot;</summary> 
-public static string TimezoneAbbriviations_Cuba_Standard_Time=>T("TimezoneAbbriviations.Cuba Standard Time");
+public static string TimezoneAbbreviations_Cuba_Standard_Time=>T("TimezoneAbbreviations.Cuba Standard Time");
 ///<summary>&quot;EST&quot;</summary> 
-public static string TimezoneAbbriviations_US_Eastern_Standard_Time=>T("TimezoneAbbriviations.US Eastern Standard Time");
+public static string TimezoneAbbreviations_US_Eastern_Standard_Time=>T("TimezoneAbbreviations.US Eastern Standard Time");
 ///<summary>&quot;VET&quot;</summary> 
-public static string TimezoneAbbriviations_Venezuela_Standard_Time=>T("TimezoneAbbriviations.Venezuela Standard Time");
+public static string TimezoneAbbreviations_Venezuela_Standard_Time=>T("TimezoneAbbreviations.Venezuela Standard Time");
 ///<summary>&quot;PYST&quot;</summary> 
-public static string TimezoneAbbriviations_Paraguay_Standard_Time=>T("TimezoneAbbriviations.Paraguay Standard Time");
+public static string TimezoneAbbreviations_Paraguay_Standard_Time=>T("TimezoneAbbreviations.Paraguay Standard Time");
 ///<summary>&quot;AST&quot;</summary> 
-public static string TimezoneAbbriviations_Atlantic_Standard_Time=>T("TimezoneAbbriviations.Atlantic Standard Time");
+public static string TimezoneAbbreviations_Atlantic_Standard_Time=>T("TimezoneAbbreviations.Atlantic Standard Time");
 ///<summary>&quot;AMST&quot;</summary> 
-public static string TimezoneAbbriviations_Central_Brazilian_Standard_Time=>T("TimezoneAbbriviations.Central Brazilian Standard Time");
+public static string TimezoneAbbreviations_Central_Brazilian_Standard_Time=>T("TimezoneAbbreviations.Central Brazilian Standard Time");
 ///<summary>&quot;SAWST&quot;</summary> 
-public static string TimezoneAbbriviations_SA_Western_Standard_Time=>T("TimezoneAbbriviations.SA Western Standard Time");
+public static string TimezoneAbbreviations_SA_Western_Standard_Time=>T("TimezoneAbbreviations.SA Western Standard Time");
 ///<summary>&quot;CLST&quot;</summary> 
-public static string TimezoneAbbriviations_Pacific_SA_Standard_Time=>T("TimezoneAbbriviations.Pacific SA Standard Time");
+public static string TimezoneAbbreviations_Pacific_SA_Standard_Time=>T("TimezoneAbbreviations.Pacific SA Standard Time");
 ///<summary>&quot;UTC-04&quot;</summary> 
-public static string TimezoneAbbriviations_Turks_And_Caicos_Standard_Time=>T("TimezoneAbbriviations.Turks And Caicos Standard Time");
+public static string TimezoneAbbreviations_Turks_And_Caicos_Standard_Time=>T("TimezoneAbbreviations.Turks And Caicos Standard Time");
 ///<summary>&quot;NST&quot;</summary> 
-public static string TimezoneAbbriviations_Newfoundland_Standard_Time=>T("TimezoneAbbriviations.Newfoundland Standard Time");
+public static string TimezoneAbbreviations_Newfoundland_Standard_Time=>T("TimezoneAbbreviations.Newfoundland Standard Time");
 ///<summary>&quot;UTC-03&quot;</summary> 
-public static string TimezoneAbbriviations_Tocantins_Standard_Time=>T("TimezoneAbbriviations.Tocantins Standard Time");
+public static string TimezoneAbbreviations_Tocantins_Standard_Time=>T("TimezoneAbbreviations.Tocantins Standard Time");
 ///<summary>&quot;BRST&quot;</summary> 
-public static string TimezoneAbbriviations_E__South_America_Standard_Time=>T("TimezoneAbbriviations.E. South America Standard Time");
+public static string TimezoneAbbreviations_E__South_America_Standard_Time=>T("TimezoneAbbreviations.E. South America Standard Time");
 ///<summary>&quot;GFT&quot;</summary> 
-public static string TimezoneAbbriviations_SA_Eastern_Standard_Time=>T("TimezoneAbbriviations.SA Eastern Standard Time");
+public static string TimezoneAbbreviations_SA_Eastern_Standard_Time=>T("TimezoneAbbreviations.SA Eastern Standard Time");
 ///<summary>&quot;ART&quot;</summary> 
-public static string TimezoneAbbriviations_Argentina_Standard_Time=>T("TimezoneAbbriviations.Argentina Standard Time");
+public static string TimezoneAbbreviations_Argentina_Standard_Time=>T("TimezoneAbbreviations.Argentina Standard Time");
 ///<summary>&quot;WGT&quot;</summary> 
-public static string TimezoneAbbriviations_Greenland_Standard_Time=>T("TimezoneAbbriviations.Greenland Standard Time");
+public static string TimezoneAbbreviations_Greenland_Standard_Time=>T("TimezoneAbbreviations.Greenland Standard Time");
 ///<summary>&quot;UYT&quot;</summary> 
-public static string TimezoneAbbriviations_Montevideo_Standard_Time=>T("TimezoneAbbriviations.Montevideo Standard Time");
+public static string TimezoneAbbreviations_Montevideo_Standard_Time=>T("TimezoneAbbreviations.Montevideo Standard Time");
 ///<summary>&quot;UTC-03&quot;</summary> 
-public static string TimezoneAbbriviations_Saint_Pierre_Standard_Time=>T("TimezoneAbbriviations.Saint Pierre Standard Time");
+public static string TimezoneAbbreviations_Saint_Pierre_Standard_Time=>T("TimezoneAbbreviations.Saint Pierre Standard Time");
 ///<summary>&quot;BRT&quot;</summary> 
-public static string TimezoneAbbriviations_Bahia_Standard_Time=>T("TimezoneAbbriviations.Bahia Standard Time");
+public static string TimezoneAbbreviations_Bahia_Standard_Time=>T("TimezoneAbbreviations.Bahia Standard Time");
 ///<summary>&quot;Etc/GMT+2&quot;</summary> 
-public static string TimezoneAbbriviations_UTC_02=>T("TimezoneAbbriviations.UTC-02");
+public static string TimezoneAbbreviations_UTC_02=>T("TimezoneAbbreviations.UTC-02");
 ///<summary>&quot;AST&quot;</summary> 
-public static string TimezoneAbbriviations_Mid_Atlantic_Standard_Time=>T("TimezoneAbbriviations.Mid-Atlantic Standard Time");
+public static string TimezoneAbbreviations_Mid_Atlantic_Standard_Time=>T("TimezoneAbbreviations.Mid-Atlantic Standard Time");
 ///<summary>&quot;AZOT&quot;</summary> 
-public static string TimezoneAbbriviations_Azores_Standard_Time=>T("TimezoneAbbriviations.Azores Standard Time");
+public static string TimezoneAbbreviations_Azores_Standard_Time=>T("TimezoneAbbreviations.Azores Standard Time");
 ///<summary>&quot;CVT&quot;</summary> 
-public static string TimezoneAbbriviations_Cape_Verde_Standard_Time=>T("TimezoneAbbriviations.Cape Verde Standard Time");
+public static string TimezoneAbbreviations_Cape_Verde_Standard_Time=>T("TimezoneAbbreviations.Cape Verde Standard Time");
 ///<summary>&quot;WET&quot;</summary> 
-public static string TimezoneAbbriviations_Morocco_Standard_Time=>T("TimezoneAbbriviations.Morocco Standard Time");
+public static string TimezoneAbbreviations_Morocco_Standard_Time=>T("TimezoneAbbreviations.Morocco Standard Time");
 ///<summary>&quot;Etc/GMT&quot;</summary> 
-public static string TimezoneAbbriviations_UTC=>T("TimezoneAbbriviations.UTC");
+public static string TimezoneAbbreviations_UTC=>T("TimezoneAbbreviations.UTC");
 ///<summary>&quot;GMT&quot;</summary> 
-public static string TimezoneAbbriviations_GMT_Standard_Time=>T("TimezoneAbbriviations.GMT Standard Time");
+public static string TimezoneAbbreviations_GMT_Standard_Time=>T("TimezoneAbbreviations.GMT Standard Time");
 ///<summary>&quot;GMT&quot;</summary> 
-public static string TimezoneAbbriviations_Greenwich_Standard_Time=>T("TimezoneAbbriviations.Greenwich Standard Time");
+public static string TimezoneAbbreviations_Greenwich_Standard_Time=>T("TimezoneAbbreviations.Greenwich Standard Time");
 ///<summary>&quot;CET&quot;</summary> 
-public static string TimezoneAbbriviations_W__Europe_Standard_Time=>T("TimezoneAbbriviations.W. Europe Standard Time");
+public static string TimezoneAbbreviations_W__Europe_Standard_Time=>T("TimezoneAbbreviations.W. Europe Standard Time");
 ///<summary>&quot;CET&quot;</summary> 
-public static string TimezoneAbbriviations_Central_Europe_Standard_Time=>T("TimezoneAbbriviations.Central Europe Standard Time");
+public static string TimezoneAbbreviations_Central_Europe_Standard_Time=>T("TimezoneAbbreviations.Central Europe Standard Time");
 ///<summary>&quot;CET&quot;</summary> 
-public static string TimezoneAbbriviations_Romance_Standard_Time=>T("TimezoneAbbriviations.Romance Standard Time");
+public static string TimezoneAbbreviations_Romance_Standard_Time=>T("TimezoneAbbreviations.Romance Standard Time");
 ///<summary>&quot;CET&quot;</summary> 
-public static string TimezoneAbbriviations_Central_European_Standard_Time=>T("TimezoneAbbriviations.Central European Standard Time");
+public static string TimezoneAbbreviations_Central_European_Standard_Time=>T("TimezoneAbbreviations.Central European Standard Time");
 ///<summary>&quot;WAT&quot;</summary> 
-public static string TimezoneAbbriviations_W__Central_Africa_Standard_Time=>T("TimezoneAbbriviations.W. Central Africa Standard Time");
+public static string TimezoneAbbreviations_W__Central_Africa_Standard_Time=>T("TimezoneAbbreviations.W. Central Africa Standard Time");
 ///<summary>&quot;WAST&quot;</summary> 
-public static string TimezoneAbbriviations_Namibia_Standard_Time=>T("TimezoneAbbriviations.Namibia Standard Time");
+public static string TimezoneAbbreviations_Namibia_Standard_Time=>T("TimezoneAbbreviations.Namibia Standard Time");
 ///<summary>&quot;EET&quot;</summary> 
-public static string TimezoneAbbriviations_Jordan_Standard_Time=>T("TimezoneAbbriviations.Jordan Standard Time");
+public static string TimezoneAbbreviations_Jordan_Standard_Time=>T("TimezoneAbbreviations.Jordan Standard Time");
 ///<summary>&quot;EET&quot;</summary> 
-public static string TimezoneAbbriviations_GTB_Standard_Time=>T("TimezoneAbbriviations.GTB Standard Time");
+public static string TimezoneAbbreviations_GTB_Standard_Time=>T("TimezoneAbbreviations.GTB Standard Time");
 ///<summary>&quot;EET&quot;</summary> 
-public static string TimezoneAbbriviations_Middle_East_Standard_Time=>T("TimezoneAbbriviations.Middle East Standard Time");
+public static string TimezoneAbbreviations_Middle_East_Standard_Time=>T("TimezoneAbbreviations.Middle East Standard Time");
 ///<summary>&quot;EET&quot;</summary> 
-public static string TimezoneAbbriviations_Egypt_Standard_Time=>T("TimezoneAbbriviations.Egypt Standard Time");
+public static string TimezoneAbbreviations_Egypt_Standard_Time=>T("TimezoneAbbreviations.Egypt Standard Time");
 ///<summary>&quot;EET&quot;</summary> 
-public static string TimezoneAbbriviations_Syria_Standard_Time=>T("TimezoneAbbriviations.Syria Standard Time");
+public static string TimezoneAbbreviations_Syria_Standard_Time=>T("TimezoneAbbreviations.Syria Standard Time");
 ///<summary>&quot;EET&quot;</summary> 
-public static string TimezoneAbbriviations_E__Europe_Standard_Time=>T("TimezoneAbbriviations.E. Europe Standard Time");
+public static string TimezoneAbbreviations_E__Europe_Standard_Time=>T("TimezoneAbbreviations.E. Europe Standard Time");
 ///<summary>&quot;UTC+02&quot;</summary> 
-public static string TimezoneAbbriviations_West_Bank_Standard_Time=>T("TimezoneAbbriviations.West Bank Standard Time");
+public static string TimezoneAbbreviations_West_Bank_Standard_Time=>T("TimezoneAbbreviations.West Bank Standard Time");
 ///<summary>&quot;SAST&quot;</summary> 
-public static string TimezoneAbbriviations_South_Africa_Standard_Time=>T("TimezoneAbbriviations.South Africa Standard Time");
+public static string TimezoneAbbreviations_South_Africa_Standard_Time=>T("TimezoneAbbreviations.South Africa Standard Time");
 ///<summary>&quot;EET&quot;</summary> 
-public static string TimezoneAbbriviations_FLE_Standard_Time=>T("TimezoneAbbriviations.FLE Standard Time");
+public static string TimezoneAbbreviations_FLE_Standard_Time=>T("TimezoneAbbreviations.FLE Standard Time");
 ///<summary>&quot;EET&quot;</summary> 
-public static string TimezoneAbbriviations_Turkey_Standard_Time=>T("TimezoneAbbriviations.Turkey Standard Time");
+public static string TimezoneAbbreviations_Turkey_Standard_Time=>T("TimezoneAbbreviations.Turkey Standard Time");
 ///<summary>&quot;IST&quot;</summary> 
-public static string TimezoneAbbriviations_Israel_Standard_Time=>T("TimezoneAbbriviations.Israel Standard Time");
+public static string TimezoneAbbreviations_Israel_Standard_Time=>T("TimezoneAbbreviations.Israel Standard Time");
 ///<summary>&quot;EET&quot;</summary> 
-public static string TimezoneAbbriviations_Kaliningrad_Standard_Time=>T("TimezoneAbbriviations.Kaliningrad Standard Time");
+public static string TimezoneAbbreviations_Kaliningrad_Standard_Time=>T("TimezoneAbbreviations.Kaliningrad Standard Time");
 ///<summary>&quot;EET&quot;</summary> 
-public static string TimezoneAbbriviations_Libya_Standard_Time=>T("TimezoneAbbriviations.Libya Standard Time");
+public static string TimezoneAbbreviations_Libya_Standard_Time=>T("TimezoneAbbreviations.Libya Standard Time");
 ///<summary>&quot;AST&quot;</summary> 
-public static string TimezoneAbbriviations_Arabic_Standard_Time=>T("TimezoneAbbriviations.Arabic Standard Time");
+public static string TimezoneAbbreviations_Arabic_Standard_Time=>T("TimezoneAbbreviations.Arabic Standard Time");
 ///<summary>&quot;AST&quot;</summary> 
-public static string TimezoneAbbriviations_Arab_Standard_Time=>T("TimezoneAbbriviations.Arab Standard Time");
+public static string TimezoneAbbreviations_Arab_Standard_Time=>T("TimezoneAbbreviations.Arab Standard Time");
 ///<summary>&quot;MSK&quot;</summary> 
-public static string TimezoneAbbriviations_Belarus_Standard_Time=>T("TimezoneAbbriviations.Belarus Standard Time");
+public static string TimezoneAbbreviations_Belarus_Standard_Time=>T("TimezoneAbbreviations.Belarus Standard Time");
 ///<summary>&quot;MSK&quot;</summary> 
-public static string TimezoneAbbriviations_Russian_Standard_Time=>T("TimezoneAbbriviations.Russian Standard Time");
+public static string TimezoneAbbreviations_Russian_Standard_Time=>T("TimezoneAbbreviations.Russian Standard Time");
 ///<summary>&quot;EAT&quot;</summary> 
-public static string TimezoneAbbriviations_E__Africa_Standard_Time=>T("TimezoneAbbriviations.E. Africa Standard Time");
+public static string TimezoneAbbreviations_E__Africa_Standard_Time=>T("TimezoneAbbreviations.E. Africa Standard Time");
 ///<summary>&quot;MSK&quot;</summary> 
-public static string TimezoneAbbriviations_Astrakhan_Standard_Time=>T("TimezoneAbbriviations.Astrakhan Standard Time");
+public static string TimezoneAbbreviations_Astrakhan_Standard_Time=>T("TimezoneAbbreviations.Astrakhan Standard Time");
 ///<summary>&quot;IRST&quot;</summary> 
-public static string TimezoneAbbriviations_Iran_Standard_Time=>T("TimezoneAbbriviations.Iran Standard Time");
+public static string TimezoneAbbreviations_Iran_Standard_Time=>T("TimezoneAbbreviations.Iran Standard Time");
 ///<summary>&quot;GST&quot;</summary> 
-public static string TimezoneAbbriviations_Arabian_Standard_Time=>T("TimezoneAbbriviations.Arabian Standard Time");
+public static string TimezoneAbbreviations_Arabian_Standard_Time=>T("TimezoneAbbreviations.Arabian Standard Time");
 ///<summary>&quot;AZT&quot;</summary> 
-public static string TimezoneAbbriviations_Azerbaijan_Standard_Time=>T("TimezoneAbbriviations.Azerbaijan Standard Time");
+public static string TimezoneAbbreviations_Azerbaijan_Standard_Time=>T("TimezoneAbbreviations.Azerbaijan Standard Time");
 ///<summary>&quot;SAMT&quot;</summary> 
-public static string TimezoneAbbriviations_Russia_Time_Zone_3=>T("TimezoneAbbriviations.Russia Time Zone 3");
+public static string TimezoneAbbreviations_Russia_Time_Zone_3=>T("TimezoneAbbreviations.Russia Time Zone 3");
 ///<summary>&quot;MUT&quot;</summary> 
-public static string TimezoneAbbriviations_Mauritius_Standard_Time=>T("TimezoneAbbriviations.Mauritius Standard Time");
+public static string TimezoneAbbreviations_Mauritius_Standard_Time=>T("TimezoneAbbreviations.Mauritius Standard Time");
 ///<summary>&quot;GET&quot;</summary> 
-public static string TimezoneAbbriviations_Georgian_Standard_Time=>T("TimezoneAbbriviations.Georgian Standard Time");
+public static string TimezoneAbbreviations_Georgian_Standard_Time=>T("TimezoneAbbreviations.Georgian Standard Time");
 ///<summary>&quot;AMT&quot;</summary> 
-public static string TimezoneAbbriviations_Caucasus_Standard_Time=>T("TimezoneAbbriviations.Caucasus Standard Time");
+public static string TimezoneAbbreviations_Caucasus_Standard_Time=>T("TimezoneAbbreviations.Caucasus Standard Time");
 ///<summary>&quot;AFT&quot;</summary> 
-public static string TimezoneAbbriviations_Afghanistan_Standard_Time=>T("TimezoneAbbriviations.Afghanistan Standard Time");
+public static string TimezoneAbbreviations_Afghanistan_Standard_Time=>T("TimezoneAbbreviations.Afghanistan Standard Time");
 ///<summary>&quot;UZT&quot;</summary> 
-public static string TimezoneAbbriviations_West_Asia_Standard_Time=>T("TimezoneAbbriviations.West Asia Standard Time");
+public static string TimezoneAbbreviations_West_Asia_Standard_Time=>T("TimezoneAbbreviations.West Asia Standard Time");
 ///<summary>&quot;YEKT&quot;</summary> 
-public static string TimezoneAbbriviations_Ekaterinburg_Standard_Time=>T("TimezoneAbbriviations.Ekaterinburg Standard Time");
+public static string TimezoneAbbreviations_Ekaterinburg_Standard_Time=>T("TimezoneAbbreviations.Ekaterinburg Standard Time");
 ///<summary>&quot;PKT&quot;</summary> 
-public static string TimezoneAbbriviations_Pakistan_Standard_Time=>T("TimezoneAbbriviations.Pakistan Standard Time");
+public static string TimezoneAbbreviations_Pakistan_Standard_Time=>T("TimezoneAbbreviations.Pakistan Standard Time");
 ///<summary>&quot;IST&quot;</summary> 
-public static string TimezoneAbbriviations_India_Standard_Time=>T("TimezoneAbbriviations.India Standard Time");
+public static string TimezoneAbbreviations_India_Standard_Time=>T("TimezoneAbbreviations.India Standard Time");
 ///<summary>&quot;IST&quot;</summary> 
-public static string TimezoneAbbriviations_Sri_Lanka_Standard_Time=>T("TimezoneAbbriviations.Sri Lanka Standard Time");
+public static string TimezoneAbbreviations_Sri_Lanka_Standard_Time=>T("TimezoneAbbreviations.Sri Lanka Standard Time");
 ///<summary>&quot;NPT&quot;</summary> 
-public static string TimezoneAbbriviations_Nepal_Standard_Time=>T("TimezoneAbbriviations.Nepal Standard Time");
+public static string TimezoneAbbreviations_Nepal_Standard_Time=>T("TimezoneAbbreviations.Nepal Standard Time");
 ///<summary>&quot;ALMT&quot;</summary> 
-public static string TimezoneAbbriviations_Central_Asia_Standard_Time=>T("TimezoneAbbriviations.Central Asia Standard Time");
+public static string TimezoneAbbreviations_Central_Asia_Standard_Time=>T("TimezoneAbbreviations.Central Asia Standard Time");
 ///<summary>&quot;BDT&quot;</summary> 
-public static string TimezoneAbbriviations_Bangladesh_Standard_Time=>T("TimezoneAbbriviations.Bangladesh Standard Time");
+public static string TimezoneAbbreviations_Bangladesh_Standard_Time=>T("TimezoneAbbreviations.Bangladesh Standard Time");
 ///<summary>&quot;NOVT&quot;</summary> 
-public static string TimezoneAbbriviations_N__Central_Asia_Standard_Time=>T("TimezoneAbbriviations.N. Central Asia Standard Time");
+public static string TimezoneAbbreviations_N__Central_Asia_Standard_Time=>T("TimezoneAbbreviations.N. Central Asia Standard Time");
 ///<summary>&quot;MSK+3&quot;</summary> 
-public static string TimezoneAbbriviations_Altai_Standard_Time=>T("TimezoneAbbriviations.Altai Standard Time");
+public static string TimezoneAbbreviations_Altai_Standard_Time=>T("TimezoneAbbreviations.Altai Standard Time");
 ///<summary>&quot;MMT&quot;</summary> 
-public static string TimezoneAbbriviations_Myanmar_Standard_Time=>T("TimezoneAbbriviations.Myanmar Standard Time");
+public static string TimezoneAbbreviations_Myanmar_Standard_Time=>T("TimezoneAbbreviations.Myanmar Standard Time");
 ///<summary>&quot;ICT&quot;</summary> 
-public static string TimezoneAbbriviations_SE_Asia_Standard_Time=>T("TimezoneAbbriviations.SE Asia Standard Time");
+public static string TimezoneAbbreviations_SE_Asia_Standard_Time=>T("TimezoneAbbreviations.SE Asia Standard Time");
 ///<summary>&quot;UTC+07&quot;</summary> 
-public static string TimezoneAbbriviations_W__Mongolia_Standard_Time=>T("TimezoneAbbriviations.W. Mongolia Standard Time");
+public static string TimezoneAbbreviations_W__Mongolia_Standard_Time=>T("TimezoneAbbreviations.W. Mongolia Standard Time");
 ///<summary>&quot;KRAT&quot;</summary> 
-public static string TimezoneAbbriviations_North_Asia_Standard_Time=>T("TimezoneAbbriviations.North Asia Standard Time");
+public static string TimezoneAbbreviations_North_Asia_Standard_Time=>T("TimezoneAbbreviations.North Asia Standard Time");
 ///<summary>&quot;UTC+07&quot;</summary> 
-public static string TimezoneAbbriviations_Tomsk_Standard_Time=>T("TimezoneAbbriviations.Tomsk Standard Time");
+public static string TimezoneAbbreviations_Tomsk_Standard_Time=>T("TimezoneAbbreviations.Tomsk Standard Time");
 ///<summary>&quot;CST&quot;</summary> 
-public static string TimezoneAbbriviations_China_Standard_Time=>T("TimezoneAbbriviations.China Standard Time");
+public static string TimezoneAbbreviations_China_Standard_Time=>T("TimezoneAbbreviations.China Standard Time");
 ///<summary>&quot;IRKT&quot;</summary> 
-public static string TimezoneAbbriviations_North_Asia_East_Standard_Time=>T("TimezoneAbbriviations.North Asia East Standard Time");
+public static string TimezoneAbbreviations_North_Asia_East_Standard_Time=>T("TimezoneAbbreviations.North Asia East Standard Time");
 ///<summary>&quot;SGT&quot;</summary> 
-public static string TimezoneAbbriviations_Singapore_Standard_Time=>T("TimezoneAbbriviations.Singapore Standard Time");
+public static string TimezoneAbbreviations_Singapore_Standard_Time=>T("TimezoneAbbreviations.Singapore Standard Time");
 ///<summary>&quot;AWST&quot;</summary> 
-public static string TimezoneAbbriviations_W__Australia_Standard_Time=>T("TimezoneAbbriviations.W. Australia Standard Time");
+public static string TimezoneAbbreviations_W__Australia_Standard_Time=>T("TimezoneAbbreviations.W. Australia Standard Time");
 ///<summary>&quot;CST&quot;</summary> 
-public static string TimezoneAbbriviations_Taipei_Standard_Time=>T("TimezoneAbbriviations.Taipei Standard Time");
+public static string TimezoneAbbreviations_Taipei_Standard_Time=>T("TimezoneAbbreviations.Taipei Standard Time");
 ///<summary>&quot;ULAT&quot;</summary> 
-public static string TimezoneAbbriviations_Ulaanbaatar_Standard_Time=>T("TimezoneAbbriviations.Ulaanbaatar Standard Time");
+public static string TimezoneAbbreviations_Ulaanbaatar_Standard_Time=>T("TimezoneAbbreviations.Ulaanbaatar Standard Time");
 ///<summary>&quot;KST&quot;</summary> 
-public static string TimezoneAbbriviations_North_Korea_Standard_Time=>T("TimezoneAbbriviations.North Korea Standard Time");
+public static string TimezoneAbbreviations_North_Korea_Standard_Time=>T("TimezoneAbbreviations.North Korea Standard Time");
 ///<summary>&quot;UTC+09&quot;</summary> 
-public static string TimezoneAbbriviations_Transbaikal_Standard_Time=>T("TimezoneAbbriviations.Transbaikal Standard Time");
+public static string TimezoneAbbreviations_Transbaikal_Standard_Time=>T("TimezoneAbbreviations.Transbaikal Standard Time");
 ///<summary>&quot;JST&quot;</summary> 
-public static string TimezoneAbbriviations_Tokyo_Standard_Time=>T("TimezoneAbbriviations.Tokyo Standard Time");
+public static string TimezoneAbbreviations_Tokyo_Standard_Time=>T("TimezoneAbbreviations.Tokyo Standard Time");
 ///<summary>&quot;KST&quot;</summary> 
-public static string TimezoneAbbriviations_Korea_Standard_Time=>T("TimezoneAbbriviations.Korea Standard Time");
+public static string TimezoneAbbreviations_Korea_Standard_Time=>T("TimezoneAbbreviations.Korea Standard Time");
 ///<summary>&quot;YAKT&quot;</summary> 
-public static string TimezoneAbbriviations_Yakutsk_Standard_Time=>T("TimezoneAbbriviations.Yakutsk Standard Time");
+public static string TimezoneAbbreviations_Yakutsk_Standard_Time=>T("TimezoneAbbreviations.Yakutsk Standard Time");
 ///<summary>&quot;ACDT&quot;</summary> 
-public static string TimezoneAbbriviations_Cen__Australia_Standard_Time=>T("TimezoneAbbriviations.Cen. Australia Standard Time");
+public static string TimezoneAbbreviations_Cen__Australia_Standard_Time=>T("TimezoneAbbreviations.Cen. Australia Standard Time");
 ///<summary>&quot;ACST&quot;</summary> 
-public static string TimezoneAbbriviations_AUS_Central_Standard_Time=>T("TimezoneAbbriviations.AUS Central Standard Time");
+public static string TimezoneAbbreviations_AUS_Central_Standard_Time=>T("TimezoneAbbreviations.AUS Central Standard Time");
 ///<summary>&quot;AEST&quot;</summary> 
-public static string TimezoneAbbriviations_E__Australia_Standard_Time=>T("TimezoneAbbriviations.E. Australia Standard Time");
+public static string TimezoneAbbreviations_E__Australia_Standard_Time=>T("TimezoneAbbreviations.E. Australia Standard Time");
 ///<summary>&quot;AEDT&quot;</summary> 
-public static string TimezoneAbbriviations_AUS_Eastern_Standard_Time=>T("TimezoneAbbriviations.AUS Eastern Standard Time");
+public static string TimezoneAbbreviations_AUS_Eastern_Standard_Time=>T("TimezoneAbbreviations.AUS Eastern Standard Time");
 ///<summary>&quot;PGT&quot;</summary> 
-public static string TimezoneAbbriviations_West_Pacific_Standard_Time=>T("TimezoneAbbriviations.West Pacific Standard Time");
+public static string TimezoneAbbreviations_West_Pacific_Standard_Time=>T("TimezoneAbbreviations.West Pacific Standard Time");
 ///<summary>&quot;AEDT&quot;</summary> 
-public static string TimezoneAbbriviations_Tasmania_Standard_Time=>T("TimezoneAbbriviations.Tasmania Standard Time");
+public static string TimezoneAbbreviations_Tasmania_Standard_Time=>T("TimezoneAbbreviations.Tasmania Standard Time");
 ///<summary>&quot;MAGT&quot;</summary> 
-public static string TimezoneAbbriviations_Magadan_Standard_Time=>T("TimezoneAbbriviations.Magadan Standard Time");
+public static string TimezoneAbbreviations_Magadan_Standard_Time=>T("TimezoneAbbreviations.Magadan Standard Time");
 ///<summary>&quot;VLAT&quot;</summary> 
-public static string TimezoneAbbriviations_Vladivostok_Standard_Time=>T("TimezoneAbbriviations.Vladivostok Standard Time");
+public static string TimezoneAbbreviations_Vladivostok_Standard_Time=>T("TimezoneAbbreviations.Vladivostok Standard Time");
 ///<summary>&quot;SRET&quot;</summary> 
-public static string TimezoneAbbriviations_Russia_Time_Zone_10=>T("TimezoneAbbriviations.Russia Time Zone 10");
+public static string TimezoneAbbreviations_Russia_Time_Zone_10=>T("TimezoneAbbreviations.Russia Time Zone 10");
 ///<summary>&quot;UTC+11&quot;</summary> 
-public static string TimezoneAbbriviations_Norfolk_Standard_Time=>T("TimezoneAbbriviations.Norfolk Standard Time");
+public static string TimezoneAbbreviations_Norfolk_Standard_Time=>T("TimezoneAbbreviations.Norfolk Standard Time");
 ///<summary>&quot;UTC+11&quot;</summary> 
-public static string TimezoneAbbriviations_Sakhalin_Standard_Time=>T("TimezoneAbbriviations.Sakhalin Standard Time");
+public static string TimezoneAbbreviations_Sakhalin_Standard_Time=>T("TimezoneAbbreviations.Sakhalin Standard Time");
 ///<summary>&quot;SBT&quot;</summary> 
-public static string TimezoneAbbriviations_Central_Pacific_Standard_Time=>T("TimezoneAbbriviations.Central Pacific Standard Time");
+public static string TimezoneAbbreviations_Central_Pacific_Standard_Time=>T("TimezoneAbbreviations.Central Pacific Standard Time");
 ///<summary>&quot;PETT&quot;</summary> 
-public static string TimezoneAbbriviations_Russia_Time_Zone_11=>T("TimezoneAbbriviations.Russia Time Zone 11");
+public static string TimezoneAbbreviations_Russia_Time_Zone_11=>T("TimezoneAbbreviations.Russia Time Zone 11");
 ///<summary>&quot;NZDT&quot;</summary> 
-public static string TimezoneAbbriviations_New_Zealand_Standard_Time=>T("TimezoneAbbriviations.New Zealand Standard Time");
+public static string TimezoneAbbreviations_New_Zealand_Standard_Time=>T("TimezoneAbbreviations.New Zealand Standard Time");
 ///<summary>&quot;Etc/GMT-12&quot;</summary> 
-public static string TimezoneAbbriviations_UTC12=>T("TimezoneAbbriviations.UTC+12");
+public static string TimezoneAbbreviations_UTC12=>T("TimezoneAbbreviations.UTC+12");
 ///<summary>&quot;FJST&quot;</summary> 
-public static string TimezoneAbbriviations_Fiji_Standard_Time=>T("TimezoneAbbriviations.Fiji Standard Time");
+public static string TimezoneAbbreviations_Fiji_Standard_Time=>T("TimezoneAbbreviations.Fiji Standard Time");
 ///<summary>&quot;PETT&quot;</summary> 
-public static string TimezoneAbbriviations_Kamchatka_Standard_Time=>T("TimezoneAbbriviations.Kamchatka Standard Time");
+public static string TimezoneAbbreviations_Kamchatka_Standard_Time=>T("TimezoneAbbreviations.Kamchatka Standard Time");
 ///<summary>&quot;CHAST&quot;</summary> 
-public static string TimezoneAbbriviations_Chatham_Islands_Standard_Time=>T("TimezoneAbbriviations.Chatham Islands Standard Time");
+public static string TimezoneAbbreviations_Chatham_Islands_Standard_Time=>T("TimezoneAbbreviations.Chatham Islands Standard Time");
 ///<summary>&quot;TOT&quot;</summary> 
-public static string TimezoneAbbriviations_Tonga_Standard_Time=>T("TimezoneAbbriviations.Tonga Standard Time");
+public static string TimezoneAbbreviations_Tonga_Standard_Time=>T("TimezoneAbbreviations.Tonga Standard Time");
 ///<summary>&quot;WSDT&quot;</summary> 
-public static string TimezoneAbbriviations_Samoa_Standard_Time=>T("TimezoneAbbriviations.Samoa Standard Time");
+public static string TimezoneAbbreviations_Samoa_Standard_Time=>T("TimezoneAbbreviations.Samoa Standard Time");
 ///<summary>&quot;LINT&quot;</summary> 
-public static string TimezoneAbbriviations_Line_Islands_Standard_Time=>T("TimezoneAbbriviations.Line Islands Standard Time");
+public static string TimezoneAbbreviations_Line_Islands_Standard_Time=>T("TimezoneAbbreviations.Line Islands Standard Time");
      private static string T(string key) 
        { 
-            return StringResourceSystemFacade.GetString("Composite.Plugins.TimezoneAbbriviations", key);
+            return StringResourceSystemFacade.GetString("Composite.Plugins.TimezoneAbbreviations", key);
         }
 } 
 

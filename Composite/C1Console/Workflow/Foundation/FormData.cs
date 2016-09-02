@@ -130,13 +130,14 @@ namespace Composite.C1Console.Workflow.Foundation
 
                 XElement excludedEventsElement = xmlSerializer.Serialize(typeof(List<string>), ExcludedEvents);
 
-                XElement formDataElement = new XElement("FormData");
-                formDataElement.Add(containerLabelElement);
-                formDataElement.Add(formDefinitionElement);
-                formDataElement.Add(customToolbarDefinitionElement);
-                formDataElement.Add(new XElement("ContainerType", containerTypeElement));
-                formDataElement.Add(new XElement("Bindings", bindingsElement));
-                formDataElement.Add(new XElement("BindingsValidationRules", bindingsValidationRulesElement));
+                var formDataElement = new XElement("FormData",
+                    containerLabelElement,
+                    formDefinitionElement,
+                    customToolbarDefinitionElement,
+                    new XElement("ContainerType", containerTypeElement),
+                    new XElement("Bindings", bindingsElement),
+                    new XElement("BindingsValidationRules", bindingsValidationRulesElement)
+                );
                 if (excludedEventsElement != null) formDataElement.Add(new XElement("ExcludedEvents", excludedEventsElement));
 
                 if (this.EventHandleFilterType != null)

@@ -4,7 +4,7 @@
 #addressbar {
 	float: left;
 	margin-top: 2px;
-	padding: 0;
+	padding: 0 0 0 10px;
 }
 
 
@@ -86,3 +86,10 @@ ui|toolbar#breadcrumbbar {
 	display: none !important;
 }
 
+.selectorpopup ui|labelbox.image-and-text ui|labeltext {
+	margin-left: 4px;
+}
+
+ui|selector.bundleselector {
+    min-width: 200px;
+}

@@ -757,7 +757,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
             Type destinationType = keyInfo.TargetType;
 
             PropertyInfo sourceKeyPropertyInfo = sourceType.GetDataPropertyRecursivly(foreignKeyPropertyName);
-            PropertyInfo destinationKeyPropertyInfo = destinationType.GetKeyProperties().Single();
+            PropertyInfo destinationKeyPropertyInfo = destinationType.GetSingleKeyProperty();
             Type keyFieldType = destinationKeyPropertyInfo.PropertyType;
 
             Type[] genericArgs = new Type[] { typeof(SOURCE), destinationType, keyFieldType };

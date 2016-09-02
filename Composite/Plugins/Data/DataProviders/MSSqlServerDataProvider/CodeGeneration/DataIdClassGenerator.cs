@@ -51,7 +51,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
         {
             var constructor = new CodeConstructor { Attributes = MemberAttributes.Public | MemberAttributes.Final };
 
-            foreach (var keyField in _dataTypeDescriptor.KeyFields)
+            foreach (var keyField in _dataTypeDescriptor.PhysicalKeyFields)
             {
                 Type keyPropertyType = keyField.InstanceType;
 
@@ -67,9 +67,10 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
 
         private void AddProperties(CodeTypeDeclaration declaration)
         {
-            foreach (string keyPropertyName in _dataTypeDescriptor.KeyPropertyNames)
+            foreach (var keyProperty in _dataTypeDescriptor.PhysicalKeyFields)
             {
-                Type keyPropertyType = _dataTypeDescriptor.Fields[keyPropertyName].InstanceType;
+                string keyPropertyName = keyProperty.Name;
+                Type keyPropertyType = keyProperty.InstanceType;
                 string propertyFieldName = MakePropertyFieldName(keyPropertyName);
 
                 declaration.Members.Add(new CodeMemberField(keyPropertyType, propertyFieldName));

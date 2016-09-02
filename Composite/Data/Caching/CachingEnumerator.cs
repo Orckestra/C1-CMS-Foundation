@@ -8,8 +8,8 @@ namespace Composite.Data.Caching
 {
     internal sealed class CachingEnumerator<T> : IEnumerator<T>
     {
-        private IEnumerator<T> _enumerator;
-        private Type _wrapperType;
+        private readonly IEnumerator<T> _enumerator;
+        private Func<T, T> _wrapperConstructor;
 
 
         public CachingEnumerator(IEnumerator<T> enumerator)
@@ -18,15 +18,7 @@ namespace Composite.Data.Caching
         }
 
 
-        public T Current
-        {
-            get
-            {
-                object wrapper = Activator.CreateInstance(this.WrapperType, new object[] { _enumerator.Current });
-
-                return (T)wrapper;
-            }
-        }
+        public T Current => WrapperConstructor(_enumerator.Current);
 
 
         public void Dispose()
@@ -35,15 +27,7 @@ namespace Composite.Data.Caching
         }
 
 
-        object IEnumerator.Current
-        {
-            get
-            {
-                object wrapper = Activator.CreateInstance(this.WrapperType, new object[] { _enumerator.Current });
-
-                return wrapper;
-            }
-        }
+        object IEnumerator.Current => WrapperConstructor(_enumerator.Current);
 
 
         public bool MoveNext()
@@ -58,16 +42,12 @@ namespace Composite.Data.Caching
         }
 
 
-        private Type WrapperType
+        private Func<T, T> WrapperConstructor
         {
             get
             {
-                if (_wrapperType == null)
-                {
-                    _wrapperType = DataWrapperTypeManager.GetDataWrapperType(typeof(T));
-                }
-
-                return _wrapperType;
+                return _wrapperConstructor 
+                    ?? (_wrapperConstructor = DataWrapperTypeManager.GetWrapperConstructor<T>());
             }
         }
     }

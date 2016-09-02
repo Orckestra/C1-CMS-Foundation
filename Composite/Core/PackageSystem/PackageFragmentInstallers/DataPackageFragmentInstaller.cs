@@ -33,6 +33,8 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         private Dictionary<Type, TypeKeyInstallationData> _dataKeysToBeInstalled;
         private Dictionary<Type, HashSet<KeyValuePair<string, object>>> _missingDataReferences;
 
+        private static Dictionary<Guid, Guid> _pageVersionIds = new Dictionary<Guid, Guid>();
+
         /// <exclude />
         public override IEnumerable<PackageFragmentValidationResult> Validate()
         {
@@ -154,7 +156,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         }
 
 
-        private static XElement AddData(DataType dataType, CultureInfo cultureInfo)
+        private XElement AddData(DataType dataType, CultureInfo cultureInfo)
         {
             XElement datasElement = new XElement("Datas");
 
@@ -165,11 +167,13 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
             foreach (XElement addElement in dataType.Dataset)
             {
-                IData data = DataFacade.BuildNew(dataType.InterfaceType);
+                var interfaceType = dataType.InterfaceType;
+
+                IData data = DataFacade.BuildNew(interfaceType);
 
                 if (!dataType.InterfaceType.IsInstanceOfType(data))
                 {
-                    dataType.InterfaceType = GetInstalledVersionOfPendingType(dataType.InterfaceType, data);
+                    dataType.InterfaceType = GetInstalledVersionOfPendingType(interfaceType, data);
                 }
 
 
@@ -177,7 +181,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
                 if (dataType.AllowOverwrite || dataType.OnlyUpdate)
                 {
-                    IData existingData = DataFacade.TryGetDataByUniqueKey(dataType.InterfaceType, dataKey);
+                    IData existingData = DataFacade.TryGetDataByUniqueKey(interfaceType, dataKey);
 
                     if (data != null)
                     {
@@ -196,7 +200,12 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 ILocalizedControlled localizedControlled = data as ILocalizedControlled;
                 if (localizedControlled != null)
                 {
-                    localizedControlled.SourceCultureName = LocalizationScopeManager.MapByType(dataType.InterfaceType).Name;
+                    localizedControlled.SourceCultureName = LocalizationScopeManager.MapByType(interfaceType).Name;
+                }
+
+                if (data is IVersioned)
+                {
+                    UpdateVersionId((IVersioned)data);
                 }
 
                 DataFacade.AddNew(data, false, true, false); // Ignore validation, this should have been done in the validation face
@@ -220,6 +229,54 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
             return datasElement;
         }
+
+
+        private void UpdateVersionId(IVersioned data)
+        {
+            if (data.VersionId != Guid.Empty)
+            {
+                return;
+            }
+
+            if (data is IPage)
+            {
+                var page = (IPage)data;
+
+                Guid versionId;
+
+                if (_pageVersionIds.TryGetValue(page.Id, out versionId))
+                {
+                    page.VersionId = versionId;
+                }
+                else
+                {
+                    page.VersionId = Guid.NewGuid();
+                    _pageVersionIds[page.Id] = page.VersionId;
+                }
+            }
+
+            else if (data is IPagePlaceholderContent)
+            {
+                Guid pageId = ((IPagePlaceholderContent)data).PageId;
+                Guid versionId;
+
+                if (_pageVersionIds.TryGetValue(pageId, out versionId))
+                {
+                    data.VersionId = versionId;
+                }
+            }
+            else if (data is IPageData)
+            {
+                Guid pageId = ((IPageData)data).PageId;
+                Guid versionId;
+
+                if (_pageVersionIds.TryGetValue(pageId, out versionId))
+                {
+                    data.VersionId = versionId;
+                }
+            }
+        }
+
 
         private static DataKeyPropertyCollection CopyFieldValues(DataType dataType, IData data, XElement addElement)
         {
@@ -413,15 +470,16 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
             DataTypeDescriptor dataTypeDescriptor = DynamicTypeManager.BuildNewDataTypeDescriptor(dataType.InterfaceType);
 
-            List<string> requiredPropertyNames =
+
+            bool isVersionedDataType = typeof (IVersioned).IsAssignableFrom(dataType.InterfaceType);
+
+            var requiredPropertyNames = 
                 (from dfd in dataTypeDescriptor.Fields
-                where !dfd.IsNullable
+                where !dfd.IsNullable && !(isVersionedDataType && dfd.Name == nameof(IVersioned.VersionId)) // Compatibility fix
                 select dfd.Name).ToList();
 
-            List<string> nonRequiredPropertyNames =
-                (from dfd in dataTypeDescriptor.Fields
-                where dfd.IsNullable
-                select dfd.Name).ToList();
+            var nonRequiredPropertyNames = dataTypeDescriptor.Fields.Select(f => f.Name)
+                                            .Except(requiredPropertyNames).ToList();
 
 
             foreach (XElement addElement in dataType.Dataset)
@@ -595,6 +653,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         {
             return typeof(ILocalizedControlled).IsAssignableFrom(dataType.InterfaceType) && fieldName == "CultureName";
         }
+
 
         private static Dictionary<string, PropertyInfo> GetDataTypeProperties(Type type)
         {

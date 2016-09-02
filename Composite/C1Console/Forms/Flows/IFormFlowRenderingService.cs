@@ -1,8 +1,9 @@
-﻿using Composite.C1Console.Actions;
+﻿using System.Collections.Generic;
+using Composite.C1Console.Actions;
 
 namespace Composite.C1Console.Forms.Flows
 {
-    /// <summary>    
+    /// <summary>
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
@@ -22,5 +23,8 @@ namespace Composite.C1Console.Forms.Flows
 
         /// <exclude />
         void SetSaveStatus(bool succeeded);
+
+        /// <exclude />
+        Dictionary<string, string> BindingPathedMessages { get; }
     }
 }

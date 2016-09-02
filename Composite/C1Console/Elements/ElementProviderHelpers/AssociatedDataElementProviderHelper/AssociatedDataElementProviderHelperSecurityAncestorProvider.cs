@@ -12,7 +12,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
         {
             var castedEntityToken = (AssociatedDataElementProviderHelperEntityToken)entityToken;
 
-            var dataItem = castedEntityToken.GetData();
+            var dataItem = castedEntityToken.GetDataList().FirstOrDefault();
 
             // Data item may not exist in current language
             return dataItem != null ? new[] { dataItem.GetDataEntityToken() } : Enumerable.Empty<EntityToken>();

@@ -6,16 +6,17 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler.CompilePhases
 {
     internal sealed class ExtractUiArtifactsPhase
     {
-        public void ExtractUiArtifacts(CompileTreeNode node, out IUiControl uiControl, out string label, out string iconhandle )
+        public void ExtractUiArtifacts(CompileTreeNode node, out IUiControl uiControl, out string label, out string tooltip, out string iconhandle )
         {
             foreach (PropertyCompileTreeNode n in node.DefaultProperties)
             {
                 if (n.Value is LayoutProducer)
                 {
-                    LayoutProducer lp = (n.Value as LayoutProducer);
+                    var lp = (LayoutProducer) n.Value;
                     uiControl = lp.UiControl;
                     label = lp.label;
                     iconhandle = lp.iconhandle;
+                    tooltip = lp.tooltip;
 
                     return;
                 }

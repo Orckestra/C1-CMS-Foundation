@@ -84,6 +84,17 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
             return data;
         }
 
+        /// <exclude />
+        public IEnumerable<IData> GetDataList()
+        {
+            Type type = TypeManager.GetType(this.Type);
+
+            object id = ValueTypeConverter.Convert(this.Id, type.GetKeyProperties()[0].PropertyType);
+
+            var datas = DataFacade.TryGetDataVersionsByUniqueKey(type, id);
+
+            return datas;
+        }
 
         /// <exclude />
         public override string Serialize()

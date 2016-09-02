@@ -4,16 +4,19 @@
 		<cms:binding name="SelectedPage" type="Composite.Data.Types.IPage" />
 		<cms:binding name="SelectablePageTypeIds" type="System.Collections.IEnumerable" />
 		<cms:binding name="SelectableTemplateIds" type="System.Collections.IEnumerable" />
-		<cms:binding name="PublishDate" type="System.Object" optional="true" />
-		<cms:binding name="UnpublishDate" type="System.Object" optional="true" />
 		<cms:binding name="StateOptions" type="System.Object" />
 		<cms:binding name="NamedXhtmlFragments" type="System.Object" />
 		<cms:binding name="PreviewEventHandler" type="System.EventHandler" optional="true" />
 		<cms:binding name="CustomEvent01Handler" type="System.EventHandler" />
 		<cms:binding name="UrlTitleIsRequired" type="System.Boolean"/>
     <cms:binding name="IsRootPage" type="System.Boolean"/>
+		<cms:binding name="Tooltip" type="System.String" optional="true" />
 	</cms:bindings>
 	<cms:layout iconhandle="page-edit-page">
+		<cms:layout.tooltip>
+			<cms:read source="Tooltip" />
+		</cms:layout.tooltip>
+		
 		<TabPanels PreSelectedIndex="1">
 			<TabPanels.Label>
         <f:BooleanCheck>
@@ -66,22 +69,6 @@
           </KeySelector>
           
 				</FieldGroup>
-				<FieldGroup Label="${Composite.Plugins.PageElementProvider, PublicationSettings.FieldGroupLabel}">
-					<KeySelector OptionsKeyField="Key" OptionsLabelField="Value" Label="${Composite.Plugins.PageElementProvider, EditPage.LabelPublicationState}" Help="${Composite.Plugins.PageElementProvider, EditPage.HelpPublicationState}" Required="true">
-						<KeySelector.Selected>
-							<cms:bind source="SelectedPage.PublicationStatus" />
-						</KeySelector.Selected>
-						<KeySelector.Options>
-							<cms:read source="StateOptions" />
-						</KeySelector.Options>
-					</KeySelector>
-					<DateTimeSelector Label="${Composite.Plugins.PageElementProvider, EditPage.LabelPublishDate}" Help="${Composite.Plugins.PageElementProvider, EditPage.HelpPublishDate}">
-						<cms:bind source="PublishDate" />
-					</DateTimeSelector>
-					<DateTimeSelector Label="${Composite.Plugins.PageElementProvider, EditPage.LabelUnpublishDate}" Help="${Composite.Plugins.PageElementProvider, EditPage.HelpUnpublishDate}">
-						<cms:bind source="UnpublishDate" />
-					</DateTimeSelector>
-				</FieldGroup>
 				<FieldGroup Label="${Composite.Plugins.PageElementProvider, AdvancedSettings.FieldGroupLabel}">
 					<TextBox Label="${Composite.Plugins.PageElementProvider, EditPage.LabelMenuTitle}" Help="${Composite.Plugins.PageElementProvider, EditPage.HelpMenuTitle}">
 						<TextBox.Text>
@@ -100,7 +87,18 @@
 						<TextBox.Text>
 							<cms:bind source="SelectedPage.FriendlyUrl" />
 						</TextBox.Text>
-					</TextBox>					
+					</TextBox>
+				</FieldGroup>
+
+				<FieldGroup Label="${Composite.Plugins.PageElementProvider, PublicationSettings.FieldGroupLabel}">
+					<KeySelector OptionsKeyField="Key" OptionsLabelField="Value" Label="${Composite.Plugins.PageElementProvider, EditPage.LabelPublicationState}" Help="${Composite.Plugins.PageElementProvider, EditPage.HelpPublicationState}" Required="true">
+						<KeySelector.Selected>
+							<cms:bind source="SelectedPage.PublicationStatus" />
+						</KeySelector.Selected>
+						<KeySelector.Options>
+							<cms:read source="StateOptions" />
+						</KeySelector.Options>
+					</KeySelector>
 				</FieldGroup>
 			</PlaceHolder>
       
