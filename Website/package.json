@@ -28,7 +28,7 @@
     "istanbul": "^0.4.3",
     "istanbul-lib-coverage": "1.0.0",
     "jsdom": "9.4.1",
-    "jspm": "0.17.0-beta.25",
+    "jspm": "0.17.0-beta.28",
     "less": "^2.1.2",
     "load-grunt-tasks": "3.5.0",
     "mocha": "3.0.1",
