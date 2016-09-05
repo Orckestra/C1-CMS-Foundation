@@ -69,7 +69,7 @@ namespace Composite.C1Console.Trees.Foundation.AttachmentPoints
 
         private EntityToken GetEntityTokensImpl()
         {
-            IData data = DataFacade.TryGetDataByUniqueKey(this.InterfaceType, KeyValue);
+            IData data = DataFacade.TryGetDataVersionsByUniqueKey(this.InterfaceType, KeyValue).FirstOrDefault();
             return data == null ? null : data.GetDataEntityToken();
         }
 
