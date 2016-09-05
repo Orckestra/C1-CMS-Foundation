@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
+using System.Linq;
 using Composite.Data;
 using Composite.C1Console.Security;
 using Composite.Data.ProcessControlled;
-
 
 namespace Composite.C1Console.Trees.Foundation.AttachmentPoints
 {
