@@ -168,8 +168,12 @@ namespace Composite.Data
             DataInterceptor globalDataInterceptor = GlobalDataInterceptors
                 .FirstOrDefault(kvp => kvp.Key.IsAssignableFrom(dataType)).Value;
 
-            DataInterceptor threadedDataInterceptor;
-            this.DataInterceptors.TryGetValue(dataType, out threadedDataInterceptor);
+            DataInterceptor threadedDataInterceptor = null;
+            var threadData = ThreadDataManager.Current;
+            if (threadData != null)
+            {
+                GetDataInterceptors(threadData).TryGetValue(dataType, out threadedDataInterceptor);
+            }
 
             if (threadedDataInterceptor == null && globalDataInterceptor == null)
             {
@@ -237,27 +241,25 @@ namespace Composite.Data
             }
         }
 
-        private Dictionary<Type, DataInterceptor> DataInterceptors
+        private Dictionary<Type, DataInterceptor> GetDataInterceptors(ThreadDataManagerData threadData)
         {
-            get
+            Verify.ArgumentNotNull(threadData, nameof(threadData));
+            const string threadDataKey = "DataFacade:DataInterceptors";
+
+            var dataInterceptors = threadData.GetValue(threadDataKey) as Dictionary<Type, DataInterceptor>;
+
+            if (dataInterceptors == null)
             {
-                const string threadDataKey = "DataFacade:DataInterceptors";
-
-                var threadData = ThreadDataManager.GetCurrentNotNull();
-
-                var dataInterceptors = threadData.GetValue(threadDataKey) as Dictionary<Type, DataInterceptor>;
-
-                if (dataInterceptors == null)
-                {
-                    dataInterceptors = new Dictionary<Type, DataInterceptor>();
-                    threadData.SetValue(threadDataKey, dataInterceptors);
-                }
-
-                return dataInterceptors;
+                dataInterceptors = new Dictionary<Type, DataInterceptor>();
+                threadData.SetValue(threadDataKey, dataInterceptors);
             }
+
+            return dataInterceptors;
         }
 
-        
+        private Dictionary<Type, DataInterceptor> DataInterceptors 
+            => GetDataInterceptors(ThreadDataManager.Current);
+
 
         public void Update(IEnumerable<IData> dataset, bool suppressEventing, bool performForeignKeyIntegrityCheck, bool performValidation)
         {
