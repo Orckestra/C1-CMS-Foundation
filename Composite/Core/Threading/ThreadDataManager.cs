@@ -142,14 +142,6 @@ using(Composite.Core.Threading.ThreadDataManager.EnsureInitialize())
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
         public static void InitializeThroughHttpContext()
         {
-            InitializeThroughHttpContext(false);
-        }
-
-
-        /// <exclude />
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
-        public static void InitializeThroughHttpContext(bool forceUserValidation)
-        {
             var httpContext = HttpContext.Current;
             Verify.IsNotNull(httpContext, "This can only be called from a thread started with a current http context");
 
@@ -164,6 +156,15 @@ using(Composite.Core.Threading.ThreadDataManager.EnsureInitialize())
                 var threadData = new ThreadDataManagerData();
                 httpContext.Items[c_HttpContextItemsId] = threadData;
             }
+        }
+
+
+        /// <exclude />
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+        [Obsolete("Use the overload taking no parameters instead")]
+        public static void InitializeThroughHttpContext(bool forceUserValidation)
+        {
+            InitializeThroughHttpContext();
 
             if (forceUserValidation)
             {

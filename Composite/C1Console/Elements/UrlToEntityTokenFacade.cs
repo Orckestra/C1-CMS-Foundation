@@ -68,9 +68,10 @@ namespace Composite.C1Console.Elements
         public static EntityToken TryGetEntityToken(string url)
         {
             var originalUrl = url;
-            url = _serviceMappers.Select(sm => sm.CleanUrl(ref url)).Last();
+            _serviceMappers.Select(sm => sm.CleanUrl(ref url));
             var baseEntityToken = _mappers.Select(mapper => mapper.TryGetEntityToken(url)).FirstOrDefault(entityToken => entityToken != null);
-            return _serviceMappers.Select(sm => sm.TryGetEntityToken(originalUrl, ref baseEntityToken)).Last();
+            _serviceMappers.Select(sm => sm.TryGetEntityToken(originalUrl, ref baseEntityToken));
+            return baseEntityToken;
         }
 
         /// <summary>

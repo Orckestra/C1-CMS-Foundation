@@ -10,36 +10,37 @@ namespace Composite.Core.WebClient.HttpModules
 {
     internal class AdministrativeDataScopeSetterHttpModule : IHttpModule
     {
-        private const string HttpContextItemsKey = nameof(AdministrativeDataScopeSetterHttpModule) + ":DataScope";
-
         public void Init(HttpApplication context)
         {
-            context.AuthenticateRequest += AuthenticateRequest;
-            context.EndRequest += EndRequest;
+            var moduleInstance = new ModuleInstance();
+            context.AuthorizeRequest += moduleInstance.AuthorizeRequest;
+            context.EndRequest += moduleInstance.EndRequest;
         }
 
-        private static void AuthenticateRequest(object sender, EventArgs e)
+        private class ModuleInstance
         {
-            if (!SystemSetupFacade.IsSystemFirstTimeInitialized) return;
+            private DataScope _dataScope;
 
-            HttpContext context = ((HttpApplication)sender).Context;
-
-            bool adminRootRequest = UrlUtils.IsAdminConsoleRequest(context);
-
-            if (adminRootRequest && UserValidationFacade.IsLoggedIn())
+            public void AuthorizeRequest(object sender, EventArgs e)
             {
-                var dataScope = new DataScope(DataScopeIdentifier.Administrated, UserSettings.ActiveLocaleCultureInfo);
-                context.Items[HttpContextItemsKey] = dataScope;
+                if (!SystemSetupFacade.IsSystemFirstTimeInitialized) return;
+
+                HttpApplication application = (HttpApplication)sender;
+                HttpContext context = application.Context;
+
+                bool adminRootRequest = UrlUtils.IsAdminConsoleRequest(context);
+
+                if (adminRootRequest && UserValidationFacade.IsLoggedIn())
+                {
+                    _dataScope = new DataScope(DataScopeIdentifier.Administrated, UserSettings.ActiveLocaleCultureInfo);
+                }
             }
 
-        }
-
-        private static void EndRequest(object sender, EventArgs e)
-        {
-            HttpContext context = ((HttpApplication)sender).Context;
-            var dataScope = context.Items[HttpContextItemsKey] as DataScope;
-
-            dataScope?.Dispose();
+            public void EndRequest(object sender, EventArgs e)
+            {
+                _dataScope?.Dispose();
+                _dataScope = null;
+            }
         }
 
         public void Dispose()

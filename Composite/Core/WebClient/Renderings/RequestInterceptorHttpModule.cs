@@ -23,7 +23,7 @@ namespace Composite.Core.WebClient.Renderings
         {
             if (!SystemSetupFacade.IsSystemFirstTimeInitialized) return;
 
-            ThreadDataManager.InitializeThroughHttpContext(true);
+            ThreadDataManager.InitializeThroughHttpContext();
 
             var httpContext = (sender as HttpApplication).Context;
 

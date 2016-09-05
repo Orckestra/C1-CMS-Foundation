@@ -163,7 +163,7 @@ namespace Composite.Core.WebClient
         {
             var context = (sender as HttpApplication).Context;
 
-            ThreadDataManager.InitializeThroughHttpContext(true);
+            ThreadDataManager.InitializeThroughHttpContext();
 
             ServiceLocator.CreateRequestServicesScope(context);
 

@@ -72,8 +72,6 @@ UnpublishedPageBinding.prototype.onBindingAttach = function () {
 
 	this.containingViewBinding = this.getAncestorBindingByType(ViewBinding, true);
 	this.isSelectedTab = true;
-
-	this.refresh();
 }
 
 UnpublishedPageBinding.prototype.renderActions = function (nodes) {
@@ -205,6 +203,12 @@ UnpublishedPageBinding.prototype.renderTable = function (nodes, selected) {
 	}
 }
 
+UnpublishedPageBinding.prototype.onAfterPageInitialize = function () {
+
+    UnpublishedPageBinding.superclass.onAfterPageInitialize.call(this);
+
+    this.refresh();
+}
 
 UnpublishedPageBinding.prototype.refresh = function () {
 
