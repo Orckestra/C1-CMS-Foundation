@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Threading;
-using Composite.Core.Logging;
-using Composite.Core.Types;
 using System.Diagnostics;
-using System.IO;
-using Composite.Core.IO;
 
 
 namespace Composite.Core.Application
@@ -15,9 +10,9 @@ namespace Composite.Core.Application
     /// </summary>
     internal static class AppDomainLocker
     {
-        private static readonly SystemGlobalSemaphore _systemGlobalEventWaitHandle = new SystemGlobalSemaphore(EventWaitHandleId);
-        private static int _numberOfLocksAcquried = 0;
-        private static readonly object _numberOfLocksAquriedLock = new object();
+        private static readonly SystemGlobalSemaphore _semaphore = new SystemGlobalSemaphore(EventWaitHandleId);
+        private static int _numberOfLocksAcquired;
+        private static readonly object _numberOfLocksAcquiredLock = new object();
 
 
         private const string _verboseLogEntryTitle = "RGB(205, 92, 92)AppDomainLocker";
@@ -47,14 +42,7 @@ namespace Composite.Core.Application
         /// <summary>
         /// Returns true if the calling app domain has the lock.
         /// </summary>
-        public static bool CurrentAppDomainHasLock
-        {
-            get
-            {
-                return IsCurrentAppDomainLockingAppDomain();
-            }
-        }
-
+        public static bool CurrentAppDomainHasLock => IsCurrentAppDomainLockingAppDomain();
 
 
         /// <summary>
@@ -64,46 +52,53 @@ namespace Composite.Core.Application
         /// </summary>
         /// <param name="timeout">Acquire lock timeout in milliseconds.</param>
         /// <param name="verbose">If this is false, no logging will be done.</param>
-        /// <returns>True if the lock was acuired.</returns>
+        /// <returns>True if the lock was acquired.</returns>
         public static bool AcquireLock(int timeout = 30000, bool verbose = true)
         {
-            if (RuntimeInformation.AppDomainLockingDisabled) return true;            
+            if (RuntimeInformation.AppDomainLockingDisabled) return true;
 
-            lock (_numberOfLocksAquriedLock)
+
+            var appDomainId = AppDomain.CurrentDomain.Id;
+            var processId = Process.GetCurrentProcess().Id;
+
+            lock (_numberOfLocksAcquiredLock)
             {
                 if (!IsCurrentAppDomainLockingAppDomain())
                 {
-                    if (verbose) Log.LogVerbose(_verboseLogEntryTitle, string.Format("The AppDomain '{0}', Process '{1}': Are going to acquire the system wide lock with the key '{2}'...", AppDomain.CurrentDomain.Id, Process.GetCurrentProcess().Id, _systemGlobalEventWaitHandle.Id));
+                    if (verbose) Log.LogVerbose(_verboseLogEntryTitle,
+                        $"The AppDomain '{appDomainId}', Process '{processId}': Are going to acquire the system wide lock with the key '{_semaphore.Id}'...");
 
-                    bool entered = _systemGlobalEventWaitHandle.Enter(timeout);
+                    bool entered = _semaphore.Enter(timeout);
                     
                     if (!entered)
                     {
-                        string message = string.Format("The AppDomain '{0}', Process '{1}': Failed to aqruie the system wide lock with the key '{2}' within the timeout period of {3} ms!!!", AppDomain.CurrentDomain.Id, Process.GetCurrentProcess().Id, _systemGlobalEventWaitHandle.Id, timeout);
+                        string message = $"The AppDomain '{appDomainId}', Process '{processId}': Failed to acquire the system wide lock with the key '{_semaphore.Id}' within the timeout period of {timeout} ms!!!";
                         Log.LogWarning(_warningLogEntryTitle, message);
                         //throw new WaitHandleCannotBeOpenedException(message);
                         return false;
                     }
 
 
-                    if (verbose) Log.LogVerbose(_verboseLogEntryTitle, string.Format("The AppDomain '{0}', Process '{1}': Acquired the system wide lock with the key '{2}'!", AppDomain.CurrentDomain.Id, Process.GetCurrentProcess().Id, _systemGlobalEventWaitHandle.Id));
+                    if (verbose) Log.LogVerbose(_verboseLogEntryTitle,
+                        $"The AppDomain '{appDomainId}', Process '{processId}': Acquired the system wide lock with the key '{_semaphore.Id}'!");
                 }
                 else
                 {
-                    if (verbose) Log.LogVerbose(_verboseLogEntryTitle, string.Format("The AppDomain '{0}', Process '{1}': Aquiring the lock that it is allready holding the system wide lock with the key '{2}' (Number of inner locks {3})", AppDomain.CurrentDomain.Id, Process.GetCurrentProcess().Id, _systemGlobalEventWaitHandle.Id, _numberOfLocksAcquried + 1));
+                    if (verbose) Log.LogVerbose(_verboseLogEntryTitle,
+                        $"The AppDomain '{appDomainId}', Process '{processId}': Acquiring the lock that it is already holding the system wide lock with the key '{_semaphore.Id}' (Number of inner locks {_numberOfLocksAcquired + 1})");
                 }
 
-                _numberOfLocksAcquried++;
+                _numberOfLocksAcquired++;
 
                 return true;
-            }            
+            }
         }
 
 
 
         /// <summary>
         /// Releases the acquired system wide lock. 
-        /// If the same thread has aqired the lock more than once, only the last call to this method
+        /// If the same thread has acquired the lock more than once, only the last call to this method
         /// from that thread will release the lock.         
         /// </summary>
         /// <param name="verbose"></param>
@@ -113,34 +108,42 @@ namespace Composite.Core.Application
         {
             if (RuntimeInformation.AppDomainLockingDisabled) return true;
 
-            lock (_numberOfLocksAquriedLock)
+            var appDomainId = AppDomain.CurrentDomain.Id;
+            var processId = Process.GetCurrentProcess().Id;
+
+            lock (_numberOfLocksAcquiredLock)
             {
                 if (!forceRelease && IsAllReleased())
                 {
-                    Log.LogWarning(_warningLogEntryTitle, string.Format("The AppDomain '{0}', Process '{1}': Is trying to release a system wide lock with the key '{2}' that it does not hold! Release ignored!", AppDomain.CurrentDomain.Id, Process.GetCurrentProcess().Id, _systemGlobalEventWaitHandle.Id));
+                    Log.LogWarning(_warningLogEntryTitle,
+                        $"The AppDomain '{appDomainId}', Process '{processId}': Is trying to release a system wide lock with the key '{_semaphore.Id}' that it does not hold! Release ignored!");
                     return true;
                 }
-                else if (forceRelease || IsLastReleaseForLockHoldingAppDomain())
+
+                if (forceRelease || IsLastReleaseForLockHoldingAppDomain())
                 {
-                    if (verbose) Log.LogVerbose(_verboseLogEntryTitle, string.Format("The AppDomain '{0}', Process '{1}': Are going to release the system wide lock with the key '{2}' (force: {3})...", AppDomain.CurrentDomain.Id, Process.GetCurrentProcess().Id, _systemGlobalEventWaitHandle.Id, forceRelease));
+                    if (verbose) Log.LogVerbose(_verboseLogEntryTitle,
+                        $"The AppDomain '{appDomainId}', Process '{processId}': Are going to release the system wide lock with the key '{_semaphore.Id}' (force: {forceRelease})...");
 
                     try
                     {
-                        _systemGlobalEventWaitHandle.Leave();
+                        _semaphore.Leave();
                     }
                     catch(Exception)
                     {
                         return false;
                     }
 
-                    if (verbose) Log.LogVerbose(_verboseLogEntryTitle, string.Format("The AppDomain '{0}', Process '{1}': Released the system wide lock with the key '{2}' (force: {3})...", AppDomain.CurrentDomain.Id, Process.GetCurrentProcess().Id, _systemGlobalEventWaitHandle.Id, forceRelease));
+                    if (verbose) Log.LogVerbose(_verboseLogEntryTitle,
+                        $"The AppDomain '{appDomainId}', Process '{processId}': Released the system wide lock with the key '{_semaphore.Id}' (force: {forceRelease})...");
                 }
                 else
                 {
-                    if (verbose) Log.LogVerbose(_verboseLogEntryTitle, string.Format("The AppDomain '{0}', Process '{1}': Releasing a lock it has aqruired more than once with the key '{2}'. Lock not released. (Number of inner locks {3})", AppDomain.CurrentDomain.Id, Process.GetCurrentProcess().Id, _systemGlobalEventWaitHandle.Id, _numberOfLocksAcquried - 1));
+                    if (verbose) Log.LogVerbose(_verboseLogEntryTitle,
+                        $"The AppDomain '{appDomainId}', Process '{processId}': Releasing a lock it has aqruired more than once with the key '{_semaphore.Id}'. Lock not released. (Number of inner locks {_numberOfLocksAcquired - 1})");
                 }
 
-                if (!forceRelease) _numberOfLocksAcquried--;
+                if (!forceRelease) _numberOfLocksAcquired--;
 
                 return true;
             }
@@ -152,25 +155,14 @@ namespace Composite.Core.Application
         /// <summary>
         /// Used to name the EventWaitHandle, making it a system wide EventWaitHandle
         /// </summary>
-        private static string EventWaitHandleId
-        {
-            get
-            {
-                return RuntimeInformation.UniqueInstanceName;
-            }
-        }
-
+        private static string EventWaitHandleId => RuntimeInformation.UniqueInstanceName;
 
 
         /// <summary>
         /// Returns true if the current thread is the thread holding the lock
         /// </summary>
         /// <returns></returns>
-        private static bool IsCurrentAppDomainLockingAppDomain()
-        {
-            return _numberOfLocksAcquried > 0;
-        }
-
+        private static bool IsCurrentAppDomainLockingAppDomain() => _numberOfLocksAcquired > 0;
 
 
 
@@ -178,10 +170,7 @@ namespace Composite.Core.Application
         /// Returns true if there will be no more releases for the lock holding thread.
         /// </summary>
         /// <returns></returns>
-        private static bool IsLastReleaseForLockHoldingAppDomain()
-        {
-            return _numberOfLocksAcquried == 1;
-        }
+        private static bool IsLastReleaseForLockHoldingAppDomain() => _numberOfLocksAcquired == 1;
 
 
 
@@ -189,10 +178,8 @@ namespace Composite.Core.Application
         /// Returns true if all locks have been released.
         /// </summary>
         /// <returns></returns>
-        private static bool IsAllReleased()
-        {
-            return _numberOfLocksAcquried == 0;
-        }
+        private static bool IsAllReleased() => _numberOfLocksAcquired == 0;
+
 
 
         /// <summary>
@@ -200,7 +187,7 @@ namespace Composite.Core.Application
         /// </summary>
         private class DisposableLock : IDisposable
         {
-            private bool _disposed = false;
+            private bool _disposed;
             private readonly bool _verbose;
 
             public DisposableLock(bool verbose = true)
@@ -218,7 +205,7 @@ namespace Composite.Core.Application
 
 
 
-            protected virtual void Dispose(bool disposing)
+            void Dispose(bool disposing)
             {
                 if (!disposing || _disposed) return;
 

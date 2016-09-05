@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
 using Composite.Core;
+using Composite.Core.Application;
 using Composite.Data.DynamicTypes;
 using Composite.Core.Instrumentation;
-using Composite.Data.Types;
 
 
 namespace Composite.Data.Foundation
@@ -14,16 +14,12 @@ namespace Composite.Data.Foundation
 
         internal static bool EnsureUpdateAllInterfaces()
         {
+            using (AppDomainLocker.NewLock())
             using (TimerProfilerFacade.CreateTimerProfiler())
             {
                 bool doFlush = false;
 
                 var knownInterfaces = DataProviderRegistry.AllKnownInterfaces.ToList(); 
-
-                if(!knownInterfaces.Contains(typeof(IXmlPageTemplate)))
-                {
-                    knownInterfaces.Insert(0, typeof(IXmlPageTemplate));
-                }
 
                 foreach (Type interfaceType in knownInterfaces)
                 {
