@@ -8,6 +8,11 @@
     <cms:binding name="PriceText" type="System.String" />
     <cms:binding name="IsInPurchasableSubscriptions" type="System.Boolean" />
     <cms:binding name="PurchasableSubscriptions" type="System.String" />
+
+		<cms:binding name="ShowTrialInfo" type="System.Boolean" />
+		<cms:binding name="ShowSubscriptionLicense" type="System.Boolean" />
+		<cms:binding name="SubscriptionName" type="System.String" />
+		<cms:binding name="LicenseExpirationDate" type="System.String" />
   </cms:bindings>
   <cms:layout iconhandle="package-view-availableinfo">
     <cms:layout.label>
@@ -45,7 +50,7 @@
 
         <f:BooleanCheck>
           <f:BooleanCheck.CheckValue>
-            <cms:read source="PackageDescription.IsTrial" />
+            <cms:read source="ShowTrialInfo" />
           </f:BooleanCheck.CheckValue>
           <f:BooleanCheck.WhenTrue>
 
@@ -83,12 +88,36 @@
                 </f:BooleanCheck.WhenTrue>
               </f:BooleanCheck>
 
-
             </FieldGroup>
           </f:BooleanCheck.WhenTrue>
         </f:BooleanCheck>
 
-      </PlaceHolder>
+				<f:BooleanCheck>
+					<f:BooleanCheck.CheckValue>
+						<cms:read source="ShowSubscriptionLicense" />
+					</f:BooleanCheck.CheckValue>
+					<f:BooleanCheck.WhenTrue>
+						
+						<FieldGroup Label="${Composite.Plugins.PackageElementProvider, ViewAvailableInformation.LicenseInformationGroupLabel}">
+
+							<TextBox Type="ReadOnly" Label="${Composite.Plugins.PackageElementProvider, ViewAvailableInformation.SubscriptionNameLabel}">
+								<TextBox.Text>
+									<cms:read source="SubscriptionName" />
+								</TextBox.Text>
+							</TextBox>
+
+							<TextBox Type="ReadOnly" Label="${Composite.Plugins.PackageElementProvider, ViewAvailableInformation.LicenseExpirationDateLabel}">
+								<TextBox.Text>
+									<cms:read source="LicenseExpirationDate" />
+								</TextBox.Text>
+							</TextBox>
+							
+						</FieldGroup>
+						
+					</f:BooleanCheck.WhenTrue>
+				</f:BooleanCheck>
+				
+			</PlaceHolder>
 
       <PlaceHolder Label="${Composite.Plugins.PackageElementProvider, ViewAvailableInformation.InstallationInfoFieldGroupLabel}">
 
