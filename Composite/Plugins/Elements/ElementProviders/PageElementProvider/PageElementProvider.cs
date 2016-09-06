@@ -128,11 +128,11 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 }
             };
 
-            var allPageTypes = DataFacade.GetData<IPageType>();
+            var allPageTypes = DataFacade.GetData<IPageType>().AsEnumerable();
 
             foreach (
                 var pageType in
-                    allPageTypes.Where(f => f.HomepageRelation != PageTypeHomepageRelation.OnlySubPages.ToPageTypeHomepageRelationString())
+                    allPageTypes.Where(f => f.HomepageRelation != nameof(PageTypeHomepageRelation.OnlySubPages))
                         .OrderByDescending(f=>f.Id))
             {
                 element.AddAction(
@@ -670,7 +670,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             string localizePageLabel = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.LocalizePage");
             string localizePageToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.LocalizePageToolTip");
             string addNewPageLabel = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.AddSubPageFormat");
-            string addNewPageToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.AddSubPageToolTip");
+            //string addNewPageToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.AddSubPageToolTip");
             string deletePageLabel = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.Delete");
             string deletePageToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.DeleteToolTip");
 
@@ -681,7 +681,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             }
 
             var elements = new Element[pages.Count];
-            var allPageTypes = DataFacade.GetData<IPageType>();
+            var allPageTypes = DataFacade.GetData<IPageType>().AsEnumerable();
 
             ParallelFacade.For("PageElementProvider. Getting elements", 0, pages.Count, i =>
             {
@@ -696,7 +696,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
                 var element = new Element(_context.CreateElementHandle(entityToken), MakeVisualData(page, kvp.Key, urlMappingName, rootPages), dragAndDropInfo);
 
-                element.PropertyBag.Add("Uri", "~/page({0})".FormatWith(page.Id));
+                element.PropertyBag.Add("Uri", $"~/page({page.Id})");
                 element.PropertyBag.Add("ElementType", "application/x-composite-page");
                 element.PropertyBag.Add("DataId", page.Id.ToString());
 
