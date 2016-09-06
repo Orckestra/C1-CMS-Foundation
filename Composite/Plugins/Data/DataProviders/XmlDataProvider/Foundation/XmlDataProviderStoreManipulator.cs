@@ -253,12 +253,14 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                 {
                     if (addingVersionId && fieldDescriptor.Name == nameof(IVersioned.VersionId) && versionIdSourceFieldName != null)
                     {
-                        var existingField = (Guid)oldElement.Attribute(versionIdSourceFieldName);
-                        if (existingField != null)
+                        if (!oldElement.Attributes().Any(a => a.Name.LocalName == nameof(IVersioned.VersionId)))
                         {
-                            newChildAttributes.Add(new XAttribute(fieldDescriptor.Name, existingField));
-                            continue;
+                            var sourceFieldValue = (Guid)oldElement.Attribute(versionIdSourceFieldName);
+
+                            newChildAttributes.Add(new XAttribute(fieldDescriptor.Name, sourceFieldValue));
                         }
+
+                        continue;
                     }
 
                     if (!fieldDescriptor.IsNullable
@@ -290,11 +292,9 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                 C1File.Delete(oldFilename);
             }
 
-            XElement newRoot = new XElement(XmlDataProviderDocumentWriter.GetRootElementName(newDataScopeConfigurationElement.ElementName));
-            newRoot.Add(newElements);
-
-            XDocument newDocument = new XDocument();
-            newDocument.Add(newRoot);
+            var newDocument = new XDocument(
+                new XElement(XmlDataProviderDocumentWriter.GetRootElementName(newDataScopeConfigurationElement.ElementName),
+                    newElements));
 
             XDocumentUtils.Save(newDocument, newFilename);
         }

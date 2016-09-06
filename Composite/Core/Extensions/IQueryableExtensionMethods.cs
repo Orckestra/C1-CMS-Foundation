@@ -47,12 +47,7 @@ namespace Composite.Core.Extensions
                 return (query as DataFacadeQueryable<T>).IsEnumerableQuery;
             }
 
-            if (query is CachingQueryable<T>)
-            {
-                return true;
-            }
-
-            return query.GetType().GetGenericTypeDefinition() == typeof(EnumerableQuery<>);
+            return query is CachingQueryable<T> || query is EnumerableQuery<T>;
         }
 
 

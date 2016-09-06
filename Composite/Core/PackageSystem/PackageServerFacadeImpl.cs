@@ -12,6 +12,8 @@ namespace Composite.Core.PackageSystem
 {
     internal sealed class PackageServerFacadeImpl : IPackageServerFacade
     {
+        const string LogTitle = nameof(PackageServerFacade);
+
         private readonly PackageServerFacadeImplCache _packageServerFacadeImplCache = new PackageServerFacadeImplCache();
 
 
@@ -19,8 +21,11 @@ namespace Composite.Core.PackageSystem
         {
             try
             {
-                var basicHttpBinding = new BasicHttpBinding { MaxReceivedMessageSize = int.MaxValue };
-                basicHttpBinding.Security.Mode = BasicHttpSecurityMode.Transport;
+                var basicHttpBinding = new BasicHttpBinding
+                {
+                    MaxReceivedMessageSize = int.MaxValue,
+                    Security = {Mode = BasicHttpSecurityMode.Transport}
+                };
 
                 var client = new PackagesSoapClient(basicHttpBinding, new EndpointAddress($"https://{packageServerUrl}"));
 
@@ -62,20 +67,27 @@ namespace Composite.Core.PackageSystem
             }
             catch (Exception ex)
             {
-                Log.LogError("PackageServerFacade", ex);
+                Log.LogError(LogTitle, ex);
             }
 
             packageDescriptions = new List<PackageDescription>();
             if (packageDescriptors != null)
             {
-                foreach (PackageDescriptor packageDescriptor in packageDescriptors)
+                foreach (var packageDescriptor in packageDescriptors)
                 {
                     if (ValidatePackageDescriptor(packageDescriptor))
                     {
                         var subscriptionList = new List<Subscription>();
                         if (packageDescriptor.Subscriptions !=null)
                         {
-                            subscriptionList = packageDescriptor.Subscriptions.Select(f => new Subscription { Name = f.Name, DetailsUrl = f.DetailsUrl, Purchasable = f.Purchasable }).ToList();
+                            subscriptionList = packageDescriptor.Subscriptions.Select(
+                                f => new Subscription
+                                {
+                                    Id = f.Id,
+                                    Name = f.Name,
+                                    DetailsUrl = f.DetailsUrl,
+                                    Purchasable = f.Purchasable
+                                }).ToList();
                         }
 
                         packageDescriptions.Add(new PackageDescription
@@ -125,7 +137,7 @@ namespace Composite.Core.PackageSystem
 
         public Stream GetInstallFileStream(string packageFileDownloadUrl)
         {
-            Log.LogVerbose("PackageServerFacade", $"Downloading file: {packageFileDownloadUrl}");
+            Log.LogVerbose(LogTitle, $"Downloading file: {packageFileDownloadUrl}");
 
             var client = new System.Net.WebClient();
             return client.OpenRead(packageFileDownloadUrl);
@@ -172,7 +184,7 @@ namespace Composite.Core.PackageSystem
             string newVersion;
             if (!VersionStringHelper.ValidateVersion(packageDescriptor.PackageVersion, out newVersion))
             {
-                Log.LogWarning("PackageServerFacade",
+                Log.LogWarning(LogTitle,
                     $"The package '{packageDescriptor.Name}' ({packageDescriptor.Id}) did not validate and is skipped");
                 return false;
             }
@@ -181,7 +193,7 @@ namespace Composite.Core.PackageSystem
 
             if (!VersionStringHelper.ValidateVersion(packageDescriptor.MinCompositeVersionSupported, out newVersion))
             {
-                Log.LogWarning("PackageServerFacade",
+                Log.LogWarning(LogTitle,
                     $"The package '{packageDescriptor.Name}' ({packageDescriptor.Id}) did not validate and is skipped");
                 return false;
             }
@@ -190,7 +202,7 @@ namespace Composite.Core.PackageSystem
 
             if (!VersionStringHelper.ValidateVersion(packageDescriptor.MaxCompositeVersionSupported, out newVersion))
             {
-                Log.LogWarning("PackageServerFacade",
+                Log.LogWarning(LogTitle,
                     $"The package '{packageDescriptor.Name}' ({packageDescriptor.Id}) did not validate and is skipped");
                 return false;
             }
