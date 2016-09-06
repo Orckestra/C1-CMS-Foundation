@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using Composite.C1Console.Trees;
 using Composite.C1Console.Users;
+using Composite.Core.Extensions;
 using Composite.Core.Linq;
 using Composite.Data.ProcessControlled;
 using Composite.Data.Transactions;
@@ -58,11 +59,23 @@ namespace Composite.Data.Types
         /// <exclude />
         public static IQueryable<IPage> GetChildren(Guid parentId)
         {
-            return from ps in DataFacade.GetData<IPageStructure>()
-                join p in DataFacade.GetData<IPage>() on ps.Id equals p.Id
-                where ps.ParentId == parentId
-                orderby ps.LocalOrdering
-                select p;
+            var structure = DataFacade.GetData<IPageStructure>();
+            var pages = DataFacade.GetData<IPage>();
+
+            if (structure.IsEnumerableQuery() && pages.IsEnumerableQuery())
+            {
+                return (from ps in structure.AsEnumerable()
+                       where ps.ParentId == parentId
+                       join p in pages.AsEnumerable() on ps.Id equals p.Id
+                       orderby ps.LocalOrdering
+                       select p).AsQueryable();
+            }
+
+            return from ps in structure
+                   where ps.ParentId == parentId
+                   join p in pages on ps.Id equals p.Id
+                   orderby ps.LocalOrdering
+                   select p;
 
 #warning revisit this - we return all versions (by design so far). Any ordering on page versions? - check history for original intent
         }
