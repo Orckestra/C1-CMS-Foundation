@@ -81,7 +81,7 @@ namespace Composite.C1Console.Actions
 
             foreach (var propertyInfo in dataProperties.Where(f => f.CanWrite))
             {
-                if (data.GetKeyProperties().Contains(propertyInfo) && propertyInfo.PropertyType == typeof(Guid))
+                if (typeof(T).GetPhysicalKeyProperties().Contains(propertyInfo) && propertyInfo.PropertyType == typeof(Guid))
                 {
                     propertyInfo.SetValue(newdata, Guid.NewGuid());
                 }
@@ -183,9 +183,8 @@ namespace Composite.C1Console.Actions
                 {
                     return string.Join("-", source, count.ToString());
                 }
-
-                return GenerateCopyOfName(source,count,maxLength).Trim().Replace(" ","-").Replace("(","").Replace(")","");
-                
+                var numberInString = count == 1 ? "" : count.ToString();
+                return $"Copy{numberInString}-of";
             }
 
             Func <int, string> copyText = i => StringResourceSystemFacade.GetString("Composite.Management", "Duplication.Text")
@@ -198,13 +197,14 @@ namespace Composite.C1Console.Actions
         {
             Guid sourcePageId = sourcePage.Id;
             Guid newPageId = newPage.Id;
-            //Guid sourceVersionId = sourcePage.VersionId;
+            Guid sourceVersionId = sourcePage.VersionId;
+            Guid newVersionId = newPage.VersionId;
 
             var newPlaceholders = new List<IPagePlaceholderContent>();
             var placeholders =
                 DataFacade.GetData<IPagePlaceholderContent>().
-                    Where(ph => ph.PageId == sourcePageId)
-                    //             && ph.VersionId == sourceVersionId)
+                    Where(ph => ph.PageId == sourcePageId
+                                 && ph.VersionId == sourceVersionId)
                     .ToList();
 
             foreach (var placeholderContent in placeholders)
@@ -214,14 +214,14 @@ namespace Composite.C1Console.Actions
                 newPlaceholder.PageId = newPageId;
                 newPlaceholder.PlaceHolderId = placeholderContent.PlaceHolderId;
                 newPlaceholder.Content = placeholderContent.Content;
-                //newPlaceholder.VersionId = newVersionId;
+                newPlaceholder.VersionId = newVersionId;
 
                 newPlaceholders.Add(newPlaceholder);
             }
             DataFacade.AddNew<IPagePlaceholderContent>(newPlaceholders);
 
-            var sourceMetaData = sourcePage.GetMetaData().Cast<IPageMetaData>();
-            //.Where(d => d.VersionId == sourceVersionId);
+            var sourceMetaData = sourcePage.GetMetaData().Cast<IPageMetaData>()
+                                    .Where(d => d.VersionId == sourceVersionId);
             foreach (var metaDataItem in sourceMetaData)
             {
                 var metaDataType = metaDataItem.DataSourceId.InterfaceType;
@@ -237,7 +237,7 @@ namespace Composite.C1Console.Actions
                     propertyInfo.SetValue(newDataItem, propertyInfo.GetValue(metaDataItem));
                 }
 
-                //newDataItem.VersionId = newVersionId;
+                newDataItem.VersionId = newVersionId;
                 newDataItem.Id = Guid.NewGuid();
                 newDataItem.PageId = newPageId;
                 newDataItem.PublicationStatus = GenericPublishProcessController.Draft;
