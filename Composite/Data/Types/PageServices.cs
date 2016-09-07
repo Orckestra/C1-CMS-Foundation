@@ -4,7 +4,10 @@ using System.Globalization;
 using System.Linq;
 using Composite.C1Console.Trees;
 using Composite.C1Console.Users;
+using Composite.Core.Extensions;
 using Composite.Core.Linq;
+using Composite.Data.ProcessControlled;
+using Composite.Data.Transactions;
 
 
 namespace Composite.Data.Types
@@ -56,20 +59,25 @@ namespace Composite.Data.Types
         /// <exclude />
         public static IQueryable<IPage> GetChildren(Guid parentId)
         {
-            var pageIDs = PageManager.GetChildrenIDs(parentId);
+            var structure = DataFacade.GetData<IPageStructure>();
+            var pages = DataFacade.GetData<IPage>();
 
-            var result = new List<IPage>();
-            foreach (var id in pageIDs)
+            if (structure.IsEnumerableQuery() && pages.IsEnumerableQuery())
             {
-                var page = PageManager.GetPageById(id);
-                // A page can de deleted after getting the child list, in a separate thread
-                if (page != null)
-                {
-                    result.Add(page);
-                }
+                return (from ps in structure.AsEnumerable()
+                       where ps.ParentId == parentId
+                       join p in pages.AsEnumerable() on ps.Id equals p.Id
+                       orderby ps.LocalOrdering
+                       select p).AsQueryable();
             }
 
-            return result.AsQueryable();
+            return from ps in structure
+                   where ps.ParentId == parentId
+                   join p in pages on ps.Id equals p.Id
+                   orderby ps.LocalOrdering
+                   select p;
+
+#warning revisit this - we return all versions (by design so far). Any ordering on page versions? - check history for original intent
         }
 
 
@@ -305,10 +313,10 @@ namespace Composite.Data.Types
         internal static void InsertIntoPositionInternal(Guid newPageId, Guid parentId, int localOrder)
         {
             List<IPageStructure> pageStructures =
-                    (from ps in DataFacade.GetData<IPageStructure>(false)
-                     where ps.ParentId == parentId
-                     orderby ps.LocalOrdering
-                     select ps).ToList();
+                (from ps in DataFacade.GetData<IPageStructure>(false)
+                    where ps.ParentId == parentId
+                    orderby ps.LocalOrdering
+                    select ps).ToList();
 
             var toBeUpdated = new List<IData>();
             for (int i = 0; i < pageStructures.Count; i++)
@@ -478,6 +486,7 @@ namespace Composite.Data.Types
             {
                 IPagePlaceholderContent pagePlaceholderContent = DataFacade.BuildNew<IPagePlaceholderContent>();
                 pagePlaceholderContent.PageId = page.Id;
+                pagePlaceholderContent.VersionId = page.VersionId;
                 pagePlaceholderContent.PlaceHolderId = pageTypeDefaultPageContent.PlaceHolderId;
                 pagePlaceholderContent.Content = pageTypeDefaultPageContent.Content;
                 DataFacade.AddNew<IPagePlaceholderContent>(pagePlaceholderContent);
@@ -486,9 +495,131 @@ namespace Composite.Data.Types
             AddPageTypePageFoldersAndApplications(page);
         }
 
+        /// <summary>
+        /// Deletes the versions of the given page in its current localization scope.
+        /// </summary>
+        public static void DeletePage(IPage page)
+        {
+            using (var transactionScope = TransactionsFacade.CreateNewScope())
+            {
+                List<CultureInfo> cultures = DataLocalizationFacade.ActiveLocalizationCultures.ToList();
+                cultures.Remove(page.DataSourceId.LocaleScope);
+
+                List<IPage> pagesToDelete = page.GetSubChildren().ToList();
+
+                foreach (IPage childPage in pagesToDelete)
+                {
+                    if (!ExistInOtherLocale(cultures, childPage))
+                    {
+                        RemoveAllFolderAndMetaDataDefinitions(childPage);
+                    }
+
+                    childPage.DeletePageStructure();
+                    ProcessControllerFacade.FullDelete(childPage);
+                }
+                
+
+                if (!ExistInOtherLocale(cultures, page))
+                {
+                    RemoveAllFolderAndMetaDataDefinitions(page);
+                }
+
+                page.DeletePageStructure();
+
+                Guid pageId = page.Id;
+                var pageVersions = DataFacade.GetData<IPage>(p => p.Id == pageId).ToList();
+
+                ProcessControllerFacade.FullDelete(pageVersions);
+
+                transactionScope.Complete();
+            }
+        }
+
+        private static bool ExistInOtherLocale(List<CultureInfo> cultures, IPage page)
+        {
+            foreach (CultureInfo localeCultureInfo in cultures)
+            {
+                using (new DataScope(localeCultureInfo))
+                {
+                    if (Composite.Data.PageManager.GetPageById(page.Id) != null)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+
+        private static void RemoveAllFolderAndMetaDataDefinitions(IPage page)
+        {
+            foreach (Type folderType in page.GetDefinedFolderTypes())
+            {
+                page.RemoveFolderDefinition(folderType, true);
+            }
+
+            foreach (Tuple<Type, string> metaDataTypeAndName in page.GetDefinedMetaDataTypeAndNames())
+            {
+                page.RemoveMetaDataDefinition(metaDataTypeAndName.Item2, true);
+            }
+        }
+
+        /// <summary>
+        /// Delete the specific version of the page in the current localization scope.
+        /// </summary>
+        /// <param name="pageId"></param>
+        /// <param name="versionId"></param>
+        /// <param name="locale"></param>
+        public static void DeletePage(Guid pageId, Guid versionId, CultureInfo locale)
+        {
+            Verify.ArgumentNotNull(locale, nameof(locale));
+
+            using (var conn = new DataConnection(PublicationScope.Unpublished, locale))
+            {
+                var pages = conn.Get<IPage>().Where(p => p.Id == pageId).ToList();
+                if (pages.Count == 1 && pages[0].VersionId == versionId)
+                {
+                    DeletePage(pages[0]);
+                    return;
+                }
+            }
+
+            var publicationScopes = new[] {PublicationScope.Published, PublicationScope.Unpublished};
+
+            using (var transactionScope = TransactionsFacade.CreateNewScope())
+            {
+                foreach (var publicationScope in publicationScopes)
+                {
+                    using (var conn = new DataConnection(publicationScope, locale))
+                    {
+                        var pageToDelete = conn.Get<IPage>()
+                            .SingleOrDefault(p => p.Id == pageId && p.VersionId == versionId);
+
+                        var placeholders = conn.Get<IPagePlaceholderContent>()
+                            .Where(p => p.PageId == pageId && p.VersionId == versionId).ToList();
+
+                        if (placeholders.Any())
+                        {
+                            DataFacade.Delete(placeholders, false, false);
+                        }
+
+                        if (pageToDelete != null)
+                        {
+                            DataFacade.Delete(pageToDelete);
+                        }
+                    }
+                }
+
+                transactionScope.Complete();
+            }
+        }
+
 
         internal static bool AddPageTypePageFoldersAndApplications(IPage page)
         {
+#warning Validate that having a page type with associated PageType PageFolders or Applications does not break on 2nd add for same page id
+
             Guid pageTypeId = page.PageTypeId;
 
             bool treeRefreshindNeeded = false;

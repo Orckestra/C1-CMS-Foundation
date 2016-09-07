@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Threading;
 using System.Web.WebPages;
 using Composite.AspNet.Razor;
-using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Core.WebClient;
 using Composite.Core.Xml;
@@ -28,19 +27,26 @@ namespace Composite.Plugins.Functions.FunctionProviders.RazorFunctionProvider
 
         protected override void InitializeParameters()
         {
-            WebPageBase razorPage;
+            WebPageBase razorPage = null;
 
-            using (BuildManagerHelper.DisableUrlMetadataCachingScope())
+            try
             {
-                razorPage = WebPage.CreateInstanceFromVirtualPath(VirtualPath);
-            }
+                using (BuildManagerHelper.DisableUrlMetadataCachingScope())
+                {
+                    razorPage = WebPage.CreateInstanceFromVirtualPath(VirtualPath);
+                }
 
-            if (!(razorPage is RazorFunction))
+                if (!(razorPage is RazorFunction))
+                {
+                    throw new InvalidOperationException($"Failed to initialize function from cache. Path: '{VirtualPath}'");
+                }
+
+                Parameters = FunctionBasedFunctionProviderHelper.GetParameters(razorPage as RazorFunction, typeof (RazorFunction), VirtualPath);
+            }
+            finally
             {
-                throw new InvalidOperationException("Failed to initialize function from cache. Path: '{0}'".FormatWith(VirtualPath));
+                (razorPage as IDisposable)?.Dispose();
             }
-
-            Parameters = FunctionBasedFunctionProviderHelper.GetParameters(razorPage as RazorFunction, typeof(RazorFunction), VirtualPath);
         }
 
 		public override object Execute(ParameterList parameters, FunctionContextContainer context)

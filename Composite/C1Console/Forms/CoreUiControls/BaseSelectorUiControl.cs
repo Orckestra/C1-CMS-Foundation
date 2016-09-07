@@ -8,7 +8,7 @@ namespace Composite.C1Console.Forms.CoreUiControls
 {
     internal abstract class BaseSelectorUiControl : UiControl
     {
-        public BaseSelectorUiControl()
+        protected BaseSelectorUiControl()
         {
             this.OptionsKeyField = ".";
             this.OptionsLabelField = ".";
@@ -59,9 +59,7 @@ namespace Composite.C1Console.Forms.CoreUiControls
         {
             string val = value as string;
 
-            val = val.ToLowerInvariant();
-
-            switch (val)
+            switch (val.ToLowerInvariant())
             {
                 case "bindtoobject":
                     return SelectorBindingType.BindToObject;
@@ -70,7 +68,7 @@ namespace Composite.C1Console.Forms.CoreUiControls
                     return SelectorBindingType.BindToKeyFieldValue;
 
                 default:
-                    throw new FormatException(String.Format("{0} is not a valid Selector BindingType value - use BindToObject or BindToKeyFieldValue", value));
+                    throw new FormatException($"{value} is not a valid Selector BindingType value - use {nameof(SelectorBindingType.BindToObject)} or {nameof(SelectorBindingType.BindToKeyFieldValue)}");
             }
         }
     }

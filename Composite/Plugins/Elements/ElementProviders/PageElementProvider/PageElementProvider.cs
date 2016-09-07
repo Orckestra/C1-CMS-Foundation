@@ -24,7 +24,7 @@ using Composite.Data.Types;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 using Microsoft.Practices.ObjectBuilder;
-using Composite.C1Console.Security.Foundation;
+
 
 namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 {
@@ -79,7 +79,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
         public PageElementProvider()
         {
             AuxiliarySecurityAncestorFacade.AddAuxiliaryAncestorProvider<DataEntityToken>(this);
-            DataEvents<IPageType>.OnStoreChanged += new StoreEventHandler(DataEvents_IPageType_OnStoreChanged);
+            DataEvents<IPageType>.OnStoreChanged += DataEvents_IPageType_OnStoreChanged;
         }
 
 
@@ -99,13 +99,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
 
 
-        public bool ContainsLocalizedData
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public bool ContainsLocalizedData => true;
 
 
         public IEnumerable<Element> GetRoots(SearchToken searchToken)
@@ -134,11 +128,11 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 }
             };
 
-            var allPageTypes = DataFacade.GetData<IPageType>();
+            var allPageTypes = DataFacade.GetData<IPageType>().AsEnumerable();
 
             foreach (
                 var pageType in
-                    allPageTypes.Where(f => f.HomepageRelation != PageTypeHomepageRelation.OnlySubPages.ToPageTypeHomepageRelationString())
+                    allPageTypes.Where(f => f.HomepageRelation != nameof(PageTypeHomepageRelation.OnlySubPages))
                         .OrderByDescending(f=>f.Id))
             {
                 element.AddAction(
@@ -316,23 +310,23 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 return _pageAssociatedHelper.GetChildren((DataGroupingProviderHelperEntityToken)entityToken, true);
             }
 
-            Dictionary<Guid, IPage> pages;
+            IEnumerable<IPage> pages;
             using (new DataScope(DataScopeIdentifier.Administrated))
             {
-                pages = GetChildrenPages(entityToken, searchToken).ToDictionary(f => f.Id);
+                pages = GetChildrenPages(entityToken, searchToken).ToList();
             }
 
 
-            Dictionary<Guid, IPage> foreignAdministratedPages;
+            IEnumerable<IPage> foreignAdministratedPages;
             using (new DataScope(DataScopeIdentifier.Administrated, UserSettings.ForeignLocaleCultureInfo))
             {
-                foreignAdministratedPages = GetChildrenPages(entityToken, searchToken).ToDictionary(f => f.Id);
+                foreignAdministratedPages = GetChildrenPages(entityToken, searchToken).ToList();
             }
 
-            Dictionary<Guid, IPage> foreignPublicPages;
+            IEnumerable<IPage> foreignPublicPages;
             using (new DataScope(DataScopeIdentifier.Public, UserSettings.ForeignLocaleCultureInfo))
             {
-                foreignPublicPages = GetChildrenPages(entityToken, searchToken).ToList().ToDictionary(f => f.Id);
+                foreignPublicPages = GetChildrenPages(entityToken, searchToken).ToList();
             }
 
 
@@ -349,24 +343,31 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             var resultPages = new List<KeyValuePair<PageLocaleState, IPage>>();
             foreach (Guid pageId in childPageIds)
             {
-                IPage page;
-                if (pages.TryGetValue(pageId, out page))
+                if (pages.Any(f => f.Id == pageId))
                 {
-                    resultPages.Add(new KeyValuePair<PageLocaleState, IPage>(PageLocaleState.Own, page));
+                    resultPages.AddRange(
+                        pages.Where(f => f.Id == pageId)
+                            .Select(p => new KeyValuePair<PageLocaleState, IPage>(PageLocaleState.Own, p)));
                 }
-                else if (foreignAdministratedPages.TryGetValue(pageId, out page)
-                         && page.IsTranslatable())
+                else if (foreignAdministratedPages.Any(f => f.Id == pageId && f.IsTranslatable()))
                 {
-                    resultPages.Add(new KeyValuePair<PageLocaleState, IPage>(PageLocaleState.ForeignActive, page));
+                    resultPages.AddRange(
+                        foreignAdministratedPages.Where(f => f.Id == pageId && f.IsTranslatable())
+                            .Select(p => new KeyValuePair<PageLocaleState, IPage>(PageLocaleState.ForeignActive, p)));
                 }
-                else if (foreignPublicPages.TryGetValue(pageId, out page))
+                else if (foreignPublicPages.Any(f => f.Id == pageId))
                 {
-                    resultPages.Add(new KeyValuePair<PageLocaleState, IPage>(PageLocaleState.ForeignActive, page));
+                    resultPages.AddRange(
+                        foreignPublicPages.Where(f => f.Id == pageId)
+                            .Select(p => new KeyValuePair<PageLocaleState, IPage>(PageLocaleState.ForeignActive, p)));
                 }
-                else if (foreignAdministratedPages.TryGetValue(pageId, out page))
+                else if (foreignAdministratedPages.Any(f => f.Id == pageId))
                 {
-                    resultPages.Add(new KeyValuePair<PageLocaleState, IPage>(PageLocaleState.ForeignDisabled, page));
+                    resultPages.AddRange(
+                        foreignAdministratedPages.Where(f => f.Id == pageId)
+                            .Select(p => new KeyValuePair<PageLocaleState, IPage>(PageLocaleState.ForeignDisabled, p)));
                 }
+
             }
 
             List<Element> childPageElements = GetElements(resultPages, entityToken is PageElementProviderEntityToken);
@@ -382,12 +383,12 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
             foreach (EntityToken entityToken in entityTokens)
             {
-                DataEntityToken dataEntityToken = entityToken as DataEntityToken;
-
+                var dataEntityToken = (DataEntityToken) entityToken;
                 Type type = dataEntityToken.InterfaceType;
+
                 if (type != typeof(IPage)) continue;
 
-                Guid pageId = (Guid) dataEntityToken.DataSourceId.GetKeyValue();
+                Guid pageId = (Guid) dataEntityToken.DataSourceId.GetKeyValue(nameof(IPage.Id));
                 Guid parentPageId = PageManager.GetParentId(pageId);
 
                 if (parentPageId != Guid.Empty) continue;
@@ -402,7 +403,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
         private IEnumerable<Element> GetChildElements(EntityToken entityToken, IEnumerable<Element> childPageElements)
         {
             Guid? itemId = GetParentPageId(entityToken);
-            if (itemId.HasValue == false) return new Element[] { };
+            if (!itemId.HasValue) return new Element[] { };
 
             List<Element> associatedChildElements;
             if (itemId.Value != Guid.Empty)
@@ -444,9 +445,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             {
                 IPage parentPage = ((DataEntityToken)entityToken).Data as IPage;
 
-                if (parentPage == null) return null;
-
-                return parentPage.Id;
+                return parentPage?.Id;
             }
 
             throw new NotImplementedException();
@@ -463,7 +462,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
             if (!searchToken.IsValidKeyword())
             {
-                return PageServices.GetChildren(itemId.Value).Evaluate().AsQueryable();
+                return OrderByVersions(PageServices.GetChildren(itemId.Value).Evaluate());
             }
 
             string keyword = searchToken.Keyword.ToLowerInvariant();
@@ -496,7 +495,18 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 }
             }
 
-            return pages.AsQueryable();
+            return OrderByVersions(pages);
+        }
+
+        private IEnumerable<IPage> OrderByVersions(IEnumerable<IPage> pages)
+        {
+            return (from page in pages
+                group page by page.Id
+                into pageVersionGroups
+                let versions = pageVersionGroups.ToList()
+                let liveVersionName = versions.Count == 1 ? null : versions[0].GetLiveVersionName()
+                select pageVersionGroups.OrderByDescending(v => v.LocalizedVersionName() == liveVersionName).ToList())
+                    .SelectMany(v => v);
         }
 
 
@@ -548,7 +558,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             Guid oldParentId = draggedPage.GetParentId();
             if (oldParentId != Guid.Empty)
             {
-                oldParent = DataFacade.GetData<IPage>(f => f.Id == oldParentId).Single();
+                oldParent = DataFacade.GetData<IPage>(f => f.Id == oldParentId).FirstOrDefault();
             }
 
             if (dragAndDropType == DragAndDropType.Move)
@@ -571,7 +581,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                             break;
                         }
 
-                        urlTitle = string.Format("{0}{1}", draggedPage.UrlTitle, counter++);
+                        urlTitle = $"{draggedPage.UrlTitle}{counter++}";
                     }
 
                     draggedPage.UrlTitle = urlTitle;
@@ -660,7 +670,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             string localizePageLabel = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.LocalizePage");
             string localizePageToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.LocalizePageToolTip");
             string addNewPageLabel = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.AddSubPageFormat");
-            string addNewPageToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.AddSubPageToolTip");
+            //string addNewPageToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.AddSubPageToolTip");
             string deletePageLabel = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.Delete");
             string deletePageToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.DeleteToolTip");
 
@@ -671,7 +681,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             }
 
             var elements = new Element[pages.Count];
-            var allPageTypes = DataFacade.GetData<IPageType>();
+            var allPageTypes = DataFacade.GetData<IPageType>().AsEnumerable();
 
             ParallelFacade.For("PageElementProvider. Getting elements", 0, pages.Count, i =>
             {
@@ -686,7 +696,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
                 var element = new Element(_context.CreateElementHandle(entityToken), MakeVisualData(page, kvp.Key, urlMappingName, rootPages), dragAndDropInfo);
 
-                element.PropertyBag.Add("Uri", "~/page({0})".FormatWith(page.Id));
+                element.PropertyBag.Add("Uri", $"~/page({page.Id})");
                 element.PropertyBag.Add("ElementType", "application/x-composite-page");
                 element.PropertyBag.Add("DataId", page.Id.ToString());
 
@@ -811,14 +821,15 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
         private ElementVisualizedData MakeVisualData(IPage page, PageLocaleState pageLocaleState, string urlMappingName, bool isRootPage)
         {
-
             bool hasChildren = PageServices.GetChildrenCount(page.Id) > 0 || _pageAssociatedHelper.HasChildren(page);
 
             var visualizedElement = new ElementVisualizedData
             {
                 HasChildren = hasChildren,
                 Label = (isRootPage || string.IsNullOrWhiteSpace(page.MenuTitle)) ? page.Title : page.MenuTitle,
-                ToolTip = page.Description
+                ToolTip = page.Description,
+                ElementBundle = page.Id.ToString(),
+                BundleElementName = page.LocalizedVersionName()
             };
 
             if (pageLocaleState == PageLocaleState.Own)
@@ -849,7 +860,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 visualizedElement.Icon = PageElementProvider.PageGhosted;
                 visualizedElement.OpenedIcon = PageElementProvider.PageGhosted;
                 visualizedElement.IsDisabled = false;
-                visualizedElement.Label = string.Format("{0} ({1})", visualizedElement.Label, urlMappingName);
+                visualizedElement.Label = $"{visualizedElement.Label} ({urlMappingName})";
             }
             else
             {
@@ -857,7 +868,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 visualizedElement.OpenedIcon = PageElementProvider.PageDisabled;
                 visualizedElement.IsDisabled = true;
                 visualizedElement.ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.DisabledPage");
-                visualizedElement.Label = string.Format("{0} ({1})", visualizedElement.Label, urlMappingName);
+                visualizedElement.Label = $"{visualizedElement.Label} ({urlMappingName})";
             }
 
             return visualizedElement;
@@ -897,10 +908,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
     {
         private static readonly PermissionType[] _permissionTypes = { PermissionType.Administrate, PermissionType.Edit };
 
-        public override IEnumerable<PermissionType> PermissionTypes
-        {
-            get { return _permissionTypes; }
-        }
+        public override IEnumerable<PermissionType> PermissionTypes => _permissionTypes;
     }
 
 

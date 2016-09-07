@@ -5,6 +5,7 @@ using System.Text;
 using Composite.C1Console.Events;
 using Composite.Core.IO.Plugins.IOProvider;
 using Composite.Core.IO.Plugins.IOProvider.Runtime;
+using Composite.Plugins.IO.IOProviders.LocalIOProvider;
 
 
 namespace Composite.Core.IO.Foundation.PluginFacades
@@ -13,7 +14,7 @@ namespace Composite.Core.IO.Foundation.PluginFacades
     {
         private static IOProviderFactory _factory;
         private static IIOProvider _ioProvider;
-        private static object _lock = new object();
+        private static readonly object _lock = new object();
 
 
         static IOProviderPluginFacade()
@@ -130,11 +131,16 @@ namespace Composite.Core.IO.Foundation.PluginFacades
 
         private static IIOProvider GetIOProvider()
         {
-            if (_factory == null || _ioProvider == null)
+            if (_ioProvider == null)
             {
                 lock (_lock)
                 {
-                    if (_factory == null || _ioProvider == null)
+                    if (RuntimeInformation.IsUnittest)
+                    {
+                        return _ioProvider = new LocalIOProvider();
+                    }
+
+                    if (_ioProvider == null)
                     {
                         try
                         {

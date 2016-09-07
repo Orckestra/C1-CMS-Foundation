@@ -25,6 +25,24 @@ EventBroadcaster.subscribe ( BroadcastMessages.APPLICATION_LOGIN, {
 		expressions.each ( function ( entry ) {
 			DataBinding.expressions [ entry.Key ] = new RegExp ( entry.Value );
 		});
+
+		var localizedWarnings = {
+			"required": StringBundle.getString("ui", "Validation.Required"),
+			"number": StringBundle.getString("ui", "Validation.InvalidField.Number"),
+			"integer": StringBundle.getString("ui", "Validation.InvalidField.Integer"),
+			"programmingidentifier": StringBundle.getString("ui", "Validation.InvalidField.ProgrammingIdentifier"),
+			"programmingnamespace": StringBundle.getString("ui", "Validation.InvalidField.ProgrammingNamespace"),
+			"url": StringBundle.getString("ui", "Validation.InvalidField.Url"),
+			"minlength": StringBundle.getString("ui", "Validation.StringLength.Min"),
+			"maxlength": StringBundle.getString("ui", "Validation.StringLength.Max"),
+			"currency": StringBundle.getString("ui", "Validation.InvalidField.Currency"),
+			"email": StringBundle.getString("ui", "Validation.InvalidField.Email"),
+			"guid": StringBundle.getString("ui", "Validation.InvalidField.Guid")
+		}
+
+		for (var prop in localizedWarnings) {
+			DataBinding.warnings[prop] = localizedWarnings[prop];
+		}
 	}
 });
 
@@ -56,15 +74,15 @@ DataBinding.expressions = {
  * TODO: Move to ConfigurationService?
  */
 DataBinding.warnings = {
-	
+
 	"required" 	                : "Required",
 	"number" 	                : "Numbers only",
 	"integer" 	                : "Integers only",
 	"programmingidentifier"     : "Invalid identifier",
 	"programmingnamespace"      : "Invalid namespace",
 	"url"						: "Invalid URL",
-	"minlength"					: "${count} characters minimum",
-	"maxlength"					: "${count} characters maximum",
+	"minlength"					: "{0} characters minimum",
+	"maxlength"					: "{0} characters maximum",
 	"currency"					: "Invalid notation",
 	"email"						: "Invalid e-mail",
 	"guid"						: "Invalid GUID"

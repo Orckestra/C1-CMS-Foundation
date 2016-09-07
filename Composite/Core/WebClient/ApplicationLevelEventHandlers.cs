@@ -15,6 +15,7 @@ using Composite.Core.Logging;
 using Composite.Core.Routing;
 using Composite.Core.Threading;
 using Composite.Core.Types;
+using Composite.Data.Types;
 using Composite.Functions;
 using Composite.Plugins.Elements.UrlToEntityToken;
 using Composite.Plugins.Routing.InternalUrlConverters;
@@ -100,6 +101,8 @@ namespace Composite.Core.WebClient
 
             InternalUrls.Register(new MediaInternalUrlConverter());
             InternalUrls.Register(new PageInternalUrlConverter());
+
+            VersionedDataHelper.Initialize();
         }
 
 
@@ -160,7 +163,7 @@ namespace Composite.Core.WebClient
         {
             var context = (sender as HttpApplication).Context;
 
-            ThreadDataManager.InitializeThroughHttpContext(true);
+            ThreadDataManager.InitializeThroughHttpContext();
 
             ServiceLocator.CreateRequestServicesScope(context);
 

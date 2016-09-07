@@ -22,7 +22,9 @@ namespace Composite.Data
 {
     internal class DataFacadeImpl : IDataFacade
     {
-        private static readonly string LogTitle = "DataFacade";
+        private static readonly string LogTitle = nameof(DataFacade);
+
+        internal Dictionary<Type, DataInterceptor> GlobalDataInterceptors = new Dictionary<Type, DataInterceptor>();
 
         static readonly Cache<string, IData> _dataBySourceIdCache = new Cache<string, IData>("Data by sourceId", 2000);
         private static readonly object _storeCreationLock = new object();
@@ -44,37 +46,16 @@ namespace Composite.Data
 
             if (DataProviderRegistry.AllInterfaces.Contains(typeof (T)))
             {
-                if (useCaching && DataCachingFacade.IsDataAccessCacheEnabled(typeof (T)))
+                if (useCaching 
+                    && providerNames == null
+                    && DataCachingFacade.IsDataAccessCacheEnabled(typeof (T)))
                 {
-                    resultQueryable = DataCachingFacade.GetDataFromCache<T>();
+                    resultQueryable = DataCachingFacade.GetDataFromCache<T>(
+                        () => BuildQueryFromProviders<T>(null));
                 }
                 else
                 {
-                    if (providerNames == null)
-                    {
-                        providerNames = DataProviderRegistry.GetDataProviderNamesByInterfaceType(typeof (T));
-                    }
-
-                    List<IQueryable<T>> queryables = new List<IQueryable<T>>();
-                    foreach (string providerName in providerNames)
-                    {
-                        IQueryable<T> queryable = DataProviderPluginFacade.GetData<T>(providerName);
-
-                        queryables.Add(queryable);
-                    }
-
-                    bool resultIsCached = queryables.Count == 1 && queryables[0] is ICachedQuery;
-
-                    if (resultIsCached)
-                    {
-                        resultQueryable = queryables[0];
-                    }
-                    else
-                    {
-                        var multipleSourceQueryable = new DataFacadeQueryable<T>(queryables);
-
-                        resultQueryable = multipleSourceQueryable;
-                    }
+                    resultQueryable = BuildQueryFromProviders<T>(providerNames);
                 }
             }
             else
@@ -83,17 +64,14 @@ namespace Composite.Data
 
                 if (!typeof(T).GetCustomInterfaceAttributes<AutoUpdatebleAttribute>().Any())
                 {
-                    throw new ArgumentException(string.Format("The given interface type ({0}) is not supported by any data providers", typeof(T)));
+                    throw new ArgumentException($"The given interface type ({typeof (T)}) is not supported by any data providers");
                     
                 }
 
                 resultQueryable = new List<T>().AsQueryable();
             }
-            
 
-            DataInterceptor dataInterceptor;
-            this.DataInterceptors.TryGetValue(typeof(T), out dataInterceptor);
-            if (dataInterceptor != null)
+            foreach (var dataInterceptor in GetDataInterceptors(typeof(T)))
             {
                 try
                 {
@@ -101,7 +79,6 @@ namespace Composite.Data
                 }
                 catch (Exception ex)
                 {
-                    Log.LogError(LogTitle, "Calling data interceptor failed with the following exception");
                     Log.LogError(LogTitle, ex);
                 }
             }
@@ -110,13 +87,36 @@ namespace Composite.Data
         }
 
 
+        private IQueryable<T> BuildQueryFromProviders<T>(IEnumerable<string> providerNames) where T : class, IData
+        {
+            if (providerNames == null)
+            {
+                providerNames = DataProviderRegistry.GetDataProviderNamesByInterfaceType(typeof(T));
+            }
 
+            var queries = new List<IQueryable<T>>();
+            foreach (string providerName in providerNames)
+            {
+                IQueryable<T> query = DataProviderPluginFacade.GetData<T>(providerName);
+
+                queries.Add(query);
+            }
+
+            bool resultIsCached = queries.Count == 1 && queries[0] is ICachedQuery;
+
+            if (resultIsCached)
+            {
+                return queries[0];
+            }
+            
+            return  new DataFacadeQueryable<T>(queries);
+        }
 
 
         public T GetDataFromDataSourceId<T>(DataSourceId dataSourceId, bool useCaching)
             where T : class, IData
         {
-            if (null == dataSourceId) throw new ArgumentNullException("dataSourceId");
+            Verify.ArgumentNotNull(dataSourceId, nameof(dataSourceId));
 
             useCaching = useCaching && DataCachingFacade.IsTypeCacheable(typeof(T));
 
@@ -145,10 +145,8 @@ namespace Composite.Data
                 {
                     resultData = DataWrappingFacade.Wrap(resultData);
                 }
-
-                DataInterceptor dataInterceptor;
-                this.DataInterceptors.TryGetValue(typeof(T), out dataInterceptor);
-                if (dataInterceptor != null)
+                
+                foreach (var dataInterceptor in GetDataInterceptors(typeof(T)))
                 {
                     try
                     {
@@ -156,7 +154,6 @@ namespace Composite.Data
                     }
                     catch (Exception ex)
                     {
-                        Log.LogError(LogTitle, "Calling data interceptor failed with the following exception");
                         Log.LogError(LogTitle, ex);
                     }
                 }
@@ -166,6 +163,28 @@ namespace Composite.Data
         }
 
 
+        public IEnumerable<DataInterceptor> GetDataInterceptors(Type dataType)
+        {
+            DataInterceptor globalDataInterceptor = GlobalDataInterceptors
+                .FirstOrDefault(kvp => kvp.Key.IsAssignableFrom(dataType)).Value;
+
+            DataInterceptor threadedDataInterceptor = null;
+            var threadData = ThreadDataManager.Current;
+            if (threadData != null)
+            {
+                GetDataInterceptors(threadData).TryGetValue(dataType, out threadedDataInterceptor);
+            }
+
+            if (threadedDataInterceptor == null && globalDataInterceptor == null)
+            {
+                return Enumerable.Empty<DataInterceptor>();
+            }
+
+            var dataInterceptors = new List<DataInterceptor> { threadedDataInterceptor, globalDataInterceptor };
+
+            return dataInterceptors.Where(d => d != null);
+        } 
+
 
         public void SetDataInterceptor<T>(DataInterceptor dataInterceptor) where T : class, IData
         {
@@ -173,7 +192,7 @@ namespace Composite.Data
 
             this.DataInterceptors.Add(typeof(T), dataInterceptor);
 
-            Log.LogVerbose(LogTitle, string.Format("Data interception added to the data type '{0}' with interceptor type '{1}'", typeof(T), dataInterceptor.GetType()));
+            Log.LogVerbose(LogTitle, $"Data interception added to the data type '{typeof (T)}' with interceptor type '{dataInterceptor.GetType()}'");
         }
 
 
@@ -191,39 +210,62 @@ namespace Composite.Data
             {
                 this.DataInterceptors.Remove(typeof(T));
 
-                Log.LogVerbose(LogTitle, string.Format("Data interception cleared for the data type '{0}'", typeof(T)));
+                Log.LogVerbose(LogTitle, $"Data interception cleared for the data type '{typeof (T)}'");
             }
         }
 
-
-
-        private Dictionary<Type, DataInterceptor> DataInterceptors
+        public void SetGlobalDataInterceptor<T>(DataInterceptor dataInterceptor) where T : class, IData
         {
-            get
+            if (GlobalDataInterceptors.ContainsKey(typeof(T))) throw new InvalidOperationException("A data interceptor has already been set");
+
+            GlobalDataInterceptors.Add(typeof(T), dataInterceptor);
+
+            Log.LogVerbose(LogTitle,
+                $"Global Data interception added to the data type '{typeof (T)}' with interceptor type '{dataInterceptor.GetType()}'");
+        }
+
+        public bool HasGlobalDataInterceptor<T>() where T : class, IData
+        {
+            return GlobalDataInterceptors.ContainsKey(typeof(T));
+        }
+
+
+
+        public void ClearGlobalDataInterceptor<T>() where T : class, IData
+        {
+            if (GlobalDataInterceptors.ContainsKey(typeof(T)))
             {
-                const string threadDataKey = "DataFacade:DataInterceptors";
+                GlobalDataInterceptors.Remove(typeof(T));
 
-                var threadData = ThreadDataManager.GetCurrentNotNull();
-
-                Dictionary<Type, DataInterceptor> dataInterceptors = threadData.GetValue(threadDataKey) as Dictionary<Type, DataInterceptor>;
-
-                if (dataInterceptors == null)
-                {
-                    dataInterceptors = new Dictionary<Type, DataInterceptor>();
-                    threadData.SetValue(threadDataKey, dataInterceptors);
-                }
-
-                return dataInterceptors;
+                Log.LogVerbose(LogTitle, $"Global Data interception cleared for the data type '{typeof (T)}'");
             }
         }
 
+        private Dictionary<Type, DataInterceptor> GetDataInterceptors(ThreadDataManagerData threadData)
+        {
+            Verify.ArgumentNotNull(threadData, nameof(threadData));
+            const string threadDataKey = "DataFacade:DataInterceptors";
+
+            var dataInterceptors = threadData.GetValue(threadDataKey) as Dictionary<Type, DataInterceptor>;
+
+            if (dataInterceptors == null)
+            {
+                dataInterceptors = new Dictionary<Type, DataInterceptor>();
+                threadData.SetValue(threadDataKey, dataInterceptors);
+            }
+
+            return dataInterceptors;
+        }
+
+        private Dictionary<Type, DataInterceptor> DataInterceptors 
+            => GetDataInterceptors(ThreadDataManager.Current);
 
 
         public void Update(IEnumerable<IData> dataset, bool suppressEventing, bool performForeignKeyIntegrityCheck, bool performValidation)
         {
             Verify.ArgumentNotNull(dataset, "dataset");
 
-            Dictionary<string, Dictionary<Type, List<IData>>> sortedDataset = dataset.ToDataProviderAndInterfaceTypeSortedDictionary();
+            var sortedDataset = dataset.ToDataProviderAndInterfaceTypeSortedDictionary();
 
             if (!suppressEventing)
             {
@@ -420,7 +462,7 @@ namespace Composite.Data
         private void Delete<T>(IEnumerable<T> dataset, bool suppressEventing, CascadeDeleteType cascadeDeleteType, bool referencesFromAllScopes, HashSet<DataSourceId> dataPendingDeletion)
             where T : class, IData
         {
-            Verify.ArgumentNotNull(dataset, "dataset");
+            Verify.ArgumentNotNull(dataset, nameof(dataset));
 
             dataset = dataset.Evaluate();
 
@@ -437,32 +479,50 @@ namespace Composite.Data
             {
                 foreach (IData element in dataset)
                 {
-                    Verify.ArgumentCondition(element != null, "dataset", "datas may not contain nulls");
+                    Verify.ArgumentCondition(element != null, nameof(dataset), "dataset may not contain nulls");
 
-                    if (element.IsDataReferred())
+                    if (!element.IsDataReferred()) continue;
+
+                    Type interfaceType = element.DataSourceId.InterfaceType;
+
+                    // Not deleting references if the data is versioned and not all of the 
+                    // versions of the element are to be deleted
+                    if (element is IVersioned)
                     {
-                        Verify.IsTrue(cascadeDeleteType != CascadeDeleteType.Disallow, "One of the given datas is referenced by one or more datas");
+                        var key = element.GetUniqueKey();
+                        var versions = DataFacade.TryGetDataVersionsByUniqueKey(interfaceType, key).ToList();
 
-                        element.RemoveOptionalReferences();
-
-                        IEnumerable<IData> referees;
-                        using (new DataScope(element.DataSourceId.DataScopeIdentifier))
+                        if (versions.Count > 1 
+                            && (dataset.Count() < versions.Count
+                                || !versions.All(v => dataPendingDeletion.Contains(v.DataSourceId))))
                         {
-                            // For some wierd reason, this line does not work.... /MRJ
-                            // IEnumerable<IData> referees = dataset.GetRefereesRecursively();
-                            referees = element.GetReferees(referencesFromAllScopes).Where(reference => !dataPendingDeletion.Contains(reference.DataSourceId));
+                            continue;
                         }
-
-                        foreach (IData referee in referees)
-                        {
-                            if (referee.CascadeDeleteAllowed(element.DataSourceId.InterfaceType) == false)
-                            {
-                                throw new InvalidOperationException("One of the given datas is referenced by one or more datas that does not allow cascade delete");
-                            }
-                        }
-
-                        Delete<IData>(referees, suppressEventing, cascadeDeleteType, referencesFromAllScopes);
                     }
+
+                    Verify.IsTrue(cascadeDeleteType != CascadeDeleteType.Disallow, "One of the given datas is referenced by one or more datas");
+
+                    element.RemoveOptionalReferences();
+
+                    IEnumerable<IData> referees;
+                    using (new DataScope(element.DataSourceId.DataScopeIdentifier))
+                    {
+                        // For some weird reason, this line does not work.... /MRJ
+                        // IEnumerable<IData> referees = dataset.GetRefereesRecursively();
+                        referees = element.GetReferees(referencesFromAllScopes)
+                                           .Where(reference => !dataPendingDeletion.Contains(reference.DataSourceId))
+                                           .Evaluate();
+                    }
+
+                    foreach (IData referee in referees)
+                    {
+                        if (!referee.CascadeDeleteAllowed(interfaceType))
+                        {
+                            throw new InvalidOperationException("One of the given datas is referenced by one or more datas that does not allow cascade delete");
+                        }
+                    }
+
+                    Delete<IData>(referees, suppressEventing, cascadeDeleteType, referencesFromAllScopes);
                 }
             }
 
@@ -483,7 +543,7 @@ namespace Composite.Data
             }
 
 
-            if (suppressEventing == false)
+            if (!suppressEventing)
             {
                 foreach (IData element in dataset)
                 {

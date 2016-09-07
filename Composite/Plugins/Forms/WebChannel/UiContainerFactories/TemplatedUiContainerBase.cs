@@ -31,6 +31,11 @@ namespace Composite.Plugins.Forms.WebChannel.UiContainerFactories
         public abstract void SetContainerTitle(string title);
 
         /// <exclude />
+        public virtual void SetContainerTooltip(string tooltip)
+        {
+        }
+
+        /// <exclude />
         public void SetContainerTitleField(string titleField)
         {
             _titleField = titleField;
@@ -45,7 +50,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiContainerFactories
 
             var mappings = new Dictionary<string, string>();
 
-            FormFlowUiDefinitionRenderer.ResolveBindingPathToCliendIDMappings(container, mappings);
+            FormFlowUiDefinitionRenderer.ResolveBindingPathToClientIDMappings(container, mappings);
 
             string clientId = mappings.ContainsKey(_titleField) ? mappings[_titleField] : "";
 

@@ -41,7 +41,8 @@ namespace Composite.Core.Application
         {
             bool entered = _eventWaitHandle.WaitOne(timeout);
 
-            if (!entered && throwOnTimeout) throw new TimeoutException(string.Format("Failed to obtain the system global semaphore with id '{0}'", _id));
+            if (!entered && throwOnTimeout) throw new TimeoutException(
+                $"Failed to obtain the system global semaphore with id '{_id}'");
 
             return entered;
         }
@@ -60,12 +61,6 @@ namespace Composite.Core.Application
         /// <summary>
         /// The used id used for naming the semaphore.
         /// </summary>
-        public string Id
-        {
-            get
-            {
-                return _id;
-            }
-        }
+        public string Id => _id;
     }
 }

@@ -13,7 +13,7 @@ namespace Composite.Core.WebClient.HttpModules
         public void Init(HttpApplication context)
         {
             var moduleInstance = new ModuleInstance();
-            context.AuthenticateRequest += moduleInstance.AuthenticateRequest;
+            context.AuthorizeRequest += moduleInstance.AuthorizeRequest;
             context.EndRequest += moduleInstance.EndRequest;
         }
 
@@ -21,9 +21,9 @@ namespace Composite.Core.WebClient.HttpModules
         {
             private DataScope _dataScope;
 
-            public void AuthenticateRequest(object sender, EventArgs e)
+            public void AuthorizeRequest(object sender, EventArgs e)
             {
-                if (SystemSetupFacade.IsSystemFirstTimeInitialized == false) return;
+                if (!SystemSetupFacade.IsSystemFirstTimeInitialized) return;
 
                 HttpApplication application = (HttpApplication)sender;
                 HttpContext context = application.Context;
@@ -38,10 +38,8 @@ namespace Composite.Core.WebClient.HttpModules
 
             public void EndRequest(object sender, EventArgs e)
             {
-                if (_dataScope != null)
-                {
-                    _dataScope.Dispose();
-                }
+                _dataScope?.Dispose();
+                _dataScope = null;
             }
         }
 

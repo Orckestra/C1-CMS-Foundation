@@ -139,7 +139,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
             //}
 
             var keyInfo = new SimpleNameTypeConfigurationElementCollection();
-            foreach (DataFieldDescriptor field in dataTypeDescriptor.KeyFields)
+            foreach (DataFieldDescriptor field in dataTypeDescriptor.PhysicalKeyFields)
             {
                 keyInfo.Add(field.Name, field.InstanceType);
             }

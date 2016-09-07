@@ -72,8 +72,6 @@ UnpublishedPageBinding.prototype.onBindingAttach = function () {
 
 	this.containingViewBinding = this.getAncestorBindingByType(ViewBinding, true);
 	this.isSelectedTab = true;
-
-	this.refresh();
 }
 
 UnpublishedPageBinding.prototype.renderActions = function (nodes) {
@@ -181,24 +179,20 @@ UnpublishedPageBinding.prototype.renderTable = function (nodes, selected) {
 		}
 		linkcell.appendChild(link);
 
-		this.addTextCell(row, node.getPropertyBag().Version,
-			{
-				"class": "version"
-			});
-		this.addTextCell(row, node.getPropertyBag().Status);
-		this.addTextCell(row, node.getPropertyBag().PublishDate,
-			{
-				"data-sort-value": node.getPropertyBag().SortablePublishDate ,
-				"class": "date"
-			}
-		);
-		this.addTextCell(row, node.getPropertyBag().UnpublishDate, {
-			"data-sort-value": node.getPropertyBag().SortableUnpublishDate,
-			"class": "date"
-		});
-		this.addTextCell(row, node.getPropertyBag().Created).setAttribute("data-sort-value", node.getPropertyBag().SortableCreated);
-		this.addTextCell(row, node.getPropertyBag().Modified).setAttribute("data-sort-value", node.getPropertyBag().SortableModified);
-		this.addTextCell(row, "");
+		var headers = this.table.firstElementChild.firstElementChild.cells;
+		var propertybag = node.getPropertyBag();
+
+		for (var i = 2; i < headers.length; i++) {
+		    var propertyName = headers[i].innerText.trim();
+		    if (propertyName in propertybag) {
+		        this.addTextCell(row, propertybag[propertyName]).
+                    setAttribute("data-sort-value", ((propertyName + "Sortable") in propertybag) ?
+                    propertybag[propertyName + "Sortable"] :
+                    propertybag[propertyName]);
+		    } else {
+		        this.addTextCell(row, "");
+		    }
+		}
 
 	}, this);
 
@@ -209,6 +203,12 @@ UnpublishedPageBinding.prototype.renderTable = function (nodes, selected) {
 	}
 }
 
+UnpublishedPageBinding.prototype.onAfterPageInitialize = function () {
+
+    UnpublishedPageBinding.superclass.onAfterPageInitialize.call(this);
+
+    this.refresh();
+}
 
 UnpublishedPageBinding.prototype.refresh = function () {
 
@@ -383,7 +383,6 @@ UnpublishedPageBinding.prototype.handleBroadcast = function (broadcast, arg) {
 			} else {
 				this.isSelectedTab = false;
 			}
-			console.log(arg);
 			break;
 
 		case BroadcastMessages.SYSTEMTREEBINDING_REFRESH:

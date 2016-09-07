@@ -222,24 +222,21 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
 
             propertyMember.CustomAttributes.Add(new CodeAttributeDeclaration(new CodeTypeReference(typeof(DebuggerNonUserCodeAttribute))));
 
-            var codeAttributeArguments = new List<CodeAttributeArgument> {
-                    new CodeAttributeArgument("Name", new CodePrimitiveExpression(dbName)),
-                    new CodeAttributeArgument("Storage", new CodePrimitiveExpression(fieldName)),
-                    new CodeAttributeArgument("DbType", new CodePrimitiveExpression(dbType)),
-                    new CodeAttributeArgument("CanBeNull", new CodePrimitiveExpression(isNullable)),
-                    new CodeAttributeArgument("IsPrimaryKey", new CodePrimitiveExpression(isId)),
-                    new CodeAttributeArgument("IsDbGenerated", new CodePrimitiveExpression(isAutoGen))
-                };
-
-
-            codeAttributeArguments.Add(
-                    new CodeAttributeArgument("UpdateCheck",
-                        new CodeFieldReferenceExpression(
-                            new CodeTypeReferenceExpression(typeof(UpdateCheck)),
-                            "Never"
-                        )
+            var codeAttributeArguments = new List<CodeAttributeArgument>
+            {
+                new CodeAttributeArgument("Name", new CodePrimitiveExpression(dbName)),
+                new CodeAttributeArgument("Storage", new CodePrimitiveExpression(fieldName)),
+                new CodeAttributeArgument("DbType", new CodePrimitiveExpression(dbType)),
+                new CodeAttributeArgument("CanBeNull", new CodePrimitiveExpression(isNullable)),
+                new CodeAttributeArgument("IsPrimaryKey", new CodePrimitiveExpression(isId)),
+                new CodeAttributeArgument("IsDbGenerated", new CodePrimitiveExpression(isAutoGen)),
+                new CodeAttributeArgument("UpdateCheck",
+                    new CodeFieldReferenceExpression(
+                        new CodeTypeReferenceExpression(typeof (UpdateCheck)), nameof(UpdateCheck.Never))
                     )
-                );
+            };
+
+
 
             propertyMember.CustomAttributes.Add(new CodeAttributeDeclaration(
                     new CodeTypeReference(typeof(ColumnAttribute)),

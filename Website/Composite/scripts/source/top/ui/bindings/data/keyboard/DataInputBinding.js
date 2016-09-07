@@ -12,7 +12,7 @@ function DataInputBinding () {
 	 * @type {SystemLogger}
 	 */
 	this.logger = SystemLogger.getLogger ( "DataInputBinding" );
-	
+
 	/**
 	 * @type {string}
 	 */
@@ -22,12 +22,12 @@ function DataInputBinding () {
 	 * @type {boolean}
 	 */
 	this.isRequired = false;
-	
+
 	/**
 	 * @type {RegExp}
 	 */
 	this.expression = null;
-	
+
 	/**
 	 * @type {boolean}
 	 */
@@ -38,91 +38,91 @@ function DataInputBinding () {
 	 * @type {string}
 	 */
 	this._value = null;
-	
+
 	/**
 	 * @type {boolean}
 	 */
 	this._isValid = true;
-	
+
 	/**
 	 * When invalid, this property flags whether or not _testDirty
-	 * we are invalid because we are "required". Not to 
+	 * we are invalid because we are "required". Not to
 	 * be confused with isRequired.
 	 * @type {boolean}
 	 */
 	this._isInvalidBecauseRequired = false;
-	
+
 	/**
 	 * True when invalid because of minlength.
 	 * @type {boolean}
 	 */
 	this._isInvalidBecauseMinLength == true;
-	
+
 	/**
 	 * True when invalid because of minlength.
 	 * @type {boolean}
 	 */
 	this._isInvalidBecauseMinLength == true;
-	
+
 	/**
 	 * True when invalid because of maxlength.
 	 * @type {boolean}
 	 */
 	this._isInvalidBecauseMaxLength == true;
-	
+
 	/**
 	 * @type {object}
 	 */
 	this._sessionResult = null;
-	
+
 	/**
 	 * @type {boolean}
 	 */
 	this.isDisabled = false;
-	
+
 	/**
 	 * @type {boolean}
 	 */
 	this.isReadOnly = false;
-	
+
 	/**
 	 * @type {function}
 	 */
 	this._dirtyinterval = null;
-	
+
 	/**
 	 * @type {boolean}
 	 */
 	this._isAutoSelect = false;
-	
+
 	/**
 	 * @type {integer}
 	 */
 	this.minlength = null;
-	
+
 	/**
 	 * @type {integer}
 	 */
 	this.maxlength = null;
-	
+
 	/**
 	 * Is autopostback?
 	 * @type {boolean}
 	 */
 	this._isAutoPost = false;
-	
+
 	/**
 	 * Autopost timeout.
 	 * @type {function}
 	 */
 	this._timeout = null;
-	
+
 	/**
 	 * Autopost time (start when idle, reset onkeydown).
 	 * @type {int}
 	 */
 	this._time = 1500;
-	
+
 	/**
 	 * Block common crawlers.
 	 * @type {Map<string><boolean>}
@@ -136,7 +136,7 @@ function DataInputBinding () {
 	* @type {boolean}
 	*/
 	this.spellcheck = true;
-	
+
 	/*
 	 * Returnable.
 	 */
@@ -166,21 +166,21 @@ DataInputBinding.prototype.onBindingRegister = function () {
 DataInputBinding.prototype.onBindingAttach = function () {
 
 	DataInputBinding.superclass.onBindingAttach.call ( this );
-	
+
 	this._parseDOMProperties ();
 	this._buildDOMContent ();
 	this._attachDOMEvents ();
 }
 
 /**
- * Disposing an invalid DataInputBinding will automatically 
+ * Disposing an invalid DataInputBinding will automatically
  * make it valid in the greater scheme of this.
  * @overloads {Binding#onBindingDispose}
  */
 DataInputBinding.prototype.onBindingDispose = function () {
-	
+
 	DataInputBinding.superclass.onBindingDispose.call ( this );
-	
+
 	//if ( Client.isExplorer && this.isFocused ) {
 	//	this.unsubscribe ( BroadcastMessages.MOUSEEVENT_MOUSEDOWN, this );
 	//}
@@ -236,7 +236,7 @@ DataInputBinding.prototype._parseDOMProperties = function () {
 	}
 
 	/*
-	* Certain types should present a default error (balloon). Specifying 
+	* Certain types should present a default error (balloon). Specifying
 	* the error *directly* on the binding will overwrite the default error.
 	*/
 	if (this.error == null && this.type != null) {
@@ -329,18 +329,18 @@ DataInputBinding.prototype._buildDOMContent = function () {
  * @return {HTMLInputElement}
  */
 DataInputBinding.prototype._getInputElement = function () {
-	
+
 	var element = DOMUtil.createElementNS ( Constants.NS_XHTML, "input", this.bindingDocument );
 	element.type = this.isPassword == true ? "password" : "text";
 	element.tabIndex = -1;
 	return element;
-} 
+}
 
 /**
  * Attach DOM events.
  */
 DataInputBinding.prototype._attachDOMEvents = function () {
-	
+
 	DOMEvents.addEventListener ( this.shadowTree.input, DOMEvents.FOCUS, this );
 	DOMEvents.addEventListener ( this.shadowTree.input, DOMEvents.BLUR, this );
 	DOMEvents.addEventListener ( this.shadowTree.input, DOMEvents.KEYDOWN, this );
@@ -397,16 +397,16 @@ DataInputBinding.prototype.handleEvent = function (e) {
 
 					/*
 					* Prevent ENTER from submitting containing form.
-					*/ 
+					*/
 					case KeyEventCodes.VK_ENTER:
 						this._handleEnterKey(e);
 						break;
 
 					/*
-					* Prevent ESC from reverting new value to original 
-					* value (we create input with JS, so our original 
+					* Prevent ESC from reverting new value to original
+					* value (we create input with JS, so our original
 					* is empty). This behavior is seen in Explorer only.
-					*/ 
+					*/
 					case KeyEventCodes.VK_ESCAPE:
 						DOMEvents.preventDefault(e);
 						break;
@@ -437,7 +437,7 @@ DataInputBinding.prototype.handleEvent = function (e) {
  * @param {boolean} isFocus
  */
 DataInputBinding.prototype._handleFocusAndBlur = function ( isFocus ) {
-	
+
 	if ( isFocus ) {
 		this.focus ( true );
 		this.bindingWindow.standardEventHandler.enableNativeKeys ();
@@ -459,40 +459,40 @@ DataInputBinding.prototype._handleFocusAndBlur = function ( isFocus ) {
 }
 
 /**
- * Handle ENTER key, preventing form submit. Isolated so that subclasses can overwrite. 
+ * Handle ENTER key, preventing form submit. Isolated so that subclasses can overwrite.
  * @param {KeyEvent} e
  */
 DataInputBinding.prototype._handleEnterKey = function ( e ) {
-	
+
 	DOMEvents.preventDefault ( e );
 	DOMEvents.stopPropagation ( e );
 	EventBroadcaster.broadcast ( BroadcastMessages.KEY_ENTER );
 }
 
 ///**
-// * Due to some cataclysmic malfunction in Explorer, the input element may still    
-// * be registered as document.activeElement when the help popup is opened - even   
-// * though the focus is obviously lost! This setup will force it to blur. Don't 
+// * Due to some cataclysmic malfunction in Explorer, the input element may still
+// * be registered as document.activeElement when the help popup is opened - even
+// * though the focus is obviously lost! This setup will force it to blur. Don't
 // * enable this in Mozilla - it will cause stuff to loose focus spontaniously.
 // * @implements {IBroadcastListener}
 // * @param {string} broadcast
 // * @param {object} arg
 // */
-//DataInputBinding.prototype.handleBroadcast = function ( broadcast, arg ) { 
-	
+//DataInputBinding.prototype.handleBroadcast = function ( broadcast, arg ) {
+
 //	DataInputBinding.superclass.handleBroadcast.call ( this, broadcast, arg );
-	
+
 //	var self = this;
-	
+
 //	switch ( broadcast ) {
-		
+
 //		/*
 //		 * The timeout allows another databinding to claim the focus first.
-//		 * Remember that the arg can be a Binding (untill we rafactor), so 
+//		 * Remember that the arg can be a Binding (untill we rafactor), so
 //		 * it actually doesn't make sanse that this operation doesn't fail.
 //		 */
 //		case BroadcastMessages.MOUSEEVENT_MOUSEDOWN :
-			
+
 //			if ( Client.isExplorer == true ) {
 //				var target = DOMEvents.getTarget ( arg );
 //				if ( target != this.shadowTree.input ) {
@@ -515,7 +515,7 @@ DataInputBinding.prototype._handleEnterKey = function ( e ) {
  * @param {boolean} isDomEvent
  */
 DataInputBinding.prototype.focus = function ( isDomEvent ) {
-	
+
 	if ( !this.isFocused && !this.isReadOnly && !this.isDisabled ) {
 		DataInputBinding.superclass.focus.call ( this );
 		if ( this.isFocused == true ) {
@@ -553,7 +553,7 @@ DataInputBinding.prototype.focus = function ( isDomEvent ) {
 DataInputBinding.prototype.select = function () {
 
 	var input = this.shadowTree.input;
-	
+
 	setTimeout ( function () {
 		if ( Client.isExplorer == true ) {
 			var range = input.createTextRange();
@@ -572,7 +572,7 @@ DataInputBinding.prototype.select = function () {
  * @param {boolean} isDomEvent
  */
 DataInputBinding.prototype.blur = function ( isDomEvent ) {
-	
+
 	if ( this.isFocused == true ) {
 		DataInputBinding.superclass.blur.call ( this );
 		if ( !isDomEvent ) {
@@ -587,7 +587,7 @@ DataInputBinding.prototype.blur = function ( isDomEvent ) {
  * @private
  */
 DataInputBinding.prototype._focus = function () {
-	
+
 	if ( !this._isValid ) {
 		if ( this.isPassword ) {
 			if ( Client.isMozilla ) {
@@ -599,11 +599,11 @@ DataInputBinding.prototype._focus = function () {
 		}
 		this.shadowTree.input.className = "";
 	}
-	
+
 	this._sessionResult = this.getResult ();
-	
+
 	var self = this;
-	
+
 	this._dirtyinterval = window.setInterval ( function () {
 		if ( Binding.exists ( self ) == true ) {
 			self.checkDirty ();
@@ -622,7 +622,7 @@ DataInputBinding.prototype._focus = function () {
  * @private
  */
 DataInputBinding.prototype._blur = function () {
-	
+
 	if ( this._dirtyinterval ) {
 		window.clearInterval ( this._dirtyinterval );
 		this._dirtyinterval = null;
@@ -633,7 +633,7 @@ DataInputBinding.prototype._blur = function () {
 	this._isValid = true; // prepare for next validation
 	this._normalizeToValid(); // reset styling and stuff
 	this.validate ( true );
-	
+
 	if ( Types.isFunction ( this.onblur )) {
 		this.onblur ();
 	}
@@ -661,8 +661,8 @@ DataInputBinding.prototype.onblur = function () {}
  * Check dirty.
  */
 DataInputBinding.prototype.checkDirty = function () {
-	
-	if ( !this.isDirty ) {		
+
+	if ( !this.isDirty ) {
 		if ( this.getResult () != this._sessionResult ) {
 			this.dirty ();
 		}
@@ -670,11 +670,11 @@ DataInputBinding.prototype.checkDirty = function () {
 }
 
 /**
- * TODO: This seems to do more or less the same 
+ * TODO: This seems to do more or less the same
  * as the method declared above. Fix this please.
  */
 DataInputBinding.prototype._testDirty = function () {
-	
+
 	var val = this.getValue ();
 	var self = this;
 	setTimeout ( function () {
@@ -695,42 +695,42 @@ DataInputBinding.prototype.onValueChange = function () {}
 /**
  * Validate.
  * @implements {IData}
- * @param {boolean} isInternal Regrettably, this was added to fix bugs when 
- * 		the blur event would update the text content  immideately followed by  
- * 		a page validation. This would cause glitches with minlength etc...		
+ * @param {boolean} isInternal Regrettably, this was added to fix bugs when
+ * 		the blur event would update the text content  immideately followed by
+ * 		a page validation. This would cause glitches with minlength etc...
  * @return {boolean}
  */
 DataInputBinding.prototype.validate = function ( isInternal ) {
-	
+
 	if ( isInternal == true || this._isValid ) {
-	
+
 		var isValid = this.isValid ();
-		
+
 		if ( isValid != this._isValid ) {
-			
+
 			this._isValid = isValid;
-			
+
 			if ( !isValid ) {
-				
+
 				this.attachClassName ( DataBinding.CLASSNAME_INVALID );
 				this._value = this.getValue ();
 				this.dispatchAction ( Binding.ACTION_INVALID );
-				
+
 				if ( !this.isFocused ) {
-					
+
 					var message = null;
 					if ( this._isInvalidBecauseRequired == true ) {
 						message = DataBinding.warnings [ "required" ];
 					} else if ( this._isInvalidBecauseMinLength == true ) {
 						message = DataBinding.warnings [ "minlength" ];
-						message = message.replace ( "${count}", String ( this.minlength ));
+						message = message.replace ( "{0}", String ( this.minlength ));
 					} else if ( this._isInvalidBecauseMaxLength == true ) {
 						message = DataBinding.warnings [ "maxlength" ];
-						message = message.replace ( "${count}", String ( this.maxlength ));
+						message = message.replace ( "{0}", String ( this.maxlength ));
 					} else {
 						message = DataBinding.warnings [ this.type ];
 					}
-					
+
 					this.shadowTree.input.className = DataBinding.CLASSNAME_WARNING;
 					if ( message != null ) {
 						if ( this.isPassword ) {
@@ -743,13 +743,13 @@ DataInputBinding.prototype.validate = function ( isInternal ) {
 						}
 					}
 				}
-				
+
 			} else {
 				this._normalizeToValid ();
 			}
 		}
 	}
-	
+
 	return this._isValid;
 }
 
@@ -757,12 +757,12 @@ DataInputBinding.prototype.validate = function ( isInternal ) {
  * Normalize invalid binding, marking the binding valid.
  */
 DataInputBinding.prototype._normalizeToValid = function () {
-	
+
 	if ( this._isValid ) {
 		if ( this.hasClassName ( DataBinding.CLASSNAME_INVALID )) {
 			this.detachClassName ( DataBinding.CLASSNAME_INVALID );
 		}
-		this.shadowTree.input.className = ""; 
+		this.shadowTree.input.className = "";
 		this.dispatchAction ( Binding.ACTION_VALID );
 	}
 };
@@ -771,15 +771,15 @@ DataInputBinding.prototype._normalizeToValid = function () {
  * @return {boolean}
  */
 DataInputBinding.prototype.isValid = function () {
-	
+
 	var isValid = true;
 	this._isInvalidBecauseRequired = false;
 	this._isInvalidBecauseMinLength = false;
 	this._isInvalidaBecuaseMaxLength = false;
 	var value = this.getValue ();
-	
+
 	if ( value == "" ) {
-		if ( this.isRequired == true ) {		
+		if ( this.isRequired == true ) {
 			isValid = false;
 			this._isInvalidBecauseRequired = true;
 		}
@@ -812,7 +812,7 @@ DataInputBinding.prototype.isValid = function () {
  * @param {boolean} isDisabled
  */
 DataInputBinding.prototype.setDisabled = function ( isDisabled ) {
-	
+
 	if ( isDisabled != this.isDisabled ) {
 		if ( isDisabled ) {
 			this.attachClassName ( "isdisabled" );
@@ -846,7 +846,7 @@ DataInputBinding.prototype.setDisabled = function ( isDisabled ) {
  * @param {boolean} isReadOnly
  */
 DataInputBinding.prototype.setReadOnly = function ( isReadOnly ) {
-	
+
 	if ( isReadOnly != this.isReadOnly ) {
 		if ( isReadOnly ) {
 			this.attachClassName ( "readonly" );
@@ -862,7 +862,7 @@ DataInputBinding.prototype.setReadOnly = function ( isReadOnly ) {
  * Disable.
  */
 DataInputBinding.prototype.disable = function () {
-	
+
 	if ( !this.isDisabled ) {
 		this.setDisabled ( true );
 	}
@@ -872,13 +872,13 @@ DataInputBinding.prototype.disable = function () {
  * Enable.
  */
 DataInputBinding.prototype.enable = function () {
-	
+
 	if ( this.isDisabled ) {
 		this.setDisabled ( false );
 	}
 }
 
-/** 
+/**
  * Handle element update.
  * @implements {IUpdateHandler}
  * @overwrites {Binding#handleElement}
@@ -886,11 +886,11 @@ DataInputBinding.prototype.enable = function () {
  * @return {boolean}
  */
 DataInputBinding.prototype.handleElement = function ( element ) {
-	
+
 	return true;
 };
 
-/** 
+/**
  * Update element.
  * @implements {IUpdateHandler}
  * @overwrites {Binding#updateElement}
@@ -898,17 +898,22 @@ DataInputBinding.prototype.handleElement = function ( element ) {
  * @return {boolean}
  */
 DataInputBinding.prototype.updateElement = function ( element ) {
-	
+
 	var newval = element.getAttribute ( "value" );
 	var newtype = element.getAttribute ( "type" );
 	var newmax = element.getAttribute ( "maxlength" );
 	var newmin = element.getAttribute ( "minlength" );
-	var newrequired = element.getAttribute ( "required" ) === "true";
-	
+	var newrequired = element.getAttribute("required") === "true";
+	var newreadonly = element.getAttribute("readonly") === "true";
+
 	if ( newval == null ) {
 		newval = "";
 	}
-	
+
+	if (this.isReadOnly != newreadonly) {
+		this.setReadOnly(newreadonly);
+	}
+
 	var manager = this.bindingWindow.UpdateManager;
 	if ( this.getValue () != newval ) {
 		manager.report ( "Property [value] updated on binding \"" + this.getID () + "\"" );
@@ -930,14 +935,14 @@ DataInputBinding.prototype.updateElement = function ( element ) {
 	    manager.report("Property [required] updated on binding \"" + this.getID() + "\"");
 	    this.isRequired = newrequired;
 	}
-	
+
 	return true;
 };
 
 /**
- * Manifest. Because postback without validation may happen, 
- * we may need override validation message and post an empty 
- * string to the server. "Save" is a validated postback, so 
+ * Manifest. Because postback without validation may happen,
+ * we may need override validation message and post an empty
+ * string to the server. "Save" is a validated postback, so
  * the non-validating string is not made permanent by this.
  * @implements {IData}
  */
@@ -958,7 +963,7 @@ DataInputBinding.prototype.manifest = function () {
  * @implements {IData}
  */
 DataInputBinding.prototype.clean = function () {
-	
+
 	DataInputBinding.superclass.clean.call ( this );
 	this._sessionResult = this.getResult ();
 }
@@ -968,7 +973,7 @@ DataInputBinding.prototype.clean = function () {
  * @param {String} value
  */
 DataInputBinding.prototype.setValue = function ( value ) {
-	
+
 	if ( value === null ) {
 		value = "";
 	}
@@ -986,10 +991,10 @@ DataInputBinding.prototype.setValue = function ( value ) {
  * @return {string}
  */
 DataInputBinding.prototype.getValue = function () {
-	
+
 	var result = null;
 	if ( this.shadowTree.input != null ) {
-		result = this.shadowTree.input.value; 
+		result = this.shadowTree.input.value;
 	} else {
 		result = this.getProperty ( "value" );
 	}
@@ -1002,9 +1007,9 @@ DataInputBinding.prototype.getValue = function () {
  * @param {string} name
  */
 DataInputBinding.prototype.setName = function ( name ) {
-	
+
 	DataInputBinding.superclass.setName.call ( this, name );
-	
+
 	if ( this.isAttached == true ) {
 		this.shadowTree.input.name = name;
 	}
@@ -1012,13 +1017,13 @@ DataInputBinding.prototype.setName = function ( name ) {
 
 /**
  * Get result. Unlike getValue, the result is qualified according to type property.
- * @implements {IData}  
+ * @implements {IData}
  * @return {object}
  */
 DataInputBinding.prototype.getResult = function () {
 
 	var result = this.getValue ();
-	
+
 	switch ( this.type ) {
 		case DataBinding.TYPE_NUMBER :
 		case DataBinding.TYPE_INTEGER :
@@ -1030,7 +1035,7 @@ DataInputBinding.prototype.getResult = function () {
 
 /**
  * Set result.
- * @implements {IData}  
+ * @implements {IData}
  * @param {object} result
  */
 DataInputBinding.prototype.setResult = DataInputBinding.prototype.setValue;

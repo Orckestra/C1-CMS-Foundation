@@ -95,8 +95,10 @@ namespace Composite.Data.Foundation
             
             foreach (ForeignPropertyInfo foreignKeyPropertyInfo in foreignKeyProperties)
             {
-                if (foreignKeyPropertyInfo.SourcePropertyInfo.CanRead == false) throw new InvalidOperationException(string.Format("The property '{0}' shoud have a getter", foreignKeyPropertyInfo.SourcePropertyInfo));
-                if (foreignKeyPropertyInfo.TargetType.IsNotReferenceable()) throw new InvalidOperationException(string.Format("The referenced type '{0}' is marked NotReferenceable and can not be referenced by the interfaceType '{1}'", foreignKeyPropertyInfo.TargetType, interfaceType));
+                if (!foreignKeyPropertyInfo.SourcePropertyInfo.CanRead) throw new InvalidOperationException(
+                    $"The property '{foreignKeyPropertyInfo.SourcePropertyInfo}' shoud have a getter");
+                if (foreignKeyPropertyInfo.TargetType.IsNotReferenceable()) throw new InvalidOperationException(
+                    $"The referenced type '{foreignKeyPropertyInfo.TargetType}' is marked NotReferenceable and can not be referenced by the interfaceType '{interfaceType}'");
 
                 PropertyInfo propertyInfo = foreignKeyPropertyInfo.TargetType.GetDataPropertyRecursively(foreignKeyPropertyInfo.TargetKeyPropertyName);
 
@@ -112,7 +114,8 @@ namespace Composite.Data.Foundation
                     sourcePropertyType = sourcePropertyType.GetGenericArguments()[0];
                 }
 
-                if (propertyInfo.PropertyType != sourcePropertyType) throw new InvalidOperationException(string.Format("Type mismatch '{0}' and '{1}' does not match from the two properties '{2}' and '{3}'", propertyInfo.PropertyType, foreignKeyPropertyInfo.SourcePropertyInfo.PropertyType, propertyInfo, foreignKeyPropertyInfo.SourcePropertyInfo));
+                if (propertyInfo.PropertyType != sourcePropertyType) throw new InvalidOperationException(
+                    $"Type mismatch '{propertyInfo.PropertyType}' and '{foreignKeyPropertyInfo.SourcePropertyInfo.PropertyType}' does not match from the two properties '{propertyInfo}' and '{foreignKeyPropertyInfo.SourcePropertyInfo}'");
                 
                 foreignKeyPropertyInfo.TargetKeyPropertyInfo = propertyInfo;
             }
@@ -142,7 +145,7 @@ namespace Composite.Data.Foundation
 
                 if (!DataProviderRegistry.AllInterfaces.Contains(foreignKeyPropertyInfo.TargetType))
                 {
-                    Log.LogCritical(LogTitle, string.Format("The one type '{0}' is referring the non supported data type '{1}'", interfaceType, foreignKeyPropertyInfo.TargetType));
+                    Log.LogCritical(LogTitle, $"The one type '{interfaceType}' is referring the non supported data type '{foreignKeyPropertyInfo.TargetType}'");
                 }
             }
         }

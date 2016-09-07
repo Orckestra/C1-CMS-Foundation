@@ -14,10 +14,15 @@ namespace Composite.Core.Extensions
         /// <exclude />
         public static IPage GetPage(this PageUrlData pageUrlData)
         {
-            Verify.ArgumentNotNull(pageUrlData, "pageUrlData");
+            Verify.ArgumentNotNull(pageUrlData, nameof(pageUrlData));
 
             using (new DataScope(pageUrlData.PublicationScope, pageUrlData.LocalizationScope))
             {
+                if (pageUrlData.VersionId != null)
+                {
+                    return PageManager.GetPageById(pageUrlData.PageId, pageUrlData.VersionId.Value);
+                }
+
                 return PageManager.GetPageById(pageUrlData.PageId);
             }
         }

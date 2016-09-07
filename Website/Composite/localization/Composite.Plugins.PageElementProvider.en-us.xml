@@ -41,10 +41,6 @@
   <string key="EditPage.HelpFriendlyUrl" value="The entry specified in this field is a shorter version of the actual page URL and redirects to it, when entered in the browser address bar. Note that some servers may have to be configured to support this feature." />
   <string key="EditPage.LabelAbstract" value="Description" />
   <string key="EditPage.LabelAbstractHelp" value="Use this field for a short description of the page" />
-  <string key="EditPage.LabelPublishDate" value="Publish date" />
-  <string key="EditPage.HelpPublishDate" value="Specify at which date and time you want the page to be published automatically." />
-  <string key="EditPage.LabelUnpublishDate" value="Unpublish date" />
-  <string key="EditPage.HelpUnpublishDate" value="Specify at which date and time you want the page to be unpublished automatically." />
   <string key="EditPage.LabelContent" value="Content" />
   <string key="EditPage.LabelPreview" value="Preview" />
   <string key="EditPage.PageTypeSelectorLabel" value="Page type" />
@@ -109,7 +105,11 @@
   <string key="DeletePageWorkflow.CascadeDeleteErrorTitle" value="Cascade delete error" />
   <string key="DeletePageWorkflow.CascadeDeleteErrorMessage" value="The page is referenced by another type that does not allow cascade deletes. This operation is halted" />
   <string key="DeletePageWorkflow.HasCompositionsTitle" value="Can not delete page" />
-  <string key="DeletePageWorkflow.HasCompositionsMessage" value="This page has one or more page folders or metadata fields defined on it. Delete these first." />
+	<string key="DeletePageWorkflow.HasCompositionsMessage" value="This page has one or more page folders or metadata fields defined on it. Delete these first." />
+	<string key="DeletePageWorkflow.ConfirmAllVersionsDeletion.DialogLabel" value="Delete page versions" />
+	<string key="DeletePageWorkflow.ConfirmAllVersionsDeletion.Text" value="This page contains multiple versions" />
+	<string key="DeletePageWorkflow.ConfirmAllVersionsDeletion.DeleteAllVersions" value="Delete all versions" />
+	<string key="DeletePageWorkflow.ConfirmAllVersionsDeletion.DeleteCurrentVersion" value="Delete only current version" />
   <string key="ViewUnpublishedItems.PageTitleLabel" value="Page Title" />
   <string key="ViewUnpublishedItems.VersionLabel" value="Version" />
   <string key="ViewUnpublishedItems.StatusLabel" value="Status" />

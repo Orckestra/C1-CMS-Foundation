@@ -17,12 +17,14 @@ using Composite.Data.Types;
 
 namespace Composite.Data.DynamicTypes
 {
-    /// <summary>    
+    /// <summary>
     /// Describes a data type in Composite C1
     /// </summary>
     [DebuggerDisplay("Type name = {Namespace + '.' + Name}")]
     public class DataTypeDescriptor
     {
+        private const string LogTitle = nameof(DataTypeDescriptor);
+
         private string _name;
         private Guid _dataTypeId;
         private string _namespace;
@@ -38,6 +40,7 @@ namespace Composite.Data.DynamicTypes
         {
             this.Fields = new DataFieldDescriptorCollection(this);
             this.KeyPropertyNames = new DataFieldNameCollection(this.Fields, false, false, false);
+            this.VersionKeyPropertyNames = new DataFieldNameCollection(this.Fields, false, false, false);
             this.StoreSortOrderFieldNames = new DataFieldNameCollection(this.Fields, true, false, false);
             this.IsCodeGenerated = false;
             this.DataScopes = new List<DataScopeIdentifier>();
@@ -123,6 +126,17 @@ namespace Composite.Data.DynamicTypes
 
 
         /// <summary>
+        /// Version keys, appear in the physical order but not included in data references.
+        /// </summary>
+        public DataFieldNameCollection VersionKeyPropertyNames { get; set; }
+
+
+        /// <summary>
+        /// Version keys, appear in the physical order but not included in data references.
+        /// </summary>
+        internal IEnumerable<string> PhysicalKeyPropertyNames => KeyPropertyNames.Concat(VersionKeyPropertyNames);
+
+        /// <summary>
         /// Returns the CLT Type for this data type description.
         /// </summary>
         /// <returns></returns>
@@ -156,14 +170,18 @@ namespace Composite.Data.DynamicTypes
         public DataFieldDescriptorCollection Fields { get; set; }
 
         /// <summary>
-        /// Key fields. Note that the order of the fields is important.
+        /// Physical key fields. Note that the order of the fields is important.
+        /// The physical key ensure that storage identity is unique across different versions of data with shared id.
         /// </summary>
-        internal IEnumerable<DataFieldDescriptor> KeyFields
+        internal IEnumerable<DataFieldDescriptor> PhysicalKeyFields
         {
             get
             {
-                return this.KeyPropertyNames.Select(fieldName => this.Fields.Where(field => field.Name == fieldName)
-                    .SingleOrException("Missing a field '{0}'", "Multiple fields with name '{0}'", fieldName));
+                Func<string, DataFieldDescriptor> getField = fieldName =>
+                    this.Fields.Where(field => field.Name == fieldName)
+                        .SingleOrException("Missing a field '{0}'", "Multiple fields with name '{0}'", fieldName);
+
+                return PhysicalKeyPropertyNames.Select(getField);
             }
         }
 
@@ -269,13 +287,7 @@ namespace Composite.Data.DynamicTypes
         /// <summary>
         /// When true data can be localized.
         /// </summary>
-        public bool Localizeable
-        {
-            get
-            {
-                return SuperInterfaces.Contains(typeof(ILocalizedControlled));
-            }
-        }
+        public bool Localizeable => SuperInterfaces.Contains(typeof(ILocalizedControlled));
 
 
         /// <summary>
@@ -314,7 +326,7 @@ namespace Composite.Data.DynamicTypes
             {
                 foreach (PropertyInfo propertyInfo in interfaceType.GetProperties())
                 {
-                    if (propertyInfo.Name == "PageId" && interfaceType == typeof (IPageData))
+                    if (propertyInfo.Name == nameof(IPageData.PageId) && interfaceType == typeof (IPageData))
                     {
                         continue;
                     }
@@ -329,19 +341,7 @@ namespace Composite.Data.DynamicTypes
             {
                 if (KeyPropertyNames.Contains(propertyName)) continue;
 
-                PropertyInfo property = interfaceType.GetProperty(propertyName);
-                if (property == null)
-                {
-                    List<Type> superInterfaces = interfaceType.GetInterfacesRecursively(t => typeof(IData).IsAssignableFrom(t) && t != typeof(IData));
-
-                    foreach (Type superInterface in superInterfaces)
-                    {
-                        property = superInterface.GetProperty(propertyName);
-                        if (property != null) break;
-                    }
-                }
-
-                Verify.IsNotNull(property, "Missing property '{0}' on type '{1}' or one of its interfaces".FormatWith(propertyName, interfaceType));
+                PropertyInfo property = ReflectionBasedDescriptorBuilder.FindProperty(interfaceType, propertyName);
 
                 if (DynamicTypeReflectionFacade.IsKeyField(property))
                 {
@@ -349,7 +349,16 @@ namespace Composite.Data.DynamicTypes
                 }
             }
 
-            foreach (DataScopeIdentifier dataScopeIdentifier in DynamicTypeReflectionFacade.GetDataScopes(interfaceType))
+            foreach (string propertyName in interfaceType.GetVersionKeyPropertyNames())
+            {
+                if (VersionKeyPropertyNames.Contains(propertyName)) continue;
+
+                ReflectionBasedDescriptorBuilder.FindProperty(interfaceType, propertyName);
+
+                this.VersionKeyPropertyNames.Add(propertyName, false);
+            }
+
+            foreach (var dataScopeIdentifier in DynamicTypeReflectionFacade.GetDataScopes(interfaceType))
             {
                 if (!this.DataScopes.Contains(dataScopeIdentifier))
                 {
@@ -357,12 +366,14 @@ namespace Composite.Data.DynamicTypes
                 }
             }
 
-
-            foreach (Type superSuperInterfaceType in interfaceType.GetInterfaces().Where(t => typeof(IData).IsAssignableFrom(t)))
+            var superInterfaces = interfaceType.GetInterfaces().Where(t => typeof (IData).IsAssignableFrom(t));
+            foreach (Type superSuperInterfaceType in superInterfaces)
             {
                 AddSuperInterface(superSuperInterfaceType, addInheritedFields);
             }
         }
+
+
 
 
 
@@ -384,7 +395,7 @@ namespace Composite.Data.DynamicTypes
 
             foreach (PropertyInfo propertyInfo in interfaceType.GetProperties())
             {
-                DataFieldDescriptor dataFieldDescriptor = ReflectionBasedDescriptorBuilder.BuildFieldDescriptor(propertyInfo, true);
+                var dataFieldDescriptor = ReflectionBasedDescriptorBuilder.BuildFieldDescriptor(propertyInfo, true);
 
                 if (this.Fields.Contains(dataFieldDescriptor))
                 {
@@ -399,7 +410,7 @@ namespace Composite.Data.DynamicTypes
             }
 
 
-            foreach (DataScopeIdentifier dataScopeIdentifier in DynamicTypeReflectionFacade.GetDataScopes(interfaceType))
+            foreach (var dataScopeIdentifier in DynamicTypeReflectionFacade.GetDataScopes(interfaceType))
             {
                 if (this.DataScopes.Contains(dataScopeIdentifier))
                 {
@@ -407,10 +418,10 @@ namespace Composite.Data.DynamicTypes
                 }
             }
 
-
-            foreach (Type superSuperInterfaceType in interfaceType.GetInterfaces().Where(t => typeof(IData).IsAssignableFrom(t)))
+            var superInterfaces = interfaceType.GetInterfaces().Where(t => typeof (IData).IsAssignableFrom(t));
+            foreach (Type superInterfaceType in superInterfaces)
             {
-                RemoveSuperInterface(superSuperInterfaceType);
+                RemoveSuperInterface(superInterfaceType);
             }
         }
 
@@ -419,14 +430,7 @@ namespace Composite.Data.DynamicTypes
         /// <summary>
         /// All interfaces this data type inherit from
         /// </summary>
-        public IEnumerable<Type> SuperInterfaces
-        {
-            get
-            {
-                return _superInterfaces;
-            }
-        }
-
+        public IEnumerable<Type> SuperInterfaces => _superInterfaces;
 
 
         /// <summary>
@@ -467,8 +471,8 @@ namespace Composite.Data.DynamicTypes
         {
             get
             {
-                return
-                    this.DataAssociations.Any(f => f.AssociatedInterfaceType == typeof(IPage) && f.AssociationType == DataAssociationType.Composition);
+                return this.DataAssociations.Any(f => f.AssociatedInterfaceType == typeof(IPage) 
+                                                   && f.AssociationType == DataAssociationType.Composition);
             }
         }
 
@@ -499,17 +503,6 @@ namespace Composite.Data.DynamicTypes
                 if (this.DataScopes.Count == 0) throw new InvalidOperationException("The DataScopes list containing the list of data scopes this type must support can not be empty. Please provide at least one data scopes.");
                 if (this.DataScopes.Select(f => f.Name).Distinct().Count() != this.DataScopes.Count) throw new InvalidOperationException("The DataScopes list contains redundant data scopes");
 
-                if (this.DataScopes.Any(f => f.Equals(DataScopeIdentifier.PublicName)))
-                {
-                    foreach (PropertyInfo propertyInfo in typeof(IPublishControlled).GetProperties())
-                    {
-                        if (!this.Fields.Any(f => f.Name == propertyInfo.Name))
-                        {
-                            throw new InvalidOperationException(string.Format("DataScope '{0}' require you to implement '{1}' and a field named '{2} is missing", DataScopeIdentifier.Public, typeof(IPublishControlled), propertyInfo.Name));
-                        }
-                    }
-                }
-
                 this.KeyPropertyNames.ValidateMembers();
                 this.StoreSortOrderFieldNames.ValidateMembers();
 
@@ -517,7 +510,7 @@ namespace Composite.Data.DynamicTypes
                 {
                     if (!this.Fields.Any(f => f.Name == this.LabelFieldName))
                     {
-                        throw new InvalidOperationException(string.Format("The label field name '{0}' is not an existing field", this.LabelFieldName));
+                        throw new InvalidOperationException($"The label field name '{this.LabelFieldName}' is not an existing field");
                     }
                 }
 
@@ -541,8 +534,8 @@ namespace Composite.Data.DynamicTypes
             }
             catch (Exception ex)
             {
-                string typeName = (string.IsNullOrEmpty(this.TypeManagerTypeName) ? this.Name : this.TypeManagerTypeName);
-                throw new InvalidOperationException(string.Format("Failed to validate data type description for '{0}'. {1}", typeName, ex.Message));
+                string typeName = string.IsNullOrEmpty(this.TypeManagerTypeName) ? this.Name : this.TypeManagerTypeName;
+                throw new InvalidOperationException($"Failed to validate data type description for '{typeName}'.", ex);
             }
         }
 
@@ -609,7 +602,6 @@ namespace Composite.Data.DynamicTypes
                 new XAttribute("name", this.Name),
                 new XAttribute("namespace", this.Namespace),
                 this.Title != null ? new XAttribute("title", this.Title) : null,
-                new XAttribute("hasCustomPhysicalSortOrder", this.HasCustomPhysicalSortOrder),
                 new XAttribute("isCodeGenerated", this.IsCodeGenerated),
                 new XAttribute("cachable", this.Cachable),
                 this.LabelFieldName != null ? new XAttribute("labelFieldName", this.LabelFieldName) : null,
@@ -626,6 +618,10 @@ namespace Composite.Data.DynamicTypes
                               DataScopes.Select(dsi => new XElement("DataScopeIdentifier", new XAttribute("name", dsi)))),
                 new XElement("KeyPropertyNames",
                               KeyPropertyNames.Select(name => new XElement("KeyPropertyName", new XAttribute("name", name)))),
+                VersionKeyPropertyNames.Any() 
+                    ? new XElement("VersionKeyPropertyNames",
+                            VersionKeyPropertyNames.Select(name => new XElement("VersionKeyPropertyName", new XAttribute("name", name))))
+                    : null,
                 new XElement("SuperInterfaces", 
                               SuperInterfaces.Select(su => new XElement("SuperInterface", new XAttribute("type", TypeManager.SerializeType(su))))),
                 new XElement("Fields", Fields.Select(f => f.ToXml()))
@@ -659,9 +655,6 @@ namespace Composite.Data.DynamicTypes
             Guid dataTypeId = (Guid) element.GetRequiredAttribute("dataTypeId");
             string name = element.GetRequiredAttributeValue("name");
             string @namespace = element.GetRequiredAttributeValue("namespace");
-
-            // TODO: check why "hasCustomPhysicalSortOrder"  is not used
-            bool hasCustomPhysicalSortOrder = (bool) element.GetRequiredAttribute("hasCustomPhysicalSortOrder");
 
             bool isCodeGenerated = (bool) element.GetRequiredAttribute("isCodeGenerated");
             XAttribute cachableAttribute = element.Attribute("cachable");
@@ -710,7 +703,7 @@ namespace Composite.Data.DynamicTypes
                 string dataScopeName = elm.GetRequiredAttributeValue("name");
                 if (DataScopeIdentifier.IsLegasyDataScope(dataScopeName))
                 {
-                    Log.LogWarning("DataTypeDescriptor", "Ignored legacy data scope '{0}' on type '{1}.{2}' while deserializing DataTypeDescriptor. The '{0}' data scope is no longer supported.".FormatWith(dataScopeName, @namespace, name));
+                    Log.LogWarning(LogTitle, "Ignored legacy data scope '{0}' on type '{1}.{2}' while deserializing DataTypeDescriptor. The '{0}' data scope is no longer supported.".FormatWith(dataScopeName, @namespace, name));
                     continue;
                 }
 
@@ -725,7 +718,7 @@ namespace Composite.Data.DynamicTypes
 
                 if (superInterfaceTypeName.StartsWith("Composite.Data.ProcessControlled.IDeleteControlled"))
                 {
-                    Log.LogWarning("DataTypeDescriptor", string.Format("Ignored legacy super interface '{0}' on type '{1}.{2}' while deserializing DataTypeDescriptor. This super interface is no longer supported.", superInterfaceTypeName, @namespace, name));
+                    Log.LogWarning(LogTitle, $"Ignored legacy super interface '{superInterfaceTypeName}' on type '{@namespace}.{name}' while deserializing DataTypeDescriptor. This super interface is no longer supported.");
                     continue;
                 }
                 
@@ -737,7 +730,7 @@ namespace Composite.Data.DynamicTypes
                 }
                 catch (Exception ex)
                 {
-                    throw XmlConfigurationExtensionMethods.GetConfigurationException("Failed to load super interface '{0}'".FormatWith(superInterfaceTypeName), ex, elm);
+                    throw XmlConfigurationExtensionMethods.GetConfigurationException($"Failed to load super interface '{superInterfaceTypeName}'", ex, elm);
                 }
 
                 dataTypeDescriptor.AddSuperInterface(superInterface, !inheritedFieldsIncluded);
@@ -818,11 +811,8 @@ namespace Composite.Data.DynamicTypes
         /// <exclude />
         public bool Equals(DataTypeDescriptor dataTypeDescriptor)
         {
-            if (dataTypeDescriptor == null) return false;
-
-            return dataTypeDescriptor.DataTypeId == this.DataTypeId;
+            return dataTypeDescriptor != null && dataTypeDescriptor.DataTypeId == this.DataTypeId;
         }
-
 
 
         /// <exclude />
@@ -868,9 +858,7 @@ namespace Composite.Data.DynamicTypes
             if (dataTypeDescriptor.IsCodeGenerated) return true;
 
             Type dataType = TypeManager.TryGetType(dataTypeDescriptor.TypeManagerTypeName);
-            if (dataType == null) return false;
-
-            return true;
+            return dataType != null;
         }
     }
 }

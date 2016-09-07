@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Transactions;
+using Composite.Core.Extensions;
 using Composite.Data.DynamicTypes;
 using Composite.Data.Foundation;
 using Composite.Data.Types;
@@ -43,9 +44,15 @@ namespace Composite.Data
         /// <returns></returns>
         public static bool HasFolderDefinitions(this IPage page)
         {
-            Verify.ArgumentNotNull(page, "page");
+            Verify.ArgumentNotNull(page, nameof(page));
 
-            return DataFacade.GetData<IPageFolderDefinition>().Any(f => f.PageId == page.Id);
+            Guid pageId = page.Id;
+
+            var definitions = DataFacade.GetData<IPageFolderDefinition>();
+
+            return definitions.IsEnumerableQuery() 
+                ? definitions.AsEnumerable().Any(f => f.PageId == pageId)
+                : definitions.Any(f => f.PageId == pageId);
         }
 
 
@@ -57,19 +64,32 @@ namespace Composite.Data
         /// <returns></returns>
         public static IEnumerable<Type> GetDefinedFolderTypes(this IPage page)
         {
-            Verify.ArgumentNotNull(page, "page");
+            Verify.ArgumentNotNull(page, nameof(page));
 
-            IEnumerable<Guid> typeIds =
-                DataFacade.GetData<IPageFolderDefinition>().
-                Where(f => f.PageId == page.Id).
-                Select(f => f.FolderTypeId).
-                Evaluate();
+            var folderDefinitions = DataFacade.GetData<IPageFolderDefinition>();
+
+            IEnumerable<Guid> typeIds;
+
+            if (folderDefinitions.IsEnumerableQuery())
+            {
+                typeIds = folderDefinitions
+                            .Evaluate()
+                            .Where(f => f.PageId == page.Id)
+                            .Select(f => f.FolderTypeId);
+            }
+            else
+            {
+                typeIds = folderDefinitions
+                            .Where(f => f.PageId == page.Id)
+                            .Select(f => f.FolderTypeId)
+                            .Evaluate();
+            }
 
             foreach (Guid typeId in typeIds)
             {
                 var dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(typeId);
                 Verify.IsNotNull(dataTypeDescriptor, "Missing a page data folder type with id '{0}', referenced by a IPageFolderDefinition record", typeId);
-
+                
                 yield return TypeManager.GetType(dataTypeDescriptor.TypeManagerTypeName);
             }
         }

@@ -375,24 +375,30 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler
         private static void ResolveBindingObject(ElementCompileTreeNode element, PropertyCompileTreeNode property, CompileContext compileContext, string bindSourceName,
             out object bindingObject, out Type bindType)
         {
-            string typeName = ((BindingsProducer)compileContext.BindingsProducer).GetTypeNameByName(bindSourceName);
+            var bindingProducer = (BindingsProducer) compileContext.BindingsProducer;
+            if (bindingProducer == null)
+            {
+                throw new FormCompileException($"Failed to resolve binding object {bindSourceName} - the binding producer is null", element, property);
+            }
+
+            string typeName = bindingProducer.GetTypeNameByName(bindSourceName);
             if (typeName == null)
             {
-                throw new FormCompileException(string.Format("{1} binds to an undeclared binding name '{0}'. All binding names must be declared in /cms:formdefinition/cms:bindings", bindSourceName, element.XmlSourceNodeInformation.XPath), element, property);
+                throw new FormCompileException($"{element.XmlSourceNodeInformation.XPath} binds to an undeclared binding name '{bindSourceName}'. All binding names must be declared in /cms:formdefinition/cms:bindings", element, property);
             }
 
             bindType = TypeManager.TryGetType(typeName);
             if (bindType == null)
             {
-                throw new FormCompileException(string.Format("The form binding '{0}' is declared as an unknown type '{1}'", bindSourceName, typeName), element, property);
+                throw new FormCompileException($"The form binding '{bindSourceName}' is declared as an unknown type '{typeName}'", element, property);
             }
 
-            bool? optional = ((BindingsProducer)compileContext.BindingsProducer).GetOptionalValueByName(bindSourceName);
+            bool? optional = bindingProducer.GetOptionalValueByName(bindSourceName);
             bindingObject = compileContext.GetBindingObject(bindSourceName);
 
             if (!optional.Value && !compileContext.BindingObjectExists(bindSourceName))
             {
-                throw new FormCompileException(string.Format("The binding object named '{0}' not found in the input dictionary", bindSourceName), element, property);
+                throw new FormCompileException($"The binding object named '{bindSourceName}' not found in the input dictionary", element, property);
             }
 
             if (bindingObject != null)
@@ -400,7 +406,7 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler
                 Type bindingObjectType = bindingObject.GetType();
                 if (!bindType.IsAssignableOrLazyFrom(bindingObjectType))
                 {
-                    throw new FormCompileException(string.Format("The binding object named '{0}' from the input dictionary is not of expected type '{1}', but '{2}'", bindSourceName, bindType.FullName, bindingObjectType.FullName), element, property);
+                    throw new FormCompileException($"The binding object named '{bindSourceName}' from the input dictionary is not of expected type '{bindType.FullName}', but '{bindingObjectType.FullName}'", element, property);
                 }
             }
         }

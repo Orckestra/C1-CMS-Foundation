@@ -83,7 +83,7 @@ namespace Composite.Data
             GlobalEventSystemFacade.SubscribeToFlushEvent(OnFlushEvent);
         }
 
-
+        
         internal static IDataFacade Implementation { get { return _dataFacade; } set { _dataFacade = value; } }
 
 
@@ -128,6 +128,12 @@ namespace Composite.Data
         }
 
 
+        /// <exclude />
+        internal static IEnumerable<DataInterceptor> GetDataInterceptors(Type interfaceType)
+        {
+            return _dataFacade.GetDataInterceptors(interfaceType);
+        }
+
 
         // Overload
         /// <exclude />
@@ -162,6 +168,34 @@ namespace Composite.Data
             methodInfo.Invoke(null, new object[] { });
         }
 
+        /// <exclude />
+        public static void SetGlobalDataInterceptor<T>(DataInterceptor dataInterceptor)
+            where T : class, IData
+        {
+            _dataFacade.SetGlobalDataInterceptor<T>(dataInterceptor);
+        }
+
+
+
+        /// <exclude />
+        public static bool HasGlobalDataInterceptor<T>()
+            where T : class, IData
+        {
+            return _dataFacade.HasGlobalDataInterceptor<T>();
+        }
+
+
+
+        /// <exclude />
+        public static void ClearGlobalDataInterceptor<T>()
+            where T : class, IData
+        {
+            _dataFacade.ClearGlobalDataInterceptor<T>();
+        }
+
+
+
+        
         #endregion
 
 
@@ -361,27 +395,35 @@ namespace Composite.Data
         }
 
         /// <exclude />
-        public static IEnumerable<IData> GetDataFromOtherScope(IData data, DataScopeIdentifier dataScopeIdentifier, bool useCaching)
+        public static IEnumerable<IData> GetDataFromOtherScope(
+            IData data, DataScopeIdentifier dataScopeIdentifier, bool useCaching)
+        {
+            return GetDataFromOtherScope(data, dataScopeIdentifier, useCaching, true);
+        }
+
+        /// <exclude />
+        public static IEnumerable<IData> GetDataFromOtherScope(
+            IData data, DataScopeIdentifier dataScopeIdentifier, bool useCaching, bool ignoreVersioning)
         {
             Verify.ArgumentNotNull(data, "data");
-            if (dataScopeIdentifier == null) throw new ArgumentNullException("dataScopeIdentifier");
+            Verify.ArgumentNotNull(dataScopeIdentifier, nameof(dataScopeIdentifier));
 
-            if (GetSupportedDataScopes(data.DataSourceId.InterfaceType).Contains(dataScopeIdentifier) == false) throw new ArgumentException(string.Format("The data type '{0}' does not support the data scope '{1}'", data.DataSourceId.InterfaceType, dataScopeIdentifier));
+            if (!GetSupportedDataScopes(data.DataSourceId.InterfaceType).Contains(dataScopeIdentifier))
+            {
+                throw new ArgumentException($"The data type '{data.DataSourceId.InterfaceType}' does not support the data scope '{dataScopeIdentifier}'");
+            }
 
             if (useCaching)
             {
                 DataSourceId sourceId = data.DataSourceId;
-                DataSourceId newDataSource = new DataSourceId(sourceId.DataId, sourceId.ProviderName,
-                                                              sourceId.InterfaceType);
+                var newDataSource = new DataSourceId(sourceId.DataId, sourceId.ProviderName, sourceId.InterfaceType)
+                {
+                    DataScopeIdentifier = dataScopeIdentifier
+                };
 
-                newDataSource.DataScopeIdentifier = dataScopeIdentifier;
 
                 IData fromDataSource = GetDataFromDataSourceId(newDataSource, true);
-                if (fromDataSource == null)
-                {
-                    return new IData[0];
-                }
-                return new[] { fromDataSource };
+                return fromDataSource == null ? new IData[0] : new[] { fromDataSource };
             }
 
             var result = new List<IData>();
@@ -390,7 +432,7 @@ namespace Composite.Data
             {
                 IQueryable table = GetData(data.DataSourceId.InterfaceType, false);
 
-                IQueryable queryable = DataExpressionBuilder.GetQueryableByData(data, table, true);
+                IQueryable queryable = DataExpressionBuilder.GetQueryableByData(data, table, ignoreVersioning);
 
                 foreach (object obj in queryable)
                 {
@@ -411,13 +453,13 @@ namespace Composite.Data
         public static Expression<Func<T, bool>> GetPredicateExpressionByUniqueKey<T>(DataKeyPropertyCollection dataKeyPropertyCollection)
             where T : class, IData
         {
-            if (dataKeyPropertyCollection == null) throw new ArgumentNullException("dataKeyPropertyCollection");
+            Verify.ArgumentNotNull(dataKeyPropertyCollection, nameof(dataKeyPropertyCollection));
 
-            var keyPropertyInfos = DataAttributeFacade.GetKeyProperties(typeof(T));
+            var keyProperties = typeof(T).GetKeyProperties();
 
             ParameterExpression parameterExpression = Expression.Parameter(typeof(T), "data");
 
-            Expression currentExpression = GetPredicateExpressionByUniqueKeyFilterExpression(keyPropertyInfos, dataKeyPropertyCollection, parameterExpression);
+            Expression currentExpression = GetPredicateExpressionByUniqueKeyFilterExpression(keyProperties, dataKeyPropertyCollection, parameterExpression);
 
             Expression<Func<T, bool>> lambdaExpression = Expression.Lambda<Func<T, bool>>(currentExpression, new ParameterExpression[] { parameterExpression });
 
@@ -471,7 +513,7 @@ namespace Composite.Data
             PropertyInfo propertyInfo = DataAttributeFacade.GetKeyProperties(interfaceType).Single();
 
             var dataKeyPropertyCollection = new DataKeyPropertyCollection();
-            dataKeyPropertyCollection.AddKeyProperty(propertyInfo, dataKeyValue);
+                dataKeyPropertyCollection.AddKeyProperty(propertyInfo, dataKeyValue);
 
             return GetPredicateExpressionByUniqueKey(interfaceType, dataKeyPropertyCollection);
         }
@@ -568,12 +610,34 @@ namespace Composite.Data
             PropertyInfo propertyInfo = DataAttributeFacade.GetKeyProperties(interfaceType).Single();
 
             DataKeyPropertyCollection dataKeyPropertyCollection = new DataKeyPropertyCollection();
-            dataKeyPropertyCollection.AddKeyProperty(propertyInfo, dataKeyValue);
+                dataKeyPropertyCollection.AddKeyProperty(propertyInfo, dataKeyValue);
 
             return TryGetDataByUniqueKey(interfaceType, dataKeyPropertyCollection);
         }
 
+        // Overload
+        /// <exclude />
+        public static IEnumerable<IData> TryGetDataVersionsByUniqueKey(Type interfaceType, object dataKeyValue)
+        {
+            Verify.ArgumentNotNull(interfaceType, "interfaceType");
 
+            if (DataCachingFacade.IsDataAccessCacheEnabled(interfaceType))
+            {
+                var cachedByKey = DataFacade.GetData(interfaceType) as CachingQueryable_CachedByKey;
+                if (cachedByKey != null)
+                {
+                    return cachedByKey.GetCachedVersionValuesByKey(dataKeyValue);
+                }
+            }
+
+
+            PropertyInfo propertyInfo = DataAttributeFacade.GetKeyProperties(interfaceType).Single();
+
+            DataKeyPropertyCollection dataKeyPropertyCollection = new DataKeyPropertyCollection();
+            dataKeyPropertyCollection.AddKeyProperty(propertyInfo, dataKeyValue);
+
+            return TryGetDataVersionsByUniqueKey(interfaceType, dataKeyPropertyCollection);
+        }
 
         /// <exclude />
         public static IData TryGetDataByUniqueKey(Type interfaceType, DataKeyPropertyCollection dataKeyPropertyCollection)
@@ -592,7 +656,22 @@ namespace Composite.Data
             return data;
         }
 
+        /// <exclude />
+        public static IEnumerable<IData> TryGetDataVersionsByUniqueKey(Type interfaceType, DataKeyPropertyCollection dataKeyPropertyCollection)
+        {
+            if (interfaceType == null) throw new ArgumentNullException("interfaceType");
+            if (dataKeyPropertyCollection == null) throw new ArgumentNullException("dataKeyPropertyCollection");
 
+            LambdaExpression lambdaExpression = GetPredicateExpressionByUniqueKey(interfaceType, dataKeyPropertyCollection);
+
+            MethodInfo methodInfo = GetGetDataWithPredicatMethodInfo(interfaceType);
+
+            IQueryable queryable = (IQueryable)methodInfo.Invoke(null, new object[] { lambdaExpression });
+
+            var datas = queryable.OfType<IData>();
+
+            return datas;
+        }
 
         // Overload
         /// <exclude />
