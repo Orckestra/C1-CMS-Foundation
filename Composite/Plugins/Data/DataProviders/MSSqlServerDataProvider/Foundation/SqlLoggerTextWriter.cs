@@ -1,24 +1,26 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
-using Composite.Core.Logging;
+using Composite.Core;
 
 
 namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundation
 {
     internal sealed class SqlLoggerTextWriter : System.IO.TextWriter
     {
-        private static Regex ContainsParamRegex = new Regex(@"@p[0-9]+", RegexOptions.Compiled);
-        private static Regex ParamRegex = new Regex(@"-- (?<param>@p[0-9]+):", RegexOptions.Compiled);
+        private static readonly Regex ContainsParamRegex = new Regex(@"@(p|x)[0-9]+", RegexOptions.Compiled);
+        private static readonly Regex ParamRegex = new Regex(@"-- (?<param>@(p|x)[0-9]+):", RegexOptions.Compiled);
 
         private readonly SqlLoggingContext _sqlLoggingContext;
 
-        private Dictionary<int, Tuple<string, Dictionary<string, string>>> _threadData = new Dictionary<int, Tuple<string, Dictionary<string, string>>>();
-        private readonly object _lock = new object();
+        private readonly ConcurrentDictionary<int, Tuple<string, Dictionary<string, string>>> _threadData 
+            = new ConcurrentDictionary<int, Tuple<string, Dictionary<string, string>>>();
 
         public SqlLoggerTextWriter(SqlLoggingContext sqlLoggingContext)
         {
@@ -28,19 +30,16 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
 
 
 
-        public override Encoding Encoding
-        {
-            get { return Encoding.UTF8; }
-        }
+        public override Encoding Encoding => Encoding.UTF8;
 
 
         public override void WriteLine(string value)
         {
-            if (value.StartsWith("--") == false)
+            if (!value.StartsWith("--"))
             {
                 HandleNewQuery(value);
             }
-            else if (value.StartsWith("-- Context:") == false)
+            else if (!value.StartsWith("-- Context:"))
             {
                 HandleParameter(value);
             }
@@ -54,9 +53,9 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
 
         private void HandleNewQuery(string value)
         {
-            foreach (string tableToIgnore in _sqlLoggingContext.TablesToIgnore)
+            if (_sqlLoggingContext.TablesToIgnore.Any(value.Contains))
             {
-                if (value.Contains(tableToIgnore)) return;
+                return;
             }
 
 
@@ -68,31 +67,32 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
                 return;
             }
 
-            Tuple<string, Dictionary<string, string>> entry = new Tuple<string, Dictionary<string, string>>(value, new Dictionary<string, string>());
-            lock (_lock)
-            {
-                _threadData.Add(Thread.CurrentThread.ManagedThreadId, entry);
-            }
+            var entry = new Tuple<string, Dictionary<string, string>>(value, new Dictionary<string, string>());
+
+            _threadData[Thread.CurrentThread.ManagedThreadId] = entry;
         }
 
 
 
         private void HandleParameter(string value)
         {
-            if (_threadData.ContainsKey(Thread.CurrentThread.ManagedThreadId) == false) return;
-
-            Match match = ParamRegex.Match(value);
-            string paramId = match.Groups["param"].Value;
-
-            string paramValue = value.Substring(value.IndexOf("["));
-
-
             Tuple<string, Dictionary<string, string>> entry;
-            lock (_lock)
+
+            if (!_threadData.TryGetValue(Thread.CurrentThread.ManagedThreadId, out entry))
             {
-                entry = _threadData[Thread.CurrentThread.ManagedThreadId];
+                return;
             }
 
+            Match match = ParamRegex.Match(value);
+
+            string paramId = match.Groups["param"].Value;
+            if (string.IsNullOrEmpty(paramId))
+            {
+                Log.LogWarning(nameof(SqlLoggerTextWriter), "Failed to parse parameter line: " + value);
+                return;
+            }
+
+            string paramValue = value.Substring(value.IndexOf('['));
             entry.Item2.Add(paramId, paramValue);
         }
 
@@ -100,21 +100,11 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
 
         public void HandleEndQuery()
         {
-            Tuple<string, Dictionary<string, string>> entry = null;
+            Tuple<string, Dictionary<string, string>> entry;
 
-            if (_threadData.ContainsKey(Thread.CurrentThread.ManagedThreadId))
-            {
-                lock (_lock)
-                {
-                    if (_threadData.ContainsKey(Thread.CurrentThread.ManagedThreadId))
-                    {
-                        entry = _threadData[Thread.CurrentThread.ManagedThreadId];
-                        _threadData.Remove(Thread.CurrentThread.ManagedThreadId);
-                    }
-                }
-            }
+            var threadId = Thread.CurrentThread.ManagedThreadId;
 
-            if (entry != null)
+            if (_threadData.TryRemove(threadId, out entry))
             {
                 string value = entry.Item1;
                 foreach (var kvp in entry.Item2)
@@ -132,10 +122,11 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
         {
             if (_sqlLoggingContext.IncludeStack)
             {
-                StringBuilder sb = new StringBuilder();
+                var sb = new StringBuilder();
                 sb.AppendLine(value);
                 sb.AppendLine("Stack trace:");
-                StackTrace trace = new StackTrace(8, true);
+
+                var trace = new StackTrace(8, true);
                 foreach (StackFrame stackFrame in trace.GetFrames())
                 {
                     MemberInfo methodInfo = stackFrame.GetMethod();
@@ -146,13 +137,13 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
                         type = methodInfo.DeclaringType.FullName;
                     }
 
-                    sb.AppendLine(string.Format("   at {0}.{1} line {2}", type, methodInfo.Name, stackFrame.GetFileLineNumber()));
+                    sb.AppendLine($"   at {type}.{methodInfo.Name} line {stackFrame.GetFileLineNumber()}");
                 }
 
                 value = sb.ToString();
             }
 
-            LoggingService.LogVerbose("RGB(0, 128, 192)SqlQuery", value);
+            Log.LogVerbose("RGB(0, 128, 192)SqlQuery", value);
         }
     }
 }
