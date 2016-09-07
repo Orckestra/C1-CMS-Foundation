@@ -349,15 +349,6 @@ namespace Composite.Data.DynamicTypes
                 }
             }
 
-            foreach (string propertyName in interfaceType.GetVersionKeyPropertyNames())
-            {
-                if (VersionKeyPropertyNames.Contains(propertyName)) continue;
-
-                ReflectionBasedDescriptorBuilder.FindProperty(interfaceType, propertyName);
-
-                this.VersionKeyPropertyNames.Add(propertyName, false);
-            }
-
             foreach (var dataScopeIdentifier in DynamicTypeReflectionFacade.GetDataScopes(interfaceType))
             {
                 if (!this.DataScopes.Contains(dataScopeIdentifier))
@@ -662,8 +653,7 @@ namespace Composite.Data.DynamicTypes
             XElement dataAssociationsElement = element.GetRequiredElement("DataAssociations");
             XElement dataScopesElement = element.GetRequiredElement("DataScopes");
             XElement keyPropertyNamesElement = element.GetRequiredElement("KeyPropertyNames");
-            // TODO: check why "superInterfaceKeyPropertyNamesElement" is not used
-            // XElement superInterfaceKeyPropertyNamesElement = element.Element("SuperInterfaceKeyPropertyNames");
+            XElement versionKeyPropertyNamesElement = element.Element("VersionKeyPropertyNames");
             XElement superInterfacesElement = element.GetRequiredElement("SuperInterfaces");
             XElement fieldsElement = element.GetRequiredElement("Fields");
             XElement indexesElement = element.Element("Indexes");
@@ -758,6 +748,16 @@ namespace Composite.Data.DynamicTypes
                 if (!isDefinedOnSuperInterface)
                 {
                     dataTypeDescriptor.KeyPropertyNames.Add(propertyName);
+                }
+            }
+
+            if (versionKeyPropertyNamesElement != null)
+            {
+                foreach (XElement elm in keyPropertyNamesElement.Elements("VersionKeyPropertyName"))
+                {
+                    var propertyName = elm.GetRequiredAttributeValue("name");
+
+                    dataTypeDescriptor.VersionKeyPropertyNames.Add(propertyName);
                 }
             }
 

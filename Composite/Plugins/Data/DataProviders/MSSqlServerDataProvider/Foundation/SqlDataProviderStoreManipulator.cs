@@ -420,6 +420,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
                 bool primaryKeyChanged = changeDescriptor.AddedKeyFields.Any() 
                                          || changeDescriptor.DeletedKeyFields.Any() 
                                          || changeDescriptor.KeyFieldsOrderChanged
+                                         || changeDescriptor.VersionKeyFieldsChanged
                                          || changeDescriptor.OriginalType.PrimaryKeyIsClusteredIndex != changeDescriptor.AlteredType.PrimaryKeyIsClusteredIndex;
 
                 DropConstraints(originalTableName, primaryKeyChanged);
