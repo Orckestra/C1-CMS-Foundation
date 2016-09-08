@@ -80,10 +80,10 @@ namespace Composite.C1Console.Trees
         /// <exclude />
         public static bool TryGetPiggybaggedEntityToken(this Dictionary<string, string> piggybag, int generation, out EntityToken entityToken)
         {
-            string key = string.Format("{0}{1}", ParentEntityTokenPiggybagString, generation);
+            string key = $"{ParentEntityTokenPiggybagString}{generation}";
 
             string serializedEntityToken;
-            if (piggybag.TryGetValue(key, out serializedEntityToken) == false)
+            if (!piggybag.TryGetValue(key, out serializedEntityToken))
             {
                 entityToken = null;
                 return false;
@@ -105,10 +105,10 @@ namespace Composite.C1Console.Trees
 
             int generation = 1;
 
-            string seriazliedEntityToken;
-            while (piggybag.TryGetValue(string.Format("{0}{1}", ParentEntityTokenPiggybagString, generation), out seriazliedEntityToken))
+            string serializedEntityToken;
+            while (piggybag.TryGetValue($"{ParentEntityTokenPiggybagString}{generation}", out serializedEntityToken))
             {
-                yield return EntityTokenSerializer.Deserialize(seriazliedEntityToken);
+                yield return EntityTokenSerializer.Deserialize(serializedEntityToken);
 
                 generation++;
             }
