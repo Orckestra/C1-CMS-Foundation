@@ -63,9 +63,9 @@ namespace Composite.C1Console.Actions
 
                 var consoleId = flowControllerServicesContainer.GetService<IManagementConsoleMessageService>().CurrentConsoleId;
 
-                ConsoleCommandHelper.SelectConsoleElement(consoleId, newData.GetDataEntityToken());
+                ConsoleCommandHelper.SelectConsoleElementWithoutPerspectiveChange(consoleId, newData.GetDataEntityToken());
 
-                treeRefresher.PostRefreshMesseges(dataEntityToken);
+                treeRefresher.PostRefreshMessages(dataEntityToken);
             }
 
             return null;
