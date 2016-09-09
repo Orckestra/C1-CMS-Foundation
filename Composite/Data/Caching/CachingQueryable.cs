@@ -7,7 +7,6 @@ using System.Threading;
 using Composite.Core.Types;
 using Composite.Data.Caching.Foundation;
 using System.Reflection;
-using Composite.Core.Extensions;
 using Composite.Core.Linq;
 using Composite.Data.Foundation;
 
@@ -78,9 +77,9 @@ namespace Composite.Data.Caching
             }
         }
 
-        private static IEnumerable<T> WrapData<T>(IEnumerable<T> input) where T : class, IData
+        private static IEnumerable<TData> WrapData<TData>(IEnumerable<TData> input) where TData : class, IData
         {
-            return input.Select(DataWrappingFacade.Wrap<T>);
+            return input.Select(DataWrappingFacade.Wrap<TData>);
         }
 
         public CachingQueryable(DataCachingFacade.CachedTable cachedTable, Func<IQueryable> originalQueryGetter)

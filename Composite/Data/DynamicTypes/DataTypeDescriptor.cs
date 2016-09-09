@@ -753,7 +753,7 @@ namespace Composite.Data.DynamicTypes
 
             if (versionKeyPropertyNamesElement != null)
             {
-                foreach (XElement elm in keyPropertyNamesElement.Elements("VersionKeyPropertyName"))
+                foreach (XElement elm in versionKeyPropertyNamesElement.Elements("VersionKeyPropertyName"))
                 {
                     var propertyName = elm.GetRequiredAttributeValue("name");
 

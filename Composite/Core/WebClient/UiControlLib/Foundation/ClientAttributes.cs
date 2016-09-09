@@ -3,6 +3,7 @@ using System.Web.UI;
 
 namespace Composite.Core.WebClient.UiControlLib.Foundation
 {
+    /// <exclude />
 	public static class ClientAttributes
 	{
         internal static void WriteClientAttributes(this WebControl uiControl, HtmlTextWriter writer)
@@ -31,6 +32,7 @@ namespace Composite.Core.WebClient.UiControlLib.Foundation
             }
         }
 
+        /// <exclude />
         public static void CopyClientAttributesTo(this UserControl uiControl, WebControl targetControl)
         {
             foreach (string attributeName in uiControl.Attributes.Keys)
