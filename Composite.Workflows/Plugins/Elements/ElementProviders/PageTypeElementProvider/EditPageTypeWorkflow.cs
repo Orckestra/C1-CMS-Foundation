@@ -73,7 +73,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTypeElementProvider
             Func<PageTypeHomepageRelation, KeyValuePair<string, string> > getOption =
                 relation =>
                     new KeyValuePair<string, string>(
-                        relation.ToPageTypeHomepageRelationString(),
+                        relation.ToString(),
                         GetText($"PageType.EditPageTypeWorkflow.HomepageRelationKeySelector.{relation}Label"));
 
             this.Bindings.Add("HomepageRelationOptions", new List<KeyValuePair<string, string>> {
@@ -88,14 +88,14 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTypeElementProvider
                 OrderBy(f => f.Title).
                 ToList(f => new KeyValuePair<Guid, string>(f.Id, f.Title));
 
-            var defaultPageTempatesOptions = new List<KeyValuePair<Guid, string>>
+            var defaultPageTemplateOptions = new List<KeyValuePair<Guid, string>>
             {
                 new KeyValuePair<Guid, string>(Guid.Empty,
                     Texts.PageType_EditPageTypeWorkflow_DefaultPageTemplateKeySelector_NoneSelectedLabel)
             };
-            defaultPageTempatesOptions.AddRange(pageTemplates);
+            defaultPageTemplateOptions.AddRange(pageTemplates);
 
-            this.Bindings.Add("DefaultTemplateOptions", defaultPageTempatesOptions);
+            this.Bindings.Add("DefaultTemplateOptions", defaultPageTemplateOptions);
 
 
             this.Bindings.Add("TemplateRestrictionOptions", pageTemplates);
@@ -180,7 +180,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTypeElementProvider
                 return;
             }
 
-            if ((pageType.HomepageRelation == PageTypeHomepageRelation.OnlyHomePages.ToPageTypeHomepageRelationString()) && (selectedPageTypeParentRestrictions.Count > 0))
+            if (pageType.HomepageRelation == nameof(PageTypeHomepageRelation.OnlyHomePages) 
+                && selectedPageTypeParentRestrictions.Count > 0)
             {
                 this.ShowFieldMessage("PageType.HomepageRelation", Texts.PageType_EditPageTypeWorkflow_ValidationError_HomepageRelationConflictsWithParentRestrictions);
                 SetSaveStatus(false);
