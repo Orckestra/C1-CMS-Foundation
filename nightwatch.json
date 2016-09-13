@@ -36,7 +36,10 @@
         "browserName": "chrome",
         "loggingPrefs": { "browser": "ALL" } ,
         "javascriptEnabled": true,
-        "acceptSslCerts": true
+        "acceptSslCerts": true,
+        "chromeOptions" : {
+          "args" : ["--no-sandbox"]
+        } 
       }
     },
 
