@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Text;
-using System.Xml.Linq;
 using Composite.C1Console.Elements;
 using Composite.C1Console.Security;
 using Composite.C1Console.Workflow;
-using Composite.Core.IO;
 using Composite.Core.Serialization;
-using Composite.Core.Xml;
 
 
 namespace Composite.C1Console.Trees
@@ -24,7 +21,7 @@ namespace Composite.C1Console.Trees
         /// <exclude />
         protected override void OnAddAction(Action<ElementAction> actionAdder, EntityToken entityToken, TreeNodeDynamicContext dynamicContext, DynamicValuesHelperReplaceContext dynamicValuesHelperReplaceContext)
         {
-            StringBuilder payload = new StringBuilder();
+            var payload = new StringBuilder();
             this.Serialize(payload);
 
             StringConversionServices.SerializeKeyValuePair(payload, "_IconResourceName_", Icon.ResourceName);
@@ -47,29 +44,14 @@ namespace Composite.C1Console.Trees
         /// <exclude />
         protected override void OnInitialize()
         {
-            if ((this.OwnerNode is DataElementsTreeNode) == false)
+            if (!(this.OwnerNode is DataElementsTreeNode))
             {
                 AddValidationError("TreeValidationError.GenericEditDataAction.OwnerIsNotDataNode");
             }
 
-            if (string.IsNullOrEmpty(this.CustomFormMarkupPath) == false)
+            if (!string.IsNullOrEmpty(this.CustomFormMarkupPath))
             {
-                try
-                {
-                    string path = PathUtil.Resolve(this.CustomFormMarkupPath);
-                    if (C1File.Exists(path) == false)
-                    {
-                        AddValidationError("TreeValidationError.GenericEditDataAction.MissingMarkupFile", path);
-                    }
-
-                    XDocument document = XDocumentUtils.Load(path);
-
-                    this.CustomFormMarkupPath = path;
-                }
-                catch
-                {
-                    AddValidationError("TreeValidationError.GenericEditDataAction.BadMarkupPath", this.CustomFormMarkupPath);
-                }
+                this.CustomFormMarkupPath = LoadAndValidateCustomFormMarkupPath(CustomFormMarkupPath);
             }
         }
 
@@ -78,7 +60,7 @@ namespace Composite.C1Console.Trees
         /// <exclude />
         public override string ToString()
         {
-            return string.Format("GenericEditDataActionNode, Label = {0}", this.Label);
+            return $"GenericEditDataActionNode, Label = {this.Label}";
         }
     }
 }

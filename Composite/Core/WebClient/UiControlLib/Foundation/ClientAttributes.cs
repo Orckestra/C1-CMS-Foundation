@@ -40,7 +40,6 @@ namespace Composite.Core.WebClient.UiControlLib.Foundation
                 string attributeNameLower = attributeName.ToLowerInvariant();
                 if (attributeNameLower.StartsWith("client_"))
                 {
-                    string clientAttributeName = attributeNameLower.Substring("client_".Length);
                     targetControl.Attributes[attributeName] = uiControl.Attributes[attributeName];
                 }
             }
