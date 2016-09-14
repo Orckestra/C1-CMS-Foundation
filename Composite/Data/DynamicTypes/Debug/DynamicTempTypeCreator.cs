@@ -90,6 +90,12 @@ namespace Composite.Data.ExtendedDataType.Debug
                 new DataFieldDescriptor(Guid.NewGuid(), "MyStringField", StoreFieldType.String(64), typeof(string))
                 {
                     Position = 10,
+                    IsNullable = true,
+                    DataUrlProfile = new DataUrlProfile()
+                    {
+                        Format = DataUrlSegmentFormat.DateTime_Year,
+                        Order = 1
+                    },
                     FormRenderingProfile = new DataFieldFormRenderingProfile
                     {
                         Label = "MyStringField",
