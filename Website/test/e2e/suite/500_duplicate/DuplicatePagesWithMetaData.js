@@ -1,0 +1,51 @@
+module.exports = {
+	'@tags': ['Duplicate'],
+	beforeEach: function (browser) {
+		browser.url(browser.launchUrl + '/Composite/top.aspx');
+		var content = browser.page.content();
+		content
+			.prepare("Content");
+	},
+	'can duplicate simple page with Metadata attached': function (browser) {
+		browser
+		.selectPerspective("Data")
+		.selectTreeNodeAction("Page Metatypes", "Add Metatype")
+		.selectDocumentTab("New Page Metatype")
+		.setFieldValue("Title", "Human title")
+		.setFieldValue("Type namespace", "newNamespace")
+		.setFieldValue("Type name", "myTypeName")
+		.selectContentTab("Fields")
+		.clickLabel("Add New")
+		.clickSave()
+		.closeDocumentTab("New Page Metatype")
+		
+		.selectPerspective("Content")
+		.openTreeNode("Venus Starter Site")
+		.selectTreeNodeAction("Getting Started","Add Metadata Field")
+		.selectDialog("Add Metadata Field")
+		.clickDialogButton("Next")
+		.clickDialogButton("Next")
+		.setFieldValue("NewField", "newTextValue")
+		.clickDialogButton("Finish")
+		
+		.selectTreeNodeAction("Getting Started","Duplicate Page")
+		.selectTreeNodeAction("Copy of Getting Started","Edit Page")
+		.selectContentTab("Metadata")
+		.assertFieldValue("Human title","NewField","newTextValue")
+		.closeDocumentTab("Copy of Getting Started")
+					
+	},
+	afterEach: function (browser, done) {
+		browser
+		.selectPerspective("Content")
+		.selectTreeNodeAction("Getting Started","Remove Metadata Field")
+		.clickDialogButton("OK")
+		.selectTreeNodeAction("Copy of Getting Started","Delete")
+		.clickDialogButton("OK")
+		.selectPerspective("Data")
+		.selectTreeNodeAction("newNamespace.myTypeName","Delete")
+		.clickDialogButton("OK")
+		done();
+	}
+}
+
