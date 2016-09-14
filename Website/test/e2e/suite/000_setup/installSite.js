@@ -17,7 +17,7 @@ module.exports = {
 	beforeEach: function (browser) {
     // 1  Launch an uninitialized website.
 		browser
-      .url(browser.launchUrl + '/Composite/top.aspx?mode=develop')
+      .url(browser.launchUrl + '/Composite/top.aspx')
       .waitForElementVisible('.welcomepage', 10000);
 	},
 	'install Venus starter site': function (browser) {

@@ -1,8 +1,8 @@
 const PERSPECTIVES = [
 	'Content',
 	'Media',
-	'Datas',
-	'Design',
+	'Data',
+	'Layout',
 	'Functions',
 	'System'
 ]
@@ -14,7 +14,7 @@ module.exports = {
 		app.prepare().enter();
 
 		PERSPECTIVES.forEach((perspective, index) => {
-			var buttonSelector = 'explorertoolbarbutton[data-qa="' + perspective + '"]';
+			var buttonSelector = 'explorertoolbarbutton[label="' + perspective + '"]';
 			var stageSelector = 'stagedeck[data-qa="perspective' + perspective + '"]';
 			browser
 				.pause(1000)
