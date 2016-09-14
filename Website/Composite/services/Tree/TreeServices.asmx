@@ -189,9 +189,12 @@ namespace Composite.Services
                     elementBundles.Add(elementBundle);
                 }
 
-                foreach (var element in GetPublishControlledDescendants(child.ElementHandle))
+                if (child.VisualData.HasChildren)
                 {
-                    yield return element;
+                    foreach (var element in GetPublishControlledDescendants(child.ElementHandle))
+                    {
+                        yield return element;
+                    }
                 }
             }
         }

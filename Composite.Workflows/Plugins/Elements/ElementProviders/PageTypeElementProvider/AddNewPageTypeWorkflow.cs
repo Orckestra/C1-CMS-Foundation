@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using Composite.Data.Types;
 using Composite.Data;
 using System.Workflow.Activities;
@@ -24,7 +23,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTypeElementProvider
             pageType.Id = Guid.NewGuid();
             pageType.Available = true;
             pageType.PresetMenuTitle = true;
-            pageType.HomepageRelation = PageTypeHomepageRelation.NoRestriction.ToPageTypeHomepageRelationString();
+            pageType.HomepageRelation = nameof(PageTypeHomepageRelation.NoRestriction);
             pageType.DefaultTemplateId = Guid.Empty;
             pageType.DefaultChildPageType = Guid.Empty;
 
