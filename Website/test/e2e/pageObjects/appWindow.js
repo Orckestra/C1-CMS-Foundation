@@ -19,6 +19,7 @@ module.exports = {
 			enter: function () {
 				this
 					.topFrame()
+					.waitForElementPresent('@appFrame', 1000)
 					.enterFrame('@appFrame');
 				return this;
 			}

@@ -12,36 +12,59 @@ module.exports = {
 	commands: [
 		{
 			enter: function () {
-				this
-					.waitForElementVisible('@editorFrame', 3000)
-					.waitForFrameLoad('@editorFrame', 3000)
-					.enterFrame('@editorFrame')
-					.waitForFrameLoad('iframe[src^="tinymce.aspx"]', 10000) // Potentially v. slow
-					.enterFrame('iframe[src^="tinymce.aspx"]')
-					.waitForFrameLoad('#editor_ifr', 3000)
-					.enterFrame('#editor_ifr')
+				this.client.api
+					.useXpath()
+					.selectFrameWithXpath('//*[@data-id="editor"]').useCss()
+					
 				return this;
 			},
 			changeElementContent: function (selector, newContent) {
-				// Enter frame with editor content
 				this
 					.enter()
-					// Check that it is editable
 					.assert.attributeEquals('body', 'contenteditable', 'true')
-					// Check that it has content
 					.section.editorBody
 					.assert.visible(selector)
-					// Change header
 					.replaceContent(selector, newContent)
 				return this;
 			},
-			save: function () {
-                this.selectFrame('#savebutton');
-				this.expect.element('#savebutton').to.not.have.attribute('isdisabled');
-				this.click('#savebutton > labelbox');
-				this.api.pause(1000)
-				this.expect.element('#savebutton').to.have.attribute('isdisabled');
-				return this;
+			selcetActionOnContent: function (number, action) {
+			this
+					.enter()
+					.assert.attributeEquals('body', 'contenteditable', 'true')
+					.client.api.useXpath()
+					.waitForElementVisible('//*[@id="tinymce"]/*['+number+']',3000)
+					.moveToElement('//*[@id="tinymce"]/*['+number+']',null,null)
+					.mouseButtonClick('right')
+					.selectFrameWithXpath('//*[local-name() = "menuitem"]//*[local-name() = "labelbox"]')
+					.waitForElementVisible('//*[local-name() = "menuitem"]//*[local-name() = "labelbox"][@label="'+action+'"]',3000)
+					.click('//*[local-name() = "menuitem"]//*[local-name() = "labelbox"][@label="'+action+'"]').useCss()
+					return this;
+			},
+			selectEditOnContent: function (number) {
+			this
+					.enter()
+					.assert.attributeEquals('body', 'contenteditable', 'true')
+					.client.api.useXpath()
+					.waitForElementVisible('//*[@id="tinymce"]/*['+number+']',3000)
+					.moveToElement('//*[@id="tinymce"]/*['+number+']',null,null)
+					.doubleClick()
+					return this;
+			},
+			acceptChanges: function (){
+				this
+					.enter()
+					.client.api.useXpath()
+					.selectFrameWithXpath('//*[@response="accept"]')
+					.click('//*[@response="accept"]').useCss();
+					return this;
+			},
+			acceptFunctionEdit: function (){
+				this
+					.enter()
+					.client.api.useXpath()
+					.selectFrameWithXpath('//*[@callbackid="buttonAccept"]')
+					.click('//*[@callbackid="buttonAccept"]').useCss();
+					return this;
 			}
 		}
 	],

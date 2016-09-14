@@ -17,18 +17,30 @@ module.exports = {
 	],
 	commands: [
 		{
-			enter: function () {
+			enter: function (perspective) {
+				if(perspective==null){
+					perspective = "Content"; // for backward compatibility
+				}
 				this.api.page.appWindow()
 					.enter()
-					.click('#explorer explorertoolbarbutton[data-qa="Content"]')
-					.waitForFrameLoad('#stagedecks stagedeck[data-qa="perspectiveContent"] iframe', 1000)
-					.enterFrame('#stagedecks stagedeck[data-qa="perspectiveContent"] iframe');
+					.waitForElementNotPresent('dialogcover[display="block"]', 1000)
+					.assert.elementPresent('#explorer explorertoolbarbutton[label="'+perspective+'"]')
+					.api.pause(200)
+					.click('#explorer explorertoolbarbutton[label="'+perspective+'"]')
+					.waitForFrameLoad('#stagedecks stagedeck[data-qa*="'+perspective+'"] iframe', 10000)
+					.enterFrame('#stagedecks stagedeck[data-qa*="'+perspective+'"] iframe');
 				return this;
 			},
-			prepare: function () {
+			enterActivePerspective: function () {
+				this.api.page.appWindow()
+					.enter()
+					.enterFrame('#stagedecks stagedeck[selected="true"] iframe');					
+				return this;
+			},
+			prepare: function (perspective) {
 				this.api.page.appWindow().prepare();
 				this
-					.enter()
+					.enter(perspective)
 					.waitForElementVisible('@browserFrame', 2000)
 					.waitForFrameLoad('@browserFrame', 1000);
 				return this;
@@ -41,7 +53,7 @@ module.exports = {
 					.enterFrame('view:nth-of-type(' + index + ') window iframe')
 				return this;
 			},
-			assertBrowserContains: function (selector, value) {
+			_assertBrowserContains: function (selector, value) {
 				this
 					.enter()
 					.enterFrame('@browserFrame')
@@ -49,6 +61,16 @@ module.exports = {
 					.waitForFrameLoad('#browsertabbox iframe', 1000)
 					.enterFrame('#browsertabbox iframe')
 					.assert.containsText(selector, value);
+				return this;
+			},
+			_assertBrowserContainsAttribute: function (selector,attribiute, value) {
+				this
+					.enter()
+					.enterFrame('@browserFrame')
+					.waitForElementVisible('#browsertabbox iframe', 1000)
+					.waitForFrameLoad('#browsertabbox iframe', 1000)
+					.enterFrame('#browsertabbox iframe')
+					.assert.attributeContains(selector,attribiute, value)
 				return this;
 			},
 			assertBrowserUrl: function (url) {
