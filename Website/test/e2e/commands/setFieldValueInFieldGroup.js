@@ -4,7 +4,7 @@ function SetValueByLabelFieldGroup() {
   events.EventEmitter.call(this);
 }
 
-SetValueByLabelFieldGroup.prototype.command = function (dialogLabel,fieldLabel,vlaue,inputType) {
+SetValueByLabelFieldGroup.prototype.command = function (dialogLabel,fieldLabel,value,inputType) {
 	if(inputType == null){
 		inputType = "input";
 	}
@@ -17,7 +17,8 @@ SetValueByLabelFieldGroup.prototype.command = function (dialogLabel,fieldLabel,v
         .useXpath()
 		.click('//*[local-name() = "fielddesc"][text()="'+fieldLabel+'"]/parent::*//*[local-name() = "'+inputType+'"]')
         .clearValue('//*[local-name() = "fielddesc"][text()="'+fieldLabel+'"]/parent::*//*[local-name() = "'+inputType+'"]')
-		.setValue('//*[local-name() = "fielddesc"][text()="'+fieldLabel+'"]/parent::*//*[local-name() = "'+inputType+'"]', vlaue).useCss();
+		.setValue('//*[local-name() = "fielddesc"][text()="'+fieldLabel+'"]/parent::*//*[local-name() = "'+inputType+'"]', value)
+		.assertFieldValue(dialogLabel,fieldLabel,value,inputType)
     return this.client.api;
 };
 

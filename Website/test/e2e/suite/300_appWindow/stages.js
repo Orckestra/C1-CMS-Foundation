@@ -19,7 +19,7 @@ module.exports = {
 			browser
 				.pause(1000)
 				.click(buttonSelector)
-				.waitForElementVisible(stageSelector, 2000);
+				.waitForElementVisible(stageSelector, 5000);
 		});
 	}
 };

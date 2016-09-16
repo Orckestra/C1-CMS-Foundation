@@ -16,12 +16,13 @@ module.exports = {
 		.clickSave()
 		.closeDocumentTab("Getting Started")
 		.assertBrowserContains('div.content-column > h1', 'Moving forward')
-	},
-	afterEach: function (browser, done) {
+		
 		browser
 		.selectPerspective("Content")
 		.selectTreeNodeAction("Getting Started","Undo Changes")
 		.selectTreeNodeAction("Getting Started","Publish")
+	},
+	afterEach: function (browser, done) {
 		done();
 	}
 }

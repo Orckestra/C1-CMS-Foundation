@@ -63,6 +63,17 @@ module.exports = {
 					.assert.containsText(selector, value);
 				return this;
 			},
+			_assertBrowserContainsWithXpath: function (selector) {
+				this
+					.enter()
+					.enterFrame('@browserFrame')
+					.waitForElementVisible('#browsertabbox iframe', 1000)
+					.waitForFrameLoad('#browsertabbox iframe', 1000)
+					.enterFrame('#browsertabbox iframe')
+					.useXpath()
+					.assert.elementPresent(selector);
+				return this;
+			},
 			_assertBrowserContainsAttribute: function (selector,attribiute, value) {
 				this
 					.enter()
