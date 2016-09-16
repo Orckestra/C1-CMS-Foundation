@@ -26,12 +26,12 @@ module.exports = {
 		.assertBrowserContains('div.jumbotron-content > h1 > em', 'Jupiter')
 		.assertBrowserContainsAttribute('div.jumbotron', 'style', 'Botanical_Garden__Photographer_Ty_Stange.jpg')
 		
-	},
-	afterEach: function (browser, done) {
 		browser
 		.selectPerspective("Content")
 		.selectTreeNodeAction("Venus Starter Site","Undo Changes")
 		.selectTreeNodeAction("Venus Starter Site","Publish")
+	},
+	afterEach: function (browser, done) {
 		done();
 	}
 }

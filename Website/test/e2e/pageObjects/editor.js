@@ -13,6 +13,7 @@ module.exports = {
 		{
 			enter: function () {
 				this.client.api
+					.pause(400)
 					.useXpath()
 					.selectFrameWithXpath('//*[@data-id="editor"]').useCss()
 					
@@ -48,6 +49,8 @@ module.exports = {
 					.waitForElementVisible('//*[@id="tinymce"]/*['+number+']',3000)
 					.moveToElement('//*[@id="tinymce"]/*['+number+']',null,null)
 					.doubleClick()
+					.useXpath()
+					.pause(400)
 					return this;
 			},
 			acceptChanges: function (){

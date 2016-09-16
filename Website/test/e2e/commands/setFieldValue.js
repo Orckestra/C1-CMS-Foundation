@@ -4,7 +4,7 @@ function SetValueByLabel() {
   events.EventEmitter.call(this);
 }
 
-SetValueByLabel.prototype.command = function (fieldLabel,vlaue,inputType) {
+SetValueByLabel.prototype.command = function (fieldLabel,value,inputType) {
 	if(inputType == null){
 		inputType = "input";
 	}
@@ -12,11 +12,12 @@ SetValueByLabel.prototype.command = function (fieldLabel,vlaue,inputType) {
     this.client.api.selectFrameWithXpath('//*[local-name() = "fielddesc"][text()="'+fieldLabel+'"]');
     
     this.client.api
-        .useXpath()
+		.useXpath()
 		.click('//*[local-name() = "fielddesc"][text()="'+fieldLabel+'"]/parent::*//*[local-name() = "'+inputType+'"]')
         .clearValue('//*[local-name() = "fielddesc"][text()="'+fieldLabel+'"]/parent::*//*[local-name() = "'+inputType+'"]')
-		.setValue('//*[local-name() = "fielddesc"][text()="'+fieldLabel+'"]/parent::*//*[local-name() = "'+inputType+'"]', vlaue).useCss();
-    return this.client.api;
+		.setValue('//*[local-name() = "fielddesc"][text()="'+fieldLabel+'"]/parent::*//*[local-name() = "'+inputType+'"]', value)
+		.assertFieldValue(null,fieldLabel,value,inputType)
+	return this.client.api;
 };
 
 module.exports = SetValueByLabel;
