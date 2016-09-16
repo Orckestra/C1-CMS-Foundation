@@ -33,9 +33,7 @@ module.exports = {
 		.selectContentTab("Metadata")
 		.assertFieldValue("Human title","NewField","newTextValue")
 		.closeDocumentTab("Copy of Getting Started")
-					
-	},
-	afterEach: function (browser, done) {
+		
 		browser
 		.selectPerspective("Content")
 		.selectTreeNodeAction("Getting Started","Remove Metadata Field")
@@ -45,6 +43,10 @@ module.exports = {
 		.selectPerspective("Data")
 		.selectTreeNodeAction("newNamespace.myTypeName","Delete")
 		.clickDialogButton("OK")
+		
+					
+	},
+	afterEach: function (browser, done) {
 		done();
 	}
 }

@@ -25,8 +25,6 @@ module.exports = {
 		.selectTreeNodeAction("About this blog","Duplicate Blog Entry")
 		.assertTreeNodeHasChild("2014 June","Copy of About this blog")
 		
-	},
-	afterEach: function (browser, done) {
 		browser
 		.selectPerspective("Content")
 		.selectTreeNodeAction("Copy of About this blog","Delete Blog Entry")
@@ -36,6 +34,9 @@ module.exports = {
 		.replaceTextInCodeMirror('<DuplicateDataAction Label="Duplicate Blog Entry" />','<EditDataAction Label="Edit Blog Entry" />')
 		.clickSave()
 		.closeDocumentTab("Composite.Community.Blog.Entries.xml")
+		
+	},
+	afterEach: function (browser, done) {
 		done();
 	}
 }

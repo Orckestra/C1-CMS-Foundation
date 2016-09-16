@@ -15,12 +15,12 @@ module.exports = {
 		.assertTreeNodeHasChild('Websites', 'Venus Starter Site')
 		.assertTreeNodeHasChild('Venus Starter Site', 'Copy of Getting Started');
 		
-	},
-	afterEach: function (browser, done) {
 		browser
 		.selectPerspective("Content")
 		.selectTreeNodeAction("Copy of Getting Started","Delete")
 		.clickDialogButton("OK")
+	},
+	afterEach: function (browser, done) {
 		done();
 	}
 }

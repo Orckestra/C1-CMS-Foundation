@@ -24,12 +24,13 @@ module.exports = {
 		.assertTreeNodeHasChild('Copy of Blog', 'Blog Entries')
 		.openTreeNode('Copy of Blog','Blog Entries')
 		.assertTreeNodeIsEmpty('Copy of Blog','Blog Entries')
-	},
-	afterEach: function (browser, done) {
+		
 		browser
 		.selectPerspective("Content")
 		.selectTreeNodeAction("Copy of Blog","Delete")
 		.clickDialogButton("OK")
+	},
+	afterEach: function (browser, done) {
 		done();
 	}
 }

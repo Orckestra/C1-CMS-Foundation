@@ -20,13 +20,15 @@ module.exports = {
 		.assertTreeNodeHasChild('Copy of Venus Starter Site', 'Top links')
 		.openTreeNode('Copy of Venus Starter Site', 'Top links')
 		.assertTreeNodeIsEmpty('Copy of Venus Starter Site', 'Top links')
-				
-	},
-	afterEach: function (browser, done) {
+		
 		browser
 		.selectPerspective("Content")
 		.selectTreeNodeAction("Copy of Venus Starter Site","Delete")
 		.clickDialogButton("OK")
+		
+				
+	},
+	afterEach: function (browser, done) {
 		done();
 	}
 }
