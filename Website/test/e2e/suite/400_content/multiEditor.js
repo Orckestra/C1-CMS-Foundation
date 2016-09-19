@@ -30,6 +30,8 @@ module.exports = {
 		.selectPerspective("Content")
 		.selectTreeNodeAction("Venus Starter Site","Undo Changes")
 		.selectTreeNodeAction("Venus Starter Site","Publish")
+		.assertBrowserContains('div.jumbotron-content > h1 > em', 'Venus')
+		.assertBrowserContainsAttribute('div.jumbotron', 'style', '5.jpg')
 	},
 	afterEach: function (browser, done) {
 		done();
