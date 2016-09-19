@@ -16,6 +16,8 @@ let pageProps = {
 	}
 };
 
+document.title = 'Orckestra CMS: ' + location.hostname;
+
 /*
 App structure:
 
