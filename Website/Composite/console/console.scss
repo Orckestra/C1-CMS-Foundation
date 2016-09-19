@@ -25,7 +25,7 @@ body, input, textarea, select, button {
 }
 
 div.toolbar {
-	padding: 15px 20px;
+	padding: 15px 10px 20px;
 }
 
 svg { // Icons
@@ -57,9 +57,11 @@ button {
 	}
 
 	svg {
+		height: 18px;
+		width: 18px;
 		display: inline-block;
 		padding-right: 10px;
-		vertical-align: -6px;
+		vertical-align: -4px;
 	}
 }
 
@@ -70,6 +72,10 @@ div.toolbar.document-toolbar {
 		border: 1px solid $buttonHighlightColor;
 		background-image: linear-gradient(to bottom, $buttonHighlightColor 0%, $buttonShadingColor 100%);
 		color: white;
+		margin: 0;
+		padding-top: 4px;
+		padding-bottom: 4px;
+		height: 32px;
 	}
 }
 
@@ -91,8 +97,9 @@ fieldset {
 
 	legend {
 		position: absolute;
-		top: -35px;
-		left: 0;
+		top: -36px;
+		left: -1px;
+		padding: 0;
 		background: transparent;
 		color: $fieldsetLegendColor;
 		font-family: 'Roboto Condensed', sans-serif;
@@ -109,7 +116,7 @@ fieldset {
 		display: block;
 		margin: 0;
 		font-weight: normal;
-		padding: 8px 0 5px 5px;
+		padding: 7px 0 5px 5px;
 		color: $fieldLabelColor;
 	}
 
@@ -121,7 +128,7 @@ fieldset {
 		padding: 5px 7px;
 		margin: 2px 1px 7px 2px;
 		background-color: #fff;
-		width: calc(100% - 42px);
+		width: calc(100% - 50px);
 		height: 20px;
 		overflow: hidden;
 
@@ -131,18 +138,22 @@ fieldset {
 
 		&[type="checkbox"] {
 			position: relative;
-			width: 20px;
+			border-radius: 4px;
+			width: 18px;
+			height: 18px;
 			appearance: none;
 
 			&:checked {
+				background-color: $fieldFocusColor;
+
 				&::after {
 					content: "\2713";
 					font-size: 14px;
 					font-weight: bold;
-					color: $fieldFocusColor;
+					color: white;
 					position: absolute;
-					top: -1px;
-					left: 4px;
+					top: -2px;
+					left: 2px;
 				}
 			}
 		}
@@ -157,7 +168,7 @@ fieldset {
 	.Select {
 		vertical-align: middle;
 		display: inline-block;
-		width: calc(100% - 26px);
+		width: calc(100% - 34px);
 		margin: 2px 1px 4px 2px;
 
 		.Select-placeholder {
@@ -252,7 +263,8 @@ fieldset {
 	}
 
 	.helperIcon{
-		position: relative;
+		position: absolute;
+		right: 0;
 
 		&::after {
 			content: "?";
@@ -260,8 +272,8 @@ fieldset {
 			height: 16px;
 			color: white;
 			position: absolute;
-			top: 0px;
-			right: -25px;
+			top: 6px;
+			right: 2px;
 			background: #CDCDCF;
 			border-radius: 8px;
 			font-size: 11px;
@@ -273,14 +285,16 @@ fieldset {
 
 		.helper {
 			position: absolute;
-			top: -12px;
-			left: calc(100% + 25px);
+			top: 2px;
+			left: calc(100% - 2px);
 			width: max-content;
 			background-color: #fff;
 			box-shadow: 0px 0px 12px -1px rgba(204, 204, 204, 0.75);
 			border-radius: 5px;
 			border: 1px solid #ccc;
 			padding: 10px 12px;
+			font-size: 12px;
+			line-height: 15px;
 			visibility: hidden;
 			opacity: 0;
 			transition: opacity 0.2s, visibility 0.2s
