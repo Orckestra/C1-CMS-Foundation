@@ -33,24 +33,24 @@ module.exports = {
 					.enter()
 					.assert.attributeEquals('body', 'contenteditable', 'true')
 					.client.api.useXpath()
-					.waitForElementVisible('//*[@id="tinymce"]/*['+number+']',3000)
+					.waitForElementVisible('//*[@id="tinymce"]/*['+number+']',60000)
 					.moveToElement('//*[@id="tinymce"]/*['+number+']',null,null)
 					.mouseButtonClick('right')
 					.selectFrameWithXpath('//*[local-name() = "menuitem"]//*[local-name() = "labelbox"]')
-					.waitForElementVisible('//*[local-name() = "menuitem"]//*[local-name() = "labelbox"][@label="'+action+'"]',3000)
+					.waitForElementVisible('//*[local-name() = "menuitem"]//*[local-name() = "labelbox"][@label="'+action+'"]',60000)
 					.click('//*[local-name() = "menuitem"]//*[local-name() = "labelbox"][@label="'+action+'"]').useCss()
 					return this;
 			},
 			selectEditOnContent: function (number) {
-			this
+				this
 					.enter()
 					.assert.attributeEquals('body', 'contenteditable', 'true')
 					.client.api.useXpath()
-					.waitForElementVisible('//*[@id="tinymce"]/*['+number+']',3000)
+					.waitForElementVisible('//*[@id="tinymce"]/*['+number+']',60000)
 					.moveToElement('//*[@id="tinymce"]/*['+number+']',null,null)
 					.doubleClick()
-					.useXpath()
-					.pause(400)
+				this.client.api.page.appWindow().enter()
+					.waitForElementPresent('iframe[src="/Composite/content/dialogs/postback/postbackdialog.aspx"]',60000)
 					return this;
 			},
 			acceptChanges: function (){

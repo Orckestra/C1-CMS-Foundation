@@ -5,7 +5,7 @@ function ClickDataBySibiling() {
 }
 
 ClickDataBySibiling.prototype.command = function (vlaue) {
-	this.client.api.selectFrameWithXpath('//*[local-name()="fielddesc"][text()="'+vlaue+'"]/..//*[local-name()="fielddata"]');
+	this.client.api.selectFrameWithXpath('//*[local-name()="fielddesc"][text()="'+vlaue+'"]');
     
     this.client.api
         .useXpath()
