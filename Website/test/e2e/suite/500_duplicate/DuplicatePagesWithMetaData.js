@@ -18,11 +18,11 @@ module.exports = {
 		.clickLabel("Add New")
 		.clickSave()
 		.closeDocumentTab("New Page Metatype")
+		.assertTreeNodeHasChild("Page Metatypes","newNamespace.myTypeName")
 		
 		.selectPerspective("Content")
 		.openTreeNode("Venus Starter Site")
 		.selectTreeNodeAction("Getting Started","Add Metadata Field")
-		.selectDialog("Add Metadata Field")
 		.clickDialogButton("Next")
 		.clickDialogButton("Next")
 		.setFieldValue("NewField", "newTextValue")
