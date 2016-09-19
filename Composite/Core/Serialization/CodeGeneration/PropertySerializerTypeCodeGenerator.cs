@@ -97,6 +97,7 @@ namespace Composite.Core.Serialization.CodeGeneration
             method.Attributes = MemberAttributes.Public | MemberAttributes.Final;
             method.Parameters.Add(new CodeParameterDeclarationExpression(typeof(object), "propertyClass"));
             method.Parameters.Add(new CodeParameterDeclarationExpression(typeof(StringBuilder), "serializedValues"));
+            method.Parameters.Add(new CodeParameterDeclarationExpression(typeof(IEnumerable<string>), "propertyNames"));
 
 
             method.Statements.Add(new CodeVariableDeclarationStatement(
@@ -150,7 +151,7 @@ namespace Composite.Core.Serialization.CodeGeneration
                             )
                         ));
                 }
-
+                
                 Type propertyType;
                 string methodName;
                 if (!property.Item2.IsArray)
@@ -179,7 +180,7 @@ namespace Composite.Core.Serialization.CodeGeneration
                                 new CodePropertyReferenceExpression(
                                     new CodeVariableReferenceExpression("classToSerialize"),
                                     property.Item1
-                                )
+                                ),new CodeVariableReferenceExpression("propertyNames")
                             }
                         )
                     ));

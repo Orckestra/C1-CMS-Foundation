@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
+  <cms:bindings>
+    <cms:binding name="DeleteAllVersions" type="System.Boolean" />
+  </cms:bindings>
+  <cms:layout iconhandle="page-delete-page" label="${Composite.Plugins.PageElementProvider, DeletePageWorkflow.ConfirmAllVersionsDeletion.DialogLabel}">
+		<PlaceHolder>
+			<Text Text="${Composite.Plugins.PageElementProvider, DeletePageWorkflow.ConfirmAllVersionsDeletion.Text}" />
+
+			<BoolSelector 
+				TrueLabel="${Composite.Plugins.PageElementProvider, DeletePageWorkflow.ConfirmAllVersionsDeletion.DeleteAllVersions}" 
+				FalseLabel="${Composite.Plugins.PageElementProvider, DeletePageWorkflow.ConfirmAllVersionsDeletion.DeleteCurrentVersion}" 
+				Label="">
+				<cms:bind source="DeleteAllVersions" />
+			</BoolSelector>
+		</PlaceHolder>
+	</cms:layout>
+</cms:formdefinition>

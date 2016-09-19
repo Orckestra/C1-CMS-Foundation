@@ -64,7 +64,20 @@ namespace Composite.C1Console.Actions.Data
                     return conditionalAction.GetActionToken(data);
                 }
             }
-            
+
+            return ResolveDefault(data, actionIdentifier);
+        }
+
+        /// <summary>
+        /// Resolves a default action of the given type for a given data item
+        /// </summary>
+        /// <param name="data">The data item</param>
+        /// <param name="actionIdentifier">The action identifier</param>
+        /// <returns></returns>
+        public ActionToken ResolveDefault(IData data, ActionIdentifier actionIdentifier)
+        {
+            var interfaces = GetOrderedInterfaces(data.DataSourceId.InterfaceType);
+
             foreach (var type in interfaces)
             {
                 var defaultAction = _defaultActions?.LastOrDefault(f => f.Check(type, data, actionIdentifier));

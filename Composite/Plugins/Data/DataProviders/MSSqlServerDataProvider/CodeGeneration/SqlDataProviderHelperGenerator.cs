@@ -35,28 +35,32 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
 
         public CodeTypeDeclaration CreateClass()
         {
-            CodeTypeDeclaration declaration = new CodeTypeDeclaration(_sqlDataProviderHelperClassName);
+            var declaration = new CodeTypeDeclaration(_sqlDataProviderHelperClassName)
+            {
+                IsClass = true,
+                TypeAttributes = TypeAttributes.Public | TypeAttributes.Sealed
+            };
 
-            declaration.IsClass = true;
-            declaration.TypeAttributes = TypeAttributes.Public | TypeAttributes.Sealed;
             declaration.BaseTypes.Add(typeof(ISqlDataProviderHelper));
 
-            foreach (string keyFieldName in _dataTypeDescriptor.KeyPropertyNames)
+            foreach (string keyFieldName in _dataTypeDescriptor.PhysicalKeyPropertyNames)
             {
                 string fieldName = CreateDataIdPropertyInfoFieldName(keyFieldName);
 
-                CodeMemberField codeField = new CodeMemberField(new CodeTypeReference(typeof(PropertyInfo)), fieldName);
-                codeField.InitExpression =
-                    new CodeMethodInvokeExpression(
+                CodeMemberField codeField = new CodeMemberField(new CodeTypeReference(typeof (PropertyInfo)), fieldName)
+                {
+                    InitExpression = new CodeMethodInvokeExpression(
                         new CodeMethodReferenceExpression(
-                            new CodeTypeReferenceExpression(typeof(IDataExtensions)),
-                            "GetDataPropertyRecursivly"
+                            new CodeTypeReferenceExpression(typeof (IDataExtensions)),
+                            nameof(IDataExtensions.GetDataPropertyRecursively)
                         ),
-                        new CodeExpression[] {
-                                new CodeTypeOfExpression(_entityClassName),
-                                new CodePrimitiveExpression(keyFieldName)
-                            }
-                    );
+                        new CodeExpression[]
+                        {
+                            new CodeTypeOfExpression(_entityClassName),
+                            new CodePrimitiveExpression(keyFieldName)
+                        }
+                    )
+                };
 
                 declaration.Members.Add(codeField);
             }
@@ -133,8 +137,8 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
 
 
             // where body variable
-            CodeExpression currentExpresion = null;
-            foreach (string propertyName in _dataTypeDescriptor.KeyPropertyNames)
+            CodeExpression currentExpression = null;
+            foreach (string propertyName in _dataTypeDescriptor.PhysicalKeyPropertyNames)
             {
                 CodeExpression newExpression = new CodeMethodInvokeExpression(
                     new CodeTypeReferenceExpression(typeof(Expression)),
@@ -164,17 +168,17 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
                     }
                 );
 
-                if (currentExpresion == null)
+                if (currentExpression == null)
                 {
-                    currentExpresion = newExpression;
+                    currentExpression = newExpression;
                 }
                 else
                 {
-                    currentExpresion = new CodeMethodInvokeExpression(
+                    currentExpression = new CodeMethodInvokeExpression(
                             new CodeTypeReferenceExpression(typeof(Expression)),
                             "And",
                             new [] {
-                                currentExpresion,
+                                currentExpression,
                                 newExpression
                             }
                         );
@@ -185,11 +189,11 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
                 new CodeVariableDeclarationStatement(
                     new CodeTypeReference(typeof(Expression)),
                     whereBodyExpressionVariableName,
-                    currentExpresion
+                    currentExpression
                 ));
 
 
-            // where labmda variable
+            // where lambda variable
             codeMethod.Statements.Add(
                 new CodeVariableDeclarationStatement(
                     new CodeTypeReference(typeof(LambdaExpression)),
@@ -429,7 +433,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
 
         private static string CreateDataIdPropertyInfoFieldName(string propertyName)
         {
-            return string.Format("_dataIdEntityPropertyInfo{0}", propertyName);
+            return $"_dataIdEntityPropertyInfo{propertyName}";
         }
     }
 }

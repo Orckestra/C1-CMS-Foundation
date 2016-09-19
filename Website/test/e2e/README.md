@@ -14,6 +14,8 @@ The next step is installing nightwatch itself. This is done by issuing the comma
 
 Finally, navigate to the root directory of your C1 working copy. This will usually be named `C1-CMS`, but you may have named it otherwise when cloning it. In this directory, you can then start the tests by running `nightwatch` from your command line. This will run the whole test suite, starting with installing the Venus starter site.
 
+Nightwatch expects to find the CMS running on localhost, port 8080. You can either change your Visual Studio or WebMatrix/IIS setup to use this port, or edit the `nightwatch.json` configuration file found in the project root. You can edit the line that says `"launch_url" : "http://localhost:8080"` to reflect the URL used.
+
 Due to certain technical limitations, nightwatch must always be run from the working directory, and cannot be run from any subdirectory.
 
 ## Running tests separately

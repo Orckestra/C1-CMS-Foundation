@@ -174,6 +174,7 @@
     <Content Include="Composite\content\branding\start-page-content.inc" />
     <Content Include="Composite\content\branding\start-page-js.inc" />
     <Content Include="Composite\content\forms\Administrative\SetTimeZone_select.xml" />
+    <Content Include="Composite\content\forms\Administrative\DeletePage_ConfirmAllVersionsDeletion.xml" />
     <Content Include="Composite\content\views\browser\deviceoptions.xml">
       <SubType>Designer</SubType>
     </Content>
@@ -323,10 +324,10 @@
     <Compile Include="Composite\content\views\log\log.aspx.designer.cs">
       <DependentUpon>log.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Composite\content\views\publishworkflowstatus\ViewUnpublishedItems.aspx.cs">
+    <Content Include="Composite\content\views\publishworkflowstatus\ViewUnpublishedItems.aspx.cs">
       <DependentUpon>ViewUnpublishedItems.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
-    </Compile>
+    </Content>
     <Compile Include="Composite\content\views\relationshipgraph\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -559,9 +560,10 @@
     <Content Include="Composite\images\welcome\accept-green.svg" />
     <Content Include="Composite\images\welcome\cancel.svg" />
     <Content Include="Composite\localization\Composite.Plugins.TimezoneDisplayNames.en-us.xml" />
-    <Content Include="Composite\localization\Composite.Plugins.TimezoneAbbriviations.en-us.xml" />
+    <Content Include="Composite\localization\Composite.Plugins.TimezoneAbbreviations.en-us.xml" />
     <Content Include="Composite\scripts\source\top\core\ImageProvider.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\branding\BrandSnippetBinding.js" />
+    <Content Include="Composite\scripts\source\top\ui\bindings\buttons\combobutton\SelectorButtonBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\data\radiocheck\CheckTreeBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\data\radiocheck\CheckTreeNodeBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\data\selectors\HierarchicalSelectorBinding.js" />
@@ -569,6 +571,8 @@
     <Content Include="Composite\scripts\source\top\ui\bindings\genericview\AddressBarBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\genericview\GenericViewBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\genericview\PathBinding.js" />
+    <Content Include="Composite\scripts\source\top\ui\bindings\buttons\viewbutton\SlideInButtonBinding.js" />
+    <Content Include="Composite\scripts\source\top\ui\bindings\views\SlideInViewBinding.js" />
     <Content Include="Composite\scripts\source\top\util\LocalStorage.js" />
     <Content Include="Composite\styles\default\fields\fields-base.less" />
     <Content Include="Composite\styles\default\dialogs\dialog-multiselector.less" />

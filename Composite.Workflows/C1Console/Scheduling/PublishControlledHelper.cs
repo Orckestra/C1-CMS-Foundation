@@ -73,53 +73,6 @@ namespace Composite.C1Console.Scheduling
             }
         }
 
-        public static void HandlePublishUnpublishWorkflows(IPage selectedPage, string cultureName, DateTime? publishDate, DateTime? unpublishDate, ref WorkflowInstance publishWorkflowInstance, ref WorkflowInstance unpublishWorkflowInstance)
-        {
-            var existingPublishSchedule = PublishScheduleHelper.GetPublishSchedule(typeof(IPage), selectedPage.Id.ToString(), cultureName);
-            if (existingPublishSchedule != null)
-            {
-                WorkflowFacade.AbortWorkflow(existingPublishSchedule.WorkflowInstanceId);
-
-                DataFacade.Delete(existingPublishSchedule);
-            }
-
-            if (publishDate != null)
-            {
-                publishWorkflowInstance = WorkflowFacade.CreateNewWorkflow(
-                    typeof(PagePublishSchedulerWorkflow), 
-                    new Dictionary<string, object>
-                {
-                    { "Date", publishDate },
-                    { "PageId", selectedPage.Id },
-                    { "LocaleName", cultureName }
-                });
-
-                PublishScheduleHelper.CreatePublishSchedule(typeof(IPage), selectedPage.Id.ToString(), cultureName, publishDate.Value, publishWorkflowInstance);
-            }
-
-            var existingUnpublishSchedule = PublishScheduleHelper.GetUnpublishSchedule(typeof(IPage), selectedPage.Id.ToString(), cultureName);
-            if (existingUnpublishSchedule != null)
-            {
-                WorkflowFacade.AbortWorkflow(existingUnpublishSchedule.WorkflowInstanceId);
-
-                DataFacade.Delete(existingUnpublishSchedule);
-            }
-
-            if (unpublishDate != null)
-            {
-                unpublishWorkflowInstance = WorkflowFacade.CreateNewWorkflow(
-                    typeof(PageUnpublishSchedulerWorkflow), 
-                    new Dictionary<string, object>
-                {
-                    { "Date", unpublishDate },
-                    { "PageId", selectedPage.Id },
-                    { "LocaleName", cultureName }
-                });
-
-                PublishScheduleHelper.CreateUnpublishSchedule(typeof(IPage), selectedPage.Id.ToString(), cultureName, unpublishDate.Value, unpublishWorkflowInstance);
-            }
-        }
-
         public static void ReloadPageElementInConsole(IPage page)
         {
             var parentPageId = PageManager.GetParentId(page.Id);

@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
-using Composite.Core.Collections.Generic;
 using Composite.Core.Types;
 using Composite.Data.Caching.Foundation;
 using System.Reflection;
+using Composite.Core.Extensions;
 using Composite.Core.Linq;
 using Composite.Data.Foundation;
 
@@ -47,6 +47,7 @@ namespace Composite.Data.Caching
     internal interface CachingQueryable_CachedByKey
     {
         IData GetCachedValueByKey(object key);
+        IEnumerable<IData> GetCachedVersionValuesByKey(object key);
     }
 
 
@@ -57,8 +58,9 @@ namespace Composite.Data.Caching
         private readonly CachingEnumerable<T> _wrappedEnumerable;
         private readonly Func<IQueryable> _getQueryFunc;
 
-        private readonly DataCachingFacade.CachedTable _cachedTable;
+        private volatile DataCachingFacade.CachedTable _cachedTable;
         private static readonly MethodInfo _wrappingMethodInfo;
+        private static readonly MethodInfo _listWrappingMethodInfo;
 
         private IEnumerable<T> _innerEnumerable;
 
@@ -69,7 +71,17 @@ namespace Composite.Data.Caching
                 _wrappingMethodInfo = StaticReflection.GetGenericMethodInfo(a => DataWrappingFacade.Wrap((IData) a))
                                                       .MakeGenericMethod(new[] {typeof (T)});
             }
-        } 
+            if (typeof(IData).IsAssignableFrom(typeof(T)))
+            {
+                _listWrappingMethodInfo = StaticReflection.GetGenericMethodInfo(a => WrapData((IEnumerable<IData>)a))
+                                                      .MakeGenericMethod(typeof(T));
+            }
+        }
+
+        private static IEnumerable<T> WrapData<T>(IEnumerable<T> input) where T : class, IData
+        {
+            return input.Select(DataWrappingFacade.Wrap<T>);
+        }
 
         public CachingQueryable(DataCachingFacade.CachedTable cachedTable, Func<IQueryable> originalQueryGetter)
         {
@@ -202,66 +214,104 @@ namespace Composite.Data.Caching
 
         public IData GetCachedValueByKey(object key)
         {
-            if (_cachedTable.RowByKey == null)
+            var filteredData = GetFromCacheFiltered(key);
+            if (filteredData == null) return null;
+
+            var result = filteredData.FirstOrDefault();
+            if (result == null) return null;
+
+            return _wrappingMethodInfo.Invoke(null, new object[] { result }) as IData;
+        }
+
+
+        public IEnumerable<IData> GetCachedVersionValuesByKey(object key)
+        {
+            var result = GetFromCacheFiltered(key);
+            if (result == null) return Enumerable.Empty<IData>();
+
+            return _listWrappingMethodInfo.Invoke(null, new object[] { result }) as IEnumerable<IData>;
+        }
+
+
+        private IEnumerable<T> GetFromCacheFiltered(object key)
+        {
+            var cachedTable = GetRowsByKeyTable();
+            IEnumerable<IData> cachedRows;
+
+            if (!cachedTable.TryGetValue(key, out cachedRows))
             {
-                lock(_cachedTable)
+                return null;
+            }
+
+            IEnumerable<T> filteredData = cachedRows.Cast<T>();
+
+            var filterMethodInfo = StaticReflection.GetGenericMethodInfo(
+                    () => ((DataInterceptor)null).InterceptGetData((IEnumerable<IData>)null))
+                    .MakeGenericMethod(typeof(T));
+
+            foreach (var dataInterceptor in DataFacade.GetDataInterceptors(typeof(T)))
+            {
+                filteredData = (IEnumerable<T>)filterMethodInfo.Invoke(dataInterceptor, new object[] { filteredData });
+            }
+
+            return filteredData;
+        }
+
+
+        Dictionary<object, IEnumerable<IData>> GetRowsByKeyTable()
+        {
+            var cachedTable = GetCachedTable();
+
+            var result = cachedTable.RowsByKey;
+            if (result != null)
+            {
+                return result;
+            }
+
+            lock (cachedTable)
+            {
+                result = cachedTable.RowsByKey;
+                if (result != null)
                 {
-                    if (_cachedTable.RowByKey == null)
+                    return result;
+                }
+
+                PropertyInfo keyPropertyInfo = typeof(T).GetKeyProperties().Single();
+
+                result = BuildEnumerable()
+                    .GroupBy(data => keyPropertyInfo.GetValue(data, null))
+                    .ToDictionary(group => group.Key, group => group.ToArray() as IEnumerable<IData>);
+
+                return cachedTable.RowsByKey = result;
+            }
+        }
+
+
+        private DataCachingFacade.CachedTable GetCachedTable()
+        {
+            if (_cachedTable == null)
+            {
+                lock (this)
+                {
+                    if (_cachedTable == null)
                     {
-                        var table = new Hashtable<object, object>();
-
-                        PropertyInfo keyPropertyInfo = DataAttributeFacade.GetKeyProperties(typeof(T)).Single();
-
-                        IEnumerable<T> enumerable = BuildEnumerable();
-
-                        var emptyIndexCollection = new object[0];
-
-                        foreach(T row in enumerable)
-                        {
-                            object rowKey = keyPropertyInfo.GetValue(row, emptyIndexCollection);
-
-                            table.Add(rowKey, row);
-                        }
-
-                        _cachedTable.RowByKey = table;
+                        _cachedTable = new DataCachingFacade.CachedTable(GetOriginalQuery());
                     }
                 }
             }
 
-            object cachedRow = _cachedTable.RowByKey[key];
-            if (cachedRow == null) return null;
-
-            return _wrappingMethodInfo.Invoke(null, new object[] { cachedRow }) as IData;
+            return _cachedTable;
         }
 
 
-        public Expression Expression
-        {
-            get { return _currentExpression; }
-        }
+        public Expression Expression => _currentExpression;
 
+        public Type ElementType => typeof(T);
 
+        public IQueryProvider Provider => this;
 
-        public Type ElementType
-        {
-            get { return typeof(T); }
-        }
+        public IQueryable Source => _source;
 
-
-
-        public IQueryProvider Provider
-        {
-            get { return this; }
-        }
-
-        public IQueryable Source
-        {
-            get { return _source; }
-        }
-
-        public IQueryable GetOriginalQuery()
-        {
-            return _getQueryFunc();
-        }
+        public IQueryable GetOriginalQuery() => _getQueryFunc();
     }
 }

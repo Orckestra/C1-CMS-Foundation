@@ -13,6 +13,7 @@ using Composite.Core.Types;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
+using Composite.Data.Types;
 using Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Sql;
 
 
@@ -105,7 +106,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
                 ).ToList();
 
             sql.AppendFormat("CREATE TABLE dbo.[{0}]({1});", tableName, string.Join(",", sqlColumns));
-            sql.Append(SetPrimaryKey(tableName, typeDescriptor.KeyPropertyNames, typeDescriptor.PrimaryKeyIsClusteredIndex));
+            sql.Append(SetPrimaryKey(tableName, typeDescriptor.PhysicalKeyPropertyNames, typeDescriptor.PrimaryKeyIsClusteredIndex));
 
             try
             {
@@ -454,7 +455,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
                     };
                 }
 
-                AppendFields(alteredTableName, changeDescriptor.AddedFields, defaultValues);
+                AppendFields(alteredTableName, changeDescriptor, changeDescriptor.AddedFields, defaultValues);
 
                 // Clustered index has to be created first.
                 var createIndexActions = new List<Tuple<bool, Action>>();
@@ -464,7 +465,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
                     bool isClusteredIndex = changeDescriptor.AlteredType.PrimaryKeyIsClusteredIndex;
 
                     createIndexActions.Add(new Tuple<bool, Action>(isClusteredIndex,
-                        () => ExecuteNonQuery(SetPrimaryKey(alteredTableName, changeDescriptor.AlteredType.KeyPropertyNames, isClusteredIndex))
+                        () => ExecuteNonQuery(SetPrimaryKey(alteredTableName, changeDescriptor.AlteredType.PhysicalKeyPropertyNames, isClusteredIndex))
                     ));
                 }
 
@@ -596,7 +597,10 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
 
 
 
-        private void AppendFields(string tableName, IEnumerable<DataFieldDescriptor> addedFieldDescriptions, Dictionary<string, object> defaultValues = null)
+        private void AppendFields(string tableName, 
+            DataTypeChangeDescriptor changeDescriptor,
+            IEnumerable<DataFieldDescriptor> addedFieldDescriptions, 
+            Dictionary<string, object> defaultValues = null)
         {
             foreach (var addedFieldDescriptor in addedFieldDescriptions)
             {
@@ -607,6 +611,34 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
                 }
 
                 CreateColumn(tableName, addedFieldDescriptor, defaultValue);
+
+                // Updating VersionId field
+                if (addedFieldDescriptor.Name == nameof(IVersioned.VersionId)
+                    && changeDescriptor.AlteredType.SuperInterfaces.Contains(typeof (IVersioned)))
+                {
+                    string sourceField;
+
+                    if (changeDescriptor.AlteredType.DataTypeId == typeof (IPage).GetImmutableTypeId())
+                    {
+                        sourceField = nameof(IPage.Id);
+                    }
+                    else
+                    {
+                        sourceField = changeDescriptor.AlteredType.Fields
+                            .Where(f => f.InstanceType == typeof(Guid) 
+                                        && (f.ForeignKeyReferenceTypeName?.Contains(typeof (IPage).FullName) ?? false))
+                            .OrderByDescending(f => f.Name == nameof(IPageData.PageId))
+                            .Select(f => f.Name)
+                            .FirstOrDefault();
+                    }
+
+                    if (sourceField != null)
+                    {
+                        string updateVersionIdCommandText =
+                            $"UPDATE [{tableName}] SET [{nameof(IVersioned.VersionId)}] = [{sourceField}]";
+                        ExecuteNonQuery(updateVersionIdCommandText);
+                    }
+                }
             }
         }
 

@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Linq;
 using Composite.Core.Types;
-using Composite.Data.DynamicTypes;
 
 
 namespace Composite.Data
@@ -112,11 +110,7 @@ namespace Composite.Data
 
 
         /// <exclude />
-        public bool IsNullReferenceValueSet
-        {
-            get { return _isNullReferenceValueSet; }
-        }
-
+        public bool IsNullReferenceValueSet => _isNullReferenceValueSet;
 
 
         /// <exclude />
@@ -181,11 +175,14 @@ namespace Composite.Data
         {
             get
             {
-                lock (_lock)
+                if (_keyPropertyName == null)
                 {
-                    if (_keyPropertyName == null)
+                    lock (_lock)
                     {
-                        _keyPropertyName = DynamicTypeManager.GetDataTypeDescriptor(this.InterfaceType).KeyPropertyNames.Single();
+                        if (_keyPropertyName == null)
+                        {
+                            _keyPropertyName = InterfaceType.GetSingleKeyProperty().Name;
+                        }
                     }
                 }
 

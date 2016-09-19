@@ -29,7 +29,7 @@ namespace Composite.C1Console.Security
 
             foreach (UserPermissionDefinition userPermissionDefinition in userPermissionDefinitions)
             {
-                if (userPermissionDefinition.EntityToken.Equals(entityToken))
+                if (userPermissionDefinition.EntityToken.EqualsWithVersionIgnore(entityToken))
                 {
                     result.AddRange(userPermissionDefinition.PermissionTypes);
                 }
@@ -52,7 +52,7 @@ namespace Composite.C1Console.Security
 
             foreach (UserGroupPermissionDefinition userGroupPermissionDefinition in userGroupPermissionDefinitions)
             {
-                if (userGroupPermissionDefinition.EntityToken.Equals(entityToken))
+                if (userGroupPermissionDefinition.EntityToken.EqualsWithVersionIgnore(entityToken))
                 {
                     result.AddRange(userGroupPermissionDefinition.PermissionTypes);
                 }
@@ -551,7 +551,7 @@ namespace Composite.C1Console.Security
             }
 
             UserPermissionDefinition userPermissionDefinition = userPermissionDefinitions
-                .Where(f => entityToken.Equals(f.EntityToken)).SingleOrDefaultOrException("More then one UserPermissionDefinition for the same entity token");
+                .Where(f => entityToken.EqualsWithVersionIgnore(f.EntityToken)).SingleOrDefaultOrException("More then one UserPermissionDefinition for the same entity token");
 
             var thisPermisstionTypes = new List<PermissionType>();
             if (userPermissionDefinition != null)
@@ -611,7 +611,7 @@ namespace Composite.C1Console.Security
                 return cached;
             }
 
-            IEnumerable<UserGroupPermissionDefinition> selectedUserGroupPermissionDefinitions = userGroupPermissionDefinitions.Where(f => entityToken.Equals(f.EntityToken));
+            IEnumerable<UserGroupPermissionDefinition> selectedUserGroupPermissionDefinitions = userGroupPermissionDefinitions.Where(f => entityToken.EqualsWithVersionIgnore(f.EntityToken));
 
             List<PermissionType> thisPermisstionTypes = new List<PermissionType>();
             foreach (UserGroupPermissionDefinition userGroupPermissionDefinition in selectedUserGroupPermissionDefinitions)
@@ -664,7 +664,7 @@ namespace Composite.C1Console.Security
 
         private static IEnumerable<PermissionType> GetInheritedGroupPermissionsTypesRecursivly(EntityToken entityToken, IEnumerable<UserGroupPermissionDefinition> userGroupPermissionDefinitions, List<EntityToken> visitedParents = null)
         {
-            UserGroupPermissionDefinition selectedUserGroupPermissionDefinition = userGroupPermissionDefinitions.Where(f => entityToken.Equals(f.EntityToken)).SingleOrDefault();
+            UserGroupPermissionDefinition selectedUserGroupPermissionDefinition = userGroupPermissionDefinitions.Where(f => entityToken.EqualsWithVersionIgnore(f.EntityToken)).SingleOrDefault();
             if (selectedUserGroupPermissionDefinition != null)
             {
                 if (selectedUserGroupPermissionDefinition.PermissionTypes.Contains(PermissionType.ClearPermissions) == false)
@@ -728,8 +728,8 @@ namespace Composite.C1Console.Security
             {
                 if (entityTokenPair == null) return false;
 
-                return this.FirstEntityToken.Equals(entityTokenPair.FirstEntityToken) &&
-                       this.SecondEntityToken.Equals(entityTokenPair.SecondEntityToken);
+                return this.FirstEntityToken.EqualsWithVersionIgnore(entityTokenPair.FirstEntityToken) &&
+                       this.SecondEntityToken.EqualsWithVersionIgnore(entityTokenPair.SecondEntityToken);
             }
 
 

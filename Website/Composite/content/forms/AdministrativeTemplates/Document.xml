@@ -21,7 +21,19 @@
   <cms:layout >
     <PlaceHolder>
       <internal:Toolbar>
-        <f:NullCheck>
+
+				<f:NullCheck>
+					<f:NullCheck.CheckValue>
+						<cms:read source="CustomToolbarItems" />
+					</f:NullCheck.CheckValue>
+					<f:NullCheck.WhenNotNull>
+						<f:Replicator>
+							<cms:read source="CustomToolbarItems" />
+						</f:Replicator>
+					</f:NullCheck.WhenNotNull>
+				</f:NullCheck>
+
+				<f:NullCheck>
           <f:NullCheck.CheckValue>
             <cms:read source="SaveEventHandler" />
           </f:NullCheck.CheckValue>
@@ -98,17 +110,6 @@
           </f:NullCheck.CheckValue>
           <f:NullCheck.WhenNotNull>
             <Text>CANCEL EVENTS NOT EXPECTED ON DOCUMENTS</Text>
-          </f:NullCheck.WhenNotNull>
-        </f:NullCheck>
-
-        <f:NullCheck>
-          <f:NullCheck.CheckValue>
-            <cms:read source="CustomToolbarItems" />
-          </f:NullCheck.CheckValue>
-          <f:NullCheck.WhenNotNull>
-            <f:Replicator>
-              <cms:read source="CustomToolbarItems" />
-            </f:Replicator>
           </f:NullCheck.WhenNotNull>
         </f:NullCheck>
 

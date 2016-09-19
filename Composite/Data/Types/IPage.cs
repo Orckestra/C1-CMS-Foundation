@@ -18,17 +18,17 @@ namespace Composite.Data.Types
     [Title("C1 Page")]
     [AutoUpdateble]
     [ImmutableTypeId("{C046F704-D3E4-4b3d-8CB9-77564FB0B9E7}")]
-    [KeyPropertyName("Id")]
+    [KeyPropertyName(nameof(Id))]
     [DataAncestorProvider(typeof(PageDataAncestorProvider))]
     [DataScope(DataScopeIdentifier.PublicName)]
     [DataScope(DataScopeIdentifier.AdministratedName)]
-    [LabelPropertyName("Title")]
+    [LabelPropertyName(nameof(Title))]
     [RelevantToUserType(UserType.Developer)]
     [CachingAttribute(CachingType.Full)]
     [PublishControlledAuxiliary(typeof(PagePublishControlledAuxiliary))]
     [PublishProcessControllerTypeAttribute(typeof(GenericPublishProcessController))]
     [KeyTemplatedXhtmlRenderer(XhtmlRenderingType.Embedable, "<a href='~/page({id})'>{label}</a>")]
-    public interface IPage : IData, IChangeHistory,ICreationHistory, IPublishControlled, ILocalizedControlled
+    public interface IPage : IData, IChangeHistory, ICreationHistory, IPublishControlled, ILocalizedControlled, IVersioned
     {
         /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.Guid)]

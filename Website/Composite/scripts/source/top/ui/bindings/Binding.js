@@ -1273,7 +1273,9 @@ Binding.prototype.getContextMenu = function () {
  * @param {object} arg This can be either a string or an {@link Action}.
  * @return {Action}
  */
-Binding.prototype.dispatchAction = function ( arg ) {
+Binding.prototype.dispatchAction = function (arg) {
+
+	//console.log(arg);
 
 	var action = null;
 	var result = null;

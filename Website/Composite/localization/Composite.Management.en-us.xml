@@ -26,7 +26,7 @@
   <string key="PublishingStatus.awaitingPublication" value="Awaiting Publication" />
   <string key="PublishingStatus.published" value="Published" />
 
-  <string key="Website.Forms.Administrative.EditUserStep1.LabelFieldGroup" value="General settings" />
+	<string key="Website.Forms.Administrative.EditUserStep1.LabelFieldGroup" value="General settings" />
 	<string key="Website.Forms.Administrative.EditUserStep1.UserNameLabel" value="User name" />
 	<string key="Website.Forms.Administrative.EditUserStep1.UserNameHelp" value="User names can not be changed. This is a 'read only' field." />
 	<string key="Website.Forms.Administrative.EditUserStep1.PasswordLabel" value="Password" />
@@ -41,7 +41,7 @@
   <string key="Website.Forms.Administrative.EditUserStep1.CultureLabel" value="Display Preferences" />
 	<string key="Website.Forms.Administrative.EditUserStep1.CultureHelp" value="Display for time, date, and number formats within the console" />
   <string key="Website.Forms.Administrative.EditUserStep1.C1ConsoleLanguageLabel" value="Console Language Preferences" />
-  <string key="Website.Forms.Administrative.EditUserStep1.C1ConsoleLanguageHelp" value="Language displayed within your console for labels, help texts, dialogs, etc. The available options are limited to language packages installed. See Composite.Localization package for more language options." />
+  <string key="Website.Forms.Administrative.EditUserStep1.C1ConsoleLanguageHelp" value="Language displayed within your console for labels, help texts, dialogs, etc. The available options are limited to language packages installed. See Composite.Localization packages for more language options." />
   <string key="Website.Forms.Administrative.EditUserStep1.ActivePerspectiveFieldLabel" value="Perspectives" />
 	<string key="Website.Forms.Administrative.EditUserStep1.ActivePerspectiveMultiSelectLabel" value="Visible perspectives" />
 	<string key="Website.Forms.Administrative.EditUserStep1.ActivePerspectiveMultiSelectHelp" value="Select which perspectives should be visible when the user starts the C1 Console." />
@@ -94,7 +94,7 @@
 	<string key="Website.Forms.Administrative.AddNewUserStep1.CultureLabel" value="Display Preferences" />
 	<string key="Website.Forms.Administrative.AddNewUserStep1.CultureHelp" value="Display for time, date, and number formats within the console" />
   <string key="Website.Forms.Administrative.AddNewUserStep1.C1ConsoleLanguageLabel" value="Console Language Preferences" />
-  <string key="Website.Forms.Administrative.AddNewUserStep1.C1ConsoleLanguageHelp" value="Language displayed within your console for labels, help texts, dialogs, etc. The available options are limited to language packages installed. See Composite.Localization package for more language options." />
+  <string key="Website.Forms.Administrative.AddNewUserStep1.C1ConsoleLanguageHelp" value="Language displayed within your console for labels, help texts, dialogs, etc. The available options are limited to language packages installed. See Composite.Localization packages for more language options." />
   <string key="UserElementProvider.MissingActiveLanguageTitle" value="A language is required" />
 	<string key="UserElementProvider.MissingActiveLanguageMessage" value="To create a user a language is required, but no languages have been added yet. You can add one under the System perspective." />
 	<string key="UserElementProvider.UserLoginIsAlreadyUsed" value="User with the same login already exist" />
@@ -635,6 +635,7 @@
 	<string key="Website.Forms.Administrative.EditMediaFolder.TotalFilenameToLong.Message" value="The folder contains a file where the total length of the filename and the new folder name is too long" />
 	<string key="Website.Forms.Administrative.EditPage.PublishDatePreventPublishTitle" value="Saved, but not published" />
 	<string key="Website.Forms.Administrative.EditPage.PublishDatePreventPublish" value="Your page has been saved, but not published since you have a future publish date set on the 'Settings' tab." />
+
   <string key="Website.Forms.Administrative.ElementKeywordSearch.LabelFieldGroup" value="Search" />
 	<string key="Website.Forms.Administrative.ElementKeywordSearch.LabelKeyword" value="Keyword" />
 	<string key="Website.Forms.Administrative.ElementKeywordSearch.LabelSearchKeyword" value="Write a keyword to search for." />
@@ -663,6 +664,7 @@
 	<string key="Website.Misc.Trees.DialogTitle.PasteTypeNotAllowed" value="Not allowed" />
 	<string key="Website.Misc.Trees.DialogText.PasteTypeNotAllowed" value="Folder won't accept document type." />
 	<string key="Website.Misc.MultiSelector.LabelEditSelections" value="Edit Selections" />
+	<string key="Website.Misc.Toolbar.LabelShowMoreActions" value="More" />
 	<string key="GenericVersionProcessController.Version" value="Version information" />
 	<string key="GenericVersionProcessController.VersionToolTip" value="Show version information" />
 	<string key="AspNetUiControl.Selector.SelectValueLabel" value="Select a value" />
@@ -677,6 +679,20 @@
   <string key="Validation.DateTime.InvalidDateFormat" value="Invalid date string: '{0}'. Use the format '{1}'." />
 	<string key="Validation.Int32.Overflow" value="The specified value is either too big or too small. The acceptable range is from -2,147,483,648 to 2,147,483,647" />
 
-  <string key="Browser.Label" value="Page Browser" />
+	<string key="Validation.Required" value="Required" />
+	<string key="Validation.InvalidField.Number" value="Numbers only" />
+	<string key="Validation.InvalidField.Integer" value="Integers only" />
+	<string key="Validation.InvalidField.ProgrammingIdentifier" value="Invalid identifier" />
+	<string key="Validation.InvalidField.ProgrammingNamespace" value="Invalid namespace" />
+	<string key="Validation.InvalidField.Url" value="Invalid URL" />
+	<string key="Validation.InvalidField.Currency" value="Invalid notation" />
+	<string key="Validation.InvalidField.Email" value="Invalid e-mail" />
+	<string key="Validation.InvalidField.Guid" value="Invalid GUID" />
+	<string key="Validation.StringLength.Min" value="{0} characters minimum" />
+	<string key="Validation.StringLength.Max" value="{0} characters maximum" />
+
+	<string key="Browser.Label" value="Page Browser" />
   <string key="Browser.ToolTip" value="Browse unpublished pages" />
+
+  <string key="DefaultVersionName" value="Original" />
 </strings>

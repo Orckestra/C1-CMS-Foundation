@@ -33,6 +33,10 @@
   <string key="ViewAvailableInformation.TrialInformationLabel" value="Trial information" />
   <string key="ViewAvailableInformation.TrialInformationText" value="This is a commercial package, available for free in the trial period. When the trial period has expired functionality may be degraded, unless you choose to purchase a license." />
   <string key="ViewAvailableInformation.TrialDaysLabel" value="Free trial period (days)" />
+	
+	<string key="ViewAvailableInformation.LicenseInformationGroupLabel" value="License Information" />
+	<string key="ViewAvailableInformation.SubscriptionNameLabel" value="Subscription Name" />
+	<string key="ViewAvailableInformation.LicenseExpirationDateLabel" value="License Expiration Date" />
 
 
   <string key="ViewAvailableInformation.InstallationInfoFieldGroupLabel" value="Installation Info" />
@@ -59,6 +63,10 @@
   <string key="ViewInstalledInformation.TrialInformationLabel" value="Trial information" />
   <string key="ViewInstalledInformation.TrialInformationText" value="This is a commercial package, available for free in the trial period. When the trial period has expired functionality may be degraded, unless you choose to purchase a license." />
   <string key="ViewInstalledInformation.TrialExpireLabel" value="Trial expiration date" />
+	
+	<string key="ViewInstalledInformation.LicenseInformationGroupLabel" value="License Information" />
+	<string key="ViewInstalledInformation.SubscriptionNameLabel" value="Subscription Name" />
+	<string key="ViewInstalledInformation.LicenseExpirationDateLabel" value="License Expiration Date" />
 
   <string key="ViewInstalledInformation.Toolbar.UninstallLabel" value="Uninstall" />
   <string key="ViewInstalledInformation.Toolbar.PurchaseLabel" value="Purchase this!" />

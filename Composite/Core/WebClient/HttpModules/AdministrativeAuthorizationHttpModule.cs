@@ -25,7 +25,7 @@ namespace Composite.Core.WebClient.HttpModules
         private static string _adminRootPath;
         private static string _servicesPath;
         private static string _loginPagePath;
-        private static object _lock = new object();
+        private static readonly object _lock = new object();
         private static bool _allowC1ConsoleRequests;
         private static bool _forceHttps = true;
         private static bool _allowFallbackToHttp = true;
@@ -54,7 +54,7 @@ namespace Composite.Core.WebClient.HttpModules
         {
             _allowC1ConsoleRequests = false;
             string adminRootPath = HostingEnvironment.MapPath(UrlUtils.AdminRootPath);
-            bool adminFolderExists = false;
+            bool adminFolderExists;
 
             try
             {
@@ -62,7 +62,7 @@ namespace Composite.Core.WebClient.HttpModules
             }
             catch (Exception)
             {
-                // we fail misserably here when write permissions are missing, also the default exception is exceptionally crappy
+                // we fail miserably here when write permissions are missing, also the default exception is exceptionally crappy
                 throw new IOException("Please ensure that the web application process has permissions to read and modify the entire web app directory structure.");
             }
 
@@ -83,12 +83,12 @@ namespace Composite.Core.WebClient.HttpModules
 
         public void Init(HttpApplication context)
         {
-            context.AuthenticateRequest += context_AuthenticateRequest;
+            context.AuthorizeRequest += context_AuthorizeRequest;
         }
 
 
 
-        private bool AlwaysAllowUnsecured(string requestPath)
+        private static bool AlwaysAllowUnsecured(string requestPath)
         {
             string fileName = Path.GetFileName(requestPath);
             return fileName.StartsWith("unsecure") ||
@@ -97,12 +97,11 @@ namespace Composite.Core.WebClient.HttpModules
                 fileName == "button.png" ||
                 fileName == "startcomposite.png" ||
                 fileName == "default.css.aspx";
-
         }
 
 
 
-        private void context_AuthenticateRequest(object sender, EventArgs e)
+        private void context_AuthorizeRequest(object sender, EventArgs e)
         {
             var application = (HttpApplication)sender;
             HttpContext context = application.Context;
@@ -124,12 +123,15 @@ namespace Composite.Core.WebClient.HttpModules
                 return;
             }
 
+            var url = context.Request.Url;
+
             // https check
-            if (_forceHttps && context.Request.Url.Scheme != "https")
+            if (_forceHttps && url.Scheme != "https")
             {
-                if (!AlwaysAllowUnsecured(context.Request.Url.LocalPath) && !UserOptedOutOfHttps(context))
+                if (!AlwaysAllowUnsecured(url.LocalPath) && !UserOptedOutOfHttps(context))
                 {
-                    context.Response.Redirect(string.Format("{0}?fallback={1}&httpsport={2}", unsecureRedirectRelativePath, _allowFallbackToHttp.ToString().ToLower(), _customHttpsPortNumber));
+                    context.Response.Redirect(
+                        $"{unsecureRedirectRelativePath}?fallback={_allowFallbackToHttp.ToString().ToLower()}&httpsport={_customHttpsPortNumber}");
                 }
             }
 
@@ -145,7 +147,7 @@ namespace Composite.Core.WebClient.HttpModules
                 }
 
                 Log.LogWarning("Authorization", "DENIED {0} access to {1}", context.Request.UserHostAddress, currentPath);
-                string redirectUrl =$"{_loginPagePath}?ReturnUrl={HttpUtility.UrlEncode(context.Request.Url.PathAndQuery, Encoding.UTF8)}";
+                string redirectUrl =$"{_loginPagePath}?ReturnUrl={HttpUtility.UrlEncode(url.PathAndQuery, Encoding.UTF8)}";
                 context.Response.Redirect(redirectUrl, true);
                 return;
                 
@@ -174,7 +176,7 @@ namespace Composite.Core.WebClient.HttpModules
             }
 
             HttpCookie cookie = context.Request.Cookies["avoidc1consolehttps"];
-            return cookie != null && cookie.Value == "true";
+            return cookie?.Value == "true";
         }
 
 
@@ -244,7 +246,7 @@ namespace Composite.Core.WebClient.HttpModules
 
             if (!C1File.Exists(webauthorizationConfigPath))
             {
-                Log.LogInformation("AdministrativeAuthorizationHttpModule ", "File '{0}' not found - all access to the ~/Composite folder will be blocked", webauthorizationConfigPath);
+                Log.LogInformation(nameof(AdministrativeAuthorizationHttpModule), "File '{0}' not found - all access to the ~/Composite folder will be blocked", webauthorizationConfigPath);
                 return;
             }
 

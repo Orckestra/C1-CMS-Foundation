@@ -3,9 +3,9 @@ using System.Web.UI;
 
 namespace Composite.Core.WebClient.UiControlLib.Foundation
 {
-	internal static class ClientAttributes
+	public static class ClientAttributes
 	{
-        public static void WriteClientAttributes(this WebControl uiControl, HtmlTextWriter writer)
+        internal static void WriteClientAttributes(this WebControl uiControl, HtmlTextWriter writer)
         {
             foreach (string attributeName in uiControl.Attributes.Keys)
             {
@@ -18,8 +18,7 @@ namespace Composite.Core.WebClient.UiControlLib.Foundation
             }
         }
 
-
-        public static void AddClientAttributes(this WebControl uiControl, HtmlTextWriter writer)
+        internal static void AddClientAttributes(this WebControl uiControl, HtmlTextWriter writer)
         {
             foreach (string attributeName in uiControl.Attributes.Keys)
             {
@@ -32,5 +31,17 @@ namespace Composite.Core.WebClient.UiControlLib.Foundation
             }
         }
 
-	}
+        public static void CopyClientAttributesTo(this UserControl uiControl, WebControl targetControl)
+        {
+            foreach (string attributeName in uiControl.Attributes.Keys)
+            {
+                string attributeNameLower = attributeName.ToLowerInvariant();
+                if (attributeNameLower.StartsWith("client_"))
+                {
+                    string clientAttributeName = attributeNameLower.Substring("client_".Length);
+                    targetControl.Attributes[attributeName] = uiControl.Attributes[attributeName];
+                }
+            }
+        }
+    }
 }

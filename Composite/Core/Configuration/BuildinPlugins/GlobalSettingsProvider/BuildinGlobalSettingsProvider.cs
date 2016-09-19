@@ -12,7 +12,7 @@ namespace Composite.Core.Configuration.BuildinPlugins.GlobalSettingsProvider
         private string _applicationShortName = "C1";
         private string _brandedVersionAssemblySource = "Composite";
         private string _configurationDirectory = "~";
-        private string _generatedAssembliesDirectory = "~";
+        private string _generatedAssembliesDirectory = "~/GeneratedAssemblies";
         private string _serializedWorkflowsDirectory = "~";
         private string _appCodeDirectory = "App_Code";
         private string _binDirectory = "~";
@@ -36,28 +36,14 @@ namespace Composite.Core.Configuration.BuildinPlugins.GlobalSettingsProvider
         private bool _functionPreviewEnabled = false;
         private TimeZoneInfo _timezone = TimeZoneInfo.Local;
 
-        public string ApplicationName
-        {
-            get { return _applicationName; }
-        }
+        public string ApplicationName => _applicationName;
 
-        public string ApplicationShortName
-        {
-            get { return _applicationShortName; }
-        }
+        public string ApplicationShortName => _applicationShortName;
 
-        public string BrandedVersionAssemblySource
-        {
-            get { return _brandedVersionAssemblySource; }
-        }
+        public string BrandedVersionAssemblySource => _brandedVersionAssemblySource;
 
 
-        public string DefaultCultureName
-        {
-            get { return Thread.CurrentThread.CurrentCulture.Name; }
-        }
-
-
+        public string DefaultCultureName => Thread.CurrentThread.CurrentCulture.Name;
 
 
         public string ConfigurationDirectory
@@ -70,14 +56,7 @@ namespace Composite.Core.Configuration.BuildinPlugins.GlobalSettingsProvider
 
 
 
-        public string GeneratedAssembliesDirectory
-        {
-            get
-            {
-                return string.Format("{0}/{1}", _generatedAssembliesDirectory, Guid.NewGuid());
-            }
-        }
-
+        public string GeneratedAssembliesDirectory => _generatedAssembliesDirectory;
 
 
         public string SerializedWorkflowsDirectory
@@ -90,183 +69,70 @@ namespace Composite.Core.Configuration.BuildinPlugins.GlobalSettingsProvider
         }
 
 
-        public string AppCodeDirectory
-        {
-            get
-            {
-                return _appCodeDirectory;
-            }
-        }
+        public string AppCodeDirectory => _appCodeDirectory;
 
 
-        public string BinDirectory
-        {
-            get
-            {
-                return _binDirectory;
-            }
-        }
+        public string BinDirectory => _binDirectory;
 
 
-
-        public string TempDirectory
-        {
-            get
-            {
-                return _tempDirectory;
-            }
-        }
+        public string TempDirectory => _tempDirectory;
 
 
-
-        public string CacheDirectory
-        {
-            get { return _cacheDirectory; }
-        }
+        public string CacheDirectory => _cacheDirectory;
 
 
-
-        public string PackageDirectory
-        {
-            get
-            {
-                return _packageDirectory;
-            }
-        }
+        public string PackageDirectory => _packageDirectory;
 
 
-
-        public string AutoPackageInstallDirectory
-        {
-            get
-            {
-                return _autoPackageInstallDirectory;
-            }
-        }
+        public string AutoPackageInstallDirectory => _autoPackageInstallDirectory;
 
 
-
-        public string TreeDefinitionsDirectory
-        {
-            get
-            {
-                return _treeDefinitionsDirectory;
-            }
-        }
+        public string TreeDefinitionsDirectory => _treeDefinitionsDirectory;
 
 
-
-        public string PageTemplateFeaturesDirectory
-        {
-            get
-            {
-                return _pageTemplateFeaturesDirectory;
-            }
-        }
+        public string PageTemplateFeaturesDirectory => _pageTemplateFeaturesDirectory;
 
 
-
-        public string DataMetaDataDirectory
-        {
-            get
-            {
-                return _dataMetaDataDirectory;
-            }
-        }
+        public string DataMetaDataDirectory => _dataMetaDataDirectory;
 
 
-        public string InlineCSharpFunctionDirectory
-        {
-            get 
-            {
-                return _inlineCSharpFunctionDirectory;
-            }
-        }
+        public string InlineCSharpFunctionDirectory => _inlineCSharpFunctionDirectory;
 
 
-        public string PackageLicenseDirectory
-        {
-            get 
-            {
-                return _packageLicenseDirectory;
-            }
-        }        
+        public string PackageLicenseDirectory => _packageLicenseDirectory;
 
 
-        public IResourceCacheSettings ResourceCacheSettings
-        {
-            get { return _resourceCacheSettings; }
-        }
+        public IResourceCacheSettings ResourceCacheSettings => _resourceCacheSettings;
 
 
-
-        public IEnumerable<string> NonProbableAssemblyNames
-        {
-            get { return _nonProbableAssemblyNames; }
-        }
+        public IEnumerable<string> NonProbableAssemblyNames => _nonProbableAssemblyNames;
 
 
-
-        public int ConsoleMessageQueueItemSecondToLive
-        {
-            get { return _consoleMessageQueueSecondToLive; }
-        }
+        public int ConsoleMessageQueueItemSecondToLive => _consoleMessageQueueSecondToLive;
 
 
-        public bool EnableDataTypesAutoUpdate
-        {
-            get { return _enableDataTypesAutoUpdate; }
-        }
+        public bool EnableDataTypesAutoUpdate => _enableDataTypesAutoUpdate;
 
 
-
-        public bool BroadcastConsoleElementChanges
-        {
-            get { return _broadcastConsoleElementChanges; }
-        }
+        public bool BroadcastConsoleElementChanges => _broadcastConsoleElementChanges;
 
 
-        public string AutoCreatedAdministratorUserName
-        {
-            get { return null; }
-        }
+        public string AutoCreatedAdministratorUserName => null;
 
 
-        public string SerializedConsoleMessagesDirectory
-        {
-            get
-            {
-                return string.Format("{0}/{1}", _serializedWorkflowsDirectory, Guid.NewGuid());
-            }
-        }
+        public string SerializedConsoleMessagesDirectory => $"{_serializedWorkflowsDirectory}/{Guid.NewGuid()}";
 
 
-        public string WorkflowTimeout
-        {
-            get { return "7.00:00:00"; }
-        }
+        public string WorkflowTimeout => "7.00:00:00";
 
 
-        public string ConsoleTimeout
-        {
-            get { return "00:01:00"; }
-        }
+        public string ConsoleTimeout => "00:01:00";
 
-        public bool OnlyTranslateWhenApproved { 
-            get { return false; } }
+        public bool OnlyTranslateWhenApproved => false;
 
-        public ICachingSettings Caching
-        {
-            get { return _cachingSettings; }
-        }
+        public ICachingSettings Caching => _cachingSettings;
 
-        public int ImageQuality
-        {
-            get
-            {
-                return 80;
-            }
-        }
+        public int ImageQuality => 80;
 
         public bool PrettifyPublicMarkup => _prettifyPublicMarkup;
 

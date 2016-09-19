@@ -66,35 +66,34 @@ ui|toolbargroup {
 	}
 }
 
-ui|toolbar.btns-group {
-	ui|toolbargroup {
-		border: 1px solid @base-border-color;
-		border-radius: 3px;
-		margin: 4px 5px;
-		padding: 0;
-		overflow: hidden;
+ui|toolbar.btns-group ui|toolbargroup,
+ui|toolbargroup.btns-group {
+	border: 1px solid @base-border-color;
+	border-radius: 3px;
+	margin: 4px 5px;
+	padding: 0;
+	overflow: hidden;
 
-		&:empty {
-			display: none;
+	&:empty {
+		display: none;
+	}
+
+	ui|toolbarbutton {
+		border-color: transparent;
+		margin: 0;
+		border-radius: 0;
+		text-transform: none;
+
+		+ ui|toolbarbutton {
+			border-color: transparent transparent transparent @base-border-color;
 		}
 
-		ui|toolbarbutton {
-			border-color: transparent;
-			margin: 0;
-			border-radius: 0;
-			text-transform: none;
+		ui|labelbox {
+			padding: 5px 9px;
+		}
 
-			+ ui|toolbarbutton {
-				border-color: transparent transparent transparent @base-border-color;
-			}
-
-			ui|labelbox {
-				padding: 5px 9px;
-			}
-
-			ui|labelbody {
-				min-width: 18px;
-			}
+		ui|labelbody {
+			min-width: 18px;
 		}
 	}
 }

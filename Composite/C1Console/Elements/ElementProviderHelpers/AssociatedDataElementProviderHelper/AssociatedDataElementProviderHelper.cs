@@ -311,7 +311,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
 
         public List<Element> GetChildren(AssociatedDataElementProviderHelperEntityToken entityToken, bool includeForeignFolders)
         {
-            IData data = entityToken.GetData();
+            IData data = entityToken.GetDataList().FirstOrDefault();
             Type interfaceType = TypeManager.TryGetType(entityToken.Payload);
 
             if (data == null) return new List<Element>();

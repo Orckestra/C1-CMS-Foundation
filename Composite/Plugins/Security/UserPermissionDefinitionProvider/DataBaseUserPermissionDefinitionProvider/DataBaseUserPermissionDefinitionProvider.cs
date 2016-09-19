@@ -87,7 +87,7 @@ namespace Composite.Plugins.Security.UserPermissionDefinitionProvider.DataBaseUs
                     DataFacade.GetData<IUserPermissionDefinition>()
                               .Where(d => d.Username == username)
                               .ToList()
-                              .Where(d => userPermissionDefinition.EntityToken.Equals(DeserializeSilent(d.SerializedEntityToken)))
+                              .Where(d => userPermissionDefinition.EntityToken.EqualsWithVersionIgnore(DeserializeSilent(d.SerializedEntityToken)))
                               .ToList();
 
                 DataFacade.Delete(existingUserPermissionDefinitions);
@@ -130,7 +130,7 @@ namespace Composite.Plugins.Security.UserPermissionDefinitionProvider.DataBaseUs
                     toDelete = DataFacade.GetData<IUserPermissionDefinition>()
                         .Where(upd => upd.Username == username)
                         .ToList()
-                        .Where(d => entityToken.Equals(DeserializeSilent(d.SerializedEntityToken)))
+                        .Where(d => entityToken.EqualsWithVersionIgnore(DeserializeSilent(d.SerializedEntityToken)))
                         .ToList();
                 }
                 else

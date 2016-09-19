@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Globalization;
+using System.Threading;
 using System.Web;
 using Composite.C1Console.Security;
+using Composite.C1Console.Users;
+using Composite.Core.Configuration;
 
 namespace Composite.Core.WebClient.HttpModules
 {
@@ -9,11 +12,11 @@ namespace Composite.Core.WebClient.HttpModules
     {
         public void Init(HttpApplication context)
         {
-            context.AuthenticateRequest += context_AuthenticateRequest;
+            context.AuthorizeRequest += context_AuthorizeRequest;
         }
 
 
-        void context_AuthenticateRequest(object sender, EventArgs e)
+        void context_AuthorizeRequest(object sender, EventArgs e)
         {
             HttpApplication application = (HttpApplication)sender;
             HttpContext context = application.Context;
@@ -24,13 +27,15 @@ namespace Composite.Core.WebClient.HttpModules
             {
                 if (UserValidationFacade.IsLoggedIn())
                 {
-                    System.Threading.Thread.CurrentThread.CurrentCulture = C1Console.Users.UserSettings.CultureInfo;
-                    System.Threading.Thread.CurrentThread.CurrentUICulture = C1Console.Users.UserSettings.C1ConsoleUiLanguage;
+                    Thread.CurrentThread.CurrentCulture = UserSettings.CultureInfo;
+                    Thread.CurrentThread.CurrentUICulture = UserSettings.C1ConsoleUiLanguage;
                 }
                 else
                 {
-                    System.Threading.Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(Composite.Core.Configuration.GlobalSettingsFacade.DefaultCultureName);
-                    System.Threading.Thread.CurrentThread.CurrentUICulture = CultureInfo.CreateSpecificCulture(Composite.Core.Configuration.GlobalSettingsFacade.DefaultCultureName);
+                    var defaultCulture = CultureInfo.CreateSpecificCulture(GlobalSettingsFacade.DefaultCultureName);
+
+                    Thread.CurrentThread.CurrentCulture = defaultCulture;
+                    Thread.CurrentThread.CurrentUICulture = defaultCulture;
                 }
             }
         }

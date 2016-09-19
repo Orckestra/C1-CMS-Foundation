@@ -14,6 +14,7 @@ DockBinding.ABSBOTTOMLEFT			= "absbottomleft";
 DockBinding.ABSBOTTOMRIGHT			= "absbottomright";
 DockBinding.ABSRIGHTTOP				= "absrighttop";
 DockBinding.ABSRIGHTBOTTOM			= "absrightbottom";
+DockBinding.SLIDE					= "slide";
 
 DockBinding.TYPE_START				= "start";
 DockBinding.TYPE_EXPLORER			= "explorer";

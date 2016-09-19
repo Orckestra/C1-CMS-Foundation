@@ -20,6 +20,7 @@
 			<Directory path="\Composite\images\icons\republic" />
 			<Directory path="\Composite\images\originals" />
       <Directory path="\Composite\transformations\temp" />
+      <Directory path="\test" />
     </Directories>
 		<Files>
 			<File path="\App_Data\Composite\clean.bat" />

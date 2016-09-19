@@ -55,6 +55,10 @@
   <string key="PublicationStatus.Help" value="Send the data to another publication status." />
   <string key="PublishDate.Label" value="Publish date" />
   <string key="PublishDate.Help" value="Specify at which date and time you want the data to be published automatically." />
+  <string key="DateCreated.Label" value="Date Created" />
+  <string key="DateModified.Label" value="Date Modified" />
+  <string key="CreatedBy.Label" value="Author" />
+  <string key="ChangedBy.Label" value="Author" />
   <string key="UnpublishDate.Label" value="Unpublish date" />
   <string key="UnpublishDate.Help" value="Specify at which date and time you want the data to be unpublished automatically." />
   <string key="AddNewInterfaceTypeStep1.DocumentTitle" value="New Datatype" />

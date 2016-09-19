@@ -4,8 +4,6 @@ using System.Collections.Generic;
 
 namespace Composite.Core.PackageSystem
 {
-    /// <summary>    
-    /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [SerializerHandler(typeof(PropertySerializerHandler))]
@@ -82,6 +80,8 @@ namespace Composite.Core.PackageSystem
     /// <exclude />
     public sealed class Subscription
     {
+        /// <exclude />
+        public Guid Id { get; set; }
         /// <exclude />
         public string Name { get; set; }
         /// <exclude />

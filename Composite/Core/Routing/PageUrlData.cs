@@ -26,6 +26,7 @@ namespace Composite.Core.Routing
             Verify.ArgumentNotNull(page, "page");
 
             PageId = page.Id;
+            VersionId = page.VersionId;
             this.PublicationScope = page.DataSourceId.PublicationScope;
             this.LocalizationScope = page.DataSourceId.LocaleScope;
         }
@@ -52,6 +53,14 @@ namespace Composite.Core.Routing
         /// The page id.
         /// </value>
         public Guid PageId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the page version id.
+        /// </summary>
+        /// <value>
+        /// The page id.
+        /// </value>
+        public Guid? VersionId { get; set; }
 
 
         /// <summary>

@@ -116,7 +116,7 @@ namespace Composite.Core.WebClient.Renderings
         public IEnumerable<IPagePlaceholderContent> GetPagePlaceholderContents()
         {
             return PreviewMode ? (IEnumerable<IPagePlaceholderContent>)HttpRuntime.Cache.Get(_previewKey + "_SelectedContents")
-                               : PageManager.GetPlaceholderContent(PageRenderer.CurrentPage.Id);
+                               : PageManager.GetPlaceholderContent(Page.Id, Page.VersionId);
         }
 
 

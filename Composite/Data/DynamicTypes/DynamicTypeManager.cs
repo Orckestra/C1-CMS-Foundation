@@ -47,9 +47,9 @@ namespace Composite.Data.DynamicTypes
         {
             DataTypeDescriptor dataTypeDescriptor;
 
-            if (TryGetDataTypeDescriptor(typeToDescript.GetImmutableTypeId(), out dataTypeDescriptor) == false)
+            if (!TryGetDataTypeDescriptor(typeToDescript.GetImmutableTypeId(), out dataTypeDescriptor))
             {
-                dataTypeDescriptor = BuildNewDataTypeDescriptor(typeToDescript); ;
+                dataTypeDescriptor = BuildNewDataTypeDescriptor(typeToDescript);
             }
 
             return dataTypeDescriptor;
@@ -59,10 +59,10 @@ namespace Composite.Data.DynamicTypes
 
         // Overload
         /// <exclude />
-        public static DataTypeDescriptor GetDataTypeDescriptor(Guid immuteableTypeId)
+        public static DataTypeDescriptor GetDataTypeDescriptor(Guid immutableTypeId)
         {
             DataTypeDescriptor dataTypeDescriptor;
-            TryGetDataTypeDescriptor(immuteableTypeId, out dataTypeDescriptor);
+            TryGetDataTypeDescriptor(immutableTypeId, out dataTypeDescriptor);
 
             return dataTypeDescriptor;
         }
@@ -79,9 +79,9 @@ namespace Composite.Data.DynamicTypes
 
 
         /// <exclude />
-        public static bool TryGetDataTypeDescriptor(Guid immuteableTypeId, out DataTypeDescriptor dataTypeDescriptor)
+        public static bool TryGetDataTypeDescriptor(Guid immutableTypeId, out DataTypeDescriptor dataTypeDescriptor)
         {
-            return _dynamicTypeManager.TryGetDataTypeDescriptor(immuteableTypeId, out dataTypeDescriptor);
+            return _dynamicTypeManager.TryGetDataTypeDescriptor(immutableTypeId, out dataTypeDescriptor);
         }
 
 
@@ -259,17 +259,11 @@ namespace Composite.Data.DynamicTypes
         // Helper
         public static void EnsureCreateStore(Type interfaceType, string providerName)
         {
-            DataTypeDescriptor dataTypeDescriptor;
-            if (!TryGetDataTypeDescriptor(interfaceType, out dataTypeDescriptor))
-            {
-                dataTypeDescriptor = BuildNewDataTypeDescriptor(interfaceType);
-            }
-
             IEnumerable<string> dynamicProviderNames;
 
             if (providerName == null)
             {
-                // Checking if any of exising dynamic data providers already has a store for the specified interface type
+                // Checking if any of existing dynamic data providers already has a store for the specified interface type
                 providerName = DataProviderRegistry.DefaultDynamicTypeDataProviderName;
                 dynamicProviderNames = DataProviderRegistry.DynamicDataProviderNames;
             }
@@ -285,6 +279,8 @@ namespace Composite.Data.DynamicTypes
             {
                 return;
             }
+
+            var dataTypeDescriptor = BuildNewDataTypeDescriptor(interfaceType);
 
             CreateStore(providerName, dataTypeDescriptor, true);
             CodeGenerationManager.GenerateCompositeGeneratedAssembly(true);

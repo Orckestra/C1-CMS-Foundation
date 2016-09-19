@@ -36,12 +36,12 @@ namespace Composite.Data.Types
         /// <exclude />
         public static PageTypeHomepageRelation GetPageTypeHomepageRelation(this string value)
         {
-            if (string.IsNullOrEmpty(value)) throw new ArgumentNullException("value");
+            if (string.IsNullOrEmpty(value)) throw new ArgumentNullException(nameof(value));
 
             PageTypeHomepageRelation result;
-            if (Enum.TryParse<PageTypeHomepageRelation>(value, out result) == false)
+            if (!Enum.TryParse<PageTypeHomepageRelation>(value, out result))
             {
-                throw new ArgumentException(string.Format("The argument is wrongly formattet"));
+                throw new ArgumentException("The argument is wrongly formatted");
             }
 
             return result;
@@ -50,6 +50,7 @@ namespace Composite.Data.Types
 
 
         /// <exclude />
+        [Obsolete("Use nameof() keyword instead", true)]
         public static string ToPageTypeHomepageRelationString(this PageTypeHomepageRelation pageTypeHomepageRelation)
         {
             return pageTypeHomepageRelation.ToString();
@@ -59,7 +60,7 @@ namespace Composite.Data.Types
 
 
 
-    /// <summary>    
+    /// <summary>
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
@@ -68,47 +69,37 @@ namespace Composite.Data.Types
         /// <exclude />
         public static IEnumerable<IPageType> GetChildPageSelectablePageTypes(this IPage parentPage, IPage childPage = null)
         {
+            var pageTypes = DataFacade.GetData<IPageType>().AsEnumerable()
+                .Where(pt => pt.Available);
+
+            pageTypes = pageTypes.OrderBy(f => f.Name);
+
             if (parentPage == null)
             {
-                return
-                    DataFacade.GetData<IPageType>().
-                    Where(f => f.Available && f.HomepageRelation != PageTypeHomepageRelation.OnlySubPages.ToString()).
-                    OrderBy(f => f.Name).
-                    Evaluate();
+                return pageTypes
+                    .Where(f => f.HomepageRelation != nameof(PageTypeHomepageRelation.OnlySubPages))
+                    .Evaluate();
             }
 
-            IEnumerable<IPageType> pageTypes;
-            if (childPage == null)
-            {
-                pageTypes =
-                    DataFacade.GetData<IPageType>().
-                        Where(f => f.Available && f.HomepageRelation != PageTypeHomepageRelation.OnlyHomePages.ToString()).
-                        OrderBy(f => f.Name).
-                        Evaluate();
-            }
-            else
-            {
-                pageTypes =
-                    DataFacade.GetData<IPageType>().
-                        Where(f => 
-                            f.Available && 
-                            (f.HomepageRelation != PageTypeHomepageRelation.OnlyHomePages.ToString() || f.Id == childPage.PageTypeId)).
-                        OrderBy(f => f.Name).
-                        Evaluate();
-            }
+            pageTypes = pageTypes
+                        .Where(f => f.HomepageRelation != nameof(PageTypeHomepageRelation.OnlyHomePages)
+                                    && (childPage == null || f.Id == childPage.PageTypeId))
+                        .Evaluate();
+
+            ICollection<IPageTypeParentRestriction> parentRestrictions = null;
 
             var result = new List<IPageType>();
             foreach (IPageType pageType in pageTypes)
             {
                 if (childPage != null && pageType.Id == childPage.PageTypeId)
                 {
-                    result.Add(pageType); 
+                    result.Add(pageType);
                     continue;
                 }
 
-                var parentRestrictions = DataFacade.GetData<IPageTypeParentRestriction>()
-                    .Where(f => f.PageTypeId == pageType.Id)
-                    .ToList();
+                parentRestrictions = parentRestrictions ??
+                    DataFacade.GetData<IPageTypeParentRestriction>().AsEnumerable()
+                        .Where(f => f.PageTypeId == pageType.Id).ToList();
 
                 if (parentRestrictions.Count == 0 || parentRestrictions.Any(f => f.AllowedParentPageTypeId == parentPage.PageTypeId))
                 {
@@ -122,7 +113,7 @@ namespace Composite.Data.Types
 
 
 
-    /// <summary>    
+    /// <summary>
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
@@ -149,7 +140,7 @@ namespace Composite.Data.Types
 
         /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.LargeString)]
-        [ImmutableFieldId("{CCAA5F15-63E4-42BF-8CDA-3AD0407520A7}")]        
+        [ImmutableFieldId("{CCAA5F15-63E4-42BF-8CDA-3AD0407520A7}")]
         string Description { get; set; }
 
 

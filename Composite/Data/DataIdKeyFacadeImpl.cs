@@ -21,10 +21,7 @@ namespace Composite.Data
             }
 
 
-            Func<Type, PropertyInfo> valueFactory = f =>
-            {
-                return f.GetProperty(keyName);
-            };
+            Func<Type, PropertyInfo> valueFactory = f => f.GetProperty(keyName);
 
             PropertyInfo keyPropertyInfo = _keyPropertyInfoCache.GetOrAdd(dataId.GetType(), valueFactory);
 

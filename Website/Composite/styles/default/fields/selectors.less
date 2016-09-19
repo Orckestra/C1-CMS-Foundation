@@ -1,3 +1,43 @@
+.arrow-base() {
+	content: "";
+	position: absolute;
+	width: 0;
+	height: 0;
+	border-style: solid;
+}
+
+.arrow-down() {
+	&:before {
+		.arrow-base();
+		top: 12px;
+		right: 10px;
+		border-width: 5px 5px 0 5px;
+		border-color: @btn-border-color transparent transparent transparent;
+	}
+
+	&:after {
+		.arrow-base();
+		top: 12px;
+		right: 11px;
+		border-width: 4px 4px 0 4px;
+		border-color: @btn-bg-color transparent transparent transparent;
+	}
+}
+
+.arrow-up() {
+	&:before {
+		top: 12px;
+		border-width: 0px 5px 5px 5px;
+		border-color: transparent transparent @btn-hover-border-color transparent;
+	}
+
+	&:after {
+		top: 13px;
+		border-width: 0px 4px 4px 4px;
+		border-color: transparent transparent @btn-hover-bg-color transparent;
+	}
+}
+
 
 ui|selection,
 ui|selector input {
@@ -17,27 +57,7 @@ ui|selector {
 			text-transform: none;
 			color: @btn-toolbar-color;
 
-			&:before, &:after {
-				content: "";
-				position: absolute;
-				width: 0;
-				height: 0;
-				border-style: solid;
-			}
-
-			&:before {
-				top: 12px;
-				right: 10px;
-				border-width: 5px 5px 0 5px;
-				border-color: @btn-border-color transparent transparent transparent;
-			}
-
-			&:after {
-				top: 12px;
-				right: 11px;
-				border-width: 4px 4px 0 4px;
-				border-color: @btn-bg-color transparent transparent transparent;
-			}
+			.arrow-down();
 		}
 
 		&.hover {
@@ -52,22 +72,28 @@ ui|selector {
 		}
 
 		&.active {
-			>ui|labelbox:before {
-				top: 12px;
-				border-width: 0px 5px 5px 5px;
-				border-color: transparent transparent @btn-hover-border-color transparent;
-			}
-
-			>ui|labelbox:after {
-				top: 13px;
-				border-width: 0px 4px 4px 4px;
-				border-color: transparent transparent @btn-hover-bg-color transparent;
+			>ui|labelbox{
+				.arrow-up();
 			}
 		}
 
 		&.infobox {
 			ui|clickbutton ui|labeltext {
 				font-style: italic;
+			}
+		}
+	}
+
+	&[single='true'] {
+		ui|clickbutton {
+
+			> ui|labelbox{
+				text-transform: uppercase;
+
+				&:before,
+				&:after {
+					display:none;
+				}
 			}
 		}
 	}
@@ -153,6 +179,22 @@ ui|datainputselector {
 			position: absolute;
 			left: 8px;
 			top: 8px;
+		}
+	}
+
+	ui|toolbarbutton[image='popup'] {
+		ui|labelbox {
+			ui|labelbody {
+				visibility: hidden;
+			}
+
+			.arrow-down();
+		}
+
+		&[ischecked='true']{
+			ui|labelbox {
+				.arrow-up();
+			}
 		}
 	}
 }

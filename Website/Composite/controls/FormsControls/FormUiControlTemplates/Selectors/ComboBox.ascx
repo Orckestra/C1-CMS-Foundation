@@ -1,9 +1,11 @@
 <%@ Control Language="C#" Inherits="Composite.Plugins.Forms.WebChannel.UiControlFactories.SelectorTemplateUserControlBase"  %>
 <%@ Import Namespace="System.Linq" %>
+<%@ Import Namespace="System.Security.Policy" %>
+<%@ Import Namespace="Composite.Core.WebClient.UiControlLib.Foundation" %>
 
 <script runat="server">
 
-    protected override void BindStateToProperties()
+    public override void BindStateToProperties()
     {
         this.SelectedKeys = new List<string> { clientSelector.SelectedValue };
     }
@@ -11,6 +13,8 @@
 
     protected override void OnLoad(EventArgs e)
     {
+        this.CopyClientAttributesTo(clientSelector);
+
         base.OnLoad(e);
 
         if (this.SelectedIndexChangedEventHandler != null)
@@ -21,7 +25,7 @@
     }
 
 
-    protected override void InitializeViewState()
+    public override void InitializeViewState()
     {
         List<KeyLabelPair> options = this.GetOptions();
 
@@ -29,16 +33,14 @@
         clientSelector.DataTextField = "Label";
         clientSelector.DataValueField = "Key";
         clientSelector.DataBind();
-        
+
         string key = this.SelectedKeys.FirstOrDefault();
         if (key != null)
         {
             clientSelector.SelectedValue = key;
         }
-        else
-        {
-            clientSelector.SelectionRequired = this.Required;
-        }
+
+        clientSelector.SelectionRequired = this.Required;
     }
 
 

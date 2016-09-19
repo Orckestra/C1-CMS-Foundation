@@ -31,21 +31,24 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 List<IData> administrativeCompositions = administrativePage.GetMetaData(DataScopeIdentifier.Administrated).ToList();
                 List<IData> publicCompositions = publicPage.GetMetaData(DataScopeIdentifier.Public).ToList();
 
+                Guid pageId = administrativePage.Id;
+                Guid versionId = administrativePage.Id;
+
                 List<IPagePlaceholderContent> administrativePlaceholders;
-                using (DataScope dataScope = new DataScope(DataScopeIdentifier.Administrated))
+                using (new DataScope(DataScopeIdentifier.Administrated))
                 {
                     administrativePlaceholders =
                         (from ph in DataFacade.GetData<IPagePlaceholderContent>()
-                         where ph.PageId == administrativePage.Id
+                         where ph.PageId == pageId && ph.VersionId == versionId
                          select ph).ToList();
                 }
 
                 List<IPagePlaceholderContent> publicPlaceholders;
-                using (DataScope dataScope = new DataScope(DataScopeIdentifier.Public))
+                using (new DataScope(DataScopeIdentifier.Public))
                 {
                     publicPlaceholders =
                         (from ph in DataFacade.GetData<IPagePlaceholderContent>()
-                         where ph.PageId == publicPage.Id
+                         where ph.PageId == pageId && ph.VersionId == versionId
                          select ph).ToList();
                 }
 

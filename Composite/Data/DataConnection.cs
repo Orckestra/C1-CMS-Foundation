@@ -25,9 +25,37 @@ namespace Composite.Data
     public class DataConnection : ImplementationContainer<DataConnectionImplementation>, IDisposable
     {
         //private ImplementationContainer<PageDataConnection> _pageDataConnection;
-        private ImplementationContainer<SitemapNavigator> _sitemapNavigator;
+        private readonly ImplementationContainer<SitemapNavigator> _sitemapNavigator;
 
+        private bool _disposed;
 
+        
+        /// <summary>
+        /// Resolve service of a specific type that is attached to connection's data scope
+        /// </summary>
+        /// <param name="t"></param>
+        /// <returns></returns>
+        public object GetService(Type t)
+        {
+            return ImplementationFactory.CurrentFactory.ResolveService(t);
+        }
+
+        /// <summary>
+        /// attach service to data connection
+        /// </summary>
+        /// <param name="service"></param>
+        public void AddService(object service)
+        {
+            Implementation.DataScope.AddService(service);
+        }
+
+        /// <summary>
+        /// disable all services in the data connection
+        /// </summary>
+        public void DisableServices()
+        {
+            Implementation.DataScope.DisableServices();
+        }
 
         /// <summary>
         /// Creates a new <see cref="DataConnection"/> instance inheriting the <see cref="Composite.Data.PublicationScope"/>
@@ -503,12 +531,18 @@ namespace Composite.Data
         /// <exclude />
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing)
+            if (!disposing) return;
+
+            if (_disposed)
             {
-                this.DisposeImplementation();
-                //_pageDataConnection.Implementation.DisposeImplementation();
-                _sitemapNavigator.Implementation.DisposeImplementation();
+                throw new ObjectDisposedException(nameof(DataConnection));
             }
+
+            this.DisposeImplementation();
+            
+            _sitemapNavigator.Implementation.DisposeImplementation();
+
+            _disposed = true;
         }
     }
 }

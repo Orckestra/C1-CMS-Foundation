@@ -14,7 +14,9 @@ BrowserPageBinding.VIEWMODE_LOCALSTORAGE_KEY = "COMPOSITE_BROWSERPAGEBINDING_VIE
 BrowserPageBinding.VIEW_MODES = Object.freeze({
 	Unpublic: 1,
 	Public: 2
-})
+});
+
+BrowserPageBinding.BUNDLE_CLASSNAME = "bundleselector";
 
 
 /**
@@ -138,6 +140,27 @@ BrowserPageBinding.prototype.handleBroadcast = function (broadcast, arg) {
 		case BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED:
 			if (arg.syncHandle == this.getSyncHandle() && !(arg.source instanceof GenericViewBinding) && arg.actionProfile) {
 				var self = this;
+
+				var bundleselector = this.getBundleSelector();
+				//TODO move this
+
+				var treenode = this.getSystemTree().getFocusedTreeNodeBindings().getFirst();
+				if (treenode.node.isMultiple()) {
+					var list = new List();
+					treenode.node.getDatas().each(function(data) {
+						list.add(new SelectorBindingSelection(data.BundleElementName ? data.BundleElementName : data.Label, data.EntityToken, data.EntityToken === treenode.node.getEntityToken()));
+					});
+					bundleselector.populateFromList(list);
+					bundleselector.show();
+				} else {
+					bundleselector.hide();
+				}
+
+				this.bindingWindow.bindingMap.navbar.flex();
+
+				//TODO end move this
+
+
 				//IE Require timeout for first time
 				setTimeout(function () {
 					self.push(arg.actionProfile.Node, true);
@@ -166,10 +189,10 @@ BrowserPageBinding.prototype.handleBroadcast = function (broadcast, arg) {
  */
 BrowserPageBinding.prototype.refreshView = function () {
 
-	var selectedTreeNode = this.getSystemTree().getFocusedTreeNodeBindings().getFirst();
-	if (selectedTreeNode) {
-		selectedTreeNode.focus();
-		this.push(selectedTreeNode.node, true, true);
+	var treenode = this.getSystemTree().getFocusedTreeNodeBindings().getFirst();
+	if (treenode) {
+		treenode.focus();
+		this.push(treenode.node, true, true);
 	} else {
 		this.push(this.getSystemPage().node, false, true);
 	}
@@ -1208,6 +1231,38 @@ BrowserPageBinding.prototype.newState = function () {
 BrowserPageBinding.prototype.getState = function () {
 
 	return this._stateKey;
+}
+
+
+BrowserPageBinding.prototype.getBundleSelector = function () {
+
+	if (!this.shadowTree.bundleselector) {
+		var addressrightgroup = this.bindingWindow.bindingMap.addressrightgroup;
+		var selector = SelectorBinding.newInstance(this.bindingDocument);
+		selector.setProperty("textonly", true);
+		addressrightgroup.bindingElement.insertBefore(selector.bindingElement, addressrightgroup.bindingElement.firstChild);
+		selector.attach();
+		selector.attachClassName(BrowserPageBinding.BUNDLE_CLASSNAME);
+		this.shadowTree.bundleselector = selector;
+
+		selector.addActionListener(SelectorBinding.ACTION_SELECTIONCHANGED, {
+			handleAction: (function (action) {
+				var binding = action.target;
+
+				switch (action.type) {
+					case SelectorBinding.ACTION_SELECTIONCHANGED:
+						if (selector === binding) {
+							var entityToken = binding.getValue();
+							this.getSystemTree()._focusTreeNodeByEntityToken(entityToken);
+						}
+						break;
+				}
+			}).bind(this)
+		});
+
+	}
+
+	return this.shadowTree.bundleselector;
 }
 
 

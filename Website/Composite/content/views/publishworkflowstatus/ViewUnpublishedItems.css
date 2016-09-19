@@ -29,11 +29,6 @@ a {
 	cursor: pointer;
 }
 
-.table.noversion th.version,
-.table.noversion td.version {
-	display: none;
-}
-
 .table ui|clickbutton.sortbutton ui|labelbox {
 	border: inherit;
 	color: inherit;

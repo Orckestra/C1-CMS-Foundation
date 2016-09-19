@@ -20,7 +20,7 @@ namespace Composite.C1Console.Forms.Flows
 
         public bool HasFieldMessages
         {
-            get { return (_bindingPathedMessages != null && _bindingPathedMessages.Count > 0); }
+            get { return _bindingPathedMessages != null && _bindingPathedMessages.Count > 0; }
         }
 
 
@@ -38,10 +38,7 @@ namespace Composite.C1Console.Forms.Flows
         }
 
 
-        internal Dictionary<string, string> BindingPathedMessages
-        {
-            get { return _bindingPathedMessages; }
-        }
+        public Dictionary<string, string> BindingPathedMessages => _bindingPathedMessages;
 
 
         public void ShowFieldMessage(string fieldBindingPath, string message)

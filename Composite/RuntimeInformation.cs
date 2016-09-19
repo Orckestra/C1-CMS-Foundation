@@ -64,9 +64,11 @@ namespace Composite
         {
             get
             {
-                string applicationName = AppDomain.CurrentDomain.SetupInformation.ApplicationName;
+                var domain = AppDomain.CurrentDomain;
+                string applicationName = domain.SetupInformation.ApplicationName;
 
-                return applicationName == null || applicationName == "vstesthost.exe";
+                return domain.FriendlyName.StartsWith("NUnit ")
+                    || applicationName == null || applicationName == "vstesthost.exe";
             }
         }
 

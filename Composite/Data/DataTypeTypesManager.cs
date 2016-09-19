@@ -163,7 +163,10 @@ namespace Composite.Data
                     }
                 }
 
-                result[dataTypeDescriptor.DataTypeId] = type;
+                if (type != null)
+                {
+                    result[dataTypeDescriptor.DataTypeId] = type;
+                }
             }
 
             if (toCompile.Any())

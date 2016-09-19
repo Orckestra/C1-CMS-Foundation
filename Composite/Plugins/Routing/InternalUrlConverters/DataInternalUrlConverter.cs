@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using Composite.Core.Routing;
 using Composite.Core.Types;
@@ -10,7 +9,6 @@ namespace Composite.Plugins.Routing.InternalUrlConverters
 {
     class DataInternalUrlConverter: IInternalUrlConverter
     {
-        private readonly IEnumerable<string> _urlPrefixes;
         private readonly Type _type;
         private readonly Type _keyType;
         private readonly ConstructorInfo _dataReferenceConstructor;
@@ -18,18 +16,15 @@ namespace Composite.Plugins.Routing.InternalUrlConverters
 
         public DataInternalUrlConverter(string shortTypeName, Type type)
         {
-            _urlPrefixes = new[] { shortTypeName + "(" };
+            AcceptedUrlPrefixes = new[] { shortTypeName + "(" };
             _type = type;
-            _keyType = _type.GetKeyProperties().Single().PropertyType;
+            _keyType = _type.GetSingleKeyProperty().PropertyType;
 
             _dataReferenceConstructor = typeof(DataReference<>).MakeGenericType(_type).GetConstructor(new[] { typeof(object) });
         }
 
 
-        public IEnumerable<string> AcceptedUrlPrefixes
-        {
-            get { return _urlPrefixes; }
-        }
+        public IEnumerable<string> AcceptedUrlPrefixes { get; }
 
 
         public string ToPublicUrl(string internalDataUrl, UrlSpace urlSpace)

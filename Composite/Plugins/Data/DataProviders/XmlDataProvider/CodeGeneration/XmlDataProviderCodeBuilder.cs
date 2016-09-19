@@ -46,7 +46,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
             // Property serializer for entity tokens and more
             var keyPropertiesDictionary = new Dictionary<string, Type>();
             var keyPropertiesList = new List<Tuple<string, Type>>();
-            foreach (var keyField in dataTypeDescriptor.KeyFields)
+            foreach (var keyField in dataTypeDescriptor.PhysicalKeyFields)
             {
                 Verify.That(!keyPropertiesDictionary.ContainsKey(keyField.Name), "Key field with name '{0}' already present. Data type: {1}. Check for multiple [KeyPropertyName(...)] attributes.", keyField.Name, dataTypeDescriptor.Namespace + "." + dataTypeDescriptor.Name);
 
