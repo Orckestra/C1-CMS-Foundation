@@ -8,7 +8,7 @@ module.exports = {
 				.enter(perspective)
 				.enterFrame('@browserFrame');
 			this
-				.waitForFrameLoad('@systemFrame', 1000)
+				.waitForFrameLoad('@systemFrame', 10000)
 				.enterFrame('@systemFrame');
 			return this;
 		},
@@ -17,7 +17,7 @@ module.exports = {
 				.enterActivePerspective()
 				.enterFrame('@browserFrame');
 			this
-				.waitForFrameLoad('@systemFrame', 1000)
+				.waitForFrameLoad('@systemFrame', 10000)
 				.enterFrame('@systemFrame');
 			return this;
 		},
@@ -27,7 +27,7 @@ module.exports = {
 				selector += 'treenode[label="' + childLabel + '"] > ';
 			}
 			selector += 'labelbox';
-			this.api.waitForElementPresent(selector,1000)
+			this.api.waitForElementPresent(selector,10000)
 			this.doubleClickSelector(selector);
 			this.api.pause(300);
 			return this;
@@ -38,7 +38,7 @@ module.exports = {
 				selector += 'treenode[label="' + childLabel + '"] > ';
 			}
 			selector +='labelbox';
-			this.api.waitForElementPresent(selector,1000)
+			this.api.waitForElementPresent(selector,10000)
 			this.click(selector);
 			return this;
 		},
@@ -48,7 +48,7 @@ module.exports = {
 				selector += 'treenode[label="' + childLabel + '"] > ';
 			}
 			selector +='labelbox';
-			this.api.waitForElementPresent(selector,1000)
+			this.api.waitForElementPresent(selector,10000)
 			this.rightClickSelector(selector);
 			return this;
 		},

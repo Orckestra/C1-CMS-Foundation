@@ -29,11 +29,12 @@
       "silent": true,
 	  "end_session_on_fail": true,
       "skip_testcases_on_fail": false,
+	  "exclude" : ["Website/test/e2e/suite/000_setup/InstalSQLPackage.js"],
 	  "globals": {
 		"connectionString": ""
 	  },
       "screenshots" : {
-        "enabled" : false,
+        "enabled" : true,
 		"on_failure" : true,
 		"on_error" : true,
         "path" : "Website/test/e2e/screenshots"
@@ -49,8 +50,8 @@
       }
     },
 	
-	"noSetup": {
-		"exclude" : ["Website/test/e2e/suite/000_setup"]
+	"sql": {
+		"exclude" : ["Website/test/e2e/suite/000_setup/installSite.js"]
 	},
 	
     "firefox" : {
