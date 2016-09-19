@@ -6,7 +6,8 @@
     "coverage": "npm run unit:cov",
     "unit:test": "jspm run test/unit/runner.js",
     "unit:cov": "jspm run test/unit/coverage.js",
-    "watch": "chokidar-socket-emitter -p Composite/console/"
+    "watch": "chokidar-socket-emitter -p Composite/console/",
+    "buildconsole": "jspm build CMSConsole Composite/console.js --minify"
   },
   "devDependencies": {
     "JSONPath": "^0.10.0",
@@ -183,4 +184,4 @@
       }
     }
   }
-}
+}

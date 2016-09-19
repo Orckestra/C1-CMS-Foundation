@@ -3,7 +3,8 @@ SystemJS.config({
     "console/": "Composite/console/",
     "github:": "jspm_packages/github/",
     "npm:": "jspm_packages/npm/",
-    "local:": "jspm_packages/local/"
+    "local:": "jspm_packages/local/",
+    "CMSConsole/": "Composite/"
   },
   meta: {
     "console/*": {
@@ -11,15 +12,7 @@ SystemJS.config({
     }
   },
   browserConfig: {
-    "baseURL": "/",
-    "paths": {
-      "CompositeC1/": "src/"
-    }
-  },
-  nodeConfig: {
-    "paths": {
-      "CompositeC1/": ""
-    }
+    "baseURL": "/"
   },
   sassPluginOptions: {
     "autoprefixer": true
@@ -339,7 +332,7 @@ SystemJS.config({
     "jsdom": "node_modules/jsdom/lib/jsdom.js"
   },
   packages: {
-    "CompositeC1": {
+    "CMSConsole": {
       "main": "console/console.js",
       "format": "esm"
     }

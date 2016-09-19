@@ -28,10 +28,15 @@ Tab view - state: open tabs, selected tab
 */
 const initialState = {};
 const store = configureStore(initialState);
-
-render(
-	<Provider store={store}>
-		<DockTab {...pageProps}/>
-	</Provider>,
-	document.querySelector('body > div.entry')
-);
+function whenReadyRender() {
+	if (document.readyState === 'complete') {
+		render(
+			<Provider store={store}>
+				<DockTab {...pageProps}/>
+			</Provider>,
+			document.querySelector('body > div.entry')
+		);
+	}
+}
+document.onreadystatechange = whenReadyRender;
+whenReadyRender();
