@@ -48,7 +48,10 @@ module.exports = {
 					.client.api.useXpath()
 					.waitForElementVisible('//*[@id="tinymce"]/*['+number+']',60000)
 					.moveToElement('//*[@id="tinymce"]/*['+number+']',null,null)
-					.doubleClick()
+					.click('//*[@id="tinymce"]/*['+number+']')
+					.selectFrame('toolbar[binding="VisualEditorToolBarBinding"]')
+					.waitForElementPresent('//*[local-name()="labeltext"][text()="Function Properties…"]',60000)
+					.clickText("Function Properties…")
 				this.client.api.page.appWindow().enter()
 					.waitForElementPresent('iframe[src="/Composite/content/dialogs/postback/postbackdialog.aspx"]',60000)
 					return this;
