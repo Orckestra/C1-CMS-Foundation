@@ -21,6 +21,7 @@ module.exports = {
 		.selectPerspective("Content")
 		.selectTreeNodeAction("Getting Started","Undo Changes")
 		.selectTreeNodeAction("Getting Started","Publish")
+		.assertBrowserContains('div.content-column > h1', 'Getting Started')
 	},
 	afterEach: function (browser, done) {
 		done();
