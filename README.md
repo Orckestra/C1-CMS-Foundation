@@ -16,6 +16,6 @@ Download binaries from https://github.com/Orckestra/CMS-Foundation/releases/late
 Head over to https://orckestracms.codeplex.com/discussions to ask questions
 
 ## Who are we? ##
-Orckestra is the company driving the development of Orckestra CMS Foundation. We are working full time on this CMS and on other cool stuff you can add to it. We are situated in Austin, Montreal, Copenhagen and Kiev. We specialize in enterprise commerce software. 
+Orckestra is the company driving the development of Orckestra CMS Foundation. We have a team  working full time on this CMS and on other cool stuff you can add to it. We are situated in Austin, Montreal, Copenhagen and Kiev. We specialize in enterprise commerce software. 
 
 You can visit us at http://cms.orckestra.com and http://www.orckestra.com/
