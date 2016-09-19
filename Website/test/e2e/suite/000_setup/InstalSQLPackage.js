@@ -1,12 +1,12 @@
 module.exports = {
-	'@tags': ['Duplicate'],
+	'@tags': ['InstallSql'],
 	beforeEach: function (browser) {
 		browser.url(browser.launchUrl + '/Composite/top.aspx');
 		var content = browser.page.content();
 		content
 			.prepare();
 	},
-	'can duplicate simple page': function (browser) {
+	'Install SQL Package': function (browser) {
 		
 		browser
 		.selectPerspective("System")
