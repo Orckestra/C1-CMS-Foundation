@@ -6,7 +6,7 @@ using System.Text;
 namespace Composite.Data
 {
     /// <summary>
-    /// Represents a reference to a Composite C1 IData item. See <see cref="DataReference{T}"/>.
+    /// Represents a reference to a Orckestra CMS IData item. See <see cref="DataReference{T}"/>.
     /// </summary>
     public interface IDataReference
 	{

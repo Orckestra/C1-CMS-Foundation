@@ -339,7 +339,7 @@ namespace Composite.Plugins.GlobalSettings.GlobalSettingsProviders
     internal sealed class ConfigBasedGlobalSettingsProviderData : GlobalSettingsProviderData
     {
         private const string _applicationNamePropertyName = "applicationName";
-        [ConfigurationProperty(_applicationNamePropertyName, IsRequired = true, DefaultValue = "Composite C1")]
+        [ConfigurationProperty(_applicationNamePropertyName, IsRequired = true, DefaultValue = "Orckestra CMS")]
         public string ApplicationName
         {
             get { return (string)base[_applicationNamePropertyName]; }

@@ -9,7 +9,7 @@
 				Build no. ${version}
 			</div>
 			<div id="copyright">
-				© ${year} Composite A/S
+				© ${year} Orckestra Inc
 			</div>
 			<br />
 			<div>

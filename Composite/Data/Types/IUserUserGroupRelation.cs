@@ -6,7 +6,7 @@ using Composite.Data.Hierarchy.DataAncestorProviders;
 namespace Composite.Data.Types
 {
     /// <summary>    
-    /// This data interface represents a user relation to a user group in Composite C1. This can be used to query user group members through a <see cref="Composite.Data.DataConnection"/>. 
+    /// This data interface represents a user relation to a user group in Orckestra CMS. This can be used to query user group members through a <see cref="Composite.Data.DataConnection"/>. 
     /// </summary>
     [AutoUpdateble]
     [KeyPropertyName(0, "UserId")]

@@ -24,7 +24,7 @@ using Composite.Plugins.Routing.InternalUrlConverters;
 namespace Composite.Core.WebClient
 {
     /// <summary>    
-    /// ASP.NET Application level logic. This class primarily interact between Composite C1 and the ASP.NET Application.  
+    /// ASP.NET Application level logic. This class primarily interact between Orckestra CMS and the ASP.NET Application.  
     /// Most of the members on this class is not documented, except for those which developers may find useful to interact with.
     /// </summary>
     public static class ApplicationLevelEventHandlers

@@ -4,7 +4,7 @@ using Composite.Core.Serialization;
 namespace Composite.Data
 {
     /// <summary>
-    /// Base interface for data types in Composite C1.
+    /// Base interface for data types in Orckestra CMS.
     /// </summary>
     [SerializerHandler(typeof(DataSerializerHandler))]
     public interface IData

@@ -6,10 +6,10 @@ using System.Globalization;
 namespace Composite.Data
 {
     /// <summary>
-    /// This class contains all the event fired by Composite C1 when changes are made to data items. 
+    /// This class contains all the event fired by Orckestra CMS when changes are made to data items. 
     /// 
     /// Use <see cref="Composite.Data.DataEvents&lt;TData&gt;.OnStoreChanged"/> to catch any data change event, including events originating from other servers in a load balance setup
-    /// or changes made directly to a store (which Composite C1 can detect). This event do not contain details about the specific data item changed and is raised after the fact.
+    /// or changes made directly to a store (which Orckestra CMS can detect). This event do not contain details about the specific data item changed and is raised after the fact.
     /// 
     /// Use the more detailed operations to catch data events that happen in the current website process. The 'OnBefore' events enable you to manipulate data before they are stored. 
     /// The 'OnAfter' events let you react to data changes in detail, for instance updating a cache.
@@ -55,7 +55,7 @@ namespace Composite.Data
         where TData : class, IData
     {
         /// <summary>
-        /// This event is fired just before a data item is added to the Composite C1 data store.
+        /// This event is fired just before a data item is added to the Orckestra CMS data store.
         /// See <see cref="Composite.Data.DataConnection.Add&lt;TData&gt;(TData)"/>
         /// </summary>
         /// <example>
@@ -96,7 +96,7 @@ namespace Composite.Data
 
 
         /// <summary>
-        /// This event is fired just after a data item has been added to the Composite C1 data store.
+        /// This event is fired just after a data item has been added to the Orckestra CMS data store.
         /// See <see cref="Composite.Data.DataConnection.Add&lt;TData&gt;(TData)"/>
         /// </summary>
         /// <example>
@@ -137,7 +137,7 @@ namespace Composite.Data
 
 
         /// <summary>
-        /// This event is fired just before a data item is updated in the Composite C1 data store.
+        /// This event is fired just before a data item is updated in the Orckestra CMS data store.
         /// See <see cref="Composite.Data.DataConnection.Update&lt;TData&gt;(TData)"/>
         /// </summary>
         /// <example>
@@ -182,7 +182,7 @@ namespace Composite.Data
 
 
         /// <summary>
-        /// This event is fired just after a data item has been updated in the Composite C1 data store.
+        /// This event is fired just after a data item has been updated in the Orckestra CMS data store.
         /// See <see cref="Composite.Data.DataConnection.Update&lt;TData&gt;(TData)"/>
         /// </summary>
         /// <example>
@@ -227,7 +227,7 @@ namespace Composite.Data
 
 
         /// <summary>
-        /// This event is fired after a data item has been deleted from the Composite C1 data store.
+        /// This event is fired after a data item has been deleted from the Orckestra CMS data store.
         /// See <see cref="Composite.Data.DataConnection.Delete&lt;TData&gt;(TData)"/>
         /// </summary>
         /// <example>
@@ -270,7 +270,7 @@ namespace Composite.Data
 
 
         /// <summary>
-        /// This event is fired after changes has happened to the Composite C1 data store. This may be atomic actions or a larger change to the underlying
+        /// This event is fired after changes has happened to the Orckestra CMS data store. This may be atomic actions or a larger change to the underlying
         /// data store. The <see cref="Composite.Data.StoreEventArgs"/> class describe the change in broad terms, including a flag indicating is detailed data
         /// event have been raised or not. 
         /// 
@@ -358,7 +358,7 @@ namespace Composite.Data
         /// Fire the event that signals that data in an external store has changed. 
         /// </summary>
         /// <remarks>
-        /// You should NOT fire this event if you do data changes through the Composite C1 data API since events will already be handled for you in this case.
+        /// You should NOT fire this event if you do data changes through the Orckestra CMS data API since events will already be handled for you in this case.
         /// 
         /// Use this method if you are responsible for flushing cached data originating from a store not fully managed by the local website process.
         /// 

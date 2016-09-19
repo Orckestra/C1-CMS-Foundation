@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Composite.Workflows")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Composite A/S")]
-[assembly: AssemblyProduct("Composite C1")]
-[assembly: AssemblyCopyright("Copyright © Composite A/S 2016")]
+[assembly: AssemblyCompany("Orckestra Inc")]
+[assembly: AssemblyProduct("Orckestra CMS")]
+[assembly: AssemblyCopyright("Copyright © Orckestra Inc 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

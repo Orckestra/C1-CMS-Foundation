@@ -6,7 +6,7 @@ using Composite.Core.WebClient.Renderings.Data;
 namespace Composite.Data.Types
 {
     /// <summary>    
-    /// This data interface represents a media file in Composite C1. This can be used to query media through a <see cref="Composite.Data.DataConnection"/>. 
+    /// This data interface represents a media file in Orckestra CMS. This can be used to query media through a <see cref="Composite.Data.DataConnection"/>. 
     /// </summary>
     [Title("C1 Media File")]
     [KeyPropertyName("KeyPath")]

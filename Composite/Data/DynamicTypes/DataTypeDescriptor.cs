@@ -18,7 +18,7 @@ using Composite.Data.Types;
 namespace Composite.Data.DynamicTypes
 {
     /// <summary>
-    /// Describes a data type in Composite C1
+    /// Describes a data type in Orckestra CMS
     /// </summary>
     [DebuggerDisplay("Type name = {Namespace + '.' + Name}")]
     public class DataTypeDescriptor
@@ -452,7 +452,7 @@ namespace Composite.Data.DynamicTypes
 
 
         /// <summary>
-        /// True when the data type is associated to Composite C1 pages as an agregation
+        /// True when the data type is associated to Orckestra CMS pages as an agregation
         /// </summary>
         public bool IsPageFolderDataType
         {
@@ -465,7 +465,7 @@ namespace Composite.Data.DynamicTypes
 
 
         /// <summary>
-        /// True when the data type is associated to Composite C1 pages as an composition
+        /// True when the data type is associated to Orckestra CMS pages as an composition
         /// </summary>
         public bool IsPageMetaDataType
         {

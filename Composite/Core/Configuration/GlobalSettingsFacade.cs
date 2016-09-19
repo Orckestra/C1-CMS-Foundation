@@ -440,7 +440,7 @@ namespace Composite.Core.Configuration
 
         /// <summary>
         /// The maximum number of characters the path to the application root (like 'C:\InetPub\MySite') can contain.
-        /// Composite C1 create files below this path, some of which have very long paths - if the root path is long enough the combined length
+        /// Orckestra CMS create files below this path, some of which have very long paths - if the root path is long enough the combined length
         /// can exceed a limitation in Microsoft Windows - see http://msdn.microsoft.com/en-us/library/aa365247%28VS.85%29.aspx#paths
         /// </summary>
         public static int MaximumRootPathLength
