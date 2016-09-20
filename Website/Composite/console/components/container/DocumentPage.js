@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import FormPage from 'console/components/presentation/FormPage.js';
+import ToolbarFrame from 'console/components/presentation/ToolbarFrame.js';
 import { saveValues } from 'console/state/actions/values.js';
 import { updateFieldValue } from 'console/state/reducers/dataFields.js';
 import { fireAction } from 'console/state/actions/fireAction.js';
@@ -8,6 +8,7 @@ import { fireAction } from 'console/state/actions/fireAction.js';
 function mapStateToProps(state) {
 	let update = {
 		buttonDefs: state.buttonDefs,
+		tabDefs: state.tabDefs,
 		fieldsetDefs: state.fieldsetDefs,
 		dataFieldDefs: state.dataFieldDefs,
 		values: {}
@@ -29,6 +30,6 @@ function mapDispatchToProps(dispatch) {
 	};
 }
 
-const DocumentPage = connect(mapStateToProps, mapDispatchToProps)(FormPage);
+const DocumentPage = connect(mapStateToProps, mapDispatchToProps)(ToolbarFrame);
 
 export default DocumentPage;

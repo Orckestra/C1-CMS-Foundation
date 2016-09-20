@@ -1,53 +1,37 @@
 import React, { PropTypes } from 'react';
-import Toolbar from 'console/components/presentation/Toolbar.js';
 import Fieldset from 'console/components/presentation/Fieldset.js';
 
-const FormPage = props => (
-	<div className='page'>
-		<Toolbar
-			type='document'
-			canSave={!!props.dirtyPages[props.name]}
-			buttons={props.pageDef.buttons.reduce((buttons, buttonName) => {
-				let button = Object.assign({}, props.buttonDefs[buttonName]);
-				if (button.action === 'save') {
-					button.action = props.actions.save(props.name);
-					button.saveButton = true;
-				} else {
-					button.action = props.actions.fireAction(button.action, props.name);
-				}
-				buttons[buttonName] = button;
-				return buttons;
-			}, {})}/>
+const FormPage = props => {
+	let fieldsets = props.tabDef.fieldsets.map(fieldsetName => {
+		let fieldset = props.fieldsetDefs[fieldsetName];
+		if (!fieldset) return null;
+		let fields = fieldset.fields.reduce((fields, fieldName) => {
+			fields[fieldName] = Object.assign({}, props.dataFieldDefs[fieldName]);
+			fields[fieldName].updateValue = props.actions.updateValue(props.name, fieldName);
+			fields[fieldName].value = props.values[fieldName] || fields[fieldName].defaultValue;
+			return fields;
+		}, {});
+		return (
+			<Fieldset
+				{...fieldset}
+				fields={fields}
+				key={fieldsetName}/>
+		);
+	});
+	return (
 		<div className='scrollbox'>
-			{props.pageDef.fieldsets.map(fieldsetName => {
-				let fieldset = props.fieldsetDefs[fieldsetName];
-				if (!fieldset) return null;
-				let fields = fieldset.fields.reduce((fields, fieldName) => {
-					fields[fieldName] = Object.assign({}, props.dataFieldDefs[fieldName]);
-					fields[fieldName].updateValue = props.actions.updateValue(props.name, fieldName);
-					fields[fieldName].value = props.values[fieldName] || fields[fieldName].defaultValue;
-					return fields;
-				}, {});
-				return (
-					<Fieldset
-						{...fieldset}
-						fields={fields}
-						key={fieldsetName}/>
-				);
-			})}
+			{fieldsets}
 		</div>
-	</div>
-);
+	);
+};
 
 FormPage.propTypes = {
 	name: PropTypes.string.isRequired,
-	buttonDefs: PropTypes.object.isRequired,
 	actions: PropTypes.object.isRequired,
-	dirtyPages: PropTypes.objectOf(PropTypes.arrayOf(PropTypes.string)).isRequired,
 	fieldsetDefs: PropTypes.object.isRequired,
 	dataFieldDefs: PropTypes.object.isRequired,
 	values: PropTypes.object.isRequired,
-	pageDef: PropTypes.object.isRequired
+	tabDef: PropTypes.object.isRequired
 };
 
 export default FormPage;

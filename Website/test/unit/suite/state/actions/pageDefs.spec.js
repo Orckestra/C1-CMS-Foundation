@@ -18,14 +18,19 @@ describe('Get page definitions', () => {
 				{
 					name: 'testPage',
 					type: 'test',
-					fieldsets: [
+					tabs: [
 						{
-							name: 'testFieldSet',
-							label: 'A test',
-							fields: [
+							name: 'testTab',
+							fieldsets: [
 								{
-									name: 'testDataField',
-									label: 'A field'
+									name: 'testFieldSet',
+									label: 'A test',
+									fields: [
+										{
+											name: 'testDataField',
+											label: 'A field'
+										}
+									]
 								}
 							]
 						}
@@ -57,9 +62,13 @@ describe('Get page definitions', () => {
 					{ spy: dispatch, args: [{ type: actions.LOAD_PAGE_DEF, name: 'testPage' }] },
 					{ spy: dispatch, args: [{ type: STORE_DEF, defType: 'page', definition: {
 						name: 'testPage',
-						fieldsets: ['testFieldSet'],
+						tabs: ['testTab'],
 						buttons: ['testButton'],
 						type: 'test'
+					}}]},
+					{ spy: dispatch, args: [{ type: STORE_DEF, defType: 'tab', definition: {
+						name: 'testTab',
+						fieldsets: ['testFieldSet']
 					}}]},
 					{ spy: dispatch, args: [{ type: STORE_DEF, defType: 'fieldset', definition: {
 						name: 'testFieldSet',

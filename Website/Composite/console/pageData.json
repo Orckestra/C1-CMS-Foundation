@@ -3,69 +3,74 @@
     "name": "edit-language",
     "label": "Edit language",
     "type": "document",
-    "fieldsets": [
+    "tabs": [
       {
-        "name": "edit-language/properties",
-        "label": "Language Properties",
-        "fields": [
+        "name": "edit-language/tab",
+        "fieldsets": [
           {
-            "name": "edit-language/properties/url-mapping-name",
-            "headline": "URL mapping name",
-            "help": "Base name in URLs"
+            "name": "edit-language/tab/properties",
+            "label": "Language Properties",
+            "fields": [
+              {
+                "name": "edit-language/tab/properties/url-mapping-name",
+                "headline": "URL mapping name",
+                "help": "Base name in URLs"
+              },
+              {
+                "name": "edit-language/tab/properties/pimp-my-select",
+                "headline": "Xzibit says",
+                "type": "select",
+                "options": [
+                  { "value": "yo", "label": "Yo dawg," },
+                  { "value": "herd", "label": "I herd u like selects" },
+                  { "value": "put", "label": "So I put a select in ur datafield" },
+                  { "value": "react", "label": "so u can select in React" }
+                ],
+                "help": "Wise words from a man who knows about putting things in other things"
+              },
+              {
+                "name": "edit-language/tab/properties/check-one",
+                "headline": "Some checkboxes",
+                "type": "checkbox",
+                "help": "Check it #1",
+                "label": "The First"
+              },
+              {
+                "name": "edit-language/tab/properties/check-two",
+                "type": "checkbox",
+                "help": "Check it #2",
+                "label": "The Last"
+              },
+              {
+                "name": "edit-language/tab/properties/check-three",
+                "type": "checkbox",
+                "help": "Check it #3",
+                "label": "The Everything"
+              }
+            ]
           },
           {
-            "name": "edit-language/properties/pimp-my-select",
-            "headline": "Xzibit says",
-            "type": "select",
-            "options": [
-              { "value": "yo", "label": "Yo dawg," },
-              { "value": "herd", "label": "I herd u like selects" },
-              { "value": "put", "label": "So I put a select in ur datafield" },
-              { "value": "react", "label": "so u can select in React" }
-            ],
-            "help": "Wise words from a man who knows about putting things in other things"
+            "name": "edit-language/tab/stuff",
+            "label": "Some things",
+            "fields": [
+              {
+                "name": "edit-language/tab/stuff/thing",
+                "headline": "A value"
+              }
+            ]
           },
           {
-            "name": "edit-language/properties/check-one",
-            "headline": "Some checkboxes",
-            "type": "checkbox",
-            "help": "Check it #1",
-            "label": "The First"
-          },
-          {
-            "name": "edit-language/properties/check-two",
-            "type": "checkbox",
-            "help": "Check it #2",
-            "label": "The Last"
-          },
-          {
-            "name": "edit-language/properties/check-three",
-            "type": "checkbox",
-            "help": "Check it #3",
-            "label": "The Everything"
+            "name": "edit-language/tab/morestuff",
+            "label": "Some more things",
+            "fields": [
+              {
+                "name": "edit-language/tab/morestuff/thing",
+                "headline": "A value"
+              }
+            ]
           }
         ]
-      },
-			{
-				"name": "edit-language/stuff",
-				"label": "Some things",
-				"fields": [
-					{
-						"name": "edit-language/stuff/thing",
-						"headline": "A value"
-					}
-				]
-			},
-			{
-				"name": "edit-language/morestuff",
-				"label": "Some more things",
-				"fields": [
-					{
-						"name": "edit-language/morestuff/thing",
-						"headline": "A value"
-					}
-				]
-			}
+      }
     ],
     "buttons": [
       {
@@ -80,14 +85,19 @@
     "name": "other-page",
     "label": "Other page",
     "type": "document",
-    "fieldsets": [
+    "tabs": [
       {
-        "name": "other-page/stuff",
-        "label": "Some things",
-        "fields": [
+        "name": "other-page/tab",
+        "fieldsets": [
           {
-            "name": "other-page/stuff/thing",
-            "headline": "A value"
+            "name": "other-page/tab/stuff",
+            "label": "Some things",
+            "fields": [
+              {
+                "name": "other-page/tab/stuff/thing",
+                "headline": "A value"
+              }
+            ]
           }
         ]
       }

@@ -29,7 +29,7 @@ describe('Component definitions', () => {
 		);
 	});
 
-	['page', 'button', 'fieldset', 'dataField'].forEach(typeName => {
+	['page', 'tab', 'button', 'fieldset', 'dataField'].forEach(typeName => {
 		describe(typeName, () => {
 			let reducer;
 			beforeEach(() => {

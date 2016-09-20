@@ -3,7 +3,7 @@ import sinon from 'sinon';
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
 import DocumentPage from 'console/components/container/DocumentPage.js';
-import FormPage from 'console/components/presentation/FormPage.js';
+import ToolbarFrame from 'console/components/presentation/ToolbarFrame.js';
 import { UPDATE_VALUE } from 'console/state/reducers/dataFields.js';
 
 describe('DocumentPage', () => {
@@ -17,6 +17,7 @@ describe('DocumentPage', () => {
 				'two': 2
 			},
 			buttonDefs: {}, // required for FormPage
+			tabDefs: {}, // required for FormPage
 			fieldsetDefs: {}, // required for FormPage
 			dataFieldDefs: {}, // required for FormPage
 		};
@@ -36,7 +37,7 @@ describe('DocumentPage', () => {
 
 	it('renders a FormPage with props, values and actions', () => {
 		renderer.render(<DocumentPage store={store} {...props}/>);
-		return expect(renderer, 'to have rendered', <FormPage
+		return expect(renderer, 'to have rendered', <ToolbarFrame
 			{...props}
 			values={state.dataFields}
 			buttonDefs={{}}

@@ -7,10 +7,14 @@ const fieldsetSchema = new Schema('fieldsetDefs', { idAttribute: 'name' });
 fieldsetSchema.define({
 	fields: arrayOf(dataFieldSchema)
 });
+const tabSchema = new Schema('tabDefs', { idAttribute: 'name' });
+tabSchema.define({
+	fieldsets: arrayOf(fieldsetSchema),
+});
 const buttonSchema = new Schema('buttonDefs', { idAttribute: 'name' });
 const pageSchema = new Schema('pageDefs', { idAttribute: 'name' });
 pageSchema.define({
-	fieldsets: arrayOf(fieldsetSchema),
+	tabs: arrayOf(tabSchema),
 	buttons: arrayOf(buttonSchema)
 });
 
@@ -38,7 +42,7 @@ export function loadPageDef(pageName) {
 			dispatch({ type: LOAD_PAGE_DEF_DONE, name: pageName });
 		})
 		.catch(err => {
-			dispatch({ type: LOAD_PAGE_DEF_FAILED, error: err });
+			dispatch({ type: LOAD_PAGE_DEF_FAILED, errorMessage: err.message, error: err });
 		});
 	};
 }
