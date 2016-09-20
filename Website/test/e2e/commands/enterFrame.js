@@ -17,7 +17,6 @@ EnterFrame.prototype.command = function(selector) {
 		this.client.api.frame(
 			result.value,
 			() => {
-				// this.client.assertion(true, null, null, 'Entered frame <' + selector + '>', this.abortOnFailure);
 				this.emit('complete');
 			}
 		);

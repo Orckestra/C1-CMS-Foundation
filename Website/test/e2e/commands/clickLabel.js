@@ -6,17 +6,17 @@ function ClickLabel() {
 
 ClickLabel.prototype.command = function (label,parentLabel) {
 	var selector;
-	if(parentLabel===null){
+	if(parentLabel==null){
 		selector ='//*[@label="'+label+'"]';
 	}
 	else{
 		selector= '//*[@label="'+parentLabel+'"]//*[@label="'+label+'"]'
 	}
-	this.client.api.selectFrameWithXpath('//*[@label="'+label+'"]');
+	this.client.api.selectFrameWithXpath(selector);
     
 	this.client.api
         .useXpath()
-		.moveToElement('//*[@label="'+label+'"]',null,null)
+		.moveToElement(selector,null,null)
 		.mouseButtonClick('left').useCss()
         
     return this.client.api;

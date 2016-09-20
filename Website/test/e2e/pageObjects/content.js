@@ -23,11 +23,11 @@ module.exports = {
 				}
 				this.api.page.appWindow()
 					.enter()
-					.waitForElementNotPresent('dialogcover[display="block"]', 10000)
-					.assert.elementPresent('#explorer explorertoolbarbutton[label="'+perspective+'"]')
+					.waitForElementNotPresent('dialogcover[style*="block"]', this.api.globals.timeouts.basic)
+					.waitForElementPresent('#explorer explorertoolbarbutton[label="'+perspective+'"]', this.api.globals.timeouts.basic)
 					.api.pause(200)
 					.click('#explorer explorertoolbarbutton[label="'+perspective+'"]')
-					.waitForFrameLoad('#stagedecks stagedeck[data-qa*="'+perspective+'"] iframe', 10000)
+					.waitForFrameLoad('#stagedecks stagedeck[data-qa*="'+perspective+'"] iframe', this.api.globals.timeouts.basic)
 					.enterFrame('#stagedecks stagedeck[data-qa*="'+perspective+'"] iframe');
 				return this;
 			},
@@ -41,15 +41,15 @@ module.exports = {
 				this.api.page.appWindow().prepare();
 				this
 					.enter(perspective)
-					.waitForElementVisible('@browserFrame', 10000)
-					.waitForFrameLoad('@browserFrame', 10000);
+					.waitForElementVisible('@browserFrame', this.api.globals.timeouts.basic)
+					.waitForFrameLoad('@browserFrame', this.api.globals.timeouts.basic);
 				return this;
 			},
 			enterTabFrame: function (index) {
 				this
 					.enter()
-					.waitForElementPresent('view:nth-of-type(' + index + ') window', 10000)
-					.waitForFrameLoad('view:nth-of-type(' + index + ') window iframe', 10000)
+					.waitForElementPresent('view:nth-of-type(' + index + ') window', this.api.globals.timeouts.basic)
+					.waitForFrameLoad('view:nth-of-type(' + index + ') window iframe', this.api.globals.timeouts.basic)
 					.enterFrame('view:nth-of-type(' + index + ') window iframe')
 				return this;
 			},
@@ -57,8 +57,8 @@ module.exports = {
 				this
 					.enter()
 					.enterFrame('@browserFrame')
-					.waitForElementVisible('#browsertabbox iframe', 10000)
-					.waitForFrameLoad('#browsertabbox iframe', 10000)
+					.waitForElementVisible('#browsertabbox iframe', this.api.globals.timeouts.basic)
+					.waitForFrameLoad('#browsertabbox iframe', this.api.globals.timeouts.basic)
 					.enterFrame('#browsertabbox iframe')
 					.assert.containsText(selector, value);
 				return this;
@@ -67,8 +67,8 @@ module.exports = {
 				this
 					.enter()
 					.enterFrame('@browserFrame')
-					.waitForElementVisible('#browsertabbox iframe', 10000)
-					.waitForFrameLoad('#browsertabbox iframe', 10000)
+					.waitForElementVisible('#browsertabbox iframe', this.api.globals.timeouts.basic)
+					.waitForFrameLoad('#browsertabbox iframe', this.api.globals.timeouts.basic)
 					.enterFrame('#browsertabbox iframe')
 					.useXpath()
 					.assert.elementPresent(selector);
@@ -78,8 +78,8 @@ module.exports = {
 				this
 					.enter()
 					.enterFrame('@browserFrame')
-					.waitForElementVisible('#browsertabbox iframe', 10000)
-					.waitForFrameLoad('#browsertabbox iframe', 10000)
+					.waitForElementVisible('#browsertabbox iframe', this.api.globals.timeouts.basic)
+					.waitForFrameLoad('#browsertabbox iframe', this.api.globals.timeouts.basic)
 					.enterFrame('#browsertabbox iframe')
 					.assert.attributeContains(selector,attribiute, value)
 				return this;

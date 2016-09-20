@@ -5,11 +5,11 @@ function ClickText() {
 }
 
 ClickText.prototype.command = function (vlaue) {
-	this.client.api.selectFrameWithXpath('//*[text()="'+vlaue+'"]');
+	this.client.api.selectFrameWithXpath('//*[normalize-space(text())="'+vlaue+'"]');
     
     this.client.api
         .useXpath()
-		.click('//*[text()="'+vlaue+'"]').useCss()
+		.click('//*[normalize-space(text())="'+vlaue+'"]').useCss()
         
     return this.client.api;
 };

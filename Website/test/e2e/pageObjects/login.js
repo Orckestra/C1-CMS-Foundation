@@ -10,7 +10,7 @@ module.exports = {
 	commands: [
 		{
 			isShown: function () {
-				this.waitForElementVisible('@usernameField', 10000);
+				this.waitForElementVisible('@usernameField', this.api.globals.timeouts.basic);
 				return this;
 			},
 			setUsername: function (username) {
@@ -31,7 +31,7 @@ module.exports = {
 					.setUsername(username || 'admin')
 					.setPassword(password || '123456')
 					.click('@submitButton')
-					.waitForElementNotVisible('@usernameField', 10000);
+					.waitForElementNotVisible('@usernameField', this.api.globals.timeouts.basic);
 			}
 		}
 	]

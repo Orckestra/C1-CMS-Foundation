@@ -33,11 +33,11 @@ module.exports = {
 					.enter()
 					.assert.attributeEquals('body', 'contenteditable', 'true')
 					.client.api.useXpath()
-					.waitForElementVisible('//*[@id="tinymce"]/*['+number+']',60000)
+					.waitForElementVisible('//*[@id="tinymce"]/*['+number+']',this.api.globals.timeouts.basic)
 					.moveToElement('//*[@id="tinymce"]/*['+number+']',null,null)
 					.mouseButtonClick('right')
 					.selectFrameWithXpath('//*[local-name() = "menuitem"]//*[local-name() = "labelbox"]')
-					.waitForElementVisible('//*[local-name() = "menuitem"]//*[local-name() = "labelbox"][@label="'+action+'"]',60000)
+					.waitForElementVisible('//*[local-name() = "menuitem"]//*[local-name() = "labelbox"][@label="'+action+'"]',this.api.globals.timeouts.basic)
 					.click('//*[local-name() = "menuitem"]//*[local-name() = "labelbox"][@label="'+action+'"]').useCss()
 					return this;
 			},
@@ -46,14 +46,14 @@ module.exports = {
 					.enter()
 					.assert.attributeEquals('body', 'contenteditable', 'true')
 					.client.api.useXpath()
-					.waitForElementVisible('//*[@id="tinymce"]/*['+number+']',60000)
+					.waitForElementVisible('//*[@id="tinymce"]/*['+number+']',this.api.globals.timeouts.basic)
 					.moveToElement('//*[@id="tinymce"]/*['+number+']',null,null)
 					.click('//*[@id="tinymce"]/*['+number+']')
 					.selectFrame('toolbar[binding="VisualEditorToolBarBinding"]')
-					.waitForElementPresent('//*[local-name()="labeltext"][text()="Function Properties…"]',60000)
+					.waitForElementPresent('//*[local-name()="labeltext"][text()="Function Properties…"]',this.api.globals.timeouts.basic)
 					.clickText("Function Properties…")
 				this.client.api.page.appWindow().enter()
-					.waitForElementPresent('iframe[src="/Composite/content/dialogs/postback/postbackdialog.aspx"]',60000)
+					.waitForElementPresent('iframe[src="/Composite/content/dialogs/postback/postbackdialog.aspx"]',this.api.globals.timeouts.basic)
 					return this;
 			},
 			acceptChanges: function (){

@@ -49,6 +49,12 @@
 				<Param name="childLabel" />
 			</Overload>
 		</KeyWord>
+		<KeyWord name="assertTreeNodeHasNoChild" func="yes">
+			<Overload retVal="browser" >
+				<Param name="parentLabel" />
+				<Param name="childLabel" />
+			</Overload>
+		</KeyWord>
 		<KeyWord name="assertTreeNodeIsEmpty" func="yes">
 			<Overload retVal="browser" >
 				<Param name="parentLabel" />
@@ -193,6 +199,11 @@
 		<KeyWord name="topFrame" func="yes">
 			<Overload retVal="browser" >
 				<Param name="selector" />
+			</Overload>
+		</KeyWord>
+		<KeyWord name="submitFormData" func="yes">
+			<Overload retVal="browser" >
+				<Param name="submitValue" />
 			</Overload>
 		</KeyWord>
 		<KeyWord name="waitForFrameLoad" func="yes">

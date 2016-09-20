@@ -8,14 +8,13 @@ SetValueByLabel.prototype.command = function (fieldLabel,value,inputType) {
 	if(inputType == null){
 		inputType = "input";
 	}
-    
-    this.client.api.selectFrameWithXpath('//*[local-name() = "fielddesc"][text()="'+fieldLabel+'"]');
+    this.client.api.selectFrameWithXpath('//*[local-name() = "fielddesc"][normalize-space(text())="'+fieldLabel+'"]');
     
     this.client.api
 		.useXpath()
-		.click('//*[local-name() = "fielddesc"][text()="'+fieldLabel+'"]/parent::*//*[local-name() = "'+inputType+'"]')
-        .clearValue('//*[local-name() = "fielddesc"][text()="'+fieldLabel+'"]/parent::*//*[local-name() = "'+inputType+'"]')
-		.setValue('//*[local-name() = "fielddesc"][text()="'+fieldLabel+'"]/parent::*//*[local-name() = "'+inputType+'"]', value)
+		.click('//*[local-name() = "fielddesc"][normalize-space(text())="'+fieldLabel+'"]/parent::*//*[local-name() = "'+inputType+'"]')
+        .clearValue('//*[local-name() = "fielddesc"][normalize-space(text())="'+fieldLabel+'"]/parent::*//*[local-name() = "'+inputType+'"]')
+		.setValue('//*[local-name() = "fielddesc"][normalize-space(text())="'+fieldLabel+'"]/parent::*//*[local-name() = "'+inputType+'"]', value)
 		.assertFieldValue(null,fieldLabel,value,inputType)
 	return this.client.api;
 };

@@ -21,9 +21,19 @@ module.exports = {
 		
 		browser
 		.selectPerspective("System")
-		.openTreeNode("Installed Packages")
-		.openTreeNode("Composite.Tools")
+		.openTreeNode("Packages","Installed Packages")
+		.openTreeNode("Installed Packages","Composite.Tools")
 		.assertTreeNodeHasChild("Composite.Tools","Composite.Tools.SqlServerDataProvider")
+		
+		.selectTreeNodeAction("SqlServer Data Provider","Convert to SQL")
+		.selectDocumentTab("Convert to SQL")
+		.setFieldValue("Connection String:",browser.globals.connectionString)
+		.submitFormData('Next')
+		.submitFormData('Finish')
+				
+		.selectPerspective("System")
+		.assertTreeNodeHasNoChild("SqlServer Data Provider")
+		
 	},
 	afterEach: function (browser, done) {
 		done();
