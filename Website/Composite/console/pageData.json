@@ -45,7 +45,27 @@
             "label": "The Everything"
           }
         ]
-      }
+      },
+			{
+				"name": "edit-language/stuff",
+				"label": "Some things",
+				"fields": [
+					{
+						"name": "edit-language/stuff/thing",
+						"headline": "A value"
+					}
+				]
+			},
+			{
+				"name": "edit-language/morestuff",
+				"label": "Some more things",
+				"fields": [
+					{
+						"name": "edit-language/morestuff/thing",
+						"headline": "A value"
+					}
+				]
+			}
     ],
     "buttons": [
       {

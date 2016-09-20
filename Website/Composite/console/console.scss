@@ -86,11 +86,11 @@ div.scrollbox {
 }
 
 fieldset {
+	float: left;
 	position: relative;
 	border: 1px solid $borderColor;
 	border-radius: 4px;
-	margin: 0;
-	margin-top: 35px;
+	margin: 35px 23px 20px 0;
 	padding: 8px 17px 25px;
 	width: 394px;
 	background-color: $fieldsetBackgroundColor;
