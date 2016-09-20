@@ -13,13 +13,13 @@ module.exports = {
 				this.api.page.startScreen().close();
 				this
 					.topFrame()
-					.waitForElementPresent('@appWindow', 1000)
+					.waitForElementPresent('@appWindow', 10000)
 				return this;
 			},
 			enter: function () {
 				this
 					.topFrame()
-					.waitForElementPresent('@appFrame', 1000)
+					.waitForElementPresent('@appFrame', 10000)
 					.enterFrame('@appFrame');
 				return this;
 			}
