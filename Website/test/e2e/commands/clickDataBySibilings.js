@@ -5,11 +5,11 @@ function ClickDataBySibiling() {
 }
 
 ClickDataBySibiling.prototype.command = function (vlaue) {
-	this.client.api.selectFrameWithXpath('//*[local-name()="fielddesc"][text()="'+vlaue+'"]');
+	this.client.api.selectFrameWithXpath('//*[local-name()="fielddesc"][normalize-space(text())="'+vlaue+'"]');
     
     this.client.api
         .useXpath()
-		.click('//*[local-name()="fielddesc"][text()="'+vlaue+'"]/..//*[local-name()="fielddata"]').useCss()
+		.click('//*[local-name()="fielddesc"][normalize-space(text())="'+vlaue+'"]/..//*[local-name()="fielddata"]').useCss()
         
     return this.client.api;
 };

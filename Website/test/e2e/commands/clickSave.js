@@ -9,7 +9,7 @@ ClickSave.prototype.command = function () {
         .selectFrame('#savebutton');
 	this.client.api.expect.element('#savebutton').to.not.have.attribute('isdisabled');
 	this.client.api.click('#savebutton > labelbox');
-	this.client.api.waitForElementVisible('#savebutton[isdisabled="true"]',60000);
+	this.client.api.waitForElementVisible('#savebutton[isdisabled="true"]',this.api.globals.timeouts.save);
     return this.client.api;
 };
 

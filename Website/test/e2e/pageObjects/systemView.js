@@ -8,7 +8,7 @@ module.exports = {
 				.enter(perspective)
 				.enterFrame('@browserFrame');
 			this
-				.waitForFrameLoad('@systemFrame', 10000)
+				.waitForFrameLoad('@systemFrame', this.api.globals.timeouts.basic)
 				.enterFrame('@systemFrame');
 			return this;
 		},
@@ -17,7 +17,7 @@ module.exports = {
 				.enterActivePerspective()
 				.enterFrame('@browserFrame');
 			this
-				.waitForFrameLoad('@systemFrame', 10000)
+				.waitForFrameLoad('@systemFrame', this.api.globals.timeouts.basic)
 				.enterFrame('@systemFrame');
 			return this;
 		},
@@ -27,7 +27,7 @@ module.exports = {
 				selector += 'treenode[label="' + childLabel + '"] > ';
 			}
 			selector += 'labelbox';
-			this.api.waitForElementPresent(selector,10000)
+			this.api.waitForElementPresent(selector,this.api.globals.timeouts.basic)
 			this.doubleClickSelector(selector);
 			this.api.pause(300);
 			return this;
@@ -38,7 +38,7 @@ module.exports = {
 				selector += 'treenode[label="' + childLabel + '"] > ';
 			}
 			selector +='labelbox';
-			this.api.waitForElementPresent(selector,10000)
+			this.api.waitForElementPresent(selector,this.api.globals.timeouts.basic)
 			this.click(selector);
 			return this;
 		},
@@ -48,7 +48,7 @@ module.exports = {
 				selector += 'treenode[label="' + childLabel + '"] > ';
 			}
 			selector +='labelbox';
-			this.api.waitForElementPresent(selector,10000)
+			this.api.waitForElementPresent(selector,this.api.globals.timeouts.basic)
 			this.rightClickSelector(selector);
 			return this;
 		},
@@ -60,6 +60,15 @@ module.exports = {
 			this.expect
 				.element(selector)
 				.to.be.present;
+		},
+		_assertTreeNodeHasNoChild: function (parentLabel, childLabel) {
+			var selector = 'treenode[label="' + parentLabel + '"] > treenode';
+			if (childLabel) {
+				selector += '[label="' + childLabel + '"]';
+			}
+			this.expect
+				.element(selector)
+				.not.to.be.present;
 		},
 		_assertTreeNodeIsEmpty: function (parentLabel,childLabel) {
 			var selector = 'treenode[label="' + parentLabel + '"] > treenode';
