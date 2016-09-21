@@ -1,12 +1,10 @@
 import React, { PropTypes } from 'react';
 import Toolbar from 'console/components/presentation/Toolbar.js';
-import FormPage from 'console/components/presentation/FormPage.js';
+import FormTab from 'console/components/presentation/FormTab.js';
 
 const ToolbarFrame = props => {
-	if (!(props.pageDef && props.tabDefs && props.fieldsetDefs)) return null;
 	let tabName = props.pageDef.tabs[0]; // TODO: Get this from state
 	let tabDef = props.tabDefs[tabName];
-	if (!tabDef) return null;
 	let buttons = props.pageDef.buttons.reduce((buttons, buttonName) => {
 		let button = Object.assign({}, props.buttonDefs[buttonName]);
 		if (button.action === 'save') {
@@ -33,7 +31,7 @@ const ToolbarFrame = props => {
 				canSave={false}
 				type='document'
 				buttons={buttons}/>
-			<FormPage {...tabProps}/>
+			<FormTab {...tabProps}/>
 		</div>
 	);
 };

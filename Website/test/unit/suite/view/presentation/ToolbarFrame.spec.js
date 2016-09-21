@@ -4,7 +4,7 @@ import React from 'react';
 import TestUtils from 'react-addons-test-utils';
 import ToolbarFrame from 'console/components/presentation/ToolbarFrame.js';
 import Toolbar from 'console/components/presentation/Toolbar.js';
-import FormPage from 'console/components/presentation/FormPage.js';
+import FormTab from 'console/components/presentation/FormTab.js';
 
 describe('ToolbarFrame', () => {
 	let renderer, props, state, pageActions;
@@ -71,48 +71,53 @@ describe('ToolbarFrame', () => {
 			}
 		};
 		renderer = TestUtils.createRenderer();
-		renderer.render(<ToolbarFrame name='test' {...props} {...state}/>);
 	});
 
-	it('renders a toolbar and a single contained tab', () => expect(
-		renderer,
-		'to have rendered',
-		<div className='page'>
-			<Toolbar
-				canSave={false}
-				type='document'
-				buttons={{}}/>
-			<FormPage name='test/oneTab' actions={{}} values={{}} fieldsetDefs={{}} dataFieldDefs={{}} tabDef={{}}/>
-		</div>
-	)
-	.and(
-		'queried for', <Toolbar type='document' canSave={false} buttons={{}}/>,
-		'to have props exhaustively satisfying', {
-			type: 'document',
-			canSave: false,
-			buttons: {
-				'test/save': { label: 'Save', action: pageActions.save, saveButton: true },
-				'test/onebutton': { label: 'One', action: pageActions.fireAction },
-				'test/twobutton': { label: 'Two', action: pageActions.fireAction }
-			}
-		}
-	));
-
-	it('passes named actions to the toolbar', () => Promise.all([
-		expect(renderer,
+	it('renders a toolbar and a single contained tab', () => {
+		renderer.render(<ToolbarFrame name='test' {...props} {...state}/>);
+		return expect(
+			renderer,
+			'to have rendered',
+			<div className='page'>
+				<Toolbar
+					canSave={false}
+					type='document'
+					buttons={{}}/>
+				<FormTab name='test/oneTab' actions={{}} values={{}} fieldsetDefs={{}} dataFieldDefs={{}} tabDef={{}}/>
+			</div>
+		)
+		.and(
 			'queried for', <Toolbar type='document' canSave={false} buttons={{}}/>,
-		'to have props satisfying', {
-			type: 'document',
-			buttons: {
-				'test/save': { action: expect.it('to be', pageActions.save) },
-				'test/onebutton': { action: expect.it('to be', pageActions.fireAction) },
-				'test/twobutton': { action: expect.it('to be', pageActions.fireAction) }
+			'to have props exhaustively satisfying', {
+				type: 'document',
+				canSave: false,
+				buttons: {
+					'test/save': { label: 'Save', action: pageActions.save, saveButton: true },
+					'test/onebutton': { label: 'One', action: pageActions.fireAction },
+					'test/twobutton': { label: 'Two', action: pageActions.fireAction }
+				}
 			}
-		}),
-		expect(state.actions.save, 'to have a call satisfying', { args: ['test'] }),
-		expect(state.actions.fireAction, 'to have calls exhaustively satisfying', [
-			{ args: ['oneaction', 'test'] },
-			{ args: ['twoaction', 'test'] },
-		])
-	]));
+		);
+	});
+
+	it('passes named actions to the toolbar', () => {
+		renderer.render(<ToolbarFrame name='test' {...props} {...state}/>);
+		Promise.all([
+			expect(renderer,
+				'queried for', <Toolbar type='document' canSave={false} buttons={{}}/>,
+			'to have props satisfying', {
+				type: 'document',
+				buttons: {
+					'test/save': { action: expect.it('to be', pageActions.save) },
+					'test/onebutton': { action: expect.it('to be', pageActions.fireAction) },
+					'test/twobutton': { action: expect.it('to be', pageActions.fireAction) }
+				}
+			}),
+			expect(state.actions.save, 'to have a call satisfying', { args: ['test'] }),
+			expect(state.actions.fireAction, 'to have calls exhaustively satisfying', [
+				{ args: ['oneaction', 'test'] },
+				{ args: ['twoaction', 'test'] },
+			])
+		]);
+	});
 });

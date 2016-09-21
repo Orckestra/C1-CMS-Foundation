@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import Fieldset from 'console/components/presentation/Fieldset.js';
 
-const FormPage = props => {
+const FormTab = props => {
 	let fieldsets = props.tabDef.fieldsets.map(fieldsetName => {
 		let fieldset = props.fieldsetDefs[fieldsetName];
 		if (!fieldset) return null;
@@ -25,7 +25,7 @@ const FormPage = props => {
 	);
 };
 
-FormPage.propTypes = {
+FormTab.propTypes = {
 	name: PropTypes.string.isRequired,
 	actions: PropTypes.object.isRequired,
 	fieldsetDefs: PropTypes.object.isRequired,
@@ -34,4 +34,4 @@ FormPage.propTypes = {
 	tabDef: PropTypes.object.isRequired
 };
 
-export default FormPage;
+export default FormTab;

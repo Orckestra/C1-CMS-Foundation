@@ -2,10 +2,10 @@ import expect from 'unittest/helpers/expect.js';
 import sinon from 'sinon';
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
-import FormPage from 'console/components/presentation/FormPage.js';
+import FormTab from 'console/components/presentation/FormTab.js';
 import Fieldset from 'console/components/presentation/Fieldset.js';
 
-describe('FormPage', () => {
+describe('FormTab', () => {
 	let renderer, props, state, pageActions;
 	beforeEach(() => {
 		renderer = TestUtils.createRenderer();
@@ -53,7 +53,7 @@ describe('FormPage', () => {
 				'test/twoset/threefield': 'different'
 			}
 		};
-		renderer.render(<FormPage name='test' {...props} {...state}/>);
+		renderer.render(<FormTab name='test' {...props} {...state}/>);
 	});
 
 	it('renders a form page with a toolbar and field sets', () => expect(

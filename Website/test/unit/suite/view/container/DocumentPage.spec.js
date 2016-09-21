@@ -16,10 +16,10 @@ describe('DocumentPage', () => {
 				'one': 1,
 				'two': 2
 			},
-			buttonDefs: {}, // required for FormPage
-			tabDefs: {}, // required for FormPage
-			fieldsetDefs: {}, // required for FormPage
-			dataFieldDefs: {}, // required for FormPage
+			buttonDefs: {}, // required for FormTab
+			tabDefs: {}, // required for FormTab
+			fieldsetDefs: {}, // required for FormTab
+			dataFieldDefs: {}, // required for FormTab
 		};
 		store = {
 			subscribe: sinon.spy().named('subscribe'),
@@ -28,14 +28,14 @@ describe('DocumentPage', () => {
 		};
 		props = {
 			test: 'value', // Not required - should be there anyway when passed through
-			name: 'testName', // required for FormPage
-			actions: {}, // required for FormPage
-			pageDef: {}, // required for FormPage
-			values: {} // required for FormPage
+			name: 'testName', // required for FormTab
+			actions: {}, // required for FormTab
+			pageDef: {}, // required for FormTab
+			values: {} // required for FormTab
 		};
 	});
 
-	it('renders a FormPage with props, values and actions', () => {
+	it('renders a FormTab with props, values and actions', () => {
 		renderer.render(<DocumentPage store={store} {...props}/>);
 		return expect(renderer, 'to have rendered', <ToolbarFrame
 			{...props}
