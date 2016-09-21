@@ -4,8 +4,7 @@ import FormTab from 'console/components/presentation/FormTab.js';
 
 const ToolbarFrame = props => {
 	if (!(props.pageDef && props.tabDefs && props.fieldsetDefs)) return null;
-	let tabName = props.pageDef.tabs[0]; // TODO: Get this from state
-	let tabDef = props.tabDefs[tabName];
+	let tabDef = props.tabDefs[props.tabName];
 	if (!tabDef) return null;
 	let buttons = props.pageDef.buttons.reduce((buttons, buttonName) => {
 		let button = Object.assign({}, props.buttonDefs[buttonName]);
@@ -19,7 +18,7 @@ const ToolbarFrame = props => {
 		return buttons;
 	}, {});
 	let tabProps = {
-		name: tabName,
+		name: props.tabName,
 		actions: props.actions,
 		fieldsetDefs: props.fieldsetDefs,
 		dataFieldDefs: props.dataFieldDefs,
@@ -42,6 +41,7 @@ ToolbarFrame.propTypes = {
 	name: PropTypes.string.isRequired,
 	buttonDefs: PropTypes.object.isRequired,
 	tabDefs: PropTypes.object.isRequired,
+	tabName: PropTypes.string.isRequired,
 	actions: PropTypes.object.isRequired,
 	dirtyPages: PropTypes.objectOf(PropTypes.arrayOf(PropTypes.string)).isRequired,
 	fieldsetDefs: PropTypes.object.isRequired,

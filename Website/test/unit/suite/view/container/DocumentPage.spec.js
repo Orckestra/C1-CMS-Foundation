@@ -11,6 +11,12 @@ describe('DocumentPage', () => {
 	beforeEach(() => {
 		renderer = TestUtils.createRenderer();
 		state = {
+			pages: {
+				currentPage: 'testpage',
+				tabs: {
+					currentPage: 'tab'
+				}
+			},
 			dataFields: {
 				dirtyFields: [],
 				'one': 1,

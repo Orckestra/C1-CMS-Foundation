@@ -11,7 +11,8 @@ function mapStateToProps(state) {
 		tabDefs: state.tabDefs,
 		fieldsetDefs: state.fieldsetDefs,
 		dataFieldDefs: state.dataFieldDefs,
-		values: {}
+		values: {},
+		tabName: state.pages.tabs[state.pages.currentPage]
 	};
 	Object.keys(state.dataFields).forEach(fieldName => {
 		update.values[fieldName] = state.dataFields[fieldName];

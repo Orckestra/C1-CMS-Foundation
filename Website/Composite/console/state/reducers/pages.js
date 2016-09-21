@@ -7,15 +7,22 @@ export function selectShownPage(pageName) {
 
 export const REPLACE_PAGES = prefix + 'REPLACE';
 export function replacePages(pages) {
-	return {type: REPLACE_PAGES, pages};
+	return { type: REPLACE_PAGES, pages };
+}
+
+export const SELECT_TAB = prefix + 'SELECT_TAB';
+export function selectTab(tabName) {
+	return { type: SELECT_TAB, tabName };
 }
 
 const initialState = {
 	pages: [],
-	currentPage: null
+	currentPage: null,
+	tabs: {}
 };
 
 const pages = (state = initialState, action) => {
+	let update;
 	switch(action.type) {
 	case SELECT_PAGE:
 		if (state.pages.indexOf(action.pageName) !== -1) {
@@ -28,6 +35,10 @@ const pages = (state = initialState, action) => {
 			throw new Error('REPLACE_PAGES action\'s pages value must be array of page names');
 		}
 		return Object.assign({}, state, { pages: action.pages, currentPage: null });
+	case SELECT_TAB:
+		update = { tabs: state.tabs };
+		update.tabs[state.currentPage] = action.tabName;
+		return Object.assign({}, state, update);
 	default:
 		return state;
 	}

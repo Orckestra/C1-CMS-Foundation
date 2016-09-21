@@ -1,7 +1,7 @@
 import expect from 'unittest/helpers/expect.js';
 import initState from 'console/state/initState.js';
 import sinon from 'sinon';
-import { SELECT_PAGE, REPLACE_PAGES } from 'console/state/reducers/pages.js';
+import { SELECT_PAGE, REPLACE_PAGES, SELECT_TAB } from 'console/state/reducers/pages.js';
 
 describe('initState', () => {
 	let store;
@@ -18,7 +18,8 @@ describe('initState', () => {
 				{ spy: store.dispatch, args: [expect.it('to be a function')]},
 				{ spy: store.dispatch, args: [expect.it('to be a function')]},
 				{ spy: store.dispatch, args: [{ type: REPLACE_PAGES }]},
-				{ spy: store.dispatch, args: [{ type: SELECT_PAGE }]}
+				{ spy: store.dispatch, args: [{ type: SELECT_PAGE }]},
+				{ spy: store.dispatch, args: [{ type: SELECT_TAB }]}
 			])
 		)
 	);

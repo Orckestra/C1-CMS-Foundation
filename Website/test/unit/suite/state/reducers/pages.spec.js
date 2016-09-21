@@ -6,7 +6,8 @@ describe('Pages', () => {
 		let state = pages(undefined, {});
 		return expect(state, 'to equal', {
 			pages: [],
-			currentPage: null
+			currentPage: null,
+			tabs: {}
 		});
 	});
 
@@ -19,6 +20,7 @@ describe('Pages', () => {
 	it('has action descriptors', () =>
 		expect(actions, 'to have property', 'SELECT_PAGE', 'PAGES.SELECT')
 		.and('to have property', 'REPLACE_PAGES', 'PAGES.REPLACE')
+		.and('to have property', 'SELECT_TAB', 'PAGES.SELECT_TAB')
 	);
 
 	describe('Select shown page', () => {
@@ -41,13 +43,26 @@ describe('Pages', () => {
 		});
 	});
 
+	describe('Select shown tab', () => {
+		let selectTab = actions.selectTab;
+
+		it('creates action for selecting the tab of the shown page', () => {
+			let action = selectTab('testtab');
+			return expect(action, 'to be an action of type', actions.SELECT_TAB)
+			.and('to have property', 'tabName', 'testtab');
+		});
+	});
+
 	describe('Action responses', () => {
 		let oldState;
 		beforeEach(() => {
 			oldState = {
 				thing: 'do not touch',
 				currentPage: 'test1',
-				pages: [ 'test1', 'test2' ]
+				pages: [ 'test1', 'test2' ],
+				tabs: {
+					'test1': 'onetab'
+				}
 			};
 		});
 
@@ -67,7 +82,10 @@ describe('Pages', () => {
 				.and('to equal', {
 					thing: 'do not touch',
 					currentPage: 'test1',
-					pages: [ 'test1', 'test2' ]
+					pages: [ 'test1', 'test2' ],
+					tabs: {
+						'test1': 'onetab'
+					}
 				});
 			});
 		});
@@ -97,6 +115,19 @@ describe('Pages', () => {
 					expect(() => pages(oldState, { type: actions.REPLACE_PAGES, pages: ['test',{}]}), 'to throw'),
 					expect(() => pages(oldState, { type: actions.REPLACE_PAGES, pages: [true, 'page']}), 'to throw')
 				]);
+			});
+		});
+
+		describe('Select tab', () => {
+			it('sets the active tab for the currently selected page', () => {
+				let newState = pages(oldState, {type: actions.SELECT_TAB, tabName: 'othertab' });
+				return expect(newState, 'not to be', oldState)
+				.and('to satisfy', {
+					thing: 'do not touch',
+					tabs: {
+						'test1': 'othertab'
+					}
+				});
 			});
 		});
 	});

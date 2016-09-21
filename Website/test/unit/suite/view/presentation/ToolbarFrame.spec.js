@@ -65,6 +65,7 @@ describe('ToolbarFrame', () => {
 				fireAction: sinon.spy(() => pageActions.fireAction).named('fireAction'),
 				updateValue: sinon.spy(() => pageActions.update).named('threebutton')
 			},
+			tabName: 'test/oneTab',
 			dirtyPages: [],
 			values: {
 				'test/twoset/threefield': 'different'
