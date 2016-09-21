@@ -46,7 +46,7 @@ describe('FormTab', () => {
 			actions: {
 				save: sinon.spy(() => pageActions.save).named('save'),
 				fireAction: sinon.spy(() => pageActions.fireAction).named('fireAction'),
-				updateValue: sinon.spy(() => pageActions.update).named('threebutton')
+				updateValue: sinon.spy(() => pageActions.update).named('updateValue')
 			},
 			dirtyPages: [],
 			values: {
