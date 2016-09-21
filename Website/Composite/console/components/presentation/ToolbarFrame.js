@@ -3,7 +3,7 @@ import Toolbar from 'console/components/presentation/Toolbar.js';
 import FormTab from 'console/components/presentation/FormTab.js';
 
 const ToolbarFrame = props => {
-	if (!(props.pageDef && props.tabDefs && props.fieldsetDefs)) return null;
+	if (!(props.pageDef && props.pageDef.tabs && props.tabDefs && props.fieldsetDefs)) return null;
 	let tabDef = props.tabDefs[props.tabName];
 	if (!tabDef) return null;
 	let buttons = props.pageDef.buttons.reduce((buttons, buttonName) => {

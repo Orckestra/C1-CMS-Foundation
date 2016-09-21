@@ -7,10 +7,16 @@ import Toolbar from 'console/components/presentation/Toolbar.js';
 import FormTab from 'console/components/presentation/FormTab.js';
 
 describe('ToolbarFrame', () => {
-	let renderer, props, state, pageActions;
+	let renderer, props, pageActions;
 	beforeEach(() => {
+		pageActions = {
+			fireAction: () => {},
+			update: () => {},
+			save: () => {}
+		};
 		props = {
 			pageDef: {
+				name: 'test',
 				tabs: ['test/oneTab'],
 				buttons: [
 					'test/save',
@@ -52,30 +58,23 @@ describe('ToolbarFrame', () => {
 				'test/oneset/onefield': {},
 				'test/oneset/twofield': { defaultValue: 'a default' },
 				'test/twoset/threefield': { defaultValue: 'overwritten' }
-			}
-		};
-		pageActions = {
-			fireAction: () => {},
-			update: () => {},
-			save: () => {}
-		};
-		state = {
+			},
+			tabName: 'test/oneTab',
+			dirtyPages: {},
+			values: {
+				'test/twoset/threefield': 'different'
+			},
 			actions: {
 				save: sinon.spy(() => pageActions.save).named('save'),
 				fireAction: sinon.spy(() => pageActions.fireAction).named('fireAction'),
 				updateValue: sinon.spy(() => pageActions.update).named('threebutton')
 			},
-			tabName: 'test/oneTab',
-			dirtyPages: [],
-			values: {
-				'test/twoset/threefield': 'different'
-			}
 		};
 		renderer = TestUtils.createRenderer();
 	});
 
 	it('renders a toolbar and a single contained tab', () => {
-		renderer.render(<ToolbarFrame name='test' {...props} {...state}/>);
+		renderer.render(<ToolbarFrame name='test' {...props}/>);
 		return expect(
 			renderer,
 			'to have rendered',
@@ -102,7 +101,7 @@ describe('ToolbarFrame', () => {
 	});
 
 	it('passes named actions to the toolbar', () => {
-		renderer.render(<ToolbarFrame name='test' {...props} {...state}/>);
+		renderer.render(<ToolbarFrame name='test' {...props}/>);
 		Promise.all([
 			expect(renderer,
 				'queried for', <Toolbar type='document' canSave={false} buttons={{}}/>,
@@ -114,11 +113,37 @@ describe('ToolbarFrame', () => {
 					'test/twobutton': { action: expect.it('to be', pageActions.fireAction) }
 				}
 			}),
-			expect(state.actions.save, 'to have a call satisfying', { args: ['test'] }),
-			expect(state.actions.fireAction, 'to have calls exhaustively satisfying', [
+			expect(props.actions.save, 'to have a call satisfying', { args: ['test'] }),
+			expect(props.actions.fireAction, 'to have calls exhaustively satisfying', [
 				{ args: ['oneaction', 'test'] },
 				{ args: ['twoaction', 'test'] },
 			])
 		]);
+	});
+
+	describe('when missing definitions', () => {
+		describe('for page', () => {
+			beforeEach(() => {
+				delete props.pageDef.tabs;
+				renderer.render(<ToolbarFrame name='test' {...props}/>);
+			});
+
+			it('renders nothing', () => expect(
+				renderer.getRenderOutput(),
+				'to equal', null
+			));
+		});
+
+		describe('for tab name', () => {
+			beforeEach(() => {
+				props.tabName = '';
+				renderer.render(<ToolbarFrame name='test' {...props}/>);
+			});
+
+			it('renders nothing', () => expect(
+				renderer.getRenderOutput(),
+				'to equal', null
+			));
+		});
 	});
 });
