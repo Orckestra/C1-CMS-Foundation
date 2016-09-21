@@ -40,9 +40,11 @@ module.exports = {
 		.clickDialogButton("OK")
 		.selectTreeNodeAction("Copy of Getting Started","Delete")
 		.clickDialogButton("OK")
+		.assertTreeNodeHasNoChild("Copy of Getting Started")
 		.selectPerspective("Data")
 		.selectTreeNodeAction("newNamespace.myTypeName","Delete")
 		.clickDialogButton("OK")
+		.assertTreeNodeHasNoChild("newNamespace.myTypeName")
 		
 					
 	},

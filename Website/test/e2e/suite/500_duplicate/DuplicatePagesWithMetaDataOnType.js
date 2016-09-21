@@ -51,15 +51,18 @@ module.exports = {
 		.selectTreeNodeAction("Getting Started","Publish")
 		.selectTreeNodeAction("Copy of Getting Started","Delete")
 		.clickDialogButton("OK")
+		.assertTreeNodeHasNoChild("Copy of Getting Started")
 		
 		.selectPerspective("Layout")
 		.openTreeNode("Metadata Fields")
 		.selectTreeNodeAction("newName","Delete Metadata Field")
 		.clickDialogButton("OK")
+		.assertTreeNodeHasNoChild("newName")
 		
 		.selectPerspective("Data")
 		.selectTreeNodeAction("newNamespace.myTypeName","Delete")
 		.clickDialogButton("OK")
+		.assertTreeNodeHasNoChild("newNamespace.myTypeName")
 				
 	},
 	afterEach: function (browser, done) {

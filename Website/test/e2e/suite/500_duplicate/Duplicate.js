@@ -19,6 +19,7 @@ module.exports = {
 		.selectPerspective("Content")
 		.selectTreeNodeAction("Copy of Getting Started","Delete")
 		.clickDialogButton("OK")
+		.assertTreeNodeHasNoChild("Copy of Getting Started")
 	},
 	afterEach: function (browser, done) {
 		done();

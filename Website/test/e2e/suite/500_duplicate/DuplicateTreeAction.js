@@ -29,6 +29,7 @@ module.exports = {
 		.selectPerspective("Content")
 		.selectTreeNodeAction("Copy of About this blog","Delete Blog Entry")
 		.clickDialogButton("OK")
+		.assertTreeNodeHasNoChild("2014 June","Copy of About this blog")
 		.selectPerspective("System")
 		.selectTreeNodeAction("Composite.Community.Blog.Entries.xml","Edit File")
 		.replaceTextInCodeMirror('<DuplicateDataAction Label="Duplicate Blog Entry" />','<EditDataAction Label="Edit Blog Entry" />')

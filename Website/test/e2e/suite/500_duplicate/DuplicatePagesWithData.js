@@ -25,6 +25,7 @@ module.exports = {
 		.selectPerspective("Content")
 		.selectTreeNodeAction("Copy of Venus Starter Site","Delete")
 		.clickDialogButton("OK")
+		.assertTreeNodeHasNoChild("Copy of Venus Starter Site")
 		
 				
 	},
