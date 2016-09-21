@@ -30,10 +30,10 @@ module.exports = {
 		.setFieldValue("Connection String:",browser.globals.connectionString)
 		.submitFormData('Next')
 		.submitFormData('Finish')
+		.selectFrameWithXpath('//*[local-name()="span"][contains(.,"completed")]')
+		.useXpath()
+		.waitForElementPresent('//*[local-name()="span"][contains(.,"completed")]',browser.globals.timeouts.save)
 				
-		.selectPerspective("System")
-		.assertTreeNodeHasNoChild("SqlServer Data Provider")
-		
 	},
 	afterEach: function (browser, done) {
 		done();
