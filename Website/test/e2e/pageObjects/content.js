@@ -23,7 +23,7 @@ module.exports = {
 				}
 				this.api.page.appWindow()
 					.enter()
-					.waitForElementNotPresent('dialogcover[style*="block"]', this.api.globals.timeouts.basic)
+					.waitForElementNotPresent('dialogcover[hidden="true"]', this.api.globals.timeouts.basic)
 					.waitForElementPresent('#explorer explorertoolbarbutton[label="'+perspective+'"]', this.api.globals.timeouts.basic)
 					.api.pause(200)
 					.click('#explorer explorertoolbarbutton[label="'+perspective+'"]')

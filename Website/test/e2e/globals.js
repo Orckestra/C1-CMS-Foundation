@@ -1,6 +1,7 @@
 var timeouts = {
 		basic: 10000,
-		save: 60000,
+		save: 120000,
+		little: 1000,
 	};
 module.exports = {
 	timeouts : timeouts,
