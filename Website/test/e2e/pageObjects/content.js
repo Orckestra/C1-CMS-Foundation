@@ -25,7 +25,7 @@ module.exports = {
 					.enter()
 					.waitForElementNotPresent('dialogcover[hidden="true"]', this.api.globals.timeouts.basic)
 					.waitForElementPresent('#explorer explorertoolbarbutton[label="'+perspective+'"]', this.api.globals.timeouts.basic)
-					.api.pause(200)
+					.api.pause(this.api.globals.timeouts.basic)
 					.click('#explorer explorertoolbarbutton[label="'+perspective+'"]')
 					.waitForFrameLoad('#stagedecks stagedeck[data-qa*="'+perspective+'"] iframe', this.api.globals.timeouts.basic)
 					.enterFrame('#stagedecks stagedeck[data-qa*="'+perspective+'"] iframe');
