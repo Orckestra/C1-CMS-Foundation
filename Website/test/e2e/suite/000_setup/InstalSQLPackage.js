@@ -18,6 +18,7 @@ module.exports = {
 		.clickDialogButton("Next")
 		.clickDialogButton("Next")
 		.clickDialogButton("Finish")
+		.pause(2000)
 		
 		browser
 		.selectPerspective("System")
