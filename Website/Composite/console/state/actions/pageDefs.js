@@ -42,7 +42,8 @@ export function loadPageDef(pageName) {
 			dispatch({ type: LOAD_PAGE_DEF_DONE, name: pageName });
 		})
 		.catch(err => {
-			dispatch({ type: LOAD_PAGE_DEF_FAILED, errorMessage: err.message, error: err });
+			dispatch({ type: LOAD_PAGE_DEF_FAILED, message: err.message, stack: err.stack });
+			console.error(err); // eslint-disable-line no-console
 		});
 	};
 }

@@ -17,7 +17,8 @@ export function fireAction(actionId, pageName, values) {
 			dispatch({ type: FIRE_ACTION_DONE, actionId, pageName });
 		})
 		.catch(err => {
-			dispatch({ type: FIRE_ACTION_FAILED, actionId, pageName, error: err });
+			dispatch({ type: FIRE_ACTION_FAILED, actionId, pageName, message: err.message, stack: err.stack });
+			console.error(err); // eslint-disable-line no-console
 		});
 	};
 }

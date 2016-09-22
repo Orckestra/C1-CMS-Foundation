@@ -21,7 +21,8 @@ export function loadValues(pageName) {
 			dispatch({ type: LOAD_VALUES_DONE, pageName });
 		})
 		.catch(err => {
-			dispatch({ type: LOAD_VALUES_FAILED, error: err });
+			dispatch({ type: LOAD_VALUES_FAILED, message: err.message, stack: err.stack });
+			console.error(err); // eslint-disable-line no-console
 		});
 	};
 }
@@ -32,7 +33,7 @@ export function saveValues(pageName) {
 		let state = getState().dataFields;
 		let fieldList = state.dirtyPages[pageName];
 		if (!fieldList) {
-			dispatch({ type: SAVE_VALUES_FAILED, pageName, error: new Error('No fields to save for ' + pageName)});
+			dispatch({ type: SAVE_VALUES_FAILED, pageName, message: 'No fields to save for ' + pageName});
 			return;
 		}
 		let body = fieldList.reduce((values, fieldName) => {
@@ -49,7 +50,8 @@ export function saveValues(pageName) {
 		})
 		.catch(err => {
 			dispatch(flagDirty(pageName, fieldList));
-			dispatch({ type: SAVE_VALUES_FAILED, error: err });
+			dispatch({ type: SAVE_VALUES_FAILED, message: err.message, stack: err.stack });
+			console.error(err); // eslint-disable-line no-console
 		});
 	};
 }

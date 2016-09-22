@@ -60,7 +60,7 @@ describe('Load/save values', () => {
 			.then(() =>
 				expect([dispatch], 'to have calls satisfying', [
 					{ spy: dispatch, args: [{ type: actions.LOAD_VALUES, pageName: 'testpage' }] },
-					{ spy: dispatch, args: [{ type: actions.LOAD_VALUES_FAILED, error: '404 Not Found' }] }
+					{ spy: dispatch, args: [{ type: actions.LOAD_VALUES_FAILED, message: '404 Not Found' }] }
 				])
 			);
 		});
@@ -130,7 +130,7 @@ describe('Load/save values', () => {
 					.then(() =>
 						expect([dispatch], 'to have calls satisfying', [
 							{ spy: dispatch, args: [{ type: actions.SAVE_VALUES, pageName: 'testpage' }] },
-							{ spy: dispatch, args: [{ type: actions.SAVE_VALUES_FAILED, error: 'No fields to save for testpage' }] }
+							{ spy: dispatch, args: [{ type: actions.SAVE_VALUES_FAILED, message: 'No fields to save for testpage' }] }
 						])
 					);
 			});
@@ -156,7 +156,7 @@ describe('Load/save values', () => {
 						{ spy: dispatch, args: [{ type: actions.SAVE_VALUES, pageName: 'testpage' }] },
 						{ spy: dispatch, args: [{ type: FLAG_PAGE_CLEAN, pageName: 'testpage' }] },
 						{ spy: dispatch, args: [{ type: FLAG_FIELDS_DIRTY, pageName: 'testpage', fieldNames: ['field1', 'field2', 'field3'] }] },
-						{ spy: dispatch, args: [{ type: actions.SAVE_VALUES_FAILED, error: '404 Not Found' }] }
+						{ spy: dispatch, args: [{ type: actions.SAVE_VALUES_FAILED, message: '404 Not Found' }] }
 					])
 				);
 			});

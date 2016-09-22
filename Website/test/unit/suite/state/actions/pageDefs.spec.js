@@ -103,7 +103,7 @@ describe('Get page definitions', () => {
 			.then(() =>
 				expect([dispatch], 'to have calls satisfying', [
 					{ spy: dispatch, args: [{ type: actions.LOAD_PAGE_DEF, name: 'testPage' }] },
-					{ spy: dispatch, args: [{ type: actions.LOAD_PAGE_DEF_FAILED, error: '404 Not Found' }] }
+					{ spy: dispatch, args: [{ type: actions.LOAD_PAGE_DEF_FAILED, message: '404 Not Found' }] }
 				])
 			);
 		});

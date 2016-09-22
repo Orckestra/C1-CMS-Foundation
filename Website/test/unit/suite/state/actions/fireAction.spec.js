@@ -61,7 +61,7 @@ describe('Fire server action', () => {
 			.then(() =>
 				expect([dispatch], 'to have calls satisfying', [
 					{ spy: dispatch, args: [{ type: actions.FIRE_ACTION,  actionId, pageName: 'testPage' }] },
-					{ spy: dispatch, args: [{ type: actions.FIRE_ACTION_FAILED, actionId, pageName: 'testPage', error: '404 Not Found' }] }
+					{ spy: dispatch, args: [{ type: actions.FIRE_ACTION_FAILED, actionId, pageName: 'testPage', message: '404 Not Found' }] }
 				])
 			);
 		});
