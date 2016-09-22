@@ -25,14 +25,24 @@ module.exports = {
 		.openTreeNode("Installed Packages","Composite.Tools")
 		.assertTreeNodeHasChild("Composite.Tools","Composite.Tools.SqlServerDataProvider")
 		
+		.openTreeNode("/")
+		.openTreeNode("Composite")
+		.openTreeNode("Composite","InstalledPackages")
+		.openTreeNode("InstalledPackages","content")
+		.openTreeNode("content","views")
+		.openTreeNode("views","Composite.Tools.SqlServerDataProvider")
+		.selectTreeNodeAction("SqlServerDataProvider.aspx.cs","Edit File")
+		.replaceTextInCodeMirror('ConsoleMessageQueueFacade.Enqueue(new RebootConsoleMessageQueueItem(), null);','//ConsoleMessageQueueFacade.Enqueue(new RebootConsoleMessageQueueItem(), null);')
+		.clickSave()
+		.closeDocumentTab("SqlServerDataProvider.aspx.cs")
+		
 		.selectTreeNodeAction("SqlServer Data Provider","Convert to SQL")
 		.selectDocumentTab("Convert to SQL")
 		.setFieldValue("Connection String:",browser.globals.connectionString)
 		.submitFormData('Next')
 		.submitFormData('Finish')
-		.selectFrameWithXpath('//*[local-name()="span"][contains(.,"completed")]')
-		.useXpath()
-		.waitForElementPresent('//*[local-name()="span"][contains(.,"completed")]',browser.globals.timeouts.save)
+		.waitForDialog(browser.globals.timeouts.save)
+		.refresh()
 				
 	},
 	afterEach: function (browser, done) {
