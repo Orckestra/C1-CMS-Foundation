@@ -18,14 +18,11 @@ describe('DocumentPage', () => {
 				}
 			},
 			dataFields: {
-				dirtyFields: [],
+				dirtyPages: {},
 				'one': 1,
 				'two': 2
 			},
-			buttonDefs: {}, // required for FormTab
-			tabDefs: {}, // required for FormTab
-			fieldsetDefs: {}, // required for FormTab
-			dataFieldDefs: {}, // required for FormTab
+			buttonDefs: {} // required for ToolbarFrame
 		};
 		store = {
 			subscribe: sinon.spy().named('subscribe'),
@@ -34,21 +31,16 @@ describe('DocumentPage', () => {
 		};
 		props = {
 			test: 'value', // Not required - should be there anyway when passed through
-			name: 'testName', // required for FormTab
-			actions: {}, // required for FormTab
-			pageDef: {}, // required for FormTab
-			values: {} // required for FormTab
+			name: 'testName', // required for ToolbarFrame
+			pageDef: {} // required for ToolbarFrame
 		};
 	});
 
-	it('renders a FormTab with props, values and actions', () => {
+	it('renders a ToolbarFrame with props, values and actions', () => {
 		renderer.render(<DocumentPage store={store} {...props}/>);
 		return expect(renderer, 'to have rendered', <ToolbarFrame
 			{...props}
-			values={state.dataFields}
 			buttonDefs={{}}
-			fieldsetDefs={{}}
-			dataFieldDefs={{}}
 			actions={{
 				updateValue: expect.it('to be a function')
 					.and('when called with', ['pagename', 'fieldname'], 'to be a function')
@@ -60,7 +52,7 @@ describe('DocumentPage', () => {
 					.and('when called with', ['pagename', 'actionId'], 'to be a function')
 					.and('when called with', ['pagename', 'actionId'], 'when called with', [['val1', 'val2']], 'to be undefined') // Result is call to store.dispatch
 			}}
-			dirtyPages={[]}/>)
+			dirtyPages={state.dataFields.dirtyPages}/>)
 		.then(() => expect(store.dispatch, 'to have calls satisfying', [
 			{ args: [{ type: UPDATE_VALUE, pageName: 'pagename', fieldName: 'fieldname', newValue: 'value' }]},
 			{ args: [expect.it('to be a function')]},

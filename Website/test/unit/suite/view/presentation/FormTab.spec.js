@@ -10,6 +10,7 @@ describe('FormTab', () => {
 	beforeEach(() => {
 		renderer = TestUtils.createRenderer();
 		props = {
+			pageName: 'test',
 			tabDef: {
 				fieldsets: [
 					'test/oneset',

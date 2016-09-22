@@ -4,7 +4,7 @@ import React from 'react';
 import TestUtils from 'react-addons-test-utils';
 import ToolbarFrame from 'console/components/presentation/ToolbarFrame.js';
 import Toolbar from 'console/components/presentation/Toolbar.js';
-import FormTab from 'console/components/presentation/FormTab.js';
+import TabContent from 'console/components/container/TabContent.js';
 
 describe('ToolbarFrame', () => {
 	let renderer, props, pageActions;
@@ -83,7 +83,7 @@ describe('ToolbarFrame', () => {
 					canSave={false}
 					type='document'
 					buttons={{}}/>
-				<FormTab name='test/oneTab' actions={{}} values={{}} fieldsetDefs={{}} dataFieldDefs={{}} tabDef={{}}/>
+				<TabContent/>
 			</div>
 		)
 		.and(
@@ -119,31 +119,5 @@ describe('ToolbarFrame', () => {
 				{ args: ['twoaction', 'test'] },
 			])
 		]);
-	});
-
-	describe('when missing definitions', () => {
-		describe('for page', () => {
-			beforeEach(() => {
-				delete props.pageDef.tabs;
-				renderer.render(<ToolbarFrame name='test' {...props}/>);
-			});
-
-			it('renders nothing', () => expect(
-				renderer.getRenderOutput(),
-				'to equal', null
-			));
-		});
-
-		describe('for tab name', () => {
-			beforeEach(() => {
-				props.tabName = '';
-				renderer.render(<ToolbarFrame name='test' {...props}/>);
-			});
-
-			it('renders nothing', () => expect(
-				renderer.getRenderOutput(),
-				'to equal', null
-			));
-		});
 	});
 });
