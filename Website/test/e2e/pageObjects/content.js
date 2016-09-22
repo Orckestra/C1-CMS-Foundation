@@ -18,14 +18,11 @@ module.exports = {
 	commands: [
 		{
 			enter: function (perspective) {
-				if(perspective==null){
-					perspective = "Content"; // for backward compatibility
-				}
+				perspective = perspective || "Content"; // for backward compatibility
 				this.api.page.appWindow()
 					.enter()
 					.waitForElementNotPresent('dialogcover[hidden="true"]', this.api.globals.timeouts.basic)
 					.waitForElementPresent('#explorer explorertoolbarbutton[label="'+perspective+'"]', this.api.globals.timeouts.basic)
-					.api.pause(this.api.globals.timeouts.basic)
 					.click('#explorer explorertoolbarbutton[label="'+perspective+'"]')
 					.waitForFrameLoad('#stagedecks stagedeck[data-qa*="'+perspective+'"] iframe', this.api.globals.timeouts.basic)
 					.enterFrame('#stagedecks stagedeck[data-qa*="'+perspective+'"] iframe');
@@ -39,6 +36,14 @@ module.exports = {
 			},
 			prepare: function (perspective) {
 				this.api.page.appWindow().prepare();
+				this
+					.enter(perspective)
+					.waitForElementVisible('@browserFrame', this.api.globals.timeouts.basic)
+					.waitForFrameLoad('@browserFrame', this.api.globals.timeouts.basic);
+				return this;
+			},
+			waitForBrowserFrame: function (perspective) {
+				perspective = perspective || "Content"; // for backward compatibility
 				this
 					.enter(perspective)
 					.waitForElementVisible('@browserFrame', this.api.globals.timeouts.basic)
