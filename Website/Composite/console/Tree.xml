@@ -10,7 +10,7 @@
 	    <Children>
 				<Element Label="Languages" Id="language.edit.new" Icon="log">
 					<Actions>
-						<CustomUrlAction Label="Edit Language" Url="~/Composite/console/edit-language.html" Icon="log-viewlog" />
+						<CustomUrlAction Label="Edit Language" Url="~/Composite/console/console.html?page=edit-language" Icon="log-viewlog" />
 					</Actions>
 				</Element>
 	    </Children>

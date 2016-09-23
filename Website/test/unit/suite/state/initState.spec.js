@@ -18,8 +18,7 @@ describe('initState', () => {
 				{ spy: store.dispatch, args: [expect.it('to be a function')]},
 				{ spy: store.dispatch, args: [expect.it('to be a function')]},
 				{ spy: store.dispatch, args: [{ type: REPLACE_PAGES }]},
-				{ spy: store.dispatch, args: [{ type: SELECT_PAGE }]},
-				{ spy: store.dispatch, args: [{ type: SELECT_TAB }]}
+				{ spy: store.dispatch, args: [{ type: SELECT_PAGE }]}
 			])
 		)
 	);
