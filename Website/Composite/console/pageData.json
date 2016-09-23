@@ -5,19 +5,19 @@
     "type": "document",
     "tabs": [
       {
-        "name": "edit-language/tab",
+        "name": "edit-language/form",
         "fieldsets": [
           {
-            "name": "edit-language/tab/properties",
+            "name": "edit-language/form/properties",
             "label": "Language Properties",
             "fields": [
               {
-                "name": "edit-language/tab/properties/url-mapping-name",
+                "name": "edit-language/form/properties/url-mapping-name",
                 "headline": "URL mapping name",
                 "help": "Base name in URLs"
               },
               {
-                "name": "edit-language/tab/properties/pimp-my-select",
+                "name": "edit-language/form/properties/pimp-my-select",
                 "headline": "Xzibit says",
                 "type": "select",
                 "options": [
@@ -29,20 +29,20 @@
                 "help": "Wise words from a man who knows about putting things in other things"
               },
               {
-                "name": "edit-language/tab/properties/check-one",
+                "name": "edit-language/form/properties/check-one",
                 "headline": "Some checkboxes",
                 "type": "checkbox",
                 "help": "Check it #1",
                 "label": "The First"
               },
               {
-                "name": "edit-language/tab/properties/check-two",
+                "name": "edit-language/form/properties/check-two",
                 "type": "checkbox",
                 "help": "Check it #2",
                 "label": "The Last"
               },
               {
-                "name": "edit-language/tab/properties/check-three",
+                "name": "edit-language/form/properties/check-three",
                 "type": "checkbox",
                 "help": "Check it #3",
                 "label": "The Everything"
@@ -50,21 +50,21 @@
             ]
           },
           {
-            "name": "edit-language/tab/stuff",
+            "name": "edit-language/form/stuff",
             "label": "Some things",
             "fields": [
               {
-                "name": "edit-language/tab/stuff/thing",
+                "name": "edit-language/form/stuff/thing",
                 "headline": "A value"
               }
             ]
           },
           {
-            "name": "edit-language/tab/morestuff",
+            "name": "edit-language/form/morestuff",
             "label": "Some more things",
             "fields": [
               {
-                "name": "edit-language/tab/morestuff/thing",
+                "name": "edit-language/form/morestuff/thing",
                 "headline": "A value"
               }
             ]
@@ -74,41 +74,75 @@
     ],
     "buttons": [
       {
+        "type": "button",
         "name": "edit-language/save",
         "label": "Save",
         "icon": "save",
         "action": "save"
       }
-    ]
-  },
-  {
-    "name": "other-page",
-    "label": "Other page",
-    "type": "document",
-    "tabs": [
+    ],
+    "toolbars": [
       {
-        "name": "other-page/tab",
-        "fieldsets": [
+        "name": "edit-language/toolbar",
+        "style": "light rightAligned",
+        "items": [
           {
-            "name": "other-page/tab/stuff",
-            "label": "Some things",
-            "fields": [
-              {
-                "name": "other-page/tab/stuff/thing",
-                "headline": "A value"
-              }
-            ]
+            "type": "button",
+            "style": "main",
+            "name": "edit-language/toolbar/save",
+            "label": "Save",
+            "icon": "save",
+            "action": "save"
           }
         ]
       }
-    ],
-    "buttons": [
+    ]
+  },
+  {
+    "name": "server-log",
+    "label": "Server log",
+    "type": "log",
+    "toolbars": [
       {
-        "name": "other-page/save",
-        "label": "Save",
-        "icon": "save",
-        "action": "save",
-        "saveButton": true
+        "name": "server-log/toolbar",
+        "style": "light",
+        "items": [
+          {
+            "type": "select",
+            "name": "server-log/toolbar/date",
+            "options": [
+              { "value": "2016-09-23" },
+              { "value": "2016-09-22" },
+              { "value": "2016-09-21" },
+              { "value": "2016-09-20" }
+            ]
+          },
+          {
+            "type": "button",
+            "name": "server-log/toolbar/delete",
+            "label": "Delete old",
+            "icon": "trash",
+            "action": "deleteOld"
+          },
+          {
+            "type": "button",
+            "name": "server-log/toolbar/refresh",
+            "label": "Refresh",
+            "icon": "refresh",
+            "action": "refresh"
+          },
+          {
+            "type": "checkboxGroup",
+            "name": "server-log/toolbar/levels",
+            "checkboxes": [
+              { "name": "server-log/toolbar/levels/critical", "label": "Critical", "default": true },
+              { "name": "server-log/toolbar/levels/error", "label": "Error", "default": true },
+              { "name": "server-log/toolbar/levels/warning", "label": "Warning", "default": true },
+              { "name": "server-log/toolbar/levels/info", "label": "Information", "default": true },
+              { "name": "server-log/toolbar/levels/verbose", "label": "Verbose", "default": false }
+            ]
+          }
+        ]
       }
     ]
   }
