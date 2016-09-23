@@ -347,7 +347,7 @@ namespace Composite.Plugins.GlobalSettings.GlobalSettingsProviders
         }
 
         private const string _applicationShortNamePropertyName = "applicationShortName";
-        [ConfigurationProperty(_applicationShortNamePropertyName, IsRequired = true, DefaultValue = "C1")]
+        [ConfigurationProperty(_applicationShortNamePropertyName, IsRequired = true, DefaultValue = "CMS")]
         public string ApplicationShortName
         {
             get { return (string)base[_applicationShortNamePropertyName]; }
