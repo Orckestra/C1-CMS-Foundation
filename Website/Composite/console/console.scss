@@ -322,9 +322,11 @@ fieldset {
 
 		.helper {
 			position: absolute;
+			z-index: 100;
 			top: 2px;
 			left: calc(100% - 2px);
 			width: max-content;
+			max-width: 200px;
 			background-color: #fff;
 			box-shadow: 0px 0px 12px -1px rgba(204, 204, 204, 0.75);
 			border-radius: 5px;
