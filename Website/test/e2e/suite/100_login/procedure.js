@@ -4,6 +4,7 @@ module.exports = {
 		login = browser.page.login();
 		startScreen = browser.page.startScreen();
 		login
+			.isShown()
 			.setUsername('admin')
 			.setPassword('123456')
 			.click('@submitButton')
