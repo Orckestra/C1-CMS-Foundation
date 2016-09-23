@@ -32,7 +32,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 List<IData> publicCompositions = publicPage.GetMetaData(DataScopeIdentifier.Public).ToList();
 
                 Guid pageId = administrativePage.Id;
-                Guid versionId = administrativePage.Id;
+                Guid versionId = administrativePage.VersionId;
 
                 List<IPagePlaceholderContent> administrativePlaceholders;
                 using (new DataScope(DataScopeIdentifier.Administrated))

@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Composite.Data;
+using System.Xml;
+using System.Xml.Linq;
 using Composite.C1Console.Elements;
 using Composite.Core.ResourceSystem;
 using Composite.C1Console.Security;
+using Composite.Core;
+using Composite.Core.IO;
 using Composite.Core.Serialization;
 
 
@@ -146,9 +149,8 @@ namespace Composite.C1Console.Trees
             }
 
             Tree tree = TreeFacade.GetTree(treeId);
-            if (tree == null) return null;
 
-            return tree.GetActionNode(actionNodeId);
+            return tree?.GetActionNode(actionNodeId);
         }
 
 
@@ -166,5 +168,41 @@ namespace Composite.C1Console.Trees
         {
             this.OwnerNode.Tree.BuildResult.AddValidationError(ValidationError.Create(this.XPath, stringName, args));
         }
-	}
+
+
+        internal string LoadAndValidateCustomFormMarkupPath(string customFormMarkupPath)
+        {
+            string path;
+
+            try
+            {
+                path = PathUtil.Resolve(customFormMarkupPath);
+                if (!C1File.Exists(path))
+                {
+                    AddValidationError("TreeValidationError.CustomFormMarkup.MissingFile", path);
+                    return customFormMarkupPath;
+                }
+            }
+            catch
+            {
+                AddValidationError("TreeValidationError.CustomFormMarkup.BadMarkupPath", customFormMarkupPath);
+                return customFormMarkupPath;
+            }
+
+
+            try
+            {
+                XDocument.Load(path);
+            }
+            catch(Exception ex)
+            {
+                Log.LogError(nameof(ActionNode), $"Failed to load xml file '{path}'");
+                Log.LogError(nameof(ActionNode), ex);
+
+                AddValidationError("TreeValidationError.CustomFormMarkup.InvalidXml", customFormMarkupPath);
+            }
+
+            return path;
+        }
+    }
 }

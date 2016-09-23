@@ -22,32 +22,9 @@ namespace Composite.C1Console.Trees.Foundation
         private static readonly IList<ConstructorInfo> Tuples_Constructors;
         private static readonly IList<MethodInfo[]> Tuples_Members;
 
-        //private static readonly IList<ConstructorInfo> AnonymousTypes_Constructors;
-        //private static readonly IList<MethodInfo[]> AnonymousTypes_Members;
-
         static DateTimeFormater()
         {
-            var objects = new object[]
-                {
-                    new {Item1 = 0},
-                    new {Item1 = 0, Item2 = 0},
-                    new {Item1 = 0, Item2 = 0, Item3 = 0},
-                    new {Item1 = 0, Item2 = 0, Item3 = 0, Item4 = 0},
-                    new {Item1 = 0, Item2 = 0, Item3 = 0, Item4 = 0, Item5 = 0},
-                    new {Item1 = 0, Item2 = 0, Item3 = 0, Item4 = 0, Item5 = 0, Item6 = 0}
-                };
-
-            //AnonymousTypes_Constructors = new List<ConstructorInfo>();
-            //AnonymousTypes_Members = new List<MethodInfo[]>();
-            //for (int i = 0; i < objects.Length; i++)
-            //{
-            //    var type = objects[i].GetType();
-
-            //    AnonymousTypes_Constructors.Add(type.GetConstructors()[0]);
-            //    AnonymousTypes_Members.Add(type.GetProperties().Select(p => p.GetGetMethod()).ToArray());
-            //}
-
-            var tupleTypes = new Type[]
+            var tupleTypes = new[]
                 {
                     typeof (Tuple<int>),
                     typeof (Tuple<int, int>),
@@ -66,6 +43,20 @@ namespace Composite.C1Console.Trees.Foundation
                 Tuples_Constructors.Add(type.GetConstructors().Single());
                 Tuples_Members.Add(type.GetProperties().Select(p => p.GetGetMethod()).ToArray());
             }
+        }
+
+
+        public bool IsDateTimeGroupingValue(object value)
+        {
+            if (value == null)
+            {
+                return false;
+            }
+
+            var type = value.GetType();
+            return type.FullName.StartsWith(typeof(Tuple).FullName) 
+                && type.IsGenericType
+                && type.GetGenericArguments().All(a => a == typeof(int));
         }
 
 
@@ -118,7 +109,7 @@ namespace Composite.C1Console.Trees.Foundation
 
         public string Serialize(object value)
         {
-            if (this.IsFormated == false)
+            if (!this.IsFormated)
             {
                 TypeConverter typeConverter = TypeDescriptor.GetConverter(typeof(DateTime));
                 return typeConverter.ConvertToString(value);
@@ -299,69 +290,41 @@ namespace Composite.C1Console.Trees.Foundation
             Verify.That(_fieldCount < Tuples_Constructors.Count, "To many fields specified: {0}", _fieldCount);
         }
 
-        public bool IsFormated
-        {
-            get { return _format != null; }
-        }
+        public bool IsFormated => _format != null;
 
 
-
-        public bool HasYear
-        {
-            get { return _yearFormat != null; }
-        }
+        public bool HasYear => _yearFormat != null;
 
 
-
-        public bool HasMonth
-        {
-            get { return _monthFormat != null; }
-        }
+        public bool HasMonth => _monthFormat != null;
 
 
-
-        public bool HasDay
-        {
-            get { return _dayFormat != null; }
-        }
+        public bool HasDay => _dayFormat != null;
 
 
-
-        public bool HasHour
-        {
-            get { return _hourFormat != null; }
-        }
+        public bool HasHour => _hourFormat != null;
 
 
-
-        public bool HasMinute
-        {
-            get { return _minuteFormat != null; }
-        }
+        public bool HasMinute => _minuteFormat != null;
 
 
-
-        public bool HasSecond
-        {
-            get { return _secondFormat != null; }
-        }
-
+        public bool HasSecond => _secondFormat != null;
 
 
         private void SetFormat(string pattern, ref string format)
         {
-            if ((this._format.Contains(pattern)) && (format == null))
+            if (_format.Contains(pattern) && format == null)
             {
                 format = pattern;
                 _fieldCount++;
             }
         }
 
-        public static PropertyInfo DateTime_Year = typeof(DateTime).GetProperty("Year");
-        public static PropertyInfo DateTime_Month = typeof(DateTime).GetProperty("Month");
-        public static PropertyInfo DateTime_Day = typeof(DateTime).GetProperty("Day");
-        public static PropertyInfo DateTime_Hour = typeof(DateTime).GetProperty("Hour");
-        public static PropertyInfo DateTime_Minute = typeof(DateTime).GetProperty("Minute");
-        public static PropertyInfo DateTime_Second = typeof(DateTime).GetProperty("Second");
+        public static PropertyInfo DateTime_Year = typeof(DateTime).GetProperty(nameof(DateTime.Year));
+        public static PropertyInfo DateTime_Month = typeof(DateTime).GetProperty(nameof(DateTime.Month));
+        public static PropertyInfo DateTime_Day = typeof(DateTime).GetProperty(nameof(DateTime.Day));
+        public static PropertyInfo DateTime_Hour = typeof(DateTime).GetProperty(nameof(DateTime.Hour));
+        public static PropertyInfo DateTime_Minute = typeof(DateTime).GetProperty(nameof(DateTime.Minute));
+        public static PropertyInfo DateTime_Second = typeof(DateTime).GetProperty(nameof(DateTime.Second));
     }
 }
