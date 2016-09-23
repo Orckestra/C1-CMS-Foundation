@@ -15,7 +15,10 @@ const ToolbarFrame = props => {
 		return buttons;
 	}, {});
 	return (
-		<div className='page'>
+		<div className='page'
+			onContextMenu={event => {
+				event.preventDefault(); // To not show the default menu
+			}}>
 			<Toolbar
 				canSave={!!props.dirtyPages[props.name]}
 				type='document'

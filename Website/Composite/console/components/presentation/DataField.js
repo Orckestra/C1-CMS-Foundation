@@ -40,6 +40,9 @@ const DataField = props => {
 			id={props.name}
 			value={props.value}
 			ref={comp => { input = comp; }}
+			onContextMenu={event => {
+				event.stopPropagation(); // to ensure default context menu is shown here
+			}}
 			onChange={handleChange}/>;
 	}
 
