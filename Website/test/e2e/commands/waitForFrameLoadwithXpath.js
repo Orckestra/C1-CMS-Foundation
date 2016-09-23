@@ -29,8 +29,26 @@ WaitForFrameLoad.prototype.command = function(selector, timeout) {
 
 	function checkFrameLoaded() {
 		client.api.execute(function (selector) {
-			var frame = document.evaluate('count('+selector+')',document,null,XPathResult.ANY_TYPE,null);
-			return frame.numberValue > 0;
+			function search(selector, frames) {
+				var i, childFrame, selection;
+				for (i = 0; i < frames.length; i++) {
+					try {
+						childFrame = frames[i];
+						alert(childFrame.name || 'unnamed' + ' ' + i);
+						selection = childFrame.document.evaluate('count('+selector+')',document,null,XPathResult.ANY_TYPE,null);
+						if(selection.numberValue > 0){
+							return true;
+						}
+						if(childFrame.length>0){
+							search(selector,childFrame);
+						}
+					} catch (e) {
+						//alert(e.message);
+					}
+				}
+				return false;
+			}
+			return search(selector, window);
 		}, [selector], (result) => {
 			if (result.value === true) {
 				clearTimeout(timeoutTimer);

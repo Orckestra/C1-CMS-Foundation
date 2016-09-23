@@ -126,6 +126,6 @@ module.exports = {
       .waitForElementNotPresent('#loading', browser.globals.timeouts.save)
       .waitForElementVisible('body', browser.globals.timeouts.basic)
       .page.appWindow()
-        .waitForFrameLoad('@appFrame', browser.globals.timeouts.little);
+        .waitForFrameLoad('@appFrame', browser.globals.timeouts.basic);
 	}
 }

@@ -6,9 +6,11 @@ function SelectPerspective() {
 
 SelectPerspective.prototype.command = function (perspective) {
     var content = this.client.api.page.content();
+	content.waitForBrowserFrame(perspective);
 	var systemView = this.client.api.page.systemView();
 	systemView
-        .enter(perspective);
+        .enter(perspective)
+		
 	return this.client.api;
 };
 

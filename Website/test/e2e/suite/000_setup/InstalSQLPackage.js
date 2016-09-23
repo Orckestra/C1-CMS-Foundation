@@ -18,6 +18,7 @@ module.exports = {
 		.clickDialogButton("Next")
 		.clickDialogButton("Next")
 		.clickDialogButton("Finish")
+		.pause(2000)
 		
 		browser
 		.selectPerspective("System")
@@ -25,15 +26,25 @@ module.exports = {
 		.openTreeNode("Installed Packages","Composite.Tools")
 		.assertTreeNodeHasChild("Composite.Tools","Composite.Tools.SqlServerDataProvider")
 		
+		.openTreeNode("/")
+		.openTreeNode("Composite")
+		.openTreeNode("Composite","InstalledPackages")
+		.openTreeNode("InstalledPackages","content")
+		.openTreeNode("content","views")
+		.openTreeNode("views","Composite.Tools.SqlServerDataProvider")
+		.selectTreeNodeAction("SqlServerDataProvider.aspx.cs","Edit File")
+		.replaceTextInCodeMirror('ConsoleMessageQueueFacade.Enqueue(new RebootConsoleMessageQueueItem(), null);','//ConsoleMessageQueueFacade.Enqueue(new RebootConsoleMessageQueueItem(), null);')
+		.clickSave()
+		.closeDocumentTab("SqlServerDataProvider.aspx.cs")
+		
 		.selectTreeNodeAction("SqlServer Data Provider","Convert to SQL")
 		.selectDocumentTab("Convert to SQL")
 		.setFieldValue("Connection String:",browser.globals.connectionString)
 		.submitFormData('Next')
 		.submitFormData('Finish')
+		.waitForDialog(browser.globals.timeouts.save)
+		.refresh()
 				
-		.selectPerspective("System")
-		.assertTreeNodeHasNoChild("SqlServer Data Provider")
-		
 	},
 	afterEach: function (browser, done) {
 		done();
