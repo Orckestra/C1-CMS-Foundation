@@ -8,14 +8,40 @@ $fieldsetBackgroundColor: #F7F7F7;
 $fieldsetLegendColor: #22B980;
 $fieldFocusColor: #22B980;
 $fieldLabelColor: #999;
+$scrollbarThumbColor: #CACACA;
+$scrollbarTrackColor: #FAFAFA;
 
 *:focus {
 	outline: 0;
 }
 
-body {
+::-webkit-scrollbar {
+  width: 13px;
+  height: 13px;
+  background: $scrollbarTrackColor;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $scrollbarThumbColor;
+  border: 3px solid $scrollbarTrackColor;
+  border-radius: 7px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: $buttonHighlightColor;
+}
+
+html, body {
 	margin: 0;
+	padding: 0;
+	overflow: hidden;
 	height: 100%;
+	width: 100%;
+}
+
+div.entry, div.page {
+	width: inherit;
+	height: inherit;
 }
 
 body, input, textarea, select, button {
@@ -80,9 +106,20 @@ div.toolbar.document-toolbar {
 }
 
 div.scrollbox {
+	display: block;
 	border-top: 1px solid $borderColor;
-	padding: 30px 30px 0 40px;
-	height: calc(100% - 66px);
+	padding: 30px 30px 20px 40px;
+	height: calc(100% - 67px);
+	width: 100%;
+	box-sizing: border-box;
+	overflow: auto;
+	position: relative;
+
+	&::after {
+		content: '';
+		display: block;
+		clear: both;
+	}
 }
 
 fieldset {
