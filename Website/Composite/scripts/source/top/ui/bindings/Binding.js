@@ -618,7 +618,7 @@ Binding.prototype._initializeBindingTestFeatures = function () {
 
 	if (Application.isTestEnvironment) {
 		var label = this.getProperty("label");
-		if (label && label.indexOf("${string:") > -1) {
+		if (label && label.indexOf && label.indexOf("${string:") > -1) {
 			this.setProperty("data-qa", label);
 		}
 	}
