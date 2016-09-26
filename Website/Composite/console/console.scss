@@ -117,6 +117,7 @@ div.scrollbox {
 
 	&.full {
 		height: 100%;
+		border-top: 0 none transparent;
 	}
 
 	&::after {
@@ -351,18 +352,20 @@ fieldset {
 		height: 24px;
 		width: 380px;
 		margin-bottom: 10px;
+		color: #999;
 
 		svg {
 			height: 24px;
 			width: 24px;
-			stroke: #333;
-			fill: #aaa;
+			//stroke: #aaa;
+			//fill: #aaa;
 		}
 
 		span {
 			line-height: 24px;
 			margin-left: 15px;
 			vertical-align: 10px;
+			color: $baseFontColor;
 		}
 	}
 
