@@ -12,8 +12,7 @@ module.exports = {
 			},
 			enter: function () {
 				this.api.page.appWindow().enter(); // Start page shows inside appwindow.
-				this.waitForElementPresent('@startFrame', 3000);
-				this.api.pause(1000);
+				this.waitForElementPresent('@startFrame', this.api.globals.timeouts.basic);
 				this.enterFrame('@startFrame'); // Enter the frame containing it
 				return this;
 			},
