@@ -6,13 +6,15 @@ import { Provider } from 'react-redux';
 import configureStore from 'console/state/store.js';
 import DockTab from 'console/components/container/DockTab.js';
 import DocumentPage from 'console/components/container/DocumentPage.js';
+import Spritesheet from 'console/components/presentation/Spritesheet.js';
 import 'console/console.scss!';
 import 'react-select/scss/default.scss!';
 import 'console/iconIndex.js';
 
 let pageProps = {
 	pageTypes: {
-		document: DocumentPage
+		document: DocumentPage,
+		spritesheet: Spritesheet
 	}
 };
 

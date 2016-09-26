@@ -145,5 +145,10 @@
         ]
       }
     ]
-  }
+  },
+	{
+		"name": "svg-sprites",
+		"label": "SVG Spritesheet",
+		"type": "spritesheet"
+	}
 ]

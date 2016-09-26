@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg width="22px" height="18px" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+<svg width="22px" height="18px" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" viewBox="0 0 22 18">
   <g stroke="#666" fill="white">
-    <g id="refresh" viewBox="0 0 22 18" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linejoin="round" stroke-linecap="round" >
+    <g id="refresh" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linejoin="round" stroke-linecap="round" >
       <path d="M0,7.2579087 L2.54465217,11.0479522 L5.47095652,7.5436913" id="Stroke-3597"></path>
       <path d="M15,7.2579087 L17.5446522,11.0479522 L20.4709565,7.5436913" id="Stroke-3597-Copy" transform="translate(17.735478, 9.152930) rotate(-180.000000) translate(-17.735478, -9.152930) "></path>
       <path d="M18.0326087,7.42937826 C18.795,11.454987 15.9572609,15.3975087 12.0896087,16.3114652 C9.39247826,16.9496826 6.68804348,16.0941609 4.84917391,14.2817696" id="Stroke-3599"></path>

@@ -12,7 +12,8 @@ const ActionButton = ({ label, action, icon, disabled }) => (
 ActionButton.propTypes = {
 	label: PropTypes.string.isRequired,
 	action: PropTypes.func.isRequired,
-	icon: PropTypes.string
+	icon: PropTypes.string,
+	disabled: PropTypes.bool
 };
 
 export default ActionButton;

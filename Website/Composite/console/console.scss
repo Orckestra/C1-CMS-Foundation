@@ -115,6 +115,10 @@ div.scrollbox {
 	overflow: auto;
 	position: relative;
 
+	&.full {
+		height: 100%;
+	}
+
 	&::after {
 		content: '';
 		display: block;
@@ -338,5 +342,33 @@ fieldset {
 			opacity: 0;
 			transition: opacity 0.2s, visibility 0.2s
 		}
+	}
+}
+
+.iconlist {
+	.cell {
+		float: left;
+		height: 24px;
+		width: 380px;
+		margin-bottom: 10px;
+
+		svg {
+			height: 24px;
+			width: 24px;
+			stroke: #333;
+			fill: #aaa;
+		}
+
+		span {
+			line-height: 24px;
+			margin-left: 15px;
+			vertical-align: 10px;
+		}
+	}
+
+	&:after {
+		content: '';
+		display: block;
+		clear: both;
 	}
 }

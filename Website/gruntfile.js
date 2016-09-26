@@ -205,7 +205,31 @@ module.exports = function (grunt) {
 		grunt.loadNpmTasks('grunt-svgmin');
 		grunt.config("svgmin", {
         options: {
-            plugins: []
+            plugins: [
+							{ removeDesc: false },
+							{ removeUselessDefs: false },
+							{ removeEmptyAttrs: false },
+							{ removeHiddenElems: false },
+							{ removeEmptyText: false },
+							{ removeEmptyContainers: false },
+							{ cleanUpEnableBackground: false },
+							{ minifyStyles: false },
+							{ convertStyleToAttrs: false },
+							{ convertColors: false },
+							{ convertPathData: false },
+							{ convertTransform: false },
+							{ removeUnknownsAndDefaults: false },
+							{ removeNonInheritableGroupAttrs: false },
+							{ removeUselessStrokeAndFill: false },
+							{ removeUnusedNS: false },
+							{ cleanupNumericValues: false },
+							{ cleanupListOfValues: false },
+							{ moveElemsAttrsToGroup: false },
+							{ moveGroupAttrsToElems: false },
+							{ collapseGroups: false },
+							{ mergePaths: false },
+							{ convertShapeToPath: false }
+						]
         },
         dist: {
             files: [{
@@ -230,14 +254,7 @@ module.exports = function (grunt) {
 				outputText += fileText
 					.replace('<svg', '<symbol id="icon-' + fileName + '"')
 					.replace('</svg>', '</symbol>')
-					.replace('xlink:href="', 'xlink:href="icon-')
-					.replace(/(?:stroke|fill)="([^"]*)"/g, function (match, p1) {
-						if (p1 === 'none') {
-							return match;
-						} else {
-							return '';
-						}
-					})
+					.replace('xlink:href="#', 'xlink:href="#icon-')
 					 + '\r\n';
 			});
 			outputText += '</svg>\r\n';
