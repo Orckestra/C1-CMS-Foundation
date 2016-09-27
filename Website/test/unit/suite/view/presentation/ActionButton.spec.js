@@ -25,6 +25,16 @@ describe('ActionButton', () => {
 		);
 	});
 
+	it('should render a button with a class', () => {
+		props.style = 'main';
+		renderer.render(
+			<ActionButton {...props}/>
+		);
+		return expect(renderer, 'to have rendered',
+			<button className='main'>{props.label}</button>
+		);
+	});
+
 	it('should render a disabled button', () => {
 		props.disabled = true;
 		renderer.render(
@@ -44,6 +54,18 @@ describe('ActionButton', () => {
 			<button>
 				<Icon id='test'/>
 				{props.label}
+			</button>
+		);
+	});
+	it('should render a button with icon and no label', () => {
+		props.icon = 'test';
+		delete props.label;
+		renderer.render(
+			<ActionButton {...props}/>
+		);
+		return expect(renderer, 'to have rendered',
+			<button>
+				<Icon id='test'/>
 			</button>
 		);
 	});

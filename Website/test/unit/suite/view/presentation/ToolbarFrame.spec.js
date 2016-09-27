@@ -86,16 +86,16 @@ describe('ToolbarFrame', () => {
 			'to have rendered',
 			<div className='page'>
 				<Toolbar
+					name='test/toolbar'
 					canSave={false}
-					type='document'
 					items={{}}/>
 				<TabContent/>
 			</div>
 		)
 		.and(
-			'queried for', <Toolbar type='document' canSave={false} items={{}}/>,
+			'queried for', <Toolbar canSave={false} items={{}}/>,
 			'to have props exhaustively satisfying', {
-				type: 'document',
+				name: 'test/toolbar',
 				canSave: false,
 				items: {
 					'test/save': { label: 'Save', action: pageActions.save, saveButton: true },
@@ -110,9 +110,9 @@ describe('ToolbarFrame', () => {
 		renderer.render(<ToolbarFrame name='test' {...props}/>);
 		Promise.all([
 			expect(renderer,
-				'queried for', <Toolbar type='document' canSave={false} items={{}}/>,
+				'queried for', <Toolbar canSave={false} items={{}}/>,
 			'to have props satisfying', {
-				type: 'document',
+				name: 'test/toolbar',
 				items: {
 					'test/save': { action: expect.it('to be', pageActions.save) },
 					'test/onebutton': { action: expect.it('to be', pageActions.fireAction) },

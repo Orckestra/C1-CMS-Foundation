@@ -20,9 +20,9 @@ const ToolbarFrame = props => {
 		}, {});
 		toolbars.push(
 			<Toolbar
+				{...toolbarDef}
 				key={toolbarName}
 				canSave={!!props.dirtyPages[props.name]}
-				type='document'
 				items={items}/>);
 		return toolbars;
 	}, []);

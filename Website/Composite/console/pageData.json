@@ -86,6 +86,24 @@
             "action": "save"
           }
         ]
+      },
+      {
+        "name": "edit-language/toolbar2",
+        "style": "dark",
+        "items": [
+          {
+            "type": "button",
+            "name": "edit-language/toolbar2/sysviewToggle",
+            "icon": "nodes",
+            "action": "sysviewToggle"
+          },
+          {
+            "type": "button",
+            "name": "edit-language/toolbar2/labeled",
+            "label": "Stuff",
+            "action": "sysviewToggle"
+          }
+        ]
       }
     ]
   },

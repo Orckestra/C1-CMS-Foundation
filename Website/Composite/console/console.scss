@@ -1,6 +1,7 @@
 $baseFontColor: #333;
 $buttonTextColor: #575757;
 $borderColor: #ccc;
+$darkBackground: #EFEFEF;
 $buttonDropShadowColor: #ddd;
 $buttonHighlightColor: #22B980;
 $buttonShadingColor: #1ea371;
@@ -50,10 +51,6 @@ body, input, textarea, select, button {
 	color: $baseFontColor;
 }
 
-div.toolbar {
-	padding: 15px 10px 20px;
-}
-
 svg { // Icons
 	height: 20px;
 	width: 20px;
@@ -86,15 +83,14 @@ button {
 		height: 18px;
 		width: 18px;
 		display: inline-block;
-		padding-right: 10px;
 		vertical-align: -4px;
 	}
-}
 
-div.toolbar.document-toolbar {
-	text-align: right; // TODO: Needs better way
+	svg + span {
+		padding-left: 10px;
+	}
 
-	button {
+	&.main {
 		border: 1px solid $buttonHighlightColor;
 		background-image: linear-gradient(to bottom, $buttonHighlightColor 0%, $buttonShadingColor 100%);
 		color: white;
@@ -105,25 +101,50 @@ div.toolbar.document-toolbar {
 	}
 }
 
+.toolbar {
+	padding: 15px 10px 20px;
+
+	&.rightAligned {
+		text-align: right; // TODO: Needs better way
+	}
+	&.dark {
+		background-color: $darkBackground;
+	}
+
+	+ .toolbar {
+		border-top: 1px solid $borderColor;
+		padding-bottom: 15px;
+
+		button {
+			height: 30px;
+			padding-top: 5px;
+			padding-bottom: 5px;
+		}
+	}
+}
+
 div.scrollbox {
 	display: block;
-	border-top: 1px solid $borderColor;
 	padding: 30px 30px 20px 40px;
-	height: calc(100% - 67px);
 	width: 100%;
 	box-sizing: border-box;
 	overflow: auto;
 	position: relative;
-
-	&.full {
-		height: 100%;
-		border-top: 0 none transparent;
-	}
+	height: 100%;
 
 	&::after {
 		content: '';
 		display: block;
 		clear: both;
+	}
+
+	.toolbar + & {
+		height: calc(100% - 67px);
+		border-top: 1px solid $borderColor;
+
+		.toolbar + & {
+			height: calc(100% - 132px);
+		}
 	}
 }
 
