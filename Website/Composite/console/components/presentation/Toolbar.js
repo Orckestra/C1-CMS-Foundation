@@ -5,10 +5,10 @@ const typeClassName = {
 	document: ' document-toolbar'
 };
 
-const Toolbar = ({ type, buttons, canSave }) => (
+const Toolbar = ({ type, items, canSave }) => (
 	<div className={'toolbar' + (typeClassName[type] || '')}>
-		{Object.keys(buttons).map(name => {
-			let button = Object.assign({}, buttons[name]);
+		{Object.keys(items).map(name => {
+			let button = Object.assign({}, items[name]);
 			if (!(button.label && button.action)) return null;
 			button.disabled = button.saveButton && !canSave;
 			delete button.saveButton;
@@ -21,7 +21,7 @@ const Toolbar = ({ type, buttons, canSave }) => (
 
 Toolbar.propTypes = {
 	type: PropTypes.string,
-	buttons: PropTypes.object.isRequired,
+	items: PropTypes.object.isRequired,
 	canSave: PropTypes.bool
 };
 

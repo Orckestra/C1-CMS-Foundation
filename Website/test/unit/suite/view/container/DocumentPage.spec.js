@@ -22,7 +22,8 @@ describe('DocumentPage', () => {
 				'one': 1,
 				'two': 2
 			},
-			buttonDefs: {} // required for ToolbarFrame
+			toolbarDefs: {}, // required for ToolbarFrame
+			itemDefs: {} // required for ToolbarFrame
 		};
 		store = {
 			subscribe: sinon.spy().named('subscribe'),
@@ -40,7 +41,8 @@ describe('DocumentPage', () => {
 		renderer.render(<DocumentPage store={store} {...props}/>);
 		return expect(renderer, 'to have rendered', <ToolbarFrame
 			{...props}
-			buttonDefs={{}}
+			toolbarDefs={{}}
+			itemDefs={{}}
 			actions={{
 				updateValue: expect.it('to be a function')
 					.and('when called with', ['pagename', 'fieldname'], 'to be a function')

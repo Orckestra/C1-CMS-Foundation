@@ -11,11 +11,15 @@ const tabSchema = new Schema('tabDefs', { idAttribute: 'name' });
 tabSchema.define({
 	fieldsets: arrayOf(fieldsetSchema),
 });
-const buttonSchema = new Schema('buttonDefs', { idAttribute: 'name' });
+const itemSchema = new Schema('itemDefs', { idAttribute: 'name' });
+const toolbarSchema = new Schema('toolbarDefs', { idAttribute: 'name' });
+toolbarSchema.define({
+	items: arrayOf(itemSchema)
+});
 const pageSchema = new Schema('pageDefs', { idAttribute: 'name' });
 pageSchema.define({
 	tabs: arrayOf(tabSchema),
-	buttons: arrayOf(buttonSchema)
+	toolbars: arrayOf(toolbarSchema)
 });
 
 const prefix = 'PAGE_DEF.';

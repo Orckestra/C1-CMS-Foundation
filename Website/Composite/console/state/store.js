@@ -10,7 +10,7 @@ let reducers = {
 	dataFields,
 	pages
 };
-['page', 'tab', 'button', 'fieldset', 'dataField'].forEach(typeName => {
+['page', 'tab', 'item', 'toolbar', 'fieldset', 'dataField'].forEach(typeName => {
 	reducers[typeName + 'Defs'] = getDefinitionReducer(typeName);
 });
 

@@ -18,11 +18,7 @@ describe('ToolbarFrame', () => {
 			pageDef: {
 				name: 'test',
 				tabs: ['test/oneTab'],
-				buttons: [
-					'test/save',
-					'test/onebutton',
-					'test/twobutton'
-				]
+				toolbars: ['test/toolbar']
 			},
 			tabDefs: {
 				'test/oneTab': {
@@ -34,7 +30,17 @@ describe('ToolbarFrame', () => {
 					]
 				}
 			},
-			buttonDefs: {
+			toolbarDefs: {
+				'test/toolbar': {
+					name: 'test/toolbar',
+					items: [
+						'test/save',
+						'test/onebutton',
+						'test/twobutton'
+					]
+				}
+			},
+			itemDefs: {
 				'test/onebutton': { label: 'One', action: 'oneaction' },
 				'test/twobutton': { label: 'Two', action: 'twoaction' },
 				'test/save': { label: 'Save', action: 'save' },
@@ -82,16 +88,16 @@ describe('ToolbarFrame', () => {
 				<Toolbar
 					canSave={false}
 					type='document'
-					buttons={{}}/>
+					items={{}}/>
 				<TabContent/>
 			</div>
 		)
 		.and(
-			'queried for', <Toolbar type='document' canSave={false} buttons={{}}/>,
+			'queried for', <Toolbar type='document' canSave={false} items={{}}/>,
 			'to have props exhaustively satisfying', {
 				type: 'document',
 				canSave: false,
-				buttons: {
+				items: {
 					'test/save': { label: 'Save', action: pageActions.save, saveButton: true },
 					'test/onebutton': { label: 'One', action: pageActions.fireAction },
 					'test/twobutton': { label: 'Two', action: pageActions.fireAction }
@@ -104,10 +110,10 @@ describe('ToolbarFrame', () => {
 		renderer.render(<ToolbarFrame name='test' {...props}/>);
 		Promise.all([
 			expect(renderer,
-				'queried for', <Toolbar type='document' canSave={false} buttons={{}}/>,
+				'queried for', <Toolbar type='document' canSave={false} items={{}}/>,
 			'to have props satisfying', {
 				type: 'document',
-				buttons: {
+				items: {
 					'test/save': { action: expect.it('to be', pageActions.save) },
 					'test/onebutton': { action: expect.it('to be', pageActions.fireAction) },
 					'test/twobutton': { action: expect.it('to be', pageActions.fireAction) }

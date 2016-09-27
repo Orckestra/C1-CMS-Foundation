@@ -15,17 +15,20 @@ describe('Toolbar', () => {
 		renderer = TestUtils.createRenderer();
 		props = {
 			canSave: false,
-			buttons: {
+			items: {
 				first: {
+					type: 'button',
 					label: 'Label1',
 					icon: 'save',
 					action: actions.first
 				},
 				second: {
+					type: 'button',
 					label: 'Label2',
 					action: actions.second
 				},
 				third: {
+					type: 'button',
 					label: 'Label3',
 					saveButton: true,
 					action: actions.third
@@ -46,7 +49,7 @@ describe('Toolbar', () => {
 	});
 
 	it('does not render buttons where action is missing', () => {
-		delete props.buttons.third.action;
+		delete props.items.third.action;
 		renderer.render(<Toolbar {...props}/>);
 		return expect(renderer, 'to have rendered',
 			<div className='toolbar'>
@@ -57,7 +60,7 @@ describe('Toolbar', () => {
 	});
 
 	it('does not render buttons where label is missing', () => {
-		delete props.buttons.third.label;
+		delete props.items.third.label;
 		renderer.render(<Toolbar {...props}/>);
 		return expect(renderer, 'to have rendered',
 			<div className='toolbar'>

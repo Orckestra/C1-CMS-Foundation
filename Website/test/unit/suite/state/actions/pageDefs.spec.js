@@ -35,10 +35,15 @@ describe('Get page definitions', () => {
 							]
 						}
 					],
-					buttons: [
+					toolbars: [
 						{
-							name: 'testButton',
-							label: 'Test it'
+							name: 'testToolbar',
+							items: [
+								{
+									name: 'testButton',
+									label: 'Test it'
+								}
+							]
 						}
 					]
 				}
@@ -63,7 +68,7 @@ describe('Get page definitions', () => {
 					{ spy: dispatch, args: [{ type: STORE_DEF, defType: 'page', definition: {
 						name: 'testPage',
 						tabs: ['testTab'],
-						buttons: ['testButton'],
+						toolbars: ['testToolbar'],
 						type: 'test'
 					}}]},
 					{ spy: dispatch, args: [{ type: STORE_DEF, defType: 'tab', definition: {
@@ -79,7 +84,11 @@ describe('Get page definitions', () => {
 						name: 'testDataField',
 						label: 'A field'
 					}}]},
-					{ spy: dispatch, args: [{ type: STORE_DEF, defType: 'button', definition: {
+					{ spy: dispatch, args: [{ type: STORE_DEF, defType: 'toolbar', definition: {
+						name: 'testToolbar',
+						items: ['testButton']
+					}}]},
+					{ spy: dispatch, args: [{ type: STORE_DEF, defType: 'item', definition: {
 						name: 'testButton',
 						label: 'Test it'
 					}}]},

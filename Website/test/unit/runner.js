@@ -9,7 +9,9 @@ runner.suite.emit('pre-require', global, 'global-mocha-context', runner);
 // Slightly hacky grep switch
 var grepSwitchIndex = process.argv.indexOf('-g');
 if (grepSwitchIndex > -1) {
-	runner.grep(process.argv[grepSwitchIndex + 1] || '');
+	let grepArg = process.argv[grepSwitchIndex + 1] || '';
+	grepArg = new RegExp(grepArg.replace('!!', '!'));
+	runner.grep(grepArg);
 }
 
 export default SystemJS.import('unittest/suite.js')

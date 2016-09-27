@@ -7,7 +7,8 @@ import { fireAction } from 'console/state/actions/fireAction.js';
 // Sets up a page that allows editing of a document consisting of sets of fields.
 function mapStateToProps(state) {
 	let update = {
-		buttonDefs: state.buttonDefs
+		toolbarDefs: state.toolbarDefs,
+		itemDefs: state.itemDefs
 	};
 	update.dirtyPages = state.dataFields && state.dataFields.dirtyPages;
 	return update;

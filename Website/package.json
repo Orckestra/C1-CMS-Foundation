@@ -2,12 +2,14 @@
   "name": "CompositeC1",
   "version": "1.0.0",
   "scripts": {
-    "test": "npm run unit:test",
+		"test": "npm run unit:test",
+		"lint": "npm run lintconsole",
     "coverage": "npm run unit:cov",
     "unit:test": "jspm run test/unit/runner.js",
     "unit:cov": "jspm run test/unit/coverage.js",
     "watch": "chokidar-socket-emitter -p Composite/console/",
-    "buildconsole": "jspm build CMSConsole Composite/console.js --minify"
+    "buildconsole": "jspm build CMSConsole Composite/console.js --minify",
+		"lintconsole": "eslint Composite/console test/unit/"
   },
   "devDependencies": {
     "JSONPath": "^0.10.0",
