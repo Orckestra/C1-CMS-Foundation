@@ -1,26 +1,7 @@
 import requestJSON from 'console/access/requestJSON.js';
-import { normalize, Schema, arrayOf } from 'normalizr';
+import { normalize } from 'normalizr';
+import schema from 'console/state/normalizingSchema.js';
 import { addDefinition } from 'console/state/reducers/definitions.js';
-
-const dataFieldSchema = new Schema('dataFieldDefs', { idAttribute: 'name' });
-const fieldsetSchema = new Schema('fieldsetDefs', { idAttribute: 'name' });
-fieldsetSchema.define({
-	fields: arrayOf(dataFieldSchema)
-});
-const tabSchema = new Schema('tabDefs', { idAttribute: 'name' });
-tabSchema.define({
-	fieldsets: arrayOf(fieldsetSchema),
-});
-const itemSchema = new Schema('itemDefs', { idAttribute: 'name' });
-const toolbarSchema = new Schema('toolbarDefs', { idAttribute: 'name' });
-toolbarSchema.define({
-	items: arrayOf(itemSchema)
-});
-const pageSchema = new Schema('pageDefs', { idAttribute: 'name' });
-pageSchema.define({
-	tabs: arrayOf(tabSchema),
-	toolbars: arrayOf(toolbarSchema)
-});
 
 const prefix = 'PAGE_DEF.';
 export const LOAD_PAGE_DEF = prefix + 'LOAD';
@@ -35,7 +16,7 @@ export function loadPageDef(pageName) {
 		dispatch({ type: LOAD_PAGE_DEF, name: pageName });
 		return requestJSON(pageDefEndpointURL)
 		.then(response => {
-			let defs = normalize(response, arrayOf(pageSchema)).entities;
+			let defs = normalize(response, schema).entities;
 			Object.keys(defs).forEach(defType => {
 				let defSet = defs[defType];
 				let typeName = defType.replace(/Defs$/, '');
