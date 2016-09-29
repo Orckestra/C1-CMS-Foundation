@@ -1,0 +1,119 @@
+var util = require('util');
+var events = require('events');
+
+function SelectFrameWithXpath() {
+	events.EventEmitter.call(this);
+}
+
+util.inherits(SelectFrameWithXpath, events.EventEmitter);
+
+function elementPresentPromise(client, selector) {
+	return new Promise(resolve => {
+		client.element('xpath', selector, result => {
+			if (result.error) {
+				resolve(false);
+			} else {
+				resolve(true);
+			}
+		});
+	});
+}
+
+function elementListPromise(client, selector) {
+	return new Promise((resolve, reject) => {
+		client.elements('css selector', selector, result => {
+			if (result.error) {
+				reject(result.error);
+			} else {
+				resolve(result.value);
+			}
+		});
+	});
+}
+
+function framePromise(client, element) {
+	return new Promise((resolve, reject) => {
+		client.frame(element, result => {
+			if (result.error) {
+				reject(result.error);
+			} else {
+				resolve();
+			}
+		});
+	});
+}
+
+function frameParentPromise(client) {
+	return new Promise((resolve, reject) => {
+		client.frameParent(result => {
+			if (result.error) {
+				reject(result.error);
+			} else {
+				resolve();
+			}
+		});
+	});
+}
+
+function promiseSome(list, iterator) {
+	var p = Promise.resolve(false);
+	list.forEach((item, index) => {
+		p = p.then(result => {
+			if (result) {
+				return true;
+			} else {
+				return iterator(item);
+			}
+		})
+	});
+	return p;
+}
+
+function findSelectorInsideFrame(client, selector) {
+	return elementPresentPromise(client, selector).then(found => {
+		return !!found ||
+			elementListPromise(client, 'iframe')
+			.then(frames => promiseSome(frames, frame =>
+				framePromise(client, frame)
+				.then(() => {
+					return findSelectorInsideFrame(client, selector);
+				})
+				.then(result => {
+					if (result) {
+						return true;
+					} else {
+						return frameParentPromise(client).then(Promise.resolve(false));
+					}
+				})
+				.catch(err => {
+					// if (err) {
+					// 	console.error('Enter frame failed:', err);
+					// }
+					return false;
+				})
+			))
+	});
+}
+
+SelectFrameWithXpath.prototype.command = function(selector, noReset) {
+	var reset = noReset ? Promise.resolve() : framePromise(this.client.api, null);
+	reset
+	.then(() => findSelectorInsideFrame(this.client.api, selector))
+	.then(found => {
+		if (!found) {
+			this.client.assertion(false, 'not found', 'found', 'Did not find selector <' + selector + '> in any frame.', this.abortOnFailure, this._stackTrace);
+		// } else {
+		// 	this.client.assertion(true, null, null, 'Found element <' + selector + '> and entered frame containing it' +
+		// 		(noReset
+		// 		? ' without resetting to top frame'
+		// 		: ''), this.abortOnFailure);
+		}
+		this.emit('complete');
+	})
+	.catch(err => {
+		this.client.assertion(false, err, null, 'Attempt to find <' + selector + '> failed horribly');
+		this.emit('complete');
+	});
+}
+
+module.exports = SelectFrameWithXpath;

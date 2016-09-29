@@ -135,6 +135,7 @@ namespace Composite.AspNet.Razor
             return PageData[RazorHelper.PageContext_FunctionContextContainer];
         }
 
+        /// <exclude />
         public override void ExecutePageHierarchy()
         {
             base.ExecutePageHierarchy();

@@ -7,7 +7,7 @@ exports.command = function (frameSelector, buttonSelector, waitTime) {
 	}
 
 	this.selectFrame(frameSelector);
-	this.waitForElementVisible(buttonSelector, waitTime || 1000);
+	this.waitForElementVisible(buttonSelector, waitTime || this.api.globals.timeouts.basic);
 	this.click(buttonSelector);
 	if (waitTime) {
 		this.pause(waitTime);

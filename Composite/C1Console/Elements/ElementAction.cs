@@ -1,37 +1,38 @@
-using System;
+using Composite.C1Console.Security;
 
 
 namespace Composite.C1Console.Elements
 {
-    /// <summary>    
+    /// <summary>
     /// Define an action you can attach to an <see cref="Element"/>.
     /// </summary>
     public sealed class ElementAction
     {
-        private readonly ActionHandle _actionHandle;
-
-
         /// <summary>
         /// Constructs a new instance.
         /// </summary>
         /// <param name="actionHandle"></param>
         public ElementAction(ActionHandle actionHandle)
         {
-            if (actionHandle == null) throw new ArgumentNullException("actionHandle");
+            Verify.ArgumentNotNull(actionHandle, nameof(actionHandle));
 
-            _actionHandle = actionHandle;            
+            ActionHandle = actionHandle;
         }
 
+
+        /// <summary>
+        /// Constructs a new instance.
+        /// </summary>
+        /// <param name="actionToken"></param>
+        public ElementAction(ActionToken actionToken): this(new ActionHandle(actionToken))
+        {
+        }
 
 
         /// <summary>
         /// The action handle
         /// </summary>
-        public ActionHandle ActionHandle
-        {
-            get { return _actionHandle; }
-        }
-
+        public ActionHandle ActionHandle { get; }
 
 
         /// <summary>
@@ -40,34 +41,11 @@ namespace Composite.C1Console.Elements
         public ActionVisualizedData VisualData { get; set; }
 
 
-
         /// <exclude />
         public string TagValue { get; set; }
 
-        
 
         /// <exclude />
-        public override bool Equals(object obj)
-        {
-            return base.Equals(obj);
-        }
-
-
-
-        /// <exclude />
-        public bool Equals(ElementAction elementAction)
-        {
-            if (elementAction == null) return false;
-
-            return this.ActionHandle.Equals(elementAction);
-        }
-
-
-
-        /// <exclude />
-        public override int GetHashCode()
-        {
-            return this.ActionHandle.GetHashCode();
-        }
+        public override int GetHashCode() => this.ActionHandle.GetHashCode();
     }
 }

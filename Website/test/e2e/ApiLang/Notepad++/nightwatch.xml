@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="Windows-1252" ?>
+<NotepadPlus>
+	<!-- language doesnt really mean anything, its more of a comment -->
+	<AutoComplete language="NightWatch">
+		<!--
+		Environment specifies how the language should be interpreted. ignoreCase makes autocomplete
+		ignore any casing, start and stopFunc specify what chars a function starts and stops with.
+		param specifies parameter separator and terminal can be used to specify a character that stops
+		any function. Using the same character for different functions results in undefined behaviour.
+		
+		05/11/2009
+		The basic word character are : A-Z a-z 0-9 and '_' 
+		If your function name contains other characters,
+		add your characters in "additionalWordChar" attribute (without separator)
+		in order to make calltip hint work
+		-->
+		<Environment ignoreCase="no" startFunc="(" stopFunc=")" paramSeparator="," terminal=";" additionalWordChar=""/>
+		<!--
+		The following items should be alphabetically ordered.
+		func="yes" means the keyword should be treated as a fuction, and thus can be used in the parameter
+		calltip system. If this is the case, the retVal attribute specifies the return value/type. Any
+		following Param tag specifies a parameter, they must be in order. The name attributes specifies
+		the parameter name.
+		-->
+		<KeyWord name="assertBrowserContainsAttribute" func="yes">
+			<Overload retVal="browser" >
+				<Param name="selector" />
+				<Param name="attribute" />
+				<Param name="value" />
+			</Overload>
+		</KeyWord>
+		<KeyWord name="assertBrowserContains" func="yes">
+			<Overload retVal="browser" >
+				<Param name="selector"/>
+				<Param name="value"/>
+			</Overload>
+		</KeyWord>
+		<KeyWord name="assertFieldValue" func="yes">
+			<Overload retVal="browser" >
+				<Param name="dialogLabel" />
+				<Param name="fieldLabel" />
+				<Param name="vlaueToAssert" />
+				<Param name="inputType" />
+			</Overload>
+		</KeyWord>
+		<KeyWord name="assertTreeNodeHasChild" func="yes">
+			<Overload retVal="browser" >
+				<Param name="parentLabel" />
+				<Param name="childLabel" />
+			</Overload>
+		</KeyWord>
+		<KeyWord name="assertTreeNodeHasNoChild" func="yes">
+			<Overload retVal="browser" >
+				<Param name="parentLabel" />
+				<Param name="childLabel" />
+			</Overload>
+		</KeyWord>
+		<KeyWord name="assertTreeNodeIsEmpty" func="yes">
+			<Overload retVal="browser" >
+				<Param name="parentLabel" />
+				<Param name="childLabel" />
+			</Overload>
+		</KeyWord>
+		<KeyWord name="assertTreeNodeIsNotEmpty" func="yes">
+			<Overload retVal="browser" >
+				<Param name="parentLabel" />
+				<Param name="childLabel" />
+			</Overload>
+		</KeyWord>
+		<KeyWord name="clickDataBySibilings" func="yes">
+			<Overload retVal="browser" >
+				<Param name="vlaue" />
+			</Overload>
+		</KeyWord>
+		<KeyWord name="clickDialogButton" func="yes">
+			<Overload retVal="browser" >
+				<Param name="button" />
+			</Overload>
+		</KeyWord>
+		<KeyWord name="clickInFrame" func="yes">
+			<Overload retVal="browser" >
+				<Param name="frameSelector" />
+				<Param name="buttonSelector" />
+				<Param name="waitTime" />
+			</Overload>
+		</KeyWord>
+		<KeyWord name="clickLabel" func="yes">
+			<Overload retVal="browser" >
+				<Param name="label" />
+				<Param name="(optional)parentLabel" />
+			</Overload>
+		</KeyWord>
+		<KeyWord name="clickSave" func="yes">
+		</KeyWord>
+		<KeyWord name="clickText" func="yes">
+			<Overload retVal="browser" >
+				<Param name="vlaue" />
+			</Overload>
+		</KeyWord>
+		<KeyWord name="closeDocumentTab" func="yes">
+			<Overload retVal="browser" >
+				<Param name="tabName" />
+			</Overload>
+		</KeyWord>
+		<KeyWord name="doubleClickSelector" func="yes">
+			<Overload retVal="browser" >
+				<Param name="selector" />
+			</Overload>
+		</KeyWord>
+		<KeyWord name="enterFrame" func="yes">
+			<Overload retVal="browser" >
+				<Param name="selector" />
+			</Overload>
+		</KeyWord>
+		<KeyWord name="leaveFrame" func="yes">
+		</KeyWord>
+		<KeyWord name="openTreeNode" func="yes">
+			<Overload retVal="browser" >
+				<Param name="parentLabel" />
+				<Param name="childLabel" />
+			</Overload>
+		</KeyWord>
+		<KeyWord name="replaceContent" func="yes">
+			<Overload retVal="browser" >
+				<Param name="selector" />
+				<Param name="newContent" />
+			</Overload>
+		</KeyWord>
+		<KeyWord name="rightClickSelector" func="yes">
+			<Overload retVal="browser" >
+				<Param name="selector" />
+			</Overload>
+		</KeyWord>
+		<KeyWord name="selectActionFromToolbar" func="yes">
+			<Overload retVal="browser" >
+				<Param name="perspective" />
+				<Param name="node" />
+				<Param name="action" />
+			</Overload>
+		</KeyWord>
+		<KeyWord name="selectContentTab" func="yes">
+			<Overload retVal="browser" >
+				<Param name="tabName" />
+			</Overload>
+		</KeyWord>
+		<KeyWord name="selectDialog" func="yes">
+			<Overload retVal="browser" >
+				<Param name="dialogName" />
+			</Overload>
+		</KeyWord>
+		<KeyWord name="selectDocumentTab" func="yes">
+			<Overload retVal="browser" >
+				<Param name="tabName" />
+			</Overload>
+		</KeyWord>
+		<KeyWord name="selectFrame" func="yes">
+			<Overload retVal="browser" >
+				<Param name="selector" />
+				<Param name="noReset" />
+			</Overload>
+		</KeyWord>
+		<KeyWord name="selectFrameWithXpath" func="yes">
+			<Overload retVal="browser" >
+				<Param name="selector" />
+				<Param name="noReset" />
+			</Overload>
+		</KeyWord>
+		<KeyWord name="selectPerspective" func="yes">
+			<Overload retVal="browser" >
+				<Param name="perspective" />
+			</Overload>
+		</KeyWord>
+		<KeyWord name="selectTreeNodeAction" func="yes">
+			<Overload retVal="browser" >
+				<Param name="node" />
+				<Param name="action" />
+			</Overload>
+		</KeyWord>
+		<KeyWord name="setFieldValueInFieldGroup" func="yes">
+			<Overload retVal="browser" >
+				<Param name="dialogLabel" />
+				<Param name="fieldLabel" />
+				<Param name="vlaue" />
+				<Param name="(optional)inputType" />
+			</Overload>
+		</KeyWord>
+		<KeyWord name="setFieldValue" func="yes">
+			<Overload retVal="browser" >
+				<Param name="fieldLabel" />
+				<Param name="vlaue" />
+				<Param name="inputType" />
+			</Overload>
+		</KeyWord>
+		<KeyWord name="switchContentTab" func="yes">
+			<Overload retVal="browser" >
+				<Param name="tabName" />
+			</Overload>
+		</KeyWord>
+		<KeyWord name="topFrame" func="yes">
+			<Overload retVal="browser" >
+				<Param name="selector" />
+			</Overload>
+		</KeyWord>
+		<KeyWord name="submitFormData" func="yes">
+			<Overload retVal="browser" >
+				<Param name="submitValue" />
+			</Overload>
+		</KeyWord>
+		<KeyWord name="waitForFrameLoad" func="yes">
+			<Overload retVal="browser" >
+				<Param name="selector" />
+				<Param name="timeout" />
+			</Overload>
+		</KeyWord>
+		<KeyWord name="replaceTextInCodeMirror" func="yes">
+			<Overload retVal="browser" >
+				<Param name="oldString" />
+				<Param name="newString" />
+			</Overload>
+		</KeyWord>
+		<KeyWord name="installPackage" func="yes">
+			<Overload retVal="browser" >
+				<Param name="category" />
+				<Param name="packageName" />
+			</Overload>
+		</KeyWord>
+		<KeyWord name="uninstallPackage" func="yes">
+			<Overload retVal="browser" >
+				<Param name="category" />
+				<Param name="packageName" />
+			</Overload>
+		</KeyWord>
+	</AutoComplete>
+</NotepadPlus>
