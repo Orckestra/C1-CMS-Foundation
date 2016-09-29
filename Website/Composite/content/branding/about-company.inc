@@ -18,10 +18,9 @@
 		</div>
 		<div id="credits">
 			<div id="roll">
-				<a href="http://www.composite.net/" target="wwwcompositenet">
-					<div id="logo1" class="brand-logo">
-					</div>
-				</a>
+				<a href="https://cms.orckestra.com/" target="cmsorckestracom">
+                        <div id="logo1" class="brand-logo dark"></div>
+ </a>
 				<h2>Visual Editor</h2>
 				<p>
 					powered by<br />
@@ -44,7 +43,7 @@
 					<a href="http://www.freepik.com/" target="_blank" title="Visit Freepik">Freepik</a>
 				</p>
 				<div id="names">
-					<div id="logo2" class="brand-logo">
+					<div id="logo2" class="brand-logo dark">
 					</div>
 				</div>
 			</div>
