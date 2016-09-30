@@ -104,7 +104,7 @@ describe('Toolbar', () => {
 						{ value: '2016-09-22', label: '2016-09-22' },
 						{ value: '2016-09-21', label: 'That day' },
 						{ value: '2016-09-20', label: '2016-09-20' }
-					]}/>
+					]} clearable={false} multi={false}/>
 				</div>
 			);
 		});

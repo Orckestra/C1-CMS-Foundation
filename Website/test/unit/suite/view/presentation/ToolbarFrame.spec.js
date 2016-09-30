@@ -12,6 +12,7 @@ describe('ToolbarFrame', () => {
 		pageActions = {
 			fireAction: () => {},
 			update: () => {},
+			setOption: () => {},
 			save: () => {}
 		};
 		props = {
@@ -66,6 +67,7 @@ describe('ToolbarFrame', () => {
 				'test/twoset/threefield': { defaultValue: 'overwritten' }
 			},
 			tabName: 'test/oneTab',
+			options: {},
 			dirtyPages: {},
 			values: {
 				'test/twoset/threefield': 'different'
@@ -73,6 +75,7 @@ describe('ToolbarFrame', () => {
 			actions: {
 				save: sinon.spy(() => pageActions.save).named('save'),
 				fireAction: sinon.spy(() => pageActions.fireAction).named('fireAction'),
+				setOption: sinon.spy(() => pageActions.setOption).named('threebutton'),
 				updateValue: sinon.spy(() => pageActions.update).named('threebutton')
 			},
 		};

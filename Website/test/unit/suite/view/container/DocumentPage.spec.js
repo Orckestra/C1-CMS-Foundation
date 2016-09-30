@@ -22,6 +22,10 @@ describe('DocumentPage', () => {
 				'one': 1,
 				'two': 2
 			},
+			options: {
+				'one': true,
+				'two': 'set up the bomb'
+			},
 			toolbarDefs: {}, // required for ToolbarFrame
 			itemDefs: {} // required for ToolbarFrame
 		};
@@ -54,6 +58,7 @@ describe('DocumentPage', () => {
 					.and('when called with', ['pagename', 'actionId'], 'to be a function')
 					.and('when called with', ['pagename', 'actionId'], 'when called with', [['val1', 'val2']], 'to be undefined') // Result is call to store.dispatch
 			}}
+			options={state.options}
 			dirtyPages={state.dataFields.dirtyPages}/>)
 		.then(() => expect(store.dispatch, 'to have calls satisfying', [
 			{ args: [{ type: UPDATE_VALUE, pageName: 'pagename', fieldName: 'fieldname', newValue: 'value' }]},

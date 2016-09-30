@@ -23,7 +23,7 @@ const initialState = {
 
 const pages = (state = initialState, action) => {
 	let update;
-	switch(action.type) {
+	switch (action.type) {
 	case SELECT_PAGE:
 		if (state.pages.indexOf(action.pageName) !== -1) {
 			return Object.assign({}, state, { currentPage: action.pageName });

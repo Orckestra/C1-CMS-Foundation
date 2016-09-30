@@ -12,8 +12,13 @@ const ToolbarFrame = props => {
 			if (item.action === 'save') {
 				item.action = props.actions.save(props.name);
 				item.saveButton = true;
+			} else if (item.type === 'select') {
+				item.onChange = option => props.actions.setOption(item.name)(option.value);
 			} else {
 				item.action = props.actions.fireAction(item.action, props.name);
+			}
+			if (props.options[itemName]) {
+				item.value = props.options[itemName];
 			}
 			items[itemName] = item;
 			return items;
@@ -43,6 +48,7 @@ ToolbarFrame.propTypes = {
 	itemDefs: PropTypes.object.isRequired,
 	actions: PropTypes.object.isRequired,
 	dirtyPages: PropTypes.objectOf(PropTypes.arrayOf(PropTypes.string)).isRequired,
+	options: PropTypes.object.isRequired,
 	pageDef: PropTypes.object.isRequired
 };
 

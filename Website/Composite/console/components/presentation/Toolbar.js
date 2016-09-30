@@ -8,11 +8,10 @@ const Toolbar = ({ style, items, canSave }) => (
 			let item = Object.assign({}, items[name]);
 			switch (item.type) {
 			case 'select':
-				item.options = item.options.map(option => ({
-					value: option.value,
-					label: option.label || option.value
-				}));
-				return <Select key="name" {...item}/>;
+				item.options.forEach(option => {
+					option.label = option.label || option.value;
+				});
+				return <Select key="name" clearable={false} multi={false} {...item}/>;
 			case 'button':
 			default:
 				if (!((item.label || item.icon) && item.action)) return null;
