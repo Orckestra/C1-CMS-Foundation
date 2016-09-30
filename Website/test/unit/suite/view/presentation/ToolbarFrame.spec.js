@@ -42,10 +42,11 @@ describe('ToolbarFrame', () => {
 				}
 			},
 			itemDefs: {
-				'test/onebutton': { label: 'One', action: 'oneaction' },
-				'test/twobutton': { label: 'Two', action: 'twoaction' },
-				'test/save': { label: 'Save', action: 'save' },
-				'do-not-render-button': { label: 'Must not be shown' }
+				'test/onebutton': { type: 'button', label: 'One', action: 'oneaction' },
+				'test/twobutton': { type: 'button', label: 'Two', action: 'twoaction' },
+				'test/save': { type: 'button', label: 'Save', action: 'save' },
+				'test/select': { type: 'select', name: 'test/select', options: [{ value: 'opt1' }] },
+				'do-not-render-button': { type: 'button', label: 'Must not be shown' }
 			},
 			fieldsetDefs: {
 				'test/oneset': {
@@ -101,9 +102,9 @@ describe('ToolbarFrame', () => {
 				name: 'test/toolbar',
 				canSave: false,
 				items: {
-					'test/save': { label: 'Save', action: pageActions.save, saveButton: true },
-					'test/onebutton': { label: 'One', action: pageActions.fireAction },
-					'test/twobutton': { label: 'Two', action: pageActions.fireAction }
+					'test/save': { type: 'button', label: 'Save', action: pageActions.save, saveButton: true },
+					'test/onebutton': { type: 'button', label: 'One', action: pageActions.fireAction },
+					'test/twobutton': { type: 'button', label: 'Two', action: pageActions.fireAction }
 				}
 			}
 		);
@@ -128,5 +129,33 @@ describe('ToolbarFrame', () => {
 				{ args: ['twoaction', 'test'] },
 			])
 		]);
+	});
+
+	it('passes useful props to selects on toolbars', () => {
+		props.toolbarDefs['test/toolbar'].items = ['test/select'];
+		renderer.render(<ToolbarFrame name='test' {...props}/>);
+		Promise.all([
+			expect(renderer,
+				'queried for', <Toolbar canSave={false} items={{}}/>,
+			'to have props satisfying', {
+				name: 'test/toolbar',
+				items: {
+					'test/select': { onChange: expect.it('to be a function'), options: [{ value: 'opt1' }] }
+				}
+			}),
+			expect(props.actions.setOption, 'to have a call satisfying', { args: ['test/select'] })
+		]);
+	});
+
+	it('handles missing toolbar defs', () => {
+		delete props.toolbarDefs['test/toolbar'];
+		renderer.render(<ToolbarFrame name='test' {...props}/>);
+		return expect(
+			renderer,
+			'to have rendered',
+			<div className='page'>
+				<TabContent/>
+			</div>
+		);
 	});
 });

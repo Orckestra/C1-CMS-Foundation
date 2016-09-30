@@ -13,7 +13,8 @@ const ToolbarFrame = props => {
 				item.action = props.actions.save(props.name);
 				item.saveButton = true;
 			} else if (item.type === 'select') {
-				item.onChange = option => props.actions.setOption(item.name)(option.value);
+				let setOption = props.actions.setOption(item.name);
+				item.onChange = option => setOption(option.value);
 			} else {
 				item.action = props.actions.fireAction(item.action, props.name);
 			}

@@ -5,6 +5,7 @@ import TestUtils from 'react-addons-test-utils';
 import DocumentPage from 'console/components/container/DocumentPage.js';
 import ToolbarFrame from 'console/components/presentation/ToolbarFrame.js';
 import { UPDATE_VALUE } from 'console/state/reducers/dataFields.js';
+import { SET_OPTION } from 'console/state/reducers/options.js';
 
 describe('DocumentPage', () => {
 	let renderer, state, store, props;
@@ -51,6 +52,9 @@ describe('DocumentPage', () => {
 				updateValue: expect.it('to be a function')
 					.and('when called with', ['pagename', 'fieldname'], 'to be a function')
 					.and('when called with', ['pagename', 'fieldname'], 'when called with', ['value'], 'to be undefined'), // Result is call to store.dispatch
+				setOption: expect.it('to be a function')
+					.and('when called with', ['fieldname'], 'to be a function')
+					.and('when called with', ['fieldname'], 'when called with', ['value'], 'to be undefined'), // Result is call to store.dispatch
 				save: expect.it('to be a function')
 					.and('when called with', ['pagename'], 'to be a function')
 					.and('when called with', ['pagename'], 'when called', 'to be undefined'), // Result is call to store.dispatch
@@ -62,6 +66,7 @@ describe('DocumentPage', () => {
 			dirtyPages={state.dataFields.dirtyPages}/>)
 		.then(() => expect(store.dispatch, 'to have calls satisfying', [
 			{ args: [{ type: UPDATE_VALUE, pageName: 'pagename', fieldName: 'fieldname', newValue: 'value' }]},
+			{ args: [{ type: SET_OPTION, name: 'fieldname', value: 'value' }]},
 			{ args: [expect.it('to be a function')]},
 			{ args: [expect.it('to be a function')]}
 		]));
