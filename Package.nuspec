@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>OrckestraCmsFoundation.Assemblies</id>
+	<title>Orckestra CMS Foundation Assemblies</title>
+    <version>5.2.0.0</version>
+    <authors>Orckestra A/S</authors>
+    <owners>Orckestra A/S</owners>
+    <licenseUrl>http://cms.orckestra.com/MPL11</licenseUrl>
+    <projectUrl>https://github.com/Orckestra/CMS-Foundation</projectUrl>
+    <!--iconUrl></iconUrl-->
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>Contains dll-s distributed with Orckestra CMS Foundation.</description>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright 2016</copyright>
+    <tags>OrckestraCms</tags>
+    <dependencies>
+	  <dependency id="Microsoft.AspNet.Razor" version="3.2.3" />
+	  <dependency id="Microsoft.AspNet.WebPages" version="3.2.3" />
+	  <dependency id="Microsoft.Extensions.DependencyInjection" version="1.0.0" />
+	  <dependency id="Microsoft.Extensions.DependencyInjection.Abstractions" version="1.0.0" />
+	  <dependency id="Microsoft.Web.Infrastructure" version="1.0.0.0"/>
+    </dependencies>
+  </metadata>
+  <files>
+	<file src="Composite\Bin\Release\Composite.dll" target="lib\Composite.dll" />
+	<file src="Composite.Workflows\Bin\Release\Composite.Workflows.dll" target="lib\Composite.Workflows.dll" />
+	<file src="Composite\Bin\Release\Microsoft.Practices.EnterpriseLibrary.Common.dll" target="lib\Microsoft.Practices.EnterpriseLibrary.Common.dll" />
+	<file src="Composite\Bin\Release\Microsoft.Practices.EnterpriseLibrary.Logging.dll" target="lib\Microsoft.Practices.EnterpriseLibrary.Logging.dll" />
+	<file src="Composite\Bin\Release\Microsoft.Practices.EnterpriseLibrary.Validation.dll" target="lib\Microsoft.Practices.EnterpriseLibrary.Validation.dll" />
+	<file src="Composite\Bin\Release\Microsoft.Practices.ObjectBuilder.dll" target="lib\Microsoft.Practices.ObjectBuilder.dll" />
+	<file src="Composite\Bin\Release\TidyNet.dll" target="lib\TidyNet.dll" />
+  </files>
+</package>
