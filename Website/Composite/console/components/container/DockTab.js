@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
+import { currentPageSelector } from 'console/state/selectors/pageSelector.js';
 import TabPage from 'console/components/presentation/TabPage.js';
 
 function mapStateToProps(state) {
 	return {
-		pageDefs: state.pageDefs,
-		name: state.pages.currentPage
+		pageDef: currentPageSelector(state)
 	};
 }
 

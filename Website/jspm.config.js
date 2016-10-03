@@ -356,6 +356,7 @@ SystemJS.config({
     "os": "github:jspm/nodelibs-os@0.2.0-alpha",
     "punycode": "github:jspm/nodelibs-punycode@0.2.0-alpha",
     "react-select": "npm:react-select@1.0.0-beta14",
+    "reselect": "npm:reselect@2.5.4",
     "tls": "github:jspm/nodelibs-tls@0.2.0-alpha",
     "unexpected": "npm:unexpected@10.15.1",
     "unexpected-messy": "npm:unexpected-messy@6.1.2",

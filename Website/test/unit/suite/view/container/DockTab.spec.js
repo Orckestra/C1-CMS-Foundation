@@ -35,9 +35,8 @@ describe('DockTab', () => {
 			expect(renderer,
 				'to have exactly rendered',
 				<TabPage
-					name='test1'
 					test='value'
-					pageDefs={state.pageDefs}
+					pageDef={expect.it('to equal', state.pageDefs.test1)}
 					pageTypes={{}}
 					dispatch={store.dispatch}
 					store={store}/>

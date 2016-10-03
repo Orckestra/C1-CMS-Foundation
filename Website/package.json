@@ -2,14 +2,14 @@
   "name": "CompositeC1",
   "version": "1.0.0",
   "scripts": {
-		"test": "npm run unit:test",
-		"lint": "npm run lintconsole",
+    "test": "npm run unit:test",
+    "lint": "npm run lintconsole",
     "coverage": "npm run unit:cov",
     "unit:test": "jspm run test/unit/runner.js",
     "unit:cov": "jspm run test/unit/coverage.js",
     "watch": "chokidar-socket-emitter -p Composite/console/",
     "buildconsole": "jspm build CMSConsole Composite/console.js --minify",
-		"lintconsole": "eslint Composite/console test/unit/"
+    "lintconsole": "eslint Composite/console test/unit/"
   },
   "devDependencies": {
     "JSONPath": "^0.10.0",
@@ -52,6 +52,7 @@
       "react-redux": "npm:react-redux@^4.4.5",
       "react-select": "npm:react-select@^1.0.0-beta14",
       "redux-thunk": "npm:redux-thunk@^2.1.0",
+      "reselect": "npm:reselect@^2.5.4",
       "scss": "github:mobilexag/plugin-sass@^0.4.6",
       "svg": "github:npbenjohnson/plugin-svg@^0.1.0",
       "url-polyfill": "github:github/url-polyfill@^0.5.6",
@@ -186,4 +187,4 @@
       }
     }
   }
-}
+}

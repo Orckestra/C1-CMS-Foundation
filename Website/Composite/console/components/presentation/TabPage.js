@@ -2,24 +2,21 @@
 import React, { PropTypes } from 'react';
 
 const TabPage = props => {
-	let pageDef = props.pageDefs[props.name];
-	if (!props.name || !pageDef || !pageDef.type) {
+	if (!props.pageDef || !props.pageDef.type) {
 		return <div/>;
 	} else {
-		let Page = props.pageTypes[pageDef.type];
+		let Page = props.pageTypes[props.pageDef.type];
 		if (!Page) {
-			throw new Error('Could not find page type "' + pageDef.type + '" for page "' + props.name + '"');
+			throw new Error('Could not find page type "' + props.pageDef.type + '" for page "' + props.pageDef.name + '"');
 		}
 		let otherProps = Object.assign({}, props);
-		delete otherProps.pageDefs;
 		delete otherProps.pageTypes;
-		return (<Page {...otherProps} pageDef={pageDef}/>);
+		return (<Page {...otherProps}/>);
 	}
 };
 
 TabPage.propTypes = {
-	name: PropTypes.string,
-	pageDefs: PropTypes.object.isRequired,
+	pageDef: PropTypes.object.isRequired,
 	pageTypes: PropTypes.objectOf(PropTypes.func).isRequired
 };
 
