@@ -4,13 +4,10 @@ import TabContent from 'console/components/container/TabContent.js';
 
 const ToolbarFrame = props => {
 	// Collate toolbars with item lists
-	let toolbars = props.pageDef.toolbars.reduce((toolbars, toolbarName) => {
-		let toolbarDef = props.toolbarDefs[toolbarName];
-		if (!toolbarDef) return null;
-		let items = toolbarDef.items.reduce((items, itemName) => {
-			let item = Object.assign({}, props.itemDefs[itemName]);
+	let toolbars = props.toolbars.map(toolbarDef => {
+		toolbarDef.items.forEach(item => {
 			if (item.action === 'save') {
-				item.action = props.actions.save(props.name);
+				item.action = props.actions.save(props.pageName);
 				item.saveButton = true;
 			} else if (item.type === 'select') {
 				let setOption = props.actions.setOption(item.name);
@@ -20,22 +17,19 @@ const ToolbarFrame = props => {
 				item.onChange = props.actions.setOption(item.name);
 				item.value = props.options.values[item.name] || [];
 			} else {
-				item.action = props.actions.fireAction(item.action, props.name);
+				item.action = props.actions.fireAction(item.action, props.pageName);
 			}
-			if (props.options[itemName]) {
-				item.value = props.options[itemName];
+			if (props.options[item.name]) {
+				item.value = props.options[item.name];
 			}
-			items[itemName] = item;
-			return items;
-		}, {});
-		toolbars.push(
+		});
+		return (
 			<Toolbar
 				{...toolbarDef}
-				key={toolbarName}
-				canSave={!!props.dirtyPages[props.name]}
-				items={items}/>);
-		return toolbars;
-	}, []);
+				key={toolbarDef.name}
+				canSave={!!props.dirtyPages[props.pageName]}/>
+		);
+	});
 	return (
 		<div className='page'
 			onContextMenu={event => {
@@ -48,13 +42,11 @@ const ToolbarFrame = props => {
 };
 
 ToolbarFrame.propTypes = {
-	name: PropTypes.string.isRequired,
-	toolbarDefs: PropTypes.object.isRequired,
-	itemDefs: PropTypes.object.isRequired,
+	pageName: PropTypes.string.isRequired,
+	toolbars: PropTypes.arrayOf(PropTypes.object).isRequired,
 	actions: PropTypes.object.isRequired,
 	dirtyPages: PropTypes.objectOf(PropTypes.arrayOf(PropTypes.string)).isRequired,
-	options: PropTypes.object.isRequired,
-	pageDef: PropTypes.object.isRequired
+	options: PropTypes.object.isRequired
 };
 
 export default ToolbarFrame;

@@ -5,23 +5,22 @@ import Select from 'react-select';
 
 const Toolbar = ({ style, items, canSave }) => (
 	<div className={'toolbar' + (style ? ' ' + style : '')}>
-		{Object.keys(items).map(name => {
-			let item = Object.assign({}, items[name]);
+		{items.map(item => {
 			switch (item.type) {
 			case 'checkboxGroup':
-				return <CheckboxGroup key={name} {...item}/>;
+				return <CheckboxGroup key={item.name} {...item}/>;
 			case 'select':
 				item.options.forEach(option => {
 					option.label = option.label || option.value;
 				});
-				return <Select key={name} clearable={false} multi={false} {...item}/>;
+				return <Select key={item.name} clearable={false} multi={false} {...item}/>;
 			case 'button':
 			default:
 				if (!((item.label || item.icon) && item.action)) return null;
 				item.disabled = item.saveButton && !canSave;
 				delete item.saveButton;
 				return <ActionButton
-					key={name}
+					key={item.name}
 					{...item}/>;
 			}
 		}).filter(item => !!item)}
@@ -30,7 +29,7 @@ const Toolbar = ({ style, items, canSave }) => (
 
 Toolbar.propTypes = {
 	style: PropTypes.string,
-	items: PropTypes.object.isRequired,
+	items: PropTypes.arrayOf(PropTypes.object).isRequired,
 	canSave: PropTypes.bool
 };
 

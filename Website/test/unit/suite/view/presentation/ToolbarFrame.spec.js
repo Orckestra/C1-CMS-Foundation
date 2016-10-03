@@ -16,59 +16,17 @@ describe('ToolbarFrame', () => {
 			save: () => {}
 		};
 		props = {
-			pageDef: {
-				name: 'test',
-				tabs: ['test/oneTab'],
-				toolbars: ['test/toolbar']
-			},
-			tabDefs: {
-				'test/oneTab': {
-					name: 'test/oneTab',
-					fieldsets: [
-						'test/oneset',
-						'test/twoset',
-						'test/fourset'
-					]
-				}
-			},
-			toolbarDefs: {
-				'test/toolbar': {
+			pageName: 'test',
+			toolbars: [
+				{
 					name: 'test/toolbar',
 					items: [
-						'test/save',
-						'test/onebutton',
-						'test/twobutton'
+						{ name: 'test/onebutton', type: 'button', label: 'One', action: 'oneaction' },
+						{ name: 'test/twobutton', type: 'button', label: 'Two', action: 'twoaction' },
+						{ name: 'test/save', type: 'button', label: 'Save', action: 'save' }
 					]
 				}
-			},
-			itemDefs: {
-				'test/onebutton': { type: 'button', label: 'One', action: 'oneaction' },
-				'test/twobutton': { type: 'button', label: 'Two', action: 'twoaction' },
-				'test/save': { type: 'button', label: 'Save', action: 'save' },
-				'test/select': { type: 'select', name: 'test/select', options: [{ value: 'opt1' }] },
-				'test/checks': { type: 'checkboxGroup', name: 'test/checks', checkboxes: [{ name: 'test/checks/c1', label: 'Check 1'}, { name: 'test/checks/c2', label: 'Check 2'}] },
-				'do-not-render-button': { type: 'button', label: 'Must not be shown' }
-			},
-			fieldsetDefs: {
-				'test/oneset': {
-					label: 'First set',
-					fields: [ 'test/oneset/onefield', 'test/oneset/twofield' ]
-				},
-				'test/twoset': {
-					label: 'Second set',
-					fields: [ 'test/twoset/threefield' ]
-				},
-				'no-show-set': {
-					label: 'Don\'t show me',
-					fields: []
-				}
-			},
-			dataFieldDefs: {
-				'test/oneset/onefield': {},
-				'test/oneset/twofield': { defaultValue: 'a default' },
-				'test/twoset/threefield': { defaultValue: 'overwritten' }
-			},
-			tabName: 'test/oneTab',
+			],
 			options: {
 				values: {
 					'test/select': 'opt1',
@@ -76,14 +34,10 @@ describe('ToolbarFrame', () => {
 				}
 			},
 			dirtyPages: {},
-			values: {
-				'test/twoset/threefield': 'different'
-			},
 			actions: {
 				save: sinon.spy(() => pageActions.save).named('save'),
 				fireAction: sinon.spy(() => pageActions.fireAction).named('fireAction'),
-				setOption: sinon.spy(() => pageActions.setOption).named('threebutton'),
-				updateValue: sinon.spy(() => pageActions.update).named('threebutton')
+				setOption: sinon.spy(() => pageActions.setOption).named('setOption')
 			},
 		};
 		renderer = TestUtils.createRenderer();
@@ -98,20 +52,20 @@ describe('ToolbarFrame', () => {
 				<Toolbar
 					name='test/toolbar'
 					canSave={false}
-					items={{}}/>
+					items={expect.it('to be an array')}/>
 				<TabContent/>
 			</div>
 		)
 		.and(
-			'queried for', <Toolbar canSave={false} items={{}}/>,
+			'queried for', <Toolbar canSave={false} items={[{},{},{}]}/>,
 			'to have props exhaustively satisfying', {
 				name: 'test/toolbar',
 				canSave: false,
-				items: {
-					'test/save': { type: 'button', label: 'Save', action: pageActions.save, saveButton: true },
-					'test/onebutton': { type: 'button', label: 'One', action: pageActions.fireAction },
-					'test/twobutton': { type: 'button', label: 'Two', action: pageActions.fireAction }
-				}
+				items: [
+					{ name: 'test/onebutton', type: 'button', label: 'One', action: pageActions.fireAction },
+					{ name: 'test/twobutton', type: 'button', label: 'Two', action: pageActions.fireAction },
+					{ name: 'test/save', type: 'button', label: 'Save', action: pageActions.save, saveButton: true }
+				]
 			}
 		);
 	});
@@ -120,14 +74,14 @@ describe('ToolbarFrame', () => {
 		renderer.render(<ToolbarFrame name='test' {...props}/>);
 		Promise.all([
 			expect(renderer,
-				'queried for', <Toolbar canSave={false} items={{}}/>,
+				'queried for', <Toolbar canSave={false} items={[{},{},{}]}/>,
 			'to have props satisfying', {
 				name: 'test/toolbar',
-				items: {
-					'test/save': { action: expect.it('to be', pageActions.save) },
-					'test/onebutton': { action: expect.it('to be', pageActions.fireAction) },
-					'test/twobutton': { action: expect.it('to be', pageActions.fireAction) }
-				}
+				items: [
+					{ action: expect.it('to be', pageActions.fireAction) },
+					{ action: expect.it('to be', pageActions.fireAction) },
+					{ action: expect.it('to be', pageActions.save) }
+				]
 			}),
 			expect(props.actions.save, 'to have a call satisfying', { args: ['test'] }),
 			expect(props.actions.fireAction, 'to have calls exhaustively satisfying', [
@@ -138,17 +92,20 @@ describe('ToolbarFrame', () => {
 	});
 
 	it('passes useful props to selects, checkbox groups on toolbars', () => {
-		props.toolbarDefs['test/toolbar'].items = ['test/select', 'test/checks'];
+		props.toolbars[0].items = [
+			{ name: 'test/select', type: 'select', options: [{ value: 'opt1' }] },
+			{ name: 'test/checks', type: 'checkboxGroup', checkboxes: [{ name: 'test/checks/c1', label: 'Check 1'}, { name: 'test/checks/c2', label: 'Check 2'}] }
+		];
 		renderer.render(<ToolbarFrame name='test' {...props}/>);
 		Promise.all([
 			expect(renderer,
-				'queried for', <Toolbar canSave={false} items={{}}/>,
+				'queried for', <Toolbar canSave={false} items={[{},{}]}/>,
 			'to have props satisfying', {
 				name: 'test/toolbar',
-				items: {
-					'test/select': { onChange: expect.it('to be a function'), options: [{ value: 'opt1' }], value: 'opt1' },
-					'test/checks': { onChange: expect.it('to be a function'), checkboxes: [{ name: 'test/checks/c1', label: 'Check 1' }, { name: 'test/checks/c2', label: 'Check 2' }], value: ['test/checks/c1'] }
-				}
+				items: [
+					{ onChange: expect.it('to be a function'), options: [{ value: 'opt1' }], value: 'opt1' },
+					{ onChange: expect.it('to be a function'), checkboxes: [{ name: 'test/checks/c1', label: 'Check 1' }, { name: 'test/checks/c2', label: 'Check 2' }], value: ['test/checks/c1'] }
+				]
 			}),
 			expect(props.actions.setOption, 'to have a call satisfying', { args: ['test/select'] }),
 			expect(props.actions.setOption, 'to have a call satisfying', { args: ['test/checks'] })
@@ -156,7 +113,7 @@ describe('ToolbarFrame', () => {
 	});
 
 	it('handles missing toolbar defs', () => {
-		delete props.toolbarDefs['test/toolbar'];
+		delete props.toolbars[0];
 		renderer.render(<ToolbarFrame name='test' {...props}/>);
 		return expect(
 			renderer,

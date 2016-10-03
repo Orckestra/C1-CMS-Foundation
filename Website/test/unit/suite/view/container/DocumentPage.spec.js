@@ -18,6 +18,12 @@ describe('DocumentPage', () => {
 					currentPage: 'tab'
 				}
 			},
+			pageDefs: {
+				'testpage': {
+					name: 'testpage',
+					toolbars: ['hasItemDefs', 'hasNoItemDefs', 'hasNoToolbarDef']
+				}
+			},
 			dataFields: {
 				dirtyPages: {},
 				'one': 1,
@@ -27,8 +33,20 @@ describe('DocumentPage', () => {
 				'one': true,
 				'two': 'set up the bomb'
 			},
-			toolbarDefs: {}, // required for ToolbarFrame
-			itemDefs: {} // required for ToolbarFrame
+			toolbarDefs: {
+				hasItemDefs: {
+					name: 'hasItemDefs',
+					items: ['item1', 'item2']
+				},
+				hasNoItemDefs: {
+					name: 'hasNoItemDefs',
+					items: ['item3', 'item4']
+				}
+			},
+			itemDefs: {
+				item1: {},
+				item2: {}
+			}
 		};
 		store = {
 			subscribe: sinon.spy().named('subscribe'),
@@ -46,8 +64,7 @@ describe('DocumentPage', () => {
 		renderer.render(<DocumentPage store={store} {...props}/>);
 		return expect(renderer, 'to have rendered', <ToolbarFrame
 			{...props}
-			toolbarDefs={{}}
-			itemDefs={{}}
+			toolbars={[{ name: 'hasItemDefs', items: [{}, {}] }, { name: 'hasNoItemDefs', items: [] }]}
 			actions={{
 				updateValue: expect.it('to be a function')
 					.and('when called with', ['pagename', 'fieldname'], 'to be a function')

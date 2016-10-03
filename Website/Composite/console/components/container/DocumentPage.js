@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { toolbarSelector } from 'console/state/selectors/toolbarSelector.js';
 import ToolbarFrame from 'console/components/presentation/ToolbarFrame.js';
 import { saveValues } from 'console/state/actions/values.js';
 import { updateFieldValue } from 'console/state/reducers/dataFields.js';
@@ -8,8 +9,8 @@ import { fireAction } from 'console/state/actions/fireAction.js';
 // Sets up a page that allows editing of a document consisting of sets of fields.
 function mapStateToProps(state) {
 	let props = {
-		toolbarDefs: state.toolbarDefs,
-		itemDefs: state.itemDefs,
+		pageName: state.pages.currentPage,
+		toolbars: toolbarSelector(state),
 		options: state.options
 	};
 	props.dirtyPages = state.dataFields && state.dataFields.dirtyPages;

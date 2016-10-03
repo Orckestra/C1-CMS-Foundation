@@ -24,25 +24,28 @@ describe('Toolbar', () => {
 
 	describe('with buttons', () => {
 		beforeEach(() => {
-			props.items = {
-				first: {
+			props.items = [
+				{
+					name: 'first',
 					type: 'button',
 					label: 'Label1',
 					icon: 'save',
 					action: actions.first
 				},
-				second: {
+				{
+					name: 'second',
 					type: 'button',
 					label: 'Label2',
 					action: actions.second
 				},
-				third: {
+				{
+					name: 'third',
 					type: 'button',
 					label: 'Label3',
 					saveButton: true,
 					action: actions.third
 				}
-			};
+			];
 		});
 
 		it('renders them', () => {
@@ -57,7 +60,7 @@ describe('Toolbar', () => {
 		});
 
 		it('does not render them where action is missing', () => {
-			delete props.items.third.action;
+			delete props.items[2].action;
 			renderer.render(<Toolbar {...props}/>);
 			return expect(renderer, 'to have rendered',
 				<div className='toolbar'>
@@ -68,8 +71,8 @@ describe('Toolbar', () => {
 		});
 
 		it('renders them where label is missing, but only if it has icon', () => {
-			delete props.items.first.label;
-			delete props.items.third.label;
+			delete props.items[0].label;
+			delete props.items[2].label;
 			renderer.render(<Toolbar {...props}/>);
 			return expect(renderer, 'to have rendered',
 				<div className='toolbar'>
@@ -82,8 +85,8 @@ describe('Toolbar', () => {
 
 	describe('with selector', () => {
 		beforeEach(() => {
-			props.items = {
-				first: {
+			props.items = [
+				{
 					type: 'select',
 					placeholder: 'Select date',
 					options: [
@@ -93,7 +96,7 @@ describe('Toolbar', () => {
 						{ value: '2016-09-20' }
 					]
 				}
-			};
+			];
 		});
 
 		it('renders them', () => {
@@ -113,8 +116,8 @@ describe('Toolbar', () => {
 
 	describe('with checkbox groups', () => {
 		beforeEach(() => {
-			props.items = {
-				first: {
+			props.items = [
+				{
 					type: 'checkboxGroup',
 					name: 'first',
 					checkboxes: [
@@ -126,7 +129,7 @@ describe('Toolbar', () => {
 					],
 					value: ['first/test1', 'first/test2', 'first/test3', 'first/test4']
 				}
-			};
+			];
 		});
 
 		it('renders them', () => {
@@ -150,6 +153,10 @@ describe('Toolbar', () => {
 	});
 
 	describe('styles', () => {
+		beforeEach(() => {
+			props.items = [];
+		});
+
 		it('sets classNames according to style list', () => {
 			props.style = 'light rightAligned';
 			renderer.render(<Toolbar {...props}/>);
