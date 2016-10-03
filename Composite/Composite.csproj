@@ -68,11 +68,13 @@
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Extensions.DependencyInjection, Version=1.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.1.0.0-rc1-final\lib\net451\Microsoft.Extensions.DependencyInjection.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Packages\Microsoft.Extensions.DependencyInjection.1.0.0\lib\netstandard1.1\Microsoft.Extensions.DependencyInjection.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.1.0.0-rc1-final\lib\net451\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Packages\Microsoft.Extensions.DependencyInjection.Abstractions.1.0.0\lib\netstandard1.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -167,7 +169,7 @@
     <Compile Include="C1Console\Actions\Data\DataActionTokenRegisterHandler.cs" />
     <Compile Include="C1Console\Actions\Data\DataActionTokenResolver.cs" />
     <Compile Include="C1Console\Actions\Data\DataActionTokenResolverFacade.cs" />
-    <Compile Include="C1Console\Actions\Data\DataActionTokenResolverRegistery.cs" />
+    <Compile Include="C1Console\Actions\Data\DataActionTokenResolverRegistry.cs" />
     <Compile Include="C1Console\Forms\ITestAutomationLocatorInformation.cs" />
     <Compile Include="C1Console\Elements\DialogStrings.cs" />
     <Compile Include="C1Console\Elements\IServiceUrlToEntityTokenMapper.cs" />
