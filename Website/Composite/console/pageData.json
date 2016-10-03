@@ -163,6 +163,17 @@
               { "value": "2016-09-21" },
               { "value": "2016-09-20" }
             ]
+          },
+          {
+            "type": "checkboxGroup",
+            "name": "other-page/toolbar2/levels",
+            "checkboxes": [
+              { "name": "other-page/toolbar2/levels/critical", "label": "Critical" },
+              { "name": "other-page/toolbar2/levels/error", "label": "Error" },
+              { "name": "other-page/toolbar2/levels/warning", "label": "Warning" },
+              { "name": "other-page/toolbar2/levels/info", "label": "Information" },
+              { "name": "other-page/toolbar2/levels/verbose", "label": "Verbose" }
+            ]
           }
         ]
       }

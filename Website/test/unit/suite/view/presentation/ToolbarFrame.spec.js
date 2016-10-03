@@ -46,6 +46,7 @@ describe('ToolbarFrame', () => {
 				'test/twobutton': { type: 'button', label: 'Two', action: 'twoaction' },
 				'test/save': { type: 'button', label: 'Save', action: 'save' },
 				'test/select': { type: 'select', name: 'test/select', options: [{ value: 'opt1' }] },
+				'test/checks': { type: 'checkboxGroup', name: 'test/checks', checkboxes: [{ name: 'test/checks/c1', label: 'Check 1'}, { name: 'test/checks/c2', label: 'Check 2'}] },
 				'do-not-render-button': { type: 'button', label: 'Must not be shown' }
 			},
 			fieldsetDefs: {
@@ -68,7 +69,10 @@ describe('ToolbarFrame', () => {
 				'test/twoset/threefield': { defaultValue: 'overwritten' }
 			},
 			tabName: 'test/oneTab',
-			options: {},
+			options: {
+				'test/select': 'opt1',
+				'test/checks': ['test/checks/c1']
+			},
 			dirtyPages: {},
 			values: {
 				'test/twoset/threefield': 'different'
@@ -131,8 +135,8 @@ describe('ToolbarFrame', () => {
 		]);
 	});
 
-	it('passes useful props to selects on toolbars', () => {
-		props.toolbarDefs['test/toolbar'].items = ['test/select'];
+	it('passes useful props to selects, checkbox groups on toolbars', () => {
+		props.toolbarDefs['test/toolbar'].items = ['test/select', 'test/checks'];
 		renderer.render(<ToolbarFrame name='test' {...props}/>);
 		Promise.all([
 			expect(renderer,
@@ -140,10 +144,12 @@ describe('ToolbarFrame', () => {
 			'to have props satisfying', {
 				name: 'test/toolbar',
 				items: {
-					'test/select': { onChange: expect.it('to be a function'), options: [{ value: 'opt1' }] }
+					'test/select': { onChange: expect.it('to be a function'), options: [{ value: 'opt1' }], value: 'opt1' },
+					'test/checks': { onChange: expect.it('to be a function'), checkboxes: [{ name: 'test/checks/c1', label: 'Check 1' }, { name: 'test/checks/c2', label: 'Check 2' }], value: ['test/checks/c1'] }
 				}
 			}),
-			expect(props.actions.setOption, 'to have a call satisfying', { args: ['test/select'] })
+			expect(props.actions.setOption, 'to have a call satisfying', { args: ['test/select'] }),
+			expect(props.actions.setOption, 'to have a call satisfying', { args: ['test/checks'] })
 		]);
 	});
 

@@ -3,6 +3,7 @@ import React from 'react';
 import TestUtils from 'react-addons-test-utils';
 import Toolbar from 'console/components/presentation/Toolbar.js';
 import ActionButton from 'console/components/presentation/ActionButton.js';
+import CheckboxGroup from 'console/components/presentation/CheckboxGroup.js';
 import Select from 'react-select';
 
 describe('Toolbar', () => {
@@ -105,6 +106,39 @@ describe('Toolbar', () => {
 						{ value: '2016-09-21', label: 'That day' },
 						{ value: '2016-09-20', label: '2016-09-20' }
 					]} clearable={false} multi={false}/>
+				</div>
+			);
+		});
+	});
+
+	describe('with checkbox groups', () => {
+		beforeEach(() => {
+			props.items = {
+				first: {
+					type: 'checkboxGroup',
+					name: 'first',
+					checkboxes: [
+						{ name: 'first/test1', label: 'One', value: true },
+						{ name: 'first/test2', label: 'Two', value: true },
+						{ name: 'first/test3', label: 'Three', value: true },
+						{ name: 'first/test4', label: 'Four', value: true },
+						{ name: 'first/test5', label: 'Five', value: false }
+					]
+				}
+			};
+		});
+
+		it('renders them', () => {
+			renderer.render(<Toolbar {...props}/>);
+			return expect(renderer, 'to have rendered',
+				<div className='toolbar'>
+					<CheckboxGroup name='first' checkboxes={[
+						{ name: 'first/test1', label: 'One', value: true },
+						{ name: 'first/test2', label: 'Two', value: true },
+						{ name: 'first/test3', label: 'Three', value: true },
+						{ name: 'first/test4', label: 'Four', value: true },
+						{ name: 'first/test5', label: 'Five', value: false }
+					]}/>
 				</div>
 			);
 		});
