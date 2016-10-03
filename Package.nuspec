@@ -23,12 +23,12 @@
     </dependencies>
   </metadata>
   <files>
-	<file src="Composite\Bin\Release\Composite.dll" target="lib\Composite.dll" />
-	<file src="Composite.Workflows\Bin\Release\Composite.Workflows.dll" target="lib\Composite.Workflows.dll" />
-	<file src="Composite\Bin\Release\Microsoft.Practices.EnterpriseLibrary.Common.dll" target="lib\Microsoft.Practices.EnterpriseLibrary.Common.dll" />
-	<file src="Composite\Bin\Release\Microsoft.Practices.EnterpriseLibrary.Logging.dll" target="lib\Microsoft.Practices.EnterpriseLibrary.Logging.dll" />
-	<file src="Composite\Bin\Release\Microsoft.Practices.EnterpriseLibrary.Validation.dll" target="lib\Microsoft.Practices.EnterpriseLibrary.Validation.dll" />
-	<file src="Composite\Bin\Release\Microsoft.Practices.ObjectBuilder.dll" target="lib\Microsoft.Practices.ObjectBuilder.dll" />
-	<file src="Composite\Bin\Release\TidyNet.dll" target="lib\TidyNet.dll" />
+	<file src="Bin\Composite.dll" target="lib\Composite.dll" />
+	<file src="Bin\Composite.Workflows.dll" target="lib\Composite.Workflows.dll" />
+	<file src="Bin\Microsoft.Practices.EnterpriseLibrary.Common.dll" target="lib\Microsoft.Practices.EnterpriseLibrary.Common.dll" />
+	<file src="Bin\Microsoft.Practices.EnterpriseLibrary.Logging.dll" target="lib\Microsoft.Practices.EnterpriseLibrary.Logging.dll" />
+	<file src="Bin\Microsoft.Practices.EnterpriseLibrary.Validation.dll" target="lib\Microsoft.Practices.EnterpriseLibrary.Validation.dll" />
+	<file src="Bin\Microsoft.Practices.ObjectBuilder.dll" target="lib\Microsoft.Practices.ObjectBuilder.dll" />
+	<file src="Bin\TidyNet.dll" target="lib\TidyNet.dll" />
   </files>
 </package>
