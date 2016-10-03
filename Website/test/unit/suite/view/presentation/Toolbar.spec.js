@@ -118,12 +118,13 @@ describe('Toolbar', () => {
 					type: 'checkboxGroup',
 					name: 'first',
 					checkboxes: [
-						{ name: 'first/test1', label: 'One', value: true },
-						{ name: 'first/test2', label: 'Two', value: true },
-						{ name: 'first/test3', label: 'Three', value: true },
-						{ name: 'first/test4', label: 'Four', value: true },
-						{ name: 'first/test5', label: 'Five', value: false }
-					]
+						{ name: 'first/test1', label: 'One' },
+						{ name: 'first/test2', label: 'Two' },
+						{ name: 'first/test3', label: 'Three' },
+						{ name: 'first/test4', label: 'Four' },
+						{ name: 'first/test5', label: 'Five' }
+					],
+					value: ['first/test1', 'first/test2', 'first/test3', 'first/test4']
 				}
 			};
 		});
@@ -132,13 +133,17 @@ describe('Toolbar', () => {
 			renderer.render(<Toolbar {...props}/>);
 			return expect(renderer, 'to have rendered',
 				<div className='toolbar'>
-					<CheckboxGroup name='first' checkboxes={[
-						{ name: 'first/test1', label: 'One', value: true },
-						{ name: 'first/test2', label: 'Two', value: true },
-						{ name: 'first/test3', label: 'Three', value: true },
-						{ name: 'first/test4', label: 'Four', value: true },
-						{ name: 'first/test5', label: 'Five', value: false }
-					]}/>
+					<CheckboxGroup
+						name='first'
+						checkboxes={[
+							{ name: 'first/test1', label: 'One' },
+							{ name: 'first/test2', label: 'Two' },
+							{ name: 'first/test3', label: 'Three' },
+							{ name: 'first/test4', label: 'Four' },
+							{ name: 'first/test5', label: 'Five' }
+						]}
+						value={['first/test1', 'first/test2', 'first/test3', 'first/test4']}
+						/>
 				</div>
 			);
 		});

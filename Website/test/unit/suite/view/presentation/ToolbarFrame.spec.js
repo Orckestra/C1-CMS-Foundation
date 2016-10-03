@@ -70,8 +70,10 @@ describe('ToolbarFrame', () => {
 			},
 			tabName: 'test/oneTab',
 			options: {
-				'test/select': 'opt1',
-				'test/checks': ['test/checks/c1']
+				values: {
+					'test/select': 'opt1',
+					'test/checks': ['test/checks/c1']
+				}
 			},
 			dirtyPages: {},
 			values: {

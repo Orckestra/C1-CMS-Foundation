@@ -15,10 +15,10 @@ const ToolbarFrame = props => {
 			} else if (item.type === 'select') {
 				let setOption = props.actions.setOption(item.name);
 				item.onChange = option => setOption(option.value);
-				item.value = props.options[item.name];
+				item.value = props.options.values[item.name];
 			} else if (item.type === 'checkboxGroup') {
 				item.onChange = props.actions.setOption(item.name);
-				item.value = props.options[item.name] || [];
+				item.value = props.options.values[item.name] || [];
 			} else {
 				item.action = props.actions.fireAction(item.action, props.name);
 			}
