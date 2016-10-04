@@ -1,7 +1,7 @@
 {
-	"edit-language/tab/properties/url-mapping-name": "en",
-	"edit-language/tab/properties/pimp-my-select": null,
-	"edit-language/tab/properties/check-one": true,
-	"edit-language/tab/properties/check-two": false,
-	"edit-language/tab/properties/check-three": true
+	"edit-language/form/properties/url-mapping-name": "en",
+	"other-page/form/properties/url-mapping-name": "en",
+	"other-page/form/properties/pimp-my-select": null,
+	"other-page/form/properties/check-one": true,
+	"other-page/form/properties/check-three": true
 }

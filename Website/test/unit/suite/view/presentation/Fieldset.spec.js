@@ -10,11 +10,11 @@ describe('Fieldset', () => {
 		renderer = TestUtils.createRenderer();
 		updater = () => {};
 		props = {
-			fields: {
-				first: { updateValue: updater },
-				second: { updateValue: updater },
-				third: { updateValue: updater }
-			}
+			fields: [
+				{ name: 'first', updateValue: updater },
+				{ name: 'second', updateValue: updater },
+				{ name: 'third', updateValue: updater }
+			]
 		};
 	});
 

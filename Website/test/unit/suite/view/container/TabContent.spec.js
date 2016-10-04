@@ -34,22 +34,25 @@ describe('TabContent', () => {
 			},
 			fieldsetDefs: {
 				'test/tab/oneset': {
+					name: 'test/tab/oneset',
 					label: 'First set',
 					fields: [ 'test/tab/oneset/onefield', 'test/tab/oneset/twofield' ]
 				},
 				'test/tab/twoset': {
+					name: 'test/tab/twoset',
 					label: 'Second set',
 					fields: [ 'test/tab/twoset/threefield' ]
 				},
 				'no-show-set': {
+					name: 'no-show-set',
 					label: 'Don\'t show me',
 					fields: []
 				}
 			},
 			dataFieldDefs: {
-				'test/tab/oneset/onefield': {},
-				'test/tab/oneset/twofield': { defaultValue: 'a default' },
-				'test/tab/twoset/threefield': { defaultValue: 'overwritten' }
+				'test/tab/oneset/onefield': { name: 'test/tab/oneset/onefield' },
+				'test/tab/oneset/twofield': { name: 'test/tab/oneset/twofield', defaultValue: 'a default' },
+				'test/tab/twoset/threefield': { name: 'test/tab/twoset/threefield', defaultValue: 'overwritten' }
 			},
 			dataFields: {
 				dirtyPages: {
@@ -72,10 +75,21 @@ describe('TabContent', () => {
 			<FormTab
 				name='test/tab'
 				pageName='test'
-				tabDef={state.tabDefs['test/tab']}
-				fieldsetDefs={state.fieldsetDefs}
-				dataFieldDefs={state.dataFieldDefs}
-				values={{ 'test/tab/twoset/threefield': 'different' }}
+				fieldsets={[
+					{
+						name: 'test/tab/oneset',
+						label: 'First set',
+						fields: [
+							{ name: 'test/tab/oneset/onefield' },
+							{ name: 'test/tab/oneset/twofield', defaultValue: 'a default' }
+						]
+					},
+					{
+						name: 'test/tab/twoset',
+						label: 'Second set',
+						fields: [ { name: 'test/tab/twoset/threefield', defaultValue: 'overwritten', value: 'different' } ]
+					}
+				]}
 				actions={{
 					updateValue: expect.it('to be a function')
 						.and('when called with', ['pagename', 'fieldname'], 'to be a function')
@@ -87,7 +101,6 @@ describe('TabContent', () => {
 			]));
 	});
 
-
 	describe('missing fields in state', () => {
 		it('provides a default tabName if none selected', () => {
 			delete state.pages.tabs.test;
@@ -97,10 +110,7 @@ describe('TabContent', () => {
 				<FormTab
 					name='test/tab'
 					pageName='test'
-					tabDef={state.tabDefs['test/tab']}
-					fieldsetDefs={{}}
-					dataFieldDefs={{}}
-					values={{}}
+					fieldsets={[{}, {}]}
 					actions={{}}
 					store={{}}/>);
 		});
@@ -111,12 +121,8 @@ describe('TabContent', () => {
 			return expect(renderer,
 				'to have rendered',
 				<FormTab
-					name='test/tab'
 					pageName='test'
-					tabDef={{}}
-					fieldsetDefs={{}}
-					dataFieldDefs={{}}
-					values={{}}
+					fieldsets={[]}
 					actions={{}}
 					store={{}}/>);
 		});

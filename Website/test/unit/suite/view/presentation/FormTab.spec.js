@@ -11,32 +11,21 @@ describe('FormTab', () => {
 		renderer = TestUtils.createRenderer();
 		props = {
 			pageName: 'test',
-			tabDef: {
-				fieldsets: [
-					'test/oneset',
-					'test/twoset',
-					'test/fourset'
-				]
-			},
-			fieldsetDefs: {
-				'test/oneset': {
+			fieldsets: [
+				{
 					label: 'First set',
-					fields: [ 'test/oneset/onefield', 'test/oneset/twofield' ]
+					name: 'test/oneset',
+					fields: [
+						{ name: 'test/oneset/onefield'},
+						{ name: 'test/oneset/twofield', defaultValue: 'a default' }
+					]
 				},
-				'test/twoset': {
+				{
 					label: 'Second set',
-					fields: [ 'test/twoset/threefield' ]
-				},
-				'no-show-set': {
-					label: 'Don\'t show me',
-					fields: []
+					name: 'test/twoset',
+					fields: [ { name: 'test/twoset/threefield', defaultValue: 'overwritten' } ]
 				}
-			},
-			dataFieldDefs: {
-				'test/oneset/onefield': {},
-				'test/oneset/twofield': { defaultValue: 'a default' },
-				'test/twoset/threefield': { defaultValue: 'overwritten' }
-			}
+			]
 		};
 		pageActions = {
 			fireAction: () => {},
@@ -61,20 +50,22 @@ describe('FormTab', () => {
 		renderer, 'to have exactly rendered',
 		<div className='scrollbox'>
 			<Fieldset
+				name='test/oneset'
 				label='First set'
-				fields={{
-					'test/oneset/onefield': {},
-					'test/oneset/twofield': { value: 'a default' }
-				}}/>
+				fields={[
+					{ name: 'test/oneset/onefield'},
+					{ name: 'test/oneset/twofield', defaultValue: 'a default' }
+				]}/>
 			<Fieldset
+				name='test/twoset'
 				label='Second set'
-				fields={{ 'test/twoset/threefield': { value: 'different' } }}/>
+				fields={[ { name: 'test/twoset/threefield', defaultValue: 'overwritten' } ]}/>
 		</div>
 	));
 
 	it('passes a nametagged update function to fields', () => Promise.all([
 		expect(renderer,
-			'queried for', <Fieldset label='First set' fields={{}}/>,
+			'queried for', <Fieldset label='First set' fields={[{}, {}]}/>,
 			'to have props satisfying', {
 				fields: expect.it('to have values satisfying',
 					'to have property',

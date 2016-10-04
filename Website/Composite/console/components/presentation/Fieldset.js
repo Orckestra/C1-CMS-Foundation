@@ -5,8 +5,8 @@ const Fieldset = ({ label, fields }) => (
 	<fieldset>
 		{label ? <legend>{label}</legend> : null}
 		{
-			Object.keys(fields).map(name => (
-				<DataField key={name} name={name} {...fields[name]}/>
+			fields.map(field => (
+				<DataField key={field.name} name={field.name} {...field}/>
 			))
 		}
 	</fieldset>
@@ -14,7 +14,7 @@ const Fieldset = ({ label, fields }) => (
 
 Fieldset.propTypes = {
 	label: PropTypes.string,
-	fields: PropTypes.object.isRequired
+	fields: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
 export default Fieldset;

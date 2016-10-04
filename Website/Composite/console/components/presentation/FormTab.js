@@ -2,21 +2,15 @@ import React, { PropTypes } from 'react';
 import Fieldset from 'console/components/presentation/Fieldset.js';
 
 const FormTab = props => {
-	if (!props.tabDef.fieldsets) return null;
-	let fieldsets = props.tabDef.fieldsets.map(fieldsetName => {
-		let fieldset = props.fieldsetDefs[fieldsetName];
-		if (!fieldset) return null;
-		let fields = fieldset.fields.reduce((fields, fieldName) => {
-			fields[fieldName] = Object.assign({}, props.dataFieldDefs[fieldName]);
-			fields[fieldName].updateValue = props.actions.updateValue(props.pageName, fieldName);
-			fields[fieldName].value = props.values[fieldName] || fields[fieldName].defaultValue;
-			return fields;
-		}, {});
+	if (!props.fieldsets) return null;
+	let fieldsets = props.fieldsets.map(fieldset => {
+		fieldset.fields.forEach(field => {
+			field.updateValue = props.actions.updateValue(props.pageName, field.name);
+		});
 		return (
 			<Fieldset
 				{...fieldset}
-				fields={fields}
-				key={fieldsetName}/>
+				key={fieldset.name}/>
 		);
 	});
 	return (
@@ -27,13 +21,10 @@ const FormTab = props => {
 };
 
 FormTab.propTypes = {
-	name: PropTypes.string.isRequired,
+	name: PropTypes.string,
 	pageName: PropTypes.string.isRequired,
-	actions: PropTypes.object.isRequired,
-	fieldsetDefs: PropTypes.object.isRequired,
-	dataFieldDefs: PropTypes.object.isRequired,
-	values: PropTypes.object.isRequired,
-	tabDef: PropTypes.object.isRequired
+	actions: PropTypes.objectOf(PropTypes.func).isRequired,
+	fieldsets: PropTypes.arrayOf(PropTypes.object)
 };
 
 export default FormTab;
