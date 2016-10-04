@@ -218,5 +218,17 @@
 				<Param name="newString" />
 			</Overload>
 		</KeyWord>
+		<KeyWord name="installPackage" func="yes">
+			<Overload retVal="browser" >
+				<Param name="category" />
+				<Param name="packageName" />
+			</Overload>
+		</KeyWord>
+		<KeyWord name="uninstallPackage" func="yes">
+			<Overload retVal="browser" >
+				<Param name="category" />
+				<Param name="packageName" />
+			</Overload>
+		</KeyWord>
 	</AutoComplete>
 </NotepadPlus>

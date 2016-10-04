@@ -9,23 +9,10 @@ module.exports = {
 	'Install SQL Package': function (browser) {
 		
 		browser
-		.selectPerspective("System")
-		.openTreeNode("Available Packages")
-		.openTreeNode("Composite.Tools")
-		.selectTreeNodeAction("Composite.Tools.SqlServerDataProvider", "Install")
-		.clickLabel("I accept the license agreement")
-		.clickDialogButton("Next")
-		.clickDialogButton("Next")
-		.clickDialogButton("Next")
-		.clickDialogButton("Finish")
-		.pause(2000)
+		.installPackage("Composite.Tools","Composite.Tools.SqlServerDataProvider")
 		
 		browser
 		.selectPerspective("System")
-		.openTreeNode("Packages","Installed Packages")
-		.openTreeNode("Installed Packages","Composite.Tools")
-		.assertTreeNodeHasChild("Composite.Tools","Composite.Tools.SqlServerDataProvider")
-		
 		.openTreeNode("/")
 		.openTreeNode("Composite")
 		.openTreeNode("Composite","InstalledPackages")
