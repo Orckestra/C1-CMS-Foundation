@@ -19,11 +19,11 @@ namespace Composite.Data.Foundation
             {
                 bool doFlush = false;
 
-                var knownInterfaces = DataProviderRegistry.AllKnownInterfaces.ToList(); 
+                var knownInterfaces = DataProviderRegistry.AllKnownInterfaces.ToList();
 
                 foreach (Type interfaceType in knownInterfaces)
                 {
-                    if (!interfaceType.IsAutoUpdateble() || interfaceType.IsGenerated())
+                    if (!interfaceType.IsAutoUpdateble())
                     {
                         continue;
                     }

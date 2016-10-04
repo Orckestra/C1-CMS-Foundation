@@ -12,7 +12,11 @@ namespace Composite.Core.WebClient.UiControlLib
     public class CheckBox : System.Web.UI.WebControls.CheckBox
     {
         /// <exclude />
-        public string ItemLabel { get; set; }
+        public string ItemLabel
+        {
+            get { return (string) ViewState[nameof(ItemLabel)]; }
+            set { ViewState[nameof(ItemLabel)] = value; }
+        }
 
 
 
@@ -23,7 +27,7 @@ namespace Composite.Core.WebClient.UiControlLib
 
             writer.WriteAttribute("label", StringResourceSystemFacade.ParseString(this.ItemLabel ?? ""));
 
-            if (string.IsNullOrEmpty(this.ToolTip) == false)
+            if (!string.IsNullOrEmpty(this.ToolTip))
             {
                 writer.WriteAttribute("title", StringResourceSystemFacade.ParseString(this.ToolTip ?? ""));
             }

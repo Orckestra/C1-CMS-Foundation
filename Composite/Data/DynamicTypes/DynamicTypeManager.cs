@@ -327,7 +327,18 @@ namespace Composite.Data.DynamicTypes
             using (TimerProfilerFacade.CreateTimerProfiler(interfaceType.ToString()))
             {
                 var newDataTypeDescriptor = BuildNewDataTypeDescriptor(interfaceType);
+
                 var oldDataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(newDataTypeDescriptor.DataTypeId);
+
+                if (interfaceType.IsGenerated())
+                {
+                    var customFields = oldDataTypeDescriptor.Fields.Where(f => !f.Inherited);
+                    foreach (var field in customFields)
+                    {
+                        newDataTypeDescriptor.Fields.Remove(newDataTypeDescriptor.Fields[field.Name]);
+                        newDataTypeDescriptor.Fields.Add(field);
+                    }
+                }
 
                 if (oldDataTypeDescriptor == null)
                 {
