@@ -16,7 +16,7 @@ const TabPage = props => {
 };
 
 TabPage.propTypes = {
-	pageDef: PropTypes.object.isRequired,
+	pageDef: PropTypes.object,
 	pageTypes: PropTypes.objectOf(PropTypes.func).isRequired
 };
 

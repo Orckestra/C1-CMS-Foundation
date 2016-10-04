@@ -88,6 +88,7 @@ describe('Toolbar', () => {
 			props.items = [
 				{
 					type: 'select',
+					name: 'switchItUp',
 					placeholder: 'Select date',
 					options: [
 						{ value: '2016-09-23' },
@@ -108,7 +109,7 @@ describe('Toolbar', () => {
 						{ value: '2016-09-22', label: '2016-09-22' },
 						{ value: '2016-09-21', label: 'That day' },
 						{ value: '2016-09-20', label: '2016-09-20' }
-					]} clearable={false} multi={false}/>
+					]} clearable={false} multi={false} simpleValue={true}/>
 				</div>
 			);
 		});
@@ -120,7 +121,7 @@ describe('Toolbar', () => {
 				{
 					type: 'checkboxGroup',
 					name: 'first',
-					checkboxes: [
+					options: [
 						{ name: 'first/test1', label: 'One' },
 						{ name: 'first/test2', label: 'Two' },
 						{ name: 'first/test3', label: 'Three' },
@@ -138,7 +139,7 @@ describe('Toolbar', () => {
 				<div className='toolbar'>
 					<CheckboxGroup
 						name='first'
-						checkboxes={[
+						options={[
 							{ name: 'first/test1', label: 'One' },
 							{ name: 'first/test2', label: 'Two' },
 							{ name: 'first/test3', label: 'Three' },

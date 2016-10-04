@@ -15,7 +15,9 @@ describe('DockTab', () => {
 				pages: ['test1', 'test2']
 			},
 			pageDefs: {
-				test1: {}
+				test1: {
+					name: 'test1'
+				}
 			},
 		};
 		store = {
@@ -36,7 +38,9 @@ describe('DockTab', () => {
 				'to have exactly rendered',
 				<TabPage
 					test='value'
-					pageDef={expect.it('to equal', state.pageDefs.test1)}
+					pageDef={{
+						name: 'test1'
+					}}
 					pageTypes={{}}
 					dispatch={store.dispatch}
 					store={store}/>

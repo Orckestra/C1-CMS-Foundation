@@ -3,8 +3,9 @@ import { currentPageSelector } from 'console/state/selectors/pageSelector.js';
 
 const toolbarDefSelector = state => state.toolbarDefs;
 const itemDefSelector = state => state.itemDefs;
+const optionsSelector = state => state.options;
 
-export const toolbarSelector = createSelector(
+export const toolbarAssemblySelector = createSelector(
 	currentPageSelector,
 	toolbarDefSelector,
 	itemDefSelector,
@@ -18,4 +19,23 @@ export const toolbarSelector = createSelector(
 		}).filter(toolbar => !!toolbar.name);
 		return toolbars;
 	}
+);
+
+export const toolbarSelector = createSelector(
+	toolbarAssemblySelector,
+	optionsSelector,
+	(toolbars, options) =>
+		toolbars.map(toolbar => Object.assign({}, toolbar, {
+			items: toolbar.items.map(item => {
+				let update = {};
+				if (item.type === 'select' || item.type == 'checkboxGroup') {
+					update.options = options.lists[item.name] || item.options;
+					update.value = options.values[item.name];
+					if (item.type === 'checkboxGroup' && !update.value) {
+						update.value = [];
+					}
+				}
+				return Object.assign({}, item, update);
+			})
+		}))
 );

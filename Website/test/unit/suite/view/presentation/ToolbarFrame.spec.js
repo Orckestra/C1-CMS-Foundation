@@ -27,12 +27,6 @@ describe('ToolbarFrame', () => {
 					]
 				}
 			],
-			options: {
-				values: {
-					'test/select': 'opt1',
-					'test/checks': ['test/checks/c1']
-				}
-			},
 			dirtyPages: {},
 			actions: {
 				save: sinon.spy(() => pageActions.save).named('save'),
@@ -52,7 +46,7 @@ describe('ToolbarFrame', () => {
 				<Toolbar
 					name='test/toolbar'
 					canSave={false}
-					items={expect.it('to be an array')}/>
+					items={[{}, {}, {}]}/>
 				<TabContent/>
 			</div>
 		)
@@ -93,8 +87,8 @@ describe('ToolbarFrame', () => {
 
 	it('passes useful props to selects, checkbox groups on toolbars', () => {
 		props.toolbars[0].items = [
-			{ name: 'test/select', type: 'select', options: [{ value: 'opt1' }] },
-			{ name: 'test/checks', type: 'checkboxGroup', checkboxes: [{ name: 'test/checks/c1', label: 'Check 1'}, { name: 'test/checks/c2', label: 'Check 2'}] }
+			{ name: 'test/select', type: 'select', options: [{ value: 'opt1' }], value: 'opt1' },
+			{ name: 'test/checks', type: 'checkboxGroup', options: [{ name: 'test/checks/c1', label: 'Check 1'}, { name: 'test/checks/c2', label: 'Check 2'}], value: ['test/checks/c1'] }
 		];
 		renderer.render(<ToolbarFrame name='test' {...props}/>);
 		Promise.all([
@@ -104,7 +98,7 @@ describe('ToolbarFrame', () => {
 				name: 'test/toolbar',
 				items: [
 					{ onChange: expect.it('to be a function'), options: [{ value: 'opt1' }], value: 'opt1' },
-					{ onChange: expect.it('to be a function'), checkboxes: [{ name: 'test/checks/c1', label: 'Check 1' }, { name: 'test/checks/c2', label: 'Check 2' }], value: ['test/checks/c1'] }
+					{ onChange: expect.it('to be a function'), options: [{ name: 'test/checks/c1', label: 'Check 1' }, { name: 'test/checks/c2', label: 'Check 2' }], value: ['test/checks/c1'] }
 				]
 			}),
 			expect(props.actions.setOption, 'to have a call satisfying', { args: ['test/select'] }),

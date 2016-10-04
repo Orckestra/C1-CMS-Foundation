@@ -13,7 +13,7 @@ const CheckboxGroup = props => {
 	};
 	return (
 		<div className='checkboxGroup'>
-			{props.checkboxes.reduce((elements, cbProps) => {
+			{props.options.reduce((elements, cbProps) => {
 				let value = (props.value.indexOf(cbProps.name) !== -1) || false;
 				elements.push(<input
 					key={cbProps.name}
@@ -33,7 +33,7 @@ const CheckboxGroup = props => {
 };
 
 CheckboxGroup.propTypes = {
-	checkboxes: PropTypes.arrayOf(PropTypes.object).isRequired,
+	options: PropTypes.arrayOf(PropTypes.object).isRequired,
 	value: PropTypes.array.isRequired
 };
 

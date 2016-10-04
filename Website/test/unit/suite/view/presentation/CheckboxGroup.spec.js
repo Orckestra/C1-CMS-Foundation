@@ -11,7 +11,7 @@ describe('CheckboxGroup', () => {
 		props = {
 			type: 'checkboxGroup',
 			name: 'test/cbg',
-			checkboxes: [
+			options: [
 				{ name: 'test/cbg/test1', label: 'One' },
 				{ name: 'test/cbg/test2', label: 'Two' },
 				{ name: 'test/cbg/test3', label: 'Three' },

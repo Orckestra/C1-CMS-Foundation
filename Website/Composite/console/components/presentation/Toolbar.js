@@ -13,7 +13,7 @@ const Toolbar = ({ style, items, canSave }) => (
 				item.options.forEach(option => {
 					option.label = option.label || option.value;
 				});
-				return <Select key={item.name} clearable={false} multi={false} {...item}/>;
+				return <Select key={item.name} clearable={false} multi={false} simpleValue={true} {...item}/>;
 			case 'button':
 			default:
 				if (!((item.label || item.icon) && item.action)) return null;

@@ -30,22 +30,49 @@ describe('DocumentPage', () => {
 				'two': 2
 			},
 			options: {
-				'one': true,
-				'two': 'set up the bomb'
+				values: {
+					'switchItUp': 2
+				},
+				lists: {
+					'checkItOut': [
+						{ value: 'one', label: 'Thing' },
+						{ value: 'two', label: 'Stuff' }
+					]
+				}
 			},
 			toolbarDefs: {
 				hasItemDefs: {
 					name: 'hasItemDefs',
-					items: ['item1', 'item2']
+					items: ['item1', 'item2', 'item3', 'item4']
 				},
 				hasNoItemDefs: {
 					name: 'hasNoItemDefs',
-					items: ['item3', 'item4']
+					items: ['item5', 'item6']
 				}
 			},
 			itemDefs: {
-				item1: {},
-				item2: {}
+				item1: {
+					type: 'button',
+					name: 'saveIt',
+					action: 'save'
+				},
+				item2: {
+					type: 'button',
+					name: 'doStuff',
+					action: 'stuff'
+				},
+				item3: {
+					type: 'select',
+					name: 'switchItUp',
+					options: [
+						{ value: 'One' },
+						{ value: 2, label: 'Two' }
+					]
+				},
+				item4: {
+					type: 'checkboxGroup',
+					name: 'checkItOut'
+				}
 			}
 		};
 		store = {
@@ -55,7 +82,6 @@ describe('DocumentPage', () => {
 		};
 		props = {
 			test: 'value', // Not required - should be there anyway when passed through
-			name: 'testName', // required for ToolbarFrame
 			pageDef: {} // required for ToolbarFrame
 		};
 	});
@@ -64,7 +90,19 @@ describe('DocumentPage', () => {
 		renderer.render(<DocumentPage store={store} {...props}/>);
 		return expect(renderer, 'to have rendered', <ToolbarFrame
 			{...props}
-			toolbars={[{ name: 'hasItemDefs', items: [{}, {}] }, { name: 'hasNoItemDefs', items: [] }]}
+			pageName='testpage'
+			toolbars={[{
+				name: 'hasItemDefs',
+				items: [
+					{type: 'button'},
+					{type: 'button'},
+					{type: 'select', options: [{},{}], value: expect.it('to be a number')},
+					{type: 'checkboxGroup', options: [{},{}], value: expect.it('to be an array')}
+				]
+			}, {
+				name: 'hasNoItemDefs',
+				items: []
+			}]}
 			actions={{
 				updateValue: expect.it('to be a function')
 					.and('when called with', ['pagename', 'fieldname'], 'to be a function')
@@ -79,7 +117,6 @@ describe('DocumentPage', () => {
 					.and('when called with', ['pagename', 'actionId'], 'to be a function')
 					.and('when called with', ['pagename', 'actionId'], 'when called with', [['val1', 'val2']], 'to be undefined') // Result is call to store.dispatch
 			}}
-			options={state.options}
 			dirtyPages={state.dataFields.dirtyPages}/>)
 		.then(() => expect(store.dispatch, 'to have calls satisfying', [
 			{ args: [{ type: UPDATE_VALUE, pageName: 'pagename', fieldName: 'fieldname', newValue: 'value' }]},

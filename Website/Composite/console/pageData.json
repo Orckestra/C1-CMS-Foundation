@@ -167,7 +167,7 @@
           {
             "type": "checkboxGroup",
             "name": "other-page/toolbar2/levels",
-            "checkboxes": [
+            "options": [
               { "name": "other-page/toolbar2/levels/critical", "label": "Critical" },
               { "name": "other-page/toolbar2/levels/error", "label": "Error" },
               { "name": "other-page/toolbar2/levels/warning", "label": "Warning" },
@@ -215,7 +215,7 @@
           {
             "type": "checkboxGroup",
             "name": "server-log/toolbar/levels",
-            "checkboxes": [
+            "options": [
               { "name": "server-log/toolbar/levels/critical", "label": "Critical", "default": true },
               { "name": "server-log/toolbar/levels/error", "label": "Error", "default": true },
               { "name": "server-log/toolbar/levels/warning", "label": "Warning", "default": true },
