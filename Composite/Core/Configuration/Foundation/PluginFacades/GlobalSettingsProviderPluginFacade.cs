@@ -367,8 +367,8 @@ namespace Composite.Core.Configuration.Foundation.PluginFacades
             {
                 var configSource = ConfigurationServices.ConfigurationSource;
 
-                if (RuntimeInformation.IsDebugBuild 
-                    && (configSource?.GetSection(GlobalSettingsProviderSettings.SectionName) == null))
+                if (RuntimeInformation.IsUnittest
+                    && configSource?.GetSection(GlobalSettingsProviderSettings.SectionName) == null)
                 {
                     resources.Provider = new BuildinGlobalSettingsProvider();
                 }
