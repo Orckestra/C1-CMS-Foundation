@@ -113,6 +113,7 @@
   <string key="ViewUnpublishedItems.PageTitleLabel" value="Page Title" />
   <string key="ViewUnpublishedItems.VersionLabel" value="Version" />
   <string key="ViewUnpublishedItems.StatusLabel" value="Status" />
+  <string key="ViewUnpublishedItems.LabelChangedBy" value="Author" />
   <string key="ViewUnpublishedItems.PublishDateLabel" value="Publish Date" />
   <string key="ViewUnpublishedItems.PublishDateHelp" value="Date and time the page has been scheduled to publish automatically. To edit, see the Publication Schedule in Edit Page mode." />
   <string key="ViewUnpublishedItems.UnpublishDateLabel" value="Unpublish Date" />
