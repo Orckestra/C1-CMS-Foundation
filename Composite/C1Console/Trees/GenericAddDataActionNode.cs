@@ -4,13 +4,11 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Xml.Linq;
 using Composite.C1Console.Elements;
 using Composite.C1Console.Security;
 using Composite.C1Console.Workflow;
-using Composite.Core.IO;
+using Composite.Core.Linq;
 using Composite.Core.Serialization;
-using Composite.Core.Xml;
 using Composite.Data;
 
 
@@ -30,24 +28,26 @@ namespace Composite.C1Console.Trees
 
 
         // Cached
-        private List<ParentIdEntry> ParentIdEntrys { get; set; }
+        private List<ParentIdEntry> ParentIdEntries { get; set; }
 
 
         /// <exclude />
         protected override void OnAddAction(Action<ElementAction> actionAdder, EntityToken entityToken, TreeNodeDynamicContext dynamicContext, DynamicValuesHelperReplaceContext dynamicValuesHelperReplaceContext)
         {
-            StringBuilder payload = new StringBuilder();
+            var payload = new StringBuilder();
             this.Serialize(payload);
 
-            if (this.ParentIdEntrys.Count > 0)
+            if (this.ParentIdEntries.Count > 0)
             {
                 List<EntityToken> entityTokens = dynamicContext.Piggybag.GetParentEntityTokens().ToList();
-                entityTokens.Reverse(); // Reversing the order so the latest partent will go first
+                entityTokens.Reverse(); 
 
                 entityTokens.Add(dynamicContext.CurrentEntityToken);
                 entityTokens.Add(entityToken);
 
-                foreach (ParentIdEntry parentIdEntry in this.ParentIdEntrys)
+                entityTokens.Reverse();
+
+                foreach (ParentIdEntry parentIdEntry in this.ParentIdEntries)
                 {
                     DataEntityToken dataEntityToken = entityTokens.FindDataEntityToken(parentIdEntry.TargetInterface);
                     if (dataEntityToken == null) continue;
@@ -84,12 +84,12 @@ namespace Composite.C1Console.Trees
         /// <exclude />
         protected override void OnInitialize()
         {
-            if ((this.InterfaceType != null) && (typeof(IData).IsAssignableFrom(this.InterfaceType) == false))
+            if (this.InterfaceType != null && !typeof(IData).IsAssignableFrom(this.InterfaceType))
             {
                 AddValidationError("TreeValidationError.Common.NotImplementingIData", this.InterfaceType, typeof(IData));
             }
 
-            this.ParentIdEntrys = new List<ParentIdEntry>();
+            this.ParentIdEntries = new List<ParentIdEntry>();
 
             IEnumerable<TreeNode> treeNodes = this.OwnerNode.Descendants(true).ToList();
             foreach (TreeNode treeNode in treeNodes)
@@ -98,8 +98,8 @@ namespace Composite.C1Console.Trees
 
                 if (dataFilteringTreeNode == null) continue;
 
-                IEnumerable<ParentIdFilterNode> parentIdFilterNodes = dataFilteringTreeNode.FilterNodes.OfType<ParentIdFilterNode>();
-                if (parentIdFilterNodes.Count() == 0) continue;
+                IEnumerable<ParentIdFilterNode> parentIdFilterNodes = dataFilteringTreeNode.FilterNodes.OfType<ParentIdFilterNode>().Evaluate();
+                if (!parentIdFilterNodes.Any()) continue;
 
                 foreach (ParentIdFilterNode parentIdFilterNode in parentIdFilterNodes)
                 {
@@ -109,48 +109,31 @@ namespace Composite.C1Console.Trees
 
                     foreach (ForeignPropertyInfo foreignPropertyInfo in foreignPropertyInfos)
                     {
-                        ParentIdEntry parentIdEntry = new ParentIdEntry
-                        {
-                            TargetInterface = interfaceType,
-                            TargetPropertyInfo = foreignPropertyInfo.TargetKeyPropertyInfo,
-                            SourcePropertyName = foreignPropertyInfo.SourcePropertyName
-                        };
+                        var parentIdEntry = new ParentIdEntry(
+                            interfaceType,
+                            foreignPropertyInfo.TargetKeyPropertyInfo,
+                            foreignPropertyInfo.SourcePropertyName
+                        );
 
-                        if (this.ParentIdEntrys.Contains(parentIdEntry) == false)
+                        if (!this.ParentIdEntries.Contains(parentIdEntry))
                         {
-                            this.ParentIdEntrys.Add(parentIdEntry);
+                            this.ParentIdEntries.Add(parentIdEntry);
                         }
                     }
                 }
             }
 
-            if (string.IsNullOrEmpty(this.CustomFormMarkupPath) == false)
+            if (!string.IsNullOrEmpty(this.CustomFormMarkupPath))
             {
-                try
-                {
-                    string path = PathUtil.Resolve(this.CustomFormMarkupPath);
-                    if (C1File.Exists(path) == false)
-                    {
-                        AddValidationError("TreeValidationError.GenericAddDataAction.MissingMarkupFile", path);
-                    }
-
-                    XDocument document = XDocumentUtils.Load(path);
-
-                    this.CustomFormMarkupPath = path;
-                }
-                catch
-                {
-                    AddValidationError("TreeValidationError.GenericAddDataAction.BadMarkupPath", this.CustomFormMarkupPath);
-                }
+                this.CustomFormMarkupPath = LoadAndValidateCustomFormMarkupPath(CustomFormMarkupPath);
             }
         }
-
 
 
         /// <exclude />
         public override string ToString()
         {
-            return string.Format("GenericAddDataActionNode, InterfaceType = {0}, Label = {1}", this.InterfaceType, this.Label);
+            return $"GenericAddDataActionNode, InterfaceType = {this.InterfaceType}, Label = {this.Label}";
         }
 
 
@@ -158,16 +141,23 @@ namespace Composite.C1Console.Trees
         [DebuggerDisplay("{SourcePropertyName} -> {TargetInterface}")]
         private sealed class ParentIdEntry
         {
-            public Type TargetInterface { get; set; }
-            public PropertyInfo TargetPropertyInfo { get; set; }
-            public string SourcePropertyName { get; set; }
+            public ParentIdEntry(Type targetInterface, PropertyInfo targetPropertyInfo, string sourcePropertyName)
+            {
+                TargetInterface = targetInterface;
+                TargetPropertyInfo = targetPropertyInfo;
+                SourcePropertyName = sourcePropertyName;
+            } 
+
+            public Type TargetInterface { get; }
+            public PropertyInfo TargetPropertyInfo { get; }
+            public string SourcePropertyName { get; }
 
             public override bool Equals(object obj)
             {
                 return Equals(obj as ParentIdEntry);
             }
 
-            public bool Equals(ParentIdEntry parentIdEntry)
+            private bool Equals(ParentIdEntry parentIdEntry)
             {
                 if (parentIdEntry == null) return false;
 

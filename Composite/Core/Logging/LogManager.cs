@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Composite.C1Console.Events;
 using Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener;
 
 namespace Composite.Core.Logging
@@ -28,29 +27,22 @@ namespace Composite.Core.Logging
             FileLogger.OnReset += () => _logFiles = null;
         }
 
-        private static FileLogger FileLogger
-        {
-            get
-            {
-                return FileLogTraceListener.LoggerInstance;
-            }
-        }
+        private static FileLogger FileLogger => FileLogTraceListener.LoggerInstance;
 
         private static LogFileReader[] LogFiles
         {
             get
             {
                 var result = _logFiles;
-                if (_logFiles == null || _logFiles.Length == 0)
+                if (result == null || result.Length == 0)
                 {
                     lock (_syncRoot)
                     {
-                        if (_logFiles == null || _logFiles.Length == 0)
-                        {
-
-                            _logFiles = (FileLogger != null ? FileLogger.GetLogFiles() : new LogFileReader[0]);
-                        }
                         result = _logFiles;
+                        if (result == null || result.Length == 0)
+                        {
+                            _logFiles = result = FileLogger?.GetLogFiles() ?? new LogFileReader[0];
+                        }
                     }
                 }
                 return result;
@@ -84,12 +76,7 @@ namespace Composite.Core.Logging
 
         internal static void Flush()
         {
-            var logger = FileLogger;
-
-            if (logger != null)
-            {
-                logger.Flush();
-            }
+            FileLogger?.Flush();
         }
 
 
@@ -119,13 +106,7 @@ namespace Composite.Core.Logging
         {
             date = date.Date;
 
-            int result = 0;
-            foreach (var logFile in LogFiles.Where(logFile => logFile.Date == date))
-            {
-                result += logFile.EntriesCount;
-            }
-
-            return result;
+            return LogFiles.Where(logFile => logFile.Date == date).Sum(logFile => logFile.EntriesCount);
         }
 
 
@@ -151,7 +132,7 @@ namespace Composite.Core.Logging
                     {
                         if (!logFile.Open())
                         {
-                            if (DateTime.Now - _startTime > LockedFileAwaitingPeriod)
+                            if (DateTime.Now - _startTime < LockedFileAwaitingPeriod)
                             {
                                 // Waiting for some time until all log files are released
                                 // This ensures that LogViewer will get all the logs from previous, currently being shutdown AppDomain(s)

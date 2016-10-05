@@ -42,6 +42,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
         /// <exclude />
         public const string Published = "published";
 
+        /// <exclude />
         public static string BulkPublishingCommandsTag { get; } = "BulkPublishingCommands";
 
         private static readonly string _backToAwaitingApproval = "awaitingApprovalBack";

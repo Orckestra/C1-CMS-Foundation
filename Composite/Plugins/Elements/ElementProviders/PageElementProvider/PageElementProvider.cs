@@ -721,7 +721,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                         }
                     });
 
-                    IPageType parentPageType = allPageTypes.First(f => f.Id == page.PageTypeId);
+                    IPageType parentPageType = allPageTypes.FirstOrDefault(f => f.Id == page.PageTypeId);
+                    Verify.IsNotNull(parentPageType, "Failed to find page type by id '{0}'", page.PageTypeId);
 
                     foreach (var pageType in page.GetChildPageSelectablePageTypes().OrderByDescending(pt => pt.Id == parentPageType.DefaultChildPageType))
                     {

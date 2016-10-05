@@ -96,7 +96,7 @@ namespace Composite.Core.WebClient
 
             using (new LogExecutionTime(_verboseLogEntryTitle, "Initializing dynamic data action tokens"))
             {
-                DataActionTokenResolverRegistery.Register(ServiceLocator.ServiceCollection);
+                DataActionTokenResolverRegistry.Register(ServiceLocator.ServiceCollection);
             }
 
             InternalUrls.Register(new MediaInternalUrlConverter());

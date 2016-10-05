@@ -3,29 +3,56 @@ module.exports = {
 		{ systemFrame: 'iframe[src="/Composite/content/views/systemview/systemview.aspx"]'}
 	],
 	commands: [{
-		enter: function () {
+		enter: function (perspective) {
 			this.api.page.content()
-				.enter()
+				.enter(perspective)
 				.enterFrame('@browserFrame');
 			this
-				.waitForFrameLoad('@systemFrame', 1000)
+				.waitForFrameLoad('@systemFrame', this.api.globals.timeouts.basic)
 				.enterFrame('@systemFrame');
 			return this;
 		},
-		openTreeNode: function (label) {
-			var selector = 'treenode[label="' + label + '"] > labelbox';
+		enterActivePerspective: function () {
+			this.api.page.content()
+				.enterActivePerspective()
+				.enterFrame('@browserFrame');
+			this
+				.waitForFrameLoad('@systemFrame', this.api.globals.timeouts.basic)
+				.enterFrame('@systemFrame');
+			return this;
+		},
+		_openTreeNode: function (parentLabel,childLabel) {
+			var selector = 'treenode[label="' + parentLabel + '"] > ';
+			if (childLabel) {
+				selector += 'treenode[label="' + childLabel + '"] > ';
+			}
+			selector += 'labelbox';
+			this.api.waitForElementPresent(selector,this.api.globals.timeouts.basic)
 			this.doubleClickSelector(selector);
 			this.api.pause(300);
 			return this;
 		},
-		selectTreeNode: function (label) {
-			var selector = 'treenode[label="' + label + '"] > labelbox';
+		_selectTreeNode: function (parentLabel,childLabel) {
+			var selector = 'treenode[label="' + parentLabel + '"] > ';
+			if (childLabel) {
+				selector += 'treenode[label="' + childLabel + '"] > ';
+			}
+			selector +='labelbox';
+			this.api.waitForElementPresent(selector,this.api.globals.timeouts.basic)
 			this.click(selector);
 			return this;
 		},
-		// Checks that a node in the system tree has children. If a child label
-		// is passed, checks for that specific child.
-		assertTreeNodeHasChild: function (parentLabel, childLabel) {
+		_rightClickonTreeNode: function (parentLabel,childLabel) {
+			var selector = 'treenode[label="' + parentLabel + '"] > ';
+			if (childLabel) {
+				selector += 'treenode[label="' + childLabel + '"] > ';
+			}
+			selector +='labelbox';
+			this.api.waitForElementPresent(selector,this.api.globals.timeouts.basic)
+			this.rightClickSelector(selector);
+			return this;
+		},
+		_assertTreeNodeHasChild: function (parentLabel, childLabel) {
 			var selector = 'treenode[label="' + parentLabel + '"] > treenode';
 			if (childLabel) {
 				selector += '[label="' + childLabel + '"]';
@@ -33,6 +60,37 @@ module.exports = {
 			this.expect
 				.element(selector)
 				.to.be.present;
+		},
+		_assertTreeNodeHasNoChild: function (parentLabel, childLabel) {
+			var selector = 'treenode[label="' + parentLabel + '"] > treenode';
+			if (childLabel) {
+				selector += '[label="' + childLabel + '"]';
+			}
+			this.expect
+				.element(selector)
+				.not.to.be.present;
+		},
+		_assertTreeNodeIsEmpty: function (parentLabel,childLabel) {
+			var selector = 'treenode[label="' + parentLabel + '"] > treenode';
+			if (childLabel) {
+				selector += '[label="' + childLabel + '"] > treenode';
+			}
+			this.expect
+				.element(selector)
+				.not.to.be.present;
+			
+			
+		},
+		_assertTreeNodeIsNotEmpty: function (parentLabel,childLabel) {
+			var selector = 'treenode[label="' + parentLabel + '"] > treenode';
+			if (childLabel) {
+				selector += '[label="' + childLabel + '"] > treenode';
+			}
+			this.expect
+				.element(selector)
+				.to.be.present;
+			
+			
 		}
 	}]
 };

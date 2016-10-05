@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Composite.C1Console.Forms
+﻿namespace Composite.C1Console.Forms
 {
+    /// <exclude />
     public interface ITestAutomationLocatorInformation
     {
+        /// <exclude />
         string TestAutomationLocator { get; }
     }
 }

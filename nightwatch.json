@@ -14,9 +14,10 @@
     "log_path" : "",
     "host" : "127.0.0.1",
     "port" : 4444,
-    "cli_args" : {
+	"cli_args" : {
       "webdriver.chrome.driver" : "Website/node_modules/chromedriver/lib/chromedriver/chromedriver.exe",
       "webdriver.ie.driver" : "Website/node_modules/iedriver/lib/iedriver/IEdriverServer.exe"
+	  
     }
   },
 
@@ -26,20 +27,34 @@
       "selenium_port"  : 4444,
       "selenium_host"  : "localhost",
       "silent": true,
-      "end_session_on_fail": false,
+	  "end_session_on_fail": true,
       "skip_testcases_on_fail": false,
+	  "exclude" : ["Website/test/e2e/suite/010_setupPackages/installSQLPackage.js"],
+	  "globals": {
+		"connectionString": ""
+	  },
       "screenshots" : {
-        "enabled" : false,
-        "path" : ""
+        "enabled" : true,
+		"on_failure" : true,
+		"on_error" : true,
+        "path" : "Website/test/e2e/screenshots"
       },
       "desiredCapabilities": {
         "browserName": "chrome",
         "loggingPrefs": { "browser": "ALL" } ,
         "javascriptEnabled": true,
-        "acceptSslCerts": true
+        "acceptSslCerts": true,
+        "chromeOptions" : {
+          "args" : ["--no-sandbox"]
+        } 
       }
     },
-
+	
+	"sql": {
+		"exclude" : ["Website/test/e2e/suite/000_setup/installSite.js",
+					 "Website/test/e2e/suite/010_setupPackages/installVerboseLoggingPackage.js"]
+	},
+	
     "firefox" : {
       "desiredCapabilities": {
         "browserName": "firefox",
