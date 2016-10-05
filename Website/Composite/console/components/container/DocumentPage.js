@@ -10,8 +10,7 @@ import { fireAction } from 'console/state/actions/fireAction.js';
 function mapStateToProps(state) {
 	let props = {
 		pageName: state.pages.currentPage,
-		toolbars: toolbarSelector(state),
-		options: state.options
+		toolbars: toolbarSelector(state)
 	};
 	props.dirtyPages = state.dataFields && state.dataFields.dirtyPages;
 	return props;
