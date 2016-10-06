@@ -37,7 +37,11 @@ export const toolbarSelector = createSelector(
 						if (optionList) {
 							item.set('options', optionList);
 						}
-						item.set('value', options.getIn(['values', name]) || '');
+						let value = options.getIn(['values', name]);
+						if (typeof value === 'undefined') {
+							value = item.get('default') || '';
+						}
+						item.set('value', value);
 						if (item.get('type') === 'checkboxGroup' && item.get('value') === '') {
 							item.set('value', Immutable.List());
 						}

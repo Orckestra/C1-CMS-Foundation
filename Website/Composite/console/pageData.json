@@ -173,6 +173,12 @@
               { "name": "other-page/toolbar2/levels/warning", "label": "Warning" },
               { "name": "other-page/toolbar2/levels/info", "label": "Information" },
               { "name": "other-page/toolbar2/levels/verbose", "label": "Verbose" }
+            ],
+            "default": [
+              "other-page/toolbar2/levels/critical",
+              "other-page/toolbar2/levels/error",
+              "other-page/toolbar2/levels/warning",
+              "other-page/toolbar2/levels/info"
             ]
           }
         ]
@@ -227,9 +233,9 @@
       }
     ]
   },
-	{
-		"name": "svg-sprites",
-		"label": "SVG Spritesheet",
-		"type": "spritesheet"
-	}
+  {
+    "name": "svg-sprites",
+    "label": "SVG Spritesheet",
+    "type": "spritesheet"
+  }
 ]
