@@ -1,33 +1,31 @@
 import { createSelector } from 'reselect';
 import { currentPageSelector } from 'console/state/selectors/pageSelector.js';
 
-const tabDefsSelector = state => state.tabDefs;
-const fieldsetDefsSelector = state => state.fieldsetDefs;
-const dataFieldDefsSelector = state => state.dataFieldDefs;
-const valuesSelector = state => state.dataFields;
-const currentTabsSelector = state => state.pages.tabs;
+const tabDefsSelector = state => state.get('tabDefs');
+const fieldsetDefsSelector = state => state.get('fieldsetDefs');
+const dataFieldDefsSelector = state => state.get('dataFieldDefs');
+const valuesSelector = state => state.get('dataFields');
+const currentTabsSelector = state => state.getIn(['pages', 'tabs']);
+
+const exists = x => x;
 
 const currentTabNameSelector = createSelector(
 	currentPageSelector,
 	currentTabsSelector,
 	(page, tabs) => {
-		return tabs[page.name] || page.tabs[0];
+		return tabs.get(page.get('name')) || page.getIn(['tabs', 0]);
 	}
 );
 
 const pureValuesSelector = createSelector(
 	valuesSelector,
-	values => {
-		let vals = Object.assign({}, values);
-		delete vals.dirtyPages;
-		return vals;
-	}
+	values => values.delete('committedPages')
 );
 
 export const currentTabDefSelector = createSelector(
 	tabDefsSelector,
 	currentTabNameSelector,
-	(tabDefs, tabName) => tabDefs[tabName]
+	(tabDefs, tabName) => tabDefs.get(tabName)
 );
 
 export const currentTabAssemblySelector = createSelector(
@@ -35,25 +33,38 @@ export const currentTabAssemblySelector = createSelector(
 	currentTabDefSelector,
 	fieldsetDefsSelector,
 	dataFieldDefsSelector,
-	(page, tabDef, fieldsetDefs, dataFieldDefs) => Object.assign({}, tabDef, {
-		fieldsets: ((tabDef || {}).fieldsets || []).map(fieldsetName => Object.assign({}, fieldsetDefs[fieldsetName], {
-			fields: ((fieldsetDefs[fieldsetName] || {}).fields || [])
-				.map(fieldName => Object.assign({}, dataFieldDefs[fieldName]))
-				.filter(field => field.name)
-		})).filter(fieldset => fieldset.name)
-	})
+	(page, tabDef, fieldsetDefs, dataFieldDefs) =>
+		!tabDef ? null :
+		tabDef.set('fieldsets', tabDef.get('fieldsets')
+			.map(fieldsetName => fieldsetDefs.get(fieldsetName))
+			.filter(exists)
+			.map(fieldset => fieldset.set('fields', fieldset.get('fields')
+				.map(fieldName => dataFieldDefs.get(fieldName))
+				.filter(exists)
+			))
+		).set('pageName', page.get('name'))
 );
 
 export const tabSelector = createSelector(
 	currentTabAssemblySelector,
 	pureValuesSelector,
-	(tabAssembly, values) => {
-		let tab = Object.assign({}, tabAssembly);
-		tab.fieldsets = (tab.fieldsets || []).map(fieldset => Object.assign({}, fieldset, {
-			fields: (fieldset.fields || []).map(field => Object.assign({}, field, {
-				value: values[field.name] || ''
-			}))
-		}));
-		return tab;
-	}
+	(tabAssembly, values) =>
+		!tabAssembly ? null :
+		tabAssembly.set('fieldsets',
+			tabAssembly.get('fieldsets')
+				.map(fieldset =>
+					fieldset.set('fields', fieldset.get('fields')
+						.map(field =>
+							field.set('value',
+								values.getIn([tabAssembly.get('pageName'), field.get('name')])
+							)
+						)
+					)
+				)
+		)
+);
+
+export const tabSelectorMutable = createSelector(
+	tabSelector,
+	tab => tab ? tab.toJS() : {}
 );

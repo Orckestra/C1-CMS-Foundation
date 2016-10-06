@@ -1,5 +1,6 @@
 import expect from 'unittest/helpers/expect.js';
 import getDefinitionReducer, * as actions from 'console/state/reducers/definitions.js';
+import Immutable from 'immutable';
 
 describe('Component definitions', () => {
 	it('has action descriptors', () =>
@@ -38,17 +39,17 @@ describe('Component definitions', () => {
 
 			it('outputs an intial state if no action and no previous state', () => {
 				let newState = reducer(undefined, {});
-				return expect(newState, 'to equal', {});
+				return expect(newState, 'to equal', Immutable.Map());
 			});
 
 			it('outputs the same state object if no action', () => {
-				let oldState = { thing: 'do not touch' };
+				let oldState = Immutable.Map({ thing: 'do not touch' });
 				let newState = reducer(oldState, {});
 				return expect(newState, 'to be', oldState);
 			});
 
 			it('updates state when given update action', () => {
-				let oldState = { thing: 'do not touch' };
+				let oldState = Immutable.Map({ thing: 'do not touch' });
 				let newState = reducer(oldState, {
 					type: actions.STORE_DEF,
 					defType: typeName,
@@ -57,12 +58,12 @@ describe('Component definitions', () => {
 					}
 				});
 				return expect(newState, 'not to be', oldState)
-				.and('to equal', {
+				.and('to equal', Immutable.fromJS({
 					thing: 'do not touch',
 					testEntity: {
 						name: 'testEntity'
 					}
-				});
+				}));
 			});
 		});
 	});

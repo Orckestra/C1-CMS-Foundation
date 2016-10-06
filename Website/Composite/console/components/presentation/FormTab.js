@@ -22,7 +22,7 @@ const FormTab = props => {
 
 FormTab.propTypes = {
 	name: PropTypes.string,
-	pageName: PropTypes.string.isRequired,
+	pageName: PropTypes.string,
 	actions: PropTypes.objectOf(PropTypes.func).isRequired,
 	fieldsets: PropTypes.arrayOf(PropTypes.object)
 };

@@ -11,7 +11,7 @@ const ToolbarFrame = props => {
 				item.saveButton = true;
 			} else if (item.type === 'select' || item.type === 'checkboxGroup') {
 				item.onChange = props.actions.setOption(item.name);
-			} else {
+			} else if (!item.saveButton) {
 				item.action = props.actions.fireAction(item.action, props.pageName);
 			}
 		});
@@ -19,7 +19,7 @@ const ToolbarFrame = props => {
 			<Toolbar
 				{...toolbarDef}
 				key={toolbarDef.name}
-				canSave={!!props.dirtyPages[props.pageName]}/>
+				canSave={!!props.dirty}/>
 		);
 	});
 	return (
@@ -37,7 +37,7 @@ ToolbarFrame.propTypes = {
 	pageName: PropTypes.string.isRequired,
 	toolbars: PropTypes.arrayOf(PropTypes.object).isRequired,
 	actions: PropTypes.object.isRequired,
-	dirtyPages: PropTypes.objectOf(PropTypes.arrayOf(PropTypes.string)).isRequired
+	dirty: PropTypes.bool.isRequired
 };
 
 export default ToolbarFrame;

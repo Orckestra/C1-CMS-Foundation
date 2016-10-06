@@ -6,6 +6,7 @@ import unexpectedSinon from 'unexpected-sinon';
 import unexpectedDom from 'unexpected-dom';
 import unexpectedMitm from 'unexpected-mitm';
 import unexpectedZurvan from 'unexpected-zurvan';
+import unexpectedImmutable from 'unexpected-immutable';
 import TestUtils from 'react-addons-test-utils';
 
 // define our instance of the `expect` function to use
@@ -14,7 +15,9 @@ const expect = unexpected.clone()
 	.use(unexpectedMitm)
 	.use(unexpectedZurvan)
 	.use(unexpectedReact)
+	.use(unexpectedImmutable)
 	.use(unexpectedSinon);
+
 
 // Custom assertions
 expect.addAssertion('<RenderedReactElement> finding DOM tag <string> <assertion?>', function (expect, subject, tagName) {
@@ -29,6 +32,10 @@ expect.addAssertion('<ReactElement> to have props [exhaustively] satisfying <any
 
 expect.addAssertion('<object> to be an action of type <string>', function (expect, subject, actionName) {
 	return expect(subject, 'to have own property', 'type', actionName);
+});
+
+expect.addAssertion('<Immutable> to satisfy <object>', function (expect, subject, pattern) {
+	return expect(subject.toJS(), 'to satisfy', pattern);
 });
 // console.log(expect.outputFormat());
 expect.outputFormat('ansi');

@@ -1,21 +1,32 @@
 import expect from 'unittest/helpers/expect.js';
 import dataFields, * as actions from 'console/state/reducers/dataFields.js';
+import Immutable from 'immutable';
 
 describe('Data fields', () => {
 	describe('actions', () => {
 		it('has action descriptors', () =>
-			expect(actions, 'to have property', 'FLAG_PAGE_CLEAN')
+			expect(actions, 'to have property', 'COMMIT_PAGE')
+			.and('to have property', 'ROLLBACK_PAGE')
 			.and('to have property', 'UPDATE_VALUE')
 			.and('to have property', 'STORE_VALUES')
-			.and('to have property', 'FLAG_FIELDS_DIRTY')
 		);
 
 		describe('Commit page', () => {
 			let commitPage = actions.commitPage;
-			it('creates action for clearing a page\'s dirty flag', () => {
+			it('creates action for committing an edited page', () => {
 				let action = commitPage('testpage');
-				return expect(action, 'to be an action of type', actions.FLAG_PAGE_CLEAN)
+				return expect(action, 'to be an action of type', actions.COMMIT_PAGE)
 					.and('to have property', 'pageName', 'testpage');
+			});
+		});
+
+		describe('Rollback page', () => {
+			let rollbackPage = actions.rollbackPage;
+			it('creates action for committing an edited page', () => {
+				let action = rollbackPage('testpage', Immutable.fromJS({ field1: 'One', field2: 'Two' }));
+				return expect(action, 'to be an action of type', actions.ROLLBACK_PAGE)
+					.and('to have property', 'pageName', 'testpage')
+					.and('to have property', 'values', Immutable.fromJS({ field1: 'One', field2: 'Two' }));
 			});
 		});
 
@@ -34,24 +45,13 @@ describe('Data fields', () => {
 
 		describe('Store value set', () => {
 			let storeValues = actions.storeValues;
-			it('creates action for storing multiple values', () => {
-				let action = storeValues({ a: 1, b: true, c: 'foo', d: { bar: 'baz' } });
+			it('creates action for storing multiple values on a page', () => {
+				let action = storeValues('testpage', { a: 1, b: true, c: 'foo', d: { bar: 'baz' } });
 				return expect(action, 'to be an action of type', actions.STORE_VALUES)
 				.and('to have properties', {
+					pageName: 'testpage',
 					values: { a: 1, b: true, c: 'foo', d: { bar: 'baz' } }
 				});
-			});
-		});
-	});
-
-	describe('Flag fields dirty', () => {
-		let flagDirty = actions.flagDirty;
-		it('creates action that sets a list of dirty fields on a page', () => {
-			let action = flagDirty('testpage', ['field1', 'field2', 'field3']);
-			return expect(action, 'to be an action of type', actions.FLAG_FIELDS_DIRTY)
-			.and('to have properties', {
-				pageName: 'testpage',
-				fieldNames: ['field1', 'field2', 'field3']
 			});
 		});
 	});
@@ -59,13 +59,85 @@ describe('Data fields', () => {
 	describe('reducer', () => {
 		it('outputs an intial state if no action and no previous state', () => {
 			let newState = dataFields(undefined, {});
-			return expect(newState, 'to equal', { dirtyPages: {} });
+			return expect(newState, 'to equal', Immutable.fromJS({ committedPages: {} }));
 		});
 
 		it('outputs the same state object if no action', () => {
-			let oldState = { thing: 'do not touch', dirtyPages: {} };
+			let oldState = Immutable.fromJS({ thing: 'do not touch' });
 			let newState = dataFields(oldState, {});
 			return expect(newState, 'to be', oldState);
+		});
+
+		describe('commit page', () => {
+			let action;
+			beforeEach(() => {
+				action = {
+					type: actions.COMMIT_PAGE,
+					pageName: 'testpage'
+				};
+			});
+
+			it('Commits a page', () => {
+				let oldState = Immutable.fromJS({
+					testpage: { field1: true, field2: 'stuff' },
+					committedPages: {
+						testpage: { field1: false, field2: 'nonsense' }
+					}
+				});
+				let newState = dataFields(oldState, action);
+				return expect(newState, 'not to be', oldState)
+				.and('to equal', Immutable.fromJS({
+					testpage: { field1: true, field2: 'stuff' },
+					committedPages: {
+						testpage: { field1: true, field2: 'stuff' }
+					}
+				}));
+			});
+		});
+
+		describe('rollback page', () => {
+			let action;
+			beforeEach(() => {
+				action = {
+					type: actions.ROLLBACK_PAGE,
+					pageName: 'testpage'
+				};
+			});
+
+			it('Rolls back a page', () => {
+				let oldState = Immutable.fromJS({
+					testpage: { field1: true, field2: 'stuff' },
+					committedPages: {
+						testpage: { field1: false, field2: 'nonsense' }
+					}
+				});
+				let newState = dataFields(oldState, action);
+				return expect(newState, 'not to be', oldState)
+				.and('to equal', Immutable.fromJS({
+					testpage: { field1: false, field2: 'nonsense' },
+					committedPages: {
+						testpage: { field1: false, field2: 'nonsense' }
+					}
+				}));
+			});
+
+			it('Rolls back a page even if already committed', () => {
+				action.values = Immutable.fromJS({ field1: false, field2: 'nonsense' });
+				let oldState = Immutable.fromJS({
+					testpage: { field1: true, field2: 'stuff' },
+					committedPages: {
+						testpage: { field1: false, field2: 'stuff' }
+					}
+				});
+				let newState = dataFields(oldState, action);
+				return expect(newState, 'not to be', oldState)
+				.and('to equal', Immutable.fromJS({
+					testpage: { field1: false, field2: 'nonsense' },
+					committedPages: {
+						testpage: { field1: false, field2: 'nonsense' }
+					}
+				}));
+			});
 		});
 
 		describe('update value', () => {
@@ -79,70 +151,26 @@ describe('Data fields', () => {
 				};
 			});
 
-			it('updates a field value', () => {
-				let oldState = { thing: 'do not touch', dirtyPages: {} };
+			it('updates a field value on an unknown page', () => {
+				let oldState = Immutable.fromJS({ thing: 'do not touch', committedPages: {} });
 				let newState = dataFields(oldState, action);
 				return expect(newState, 'not to be', oldState)
-				.and('to equal', {
+				.and('to equal', Immutable.fromJS({
 					thing: 'do not touch',
-					testfield: 'testvalue',
-					dirtyPages: { testpage: ['testfield'] }
-				});
+					testpage: { testfield: 'testvalue' },
+					committedPages: { testpage: {} }
+				}));
 			});
 
-			it('only adds page to dirty list if not already on it', () => {
-				let oldState = {
-					thing: 'do not touch',
-					testfield: 'old',
-					dirtyPages: { testpage: ['testfield'] }
-				};
+			it('updates a field value on a known page', () => {
+				let oldState = Immutable.fromJS({ thing: 'do not touch', testpage: {}, committedPages: { testpage: {}} });
 				let newState = dataFields(oldState, action);
 				return expect(newState, 'not to be', oldState)
-				.and('to equal', {
+				.and('to equal', Immutable.fromJS({
 					thing: 'do not touch',
-					testfield: 'testvalue',
-					dirtyPages: { testpage: ['testfield'] }
-				});
-			});
-
-			it('adds field name to dirty list if not already on it', () => {
-				let oldState = {
-					thing: 'do not touch',
-					testfield: 'old',
-					dirtyPages: { testpage: ['otherfield'] }
-				};
-				let newState = dataFields(oldState, action);
-				return expect(newState, 'not to be', oldState)
-				.and('to equal', {
-					thing: 'do not touch',
-					testfield: 'testvalue',
-					dirtyPages: { testpage: ['otherfield', 'testfield'] }
-				});
-			});
-		});
-
-		describe('save', () => {
-			let action;
-			beforeEach(() => {
-				action = {
-					type: actions.FLAG_PAGE_CLEAN,
-					pageName: 'testpage'
-				};
-			});
-
-			it('clears the saved page from the dirty list', () => {
-				let oldState = {
-					thing: 'do not touch',
-					testfield: 'testvalue',
-					dirtyPages: { testpage: ['testfield'], otherpage: ['somefield'] }
-				};
-				let newState = dataFields(oldState, action);
-				return expect(newState, 'not to be', oldState)
-				.and('to equal', {
-					thing: 'do not touch',
-					testfield: 'testvalue',
-					dirtyPages: { otherpage: ['somefield'] }
-				});
+					testpage: { testfield: 'testvalue' },
+					committedPages: { testpage: {} }
+				}));
 			});
 		});
 
@@ -151,72 +179,64 @@ describe('Data fields', () => {
 			beforeEach(() => {
 				action = {
 					type: actions.STORE_VALUES,
+					pageName: 'page1',
 					values: {
-						field1: 202,
-						field2: 'some text'
+						field1: 202
 					}
 				};
 			});
 
 			it('stores the passed values in state and resets dirty fields and pages', () => {
-				let oldState = {
-					field1: 0,
-					field2: 'no',
-					field3: false,
-					field4: '',
-					dirtyPages: {
-						page1: [ 'field1' ],
-						page2: [ 'field2', 'field3' ],
-						page3: [ 'field4' ]
+				let oldState = Immutable.fromJS({
+					page1: {
+						field1: 0
+					},
+					page2: {
+						field2: 'no',
+						field3: false
+					},
+					page3: {
+						field4: ''
+					},
+					committedPages: {
+						page1: {
+							field1: 3
+						},
+						page2: {
+							field2: 'yes',
+							field3: true
+						},
+						page3: {
+							field4: 'something'
+						}
 					}
-				};
+				});
 				let newState = dataFields(oldState, action);
 				return expect(newState, 'not to be', oldState)
-				.and('to equal', {
-					field1: 202,
-					field2: 'some text',
-					field3: false,
-					field4: '',
-					dirtyPages: {
-						page2: [ 'field3' ],
-						page3: [ 'field4' ]
+				.and('to equal', Immutable.fromJS({
+					page1: {
+						field1: 202
+					},
+					page2: {
+						field2: 'no',
+						field3: false
+					},
+					page3: {
+						field4: ''
+					},
+					committedPages: {
+						page1: {
+							field1: 202
+						},
+						page2: {
+							field2: 'yes',
+							field3: true
+						},
+						page3: {
+							field4: 'something'
+						}
 					}
-				});
-			});
-		});
-
-		describe('flag fields', () => {
-			let action;
-			beforeEach(() => {
-				action = {
-					type: actions.FLAG_FIELDS_DIRTY,
-					pageName: 'page1',
-					fieldNames: ['field1', 'field2']
-				};
-			});
-
-			it('flags fields on a page dirty without changing their values', () => {
-				let oldState = {
-					field1: 202,
-					field2: 'some text',
-					field3: false,
-					field4: '',
-					dirtyPages: {
-						page2: [ 'field3' ]
-					}
-				};
-				let newState = dataFields(oldState, action);
-				expect(newState, 'not to be', oldState)
-				.and('to equal', {
-					field1: 202,
-					field2: 'some text',
-					field3: false,
-					field4: '',
-					dirtyPages: {
-						page1: ['field1', 'field2'],
-						page2: [ 'field3' ]
-					}
-				});
+				}));
 			});
 		});
 	});

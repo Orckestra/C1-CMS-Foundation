@@ -1,5 +1,6 @@
 import requestJSON from 'console/access/requestJSON.js';
-import { storeValues, commitPage, flagDirty } from 'console/state/reducers/dataFields.js';
+import { storeValues, commitPage } from 'console/state/reducers/dataFields.js';
+import Immutable from 'immutable';
 
 const prefix = 'VALUES.';
 export const LOAD_VALUES = prefix + 'LOAD';
@@ -17,7 +18,7 @@ export function loadValues(pageName) {
 		return requestJSON(valueEndpointURL +
 			'?page=' + pageName)
 		.then(valueData => {
-			dispatch(storeValues(valueData));
+			dispatch(storeValues(pageName, valueData));
 			dispatch({ type: LOAD_VALUES_DONE, pageName });
 		})
 		.catch(err => {
@@ -30,26 +31,23 @@ export function loadValues(pageName) {
 export function saveValues(pageName) {
 	return (dispatch, getState) => {
 		dispatch({ type: SAVE_VALUES, pageName });
-		let state = getState().dataFields;
-		let fieldList = state.dirtyPages[pageName];
-		if (!fieldList) {
-			dispatch({ type: SAVE_VALUES_FAILED, pageName, message: 'No fields to save for ' + pageName});
+		let state = getState().get('dataFields');
+		let fieldValues = state.get(pageName);
+		let committedFieldList = state.getIn(['committedPages', pageName]);
+		if (Immutable.is(fieldValues, committedFieldList)) {
+			dispatch({ type: SAVE_VALUES_FAILED, pageName, message: 'Page ' + pageName + ' is unchanged'});
 			return;
 		}
-		let body = fieldList.reduce((values, fieldName) => {
-			values[fieldName] = state[fieldName];
-			return values;
-		}, {});
-		dispatch(commitPage(pageName));
+		let body = fieldValues.toJS();
 		return requestJSON(valueEndpointURL, {
 			method: 'POST',
 			body
 		})
 		.then(() => {
+			dispatch(commitPage(pageName));
 			dispatch({ type: SAVE_VALUES_DONE, pageName });
 		})
 		.catch(err => {
-			dispatch(flagDirty(pageName, fieldList));
 			dispatch({ type: SAVE_VALUES_FAILED, message: err.message, stack: err.stack });
 			console.error(err); // eslint-disable-line no-console
 		});

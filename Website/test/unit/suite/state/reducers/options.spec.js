@@ -1,10 +1,11 @@
 import expect from 'unittest/helpers/expect.js';
 import options, * as actions from 'console/state/reducers/options.js';
+import Immutable from 'immutable';
 
 describe('Options', () => {
 	it('outputs an intial state if no action and no previous state', () => {
 		let state = options(undefined, {});
-		return expect(state, 'to equal', { values: {}, lists: {} });
+		return expect(state, 'to equal', Immutable.fromJS({ values: {}, lists: {} }));
 	});
 
 	it('outputs the same state object if no action', () => {
@@ -43,14 +44,14 @@ describe('Options', () => {
 	describe('Action responses', () => {
 		let oldState;
 		beforeEach(() => {
-			oldState = {
+			oldState = Immutable.fromJS({
 				values: {
 					thing: 'do not touch'
 				},
 				lists: {
 					unused: [{ value: 'test', label: 'Do not show' }]
 				}
-			};
+			});
 		});
 
 		describe('Set option', () => {

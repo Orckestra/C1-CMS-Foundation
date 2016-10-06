@@ -1,41 +1,53 @@
 import { createSelector } from 'reselect';
 import { currentPageSelector } from 'console/state/selectors/pageSelector.js';
+import Immutable from 'immutable';
 
-const toolbarDefSelector = state => state.toolbarDefs;
-const itemDefSelector = state => state.itemDefs;
-const optionsSelector = state => state.options;
+const toolbarDefSelector = state => state.get('toolbarDefs');
+const itemDefSelector = state => state.get('itemDefs');
+const optionsSelector = state => state.get('options');
+
+const exists = x => x;
 
 export const toolbarAssemblySelector = createSelector(
 	currentPageSelector,
 	toolbarDefSelector,
 	itemDefSelector,
-	(pageDef, toolbarDefs, itemDefs) => {
-		let toolbars = pageDef.toolbars.map(toolbarName => {
-			let toolbar = Object.assign({}, toolbarDefs[toolbarName]);
-			toolbar.items = (toolbar.items || [])
-				.map(itemName => itemDefs[itemName])
-				.filter(item => !!item);
-			return toolbar;
-		}).filter(toolbar => !!toolbar.name);
-		return toolbars;
-	}
+	(pageDef, toolbarDefs, itemDefs) =>
+		pageDef.get('toolbars')
+			.map(toolbarName => toolbarDefs.get(toolbarName))
+			.filter(exists)
+			.map(toolbar => {
+				let items = toolbar.get('items')
+					.map(itemName => itemDefs.get(itemName))
+					.filter(exists);
+				return toolbar.set('items', items);
+			})
 );
 
 export const toolbarSelector = createSelector(
 	toolbarAssemblySelector,
 	optionsSelector,
 	(toolbars, options) =>
-		toolbars.map(toolbar => Object.assign({}, toolbar, {
-			items: toolbar.items.map(item => {
-				let update = {};
-				if (item.type === 'select' || item.type == 'checkboxGroup') {
-					update.options = options.lists[item.name] || item.options;
-					update.value = options.values[item.name];
-					if (item.type === 'checkboxGroup' && !update.value) {
-						update.value = [];
+		toolbars.map(toolbar => {
+			let items = toolbar.get('items')
+				.map(item => item.withMutations(item => {
+					if (item.get('type') === 'select' || item.get('type') === 'checkboxGroup') {
+						let name = item.get('name');
+						let optionList = options.getIn(['lists', name]);
+						if (optionList) {
+							item.set('options', optionList);
+						}
+						item.set('value', options.getIn(['values', name]) || '');
+						if (item.get('type') === 'checkboxGroup' && item.get('value') === '') {
+							item.set('value', Immutable.List());
+						}
 					}
-				}
-				return Object.assign({}, item, update);
-			})
-		}))
+				}));
+			return toolbar.set('items', items);
+		})
+);
+
+export const toolbarSelectorMutable = createSelector(
+	toolbarSelector,
+	toolbar => toolbar ? toolbar.toJS() : {}
 );

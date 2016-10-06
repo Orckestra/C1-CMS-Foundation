@@ -1,3 +1,5 @@
+import Immutable from 'immutable';
+
 const prefix = 'PAGES.';
 
 export const SELECT_PAGE = prefix + 'SELECT';
@@ -15,18 +17,18 @@ export function selectTab(tabName) {
 	return { type: SELECT_TAB, tabName };
 }
 
-const initialState = {
-	pages: [],
+const initialState = Immutable.Map({
+	pages: Immutable.List(),
 	currentPage: null,
-	tabs: {}
-};
+	tabs: Immutable.Map()
+});
 
 const pages = (state = initialState, action) => {
 	let update;
 	switch (action.type) {
 	case SELECT_PAGE:
-		if (state.pages.indexOf(action.pageName) !== -1) {
-			return Object.assign({}, state, { currentPage: action.pageName });
+		if (state.get('pages').includes(action.pageName)) {
+			return state.set('currentPage', action.pageName);
 		} else {
 			return state;
 		}
@@ -34,11 +36,12 @@ const pages = (state = initialState, action) => {
 		if (!Array.isArray(action.pages) || !action.pages.every(item => typeof item === 'string')) {
 			throw new Error('REPLACE_PAGES action\'s pages value must be array of page names');
 		}
-		return Object.assign({}, state, { pages: action.pages, currentPage: null });
+		return state.withMutations(state => {
+			state.set('pages', Immutable.List(action.pages));
+			state.set('currentPage', null);
+		});
 	case SELECT_TAB:
-		update = { tabs: state.tabs };
-		update.tabs[state.currentPage] = action.tabName;
-		return Object.assign({}, state, update);
+		return state.setIn(['tabs', state.get('currentPage')], action.tabName);
 	default:
 		return state;
 	}

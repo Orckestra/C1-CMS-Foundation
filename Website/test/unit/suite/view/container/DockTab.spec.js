@@ -4,12 +4,13 @@ import React from 'react';
 import TestUtils from 'react-addons-test-utils';
 import DockTab from 'console/components/container/DockTab.js';
 import TabPage from 'console/components/presentation/TabPage.js';
+import Immutable from 'immutable';
 
 describe('DockTab', () => {
 	let renderer, state, store, props;
 	beforeEach(() => {
 		renderer = TestUtils.createRenderer();
-		state = {
+		state = Immutable.fromJS({
 			pages: {
 				currentPage: 'test1',
 				pages: ['test1', 'test2']
@@ -19,7 +20,7 @@ describe('DockTab', () => {
 					name: 'test1'
 				}
 			},
-		};
+		});
 		store = {
 			subscribe: sinon.spy().named('subscribe'),
 			dispatch: sinon.spy().named('dispatch'),

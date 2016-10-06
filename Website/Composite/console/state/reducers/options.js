@@ -1,3 +1,5 @@
+import Immutable from 'immutable';
+
 const prefix = 'OPTIONS.';
 
 export const SET_OPTION = prefix + 'SET';
@@ -10,22 +12,17 @@ export function storeOptions(field, options) {
 	return { type: STORE_OPTION_LIST, field, options };
 }
 
-const initialState = {
-	values: {},
-	lists: {}
-};
+const initialState = Immutable.Map({
+	values: Immutable.Map(),
+	lists: Immutable.Map()
+});
 
 const options = (state = initialState, action) => {
-	let update;
 	switch (action.type) {
 	case SET_OPTION:
-		update = { values: Object.assign({}, state.values)};
-		update.values[action.name] = action.value;
-		return Object.assign({}, state, update);
+		return state.setIn(['values', action.name], action.value);
 	case STORE_OPTION_LIST:
-		update = { lists: Object.assign({}, state.lists) };
-		update.lists[action.field] = action.options;
-		return Object.assign({}, state, update);
+		return state.setIn(['lists', action.field], Immutable.fromJS(action.options));
 	default:
 		return state;
 	}

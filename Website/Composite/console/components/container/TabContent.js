@@ -1,11 +1,10 @@
 import { connect } from 'react-redux';
 import FormTab from 'console/components/presentation/FormTab.js';
 import { updateFieldValue } from 'console/state/reducers/dataFields.js';
-import { tabSelector } from 'console/state/selectors/tabSelector.js';
+import { tabSelectorMutable } from 'console/state/selectors/tabSelector.js';
 
 function mapStateToProps(state) {
-	let props = tabSelector(state);
-	props.pageName = state.pages.currentPage;
+	let props = tabSelectorMutable(state);
 	return props;
 }
 

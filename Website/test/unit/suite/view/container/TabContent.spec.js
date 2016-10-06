@@ -5,12 +5,13 @@ import TestUtils from 'react-addons-test-utils';
 import TabContent from 'console/components/container/TabContent.js';
 import FormTab from 'console/components/presentation/FormTab.js';
 import { UPDATE_VALUE } from 'console/state/reducers/dataFields.js';
+import Immutable from 'immutable';
 
 describe('TabContent', () => {
 	let renderer, state, store;
 	beforeEach(() => {
 		renderer = TestUtils.createRenderer();
-		state = {
+		state = Immutable.fromJS({
 			pages: {
 				currentPage: 'test',
 				tabs: {
@@ -19,6 +20,7 @@ describe('TabContent', () => {
 			},
 			pageDefs: {
 				'test': {
+					name: 'test',
 					tabs: ['test/tab']
 				}
 			},
@@ -55,16 +57,21 @@ describe('TabContent', () => {
 				'test/tab/twoset/threefield': { name: 'test/tab/twoset/threefield', defaultValue: 'overwritten' }
 			},
 			dataFields: {
-				dirtyPages: {
-					'test': ['test/tab/twoset/threefield']
+				committedPages: {
+					'test': {
+						'test/tab/twoset/threefield': 'same'
+					}
 				},
-				'test/tab/twoset/threefield': 'different'
+				'test': {
+					'test/tab/twoset/threefield': 'different'
+				}
 			}
-		};
+		});
 		store = {
+			state: state,
 			subscribe: sinon.spy().named('subscribe'),
 			dispatch: sinon.spy().named('dispatch'),
-			getState: sinon.spy(() => state).named('getState')
+			getState: sinon.spy(() => store.state).named('getState')
 		};
 	});
 
@@ -103,7 +110,7 @@ describe('TabContent', () => {
 
 	describe('missing fields in state', () => {
 		it('provides a default tabName if none selected', () => {
-			delete state.pages.tabs.test;
+			store.state = state.deleteIn(['pages', 'tabs', 'test']);
 			renderer.render(<TabContent store={store}/>);
 			return expect(renderer,
 				'to have rendered',
@@ -116,13 +123,11 @@ describe('TabContent', () => {
 		});
 
 		it('provides an empty tabDef if none found', () => {
-			delete state.tabDefs['test/tab'];
+			store.state = state.deleteIn(['tabDefs', 'test/tab']);
 			renderer.render(<TabContent store={store}/>);
 			return expect(renderer,
 				'to have rendered',
 				<FormTab
-					pageName='test'
-					fieldsets={[]}
 					actions={{}}
 					store={{}}/>);
 		});

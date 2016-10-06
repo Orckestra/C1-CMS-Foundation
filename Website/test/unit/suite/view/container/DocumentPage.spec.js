@@ -6,12 +6,13 @@ import DocumentPage from 'console/components/container/DocumentPage.js';
 import ToolbarFrame from 'console/components/presentation/ToolbarFrame.js';
 import { UPDATE_VALUE } from 'console/state/reducers/dataFields.js';
 import { SET_OPTION } from 'console/state/reducers/options.js';
+import Immutable from 'immutable';
 
 describe('DocumentPage', () => {
 	let renderer, state, store, props;
 	beforeEach(() => {
 		renderer = TestUtils.createRenderer();
-		state = {
+		state = Immutable.fromJS({
 			pages: {
 				currentPage: 'testpage',
 				tabs: {
@@ -25,9 +26,16 @@ describe('DocumentPage', () => {
 				}
 			},
 			dataFields: {
-				dirtyPages: {},
-				'one': 1,
-				'two': 2
+				committedPages: {
+					testpage: {
+						'one': 1,
+						'two': 2
+					}
+				},
+				testpage: {
+					'one': 1,
+					'two': 2
+				}
 			},
 			options: {
 				values: {
@@ -74,15 +82,14 @@ describe('DocumentPage', () => {
 					name: 'checkItOut'
 				}
 			}
-		};
+		});
 		store = {
 			subscribe: sinon.spy().named('subscribe'),
 			dispatch: sinon.spy().named('dispatch'),
 			getState: sinon.spy(() => state).named('getState')
 		};
 		props = {
-			test: 'value', // Not required - should be there anyway when passed through
-			pageDef: {} // required for ToolbarFrame
+			test: 'value' // Not required - should be there anyway when passed through
 		};
 	});
 
@@ -103,6 +110,7 @@ describe('DocumentPage', () => {
 				name: 'hasNoItemDefs',
 				items: []
 			}]}
+			dirty={false}
 			actions={{
 				updateValue: expect.it('to be a function')
 					.and('when called with', ['pagename', 'fieldname'], 'to be a function')
@@ -116,8 +124,7 @@ describe('DocumentPage', () => {
 				fireAction: expect.it('to be a function')
 					.and('when called with', ['pagename', 'actionId'], 'to be a function')
 					.and('when called with', ['pagename', 'actionId'], 'when called with', [['val1', 'val2']], 'to be undefined') // Result is call to store.dispatch
-			}}
-			dirtyPages={state.dataFields.dirtyPages}/>)
+			}}/>)
 		.then(() => expect(store.dispatch, 'to have calls satisfying', [
 			{ args: [{ type: UPDATE_VALUE, pageName: 'pagename', fieldName: 'fieldname', newValue: 'value' }]},
 			{ args: [{ type: SET_OPTION, name: 'fieldname', value: 'value' }]},

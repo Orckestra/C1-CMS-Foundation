@@ -51,6 +51,7 @@
       "plugin-babel": "npm:systemjs-plugin-babel@^0.0.13",
       "react-redux": "npm:react-redux@^4.4.5",
       "react-select": "npm:react-select@^1.0.0-beta14",
+      "redux-immutablejs": "npm:redux-immutablejs@^0.0.8",
       "redux-thunk": "npm:redux-thunk@^2.1.0",
       "reselect": "npm:reselect@^2.5.4",
       "scss": "github:mobilexag/plugin-sass@^0.4.6",
@@ -78,6 +79,7 @@
       "tty": "github:jspm/nodelibs-tty@^0.2.0-alpha",
       "tweetnacl": "npm:tweetnacl@0.13",
       "unexpected-dom": "npm:unexpected-dom@^3.1.0",
+      "unexpected-immutable": "npm:unexpected-immutable@^0.0.2",
       "unexpected-mitm": "npm:unexpected-mitm@^9.1.6",
       "unexpected-react": "npm:unexpected-react@^3.2.3",
       "unexpected-sinon": "npm:unexpected-sinon@^10.2.1",
@@ -96,6 +98,7 @@
       "fs": "github:jspm/nodelibs-fs@^0.2.0-alpha",
       "http": "github:jspm/nodelibs-http@^0.2.0-alpha",
       "https": "github:jspm/nodelibs-https@^0.2.0-alpha",
+      "immutable": "npm:immutable@^3.8.1",
       "magicpen-media": "npm:magicpen-media@^1.5.0",
       "messy": "npm:messy@^6.7.1",
       "net": "github:jspm/nodelibs-net@^0.2.0-alpha",
@@ -165,7 +168,18 @@
           "test.js"
         ]
       },
+      "npm:inherits@2.0.3": {
+        "ignore": [
+          "test.js"
+        ]
+      },
       "npm:lodash@4.14.1": {
+        "map": {
+          "buffer": "@empty",
+          "process": "@empty"
+        }
+      },
+      "npm:lodash@4.16.3": {
         "map": {
           "buffer": "@empty",
           "process": "@empty"

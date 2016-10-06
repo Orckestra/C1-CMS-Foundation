@@ -1,18 +1,19 @@
 import expect from 'unittest/helpers/expect.js';
 import pages, * as actions from 'console/state/reducers/pages.js';
+import Immutable from 'immutable';
 
 describe('Pages', () => {
 	it('outputs an intial state if no action and no previous state', () => {
 		let state = pages(undefined, {});
-		return expect(state, 'to equal', {
+		return expect(state, 'to equal', Immutable.fromJS({
 			pages: [],
 			currentPage: null,
 			tabs: {}
-		});
+		}));
 	});
 
 	it('outputs the same state object if no action', () => {
-		let oldState = { thing: 'do not touch' };
+		let oldState = Immutable.Map({ thing: 'do not touch' });
 		let newState = pages(oldState, {});
 		return expect(newState, 'to be', oldState);
 	});
@@ -56,14 +57,14 @@ describe('Pages', () => {
 	describe('Action responses', () => {
 		let oldState;
 		beforeEach(() => {
-			oldState = {
+			oldState = Immutable.fromJS({
 				thing: 'do not touch',
 				currentPage: 'test1',
 				pages: [ 'test1', 'test2' ],
 				tabs: {
 					'test1': 'onetab'
 				}
-			};
+			});
 		});
 
 		describe('Select page', () => {
@@ -79,14 +80,14 @@ describe('Pages', () => {
 			it('does nothing if selected page is unknown', () => {
 				let newState = pages(oldState, { type: actions.SELECT_PAGE, pageName: 'test88' });
 				return expect(newState, 'to be', oldState)
-				.and('to equal', {
+				.and('to equal', Immutable.fromJS({
 					thing: 'do not touch',
 					currentPage: 'test1',
 					pages: [ 'test1', 'test2' ],
 					tabs: {
 						'test1': 'onetab'
 					}
-				});
+				}));
 			});
 		});
 

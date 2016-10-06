@@ -18,7 +18,6 @@ const Toolbar = ({ style, items, canSave }) => (
 			default:
 				if (!((item.label || item.icon) && item.action)) return null;
 				item.disabled = item.saveButton && !canSave;
-				delete item.saveButton;
 				return <ActionButton
 					key={item.name}
 					{...item}/>;
