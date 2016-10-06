@@ -2,12 +2,12 @@
 import React, { PropTypes } from 'react';
 
 const TabPage = props => {
-	if (!props.pageDef || !props.pageDef.type) {
+	if (!props.pageDef || !props.pageDef.get('type')) {
 		return <div/>;
 	} else {
-		let Page = props.pageTypes[props.pageDef.type];
+		let Page = props.pageTypes[props.pageDef.get('type')];
 		if (!Page) {
-			throw new Error('Could not find page type "' + props.pageDef.type + '" for page "' + props.pageDef.name + '"');
+			throw new Error('Could not find page type "' + props.pageDef.get('type') + '" for page "' + props.pageDef.get('name') + '"');
 		}
 		let otherProps = Object.assign({}, props);
 		delete otherProps.pageTypes;

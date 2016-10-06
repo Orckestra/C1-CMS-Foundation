@@ -3,12 +3,13 @@ import React from 'react';
 import TestUtils from 'react-addons-test-utils';
 import TestComponent from 'unittest/helpers/TestComponent.js';
 import TabPage from 'console/components/presentation/TabPage.js';
+import Immutable from 'immutable';
 
 describe('TabPage', () => {
 	let renderer, pageDef, pageTypes;
 	beforeEach(() => {
 		renderer = TestUtils.createRenderer();
-		pageDef = { name: 'testpage', type: 'test' };
+		pageDef = Immutable.fromJS({ name: 'testpage', type: 'test' });
 		pageTypes = {
 			test: TestComponent
 		};
@@ -16,7 +17,7 @@ describe('TabPage', () => {
 
 	it('should render the type it\'s given', () => {
 		renderer.render(<TabPage pageDef={pageDef} pageTypes={pageTypes}/>);
-		expect(renderer, 'to have rendered', <TestComponent pageDef={pageDef}/>);
+		expect(renderer, 'to have rendered', <TestComponent pageDef={pageDef.toJS()}/>);
 	});
 
 	it('should render an empty element if given no pageDef', () => {
