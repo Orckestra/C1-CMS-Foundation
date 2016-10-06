@@ -34,8 +34,8 @@ expect.addAssertion('<object> to be an action of type <string>', function (expec
 	return expect(subject, 'to have own property', 'type', actionName);
 });
 
-expect.addAssertion('<Immutable> to satisfy <object>', function (expect, subject, pattern) {
-	return expect(subject.toJS(), 'to satisfy', pattern);
+expect.addAssertion('<Immutable> to [exaustively] satisfy <any>', function (expect, subject, pattern) {
+	return expect(subject.toJS(), 'to [exaustively] satisfy', pattern);
 });
 // console.log(expect.outputFormat());
 expect.outputFormat('ansi');

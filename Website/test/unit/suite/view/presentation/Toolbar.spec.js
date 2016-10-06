@@ -5,6 +5,7 @@ import Toolbar from 'console/components/presentation/Toolbar.js';
 import ActionButton from 'console/components/presentation/ActionButton.js';
 import CheckboxGroup from 'console/components/presentation/CheckboxGroup.js';
 import Select from 'react-select';
+import Immutable from 'immutable';
 
 describe('Toolbar', () => {
 	let renderer, props, actions;
@@ -18,13 +19,13 @@ describe('Toolbar', () => {
 		props = {
 			name: 'toolbar',
 			canSave: false,
-			items: {}
+			items: Immutable.List()
 		};
 	});
 
 	describe('with buttons', () => {
 		beforeEach(() => {
-			props.items = [
+			props.items = Immutable.fromJS([
 				{
 					name: 'first',
 					type: 'button',
@@ -42,10 +43,10 @@ describe('Toolbar', () => {
 					name: 'third',
 					type: 'button',
 					label: 'Label3',
-					saveButton: true,
+					disabled: true,
 					action: actions.third
 				}
-			];
+			]);
 		});
 
 		it('renders them', () => {
@@ -60,7 +61,7 @@ describe('Toolbar', () => {
 		});
 
 		it('does not render them where action is missing', () => {
-			delete props.items[2].action;
+			props.items = props.items.deleteIn([2], 'action');
 			renderer.render(<Toolbar {...props}/>);
 			return expect(renderer, 'to have rendered',
 				<div className='toolbar'>
@@ -71,8 +72,10 @@ describe('Toolbar', () => {
 		});
 
 		it('renders them where label is missing, but only if it has icon', () => {
-			delete props.items[0].label;
-			delete props.items[2].label;
+			props.items = props.items.withMutations(items => {
+				items.deleteIn([0, 'label']);
+				items.deleteIn([2, 'label']);
+			});
 			renderer.render(<Toolbar {...props}/>);
 			return expect(renderer, 'to have rendered',
 				<div className='toolbar'>
@@ -85,7 +88,7 @@ describe('Toolbar', () => {
 
 	describe('with selector', () => {
 		beforeEach(() => {
-			props.items = [
+			props.items = Immutable.fromJS([
 				{
 					type: 'select',
 					name: 'switchItUp',
@@ -97,7 +100,7 @@ describe('Toolbar', () => {
 						{ value: '2016-09-20' }
 					]
 				}
-			];
+			]);
 		});
 
 		it('renders them', () => {
@@ -117,7 +120,7 @@ describe('Toolbar', () => {
 
 	describe('with checkbox groups', () => {
 		beforeEach(() => {
-			props.items = [
+			props.items = Immutable.fromJS([
 				{
 					type: 'checkboxGroup',
 					name: 'first',
@@ -130,7 +133,7 @@ describe('Toolbar', () => {
 					],
 					value: ['first/test1', 'first/test2', 'first/test3', 'first/test4']
 				}
-			];
+			]);
 		});
 
 		it('renders them', () => {
@@ -154,10 +157,6 @@ describe('Toolbar', () => {
 	});
 
 	describe('styles', () => {
-		beforeEach(() => {
-			props.items = [];
-		});
-
 		it('sets classNames according to style list', () => {
 			props.style = 'light rightAligned';
 			renderer.render(<Toolbar {...props}/>);

@@ -1,27 +1,15 @@
 import React, { PropTypes } from 'react';
 import Toolbar from 'console/components/presentation/Toolbar.js';
 import TabContent from 'console/components/container/TabContent.js';
+import { toolbarPropsSelector } from 'console/state/selectors/toolbarPropsSelector.js';
 
 const ToolbarFrame = props => {
-	// Collate toolbars with item lists
-	let toolbars = props.toolbars.map(toolbarDef => {
-		toolbarDef.items.forEach(item => {
-			if (item.action === 'save') {
-				item.action = props.actions.save(props.pageName);
-				item.saveButton = true;
-			} else if (item.type === 'select' || item.type === 'checkboxGroup') {
-				item.onChange = props.actions.setOption(item.name);
-			} else if (!item.saveButton) {
-				item.action = props.actions.fireAction(item.action, props.pageName);
-			}
-		});
-		return (
+	let toolbars = toolbarPropsSelector(props).map(toolbar => (
 			<Toolbar
-				{...toolbarDef}
-				key={toolbarDef.name}
-				canSave={!!props.dirty}/>
-		);
-	});
+				{...toolbar.toObject()}
+				key={toolbar.get('name')}/>
+		)
+	).toArray();
 	return (
 		<div className='page'
 			onContextMenu={event => {
@@ -34,8 +22,7 @@ const ToolbarFrame = props => {
 };
 
 ToolbarFrame.propTypes = {
-	pageName: PropTypes.string.isRequired,
-	toolbars: PropTypes.arrayOf(PropTypes.object).isRequired,
+	toolbars: PropTypes.object.isRequired, // Immutable.List
 	actions: PropTypes.object.isRequired,
 	dirty: PropTypes.bool.isRequired
 };

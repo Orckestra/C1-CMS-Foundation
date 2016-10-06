@@ -5,6 +5,7 @@ import TestUtils from 'react-addons-test-utils';
 import ToolbarFrame from 'console/components/presentation/ToolbarFrame.js';
 import Toolbar from 'console/components/presentation/Toolbar.js';
 import TabContent from 'console/components/container/TabContent.js';
+import Immutable from 'immutable';
 
 describe('ToolbarFrame', () => {
 	let renderer, props, pageActions;
@@ -17,7 +18,7 @@ describe('ToolbarFrame', () => {
 		};
 		props = {
 			pageName: 'test',
-			toolbars: [
+			toolbars: Immutable.fromJS([
 				{
 					name: 'test/toolbar',
 					items: [
@@ -26,8 +27,8 @@ describe('ToolbarFrame', () => {
 						{ name: 'test/save', type: 'button', label: 'Save', action: 'save' }
 					]
 				}
-			],
-			dirtyPages: {},
+			]),
+			dirty: false,
 			actions: {
 				save: sinon.spy(() => pageActions.save).named('save'),
 				fireAction: sinon.spy(() => pageActions.fireAction).named('fireAction'),
@@ -45,21 +46,19 @@ describe('ToolbarFrame', () => {
 			<div className='page'>
 				<Toolbar
 					name='test/toolbar'
-					canSave={false}
 					items={[{}, {}, {}]}/>
 				<TabContent/>
 			</div>
 		)
 		.and(
-			'queried for', <Toolbar canSave={false} items={[{},{},{}]}/>,
+			'queried for', <Toolbar/>,
 			'to have props exhaustively satisfying', {
 				name: 'test/toolbar',
-				canSave: false,
-				items: [
+				items: Immutable.fromJS([
 					{ name: 'test/onebutton', type: 'button', label: 'One', action: pageActions.fireAction },
 					{ name: 'test/twobutton', type: 'button', label: 'Two', action: pageActions.fireAction },
-					{ name: 'test/save', type: 'button', label: 'Save', action: pageActions.save, saveButton: true }
-				]
+					{ name: 'test/save', type: 'button', label: 'Save', action: pageActions.save, disabled: true }
+				])
 			}
 		);
 	});
@@ -68,7 +67,7 @@ describe('ToolbarFrame', () => {
 		renderer.render(<ToolbarFrame name='test' {...props}/>);
 		Promise.all([
 			expect(renderer,
-				'queried for', <Toolbar canSave={false} items={[{},{},{}]}/>,
+				'queried for', <Toolbar/>,
 			'to have props satisfying', {
 				name: 'test/toolbar',
 				items: [
@@ -86,14 +85,14 @@ describe('ToolbarFrame', () => {
 	});
 
 	it('passes useful props to selects, checkbox groups on toolbars', () => {
-		props.toolbars[0].items = [
+		props.toolbars = props.toolbars.setIn([0, 'items'], Immutable.fromJS([
 			{ name: 'test/select', type: 'select', options: [{ value: 'opt1' }], value: 'opt1' },
 			{ name: 'test/checks', type: 'checkboxGroup', options: [{ name: 'test/checks/c1', label: 'Check 1'}, { name: 'test/checks/c2', label: 'Check 2'}], value: ['test/checks/c1'] }
-		];
+		]));
 		renderer.render(<ToolbarFrame name='test' {...props}/>);
 		Promise.all([
 			expect(renderer,
-				'queried for', <Toolbar canSave={false} items={[{},{}]}/>,
+				'queried for', <Toolbar/>,
 			'to have props satisfying', {
 				name: 'test/toolbar',
 				items: [

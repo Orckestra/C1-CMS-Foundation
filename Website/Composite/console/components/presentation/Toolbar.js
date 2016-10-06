@@ -3,24 +3,24 @@ import ActionButton from 'console/components/presentation/ActionButton.js';
 import CheckboxGroup from 'console/components/presentation/CheckboxGroup.js';
 import Select from 'react-select';
 
-const Toolbar = ({ style, items, canSave }) => (
-	<div className={'toolbar' + (style ? ' ' + style : '')}>
-		{items.map(item => {
-			switch (item.type) {
+const Toolbar = props => (
+	<div className={'toolbar' + (props.style ? ' ' + props.style : '')}>
+		{props.items.map(item => {
+			switch (item.get('type')) {
 			case 'checkboxGroup':
-				return <CheckboxGroup key={item.name} {...item}/>;
+				return <CheckboxGroup key={item.get('name')} {...item.toJS()}/>;
 			case 'select':
+				item = item.toJS();
 				item.options.forEach(option => {
 					option.label = option.label || option.value;
 				});
 				return <Select key={item.name} clearable={false} multi={false} simpleValue={true} {...item}/>;
 			case 'button':
 			default:
-				if (!((item.label || item.icon) && item.action)) return null;
-				item.disabled = item.saveButton && !canSave;
+				if (!((item.get('label') || item.get('icon')) && item.get('action'))) return null;
 				return <ActionButton
-					key={item.name}
-					{...item}/>;
+					key={item.get('name')}
+					{...item.toJS()}/>;
 			}
 		}).filter(item => !!item)}
 	</div>
@@ -28,7 +28,7 @@ const Toolbar = ({ style, items, canSave }) => (
 
 Toolbar.propTypes = {
 	style: PropTypes.string,
-	items: PropTypes.arrayOf(PropTypes.object).isRequired,
+	items: PropTypes.object.isRequired,
 	canSave: PropTypes.bool
 };
 

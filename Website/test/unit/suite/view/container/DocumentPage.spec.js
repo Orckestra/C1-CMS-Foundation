@@ -101,15 +101,16 @@ describe('DocumentPage', () => {
 			toolbars={[{
 				name: 'hasItemDefs',
 				items: [
-					{type: 'button'},
-					{type: 'button'},
-					{type: 'select', options: [{},{}], value: expect.it('to be a number')},
-					{type: 'checkboxGroup', options: [{},{}], value: expect.it('to be an array')}
+					{ type: 'button', name: 'saveIt', action: 'save' },
+					{ type: 'button', name: 'doStuff', action: 'stuff'},
+					{ type: 'select', options: [{value: 'One'}, {value: 2, label: 'Two' }], value: 2 },
+					{ type: 'checkboxGroup', options: [{value: 'one', label: 'Thing'}, {value: 'two', label: 'Stuff'}], value: []}
 				]
 			}, {
 				name: 'hasNoItemDefs',
 				items: []
 			}]}
+			test={'value'}
 			dirty={false}
 			actions={{
 				updateValue: expect.it('to be a function')

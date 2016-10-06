@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { toolbarSelectorMutable } from 'console/state/selectors/toolbarSelector.js';
+import { toolbarSelector } from 'console/state/selectors/toolbarSelector.js';
 import ToolbarFrame from 'console/components/presentation/ToolbarFrame.js';
 import { saveValues } from 'console/state/actions/values.js';
 import { updateFieldValue } from 'console/state/reducers/dataFields.js';
@@ -11,7 +11,7 @@ import Immutable from 'immutable';
 function mapStateToProps(state) {
 	let props = {
 		pageName: state.getIn(['pages', 'currentPage']),
-		toolbars: toolbarSelectorMutable(state)
+		toolbars: toolbarSelector(state)
 	};
 	props.dirty = !Immutable.is(
 		state.getIn(['dataFields', 'committedPages', props.pageName]),
