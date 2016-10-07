@@ -3,6 +3,7 @@ import React from 'react';
 import TestUtils from 'react-addons-test-utils';
 import Fieldset from 'console/components/presentation/Fieldset.js';
 import DataField from 'console/components/presentation/DataField.js';
+import Immutable from 'immutable';
 
 describe('Fieldset', () => {
 	let renderer, props, updater;
@@ -10,11 +11,11 @@ describe('Fieldset', () => {
 		renderer = TestUtils.createRenderer();
 		updater = () => {};
 		props = {
-			fields: [
+			fields: Immutable.fromJS([
 				{ name: 'first', updateValue: updater },
 				{ name: 'second', updateValue: updater },
 				{ name: 'third', updateValue: updater }
-			]
+			])
 		};
 	});
 

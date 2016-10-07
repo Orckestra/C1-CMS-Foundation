@@ -1,11 +1,11 @@
 import { connect } from 'react-redux';
 import FormTab from 'console/components/presentation/FormTab.js';
 import { updateFieldValue } from 'console/state/reducers/dataFields.js';
-import { tabSelectorMutable } from 'console/state/selectors/tabSelector.js';
+import { tabSelector } from 'console/state/selectors/tabSelector.js';
 
 function mapStateToProps(state) {
-	let props = tabSelectorMutable(state);
-	return props;
+	let props = tabSelector(state);
+	return props ? props.toObject() : {};
 }
 
 function mapDispatchToProps(dispatch) {

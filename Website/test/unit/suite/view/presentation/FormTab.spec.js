@@ -4,6 +4,7 @@ import React from 'react';
 import TestUtils from 'react-addons-test-utils';
 import FormTab from 'console/components/presentation/FormTab.js';
 import Fieldset from 'console/components/presentation/Fieldset.js';
+import Immutable from 'immutable';
 
 describe('FormTab', () => {
 	let renderer, props, state, pageActions;
@@ -11,7 +12,7 @@ describe('FormTab', () => {
 		renderer = TestUtils.createRenderer();
 		props = {
 			pageName: 'test',
-			fieldsets: [
+			fieldsets: Immutable.fromJS([
 				{
 					label: 'First set',
 					name: 'test/oneset',
@@ -25,7 +26,7 @@ describe('FormTab', () => {
 					name: 'test/twoset',
 					fields: [ { name: 'test/twoset/threefield', defaultValue: 'overwritten' } ]
 				}
-			]
+			])
 		};
 		pageActions = {
 			fireAction: () => {},
@@ -64,12 +65,13 @@ describe('FormTab', () => {
 	));
 
 	it('passes a nametagged update function to fields', () => Promise.all([
+		// expect({ bar: Immutable.List([Immutable.Map({foo: 1})])}, 'to satisfy', {bar: expect.it('to have items satisfying', 'to have property', 'foo', 1)})
 		expect(renderer,
-			'queried for', <Fieldset label='First set' fields={[{}, {}]}/>,
+			'queried for', <Fieldset label='First set'/>,
 			'to have props satisfying', {
-				fields: expect.it('to have values satisfying',
+				fields: expect.it('to have items satisfying',
 					'to have property',
-					'updateValue', pageActions.update
+					'updateValue'//, pageActions.update
 				)
 			}
 		),

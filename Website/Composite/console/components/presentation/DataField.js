@@ -1,9 +1,10 @@
 import React, { PropTypes } from 'react';
+import * as CustomPropTypes from 'console/components/customPropTypes.js';
 import HelpIcon from 'console/components/presentation/HelpIcon.js';
 import Select from 'react-select';
 
 const DataField = props => {
-	let input, handleChange, defaultOption, inputElement;
+	let input, handleChange, defaultOption, inputElement, options;
 	switch (props.type) {
 	case 'checkbox':
 		handleChange = function (event) {
@@ -20,13 +21,14 @@ const DataField = props => {
 		handleChange = function (option) {
 			props.updateValue(option.value);
 		};
-		defaultOption = props.options.filter(option => option.value === props.value)[0];
+		options = props.options.toJS();
+		defaultOption = options.filter(option => option.value === props.value)[0];
 		inputElement = <Select
 				id={props.name}
 				value={defaultOption}
 				clearable={false}
 				multi={false}
-				options={props.options}
+				options={options}
 				onChange={handleChange}
 				placeholder={props.placeholder}>
 			</Select>;
@@ -62,7 +64,7 @@ const DataField = props => {
 
 DataField.propTypes = {
 	type: PropTypes.string,
-	options: PropTypes.arrayOf(PropTypes.object),
+	options: CustomPropTypes.immutableList,
 	updateValue: PropTypes.func.isRequired,
 	name: PropTypes.string.isRequired,
 	headline: PropTypes.string,

@@ -6,6 +6,7 @@ import HelpIcon from 'console/components/presentation/HelpIcon.js';
 import DataField from 'console/components/presentation/DataField.js';
 import StatelessWrapper from 'unittest/helpers/StatelessWrapper.js';
 import Select from 'react-select';
+import Immutable from 'immutable';
 
 describe('DataField', () => {
 	let renderer, props, state;
@@ -175,12 +176,12 @@ describe('DataField', () => {
 
 		describe('with option list', () => {
 			beforeEach(() => {
-				props.options = [
+				props.options = Immutable.fromJS([
 					{ value: 1, label: 'One' },
 					{ value: 2, label: 'Two' },
 					{ value: 3, label: 'Three' },
 					{ value: 4, label: 'Four' }
-				];
+				]);
 			});
 
 			it('renders a dropdown with headline and helper', () => {
