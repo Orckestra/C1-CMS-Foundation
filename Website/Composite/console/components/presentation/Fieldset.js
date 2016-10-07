@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import DataField from 'console/components/presentation/DataField.js';
-import * as CustomPropTypes from 'console/components/customPropTypes.js';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 
 const Fieldset = ({ label, fields }) => (
 	<fieldset>
@@ -15,7 +15,7 @@ const Fieldset = ({ label, fields }) => (
 
 Fieldset.propTypes = {
 	label: PropTypes.string,
-	fields: CustomPropTypes.immutableList.isRequired
+	fields: ImmutablePropTypes.listOf(ImmutablePropTypes.map).isRequired
 };
 
 export default Fieldset;

@@ -72,6 +72,7 @@
       "module": "github:jspm/nodelibs-module@^0.2.0-alpha",
       "querystring": "github:jspm/nodelibs-querystring@^0.2.0-alpha",
       "react-addons-test-utils": "npm:react-addons-test-utils@^15.3.0",
+      "react-immutable-proptypes": "npm:react-immutable-proptypes@^2.1.0",
       "sinon": "npm:sinon@^1.17.5",
       "source-map": "npm:source-map@0.2",
       "systemjs-hot-reloader": "github:capaj/systemjs-hot-reloader@^0.6.0",

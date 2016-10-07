@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import Fieldset from 'console/components/presentation/Fieldset.js';
-import * as CustomPropTypes from 'console/components/customPropTypes.js';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 
 const FormTab = props => {
 	if (!props.fieldsets) return null;
@@ -26,7 +26,7 @@ FormTab.propTypes = {
 	name: PropTypes.string,
 	pageName: PropTypes.string,
 	actions: PropTypes.objectOf(PropTypes.func).isRequired,
-	fieldsets: CustomPropTypes.immutableList
+	fieldsets: ImmutablePropTypes.listOf(ImmutablePropTypes.map)
 };
 
 export default FormTab;

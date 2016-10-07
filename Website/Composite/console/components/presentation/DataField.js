@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import * as CustomPropTypes from 'console/components/customPropTypes.js';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 import HelpIcon from 'console/components/presentation/HelpIcon.js';
 import Select from 'react-select';
 
@@ -64,7 +64,7 @@ const DataField = props => {
 
 DataField.propTypes = {
 	type: PropTypes.string,
-	options: CustomPropTypes.immutableList,
+	options: ImmutablePropTypes.listOf(ImmutablePropTypes.map),
 	updateValue: PropTypes.func.isRequired,
 	name: PropTypes.string.isRequired,
 	headline: PropTypes.string,
