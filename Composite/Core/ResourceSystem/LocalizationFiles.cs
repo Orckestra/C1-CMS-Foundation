@@ -193,6 +193,8 @@ public static string GenericAddDataAction_DefaultLabel=>T("GenericAddDataAction.
 public static string GenericEditDataAction_DefaultLabel=>T("GenericEditDataAction.DefaultLabel");
 ///<summary>&quot;Delete&quot;</summary> 
 public static string GenericDeleteDataAction_DefaultLabel=>T("GenericDeleteDataAction.DefaultLabel");
+///<summary>&quot;Duplicate&quot;</summary> 
+public static string GenericDuplicateDataAction_DefaultLabel=>T("GenericDuplicateDataAction.DefaultLabel");
 ///<summary>&quot;Cascade delete error&quot;</summary> 
 public static string TreeGenericDelete_CascadeDeleteErrorTitle=>T("TreeGenericDelete.CascadeDeleteErrorTitle");
 ///<summary>&quot;The type is referenced by another type that does not allow cascade deletes. This operation is halted&quot;</summary> 
@@ -1313,6 +1315,10 @@ public static string AssociatedDataElementProviderHelper_EditAssociatedDataToolT
 public static string AssociatedDataElementProviderHelper_DeleteAssociatedDataLabel=>T("AssociatedDataElementProviderHelper.DeleteAssociatedDataLabel");
 ///<summary>&quot;Delete data&quot;</summary> 
 public static string AssociatedDataElementProviderHelper_DeleteAssociatedDataToolTip=>T("AssociatedDataElementProviderHelper.DeleteAssociatedDataToolTip");
+///<summary>&quot;Duplicate Data&quot;</summary> 
+public static string AssociatedDataElementProviderHelper_DuplicateAssociatedDataLabel=>T("AssociatedDataElementProviderHelper.DuplicateAssociatedDataLabel");
+///<summary>&quot;Duplicate data&quot;</summary> 
+public static string AssociatedDataElementProviderHelper_DuplicateAssociatedDataToolTip=>T("AssociatedDataElementProviderHelper.DuplicateAssociatedDataToolTip");
 ///<summary>&quot;Localize&quot;</summary> 
 public static string AssociatedDataElementProviderHelper_LocalizeData=>T("AssociatedDataElementProviderHelper.LocalizeData");
 ///<summary>&quot;Localize data&quot;</summary> 
@@ -2475,6 +2481,8 @@ public static string Validation_StringLength_Max(object parameter0)=>string.Form
 public static string Browser_Label=>T("Browser.Label");
 ///<summary>&quot;Browse unpublished pages&quot;</summary> 
 public static string Browser_ToolTip=>T("Browser.ToolTip");
+///<summary>&quot;Copy{count} of {0}&quot;</summary> 
+public static string Duplication_Text(object parameter0)=>string.Format(T("Duplication.Text"), parameter0);
 ///<summary>&quot;Original&quot;</summary> 
 public static string DefaultVersionName=>T("DefaultVersionName");
      private static string T(string key) 
@@ -2685,6 +2693,10 @@ public static string EditDataToolTip=>T("EditDataToolTip");
 public static string DeleteData=>T("DeleteData");
 ///<summary>&quot;Delete selected data&quot;</summary> 
 public static string DeleteDataToolTip=>T("DeleteDataToolTip");
+///<summary>&quot;Duplicate Data&quot;</summary> 
+public static string DuplicateData=>T("DuplicateData");
+///<summary>&quot;Duplicate selected data&quot;</summary> 
+public static string DuplicateDataToolTip=>T("DuplicateDataToolTip");
 ///<summary>&quot;Translate Data&quot;</summary> 
 public static string LocalizeData=>T("LocalizeData");
 ///<summary>&quot;Translate selected data&quot;</summary> 
@@ -3627,6 +3639,10 @@ public static string PageElementProvider_EditPageToolTip=>T("PageElementProvider
 public static string PageElementProvider_Delete=>T("PageElementProvider.Delete");
 ///<summary>&quot;Delete the selected page&quot;</summary> 
 public static string PageElementProvider_DeleteToolTip=>T("PageElementProvider.DeleteToolTip");
+///<summary>&quot;Duplicate Page&quot;</summary> 
+public static string PageElementProvider_Duplicate=>T("PageElementProvider.Duplicate");
+///<summary>&quot;Duplicate the selected page&quot;</summary> 
+public static string PageElementProvider_DuplicateToolTip=>T("PageElementProvider.DuplicateToolTip");
 ///<summary>&quot;Translate Page&quot;</summary> 
 public static string PageElementProvider_LocalizePage=>T("PageElementProvider.LocalizePage");
 ///<summary>&quot;Translate selected page&quot;</summary> 
