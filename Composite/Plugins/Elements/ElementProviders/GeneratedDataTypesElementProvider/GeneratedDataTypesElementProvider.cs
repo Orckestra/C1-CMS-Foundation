@@ -141,6 +141,9 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
         public static ResourceHandle AddDataIcon { get { return GetIconHandle("generated-type-data-add"); } }
 
         /// <exclude />
+        public static ResourceHandle DuplicateDataIcon { get { return GetIconHandle("copy"); } }
+
+        /// <exclude />
         public static ResourceHandle EditDataIcon { get { return GetIconHandle("generated-type-data-edit"); } }
 
         /// <exclude />
@@ -1089,6 +1092,24 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                             ActionLocation = new ActionLocation
                             {
                                 ActionType = ActionType.Delete,
+                                IsInFolder = false,
+                                IsInToolbar = true,
+                                ActionGroup = PrimaryActionGroup
+                            }
+                        }
+                    });
+                element.AddAction(
+                    new ElementAction(new ActionHandle(new ProxyDataActionToken(ActionIdentifier.Duplicate, _addNewDataPermissionTypes)))
+                    {
+                        VisualData = new ActionVisualizedData
+                        {
+                            Label = GetText("DuplicateData"),
+                            ToolTip = GetText("DuplicateDataToolTip"),
+                            Icon = GeneratedDataTypesElementProvider.DuplicateDataIcon,
+                            Disabled = false,
+                            ActionLocation = new ActionLocation
+                            {
+                                ActionType = ActionType.Add,
                                 IsInFolder = false,
                                 IsInToolbar = true,
                                 ActionGroup = PrimaryActionGroup

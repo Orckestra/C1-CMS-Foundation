@@ -46,6 +46,9 @@ namespace Composite.C1Console.Actions.Data
         public static ActionIdentifier Undo => new ActionIdentifier("Undo");
 
         /// <exclude />
+        public static ActionIdentifier Duplicate => new ActionIdentifier("Duplicate");
+
+        /// <exclude />
         public IEnumerable<PermissionType> Permissions()
         {
             if (this == Add)
@@ -85,6 +88,10 @@ namespace Composite.C1Console.Actions.Data
             if (this == Undo)
             {
                 yield return PermissionType.Edit;
+            }
+            if (this == Duplicate)
+            {
+                yield return PermissionType.Add;
             }
         }
 

@@ -195,6 +195,8 @@ public static string GenericAddDataAction_DefaultLabel=>T("GenericAddDataAction.
 public static string GenericEditDataAction_DefaultLabel=>T("GenericEditDataAction.DefaultLabel");
 ///<summary>&quot;Delete&quot;</summary> 
 public static string GenericDeleteDataAction_DefaultLabel=>T("GenericDeleteDataAction.DefaultLabel");
+///<summary>&quot;Duplicate&quot;</summary> 
+public static string GenericDuplicateDataAction_DefaultLabel=>T("GenericDuplicateDataAction.DefaultLabel");
 ///<summary>&quot;Cascade delete error&quot;</summary> 
 public static string TreeGenericDelete_CascadeDeleteErrorTitle=>T("TreeGenericDelete.CascadeDeleteErrorTitle");
 ///<summary>&quot;The type is referenced by another type that does not allow cascade deletes. This operation is halted&quot;</summary> 
@@ -1149,8 +1151,6 @@ public static string Website_Image_SelectDialog_Title=>T("Website.Image.SelectDi
 public static string Website_Folder_SelectDialog_Title=>T("Website.Folder.SelectDialog.Title");
 ///<summary>&quot;Draft&quot;</summary> 
 public static string PublishingStatus_draft=>T("PublishingStatus.draft");
-///<summary>&quot;Sent to Draft&quot;</summary> 
-public static string PublishingStatus_sentToDraft=>T("PublishingStatus.sentToDraft");
 ///<summary>&quot;Awaiting Approval&quot;</summary> 
 public static string PublishingStatus_awaitingApproval=>T("PublishingStatus.awaitingApproval");
 ///<summary>&quot;Awaiting Publication&quot;</summary> 
@@ -1317,6 +1317,10 @@ public static string AssociatedDataElementProviderHelper_EditAssociatedDataToolT
 public static string AssociatedDataElementProviderHelper_DeleteAssociatedDataLabel=>T("AssociatedDataElementProviderHelper.DeleteAssociatedDataLabel");
 ///<summary>&quot;Delete data&quot;</summary> 
 public static string AssociatedDataElementProviderHelper_DeleteAssociatedDataToolTip=>T("AssociatedDataElementProviderHelper.DeleteAssociatedDataToolTip");
+///<summary>&quot;Duplicate Data&quot;</summary> 
+public static string AssociatedDataElementProviderHelper_DuplicateAssociatedDataLabel=>T("AssociatedDataElementProviderHelper.DuplicateAssociatedDataLabel");
+///<summary>&quot;Duplicate data&quot;</summary> 
+public static string AssociatedDataElementProviderHelper_DuplicateAssociatedDataToolTip=>T("AssociatedDataElementProviderHelper.DuplicateAssociatedDataToolTip");
 ///<summary>&quot;Localize&quot;</summary> 
 public static string AssociatedDataElementProviderHelper_LocalizeData=>T("AssociatedDataElementProviderHelper.LocalizeData");
 ///<summary>&quot;Localize data&quot;</summary> 
@@ -2427,6 +2431,8 @@ public static string Website_Misc_Trees_DialogTitle_PasteTypeNotAllowed=>T("Webs
 public static string Website_Misc_Trees_DialogText_PasteTypeNotAllowed=>T("Website.Misc.Trees.DialogText.PasteTypeNotAllowed");
 ///<summary>&quot;Edit Selections&quot;</summary> 
 public static string Website_Misc_MultiSelector_LabelEditSelections=>T("Website.Misc.MultiSelector.LabelEditSelections");
+///<summary>&quot;More&quot;</summary> 
+public static string Website_Misc_Toolbar_LabelShowMoreActions=>T("Website.Misc.Toolbar.LabelShowMoreActions");
 ///<summary>&quot;Version information&quot;</summary> 
 public static string GenericVersionProcessController_Version=>T("GenericVersionProcessController.Version");
 ///<summary>&quot;Show version information&quot;</summary> 
@@ -2451,10 +2457,34 @@ public static string Validation_Decimal_SymbolsBeforePointAllowed(object paramet
 public static string Validation_DateTime_InvalidDateFormat(object parameter0,object parameter1)=>string.Format(T("Validation.DateTime.InvalidDateFormat"), parameter0,parameter1);
 ///<summary>&quot;The specified value is either too big or too small. The acceptable range is from -2,147,483,648 to 2,147,483,647&quot;</summary> 
 public static string Validation_Int32_Overflow=>T("Validation.Int32.Overflow");
+///<summary>&quot;Required&quot;</summary> 
+public static string Validation_Required=>T("Validation.Required");
+///<summary>&quot;Numbers only&quot;</summary> 
+public static string Validation_InvalidField_Number=>T("Validation.InvalidField.Number");
+///<summary>&quot;Integers only&quot;</summary> 
+public static string Validation_InvalidField_Integer=>T("Validation.InvalidField.Integer");
+///<summary>&quot;Invalid identifier&quot;</summary> 
+public static string Validation_InvalidField_ProgrammingIdentifier=>T("Validation.InvalidField.ProgrammingIdentifier");
+///<summary>&quot;Invalid namespace&quot;</summary> 
+public static string Validation_InvalidField_ProgrammingNamespace=>T("Validation.InvalidField.ProgrammingNamespace");
+///<summary>&quot;Invalid URL&quot;</summary> 
+public static string Validation_InvalidField_Url=>T("Validation.InvalidField.Url");
+///<summary>&quot;Invalid notation&quot;</summary> 
+public static string Validation_InvalidField_Currency=>T("Validation.InvalidField.Currency");
+///<summary>&quot;Invalid e-mail&quot;</summary> 
+public static string Validation_InvalidField_Email=>T("Validation.InvalidField.Email");
+///<summary>&quot;Invalid GUID&quot;</summary> 
+public static string Validation_InvalidField_Guid=>T("Validation.InvalidField.Guid");
+///<summary>&quot;{0} characters minimum&quot;</summary> 
+public static string Validation_StringLength_Min(object parameter0)=>string.Format(T("Validation.StringLength.Min"), parameter0);
+///<summary>&quot;{0} characters maximum&quot;</summary> 
+public static string Validation_StringLength_Max(object parameter0)=>string.Format(T("Validation.StringLength.Max"), parameter0);
 ///<summary>&quot;Page Browser&quot;</summary> 
 public static string Browser_Label=>T("Browser.Label");
 ///<summary>&quot;Browse unpublished pages&quot;</summary> 
 public static string Browser_ToolTip=>T("Browser.ToolTip");
+///<summary>&quot;Copy{count} of {0}&quot;</summary> 
+public static string Duplication_Text(object parameter0)=>string.Format(T("Duplication.Text"), parameter0);
 ///<summary>&quot;Original&quot;</summary> 
 public static string DefaultVersionName=>T("DefaultVersionName");
      private static string T(string key) 
@@ -2665,6 +2695,10 @@ public static string EditDataToolTip=>T("EditDataToolTip");
 public static string DeleteData=>T("DeleteData");
 ///<summary>&quot;Delete selected data&quot;</summary> 
 public static string DeleteDataToolTip=>T("DeleteDataToolTip");
+///<summary>&quot;Duplicate Data&quot;</summary> 
+public static string DuplicateData=>T("DuplicateData");
+///<summary>&quot;Duplicate selected data&quot;</summary> 
+public static string DuplicateDataToolTip=>T("DuplicateDataToolTip");
 ///<summary>&quot;Translate Data&quot;</summary> 
 public static string LocalizeData=>T("LocalizeData");
 ///<summary>&quot;Translate selected data&quot;</summary> 
@@ -3595,6 +3629,10 @@ public static string PageElementProvider_EditPageToolTip=>T("PageElementProvider
 public static string PageElementProvider_Delete=>T("PageElementProvider.Delete");
 ///<summary>&quot;Delete the selected page&quot;</summary> 
 public static string PageElementProvider_DeleteToolTip=>T("PageElementProvider.DeleteToolTip");
+///<summary>&quot;Duplicate Page&quot;</summary> 
+public static string PageElementProvider_Duplicate=>T("PageElementProvider.Duplicate");
+///<summary>&quot;Duplicate the selected page&quot;</summary> 
+public static string PageElementProvider_DuplicateToolTip=>T("PageElementProvider.DuplicateToolTip");
 ///<summary>&quot;Translate Page&quot;</summary> 
 public static string PageElementProvider_LocalizePage=>T("PageElementProvider.LocalizePage");
 ///<summary>&quot;Translate selected page&quot;</summary> 
