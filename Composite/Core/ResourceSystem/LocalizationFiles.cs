@@ -137,18 +137,16 @@ public static string TreeValidationError_FunctionFilter_WrongFunctionReturnType(
 public static string TreeValidationError_FunctionFilter_WrongFunctionParameterCount(object parameter0)=>string.Format(T("TreeValidationError.FunctionFilter.WrongFunctionParameterCount"), parameter0);
 ///<summary>&quot;The expressions parameter type returned by the function is &apos;{0}&apos;, &apos;{1}&apos; was expected&quot;</summary> 
 public static string TreeValidationError_FunctionFilter_WrongFunctionParameterType(object parameter0,object parameter1)=>string.Format(T("TreeValidationError.FunctionFilter.WrongFunctionParameterType"), parameter0,parameter1);
+///<summary>&quot;The file &apos;{0}&apos; does not exist&quot;</summary> 
+public static string TreeValidationError_CustomFormMarkup_MissingFile(object parameter0)=>string.Format(T("TreeValidationError.CustomFormMarkup.MissingFile"), parameter0);
+///<summary>&quot;The custom markup path &apos;{0}&apos; is wrongly formatted. Use ~/Dir1/Dir2/File.xml&quot;</summary> 
+public static string TreeValidationError_CustomFormMarkup_BadMarkupPath(object parameter0)=>string.Format(T("TreeValidationError.CustomFormMarkup.BadMarkupPath"), parameter0);
+///<summary>&quot;The file &apos;{0}&apos; does not contain valid XML markup.&quot;</summary> 
+public static string TreeValidationError_CustomFormMarkup_InvalidXml(object parameter0)=>string.Format(T("TreeValidationError.CustomFormMarkup.InvalidXml"), parameter0);
 ///<summary>&quot;The function does not return value of the type &apos;{0}&apos;&quot;</summary> 
 public static string TreeValidationError_ReportFunctionAction_WrongReturnValue(object parameter0)=>string.Format(T("TreeValidationError.ReportFunctionAction.WrongReturnValue"), parameter0);
-///<summary>&quot;The file &apos;{0}&apos; does not exist&quot;</summary> 
-public static string TreeValidationError_GenericAddDataAction_MissingMarkupFile(object parameter0)=>string.Format(T("TreeValidationError.GenericAddDataAction.MissingMarkupFile"), parameter0);
-///<summary>&quot;The custom markup path &apos;{0}&apos; is wrongly formatted. Use ~/Dir1/Dir2/File.xml&quot;</summary> 
-public static string TreeValidationError_GenericAddDataAction_BadMarkupPath(object parameter0)=>string.Format(T("TreeValidationError.GenericAddDataAction.BadMarkupPath"), parameter0);
 ///<summary>&quot;The edit data action only applies to elements that produce data elements&quot;</summary> 
 public static string TreeValidationError_GenericEditDataAction_OwnerIsNotDataNode=>T("TreeValidationError.GenericEditDataAction.OwnerIsNotDataNode");
-///<summary>&quot;The file &apos;{0}&apos; does not exist&quot;</summary> 
-public static string TreeValidationError_GenericEditDataAction_MissingMarkupFile(object parameter0)=>string.Format(T("TreeValidationError.GenericEditDataAction.MissingMarkupFile"), parameter0);
-///<summary>&quot;The custom markup path &apos;{0}&apos; is wrongly formatted. Use ~/Dir1/Dir2/File.xml&quot;</summary> 
-public static string TreeValidationError_GenericEditDataAction_BadMarkupPath(object parameter0)=>string.Format(T("TreeValidationError.GenericEditDataAction.BadMarkupPath"), parameter0);
 ///<summary>&quot;The delete data action only applies to elements that produce data elements&quot;</summary> 
 public static string TreeValidationError_GenericDeleteDataAction_OwnerIsNotDataNode=>T("TreeValidationError.GenericDeleteDataAction.OwnerIsNotDataNode");
 ///<summary>&quot;The dialog type &apos;{0}&apos; is not supported&quot;</summary> 
@@ -3270,6 +3268,12 @@ public static string ViewAvailableInformation_TrialInformationLabel=>T("ViewAvai
 public static string ViewAvailableInformation_TrialInformationText=>T("ViewAvailableInformation.TrialInformationText");
 ///<summary>&quot;Free trial period (days)&quot;</summary> 
 public static string ViewAvailableInformation_TrialDaysLabel=>T("ViewAvailableInformation.TrialDaysLabel");
+///<summary>&quot;License Information&quot;</summary> 
+public static string ViewAvailableInformation_LicenseInformationGroupLabel=>T("ViewAvailableInformation.LicenseInformationGroupLabel");
+///<summary>&quot;Subscription Name&quot;</summary> 
+public static string ViewAvailableInformation_SubscriptionNameLabel=>T("ViewAvailableInformation.SubscriptionNameLabel");
+///<summary>&quot;License Expiration Date&quot;</summary> 
+public static string ViewAvailableInformation_LicenseExpirationDateLabel=>T("ViewAvailableInformation.LicenseExpirationDateLabel");
 ///<summary>&quot;Installation Info&quot;</summary> 
 public static string ViewAvailableInformation_InstallationInfoFieldGroupLabel=>T("ViewAvailableInformation.InstallationInfoFieldGroupLabel");
 ///<summary>&quot;Version&quot;</summary> 
@@ -3314,6 +3318,12 @@ public static string ViewInstalledInformation_TrialInformationLabel=>T("ViewInst
 public static string ViewInstalledInformation_TrialInformationText=>T("ViewInstalledInformation.TrialInformationText");
 ///<summary>&quot;Trial expiration date&quot;</summary> 
 public static string ViewInstalledInformation_TrialExpireLabel=>T("ViewInstalledInformation.TrialExpireLabel");
+///<summary>&quot;License Information&quot;</summary> 
+public static string ViewInstalledInformation_LicenseInformationGroupLabel=>T("ViewInstalledInformation.LicenseInformationGroupLabel");
+///<summary>&quot;Subscription Name&quot;</summary> 
+public static string ViewInstalledInformation_SubscriptionNameLabel=>T("ViewInstalledInformation.SubscriptionNameLabel");
+///<summary>&quot;License Expiration Date&quot;</summary> 
+public static string ViewInstalledInformation_LicenseExpirationDateLabel=>T("ViewInstalledInformation.LicenseExpirationDateLabel");
 ///<summary>&quot;Uninstall&quot;</summary> 
 public static string ViewInstalledInformation_Toolbar_UninstallLabel=>T("ViewInstalledInformation.Toolbar.UninstallLabel");
 ///<summary>&quot;Purchase this!&quot;</summary> 
@@ -3719,6 +3729,8 @@ public static string ViewUnpublishedItems_PageTitleLabel=>T("ViewUnpublishedItem
 public static string ViewUnpublishedItems_VersionLabel=>T("ViewUnpublishedItems.VersionLabel");
 ///<summary>&quot;Status&quot;</summary> 
 public static string ViewUnpublishedItems_StatusLabel=>T("ViewUnpublishedItems.StatusLabel");
+///<summary>&quot;Author&quot;</summary> 
+public static string ViewUnpublishedItems_LabelChangedBy=>T("ViewUnpublishedItems.LabelChangedBy");
 ///<summary>&quot;Publish Date&quot;</summary> 
 public static string ViewUnpublishedItems_PublishDateLabel=>T("ViewUnpublishedItems.PublishDateLabel");
 ///<summary>&quot;Date and time the page has been scheduled to publish automatically. To edit, see the Publication Schedule in Edit Page mode.&quot;</summary> 
