@@ -7,10 +7,8 @@ using System.Text;
 using Composite.C1Console.Elements;
 using Composite.C1Console.Security;
 using Composite.C1Console.Workflow;
-using Composite.Core.IO;
 using Composite.Core.Linq;
 using Composite.Core.Serialization;
-using Composite.Core.Xml;
 using Composite.Data;
 
 
@@ -111,12 +109,11 @@ namespace Composite.C1Console.Trees
 
                     foreach (ForeignPropertyInfo foreignPropertyInfo in foreignPropertyInfos)
                     {
-                        var parentIdEntry = new ParentIdEntry
-                        {
-                            TargetInterface = interfaceType,
-                            TargetPropertyInfo = foreignPropertyInfo.TargetKeyPropertyInfo,
-                            SourcePropertyName = foreignPropertyInfo.SourcePropertyName
-                        };
+                        var parentIdEntry = new ParentIdEntry(
+                            interfaceType,
+                            foreignPropertyInfo.TargetKeyPropertyInfo,
+                            foreignPropertyInfo.SourcePropertyName
+                        );
 
                         if (!this.ParentIdEntries.Contains(parentIdEntry))
                         {
@@ -128,25 +125,9 @@ namespace Composite.C1Console.Trees
 
             if (!string.IsNullOrEmpty(this.CustomFormMarkupPath))
             {
-                try
-                {
-                    string path = PathUtil.Resolve(this.CustomFormMarkupPath);
-                    if (!C1File.Exists(path))
-                    {
-                        AddValidationError("TreeValidationError.GenericAddDataAction.MissingMarkupFile", path);
-                    }
-
-                    XDocumentUtils.Load(path);
-
-                    this.CustomFormMarkupPath = path;
-                }
-                catch
-                {
-                    AddValidationError("TreeValidationError.GenericAddDataAction.BadMarkupPath", this.CustomFormMarkupPath);
-                }
+                this.CustomFormMarkupPath = LoadAndValidateCustomFormMarkupPath(CustomFormMarkupPath);
             }
         }
-
 
 
         /// <exclude />
@@ -160,16 +141,23 @@ namespace Composite.C1Console.Trees
         [DebuggerDisplay("{SourcePropertyName} -> {TargetInterface}")]
         private sealed class ParentIdEntry
         {
-            public Type TargetInterface { get; set; }
-            public PropertyInfo TargetPropertyInfo { get; set; }
-            public string SourcePropertyName { get; set; }
+            public ParentIdEntry(Type targetInterface, PropertyInfo targetPropertyInfo, string sourcePropertyName)
+            {
+                TargetInterface = targetInterface;
+                TargetPropertyInfo = targetPropertyInfo;
+                SourcePropertyName = sourcePropertyName;
+            } 
+
+            public Type TargetInterface { get; }
+            public PropertyInfo TargetPropertyInfo { get; }
+            public string SourcePropertyName { get; }
 
             public override bool Equals(object obj)
             {
                 return Equals(obj as ParentIdEntry);
             }
 
-            public bool Equals(ParentIdEntry parentIdEntry)
+            private bool Equals(ParentIdEntry parentIdEntry)
             {
                 if (parentIdEntry == null) return false;
 

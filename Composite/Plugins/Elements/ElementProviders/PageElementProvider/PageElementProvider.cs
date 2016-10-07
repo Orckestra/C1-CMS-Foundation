@@ -725,6 +725,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                         }
                     });
 
+                    IPageType parentPageType = allPageTypes.FirstOrDefault(f => f.Id == page.PageTypeId);
+                    Verify.IsNotNull(parentPageType, "Failed to find page type by id '{0}'", page.PageTypeId);
                     element.AddAction(new ElementAction(new ActionHandle(new ProxyDataActionToken(ActionIdentifier.Duplicate, DuplicatePermissionTypes)))
                     {
                         VisualData = new ActionVisualizedData
@@ -742,8 +744,6 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                             }
                         }
                     });
-
-                    IPageType parentPageType = allPageTypes.First(f => f.Id == page.PageTypeId);
 
                     foreach (var pageType in page.GetChildPageSelectablePageTypes().OrderByDescending(pt => pt.Id == parentPageType.DefaultChildPageType))
                     {

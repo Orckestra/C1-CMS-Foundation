@@ -1,10 +1,4 @@
-using System;
-using System.Text;
-using System.Reflection;
-using System.Collections.Generic;
-using Composite.Core.Types;
 using Composite.C1Console.Security;
-using Composite.Core.Serialization;
 
 
 namespace Composite.C1Console.Elements
@@ -14,7 +8,7 @@ namespace Composite.C1Console.Elements
     /// </summary>
     public sealed class ActionHandle
     {
-        private ActionToken _actionToken;
+        private readonly ActionToken _actionToken;
         private string _serializedActionToken;
 
 
@@ -33,11 +27,7 @@ namespace Composite.C1Console.Elements
         /// <summary>
         /// <see cref="ActionToken"/> represented by this handle.
         /// </summary>
-        public ActionToken ActionToken
-        {
-            get { return _actionToken; }
-        }
-
+        public ActionToken ActionToken => _actionToken;
 
 
         private string SerializedActionToken
@@ -56,11 +46,7 @@ namespace Composite.C1Console.Elements
 
 
         /// <exclude />
-        public override bool Equals(object obj)
-        {
-            return Equals(obj as ActionHandle);
-        }
-
+        public override bool Equals(object obj) => Equals(obj as ActionHandle);
 
 
         /// <exclude />

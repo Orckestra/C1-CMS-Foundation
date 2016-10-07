@@ -11,10 +11,7 @@
 
         _selectedKeys = new List<string>(this.SelectedKeys);
 
-        var repeater = CompactMode ? OptionsRepeater : CheckBoxRepeater;
-
-        repeater.DataSource = GetOptions();
-        repeater.DataBind();
+        PopulateRepeater(_selectedKeys);
     }
     
     
@@ -43,12 +40,28 @@
 
             _selectedKeys = result;
 
-            OptionsRepeater.DataSource = GetOptions();
-            OptionsRepeater.DataBind();
+            PopulateRepeater(result);
         }
 
         this.SelectedKeys = result;
     }
+
+	private void PopulateRepeater(List<string> selectedKeys)
+	{
+		var repeater = CompactMode ? OptionsRepeater : CheckBoxRepeater;
+
+		var options = GetOptions();
+		if (CompactMode)
+		{
+			// Preserving the order of selection in compact mode
+			int index = 0;
+			var order = selectedKeys.ToDictionary(option => option, option => index++);
+			options = options.OrderBy(kvp => order.ContainsKey(kvp.Key) ? order[kvp.Key] : -1).ToList();
+		}
+
+		repeater.DataSource = options;
+		repeater.DataBind();
+	}
 
 
     public override string GetDataFieldClientName()

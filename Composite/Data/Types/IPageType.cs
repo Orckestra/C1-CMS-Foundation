@@ -83,7 +83,7 @@ namespace Composite.Data.Types
 
             pageTypes = pageTypes
                         .Where(f => f.HomepageRelation != nameof(PageTypeHomepageRelation.OnlyHomePages)
-                                    && (childPage == null || f.Id == childPage.PageTypeId))
+                                    || (childPage != null && f.Id == childPage.PageTypeId))
                         .Evaluate();
 
             ICollection<IPageTypeParentRestriction> parentRestrictions = null;

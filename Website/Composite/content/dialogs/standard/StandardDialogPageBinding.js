@@ -63,7 +63,7 @@ StandardDialogPageBinding.prototype.onBeforePageInitialize = function () {
 
     var divDialogText = document.getElementById("dialogtext");
 
-    var text = this._dialogText.replace('\r\n', '\n');
+    var text = (this._dialogText == null) ? "" : this._dialogText.replace('\r\n', '\n');
     var textParts = text.split('\n');
 
     // Adding text and inserting and inserting line breaks

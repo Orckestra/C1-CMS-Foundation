@@ -195,7 +195,7 @@ namespace Composite
 
             using (new LogExecutionTime(LogTitle, "Auto update of static data types"))
             {
-                bool typesUpdated = AutoUpdateStaticDataTypes();
+                bool typesUpdated = AutoUpdateDataTypes();
                 if (typesUpdated)
                 {
                     using (new LogExecutionTime(LogTitle, "Reinitialization of the static data types"))
@@ -303,7 +303,7 @@ namespace Composite
 
 
 
-        private static bool AutoUpdateStaticDataTypes()
+        private static bool AutoUpdateDataTypes()
         {
             if (!GlobalSettingsFacade.EnableDataTypesAutoUpdate)
             {
