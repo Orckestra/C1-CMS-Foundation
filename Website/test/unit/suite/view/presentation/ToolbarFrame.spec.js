@@ -54,11 +54,11 @@ describe('ToolbarFrame', () => {
 			'queried for', <Toolbar/>,
 			'to have props exhaustively satisfying', {
 				name: 'test/toolbar',
-				items: Immutable.fromJS([
+				items: [
 					{ name: 'test/onebutton', type: 'button', label: 'One', action: pageActions.fireAction },
 					{ name: 'test/twobutton', type: 'button', label: 'Two', action: pageActions.fireAction },
 					{ name: 'test/save', type: 'button', label: 'Save', action: pageActions.save, disabled: true }
-				])
+				]
 			}
 		);
 	});
