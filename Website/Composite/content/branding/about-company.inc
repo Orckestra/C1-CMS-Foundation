@@ -19,7 +19,9 @@
 		<div id="credits">
 			<div id="roll">
 				<a href="https://cms.orckestra.com/" target="cmsorckestracom">
+                    <div class="logo-wrapper">
                         <div id="logo1" class="brand-logo dark"></div>
+                    </div>
  </a>
 				<h2>Visual Editor</h2>
 				<p>
@@ -43,8 +45,10 @@
 					<a href="http://www.freepik.com/" target="_blank" title="Visit Freepik">Freepik</a>
 				</p>
 				<div id="names">
-					<div id="logo2" class="brand-logo dark">
+                    <div class="logo-wrapper logo2">
+					    <div id="logo2" class="brand-logo dark">
 					</div>
+                    </div>
 				</div>
 			</div>
 			<div id="fade">

@@ -77,6 +77,13 @@ html, body {
 	min-height: 260px;
 }
 
+.loading-deck {
+	overflow: visible !important;
+}
+
+.loading-deck .progressbar-msg {
+	padding-bottom: 35px;
+}
 
 p#introtestsuccess,
 ui|clickbutton#introtestsuccessbutton {
