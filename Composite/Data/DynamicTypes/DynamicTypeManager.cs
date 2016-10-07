@@ -332,7 +332,9 @@ namespace Composite.Data.DynamicTypes
 
                 if (interfaceType.IsGenerated())
                 {
-                    var customFields = oldDataTypeDescriptor.Fields.Where(f => !f.Inherited);
+                    var customFields = oldDataTypeDescriptor.Fields.Where(f => !f.Inherited &&
+                                                                               !oldDataTypeDescriptor.KeyPropertyNames
+                                                                                   .Contains(f.Name));
                     foreach (var field in customFields)
                     {
                         newDataTypeDescriptor.Fields.Remove(newDataTypeDescriptor.Fields[field.Name]);
@@ -346,13 +348,16 @@ namespace Composite.Data.DynamicTypes
                     return false;
                 }
 
-                var dataTypeChangeDescriptor = new DataTypeChangeDescriptor(oldDataTypeDescriptor, newDataTypeDescriptor);                
+                var dataTypeChangeDescriptor = new DataTypeChangeDescriptor(oldDataTypeDescriptor, newDataTypeDescriptor);
 
                 if (!dataTypeChangeDescriptor.AlteredTypeHasChanges) return false;
 
-                Log.LogVerbose("DynamicTypeManager", "Updating the store for interface type '{0}' on the '{1}' data provider", interfaceType, providerName);
+                Log.LogVerbose("DynamicTypeManager",
+                    "Updating the store for interface type '{0}' on the '{1}' data provider", interfaceType,
+                    providerName);
 
-                var updateDataTypeDescriptor = new UpdateDataTypeDescriptor(oldDataTypeDescriptor, newDataTypeDescriptor, providerName);
+                var updateDataTypeDescriptor = new UpdateDataTypeDescriptor(oldDataTypeDescriptor, newDataTypeDescriptor,
+                    providerName);
 
                 AlterStore(updateDataTypeDescriptor, makeAFlush);
 
