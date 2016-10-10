@@ -16,6 +16,6 @@ function mapDispatchToProps(dispatch) {
 	};
 }
 
-const TabContent = connect(mapStateToProps, mapDispatchToProps)(FormTab);
+const ConnectTabPanel = connect(mapStateToProps, mapDispatchToProps)(FormTab);
 
-export default TabContent;
+export default ConnectTabPanel;

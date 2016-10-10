@@ -2,13 +2,13 @@ import expect from 'unittest/helpers/expect.js';
 import sinon from 'sinon';
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
-import DocumentPage from 'console/components/container/DocumentPage.js';
+import ConnectToolbarFrame from 'console/components/container/ConnectToolbarFrame.js';
 import ToolbarFrame from 'console/components/presentation/ToolbarFrame.js';
 import { UPDATE_VALUE } from 'console/state/reducers/dataFields.js';
 import { SET_OPTION } from 'console/state/reducers/options.js';
 import Immutable from 'immutable';
 
-describe('DocumentPage', () => {
+describe('ConnectToolbarFrame', () => {
 	let renderer, state, store, props;
 	beforeEach(() => {
 		renderer = TestUtils.createRenderer();
@@ -94,7 +94,7 @@ describe('DocumentPage', () => {
 	});
 
 	it('renders a ToolbarFrame with props, values and actions', () => {
-		renderer.render(<DocumentPage store={store} {...props}/>);
+		renderer.render(<ConnectToolbarFrame store={store} {...props}/>);
 		return expect(renderer, 'to have rendered', <ToolbarFrame
 			{...props}
 			pageName='testpage'

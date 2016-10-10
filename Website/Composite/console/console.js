@@ -4,8 +4,8 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import configureStore from 'console/state/store.js';
-import DockTab from 'console/components/container/DockTab.js';
-import DocumentPage from 'console/components/container/DocumentPage.js';
+import ConnectDockPanel from 'console/components/container/ConnectDockPanel.js';
+import ConnectToolbarFrame from 'console/components/container/ConnectToolbarFrame.js';
 import Spritesheet from 'console/components/presentation/Spritesheet.js';
 import 'console/console.scss!';
 import 'react-select/scss/default.scss!';
@@ -13,7 +13,7 @@ import 'console/iconIndex.js';
 
 let pageProps = {
 	pageTypes: {
-		document: DocumentPage,
+		document: ConnectToolbarFrame,
 		spritesheet: Spritesheet
 	}
 };
@@ -27,7 +27,7 @@ Frame with menubar + explorer, contains split view - State: Selected perspective
 Split view defaults to a single view - state: Shown views, splitter position
 Tab view - state: open tabs, selected tab
 	First tab is browser (default) state: complex? TBD
-	Subsequent tabs can contain any page (incl. DocumentPage) - state: As already done
+	Subsequent tabs can contain any page (incl. ConnectToolbarFrame) - state: As already done
 
 */
 const initialState = {};
@@ -36,7 +36,7 @@ function whenReadyRender() {
 	if (document.readyState === 'complete') {
 		render(
 			<Provider store={store}>
-				<DockTab {...pageProps}/>
+				<ConnectDockPanel {...pageProps}/>
 			</Provider>,
 			document.querySelector('body > div.entry')
 		);

@@ -24,7 +24,6 @@ const initialState = Immutable.Map({
 });
 
 const pages = (state = initialState, action) => {
-	let update;
 	switch (action.type) {
 	case SELECT_PAGE:
 		if (state.get('pages').includes(action.pageName)) {

@@ -6,6 +6,7 @@
     "tabs": [
       {
         "name": "edit-language/form",
+        "type": "form",
         "fieldsets": [
           {
             "name": "edit-language/form/properties",
@@ -45,6 +46,7 @@
     "tabs": [
       {
         "name": "other-page/form",
+        "type": "form",
         "fieldsets": [
           {
             "name": "other-page/form/properties",
@@ -188,7 +190,7 @@
   {
     "name": "server-log",
     "label": "Server log",
-    "type": "log",
+    "type": "document",
     "toolbars": [
       {
         "name": "server-log/toolbar",
@@ -222,14 +224,27 @@
             "type": "checkboxGroup",
             "name": "server-log/toolbar/levels",
             "options": [
-              { "name": "server-log/toolbar/levels/critical", "label": "Critical", "default": true },
-              { "name": "server-log/toolbar/levels/error", "label": "Error", "default": true },
-              { "name": "server-log/toolbar/levels/warning", "label": "Warning", "default": true },
-              { "name": "server-log/toolbar/levels/info", "label": "Information", "default": true },
-              { "name": "server-log/toolbar/levels/verbose", "label": "Verbose", "default": false }
+              { "name": "server-log/toolbar/levels/critical", "label": "Critical" },
+              { "name": "server-log/toolbar/levels/error", "label": "Error" },
+              { "name": "server-log/toolbar/levels/warning", "label": "Warning" },
+              { "name": "server-log/toolbar/levels/info", "label": "Information" },
+              { "name": "server-log/toolbar/levels/verbose", "label": "Verbose" }
+            ],
+            "default": [
+              "server-log/toolbar/levels/critical",
+              "server-log/toolbar/levels/error",
+              "server-log/toolbar/levels/warning",
+              "server-log/toolbar/levels/info"
             ]
           }
         ]
+      }
+    ],
+    "tabs": [
+      {
+        "name": "server-log/log",
+        "type": "log",
+        "logURL": "/Composite/console/serverLog.json"
       }
     ]
   },

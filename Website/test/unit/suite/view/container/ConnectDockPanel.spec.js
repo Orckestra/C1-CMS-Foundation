@@ -2,11 +2,11 @@ import expect from 'unittest/helpers/expect.js';
 import sinon from 'sinon';
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
-import DockTab from 'console/components/container/DockTab.js';
-import TabPage from 'console/components/presentation/TabPage.js';
+import ConnectDockPanel from 'console/components/container/ConnectDockPanel.js';
+import DockPanel from 'console/components/presentation/DockPanel.js';
 import Immutable from 'immutable';
 
-describe('DockTab', () => {
+describe('ConnectDockPanel', () => {
 	let renderer, state, store, props;
 	beforeEach(() => {
 		renderer = TestUtils.createRenderer();
@@ -28,16 +28,16 @@ describe('DockTab', () => {
 		};
 		props = {
 			test: 'value',
-			pageTypes: {} // required for TabPage
+			pageTypes: {} // required for DockPanel
 		};
 	});
 
-	it('renders a TabPage with props and page name to show', () => {
-		renderer.render(<DockTab store={store} {...props}/>);
+	it('renders a DockPanel with props and page name to show', () => {
+		renderer.render(<ConnectDockPanel store={store} {...props}/>);
 		return Promise.all([
 			expect(renderer,
 				'to have exactly rendered',
-				<TabPage
+				<DockPanel
 					test='value'
 					pageDef={{
 						name: 'test1'

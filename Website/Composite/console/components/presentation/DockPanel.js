@@ -1,7 +1,7 @@
 // Shows page if given name and type, else shows nothing.
 import React, { PropTypes } from 'react';
 
-const TabPage = props => {
+const DockPanel = props => {
 	if (!props.pageDef || !props.pageDef.get('type')) {
 		return <div/>;
 	} else {
@@ -15,9 +15,9 @@ const TabPage = props => {
 	}
 };
 
-TabPage.propTypes = {
+DockPanel.propTypes = {
 	pageDef: PropTypes.object,
 	pageTypes: PropTypes.objectOf(PropTypes.func).isRequired
 };
 
-export default TabPage;
+export default DockPanel;

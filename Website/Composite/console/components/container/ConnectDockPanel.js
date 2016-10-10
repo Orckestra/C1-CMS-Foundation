@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { currentPageSelector } from 'console/state/selectors/pageSelector.js';
-import TabPage from 'console/components/presentation/TabPage.js';
+import DockPanel from 'console/components/presentation/DockPanel.js';
 
 function mapStateToProps(state) {
 	return {
@@ -8,6 +8,6 @@ function mapStateToProps(state) {
 	};
 }
 
-const DockTab = connect(mapStateToProps)(TabPage);
+const ConnectDockPanel = connect(mapStateToProps)(DockPanel);
 
-export default DockTab;
+export default ConnectDockPanel;

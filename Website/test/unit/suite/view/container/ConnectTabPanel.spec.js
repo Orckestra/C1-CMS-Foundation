@@ -2,12 +2,12 @@ import expect from 'unittest/helpers/expect.js';
 import sinon from 'sinon';
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
-import TabContent from 'console/components/container/TabContent.js';
+import ConnectTabPanel from 'console/components/container/ConnectTabPanel.js';
 import FormTab from 'console/components/presentation/FormTab.js';
 import { UPDATE_VALUE } from 'console/state/reducers/dataFields.js';
 import Immutable from 'immutable';
 
-describe('TabContent', () => {
+describe('ConnectTabPanel', () => {
 	let renderer, state, store;
 	beforeEach(() => {
 		renderer = TestUtils.createRenderer();
@@ -76,7 +76,7 @@ describe('TabContent', () => {
 	});
 
 	it('renders a FormTab with props and page name to show', () => {
-		renderer.render(<TabContent store={store}/>);
+		renderer.render(<ConnectTabPanel store={store}/>);
 		return expect(renderer,
 			'to have exactly rendered',
 			<FormTab
@@ -111,7 +111,7 @@ describe('TabContent', () => {
 	describe('missing fields in state', () => {
 		it('provides a default tabName if none selected', () => {
 			store.state = state.deleteIn(['pages', 'tabs', 'test']);
-			renderer.render(<TabContent store={store}/>);
+			renderer.render(<ConnectTabPanel store={store}/>);
 			return expect(renderer,
 				'to have rendered',
 				<FormTab
@@ -124,7 +124,7 @@ describe('TabContent', () => {
 
 		it('provides an empty tabDef if none found', () => {
 			store.state = state.deleteIn(['tabDefs', 'test/tab']);
-			renderer.render(<TabContent store={store}/>);
+			renderer.render(<ConnectTabPanel store={store}/>);
 			return expect(renderer,
 				'to have rendered',
 				<FormTab

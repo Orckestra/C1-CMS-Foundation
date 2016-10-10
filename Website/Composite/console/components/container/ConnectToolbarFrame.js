@@ -31,6 +31,6 @@ function mapDispatchToProps(dispatch) {
 	};
 }
 
-const DocumentPage = connect(mapStateToProps, mapDispatchToProps)(ToolbarFrame);
+const ConnectToolbarFrame = connect(mapStateToProps, mapDispatchToProps)(ToolbarFrame);
 
-export default DocumentPage;
+export default ConnectToolbarFrame;
