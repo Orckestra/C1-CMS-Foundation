@@ -3,7 +3,7 @@ import sinon from 'sinon';
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
 import ConnectDockPanel from 'console/components/container/ConnectDockPanel.js';
-import DockPanel from 'console/components/presentation/DockPanel.js';
+import SwitchPanel from 'console/components/presentation/SwitchPanel.js';
 import Immutable from 'immutable';
 
 describe('ConnectDockPanel', () => {
@@ -28,21 +28,21 @@ describe('ConnectDockPanel', () => {
 		};
 		props = {
 			test: 'value',
-			pageTypes: {} // required for DockPanel
+			panelTypes: {} // required for SwitchPanel
 		};
 	});
 
-	it('renders a DockPanel with props and page name to show', () => {
+	it('renders a SwitchPanel with props and page name to show', () => {
 		renderer.render(<ConnectDockPanel store={store} {...props}/>);
 		return Promise.all([
 			expect(renderer,
 				'to have exactly rendered',
-				<DockPanel
+				<SwitchPanel
 					test='value'
 					pageDef={{
 						name: 'test1'
 					}}
-					pageTypes={{}}
+					panelTypes={{}}
 					dispatch={store.dispatch}
 					store={store}/>
 			),

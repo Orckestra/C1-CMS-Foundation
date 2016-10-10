@@ -2,32 +2,33 @@ import expect from 'unittest/helpers/expect.js';
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
 import TestComponent from 'unittest/helpers/TestComponent.js';
-import DockPanel from 'console/components/presentation/DockPanel.js';
+import SwitchPanel from 'console/components/presentation/SwitchPanel.js';
 import Immutable from 'immutable';
 
-describe('DockPanel', () => {
-	let renderer, pageDef, pageTypes;
+describe('SwitchPanel', () => {
+	let renderer, pageDef, showType, panelTypes;
 	beforeEach(() => {
 		renderer = TestUtils.createRenderer();
+		showType = 'test';
 		pageDef = Immutable.fromJS({ name: 'testpage', type: 'test' });
-		pageTypes = {
+		panelTypes = {
 			test: TestComponent
 		};
 	});
 
 	it('should render the type it\'s given', () => {
-		renderer.render(<DockPanel pageDef={pageDef} pageTypes={pageTypes}/>);
+		renderer.render(<SwitchPanel showType={showType} pageDef={pageDef} panelTypes={panelTypes}/>);
 		expect(renderer, 'to have rendered', <TestComponent pageDef={pageDef.toJS()}/>);
 	});
 
-	it('should render an empty element if given no pageDef', () => {
-		renderer.render(<DockPanel pageDef={undefined} pageTypes={pageTypes}/>);
+	it('should render an empty element if given no showType', () => {
+		renderer.render(<SwitchPanel pageDef={undefined} panelTypes={panelTypes}/>);
 		expect(renderer, 'to have exactly rendered', <div/>);
 	});
 
 	it('should error if referencing an invalid page type', () => {
 		expect(() => {
-			renderer.render(<DockPanel pageDef={{ name: 'testpage', type: 'wrongtype' }} pageTypes={pageTypes}/>);
+			renderer.render(<SwitchPanel showType='wrongtype' pageDef={{ name: 'testpage', type: 'wrongtype' }} panelTypes={panelTypes}/>);
 		}, 'to throw');
 	});
 });

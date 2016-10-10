@@ -5,18 +5,10 @@ import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import configureStore from 'console/state/store.js';
 import ConnectDockPanel from 'console/components/container/ConnectDockPanel.js';
-import ConnectToolbarFrame from 'console/components/container/ConnectToolbarFrame.js';
-import Spritesheet from 'console/components/presentation/Spritesheet.js';
 import 'console/console.scss!';
 import 'react-select/scss/default.scss!';
 import 'console/iconIndex.js';
 
-let pageProps = {
-	pageTypes: {
-		document: ConnectToolbarFrame,
-		spritesheet: Spritesheet
-	}
-};
 
 document.title = 'Orckestra CMS: ' + location.hostname;
 
@@ -36,7 +28,7 @@ function whenReadyRender() {
 	if (document.readyState === 'complete') {
 		render(
 			<Provider store={store}>
-				<ConnectDockPanel {...pageProps}/>
+				<ConnectDockPanel/>
 			</Provider>,
 			document.querySelector('body > div.entry')
 		);
