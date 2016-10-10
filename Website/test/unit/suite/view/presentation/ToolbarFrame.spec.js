@@ -4,7 +4,7 @@ import React from 'react';
 import TestUtils from 'react-addons-test-utils';
 import ToolbarFrame from 'console/components/presentation/ToolbarFrame.js';
 import Toolbar from 'console/components/presentation/Toolbar.js';
-import ConnectTabPanel from 'console/components/container/ConnectTabPanel.js';
+import ConnectFormPanel from 'console/components/container/ConnectFormPanel.js';
 import Immutable from 'immutable';
 
 describe('ToolbarFrame', () => {
@@ -47,7 +47,7 @@ describe('ToolbarFrame', () => {
 				<Toolbar
 					name='test/toolbar'
 					items={[{}, {}, {}]}/>
-				<ConnectTabPanel/>
+				<ConnectFormPanel/>
 			</div>
 		)
 		.and(
@@ -112,7 +112,7 @@ describe('ToolbarFrame', () => {
 			renderer,
 			'to have rendered',
 			<div className='page'>
-				<ConnectTabPanel/>
+				<ConnectFormPanel/>
 			</div>
 		);
 	});

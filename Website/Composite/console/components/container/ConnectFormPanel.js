@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
 import FormTab from 'console/components/presentation/FormTab.js';
 import { updateFieldValue } from 'console/state/reducers/dataFields.js';
-import { tabSelector } from 'console/state/selectors/tabSelector.js';
+import { formSelector } from 'console/state/selectors/formSelector.js';
 
 function mapStateToProps(state) {
-	let props = tabSelector(state);
+	let props = formSelector(state);
 	return props ? props.toObject() : {};
 }
 
@@ -16,6 +16,6 @@ function mapDispatchToProps(dispatch) {
 	};
 }
 
-const ConnectTabPanel = connect(mapStateToProps, mapDispatchToProps)(FormTab);
+const ConnectFormPanel = connect(mapStateToProps, mapDispatchToProps)(FormTab);
 
-export default ConnectTabPanel;
+export default ConnectFormPanel;
