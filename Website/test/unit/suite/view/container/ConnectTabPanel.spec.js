@@ -2,23 +2,32 @@ import expect from 'unittest/helpers/expect.js';
 import sinon from 'sinon';
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
-import ConnectDockPanel from 'console/components/container/ConnectDockPanel.js';
+import ConnectTabPanel from 'console/components/container/ConnectTabPanel.js';
 import SwitchPanel from 'console/components/presentation/SwitchPanel.js';
 import Immutable from 'immutable';
 
-describe('ConnectDockPanel', () => {
+describe('ConnectTabPanel', () => {
 	let renderer, state, store, props;
 	beforeEach(() => {
 		renderer = TestUtils.createRenderer();
 		state = Immutable.fromJS({
 			pages: {
 				currentPage: 'test1',
-				pages: ['test1', 'test2']
+				pages: ['test1', 'test2'],
+				tabs: {
+					test1: 'tab1'
+				}
 			},
 			pageDefs: {
 				test1: {
 					name: 'test1',
-					type: 'test'
+					tabs: ['tab1']
+				}
+			},
+			tabDefs: {
+				tab1: {
+					name: 'tab1',
+					type: 'testtab'
 				}
 			}
 		});
@@ -33,17 +42,15 @@ describe('ConnectDockPanel', () => {
 		};
 	});
 
-	it('renders a SwitchPanel with props and panel type to show', () => {
-		renderer.render(<ConnectDockPanel store={store} {...props}/>);
+	it('renders a SwitchPanel with props and type to show', () => {
+		renderer.render(<ConnectTabPanel store={store} {...props}/>);
 		return Promise.all([
 			expect(renderer,
 				'to have exactly rendered',
 				<SwitchPanel
 					test='value'
-					pageDef={{
-						name: 'test1'
-					}}
-					showType='test'
+					tabDef={{}}
+					showType='testtab'
 					panelTypes={{}}
 					dispatch={store.dispatch}
 					store={store}/>
