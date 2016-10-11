@@ -1,10 +1,10 @@
 using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using Composite.Core.Collections.Generic;
 using Composite.Core.Linq;
 using Composite.Data.DynamicTypes;
 using Composite.Data.Foundation;
@@ -12,6 +12,9 @@ using Composite.Data.Foundation.PluginFacades;
 using Composite.C1Console.Events;
 using Composite.Core.Configuration;
 
+using TypeData = System.Collections.Concurrent.ConcurrentDictionary<
+    Composite.Data.DataScopeIdentifier,
+    System.Collections.Concurrent.ConcurrentDictionary<System.Globalization.CultureInfo, Composite.Data.Caching.DataCachingFacade.CachedTable>>;
 
 namespace Composite.Data.Caching
 {
@@ -21,7 +24,8 @@ namespace Composite.Data.Caching
     public static class DataCachingFacade
     {
         private static readonly string CacheName = "DataAccess";
-        private static readonly ResourceLocker<Resources> _resourceLocker = new ResourceLocker<Resources>(new Resources(), Resources.Initialize);
+
+        private static readonly ConcurrentDictionary<Type, TypeData> _cachedData = new ConcurrentDictionary<Type, TypeData>();
 
         private static bool _isEnabled = true;
         private static int _maximumSize = -1;
@@ -113,37 +117,13 @@ namespace Composite.Data.Caching
             DataScopeIdentifier dataScopeIdentifier = DataScopeManager.MapByType(typeof(T));
             CultureInfo localizationScope = LocalizationScopeManager.MapByType(typeof(T));
 
-            var cachedDataset = _resourceLocker.Resources.CachedData;
+            var typeData = _cachedData.GetOrAdd(typeof(T), t => new TypeData());
 
-            Hashtable<DataScopeIdentifier, Hashtable<CultureInfo, CachedTable>> dataScopeData;
-            if (!cachedDataset.TryGetValue(typeof(T), out dataScopeData))
-            {
-                using (_resourceLocker.Locker)
-                {
-                    if (!cachedDataset.TryGetValue(typeof(T), out dataScopeData))
-                    {
-                        dataScopeData = new Hashtable<DataScopeIdentifier, Hashtable<CultureInfo, CachedTable>>();
+            var dataScopeData = typeData.GetOrAdd(dataScopeIdentifier, scope => new ConcurrentDictionary<CultureInfo, CachedTable>());
 
-                        cachedDataset.Add(typeof(T), dataScopeData);
-                    }
-                }
-            }
-
-            Hashtable<CultureInfo, CachedTable> localizationScopeData;
-            if (!dataScopeData.TryGetValue(dataScopeIdentifier, out localizationScopeData))
-            {
-                using (_resourceLocker.Locker)
-                {
-                    if (!dataScopeData.TryGetValue(dataScopeIdentifier, out localizationScopeData))
-                    {
-                        localizationScopeData = new Hashtable<CultureInfo, CachedTable>();
-                        dataScopeData.Add(dataScopeIdentifier, localizationScopeData);
-                    }
-                }
-            }
 
             CachedTable cachedTable;
-            if (!localizationScopeData.TryGetValue(localizationScope, out cachedTable))
+            if (!dataScopeData.TryGetValue(localizationScope, out cachedTable))
             {
                 IQueryable<T> wholeTable = getQueryFunc();
 
@@ -171,13 +151,7 @@ namespace Composite.Data.Caching
                     cachedTable = new CachedTable(wholeTable.Evaluate().AsQueryable());
                 }
 
-                using (_resourceLocker.Locker)
-                {
-                    if (!localizationScopeData.ContainsKey(localizationScope))
-                    {
-                        localizationScopeData.Add(localizationScope, cachedTable);
-                    }
-                }
+                dataScopeData[localizationScope] = cachedTable;
             }
 
             var typedData = cachedTable.Queryable as IQueryable<T>;
@@ -235,30 +209,16 @@ namespace Composite.Data.Caching
         /// <param name="dataScopeIdentifier">The data scope to flush</param>
         public static void ClearCache(Type interfaceType, DataScopeIdentifier dataScopeIdentifier)
         {
-            using (_resourceLocker.Locker)
+            TypeData typeData;
+            if(!_cachedData.TryGetValue(interfaceType, out typeData)) return;
+
+            if (dataScopeIdentifier == null)
             {
-                var cachedData = _resourceLocker.Resources.CachedData;
-
-                if (!cachedData.ContainsKey(interfaceType))
-                {
-                    return;
-                }
-
-                if (dataScopeIdentifier == null)
-                {
-                    dataScopeIdentifier = DataScopeManager.MapByType(interfaceType);
-                }
-
-                if (cachedData[interfaceType].ContainsKey(dataScopeIdentifier))
-                {
-                    cachedData[interfaceType].Remove(dataScopeIdentifier);
-
-                    if (cachedData[interfaceType].Count == 0)
-                    {
-                        cachedData.Remove(interfaceType);
-                    }
-                }
+                dataScopeIdentifier = DataScopeManager.MapByType(interfaceType);
             }
+
+            ConcurrentDictionary<CultureInfo, CachedTable> data;
+            typeData.TryRemove(dataScopeIdentifier, out data);
         }
 
 
@@ -268,7 +228,7 @@ namespace Composite.Data.Caching
         /// </summary>
         internal static void Flush()
         {
-            _resourceLocker.ResetInitialization();
+            _cachedData.Clear();
             _disabledTypes = new Hashtable();
         }
 
@@ -319,16 +279,9 @@ namespace Composite.Data.Caching
                     _disabledTypes.Add(type, string.Empty);
                 }
             }
-        }
 
-        private sealed class Resources
-        {
-            public Hashtable<Type, Hashtable<DataScopeIdentifier, Hashtable<CultureInfo, CachedTable>>> CachedData { get; private set; }
-
-            public static void Initialize(Resources resources)
-            {
-                resources.CachedData = new Hashtable<Type, Hashtable<DataScopeIdentifier, Hashtable<CultureInfo, CachedTable>>>();
-            }
+            TypeData data;
+            _cachedData.TryRemove(type, out data);
         }
     }
 }
