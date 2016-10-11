@@ -9,6 +9,7 @@ using Composite.Core.IO;
 using Composite.Core.Types;
 using Composite.Data.Streams;
 using System.IO;
+using Composite.Core;
 
 namespace Composite.Data.Plugins.DataProvider.Streams
 {
@@ -86,17 +87,24 @@ namespace Composite.Data.Plugins.DataProvider.Streams
 
             foreach (var callInfo in weakInvocationList)
             {
-                if (callInfo.Second == null) // Call to a static method
+                try
                 {
-                    callInfo.First.Invoke(null, parameters);
-                }
-                else
-                {
-                    object target = callInfo.Second.Target;
-                    if (target != null) // Checking if object is alive
+                    if (callInfo.Second == null) // Call to a static method
                     {
-                        callInfo.First.Invoke(target, parameters);
+                        callInfo.First.Invoke(null, parameters);
                     }
+                    else
+                    {
+                        object target = callInfo.Second.Target;
+                        if (target != null) // Checking if object is alive
+                        {
+                            callInfo.First.Invoke(target, parameters);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log.LogError(nameof(FileChangeNotificator), ex);
                 }
             }
         }
