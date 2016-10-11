@@ -184,8 +184,16 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
             PageServices.DeletePage(selectedPage.Id, selectedPage.VersionId, selectedPage.DataSourceId.LocaleScope);
 
+            Guid pageId = selectedPage.Id;
+            var anotherVersion = DataFacade.GetData<IPage>().FirstOrDefault(p => p.Id == pageId);
+
             var parentTreeRefresher = this.CreateParentTreeRefresher();
-            parentTreeRefresher.PostRefreshMessages(selectedPage.GetDataEntityToken(), 2);
+            parentTreeRefresher.PostRefreshMessages((anotherVersion ?? selectedPage).GetDataEntityToken());
+
+            if (anotherVersion != null)
+            {
+                SelectElement(anotherVersion.GetDataEntityToken());
+            }
         }
 
         private void ifElse_ShouldAllVersionsBeDeleted(object sender, ConditionalEventArgs e)
