@@ -10,17 +10,14 @@ using Composite.Core.IO;
 using Microsoft.Practices.EnterpriseLibrary.Logging;
 using Microsoft.Practices.EnterpriseLibrary.Logging.Configuration;
 
-
 namespace Composite.Core.Logging
 {
-    /// <summary>    
-    /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public static class LoggingService
     {
         /// <exclude />
-        [FlagsAttribute()]
+        [Flags]
         public enum Category
         {
             /// <exclude />
@@ -58,8 +55,7 @@ namespace Composite.Core.Logging
             LogEntry(title, message, null, category, severity, priority, eventid);
         }
 
-        /// <exclude />
-        static public void LogEntry(string title, string message, Exception exc, Category category, System.Diagnostics.TraceEventType severity, int priority, int eventid)
+        static private void LogEntry(string title, string message, Exception exc, Category category, System.Diagnostics.TraceEventType severity, int priority, int eventid)
         {
             var entry = new Microsoft.Practices.EnterpriseLibrary.Logging.LogEntry();
 
