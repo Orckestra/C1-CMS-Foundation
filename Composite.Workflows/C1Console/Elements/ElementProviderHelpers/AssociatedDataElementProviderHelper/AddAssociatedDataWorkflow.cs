@@ -15,7 +15,6 @@ using Composite.Data.DynamicTypes;
 using Composite.Data.GeneratedTypes;
 using Composite.Data.ProcessControlled;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
-using Composite.Data.Types;
 
 namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper
 {
@@ -27,6 +26,11 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
     {
         [NonSerialized]
         private bool _doPublish;
+
+        private static class BindingNames
+        {
+            public const string PageId = nameof(PageId);
+        }
 
         public AddAssociatedDataWorkflow()
         {
@@ -42,15 +46,14 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
         {
             var entityToken = EntityToken as AssociatedDataElementProviderHelperEntityToken;
 
-            if ((entityToken != null) && (entityToken.Payload != ""))
+            if (!string.IsNullOrEmpty(entityToken?.Payload))
             {
                 var type = TypeManager.GetType(entityToken.Payload);
                 var id = type.GetImmutableTypeId();
                 var dataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(id);
                 UpdateBinding("DataTypeDescriptor", dataTypeDescriptor);
 
-                var data = entityToken.GetData();
-                UpdateBinding("Data", data);
+                UpdateBinding(BindingNames.PageId, new Guid(entityToken.Id));
 
                 if (!PermissionsFacade.GetPermissionsForCurrentUser(EntityToken).Contains(PermissionType.Publish) || !typeof(IPublishControlled).IsAssignableFrom(type))
                 {
@@ -101,9 +104,9 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
 
             var type = TypeManager.GetType(dataTypeDescriptor.TypeManagerTypeName);
 
-            var page = GetBinding<IData>("Data") as IPage;
+            Guid pageId = GetBinding<Guid>(BindingNames.PageId);
 
-            var helper = new DataTypeDescriptorFormsHelper(dataTypeDescriptor, true, page.GetDataEntityToken())
+            var helper = new DataTypeDescriptorFormsHelper(dataTypeDescriptor, true, null)
             {
                 LayoutIconHandle = "associated-data-add"
             };
@@ -116,7 +119,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
             {
                 newData = DataFacade.BuildNew(type);
 
-                PageFolderFacade.AssignFolderDataSpecificValues(newData, page);
+                PageFolderFacade.AssignFolderDataSpecificValues(newData, pageId);
 
                 var publishControlled = newData as IPublishControlled;
                 if (publishControlled != null)
