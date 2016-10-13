@@ -1,22 +1,20 @@
-using System;
 using System.Xml.Linq;
 using Composite.Core.Types;
 
-
 namespace Composite.Functions
 {
-    /// <summary>    
-    /// </summary>
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
-	public abstract class BaseValueProvider
-	{
-        internal BaseValueProvider() { }
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+    public abstract class BaseValueProvider
+    {
+        /// <exclude />
+        public BaseValueProvider() { }
 
         /// <exclude />
         public object GetValue()
         {
-            FunctionContextContainer internalContextContainer = new FunctionContextContainer();
+            var internalContextContainer = new FunctionContextContainer();
+
             return GetValue(internalContextContainer);
         }
 
@@ -40,5 +38,5 @@ namespace Composite.Functions
 
         /// <exclude />
         public abstract XObject Serialize();
-	}
+    }
 }
