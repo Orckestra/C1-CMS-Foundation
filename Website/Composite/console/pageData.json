@@ -245,7 +245,8 @@
         "name": "server-log/log",
         "type": "log",
         "logURL": "/Composite/console/serverLog.json",
-        "logLevels": "server-log/levels"
+        "logLevels": "server-log/levels",
+        "placeholder": "No log data available..."
       }
     ]
   },

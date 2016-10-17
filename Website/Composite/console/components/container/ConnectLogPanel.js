@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Table from 'rc-table';
 import Immutable from 'immutable';
+import { tabSelector } from 'console/state/selectors/tabSelector.js';
 import { logSelector } from 'console/state/selectors/logSelector.js';
 
 const indicatorColors = {
@@ -26,15 +27,16 @@ const columns = [
 			}}/>
 	},
 	{ title: 'Date', key: 'timestamp', dataIndex: 'timestamp', width: '20%' },
-	{ title: 'Message', key: 'message', dataIndex: 'message', width: '50%' },
+	{ title: 'Message', key: 'message', dataIndex: 'message' },
 	{ title: 'Title', key: 'title', dataIndex: 'title', width: '20%' },
-	{ title: 'EventType', key: 'type', dataIndex: 'type' }
+	{ title: 'EventType', key: 'type', dataIndex: 'type', width: '10%' }
 ];
 
 function mapStateToProps(state) {
 	return {
 		prefixCls: 'log-table',
 		columns,
+		emptyText: () => tabSelector(state).get('placeholder') || 'No data',
 		data: logSelector(state).toJS()
 	}
 }

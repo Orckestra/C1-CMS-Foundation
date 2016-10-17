@@ -28,7 +28,8 @@ describe('ConnectLogPanel', () => {
 				tab1: {
 					name: 'tab1',
 					type: 'testtab',
-					logLevels: 'logLevel'
+					logLevels: 'logLevel',
+					placeholder: 'Empty'
 				}
 			},
 			itemDefs: {
@@ -82,6 +83,7 @@ describe('ConnectLogPanel', () => {
 		return expect(renderer, 'to have rendered', <Table
 			columns={[{}, {}, {}, {}, {}]}
 			prefixCls='log-table'
+			emptyText={expect.it('to be a function')}
 			data={[
 				{ message: 'Message4' },
 				{ message: 'Message1' }
@@ -95,6 +97,7 @@ describe('ConnectLogPanel', () => {
 		return expect(renderer, 'to have rendered', <Table
 			columns={[{}, {}, {}, {}, {}]}
 			prefixCls='log-table'
+			emptyText={expect.it('to be a function')}
 			data={[
 				{ message: 'Message2' },
 				{ message: 'Message3' }
