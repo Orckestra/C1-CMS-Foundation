@@ -116,8 +116,18 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DateTimeSelect
         {
             if (date.HasValue == true && date.Value > DateTime.MinValue)
             {
-                DateTimeSelector.SelectedDate = date.Value - date.Value.TimeOfDay;
-                DateTimeSelector.VisibleDate = DateTimeSelector.SelectedDate;
+                DateTime parsedTime;
+                if (DateTimeExtensionMethods.TryParseInTimeZone(date.Value.ToTimeZoneDateString(), out parsedTime))
+                {
+                    DateTimeSelector.SelectedDate = parsedTime - parsedTime.TimeOfDay;
+                    DateTimeSelector.VisibleDate = DateTimeSelector.SelectedDate;
+                }
+                else
+                {
+                    DateTimeSelector.SelectedDate = date.Value - date.Value.TimeOfDay;
+                    DateTimeSelector.VisibleDate = DateTimeSelector.SelectedDate;
+                }
+                
             }
             else
             {
