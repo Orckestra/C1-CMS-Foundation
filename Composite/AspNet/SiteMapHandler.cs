@@ -53,8 +53,10 @@ namespace Composite.AspNet
 
                     if (rootNode != null)
                     {
-                        Thread.CurrentThread.CurrentCulture = rootNode.Culture;
-                        WriteFullSiteMap(writer, provider);
+                        using (new DataScope(rootNode.Culture))
+                        {
+                            WriteFullSiteMap(writer, provider);
+                        }
                     }
                 }
             }
