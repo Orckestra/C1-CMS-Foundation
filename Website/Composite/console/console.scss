@@ -222,15 +222,30 @@ button {
 	.Select {
 		width: 150px;
 		margin: 2px 10px 2px 0;
-		vertical-align: -13px;
+		vertical-align: -15px;
 		.Select-input {
-			line-height: 27px;
+			line-height: 34px;
+			height: 34px;
 		}
 		.Select-placeholder {
-			line-height: 28px;
+			line-height: 34px;
 		}
 		.Select-control {
 			border-radius: 4px;
+		}
+		.Select-arrow:after {
+			top: 15px;
+		}
+		.Select-arrow:before {
+			top: 15px;
+		}
+		&.is-open {
+			.Select-arrow:after {
+				top: 16px;
+			}
+			.Select-arrow:before {
+				top: 15px;
+			}
 		}
 	}
 
