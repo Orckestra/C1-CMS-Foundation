@@ -222,19 +222,19 @@
           },
           {
             "type": "checkboxGroup",
-            "name": "server-log/toolbar/levels",
+            "name": "server-log/levels",
             "options": [
-              { "name": "server-log/toolbar/levels/critical", "label": "Critical" },
-              { "name": "server-log/toolbar/levels/error", "label": "Error" },
-              { "name": "server-log/toolbar/levels/warning", "label": "Warning" },
-              { "name": "server-log/toolbar/levels/info", "label": "Information" },
-              { "name": "server-log/toolbar/levels/verbose", "label": "Verbose" }
+              { "name": "server-log/levels/critical", "value": "Critical", "label": "Critical" },
+              { "name": "server-log/levels/error", "value": "Error", "label": "Error" },
+              { "name": "server-log/levels/warning", "value": "Warning", "label": "Warning" },
+              { "name": "server-log/levels/info", "value": "Information", "label": "Information" },
+              { "name": "server-log/levels/verbose", "value": "Verbose", "label": "Verbose" }
             ],
             "default": [
-              "server-log/toolbar/levels/critical",
-              "server-log/toolbar/levels/error",
-              "server-log/toolbar/levels/warning",
-              "server-log/toolbar/levels/info"
+              "Critical",
+              "Error",
+              "Warning",
+              "Information"
             ]
           }
         ]
@@ -244,7 +244,8 @@
       {
         "name": "server-log/log",
         "type": "log",
-        "logURL": "/Composite/console/serverLog.json"
+        "logURL": "/Composite/console/serverLog.json",
+        "logLevels": "server-log/levels"
       }
     ]
   },

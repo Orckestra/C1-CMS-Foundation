@@ -4,7 +4,7 @@ import { currentPageSelector } from 'console/state/selectors/pageSelector.js';
 const tabDefsSelector = state => state.get('tabDefs');
 const currentTabsSelector = state => state.getIn(['pages', 'tabs']);
 
-const currentTabNameSelector = createSelector(
+export const currentTabNameSelector = createSelector(
 	currentPageSelector,
 	currentTabsSelector,
 	(page, tabs) => {

@@ -12,16 +12,16 @@ describe('CheckboxGroup', () => {
 			type: 'checkboxGroup',
 			name: 'test/cbg',
 			options: [
-				{ name: 'test/cbg/test1', label: 'One' },
-				{ name: 'test/cbg/test2', label: 'Two' },
-				{ name: 'test/cbg/test3', label: 'Three' },
-				{ name: 'test/cbg/test4', label: 'Four' },
-				{ name: 'test/cbg/test5', label: 'Five' }
+				{ name: 'test/cbg/test1', label: 'One', value: 'One' },
+				{ name: 'test/cbg/test2', label: 'Two', value: 'Two' },
+				{ name: 'test/cbg/test3', label: 'Three', value: 'Three' },
+				{ name: 'test/cbg/test4', label: 'Four', value: 'Four' },
+				{ name: 'test/cbg/test5', label: 'Five', value: 'Five' }
 			],
 			value: [
-				'test/cbg/test1',
-				'test/cbg/test2',
-				'test/cbg/test4'
+				'One',
+				'Two',
+				'Four'
 			],
 			onChange: sinon.spy().named('onChange')
 		};
@@ -45,8 +45,8 @@ describe('CheckboxGroup', () => {
 			renderer.render(<CheckboxGroup {...props}/>);
 			return expect(renderer, 'with event', 'change', 'on', <input id='test/cbg/test2'/>)
 			.then(() => expect(props.onChange, 'to have a call satisfying', [[
-				'test/cbg/test1',
-				'test/cbg/test4'
+				'One',
+				'Four'
 			]]));
 		});
 
@@ -54,10 +54,10 @@ describe('CheckboxGroup', () => {
 			renderer.render(<CheckboxGroup {...props}/>);
 			expect(renderer, 'with event', 'change', 'on', <input id='test/cbg/test3'/>)
 			.then(() => expect(props.onChange, 'to have a call satisfying', [[
-				'test/cbg/test1',
-				'test/cbg/test2',
-				'test/cbg/test4',
-				'test/cbg/test3'
+				'One',
+				'Two',
+				'Four',
+				'Three'
 			]]));
 		});
 	});

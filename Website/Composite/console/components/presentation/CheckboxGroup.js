@@ -14,14 +14,14 @@ const CheckboxGroup = props => {
 	return (
 		<div className='checkboxGroup'>
 			{props.options.reduce((elements, cbProps) => {
-				let value = (props.value.indexOf(cbProps.name) !== -1) || false;
+				let value = (props.value.indexOf(cbProps.value) !== -1) || false;
 				elements.push(<input
 					key={cbProps.name}
 					id={cbProps.name}
 					type='checkbox'
 					value={value}
 					checked={value}
-					onChange={getBoxChanger(cbProps.name)}
+					onChange={getBoxChanger(cbProps.value)}
 					/>);
 				elements.push(<label
 					key={cbProps.name + 'Key'}

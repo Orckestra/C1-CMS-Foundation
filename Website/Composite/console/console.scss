@@ -2,7 +2,7 @@ $baseFontColor: #333;
 $buttonTextColor: #575757;
 $borderColor: #ccc;
 $darkBackground: #EFEFEF;
-$buttonDropShadowColor: #ddd;
+$buttonDropShadowColor: #DDD;
 $buttonHighlightColor: #22B980;
 $buttonShadingColor: #1ea371;
 $fieldsetBackgroundColor: #F7F7F7;
@@ -11,6 +11,7 @@ $fieldFocusColor: #22B980;
 $fieldLabelColor: #999;
 $scrollbarThumbColor: #CACACA;
 $scrollbarTrackColor: #FAFAFA;
+$tableBorderColor: #DDD;
 
 *:focus {
 	outline: 0;
@@ -446,5 +447,34 @@ fieldset {
 		content: '';
 		display: block;
 		clear: both;
+	}
+}
+
+.log-table {
+	border-top: 1px solid $borderColor;
+
+	table {
+		width: 100%;
+		border-collapse: collapse;
+
+		th, td {
+			height: 25px;
+			border-bottom: 1px solid $tableBorderColor;
+			padding-left: 4px;
+		}
+
+		td {
+			border-left: 1px solid $tableBorderColor;
+
+			&:first-child {
+				border-left: 0 none transparent;
+				padding: 0;
+			}
+		}
+
+		th {
+			text-align: left;
+			background-color: $darkBackground;
+		}
 	}
 }

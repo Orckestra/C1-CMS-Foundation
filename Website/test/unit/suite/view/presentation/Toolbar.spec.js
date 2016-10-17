@@ -125,13 +125,13 @@ describe('Toolbar', () => {
 					type: 'checkboxGroup',
 					name: 'first',
 					options: [
-						{ name: 'first/test1', label: 'One' },
-						{ name: 'first/test2', label: 'Two' },
-						{ name: 'first/test3', label: 'Three' },
-						{ name: 'first/test4', label: 'Four' },
-						{ name: 'first/test5', label: 'Five' }
+						{ name: 'first/test1', label: 'One', value: 'One' },
+						{ name: 'first/test2', label: 'Two', value: 'Two' },
+						{ name: 'first/test3', label: 'Three', value: 'Three' },
+						{ name: 'first/test4', label: 'Four', value: 'Four' },
+						{ name: 'first/test5', label: 'Five', value: 'Five' }
 					],
-					value: ['first/test1', 'first/test2', 'first/test3', 'first/test4']
+					value: ['One', 'Two', 'Three', 'Four']
 				}
 			]);
 		});
@@ -149,7 +149,7 @@ describe('Toolbar', () => {
 							{ name: 'first/test4', label: 'Four' },
 							{ name: 'first/test5', label: 'Five' }
 						]}
-						value={['first/test1', 'first/test2', 'first/test3', 'first/test4']}
+						value={['One', 'Two', 'Three', 'Four']}
 						/>
 				</div>
 			);

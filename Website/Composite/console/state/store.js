@@ -12,7 +12,8 @@ import Immutable from 'immutable';
 let reducers = {
 	dataFields,
 	pages,
-	options
+	options,
+	logs: (state = Immutable.Map(), action) => state // temporary noop reducer
 };
 ['page', 'tab', 'item', 'toolbar', 'fieldset', 'dataField'].forEach(typeName => {
 	reducers[typeName + 'Defs'] = getDefinitionReducer(typeName);
