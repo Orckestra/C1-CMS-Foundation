@@ -45,7 +45,7 @@ namespace Composite.Core.WebClient.FlowMediators
 
                     if (string.IsNullOrEmpty(webControl.ID)) webControl.ID = "FlowUI";
 
-                    if (RuntimeInformation.IsTestEnvironment)
+                    if (RuntimeInformation.TestAutomationEnabled)
                     {
                         var testAutomationLocatorInformation = formFlowUiDefinition.MarkupProvider as ITestAutomationLocatorInformation;
                         if (testAutomationLocatorInformation != null) {

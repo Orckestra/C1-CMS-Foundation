@@ -37,6 +37,7 @@
                         <th class="version"><ui:clickbutton label="${string:Composite.Plugins.PageElementProvider:ViewUnpublishedItems.VersionLabel}" binding="SortButtonBinding" /></th>
 						<% } %>
                         <th><ui:clickbutton label="${string:Composite.Plugins.PageElementProvider:ViewUnpublishedItems.StatusLabel}" binding="SortButtonBinding" /></th>
+                        <th><ui:clickbutton label="${string:Composite.Plugins.PageElementProvider:ViewUnpublishedItems.LabelChangedBy}" binding="SortButtonBinding" /></th>
 						<asp:Repeater runat="server" ID="headerRepeater">
                             <ItemTemplate>
                                 <th>

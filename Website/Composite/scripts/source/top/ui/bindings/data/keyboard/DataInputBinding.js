@@ -853,8 +853,10 @@ DataInputBinding.prototype.setReadOnly = function ( isReadOnly ) {
 		} else {
 			this.detachClassName ( "readonly" );
 		}
-		this.shadowTree.input.readOnly = isReadOnly;
-		this.isReadOnly = isReadOnly;
+		if (this.shadowTree.input) {
+	        this.shadowTree.input.readOnly = isReadOnly;
+	    }
+	    this.isReadOnly = isReadOnly;
 	}
 }
 

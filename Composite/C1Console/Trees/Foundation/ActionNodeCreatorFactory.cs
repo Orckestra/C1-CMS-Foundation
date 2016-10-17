@@ -18,6 +18,7 @@ namespace Composite.C1Console.Trees.Foundation
         private static readonly string DefaultAddDataResourceName = "generated-type-data-add";
         private static readonly string DefaultEditDataResourceName = "generated-type-data-edit";
         private static readonly string DefaultDeleteDataResourceName = "generated-type-data-delete";
+        private static readonly string DefaultDuplicateDataResourceName = "generated-type-data-duplicate";
         private static readonly string DefaultReportFunctionResourceName = "reportfunctionaction-defaulticon";
         private static readonly string DefaultMessageBoxResourceName = "messageboxaction-defaulticon";
         private static readonly string DefaultCustomUrlResourceName = "customurlaction-defaulticon";
@@ -28,6 +29,7 @@ namespace Composite.C1Console.Trees.Foundation
         private static readonly List<PermissionType> DefaultAddPermissionTypes = new List<PermissionType> { PermissionType.Add };
         private static readonly List<PermissionType> DefaultEditPermissionTypes = new List<PermissionType> { PermissionType.Edit };
         private static readonly List<PermissionType> DefaultDeletePermissionTypes = new List<PermissionType> { PermissionType.Delete };
+        private static readonly List<PermissionType> DefaultDuplicatePermissionTypes = new List<PermissionType> { PermissionType.Add };
 
 
         public static ActionNode CreateActionNode(XElement element, Tree tree)
@@ -69,6 +71,13 @@ namespace Composite.C1Console.Trees.Foundation
             {
                 GenericDeleteDataActionNode actionNode = new GenericDeleteDataActionNode();
                 InitializeWithCommonValue(element, tree, actionNode, DefaultDeleteDataResourceName, StringResourceSystemFacade.GetString("Composite.C1Console.Trees", "GenericDeleteDataAction.DefaultLabel"), ActionLocation.DeletePrimaryActionLocation, DefaultDeletePermissionTypes);
+
+                return actionNode;
+            }
+            else if (element.Name == TreeMarkupConstants.Namespace + "DuplicateDataAction")
+            {
+                GenericDuplicateDataActionNode actionNode = new GenericDuplicateDataActionNode();
+                InitializeWithCommonValue(element, tree, actionNode, DefaultDuplicateDataResourceName, StringResourceSystemFacade.GetString("Composite.C1Console.Trees", "GenericDuplicateDataAction.DefaultLabel"), ActionLocation.OtherPrimaryActionLocation, DefaultDuplicatePermissionTypes);
 
                 return actionNode;
             }

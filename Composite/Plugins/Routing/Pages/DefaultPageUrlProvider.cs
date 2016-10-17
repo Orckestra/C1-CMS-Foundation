@@ -288,8 +288,7 @@ namespace Composite.Plugins.Routing.Pages
                 return true;
             }
 
-            // Can be optimized
-            return DataFacade.GetData<IHostnameBinding>().AsEnumerable().Any(b => b.Hostname == hostname);
+            return GetHostnameBindings().Any(b => b.Hostname == hostname);
         }
 
         public PageUrlData ParseUrl(string relativeUrl, UrlSpace urlSpace, out UrlKind urlKind)

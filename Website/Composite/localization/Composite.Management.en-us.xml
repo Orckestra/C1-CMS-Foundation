@@ -1,293 +1,292 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <strings>
-	<string key="ManageUserPermissions.ManageUserPermissionsOnBranchLabel" value="Edit Permissions" />
-	<string key="ManageUserPermissions.ManageUserPermissionsOnItemLabel" value="Edit Permissions" />
-	<string key="ManageUserPermissions.ManageGlobalUserPermissionsLabel" value="User Permission Settings" />
-	<string key="ManageUserPermissions.ManageUserPermissionsToolTip" value="Manage user permissions" />
-	<string key="DataCompositionVisabilityFacade.DefaultContainerLabel" value="Metadata" />
-	<string key="Website.Forms.Administrative.DeleteUserStep1.LabelFieldGroup" value="Delete User?" />
-	<string key="Website.Forms.Administrative.DeleteUserStep1.Text" value="Delete the selected user?" />
-	<string key="DeleteUserWorkflow.CascadeDeleteErrorTitle" value="Cascade delete error" />
-	<string key="DeleteUserWorkflow.CascadeDeleteErrorMessage" value="The type is referenced by another type that does not allow cascade deletes. This operation is halted" />
-	<string key="DeleteUserWorkflow.DeleteSelfTitle" value="Cannot delete a user" />
-	<string key="DeleteUserWorkflow.DeleteSelfErrorMessage" value="You can not delete an account you logged in as." />
-
-	<string key="Website.Function.SelectDialog.Title" value="Select Function" />
-	<string key="Website.Widget.SelectDialog.Title" value="Select Widget" />
-	<string key="Website.ContentLink.SelectDialog.Title" value="Select Page or File" />
-	<string key="Website.Page.SelectDialog.Title" value="Select Page" />
-	<string key="Website.FrontendFile.SelectDialog.Title" value="Select Frontend File" />
-	<string key="Website.Media.SelectDialog.Title" value="Select Media" />
-	<string key="Website.Image.SelectDialog.Title" value="Select Image" />
-	<string key="Website.Folder.SelectDialog.Title" value="Select Folder" />
-
+  <string key="ManageUserPermissions.ManageUserPermissionsOnBranchLabel" value="Edit Permissions" />
+  <string key="ManageUserPermissions.ManageUserPermissionsOnItemLabel" value="Edit Permissions" />
+  <string key="ManageUserPermissions.ManageGlobalUserPermissionsLabel" value="User Permission Settings" />
+  <string key="ManageUserPermissions.ManageUserPermissionsToolTip" value="Manage user permissions" />
+  <string key="DataCompositionVisabilityFacade.DefaultContainerLabel" value="Metadata" />
+  <string key="Website.Forms.Administrative.DeleteUserStep1.LabelFieldGroup" value="Delete User?" />
+  <string key="Website.Forms.Administrative.DeleteUserStep1.Text" value="Delete the selected user?" />
+  <string key="DeleteUserWorkflow.CascadeDeleteErrorTitle" value="Cascade delete error" />
+  <string key="DeleteUserWorkflow.CascadeDeleteErrorMessage" value="The type is referenced by another type that does not allow cascade deletes. This operation is halted" />
+  <string key="DeleteUserWorkflow.DeleteSelfTitle" value="Cannot delete a user" />
+  <string key="DeleteUserWorkflow.DeleteSelfErrorMessage" value="You can not delete an account you logged in as." />
+  <string key="Website.Function.SelectDialog.Title" value="Select Function" />
+  <string key="Website.Widget.SelectDialog.Title" value="Select Widget" />
+  <string key="Website.ContentLink.SelectDialog.Title" value="Select Page or File" />
+  <string key="Website.Page.SelectDialog.Title" value="Select Page" />
+  <string key="Website.FrontendFile.SelectDialog.Title" value="Select Frontend File" />
+  <string key="Website.Media.SelectDialog.Title" value="Select Media" />
+  <string key="Website.Image.SelectDialog.Title" value="Select Image" />
+  <string key="Website.Folder.SelectDialog.Title" value="Select Folder" />
   <string key="PublishingStatus.draft" value="Draft" />
   <string key="PublishingStatus.awaitingApproval" value="Awaiting Approval" />
   <string key="PublishingStatus.awaitingPublication" value="Awaiting Publication" />
   <string key="PublishingStatus.published" value="Published" />
-
-	<string key="Website.Forms.Administrative.EditUserStep1.LabelFieldGroup" value="General settings" />
-	<string key="Website.Forms.Administrative.EditUserStep1.UserNameLabel" value="User name" />
-	<string key="Website.Forms.Administrative.EditUserStep1.UserNameHelp" value="User names can not be changed. This is a 'read only' field." />
-	<string key="Website.Forms.Administrative.EditUserStep1.PasswordLabel" value="Password" />
-	<string key="Website.Forms.Administrative.EditUserStep1.PasswordHelp" value="The password has to be more than 6 characters long." />
+  <string key="Website.Forms.Administrative.EditUserStep1.LabelFieldGroup" value="General settings" />
+  <string key="Website.Forms.Administrative.EditUserStep1.UserNameLabel" value="User name" />
+  <string key="Website.Forms.Administrative.EditUserStep1.UserNameHelp" value="User names can not be changed. This is a 'read only' field." />
+  <string key="Website.Forms.Administrative.EditUserStep1.PasswordLabel" value="Password" />
+  <string key="Website.Forms.Administrative.EditUserStep1.PasswordHelp" value="The password has to be more than 6 characters long." />
   <string key="Website.Forms.Administrative.EditUserStep1.NameLabel" value="Name" />
   <string key="Website.Forms.Administrative.EditUserStep1.NameHelp" value="The full name of the person using this account." />
-	<string key="Website.Forms.Administrative.EditUserStep1.EmailLabel" value="Email" />
-	<string key="Website.Forms.Administrative.EditUserStep1.EmailHelp" value="The e-mail address of the user (optional)." />
-	<string key="Website.Forms.Administrative.EditUserStep1.GroupLabel" value="Folder" />
-	<string key="Website.Forms.Administrative.EditUserStep1.GroupHelp" value="If you enter a folder name that does not already exist a new folder will be created." />
+  <string key="Website.Forms.Administrative.EditUserStep1.EmailLabel" value="Email" />
+  <string key="Website.Forms.Administrative.EditUserStep1.EmailHelp" value="The e-mail address of the user (optional)." />
+  <string key="Website.Forms.Administrative.EditUserStep1.GroupLabel" value="Folder" />
+  <string key="Website.Forms.Administrative.EditUserStep1.GroupHelp" value="If you enter a folder name that does not already exist a new folder will be created." />
   <string key="Website.Forms.Administrative.EditUserStep1.LabelLocalizationFieldGroup" value="C1 Console Localization" />
   <string key="Website.Forms.Administrative.EditUserStep1.CultureLabel" value="Display Preferences" />
-	<string key="Website.Forms.Administrative.EditUserStep1.CultureHelp" value="Display for time, date, and number formats within the console" />
+  <string key="Website.Forms.Administrative.EditUserStep1.CultureHelp" value="Display for time, date, and number formats within the console" />
   <string key="Website.Forms.Administrative.EditUserStep1.C1ConsoleLanguageLabel" value="Console Language Preferences" />
   <string key="Website.Forms.Administrative.EditUserStep1.C1ConsoleLanguageHelp" value="Language displayed within your console for labels, help texts, dialogs, etc. The available options are limited to language packages installed. See Composite.Localization packages for more language options." />
   <string key="Website.Forms.Administrative.EditUserStep1.ActivePerspectiveFieldLabel" value="Perspectives" />
-	<string key="Website.Forms.Administrative.EditUserStep1.ActivePerspectiveMultiSelectLabel" value="Visible perspectives" />
-	<string key="Website.Forms.Administrative.EditUserStep1.ActivePerspectiveMultiSelectHelp" value="Select which perspectives should be visible when the user starts the C1 Console." />
-	<string key="Website.Forms.Administrative.EditUserStep1.GlobalPermissionsFieldLabel" value="Global permissions" />
-	<string key="Website.Forms.Administrative.EditUserStep1.GlobalPermissionsMultiSelectLabel" value="Global permissions" />
-	<string key="Website.Forms.Administrative.EditUserStep1.GlobalPermissionsMultiSelectHelp" value="The Administrate permission grants the user access to manage user permissions and execute other administrative tasks. The Configure permission grants access to super user tasks." />
-	<string key="Website.Forms.Administrative.EditUserStep1.GlobalPermissions.IgnoredOwnAdministrativeRemoval" value="The removal of your own administrative permission has been ignored. You still have administrative privileges." />
-	<string key="Website.Forms.Administrative.EditUserStep1.ActiveLocalesFieldLabel" value="Data language access" />
-	<string key="Website.Forms.Administrative.EditUserStep1.ActiveLocalesMultiSelectLabel" value="Data Languages" />
-	<string key="Website.Forms.Administrative.EditUserStep1.ActiveLocalesMultiSelectHelp" value="User has access to manage data in the selected languages." />
-	<string key="Website.Forms.Administrative.EditUserStep1.ActiveLocaleLabel" value="Active content language" />
-	<string key="Website.Forms.Administrative.EditUserStep1.ActiveLocaleHelp" value="The content language this user will edit." />
-	<string key="Website.Forms.Administrative.EditUserStep1.ActiveLocaleNotChecked" value="The selected language is not checked in the data language section." />
-	<string key="Website.Forms.Administrative.EditUserStep1.NoActiveLocaleSelected" value="You must select at least one active language." />
-	<string key="Website.Forms.Administrative.EditUserStep1.GenerelTabLabel" value="General" />
-	<string key="Website.Forms.Administrative.EditUserStep1.PermissionsTabLabel" value="Permissions" />
-	<string key="Website.Forms.Administrative.EditUserStep1.PerspectivesTabLabel" value="Perspectives" />
-	<string key="Website.Forms.Administrative.EditUserStep1.UserGroupsFieldLabel" value="User Groups" />
-	<string key="Website.Forms.Administrative.EditUserStep1.UserGroupsMultiSelectHelp" value="Select the user groups that the selected user should be a member of." />
+  <string key="Website.Forms.Administrative.EditUserStep1.ActivePerspectiveMultiSelectLabel" value="Visible perspectives" />
+  <string key="Website.Forms.Administrative.EditUserStep1.ActivePerspectiveMultiSelectHelp" value="Select which perspectives should be visible when the user starts the C1 Console." />
+  <string key="Website.Forms.Administrative.EditUserStep1.GlobalPermissionsFieldLabel" value="Global permissions" />
+  <string key="Website.Forms.Administrative.EditUserStep1.GlobalPermissionsMultiSelectLabel" value="Global permissions" />
+  <string key="Website.Forms.Administrative.EditUserStep1.GlobalPermissionsMultiSelectHelp" value="The Administrate permission grants the user access to manage user permissions and execute other administrative tasks. The Configure permission grants access to super user tasks." />
+  <string key="Website.Forms.Administrative.EditUserStep1.GlobalPermissions.IgnoredOwnAdministrativeRemoval" value="The removal of your own administrative permission has been ignored. You still have administrative privileges." />
+  <string key="Website.Forms.Administrative.EditUserStep1.ActiveLocalesFieldLabel" value="Data language access" />
+  <string key="Website.Forms.Administrative.EditUserStep1.ActiveLocalesMultiSelectLabel" value="Data Languages" />
+  <string key="Website.Forms.Administrative.EditUserStep1.ActiveLocalesMultiSelectHelp" value="User has access to manage data in the selected languages." />
+  <string key="Website.Forms.Administrative.EditUserStep1.ActiveLocaleLabel" value="Active content language" />
+  <string key="Website.Forms.Administrative.EditUserStep1.ActiveLocaleHelp" value="The content language this user will edit." />
+  <string key="Website.Forms.Administrative.EditUserStep1.ActiveLocaleNotChecked" value="The selected language is not checked in the data language section." />
+  <string key="Website.Forms.Administrative.EditUserStep1.NoActiveLocaleSelected" value="You must select at least one active language." />
+  <string key="Website.Forms.Administrative.EditUserStep1.GenerelTabLabel" value="General" />
+  <string key="Website.Forms.Administrative.EditUserStep1.PermissionsTabLabel" value="Permissions" />
+  <string key="Website.Forms.Administrative.EditUserStep1.PerspectivesTabLabel" value="Perspectives" />
+  <string key="Website.Forms.Administrative.EditUserStep1.UserGroupsFieldLabel" value="User Groups" />
+  <string key="Website.Forms.Administrative.EditUserStep1.UserGroupsMultiSelectHelp" value="Select the user groups that the selected user should be a member of." />
   <string key="Website.Forms.Administrative.EditUserStep1.IsLockedLabel" value="Is Locked" />
   <string key="Website.Forms.Administrative.EditUserStep1.IsLockedItemLabel" value="User can not log in" />
   <string key="Website.Forms.Administrative.EditUserStep1.IsLockedHelp" value="When checked the user will be forbidden from logging in." />
-	<string key="EditUserWorkflow.EditErrorTitle" value="Error" />
-	<string key="EditUserWorkflow.EditOwnAccessToSystemPerspective" value="You can not delete your own access rights to 'System' perspective." />
+  <string key="EditUserWorkflow.EditErrorTitle" value="Error" />
+  <string key="EditUserWorkflow.EditOwnAccessToSystemPerspective" value="You can not delete your own access rights to 'System' perspective." />
   <string key="EditUserWorkflow.LockingOwnUserAccount" value="You can not lock your own account." />
-	<string key="UserElementProvider.RootLabel" value="Users" />
-	<string key="UserElementProvider.RootToolTip" value="Users" />
-	<string key="UserElementProvider.AddUserLabel" value="Add User" />
-	<string key="UserElementProvider.AddUserToolTip" value="Add new user" />
-	<string key="UserElementProvider.EditUserLabel" value="Edit User" />
-	<string key="UserElementProvider.EditUserToolTip" value="Edit selected user" />
-	<string key="UserElementProvider.DeleteUserLabel" value="Delete User" />
-	<string key="UserElementProvider.DeleteUserToolTip" value="Delete the selected user" />
-	<string key="UserElementProvider.ChangeOtherActiveLocaleTitle" value="Warning" />
-	<string key="UserElementProvider.ChangeOtherActiveLocaleMessage" value="You have change the active language for a user that is currently logged on. The users console will be reloaded and data might be lost." />
-	<string key="UserElementProvider.ChangeOtherActiveLocaleDialogTitle" value="Cleanup Required" />
-	<string key="UserElementProvider.ChangeOtherActiveLocaleDialogText" value="This requires a stage cleanup. Active editors will be saved and closed." />
-	<string key="AddNewUserWorkflow.UsernameDuplicateError" value="A user with the same name already exists" />
-	<string key="Website.Forms.Administrative.AddNewUserStep1.LabelFieldGroup" value="Add New User" />
-	<string key="Website.Forms.Administrative.AddNewUserStep1.UserNameLabel" value="User name" />
-	<string key="Website.Forms.Administrative.AddNewUserStep1.UserNameHelp" value="When you have created a new user the username cannot be changed." />
-	<string key="Website.Forms.Administrative.AddNewUserStep1.PasswordLabel" value="Password" />
-	<string key="Website.Forms.Administrative.AddNewUserStep1.PasswordHelp" value="The password has to be more than 6 characters long." />
+  <string key="UserElementProvider.RootLabel" value="Users" />
+  <string key="UserElementProvider.RootToolTip" value="Users" />
+  <string key="UserElementProvider.AddUserLabel" value="Add User" />
+  <string key="UserElementProvider.AddUserToolTip" value="Add new user" />
+  <string key="UserElementProvider.EditUserLabel" value="Edit User" />
+  <string key="UserElementProvider.EditUserToolTip" value="Edit selected user" />
+  <string key="UserElementProvider.DeleteUserLabel" value="Delete User" />
+  <string key="UserElementProvider.DeleteUserToolTip" value="Delete the selected user" />
+  <string key="UserElementProvider.ChangeOtherActiveLocaleTitle" value="Warning" />
+  <string key="UserElementProvider.ChangeOtherActiveLocaleMessage" value="You have change the active language for a user that is currently logged on. The users console will be reloaded and data might be lost." />
+  <string key="UserElementProvider.ChangeOtherActiveLocaleDialogTitle" value="Cleanup Required" />
+  <string key="UserElementProvider.ChangeOtherActiveLocaleDialogText" value="This requires a stage cleanup. Active editors will be saved and closed." />
+  <string key="AddNewUserWorkflow.UsernameDuplicateError" value="A user with the same name already exists" />
+  <string key="Website.Forms.Administrative.AddNewUserStep1.LabelFieldGroup" value="Add New User" />
+  <string key="Website.Forms.Administrative.AddNewUserStep1.UserNameLabel" value="User name" />
+  <string key="Website.Forms.Administrative.AddNewUserStep1.UserNameHelp" value="When you have created a new user the username cannot be changed." />
+  <string key="Website.Forms.Administrative.AddNewUserStep1.PasswordLabel" value="Password" />
+  <string key="Website.Forms.Administrative.AddNewUserStep1.PasswordHelp" value="The password has to be more than 6 characters long." />
   <string key="Website.Forms.Administrative.AddNewUserStep1.NameLabel" value="Name" />
   <string key="Website.Forms.Administrative.AddNewUserStep1.NameHelp" value="The full name of the person using this account." />
   <string key="Website.Forms.Administrative.AddNewUserStep1.EmailLabel" value="Email address" />
-	<string key="Website.Forms.Administrative.AddNewUserStep1.EmailHelp" value="The e-mail address of the user (optional)." />
-	<string key="Website.Forms.Administrative.AddNewUserStep1.GroupLabel" value="Folder" />
-	<string key="Website.Forms.Administrative.AddNewUserStep1.GroupHelp" value="If you enter a folder name that does not already exist a new folder will be created." />
-	<string key="Website.Forms.Administrative.AddNewUserStep1.CultureLabel" value="Display Preferences" />
-	<string key="Website.Forms.Administrative.AddNewUserStep1.CultureHelp" value="Display for time, date, and number formats within the console" />
+  <string key="Website.Forms.Administrative.AddNewUserStep1.EmailHelp" value="The e-mail address of the user (optional)." />
+  <string key="Website.Forms.Administrative.AddNewUserStep1.GroupLabel" value="Folder" />
+  <string key="Website.Forms.Administrative.AddNewUserStep1.GroupHelp" value="If you enter a folder name that does not already exist a new folder will be created." />
+  <string key="Website.Forms.Administrative.AddNewUserStep1.CultureLabel" value="Display Preferences" />
+  <string key="Website.Forms.Administrative.AddNewUserStep1.CultureHelp" value="Display for time, date, and number formats within the console" />
   <string key="Website.Forms.Administrative.AddNewUserStep1.C1ConsoleLanguageLabel" value="Console Language Preferences" />
   <string key="Website.Forms.Administrative.AddNewUserStep1.C1ConsoleLanguageHelp" value="Language displayed within your console for labels, help texts, dialogs, etc. The available options are limited to language packages installed. See Composite.Localization packages for more language options." />
   <string key="UserElementProvider.MissingActiveLanguageTitle" value="A language is required" />
-	<string key="UserElementProvider.MissingActiveLanguageMessage" value="To create a user a language is required, but no languages have been added yet. You can add one under the System perspective." />
-	<string key="UserElementProvider.UserLoginIsAlreadyUsed" value="User with the same login already exist" />
-	<string key="AssociatedDataElementProviderHelper.AddDataFolderTypeLabel" value="Add Datafolder" />
-	<string key="AssociatedDataElementProviderHelper.AddDataFolderTypeToolTip" value="Add datafolder" />
-	<string key="AssociatedDataElementProviderHelper.AddAssociatedDataLabel" value="Add Data" />
-	<string key="AssociatedDataElementProviderHelper.AddAssociatedDataToolTip" value="Add data" />
-	<string key="AssociatedDataElementProviderHelper.EditAssociatedDataLabel" value="Edit Data" />
-	<string key="AssociatedDataElementProviderHelper.EditAssociatedDataToolTip" value="Edit data" />
-	<string key="AssociatedDataElementProviderHelper.DeleteAssociatedDataLabel" value="Delete Data" />
-	<string key="AssociatedDataElementProviderHelper.DeleteAssociatedDataToolTip" value="Delete data" />
-	<string key="AssociatedDataElementProviderHelper.LocalizeData" value="Localize" />
-	<string key="AssociatedDataElementProviderHelper.LocalizeDataToolTip" value="Localize data" />
-	<string key="AssociatedDataElementProviderHelper.DisabledData" value="Not yet approved or published" />
-	<string key="AssociatedDataElementProviderHelper.AddDataFolderExSelectType.FieldLabel" value="Add Datafolder" />
-	<string key="AssociatedDataElementProviderHelper.AddDataFolderExSelectType.SelectorLabel" value="Datafolder type" />
-	<string key="AssociatedDataElementProviderHelper.AddDataFolderExSelectType.SelectorHelp" value="Create new datatype or use an existing datatype (if present)." />
-	<string key="AssociatedDataElementProviderHelper.AddDataFolderExCreateNewType.LabelNewType" value="Settings" />
-	<string key="AssociatedDataElementProviderHelper.AddDataFolderExCreateNewType.LabelTypeName" value="Type name" />
-	<string key="AssociatedDataElementProviderHelper.AddDataFolderExCreateNewType.HelpTypeName" value="The technical name of the data type (ex. Product). This is used to identify this type in code and should not be changed once used externally." />
-	<string key="AssociatedDataElementProviderHelper.AddDataFolderExCreateNewType.LabelTypeNamespace" value="Type namespace" />
-	<string key="AssociatedDataElementProviderHelper.AddDataFolderExCreateNewType.HelpTypeNamespace" value="The namespace (module / category name) of the type. This is used to identify this type in code and should not be changed." />
-	<string key="AssociatedDataElementProviderHelper.AddDataFolderExCreateNewType.LabelTypeTitle" value="Title" />
-	<string key="AssociatedDataElementProviderHelper.AddDataFolderExCreateNewType.HelpTypeTitle" value="Use this entry to specify a user friendly name. You can change this field as you like." />
-	<string key="AssociatedDataElementProviderHelper.AddDataFolderExCreateNewType.LabelFields" value="Fields" />
-	<string key="AssociatedDataElementProviderHelper.AddDataFolderExCreateNewType.ServicesLabel" value="Services" />
-	<string key="AssociatedDataElementProviderHelper.AddDataFolderExCreateNewType.HasPublishing" value="Has publishing" />
-	<string key="AssociatedDataElementProviderHelper.AddDataFolderExCreateNewType.HasLocalization" value="Has localization" />
-	<string key="AssociatedDataElementProviderHelper.AddDataFolderExWorkflow.NoTypesTitle" value="No page datafolders exists" />
-	<string key="AssociatedDataElementProviderHelper.AddDataFolderExWorkflow.NoTypesMessage" value="No page datafolders have been created yet. You can create a page datafolder in the 'Data' perspective." />
-	<string key="AssociatedDataElementProviderHelper.AddDataFolderExWorkflow.NoUnusedTypesTitle" value="No Unused Page Datafolders Exist" />
-	<string key="AssociatedDataElementProviderHelper.AddDataFolderExWorkflow.NoUnusedTypesMessage" value="All available page datafolders have been added already. To create a new page datafolder go to the 'Data' perspective." />
-	<string key="AssociatedDataElementProviderHelper.AddDataFolderExCreateNewType.ErrorTitle" value="Error" />
-	<string key="AssociatedDataElementProviderHelper.AddDataFolderSelectType.FieldLabel" value="Select existing data folder type to add" />
-	<string key="AssociatedDataElementProviderHelper.AddDataFolderSelectType.SelectorLabel" value="Existing data folder types" />
-	<string key="AssociatedDataElementProviderHelper.AddDataFolderSelectType.SelectorHelp" value="Select existing data folder type to add" />
-	<string key="AssociatedDataElementProviderHelper.RemoveMetaDataTypeLabel" value="Remove Metadata Field" />
-	<string key="AssociatedDataElementProviderHelper.RemoveMetaDataTypeToolTip" value="Remove metadata field" />
-	<string key="AssociatedDataElementProviderHelper.DeleteDataFolderWorkflow.LabelFieldGroup" value="Remove Datafolder from Page" />
-	<string key="AssociatedDataElementProviderHelper.DeleteDataFolderWorkflow.FieldGroupLabel" value="Data cleanup" />
-	<string key="AssociatedDataElementProviderHelper.DeleteDataFolderWorkflow.DeleteFolderDataLabel" value="Delete data" />
-	<string key="AssociatedDataElementProviderHelper.DeleteDataFolderWorkflow.DeleteFolderDataCheckBoxLabel" value="Yes, delete folder data" />
-	<string key="AssociatedDataElementProviderHelper.DeleteDataFolderWorkflow.DeleteFolderDataHelp" value="If you want data in this folder to stay in the database, you should uncheck this option." />
-	<string key="AssociatedDataElementProviderHelper.AddMetaDataSelectType.LayoutLabel" value="Add Metadata Field" />
-	<string key="AssociatedDataElementProviderHelper.AddMetaDataTypeLabel" value="Add Metadata Field" />
-	<string key="AssociatedDataElementProviderHelper.AddMetaDataTypeToolTip" value="Add metadata field" />
-	<string key="AssociatedDataElementProviderHelper.AddMetaDataSelectType.FieldLabel" value="Select existing metadata type to add" />
-	<string key="AssociatedDataElementProviderHelper.AddMetaDataSelectType.SelectorLabel" value="Existing metadata types" />
-	<string key="AssociatedDataElementProviderHelper.AddMetaDataSelectType.SelectorHelp" value="Select existing metadata type to add" />
-	<string key="AssociatedDataElementProviderHelper.AddMetaDataWorkflow.NoTypesTitle" value="No page metadata types exists" />
-	<string key="AssociatedDataElementProviderHelper.AddMetaDataWorkflow.NoTypesMessage" value="No page metatypes have been created yet. You can create a Page metatype in the 'Data' perspective." />
-	<string key="AssociatedDataElementProviderHelper.AddMetaDataCreateFieldGroup.NamingFieldLabel" value="Metadata field group naming" />
-	<string key="AssociatedDataElementProviderHelper.AddMetaDataCreateFieldGroup.FieldGroupNameLabel" value="Name" />
-	<string key="AssociatedDataElementProviderHelper.AddMetaDataCreateFieldGroup.FieldGroupNameHelp" value="Enter a unique name identifying this metadata field group" />
-	<string key="AssociatedDataElementProviderHelper.AddMetaDataCreateFieldGroup.FieldGroupLabelLabel" value="Label" />
-	<string key="AssociatedDataElementProviderHelper.AddMetaDataCreateFieldGroup.FieldGroupLabelHelp" value="Enter a user friendly label for this metadata field group" />
-	<string key="AssociatedDataElementProviderHelper.AddMetaDataCreateFieldGroup.VisabilityFieldLabel" value="Metadata field group visibility" />
-	<string key="AssociatedDataElementProviderHelper.AddMetaDataCreateFieldGroup.ContainerSelectorLabel" value="Tab" />
-	<string key="AssociatedDataElementProviderHelper.AddMetaDataCreateFieldGroup.ContainerSelectorHelp" value="Select the tab for which this metadata should exists" />
-	<string key="AssociatedDataElementProviderHelper.AddMetaDataCreateFieldGroup.StartDisplaySelectorLabel" value="Start display from" />
-	<string key="AssociatedDataElementProviderHelper.AddMetaDataCreateFieldGroup.StartDisplaySelectorHelp" value="Start display from" />
-	<string key="AssociatedDataElementProviderHelper.AddMetaDataCreateFieldGroup.InheritDisplaySelectorLabel" value="Inherit display" />
-	<string key="AssociatedDataElementProviderHelper.AddMetaDataCreateFieldGroup.InheritDisplaySelectorHelp" value="Inherit display" />
-	<string key="AssociatedDataElementProviderHelper.NoItems.Title" value="The metadata field group has no items in scope" />
-	<string key="AssociatedDataElementProviderHelper.NoItems.Description" value="There are currently no items within the specified display range. Press Previous to change the display range or Finish to create the metadata field group." />
-	<string key="AssociatedDataElementProviderHelper.AddMetaDataWorkflow.StartDisplayOption0" value="This item" />
-	<string key="AssociatedDataElementProviderHelper.AddMetaDataWorkflow.StartDisplayOption1" value="Children" />
-	<string key="AssociatedDataElementProviderHelper.AddMetaDataWorkflow.StartDisplayOption2" value="2nd generation descendants" />
-	<string key="AssociatedDataElementProviderHelper.AddMetaDataWorkflow.StartDisplayOption3" value="3rd generation descendants" />
-	<string key="AssociatedDataElementProviderHelper.AddMetaDataWorkflow.StartDisplayOption4" value="4th generation descendants" />
-	<string key="AssociatedDataElementProviderHelper.AddMetaDataWorkflow.StartDisplayOption5" value="5th generation descendants" />
-	<string key="AssociatedDataElementProviderHelper.AddMetaDataWorkflow.InheritDisplayOption0" value="Do not inherit" />
-	<string key="AssociatedDataElementProviderHelper.AddMetaDataWorkflow.InheritDisplayOption1" value="Inherit 1 generation" />
-	<string key="AssociatedDataElementProviderHelper.AddMetaDataWorkflow.InheritDisplayOption2" value="Inherit 2 generations" />
-	<string key="AssociatedDataElementProviderHelper.AddMetaDataWorkflow.InheritDisplayOption3" value="Inherit 3 generations" />
-	<string key="AssociatedDataElementProviderHelper.AddMetaDataWorkflow.InheritDisplayOption4" value="Always inherit" />
-	<string key="AssociatedDataElementProviderHelper.AddMetaDataWorkflow.FieldGroupNameNotValid" value="The field group name is in use" />
-	<string key="AssociatedDataElementProviderHelper.DeleteMetaDataSelectType.LayoutLabel" value="Remove Metadata Field Group" />
-	<string key="AssociatedDataElementProviderHelper.DeleteMetaDataSelectFieldGroupName.FieldLabel" value="Select a metadata field group to remove" />
-	<string key="AssociatedDataElementProviderHelper.DeleteMetaDataSelectFieldGroupName.SelectorLabel" value="Field group" />
-	<string key="AssociatedDataElementProviderHelper.DeleteMetaDataSelectFieldGroupName.SelectorHelp" value="Select a metadata field group to remove" />
-	<string key="AssociatedDataElementProviderHelper.EditMetaDataTypeLabel" value="Edit Metadata Field" />
-	<string key="AssociatedDataElementProviderHelper.EditMetaDataTypeToolTip" value="Edit metadata field" />
-	<string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.Layout.Label" value="Edit Page Metadata Field" />
-	<string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.FieldGroup.Label" value="Page metadata field settings" />
-	<string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.LabelTextBox.Label" value="Label" />
-	<string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.LabelTextBox.Help" value="The label of the metadata field. Used when editing pages" />
-	<string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.MetaDataContainerSelector.Label" value="Tab" />
-	<string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.MetaDataContainerSelector.Help" value="Select the tab for which this metadata should exists" />
-	<string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.StartDisplaySelectorLabel" value="Start display from" />
-	<string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.StartDisplaySelectorHelp" value="Start display from" />
-	<string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.InheritDisplaySelectorLabel" value="Inherit display" />
-	<string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.InheritDisplaySelectorHelp" value="Inherit display" />
-	<string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.MetaDataDefinitionSelector.Label" value="Metadata field" />
-	<string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.MetaDataDefinitionSelector.Help" value="Select the metadata field to edit" />
-	<string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.NoMetaDataDefinitionsExists.Title" value="No Metadata Fields to Edit" />
-	<string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.NoMetaDataDefinitionsExists.Message" value="There is no metadata fields defined on this item to edit" />
-	<string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.MetaDataFieldNameAlreadyUsed" value="The metadata type is used another place with same name but different label" />
-	<string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.MetaDataContainerChangeNotAllowed" value="There exists one or more definitions with the same name, container change is not allowed" />
-	<string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.NoDefaultValuesNeeded.Title" value="Press finish to save" />
-	<string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.NoDefaultValuesNeeded.Description" value="All required information has been gathered. Press Finish to update the metadata field" />
-	<string key="AssociatedDataElementProviderHelper.DeleteMetaDataWorkflow.NoDefinedTypesExists.Title" value="No Metadata Fields to Remove" />
-	<string key="AssociatedDataElementProviderHelper.DeleteMetaDataWorkflow.NoDefinedTypesExists.Message" value="There is no metadata fields defined on this item to remove" />
-	<string key="DeleteAssociatedDataWorkflow.CascadeDeleteErrorTitle" value="Cascade delete error" />
-	<string key="DeleteAssociatedDataWorkflow.CascadeDeleteErrorMessage" value="The type is referenced by another type that does not allow cascade deletes. This operation is halted" />
-	<string key="Website.Forms.Administrative.CreateNewAssociatedTypeStep1.LabelNewType" value="Settings" />
-	<string key="Website.Forms.Administrative.CreateNewAssociatedTypeStep1.LabelTypeName" value="Type name" />
-	<string key="Website.Forms.Administrative.CreateNewAssociatedTypeStep1.HelpTypeName" value="The name of the new type that you are creating (ex. product)" />
-	<string key="Website.Forms.Administrative.CreateNewAssociatedTypeStep1.LabelTypeNamespace" value="Type namespace" />
-	<string key="Website.Forms.Administrative.CreateNewAssociatedTypeStep1.HelpTypeNamespace" value="The name of the module, category or namespace that you are creating" />
-	<string key="Website.Forms.Administrative.CreateNewAssociatedTypeStep1.LabelTypeTitle" value="Title" />
-	<string key="Website.Forms.Administrative.CreateNewAssociatedTypeStep1.HelpTypeTitle" value="Use this entry to specify a user friendly name" />
-	<string key="Website.Forms.Administrative.CreateNewAssociatedTypeStep1.LabelFields" value="Fields" />
-	<string key="Website.Forms.Administrative.CreateNewAssociatedTypeStep1.ServicesLabel" value="Services" />
-	<string key="Website.Forms.Administrative.CreateNewAssociatedTypeStep1.HasVersioning" value="Has versioning" />
-	<string key="Website.Forms.Administrative.CreateNewAssociatedTypeStep1.HasPublishing" value="Has publishing" />
-	<string key="Website.Forms.Administrative.DeleteAssociatedTypeDataStep1.FieldGroupLabel" value="Delete Data?" />
-	<string key="Website.Forms.Administrative.DeleteAssociatedTypeDataStep1.Text" value="Delete data?" />
-	<string key="Website.Forms.Administrative.AddAssociatedDataWorkflow.FieldGroupLabel" value="Add page data" />
-	<string key="Website.Forms.Administrative.AddAssociatedDataWorkflow.TypeSelectorLabel" value="Select a datatype to add" />
-	<string key="Website.Forms.Administrative.AddAssociatedDataWorkflow.TypeSelectorHelp" value="Select one of the existing types to add data to" />
-	<string key="Website.Forms.Administrative.AddAssociatedTypeWorkflow.FieldGroupLabel" value="Add page datatype" />
-	<string key="Website.Forms.Administrative.AddAssociatedTypeAddExisting.TypeSelectorLabel" value="Select type to add" />
-	<string key="Website.Forms.Administrative.AddAssociatedTypeAddExisting.TypeSelectorHelp" value="Select one of the existing types in the system" />
-	<string key="Website.Forms.Administrative.AddAssociatedTypeAddExistingSelectForeignKey.KeySelectorLabel" value="Select a foreign key" />
-	<string key="Website.Forms.Administrative.AddAssociatedTypeAddExistingSelectForeignKey.KeySelectorHelp" value="Select one of the fields from the type to use as foreign key" />
-	<string key="Website.Forms.Administrative.AddAssociatedTypeAddingTypeSelection.KeySelectorLabel" value="Add a" />
-	<string key="Website.Forms.Administrative.AddAssociatedTypeAddingTypeSelection.KeySelectorHelp" value="Creating a new type or using an existing type" />
-	<string key="Website.Forms.Administrative.AddAssociatedTypeAssociationTypeSelection.KeySelectorLabel" value="Select type:" />
-	<string key="Website.Forms.Administrative.AddAssociatedTypeAssociationTypeSelection.KeySelectorHelp" value="Regular data is a new type that are created under a page. Metadata is a new field that are created on a page" />
-	<string key="Website.Forms.Administrative.AddAssociatedTypeCompositionScopeSelection.ScopeRuleNameLabel" value="Rule name" />
-	<string key="Website.Forms.Administrative.AddAssociatedTypeCompositionScopeSelection.ScopeRuleNameHelp" value="Rule name are saved with the metadata and are a part of the metadata key. The name must be unique." />
-	<string key="Website.Forms.Administrative.AddAssociatedTypeCompositionScopeSelection.ScopeRuleLabelLabel" value="Rule label" />
-	<string key="Website.Forms.Administrative.AddAssociatedTypeCompositionScopeSelection.ScopeRuleHelpHelp" value="Rule label is used as a user friendly name for the instance. Can be localized" />
-	<string key="Website.Forms.Administrative.AddAssociatedTypeCompositionScopeSelection.ContainerKeySelectorLabel" value="Select composition container" />
-	<string key="Website.Forms.Administrative.AddAssociatedTypeCompositionScopeSelection.ContainerKeySelectorHelp" value="Select container for the new rule." />
-	<string key="Website.Forms.Administrative.AddAssociatedTypeCompositionScopeSelection.ScopeKeySelectorLabel" value="Select composition scope" />
-	<string key="Website.Forms.Administrative.AddAssociatedTypeCompositionScopeSelection.ScopeKeySelectorHelp" value="Select the scope for the new composition" />
-	<string key="Website.Forms.Administrative.AddAssociatedTypeLevelsScopeSelection.LevelsLabel" value="Levels" />
-	<string key="Website.Forms.Administrative.AddAssociatedTypeLevelsScopeSelection.LevelsHelp" value="The depth of sub pages in which the composition will be visible" />
-	<string key="Website.Forms.Administrative.AddAssociatedTypeFinalInfo.AssociationTypeLabel" value="Confirm new datatype:" />
-	<string key="Website.Forms.Administrative.AddAssociatedTypeFinalInfo.AssociationTypeHelp" value="Metadata is a new field that are created on a page" />
-	<string key="Website.Forms.Administrative.AddAssociatedTypeFinalInfo.CompositionScopeRuleNameLabel" value="Composition scope rule name" />
-	<string key="Website.Forms.Administrative.AddAssociatedTypeFinalInfo.CompositionScopeRuleNameHelp" value="Rule name are saved with the metadata and are a part of the metadata key. The name must be unique." />
-	<string key="Website.Forms.Administrative.AddAssociatedTypeFinalInfo.CompositionScopeRuleLabelLabel" value="Composition scope rule label" />
-	<string key="Website.Forms.Administrative.AddAssociatedTypeFinalInfo.CompositionScopeRuleHelpHelp" value="Rule label is used as a user friendly name for the instance. Can be localized" />
-	<string key="Website.Forms.Administrative.AddAssociatedTypeFinalInfo.CompositionScopeLabel" value="Composition scope" />
-	<string key="Website.Forms.Administrative.AddAssociatedTypeFinalInfo.CompositionScopeHelp" value="This is the scope in which the new composition will be visible when editing pages" />
-	<string key="Website.Forms.Administrative.AddAssociatedTypeFinalInfo.AddingTypeLabel" value="Adding type" />
-	<string key="Website.Forms.Administrative.AddAssociatedTypeFinalInfo.AddingTypeHelp" value="Create a new type or use an existing type" />
-	<string key="Website.Forms.Administrative.AddAssociatedTypeFinalInfo.ExistingTypeNameLabel" value="Existing type name" />
-	<string key="Website.Forms.Administrative.AddAssociatedTypeFinalInfo.ExistingTypeNameHelp" value="The name of the selected existing type in the system to use" />
-	<string key="Website.Forms.Administrative.AddAssociatedTypeFinalInfo.ForeignKeyFieldNameLabel" value="Foreign key field name" />
-	<string key="Website.Forms.Administrative.AddAssociatedTypeFinalInfo.ForeignKeyFieldNameHelp" value="The name of the field of the existing type to use as a foreign key " />
-	<string key="AssociatedDataElementProviderHelper.RemoveAssociatedTypeLabel" value="Remove Datafolder" />
-	<string key="AssociatedDataElementProviderHelper.RemoveAssociatedTypeToolTip" value="Remove datafolder" />
-	<string key="Website.Forms.Administrative.RemoveAssociatedType.FieldGroupLabel" value="Remove page datatype" />
-	<string key="Website.Forms.Administrative.RemoveAssociatedTypeFinalInfo.AssociationTypeLabel" value="Remove page datatype" />
-	<string key="Website.Forms.Administrative.RemoveAssociatedTypeFinalInfo.CompositionScopeRuleNameLabel" value="Composition scope rule name" />
-	<string key="Website.Forms.Administrative.RemoveAssociatedTypeSelectRuleName.KeySelectorLabel" value="Select a rule" />
-	<string key="Website.Forms.Administrative.RemoveAssociatedTypeSelectRuleName.KeySelectorHelp" value="The name of the rule to remove" />
-	<string key="Website.Forms.Administrative.RemoveAssociatedTypeSelectAssociationType.KeySelectorLabel" value="Select page datatype" />
-	<string key="Website.Forms.Administrative.RemoveAssociatedTypeSelectAssociationType.KeySelectorHelp" value="" />
-	<string key="Website.Forms.Administrative.RemoveAssociatedTypeSelectType.TypeSelectorLabel" value="Select datatype" />
-	<string key="Website.Forms.Administrative.RemoveAssociatedTypeSelectType.TypeSelectorHelp" value="Select one of the existing types" />
-	<string key="VirtualElementProviderElementProvider.ID01" value="Virtual root" />
+  <string key="UserElementProvider.MissingActiveLanguageMessage" value="To create a user a language is required, but no languages have been added yet. You can add one under the System perspective." />
+  <string key="UserElementProvider.UserLoginIsAlreadyUsed" value="User with the same login already exist" />
+  <string key="AssociatedDataElementProviderHelper.AddDataFolderTypeLabel" value="Add Datafolder" />
+  <string key="AssociatedDataElementProviderHelper.AddDataFolderTypeToolTip" value="Add Datafolder" />
+  <string key="AssociatedDataElementProviderHelper.AddAssociatedDataLabel" value="Add Data" />
+  <string key="AssociatedDataElementProviderHelper.AddAssociatedDataToolTip" value="Add data" />
+  <string key="AssociatedDataElementProviderHelper.EditAssociatedDataLabel" value="Edit Data" />
+  <string key="AssociatedDataElementProviderHelper.EditAssociatedDataToolTip" value="Edit data" />
+  <string key="AssociatedDataElementProviderHelper.DeleteAssociatedDataLabel" value="Delete Data" />
+  <string key="AssociatedDataElementProviderHelper.DeleteAssociatedDataToolTip" value="Delete data" />
+  <string key="AssociatedDataElementProviderHelper.DuplicateAssociatedDataLabel" value="Duplicate Data" />
+  <string key="AssociatedDataElementProviderHelper.DuplicateAssociatedDataToolTip" value="Duplicate data" />
+  <string key="AssociatedDataElementProviderHelper.LocalizeData" value="Localize" />
+  <string key="AssociatedDataElementProviderHelper.LocalizeDataToolTip" value="Localize data" />
+  <string key="AssociatedDataElementProviderHelper.DisabledData" value="Not yet approved or published" />
+  <string key="AssociatedDataElementProviderHelper.AddDataFolderExSelectType.FieldLabel" value="Add Datafolder" />
+  <string key="AssociatedDataElementProviderHelper.AddDataFolderExSelectType.SelectorLabel" value="Datafolder type" />
+  <string key="AssociatedDataElementProviderHelper.AddDataFolderExSelectType.SelectorHelp" value="Create new datatype or use an existing datatype (if present)." />
+  <string key="AssociatedDataElementProviderHelper.AddDataFolderExCreateNewType.LabelNewType" value="Settings" />
+  <string key="AssociatedDataElementProviderHelper.AddDataFolderExCreateNewType.LabelTypeName" value="Type name" />
+  <string key="AssociatedDataElementProviderHelper.AddDataFolderExCreateNewType.HelpTypeName" value="The technical name of the data type (ex. Product). This is used to identify this type in code and should not be changed once used externally." />
+  <string key="AssociatedDataElementProviderHelper.AddDataFolderExCreateNewType.LabelTypeNamespace" value="Type namespace" />
+  <string key="AssociatedDataElementProviderHelper.AddDataFolderExCreateNewType.HelpTypeNamespace" value="The namespace (module / category name) of the type. This is used to identify this type in code and should not be changed." />
+  <string key="AssociatedDataElementProviderHelper.AddDataFolderExCreateNewType.LabelTypeTitle" value="Title" />
+  <string key="AssociatedDataElementProviderHelper.AddDataFolderExCreateNewType.HelpTypeTitle" value="Use this entry to specify a user friendly name. You can change this field as you like." />
+  <string key="AssociatedDataElementProviderHelper.AddDataFolderExCreateNewType.LabelFields" value="Fields" />
+  <string key="AssociatedDataElementProviderHelper.AddDataFolderExCreateNewType.ServicesLabel" value="Services" />
+  <string key="AssociatedDataElementProviderHelper.AddDataFolderExCreateNewType.HasPublishing" value="Has publishing" />
+  <string key="AssociatedDataElementProviderHelper.AddDataFolderExCreateNewType.HasLocalization" value="Has localization" />
+  <string key="AssociatedDataElementProviderHelper.AddDataFolderExWorkflow.NoTypesTitle" value="No page datafolders exists" />
+  <string key="AssociatedDataElementProviderHelper.AddDataFolderExWorkflow.NoTypesMessage" value="No page datafolders have been created yet. You can create a page datafolder in the 'Data' perspective." />
+  <string key="AssociatedDataElementProviderHelper.AddDataFolderExWorkflow.NoUnusedTypesTitle" value="No Unused Page Datafolders Exist" />
+  <string key="AssociatedDataElementProviderHelper.AddDataFolderExWorkflow.NoUnusedTypesMessage" value="All available page datafolders have been added already. To create a new page datafolder go to the 'Data' perspective." />
+  <string key="AssociatedDataElementProviderHelper.AddDataFolderExCreateNewType.ErrorTitle" value="Error" />
+  <string key="AssociatedDataElementProviderHelper.AddDataFolderSelectType.FieldLabel" value="Select existing data folder type to add" />
+  <string key="AssociatedDataElementProviderHelper.AddDataFolderSelectType.SelectorLabel" value="Existing data folder types" />
+  <string key="AssociatedDataElementProviderHelper.AddDataFolderSelectType.SelectorHelp" value="Select existing data folder type to add" />
+  <string key="AssociatedDataElementProviderHelper.RemoveMetaDataTypeLabel" value="Remove Metadata Field" />
+  <string key="AssociatedDataElementProviderHelper.RemoveMetaDataTypeToolTip" value="Remove metadata field" />
+  <string key="AssociatedDataElementProviderHelper.DeleteDataFolderWorkflow.LabelFieldGroup" value="Remove Datafolder from Page" />
+  <string key="AssociatedDataElementProviderHelper.DeleteDataFolderWorkflow.FieldGroupLabel" value="Data cleanup" />
+  <string key="AssociatedDataElementProviderHelper.DeleteDataFolderWorkflow.DeleteFolderDataLabel" value="Delete data" />
+  <string key="AssociatedDataElementProviderHelper.DeleteDataFolderWorkflow.DeleteFolderDataCheckBoxLabel" value="Yes, delete folder data" />
+  <string key="AssociatedDataElementProviderHelper.DeleteDataFolderWorkflow.DeleteFolderDataHelp" value="If you want data in this folder to stay in the database, you should uncheck this option." />
+  <string key="AssociatedDataElementProviderHelper.AddMetaDataSelectType.LayoutLabel" value="Add Metadata Field" />
+  <string key="AssociatedDataElementProviderHelper.AddMetaDataTypeLabel" value="Add Metadata Field" />
+  <string key="AssociatedDataElementProviderHelper.AddMetaDataTypeToolTip" value="Add metadata field" />
+  <string key="AssociatedDataElementProviderHelper.AddMetaDataSelectType.FieldLabel" value="Select existing metadata type to add" />
+  <string key="AssociatedDataElementProviderHelper.AddMetaDataSelectType.SelectorLabel" value="Existing metadata types" />
+  <string key="AssociatedDataElementProviderHelper.AddMetaDataSelectType.SelectorHelp" value="Select existing metadata type to add" />
+  <string key="AssociatedDataElementProviderHelper.AddMetaDataWorkflow.NoTypesTitle" value="No page metadata types exists" />
+  <string key="AssociatedDataElementProviderHelper.AddMetaDataWorkflow.NoTypesMessage" value="No page metatypes have been created yet. You can create a Page metatype in the 'Data' perspective." />
+  <string key="AssociatedDataElementProviderHelper.AddMetaDataCreateFieldGroup.NamingFieldLabel" value="Metadata field group naming" />
+  <string key="AssociatedDataElementProviderHelper.AddMetaDataCreateFieldGroup.FieldGroupNameLabel" value="Name" />
+  <string key="AssociatedDataElementProviderHelper.AddMetaDataCreateFieldGroup.FieldGroupNameHelp" value="Enter a unique name identifying this metadata field group" />
+  <string key="AssociatedDataElementProviderHelper.AddMetaDataCreateFieldGroup.FieldGroupLabelLabel" value="Label" />
+  <string key="AssociatedDataElementProviderHelper.AddMetaDataCreateFieldGroup.FieldGroupLabelHelp" value="Enter a user friendly label for this metadata field group" />
+  <string key="AssociatedDataElementProviderHelper.AddMetaDataCreateFieldGroup.VisabilityFieldLabel" value="Metadata field group visibility" />
+  <string key="AssociatedDataElementProviderHelper.AddMetaDataCreateFieldGroup.ContainerSelectorLabel" value="Tab" />
+  <string key="AssociatedDataElementProviderHelper.AddMetaDataCreateFieldGroup.ContainerSelectorHelp" value="Select the tab for which this metadata should exists" />
+  <string key="AssociatedDataElementProviderHelper.AddMetaDataCreateFieldGroup.StartDisplaySelectorLabel" value="Start display from" />
+  <string key="AssociatedDataElementProviderHelper.AddMetaDataCreateFieldGroup.StartDisplaySelectorHelp" value="Start display from" />
+  <string key="AssociatedDataElementProviderHelper.AddMetaDataCreateFieldGroup.InheritDisplaySelectorLabel" value="Inherit display" />
+  <string key="AssociatedDataElementProviderHelper.AddMetaDataCreateFieldGroup.InheritDisplaySelectorHelp" value="Inherit display" />
+  <string key="AssociatedDataElementProviderHelper.NoItems.Title" value="The metadata field group has no items in scope" />
+  <string key="AssociatedDataElementProviderHelper.NoItems.Description" value="There are currently no items within the specified display range. Press Previous to change the display range or Finish to create the metadata field group." />
+  <string key="AssociatedDataElementProviderHelper.AddMetaDataWorkflow.StartDisplayOption0" value="This item" />
+  <string key="AssociatedDataElementProviderHelper.AddMetaDataWorkflow.StartDisplayOption1" value="Children" />
+  <string key="AssociatedDataElementProviderHelper.AddMetaDataWorkflow.StartDisplayOption2" value="2nd generation descendants" />
+  <string key="AssociatedDataElementProviderHelper.AddMetaDataWorkflow.StartDisplayOption3" value="3rd generation descendants" />
+  <string key="AssociatedDataElementProviderHelper.AddMetaDataWorkflow.StartDisplayOption4" value="4th generation descendants" />
+  <string key="AssociatedDataElementProviderHelper.AddMetaDataWorkflow.StartDisplayOption5" value="5th generation descendants" />
+  <string key="AssociatedDataElementProviderHelper.AddMetaDataWorkflow.InheritDisplayOption0" value="Do not inherit" />
+  <string key="AssociatedDataElementProviderHelper.AddMetaDataWorkflow.InheritDisplayOption1" value="Inherit 1 generation" />
+  <string key="AssociatedDataElementProviderHelper.AddMetaDataWorkflow.InheritDisplayOption2" value="Inherit 2 generations" />
+  <string key="AssociatedDataElementProviderHelper.AddMetaDataWorkflow.InheritDisplayOption3" value="Inherit 3 generations" />
+  <string key="AssociatedDataElementProviderHelper.AddMetaDataWorkflow.InheritDisplayOption4" value="Always inherit" />
+  <string key="AssociatedDataElementProviderHelper.AddMetaDataWorkflow.FieldGroupNameNotValid" value="The field group name is in use" />
+  <string key="AssociatedDataElementProviderHelper.DeleteMetaDataSelectType.LayoutLabel" value="Remove Metadata Field Group" />
+  <string key="AssociatedDataElementProviderHelper.DeleteMetaDataSelectFieldGroupName.FieldLabel" value="Select a metadata field group to remove" />
+  <string key="AssociatedDataElementProviderHelper.DeleteMetaDataSelectFieldGroupName.SelectorLabel" value="Field group" />
+  <string key="AssociatedDataElementProviderHelper.DeleteMetaDataSelectFieldGroupName.SelectorHelp" value="Select a metadata field group to remove" />
+  <string key="AssociatedDataElementProviderHelper.EditMetaDataTypeLabel" value="Edit Metadata Field" />
+  <string key="AssociatedDataElementProviderHelper.EditMetaDataTypeToolTip" value="Edit metadata field" />
+  <string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.Layout.Label" value="Edit Page Metadata Field" />
+  <string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.FieldGroup.Label" value="Page metadata field settings" />
+  <string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.LabelTextBox.Label" value="Label" />
+  <string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.LabelTextBox.Help" value="The label of the metadata field. Used when editing pages" />
+  <string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.MetaDataContainerSelector.Label" value="Tab" />
+  <string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.MetaDataContainerSelector.Help" value="Select the tab for which this metadata should exists" />
+  <string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.StartDisplaySelectorLabel" value="Start display from" />
+  <string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.StartDisplaySelectorHelp" value="Start display from" />
+  <string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.InheritDisplaySelectorLabel" value="Inherit display" />
+  <string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.InheritDisplaySelectorHelp" value="Inherit display" />
+  <string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.MetaDataDefinitionSelector.Label" value="Metadata field" />
+  <string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.MetaDataDefinitionSelector.Help" value="Select the metadata field to edit" />
+  <string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.NoMetaDataDefinitionsExists.Title" value="No Metadata Fields to Edit" />
+  <string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.NoMetaDataDefinitionsExists.Message" value="There is no metadata fields defined on this item to edit" />
+  <string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.MetaDataFieldNameAlreadyUsed" value="The metadata type is used another place with same name but different label" />
+  <string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.MetaDataContainerChangeNotAllowed" value="There exists one or more definitions with the same name, container change is not allowed" />
+  <string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.NoDefaultValuesNeeded.Title" value="Press finish to save" />
+  <string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.NoDefaultValuesNeeded.Description" value="All required information has been gathered. Press Finish to update the metadata field" />
+  <string key="AssociatedDataElementProviderHelper.DeleteMetaDataWorkflow.NoDefinedTypesExists.Title" value="No Metadata Fields to Remove" />
+  <string key="AssociatedDataElementProviderHelper.DeleteMetaDataWorkflow.NoDefinedTypesExists.Message" value="There is no metadata fields defined on this item to remove" />
+  <string key="DeleteAssociatedDataWorkflow.CascadeDeleteErrorTitle" value="Cascade delete error" />
+  <string key="DeleteAssociatedDataWorkflow.CascadeDeleteErrorMessage" value="The type is referenced by another type that does not allow cascade deletes. This operation is halted" />
+  <string key="Website.Forms.Administrative.CreateNewAssociatedTypeStep1.LabelNewType" value="Settings" />
+  <string key="Website.Forms.Administrative.CreateNewAssociatedTypeStep1.LabelTypeName" value="Type name" />
+  <string key="Website.Forms.Administrative.CreateNewAssociatedTypeStep1.HelpTypeName" value="The name of the new type that you are creating (ex. product)" />
+  <string key="Website.Forms.Administrative.CreateNewAssociatedTypeStep1.LabelTypeNamespace" value="Type namespace" />
+  <string key="Website.Forms.Administrative.CreateNewAssociatedTypeStep1.HelpTypeNamespace" value="The name of the module, category or namespace that you are creating" />
+  <string key="Website.Forms.Administrative.CreateNewAssociatedTypeStep1.LabelTypeTitle" value="Title" />
+  <string key="Website.Forms.Administrative.CreateNewAssociatedTypeStep1.HelpTypeTitle" value="Use this entry to specify a user friendly name" />
+  <string key="Website.Forms.Administrative.CreateNewAssociatedTypeStep1.LabelFields" value="Fields" />
+  <string key="Website.Forms.Administrative.CreateNewAssociatedTypeStep1.ServicesLabel" value="Services" />
+  <string key="Website.Forms.Administrative.CreateNewAssociatedTypeStep1.HasVersioning" value="Has versioning" />
+  <string key="Website.Forms.Administrative.CreateNewAssociatedTypeStep1.HasPublishing" value="Has publishing" />
+  <string key="Website.Forms.Administrative.DeleteAssociatedTypeDataStep1.FieldGroupLabel" value="Delete Data?" />
+  <string key="Website.Forms.Administrative.DeleteAssociatedTypeDataStep1.Text" value="Delete data?" />
+  <string key="Website.Forms.Administrative.AddAssociatedDataWorkflow.FieldGroupLabel" value="Add page data" />
+  <string key="Website.Forms.Administrative.AddAssociatedDataWorkflow.TypeSelectorLabel" value="Select a datatype to add" />
+  <string key="Website.Forms.Administrative.AddAssociatedDataWorkflow.TypeSelectorHelp" value="Select one of the existing types to add data to" />
+  <string key="Website.Forms.Administrative.AddAssociatedTypeWorkflow.FieldGroupLabel" value="Add page datatype" />
+  <string key="Website.Forms.Administrative.AddAssociatedTypeAddExisting.TypeSelectorLabel" value="Select type to add" />
+  <string key="Website.Forms.Administrative.AddAssociatedTypeAddExisting.TypeSelectorHelp" value="Select one of the existing types in the system" />
+  <string key="Website.Forms.Administrative.AddAssociatedTypeAddExistingSelectForeignKey.KeySelectorLabel" value="Select a foreign key" />
+  <string key="Website.Forms.Administrative.AddAssociatedTypeAddExistingSelectForeignKey.KeySelectorHelp" value="Select one of the fields from the type to use as foreign key" />
+  <string key="Website.Forms.Administrative.AddAssociatedTypeAddingTypeSelection.KeySelectorLabel" value="Add a" />
+  <string key="Website.Forms.Administrative.AddAssociatedTypeAddingTypeSelection.KeySelectorHelp" value="Creating a new type or using an existing type" />
+  <string key="Website.Forms.Administrative.AddAssociatedTypeAssociationTypeSelection.KeySelectorLabel" value="Select type:" />
+  <string key="Website.Forms.Administrative.AddAssociatedTypeAssociationTypeSelection.KeySelectorHelp" value="Regular data is a new type that are created under a page. Metadata is a new field that are created on a page" />
+  <string key="Website.Forms.Administrative.AddAssociatedTypeCompositionScopeSelection.ScopeRuleNameLabel" value="Rule name" />
+  <string key="Website.Forms.Administrative.AddAssociatedTypeCompositionScopeSelection.ScopeRuleNameHelp" value="Rule name are saved with the metadata and are a part of the metadata key. The name must be unique." />
+  <string key="Website.Forms.Administrative.AddAssociatedTypeCompositionScopeSelection.ScopeRuleLabelLabel" value="Rule label" />
+  <string key="Website.Forms.Administrative.AddAssociatedTypeCompositionScopeSelection.ScopeRuleHelpHelp" value="Rule label is used as a user friendly name for the instance. Can be localized" />
+  <string key="Website.Forms.Administrative.AddAssociatedTypeCompositionScopeSelection.ContainerKeySelectorLabel" value="Select composition container" />
+  <string key="Website.Forms.Administrative.AddAssociatedTypeCompositionScopeSelection.ContainerKeySelectorHelp" value="Select container for the new rule." />
+  <string key="Website.Forms.Administrative.AddAssociatedTypeCompositionScopeSelection.ScopeKeySelectorLabel" value="Select composition scope" />
+  <string key="Website.Forms.Administrative.AddAssociatedTypeCompositionScopeSelection.ScopeKeySelectorHelp" value="Select the scope for the new composition" />
+  <string key="Website.Forms.Administrative.AddAssociatedTypeLevelsScopeSelection.LevelsLabel" value="Levels" />
+  <string key="Website.Forms.Administrative.AddAssociatedTypeLevelsScopeSelection.LevelsHelp" value="The depth of sub pages in which the composition will be visible" />
+  <string key="Website.Forms.Administrative.AddAssociatedTypeFinalInfo.AssociationTypeLabel" value="Confirm new datatype:" />
+  <string key="Website.Forms.Administrative.AddAssociatedTypeFinalInfo.AssociationTypeHelp" value="Metadata is a new field that are created on a page" />
+  <string key="Website.Forms.Administrative.AddAssociatedTypeFinalInfo.CompositionScopeRuleNameLabel" value="Composition scope rule name" />
+  <string key="Website.Forms.Administrative.AddAssociatedTypeFinalInfo.CompositionScopeRuleNameHelp" value="Rule name are saved with the metadata and are a part of the metadata key. The name must be unique." />
+  <string key="Website.Forms.Administrative.AddAssociatedTypeFinalInfo.CompositionScopeRuleLabelLabel" value="Composition scope rule label" />
+  <string key="Website.Forms.Administrative.AddAssociatedTypeFinalInfo.CompositionScopeRuleHelpHelp" value="Rule label is used as a user friendly name for the instance. Can be localized" />
+  <string key="Website.Forms.Administrative.AddAssociatedTypeFinalInfo.CompositionScopeLabel" value="Composition scope" />
+  <string key="Website.Forms.Administrative.AddAssociatedTypeFinalInfo.CompositionScopeHelp" value="This is the scope in which the new composition will be visible when editing pages" />
+  <string key="Website.Forms.Administrative.AddAssociatedTypeFinalInfo.AddingTypeLabel" value="Adding type" />
+  <string key="Website.Forms.Administrative.AddAssociatedTypeFinalInfo.AddingTypeHelp" value="Create a new type or use an existing type" />
+  <string key="Website.Forms.Administrative.AddAssociatedTypeFinalInfo.ExistingTypeNameLabel" value="Existing type name" />
+  <string key="Website.Forms.Administrative.AddAssociatedTypeFinalInfo.ExistingTypeNameHelp" value="The name of the selected existing type in the system to use" />
+  <string key="Website.Forms.Administrative.AddAssociatedTypeFinalInfo.ForeignKeyFieldNameLabel" value="Foreign key field name" />
+  <string key="Website.Forms.Administrative.AddAssociatedTypeFinalInfo.ForeignKeyFieldNameHelp" value="The name of the field of the existing type to use as a foreign key " />
+  <string key="AssociatedDataElementProviderHelper.RemoveAssociatedTypeLabel" value="Remove Datafolder" />
+  <string key="AssociatedDataElementProviderHelper.RemoveAssociatedTypeToolTip" value="Remove datafolder" />
+  <string key="Website.Forms.Administrative.RemoveAssociatedType.FieldGroupLabel" value="Remove page datatype" />
+  <string key="Website.Forms.Administrative.RemoveAssociatedTypeFinalInfo.AssociationTypeLabel" value="Remove page datatype" />
+  <string key="Website.Forms.Administrative.RemoveAssociatedTypeFinalInfo.CompositionScopeRuleNameLabel" value="Composition scope rule name" />
+  <string key="Website.Forms.Administrative.RemoveAssociatedTypeSelectRuleName.KeySelectorLabel" value="Select a rule" />
+  <string key="Website.Forms.Administrative.RemoveAssociatedTypeSelectRuleName.KeySelectorHelp" value="The name of the rule to remove" />
+  <string key="Website.Forms.Administrative.RemoveAssociatedTypeSelectAssociationType.KeySelectorLabel" value="Select page datatype" />
+  <string key="Website.Forms.Administrative.RemoveAssociatedTypeSelectAssociationType.KeySelectorHelp" value="" />
+  <string key="Website.Forms.Administrative.RemoveAssociatedTypeSelectType.TypeSelectorLabel" value="Select datatype" />
+  <string key="Website.Forms.Administrative.RemoveAssociatedTypeSelectType.TypeSelectorHelp" value="Select one of the existing types" />
+  <string key="VirtualElementProviderElementProvider.ID01" value="Virtual root" />
   <string key="VirtualElementProviderElementProvider.PermissionsPerspective" value="Users and Permissions" />
-	<string key="VirtualElementProviderElementProvider.UserPerspective" value="Users" />
-	<string key="VirtualElementProviderElementProvider.DeveloperApplicationPerspective" value="Developer Apps" />
-	<string key="VirtualElementProviderElementProvider.UserGroupPerspective" value="User Groups" />
-	<string key="VirtualElementProviderElementProvider.SystemPerspective" value="System" />
-	<string key="VirtualElementProviderElementProvider.ContentPerspective" value="Content" />
-	<string key="VirtualElementProviderElementProvider.DatasPerspective" value="Data" />
-	<string key="VirtualElementProviderElementProvider.DesignPerspective" value="Layout" />
-	<string key="VirtualElementProviderElementProvider.FunctionsPerspective" value="Functions" />
-	<string key="VirtualElementProviderElementProvider.MediaFilePerspective" value="All Media Files" />
-	<string key="VirtualElementProviderElementProvider.MediaPerspective" value="Media" />
-	<string key="VirtualElementProviderElementProvider.ReadOnlyFunctionPerspective" value="All Functions" />
-	<string key="VirtualElementProviderElementProvider.ReadOnlyWidgetFunctionPerspective" value="All Widget Functions" />
-	<string key="VirtualElementProviderElementProvider.SqlFunctionPerspective" value="SQL Functions" />
-	<string key="VirtualElementProviderElementProvider.XsltBasedFunctionPerspective" value="Xslt Based Functions" />
-	<string key="VirtualElementProviderElementProvider.RootActions.SendMessageLabel" value="Broadcast Message" />
-	<string key="VirtualElementProviderElementProvider.RootActions.SendMessageTooltip" value="Send a message to all running consoles" />
+  <string key="VirtualElementProviderElementProvider.UserPerspective" value="Users" />
+  <string key="VirtualElementProviderElementProvider.DeveloperApplicationPerspective" value="Developer Apps" />
+  <string key="VirtualElementProviderElementProvider.UserGroupPerspective" value="User Groups" />
+  <string key="VirtualElementProviderElementProvider.SystemPerspective" value="System" />
+  <string key="VirtualElementProviderElementProvider.ContentPerspective" value="Content" />
+  <string key="VirtualElementProviderElementProvider.DatasPerspective" value="Data" />
+  <string key="VirtualElementProviderElementProvider.DesignPerspective" value="Layout" />
+  <string key="VirtualElementProviderElementProvider.FunctionsPerspective" value="Functions" />
+  <string key="VirtualElementProviderElementProvider.MediaFilePerspective" value="All Media Files" />
+  <string key="VirtualElementProviderElementProvider.MediaPerspective" value="Media" />
+  <string key="VirtualElementProviderElementProvider.ReadOnlyFunctionPerspective" value="All Functions" />
+  <string key="VirtualElementProviderElementProvider.ReadOnlyWidgetFunctionPerspective" value="All Widget Functions" />
+  <string key="VirtualElementProviderElementProvider.SqlFunctionPerspective" value="SQL Functions" />
+  <string key="VirtualElementProviderElementProvider.XsltBasedFunctionPerspective" value="Xslt Based Functions" />
+  <string key="VirtualElementProviderElementProvider.RootActions.SendMessageLabel" value="Broadcast Message" />
+  <string key="VirtualElementProviderElementProvider.RootActions.SendMessageTooltip" value="Send a message to all running consoles" />
   <string key="VirtualElementProviderElementProvider.RootActions.SetTimezoneLabel" value="Time Zone Settings" />
   <string key="VirtualElementProviderElementProvider.RootActions.SetTimezoneTooltip" value="Time zone to be displayed for all users within the console" />
   <string key="VirtualElementProviderElementProvider.RootActions.GlobalSetting" value="Global Settings" />
   <string key="VirtualElementProviderElementProvider.RootActions.RestartApplicationLabel" value="Restart server" />
-	<string key="VirtualElementProviderElementProvider.RootActions.RestartApplicationTooltip" value="Restart the server" />
-	<string key="SendMessageToConsolesWorkflow.Layout.Label" value="Broadcast Message to All {applicationname} Consoles" />
-	<string key="SendMessageToConsolesWorkflow.TitleTextBox.Label" value="Title" />
+  <string key="VirtualElementProviderElementProvider.RootActions.RestartApplicationTooltip" value="Restart the server" />
+  <string key="SendMessageToConsolesWorkflow.Layout.Label" value="Broadcast Message to All {applicationname} Consoles" />
+  <string key="SendMessageToConsolesWorkflow.TitleTextBox.Label" value="Title" />
   <string key="SendMessageToConsolesWorkflow.TitleTextBox.Help" value="Dialog title of broadcast message" />
-	<string key="SendMessageToConsolesWorkflow.MessageTextArea.Label" value="Message" />
-	<string key="SendMessageToConsolesWorkflow.MessageTextArea.Help" value="The message to broadcast" />
+  <string key="SendMessageToConsolesWorkflow.MessageTextArea.Label" value="Message" />
+  <string key="SendMessageToConsolesWorkflow.MessageTextArea.Help" value="The message to broadcast" />
   <string key="SendMessageToConsolesWorkflow.SuccessMessage.TimezoneChangedTitle" value="Time Zone Updated" />
   <string key="SendMessageToConsolesWorkflow.SuccessMessage.TimezoneChangedMessage" value="Time zone has been successfully updated" />
   <string key="SetTimezoneWorkflow.Layout.Label" value="Set Time Zone Display" />
@@ -295,327 +294,326 @@
   <string key="SetTimezoneWorkflow.TitleTextBox.Help" value="Time zone to be displayed for all users within the console. The console will restart once time zone updated. Any unsaved changes will be lost." />
   <string key="SetTimezoneWorkflow.WarningText.Text" value="Time zone update requires a console restart. Any unsaved changes will be lost." />
   <string key="LoginWebRequestHandler.Login" value="Login" />
-	<string key="LoginWebRequestHandler.Header" value="Login to {0}" />
-	<string key="LoginWebRequestHandler.LoginFailed" value="Incorrect user name or password" />
-	<string key="LoginWebRequestHandler.Password" value="Password" />
-	<string key="LoginWebRequestHandler.Username" value="Username" />
-	<string key="LoginWebRequestHandler.LogInAsOtherUser" value="Log in as another user." />
-	<string key="LoginWebRequestHandler.WrongUserNameOrPassword" value="Wrong username or password." />
-	<string key="LoginWebRequestHandler.UserNameNotRegistered" value="The supplied Windows login, {0}\{1} is not registered in the user database. You must use a different login." />
-	<string key="DataInterfaceValidator.TypeNotAnInterface" value="The type {0} is not an interface." />
-	<string key="DataInterfaceValidator.TypeDoesNotImplementInterface" value="The interface type {0} does not implement the interface {1}." />
-	<string key="DataInterfaceValidator.NotAcceptedType" value="The property {0} on the interface type {1} is not a accepted type." />
-	<string key="DataInterfaceValidator.NotValidIDataInterface" value="The interface {0} is not a valid IData interface." />
-	<string key="DeleteMediaFileWorkflow.CascadeDeleteErrorTitle" value="Cascade delete error" />
-	<string key="DeleteMediaFileWorkflow.CascadeDeleteErrorMessage" value="The type is referenced by another type that does not allow cascade deletes. This operation is halted" />
-	<string key="DeleteMediaFolderWorkflow.CascadeDeleteErrorTitle" value="Cascade delete error" />
-	<string key="DeleteMediaFolderWorkflow.CascadeDeleteErrorMessage" value="The type is referenced by another type that does not allow cascade deletes. This operation is halted" />
-	<string key="MediaFileProviderElementProvider.RootToolTip" value="Add folders and files to the media archive" />
-	<string key="MediaFileProviderElementProvider.AddMediaFolder" value="Add Folder" />
-	<string key="MediaFileProviderElementProvider.AddMediaFolderToolTip" value="Add new media folder" />
-	<string key="MediaFileProviderElementProvider.AddMediaFile" value="Upload File" />
-	<string key="MediaFileProviderElementProvider.AddMediaFileToolTip" value="Add new media file" />
-	<string key="MediaFileProviderElementProvider.DeleteMediaFile" value="Delete File" />
-	<string key="MediaFileProviderElementProvider.DeleteMediaFileToolTip" value="Delete the selected media file" />
-	<string key="MediaFileProviderElementProvider.DeleteMediaFolder" value="Delete Folder" />
-	<string key="MediaFileProviderElementProvider.DeleteMediaFolderToolTip" value="Delete the media folder and all items under it." />
-	<string key="MediaFileProviderElementProvider.Download" value="Download" />
-	<string key="MediaFileProviderElementProvider.DownloadToolTip" value="Download file" />
-	<string key="MediaFileProviderElementProvider.EditMediaFile" value="File Properties" />
-	<string key="MediaFileProviderElementProvider.EditMediaFileToolTip" value="Rename the selected media file" />
-	<string key="MediaFileProviderElementProvider.EditMediaFileTextContent" value="Edit text" />
-	<string key="MediaFileProviderElementProvider.EditMediaFileTextContentToolTip" value="Edit text content" />
-	<string key="MediaFileProviderElementProvider.EditImage" value="Image Editor" />
-	<string key="MediaFileProviderElementProvider.EditImageToolTip" value="Open the selected media file in the image editor" />
-	<string key="MediaFileProviderElementProvider.EditMediaFolder" value="Folder Properties" />
-	<string key="MediaFileProviderElementProvider.EditMediaFolderToolTip" value="Edit media folder properties" />
-	<string key="MediaFileProviderElementProvider.ChangeMediaFile" value="Replace File" />
-	<string key="MediaFileProviderElementProvider.ChangeMediaFileToolTip" value="Replace the selected with another media file" />
-	<string key="MediaFileProviderElementProvider.UploadZipFile" value="Upload Multiple" />
-	<string key="MediaFileProviderElementProvider.UploadZipFileToolTip" value="Upload Zip file" />
-	<string key="MediaFileProviderElementProvider.MediaFileItemToolTip" value="Media Item" />
-	<string key="MediaFileProviderElementProvider.OrganizedFilesAndFoldersToolTip" value="Organize folders and files" />
-	<string key="MediaFileProviderElementProvider.ErrorMessageTitle" value="Error" />
-	<string key="MediaFileProviderElementProvider.FileAlreadyExistsMessage" value="File '{0}' already exists in folder '{1}'" />
-	<string key="UploadNewMediaFileWorkflow.UploadFailure" value="Failure" />
-	<string key="UploadNewMediaFileWorkflow.UploadFailureMessage" value="The uploaded file must be of the same type as the original. The file you uploaded is of a different type." />
-	<string key="RelationshipGraphActionExecutor.ShowGraph" value="Show Graph" />
-	<string key="RelationshipGraphActionExecutor.ShowGraphToolTip" value="Show relationship graph" />
-	<string key="RelationshipGraphActionExecutor.ShowOrientedGraph" value="Show Oriented Graph" />
-	<string key="RelationshipGraphActionExecutor.ShowOrientedGraphToolTip" value="Show Oriented Relationship graph" />
-	<string key="ShowElementInformationActionExecutor.ShowElementInformation.Label" value="Show Element Information" />
-	<string key="ShowElementInformationActionExecutor.ShowElementInformation.ToolTip" value="Show Element Information" />
-	<string key="RelationshipGraphActionExecutor.Search" value="Search elements" />
-	<string key="RelationshipGraphActionExecutor.SearchToolTip" value="Search for elements" />
-	<string key="RelationshipGraphActionExecutor.SearchElements" value="Search elements" />
-	<string key="RelationshipGraphActionExecutor.SearchElementsToolTip" value="Search for elements" />
-	<!-- WEBSITE -->
-	<string key="Website.General.LabelVersionNumber" value="Version No." />
-	<string key="Website.Application.DialogReload.Title" value="Restart?" />
-	<string key="Website.Application.DialogReload.Text" value="Restart {applicationname}? All unsaved changes will be lost." />
-	<string key="WebSite.Application.DialogSaveResource.Title" value="Save Resource?" />
-	<string key="WebSite.Application.DialogSaveResource.Text" value="&quot;${resourcename}&quot; has been modified. Save changes?" />
-	<string key="Website.Dialogs.SaveAll.LabelSaveResources" value="Save Resources?" />
-	<string key="Website.Dialogs.SaveAll.LabelUnsavedResources" value="Unsaved resources" />
-	<string key="Website.Dialogs.LabelYes" value="Yes" />
-	<string key="Website.Dialogs.LabelNo" value="No" />
-	<string key="Website.Dialogs.LabelAccept" value="OK" />
-	<string key="Website.Dialogs.LabelCancel" value="Cancel" />
-	<string key="Website.Dialogs.LabelDisclosure" value="More Info" />
-	<string key="Website.Dialogs.About.Title" value="About {applicationname}" />
-	<string key="Website.Dialogs.About.LabelCredits" value="Credits" />
-	<string key="Website.Dialogs.About.LabelBack" value="Back" />
-	<string key="Website.Dialogs.About.LabelCredits2" value="Credits" />
-
-	<string key="Website.Dialogs.NoAccessTitle" value="No access" />
-	<string key="Website.Dialogs.NoAccessText" value="You have not been granted access rights to the system. Please contact your administrator." />
-	<string key="Website.Dialogs.ImageEditor.ScaleImage.Unit" value="Unit" />
-	<string key="Website.Dialogs.ImageEditor.ScaleImage.Width" value="Width" />
-	<string key="Website.Dialogs.ImageEditor.ScaleImage.Height" value="Height" />
-	<string key="Website.Dialogs.ImageEditor.ScaleImage.LabelScaleImage" value="Scale Image" />
-	<string key="Website.Dialogs.ImageEditor.ScaleImage.LabelDimensions" value="Dimensions" />
-	<string key="Website.Dialogs.ImageEditor.ScaleImage.LabelImageSize" value="Image Size" />
-	<string key="Website.Dialogs.ImageEditor.ScaleImage.LabelFixedRatio" value="Fixed Ratio" />
-	<string key="Website.Dialogs.ImageEditor.ScaleImage.LabelFreeResize" value="Free Resize" />
-	<string key="Website.Dialogs.ImageEditor.ScaleImage.LabelPixels" value="Pixels" />
-	<string key="Website.Dialogs.ImageEditor.ScaleImage.LabelPercent" value="Percent" />
-	<string key="Website.Dialogs.Options.LoginScreen" value="Login screen" />
-	<string key="Website.Dialogs.Options.LabelOptions" value="Options" />
-	<string key="Website.Dialogs.Options.LabelGeneral" value="General" />
-	<string key="Website.Dialogs.Options.LabelAdvanced" value="Advanced" />
-	<string key="Website.Dialogs.Options.LabelLoginPreferences" value="Login Preferences" />
-	<string key="Website.Dialogs.Options.LabelFakeLoginScreen" value="Fake login screen" />
-	<string key="Website.Dialogs.Options.LabelNoLoginScreen" value="No login screen" />
-	<string key="Website.Dialogs.WebServices.Error" value="Error in web service method " />
-	<string key="Website.Dialogs.WebServices.LabelWebServiceError" value="Web Service Error" />
-	<string key="Website.Dialogs.SystemTree.DetailedPaste.Title" value="Insert Where?" />
-	<string key="Website.Dialogs.SystemTree.DetailedPaste.LabelPosition" value="Position" />
-	<string key="Website.Dialogs.SystemTree.DetailedPaste.LabelInsertBefore" value="Insert before" />
-	<string key="Website.Dialogs.SystemTree.DetailedPaste.LabelInsertAfter" value="Insert after" />
+  <string key="LoginWebRequestHandler.Header" value="Login to {0}" />
+  <string key="LoginWebRequestHandler.LoginFailed" value="Incorrect user name or password" />
+  <string key="LoginWebRequestHandler.Password" value="Password" />
+  <string key="LoginWebRequestHandler.Username" value="Username" />
+  <string key="LoginWebRequestHandler.LogInAsOtherUser" value="Log in as another user." />
+  <string key="LoginWebRequestHandler.WrongUserNameOrPassword" value="Wrong username or password." />
+  <string key="LoginWebRequestHandler.UserNameNotRegistered" value="The supplied Windows login, {0}\{1} is not registered in the user database. You must use a different login." />
+  <string key="DataInterfaceValidator.TypeNotAnInterface" value="The type {0} is not an interface." />
+  <string key="DataInterfaceValidator.TypeDoesNotImplementInterface" value="The interface type {0} does not implement the interface {1}." />
+  <string key="DataInterfaceValidator.NotAcceptedType" value="The property {0} on the interface type {1} is not a accepted type." />
+  <string key="DataInterfaceValidator.NotValidIDataInterface" value="The interface {0} is not a valid IData interface." />
+  <string key="DeleteMediaFileWorkflow.CascadeDeleteErrorTitle" value="Cascade delete error" />
+  <string key="DeleteMediaFileWorkflow.CascadeDeleteErrorMessage" value="The type is referenced by another type that does not allow cascade deletes. This operation is halted" />
+  <string key="DeleteMediaFolderWorkflow.CascadeDeleteErrorTitle" value="Cascade delete error" />
+  <string key="DeleteMediaFolderWorkflow.CascadeDeleteErrorMessage" value="The type is referenced by another type that does not allow cascade deletes. This operation is halted" />
+  <string key="MediaFileProviderElementProvider.RootToolTip" value="Add folders and files to the media archive" />
+  <string key="MediaFileProviderElementProvider.AddMediaFolder" value="Add Folder" />
+  <string key="MediaFileProviderElementProvider.AddMediaFolderToolTip" value="Add new media folder" />
+  <string key="MediaFileProviderElementProvider.AddMediaFile" value="Upload File" />
+  <string key="MediaFileProviderElementProvider.AddMediaFileToolTip" value="Add new media file" />
+  <string key="MediaFileProviderElementProvider.DeleteMediaFile" value="Delete File" />
+  <string key="MediaFileProviderElementProvider.DeleteMediaFileToolTip" value="Delete the selected media file" />
+  <string key="MediaFileProviderElementProvider.DeleteMediaFolder" value="Delete Folder" />
+  <string key="MediaFileProviderElementProvider.DeleteMediaFolderToolTip" value="Delete the media folder and all items under it." />
+  <string key="MediaFileProviderElementProvider.Download" value="Download" />
+  <string key="MediaFileProviderElementProvider.DownloadToolTip" value="Download file" />
+  <string key="MediaFileProviderElementProvider.EditMediaFile" value="File Properties" />
+  <string key="MediaFileProviderElementProvider.EditMediaFileToolTip" value="Rename the selected media file" />
+  <string key="MediaFileProviderElementProvider.EditMediaFileTextContent" value="Edit text" />
+  <string key="MediaFileProviderElementProvider.EditMediaFileTextContentToolTip" value="Edit text content" />
+  <string key="MediaFileProviderElementProvider.EditImage" value="Image Editor" />
+  <string key="MediaFileProviderElementProvider.EditImageToolTip" value="Open the selected media file in the image editor" />
+  <string key="MediaFileProviderElementProvider.EditMediaFolder" value="Folder Properties" />
+  <string key="MediaFileProviderElementProvider.EditMediaFolderToolTip" value="Edit media folder properties" />
+  <string key="MediaFileProviderElementProvider.ChangeMediaFile" value="Replace File" />
+  <string key="MediaFileProviderElementProvider.ChangeMediaFileToolTip" value="Replace the selected with another media file" />
+  <string key="MediaFileProviderElementProvider.UploadZipFile" value="Upload Multiple" />
+  <string key="MediaFileProviderElementProvider.UploadZipFileToolTip" value="Upload Zip file" />
+  <string key="MediaFileProviderElementProvider.MediaFileItemToolTip" value="Media Item" />
+  <string key="MediaFileProviderElementProvider.OrganizedFilesAndFoldersToolTip" value="Organize folders and files" />
+  <string key="MediaFileProviderElementProvider.ErrorMessageTitle" value="Error" />
+  <string key="MediaFileProviderElementProvider.FileAlreadyExistsMessage" value="File '{0}' already exists in folder '{1}'" />
+  <string key="UploadNewMediaFileWorkflow.UploadFailure" value="Failure" />
+  <string key="UploadNewMediaFileWorkflow.UploadFailureMessage" value="The uploaded file must be of the same type as the original. The file you uploaded is of a different type." />
+  <string key="RelationshipGraphActionExecutor.ShowGraph" value="Show Graph" />
+  <string key="RelationshipGraphActionExecutor.ShowGraphToolTip" value="Show relationship graph" />
+  <string key="RelationshipGraphActionExecutor.ShowOrientedGraph" value="Show Oriented Graph" />
+  <string key="RelationshipGraphActionExecutor.ShowOrientedGraphToolTip" value="Show Oriented Relationship graph" />
+  <string key="ShowElementInformationActionExecutor.ShowElementInformation.Label" value="Show Element Information" />
+  <string key="ShowElementInformationActionExecutor.ShowElementInformation.ToolTip" value="Show Element Information" />
+  <string key="RelationshipGraphActionExecutor.Search" value="Search elements" />
+  <string key="RelationshipGraphActionExecutor.SearchToolTip" value="Search for elements" />
+  <string key="RelationshipGraphActionExecutor.SearchElements" value="Search elements" />
+  <string key="RelationshipGraphActionExecutor.SearchElementsToolTip" value="Search for elements" />
+  <!-- WEBSITE -->
+  <string key="Website.General.LabelVersionNumber" value="Version No." />
+  <string key="Website.Application.DialogReload.Title" value="Restart?" />
+  <string key="Website.Application.DialogReload.Text" value="Restart {applicationname}? All unsaved changes will be lost." />
+  <string key="WebSite.Application.DialogSaveResource.Title" value="Save Resource?" />
+  <string key="WebSite.Application.DialogSaveResource.Text" value="&quot;${resourcename}&quot; has been modified. Save changes?" />
+  <string key="Website.Dialogs.SaveAll.LabelSaveResources" value="Save Resources?" />
+  <string key="Website.Dialogs.SaveAll.LabelUnsavedResources" value="Unsaved resources" />
+  <string key="Website.Dialogs.LabelYes" value="Yes" />
+  <string key="Website.Dialogs.LabelNo" value="No" />
+  <string key="Website.Dialogs.LabelAccept" value="OK" />
+  <string key="Website.Dialogs.LabelCancel" value="Cancel" />
+  <string key="Website.Dialogs.LabelDisclosure" value="More Info" />
+  <string key="Website.Dialogs.About.Title" value="About {applicationname}" />
+  <string key="Website.Dialogs.About.LabelCredits" value="Credits" />
+  <string key="Website.Dialogs.About.LabelBack" value="Back" />
+  <string key="Website.Dialogs.About.LabelCredits2" value="Credits" />
+  <string key="Website.Dialogs.NoAccessTitle" value="No access" />
+  <string key="Website.Dialogs.NoAccessText" value="You have not been granted access rights to the system. Please contact your administrator." />
+  <string key="Website.Dialogs.ImageEditor.ScaleImage.Unit" value="Unit" />
+  <string key="Website.Dialogs.ImageEditor.ScaleImage.Width" value="Width" />
+  <string key="Website.Dialogs.ImageEditor.ScaleImage.Height" value="Height" />
+  <string key="Website.Dialogs.ImageEditor.ScaleImage.LabelScaleImage" value="Scale Image" />
+  <string key="Website.Dialogs.ImageEditor.ScaleImage.LabelDimensions" value="Dimensions" />
+  <string key="Website.Dialogs.ImageEditor.ScaleImage.LabelImageSize" value="Image Size" />
+  <string key="Website.Dialogs.ImageEditor.ScaleImage.LabelFixedRatio" value="Fixed Ratio" />
+  <string key="Website.Dialogs.ImageEditor.ScaleImage.LabelFreeResize" value="Free Resize" />
+  <string key="Website.Dialogs.ImageEditor.ScaleImage.LabelPixels" value="Pixels" />
+  <string key="Website.Dialogs.ImageEditor.ScaleImage.LabelPercent" value="Percent" />
+  <string key="Website.Dialogs.Options.LoginScreen" value="Login screen" />
+  <string key="Website.Dialogs.Options.LabelOptions" value="Options" />
+  <string key="Website.Dialogs.Options.LabelGeneral" value="General" />
+  <string key="Website.Dialogs.Options.LabelAdvanced" value="Advanced" />
+  <string key="Website.Dialogs.Options.LabelLoginPreferences" value="Login Preferences" />
+  <string key="Website.Dialogs.Options.LabelFakeLoginScreen" value="Fake login screen" />
+  <string key="Website.Dialogs.Options.LabelNoLoginScreen" value="No login screen" />
+  <string key="Website.Dialogs.WebServices.Error" value="Error in web service method " />
+  <string key="Website.Dialogs.WebServices.LabelWebServiceError" value="Web Service Error" />
+  <string key="Website.Dialogs.SystemTree.DetailedPaste.Title" value="Insert Where?" />
+  <string key="Website.Dialogs.SystemTree.DetailedPaste.LabelPosition" value="Position" />
+  <string key="Website.Dialogs.SystemTree.DetailedPaste.LabelInsertBefore" value="Insert before" />
+  <string key="Website.Dialogs.SystemTree.DetailedPaste.LabelInsertAfter" value="Insert after" />
   <string key="Website.Dialogs.EditFunction.BasicView" value="Basic view" />
   <string key="Website.Dialogs.EditFunction.AdvancedView" value="Advanced view" />
   <string key="Website.Dialogs.EditFunction.BasicView.NoParameters" value="This function has no parameters" />
-	<string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.LabelTitle" value="Edit image" />
-	<string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.LabelFile" value="File" />
-	<string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.LabelSave" value="Save" />
-	<string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.LabelSaveAs" value="Save As..." />
-	<string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.LabelRevert" value="Revert" />
-	<string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.LabelView" value="View" />
-	<string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.LabelZoom" value="Zoom" />
-	<string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.LabelZoomIn" value="Zoom In" />
-	<string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.LabelZoomOut" value="Zoom Out" />
-	<string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.Label800" value="800%" />
-	<string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.Label400" value="400%" />
-	<string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.Label200" value="200%" />
-	<string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.Label100" value="100%" />
-	<string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.Label50" value="50%" />
-	<string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.Label25" value="25%" />
-	<string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.Label12" value="12%" />
-	<string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.LabelImage" value="Image" />
-	<string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.LabelTransform" value="Transform" />
-	<string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.LabelFlipHorizontal" value="Flip Horizontally" />
-	<string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.LabelFlipVertical" value="Flip Vertically" />
-	<string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.LabelRotate90CW" value="Rotate 90 Degrees CW" />
-	<string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.LabelRotate90CCW" value="Rotate 90 Degrees CCW" />
-	<string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.LabelRotate180" value="Rotate 180 Degrees" />
-	<string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.LabelScale" value="Scale Image..." />
-	<string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.LabelCrop" value="Crop Image" />
-	<string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.ToolBox.ToolTipSelect" value="Select" />
-	<string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.ToolBox.ToolTipZoom" value="Zoom" />
-	<string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.ToolBar.LabelSave" value="Save" />
-	<string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.ToolBar.LabelScale" value="Scale image" />
-	<string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.ToolBar.LabelCrop" value="Crop image" />
-	<string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.ToolBar.LabelUndo" value="Undo" />
-	<string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.ToolBar.LabelRedo" value="Redo" />
-	<string key="Website.Content.Views.Editors.PermissionEditor.LabelTitle" value="Permissions" />
-	<string key="Website.Content.Views.Editors.PermissionEditor.LabelTabUsers" value="Users" />
-	<string key="Website.Content.Views.Editors.PermissionEditor.LabelTabUserGroups" value="User Groups" />
-	<string key="Website.Content.Views.Editors.PermissionEditor.LabelButtonSave" value="Save" />
-	<string key="Website.Content.Views.Help.ToolTipBack" value="Go back one page" />
-	<string key="Website.Content.Views.Help.ToolTipForward" value="Go forward one page" />
-	<string key="Website.Content.Views.Help.ToolTipRefresh" value="Refresh page" />
-	<string key="Website.Content.Views.Help.LabelContents" value="Contents" />
-	<string key="Website.Content.Views.Help.ToolTipContents" value="Help contents" />
-	<string key="Website.Content.Views.SystemView.ToolTipCollapseAll" value="Collapse All" />
-	<string key="Website.Content.Views.SystemView.ToolTipLinkWithEditor" value="Link with Editor" />
-	<string key="Website.Content.Views.Search.Search.LabelNewSearch" value="New Search..." />
-	<string key="Website.Content.Views.ViewSource.LabelFormatted" value="Formatted" />
-	<string key="Website.Content.Views.ViewSource.LabelRaw" value="Raw" />
+  <string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.LabelTitle" value="Edit image" />
+  <string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.LabelFile" value="File" />
+  <string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.LabelSave" value="Save" />
+  <string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.LabelSaveAs" value="Save As..." />
+  <string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.LabelRevert" value="Revert" />
+  <string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.LabelView" value="View" />
+  <string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.LabelZoom" value="Zoom" />
+  <string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.LabelZoomIn" value="Zoom In" />
+  <string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.LabelZoomOut" value="Zoom Out" />
+  <string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.Label800" value="800%" />
+  <string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.Label400" value="400%" />
+  <string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.Label200" value="200%" />
+  <string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.Label100" value="100%" />
+  <string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.Label50" value="50%" />
+  <string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.Label25" value="25%" />
+  <string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.Label12" value="12%" />
+  <string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.LabelImage" value="Image" />
+  <string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.LabelTransform" value="Transform" />
+  <string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.LabelFlipHorizontal" value="Flip Horizontally" />
+  <string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.LabelFlipVertical" value="Flip Vertically" />
+  <string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.LabelRotate90CW" value="Rotate 90 Degrees CW" />
+  <string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.LabelRotate90CCW" value="Rotate 90 Degrees CCW" />
+  <string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.LabelRotate180" value="Rotate 180 Degrees" />
+  <string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.LabelScale" value="Scale Image..." />
+  <string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.LabelCrop" value="Crop Image" />
+  <string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.ToolBox.ToolTipSelect" value="Select" />
+  <string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.ToolBox.ToolTipZoom" value="Zoom" />
+  <string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.ToolBar.LabelSave" value="Save" />
+  <string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.ToolBar.LabelScale" value="Scale image" />
+  <string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.ToolBar.LabelCrop" value="Crop image" />
+  <string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.ToolBar.LabelUndo" value="Undo" />
+  <string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.ToolBar.LabelRedo" value="Redo" />
+  <string key="Website.Content.Views.Editors.PermissionEditor.LabelTitle" value="Permissions" />
+  <string key="Website.Content.Views.Editors.PermissionEditor.LabelTabUsers" value="Users" />
+  <string key="Website.Content.Views.Editors.PermissionEditor.LabelTabUserGroups" value="User Groups" />
+  <string key="Website.Content.Views.Editors.PermissionEditor.LabelButtonSave" value="Save" />
+  <string key="Website.Content.Views.Help.ToolTipBack" value="Go back one page" />
+  <string key="Website.Content.Views.Help.ToolTipForward" value="Go forward one page" />
+  <string key="Website.Content.Views.Help.ToolTipRefresh" value="Refresh page" />
+  <string key="Website.Content.Views.Help.LabelContents" value="Contents" />
+  <string key="Website.Content.Views.Help.ToolTipContents" value="Help contents" />
+  <string key="Website.Content.Views.SystemView.ToolTipCollapseAll" value="Collapse All" />
+  <string key="Website.Content.Views.SystemView.ToolTipLinkWithEditor" value="Link with Editor" />
+  <string key="Website.Content.Views.Search.Search.LabelNewSearch" value="New Search..." />
+  <string key="Website.Content.Views.ViewSource.LabelFormatted" value="Formatted" />
+  <string key="Website.Content.Views.ViewSource.LabelRaw" value="Raw" />
   <string key="ServerLog.Element.Label" value="Server Log" />
   <string key="ServerLog.Element.Tooltip" value="The server log contain security and system health related messages." />
   <string key="ServerLog.Element.View.Label" value="View Server Log" />
   <string key="ServerLog.Element.View.Tooltip" value="View recent server events" />
   <string key="ServerLog.LabelTitle" value="Server Log" />
-	<string key="ServerLog.LabelButtonDeleteOld" value="Delete old" />
-	<string key="ServerLog.LabelButtonRefresh" value="Refresh" />
-	<string key="ServerLog.EmptyLabel" value="No log data available..." />
+  <string key="ServerLog.LabelButtonDeleteOld" value="Delete old" />
+  <string key="ServerLog.LabelButtonRefresh" value="Refresh" />
+  <string key="ServerLog.EmptyLabel" value="No log data available..." />
   <string key="ServerLog.LogEntriesRemovedBrowserViewLabel" value="Only the {0} most recent log entries are shown. Open the log for more entries." />
   <string key="ServerLog.LogEntriesRemovedLabel" value="Only the {0} most recent log entries are shown. {1} entries exists for the current search. Either narrow the search or use the log viewer tool from http://docs.composite.net/Configuration/Logging for full log access." />
   <string key="ServerLog.LogEntry.DateLabel" value="Date" />
-	<string key="ServerLog.LogEntry.MessageLabel" value="Message" />
-	<string key="ServerLog.LogEntry.TitleLabel" value="Title" />
-	<string key="ServerLog.LogEntry.EventTypeLabel" value="EventType" />
+  <string key="ServerLog.LogEntry.MessageLabel" value="Message" />
+  <string key="ServerLog.LogEntry.TitleLabel" value="Title" />
+  <string key="ServerLog.LogEntry.EventTypeLabel" value="EventType" />
   <string key="ServerLog.Severity.Verbose" value="Verbose" />
   <string key="ServerLog.Severity.Information" value="Information" />
   <string key="ServerLog.Severity.Warning" value="Warning" />
   <string key="ServerLog.Severity.Error" value="Error" />
   <string key="ServerLog.Severity.Critical" value="Critical" />
-	<string key="FunctionDocumentation.LabelButtonRefresh" value="Refresh" />
-	<string key="FunctionDocumentation.LabelButtonPrint" value="Print" />
-	<string key="Website.FlowUICompleted.ExecutionEndedTitle" value="Execution Ended" />
-	<string key="Website.FlowUICompleted.ExecutionEndedMessage" value="The action executed in this window has ended." />
-	<string key="Website.ServerError.ServerErrorTitle" value="Server Error" />
-	<string key="Website.ServerError.ServerErrorMessage" value="An unfortunate error has occurred." />
-	<string key="Website.ServerError.ServerErrorDetails" value="Details" />
-	<string key="Website.LicenseViolation.LicenseViolationTitle" value="License Violation" />
-	<string key="Website.LicenseViolation.LicenseViolationMessage" value="The requested action is in violates with your current license." />
-	<string key="Website.Templates.WysiwygEditorPlugins.MediaFlashOptions.LabelFlashOptions" value="Flash options" />
-	<string key="Website.Templates.WysiwygEditorPlugins.MediaFlashOptions.LabelHigh" value="High" />
-	<string key="Website.Templates.WysiwygEditorPlugins.MediaFlashOptions.LabelLow" value="Low" />
-	<string key="Website.Templates.WysiwygEditorPlugins.MediaFlashOptions.LabelAutohigh" value="Autohigh" />
-	<string key="Website.Templates.WysiwygEditorPlugins.MediaFlashOptions.LabelAutolow" value="Autolow" />
-	<string key="Website.Templates.WysiwygEditorPlugins.MediaFlashOptions.LabelBest" value="Best" />
-	<string key="Website.Templates.WysiwygEditorPlugins.MediaFlashOptions.LabelWindow" value="Window" />
-	<string key="Website.Templates.WysiwygEditorPlugins.MediaFlashOptions.LabelOpaque" value="Opaque" />
-	<string key="Website.Templates.WysiwygEditorPlugins.MediaFlashOptions.LabelTransparent" value="Transparent" />
-	<string key="Website.Templates.WysiwygEditorPlugins.MediaFlashOptions.LabelShowall" value="Showall" />
-	<string key="Website.Templates.WysiwygEditorPlugins.MediaFlashOptions.LabelNoborder" value="Noborder" />
-	<string key="Website.Templates.WysiwygEditorPlugins.MediaFlashOptions.LabelExactfit" value="Exactfit" />
-	<string key="Website.Templates.WysiwygEditorPlugins.MediaFlashOptions.LabelAutoPlay" value="Auto play" />
-	<string key="Website.Templates.WysiwygEditorPlugins.MediaFlashOptions.LabelLoop" value="Loop" />
-	<string key="Website.Templates.WysiwygEditorPlugins.MediaFlashOptions.LabelShowMenu" value="Show menu" />
-	<string key="Website.Templates.WysiwygEditorPlugins.MediaFlashOptions.LabelSWLiveConnect" value="SWLiveConnect" />
-	<string key="Website.Templates.WysiwygEditorPlugins.MediaQuickTimeOptions.LabelQuickTimeOptions" value="Quicktime options" />
-	<string key="Website.Templates.WysiwygEditorPlugins.MediaQuickTimeOptions.LabelLoop" value="Loop" />
-	<string key="Website.Templates.WysiwygEditorPlugins.MediaQuickTimeOptions.LabelCache" value="Cache" />
-	<string key="Website.Templates.WysiwygEditorPlugins.MediaQuickTimeOptions.LabelNoCorrection" value="No correction" />
-	<string key="Website.Templates.WysiwygEditorPlugins.MediaQuickTimeOptions.LabelKioskMode" value="Kiosk mode" />
-	<string key="Website.Templates.WysiwygEditorPlugins.MediaQuickTimeOptions.LabelPlayEveryFrame" value="Play every frame" />
-	<string key="Website.Templates.WysiwygEditorPlugins.MediaQuickTimeOptions.LabelAutoPlay" value="Auto play" />
-	<string key="Website.Templates.WysiwygEditorPlugins.MediaQuickTimeOptions.LabelController" value="Controller" />
-	<string key="Website.Templates.WysiwygEditorPlugins.MediaQuickTimeOptions.LabelEnableJavaScript" value="Enable Javascript" />
-	<string key="Website.Templates.WysiwygEditorPlugins.MediaQuickTimeOptions.LabelAutoHRef" value="AutoHREF" />
-	<string key="Website.Templates.WysiwygEditorPlugins.MediaQuickTimeOptions.LabelTargetCache" value="Target cache" />
-	<string key="Website.Templates.WysiwygEditorPlugins.MediaShockWaveOptions.LabelShockWaveOptions" value="Shockwave options" />
-	<string key="Website.Templates.WysiwygEditorPlugins.MediaShockWaveOptions.LabelHigh" value="High" />
-	<string key="Website.Templates.WysiwygEditorPlugins.MediaShockWaveOptions.LabelLow" value="Low" />
-	<string key="Website.Templates.WysiwygEditorPlugins.MediaShockWaveOptions.LabelAutoHigh" value="Autohigh" />
-	<string key="Website.Templates.WysiwygEditorPlugins.MediaShockWaveOptions.LabelAutoLow" value="Autolow" />
-	<string key="Website.Templates.WysiwygEditorPlugins.MediaShockWaveOptions.LabelBest" value="Best" />
-	<string key="Website.Templates.WysiwygEditorPlugins.MediaShockWaveOptions.LabelWindow" value="Window" />
-	<string key="Website.Templates.WysiwygEditorPlugins.MediaShockWaveOptions.LabelOpaque" value="Opaque" />
-	<string key="Website.Templates.WysiwygEditorPlugins.MediaShockWaveOptions.LabelTransparent" value="Transparent" />
-	<string key="Website.Templates.WysiwygEditorPlugins.MediaShockWaveOptions.LabelShowAll" value="Showall" />
-	<string key="Website.Templates.WysiwygEditorPlugins.MediaShockWaveOptions.LabelNoBorder" value="Noborder" />
-	<string key="Website.Templates.WysiwygEditorPlugins.MediaShockWaveOptions.LabelExactFit" value="Exactfit" />
-	<string key="Website.Templates.WysiwygEditorPlugins.MediaShockWaveOptions.LabelAutoPlay" value="Auto play" />
-	<string key="Website.Templates.WysiwygEditorPlugins.MediaShockWaveOptions.LabelLoop" value="Loop" />
-	<string key="Website.Templates.WysiwygEditorPlugins.MediaShockWaveOptions.LabelShowMenu" value="Show menu" />
-	<string key="Website.Templates.WysiwygEditorPlugins.MediaShockWaveOptions.LabelSWLiveConnect" value="SWLiveConnect" />
-	<string key="Website.Templates.WysiwygEditorPlugins.MediaWinMediaOptions.LabelQuickTimeOptions" value="Quicktime options" />
-	<string key="Website.Templates.WysiwygEditorPlugins.MediaWinMediaOptions.LabelAutoStart" value="Auto Start" />
-	<string key="Website.Templates.WysiwygEditorPlugins.MediaWinMediaOptions.LabelShowMenu" value="Show menu" />
-	<string key="Website.Templates.WysiwygEditorPlugins.MediaWinMediaOptions.LabelInvokeURLs" value="Invoke URLs" />
-	<string key="Website.Templates.WysiwygEditorPlugins.MediaWinMediaOptions.LabelStretchToFit" value="Stretch to fit" />
-	<string key="Website.Templates.WysiwygEditorPlugins.MediaWinMediaOptions.LabelEnabled" value="Enabled" />
-	<string key="Website.Templates.WysiwygEditorPlugins.MediaWinMediaOptions.LabelFullScreen" value="Fullscreen" />
-	<string key="Website.Templates.WysiwygEditorPlugins.MediaWinMediaOptions.LabelMute" value="Mute" />
-	<string key="Website.Templates.WysiwygEditorPlugins.MediaWinMediaOptions.LabelWindowLessVideo" value="Windowless video" />
-	<string key="Website.App.LabelSave" value="Save" />
-	<string key="Website.App.LabelSaveAndPublish" value="Save and Publish" />
-	<string key="Website.App.LabelCloseTab" value="Close Tab" />
-	<string key="Website.App.LabelCloseOthers" value="Close Others" />
-	<string key="Website.App.LabelRefreshView" value="Refresh View" />
-	<string key="Website.App.LabelMakeDirty" value="Make Dirty" />
-	<string key="Website.App.LabelViewSource" value="View Source" />
-	<string key="Website.App.LabelViewGenerated" value="View Generated" />
-	<string key="Website.App.LabelViewSerialized" value="View Serialized" />
-	<string key="Website.App.LabelClose" value="Close" />
-	<string key="Website.App.LabelFile" value="File" />
-	<string key="Website.App.LabelFileClose" value="Close" />
-	<string key="Website.App.LabelFileCloseAll" value="Close All" />
-	<string key="Website.App.LabelFileSaveAll" value="Save All..." />
-	<string key="Website.App.LabelFileExit" value="Sign out" />
-	<string key="Website.App.LabelView" value="View" />
-	<string key="Website.App.LabelViewCompositeStart" value="Composite Start" />
-	<string key="Website.App.LabelSystemLog" value="System Log" />
-	<string key="Website.App.LabelDeveloperPanel" value="Developer Panel" />
-	<string key="Website.App.LabelTools" value="Tools" />
-	<string key="Website.App.LabelHelp" value="Help" />
+  <string key="FunctionDocumentation.LabelButtonRefresh" value="Refresh" />
+  <string key="FunctionDocumentation.LabelButtonPrint" value="Print" />
+  <string key="Website.FlowUICompleted.ExecutionEndedTitle" value="Execution Ended" />
+  <string key="Website.FlowUICompleted.ExecutionEndedMessage" value="The action executed in this window has ended." />
+  <string key="Website.ServerError.ServerErrorTitle" value="Server Error" />
+  <string key="Website.ServerError.ServerErrorMessage" value="An unfortunate error has occurred." />
+  <string key="Website.ServerError.ServerErrorDetails" value="Details" />
+  <string key="Website.LicenseViolation.LicenseViolationTitle" value="License Violation" />
+  <string key="Website.LicenseViolation.LicenseViolationMessage" value="The requested action is in violates with your current license." />
+  <string key="Website.Templates.WysiwygEditorPlugins.MediaFlashOptions.LabelFlashOptions" value="Flash options" />
+  <string key="Website.Templates.WysiwygEditorPlugins.MediaFlashOptions.LabelHigh" value="High" />
+  <string key="Website.Templates.WysiwygEditorPlugins.MediaFlashOptions.LabelLow" value="Low" />
+  <string key="Website.Templates.WysiwygEditorPlugins.MediaFlashOptions.LabelAutohigh" value="Autohigh" />
+  <string key="Website.Templates.WysiwygEditorPlugins.MediaFlashOptions.LabelAutolow" value="Autolow" />
+  <string key="Website.Templates.WysiwygEditorPlugins.MediaFlashOptions.LabelBest" value="Best" />
+  <string key="Website.Templates.WysiwygEditorPlugins.MediaFlashOptions.LabelWindow" value="Window" />
+  <string key="Website.Templates.WysiwygEditorPlugins.MediaFlashOptions.LabelOpaque" value="Opaque" />
+  <string key="Website.Templates.WysiwygEditorPlugins.MediaFlashOptions.LabelTransparent" value="Transparent" />
+  <string key="Website.Templates.WysiwygEditorPlugins.MediaFlashOptions.LabelShowall" value="Showall" />
+  <string key="Website.Templates.WysiwygEditorPlugins.MediaFlashOptions.LabelNoborder" value="Noborder" />
+  <string key="Website.Templates.WysiwygEditorPlugins.MediaFlashOptions.LabelExactfit" value="Exactfit" />
+  <string key="Website.Templates.WysiwygEditorPlugins.MediaFlashOptions.LabelAutoPlay" value="Auto play" />
+  <string key="Website.Templates.WysiwygEditorPlugins.MediaFlashOptions.LabelLoop" value="Loop" />
+  <string key="Website.Templates.WysiwygEditorPlugins.MediaFlashOptions.LabelShowMenu" value="Show menu" />
+  <string key="Website.Templates.WysiwygEditorPlugins.MediaFlashOptions.LabelSWLiveConnect" value="SWLiveConnect" />
+  <string key="Website.Templates.WysiwygEditorPlugins.MediaQuickTimeOptions.LabelQuickTimeOptions" value="Quicktime options" />
+  <string key="Website.Templates.WysiwygEditorPlugins.MediaQuickTimeOptions.LabelLoop" value="Loop" />
+  <string key="Website.Templates.WysiwygEditorPlugins.MediaQuickTimeOptions.LabelCache" value="Cache" />
+  <string key="Website.Templates.WysiwygEditorPlugins.MediaQuickTimeOptions.LabelNoCorrection" value="No correction" />
+  <string key="Website.Templates.WysiwygEditorPlugins.MediaQuickTimeOptions.LabelKioskMode" value="Kiosk mode" />
+  <string key="Website.Templates.WysiwygEditorPlugins.MediaQuickTimeOptions.LabelPlayEveryFrame" value="Play every frame" />
+  <string key="Website.Templates.WysiwygEditorPlugins.MediaQuickTimeOptions.LabelAutoPlay" value="Auto play" />
+  <string key="Website.Templates.WysiwygEditorPlugins.MediaQuickTimeOptions.LabelController" value="Controller" />
+  <string key="Website.Templates.WysiwygEditorPlugins.MediaQuickTimeOptions.LabelEnableJavaScript" value="Enable Javascript" />
+  <string key="Website.Templates.WysiwygEditorPlugins.MediaQuickTimeOptions.LabelAutoHRef" value="AutoHREF" />
+  <string key="Website.Templates.WysiwygEditorPlugins.MediaQuickTimeOptions.LabelTargetCache" value="Target cache" />
+  <string key="Website.Templates.WysiwygEditorPlugins.MediaShockWaveOptions.LabelShockWaveOptions" value="Shockwave options" />
+  <string key="Website.Templates.WysiwygEditorPlugins.MediaShockWaveOptions.LabelHigh" value="High" />
+  <string key="Website.Templates.WysiwygEditorPlugins.MediaShockWaveOptions.LabelLow" value="Low" />
+  <string key="Website.Templates.WysiwygEditorPlugins.MediaShockWaveOptions.LabelAutoHigh" value="Autohigh" />
+  <string key="Website.Templates.WysiwygEditorPlugins.MediaShockWaveOptions.LabelAutoLow" value="Autolow" />
+  <string key="Website.Templates.WysiwygEditorPlugins.MediaShockWaveOptions.LabelBest" value="Best" />
+  <string key="Website.Templates.WysiwygEditorPlugins.MediaShockWaveOptions.LabelWindow" value="Window" />
+  <string key="Website.Templates.WysiwygEditorPlugins.MediaShockWaveOptions.LabelOpaque" value="Opaque" />
+  <string key="Website.Templates.WysiwygEditorPlugins.MediaShockWaveOptions.LabelTransparent" value="Transparent" />
+  <string key="Website.Templates.WysiwygEditorPlugins.MediaShockWaveOptions.LabelShowAll" value="Showall" />
+  <string key="Website.Templates.WysiwygEditorPlugins.MediaShockWaveOptions.LabelNoBorder" value="Noborder" />
+  <string key="Website.Templates.WysiwygEditorPlugins.MediaShockWaveOptions.LabelExactFit" value="Exactfit" />
+  <string key="Website.Templates.WysiwygEditorPlugins.MediaShockWaveOptions.LabelAutoPlay" value="Auto play" />
+  <string key="Website.Templates.WysiwygEditorPlugins.MediaShockWaveOptions.LabelLoop" value="Loop" />
+  <string key="Website.Templates.WysiwygEditorPlugins.MediaShockWaveOptions.LabelShowMenu" value="Show menu" />
+  <string key="Website.Templates.WysiwygEditorPlugins.MediaShockWaveOptions.LabelSWLiveConnect" value="SWLiveConnect" />
+  <string key="Website.Templates.WysiwygEditorPlugins.MediaWinMediaOptions.LabelQuickTimeOptions" value="Quicktime options" />
+  <string key="Website.Templates.WysiwygEditorPlugins.MediaWinMediaOptions.LabelAutoStart" value="Auto Start" />
+  <string key="Website.Templates.WysiwygEditorPlugins.MediaWinMediaOptions.LabelShowMenu" value="Show menu" />
+  <string key="Website.Templates.WysiwygEditorPlugins.MediaWinMediaOptions.LabelInvokeURLs" value="Invoke URLs" />
+  <string key="Website.Templates.WysiwygEditorPlugins.MediaWinMediaOptions.LabelStretchToFit" value="Stretch to fit" />
+  <string key="Website.Templates.WysiwygEditorPlugins.MediaWinMediaOptions.LabelEnabled" value="Enabled" />
+  <string key="Website.Templates.WysiwygEditorPlugins.MediaWinMediaOptions.LabelFullScreen" value="Fullscreen" />
+  <string key="Website.Templates.WysiwygEditorPlugins.MediaWinMediaOptions.LabelMute" value="Mute" />
+  <string key="Website.Templates.WysiwygEditorPlugins.MediaWinMediaOptions.LabelWindowLessVideo" value="Windowless video" />
+  <string key="Website.App.LabelSave" value="Save" />
+  <string key="Website.App.LabelSaveAndPublish" value="Save and Publish" />
+  <string key="Website.App.LabelCloseTab" value="Close Tab" />
+  <string key="Website.App.LabelCloseOthers" value="Close Others" />
+  <string key="Website.App.LabelRefreshView" value="Refresh View" />
+  <string key="Website.App.LabelMakeDirty" value="Make Dirty" />
+  <string key="Website.App.LabelViewSource" value="View Source" />
+  <string key="Website.App.LabelViewGenerated" value="View Generated" />
+  <string key="Website.App.LabelViewSerialized" value="View Serialized" />
+  <string key="Website.App.LabelClose" value="Close" />
+  <string key="Website.App.LabelFile" value="File" />
+  <string key="Website.App.LabelFileClose" value="Close" />
+  <string key="Website.App.LabelFileCloseAll" value="Close All" />
+  <string key="Website.App.LabelFileSaveAll" value="Save All..." />
+  <string key="Website.App.LabelFileExit" value="Sign out" />
+  <string key="Website.App.LabelView" value="View" />
+  <string key="Website.App.LabelViewCompositeStart" value="Composite Start" />
+  <string key="Website.App.LabelSystemLog" value="System Log" />
+  <string key="Website.App.LabelDeveloperPanel" value="Developer Panel" />
+  <string key="Website.App.LabelTools" value="Tools" />
+  <string key="Website.App.LabelHelp" value="Help" />
   <string key="Website.App.LabelSettings" value="Settings" />
-	<string key="Website.App.LabelHelpContents" value="Help Contents" />
-	<string key="Website.App.LabelFeedback" value="Provide Feedback..." />
-	<string key="Website.App.LabelAbout" value="About {applicationname}" />
-	<string key="Website.App.LabelCut" value="Cut" />
-	<string key="Website.App.LabelCopy" value="Copy" />
-	<string key="Website.App.LabelPaste" value="Paste" />
-	<string key="Website.App.LabelRefresh" value="Refresh" />
+  <string key="Website.App.LabelHelpContents" value="Help Contents" />
+  <string key="Website.App.LabelFeedback" value="Provide Feedback..." />
+  <string key="Website.App.LabelAbout" value="About {applicationname}" />
+  <string key="Website.App.LabelCut" value="Cut" />
+  <string key="Website.App.LabelCopy" value="Copy" />
+  <string key="Website.App.LabelPaste" value="Paste" />
+  <string key="Website.App.LabelRefresh" value="Refresh" />
   <string key="Website.App.LimitedElementsShown" value="Only first {0} elements are shown in the tree." />
-	<string key="Website.App.LabelLoading" value="Loading..." />
-	<string key="Website.App.LabelLoaded" value="Loaded" />
-	<string key="Website.App.LabelSaved" value="Saved" />
-	<string key="Website.App.ToolTipMinimize" value="Minimize" />
-	<string key="Website.App.ToolTipMaximize" value="Maximize" />
-	<string key="Website.App.ToolTipUnMaximize" value="Restore" />
-	<string key="Website.App.ToolTipUnMinimize" value="Restore" />
-	<string key="Website.App.ToolTipClose" value="Close" />
-	<string key="Website.App.StatusBar.Opening" value="Opening {0}..." />
-	<string key="Website.App.StatusBar.Refreshing" value="Refreshing {0}..." />
-	<string key="Website.App.StatusBar.Loading" value="Loading {0}..." />
-	<string key="Website.App.StatusBar.Error" value="Error" />
-	<string key="Website.App.StatusBar.Warn" value="Warning" />
-	<string key="Website.App.StatusBar.Busy" value="Working..." />
-	<string key="Website.App.StatusBar.Ready" value="Ready!" />
-	<string key="Website.App.StatusBar.ErrorInField" value="Error in" />
-	<string key="Website.Forms.Administrative.AddNewMediaFile.Layout.Label" value="Add New Media File" />
-	<string key="Website.Forms.Administrative.AddNewMediaFile.FileUpload.Label" value="Filename" />
-	<string key="Website.Forms.Administrative.AddNewMediaFile.FileUpload.Help" value="Select the file to upload" />
-	<string key="Website.Forms.Administrative.AddNewMediaFile.OverwriteCheckBox.Label" value="Allow overwrite" />
-	<string key="Website.Forms.Administrative.AddNewMediaFile.OverwriteCheckBox.Help" value="Replace existing file" />
-	<string key="Website.Forms.Administrative.AddNewMediaFile.FilenameTextBox.Label" value="Filename" />
-	<string key="Website.Forms.Administrative.AddNewMediaFile.FilenameTextBox.Help" value="The name of the file in the media library" />
-	<string key="Website.Forms.Administrative.AddNewMediaFile.TitleTextBox.Label" value="Title" />
-	<string key="Website.Forms.Administrative.AddNewMediaFile.TitleTextBox.Help" value="Use this field for an image title" />
-	<string key="Website.Forms.Administrative.AddNewMediaFile.DescriptionTextBox.Label" value="Description" />
-	<string key="Website.Forms.Administrative.AddNewMediaFile.DescriptionTextBox.Help" value="Use this field for a short description of the image" />
-	<string key="Website.Forms.Administrative.AddNewMediaFile.MissingUploadedFile.Message" value="Please select a file to upload" />
-	<string key="Website.Forms.Administrative.AddNewMediaFile.FileExists.Message" value="A file with the same name exists. Check allow overwrite or change the filename" />
-	<string key="Website.Forms.Administrative.AddNewMediaFile.TotalFilenameToLong.Message" value="The total length of the filename (folder and filename) is too long" />
-	<string key="Website.Forms.Administrative.AddNewMediaFolder.Label.AddNewMediaFolder" value="Add New Media Folder" />
-	<string key="Website.Forms.Administrative.AddNewMediaFolder.LabelFolderName" value="Folder Name" />
-	<string key="Website.Forms.Administrative.AddNewMediaFolder.HelpFolderName" value="" />
-	<string key="Website.Forms.Administrative.AddNewMediaFolder.LabelTitle" value="Title" />
-	<string key="Website.Forms.Administrative.AddNewMediaFolder.HelpTitle" value="" />
-	<string key="Website.Forms.Administrative.AddNewMediaFolder.LabelDescription" value="Description" />
-	<string key="Website.Forms.Administrative.AddNewMediaFolder.HelpDescription" value="" />
-	<string key="Website.Forms.Administrative.AddNewMediaFolder.FolderNameAlreadyUsed" value="The folder already exists" />
-	<string key="Website.Forms.Administrative.AddNewMediaFolder.FolderNameTooLong" value="The total length of the folder name is too long" />
-	<string key="Website.Forms.Administrative.AddNewMediaFolder.FolderNotOnlySlash" value="The folder name can not only be '/' or '\'" />
-	<string key="Website.Forms.Administrative.AddZipMediaFile.LabelDialog" value="Upload Multiple Files via a Zip File" />
-	<string key="Website.Forms.Administrative.AddZipMediaFile.LabelFile" value="Zip file" />
-	<string key="Website.Forms.Administrative.AddZipMediaFile.HelpFile" value="Create a Zip file (right click local folder and select Send to -&gt; Compressed folder) and select it using the Browse button" />
-	<string key="Website.Forms.Administrative.AddZipMediaFile.LabelRecreateStructure" value="Create folders" />
-	<string key="Website.Forms.Administrative.AddZipMediaFile.HelpRecreateStructure" value="Selecting this option will copy the exact folder structure from your Zip file" />
-	<string key="Website.Forms.Administrative.AddZipMediaFile.LabelRecreateStructureCheckBox" value="Extract folders from Zip file" />
-	<string key="Website.Forms.Administrative.AddZipMediaFile.LabelOverwriteExsisting" value="Overwrite existing" />
-	<string key="Website.Forms.Administrative.AddZipMediaFile.HelpOverwriteExsisting" value="Selecting this option will overwrite existing files in the media archive with matching file names" />
-	<string key="Website.Forms.Administrative.AddZipMediaFile.Error.Title" value="Error" />
-	<string key="Website.Forms.Administrative.AddZipMediaFile.LabelOverwriteExsistingCheckBox" value="Overwrite existing files" />
-	<string key="Website.Forms.Administrative.AddZipMediaFile.MissingUploadedFile.Message" value="Please select a file to upload" />
-	<string key="Website.Forms.Administrative.AddZipMediaFile.CannotUploadDocxFile" value="Please use the normal upload command to upload .docx files" />
-	<string key="Website.Forms.Administrative.AddZipMediaFile.WrongUploadedFile.Message" value="The selected file was not a correct zip file" />
-	<string key="Website.Forms.Administrative.AllFunctionsElementProviderSearchForm.LabelFunctionSearch" value="Function search" />
-	<string key="Website.Forms.Administrative.AllFunctionsElementProviderSearchForm.LabelKeyword" value="Keyword" />
-	<string key="Website.Forms.Administrative.AllFunctionsElementProviderSearchForm.LabelKeywordHelp" value="Write a keyword to search for." />
-	<string key="Website.Forms.Administrative.AllFunctionsElementProviderSearchForm.LabelReturnType" value="Return type" />
-	<string key="Website.Forms.Administrative.AllFunctionsElementProviderSearchForm.LabelReturnTypeHelp" value="Select a return type to search for." />
-	<string key="Website.Forms.Administrative.DeleteMediaFile.LabelFieldGroup" value="Delete This File?" />
-	<string key="Website.Forms.Administrative.DeleteMediaFile.Text" value="Delete this file?" />
-	<string key="Website.Forms.Administrative.DeleteMediaFile.DeleteDataConfirmationHeader" value="Deleting a file" />
-	<string key="Website.Forms.Administrative.DeleteMediaFile.DeleteDataConfirmationText" value="There is some referenced data that will also be deleted, do you want to continue?" />
-	<string key="Website.Forms.Administrative.DeleteMediaFolder.LabelFieldGroup" value="Delete This Folder?" />
-	<string key="Website.Forms.Administrative.DeleteMediaFolder.Text" value="Delete this folder?" />
-	<string key="Website.Forms.Administrative.DeleteMediaFolder.HasChildringText" value="This folder contains one or more files or subfolders. Deleting this folder will also delete all sub files and folders. Delete this folder?" />
+  <string key="Website.App.LabelLoading" value="Loading..." />
+  <string key="Website.App.LabelLoaded" value="Loaded" />
+  <string key="Website.App.LabelSaved" value="Saved" />
+  <string key="Website.App.ToolTipMinimize" value="Minimize" />
+  <string key="Website.App.ToolTipMaximize" value="Maximize" />
+  <string key="Website.App.ToolTipUnMaximize" value="Restore" />
+  <string key="Website.App.ToolTipUnMinimize" value="Restore" />
+  <string key="Website.App.ToolTipClose" value="Close" />
+  <string key="Website.App.StatusBar.Opening" value="Opening {0}..." />
+  <string key="Website.App.StatusBar.Refreshing" value="Refreshing {0}..." />
+  <string key="Website.App.StatusBar.Loading" value="Loading {0}..." />
+  <string key="Website.App.StatusBar.Error" value="Error" />
+  <string key="Website.App.StatusBar.Warn" value="Warning" />
+  <string key="Website.App.StatusBar.Busy" value="Working..." />
+  <string key="Website.App.StatusBar.Ready" value="Ready!" />
+  <string key="Website.App.StatusBar.ErrorInField" value="Error in" />
+  <string key="Website.Forms.Administrative.AddNewMediaFile.Layout.Label" value="Add New Media File" />
+  <string key="Website.Forms.Administrative.AddNewMediaFile.FileUpload.Label" value="Filename" />
+  <string key="Website.Forms.Administrative.AddNewMediaFile.FileUpload.Help" value="Select the file to upload" />
+  <string key="Website.Forms.Administrative.AddNewMediaFile.OverwriteCheckBox.Label" value="Allow overwrite" />
+  <string key="Website.Forms.Administrative.AddNewMediaFile.OverwriteCheckBox.Help" value="Replace existing file" />
+  <string key="Website.Forms.Administrative.AddNewMediaFile.FilenameTextBox.Label" value="Filename" />
+  <string key="Website.Forms.Administrative.AddNewMediaFile.FilenameTextBox.Help" value="The name of the file in the media library" />
+  <string key="Website.Forms.Administrative.AddNewMediaFile.TitleTextBox.Label" value="Title" />
+  <string key="Website.Forms.Administrative.AddNewMediaFile.TitleTextBox.Help" value="Use this field for an image title" />
+  <string key="Website.Forms.Administrative.AddNewMediaFile.DescriptionTextBox.Label" value="Description" />
+  <string key="Website.Forms.Administrative.AddNewMediaFile.DescriptionTextBox.Help" value="Use this field for a short description of the image" />
+  <string key="Website.Forms.Administrative.AddNewMediaFile.MissingUploadedFile.Message" value="Please select a file to upload" />
+  <string key="Website.Forms.Administrative.AddNewMediaFile.FileExists.Message" value="A file with the same name exists. Check allow overwrite or change the filename" />
+  <string key="Website.Forms.Administrative.AddNewMediaFile.TotalFilenameToLong.Message" value="The total length of the filename (folder and filename) is too long" />
+  <string key="Website.Forms.Administrative.AddNewMediaFolder.Label.AddNewMediaFolder" value="Add New Media Folder" />
+  <string key="Website.Forms.Administrative.AddNewMediaFolder.LabelFolderName" value="Folder Name" />
+  <string key="Website.Forms.Administrative.AddNewMediaFolder.HelpFolderName" value="" />
+  <string key="Website.Forms.Administrative.AddNewMediaFolder.LabelTitle" value="Title" />
+  <string key="Website.Forms.Administrative.AddNewMediaFolder.HelpTitle" value="" />
+  <string key="Website.Forms.Administrative.AddNewMediaFolder.LabelDescription" value="Description" />
+  <string key="Website.Forms.Administrative.AddNewMediaFolder.HelpDescription" value="" />
+  <string key="Website.Forms.Administrative.AddNewMediaFolder.FolderNameAlreadyUsed" value="The folder already exists" />
+  <string key="Website.Forms.Administrative.AddNewMediaFolder.FolderNameTooLong" value="The total length of the folder name is too long" />
+  <string key="Website.Forms.Administrative.AddNewMediaFolder.FolderNotOnlySlash" value="The folder name can not only be '/' or '\'" />
+  <string key="Website.Forms.Administrative.AddZipMediaFile.LabelDialog" value="Upload Multiple Files via a Zip File" />
+  <string key="Website.Forms.Administrative.AddZipMediaFile.LabelFile" value="Zip file" />
+  <string key="Website.Forms.Administrative.AddZipMediaFile.HelpFile" value="Create a Zip file (right click local folder and select Send to -&gt; Compressed folder) and select it using the Browse button" />
+  <string key="Website.Forms.Administrative.AddZipMediaFile.LabelRecreateStructure" value="Create folders" />
+  <string key="Website.Forms.Administrative.AddZipMediaFile.HelpRecreateStructure" value="Selecting this option will copy the exact folder structure from your Zip file" />
+  <string key="Website.Forms.Administrative.AddZipMediaFile.LabelRecreateStructureCheckBox" value="Extract folders from Zip file" />
+  <string key="Website.Forms.Administrative.AddZipMediaFile.LabelOverwriteExsisting" value="Overwrite existing" />
+  <string key="Website.Forms.Administrative.AddZipMediaFile.HelpOverwriteExsisting" value="Selecting this option will overwrite existing files in the media archive with matching file names" />
+  <string key="Website.Forms.Administrative.AddZipMediaFile.Error.Title" value="Error" />
+  <string key="Website.Forms.Administrative.AddZipMediaFile.LabelOverwriteExsistingCheckBox" value="Overwrite existing files" />
+  <string key="Website.Forms.Administrative.AddZipMediaFile.MissingUploadedFile.Message" value="Please select a file to upload" />
+  <string key="Website.Forms.Administrative.AddZipMediaFile.CannotUploadDocxFile" value="Please use the normal upload command to upload .docx files" />
+  <string key="Website.Forms.Administrative.AddZipMediaFile.WrongUploadedFile.Message" value="The selected file was not a correct zip file" />
+  <string key="Website.Forms.Administrative.AllFunctionsElementProviderSearchForm.LabelFunctionSearch" value="Function search" />
+  <string key="Website.Forms.Administrative.AllFunctionsElementProviderSearchForm.LabelKeyword" value="Keyword" />
+  <string key="Website.Forms.Administrative.AllFunctionsElementProviderSearchForm.LabelKeywordHelp" value="Write a keyword to search for." />
+  <string key="Website.Forms.Administrative.AllFunctionsElementProviderSearchForm.LabelReturnType" value="Return type" />
+  <string key="Website.Forms.Administrative.AllFunctionsElementProviderSearchForm.LabelReturnTypeHelp" value="Select a return type to search for." />
+  <string key="Website.Forms.Administrative.DeleteMediaFile.LabelFieldGroup" value="Delete This File?" />
+  <string key="Website.Forms.Administrative.DeleteMediaFile.Text" value="Delete this file?" />
+  <string key="Website.Forms.Administrative.DeleteMediaFile.DeleteDataConfirmationHeader" value="Deleting a file" />
+  <string key="Website.Forms.Administrative.DeleteMediaFile.DeleteDataConfirmationText" value="There is some referenced data that will also be deleted, do you want to continue?" />
+  <string key="Website.Forms.Administrative.DeleteMediaFolder.LabelFieldGroup" value="Delete This Folder?" />
+  <string key="Website.Forms.Administrative.DeleteMediaFolder.Text" value="Delete this folder?" />
+  <string key="Website.Forms.Administrative.DeleteMediaFolder.HasChildringText" value="This folder contains one or more files or subfolders. Deleting this folder will also delete all sub files and folders. Delete this folder?" />
   <string key="Website.Forms.Administrative.EditMediaFile.LabelFieldGroup" value="Media Properties" />
   <string key="Website.Forms.Administrative.EditMediaFile.LabelTitle" value="Title" />
   <string key="Website.Forms.Administrative.EditMediaFile.HelpTitle" value="A human friendly short text describing the content of the media file" />
@@ -626,73 +624,69 @@
   <string key="Website.Forms.Administrative.EditMediaFile.TotalFilenameToLong.Message" value="The total length of the filename (folder and filename) is too long" />
   <string key="Website.Forms.Administrative.EditMediaFile.FileExists.Message" value="A file with the same name already exists in this folder." />
   <string key="Website.Forms.Administrative.EditMediaFolder.LabelFieldGroup" value="Folder Properties" />
-	<string key="Website.Forms.Administrative.EditMediaFolder.LabelFolderName" value="Folder Name" />
-	<string key="Website.Forms.Administrative.EditMediaFolder.HelpFolderName" value="" />
-	<string key="Website.Forms.Administrative.EditMediaFolder.LabelTitle" value="Title" />
-	<string key="Website.Forms.Administrative.EditMediaFolder.HelpTitle" value="Use this field for a folder title" />
-	<string key="Website.Forms.Administrative.EditMediaFolder.LabelDescription" value="Description" />
-	<string key="Website.Forms.Administrative.EditMediaFolder.HelpDescription" value="" />
-	<string key="Website.Forms.Administrative.EditMediaFolder.TotalFilenameToLong.Message" value="The folder contains a file where the total length of the filename and the new folder name is too long" />
-	<string key="Website.Forms.Administrative.EditPage.PublishDatePreventPublishTitle" value="Saved, but not published" />
-	<string key="Website.Forms.Administrative.EditPage.PublishDatePreventPublish" value="Your page has been saved, but not published since you have a future publish date set on the 'Settings' tab." />
-
+  <string key="Website.Forms.Administrative.EditMediaFolder.LabelFolderName" value="Folder Name" />
+  <string key="Website.Forms.Administrative.EditMediaFolder.HelpFolderName" value="" />
+  <string key="Website.Forms.Administrative.EditMediaFolder.LabelTitle" value="Title" />
+  <string key="Website.Forms.Administrative.EditMediaFolder.HelpTitle" value="Use this field for a folder title" />
+  <string key="Website.Forms.Administrative.EditMediaFolder.LabelDescription" value="Description" />
+  <string key="Website.Forms.Administrative.EditMediaFolder.HelpDescription" value="" />
+  <string key="Website.Forms.Administrative.EditMediaFolder.TotalFilenameToLong.Message" value="The folder contains a file where the total length of the filename and the new folder name is too long" />
+  <string key="Website.Forms.Administrative.EditPage.PublishDatePreventPublishTitle" value="Saved, but not published" />
+  <string key="Website.Forms.Administrative.EditPage.PublishDatePreventPublish" value="Your page has been saved, but not published since you have a future publish date set on the 'Settings' tab." />
   <string key="Website.Forms.Administrative.ElementKeywordSearch.LabelFieldGroup" value="Search" />
-	<string key="Website.Forms.Administrative.ElementKeywordSearch.LabelKeyword" value="Keyword" />
-	<string key="Website.Forms.Administrative.ElementKeywordSearch.LabelSearchKeyword" value="Write a keyword to search for." />
-	<string key="Website.Forms.Administrative.UploadMediaFile.LabelFieldGroup" value="Upload New Media File" />
-	<string key="Website.Forms.Administrative.UploadMediaFile.LabelFile" value="File name:" />
-	<string key="Website.Forms.Administrative.UploadMediaFile.HelpFile" value="" />
-	<string key="Website.Forms.Administrative.UploadMediaFile.EmptyFileErrorTitle" value="File missing or empty" />
-	<string key="Website.Forms.Administrative.UploadMediaFile.EmptyFileErrorMessage" value="No file data was received. Please use the browse button and ensure that the selected file is not empty." />
-	<string key="Website.Forms.Administrative.UploadNewMediaFile.LabelFieldGroup" value="Upload New Media File to Existing File" />
-	<string key="Website.Forms.Administrative.UploadNewMediaFile.LabelFile" value="File name:" />
-	<string key="Website.Forms.Administrative.UploadNewMediaFile.HelpFile" value="" />
-	<string key="Website.Forms.Administrative.AdministrativeTemplates.Document.LabelSave" value="Save" />
-	<string key="Website.Forms.Administrative.AdministrativeTemplates.Document.LabelSaveAs" value="Save As..." />
-	<string key="Website.Forms.Administrative.AdministrativeTemplates.Wizard.LabelPrevious" value="Previous" />
-	<string key="Website.Forms.Administrative.AdministrativeTemplates.Wizard.LabelNext" value="Next" />
-	<string key="Website.Forms.Administrative.AdministrativeTemplates.Wizard.LabelFinish" value="Finish" />
-	<string key="Website.Forms.Administrative.AdministrativeTemplates.Wizard.LabelCancel" value="Cancel" />
-	<string key="Website.Forms.Administrative.AdministrativeTemplates.DataDialog.LabelOk" value="OK" />
-	<string key="Website.Forms.Administrative.AdministrativeTemplates.DataDialog.LabelCancel" value="Cancel" />
-	<string key="Website.Forms.Administrative.AdministrativeTemplates.ConfirmDialog.LabelOk" value="OK" />
-	<string key="Website.Forms.Administrative.AdministrativeTemplates.ConfirmDialog.LabelCancel" value="Cancel" />
-	<string key="Website.Misc.SourceCodeViewer.LabelInput" value="Input" />
-	<string key="Website.Misc.SourceCodeViewer.LabelOutput" value="Output" />
-	<string key="Website.Misc.Trees.DialogTitle.PasteNotAllowed" value="Not allowed." />
-	<string key="Website.Misc.Trees.DialogText.PasteNotAllowed" value="Paste not allowed in this context." />
-	<string key="Website.Misc.Trees.DialogTitle.PasteTypeNotAllowed" value="Not allowed" />
-	<string key="Website.Misc.Trees.DialogText.PasteTypeNotAllowed" value="Folder won't accept document type." />
-	<string key="Website.Misc.MultiSelector.LabelEditSelections" value="Edit Selections" />
-	<string key="Website.Misc.Toolbar.LabelShowMoreActions" value="More" />
-	<string key="GenericVersionProcessController.Version" value="Version information" />
-	<string key="GenericVersionProcessController.VersionToolTip" value="Show version information" />
-	<string key="AspNetUiControl.Selector.SelectValueLabel" value="Select a value" />
-	<string key="AspNetUiControl.Selector.BrokenReference" value="&lt; broken reference &gt;..." />
-	<string key="AspNetUiControl.Selector.NoSelection" value="(no selection)" />
-	<string key="AspNetUiControl.Selector.NoMatchesFor" value="No matches for '{0}'" />
-
+  <string key="Website.Forms.Administrative.ElementKeywordSearch.LabelKeyword" value="Keyword" />
+  <string key="Website.Forms.Administrative.ElementKeywordSearch.LabelSearchKeyword" value="Write a keyword to search for." />
+  <string key="Website.Forms.Administrative.UploadMediaFile.LabelFieldGroup" value="Upload New Media File" />
+  <string key="Website.Forms.Administrative.UploadMediaFile.LabelFile" value="File name:" />
+  <string key="Website.Forms.Administrative.UploadMediaFile.HelpFile" value="" />
+  <string key="Website.Forms.Administrative.UploadMediaFile.EmptyFileErrorTitle" value="File missing or empty" />
+  <string key="Website.Forms.Administrative.UploadMediaFile.EmptyFileErrorMessage" value="No file data was received. Please use the browse button and ensure that the selected file is not empty." />
+  <string key="Website.Forms.Administrative.UploadNewMediaFile.LabelFieldGroup" value="Upload New Media File to Existing File" />
+  <string key="Website.Forms.Administrative.UploadNewMediaFile.LabelFile" value="File name:" />
+  <string key="Website.Forms.Administrative.UploadNewMediaFile.HelpFile" value="" />
+  <string key="Website.Forms.Administrative.AdministrativeTemplates.Document.LabelSave" value="Save" />
+  <string key="Website.Forms.Administrative.AdministrativeTemplates.Document.LabelSaveAs" value="Save As..." />
+  <string key="Website.Forms.Administrative.AdministrativeTemplates.Wizard.LabelPrevious" value="Previous" />
+  <string key="Website.Forms.Administrative.AdministrativeTemplates.Wizard.LabelNext" value="Next" />
+  <string key="Website.Forms.Administrative.AdministrativeTemplates.Wizard.LabelFinish" value="Finish" />
+  <string key="Website.Forms.Administrative.AdministrativeTemplates.Wizard.LabelCancel" value="Cancel" />
+  <string key="Website.Forms.Administrative.AdministrativeTemplates.DataDialog.LabelOk" value="OK" />
+  <string key="Website.Forms.Administrative.AdministrativeTemplates.DataDialog.LabelCancel" value="Cancel" />
+  <string key="Website.Forms.Administrative.AdministrativeTemplates.ConfirmDialog.LabelOk" value="OK" />
+  <string key="Website.Forms.Administrative.AdministrativeTemplates.ConfirmDialog.LabelCancel" value="Cancel" />
+  <string key="Website.Misc.SourceCodeViewer.LabelInput" value="Input" />
+  <string key="Website.Misc.SourceCodeViewer.LabelOutput" value="Output" />
+  <string key="Website.Misc.Trees.DialogTitle.PasteNotAllowed" value="Not allowed." />
+  <string key="Website.Misc.Trees.DialogText.PasteNotAllowed" value="Paste not allowed in this context." />
+  <string key="Website.Misc.Trees.DialogTitle.PasteTypeNotAllowed" value="Not allowed" />
+  <string key="Website.Misc.Trees.DialogText.PasteTypeNotAllowed" value="Folder won't accept document type." />
+  <string key="Website.Misc.MultiSelector.LabelEditSelections" value="Edit Selections" />
+  <string key="Website.Misc.Toolbar.LabelShowMoreActions" value="More" />
+  <string key="GenericVersionProcessController.Version" value="Version information" />
+  <string key="GenericVersionProcessController.VersionToolTip" value="Show version information" />
+  <string key="AspNetUiControl.Selector.SelectValueLabel" value="Select a value" />
+  <string key="AspNetUiControl.Selector.BrokenReference" value="&lt; broken reference &gt;..." />
+  <string key="AspNetUiControl.Selector.NoSelection" value="(no selection)" />
+  <string key="AspNetUiControl.Selector.NoMatchesFor" value="No matches for '{0}'" />
   <string key="Validation.BrokenReference" value="This field contains a broken reference" />
   <string key="Validation.RequiredField" value="This field is required." />
   <string key="Validation.Decimal.SymbolsAfterPointAllowed" value="Only {0} digit(s) after decimal point allowed" />
-	<string key="Validation.Decimal.SymbolsBeforePointAllowed" value="Only {0} digit(s) before decimal point allowed" />
+  <string key="Validation.Decimal.SymbolsBeforePointAllowed" value="Only {0} digit(s) before decimal point allowed" />
   <string key="Validation.DateTime.InvalidDateFormat" value="Invalid date string: '{0}'. Use the format '{1}'." />
-	<string key="Validation.Int32.Overflow" value="The specified value is either too big or too small. The acceptable range is from -2,147,483,648 to 2,147,483,647" />
-
-	<string key="Validation.Required" value="Required" />
-	<string key="Validation.InvalidField.Number" value="Numbers only" />
-	<string key="Validation.InvalidField.Integer" value="Integers only" />
-	<string key="Validation.InvalidField.ProgrammingIdentifier" value="Invalid identifier" />
-	<string key="Validation.InvalidField.ProgrammingNamespace" value="Invalid namespace" />
-	<string key="Validation.InvalidField.Url" value="Invalid URL" />
-	<string key="Validation.InvalidField.Currency" value="Invalid notation" />
-	<string key="Validation.InvalidField.Email" value="Invalid e-mail" />
-	<string key="Validation.InvalidField.Guid" value="Invalid GUID" />
-	<string key="Validation.StringLength.Min" value="{0} characters minimum" />
-	<string key="Validation.StringLength.Max" value="{0} characters maximum" />
-
-	<string key="Browser.Label" value="Page Browser" />
+  <string key="Validation.Int32.Overflow" value="The specified value is either too big or too small. The acceptable range is from -2,147,483,648 to 2,147,483,647" />
+  <string key="Validation.Required" value="Required" />
+  <string key="Validation.InvalidField.Number" value="Numbers only" />
+  <string key="Validation.InvalidField.Integer" value="Integers only" />
+  <string key="Validation.InvalidField.ProgrammingIdentifier" value="Invalid identifier" />
+  <string key="Validation.InvalidField.ProgrammingNamespace" value="Invalid namespace" />
+  <string key="Validation.InvalidField.Url" value="Invalid URL" />
+  <string key="Validation.InvalidField.Currency" value="Invalid notation" />
+  <string key="Validation.InvalidField.Email" value="Invalid e-mail" />
+  <string key="Validation.InvalidField.Guid" value="Invalid GUID" />
+  <string key="Validation.StringLength.Min" value="{0} characters minimum" />
+  <string key="Validation.StringLength.Max" value="{0} characters maximum" />
+  <string key="Browser.Label" value="Page Browser" />
   <string key="Browser.ToolTip" value="Browse unpublished pages" />
-
+  <string key="Duplication.Text" value="Copy{count} of {0}" />
   <string key="DefaultVersionName" value="Original" />
 </strings>

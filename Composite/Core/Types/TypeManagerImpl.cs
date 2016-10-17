@@ -47,7 +47,7 @@ namespace Composite.Core.Types
 
             if (throwIfNotFound && type == null)
             {
-                throw new InvalidOperationException(string.Format("The type '{0}' could not be found", fullName));
+                throw new InvalidOperationException($"The type '{fullName}' could not be found");
             }
 
             return type;
@@ -78,7 +78,8 @@ namespace Composite.Core.Types
 
             if (string.IsNullOrEmpty(serializedType))
             {
-                throw new InvalidOperationException(string.Format("No TypeManagerTypeHandler plugins could serialize the given type '{0}'", type));
+                throw new InvalidOperationException(
+                    $"No TypeManagerTypeHandler plugins could serialize the given type '{type}'");
             }
 
             return serializedType;
@@ -88,7 +89,7 @@ namespace Composite.Core.Types
 
         public string TrySerializeType(Type type)
         {
-            if (type == null) throw new ArgumentNullException("type");
+            Verify.ArgumentNotNull(type, nameof(type));
 
             return _serializedTypeLookup.GetOrAdd(type,
                 t => t.IsGenericType ? TrySerializeGenericType(t).ToString() : TrySerializeNonGenericType(t));
@@ -153,9 +154,7 @@ namespace Composite.Core.Types
 
                 Type genericType = Type.GetType(attribute.Value);
 
-                if (genericType == null) return null;
-
-                return genericType.MakeGenericType(genericArguments.ToArray());
+                return genericType?.MakeGenericType(genericArguments.ToArray());
             }
             else
             {
@@ -181,7 +180,7 @@ namespace Composite.Core.Types
 
             fullName = TypeManager.FixLegasyTypeName(fullName);
 
-            // This should be the first thing tried, otherwise "old" types are found in Composite.Genereted.dll instead of a possible new compiled version of the type /MRJ
+            // This should be the first thing tried, otherwise "old" types are found in Composite.Generated.dll instead of a possible new compiled version of the type /MRJ
             if (!fullName.Contains(","))
             {
                 Type compositeType = typeof (Composite.Data.IData).Assembly.GetType(fullName, false);
@@ -211,14 +210,14 @@ namespace Composite.Core.Types
             {
                 Type genericType = type.GetGenericTypeDefinition();
 
-                Type[] genericArguemnts = type.GetGenericArguments();
+                Type[] genericArguments = type.GetGenericArguments();
 
                 XElement element =
                     new XElement("t",
                         new XAttribute("n", genericType.AssemblyQualifiedName)
                     );
 
-                foreach (Type genericArgument in genericArguemnts)
+                foreach (Type genericArgument in genericArguments)
                 {
                     XElement elm = TrySerializeGenericType(genericArgument);
 
@@ -276,7 +275,7 @@ namespace Composite.Core.Types
 
             if (null == source)
             {
-                throw new ConfigurationErrorsException(string.Format("No configuration source specified"));
+                throw new ConfigurationErrorsException("No configuration source specified");
             }
 
             return source;
@@ -293,9 +292,8 @@ namespace Composite.Core.Types
             {
                 resources.BuildinHandler = null;
 
-                if (RuntimeInformation.IsDebugBuild
-                    && (ConfigurationServices.ConfigurationSource == null ||
-                        ConfigurationServices.ConfigurationSource.GetSection(TypeManagerTypeHandlerSettings.SectionName) == null))
+                if (RuntimeInformation.IsUnittest
+                    && ConfigurationServices.ConfigurationSource?.GetSection(TypeManagerTypeHandlerSettings.SectionName) == null)
                 {
                     resources.BuildinHandler = new BuildinTypeManagerTypeHandler();
                 }
@@ -307,7 +305,7 @@ namespace Composite.Core.Types
 
                     if (settings == null)
                     {
-                        throw new ConfigurationErrorsException(string.Format("Failed to load the configuration section '{0}' from the configuration", TypeManagerTypeHandlerSettings.SectionName));
+                        throw new ConfigurationErrorsException($"Failed to load the configuration section '{TypeManagerTypeHandlerSettings.SectionName}' from the configuration");
                     }
 
                     resources.ProviderNameList = new List<ProviderEntry>();
@@ -317,7 +315,7 @@ namespace Composite.Core.Types
                         resources.ProviderNameList.Add(new ProviderEntry(data.Priority, data.Name));
                     }
 
-                    resources.ProviderNameList.Sort(delegate(ProviderEntry e1, ProviderEntry e2) { return e1.Priority - e2.Priority; });
+                    resources.ProviderNameList.Sort((e1, e2) => e1.Priority - e2.Priority);
                 }
             }
         }
@@ -327,24 +325,15 @@ namespace Composite.Core.Types
         [DebuggerDisplay("ProviderName = {ProviderName}, Priority = {Priority}")]
         private class ProviderEntry
         {
-            private readonly int _priority;
-            private readonly string _providerName;
-
             public ProviderEntry(int priority, string providerName)
             {
-                _priority = priority;
-                _providerName = providerName;
+                Priority = priority;
+                ProviderName = providerName;
             }
 
-            public int Priority
-            {
-                get { return _priority; }
-            }
+            public int Priority { get; }
 
-            public string ProviderName
-            {
-                get { return _providerName; }
-            }
+            public string ProviderName { get; }
         }
     }
 }
