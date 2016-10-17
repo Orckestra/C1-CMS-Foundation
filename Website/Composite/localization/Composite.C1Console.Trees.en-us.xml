@@ -56,13 +56,12 @@
   <string key="TreeValidationError.FunctionFilter.WrongFunctionReturnType" value="The return type of the expression returned by the function is '{0}', '{1}' was expected" />
   <string key="TreeValidationError.FunctionFilter.WrongFunctionParameterCount" value="The parameter count of expression returned by the function is '{0}', 1 was expected" />
   <string key="TreeValidationError.FunctionFilter.WrongFunctionParameterType" value="The expressions parameter type returned by the function is '{0}', '{1}' was expected" />
-  
+
+	<string key="TreeValidationError.CustomFormMarkup.MissingFile" value="The file '{0}' does not exist" />
+	<string key="TreeValidationError.CustomFormMarkup.BadMarkupPath" value="The custom markup path '{0}' is wrongly formatted. Use ~/Dir1/Dir2/File.xml" />
+	<string key="TreeValidationError.CustomFormMarkup.InvalidXml" value="The file '{0}' does not contain valid XML markup." />
   <string key="TreeValidationError.ReportFunctionAction.WrongReturnValue" value="The function does not return value of the type '{0}'" />
-  <string key="TreeValidationError.GenericAddDataAction.MissingMarkupFile" value="The file '{0}' does not exist" />
-  <string key="TreeValidationError.GenericAddDataAction.BadMarkupPath" value="The custom markup path '{0}' is wrongly formatted. Use ~/Dir1/Dir2/File.xml" />
   <string key="TreeValidationError.GenericEditDataAction.OwnerIsNotDataNode" value="The edit data action only applies to elements that produce data elements" />
-  <string key="TreeValidationError.GenericEditDataAction.MissingMarkupFile" value="The file '{0}' does not exist" />
-  <string key="TreeValidationError.GenericEditDataAction.BadMarkupPath" value="The custom markup path '{0}' is wrongly formatted. Use ~/Dir1/Dir2/File.xml" />
   <string key="TreeValidationError.GenericDeleteDataAction.OwnerIsNotDataNode" value="The delete data action only applies to elements that produce data elements" />
   <string key="TreeValidationError.MessageBoxAction.UnknownDialogType" value="The dialog type '{0}' is not supported" />
   <string key="TreeValidationError.CustomUrlAction.TooManyPostParameterElements" value="Too many '{0}' elements, only one is allowed" />
@@ -98,6 +97,7 @@
   <string key="GenericAddDataAction.DefaultLabel" value="Add" />
   <string key="GenericEditDataAction.DefaultLabel" value="Edit" />
   <string key="GenericDeleteDataAction.DefaultLabel" value="Delete" />
+  <string key="GenericDuplicateDataAction.DefaultLabel" value="Duplicate" />
   
   
   <string key="TreeGenericDelete.CascadeDeleteErrorTitle" value="Cascade delete error" />

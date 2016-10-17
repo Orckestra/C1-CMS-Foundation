@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using Composite.C1Console.Elements;
 using Composite.C1Console.Security;
+using Composite.C1Console.Trees.Foundation;
 using Composite.C1Console.Users;
 using Composite.C1Console.Workflow;
 using Composite.Core.Extensions;
@@ -226,6 +227,10 @@ namespace Composite.C1Console.Trees
                 dynamicContext.Piggybag.PreparePiggybag(this.ParentNode, parentEntityToken)
             ));
 
+            if (parentEntityToken is TreePerspectiveEntityToken)
+            {
+                element.ElementHandle.Piggyback[StringConstants.PiggybagTreeId] = Tree.TreeId;
+            }
 
             bool hasChildren;
             bool isDisabled = false;

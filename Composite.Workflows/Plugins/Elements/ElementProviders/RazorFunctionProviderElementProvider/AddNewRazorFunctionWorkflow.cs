@@ -134,16 +134,17 @@ namespace Composite.Plugins.Elements.ElementProviders.RazorFunctionProviderEleme
 
         private void finalizecodeActivity_ExecuteCode(object sender, EventArgs e)
         {
-            string functionName = this.GetBinding<string>(Binding_Name);
-            string functionNamespace = this.GetBinding<string>(Binding_Namespace);
-            string functionFullName = functionNamespace + "." + functionName;
-
             var provider = GetFunctionProvider<RazorFunctionProvider>();
+
+            string functionName = this.GetBinding<string>(Binding_Name);
+            string functionNamespace = ChangeNamespaceAccordingToExistingFolders(provider,this.GetBinding<string>(Binding_Namespace));
+            string functionFullName = functionNamespace + "." + functionName;
 
             AddNewTreeRefresher addNewTreeRefresher = this.CreateAddNewTreeRefresher(this.EntityToken);
 
             string fileName = functionName + ".cshtml";
             string folder = Path.Combine(provider.PhysicalPath, functionNamespace.Replace('.', '\\'));
+
             string cshtmlFilePath = Path.Combine(folder, fileName);
 
             string code;
@@ -172,6 +173,34 @@ namespace Composite.Plugins.Elements.ElementProviders.RazorFunctionProviderEleme
             var container = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
             var executionService = container.GetService<IActionExecutionService>();
             executionService.Execute(newFunctionEntityToken, new WorkflowActionToken(typeof(EditRazorFunctionWorkflow)), null);
+        }
+
+        private static string ChangeNamespaceAccordingToExistingFolders(RazorFunctionProvider provider, string nameSpace)
+        {
+            string folder = Path.Combine(provider.PhysicalPath, nameSpace.Replace('.', '\\'));
+            
+            if (Directory.Exists(folder))
+            {
+                return GetAlldirectoriesAndSubDirectories(provider.PhysicalPath)
+                    .Single(f=>f.Equals(folder,StringComparison.InvariantCultureIgnoreCase))
+                    .Replace(provider.PhysicalPath + "\\", "")
+                    .Replace('\\','.');
+            }
+
+            return nameSpace;
+        }
+
+        private static List<string> GetAlldirectoriesAndSubDirectories(string physicalPath)
+        {
+            var res = new List<string>();
+
+            foreach (var dir in Directory.GetDirectories(physicalPath))
+            {
+                res.Add(dir);
+                res.AddRange(GetAlldirectoriesAndSubDirectories(dir));
+            }
+
+            return res;
         }
 
         private string GetFunctionCode(string copyFromFunction)

@@ -11,7 +11,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Composite</RootNamespace>
     <AssemblyName>Composite.Website</AssemblyName>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
@@ -1296,7 +1296,9 @@
     <Content Include="App_Data\Composite\Configuration\UrlFormatting.xml" />
     <Content Include="Composite\content\dialogs\treeselector\TreeSelectorToolBarBinding.js" />
     <Content Include="Composite\content\forms\Administrative\FunctionTesterEditFunction.xml" />
-    <Content Include="App_Data\Composite\TreeDefinitions\PageType.xml" />
+    <Content Include="App_Data\Composite\TreeDefinitions\PageType.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Composite\content\forms\AdministrativeTemplates\EmptyDocument.xml" />
     <Content Include="Composite\content\forms\Administrative\AddMediaFileStep1.xml">
       <SubType>Designer</SubType>

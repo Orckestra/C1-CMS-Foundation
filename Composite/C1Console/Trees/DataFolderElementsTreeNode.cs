@@ -211,8 +211,11 @@ namespace Composite.C1Console.Trees
                     
                     if (dataEntityToken != null)
                     {
+                        var data = dataEntityToken.Data;
+                        Verify.IsNotNull(data, "data is null, " + dataEntityToken);
+
                         referenceType = this.ChildGeneratingParentIdFilterNode.KeyPropertyInfo.DeclaringType;
-                        referenceValue = this.ChildGeneratingParentIdFilterNode.KeyPropertyInfo.GetValue(dataEntityToken.Data, null);
+                        referenceValue = this.ChildGeneratingParentIdFilterNode.KeyPropertyInfo.GetValue(data, null);
                     }                    
                 }
                 else
@@ -285,11 +288,18 @@ namespace Composite.C1Console.Trees
                     referenceValue,
                     dynamicContext,
                     pair.Label,
-                    f => f.GroupingValues.Add(this.GroupingValuesFieldName, this.DateTimeFormater.Serialize(pair.Object))
+                    f => f.GroupingValues.Add(this.GroupingValuesFieldName, ConvertGroupingValue(pair.Object))
                 );
 
                 yield return element;
             }
+        }
+
+        private object ConvertGroupingValue(object value)
+        {
+            return this.DateTimeFormater.IsDateTimeGroupingValue(value) 
+                ? this.DateTimeFormater.Serialize(value) 
+                : value;
         }
 
         private Func<object, string> GetLabelFunction(out bool shouldBeSortedByLabel)
@@ -799,21 +809,32 @@ namespace Composite.C1Console.Trees
 
         private Expression CreateSimpleFilterExpression(object value, Expression fieldExpression)
         {
-            if (this.PropertyInfo.PropertyType != typeof(DateTime) && this.PropertyInfo.PropertyType != typeof(DateTime?))
+            Type propertyType = this.PropertyInfo.PropertyType;
+            if (propertyType == typeof (DateTime) || propertyType == typeof (DateTime?))
             {
-                Expression expression = Expression.Equal(fieldExpression, Expression.Constant(value, this.PropertyInfo.PropertyType));
-
-                return expression;
+                return CreateFilterByDateTimeExpression(value, fieldExpression);
             }
 
+            if (value != null && !propertyType.IsInstanceOfType(value))
+            {
+                Exception ex;
+                value = ValueTypeConverter.TryConvert(value, propertyType, out ex);
+                if (ex != null)
+                {
+                    throw new InvalidOperationException($"Failed to convent a filtering value to type '{propertyType}'");
+                }
+            }
 
+            return Expression.Equal(fieldExpression, Expression.Constant(value, propertyType));
+        }
+
+        private Expression CreateFilterByDateTimeExpression(object value, Expression fieldExpression)
+        {
             DateTime dateTime = DateTimeFormater.Deserialize(value.ToString());
 
             if (this.DateFormat == null)
             {
-                Expression expression = Expression.Equal(fieldExpression, Expression.Constant(dateTime));
-
-                return expression;
+                return Expression.Equal(fieldExpression, Expression.Constant(dateTime));
             }
 
 

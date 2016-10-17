@@ -12,13 +12,13 @@ function SystemPageBinding () {
 	 * @type {SystemLogger}
 	 */
 	this.logger = SystemLogger.getLogger ( "SystemPageBinding" );
-	
+
 	/**
 	 * Supplied as page argument.
 	 * @type {SystemNode}
 	 */
 	this.node = null;
-	
+
 	/**
 	 * @type {SystemTree}
 	 */
@@ -29,7 +29,7 @@ function SystemPageBinding () {
  * Identifies binding.
  */
 SystemPageBinding.prototype.toString = function () {
-	
+
 	return "[SystemPageBinding]";
 }
 
@@ -37,7 +37,7 @@ SystemPageBinding.prototype.toString = function () {
  * @overloads {PageBinding#onBindingRegister}
  */
 SystemPageBinding.prototype.onBindingRegister = function () {
-	
+
 	SystemPageBinding.superclass.onBindingRegister.call ( this );
 	this.subscribe ( BroadcastMessages.SYSTEMTREEBINDING_REFRESH );
 	this.addActionListener ( ButtonBinding.ACTION_COMMAND );
@@ -48,7 +48,7 @@ SystemPageBinding.prototype.onBindingRegister = function () {
  * @param {SystemNode} systemNode
  */
 SystemPageBinding.prototype.setPageArgument = function ( systemNode ) {
-	
+
 	this.node = systemNode;
 	SystemPageBinding.superclass.setPageArgument.call ( this, systemNode );
 }
@@ -68,7 +68,7 @@ SystemPageBinding.prototype.onBeforePageInitialize = function () {
 	} else {
 		throw "SystemPageBinding requires a SystemNode";
 	}
-	
+
 	SystemPageBinding.superclass.onBeforePageInitialize.call ( this );
 }
 
@@ -80,11 +80,11 @@ SystemPageBinding.prototype._buildTree = function () {
 	var children = this.node.getChildren ();
 	if ( children.hasEntries ()) {
 		while ( children.hasNext ()) {
-			var node = SystemTreeNodeBinding.newInstance ( 
-				children.getNext (), 
-				this.bindingDocument 
+			var node = SystemTreeNodeBinding.newInstance (
+				children.getNext (),
+				this.bindingDocument
 			)
-			this._tree.add ( node ); 
+			this._tree.add ( node );
 			node.attach ();
 		}
 	}
@@ -94,11 +94,11 @@ SystemPageBinding.prototype._buildTree = function () {
  * Refresh tree.
  */
 SystemPageBinding.prototype._refreshTree = function () {
-	
-	/* 
-	 * Preopen non-container root nodes. That aint right, 
-	 * but they will get replaced by fresh nodes anyway. 
-	 * This will let the user see a newly added treenode 
+
+	/*
+	 * Preopen non-container root nodes. That aint right,
+	 * but they will get replaced by fresh nodes anyway.
+	 * This will let the user see a newly added treenode
 	 * without opening container, at least at root level.
 	 */
 	var roots = this._tree._treeBodyBinding.getChildBindingsByLocalName ( "treenode" );
@@ -107,37 +107,37 @@ SystemPageBinding.prototype._refreshTree = function () {
 			root.isOpen = true;
 		}
 	});
-	
-	
+
+
 	// Collect open treenodes.
 	var crawler = new TreeCrawler ();
 	var opens = new List ();
 	crawler.mode = TreeCrawler.MODE_GETOPEN;
 	crawler.crawl ( this.bindingElement, opens );
 	crawler.dispose ();
-	
+
 	// Extract open SystemNodes.
 	var list = new List ([ this.node ]);
 	opens.each ( function ( treenode ) {
 		list.add ( treenode.node );
 	});
-	
+
 	// Empty tree and build new.
 	this._tree.empty ();
 	var branch = this.node.getDescendantBranch ( list );
 
 	if ( branch.hasEntries ()) {
-	
+
 		var self = this;
 		var map = new Map ();
-		
+
 		/*
-		 * Note that this is basically a copy-paste 
+		 * Note that this is basically a copy-paste
 		 * of some stoff going on in SystemTreeNode.
 		 */
 		branch.each ( function ( key, nodes ) {
 			nodes.each ( function ( node ) {
-				
+
 				var treenode = SystemTreeNodeBinding.newInstance ( node, self.bindingDocument );
 				map.set ( node.getHandle (), treenode );
 				if ( map.has ( key )) {
@@ -149,7 +149,7 @@ SystemPageBinding.prototype._refreshTree = function () {
 				}
 			});
 		});
-		
+
 		this._tree.attachRecursive ();
 	}
 }
@@ -158,9 +158,15 @@ SystemPageBinding.prototype._refreshTree = function () {
  * Executed when the page is shown. Select first treenode.
  */
 SystemPageBinding.prototype.onAfterPageInitialize = function () {
-	
+
 	SystemPageBinding.superclass.onAfterPageInitialize.call ( this );
-	this._tree.selectDefault ();
+	this._tree.selectDefault();
+
+	if (Application.isTestEnvironment) {
+		try {
+			this.setProperty("data-qa", this.node.getTag());
+		} catch (exception) { }
+	}
 }
 
 /**
@@ -169,12 +175,12 @@ SystemPageBinding.prototype.onAfterPageInitialize = function () {
  * @param {Action} action
  */
 SystemPageBinding.prototype.handleAction = function ( action ) {
-	
+
 	SystemPageBinding.superclass.handleAction.call ( this, action )
-	
+
 	switch ( action.type ) {
 		case ButtonBinding.ACTION_COMMAND :
-			var button = action.target; 
+			var button = action.target;
 			switch ( button.getID ()) {
 				case "locktreebutton" :
 					this._tree.setLockToEditor ( button.isChecked );
@@ -193,16 +199,16 @@ SystemPageBinding.prototype.handleAction = function ( action ) {
  * @param {object} arg
  */
 SystemPageBinding.prototype.handleBroadcast = function ( broadcast, arg ) {
-	
+
 	SystemPageBinding.superclass.handleBroadcast.call ( this, broadcast, arg );
-	
+
 	/*
-	 * This is basically a copy of the procedure instiaged 
+	 * This is basically a copy of the procedure instiaged
 	 * at SystemTreeNodeBinding method "refresh".
 	 */
 	switch ( broadcast ) {
 		case BroadcastMessages.SYSTEMTREEBINDING_REFRESH :
-		
+
 			var token = arg;
 			if ( this.node && this.node.getEntityToken () == token ) {
 				try {

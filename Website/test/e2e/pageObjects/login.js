@@ -10,19 +10,23 @@ module.exports = {
 	commands: [
 		{
 			isShown: function () {
-				this.waitForElementVisible('@usernameField', 2500);
+				this.waitForElementVisible('@usernameField', this.api.globals.timeouts.basic);
 				return this;
 			},
 			setUsername: function (username) {
 				this
 					.clearValue('@usernameInput') // There may be a default value, clear it
-					.setValue('@usernameInput', username);
+					.click('@usernameInput')
+					.setValue('@usernameInput', username)
+					.assert.value('@usernameInput',username);
 				return this;
 			},
 			setPassword: function (password) {
 				this
 					.clearValue('@passwordInput') // There may be a default value, clear it
-					.setValue('@passwordInput', password);
+					.click('@passwordInput')
+					.setValue('@passwordInput', password)
+					.assert.value('@passwordInput', password);
 				return this;
 			},
 			fullLogin: function (username, password) {
@@ -31,7 +35,7 @@ module.exports = {
 					.setUsername(username || 'admin')
 					.setPassword(password || '123456')
 					.click('@submitButton')
-					.waitForElementNotVisible('@usernameField', 1000);
+					.waitForElementNotVisible('@usernameField', this.api.globals.timeouts.basic);
 			}
 		}
 	]

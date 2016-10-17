@@ -131,6 +131,8 @@ namespace Composite.Services
                 {
                     propertyBag[Texts.ViewUnpublishedItems_DateModifiedLabel] = changeHistory.ChangeDate.ToTimeZoneDateTimeString();
                     propertyBag[Texts.ViewUnpublishedItems_DateModifiedLabel+"Sortable"] = toSortableString(changeHistory.ChangeDate);
+                    propertyBag[Texts.ViewUnpublishedItems_LabelChangedBy] = changeHistory.ChangedBy;
+                    propertyBag[Texts.ViewUnpublishedItems_LabelChangedBy+"Sortable"] = changeHistory.ChangedBy;
                 }
                 var creationHistory = data as ICreationHistory;
                 if (creationHistory != null)
