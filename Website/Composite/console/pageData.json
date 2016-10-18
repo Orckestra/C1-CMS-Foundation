@@ -198,13 +198,14 @@
         "items": [
           {
             "type": "select",
-            "name": "server-log/toolbar/date",
+            "name": "server-log/date",
             "options": [
-              { "value": "2016-09-23" },
-              { "value": "2016-09-22" },
-              { "value": "2016-09-21" },
-              { "value": "2016-09-20" }
-            ]
+              { "value": "2016-10-08" },
+              { "value": "2016-10-07" },
+              { "value": "2016-10-06" },
+              { "value": "2016-10-05" }
+            ],
+            "default": "2016-10-08"
           },
           {
             "type": "button",
@@ -246,6 +247,7 @@
         "type": "log",
         "logURL": "/Composite/console/serverLog.json",
         "logLevels": "server-log/levels",
+        "logPageName": "server-log/date",
         "placeholder": "No log data available..."
       }
     ]

@@ -29,40 +29,46 @@ describe('ConnectLogPanel', () => {
 					name: 'tab1',
 					type: 'testtab',
 					logLevels: 'logLevel',
+					logPageName: 'page',
 					placeholder: 'Empty'
 				}
 			},
 			itemDefs: {
 				logLevel: {
 					default: ['Information', 'Error']
+				},
+				page: {
+					default: 'page'
 				}
 			},
 			logs: {
-				tab1: [
-					{
-						timestamp: "2016-10-07 12:53:32.50",
-				    message: "Message1",
-				    title: "Title1",
-				    type: "Information"
-				  },
-				  {
-						timestamp: "2016-10-07 15:17:38.18",
-				    message: "Message2",
-				    title: "Title1",
-				    type: "Verbose"
-				  },{
-						timestamp: "2016-10-07 12:52:06.49",
-				    message: "Message3",
-				    title: "Title2",
-				    type: "Verbose"
-				  },
-				  {
-						timestamp: "2016-10-07 15:17:38.07",
-				    message: "Message4",
-				    title: "Title3",
-				    type: "Error"
-				  }
-				]
+				tab1: {
+					page: [
+						{
+							timestamp: "2016-10-07 12:53:32.50",
+					    message: "Message1",
+					    title: "Title1",
+					    type: "Information"
+					  },
+					  {
+							timestamp: "2016-10-07 15:17:38.18",
+					    message: "Message2",
+					    title: "Title1",
+					    type: "Verbose"
+					  },{
+							timestamp: "2016-10-07 12:52:06.49",
+					    message: "Message3",
+					    title: "Title2",
+					    type: "Verbose"
+					  },
+					  {
+							timestamp: "2016-10-07 15:17:38.07",
+					    message: "Message4",
+					    title: "Title3",
+					    type: "Error"
+					  }
+					]
+				}
 			},
 			options: {
 				values: {

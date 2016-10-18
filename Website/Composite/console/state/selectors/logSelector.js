@@ -18,15 +18,32 @@ const logLevelSelector = createSelector(
 	}
 );
 
+const pageNameSelector = createSelector(
+	allOptionsSelector,
+	itemDefsSelector,
+	tabSelector,
+	(options, itemDefs, tabDef) => {
+		let itemName = tabDef.get('logPageName');
+		return options.getIn(['values', itemName]) ||
+			itemDefs.getIn([itemName, 'default']);
+	}
+);
+
 const currentLogSelector = createSelector(
 	allLogsSelector,
 	currentTabNameSelector,
 	(logs, tabName) =>
-		(logs.get(tabName) || Immutable.List())
+		(logs.get(tabName) || Immutable.Map())
+);
+
+const currentLogPageSelector = createSelector(
+	currentLogSelector,
+	pageNameSelector,
+	(log, page) => log.get(page) || Immutable.List()
 );
 
 const levelFilteredLogSelector = createSelector(
-	currentLogSelector,
+	currentLogPageSelector,
 	logLevelSelector,
 	(log, levels) => log.filter(logEntry => levels.includes(logEntry.get('type')))
 );

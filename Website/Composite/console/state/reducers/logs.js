@@ -11,5 +11,10 @@ const initialState = Immutable.Map({
 });
 
 export default function logs(state = initialState, action) {
-	return state;
+	switch (action.type) {
+	case REFRESH_LOG:
+		return state.setIn([action.logName, action.page], Immutable.fromJS(action.entries));
+	default:
+		return state;
+	}
 }
