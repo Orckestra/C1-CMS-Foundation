@@ -50,8 +50,3 @@ export const toolbarSelector = createSelector(
 			return toolbar.set('items', items);
 		})
 );
-
-export const toolbarSelectorMutable = createSelector(
-	toolbarSelector,
-	toolbar => toolbar ? toolbar.toJS() : {}
-);

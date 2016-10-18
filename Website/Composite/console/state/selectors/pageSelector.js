@@ -8,8 +8,3 @@ export const currentPageSelector = createSelector(
 	pageDefSelector,
 	(name, pageDefs) => pageDefs.get(name)
 );
-
-export const currentPageSelectorMutable = createSelector(
-	currentPageSelector,
-	page => page ? page.toJS() : {}
-);

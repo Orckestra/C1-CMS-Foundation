@@ -48,8 +48,3 @@ export const formSelector = createSelector(
 				)
 		)
 );
-
-export const formSelectorMutable = createSelector(
-	formSelector,
-	tab => tab ? tab.toJS() : {}
-);
