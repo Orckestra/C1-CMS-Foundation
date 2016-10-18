@@ -352,6 +352,7 @@ SystemJS.config({
     "local:*.json"
   ],
   map: {
+    "fixed-data-table": "npm:fixed-data-table@0.6.3",
     "immutable": "npm:immutable@3.8.1",
     "github/url-polyfill": "github:github/url-polyfill@0.5.6",
     "bluebird": "npm:bluebird@3.4.1",

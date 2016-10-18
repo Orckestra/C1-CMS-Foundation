@@ -9,10 +9,10 @@ describe('Logs', () => {
 		);
 
 		describe('Refresh', () => {
-			let refreshLogs = actions.refreshLogs;
+			let refreshLog = actions.refreshLog;
 			it('creates action for refreshing a log\'s entries', () => {
 				let entries = [ 'test1', 'test2', 'test3', 'test4', 'test5', 'test6' ];
-				let action = refreshLogs('testlog', '2016-10-15', entries);
+				let action = refreshLog('testlog', '2016-10-15', entries);
 				return expect(action, 'to be an action of type', actions.REFRESH_LOG)
 					.and('to have property', 'logName', 'testlog')
 					.and('to have property', 'page', '2016-10-15')
@@ -42,6 +42,28 @@ describe('Logs', () => {
 					page: '2016-10-12',
 					entries: [ 'test1', 'test2', 'test3', 'test4', 'test5', 'test6' ]
 				};
+			});
+
+			it('Adds a new log page', () => {
+				let oldState = Immutable.fromJS({
+					testlog: {
+						'otherday': ['no', 'change']
+					},
+					otherlog: {
+						'someday': ['no', 'touchy']
+					}
+				});
+				let newState = logs(oldState, action);
+				return expect(newState, 'not to be', oldState)
+				.and('to equal', Immutable.fromJS({
+					testlog: {
+						'otherday': ['no', 'change'],
+						'2016-10-12': [ 'test1', 'test2', 'test3', 'test4', 'test5', 'test6' ]
+					},
+					otherlog: {
+						'someday': ['no', 'touchy']
+					}
+				}));
 			});
 
 			it('Replaces entries on a log page', () => {

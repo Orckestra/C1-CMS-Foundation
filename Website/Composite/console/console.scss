@@ -465,35 +465,15 @@ fieldset {
 	}
 }
 
-.log-table {
-	border-top: 1px solid $borderColor;
-
-	table {
-		width: 100%;
-		border-collapse: collapse;
-
-		th, td {
-			height: 25px;
-			border-bottom: 1px solid $tableBorderColor;
-			padding-left: 4px;
-		}
-
-		td {
-			border-left: 1px solid $tableBorderColor;
-
-			&:first-child {
-				border-left: 0 none transparent;
-				padding: 0;
-			}
-		}
-
-		th {
-			text-align: left;
-			background-color: $darkBackground;
-		}
-	}
-
-	.log-table-placeholder {
-		padding: 1em;
-	}
+.Information {
+	background-color: lime;
+}
+.Warning {
+	background-color: orange;
+}
+.Error {
+	background-color: red;
+}
+.Critical {
+	background-color: crimson;
 }

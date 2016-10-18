@@ -46,6 +46,7 @@
   "jspm": {
     "main": "Composite/console/console.js",
     "dependencies": {
+      "fixed-data-table": "npm:fixed-data-table@^0.6.3",
       "github/url-polyfill": "github:github/url-polyfill@^0.5.6",
       "normalizr": "npm:normalizr@^2.2.1",
       "plugin-babel": "npm:systemjs-plugin-babel@^0.0.13",
