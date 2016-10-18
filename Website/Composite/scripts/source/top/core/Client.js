@@ -127,7 +127,7 @@ _Client.prototype = {
 	},
 
 	/**
-	* Client qualified for the awesome Composite C1 experience?
+	* Client qualified for the awesome Orckestra CMS experience?
 	* @return {boolean}
 	*/
 	qualifies: function () {

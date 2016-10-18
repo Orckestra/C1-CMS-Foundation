@@ -310,8 +310,6 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 || selectedPage.MenuTitle != originalPage.MenuTitle
                 || selectedPage.Title != originalPage.Title;
 
-            var treeviewRequiresRefreshing = false;
-
             var dataToAdd = new Dictionary<string, IData>();
             var dataToUpdate = new Dictionary<string, IData>();
 
@@ -339,12 +337,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                                 }
                             }
 
-                            bool newDataAdded = PageServices.AddPageTypePageFoldersAndApplications(selectedPage);
-
-                            if (newDataAdded)
-                            {
-                                treeviewRequiresRefreshing = true;
-                            }
+                            PageServices.AddPageTypePageFoldersAndApplications(selectedPage);
                         }
 
 
@@ -360,10 +353,6 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
                             DataFacade.Update(data);
                         }
-
-                        treeviewRequiresRefreshing |= (originalPage.Title != selectedPage.Title) ||
-                                                   (originalPage.Description != selectedPage.Description) ||
-                                                   (originalPage.PublicationStatus != selectedPage.PublicationStatus);
 
                         // NOTE: updating originalPage object, in order to make XML & SQL provider work in the same way
                         originalPage.TemplateId = selectedPage.TemplateId;
@@ -418,13 +407,10 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                     var serviceContainer = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
 
                     ActionExecutorFacade.Execute(EntityToken, actionToken, serviceContainer);
-
-                    treeviewRequiresRefreshing = false;
                 }
-
-                if (treeviewRequiresRefreshing)
+                else
                 {
-                    updateTreeRefresher.PostRefreshMesseges(selectedPage.GetDataEntityToken());
+                    updateTreeRefresher.PostRefreshMessages(selectedPage.GetDataEntityToken());
                 }
 
                 UpdateBinding("OldPublicationStatus", selectedPage.PublicationStatus);
@@ -547,6 +533,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             }
             catch (Exception ex)
             {
+                // TODO: add html encoding for the exception text
                 Control errOutput = new LiteralControl("<pre>" + ex + "</pre>");
                 webRenderService.SetNewPageOutput(errOutput);
             }

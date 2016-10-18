@@ -70,6 +70,8 @@
   <string key="PageElementProvider.EditPageToolTip" value="Edit selected page" />
   <string key="PageElementProvider.Delete" value="Delete" />
   <string key="PageElementProvider.DeleteToolTip" value="Delete the selected page" />
+  <string key="PageElementProvider.Duplicate" value="Duplicate Page" />
+  <string key="PageElementProvider.DuplicateToolTip" value="Duplicate the selected page" />
   <string key="PageElementProvider.LocalizePage" value="Translate Page" />
   <string key="PageElementProvider.LocalizePageToolTip" value="Translate selected page" />
   <string key="PageElementProvider.AddSubPage" value="Add page" />
@@ -113,6 +115,7 @@
   <string key="ViewUnpublishedItems.PageTitleLabel" value="Page Title" />
   <string key="ViewUnpublishedItems.VersionLabel" value="Version" />
   <string key="ViewUnpublishedItems.StatusLabel" value="Status" />
+  <string key="ViewUnpublishedItems.LabelChangedBy" value="Author" />
   <string key="ViewUnpublishedItems.PublishDateLabel" value="Publish Date" />
   <string key="ViewUnpublishedItems.PublishDateHelp" value="Date and time the page has been scheduled to publish automatically. To edit, see the Publication Schedule in Edit Page mode." />
   <string key="ViewUnpublishedItems.UnpublishDateLabel" value="Unpublish Date" />

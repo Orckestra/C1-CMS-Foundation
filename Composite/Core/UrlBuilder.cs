@@ -21,12 +21,14 @@ namespace Composite.Core
         private string _pathInfo;
         private string _filePath;
         private string _anchor;
-        private List<KeyValuePair<string, string>> _queryParameters;
+        private readonly List<KeyValuePair<string, string>> _queryParameters;
 
 
         /// <exclude />
         public UrlBuilder(string url)
         {
+            Verify.ArgumentNotNull(url, nameof(url));
+
             _queryParameters = new List<KeyValuePair<string, string>>();
 
             int anchorIndex = url.IndexOf('#');

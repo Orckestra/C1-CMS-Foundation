@@ -17,21 +17,21 @@ module.exports = {
 	beforeEach: function (browser) {
     // 1  Launch an uninitialized website.
 		browser
-      .url(browser.launchUrl + '/Composite/top.aspx?mode=develop')
-      .waitForElementVisible('.welcomepage', 10000);
+      .url(browser.launchUrl + '/Composite/top.aspx')
+      .waitForElementVisible('.welcomepage', browser.globals.timeouts.basic);
 	},
 	'install Venus starter site': function (browser) {
     browser
     //	The “Welcome” page of the setup wizard appears.
-      .waitForElementVisible('#intro', 1000)
+      .waitForElementVisible('#intro', browser.globals.timeouts.little)
 		//    All the requirements are met (checked).
-      .waitForElementVisible('#introtestsuccess', 5000)
+      .waitForElementVisible('#introtestsuccess', browser.globals.timeouts.basic)
 		//    The “Next” button is available and enabled
-      .waitForElementVisible('#introtestsuccessbutton', 1000)
+      .waitForElementVisible('#introtestsuccessbutton', browser.globals.timeouts.little)
 		// 2  Click “Next”.  The “License” page of the setup wizard appears.
       .click('#introtestsuccessbutton')
 		//    The “Accept” check box is present and unchecked
-      .waitForElementVisible('#licenseaccept', 1000);
+      .waitForElementVisible('#licenseaccept', browser.globals.timeouts.little);
     browser.expect.element('#licenseaccept').to.not.have.attribute('checked');
 		//    The “Next” button is available but disabled
     browser.expect.element('#setupbutton').to.have.attribute('isdisabled');
@@ -43,7 +43,7 @@ module.exports = {
     browser
       .click('#setupbutton')
 		//    The “Starter Site” radio button is present and selected
-      .waitForElementVisible('#setup', 1000);
+      .waitForElementVisible('#setup', browser.globals.timeouts.little);
     browser.expect.element('#setup h1').text.to.contain('Setup');
 		//    The “Venus” radio button is present and selected.
     browser.expect
@@ -63,7 +63,7 @@ module.exports = {
 		// 5  Click “Next”.  The “Language” page of the setup wizard appears.
     browser
       .click('#navsetup clickbutton[label="Next"]')
-      .waitForElementVisible('#language', 1000);
+      .waitForElementVisible('#language', browser.globals.timeouts.little);
 		//    A language is selected. (It must be based on the user’s locale.)
     browser.expect.element('#websitelanguage').value.to.equal(expectedLanguage);
 		//    The “Next” button is available and enabled
@@ -71,10 +71,10 @@ module.exports = {
 		// 6  Click “Next”.  The “Create Login” page of the setup wizard appears.
     browser
       .click('#navlanguage clickbutton[label="Next"]')
-      .waitForElementVisible('#login', 1000);
-		//    The “Start C1” button is available but disabled.
+      .waitForElementVisible('#login', browser.globals.timeouts.little);
+		//    The “Start CMS” button is available but disabled.
     browser.expect
-      .element('#navlogin clickbutton[label="Start C1"]')
+      .element('#navlogin clickbutton[label="Start CMS"]')
       .to.have.attribute('isdisabled');
 		//    The “Username” field is filled with the value ‘admin’.
     browser.expect.element('#username').value.to.equal('admin');
@@ -85,9 +85,9 @@ module.exports = {
     browser.setValue('#email', 'john.doe@contoso.com');
 		//    The field is filled with the value.
 	browser.expect.element('#email').value.to.equal('john.doe@contoso.com')
-		//    The “Start C1” button is still disabled.
+		//    The “Start CMS” button is still disabled.
     browser.expect
-      .element('#navlogin clickbutton[label="Start C1"]')
+      .element('#navlogin clickbutton[label="Start CMS"]')
       .to.have.attribute('isdisabled');
 		// 8  Fill the “Password” field. Value: “123456”
 	browser.click('#password');
@@ -98,9 +98,9 @@ module.exports = {
 		//    The value is masked.
     browser.expect.element('#password')
       .to.have.attribute('type', 'password')
-		//    The “Start C1” button is still disabled.
+		//    The “Start CMS” button is still disabled.
     browser.expect
-      .element('#navlogin clickbutton[label="Start C1"]')
+      .element('#navlogin clickbutton[label="Start CMS"]')
       .to.have.attribute('isdisabled');
 		// 9  Fill the “Repeat Password” field. Value: “123456”
 	browser.click('#passcheck');
@@ -111,21 +111,21 @@ module.exports = {
 		//    The value is masked.
     browser.expect.element('#passcheck')
       .to.have.attribute('type', 'password')
-		//    The “Start C1” button gets enabled.
+		//    The “Start CMS” button gets enabled.
     browser.expect
-      .element('#navlogin clickbutton[label="Start C1"]')
+      .element('#navlogin clickbutton[label="Start CMS"]')
       .to.not.have.attribute('isdisabled');
-		// 10 Click “Start C1”.
-    browser.click('#navlogin clickbutton[label="Start C1"]');
+		// 10 Click “Start CMS”.
+    browser.click('#navlogin clickbutton[label="Start CMS"]');
 		//    The screen with “You starting site being downloaded
 		//        and installed…” appears showing the installation progress and
 		//        other screens succeed each other.
     browser
-      .waitForElementVisible('#loading', 1000)
-		//    Eventually, the user logs in successfully and the C1 Console appears.
-      .waitForElementNotPresent('#loading', 60000)
-      .waitForElementVisible('body', 10000)
+      .waitForElementVisible('#loading', browser.globals.timeouts.little)
+		//    Eventually, the user logs in successfully and the CMS Console appears.
+      .waitForElementNotPresent('#loading', browser.globals.timeouts.save)
+      .waitForElementVisible('body', browser.globals.timeouts.basic)
       .page.appWindow()
-        .waitForFrameLoad('@appFrame', 1000);
+        .waitForFrameLoad('@appFrame', browser.globals.timeouts.basic);
 	}
 }

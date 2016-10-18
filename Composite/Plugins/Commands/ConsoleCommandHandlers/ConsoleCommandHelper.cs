@@ -40,7 +40,24 @@ namespace Composite.Plugins.Commands.ConsoleCommandHandlers
             var selectItem = new SelectElementQueueItem
             {
                 EntityToken = serializedEntityToken,
-                PerspectiveElementKey = perspectiveElementKey
+                //PerspectiveElementKey = perspectiveElementKey
+            };
+
+            ConsoleMessageQueueFacade.Enqueue(selectItem, consoleId);
+        }
+
+        /// <summary>
+        /// Selects the specified element in the console, doesn't change the perspective
+        /// </summary>
+        /// <param name="consoleId">The console id.</param>
+        /// <param name="entityToken">The entity token.</param>
+        public static void SelectConsoleElementWithoutPerspectiveChange(string consoleId, EntityToken entityToken)
+        {
+            var serializedEntityToken = EntityTokenSerializer.Serialize(entityToken, true);
+
+            var selectItem = new SelectElementQueueItem
+            {
+                EntityToken = serializedEntityToken,
             };
 
             ConsoleMessageQueueFacade.Enqueue(selectItem, consoleId);

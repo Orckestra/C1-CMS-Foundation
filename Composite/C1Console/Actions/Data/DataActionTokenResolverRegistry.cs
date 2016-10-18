@@ -2,12 +2,11 @@
 
 namespace Composite.C1Console.Actions.Data
 {
-    /// <exclude />
-    public static class DataActionTokenResolverRegistery
+    internal static class DataActionTokenResolverRegistry
     {
         internal static void Register(IServiceCollection serviceCollection)
         {
-            serviceCollection.Add(ServiceDescriptor.Instance(typeof(DataActionTokenResolver), new DataActionTokenResolver()));
+            serviceCollection.Add(ServiceDescriptor.Singleton(new DataActionTokenResolver()));
         }
     }
 }

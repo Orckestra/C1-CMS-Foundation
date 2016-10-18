@@ -29,7 +29,7 @@ public class PingTester : IHttpHandler
                 return;
             }
             
-            context.Response.Write("This Composite C1 site has been initialized (info)\n\n");
+            context.Response.Write("This Orckestra CMS site has been initialized (info)\n\n");
         }
 
         IPHostEntry packageServerAddress;

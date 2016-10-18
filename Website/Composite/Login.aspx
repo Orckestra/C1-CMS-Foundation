@@ -8,7 +8,7 @@
     <% Response.WriteFile("favicon.inc"); %>
     <control:styleloader runat="server"/>
     <style type="text/css">
-        
+
         form {
             height: auto;
         }
@@ -58,7 +58,7 @@
                     <form id="form_login" method="post">
                         <!-- action="Login.aspx"  -->
                         <div class="text-error">
-                            <p>The entered url is protected, please enter C1 Console credentials</p>
+                            <p>The entered url is protected, please enter CMS Console credentials</p>
                             <div id="divLoginFailed" runat="server" visible="false" class="text-error hide">
                                 Username or password is incorrect.
                             </div>

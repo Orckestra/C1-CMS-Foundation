@@ -26,7 +26,7 @@ namespace Composite.C1Console.Security
 
 
     /// <summary>
-    /// EntityToken is used through out Composite C1 to describe artifacts that can have security settings. Also see <see cref="Composite.Data.DataEntityToken"/>.
+    /// EntityToken is used through out Orckestra CMS to describe artifacts that can have security settings. Also see <see cref="Composite.Data.DataEntityToken"/>.
     /// </summary>
     /// <remarks>
     /// When subclassing this class and adding properties that have an impack when identity (equiallity)

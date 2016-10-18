@@ -288,8 +288,7 @@ namespace Composite.Plugins.Routing.Pages
                 return true;
             }
 
-            // Can be optimized
-            return DataFacade.GetData<IHostnameBinding>().AsEnumerable().Any(b => b.Hostname == hostname);
+            return GetHostnameBindings().Any(b => b.Hostname == hostname);
         }
 
         public PageUrlData ParseUrl(string relativeUrl, UrlSpace urlSpace, out UrlKind urlKind)
@@ -434,7 +433,7 @@ namespace Composite.Plugins.Routing.Pages
             string pathInfo = null;
 
             bool canBePublicUrl = true;
-            bool pathInfoExctracted = false;
+            bool pathInfoExtracted = false;
 
             if (!string.IsNullOrEmpty(UrlSuffix))
             {
@@ -446,13 +445,13 @@ namespace Composite.Plugins.Routing.Pages
                     pathInfo = pagePath.Substring(suffixOffset + UrlSuffix.Length);
                     pagePath = pagePath.Substring(0, suffixOffset);
 
-                    pathInfoExctracted = true;
+                    pathInfoExtracted = true;
                 }
                 else if (pagePath.EndsWith(UrlSuffix, StringComparison.OrdinalIgnoreCase))
                 {
                     pagePath = pagePath.Substring(0, pagePath.Length - UrlSuffix.Length);
 
-                    pathInfoExctracted = true;
+                    pathInfoExtracted = true;
                 }
                 else
                 {
@@ -462,7 +461,7 @@ namespace Composite.Plugins.Routing.Pages
 
             if (canBePublicUrl)
             {
-                IPage page = TryGetPageByUrlTitlePath(pagePath, pathInfoExctracted, hostnameBinding, ref pathInfo);
+                IPage page = TryGetPageByUrlTitlePath(pagePath, pathInfoExtracted, hostnameBinding, ref pathInfo);
 
                 if (page != null)
                 {
@@ -510,8 +509,8 @@ namespace Composite.Plugins.Routing.Pages
             {
                 IPage rootPage = PageManager.GetPageById(hostnameBinding.HomePageId, true);
 
-                bool rootPageIsOmmited = rootPage != null && !hostnameBinding.IncludeHomePageInUrl || string.IsNullOrEmpty(rootPage.UrlTitle);
-                if (rootPageIsOmmited)
+                bool rootPageIsOmitted = rootPage != null && (!hostnameBinding.IncludeHomePageInUrl || string.IsNullOrEmpty(rootPage.UrlTitle));
+                if (rootPageIsOmitted)
                 {
                     firstPage = FindMatchingPage(rootPage.Id, firstUrlTitle);
                 }

@@ -7,7 +7,7 @@ using System.Linq.Expressions;
 namespace Composite.Data
 {
     /// <summary>
-    /// Represents a reference to a Composite C1 IData item. Unlike <see cref="DataReference{T}"/> this class signals
+    /// Represents a reference to a Orckestra CMS IData item. Unlike <see cref="DataReference{T}"/> this class signals
     /// that a data reference need not be set for this to be in a valid state.
     /// </summary>
     /// <typeparam name="T">The C1 Data Type (<see cref="IData"/>) being referenced</typeparam>
@@ -30,7 +30,7 @@ namespace Composite.Data
 
 
     /// <summary>
-    /// Represents a reference to a Composite C1 IData item. 
+    /// Represents a reference to a Orckestra CMS IData item. 
     /// </summary>
     /// <typeparam name="T">The C1 Data Type (<see cref="IData"/>) being referenced</typeparam>
     [DataReferenceConverter]

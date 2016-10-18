@@ -8,7 +8,7 @@ namespace Composite.Data
     /// <summary>
     /// Define the scope of data in relation to publication status. Data which support publication should always be maintained 
     /// in the “Unpublihed” scope, while reading data on the public website should always be done in the “Published” scope. 
-    /// Correct setting of the PublicationScope is typically handled by Composite C1 and should in general not be changed by developers. 
+    /// Correct setting of the PublicationScope is typically handled by Orckestra CMS and should in general not be changed by developers. 
     /// Setting an explicit PublicationScope is typically only needed on new service end-points or 
     /// if specific features relating to data updating / publication is desired.
     /// See <see cref="Composite.Data.DataConnection"/>    

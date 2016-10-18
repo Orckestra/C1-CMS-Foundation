@@ -7,12 +7,12 @@ using JetBrains.Annotations;
 namespace Composite.Core
 {
     /// <summary>
-    /// Provide write access to the Composite C1 log. Note that 'verbose' messages are typically only shown in run-time log viewers.
+    /// Provide write access to the Orckestra CMS log. Note that 'verbose' messages are typically only shown in run-time log viewers.
     /// </summary>
     public static class Log
     {
         /// <summary>
-        /// Logs a 'information' message to the Composite C1 log.
+        /// Logs a 'information' message to the Orckestra CMS log.
         /// </summary>
         /// <param name="title">Title of log message</param>
         /// <param name="message">Message to log</param>
@@ -24,7 +24,7 @@ namespace Composite.Core
 
 
         /// <summary>
-        /// Logs a 'information' message to the Composite C1 log.
+        /// Logs a 'information' message to the Orckestra CMS log.
         /// </summary>
         /// <param name="title">Title of log message</param>
         /// <param name="messageFormat">Message to log in a String.Format() style using {0} etc.</param>
@@ -38,7 +38,7 @@ namespace Composite.Core
 
 
         /// <summary>
-        /// Logs a 'verbose' message to the Composite C1 log. Verbose messages are typically only shown in developer log viewers.
+        /// Logs a 'verbose' message to the Orckestra CMS log. Verbose messages are typically only shown in developer log viewers.
         /// </summary>
         /// <param name="title">Title of log message</param>
         /// <param name="message">Message to log</param>
@@ -50,7 +50,7 @@ namespace Composite.Core
 
 
         /// <summary>
-        /// Logs a 'verbose' message to the Composite C1 log.
+        /// Logs a 'verbose' message to the Orckestra CMS log.
         /// </summary>
         /// <param name="title">Title of log message</param>
         /// <param name="messageFormat">Message to log in a String.Format() style using {0} etc.</param>
@@ -64,7 +64,7 @@ namespace Composite.Core
 
 
         /// <summary>
-        /// Logs a 'warning' message to the Composite C1 log. 
+        /// Logs a 'warning' message to the Orckestra CMS log. 
         /// </summary>
         /// <param name="title">Title of log message</param>
         /// <param name="message">Message to log</param>
@@ -76,7 +76,7 @@ namespace Composite.Core
 
 
         /// <summary>
-        /// Logs a 'warning' message to the Composite C1 log.
+        /// Logs a 'warning' message to the Orckestra CMS log.
         /// </summary>
         /// <param name="title">Title of log message</param>
         /// <param name="messageFormat">Message to log in a String.Format() style using {0} etc.</param>
@@ -90,7 +90,7 @@ namespace Composite.Core
 
 
         /// <summary>
-        /// Logs a 'verbose' message to the Composite C1 log. 
+        /// Logs a 'verbose' message to the Orckestra CMS log. 
         /// </summary>
         /// <param name="title">Title of log message</param>
         /// <param name="exception">Exception to log</param>
@@ -102,7 +102,7 @@ namespace Composite.Core
 
 
         /// <summary>
-        /// Logs a 'error' message to the Composite C1 log. 
+        /// Logs a 'error' message to the Orckestra CMS log. 
         /// </summary>
         /// <param name="title">Title of log message</param>
         /// <param name="message">Message to log</param>
@@ -114,7 +114,7 @@ namespace Composite.Core
 
 
         /// <summary>
-        /// Logs a 'error' message to the Composite C1 log.
+        /// Logs a 'error' message to the Orckestra CMS log.
         /// </summary>
         /// <param name="title">Title of log message</param>
         /// <param name="messageFormat">Message to log in a String.Format() style using {0} etc.</param>
@@ -128,7 +128,7 @@ namespace Composite.Core
 
 
         /// <summary>
-        /// Logs a 'error' message to the Composite C1 log. 
+        /// Logs a 'error' message to the Orckestra CMS log. 
         /// </summary>
         /// <param name="title">Title of log message</param>
         /// <param name="exception">Exception to log</param>
@@ -140,7 +140,7 @@ namespace Composite.Core
 
 
         /// <summary>
-        /// Logs a 'critical' message to the Composite C1 log. You should only use 'critical' when a major system failure occur.
+        /// Logs a 'critical' message to the Orckestra CMS log. You should only use 'critical' when a major system failure occur.
         /// </summary>
         /// <param name="title">Title of log message</param>
         /// <param name="message">Message to log</param>
@@ -152,7 +152,7 @@ namespace Composite.Core
 
 
         /// <summary>
-        /// Logs a 'critical' message to the Composite C1 log. You should only use 'critical' when a major system failure occur.
+        /// Logs a 'critical' message to the Orckestra CMS log. You should only use 'critical' when a major system failure occur.
         /// </summary>
         /// <param name="title">Title of log message</param>
         /// <param name="messageFormat">Message to log in a String.Format() style using {0} etc.</param>
@@ -166,7 +166,7 @@ namespace Composite.Core
 
 
         /// <summary>
-        /// Logs a 'critical' message to the Composite C1 log. You should only use 'critical' when a major system failure occur.
+        /// Logs a 'critical' message to the Orckestra CMS log. You should only use 'critical' when a major system failure occur.
         /// </summary>
         /// <param name="title">Title of log message</param>
         /// <param name="exception">Exception to log</param>

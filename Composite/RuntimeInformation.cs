@@ -14,11 +14,10 @@ namespace Composite
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public static class RuntimeInformation
 	{
-        private static bool _isUnitTestDetermined = false;
-        private static bool _isUnitTest = false;
-        private static string _uniqueInstanceName = null;
-        private static string _uniqueInstanceNameSafe = null;
-        private static Lazy<Version> _brandedAssemblyName = new Lazy<Version>(GetBrandedProductVersion);
+        private static bool? _isUnitTest;
+        private static string _uniqueInstanceName;
+        private static string _uniqueInstanceNameSafe;
+        private static readonly Lazy<Version> _brandedAssemblyName = new Lazy<Version>(GetBrandedProductVersion);
 
         /// <exclude />
         public static bool IsDebugBuild
@@ -35,13 +34,7 @@ namespace Composite
 
 
         /// <exclude />
-	    public static bool AppDomainLockingDisabled
-	    {
-            get
-            {
-                return IsUnittest;
-            }
-	    }
+	    public static bool AppDomainLockingDisabled => IsUnittest;
 
 
         /// <exclude />
@@ -49,37 +42,26 @@ namespace Composite
         {
             get
             {
-                if (!_isUnitTestDetermined)
+                if (!_isUnitTest.HasValue)
                 {
-                    _isUnitTest = RuntimeInformation.IsUnittestImpl;
-                    _isUnitTestDetermined = true;
+                    _isUnitTest = IsUnittestEnvironment();
                 }
 
-                return _isUnitTest;
+                return _isUnitTest.Value;
             }
         }
 
 
-        private static bool IsUnittestImpl
+        private static bool IsUnittestEnvironment()
         {
-            get
-            {
-                var domain = AppDomain.CurrentDomain;
-                string applicationName = domain.SetupInformation.ApplicationName;
+            var domain = AppDomain.CurrentDomain;
+            string applicationName = domain.SetupInformation.ApplicationName;
 
-                return domain.FriendlyName.StartsWith("NUnit ")
-                    || applicationName == null || applicationName == "vstesthost.exe";
-            }
+            return domain.FriendlyName.StartsWith("NUnit ")
+                || applicationName == null || applicationName == "vstesthost.exe";
         }
 
-        internal static bool IsTestEnvironment
-        {
-            get
-            {
-                return true;
-            }
-        }
-
+        internal static bool TestAutomationEnabled => true;
 
 
         /// <exclude />
@@ -154,7 +136,7 @@ namespace Composite
                 if (_uniqueInstanceName == null)
                 {
                     string baseString = PathUtil.BaseDirectory.ToLowerInvariant();
-                    _uniqueInstanceName = string.Format("C1@{0}", PathUtil.CleanFileName(baseString));
+                    _uniqueInstanceName = $"C1@{PathUtil.CleanFileName(baseString)}";
                 }
 
                 return _uniqueInstanceName;
@@ -171,7 +153,7 @@ namespace Composite
                 if (_uniqueInstanceNameSafe == null)
                 {
                     string baseString = PathUtil.BaseDirectory.ToLowerInvariant().Replace(@"\", "-").Replace("/", "-");
-                    _uniqueInstanceNameSafe = string.Format("C1@{0}", PathUtil.CleanFileName(baseString));
+                    _uniqueInstanceNameSafe = $"C1@{PathUtil.CleanFileName(baseString)}";
                 }
 
                 return _uniqueInstanceNameSafe;
