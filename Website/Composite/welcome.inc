@@ -12,11 +12,11 @@
 					<p id="crumbs" class="crumbs">
 						<span id="crumbtest" class="text-primary">Welcome</span>
 						<em>►</em>
-						<span id="crumblicense">License</span> 
-						<em>►</em> 
-						<span id="crumbsetup">Setup</span> 
+						<span id="crumblicense">License</span>
 						<em>►</em>
-						<span id="crumblanguage">Language</span> 
+						<span id="crumbsetup">Setup</span>
+						<em>►</em>
+						<span id="crumblanguage">Language</span>
 						<em>►</em>
 						<span id="crumblogin">Login</span>
 					</p>
@@ -54,7 +54,7 @@
 						<!-- p id="consolehelp">The "console language" is the language used in the administration of your website. You can change this later.</p-->
 						<p id="websitehelp">Select the default public language of your website. You can add more languages later.</p>
 						<form id="languageform" class="form" action="javascript://" method="get">
-							<!-- 
+							<!--
 							<div>
 								<label>Console language</label>
 								<span>
@@ -69,7 +69,7 @@
 								<select id="websitelanguage" class="form-control" />
 							</div>
 						</form>
-					</div>			
+					</div>
 					</ui:deck>
 					<ui:deck id="login">
 						<h1>Create Login</h1>
@@ -102,7 +102,9 @@
 						</form>
 					</ui:deck>
 					<ui:deck id="loading" class="loading-deck">
-						<div class="brand-logo"></div>
+						<div class="brand-logo-wrapper">
+                            <div class="brand-logo"></div>
+                        </div>
 						<div class="progress">
 							<p class="progressbar-msg">Your starter site is being downloaded and installed. This may take a few minutes...</p>
 							<div id="progressbar" class="progressbar">
@@ -141,7 +143,7 @@
 			<ui:deck id="navlogin">
 				<ui:dialogtoolbar>
 					<ui:clickbutton class="left-btn"  label="Back" focusable="true" oncommand="Welcome.switchTo('language')"/>
-					<ui:clickbutton class="right-btn" id="startbutton" isdisabled="true" label="Start C1" focusable="true" oncommand="Welcome.login()"/>
+					<ui:clickbutton class="right-btn" id="startbutton" isdisabled="true" label="Start CMS" focusable="true" oncommand="Welcome.login()"/>
 				</ui:dialogtoolbar>
 			</ui:deck>
 			</ui:decks>

@@ -72,7 +72,7 @@ namespace Composite.Core.Xml
         public static XNamespace Localization10 { get; private set; }
 
         /// <summary>
-        /// Namespace for ASP.NET Web Forms in Composite C1 pages: http://www.composite.net/ns/asp.net/controls
+        /// Namespace for ASP.NET Web Forms in Orckestra CMS pages: http://www.composite.net/ns/asp.net/controls
         /// </summary>
         public static XNamespace AspNetControls { get; private set; }
 
@@ -92,7 +92,7 @@ namespace Composite.Core.Xml
         public static XNamespace XmlNs { get; private set; }
 
         /// <summary>
-        /// Namespace for XHTML documents in Composite C1: http://www.w3.org/1999/xhtml
+        /// Namespace for XHTML documents in Orckestra CMS: http://www.w3.org/1999/xhtml
         /// </summary>
         public static XNamespace Xhtml { get; private set; }
 

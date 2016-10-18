@@ -7,7 +7,7 @@ using Microsoft.Practices.EnterpriseLibrary.Validation.Validators;
 namespace Composite.Data.Types
 {
     /// <summary>    
-    /// This data interface represents a user group in Composite C1. This can be used to query user groups through a <see cref="Composite.Data.DataConnection"/>. 
+    /// This data interface represents a user group in Orckestra CMS. This can be used to query user groups through a <see cref="Composite.Data.DataConnection"/>. 
     /// </summary>
     [AutoUpdateble]
     [KeyPropertyName("Id")]

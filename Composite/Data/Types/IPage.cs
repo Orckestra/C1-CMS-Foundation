@@ -11,7 +11,7 @@ using Microsoft.Practices.EnterpriseLibrary.Validation.Validators;
 namespace Composite.Data.Types
 {
     /// <summary>
-    /// This data interface represents a page in Composite C1. This can be used to query pages through a <see cref="Composite.Data.DataConnection"/>. 
+    /// This data interface represents a page in Orckestra CMS. This can be used to query pages through a <see cref="Composite.Data.DataConnection"/>. 
     /// Note that a lot of page related tasks can be done with a <see cref="Composite.Data.SitemapNavigator"/>. 
     /// And any changes done through this interface and a <see cref="Composite.Data.DataConnection"/> should be done with care. 
     /// </summary>

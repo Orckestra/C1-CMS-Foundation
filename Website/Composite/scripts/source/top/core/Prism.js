@@ -1,7 +1,7 @@
 /**
  * @class
  * Allows basic communication between C1 and the Prism host. 
- * The Composite C1 extension must be installed in Prism.
+ * The Orckestra CMS extension must be installed in Prism.
  */
 function _Prism () {}
 _Prism.prototype = {

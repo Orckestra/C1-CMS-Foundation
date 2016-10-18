@@ -3472,7 +3472,7 @@ public static string AddPackageSource_Step1_UrlLabel=>T("AddPackageSource.Step1.
 public static string AddPackageSource_Step1_UrlHelp=>T("AddPackageSource.Step1.UrlHelp");
 ///<summary>&quot;The entered text was not a valid URL&quot;</summary> 
 public static string AddPackageSource_Step1_UrlNotValid=>T("AddPackageSource.Step1.UrlNotValid");
-///<summary>&quot;The server is not a Composite C1 package server&quot;</summary> 
+///<summary>&quot;The server is not a Orckestra CMS package server&quot;</summary> 
 public static string AddPackageSource_Step1_UrlNonPackageServer=>T("AddPackageSource.Step1.UrlNonPackageServer");
 ///<summary>&quot;Add Package Server Source&quot;</summary> 
 public static string AddPackageSource_Step2_LayoutLabel=>T("AddPackageSource.Step2.LayoutLabel");
@@ -4876,7 +4876,7 @@ public static string Composite_Web_Html_Template_CommonMetaTags_param_Designer_l
 public static string Composite_Web_Html_Template_CommonMetaTags_param_Designer_help=>T("Composite.Web.Html.Template.CommonMetaTags.param.Designer.help");
 ///<summary>&quot;Show generator&quot;</summary> 
 public static string Composite_Web_Html_Template_CommonMetaTags_param_ShowGenerator_label=>T("Composite.Web.Html.Template.CommonMetaTags.param.ShowGenerator.label");
-///<summary>&quot;Show the world you support Composite C1 - free open source!&quot;</summary> 
+///<summary>&quot;Show the world you support Orckestra CMS - free open source!&quot;</summary> 
 public static string Composite_Web_Html_Template_CommonMetaTags_param_ShowGenerator_help=>T("Composite.Web.Html.Template.CommonMetaTags.param.ShowGenerator.help");
 ///<summary>&quot;Appends a lang=&apos;(language code)&apos; attribute the the parent element, reflecting the language of the current page. You can put this just below the &lt;html /&gt; tag.&quot;</summary> 
 public static string Composite_Web_Html_Template_LangAttribute_description=>T("Composite.Web.Html.Template.LangAttribute.description");

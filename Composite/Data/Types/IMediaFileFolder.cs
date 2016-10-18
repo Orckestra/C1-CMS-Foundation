@@ -6,7 +6,7 @@ using Composite.Data.Hierarchy;
 namespace Composite.Data.Types
 {
     /// <summary>    
-    /// This data interface represents a media folder in Composite C1. This can be used to query media folders through a <see cref="Composite.Data.DataConnection"/>. 
+    /// This data interface represents a media folder in Orckestra CMS. This can be used to query media folders through a <see cref="Composite.Data.DataConnection"/>. 
     /// </summary>
     [Title("C1 Media Folder")]
     [KeyPropertyName("KeyPath")]

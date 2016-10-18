@@ -1,10 +1,10 @@
 # Warnings
 
-This test suite is intended to verify console function when changing functionality within the C1 CMS. **Do not run it** to test any particular site setup as it will not only not work, but will delete data installed on this C1 copy.
+This test suite is intended to verify console function when changing functionality within the CMS. **Do not run it** to test any particular site setup as it will not only not work, but will delete data installed on this CMS copy.
 
 # Running the nightwatch tests
 
-In order to run the end-to-end test suite, you will first need to have built your working copy of C1 with Visual Studio, installed all npm packages, and run the grunt build task as documented elsewhere.
+In order to run the end-to-end test suite, you will first need to have built your working copy of CMS with Visual Studio, installed all npm packages, and run the grunt build task as documented elsewhere.
 
 In order to install nightwatch, you will need to access your command line. This can be done by either starting PowerShell or the Windows Command Line utility, `cmd`.
 
@@ -12,7 +12,7 @@ First we need to verify that you have the needed version of node.js, which is us
 
 The next step is installing nightwatch itself. This is done by issuing the command `npm install -g nightwatch`. This will install nightwatch as a globally accessible command. There may be some warnings issued by npm as it runs, these can usually be ignored without issue.
 
-Finally, navigate to the root directory of your C1 working copy. This will usually be named `C1-CMS`, but you may have named it otherwise when cloning it. In this directory, you can then start the tests by running `nightwatch` from your command line. This will run the whole test suite, starting with installing the Venus starter site.
+Finally, navigate to the root directory of your CMS working copy. This will usually be named `CMS`, but you may have named it otherwise when cloning it. In this directory, you can then start the tests by running `nightwatch` from your command line. This will run the whole test suite, starting with installing the Venus starter site.
 
 Nightwatch expects to find the CMS running on localhost, port 8080. You can either change your Visual Studio or WebMatrix/IIS setup to use this port, or edit the `nightwatch.json` configuration file found in the project root. You can edit the line that says `"launch_url" : "http://localhost:8080"` to reflect the URL used.
 
@@ -34,6 +34,6 @@ To build new tests, it is recommended to look at what already exists, and struct
 
 A test file consists of a CommonJS formatted module, exporting a single object with functions as members. A few names on these objects are reserved - `before`, `after`, `beforeEach` and `afterEach` - for setting up and tearing down your tests. You can look this up in [the nightwatch developer guide](http://nightwatchjs.org/guide#using-before-each-and-after-each-hooks) for the full details. Any other member of that object will be run as a test case.
 
-Custom commands have been added to accommodate testing within the specific system of C1's console. These may be found within the `commands` directory, with examples of use found throughout the test cases.
+Custom commands have been added to accommodate testing within the specific system of CMS's console. These may be found within the `commands` directory, with examples of use found throughout the test cases.
 
 A number of [page objects](http://nightwatchjs.org/guide#page-objects) have been constructed as well, providing ease of access, custom commands and assertions specific to certain parts of the console. These may be found in the `pageObjects` directory, again, with examples of use throughout the tests.

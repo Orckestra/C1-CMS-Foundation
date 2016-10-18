@@ -142,7 +142,7 @@
   <string key="AddPackageSource.Step1.UrlLabel" value="Package web service URL" />
   <string key="AddPackageSource.Step1.UrlHelp" value="Packages can be hosted on remote servers. The package web service URL will be validated in the next step." />
   <string key="AddPackageSource.Step1.UrlNotValid" value="The entered text was not a valid URL" />
-  <string key="AddPackageSource.Step1.UrlNonPackageServer" value="The server is not a Composite C1 package server" />
+  <string key="AddPackageSource.Step1.UrlNonPackageServer" value="The server is not a Orckestra CMS package server" />
   <string key="AddPackageSource.Step2.LayoutLabel" value="Add Package Server Source" />
   <string key="AddPackageSource.Step2.HeadingTitle" value="Server URL is valid" />
   <string key="AddPackageSource.Step2.HeadingNoHttpsDescription" value="Note that the HTTP protocol is used on this connection. This implies that all information will be send unencrypted. Click Finish to add the source." />
