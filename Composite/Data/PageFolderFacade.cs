@@ -364,19 +364,31 @@ namespace Composite.Data
         /// </summary>
         /// <param name="pageFolderData"></param>        
         /// <param name="definingPage"></param>
+        [Obsolete("Use an overload accepting a page Id")]
         public static void AssignFolderDataSpecificValues(IData pageFolderData, IPage definingPage)
+        {
+            AssignFolderDataSpecificValues(pageFolderData, definingPage.Id);
+        }
+
+
+        /// <summary>
+        /// Updates the given page folder item with new Id and setting the page folder definition id and defining item id
+        /// </summary>
+        /// <param name="pageFolderData"></param>        
+        /// <param name="pageId"></param>
+        public static void AssignFolderDataSpecificValues(IData pageFolderData, Guid pageId)
         {
             var pageRelatedData = pageFolderData as IPageRelatedData;
             if (pageRelatedData != null)
             {
-                pageRelatedData.PageId = definingPage.Id;
+                pageRelatedData.PageId = pageId;
             }
             else
             {
                 // Backward compatibility
                 Type interfaceType = pageFolderData.DataSourceId.InterfaceType;
                 PropertyInfo pageReferencePropertyInfo = GetDefinitionPageReferencePropertyInfo(interfaceType);
-                pageReferencePropertyInfo.SetValue(pageFolderData, definingPage.Id, null);
+                pageReferencePropertyInfo.SetValue(pageFolderData, pageId, null);
             }
 
             var pageData = pageFolderData as IPageData;

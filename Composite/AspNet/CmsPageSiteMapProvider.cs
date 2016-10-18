@@ -150,6 +150,11 @@ namespace Composite.AspNet
             if (rootPage == null)
             {
                 Guid homePageId = SitemapNavigator.CurrentHomePageId;
+                if (homePageId == Guid.Empty)
+                {
+                    homePageId = PageManager.GetChildrenIDs(Guid.Empty).FirstOrDefault();
+                }
+
                 if (homePageId != Guid.Empty)
                 {
                     rootPage = PageManager.GetPageById(homePageId);
