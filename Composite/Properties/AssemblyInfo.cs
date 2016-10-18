@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 
 #if !InternalBuild
-[assembly: AssemblyTitle("Orckestra CMS 5.2")] 
+[assembly: AssemblyTitle("Orckestra CMS 5.3")] 
 #else
-[assembly: AssemblyTitle("Orckestra CMS 5.2 (Internal Build)")]
+[assembly: AssemblyTitle("Orckestra CMS 5.3 (Internal Build)")]
 #endif
 
 [assembly: AssemblyDescription("Orckestra CMS Core classes")]
@@ -39,7 +39,7 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
 
-[assembly: AssemblyVersion("5.2.*")]
+[assembly: AssemblyVersion("5.3.*")]
 
 [assembly: InternalsVisibleTo("UpgradePackage")]
 [assembly: InternalsVisibleTo("Composite.Workflows")]
