@@ -74,7 +74,8 @@ describe('ConnectLogPanel', () => {
 				values: {
 					'foo': ['not used']
 				}
-			}
+			},
+			layout: { window: { width: 1920, height: 1080 }}
 		});
 		store = {
 			stateObj: state,

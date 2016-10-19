@@ -6,7 +6,8 @@ import LogPanel from 'console/components/presentation/LogPanel.js';
 function mapStateToProps(state) {
 	return {
 		placeholder: () => tabSelector(state).get('placeholder') || 'No data',
-		logPage: logSelector(state).toJS()
+		logPage: logSelector(state).toJS(),
+		window: state.getIn(['layout', 'window'])
 	};
 }
 

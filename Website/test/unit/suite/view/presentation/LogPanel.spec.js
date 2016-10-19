@@ -2,7 +2,7 @@ import expect from 'unittest/helpers/expect.js';
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
 import LogPanel from 'console/components/presentation/LogPanel.js';
-import { Table, Column }from 'fixed-data-table';
+import { Table, Column } from 'fixed-data-table';
 import Immutable from 'immutable';
 
 describe('LogPanel', () => {
@@ -18,7 +18,8 @@ describe('LogPanel', () => {
 					type: 'EventType'
 				}
 			}),
-			logPage: []
+			logPage: [],
+			window: Immutable.Map({ width: 1280, height: 768 })
 		};
 	});
 
@@ -26,16 +27,16 @@ describe('LogPanel', () => {
 		renderer.render(<LogPanel {...props}/>);
 		return expect(renderer, 'to have rendered',
 			<Table
-				height={500}
-				width={1000}
+				height={693}
+				width={1280}
 				headerHeight={26}
 				rowsCount={props.logPage.length}
 				rowHeight={26}>
 				<Column width={26}/>
-				<Column width={200}/>
-				<Column width={500}/>
-				<Column width={174}/>
-				<Column width={100}/>
+				<Column width={251}/>
+				<Column width={627}/>
+				<Column width={250}/>
+				<Column width={126}/>
 			</Table>);
 	});
 });

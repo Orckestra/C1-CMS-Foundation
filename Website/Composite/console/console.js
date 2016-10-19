@@ -27,6 +27,12 @@ const initialState = {
 		'server-log/log': {
 			'2016-10-07': [
 				{
+					timestamp: '2016-10-18 13:25:59.52',
+					message: 'System.ComponentModel.Win32Exception (0x80004005): The system cannot find the file specified   at Composite.Web.Css.Less.ReparsePointUtils.GetSymbolicLinkTarget(DirectoryInfo symlink)\nat Composite.Web.Css.Less.ReparsePointUtils.GetDirectoryReparsePointTarget(String directoryPath)\nat Composite.Web.Css.Less.StylesHashing.FileHashCalculator.AddWatchesForSymbolicallyLinkedSubfolders(String folder)',
+					title: 'LessCss',
+					type: 'Error'
+				},
+				{
 					timestamp: '2016-10-07 12:53:32.50',
 					message: 'AppDomain 3 started at 12:53:32:48 in process 9456',
 					title: 'ApplicationEventHandler',
