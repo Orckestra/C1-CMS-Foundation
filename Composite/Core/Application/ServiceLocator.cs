@@ -6,13 +6,28 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Composite.Core.Application
 {
     /// <summary>
-    /// Build in service locator that is used for the injecting dependencies into c1 functions.
+    /// The root service locator used by the CMS for resolving services for ie. injecting function parameters 
+    /// and resolving services in various places throughout the system
     /// </summary>
     public static class ServiceLocator
     {
         private const string HttpContextKey = "HttpApplication.ServiceScope";
+
+        private static Func<IServiceCollection, IServiceProvider> _serviceProvider = s => s.BuildServiceProvider();
         private static IServiceCollection _serviceCollection;
         private static IServiceProvider _applicationServices;
+
+        /// <summary>
+        /// Replaces the default services container by registering your own IServiceProvider
+        /// </summary>
+        /// <param name="serviceProvider">A callback function that returns your custom IServiceProvider</param>
+        public static void SetServiceProvider(Func<IServiceCollection, IServiceProvider> serviceProvider)
+        {
+            Verify.ArgumentNotNull(serviceProvider, nameof(serviceProvider));
+
+            _serviceProvider = serviceProvider;
+            _applicationServices = null;
+        }
 
         /// <summary>
         /// A service collection to be populated at startup
@@ -27,7 +42,6 @@ namespace Composite.Core.Application
                 }
                 return _serviceCollection;
             } 
-            set { _serviceCollection = value; }
         }
 
         
@@ -42,12 +56,11 @@ namespace Composite.Core.Application
                 {
                     if (_serviceCollection == null) return null;
 
-                    _applicationServices = _serviceCollection.BuildServiceProvider();
+                    _applicationServices = _serviceProvider(_serviceCollection);
                 }
 
                 return _applicationServices;
             }
-            set { _applicationServices = value; } 
         }
 
 
