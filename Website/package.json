@@ -46,7 +46,7 @@
   "jspm": {
     "main": "Composite/console/console.js",
     "dependencies": {
-      "fixed-data-table": "npm:fixed-data-table@^0.6.3",
+      "fixed-data-table-2": "npm:fixed-data-table-2@^0.7.6",
       "github/url-polyfill": "github:github/url-polyfill@^0.5.6",
       "normalizr": "npm:normalizr@^2.2.1",
       "plugin-babel": "npm:systemjs-plugin-babel@^0.0.13",
@@ -104,14 +104,14 @@
       "https": "github:jspm/nodelibs-https@^0.2.0-alpha",
       "immutable": "npm:immutable@^3.8.1",
       "magicpen-media": "npm:magicpen-media@^1.5.0",
-      "messy": "npm:messy@^6.7.1",
+      "messy": "npm:messy@^6.12.0",
       "net": "github:jspm/nodelibs-net@^0.2.0-alpha",
       "os": "github:jspm/nodelibs-os@^0.2.0-alpha",
       "path": "github:jspm/nodelibs-path@^0.2.0-alpha",
       "process": "github:jspm/nodelibs-process@^0.2.0-alpha",
       "punycode": "github:jspm/nodelibs-punycode@^0.2.0-alpha",
       "react": "npm:react@^15.3.2",
-      "react-dom": "npm:react-dom@^15.1.0",
+      "react-dom": "npm:react-dom@^15.3.2",
       "redux": "npm:redux@^3.5.2",
       "stream": "github:jspm/nodelibs-stream@^0.2.0-alpha",
       "string_decoder": "github:jspm/nodelibs-string_decoder@^0.2.0-alpha",
@@ -127,6 +127,9 @@
       "github:github/url-polyfill@0.5.6": {
         "main": "url.js"
       },
+      "github:socketio/socket.io-client@1.5.0": {
+        "main": "socket.io.js"
+      },
       "npm:babel-runtime@5.8.38": {
         "main": false,
         "dependencies": {},
@@ -134,7 +137,7 @@
           "core-js": "^1.2.0"
         }
       },
-      "npm:bluebird@3.4.1": {
+      "npm:bluebird@3.4.6": {
         "meta": {
           "js/browser/bluebird.js": {
             "format": "global"
@@ -177,13 +180,7 @@
           "test.js"
         ]
       },
-      "npm:lodash@4.14.1": {
-        "map": {
-          "buffer": "@empty",
-          "process": "@empty"
-        }
-      },
-      "npm:lodash@4.16.3": {
+      "npm:lodash@4.16.4": {
         "map": {
           "buffer": "@empty",
           "process": "@empty"
@@ -193,7 +190,7 @@
         "jspmNodeConversion": false,
         "format": "cjs"
       },
-      "npm:sass.js@0.9.11": {
+      "npm:sass.js@0.9.13": {
         "map": {
           "ws": "@empty"
         },
@@ -205,4 +202,4 @@
       }
     }
   }
-}
+}

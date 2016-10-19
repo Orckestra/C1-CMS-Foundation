@@ -2,7 +2,7 @@ import expect from 'unittest/helpers/expect.js';
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
 import { LogPanel } from 'console/components/presentation/LogPanel.js';
-import { Table, Column } from 'fixed-data-table';
+import { Table, Column } from 'fixed-data-table-2';
 import Immutable from 'immutable';
 
 describe('LogPanel', () => {

@@ -1,6 +1,6 @@
 import React, {PropTypes } from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { Table, Column, Cell } from 'fixed-data-table';
+import { Table, Column, Cell } from 'fixed-data-table-2';
 import Dimensions from 'react-dimensions';
 
 const widthCoeff = [0, 0.2, 0.5, 0.2, 0.1];
@@ -37,7 +37,15 @@ export const LogPanel = props => {
 				// Support <pre>-tagged messages
 				({ rowIndex, ...cellProps }) =>
 				<Cell {...cellProps}>
-					{props.logPage[rowIndex]['message']}
+					<div style={{
+						width: (columnWidths[2] - 10) + 'px',
+						height: '16px',
+						overflow: 'hidden',
+						whiteSpace: 'nowrap',
+						textOverflow: 'ellipsis'
+					}}>
+						{props.logPage[rowIndex]['message']}
+					</div>
 				</Cell>
 			}
 			/>
