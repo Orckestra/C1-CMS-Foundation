@@ -363,6 +363,7 @@ SystemJS.config({
     "os": "github:jspm/nodelibs-os@0.2.0-alpha",
     "punycode": "github:jspm/nodelibs-punycode@0.2.0-alpha",
     "rc-table": "npm:rc-table@5.0.3",
+    "react-dimensions": "npm:react-dimensions@1.3.0",
     "react-select": "npm:react-select@1.0.0-beta14",
     "redux-immutablejs": "npm:redux-immutablejs@0.0.8",
     "reselect": "npm:reselect@2.5.4",
@@ -913,6 +914,11 @@ SystemJS.config({
         "lodash._getnative": "npm:lodash._getnative@3.9.1",
         "lodash.isarray": "npm:lodash.isarray@3.0.4",
         "lodash.isarguments": "npm:lodash.isarguments@3.1.0"
+      }
+    },
+    "npm:react-dimensions@1.3.0": {
+      "map": {
+        "element-resize-event": "npm:element-resize-event@2.0.7"
       }
     }
   }

@@ -1,19 +1,20 @@
 import React, {PropTypes } from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { Table, Column, Cell } from 'fixed-data-table';
+import Dimensions from 'react-dimensions';
 
 const widthCoeff = [0, 0.2, 0.5, 0.2, 0.1];
 
-const LogPanel = props => {
-	let mainWidth = props.window.get('width'); // Adjust this to grab width of parent element
-	let mainHeight = props.window.get('height'); // Adjust this to grab height of parent element
+export const LogPanel = props => {
+	let mainWidth = props.containerWidth;
+	let mainHeight = props.containerHeight;
 	let columnWidths = widthCoeff.map(coeff =>
 		Math.ceil((mainWidth - 26) * coeff) || 26
 	);
 	// Adjust for rounding errors
 	columnWidths[3] -= columnWidths.reduce((total, w) => total + w, 0) - mainWidth;
 	return <Table
-		height={mainHeight - 75}
+		height={mainHeight}
 		width={mainWidth}
 		headerHeight={26}
 		rowsCount={props.logPage.length}
@@ -35,10 +36,10 @@ const LogPanel = props => {
 				// Do something to show long messages
 				// Support <pre>-tagged messages
 				({ rowIndex, ...cellProps }) =>
-					<Cell {...cellProps}>
-						{props.logPage[rowIndex]['message']}
-					</Cell>
-				}
+				<Cell {...cellProps}>
+					{props.logPage[rowIndex]['message']}
+				</Cell>
+			}
 			/>
 		<Column
 			width={columnWidths[3]}
@@ -54,8 +55,16 @@ const LogPanel = props => {
 };
 
 LogPanel.propTypes = {
-	tabDef: ImmutablePropTypes.map,
-	logPage: PropTypes.arrayOf(PropTypes.object)
+	tabDef: ImmutablePropTypes.map.isRequired,
+	logPage: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
-export default LogPanel;
+export default Dimensions({
+	containerStyle: {
+		padding: 0,
+		borderTop: 0,
+		overflow: 'hidden'
+	},
+	className: 'scrollbox',
+	elementResize: true
+})(LogPanel);

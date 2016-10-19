@@ -2,7 +2,6 @@ import { loadPageDef } from 'console/state/actions/pageDefs.js';
 import { loadValues } from 'console/state/actions/values.js';
 import { selectShownPage, replacePages } from 'console/state/reducers/pages.js';
 import { refreshLog } from 'console/state/reducers/logs.js';
-import { resizeWindow } from 'console/state/reducers/layout.js';
 import requestJSON from 'console/access/requestJSON.js';
 
 // The intent is that this should be as small as possible, instead initializing
@@ -21,8 +20,4 @@ export default function initState(store) {
 	store.dispatch(selectShownPage(pageName));
 	requestJSON('/longLog.json').then(data => store.dispatch(refreshLog('server-log/log', '2016-10-06', data)));
 	requestJSON('/mediumLog.json').then(data => store.dispatch(refreshLog('server-log/log', '2016-10-05', data)));
-	window.addEventListener('resize', () => {
-		store.dispatch(resizeWindow(window.innerWidth, window.innerHeight));
-	});
-	store.dispatch(resizeWindow(window.innerWidth, window.innerHeight));
 }

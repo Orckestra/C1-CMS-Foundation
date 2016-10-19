@@ -7,7 +7,7 @@ import configureStore from 'console/state/store.js';
 import ConnectDockPanel from 'console/components/container/ConnectDockPanel.js';
 import 'console/console.scss!';
 import 'react-select/scss/default.scss!';
-import 'fixed-data-table/dist/fixed-data-table.min.css!scss';
+import 'fixed-data-table/dist/fixed-data-table.css!scss';
 import 'console/iconIndex.js';
 
 document.title = 'Orckestra CMS: ' + location.hostname;

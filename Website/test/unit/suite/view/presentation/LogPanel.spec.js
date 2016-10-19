@@ -1,7 +1,7 @@
 import expect from 'unittest/helpers/expect.js';
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
-import LogPanel from 'console/components/presentation/LogPanel.js';
+import { LogPanel } from 'console/components/presentation/LogPanel.js';
 import { Table, Column } from 'fixed-data-table';
 import Immutable from 'immutable';
 
@@ -19,7 +19,8 @@ describe('LogPanel', () => {
 				}
 			}),
 			logPage: [],
-			window: Immutable.Map({ width: 1280, height: 768 })
+			containerHeight: 693,
+			containerWidth: 1280
 		};
 	});
 
