@@ -5,9 +5,9 @@ import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import configureStore from 'console/state/store.js';
 import ConnectDockPanel from 'console/components/container/ConnectDockPanel.js';
-import 'console/console.scss!';
 import 'react-select/scss/default.scss!';
-import 'fixed-data-table/dist/fixed-data-table.css!scss';
+import 'fixed-data-table-2/dist/fixed-data-table.css!scss';
+import 'console/console.scss!';
 import 'console/iconIndex.js';
 
 document.title = 'Orckestra CMS: ' + location.hostname;

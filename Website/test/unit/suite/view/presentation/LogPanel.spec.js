@@ -32,12 +32,13 @@ describe('LogPanel', () => {
 				width={1280}
 				headerHeight={26}
 				rowsCount={props.logPage.length}
+				rowHeightGetter={expect.it('to be a function')}
 				rowHeight={26}>
 				<Column width={26}/>
-				<Column width={251}/>
-				<Column width={627}/>
-				<Column width={250}/>
-				<Column width={126}/>
+				<Column width={20} flexGrow={2}/>
+				<Column width={50} flexGrow={20}/>
+				<Column width={20} flexGrow={3}/>
+				<Column width={10} flexGrow={1}/>
 			</Table>);
 	});
 });

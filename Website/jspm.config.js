@@ -141,12 +141,6 @@ SystemJS.config({
           "babel-helper-builder-react-jsx": "npm:babel-helper-builder-react-jsx@6.9.0"
         }
       },
-      "npm:babel-runtime@6.11.6": {
-        "map": {
-          "core-js": "npm:core-js@2.4.1",
-          "regenerator-runtime": "npm:regenerator-runtime@0.9.5"
-        }
-      },
       "npm:babel-helper-builder-react-jsx@6.9.0": {
         "map": {
           "babel-runtime": "npm:babel-runtime@6.11.6",
@@ -254,6 +248,12 @@ SystemJS.config({
       "npm:is-finite@1.0.2": {
         "map": {
           "number-is-nan": "npm:number-is-nan@1.0.1"
+        }
+      },
+      "npm:babel-runtime@6.11.6": {
+        "map": {
+          "core-js": "npm:core-js@2.4.1",
+          "regenerator-runtime": "npm:regenerator-runtime@0.9.5"
         }
       }
     }

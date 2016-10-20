@@ -465,6 +465,15 @@ fieldset {
 	}
 }
 
+.public_fixedDataTableCell_cellContent {
+	padding: 0;
+}
+.fixedDataTableCellLayout_wrap3 {
+	vertical-align: inherit;
+}
+.tableCell {
+	padding: 5px;
+}
 .Information {
 	background-color: lime;
 }
@@ -476,4 +485,7 @@ fieldset {
 }
 .Critical {
 	background-color: crimson;
+}
+pre {
+	margin: 0;
 }
