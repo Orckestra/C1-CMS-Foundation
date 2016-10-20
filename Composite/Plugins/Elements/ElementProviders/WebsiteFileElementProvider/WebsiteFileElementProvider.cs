@@ -94,7 +94,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
 
         public IEnumerable<Element> GetRoots(SearchToken seachToken)
         {
-            Element element = new Element(_context.CreateElementHandle(new WebsiteFileElementProviderRootEntityToken(_context.ProviderName)))
+            Element element = new Element(_context.CreateElementHandle(new WebsiteFileElementProviderRootEntityToken(_context.ProviderName, _rootPath)))
             {
                 VisualData = new ElementVisualizedData()
                 {

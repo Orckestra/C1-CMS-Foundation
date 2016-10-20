@@ -68,13 +68,27 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
             SpecificTreeRefresher specificTreeRefresher = this.CreateSpecificTreeRefresher();
             specificTreeRefresher.PostRefreshMesseges(this.EntityToken);
 
-            if (this.EntityToken is WebsiteFileElementProviderEntityToken)
+            string providerName;
+            string rootPath;
+
+            switch (this.EntityToken.GetType().Name)
             {
-                WebsiteFileElementProviderEntityToken folderToken = (WebsiteFileElementProviderEntityToken)this.EntityToken;
-                var newFileToken = new WebsiteFileElementProviderEntityToken(folderToken.ProviderName, newFolderPath, folderToken.RootPath);
-                SelectElement(newFileToken);
+                case nameof(WebsiteFileElementProviderRootEntityToken):
+                    WebsiteFileElementProviderRootEntityToken rootToken = (WebsiteFileElementProviderRootEntityToken)this.EntityToken;
+                    providerName = rootToken.ProviderName;
+                    rootPath = rootToken.RootPath;
+                    break;
+                case nameof(WebsiteFileElementProviderEntityToken):
+                    WebsiteFileElementProviderEntityToken folderToken = (WebsiteFileElementProviderEntityToken)this.EntityToken;
+                    providerName = folderToken.ProviderName;
+                    rootPath = folderToken.RootPath;
+                    break;
+                default:
+                    throw new InvalidOperationException("Unexpected EntityToken type");
             }
 
+            var newFileToken = new WebsiteFileElementProviderEntityToken(providerName, newFolderPath, rootPath);
+            SelectElement(newFileToken);
         }
 
 
