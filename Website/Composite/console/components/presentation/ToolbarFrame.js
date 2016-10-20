@@ -1,6 +1,5 @@
 import React, { PropTypes } from 'react';
 import Toolbar from 'console/components/presentation/Toolbar.js';
-import ConnectTabPanel from 'console/components/container/ConnectTabPanel.js';
 import { toolbarPropsSelector } from 'console/state/selectors/toolbarPropsSelector.js';
 
 const ToolbarFrame = props => {
@@ -16,12 +15,13 @@ const ToolbarFrame = props => {
 				event.preventDefault(); // To not show the default menu
 			}}>
 			{toolbars}
-			<ConnectTabPanel/>
+			{props.children}
 		</div>
 	);
 };
 
 ToolbarFrame.propTypes = {
+	children: PropTypes.array,
 	toolbars: PropTypes.object.isRequired, // Immutable.List
 	actions: PropTypes.object.isRequired,
 	dirty: PropTypes.bool.isRequired

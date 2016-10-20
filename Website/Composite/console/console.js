@@ -4,7 +4,11 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import configureStore from 'console/state/store.js';
-import ConnectDockPanel from 'console/components/container/ConnectDockPanel.js';
+import { Router, Route, IndexRoute, hashHistory } from 'react-router';
+import { syncHistoryWithStore } from 'react-router-redux';
+import ConnectToolbarFrame from 'console/components/container/ConnectToolbarFrame.js';
+import ConnectTabPanel from 'console/components/container/ConnectTabPanel.js';
+import Spritesheet from 'console/components/presentation/Spritesheet.js';
 import 'react-select/scss/default.scss!';
 import 'fixed-data-table-2/dist/fixed-data-table.css!scss';
 import 'console/console.scss!';
@@ -97,11 +101,20 @@ const initialState = {
 	}
 };
 const store = configureStore(initialState);
+
+const history = syncHistoryWithStore(hashHistory, store, { selectLocationState: state => state.get('routing') });
+
 function whenReadyRender() {
 	if (document.readyState === 'complete') {
 		render(
 			<Provider store={store}>
-				<ConnectDockPanel/>
+				<Router history={history}>
+					<Route path="/sprites" component={Spritesheet}/>
+					<Route path='/:page' component={ConnectToolbarFrame}>
+						<IndexRoute component={ConnectTabPanel}/>
+						<Route path=':tab' component={ConnectTabPanel}/>
+					</Route>
+				</Router>
 			</Provider>,
 			document.querySelector('body > div.entry')
 		);

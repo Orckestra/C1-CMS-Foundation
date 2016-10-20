@@ -4,7 +4,7 @@ import React from 'react';
 import TestUtils from 'react-addons-test-utils';
 import ToolbarFrame from 'console/components/presentation/ToolbarFrame.js';
 import Toolbar from 'console/components/presentation/Toolbar.js';
-import ConnectTabPanel from 'console/components/container/ConnectTabPanel.js';
+import TestComponent from 'test/unit/helpers/TestComponent.js';
 import Immutable from 'immutable';
 
 describe('ToolbarFrame', () => {
@@ -34,6 +34,7 @@ describe('ToolbarFrame', () => {
 				fireAction: sinon.spy(() => pageActions.fireAction).named('fireAction'),
 				setOption: sinon.spy(() => pageActions.setOption).named('setOption')
 			},
+			children: [<TestComponent/>]
 		};
 		renderer = TestUtils.createRenderer();
 	});
@@ -47,7 +48,7 @@ describe('ToolbarFrame', () => {
 				<Toolbar
 					name='test/toolbar'
 					items={[{}, {}, {}]}/>
-				<ConnectTabPanel/>
+				<TestComponent/>
 			</div>
 		)
 		.and(
@@ -112,7 +113,7 @@ describe('ToolbarFrame', () => {
 			renderer,
 			'to have rendered',
 			<div className='page'>
-				<ConnectTabPanel/>
+				<TestComponent/>
 			</div>
 		);
 	});

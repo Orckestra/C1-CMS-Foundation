@@ -303,6 +303,8 @@ SystemJS.config({
     "react": "npm:react@15.3.2",
     "react-dimensions": "npm:react-dimensions@1.3.0",
     "react-dom": "npm:react-dom@15.3.2",
+    "react-router": "npm:react-router@2.8.1",
+    "react-router-redux": "npm:react-router-redux@4.0.6",
     "react-select": "npm:react-select@1.0.0-rc.2",
     "redux-immutablejs": "npm:redux-immutablejs@0.0.8",
     "reselect": "npm:reselect@2.5.4",
@@ -872,6 +874,38 @@ SystemJS.config({
     "npm:encoding@0.1.12": {
       "map": {
         "iconv-lite": "npm:iconv-lite@0.4.13"
+      }
+    },
+    "npm:react-router@2.8.1": {
+      "map": {
+        "warning": "npm:warning@3.0.0",
+        "hoist-non-react-statics": "npm:hoist-non-react-statics@1.2.0",
+        "invariant": "npm:invariant@2.2.1",
+        "loose-envify": "npm:loose-envify@1.2.0",
+        "history": "npm:history@2.1.2"
+      }
+    },
+    "npm:history@2.1.2": {
+      "map": {
+        "warning": "npm:warning@2.1.0",
+        "invariant": "npm:invariant@2.2.1",
+        "query-string": "npm:query-string@3.0.3",
+        "deep-equal": "npm:deep-equal@1.0.1"
+      }
+    },
+    "npm:warning@3.0.0": {
+      "map": {
+        "loose-envify": "npm:loose-envify@1.2.0"
+      }
+    },
+    "npm:warning@2.1.0": {
+      "map": {
+        "loose-envify": "npm:loose-envify@1.2.0"
+      }
+    },
+    "npm:query-string@3.0.3": {
+      "map": {
+        "strict-uri-encode": "npm:strict-uri-encode@1.1.0"
       }
     }
   }

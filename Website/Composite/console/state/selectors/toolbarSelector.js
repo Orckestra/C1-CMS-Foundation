@@ -13,7 +13,7 @@ export const toolbarAssemblySelector = createSelector(
 	toolbarDefSelector,
 	itemDefSelector,
 	(pageDef, toolbarDefs, itemDefs) =>
-		pageDef.get('toolbars')
+		(pageDef.get('toolbars') || Immutable.Map())
 			.map(toolbarName => toolbarDefs.get(toolbarName))
 			.filter(exists)
 			.map(toolbar => {
