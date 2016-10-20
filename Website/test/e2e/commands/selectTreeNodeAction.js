@@ -19,7 +19,7 @@ SlectTreeNodeAction.prototype.command = function (node,action,bundle) {
 	}
 	else{
 		this.client.api.moveToElement('menuitem[label="' + bundle + '"]', 5, 5, function(){
-			browser.pause(2000);
+			browser.pause(browser.globals.timeouts.little);
 			content
 				.click('menuitem[label="'+action+'"]');
 		});
