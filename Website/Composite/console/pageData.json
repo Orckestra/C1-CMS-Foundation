@@ -5,15 +5,15 @@
     "type": "document",
     "tabs": [
       {
-        "name": "edit-language/form",
+        "name": "edit-language.form",
         "type": "form",
         "fieldsets": [
           {
-            "name": "edit-language/form/properties",
+            "name": "edit-language.form.properties",
             "label": "Language Properties",
             "fields": [
               {
-                "name": "edit-language/form/properties/url-mapping-name",
+                "name": "edit-language.form.properties.url-mapping-name",
                 "headline": "URL mapping name",
                 "help": "Base name in URLs"
               }
@@ -24,13 +24,13 @@
     ],
     "toolbars": [
       {
-        "name": "edit-language/toolbar",
+        "name": "edit-language.toolbar",
         "style": "light rightAligned",
         "items": [
           {
             "type": "button",
             "style": "main",
-            "name": "edit-language/toolbar/save",
+            "name": "edit-language.toolbar.save",
             "label": "Save",
             "icon": "save",
             "action": "save"
@@ -45,20 +45,20 @@
     "type": "document",
     "tabs": [
       {
-        "name": "other-page/form",
+        "name": "other-page.form",
         "type": "form",
         "fieldsets": [
           {
-            "name": "other-page/form/properties",
+            "name": "other-page.form.properties",
             "label": "Language Properties",
             "fields": [
               {
-                "name": "other-page/form/properties/url-mapping-name",
+                "name": "other-page.form.properties.url-mapping-name",
                 "headline": "URL mapping name",
                 "help": "Base name in URLs"
               },
               {
-                "name": "other-page/form/properties/pimp-my-select",
+                "name": "other-page.form.properties.pimp-my-select",
                 "headline": "Xzibit says",
                 "type": "select",
                 "options": [
@@ -70,20 +70,20 @@
                 "help": "Wise words from a man who knows about putting things in other things"
               },
               {
-                "name": "other-page/form/properties/check-one",
+                "name": "other-page.form.properties.check-one",
                 "headline": "Some checkboxes",
                 "type": "checkbox",
                 "help": "Check it #1",
                 "label": "The First"
               },
               {
-                "name": "other-page/form/properties/check-two",
+                "name": "other-page.form.properties.check-two",
                 "type": "checkbox",
                 "help": "Check it #2",
                 "label": "The Last"
               },
               {
-                "name": "other-page/form/properties/check-three",
+                "name": "other-page.form.properties.check-three",
                 "type": "checkbox",
                 "help": "Check it #3",
                 "label": "The Everything"
@@ -91,22 +91,39 @@
             ]
           },
           {
-            "name": "other-page/form/stuff",
+            "name": "other-page.form.stuff",
             "label": "Some things",
             "fields": [
               {
-                "name": "other-page/form/stuff/thing",
+                "name": "other-page.form.stuff.thing",
                 "headline": "A value"
               }
             ]
           },
           {
-            "name": "other-page/form/morestuff",
+            "name": "other-page.form.morestuff",
             "label": "Some more things",
             "fields": [
               {
-                "name": "other-page/form/morestuff/thing",
+                "name": "other-page.form.morestuff.thing",
                 "headline": "A value"
+              }
+            ]
+          }
+        ]
+      },
+			{
+        "name": "other-page.tab2",
+        "type": "form",
+        "fieldsets": [
+          {
+            "name": "other-page.tab2.properties",
+            "label": "Language Properties",
+            "fields": [
+              {
+                "name": "other-page.tab2.properties.url-mapping-name",
+                "headline": "URL mapping name",
+                "help": "Base name in URLs"
               }
             ]
           }
@@ -115,12 +132,12 @@
     ],
     "toolbars": [
       {
-        "name": "other-page/toolbar",
+        "name": "other-page.toolbar",
         "style": "rightAligned",
         "items": [
           {
             "type": "select",
-            "name": "server-log/toolbar/date",
+            "name": "server-log.toolbar.date",
             "placeholder": "Select date",
             "options": [
               { "value": "2016-09-23" },
@@ -132,7 +149,7 @@
           {
             "type": "button",
             "style": "main",
-            "name": "other-page/toolbar/save",
+            "name": "other-page.toolbar.save",
             "label": "Save",
             "icon": "save",
             "action": "save"
@@ -140,24 +157,24 @@
         ]
       },
       {
-        "name": "other-page/toolbar2",
+        "name": "other-page.toolbar2",
         "style": "dark",
         "items": [
           {
             "type": "button",
-            "name": "other-page/toolbar2/sysviewToggle",
+            "name": "other-page.toolbar2.sysviewToggle",
             "icon": "nodes",
             "action": "sysviewToggle"
           },
           {
             "type": "button",
-            "name": "other-page/toolbar2/labeled",
+            "name": "other-page.toolbar2.labeled",
             "label": "Stuff",
             "action": "sysviewToggle"
           },
           {
             "type": "select",
-            "name": "server-log/toolbar2/date",
+            "name": "server-log.toolbar2.date",
             "placeholder": "Select date",
             "options": [
               { "value": "2016-09-23" },
@@ -168,13 +185,13 @@
           },
           {
             "type": "checkboxGroup",
-            "name": "other-page/toolbar2/levels",
+            "name": "other-page.toolbar2.levels",
             "options": [
-              { "name": "other-page/toolbar2/levels/critical", "label": "Critical" },
-              { "name": "other-page/toolbar2/levels/error", "label": "Error" },
-              { "name": "other-page/toolbar2/levels/warning", "label": "Warning" },
-              { "name": "other-page/toolbar2/levels/info", "label": "Information" },
-              { "name": "other-page/toolbar2/levels/verbose", "label": "Verbose" }
+              { "name": "other-page.toolbar2.levels.critical", "label": "Critical" },
+              { "name": "other-page.toolbar2.levels.error", "label": "Error" },
+              { "name": "other-page.toolbar2.levels.warning", "label": "Warning" },
+              { "name": "other-page.toolbar2.levels.info", "label": "Information" },
+              { "name": "other-page.toolbar2.levels.verbose", "label": "Verbose" }
             ],
             "default": [
               "other-page/toolbar2/levels/critical",
@@ -193,12 +210,12 @@
     "type": "document",
     "toolbars": [
       {
-        "name": "server-log/toolbar",
+        "name": "server-log.toolbar",
         "style": "light",
         "items": [
           {
             "type": "select",
-            "name": "server-log/date",
+            "name": "server-log.date",
             "options": [
               { "value": "2016-10-08" },
               { "value": "2016-10-07" },
@@ -209,27 +226,27 @@
           },
           {
             "type": "button",
-            "name": "server-log/toolbar/delete",
+            "name": "server-log.toolbar.delete",
             "label": "Delete old",
             "icon": "trash",
             "action": "deleteOld"
           },
           {
             "type": "button",
-            "name": "server-log/toolbar/refresh",
+            "name": "server-log.toolbar.refresh",
             "label": "Refresh",
             "icon": "refresh",
             "action": "refresh"
           },
           {
             "type": "checkboxGroup",
-            "name": "server-log/levels",
+            "name": "server-log.levels",
             "options": [
-              { "name": "server-log/levels/critical", "value": "Critical", "label": "Critical" },
-              { "name": "server-log/levels/error", "value": "Error", "label": "Error" },
-              { "name": "server-log/levels/warning", "value": "Warning", "label": "Warning" },
-              { "name": "server-log/levels/info", "value": "Information", "label": "Information" },
-              { "name": "server-log/levels/verbose", "value": "Verbose", "label": "Verbose" }
+              { "name": "server-log.levels.critical", "value": "Critical", "label": "Critical" },
+              { "name": "server-log.levels.error", "value": "Error", "label": "Error" },
+              { "name": "server-log.levels.warning", "value": "Warning", "label": "Warning" },
+              { "name": "server-log.levels.info", "value": "Information", "label": "Information" },
+              { "name": "server-log.levels.verbose", "value": "Verbose", "label": "Verbose" }
             ],
             "default": [
               "Critical",
@@ -243,7 +260,7 @@
     ],
     "tabs": [
       {
-        "name": "server-log/log",
+        "name": "server-log.log",
         "type": "log",
         "logURL": "/Composite/console/serverLog.json",
         "logLevels": "server-log/levels",
