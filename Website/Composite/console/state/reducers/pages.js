@@ -1,5 +1,5 @@
 import Immutable from 'immutable';
-import { LOCATION_CHANGE } from 'react-router-redux';
+
 const prefix = 'PAGES.';
 
 export const SELECT_PAGE = prefix + 'SELECT';
@@ -24,18 +24,7 @@ const initialState = Immutable.Map({
 });
 
 const pages = (state = initialState, action) => {
-	let path;
 	switch (action.type) {
-	case LOCATION_CHANGE:
-		path = action.payload.pathname.split('/');
-		return state.withMutations(state => {
-			state.set('currentPage', path[1]);
-			if (path[2]) {
-				state.setIn(['tabs', path[1]], path[1] + '/' + path[2]);
-			} else {
-				state.deleteIn(['tabs', path[1]]);
-			}
-		});
 	case SELECT_PAGE:
 		if (state.get('pages').includes(action.pageName)) {
 			return state.set('currentPage', action.pageName);

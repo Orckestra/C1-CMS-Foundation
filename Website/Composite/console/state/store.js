@@ -7,7 +7,6 @@ import options from 'console/state/reducers/options.js';
 import logs from 'console/state/reducers/logs.js';
 import getDefinitionReducer from 'console/state/reducers/definitions.js';
 import ReduxThunk from 'redux-thunk';
-import { routerReducer } from 'react-router-redux';
 import initState from 'console/state/initState.js';
 import Immutable from 'immutable';
 
@@ -15,8 +14,7 @@ let reducers = {
 	dataFields,
 	pages,
 	options,
-	logs,
-	routing: routerReducer
+	logs
 };
 ['page', 'tab', 'item', 'toolbar', 'fieldset', 'dataField'].forEach(typeName => {
 	reducers[typeName + 'Defs'] = getDefinitionReducer(typeName);

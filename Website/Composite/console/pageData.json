@@ -111,23 +111,6 @@
             ]
           }
         ]
-      },
-      {
-        "name": "other-page/tab2",
-        "type": "form",
-        "fieldsets": [
-          {
-            "name": "other-page/tab2/properties",
-            "label": "Language Properties",
-            "fields": [
-              {
-                "name": "other-page/tab2/properties/url-mapping-name",
-                "headline": "URL mapping name",
-                "help": "Base name in URLs"
-              }
-            ]
-          }
-        ]
       }
     ],
     "toolbars": [

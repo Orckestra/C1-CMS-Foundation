@@ -1,6 +1,5 @@
 import expect from 'unittest/helpers/expect.js';
 import pages, * as actions from 'console/state/reducers/pages.js';
-import { LOCATION_CHANGE } from 'react-router-redux';
 import Immutable from 'immutable';
 
 describe('Pages', () => {
@@ -65,38 +64,6 @@ describe('Pages', () => {
 				tabs: {
 					'test1': 'onetab'
 				}
-			});
-		});
-
-		describe('Location change', () => {
-			it('changes selected page and tab', () => {
-				let newState = pages(oldState, { type: LOCATION_CHANGE, payload: {
-					pathname: '/test2/othertab'
-				} });
-				return expect(newState, 'not to be', oldState)
-				.and('to satisfy', {
-					thing: 'do not touch',
-					currentPage: 'test2',
-					tabs: {
-						'test1': 'onetab',
-						'test2': 'test2/othertab'
-					}
-				});
-			});
-
-			it('changes selected page and clears tab', () => {
-				oldState = oldState.setIn(['tabs', 'test2'], 'sometab');
-				let newState = pages(oldState, { type: LOCATION_CHANGE, payload: {
-					pathname: '/test2'
-				}});
-				return expect(newState, 'not to be', oldState)
-				.and('to satisfy', {
-					thing: 'do not touch',
-					currentPage: 'test2',
-					tabs: {
-						'test1': 'onetab'
-					}
-				});
 			});
 		});
 

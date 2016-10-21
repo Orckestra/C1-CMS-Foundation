@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import Icon from 'console/components/presentation/Icon.js';
 
 const isMime = /mimetype/;
@@ -50,6 +50,10 @@ const Spritesheet = () => {
 			</div>
 		</div>
 	);
+};
+
+Spritesheet.propTypes = {
+	pageDef: PropTypes.object.isRequired
 };
 
 export default Spritesheet;
