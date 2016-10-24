@@ -3,15 +3,16 @@ import 'url-polyfill';
 
 export default function requestJSON(path, inputData) {
 	if (typeof inputData === 'object') {
-		inputData.credentials = 'same-origin';
+		inputData.credentials = 'include';
 		if (typeof inputData.body === 'object') {
+			inputData.method = inputData.method ? inputData.method : 'POST';
 			inputData.headers = inputData.headers || {};
 			inputData.headers['Content-Type'] = 'application/json';
 			inputData.body = JSON.stringify(inputData.body);
 		}
 	} else {
 		inputData = {
-			credentials: 'same-origin'
+			credentials: 'include'
 		};
 	}
 	let url = new URL(path, location.href);
