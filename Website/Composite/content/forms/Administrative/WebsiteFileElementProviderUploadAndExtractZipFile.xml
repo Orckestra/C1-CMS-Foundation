@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
+  <cms:bindings>
+    <cms:binding name="UploadedFile" type="Composite.C1Console.Forms.CoreUiControls.UploadedFile, Composite" />
+    <cms:binding name="OverwriteExisting" type="System.Boolean" />
+  </cms:bindings>
+  <cms:layout iconhandle="website-upload-zip-file" label="${Composite.Plugins.WebsiteFileElementProvider, UploadAndExtractZipFile.DialogLabel}">
+    <FieldGroup>
+      <FileUpload Label="${Composite.Plugins.WebsiteFileElementProvider, UploadAndExtractZipFile.FileLabel}" Help="${Composite.Plugins.WebsiteFileElementProvider, UploadAndExtractZipFile.FileHelp}">
+        <FileUpload.UploadedFile>
+          <cms:bind source="UploadedFile" />
+        </FileUpload.UploadedFile>
+      </FileUpload>
+      <CheckBox Label="${Composite.Plugins.WebsiteFileElementProvider, UploadAndExtractZipFile.OverwriteExistingLabel}" Help="${Composite.Plugins.WebsiteFileElementProvider, UploadAndExtractZipFile.OverwriteExistingHelp}" ItemLabel="${Composite.Plugins.WebsiteFileElementProvider, UploadAndExtractZipFile.OverwriteExistingItemLabel}">
+        <CheckBox.Checked>
+          <cms:bind source="OverwriteExisting" />
+        </CheckBox.Checked>
+      </CheckBox>
+    </FieldGroup>
+  </cms:layout>
+</cms:formdefinition>

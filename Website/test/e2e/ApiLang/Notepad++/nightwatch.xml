@@ -39,7 +39,7 @@
 			<Overload retVal="browser" >
 				<Param name="dialogLabel" />
 				<Param name="fieldLabel" />
-				<Param name="vlaueToAssert" />
+				<Param name="valueToAssert" />
 				<Param name="inputType" />
 			</Overload>
 		</KeyWord>
@@ -69,7 +69,7 @@
 		</KeyWord>
 		<KeyWord name="clickDataBySibilings" func="yes">
 			<Overload retVal="browser" >
-				<Param name="vlaue" />
+				<Param name="value" />
 			</Overload>
 		</KeyWord>
 		<KeyWord name="clickDialogButton" func="yes">
@@ -94,7 +94,7 @@
 		</KeyWord>
 		<KeyWord name="clickText" func="yes">
 			<Overload retVal="browser" >
-				<Param name="vlaue" />
+				<Param name="value" />
 			</Overload>
 		</KeyWord>
 		<KeyWord name="closeDocumentTab" func="yes">
@@ -174,21 +174,28 @@
 			<Overload retVal="browser" >
 				<Param name="node" />
 				<Param name="action" />
+				<Param name="bundle (optional)" />
 			</Overload>
 		</KeyWord>
 		<KeyWord name="setFieldValueInFieldGroup" func="yes">
 			<Overload retVal="browser" >
 				<Param name="dialogLabel" />
 				<Param name="fieldLabel" />
-				<Param name="vlaue" />
+				<Param name="value" />
 				<Param name="(optional)inputType" />
 			</Overload>
 		</KeyWord>
 		<KeyWord name="setFieldValue" func="yes">
 			<Overload retVal="browser" >
 				<Param name="fieldLabel" />
-				<Param name="vlaue" />
+				<Param name="value" />
 				<Param name="inputType" />
+			</Overload>
+		</KeyWord>
+		<KeyWord name="setFileFieldValue" func="yes">
+			<Overload retVal="browser" >
+				<Param name="fieldLabel" />
+				<Param name="path" />
 			</Overload>
 		</KeyWord>
 		<KeyWord name="switchContentTab" func="yes">

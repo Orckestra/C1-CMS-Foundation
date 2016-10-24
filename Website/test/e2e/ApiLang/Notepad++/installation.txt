@@ -1,0 +1,5 @@
+1. copy nightwatch.xml to your notepad++ api directory ( C:\Program Files (x86)\Notepad++\plugins\APIs\ )
+2. in notepad++ select Languages > Define Your Language.. > Import... > (select nightwatch.UML.xml)
+3. restart notepad++
+
+it should appear in language menu as Nightwatch

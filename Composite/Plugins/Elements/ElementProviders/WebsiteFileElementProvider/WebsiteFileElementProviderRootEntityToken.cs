@@ -10,14 +10,26 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
     [SecurityAncestorProvider(typeof(NoAncestorSecurityAncestorProvider))]
     public sealed class WebsiteFileElementProviderRootEntityToken : EntityToken
 	{
-        private string _providerName;
-
         /// <exclude />
-        public WebsiteFileElementProviderRootEntityToken(string providerName)
+        public WebsiteFileElementProviderRootEntityToken(string providerName, string rootPath)
         {
-            _providerName = providerName;
+            ProviderName = providerName;
+            RootPath = rootPath;
         }
 
+
+        /// <exclude />
+        internal string ProviderName
+        {
+            get;
+            private set;
+        }
+
+        internal string RootPath
+        {
+            get;
+            private set;
+        }
 
         /// <exclude />
         public override string Type
@@ -29,7 +41,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
         /// <exclude />
         public override string Source
         {
-            get { return _providerName; }
+            get { return ProviderName; }
         }
 
 
@@ -43,14 +55,22 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
         /// <exclude />
         public override string Serialize()
         {
-            return _providerName;
+            return string.Format("{0}${1}", ProviderName, RootPath);
         }
 
 
         /// <exclude />
         public static EntityToken Deserialize(string serializedData)
         {
-            return new WebsiteFileElementProviderRootEntityToken(serializedData);
+            if (serializedData.IndexOf('$')>0)
+            {
+                var parts = serializedData.Split('$');
+                return new WebsiteFileElementProviderRootEntityToken(parts[0], parts[1]);
+            }
+            else
+            {
+                return new WebsiteFileElementProviderRootEntityToken(serializedData, "");
+            }
         }
     }
 }
