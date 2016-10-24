@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 
 #if !InternalBuild
-[assembly: AssemblyTitle("Orckestra CMS 5.3")] 
+[assembly: AssemblyTitle("Orckestra CMS 5.4 (beta)")] 
 #else
-[assembly: AssemblyTitle("Orckestra CMS 5.3 (Internal Build)")]
+[assembly: AssemblyTitle("Orckestra CMS 5.4 (Internal Build)")]
 #endif
 
 [assembly: AssemblyDescription("Orckestra CMS Core classes")]
