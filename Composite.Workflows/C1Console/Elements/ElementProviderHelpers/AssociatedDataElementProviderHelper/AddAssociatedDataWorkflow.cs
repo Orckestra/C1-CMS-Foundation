@@ -106,7 +106,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
 
             Guid pageId = GetBinding<Guid>(BindingNames.PageId);
 
-            var helper = new DataTypeDescriptorFormsHelper(dataTypeDescriptor, true, null)
+            var helper = new DataTypeDescriptorFormsHelper(dataTypeDescriptor, true, EntityToken)
             {
                 LayoutIconHandle = "associated-data-add"
             };
