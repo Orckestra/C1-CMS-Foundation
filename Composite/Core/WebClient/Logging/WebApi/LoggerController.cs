@@ -4,8 +4,10 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Web;
 using System.Web.Http;
 using Composite.Core.Logging;
+using Microsoft.Web.WebSockets;
 using Newtonsoft.Json;
 
 
@@ -18,23 +20,61 @@ namespace Composite.Core.WebClient.Logging.WebApi
     public class LoggerController : ApiController
     {
         /// <summary>
-        /// Get method
+        /// Logger web socket endpoint
         /// </summary>
-        /// <returns></returns>
-        [Route("")]
+        [Route("WebSocket")]
         public HttpResponseMessage Get()
         {
-            var logRequestInfo = new LogRequestInfo()
+            HttpContext.Current.AcceptWebSocketRequest(new LoggerWebSocketHandler());
+            return Request.CreateResponse(HttpStatusCode.SwitchingProtocols);
+        }
+
+        private class LoggerWebSocketHandler : WebSocketHandler
+        {
+            private static readonly WebSocketCollection Clients = new WebSocketCollection();
+           
+            public override void OnOpen()
             {
-                Amount = "100",
-                DateFrom = DateTime.Now.AddDays(-1).ToLongDateString(),
-                DateTo = DateTime.Now.ToLongDateString(),
-                Severity = "Verbose"
-            };
+                Clients.Add(this);
+            }
+    
+            public override void OnMessage(string message)
+            {
+                try
+                {
+                    if (message == "GetDates")
+                    {
+                        Clients.Broadcast(
+                            JsonConvert.SerializeObject(LogManager.GetLoggingDates().Select(f => f.ToShortDateString())));
+                        return;
+                    }
+                    if (message == "Default")
+                    {
+                        var logRequestInfo = new LogRequestInfo()
+                        {
+                            Amount = "100",
+                            DateFrom = DateTime.Now.AddDays(-1).ToLongDateString(),
+                            DateTo = DateTime.Now.ToLongDateString(),
+                            Severity = "Verbose"
+                        };
+                        Clients.Broadcast(JsonConvert.SerializeObject(GetLogDatas(logRequestInfo)));
+                        return;
+                    }
+                    if (JsonConvert.DeserializeObject<LogRequestInfo>(message) != null)
+                    {
+                        Clients.Broadcast(JsonConvert.SerializeObject(GetLogDatas(JsonConvert.DeserializeObject<LogRequestInfo>(message))));
+                    }
+                }
+                catch (Exception)
+                {
+                    Clients.Broadcast("Could not Parse Message");
+                }
+            }
 
-            var res = GetLogDatas(logRequestInfo);
-
-            return HttpResponseMessage(res);
+            public override void OnClose()
+            {
+                Clients.Remove(this);
+            }
         }
 
         /// <summary>
@@ -88,11 +128,18 @@ namespace Composite.Core.WebClient.Logging.WebApi
         }
     }
 
+    /// <summary>
+    /// Request structure
+    /// </summary>
     public class LogRequestInfo
     {
+        /// <exclude />
         public string DateFrom;
+        /// <exclude />
         public string DateTo;
+        /// <exclude />
         public string Severity;
+        /// <exclude />
         public string Amount;
     }
 
