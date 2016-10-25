@@ -7,8 +7,9 @@ import requestJSON from 'console/access/requestJSON.js';
 // The intent is that this should be as small as possible, instead initializing
 // from server data
 let pageName;
-if (location.search) {
-	pageName = location.search.replace(/^\?(?:.+&)?page=(.+?)(?:&.*)?$/, '$1');
+// Temporary. Intent is to let localstorage control location
+if (location.hash) {
+	pageName = location.hash.replace(/^#\/(.+?)?$/, '$1');
 } else {
 	pageName = 'edit-language';
 }

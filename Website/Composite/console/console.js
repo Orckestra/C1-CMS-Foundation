@@ -12,16 +12,6 @@ import 'console/iconIndex.js';
 
 document.title = 'Orckestra CMS: ' + location.hostname;
 
-/*
-App structure:
-
-Frame with menubar + explorer, contains split view - State: Selected perspective, open menus
-Split view defaults to a single view - state: Shown views, splitter position
-Tab view - state: open tabs, selected tab
-	First tab is browser (default) state: complex? TBD
-	Subsequent tabs can contain any page (incl. ConnectToolbarFrame) - state: As already done
-
-*/
 const initialState = {
 	logs: {
 		'server-log/log': {
