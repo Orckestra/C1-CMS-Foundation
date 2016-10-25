@@ -44,7 +44,7 @@ namespace Composite.Core.WebClient.Logging.WebApi
         [Route("GetDates")]
         public HttpResponseMessage GetDates()
         {
-            var res = LogManager.GetLoggingDates();
+            var res = LogManager.GetLoggingDates().Select(f=>f.ToShortDateString());
 
             return HttpResponseMessage(res);
         }
