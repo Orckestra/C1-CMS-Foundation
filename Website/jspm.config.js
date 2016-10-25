@@ -51,7 +51,6 @@ SystemJS.config({
       "unexpected-mitm": "npm:unexpected-mitm@9.3.4",
       "zurvan": "npm:zurvan@0.3.2",
       "unexpected-zurvan": "npm:unexpected-zurvan@0.1.0",
-      "unexpected-immutable": "npm:unexpected-immutable@0.0.2",
       "react-immutable-proptypes": "npm:react-immutable-proptypes@2.1.0"
     },
     "packages": {
