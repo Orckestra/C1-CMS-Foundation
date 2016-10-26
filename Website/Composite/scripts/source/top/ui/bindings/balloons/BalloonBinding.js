@@ -252,8 +252,13 @@ BalloonBinding.prototype._setComputedPosition = function ( tPoint, ePoint, tDim,
 	}
 
 	if ( isLeft ) {
-		point.x -= ( bDim.w + BalloonBinding.OFFSET_X );
-		this.attachClassName ( BalloonBinding.CLASSNAME_LEFT );
+		if (point.x < bDim.w + BalloonBinding.OFFSET_X) { // ballon outside app window from left
+			point.x += BalloonBinding.OFFSET_X * 2;
+			this.detachClassName(BalloonBinding.CLASSNAME_LEFT);
+		} else {
+			point.x -= (bDim.w + BalloonBinding.OFFSET_X);
+			this.attachClassName(BalloonBinding.CLASSNAME_LEFT);
+		}
 	} else {
 		point.x += tDim.w + BalloonBinding.OFFSET_X;
 	 	this.detachClassName ( BalloonBinding.CLASSNAME_LEFT );

@@ -20,7 +20,7 @@ using Composite.Data.DynamicTypes.Foundation;
 
 namespace Composite.Data
 {
-    /// <summary>    
+    /// <summary>
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
@@ -171,10 +171,10 @@ namespace Composite.Data
 
         /// <summary>
         /// This method will return the data type descriptor for the given data type id.
-        /// If the data type descriptor has not yet been created (file not existing) and 
+        /// If the data type descriptor has not yet been created (file not existing) and
         /// the <paramref name="allowDataTypeCreation"/> is set to true,
-        /// this method will try getting it through the <see cref="Composite.Data.DynamicTypes.Foundation.ReflectionBasedDescriptorBuilder"/> 
-        /// that will try locating the type from the data type id using refelction 
+        /// this method will try getting it through the <see cref="Composite.Data.DynamicTypes.Foundation.ReflectionBasedDescriptorBuilder"/>
+        /// that will try locating the type from the data type id using refelction
         /// going through know assemblies.
         /// </summary>
         /// <param name="dataTypeId">The id of the data type.</param>
@@ -211,7 +211,8 @@ namespace Composite.Data
                 }
                 catch(ReflectionTypeLoadException ex)
                 {
-                    throw new InvalidOperationException($"Failed to get types from assembly '{assembly.FullName}'", ex);
+                    Log.LogWarning($"Failed to get types from assembly '{assembly.FullName}'", ex);
+                    continue;
                 }
 
                 foreach (Type type in types)
