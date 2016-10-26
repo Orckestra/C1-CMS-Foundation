@@ -213,6 +213,30 @@ ui|field.fieldhelp ui|fielddata ui|urlinputdialog input {
 
 /* Hierarchical Selector */
 ui|hierarchicalselector {
+
+	&[hascounter='true'] {
+
+		@counter-height: 30px;
+
+		ui|box {
+			margin-bottom: @counter-height;
+		}
+		> ui|labelbox{
+			margin-top: -@counter-height;
+			height: @counter-height;
+			width: 100%;
+			line-height: @counter-height;
+			border-top: 1px solid @base-border-color;
+
+			ui|labelbody {
+				padding-right: 10px;
+				padding-left: 10px;
+				float: right;
+			}
+		}
+	}
+
+
 	ui|treenode {
 
 		ui|treenode {

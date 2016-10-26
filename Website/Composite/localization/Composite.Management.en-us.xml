@@ -689,4 +689,5 @@
   <string key="Browser.ToolTip" value="Browse unpublished pages" />
   <string key="Duplication.Text" value="Copy{count} of {0}" />
   <string key="DefaultVersionName" value="Original" />
+  <string key="Selector.Count" value="{0} selected" />
 </strings>
