@@ -4,14 +4,20 @@ import { openPage, setPage } from 'console/state/reducers/layout.js';
 
 export function loadAndOpenPage(pageName) {
 	return (dispatch, getState) => {
-		dispatch(loadPageDef(pageName))
-		.then(() => {
-			let page = getState().getIn(['pageDefs', pageName]);
-			let tabs = page && page.get('tabs') ? page.get('tabs') : [];
-			dispatch(openPage(pageName, tabs));
-			dispatch(setPage(pageName));
-		});
-		// Load any options specified
-		dispatch(loadValues(pageName));
+		let loadDef = getState().getIn(['pageDefs', pageName]) ?
+			Promise.resolve(null) :
+			dispatch(loadPageDef(pageName));
+		return Promise.all([
+			loadDef.then(() => {
+				let page = getState().getIn(['pageDefs', pageName]);
+				let tabs = page && page.get('tabs') ?
+					page.get('tabs').toArray() :
+					[];
+				dispatch(openPage(pageName, tabs));
+				dispatch(setPage(pageName));
+			}),
+			// Load any options specified
+			dispatch(loadValues(pageName))
+		]);
 	};
 }
