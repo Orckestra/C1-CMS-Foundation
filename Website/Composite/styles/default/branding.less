@@ -23,11 +23,24 @@
 	}
 }
 
-.brand-logo {
-	width: 250px;
-	height: 100px;
-	margin: 20px auto 30px auto;
-	background: url("@{images-root-path}/logo.png?cacheversion=@{cache-version}") no-repeat center center;
+.brand-logo-wrapper {
+	background: #333;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	margin: -30px -30px 40px -30px;
+}
+
+ .brand-logo {
+		height: 110px;
+		width: 250px;
+		margin: 20px auto 30px auto;
+		background-image: url("@{images-root-path}/logo.png?cacheversion=@{cache-version}");
+		background-position: center center;
+		background-repeat: no-repeat;
+}
+
+.brand-logo.dark {
+	background-image: url("@{images-root-path}/logo-dark.png?cacheversion=@{cache-version}");
 }
 
 .brand-main {

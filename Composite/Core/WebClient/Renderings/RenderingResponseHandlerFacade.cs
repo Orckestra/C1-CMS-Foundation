@@ -5,7 +5,7 @@ namespace Composite.Core.WebClient.Renderings
 {
     /// <summary>
     /// Pass information about a request through all <see cref="Composite.Core.WebClient.Renderings.Plugins.RenderingResponseHandler.IDataRenderingResponseHandler"/> 
-    /// plugins registered on the Composite C1 site. Use this if you are handling raw page / media http requests yourself.
+    /// plugins registered on the Orckestra CMS site. Use this if you are handling raw page / media http requests yourself.
     /// 
     /// </summary>
 	public static class RenderingResponseHandlerFacade
@@ -18,7 +18,7 @@ namespace Composite.Core.WebClient.Renderings
 
         /// <summary>
         /// Pass information about a request through all <see cref="Composite.Core.WebClient.Renderings.Plugins.RenderingResponseHandler.IDataRenderingResponseHandler"/> 
-        /// plugins registered on the Composite C1 site. The resulting <see cref="RenderingResponseHandlerResult"/> define how you should treat the request.
+        /// plugins registered on the Orckestra CMS site. The resulting <see cref="RenderingResponseHandlerResult"/> define how you should treat the request.
         /// </summary>
         /// <param name="requestedItemEntityToken">The data being rendered. This can be <see cref="Composite.Data.Types.IPage"/> and <see cref="Composite.Data.Types.IMediaFile"/>.</param>
         /// <returns>A <see cref="RenderingResponseHandlerResult"/> object detailing what should happen to the user request. Returning null means no special handling should be done (request should continue).</returns>

@@ -8,7 +8,7 @@ function _Installation () {
 
 _Installation.prototype = {
 
-	/** Application Name like "Composite C1"
+	/** Application Name like "Orckestra CMS"
 	* @type {string}
 	*/
 	applicationName: null,
@@ -20,7 +20,7 @@ _Installation.prototype = {
     versionString: null,
 
     /**
-    * Human readable product version "Composite C1 1.2 SP2".
+    * Human readable product version "Orckestra CMS 1.2 SP2".
     * @type {string}
     */
     versionPrettyString: null,

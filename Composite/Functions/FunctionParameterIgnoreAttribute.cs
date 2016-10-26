@@ -3,12 +3,12 @@
 namespace Composite.Functions
 {
     /// <summary>
-    /// Put this attribute on properties to make Composite C1 skip them when infering C1 Function parameters from a class.
+    /// Put this attribute on properties to make Orckestra CMS skip them when infering C1 Function parameters from a class.
     /// 
     /// If you need a property on your class, but do not want this property to be part of the C1 Function signature use this attrobute.
     /// </summary>
     /// <example>
-    /// Here is an example of how to use <see cref="FunctionParameterIgnoreAttribute" /> to make Composite C1 skip a property when infering parameters:
+    /// Here is an example of how to use <see cref="FunctionParameterIgnoreAttribute" /> to make Orckestra CMS skip a property when infering parameters:
     /// <code>
     /// [FunctionParameterIgnore()]
     /// public int ItemCount { get; set; } 

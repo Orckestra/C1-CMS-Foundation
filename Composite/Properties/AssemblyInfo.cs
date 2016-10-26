@@ -8,16 +8,16 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 
 #if !InternalBuild
-[assembly: AssemblyTitle("Composite C1 5.2")] 
+[assembly: AssemblyTitle("Orckestra CMS 5.4 (beta)")] 
 #else
-[assembly: AssemblyTitle("Composite C1 5.2 (Internal Build)")]
+[assembly: AssemblyTitle("Orckestra CMS 5.4 (Internal Build)")]
 #endif
 
-[assembly: AssemblyDescription("Composite C1 Core classes")]
+[assembly: AssemblyDescription("Orckestra CMS Core classes")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Composite A/S")]
-[assembly: AssemblyProduct("Composite C1")]
-[assembly: AssemblyCopyright("Copyright © Composite A/S 2016")]
+[assembly: AssemblyCompany("Orckestra Inc")]
+[assembly: AssemblyProduct("Orckestra CMS")]
+[assembly: AssemblyCopyright("Copyright © Orckestra Inc 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -39,7 +39,7 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
 
-[assembly: AssemblyVersion("5.2.*")]
+[assembly: AssemblyVersion("5.4.*")]
 
 [assembly: InternalsVisibleTo("UpgradePackage")]
 [assembly: InternalsVisibleTo("Composite.Workflows")]

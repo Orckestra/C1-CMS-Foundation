@@ -4,7 +4,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 namespace Composite.C1Console.Commands
 {
     /// <summary>
-    /// Handles hash based deep links to Composite C1 console (/Composite/top.aspx#&lt;command name&gt;;&lt;command payload&gt; )
+    /// Handles hash based deep links to Orckestra CMS console (/Composite/top.aspx#&lt;command name&gt;;&lt;command payload&gt; )
     /// </summary>
     [CustomFactory(typeof(ConsoleCommandHandlerCustomFactory))]
     public interface IConsoleCommandHandler
