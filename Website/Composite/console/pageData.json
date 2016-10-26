@@ -304,8 +304,8 @@
         "name": "server-log.log",
         "type": "log",
         "logURL": "/Composite/console/serverLog.json",
-        "logLevels": "server-log/levels",
-        "logPageName": "server-log/date",
+        "logLevels": "server-log.levels",
+        "logPageName": "server-log.date",
         "placeholder": "No log data available...",
         "headers": {
           "timestamp": "Date",

@@ -14,7 +14,7 @@ document.title = 'Orckestra CMS: ' + location.hostname;
 
 const initialState = {
 	logs: {
-		'server-log/log': {
+		'server-log.log': {
 			'2016-10-07': [
 				{
 					timestamp: '2016-10-18 13:25:59.52',
