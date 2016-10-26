@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
+import { currentPageNameSelector } from 'console/state/selectors/layoutSelector.js';
 
 const pageDefSelector = state => state.get('pageDefs');
-const currentPageNameSelector = state => state.getIn(['pages', 'currentPage']);
 
 export const currentPageSelector = createSelector(
 	currentPageNameSelector,

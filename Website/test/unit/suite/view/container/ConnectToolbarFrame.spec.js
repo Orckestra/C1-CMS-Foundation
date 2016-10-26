@@ -13,10 +13,21 @@ describe('ConnectToolbarFrame', () => {
 	beforeEach(() => {
 		renderer = TestUtils.createRenderer();
 		state = Immutable.fromJS({
-			pages: {
-				currentPage: 'testpage',
-				tabs: {
-					currentPage: 'tab'
+			layout: {
+				currentPerspective: 'system',
+				perspectives: {
+					system: {
+						currentPage: 'testpage',
+						pages: {
+							testpage: {
+								currentTab: 'tab',
+								tabs: {
+									tab: {}
+								}
+							},
+							test2: {}
+						}
+					}
 				}
 			},
 			pageDefs: {

@@ -1,6 +1,4 @@
-import { loadPageDef } from 'console/state/actions/pageDefs.js';
-import { loadValues } from 'console/state/actions/values.js';
-import { selectShownPage, replacePages } from 'console/state/reducers/pages.js';
+import { loadAndOpenPage } from 'console/state/actions/loadAndOpenPage.js';
 import { refreshLog } from 'console/state/reducers/logs.js';
 import requestJSON from 'console/access/requestJSON.js';
 
@@ -15,10 +13,7 @@ if (location.hash) {
 }
 
 export default function initState(store) {
-	store.dispatch(loadPageDef(pageName));
-	store.dispatch(loadValues(pageName));
-	store.dispatch(replacePages([pageName]));
-	store.dispatch(selectShownPage(pageName));
+	store.dispatch(loadAndOpenPage(pageName));
 	requestJSON('/longLog.json').then(data => store.dispatch(refreshLog('server-log/log', '2016-10-06', data)));
 	requestJSON('/mediumLog.json').then(data => store.dispatch(refreshLog('server-log/log', '2016-10-05', data)));
 }

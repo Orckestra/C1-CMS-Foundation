@@ -1,19 +1,19 @@
 import { createSelector } from 'reselect';
 import { currentPageSelector } from 'console/state/selectors/pageSelector.js';
+import { currentTabNameSelector } from 'console/state/selectors/layoutSelector.js';
 
 const tabDefsSelector = state => state.get('tabDefs');
-const currentTabsSelector = state => state.getIn(['pages', 'tabs']);
 
-export const currentTabNameSelector = createSelector(
+export const shownTabNameSelector = createSelector(
+	currentTabNameSelector,
 	currentPageSelector,
-	currentTabsSelector,
-	(page, tabs) => {
-		return tabs.get(page.get('name')) || page.getIn(['tabs', 0]);
+	(tabName, page) => {
+		return tabName || page.getIn(['tabs', 0]);
 	}
 );
 
 export const tabSelector = createSelector(
 	tabDefsSelector,
-	currentTabNameSelector,
+	shownTabNameSelector,
 	(tabDefs, tabName) => tabDefs.get(tabName)
 );
