@@ -257,6 +257,7 @@
           {
             "type": "select",
             "name": "server-log.date",
+						"optionLoader": "getLogDates",
             "options": [
               { "value": "2016-10-08" },
               { "value": "2016-10-07" },

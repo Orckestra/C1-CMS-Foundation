@@ -5,23 +5,21 @@ const logDateURL = '/Composite/api/Logger/GetDates';
 
 export const getLogDates = dateSelectorName => {
 	return dispatch =>
-		// Fetch log date end point
 		requestJSON(logDateURL)
 		.then(dates => {
-			// Map results to Date.toLocaleDateStrings
 			let dateOptions = dates.map(dateString => {
+				// Date string is in M/D/YYYY format
 				let dateParts = dateString.split('/');
-				let localizedDate = new Date(
+				let date = new Date(Date.UTC(
 					parseInt(dateParts[2], 10),
 					parseInt(dateParts[0], 10) - 1,
 					parseInt(dateParts[1], 10)
-				);
+				));
 				return {
-					value: dateString,
-					label: localizedDate.toLocaleDateString('en-gb') // Need to extract IANA langtag from user environment
+					value: date.toISOString(),
+					label: date.toLocaleDateString('en-gb') // Need to extract IANA langtag from user environment
 				};
-			});
-			// Store as options for date selector on log page
+			}).sort((a,b) => (a.value > b.value ? -1 : (a.value < b.value ? 1 : 0)));
 			dispatch(storeOptions(dateSelectorName, dateOptions));
 		});
 };

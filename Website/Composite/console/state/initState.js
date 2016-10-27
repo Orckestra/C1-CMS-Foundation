@@ -14,6 +14,6 @@ if (location.hash) {
 
 export default function initState(store) {
 	store.dispatch(loadAndOpenPage(pageName));
-	requestJSON('/longLog.json').then(data => store.dispatch(refreshLog('server-log.log', '2016-10-06', data)));
-	requestJSON('/mediumLog.json').then(data => store.dispatch(refreshLog('server-log.log', '2016-10-05', data)));
+	requestJSON('/longLog.json').then(data => store.dispatch(refreshLog('server-log.log', '2016-10-06T00:00:00.000Z', data)));
+	requestJSON('/mediumLog.json').then(data => store.dispatch(refreshLog('server-log.log', '2016-10-05T00:00:00.000Z', data)));
 }

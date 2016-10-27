@@ -15,7 +15,7 @@ document.title = 'Orckestra CMS: ' + location.hostname;
 const initialState = {
 	logs: {
 		'server-log.log': {
-			'2016-10-07': [
+			'2016-10-07T00:00:00.000Z': [
 				{
 					timestamp: '2016-10-18 13:25:59.52',
 					message: 'System.ComponentModel.Win32Exception (0x80004005): The system cannot find the file specified   at Composite.Web.Css.Less.ReparsePointUtils.GetSymbolicLinkTarget(DirectoryInfo symlink)\nat Composite.Web.Css.Less.ReparsePointUtils.GetDirectoryReparsePointTarget(String directoryPath)\nat Composite.Web.Css.Less.StylesHashing.FileHashCalculator.AddWatchesForSymbolicallyLinkedSubfolders(String folder)',

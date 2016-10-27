@@ -36,9 +36,9 @@ describe('getLogDates', () => {
 					type: STORE_OPTION_LIST,
 					field: 'logDate',
 					options: [
-						{ value: '9/28/2016', label: '9/28/2016' },
-						{ value: '9/30/2016', label: '9/30/2016' },
-						{ value: '10/3/2016', label: '10/3/2016' }
+						{ value: '2016-10-03T00:00:00.000Z', label: '10/3/2016' },
+						{ value: '2016-09-30T00:00:00.000Z', label: '9/30/2016' },
+						{ value: '2016-09-28T00:00:00.000Z', label: '9/28/2016' }
 					]
 				}]
 			}])
