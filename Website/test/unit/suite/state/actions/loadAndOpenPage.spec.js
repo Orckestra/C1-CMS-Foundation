@@ -83,7 +83,7 @@ describe('loadAndOpenPage', () => {
 					},
 					'when called with', [innerDispatch]
 				).then(() =>
-					expect(innerDispatch.firstCall, 'to satisfy', { args: [{
+					expect(innerDispatch.secondCall, 'to satisfy', { args: [{
 						type: STORE_OPTION_LIST,
 						field: 'optionized',
 						options: [

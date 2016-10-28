@@ -5,8 +5,8 @@ import { addDefinition } from 'console/state/reducers/definitions.js';
 
 const prefix = 'PAGE_DEF.';
 export const LOAD_PAGE_DEF = prefix + 'LOAD';
-export const LOAD_PAGE_DEF_DONE = prefix + 'LOAD.DONE';
-export const LOAD_PAGE_DEF_FAILED = prefix + 'LOAD.FAIL';
+export const LOAD_PAGE_DEF_DONE = LOAD_PAGE_DEF + '.DONE';
+export const LOAD_PAGE_DEF_FAILED = LOAD_PAGE_DEF + '.FAIL';
 
 const pageDefEndpointURL = '/Composite/console/pageData.json';
 
