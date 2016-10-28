@@ -111,23 +111,6 @@
             ]
           }
         ]
-      },
-			{
-        "name": "other-page.tab2",
-        "type": "form",
-        "fieldsets": [
-          {
-            "name": "other-page.tab2.properties",
-            "label": "Language Properties",
-            "fields": [
-              {
-                "name": "other-page.tab2.properties.url-mapping-name",
-                "headline": "URL mapping name",
-                "help": "Base name in URLs"
-              }
-            ]
-          }
-        ]
       }
     ],
     "toolbars": [
@@ -205,6 +188,64 @@
     ]
   },
   {
+    "name": "tabbed-page",
+    "label": "Tabbed page",
+    "type": "document",
+    "defaultTab": "tabbed-page.content",
+    "tabs": [
+      {
+        "name": "tabbed-page.settings",
+        "type": "form",
+        "fieldsets": [
+          {
+            "name": "tabbed-page.settings.properties",
+            "label": "Properties",
+            "fields": [
+              {
+                "name": "tabbed-page.settings.properties.name",
+                "headline": "Name",
+                "help": "What to call it"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "tabbed-page.content",
+        "type": "form",
+        "fieldsets": [
+          {
+            "name": "tabbed-page.content.properties",
+            "label": "Imagine an editor here",
+            "fields": [
+              {
+                "name": "tabbed-page.content.properties.name",
+                "headline": "Content",
+                "help": "Should be an editor"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "toolbars": [
+      {
+        "name": "tabbed-page.toolbar",
+        "style": "light rightAligned",
+        "items": [
+          {
+            "type": "button",
+            "style": "main",
+            "name": "tabbed-page.toolbar.save",
+            "label": "Save",
+            "icon": "save",
+            "action": "save"
+          }
+        ]
+      }
+    ]
+  },
+  {
     "name": "server-log",
     "label": "Server log",
     "type": "document",
@@ -263,8 +304,8 @@
         "name": "server-log.log",
         "type": "log",
         "logURL": "/Composite/console/serverLog.json",
-        "logLevels": "server-log/levels",
-        "logPageName": "server-log/date",
+        "logLevels": "server-log.levels",
+        "logPageName": "server-log.date",
         "placeholder": "No log data available...",
         "headers": {
           "timestamp": "Date",

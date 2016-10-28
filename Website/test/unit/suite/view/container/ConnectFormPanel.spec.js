@@ -12,10 +12,20 @@ describe('ConnectFormPanel', () => {
 	beforeEach(() => {
 		renderer = TestUtils.createRenderer();
 		state = Immutable.fromJS({
-			pages: {
-				currentPage: 'test',
-				tabs: {
-					'test': 'test/tab'
+			layout: {
+				currentPerspective: 'content',
+				perspectives: {
+					content: {
+						currentPage: 'test',
+						pages: {
+							test: {
+								currentTab: 'test/tab',
+								tabs: {
+									'test/tab': {}
+								}
+							}
+						}
+					}
 				}
 			},
 			pageDefs: {
@@ -110,7 +120,7 @@ describe('ConnectFormPanel', () => {
 
 	describe('missing fields in state', () => {
 		it('provides a default tabName if none selected', () => {
-			store.state = state.deleteIn(['pages', 'tabs', 'test']);
+			store.state = state.deleteIn(['layout', 'perspectives', 'content', 'pages', 'test', 'currentTab']);
 			renderer.render(<ConnectFormPanel store={store}/>);
 			return expect(renderer,
 				'to have rendered',

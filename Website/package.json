@@ -83,7 +83,6 @@
       "tty": "github:jspm/nodelibs-tty@^0.2.0-alpha",
       "tweetnacl": "npm:tweetnacl@0.13",
       "unexpected-dom": "npm:unexpected-dom@^3.1.0",
-      "unexpected-immutable": "npm:unexpected-immutable@^0.0.2",
       "unexpected-mitm": "npm:unexpected-mitm@^9.1.6",
       "unexpected-react": "npm:unexpected-react@^3.2.3",
       "unexpected-sinon": "npm:unexpected-sinon@^10.2.1",

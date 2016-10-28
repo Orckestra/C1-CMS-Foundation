@@ -11,9 +11,14 @@ describe('ConnectDockPanel', () => {
 	beforeEach(() => {
 		renderer = TestUtils.createRenderer();
 		state = Immutable.fromJS({
-			pages: {
-				currentPage: 'test1',
-				pages: ['test1', 'test2']
+			layout: {
+				currentPerspective: 'content',
+				perspectives: {
+					content: {
+						currentPage: 'test1',
+						pages: {}
+					}
+				}
 			},
 			pageDefs: {
 				test1: {

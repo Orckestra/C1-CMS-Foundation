@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { tabSelector, currentTabNameSelector } from 'console/state/selectors/tabSelector.js';
+import { tabSelector, shownTabNameSelector } from 'console/state/selectors/tabSelector.js';
 import Immutable from 'immutable';
 
 const allLogsSelector = state => state.get('logs');
@@ -31,7 +31,7 @@ const pageNameSelector = createSelector(
 
 const currentLogSelector = createSelector(
 	allLogsSelector,
-	currentTabNameSelector,
+	shownTabNameSelector,
 	(logs, tabName) =>
 		(logs.get(tabName) || Immutable.Map())
 );
@@ -53,7 +53,7 @@ const dateDescComparator = (a, b) => {
 	let bDate = new Date(b.get('timestamp'));
 	return aDate < bDate ?  1 :
 		aDate > bDate ? -1 :
-		0
+		0;
 };
 
 export const logSelector = createSelector(

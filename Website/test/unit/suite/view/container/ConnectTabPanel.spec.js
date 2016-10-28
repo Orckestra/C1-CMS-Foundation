@@ -11,11 +11,21 @@ describe('ConnectTabPanel', () => {
 	beforeEach(() => {
 		renderer = TestUtils.createRenderer();
 		state = Immutable.fromJS({
-			pages: {
-				currentPage: 'test1',
-				pages: ['test1', 'test2'],
-				tabs: {
-					test1: 'tab1'
+			layout: {
+				currentPerspective: 'system',
+				perspectives: {
+					system: {
+						currentPage: 'test1',
+						pages: {
+							test1: {
+								currentTab: 'tab1',
+								tabs: {
+									tab1: {}
+								}
+							},
+							test2: {}
+						}
+					}
 				}
 			},
 			pageDefs: {

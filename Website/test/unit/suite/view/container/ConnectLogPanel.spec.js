@@ -11,11 +11,21 @@ describe('ConnectLogPanel', () => {
 	beforeEach(() => {
 		renderer = TestUtils.createRenderer();
 		state = Immutable.fromJS({
-			pages: {
-				currentPage: 'test1',
-				pages: ['test1', 'test2'],
-				tabs: {
-					test1: 'tab1'
+			layout: {
+				currentPerspective: 'system',
+				perspectives: {
+					system: {
+						currentPage: 'test1',
+						pages: {
+							test1: {
+								currentTab: 'tab1',
+								tabs: {
+									tab1: {}
+								}
+							},
+							test2: {}
+						}
+					}
 				}
 			},
 			pageDefs: {
@@ -74,8 +84,7 @@ describe('ConnectLogPanel', () => {
 				values: {
 					'foo': ['not used']
 				}
-			},
-			layout: { window: { width: 1920, height: 1080 }}
+			}
 		});
 		store = {
 			stateObj: state,

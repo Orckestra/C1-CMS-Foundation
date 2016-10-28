@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import { toolbarSelector } from 'console/state/selectors/toolbarSelector.js';
+import { currentPageNameSelector } from 'console/state/selectors/layoutSelector.js';
 import ToolbarFrame from 'console/components/presentation/ToolbarFrame.js';
 import { saveValues } from 'console/state/actions/values.js';
 import { updateFieldValue } from 'console/state/reducers/dataFields.js';
@@ -10,7 +11,7 @@ import Immutable from 'immutable';
 // Sets up a page that allows editing of a document consisting of sets of fields.
 function mapStateToProps(state) {
 	let props = {
-		pageName: state.getIn(['pages', 'currentPage']),
+		pageName: currentPageNameSelector(state),
 		toolbars: toolbarSelector(state)
 	};
 	props.dirty = !Immutable.is(
