@@ -1,7 +1,6 @@
 import React, {PropTypes } from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { Table, Column, Cell } from 'fixed-data-table-2';
-import Dimensions from 'react-dimensions';
 
 function getTextHeight(message) {
 	let lineBreaks = message.match(/\n/g);
@@ -66,16 +65,10 @@ export const LogPanel = props => {
 };
 
 LogPanel.propTypes = {
+	containerWidth: PropTypes.number.isRequired,
+	containerHeight: PropTypes.number.isRequired,
 	tabDef: ImmutablePropTypes.map.isRequired,
 	logPage: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
-export default Dimensions({
-	containerStyle: {
-		padding: 0,
-		borderTop: 0,
-		overflow: 'hidden'
-	},
-	className: 'scrollbox',
-	elementResize: true
-})(LogPanel);
+export default LogPanel;

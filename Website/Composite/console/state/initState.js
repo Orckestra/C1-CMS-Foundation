@@ -1,4 +1,4 @@
-import { loadAndOpenPage } from 'console/state/actions/loadAndOpenPage.js';
+import { loadAndOpenPage } from 'console/state/actions/loadAndOpen.js';
 import { refreshLog } from 'console/state/reducers/logs.js';
 import requestJSON from 'console/access/requestJSON.js';
 

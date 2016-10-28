@@ -1,6 +1,6 @@
 import expect from 'unittest/helpers/expect.js';
 import sinon from 'sinon';
-import { loadAndOpenPage } from 'console/state/actions/loadAndOpenPage.js';
+import { loadAndOpenPage } from 'console/state/actions/loadAndOpen.js';
 import { OPEN_PAGE, SELECT_LOCATION } from 'console/state/reducers/layout.js';
 import { STORE_OPTION_LIST } from 'console/state/reducers/options.js';
 import Immutable from 'immutable';

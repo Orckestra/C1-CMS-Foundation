@@ -23,7 +23,8 @@ export const getLogDates = dateSelectorName => (dispatch, getState) => {
 			));
 			return {
 				value: date.toISOString(),
-				label: date.toLocaleDateString('en-gb') // Need to extract IANA langtag from user environment
+				// TODO: Need to extract IANA langtag from user environment
+				label: date.toLocaleDateString('en-gb')
 			};
 		}).sort((a,b) => (a.value > b.value ? -1 : (a.value < b.value ? 1 : 0)));
 		dispatch(storeOptions(dateSelectorName, dateOptions));

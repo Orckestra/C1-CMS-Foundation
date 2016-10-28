@@ -2,7 +2,7 @@ import expect from 'unittest/helpers/expect.js';
 import sinon from 'sinon';
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
-import ConnectLogPanel from 'console/components/container/ConnectLogPanel.js';
+import { ConnectLogPanel } from 'console/components/container/ConnectLogPanel.js';
 import LogPanel from 'console/components/presentation/LogPanel.js';
 import Immutable from 'immutable';
 
@@ -94,9 +94,10 @@ describe('ConnectLogPanel', () => {
 		};
 	});
 
-	it('passes data to the Table component', () => {
-		renderer.render(<ConnectLogPanel store={store}/>);
+	it('passes data to presentation component', () => {
+		renderer.render(<ConnectLogPanel containerHeight={1000} containerWidth={1500} store={store}/>);
 		return expect(renderer, 'to have rendered', <LogPanel
+		containerHeight={1000} containerWidth={1500}
 			placeholder={expect.it('to be a function')}
 			logPage={[
 				{ message: 'Message4' },
@@ -107,8 +108,9 @@ describe('ConnectLogPanel', () => {
 
 	it('reacts to changing log levels', () => {
 		store.stateObj = state.setIn(['options', 'values', 'logLevel'], Immutable.List(['Verbose']));
-		renderer.render(<ConnectLogPanel store={store}/>);
+		renderer.render(<ConnectLogPanel containerHeight={1000} containerWidth={1500} store={store}/>);
 		return expect(renderer, 'to have rendered', <LogPanel
+			containerHeight={1000} containerWidth={1500}
 			placeholder={expect.it('to be a function')}
 			logPage={[
 				{ message: 'Message2' },
