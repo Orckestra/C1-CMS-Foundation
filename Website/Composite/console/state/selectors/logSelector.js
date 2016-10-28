@@ -45,7 +45,7 @@ const currentLogPageSelector = createSelector(
 const levelFilteredLogSelector = createSelector(
 	currentLogPageSelector,
 	logLevelSelector,
-	(log, levels) => log.filter(logEntry => levels.includes(logEntry.get('type')))
+	(log, levels) => log.filter(logEntry => levels.includes(logEntry.get('severity')))
 );
 
 const dateDescComparator = (a, b) => {

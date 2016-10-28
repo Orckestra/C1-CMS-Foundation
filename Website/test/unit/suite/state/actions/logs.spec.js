@@ -112,7 +112,7 @@ describe('Log operations', () => {
 							DateFrom: '9/29/2016',
 							DateTo: '9/30/2016',
 							Severity: 'Verbose',
-							Amount: 10000
+							Amount: 5000
 						}
 					},
 					response: {
@@ -122,19 +122,19 @@ describe('Log operations', () => {
 								timestamp: '2016-09-29 13:25:59.52',
 								message: 'System.ComponentModel.Win32Exception (0x80004005): The system cannot find the file specified   at Composite.Web.Css.Less.ReparsePointUtils.GetSymbolicLinkTarget(DirectoryInfo symlink)\nat Composite.Web.Css.Less.ReparsePointUtils.GetDirectoryReparsePointTarget(String directoryPath)\nat Composite.Web.Css.Less.StylesHashing.FileHashCalculator.AddWatchesForSymbolicallyLinkedSubfolders(String folder)',
 								title: 'LessCss',
-								type: 'Error'
+								severity: 'Error'
 							},
 							{
 								timestamp: '2016-09-29 12:53:32.50',
 								message: 'AppDomain 3 started at 12:53:32:48 in process 9456',
 								title: 'ApplicationEventHandler',
-								type: 'Information'
+								severity: 'Information'
 							},
 							{
 								timestamp: '2016-09-29 15:17:38.18',
 								message: 'AppDomain 2 unloaded at 12:52:07:04',
 								title: 'ApplicationEventHandler',
-								type: 'Information'
+								severity: 'Information'
 							}
 						]
 					}
@@ -153,19 +153,19 @@ describe('Log operations', () => {
 									timestamp: '2016-09-29 13:25:59.52',
 									message: 'System.ComponentModel.Win32Exception (0x80004005): The system cannot find the file specified   at Composite.Web.Css.Less.ReparsePointUtils.GetSymbolicLinkTarget(DirectoryInfo symlink)\nat Composite.Web.Css.Less.ReparsePointUtils.GetDirectoryReparsePointTarget(String directoryPath)\nat Composite.Web.Css.Less.StylesHashing.FileHashCalculator.AddWatchesForSymbolicallyLinkedSubfolders(String folder)',
 									title: 'LessCss',
-									type: 'Error'
+									severity: 'Error'
 								},
 								{
 									timestamp: '2016-09-29 12:53:32.50',
 									message: 'AppDomain 3 started at 12:53:32:48 in process 9456',
 									title: 'ApplicationEventHandler',
-									type: 'Information'
+									severity: 'Information'
 								},
 								{
 									timestamp: '2016-09-29 15:17:38.18',
 									message: 'AppDomain 2 unloaded at 12:52:07:04',
 									title: 'ApplicationEventHandler',
-									type: 'Information'
+									severity: 'Information'
 								}
 							]
 						}]
@@ -189,7 +189,7 @@ describe('Log operations', () => {
 						DateFrom: '9/29/2016',
 						DateTo: '9/30/2016',
 						Severity: 'Verbose',
-						Amount: 10000
+						Amount: 5000
 					}
 				},
 				response: {

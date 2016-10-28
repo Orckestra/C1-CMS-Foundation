@@ -58,24 +58,24 @@ describe('ConnectLogPanel', () => {
 							timestamp: '2016-10-07 12:53:32.50',
 							message: 'Message1',
 							title: 'Title1',
-							type: 'Information'
+							severity: 'Information'
 						},
 						{
 							timestamp: '2016-10-07 15:17:38.18',
 							message: 'Message2',
 							title: 'Title1',
-							type: 'Verbose'
+							severity: 'Verbose'
 						},{
 							timestamp: '2016-10-07 12:52:06.49',
 							message: 'Message3',
 							title: 'Title2',
-							type: 'Verbose'
+							severity: 'Verbose'
 						},
 						{
 							timestamp: '2016-10-07 15:17:38.07',
 							message: 'Message4',
 							title: 'Title3',
-							type: 'Error'
+							severity: 'Error'
 						}
 					]
 				}

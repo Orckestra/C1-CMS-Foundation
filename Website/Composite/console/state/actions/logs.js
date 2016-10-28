@@ -57,7 +57,7 @@ export const getLogPage = (logTabName, day) => (dispatch) => {
 			DateFrom: formatDate(fromDate),
 			DateTo: formatDate(toDate),
 			Severity: 'Verbose',
-			Amount: 10000
+			Amount: 5000
 		}
 	})
 	.then(logData => {

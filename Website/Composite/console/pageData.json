@@ -312,7 +312,7 @@
           "timestamp": "Date",
           "message": "Message",
           "title": "Title",
-          "type": "EventType"
+          "severity": "EventType"
         }
       }
     ]

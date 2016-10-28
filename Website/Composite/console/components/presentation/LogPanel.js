@@ -30,13 +30,13 @@ export const LogPanel = props => {
 		<Column
 			width={26}
 			header={<Cell/>}
-			cell={({ rowIndex, ...cellProps }) => <Cell className={props.logPage[rowIndex]['type']} {...cellProps}></Cell>}
+			cell={({ rowIndex, ...cellProps }) => <Cell className={props.logPage[rowIndex]['severity']} {...cellProps}></Cell>}
 			/>
 		<Column
 			flexGrow={2}
 			width={20}
-			header={<Cell>{props.tabDef.get('headers').get('timestamp')}</Cell>}
-			cell={({ rowIndex, ...cellProps }) => <Cell className='tableCell' {...cellProps}>{props.logPage[rowIndex]['timestamp']}</Cell>}
+			header={<Cell>{props.tabDef.get('headers').get('timeStamp')}</Cell>}
+			cell={({ rowIndex, ...cellProps }) => <Cell className='tableCell' {...cellProps}>{props.logPage[rowIndex]['timeStamp']}</Cell>}
 			/>
 		<Column
 			flexGrow={20}
@@ -58,8 +58,8 @@ export const LogPanel = props => {
 		<Column
 			flexGrow={1}
 			width={10}
-			header={<Cell>{props.tabDef.get('headers').get('type')}</Cell>}
-			cell={({ rowIndex, ...cellProps }) => <Cell className='tableCell' {...cellProps}>{props.logPage[rowIndex]['type']}</Cell>}
+			header={<Cell>{props.tabDef.get('headers').get('severity')}</Cell>}
+			cell={({ rowIndex, ...cellProps }) => <Cell className='tableCell' {...cellProps}>{props.logPage[rowIndex]['severity']}</Cell>}
 			/>
 	</Table>;
 };

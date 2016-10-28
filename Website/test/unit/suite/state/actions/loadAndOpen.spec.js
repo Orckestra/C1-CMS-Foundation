@@ -55,7 +55,9 @@ describe('loadAndOpenPage', () => {
 					{ spy: store.dispatch, args: [{
 						type: SELECT_LOCATION,
 						page: 'testpage'
-					}] }
+					}] },
+					{ spy: store.dispatch, args: [expect.it('to be a function')] }, // Tab loader
+					{ spy: store.dispatch, args: [expect.it('to be a function')] } // Tab loader
 				])
 			)
 		);
@@ -68,7 +70,7 @@ describe('loadAndOpenPage', () => {
 				.and('when called with', [store.dispatch, store.getState])
 			).then(() => {
 				let innerDispatch = sinon.spy().named('innerDispatch');
-				expect(store.dispatch.secondCall.args[0],'to be a function')
+				expect(store.dispatch.getCall(3).args[0], 'to be a function')
 				.and(
 					'with http mocked out', {
 						request: 'GET /Composite/api/Logger/GetDates',
@@ -83,7 +85,7 @@ describe('loadAndOpenPage', () => {
 					},
 					'when called with', [innerDispatch]
 				).then(() =>
-					expect(innerDispatch.secondCall, 'to satisfy', { args: [{
+					expect(innerDispatch, 'to have a call satisfying', { args: [{
 						type: STORE_OPTION_LIST,
 						field: 'optionized',
 						options: [
@@ -106,8 +108,9 @@ describe('loadAndOpenPage', () => {
 			).then(() =>
 				expect([store.dispatch], 'to have calls satisfying', [
 					{ spy: store.dispatch, args: [expect.it('to be a function')] }, // Load pageDef
-					{ spy: store.dispatch, args: [expect.it('to be a function')] } // Load values
-					// Mocking causes page def load to fail, stops page from being opened and selected.
+					{ spy: store.dispatch, args: [expect.it('to be a function')] }, // Load values
+					{ spy: store.dispatch, args: [{ type: 'LAYOUT.OPEN_PAGE', pageName: 'newpage', tabNames: [] }] },
+					{ spy: store.dispatch, args: [{ type: 'LAYOUT.SELECT_LOCATION', page: 'newpage' }] }
 				])
 			)
 		);
