@@ -57,12 +57,12 @@ namespace Composite.Core.WebClient.Logging.WebApi
                             DateTo = DateTime.Now.ToLongDateString(),
                             Severity = "Verbose"
                         };
-                        Clients.Broadcast(JsonConvert.SerializeObject(GetLogDatas(logRequestInfo)));
+                        Clients.Broadcast(JsonConvert.SerializeObject(GetLogData(logRequestInfo)));
                         return;
                     }
                     if (JsonConvert.DeserializeObject<LogRequestInfo>(message) != null)
                     {
-                        Clients.Broadcast(JsonConvert.SerializeObject(GetLogDatas(JsonConvert.DeserializeObject<LogRequestInfo>(message))));
+                        Clients.Broadcast(JsonConvert.SerializeObject(GetLogData(JsonConvert.DeserializeObject<LogRequestInfo>(message))));
                     }
                 }
                 catch (Exception)
@@ -98,7 +98,7 @@ namespace Composite.Core.WebClient.Logging.WebApi
         [HttpPost]
         public HttpResponseMessage GetData([FromBody] LogRequestInfo logRequestInfo)
         {
-            var res = GetLogDatas(logRequestInfo);
+            var res = GetLogData(logRequestInfo);
 
             return HttpResponseMessage(res);
         }
@@ -111,7 +111,7 @@ namespace Composite.Core.WebClient.Logging.WebApi
             return response;
         }
 
-        private static List<LogData> GetLogDatas(LogRequestInfo logRequestInfo)
+        private static List<LogData> GetLogData(LogRequestInfo logRequestInfo)
         {
             var logs = LogManager.GetLogEntries(DateTime.Parse(logRequestInfo.DateFrom),
                 DateTime.Parse(logRequestInfo.DateTo),
@@ -119,10 +119,10 @@ namespace Composite.Core.WebClient.Logging.WebApi
 
             var res = logs.Select(logEntry => new LogData()
             {
-                Title = logEntry.Title,
-                Message = logEntry.Message,
-                TimeStamp = logEntry.TimeStamp.ToLongDateString(),
-                Severity = logEntry.Severity
+                title = logEntry.Title,
+                message = logEntry.Message,
+                timeStamp = logEntry.TimeStamp.ToLongDateString(),
+                severity = logEntry.Severity
             }).ToList();
             return res;
         }
@@ -145,10 +145,10 @@ namespace Composite.Core.WebClient.Logging.WebApi
 
     internal class LogData
     {
-        public string Title;
-        public string Message;
-        public string TimeStamp;
-        public string Severity;
+        public string title;
+        public string message;
+        public string timeStamp;
+        public string severity;
     }
 
 }
