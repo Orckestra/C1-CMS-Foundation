@@ -2,6 +2,7 @@ import { loadPageDef } from 'console/state/actions/pageDefs.js';
 import { loadValues } from 'console/state/actions/values.js';
 import { openPage, setPage } from 'console/state/reducers/layout.js';
 import { getLogDates, getLogPage } from 'console/state/actions/logs.js';
+import { subscribe } from 'console/state/observers.js';
 
 const actionList = {
 	getLogDates,
@@ -9,14 +10,14 @@ const actionList = {
 };
 
 const pageLoaders = {
-	document: (pageName, state, dispatch) => {
-		let pageDef = state.getIn(['pageDefs', pageName]);
+	document: (pageName, getState, dispatch) => {
+		let pageDef = getState().getIn(['pageDefs', pageName]);
 		// Run through toolbars, load options
 		let loading = [];
 		pageDef.get('toolbars').forEach(toolbarName => {
-			let toolbarDef = state.getIn(['toolbarDefs', toolbarName]);
+			let toolbarDef = getState().getIn(['toolbarDefs', toolbarName]);
 			toolbarDef.get('items').forEach(itemName => {
-				let itemDef = state.getIn(['itemDefs', itemName]);
+				let itemDef = getState().getIn(['itemDefs', itemName]);
 				if (itemDef.get('type') === 'select' && itemDef.get('optionLoader')) {
 					loading.push(dispatch(actionList[itemDef.get('optionLoader')](itemName)));
 				}
@@ -43,7 +44,7 @@ export function loadAndOpenPage(pageName) {
 				dispatch(setPage(pageName));
 				let loader = pageLoaders[pageDef.get('type')];
 				if (loader) {
-					loading.push(loader(pageName, getState(), dispatch));
+					loading.push(loader(pageName, getState, dispatch));
 				}
 				return Promise.all(loading)
 				.then(() => Promise.all(tabs.map(tabName =>
@@ -56,11 +57,17 @@ export function loadAndOpenPage(pageName) {
 }
 
 const tabLoaders = {
-	log: (tabName, state, dispatch) => {
-		let dateSelectorName = state.getIn(['tabDefs', tabName, 'logPageName']);
-		let date = state.getIn(['options', 'values', dateSelectorName]) ||
-			state.getIn(['options', 'lists', dateSelectorName, 0]);
-		return dispatch(actionList['getLogPage'](tabName, date));
+	log: (tabName, getState, dispatch) => {
+		let dateSelectorName = getState().getIn(['tabDefs', tabName, 'logPageName']);
+		let loadLogs = () => {
+			let date = getState().getIn(['options', 'values', dateSelectorName]) ||
+				getState().getIn(['options', 'lists', dateSelectorName, 0, 'value']);
+			if (!getState().getIn(['logs', tabName, date])) {
+				dispatch(actionList.getLogPage(tabName, date));
+			}
+		};
+		subscribe(['options', 'values', dateSelectorName], loadLogs);
+		return loadLogs();
 	}
 };
 
@@ -69,7 +76,7 @@ export function loadTabValues(tabName) {
 		let tabDef = getState().getIn(['tabDefs', tabName]);
 		let loader = tabLoaders[tabDef.get('type')];
 		if (loader) {
-			return loader(tabName, getState(), dispatch);
+			return loader(tabName, getState, dispatch);
 		}
 	};
 }

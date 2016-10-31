@@ -8,6 +8,7 @@ import options from 'console/state/reducers/options.js';
 import logs from 'console/state/reducers/logs.js';
 import getDefinitionReducer from 'console/state/reducers/definitions.js';
 import ReduxThunk from 'redux-thunk';
+import observers from 'console/state/observers.js';
 import initState from 'console/state/initState.js';
 import Immutable from 'immutable';
 
@@ -33,6 +34,7 @@ export default function configureStore(initialState) {
 	} else {
 		store = createStore(consoleReducers, Immutable.fromJS(initialState), compose(
 			applyMiddleware(ReduxThunk),
+			applyMiddleware(observers),
 			window.devToolsExtension ? window.devToolsExtension() : f => f
 		));
 		hotStore.prevStore = store;

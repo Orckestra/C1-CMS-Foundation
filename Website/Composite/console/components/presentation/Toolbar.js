@@ -11,7 +11,7 @@ const Toolbar = props => (
 				return <CheckboxGroup key={item.get('name')} {...item.toJS()}/>;
 			case 'select':
 				item = item.toJS();
-				item.options.forEach(option => {
+				item.options && item.options.forEach(option => {
 					option.label = option.label || option.value;
 				});
 				return <Select key={item.name} clearable={false} multi={false} simpleValue={true} {...item}/>;

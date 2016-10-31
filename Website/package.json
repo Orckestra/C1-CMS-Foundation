@@ -55,6 +55,7 @@
       "react-redux": "npm:react-redux@^4.4.5",
       "react-select": "npm:react-select@^1.0.0-beta14",
       "redux-immutablejs": "npm:redux-immutablejs@^0.0.8",
+      "redux-observer": "npm:redux-observer@^1.0.0",
       "redux-thunk": "npm:redux-thunk@^2.1.0",
       "reselect": "npm:reselect@^2.5.4",
       "scss": "github:mobilexag/plugin-sass@^0.4.6",

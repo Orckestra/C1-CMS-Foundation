@@ -304,6 +304,7 @@ SystemJS.config({
     "react-dom": "npm:react-dom@15.3.2",
     "react-select": "npm:react-select@1.0.0-rc.2",
     "redux-immutablejs": "npm:redux-immutablejs@0.0.8",
+    "redux-observer": "npm:redux-observer@1.0.0",
     "reselect": "npm:reselect@2.5.4",
     "tls": "github:jspm/nodelibs-tls@0.2.0-alpha",
     "unexpected": "npm:unexpected@10.18.1",
