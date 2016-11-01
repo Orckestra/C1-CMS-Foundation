@@ -781,6 +781,9 @@
       <DependentUpon>EditXsltFunctionWorkflow.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="..\Composite\Properties\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\AddNewCompositionTypeWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
