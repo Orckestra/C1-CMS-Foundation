@@ -36,7 +36,9 @@ export const LogPanel = props => {
 			flexGrow={3}
 			width={20}
 			header={<Cell>{props.tabDef.get('headers').get('timestamp')}</Cell>}
-			cell={({ rowIndex, ...cellProps }) => <Cell className='tableCell' {...cellProps}>{props.logPage[rowIndex]['timeStamp']}</Cell>}
+			cell={({ rowIndex, ...cellProps }) => <Cell className='tableCell' {...cellProps}>
+				{new Date(props.logPage[rowIndex]['timeStamp']).toLocaleString('en-gb')}
+			</Cell>}
 			/>
 		<Column
 			flexGrow={20}

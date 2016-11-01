@@ -7,7 +7,8 @@ import pages from 'console/state/reducers/pages.js';
 import options from 'console/state/reducers/options.js';
 import logs from 'console/state/reducers/logs.js';
 import getDefinitionReducer from 'console/state/reducers/definitions.js';
-import ReduxThunk from 'redux-thunk';
+import thunk from 'redux-thunk';
+import socket from 'console/access/socket.js';
 import observers from 'console/state/observers.js';
 import initState from 'console/state/initState.js';
 import Immutable from 'immutable';
@@ -33,11 +34,12 @@ export default function configureStore(initialState) {
 		store.replaceReducer(consoleReducers);
 	} else {
 		store = createStore(consoleReducers, Immutable.fromJS(initialState), compose(
-			applyMiddleware(ReduxThunk),
+			applyMiddleware(thunk.withExtraArgument(socket)),
 			applyMiddleware(observers),
 			window.devToolsExtension ? window.devToolsExtension() : f => f
 		));
 		hotStore.prevStore = store;
+		socket.subscribe(store);
 		initState(store);
 	}
 	return store;
