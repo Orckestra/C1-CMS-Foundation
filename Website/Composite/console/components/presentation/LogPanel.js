@@ -33,9 +33,9 @@ export const LogPanel = props => {
 			cell={({ rowIndex, ...cellProps }) => <Cell className={props.logPage[rowIndex]['severity']} {...cellProps}></Cell>}
 			/>
 		<Column
-			flexGrow={2}
+			flexGrow={3}
 			width={20}
-			header={<Cell>{props.tabDef.get('headers').get('timeStamp')}</Cell>}
+			header={<Cell>{props.tabDef.get('headers').get('timestamp')}</Cell>}
 			cell={({ rowIndex, ...cellProps }) => <Cell className='tableCell' {...cellProps}>{props.logPage[rowIndex]['timeStamp']}</Cell>}
 			/>
 		<Column
@@ -50,13 +50,13 @@ export const LogPanel = props => {
 			}
 			/>
 		<Column
-			flexGrow={3}
+			flexGrow={5}
 			width={20}
 			header={<Cell>{props.tabDef.get('headers').get('title')}</Cell>}
 			cell={({ rowIndex, ...cellProps }) => <Cell className='tableCell' {...cellProps}>{props.logPage[rowIndex]['title']}</Cell>}
 			/>
 		<Column
-			flexGrow={1}
+			flexGrow={2}
 			width={10}
 			header={<Cell>{props.tabDef.get('headers').get('severity')}</Cell>}
 			cell={({ rowIndex, ...cellProps }) => <Cell className='tableCell' {...cellProps}>{props.logPage[rowIndex]['severity']}</Cell>}
