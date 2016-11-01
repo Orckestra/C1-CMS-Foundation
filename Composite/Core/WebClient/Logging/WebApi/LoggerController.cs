@@ -121,7 +121,9 @@ namespace Composite.Core.WebClient.Logging.WebApi
             {
                 title = logEntry.Title,
                 message = logEntry.Message,
-                timeStamp = logEntry.TimeStamp.ToLongDateString(),
+                timeStamp =
+                    TimeZoneInfo.ConvertTimeToUtc(DateTime.SpecifyKind(logEntry.TimeStamp,DateTimeKind.Local), TimeZoneInfo.Local)
+                        .ToString("yyyy-MM-ddTHH:mm:ss.fffffffZ"),
                 severity = logEntry.Severity
             }).ToList();
             return res;
