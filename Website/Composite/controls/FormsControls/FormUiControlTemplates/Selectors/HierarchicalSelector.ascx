@@ -94,6 +94,8 @@
 
 <ui:hierarchicalselector name="<%= this.ClientID %>"
 	 required="<%= Required ? "true" : "false" %>"
-	 autoselectchildren="<%= AutoSelectChildren ? "true" : "false" %>">
+	 autoselectchildren="<%= AutoSelectChildren ? "true" : "false" %>"
+     hascounter="true"
+    >
 	<%= _treeXhml %>
 </ui:hierarchicalselector>
