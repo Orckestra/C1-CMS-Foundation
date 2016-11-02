@@ -4,9 +4,8 @@ using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-[assembly: AssemblyTitle("Composite.Workflows")]
-[assembly: AssemblyDescription("")]
+// associated with an assembly. See also Composite SharedAssemblyInfo.cs
+[assembly: AssemblyDescription("Orckestra CMS Workflow Foundation classes")]
 [assembly: AssemblyConfiguration("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
