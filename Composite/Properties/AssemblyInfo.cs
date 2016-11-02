@@ -2,17 +2,9 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-
-#if !InternalBuild
-[assembly: AssemblyTitle("Orckestra CMS 5.4 (beta)")] 
-#else
-[assembly: AssemblyTitle("Orckestra CMS 5.4 (Internal Build)")]
-#endif
-
+// associated with an assembly. See also Composite SharedAssemblyInfo.cs
 [assembly: AssemblyDescription("Orckestra CMS Core classes")]
 [assembly: AssemblyConfiguration("")]
 
@@ -23,7 +15,6 @@ using System.Runtime.InteropServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("c190c8d0-449f-42db-972d-0fc30f8c301d")]
-
 
 [assembly: InternalsVisibleTo("UpgradePackage")]
 [assembly: InternalsVisibleTo("Composite.Workflows")]
