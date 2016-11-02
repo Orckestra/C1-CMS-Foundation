@@ -2,8 +2,8 @@
 <package >
   <metadata>
     <id>OrckestraCmsFoundation.Assemblies</id>
-	<title>Orckestra CMS Foundation Assemblies</title>
-    <version>5.3.0.0</version>
+    <title>Orckestra CMS Foundation Assemblies</title>
+    <version>$version$</version>
     <authors>Orckestra A/S</authors>
     <owners>Orckestra A/S</owners>
     <licenseUrl>http://cms.orckestra.com/MPL11</licenseUrl>
@@ -15,20 +15,20 @@
     <copyright>Copyright 2016</copyright>
     <tags>OrckestraCms</tags>
     <dependencies>
-	  <dependency id="Microsoft.AspNet.Razor" version="3.2.3" />
-	  <dependency id="Microsoft.AspNet.WebPages" version="3.2.3" />
-	  <dependency id="Microsoft.Extensions.DependencyInjection" version="1.0.0" />
-	  <dependency id="Microsoft.Extensions.DependencyInjection.Abstractions" version="1.0.0" />
-	  <dependency id="Microsoft.Web.Infrastructure" version="1.0.0.0"/>
+      <dependency id="Microsoft.AspNet.Razor" version="3.2.3" />
+      <dependency id="Microsoft.AspNet.WebPages" version="3.2.3" />
+      <dependency id="Microsoft.Extensions.DependencyInjection" version="1.0.0" />
+      <dependency id="Microsoft.Extensions.DependencyInjection.Abstractions" version="1.0.0" />
+      <dependency id="Microsoft.Web.Infrastructure" version="1.0.0.0"/>
     </dependencies>
   </metadata>
   <files>
-	<file src="Bin\Composite.dll" target="lib\Composite.dll" />
-	<file src="Bin\Composite.Workflows.dll" target="lib\Composite.Workflows.dll" />
-	<file src="Bin\Microsoft.Practices.EnterpriseLibrary.Common.dll" target="lib\Microsoft.Practices.EnterpriseLibrary.Common.dll" />
-	<file src="Bin\Microsoft.Practices.EnterpriseLibrary.Logging.dll" target="lib\Microsoft.Practices.EnterpriseLibrary.Logging.dll" />
-	<file src="Bin\Microsoft.Practices.EnterpriseLibrary.Validation.dll" target="lib\Microsoft.Practices.EnterpriseLibrary.Validation.dll" />
-	<file src="Bin\Microsoft.Practices.ObjectBuilder.dll" target="lib\Microsoft.Practices.ObjectBuilder.dll" />
-	<file src="Bin\TidyNet.dll" target="lib\TidyNet.dll" />
+    <file src="Bin\Composite.dll" target="lib\Composite.dll" />
+    <file src="Bin\Composite.Workflows.dll" target="lib\Composite.Workflows.dll" />
+    <file src="Bin\Microsoft.Practices.EnterpriseLibrary.Common.dll" target="lib\Microsoft.Practices.EnterpriseLibrary.Common.dll" />
+    <file src="Bin\Microsoft.Practices.EnterpriseLibrary.Logging.dll" target="lib\Microsoft.Practices.EnterpriseLibrary.Logging.dll" />
+    <file src="Bin\Microsoft.Practices.EnterpriseLibrary.Validation.dll" target="lib\Microsoft.Practices.EnterpriseLibrary.Validation.dll" />
+    <file src="Bin\Microsoft.Practices.ObjectBuilder.dll" target="lib\Microsoft.Practices.ObjectBuilder.dll" />
+    <file src="Bin\TidyNet.dll" target="lib\TidyNet.dll" />
   </files>
 </package>

@@ -467,7 +467,10 @@ PopupBinding.prototype.show = function () {
 		this._makeVisible ( true );
 
 		if ( this._bodyBinding instanceof MenuBodyBinding ) {
-			this._bodyBinding.refreshMenuGroups ();
+			this._bodyBinding.refreshMenuGroups();
+			this._bodyBinding.grabKeyboard();
+			this._bodyBinding.bindingElement.tabIndex = "-1";
+			this._bodyBinding.bindingElement.focus();
 		}
 
 		/**

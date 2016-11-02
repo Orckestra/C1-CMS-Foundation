@@ -12,9 +12,9 @@ First we need to verify that you have the needed version of node.js, which is us
 
 The next step is installing nightwatch itself. This is done by issuing the command `npm install -g nightwatch`. This will install nightwatch as a globally accessible command. There may be some warnings issued by npm as it runs, these can usually be ignored without issue.
 
-Finally, navigate to the root directory of your CMS working copy. This will usually be named `CMS`, but you may have named it otherwise when cloning it. In this directory, you can then start the tests by running `nightwatch` from your command line. This will run the whole test suite, starting with installing the Venus starter site.
-
 Nightwatch expects to find the CMS running on localhost, port 8080. You can either change your Visual Studio or WebMatrix/IIS setup to use this port, or edit the `nightwatch.json` configuration file found in the project root. You can edit the line that says `"launch_url" : "http://localhost:8080"` to reflect the URL used.
+
+Finally, navigate to the root directory of your CMS working copy. This will usually be named `CMS`, but you may have named it otherwise when cloning it. In this directory, you can then start the tests by running `nightwatch` from your command line. This will run the whole test suite, starting with installing the Venus starter site.
 
 Due to certain technical limitations, nightwatch must always be run from the working directory, and cannot be run from any subdirectory.
 

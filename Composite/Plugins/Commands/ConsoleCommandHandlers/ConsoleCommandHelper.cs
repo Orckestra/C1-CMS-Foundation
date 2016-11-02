@@ -40,7 +40,7 @@ namespace Composite.Plugins.Commands.ConsoleCommandHandlers
             var selectItem = new SelectElementQueueItem
             {
                 EntityToken = serializedEntityToken,
-                //PerspectiveElementKey = perspectiveElementKey
+                PerspectiveElementKey = perspectiveElementKey
             };
 
             ConsoleMessageQueueFacade.Enqueue(selectItem, consoleId);

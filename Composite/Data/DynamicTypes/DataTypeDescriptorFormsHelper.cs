@@ -58,7 +58,12 @@ namespace Composite.Data.DynamicTypes
         }
 
 
-        /// <exclude />
+        /// <summary>
+        /// Creates an instance of <see cref="DataTypeDescriptorFormsHelper"/>
+        /// </summary>
+        /// <param name="dataTypeDescriptor"></param>
+        /// <param name="showPublicationStatusSelector"></param>
+        /// <param name="entityToken">EntityToken is used for resolving to which publication states, current user has access to.</param>
         public DataTypeDescriptorFormsHelper(DataTypeDescriptor dataTypeDescriptor, bool showPublicationStatusSelector, EntityToken entityToken)
             : this(dataTypeDescriptor, null, showPublicationStatusSelector, entityToken)
         {
@@ -198,9 +203,9 @@ namespace Composite.Data.DynamicTypes
         /// <exclude />
         public void UpdateWithNewBindings(Dictionary<string, object> bindings)
         {
-            var newBindigns = GetNewBindings();
+            var newBindings = GetNewBindings();
 
-            foreach (var kvp in newBindigns)
+            foreach (var kvp in newBindings)
             {
                 bindings[kvp.Key] = kvp.Value;
             }
@@ -288,9 +293,9 @@ namespace Composite.Data.DynamicTypes
         /// <exclude />
         public void UpdateWithBindings(IData dataObject, Dictionary<string, object> bindings)
         {
-            var newBindigns = GetBindings(dataObject);
+            var newBindings = GetBindings(dataObject);
 
-            foreach (var kvp in newBindigns)
+            foreach (var kvp in newBindings)
             {
                 bindings[kvp.Key] = kvp.Value;
             }
@@ -359,15 +364,15 @@ namespace Composite.Data.DynamicTypes
                 bindings[PublicationStatusBindingName] = ((IPublishControlled)dataObject).PublicationStatus;
                 bindings.Add(PublicationStatusOptionsBindingName, GetAvailablePublishingFlowTransitions(EntityToken));
 
-                var intefaceType = dataObject.DataSourceId.InterfaceType;
+                var interfaceType = dataObject.DataSourceId.InterfaceType;
                 var stringKey = dataObject.GetUniqueKey().ToString();
                 var locale = dataObject.DataSourceId.LocaleScope.Name;
 
-                var existingPublishSchedule = PublishScheduleHelper.GetPublishSchedule(intefaceType, stringKey, locale);
-                bindings.Add("PublishDate", existingPublishSchedule != null ? existingPublishSchedule.PublishDate : (DateTime?) null);
+                var existingPublishSchedule = PublishScheduleHelper.GetPublishSchedule(interfaceType, stringKey, locale);
+                bindings.Add("PublishDate", existingPublishSchedule?.PublishDate);
 
-                var existingUnpublishSchedule = PublishScheduleHelper.GetUnpublishSchedule(intefaceType, stringKey, locale);
-                bindings.Add("UnpublishDate", existingUnpublishSchedule != null ? existingUnpublishSchedule.UnpublishDate : (DateTime?) null);
+                var existingUnpublishSchedule = PublishScheduleHelper.GetUnpublishSchedule(interfaceType, stringKey, locale);
+                bindings.Add("UnpublishDate", existingUnpublishSchedule?.UnpublishDate);
             }
 
             return bindings;
@@ -530,27 +535,15 @@ namespace Composite.Data.DynamicTypes
 
 
         /// <exclude />
-        public static XNamespace MainNamespace
-        {
-            get { return Namespaces.BindingFormsStdUiControls10; }
-        }
-
+        public static XNamespace MainNamespace => Namespaces.BindingFormsStdUiControls10;
 
 
         /// <exclude />
-        public static XNamespace CmsNamespace
-        {
-            get { return Namespaces.BindingForms10; }
-        }
-
+        public static XNamespace CmsNamespace => Namespaces.BindingForms10;
 
 
         /// <exclude />
-        public static XNamespace FunctionNamespace
-        {
-            get { return Namespaces.BindingFormsStdFuncLib10; }
-        }
-
+        public static XNamespace FunctionNamespace => Namespaces.BindingFormsStdFuncLib10;
 
 
         /// <exclude />
@@ -878,7 +871,7 @@ namespace Composite.Data.DynamicTypes
 
             XElement bindingsXml;
 
-            if (customFormDefinition != null && customFormDefinition.Root != null)
+            if (customFormDefinition?.Root != null)
             {
                 bindingsXml = customFormDefinition.Root;
             }

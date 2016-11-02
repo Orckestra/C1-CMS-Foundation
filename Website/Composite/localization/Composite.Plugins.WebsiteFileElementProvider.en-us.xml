@@ -23,9 +23,25 @@
   <string key="UploadNewWebsiteFile.ConfirmOverwriteDescription" value="A file with the same name already exists, overwrite?" />
 	<string key="UploadFile.Error.WrongTypeTitle" value="Wrong File Type" />
 	<string key="UploadFile.Error.WrongTypeMessage" value="Wrong file type" />
-	
 
-	<string key="AddWebsiteFolderTitle" value="New Folder" />
+  <string key="UploadAndExtractZipFileTitle" value="Upload and Extract Zip" />
+  <string key="UploadAndExtractZipFileToolTip" value="Upload multiple files and folders by providing a Zip file" />
+  <string key="UploadAndExtractZipFile.DialogLabel" value="Upload and Extract Zip File" />
+  <string key="UploadAndExtractZipFile.FileLabel" value="Zip file" />
+  <string key="UploadAndExtractZipFile.FileHelp" value="The file/folder structure of the zip file you select will be extracted and copied to the website" />
+  <string key="UploadAndExtractZipFile.OverwriteExistingLabel" value="Overwrite existing" />
+  <string key="UploadAndExtractZipFile.OverwriteExistingHelp" value="If you select this option, existing files will be overwritten" />
+  <string key="UploadAndExtractZipFile.OverwriteExistingItemLabel" value="Overwrite existing files" />
+
+  <string key="UploadAndExtractZipFile.FileExistsError" value="File '{0}' exists both in the zip and on the website. Choose to overwrite files to complete this action" />
+  <string key="UploadAndExtractZipFile.FileNotUploaded" value="No file was uploaded" />
+  <string key="UploadAndExtractZipFile.NotZip" value="The uploaded file is not a valid Zip archive" />
+  <string key="UploadAndExtractZipFile.ErrorDialogLabel" value="Zip upload could not be completed" />
+  <string key="UploadAndExtractZipFile.UnexpectedError" value="Upload failed unexpectedly. Please see log for details" />
+  <string key="UploadAndExtractZipFile.ExistingFileReadOnly" value="Existing file '{0}' is marked as read only. No files were uploaded" />
+
+
+  <string key="AddWebsiteFolderTitle" value="New Folder" />
 	<string key="AddWebsiteFolderToolTip" value="Add new folder" />
 	<string key="AddWebsiteFileTitle" value="New File" />
 	<string key="AddWebsiteFileToolTip" value="Create new file" />
