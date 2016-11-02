@@ -15,6 +15,7 @@ socket.sendJSON = function (obj) {
 
 const prefix = 'SOCKET.';
 export const SOCKET_OPEN = prefix + 'OPEN';
+export const SOCKET_CLOSE = prefix + 'CLOSE';
 export const SOCKET_ERROR = prefix + 'FAIL';
 export function socketError(err) {
 	return {
@@ -27,11 +28,11 @@ export function socketError(err) {
 // Add error handling, retry handling, etc.
 socket.subscribe = store => {
 	// First verify that socket is live
-	if (socket.readyState === 0) {
+	if (socket.readyState === WebSocket.CONNECTING) {
 		socket.addEventListener('open', () => {
 			store.dispatch({ type: SOCKET_OPEN });
 		});
-	} else if (socket.readyState === 1) {
+	} else if (socket.readyState === WebSocket.OPEN) {
 		store.dispatch({ type: SOCKET_OPEN });
 	} else {
 		// This is a problem.
@@ -42,6 +43,7 @@ socket.subscribe = store => {
 		return; // Should really try to reestablish socket.
 	}
 	socket.addEventListener('error', err => store.dispatch(socketError(err)));
+	socket.addEventListener('close', event => store.dispatch({ type: SOCKET_CLOSE, code: event.code, message: event.reason }));
 };
 
 export default socket;

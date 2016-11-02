@@ -9,6 +9,7 @@ import logs from 'console/state/reducers/logs.js';
 import getDefinitionReducer from 'console/state/reducers/definitions.js';
 import thunk from 'redux-thunk';
 import socket from 'console/access/socket.js';
+import socketReducer from 'console/state/reducers/socket.js';
 import observers from 'console/state/observers.js';
 import initState from 'console/state/initState.js';
 import Immutable from 'immutable';
@@ -18,7 +19,8 @@ let reducers = {
 	dataFields,
 	pages,
 	options,
-	logs
+	logs,
+	socket: socketReducer
 };
 ['page', 'tab', 'item', 'toolbar', 'fieldset', 'dataField'].forEach(typeName => {
 	reducers[typeName + 'Defs'] = getDefinitionReducer(typeName);
