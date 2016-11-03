@@ -4,8 +4,9 @@ function InstallWebsite() {
   events.EventEmitter.call(this);
 }
 
-InstallWebsite.prototype.command = function (expectedLanguage, newLanguage, newLanguageCode) {
+InstallWebsite.prototype.command = function (starterSite, expectedLanguage, newLanguage, newLanguageCode) {
 	var browser = this.client.api;
+	starterSite = "Venus"; // other starter sites disallowed until reset.js is updated for other starter sites
 	
     browser
     //	The “Welcome” page of the setup wizard appears.
@@ -33,19 +34,32 @@ InstallWebsite.prototype.command = function (expectedLanguage, newLanguage, newL
 		//    The “Starter Site” radio button is present and selected
       .waitForElementVisible('#setup', browser.globals.timeouts.little);
     browser.expect.element('#setup h1').text.to.contain('Setup');
-		//    The “Venus” radio button is present and selected.
+		//    The “Venus” (or other site's) radio button is present and selected.
     browser.expect
       .element('#setupfields > div > radiodatagroup > radio:nth-of-type(1) > radiobutton')
       .to.have.attribute('ischecked', 'true');
     browser.expect
       .element('#setupfields > div > radiodatagroup > radio:nth-of-type(1) > datalabeltext')
       .text.to.equal('Starter sites');
+	  
+	// {{
+  
+	// select a starter site
+		  
+	var siteIndex = this.api.globals.starterSites[starterSite];
+	
+	browser.clickLabel(starterSite);
+	   
     browser.expect
-      .element('#setupfields > div > radiodatagroup > radio:nth-of-type(1) + p + div > radiodatagroup > radio:nth-of-type(1) > radiobutton')
+      .element('#setupfields > div > radiodatagroup > radio:nth-of-type(1) + p + div > radiodatagroup > radio:nth-of-type(' + siteIndex + ') > radiobutton')
       .to.have.attribute('ischecked', 'true');
+	  
     browser.expect
-      .element('#setupfields > div > radiodatagroup > radio:nth-of-type(1) + p + div > radiodatagroup > radio:nth-of-type(1) > datalabeltext')
-      .text.to.equal('Venus');
+      .element('#setupfields > div > radiodatagroup > radio:nth-of-type(1) + p + div > radiodatagroup > radio:nth-of-type(' + siteIndex + ') > datalabeltext')
+      .text.to.equal(starterSite);
+	  
+	  // }}
+	  
 		//    The “Next” button is available and enabled
     browser.expect.element('#navsetup clickbutton[label="Next"]').to.not.have.attribute('isdisabled');
 		// 5  Click “Next”.  The “Language” page of the setup wizard appears.

@@ -267,6 +267,7 @@
 		</KeyWord>
 		<KeyWord name="installWebsite" func="yes">
 			<Overload retVal="browser" >
+				<Param name="starterSite" />
 				<Param name="expectedLanguage" />
 				<Param name="newLanguage" />
 				<Param name="newLanguageCode" />				
