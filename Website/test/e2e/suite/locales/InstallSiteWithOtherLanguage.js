@@ -19,7 +19,7 @@ module.exports = {
 	
 	'install Venus starter site with French (CA)': function (browser) {
 		browser
-		.installWebsite('Venus', 'en-US', 'French (CA)', 'fr-CA')
+		.installWebsite('Starter sites', 'Venus', 'en-US', 'French (CA)', 'fr-CA')
 		
 		// assert the GUI and the website language is French 
 		browser
@@ -30,7 +30,7 @@ module.exports = {
 	},
 	
 	'reinstall Venus starter site with English (US)': function (browser) {
-		browser.installWebsite('Venus', 'en-US')
+		browser.installWebsite('Starter sites', 'Venus', 'en-US')
 		
 		// assert the GUI and the website language is English 
 		browser

@@ -1,5 +1,6 @@
 var resetSite = require('../../reset.js');
 
+var setupOption = 'Bare bones';
 var starterSite = 'Venus';
 var expectedLanguage = 'en-US';
 
@@ -22,6 +23,6 @@ module.exports = {
       .waitForElementVisible('.welcomepage', browser.globals.timeouts.basic);
 	},
 	'install Venus starter site': function (browser) {
-		browser.installWebsite(starterSite, expectedLanguage)
+		browser.installWebsite(setupOption, starterSite, expectedLanguage)
 	}
 }

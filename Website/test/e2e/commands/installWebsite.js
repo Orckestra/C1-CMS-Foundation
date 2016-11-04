@@ -4,9 +4,13 @@ function InstallWebsite() {
   events.EventEmitter.call(this);
 }
 
-InstallWebsite.prototype.command = function (starterSite, expectedLanguage, newLanguage, newLanguageCode) {
+InstallWebsite.prototype.command = function (setupOption, starterSite, expectedLanguage, newLanguage, newLanguageCode) {
 	var browser = this.client.api;
-	starterSite = "Venus"; // other starter sites disallowed until reset.js is updated for other starter sites
+	
+	// TEMP: other setup and starter site options disallowed 
+	// until reset.js is updated for other setup options and starter sites
+	setupOption = "Starter sites";
+	starterSite = "Venus";			
 	
     browser
     //	The “Welcome” page of the setup wizard appears.
@@ -35,30 +39,40 @@ InstallWebsite.prototype.command = function (starterSite, expectedLanguage, newL
       .waitForElementVisible('#setup', browser.globals.timeouts.little);
     browser.expect.element('#setup h1').text.to.contain('Setup');
 		//    The “Venus” (or other site's) radio button is present and selected.
-    browser.expect
-      .element('#setupfields > div > radiodatagroup > radio:nth-of-type(1) > radiobutton')
-      .to.have.attribute('ischecked', 'true');
-    browser.expect
-      .element('#setupfields > div > radiodatagroup > radio:nth-of-type(1) > datalabeltext')
-      .text.to.equal('Starter sites');
-	  
-	// {{
-  
-	// select a starter site
-		  
-	var siteIndex = this.api.globals.starterSites[starterSite];
+		
+	// {{ select s setup option, for example "Starter site"
 	
-	browser.clickLabel(starterSite);
-	   
+	var setupGroupIndex = this.api.globals.setupOptions[setupOption];
+	
+	browser.clickLabel(setupOption);
+	
     browser.expect
-      .element('#setupfields > div > radiodatagroup > radio:nth-of-type(1) + p + div > radiodatagroup > radio:nth-of-type(' + siteIndex + ') > radiobutton')
+      .element('#setupfields > div > radiodatagroup > radio:nth-of-type(' + setupGroupIndex + ') > radiobutton')
       .to.have.attribute('ischecked', 'true');
-	  
     browser.expect
-      .element('#setupfields > div > radiodatagroup > radio:nth-of-type(1) + p + div > radiodatagroup > radio:nth-of-type(' + siteIndex + ') > datalabeltext')
-      .text.to.equal(starterSite);
+      .element('#setupfields > div > radiodatagroup > radio:nth-of-type(' + setupGroupIndex + ') > datalabeltext')
+      .text.to.equal(setupOption);
 	  
-	  // }}
+	// }}
+	  
+	// {{ select a starter site, for example, "Venus" (only if not "Bare bones" : 3)
+ 		
+	if(setupOption != 'Bare bones')
+	{
+		var siteIndex = this.api.globals.starterSites[starterSite];
+		
+		browser.clickLabel(starterSite);
+		   
+		browser.expect
+		  .element('#setupfields > div > radiodatagroup > radio:nth-of-type(' + setupGroupIndex + ') + p + div > radiodatagroup > radio:nth-of-type(' + siteIndex + ') > radiobutton')
+		  .to.have.attribute('ischecked', 'true');
+		  
+		browser.expect
+		  .element('#setupfields > div > radiodatagroup > radio:nth-of-type(' + setupGroupIndex + ') + p + div > radiodatagroup > radio:nth-of-type(' + siteIndex + ') > datalabeltext')
+		  .text.to.equal(starterSite);
+	}
+	
+	// }}
 	  
 		//    The “Next” button is available and enabled
     browser.expect.element('#navsetup clickbutton[label="Next"]').to.not.have.attribute('isdisabled');

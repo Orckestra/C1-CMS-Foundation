@@ -16,7 +16,6 @@ module.exports = {
 		browser
       .url(browser.launchUrl + '/Composite/top.aspx')
       .waitForElementVisible('.welcomepage', browser.globals.timeouts.basic);
-		/*	  */
 	},
 	
 /*		
@@ -42,7 +41,7 @@ module.exports = {
 */	
 	'install Venus starter site': function (browser) {
 		browser
-		.installWebsite('Venus', 'en-US')
+		.installWebsite('Starter sites', 'Venus', 'en-US')
 		
 		browser
 		.selectPerspective("Content")
