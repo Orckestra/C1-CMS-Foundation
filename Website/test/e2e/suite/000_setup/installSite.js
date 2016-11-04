@@ -1,6 +1,6 @@
 var resetSite = require('../../reset.js');
 
-var setupOption = 'Bare bones';
+var setupOption = 'Starter sites';
 var starterSite = 'Venus';
 var expectedLanguage = 'en-US';
 
