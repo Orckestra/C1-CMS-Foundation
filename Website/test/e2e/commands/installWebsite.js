@@ -5,12 +5,13 @@ function InstallWebsite() {
 }
 
 InstallWebsite.prototype.command = function (setupOption, starterSite, expectedLanguage, newLanguage, newLanguageCode) {
+	
 	var browser = this.client.api;
 	
-	// TEMP: other setup and starter site options disallowed 
-	// until reset.js is updated for other setup options and starter sites
-	setupOption = "Starter sites";
-	starterSite = "Venus";			
+	// Launch an uninitialized website.
+	browser
+      .url(browser.launchUrl + '/Composite/top.aspx')
+      .waitForElementVisible('.welcomepage', browser.globals.timeouts.basic);
 	
     browser
     //	The “Welcome” page of the setup wizard appears.

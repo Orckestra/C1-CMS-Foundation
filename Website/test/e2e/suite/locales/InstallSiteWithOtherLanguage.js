@@ -4,17 +4,7 @@ module.exports = {
 	'@tags': ['install'],
 	beforeEach: function (browser) {
 	// 0 Reset the website
-		resetSite(function (err) {
-			if (err) {
-				browser.end();
-				console.error(err);
-				process.exit(1);
-			}
-		});
-    // 1  Launch an uninitialized website.
-		browser
-      .url(browser.launchUrl + '/Composite/top.aspx')
-      .waitForElementVisible('.welcomepage', browser.globals.timeouts.basic);
+		resetSite();
 	},
 	
 	'install Venus starter site with French (CA)': function (browser) {
@@ -27,6 +17,7 @@ module.exports = {
 		.openTreeNode("Langues")
 		.assertTreeNodeHasChild("Langues", "Français, Canada")
 		
+		.end()
 	},
 	
 	'reinstall Venus starter site with English (US)': function (browser) {
@@ -37,6 +28,8 @@ module.exports = {
 		.selectPerspective("System")
 		.openTreeNode("Languages")
 		.assertTreeNodeHasChild("Languages", "English, US")
+		
+		.end()
 	}
 	
 	
