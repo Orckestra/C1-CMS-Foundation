@@ -4,7 +4,7 @@
   "devDependencies": {
     "JSONPath": "^0.10.0",
     "autoprefixer-core": "^5.2.1",
-    "chromedriver": "2.21.2",
+    "chromedriver": "^2.25.1",
     "csswring": "^3.0.5",
     "grunt": "~0.4.5",
     "grunt-contrib-copy": "0.8.2",
@@ -15,6 +15,7 @@
     "iedriver": "2.53.1",
     "less": "^2.1.2",
     "nightwatch": "0.9.3",
+	"robocopy": "^0.1.15",
     "rimraf": "2.5.4",
     "selenium-server-standalone-jar": "2.53.1",
     "xml2js": "^0.4.10"
