@@ -6,7 +6,7 @@ module.exports = {
 		content
 			.prepare("Content");
 	},
-	'Install Extranet': function (browser) {
+	'Uninstall and Install YouTube': function (browser) {
 		
 		browser
 		.uninstallLocalPackage("Composite.Media.YouTube")
