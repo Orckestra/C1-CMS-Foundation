@@ -33,7 +33,13 @@ describe('ConnectToolbarFrame', () => {
 			pageDefs: {
 				'testpage': {
 					name: 'testpage',
-					toolbars: ['hasItemDefs', 'hasNoItemDefs', 'hasNoToolbarDef']
+					toolbars: ['hasItemDefs', 'hasNoItemDefs', 'hasNoToolbarDef'],
+					tabs: ['tab1']
+				}
+			},
+			tabDefs: {
+				tab1: {
+					name: 'tab1'
 				}
 			},
 			dataFields: {

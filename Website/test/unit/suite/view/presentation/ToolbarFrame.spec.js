@@ -4,6 +4,7 @@ import React from 'react';
 import TestUtils from 'react-addons-test-utils';
 import ToolbarFrame from 'console/components/presentation/ToolbarFrame.js';
 import Toolbar from 'console/components/presentation/Toolbar.js';
+import TabBar from 'console/components/presentation/TabBar.js';
 import ConnectTabPanel from 'console/components/container/ConnectTabPanel.js';
 import Immutable from 'immutable';
 
@@ -14,7 +15,8 @@ describe('ToolbarFrame', () => {
 			fireAction: () => {},
 			update: () => {},
 			setOption: () => {},
-			save: () => {}
+			save: () => {},
+			setTab: () => {}
 		};
 		props = {
 			pageName: 'test',
@@ -28,11 +30,22 @@ describe('ToolbarFrame', () => {
 					]
 				}
 			]),
+			tabDefs: Immutable.fromJS([
+				{
+					name: 'tab1',
+					label: 'First'
+				},
+				{
+					name: 'tab2',
+					label: 'Second'
+				}
+			]),
 			dirty: false,
 			actions: {
 				save: sinon.spy(() => pageActions.save).named('save'),
 				fireAction: sinon.spy(() => pageActions.fireAction).named('fireAction'),
-				setOption: sinon.spy(() => pageActions.setOption).named('setOption')
+				setOption: sinon.spy(() => pageActions.setOption).named('setOption'),
+				setTab: sinon.spy(() => pageActions.setTab).named('setTab')
 			},
 		};
 		renderer = TestUtils.createRenderer();
@@ -46,12 +59,13 @@ describe('ToolbarFrame', () => {
 			<div className='page'>
 				<Toolbar
 					name='test/toolbar'
-					items={[{}, {}, {}]}/>
+					items={{}}/>
+				<TabBar tabs={[{}, {}]}/>
 				<ConnectTabPanel/>
 			</div>
 		)
 		.and(
-			'queried for', <Toolbar/>,
+			'queried for', <Toolbar items={{}}/>,
 			'to have props exhaustively satisfying', {
 				name: 'test/toolbar',
 				items: [
@@ -67,19 +81,38 @@ describe('ToolbarFrame', () => {
 		renderer.render(<ToolbarFrame name='test' {...props}/>);
 		Promise.all([
 			expect(renderer,
-				'queried for', <Toolbar/>,
-			'to have props satisfying', {
-				name: 'test/toolbar',
-				items: [
-					{ action: expect.it('to be', pageActions.fireAction) },
-					{ action: expect.it('to be', pageActions.fireAction) },
-					{ action: expect.it('to be', pageActions.save) }
-				]
-			}),
+				'queried for', <Toolbar items={{}}/>,
+				'to have props satisfying', {
+					name: 'test/toolbar',
+					items: [
+						{ action: expect.it('to be', pageActions.fireAction) },
+						{ action: expect.it('to be', pageActions.fireAction) },
+						{ action: expect.it('to be', pageActions.save) }
+					]
+				}),
 			expect(props.actions.save, 'to have a call satisfying', { args: ['test'] }),
 			expect(props.actions.fireAction, 'to have calls exhaustively satisfying', [
 				{ args: ['oneaction', 'test'] },
 				{ args: ['twoaction', 'test'] },
+			])
+		]);
+	});
+
+
+	it('passes named actions to the tabbar', () => {
+		renderer.render(<ToolbarFrame name='test' {...props}/>);
+		Promise.all([
+			expect(renderer,
+				'queried for', <TabBar tabs={[{}, {}]}/>,
+				'to have props satisfying', {
+					tabs: [
+						{ onClick: expect.it('to be', pageActions.setTab) },
+						{ onClick: expect.it('to be', pageActions.setTab) }
+					]
+				}),
+			expect(props.actions.setTab, 'to have calls exhaustively satisfying', [
+				{ args: ['tab1'] },
+				{ args: ['tab2'] },
 			])
 		]);
 	});
@@ -92,7 +125,7 @@ describe('ToolbarFrame', () => {
 		renderer.render(<ToolbarFrame name='test' {...props}/>);
 		Promise.all([
 			expect(renderer,
-				'queried for', <Toolbar/>,
+				'queried for', <Toolbar items={{}}/>,
 			'to have props satisfying', {
 				name: 'test/toolbar',
 				items: [

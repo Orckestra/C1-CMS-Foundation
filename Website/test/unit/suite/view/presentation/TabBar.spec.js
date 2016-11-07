@@ -8,13 +8,20 @@ describe('Tab', () => {
 	beforeEach(() => {
 		renderer = TestUtils.createRenderer();
 		props = {
-			name: 'foo'
+			label: 'foo',
+			index: 3
 		};
 	});
 
-	it('tenders a tab', () => {
+	it('renders a tab', () => {
 		renderer.render(<Tab {...props}/>);
-		return expect(renderer, 'to have rendered', <div className='tab' name='foo'/>);
+		return expect(renderer, 'to have rendered', <div className='tab' style={{ left: '259px' }}>foo</div>);
+	});
+
+	it('renders an active tab', () => {
+		props.active = true;
+		renderer.render(<Tab {...props}/>);
+		return expect(renderer, 'to have rendered', <div className='tab active' style={{ left: '259px' }}>foo</div>);
 	});
 });
 
@@ -24,9 +31,9 @@ describe('TabBar', () => {
 		renderer = TestUtils.createRenderer();
 		props = {
 			tabs: [
-				{ name: 'foo' },
-				{ name: 'bar' },
-				{ name: 'wat' }
+				{ label: 'Foo', name: 'foo' },
+				{ label: 'Bar', name: 'bar' },
+				{ label: 'Wat', name: 'wat' }
 			]
 		};
 	});
@@ -34,9 +41,9 @@ describe('TabBar', () => {
 	it('renders a tab bar', () => {
 		renderer.render(<TabBar {...props}/>);
 		return expect(renderer, 'to have rendered', <div className='tabbar'>
-			<Tab name='foo'/>
-			<Tab name='bar'/>
-			<Tab name='wat'/>
+			<Tab key='foo' index={0} label='Foo'/>
+			<Tab key='bar' index={1} label='Bar'/>
+			<Tab key='wat' index={2} label='Wat'/>
 		</div>);
 	});
 });

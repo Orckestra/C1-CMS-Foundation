@@ -163,18 +163,14 @@ describe('Layout', () => {
 		});
 
 		describe('select location', () => {
-			let action;
-			beforeEach(() => {
-				action = {
+			it('sets all location pointers', () => {
+				let action = {
 					type: actions.SELECT_LOCATION,
 					perspective: 'content',
 					page: 'frontpage',
 					tab: 'preview',
 					preview: 'frontpagePreview'
 				};
-			});
-
-			it('sets the current location', () => {
 				let oldState = initialState;
 				let newState = layout(oldState, action);
 				return expect(newState, 'to satisfy', {
@@ -197,7 +193,80 @@ describe('Layout', () => {
 				});
 			});
 
+			it('sets single location pointers', () => {
+				let action = {
+					type: actions.SELECT_LOCATION,
+					perspective: 'content'
+				};
+				let expectations = [];
+				let oldState = initialState;
+				let newState = layout(oldState, action);
+				expectations.push(expect(newState, 'to satisfy', {
+					currentPerspective: 'content'
+				}));
+				action = {
+					type: actions.SELECT_LOCATION,
+					page: 'frontpage'
+				};
+				oldState = newState;
+				newState = layout(oldState, action);
+				expectations.push(expect(newState, 'to satisfy', {
+					perspectives: {
+						content: {
+							currentPage: 'frontpage'
+						}
+					}
+				}));
+				action = {
+					type: actions.SELECT_LOCATION,
+					tab: 'preview'
+				};
+				oldState = newState;
+				newState = layout(oldState, action);
+				expectations.push(expect(newState, 'to satisfy', {
+					perspectives: {
+						content: {
+							pages: {
+								frontpage: {
+									currentTab: 'preview'
+								}
+							}
+						}
+					}
+				}));
+				action = {
+					type: actions.SELECT_LOCATION,
+					preview: 'frontpagePreview'
+				};
+				oldState = newState;
+				newState = layout(oldState, action);
+				expectations.push(expect(newState, 'to satisfy', {
+					perspectives: {
+						content: {
+							pages: {
+								frontpage: {
+									tabs: {
+										preview: {
+											previewLocation: 'frontpagePreview'
+										}
+									}
+								}
+							}
+						}
+					}
+				}));
+				return Promise.all(expectations);
+			});
+
 			it('cuts out if tab missing', () => {
+				let action = {
+					type: actions.SELECT_LOCATION,
+					perspective: 'content',
+					page: 'frontpage',
+					tab: 'preview',
+					preview: 'frontpagePreview'
+				};
+
 				let oldState = initialState.deleteIn(['perspectives', 'content', 'pages', 'frontpage', 'tabs', 'preview']);
 				let newState = layout(oldState, action);
 				return expect(newState, 'to satisfy', {
@@ -219,6 +288,14 @@ describe('Layout', () => {
 			});
 
 			it('cuts out if page missing', () => {
+				let action = {
+					type: actions.SELECT_LOCATION,
+					perspective: 'content',
+					page: 'frontpage',
+					tab: 'preview',
+					preview: 'frontpagePreview'
+				};
+
 				let oldState = initialState.deleteIn(['perspectives', 'content', 'pages', 'frontpage']);
 				let newState = layout(oldState, action);
 				return expect(newState, 'to satisfy', {

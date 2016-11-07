@@ -195,6 +195,7 @@
     "tabs": [
       {
         "name": "tabbed-page.settings",
+        "label": "Settings",
         "type": "form",
         "fieldsets": [
           {
@@ -212,6 +213,7 @@
       },
       {
         "name": "tabbed-page.content",
+        "label": "Content",
         "type": "form",
         "fieldsets": [
           {

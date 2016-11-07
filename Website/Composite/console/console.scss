@@ -12,6 +12,7 @@ $fieldLabelColor: #999;
 $scrollbarThumbColor: #CACACA;
 $scrollbarTrackColor: #FAFAFA;
 $tableBorderColor: #DDD;
+$fadedTextColor: #ADADAD;
 
 *:focus {
 	outline: 0;
@@ -282,6 +283,30 @@ button {
 	}
 }
 
+.tabbar {
+	border-bottom: 1px solid $borderColor;
+	position: relative;
+
+	.tab {
+		width: 50px;
+		padding: 5px 20px 5px 15px;
+		border: 1px solid $borderColor;
+		border-radius: 5px 5px 0 0;
+		position: absolute;
+		top: -27px;
+		background-color: white;
+		color: $fadedTextColor;
+		text-transform: uppercase;
+		cursor: default;
+
+		&.active {
+			border-bottom-color: white;
+			color: $buttonHighlightColor;
+			z-index: 100;
+		}
+	}
+}
+
 div.scrollbox {
 	display: block;
 	padding: 30px 30px 20px 40px;
@@ -298,11 +323,19 @@ div.scrollbox {
 	}
 
 	.toolbar + & {
-		height: calc(100% - 67px);
+		height: calc(100% - 71px);
 		border-top: 1px solid $borderColor;
 
 		.toolbar + & {
-			height: calc(100% - 132px);
+			height: calc(100% - 136px);
+		}
+	}
+
+	.toolbar + .tabbar + & {
+		height: calc(100% - 72px);
+
+		.toolbar + & {
+			height: calc(100% - 137px);
 		}
 	}
 }

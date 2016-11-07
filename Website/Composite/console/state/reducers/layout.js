@@ -80,13 +80,15 @@ export default function layout(state = initialState, action) {
 						}
 						perspective.setIn(['pages', perspective.get('currentPage')], page.withMutations(page => {
 							let tab = page.getIn(['tabs', action.tab || page.get('currentTab')]);
-							if (tab && action.preview) {
+							if (tab) {
 								if (action.tab) {
 									page.set('currentTab', action.tab);
 								}
-								page.setIn(['tabs', page.get('currentTab')], tab.withMutations(tab => {
-									tab.set('previewLocation', action.preview);
-								}));
+								if (action.preview) {
+									page.setIn(['tabs', page.get('currentTab')], tab.withMutations(tab => {
+										tab.set('previewLocation', action.preview);
+									}));
+								}
 							}
 						}));
 					}
