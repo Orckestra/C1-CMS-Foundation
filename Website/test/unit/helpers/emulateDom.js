@@ -7,6 +7,10 @@ if (typeof document === 'undefined') {
 	global.document = jsdom.jsdom('');
 	global.window = global.document.defaultView;
 	global.window.fetch = fetch;
+	global.window.WebSocket = function () { // Dead simple mock
+		this.send = () => {};
+		this.addEventListener = () => {};
+	};
 
 	for (let key in global.window) {
 		if (!global[key]) {

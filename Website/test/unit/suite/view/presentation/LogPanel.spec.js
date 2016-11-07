@@ -35,10 +35,10 @@ describe('LogPanel', () => {
 				rowHeightGetter={expect.it('to be a function')}
 				rowHeight={26}>
 				<Column width={26}/>
-				<Column width={20} flexGrow={2}/>
-				<Column width={50} flexGrow={20}/>
 				<Column width={20} flexGrow={3}/>
-				<Column width={10} flexGrow={1}/>
+				<Column width={50} flexGrow={20}/>
+				<Column width={20} flexGrow={5}/>
+				<Column width={10} flexGrow={2}/>
 			</Table>);
 	});
 });
