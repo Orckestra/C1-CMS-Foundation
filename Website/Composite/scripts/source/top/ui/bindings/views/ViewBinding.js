@@ -43,7 +43,7 @@ ViewBinding._instances = new Map ();
  */
 ViewBinding.hasInstance = function (handle) {
 
-	return ViewBinding._instances.has(handle);
+	return ViewBinding._instances.has(ViewBinding.normalizeHandle(handle));
 }
 
 /**
@@ -53,7 +53,7 @@ ViewBinding.hasInstance = function (handle) {
  */
 ViewBinding.getInstance = function ( handle ) {
 
-	var result = ViewBinding._instances.get ( handle );
+	var result = ViewBinding._instances.get (ViewBinding.normalizeHandle(handle));
 	//if ( !result ) {
 	//	var cry = "ViewBinding.getInstance: No such instance: " + handle;
 	//	SystemLogger.getLogger ( "ViewBinding [static]" ).error ( cry );
@@ -63,6 +63,15 @@ ViewBinding.getInstance = function ( handle ) {
 	//	}
 	//}
 	return result;
+}
+
+
+ViewBinding.normalizeHandle = function (handle) {
+
+	if (handle === "Composite.Management.Browser" && StageBinding.perspectiveNode) {
+		return handle + "." + StageBinding.perspectiveNode.getHandle();
+	}
+	return handle;
 }
 
 /**
@@ -318,14 +327,6 @@ ViewBinding.prototype.onBindingDispose = function () {
 		*/
 	}
 
-	// Unregister snap target.
-	if (this._snapBinding) {
-		this._snapBinding.removeActionListener(Binding.ACTION_DIMENSIONCHANGED, this);
-		this._snapBinding.removeActionListener(Binding.ACTION_VISIBILITYCHANGED, this);
-		this._snapBinding.removeActionListener(Binding.ACTION_DISPOSED, this);
-		this._snapBinding.viewBinding = null;
-	}
-
 	this.dispatchAction ( ViewBinding.ACTION_CLOSED );
 }
 
@@ -573,7 +574,7 @@ ViewBinding.prototype.handleAction = function ( action ) {
 		 */
 		case ViewBinding.ACTION_DETACH :
 			this.setDefinition ( ViewDefinitions [ "Composite.Management.Null" ]);
-			ViewBinding._instances.set ( this._viewDefinition.handle, this );
+			ViewBinding._instances.set(ViewBinding.normalizeHandle(this._viewDefinition.handle), this);
 			// don't consume - TabPanelBinding is listening (waiting to un-dirty the tab).
 			break;
 	}
@@ -625,7 +626,7 @@ ViewBinding.prototype._onLoadingCompleted = function () {
  */
 ViewBinding.prototype._open = function () {
 
-	ViewBinding._instances.set ( this._viewDefinition.handle, this );
+	ViewBinding._instances.set(ViewBinding.normalizeHandle(this._viewDefinition.handle), this);
 	this.dispatchAction ( ViewBinding.ACTION_LOADED );
 	EventBroadcaster.broadcast ( BroadcastMessages.VIEW_OPENED, this._viewDefinition.handle );
 	this.show ();

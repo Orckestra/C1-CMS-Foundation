@@ -92,6 +92,7 @@
     </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Drawing.Design" />
+    <Reference Include="System.IO.Compression" />
     <Reference Include="System.Management" />
     <Reference Include="System.Runtime.Serialization">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
@@ -688,6 +689,12 @@
     <Compile Include="Plugins\Elements\ElementProviders\VisualFunctionProviderElementProvider\EditVisualFunctionWorkflow.designer.cs">
       <DependentUpon>EditVisualFunctionWorkflow.cs</DependentUpon>
     </Compile>
+    <Compile Include="Plugins\Elements\ElementProviders\WebsiteFileElementProvider\UploadAndExtractZipFileWorkflow.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Plugins\Elements\ElementProviders\WebsiteFileElementProvider\UploadAndExtractZipFileWorkflow.Designer.cs">
+      <DependentUpon>UploadAndExtractZipFileWorkflow.cs</DependentUpon>
+    </Compile>
     <Compile Include="Plugins\Elements\ElementProviders\WebsiteFileElementProvider\AddNewWebsiteFileWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -774,6 +781,9 @@
       <DependentUpon>EditXsltFunctionWorkflow.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="..\Composite\Properties\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\AddNewCompositionTypeWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -1207,6 +1217,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Plugins\Elements\ElementProviders\VisualFunctionProviderElementProvider\EditVisualFunctionWorkflow.layout">
       <DependentUpon>EditVisualFunctionWorkflow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\WebsiteFileElementProvider\UploadAndExtractZipFileWorkflow.layout">
+      <DependentUpon>UploadAndExtractZipFileWorkflow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Plugins\Elements\ElementProviders\WebsiteFileElementProvider\AddNewWebsiteFileWorkflow.layout">
       <DependentUpon>AddNewWebsiteFileWorkflow.cs</DependentUpon>

@@ -20,7 +20,7 @@ div#info {
 #infocover {
 	width: 348px;
 	height: 160px;
-	background: #f7f7f7;
+	background: #fff;
 }
 
 input#id {
@@ -29,7 +29,6 @@ input#id {
 	padding: 3px 4px;
 	margin-top: -5px;
 	border: 1px solid #ccc;
-	background-color: transparent;
 }
 
 div#version,
@@ -50,7 +49,7 @@ ui|toolbargroup {
 	padding-bottom: 100px;
 }
 
-.brand-logo {
+.logo-wrapper {
 	cursor: pointer;
 	position: absolute;
 	top: 0;
@@ -58,11 +57,19 @@ ui|toolbargroup {
 	margin-left: -125px;
 }
 
-#logo2 {
-	margin-top: 10px;
+
+.logo-wrapper.logo2 {
+	position: absolute;
 	top: auto;
 	bottom: 0;
+	height: 141px;
 }
+
+.logo-wrapper.logo2 .brand-logo {
+	margin-top: 32px;
+}
+
+
 
 #credits ul,
 #credits p {
@@ -96,8 +103,8 @@ div#fade {
 	bottom: 0;
 	left: 0;
 	z-index: 1;
-	-webkit-box-shadow: inset 0px 0px 72px 8px rgba(255,255,255,1);
-	-moz-box-shadow: inset 0px 0px 72px 8px rgba(255,255,255,1);
-	box-shadow: inset 0px 0px 72px 8px rgba(255,255,255,1);
+	-webkit-box-shadow: inset 0 0 72px 8px rgba(255,255,255,1);
+	-moz-box-shadow: inset 0 0 72px 8px rgba(255,255,255,1);
+	box-shadow: inset 0 0 72px 8px rgba(255,255,255,1);
 }
 

@@ -61,7 +61,6 @@ namespace Composite.C1Console.Actions
             foreach (EntityToken entityToken in RefreshDeleteEntityTokenFinder.FindEntityTokens(_beforeGraph, skipBeforeDeleteEntityToken))
             {
                 messageService.RefreshTreeSection(entityToken);
-                Log.LogVerbose(this.GetType().Name, "Refreshing EntityToken: Type = {0}, Source = {1}, Id = {2}, EntityTokenType = {3}", entityToken.Type, entityToken.Source, entityToken.Id, entityToken.GetType());
             }
         }
     }

@@ -20,7 +20,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
         {
             get
             {
-                WidgetFunctionProvider showGeneratorWidget = StandardWidgetFunctions.GetBoolSelectorWidget("Yes, show Composite C1 support!", "No, please hide this...");
+                WidgetFunctionProvider showGeneratorWidget = StandardWidgetFunctions.GetBoolSelectorWidget("Yes, show Orckestra CMS Foundation support!", "No, please hide this...");
 
                 yield return new StandardFunctionParameterProfile(
                     "ContentType",
@@ -73,7 +73,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
             {
                 metaTags.Add(new XElement(Namespaces.Xhtml + "meta",
                     new XAttribute("name", "Generator"),
-                    new XAttribute("content", "Composite C1 CMS - Free Open Source from http://composite.net/")));
+                    new XAttribute("content", "Orckestra CMS Foundation - Free Open Source from Orckestra and https://github.com/Orckestra/CMS-Foundation")));
             }
 
             return metaTags;

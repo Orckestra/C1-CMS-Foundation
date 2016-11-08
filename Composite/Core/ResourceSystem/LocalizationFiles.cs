@@ -1301,7 +1301,7 @@ public static string UserElementProvider_MissingActiveLanguageMessage=>T("UserEl
 public static string UserElementProvider_UserLoginIsAlreadyUsed=>T("UserElementProvider.UserLoginIsAlreadyUsed");
 ///<summary>&quot;Add Datafolder&quot;</summary> 
 public static string AssociatedDataElementProviderHelper_AddDataFolderTypeLabel=>T("AssociatedDataElementProviderHelper.AddDataFolderTypeLabel");
-///<summary>&quot;Add datafolder&quot;</summary> 
+///<summary>&quot;Add Datafolder&quot;</summary> 
 public static string AssociatedDataElementProviderHelper_AddDataFolderTypeToolTip=>T("AssociatedDataElementProviderHelper.AddDataFolderTypeToolTip");
 ///<summary>&quot;Add Data&quot;</summary> 
 public static string AssociatedDataElementProviderHelper_AddAssociatedDataLabel=>T("AssociatedDataElementProviderHelper.AddAssociatedDataLabel");
@@ -3472,7 +3472,7 @@ public static string AddPackageSource_Step1_UrlLabel=>T("AddPackageSource.Step1.
 public static string AddPackageSource_Step1_UrlHelp=>T("AddPackageSource.Step1.UrlHelp");
 ///<summary>&quot;The entered text was not a valid URL&quot;</summary> 
 public static string AddPackageSource_Step1_UrlNotValid=>T("AddPackageSource.Step1.UrlNotValid");
-///<summary>&quot;The server is not a Composite C1 package server&quot;</summary> 
+///<summary>&quot;The server is not a Orckestra CMS package server&quot;</summary> 
 public static string AddPackageSource_Step1_UrlNonPackageServer=>T("AddPackageSource.Step1.UrlNonPackageServer");
 ///<summary>&quot;Add Package Server Source&quot;</summary> 
 public static string AddPackageSource_Step2_LayoutLabel=>T("AddPackageSource.Step2.LayoutLabel");
@@ -4876,7 +4876,7 @@ public static string Composite_Web_Html_Template_CommonMetaTags_param_Designer_l
 public static string Composite_Web_Html_Template_CommonMetaTags_param_Designer_help=>T("Composite.Web.Html.Template.CommonMetaTags.param.Designer.help");
 ///<summary>&quot;Show generator&quot;</summary> 
 public static string Composite_Web_Html_Template_CommonMetaTags_param_ShowGenerator_label=>T("Composite.Web.Html.Template.CommonMetaTags.param.ShowGenerator.label");
-///<summary>&quot;Show the world you support Composite C1 - free open source!&quot;</summary> 
+///<summary>&quot;Show the world you support Orckestra CMS Foundation - free open source!&quot;</summary> 
 public static string Composite_Web_Html_Template_CommonMetaTags_param_ShowGenerator_help=>T("Composite.Web.Html.Template.CommonMetaTags.param.ShowGenerator.help");
 ///<summary>&quot;Appends a lang=&apos;(language code)&apos; attribute the the parent element, reflecting the language of the current page. You can put this just below the &lt;html /&gt; tag.&quot;</summary> 
 public static string Composite_Web_Html_Template_LangAttribute_description=>T("Composite.Web.Html.Template.LangAttribute.description");
@@ -6102,6 +6102,34 @@ public static string UploadNewWebsiteFile_ConfirmOverwriteDescription=>T("Upload
 public static string UploadFile_Error_WrongTypeTitle=>T("UploadFile.Error.WrongTypeTitle");
 ///<summary>&quot;Wrong file type&quot;</summary> 
 public static string UploadFile_Error_WrongTypeMessage=>T("UploadFile.Error.WrongTypeMessage");
+///<summary>&quot;Upload and Extract Zip&quot;</summary> 
+public static string UploadAndExtractZipFileTitle=>T("UploadAndExtractZipFileTitle");
+///<summary>&quot;Upload multiple files and folders by providing a Zip file&quot;</summary> 
+public static string UploadAndExtractZipFileToolTip=>T("UploadAndExtractZipFileToolTip");
+///<summary>&quot;Upload and Extract Zip File&quot;</summary> 
+public static string UploadAndExtractZipFile_DialogLabel=>T("UploadAndExtractZipFile.DialogLabel");
+///<summary>&quot;Zip file&quot;</summary> 
+public static string UploadAndExtractZipFile_FileLabel=>T("UploadAndExtractZipFile.FileLabel");
+///<summary>&quot;The file/folder structure of the zip file you select will be extracted and copied to the website&quot;</summary> 
+public static string UploadAndExtractZipFile_FileHelp=>T("UploadAndExtractZipFile.FileHelp");
+///<summary>&quot;Overwrite existing&quot;</summary> 
+public static string UploadAndExtractZipFile_OverwriteExistingLabel=>T("UploadAndExtractZipFile.OverwriteExistingLabel");
+///<summary>&quot;If you select this option, existing files will be overwritten&quot;</summary> 
+public static string UploadAndExtractZipFile_OverwriteExistingHelp=>T("UploadAndExtractZipFile.OverwriteExistingHelp");
+///<summary>&quot;Overwrite existing files&quot;</summary> 
+public static string UploadAndExtractZipFile_OverwriteExistingItemLabel=>T("UploadAndExtractZipFile.OverwriteExistingItemLabel");
+///<summary>&quot;File &apos;{0}&apos; exists both in the zip and on the website. Choose to overwrite files to complete this action&quot;</summary> 
+public static string UploadAndExtractZipFile_FileExistsError(object parameter0)=>string.Format(T("UploadAndExtractZipFile.FileExistsError"), parameter0);
+///<summary>&quot;No file was uploaded&quot;</summary> 
+public static string UploadAndExtractZipFile_FileNotUploaded=>T("UploadAndExtractZipFile.FileNotUploaded");
+///<summary>&quot;The uploaded file is not a valid Zip archive&quot;</summary> 
+public static string UploadAndExtractZipFile_NotZip=>T("UploadAndExtractZipFile.NotZip");
+///<summary>&quot;Zip upload could not be completed&quot;</summary> 
+public static string UploadAndExtractZipFile_ErrorDialogLabel=>T("UploadAndExtractZipFile.ErrorDialogLabel");
+///<summary>&quot;Upload failed unexpectedly. Please see log for details&quot;</summary> 
+public static string UploadAndExtractZipFile_UnexpectedError=>T("UploadAndExtractZipFile.UnexpectedError");
+///<summary>&quot;Existing file &apos;{0}&apos; is marked as read only. No files were uploaded&quot;</summary> 
+public static string UploadAndExtractZipFile_ExistingFileReadOnly(object parameter0)=>string.Format(T("UploadAndExtractZipFile.ExistingFileReadOnly"), parameter0);
 ///<summary>&quot;New Folder&quot;</summary> 
 public static string AddWebsiteFolderTitle=>T("AddWebsiteFolderTitle");
 ///<summary>&quot;Add new folder&quot;</summary> 

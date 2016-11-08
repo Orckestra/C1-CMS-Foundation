@@ -72,9 +72,9 @@ module.exports = {
     browser
       .click('#navlanguage clickbutton[label="Next"]')
       .waitForElementVisible('#login', browser.globals.timeouts.little);
-		//    The “Start C1” button is available but disabled.
+		//    The “Start CMS” button is available but disabled.
     browser.expect
-      .element('#navlogin clickbutton[label="Start C1"]')
+      .element('#navlogin clickbutton[label="Start CMS"]')
       .to.have.attribute('isdisabled');
 		//    The “Username” field is filled with the value ‘admin’.
     browser.expect.element('#username').value.to.equal('admin');
@@ -85,9 +85,9 @@ module.exports = {
     browser.setValue('#email', 'john.doe@contoso.com');
 		//    The field is filled with the value.
 	browser.expect.element('#email').value.to.equal('john.doe@contoso.com')
-		//    The “Start C1” button is still disabled.
+		//    The “Start CMS” button is still disabled.
     browser.expect
-      .element('#navlogin clickbutton[label="Start C1"]')
+      .element('#navlogin clickbutton[label="Start CMS"]')
       .to.have.attribute('isdisabled');
 		// 8  Fill the “Password” field. Value: “123456”
 	browser.click('#password');
@@ -98,9 +98,9 @@ module.exports = {
 		//    The value is masked.
     browser.expect.element('#password')
       .to.have.attribute('type', 'password')
-		//    The “Start C1” button is still disabled.
+		//    The “Start CMS” button is still disabled.
     browser.expect
-      .element('#navlogin clickbutton[label="Start C1"]')
+      .element('#navlogin clickbutton[label="Start CMS"]')
       .to.have.attribute('isdisabled');
 		// 9  Fill the “Repeat Password” field. Value: “123456”
 	browser.click('#passcheck');
@@ -111,18 +111,18 @@ module.exports = {
 		//    The value is masked.
     browser.expect.element('#passcheck')
       .to.have.attribute('type', 'password')
-		//    The “Start C1” button gets enabled.
+		//    The “Start CMS” button gets enabled.
     browser.expect
-      .element('#navlogin clickbutton[label="Start C1"]')
+      .element('#navlogin clickbutton[label="Start CMS"]')
       .to.not.have.attribute('isdisabled');
-		// 10 Click “Start C1”.
-    browser.click('#navlogin clickbutton[label="Start C1"]');
+		// 10 Click “Start CMS”.
+    browser.click('#navlogin clickbutton[label="Start CMS"]');
 		//    The screen with “You starting site being downloaded
 		//        and installed…” appears showing the installation progress and
 		//        other screens succeed each other.
     browser
       .waitForElementVisible('#loading', browser.globals.timeouts.little)
-		//    Eventually, the user logs in successfully and the C1 Console appears.
+		//    Eventually, the user logs in successfully and the CMS Console appears.
       .waitForElementNotPresent('#loading', browser.globals.timeouts.save)
       .waitForElementVisible('body', browser.globals.timeouts.basic)
       .page.appWindow()

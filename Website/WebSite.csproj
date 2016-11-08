@@ -183,6 +183,7 @@
     <Content Include="Composite\content\branding\start-page-js.inc" />
     <Content Include="Composite\content\forms\Administrative\SetTimeZone_select.xml" />
     <Content Include="Composite\content\forms\Administrative\DeletePage_ConfirmAllVersionsDeletion.xml" />
+    <Content Include="Composite\content\forms\Administrative\WebsiteFileElementProviderUploadAndExtractZipFile.xml" />
     <Content Include="Composite\content\views\browser\deviceoptions.xml">
       <SubType>Designer</SubType>
     </Content>
@@ -227,6 +228,7 @@
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\Selectors\SvgIconSelector.ascx" />
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\Selectors\FontIconSelector.ascx" />
     <Content Include="Composite\images\branding\brand-icon.png" />
+    <Content Include="Composite\images\icons\svg\website-upload-zip-file.svg" />
     <Content Include="Composite\images\icons\svg\optimizely.svg" />
     <Content Include="Composite\images\icons\svg\website-remove-folder-from-whitelist.svg" />
     <Content Include="Composite\images\icons\svg\website-add-folder-to-whitelist.svg" />
@@ -267,7 +269,6 @@
     <Content Include="Composite\content\views\generic\GenericPageBinding.js" />
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\DateTimeSelectors\DateSelector.ascx.cs">
       <SubType>ASPXCodeBehind</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Compile Include="Composite\controls\FormsControls\FormUiContainerTemplates\FormUIStandardDialogs\WarningDialogExecutionContainer.ascx.cs">
       <SubType>ASPXCodeBehind</SubType>
@@ -1822,10 +1823,8 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Composite\services\Installation\InstallationService.asmx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Composite\services\Setup\SetupService.asmx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
@@ -2497,52 +2496,36 @@
     </Content>
     <Content Include="Renderers\Captcha.ashx" />
     <Content Include="Composite\services\Configuration\ConfigurationService.asmx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Composite\services\ConsoleMessageQueue\ConsoleMessageQueueServices.asmx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Composite\services\FlowController\FlowControllerServices.asmx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Composite\services\Localization\LocalizationService.asmx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Composite\services\Login\Login.asmx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Composite\services\Page\PageService.asmx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Composite\services\Ready\ReadyService.asmx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Composite\services\SearchEngineOptimizationKeyword\SearchEngineOptimizationKeyword.asmx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Composite\services\SourceEditor\MarkupFormatService.asmx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Composite\services\SourceEditor\SourceValidationService.asmx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Composite\services\StringResource\DiffService.asmx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Composite\services\StringResource\StringService.asmx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Composite\services\Tree\SecurityServices.asmx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Composite\services\Tree\TreeServices.asmx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Composite\services\WysiwygEditor\ConfigurationServices.asmx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Composite\services\WysiwygEditor\XhtmlTransformations.asmx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Composite\styles\default\_variables.less" />
     <None Include="Composite\welcome.inc" />

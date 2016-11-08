@@ -632,7 +632,7 @@ namespace Composite.Data
             ILocalizedControlled localizedData = newData as ILocalizedControlled;
             if (localizedData != null)
             {
-                localizedData.SourceCultureName = UserSettings.ActiveLocaleCultureInfo.Name;
+                localizedData.SourceCultureName = page.SourceCultureName;
             }
 
             newData = (IPublishControlled)DataFacade.AddNew((IData)newData); // Cast is needed for the DataFacade to work correctly

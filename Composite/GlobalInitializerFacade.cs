@@ -393,9 +393,12 @@ namespace Composite
 
                 try
                 {
-                    using (ThreadDataManager.EnsureInitialize())
+                    using (GlobalInitializerFacade.CoreIsInitializedScope)
                     {
-                        HookingFacade.EnsureInitialization();
+                        using (ThreadDataManager.EnsureInitialize())
+                        {
+                            HookingFacade.EnsureInitialization();
+                        }
                     }
                 }
                 catch (Exception ex)
