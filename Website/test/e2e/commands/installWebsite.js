@@ -164,9 +164,9 @@ InstallWebsite.prototype.command = function (setupOption, starterSite, expectedL
       .waitForElementVisible('#loading', browser.globals.timeouts.little)
 		//    Eventually, the user logs in successfully and the CMS Console appears.
       .waitForElementNotPresent('#loading', browser.globals.timeouts.save)
-      .waitForElementVisible('body', browser.globals.timeouts.basic)
+      .waitForElementVisible('body', browser.globals.timeouts.loading)
       .page.appWindow()
-        .waitForFrameLoad('@appFrame', browser.globals.timeouts.basic);
+        .waitForFrameLoad('@appFrame', browser.globals.timeouts.loading);
 };
 
 module.exports = InstallWebsite; 
