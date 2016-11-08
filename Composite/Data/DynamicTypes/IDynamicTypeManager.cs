@@ -15,7 +15,7 @@ namespace Composite.Data.DynamicTypes
         DataTypeDescriptor BuildNewDataTypeDescriptor(Type typeToDescript);
 
         /// <exclude />
-        bool TryGetDataTypeDescriptor(Guid immuteableTypeId, out DataTypeDescriptor dataTypeDescriptor);
+        bool TryGetDataTypeDescriptor(Guid immutableTypeId, out DataTypeDescriptor dataTypeDescriptor);
 
         /// <exclude />
         void UpdateDataTypeDescriptor(DataTypeDescriptor dataTypeDescriptor, bool flushTheSystem);
