@@ -273,6 +273,11 @@
 				<Param name="newLanguage" />
 				<Param name="newLanguageCode" />				
 			</Overload>
+		</KeyWord>
+		<KeyWord name="logOut" func="yes">
+			<Overload retVal="browser" >
+				<Param name="userName" />
+			</Overload>
 		</KeyWord>		
 	</AutoComplete>
 </NotepadPlus>
