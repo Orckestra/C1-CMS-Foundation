@@ -4,11 +4,13 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using Composite.Core;
+using Composite.Core.Configuration;
 using Composite.Core.Instrumentation;
 using Composite.Data.Foundation;
 using Composite.Data.Foundation.PluginFacades;
 using Composite.Data.Plugins.DataProvider;
 using Composite.Core.Types;
+using Composite.Core.WebClient.Setup;
 
 
 namespace Composite.Data.DynamicTypes
@@ -272,18 +274,30 @@ namespace Composite.Data.DynamicTypes
                 dynamicProviderNames = new[] {providerName};
             }
 
-            if (dynamicProviderNames
+            var possibleMatches = dynamicProviderNames
                 .Select(DataProviderPluginFacade.GetDataProvider)
                 .Cast<IDynamicDataProvider>()
-                .Any(dynamicDataProvider => dynamicDataProvider.GetKnownInterfaces().Contains(interfaceType)))
+                .SelectMany(dynamicDataProvider => dynamicDataProvider.GetKnownInterfaces())
+                .Where(i => i.FullName == interfaceType.FullName);
+
+            foreach(var match in possibleMatches)
             {
-                return;
+                if(match == interfaceType) return;
+
+                if (match.GetImmutableTypeId() == interfaceType.GetImmutableTypeId())
+                {
+                    throw new InvalidOperationException($"The same type '{match.FullName}' is loaded in memory twice. Location 1: '{match.Assembly.Location}', location 2: {interfaceType.Assembly.Location}");
+                }
             }
 
             var dataTypeDescriptor = BuildNewDataTypeDescriptor(interfaceType);
 
             CreateStore(providerName, dataTypeDescriptor, true);
-            CodeGenerationManager.GenerateCompositeGeneratedAssembly(true);
+
+            if (!SystemSetupFacade.SetupIsRunning)
+            {
+                CodeGenerationManager.GenerateCompositeGeneratedAssembly(true);
+            }
         }
         
 

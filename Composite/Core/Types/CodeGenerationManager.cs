@@ -88,7 +88,7 @@ namespace Composite.Core.Types
             if (lastWrite <= time) return;
 
             _compositeGeneratedCompiled = true;
-            Log.LogVerbose(LogTitle, string.Format("Assembly in this application domain is newer than this application domain ({0})", AppDomain.CurrentDomain.Id));
+            Log.LogVerbose(LogTitle, $"Assembly in this application domain is newer than this application domain ({AppDomain.CurrentDomain.Id})");
         }
 
 
@@ -107,7 +107,7 @@ namespace Composite.Core.Types
                 {
                     if (forceGeneration || !_compositeGeneratedCompiled)
                     {
-                        Log.LogVerbose(LogTitle, string.Format("Compiling new assembly in this application domain ({0})", AppDomain.CurrentDomain.Id));
+                        Log.LogVerbose(LogTitle, $"Compiling new assembly in this application domain ({AppDomain.CurrentDomain.Id})");
 
                         int t1 = Environment.TickCount;
 
@@ -248,9 +248,7 @@ namespace Composite.Core.Types
                     Exception exceptionToLog = ex;
 
                     var loadException = ex as ReflectionTypeLoadException;
-                    if (loadException != null
-                        && loadException.LoaderExceptions != null
-                        && loadException.LoaderExceptions.Any())
+                    if (loadException?.LoaderExceptions != null && loadException.LoaderExceptions.Any())
                     {
                         exceptionToLog = loadException.LoaderExceptions.First();
                     }
@@ -470,8 +468,8 @@ namespace Composite.Core.Types
 
         private static void ClearOldTempFiles()
         {
-            DateTime yeasterday = DateTime.Now.AddDays(-1);
-            var oldFiles = C1Directory.GetFiles(TempAssemblyFolderPath, "*.*").Where(filePath => C1File.GetCreationTime(filePath) < yeasterday).ToArray();
+            DateTime yesterday = DateTime.Now.AddDays(-1);
+            var oldFiles = C1Directory.GetFiles(TempAssemblyFolderPath, "*.*").Where(filePath => C1File.GetCreationTime(filePath) < yesterday).ToArray();
 
             foreach (var file in oldFiles)
             {
