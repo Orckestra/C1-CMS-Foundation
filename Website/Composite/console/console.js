@@ -12,7 +12,15 @@ import 'console/iconIndex.js';
 
 document.title = 'Orckestra CMS: ' + location.hostname;
 
-const initialState = {};
+const initialState = {
+	pageDefs: {
+		'svg-sprites': {
+			name: 'svg-sprites',
+			label: 'SVG Spritesheet',
+			type: 'spritesheet'
+		}
+	}
+};
 const store = configureStore(initialState);
 function whenReadyRender() {
 	if (document.readyState === 'complete') {

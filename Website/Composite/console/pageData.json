@@ -312,9 +312,13 @@
       }
     ]
   },
-  {
-    "name": "svg-sprites",
-    "label": "SVG Spritesheet",
-    "type": "spritesheet"
-  }
+	{
+		"name": "component-selector-shim",
+		"type": "dialogPageShim",
+		"dialog": {
+			"name": "component-selector",
+			"type": "palette",
+			"elementSource": ""
+		}
+	}
 ]

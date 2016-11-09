@@ -22,7 +22,7 @@ let reducers = {
 	logs,
 	socket: socketReducer
 };
-['page', 'tab', 'item', 'toolbar', 'fieldset', 'dataField'].forEach(typeName => {
+['page', 'tab', 'item', 'toolbar', 'fieldset', 'dataField', 'dialog'].forEach(typeName => {
 	reducers[typeName + 'Defs'] = getDefinitionReducer(typeName);
 });
 

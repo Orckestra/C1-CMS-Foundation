@@ -14,10 +14,12 @@ export const toolbarSchema = new Schema('toolbarDefs', { idAttribute: 'name' });
 toolbarSchema.define({
 	items: arrayOf(itemSchema)
 });
+export const dialogSchema = new Schema('dialogDefs', {idAttribute: 'name' });
 export const pageSchema = new Schema('pageDefs', { idAttribute: 'name' });
 pageSchema.define({
 	tabs: arrayOf(tabSchema),
-	toolbars: arrayOf(toolbarSchema)
+	toolbars: arrayOf(toolbarSchema),
+	dialog: dialogSchema
 });
 
 export default arrayOf(pageSchema);
