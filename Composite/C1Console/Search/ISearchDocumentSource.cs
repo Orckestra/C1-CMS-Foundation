@@ -21,6 +21,11 @@ namespace Composite.C1Console.Search
         IEnumerable<SearchDocument> GetAllSearchDocuments(CultureInfo culture);
 
         /// <summary>
+        /// Gets the custom fields.
+        /// </summary>
+        IEnumerable<DocumentField> CustomFields { get; }
+
+        /// <summary>
         /// Subscribes the given search document sourceListener to the source.
         /// </summary>
         /// <param name="sourceListener"></param>

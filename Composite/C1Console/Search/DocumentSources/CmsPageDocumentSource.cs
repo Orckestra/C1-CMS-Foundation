@@ -33,16 +33,14 @@ namespace Composite.C1Console.Search.DocumentSources
                 pages = conn.Get<IPage>().Evaluate();
             }
 
-            foreach (var page in pages)
-            {
-                yield return FromPage(page);
-            }
+            return pages.Select(FromPage);
         }
+
+        public IEnumerable<DocumentField> CustomFields 
+            => DataTypeSearchReflectionHelper.GetDocumentFields(typeof (IPage));
 
         private SearchDocument FromPage(IPage page)
         {
-            IEnumerable<string> fullText = new[] { page.Title, page.UrlTitle, page.Description };
-
             string label = page.MenuTitle;
             if (string.IsNullOrWhiteSpace(label))
             {
@@ -50,6 +48,8 @@ namespace Composite.C1Console.Search.DocumentSources
             }
 
             var dataCrawler = new DataCrawlingHelper();
+
+            dataCrawler.CrawlData(page);
 
             using (new DataConnection(page.DataSourceId.PublicationScope, page.DataSourceId.LocaleScope))
             {
@@ -60,13 +60,14 @@ namespace Composite.C1Console.Search.DocumentSources
                 }
             }
 
-            fullText = fullText.Concat(dataCrawler.TextParts);
+            // TODO: crawl page meta data as well
 
             string documentId = $"{page.Id}{page.VersionId}";
             return new SearchDocument(Name, documentId, label, page.GetDataEntityToken())
             {
                 ElementBundleName = null, // TODO: implement
-                FullText = fullText
+                FullText = dataCrawler.TextParts,
+                FieldValues = dataCrawler.FieldPreviewValues.ToDictionary(pair => pair.Key, pair => pair.Value)
             };
         }
     }

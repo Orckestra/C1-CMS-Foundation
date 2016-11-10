@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
+using Composite.C1Console.Search.Crawling;
 using Composite.Core.Linq;
 using Composite.Data;
 using Composite.Data.Types;
@@ -29,27 +31,30 @@ namespace Composite.C1Console.Search.DocumentSources
             using (var conn = new DataConnection())
             {
                 mediaFiles = conn.Get<IMediaFile>().Evaluate();
-
             }
 
-            foreach (var mediaFile in mediaFiles)
-            {
-                yield return FromMediaFile(mediaFile);
-            }
+            return mediaFiles.Select(FromMediaFile);
         }
+
+        public IEnumerable<DocumentField> CustomFields =>
+            DataTypeSearchReflectionHelper.GetDocumentFields(typeof (IMediaFile));
 
         private SearchDocument FromMediaFile(IMediaFile mediaFile)
         {
             string label = mediaFile.Title;
             if (string.IsNullOrWhiteSpace(label))
             {
-                label = mediaFile.Title;
+                label = mediaFile.FileName;
             }
 
             string documentId = mediaFile.Id.ToString();
+            var helper = new DataCrawlingHelper();
+            helper.CrawlData(mediaFile);
+
             return new SearchDocument(Name, documentId, label, mediaFile.GetDataEntityToken())
             {
-                FullText = new [] { mediaFile.FileName, mediaFile.Description }
+                FullText = helper.TextParts,
+                FieldValues = helper.FieldPreviewValues.ToDictionary(a => a.Key, a => a.Value)
             };
         }
     }

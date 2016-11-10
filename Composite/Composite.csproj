@@ -169,6 +169,8 @@
     <Compile Include="C1Console\Forms\ITestAutomationLocatorInformation.cs" />
     <Compile Include="C1Console\Elements\DialogStrings.cs" />
     <Compile Include="C1Console\Search\Crawling\DataCrawlingHelper.cs" />
+    <Compile Include="C1Console\Search\DocumentField.cs" />
+    <Compile Include="C1Console\Search\Crawling\DataTypeSearchReflectionHelper.cs" />
     <Compile Include="C1Console\Search\DocumentSources\MediaLibraryDocumentSource.cs" />
     <Compile Include="C1Console\Search\DocumentSources\CmsPageDocumentSource.cs" />
     <Compile Include="C1Console\Search\IDocumentSourceListener.cs" />
@@ -191,6 +193,7 @@
     <Compile Include="Core\WebClient\Services\ConsoleMessageService\OpenSlideViewParams.cs" />
     <Compile Include="Data\DataScopeServicesFacade.cs" />
     <Compile Include="Data\DataServiceScopeManager.cs" />
+    <Compile Include="Data\SearchableFieldAttribute.cs" />
     <Compile Include="Data\Types\IVersioned.cs" />
     <Compile Include="Data\Types\IVersionedDataHelper.cs" />
     <Compile Include="Data\Types\PageInsertPosition.cs" />

@@ -7,6 +7,8 @@ using System.Web;
 using Composite.C1Console.Actions.Data;
 using Composite.C1Console.Elements;
 using Composite.C1Console.Events;
+using Composite.C1Console.Search;
+using Composite.C1Console.Search.DocumentSources;
 using Composite.Core.Application;
 using Composite.Core.Configuration;
 using Composite.Core.Extensions;
@@ -19,6 +21,7 @@ using Composite.Data.Types;
 using Composite.Functions;
 using Composite.Plugins.Elements.UrlToEntityToken;
 using Composite.Plugins.Routing.InternalUrlConverters;
+using Microsoft.Extensions.DependencyInjection;
 
 
 namespace Composite.Core.WebClient
@@ -91,16 +94,19 @@ namespace Composite.Core.WebClient
             UrlToEntityTokenFacade.Register(new DataUrlToEntityTokenMapper());
             UrlToEntityTokenFacade.Register(new ServerLogUrlToEntityTokenMapper());
 
-            RoutedData.ConfigureServices(ServiceLocator.ServiceCollection);
-
+            var services = ServiceLocator.ServiceCollection;
+            RoutedData.ConfigureServices(services);
 
             using (new LogExecutionTime(_verboseLogEntryTitle, "Initializing dynamic data action tokens"))
             {
-                DataActionTokenResolverRegistry.Register(ServiceLocator.ServiceCollection);
+                DataActionTokenResolverRegistry.Register(services);
             }
 
             InternalUrls.Register(new MediaInternalUrlConverter());
             InternalUrls.Register(new PageInternalUrlConverter());
+
+            services.AddSingleton<ISearchDocumentSource>(new CmsPageDocumentSource("CmsPages"));
+            services.AddSingleton<ISearchDocumentSource>(new MediaLibraryDocumentSource("MediaLibrary"));
 
             VersionedDataHelper.Initialize();
         }

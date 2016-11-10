@@ -75,6 +75,11 @@ namespace Composite.C1Console.Search
         /// </summary>
         public IEnumerable<string> FullText { get; set; }
 
+        /// <summary>
+        /// Field values that is preserved in the index and will appear in the search results.
+        /// </summary>
+        public IDictionary<string, object> FieldValues { get; set; }
+
         //public IEnumerable<DocumentField> CustomFields { get; set; }
 
         ///// <summary>
