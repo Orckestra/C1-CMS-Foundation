@@ -3,7 +3,6 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import { combineReducers } from 'redux-immutablejs';
 import layout from 'console/state/reducers/layout.js';
 import dataFields from 'console/state/reducers/dataFields.js';
-import pages from 'console/state/reducers/pages.js';
 import options from 'console/state/reducers/options.js';
 import logs from 'console/state/reducers/logs.js';
 import getDefinitionReducer from 'console/state/reducers/definitions.js';
@@ -17,7 +16,6 @@ import Immutable from 'immutable';
 let reducers = {
 	layout,
 	dataFields,
-	pages,
 	options,
 	logs,
 	socket: socketReducer
