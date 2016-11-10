@@ -1,8 +1,10 @@
 import { connect } from 'react-redux';
 import SwitchPanel from 'console/components/presentation/SwitchPanel.js';
+import Palette from 'console/components/presentation/Palette.js';
+import Immutable from 'immutable';
 
 const dialogTypes = {
-	palette: () => null
+	palette: Palette
 };
 
 function mapStateToProps(state, ownProps) {
@@ -11,7 +13,8 @@ function mapStateToProps(state, ownProps) {
 	// TODO: Rig this up in a way that allows dialog control from layout state.
 	return {
 		dialogDef,
-		dialogTypes
+		showType: (dialogDef || Immutable.Map()).get('type'),
+		panelTypes: dialogTypes
 	};
 }
 
