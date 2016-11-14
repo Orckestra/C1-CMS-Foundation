@@ -54,6 +54,7 @@ namespace Composite.C1Console.Search
                 return new SearchResult
                 {
                     Documents = Filter(documents, applySecurity, searchRoot),
+                    Facets = result.Facets,
                     TotalHits = result.TotalHits
                 };
             }

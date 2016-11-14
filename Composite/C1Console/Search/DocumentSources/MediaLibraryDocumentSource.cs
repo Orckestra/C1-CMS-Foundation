@@ -54,7 +54,8 @@ namespace Composite.C1Console.Search.DocumentSources
             return new SearchDocument(Name, documentId, label, mediaFile.GetDataEntityToken())
             {
                 FullText = helper.TextParts,
-                FieldValues = helper.FieldPreviewValues.ToDictionary(a => a.Key, a => a.Value)
+                FieldValues = helper.FieldPreviewValues.ToDictionary(a => a.Key, a => a.Value),
+                FacetFieldValues = helper.FacetFieldValues.ToDictionary(pair => pair.Key, pair => pair.Value)
             };
         }
     }

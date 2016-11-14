@@ -67,7 +67,8 @@ namespace Composite.C1Console.Search.DocumentSources
             {
                 ElementBundleName = null, // TODO: implement
                 FullText = dataCrawler.TextParts,
-                FieldValues = dataCrawler.FieldPreviewValues.ToDictionary(pair => pair.Key, pair => pair.Value)
+                FieldValues = dataCrawler.FieldPreviewValues.ToDictionary(pair => pair.Key, pair => pair.Value),
+                FacetFieldValues = dataCrawler.FacetFieldValues.ToDictionary(pair => pair.Key, pair => pair.Value)
             };
         }
     }

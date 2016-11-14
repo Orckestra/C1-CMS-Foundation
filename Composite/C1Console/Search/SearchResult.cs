@@ -4,6 +4,22 @@ using System.Linq;
 namespace Composite.C1Console.Search
 {
     /// <summary>
+    /// Information about a search facet.
+    /// </summary>
+    public class Facet
+    {
+        /// <summary>
+        /// The field value.
+        /// </summary>
+        public string Value { get; set; }
+
+        /// <summary>
+        /// Amount of document found for the given value.
+        /// </summary>
+        public int HitCount { get; set; }
+    }
+
+    /// <summary>
     /// Search result.
     /// </summary>
     public sealed class SearchResult
@@ -18,7 +34,10 @@ namespace Composite.C1Console.Search
         /// </summary>
         public int TotalHits { get; set; }
 
-        // TODO: add facets/paging information
+        /// <summary>
+        /// Found facet values.
+        /// </summary>
+        public IDictionary<string, Facet[]> Facets { get; set; }
 
         /// <exclude />
         public static SearchResult Empty => new SearchResult { Documents = Enumerable.Empty<SearchDocument>() };

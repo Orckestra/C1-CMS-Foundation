@@ -16,6 +16,7 @@ namespace Composite.C1Console.Search.Crawling
         //private readonly List<string> _references = new List<string>();
 
         private readonly List<KeyValuePair<string, object>> _fieldValues = new List<KeyValuePair<string, object>>();
+        private readonly List<KeyValuePair<string, string[]>> _facetFieldValues = new List<KeyValuePair<string, string[]>>();
 
         /// <summary>
         /// Collected text parts.
@@ -24,6 +25,9 @@ namespace Composite.C1Console.Search.Crawling
         //public IEnumerable<string> References => _references;
 
         public IEnumerable<KeyValuePair<string, object>> FieldPreviewValues => _fieldValues;
+
+        public IEnumerable<KeyValuePair<string, string[]>> FacetFieldValues => _facetFieldValues;
+        
 
         /// <summary>
         /// Extracts text parts for the text search as well as fields values for search results preview 
@@ -66,6 +70,9 @@ namespace Composite.C1Console.Search.Crawling
                 if (attr.Faceted)
                 {
                     // TODO: populate facet field values
+                    string textValue = value.ToString();
+                    _facetFieldValues.Add(new KeyValuePair<string, string[]>(
+                        field.Key.Name, new[] { textValue }));
                 }
             }
         }

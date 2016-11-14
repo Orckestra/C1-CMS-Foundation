@@ -80,7 +80,10 @@ namespace Composite.C1Console.Search
         /// </summary>
         public IDictionary<string, object> FieldValues { get; set; }
 
-        //public IEnumerable<DocumentField> CustomFields { get; set; }
+        /// <summary>
+        /// Field values that is preserved in the index and will be used in faceted search.
+        /// </summary>
+        public IDictionary<string, string[]> FacetFieldValues { get; set; }
 
         ///// <summary>
         ///// Contains all the references the current document has (f.e. for a cms page, that could be page type, template, etc)

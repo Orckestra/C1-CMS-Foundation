@@ -5,10 +5,21 @@
     //    IEnumerable<string> GetTokens(object fieldValue);
     //}
 
-    public sealed class DocumentFieldFacet
+    public class DocumentFieldFacet
     {
-        //public Func<object, IEnumerable<string>> Tokenizer { get; set; }
+        /// <summary>
+        /// Gets or sets the maximum number of choices to return. The default value is 0 which means - all.
+        /// </summary>
+        public int Limit { get; set; }
+
+        /// <summary>
+        /// Gets or sets the minimum about of hits a choice should have to be listed in the result.
+        /// </summary>
+        public int MinHitCount { get; set; } = 1;
+
         public int FieldOrder { get; set; }
+
+        // TODO: add sorting options
     }
 
     public sealed class DocumentFieldPreview
@@ -40,12 +51,10 @@
         /// <param name="previewInformation"></param>
         public DocumentField(
             string name, 
-//            bool indexText, 
             DocumentFieldFacet facetInformation, 
             DocumentFieldPreview previewInformation)
         {
             Name = name;
-            //IndexText = indexText;
             Facet = facetInformation;
             Preview = previewInformation;
         }
@@ -54,11 +63,6 @@
         /// The name of the field
         /// </summary>
         public string Name { get; }
-
-        ///// <summary>
-        ///// Indicates whether the field value will be indexed as a part of full-text document field.
-        ///// </summary>
-        //public bool IndexText { get; }
 
         /// <summary>
         /// Indicates whether faceted search is enabled for this field.
