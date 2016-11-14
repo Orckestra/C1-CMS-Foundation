@@ -7,7 +7,7 @@ namespace Composite.Core.Types.Foundation
 {
     internal sealed class AssemblyFilenameCollection
     {
-        private Dictionary<string, string> _assemblyFilenames = new Dictionary<string, string>();
+        private readonly Dictionary<string, string> _assemblyFilenames = new Dictionary<string, string>();
 
 
 
@@ -47,7 +47,10 @@ namespace Composite.Core.Types.Foundation
             if (string.IsNullOrEmpty(assemblyName)) throw new ArgumentNullException("assemblyName");
 
             string assemblyFilename;
-            if (_assemblyFilenames.TryGetValue(assemblyName, out assemblyFilename) == false) throw new ArgumentException(string.Format("Does not contain the assembly name '{0}'", assemblyName));
+            if (!_assemblyFilenames.TryGetValue(assemblyName, out assemblyFilename))
+            {
+                throw new ArgumentException($"Does not contain the assembly name '{assemblyName}'");
+            }
 
             return assemblyFilename;
         }

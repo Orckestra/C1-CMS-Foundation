@@ -1,5 +1,25 @@
 var page = require('webpage').create();
 
+function WriteSuccess(console) {
+	console.log("SUCCESS");
+}
+
+function WriteError(console, message) {
+	console.log("ERROR: " + message);
+}
+
+function WriteTimeout(console, message) {
+	console.log("TIMEOUT: " + message);
+}
+
+function WriteRedirect(console, location) {
+	console.log("REDIRECT: " + location);
+}
+
+function WriteEndOfReply(console) {
+	console.log("END_OF_REPLY");
+}
+
 function getPlaceholdersLocationInfo(placeholderElementName) {
     var ret = [];
 
@@ -21,6 +41,13 @@ function BuildFunctionPreview(system, console, address, output, cookies, mode) {
             globalTimeout = null;
         }
     };
+
+	// Sends "END_OF_REQUESTS" message and runs the message loop
+	var endRequest = function() {
+		clearGlobalTimeout();
+		WriteEndOfReply(console);
+		WaitForInput(system, console);
+	}
 
     if (cookies != null) {
 	    var customCookieHeader = null;
@@ -49,7 +76,7 @@ function BuildFunctionPreview(system, console, address, output, cookies, mode) {
 		}
 	}	
 		
-    if (mode == "test") {
+    if (mode === "test") {
     	page.viewportSize = { width: 320, height: 200 };
     	page.clipRect = { top: 0, left: 0, height: 320, width: 200 };
     } else {
@@ -57,15 +84,20 @@ function BuildFunctionPreview(system, console, address, output, cookies, mode) {
     }
 
     page.settings.resourceTimeout = 30000;
-    
+
+	page.onUrlChanged = function (targetUrl) {
+		if (page.preview_url !== targetUrl) {
+			WriteRedirect(console, targetUrl);
+
+			endRequest();
+		}
+	};
+
 	page.onResourceTimeout = function (request) {
-	    if (request.id == 1) {
-	        clearGlobalTimeout();
+	    if (request.id === 1) {
+			WriteTimeout(console, "page.onResourceTimeout: " + JSON.stringify(request.errorString) + ", URL: " + JSON.stringify(request.url));
 
-	        var errorMessage = 'TIMEOUT: page.onResourceTimeout: ' + JSON.stringify(request.errorString) + ', URL: ' + JSON.stringify(request.url);
-
-	        console.log(errorMessage);
-	        WaitForInput(system, console);
+			endRequest();
 	    }
 	};
 
@@ -75,37 +107,36 @@ function BuildFunctionPreview(system, console, address, output, cookies, mode) {
 	}
 
 	page.onResourceError = function (resourceError) {
-		page.fail_reason = "Error opening url '" + resourceError.url + "'; Error code: " + resourceError.errorCode + ". Description: " + resourceError.errorString;
+		console.log("page.onResourceError: url '" + resourceError.url + "'; Error code: " + resourceError.errorCode + ". Description: " + resourceError.errorString);
 	};
 
-    // redirects ...
 	page.onResourceReceived = function (response) {
-	    if (response.id == 1) {
+		console.log("Resource received. Id: " + response.id + " status = " + response.status + " url = " + request.url);
+	    if (response.id === 1) {
 	        var closePage = false;
 
-	        if (response.status == 301 || response.status == 302) {
-	            console.log('REDIRECT: ' + response.url);
+	        if (response.status === 301 || response.status === 302) {
+		        WriteRedirect(console, response.url);
 	            closePage = true;
 	        }
 
             if (response.status >= 400) {
-                var description  = 'HTTP Status-Code ' + response.status + '.';
+                var description  = "HTTP Status-Code " + response.status + ".";
 
-                if (response.status == 500) {
-                    description = '500 Internal Server Error.';
+                if (response.status === 500) {
+                    description = "500 Internal Server Error.";
                 }
-                else if (response.status == 503) {
-                    description = '503 Service Unavailable.';
+                else if (response.status === 503) {
+                    description = "503 Service Unavailable.";
                 }
 
-                console.log('ERROR: ' + description);
+	            WriteError(console, description);
 
                 closePage = true;
             }
 
 	        if (closePage) {
-	            clearGlobalTimeout();
-	            WaitForInput(system, console);
+				endRequest();
 	        }
 	    }
 	}
@@ -114,7 +145,7 @@ function BuildFunctionPreview(system, console, address, output, cookies, mode) {
 	page.onCallback = function (data) {
 	    clearGlobalTimeout();
 
-	    if (mode == "function") {
+	    if (mode === "function") {
 	        var previewElementId = "CompositeC1FunctionPreview";
 
 	        var clientRect = page.evaluate("getFunctionPreviewClientRect", previewElementId);
@@ -127,58 +158,58 @@ function BuildFunctionPreview(system, console, address, output, cookies, mode) {
 	            }
 	            page.clipRect = clientRect;
 	        } else {
+		        console.log("warn: clientRect is empty, redering a 1x1 image. " + JSON.stringify(clientRect));
+
 	            // Rendering an empty spot
 	            page.clipRect = { top: 0, left: 0, height: 1, width: 1 };
 	        }
 
 	        page.render(output);
 
-	        console.log('SUCCESS: ' + address);
-	    } else if (mode == "template") {
+		    WriteSuccess(console);
+	    } else if (mode === "template") {
 	        // Template preview:
-	        var placeholdersInfo = page.evaluate(getPlaceholdersLocationInfo, 'placeholderpreview');
+	        var placeholdersInfo = page.evaluate(getPlaceholdersLocationInfo, "placeholderpreview");
 
 	        page.render(output);
 
-	        console.log('templateInfo:' + placeholdersInfo);
+	        console.log('templateInfo:' + placeholdersInfo); // TODO: pass placeholders info as JSON
+	        WriteSuccess(console);
 	    } else {
 	        page.render(output);
 
-	        console.log('SUCCESS');
+	        WriteSuccess(console);
 	    }
 
-	    WaitForInput(system, console);
+		endRequest();
 	};
 
-    try {
-        page.open(address, function (status) {
-            if (status !== 'success') {
-                clearGlobalTimeout();
-            	console.log('ERROR, page.open: ' + status 
-					+ "; " + page.fail_reason);
+	try {
+		console.log("Opening url: " + address);
 
-                WaitForInput(system, console);
+		page.preview_url = address;
+        page.open(address, function (status) {
+            if (status !== "success") {
+            	WriteError("page.open(), status=" + status);
+
+                endRequest();
             } else {
                 if (mode === "test") {
-                    clearGlobalTimeout();
+                	page.render(output);
 
-                    page.render(output);
+                	WriteSuccess(console);
 
-                    console.log('SUCCESS');
-
-                    WaitForInput(system, console);
+	                endRequest();
                 } else {
                     var previewJsExecuted = page.evaluate(function () {
-                        return window.previewJsInitialized == true;
+                        return window.previewJsInitialized === true;
                     });
 
                     // If "preview.js" isn't inserted, closing the page, as the default callback will not be called
                     if (!previewJsExecuted) {
-                        clearGlobalTimeout();
+                        WriteError(console, "preview.js script is not present in the response body");
 
-                        console.log('ERROR: preview.js script is not present in the response body');
-
-                        WaitForInput(system, console);
+	                    endRequest();
                     }
                 }
             }
@@ -187,9 +218,10 @@ function BuildFunctionPreview(system, console, address, output, cookies, mode) {
         var timeoutInSeconds = 60;
 
         globalTimeout = setTimeout(function () {
-            console.log("TIMEOUT: Max execution time - " + timeoutInSeconds + " seconds - exceeded");
-            globalTimeout = null;
-            WaitForInput(system, console);
+        	globalTimeout = null;
+        	WriteTimeout(console, "Max execution time - " + timeoutInSeconds + " seconds - exceeded");
+
+	        endRequest();
         }, timeoutInSeconds * 1000);
     }
 }
@@ -197,55 +229,48 @@ function BuildFunctionPreview(system, console, address, output, cookies, mode) {
 var system = require('system');
 
 function WaitForInput(system, console) {
-	while(true) {
-	   var line = system.stdin.readLine();
-	   if(line == "exit") 
-	   {
+	while (true) {
+		var line = system.stdin.readLine();
+		if (line === "exit") {
 			phantom.exit(0);
 			return;
-	   }
+		}
 
-	   var parameters = line.split(";");
-	   if(parameters.length == 4) {
-	   
-		  var cookieInfo = parameters[0];
-		  var url = parameters[1];
-		  var outputFilePath = parameters[2];
-		  var mode = parameters[3];
-		  
-		  var cookies = null;
+		var request = JSON.parse(line);
+		if (request.mode) {
 
-		  if(cookieInfo !== "") {
-			var cookieInfoParts = cookieInfo.split(",");
-			
-			if(cookieInfoParts.length % 3 !== 0) {
-				console.log('Invalid cookie information, correct format is {name},{value},{domain}[,{name},{value},{domain}]*');
-				continue;
+			var mode = request.mode;
+			var url = request.url;
+			var outputFilePath = request.outputFilePath;
+			var cookieInfo = request.cookies;
+
+			var cookies = null;
+
+			if (cookieInfo != null) {
+
+				cookies = [];
+				for (var i = 0; i < cookieInfo.length; i++) {
+					var cookie = {
+						'name': cookieInfo[i].name,
+						'value': cookieInfo[i].value,
+						'domain': cookieInfo[i].value,
+						'path': '/',
+						'httponly': true,
+						'secure': false,
+						'expires': (new Date()).getTime() + (1000 * 60 * 60)
+					};
+
+					cookies.push(cookie);
+				}
 			}
-		
-			cookies = [];
-			for (var i = 0; i < cookieInfoParts.length / 3; i++) {
-				var cookie = {
-					'name': cookieInfoParts[i*3],
-					'value': cookieInfoParts[i * 3 + 1],
-					'domain': cookieInfoParts[i * 3 + 2],
-					'path': '/',
-					'httponly': true,
-					'secure': false,
-					'expires': (new Date()).getTime() + (1000 * 60 * 60)
-				};
 
-				cookies.push(cookie);
-			}
-		  }
-		  		  	   
-		  BuildFunctionPreview(system, console, url, outputFilePath, cookies, mode);
-		  return;
-	   }
-	   else {
-	   	console.log('Usage: {Authentication cookie information};{url};{out put file name};{mode}. Where {Authentication cookie information} = {name},{value},{domain}[,{name},{value},{domain}]*');
-	   }
-   }
+			BuildFunctionPreview(system, console, url, outputFilePath, cookies, mode);
+			return;
+		}
+		else {
+			console.log('Usage: {mode: "...", url: "...", ...}');
+		}
+	}
 }
 
 WaitForInput(system, console);
