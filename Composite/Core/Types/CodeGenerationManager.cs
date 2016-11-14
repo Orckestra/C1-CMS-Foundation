@@ -5,13 +5,16 @@ using System;
 using System.CodeDom;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using Composite.C1Console.Events;
 using Composite.Core.Configuration;
+using Composite.Core.Extensions;
 using Composite.Core.IO;
+using Composite.Core.PackageSystem;
 using Composite.Data.Foundation.CodeGeneration;
 using Composite.Data.GeneratedTypes;
 using Microsoft.CSharp;
@@ -85,7 +88,7 @@ namespace Composite.Core.Types
             if (lastWrite <= time) return;
 
             _compositeGeneratedCompiled = true;
-            Log.LogVerbose(LogTitle, string.Format("Assembly in this application domain is newer than this application domain ({0})", AppDomain.CurrentDomain.Id));
+            Log.LogVerbose(LogTitle, $"Assembly in this application domain is newer than this application domain ({AppDomain.CurrentDomain.Id})");
         }
 
 
@@ -104,7 +107,7 @@ namespace Composite.Core.Types
                 {
                     if (forceGeneration || !_compositeGeneratedCompiled)
                     {
-                        Log.LogVerbose(LogTitle, string.Format("Compiling new assembly in this application domain ({0})", AppDomain.CurrentDomain.Id));
+                        Log.LogVerbose(LogTitle, $"Compiling new assembly in this application domain ({AppDomain.CurrentDomain.Id})");
 
                         int t1 = Environment.TickCount;
 
@@ -178,8 +181,8 @@ namespace Composite.Core.Types
 
                 int t2 = Environment.TickCount;
 
-                Log.LogVerbose(LogTitle, string.Format("Compile '{0}' in {1}ms", codeGenerationBuilder.DebugLabel, t2 - t1));
-                Log.LogVerbose(LogTitle, string.Format("Types from : {0}", compilerParameters.OutputAssembly));
+                Log.LogVerbose(LogTitle, $"Compile '{codeGenerationBuilder.DebugLabel}' in {t2 - t1}ms");
+                Log.LogVerbose(LogTitle, $"Types from : {compilerParameters.OutputAssembly}");
 
                 foreach (Type resultType in resultTypes)
                 {
@@ -199,31 +202,9 @@ namespace Composite.Core.Types
                 }
             }
 #endif
+            
 
-            var failedAssemblyLoads = new List<Pair<string, Exception>>();
-            foreach (string assemblyLocation in compilerParameters.ReferencedAssemblies)
-            {
-                try
-                {
-                    Assembly assembly = Assembly.LoadFrom(assemblyLocation);
-                    var types = assembly.GetTypes(); // Accessing GetTypes() to iterate classes
-                }
-                catch (Exception ex)
-                {
-                    Exception exceptionToLog = ex;
-
-                    var loadException = ex as ReflectionTypeLoadException;
-                    if (loadException != null 
-                        && loadException.LoaderExceptions != null
-                        && loadException.LoaderExceptions.Any())
-                    {
-                        exceptionToLog = loadException.LoaderExceptions.First();
-                    }
-
-                    failedAssemblyLoads.Add(new Pair<string, Exception>( assemblyLocation, exceptionToLog));
-                }
-            }
-
+            var failedAssemblyLoads = LoadAssembliesToMemory(compilerParameters.ReferencedAssemblies);
 
             var sb = new StringBuilder();
             failedAssemblyLoads.ForEach(asm => sb.AppendFormat("Failed to load dll: '{0}' : {1}", asm.First, asm.Second).AppendLine());
@@ -247,10 +228,42 @@ namespace Composite.Core.Types
         }
 
 
+        private static ICollection<Pair<string, Exception>> LoadAssembliesToMemory(StringCollection assemblyLocations)
+        {
+            var failedAssemblyLoads = new List<Pair<string, Exception>>();
+            foreach (string assemblyLocation in assemblyLocations)
+            {
+                if (PackageAssemblyHandler.TryGetAlreadyLoadedAssembly(assemblyLocation) != null)
+                {
+                    continue;
+                }
+
+                try
+                {
+                    var assembly = Assembly.LoadFrom(assemblyLocation);
+                    assembly.GetTypes(); // Accessing GetTypes() to iterate classes
+                }
+                catch (Exception ex)
+                {
+                    Exception exceptionToLog = ex;
+
+                    var loadException = ex as ReflectionTypeLoadException;
+                    if (loadException?.LoaderExceptions != null && loadException.LoaderExceptions.Any())
+                    {
+                        exceptionToLog = loadException.LoaderExceptions.First();
+                    }
+
+                    failedAssemblyLoads.Add(new Pair<string, Exception>(assemblyLocation, exceptionToLog));
+                }
+            }
+
+            return failedAssemblyLoads;
+        }
+
 
         /// <summary>
         /// This method returns true if the given type <paramref name="type"/> is
-        /// compiled at runetime. Otherwice false.
+        /// compiled at runetime. Otherwise false.
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
@@ -285,7 +298,7 @@ namespace Composite.Core.Types
 
 
         /// <summary>
-        /// Use this method to add a <see cref="ICodeProvider"/> impelementation
+        /// Use this method to add a <see cref="ICodeProvider"/> implementation
         /// that will be used when (and only) generating the final Composite.Generated.dll.
         /// </summary>
         /// <param name="codeProvider"></param>
@@ -365,26 +378,12 @@ namespace Composite.Core.Types
         /// <summary>
         /// Returns all currently temp compiled assemblies.
         /// </summary>
-        internal static IEnumerable<Assembly> CompiledAssemblies
-        {
-            get
-            {
-                return _compiledAssemblies;
-            }
-        }
-
+        internal static IEnumerable<Assembly> CompiledAssemblies => _compiledAssemblies;
 
 
         /// <summary>
         /// </summary>
-        internal static string TempAssemblyFolderPath
-        {
-            get
-            {
-                return PathUtil.Resolve(GlobalSettingsFacade.GeneratedAssembliesDirectory);
-            }
-        }
-
+        internal static string TempAssemblyFolderPath => PathUtil.Resolve(GlobalSettingsFacade.GeneratedAssembliesDirectory);
 
 
         /// <summary>
@@ -403,26 +402,12 @@ namespace Composite.Core.Types
 
         /// <summary>
         /// </summary>
-        internal static string CompositeGeneratedFileName
-        {
-            get
-            {
-                return "Composite.Generated.dll";
-            }
-        }
-
+        internal static string CompositeGeneratedFileName => "Composite.Generated.dll";
 
 
         /// <summary>
         /// </summary>
-        internal static string CompositeGeneratedAssemblyPath
-        {
-            get
-            {
-                return Path.Combine(BinFolder, "Composite.Generated.dll");
-            }
-        }
-
+        internal static string CompositeGeneratedAssemblyPath => Path.Combine(BinFolder, "Composite.Generated.dll");
 
 
         private static void PopulateBuilder(CodeGenerationBuilder builder)
@@ -483,8 +468,8 @@ namespace Composite.Core.Types
 
         private static void ClearOldTempFiles()
         {
-            DateTime yeasterday = DateTime.Now.AddDays(-1);
-            var oldFiles = C1Directory.GetFiles(TempAssemblyFolderPath, "*.*").Where(filePath => C1File.GetCreationTime(filePath) < yeasterday).ToArray();
+            DateTime yesterday = DateTime.Now.AddDays(-1);
+            var oldFiles = C1Directory.GetFiles(TempAssemblyFolderPath, "*.*").Where(filePath => C1File.GetCreationTime(filePath) < yesterday).ToArray();
 
             foreach (var file in oldFiles)
             {

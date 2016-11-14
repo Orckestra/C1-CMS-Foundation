@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Web;
 using Composite.C1Console.Events;
 using System.Threading.Tasks;
+using Composite.Core.WebClient.PhantomJs;
 
 namespace Composite.Core.WebClient.Services.WysiwygEditor
 {
@@ -39,7 +41,7 @@ namespace Composite.Core.WebClient.Services.WysiwygEditor
             string requestUrl = new UrlBuilder(context.Request.Url.ToString()).ServerUrl 
                 + ServiceUrl + $"?p={pageId}&t={templateId}&hash={updateHash}";
 
-            BrowserRender.RenderingResult result = null;
+            RenderingResult result = null;
 
             var renderTask = BrowserRender.RenderUrlAsync(context, requestUrl, RenderingMode);
             renderTask.Wait(10000);
@@ -55,7 +57,7 @@ namespace Composite.Core.WebClient.Services.WysiwygEditor
                 return false;
             }
 
-            if (result.Status != BrowserRender.RenderingResultStatus.Success)
+            if (result.Status != RenderingResultStatus.Success)
             {
                 Log.LogWarning("PageTemplatePreview", "Failed to build preview for page template '{0}'. Reason: {1}; Output:\r\n{2}",
                     templateId, result.Status, result.Output);
@@ -66,15 +68,17 @@ namespace Composite.Core.WebClient.Services.WysiwygEditor
             }
 
             imageFilePath = result.FilePath;
-            string output = result.Output;
+            ICollection<string> output = result.Output;
+            const string templateInfoPrefix = "templateInfo:";
+
+            var placeholderData = output.FirstOrDefault(l => l.StartsWith(templateInfoPrefix));
 
             var pList = new List<PlaceholderInformation>();
 
-            string templateInfoPrefix = "templateInfo:";
-
-            if (output.StartsWith(templateInfoPrefix))
+            // TODO: use JSON
+            if (placeholderData != null)
             {
-                foreach (var infoPart in output.Substring(templateInfoPrefix.Length).Split('|'))
+                foreach (var infoPart in placeholderData.Substring(templateInfoPrefix.Length).Split('|'))
                 {
                     string[] parts = infoPart.Split(',');
 
