@@ -25,6 +25,25 @@ namespace Composite.C1Console.Search
         public SearchQuerySelectionOperation Operation { get; set; }
     }
 
+    public class SearchQuerySortOption
+    {
+        public SearchQuerySortOption(string fieldName, bool reverseOrder)
+        {
+            FieldName = fieldName;
+            ReverseOrder = reverseOrder;
+        }
+
+        /// <summary>
+        /// A field name to sort results by
+        /// </summary>
+        public string FieldName { get; }
+
+        /// <summary>
+        /// Indicates whether the results should appear in an order reverse to the way it is kept in the index.
+        /// </summary>
+        public bool ReverseOrder { get; }
+    }
+
     /// <summary>
     /// A search query.
     /// </summary>
@@ -73,6 +92,14 @@ namespace Composite.C1Console.Search
         /// </summary>
         public IEnumerable<SearchQuerySelection> Selection { get; set; }
 
-        // TODO: add sorting options
+        /// <summary>
+        /// Indicates whether the results should be sorted by weight/relevance.
+        /// </summary>
+        public bool SortByRelevance { get; set; }
+
+        /// <summary>
+        /// Sort options.
+        /// </summary>
+        public IEnumerable<SearchQuerySortOption> SortOptions { get; set; }
     }
 }

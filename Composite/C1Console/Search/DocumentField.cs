@@ -1,4 +1,8 @@
-﻿namespace Composite.C1Console.Search
+﻿using System;
+using System.Globalization;
+using Composite.Plugins.ResourceSystem.XmlStringResourceProvider;
+
+namespace Composite.C1Console.Search
 {
     //public interface IFieldTokenizer
     //{
@@ -22,9 +26,13 @@
         // TODO: add sorting options
     }
 
+
     public sealed class DocumentFieldPreview
     {
-        //public Func<object, string> PreviewFunction { get; set; }
+        /// <summary>
+        /// A function reference to preview the field value.
+        /// </summary>
+        public Func<object, string> PreviewFunction { get; set; }
 
         /// <summary>
         /// Indicates whether sorting for the given field should be enabled.
@@ -46,7 +54,6 @@
         /// 
         /// </summary>
         /// <param name="name"></param>
-        ///// <param name="indexText"></param>
         /// <param name="facetInformation"></param>
         /// <param name="previewInformation"></param>
         public DocumentField(
@@ -57,12 +64,18 @@
             Name = name;
             Facet = facetInformation;
             Preview = previewInformation;
+            GetLabelFunc = ci => name;
         }
 
         /// <summary>
         /// The name of the field
         /// </summary>
         public string Name { get; }
+
+        /// <summary>
+        /// A function pointer to get the field label in the given culture.
+        /// </summary>
+        public Func<CultureInfo, string> GetLabelFunc { get; set; }
 
         /// <summary>
         /// Indicates whether faceted search is enabled for this field.

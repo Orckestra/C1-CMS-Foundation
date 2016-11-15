@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Xml.Linq;
 using Composite.Core;
+using Composite.Core.Types;
 using Composite.Core.Xml;
 using Composite.Data;
 
@@ -41,7 +43,8 @@ namespace Composite.C1Console.Search.Crawling
 
             foreach (var field in fields)
             {
-                object value = field.Key.GetValue(data);
+                var propertyInfo = field.Key;
+                object value = propertyInfo.GetValue(data);
                 if(value == null) continue;
 
                 var attr = field.Value;
@@ -61,10 +64,16 @@ namespace Composite.C1Console.Search.Crawling
                     }
                 }
 
-                // Fieled previewing
+                // Field previewing
                 if (attr.Previewable)
                 {
-                    _fieldValues.Add(new KeyValuePair<string, object>(field.Key.Name, value));
+                    var indexValue = ToIndexValue(value);
+                    if (indexValue != null)
+                    {
+                        _fieldValues.Add(new KeyValuePair<string, object>(
+                            DataTypeSearchReflectionHelper.GetDocumentFieldName(field.Key), 
+                            indexValue));
+                    }
                 }
 
                 if (attr.Faceted)
@@ -72,7 +81,8 @@ namespace Composite.C1Console.Search.Crawling
                     // TODO: populate facet field values
                     string textValue = value.ToString();
                     _facetFieldValues.Add(new KeyValuePair<string, string[]>(
-                        field.Key.Name, new[] { textValue }));
+                        DataTypeSearchReflectionHelper.GetDocumentFieldName(field.Key), 
+                        new[] { textValue }));
                 }
             }
         }
@@ -138,6 +148,16 @@ namespace Composite.C1Console.Search.Crawling
             // TODO: add a function reference
         }
 
+        public virtual object ToIndexValue(object fieldValue)
+        {
+            if (fieldValue == null) return null;
 
+            if (fieldValue is DateTime?)
+            {
+                return ((DateTime)fieldValue).ToString("s");
+            }
+
+            return ValueTypeConverter.Convert<string>(fieldValue);
+        }
     }
 }
