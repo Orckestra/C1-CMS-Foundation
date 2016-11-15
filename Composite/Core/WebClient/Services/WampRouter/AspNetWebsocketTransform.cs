@@ -78,7 +78,7 @@ namespace Composite.Core.WebClient.Services.WampRouter
         }
 
         /// <exclude />
-        [RoutePrefix("Composite2/api/Router")]
+        [RoutePrefix("Composite/api/Router")]
         public class RouterController : ApiController
         {
             /// <exclude />
