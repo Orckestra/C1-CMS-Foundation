@@ -17,7 +17,7 @@ namespace Composite.Core.Application
         /// <summary>
         /// A service collection to be populated at startup
         /// </summary>
-        public static IServiceCollection ServiceCollection
+        internal static IServiceCollection ServiceCollection
         {
             get
             {
@@ -30,11 +30,11 @@ namespace Composite.Core.Application
             set { _serviceCollection = value; }
         }
 
-        
+
         /// <summary>
         /// Gets an application service provider
         /// </summary>
-        public static IServiceProvider ApplicationServices 
+        internal static IServiceProvider ApplicationServices 
         {
             get
             {
@@ -54,7 +54,7 @@ namespace Composite.Core.Application
         /// <summary>
         /// Gets a request service provider
         /// </summary>
-        public static IServiceProvider RequestScopedServices
+        internal static IServiceProvider RequestScopedServices
         {
             get
             {
@@ -69,7 +69,7 @@ namespace Composite.Core.Application
         /// <summary>
         /// Creates a service scope associated with the current http context
         /// </summary>
-        public static void CreateRequestServicesScope(HttpContext context)
+        internal static void CreateRequestServicesScope(HttpContext context)
         {
             if (ApplicationServices == null)
             {
@@ -85,7 +85,7 @@ namespace Composite.Core.Application
         /// <summary>
         /// Disposes a service scope associated with the current http context
         /// </summary>
-        public static void DisposeRequestServicesScope(HttpContext context)
+        internal static void DisposeRequestServicesScope(HttpContext context)
         {
             if (ApplicationServices == null)
             {
