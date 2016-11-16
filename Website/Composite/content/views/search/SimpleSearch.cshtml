@@ -1,0 +1,303 @@
+﻿@using System.Globalization
+@using Composite.C1Console.Search
+@using Composite.C1Console.Security
+@using Composite.C1Console.Users
+@using Composite.Core.WebClient
+
+
+@functions {
+
+	const string FacetSelectionPrefix = "chk_";
+
+	private object GetFocusUrl(string serializedEntityToken)
+	{
+		return UrlUtils.AdminRootPath + "/top.aspx#FocusElement;" + serializedEntityToken;
+	}
+
+	private IEnumerable<T> RemoveDuplicateKeys<T>(IEnumerable<T> sequence, Func<T, string> getKeyFunc)
+	{
+		var keys = new HashSet<string>();
+
+		foreach (var el in sequence)
+		{
+			string key = getKeyFunc(el);
+
+			if (keys.Contains(key)) continue;
+
+			keys.Add(key);
+
+			yield return el;
+		}
+	}
+}
+
+@{
+	if (!UserValidationFacade.IsLoggedIn())
+	{
+		@: No user logged in
+		return;
+	}
+
+	if (!SearchFacade.SearchEnabled)
+	{
+		@: The search functionality is not enabled
+		return;
+	}
+
+	string text = null;
+	EntityToken searchRoot = null;
+	SearchResult result = null;
+	string sortField = null;
+	bool sortByAscending = true;
+	bool sortByRelevance = false;
+	IList<DocumentField> facetFields = null;
+
+	if (IsPost)
+	{
+		text = Request["q"];
+		sortField = Request["sf"];
+		sortByAscending = bool.Parse(Request["sfd"]);
+		sortByRelevance = Request["sbr"] == "1";
+
+		string root = Request["r"];
+		if (root != null)
+		{
+			searchRoot = EntityTokenSerializer.Deserialize(UrlUtils.UnZipContent(root));
+		}
+
+		if (!string.IsNullOrWhiteSpace(text))
+		{
+			facetFields = RemoveDuplicateKeys(
+				SearchFacade.DocumentSources.SelectMany(ds => ds.CustomFields)
+				.Where(f => f.FacetedSearchEnabled),
+				f => f.Name).ToList();
+
+			var selections = new List<SearchQuerySelection>();
+			foreach (string key in Request.Form.Keys)
+			{
+				if (key.StartsWith(FacetSelectionPrefix))
+				{
+					string fieldName = key.Substring(FacetSelectionPrefix.Length);
+					string[] values = Request.Form[key].Split(',');
+
+					selections.Add(new SearchQuerySelection
+					{
+						FieldName = fieldName,
+						Values = values,
+						Operation = SearchQuerySelectionOperation.Or
+					});
+				}
+			}
+
+			var sortOptions = new List<SearchQuerySortOption>();
+			if (sortField != null)
+			{
+				sortOptions.Add(new SearchQuerySortOption(sortField, !sortByAscending));
+			}
+
+			var query = new SearchQuery(text, UserSettings.ActiveLocaleCultureInfo)
+			{
+				Facets = facetFields.Select(f => new KeyValuePair<string, DocumentFieldFacet>(f.Name, f.Facet)),
+				Selection = selections,
+				SortOptions = sortOptions,
+				SortByRelevance = sortByRelevance
+			};
+
+			result = SearchFacade.SearchConsoleAsync(query, true, searchRoot).Result;
+		}
+	}
+}
+<html>
+<head>
+	<style type="text/css">
+		 table thead { background-color: grey;font-weight: bold; color: white }
+		 table thead a { color: white;}
+		 table tbody tr:nth-child(even) { background-color: #EEEEEE }
+		 table td { padding: 2px 10px }
+		 table { padding-bottom: 10px; }
+
+		 .facets { clear: both; padding-bottom: 20px; width: 100%; }
+		 .facets .facet { width: 300px; float: left; }
+
+		 .clearfix:after {
+			visibility: hidden;
+			display: block;
+			font-size: 0;
+			content: " ";
+			clear: both;
+			height: 0;
+			}
+	</style>
+	<script type="text/javascript">
+		function Sort(fieldName, isAsc) {
+			document.getElementById('sortField').value = fieldName;
+			document.getElementById('sortAsc').value = isAsc ? 'true' : 'false';
+			document.getElementById("search").submit();
+		}
+	</script>
+</head>
+<body>
+
+<h1>Search</h1>
+<form method="POST" id="search">
+	<div>
+		<input name="q" type="text" class="searchfield" value="@text"/>
+		<div>
+			<input type="checkbox" id="sortByRelevance" name="sbr" value="1" @if (@sortByRelevance) { <text> checked="checked" </text>  } />
+			<label for="sbr">Sort by relevance</label>
+		</div>
+
+		<input id="sortField" name="sf" value="@sortField" type="hidden"/>
+		<input id="sortAsc" name="sfd" value="@sortByAscending.ToString()" type="hidden" />
+	</div>
+	<input type="submit"/>
+
+	@if (result != null)
+	{
+		@ResultFacets(result, facetFields)
+	}
+</form>
+	
+@if (result != null)
+{
+	@ResultTable(result, sortField, sortByAscending)
+
+	if (!string.IsNullOrEmpty(sortField))
+	{
+		<div>
+			Sorted by: @sortField
+		</div>
+	}
+
+	<div>
+		Total hits: @result.TotalHits
+	</div>
+}
+
+</body>
+</html>
+
+@helper ResultFacets(SearchResult result, IList<DocumentField> facetFields)
+{
+	var fields = facetFields.ToDictionary(f => f.Name);
+
+	<div class="facets clearfix">
+		@foreach (var key in result.Facets.Keys)
+		{
+			var facets = result.Facets[key];
+			if (facets.Length == 0)
+			{
+				continue;
+			}
+
+			string checkBoxName = FacetSelectionPrefix + key;
+			string[] preselectedValues = (Request.Form[checkBoxName] ?? "").Split(',');
+
+			<div class="facet">
+				<h2>@fields[key].GetFieldLabel(CultureInfo.CurrentCulture)</h2>
+				@{
+					int optionIndex = 0;
+				}
+				@foreach (var facet in facets)
+				{
+					optionIndex++;
+
+					bool @checked = preselectedValues.Contains(facet.Value);
+
+					<div>
+						<input type="checkbox" id="@checkBoxName@optionIndex" name="@checkBoxName" value="@facet.Value"
+						       @if (@checked)
+						       {<text>checked="checked"</text>}
+							/>
+						<label for="@checkBoxName@optionIndex">
+							@fields[key].Facet.LabelFunction(facet.Value) [@facet.HitCount]
+						</label>
+					</div>
+				}
+			</div>
+		}
+	</div>
+}
+
+@helper ResultTable(SearchResult result, string sortField, bool sortAscending)
+{
+var documents = result.Documents.ToList();
+var dataSourceNames = new HashSet<string>(documents.Select(d => d.Source).Distinct());
+
+var dataSources = SearchFacade.DocumentSources.Where(d => dataSourceNames.Contains(d.Name)).ToList();
+var fields = dataSources.SelectMany(ds => ds.CustomFields);
+
+var previewFields = RemoveDuplicateKeys(fields.Where(f => f.FieldValuePreserved), f => f.Name).ToList();
+
+if (documents.Any())
+{
+	<div class="results">
+		<table>
+			<thead>
+				<tr>
+					<td>Label</td>
+					@foreach (var field in previewFields)
+					{
+						var fieldName = field.Name;
+						var label = field.GetFieldLabel(CultureInfo.CurrentCulture);
+
+						<td>
+							@if (field.Preview.Sortable)
+							{
+								if (fieldName == sortField)
+								{
+									@(sortAscending ? "▲" : "▼")
+								}
+
+								<a href="#" onclick="Sort('@fieldName', @((fieldName != sortField || !sortAscending) ? "true" : "false"))">
+									<label title="@fieldName">
+										@label
+									</label>
+								</a>
+							}
+							else
+							{
+								<label title="@fieldName">
+									@label
+								</label>
+							}
+						</td>
+					}
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var hit in documents)
+				{
+					<tr class="hit">
+						<td>
+							<a href="@GetFocusUrl(hit.SerializedEntityToken)" target="_top">@hit.Label</a>
+						</td>
+						@foreach (var field in previewFields)
+						{
+							var fieldName = field.Name;
+
+							object value;
+							<td>
+								@if (hit.FieldValues != null && hit.FieldValues.TryGetValue(fieldName, out value))
+								{
+									if (value != null && field.Preview.PreviewFunction != null)
+									{
+										@field.Preview.PreviewFunction(value)
+									}
+									else
+									{
+										@value
+									}
+								}
+							</td>
+						}
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+}
+}
+
+
+

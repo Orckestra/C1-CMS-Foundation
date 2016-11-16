@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Globalization;
-using Composite.Plugins.ResourceSystem.XmlStringResourceProvider;
 
 namespace Composite.C1Console.Search
 {
@@ -19,9 +18,14 @@ namespace Composite.C1Console.Search
         /// <summary>
         /// Gets or sets the minimum about of hits a choice should have to be listed in the result.
         /// </summary>
-        public int MinHitCount { get; set; } = 1;
+        public int MinHitCount { get; set; }
 
-        public int FieldOrder { get; set; }
+        //public int FieldOrder { get; set; }
+
+        /// <summary>
+        /// A function to get a label for a given facet value.
+        /// </summary>
+        public Func<string, string> LabelFunction { get; set; }
 
         // TODO: add sorting options
     }
@@ -64,7 +68,7 @@ namespace Composite.C1Console.Search
             Name = name;
             Facet = facetInformation;
             Preview = previewInformation;
-            GetLabelFunc = ci => name;
+            GetFieldLabel = ci => name;
         }
 
         /// <summary>
@@ -73,9 +77,9 @@ namespace Composite.C1Console.Search
         public string Name { get; }
 
         /// <summary>
-        /// A function pointer to get the field label in the given culture.
+        /// A function to get the field label in the given culture.
         /// </summary>
-        public Func<CultureInfo, string> GetLabelFunc { get; set; }
+        public Func<CultureInfo, string> GetFieldLabel { get; set; }
 
         /// <summary>
         /// Indicates whether faceted search is enabled for this field.

@@ -42,6 +42,7 @@ namespace Composite.Data.Types
         /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.LargeString)]
         [ImmutableFieldId("{DB0C7557-8C56-4924-A199-3A1E984BE2E8}")]
+        [SearchableField(true, false, false)]
         string Content { get; set; }
     }
 

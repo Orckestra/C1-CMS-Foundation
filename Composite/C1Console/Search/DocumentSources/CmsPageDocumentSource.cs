@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Linq;
 using Composite.C1Console.Search.Crawling;
+using Composite.Core.Extensions;
 using Composite.Core.Linq;
 using Composite.Data;
 using Composite.Data.Types;
@@ -54,10 +55,7 @@ namespace Composite.C1Console.Search.DocumentSources
             using (new DataConnection(page.DataSourceId.PublicationScope, page.DataSourceId.LocaleScope))
             {
                 var placeholders = PageManager.GetPlaceholderContent(page.Id, page.VersionId);
-                foreach (var placeholder in placeholders)
-                {
-                    dataCrawler.CrawlXhtml(placeholder.Content);
-                }
+                placeholders.ForEach(pl => dataCrawler.CrawlData(pl, true));
             }
 
             // TODO: crawl page meta data as well

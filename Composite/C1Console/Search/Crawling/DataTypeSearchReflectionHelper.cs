@@ -13,9 +13,12 @@ namespace Composite.C1Console.Search.Crawling
 {
     internal static class DataTypeSearchReflectionHelper
     {
-
         private static readonly ConcurrentDictionary<Type, IEnumerable<SearchableFieldInfo>> DocumentFieldsCache =
             new ConcurrentDictionary<Type, IEnumerable<SearchableFieldInfo>>();
+
+        private static readonly ConcurrentDictionary<PropertyInfo, IDataFieldProcessor> DataFieldProcessors =
+            new ConcurrentDictionary<PropertyInfo, IDataFieldProcessor>();
+
 
         public static IEnumerable<SearchableFieldInfo> GetSearchableFields(Type interfaceType)
         {
@@ -39,66 +42,34 @@ namespace Composite.C1Console.Search.Crawling
             });
         }
 
+        public static IDataFieldProcessor GetDataFieldProcessor(PropertyInfo propertyInfo)
+        {
+            return DataFieldProcessors.GetOrAdd(propertyInfo, pi =>
+            {
+                var propertyType = pi.PropertyType;
+                if (propertyType == typeof (DateTime) || propertyType == typeof (DateTime?))
+                {
+                    return new DateTimeDataFieldProcessor();
+                }
+
+                return new DefaultDataFieldProcessor();
+            });
+        }
+
         public static IEnumerable<DocumentField> GetDocumentFields(Type interfaceType)
         {
             return from info in GetSearchableFields(interfaceType)
                    let prop = info.Key
                    let attr = info.Value
                    where attr.Previewable || attr.Faceted
-                   select new DocumentField(GetDocumentFieldName(prop), 
-                    attr.Faceted ? new DocumentFieldFacet { FieldOrder = 100 } : null,
-                    attr.Previewable ? GetDocumentFieldPreview(prop) : null)
+                   let processor = GetDataFieldProcessor(prop)
+                   select new DocumentField(
+                       processor.GetDocumentFieldName(prop),
+                       attr.Faceted ? processor.GetDocumentFieldFacet(prop) : null,
+                       attr.Previewable ? processor.GetDocumentFieldPreview(prop) : null)
                    {
-                       GetLabelFunc = culture => prop.Name
+                       GetFieldLabel = culture => prop.Name
                    };
-        }
-
-        private static DocumentFieldPreview GetDocumentFieldPreview(PropertyInfo dataField)
-        {
-            var attr = dataField.GetCustomAttribute<StoreFieldTypeAttribute>(true);
-            Verify.IsNotNull(attr, $"Failed to find and attribute of type '{nameof(StoreFieldTypeAttribute)}'");
-
-            var storeFieldType = attr.StoreFieldType;
-
-            return new DocumentFieldPreview
-            {
-                Sortable = IsFieldSortable(storeFieldType),
-                PreviewFunction = GetPreviewFunction(storeFieldType),
-                FieldOrder = 100
-            };
-        }
-
-        private static Func<object, string> GetPreviewFunction(StoreFieldType storeFieldType)
-        {
-            if (storeFieldType.IsDateTime)
-            {
-                return obj =>
-                {
-                    if (obj == null) return null;
-                    var date = DateTime.ParseExact((string) obj, "s", CultureInfo.InvariantCulture);
-
-                    return date.ToString("yyyy MMM d");
-                };
-            }
-
-            return obj => obj?.ToString();
-        }
-
-        internal static string GetDocumentFieldName(PropertyInfo propertyInfo)
-        {
-            return $"{propertyInfo.ReflectedType.Name}.{propertyInfo.Name}";
-        }
-
-        private static bool IsFieldSortable(StoreFieldType storeFieldType)
-        {
-            if (storeFieldType.IsString)
-            {
-                return storeFieldType.MaximumLength <= 64;
-            }
-
-            return storeFieldType.IsDateTime
-                   || storeFieldType.IsNumeric
-                   || storeFieldType.IsBoolean;
         }
     }
 }
