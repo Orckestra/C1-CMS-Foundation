@@ -339,6 +339,8 @@ namespace Composite.Core.WebClient
 
             using (GlobalInitializerFacade.GetPreInitHandlersScope())
             {
+                ApplicationStartupFacade.FireConfigureServices(ServiceLocator.ServiceCollection);
+
                 ApplicationStartupFacade.FireBeforeSystemInitialize();
             }
 

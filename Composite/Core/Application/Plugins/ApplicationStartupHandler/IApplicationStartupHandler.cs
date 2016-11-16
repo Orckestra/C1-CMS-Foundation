@@ -1,4 +1,5 @@
-﻿using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 using Composite.Core.Application.Plugins.ApplicationStartupHandler.Runtime;
 
 
@@ -12,6 +13,11 @@ namespace Composite.Core.Application.Plugins.ApplicationStartupHandler
     [ConfigurationNameMapper(typeof(ApplicationStartupHandlerDefaultNameRetriever))]
 	public interface IApplicationStartupHandler
 	{
+        /// <summary>
+        /// This handler will be called before Composite initialization. The data layer cannot be used here.
+        /// </summary>
+        void ConfigureServices(IServiceCollection serviceCollection);
+
         /// <summary>
         /// This handler will be called before Composite initialization. The data layer cannot be used here.
         /// </summary>

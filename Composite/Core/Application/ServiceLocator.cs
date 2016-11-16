@@ -54,7 +54,7 @@ namespace Composite.Core.Application
         /// <summary>
         /// Gets a request service provider
         /// </summary>
-        public static IServiceProvider RequestServices
+        public static IServiceProvider RequestScopedServices
         {
             get
             {
@@ -110,7 +110,7 @@ namespace Composite.Core.Application
                 return true;
             }
 
-            var serviceProvider = RequestServices ?? ApplicationServices;
+            var serviceProvider = RequestScopedServices ?? ApplicationServices;
 
             if (serviceProvider != null)
             {

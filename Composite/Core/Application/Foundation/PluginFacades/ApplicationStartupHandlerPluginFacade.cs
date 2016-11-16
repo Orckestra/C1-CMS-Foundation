@@ -5,6 +5,7 @@ using Composite.Core.Application.Plugins.ApplicationOnlineHandler.Runtime;
 using Composite.Core.Application.Plugins.ApplicationStartupHandler;
 using Composite.Core.Application.Plugins.ApplicationStartupHandler.Runtime;
 using Composite.Core.Collections.Generic;
+using Microsoft.Extensions.DependencyInjection;
 
 
 namespace Composite.Core.Application.Foundation.PluginFacades
@@ -14,9 +15,23 @@ namespace Composite.Core.Application.Foundation.PluginFacades
         private static ResourceLocker<Resources> _resourceLocker = new ResourceLocker<Resources>(new Resources(), Resources.Initialize);
 
 
+        public static void ConfigureServices(string handlerName, IServiceCollection serviceCollection)
+        {
+            Verify.ArgumentNotNullOrEmpty(handlerName, nameof(handlerName));
+            Verify.ArgumentNotNull(serviceCollection, nameof(serviceCollection));
+
+            using (_resourceLocker.Locker)
+            {
+                IApplicationStartupHandler provider = GetApplicationStartupHandler(handlerName);
+
+                provider.ConfigureServices(serviceCollection);
+            }
+        }
+
+
         public static void OnBeforeInitialize(string handlerName)
         {
-            Verify.ArgumentNotNullOrEmpty(handlerName, handlerName);
+            Verify.ArgumentNotNullOrEmpty(handlerName, nameof(handlerName));
 
             using (_resourceLocker.Locker)
             {
@@ -28,7 +43,7 @@ namespace Composite.Core.Application.Foundation.PluginFacades
 
         public static void OnInitialized(string handlerName)
         {
-            Verify.ArgumentNotNullOrEmpty(handlerName, handlerName);
+            Verify.ArgumentNotNullOrEmpty(handlerName, nameof(handlerName));
 
             using (_resourceLocker.Locker)
             {
