@@ -16,9 +16,13 @@ namespace Composite.Core.WebClient.Services.WampRouter
         {
             CookieCollection result = new CookieCollection();
 
-            foreach (KeyValuePair<string, string> cookie in httpContext.Request.Cookies)
+            foreach (var cookie in httpContext.Request.Cookies)
             {
-                result.Add(new Cookie(cookie.Key, cookie.Value));
+                if (cookie is KeyValuePair<string, string>)
+                {
+                    var castedCookie = (KeyValuePair<string, string>) cookie;
+                    result.Add(new Cookie(castedCookie.Key, castedCookie.Value));
+                }
             }
 
             return result;
