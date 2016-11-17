@@ -39,6 +39,11 @@ function HierarchicalSelectorBinding() {
 	 * @type {boolean}
 	 */
 	this.isRequired = false;
+
+	/**
+	 * @type {boolean}
+	 */
+	this.hasCounter = false;
 }
 
 /**
@@ -66,6 +71,8 @@ HierarchicalSelectorBinding.prototype.onBindingAttach = function () {
 	if (parent != null && parent instanceof DialogPageBodyBinding && parent.bindingElement.children.length === 1) {
 		parent.attachClassName(DialogPageBodyBinding.FILLED_CLASSNAME);
 	}
+
+	this.updateCounter();
 
 }
 
@@ -95,6 +102,7 @@ HierarchicalSelectorBinding.prototype._parseDOMProperties = function () {
 
 	this.autoSelectChildren = this.getProperty("autoselectchildren") === true;
 	this.isRequired = this.getProperty("required") === true;
+	this.hasCounter = this.getProperty("hascounter") === true;
 }
 
 HierarchicalSelectorBinding.prototype._populate = function () {
@@ -201,6 +209,8 @@ HierarchicalSelectorBinding.prototype.handleAction = function (action) {
 				this.detachClassName(DataBinding.CLASSNAME_INVALID);
 			}
 
+			this.updateCounter();
+
 			action.consume();
 			break;
 
@@ -212,6 +222,42 @@ HierarchicalSelectorBinding.prototype.handleAction = function (action) {
 			}
 			action.consume();
 			break;
+	}
+}
+
+
+
+HierarchicalSelectorBinding.prototype.updateCounter = function () {
+
+	if (this.hasCounter) {
+		var count = 0;
+		var selections = DOMUtil.getElementsByTagName(this.bindingElement, "selection");
+		new List(selections).each(function (selection) {
+			var isSelectable = selection.getAttribute("selectable") === "true";
+			var isSelected = selection.getAttribute("selected") === "true";
+			var isReadonly = selection.getAttribute("readonly") === "true";
+			if (isSelectable && !isReadonly && isSelected) {
+				count++;
+			}
+		}, this);
+		this.setCounter(count);
+		console.log(count);
+	}
+}
+
+
+HierarchicalSelectorBinding.prototype.setCounter = function (value) {
+
+	if (this.hasCounter) {
+		if (this.shadowTree.countLabelBinding == null) {
+			this.shadowTree.countLabelBinding = LabelBinding.newInstance(
+				this.bindingDocument
+			);
+			this.add(this.shadowTree.countLabelBinding);
+		}
+		var label = StringBundle.getString("ui", "Selector.Count");
+		if (!label) return;
+		this.shadowTree.countLabelBinding.setLabel(label.replace("{0}", value));
 	}
 }
 

@@ -13,10 +13,11 @@ using Composite.Core.Parallelization;
 using Composite.Data.Plugins.DataProvider.Streams;
 using Timer = System.Timers.Timer;
 using System.Threading.Tasks;
+using Composite.Core.WebClient.PhantomJs;
 
 namespace Composite.Core.WebClient
 {
-    internal static partial class BrowserRender
+    internal static class BrowserRender
     {
         private static readonly string LogTitle = typeof (BrowserRender).Name;
         private static readonly string CacheImagesFolder = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.CacheDirectory), "PreviewImages");
@@ -38,25 +39,6 @@ namespace Composite.Core.WebClient
         private static volatile bool Enabled = true;
         private static volatile bool ServerAvailabilityChecked;
         private static readonly AsyncLock _serverAvailabilityCheckLock = new AsyncLock();
-
-        public enum RenderingResultStatus
-        {
-            Success = 0,
-            Redirect = 1,
-            Error = 2,
-            Timeout = 3,
-            PhantomServerTimeout = 4,
-            PhantomServerIncorrectResponse = 5,
-            PhantomServerNoOutput = 6
-        }
-
-        public class RenderingResult
-        {
-            public RenderingResultStatus Status { get; set; }
-            public string FilePath { get; set; }
-            public string Output { get; set; }
-            public string RedirectUrl { get; set; }
-        }
 
         /// <summary>
         /// Ensures that the BrowserRenderer service is launched, without blocking the current thread
@@ -104,6 +86,7 @@ namespace Composite.Core.WebClient
 
             string outputImageFileName = Path.Combine(dropFolder, urlHash + ".png");
             string outputFileName = Path.Combine(dropFolder, urlHash + ".output");
+            string redirectLogFileName = Path.Combine(dropFolder, urlHash + ".redirect");
             string errorFileName = Path.Combine(dropFolder, urlHash + ".error");
 
             if (C1File.Exists(outputImageFileName) || C1File.Exists(outputFileName))
@@ -111,7 +94,7 @@ namespace Composite.Core.WebClient
 #if BrowserRender_NoCache
                 File.Delete(outputFileName);
 #else
-                string output = C1File.Exists(outputFileName) ? C1File.ReadAllText(outputFileName) : null;
+                string[] output = C1File.Exists(outputFileName) ? C1File.ReadAllLines(outputFileName) : null;
 
                 return new RenderingResult { FilePath = outputImageFileName, Output = output, Status = RenderingResultStatus.Success};
 #endif
@@ -126,7 +109,7 @@ namespace Composite.Core.WebClient
 
             if (result.Status >= RenderingResultStatus.Error)
             {
-                C1File.WriteAllText(errorFileName, result.Output);
+                C1File.WriteAllLines(errorFileName, result.Output);
             }
 
             if (!Enabled)
@@ -136,7 +119,11 @@ namespace Composite.Core.WebClient
 
             if (result.Status == RenderingResultStatus.Success)
             {
-                C1File.WriteAllText(outputFileName, result.Output);
+                C1File.WriteAllLines(outputFileName, result.Output);
+            }
+            else if (result.Status == RenderingResultStatus.Redirect)
+            {
+                C1File.WriteAllLines(redirectLogFileName, result.Output);
             }
 
             return result;

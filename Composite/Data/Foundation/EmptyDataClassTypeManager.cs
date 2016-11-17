@@ -43,7 +43,7 @@ namespace Composite.Data.Foundation
         {
             VerifyAssemblyLocation(interfaceType);
 
-            var dataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(interfaceType.GetImmutableTypeId(), true);
+            var dataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(interfaceType, true);
 
             return GetEmptyDataClassType(dataTypeDescriptor, forceReCompilation);
         }
@@ -78,7 +78,7 @@ namespace Composite.Data.Foundation
                 return CreateEmptyDataClassType(dataTypeDescriptor);
             }
 
-            Type interfaceType = TypeManager.TryGetType(dataTypeDescriptor.GetFullInterfaceName());
+            Type interfaceType = TypeManager.TryGetType(dataTypeDescriptor.TypeManagerTypeName);
 
             string emptyClassFullName = EmptyDataClassCodeGenerator.GetEmptyClassTypeFullName(dataTypeDescriptor);
             Type emptyClassType = TypeManager.TryGetType(emptyClassFullName);

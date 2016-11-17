@@ -91,10 +91,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\bin\Microsoft.Practices.ObjectBuilder.dll</HintPath>
     </Reference>
-    <Reference Include="NodaTime, Version=1.3.0.0, Culture=neutral, PublicKeyToken=4226afe0d9b296d1, processorArchitecture=MSIL">
-      <HintPath>..\packages\NodaTime.1.3.2\lib\net35-Client\NodaTime.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Configuration.Install" />
@@ -176,6 +172,10 @@
     <Compile Include="C1Console\Workflow\FormsWorkflowExtensions.cs" />
     <Compile Include="C1Console\Workflow\IFormsWorkflowExtension.cs" />
     <Compile Include="Core\Extensions\DateTimeExtensionMethods.cs" />
+    <Compile Include="Core\WebClient\PhantomJs\PhantomServer.cs" />
+    <Compile Include="Core\WebClient\PhantomJs\RenderingResult.cs" />
+    <Compile Include="Core\WebClient\PhantomJs\RenderingResultStatus.cs" />
+    <Compile Include="Core\WebClient\PhantomJs\RenderPreviewRequest.cs" />
     <Compile Include="Core\WebClient\Services\ConsoleMessageService\OpenSlideViewParams.cs" />
     <Compile Include="Data\DataScopeServicesFacade.cs" />
     <Compile Include="Data\DataServiceScopeManager.cs" />
@@ -265,7 +265,6 @@
     <Compile Include="Core\Routing\Pages\SeoFriendlyRedirectRouteHandler.cs" />
     <Compile Include="Core\Threading\ThreadCultureScope.cs" />
     <Compile Include="Core\WebClient\BrowserRender.cs" />
-    <Compile Include="Core\WebClient\BrowserRender_PhantomServer.cs" />
     <Compile Include="Core\WebClient\BuildManagerHelper.cs" />
     <Compile Include="Core\WebClient\Captcha\CaptchaConfiguration.cs" />
     <Compile Include="Core\WebClient\Renderings\FunctionPreview.cs" />
@@ -1130,6 +1129,7 @@
     <Compile Include="C1Console\Users\UserSettingsMock.cs" />
     <Compile Include="Data\Validation\Validators\StringSizeValidatorAttribute.cs" />
     <Compile Include="Plugins\Elements\UrlToEntityToken\DataUrlToEntityTokenMapper.cs" />
+    <Compile Include="Properties\SharedAssemblyInfo.cs" />
     <Compile Include="Verify.cs" />
     <Compile Include="C1Console\Events\BroadcastMessageQueueItem.cs" />
     <Compile Include="C1Console\Events\CollapseAndRefreshConsoleMessageQueueItem.cs" />
