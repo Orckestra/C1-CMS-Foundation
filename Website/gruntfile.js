@@ -35,6 +35,11 @@ module.exports = function (grunt) {
 				{ expand: true, cwd: 'bower_components/codemirror/mode/sql', src: ['*.*'], dest: 'Composite/lib/codemirror/mode/sql' },
 				{ expand: true, cwd: 'bower_components/codemirror/mode/xml', src: ['*.*'], dest: 'Composite/lib/codemirror/mode/xml' }
 			]
+		},
+		autobahnjs: {
+			files: [
+				{ expand: true, cwd: 'bower_components/autobahnjs', src: ['autobahn.js'], dest: 'Composite/lib/autobahnjs' },
+			]
 		}
 	});
 

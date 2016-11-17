@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Reflection;
 using Composite.C1Console.Events;
 using Composite.Core.Types.Foundation;
@@ -11,29 +10,36 @@ namespace Composite.Core.PackageSystem
 {
     internal static class PackageAssemblyHandler
     {
-        private static bool _initialized = false;
+        private static bool _initialized;
         private static readonly object _lock = new object();
         private static AssemblyFilenameCollection _loadedAssemblyFilenames = new AssemblyFilenameCollection();
-
+        private static List<Assembly> _inMemoryAssemblies = new List<Assembly>();
 
         public static void Initialize()
         {
-            if (!_initialized)
+            if (_initialized) return;
+
+            lock (_lock)
             {
-                lock (_lock)
-                {
-                    if (!_initialized)
-                    {
-                        GlobalEventSystemFacade.SubscribeToFlushEvent(OnFlushEvent);
+                if (_initialized) return;
 
-                        AppDomain.CurrentDomain.AssemblyResolve += OnAssemblyResolve;
+                GlobalEventSystemFacade.SubscribeToFlushEvent(args => ClearAssemblyList());
 
-                        _initialized = true;
-                    }
-                }
+                AppDomain.CurrentDomain.AssemblyResolve += OnAssemblyResolve;
+                AppDomain.CurrentDomain.AssemblyLoad += OnAssemblyLoad;
+
+                _initialized = true;
             }
         }
 
+        private static void OnAssemblyLoad(object sender, AssemblyLoadEventArgs args)
+        {
+            var asm = args.LoadedAssembly;
+            if (!asm.IsDynamic)
+            {
+                Log.LogVerbose(nameof(PackageAssemblyHandler), $"Assembly loaded: {asm.Location}");
+            }
+        }
 
 
         public static void AddAssembly(string assemblyFilePath)
@@ -47,24 +53,25 @@ namespace Composite.Core.PackageSystem
         }
 
 
+        public static Assembly TryGetAlreadyLoadedAssembly(string assemblyFileName)
+        {
+            string assemblyName = AssemblyFilenameCollection.GetAssemblyName(assemblyFileName);
+
+            lock (_lock)
+            {
+                return _inMemoryAssemblies.FirstOrDefault(asm => asm.GetName().Name == assemblyName);
+            }
+        }
+
 
         private static Assembly OnAssemblyResolve(object sender, ResolveEventArgs args)
         {
             string filename = args.Name;
 
-            // Why can the system not load the "System.Web.Extensions" assembly? 
-            // And "Composite.Core.XmlSerializers" <-- Licensing?
-            // For now ignore it, so no exception is thrown /MRJ
-            if ((filename == "System.Web.Extensions") ||
-                (filename.StartsWith("Composite.Core.XmlSerializers")))
-            {
-                return null;
-            }
-
             string fn = filename;
             if (fn.Contains(","))
             {
-                fn = fn.Remove(fn.IndexOf(",")).Trim();
+                fn = fn.Remove(fn.IndexOf(',')).Trim();
             }
 
             if (_loadedAssemblyFilenames.ContainsAssemblyName(fn))
@@ -77,11 +84,16 @@ namespace Composite.Core.PackageSystem
             {
                 try
                 {
-                    assembly = Assembly.LoadFile(filename);
+                    assembly = Assembly.LoadFrom(filename);
                 }
                 catch (Exception ex)
                 {
-                    Log.LogError("PackageAssemblyHandler", ex);
+                    Log.LogError(nameof(PackageAssemblyHandler), ex);
+                }
+
+                lock (_lock)
+                {
+                    _inMemoryAssemblies.Add(assembly);
                 }
             }
 
@@ -91,23 +103,11 @@ namespace Composite.Core.PackageSystem
 
         public static void ClearAssemblyList()
         {
-            Flush();
-        }
-
-
-        private static void Flush()
-        {
             lock (_lock)
             {
                 _loadedAssemblyFilenames = new AssemblyFilenameCollection();
+                _inMemoryAssemblies = new List<Assembly>();
             }
-        }
-
-
-
-        private static void OnFlushEvent(FlushEventArgs args)
-        {
-            Flush();
         }
     }
 }

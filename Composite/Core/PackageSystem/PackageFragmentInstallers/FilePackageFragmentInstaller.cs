@@ -347,24 +347,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 if (targetFilePath.StartsWith(Path.Combine(PathUtil.BaseDirectory, "Bin"), StringComparison.InvariantCultureIgnoreCase)
                     && targetFilePath.EndsWith(".dll", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    string fileName = Path.GetFileName(targetFilePath);
-
-                    if (!DllsNotToLoad.Any(fileName.StartsWith))
-                    {
-                        Assembly assembly;
-
-                        try
-                        {
-                            assembly = Assembly.LoadFrom(targetFilePath);
-                        }
-                        catch (Exception)
-                        {
-                            continue;
-                        }
-
-                        DataTypeTypesManager.AddNewAssembly(assembly, false);
-                    }
-                    
+                    LoadDataTypesFromDll(targetFilePath);
                 }
 
                 var fileElement = new XElement("File", new XAttribute("filename", fileToCopy.TargetRelativeFilePath));
@@ -378,6 +361,29 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
             }
 
             yield return new XElement("Files", fileElements);
+        }
+
+        private void LoadDataTypesFromDll(string filePath)
+        {
+            string fileName = Path.GetFileName(filePath);
+
+            if (DllsNotToLoad.Any(fileName.StartsWith)) return;
+
+            var assembly = PackageAssemblyHandler.TryGetAlreadyLoadedAssembly(filePath);
+
+            if(assembly == null)
+            {
+                try
+                {
+                    assembly = Assembly.LoadFrom(filePath);
+                }
+                catch (Exception)
+                {
+                    return;
+                }
+            }
+
+            DataTypeTypesManager.AddNewAssembly(assembly, false);
         }
 
         private string GetBackupFileName(string targetFilePath)

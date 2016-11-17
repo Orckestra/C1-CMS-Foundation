@@ -5,6 +5,7 @@ using Composite.Core.Extensions;
 using Composite.Data.DynamicTypes.Foundation;
 using Composite.Data.Foundation.PluginFacades;
 using Composite.C1Console.Events;
+using Composite.Core.Configuration;
 using Composite.Data.Transactions;
 using Composite.Core.Types;
 
@@ -28,9 +29,9 @@ namespace Composite.Data.DynamicTypes
 
 
         /// <exclude />
-        public bool TryGetDataTypeDescriptor(Guid immuteableTypeId, out DataTypeDescriptor dataTypeDescriptor)
+        public bool TryGetDataTypeDescriptor(Guid immutableTypeId, out DataTypeDescriptor dataTypeDescriptor)
         {
-            dataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(immuteableTypeId);
+            dataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(immutableTypeId);
 
             return dataTypeDescriptor != null;
         }
@@ -126,8 +127,8 @@ namespace Composite.Data.DynamicTypes
         /// <exclude />
         public void AddLocale(string providerName, CultureInfo cultureInfo)
         {
-            if (string.IsNullOrEmpty(providerName)) throw new ArgumentNullException("providerName");
-            if (cultureInfo == null) throw new ArgumentNullException("cultureInfo");
+            Verify.ArgumentNotNullOrEmpty(providerName, nameof(providerName));
+            Verify.ArgumentNotNull(cultureInfo, nameof(cultureInfo));
 
             using (var transactionScope = TransactionsFacade.CreateNewScope())
             {
@@ -135,7 +136,10 @@ namespace Composite.Data.DynamicTypes
                 transactionScope.Complete();
             }
 
-            CodeGenerationManager.GenerateCompositeGeneratedAssembly(true);           
+            if (!SystemSetupFacade.SetupIsRunning)
+            {
+                CodeGenerationManager.GenerateCompositeGeneratedAssembly(true);
+            }
         }
 
 
@@ -152,7 +156,7 @@ namespace Composite.Data.DynamicTypes
                 transactionScope.Complete();
             }
 
-            CodeGenerationManager.GenerateCompositeGeneratedAssembly(true);            
+            CodeGenerationManager.GenerateCompositeGeneratedAssembly(true);
         }
     }
 }

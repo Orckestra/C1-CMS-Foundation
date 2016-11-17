@@ -1,7 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using System.Web;
 using Composite.C1Console.Events;
 using Composite.Core.Configuration;
+using Composite.Core.WebClient.PhantomJs;
 
 namespace Composite.Core.WebClient.Renderings
 {
@@ -26,15 +28,17 @@ namespace Composite.Core.WebClient.Renderings
                 return null;
             }
 
-            if (renderingResult.Status == BrowserRender.RenderingResultStatus.Success)
+            if (renderingResult.Status == RenderingResultStatus.Success)
             {
                 return renderingResult.FilePath;
             }
 
-            if (renderingResult.Status >= BrowserRender.RenderingResultStatus.Error)
+            if (renderingResult.Status >= RenderingResultStatus.Error)
             {
-                Log.LogWarning("FunctionPreview", "Failed to build preview for function. Reason: {0}; Output:\r\n{1}", 
-                    renderingResult.Status, renderingResult.Output);
+                string functionTitle = context.Request.QueryString["title"] ?? "null";
+
+                Log.LogWarning("FunctionPreview", "Failed to build preview for function '{0}'. Reason: {1}; Output:\r\n{2}",
+                    functionTitle, renderingResult.Status, string.Join(Environment.NewLine, renderingResult.Output));
             }
             return null;
         }

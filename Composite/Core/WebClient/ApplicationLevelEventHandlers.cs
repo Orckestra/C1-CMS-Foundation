@@ -15,6 +15,7 @@ using Composite.Core.Logging;
 using Composite.Core.Routing;
 using Composite.Core.Threading;
 using Composite.Core.Types;
+using Composite.Core.WebClient.Services.WampRouter;
 using Composite.Data.Types;
 using Composite.Functions;
 using Composite.Plugins.Elements.UrlToEntityToken;
@@ -97,6 +98,11 @@ namespace Composite.Core.WebClient
             using (new LogExecutionTime(_verboseLogEntryTitle, "Initializing dynamic data action tokens"))
             {
                 DataActionTokenResolverRegistry.Register(ServiceLocator.ServiceCollection);
+            }
+
+            using (new LogExecutionTime(_verboseLogEntryTitle, "Initializing Wamp Router"))
+            {
+                WampRouterResolverRegistry.Register(ServiceLocator.ServiceCollection);
             }
 
             InternalUrls.Register(new MediaInternalUrlConverter());
