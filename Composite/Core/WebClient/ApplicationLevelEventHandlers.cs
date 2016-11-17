@@ -17,6 +17,7 @@ using Composite.Core.Logging;
 using Composite.Core.Routing;
 using Composite.Core.Threading;
 using Composite.Core.Types;
+using Composite.Data;
 using Composite.Data.Types;
 using Composite.Functions;
 using Composite.Plugins.Elements.UrlToEntityToken;
@@ -33,7 +34,7 @@ namespace Composite.Core.WebClient
     public static class ApplicationLevelEventHandlers
     {
         private const string _verboseLogEntryTitle = "RGB(205, 92, 92)ApplicationEventHandler";
-        readonly static object _syncRoot = new object();
+        static readonly object _syncRoot = new object();
         private static DateTime _startTime;
         private static bool _systemIsInitialized;
         private static readonly ConcurrentDictionary<string, Func<HttpContext, string>> _c1PageCustomStringProviders = new ConcurrentDictionary<string, Func<HttpContext, string>>();
@@ -105,8 +106,8 @@ namespace Composite.Core.WebClient
             InternalUrls.Register(new MediaInternalUrlConverter());
             InternalUrls.Register(new PageInternalUrlConverter());
 
-            services.AddSingleton<ISearchDocumentSource>(new CmsPageDocumentSource("CmsPages"));
-            services.AddSingleton<ISearchDocumentSource>(new MediaLibraryDocumentSource("MediaLibrary"));
+            services.AddSingleton<ISearchDocumentSourceProvider>(new BuiltInTypesDocumentSourceProvider());
+            services.AddSingleton<ISearchDocumentSourceProvider>(new DataTypesDocumentSourceProvider());
 
             VersionedDataHelper.Initialize();
         }

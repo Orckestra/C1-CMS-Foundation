@@ -2485,6 +2485,8 @@ public static string Browser_ToolTip=>T("Browser.ToolTip");
 public static string Duplication_Text(object parameter0)=>string.Format(T("Duplication.Text"), parameter0);
 ///<summary>&quot;Original&quot;</summary> 
 public static string DefaultVersionName=>T("DefaultVersionName");
+///<summary>&quot;{0} selected&quot;</summary> 
+public static string Selector_Count(object parameter0)=>string.Format(T("Selector.Count"), parameter0);
      private static string T(string key) 
        { 
             return StringResourceSystemFacade.GetString("Composite.Management", key);
@@ -2769,6 +2771,8 @@ public static string EditorCommon_InternalUrlPrefixLabel=>T("EditorCommon.Intern
 public static string EditorCommon_InternalUrlPrefixHelp=>T("EditorCommon.InternalUrlPrefixHelp");
 ///<summary>&quot;Has caching&quot;</summary> 
 public static string EditorCommon_HasCaching=>T("EditorCommon.HasCaching");
+///<summary>&quot;Is searchable&quot;</summary> 
+public static string EditorCommon_IsSearchable=>T("EditorCommon.IsSearchable");
 ///<summary>&quot;Has publishing&quot;</summary> 
 public static string EditorCommon_HasPublishing=>T("EditorCommon.HasPublishing");
 ///<summary>&quot;Is localizable data&quot;</summary> 
@@ -6626,6 +6630,26 @@ public static string _512CharMax=>T("512CharMax");
 public static string _1024CharMax=>T("1024CharMax");
 ///<summary>&quot;Unlimited length&quot;</summary> 
 public static string Unlimited=>T("Unlimited");
+///<summary>&quot;Search&quot;</summary> 
+public static string SearchGroupLabel=>T("SearchGroupLabel");
+///<summary>&quot;Text Search&quot;</summary> 
+public static string Search_TextSearch=>T("Search.TextSearch");
+///<summary>&quot;Index text content&quot;</summary> 
+public static string Search_IndexText_Label=>T("Search.IndexText.Label");
+///<summary>&quot;When checked, the text content of the field will be searchable.&quot;</summary> 
+public static string Search_IndexText_Help=>T("Search.IndexText.Help");
+///<summary>&quot;Search Results&quot;</summary> 
+public static string Search_SearchResults=>T("Search.SearchResults");
+///<summary>&quot;Enable field preview&quot;</summary> 
+public static string Search_FieldPreview_Label=>T("Search.FieldPreview.Label");
+///<summary>&quot;When checked, the field will appear in the search results table as a column.&quot;</summary> 
+public static string Search_FieldPreview_Help=>T("Search.FieldPreview.Help");
+///<summary>&quot;Faceted Search&quot;</summary> 
+public static string Search_FacetedSearch=>T("Search.FacetedSearch");
+///<summary>&quot;Enable faceted search&quot;</summary> 
+public static string Search_Facet_Label=>T("Search.Facet.Label");
+///<summary>&quot;When checked, the field will appear in search results as a facet.&quot;</summary> 
+public static string Search_Facet_Help=>T("Search.Facet.Help");
 ///<summary>&quot;Decimal number format&quot;</summary> 
 public static string DecimalNumberFormat=>T("DecimalNumberFormat");
 ///<summary>&quot;1 decimal place&quot;</summary> 

@@ -2,8 +2,6 @@
 using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
-using Composite.C1Console.Events;
-using Composite.Core.Collections.Generic;
 using Composite.Core.Types;
 using Composite.Core.WebClient.Renderings.Data;
 using Composite.Data.DynamicTypes;
@@ -22,15 +20,6 @@ namespace Composite.Data.GeneratedTypes
     /// </summary>
     public static class InterfaceCodeGenerator
     {
-        private static readonly ResourceLocker<Resources> ResourceLocker = new ResourceLocker<Resources>(new Resources(), Resources.Initialize);
-
-
-        static InterfaceCodeGenerator()
-        {
-            GlobalEventSystemFacade.SubscribeToFlushEvent(args => Flush());
-        }
-
-
         /// <summary>
         /// Adds the assembly references required by the supplied <see cref="DataTypeDescriptor"/> to the supplied  <see cref="CodeGenerationBuilder"/>
         /// </summary>
@@ -100,7 +89,7 @@ namespace Composite.Data.GeneratedTypes
             }
             catch (Exception ex)
             {
-                throw new InvalidOperationException(string.Format("Failed to generate interface for type '{0}'", dataTypeDescriptor.TypeManagerTypeName), ex);
+                throw new InvalidOperationException($"Failed to generate interface for type '{dataTypeDescriptor.TypeManagerTypeName}'", ex);
             }
         }
 
@@ -253,7 +242,7 @@ namespace Composite.Data.GeneratedTypes
             }
 
 
-            if (dataTypeDescriptor.SuperInterfaces.Contains(typeof(IPageMetaData)) == false)
+            if (!dataTypeDescriptor.SuperInterfaces.Contains(typeof(IPageMetaData)))
             {
                 if (dataTypeDescriptor.SuperInterfaces.Contains(typeof(IPublishControlled)))
                 {
@@ -278,19 +267,28 @@ namespace Composite.Data.GeneratedTypes
                             new CodeAttributeArgument(
                                 new CodeFieldReferenceExpression(
                                     new CodeTypeReferenceExpression(typeof(CachingType)),
-                                    "Full"
+                                    nameof(CachingType.Full)
                                 )
                             )
                         }
+                    ));
+            }
+
+            if (dataTypeDescriptor.Searchable)
+            {
+                // [SearchableTypeAttribute]
+                codeTypeDeclaration.CustomAttributes.Add(
+                    new CodeAttributeDeclaration(
+                        typeof(SearchableTypeAttribute).FullName
                     ));
             }
         }
 
 
 
-        private static void AddInterfaceProperties(CodeTypeDeclaration codeTypeDeclaratoin, DataTypeDescriptor dataTypeDescriptor, List<string> propertyNamesToSkip)
+        private static void AddInterfaceProperties(CodeTypeDeclaration codeTypeDeclaration, DataTypeDescriptor dataTypeDescriptor, List<string> propertyNamesToSkip)
         {
-            foreach (DataFieldDescriptor dataFieldDescriptor in dataTypeDescriptor.Fields.Where(dfd => dfd.Inherited == false))
+            foreach (var dataFieldDescriptor in dataTypeDescriptor.Fields.Where(dfd => !dfd.Inherited))
             {
                 if (propertyNamesToSkip.Contains(dataFieldDescriptor.Name)) continue;
 
@@ -302,17 +300,18 @@ namespace Composite.Data.GeneratedTypes
                     HasSet = true
                 };
 
-                AddPropertyAttributes(codeMemberProperty, dataFieldDescriptor, dataTypeDescriptor.KeyPropertyNames.Contains(dataFieldDescriptor.Name));
+                AddPropertyAttributes(codeMemberProperty.CustomAttributes, dataFieldDescriptor, 
+                    dataTypeDescriptor.KeyPropertyNames.Contains(dataFieldDescriptor.Name));
 
-                codeTypeDeclaratoin.Members.Add(codeMemberProperty);
+                codeTypeDeclaration.Members.Add(codeMemberProperty);
             }
         }
 
 
 
-        private static void AddPropertyAttributes(CodeMemberProperty codeMemberProperty, DataFieldDescriptor dataFieldDescriptor, bool isKeyField)
+        private static void AddPropertyAttributes(CodeAttributeDeclarationCollection customAttributes, DataFieldDescriptor dataFieldDescriptor, bool isKeyField)
         {
-            codeMemberProperty.CustomAttributes.Add(
+            customAttributes.Add(
                     new CodeAttributeDeclaration(
                         typeof(ImmutableFieldIdAttribute).FullName,
                         new CodeAttributeArgument[] {
@@ -322,7 +321,7 @@ namespace Composite.Data.GeneratedTypes
 
             if (isKeyField && dataFieldDescriptor.InstanceType == typeof(Guid) && dataFieldDescriptor.NewInstanceDefaultFieldValue == null)
             {
-                codeMemberProperty.CustomAttributes.Add(
+                customAttributes.Add(
                     new CodeAttributeDeclaration(
                         typeof(FunctionBasedNewInstanceDefaultFieldValueAttribute).FullName,
                         new CodeAttributeArgument[] {
@@ -332,7 +331,7 @@ namespace Composite.Data.GeneratedTypes
             }
             else if (dataFieldDescriptor.NewInstanceDefaultFieldValue != null)
             {
-                codeMemberProperty.CustomAttributes.Add(
+                customAttributes.Add(
                     new CodeAttributeDeclaration(
                         typeof(FunctionBasedNewInstanceDefaultFieldValueAttribute).FullName,
                         new CodeAttributeArgument[] {
@@ -371,7 +370,7 @@ namespace Composite.Data.GeneratedTypes
             }
 
 
-            codeMemberProperty.CustomAttributes.Add(
+            customAttributes.Add(
                 new CodeAttributeDeclaration(
                     typeof(StoreFieldTypeAttribute).FullName,
                     arguments.ToArray()
@@ -390,7 +389,7 @@ namespace Composite.Data.GeneratedTypes
                             )
                         );
 
-                    codeMemberProperty.CustomAttributes.Add(codeAttributeDeclaration);
+                    customAttributes.Add(codeAttributeDeclaration);
                 }
             }
 
@@ -399,7 +398,7 @@ namespace Composite.Data.GeneratedTypes
                 if (!dataFieldDescriptor.InstanceType.IsValueType)
                 {
                     var notNullAttribute = new CodeAttributeDeclaration(new CodeTypeReference(typeof(Microsoft.Practices.EnterpriseLibrary.Validation.Validators.NotNullValidatorAttribute)));
-                    codeMemberProperty.CustomAttributes.Add(notNullAttribute);
+                    customAttributes.Add(notNullAttribute);
                 }
 
                 if (dataFieldDescriptor.StoreType.IsDateTime)
@@ -409,11 +408,11 @@ namespace Composite.Data.GeneratedTypes
                     // 1753 is what sql server has as minimum date...
                     dateRangeAttribute.Arguments.Add(new CodeAttributeArgument(new CodePrimitiveExpression("1753-01-01T00:00:00")));
                     dateRangeAttribute.Arguments.Add(new CodeAttributeArgument(new CodePrimitiveExpression("9999-12-31T23:59:59")));
-                    codeMemberProperty.CustomAttributes.Add(dateRangeAttribute);
+                    customAttributes.Add(dateRangeAttribute);
                 }
                 else if (dataFieldDescriptor.ForeignKeyReferenceTypeName != null && dataFieldDescriptor.InstanceType == typeof(Guid))
                 {
-                    codeMemberProperty.CustomAttributes.Add(new CodeAttributeDeclaration(new CodeTypeReference(typeof(GuidNotEmptyAttribute))));
+                    customAttributes.Add(new CodeAttributeDeclaration(new CodeTypeReference(typeof(GuidNotEmptyAttribute))));
                 }
             }
 
@@ -425,7 +424,7 @@ namespace Composite.Data.GeneratedTypes
                     new CodeAttributeArgument(new CodePrimitiveExpression(dataFieldDescriptor.Position))
                 );
 
-                codeMemberProperty.CustomAttributes.Add(fieldPositionAttribute);
+                customAttributes.Add(fieldPositionAttribute);
             }
 
 
@@ -441,7 +440,7 @@ namespace Composite.Data.GeneratedTypes
                     new CodeAttributeArgument(new CodePrimitiveExpression(0)),
                     new CodeAttributeArgument(new CodePrimitiveExpression(max)));
 
-                codeMemberProperty.CustomAttributes.Add(stringLengthAttribute);
+                customAttributes.Add(stringLengthAttribute);
             }
 
             if (dataFieldDescriptor.StoreType.PhysicalStoreType == PhysicalStoreFieldType.Integer)
@@ -452,7 +451,7 @@ namespace Composite.Data.GeneratedTypes
                     new CodeAttributeArgument(new CodePrimitiveExpression(Int32.MinValue)),
                     new CodeAttributeArgument(new CodePrimitiveExpression(Int32.MaxValue)));
 
-                codeMemberProperty.CustomAttributes.Add(integerRangeValidatorAttribute);
+                customAttributes.Add(integerRangeValidatorAttribute);
             }
 
             if (dataFieldDescriptor.StoreType.IsDecimal)
@@ -462,7 +461,7 @@ namespace Composite.Data.GeneratedTypes
                 int precision = dataFieldDescriptor.StoreType.NumericScale;
 
                 decimalPrecisionAttribute.Arguments.Add(new CodeAttributeArgument(new CodePrimitiveExpression(precision)));
-                codeMemberProperty.CustomAttributes.Add(decimalPrecisionAttribute);
+                customAttributes.Add(decimalPrecisionAttribute);
             }
 
             if (dataFieldDescriptor.DefaultValue != null)
@@ -471,7 +470,7 @@ namespace Composite.Data.GeneratedTypes
 
                 if (codeAttributeDeclaration != null)
                 {
-                    codeMemberProperty.CustomAttributes.Add(codeAttributeDeclaration);
+                    customAttributes.Add(codeAttributeDeclaration);
                 }
             }
 
@@ -507,7 +506,7 @@ namespace Composite.Data.GeneratedTypes
                     codeAttributeArgument.Add(new CodeAttributeArgument("NullableString", new CodePrimitiveExpression(true)));
                 }
 
-                codeMemberProperty.CustomAttributes.Add(
+                customAttributes.Add(
                     new CodeAttributeDeclaration(
                         typeof(ForeignKeyAttribute).FullName,
                         codeAttributeArgument.ToArray()
@@ -526,7 +525,7 @@ namespace Composite.Data.GeneratedTypes
                     args.Add( new CodeAttributeArgument(new CodePrimitiveExpression(dataFieldDescriptor.TreeOrderingProfile.OrderDescending)));
                 }
 
-                codeMemberProperty.CustomAttributes.Add(
+                customAttributes.Add(
                         new CodeAttributeDeclaration(
                             typeof(TreeOrderingAttribute).FullName, 
                             args.ToArray()
@@ -537,37 +536,22 @@ namespace Composite.Data.GeneratedTypes
 
             if (dataFieldDescriptor.DataUrlProfile != null)
             {
-                codeMemberProperty.CustomAttributes.Add(dataFieldDescriptor.DataUrlProfile.GetCodeAttributeDeclaration());
+                customAttributes.Add(dataFieldDescriptor.DataUrlProfile.GetCodeAttributeDeclaration());
+            }
+
+            if (dataFieldDescriptor.SearchProfile != null)
+            {
+                customAttributes.Add(dataFieldDescriptor.SearchProfile.GetCodeAttributeDeclaration());
             }
 
 
             if (dataFieldDescriptor.GroupByPriority != 0)
             {
-                codeMemberProperty.CustomAttributes.Add(
+                customAttributes.Add(
                         new CodeAttributeDeclaration(
                             typeof(GroupByPriorityAttribute).FullName,
                                 new CodeAttributeArgument( new CodePrimitiveExpression( dataFieldDescriptor.GroupByPriority ) )
                         ));
-                
-            }
-
-        }
-
-
-
-        private static void Flush()
-        {
-            ResourceLocker.ResetInitialization();
-        }
-
-
-        private sealed class Resources
-        {
-            public Dictionary<DataTypeDescriptor, Type> CompiledInterfaces { get; set; }
-
-            public static void Initialize(Resources resources)
-            {
-                resources.CompiledInterfaces = new Dictionary<DataTypeDescriptor, Type>();
             }
         }
     }

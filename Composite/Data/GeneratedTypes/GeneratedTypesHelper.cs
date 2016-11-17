@@ -49,6 +49,7 @@ namespace Composite.Data.GeneratedTypes
         private string _newTypeNamespace;
         private string _newTypeTitle;
         private bool _cachable;
+        private bool _searchable;
         private bool _publishControlled;
         private bool _localizedControlled;
 
@@ -169,6 +170,17 @@ namespace Composite.Data.GeneratedTypes
         }
 
 
+        /// <exclude />
+        public bool IsSearchable
+        {
+            get
+            {
+                Verify.IsNotNull(_oldDataTypeDescriptor, "No old data type specified");
+
+                return _oldDataTypeDescriptor.Searchable;
+            }
+        }
+
 
         /// <exclude />
         public bool IsPublishControlled
@@ -196,7 +208,9 @@ namespace Composite.Data.GeneratedTypes
 
 
 
-        /// <exclude />
+        /// <summary>
+        /// Returns <value>true</value> if the date type is a page meta data type.
+        /// </summary>
         public bool IsEditProcessControlledAllowed
         {
             get
@@ -444,6 +458,12 @@ namespace Composite.Data.GeneratedTypes
             _cachable = cachable;
         }
 
+
+        /// <exclude />
+        public void SetSearchable(bool searchable)
+        {
+            _searchable = searchable;
+        }
 
 
         /// <exclude />
@@ -746,6 +766,7 @@ namespace Composite.Data.GeneratedTypes
                 _newLabelFieldName,
                 _newInternalUrlPrefix,
                 _cachable,
+                _searchable,
                 _publishControlled,
                 _localizedControlled,
                 _newDataFieldDescriptors,
@@ -763,6 +784,7 @@ namespace Composite.Data.GeneratedTypes
             string labelFieldName,
             string internalUrlPrefix,
             bool cachable,
+            bool searchable,
             bool publishControlled,
             bool localizedControlled,
             IEnumerable<DataFieldDescriptor> dataFieldDescriptors,
@@ -774,6 +796,7 @@ namespace Composite.Data.GeneratedTypes
             var dataTypeDescriptor = new DataTypeDescriptor(id, typeNamespace, typeName, true)
             {
                 Cachable = cachable,
+                Searchable = searchable,
                 Title = typeTitle,
                 LabelFieldName = labelFieldName,
                 InternalUrlPrefix = internalUrlPrefix
@@ -887,11 +910,15 @@ namespace Composite.Data.GeneratedTypes
 
         private DataTypeDescriptor CreateUpdatedDataTypeDescriptor()
         {
-            var dataTypeDescriptor = new DataTypeDescriptor(_oldDataTypeDescriptor.DataTypeId, _newTypeNamespace, _newTypeName, true);
+            var dataTypeDescriptor = new DataTypeDescriptor(
+                _oldDataTypeDescriptor.DataTypeId, _newTypeNamespace, _newTypeName, true)
+            {
+                Cachable = _cachable,
+                Searchable = _searchable
+            };
 
             dataTypeDescriptor.DataScopes.Add(DataScopeIdentifier.Public);
 
-            dataTypeDescriptor.Cachable = _cachable;
 
 
             Type[] indirectlyInheritedInterfaces =
@@ -1012,9 +1039,9 @@ namespace Composite.Data.GeneratedTypes
             DataFieldDescriptor targetKeyDataFieldDescriptor = targetDataTypeDescriptor.Fields[targetKeyFieldName];
 
             foreignKeyFieldName = fieldName ??
-                                  string.Format("{0}{1}ForeignKey", targetDataTypeDescriptor.Name, targetKeyFieldName);
+                                  $"{targetDataTypeDescriptor.Name}{targetKeyFieldName}ForeignKey";
 
-            WidgetFunctionProvider widgetFunctionProvider = StandardWidgetFunctions.GetDataReferenceWidget(targetType);
+            var widgetFunctionProvider = StandardWidgetFunctions.GetDataReferenceWidget(targetType);
 
             return new DataFieldDescriptor(
                             Guid.NewGuid(),
@@ -1063,7 +1090,7 @@ namespace Composite.Data.GeneratedTypes
 
             if (dataFieldDescriptor.ForeignKeyReferenceTypeName != null)
             {
-                DataTypeAssociationDescriptor dataTypeAssociationDescriptor = dataTypeDescriptor.DataAssociations.FirstOrDefault();
+                var dataTypeAssociationDescriptor = dataTypeDescriptor.DataAssociations.FirstOrDefault();
 
                 if (dataTypeAssociationDescriptor != null)
                 {

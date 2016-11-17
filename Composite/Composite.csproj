@@ -175,10 +175,14 @@
     <Compile Include="C1Console\Search\Crawling\XhtmlCrawlingHelper.cs" />
     <Compile Include="C1Console\Search\DocumentField.cs" />
     <Compile Include="C1Console\Search\Crawling\DataTypeSearchReflectionHelper.cs" />
+    <Compile Include="C1Console\Search\DocumentSources\BuiltInTypesDocumentSourceProvider.cs" />
+    <Compile Include="C1Console\Search\DocumentSources\DataTypeDocumentSource.cs" />
+    <Compile Include="C1Console\Search\DocumentSources\DataTypesDocumentSourceProvider.cs" />
     <Compile Include="C1Console\Search\DocumentSources\MediaLibraryDocumentSource.cs" />
     <Compile Include="C1Console\Search\DocumentSources\CmsPageDocumentSource.cs" />
     <Compile Include="C1Console\Search\IDocumentSourceListener.cs" />
     <Compile Include="C1Console\Search\ISearchDocumentSource.cs" />
+    <Compile Include="C1Console\Search\ISearchDocumentSourceProvider.cs" />
     <Compile Include="C1Console\Search\ISearchProvider.cs" />
     <Compile Include="C1Console\Search\SearchDocument.cs" />
     <Compile Include="C1Console\Search\SearchFacade.cs" />
@@ -197,6 +201,8 @@
     <Compile Include="Core\WebClient\Services\ConsoleMessageService\OpenSlideViewParams.cs" />
     <Compile Include="Data\DataScopeServicesFacade.cs" />
     <Compile Include="Data\DataServiceScopeManager.cs" />
+    <Compile Include="Data\DynamicTypes\SearchProfile.cs" />
+    <Compile Include="Data\SearchableTypeAttribute.cs" />
     <Compile Include="Data\SearchableFieldAttribute.cs" />
     <Compile Include="Data\Types\IVersioned.cs" />
     <Compile Include="Data\Types\IVersionedDataHelper.cs" />

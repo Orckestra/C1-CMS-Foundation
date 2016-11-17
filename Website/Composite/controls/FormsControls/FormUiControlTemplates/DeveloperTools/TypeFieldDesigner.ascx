@@ -289,6 +289,49 @@
                                                 </asp:PlaceHolder>
                                             </ui:fieldgroup>
                                         </asp:PlaceHolder>
+										
+                                        <asp:PlaceHolder runat="server" ID="plhSearch">
+                                            <ui:fieldgroup label="<%= Texts.SearchGroupLabel %>">
+	                                            
+												<asp:PlaceHolder runat="server" ID="plhSearch_IndexText">
+                                            		<ui:field>
+														<ui:fielddesc><%= Texts.Search_TextSearch %></ui:fielddesc>
+														<ui:fieldhelp><%= Texts.Search_IndexText_Help%></ui:fieldhelp>
+														<ui:fielddata>
+															<ui:checkboxgroup timestamp="<%= DateTime.Now.Ticks %>">
+																	<aspui:CheckBox ID="chkIndexText" runat="server" 
+																		ItemLabel="<%# Texts.Search_IndexText_Label%>" />
+															</ui:checkboxgroup>
+														</ui:fielddata>
+													</ui:field>
+												</asp:PlaceHolder> 
+												<asp:PlaceHolder runat="server" ID="plhSearch_FieldPreview">
+													<ui:field>
+														<ui:fielddesc><%= Texts.Search_SearchResults %></ui:fielddesc>
+														<ui:fieldhelp><%= Texts.Search_FieldPreview_Help %></ui:fieldhelp>
+														<ui:fielddata>
+															<ui:checkboxgroup timestamp="<%= DateTime.Now.Ticks %>">
+																	<aspui:CheckBox ID="chkSearchPreview" runat="server" 
+																		ItemLabel="<%# Texts.Search_FieldPreview_Label%>" />
+															</ui:checkboxgroup>
+														</ui:fielddata>
+													</ui:field>
+												</asp:PlaceHolder> 
+												<asp:PlaceHolder runat="server" ID="plhSearch_FacetedSearch">
+													<ui:field>
+														<ui:fielddesc><%= Texts.Search_FacetedSearch %></ui:fielddesc>
+														<ui:fieldhelp><%= Texts.Search_Facet_Help %></ui:fieldhelp>
+														<ui:fielddata>
+															<ui:checkboxgroup timestamp="<%= DateTime.Now.Ticks %>">
+																	<aspui:CheckBox ID="chkFacetField" runat="server" 
+																		ItemLabel="<%# Texts.Search_Facet_Label%>" />
+															</ui:checkboxgroup>
+														</ui:fielddata>
+													</ui:field>
+												</asp:PlaceHolder> 
+                                            </ui:fieldgroup>
+											
+                                        </asp:PlaceHolder>
 									</ui:fields>
 								</ui:scrollbox>
 							</ui:tabpanel>

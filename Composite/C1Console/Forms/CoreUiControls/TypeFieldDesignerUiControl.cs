@@ -37,5 +37,9 @@ namespace Composite.C1Console.Forms.CoreUiControls
         [BindableProperty]
         [FormsProperty]
         public string KeyFieldName { get; set; }
+
+
+        [FormsProperty]
+        public bool IsSearchable { get; set; }
     }
 }

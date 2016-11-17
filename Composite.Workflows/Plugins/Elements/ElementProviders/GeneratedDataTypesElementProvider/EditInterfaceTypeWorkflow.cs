@@ -43,6 +43,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             public const string InternalUrlPrefix = "InternalUrlPrefix";
             public const string HasCaching = "HasCaching";
             public const string HasPublishing = "HasPublishing";
+            public const string IsSearchable = "IsSearchable";
 
             public const string OldTypeName = "OldTypeName";
             public const string OldTypeNamespace = "OldTypeNamespace";
@@ -83,6 +84,8 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 {BindingNames.InternalUrlPrefix, dataTypeDescriptor.InternalUrlPrefix},
                 {BindingNames.HasCaching, helper.IsCachable},
                 {BindingNames.HasPublishing, helper.IsPublishControlled},
+                {BindingNames.IsSearchable, helper.IsSearchable},
+                
                 {BindingNames.DataFieldDescriptors, fieldDescriptors},
                 {BindingNames.OldTypeName, dataTypeDescriptor.Name},
                 {BindingNames.OldTypeNamespace, dataTypeDescriptor.Namespace}
@@ -115,6 +118,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 string typeTitle = this.GetBinding<string>(BindingNames.TypeTitle);
                 bool hasCaching = this.GetBinding<bool>(BindingNames.HasCaching);
                 bool hasPublishing = this.GetBinding<bool>(BindingNames.HasPublishing);
+                bool isSearchable = this.GetBinding<bool>(BindingNames.IsSearchable);
                 string keyFieldName = this.GetBinding<string>(BindingNames.KeyFieldName);
                 string labelFieldName = this.GetBinding<string>(BindingNames.LabelFieldName);
                 string internalUrlPrefix = this.GetBinding<string>(BindingNames.InternalUrlPrefix);
@@ -162,6 +166,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 if (helper.IsEditProcessControlledAllowed)
                 {
                     helper.SetCachable(hasCaching);
+                    helper.SetSearchable(isSearchable);
                     helper.SetPublishControlled(hasPublishing);
                     helper.SetLocalizedControlled(hasLocalization);
                 }

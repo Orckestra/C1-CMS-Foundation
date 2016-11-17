@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Composite.C1Console.Security;
 using Composite.Core;
@@ -18,8 +19,9 @@ namespace Composite.C1Console.Search
         /// <summary>
         /// Gets the document sources
         /// </summary>
-        public static IEnumerable<ISearchDocumentSource> DocumentSources => 
-            ServiceLocator.ApplicationServices.GetServices<ISearchDocumentSource>();
+        public static IEnumerable<ISearchDocumentSource> DocumentSources =>
+            ServiceLocator.ApplicationServices.GetServices<ISearchDocumentSourceProvider>()
+            .SelectMany(sp => sp.GetDocumentSources());
 
         /// <summary>
         /// Gets or sets the search provider
