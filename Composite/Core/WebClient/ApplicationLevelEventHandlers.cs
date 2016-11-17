@@ -19,7 +19,8 @@ using Composite.Data.Types;
 using Composite.Functions;
 using Composite.Plugins.Elements.UrlToEntityToken;
 using Composite.Plugins.Routing.InternalUrlConverters;
-
+using Microsoft.Extensions.DependencyInjection;
+using Composite.Core.Implementation;
 
 namespace Composite.Core.WebClient
 {
@@ -91,13 +92,10 @@ namespace Composite.Core.WebClient
             UrlToEntityTokenFacade.Register(new DataUrlToEntityTokenMapper());
             UrlToEntityTokenFacade.Register(new ServerLogUrlToEntityTokenMapper());
 
-            RoutedData.ConfigureServices(ServiceLocator.ServiceCollection);
 
-
-            using (new LogExecutionTime(_verboseLogEntryTitle, "Initializing dynamic data action tokens"))
-            {
-                DataActionTokenResolverRegistry.Register(ServiceLocator.ServiceCollection);
-            }
+            ServiceLocator.ServiceCollection.AddLogging();
+            ServiceLocator.ServiceCollection.AddRoutedData();
+            ServiceLocator.ServiceCollection.AddDataActionTokenResolver();
 
             InternalUrls.Register(new MediaInternalUrlConverter());
             InternalUrls.Register(new PageInternalUrlConverter());
