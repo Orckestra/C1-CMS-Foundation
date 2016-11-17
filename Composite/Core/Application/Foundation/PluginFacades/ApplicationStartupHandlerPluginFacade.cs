@@ -29,7 +29,7 @@ namespace Composite.Core.Application.Foundation.PluginFacades
         }
 
 
-        public static void OnBeforeInitialize(string handlerName)
+        public static void OnBeforeInitialize(string handlerName, IServiceProvider serviceProvider)
         {
             Verify.ArgumentNotNullOrEmpty(handlerName, nameof(handlerName));
 
@@ -37,11 +37,11 @@ namespace Composite.Core.Application.Foundation.PluginFacades
             {
                 IApplicationStartupHandler provider = GetApplicationStartupHandler(handlerName);
 
-                provider.OnBeforeInitialize();
+                provider.OnBeforeInitialize(serviceProvider);
             }
         }
 
-        public static void OnInitialized(string handlerName)
+        public static void OnInitialized(string handlerName, IServiceProvider serviceProvider)
         {
             Verify.ArgumentNotNullOrEmpty(handlerName, nameof(handlerName));
 
@@ -49,7 +49,7 @@ namespace Composite.Core.Application.Foundation.PluginFacades
             {
                 IApplicationStartupHandler provider = GetApplicationStartupHandler(handlerName);
 
-                provider.OnInitialized();
+                provider.OnInitialized(serviceProvider);
             }
         }
 

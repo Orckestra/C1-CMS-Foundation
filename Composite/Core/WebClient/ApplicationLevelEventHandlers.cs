@@ -341,14 +341,16 @@ namespace Composite.Core.WebClient
             {
                 ApplicationStartupFacade.FireConfigureServices(ServiceLocator.ServiceCollection);
 
-                ApplicationStartupFacade.FireBeforeSystemInitialize();
+                ServiceLocator.BuildServiceProvider();
+
+                ApplicationStartupFacade.FireBeforeSystemInitialize(ServiceLocator.ServiceProvider);
             }
 
             TempDirectoryFacade.OnApplicationStart();
 
             HostnameBindingsFacade.Initialize();
 
-            ApplicationStartupFacade.FireSystemInitialized();
+            ApplicationStartupFacade.FireSystemInitialized(ServiceLocator.ServiceProvider);
 
             ThreadDataManager.FinalizeThroughHttpContext();
         }

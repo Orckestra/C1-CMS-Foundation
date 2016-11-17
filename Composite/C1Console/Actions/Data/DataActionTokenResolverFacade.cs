@@ -47,7 +47,7 @@ namespace Composite.C1Console.Actions.Data
 
         private static DataActionTokenResolver GetDataActionTokenResolverService()
         {
-            return ServiceLocator.ApplicationServices.GetService<DataActionTokenResolver>();
+            return ServiceLocator.ServiceProvider.GetService<DataActionTokenResolver>();
         }
     }
 }

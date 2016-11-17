@@ -8,11 +8,11 @@ namespace Composite.Core.Application
     /// <summary>
     /// Build in service locator that is used for the injecting dependencies into c1 functions.
     /// </summary>
-    public static class ServiceLocator
+    internal static class ServiceLocator
     {
         private const string HttpContextKey = "HttpApplication.ServiceScope";
         private static IServiceCollection _serviceCollection;
-        private static IServiceProvider _applicationServices;
+        private static IServiceProvider _serviceProvider;
 
         /// <summary>
         /// A service collection to be populated at startup
@@ -30,24 +30,25 @@ namespace Composite.Core.Application
             set { _serviceCollection = value; }
         }
 
+        internal static void BuildServiceProvider()
+        {
+            _serviceProvider = _serviceCollection.BuildServiceProvider();
+        }
 
         /// <summary>
         /// Gets an application service provider
         /// </summary>
-        internal static IServiceProvider ApplicationServices 
+        internal static IServiceProvider ServiceProvider 
         {
             get
             {
-                if (_applicationServices == null)
+                if (_serviceProvider == null)
                 {
-                    if (_serviceCollection == null) return null;
-
-                    _applicationServices = _serviceCollection.BuildServiceProvider();
+                    throw new InvalidOperationException("IServiceProvider not build - call out of sequence.");
                 }
 
-                return _applicationServices;
+                return _serviceProvider;
             }
-            set { _applicationServices = value; } 
         }
 
 
@@ -71,12 +72,12 @@ namespace Composite.Core.Application
         /// </summary>
         internal static void CreateRequestServicesScope(HttpContext context)
         {
-            if (ApplicationServices == null)
+            if (ServiceProvider == null)
             {
                 return;
             }
 
-            var serviceScopeFactory = (IServiceScopeFactory) ApplicationServices.GetService(typeof(IServiceScopeFactory));
+            var serviceScopeFactory = (IServiceScopeFactory) ServiceProvider.GetService(typeof(IServiceScopeFactory));
             var serviceScope = serviceScopeFactory.CreateScope();
 
             context.Items[HttpContextKey] = serviceScope;
@@ -87,7 +88,7 @@ namespace Composite.Core.Application
         /// </summary>
         internal static void DisposeRequestServicesScope(HttpContext context)
         {
-            if (ApplicationServices == null)
+            if (ServiceProvider == null)
             {
                 return;
             }
@@ -110,7 +111,7 @@ namespace Composite.Core.Application
                 return true;
             }
 
-            var serviceProvider = RequestScopedServices ?? ApplicationServices;
+            var serviceProvider = RequestScopedServices ?? ServiceProvider;
 
             if (serviceProvider != null)
             {

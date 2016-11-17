@@ -168,6 +168,11 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
         {
             MethodInfo methodInfo = type.GetMethods().FirstOrDefault(m => m.Name == methodName );
 
+            if (methodInfo == null)
+            {
+                return null;
+            }
+
             if(!methodInfo.IsStatic)
             {
                 throw new InvalidOperationException($"Method '{type}' in type '{methodName}' should be static");
@@ -473,7 +478,7 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
 
 
         /// <exclude />
-        public void OnBeforeInitialize()
+        public void OnBeforeInitialize(IServiceProvider serviceProvider)
         {
             foreach (var startupHandler in _startupHandlers)
             {
@@ -488,7 +493,7 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
 
 
         /// <exclude />
-        public void OnInitialized()
+        public void OnInitialized(IServiceProvider serviceProvider)
         {
             foreach (var startupHandler in _startupHandlers)
             {
