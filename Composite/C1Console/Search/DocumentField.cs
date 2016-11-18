@@ -3,11 +3,9 @@ using System.Globalization;
 
 namespace Composite.C1Console.Search
 {
-    //public interface IFieldTokenizer
-    //{
-    //    IEnumerable<string> GetTokens(object fieldValue);
-    //}
-
+    /// <summary>
+    /// Contains information about the facet.
+    /// </summary>
     public class DocumentFieldFacet
     {
         /// <summary>
@@ -31,6 +29,9 @@ namespace Composite.C1Console.Search
     }
 
 
+    /// <summary>
+    /// Constains information how a data field is preserved and shown in search results.
+    /// </summary>
     public sealed class DocumentFieldPreview
     {
         /// <summary>

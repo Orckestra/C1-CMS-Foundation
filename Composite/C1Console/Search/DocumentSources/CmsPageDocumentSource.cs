@@ -37,7 +37,7 @@ namespace Composite.C1Console.Search.DocumentSources
             return pages.Select(FromPage);
         }
 
-        public IEnumerable<DocumentField> CustomFields 
+        public IEnumerable<DocumentField> CustomFields
             => DataTypeSearchReflectionHelper.GetDocumentFields(typeof (IPage));
 
         private SearchDocument FromPage(IPage page)
@@ -48,26 +48,22 @@ namespace Composite.C1Console.Search.DocumentSources
                 label = page.Title;
             }
 
-            var dataCrawler = new DataCrawlingHelper();
+            var documentBuilder = new SearchDocumentBuilder();
 
-            dataCrawler.CrawlData(page);
+            documentBuilder.SetDataType(typeof(IPage));
+            documentBuilder.CrawlData(page);
 
             using (new DataConnection(page.DataSourceId.PublicationScope, page.DataSourceId.LocaleScope))
             {
                 var placeholders = PageManager.GetPlaceholderContent(page.Id, page.VersionId);
-                placeholders.ForEach(pl => dataCrawler.CrawlData(pl, true));
+                placeholders.ForEach(pl => documentBuilder.CrawlData(pl, true));
             }
 
             // TODO: crawl page meta data as well
 
             string documentId = $"{page.Id}{page.VersionId}";
-            return new SearchDocument(Name, documentId, label, page.GetDataEntityToken())
-            {
-                ElementBundleName = null, // TODO: implement
-                FullText = dataCrawler.TextParts,
-                FieldValues = dataCrawler.FieldPreviewValues.ToDictionary(pair => pair.Key, pair => pair.Value),
-                FacetFieldValues = dataCrawler.FacetFieldValues.ToDictionary(pair => pair.Key, pair => pair.Value)
-            };
+
+            return documentBuilder.BuildDocument(Name, documentId, label, null, page.GetDataEntityToken());
         }
     }
 }

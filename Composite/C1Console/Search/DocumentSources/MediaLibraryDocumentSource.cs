@@ -48,15 +48,13 @@ namespace Composite.C1Console.Search.DocumentSources
             }
 
             string documentId = mediaFile.Id.ToString();
-            var helper = new DataCrawlingHelper();
-            helper.CrawlData(mediaFile);
 
-            return new SearchDocument(Name, documentId, label, mediaFile.GetDataEntityToken())
-            {
-                FullText = helper.TextParts,
-                FieldValues = helper.FieldPreviewValues.ToDictionary(a => a.Key, a => a.Value),
-                FacetFieldValues = helper.FacetFieldValues.ToDictionary(pair => pair.Key, pair => pair.Value)
-            };
+            var documentBuilder = new SearchDocumentBuilder();
+
+            documentBuilder.SetDataType(typeof(IMediaFile));
+            documentBuilder.CrawlData(mediaFile);
+
+            return documentBuilder.BuildDocument(Name, documentId, label, null, mediaFile.GetDataEntityToken());
         }
     }
 }

@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using Composite.Core.Types;
 using Composite.Data;
-using Composite.Data.DynamicTypes;
 using SearchableFieldInfo = System.Collections.Generic.KeyValuePair<System.Reflection.PropertyInfo, Composite.Data.SearchableFieldAttribute>;
 
 namespace Composite.C1Console.Search.Crawling
@@ -56,20 +54,24 @@ namespace Composite.C1Console.Search.Crawling
             });
         }
 
+
+
+
         public static IEnumerable<DocumentField> GetDocumentFields(Type interfaceType)
         {
-            return from info in GetSearchableFields(interfaceType)
-                   let prop = info.Key
-                   let attr = info.Value
-                   where attr.Previewable || attr.Faceted
-                   let processor = GetDataFieldProcessor(prop)
-                   select new DocumentField(
-                       processor.GetDocumentFieldName(prop),
-                       attr.Faceted ? processor.GetDocumentFieldFacet(prop) : null,
-                       attr.Previewable ? processor.GetDocumentFieldPreview(prop) : null)
-                   {
-                       GetFieldLabel = culture => prop.Name
-                   };
+            return SearchDocumentBuilder.GetDefaultDocumentFields().Concat(
+                from info in GetSearchableFields(interfaceType)
+                let prop = info.Key
+                let attr = info.Value
+                where attr.Previewable || attr.Faceted
+                let processor = GetDataFieldProcessor(prop)
+                select new DocumentField(
+                    processor.GetDocumentFieldName(prop),
+                    attr.Faceted ? processor.GetDocumentFieldFacet(prop) : null,
+                    attr.Previewable ? processor.GetDocumentFieldPreview(prop) : null)
+                {
+                    GetFieldLabel = culture => prop.Name
+                });
         }
     }
 }

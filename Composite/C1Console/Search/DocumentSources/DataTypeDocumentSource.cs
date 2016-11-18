@@ -49,17 +49,12 @@ namespace Composite.C1Console.Search.DocumentSources
                 return null;
             }
 
-            var dataCrawler = new DataCrawlingHelper();
-            dataCrawler.CrawlData(data);
+            var documentBuilder = new SearchDocumentBuilder();
+            documentBuilder.CrawlData(data);
+            documentBuilder.SetDataType(_interfaceType);
 
             string documentId = data.GetUniqueKey().ToString();
-            return new SearchDocument(Name, documentId, label, data.GetDataEntityToken())
-            {
-                ElementBundleName = null,
-                FullText = dataCrawler.TextParts,
-                FieldValues = dataCrawler.FieldPreviewValues.ToDictionary(pair => pair.Key, pair => pair.Value),
-                FacetFieldValues = dataCrawler.FacetFieldValues.ToDictionary(pair => pair.Key, pair => pair.Value)
-            };
+            return documentBuilder.BuildDocument(Name, documentId, label, null, data.GetDataEntityToken());
         }
     }
 }

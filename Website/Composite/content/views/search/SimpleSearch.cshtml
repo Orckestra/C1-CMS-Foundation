@@ -234,62 +234,60 @@ if (documents.Any())
 	<div class="results">
 		<table>
 			<thead>
-				<tr>
+			<tr>
+				@if (previewFields.Count == 0)
+				{
 					<td>Label</td>
-					@foreach (var field in previewFields)
-					{
-						var fieldName = field.Name;
-						var label = field.GetFieldLabel(CultureInfo.CurrentCulture);
+				}
+				@foreach (var field in previewFields)
+				{
+					var fieldName = field.Name;
+					var label = field.GetFieldLabel(CultureInfo.CurrentCulture);
 
-						<td>
-							@if (field.Preview.Sortable)
+					<td>
+						@if (field.Preview.Sortable)
+						{
+							if (fieldName == sortField)
 							{
-								if (fieldName == sortField)
-								{
-									@(sortAscending ? "▲" : "▼")
-								}
-
-								<a href="#" onclick="Sort('@fieldName', @((fieldName != sortField || !sortAscending) ? "true" : "false"))">
-									<label title="@fieldName">
-										@label
-									</label>
-								</a>
+								@(sortAscending ? "▲" : "▼")
 							}
-							else
-							{
+
+							<a href="#" onclick="Sort('@fieldName', @((fieldName != sortField || !sortAscending) ? "true" : "false"))">
 								<label title="@fieldName">
 									@label
 								</label>
-							}
-						</td>
-					}
-				</tr>
+							</a>
+						}
+						else
+						{
+							<label title="@fieldName">
+								@label
+							</label>
+						}
+					</td>
+				}
+			</tr>
 			</thead>
 			<tbody>
 				@foreach (var hit in documents)
 				{
+					int index = 0;
 					<tr class="hit">
-						<td>
-							<a href="@GetFocusUrl(hit.SerializedEntityToken)" target="_top">@hit.Label</a>
-						</td>
-						@foreach (var field in previewFields)
+						@if (previewFields.Count == 0)
 						{
-							var fieldName = field.Name;
-
-							object value;
 							<td>
-								@if (hit.FieldValues != null && hit.FieldValues.TryGetValue(fieldName, out value))
-								{
-									if (value != null && field.Preview.PreviewFunction != null)
-									{
-										@field.Preview.PreviewFunction(value)
-									}
-									else
-									{
-										@value
-									}
-								}
+								<a href="@GetFocusUrl(hit.SerializedEntityToken)" target="_top">@hit.Label</a>
 							</td>
+						}
+						else
+						{
+							foreach (var field in previewFields)
+							{
+								bool isFirst = index++ == 0;
+								<td>
+									@PreviewField(hit, field, isFirst)
+								</td>
+							}
 						}
 					</tr>
 				}
@@ -299,5 +297,30 @@ if (documents.Any())
 }
 }
 
+@helper PreviewField(SearchDocument doc, DocumentField field, bool isDocumentLink)
+{
+	var fieldName = field.Name;
 
+	object value;
+	string label = null;
+	if (doc.FieldValues != null && doc.FieldValues.TryGetValue(fieldName, out value) && value != null)
+	{
+		if (field.Preview.PreviewFunction != null)
+		{
+			label = field.Preview.PreviewFunction(value);
+		}
+		else
+		{
+			label = value.ToString();
+		}
+	}
 
+	if (isDocumentLink)
+	{
+		<a href="@GetFocusUrl(doc.SerializedEntityToken)" target="_top">@label</a>
+	}
+	else
+	{
+		@label
+	}
+}
