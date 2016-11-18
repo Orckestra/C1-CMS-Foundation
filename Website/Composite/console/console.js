@@ -10,6 +10,9 @@ import 'fixed-data-table-2/dist/fixed-data-table.css!scss';
 import 'console/console.scss!';
 import 'console/iconIndex.js';
 
+// TODO: Remove this when proper services available.
+import 'console/mocks/mockserver.js';
+
 document.title = 'Orckestra CMS: ' + location.hostname;
 
 const initialState = {

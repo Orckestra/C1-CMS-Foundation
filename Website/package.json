@@ -61,6 +61,7 @@
       "scss": "github:mobilexag/plugin-sass@^0.4.6",
       "svg": "github:npbenjohnson/plugin-svg@^0.1.0",
       "url-polyfill": "github:github/url-polyfill@^0.5.6",
+      "wampy": "npm:wampy@^4.0.0",
       "whatwg-fetch": "npm:whatwg-fetch@^1.0.0"
     },
     "devDependencies": {
@@ -73,15 +74,12 @@
       "glob": "npm:glob@^7.0.5",
       "jodid25519": "npm:jodid25519@^1.0.0",
       "jsbn": "npm:jsbn@0.1",
-      "module": "github:jspm/nodelibs-module@^0.2.0-alpha",
-      "querystring": "github:jspm/nodelibs-querystring@^0.2.0-alpha",
       "react-addons-test-utils": "npm:react-addons-test-utils@^15.3.0",
       "react-immutable-proptypes": "npm:react-immutable-proptypes@^2.1.0",
       "sinon": "npm:sinon@^1.17.5",
       "source-map": "npm:source-map@0.2",
       "systemjs-hot-reloader": "github:capaj/systemjs-hot-reloader@^0.6.0",
       "systemjs-hot-reloader-store": "github:peteruithoven/systemjs-hot-reloader-store@^1.0.0",
-      "tty": "github:jspm/nodelibs-tty@^0.2.0-alpha",
       "tweetnacl": "npm:tweetnacl@0.13",
       "unexpected-dom": "npm:unexpected-dom@^3.1.0",
       "unexpected-mitm": "npm:unexpected-mitm@^9.1.6",
@@ -105,17 +103,21 @@
       "immutable": "npm:immutable@^3.8.1",
       "magicpen-media": "npm:magicpen-media@^1.5.0",
       "messy": "npm:messy@^6.12.0",
+      "module": "github:jspm/nodelibs-module@^0.2.0-alpha",
       "net": "github:jspm/nodelibs-net@^0.2.0-alpha",
       "os": "github:jspm/nodelibs-os@^0.2.0-alpha",
       "path": "github:jspm/nodelibs-path@^0.2.0-alpha",
       "process": "github:jspm/nodelibs-process@^0.2.0-alpha",
       "punycode": "github:jspm/nodelibs-punycode@^0.2.0-alpha",
+      "querystring": "github:jspm/nodelibs-querystring@^0.2.0-alpha",
       "react": "npm:react@^15.3.2",
       "react-dom": "npm:react-dom@^15.3.2",
       "redux": "npm:redux@^3.5.2",
+      "repl": "github:jspm/nodelibs-repl@^0.2.0-alpha",
       "stream": "github:jspm/nodelibs-stream@^0.2.0-alpha",
       "string_decoder": "github:jspm/nodelibs-string_decoder@^0.2.0-alpha",
       "tls": "github:jspm/nodelibs-tls@^0.2.0-alpha",
+      "tty": "github:jspm/nodelibs-tty@^0.2.0-alpha",
       "unexpected": "npm:unexpected@^10.10.0",
       "unexpected-messy": "npm:unexpected-messy@^6.0.0",
       "url": "github:jspm/nodelibs-url@^0.2.0-alpha",
@@ -170,6 +172,20 @@
           "util": "@node/util"
         }
       },
+      "npm:debug@2.3.2": {
+        "main": "browser.js",
+        "jspmNodeConversion": false,
+        "format": "cjs",
+        "map": {
+          "./browser.js": {
+            "node": "./node.js"
+          },
+          "fs": "@node/fs",
+          "net": "@node/net",
+          "tty": "@node/tty",
+          "util": "@node/util"
+        }
+      },
       "npm:inherits@2.0.1": {
         "ignore": [
           "test.js"
@@ -187,6 +203,10 @@
         }
       },
       "npm:ms@0.7.1": {
+        "jspmNodeConversion": false,
+        "format": "cjs"
+      },
+      "npm:ms@0.7.2": {
         "jspmNodeConversion": false,
         "format": "cjs"
       },

@@ -318,6 +318,7 @@
 		"dialog": {
 			"name": "component-selector",
 			"type": "palette",
+			"headline": "Select a component",
 			"elementSource": ""
 		}
 	}

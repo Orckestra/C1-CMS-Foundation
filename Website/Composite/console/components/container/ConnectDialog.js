@@ -9,11 +9,11 @@ const dialogTypes = {
 
 function mapStateToProps(state, ownProps) {
 	// Harvest dialog identity from pageDef
-	let dialogDef = state.getIn(['dialogDefs', ownProps.pageDef.get('dialog')]);
+	let dialogDef = state.getIn(['dialogDefs', ownProps.pageDef.get('dialog')]) || Immutable.Map();
 	// TODO: Rig this up in a way that allows dialog control from layout state.
 	return {
 		dialogDef,
-		showType: (dialogDef || Immutable.Map()).get('type'),
+		showType: dialogDef.get('type'),
 		panelTypes: dialogTypes
 	};
 }
