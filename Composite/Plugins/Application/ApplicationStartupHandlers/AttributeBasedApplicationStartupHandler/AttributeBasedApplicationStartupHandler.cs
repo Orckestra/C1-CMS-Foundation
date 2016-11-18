@@ -21,28 +21,45 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 namespace Composite.Core.Application
 {
     /// <summary>    
-    /// Using this attribute on a class with the following two static methods,
-    /// will cause C1 to call those two methods in the initialization phase of C1.
-    /// This can be used to register event handlers ans such.
-    /// The static class should have these two static methods:
+    /// Using this attribute on a class with one or more of the following methods,
+    /// will cause the CMS to call those methods in the initialization phase.
+    /// This can be used to register services, event handlers and such.
     /// <code>
+    /// /* This handler will be called first, before C1 initialization, and allow you to register services exposed by <see cref="Composite.Core.ServiceLocator"/>
+    /// public void ConfigureServices(<see cref="Microsoft.Extensions.DependencyInjection.IServiceCollection"/> serviceCollection) {}
     /// /* This handler will be called before C1 initialization. The data layer cannot be used here. */
-    /// public static void OnBeforeInitialize() {}
+    /// public void OnBeforeInitialize() {}
     /// /* This handler will be called after initialization of C1 core. */
-    /// public static void OnInitialized() {}
+    /// public void OnInitialized() {}
     /// </code>
     /// </summary>
     /// <example>
+    /// To register a service on <see cref="Composite.Core.ServiceLocator"/>:
+    /// <code>
+    /// [ApplicationStartup]
+    /// public class MyServiceRegistration
+    /// {
+    ///     public void ConfigureServices(IServiceCollection serviceCollection)
+    ///     {
+    ///         // Register a singleton service that will be retrievable via Composite.Core.ServiceLocator
+    ///         serviceCollection.AddSingleton(typeof(ITestStuff), typeof(TestStuff));
+    ///     }
+    /// } 
+    /// </code>
+    /// 
+    /// If OnBeforeInitialize() or OnInitialized() has any parameters, they will be provided via the ServiceLocator.
+    /// 
     /// <code>
     /// [ApplicationStartup]
     /// public class MyAppStartupHandler
     /// {
-    ///     public static void OnBeforeInitialize()
+    ///     public void OnBeforeInitialize()
     ///     {
     ///     }
     ///     
-    ///     public static void OnInitialized()
+    ///     public void OnInitialized(Composite.Core.Logging.ILog log)
     ///     {
+    ///         log.LogInformation("Dependency Injection supported here");
     ///     }
     /// } 
     /// </code>
@@ -501,7 +518,7 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
 
         private static void InvokeWithServices(IServiceProvider serviceProvider, MethodInfo methodInfo)
         {
-            object[] methodArguments = methodInfo.GetParameters().Select(p => serviceProvider.GetService(p.ParameterType)).ToArray();
+            object[] methodArguments = methodInfo.GetParameters().Select(p => serviceProvider.GetRequiredService(p.ParameterType)).ToArray();
             object methodClass = methodInfo.IsStatic ? null : ActivatorUtilities.GetServiceOrCreateInstance(serviceProvider, methodInfo.DeclaringType);
 
             methodInfo.Invoke(methodClass, methodArguments);

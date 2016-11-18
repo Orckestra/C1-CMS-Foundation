@@ -1,6 +1,6 @@
 ﻿using System;
 using Composite.C1Console.Security;
-using Composite.Core.Application;
+using Composite.Core;
 using Composite.Data;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -47,7 +47,7 @@ namespace Composite.C1Console.Actions.Data
 
         private static DataActionTokenResolver GetDataActionTokenResolverService()
         {
-            return ServiceLocator.ServiceProvider.GetService<DataActionTokenResolver>();
+            return ServiceLocator.GetService<DataActionTokenResolver>();
         }
     }
 }

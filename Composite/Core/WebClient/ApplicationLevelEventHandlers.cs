@@ -10,6 +10,7 @@ using Composite.C1Console.Events;
 using Composite.Core.Application;
 using Composite.Core.Configuration;
 using Composite.Core.Extensions;
+using Composite.Core.Implementation;
 using Composite.Core.Instrumentation;
 using Composite.Core.Logging;
 using Composite.Core.Routing;
@@ -19,8 +20,7 @@ using Composite.Data.Types;
 using Composite.Functions;
 using Composite.Plugins.Elements.UrlToEntityToken;
 using Composite.Plugins.Routing.InternalUrlConverters;
-using Microsoft.Extensions.DependencyInjection;
-using Composite.Core.Implementation;
+
 
 namespace Composite.Core.WebClient
 {
@@ -91,8 +91,7 @@ namespace Composite.Core.WebClient
         {
             UrlToEntityTokenFacade.Register(new DataUrlToEntityTokenMapper());
             UrlToEntityTokenFacade.Register(new ServerLogUrlToEntityTokenMapper());
-
-
+            
             ServiceLocator.ServiceCollection.AddLogging();
             ServiceLocator.ServiceCollection.AddRoutedData();
             ServiceLocator.ServiceCollection.AddDataActionTokenResolver();
@@ -340,6 +339,7 @@ namespace Composite.Core.WebClient
                 ApplicationStartupFacade.FireConfigureServices(ServiceLocator.ServiceCollection);
 
                 ServiceLocator.BuildServiceProvider();
+                ServiceLocator.CreateRequestServicesScope(HttpContext.Current);
 
                 ApplicationStartupFacade.FireBeforeSystemInitialize(ServiceLocator.ServiceProvider);
             }
