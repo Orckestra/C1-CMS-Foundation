@@ -7,8 +7,6 @@ import options from 'console/state/reducers/options.js';
 import logs from 'console/state/reducers/logs.js';
 import getDefinitionReducer from 'console/state/reducers/definitions.js';
 import thunk from 'redux-thunk';
-import socket from 'console/access/socket.js';
-import socketReducer from 'console/state/reducers/socket.js';
 import observers from 'console/state/observers.js';
 import initState from 'console/state/initState.js';
 import Immutable from 'immutable';
@@ -17,8 +15,7 @@ let reducers = {
 	layout,
 	dataFields,
 	options,
-	logs,
-	socket: socketReducer
+	logs
 };
 ['page', 'tab', 'item', 'toolbar', 'fieldset', 'dataField', 'dialog'].forEach(typeName => {
 	reducers[typeName + 'Defs'] = getDefinitionReducer(typeName);
@@ -34,12 +31,11 @@ export default function configureStore(initialState) {
 		store.replaceReducer(consoleReducers);
 	} else {
 		store = createStore(consoleReducers, Immutable.fromJS(initialState), compose(
-			applyMiddleware(thunk.withExtraArgument(socket)),
+			applyMiddleware(thunk),
 			applyMiddleware(observers),
 			window.devToolsExtension ? window.devToolsExtension() : f => f
 		));
 		hotStore.prevStore = store;
-		socket.subscribe(store);
 		initState(store);
 	}
 	return store;
