@@ -21,7 +21,6 @@ using Composite.Functions;
 using Composite.Plugins.Elements.UrlToEntityToken;
 using Composite.Plugins.Routing.InternalUrlConverters;
 
-
 namespace Composite.Core.WebClient
 {
     /// <summary>    

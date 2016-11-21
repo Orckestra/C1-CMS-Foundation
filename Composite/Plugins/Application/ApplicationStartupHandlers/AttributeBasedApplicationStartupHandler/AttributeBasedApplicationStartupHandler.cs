@@ -21,9 +21,9 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 namespace Composite.Core.Application
 {
     /// <summary>    
-    /// Using this attribute on a class with one or more of the following methods,
-    /// will cause the CMS to call those methods in the initialization phase.
-    /// This can be used to register services, event handlers and such.
+    /// Using this attribute on a class will cause the CMS to call methods on it at startup. 
+    /// The following methods will be called, if they exist:
+    /// 
     /// <code>
     /// /* This handler will be called first, before C1 initialization, and allow you to register services exposed by <see cref="Composite.Core.ServiceLocator"/>
     /// public void ConfigureServices(<see cref="Microsoft.Extensions.DependencyInjection.IServiceCollection"/> serviceCollection) {}
@@ -64,6 +64,9 @@ namespace Composite.Core.Application
     /// } 
     /// </code>
     /// </example>
+    /// <notes>
+    /// Class and method can be static, but do not need to be. 
+    /// </notes>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public sealed class ApplicationStartupAttribute : Attribute
     {

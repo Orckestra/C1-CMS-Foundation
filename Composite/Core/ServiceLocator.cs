@@ -3,21 +3,24 @@ using System.Linq;
 using System.Web;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
 
 namespace Composite.Core
 {
     /// <summary>
     /// A mechanism for retrieving a service objects; that is, an object that provides custom support to other objects.
     /// 
-    /// To register a service, see 
-    /// 
-    /// <see cref="Microsoft.Extensions.DependencyInjection"/>
+    /// To register a service, see <see cref="Composite.Core.Application.ApplicationStartupAttribute"/> 
     /// </summary>
+    /// <remarks>
+    /// The underlying plumbing is from <see cref="Microsoft.Extensions.DependencyInjection"/>.
+    /// </remarks>
     public static class ServiceLocator
     {
         private const string HttpContextKey = "HttpApplication.ServiceScope";
         private static IServiceCollection _serviceCollection;
         private static IServiceProvider _serviceProvider = null;
+        private static ConcurrentDictionary<Type, bool> _hasTypeLookup = new ConcurrentDictionary<Type, bool>();
 
         /// <summary>
         /// Get service of type T
@@ -98,39 +101,41 @@ namespace Composite.Core
             {
                 Verify.IsNotNull(_serviceProvider,"IServiceProvider not build - call out of expected sequence.");
 
-                return RequestScopedServiceProvider;
+                return RequestScopedServiceProvider ?? _serviceProvider;
             }
         }
 
 
-#warning - this is cacheable
+  
         internal static bool HasService(Type serviceType)
         {
-            var serviceCollection = ServiceLocator.ServiceCollection;
-            if (serviceCollection != null
-                && serviceCollection.Any(sd => sd.ServiceType.IsAssignableFrom(serviceType)
-                                               || (serviceType.IsGenericType
-                                                    && sd.ServiceType.IsAssignableFrom(serviceType.GetGenericTypeDefinition()))))
-            {
-                return true;
-            }
+            Verify.ArgumentNotNull(serviceType, nameof(serviceType));
+            Verify.IsNotNull(_serviceProvider, "IServiceProvider not build - call out of expected sequence.");
 
-            var serviceProvider = ServiceProvider;
+            bool hasType;
 
-            if (serviceProvider != null)
+            if (!_hasTypeLookup.TryGetValue(serviceType, out hasType))
             {
+                if (ServiceCollection.Any(sd => sd.ServiceType.IsAssignableFrom(serviceType)
+                                                   || (serviceType.IsGenericType
+                                                        && sd.ServiceType.IsAssignableFrom(serviceType.GetGenericTypeDefinition()))))
+                {
+                    hasType = true;
+                }
+
                 try
                 {
-                    return serviceProvider.GetService(serviceType) != null;
+                    hasType = ServiceProvider.GetService(serviceType) != null;
                 }
                 catch (Exception)
                 {
-                    // Some of the services may fail during construction in current context.
-                    return true;
+                    hasType = false;
                 }
+
+                _hasTypeLookup.TryAdd(serviceType, hasType);
             }
 
-            return false;
+            return hasType;
         }
 
 
@@ -163,8 +168,9 @@ namespace Composite.Core
         /// </summary>
         internal static void CreateRequestServicesScope(HttpContext context)
         {
-            if (_serviceProvider == null || context == null)
-                return;
+            Verify.ArgumentNotNull(context, nameof(context));
+            Verify.IsNotNull(_serviceProvider, "ServiceProvider not initialized yet");
+            Verify.IsNull(context.Items[HttpContextKey], "Multiple calls to CreateRequestServicesScope unexpected");
 
             var serviceScopeFactory = (IServiceScopeFactory)_serviceProvider.GetService(typeof(IServiceScopeFactory));
             var serviceScope = serviceScopeFactory.CreateScope();
@@ -178,6 +184,7 @@ namespace Composite.Core
         /// </summary>
         internal static void DisposeRequestServicesScope(HttpContext context)
         {
+            Verify.ArgumentNotNull(context, nameof(context));
             var scope = (IServiceScope)context.Items[HttpContextKey];
             if (scope != null)
             {
@@ -194,11 +201,11 @@ namespace Composite.Core
             get
             {
                 var context = HttpContext.Current;
-                if (context == null) return _serviceProvider;
+                if (context == null) return null;
 
                 var scope = (IServiceScope)context.Items[HttpContextKey];
 
-                return scope != null ? scope.ServiceProvider : _serviceProvider;
+                return scope != null ? scope.ServiceProvider : null;
             }
         }
 
