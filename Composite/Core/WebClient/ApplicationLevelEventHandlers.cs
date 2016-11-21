@@ -161,7 +161,10 @@ namespace Composite.Core.WebClient
 
             ThreadDataManager.InitializeThroughHttpContext();
 
-            ServiceLocator.CreateRequestServicesScope(context);
+            if (SystemSetupFacade.IsSystemFirstTimeInitialized)
+            {
+                ServiceLocator.CreateRequestServicesScope(context);
+            }
 
             if (LogRequestDetails)
             {
