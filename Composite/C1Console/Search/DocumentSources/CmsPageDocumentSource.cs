@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Composite.C1Console.Search.Crawling;
@@ -12,10 +13,18 @@ namespace Composite.C1Console.Search.DocumentSources
     internal class CmsPageDocumentSource : ISearchDocumentSource
     {
         private readonly List<IDocumentSourceListener> _listeners = new List<IDocumentSourceListener>();
+        private readonly DataChangesIndexNotifier _changesIndexNotifier;
 
         public CmsPageDocumentSource(string name)
         {
             Name = name;
+
+            _changesIndexNotifier = new DataChangesIndexNotifier(
+                _listeners, typeof(IPage), 
+                data => FromPage((IPage)data),
+                data => GetDocumentId((IPage) data));
+
+            _changesIndexNotifier.Start();
         }
 
         public string Name { get; }
@@ -37,8 +46,8 @@ namespace Composite.C1Console.Search.DocumentSources
             return pages.Select(FromPage);
         }
 
-        public IEnumerable<DocumentField> CustomFields
-            => DataTypeSearchReflectionHelper.GetDocumentFields(typeof (IPage));
+        public ICollection<DocumentField> CustomFields { get; } 
+            = DataTypeSearchReflectionHelper.GetDocumentFields(typeof (IPage)).Evaluate();
 
         private SearchDocument FromPage(IPage page)
         {
@@ -61,9 +70,14 @@ namespace Composite.C1Console.Search.DocumentSources
 
             // TODO: crawl page meta data as well
 
-            string documentId = $"{page.Id}{page.VersionId}";
+            string documentId = GetDocumentId(page);
 
             return documentBuilder.BuildDocument(Name, documentId, label, null, page.GetDataEntityToken());
+        }
+
+        private string GetDocumentId(IPage page)
+        {
+            return $"{page.Id}{page.VersionId}";
         }
     }
 }

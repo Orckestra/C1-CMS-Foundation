@@ -15,9 +15,12 @@ namespace Composite.C1Console.Search.DocumentSources
         public MediaLibraryDocumentSource(string name)
         {
             Name = name;
+            CustomFields = DataTypeSearchReflectionHelper.GetDocumentFields(typeof(IMediaFile)).Evaluate();
         }
 
         public string Name { get; }
+
+        public ICollection<DocumentField> CustomFields { get; }
 
         public void Subscribe(IDocumentSourceListener sourceListener)
         {
@@ -36,9 +39,6 @@ namespace Composite.C1Console.Search.DocumentSources
             return mediaFiles.Select(FromMediaFile);
         }
 
-        public IEnumerable<DocumentField> CustomFields =>
-            DataTypeSearchReflectionHelper.GetDocumentFields(typeof (IMediaFile));
-
         private SearchDocument FromMediaFile(IMediaFile mediaFile)
         {
             string label = mediaFile.Title;
@@ -51,7 +51,7 @@ namespace Composite.C1Console.Search.DocumentSources
 
             var documentBuilder = new SearchDocumentBuilder();
 
-            documentBuilder.SetDataType(typeof(IMediaFile));
+            documentBuilder.SetDataType("Media File"); //TODO: localize
             documentBuilder.CrawlData(mediaFile);
 
             return documentBuilder.BuildDocument(Name, documentId, label, null, mediaFile.GetDataEntityToken());

@@ -23,7 +23,7 @@ namespace Composite.C1Console.Search
         /// <summary>
         /// Gets the custom fields.
         /// </summary>
-        IEnumerable<DocumentField> CustomFields { get; }
+        ICollection<DocumentField> CustomFields { get; }
 
         /// <summary>
         /// Subscribes the given search document sourceListener to the source.

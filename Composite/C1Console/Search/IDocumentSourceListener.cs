@@ -25,9 +25,8 @@ namespace Composite.C1Console.Search
         /// Deletes a search document from collection.
         /// </summary>
         /// <param name="cultureInfo">The culture.</param>
-        /// <param name="source">The document source name.</param>
         /// <param name="documentId">The id of the document to be deleted.</param>
-        void Delete(CultureInfo cultureInfo, string source, string documentId);
+        void Delete(CultureInfo cultureInfo, string documentId);
 
         /// <summary>
         /// Requests rebuilding all of the document for the specified source

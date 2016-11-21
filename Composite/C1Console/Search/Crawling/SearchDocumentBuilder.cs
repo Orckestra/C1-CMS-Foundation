@@ -48,7 +48,7 @@ namespace Composite.C1Console.Search.Crawling
 
 
         /// <summary>
-        /// Sets the interface type, name of which will be used for populating the related column in the search results.
+        /// Sets the interface type, name of which will be used for populating the "Data Type" column in the search results.
         /// </summary>
         /// <param name="interfaceType">The interface type.</param>
         public void SetDataType(Type interfaceType)
@@ -64,8 +64,14 @@ namespace Composite.C1Console.Search.Crawling
                 value = interfaceType.FullName;
             }
 
-            _fieldValues.Add(new KeyValuePair<string, object>(DefaultFieldNames.DataType, value));
-            _facetFieldValues.Add(new KeyValuePair<string, string[]>(DefaultFieldNames.DataType, new []{ value }));
+            SetDataType(value);
+        }
+
+        /// Sets the data type name,which will be used for populating the "Data Type" column in the search results.
+        public void SetDataType(string label)
+        {
+            _fieldValues.Add(new KeyValuePair<string, object>(DefaultFieldNames.DataType, label));
+            _facetFieldValues.Add(new KeyValuePair<string, string[]>(DefaultFieldNames.DataType, new[] { label }));
         }
 
         /// <summary>

@@ -12,10 +12,17 @@ namespace Composite.C1Console.Search.DocumentSources
     {
         private readonly List<IDocumentSourceListener> _listeners = new List<IDocumentSourceListener>();
         private readonly Type _interfaceType;
+        private readonly DataChangesIndexNotifier _changesIndexNotifier;
 
         public DataTypeDocumentSource(Type interfaceType)
         {
             _interfaceType = interfaceType;
+            CustomFields = DataTypeSearchReflectionHelper.GetDocumentFields(_interfaceType).Evaluate();
+
+            _changesIndexNotifier = new DataChangesIndexNotifier(
+                _listeners, _interfaceType, FromData, GetDocumentId);
+
+            _changesIndexNotifier.Start();
         }
 
         public string Name => _interfaceType.FullName;
@@ -37,8 +44,7 @@ namespace Composite.C1Console.Search.DocumentSources
             return data.Select(FromData).Where(doc => doc != null);
         }
 
-        public IEnumerable<DocumentField> CustomFields 
-            => DataTypeSearchReflectionHelper.GetDocumentFields(_interfaceType);
+        public ICollection<DocumentField> CustomFields { get; }
 
         private SearchDocument FromData(IData data)
         {
@@ -53,8 +59,13 @@ namespace Composite.C1Console.Search.DocumentSources
             documentBuilder.CrawlData(data);
             documentBuilder.SetDataType(_interfaceType);
 
-            string documentId = data.GetUniqueKey().ToString();
+            string documentId = GetDocumentId(data);
             return documentBuilder.BuildDocument(Name, documentId, label, null, data.GetDataEntityToken());
+        }
+
+        private string GetDocumentId(IData data)
+        {
+            return data.GetUniqueKey().ToString();
         }
     }
 }

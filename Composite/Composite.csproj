@@ -176,6 +176,7 @@
     <Compile Include="C1Console\Search\DocumentField.cs" />
     <Compile Include="C1Console\Search\Crawling\DataTypeSearchReflectionHelper.cs" />
     <Compile Include="C1Console\Search\DocumentSources\BuiltInTypesDocumentSourceProvider.cs" />
+    <Compile Include="C1Console\Search\DocumentSources\DataChangesIndexNotifier.cs" />
     <Compile Include="C1Console\Search\DocumentSources\DataTypeDocumentSource.cs" />
     <Compile Include="C1Console\Search\DocumentSources\DataTypesDocumentSourceProvider.cs" />
     <Compile Include="C1Console\Search\DocumentSources\MediaLibraryDocumentSource.cs" />
