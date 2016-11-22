@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Globalization;
 using Composite.Core.Logging;
-
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Composite.Core.Implementation
 {
     /// <summary>
     /// Implementation pending
     /// </summary>
-    public class LogImplementation
+    public class LogImplementation : ILog
     {
         /// <summary>
         /// Stateless constructor. This is used when implementations of static methods needs to be called        
@@ -176,5 +176,20 @@ namespace Composite.Core.Implementation
         {
             LoggingService.LogCritical(title, exception);
         }        
+    }
+
+    /// <summary>
+    /// IServiceCollection extensions
+    /// </summary>
+    public static class ServiceCollectionExtensions
+    {
+        /// <summary>
+        /// Registers logging service
+        /// </summary>
+        /// <param name="serviceCollection">Collection onto register service</param>
+        public static void AddLogging(this IServiceCollection serviceCollection)
+        {
+            serviceCollection.AddSingleton(typeof(ILog), typeof(LogImplementation));
+        }
     }
 }

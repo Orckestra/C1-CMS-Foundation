@@ -1,6 +1,6 @@
 ﻿using System;
 using Composite.C1Console.Security;
-using Composite.Core.Application;
+using Composite.Core;
 using Composite.Data;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -31,7 +31,7 @@ namespace Composite.C1Console.Actions.Data
         /// <param name="dataActionToken"></param>
         public static void RegisterDefault<T>(ActionIdentifier actionIdentifier, Func<T, ActionToken> dataActionToken) where T : IData
         {
-            GetDataActionTokenResolverService().RegisterDefault<T>(actionIdentifier, dataActionToken);
+                GetDataActionTokenResolverService().RegisterDefault<T>(actionIdentifier, dataActionToken);
         }
         /// <summary>
         /// Use this to assaign an action to a certain data type if a certain condition met
@@ -47,7 +47,7 @@ namespace Composite.C1Console.Actions.Data
 
         private static DataActionTokenResolver GetDataActionTokenResolverService()
         {
-            return ServiceLocator.ApplicationServices.GetService<DataActionTokenResolver>();
+            return ServiceLocator.GetService<DataActionTokenResolver>();
         }
     }
 }

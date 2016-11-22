@@ -183,7 +183,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 {
                     IData existingData = DataFacade.TryGetDataByUniqueKey(interfaceType, dataKey);
 
-                    if (data != null)
+                    if (existingData != null)
                     {
                         CopyFieldValues(dataType, existingData, addElement);
                         DataFacade.Update(existingData, false, true, false);

@@ -138,9 +138,6 @@ del ..\..\App_Data\Composite\TreeDefinitions\Composite.Community.ContactFrom.Ema
 del ..\..\Bin\Composite.Versioning.ContentVersioning.dll
 del TreeDefinitions\Composite.Versioning.ContentVersioning.xml
 
-:: Root webconfig reset
-tf undo ../../web.config /noprompt
-attrib -r ../../web.config
 
 :: Base site cleanup
 rd ..\..\Frontend\Composite\C1BaseSite /S /Q
@@ -151,6 +148,8 @@ del ..\..\Composite\InstalledPackages\localization\Composite.TemplateSites.Base0
 del TreeDefinitions\Composite.TemplateSites.Base01.News.NewsItem.xml 
 del TreeDefinitions\Composite.TemplateSites.Base01.TeaserSpot.xml
 
+copy ..\..\DebugBuild.Web.config ..\..\Web.config /y
+copy DebugBuild.Composite.config Composite.config /y
 
 
 :: Composite2.0.TemplateSites.Base01.zip

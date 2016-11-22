@@ -12,6 +12,7 @@ using Composite.C1Console.Search.DocumentSources;
 using Composite.Core.Application;
 using Composite.Core.Configuration;
 using Composite.Core.Extensions;
+using Composite.Core.Implementation;
 using Composite.Core.Instrumentation;
 using Composite.Core.Logging;
 using Composite.Core.Routing;
@@ -23,7 +24,6 @@ using Composite.Functions;
 using Composite.Plugins.Elements.UrlToEntityToken;
 using Composite.Plugins.Routing.InternalUrlConverters;
 using Microsoft.Extensions.DependencyInjection;
-
 
 namespace Composite.Core.WebClient
 {
@@ -96,18 +96,17 @@ namespace Composite.Core.WebClient
             UrlToEntityTokenFacade.Register(new ServerLogUrlToEntityTokenMapper());
 
             var services = ServiceLocator.ServiceCollection;
-            RoutedData.ConfigureServices(services);
-
-            using (new LogExecutionTime(_verboseLogEntryTitle, "Initializing dynamic data action tokens"))
-            {
-                DataActionTokenResolverRegistry.Register(services);
-            }
+            services.AddLogging();
+            services.AddRoutedData();
+            services.AddDataActionTokenResolver();
+            services.AddSingleton<ISearchDocumentSourceProvider>(new BuiltInTypesDocumentSourceProvider());
+            services.AddSingleton<ISearchDocumentSourceProvider>(new DataTypesDocumentSourceProvider());
 
             InternalUrls.Register(new MediaInternalUrlConverter());
             InternalUrls.Register(new PageInternalUrlConverter());
 
-            services.AddSingleton<ISearchDocumentSourceProvider>(new BuiltInTypesDocumentSourceProvider());
-            services.AddSingleton<ISearchDocumentSourceProvider>(new DataTypesDocumentSourceProvider());
+
+            
 
             VersionedDataHelper.Initialize();
         }
@@ -172,7 +171,10 @@ namespace Composite.Core.WebClient
 
             ThreadDataManager.InitializeThroughHttpContext();
 
+            if (SystemSetupFacade.IsSystemFirstTimeInitialized)
+            {
             ServiceLocator.CreateRequestServicesScope(context);
+            }
 
             if (LogRequestDetails)
             {
@@ -346,14 +348,19 @@ namespace Composite.Core.WebClient
 
             using (GlobalInitializerFacade.GetPreInitHandlersScope())
             {
-                ApplicationStartupFacade.FireBeforeSystemInitialize();
+                ApplicationStartupFacade.FireConfigureServices(ServiceLocator.ServiceCollection);
+
+                ServiceLocator.BuildServiceProvider();
+                ServiceLocator.CreateRequestServicesScope(HttpContext.Current);
+
+                ApplicationStartupFacade.FireBeforeSystemInitialize(ServiceLocator.ServiceProvider);
             }
 
             TempDirectoryFacade.OnApplicationStart();
 
             HostnameBindingsFacade.Initialize();
 
-            ApplicationStartupFacade.FireSystemInitialized();
+            ApplicationStartupFacade.FireSystemInitialized(ServiceLocator.ServiceProvider);
 
             ThreadDataManager.FinalizeThroughHttpContext();
         }

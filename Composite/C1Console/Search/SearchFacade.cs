@@ -20,14 +20,14 @@ namespace Composite.C1Console.Search
         /// Gets the document sources
         /// </summary>
         public static IEnumerable<ISearchDocumentSource> DocumentSources =>
-            ServiceLocator.ApplicationServices.GetServices<ISearchDocumentSourceProvider>()
+            ServiceLocator.GetServices<ISearchDocumentSourceProvider>()
             .SelectMany(sp => sp.GetDocumentSources());
 
         /// <summary>
         /// Gets or sets the search provider
         /// </summary>
         public static ISearchProvider SearchProvider
-            => ServiceLocator.ApplicationServices.GetService<ISearchProvider>();
+            => ServiceLocator.GetService<ISearchProvider>();
 
         /// <summary>
         /// Indicates whether search functionality is enabled
