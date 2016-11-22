@@ -99,14 +99,11 @@ namespace Composite.Core.WebClient
             services.AddLogging();
             services.AddRoutedData();
             services.AddDataActionTokenResolver();
-            services.AddSingleton<ISearchDocumentSourceProvider>(new BuiltInTypesDocumentSourceProvider());
-            services.AddSingleton<ISearchDocumentSourceProvider>(new DataTypesDocumentSourceProvider());
+            services.AddDefaultSearchDocumentSourceProviders();
 
             InternalUrls.Register(new MediaInternalUrlConverter());
             InternalUrls.Register(new PageInternalUrlConverter());
 
-
-            
 
             VersionedDataHelper.Initialize();
         }

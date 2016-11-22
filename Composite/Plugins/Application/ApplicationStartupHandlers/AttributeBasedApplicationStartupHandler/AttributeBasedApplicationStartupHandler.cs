@@ -12,7 +12,6 @@ using Composite.Core;
 using Composite.Core.Application;
 using Composite.Core.Application.Plugins.ApplicationStartupHandler;
 using Composite.Core.Configuration;
-using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Core.Types;
 using Microsoft.Extensions.DependencyInjection;
@@ -114,7 +113,7 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
         /// <exclude />
         public void OnBeforeInitialize(IServiceProvider serviceProvider)
         {
-            ExecuteEventHandlers(serviceProvider, handler => handler.OnBeforeInitialeMethod);
+            ExecuteEventHandlers(serviceProvider, handler => handler.OnBeforeInitializeMethod);
         }
 
 
@@ -136,7 +135,7 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
             public Type Type { get; }
             public ApplicationStartupAttribute Attribute { get; }
 
-            public MethodInfo OnBeforeInitialeMethod { get; set; }
+            public MethodInfo OnBeforeInitializeMethod { get; set; }
             public MethodInfo OnInitializedMethod { get; set; }
             public MethodInfo ConfigureServicesMethod { get; set; }
         }
@@ -144,9 +143,9 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
         private static readonly string LogTitle = typeof (AttributeBasedApplicationStartupHandler).Name;
         private static readonly string CacheFileName = "StartupHandlersCache.xml";
 
-        private static readonly string OnBeforeInitializeMethodName = "OnBeforeInitialize";
-        private static readonly string OnInitializedMethodName = "OnInitialized";
-        private static readonly string ConfigureServicesMethodName = "ConfigureServices";        
+        private static readonly string OnBeforeInitializeMethodName = nameof(IApplicationStartupHandler.OnBeforeInitialize);
+        private static readonly string OnInitializedMethodName = nameof(IApplicationStartupHandler.OnInitialized);
+        private static readonly string ConfigureServicesMethodName = nameof(IApplicationStartupHandler.ConfigureServices);
 
         private readonly List<StartupHandlerInfo> _startupHandlers = new List<StartupHandlerInfo>();
 
@@ -208,17 +207,14 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
             {
                 var type = startupHandler.Type;
 
-                startupHandler.ConfigureServicesMethod = type.GetMethods().FirstOrDefault(m => m.Name == ConfigureServicesMethodName && m.GetParameters().Length == 1 && m.GetParameters()[0].ParameterType == typeof(IServiceCollection));
-                startupHandler.OnBeforeInitialeMethod = type.GetMethods().FirstOrDefault(m => m.Name == OnBeforeInitializeMethodName);
-                startupHandler.OnInitializedMethod = type.GetMethods().FirstOrDefault(m => m.Name == OnInitializedMethodName);
+                var methods = type.GetMethods();
+
+                startupHandler.ConfigureServicesMethod = methods.FirstOrDefault(m => m.Name == ConfigureServicesMethodName && m.GetParameters().Length == 1 && m.GetParameters()[0].ParameterType == typeof(IServiceCollection));
+                startupHandler.OnBeforeInitializeMethod = methods.FirstOrDefault(m => m.Name == OnBeforeInitializeMethodName);
+                startupHandler.OnInitializedMethod = methods.FirstOrDefault(m => m.Name == OnInitializedMethodName);
 
                 _startupHandlers.Add(startupHandler);
             }
-        }
-
-        private static MethodInfo TryGetMethod(Type type, string methodName, Func<MethodInfo, bool> methodPredicate, bool isStatic)
-        {
-            return type.GetMethods().FirstOrDefault(m => m.Name == methodName && m.IsStatic == isStatic && methodPredicate(m));
         }
 
 
@@ -244,7 +240,7 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
             {
                 if(ex is IOException || ex is UnauthorizedAccessException)
                 {
-                    Log.LogWarning(LogTitle, "Failed to open file '{0}'".FormatWith(CacheFilePath));
+                    Log.LogWarning(LogTitle, $"Failed to open file '{CacheFilePath}'");
                     Log.LogError(LogTitle, ex);
                     return result;
                 }
@@ -257,7 +253,7 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
 
                 if(innerEx is XmlException || innerEx is SerializationException)
                 {
-                    Log.LogWarning(LogTitle, "Failed to deserialize file '{0}'".FormatWith(CacheFilePath));
+                    Log.LogWarning(LogTitle, $"Failed to deserialize file '{CacheFilePath}'");
                     Log.LogError(LogTitle, ex);
                     return result;
                 }
@@ -265,9 +261,7 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
                 throw;
             }
 
-            if(cached != null 
-                && cached.Assemblies != null 
-                && cached.Assemblies.Length != 0)
+            if (cached?.Assemblies != null && cached.Assemblies.Length != 0)
             {
                 result.AddRange(cached.Assemblies);
             }
@@ -324,7 +318,7 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
             }
             catch (ReflectionTypeLoadException ex)
             {
-                Log.LogWarning(LogTitle, "Failed to load assembly '{0}'".FormatWith(filePath));
+                Log.LogWarning(LogTitle, $"Failed to load assembly '{filePath}'");
                 if(ex.LoaderExceptions != null && ex.LoaderExceptions.Length > 0)
                 {
                     Log.LogError(LogTitle, ex.LoaderExceptions[0]);
@@ -418,7 +412,7 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
             }
             catch (UnauthorizedAccessException)
             {
-                Log.LogWarning(LogTitle, "Failed to open file '{0}'".FormatWith(CacheFilePath));
+                Log.LogWarning(LogTitle, $"Failed to open file '{CacheFilePath}'");
             }
         }
 
@@ -432,7 +426,7 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
             }
             catch (TypeLoadException exception)
             {
-                Log.LogError(LogTitle, new Exception("Failed to load assembly '{0}'".FormatWith(assembly.FullName), exception));
+                Log.LogError(LogTitle, new Exception($"Failed to load assembly '{assembly.FullName}'", exception));
                 types = null;
                 return false;
             }
@@ -442,7 +436,7 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
                     ? exception.LoaderExceptions.First()
                     : exception;
                 
-                Log.LogError(LogTitle, new Exception("Failed to load assembly '{0}'".FormatWith(assembly.FullName), exceptionToLog));
+                Log.LogError(LogTitle, new Exception($"Failed to load assembly '{assembly.FullName}'", exceptionToLog));
 
                 types = null;
                 return false;
@@ -470,13 +464,7 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
         }
 
 
-        private static string CacheDirectoryPath
-        {
-            get
-            {
-                return PathUtil.Resolve(GlobalSettingsFacade.CacheDirectory);
-            }
-        }
+        private static string CacheDirectoryPath => PathUtil.Resolve(GlobalSettingsFacade.CacheDirectory);
 
 
         private string CacheFilePath
@@ -530,7 +518,7 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
 
         private static void LogAssemblyLoadException(string filePath, Exception e)
         {
-            var logEx = new InvalidOperationException("Failed to load types from file '{0}'".FormatWith(filePath), e);
+            var logEx = new InvalidOperationException($"Failed to load types from file '{filePath}'", e);
             Log.LogError(LogTitle, logEx);
 
             Exception toExamine = e;
@@ -567,7 +555,7 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
         public class AssemblyInfo
         {
             /// <exclude />
-            public string AssemblyName { get; set; }            // Assembly name
+            public string AssemblyName { get; set; }
 
             /// <exclude />
             public DateTime LastModified { get; set; }

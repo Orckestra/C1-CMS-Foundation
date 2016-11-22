@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Composite.C1Console.Search.DocumentSources;
 using Composite.C1Console.Security;
 using Composite.Core;
-using Composite.Core.Application;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Composite.C1Console.Search
@@ -21,7 +21,7 @@ namespace Composite.C1Console.Search
         /// </summary>
         public static IEnumerable<ISearchDocumentSource> DocumentSources =>
             ServiceLocator.GetServices<ISearchDocumentSourceProvider>()
-            .SelectMany(sp => sp.GetDocumentSources());
+                .SelectMany(sp => sp.GetDocumentSources());
 
         /// <summary>
         /// Gets or sets the search provider
@@ -41,7 +41,10 @@ namespace Composite.C1Console.Search
         /// <param name="applySecurity"></param>
         /// <param name="searchRoot"></param>
         /// <returns></returns>
-        public static async Task<SearchResult> SearchConsoleAsync(SearchQuery query, bool applySecurity = true, EntityToken searchRoot = null)
+        public static async Task<SearchResult> SearchConsoleAsync(
+            SearchQuery query, 
+            bool applySecurity = true,
+            EntityToken searchRoot = null)
         {
             if (!SearchEnabled)
             {
@@ -65,8 +68,8 @@ namespace Composite.C1Console.Search
         }
 
         private static IEnumerable<SearchDocument> Filter(
-            IEnumerable<SearchDocument> documents, 
-            bool applySecurity, 
+            IEnumerable<SearchDocument> documents,
+            bool applySecurity,
             EntityToken searchRoot)
         {
             CurrentUserSecurityData userSecurityData = applySecurity ? new CurrentUserSecurityData() : null;
@@ -78,7 +81,7 @@ namespace Composite.C1Console.Search
                 {
                     entityToken = EntityTokenSerializer.Deserialize(doc.SerializedEntityToken);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     // TODO: collect documents with invalid entity tokens
                     Log.LogWarning(nameof(SearchFacade), ex);
@@ -122,6 +125,12 @@ namespace Composite.C1Console.Search
                 return PermissionTypeFacade.IsSubBrachContainingPermissionTypes(
                     _userToken, entityToken, _userPermissionDefinitions, _userGroupPermissionDefinition);
             }
+        }
+
+        internal static void AddDefaultSearchDocumentSourceProviders(this IServiceCollection services)
+        {
+            services.AddSingleton<ISearchDocumentSourceProvider>(new BuiltInTypesDocumentSourceProvider());
+            services.AddSingleton<ISearchDocumentSourceProvider>(new DataTypesDocumentSourceProvider());
         }
     }
 }
