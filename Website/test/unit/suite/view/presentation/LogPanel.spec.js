@@ -4,6 +4,9 @@ import TestUtils from 'react-addons-test-utils';
 import { LogPanel } from 'console/components/presentation/LogPanel.js';
 import { Table, Column } from 'fixed-data-table-2';
 import Immutable from 'immutable';
+import styled from 'styled-components';
+
+const StyledTable = styled(Table)``;
 
 describe('LogPanel', () => {
 	let renderer, props;
@@ -27,7 +30,7 @@ describe('LogPanel', () => {
 	it('renders a table of log entries', () => {
 		renderer.render(<LogPanel {...props}/>);
 		return expect(renderer, 'to have rendered',
-			<Table
+			<StyledTable
 				height={693}
 				width={1280}
 				headerHeight={26}
@@ -39,6 +42,6 @@ describe('LogPanel', () => {
 				<Column width={50} flexGrow={20}/>
 				<Column width={20} flexGrow={5}/>
 				<Column width={10} flexGrow={2}/>
-			</Table>);
+			</StyledTable>);
 	});
 });

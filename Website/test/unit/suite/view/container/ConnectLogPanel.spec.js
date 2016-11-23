@@ -2,7 +2,7 @@ import expect from 'unittest/helpers/expect.js';
 import sinon from 'sinon';
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
-import { ConnectLogPanel } from 'console/components/container/ConnectLogPanel.js';
+import { CLP as ConnectLogPanel } from 'console/components/container/ConnectLogPanel.js';
 import LogPanel from 'console/components/presentation/LogPanel.js';
 import Immutable from 'immutable';
 

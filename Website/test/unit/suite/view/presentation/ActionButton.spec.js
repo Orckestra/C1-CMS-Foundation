@@ -4,6 +4,9 @@ import React from 'react';
 import TestUtils from 'react-addons-test-utils';
 import ActionButton from 'console/components/presentation/ActionButton.js';
 import Icon from 'console/components/presentation/Icon.js';
+import styled from 'styled-components';
+
+const StyledButton = styled.button``;
 
 describe('ActionButton', () => {
 	let renderer, props;
@@ -21,7 +24,7 @@ describe('ActionButton', () => {
 			<ActionButton {...props}/>
 		);
 		return expect(renderer, 'to have rendered',
-			<button>{props.label}</button>
+			<StyledButton>{props.label}</StyledButton>
 		);
 	});
 
@@ -31,7 +34,7 @@ describe('ActionButton', () => {
 			<ActionButton {...props}/>
 		);
 		return expect(renderer, 'to have rendered',
-			<button className='main'>{props.label}</button>
+			<StyledButton className='main'>{props.label}</StyledButton>
 		);
 	});
 
@@ -41,7 +44,7 @@ describe('ActionButton', () => {
 			<ActionButton {...props}/>
 		);
 		return expect(renderer, 'to have rendered',
-			<button disabled={true}>{props.label}</button>
+			<StyledButton disabled={true}>{props.label}</StyledButton>
 		);
 	});
 
@@ -51,10 +54,10 @@ describe('ActionButton', () => {
 			<ActionButton {...props}/>
 		);
 		return expect(renderer, 'to have rendered',
-			<button>
+			<StyledButton>
 				<Icon id='test'/>
 				{props.label}
-			</button>
+			</StyledButton>
 		);
 	});
 	it('should render a button with icon and no label', () => {
@@ -64,9 +67,9 @@ describe('ActionButton', () => {
 			<ActionButton {...props}/>
 		);
 		return expect(renderer, 'to have rendered',
-			<button>
+			<StyledButton>
 				<Icon id='test'/>
-			</button>
+			</StyledButton>
 		);
 	});
 

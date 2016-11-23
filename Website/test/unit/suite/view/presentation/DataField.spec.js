@@ -7,6 +7,13 @@ import DataField from 'console/components/presentation/DataField.js';
 import StatelessWrapper from 'unittest/helpers/StatelessWrapper.js';
 import Select from 'react-select';
 import Immutable from 'immutable';
+import styled from 'styled-components';
+
+const StyledDiv = styled.div``;
+const StyledH4 = styled.h4``;
+const StyledInput = styled.input``;
+const StyledLabel = styled.label``;
+const StyledSelect = styled(Select)``;
 
 describe('DataField', () => {
 	let renderer, props, state;
@@ -31,14 +38,14 @@ describe('DataField', () => {
 		it('renders a text field with headline and helper', () => {
 			renderer.render(<DataField {...props} {...state}/> );
 			return expect(renderer, 'to have rendered',
-			<div className="datafield">
-				<h4>{props.headline}</h4>
-				<input
+			<StyledDiv>
+				<StyledH4>{props.headline}</StyledH4>
+				<StyledInput
 					type={props.type}
 					id={props.name}
 					value={state.value}/>
 				<HelpIcon text={props.help}/>
-			</div>
+			</StyledDiv>
 			);
 		});
 
@@ -46,13 +53,13 @@ describe('DataField', () => {
 			delete props.help;
 			renderer.render(<DataField {...props} {...state}/> );
 			return expect(renderer, 'to have rendered',
-				<div className="datafield">
-					<h4>{props.headline}</h4>
-					<input
+				<StyledDiv>
+					<StyledH4>{props.headline}</StyledH4>
+					<StyledInput
 						type={props.type}
 						id={props.name}
 						value={state.value}/>
-				</div>
+				</StyledDiv>
 			)
 			.and('not to contain', <HelpIcon text=""/>);
 		});
@@ -61,15 +68,15 @@ describe('DataField', () => {
 			delete props.headline;
 			renderer.render(<DataField {...props} {...state}/> );
 			return expect(renderer, 'to have rendered',
-				<div className="datafield">
-					<input
+				<StyledDiv>
+					<StyledInput
 						type={props.type}
 						id={props.name}
 						value={state.value}/>
 					<HelpIcon text={props.help}/>
-				</div>
+				</StyledDiv>
 			)
-			.and('not to contain', <h4/>);
+			.and('not to contain', <StyledH4/>);
 		});
 
 		it('calls its update callback', () => {
@@ -79,10 +86,10 @@ describe('DataField', () => {
 				</StatelessWrapper>
 			);
 			return expect(
-				component, 'queried for', <input/>,
-				'to have rendered', <input value="Init"/>
+				component, 'queried for', <StyledInput/>,
+			'to have rendered', <StyledInput value="Init"/>
 			)
-			.then(() => expect(component,'with event change', 'on', <input/>))
+			.then(() => expect(component,'with event change', 'on', <StyledInput/>))
 			.then(() => expect(props.updateValue, 'was called'));
 		});
 	});
@@ -104,14 +111,14 @@ describe('DataField', () => {
 		it('renders a password field with headline and helper', () => {
 			renderer.render(<DataField {...props} {...state}/> );
 			return expect(renderer, 'to have rendered',
-			<div className="datafield">
-				<h4>{props.headline}</h4>
-				<input
+			<StyledDiv>
+				<StyledH4>{props.headline}</StyledH4>
+				<StyledInput
 					type={props.type}
 					id={props.name}
 					value={state.value}/>
 				<HelpIcon text={props.help}/>
-			</div>
+			</StyledDiv>
 			);
 		});
 
@@ -119,13 +126,13 @@ describe('DataField', () => {
 			delete props.help;
 			renderer.render(<DataField {...props} {...state}/> );
 			return expect(renderer, 'to have rendered',
-				<div className="datafield">
-					<h4>{props.headline}</h4>
-					<input
+				<StyledDiv>
+					<StyledH4>{props.headline}</StyledH4>
+					<StyledInput
 						type={props.type}
 						id={props.name}
 						value={state.value}/>
-				</div>
+				</StyledDiv>
 			)
 			.and('not to contain', <HelpIcon text=""/>);
 		});
@@ -134,15 +141,15 @@ describe('DataField', () => {
 			delete props.headline;
 			renderer.render(<DataField {...props} {...state}/> );
 			return expect(renderer, 'to have rendered',
-				<div className="datafield">
-					<input
+				<StyledDiv>
+					<StyledInput
 						type={props.type}
 						id={props.name}
 						value={state.value}/>
 					<HelpIcon text={props.help}/>
-				</div>
+				</StyledDiv>
 			)
-			.and('not to contain', <h4/>);
+			.and('not to contain', <StyledH4/>);
 		});
 
 		it('calls its update callback', () => {
@@ -152,10 +159,10 @@ describe('DataField', () => {
 				</StatelessWrapper>
 			);
 			return expect(
-				component, 'queried for', <input/>,
-				'to have rendered', <input value="Init"/>
+				component, 'queried for', <StyledInput/>,
+			'to have rendered', <StyledInput value="Init"/>
 			)
-			.then(() => expect(component,'with event change', 'on', <input/>))
+			.then(() => expect(component,'with event change', 'on', <StyledInput/>))
 			.then(() => expect(props.updateValue, 'was called'));
 		});
 	});
@@ -187,9 +194,9 @@ describe('DataField', () => {
 			it('renders a dropdown with headline and helper', () => {
 				renderer.render(<DataField {...props} {...state}/> );
 				return expect(renderer, 'to have rendered',
-					<div className="datafield">
-						<h4>{props.headline}</h4>
-							<Select id="test" value={{ value: 2, label: 'Two' }} options={[
+					<StyledDiv>
+						<StyledH4>{props.headline}</StyledH4>
+							<StyledSelect id="test" value={{ value: 2, label: 'Two' }} options={[
 									{ value: 1, label: 'One' },
 									{ value: 2, label: 'Two' },
 									{ value: 3, label: 'Three' },
@@ -197,7 +204,7 @@ describe('DataField', () => {
 							]}
 							placeholder="(No selection)" clearable={false}/>
 						<HelpIcon text={props.help}/>
-					</div>
+					</StyledDiv>
 				);
 			});
 
@@ -205,16 +212,16 @@ describe('DataField', () => {
 				delete props.help;
 				renderer.render(<DataField {...props} {...state}/> );
 				return expect(renderer, 'to have rendered',
-					<div className="datafield">
-						<h4>{props.headline}</h4>
-							<Select id="test" value={{ value: 2, label: 'Two' }} options={[
+					<StyledDiv>
+						<StyledH4>{props.headline}</StyledH4>
+							<StyledSelect id="test" value={{ value: 2, label: 'Two' }} options={[
 									{ value: 1, label: 'One' },
 									{ value: 2, label: 'Two' },
 									{ value: 3, label: 'Three' },
 									{ value: 4, label: 'Four' }
 							]}
 							placeholder="(No selection)" clearable={false}/>
-					</div>
+					</StyledDiv>
 				)
 				.and('not to contain', <HelpIcon text=""/>);
 			});
@@ -223,8 +230,8 @@ describe('DataField', () => {
 				delete props.headline;
 				renderer.render(<DataField {...props} {...state}/> );
 				return expect(renderer, 'to have rendered',
-					<div className="datafield">
-						<Select id="test" value={{ value: 2, label: 'Two' }} options={[
+					<StyledDiv>
+						<StyledSelect id="test" value={{ value: 2, label: 'Two' }} options={[
 								{ value: 1, label: 'One' },
 								{ value: 2, label: 'Two' },
 								{ value: 3, label: 'Three' },
@@ -232,9 +239,9 @@ describe('DataField', () => {
 						]}
 						placeholder="(No selection)" clearable={false}/>
 						<HelpIcon text={props.help}/>
-					</div>
+					</StyledDiv>
 				)
-				.and('not to contain', <h4/>);
+				.and('not to contain', <StyledH4/>);
 			});
 
 			it.skip('calls its update callback', () => {
@@ -245,16 +252,16 @@ describe('DataField', () => {
 				);
 				return expect(
 					component,
-					'to contain', <Select value={{ value: 2, label: 'Two' }} placeholder="(No selection)" clearable={false}/>
+					'to contain', <StyledSelect value={{ value: 2, label: 'Two' }} placeholder="(No selection)" clearable={false}/>
 				)
 				.then(() => expect(component,
 					'with event click',
-					'on', <div className='Select-control'/>)
+					'on', <StyledDiv className='Select-control'/>)
 				)
 				// Make component update its rendering here, somehow
 				.then(() => expect(component,
 					'with event click',
-					'on', <div className='Select-option' key={3}/>)
+					'on', <StyledDiv className='Select-option' key={3}/>)
 				)
 				.then(() => expect(props.updateValue, 'to have a call satisfying', {args: [3]}));
 			});
@@ -279,15 +286,15 @@ describe('DataField', () => {
 		it('renders a checkbox field with headline, label and helper', () => {
 			renderer.render(<DataField {...props} {...state}/> );
 			return expect(renderer, 'to have rendered',
-			<div className="datafield">
-				<h4>{props.headline}</h4>
-				<input
+			<StyledDiv>
+				<StyledH4>{props.headline}</StyledH4>
+				<StyledInput
 					type={props.type}
 					id={props.name}
 					checked={state.value}/>
-				<label htmlFor={props.name}>{props.label}</label>
+				<StyledLabel htmlFor={props.name}>{props.label}</StyledLabel>
 				<HelpIcon text={props.help}/>
-			</div>
+			</StyledDiv>
 			);
 		});
 
@@ -295,15 +302,15 @@ describe('DataField', () => {
 			state.value = undefined;
 			renderer.render(<DataField {...props} {...state}/> );
 			return expect(renderer, 'to have rendered',
-			<div className="datafield">
-				<h4>{props.headline}</h4>
-				<input
+			<StyledDiv>
+				<StyledH4>{props.headline}</StyledH4>
+				<StyledInput
 					type={props.type}
 					id={props.name}
 					checked={false}/>
-				<label htmlFor={props.name}>{props.label}</label>
+				<StyledLabel htmlFor={props.name}>{props.label}</StyledLabel>
 				<HelpIcon text={props.help}/>
-			</div>
+			</StyledDiv>
 			);
 		});
 
@@ -311,16 +318,16 @@ describe('DataField', () => {
 			delete props.label;
 			renderer.render(<DataField {...props} {...state}/> );
 			return expect(renderer, 'to have rendered',
-			<div className="datafield">
-				<h4>{props.headline}</h4>
-				<input
+			<StyledDiv>
+				<StyledH4>{props.headline}</StyledH4>
+				<StyledInput
 					type={props.type}
 					id={props.name}
 					checked={state.value}/>
 				<HelpIcon text={props.help}/>
-			</div>
+			</StyledDiv>
 			)
-			.and('not to contain', <label/>);
+			.and('not to contain', <StyledLabel/>);
 		});
 
 		it('calls its update callback', () => {
@@ -330,10 +337,10 @@ describe('DataField', () => {
 				</StatelessWrapper>
 			);
 			return expect(
-				component, 'queried for', <input/>,
-				'to have rendered', <input checked={true}/>
+				component, 'queried for', <StyledInput/>,
+			'to have rendered', <StyledInput checked={true}/>
 			)
-			.then(() => expect(component,'with event change', 'on', <input/>))
+			.then(() => expect(component,'with event change', 'on', <StyledInput/>))
 			.then(() => expect(props.updateValue, 'was called'));
 		});
 	});

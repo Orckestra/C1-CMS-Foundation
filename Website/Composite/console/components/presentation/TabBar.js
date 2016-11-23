@@ -1,11 +1,32 @@
 import React, {PropTypes } from 'react';
+import styled from 'styled-components';
+import colors from 'console/components/colors.js';
 
-export const Tab = props => <div
+const TabDiv = styled.div`
+	width: 50px;
+	padding: 5px 20px 5px 15px;
+	border: 1px solid ${colors.borderColor};
+	border-radius: 5px 5px 0 0;
+	position: absolute;
+	top: -27px;
+	background-color: white;
+	color: ${colors.fadedTextColor};
+	text-transform: uppercase;
+	cursor: default;
+
+	&.active {
+		border-bottom-color: white;
+		color: ${colors.buttonHighlightColor};
+		z-index: 100;
+	}
+`;
+
+export const Tab = props => <TabDiv
 	onClick={props.onClick}
 	className={'tab' + (props.active ? ' active' : '')}
 	style={{ left: 10 + (props.index * 83) + 'px' }}>
 		{props.label}
-	</div>;
+	</TabDiv>;
 
 Tab.propTypes = {
 	label: PropTypes.string.isRequired,
@@ -14,13 +35,18 @@ Tab.propTypes = {
 	onClick: PropTypes.func
 };
 
+const TabBarDiv = styled.div`
+	border-bottom: 1px solid ${colors.borderColor};
+	position: relative;
+`;
+
 const TabBar = props => (
-	<div className='tabbar'>
+	<TabBarDiv className='tabbar'>
 		{props.tabs.map((p, index) => <Tab
 			key={p.name}
 			index={index}
 			{...p}/>)}
-	</div>
+	</TabBarDiv>
 );
 
 TabBar.propTypes = {

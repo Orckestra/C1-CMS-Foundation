@@ -1,4 +1,16 @@
 import React, { PropTypes } from 'react';
+import styled from 'styled-components';
+import Input from 'console/components/presentation/Input.js';
+
+const Div = styled.div`
+	display: inline-block;
+`;
+
+const Label = styled.label`
+	display: inline-block;
+	padding-left: 5px;
+	padding-right: 15px;
+`;
 
 const CheckboxGroup = props => {
 	let getBoxChanger = name => () => {
@@ -12,10 +24,10 @@ const CheckboxGroup = props => {
 		props.onChange(value);
 	};
 	return (
-		<div className='checkboxGroup'>
+		<Div className='checkboxGroup'>
 			{props.options.reduce((elements, cbProps) => {
 				let value = (props.value.indexOf(cbProps.value) !== -1) || false;
-				elements.push(<input
+				elements.push(<Input
 					key={cbProps.name}
 					id={cbProps.name}
 					type='checkbox'
@@ -23,12 +35,12 @@ const CheckboxGroup = props => {
 					checked={value}
 					onChange={getBoxChanger(cbProps.value)}
 					/>);
-				elements.push(<label
+				elements.push(<Label
 					key={cbProps.name + 'Key'}
-					htmlFor={cbProps.name}>{cbProps.label}</label>);
+					htmlFor={cbProps.name}>{cbProps.label}</Label>);
 				return elements;
 			}, [])}
-		</div>
+		</Div>
 	);
 };
 

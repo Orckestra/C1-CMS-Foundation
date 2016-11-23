@@ -1,7 +1,34 @@
 import React, { PropTypes } from 'react';
 import Icon from 'console/components/presentation/Icon.js';
+import ScrollBox from 'console/components/presentation/ScrollBox.js';
+import styled from 'styled-components';
+import colors from 'console/components/colors.js';
+
 
 const isMime = /mimetype/;
+
+const IconList = styled.div`
+	&:after {
+		content: '';
+		display: block;
+		clear: both;
+	}
+`;
+
+const IconCell = styled.div`
+	float: left;
+	height: 24px;
+	width: 380px;
+	margin-bottom: 10px;
+	color: #999;
+`;
+
+const IconLabel = styled.span`
+	line-height: 24px;
+	margin-left: 15px;
+	vertical-align: 10px;
+	color: ${colors.baseFontColor};
+`;
 
 const Spritesheet = () => {
 	let { general, reference, mimetype } = Array.from(document.querySelectorAll('svg > symbol'))
@@ -20,35 +47,35 @@ const Spritesheet = () => {
 			return current;
 		}, { general: [], reference: {}, mimetype: [] });
 	return (
-		<div className="scrollbox full">
+		<ScrollBox>
 			<h1>General icons 24*24</h1>
-			<div className="iconlist">
+			<IconList className="iconlist">
 				{general.map(id =>
-					<div className='cell' key={id}>
+					<IconCell key={id}>
 						<Icon id={id}/>
-						<span>{id}</span>
-					</div>
+						<IconLabel>{id}</IconLabel>
+					</IconCell>
 				)}
-			</div>
+			</IconList>
 			<h1>Referenced icons 24*24</h1>
-			<div className="iconlist">
+			<IconList className="iconlist">
 				{Object.keys(reference).map((id) =>
-					<div className='cell' key={id}>
+					<IconCell key={id}>
 						<Icon id={id}/>
-						<span>{id} ({reference[id]})</span>
-					</div>
+						<IconLabel>{id} ({reference[id]})</IconLabel>
+					</IconCell>
 				)}
-			</div>
+			</IconList>
 			<h1>File format icons 24*24</h1>
-			<div className="iconlist">
+			<IconList className="iconlist">
 				{mimetype.map(id =>
-					<div className='cell' key={id}>
+					<IconCell key={id}>
 						<Icon id={id}/>
-						<span>{id}</span>
-					</div>
+						<IconLabel>{id}</IconLabel>
+					</IconCell>
 				)}
-			</div>
-		</div>
+			</IconList>
+		</ScrollBox>
 	);
 };
 

@@ -1,8 +1,11 @@
+import React from 'react';
 import { connect } from 'react-redux';
 import { tabSelector } from 'console/state/selectors/tabSelector.js';
 import { logSelector } from 'console/state/selectors/logSelector.js';
 import Dimensions from 'react-dimensions';
 import LogPanel from 'console/components/presentation/LogPanel.js';
+import ScrollBox from 'console/components/presentation/ScrollBox.js';
+import styled from 'styled-components';
 
 function mapStateToProps(state) {
 	return {
@@ -11,14 +14,24 @@ function mapStateToProps(state) {
 	};
 }
 
-export const ConnectLogPanel = connect(mapStateToProps)(LogPanel);
+export const CLP = connect(mapStateToProps)(LogPanel);
 
-export default Dimensions({
+const SizedCLP = Dimensions({
 	containerStyle: {
-		padding: 0,
-		borderTop: 0,
-		overflow: 'hidden'
+		height: '100%',
+		width: '100%'
 	},
-	className: 'scrollbox',
 	elementResize: true
-})(ConnectLogPanel);
+})(CLP);
+
+const CleanScrollBox = styled(ScrollBox)`
+	padding: 0;
+	border-top: 0 !important;
+	overflow: hidden;
+`;
+
+const ConnectLogPanel = props => <CleanScrollBox>
+	<SizedCLP {...props}/>
+</CleanScrollBox>;
+
+export default ConnectLogPanel;

@@ -6,6 +6,10 @@ import ActionButton from 'console/components/presentation/ActionButton.js';
 import CheckboxGroup from 'console/components/presentation/CheckboxGroup.js';
 import Select from 'react-select';
 import Immutable from 'immutable';
+import styled from 'styled-components';
+
+const StyledDiv = styled.div``;
+const StyledSelect = styled(Select)``;
 
 describe('Toolbar', () => {
 	let renderer, props, actions;
@@ -52,11 +56,11 @@ describe('Toolbar', () => {
 		it('renders them', () => {
 			renderer.render(<Toolbar {...props}/>);
 			return expect(renderer, 'to have rendered',
-				<div className='toolbar'>
+				<StyledDiv className='toolbar'>
 					<ActionButton label='Label1' action={actions.first} icon='save'/>
 					<ActionButton label='Label2' action={actions.second}/>
 					<ActionButton label='Label3' action={actions.third} disabled={true}/>
-				</div>
+				</StyledDiv>
 			);
 		});
 
@@ -64,10 +68,10 @@ describe('Toolbar', () => {
 			props.items = props.items.deleteIn([2], 'action');
 			renderer.render(<Toolbar {...props}/>);
 			return expect(renderer, 'to have rendered',
-				<div className='toolbar'>
+				<StyledDiv className='toolbar'>
 					<ActionButton label='Label1' action={actions.first} icon='save'/>
 					<ActionButton label='Label2' action={actions.second}/>
-				</div>
+				</StyledDiv>
 			);
 		});
 
@@ -78,10 +82,10 @@ describe('Toolbar', () => {
 			});
 			renderer.render(<Toolbar {...props}/>);
 			return expect(renderer, 'to have rendered',
-				<div className='toolbar'>
+				<StyledDiv className='toolbar'>
 					<ActionButton action={actions.first} icon='save'/>
 					<ActionButton label='Label2' action={actions.second}/>
-				</div>
+				</StyledDiv>
 			);
 		});
 	});
@@ -106,14 +110,14 @@ describe('Toolbar', () => {
 		it('renders them', () => {
 			renderer.render(<Toolbar {...props}/>);
 			return expect(renderer, 'to have rendered',
-				<div className='toolbar'>
-					<Select placeholder='Select date' options={[
+				<StyledDiv className='toolbar'>
+					<StyledSelect placeholder='Select date' options={[
 						{ value: '2016-09-23', label: '2016-09-23' },
 						{ value: '2016-09-22', label: '2016-09-22' },
 						{ value: '2016-09-21', label: 'That day' },
 						{ value: '2016-09-20', label: '2016-09-20' }
 					]} clearable={false} multi={false} simpleValue={true}/>
-				</div>
+			</StyledDiv>
 			);
 		});
 	});
@@ -139,7 +143,7 @@ describe('Toolbar', () => {
 		it('renders them', () => {
 			renderer.render(<Toolbar {...props}/>);
 			return expect(renderer, 'to have rendered',
-				<div className='toolbar'>
+				<StyledDiv className='toolbar'>
 					<CheckboxGroup
 						name='first'
 						options={[
@@ -151,7 +155,7 @@ describe('Toolbar', () => {
 						]}
 						value={['One', 'Two', 'Three', 'Four']}
 						/>
-				</div>
+				</StyledDiv>
 			);
 		});
 	});
@@ -161,7 +165,7 @@ describe('Toolbar', () => {
 			props.style = 'light rightAligned';
 			renderer.render(<Toolbar {...props}/>);
 			return expect(renderer, 'to have rendered',
-				<div className='toolbar light rightAligned'/>
+				<StyledDiv className='toolbar light rightAligned'/>
 			);
 		});
 	});

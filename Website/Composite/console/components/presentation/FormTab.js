@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import Fieldset from 'console/components/presentation/Fieldset.js';
 import ImmutablePropTypes from 'react-immutable-proptypes';
+import ScrollBox from 'console/components/presentation/ScrollBox.js';
 
 const FormTab = props => {
 	if (!props.fieldsets) return null;
@@ -16,9 +17,9 @@ const FormTab = props => {
 		);
 	});
 	return (
-		<div className='scrollbox'>
+		<ScrollBox>
 			{fieldsets}
-		</div>
+		</ScrollBox>
 	);
 };
 

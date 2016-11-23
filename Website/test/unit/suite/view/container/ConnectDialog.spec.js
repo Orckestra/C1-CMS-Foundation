@@ -59,7 +59,7 @@ describe('ConnectDialog', () => {
 			<SwitchPanel
 				test='value'
 				pageDef={{ dialog: 'testdialog'}}
-				dialogDef={undefined}
+				dialogDef={{}}
 				panelTypes={{}}
 				dispatch={store.dispatch}
 				store={store}/>

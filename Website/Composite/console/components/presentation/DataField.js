@@ -1,7 +1,29 @@
 import React, { PropTypes } from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import HelpIcon from 'console/components/presentation/HelpIcon.js';
-import Select from 'react-select';
+import Select from 'console/components/presentation/Select.js';
+import Input from 'console/components/presentation/Input.js';
+import styled from 'styled-components';
+import colors from 'console/components/colors.js';
+
+const Headline = styled.h4`
+	display: block;
+	margin: 0;
+	font-weight: normal;
+	padding: 7px 0 5px 5px;
+	color: ${colors.fieldLabelColor};
+`;
+
+const Label = styled.label`
+	display: inline-block;
+	padding-left: 10px;
+	padding-right: 0;
+	width: calc(100% - 56px);
+`;
+
+const DataFieldWrapper = styled.div`
+	position: relative;
+`;
 
 const DataField = props => {
 	let input, handleChange, defaultOption, inputElement, options;
@@ -10,7 +32,7 @@ const DataField = props => {
 		handleChange = function (event) {
 			props.updateValue(event.target.checked);
 		};
-		inputElement = <input
+		inputElement = <Input
 			type={props.type}
 			id={props.name}
 			value={props.value || false}
@@ -37,7 +59,7 @@ const DataField = props => {
 		handleChange = function () {
 			props.updateValue(input.value);
 		};
-		inputElement = <input
+		inputElement = <Input
 			type={props.type}
 			id={props.name}
 			value={props.value}
@@ -49,16 +71,16 @@ const DataField = props => {
 	}
 
 	return (
-		<div className="datafield">
+		<DataFieldWrapper>
 			{props.headline ?
-				<h4>{props.headline}</h4> :
+				<Headline>{props.headline}</Headline> :
 				null}
 			{inputElement}
 			{props.label ?
-				<label htmlFor={props.name}>{props.label}</label> :
+				<Label htmlFor={props.name}>{props.label}</Label> :
 				null}
 			{props.help ? <HelpIcon text={props.help} /> : null}
-		</div>
+		</DataFieldWrapper>
 	);
 };
 

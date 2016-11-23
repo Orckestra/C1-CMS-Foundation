@@ -5,13 +5,55 @@ import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import configureStore from 'console/state/store.js';
 import ConnectDockPanel from 'console/components/container/ConnectDockPanel.js';
-import 'react-select/scss/default.scss!';
-import 'fixed-data-table-2/dist/fixed-data-table.css!scss';
-import 'console/console.scss!';
+import { injectGlobal } from 'styled-components';
 import 'console/iconIndex.js';
 
 // TODO: Remove this when proper services available.
 import 'console/mocks/mockserver.js';
+
+import colors from 'console/components/colors.js';
+
+injectGlobal`
+*:focus {
+	outline: 0;
+}
+
+::-webkit-scrollbar {
+  width: 13px;
+  height: 13px;
+  background: ${colors.scrollbarTrackColor};
+}
+
+::-webkit-scrollbar-thumb {
+  background: ${colors.scrollbarThumbColor};
+  border: 3px solid ${colors.scrollbarTrackColor};
+  border-radius: 7px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: ${colors.buttonHighlightColor};
+}
+
+html, body {
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	height: 100%;
+	width: 100%;
+}
+
+div.entry, div.page {
+	width: inherit;
+	height: inherit;
+}
+
+body, input, textarea, select, button {
+	font-size: 12px;
+	font-family: "Segoe UI", Tahoma, sans-serif;
+	color: ${colors.baseFontColor};
+}
+`;
+
 
 document.title = 'Orckestra CMS: ' + location.hostname;
 

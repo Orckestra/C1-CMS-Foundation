@@ -170,17 +170,17 @@
             "type": "checkboxGroup",
             "name": "other-page.toolbar2.levels",
             "options": [
-              { "name": "other-page.toolbar2.levels.critical", "label": "Critical" },
-              { "name": "other-page.toolbar2.levels.error", "label": "Error" },
-              { "name": "other-page.toolbar2.levels.warning", "label": "Warning" },
-              { "name": "other-page.toolbar2.levels.info", "label": "Information" },
-              { "name": "other-page.toolbar2.levels.verbose", "label": "Verbose" }
+              { "name": "other-page.toolbar2.levels.critical", "value": "Critical", "label": "Critical" },
+              { "name": "other-page.toolbar2.levels.error", "value": "Error", "label": "Error" },
+              { "name": "other-page.toolbar2.levels.warning", "value": "Warning", "label": "Warning" },
+              { "name": "other-page.toolbar2.levels.info", "value": "Information", "label": "Information" },
+              { "name": "other-page.toolbar2.levels.verbose", "value": "Verbose", "label": "Verbose" }
             ],
             "default": [
-              "other-page/toolbar2/levels/critical",
-              "other-page/toolbar2/levels/error",
-              "other-page/toolbar2/levels/warning",
-              "other-page/toolbar2/levels/info"
+              "Critical",
+              "Error",
+              "Warning",
+              "Information"
             ]
           }
         ]

@@ -5,6 +5,9 @@ import TestUtils from 'react-addons-test-utils';
 import FormTab from 'console/components/presentation/FormTab.js';
 import Fieldset from 'console/components/presentation/Fieldset.js';
 import Immutable from 'immutable';
+import styled from 'styled-components';
+
+const StyledDiv = styled.div``;
 
 describe('FormTab', () => {
 	let renderer, props, state, pageActions;
@@ -49,7 +52,7 @@ describe('FormTab', () => {
 
 	it('renders a form page with a toolbar and field sets', () => expect(
 		renderer, 'to have exactly rendered',
-		<div className='scrollbox'>
+		<StyledDiv>
 			<Fieldset
 				name='test/oneset'
 				label='First set'
@@ -61,7 +64,7 @@ describe('FormTab', () => {
 				name='test/twoset'
 				label='Second set'
 				fields={[ { name: 'test/twoset/threefield', defaultValue: 'overwritten' } ]}/>
-		</div>
+		</StyledDiv>
 	));
 
 	it('passes a nametagged update function to fields', () => Promise.all([

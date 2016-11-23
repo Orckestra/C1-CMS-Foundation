@@ -1,6 +1,11 @@
 import React, {PropTypes } from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { Table, Column, Cell } from 'fixed-data-table-2';
+import styled, {injectGlobal } from 'styled-components';
+import colors from 'console/components/colors.js';
+import fixedDataTableStylesheet from 'fixed-data-table-2/dist/fixed-data-table.css!text';
+
+injectGlobal`${fixedDataTableStylesheet}`;
 
 function getTextHeight(message) {
 	let lineBreaks = message.match(/\n/g);
@@ -12,6 +17,40 @@ function getTextHeight(message) {
 	}
 }
 
+const StyledTable = styled(Table)`
+.fixedDataTableRowLayout_rowWrapper {
+	z-index: auto !important;
+}
+
+.public_fixedDataTableCell_cellContent {
+	padding: 5px;
+}
+.fixedDataTableCellLayout_wrap3 {
+	vertical-align: inherit;
+}
+.public_fixedDataTable_header,
+.public_fixedDataTable_header .public_fixedDataTableCell_main {
+	background-color: ${colors.darkBackground};
+	background-image: none;
+	border-right-width: 0;
+}
+.Information {
+	background-color: lime;
+}
+.Warning {
+	background-color: orange;
+}
+.Error {
+	background-color: red;
+}
+.Critical {
+	background-color: crimson;
+}
+pre {
+	margin: 0;
+}
+`;
+
 export const LogPanel = props => {
 	let mainWidth = props.containerWidth;
 	let mainHeight = props.containerHeight;
@@ -19,7 +58,7 @@ export const LogPanel = props => {
 		props.logPage[rowIndex] &&
 		getTextHeight(props.logPage[rowIndex].message) + 10;
 	let getMessageBlock = message => /\n/.test(message) ? <pre>{message}</pre> : message;
-	return <Table
+	return <StyledTable
 		height={mainHeight}
 		width={mainWidth}
 		headerHeight={26}
@@ -63,7 +102,7 @@ export const LogPanel = props => {
 			header={<Cell>{props.tabDef.get('headers').get('severity')}</Cell>}
 			cell={({ rowIndex, ...cellProps }) => <Cell className='tableCell' {...cellProps}>{props.logPage[rowIndex]['severity']}</Cell>}
 			/>
-	</Table>;
+	</StyledTable>;
 };
 
 LogPanel.propTypes = {

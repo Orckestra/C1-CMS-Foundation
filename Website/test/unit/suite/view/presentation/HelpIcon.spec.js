@@ -4,6 +4,10 @@ import TestUtils from 'react-addons-test-utils';
 import HelpIcon from 'console/components/presentation/HelpIcon.js';
 import StatelessWrapper from 'unittest/helpers/StatelessWrapper.js';
 import zurvan from 'zurvan';
+import styled from 'styled-components';
+
+const StyledDiv = styled.div``;
+const StyledSpan = styled.span``;
 
 describe('HelpIcon', () => {
 	let renderer, text;
@@ -15,13 +19,13 @@ describe('HelpIcon', () => {
 
 	it('displays an icon', () => expect(
 		renderer, 'to have rendered',
-		<span className="helperIcon"/>
+		<StyledSpan/>
 	));
 
 	it('renders but does not display the help text', () =>
 		expect(
-			renderer, 'queried for', <div/>, 'to have rendered',
-			<div style={{visibility: 'hidden', opacity: 0}}>{text}</div>
+			renderer, 'queried for', <StyledDiv/>, 'to have rendered',
+			<StyledDiv style={{visibility: 'hidden', opacity: 0}}>{text}</StyledDiv>
 		)
 	);
 

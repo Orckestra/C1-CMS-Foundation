@@ -1,10 +1,43 @@
 import React, { PropTypes } from 'react';
+import styled from 'styled-components';
+import colors from 'console/components/colors.js';
 import ActionButton from 'console/components/presentation/ActionButton.js';
 import CheckboxGroup from 'console/components/presentation/CheckboxGroup.js';
-import Select from 'react-select';
+import Select from 'console/components/presentation/Select.js';
+
+const Div = styled.div`
+	padding: 15px 10px 20px;
+
+	&.rightAligned {
+		text-align: right; // TODO: Needs better way
+	}
+	&.rightAligned > * {
+		text-align: left;
+	}
+	&.rightAligned > button,
+	&.rightAligned > .Select {
+		margin-left: 10px;
+		margin-right: 0;
+	}
+	&.dark {
+		background-color: ${colors.darkBackground};
+	}
+
+	& + & {
+		border-top: 1px solid ${colors.borderColor};
+		padding-bottom: 15px;
+
+	}
+	& + & button {
+		height: 30px;
+		padding-top: 5px;
+		padding-bottom: 5px;
+	}
+
+`;
 
 const Toolbar = props => (
-	<div className={'toolbar' + (props.style ? ' ' + props.style : '')}>
+	<Div className={'toolbar' + (props.style ? ' ' + props.style : '')}>
 		{props.items.map(item => {
 			switch (item.get('type')) {
 			case 'checkboxGroup':
@@ -23,7 +56,7 @@ const Toolbar = props => (
 					{...item.toJS()}/>;
 			}
 		}).filter(item => !!item)}
-	</div>
+	</Div>
 );
 
 Toolbar.propTypes = {

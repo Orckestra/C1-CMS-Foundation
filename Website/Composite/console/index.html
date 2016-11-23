@@ -6,7 +6,10 @@
 		<script type="text/javascript" src="/jspm_packages/system.js"></script>
 		<script type="text/javascript" src="/jspm.config.js"></script>
 		<script type="text/javascript">
-			System.import('CMSConsole');
+			System.import('core-js/shim')
+			.then(function () {
+				System.import('CMSConsole');
+			});
 		</script>
 		<!-- <script type="text/javascript" src="/Composite/console.js"></script> -->
 	</head>

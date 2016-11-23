@@ -58,8 +58,9 @@
       "redux-observer": "npm:redux-observer@^1.0.0",
       "redux-thunk": "npm:redux-thunk@^2.1.0",
       "reselect": "npm:reselect@^2.5.4",
-      "scss": "github:mobilexag/plugin-sass@^0.4.6",
+      "styled-components": "npm:styled-components@^1.1.1",
       "svg": "github:npbenjohnson/plugin-svg@^0.1.0",
+      "text": "github:systemjs/plugin-text@^0.0.9",
       "url-polyfill": "github:github/url-polyfill@^0.5.6",
       "wampy": "npm:wampy@^4.0.0",
       "whatwg-fetch": "npm:whatwg-fetch@^1.0.0"
@@ -202,6 +203,12 @@
           "process": "@empty"
         }
       },
+      "npm:lodash@4.17.2": {
+        "map": {
+          "buffer": "@empty",
+          "process": "@empty"
+        }
+      },
       "npm:ms@0.7.1": {
         "jspmNodeConversion": false,
         "format": "cjs"
@@ -210,14 +217,14 @@
         "jspmNodeConversion": false,
         "format": "cjs"
       },
-      "npm:sass.js@0.9.13": {
-        "map": {
-          "ws": "@empty"
-        },
-        "meta": {
-          "dist/sass.worker.js": {
-            "format": "global"
-          }
+      "npm:styled-components@1.1.1": {
+        "dependencies": {
+          "buffer": "^5.0.0",
+          "fbjs": "^0.8.4",
+          "glamor": "^2.15.5",
+          "inline-style-prefixer": "^2.0.4",
+          "lodash": "^4.15.0",
+          "supports-color": "^3.1.2"
         }
       }
     }
