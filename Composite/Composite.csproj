@@ -166,6 +166,7 @@
     <Compile Include="C1Console\Actions\DuplicateActionToken.cs" />
     <Compile Include="C1Console\Forms\ITestAutomationLocatorInformation.cs" />
     <Compile Include="C1Console\Elements\DialogStrings.cs" />
+    <Compile Include="C1Console\Search\Crawling\IDataFieldProcessorProvider.cs" />
     <Compile Include="C1Console\Search\Crawling\SearchDocumentBuilder.cs" />
     <Compile Include="C1Console\Search\Crawling\DateTimeDataFieldProcessor.cs" />
     <Compile Include="C1Console\Search\Crawling\DefaultDataFieldProcessor.cs" />
@@ -180,6 +181,7 @@
     <Compile Include="C1Console\Search\DocumentSources\MediaLibraryDocumentSource.cs" />
     <Compile Include="C1Console\Search\DocumentSources\CmsPageDocumentSource.cs" />
     <Compile Include="C1Console\Search\IDocumentSourceListener.cs" />
+    <Compile Include="C1Console\Search\ISearchIndexUpdater.cs" />
     <Compile Include="C1Console\Search\ISearchDocumentSource.cs" />
     <Compile Include="C1Console\Search\ISearchDocumentSourceProvider.cs" />
     <Compile Include="C1Console\Search\ISearchProvider.cs" />

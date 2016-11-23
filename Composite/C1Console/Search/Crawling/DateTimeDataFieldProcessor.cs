@@ -3,13 +3,18 @@ using System.Globalization;
 
 namespace Composite.C1Console.Search.Crawling
 {
+    /// <summary>
+    /// The default field processor for <see cref="DateTime"/> fields.
+    /// </summary>
     public class DateTimeDataFieldProcessor: DefaultDataFieldProcessor
     {
+        /// <exclude />
         public override object GetIndexValue(object fieldValue)
         {
             return ((DateTime?) fieldValue)?.ToString("s");
         }
 
+        /// <exclude />
         protected override Func<object, string> GetPreviewFunction()
         {
             return obj =>
@@ -21,6 +26,7 @@ namespace Composite.C1Console.Search.Crawling
             };
         }
 
+        /// <exclude />
         public override string[] GetFacetValues(object value)
         {
             var str = ((DateTime?) value)?.ToString("yyyy MM");
@@ -28,6 +34,7 @@ namespace Composite.C1Console.Search.Crawling
             return str != null ? new [] {str} : null;
         }
 
+        /// <exclude />
         protected override Func<string, string> GetFacetLabelFunction()
         {
             return value =>

@@ -18,16 +18,55 @@ namespace Composite.C1Console.Search
         /// </summary>
         public int MinHitCount { get; set; }
 
-        //public int FieldOrder { get; set; }
+        /// <summary>
+        /// Gets or sets the facet type.
+        /// </summary>
+        public FacetType FacetType { get; set; }
+
+        /// <summary>
+        /// Gets or sets the facet type.
+        /// </summary>
+        public FacetSorting FacetSorting { get; set; }
 
         /// <summary>
         /// A function to get a label for a given facet value.
         /// </summary>
         public Func<string, string> LabelFunction { get; set; }
 
-        // TODO: add sorting options
+        //public int FieldOrder { get; set; }
     }
 
+    /// <summary>
+    /// Defines a type of a facet field.
+    /// </summary>
+    public enum FacetType
+    {
+        /// <summary>
+        /// A signle facet value per data field value.
+        /// </summary>
+        SingleValue = 0,
+
+        /// <summary>
+        /// Allows multiple facet values per data field value.
+        /// </summary>
+        MultipleValues = 1
+    }
+
+    /// <summary>
+    /// Defines a type of a facet field.
+    /// </summary>
+    public enum FacetSorting
+    {
+        /// <summary>
+        /// A the facets with the most hits will be shown first.
+        /// </summary>
+        HitCount = 0,
+
+        /// <summary>
+        /// The facets will be shown in lexicographical ascending order.
+        /// </summary>
+        Ascending = 1
+    }
 
     /// <summary>
     /// Constains information how a data field is preserved and shown in search results.

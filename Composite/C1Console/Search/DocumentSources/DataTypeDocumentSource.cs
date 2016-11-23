@@ -13,11 +13,14 @@ namespace Composite.C1Console.Search.DocumentSources
         private readonly List<IDocumentSourceListener> _listeners = new List<IDocumentSourceListener>();
         private readonly Type _interfaceType;
         private readonly DataChangesIndexNotifier _changesIndexNotifier;
+        private readonly Lazy<ICollection<DocumentField>> _customFields;
 
         public DataTypeDocumentSource(Type interfaceType)
         {
             _interfaceType = interfaceType;
-            CustomFields = DataTypeSearchReflectionHelper.GetDocumentFields(_interfaceType).Evaluate();
+
+            _customFields = new Lazy<ICollection<DocumentField>>(() =>
+                DataTypeSearchReflectionHelper.GetDocumentFields(_interfaceType).Evaluate());
 
             _changesIndexNotifier = new DataChangesIndexNotifier(
                 _listeners, _interfaceType, FromData, GetDocumentId);
@@ -44,7 +47,7 @@ namespace Composite.C1Console.Search.DocumentSources
             return data.Select(FromData).Where(doc => doc != null);
         }
 
-        public ICollection<DocumentField> CustomFields { get; }
+        public ICollection<DocumentField> CustomFields => _customFields.Value;
 
         private SearchDocument FromData(IData data)
         {

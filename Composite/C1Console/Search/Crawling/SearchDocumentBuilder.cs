@@ -25,6 +25,16 @@ namespace Composite.C1Console.Search.Crawling
             /// The name of the data type field.
             /// </summary>
             public static readonly string DataType = "datatype";
+
+            /// <summary>
+            /// The name of the data type field.
+            /// </summary>
+            public static readonly string Description = "desc";
+
+            /// <summary>
+            /// The name of the data type field.
+            /// </summary>
+            public static readonly string CreationTime = "ctime";
         }
 
         private readonly List<string> _textParts = new List<string>();

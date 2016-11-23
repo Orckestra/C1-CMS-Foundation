@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Composite.C1Console.Search.Crawling;
@@ -12,15 +13,18 @@ namespace Composite.C1Console.Search.DocumentSources
     {
         private readonly List<IDocumentSourceListener> _listeners = new List<IDocumentSourceListener>();
 
+        private readonly Lazy<ICollection<DocumentField>> _customFields;
+
         public MediaLibraryDocumentSource(string name)
         {
             Name = name;
-            CustomFields = DataTypeSearchReflectionHelper.GetDocumentFields(typeof(IMediaFile)).Evaluate();
+            _customFields = new Lazy<ICollection<DocumentField>>(() =>
+                DataTypeSearchReflectionHelper.GetDocumentFields(typeof(IMediaFile)).Evaluate());
         }
 
         public string Name { get; }
 
-        public ICollection<DocumentField> CustomFields { get; }
+        public ICollection<DocumentField> CustomFields => _customFields.Value;
 
         public void Subscribe(IDocumentSourceListener sourceListener)
         {

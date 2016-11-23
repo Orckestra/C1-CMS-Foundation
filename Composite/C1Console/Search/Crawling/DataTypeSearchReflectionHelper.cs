@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Composite.Core;
 using Composite.Core.Types;
 using Composite.Data;
 using SearchableFieldInfo = System.Collections.Generic.KeyValuePair<System.Reflection.PropertyInfo, Composite.Data.SearchableFieldAttribute>;
@@ -44,6 +45,12 @@ namespace Composite.C1Console.Search.Crawling
         {
             return DataFieldProcessors.GetOrAdd(propertyInfo, pi =>
             {
+                var processor = ServiceLocator.GetServices<IDataFieldProcessorProvider>()
+                    .Select(p => p.GetDataFieldProcessor(pi))
+                    .FirstOrDefault();
+
+                if (processor != null) return processor;
+
                 var propertyType = pi.PropertyType;
                 if (propertyType == typeof (DateTime) || propertyType == typeof (DateTime?))
                 {

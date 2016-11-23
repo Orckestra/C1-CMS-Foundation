@@ -14,10 +14,14 @@ namespace Composite.C1Console.Search.DocumentSources
     {
         private readonly List<IDocumentSourceListener> _listeners = new List<IDocumentSourceListener>();
         private readonly DataChangesIndexNotifier _changesIndexNotifier;
+        private readonly Lazy<ICollection<DocumentField>> _customFields;
 
         public CmsPageDocumentSource(string name)
         {
             Name = name;
+
+            _customFields = new Lazy<ICollection<DocumentField>>(() =>
+                DataTypeSearchReflectionHelper.GetDocumentFields(typeof(IPage)).Evaluate());
 
             _changesIndexNotifier = new DataChangesIndexNotifier(
                 _listeners, typeof(IPage), 
@@ -46,8 +50,7 @@ namespace Composite.C1Console.Search.DocumentSources
             return pages.Select(FromPage);
         }
 
-        public ICollection<DocumentField> CustomFields { get; } 
-            = DataTypeSearchReflectionHelper.GetDocumentFields(typeof (IPage)).Evaluate();
+        public ICollection<DocumentField> CustomFields => _customFields.Value;
 
         private SearchDocument FromPage(IPage page)
         {

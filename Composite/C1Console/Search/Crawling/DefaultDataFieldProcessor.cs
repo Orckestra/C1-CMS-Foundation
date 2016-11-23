@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Reflection;
 using Composite.Core.Types;
 using Composite.Data;
+using Composite.Data.Types;
 
 namespace Composite.C1Console.Search.Crawling
 {
@@ -12,6 +13,7 @@ namespace Composite.C1Console.Search.Crawling
     /// </summary>
     public class DefaultDataFieldProcessor: IDataFieldProcessor
     {
+        /// <exclude />
         public virtual IEnumerable<string> GetTextParts(object value)
         {
             var text = value as string;
@@ -27,11 +29,13 @@ namespace Composite.C1Console.Search.Crawling
             return new[] { text };
         }
 
+        /// <exclude />
         public virtual object GetIndexValue(object fieldValue)
         {
             return fieldValue == null ? null : ValueTypeConverter.Convert<string>(fieldValue);
         }
 
+        /// <exclude />
         public virtual string[] GetFacetValues(object value)
         {
             if (value == null) return null;
@@ -41,12 +45,25 @@ namespace Composite.C1Console.Search.Crawling
             return string.IsNullOrEmpty(stringValue) ? null : new[] { stringValue };
         }
 
-        public string GetDocumentFieldName(PropertyInfo propertyInfo)
+        /// <exclude />
+        public virtual string GetDocumentFieldName(PropertyInfo pi)
         {
-            return $"{propertyInfo.ReflectedType.Name}.{propertyInfo.Name}";
+            if (pi.Name == nameof(IPage.Description) && pi.PropertyType == typeof(string))
+            {
+                return SearchDocumentBuilder.DefaultFieldNames.Description;
+            }
+
+            if ((pi.Name == nameof(ICreationHistory.CreationDate) || pi.Name == nameof(IMediaFile.CreationTime))
+                && (pi.PropertyType == typeof(DateTime) || pi.PropertyType == typeof(DateTime?)))
+            {
+                return SearchDocumentBuilder.DefaultFieldNames.CreationTime;
+            }
+
+            return $"{pi.ReflectedType.Name}.{pi.Name}";
         }
 
-        public DocumentFieldFacet GetDocumentFieldFacet(PropertyInfo propertyInfo)
+        /// <exclude />
+        public virtual DocumentFieldFacet GetDocumentFieldFacet(PropertyInfo propertyInfo)
         {
             return new DocumentFieldFacet
             {
@@ -56,7 +73,8 @@ namespace Composite.C1Console.Search.Crawling
             };
         }
 
-        public DocumentFieldPreview GetDocumentFieldPreview(PropertyInfo propertyInfo)
+        /// <exclude />
+        public virtual DocumentFieldPreview GetDocumentFieldPreview(PropertyInfo propertyInfo)
         {
             return new DocumentFieldPreview
             {
@@ -66,16 +84,19 @@ namespace Composite.C1Console.Search.Crawling
             };
         }
 
-        public string GetFieldLabel(PropertyInfo propertyInfo, CultureInfo cultureInfo)
+        /// <exclude />
+        public virtual string GetFieldLabel(PropertyInfo propertyInfo, CultureInfo cultureInfo)
         {
             return propertyInfo.Name;
         }
 
+        /// <exclude />
         protected virtual Func<object, string> GetPreviewFunction()
         {
             return obj => obj?.ToString();
         }
 
+        /// <exclude />
         protected virtual Func<string, string> GetFacetLabelFunction()
         {
             return obj => obj;
