@@ -116,20 +116,23 @@ namespace Composite.Core
 
             if (!_hasTypeLookup.TryGetValue(serviceType, out hasType))
             {
-                if (ServiceCollection.Any(sd => sd.ServiceType.IsAssignableFrom(serviceType)
-                                                   || (serviceType.IsGenericType
-                                                        && sd.ServiceType.IsAssignableFrom(serviceType.GetGenericTypeDefinition()))))
+                if (_serviceCollection.Any(sd => 
+                    sd.ServiceType.IsAssignableFrom(serviceType)
+                || (serviceType.IsGenericType 
+                    && sd.ServiceType.IsAssignableFrom(serviceType.GetGenericTypeDefinition()))))
                 {
                     hasType = true;
                 }
-
-                try
+                else
                 {
-                    hasType = ServiceProvider.GetService(serviceType) != null;
-                }
-                catch (Exception)
-                {
-                    hasType = false;
+                    try
+                    {
+                        hasType = ServiceProvider.GetService(serviceType) != null;
+                    }
+                    catch (Exception)
+                    {
+                        hasType = false;
+                    }
                 }
 
                 _hasTypeLookup.TryAdd(serviceType, hasType);
