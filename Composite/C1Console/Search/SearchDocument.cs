@@ -9,6 +9,14 @@ namespace Composite.C1Console.Search
     public sealed class SearchDocument
     {
         /// <summary>
+        /// To be used for deserialization.
+        /// </summary>
+        public SearchDocument()
+        {
+            
+        }
+
+        /// <summary>
         /// Constructs a new search document.
         /// </summary>
         /// <param name="source">The data source name.</param>
@@ -48,17 +56,17 @@ namespace Composite.C1Console.Search
         /// <summary>
         /// A unique identifier for the document.
         /// </summary>
-        public string Id { get; }
+        public string Id { get; set; }
 
         /// <summary>
         /// Document source name.
         /// </summary>
-        public string Source { get; }
+        public string Source { get; set; }
 
         /// <summary>
         /// Element label, to be shown in search results as well as searched for.
         /// </summary>
-        public string Label { get; }
+        public string Label { get; set; }
 
         /// <summary>
         /// Element bundle name, to be shown in search results as well as searched for.
@@ -68,7 +76,7 @@ namespace Composite.C1Console.Search
         /// <summary>
         /// A serialized entity token of an console tree element that's related to the document
         /// </summary>
-        public string SerializedEntityToken { get; }
+        public string SerializedEntityToken { get; set; }
 
         /// <summary>
         /// Contains all the text string that should be indexed.
@@ -84,21 +92,5 @@ namespace Composite.C1Console.Search
         /// Field values that is preserved in the index and will be used in faceted search.
         /// </summary>
         public IDictionary<string, string[]> FacetFieldValues { get; set; }
-
-        ///// <summary>
-        ///// Contains all the references the current document has (f.e. for a cms page, that could be page type, template, etc)
-        ///// </summary>
-        //public string[] References { get; set; }
     }
-
-    //public class DocumentField
-    //{
-    //    public string Name { get; set; }
-    //    public object Value { get; set; }
-
-    //    // TODO: to be defined
-    //    //public bool ShowInColumns { get; set; }
-    //    //public bool Sortable { get; set; }
-    //    //public bool Facet { get; set; }
-    //}
 }
