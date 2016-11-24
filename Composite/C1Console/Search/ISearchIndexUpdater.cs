@@ -16,18 +16,24 @@ namespace Composite.C1Console.Search
         /// Rebuilds search data for the given data source.
         /// </summary>
         /// <param name="dataSource"></param>
-        void Rebuild(string dataSource);
+        void Populate(string dataSource);
 
         /// <summary>
-        /// Removes data for the given data source.
+        /// Removes search documents received from the given data source.
         /// </summary>
         /// <param name="dataSource"></param>
         void Remove(string dataSource);
 
         /// <summary>
-        /// Drops the index for the given culture.
+        /// Creates a search document collection for the given culture.
         /// </summary>
         /// <param name="cultureInfo"></param>
-        void Drop(CultureInfo cultureInfo);
+        void CreateCollection(CultureInfo cultureInfo);
+        
+        /// <summary>
+        /// Drops the document collection created for the given culture.
+        /// </summary>
+        /// <param name="cultureInfo"></param>
+        void DropCollection(CultureInfo cultureInfo);
     }
 }

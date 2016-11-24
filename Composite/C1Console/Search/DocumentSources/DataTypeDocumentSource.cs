@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Composite.C1Console.Search.Crawling;
+using Composite.Core;
 using Composite.Core.Linq;
 using Composite.Data;
+using Composite.Data.DynamicTypes;
 
 namespace Composite.C1Console.Search.DocumentSources
 {
@@ -14,6 +16,14 @@ namespace Composite.C1Console.Search.DocumentSources
         private readonly Type _interfaceType;
         private readonly DataChangesIndexNotifier _changesIndexNotifier;
         private readonly Lazy<ICollection<DocumentField>> _customFields;
+
+        static DataTypeDocumentSource()
+        {
+            DynamicTypeManager.OnStoreCreated += OnStoreCreated;
+            DynamicTypeManager.OnStoreDropped += OnStoreDropped;
+            DynamicTypeManager.OnStoreUpdated += OnStoreUpdated;
+        }
+
 
         public DataTypeDocumentSource(Type interfaceType)
         {
@@ -70,5 +80,31 @@ namespace Composite.C1Console.Search.DocumentSources
         {
             return data.GetUniqueKey().ToString();
         }
+
+        private static void OnStoreCreated(DataTypeDescriptor dataTypeDescriptor)
+        {
+            if (!dataTypeDescriptor.Searchable) return;
+
+            var indexUpdater = ServiceLocator.GetService<ISearchIndexUpdater>();
+
+            indexUpdater?.Populate(GetStoreName(dataTypeDescriptor));
+        }
+
+        private static void OnStoreDropped(DataTypeDescriptor dataTypeDescriptor)
+        {
+            if (!dataTypeDescriptor.Searchable) return;
+
+            var indexUpdater = ServiceLocator.GetService<ISearchIndexUpdater>();
+
+            indexUpdater?.Remove(GetStoreName(dataTypeDescriptor));
+        }
+
+        private static void OnStoreUpdated(UpdateDataTypeDescriptor updateDataTypeDescriptor)
+        {
+            OnStoreDropped(updateDataTypeDescriptor.OldDataTypeDescriptor);
+            OnStoreCreated(updateDataTypeDescriptor.NewDataTypeDescriptor);
+        }
+
+        private static string GetStoreName(DataTypeDescriptor dtd) => dtd.GetFullInterfaceName();
     }
 }

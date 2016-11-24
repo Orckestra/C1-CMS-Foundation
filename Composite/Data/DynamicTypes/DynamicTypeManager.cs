@@ -5,12 +5,12 @@ using System.Globalization;
 using System.Linq;
 using Composite.Core;
 using Composite.Core.Configuration;
+using Composite.Core.Extensions;
 using Composite.Core.Instrumentation;
 using Composite.Data.Foundation;
 using Composite.Data.Foundation.PluginFacades;
 using Composite.Data.Plugins.DataProvider;
 using Composite.Core.Types;
-using Composite.Core.WebClient.Setup;
 
 
 namespace Composite.Data.DynamicTypes
@@ -33,6 +33,17 @@ namespace Composite.Data.DynamicTypes
         /// <exclude />
         public static IDynamicTypeManager Implementation { get { return _dynamicTypeManager; } set { _dynamicTypeManager = value; } }
 
+
+        internal delegate void DataStoreEventHandler(DataTypeDescriptor dataTypeDescriptor);
+        internal delegate void DataStoreChangedEventHandler(UpdateDataTypeDescriptor updateDataTypeDescriptor);
+        internal delegate void LocalizationEventHandler(CultureInfo culture);
+
+        internal static event DataStoreEventHandler OnStoreCreated;
+        internal static event DataStoreEventHandler OnStoreDropped;
+        internal static event DataStoreChangedEventHandler OnStoreUpdated;
+
+        internal static event LocalizationEventHandler OnLocaleAdded;
+        internal static event LocalizationEventHandler OnLocaleRemoved;
 
 
         /// <exclude />
@@ -142,12 +153,16 @@ namespace Composite.Data.DynamicTypes
         public static void CreateStore(string providerName, DataTypeDescriptor typeDescriptor, bool doFlush)
         {
             _dynamicTypeManager.CreateStores(providerName, new[] { typeDescriptor }, doFlush);
+
+            OnStoreCreated?.Invoke(typeDescriptor);
         }
 
         /// <exclude />
         public static void CreateStores(string providerName, IReadOnlyCollection<DataTypeDescriptor> typeDescriptors, bool doFlush)
         {
             _dynamicTypeManager.CreateStores(providerName, typeDescriptors, doFlush);
+
+            typeDescriptors.ForEach(td => OnStoreCreated?.Invoke(td));
         }
 
 
@@ -157,7 +172,7 @@ namespace Composite.Data.DynamicTypes
         public static void AlterStore(UpdateDataTypeDescriptor updateDataTypeDescriptor)
         {
             AlterStore(updateDataTypeDescriptor, false);
-        }        
+        }
 
 
 
@@ -165,6 +180,8 @@ namespace Composite.Data.DynamicTypes
         public static void AlterStore(UpdateDataTypeDescriptor updateDataTypeDescriptor, bool forceRecompile)
         {
             _dynamicTypeManager.AlterStore(updateDataTypeDescriptor, forceRecompile);
+
+            OnStoreUpdated?.Invoke(updateDataTypeDescriptor);
         }
 
 
@@ -201,6 +218,8 @@ namespace Composite.Data.DynamicTypes
             {
                 DataProviderRegistry.UnregisterDataType(interfaceType, providerName);
             }
+
+            OnStoreDropped?.Invoke(typeDescriptor);
         }
 
 
@@ -218,6 +237,8 @@ namespace Composite.Data.DynamicTypes
         public static void AddLocale(string providerName, CultureInfo cultureInfo)
         {
             _dynamicTypeManager.AddLocale(providerName, cultureInfo);
+
+            OnLocaleAdded?.Invoke(cultureInfo);
         }
 
 
@@ -235,6 +256,8 @@ namespace Composite.Data.DynamicTypes
         public static void RemoveLocale(string providerName, CultureInfo cultureInfo)
         {
             _dynamicTypeManager.RemoveLocale(providerName, cultureInfo);
+
+            OnLocaleRemoved?.Invoke(cultureInfo);
         }
 
 
@@ -244,7 +267,6 @@ namespace Composite.Data.DynamicTypes
         /// This method will create the store if the interfaceType has not been configured.
         /// </summary>
         /// <param name="interfaceType"></param>
-        // Helper
         public static void EnsureCreateStore(Type interfaceType)
         {
             EnsureCreateStore(interfaceType, null);
@@ -366,7 +388,7 @@ namespace Composite.Data.DynamicTypes
 
                 if (!dataTypeChangeDescriptor.AlteredTypeHasChanges) return false;
 
-                Log.LogVerbose("DynamicTypeManager",
+                Log.LogVerbose(nameof(DynamicTypeManager),
                     "Updating the store for interface type '{0}' on the '{1}' data provider", interfaceType,
                     providerName);
 
