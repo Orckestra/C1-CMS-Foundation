@@ -34,8 +34,10 @@ const Select = styled(ReactSelect)`
 		line-height: 30px;
 		color: ${colors.baseFontColor};
 	}
-	&.is-focused .Select-control {
+	&.is-focused .Select-control,
+	&.is-focused:not(.is-open) .Select-control {
 		border-color: ${colors.fieldFocusColor};
+		box-shadow: none;
 	}
 
 	.Select-arrow {
@@ -79,6 +81,7 @@ const Select = styled(ReactSelect)`
 		background-color: white;
 		width: calc(100% - 0px);
 		overflow: hidden;
+		z-index: 10;
 	}
 	.Select-menu-outer .Select-option {
 		padding: 7px 8px;
