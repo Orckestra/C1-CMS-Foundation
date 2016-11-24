@@ -1,9 +1,26 @@
+import loadModules from 'unittest/helpers/moduleLoader.js';
 import expect from 'unittest/helpers/expect.js';
 import sinon from 'sinon';
-import * as actions from 'console/state/actions/pageDefs.js';
-import { STORE_DEF } from  'console/state/reducers/definitions.js';
 
 describe('Get page definitions', () => {
+	let STORE_DEF, WAMPClient, actions;
+	before(done => {
+		loadModules([
+			{
+				module: 'console/state/reducers/definitions.js',
+				moduleCb: m => { STORE_DEF = m.STORE_DEF; }
+			},
+			{
+				module: 'console/state/actions/pageDefs.js',
+				moduleCb: m => { actions = m; }
+			},
+			{
+				module: 'console/access/wampClient.js',
+				moduleCb: m => { WAMPClient = m.default; }
+			}
+		], () => done());
+	});
+
 	it('has action descriptors', () =>
 		expect(actions, 'to have property', 'LOAD_PAGE_DEF')
 		.and('to have property', 'LOAD_PAGE_DEF_DONE')
@@ -11,43 +28,50 @@ describe('Get page definitions', () => {
 	);
 
 	describe('loadPageDef', () => {
-		let dispatch, rawPageDef, loadPageDef = actions.loadPageDef;
+		let dispatch, wampCall, loadPageDef;
 		beforeEach(() => {
+			loadPageDef = actions.loadPageDef;
 			dispatch = sinon.spy().named('dispatch');
-			rawPageDef = [
-				{
-					name: 'testPage',
-					type: 'test',
-					tabs: [
-						{
-							name: 'testTab',
-							fieldsets: [
-								{
-									name: 'testFieldSet',
-									label: 'A test',
-									fields: [
-										{
-											name: 'testDataField',
-											label: 'A field'
-										}
-									]
-								}
-							]
-						}
-					],
-					toolbars: [
-						{
-							name: 'testToolbar',
-							items: [
-								{
-									name: 'testButton',
-									label: 'Test it'
-								}
-							]
-						}
-					]
-				}
-			];
+			let rawPageDef = {
+				name: 'testPage',
+				type: 'test',
+				tabs: [
+					{
+						name: 'testTab',
+						fieldsets: [
+							{
+								name: 'testFieldSet',
+								label: 'A test',
+								fields: [
+									{
+										name: 'testDataField',
+										label: 'A field'
+									}
+								]
+							}
+						]
+					}
+				],
+				toolbars: [
+					{
+						name: 'testToolbar',
+						items: [
+							{
+								name: 'testButton',
+								label: 'Test it'
+							}
+						]
+					}
+				]
+			};
+			wampCall = sinon.stub().named('wampCall');
+			wampCall.withArgs('mock.struct.page', 'failPage').returns(Promise.reject(new Error('test error')));
+			wampCall.withArgs('mock.struct.page', 'testPage').returns(Promise.resolve(rawPageDef));
+			WAMPClient.setMock(wampCall);
+		});
+
+		afterEach(() => {
+			WAMPClient.reset();
 		});
 
 		it('creates a thunk that loads definitions and dispatches actions', () => {
@@ -56,12 +80,7 @@ describe('Get page definitions', () => {
 				expect(thunk, 'to be a function')
 				.and('when called with', [dispatch])
 			),
-			'with http mocked out', {
-				request: 'GET /Composite/console/pageData.json',
-				response: {
-					body: JSON.stringify(rawPageDef)
-				}
-			}, 'not to error')
+			'not to error')
 			.then(() =>
 				expect([dispatch], 'to have calls satisfying', [
 					{ spy: dispatch, args: [{ type: actions.LOAD_PAGE_DEF, name: 'testPage' }] },
@@ -98,21 +117,16 @@ describe('Get page definitions', () => {
 		});
 
 		it('sends word of unhandled errors', () => {
-			return expect(() => expect(loadPageDef, 'when called with', ['testPage'])
+			return expect(() => expect(loadPageDef, 'when called with', ['failPage'])
 			.then(thunk =>
 				expect(thunk, 'to be a function')
 				.and('when called with', [dispatch])
 			),
-			'with http mocked out', {
-				request: 'GET /Composite/console/pageData.json',
-				response: {
-					statusCode: 404
-				}
-			}, 'not to error')
+			'not to error')
 			.then(() =>
 				expect([dispatch], 'to have calls satisfying', [
-					{ spy: dispatch, args: [{ type: actions.LOAD_PAGE_DEF, name: 'testPage' }] },
-					{ spy: dispatch, args: [{ type: actions.LOAD_PAGE_DEF_FAILED, message: '404 Not Found' }] }
+					{ spy: dispatch, args: [{ type: actions.LOAD_PAGE_DEF, name: 'failPage' }] },
+					{ spy: dispatch, args: [{ type: actions.LOAD_PAGE_DEF_FAILED, message: 'test error' }] }
 				])
 			);
 		});

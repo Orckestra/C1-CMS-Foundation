@@ -10,6 +10,9 @@ const values = {
 	}
 };
 
-export default function (pageName) {
+export function valueFetcher(pageName) {
 	return values[pageName];
+}
+export function valuePutter(pageName, values) {
+	console.log('Saved values', pageName, values); // eslint-disable-line no-console
 }

@@ -8,9 +8,6 @@ import ConnectDockPanel from 'console/components/container/ConnectDockPanel.js';
 import { injectGlobal } from 'styled-components';
 import 'console/iconIndex.js';
 
-// TODO: Remove this when proper services available.
-import 'console/mocks/mockserver.js';
-
 import colors from 'console/components/colors.js';
 
 injectGlobal`

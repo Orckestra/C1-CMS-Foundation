@@ -41,7 +41,7 @@ export const formSelector = createSelector(
 					fieldset.set('fields', fieldset.get('fields')
 						.map(field =>
 							field.set('value',
-								values.getIn([tabAssembly.get('pageName'), field.get('name')])
+								values.getIn([tabAssembly.get('pageName'), field.get('name')] || '')
 							)
 						)
 					)

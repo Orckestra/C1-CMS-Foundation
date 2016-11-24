@@ -1,8 +1,18 @@
+import loadModules from 'unittest/helpers/moduleLoader.js';
 import expect from 'unittest/helpers/expect.js';
-import initState from 'console/state/initState.js';
 import sinon from 'sinon';
 
 describe('initState', () => {
+	let initState;
+	before(done => {
+		loadModules([
+			{
+				module: 'console/state/initState.js',
+				moduleCb: m => { initState = m.default; }
+			}
+		], () => done());
+	});
+
 	let store;
 	beforeEach(() => {
 		store = {

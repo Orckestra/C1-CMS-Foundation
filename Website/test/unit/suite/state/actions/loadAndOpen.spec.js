@@ -1,10 +1,18 @@
 import expect from 'unittest/helpers/expect.js';
 import sinon from 'sinon';
-import { loadAndOpenPage, loadTabValues } from 'console/state/actions/loadAndOpen.js';
 import { OPEN_PAGE, SELECT_LOCATION } from 'console/state/reducers/layout.js';
 import { STORE_OPTION_LIST } from 'console/state/reducers/options.js';
 import { GET_LOG, GET_LOG_DONE } from 'console/state/actions/logs.js';
 import Immutable from 'immutable';
+
+let loadAndOpenPage, loadTabValues;
+before(done => {
+	System.import('console/state/actions/loadAndOpen.js')
+	.then(m => {
+		({ loadAndOpenPage, loadTabValues } = m);
+		done();
+	});
+});
 
 describe('loadAndOpenPage', () => {
 	let store;

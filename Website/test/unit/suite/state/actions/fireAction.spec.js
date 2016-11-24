@@ -1,8 +1,19 @@
+import loadModules from 'unittest/helpers/moduleLoader.js';
 import expect from 'unittest/helpers/expect.js';
 import sinon from 'sinon';
-import * as actions from 'console/state/actions/fireAction.js';
 
 describe('Fire server action', () => {
+	let actions;
+	before(done => {
+		loadModules([
+			{
+				module: 'console/state/actions/fireAction.js',
+				moduleCb: m => { actions = m; }
+			}
+		], () => done());
+	});
+
+
 	it('has action descriptors', () =>
 		expect(actions, 'to have property', 'FIRE_ACTION')
 		.and('to have property', 'FIRE_ACTION_DONE')
@@ -10,8 +21,9 @@ describe('Fire server action', () => {
 	);
 
 	describe('fireAction', () => {
-		let dispatch, actionId, valueData, fireAction = actions.fireAction;
+		let dispatch, actionId, valueData, fireAction;
 		beforeEach(() => {
+			fireAction = actions.fireAction;
 			dispatch = sinon.spy().named('dispatch');
 			actionId = 'action';
 			valueData = {};

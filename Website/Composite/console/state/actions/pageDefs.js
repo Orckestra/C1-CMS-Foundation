@@ -1,6 +1,6 @@
-import requestJSON from 'console/access/requestJSON.js';
+import WAMPClient from 'console/access/wampClient.js';
 import { normalize } from 'normalizr';
-import schema from 'console/state/normalizingSchema.js';
+import { pageSchema } from 'console/state/normalizingSchema.js';
 import { addDefinition } from 'console/state/reducers/definitions.js';
 
 const prefix = 'PAGE_DEF.';
@@ -8,15 +8,14 @@ export const LOAD_PAGE_DEF = prefix + 'LOAD';
 export const LOAD_PAGE_DEF_DONE = LOAD_PAGE_DEF + '.DONE';
 export const LOAD_PAGE_DEF_FAILED = LOAD_PAGE_DEF + '.FAIL';
 
-const pageDefEndpointURL = '/Composite/console/pageData.json';
+const pageDefEndpointURI = 'mock.struct.page';
 
-// Better input: Page identity/-ies (perspective, parentage, page name - path object of some kind?)
 export function loadPageDef(pageName) {
 	return dispatch => {
 		dispatch({ type: LOAD_PAGE_DEF, name: pageName });
-		return requestJSON(pageDefEndpointURL)
+		return WAMPClient.call(pageDefEndpointURI, pageName)
 		.then(response => {
-			let defs = normalize(response, schema).entities;
+			let defs = normalize(response, pageSchema).entities;
 			Object.keys(defs).forEach(defType => {
 				let defSet = defs[defType];
 				let typeName = defType.replace(/Defs$/, '');
@@ -28,7 +27,7 @@ export function loadPageDef(pageName) {
 		})
 		.catch(err => {
 			dispatch({ type: LOAD_PAGE_DEF_FAILED, message: err.message, stack: err.stack });
-			console.error(err); // eslint-disable-line no-console
+			// console.error(err); // eslint-disable-line no-console
 		});
 	};
 }

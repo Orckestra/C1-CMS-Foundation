@@ -1,11 +1,21 @@
+import loadModules from 'unittest/helpers/moduleLoader.js';
 import expect from 'unittest/helpers/expect.js';
-import configureStore from 'console/state/store.js';
 import sinon from 'sinon';
 import getHotReloadStore from 'systemjs-hot-reloader-store';
 
 const hotStore = getHotReloadStore('console:store');
 
 describe('configureStore', () => {
+	let configureStore;
+	before(done => {
+		loadModules([
+			{
+				module: 'console/state/store.js',
+				moduleCb: m => { configureStore = m.default; }
+			}
+		], () => done());
+	});
+
 	afterEach(() => {
 		hotStore.prevStore = null;
 		delete window.devToolsExtension;
