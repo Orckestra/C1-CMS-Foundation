@@ -56,8 +56,8 @@ const DataField = props => {
 			</Select>;
 		break;
 	default:
-		handleChange = function () {
-			props.updateValue(input.value);
+		handleChange = function (event) {
+			props.updateValue(event.target.value);
 		};
 		inputElement = <Input
 			type={props.type}

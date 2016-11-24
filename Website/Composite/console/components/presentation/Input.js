@@ -39,4 +39,8 @@ const Input = styled.input`
 	}
 `;
 
+Input.defaultProps = {
+	value: ''
+};
+
 export default Input;
