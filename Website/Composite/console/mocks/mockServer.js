@@ -30,6 +30,7 @@ const client = new Wampy(url.href, {
 		]).then(unblock);
 	}
 });
+window.addEventListener('beforeunload', client.disconnect.bind(client));
 
 function registerMock(name, handler) {
 	return new Promise(resolve => {
