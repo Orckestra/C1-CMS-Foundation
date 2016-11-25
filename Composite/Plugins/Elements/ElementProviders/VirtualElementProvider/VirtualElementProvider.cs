@@ -5,22 +5,22 @@ using System.Configuration;
 using System.Linq;
 using System.Web.Hosting;
 using Composite.C1Console.Actions;
-using Composite.C1Console.Events;
 using Composite.C1Console.Elements;
 using Composite.C1Console.Elements.Foundation;
 using Composite.C1Console.Elements.Plugins.ElementProvider;
+using Composite.C1Console.Search;
 using Composite.Core;
 using Composite.Core.Extensions;
 using Composite.Core.ResourceSystem;
 using Composite.Core.ResourceSystem.Icons;
 using Composite.C1Console.Security;
-using Composite.Core.WebClient;
 using Composite.C1Console.Workflow;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 using Microsoft.Practices.ObjectBuilder;
 
 using UserTexts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_C1Console_Users;
+using Texts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_Management;
 
 
 namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
@@ -42,6 +42,7 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
         public static ResourceHandle ChangeOwnPasswordIcon => GetIconHandle("users-changeownpassword");
         public static ResourceHandle ChangeOwnCultureIcon => GetIconHandle("users-changeownculture");
         public static ResourceHandle SendMessageIcon => GetIconHandle("balloon");
+        public static ResourceHandle RebuildSearchIndexIcon => GetIconHandle("refresh");
         public static ResourceHandle RestartApplicationIcon => GetIconHandle("restart-application");
         public static ResourceHandle ManageSecurityIcon => GetIconHandle("security-manage-permissions");
         public static ResourceHandle ChangeOwnActiveAndForeignLocaleIcon => GetIconHandle("localization-changelocale");
@@ -253,16 +254,35 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
                     }
                 }
             });
+
+            if (ServiceLocator.HasService(typeof (ISearchIndexUpdater)))
+            {
+                element.AddAction(new ElementAction(new RebuildSearchIndexActionToken())
+                {
+                    VisualData = new ActionVisualizedData
+                    {
+                        Label = Texts.VirtualElementProviderElementProvider_RootActions_RebuildSearchIndexLabel,
+                        ToolTip = Texts.VirtualElementProviderElementProvider_RootActions_RebuildSearchIndexTooltip,
+                        Icon = RebuildSearchIndexIcon,
+                        Disabled = false,
+                        ActionLocation = new ActionLocation
+                        {
+                            ActionType = ActionType.Other,
+                            IsInFolder = false,
+                            IsInToolbar = false,
+                            ActionGroup = PrimaryActionGroup
+                        }
+                    }
+                });
+            }
             
-                
-            
-            element.AddAction(new ElementAction(new ActionHandle(new RestartApplicationActionToken()))
+            element.AddAction(new ElementAction(new RestartApplicationActionToken())
             {
                 VisualData = new ActionVisualizedData
                 {
-                    Label = StringResourceSystemFacade.GetString("Composite.Management", "VirtualElementProviderElementProvider.RootActions.RestartApplicationLabel"),
-                    ToolTip = StringResourceSystemFacade.GetString("Composite.Management", "VirtualElementProviderElementProvider.RootActions.RestartApplicationTooltip"),
-                    Icon = VirtualElementProvider.RestartApplicationIcon,
+                    Label = Texts.VirtualElementProviderElementProvider_RootActions_RestartApplicationLabel,
+                    ToolTip = Texts.VirtualElementProviderElementProvider_RootActions_RestartApplicationTooltip,
+                    Icon = RestartApplicationIcon,
                     Disabled = false,
                     ActionLocation = new ActionLocation
                     {
@@ -662,36 +682,47 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
     }
 
 
+    
+
+    [ActionExecutor(typeof(RebuildSearchIndexActionExecutor))]
+    internal sealed class RebuildSearchIndexActionToken : ActionToken
+    {
+        private static readonly IEnumerable<PermissionType> _permissionType = new [] { PermissionType.Administrate };
+
+        public override IEnumerable<PermissionType> PermissionTypes => _permissionType;
+
+        public override string Serialize() => nameof(RebuildSearchIndexActionToken);
+
+        public static ActionToken Deserialize(string serializedData) => new RebuildSearchIndexActionToken();
+    }
 
 
     [ActionExecutor(typeof(RestartApplicationActionExecutor))]
     internal sealed class RestartApplicationActionToken : ActionToken
     {
-        private static IEnumerable<PermissionType> _permissionType = new PermissionType[] { PermissionType.Administrate };
+        private static readonly IEnumerable<PermissionType> _permissionType = new [] { PermissionType.Administrate };
 
-        public RestartApplicationActionToken()
+        public override IEnumerable<PermissionType> PermissionTypes => _permissionType;
+
+        public override string Serialize() => nameof(RestartApplicationActionToken);
+
+        public static ActionToken Deserialize(string serializedData) => new RestartApplicationActionToken();
+    }
+
+    
+    internal sealed class RebuildSearchIndexActionExecutor : IActionExecutor
+    {
+        public FlowToken Execute(EntityToken entityToken, ActionToken actionToken, FlowControllerServicesContainer flowControllerServicesContainer)
         {
-        }
+            var service = ServiceLocator.GetService<ISearchIndexUpdater>();
+            service?.Rebuild();
 
-        public override IEnumerable<PermissionType> PermissionTypes
-        {
-            get { return _permissionType; }
-        }
-
-        public override string Serialize()
-        {
-            return "RestartApplicationActionToken";
-        }
-
-
-        public static ActionToken Deserialize(string serializedData)
-        {
-            return new RestartApplicationActionToken();
+            return null;
         }
     }
 
 
-    internal sealed class RestartApplicationActionExecutor : Composite.C1Console.Actions.IActionExecutor
+    internal sealed class RestartApplicationActionExecutor : IActionExecutor
     {
         public FlowToken Execute(EntityToken entityToken, ActionToken actionToken, FlowControllerServicesContainer flowControllerServicesContainer)
         {

@@ -1669,6 +1669,10 @@ public static string VirtualElementProviderElementProvider_RootActions_SetTimezo
 public static string VirtualElementProviderElementProvider_RootActions_SetTimezoneTooltip=>T("VirtualElementProviderElementProvider.RootActions.SetTimezoneTooltip");
 ///<summary>&quot;Global Settings&quot;</summary> 
 public static string VirtualElementProviderElementProvider_RootActions_GlobalSetting=>T("VirtualElementProviderElementProvider.RootActions.GlobalSetting");
+///<summary>&quot;Rebuild search index&quot;</summary> 
+public static string VirtualElementProviderElementProvider_RootActions_RebuildSearchIndexLabel=>T("VirtualElementProviderElementProvider.RootActions.RebuildSearchIndexLabel");
+///<summary>&quot;Initiate search index rebuilding&quot;</summary> 
+public static string VirtualElementProviderElementProvider_RootActions_RebuildSearchIndexTooltip=>T("VirtualElementProviderElementProvider.RootActions.RebuildSearchIndexTooltip");
 ///<summary>&quot;Restart server&quot;</summary> 
 public static string VirtualElementProviderElementProvider_RootActions_RestartApplicationLabel=>T("VirtualElementProviderElementProvider.RootActions.RestartApplicationLabel");
 ///<summary>&quot;Restart the server&quot;</summary> 
