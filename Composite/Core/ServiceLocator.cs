@@ -18,9 +18,10 @@ namespace Composite.Core
     public static class ServiceLocator
     {
         private const string HttpContextKey = "HttpApplication.ServiceScope";
-        private static IServiceCollection _serviceCollection;
+        private static IServiceCollection _serviceCollection = new ServiceCollection();
         private static IServiceProvider _serviceProvider = null;
         private static ConcurrentDictionary<Type, bool> _hasTypeLookup = new ConcurrentDictionary<Type, bool>();
+        private static Func<IServiceCollection, IServiceProvider> _serviceProviderBuilder = s => s.BuildServiceProvider();
 
         /// <summary>
         /// Get service of type T
@@ -78,7 +79,7 @@ namespace Composite.Core
             return ServiceProvider.GetRequiredService(serviceType);
         }
 
-        
+
         /// <summary>
         /// Get services of the specified type
         /// </summary>
@@ -90,7 +91,18 @@ namespace Composite.Core
         }
 
 
+        /// <summary>
+        /// Replaces the default services container by registering a builder for your own IServiceProvider.
+        /// You must register this during the service configuration phase, see <see cref="Composite.Core.Application.ApplicationStartupAttribute"/> and the ConfigureServices method.
+        /// </summary>
+        /// <param name="serviceProviderBuilder">A callback function that returns your custom IServiceProvider</param>
+        public static void SetServiceProvider(Func<IServiceCollection, IServiceProvider> serviceProviderBuilder)
+        {
+            Verify.ArgumentNotNull(serviceProviderBuilder, nameof(serviceProviderBuilder));
+            Verify.IsNull(_serviceProvider, "ServiceProvider already created and cannot be replaced at this time. Your custom ServiceProvider must be set during application startup - see ApplicationStartupAttribute and ConfigureServices().");
 
+            _serviceProviderBuilder = serviceProviderBuilder;
+        }
 
         /// <summary>
         /// Gets an application service provider
@@ -106,7 +118,7 @@ namespace Composite.Core
         }
 
 
-  
+
         internal static bool HasService(Type serviceType)
         {
             Verify.ArgumentNotNull(serviceType, nameof(serviceType));
@@ -116,9 +128,9 @@ namespace Composite.Core
 
             if (!_hasTypeLookup.TryGetValue(serviceType, out hasType))
             {
-                if (_serviceCollection.Any(sd => 
+                if (_serviceCollection.Any(sd =>
                     sd.ServiceType.IsAssignableFrom(serviceType)
-                || (serviceType.IsGenericType 
+                || (serviceType.IsGenericType
                     && sd.ServiceType.IsAssignableFrom(serviceType.GetGenericTypeDefinition()))))
                 {
                     hasType = true;
@@ -151,18 +163,14 @@ namespace Composite.Core
             {
                 Verify.IsNull(_serviceProvider, "ServiceCollection accessed after ServiceProvider build-up - call out of sequence.");
 
-                if (_serviceCollection == null)
-                {
-                    _serviceCollection = new ServiceCollection();
-                }
                 return _serviceCollection;
-            } 
+            }
         }
 
 
         internal static void BuildServiceProvider()
         {
-            _serviceProvider = _serviceCollection.BuildServiceProvider();
+            _serviceProvider = _serviceProviderBuilder(_serviceCollection);
         }
 
 
