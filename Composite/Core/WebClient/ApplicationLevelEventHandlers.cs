@@ -10,6 +10,7 @@ using Composite.C1Console.Events;
 using Composite.Core.Application;
 using Composite.Core.Configuration;
 using Composite.Core.Extensions;
+using Composite.Core.Implementation;
 using Composite.Core.Instrumentation;
 using Composite.Core.Logging;
 using Composite.Core.Routing;
@@ -20,7 +21,6 @@ using Composite.Data.Types;
 using Composite.Functions;
 using Composite.Plugins.Elements.UrlToEntityToken;
 using Composite.Plugins.Routing.InternalUrlConverters;
-
 
 namespace Composite.Core.WebClient
 {
@@ -91,14 +91,10 @@ namespace Composite.Core.WebClient
         {
             UrlToEntityTokenFacade.Register(new DataUrlToEntityTokenMapper());
             UrlToEntityTokenFacade.Register(new ServerLogUrlToEntityTokenMapper());
-
-            RoutedData.ConfigureServices(ServiceLocator.ServiceCollection);
-
-
-            using (new LogExecutionTime(_verboseLogEntryTitle, "Initializing dynamic data action tokens"))
-            {
-                DataActionTokenResolverRegistry.Register(ServiceLocator.ServiceCollection);
-            }
+            
+            ServiceLocator.ServiceCollection.AddLogging();
+            ServiceLocator.ServiceCollection.AddRoutedData();
+            ServiceLocator.ServiceCollection.AddDataActionTokenResolver();
 
             using (new LogExecutionTime(_verboseLogEntryTitle, "Initializing Wamp Router"))
             {
@@ -171,7 +167,10 @@ namespace Composite.Core.WebClient
 
             ThreadDataManager.InitializeThroughHttpContext();
 
-            ServiceLocator.CreateRequestServicesScope(context);
+            if (SystemSetupFacade.IsSystemFirstTimeInitialized)
+            {
+                ServiceLocator.CreateRequestServicesScope(context);
+            }
 
             if (LogRequestDetails)
             {
@@ -345,14 +344,19 @@ namespace Composite.Core.WebClient
 
             using (GlobalInitializerFacade.GetPreInitHandlersScope())
             {
-                ApplicationStartupFacade.FireBeforeSystemInitialize();
+                ApplicationStartupFacade.FireConfigureServices(ServiceLocator.ServiceCollection);
+
+                ServiceLocator.BuildServiceProvider();
+                ServiceLocator.CreateRequestServicesScope(HttpContext.Current);
+
+                ApplicationStartupFacade.FireBeforeSystemInitialize(ServiceLocator.ServiceProvider);
             }
 
             TempDirectoryFacade.OnApplicationStart();
 
             HostnameBindingsFacade.Initialize();
 
-            ApplicationStartupFacade.FireSystemInitialized();
+            ApplicationStartupFacade.FireSystemInitialized(ServiceLocator.ServiceProvider);
 
             ThreadDataManager.FinalizeThroughHttpContext();
         }

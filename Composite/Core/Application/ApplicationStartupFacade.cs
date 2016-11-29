@@ -1,6 +1,7 @@
 ﻿using System;
 using Composite.Core.Application.Foundation;
 using Composite.Core.Application.Foundation.PluginFacades;
+using Microsoft.Extensions.DependencyInjection;
 
 
 namespace Composite.Core.Application
@@ -12,21 +13,31 @@ namespace Composite.Core.Application
 	public static class ApplicationStartupFacade
 	{
         /// <exclude />
-        public static void FireBeforeSystemInitialize()
+        public static void FireConfigureServices(IServiceCollection serviceCollection)
         {
             foreach (string hanlderName in ApplicationStartupHandlerRegistry.ApplicationStartupHandlerNames)
             {
-                ApplicationStartupHandlerPluginFacade.OnBeforeInitialize(hanlderName);
+                ApplicationStartupHandlerPluginFacade.ConfigureServices(hanlderName, serviceCollection);
             }
         }
 
 
         /// <exclude />
-        public static void FireSystemInitialized()
+        public static void FireBeforeSystemInitialize(IServiceProvider serviceProvider)
         {
             foreach (string hanlderName in ApplicationStartupHandlerRegistry.ApplicationStartupHandlerNames)
             {
-                ApplicationStartupHandlerPluginFacade.OnInitialized(hanlderName);
+                ApplicationStartupHandlerPluginFacade.OnBeforeInitialize(hanlderName, serviceProvider);
+            }
+        }
+
+
+        /// <exclude />
+        public static void FireSystemInitialized(IServiceProvider serviceProvider)
+        {
+            foreach (string hanlderName in ApplicationStartupHandlerRegistry.ApplicationStartupHandlerNames)
+            {
+                ApplicationStartupHandlerPluginFacade.OnInitialized(hanlderName, serviceProvider);
             }
         }
 	}
