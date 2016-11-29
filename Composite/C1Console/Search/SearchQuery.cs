@@ -9,28 +9,53 @@ namespace Composite.C1Console.Search
     public enum SearchQuerySelectionOperation
     {
         /// <summary>
-        /// 
+        /// The result documents should have at least one of the given values.
         /// </summary>
         Or = 0,
         /// <summary>
-        /// 
+        /// The result documents should have all of the given values.
         /// </summary>
         And = 1
     }
 
+    /// <summary>
+    /// Allows filtering search results by defining the needed facet values.
+    /// </summary>
     public class SearchQuerySelection
     {
+        /// <summary>
+        /// The name of the field.
+        /// </summary>
         public string FieldName { get; set; }
+
+        /// <summary>
+        /// The array of values.
+        /// </summary>
         public string[] Values { get; set; }
+
+        /// <summary>
+        /// Defines how multiple selected values should be resolved.
+        /// </summary>
         public SearchQuerySelectionOperation Operation { get; set; }
     }
 
+
+    /// <summary>
+    /// Represents a sort option for the a search query.
+    /// </summary>
     public class SearchQuerySortOption
     {
-        public SearchQuerySortOption(string fieldName, bool reverseOrder)
+        /// <summary>
+        /// Constructs a new instance of <see cref="SearchQuerySortOption"/>.
+        /// </summary>
+        /// <param name="fieldName"></param>
+        /// <param name="reverseOrder"></param>
+        /// <param name="sortTermsAs"></param>
+        public SearchQuerySortOption(string fieldName, bool reverseOrder, SortTermsAs sortTermsAs = SortTermsAs.String)
         {
             FieldName = fieldName;
             ReverseOrder = reverseOrder;
+            SortTermsAs = sortTermsAs;
         }
 
         /// <summary>
@@ -42,6 +67,11 @@ namespace Composite.C1Console.Search
         /// Indicates whether the results should appear in an order reverse to the way it is kept in the index.
         /// </summary>
         public bool ReverseOrder { get; }
+
+        /// <summary>
+        /// Defines how the field values are interpreted during sorting of the search results.
+        /// </summary>
+        public SortTermsAs SortTermsAs { get; set; }
     }
 
     /// <summary>

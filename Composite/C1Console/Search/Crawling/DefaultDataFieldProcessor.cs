@@ -79,9 +79,50 @@ namespace Composite.C1Console.Search.Crawling
             return new DocumentFieldPreview
             {
                 Sortable = IsFieldSortable(propertyInfo),
+                SortTermsAs = GetFieldSortingMethod(propertyInfo.PropertyType),
                 PreviewFunction = GetPreviewFunction(),
                 FieldOrder = 100
             };
+        }
+
+        private SortTermsAs GetFieldSortingMethod(Type propertyType)
+        {
+            if (propertyType.IsGenericType && propertyType.GetGenericTypeDefinition() == typeof (Nullable<>))
+            {
+                propertyType = propertyType.GetGenericArguments()[0];
+            }
+
+            if (propertyType == typeof (byte))
+            {
+                return SortTermsAs.Int;
+            }
+
+            if (propertyType == typeof(short))
+            {
+                return SortTermsAs.Int;
+            }
+
+            if (propertyType == typeof(int))
+            {
+                return SortTermsAs.Int;
+            }
+
+            if (propertyType == typeof(long))
+            {
+                return SortTermsAs.Long;
+            }
+
+            if (propertyType == typeof(float))
+            {
+                return SortTermsAs.Float;
+            }
+
+            if (propertyType == typeof(decimal))
+            {
+                return SortTermsAs.Double;
+            }
+
+            return SortTermsAs.String;
         }
 
         /// <exclude />

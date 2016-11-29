@@ -69,6 +69,33 @@ namespace Composite.C1Console.Search
     }
 
     /// <summary>
+    /// Defines a sorting methods for the search results
+    /// </summary>
+    public enum SortTermsAs
+    {
+        /// <summary>
+        /// The values will be sorted alphabetically
+        /// </summary>
+        String = 0,
+        /// <summary>
+        /// The values will be sorted as integer values
+        /// </summary>
+        Int = 1,
+        /// <summary>
+        /// The values will be sorted as long values
+        /// </summary>
+        Long = 2,
+        /// <summary>
+        /// The values will be sorted as float values
+        /// </summary>
+        Float = 3,
+        /// <summary>
+        /// The values will be sorted as double values
+        /// </summary>
+        Double = 4
+    }
+
+    /// <summary>
     /// Constains information how a data field is preserved and shown in search results.
     /// </summary>
     public sealed class DocumentFieldPreview
@@ -82,6 +109,11 @@ namespace Composite.C1Console.Search
         /// Indicates whether sorting for the given field should be enabled.
         /// </summary>
         public bool Sortable { get; set; }
+
+        /// <summary>
+        /// Defines a sorting method for the given values.
+        /// </summary>
+        public SortTermsAs SortTermsAs { get; set; }
 
         /// <summary>
         /// Indicates the order in which the field appears

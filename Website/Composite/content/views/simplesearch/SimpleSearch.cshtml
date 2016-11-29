@@ -67,8 +67,10 @@
 
 		if (!string.IsNullOrWhiteSpace(text))
 		{
+			var allFields = SearchFacade.DocumentSources.SelectMany(ds => ds.CustomFields).ToList();
+
 			facetFields = RemoveDuplicateKeys(
-				SearchFacade.DocumentSources.SelectMany(ds => ds.CustomFields)
+				allFields
 				.Where(f => f.FacetedSearchEnabled),
 				f => f.Name).ToList();
 
@@ -92,7 +94,12 @@
 			var sortOptions = new List<SearchQuerySortOption>();
 			if (sortField != null)
 			{
-				sortOptions.Add(new SearchQuerySortOption(sortField, !sortByAscending));
+				var sortTermsAs = allFields
+					.Where(f => f.Name == sortField && f.Preview != null && f.Preview.Sortable)
+					.Select(f => f.Preview.SortTermsAs)
+					.FirstOrDefault();
+
+				sortOptions.Add(new SearchQuerySortOption(sortField, !sortByAscending, sortTermsAs));
 			}
 
 			var query = new SearchQuery(text, UserSettings.ActiveLocaleCultureInfo)
