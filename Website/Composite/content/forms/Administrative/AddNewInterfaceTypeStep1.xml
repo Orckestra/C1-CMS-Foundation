@@ -8,7 +8,8 @@
     <cms:binding name="DataFieldDescriptors" type="System.Object" />
     <cms:binding name="HasCaching" type="System.Boolean" />
     <cms:binding name="HasPublishing" type="System.Boolean" />
-    <cms:binding name="HasLocalization" type="System.Boolean" />
+		<cms:binding name="HasLocalization" type="System.Boolean" />
+		<cms:binding name="IsSearchable" type="System.Boolean" />
     <cms:binding name="KeyFieldName" type="System.String" />
     <cms:binding name="LabelFieldName" type="System.String" optional="true" />
     <cms:binding name="InternalUrlPrefix" type="System.String" optional="true" />
@@ -58,6 +59,11 @@
                 <cms:bind source="HasLocalization" />
               </CheckBox.Checked>
             </CheckBox>
+						<CheckBox Label="${Composite.Plugins.GeneratedDataTypesElementProvider, EditorCommon.IsSearchable}" ItemLabel="${Composite.Plugins.GeneratedDataTypesElementProvider, EditorCommon.IsSearchable}">
+							<CheckBox.Checked>
+								<cms:bind source="IsSearchable" />
+							</CheckBox.Checked>
+						</CheckBox>
           </PlaceHolder>
         </FieldGroup>
       </PlaceHolder>
@@ -74,7 +80,10 @@
         <internal:TypeFieldDesigner.KeyFieldReadOnly>
           <cms:bind source="KeyFieldReadOnly" />
         </internal:TypeFieldDesigner.KeyFieldReadOnly>
-      </internal:TypeFieldDesigner>
+				<internal:TypeFieldDesigner.IsSearchable>
+					<cms:read source="IsSearchable" />
+				</internal:TypeFieldDesigner.IsSearchable>
+			</internal:TypeFieldDesigner>
     </TabPanels>
   </cms:layout>
 </cms:formdefinition>

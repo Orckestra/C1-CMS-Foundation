@@ -27,6 +27,7 @@ namespace Composite.C1Console.Search.DocumentSources
         private IEnumerable<ISearchDocumentSource> GetDataTypeDocumentSources()
         {
             return from dataType in DataFacade.GetAllInterfaces()
+                where !typeof(IPageMetaData).IsAssignableFrom(dataType)
                 let attributes = dataType.GetCustomAttributes(true)
                 where attributes.Any(a => a is SearchableTypeAttribute)
                 select new DataTypeDocumentSource(dataType);

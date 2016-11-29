@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Composite.C1Console.Security;
+using Composite.Core.Linq;
 using Composite.Data;
 
 namespace Composite.C1Console.Search.Crawling
@@ -168,10 +169,16 @@ namespace Composite.C1Console.Search.Crawling
             {
                 ElementBundleName = versionName,
                 FullText = _textParts,
-                FieldValues = _fieldValues.ToDictionary(pair => pair.Key, pair => pair.Value),
-                FacetFieldValues = _facetFieldValues.ToDictionary(pair => pair.Key, pair => pair.Value)
+                FieldValues = _fieldValues
+                    .ExcludeDuplicateKeys(pair => pair.Key)
+                    .ToDictionary(pair => pair.Key, pair => pair.Value),
+                FacetFieldValues = _facetFieldValues
+                    .ExcludeDuplicateKeys(pair => pair.Key)
+                    .ToDictionary(pair => pair.Key, pair => pair.Value)
             };
         }
+
+
 
         /// <summary>
         /// Gets the list of default document fields

@@ -64,9 +64,13 @@ namespace Composite.C1Console.Search.Crawling
 
 
 
-        public static IEnumerable<DocumentField> GetDocumentFields(Type interfaceType)
+        public static IEnumerable<DocumentField> GetDocumentFields(Type interfaceType, bool includeDefaultFields = true)
         {
-            return SearchDocumentBuilder.GetDefaultDocumentFields().Concat(
+            var defaultFields = includeDefaultFields
+                ? SearchDocumentBuilder.GetDefaultDocumentFields()
+                : Enumerable.Empty<DocumentField>();
+
+            return defaultFields.Concat(
                 from info in GetSearchableFields(interfaceType)
                 let prop = info.Key
                 let attr = info.Value

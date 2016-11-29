@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Composite.C1Console.Search.Crawling;
+using Composite.Core;
 using Composite.Core.Extensions;
 using Composite.Core.Linq;
 using Composite.Data;
@@ -12,6 +13,8 @@ namespace Composite.C1Console.Search.DocumentSources
 {
     internal class CmsPageDocumentSource : ISearchDocumentSource
     {
+        const string LogTitle = nameof(CmsPageDocumentSource);
+
         private readonly List<IDocumentSourceListener> _listeners = new List<IDocumentSourceListener>();
         private readonly DataChangesIndexNotifier _changesIndexNotifier;
         private readonly Lazy<ICollection<DocumentField>> _customFields;
@@ -21,7 +24,16 @@ namespace Composite.C1Console.Search.DocumentSources
             Name = name;
 
             _customFields = new Lazy<ICollection<DocumentField>>(() =>
-                DataTypeSearchReflectionHelper.GetDocumentFields(typeof(IPage)).Evaluate());
+            {
+                var pageDocFields = DataTypeSearchReflectionHelper.GetDocumentFields(typeof (IPage));
+                var metaDataFields = PageMetaDataFacade.GetAllMetaDataTypes()
+                    .SelectMany(dataType => DataTypeSearchReflectionHelper.GetDocumentFields(dataType, false));
+
+                return pageDocFields
+                       .Concat(metaDataFields)
+                       .ExcludeDuplicateKeys(f => f.Name)
+                       .Evaluate();
+            });
 
             _changesIndexNotifier = new DataChangesIndexNotifier(
                 _listeners, typeof(IPage), 
@@ -69,9 +81,17 @@ namespace Composite.C1Console.Search.DocumentSources
             {
                 var placeholders = PageManager.GetPlaceholderContent(page.Id, page.VersionId);
                 placeholders.ForEach(pl => documentBuilder.CrawlData(pl, true));
-            }
 
-            // TODO: crawl page meta data as well
+                try
+                {
+                    page.GetMetaData()
+                        .ForEach(pageMetaData => documentBuilder.CrawlData(pageMetaData));
+                }
+                catch (Exception ex)
+                {
+                    Log.LogWarning(LogTitle, ex);
+                }
+            }
 
             string documentId = GetDocumentId(page);
 
