@@ -96,11 +96,6 @@ namespace Composite.Core.WebClient
             ServiceLocator.ServiceCollection.AddRoutedData();
             ServiceLocator.ServiceCollection.AddDataActionTokenResolver();
 
-            using (new LogExecutionTime(_verboseLogEntryTitle, "Initializing Wamp Router"))
-            {
-                WampRouterResolverRegistry.Register(ServiceLocator.ServiceCollection);
-            }
-
             InternalUrls.Register(new MediaInternalUrlConverter());
             InternalUrls.Register(new PageInternalUrlConverter());
 
