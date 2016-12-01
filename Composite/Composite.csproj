@@ -288,7 +288,6 @@
     <Compile Include="Core\WebClient\PhantomJs\RenderingResultStatus.cs" />
     <Compile Include="Core\WebClient\PhantomJs\RenderPreviewRequest.cs" />
     <Compile Include="Core\Logging\ILog.cs" />
-
     <Compile Include="Core\WebClient\Services\ConsoleMessageService\OpenSlideViewParams.cs" />
     <Compile Include="Core\WebClient\Services\WampRouter\AspNetCookieProvider.cs" />
     <Compile Include="Core\WebClient\Services\WampRouter\AspNetWebsocketTransform.cs" />
@@ -305,6 +304,7 @@
     <Compile Include="Data\Types\PageInsertPosition.cs" />
     <Compile Include="Data\ICreationHistory.cs" />
     <Compile Include="Data\VersionKeyPropertyName.cs" />
+    <Compile Include="Plugins\Components\ComponentsEndpoint\ComponentsEndpoint.cs" />
     <Compile Include="Plugins\Components\FileBasedComponentProvider\FileBasedComponentProvider.cs" />
     <Compile Include="Plugins\Elements\ElementProviders\PageElementProvider\PageAddActionExecuter.cs" />
     <Compile Include="Plugins\Elements\ElementProviders\PageElementProvider\PageAddActionToken.cs" />
