@@ -1,12 +1,16 @@
 ﻿using Composite.C1Console.Components;
 using Composite.Core.Application;
-using Composite.Core.Xml;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Runtime.Serialization;
+using System.Web.Hosting;
+using System.Xml.Linq;
+using System.Xml.Serialization;
+using Composite.Core.IO;
+using Composite.Core.Linq;
+using Composite.Core.Xml;
 
 #warning Code gone A MOCK! This is far from done.
 
@@ -22,7 +26,6 @@ namespace Composite.Plugins.Components.FileBasedComponentProvider
             serviceCollection.AddSingleton(typeof(IComponentProvider), typeof(FileBasedComponentProvider));
         }
     }
-
 
     /// <exclude />
     public class FileBasedComponentProvider : IComponentProvider
@@ -48,13 +51,24 @@ namespace Composite.Plugins.Components.FileBasedComponentProvider
 
             _changeNotifier.ProviderChange(this.ProviderId);
 
-            yield return new Component
+            foreach (var componentFile in Directory.GetFiles(HostingEnvironment.MapPath("~/App_Data/Components/"),"*.xml",SearchOption.AllDirectories))
             {
-                Title = "Component 1",
-                Description = "Yada yahahadada yada",
-                GroupingTags = new string[] { "media", "images" },
-                ComponentDefinition = new XhtmlDocument()
-            };
+                var ns = XNamespace.Get("http://cms.orckestra.com/blip/blop/foo/bar");
+                var doc = XDocument.Load(componentFile);
+                var el = doc.Descendants().First();
+
+                if (el != null)
+                {
+                    yield return new Component
+                    {
+                        Title = el.GetAttributeValue(ns + "title") ?? Path.GetFileNameWithoutExtension(componentFile),
+                        Description = el.GetAttributeValue(ns + "description")?? Path.GetFileNameWithoutExtension(componentFile),
+                        GroupingTags = el.GetAttributeValue(ns + "tags").Split(',').ToList(),
+                        ComponentDefinition = el.Document
+
+                    };
+                }
+            }
         }
     }
 }
