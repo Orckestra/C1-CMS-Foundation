@@ -149,7 +149,7 @@ namespace Composite.Functions
 
         private bool IsHttpException(Exception exception)
         {
-            return exception is HttpException || (exception.InnerException != null && IsHttpException(exception.InnerException));
+            return (!(exception is HttpCompileException) && exception is HttpException) || (exception.InnerException != null && IsHttpException(exception.InnerException));
         }
     }
 }
