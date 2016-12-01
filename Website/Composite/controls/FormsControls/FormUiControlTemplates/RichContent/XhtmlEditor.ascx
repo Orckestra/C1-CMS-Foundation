@@ -56,6 +56,7 @@
 
 <ui:visualeditor 
 	formattingconfiguration="<%= this.ClassConfigurationName %>"
+    containerclasses="<%=this.ContainerClasses %>"
     embedablefieldstypenames="<%= HttpUtility.HtmlAttributeEncode(this.EmbedableFieldsTypesString) %>"
 	value="<%= _currentStringValue %>"
 	id="<%= this.UniqueID %>"

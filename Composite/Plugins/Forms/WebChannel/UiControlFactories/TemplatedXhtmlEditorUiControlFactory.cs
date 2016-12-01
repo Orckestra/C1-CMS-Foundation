@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
 using System.Web.UI;
 using Composite.C1Console.Forms;
 using Composite.C1Console.Forms.CoreUiControls;
@@ -62,6 +63,8 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
         /// <exclude />
         public string ClassConfigurationName { get; set; }
 
+        /// <exclude />
+        public string ContainerClasses { get; set; }
 
         /// <exclude />
         public Guid PreviewPageId { get; set; }
@@ -104,6 +107,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
             _userControl.Xhtml = this.Xhtml;
             _userControl.EmbedableFieldsTypes = this.EmbedableFieldsTypes;
             _userControl.ClassConfigurationName = this.ClassConfigurationName;
+            _userControl.ContainerClasses = string.Join(",", this.ContainerClasses.Replace(" ", ",").Split(',').Where(s => s.Length > 0));
             _userControl.PreviewPageId = PreviewPageId;
             _userControl.PreviewTemplateId = PreviewTemplateId;
             _userControl.PreviewPlaceholder = PreviewPlaceholder;
@@ -133,6 +137,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
             TemplatedXhtmlEditorUiControl control = new TemplatedXhtmlEditorUiControl(this.UserControlType);
 
             control.ClassConfigurationName = _data.ClassConfigurationName;
+            control.ContainerClasses = _data.ContainerClasses;
 
             return control;
         }

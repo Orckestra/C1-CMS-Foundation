@@ -890,6 +890,16 @@
             </xsd:sequence>
           </xsd:complexType>
         </xsd:element>
+        <xsd:element name="PageContentEditor.ContainerClasses">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
         <xsd:element name="PageContentEditor.Label">
           <xsd:complexType mixed="true">
             <xsd:sequence maxOccurs="1" minOccurs="0">
@@ -916,6 +926,7 @@
     <xsd:attribute name="TemplateId" type="xsd:string" use="optional" />
     <xsd:attribute name="NamedXhtmlFragments" type="xsd:string" use="optional" />
     <xsd:attribute name="ClassConfigurationName" type="xsd:string" use="optional" />
+    <xsd:attribute name="ContainerClasses" type="xsd:string" use="optional" />
     <xsd:attribute name="Label" type="xsd:string" use="optional" />
     <xsd:attribute name="Help" type="xsd:string" use="optional" />
   </xsd:complexType>

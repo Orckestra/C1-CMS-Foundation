@@ -11,8 +11,8 @@ namespace CompositePageContentEditor
 {
     public partial class PageContentEditor : PageContentEditorTemplateUserControlBase
     {
-        private Guid SelectedTemplateId { get { return new Guid(this.TemplateSelector.SelectedValue); } }        
- 
+        private Guid SelectedTemplateId { get { return new Guid(this.TemplateSelector.SelectedValue); } }
+
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -52,7 +52,7 @@ namespace CompositePageContentEditor
         {
             this.TemplateSelector.DataSource = this.SelectableTemplateIds;
             this.TemplateSelector.DataValueField = "Key";
-            this.TemplateSelector.DataTextField= "Value";
+            this.TemplateSelector.DataTextField = "Value";
             this.TemplateSelector.DataBind();
 
             Verify.That(SelectableTemplateIds.Count > 0, "No page templates available for selection");
@@ -96,6 +96,7 @@ namespace CompositePageContentEditor
                     contentTextBox.ID = placeholderId;
                     contentTextBox.Attributes.Add("placeholderid", placeholderId);
                     contentTextBox.Attributes.Add("placeholdername", placeholderDescription.Title);
+                    contentTextBox.Attributes.Add("containerclasses", string.Join(",", placeholderDescription.ContainerClasses));
                     if (placeholderId == pageTemplate.DefaultPlaceholderId)
                     {
                         contentTextBox.Attributes.Add("selected", "true");

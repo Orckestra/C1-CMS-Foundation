@@ -69,8 +69,12 @@ namespace Composite.Core.PageTemplates
                         throw new InvalidOperationException("Placeholder '{0}' defined multiple times".FormatWith(placeholderId));
                     }
 
+                    var containerClasses = string.IsNullOrWhiteSpace(placeholderAttribute.ContainerClasses) ? 
+                        new List<string>() 
+                        : placeholderAttribute.ContainerClasses.Replace(" ",",").Split(',').Where(s=>s.Length>0).ToList();
+
                     placeholderProperties.Add(placeholderId, property);
-                    placeholders.Add(new PlaceholderDescriptor { Id = placeholderId, Title = placeholderLabel });
+                    placeholders.Add(new PlaceholderDescriptor { Id = placeholderId, Title = placeholderLabel, ContainerClasses = containerClasses });
                     
 
                     if (placeholderAttribute.IsDefault)
