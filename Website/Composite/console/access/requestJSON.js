@@ -9,6 +9,8 @@ export default function requestJSON(path, inputData) {
 			inputData.headers = inputData.headers || {};
 			inputData.headers['Content-Type'] = 'application/json';
 			inputData.body = JSON.stringify(inputData.body);
+		} else {
+			delete inputData.body;
 		}
 	} else {
 		inputData = {

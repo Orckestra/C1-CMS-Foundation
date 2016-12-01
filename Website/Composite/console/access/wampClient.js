@@ -44,7 +44,13 @@ const WAMPClient = {
 		return getClient('realm1')
 		.then(client =>
 			new Promise((resolve, reject) =>
-				client.call(uri, args, { onSuccess: (_, result) => resolve(result), onError: reject })
+				client.call(uri, args, { onSuccess: (r1, r2) => {
+					if (Array.isArray(r1) && r1.length === 0) {
+						resolve(r2);
+					} else {
+						resolve(r1);
+					}
+				}, onError: reject })
 			)
 		);
 	}

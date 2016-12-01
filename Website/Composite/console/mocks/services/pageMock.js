@@ -312,6 +312,11 @@ const pages = {
 			}
 		]
 	},
+	'svg-sprites': {
+		name: 'svg-sprites',
+		label: 'SVG Spritesheet',
+		type: 'spritesheet'
+	},
 	'component-selector-shim': {
 		name: 'component-selector-shim',
 		type: 'dialogPageShim',
@@ -319,7 +324,17 @@ const pages = {
 			name: 'component-selector',
 			type: 'palette',
 			headline: 'Select a component',
-			elementSource: ''
+			context: 'left-aside',
+			providers: {
+				elementSource: {
+					protocol: 'wamp',
+					uri: 'mock.provider.components.list'
+				},
+				elementSelect: {
+					protocol: 'wamp',
+					uri: 'mock.provider.components.pick'
+				}
+			}
 		}
 	}
 };

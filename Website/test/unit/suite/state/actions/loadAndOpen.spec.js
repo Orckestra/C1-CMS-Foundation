@@ -24,6 +24,11 @@ describe('loadAndOpenPage', () => {
 						type: 'test',
 						tabs: ['tab1', 'tab2'],
 						toolbars: ['toolbar']
+					},
+					shimpage: {
+						name: 'shimpage',
+						dialog: 'testdialog',
+						type: 'dialogPageShim'
 					}
 				},
 				toolbarDefs: {
@@ -37,6 +42,19 @@ describe('loadAndOpenPage', () => {
 						name: 'optionized',
 						type: 'select',
 						optionLoader: 'getLogDates'
+					}
+				},
+				dialogDefs: {
+					testdialog: {
+						name: 'testdialog',
+						type: 'palette',
+						context: 'testing',
+						providers: {
+							elementSource: {
+								protocol: 'wamp',
+								uri: 'mock.provider.test'
+							}
+						}
 					}
 				}
 			}),
@@ -54,58 +72,20 @@ describe('loadAndOpenPage', () => {
 				expect(thunk, 'to be a function')
 				.and('when called with', [store.dispatch, store.getState])
 			).then(() =>
-				expect([store.dispatch], 'to have calls satisfying', [
-					{ spy: store.dispatch, args: [expect.it('to be a function')] }, // Load values
-					{ spy: store.dispatch, args: [{
+				expect(store.dispatch, 'to have calls satisfying', [
+					{ args: [{
 						type: OPEN_PAGE,
 						pageName: 'testpage',
 						tabNames: ['tab1', 'tab2']
 					}] },
-					{ spy: store.dispatch, args: [{
+					{ args: [{
 						type: SELECT_LOCATION,
 						page: 'testpage'
-					}] },
-					{ spy: store.dispatch, args: [expect.it('to be a function')] }, // Tab loader
-					{ spy: store.dispatch, args: [expect.it('to be a function')] } // Tab loader
+					}] }
 				])
 			)
 		);
 
-		it('loads log dates', () => {
-			store.state = store.state.setIn(['pageDefs', 'testpage', 'type'], 'document');
-			return expect(loadAndOpenPage, 'when called with', ['testpage'])
-			.then(thunk =>
-				expect(thunk, 'to be a function')
-				.and('when called with', [store.dispatch, store.getState])
-			).then(() => {
-				let innerDispatch = sinon.spy().named('innerDispatch');
-				expect(store.dispatch.getCall(3).args[0], 'to be a function')
-				.and(
-					'with http mocked out', {
-						request: 'GET /Composite/api/Logger/GetDates',
-						response: {
-							status: 200,
-							body: [
-								'9/28/2016',
-								'9/30/2016',
-								'10/3/2016'
-							]
-						}
-					},
-					'when called with', [innerDispatch]
-				).then(() =>
-					expect(innerDispatch, 'to have a call satisfying', { args: [{
-						type: STORE_OPTION_LIST,
-						field: 'optionized',
-						options: [
-							{ value: '2016-10-03T00:00:00.000Z', label: '10/3/2016' },
-							{ value: '2016-09-30T00:00:00.000Z', label: '9/30/2016' },
-							{ value: '2016-09-28T00:00:00.000Z', label: '9/28/2016' }
-						]
-					}]})
-				);
-			});
-		});
 	});
 
 	describe('for unknown page', () => {
@@ -115,14 +95,108 @@ describe('loadAndOpenPage', () => {
 				expect(thunk, 'to be a function')
 				.and('when called with', [store.dispatch, store.getState], 'to be rejected')
 			).then(() =>
-				expect([store.dispatch], 'to have calls satisfying', [
-					{ spy: store.dispatch, args: [expect.it('to be a function')] }, // Load pageDef
-					{ spy: store.dispatch, args: [expect.it('to be a function')] }, // Load values
-					{ spy: store.dispatch, args: [{ type: 'LAYOUT.OPEN_PAGE', pageName: 'newpage', tabNames: [] }] },
-					{ spy: store.dispatch, args: [{ type: 'LAYOUT.SELECT_LOCATION', page: 'newpage' }] }
+				expect(store.dispatch, 'to have calls satisfying', [
+					{ args: [expect.it('to be a function')] }, // Load pageDef
+					{ args: [{ type: 'LAYOUT.OPEN_PAGE', pageName: 'newpage', tabNames: [] }] },
+					{ args: [{ type: 'LAYOUT.SELECT_LOCATION', page: 'newpage' }] }
 				])
 			)
 		);
+	});
+
+	describe('for log page', () => {
+		it('loads log dates', () => {
+			store.state = store.state.setIn(['pageDefs', 'testpage', 'type'], 'document');
+			let tabState = sinon.stub().named('getState').returns(Immutable.fromJS({
+				tabDefs: {
+					tab1: {
+						name: 'tab1',
+						type: 'log',
+						logURL: '/Composite/console/serverLog.json',
+						logPageName: 'tab1date'
+					},
+					tab2: {}
+				},
+				options: {
+					tab1date: '2016-09-30T00:00:00.000Z'
+				}
+			}));
+			let innerDispatch = sinon.spy().named('innerDispatch');
+			return expect(loadAndOpenPage, 'when called with', ['testpage'])
+			.then(thunk =>
+				expect(thunk, 'to be a function')
+				.and('when called with', [store.dispatch, store.getState])
+			).then(() => {
+				return expect(store.dispatch, 'to have calls satisfying', [
+					{ args: [{ type: 'LAYOUT.OPEN_PAGE', pageName: 'testpage', tabNames: ['tab1', 'tab2'] }] },
+					{ args: [{ type: 'LAYOUT.SELECT_LOCATION', page: 'testpage' }] },
+					{ args: [ expect.it('to be a function') ]},
+					{ args: [
+						expect.it('to be a function')
+						.and(
+							'with http mocked out', {
+								request: 'GET /Composite/api/Logger/GetDates',
+								response: {
+									status: 200,
+									body: [
+										'9/28/2016',
+										'9/30/2016',
+										'10/3/2016'
+									]
+								}
+							},
+							'when called with', [innerDispatch, tabState],
+							'to be fulfilled'
+						)
+					] },
+					{ args: [ expect.it('to be a function') ]},
+					{ args: [ expect.it('to be a function') ]}
+				])
+				.then(() =>
+					expect(innerDispatch, 'to have a call satisfying', {
+						args: [
+							{
+								type: STORE_OPTION_LIST,
+								field: 'optionized',
+								options: [
+									{ value: '2016-10-03T00:00:00.000Z', label: '10/3/2016' },
+									{ value: '2016-09-30T00:00:00.000Z', label: '9/30/2016' },
+									{ value: '2016-09-28T00:00:00.000Z', label: '9/28/2016' }
+								]
+							}
+						]
+					})
+				);
+			});
+		});
+	});
+
+	describe('for shim page', () => {
+		it('fetches data from the dialog provider', () => {
+			let innerDispatch = sinon.spy().named('innerDispatch');
+			return expect(loadAndOpenPage, 'when called with', ['shimpage'])
+			.then(thunk =>
+				expect(thunk, 'to be a function')
+				.and('when called with', [store.dispatch, store.getState], 'to be fulfilled')
+			)
+			.then(() =>
+				expect(store.dispatch, 'to have calls satisfying', [
+					{ args: [{ type: 'LAYOUT.OPEN_PAGE', pageName: 'shimpage', tabNames: [] }] },
+					{ args: [{ type: 'LAYOUT.SELECT_LOCATION', page: 'shimpage' }] },
+					{ args: [
+						expect.it('to be a function') // Load provider data
+						.and('when called with', [innerDispatch], 'to be fulfilled')
+					] }
+				])
+			)
+			.then(() =>
+				expect(innerDispatch, 'to have calls satisfying', [
+					{ args: [ { type: 'PROVIDER.GET', provider: { protocol: 'wamp', uri: 'mock.provider.test' }, page: 'testdialog', params: [ 'testing' ] } ]},
+					{ args: [ { type: 'PROVIDER.STORE', providerName: 'mock.provider.test', page: 'testdialog' } ]},
+					{ args: [ { type: 'PROVIDER.GET_DONE', provider: { protocol: 'wamp', uri: 'mock.provider.test' }, page: 'testdialog' } ]}
+				])
+			);
+		});
 	});
 });
 

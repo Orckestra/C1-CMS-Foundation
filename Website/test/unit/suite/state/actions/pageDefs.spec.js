@@ -64,7 +64,7 @@ describe('Get page definitions', () => {
 					}
 				]
 			};
-			wampCall = sinon.stub().named('wampCall');
+			wampCall = sinon.stub().named('wampCall').returns(Promise.reject('Wrong parameters'));
 			wampCall.withArgs('mock.struct.page', 'failPage').returns(Promise.reject(new Error('test error')));
 			wampCall.withArgs('mock.struct.page', 'testPage').returns(Promise.resolve(rawPageDef));
 			WAMPClient.setMock(wampCall);

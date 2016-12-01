@@ -5,6 +5,7 @@ import layout from 'console/state/reducers/layout.js';
 import dataFields from 'console/state/reducers/dataFields.js';
 import options from 'console/state/reducers/options.js';
 import logs from 'console/state/reducers/logs.js';
+import providers from 'console/state/reducers/providers.js';
 import getDefinitionReducer from 'console/state/reducers/definitions.js';
 import thunk from 'redux-thunk';
 import observers from 'console/state/observers.js';
@@ -15,7 +16,8 @@ let reducers = {
 	layout,
 	dataFields,
 	options,
-	logs
+	logs,
+	providers
 };
 ['page', 'tab', 'item', 'toolbar', 'fieldset', 'dataField', 'dialog'].forEach(typeName => {
 	reducers[typeName + 'Defs'] = getDefinitionReducer(typeName);
