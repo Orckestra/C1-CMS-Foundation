@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Composite.C1Console.Components;
@@ -18,6 +19,7 @@ namespace Composite.Plugins.Components.ComponentsEndpoint
         public static void OnInitialized()
         {
             WampRouterFacade.RegisterCallee("ComponentsRealm", new ComponentsRpcService());
+            WampRouterFacade.RegisterPublisher("ComponentsRealm", "NewComponents", new ComponentPublisher());
         }
     }
 
@@ -32,6 +34,18 @@ namespace Composite.Plugins.Components.ComponentsEndpoint
         {
             var componentManager = ServiceLocator.GetRequiredService<ComponentManager>();
             return componentManager.GetComponents();
+        }
+    }
+
+    public class ComponentPublisher : IWampEventHandler<ComponentChange,Component>
+    {
+        public IObservable<ComponentChange> Event => ServiceLocator.GetRequiredService<ComponentChangeNotifier>();
+
+        private int counter = 0;
+
+        public Component GetNewData()
+        {
+            return new Component();
         }
     }
 }
