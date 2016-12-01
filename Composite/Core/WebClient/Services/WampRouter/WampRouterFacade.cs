@@ -30,7 +30,7 @@ namespace Composite.Core.WebClient.Services.WampRouter
         /// <param name="eventObservable"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public static bool RegisterPublisher<T>(string realmName, string topicName, IWampEventHandler<T> eventObservable)
+        public static bool RegisterPublisher<T1,T2>(string realmName, string topicName, IWampEventHandler<T1,T2> eventObservable)
         {
             var wampRouter = ServiceLocator.GetRequiredService<WampRouter>();
             if (wampRouter == null)
