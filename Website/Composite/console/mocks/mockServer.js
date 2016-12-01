@@ -1,6 +1,7 @@
 import Wampy from 'wampy';
 import pageFetcher from 'console/mocks/services/pageMock.js';
 import { valueFetcher, valuePutter } from 'console/mocks/services/valueMock.js';
+import { getFunction, pickFunction } from 'console/mocks/services/functionMock.js';
 
 let url = new URL('/Composite/api/Router', location.href);
 url.protocol = 'ws:';
@@ -26,7 +27,9 @@ const client = new Wampy(url.href, {
 			// Register other mock rpcs.
 			registerMock('struct.page', pageFetcher),
 			registerMock('data.values.load', valueFetcher),
-			registerMock('data.values.save', valuePutter)
+			registerMock('data.values.save', valuePutter),
+			registerMock('provider.components.list', getFunction),
+			registerMock('provider.components.pick', pickFunction)
 		]).then(unblock);
 	}
 });
