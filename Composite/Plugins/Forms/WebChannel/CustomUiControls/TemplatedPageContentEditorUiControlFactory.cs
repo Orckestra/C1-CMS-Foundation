@@ -58,9 +58,6 @@ namespace Composite.Plugins.Forms.WebChannel.CustomUiControls
 
         /// <exclude />
         public string ClassConfigurationName { get; set; }
-
-        /// <exclude />
-        public string ContainerClasses { get; set; }
     }
 
     internal sealed class TemplatedPageContentEditorUiControl : UiControl, IWebUiControl
@@ -83,9 +80,6 @@ namespace Composite.Plugins.Forms.WebChannel.CustomUiControls
 
         [FormsProperty()]
         public string ClassConfigurationName { get; set; }
-
-        [FormsProperty()]
-        public string ContainerClasses { get; set; }
 
         private Type _userControlType;
         private PageContentEditorTemplateUserControlBase _userControl;
@@ -120,7 +114,6 @@ namespace Composite.Plugins.Forms.WebChannel.CustomUiControls
             _userControl.SelectableTemplateIds = this.SelectableTemplateIds;
             _userControl.NamedXhtmlFragments = this.NamedXhtmlFragments;
             _userControl.ClassConfigurationName = this.ClassConfigurationName;
-            _userControl.ContainerClasses = this.ContainerClasses;
             _userControl.PageId = this.PageId;
 
             return _userControl;
@@ -161,7 +154,6 @@ namespace Composite.Plugins.Forms.WebChannel.CustomUiControls
             TemplatedPageContentEditorUiControl control = new TemplatedPageContentEditorUiControl(userControlType);
 
             control.ClassConfigurationName = _data.ClassConfigurationName;
-            control.ContainerClasses = string.Join(",", _data.ContainerClasses.Replace(" ", ",").Split(',').Where(s => s.Length > 0));
 
             return control;
         }
@@ -193,14 +185,6 @@ namespace Composite.Plugins.Forms.WebChannel.CustomUiControls
         {
             get { return (string)base[_classConfigurationNamePropertyName]; }
             set { base[_classConfigurationNamePropertyName] = value; }
-        }
-
-        private const string _containerClassesPropertyName = "ContainerClasses";
-        [ConfigurationProperty(_containerClassesPropertyName, IsRequired = false, DefaultValue = "")]
-        public string ContainerClasses
-        {
-            get { return (string)base[_containerClassesPropertyName]; }
-            set { base[_containerClassesPropertyName] = value; }
         }
 
     }
