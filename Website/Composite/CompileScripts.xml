@@ -26,6 +26,7 @@
 			<Script filename="${root}/scripts/compressed/top.js"/>
 		</Mode>
 		<Mode name="develop">
+			<Script filename="${root}/lib/autobahnjs/autobahn.js"/>
 			<Script filename="${root}/scripts/source/top/interfaces/IAcceptable.js"/>
 			<Script filename="${root}/scripts/source/top/interfaces/IActionListener.js"/>
 			<Script filename="${root}/scripts/source/top/interfaces/IActivatable.js"/>
