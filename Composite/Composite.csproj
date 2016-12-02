@@ -270,10 +270,10 @@
     <Compile Include="C1Console\Actions\Data\DataActionTokenResolverFacade.cs" />
     <Compile Include="C1Console\Actions\Data\DataActionTokenResolverRegistry.cs" />
     <Compile Include="C1Console\Actions\DuplicateActionToken.cs" />
-    <Compile Include="C1Console\Components\Component.cs" />
-    <Compile Include="C1Console\Components\ComponentChangeNotifier.cs" />
-    <Compile Include="C1Console\Components\ComponentManager.cs" />
-    <Compile Include="C1Console\Components\IComponentProvider.cs" />
+    <Compile Include="C1Console\RichContent\Components\Component.cs" />
+    <Compile Include="C1Console\RichContent\Components\ComponentChangeNotifier.cs" />
+    <Compile Include="C1Console\RichContent\Components\ComponentManager.cs" />
+    <Compile Include="C1Console\RichContent\Components\IComponentProvider.cs" />
     <Compile Include="C1Console\Forms\ITestAutomationLocatorInformation.cs" />
     <Compile Include="C1Console\Elements\DialogStrings.cs" />
     <Compile Include="C1Console\Trees\GenericDuplicateDataActionNode.cs" />
