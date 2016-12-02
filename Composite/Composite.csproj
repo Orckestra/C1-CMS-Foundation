@@ -284,12 +284,12 @@
     <Compile Include="Core\WebClient\PhantomJs\RenderingResultStatus.cs" />
     <Compile Include="Core\WebClient\PhantomJs\RenderPreviewRequest.cs" />
     <Compile Include="Core\Logging\ILog.cs" />
-
     <Compile Include="Core\WebClient\Services\ConsoleMessageService\OpenSlideViewParams.cs" />
     <Compile Include="Core\WebClient\Services\WampRouter\AspNetCookieProvider.cs" />
     <Compile Include="Core\WebClient\Services\WampRouter\AspNetWebsocketTransform.cs" />
     <Compile Include="Core\WebClient\Services\WampRouter\IRpcService.cs" />
     <Compile Include="Core\WebClient\Services\WampRouter\IWampEventHandler.cs" />
+    <Compile Include="Core\WebClient\Services\WampRouter\WampLogger.cs" />
     <Compile Include="Core\WebClient\Services\WampRouter\WampRouter.cs" />
     <Compile Include="Core\WebClient\Services\WampRouter\WampRouterFacade.cs" />
     <Compile Include="Core\WebClient\Services\WampRouter\WampRouterResolverRegistry.cs" />
