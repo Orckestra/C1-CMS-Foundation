@@ -85,7 +85,7 @@
       "unexpected-dom": "npm:unexpected-dom@^3.1.0",
       "unexpected-mitm": "npm:unexpected-mitm@^9.1.6",
       "unexpected-react": "npm:unexpected-react@^3.2.3",
-      "unexpected-sinon": "npm:unexpected-sinon@^10.2.1",
+      "unexpected-sinon": "npm:unexpected-sinon@^10.5.1",
       "unexpected-zurvan": "npm:unexpected-zurvan@^0.1.0",
       "zurvan": "npm:zurvan@^0.3.2"
     },
@@ -229,4 +229,4 @@
       }
     }
   }
-}
+}

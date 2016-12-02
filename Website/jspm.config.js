@@ -36,7 +36,7 @@ SystemJS.config({
       "systemjs-hot-reloader-store": "github:peteruithoven/systemjs-hot-reloader-store@1.0.0",
       "unexpected-dom": "npm:unexpected-dom@3.1.0",
       "unexpected-react": "npm:unexpected-react@3.2.4",
-      "unexpected-sinon": "npm:unexpected-sinon@10.5.0",
+      "unexpected-sinon": "npm:unexpected-sinon@10.5.1",
       "source-map": "npm:source-map@0.2.0",
       "jsbn": "npm:jsbn@0.1.0",
       "tweetnacl": "npm:tweetnacl@0.13.3",

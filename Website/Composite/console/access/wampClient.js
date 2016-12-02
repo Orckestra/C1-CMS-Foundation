@@ -45,9 +45,12 @@ const WAMPClient = {
 		.then(client =>
 			new Promise((resolve, reject) =>
 				client.call(uri, args, { onSuccess: (r1, r2) => {
-					if (Array.isArray(r1) && r1.length === 0) {
+					// Unpick the way Wampy passes data: (see https://github.com/KSDaemon/wampy.js/blob/dev/Migrating.md)
+					if (r1 && r1.length === 0) {
+						// RPC returned non-array
 						resolve(r2);
 					} else {
+						// RPC returned array
 						resolve(r1);
 					}
 				}, onError: reject })
