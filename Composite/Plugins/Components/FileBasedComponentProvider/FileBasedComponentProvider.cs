@@ -30,6 +30,7 @@ namespace Composite.Plugins.Components.FileBasedComponentProvider
     /// <exclude />
     public class FileBasedComponentProvider : IComponentProvider
     {
+        const string AppDataComponents = "\\App_Data\\Components\\";
         ComponentChangeNotifier _changeNotifier;
 
         /// <exclude />
@@ -51,22 +52,42 @@ namespace Composite.Plugins.Components.FileBasedComponentProvider
 
             _changeNotifier.ProviderChange(this.ProviderId);
 
-            foreach (var componentFile in Directory.GetFiles(HostingEnvironment.MapPath("~/App_Data/Components/"),"*.xml",SearchOption.AllDirectories))
+            
+            foreach (var componentFile in Directory.GetFiles(HostingEnvironment.MapPath(AppDataComponents),"*.xml",SearchOption.AllDirectories))
             {
-                var ns = XNamespace.Get("http://cms.orckestra.com/blip/blop/foo/bar");
+                var xNamespace = XNamespace.Get("http://cms.orckestra.com/blip/blop/foo/bar");
                 var doc = XDocument.Load(componentFile);
-                var el = doc.Descendants().First();
+                var xElement = doc.Descendants().First();
 
-                if (el != null)
+                if (xElement != null)
                 {
+                    var title = xElement.GetAttributeValue(xNamespace + "title") ??
+                                Path.GetFileNameWithoutExtension(componentFile);
+
+                    var description = xElement.GetAttributeValue(xNamespace + "description") ?? title;
+
+                    var groupingTagsRaw = xElement.GetAttributeValue(xNamespace + "tags") ??
+                                          Path.GetDirectoryName(componentFile)
+                                              .Substring(
+                                                  Path.GetDirectoryName(componentFile).IndexOf(AppDataComponents) +
+                                                  AppDataComponents.Length)
+                                              .Replace('\\', ',');
+
+                    var groupingTags = groupingTagsRaw.ToLower().Split(',').ToList();
+
+                    xElement.RemoveAttributes();
+
+
                     yield return new Component
                     {
-                        Title = el.GetAttributeValue(ns + "title") ?? Path.GetFileNameWithoutExtension(componentFile),
-                        Description = el.GetAttributeValue(ns + "description")?? Path.GetFileNameWithoutExtension(componentFile),
-                        GroupingTags = el.GetAttributeValue(ns + "tags").Split(',').ToList(),
-                        ComponentDefinition = el.Document
+                        Title = title,
+                        Description = description,
+                        GroupingTags = groupingTags,
+                        ComponentDefinition = xElement.Document
 
                     };
+
+
                 }
             }
         }
