@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Composite;
+using Composite.C1Console.RichContent.ContainerClasses;
 using Composite.Core.Extensions;
 using Composite.Core.PageTemplates;
 using Composite.Plugins.Forms.WebChannel.CustomUiControls;
@@ -91,12 +92,16 @@ namespace CompositePageContentEditor
 
                 if (handledIds.Contains(placeholderId) == false)
                 {
+                    var pageTypeContainerClasses = ContainerClassManager.GetPageTypeContainerClasses(this.PageTypeId, placeholderDescription.Id);
+                    var allContainerClasses = ContainerClassManager.MergeContainerClasses(placeholderDescription.ContainerClasses, pageTypeContainerClasses);
+
                     TextBox contentTextBox = new Composite.Core.WebClient.UiControlLib.TextBox();
                     contentTextBox.TextMode = TextBoxMode.MultiLine;
                     contentTextBox.ID = placeholderId;
                     contentTextBox.Attributes.Add("placeholderid", placeholderId);
                     contentTextBox.Attributes.Add("placeholdername", placeholderDescription.Title);
-                    contentTextBox.Attributes.Add("containerclasses", string.Join(",", placeholderDescription.ContainerClasses));
+                    contentTextBox.Attributes.Add("containerclasses", string.Join(",", allContainerClasses));
+
                     if (placeholderId == pageTemplate.DefaultPlaceholderId)
                     {
                         contentTextBox.Attributes.Add("selected", "true");

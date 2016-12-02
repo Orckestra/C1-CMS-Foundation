@@ -7,6 +7,7 @@ using Composite.C1Console.Forms;
 using Composite.C1Console.Forms.CoreUiControls;
 using Composite.C1Console.Forms.Plugins.UiControlFactory;
 using Composite.C1Console.Forms.WebChannel;
+using Composite.C1Console.RichContent.ContainerClasses;
 using Composite.Plugins.Forms.WebChannel.Foundation;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
@@ -107,7 +108,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
             _userControl.Xhtml = this.Xhtml;
             _userControl.EmbedableFieldsTypes = this.EmbedableFieldsTypes;
             _userControl.ClassConfigurationName = this.ClassConfigurationName;
-            _userControl.ContainerClasses = string.Join(",", this.ContainerClasses.Replace(" ", ",").Split(',').Where(s => s.Length > 0));
+            _userControl.ContainerClasses = ContainerClassManager.NormalizeClassNamesString(this.ContainerClasses); 
             _userControl.PreviewPageId = PreviewPageId;
             _userControl.PreviewTemplateId = PreviewTemplateId;
             _userControl.PreviewPlaceholder = PreviewPlaceholder;
