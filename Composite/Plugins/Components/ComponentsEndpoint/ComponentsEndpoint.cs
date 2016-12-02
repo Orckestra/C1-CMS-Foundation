@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Composite.C1Console.Components;
+using Composite.C1Console.RichContent.Components;
 using Composite.Core;
 using Composite.Core.Application;
 using Composite.Core.Logging;

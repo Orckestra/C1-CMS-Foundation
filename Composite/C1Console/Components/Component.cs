@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace Composite.C1Console.Components
+namespace Composite.C1Console.RichContent.Components
 {
     public class Component
     {

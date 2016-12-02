@@ -1,4 +1,4 @@
-﻿using Composite.C1Console.Components;
+﻿using Composite.C1Console.RichContent.Components;
 using Composite.Core.Application;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;

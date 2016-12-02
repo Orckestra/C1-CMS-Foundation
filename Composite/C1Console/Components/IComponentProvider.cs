@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Composite.C1Console.Components
+namespace Composite.C1Console.RichContent.Components
 {
     public interface IComponentProvider
     {

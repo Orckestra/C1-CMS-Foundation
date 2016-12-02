@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Composite.C1Console.Components
+namespace Composite.C1Console.RichContent.Components
 {
     [ApplicationStartup()]
     public class ComponentChangeNotifierRegistrator
