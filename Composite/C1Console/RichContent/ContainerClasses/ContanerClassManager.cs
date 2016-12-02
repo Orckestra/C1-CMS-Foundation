@@ -55,7 +55,7 @@ namespace Composite.C1Console.RichContent.ContainerClasses
         {
             return string.Join(",", ParseToList(containerClasses));
         }
-#warning docs out of sync with comments on the following two methods - the comments describe coming expected behaviour
+#warning code out of sync with comments on the following two methods - the comments describe coming expected behaviour
         /// <summary>
         /// Merge two IList based class lists into one.
         /// </summary>
