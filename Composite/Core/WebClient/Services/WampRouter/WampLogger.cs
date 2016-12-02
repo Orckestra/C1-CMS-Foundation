@@ -1,36 +1,27 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using WampSharp.Logging;
 
 namespace Composite.Core.WebClient.Services.WampRouter
 {
     class WampLogger : ILogProvider
     {
-        public WampLogger()
-        {
-        }
-
         public Logger GetLogger(string name)
         {
-            return new CompositeLogger().Log;
+            return new CompositeLoggerWrapper().Log;
         }
 
         public IDisposable OpenNestedContext(string message)
         {
-            return null; //LogContext.PushProperty("NDC", message);
+            return null;
         }
 
         public IDisposable OpenMappedContext(string key, string value)
         {
-            return null;//LogContext.PushProperty(key, value, false);
+            return null;
         }
 
-        internal class CompositeLogger
+        internal class CompositeLoggerWrapper
         {
             public bool Log(LogLevel logLevel, Func<string> messageFunc, Exception exception,
                 params object[] formatParameters)
@@ -51,9 +42,6 @@ namespace Composite.Core.WebClient.Services.WampRouter
                         break;
                     case LogLevel.Trace:
                         Core.Log.LogVerbose(nameof(WampLogger), FormatMessage(messageFunc, formatParameters));
-                        break;
-                    default:
-                        //Core.Log.LogVerbose(nameof(WampLogger), messageFunc.Invoke(), formatParameters);
                         break;
                 }
                 return true;
