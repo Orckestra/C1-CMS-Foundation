@@ -296,6 +296,7 @@
     <Compile Include="Core\WebClient\Services\WampRouter\AspNetWebsocketTransform.cs" />
     <Compile Include="Core\WebClient\Services\WampRouter\IRpcService.cs" />
     <Compile Include="Core\WebClient\Services\WampRouter\IWampEventHandler.cs" />
+    <Compile Include="Core\WebClient\Services\WampRouter\WampLogger.cs" />
     <Compile Include="Core\WebClient\Services\WampRouter\WampRouter.cs" />
     <Compile Include="Core\WebClient\Services\WampRouter\WampRouterFacade.cs" />
     <Compile Include="Core\WebClient\Services\WampRouter\WampRouterResolverRegistry.cs" />

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reactive.Subjects;
 using WampSharp.Binding;
+using WampSharp.Logging;
 using WampSharp.V2;
 using WampSharp.V2.Realm;
 
@@ -13,6 +14,8 @@ namespace Composite.Core.WebClient.Services.WampRouter
 
         public WampRouter()
         {
+            LogProvider.SetCurrentLogProvider(new WampLogger());
+
             StartWampRouter();
         }
 
@@ -52,6 +55,7 @@ namespace Composite.Core.WebClient.Services.WampRouter
             _host = new WampHost();
             _host.RegisterTransport(new AspNetWebsocketTransform(),
                 new JTokenJsonBinding());
+            
             IWampHostedRealm realm = _host.RealmContainer.GetRealmByName(DefaultRealmName);
 
             realm.SessionCreated += SessionCreated;
