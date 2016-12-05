@@ -5,6 +5,7 @@ using System.Linq;
 using Composite.C1Console.Search.Crawling;
 using Composite.Core;
 using Composite.Core.Linq;
+using Composite.Core.Routing;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
 
@@ -68,12 +69,18 @@ namespace Composite.C1Console.Search.DocumentSources
                 return null;
             }
 
-            var documentBuilder = new SearchDocumentBuilder();
-            documentBuilder.CrawlData(data);
-            documentBuilder.SetDataType(_interfaceType);
+            var docBuilder = new SearchDocumentBuilder();
+            docBuilder.CrawlData(data);
+            docBuilder.SetDataType(_interfaceType);
 
             string documentId = GetDocumentId(data);
-            return documentBuilder.BuildDocument(Name, documentId, label, null, data.GetDataEntityToken());
+            string url = null;
+            if (InternalUrls.DataTypeSupported(data.DataSourceId.InterfaceType))
+            {
+                url = InternalUrls.TryBuildInternalUrl(data.ToDataReference());
+            }
+
+            return docBuilder.BuildDocument(Name, documentId, label, null, data.GetDataEntityToken(), url);
         }
 
         private string GetDocumentId(IData data)

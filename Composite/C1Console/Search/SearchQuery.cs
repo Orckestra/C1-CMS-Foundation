@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
+using Composite.C1Console.Search.Crawling;
 
 namespace Composite.C1Console.Search
 {
@@ -92,6 +95,35 @@ namespace Composite.C1Console.Search
             MaxDocumentsNumber = 100;
         }
 
+        public void FilterByDataTypes(IEnumerable<Type> dataTypes)
+        {
+            // TODO: implement
+            //    new SearchQuerySelection
+            //    {
+            //        FieldName = DefaultDocumentFieldNames.DataType,
+            //        Operation = SearchQuerySelectionOperation.Or,
+            //        Values = searchableTypes.Select(t => t.FullName).ToArray()
+            //    }
+        }
+
+        /// <summary>
+        /// Only documents that have the <see cref="SearchDocument.Url"/> property set should be returned.
+        /// </summary>
+        public void ShowOnlyDocumentsWithUrls()
+        {
+            Selection.Add(new SearchQuerySelection
+            {
+                FieldName = DefaultDocumentFieldNames.HasUrl,
+                Values = new [] {"1"}
+            });
+
+            Facets.Add(new KeyValuePair<string, DocumentFieldFacet>(
+                DefaultDocumentFieldNames.HasUrl,
+                SearchDocumentBuilder.GetDefaultDocumentFields()
+                .Single(f => f.Name == DefaultDocumentFieldNames.HasUrl)
+                .Facet));
+        }
+
         /// <summary>
         /// The query text
         /// </summary>
@@ -115,12 +147,13 @@ namespace Composite.C1Console.Search
         /// <summary>
         /// Facets to be returned.
         /// </summary>
-        public IEnumerable<KeyValuePair<string, DocumentFieldFacet>> Facets { get; set; }
+        public ICollection<KeyValuePair<string, DocumentFieldFacet>> Facets { get; set; } 
+            = new List<KeyValuePair<string, DocumentFieldFacet>>();
 
         /// <summary>
         /// To be used to filter results by facet field values.
         /// </summary>
-        public IEnumerable<SearchQuerySelection> Selection { get; set; }
+        public ICollection<SearchQuerySelection> Selection { get; set; } = new List<SearchQuerySelection>();
 
         /// <summary>
         /// Indicates whether the results should be sorted by weight/relevance.

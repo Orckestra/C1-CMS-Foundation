@@ -12,32 +12,6 @@ namespace Composite.C1Console.Search.Crawling
     /// </summary>
     public class SearchDocumentBuilder
     {
-        /// <summary>
-        /// Contains default field names
-        /// </summary>
-        public static class DefaultFieldNames
-        {
-            /// <summary>
-            /// The name of the label field.
-            /// </summary>
-            public static readonly string Label = "label";
-
-            /// <summary>
-            /// The name of the data type field.
-            /// </summary>
-            public static readonly string DataType = "datatype";
-
-            /// <summary>
-            /// The name of the data type field.
-            /// </summary>
-            public static readonly string Description = "desc";
-
-            /// <summary>
-            /// The name of the data type field.
-            /// </summary>
-            public static readonly string CreationTime = "ctime";
-        }
-
         private readonly List<string> _textParts = new List<string>();
         private readonly List<KeyValuePair<string, object>> _fieldValues = new List<KeyValuePair<string, object>>();
         private readonly List<KeyValuePair<string, string[]>> _facetFieldValues = new List<KeyValuePair<string, string[]>>();
@@ -78,11 +52,11 @@ namespace Composite.C1Console.Search.Crawling
             SetDataType(value);
         }
 
-        /// Sets the data type name,which will be used for populating the "Data Type" column in the search results.
-        public void SetDataType(string label)
+        /// Sets the data type name, which will be used for populating the "Data Type" column in the search results.
+        public void SetDataType(string dataTypeName)
         {
-            _fieldValues.Add(new KeyValuePair<string, object>(DefaultFieldNames.DataType, label));
-            _facetFieldValues.Add(new KeyValuePair<string, string[]>(DefaultFieldNames.DataType, new[] { label }));
+            _fieldValues.Add(new KeyValuePair<string, object>(DefaultDocumentFieldNames.DataType, dataTypeName));
+            _facetFieldValues.Add(new KeyValuePair<string, string[]>(DefaultDocumentFieldNames.DataType, new[] { dataTypeName }));
         }
 
         /// <summary>
@@ -156,19 +130,32 @@ namespace Composite.C1Console.Search.Crawling
         /// <param name="label">The label of the item in the tree</param>
         /// <param name="versionName">The version name of the item</param>
         /// <param name="entityToken">The entity token.</param>
+        /// <param name="url">The document url. Setting a not empty value makes the document searchable from the frontend.</param>
         /// <returns></returns>
-        public SearchDocument BuildDocument(string source, string documentId, string label, string versionName, EntityToken entityToken)
+        public SearchDocument BuildDocument(
+            string source, 
+            string documentId, 
+            string label, 
+            string versionName, 
+            EntityToken entityToken, 
+            string url)
         {
             Verify.ArgumentNotNullOrEmpty(source, nameof(source));
             Verify.ArgumentNotNullOrEmpty(documentId, nameof(documentId));
             Verify.ArgumentNotNullOrEmpty(label, nameof(label));
 
-            _fieldValues.Add(new KeyValuePair<string, object>(DefaultFieldNames.Label, label));
+            _fieldValues.Add(new KeyValuePair<string, object>(DefaultDocumentFieldNames.Label, label));
+
+            if (!string.IsNullOrWhiteSpace(url))
+            {
+                _facetFieldValues.Add(new KeyValuePair<string, string[]>(DefaultDocumentFieldNames.HasUrl, new[] { "1" }));
+            }
 
             return new SearchDocument(source, documentId, label, entityToken)
             {
                 ElementBundleName = versionName,
                 FullText = _textParts,
+                Url = url,
                 FieldValues = _fieldValues
                     .ExcludeDuplicateKeys(pair => pair.Key)
                     .ToDictionary(pair => pair.Key, pair => pair.Value),
@@ -189,7 +176,7 @@ namespace Composite.C1Console.Search.Crawling
             return new[]
             {
                 new DocumentField(
-                    DefaultFieldNames.Label,
+                    DefaultDocumentFieldNames.Label,
                     null,
                     new DocumentFieldPreview
                     {
@@ -202,7 +189,7 @@ namespace Composite.C1Console.Search.Crawling
                 },
 
                 new DocumentField(
-                    DefaultFieldNames.DataType,
+                    DefaultDocumentFieldNames.DataType,
                     new DocumentFieldFacet
                     {
                         LabelFunction = GetDataTypeLabel,
@@ -216,6 +203,18 @@ namespace Composite.C1Console.Search.Crawling
                     })
                 {
                     GetFieldLabel = c => "Data Type" // TODO: localize
+                },
+
+                new DocumentField(
+                    DefaultDocumentFieldNames.HasUrl,
+                    new DocumentFieldFacet
+                    {
+                        LabelFunction = c => null,
+                        MinHitCount = 1
+                    }, 
+                    null)
+                {
+                    GetFieldLabel = c => "Has Url"
                 }
             };
         }

@@ -6,6 +6,7 @@ using Composite.C1Console.Search.Crawling;
 using Composite.Core;
 using Composite.Core.Extensions;
 using Composite.Core.Linq;
+using Composite.Core.Routing;
 using Composite.Data;
 using Composite.Data.Types;
 
@@ -19,10 +20,8 @@ namespace Composite.C1Console.Search.DocumentSources
         private readonly DataChangesIndexNotifier _changesIndexNotifier;
         private readonly Lazy<ICollection<DocumentField>> _customFields;
 
-        public CmsPageDocumentSource(string name)
+        public CmsPageDocumentSource()
         {
-            Name = name;
-
             _customFields = new Lazy<ICollection<DocumentField>>(() =>
             {
                 var pageDocFields = DataTypeSearchReflectionHelper.GetDocumentFields(typeof (IPage));
@@ -43,7 +42,7 @@ namespace Composite.C1Console.Search.DocumentSources
             _changesIndexNotifier.Start();
         }
 
-        public string Name { get; }
+        public string Name => typeof (IPage).FullName;
 
         public void Subscribe(IDocumentSourceListener sourceListener)
         {
@@ -95,7 +94,10 @@ namespace Composite.C1Console.Search.DocumentSources
 
             string documentId = GetDocumentId(page);
 
-            return documentBuilder.BuildDocument(Name, documentId, label, null, page.GetDataEntityToken());
+            var entityToken = page.GetDataEntityToken();
+            string url = PageUrls.BuildUrl(page, UrlKind.Internal);
+
+            return documentBuilder.BuildDocument(Name, documentId, label, null, entityToken, url);
         }
 
         private string GetDocumentId(IPage page)

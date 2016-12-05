@@ -79,6 +79,11 @@ namespace Composite.C1Console.Search
         public string SerializedEntityToken { get; set; }
 
         /// <summary>
+        /// Url, to be shown in search results as well as searched for.
+        /// </summary>
+        public string Url { get; set; }
+
+        /// <summary>
         /// Contains all the text string that should be indexed.
         /// </summary>
         public IEnumerable<string> FullText { get; set; }

@@ -166,6 +166,7 @@
     <Compile Include="C1Console\Actions\DuplicateActionToken.cs" />
     <Compile Include="C1Console\Forms\ITestAutomationLocatorInformation.cs" />
     <Compile Include="C1Console\Elements\DialogStrings.cs" />
+    <Compile Include="C1Console\Search\Crawling\DefaultDocumentFieldNames.cs" />
     <Compile Include="C1Console\Search\Crawling\IDataFieldProcessorProvider.cs" />
     <Compile Include="C1Console\Search\Crawling\SearchDocumentBuilder.cs" />
     <Compile Include="C1Console\Search\Crawling\DateTimeDataFieldProcessor.cs" />

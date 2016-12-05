@@ -50,13 +50,13 @@ namespace Composite.C1Console.Search.Crawling
         {
             if (pi.Name == nameof(IPage.Description) && pi.PropertyType == typeof(string))
             {
-                return SearchDocumentBuilder.DefaultFieldNames.Description;
+                return DefaultDocumentFieldNames.Description;
             }
 
             if ((pi.Name == nameof(ICreationHistory.CreationDate) || pi.Name == nameof(IMediaFile.CreationTime))
                 && (pi.PropertyType == typeof(DateTime) || pi.PropertyType == typeof(DateTime?)))
             {
-                return SearchDocumentBuilder.DefaultFieldNames.CreationTime;
+                return DefaultDocumentFieldNames.CreationTime;
             }
 
             return $"{pi.ReflectedType.Name}.{pi.Name}";

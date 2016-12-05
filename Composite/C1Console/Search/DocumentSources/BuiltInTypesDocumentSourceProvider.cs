@@ -10,8 +10,8 @@ namespace Composite.C1Console.Search.DocumentSources
         {
             _documentSources = new List<ISearchDocumentSource>
             {
-                new CmsPageDocumentSource("CmsPages"),
-                new MediaLibraryDocumentSource("MediaLibrary")
+                new CmsPageDocumentSource(),
+                new MediaLibraryDocumentSource()
             };
         }
 

@@ -104,7 +104,7 @@
 
 			var query = new SearchQuery(text, UserSettings.ActiveLocaleCultureInfo)
 			{
-				Facets = facetFields.Select(f => new KeyValuePair<string, DocumentFieldFacet>(f.Name, f.Facet)),
+				Facets = facetFields.Select(f => new KeyValuePair<string, DocumentFieldFacet>(f.Name, f.Facet)).ToList(),
 				Selection = selections,
 				SortOptions = sortOptions,
 				SortByRelevance = sortByRelevance

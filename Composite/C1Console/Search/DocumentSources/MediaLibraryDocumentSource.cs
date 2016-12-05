@@ -15,14 +15,15 @@ namespace Composite.C1Console.Search.DocumentSources
 
         private readonly Lazy<ICollection<DocumentField>> _customFields;
 
-        public MediaLibraryDocumentSource(string name)
+        public MediaLibraryDocumentSource()
         {
-            Name = name;
+            // TODO: listen to data events
+
             _customFields = new Lazy<ICollection<DocumentField>>(() =>
                 DataTypeSearchReflectionHelper.GetDocumentFields(typeof(IMediaFile)).Evaluate());
         }
 
-        public string Name { get; }
+        public string Name => typeof(IMediaFile).FullName;
 
         public ICollection<DocumentField> CustomFields => _customFields.Value;
 
@@ -53,12 +54,12 @@ namespace Composite.C1Console.Search.DocumentSources
 
             string documentId = mediaFile.Id.ToString();
 
-            var documentBuilder = new SearchDocumentBuilder();
+            var docBuilder = new SearchDocumentBuilder();
 
-            documentBuilder.SetDataType("Media File"); //TODO: localize
-            documentBuilder.CrawlData(mediaFile);
+            docBuilder.SetDataType(typeof(IMediaFile));
+            docBuilder.CrawlData(mediaFile);
 
-            return documentBuilder.BuildDocument(Name, documentId, label, null, mediaFile.GetDataEntityToken());
+            return docBuilder.BuildDocument(Name, documentId, label, null, mediaFile.GetDataEntityToken(), null);
         }
     }
 }
