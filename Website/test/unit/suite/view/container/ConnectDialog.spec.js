@@ -11,11 +11,81 @@ describe('ConnectDialog', () => {
 	beforeEach(() => {
 		renderer = TestUtils.createRenderer();
 		state = Immutable.fromJS({
+			layout: {
+				currentPerspective: 'test',
+				perspectives: {
+					test: {
+						currentPage: 'dialogShim',
+						pages: {
+							dialogShim: {}
+						}
+					}
+				}
+
+			},
+			pageDefs: {
+				dialogShim: {
+					name: 'dialogShim',
+					dialog: 'testdialog'
+				}
+			},
 			dialogDefs: {
 				testdialog: {
 					name: 'testdialog',
 					test: 'this is data',
-					type: 'testType'
+					type: 'testType',
+					providers: {
+						elementSource: {
+							uri: 'test.provider.elements'
+						}
+					}
+				}
+			},
+			dialogData: {
+				testdialog: {
+					selectedItem: 'entry2'
+				}
+			},
+			providers: {
+				'test.provider.elements': {
+					testdialog: [
+						{
+							name: 'group1',
+							label: 'First group',
+							entries: [
+								{
+									name: 'entry1',
+									label: 'First entry',
+									description: 'All manner of words',
+									previewUrl: '/path/to/image1.png'
+								},
+								{
+									name: 'entry2',
+									label: 'Second entry',
+									description: 'Some other words',
+									previewUrl: '/path/to/image2.png'
+								}
+							]
+						},
+						{
+							name: 'group2',
+							label: 'Second group',
+							entries: [
+								{
+									name: 'entry3',
+									label: 'Third entry',
+									description: 'Words to live by',
+									previewUrl: '/path/to/image3.png'
+								},
+								{
+									name: 'entry4',
+									label: 'Fourth entry',
+									description: 'Words to die for',
+									previewUrl: '/path/to/image4.png'
+								}
+							]
+						}
+					]
 				}
 			}
 		});
@@ -42,6 +112,19 @@ describe('ConnectDialog', () => {
 					dialogDef={{ name: 'testdialog', test: 'this is data' }}
 					showType='testType'
 					panelTypes={{}}
+					itemGroups={[
+						{ name: 'group1', entries: [
+							{ name: 'entry1' },
+							{ name: 'entry2' }
+						]},
+						{ name: 'group2', entries: [
+							{ name: 'entry3' },
+							{ name: 'entry4' }
+						]}
+					]}
+					dialogData={{
+						selectedItem: 'entry2'
+					}}
 					dispatch={store.dispatch}
 					store={store}/>
 			),
@@ -61,6 +144,8 @@ describe('ConnectDialog', () => {
 				pageDef={{ dialog: 'testdialog'}}
 				dialogDef={{}}
 				panelTypes={{}}
+				itemGroups={[]}
+				dialogData={{}}
 				dispatch={store.dispatch}
 				store={store}/>
 		);

@@ -2,7 +2,7 @@ const functionList = [
 	{
 		name: 'media',
 		label: 'Media',
-		functions: [
+		entries: [
 			{
 				name: 'image-insert',
 				label: 'Image',
@@ -13,19 +13,19 @@ const functionList = [
 				name: 'video-insert',
 				label: 'Video',
 				description: 'Nam nulla quam, gravida non, commodo a, sodales sit amet, nisi.',
-				previewImageUrl: '/media/b72125aa-5828-463b-8548-f43d65ee33e0/-Rj7RQ/Copenhagen/Vikings__Photographer_Frederikssund_Turistbureau.jpg?w=100'
+				previewImageUrl: '/media/393eeb79-ec4b-4a36-ab03-1b71e17112e2/vENN5g/Composite.Community.Profiles/Profiles-2.jpg?h=100'
 			}
 		]
 	},
 	{
 		name: 'social-network',
 		label: 'Social Network',
-		functions: [
+		entries: [
 			{
 				name: 'imagefb-feed',
 				label: 'Facebook feed',
 				description: 'Morbi in sem quis dui placerat ornare. Pellentesque odio nisi, euismod in, pharetra a, ultricies in, diam. Sed arcu. Cras consequat.',
-				previewImageUrl: '/media/b72125aa-5828-463b-8548-f43d65ee33e0/-Rj7RQ/Copenhagen/Vikings__Photographer_Frederikssund_Turistbureau.jpg?w=100'
+				previewImageUrl: '/media/393eeb79-ec4b-4a36-ab03-1b71e17112e2/vENN5g/Composite.Community.Profiles/Profiles-2.jpg?h=100'
 			},
 			{
 				name: 'twitter-feed',

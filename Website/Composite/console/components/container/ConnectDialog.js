@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { currentPaletteElementList } from 'console/state/selectors/paletteDialogSelector.js';
 import SwitchPanel from 'console/components/presentation/SwitchPanel.js';
 import Palette from 'console/components/presentation/Palette.js';
 import Immutable from 'immutable';
@@ -14,7 +15,10 @@ function mapStateToProps(state, ownProps) {
 	return {
 		dialogDef,
 		showType: dialogDef.get('type'),
-		panelTypes: dialogTypes
+		panelTypes: dialogTypes,
+		headline: dialogDef.get('headline'),
+		itemGroups: currentPaletteElementList(state),
+		dialogData: state.getIn(['dialogData', dialogDef.get('name')]) || Immutable.Map()
 	};
 }
 
