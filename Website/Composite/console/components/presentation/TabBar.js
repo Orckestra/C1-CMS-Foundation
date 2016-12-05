@@ -17,7 +17,7 @@ const TabDiv = styled.div`
 	&.active {
 		border-bottom-color: white;
 		color: ${colors.buttonHighlightColor};
-		z-index: 100;
+		z-index: 1;
 	}
 `;
 
