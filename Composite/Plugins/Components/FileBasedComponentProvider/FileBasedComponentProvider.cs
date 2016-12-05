@@ -4,12 +4,8 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.Serialization;
-using System.Web.Hosting;
 using System.Xml.Linq;
-using System.Xml.Serialization;
 using Composite.Core.IO;
-using Composite.Core.Linq;
 using Composite.Core.Xml;
 
 #warning Code gone A MOCK! This is far from done.
@@ -30,13 +26,22 @@ namespace Composite.Plugins.Components.FileBasedComponentProvider
     /// <exclude />
     public class FileBasedComponentProvider : IComponentProvider
     {
-        const string AppDataComponents = "\\App_Data\\Components\\";
         ComponentChangeNotifier _changeNotifier;
+        private string _providerDirectory;
+        private string _searchPattern;
+        private SearchOption _searchOption;
 
         /// <exclude />
         public FileBasedComponentProvider(ComponentChangeNotifier changeNotifier)
         {
             _changeNotifier = changeNotifier;
+
+            var componentProviderSetting = ComponentProviderSettings.GetProviderPath(nameof(FileBasedComponentProvider));
+            _providerDirectory = componentProviderSetting.Directory;
+            _searchPattern = componentProviderSetting.FileSearchPattern;
+            _searchOption = componentProviderSetting.TopDirectoryOnly == "true"
+                ? SearchOption.TopDirectoryOnly
+                : SearchOption.AllDirectories;
         }
 
         /// <exclude />
@@ -52,11 +57,10 @@ namespace Composite.Plugins.Components.FileBasedComponentProvider
 
             _changeNotifier.ProviderChange(this.ProviderId);
 
-            
-            foreach (var componentFile in Directory.GetFiles(HostingEnvironment.MapPath(AppDataComponents),"*.xml",SearchOption.AllDirectories))
+            foreach (var componentFile in C1Directory.GetFiles(PathUtil.Resolve(_providerDirectory),_searchPattern,_searchOption))
             {
                 var xNamespace = XNamespace.Get("http://cms.orckestra.com/blip/blop/foo/bar");
-                var doc = XDocument.Load(componentFile);
+                var doc = XDocumentUtils.Load(componentFile);
                 var xElement = doc.Descendants().First();
 
                 if (xElement != null)
@@ -67,10 +71,11 @@ namespace Composite.Plugins.Components.FileBasedComponentProvider
                     var description = xElement.GetAttributeValue(xNamespace + "description") ?? title;
 
                     var groupingTagsRaw = xElement.GetAttributeValue(xNamespace + "tags") ??
-                                          Path.GetDirectoryName(componentFile)
+                                          Path.GetDirectoryName(componentFile)?
                                               .Substring(
-                                                  Path.GetDirectoryName(componentFile).IndexOf(AppDataComponents) +
-                                                  AppDataComponents.Length)
+                                                  Path.GetDirectoryName(componentFile)
+                                                      .IndexOf(_providerDirectory.Replace('/', '\\').Replace("~", "")) +
+                                                  _providerDirectory.Length)
                                               .Replace('\\', ',');
 
                     var groupingTags = groupingTagsRaw.ToLower().Split(',').ToList();
