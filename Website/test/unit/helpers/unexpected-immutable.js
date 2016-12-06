@@ -19,6 +19,9 @@ export function installInto(expect) {
 		}
 	});
 
+	expect.addAssertion('<Immutable> to [exhaustively] satisfy <Immutable>', function (expect, subject, pattern) {
+		return expect(subject.toJS(), 'to [exhaustively] satisfy', pattern.toJS());
+	});
 	expect.addAssertion('<Immutable> to [exhaustively] satisfy <any>', function (expect, subject, pattern) {
 		return expect(subject.toJS(), 'to [exhaustively] satisfy', pattern);
 	});

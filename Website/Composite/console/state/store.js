@@ -21,7 +21,17 @@ let reducers = {
 	providers,
 	dialogData
 };
-['page', 'tab', 'item', 'toolbar', 'fieldset', 'dataField', 'dialog'].forEach(typeName => {
+[
+	'page',
+	'tab',
+	'item',
+	'toolbar',
+	'fieldset',
+	'dataField',
+	'dialog',
+	'dialogPane',
+	'provider'
+].forEach(typeName => {
 	reducers[typeName + 'Defs'] = getDefinitionReducer(typeName);
 });
 

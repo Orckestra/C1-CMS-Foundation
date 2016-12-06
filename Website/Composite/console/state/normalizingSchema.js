@@ -14,7 +14,17 @@ export const toolbarSchema = new Schema('toolbarDefs', { idAttribute: 'name' });
 toolbarSchema.define({
 	items: arrayOf(itemSchema)
 });
-export const dialogSchema = new Schema('dialogDefs', {idAttribute: 'name' });
+export const providerSchema = new Schema('providerDefs', { idAttribute: 'name' });
+export const dialogPaneSchema = new Schema('dialogPaneDefs', { idAttribute: 'name' });
+dialogPaneSchema.define({
+	provider: providerSchema,
+	cancelProvider: providerSchema,
+	finishProvider: providerSchema
+});
+export const dialogSchema = new Schema('dialogDefs', { idAttribute: 'name' });
+dialogSchema.define({
+	panes: arrayOf(dialogPaneSchema)
+});
 export const pageSchema = new Schema('pageDefs', { idAttribute: 'name' });
 pageSchema.define({
 	tabs: arrayOf(tabSchema),

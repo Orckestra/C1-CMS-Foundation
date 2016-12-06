@@ -8,15 +8,6 @@ import { setDialogState } from 'console/state/reducers/dialog.js';
 // Category has headline, open state, contains list of components
 // Component has preview image url, label, description
 
-// TODO: Restyle for use in actual dialogs.
-export const Dialog = styled.div`
-	background-color: ${colors.fieldsetBackgroundColor};
-	height: 100%;
-/*	max-width: 880px;
-	overflow: hidden;*/
-`;
-export const DialogTitle = styled.h1``;
-
 export const ItemGroup = styled.div`
 	overflow: hidden;
 `;
@@ -62,8 +53,7 @@ export const Description = styled.p`
 `;
 
 const Palette = props => {
-	return <Dialog>
-		{props.dialogDef.get('headline') ? <DialogTitle>{props.dialogDef.get('headline')}</DialogTitle> : null}
+	return <div>
 		{props.itemGroups.map(itemGroup =>
 			<ItemGroup
 				key={itemGroup.get('name')}>
@@ -74,7 +64,7 @@ const Palette = props => {
 						key={item.get('name')}
 						onClick={() => props.dispatch(
 							setDialogState(
-								props.dialogDef.get('name'),
+								props.dialogName,
 								props.dialogData.set('selectedItem', itemName)
 							)
 						)}
@@ -86,14 +76,15 @@ const Palette = props => {
 				}).toArray()}
 			</ItemGroup>
 		).toArray()}
-	</Dialog>;
+	</div>;
 };
 
 Palette.propTypes = {
+	dialogName: PropTypes.string.isRequired,
 	dialogData: ImmutablePropTypes.mapContains({
 		selectedItem: PropTypes.string
 	}),
-	dialogDef: ImmutablePropTypes.mapContains({
+	paneDef: ImmutablePropTypes.mapContains({
 		name: PropTypes.string.isRequired,
 		headline: PropTypes.string
 	}).isRequired,

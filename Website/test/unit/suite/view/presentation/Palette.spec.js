@@ -2,7 +2,7 @@ import expect from 'unittest/helpers/expect.js';
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
 import Immutable from 'immutable';
-import Palette, { Dialog, DialogTitle, ItemGroup, ItemGroupTitle, Item, Preview, Label, Description } from 'console/components/presentation/Palette.js';
+import Palette, { ItemGroup, ItemGroupTitle, Item, Preview, Label, Description } from 'console/components/presentation/Palette.js';
 
 describe('Palette', () => {
 	let renderer, props;
@@ -48,10 +48,10 @@ describe('Palette', () => {
 					]
 				}
 			]),
-			dialogDef: Immutable.Map({
-				name: 'testdialog',
-				headline: 'foo'
+			paneDef: Immutable.Map({
+				name: 'testdpalette'
 			}),
+			dialogName: 'testdialog',
 			dialogData: Immutable.Map({ selectedItem: 'entry2' }),
 			dispatch: () => {}
 		};
@@ -59,8 +59,7 @@ describe('Palette', () => {
 
 	it('renders a palette', () => {
 		renderer.render(<Palette {...props}/>);
-		return expect(renderer, 'to have rendered', <Dialog>
-			<DialogTitle>foo</DialogTitle>
+		return expect(renderer, 'to have rendered', <div>
 			<ItemGroup key='group1'>
 				<ItemGroupTitle>First group</ItemGroupTitle>
 				<Item key='entry1' active={false}>
@@ -87,6 +86,6 @@ describe('Palette', () => {
 					<Description>Words to die for</Description>
 				</Item>
 			</ItemGroup>
-		</Dialog>);
+		</div>);
 	});
 });

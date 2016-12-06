@@ -47,14 +47,23 @@ describe('loadAndOpenPage', () => {
 				dialogDefs: {
 					testdialog: {
 						name: 'testdialog',
+						panes: [
+							'testpalette'
+						]
+					}
+				},
+				dialogPaneDefs: {
+					testpalette: {
+						name: 'testpalette',
 						type: 'palette',
 						context: 'testing',
-						providers: {
-							elementSource: {
-								protocol: 'wamp',
-								uri: 'mock.provider.test'
-							}
-						}
+						provider: 'elementSource'
+					}
+				},
+				providerDefs: {
+					elementSource: {
+						protocol: 'wamp',
+						uri: 'mock.provider.test'
 					}
 				}
 			}),

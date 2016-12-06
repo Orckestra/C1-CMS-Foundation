@@ -30,7 +30,6 @@ const Button = styled.button`
 		color: white;
 		padding-top: 4px;
 		padding-bottom: 4px;
-		height: 32px;
 	}
 `;
 

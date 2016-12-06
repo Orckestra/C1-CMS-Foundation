@@ -3,7 +3,7 @@ import sinon from 'sinon';
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
 import ConnectDialog from 'console/components/container/ConnectDialog.js';
-import SwitchPanel from 'console/components/presentation/SwitchPanel.js';
+import Dialog from 'console/components/presentation/Dialog.js';
 import Immutable from 'immutable';
 
 describe('ConnectDialog', () => {
@@ -32,13 +32,20 @@ describe('ConnectDialog', () => {
 			dialogDefs: {
 				testdialog: {
 					name: 'testdialog',
+					panes: ['testpane']
+				}
+			},
+			dialogPaneDefs: {
+				testpane: {
+					name: 'testpane',
 					test: 'this is data',
 					type: 'testType',
-					providers: {
-						elementSource: {
-							uri: 'test.provider.elements'
-						}
-					}
+					provider: 'elementSource'
+				}
+			},
+			providerDefs: {
+				elementSource: {
+					uri: 'test.provider.elements'
 				}
 			},
 			dialogData: {
@@ -101,18 +108,16 @@ describe('ConnectDialog', () => {
 		};
 	});
 
-	it('renders a SwitchPanel with props and panel type to show', () => {
+	it('renders a Dialog with props and panel type to show', () => {
 		renderer.render(<ConnectDialog store={store} {...props}/>);
 		return Promise.all([
 			expect(renderer,
 				'to have exactly rendered',
-				<SwitchPanel
+				<Dialog
 					test='value'
-					pageDef={{ dialog: 'testdialog'}}
-					dialogDef={{ name: 'testdialog', test: 'this is data' }}
-					showType='testType'
-					panelTypes={{}}
-					itemGroups={[
+					pageDef={Immutable.fromJS({ dialog: 'testdialog'})}
+					dialogDef={Immutable.fromJS({ name: 'testdialog', panes: [{ test: 'this is data' }] })}
+					itemGroups={Immutable.fromJS([
 						{ name: 'group1', entries: [
 							{ name: 'entry1' },
 							{ name: 'entry2' }
@@ -121,10 +126,10 @@ describe('ConnectDialog', () => {
 							{ name: 'entry3' },
 							{ name: 'entry4' }
 						]}
-					]}
-					dialogData={{
+					])}
+					dialogData={Immutable.fromJS({
 						selectedItem: 'entry2'
-					}}
+					})}
 					dispatch={store.dispatch}
 					store={store}/>
 			),
@@ -132,22 +137,5 @@ describe('ConnectDialog', () => {
 			expect(store.subscribe, 'was not called'),
 			expect(store.getState, 'was called')
 		]);
-	});
-
-	it('handles lacking def', () => {
-		store.state = state.deleteIn(['dialogDefs', 'testdialog']);
-		renderer.render(<ConnectDialog store={store} {...props}/>);
-		return expect(renderer,
-			'to have exactly rendered',
-			<SwitchPanel
-				test='value'
-				pageDef={{ dialog: 'testdialog'}}
-				dialogDef={{}}
-				panelTypes={{}}
-				itemGroups={[]}
-				dialogData={{}}
-				dispatch={store.dispatch}
-				store={store}/>
-		);
 	});
 });

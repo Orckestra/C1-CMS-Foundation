@@ -37,9 +37,12 @@ const pageLoaders = {
 	dialogPageShim: (pageName, getState, dispatch) => {
 		let dialogName = getState().getIn(['pageDefs', pageName, 'dialog']);
 		let dialogDef = getState().getIn(['dialogDefs', dialogName]);
-		if (dialogDef.get('type') === 'palette') {
-			let provider = dialogDef.getIn(['providers', 'elementSource']).toJS();
-			return dispatch(getProviderPage(provider, dialogName, dialogDef.get('context')));
+		let paneIndex = getState().getIn(['dialogData', dialogName, 'showPane']) || 0;
+		let paneName = dialogDef.getIn(['panes', paneIndex]);
+		let paneDef = getState().getIn(['dialogPaneDefs', paneName]);
+		if (paneDef.get('type') === 'palette') {
+			let provider = getState().getIn(['providerDefs', paneDef.get('provider')]).toJS();
+			return dispatch(getProviderPage(provider, dialogName, paneDef.get('context')));
 		} else {
 			return Promise.resolve();
 		}

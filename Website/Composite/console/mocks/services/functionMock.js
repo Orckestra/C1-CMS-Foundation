@@ -22,7 +22,7 @@ const functionList = [
 		label: 'Social Network',
 		entries: [
 			{
-				name: 'imagefb-feed',
+				name: 'fb-feed',
 				label: 'Facebook feed',
 				description: 'Morbi in sem quis dui placerat ornare. Pellentesque odio nisi, euismod in, pharetra a, ultricies in, diam. Sed arcu. Cras consequat.',
 				previewImageUrl: '/media/393eeb79-ec4b-4a36-ab03-1b71e17112e2/vENN5g/Composite.Community.Profiles/Profiles-2.jpg?h=100'
@@ -37,6 +37,33 @@ const functionList = [
 	}
 ];
 
+const fields = {
+	'image-insert': [
+		{
+			name: 'image-insert.url',
+			headline: 'Image URL'
+		}
+	],
+	'video-insert': [
+		{
+			name: 'video-insert.url',
+			headline: 'Video URL'
+		}
+	],
+	'fb-feed': [
+		{
+			name: 'fb-feed.username',
+			headline: 'User name'
+		}
+	],
+	'twitter-feed': [
+		{
+			name: 'fb-feed.username',
+			headline: 'User name'
+		}
+	]
+};
+
 export function getFunctions(context) {
 	if (context) {
 		return functionList;
@@ -45,4 +72,8 @@ export function getFunctions(context) {
 
 export function pickFunction(functionName) {
 	console.log('Saved values', functionName); // eslint-disable-line no-console
+}
+
+export function getFunctionFields(functionName) {
+	return fields[functionName];
 }

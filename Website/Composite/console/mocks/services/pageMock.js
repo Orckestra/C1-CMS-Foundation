@@ -322,19 +322,36 @@ const pages = {
 		type: 'dialogPageShim',
 		dialog: {
 			name: 'component-selector',
-			type: 'palette',
-			headline: 'Select a component',
-			context: 'left-aside',
-			providers: {
-				elementSource: {
-					protocol: 'wamp',
-					uri: 'mock.provider.components.list'
-				},
-				elementSelect: {
-					protocol: 'wamp',
-					uri: 'mock.provider.components.pick'
+			panes: [
+				{
+					name: 'component-list',
+					type: 'palette',
+					headline: 'Select a component',
+					context: 'left-aside',
+					provider: {
+						name: 'elementSource',
+						protocol: 'wamp',
+						uri: 'mock.provider.components.list'
+					},
+					finishButton: {
+						label: 'Next',
+						style: 'main'
+					},
+					finishProvider: {
+						name: 'elementInsert',
+						protocol: 'wamp',
+						uri: 'mock.provider.components.pick'
+					},
+					cancelButton: {
+						label: 'Cancel'
+					},
+					cancelProvider: {
+						name: 'componentListCancel',
+						protocol: 'wamp',
+						uri: 'mock.struct.dialog.cancel'
+					}
 				}
-			}
+			]
 		}
 	}
 };

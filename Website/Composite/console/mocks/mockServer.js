@@ -29,7 +29,10 @@ const client = new Wampy(url.href, {
 			registerMock('data.values.load', valueFetcher),
 			registerMock('data.values.save', valuePutter),
 			registerMock('provider.components.list', getFunctions),
-			registerMock('provider.components.pick', pickFunction)
+			registerMock('provider.components.pick', pickFunction),
+			registerMock('struct.dialog.cancel', dialogName =>
+				console.log('Canceling and closing', dialogName) // eslint-disable-line no-console
+			),
 		]).then(unblock);
 	}
 });
