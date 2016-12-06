@@ -6,8 +6,11 @@ using Composite.C1Console.Search.Crawling;
 using Composite.Core;
 using Composite.Core.Linq;
 using Composite.Core.Routing;
+using Composite.Core.WebClient;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
+using Composite.Data.ProcessControlled;
+using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
 
 namespace Composite.C1Console.Search.DocumentSources
 {
@@ -17,6 +20,8 @@ namespace Composite.C1Console.Search.DocumentSources
         private readonly Type _interfaceType;
         private readonly DataChangesIndexNotifier _changesIndexNotifier;
         private readonly Lazy<ICollection<DocumentField>> _customFields;
+
+        private readonly bool _isPublishable;
 
         static DataTypeDocumentSource()
         {
@@ -29,6 +34,8 @@ namespace Composite.C1Console.Search.DocumentSources
         public DataTypeDocumentSource(Type interfaceType)
         {
             _interfaceType = interfaceType;
+
+            _isPublishable = typeof (IPublishControlled).IsAssignableFrom(_interfaceType);
 
             _customFields = new Lazy<ICollection<DocumentField>>(() =>
                 DataTypeSearchReflectionHelper.GetDocumentFields(_interfaceType).Evaluate());
@@ -48,14 +55,30 @@ namespace Composite.C1Console.Search.DocumentSources
 
         public IEnumerable<SearchDocument> GetAllSearchDocuments(CultureInfo culture)
         {
-            ICollection<IData> data;
-
-            using (new DataConnection(PublicationScope.Unpublished, culture))
+            using (new DataConnection(PublicationScope.Published, culture))
             {
-                data = DataFacade.GetData(_interfaceType).Cast<IData>().Evaluate();
+                var dataSet = DataFacade.GetData(_interfaceType).Cast<IData>().Evaluate();
+                foreach (var document in dataSet.Select(FromData).Where(doc => doc != null))
+                {
+                    yield return document;
+                }
             }
 
-            return data.Select(FromData).Where(doc => doc != null);
+            if (typeof (IPublishControlled).IsAssignableFrom(_interfaceType))
+            {
+                using (new DataConnection(PublicationScope.Unpublished, culture))
+                {
+                    var dataSet = DataFacade.GetData(_interfaceType)
+                        .Cast<IPublishControlled>()
+                        .Where(data => data.PublicationStatus != GenericPublishProcessController.Published)
+                        .Evaluate();
+
+                    foreach (var document in dataSet.Select(FromData).Where(doc => doc != null))
+                    {
+                        yield return document;
+                    }
+                }
+            }
         }
 
         public ICollection<DocumentField> CustomFields => _customFields.Value;
@@ -75,7 +98,8 @@ namespace Composite.C1Console.Search.DocumentSources
 
             string documentId = GetDocumentId(data);
             string url = null;
-            if (InternalUrls.DataTypeSupported(data.DataSourceId.InterfaceType))
+            if (InternalUrls.DataTypeSupported(data.DataSourceId.InterfaceType)
+                && (!_isPublishable || (data.DataSourceId.PublicationScope == PublicationScope.Published)))
             {
                 url = InternalUrls.TryBuildInternalUrl(data.ToDataReference());
             }
@@ -85,7 +109,16 @@ namespace Composite.C1Console.Search.DocumentSources
 
         private string GetDocumentId(IData data)
         {
-            return data.GetUniqueKey().ToString();
+            var uniqueKey = data.GetUniqueKey();
+            if (uniqueKey is Guid)
+            {
+                uniqueKey = UrlUtils.CompressGuid((Guid)uniqueKey);
+            }
+
+            string scopeSuffix = _isPublishable && data.DataSourceId.PublicationScope == PublicationScope.Unpublished
+                ? "u" : string.Empty;
+
+            return uniqueKey + scopeSuffix;
         }
 
         private static void OnStoreCreated(DataTypeDescriptor dataTypeDescriptor)

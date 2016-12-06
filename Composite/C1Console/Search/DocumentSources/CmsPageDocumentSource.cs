@@ -7,7 +7,9 @@ using Composite.Core;
 using Composite.Core.Extensions;
 using Composite.Core.Linq;
 using Composite.Core.Routing;
+using Composite.Core.WebClient;
 using Composite.Data;
+using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
 using Composite.Data.Types;
 
 namespace Composite.C1Console.Search.DocumentSources
@@ -36,7 +38,7 @@ namespace Composite.C1Console.Search.DocumentSources
 
             _changesIndexNotifier = new DataChangesIndexNotifier(
                 _listeners, typeof(IPage), 
-                data => FromPage((IPage)data),
+                data => FromPage((IPage) data),
                 data => GetDocumentId((IPage) data));
 
             _changesIndexNotifier.Start();
@@ -51,14 +53,36 @@ namespace Composite.C1Console.Search.DocumentSources
 
         public IEnumerable<SearchDocument> GetAllSearchDocuments(CultureInfo culture)
         {
-            ICollection<IPage> pages;
+            ICollection<IPage> unpublishedPages;
 
             using (var conn = new DataConnection(PublicationScope.Unpublished, culture))
             {
-                pages = conn.Get<IPage>().Evaluate();
+                unpublishedPages = conn.Get<IPage>().Evaluate();
             }
 
-            return pages.Select(FromPage);
+            var publishedPages = new Dictionary<Tuple<Guid, Guid>, IPage>();
+            using (var conn = new DataConnection(PublicationScope.Published, culture))
+            {
+                publishedPages = conn.Get<IPage>().ToDictionary(page => new Tuple<Guid, Guid>(page.Id, page.VersionId));
+            }
+
+            foreach (var unpublishedPage in unpublishedPages)
+            {
+                IPage publishedPage;
+                if (publishedPages.TryGetValue(new Tuple<Guid, Guid>(unpublishedPage.Id, unpublishedPage.VersionId), 
+                        out publishedPage))
+                {
+                    yield return FromPage(publishedPage);
+
+                    if (unpublishedPage.PublicationStatus == GenericPublishProcessController.Published)
+                    {
+                        // If page is in "published" state, indexing only one version of it
+                        continue;
+                    }
+                }
+
+                yield return FromPage(unpublishedPage);
+            }
         }
 
         public ICollection<DocumentField> CustomFields => _customFields.Value;
@@ -92,17 +116,31 @@ namespace Composite.C1Console.Search.DocumentSources
                 }
             }
 
+            bool isPublished = page.DataSourceId.PublicationScope == PublicationScope.Published;
             string documentId = GetDocumentId(page);
 
+            string url = isPublished ? PageUrls.BuildUrl(page, UrlKind.Internal) : null;
+
             var entityToken = page.GetDataEntityToken();
-            string url = PageUrls.BuildUrl(page, UrlKind.Internal);
+
+            if (isPublished)
+            {
+                entityToken.DataSourceId.DataScopeIdentifier = DataScopeIdentifier.Administrated;
+            }
 
             return documentBuilder.BuildDocument(Name, documentId, label, null, entityToken, url);
         }
 
         private string GetDocumentId(IPage page)
         {
-            return $"{page.Id}{page.VersionId}";
+            bool isUnpublished = page.DataSourceId.PublicationScope == PublicationScope.Unpublished;
+
+            string versionId = "";
+            if (page.VersionId != Guid.Empty)
+            {
+                versionId = UrlUtils.CompressGuid(page.VersionId);
+            }
+            return $"{UrlUtils.CompressGuid(page.Id)}{versionId}" + (isUnpublished ? "u" : "");
         }
     }
 }

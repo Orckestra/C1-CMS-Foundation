@@ -5,6 +5,7 @@ using System.Linq;
 using Composite.Core.Extensions;
 using Composite.Data;
 using Composite.Data.ProcessControlled;
+using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
 
 namespace Composite.C1Console.Search.DocumentSources
 {
@@ -51,8 +52,13 @@ namespace Composite.C1Console.Search.DocumentSources
             if (!_listeners.Any()) return;
 
             var data = dataEventArgs.Data;
-            var document = GetDocument(data);
 
+            if (IsPublishedDataFromUnpublishedScope(data))
+            {
+                return;
+            }
+
+            var document = GetDocument(data);
             foreach (var culture in GetCultures(data))
             {
                 _listeners.ForEach(l => l.Create(culture, document));
@@ -64,6 +70,14 @@ namespace Composite.C1Console.Search.DocumentSources
             if (!_listeners.Any()) return;
 
             var data = dataEventArgs.Data;
+            bool toBeDeleted = IsPublishedDataFromUnpublishedScope(data);
+
+            if (toBeDeleted)
+            {
+                DeleteDocuments(data);
+                return;
+            }
+
             var document = GetDocument(data);
 
             foreach (var culture in GetCultures(data))
@@ -77,12 +91,24 @@ namespace Composite.C1Console.Search.DocumentSources
             if (!_listeners.Any()) return;
 
             var data = dataEventArgs.Data;
+            DeleteDocuments(data);
+        }
+
+        private void DeleteDocuments(IData data)
+        {
             var documentId = GetDocumentId(data);
 
             foreach (var culture in GetCultures(data))
             {
                 _listeners.ForEach(l => l.Delete(culture, documentId));
             }
+        }
+
+        private bool IsPublishedDataFromUnpublishedScope(IData data)
+        {
+            return typeof (IPublishControlled).IsAssignableFrom(_interfaceType)
+                   && data.DataSourceId.PublicationScope == PublicationScope.Unpublished
+                   && ((IPublishControlled)data).PublicationStatus == GenericPublishProcessController.Published;
         }
     }
 }
