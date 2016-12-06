@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Composite.C1Console.Actions;
 using Composite.C1Console.Security;
-using Composite.Core.Serialization;
 using Composite.Core.Types;
+using static Composite.Core.Serialization.StringConversionServices;
 
 
 namespace Composite.C1Console.Workflow
@@ -16,9 +17,6 @@ namespace Composite.C1Console.Workflow
     [ActionExecutor(typeof(WorkflowActionExecutor))]
     public class WorkflowActionToken : ActionToken
     {
-        private IEnumerable<PermissionType> _permissionTypes;
-
-
         /// <exclude />
         public WorkflowActionToken(Type workflowType)
             : this(workflowType, null)
@@ -29,16 +27,9 @@ namespace Composite.C1Console.Workflow
         /// <exclude />
         public WorkflowActionToken(Type workflowType, IEnumerable<PermissionType> permissionType)
         {
-            if (workflowType == null) throw new ArgumentNullException("workflowType");
+            Verify.ArgumentNotNull(workflowType, nameof(workflowType));
 
-            if (permissionType != null)
-            {
-                _permissionTypes = permissionType;
-            }
-            else
-            {
-                _permissionTypes = new List<PermissionType>();
-            }
+            PermissionTypes = permissionType ?? Enumerable.Empty<PermissionType>();
 
             this.WorkflowType = workflowType;
             this.ParentWorkflowInstanceId = Guid.Empty;
@@ -49,11 +40,7 @@ namespace Composite.C1Console.Workflow
 
 
         /// <exclude />
-        public Type WorkflowType
-        {
-            get;
-            private set;
-        }
+        public Type WorkflowType { get; }
 
 
         /// <exclude />
@@ -100,36 +87,27 @@ namespace Composite.C1Console.Workflow
 
 
         /// <exclude />
-        public override bool IgnoreEntityTokenLocking
-        {
-            get { return this.DoIgnoreEntityTokenLocking; }
-        }
+        public override bool IgnoreEntityTokenLocking => this.DoIgnoreEntityTokenLocking;
 
 
         /// <exclude />
-        public override IEnumerable<PermissionType> PermissionTypes
-        {
-            get
-            {
-                return _permissionTypes;
-            }
-        }
+        public override IEnumerable<PermissionType> PermissionTypes { get; }
 
 
         /// <exclude />
         public override string Serialize()
         {
-            StringBuilder stringBuilder = new StringBuilder();
+            var stringBuilder = new StringBuilder();
 
-            StringConversionServices.SerializeKeyValuePair(stringBuilder, "_WorkflowType_", TypeManager.SerializeType(this.WorkflowType));
-            StringConversionServices.SerializeKeyValuePair(stringBuilder, "_Payload_", this.Payload);
-            StringConversionServices.SerializeKeyValuePair(stringBuilder, "_ExtraPayload_", this.ExtraPayload);
-            StringConversionServices.SerializeKeyValuePair(stringBuilder, "_Ignore_", this.DoIgnoreEntityTokenLocking);
-            StringConversionServices.SerializeKeyValuePair(stringBuilder, "_PermissionTypes_", this.PermissionTypes.SerializePermissionTypes());
+            SerializeKeyValuePair(stringBuilder, "_WorkflowType_", TypeManager.SerializeType(this.WorkflowType));
+            SerializeKeyValuePair(stringBuilder, "_Payload_", this.Payload);
+            SerializeKeyValuePair(stringBuilder, "_ExtraPayload_", this.ExtraPayload);
+            SerializeKeyValuePair(stringBuilder, "_Ignore_", this.DoIgnoreEntityTokenLocking);
+            SerializeKeyValuePair(stringBuilder, "_PermissionTypes_", this.PermissionTypes.SerializePermissionTypes());
             if (this.EventHandleFilterType != null)
             {
                 string serializedType = TypeManager.SerializeType(this.EventHandleFilterType);
-                StringConversionServices.SerializeKeyValuePair(stringBuilder, "_EventHandleFilterType_", serializedType);
+                SerializeKeyValuePair(stringBuilder, "_EventHandleFilterType_", serializedType);
             }
 
             return stringBuilder.ToString();
@@ -137,38 +115,38 @@ namespace Composite.C1Console.Workflow
 
 
         /// <exclude />
-        public static ActionToken Deserialize(string serialiedWorkflowActionToken)
+        public static ActionToken Deserialize(string serializedWorkflowActionToken)
         {
-            Dictionary<string, string> dic = StringConversionServices.ParseKeyValueCollection(serialiedWorkflowActionToken);
+            Dictionary<string, string> dic = ParseKeyValueCollection(serializedWorkflowActionToken);
 
-            if ((dic.ContainsKey("_WorkflowType_") == false) ||
-                (dic.ContainsKey("_Payload_") == false) ||
-                (dic.ContainsKey("_ExtraPayload_") == false) ||
-                (dic.ContainsKey("_Ignore_") == false) ||
-                (dic.ContainsKey("_PermissionTypes_") == false))
+            if (!dic.ContainsKey("_WorkflowType_")
+                || !dic.ContainsKey("_Payload_") 
+                || !dic.ContainsKey("_ExtraPayload_") 
+                || !dic.ContainsKey("_Ignore_") 
+                || !dic.ContainsKey("_PermissionTypes_"))
             {
-                throw new ArgumentException("The serialiedWorkflowActionToken is not a serialized WorkflowActionToken", "serialiedWorkflowActionToken");
+                throw new ArgumentException("The serializedWorkflowActionToken is not a serialized WorkflowActionToken", nameof(serializedWorkflowActionToken));
             }
 
-            string serializedType = StringConversionServices.DeserializeValueString(dic["_WorkflowType_"]);
+            string serializedType = DeserializeValueString(dic["_WorkflowType_"]);
             Type type = TypeManager.GetType(serializedType);
 
-            string permissionTypesString = StringConversionServices.DeserializeValueString(dic["_PermissionTypes_"]);
+            string permissionTypesString = DeserializeValueString(dic["_PermissionTypes_"]);
 
-            WorkflowActionToken workflowActionToken = new WorkflowActionToken(type, permissionTypesString.DesrializePermissionTypes());
+            var workflowActionToken = new WorkflowActionToken(type, permissionTypesString.DesrializePermissionTypes());
 
-            string payload = StringConversionServices.DeserializeValueString(dic["_Payload_"]);
+            string payload = DeserializeValueString(dic["_Payload_"]);
             workflowActionToken.Payload = payload;
 
-            string extraPayload = StringConversionServices.DeserializeValueString(dic["_ExtraPayload_"]);
+            string extraPayload = DeserializeValueString(dic["_ExtraPayload_"]);
             workflowActionToken.ExtraPayload = extraPayload;
 
-            bool ignoreEntityTokenLocking = StringConversionServices.DeserializeValueBool(dic["_Ignore_"]);
+            bool ignoreEntityTokenLocking = DeserializeValueBool(dic["_Ignore_"]);
             workflowActionToken.DoIgnoreEntityTokenLocking = ignoreEntityTokenLocking;
 
             if (dic.ContainsKey("_EventHandleFilterType_"))
             {
-                string serializedFilterType = StringConversionServices.DeserializeValueString(dic["_EventHandleFilterType_"]);
+                string serializedFilterType = DeserializeValueString(dic["_EventHandleFilterType_"]);
                 workflowActionToken.EventHandleFilterType = TypeManager.GetType(serializedFilterType);
             }
 
