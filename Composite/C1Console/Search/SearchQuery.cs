@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Composite.C1Console.Search.Crawling;
+using Composite.Data;
 
 namespace Composite.C1Console.Search
 {
@@ -97,13 +98,24 @@ namespace Composite.C1Console.Search
 
         public void FilterByDataTypes(IEnumerable<Type> dataTypes)
         {
-            // TODO: implement
-            //    new SearchQuerySelection
-            //    {
-            //        FieldName = DefaultDocumentFieldNames.DataType,
-            //        Operation = SearchQuerySelectionOperation.Or,
-            //        Values = searchableTypes.Select(t => t.FullName).ToArray()
-            //    }
+            Verify.ArgumentNotNull(dataTypes, nameof(dataTypes));
+
+            Selection.Add(new SearchQuerySelection
+            {
+                FieldName = DefaultDocumentFieldNames.DataType,
+                Operation = SearchQuerySelectionOperation.Or,
+                Values = dataTypes.Select(type => type.GetImmutableTypeId().ToString()).ToArray()
+            });
+
+            if (!Facets.Any(f => f.Key == DefaultDocumentFieldNames.DataType))
+            {
+                Facets.Add(new KeyValuePair<string, DocumentFieldFacet>(
+                    DefaultDocumentFieldNames.DataType,
+                    SearchDocumentBuilder.GetDefaultDocumentFields()
+                    .Single(f => f.Name == DefaultDocumentFieldNames.DataType)
+                    .Facet));
+            }
+            
         }
 
         /// <summary>
@@ -117,11 +129,14 @@ namespace Composite.C1Console.Search
                 Values = new [] {"1"}
             });
 
-            Facets.Add(new KeyValuePair<string, DocumentFieldFacet>(
-                DefaultDocumentFieldNames.HasUrl,
-                SearchDocumentBuilder.GetDefaultDocumentFields()
-                .Single(f => f.Name == DefaultDocumentFieldNames.HasUrl)
-                .Facet));
+            if (!Facets.Any(f => f.Key == DefaultDocumentFieldNames.HasUrl))
+            {
+                Facets.Add(new KeyValuePair<string, DocumentFieldFacet>(
+                    DefaultDocumentFieldNames.HasUrl,
+                    SearchDocumentBuilder.GetDefaultDocumentFields()
+                        .Single(f => f.Name == DefaultDocumentFieldNames.HasUrl)
+                        .Facet));
+            }
         }
 
         /// <summary>
