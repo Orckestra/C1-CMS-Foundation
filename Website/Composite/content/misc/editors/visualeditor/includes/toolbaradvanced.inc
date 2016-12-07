@@ -23,7 +23,8 @@
             url			: "${root}/content/dialogs/postback/postbackdialog.aspx",
             argument 	: {
               "url"	: "${root}/console/?TEMP-COMPONENTS&pageId={context:pageId}&containerClasses={context:containerClasses}",
-              "list"	: new List()
+              "list"	: new List(),
+              "method" : "get"
             },
             width: 500,
             height: 520,
