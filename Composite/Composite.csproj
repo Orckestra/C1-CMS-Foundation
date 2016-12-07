@@ -307,6 +307,7 @@
     <Compile Include="Data\VersionKeyPropertyName.cs" />
     <Compile Include="Plugins\Components\ComponentProviderSettings.cs" />
     <Compile Include="Plugins\Components\ComponentsEndpoint\ComponentsEndpoint.cs" />
+    <Compile Include="Plugins\Components\ComponentTags\TagManager.cs" />
     <Compile Include="Plugins\Components\FileBasedComponentProvider\FileBasedComponentProvider.cs" />
     <Compile Include="Plugins\Elements\ElementProviders\PageElementProvider\PageAddActionExecuter.cs" />
     <Compile Include="Plugins\Elements\ElementProviders\PageElementProvider\PageAddActionToken.cs" />

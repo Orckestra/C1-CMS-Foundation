@@ -10,6 +10,7 @@ using Composite.Core;
 using Composite.Core.IO;
 using Composite.Core.Linq;
 using Composite.Core.Xml;
+using Composite.Plugins.Components.ComponentTags;
 
 #warning Code gone A MOCK! This is far from done.
 
@@ -57,7 +58,13 @@ namespace Composite.Plugins.Components.FileBasedComponentProvider
 
             _changeNotifier.ProviderChange(this.ProviderId);
 
-            foreach (var componentFile in C1Directory.GetFiles(PathUtil.Resolve(_providerDirectory),_searchPattern,_searchOption))
+            return GetComponentsFromFile();
+        }
+
+        private IEnumerable<Component> GetComponentsFromFile()
+        {
+            foreach (
+                var componentFile in C1Directory.GetFiles(PathUtil.Resolve(_providerDirectory), _searchPattern, _searchOption))
             {
                 var xNamespace = XNamespace.Get("http://cms.orckestra.com/blip/blop/foo/bar");
                 var doc = XDocumentUtils.Load(componentFile);
@@ -73,7 +80,8 @@ namespace Composite.Plugins.Components.FileBasedComponentProvider
                     var groupingTagsRaw = xElement.GetAttributeValue(xNamespace + "tags") ??
                                           GuessGroupingTagsBasedOnPath(componentFile);
 
-                    var groupingTags = groupingTagsRaw.ToLower().Split(',').ToList();
+                    var tagManager = ServiceLocator.GetRequiredService<TagManager>();
+                    var groupingTags = groupingTagsRaw.ToLower().Split(',').Select(tagManager.GetTagTitle).ToList();
 
                     var containerClasses =
                         ContainerClassManager.ParseToList(xElement.GetAttributeValue(xNamespace + "container-class"));
@@ -88,8 +96,6 @@ namespace Composite.Plugins.Components.FileBasedComponentProvider
                         ContainerClasses = containerClasses,
                         ComponentDefinition = xElement.Document
                     };
-
-
                 }
             }
         }

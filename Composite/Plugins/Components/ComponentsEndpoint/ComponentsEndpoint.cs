@@ -9,6 +9,7 @@ using Composite.Core;
 using Composite.Core.Application;
 using Composite.Core.Logging;
 using Composite.Core.WebClient.Services.WampRouter;
+using Composite.Plugins.Components.ComponentTags;
 using WampSharp.V2.Rpc;
 
 namespace Composite.Plugins.Components.ComponentsEndpoint
@@ -34,6 +35,13 @@ namespace Composite.Plugins.Components.ComponentsEndpoint
         {
             var componentManager = ServiceLocator.GetRequiredService<ComponentManager>();
             return componentManager.GetComponents();
+        }
+
+        [WampProcedure("GetOrderedTags")]
+        public IEnumerable<string> GetOrderedTags()
+        {
+            var tagManager = ServiceLocator.GetRequiredService<TagManager>();
+            return tagManager.GetRegisteredTagOrdering();
         }
     }
 
