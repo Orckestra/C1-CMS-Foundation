@@ -58,10 +58,16 @@ PostBackDialogPageBinding.prototype.setPageArgument = function ( arg ) {
  * to further study how we can make this go a lot faster.
  * @overloads {DialogPageBinding#onAfterPageInitialize}
  */
-PostBackDialogPageBinding.prototype.onAfterPageInitialize = function () {
+PostBackDialogPageBinding.prototype.onAfterPageInitialize = function() {
 
-	PostBackDialogPageBinding.superclass.onAfterPageInitialize.call ( this );
-	this._submit ();
+	PostBackDialogPageBinding.superclass.onAfterPageInitialize.call(this);
+	//TODO
+	if (this._method === "get") {
+		window.location = top.Resolver.resolve(this._url);
+	} else
+	{
+		this._submit();
+	}
 }
 
 /**
@@ -71,9 +77,6 @@ PostBackDialogPageBinding.prototype._submit = function () {
 
 	var form = this.bindingDocument.forms [ 0 ];
 	form.action = top.Resolver.resolve(this._url);
-	if (this._method) {
-		form.method = this._method;
-	}
 
 	var isDebugging = true;
 	var debug = "Posting to: " + form.action +"\n\n";
