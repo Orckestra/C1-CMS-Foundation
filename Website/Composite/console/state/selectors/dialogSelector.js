@@ -23,12 +23,15 @@ export const currentDialogDefSelector = createSelector(
 						providerDefs.get(paneDef.get('provider'))
 					);
 				}
-				if (paneDef.get('finishProvider')) {
-					paneDef = paneDef.set(
-						'finishProvider',
-						providerDefs.get(paneDef.get('finishProvider'))
-					);
-				}
+				['finish', 'cancel'].forEach(button => {
+					let name = button + 'Provider';
+					if (paneDef.get(name)) {
+						paneDef = paneDef.set(
+							name,
+							providerDefs.get(paneDef.get(name))
+						);
+					}
+				});
 				return paneDef;
 			})
 		);
