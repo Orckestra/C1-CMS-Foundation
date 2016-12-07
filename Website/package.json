@@ -8,7 +8,7 @@
     "unit:test": "jspm run test/unit/runner.js",
     "unit:cov": "jspm run test/unit/coverage.js",
     "watch": "chokidar-socket-emitter -p Composite/console/",
-    "buildconsole": "jspm build CMSConsole Composite/console.js --minify",
+    "buildconsole": "jspm build CMSConsole Composite/console.js --minify --production",
     "lintconsole": "eslint Composite/console test/unit/"
   },
   "devDependencies": {
