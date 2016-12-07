@@ -276,7 +276,9 @@
     <Compile Include="C1Console\RichContent\Components\IComponentProvider.cs" />
     <Compile Include="C1Console\Forms\ITestAutomationLocatorInformation.cs" />
     <Compile Include="C1Console\Elements\DialogStrings.cs" />
+    <Compile Include="C1Console\RichContent\ContainerClasses\AntonymContainerClassTagManager.cs" />
     <Compile Include="C1Console\RichContent\ContainerClasses\ContanerClassManager.cs" />
+    <Compile Include="C1Console\RichContent\ContainerClasses\EqualOrAntonymComparer.cs" />
     <Compile Include="C1Console\Trees\GenericDuplicateDataActionNode.cs" />
     <Compile Include="C1Console\Elements\IServiceUrlToEntityTokenMapper.cs" />
     <Compile Include="C1Console\Events\OpenSlideViewQueueItem.cs" />

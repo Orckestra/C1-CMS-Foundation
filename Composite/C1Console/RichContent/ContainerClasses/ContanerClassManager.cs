@@ -55,7 +55,7 @@ namespace Composite.C1Console.RichContent.ContainerClasses
         {
             return string.Join(",", ParseToList(containerClasses));
         }
-#warning code out of sync with comments on the following two methods - the comments describe coming expected behaviour
+
         /// <summary>
         /// Merge two IList based class lists into one.
         /// </summary>
@@ -64,7 +64,7 @@ namespace Composite.C1Console.RichContent.ContainerClasses
         /// <returns></returns>
         public static IList<string> MergeContainerClasses(IEnumerable<string> originalClassList, IEnumerable<string> updatedClassList)
         {
-            return originalClassList.Concat(updatedClassList).ToList();
+            return updatedClassList.Union(originalClassList, new EqualOrAntonymComparer()).ToList();
         }
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace Composite.C1Console.RichContent.ContainerClasses
         /// <returns></returns>
         public static string MergeContainerClasses(string originalClassList, string updatedClassList)
         {
-            return string.Join(",", ParseToList(originalClassList).Concat(ParseToList(updatedClassList)));
+            return string.Join(",", MergeContainerClasses(ParseToList(originalClassList),ParseToList(updatedClassList)));
         }
     }
 }
