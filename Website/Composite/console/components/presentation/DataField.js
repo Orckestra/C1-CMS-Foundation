@@ -26,7 +26,7 @@ const DataFieldWrapper = styled.div`
 `;
 
 const DataField = props => {
-	let input, handleChange, defaultOption, inputElement, options;
+	let handleChange, defaultOption, inputElement, options;
 	switch (props.type) {
 	case 'checkbox':
 		handleChange = function (event) {
@@ -63,7 +63,6 @@ const DataField = props => {
 			type={props.type}
 			id={props.name}
 			value={props.value}
-			ref={comp => { input = comp; }}
 			onContextMenu={event => {
 				event.stopPropagation(); // to ensure default context menu is shown here
 			}}
