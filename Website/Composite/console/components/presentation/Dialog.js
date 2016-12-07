@@ -5,6 +5,7 @@ import colors from 'console/components/colors.js';
 import Palette from 'console/components/presentation/Palette.js';
 import ActionButton from 'console/components/presentation/ActionButton.js';
 import Immutable from 'immutable';
+import { fireAction } from 'console/state/actions/fireAction.js';
 
 const paneTypes = {
 	palette: Palette
@@ -23,12 +24,13 @@ const Dialog = props => {
 	let paneDef = props.dialogDef.getIn(['panes', props.dialogData.get('showPane') || 0]) || Immutable.Map();
 	let Pane = paneTypes[paneDef.get('type')] || (() => null);
 	let cancelButton = paneDef.get('cancelButton') ? paneDef.get('cancelButton').toJS() : null;
-	let cancelProvider = paneDef.get('cancelProvider') ? paneDef.get('cancelProvider').toJS() : null;
+	let cancelProvider = paneDef.get('cancelProvider') && paneDef.get('cancelProvider').toJS ? paneDef.get('cancelProvider').toJS() : null;
 	let cancelAction = cancelButton ? () => {
 		// Cancel and close dialog
 		console.log('Cancel', props.dialogDef.get('name')); // eslint-disable-line no-console
 		if (cancelProvider) {
 			// Fire off a call to the provider if one exists, send dialog name.
+			props.dispatch(fireAction(cancelProvider, props.dialogDef.get('name')));
 		}
 	} : null;
 	let nextButton = paneDef.get('nextButton') ? paneDef.get('nextButton').toJS() : null;
@@ -37,9 +39,10 @@ const Dialog = props => {
 		console.log('Next', props.dialogDef.get('name')); // eslint-disable-line no-console
 	} : null;
 	let finishButton = paneDef.get('finishButton') ? paneDef.get('finishButton').toJS() : null;
-	let finishAction = paneDef.get('finishButton') && paneDef.get('finishProvider') ? () => {
+	let finishAction = paneDef.get('finishButton') && paneDef.get('finishProvider') && paneDef.get('finishProvider').toJS ? () => {
 		// Complete dialog activity, send back data using provider
 		console.log('Finish', props.dialogDef.get('name'), props.dialogData.toJS()); // eslint-disable-line no-console
+		props.dispatch(fireAction(paneDef.get('finishProvider').toJS(), props.dialogDef.get('name'), props.dialogData.toJS()));
 	} : null;
 	return <DialogBox>
 		{paneDef.get('headline') ? <DialogTitle>{paneDef.get('headline')}</DialogTitle> : null}

@@ -2,11 +2,25 @@ import expect from 'unittest/helpers/expect.js';
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
 import Immutable from 'immutable';
-import Dialog, { DialogBox, DialogTitle } from 'console/components/presentation/Dialog.js';
 import Palette from 'console/components/presentation/Palette.js';
 import ActionButton from 'console/components/presentation/ActionButton.js';
+import loadModules from 'unittest/helpers/moduleLoader.js';
 
 describe('Dialog', () => {
+	let Dialog, DialogBox, DialogTitle;
+	before(done => {
+		loadModules([
+			{
+				module: 'console/components/presentation/Dialog.js',
+				moduleCb: m => {
+					Dialog = m.default;
+					DialogBox = m.DialogBox;
+					DialogTitle = m.DialogTitle;
+				}
+			}
+		], () => done());
+	});
+
 	let renderer, minimalProps, fullProps;
 	beforeEach(() => {
 		renderer = TestUtils.createRenderer();

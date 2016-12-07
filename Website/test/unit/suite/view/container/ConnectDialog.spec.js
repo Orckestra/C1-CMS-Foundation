@@ -2,11 +2,28 @@ import expect from 'unittest/helpers/expect.js';
 import sinon from 'sinon';
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
-import ConnectDialog from 'console/components/container/ConnectDialog.js';
-import Dialog from 'console/components/presentation/Dialog.js';
 import Immutable from 'immutable';
+import loadModules from 'unittest/helpers/moduleLoader.js';
 
 describe('ConnectDialog', () => {
+	let ConnectDialog, Dialog;
+	before(done => {
+		loadModules([
+			{
+				module: 'console/components/presentation/Dialog.js',
+				moduleCb: m => {
+					Dialog = m.default;
+				}
+			},
+			{
+				module: 'console/components/container/ConnectDialog.js',
+				moduleCb: m => {
+					ConnectDialog = m.default;
+				}
+			}
+		], () => done());
+	});
+
 	let renderer, state, store, props;
 	beforeEach(() => {
 		renderer = TestUtils.createRenderer();
