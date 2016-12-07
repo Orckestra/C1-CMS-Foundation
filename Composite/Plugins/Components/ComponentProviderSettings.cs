@@ -44,10 +44,10 @@ namespace Composite.Plugins.Components
             set { base["fileSearchPattern"] = value; }
         }
 
-        [ConfigurationProperty("topDirectoryOnly", IsRequired = false, DefaultValue = "false")]
-        public string TopDirectoryOnly
+        [ConfigurationProperty("topDirectoryOnly", IsRequired = false, DefaultValue = false)]
+        public bool TopDirectoryOnly
         {
-            get { return (string)base["topDirectoryOnly"]; }
+            get { return (bool)base["topDirectoryOnly"]; }
             set { base["topDirectoryOnly"] = value; }
         }
     }
