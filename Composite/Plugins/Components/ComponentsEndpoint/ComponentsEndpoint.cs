@@ -40,11 +40,39 @@ namespace Composite.Plugins.Components.ComponentsEndpoint
         /// To get all components
         /// </summary>
         /// <returns>list of Components</returns>
+        [WampProcedure("structure.page")]
+        public ComponentsResponseMessage Get()
+        {
+            return new ComponentsResponseMessage();
+        }
+
+        /// <summary>
+        /// To get all components
+        /// </summary>
+        /// <returns>list of Components</returns>
         [WampProcedure("components.getComponents")]
         public IEnumerable<Component> GetComponents()
         {
             var componentManager = ServiceLocator.GetRequiredService<ComponentManager>();
             return componentManager.GetComponents();
+        }
+
+        /// <summary>
+        /// To get all components
+        /// </summary>
+        /// <returns>list of Components</returns>
+        [WampProcedure("mock.provider.components.pick")]
+        public void FinishProvider()
+        {
+        }
+
+        /// <summary>
+        /// To get all components
+        /// </summary>
+        /// <returns>list of Components</returns>
+        [WampProcedure("mock.struct.dialog.cancel")]
+        public void CancelProvider()
+        {
         }
 
         /// <summary>
