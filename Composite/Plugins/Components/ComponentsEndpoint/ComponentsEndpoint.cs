@@ -19,25 +19,39 @@ namespace Composite.Plugins.Components.ComponentsEndpoint
     {
         public static void OnInitialized()
         {
-            WampRouterFacade.RegisterCallee("ComponentsRealm", new ComponentsRpcService());
-            WampRouterFacade.RegisterPublisher("ComponentsRealm", "NewComponents", new ComponentPublisher());
+            WampRouterFacade.RegisterCallee(new ComponentsRpcService());
+            WampRouterFacade.RegisterPublisher("components.newComponents", new ComponentPublisher());
         }
     }
 
+    /// <summary>
+    /// Rpc service collection for interaction with components
+    /// </summary>
     public class ComponentsRpcService : IRpcService
     {
+        /// <summary>
+        /// To test if service is in its place
+        /// </summary>
         public void Ping()
         {
         }
 
-        [WampProcedure("GetComponents")]
+        /// <summary>
+        /// To get all components
+        /// </summary>
+        /// <returns>list of Components</returns>
+        [WampProcedure("components.getComponents")]
         public IEnumerable<Component> GetComponents()
         {
             var componentManager = ServiceLocator.GetRequiredService<ComponentManager>();
             return componentManager.GetComponents();
         }
 
-        [WampProcedure("GetOrderedTags")]
+        /// <summary>
+        /// To get all tags based on configuration ordering
+        /// </summary>
+        /// <returns>list of strings</returns>
+        [WampProcedure("components.getOrderedTags")]
         public IEnumerable<string> GetOrderedTags()
         {
             var tagManager = ServiceLocator.GetRequiredService<TagManager>();
