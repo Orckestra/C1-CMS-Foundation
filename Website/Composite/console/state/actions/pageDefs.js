@@ -8,7 +8,7 @@ export const LOAD_PAGE_DEF = prefix + 'LOAD';
 export const LOAD_PAGE_DEF_DONE = LOAD_PAGE_DEF + '.DONE';
 export const LOAD_PAGE_DEF_FAILED = LOAD_PAGE_DEF + '.FAIL';
 
-const pageDefEndpointURI = 'mock.struct.page';
+const pageDefEndpointURI = 'structure.page';
 
 export function loadPageDef(pageName) {
 	return dispatch => {
