@@ -174,7 +174,7 @@ namespace Composite.Data
         /// If the data type descriptor has not yet been created (file not existing) and
         /// the <paramref name="allowTypeMetaDataCreation"/> is set to true,
         /// this method will try getting it through the <see cref="Composite.Data.DynamicTypes.Foundation.ReflectionBasedDescriptorBuilder"/>
-        /// that will try locating the type from the data type id using refelection
+        /// that will try locating the type from the data type id using reflection
         /// going through know assemblies.
         /// </summary>
         /// <param name="dataTypeId">The id of the data type.</param>

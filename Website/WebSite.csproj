@@ -189,6 +189,69 @@
       <DependentUpon>ShowFunctionInfo.aspx</DependentUpon>
     </Compile>
     <Content Include="App_Data\Composite\Configuration\Entities.xml" />
+    <Content Include="Composite\console\access\requestJSON.js" />
+    <Content Include="Composite\console\access\wampClient.js" />
+    <Content Include="Composite\console\components\colors.js" />
+    <Content Include="Composite\console\components\container\ConnectDialog.js" />
+    <Content Include="Composite\console\components\container\ConnectDockPanel.js" />
+    <Content Include="Composite\console\components\container\ConnectFormPanel.js" />
+    <Content Include="Composite\console\components\container\ConnectLogPanel.js" />
+    <Content Include="Composite\console\components\container\ConnectTabPanel.js" />
+    <Content Include="Composite\console\components\container\ConnectToolbarFrame.js" />
+    <Content Include="Composite\console\components\presentation\ActionButton.js" />
+    <Content Include="Composite\console\components\presentation\CheckboxGroup.js" />
+    <Content Include="Composite\console\components\presentation\DataField.js" />
+    <Content Include="Composite\console\components\presentation\Dialog.js" />
+    <Content Include="Composite\console\components\presentation\Fieldset.js" />
+    <Content Include="Composite\console\components\presentation\FormTab.js" />
+    <Content Include="Composite\console\components\presentation\HelpIcon.js" />
+    <Content Include="Composite\console\components\presentation\Icon.js" />
+    <Content Include="Composite\console\components\presentation\Input.js" />
+    <Content Include="Composite\console\components\presentation\LogPanel.js" />
+    <Content Include="Composite\console\components\presentation\Palette.js" />
+    <Content Include="Composite\console\components\presentation\ScrollBox.js" />
+    <Content Include="Composite\console\components\presentation\Select.js" />
+    <Content Include="Composite\console\components\presentation\Spritesheet.js" />
+    <Content Include="Composite\console\components\presentation\SwitchPanel.js" />
+    <Content Include="Composite\console\components\presentation\TabBar.js" />
+    <Content Include="Composite\console\components\presentation\Toolbar.js" />
+    <Content Include="Composite\console\components\presentation\ToolbarFrame.js" />
+    <Content Include="Composite\console\console.js" />
+    <Content Include="Composite\console\iconIndex.js" />
+    <Content Include="Composite\console\index.html" />
+    <Content Include="Composite\console\index.prod.html" />
+    <Content Include="Composite\console\mocks\mockServer.js" />
+    <Content Include="Composite\console\mocks\services\functionMock.js" />
+    <Content Include="Composite\console\mocks\services\pageMock.js" />
+    <Content Include="Composite\console\mocks\services\valueMock.js" />
+    <Content Include="Composite\console\README.txt" />
+    <Content Include="Composite\console\state\actions\fetchFromProvider.js" />
+    <Content Include="Composite\console\state\actions\fireAction.js" />
+    <Content Include="Composite\console\state\actions\loadAndOpen.js" />
+    <Content Include="Composite\console\state\actions\logs.js" />
+    <Content Include="Composite\console\state\actions\pageDefs.js" />
+    <Content Include="Composite\console\state\actions\values.js" />
+    <Content Include="Composite\console\state\initState.js" />
+    <Content Include="Composite\console\state\normalizingSchema.js" />
+    <Content Include="Composite\console\state\observers.js" />
+    <Content Include="Composite\console\state\reducers\dataFields.js" />
+    <Content Include="Composite\console\state\reducers\definitions.js" />
+    <Content Include="Composite\console\state\reducers\dialog.js" />
+    <Content Include="Composite\console\state\reducers\layout.js" />
+    <Content Include="Composite\console\state\reducers\logs.js" />
+    <Content Include="Composite\console\state\reducers\options.js" />
+    <Content Include="Composite\console\state\reducers\providers.js" />
+    <Content Include="Composite\console\state\selectors\dialogSelector.js" />
+    <Content Include="Composite\console\state\selectors\formSelector.js" />
+    <Content Include="Composite\console\state\selectors\layoutSelector.js" />
+    <Content Include="Composite\console\state\selectors\logSelector.js" />
+    <Content Include="Composite\console\state\selectors\pageSelector.js" />
+    <Content Include="Composite\console\state\selectors\paletteDialogSelector.js" />
+    <Content Include="Composite\console\state\selectors\tabSelector.js" />
+    <Content Include="Composite\console\state\selectors\toolbarPropsSelector.js" />
+    <Content Include="Composite\console\state\selectors\toolbarSelector.js" />
+    <Content Include="Composite\console\state\store.js" />
+    <Content Include="Composite\console\Tree.xml" />
     <Content Include="Composite\content\branding\about-company.inc">
       <SubType>Designer</SubType>
     </Content>
@@ -1324,10 +1387,12 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Content Include="Frontend\Config\VisualEditor\Default.common.xml" />
+    <Content Include="jspm.config.js" />
     <Content Include="packages.config">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="DebugBuild.Web.config" />
+    <Content Include="test\e2e\README.md" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\Composite\Configuration\UrlFormatting.xml" />
@@ -1847,6 +1912,125 @@
     <Content Include="Frontend\Config\VisualEditor\Styles\core.css" />
     <Content Include="gruntfile.js" />
     <Content Include="robots.txt" />
+    <Content Include="test\e2e\ApiLang\Notepad++\installation.txt" />
+    <Content Include="test\e2e\ApiLang\Notepad++\Nightwatch.UDL.xml" />
+    <Content Include="test\e2e\ApiLang\Notepad++\nightwatch.xml" />
+    <Content Include="test\e2e\commands\assertBrowserContains.js" />
+    <Content Include="test\e2e\commands\assertBrowserContainsAttribute.js" />
+    <Content Include="test\e2e\commands\assertBrowserContainsWithXpath.js" />
+    <Content Include="test\e2e\commands\assertFieldValue.js" />
+    <Content Include="test\e2e\commands\assertTreeNodeHasChild.js" />
+    <Content Include="test\e2e\commands\assertTreeNodeHasNoChild.js" />
+    <Content Include="test\e2e\commands\assertTreeNodeIsEmpty.js" />
+    <Content Include="test\e2e\commands\assertTreeNodeIsNotEmpty.js" />
+    <Content Include="test\e2e\commands\clickDataBySibilings.js" />
+    <Content Include="test\e2e\commands\clickDialogButton.js" />
+    <Content Include="test\e2e\commands\clickInFrame.js" />
+    <Content Include="test\e2e\commands\clickLabel.js" />
+    <Content Include="test\e2e\commands\clickSave.js" />
+    <Content Include="test\e2e\commands\clickText.js" />
+    <Content Include="test\e2e\commands\closeDocumentTab.js" />
+    <Content Include="test\e2e\commands\doubleClickSelector.js" />
+    <Content Include="test\e2e\commands\enterFrame.js" />
+    <Content Include="test\e2e\commands\installPackage.js" />
+    <Content Include="test\e2e\commands\leaveFrame.js" />
+    <Content Include="test\e2e\commands\openTreeNode.js" />
+    <Content Include="test\e2e\commands\replaceContent.js" />
+    <Content Include="test\e2e\commands\replaceTextInCodeMirror.js" />
+    <Content Include="test\e2e\commands\rightClickSelector.js" />
+    <Content Include="test\e2e\commands\selectActionFromToolbar.js" />
+    <Content Include="test\e2e\commands\selectContentTab.js" />
+    <Content Include="test\e2e\commands\selectDocumentTab.js" />
+    <Content Include="test\e2e\commands\selectFrame.js" />
+    <Content Include="test\e2e\commands\selectFrameWithXpath.js" />
+    <Content Include="test\e2e\commands\selectPerspective.js" />
+    <Content Include="test\e2e\commands\selectTreeNodeAction.js" />
+    <Content Include="test\e2e\commands\setFieldValue.js" />
+    <Content Include="test\e2e\commands\setFieldValueInFieldGroup.js" />
+    <Content Include="test\e2e\commands\setFileFieldValue.js" />
+    <Content Include="test\e2e\commands\submitFormData.js" />
+    <Content Include="test\e2e\commands\switchContentTab.js" />
+    <Content Include="test\e2e\commands\topFrame.js" />
+    <Content Include="test\e2e\commands\uninstallPackage.js" />
+    <Content Include="test\e2e\commands\waitForDialog.js" />
+    <Content Include="test\e2e\commands\waitForFrameLoad.js" />
+    <Content Include="test\e2e\commands\waitForFrameLoadwithXpath.js" />
+    <Content Include="test\e2e\globals.js" />
+    <Content Include="test\e2e\pageObjects\appWindow.js" />
+    <Content Include="test\e2e\pageObjects\content.js" />
+    <Content Include="test\e2e\pageObjects\editor.js" />
+    <Content Include="test\e2e\pageObjects\login.js" />
+    <Content Include="test\e2e\pageObjects\startScreen.js" />
+    <Content Include="test\e2e\pageObjects\systemView.js" />
+    <Content Include="test\e2e\reset.js" />
+    <Content Include="test\e2e\suite\000_setup\installSite.js" />
+    <Content Include="test\e2e\suite\010_setupPackages\installSQLPackage.js" />
+    <Content Include="test\e2e\suite\010_setupPackages\installVerboseLoggingPackage.js" />
+    <Content Include="test\e2e\suite\100_login\normalMode.js" />
+    <Content Include="test\e2e\suite\100_login\procedure.js" />
+    <Content Include="test\e2e\suite\200_startScreen\display.js" />
+    <Content Include="test\e2e\suite\200_startScreen\logged-in.js" />
+    <Content Include="test\e2e\suite\300_appWindow\has-elements.js" />
+    <Content Include="test\e2e\suite\300_appWindow\stages.js" />
+    <Content Include="test\e2e\suite\content\browseTree.js" />
+    <Content Include="test\e2e\suite\content\multiEditor.js" />
+    <Content Include="test\e2e\suite\content\singleEditor.js" />
+    <Content Include="test\e2e\suite\duplicate\Duplicate.js" />
+    <Content Include="test\e2e\suite\duplicate\DuplicatePagesWithAction.js" />
+    <Content Include="test\e2e\suite\duplicate\DuplicatePagesWithData.js" />
+    <Content Include="test\e2e\suite\duplicate\DuplicatePagesWithMetaData.js" />
+    <Content Include="test\e2e\suite\duplicate\DuplicatePagesWithMetaDataOnType.js" />
+    <Content Include="test\e2e\suite\duplicate\DuplicateTreeAction.js" />
+    <Content Include="test\e2e\suite\website-zip-upload-extract\UploadAndExtractZip.js" />
+    <Content Include="test\unit\coverage.js" />
+    <Content Include="test\unit\helpers\emulateDom.js" />
+    <Content Include="test\unit\helpers\expect.js" />
+    <Content Include="test\unit\helpers\moduleLoader.js" />
+    <Content Include="test\unit\helpers\StatelessWrapper.js" />
+    <Content Include="test\unit\helpers\TestComponent.js" />
+    <Content Include="test\unit\helpers\ui.js" />
+    <Content Include="test\unit\helpers\unexpected-immutable.js" />
+    <Content Include="test\unit\runner.js" />
+    <Content Include="test\unit\suite.js" />
+    <Content Include="test\unit\suite\access\requestJSON.spec.js" />
+    <Content Include="test\unit\suite\state\actions\fetchFromProvider.spec.js" />
+    <Content Include="test\unit\suite\state\actions\fireAction.spec.js" />
+    <Content Include="test\unit\suite\state\actions\loadAndOpen.spec.js" />
+    <Content Include="test\unit\suite\state\actions\logs.spec.js" />
+    <Content Include="test\unit\suite\state\actions\pageDefs.spec.js" />
+    <Content Include="test\unit\suite\state\actions\values.spec.js" />
+    <Content Include="test\unit\suite\state\initState.spec.js" />
+    <Content Include="test\unit\suite\state\observers.spec.js" />
+    <Content Include="test\unit\suite\state\reducers\dataFields.spec.js" />
+    <Content Include="test\unit\suite\state\reducers\definitions.spec.js" />
+    <Content Include="test\unit\suite\state\reducers\dialog.spec.js" />
+    <Content Include="test\unit\suite\state\reducers\layout.spec.js" />
+    <Content Include="test\unit\suite\state\reducers\logs.spec.js" />
+    <Content Include="test\unit\suite\state\reducers\options.spec.js" />
+    <Content Include="test\unit\suite\state\reducers\providers.spec.js" />
+    <Content Include="test\unit\suite\state\store.spec.js" />
+    <Content Include="test\unit\suite\state\_setup.js" />
+    <Content Include="test\unit\suite\view\container\ConnectDialog.spec.js" />
+    <Content Include="test\unit\suite\view\container\ConnectDockPanel.spec.js" />
+    <Content Include="test\unit\suite\view\container\ConnectFormPanel.spec.js" />
+    <Content Include="test\unit\suite\view\container\ConnectLogPanel.spec.js" />
+    <Content Include="test\unit\suite\view\container\ConnectTabPanel.spec.js" />
+    <Content Include="test\unit\suite\view\container\ConnectToolbarFrame.spec.js" />
+    <Content Include="test\unit\suite\view\presentation\ActionButton.spec.js" />
+    <Content Include="test\unit\suite\view\presentation\CheckboxGroup.spec.js" />
+    <Content Include="test\unit\suite\view\presentation\DataField.spec.js" />
+    <Content Include="test\unit\suite\view\presentation\Dialog.spec.js" />
+    <Content Include="test\unit\suite\view\presentation\Fieldset.spec.js" />
+    <Content Include="test\unit\suite\view\presentation\FormTab.spec.js" />
+    <Content Include="test\unit\suite\view\presentation\HelpIcon.spec.js" />
+    <Content Include="test\unit\suite\view\presentation\Icon.spec.js" />
+    <Content Include="test\unit\suite\view\presentation\LogPanel.spec.js" />
+    <Content Include="test\unit\suite\view\presentation\Palette.spec.js" />
+    <Content Include="test\unit\suite\view\presentation\SwitchPanel.spec.js" />
+    <Content Include="test\unit\suite\view\presentation\TabBar.spec.js" />
+    <Content Include="test\unit\suite\view\presentation\Toolbar.spec.js" />
+    <Content Include="test\unit\suite\view\presentation\ToolbarFrame.spec.js" />
+    <Content Include="test\unit\suite\view\_setup.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -2573,6 +2757,7 @@
     <Folder Include="Frontend\Scripts\" />
     <Folder Include="Frontend\Styles\" />
     <Folder Include="Properties\" />
+    <Folder Include="test\unit\suite\state\selectors\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Composite.Workflows\Composite.Workflows.csproj">
@@ -2612,21 +2797,26 @@
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>
-    <PreBuildEvent>if not exist "$(ProjectDir)web.config" (
-   copy "$(ProjectDir)DebugBuild.Web.config" "$(ProjectDir)Web.config"
-)
- 
-if not exist "$(ProjectDir)App_Data\Composite\Composite.config" (
-   copy "$(ProjectDir)App_Data\Composite\DebugBuild.Composite.config" "$(ProjectDir)App_Data\Composite\Composite.config"
-)
+    <PreBuildEvent>
+      if not exist "$(ProjectDir)web.config" (
+      copy "$(ProjectDir)DebugBuild.Web.config" "$(ProjectDir)Web.config"
+      )
 
-if not exist "$(ProjectDir)Frontend\Config\VisualEditor\common.xml" (
-   copy "$(ProjectDir)Frontend\Config\VisualEditor\Default.common.xml" "$(ProjectDir)Frontend\Config\VisualEditor\common.xml"
-)
+      if not exist "$(ProjectDir)App_Data\Composite\Composite.config" (
+      copy "$(ProjectDir)App_Data\Composite\DebugBuild.Composite.config" "$(ProjectDir)App_Data\Composite\Composite.config"
+      )
 
-robocopy "$(ProjectDir)\..\Packages\PhantomJS.2.1.1\tools\phantomjs" "$(ProjectDir)App_Data\Composite\PhantomJs" "phantomjs.exe"
-set rce=%25errorlevel%25
-if not %25rce%25==1 exit %25rce%25 else exit 0</PreBuildEvent>
+      if not exist "$(ProjectDir)Frontend\Config\VisualEditor\common.xml" (
+      copy "$(ProjectDir)Frontend\Config\VisualEditor\Default.common.xml" "$(ProjectDir)Frontend\Config\VisualEditor\common.xml"
+      )
+
+      cd "$(ProjectDir)"
+      jspm install
+
+
+      robocopy "$(ProjectDir)\..\Packages\PhantomJS.2.1.1\tools\phantomjs" "$(ProjectDir)App_Data\Composite\PhantomJs" "phantomjs.exe"
+      set rce=%25errorlevel%25
+      if not %25rce%25==1 exit %25rce%25 else exit 0</PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PostBuildEvent>
