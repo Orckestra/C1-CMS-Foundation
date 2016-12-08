@@ -2808,7 +2808,7 @@
       )
 
       cd "$(ProjectDir)"
-      jspm install
+      jspm install --quick
 
 
       robocopy "$(ProjectDir)\..\Packages\PhantomJS.2.1.1\tools\phantomjs" "$(ProjectDir)App_Data\Composite\PhantomJs" "phantomjs.exe"
