@@ -51,9 +51,13 @@ namespace Composite.Plugins.Components.ComponentsEndpoint
         /// </summary>
         /// <returns>list of Components</returns>
         [WampProcedure("components.getComponents")]
-        public IEnumerable<Component> GetComponents()
+        public IEnumerable<Component> GetComponents(string containerclass=null)
         {
             var componentManager = ServiceLocator.GetRequiredService<ComponentManager>();
+            if (containerclass != null)
+            {
+                return componentManager.GetComponents().Where(f => f.ContainerClasses.Contains(containerclass));
+            }
             return componentManager.GetComponents();
         }
 
