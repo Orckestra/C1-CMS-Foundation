@@ -55,6 +55,7 @@ body, input, textarea, select, button {
 document.title = 'Orckestra CMS: ' + location.hostname;
 
 const initialState = {};
+
 const store = configureStore(initialState);
 function whenReadyRender() {
 	if (document.readyState === 'complete') {
