@@ -173,10 +173,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\bin\TidyNet.dll</HintPath>
     </Reference>
-    <Reference Include="WampSharp, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\WampSharp.1.2.5.25-beta\lib\net45\WampSharp.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Composite\content\dialogs\functions\editFunctionCall.aspx.designer.cs">
