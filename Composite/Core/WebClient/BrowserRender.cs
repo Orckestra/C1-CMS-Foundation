@@ -45,6 +45,8 @@ namespace Composite.Core.WebClient
         /// </summary>
         public static void EnsureReadiness()
         {
+            if (!GlobalSettingsFacade.FunctionPreviewEnabled) return;
+
             _lastUsageDate = DateTime.Now;
             if (ServerAvailabilityChecked) return;
 

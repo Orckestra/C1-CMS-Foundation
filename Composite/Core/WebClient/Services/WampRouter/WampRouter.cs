@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reactive.Subjects;
 using WampSharp.Binding;
+using WampSharp.Logging;
 using WampSharp.V2;
 using WampSharp.V2.Realm;
 
@@ -13,6 +14,8 @@ namespace Composite.Core.WebClient.Services.WampRouter
 
         public WampRouter()
         {
+            LogProvider.SetCurrentLogProvider(new WampLogger());
+
             StartWampRouter();
         }
 
@@ -24,14 +27,14 @@ namespace Composite.Core.WebClient.Services.WampRouter
             registrationTask.Wait();
         }
 
-        public void RegisterPublisher<T>(string realmName, string topicName, IWampEventHandler<T> eventObservable)
+        public void RegisterPublisher<T1,T2>(string realmName, string topicName, IWampEventHandler<T1,T2> eventObservable)
         {
             IWampHostedRealm realm = _host.RealmContainer.GetRealmByName(realmName);
 
-            ISubject<T> subject =
-                realm.Services.GetSubject<T>(topicName);
+            ISubject<T2> subject =
+                realm.Services.GetSubject<T2>(topicName);
 
-            IObservable<long> observableEvent = eventObservable.Event;
+            IObservable<T1> observableEvent = eventObservable.Event;
 
             IDisposable disposable =
                 observableEvent.Subscribe(x =>
@@ -52,6 +55,7 @@ namespace Composite.Core.WebClient.Services.WampRouter
             _host = new WampHost();
             _host.RegisterTransport(new AspNetWebsocketTransform(),
                 new JTokenJsonBinding());
+            
             IWampHostedRealm realm = _host.RealmContainer.GetRealmByName(DefaultRealmName);
 
             realm.SessionCreated += SessionCreated;
