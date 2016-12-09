@@ -4,8 +4,8 @@ import { loadAndOpenPage } from 'console/state/actions/loadAndOpen.js';
 // from server data
 let pageName;
 // Temporary. Intent is to let localstorage control location
-if (location.search && /(\?|&)page/.test(location.search)) {
-	pageName = location.search.replace(/^\?(?:.*&)?page=(.+?)?(?:&.*)?$/, '$1');
+if (location.search && /(\?|&)pageId=/.test(location.search)) {
+	pageName = location.search.replace(/^\?(?:.*&)?pageId=(.+?)?(?:&.*)?$/, '$1');
 } else {
 	pageName = 'edit-language';
 }
