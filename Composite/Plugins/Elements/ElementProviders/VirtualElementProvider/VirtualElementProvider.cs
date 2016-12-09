@@ -48,7 +48,7 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
         public static ResourceHandle ChangeOwnActiveAndForeignLocaleIcon => GetIconHandle("localization-changelocale");
 
         private static readonly string LogTitle = typeof (VirtualElementProvider).Name;
-        private static readonly HashSet<string> _notLoadedVirtualElements = new HashSet<string>(); 
+        private static readonly HashSet<string> _notLoadedVirtualElements = new HashSet<string>();
 
         private readonly VirtualElementProviderData _configuration;
 
@@ -96,7 +96,7 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
             };
 
             root.ElementExternalActionAdding = root.ElementExternalActionAdding.Remove(ElementExternalActionAdding.AllowGlobal);
-            
+
             AddRootActions(root);
 
             return new [] { root };
@@ -396,7 +396,7 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
                         _notLoadedVirtualElements.Add(elementName);
                     }
                 }
-                
+
                 result = null;
             }
 
@@ -514,7 +514,7 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
                 {
                     if(_notLoadedVirtualElements.Contains(attachProviderElement.Name)) continue;
                 }
-                
+
 
                 string providerName = attachProviderElement.ProviderName;
                 var childElements = ElementFacade.GetRootsWithNoSecurity(new ElementProviderHandle(providerName), null).ToList();
@@ -545,7 +545,7 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
                 VisualData = new ElementVisualizedData
                 {
                     Label = StringResourceSystemFacade.ParseString(simpleElementNode.Label),
-                    HasChildren = true // fixing refresh problem easy way... was: HasChildren(baseElementNode) 
+                    HasChildren = true // fixing refresh problem easy way... was: HasChildren(baseElementNode)
                 }
             };
 
@@ -594,6 +594,11 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
                 element.VisualData.Icon = CommonElementIcons.FolderDisabled;
             }
 
+            var placeholderElementNode = simpleElementNode as PlaceholderVirtualElement;
+            if (placeholderElementNode != null)
+            {
+                element.PropertyBag["Path"] = placeholderElementNode.Path;
+            }
 
             return element;
         }
@@ -618,7 +623,7 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
 
                 //return children.Count != 0;
             }
-            
+
             throw new NotSupportedException(string.Format("The element node type '{0}' is not supported", baseElementNode.GetType()));
         }
 

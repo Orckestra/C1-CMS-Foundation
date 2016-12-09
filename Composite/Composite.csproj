@@ -339,6 +339,7 @@
     <Compile Include="Plugins\Commands\ConsoleCommandHandlers\ConsoleCommandHelper.cs" />
     <Compile Include="Plugins\Commands\ConsoleCommandHandlers\FocusElement.cs" />
     <Compile Include="Plugins\Commands\ConsoleCommandHandlers\FocusData.cs" />
+    <Compile Include="Plugins\Elements\ElementProviders\VirtualElementProvider\PlaceholderVirtualElement.cs" />
     <Compile Include="Plugins\Forms\WebChannel\UiControlFactories\TemplatedHierarchicalSelectorUiControlFactory.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>

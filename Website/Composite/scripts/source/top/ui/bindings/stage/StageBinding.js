@@ -853,10 +853,14 @@ StageBinding.prototype._presentViewDefinition = function ( viewDefinition ) {
 					default :
 
 						// targetting the main stage.
-						var selectedDeck = this._decksBinding.getSelectedDeckBinding ();
-						target = selectedDeck.getDockBindingByReference (
-							viewDefinition.position
-						);
+						var selectedDeck = this._decksBinding.getSelectedDeckBinding();
+						if (selectedDeck.isPlaceholder()) {
+							target = this._dockBindings.get(DockBinding.ABSRIGHTTOP);
+						} else {
+							target = selectedDeck.getDockBindingByReference(
+								viewDefinition.position
+							);
+						}
 
 						// hide start stuff if present.
 						if ( this._isShowingStart ) {
