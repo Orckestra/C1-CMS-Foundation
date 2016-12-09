@@ -7,7 +7,7 @@ import ActionButton from 'console/components/presentation/ActionButton.js';
 import loadModules from 'unittest/helpers/moduleLoader.js';
 
 describe('Dialog', () => {
-	let Dialog, DialogBox, DialogTitle;
+	let Dialog, DialogBox, DialogTitle, DialogPane, DialogButtonGroup;
 	before(done => {
 		loadModules([
 			{
@@ -16,6 +16,8 @@ describe('Dialog', () => {
 					Dialog = m.default;
 					DialogBox = m.DialogBox;
 					DialogTitle = m.DialogTitle;
+					DialogPane = m.DialogPane;
+					DialogButtonGroup = m.DialogButtonGroup;
 				}
 			}
 		], () => done());
@@ -68,10 +70,14 @@ describe('Dialog', () => {
 		renderer.render(<Dialog {...fullProps}/>);
 		return expect(renderer, 'to have rendered', <DialogBox>
 			<DialogTitle>Palette!</DialogTitle>
-			<Palette dialogName='testdialog' paneDef={Immutable.Map({ name: 'testpalette' })} itemGroups={Immutable.List()} dispatch={expect.it('to be a function')} />
-			<ActionButton label='Cancel'/>
-			<ActionButton label='Next'/>
-			<ActionButton label='Finish'/>
+			<DialogPane>
+				<Palette dialogName='testdialog' paneDef={Immutable.Map({ name: 'testpalette' })} itemGroups={Immutable.List()} dispatch={expect.it('to be a function')} />
+			</DialogPane>
+			<DialogButtonGroup>
+				<ActionButton label='Cancel'/>
+				<ActionButton label='Next'/>
+				<ActionButton label='Finish'/>
+			</DialogButtonGroup>
 		</DialogBox>);
 	});
 });
