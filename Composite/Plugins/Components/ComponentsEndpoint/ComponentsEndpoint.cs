@@ -62,19 +62,19 @@ namespace Composite.Plugins.Components.ComponentsEndpoint
         }
 
         /// <summary>
-        /// To get all components
+        /// Select a component for use, signal that dialog is finished
         /// </summary>
         /// <returns>list of Components</returns>
-        [WampProcedure("mock.provider.components.pick")]
+        [WampProcedure("components.pick")]
         public void FinishProvider()
         {
         }
 
         /// <summary>
-        /// To get all components
+        /// Close dialog without changes
         /// </summary>
         /// <returns>list of Components</returns>
-        [WampProcedure("mock.struct.dialog.cancel")]
+        [WampProcedure("structure.dialog.cancel")]
         public void CancelProvider()
         {
         }

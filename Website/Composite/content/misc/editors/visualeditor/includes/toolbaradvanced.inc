@@ -22,7 +22,8 @@
             position 	: Dialog.MODAL,
             url			: "${root}/content/dialogs/postback/postbackdialog.aspx",
             argument 	: {
-              "url"	: "${root}/console/?TEMP-COMPONENTS&pageId={context:pageId}&containerClasses={context:containerClasses}",
+              // "url"	: "${root}/console/?TEMP-COMPONENTS&pageId={context:pageId}&containerClasses={context:containerClasses}",
+              "url"	: "${root}/console/?TEMP-COMPONENTS&pageId=component-selector-shim&containerClasses={context:containerClasses}",
               "list"	: new List(),
               "method" : "get"
             },

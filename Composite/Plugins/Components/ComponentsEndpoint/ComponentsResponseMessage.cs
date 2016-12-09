@@ -27,7 +27,7 @@ namespace Composite.Plugins.Components.ComponentsEndpoint
     {
         public string name => "elementInsert";
         public string protocol => "wamp";
-        public string uri => "mock.provider.components.pick";
+        public string uri => "components.pick";
     }
 
     public class CancelButton
@@ -39,7 +39,7 @@ namespace Composite.Plugins.Components.ComponentsEndpoint
     {
         public string name => "componentListCancel";
         public string protocol => "wamp";
-        public string uri => "mock.struct.dialog.cancel";
+        public string uri => "structure.dialog.cancel";
     }
 
     public class Pane
@@ -61,6 +61,6 @@ namespace Composite.Plugins.Components.ComponentsEndpoint
         public List<Pane> panes =>new List<Pane>() {new Pane()};
     }
 
-    
+
 
 }

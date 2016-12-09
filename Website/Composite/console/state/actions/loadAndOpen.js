@@ -35,6 +35,12 @@ const pageLoaders = {
 		return Promise.all(loading);
 	},
 	dialogPageShim: (pageName, getState, dispatch) => {
+		let context;
+		if (location.search && /(\?|&)containerClasses/.test(location.search)) {
+			context = location.search.replace(/^\?(?:.*&)?containerClasses=(.+?)?(?:&.*)?$/, '$1');
+		} else {
+			context = 'component-selector-shim';
+		}
 		let dialogName = getState().getIn(['pageDefs', pageName, 'dialog']);
 		let dialogDef = getState().getIn(['dialogDefs', dialogName]);
 		let paneIndex = getState().getIn(['dialogData', dialogName, 'showPane']) || 0;
@@ -42,7 +48,9 @@ const pageLoaders = {
 		let paneDef = getState().getIn(['dialogPaneDefs', paneName]);
 		if (paneDef.get('type') === 'palette') {
 			let provider = getState().getIn(['providerDefs', paneDef.get('provider')]).toJS();
-			return dispatch(getProviderPage(provider, dialogName, paneDef.get('context')));
+			// XXX: Context extraction is hard coded and ugly AF.
+			// Needs to be in page structure data where it belongs,
+			return dispatch(getProviderPage(provider, dialogName, context/*paneDef.get('context')*/));
 		} else {
 			return Promise.resolve();
 		}
