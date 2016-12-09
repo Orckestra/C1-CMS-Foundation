@@ -11,14 +11,52 @@ const paneTypes = {
 	palette: Palette
 };
 
-// TODO: Restyle for use in actual dialogs.
+const sizes = {
+	sidePadding: 15,
+	titlePaddingTop: 20,
+	titleHeight: 16,
+	titlePaddingBottom: 18,
+	paneBorder: 1,
+	panePaddingTop: 15,
+	panePaddingBottom: 15,
+	buttonsPaddingTop: 12,
+	buttonsHeight: 40,
+	buttonsPaddingBottom: 14
+};
+
+// TODO: Restyle for use as actual dialogs, add overlays where needed, etc.
 export const DialogBox = styled.div`
 	background-color: ${colors.fieldsetBackgroundColor};
 	height: 100%;
 /*	max-width: 880px;
 	overflow: hidden;*/
 `;
-export const DialogTitle = styled.h1``;
+export const DialogTitle = styled.h1`
+	margin: 0;
+	padding: ${sizes.titlePaddingTop}px ${sizes.sidePadding}px ${sizes.titlePaddingBottom}px;
+	font-size: ${sizes.titleHeight}px;
+	font-weight: normal;
+	font-family: 'Roboto Condensed', sans-serif;
+	text-transform: uppercase;
+	color: ${colors.dialogHeaderColor};
+`;
+
+export const DialogPane = styled.div`
+	border-top: ${sizes.paneBorder}px solid ${colors.borderColor};
+	border-bottom: ${sizes.paneBorder}px solid ${colors.borderColor};
+	padding: ${sizes.panePaddingTop}px ${sizes.sidePadding}px ${sizes.panePaddingBottom}px;
+	height: calc(100% - ${
+		(sizes.titlePaddingTop + sizes.titleHeight + sizes.titlePaddingBottom) +
+		(sizes.paneBorder + sizes.panePaddingTop + sizes.panePaddingBottom + sizes.paneBorder) +
+		(sizes.buttonsPaddingTop + sizes.buttonsHeight + sizes.buttonsPaddingBottom)
+	}px);
+	overflow-y: auto;
+`;
+
+export const DialogButtonGroup = styled.div`
+	padding: ${sizes.buttonsPaddingTop}px ${sizes.sidePadding}px ${sizes.buttonsPaddingBottom}px;
+	text-align: right;
+`;
 
 const Dialog = props => {
 	let paneDef = props.dialogDef.getIn(['panes', props.dialogData.get('showPane') || 0]) || Immutable.Map();
@@ -46,10 +84,14 @@ const Dialog = props => {
 	} : null;
 	return <DialogBox>
 		{paneDef.get('headline') ? <DialogTitle>{paneDef.get('headline')}</DialogTitle> : null}
-		<Pane dialogName={props.dialogDef.get('name')} paneDef={paneDef} itemGroups={props.itemGroups} dialogData={props.dialogData} dispatch={props.dispatch}/>
-		{ cancelButton ? <ActionButton action={cancelAction} {...cancelButton}/> : null}
-		{ nextButton ? <ActionButton action={nextAction} {...nextButton}/> : null}
-		{ finishButton ? <ActionButton action={finishAction} {...finishButton}/> : null}
+		<DialogPane>
+			<Pane dialogName={props.dialogDef.get('name')} paneDef={paneDef} itemGroups={props.itemGroups} dialogData={props.dialogData} dispatch={props.dispatch}/>
+		</DialogPane>
+		<DialogButtonGroup>
+			{ cancelButton ? <ActionButton action={cancelAction} {...cancelButton}/> : null}
+			{ nextButton ? <ActionButton action={nextAction} {...nextButton}/> : null}
+			{ finishButton ? <ActionButton action={finishAction} {...finishButton}/> : null}
+		</DialogButtonGroup>
 	</DialogBox>;
 };
 
