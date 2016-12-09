@@ -39,7 +39,7 @@ const pageLoaders = {
 		if (location.search && /(\?|&)containerClasses/.test(location.search)) {
 			context = location.search.replace(/^\?(?:.*&)?containerClasses=(.+?)?(?:&.*)?$/, '$1');
 		} else {
-			context = 'component-selector-shim';
+			context = '';
 		}
 		let dialogName = getState().getIn(['pageDefs', pageName, 'dialog']);
 		let dialogDef = getState().getIn(['dialogDefs', dialogName]);
