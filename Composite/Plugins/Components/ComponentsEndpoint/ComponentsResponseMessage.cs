@@ -25,6 +25,7 @@ namespace Composite.Plugins.Components.ComponentsEndpoint
         public string type => "palette";
         public string headline => "Select a component";
         public string context => "left-aside";
+        public List<string> categories => new List<string>() { "gallery", "popular" };
         public Provider provider => new Provider();
         public FinishButton finishButton => new FinishButton();
         public FinishProvider finishProvider => new FinishProvider();
