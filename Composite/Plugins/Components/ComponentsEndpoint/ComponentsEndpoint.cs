@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reactive.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Castle.Core.Internal;
 using Composite.C1Console.RichContent.Components;
 using Composite.Core;
 using Composite.Core.Application;
-using Composite.Core.Logging;
 using Composite.Core.WebClient.Services.WampRouter;
 using Composite.Plugins.Components.ComponentTags;
 using WampSharp.V2.Rpc;
@@ -54,7 +51,7 @@ namespace Composite.Plugins.Components.ComponentsEndpoint
         public IEnumerable<Component> GetComponents(string containerclass=null)
         {
             var componentManager = ServiceLocator.GetRequiredService<ComponentManager>();
-            if (containerclass != null)
+            if (!containerclass.IsNullOrEmpty())
             {
                 return componentManager.GetComponents().Where(f => f.ContainerClasses.Contains(containerclass));
             }
