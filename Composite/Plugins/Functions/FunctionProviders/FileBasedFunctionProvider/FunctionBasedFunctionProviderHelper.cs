@@ -45,6 +45,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
         public static IDictionary<string, FunctionParameter> GetParameters(object functionObject, Type baseFunctionType, string filePath)
         {
             var dict = new Dictionary<string, FunctionParameter>();
+            IDictionary<string, WidgetFunctionProvider> parameterWidgets = null;
 
             var type = functionObject.GetType();
             while (type != baseFunctionType && type != null)
@@ -92,6 +93,28 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
                             Log.LogWarning(LogTitle, ex);
                         }
                     }
+                    else
+                    {
+                        if (parameterWidgets == null)
+                        {
+                            var widgetsProvider = functionObject as IParameterWidgetsProvider;
+                            if (widgetsProvider != null)
+                            {
+                                parameterWidgets = widgetsProvider.GetParameterWidgets();
+                            }
+
+                            if (parameterWidgets == null)
+                            {
+                                parameterWidgets = new Dictionary<string, WidgetFunctionProvider>();
+                            }
+                        }
+
+                        if (parameterWidgets.ContainsKey(name))
+                        {
+                            widgetProvider = parameterWidgets[name];
+                        }
+                    }
+
 
                     if (!dict.ContainsKey(name))
                     {
