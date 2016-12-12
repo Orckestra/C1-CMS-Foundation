@@ -5,10 +5,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
+using Castle.Core.Internal;
 using Composite.C1Console.RichContent.ContainerClasses;
 using Composite.Core;
 using Composite.Core.IO;
-using Composite.Core.Linq;
 using Composite.Core.Xml;
 using Composite.Plugins.Components.ComponentTags;
 
@@ -30,6 +30,7 @@ namespace Composite.Plugins.Components.FileBasedComponentProvider
     /// <exclude />
     public class FileBasedComponentProvider : IComponentProvider
     {
+        private const string DefaultComponentIcon = "default";
         private readonly ComponentChangeNotifier _changeNotifier;
         private readonly string _providerDirectory;
         private readonly string _searchPattern;
@@ -50,6 +51,8 @@ namespace Composite.Plugins.Components.FileBasedComponentProvider
 
         /// <exclude />
         public string ProviderId => nameof(FileBasedComponentProvider);
+
+        
 
         /// <exclude />
         public IEnumerable<Component> GetComponents()
@@ -86,6 +89,17 @@ namespace Composite.Plugins.Components.FileBasedComponentProvider
                     var containerClasses =
                         ContainerClassManager.ParseToList(xElement.GetAttributeValue(xNamespace + "container-class"));
 
+                    var imageUri = new ImageUri()
+                    {
+                        CustomImageUri = xElement.GetAttributeValue(xNamespace + "image"),
+                        IconName = xElement.GetAttributeValue(xNamespace + "icon")
+                    };
+
+                    if (imageUri.IconName.IsNullOrEmpty() && imageUri.CustomImageUri.IsNullOrEmpty())
+                    {
+                        imageUri.IconName = DefaultComponentIcon;
+                    }
+
                     xElement.RemoveAttributes();
 
                     yield return new Component
@@ -94,6 +108,7 @@ namespace Composite.Plugins.Components.FileBasedComponentProvider
                         Description = description,
                         GroupingTags = groupingTags,
                         ContainerClasses = containerClasses,
+                        ImageUri = imageUri,
                         ComponentDefinition = xElement.Document
                     };
                 }
