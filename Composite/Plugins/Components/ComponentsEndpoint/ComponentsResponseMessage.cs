@@ -6,62 +6,96 @@ using WampSharp.V2.Rpc;
 namespace Composite.Plugins.Components.ComponentsEndpoint
 {
 #warning heavily mocked!
+    /// <exclude />
     public class ComponentsResponseMessage
     {
-        public string name => "component-selector-shim";
-        public string type => "dialogPageShim";
-        public Dialog dialog => new Dialog();
+        /// <exclude />
+        public string Name => "component-selector-shim";
+        /// <exclude />
+        public string Type => "dialogPageShim";
+        /// <exclude />
+        public Dialog Dialog => new Dialog();
     }
 
+    /// <exclude />
     public class Dialog
     {
-        public string name => "component-selector";
-        public List<Pane> panes => new List<Pane>() { new Pane() };
+        /// <exclude />
+        public string Name => "component-selector";
+        /// <exclude />
+        public List<Pane> Panes => new List<Pane>() { new Pane() };
     }
 
+    /// <exclude />
     public class Pane
     {
-        public string name => "component-list";
-        public string type => "palette";
-        public string headline => "Select a component";
-        public string context => "left-aside";
-        public List<string> categories => new List<string>() { "gallery", "popular" };
-        public Provider provider => new Provider();
-        public FinishButton finishButton => new FinishButton();
-        public FinishProvider finishProvider => new FinishProvider();
-        public CancelButton cancelButton => new CancelButton();
-        public CancelProvider cancelProvider => new CancelProvider();
+        /// <exclude />
+        public string Name => "component-list";
+        /// <exclude />
+        public string Type => "palette";
+        /// <exclude />
+        public string Headline => "Select a component";
+        /// <exclude />
+        public string Context => "left-aside";
+        /// <exclude />
+        public List<string> Categories => new List<string>() { "gallery", "popular" };
+        /// <exclude />
+        public Provider Provider => new Provider();
+        /// <exclude />
+        public FinishButton FinishButton => new FinishButton();
+        /// <exclude />
+        public FinishProvider FinishProvider => new FinishProvider();
+        /// <exclude />
+        public CancelButton CancelButton => new CancelButton();
+        /// <exclude />
+        public CancelProvider CancelProvider => new CancelProvider();
     }
 
+    /// <exclude />
     public class Provider : ProviderResponce
     {
-        public string name => "elementSource";
-        public string uri => ResponseMessageHelper.GetProcedureName<ComponentsRpcService>(
+        /// <exclude />
+        public override string Name => "elementSource";
+        /// <exclude />
+        public override string Uri => ResponseMessageHelper.GetProcedureName<ComponentsRpcService>(
             nameof(ComponentsRpcService.GetComponents));
     }
 
+    /// <exclude />
     public class FinishButton : ButtonResponse
     {
-        public string label => "Next";
-        public string style => "main";
+        /// <exclude />
+        public override string Label => "Next";
+        /// <exclude />
+        public override string Style => "main";
     }
 
+    /// <exclude />
     public class FinishProvider : ProviderResponce
     {
-        public string name => "elementInsert";
-        public string uri => ResponseMessageHelper.GetProcedureName<ComponentsRpcService>(
+        /// <exclude />
+        public override string Name => "elementInsert";
+        /// <exclude />
+        public override string Uri => ResponseMessageHelper.GetProcedureName<ComponentsRpcService>(
             nameof(ComponentsRpcService.FinishProvider));
     }
 
+    /// <exclude />
     public class CancelButton : ButtonResponse
     {
-        public string label => "Cancel";
+        /// <exclude />
+        public override string Label => "Cancel";
+        /// <exclude />
+        public override string Style => "";
     }
 
+    /// <exclude />
     public class CancelProvider : ProviderResponce
     {
-        public string name => "componentListCancel";
-        public string uri => ResponseMessageHelper.GetProcedureName<ComponentsRpcService>(
+        /// <exclude />
+        public override string Name => "componentListCancel";
+        /// <exclude />
+        public override string Uri => ResponseMessageHelper.GetProcedureName<ComponentsRpcService>(
             nameof(ComponentsRpcService.CancelProvider));
     }
 
@@ -75,17 +109,41 @@ namespace Composite.Plugins.Components.ComponentsEndpoint
         }
     }
 
-    public class ProviderResponce
+
+    /// <summary>
+    /// Page structure provider contract
+    /// </summary>
+    public abstract class ProviderResponce
     {
-        public virtual string name { get; }
-        public virtual string protocol => "wamp";
-        public virtual string uri { get;}
+        /// <summary>
+        /// provider's name
+        /// </summary>
+        public abstract string Name { get; }
+
+        /// <summary>
+        /// provider's protocol
+        /// </summary>
+        public virtual string Protocol => "wamp";
+        /// <summary>
+        /// provider's uri
+        /// </summary>
+        public abstract string Uri { get; }
     }
 
-    public class ButtonResponse
+    /// <summary>
+    /// page structure button contract
+    /// </summary>
+    public abstract class ButtonResponse
     {
-        public virtual string label { get; }
-        public virtual string style { get; }
+        /// <summary>
+        /// button label
+        /// </summary>
+        public abstract string Label { get; }
+
+        /// <summary>
+        /// button style
+        /// </summary>
+        public abstract string Style { get; }
     }
 
 }

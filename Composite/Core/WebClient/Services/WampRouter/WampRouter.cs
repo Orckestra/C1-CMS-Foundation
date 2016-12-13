@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Reactive.Subjects;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using WampSharp.Binding;
 using WampSharp.Logging;
 using WampSharp.V2;
@@ -64,7 +66,8 @@ namespace Composite.Core.WebClient.Services.WampRouter
         {
             _host = new WampHost();
             _host.RegisterTransport(new AspNetWebsocketTransform(),
-                new JTokenJsonBinding());
+                new JTokenJsonBinding(new JsonSerializer()
+                { ContractResolver = new CamelCasePropertyNamesContractResolver()}));
             
             IWampHostedRealm realm = _host.RealmContainer.GetRealmByName(DefaultRealmName);
 
