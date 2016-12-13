@@ -3,6 +3,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import styled from 'styled-components';
 import colors from 'console/components/colors.js';
 import { setDialogState } from 'console/state/reducers/dialog.js';
+import Icon from 'console/components/presentation/Icon.js';
 
 // two-dimensional structure: Categories containing components.
 // Category has headline, open state, contains list of components
@@ -33,7 +34,7 @@ export const Item = styled.div`
 	border-color: ${colors.borderColor};
 	border-style: ${ props => props.active ? 'solid' : 'dashed' };
 `;
-export const Preview = styled.div`
+export const PreviewImage = styled.div`
 	width: 100px;
 	height: 100px;
 	position: absolute;
@@ -46,6 +47,17 @@ export const Preview = styled.div`
 	background-image: url(${ props => props.image });
 	background-position: center center;
 	background-repeat: no-repeat;
+`;
+export const PreviewIcon = styled(Icon)`
+	width: 100px;
+	height: 100px;
+	position: absolute;
+	left: 20px;
+	top: 15px;
+	padding: 5px;
+	border-radius: 5px;
+	border: 1px solid ${colors.borderColor};
+	background-color: white;
 `;
 export const Label = styled.h3`
 	position: absolute;
@@ -63,16 +75,20 @@ export const Description = styled.p`
 	overflow-y: auto;
 `;
 
+function resolveMediaURI(uri) {
+	return '/media(' + uri + ')?mw=100&mh=100';
+}
+
 const Palette = props => {
 	return <div>
 		{props.itemGroups.map(itemGroup =>
 			<ItemGroup
 				key={itemGroup.get('name')}>
-				<ItemGroupTitle>{itemGroup.get('label')}</ItemGroupTitle>
+				<ItemGroupTitle>{itemGroup.get('title')}</ItemGroupTitle>
 				{itemGroup.get('entries').map(item => {
-					let itemName = item.get('name');
+					let itemName = item.get('id');
 					return <Item
-						key={item.get('name')}
+						key={itemName}
 						onClick={() => props.dispatch(
 							setDialogState(
 								props.dialogName,
@@ -80,8 +96,12 @@ const Palette = props => {
 							)
 						)}
 						active={itemName === props.dialogData.get('selectedItem')}>
-						<Preview image={item.get('previewImageUrl')}/>
-						<Label>{item.get('label')}</Label>
+						{
+							item.getIn(['imageUri', 'customImageUri']) ?
+							<PreviewImage image={resolveMediaURI(item.getIn(['imageUri', 'customImageUri']))}/> :
+							<PreviewIcon id={item.getIn(['imageUri', 'iconName']) || 'base-function-function'}/>
+						}
+						<Label>{item.get('title')}</Label>
 						<Description>{item.get('description')}</Description>
 					</Item>;
 				}).toArray()}

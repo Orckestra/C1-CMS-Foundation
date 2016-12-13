@@ -29,7 +29,7 @@ const categorizedElementListSelector = createSelector(
 			categoryMap[name] = [];
 		});
 		rawData.forEach(element => {
-			element.get('GroupingTags').forEach(tag => {
+			element.get('groupingTags').forEach(tag => {
 				if (categoryMap[tag]) {
 					categoryMap[tag].push(element);
 				}
@@ -37,6 +37,8 @@ const categorizedElementListSelector = createSelector(
 		});
 		return categories.map(categoryName => Immutable.Map({
 			name: categoryName,
+			// Ideally, title for the group would be defined as a string somewhere.
+			title: categoryName.replace(/^\w/, match => match.toLocaleUpperCase()),
 			entries: Immutable.List(categoryMap[categoryName])
 		}));
 	}

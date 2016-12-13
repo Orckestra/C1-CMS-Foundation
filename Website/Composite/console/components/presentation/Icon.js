@@ -21,16 +21,17 @@ const Svg = styled.svg`
 `;
 
 
-const Icon = ({id}) => {
+const Icon = ({ id, className }) => {
 	return (
-		<Svg>
+		<Svg className={className}>
 			<use xlinkHref={'#icon-' + id}/>
 		</Svg>
 	);
 };
 
 Icon.propTypes = {
-	id: PropTypes.string.isRequired
+	id: PropTypes.string.isRequired,
+	className: PropTypes.string
 };
 
 export default Icon;

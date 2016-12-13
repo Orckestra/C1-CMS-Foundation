@@ -75,72 +75,72 @@ describe('ConnectDialog', () => {
 				'test.provider.elements': {
 					testdialog: [
 						{
-							Name: 'entry1',
-							Title: 'First component',
-							Description: 'All manner of words',
-							GroupingTags: [
+							name: 'entry1',
+							title: 'First component',
+							description: 'All manner of words',
+							groupingTags: [
 								'tag1',
 								'tag2',
 								'LabelTag'
 							],
-							ContainerClasses: [
+							containerClasses: [
 								'narrow',
 								'footer'
 							],
-							ComponentDefinition: {
+							componentDefinition: {
 								html: {
 									body: {}
 								}
 							}
 						},
 						{
-							Name: 'entry2',
-							Title: 'Second component',
-							Description: 'Even more words',
-							GroupingTags: [
+							name: 'entry2',
+							title: 'Second component',
+							description: 'Even more words',
+							groupingTags: [
 								'tag1',
 								'tag2'
 							],
-							ContainerClasses: [
+							containerClasses: [
 								'narrow',
 								'footer'
 							],
-							ComponentDefinition: {
+							componentDefinition: {
 								html: {
 									body: {}
 								}
 							}
 						},
 						{
-							Name: 'entry3',
-							Title: 'Third component',
-							Description: 'Even more words',
-							GroupingTags: [
+							name: 'entry3',
+							title: 'Third component',
+							description: 'Even more words',
+							groupingTags: [
 								'tag2',
 								'tag3'
 							],
-							ContainerClasses: [
+							containerClasses: [
 								'narrow',
 								'footer'
 							],
-							ComponentDefinition: {
+							componentDefinition: {
 								html: {
 									body: {}
 								}
 							}
 						},
 						{
-							Name: 'entry4',
-							Title: 'Fourth component',
-							Description: 'Even more words',
-							GroupingTags: [
+							name: 'entry4',
+							title: 'Fourth component',
+							description: 'Even more words',
+							groupingTags: [
 								'tag3'
 							],
-							ContainerClasses: [
+							containerClasses: [
 								'narrow',
 								'footer'
 							],
-							ComponentDefinition: {
+							componentDefinition: {
 								html: {
 									body: {}
 								}
@@ -173,17 +173,17 @@ describe('ConnectDialog', () => {
 					dialogDef={Immutable.fromJS({ name: 'testdialog', panes: [{ test: 'this is data' }] })}
 					itemGroups={Immutable.fromJS([
 						{ name: 'tag1', entries: [
-							{ Name: 'entry1' },
-							{ Name: 'entry2' }
+							{ name: 'entry1' },
+							{ name: 'entry2' }
 						]},
 						{ name: 'tag2', entries: [
-							{ Name: 'entry1' },
-							{ Name: 'entry2' },
-							{ Name: 'entry3' }
+							{ name: 'entry1' },
+							{ name: 'entry2' },
+							{ name: 'entry3' }
 						]},
 						{ name: 'tag3', entries: [
-							{ Name: 'entry3' },
-							{ Name: 'entry4' }
+							{ name: 'entry3' },
+							{ name: 'entry4' }
 						]}
 					])}
 					dialogData={Immutable.fromJS({
