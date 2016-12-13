@@ -45,7 +45,8 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
         public static IDictionary<string, FunctionParameter> GetParameters(object functionObject, Type baseFunctionType, string filePath)
         {
             var dict = new Dictionary<string, FunctionParameter>();
-            IDictionary<string, WidgetFunctionProvider> parameterWidgets = null;
+
+            IDictionary<string, WidgetFunctionProvider> parameterWidgets = GetParameterWidgets(functionObject);
 
             var type = functionObject.GetType();
             while (type != baseFunctionType && type != null)
@@ -95,20 +96,6 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
                     }
                     else
                     {
-                        if (parameterWidgets == null)
-                        {
-                            var widgetsProvider = functionObject as IParameterWidgetsProvider;
-                            if (widgetsProvider != null)
-                            {
-                                parameterWidgets = widgetsProvider.GetParameterWidgets();
-                            }
-
-                            if (parameterWidgets == null)
-                            {
-                                parameterWidgets = new Dictionary<string, WidgetFunctionProvider>();
-                            }
-                        }
-
                         if (parameterWidgets.ContainsKey(name))
                         {
                             widgetProvider = parameterWidgets[name];
@@ -126,6 +113,14 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
             }
 
             return dict;
+        }
+
+        private static IDictionary<string, WidgetFunctionProvider> GetParameterWidgets(object functionObject)
+        {
+            var widgetsProvider = functionObject as IParameterWidgetsProvider;
+            IDictionary<string, WidgetFunctionProvider> parameterWidgets = widgetsProvider != null ? widgetsProvider.GetParameterWidgets() : null;
+
+            return parameterWidgets ?? new Dictionary<string, WidgetFunctionProvider>();
         }
     }
 }
