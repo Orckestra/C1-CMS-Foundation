@@ -13,7 +13,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
     /// </summary>
     public static class FunctionBasedFunctionProviderHelper
     {
-        private static readonly string LogTitle = typeof (FunctionBasedFunctionProviderHelper).FullName;
+        private static readonly string LogTitle = typeof(FunctionBasedFunctionProviderHelper).FullName;
 
         /// <summary>
         /// Gets the function description from the <see cref="FunctionAttribute" />.
@@ -45,7 +45,6 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
         public static IDictionary<string, FunctionParameter> GetParameters(object functionObject, Type baseFunctionType, string filePath)
         {
             var dict = new Dictionary<string, FunctionParameter>();
-
             IDictionary<string, WidgetFunctionProvider> parameterWidgets = GetParameterWidgets(functionObject);
 
             var type = functionObject.GetType();
@@ -69,7 +68,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
                     var attributes = property.GetCustomAttributes(typeof(FunctionParameterAttribute), false).Cast<FunctionParameterAttribute>().ToList();
 
 
-                    if(attributes.Count > 1)
+                    if (attributes.Count > 1)
                     {
                         Log.LogWarning(LogTitle, "More than one '{0}' attribute defined on property '{1}'. Location: '{2}'"
                                                  .FormatWith(typeof(FunctionParameterAttribute).Name, name, filePath));
