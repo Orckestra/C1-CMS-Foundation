@@ -60,13 +60,11 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
                     // Skipping explicitly ignored attributes
                     if (property.GetCustomAttributes(typeof(FunctionParameterIgnoreAttribute), false).Any()) continue;
 
-
                     var propType = property.PropertyType;
                     var name = property.Name;
 
                     FunctionParameterAttribute attr = null;
                     var attributes = property.GetCustomAttributes(typeof(FunctionParameterAttribute), false).Cast<FunctionParameterAttribute>().ToList();
-
 
                     if (attributes.Count > 1)
                     {
@@ -78,13 +76,14 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
                         attr = attributes.FirstOrDefault();
                     }
 
-                    WidgetFunctionProvider widgetProvider = null;
+                    WidgetFunctionProvider attibuteBasedWidgetProvider = null;
+                    WidgetFunctionProvider methodBasedWidgetProvider = null;
 
                     if (attr != null && attr.HasWidgetMarkup)
                     {
                         try
                         {
-                            widgetProvider = attr.GetWidgetFunctionProvider(type, property);
+                            attibuteBasedWidgetProvider = attr.GetWidgetFunctionProvider(type, property);
                         }
                         catch (Exception ex)
                         {
@@ -93,18 +92,18 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
                             Log.LogWarning(LogTitle, ex);
                         }
                     }
-                    else
-                    {
-                        if (parameterWidgets.ContainsKey(name))
-                        {
-                            widgetProvider = parameterWidgets[name];
-                        }
-                    }
 
+                    parameterWidgets.TryGetValue(name, out methodBasedWidgetProvider);
+
+                    if (methodBasedWidgetProvider!=null && attibuteBasedWidgetProvider!=null)
+                    {
+                        Log.LogWarning(LogTitle, "Widget for property {0} is defined in both {1} attribute and in {2}() method. Remove one of the definitions. Location: '{3}'"
+                                                 .FormatWith(property.Name, nameof(FunctionParameterAttribute), nameof(IParameterWidgetsProvider.GetParameterWidgets), filePath));
+                    }
 
                     if (!functionParameters.ContainsKey(name))
                     {
-                        functionParameters.Add(name, new FunctionParameter(name, propType, attr, widgetProvider));
+                        functionParameters.Add(name, new FunctionParameter(name, propType, attr, attibuteBasedWidgetProvider ?? methodBasedWidgetProvider));
                     }
                 }
 
