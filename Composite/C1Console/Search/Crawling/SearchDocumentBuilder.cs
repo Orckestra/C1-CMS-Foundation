@@ -226,6 +226,11 @@ namespace Composite.C1Console.Search.Crawling
             Guid dataTypeId;
             if (Guid.TryParse(str, out dataTypeId))
             {
+                if (dataTypeId == new Guid("A8716C78-1499-4155-875B-2545006385B2"))
+                {
+                    return "Media File"; // TODO: localize
+                }
+
                 var descriptor = DataMetaDataFacade.GetDataTypeDescriptor(dataTypeId, false);
                 if (descriptor != null)
                 {

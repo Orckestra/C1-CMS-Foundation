@@ -92,7 +92,7 @@
 			}
 
 			var sortOptions = new List<SearchQuerySortOption>();
-			if (sortField != null)
+			if (!string.IsNullOrEmpty(sortField))
 			{
 				var sortTermsAs = allFields
 					.Where(f => f.Name == sortField && f.Preview != null && f.Preview.Sortable)
@@ -186,6 +186,11 @@
 
 @helper ResultFacets(SearchResult result, IList<DocumentField> facetFields)
 {
+	if (result.Facets == null)
+	{
+		return;
+	}
+
 	var fields = facetFields.ToDictionary(f => f.Name);
 
 	<div class="facets clearfix">

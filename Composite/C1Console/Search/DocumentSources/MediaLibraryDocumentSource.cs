@@ -14,13 +14,18 @@ namespace Composite.C1Console.Search.DocumentSources
         private readonly List<IDocumentSourceListener> _listeners = new List<IDocumentSourceListener>();
 
         private readonly Lazy<ICollection<DocumentField>> _customFields;
+        private readonly DataChangesIndexNotifier _changesIndexNotifier;
 
         public MediaLibraryDocumentSource()
         {
-            // TODO: listen to data events
-
             _customFields = new Lazy<ICollection<DocumentField>>(() =>
                 DataTypeSearchReflectionHelper.GetDocumentFields(typeof(IMediaFile)).Evaluate());
+
+            _changesIndexNotifier = new DataChangesIndexNotifier(
+                _listeners, typeof(IMediaFile),
+                data => FromMediaFile((IMediaFile)data),
+                data => ((IMediaFile)data).Id.ToString());
+            _changesIndexNotifier.Start();
         }
 
         public string Name => typeof(IMediaFile).FullName;

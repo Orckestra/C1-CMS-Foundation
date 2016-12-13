@@ -59,6 +59,8 @@ namespace Composite.C1Console.Search.DocumentSources
             }
 
             var document = GetDocument(data);
+            if(document == null) return;
+
             foreach (var culture in GetCultures(data))
             {
                 _listeners.ForEach(l => l.Create(culture, document));
@@ -79,6 +81,7 @@ namespace Composite.C1Console.Search.DocumentSources
             }
 
             var document = GetDocument(data);
+            if(document == null) return;
 
             foreach (var culture in GetCultures(data))
             {
