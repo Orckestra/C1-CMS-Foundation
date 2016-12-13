@@ -44,7 +44,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
         /// <returns></returns>
         public static IDictionary<string, FunctionParameter> GetParameters(object functionObject, Type baseFunctionType, string filePath)
         {
-            var dict = new Dictionary<string, FunctionParameter>();
+            var functionParameters = new Dictionary<string, FunctionParameter>();
             IDictionary<string, WidgetFunctionProvider> parameterWidgets = GetParameterWidgets(functionObject);
 
             var type = functionObject.GetType();
@@ -102,16 +102,16 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
                     }
 
 
-                    if (!dict.ContainsKey(name))
+                    if (!functionParameters.ContainsKey(name))
                     {
-                        dict.Add(name, new FunctionParameter(name, propType, attr, widgetProvider));
+                        functionParameters.Add(name, new FunctionParameter(name, propType, attr, widgetProvider));
                     }
                 }
 
                 type = type.BaseType;
             }
 
-            return dict;
+            return functionParameters;
         }
 
         private static IDictionary<string, WidgetFunctionProvider> GetParameterWidgets(object functionObject)
