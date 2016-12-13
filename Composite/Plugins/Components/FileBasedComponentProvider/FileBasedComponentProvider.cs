@@ -1,9 +1,12 @@
-﻿using Composite.C1Console.RichContent.Components;
+﻿using System;
+using Composite.C1Console.RichContent.Components;
 using Composite.Core.Application;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Xml.Linq;
 using Castle.Core.Internal;
 using Composite.C1Console.RichContent.ContainerClasses;
@@ -75,6 +78,11 @@ namespace Composite.Plugins.Components.FileBasedComponentProvider
 
                 if (xElement != null)
                 {
+#warning making id based on file location, check again once function based provider come alive
+                    var xmlBytes = new UnicodeEncoding().GetBytes(componentFile);
+                    var hashedXmlBytes = ((HashAlgorithm)CryptoConfig.CreateFromName("MD5")).ComputeHash(xmlBytes);
+                    var id = new Guid(hashedXmlBytes);
+
                     var title = xElement.GetAttributeValue(xNamespace + "title") ??
                                 Path.GetFileNameWithoutExtension(componentFile);
 
@@ -104,6 +112,7 @@ namespace Composite.Plugins.Components.FileBasedComponentProvider
 
                     yield return new Component
                     {
+                        Id = id,
                         Title = title,
                         Description = description,
                         GroupingTags = groupingTags,
