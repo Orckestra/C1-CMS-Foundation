@@ -51,7 +51,9 @@ namespace Composite.Plugins.Components.FileBasedComponentProvider
             _searchOption = componentProviderSetting.TopDirectoryOnly
                 ? SearchOption.TopDirectoryOnly
                 : SearchOption.AllDirectories;
-            
+
+            Directory.CreateDirectory(PathUtil.Resolve(_providerDirectory));
+
             FileBasedComponentObservable().Subscribe( x => _changeNotifier.ProviderChange(x.ProviderId));
         }
 
