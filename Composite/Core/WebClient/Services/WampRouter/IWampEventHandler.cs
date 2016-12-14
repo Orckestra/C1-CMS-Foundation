@@ -9,7 +9,10 @@ namespace Composite.Core.WebClient.Services.WampRouter
     /// <typeparam name="T2"></typeparam>
     public interface IWampEventHandler<out T1,out T2>
     {
-
+        /// <summary>
+        /// Topic uri
+        /// </summary>
+        string Topic { get; }
         /// <summary>
         /// Observable event
         /// </summary>

@@ -34,17 +34,17 @@ namespace Composite.Core.WebClient.Services.WampRouter
             registrationTask.Wait();
         }
 
-        public void RegisterPublisher<T1, T2>(string topicName, IWampEventHandler<T1, T2> eventObservable)
+        public void RegisterPublisher<T1, T2>(IWampEventHandler<T1, T2> eventObservable)
         {
-            RegisterPublisher(DefaultRealmName, topicName, eventObservable);
+            RegisterPublisher(DefaultRealmName, eventObservable);
         }
 
-        public void RegisterPublisher<T1,T2>(string realmName, string topicName, IWampEventHandler<T1,T2> eventObservable)
+        public void RegisterPublisher<T1,T2>(string realmName, IWampEventHandler<T1,T2> eventObservable)
         {
             IWampHostedRealm realm = _host.RealmContainer.GetRealmByName(realmName);
 
             ISubject<T2> subject =
-                realm.Services.GetSubject<T2>(topicName);
+                realm.Services.GetSubject<T2>(eventObservable.Topic);
 
             IObservable<T1> observableEvent = eventObservable.Event;
 

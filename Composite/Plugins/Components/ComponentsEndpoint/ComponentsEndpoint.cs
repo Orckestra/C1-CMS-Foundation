@@ -17,7 +17,7 @@ namespace Composite.Plugins.Components.ComponentsEndpoint
         public static void OnInitialized(ComponentManager componentManager, ComponentChangeNotifier componentChangeNotifier)
         {
             WampRouterFacade.RegisterCallee(new ComponentsRpcService(componentManager));
-            WampRouterFacade.RegisterPublisher("components.newComponents", new ComponentPublisher(componentChangeNotifier));
+            WampRouterFacade.RegisterPublisher(new ComponentPublisher(componentChangeNotifier));
         }
     }
 
@@ -54,7 +54,7 @@ namespace Composite.Plugins.Components.ComponentsEndpoint
         /// To get all components
         /// </summary>
         /// <returns>list of Components</returns>
-        [WampProcedure("components.getComponents")]
+        [WampProcedure("components.get")]
         public IEnumerable<Component> GetComponents(string containerclass=null)
         {
             
@@ -97,7 +97,11 @@ namespace Composite.Plugins.Components.ComponentsEndpoint
 
     public class ComponentPublisher : IWampEventHandler<ComponentChange,bool>
     {
-        private static ComponentChangeNotifier _componentChangeNotifier;
+        private readonly ComponentChangeNotifier _componentChangeNotifier;
+
+        public static string Topic => "components.new";
+
+        string IWampEventHandler<ComponentChange, bool>.Topic => Topic;
 
         public IObservable<ComponentChange> Event => _componentChangeNotifier;
 
