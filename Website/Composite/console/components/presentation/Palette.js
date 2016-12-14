@@ -92,7 +92,9 @@ const Palette = props => {
 						onClick={() => props.dispatch(
 							setDialogState(
 								props.dialogName,
-								props.dialogData.set('selectedItem', itemName)
+								props.dialogData
+									.set('selectedItem', itemName)
+									.set('selectedComponentDefinition', item.get('componentDefinition'))
 							)
 						)}
 						active={itemName === props.dialogData.get('selectedItem')}>
