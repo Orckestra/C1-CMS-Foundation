@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Castle.Core.Internal;
 using Composite.C1Console.RichContent.Components;
-using Composite.Core;
 using Composite.Core.Application;
 using Composite.Core.WebClient.Services.WampRouter;
-using Composite.Plugins.Components.ComponentTags;
 using WampSharp.V2.Rpc;
 
 namespace Composite.Plugins.Components.ComponentsEndpoint
@@ -81,17 +79,6 @@ namespace Composite.Plugins.Components.ComponentsEndpoint
         [WampProcedure("structure.dialog.cancel")]
         public void CancelProvider()
         {
-        }
-
-        /// <summary>
-        /// To get all tags based on configuration ordering
-        /// </summary>
-        /// <returns>list of strings</returns>
-        [WampProcedure("components.getOrderedTags")]
-        public IEnumerable<string> GetOrderedTags()
-        {
-            var tagManager = ServiceLocator.GetRequiredService<TagManager>();
-            return tagManager.GetRegisteredTagOrdering();
         }
     }
 

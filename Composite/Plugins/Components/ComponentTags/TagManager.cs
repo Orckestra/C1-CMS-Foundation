@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Composite.C1Console.RichContent.Components;
+using Composite.Core;
 using Composite.Core.Application;
 using Composite.Core.IO;
 using Composite.Core.ResourceSystem;
@@ -69,6 +71,15 @@ namespace Composite.Plugins.Components.ComponentTags
         public IEnumerable<string> GetRegisteredTagOrdering()
         {
             return _tagToTitleMap.Select(f => f.Key);
+        }
+        /// <summary>
+        /// return a list of all tags based on their ordering in configuration file
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<string> GetAllTags()
+        {
+            var componentProvider = ServiceLocator.GetRequiredService<IComponentProvider>();
+            return GetRegisteredTagOrdering().Union(componentProvider.GetComponents().SelectMany(f=>f.GroupingTags));
         }
     }
 

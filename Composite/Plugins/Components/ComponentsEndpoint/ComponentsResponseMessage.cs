@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
+using Composite.Core;
 using Composite.Core.WebClient.Services.WampRouter;
+using Composite.Plugins.Components.ComponentTags;
 using WampSharp.V2.Rpc;
 
 namespace Composite.Plugins.Components.ComponentsEndpoint
@@ -29,6 +31,12 @@ namespace Composite.Plugins.Components.ComponentsEndpoint
     /// <exclude />
     public class Pane
     {
+        public Pane()
+        {
+            var tagManager = ServiceLocator.GetRequiredService<TagManager>();
+            Categories = tagManager.GetAllTags();
+        }
+
         /// <exclude />
         public string Name => "component-list";
         /// <exclude />
@@ -38,7 +46,7 @@ namespace Composite.Plugins.Components.ComponentsEndpoint
         /// <exclude />
         public string Context => "left-aside";
         /// <exclude />
-        public List<string> Categories => new List<string>() { "gallery", "popular" };
+        public IEnumerable<string> Categories { get; }
         /// <exclude />
         public Provider Provider => new Provider();
         /// <exclude />
