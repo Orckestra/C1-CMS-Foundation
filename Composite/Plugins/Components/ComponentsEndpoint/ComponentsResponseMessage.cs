@@ -49,6 +49,8 @@ namespace Composite.Plugins.Components.ComponentsEndpoint
         public CancelButton CancelButton => new CancelButton();
         /// <exclude />
         public CancelProvider CancelProvider => new CancelProvider();
+
+        public List<ProviderResponce> Topics => new List<ProviderResponce>() {new ChangeProvider()};
     }
 
     /// <exclude />
@@ -99,6 +101,14 @@ namespace Composite.Plugins.Components.ComponentsEndpoint
             nameof(ComponentsRpcService.CancelProvider));
     }
 
+    public class ChangeProvider : ProviderResponce
+    {
+        /// <exclude />
+        public override string Name => "componentChange";
+        /// <exclude />
+        public override string Uri => ComponentPublisher.Topic;
+    }
+
     internal static class ResponseMessageHelper 
     {
         internal static string GetProcedureName<T>(string methodName) where T : IRpcService
@@ -147,3 +157,4 @@ namespace Composite.Plugins.Components.ComponentsEndpoint
     }
 
 }
+
