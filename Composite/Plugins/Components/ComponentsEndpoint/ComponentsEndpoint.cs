@@ -14,10 +14,10 @@ namespace Composite.Plugins.Components.ComponentsEndpoint
     [ApplicationStartup]
     class ComponentsEndpoint
     {
-        public static void OnInitialized()
+        public static void OnInitialized(ComponentManager componentManager, ComponentChangeNotifier componentChangeNotifier)
         {
-            WampRouterFacade.RegisterCallee(new ComponentsRpcService());
-            WampRouterFacade.RegisterPublisher("components.newComponents", new ComponentPublisher());
+            WampRouterFacade.RegisterCallee(new ComponentsRpcService(componentManager));
+            WampRouterFacade.RegisterPublisher("components.newComponents", new ComponentPublisher(componentChangeNotifier));
         }
     }
 
@@ -26,6 +26,13 @@ namespace Composite.Plugins.Components.ComponentsEndpoint
     /// </summary>
     public class ComponentsRpcService : IRpcService
     {
+        private static ComponentManager _componentManager;
+
+        public ComponentsRpcService(ComponentManager componentManager)
+        {
+            _componentManager = componentManager;
+        }
+
         /// <summary>
         /// To test if service is in its place
         /// </summary>
@@ -50,12 +57,12 @@ namespace Composite.Plugins.Components.ComponentsEndpoint
         [WampProcedure("components.getComponents")]
         public IEnumerable<Component> GetComponents(string containerclass=null)
         {
-            var componentManager = ServiceLocator.GetRequiredService<ComponentManager>();
+            
             if (!containerclass.IsNullOrEmpty())
             {
-                return componentManager.GetComponents().Where(f => f.ContainerClasses.Contains(containerclass));
+                return _componentManager.GetComponents().Where(f => f.ContainerClasses.Contains(containerclass));
             }
-            return componentManager.GetComponents();
+            return _componentManager.GetComponents();
         }
 
         /// <summary>
@@ -88,15 +95,20 @@ namespace Composite.Plugins.Components.ComponentsEndpoint
         }
     }
 
-    public class ComponentPublisher : IWampEventHandler<ComponentChange,Component>
+    public class ComponentPublisher : IWampEventHandler<ComponentChange,bool>
     {
-        public IObservable<ComponentChange> Event => ServiceLocator.GetRequiredService<ComponentChangeNotifier>();
+        private static ComponentChangeNotifier _componentChangeNotifier;
 
-        private int counter = 0;
+        public IObservable<ComponentChange> Event => _componentChangeNotifier;
 
-        public Component GetNewData()
+        public ComponentPublisher(ComponentChangeNotifier componentChangeNotifier)
         {
-            return new Component();
+            _componentChangeNotifier = componentChangeNotifier;
+        }
+
+        public bool GetNewData()
+        {
+            return true;
         }
     }
 }
