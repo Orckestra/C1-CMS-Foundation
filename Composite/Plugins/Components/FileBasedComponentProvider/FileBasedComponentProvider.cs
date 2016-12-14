@@ -35,6 +35,13 @@ namespace Composite.Plugins.Components.FileBasedComponentProvider
     /// <exclude />
     public class FileBasedComponentProvider : IComponentProvider
     {
+        private const string Title = "title";
+        private const string Description = "description";
+        private const string Tags = "tags";
+        private const string ContainerClass = "container-class";
+        private const string Image = "image";
+        private const string Icon = "icon";
+
         private readonly ComponentChangeNotifier _changeNotifier;
         private readonly string _providerDirectory;
         private readonly string _searchPattern;
@@ -78,8 +85,7 @@ namespace Composite.Plugins.Components.FileBasedComponentProvider
 
         private Component GetComponentsFromFile(string componentFile)
         {
-            
-            var xNamespace = XNamespace.Get("http://cms.orckestra.com/blip/blop/foo/bar");
+
             var doc = XDocumentUtils.Load(componentFile);
             var xElement = doc.Descendants().FirstOrDefault();
 
@@ -90,24 +96,24 @@ namespace Composite.Plugins.Components.FileBasedComponentProvider
                 var hashedXmlBytes = ((HashAlgorithm)CryptoConfig.CreateFromName("MD5")).ComputeHash(xmlBytes);
                 var id = new Guid(hashedXmlBytes);
 
-                var title = xElement.GetAttributeValue(xNamespace + "title") ??
+                var title = xElement.GetAttributeValue(Namespaces.Components + Title) ??
                             Path.GetFileNameWithoutExtension(componentFile);
 
-                var description = xElement.GetAttributeValue(xNamespace + "description") ?? title;
+                var description = xElement.GetAttributeValue(Namespaces.Components + Description) ?? title;
 
-                var groupingTagsRaw = xElement.GetAttributeValue(xNamespace + "tags") ??
+                var groupingTagsRaw = xElement.GetAttributeValue(Namespaces.Components + Tags) ??
                                         GuessGroupingTagsBasedOnPath(componentFile);
 
                 var tagManager = ServiceLocator.GetRequiredService<TagManager>();
                 var groupingTags = groupingTagsRaw.ToLower().Split(',').Select(tagManager.GetTagTitle).ToList();
 
                 var containerClasses =
-                    ContainerClassManager.ParseToList(xElement.GetAttributeValue(xNamespace + "container-class"));
+                    ContainerClassManager.ParseToList(xElement.GetAttributeValue(Namespaces.Components + ContainerClass));
 
                 var imageUri = new ImageUri()
                 {
-                    CustomImageUri = xElement.GetAttributeValue(xNamespace + "image"),
-                    IconName = xElement.GetAttributeValue(xNamespace + "icon")
+                    CustomImageUri = xElement.GetAttributeValue(Namespaces.Components + Image),
+                    IconName = xElement.GetAttributeValue(Namespaces.Components + Icon)
                 };
 
                 xElement.RemoveAttributes();
