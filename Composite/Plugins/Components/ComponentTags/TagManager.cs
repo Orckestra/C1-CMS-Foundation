@@ -70,7 +70,7 @@ namespace Composite.Plugins.Components.ComponentTags
         /// <returns></returns>
         public IEnumerable<string> GetRegisteredTagOrdering()
         {
-            return _tagToTitleMap.Select(f => f.Key);
+            return _tagToTitleMap.Select(f => GetTagTitle(f.Key));
         }
         /// <summary>
         /// return a list of all tags based on their ordering in configuration file

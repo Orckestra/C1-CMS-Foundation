@@ -57,8 +57,8 @@ namespace Composite.Plugins.Components.ComponentsEndpoint
         public CancelButton CancelButton => new CancelButton();
         /// <exclude />
         public CancelProvider CancelProvider => new CancelProvider();
-
-        public List<ProviderResponce> Topics => new List<ProviderResponce>() {new ChangeProvider()};
+        /// <exclude />
+        public UpdateProvider UpdateTopic => new UpdateProvider();
     }
 
     /// <exclude />
@@ -109,10 +109,10 @@ namespace Composite.Plugins.Components.ComponentsEndpoint
             nameof(ComponentsRpcService.CancelProvider));
     }
 
-    public class ChangeProvider : ProviderResponce
+    public class UpdateProvider : ProviderResponce
     {
         /// <exclude />
-        public override string Name => "componentChange";
+        public override string Name => "updateTopic";
         /// <exclude />
         public override string Uri => ComponentPublisher.Topic;
     }
