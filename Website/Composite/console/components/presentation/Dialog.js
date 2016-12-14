@@ -82,7 +82,10 @@ const Dialog = props => {
 		console.log('Finish', props.dialogDef.get('name'), props.dialogData.toJS()); // eslint-disable-line no-console
 		props.dispatch(fireAction(paneDef.get('finishProvider').toJS(), props.dialogDef.get('name'), props.dialogData.toJS()));
 	} : null;
-	return <DialogBox>
+	return <DialogBox
+		onContextMenu={event => {
+			event.preventDefault(); // To not show the default menu
+		}}>
 		{paneDef.get('headline') ? <DialogTitle>{paneDef.get('headline')}</DialogTitle> : null}
 		<DialogPane>
 			<Pane dialogName={props.dialogDef.get('name')} paneDef={paneDef} itemGroups={props.itemGroups} dialogData={props.dialogData} dispatch={props.dispatch}/>
