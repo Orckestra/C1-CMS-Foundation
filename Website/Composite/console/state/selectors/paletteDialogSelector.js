@@ -24,17 +24,26 @@ const categorizedElementListSelector = createSelector(
 	categorySelector,
 	rawProviderDataSelector,
 	(categories, rawData) => {
-		let categoryMap = {};
+		let categoryMap = {
+			uncategorized: []
+		};
 		categories.forEach(name => {
 			categoryMap[name] = [];
 		});
 		rawData.forEach(element => {
+			let categorized = false;
 			element.get('groupingTags').forEach(tag => {
 				if (categoryMap[tag]) {
 					categoryMap[tag].push(element);
+					categorized = true;
 				}
 			});
+			if (!categorized) {
+				categoryMap['uncategorized'].push(element);
+			}
 		});
+		categories = categories.push('uncategorized');
+		categories = categories.filter(name => categoryMap[name].length);
 		return categories.map(categoryName => Immutable.Map({
 			name: categoryName,
 			// Ideally, title for the group would be defined as a string somewhere.

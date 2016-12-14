@@ -56,7 +56,7 @@ describe('ConnectDialog', () => {
 				testpane: {
 					name: 'testpane',
 					test: 'this is data',
-					categories: ['tag1', 'tag2', 'tag3'],
+					categories: ['tag1', 'tag2', 'tag3', 'tag4'],
 					type: 'testType',
 					provider: 'elementSource'
 				}
@@ -81,7 +81,7 @@ describe('ConnectDialog', () => {
 							groupingTags: [
 								'tag1',
 								'tag2',
-								'LabelTag'
+								'unusedtag'
 							],
 							containerClasses: [
 								'narrow',
@@ -145,6 +145,21 @@ describe('ConnectDialog', () => {
 									body: {}
 								}
 							}
+						},
+						{
+							name: 'entry5',
+							title: 'Fifth component',
+							description: 'Wooooords',
+							groupingTags: ['unusedtag'],
+							containerClasses: [
+								'narrow',
+								'footer'
+							],
+							componentDefinition: {
+								html: {
+									body: {}
+								}
+							}
 						}
 					]
 				}
@@ -184,6 +199,9 @@ describe('ConnectDialog', () => {
 						{ name: 'tag3', entries: [
 							{ name: 'entry3' },
 							{ name: 'entry4' }
+						]},
+						{ name: 'uncategorized', entries: [
+							{ name: 'entry5' }
 						]}
 					])}
 					dialogData={Immutable.fromJS({
