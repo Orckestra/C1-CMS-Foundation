@@ -44,7 +44,7 @@ export const PreviewImage = styled.div`
 	border-radius: 5px;
 	border: 1px solid ${colors.borderColor};
 	background-color: white;
-	background-image: url(${ props => props.image });
+	background-image: url('${ props => props.image }');
 	background-position: center center;
 	background-repeat: no-repeat;
 `;
