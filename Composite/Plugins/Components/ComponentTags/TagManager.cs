@@ -27,7 +27,7 @@ namespace Composite.Plugins.Components.ComponentTags
     public class TagManager
     {
         private static Dictionary<string, string> _tagToTitleMap;
-        private const string TagConfigurationsRelativePath = "~/App_Data/Composite/Configuration/Tags.xml";
+        private const string TagConfigurationsRelativePath = "~/App_Data/Composite/Configuration/ComponentTags.xml";
 
         internal TagManager()
         {
