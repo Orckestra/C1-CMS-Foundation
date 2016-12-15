@@ -90,7 +90,7 @@ namespace Composite.Plugins.Components.FileBasedComponentProvider
             }
             catch (XmlException exception)
             {
-                Log.LogVerbose(nameof(FileBasedComponentProvider),$"Error in reading component file: {exception}");
+                Log.LogError(nameof(FileBasedComponentProvider),$"Error in reading component file: {exception}");
                 return null;
             }
 
@@ -143,11 +143,12 @@ namespace Composite.Plugins.Components.FileBasedComponentProvider
 
         private string GuessGroupingTagsBasedOnPath(string componentFile)
         {
+#warning change that
             return Path.GetDirectoryName(componentFile)?
                 .Substring(
                     Path.GetDirectoryName(componentFile)
                         .IndexOf(_providerDirectory.Replace('/', '\\').Replace("~", "")) +
-                    _providerDirectory.Length)
+                    _providerDirectory.Length-1)
                 .Replace(" ","").Replace('\\', ',');
         }
 
