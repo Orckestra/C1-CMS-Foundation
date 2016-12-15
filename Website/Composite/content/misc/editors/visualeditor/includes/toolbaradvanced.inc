@@ -27,8 +27,8 @@
               "list"	: new List(),
               "method" : "get"
             },
-            width: 500,
-            height: 520,
+            width: 1350,
+            height: 780,
             handler: {
               handleDialogResponse: function (response, result) {
                 console.log(response);
