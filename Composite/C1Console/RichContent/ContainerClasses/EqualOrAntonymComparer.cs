@@ -6,12 +6,12 @@ namespace Composite.C1Console.RichContent.ContainerClasses
     {
         public bool Equals(string x, string y)
         {
-            return x.Equals(AntonymContainerClassTagManager.GetAntonym(y)) || x.Equals(y);
+            return x.Equals(AntonymContainerClassManager.GetAntonym(y)) || x.Equals(y);
         }
 
         public int GetHashCode(string obj)
         {
-            return obj.GetHashCode() ^ AntonymContainerClassTagManager.GetAntonym(obj).GetHashCode();
+            return obj.GetHashCode() ^ AntonymContainerClassManager.GetAntonym(obj).GetHashCode();
         }
     }
 }
