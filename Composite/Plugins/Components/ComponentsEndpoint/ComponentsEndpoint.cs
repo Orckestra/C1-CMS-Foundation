@@ -58,7 +58,7 @@ namespace Composite.Plugins.Components.ComponentsEndpoint
             
             if (!containerclass.IsNullOrEmpty())
             {
-                return _componentManager.GetComponents().Where(f => f.ContainerClasses.Contains(containerclass));
+                return _componentManager.GetComponents().Where(f => f.ContainerClasses.Contains(containerclass)|| f.ContainerClasses.IsNullOrEmpty());
             }
             return _componentManager.GetComponents();
         }
