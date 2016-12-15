@@ -112,7 +112,7 @@ namespace Composite.Plugins.Components.FileBasedComponentProvider
                                         GuessGroupingTagsBasedOnPath(componentFile);
 
                 var tagManager = ServiceLocator.GetRequiredService<TagManager>();
-                var groupingTags = groupingTagsRaw.ToLower().Split(',').Select(tagManager.GetTagTitle).ToList();
+                var groupingTags = groupingTagsRaw?.Replace(" ", "").ToLower().Split(',').Select(tagManager.GetTagTitle).ToList();
 
                 var containerClasses =
                     ContainerClassManager.ParseToList(xElement.GetAttributeValue(Namespaces.Components + ContainerClass));
