@@ -65,7 +65,6 @@ const Dialog = props => {
 	let cancelProvider = paneDef.get('cancelProvider') && paneDef.get('cancelProvider').toJS ? paneDef.get('cancelProvider').toJS() : null;
 	let cancelAction = cancelButton ? () => {
 		// Cancel and close dialog
-		console.log('Cancel', props.dialogDef.get('name')); // eslint-disable-line no-console
 		if (cancelProvider) {
 			// Fire off a call to the provider if one exists, send dialog name.
 			props.dispatch(fireAction(cancelProvider, props.dialogDef.get('name')));
@@ -74,12 +73,10 @@ const Dialog = props => {
 	let nextButton = paneDef.get('nextButton') ? paneDef.get('nextButton').toJS() : null;
 	let nextAction = paneDef.get('nextButton') ? () => {
 		// Switch to next pane - set or increment dialogData[showPane]
-		console.log('Next', props.dialogDef.get('name')); // eslint-disable-line no-console
 	} : null;
 	let finishButton = paneDef.get('finishButton') ? paneDef.get('finishButton').toJS() : null;
 	let finishAction = paneDef.get('finishButton') && paneDef.get('finishProvider') && paneDef.get('finishProvider').toJS ? () => {
 		// Complete dialog activity, send back data using provider
-		console.log('Finish', props.dialogDef.get('name'), props.dialogData.toJS()); // eslint-disable-line no-console
 		props.dispatch(fireAction(paneDef.get('finishProvider').toJS(), props.dialogDef.get('name'), props.dialogData.toJS()));
 	} : null;
 	return <DialogBox

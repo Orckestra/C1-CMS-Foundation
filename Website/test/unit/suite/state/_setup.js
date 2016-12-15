@@ -14,6 +14,9 @@ before(done => {
 				call: function (...args) {
 					return this.mockery(...args);
 				},
+				subscribe: function (...args) {
+					return this.mockery(...args);
+				},
 				reset: function () {
 					this.mockery = () => Promise.resolve();
 				}

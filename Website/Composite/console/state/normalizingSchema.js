@@ -18,6 +18,7 @@ export const providerSchema = new Schema('providerDefs', { idAttribute: 'name' }
 export const dialogPaneSchema = new Schema('dialogPaneDefs', { idAttribute: 'name' });
 dialogPaneSchema.define({
 	provider: providerSchema,
+	updateTopic: providerSchema,
 	cancelProvider: providerSchema,
 	finishProvider: providerSchema
 });
