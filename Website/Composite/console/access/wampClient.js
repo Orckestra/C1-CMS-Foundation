@@ -49,6 +49,18 @@ const WAMPClient = {
 				}, onError: reject })
 			)
 		);
+	},
+	subscribe: (uri, handler) => {
+		return getClient('realm')
+		.then(client =>
+			new Promise((resolve, reject) => {
+				client.subscribe(uri, {
+					onSuccess: (...args) => resolve(args),
+					onError: (message, details) => reject({message, details}),
+					onEvent: handler // Potentially needs argument unwrapping
+				});
+			})
+		);
 	}
 };
 

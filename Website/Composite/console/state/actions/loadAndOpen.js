@@ -4,6 +4,7 @@ import { openPage, setPage } from 'console/state/reducers/layout.js';
 import { getLogDates, getLogPage } from 'console/state/actions/logs.js';
 import { getProviderPage } from 'console/state/actions/fetchFromProvider.js';
 import { subscribe } from 'console/state/observers.js';
+import WAMPClient from 'console/access/wampClient.js';
 
 const actionList = {
 	getLogDates,
@@ -50,7 +51,17 @@ const pageLoaders = {
 			let provider = getState().getIn(['providerDefs', paneDef.get('provider')]).toJS();
 			// XXX: Context extraction is hard coded and ugly AF.
 			// Needs to be in page structure data where it belongs,
-			return dispatch(getProviderPage(provider, dialogName, context/*paneDef.get('context')*/));
+			return dispatch(getProviderPage(provider, dialogName, context/*paneDef.get('context')*/))
+			.then(() => {
+				// Subscribe to component update
+				let topic = getState().getIn(['providerDefs', paneDef.get('updateTopic'), 'uri']);
+				if (topic) {
+					WAMPClient.subscribe(topic, () => {
+						// Fetch new list if event
+						dispatch(getProviderPage(provider, dialogName, context/*paneDef.get('context')*/));
+					});
+				}
+			});
 		} else {
 			return Promise.resolve();
 		}
