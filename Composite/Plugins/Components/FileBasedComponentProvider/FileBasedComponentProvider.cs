@@ -85,9 +85,9 @@ namespace Composite.Plugins.Components.FileBasedComponentProvider
 
         private Component GetComponentsFromFile(string componentFile)
         {
+            var document = XDocumentUtils.Load(componentFile);
 
-            var doc = XDocumentUtils.Load(componentFile);
-            var xElement = doc.Descendants().FirstOrDefault();
+            var xElement = document.Descendants().FirstOrDefault();
 
             if (xElement != null)
             {
@@ -161,6 +161,10 @@ namespace Composite.Plugins.Components.FileBasedComponentProvider
                       .Merge(Observable.FromEventPattern<FileSystemEventHandler, FileSystemEventArgs>(
                         h => fileSystemWatcher.Changed += h,
                         h => fileSystemWatcher.Changed -= h)
+                        .Select(e => new ComponentChange() { ProviderId = nameof(FileBasedComponentProvider) }))
+                      .Merge(Observable.FromEventPattern<FileSystemEventHandler, FileSystemEventArgs>(
+                        h => fileSystemWatcher.Created += h,
+                        h => fileSystemWatcher.Created -= h)
                         .Select(e => new ComponentChange() { ProviderId = nameof(FileBasedComponentProvider) }))
                       .Merge(Observable.FromEventPattern<RenamedEventHandler, RenamedEventArgs>(
                         h => fileSystemWatcher.Renamed += h,
