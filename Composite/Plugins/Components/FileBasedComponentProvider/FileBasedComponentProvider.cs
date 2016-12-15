@@ -5,19 +5,16 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reactive;
 using System.Reactive.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Xml;
 using System.Xml.Linq;
-using Castle.Core.Internal;
 using Composite.C1Console.RichContent.ContainerClasses;
 using Composite.Core;
 using Composite.Core.IO;
 using Composite.Core.Xml;
 using Composite.Plugins.Components.ComponentTags;
-
-#warning Code gone A MOCK! This is far from done.
 
 namespace Composite.Plugins.Components.FileBasedComponentProvider
 {
@@ -80,12 +77,22 @@ namespace Composite.Plugins.Components.FileBasedComponentProvider
         {
             return C1Directory.GetFiles(
                 PathUtil.Resolve(_providerDirectory), _searchPattern, _searchOption)
-                .Select(GetComponentsFromFile);
+                .Select(GetComponentsFromFile).Where(f => f != null);
         }
 
         private Component GetComponentsFromFile(string componentFile)
         {
-            var document = XDocumentUtils.Load(componentFile);
+            XDocument document =null;
+
+            try
+            {
+                document = XDocumentUtils.Load(componentFile);
+            }
+            catch (XmlException exception)
+            {
+                Log.LogVerbose(nameof(FileBasedComponentProvider),$"Error in reading component file: {exception}");
+                return null;
+            }
 
             var xElement = document.Descendants().FirstOrDefault();
 

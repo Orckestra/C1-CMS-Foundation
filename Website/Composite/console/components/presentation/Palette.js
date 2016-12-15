@@ -47,6 +47,7 @@ export const PreviewImage = styled.div`
 	background-image: url('${ props => props.image }');
 	background-position: center center;
 	background-repeat: no-repeat;
+	background-size: cover;
 `;
 export const PreviewIcon = styled(Icon)`
 	width: 100px;
@@ -59,24 +60,25 @@ export const PreviewIcon = styled(Icon)`
 	border: 1px solid ${colors.borderColor};
 	background-color: white;
 `;
-export const Label = styled.h3`
+export const InfoBox = styled.div`
 	position: absolute;
 	left: 150px;
-	top: 0;
+	top: 15px;
+	width: 260px;
+	height: 112px;
+	overflow-y: auto;
+`;
+export const Label = styled.h3`
 	font-weight: normal;
 	color: ${colors.fieldLabelColor};
+	margin: 0 0 10px;
 `;
 export const Description = styled.p`
-	position: absolute;
-	left: 150px;
-	top: 26px;
-	width: 260px;
-	max-height: 80px;
-	overflow-y: auto;
+margin: 10px 0;
 `;
 
 function resolveMediaURI(uri) {
-	return '/media(' + uri + ')?mw=100&mh=100';
+	return uri;
 }
 
 const Palette = props => {
@@ -103,8 +105,10 @@ const Palette = props => {
 							<PreviewImage image={resolveMediaURI(item.getIn(['imageUri', 'customImageUri']))}/> :
 							<PreviewIcon id={item.getIn(['imageUri', 'iconName']) || 'base-function-function'}/>
 						}
-						<Label>{item.get('title')}</Label>
-						<Description>{item.get('description')}</Description>
+						<InfoBox>
+							<Label>{item.get('title')}</Label>
+							<Description>{item.get('description')}</Description>
+						</InfoBox>
 					</Item>;
 				}).toArray()}
 			</ItemGroup>
