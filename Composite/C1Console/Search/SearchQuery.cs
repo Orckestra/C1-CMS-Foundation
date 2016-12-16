@@ -96,6 +96,10 @@ namespace Composite.C1Console.Search
             MaxDocumentsNumber = 100;
         }
 
+        /// <summary>
+        /// Filters search results by data types.
+        /// </summary>
+        /// <param name="dataTypes"></param>
         public void FilterByDataTypes(IEnumerable<Type> dataTypes)
         {
             Verify.ArgumentNotNull(dataTypes, nameof(dataTypes));
@@ -169,11 +173,6 @@ namespace Composite.C1Console.Search
         /// To be used to filter results by facet field values.
         /// </summary>
         public ICollection<SearchQuerySelection> Selection { get; set; } = new List<SearchQuerySelection>();
-
-        /// <summary>
-        /// Indicates whether the results should be sorted by weight/relevance.
-        /// </summary>
-        public bool SortByRelevance { get; set; }
 
         /// <summary>
         /// Sort options.
