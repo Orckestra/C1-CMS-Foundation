@@ -49,7 +49,6 @@
 	SearchResult result = null;
 	string sortField = null;
 	bool sortByAscending = true;
-	bool sortByRelevance = false;
 	IList<DocumentField> facetFields = null;
 
 	if (IsPost)
@@ -57,7 +56,6 @@
 		text = Request["q"];
 		sortField = Request["sf"];
 		sortByAscending = bool.Parse(Request["sfd"]);
-		sortByRelevance = Request["sbr"] == "1";
 
 		string root = Request["r"];
 		if (root != null)
@@ -106,8 +104,7 @@
 			{
 				Facets = facetFields.Select(f => new KeyValuePair<string, DocumentFieldFacet>(f.Name, f.Facet)).ToList(),
 				Selection = selections,
-				SortOptions = sortOptions,
-				SortByRelevance = sortByRelevance
+				SortOptions = sortOptions
 			};
 
 			result = SearchFacade.SearchConsoleAsync(query, true, searchRoot).Result;
@@ -149,10 +146,6 @@
 <form method="POST" id="search">
 	<div>
 		<input name="q" type="text" class="searchfield" value="@text"/>
-		<div>
-			<input type="checkbox" id="sortByRelevance" name="sbr" value="1" @if (@sortByRelevance) { <text> checked="checked" </text>  } />
-			<label for="sbr">Sort by relevance</label>
-		</div>
 
 		<input id="sortField" name="sf" value="@sortField" type="hidden"/>
 		<input id="sortAsc" name="sfd" value="@sortByAscending.ToString()" type="hidden" />
