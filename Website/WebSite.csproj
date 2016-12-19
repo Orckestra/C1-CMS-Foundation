@@ -2630,8 +2630,7 @@ if not %25rce%25==1 exit %25rce%25 else exit 0</PreBuildEvent>
     </PostBuildEvent>
     <PostBuildEvent>if not exist "$(ProjectDir)\bin\ExtraDllVersion" (
  md "$(ProjectDir)\bin\ExtraDllVersion"
- rem cd "$(SolutionDir)\Packages\System.Collections.Immutable.1.2.0\lib\netstandard1.0" 
- start /MIN copy "$(SolutionDir)\Packages\System.Collections.Immutable.1.2.0\lib\netstandard1.0\*.dll" "$(ProjectDir)\bin\ExtraDllVersion"
+ copy "$(ProjectDir)\..\Packages\System.Collections.Immutable.1.2.0\lib\netstandard1.0\*.dll" "$(ProjectDir)\bin\ExtraDllVersion" /y
   )</PostBuildEvent>
   </PropertyGroup>
 </Project>
