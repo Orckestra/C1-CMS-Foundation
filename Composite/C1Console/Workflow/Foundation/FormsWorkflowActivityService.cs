@@ -1,7 +1,9 @@
 using System;
-using System.Xml;
 using System.Collections.Generic;
+using System.Linq;
+using System.Xml.Linq;
 using Composite.C1Console.Actions;
+using Composite.C1Console.Elements;
 using Composite.C1Console.Forms.Flows;
 using Composite.Data.Validation.ClientValidationRules;
 
@@ -12,13 +14,7 @@ namespace Composite.C1Console.Workflow.Foundation
     {
         public void DeliverFormData(Guid instanceId, string containerLabel, IFlowUiContainerType containerType, string formDefinition, Dictionary<string, object> bindings)
         {
-            FormData formData;
-
-            if (WorkflowFacade.TryGetFormData(instanceId, out formData) == false)
-            {
-                formData = new FormData();
-                WorkflowFacade.AddFormData(instanceId, formData);
-            }
+            var formData = GetOrAddFormData(instanceId);
 
             formData.ContainerLabel = containerLabel;
             formData.ContainerType = containerType;
@@ -31,13 +27,7 @@ namespace Composite.C1Console.Workflow.Foundation
 
         public void DeliverFormData(Guid instanceId, string containerLabel, IFlowUiContainerType containerType, IFormMarkupProvider formMarkupProvider, Dictionary<string, object> bindings)
         {
-            FormData formData;
-
-            if (WorkflowFacade.TryGetFormData(instanceId, out formData) == false)
-            {
-                formData = new FormData();
-                WorkflowFacade.AddFormData(instanceId, formData);
-            }
+            var formData = GetOrAddFormData(instanceId);
 
             formData.ContainerLabel = containerLabel;
             formData.ContainerType = containerType;
@@ -50,16 +40,10 @@ namespace Composite.C1Console.Workflow.Foundation
 
         public void DeliverFormData(Guid instanceId, string containerLabel, IFlowUiContainerType containerType, string formDefinition, Dictionary<string, object> bindings, Dictionary<string, List<ClientValidationRule>> bindingsValidationRules)
         {
-            FormData formData;
-
-            if (WorkflowFacade.TryGetFormData(instanceId, out formData) == false)
-            {
-                formData = new FormData();
-                WorkflowFacade.AddFormData(instanceId, formData);
-            }
+            var formData = GetOrAddFormData(instanceId);
 
             formData.ContainerLabel = containerLabel;
-            formData.ContainerType = containerType;            
+            formData.ContainerType = containerType;
             formData.FormDefinition = formDefinition;
             formData.FormMarkupProvider = null;
             formData.Bindings = bindings;
@@ -70,13 +54,7 @@ namespace Composite.C1Console.Workflow.Foundation
 
         public void DeliverFormData(Guid instanceId, string containerLabel, IFlowUiContainerType containerType, IFormMarkupProvider formMarkupProvider, Dictionary<string, object> bindings, Dictionary<string, List<ClientValidationRule>> bindingsValidationRules)
         {
-            FormData formData;
-
-            if (WorkflowFacade.TryGetFormData(instanceId, out formData) == false)
-            {
-                formData = new FormData();
-                WorkflowFacade.AddFormData(instanceId, formData);
-            }
+            var formData = GetOrAddFormData(instanceId);
 
             formData.ContainerLabel = containerLabel;
             formData.ContainerType = containerType;
@@ -86,38 +64,65 @@ namespace Composite.C1Console.Workflow.Foundation
             formData.BindingsValidationRules = bindingsValidationRules;
         }
 
- 
+
+        public void AddCustomToolbarItem(Guid instanceId, string itemId, XDocument markup, ActionGroupPriority priority)
+        {
+            Verify.ArgumentNotNull(itemId, nameof(itemId));
+            Verify.ArgumentNotNull(markup, nameof(markup));
+
+            var formData = GetOrAddFormData(instanceId);
+
+            if (formData.CustomToolbarItems == null)
+            {
+                formData.CustomToolbarItems = new List<Tuple<string, XDocument, ActionGroupPriority>>();
+            }
+            else
+            {
+                var existingItem = formData.CustomToolbarItems.FirstOrDefault(i => i.Item1 == itemId);
+                if (existingItem != null)
+                {
+                    formData.CustomToolbarItems.Remove(existingItem);
+                }
+            }
+            
+            formData.CustomToolbarItems.Add(new Tuple<string, XDocument, ActionGroupPriority>(
+                itemId, markup, priority));
+        }
 
         public FlowControllerServicesContainer GetFlowServicesContainer(Guid instanceId)
         {
-            throw new Exception("The method or operation is not implemented.");
+            throw new NotImplementedException();
         }
 
         public void DeliverCustomToolbarDefinition(Guid instanceId, string customToolbarDefinition)
         {
-            if (string.IsNullOrEmpty(customToolbarDefinition)) throw new ArgumentNullException("customToolbarDefinition");
-            FormData formData;
+            Verify.ArgumentNotNullOrEmpty(customToolbarDefinition, nameof(customToolbarDefinition));
 
-            if (WorkflowFacade.TryGetFormData(instanceId, out formData) == false)
-            {
-                formData = new FormData();
-                WorkflowFacade.AddFormData(instanceId, formData);
-            }
-
-            formData.CustomToolbarDefinition = customToolbarDefinition;
+            AddCustomToolbarItem(instanceId, "default", 
+                XDocument.Parse(customToolbarDefinition), ActionGroupPriority.TargetedAppendMedium);
         }
 
         public void DeliverCustomToolbarDefinition(Guid instanceId, IFormMarkupProvider customToolbarMarkupProvider)
         {
+            Verify.ArgumentNotNull(customToolbarMarkupProvider, nameof(customToolbarMarkupProvider));
+
+            var doc = XDocument.Load(customToolbarMarkupProvider.GetReader());
+
+            AddCustomToolbarItem(instanceId, "default", doc, ActionGroupPriority.TargetedAppendMedium);
+        }
+
+
+        private FormData GetOrAddFormData(Guid instanceId)
+        {
             FormData formData;
 
-            if (WorkflowFacade.TryGetFormData(instanceId, out formData) == false)
+            if (!WorkflowFacade.TryGetFormData(instanceId, out formData))
             {
                 formData = new FormData();
                 WorkflowFacade.AddFormData(instanceId, formData);
             }
 
-            formData.CustomToolbarMarkupProvider = customToolbarMarkupProvider;
+            return formData;
         }
 
     }

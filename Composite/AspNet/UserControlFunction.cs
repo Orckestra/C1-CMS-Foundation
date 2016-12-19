@@ -1,12 +1,15 @@
-﻿using System.Web.UI;
+﻿using System.Collections.Generic;
+using System.Web.UI;
 using Composite.Functions;
+using Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvider;
 
 namespace Composite.AspNet
 {
     /// <summary>
     /// Base class for a UserControls that represents a C1 function
     /// </summary>
-    public abstract class UserControlFunction : UserControl
+    public abstract class UserControlFunction : UserControl, IParameterWidgetsProvider
+
     {
         /// <summary>
         /// Gets the function description.
@@ -24,5 +27,12 @@ namespace Composite.AspNet
             get; 
             set;
         }
+
+        /// <exclude />
+        public virtual IDictionary<string, WidgetFunctionProvider> GetParameterWidgets()
+        {
+            return null;
+        }
+
     }
 }
