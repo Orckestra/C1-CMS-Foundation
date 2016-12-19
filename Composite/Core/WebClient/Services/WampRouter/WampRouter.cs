@@ -11,7 +11,7 @@ namespace Composite.Core.WebClient.Services.WampRouter
 {
     internal class WampRouter
     {
-        private const string DefaultRealmName = "realm1";
+        private const string DefaultRealmName = "realm";
         private WampHost _host;
 
         public WampRouter()
@@ -21,12 +21,22 @@ namespace Composite.Core.WebClient.Services.WampRouter
             StartWampRouter();
         }
 
+        public void RegisterCallee(IRpcService instance)
+        {
+            RegisterCallee(DefaultRealmName, instance);
+        }
+
         public void RegisterCallee(string realmName, IRpcService instance) 
         {
             var realm = _host.RealmContainer.GetRealmByName(realmName);
 
             var registrationTask = realm.Services.RegisterCallee(instance);
             registrationTask.Wait();
+        }
+
+        public void RegisterPublisher<T1, T2>(string topicName, IWampEventHandler<T1, T2> eventObservable)
+        {
+            RegisterPublisher(DefaultRealmName, topicName, eventObservable);
         }
 
         public void RegisterPublisher<T1,T2>(string realmName, string topicName, IWampEventHandler<T1,T2> eventObservable)

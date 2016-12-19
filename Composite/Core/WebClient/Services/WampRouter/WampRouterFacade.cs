@@ -23,6 +23,21 @@ namespace Composite.Core.WebClient.Services.WampRouter
         }
 
         /// <summary>
+        /// Method for registering callee
+        /// </summary>
+        /// <param name="realmName"></param>
+        /// <param name="instance"></param>
+        /// <returns></returns>
+        public static bool RegisterCallee(IRpcService instance)
+        {
+            var wampRouter = ServiceLocator.GetRequiredService<WampRouter>();
+            if (wampRouter == null)
+                return false;
+            wampRouter.RegisterCallee(instance);
+            return true;
+        }
+
+        /// <summary>
         /// Method for registering publisher
         /// </summary>
         /// <param name="realmName"></param>
@@ -36,6 +51,23 @@ namespace Composite.Core.WebClient.Services.WampRouter
             if (wampRouter == null)
                 return false;
             wampRouter.RegisterPublisher(realmName, topicName, eventObservable);
+            return true;
+        }
+
+        /// <summary>
+        /// Method for registering publisher
+        /// </summary>
+        /// <param name="realmName"></param>
+        /// <param name="topicName"></param>
+        /// <param name="eventObservable"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static bool RegisterPublisher<T1, T2>(string topicName, IWampEventHandler<T1, T2> eventObservable)
+        {
+            var wampRouter = ServiceLocator.GetRequiredService<WampRouter>();
+            if (wampRouter == null)
+                return false;
+            wampRouter.RegisterPublisher(topicName, eventObservable);
             return true;
         }
     }
