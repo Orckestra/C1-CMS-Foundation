@@ -121,7 +121,7 @@ namespace Composite.Plugins.Components.FileBasedComponentProvider
                 var antiTags =
                     ContainerClassManager.ParseToList(xElement.GetAttributeValue(Namespaces.Components + AntiTags));
 
-                var imageUri = new ImageUri()
+                var componentImage = new ComponentImage()
                 {
                     CustomImageUri = xElement.GetAttributeValue(Namespaces.Components + Image),
                     IconName = xElement.GetAttributeValue(Namespaces.Components + Icon)
@@ -137,7 +137,7 @@ namespace Composite.Plugins.Components.FileBasedComponentProvider
                     GroupingTags = groupingTags,
                     ContainerClasses = containerClasses,
                     AntiTags = antiTags,
-                    ImageUri = imageUri,
+                    ComponentImage = componentImage,
                     ComponentDefinition = xElement.Document
                 };
             }
