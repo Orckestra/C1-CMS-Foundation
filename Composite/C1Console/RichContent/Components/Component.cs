@@ -11,6 +11,7 @@ namespace Composite.C1Console.RichContent.Components
         public virtual string Description { get; set; }
         public virtual IEnumerable<string> GroupingTags { get; set; }
         public virtual IEnumerable<string> ContainerClasses { get; set; }
+        public virtual IEnumerable<string> AntiTags { get; set; }
         public virtual ImageUri ImageUri { get; set; }
         public virtual XDocument ComponentDefinition { get; set; }
     }

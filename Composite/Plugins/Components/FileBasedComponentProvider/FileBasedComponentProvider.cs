@@ -38,6 +38,7 @@ namespace Composite.Plugins.Components.FileBasedComponentProvider
         private const string ContainerClass = "container-class";
         private const string Image = "image";
         private const string Icon = "icon";
+        private const string AntiTags = "container-anti-tags";
 
         private readonly ComponentChangeNotifier _changeNotifier;
         private readonly string _providerDirectory;
@@ -117,6 +118,9 @@ namespace Composite.Plugins.Components.FileBasedComponentProvider
                 var containerClasses =
                     ContainerClassManager.ParseToList(xElement.GetAttributeValue(Namespaces.Components + ContainerClass));
 
+                var antiTags =
+                    ContainerClassManager.ParseToList(xElement.GetAttributeValue(Namespaces.Components + AntiTags));
+
                 var imageUri = new ImageUri()
                 {
                     CustomImageUri = xElement.GetAttributeValue(Namespaces.Components + Image),
@@ -132,6 +136,7 @@ namespace Composite.Plugins.Components.FileBasedComponentProvider
                     Description = description,
                     GroupingTags = groupingTags,
                     ContainerClasses = containerClasses,
+                    AntiTags = antiTags,
                     ImageUri = imageUri,
                     ComponentDefinition = xElement.Document
                 };
