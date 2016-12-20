@@ -11,6 +11,7 @@ using WampSharp.V2.Realm;
 
 namespace Composite.Core.WebClient.Services.WampRouter
 {
+    /// <exclude />
     [Route("Composite2/api/Router")]
     public class MyRouterController : AspNetWebsocketTransform.RouterController
     {
