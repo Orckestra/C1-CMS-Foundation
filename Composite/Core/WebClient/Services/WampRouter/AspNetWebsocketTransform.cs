@@ -78,12 +78,10 @@ namespace Composite.Core.WebClient.Services.WampRouter
         }
 
         /// <exclude />
-        [RoutePrefix("Composite/api/Router")]
         public class RouterController : ApiController
         {
             /// <exclude />
-            [Route("")]
-            public HttpResponseMessage Get()
+            public virtual HttpResponseMessage Get()
             {
                 if (HttpContext.Current.IsWebSocketRequest)
                 {

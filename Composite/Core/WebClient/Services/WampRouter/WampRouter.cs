@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Net.Http;
 using System.Reactive.Subjects;
+using System.Web.Http;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using WampSharp.Binding;
@@ -9,6 +11,11 @@ using WampSharp.V2.Realm;
 
 namespace Composite.Core.WebClient.Services.WampRouter
 {
+    [Route("Composite2/api/Router")]
+    public class MyRouterController : AspNetWebsocketTransform.RouterController
+    {
+    }
+
     internal class WampRouter
     {
         private const string DefaultRealmName = "realm";
