@@ -175,7 +175,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class2.cs" />
     <Compile Include="Composite\content\dialogs\functions\editFunctionCall.aspx.designer.cs">
       <DependentUpon>editFunctionCall.aspx</DependentUpon>
     </Compile>

@@ -13,15 +13,15 @@ namespace Composite.Core.WebClient.Services.WampRouter
 {
     /// <exclude />
     [Route("Composite/api/Router")]
-    public class MyRouterController : AspNetWebsocketTransform.RouterController
+    public class AuthenticatedRouterController : AspNetWebsocketTransform.RouterController
     {
         /// <exclude />
-        public MyRouterController() : this(ServiceLocator.GetService<WampRouter>().GetTransport())
+        public AuthenticatedRouterController() : this(ServiceLocator.GetService<WampRouter>().GetTransport())
         {
         }
 
         /// <exclude />
-        public MyRouterController(AspNetWebsocketTransform aspNetWebsocketTransform) 
+        public AuthenticatedRouterController(AspNetWebsocketTransform aspNetWebsocketTransform) 
                 : base(aspNetWebsocketTransform)
         {
         }
