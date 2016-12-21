@@ -35,6 +35,11 @@ module.exports = function (grunt) {
 				{ expand: true, cwd: 'bower_components/codemirror/mode/sql', src: ['*.*'], dest: 'Composite/lib/codemirror/mode/sql' },
 				{ expand: true, cwd: 'bower_components/codemirror/mode/xml', src: ['*.*'], dest: 'Composite/lib/codemirror/mode/xml' }
 			]
+		},
+		autobahnjs: {
+			files: [
+				{ expand: true, cwd: 'bower_components/autobahnjs', src: ['autobahn.js'], dest: 'Composite/lib/autobahnjs' },
+			]
 		}
 	});
 
@@ -131,13 +136,13 @@ module.exports = function (grunt) {
 				// Done, run the uglify task
 				grunt.task.run(['uglify:default']);
 
-				
+
 			    // Generating "toplevelclassnames.js"
 				var topLevelClassNamesTargetFolder = 'Composite/scripts/source';
                 var topLevelClassNamesIgnoreFolder = 'Composite/scripts/source/page';
 
 				grunt.file.recurse(topLevelClassNamesTargetFolder, function (filepath) {
-				    if (filepath.indexOf(topLevelClassNamesIgnoreFolder) >= 0 || 
+				    if (filepath.indexOf(topLevelClassNamesIgnoreFolder) >= 0 ||
                         filepath.indexOf(".js") < 0) {
 				        return;
 				    }
@@ -159,7 +164,7 @@ module.exports = function (grunt) {
 
 
     // ****************************************************************************************************
-    //  SVG                        
+    //  SVG
     // ****************************************************************************************************
 
 
@@ -198,6 +203,74 @@ module.exports = function (grunt) {
 	    grunt.file.write(targetFile, resultSvg.join(''));
     });
 
+		// Optimize source svgs
+
+		var iconTmpDir = 'iconTmp/';
+
+		grunt.loadNpmTasks('grunt-svgmin');
+		grunt.config("svgmin", {
+        options: {
+            plugins: [
+							{ removeDesc: false },
+							{ removeUselessDefs: false },
+							{ removeEmptyAttrs: false },
+							{ removeHiddenElems: false },
+							{ removeEmptyText: false },
+							{ removeEmptyContainers: false },
+							{ cleanUpEnableBackground: false },
+							{ minifyStyles: false },
+							{ convertStyleToAttrs: false },
+							{ convertColors: false },
+							{ convertPathData: false },
+							{ convertTransform: false },
+							{ removeUnknownsAndDefaults: false },
+							{ removeNonInheritableGroupAttrs: false },
+							{ removeUselessStrokeAndFill: false },
+							{ removeUnusedNS: false },
+							{ cleanupNumericValues: false },
+							{ cleanupListOfValues: false },
+							{ moveElemsAttrsToGroup: false },
+							{ moveGroupAttrsToElems: false },
+							{ collapseGroups: false },
+							{ mergePaths: false },
+							{ convertShapeToPath: false }
+						]
+        },
+        dist: {
+            files: [{
+							expand: true,
+							cwd: 'Composite/images/icons/svg/',
+							src: ['*.svg'],
+							dest: iconTmpDir
+            }]
+        }
+    });
+
+		grunt.registerTask('buildSpriteSheet', function () {
+			grunt.task.requires('svgmin');
+
+			var outputFile = 'Composite/console/icons.svg';
+			var inputDir = iconTmpDir;
+			var outputText = '<svg xmlns="http://www.w3.org/2000/svg">\r\n';
+			grunt.file.recurse(inputDir, function (filePath) {
+				var fileName = filePath.replace(/^.*\/([^\/]*).svg/, '$1');
+				var fileText = grunt.file.read(filePath);
+
+				outputText += fileText
+					.replace('<svg', '<symbol id="icon-' + fileName + '"')
+					.replace('</svg>', '</symbol>')
+					.replace('xlink:href="#', 'xlink:href="#icon-')
+					.replace(/(?:stroke|fill)="#(?:([0-9a-eA-E])\1{2,5})"/g, '')
+					 + '\r\n';
+			});
+			outputText += '</svg>\r\n';
+
+			grunt.file.write(outputFile, outputText);
+			grunt.file.delete(iconTmpDir);
+		});
+
+		grunt.registerTask('icons', ['svgmin', 'buildSpriteSheet']);
+
 	//************************************************************************************************************************************************
 	// WATCH
 	//************************************************************************************************************************************************
@@ -222,6 +295,6 @@ module.exports = function (grunt) {
 
 	grunt.registerTask('watchAll', ['watch']);
 	// Register the default tasks.
-	grunt.registerTask('build', ['copy', 'less', 'postcss', 'uglifyCompileScripts', 'mergeSvg']);
+	grunt.registerTask('build', ['copy', 'less', 'postcss', 'uglifyCompileScripts', 'mergeSvg', 'icons']);
 	grunt.registerTask('default', ['build']);
 };

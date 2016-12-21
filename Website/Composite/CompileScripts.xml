@@ -26,11 +26,13 @@
 			<Script filename="${root}/scripts/compressed/top.js"/>
 		</Mode>
 		<Mode name="develop">
+			<Script filename="${root}/lib/autobahnjs/autobahn.js"/>
 			<Script filename="${root}/scripts/source/top/interfaces/IAcceptable.js"/>
 			<Script filename="${root}/scripts/source/top/interfaces/IActionListener.js"/>
 			<Script filename="${root}/scripts/source/top/interfaces/IActivatable.js"/>
 			<Script filename="${root}/scripts/source/top/interfaces/IActivationAware.js"/>
 			<Script filename="${root}/scripts/source/top/interfaces/IBroadcastListener.js"/>
+			<Script filename="${root}/scripts/source/top/interfaces/IContextContainerBinding.js"/>
 			<Script filename="${root}/scripts/source/top/interfaces/ICrawlerHandler.js"/>
 			<Script filename="${root}/scripts/source/top/interfaces/IData.js"/>
 			<Script filename="${root}/scripts/source/top/interfaces/IDialogResponseHandler.js"/>
@@ -60,6 +62,7 @@
 			<Script filename="${root}/scripts/source/top/core/BroadcastMessages.js"/>
 			<Script filename="${root}/scripts/source/top/core/EventBroadcaster.js"/>
 			<Script filename="${root}/scripts/source/top/core/Constants.js"/>
+			<Script filename="${root}/scripts/source/top/core/ContextContainer.js"/>
 			<Script filename="${root}/scripts/source/top/core/Client.js"/>
 			<Script filename="${root}/scripts/source/top/dev/SystemLogger.js"/>
 			<Script filename="${root}/scripts/source/top/dev/SystemTimer.js"/>

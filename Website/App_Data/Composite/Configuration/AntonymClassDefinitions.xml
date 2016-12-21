@@ -1,0 +1,4 @@
+<Classes>
+	<Class name="wide" antonym="narrow"/>
+	<Class name="narrow" antonym="wide"/>
+</Classes>

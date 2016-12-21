@@ -61,11 +61,14 @@ namespace CompositeMultiContentXhtmlEditor
             {
                 if (handledIds.Contains(placeHolderId) == false)
                 {
+                    string containerClasses = this.PlaceholderContainerClasses.ContainsKey(placeHolderId) ? this.PlaceholderContainerClasses[placeHolderId] : "";
                     TextBox contentTextBox = new Composite.Core.WebClient.UiControlLib.TextBox();
                     contentTextBox.TextMode = TextBoxMode.MultiLine;
                     contentTextBox.ID = placeHolderId;
                     contentTextBox.Attributes.Add("placeholderid", placeHolderId);
                     contentTextBox.Attributes.Add("placeholdername", this.PlaceholderDefinitions[placeHolderId]);
+                    contentTextBox.Attributes.Add("containerclasses", containerClasses);
+
                     if ( isFirst )
                     {
                         contentTextBox.Attributes.Add("selected", "true");

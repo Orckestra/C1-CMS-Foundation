@@ -1,6 +1,6 @@
 ﻿using System;
-using Composite.C1Console.Forms.Foundation;
 using System.Collections.Generic;
+using Composite.C1Console.Forms.Foundation;
 
 namespace Composite.C1Console.Forms.CoreUiControls
 {
@@ -19,6 +19,9 @@ namespace Composite.C1Console.Forms.CoreUiControls
 
         [FormsProperty]
         public string ClassConfigurationName { get; set; }
+
+        [FormsProperty]
+        public string ContainerClasses { get; set; }
 
         [FormsProperty]
         public IEnumerable<Type> EmbedableFieldsTypes { get; set; }

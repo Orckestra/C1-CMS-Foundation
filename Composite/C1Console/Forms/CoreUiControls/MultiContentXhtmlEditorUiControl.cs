@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Globalization;
-using System.ComponentModel;
-
-
-using Composite.C1Console.Forms.Foundation;
 using System.Collections.Generic;
+using Composite.C1Console.Forms.Foundation;
 
 namespace Composite.C1Console.Forms.CoreUiControls
 {
@@ -12,6 +8,9 @@ namespace Composite.C1Console.Forms.CoreUiControls
     {
         [FormsProperty()]
         public Dictionary<string, string> PlaceholderDefinitions { get; set; }
+
+        [FormsProperty()]
+        public Dictionary<string, string> PlaceholderContainerClasses { get; set; }
 
         [FormsProperty()]
         public string DefaultPlaceholderId { get; set; }

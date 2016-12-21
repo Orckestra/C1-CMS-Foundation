@@ -130,7 +130,7 @@ _Application.prototype = {
  	isBlurred: false,
 
 	/**
-	 * @type {boolean} 
+	 * @type {boolean}
 	 */
  	isTestEnvironment: true,
 
@@ -351,6 +351,8 @@ _Application.prototype = {
 	login : function () {
 
 		this.isLoggedIn = true;
+
+		// Add Autobahn startup here. Obtain session, subscribe to messages
 
 		ConfigurationService		= WebServiceProxy.createProxy ( Constants.URL_WSDL_CONFIGURATION );
 		ConsoleMessageQueueService	= WebServiceProxy.createProxy ( Constants.URL_WSDL_MESSAGEQUEUE );
