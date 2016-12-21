@@ -4,12 +4,14 @@ import SwitchPanel from 'console/components/presentation/SwitchPanel.js';
 import ConnectToolbarFrame from 'console/components/container/ConnectToolbarFrame.js';
 import ConnectDialog from 'console/components/container/ConnectDialog.js';
 import Spritesheet from 'console/components/presentation/Spritesheet.js';
+import SearchPage from 'console/components/presentation/SearchPage.js';
 import Immutable from 'immutable';
 
 let panelTypes = {
 	document: ConnectToolbarFrame,
 	spritesheet: Spritesheet,
-	dialogPageShim: ConnectDialog
+	dialogPageShim: ConnectDialog,
+	search: SearchPage
 };
 
 function mapStateToProps(state) {

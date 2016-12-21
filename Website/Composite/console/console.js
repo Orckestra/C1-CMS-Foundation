@@ -60,6 +60,20 @@ const initialState = {
 			name: 'svg-sprites',
 			label: 'SVG Spritesheet',
 			type: 'spritesheet'
+		},
+		search: {
+			name: 'search',
+			label: 'Search',
+			type: 'search',
+			searchProvider: 'searchProvider',
+			providers: ['searchProvider']
+		}
+	},
+	providerDefs: {
+		searchProvider: {
+			name: 'searchProvider',
+			protocol: 'wamp',
+			uri: 'content.search' // TBD
 		}
 	}
 };
