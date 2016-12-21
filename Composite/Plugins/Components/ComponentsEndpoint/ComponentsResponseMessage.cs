@@ -93,7 +93,7 @@ namespace Composite.Plugins.Components.ComponentsEndpoint
         /// <exclude />
         public string Action => "DialogPageBinding.ACTION_RESPONSE";
         /// <exclude />
-        public List<string> Markup => new List<string>() { "selectedComponentDefinition", "html", "body", "f:function" };
+        public List<string> Markup => new List<string>() { "selectedComponentDefinition" };
         /// <exclude />
         public override string Uri => "";
     }
