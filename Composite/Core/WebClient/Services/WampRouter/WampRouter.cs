@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Net.Http;
 using System.Reactive.Subjects;
+using System.Web.Http;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using WampSharp.Binding;
@@ -9,6 +11,12 @@ using WampSharp.V2.Realm;
 
 namespace Composite.Core.WebClient.Services.WampRouter
 {
+    /// <exclude />
+    [Route("Composite/api/Router")]
+    public class MyRouterController : AspNetWebsocketTransform.RouterController
+    {
+    }
+
     internal class WampRouter
     {
         private const string DefaultRealmName = "realm";
@@ -34,19 +42,21 @@ namespace Composite.Core.WebClient.Services.WampRouter
             registrationTask.Wait();
         }
 
-        public void RegisterPublisher<T1, T2>(IWampEventHandler<T1, T2> eventObservable)
+        public void RegisterPublisher<TObservable, TResult>
+            (IWampEventHandler<TObservable, TResult> eventObservable)
         {
             RegisterPublisher(DefaultRealmName, eventObservable);
         }
 
-        public void RegisterPublisher<T1,T2>(string realmName, IWampEventHandler<T1,T2> eventObservable)
+        public void RegisterPublisher<TObservable, TResult>
+            (string realmName, IWampEventHandler<TObservable,TResult> eventObservable)
         {
             IWampHostedRealm realm = _host.RealmContainer.GetRealmByName(realmName);
 
-            ISubject<T2> subject =
-                realm.Services.GetSubject<T2>(eventObservable.Topic);
+            ISubject<TResult> subject =
+                realm.Services.GetSubject<TResult>(eventObservable.Topic);
 
-            IObservable<T1> observableEvent = eventObservable.Event;
+            IObservable<TObservable> observableEvent = eventObservable.Event;
 
             IDisposable disposable =
                 observableEvent.Subscribe(x =>

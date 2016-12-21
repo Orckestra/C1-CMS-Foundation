@@ -7,10 +7,5 @@ namespace Composite.Core.WebClient.Services.WampRouter
     /// </summary>
     public interface IRpcService
     {
-        /// <summary>
-        /// Basic ping method
-        /// </summary>
-        [WampProcedure("ping")]
-        void Ping();
     }
 }

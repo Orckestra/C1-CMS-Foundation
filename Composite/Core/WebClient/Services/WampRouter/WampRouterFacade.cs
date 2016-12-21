@@ -1,5 +1,3 @@
-using Composite.Core.Application;
-
 namespace Composite.Core.WebClient.Services.WampRouter
 {
     /// <summary>
@@ -25,7 +23,6 @@ namespace Composite.Core.WebClient.Services.WampRouter
         /// <summary>
         /// Method for registering callee
         /// </summary>
-        /// <param name="realmName"></param>
         /// <param name="instance"></param>
         /// <returns></returns>
         public static bool RegisterCallee(IRpcService instance)
@@ -42,9 +39,11 @@ namespace Composite.Core.WebClient.Services.WampRouter
         /// </summary>
         /// <param name="realmName"></param>
         /// <param name="eventObservable"></param>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TObservable"></typeparam>
+        /// <typeparam name="TResult"></typeparam>
         /// <returns></returns>
-        public static bool RegisterPublisher<T1,T2>(string realmName, IWampEventHandler<T1,T2> eventObservable)
+        public static bool RegisterPublisher<TObservable,TResult>
+            (string realmName, IWampEventHandler<TObservable, TResult> eventObservable)
         {
             var wampRouter = ServiceLocator.GetRequiredService<WampRouter>();
             if (wampRouter == null)
@@ -57,9 +56,11 @@ namespace Composite.Core.WebClient.Services.WampRouter
         /// Method for registering publisher
         /// </summary>
         /// <param name="eventObservable"></param>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TObservable"></typeparam>
+        /// <typeparam name="TResult"></typeparam>
         /// <returns></returns>
-        public static bool RegisterPublisher<T1, T2>(IWampEventHandler<T1, T2> eventObservable)
+        public static bool RegisterPublisher<TObservable,TResult>
+            (IWampEventHandler<TObservable, TResult> eventObservable)
         {
             var wampRouter = ServiceLocator.GetRequiredService<WampRouter>();
             if (wampRouter == null)
