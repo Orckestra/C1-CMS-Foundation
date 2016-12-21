@@ -76,7 +76,7 @@ namespace Composite.Plugins.Components.ComponentsEndpoint
     public class FinishButton : ButtonResponse
     {
         /// <exclude />
-        public override string Label => "Next";
+        public override string Label => "OK";
         /// <exclude />
         public override string Style => "main";
     }
