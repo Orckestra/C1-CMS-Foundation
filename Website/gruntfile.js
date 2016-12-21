@@ -35,6 +35,11 @@ module.exports = function (grunt) {
 				{ expand: true, cwd: 'bower_components/codemirror/mode/sql', src: ['*.*'], dest: 'Composite/lib/codemirror/mode/sql' },
 				{ expand: true, cwd: 'bower_components/codemirror/mode/xml', src: ['*.*'], dest: 'Composite/lib/codemirror/mode/xml' }
 			]
+		},
+		autobahnjs: {
+			files: [
+				{ expand: true, cwd: 'bower_components/autobahnjs', src: ['autobahn.js'], dest: 'Composite/lib/autobahnjs' },
+			]
 		}
 	});
 
@@ -131,13 +136,13 @@ module.exports = function (grunt) {
 				// Done, run the uglify task
 				grunt.task.run(['uglify:default']);
 
-				
+
 			    // Generating "toplevelclassnames.js"
 				var topLevelClassNamesTargetFolder = 'Composite/scripts/source';
                 var topLevelClassNamesIgnoreFolder = 'Composite/scripts/source/page';
 
 				grunt.file.recurse(topLevelClassNamesTargetFolder, function (filepath) {
-				    if (filepath.indexOf(topLevelClassNamesIgnoreFolder) >= 0 || 
+				    if (filepath.indexOf(topLevelClassNamesIgnoreFolder) >= 0 ||
                         filepath.indexOf(".js") < 0) {
 				        return;
 				    }
@@ -159,7 +164,7 @@ module.exports = function (grunt) {
 
 
     // ****************************************************************************************************
-    //  SVG                        
+    //  SVG
     // ****************************************************************************************************
 
 
