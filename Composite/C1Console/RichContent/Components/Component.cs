@@ -13,7 +13,7 @@ namespace Composite.C1Console.RichContent.Components
         public virtual IEnumerable<string> ContainerClasses { get; set; }
         public virtual IEnumerable<string> AntiTags { get; set; }
         public virtual ComponentImage ComponentImage { get; set; }
-        public virtual XDocument ComponentDefinition { get; set; }
+        public virtual string ComponentDefinition { get; set; }
     }
 
     public class ComponentImage

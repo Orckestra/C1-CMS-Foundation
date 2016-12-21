@@ -138,7 +138,7 @@ namespace Composite.Plugins.Components.FileBasedComponentProvider
                     ContainerClasses = containerClasses,
                     AntiTags = antiTags,
                     ComponentImage = componentImage,
-                    ComponentDefinition = xElement.Document
+                    ComponentDefinition = xElement.Document.GetDocumentAsString()
                 };
             }
 
