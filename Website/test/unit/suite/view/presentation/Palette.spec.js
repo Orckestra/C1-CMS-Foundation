@@ -19,13 +19,13 @@ describe('Palette', () => {
 							id: 'entry1',
 							title: 'First entry',
 							description: 'All manner of words',
-							imageUri: { customImageUri: '/path/to/image1.png' } // Media URI resolves to /media/ reference
+							componentImage: { customImageUri: '/path/to/image1.png' } // Media URI resolves to /media/ reference
 						},
 						{
 							id: 'entry2',
 							title: 'Second entry',
 							description: 'Some other words',
-							imageUri: { iconName: 'testicon', customImageUri: '/path/to/image2.png' }
+							componentImage: { iconName: 'testicon', customImageUri: '/path/to/image2.png' }
 						}
 					]
 				},
@@ -37,13 +37,13 @@ describe('Palette', () => {
 							id: 'entry3',
 							title: 'Third entry',
 							description: 'Words to live by',
-							imageUri: { iconName: 'testicon' }
+							componentImage: { iconName: 'testicon' }
 						},
 						{
 							id: 'entry4',
 							title: 'Fourth entry',
 							description: 'Words to die for',
-							imageUri: {}
+							componentImage: {}
 						}
 					]
 				}
