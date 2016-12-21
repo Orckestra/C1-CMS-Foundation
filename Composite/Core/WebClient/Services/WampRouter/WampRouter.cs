@@ -15,12 +15,23 @@ namespace Composite.Core.WebClient.Services.WampRouter
     [Route("Composite/api/Router")]
     public class MyRouterController : AspNetWebsocketTransform.RouterController
     {
+        /// <exclude />
+        public MyRouterController() : this(ServiceLocator.GetService<WampRouter>().GetTransport())
+        {
+        }
+
+        /// <exclude />
+        public MyRouterController(AspNetWebsocketTransform aspNetWebsocketTransform) 
+                : base(aspNetWebsocketTransform)
+        {
+        }
     }
 
     internal class WampRouter
     {
         private const string DefaultRealmName = "realm";
         private WampHost _host;
+        private AspNetWebsocketTransform _aspNetWebsocketTransform;
 
         public WampRouter()
         {
@@ -76,7 +87,9 @@ namespace Composite.Core.WebClient.Services.WampRouter
         private void StartWampRouter()
         {
             _host = new WampHost();
-            _host.RegisterTransport(new AspNetWebsocketTransform(),
+            _aspNetWebsocketTransform = new AspNetWebsocketTransform();
+
+            _host.RegisterTransport(_aspNetWebsocketTransform,
                 new JTokenJsonBinding(new JsonSerializer()
                 { ContractResolver = new CamelCasePropertyNamesContractResolver()}));
             
@@ -94,6 +107,11 @@ namespace Composite.Core.WebClient.Services.WampRouter
         private static void SessionRemoved(object sender, WampSessionCloseEventArgs e)
         {
             Log.LogVerbose(nameof(WampRouter), "A connection error occured");
+        }
+
+        public AspNetWebsocketTransform GetTransport()
+        {
+            return _aspNetWebsocketTransform;
         }
     }
 }
