@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Net.Http;
+using System.Linq;
 using System.Reactive.Subjects;
 using System.Web.Http;
 using Newtonsoft.Json;
@@ -58,18 +58,19 @@ namespace Composite.Core.WebClient.Services.WampRouter
 
             IObservable<TObservable> observableEvent = eventObservable.Event;
 
-            IDisposable disposable =
-                observableEvent.Subscribe(x =>
+            observableEvent.Subscribe(x =>
+            {
+                if (realm.TopicContainer.TopicUris.FirstOrDefault(f => f.Equals(eventObservable.Topic)) == null)
                 {
-                    try
-                    {
-                        subject.OnNext(eventObservable.GetNewData());
-                    }
-                    catch (Exception)
-                    {
-                        //TODO: Why it publishes data and generates error
-                    }
-                });
+                    Log.LogWarning(nameof(WampRouter),
+                        $"Trying to publish on topic: {eventObservable.Topic}, but there is no subscriber to this topic");
+                }
+                else
+                {
+                    subject.OnNext(eventObservable.GetNewData());
+                }
+                    
+            });
         }
 
         private void StartWampRouter()
