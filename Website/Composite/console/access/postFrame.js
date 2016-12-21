@@ -1,6 +1,6 @@
-// DEPRECATED AT START OF LIFE - do not use this unless you have to.
-// Somewhat hacky shim to communicate with old UI outside an iframe hosting this app.
-
+/** Converts a JS object to a string containing XHTML markup
+ @-prefixed members will be treated as attributes.
+ */
 export function objectToMarkupString(obj, tagName) {
 	return objectToMarkupStringWithDepth(obj, tagName, '');
 }
@@ -20,6 +20,8 @@ function objectToMarkupStringWithDepth(obj, tagName, depth) {
 	}
 }
 
+// Finds an object in the outer console application.
+// Will throw if no such application exists (i.e. top === undefined)
 function getObject(path) {
 	path = path.split('.');
 	let parent = top;
@@ -48,8 +50,10 @@ function getInObject(obj, path) {
 	}
 }
 
-// Call a function on outer frame/top frame
-// FIXME: Hardcoded to return function markup, needs to be more general
+/** Somewhat hacky shim to communicate with old UI outside an iframe hosting this app.
+ XXX: DEPRECATED AT START OF LIFE - do not use this unless you have to.
+ FIXME: Hardcoded to return function markup, needs to be more general
+*/
 export default function outerFrameCallback(provider, obj) {
 	if (top && top.Application) {
 		var target = {
