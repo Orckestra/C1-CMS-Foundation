@@ -127,7 +127,7 @@ namespace Composite.Plugins.Components.FileBasedComponentProvider
                     IconName = xElement.GetAttributeValue(Namespaces.Components + Icon)
                 };
 
-                xElement.RemoveAttributes();
+                xElement.Attributes().Where(f=>f.Name.Namespace == Namespaces.Components).Remove();
 
                 return new Component
                 {
