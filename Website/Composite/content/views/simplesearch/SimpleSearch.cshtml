@@ -3,32 +3,12 @@
 @using Composite.C1Console.Security
 @using Composite.C1Console.Users
 @using Composite.Core.WebClient
+@using Composite.Plugins.Search.Endpoint
 
 
 @functions {
 
 	const string FacetSelectionPrefix = "chk_";
-
-	private object GetFocusUrl(string serializedEntityToken)
-	{
-		return UrlUtils.AdminRootPath + "/top.aspx#FocusElement;" + serializedEntityToken;
-	}
-
-	private IEnumerable<T> RemoveDuplicateKeys<T>(IEnumerable<T> sequence, Func<T, string> getKeyFunc)
-	{
-		var keys = new HashSet<string>();
-
-		foreach (var el in sequence)
-		{
-			string key = getKeyFunc(el);
-
-			if (keys.Contains(key)) continue;
-
-			keys.Add(key);
-
-			yield return el;
-		}
-	}
 }
 
 @{
@@ -46,7 +26,7 @@
 
 	string text = null;
 	EntityToken searchRoot = null;
-	SearchResult result = null;
+	ConsoleSearchResult result = null;
 	string sortField = null;
 	bool sortByAscending = true;
 	IList<DocumentField> facetFields = null;
@@ -65,14 +45,7 @@
 
 		if (!string.IsNullOrWhiteSpace(text))
 		{
-			var allFields = SearchFacade.DocumentSources.SelectMany(ds => ds.CustomFields).ToList();
-
-			facetFields = RemoveDuplicateKeys(
-				allFields
-				.Where(f => f.FacetedSearchEnabled),
-				f => f.Name).ToList();
-
-			var selections = new List<SearchQuerySelection>();
+			var selections = new List<ConsoleSearchQuerySelection>();
 			foreach (string key in Request.Form.Keys)
 			{
 				if (key.StartsWith(FacetSelectionPrefix))
@@ -80,34 +53,25 @@
 					string fieldName = key.Substring(FacetSelectionPrefix.Length);
 					string[] values = Request.Form[key].Split(',');
 
-					selections.Add(new SearchQuerySelection
+					selections.Add(new ConsoleSearchQuerySelection
 					{
 						FieldName = fieldName,
-						Values = values,
-						Operation = SearchQuerySelectionOperation.Or
+						Values = values
 					});
 				}
 			}
-
-			var sortOptions = new List<SearchQuerySortOption>();
-			if (!string.IsNullOrEmpty(sortField))
+			var query = new ConsoleSearchQuery
 			{
-				var sortTermsAs = allFields
-					.Where(f => f.Name == sortField && f.Preview != null && f.Preview.Sortable)
-					.Select(f => f.Preview.SortTermsAs)
-					.FirstOrDefault();
-
-				sortOptions.Add(new SearchQuerySortOption(sortField, !sortByAscending, sortTermsAs));
-			}
-
-			var query = new SearchQuery(text, UserSettings.ActiveLocaleCultureInfo)
-			{
-				Facets = facetFields.Select(f => new KeyValuePair<string, DocumentFieldFacet>(f.Name, f.Facet)).ToList(),
-				Selection = selections,
-				SortOptions = sortOptions
+				Text = text,
+				Selections = selections.ToArray(),
+				CultureName = UserSettings.ActiveLocaleCultureInfo.Name,
+				SortBy = sortField,
+				SortInReverseOrder = !sortByAscending
 			};
 
-			result = SearchFacade.SearchConsoleAsync(query, true, searchRoot).Result;
+			var service = new ConsoleSearchRpcService();
+			//result = SearchFacade.ConsoleSearchRpcService(query, true, searchRoot).Result;
+			result = service.Query(query);
 		}
 	}
 }
@@ -154,7 +118,7 @@
 
 	@if (result != null)
 	{
-		@ResultFacets(result, facetFields)
+		@ResultFacets(result)
 	}
 </form>
 	
@@ -177,33 +141,25 @@
 </body>
 </html>
 
-@helper ResultFacets(SearchResult result, IList<DocumentField> facetFields)
+@helper ResultFacets(ConsoleSearchResult result)
 {
-	if (result.Facets == null)
+	if (result.FacetFields == null)
 	{
 		return;
 	}
 
-	var fields = facetFields.ToDictionary(f => f.Name);
-
 	<div class="facets clearfix">
-		@foreach (var key in result.Facets.Keys)
+		@foreach (var facetField in result.FacetFields)
 		{
-			var facets = result.Facets[key];
-			if (facets.Length == 0)
-			{
-				continue;
-			}
-
-			string checkBoxName = FacetSelectionPrefix + key;
+			string checkBoxName = FacetSelectionPrefix + facetField.FieldName;
 			string[] preselectedValues = (Request.Form[checkBoxName] ?? "").Split(',');
 
 			<div class="facet">
-				<h2>@fields[key].GetFieldLabel(CultureInfo.CurrentCulture)</h2>
+				<h2>@facetField.Label</h2>
 				@{
 					int optionIndex = 0;
 				}
-				@foreach (var facet in facets)
+				@foreach (var facet in facetField.Facets)
 				{
 					optionIndex++;
 
@@ -215,7 +171,7 @@
 						       {<text>checked="checked"</text>}
 							/>
 						<label for="@checkBoxName@optionIndex">
-							@fields[key].Facet.LabelFunction(facet.Value) [@facet.HitCount]
+							@facet.Label [@facet.HitCount]
 						</label>
 					</div>
 				}
@@ -224,33 +180,23 @@
 	</div>
 }
 
-@helper ResultTable(SearchResult result, string sortField, bool sortAscending)
+@helper ResultTable(ConsoleSearchResult result, string sortField, bool sortAscending)
 {
-var documents = result.Documents.ToList();
-var dataSourceNames = new HashSet<string>(documents.Select(d => d.Source).Distinct());
+	if (result.TotalHits == 0)
+	{
+		return;
+	}
 
-var dataSources = SearchFacade.DocumentSources.Where(d => dataSourceNames.Contains(d.Name)).ToList();
-var fields = dataSources.SelectMany(ds => ds.CustomFields);
-
-var previewFields = RemoveDuplicateKeys(fields.Where(f => f.FieldValuePreserved), f => f.Name).ToList();
-
-if (documents.Any())
-{
 	<div class="results">
 		<table>
 			<thead>
 			<tr>
-				@if (previewFields.Count == 0)
+				@foreach (var column in result.Columns)
 				{
-					<td>Label</td>
-				}
-				@foreach (var field in previewFields)
-				{
-					var fieldName = field.Name;
-					var label = field.GetFieldLabel(CultureInfo.CurrentCulture);
+					var fieldName = column.FieldName;
 
 					<td>
-						@if (field.Preview.Sortable)
+						@if (column.Sortable)
 						{
 							if (fieldName == sortField)
 							{
@@ -259,14 +205,14 @@ if (documents.Any())
 
 							<a href="#" onclick="Sort('@fieldName', @((fieldName != sortField || !sortAscending) ? "true" : "false"))">
 								<label title="@fieldName">
-									@label
+									@column.Label
 								</label>
 							</a>
 						}
 						else
 						{
 							<label title="@fieldName">
-								@label
+								@column.Label
 							</label>
 						}
 					</td>
@@ -274,58 +220,33 @@ if (documents.Any())
 			</tr>
 			</thead>
 			<tbody>
-				@foreach (var hit in documents)
+				@foreach (var row in result.Rows)
 				{
 					int index = 0;
 					<tr class="hit">
-						@if (previewFields.Count == 0)
+						@foreach (var column in result.Columns)
 						{
+							string value;
+							bool isFirst = index++ == 0;
 							<td>
-								<a href="@GetFocusUrl(hit.SerializedEntityToken)" target="_top">@hit.Label</a>
+								@if (row.Values.TryGetValue(column.FieldName, out value))
+								{
+									if (isFirst)
+									{
+										<a href="@row.Url" target="_top">
+											@value
+										</a>
+									}
+									else
+									{
+										@value
+									}
+								}
 							</td>
-						}
-						else
-						{
-							foreach (var field in previewFields)
-							{
-								bool isFirst = index++ == 0;
-								<td>
-									@PreviewField(hit, field, isFirst)
-								</td>
-							}
 						}
 					</tr>
 				}
 			</tbody>
 		</table>
 	</div>
-}
-}
-
-@helper PreviewField(SearchDocument doc, DocumentField field, bool isDocumentLink)
-{
-	var fieldName = field.Name;
-
-	object value;
-	string label = null;
-	if (doc.FieldValues != null && doc.FieldValues.TryGetValue(fieldName, out value) && value != null)
-	{
-		if (field.Preview.PreviewFunction != null)
-		{
-			label = field.Preview.PreviewFunction(value);
-		}
-		else
-		{
-			label = value.ToString();
-		}
-	}
-
-	if (isDocumentLink)
-	{
-		<a href="@GetFocusUrl(doc.SerializedEntityToken)" target="_top">@label</a>
-	}
-	else
-	{
-		@label
-	}
 }
