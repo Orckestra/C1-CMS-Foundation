@@ -32,13 +32,6 @@ namespace Composite.Plugins.Components.ComponentsEndpoint
         }
 
         /// <summary>
-        /// To test if service is in its place
-        /// </summary>
-        public void Ping()
-        {
-        }
-
-        /// <summary>
         /// To get all components
         /// </summary>
         /// <returns>list of Components</returns>
@@ -58,7 +51,9 @@ namespace Composite.Plugins.Components.ComponentsEndpoint
             
             if (!containerclass.IsNullOrEmpty())
             {
-                return _componentManager.GetComponents().Where(f => f.ContainerClasses.Contains(containerclass)|| f.ContainerClasses.IsNullOrEmpty());
+                return _componentManager.GetComponents().Where(f => (f.ContainerClasses.Contains(containerclass)  ||
+                                        f.ContainerClasses.IsNullOrEmpty()) &&
+                                        !f.AntiTags.Contains(containerclass));
             }
             return _componentManager.GetComponents();
         }

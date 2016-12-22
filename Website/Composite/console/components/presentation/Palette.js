@@ -101,9 +101,9 @@ const Palette = props => {
 						)}
 						active={itemName === props.dialogData.get('selectedItem')}>
 						{
-							item.getIn(['imageUri', 'customImageUri']) ?
-							<PreviewImage image={resolveMediaURI(item.getIn(['imageUri', 'customImageUri']))}/> :
-							<PreviewIcon id={item.getIn(['imageUri', 'iconName']) || 'base-function-function'}/>
+							item.getIn(['componentImage', 'customImageUri']) ?
+							<PreviewImage image={resolveMediaURI(item.getIn(['componentImage', 'customImageUri']))}/> :
+							<PreviewIcon id={item.getIn(['componentImage', 'iconName']) || 'base-function-function'}/>
 						}
 						<InfoBox>
 							<Label>{item.get('title')}</Label>

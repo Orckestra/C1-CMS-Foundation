@@ -38,6 +38,7 @@ namespace Composite.Plugins.Components.FileBasedComponentProvider
         private const string ContainerClass = "container-class";
         private const string Image = "image";
         private const string Icon = "icon";
+        private const string AntiTags = "container-anti-tags";
 
         private readonly ComponentChangeNotifier _changeNotifier;
         private readonly string _providerDirectory;
@@ -90,7 +91,7 @@ namespace Composite.Plugins.Components.FileBasedComponentProvider
             }
             catch (XmlException exception)
             {
-                Log.LogVerbose(nameof(FileBasedComponentProvider),$"Error in reading component file: {exception}");
+                Log.LogError(nameof(FileBasedComponentProvider),$"Error in reading component file: {exception}");
                 return null;
             }
 
@@ -112,18 +113,21 @@ namespace Composite.Plugins.Components.FileBasedComponentProvider
                                         GuessGroupingTagsBasedOnPath(componentFile);
 
                 var tagManager = ServiceLocator.GetRequiredService<TagManager>();
-                var groupingTags = groupingTagsRaw.ToLower().Split(',').Select(tagManager.GetTagTitle).ToList();
+                var groupingTags = groupingTagsRaw?.Replace(" ", "").ToLower().Split(',').Select(tagManager.GetTagTitle).ToList();
 
                 var containerClasses =
                     ContainerClassManager.ParseToList(xElement.GetAttributeValue(Namespaces.Components + ContainerClass));
 
-                var imageUri = new ImageUri()
+                var antiTags =
+                    ContainerClassManager.ParseToList(xElement.GetAttributeValue(Namespaces.Components + AntiTags));
+
+                var componentImage = new ComponentImage()
                 {
                     CustomImageUri = xElement.GetAttributeValue(Namespaces.Components + Image),
                     IconName = xElement.GetAttributeValue(Namespaces.Components + Icon)
                 };
 
-                xElement.RemoveAttributes();
+                xElement.Attributes().Where(f=>f.Name.Namespace == Namespaces.Components).Remove();
 
                 return new Component
                 {
@@ -132,8 +136,9 @@ namespace Composite.Plugins.Components.FileBasedComponentProvider
                     Description = description,
                     GroupingTags = groupingTags,
                     ContainerClasses = containerClasses,
-                    ImageUri = imageUri,
-                    ComponentDefinition = xElement.Document
+                    AntiTags = antiTags,
+                    ComponentImage = componentImage,
+                    ComponentDefinition = xElement.Document.GetDocumentAsString()
                 };
             }
 
@@ -143,11 +148,12 @@ namespace Composite.Plugins.Components.FileBasedComponentProvider
 
         private string GuessGroupingTagsBasedOnPath(string componentFile)
         {
+#warning change that
             return Path.GetDirectoryName(componentFile)?
                 .Substring(
                     Path.GetDirectoryName(componentFile)
                         .IndexOf(_providerDirectory.Replace('/', '\\').Replace("~", "")) +
-                    _providerDirectory.Length)
+                    _providerDirectory.Length-1)
                 .Replace(" ","").Replace('\\', ',');
         }
 

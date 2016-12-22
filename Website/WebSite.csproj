@@ -272,6 +272,7 @@
     <Content Include="Composite\content\forms\Administrative\SetTimeZone_select.xml" />
     <Content Include="Composite\content\forms\Administrative\DeletePage_ConfirmAllVersionsDeletion.xml" />
     <Content Include="Composite\content\forms\Administrative\WebsiteFileElementProviderUploadAndExtractZipFile.xml" />
+    <Content Include="Composite\content\misc\editors\visualeditor\tinymce\plugins\compositecomponent\plugin.min.js" />
     <Content Include="Composite\content\views\browser\deviceoptions.xml">
       <SubType>Designer</SubType>
     </Content>
@@ -2823,8 +2824,7 @@
     </PostBuildEvent>
     <PostBuildEvent>if not exist "$(ProjectDir)\bin\ExtraDllVersion" (
  md "$(ProjectDir)\bin\ExtraDllVersion"
- rem cd "$(SolutionDir)\Packages\System.Collections.Immutable.1.2.0\lib\netstandard1.0" 
- start /MIN copy "$(SolutionDir)\Packages\System.Collections.Immutable.1.2.0\lib\netstandard1.0\*.dll" "$(ProjectDir)\bin\ExtraDllVersion"
+ copy "$(ProjectDir)\..\Packages\System.Collections.Immutable.1.2.0\lib\netstandard1.0\*.dll" "$(ProjectDir)\bin\ExtraDllVersion" /y
   )</PostBuildEvent>
   </PropertyGroup>
 </Project>

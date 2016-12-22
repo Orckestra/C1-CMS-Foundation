@@ -31,6 +31,7 @@ namespace Composite.Plugins.Components.ComponentsEndpoint
     /// <exclude />
     public class Pane
     {
+        /// <exclude />
         public Pane()
         {
             var tagManager = ServiceLocator.GetRequiredService<TagManager>();
@@ -75,7 +76,7 @@ namespace Composite.Plugins.Components.ComponentsEndpoint
     public class FinishButton : ButtonResponse
     {
         /// <exclude />
-        public override string Label => "Next";
+        public override string Label => "OK";
         /// <exclude />
         public override string Style => "main";
     }
@@ -86,8 +87,15 @@ namespace Composite.Plugins.Components.ComponentsEndpoint
         /// <exclude />
         public override string Name => "elementInsert";
         /// <exclude />
-        public override string Uri => ResponseMessageHelper.GetProcedureName<ComponentsRpcService>(
-            nameof(ComponentsRpcService.FinishProvider));
+        public override string Protocol => "post";
+        /// <exclude />
+        public string Response => "Dialog.RESPONSE_ACCEPT";
+        /// <exclude />
+        public string Action => "DialogPageBinding.ACTION_RESPONSE";
+        /// <exclude />
+        public List<string> Markup => new List<string>() { "selectedComponentDefinition" };
+        /// <exclude />
+        public override string Uri => "";
     }
 
     /// <exclude />
@@ -105,10 +113,17 @@ namespace Composite.Plugins.Components.ComponentsEndpoint
         /// <exclude />
         public override string Name => "componentListCancel";
         /// <exclude />
-        public override string Uri => ResponseMessageHelper.GetProcedureName<ComponentsRpcService>(
-            nameof(ComponentsRpcService.CancelProvider));
+        public override string Protocol => "post";
+        /// <exclude />
+        public string Action => "DialogPageBinding.ACTION_RESPONSE";
+        /// <exclude />
+        public string Response => "Dialog.RESPONSE_CANCEL";
+        /// <exclude />
+        public override string Uri => "";
+
     }
 
+    /// <exclude />
     public class UpdateProvider : ProviderResponce
     {
         /// <exclude />
@@ -117,7 +132,7 @@ namespace Composite.Plugins.Components.ComponentsEndpoint
         public override string Uri => ComponentPublisher.Topic;
     }
 
-    internal static class ResponseMessageHelper 
+    internal static class ResponseMessageHelper
     {
         internal static string GetProcedureName<T>(string methodName) where T : IRpcService
         {
@@ -165,4 +180,3 @@ namespace Composite.Plugins.Components.ComponentsEndpoint
     }
 
 }
-
