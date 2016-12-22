@@ -65,6 +65,7 @@ const initialState = {
 			name: 'search',
 			label: 'Search',
 			type: 'search',
+			placeholder: 'Search here',
 			searchProvider: 'searchProvider',
 			providers: ['searchProvider']
 		}
