@@ -12,34 +12,4 @@
     <ui:toolbarbutton cmd="compositeInsertImage" val="update" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelImageProperties" image="${icon:image}" />
     <ui:toolbarbutton cmd="compositeInsertRendering" val="update" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelRenderingProperties}" image="${icon:functioncall}" />
   </ui:toolbargroup>
-  <ui:toolbargroup>
-    <script type="text/javascript">
-      //<![CDATA[
-      var openComponentsDialog = function (binding){
-        var definition =  new DialogViewDefinition ({
-            handle 		: "ComponentsDialog",
-            isMutable	: true,
-            position 	: Dialog.MODAL,
-            url			: "${root}/content/dialogs/postback/postbackdialog.aspx",
-            argument 	: {
-              // "url"	: "${root}/console/?TEMP-COMPONENTS&pageId={context:pageId}&containerClasses={context:containerClasses}",
-              "url"	: "${root}/console/?TEMP-COMPONENTS&pageId=component-selector-shim&containerClasses={context:containerClasses}",
-              "list"	: new List(),
-              "method" : "get"
-            },
-            width: 1350,
-            height: 780,
-            handler: {
-              handleDialogResponse: function (response, result) {
-                console.log(response);
-                console.log(result);
-              }
-            }
-        });
-        StageBinding.presentViewDefinition(definition, binding);
-      };
-      //]]>
-    </script>
-    <ui:toolbarbutton oncommand="openComponentsDialog ( this ) " label="Components" image="${icon:functioncall}" />
-  </ui:toolbargroup>
 </ui:toolbarbody>

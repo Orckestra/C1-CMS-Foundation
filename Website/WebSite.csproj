@@ -272,6 +272,7 @@
     <Content Include="Composite\content\forms\Administrative\SetTimeZone_select.xml" />
     <Content Include="Composite\content\forms\Administrative\DeletePage_ConfirmAllVersionsDeletion.xml" />
     <Content Include="Composite\content\forms\Administrative\WebsiteFileElementProviderUploadAndExtractZipFile.xml" />
+    <Content Include="Composite\content\misc\editors\visualeditor\tinymce\plugins\compositecomponent\plugin.min.js" />
     <Content Include="Composite\content\views\browser\deviceoptions.xml">
       <SubType>Designer</SubType>
     </Content>
