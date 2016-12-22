@@ -1,0 +1,79 @@
+import React, { PropTypes } from 'react';
+import styled from 'styled-components';
+import colors from 'console/components/colors.js';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import Input from 'console/components/presentation/Input.js';
+import Icon from 'console/components/presentation/Icon.js';
+
+export const SearchContainer = styled.div`
+width: 100%;
+height: 100%;
+position: relative;
+`;
+export const SearchSidebar = styled.div`
+box-sizing: border-box;
+position: absolute;
+top: 0;
+left: 0;
+width: 290px;
+height: 100%;
+padding: 15px;
+background-color: ${colors.darkBackground};
+`;
+export const SearchField = styled(Input)`
+padding-right: 30px;
+`;
+export const SearchIcon = styled(Icon)`
+position: absolute;
+top: 23px;
+right: 31px;
+`;
+export const FacetList = styled.div`
+border-top: 1px solid ${colors.borderColor};
+`;
+export const FacetGroup = styled.div``;
+export const FacetHeader = styled.h2``;
+export const Facet = styled.div``;
+export const SearchResultPane = styled.div`
+box-sizing: border-box;
+position: absolute;
+top: 0;
+right: 0;
+width: calc(100% - 290px);
+height: 100%;
+padding: 15px;
+`;
+export const ResultHeader = styled.h1``;
+export const ResultTable = styled.table``;
+// Table row, header, cell etc.?
+
+const SearchPage = props => <SearchContainer>
+	<SearchSidebar>
+		<SearchField placeholder={props.pageDef.get('placeholder')} value={props.searchFieldValue}/><SearchIcon id="magnifier"/>
+		<FacetList>
+			{
+				/* Get list of facet groups, render one header and group for each */
+				props.facetGroups.map(group => <FacetGroup key={group.get('name')}>
+					<FacetHeader>{group.get('header')}</FacetHeader>
+					{group.get('facets').map(facet => <Facet key={facet.get('name')}>{facet.get('label')}</Facet>).toArray()}
+				</FacetGroup>).toArray()
+			}
+		</FacetList>
+	</SearchSidebar>
+	<SearchResultPane>
+		<ResultHeader>{props.results.size} results for '{props.searchString}'</ResultHeader>
+		<ResultTable></ResultTable>
+	</SearchResultPane>
+</SearchContainer>;
+
+SearchPage.propTypes = {
+	pageDef: ImmutablePropTypes.map,
+	facetGroups: ImmutablePropTypes.listOf(ImmutablePropTypes.mapContains({
+		facets: ImmutablePropTypes.listOf(ImmutablePropTypes.map)
+	})),
+	results: ImmutablePropTypes.listOf(ImmutablePropTypes.map),
+	searchFieldValue: PropTypes.string.isRequired,
+	searchString: PropTypes.string
+};
+
+export default SearchPage;
