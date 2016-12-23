@@ -491,17 +491,19 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
                 {
                     InvokeWithServices(serviceProvider, methodInfo);
                 }
-                catch (TargetInvocationException ex)
+                catch (Exception ex)
                 {
+                    var type = methodInfo.DeclaringType;
+                    var message = $"Failed to execute startup handler. Type: '{type.FullName}', Assembly: '{type.Assembly.FullName}'";
+
                     if (startupHandler.Attribute.AbortStartupOnException)
                     {
-                        throw;
+                        throw new InvalidOperationException(message, ex);
                     }
 
-                    Log.LogError(LogTitle, "Failed to execute startup handler. Type: '{0}', Assembly: '{1}'",
-                                            methodInfo.DeclaringType.FullName, methodInfo.DeclaringType.Assembly.FullName);
+                    Log.LogError(LogTitle, message);
 
-                    Log.LogError(LogTitle, ex.InnerException);
+                    Log.LogError(LogTitle, ex is TargetInvocationException ? ex.InnerException : ex);
                 }
             }
         }
