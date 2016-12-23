@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using Composite.C1Console.Search;
 using Composite.C1Console.Users;
 using Composite.Core.Application;
@@ -15,103 +16,39 @@ namespace Composite.Plugins.Search.Endpoint
     [ApplicationStartup]
     class SearchApplicationStartup
     {
-        public static void OnInitialized()
+        public static void OnInitialized(
+            ISearchProvider searchProvider, 
+            IEnumerable<ISearchDocumentSourceProvider> docSourceProviders)
         {
-            WampRouterFacade.RegisterCallee(new ConsoleSearchRpcService());
+            WampRouterFacade.RegisterCallee(new ConsoleSearchRpcService(searchProvider, docSourceProviders));
         }
     }
 
-    /// <exclude />
-    public class ConsoleSearchResult
-    {
-        /// <exclude />
-        public ConsoleSearchResultColumn[] Columns { get; set; }
-        /// <exclude />
-        public ConsoleSearchResultRow[] Rows { get; set; }
-        /// <exclude />
-        public int TotalHits { get; set; }
-        /// <exclude />
-        public ConsoleSearchResultFacetField[] FacetFields { get; set; }
-    }
 
-    /// <exclude />
-    public class ConsoleSearchQuery
-    {
-        /// <exclude />
-        public string CultureName { get; set; }
-        /// <exclude />
-        public string Text { get; set; }
-        /// <exclude />
-        public string SortBy { get; set; }
-        /// <exclude />
-        public bool SortInReverseOrder { get; set; }
-        /// <exclude />
-        public ConsoleSearchQuerySelection[] Selections { get; set; }
-    }
-
-    /// <exclude />
-    public class ConsoleSearchResultColumn
-    {
-        /// <exclude />
-        public string FieldName { get; set; }
-        /// <exclude />
-        public string Label { get; set; }
-        /// <exclude />
-        public bool Sortable { get; set; }
-    }
-
-    /// <exclude />
-    public class ConsoleSearchQuerySelection
-    {
-        /// <exclude />
-        public string FieldName { get; set; }
-        /// <exclude />
-        public string[] Values { get; set; }
-    }
-
-    /// <exclude />
-    public class ConsoleSearchResultRow
-    {
-        /// <exclude />
-        public string Label { get; set; }
-        /// <exclude />
-        public string Url { get; set; }
-        /// <exclude />
-        public Dictionary<string, string> Values { get; set; }
-    }
-
-    /// <exclude />
-    public class ConsoleSearchResultFacetField
-    {
-        /// <exclude />
-        public string FieldName { get; set; }
-        /// <exclude />
-        public string Label { get; set; }
-        /// <exclude />
-        public ConsoleSearchResultFacetValue[] Facets { get; set; }
-    }
-
-    /// <exclude />
-    public class ConsoleSearchResultFacetValue
-    {
-        /// <exclude />
-        public string Value { get; set; }
-        /// <exclude />
-        public string Label { get; set; }
-        /// <exclude />
-        public int HitCount { get; set; }
-    }
 
     /// <exclude />
     public class ConsoleSearchRpcService : IRpcService
     {
+        private readonly ISearchProvider _searchProvider;
+        private readonly IEnumerable<ISearchDocumentSourceProvider> _docSourceProviders;
+
+        public ConsoleSearchRpcService(
+            ISearchProvider searchProvider, 
+            IEnumerable<ISearchDocumentSourceProvider> docSourceProviders)
+        {
+            _searchProvider = searchProvider;
+            _docSourceProviders = docSourceProviders;
+        }
+
         /// <exclude />
         [WampProcedure("search.query")]
-        public ConsoleSearchResult Query(ConsoleSearchQuery query)
+        public async Task<ConsoleSearchResult> QueryAsync(ConsoleSearchQuery query)
         {
+            if (_searchProvider == null) return null;
+
             var uiCulture = CultureInfo.CurrentUICulture;
 
-            var documentSources = SearchFacade.DocumentSources.Evaluate();
+            var documentSources = _docSourceProviders.SelectMany(dsp => dsp.GetDocumentSources()).ToList();
             var allFields = documentSources.SelectMany(ds => ds.CustomFields).ToList();
 
             var facetFields = RemoveDuplicateKeys(
@@ -161,8 +98,7 @@ namespace Composite.Plugins.Search.Endpoint
                 SortOptions = sortOptions
             };
 
-            // TODO: use async/await here
-            var result = SearchFacade.SearchConsoleAsync(searchQuery, false, null).Result;
+            var result = await _searchProvider.SearchAsync(searchQuery);
 
             var documents = result.Documents.ToList();
             if (!documents.Any())

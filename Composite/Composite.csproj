@@ -104,6 +104,10 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Collections.Immutable, Version=1.1.37.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Packages\System.Collections.Immutable.1.2.0\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
+    </Reference>
     <Reference Include="System.configuration" />
     <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core">
@@ -1226,6 +1230,8 @@
     <Compile Include="Plugins\Routing\Pages\DefaultPageUrlProvider.cs" />
     <Compile Include="Plugins\Routing\UrlFormatters\StringReplaceUrlFormatter.cs" />
     <Compile Include="Plugins\Routing\UrlFormatters\ToLowerCaseUrlFormatter.cs" />
+    <Compile Include="Plugins\Search\Endpoint\ConsoleSearchQuery.cs" />
+    <Compile Include="Plugins\Search\Endpoint\ConsoleSearchResult.cs" />
     <Compile Include="Plugins\Search\Endpoint\ConsoleSearchRpcService.cs" />
     <Compile Include="Plugins\Security\LoginProviderPlugins\DataBasedFormLoginProvider\UserFormLoginManager.cs" />
     <Compile Include="Plugins\Security\PasswordRules\DifferentCharacterGroups\DifferentCharacterGroupsPasswordRule.cs" />

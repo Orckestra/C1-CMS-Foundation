@@ -90,7 +90,7 @@
     <Reference Include="System" />
     <Reference Include="System.Collections.Immutable">
       <HintPath>..\Packages\Microsoft.Bcl.Immutable.1.1.20-beta\lib\portable-net45+win8\System.Collections.Immutable.dll</HintPath>
-      <Private>True</Private>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -2811,7 +2811,7 @@
       )
 
       cd "$(ProjectDir)"
-      jspm install --quick
+      .\node_modules\.bin\jspm install --quick
 
 
       robocopy "$(ProjectDir)\..\Packages\PhantomJS.2.1.1\tools\phantomjs" "$(ProjectDir)App_Data\Composite\PhantomJs" "phantomjs.exe"
@@ -2823,7 +2823,7 @@
     </PostBuildEvent>
     <PostBuildEvent>if not exist "$(ProjectDir)\bin\ExtraDllVersion" (
  md "$(ProjectDir)\bin\ExtraDllVersion"
- copy "$(ProjectDir)\..\Packages\System.Collections.Immutable.1.2.0\lib\netstandard1.0\*.dll" "$(ProjectDir)\bin\ExtraDllVersion" /y
+ copy "$(ProjectDir)\..\Packages\Microsoft.Bcl.Immutable.1.1.20-beta\lib\portable-net45+win8\*.dll" "$(ProjectDir)\bin\ExtraDllVersion" /y
   )</PostBuildEvent>
   </PropertyGroup>
 </Project>

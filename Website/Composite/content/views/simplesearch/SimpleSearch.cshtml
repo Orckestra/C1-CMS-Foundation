@@ -2,6 +2,7 @@
 @using Composite.C1Console.Search
 @using Composite.C1Console.Security
 @using Composite.C1Console.Users
+@using Composite.Core
 @using Composite.Core.WebClient
 @using Composite.Plugins.Search.Endpoint
 
@@ -37,11 +38,11 @@
 		sortField = Request["sf"];
 		sortByAscending = bool.Parse(Request["sfd"]);
 
-		string root = Request["r"];
-		if (root != null)
-		{
-			searchRoot = EntityTokenSerializer.Deserialize(UrlUtils.UnZipContent(root));
-		}
+		//string root = Request["r"];
+		//if (root != null)
+		//{
+		//	searchRoot = EntityTokenSerializer.Deserialize(UrlUtils.UnZipContent(root));
+		//}
 
 		if (!string.IsNullOrWhiteSpace(text))
 		{
@@ -69,9 +70,12 @@
 				SortInReverseOrder = !sortByAscending
 			};
 
-			var service = new ConsoleSearchRpcService();
+			var service = new ConsoleSearchRpcService(
+				ServiceLocator.GetService<ISearchProvider>(),
+				ServiceLocator.GetServices<ISearchDocumentSourceProvider>());
 			//result = SearchFacade.ConsoleSearchRpcService(query, true, searchRoot).Result;
-			result = service.Query(query);
+
+			result = service.QueryAsync(query).Result;
 		}
 	}
 }
