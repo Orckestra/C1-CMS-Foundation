@@ -1,8 +1,10 @@
 import { connect } from 'react-redux';
 import Immutable from 'immutable';
+import { setOption } from 'console/state/reducers/options.js';
+import { getProviderPage } from 'console/state/actions/fetchFromProvider.js';
 import SearchPage from 'console/components/presentation/SearchPage.js';
 
-function mapStateToProps() {
+function mapStateToProps(state) {
 	// Get facets, search results
 	return {
 		facetGroups: Immutable.fromJS([
@@ -59,11 +61,20 @@ function mapStateToProps() {
 				published: 'published',
 			}
 		]),
-		searchFieldValue: 'Test',
+		searchFieldValue: state.getIn(['options', 'values', 'search']) || '',
 		searchString: 'Test'
 	};
 }
 
-const ConnectSearchPage = connect(mapStateToProps)(SearchPage);
+function mapDispatchToProps(dispatch) {
+	return {
+		actions: {
+			performSearch: (provider, pageName) => values => dispatch(getProviderPage(provider, pageName, values)),
+			setOption: fieldName => value => dispatch(setOption(fieldName, value))
+		}
+	};
+}
+
+const ConnectSearchPage = connect(mapStateToProps, mapDispatchToProps)(SearchPage);
 
 export default ConnectSearchPage;

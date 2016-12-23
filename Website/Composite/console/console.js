@@ -74,7 +74,7 @@ const initialState = {
 		searchProvider: {
 			name: 'searchProvider',
 			protocol: 'wamp',
-			uri: 'content.search' // TBD
+			uri: 'search.query'
 		}
 	}
 };
