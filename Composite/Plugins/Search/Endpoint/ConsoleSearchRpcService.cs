@@ -4,11 +4,13 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Composite.C1Console.Search;
+using Composite.C1Console.Search.Crawling;
 using Composite.C1Console.Users;
 using Composite.Core.Application;
 using Composite.Core.Linq;
 using Composite.Core.WebClient;
 using Composite.Core.WebClient.Services.WampRouter;
+using Microsoft.Extensions.DependencyInjection;
 using WampSharp.V2.Rpc;
 
 namespace Composite.Plugins.Search.Endpoint
@@ -16,11 +18,11 @@ namespace Composite.Plugins.Search.Endpoint
     [ApplicationStartup]
     class SearchApplicationStartup
     {
-        public static void OnInitialized(
-            ISearchProvider searchProvider, 
-            IEnumerable<ISearchDocumentSourceProvider> docSourceProviders)
+        public static void OnInitialized(IServiceProvider serviceProvider)
         {
-            WampRouterFacade.RegisterCallee(new ConsoleSearchRpcService(searchProvider, docSourceProviders));
+            WampRouterFacade.RegisterCallee(new ConsoleSearchRpcService(
+                serviceProvider.GetService<ISearchProvider>(),
+                serviceProvider.GetServices<ISearchDocumentSourceProvider>()));
         }
     }
 
@@ -32,6 +34,7 @@ namespace Composite.Plugins.Search.Endpoint
         private readonly ISearchProvider _searchProvider;
         private readonly IEnumerable<ISearchDocumentSourceProvider> _docSourceProviders;
 
+        /// <exclude />
         public ConsoleSearchRpcService(
             ISearchProvider searchProvider, 
             IEnumerable<ISearchDocumentSourceProvider> docSourceProviders)
@@ -53,7 +56,7 @@ namespace Composite.Plugins.Search.Endpoint
 
             var facetFields = RemoveDuplicateKeys(
                 allFields
-                .Where(f => f.FacetedSearchEnabled),
+                .Where(f => f.FacetedSearchEnabled && f.Name != DefaultDocumentFieldNames.HasUrl),
                 f => f.Name).ToList();
 
             var selections = new List<SearchQuerySelection>();
@@ -100,7 +103,7 @@ namespace Composite.Plugins.Search.Endpoint
 
             var result = await _searchProvider.SearchAsync(searchQuery);
 
-            var documents = result.Documents.ToList();
+            var documents = SearchFacade.Filter(result.Documents.ToList(), true, null).Evaluate();
             if (!documents.Any())
             {
                 return new ConsoleSearchResult
@@ -148,6 +151,8 @@ namespace Composite.Plugins.Search.Endpoint
             foreach (var field in facetFields.Where(f => queryResult.Facets.ContainsKey(f.Name)))
             {
                 Facet[] values = queryResult.Facets[field.Name];
+                if (values.Length == 0) continue;
+
                 result.Add(new ConsoleSearchResultFacetField
                 {
                     FieldName = field.Name,

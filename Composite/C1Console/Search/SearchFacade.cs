@@ -67,12 +67,12 @@ namespace Composite.C1Console.Search
             return result;
         }
 
-        private static IEnumerable<SearchDocument> Filter(
+        internal static IEnumerable<SearchDocument> Filter(
             IEnumerable<SearchDocument> documents,
             bool applySecurity,
             EntityToken searchRoot)
         {
-            CurrentUserSecurityData userSecurityData = applySecurity ? new CurrentUserSecurityData() : null;
+            var userSecurityData = applySecurity ? new CurrentUserSecurityData() : null;
 
             foreach (var doc in documents)
             {
