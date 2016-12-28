@@ -29,6 +29,33 @@ namespace Composite.Core.ResourceSystem
 		
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+	   public static class Composite_C1Console_Search {
+///<summary>&quot;Page&quot;</summary> 
+public static string DataType_Page=>T("DataType.Page");
+///<summary>&quot;Media File&quot;</summary> 
+public static string DataType_MediaFile=>T("DataType.MediaFile");
+///<summary>&quot;Label&quot;</summary> 
+public static string FieldNames_Label=>T("FieldNames.Label");
+///<summary>&quot;Description&quot;</summary> 
+public static string FieldNames_Description=>T("FieldNames.Description");
+///<summary>&quot;Data Type&quot;</summary> 
+public static string FieldNames_DataType=>T("FieldNames.DataType");
+///<summary>&quot;Creation Date&quot;</summary> 
+public static string FieldNames_CreationDate=>T("FieldNames.CreationDate");
+///<summary>&quot;Created By&quot;</summary> 
+public static string FieldNames_CreatedBy=>T("FieldNames.CreatedBy");
+///<summary>&quot;Publication Status&quot;</summary> 
+public static string FieldNames_PublicationStatus=>T("FieldNames.PublicationStatus");
+///<summary>&quot;MIME Type&quot;</summary> 
+public static string FieldNames_MimeType=>T("FieldNames.MimeType");
+     private static string T(string key) 
+       { 
+            return StringResourceSystemFacade.GetString("Composite.C1Console.Search", key);
+        }
+} 
+
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	   public static class Composite_C1Console_SecurityViolation {
 ///<summary>&quot;Security violation&quot;</summary> 
 public static string LayoutLabel=>T("LayoutLabel");
@@ -2602,6 +2629,17 @@ public static string AllFunctionsElementProvider_FunctionTester_ToolTip=>T("AllF
 
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+	   public static class Composite_Plugins_Components {
+///<summary>&quot;E-Commerce&quot;</summary> 
+public static string Tags_Ecommerce=>T("Tags.Ecommerce");
+     private static string T(string key) 
+       { 
+            return StringResourceSystemFacade.GetString("Composite.Plugins.Components", key);
+        }
+} 
+
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	   public static class Composite_Plugins_GeneratedDataTypesElementProvider {
 ///<summary>&quot;Global Datatypes&quot;</summary> 
 public static string GlobalDataFolderLabel=>T("GlobalDataFolderLabel");
@@ -4058,12 +4096,16 @@ public static string PageType_AddPageTypeDefaultPageContentWorkflow_NonExistingP
 public static string PageType_EditPageTypeDefaultPageContentWorkflow_Layout_Label=>T("PageType.EditPageTypeDefaultPageContentWorkflow.Layout.Label");
 ///<summary>&quot;Settings&quot;</summary> 
 public static string PageType_EditPageTypeDefaultPageContentWorkflow_SettingsPlaceHolder_Label=>T("PageType.EditPageTypeDefaultPageContentWorkflow.SettingsPlaceHolder.Label");
-///<summary>&quot;Placeholder Info&quot;</summary> 
+///<summary>&quot;Placeholder Settings&quot;</summary> 
 public static string PageType_EditPageTypeDefaultPageContentWorkflow_SettingsFieldGroup_Label=>T("PageType.EditPageTypeDefaultPageContentWorkflow.SettingsFieldGroup.Label");
 ///<summary>&quot;Placeholder ID&quot;</summary> 
 public static string PageType_EditPageTypeDefaultPageContentWorkflow_PlaceHolderIdTextBox_Label=>T("PageType.EditPageTypeDefaultPageContentWorkflow.PlaceHolderIdTextBox.Label");
 ///<summary>&quot;The ID of the placeholder. You can write a non-existing ID and create the placeholder afterwards (edit Page Template markup).&quot;</summary> 
 public static string PageType_EditPageTypeDefaultPageContentWorkflow_PlaceHolderIdTextBox_Help=>T("PageType.EditPageTypeDefaultPageContentWorkflow.PlaceHolderIdTextBox.Help");
+///<summary>&quot;Container Classes&quot;</summary> 
+public static string PageType_EditPageTypeDefaultPageContentWorkflow_PlaceHolderContainerClassesTextBox_Label=>T("PageType.EditPageTypeDefaultPageContentWorkflow.PlaceHolderContainerClassesTextBox.Label");
+///<summary>&quot;Extra &apos;Container Classes&apos; to add to this placeholder when user is editing this type of page. Container classes let you style the editor and control which components can be added.&quot;</summary> 
+public static string PageType_EditPageTypeDefaultPageContentWorkflow_PlaceHolderContainerClassesTextBox_Help=>T("PageType.EditPageTypeDefaultPageContentWorkflow.PlaceHolderContainerClassesTextBox.Help");
 ///<summary>&quot;Content&quot;</summary> 
 public static string PageType_EditPageTypeDefaultPageContentWorkflow_ContentXhtmlEditor_Label=>T("PageType.EditPageTypeDefaultPageContentWorkflow.ContentXhtmlEditor.Label");
 ///<summary>&quot;Add Metadata Field&quot;</summary> 

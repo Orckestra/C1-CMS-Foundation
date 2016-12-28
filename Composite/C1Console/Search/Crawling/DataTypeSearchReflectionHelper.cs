@@ -81,7 +81,7 @@ namespace Composite.C1Console.Search.Crawling
                     attr.Faceted ? processor.GetDocumentFieldFacet(prop) : null,
                     attr.Previewable ? processor.GetDocumentFieldPreview(prop) : null)
                 {
-                    GetFieldLabel = culture => prop.Name
+                    GetFieldLabel = culture => processor.GetFieldLabel(prop, culture)
                 });
         }
     }

@@ -5,6 +5,8 @@ using Composite.C1Console.Security;
 using Composite.Core.Linq;
 using Composite.Data;
 
+using Texts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_C1Console_Search;
+
 namespace Composite.C1Console.Search.Crawling
 {
     /// <summary>
@@ -185,7 +187,7 @@ namespace Composite.C1Console.Search.Crawling
                         FieldOrder = 1
                     })
                 {
-                    GetFieldLabel = c => "Label" // TODO: localize
+                    GetFieldLabel = c => Texts.FieldNames_Label
                 },
 
                 new DocumentField(
@@ -202,7 +204,7 @@ namespace Composite.C1Console.Search.Crawling
                         FieldOrder = 2
                     })
                 {
-                    GetFieldLabel = c => "Data Type" // TODO: localize
+                    GetFieldLabel = c => Texts.FieldNames_DataType
                 },
 
                 new DocumentField(
@@ -226,9 +228,14 @@ namespace Composite.C1Console.Search.Crawling
             Guid dataTypeId;
             if (Guid.TryParse(str, out dataTypeId))
             {
+                if (dataTypeId == new Guid("C046F704-D3E4-4b3d-8CB9-77564FB0B9E7"))
+                {
+                    return Texts.DataType_Page;
+                }
+
                 if (dataTypeId == new Guid("A8716C78-1499-4155-875B-2545006385B2"))
                 {
-                    return "Media File"; // TODO: localize
+                    return Texts.DataType_MediaFile;
                 }
 
                 var descriptor = DataMetaDataFacade.GetDataTypeDescriptor(dataTypeId, false);

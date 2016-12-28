@@ -156,7 +156,7 @@ namespace Composite.C1Console.Search
         /// <summary>
         /// To be used for pagination - number for the first page from the result set to be returned.
         /// </summary>
-        public int SearchResultOffest { get; set; }
+        public int SearchResultOffset { get; set; }
 
         /// <summary>
         /// Maximum amount of documents returned.

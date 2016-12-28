@@ -1,10 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Reflection;
+using Composite.Core.ResourceSystem;
 using Composite.Core.Types;
 using Composite.Data;
+using Composite.Data.DynamicTypes;
+using Composite.Data.ProcessControlled;
 using Composite.Data.Types;
+
+using Texts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_C1Console_Search;
 
 namespace Composite.C1Console.Search.Crawling
 {
@@ -128,7 +134,28 @@ namespace Composite.C1Console.Search.Crawling
         /// <exclude />
         public virtual string GetFieldLabel(PropertyInfo propertyInfo, CultureInfo cultureInfo)
         {
-            return propertyInfo.Name;
+            var fieldName = GetDocumentFieldName(propertyInfo);
+            if (fieldName == DefaultDocumentFieldNames.Description)
+            {
+                return Texts.FieldNames_Description;
+            }
+
+            if (fieldName == DefaultDocumentFieldNames.CreationTime) return Texts.FieldNames_CreationDate;
+            if (propertyInfo.Name == nameof(ICreationHistory.CreatedBy)) return Texts.FieldNames_CreatedBy;
+            if (propertyInfo.Name == nameof(IPublishControlled.PublicationStatus)) return Texts.FieldNames_PublicationStatus;
+            if (propertyInfo.Name == nameof(IMediaFile.MimeType)) return Texts.FieldNames_MimeType;
+
+            var frpAttribute = propertyInfo.GetCustomAttribute<FormRenderingProfileAttribute>();
+            if (!string.IsNullOrEmpty(frpAttribute?.Label))
+            {
+                return frpAttribute.Label;
+            }
+
+            var dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(propertyInfo.DeclaringType);
+            var fieldDescriptor = dataTypeDescriptor?.Fields.FirstOrDefault(f => f.Name == propertyInfo.Name);
+            var label = fieldDescriptor?.FormRenderingProfile?.Label;
+
+            return label ?? propertyInfo.Name;
         }
 
         /// <exclude />
