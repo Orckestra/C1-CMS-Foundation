@@ -2,13 +2,14 @@
 <%@ Import Namespace="Composite.Plugins.Forms.WebChannel.UiControlFactories" %>
 
 <script runat="server">
-    bool _isChecked = false;
+    bool _isChecked;
 
-    protected void Page_Init(object sender, EventArgs e)
+    public override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
     {
-        _isChecked = (string.IsNullOrEmpty(HttpContext.Current.Request.Form[this.ClientID]) == false);
+        _isChecked = !string.IsNullOrEmpty(postCollection[postDataKey]);
+        return true;
     }
-    
+
     protected override void BindStateToProperties()
     {
         this.Checked = _isChecked; 
@@ -21,10 +22,10 @@
 
     public override string GetDataFieldClientName()
     {
-        return this.ClientID;
+        return this.UniqueID;
     }
 </script>
 
 <ui:checkboxgroup>
-	<ui:checkbox label="<%= this.ItemLabel %>" name="<%= this.ClientID %>" ischecked="<%= this._isChecked.ToString().ToLower() %>" />
+	<ui:checkbox label="<%= this.ItemLabel %>" name="<%= this.UniqueID %>" ischecked="<%= this._isChecked.ToString().ToLower() %>" />
 </ui:checkboxgroup>
