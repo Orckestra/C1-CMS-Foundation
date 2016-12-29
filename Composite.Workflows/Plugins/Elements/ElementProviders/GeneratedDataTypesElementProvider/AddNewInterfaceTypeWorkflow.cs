@@ -64,7 +64,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 {BindingNames.HasCaching, false},
                 {BindingNames.HasPublishing, false},
                 {BindingNames.HasLocalization, false},
-                {BindingNames.IsSearchable, false},
+                {BindingNames.IsSearchable, true},
                 {BindingNames.KeyFieldName, dataFieldDescriptors.First().Name},
                 {BindingNames.LabelFieldName, ""},
                 {BindingNames.KeyFieldReadOnly, false}
@@ -149,9 +149,9 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                     return;
                 }
 
-                if(interfaceType != null)
+                if (interfaceType != null)
                 {
-                    if(hasLocalization != DataLocalizationFacade.IsLocalized(interfaceType)
+                    if (hasLocalization != DataLocalizationFacade.IsLocalized(interfaceType)
                         && DataFacade.GetData(interfaceType).ToDataEnumerable().Any())
                     {
                         this.ShowMessage(
@@ -207,13 +207,13 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 string serializedTypeName = TypeManager.SerializeType(helper.InterfaceType);
 
                 EntityToken entityToken = new GeneratedDataTypesElementProviderTypeEntityToken(
-                    serializedTypeName, 
-                    this.EntityToken.Source, 
+                    serializedTypeName,
+                    this.EntityToken.Source,
                     IsPageDataFolder ? GeneratedDataTypesElementProviderRootEntityToken.PageDataFolderTypeFolderId
                                      : GeneratedDataTypesElementProviderRootEntityToken.GlobalDataTypeFolderId
                 );
 
-                if(originalTypeDataExists)
+                if (originalTypeDataExists)
                 {
                     SetSaveStatus(true);
                 }
@@ -221,7 +221,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 {
                     SetSaveStatus(true, entityToken);
                 }
-                
+
 
                 if (!this.BindingExist(BindingNames.InterfaceType))
                 {
@@ -248,6 +248,11 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
                 this.ShowMessage(DialogType.Error, ex.Message, ex.Message);
             }
+        }
+
+        private void codeActivity_RefreshViewHandler(object sender, EventArgs e)
+        {
+            RerenderView();
         }
     }
 }

@@ -2,30 +2,72 @@
 <%@ Import Namespace="Composite.Plugins.Forms.WebChannel.UiControlFactories" %>
 
 <script runat="server">
-    bool _isChecked;
+	const string ViewStateKey = "Checkbox.IsChecked";
 
-    public override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
-    {
-        _isChecked = !string.IsNullOrEmpty(postCollection[postDataKey]);
-        return true;
-    }
+	protected void Page_Load(object sender, EventArgs e)
+	{
+		// Workaround for <ui:control> not posting a value when it is not checked
+		if (IsPostBack
+		    && CheckedChangedEventHandler == null
+		    && string.IsNullOrEmpty(Request.Form[UniqueID]))
+		{
+			LoadPostData(UniqueID, Request.Form);
+		}
+	}
 
-    protected override void BindStateToProperties()
-    {
-        this.Checked = _isChecked; 
-    }
+	private bool ViewState_Checked
+	{
+		get { return (bool) ViewState[ViewStateKey]; }
+		set { ViewState[ViewStateKey] = value; }
+	}
 
-    protected override void InitializeViewState()
-    {
-        _isChecked = this.Checked;
-    }
+	public override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
+	{
+		bool previousValue = ViewState_Checked;
 
-    public override string GetDataFieldClientName()
-    {
-        return this.UniqueID;
-    }
+		ViewState_Checked = (postCollection[postDataKey] ?? "").Contains("on");
+
+		return ViewState_Checked != previousValue;
+	}
+
+	public override void RaisePostDataChangedEvent()
+	{
+		if (this.CheckedChangedEventHandler != null)
+		{
+			this.CheckedChangedEventHandler(this, EventArgs.Empty);
+		}
+	}
+
+	protected override void BindStateToProperties()
+	{
+		this.Checked = ViewState_Checked;
+	}
+
+	protected override void InitializeViewState()
+	{
+		ViewState_Checked = this.Checked;
+	}
+
+	public override string GetDataFieldClientName()
+	{
+		return this.UniqueID;
+	}
+
+	private string ExtraAttributes()
+	{
+		if (this.CheckedChangedEventHandler != null)
+		{
+			return string.Format(@"callbackid=""{0}"" onchange=""this.dispatchAction(PageBinding.ACTION_DOPOSTBACK)""", this.UniqueID);
+		}
+
+		return null;
+	}
+
+
 </script>
 
 <ui:checkboxgroup>
-	<ui:checkbox label="<%= this.ItemLabel %>" name="<%= this.UniqueID %>" ischecked="<%= this._isChecked.ToString().ToLower() %>" />
+	<ui:checkbox label="<%= this.ItemLabel %>" name="<%= this.UniqueID %>" 
+		ischecked="<%= this.Checked.ToString().ToLower() %>" 
+		<%= ExtraAttributes() %> />
 </ui:checkboxgroup>

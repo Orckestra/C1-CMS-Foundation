@@ -11,6 +11,7 @@
         <cms:binding name="KeyFieldName" type="System.String" optional="true" />
         <cms:binding name="LabelFieldName" type="System.String" optional="true" />
         <cms:binding name="InternalUrlPrefix" type="System.String" optional="true" />
+        <cms:binding name="CustomEvent01Handler" type="System.EventHandler" />
     </cms:bindings>
     <cms:layout iconhandle="generated-type-edit">
         <cms:layout.label>
@@ -54,6 +55,9 @@
 													<CheckBox.Checked>
 														<cms:bind source="IsSearchable" />
 													</CheckBox.Checked>
+													<CheckBox.CheckedChangedEventHandler>
+														<cms:read source="CustomEvent01Handler"/>
+													</CheckBox.CheckedChangedEventHandler>
 												</CheckBox>
 									</PlaceHolder>
                 </FieldGroup>

@@ -48,6 +48,9 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
         /// <exclude />
         public string ItemLabel { get; set; }
 
+        /// <exclude />
+        public EventHandler CheckedChangedEventHandler { get; set; }
+
         /// <summary>
         /// When implemented by a class, processes postback data for an ASP.NET server control.
         /// </summary>
@@ -96,6 +99,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
             _userControl.FormControlLabel = this.Label;
             _userControl.Checked = this.Checked;
             _userControl.ItemLabel = this.ItemLabel;
+            _userControl.CheckedChangedEventHandler += this.CheckedChangedEventHandler;
 
             return _userControl;
         }

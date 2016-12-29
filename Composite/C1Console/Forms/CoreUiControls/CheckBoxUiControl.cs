@@ -1,24 +1,21 @@
 ﻿using System;
-
 using Composite.C1Console.Forms.Foundation;
 
 
 namespace Composite.C1Console.Forms.CoreUiControls
 {
-    [ControlValueProperty("Checked")]
+    [ControlValueProperty(nameof(Checked))]
     internal abstract class CheckBoxUiControl : UiControl
     {
-        private bool _checked = false;
+        [BindableProperty]
+        [FormsProperty]
+        public bool Checked { get; set; }
 
-        [BindableProperty()]
-        [FormsProperty()]
-        public bool Checked
-        {
-            get { return _checked; }
-            set { _checked = value; }
-        }
-
-        [FormsProperty()]
+        [FormsProperty]
         public string ItemLabel { get; set; }
+
+        [BindableProperty]
+        [FormsProperty]
+        public EventHandler CheckedChangedEventHandler { get; set; }
     }
 }

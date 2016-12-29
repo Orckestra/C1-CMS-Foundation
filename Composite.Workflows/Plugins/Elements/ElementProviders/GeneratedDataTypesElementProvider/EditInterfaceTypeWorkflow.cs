@@ -85,7 +85,6 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 {BindingNames.HasCaching, helper.IsCachable},
                 {BindingNames.HasPublishing, helper.IsPublishControlled},
                 {BindingNames.IsSearchable, helper.IsSearchable},
-                
                 {BindingNames.DataFieldDescriptors, fieldDescriptors},
                 {BindingNames.OldTypeName, dataTypeDescriptor.Name},
                 {BindingNames.OldTypeNamespace, dataTypeDescriptor.Namespace}
@@ -125,7 +124,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 var dataFieldDescriptors = this.GetBinding<List<DataFieldDescriptor>>(BindingNames.DataFieldDescriptors);
 
                 var helper = new GeneratedTypesHelper(oldType);
-                bool hasLocalization = typeof (ILocalizedControlled).IsAssignableFrom(oldType);
+                bool hasLocalization = typeof(ILocalizedControlled).IsAssignableFrom(oldType);
 
                 string errorMessage;
                 if (!helper.ValidateNewTypeName(typeName, out errorMessage))
@@ -160,7 +159,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 helper.SetNewTypeFullName(typeName, typeNamespace);
                 helper.SetNewTypeTitle(typeTitle);
                 helper.SetNewInternalUrlPrefix(internalUrlPrefix);
-                
+
                 helper.SetNewFieldDescriptors(dataFieldDescriptors, keyFieldName, labelFieldName);
 
                 if (helper.IsEditProcessControlledAllowed)
@@ -201,7 +200,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
                 SetSaveStatus(true);
 
-                var rootEntityToken = new GeneratedDataTypesElementProviderRootEntityToken(this.EntityToken.Source, 
+                var rootEntityToken = new GeneratedDataTypesElementProviderRootEntityToken(this.EntityToken.Source,
                     IsPageFolder ? GeneratedDataTypesElementProviderRootEntityToken.PageDataFolderTypeFolderId
                                  : GeneratedDataTypesElementProviderRootEntityToken.GlobalDataTypeFolderId);
 
@@ -211,7 +210,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 IFile markupFile = DynamicTypesAlternateFormFacade.GetAlternateFormMarkupFile(typeNamespace, typeName);
                 if (markupFile != null)
                 {
-                    ShowMessage(DialogType.Message, 
+                    ShowMessage(DialogType.Message,
                         Texts.FormMarkupInfo_Dialog_Label,
                         Texts.FormMarkupInfo_Message(Texts.EditFormMarkup, markupFile.GetRelativeFilePath()));
                 }
@@ -232,7 +231,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 return;
             }
 
-            if(!DataFacade.GetData<IGeneratedTypeWhiteList>(item => item.TypeManagerTypeName == newTypeName).Any())
+            if (!DataFacade.GetData<IGeneratedTypeWhiteList>(item => item.TypeManagerTypeName == newTypeName).Any())
             {
                 var newWhiteListItem = DataFacade.BuildNew<IGeneratedTypeWhiteList>();
                 newWhiteListItem.TypeManagerTypeName = newTypeName;
@@ -246,6 +245,11 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
         private static string GetSerializedTypeName(string typeNamespace, string typeName)
         {
             return "DynamicType:" + (typeName.Length == 0 ? typeName : typeNamespace + "." + typeName);
+        }
+
+        private void codeActivity_refreshViewHandler(object sender, EventArgs e)
+        {
+            RerenderView();
         }
     }
 }
