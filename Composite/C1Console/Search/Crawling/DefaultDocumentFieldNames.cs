@@ -21,6 +21,11 @@
         public static readonly string DataType = "datatype";
 
         /// <summary>
+        /// The name of the facet field that contains the list of users and user groups that have access to the current document.
+        /// </summary>
+        public static readonly string ConsoleAccess = "access";
+
+        /// <summary>
         /// The name of the boolean facet field that indicates whether the document has a url.
         ///  </summary>
         public static readonly string HasUrl = "hasUrl";

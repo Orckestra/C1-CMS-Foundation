@@ -280,6 +280,7 @@
     <Compile Include="C1Console\RichContent\ContainerClasses\ContainerClassManager.cs" />
     <Compile Include="C1Console\RichContent\ContainerClasses\EqualOrAntonymComparer.cs" />
     <Compile Include="C1Console\Search\Crawling\DefaultDocumentFieldNames.cs" />
+    <Compile Include="C1Console\Search\Crawling\EntityTokenSecurityHelper.cs" />
     <Compile Include="C1Console\Search\Crawling\IDataFieldProcessorProvider.cs" />
     <Compile Include="C1Console\Search\Crawling\SearchDocumentBuilder.cs" />
     <Compile Include="C1Console\Search\Crawling\DateTimeDataFieldProcessor.cs" />

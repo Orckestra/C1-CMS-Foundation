@@ -153,6 +153,8 @@ namespace Composite.C1Console.Search.Crawling
                 _facetFieldValues.Add(new KeyValuePair<string, string[]>(DefaultDocumentFieldNames.HasUrl, new[] { "1" }));
             }
 
+            AddAccessField(entityToken);
+
             return new SearchDocument(source, documentId, label, entityToken)
             {
                 ElementBundleName = versionName,
@@ -167,6 +169,22 @@ namespace Composite.C1Console.Search.Crawling
             };
         }
 
+
+        private void AddAccessField(EntityToken entityToken)
+        {
+            IEnumerable<string> users;
+            IEnumerable<Guid> groups;
+            EntityTokenSecurityHelper.GetUsersAndGroupsWithReadAccess(entityToken, out users, out groups);
+
+            var tokens = users.Concat(groups.Select(g => g.ToString())).ToArray();
+
+            if (tokens.Any())
+            {
+                _facetFieldValues.Add(new KeyValuePair<string, string[]>(
+                    DefaultDocumentFieldNames.ConsoleAccess,
+                    tokens));
+            }
+        }
 
 
         /// <summary>
@@ -211,12 +229,25 @@ namespace Composite.C1Console.Search.Crawling
                     DefaultDocumentFieldNames.HasUrl,
                     new DocumentFieldFacet
                     {
-                        LabelFunction = c => null,
+                        LabelFunction = v => v,
                         MinHitCount = 1
                     }, 
                     null)
                 {
-                    GetFieldLabel = c => "Has Url"
+                    GetFieldLabel = c => null
+                },
+
+                new DocumentField(
+                    DefaultDocumentFieldNames.ConsoleAccess,
+                    new DocumentFieldFacet
+                    {
+                        FacetType = FacetType.MultipleValues,
+                        LabelFunction = v => v,
+                        MinHitCount = 1
+                    },
+                    null)
+                {
+                    GetFieldLabel = c => "Console Access"
                 }
             };
         }
