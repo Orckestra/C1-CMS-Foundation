@@ -6,6 +6,7 @@ import Immutable from 'immutable';
 import Input from 'console/components/presentation/Input.js';
 import Icon from 'console/components/presentation/Icon.js';
 import SearchResults from 'console/components/presentation/SearchResults.js';
+import SearchFacets from 'console/components/presentation/SearchFacets.js';
 
 export const SearchContainer = styled.div`
 width: 100%;
@@ -30,12 +31,6 @@ position: absolute;
 top: 23px;
 right: 31px;
 `;
-export const FacetList = styled.div`
-border-top: 1px solid ${colors.borderColor};
-`;
-export const FacetGroup = styled.div``;
-export const FacetHeader = styled.h2``;
-export const Facet = styled.div``;
 export const SearchResultPane = styled.div`
 box-sizing: border-box;
 position: absolute;
@@ -76,15 +71,7 @@ const SearchPage = props => {
 					}
 				}}/>
 			<SearchIcon id="magnifier" onClick={searchAction}/>
-			<FacetList>
-				{
-					/* Get list of facet groups, render one header and group for each */
-					props.facetGroups.map(group => <FacetGroup key={group.get('fieldName')}>
-						<FacetHeader>{group.get('label')}</FacetHeader>
-						{group.get('facets').map(facet => <Facet key={facet.get('value')}>{facet.get('label')}</Facet>).toArray()}
-					</FacetGroup>).toArray()
-				}
-			</FacetList>
+			<SearchFacets facetGroups={props.facetGroups} actions={props.actions}/>
 		</SearchSidebar>
 		<SearchResultPane>
 			<ResultHeader>{props.results.size} results for '{props.searchString}'</ResultHeader>
@@ -95,9 +82,7 @@ const SearchPage = props => {
 
 SearchPage.propTypes = {
 	pageDef: ImmutablePropTypes.map,
-	facetGroups: ImmutablePropTypes.listOf(ImmutablePropTypes.mapContains({
-		facets: ImmutablePropTypes.listOf(ImmutablePropTypes.map)
-	})),
+	facetGroups: ImmutablePropTypes.list,
 	results: ImmutablePropTypes.list,
 	resultColumns: ImmutablePropTypes.list.isRequired,
 	searchFieldValue: PropTypes.string.isRequired,

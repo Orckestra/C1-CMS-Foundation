@@ -3,6 +3,7 @@ import React from 'react';
 import TestUtils from 'react-addons-test-utils';
 import SearchPage, * as searchUi from 'console/components/presentation/SearchPage.js';
 import SearchResults from 'console/components/presentation/SearchResults.js';
+import SearchFacets from 'console/components/presentation/SearchFacets.js';
 import Immutable from 'immutable';
 
 describe('SearchPage', () => {
@@ -82,14 +83,13 @@ describe('SearchPage', () => {
 		expect(renderer, 'to have rendered', <searchUi.SearchContainer>
 			<searchUi.SearchSidebar>
 				<searchUi.SearchField value='Test'/><searchUi.SearchIcon/>
-				<searchUi.FacetList>
-					<searchUi.FacetGroup key='testgroup'>
-						<searchUi.FacetHeader>Test group 1</searchUi.FacetHeader>
-						<searchUi.Facet key='facet1'>Facet One</searchUi.Facet>
-						<searchUi.Facet key='facet2'>Facet Two</searchUi.Facet>
-						<searchUi.Facet key='facet3'>Facet Three</searchUi.Facet>
-					</searchUi.FacetGroup>
-				</searchUi.FacetList>
+				<SearchFacets
+					facetGroups={Immutable.fromJS([{}])}
+					actions={{
+						setOption: expect.it('to be a function'),
+						performSearch: expect.it('to be a function')
+					}}
+				/>
 			</searchUi.SearchSidebar>
 			<searchUi.SearchResultPane>
 				<searchUi.ResultHeader>3 results for 'Test'</searchUi.ResultHeader>
