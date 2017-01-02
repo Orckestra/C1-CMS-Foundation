@@ -69,9 +69,10 @@ namespace Composite.Core.WebClient.Services.WampRouter
 
         private void StartWampRouter()
         {
-            _host = new WampHost();
+            _host = new WampAuthenticationHost(new UserNameBasedAuthenticationFactory());
             
-            _host.RegisterTransport(new AspNetWebSocketTransport("Composite/api/Router"),
+            _host.RegisterTransport(new AspNetWebSocketTransport("Composite/api/Router"
+                ,new UserNameBasedCookieAuthenticationFactory()),
                 new JTokenJsonBinding(new JsonSerializer()
                 { ContractResolver = new CamelCasePropertyNamesContractResolver()}));
             
