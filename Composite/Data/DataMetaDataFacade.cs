@@ -4,6 +4,7 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Xml;
 using System.Xml.Linq;
 using Composite.C1Console.Events;
@@ -210,6 +211,12 @@ namespace Composite.Data
                 }
                 catch(ReflectionTypeLoadException ex)
                 {
+                    if (assembly == typeof (IData).Assembly)
+                    {
+                        // It is critical to be able to load types from Composite.dll
+                        Log.LogError(LogTitle, ex.LoaderExceptions.FirstOrDefault());
+                        throw new InvalidOperationException($"Failed to load '{typeof(IData).Assembly.FullName}', check log file for the details", ex);
+                    }
                     Log.LogWarning($"Failed to get types from assembly '{assembly.FullName}'", ex);
                     continue;
                 }

@@ -24,19 +24,18 @@ namespace Composite.Core.WebClient
 
             cookieName = GetApplicationSpecificCookieName(cookieName);
 
-            var responseCookie = GetCookie(context.Response.Cookies, cookieName);
-            if (responseCookie != null)
+            if (!context.IsWebSocketRequest)
             {
-                return responseCookie.Value;
+                var responseCookie = GetCookie(context.Response.Cookies, cookieName);
+                if (responseCookie != null)
+                {
+                    return responseCookie.Value;
+                }
             }
 
             var requestCookie = GetCookie(context.Request.Cookies, cookieName);
-            if (requestCookie != null)
-            {
-                return requestCookie.Value;
-            }
 
-            return null;
+            return requestCookie?.Value;
         }
 
 
