@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Reactive.Subjects;
-using System.Web.Http;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using WampSharp.AspNet.WebSockets.Server;
 using WampSharp.Binding;
 using WampSharp.Logging;
 using WampSharp.V2;
@@ -11,27 +11,10 @@ using WampSharp.V2.Realm;
 
 namespace Composite.Core.WebClient.Services.WampRouter
 {
-    /// <exclude />
-    [Route("Composite/api/Router")]
-    public class AuthenticatedRouterController : AspNetWebsocketTransform.RouterController
-    {
-        /// <exclude />
-        public AuthenticatedRouterController() : this(ServiceLocator.GetService<WampRouter>().GetTransport())
-        {
-        }
-
-        /// <exclude />
-        public AuthenticatedRouterController(AspNetWebsocketTransform aspNetWebsocketTransform) 
-                : base(aspNetWebsocketTransform)
-        {
-        }
-    }
-
     internal class WampRouter
     {
         private const string DefaultRealmName = "realm";
         private WampHost _host;
-        private AspNetWebsocketTransform _aspNetWebsocketTransform;
 
         public WampRouter()
         {
@@ -87,9 +70,8 @@ namespace Composite.Core.WebClient.Services.WampRouter
         private void StartWampRouter()
         {
             _host = new WampHost();
-            _aspNetWebsocketTransform = new AspNetWebsocketTransform();
-
-            _host.RegisterTransport(_aspNetWebsocketTransform,
+            
+            _host.RegisterTransport(new AspNetWebSocketTransport("Composite/api/Router"),
                 new JTokenJsonBinding(new JsonSerializer()
                 { ContractResolver = new CamelCasePropertyNamesContractResolver()}));
             
@@ -108,11 +90,7 @@ namespace Composite.Core.WebClient.Services.WampRouter
         {
             Log.LogVerbose(nameof(WampRouter), "A connection error occured");
         }
-
-        public AspNetWebsocketTransform GetTransport()
-        {
-            return _aspNetWebsocketTransform;
-        }
+        
     }
 }
 
