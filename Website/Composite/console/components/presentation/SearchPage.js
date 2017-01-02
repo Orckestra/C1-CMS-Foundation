@@ -5,6 +5,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import Immutable from 'immutable';
 import Input from 'console/components/presentation/Input.js';
 import Icon from 'console/components/presentation/Icon.js';
+import SearchResults from 'console/components/presentation/SearchResults.js';
 
 export const SearchContainer = styled.div`
 width: 100%;
@@ -45,50 +46,6 @@ height: 100%;
 `;
 export const ResultHeader = styled.h1`
 margin-left: 15px;
-`;
-export const ResultTable = styled.table`
-width: 100%;
-max-height: calc(100% - 32px);
-border-collapse: collapse;
-`;
-export const ResultTableHead = styled.thead``;
-export const ResultTableBody = styled.tbody`
-overflow-y: scroll;
-`;
-export const ResultTableHeadCell = styled.th`
-height: 26px;
-border-top: 1px solid ${colors.borderColor};
-border-bottom: 1px solid ${colors.borderColor};
-background-color: ${colors.darkBackground};
-text-align: left;
-font-weight: normal;
-
-&.active {
-	font-weight: bold;
-}
-
-&:first-child {
-	padding-left: 15px;
-	border-left: 1px solid ${colors.borderColor};
-}
-&:last-child {
-	padding-right: 15px;
-}
-`;
-export const ResultTableBodyCell = styled.td`
-height: 26px;
-border-bottom: 1px solid ${colors.borderColor};
-
-&.active {
-	font-weight: bold;
-}
-
-&:first-child {
-	padding-left: 15px;
-}
-&:last-child {
-	padding-right: 15px;
-}
 `;
 
 const SearchPage = props => {
@@ -131,20 +88,7 @@ const SearchPage = props => {
 		</SearchSidebar>
 		<SearchResultPane>
 			<ResultHeader>{props.results.size} results for '{props.searchString}'</ResultHeader>
-			<ResultTable>
-				<ResultTableHead>
-					<tr>
-						{props.resultColumns.map(col => <ResultTableHeadCell key={col.get('fieldName')}>{col.get('label')}</ResultTableHeadCell>).toArray()}
-					</tr>
-				</ResultTableHead>
-				<ResultTableBody>
-					{props.results.map(row =>
-						<tr key={row.hashCode()}>
-							{props.resultColumns.map(col => <ResultTableBodyCell key={col.get('fieldName')}>{row.getIn(['values', col.get('fieldName')])}</ResultTableBodyCell>).toArray()}
-						</tr>
-					).toArray()}
-				</ResultTableBody>
-			</ResultTable>
+			<SearchResults resultColumns={props.resultColumns} results={props.results}/>
 		</SearchResultPane>
 	</SearchContainer>;
 };
@@ -154,10 +98,8 @@ SearchPage.propTypes = {
 	facetGroups: ImmutablePropTypes.listOf(ImmutablePropTypes.mapContains({
 		facets: ImmutablePropTypes.listOf(ImmutablePropTypes.map)
 	})),
-	results: ImmutablePropTypes.listOf(ImmutablePropTypes.map),
-	resultColumns: ImmutablePropTypes.listOf(ImmutablePropTypes.mapContains({
-		label: PropTypes.string.isRequired
-	})).isRequired,
+	results: ImmutablePropTypes.list,
+	resultColumns: ImmutablePropTypes.list.isRequired,
 	searchFieldValue: PropTypes.string.isRequired,
 	searchString: PropTypes.string,
 	actions: PropTypes.shape({
