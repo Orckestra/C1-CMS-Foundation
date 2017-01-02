@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using Composite.Core.ResourceSystem;
 using Composite.Core.Types;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
@@ -75,7 +74,7 @@ namespace Composite.C1Console.Search.Crawling
             {
                 Limit = 100,
                 MinHitCount = 1,
-                LabelFunction = GetFacetLabelFunction()
+                GetValuePreviewFunction = GetFacetValuePreviewFunction()
             };
         }
 
@@ -159,15 +158,15 @@ namespace Composite.C1Console.Search.Crawling
         }
 
         /// <exclude />
-        protected virtual Func<object, string> GetPreviewFunction()
+        protected virtual DocumentFieldPreview.GetValuePreviewDelegate GetPreviewFunction()
         {
-            return obj => obj?.ToString();
+            return (value, culture) => value?.ToString();
         }
 
         /// <exclude />
-        protected virtual Func<string, string> GetFacetLabelFunction()
+        protected virtual DocumentFieldFacet.GetFacetValuePreviewDelegate GetFacetValuePreviewFunction()
         {
-            return obj => obj;
+            return (obj, culture) => obj;
         }
 
         private static bool IsFieldSortable(PropertyInfo propertyInfo)

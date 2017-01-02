@@ -6,6 +6,8 @@ namespace Composite.Plugins.Search.Endpoint
     public class ConsoleSearchResult
     {
         /// <exclude />
+        public string QueryText { get; set; }
+        /// <exclude />
         public ConsoleSearchResultColumn[] Columns { get; set; }
         /// <exclude />
         public ConsoleSearchResultRow[] Rows { get; set; }

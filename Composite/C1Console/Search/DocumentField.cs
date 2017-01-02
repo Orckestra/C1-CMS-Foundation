@@ -8,6 +8,9 @@ namespace Composite.C1Console.Search
     /// </summary>
     public class DocumentFieldFacet
     {
+        /// <exclude />
+        public delegate string GetFacetValuePreviewDelegate(string value, CultureInfo culture);
+
         /// <summary>
         /// Gets or sets the maximum number of choices to return. The default value is 0 which means - all.
         /// </summary>
@@ -31,7 +34,7 @@ namespace Composite.C1Console.Search
         /// <summary>
         /// A function to get a label for a given facet value.
         /// </summary>
-        public Func<string, string> LabelFunction { get; set; }
+        public GetFacetValuePreviewDelegate GetValuePreviewFunction { get; set; }
 
         //public int FieldOrder { get; set; }
     }
@@ -100,10 +103,13 @@ namespace Composite.C1Console.Search
     /// </summary>
     public sealed class DocumentFieldPreview
     {
+        /// <exclude />
+        public delegate string GetValuePreviewDelegate(object value, CultureInfo culture);
+
         /// <summary>
         /// A function reference to preview the field value.
         /// </summary>
-        public Func<object, string> PreviewFunction { get; set; }
+        public GetValuePreviewDelegate PreviewFunction { get; set; }
 
         /// <summary>
         /// Indicates whether sorting for the given field should be enabled.

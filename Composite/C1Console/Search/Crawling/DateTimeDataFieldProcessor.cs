@@ -15,14 +15,14 @@ namespace Composite.C1Console.Search.Crawling
         }
 
         /// <exclude />
-        protected override Func<object, string> GetPreviewFunction()
+        protected override DocumentFieldPreview.GetValuePreviewDelegate GetPreviewFunction()
         {
-            return obj =>
+            return (value, culture) =>
             {
-                if (obj == null) return null;
-                var date = DateTime.ParseExact((string)obj, "s", CultureInfo.InvariantCulture);
+                if (value == null) return null;
+                var date = DateTime.ParseExact((string)value, "s", CultureInfo.InvariantCulture);
 
-                return date.ToString("yyyy MMM d");
+                return date.ToString("yyyy MMM d", culture);
             };
         }
 
@@ -35,16 +35,16 @@ namespace Composite.C1Console.Search.Crawling
         }
 
         /// <exclude />
-        protected override Func<string, string> GetFacetLabelFunction()
+        protected override DocumentFieldFacet.GetFacetValuePreviewDelegate GetFacetValuePreviewFunction()
         {
-            return value =>
+            return (value, culture) =>
             {
                 if (value == null) return null;
                 var parts = value.Split(' ');
 
                 int month = int.Parse(parts[1]);
 
-                var monthName = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month);
+                var monthName = culture.DateTimeFormat.GetMonthName(month);
                 return $"{parts[0]} {monthName}";
             };
         }

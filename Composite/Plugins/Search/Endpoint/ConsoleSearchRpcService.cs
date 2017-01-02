@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 using Composite.C1Console.Search;
 using Composite.C1Console.Search.Crawling;
 using Composite.C1Console.Users;
+using Composite.Core;
 using Composite.Core.Application;
 using Composite.Core.Linq;
 using Composite.Core.WebClient;
 using Composite.Core.WebClient.Services.WampRouter;
 using Microsoft.Extensions.DependencyInjection;
+using WampSharp.V2;
 using WampSharp.V2.Rpc;
 
 namespace Composite.Plugins.Search.Endpoint
@@ -36,7 +38,7 @@ namespace Composite.Plugins.Search.Endpoint
 
         /// <exclude />
         public ConsoleSearchRpcService(
-            ISearchProvider searchProvider, 
+            ISearchProvider searchProvider,
             IEnumerable<ISearchDocumentSourceProvider> docSourceProviders)
         {
             _searchProvider = searchProvider;
@@ -49,7 +51,8 @@ namespace Composite.Plugins.Search.Endpoint
         {
             if (_searchProvider == null) return null;
 
-            var uiCulture = CultureInfo.CurrentUICulture;
+            var consoleCulture = UserSettings.CultureInfo;
+            var consoleUiCulture = UserSettings.C1ConsoleUiLanguage;
 
             var documentSources = _docSourceProviders.SelectMany(dsp => dsp.GetDocumentSources()).ToList();
             var allFields = documentSources.SelectMany(ds => ds.CustomFields).ToList();
@@ -101,9 +104,11 @@ namespace Composite.Plugins.Search.Endpoint
                 SortOptions = sortOptions
             };
 
+            searchQuery.FilterByUser(UserSettings.Username);
+
             var result = await _searchProvider.SearchAsync(searchQuery);
 
-            var documents = SearchFacade.Filter(result.Documents.ToList(), true, null).Evaluate();
+            var documents = result.Documents.Evaluate();
             if (!documents.Any())
             {
                 return new ConsoleSearchResult
@@ -123,19 +128,20 @@ namespace Composite.Plugins.Search.Endpoint
 
             return new ConsoleSearchResult
             {
+                QueryText = query.Text,
                 Columns = previewFields.Select(pf => new ConsoleSearchResultColumn
                 {
                     FieldName = pf.Name,
-                    Label = pf.GetFieldLabel(uiCulture),
+                    Label = pf.GetFieldLabel(consoleUiCulture),
                     Sortable = pf.Preview.Sortable
                 }).ToArray(),
                 Rows = documents.Select(doc => new ConsoleSearchResultRow
                 {
                     Label = doc.Label,
                     Url = GetFocusUrl(doc.SerializedEntityToken),
-                    Values = GetPreviewValues(doc, previewFields)
+                    Values = GetPreviewValues(doc, previewFields, consoleCulture)
                 }).ToArray(),
-                FacetFields = GetFacets(result, facetFields, uiCulture),
+                FacetFields = GetFacets(result, facetFields, consoleCulture),
                 TotalHits = result.TotalHits
             };
         }
@@ -161,7 +167,7 @@ namespace Composite.Plugins.Search.Endpoint
                     {
                         Value = v.Value,
                         HitCount = v.HitCount,
-                        Label = field.Facet.LabelFunction(v.Value)
+                        Label = field.Facet.GetValuePreviewFunction(v.Value, culture)
                     }).ToArray()
                 });
             }
@@ -171,7 +177,8 @@ namespace Composite.Plugins.Search.Endpoint
 
         private Dictionary<string, string> GetPreviewValues(
             SearchDocument searchDocument,
-            IEnumerable<DocumentField> fields)
+            IEnumerable<DocumentField> fields,
+            CultureInfo culture)
         {
             var result = new Dictionary<string, string>();
 
@@ -180,7 +187,7 @@ namespace Composite.Plugins.Search.Endpoint
                 object value;
                 if (!searchDocument.FieldValues.TryGetValue(field.Name, out value)) continue;
 
-                var stringValue = (field.Preview.PreviewFunction ?? (a => a?.ToString()))(value);
+                var stringValue = (field.Preview.PreviewFunction ?? ((v, c) => v?.ToString()))(value, culture);
                 result[field.Name] = stringValue;
             }
 

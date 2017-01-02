@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Composite.C1Console.Search.Crawling;
+using Composite.C1Console.Security;
 using Composite.Data;
 
 namespace Composite.C1Console.Search
@@ -111,15 +112,7 @@ namespace Composite.C1Console.Search
                 Values = dataTypes.Select(type => type.GetImmutableTypeId().ToString()).ToArray()
             });
 
-            if (!Facets.Any(f => f.Key == DefaultDocumentFieldNames.DataType))
-            {
-                Facets.Add(new KeyValuePair<string, DocumentFieldFacet>(
-                    DefaultDocumentFieldNames.DataType,
-                    SearchDocumentBuilder.GetDefaultDocumentFields()
-                    .Single(f => f.Name == DefaultDocumentFieldNames.DataType)
-                    .Facet));
-            }
-            
+            AddDefaultFieldFacet(DefaultDocumentFieldNames.DataType);
         }
 
         /// <summary>
@@ -133,14 +126,30 @@ namespace Composite.C1Console.Search
                 Values = new [] {"1"}
             });
 
-            if (!Facets.Any(f => f.Key == DefaultDocumentFieldNames.HasUrl))
+            AddDefaultFieldFacet(DefaultDocumentFieldNames.HasUrl);
+        }
+
+
+        /// <summary>
+        /// Filtering search results to which the given user does not have read access permission.
+        /// </summary>
+        /// <param name="userName"></param>
+        public void FilterByUser(string userName)
+        {
+            Verify.ArgumentNotNullOrEmpty(userName, nameof(userName));
+
+            var tokens = new List<string> {userName};
+
+            tokens.AddRange(UserGroupFacade.GetUserGroupIds(userName).Select(id => id.ToString()));
+
+            Selection.Add(new SearchQuerySelection
             {
-                Facets.Add(new KeyValuePair<string, DocumentFieldFacet>(
-                    DefaultDocumentFieldNames.HasUrl,
-                    SearchDocumentBuilder.GetDefaultDocumentFields()
-                        .Single(f => f.Name == DefaultDocumentFieldNames.HasUrl)
-                        .Facet));
-            }
+                FieldName = DefaultDocumentFieldNames.ConsoleAccess,
+                Operation = SearchQuerySelectionOperation.Or,
+                Values = tokens.ToArray()
+            });
+
+            AddDefaultFieldFacet(DefaultDocumentFieldNames.ConsoleAccess);
         }
 
         /// <summary>
@@ -178,5 +187,20 @@ namespace Composite.C1Console.Search
         /// Sort options.
         /// </summary>
         public IEnumerable<SearchQuerySortOption> SortOptions { get; set; }
+
+
+        private void AddDefaultFieldFacet(string fieldName)
+        {
+            if (Facets.Any(f => f.Key == DefaultDocumentFieldNames.HasUrl))
+            {
+                return;
+            }
+
+            Facets.Add(new KeyValuePair<string, DocumentFieldFacet>(
+                    DefaultDocumentFieldNames.HasUrl,
+                    SearchDocumentBuilder.GetDefaultDocumentFields()
+                    .Single(f => f.Name == fieldName)
+                    .Facet));
+        }
     }
 }

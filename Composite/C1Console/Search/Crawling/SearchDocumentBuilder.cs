@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Composite.C1Console.Security;
 using Composite.Core.Linq;
@@ -200,7 +201,7 @@ namespace Composite.C1Console.Search.Crawling
                     null,
                     new DocumentFieldPreview
                     {
-                        PreviewFunction = label => label?.ToString(),
+                        PreviewFunction = (value, culture) => value?.ToString(),
                         Sortable = true,
                         FieldOrder = 1
                     })
@@ -212,7 +213,7 @@ namespace Composite.C1Console.Search.Crawling
                     DefaultDocumentFieldNames.DataType,
                     new DocumentFieldFacet
                     {
-                        LabelFunction = GetDataTypeLabel,
+                        GetValuePreviewFunction = GetDataTypeLabel,
                         MinHitCount = 1
                     },
                     new DocumentFieldPreview
@@ -229,12 +230,12 @@ namespace Composite.C1Console.Search.Crawling
                     DefaultDocumentFieldNames.HasUrl,
                     new DocumentFieldFacet
                     {
-                        LabelFunction = v => v,
+                        GetValuePreviewFunction = (value, culture) => value,
                         MinHitCount = 1
                     }, 
                     null)
                 {
-                    GetFieldLabel = c => null
+                    GetFieldLabel = culture => null
                 },
 
                 new DocumentField(
@@ -242,17 +243,17 @@ namespace Composite.C1Console.Search.Crawling
                     new DocumentFieldFacet
                     {
                         FacetType = FacetType.MultipleValues,
-                        LabelFunction = v => v,
+                        GetValuePreviewFunction = (value, culture) => value,
                         MinHitCount = 1
                     },
                     null)
                 {
-                    GetFieldLabel = c => "Console Access"
+                    GetFieldLabel = culture => "Console Access"
                 }
             };
         }
 
-        private static string GetDataTypeLabel(object datatype)
+        private static string GetDataTypeLabel(object datatype, CultureInfo culture)
         {
             var str = (string)datatype;
 
