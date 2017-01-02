@@ -21,60 +21,76 @@ describe('SearchPage', () => {
 						protocol: 'wamp',
 						uri: 'content.search' // TBD
 					}
-				}
+				},
+				linkColumn: 'label'
 			}),
 			facetGroups: Immutable.fromJS([
 				{
-					name: 'testgroup',
-					header: 'Test group 1',
+					fieldName: 'testgroup',
+					label: 'Test group 1',
 					facets: [
 						{
-							name: 'facet1',
-							label: 'Facet One'
+							value: 'facet1',
+							label: 'Facet One',
+							hitCount: 1
 						},
 						{
-							name: 'facet2',
-							label: 'Facet Two'
+							value: 'facet2',
+							label: 'Facet Two',
+							hitCount: 3
 						},
 						{
-							name: 'facet3',
-							label: 'Facet Three'
+							value: 'facet3',
+							label: 'Facet Three',
+							hitCount: 2
 						}
 					]
 				}
 			]),
 			resultColumns: Immutable.fromJS([
-				{ name: 'name', label: 'Label' },
-				{ name: 'type', label: 'Data type' },
-				{ name: 'description', label: 'Description' },
-				{ name: 'creationDate', label: 'Created' },
-				{ name: 'createdBy', label: 'Author' },
-				{ name: 'published', label: 'Published?' }
+				{ fieldName: 'label', label: 'Label' },
+				{ fieldName: 'type', label: 'Data type' },
+				{ fieldName: 'description', label: 'Description' },
+				{ fieldName: 'creationDate', label: 'Created' },
+				{ fieldName: 'createdBy', label: 'Author' },
+				{ fieldName: 'published', label: 'Published?' }
 			]),
 			results: Immutable.fromJS([
 				{
-					name: 'Components',
-					type: 'C1 Page',
-					description: 'This section contains pages that show off the different layouts and styling options.',
-					creationDate: '2016 Dec 14',
-					createdBy: 'admin',
-					published: 'published',
+					label: 'Components',
+					url: '/address1',
+					values: {
+						label: 'Components',
+						type: 'C1 Page',
+						description: 'This section contains pages that show off the different layouts and styling options.',
+						creationDate: '2016 Dec 14',
+						createdBy: 'admin',
+						published: 'published'
+					}
 				},
 				{
-					name: 'Navigation',
-					type: 'C1 Page',
-					description: 'Test things like deep structures and labels that are darn long.',
-					creationDate: '2016 Dec 14',
-					createdBy: 'admin',
-					published: 'published',
+					label: 'Navigation',
+					url: '/address2',
+					values: {
+						label: 'Navigation',
+						type: 'C1 Page',
+						description: 'Test things like deep structures and labels that are darn long.',
+						creationDate: '2016 Dec 14',
+						createdBy: 'admin',
+						published: 'published'
+					}
 				},
 				{
-					name: 'Styles',
-					type: 'C1 Page',
-					description: 'This page contains different elements that you can define with the Visual Editor in the CMS Console.',
-					creationDate: '2016 Dec 14',
-					createdBy: 'admin',
-					published: 'published',
+					label: 'Styles',
+					url: '/address3',
+					values: {
+						label: 'Styles',
+						type: 'C1 Page',
+						description: 'This page contains different elements that you can define with the Visual Editor in the CMS Console.',
+						creationDate: '2016 Dec 14',
+						createdBy: 'admin',
+						published: 'published'
+					}
 				}
 			]),
 			searchFieldValue: 'Test',

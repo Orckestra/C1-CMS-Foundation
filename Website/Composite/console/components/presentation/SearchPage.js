@@ -122,9 +122,9 @@ const SearchPage = props => {
 			<FacetList>
 				{
 					/* Get list of facet groups, render one header and group for each */
-					props.facetGroups.map(group => <FacetGroup key={group.get('name')}>
-						<FacetHeader>{group.get('header')}</FacetHeader>
-						{group.get('facets').map(facet => <Facet key={facet.get('name')}>{facet.get('label')}</Facet>).toArray()}
+					props.facetGroups.map(group => <FacetGroup key={group.get('fieldName')}>
+						<FacetHeader>{group.get('label')}</FacetHeader>
+						{group.get('facets').map(facet => <Facet key={facet.get('value')}>{facet.get('label')}</Facet>).toArray()}
 					</FacetGroup>).toArray()
 				}
 			</FacetList>
@@ -134,13 +134,13 @@ const SearchPage = props => {
 			<ResultTable>
 				<ResultTableHead>
 					<tr>
-						{props.resultColumns.map(col => <ResultTableHeadCell key={col.get('name')}>{col.get('label')}</ResultTableHeadCell>).toArray()}
+						{props.resultColumns.map(col => <ResultTableHeadCell key={col.get('fieldName')}>{col.get('label')}</ResultTableHeadCell>).toArray()}
 					</tr>
 				</ResultTableHead>
 				<ResultTableBody>
 					{props.results.map(row =>
 						<tr key={row.hashCode()}>
-							{props.resultColumns.map(col => <ResultTableBodyCell key={col.get('name')}>{row.get(col.get('name'))}</ResultTableBodyCell>).toArray()}
+							{props.resultColumns.map(col => <ResultTableBodyCell key={col.get('fieldName')}>{row.getIn(['values', col.get('fieldName')])}</ResultTableBodyCell>).toArray()}
 						</tr>
 					).toArray()}
 				</ResultTableBody>
@@ -156,8 +156,7 @@ SearchPage.propTypes = {
 	})),
 	results: ImmutablePropTypes.listOf(ImmutablePropTypes.map),
 	resultColumns: ImmutablePropTypes.listOf(ImmutablePropTypes.mapContains({
-		name: PropTypes.string.isRequired,
-		label: PropTypes.isRequired
+		label: PropTypes.string.isRequired
 	})).isRequired,
 	searchFieldValue: PropTypes.string.isRequired,
 	searchString: PropTypes.string,
