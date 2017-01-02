@@ -89,16 +89,21 @@ const Palette = props => {
 				<ItemGroupTitle>{itemGroup.get('title')}</ItemGroupTitle>
 				{itemGroup.get('entries').map(item => {
 					let itemName = item.get('id');
+					const selectItem = () => props.dispatch(
+						setDialogState(
+							props.dialogName,
+							props.dialogData
+							.set('selectedItem', itemName)
+							.set('selectedComponentDefinition', item.get('componentDefinition'))
+						)
+					);
 					return <Item
 						key={itemName}
-						onClick={() => props.dispatch(
-							setDialogState(
-								props.dialogName,
-								props.dialogData
-									.set('selectedItem', itemName)
-									.set('selectedComponentDefinition', item.get('componentDefinition'))
-							)
-						)}
+						onClick={selectItem}
+						onDoubleClick={() => {
+							selectItem();
+							(props.nextAction && props.nextAction());
+						}}
 						active={itemName === props.dialogData.get('selectedItem')}>
 						{
 							item.getIn(['componentImage', 'customImageUri']) ?
@@ -128,7 +133,8 @@ Palette.propTypes = {
 	itemGroups: ImmutablePropTypes.listOf(ImmutablePropTypes.mapContains({
 		entries: ImmutablePropTypes.listOf(ImmutablePropTypes.map).isRequired
 	})).isRequired,
-	dispatch: PropTypes.func.isRequired
+	dispatch: PropTypes.func.isRequired,
+	nextAction: PropTypes.func
 };
 
 export default Palette;
