@@ -21,9 +21,9 @@ const Svg = styled.svg`
 `;
 
 
-const Icon = ({ id, className }) => {
+const Icon = ({ id, ...props }) => {
 	return (
-		<Svg className={className}>
+		<Svg {...props}>
 			<use xlinkHref={'#icon-' + id}/>
 		</Svg>
 	);
