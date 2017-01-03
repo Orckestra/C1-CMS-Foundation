@@ -68,7 +68,7 @@ const initialState = {
 			placeholder: 'Search here',
 			searchProvider: 'searchProvider',
 			providers: ['searchProvider'],
-			linkColumn: 'label'
+			urlColumn: 'label'
 		}
 	},
 	providerDefs: {

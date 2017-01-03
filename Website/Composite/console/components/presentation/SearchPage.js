@@ -76,7 +76,7 @@ const SearchPage = props => {
 					<ResultHeader>{props.results.size} results for '{props.searchString}'</ResultHeader> :
 					<ResultHeader>No results found for '{props.searchString}'</ResultHeader>
 			}
-			<SearchResults resultColumns={props.resultColumns} results={props.results}/>
+			<SearchResults resultColumns={props.resultColumns} results={props.results} urlColumn={props.pageDef.get('urlColumn')}/>
 		</SearchResultPane>
 	</SearchContainer>;
 };
