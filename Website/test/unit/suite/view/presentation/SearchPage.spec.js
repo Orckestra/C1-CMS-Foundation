@@ -69,10 +69,10 @@ describe('SearchPage', () => {
 					values: {}
 				}
 			]),
-			searchFieldValue: 'Test',
+			searchQuery: Immutable.fromJS({ text: 'Test', sortInReverseOrder: false }),
 			searchString: 'Test',
 			actions: {
-				setOption: () => {},
+				setOption: () => () => () => {},
 				performSearch: () => {}
 			}
 		};
@@ -85,10 +85,8 @@ describe('SearchPage', () => {
 				<searchUi.SearchField value='Test'/><searchUi.SearchIcon/>
 				<SearchFacets
 					facetGroups={Immutable.fromJS([{}])}
-					actions={{
-						setOption: expect.it('to be a function'),
-						performSearch: expect.it('to be a function')
-					}}
+					searchQuery={Immutable.Map()}
+					updateQuery={expect.it('to be a function')}
 				/>
 			</searchUi.SearchSidebar>
 			<searchUi.SearchResultPane>

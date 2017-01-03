@@ -4,6 +4,7 @@ import { getProviderPage } from 'console/state/actions/fetchFromProvider.js';
 import { searchQuerySelector, facetSelector, columnSelector, rowSelector } from 'console/state/selectors/searchSelector.js';
 import { currentPageNameSelector } from 'console/state/selectors/layoutSelector.js';
 import SearchPage from 'console/components/presentation/SearchPage.js';
+import Immutable from 'immutable';
 
 function mapStateToProps(state) {
 	// Get facets, search results
@@ -11,7 +12,7 @@ function mapStateToProps(state) {
 		facetGroups: facetSelector(state),
 		resultColumns: columnSelector(state),
 		results: rowSelector(state),
-		searchFieldValue: state.getIn(['options', 'values', currentPageNameSelector(state)]) || '',
+		searchQuery: state.getIn(['options', 'values', currentPageNameSelector(state)]) || Immutable.fromJS({ text: '', sortInReverseOrder: false }),
 		searchString: searchQuerySelector(state)
 	};
 }

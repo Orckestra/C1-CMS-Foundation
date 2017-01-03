@@ -44,26 +44,23 @@ margin-left: 15px;
 `;
 
 const SearchPage = props => {
-	let searchFieldUpdate = props.actions.setOption(props.pageDef.get('name'));
+	let searchQueryUpdater = props.actions.setOption(props.pageDef.get('name'));
 	let searchChangeHandler = event => {
-		searchFieldUpdate(event.target.value);
+		searchQueryUpdater(props.searchQuery.set('text', event.target.value));
 	};
 	let fireSearch = props.actions.performSearch(
 		(props.pageDef.getIn(['providers', props.pageDef.get('searchProvider')]) || Immutable.Map()).toJS(),
 		props.pageDef.get('name')
 	);
 	let searchAction = () => {
-		let searchQuery = {
-			text: props.searchFieldValue,
-			sortInReverseOrder: false
-		};
+		let searchQuery = props.searchQuery.toJS();
 		fireSearch(searchQuery);
 	};
 	return <SearchContainer>
 		<SearchSidebar>
 			<SearchField
 				placeholder={props.pageDef.get('placeholder')}
-				value={props.searchFieldValue}
+				value={props.searchQuery.get('text')}
 				onChange={searchChangeHandler}
 				onKeyPress={event => {
 					if (event.key === 'Enter') {
@@ -71,10 +68,14 @@ const SearchPage = props => {
 					}
 				}}/>
 			<SearchIcon id="magnifier" onClick={searchAction}/>
-			<SearchFacets facetGroups={props.facetGroups} actions={props.actions}/>
+			<SearchFacets facetGroups={props.facetGroups} searchQuery={props.searchQuery} updateQuery={searchQueryUpdater}/>
 		</SearchSidebar>
 		<SearchResultPane>
-			<ResultHeader>{props.results.size} results for '{props.searchString}'</ResultHeader>
+			{!props.searchString && !props.results.size ? null :
+				props.results.size ?
+					<ResultHeader>{props.results.size} results for '{props.searchString}'</ResultHeader> :
+					<ResultHeader>No results found for '{props.searchString}'</ResultHeader>
+			}
 			<SearchResults resultColumns={props.resultColumns} results={props.results}/>
 		</SearchResultPane>
 	</SearchContainer>;
@@ -85,7 +86,15 @@ SearchPage.propTypes = {
 	facetGroups: ImmutablePropTypes.list,
 	results: ImmutablePropTypes.list,
 	resultColumns: ImmutablePropTypes.list.isRequired,
-	searchFieldValue: PropTypes.string.isRequired,
+	searchQuery: ImmutablePropTypes.mapContains({
+		text: PropTypes.string.isRequired,
+		sortBy: PropTypes.string,
+		sortInReverseOrder: PropTypes.bool.isRequired,
+		selections: ImmutablePropTypes.listOf(ImmutablePropTypes.mapContains({
+			fieldName: PropTypes.string.isRequired,
+			values: ImmutablePropTypes.listOf(PropTypes.string).isRequired
+		}))
+	}).isRequired,
 	searchString: PropTypes.string,
 	actions: PropTypes.shape({
 		performSearch: PropTypes.func.isRequired,

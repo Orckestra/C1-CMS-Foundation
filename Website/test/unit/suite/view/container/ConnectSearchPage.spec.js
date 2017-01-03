@@ -48,7 +48,10 @@ describe('ConnectSearchPage', () => {
 			},
 			options: {
 				values: {
-					search: 'changed'
+					search: {
+						text: 'changed',
+						sortInReverseOrder: false
+					}
 				}
 			},
 			providerDefs: {
@@ -184,7 +187,7 @@ describe('ConnectSearchPage', () => {
 			facetGroups={Immutable.fromJS([{}])}
 			resultColumns={Immutable.fromJS([{ label: 'Column 1' }, { label: 'Column 2' }])}
 			results={Immutable.fromJS([{}, {}, {}, {}, {}])}
-			searchFieldValue={'changed'}
+			searchQuery={Immutable.fromJS({ text: 'changed', sortInReverseOrder: false })}
 			searchString='testquery'
 			actions={{
 				performSearch: expect.it('to be a function'),
