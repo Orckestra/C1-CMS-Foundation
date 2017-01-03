@@ -57,8 +57,16 @@ const SearchFacets = props => {
 			props.facetGroups.map(group => <FacetGroup key={group.get('fieldName')}>
 				<FacetHeader>{group.get('label')}</FacetHeader>
 				{group.get('facets').map(facet => <Facet key={facet.get('value')}>
-					<FacetSelector checked={!!facet.get('checked')} onClick={setFacet(group.get('fieldName'), facet.get('value'))} onChange={() => {}/* To calm warnings about onChange missing */}/>
-					{facet.get('label')}
+					<FacetSelector
+						id={group.get('fieldName') + '_' +  facet.get('value')}
+						checked={!!facet.get('checked')}
+						onClick={setFacet(group.get('fieldName'), facet.get('value'))}
+						onChange={() => {}/* To calm warnings about onChange missing */}
+					/>
+					<label htmlFor={group.get('fieldName') + '_' +  facet.get('value')}>
+						{facet.get('label').slice(0, 30) + (facet.get('label').length > 30 ? '... ' : ' ')}
+						[{facet.get('hitCount')}]
+					</label>
 				</Facet>).toArray()}
 			</FacetGroup>).toArray()
 		}

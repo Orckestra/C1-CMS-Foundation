@@ -30,6 +30,10 @@ export const SearchIcon = styled(Icon)`
 position: absolute;
 top: 23px;
 right: 31px;
+
+&:hover {
+	fill: ${colors.buttonHighlightColor};
+}
 `;
 export const SearchResultPane = styled.div`
 box-sizing: border-box;

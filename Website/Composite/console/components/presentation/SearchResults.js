@@ -59,7 +59,7 @@ const SearchResults = props => <ResultTable>
 			<tr key={row.hashCode()}>
 				{props.resultColumns.map(col => <ResultTableBodyCell key={col.get('fieldName')}>
 					{col.get('fieldName') === props.urlColumn ?
-						<a href={row.get('url')}>{row.getIn(['values', col.get('fieldName')])}</a> :
+						<a href={row.get('url')} target="_top">{row.getIn(['values', col.get('fieldName')])}</a> :
 						row.getIn(['values', col.get('fieldName')])
 					}
 				</ResultTableBodyCell>).toArray()}
@@ -74,7 +74,7 @@ SearchResults.propTypes = {
 	resultColumns: ImmutablePropTypes.listOf(ImmutablePropTypes.mapContains({
 		fieldName: PropTypes.string.isRequired
 	})).isRequired,
-	urlColumn: PropTypes.string
+	urlColumn: PropTypes.string,
 };
 
 export default SearchResults;
