@@ -51,6 +51,15 @@ namespace Composite.Plugins.Search.Endpoint
         {
             if (_searchProvider == null) return null;
 
+            if (string.IsNullOrEmpty(query?.Text))
+            {
+                return new ConsoleSearchResult
+                {
+                    QueryText = string.Empty,
+                    TotalHits = 0
+                };
+            }
+
             var consoleCulture = UserSettings.CultureInfo;
             var consoleUiCulture = UserSettings.C1ConsoleUiLanguage;
 
@@ -113,6 +122,7 @@ namespace Composite.Plugins.Search.Endpoint
             {
                 return new ConsoleSearchResult
                 {
+                    QueryText = query.Text,
                     TotalHits = 0
                 };
             }
