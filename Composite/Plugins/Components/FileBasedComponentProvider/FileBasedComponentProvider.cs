@@ -10,6 +10,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
+using Castle.Core.Internal;
 using Composite.C1Console.RichContent.ContainerClasses;
 using Composite.Core;
 using Composite.Core.IO;
@@ -38,7 +39,7 @@ namespace Composite.Plugins.Components.FileBasedComponentProvider
         private const string ContainerClass = "container-class";
         private const string Image = "image";
         private const string Icon = "icon";
-        private const string AntiTags = "container-anti-tags";
+        private const string AntiTags = "container-anti-class";
 
         private readonly ComponentChangeNotifier _changeNotifier;
         private readonly string _providerDirectory;
@@ -112,8 +113,18 @@ namespace Composite.Plugins.Components.FileBasedComponentProvider
                 var groupingTagsRaw = xElement.GetAttributeValue(Namespaces.Components + Tags) ??
                                         GuessGroupingTagsBasedOnPath(componentFile);
 
-                var tagManager = ServiceLocator.GetRequiredService<TagManager>();
-                var groupingTags = groupingTagsRaw?.Replace(" ", "").ToLower().Split(',').Select(tagManager.GetTagTitle).ToList();
+                List<string> groupingTags = new List<string>();
+
+                if (!groupingTagsRaw.IsNullOrEmpty())
+                {
+                    var tagManager = ServiceLocator.GetRequiredService<TagManager>();
+                    groupingTags.AddRange(
+                        groupingTagsRaw.ToLower()
+                            .Split(',')
+                            .Select(f => f.Trim())
+                            .Select(tagManager.GetTagTitle)
+                            .ToList());
+                }
 
                 var containerClasses =
                     ContainerClassManager.ParseToList(xElement.GetAttributeValue(Namespaces.Components + ContainerClass));
@@ -148,13 +159,16 @@ namespace Composite.Plugins.Components.FileBasedComponentProvider
 
         private string GuessGroupingTagsBasedOnPath(string componentFile)
         {
-#warning change that
-            return Path.GetDirectoryName(componentFile)?
-                .Substring(
-                    Path.GetDirectoryName(componentFile)
-                        .IndexOf(_providerDirectory.Replace('/', '\\').Replace("~", "")) +
-                    _providerDirectory.Length-1)
-                .Replace(" ","").Replace('\\', ',');
+            var componentPath = Path.GetDirectoryName(componentFile);
+
+            var cleanedProviderDirectory = _providerDirectory.Replace('/', '\\').Replace("~", "");
+
+            var componentPathfromComponentFolder =
+                componentPath?.Substring(
+                    componentPath.IndexOf(cleanedProviderDirectory,
+                        StringComparison.Ordinal) + cleanedProviderDirectory.Length);
+
+            return componentPathfromComponentFolder?.Replace('\\', ',').Trim(',');
         }
 
         private IObservable<ComponentChange> FileBasedComponentObservable()

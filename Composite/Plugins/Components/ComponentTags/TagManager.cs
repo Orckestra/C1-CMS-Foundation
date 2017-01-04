@@ -78,8 +78,8 @@ namespace Composite.Plugins.Components.ComponentTags
         /// <returns></returns>
         public IEnumerable<string> GetAllTags()
         {
-            var componentProvider = ServiceLocator.GetRequiredService<IComponentProvider>();
-            return GetRegisteredTagOrdering().Union(componentProvider.GetComponents().SelectMany(f=>f.GroupingTags));
+            var componentManager = ServiceLocator.GetRequiredService<ComponentManager>();
+            return GetRegisteredTagOrdering().Union(componentManager.GetComponents().SelectMany(f=>f.GroupingTags));
         }
     }
 
