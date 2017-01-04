@@ -15,14 +15,14 @@ namespace Composite.C1Console.Search.Crawling
         }
 
         /// <exclude />
-        protected override DocumentFieldPreview.GetValuePreviewDelegate GetPreviewFunction()
+        protected override DocumentFieldPreview.ValuePreviewDelegate GetPreviewFunction()
         {
-            return (value, culture) =>
+            return value =>
             {
                 if (value == null) return null;
                 var date = DateTime.ParseExact((string)value, "s", CultureInfo.InvariantCulture);
 
-                return date.ToString("yyyy MMM d", culture);
+                return date.ToString("yyyy MMM d");
             };
         }
 
@@ -35,16 +35,16 @@ namespace Composite.C1Console.Search.Crawling
         }
 
         /// <exclude />
-        protected override DocumentFieldFacet.GetFacetValuePreviewDelegate GetFacetValuePreviewFunction()
+        protected override DocumentFieldFacet.FacetValuePreviewDelegate GetFacetValuePreviewFunction()
         {
-            return (value, culture) =>
+            return value =>
             {
                 if (value == null) return null;
                 var parts = value.Split(' ');
 
                 int month = int.Parse(parts[1]);
 
-                var monthName = culture.DateTimeFormat.GetMonthName(month);
+                var monthName = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month);
                 return $"{parts[0]} {monthName}";
             };
         }

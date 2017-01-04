@@ -48,11 +48,29 @@ public static string FieldNames_CreatedBy=>T("FieldNames.CreatedBy");
 public static string FieldNames_PublicationStatus=>T("FieldNames.PublicationStatus");
 ///<summary>&quot;MIME Type&quot;</summary> 
 public static string FieldNames_MimeType=>T("FieldNames.MimeType");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.C1Console.Search", key);
-        }
-} 
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.C1Console.Search", key);
+/// <exclude />
+public static class Untranslated {
+///<summary>&quot;Page&quot;</summary>
+public const string DataType_Page="${Composite.C1Console.Search,DataType.Page}";
+///<summary>&quot;Media File&quot;</summary>
+public const string DataType_MediaFile="${Composite.C1Console.Search,DataType.MediaFile}";
+///<summary>&quot;Label&quot;</summary>
+public const string FieldNames_Label="${Composite.C1Console.Search,FieldNames.Label}";
+///<summary>&quot;Description&quot;</summary>
+public const string FieldNames_Description="${Composite.C1Console.Search,FieldNames.Description}";
+///<summary>&quot;Data Type&quot;</summary>
+public const string FieldNames_DataType="${Composite.C1Console.Search,FieldNames.DataType}";
+///<summary>&quot;Creation Date&quot;</summary>
+public const string FieldNames_CreationDate="${Composite.C1Console.Search,FieldNames.CreationDate}";
+///<summary>&quot;Created By&quot;</summary>
+public const string FieldNames_CreatedBy="${Composite.C1Console.Search,FieldNames.CreatedBy}";
+///<summary>&quot;Publication Status&quot;</summary>
+public const string FieldNames_PublicationStatus="${Composite.C1Console.Search,FieldNames.PublicationStatus}";
+///<summary>&quot;MIME Type&quot;</summary>
+public const string FieldNames_MimeType="${Composite.C1Console.Search,FieldNames.MimeType}";
+
+}} 
 
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
@@ -63,10 +81,7 @@ public static string LayoutLabel=>T("LayoutLabel");
 public static string Title=>T("Title");
 ///<summary>&quot;You do not have permission to execute the action. Contact your administrator for more information.&quot;</summary> 
 public static string Description=>T("Description");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.C1Console.SecurityViolation", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.C1Console.SecurityViolation", key);
 } 
 
     /// <exclude />
@@ -320,10 +335,7 @@ public static string LocalizeData_ShowError_Description=>T("LocalizeData.ShowErr
 public static string LocalizeData_ShowError_FieldErrorFormat(object parameter0,object parameter1,object parameter2)=>string.Format(T("LocalizeData.ShowError.FieldErrorFormat"), parameter0,parameter1,parameter2);
 ///<summary>&quot;This data has already been translated. The translated version belongs to a different group.&quot;</summary> 
 public static string LocalizeData_ShowError_AlreadyTranslated=>T("LocalizeData.ShowError.AlreadyTranslated");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.C1Console.Trees", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.C1Console.Trees", key);
 } 
 
     /// <exclude />
@@ -425,10 +437,7 @@ public static string ChangePasswordForm_ChangePasswordButton=>T("ChangePasswordF
 public static string ChangePasswordForm_PasswordExpiredMessage(object parameter0)=>string.Format(T("ChangePasswordForm.PasswordExpiredMessage"), parameter0);
 ///<summary>&quot;The old password is incorrect.&quot;</summary> 
 public static string ChangePasswordForm_IncorrectOldPassword=>T("ChangePasswordForm.IncorrectOldPassword");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.C1Console.Users", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.C1Console.Users", key);
 } 
 
     /// <exclude />
@@ -642,10 +651,7 @@ public static string PackageFragmentInstaller_IncorrectElement(object parameter0
 public static string PackageFragmentInstaller_MissingAttribute(object parameter0)=>string.Format(T("PackageFragmentInstaller.MissingAttribute"), parameter0);
 ///<summary>&quot;Missing element &apos;{0}&apos;.&quot;</summary> 
 public static string PackageFragmentInstaller_MissingElement(object parameter0)=>string.Format(T("PackageFragmentInstaller.MissingElement"), parameter0);
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", key);
 } 
 
     /// <exclude />
@@ -1073,10 +1079,7 @@ public static string sah_RU=>T("sah-RU");
 public static string ii_CN=>T("ii-CN");
 ///<summary>&quot;Yoruba, Nigeria&quot;</summary> 
 public static string yo_NG=>T("yo-NG");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Cultures", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Cultures", key);
 } 
 
     /// <exclude />
@@ -1098,10 +1101,7 @@ public static string SameUserHeading_Description=>T("SameUserHeading.Description
 public static string AnotherUserHeading_Title=>T("AnotherUserHeading.Title");
 ///<summary>&quot;If the item is changed simultaneously by multiple users changes may get lost. Press OK to proceed or cancel to abort.&quot;</summary> 
 public static string AnotherUserHeading_Description=>T("AnotherUserHeading.Description");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.EntityTokenLocked", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.EntityTokenLocked", key);
 } 
 
     /// <exclude />
@@ -1127,10 +1127,7 @@ public static string NamespaceIsReserved=>T("NamespaceIsReserved");
 public static string CompileErrorWhileAddingType=>T("CompileErrorWhileAddingType");
 ///<summary>&quot;Cannot change a data type since it will cause some compilation errors.&quot;</summary> 
 public static string CompileErrorWhileChangingType=>T("CompileErrorWhileChangingType");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.GeneratedTypes", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.GeneratedTypes", key);
 } 
 
     /// <exclude />
@@ -2518,10 +2515,7 @@ public static string Duplication_Text(object parameter0)=>string.Format(T("Dupli
 public static string DefaultVersionName=>T("DefaultVersionName");
 ///<summary>&quot;{0} selected&quot;</summary> 
 public static string Selector_Count(object parameter0)=>string.Format(T("Selector.Count"), parameter0);
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Management", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Management", key);
 } 
 
     /// <exclude />
@@ -2537,10 +2531,7 @@ public static string DuplicateElementNamespace=>T("DuplicateElementNamespace");
 public static string InvalidIdentifier(object parameter0)=>string.Format(T("InvalidIdentifier"), parameter0);
 ///<summary>&quot;The name &apos;{0}&apos; is not a valid identifier. Identifiers may not start with digits.&quot;</summary> 
 public static string InvalidIdentifierDigit(object parameter0)=>string.Format(T("InvalidIdentifierDigit"), parameter0);
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.NameValidation", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.NameValidation", key);
 } 
 
     /// <exclude />
@@ -2566,10 +2557,7 @@ public static string AdministrateLabel=>T("AdministrateLabel");
 public static string ClearPermissionsLabel=>T("ClearPermissionsLabel");
 ///<summary>&quot;This operation would remove your administrative permissions from this entity. You can not remove your own administrative permissions.&quot;</summary> 
 public static string AdminLockoutMessage=>T("AdminLockoutMessage");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Permissions", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Permissions", key);
 } 
 
     /// <exclude />
@@ -2621,10 +2609,7 @@ public static string FunctionTesterWorkflow_PublicScope_Label=>T("FunctionTester
 public static string AllFunctionsElementProvider_FunctionTester_Label=>T("AllFunctionsElementProvider.FunctionTester.Label");
 ///<summary>&quot;Test function&quot;</summary> 
 public static string AllFunctionsElementProvider_FunctionTester_ToolTip=>T("AllFunctionsElementProvider.FunctionTester.ToolTip");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Plugins.AllFunctionsElementProvider", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Plugins.AllFunctionsElementProvider", key);
 } 
 
     /// <exclude />
@@ -2632,10 +2617,7 @@ public static string AllFunctionsElementProvider_FunctionTester_ToolTip=>T("AllF
 	   public static class Composite_Plugins_Components {
 ///<summary>&quot;E-Commerce&quot;</summary> 
 public static string Tags_Ecommerce=>T("Tags.Ecommerce");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Plugins.Components", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Plugins.Components", key);
 } 
 
     /// <exclude />
@@ -2911,10 +2893,7 @@ public static string DataTypeDescriptorToXmlLabel=>T("DataTypeDescriptorToXmlLab
 public static string FormMarkupInfo_Dialog_Label=>T("FormMarkupInfo.Dialog.Label");
 ///<summary>&quot;Your field changes will not affect the form for editing data. Do &apos;{0}&apos; to change the form or delete the file &apos;{1}&apos;.&quot;</summary> 
 public static string FormMarkupInfo_Message(object parameter0,object parameter1)=>string.Format(T("FormMarkupInfo.Message"), parameter0,parameter1);
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", key);
 } 
 
     /// <exclude />
@@ -2948,10 +2927,7 @@ public static string UndoPublishedChangesToolTip=>T("UndoPublishedChangesToolTip
 public static string ValidationErrorTitle=>T("ValidationErrorTitle");
 ///<summary>&quot;The data did not validate with the following errors:&quot;</summary> 
 public static string ValidationErrorMessage=>T("ValidationErrorMessage");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", key);
 } 
 
     /// <exclude />
@@ -3019,10 +2995,7 @@ public static string RemoveSystemLocaleWorkflow_Abort_Title=>T("RemoveSystemLoca
 public static string RemoveSystemLocaleWorkflow_Abort_Description=>T("RemoveSystemLocaleWorkflow.Abort.Description");
 ///<summary>&quot;Remove this language?&quot;</summary> 
 public static string RemoveSystemLocaleWorkflow_Confirm_Description=>T("RemoveSystemLocaleWorkflow.Confirm.Description");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Plugins.LocalizationElementProvider", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Plugins.LocalizationElementProvider", key);
 } 
 
     /// <exclude />
@@ -3064,10 +3037,7 @@ public static string AddNewMasterPagePageTemplate_LabelCopyFromEmptyOption=>T("A
 public static string AddNewMasterPagePageTemplateWorkflow_TitleInUseTitle=>T("AddNewMasterPagePageTemplateWorkflow.TitleInUseTitle");
 ///<summary>&quot;The title is too long (used as part of a filename).&quot;</summary> 
 public static string AddNewMasterPagePageTemplateWorkflow_TitleTooLong=>T("AddNewMasterPagePageTemplateWorkflow.TitleTooLong");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Plugins.MasterPagePageTemplate", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Plugins.MasterPagePageTemplate", key);
 } 
 
     /// <exclude />
@@ -3241,10 +3211,7 @@ public static string CSharpInlineFunction_MissingParameterDefinition(object para
 public static string CSharpInlineFunction_WrongParameterTestValueType(object parameter0,object parameter1,object parameter2)=>string.Format(T("CSharpInlineFunction.WrongParameterTestValueType"), parameter0,parameter1,parameter2);
 ///<summary>&quot;The parameter &apos;{0}&apos; defined on &apos;Input Parameters&apos; must have a test or default value before your function can be evaluated.&quot;</summary> 
 public static string CSharpInlineFunction_MissingParameterTestOrDefaultValue(object parameter0)=>string.Format(T("CSharpInlineFunction.MissingParameterTestOrDefaultValue"), parameter0);
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Plugins.MethodBasedFunctionProviderElementProvider", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Plugins.MethodBasedFunctionProviderElementProvider", key);
 } 
 
     /// <exclude />
@@ -3536,10 +3503,7 @@ public static string DeletePackageSource_Step1_Text=>T("DeletePackageSource.Step
 public static string ConfirmLicense_ExpiredTitle=>T("ConfirmLicense.ExpiredTitle");
 ///<summary>&quot;The trial period of the package has expired. You need to obtain a valid license.&quot;</summary> 
 public static string ConfirmLicense_ExpiredMessage=>T("ConfirmLicense.ExpiredMessage");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", key);
 } 
 
     /// <exclude />
@@ -3793,10 +3757,7 @@ public static string ViewUnpublishedItems_DateModifiedLabel=>T("ViewUnpublishedI
 public static string ViewUnpublishedItems_PublishConfirmTitle=>T("ViewUnpublishedItems.PublishConfirmTitle");
 ///<summary>&quot;You are about to publish these pages. Continue?&quot;</summary> 
 public static string ViewUnpublishedItems_PublishConfirmText=>T("ViewUnpublishedItems.PublishConfirmText");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", key);
 } 
 
     /// <exclude />
@@ -3882,10 +3843,7 @@ public static string AddNewPageTemplate_TemplateType_Razor=>T("AddNewPageTemplat
 public static string AddNewPageTemplate_TemplateType_MasterPage=>T("AddNewPageTemplate.TemplateType.MasterPage");
 ///<summary>&quot;XML&quot;</summary> 
 public static string AddNewPageTemplate_TemplateType_XML=>T("AddNewPageTemplate.TemplateType.XML");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Plugins.PageTemplateElementProvider", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Plugins.PageTemplateElementProvider", key);
 } 
 
     /// <exclude />
@@ -3935,10 +3893,7 @@ public static string AddWorkflow_NameNotValidInFilename=>T("AddWorkflow.NameNotV
 public static string DeleteWorkflow_Title=>T("DeleteWorkflow.Title");
 ///<summary>&quot;If this feature is in use by page templates, this action could lead to errors.&quot;</summary> 
 public static string DeleteWorkflow_Text=>T("DeleteWorkflow.Text");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Plugins.PageTemplateFeatureElementProvider", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Plugins.PageTemplateFeatureElementProvider", key);
 } 
 
     /// <exclude />
@@ -4160,10 +4115,7 @@ public static string PageType_EditPageTypeMetaDataFieldWorkflow_ValidationError_
 public static string PageType_EditPageTypeMetaDataFieldWorkflow_ValidationError_MetaDataTypeNotExisting_Title=>T("PageType.EditPageTypeMetaDataFieldWorkflow.ValidationError.MetaDataTypeNotExisting.Title");
 ///<summary>&quot;The Metadata type has been deleted from the system and can no longer be added to any page types&quot;</summary> 
 public static string PageType_EditPageTypeMetaDataFieldWorkflow_ValidationError_MetaDataTypeNotExisting_Message=>T("PageType.EditPageTypeMetaDataFieldWorkflow.ValidationError.MetaDataTypeNotExisting.Message");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Plugins.PageTypeElementProvider", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Plugins.PageTypeElementProvider", key);
 } 
 
     /// <exclude />
@@ -4221,10 +4173,7 @@ public static string EditRazorFunctionWorkflow_Validation_IncorrectBaseClass(obj
 public static string DeleteRazorFunctionWorkflow_ConfirmDeleteTitle=>T("DeleteRazorFunctionWorkflow.ConfirmDeleteTitle");
 ///<summary>&quot;Delete the selected Razor function?&quot;</summary> 
 public static string DeleteRazorFunctionWorkflow_ConfirmDeleteMessage=>T("DeleteRazorFunctionWorkflow.ConfirmDeleteMessage");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Plugins.RazorFunction", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Plugins.RazorFunction", key);
 } 
 
     /// <exclude />
@@ -4268,10 +4217,7 @@ public static string EditTemplate_Validation_IncorrectBaseClass(object parameter
 public static string EditTemplate_Validation_PropertyError(object parameter0,object parameter1)=>string.Format(T("EditTemplate.Validation.PropertyError"), parameter0,parameter1);
 ///<summary>&quot;It is not allowed to change template id through current workflow. Original template id is &apos;{0}&apos;&quot;</summary> 
 public static string EditTemplate_Validation_TemplateIdChanged(object parameter0)=>string.Format(T("EditTemplate.Validation.TemplateIdChanged"), parameter0);
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Plugins.RazorPageTemplate", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Plugins.RazorPageTemplate", key);
 } 
 
     /// <exclude />
@@ -4397,10 +4343,7 @@ public static string DeleteSqlFunction_Text=>T("DeleteSqlFunction.Text");
 public static string CascadeDeleteErrorTitle=>T("CascadeDeleteErrorTitle");
 ///<summary>&quot;The type is referenced by another type that does not allow cascade deletes. This operation is halted&quot;</summary> 
 public static string CascadeDeleteErrorMessage=>T("CascadeDeleteErrorMessage");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Plugins.SqlFunction", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Plugins.SqlFunction", key);
 } 
 
     /// <exclude />
@@ -5308,10 +5251,7 @@ public static string Composite_Utils_Dictionary_EnumerableToDictionary_param_Key
 public static string Composite_Utils_Dictionary_EnumerableToDictionary_param_ValuePropertyName_label=>T("Composite.Utils.Dictionary.EnumerableToDictionary.param.ValuePropertyName.label");
 ///<summary>&quot;The name of the property on each object which value will be used for values in the dictionary.&quot;</summary> 
 public static string Composite_Utils_Dictionary_EnumerableToDictionary_param_ValuePropertyName_help=>T("Composite.Utils.Dictionary.EnumerableToDictionary.param.ValuePropertyName.help");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Plugins.StandardFunctions", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Plugins.StandardFunctions", key);
 } 
 
     /// <exclude />
@@ -5573,10 +5513,7 @@ public static string TimezoneAbbreviations_Tonga_Standard_Time=>T("TimezoneAbbre
 public static string TimezoneAbbreviations_Samoa_Standard_Time=>T("TimezoneAbbreviations.Samoa Standard Time");
 ///<summary>&quot;LINT&quot;</summary> 
 public static string TimezoneAbbreviations_Line_Islands_Standard_Time=>T("TimezoneAbbreviations.Line Islands Standard Time");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Plugins.TimezoneAbbreviations", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Plugins.TimezoneAbbreviations", key);
 } 
 
     /// <exclude />
@@ -5844,10 +5781,7 @@ public static string TimezoneDisplayName_Tonga_Standard_Time=>T("TimezoneDisplay
 public static string TimezoneDisplayName_Samoa_Standard_Time=>T("TimezoneDisplayName.Samoa Standard Time");
 ///<summary>&quot;(UTC+14:00) Kiritimati Island&quot;</summary> 
 public static string TimezoneDisplayName_Line_Islands_Standard_Time=>T("TimezoneDisplayName.Line Islands Standard Time");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Plugins.TimezoneDisplayNames", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Plugins.TimezoneDisplayNames", key);
 } 
 
     /// <exclude />
@@ -5905,10 +5839,7 @@ public static string EditUserControlFunctionWorkflow_Validation_IncorrectBaseCla
 public static string DeleteUserControlFunctionWorkflow_ConfirmDeleteTitle=>T("DeleteUserControlFunctionWorkflow.ConfirmDeleteTitle");
 ///<summary>&quot;Delete the selected User Control?&quot;</summary> 
 public static string DeleteUserControlFunctionWorkflow_ConfirmDeleteMessage=>T("DeleteUserControlFunctionWorkflow.ConfirmDeleteMessage");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Plugins.UserControlFunction", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Plugins.UserControlFunction", key);
 } 
 
     /// <exclude />
@@ -5966,10 +5897,7 @@ public static string DeleteUserGroup_DeleteUserGroupInitialStep_UserGroupHasUser
 public static string DeleteUserGroup_DeleteUserGroupStep1_LabelFieldGroup=>T("DeleteUserGroup.DeleteUserGroupStep1.LabelFieldGroup");
 ///<summary>&quot;Delete the selected user group?&quot;</summary> 
 public static string DeleteUserGroup_DeleteUserGroupStep1_Text=>T("DeleteUserGroup.DeleteUserGroupStep1.Text");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Plugins.UserGroupElementProvider", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Plugins.UserGroupElementProvider", key);
 } 
 
     /// <exclude />
@@ -6099,10 +6027,7 @@ public static string VisualFunctionElementProviderHelper_EditToolTip=>T("VisualF
 public static string VisualFunctionElementProviderHelper_DeleteLabel=>T("VisualFunctionElementProviderHelper.DeleteLabel");
 ///<summary>&quot;Delete visual function&quot;</summary> 
 public static string VisualFunctionElementProviderHelper_DeleteToolTip=>T("VisualFunctionElementProviderHelper.DeleteToolTip");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Plugins.VisualFunction", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Plugins.VisualFunction", key);
 } 
 
     /// <exclude />
@@ -6224,10 +6149,7 @@ public static string DeleteWebsiteFileWorkflow_DeleteErrorMessage=>T("DeleteWebs
 public static string DeleteWebsiteFolderWorkflow_DeleteErrorTitle=>T("DeleteWebsiteFolderWorkflow.DeleteErrorTitle");
 ///<summary>&quot;Could not delete the folder&quot;</summary> 
 public static string DeleteWebsiteFolderWorkflow_DeleteErrorMessage=>T("DeleteWebsiteFolderWorkflow.DeleteErrorMessage");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Plugins.WebsiteFileElementProvider", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Plugins.WebsiteFileElementProvider", key);
 } 
 
     /// <exclude />
@@ -6361,10 +6283,7 @@ public static string EditXsltFunctionWorkflow_MissingActiveLanguageMessage=>T("E
 public static string EditXsltFunctionWorkflow_MissingPageTitle=>T("EditXsltFunctionWorkflow.MissingPageTitle");
 ///<summary>&quot;To edit a XSLT function at least one page has to be added.&quot;</summary> 
 public static string EditXsltFunctionWorkflow_MissingPageMessage=>T("EditXsltFunctionWorkflow.MissingPageMessage");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Plugins.XsltBasedFunction", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Plugins.XsltBasedFunction", key);
 } 
 
     /// <exclude />
@@ -6418,10 +6337,7 @@ public static string SetNewButtonLabel=>T("SetNewButtonLabel");
 public static string ToolBar_LabelSource=>T("ToolBar.LabelSource");
 ///<summary>&quot;Design&quot;</summary> 
 public static string ToolBar_LabelDesign=>T("ToolBar.LabelDesign");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Web.FormControl.FunctionCallsDesigner", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Web.FormControl.FunctionCallsDesigner", key);
 } 
 
     /// <exclude />
@@ -6501,10 +6417,7 @@ public static string SpaceInNameError=>T("SpaceInNameError");
 public static string NameEmptyError=>T("NameEmptyError");
 ///<summary>&quot;Another parameter uses this name. Parameter names must be unique.&quot;</summary> 
 public static string NameAlreadyInUseError=>T("NameAlreadyInUseError");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Web.FormControl.FunctionParameterDesigner", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Web.FormControl.FunctionParameterDesigner", key);
 } 
 
     /// <exclude />
@@ -6720,10 +6633,7 @@ public static string NotAnOptionalTypeError=>T("NotAnOptionalTypeError");
 public static string NoWidgetSelected=>T("NoWidgetSelected");
 ///<summary>&quot;(no widget specified)&quot;</summary> 
 public static string NoWidgetSelectedLabel=>T("NoWidgetSelectedLabel");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Web.FormControl.TypeFieldDesigner", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Web.FormControl.TypeFieldDesigner", key);
 } 
 
     /// <exclude />
@@ -6777,10 +6687,7 @@ public static string AddressBar_Invalid_DialogText_InternalError=>T("AddressBar.
 public static string AddressBar_Invalid_DialogTitle_Default=>T("AddressBar.Invalid.DialogTitle.Default");
 ///<summary>&quot;An error prevents the URL from being loaded.&quot;</summary> 
 public static string AddressBar_Invalid_DialogText_Default=>T("AddressBar.Invalid.DialogText.Default");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Web.PageBrowser", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Web.PageBrowser", key);
 } 
 
     /// <exclude />
@@ -6818,10 +6725,7 @@ public static string NoKeywords=>T("NoKeywords");
 public static string IncorrectHtml=>T("IncorrectHtml");
 ///<summary>&quot;Add SEO word ...&quot;</summary> 
 public static string AddKeywordInputPlaceholder=>T("AddKeywordInputPlaceholder");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Web.SEOAssistant", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Web.SEOAssistant", key);
 } 
 
     /// <exclude />
@@ -6875,10 +6779,7 @@ public static string Insert_MediaURL_Label=>T("Insert.MediaURL.Label");
 public static string Insert_FrontendURL_Label=>T("Insert.FrontendURL.Label");
 ///<summary>&quot;Function Markup&quot;</summary> 
 public static string Insert_FunctionMarkup_Label=>T("Insert.FunctionMarkup.Label");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Web.SourceEditor", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Web.SourceEditor", key);
 } 
 
     /// <exclude />
@@ -7212,10 +7113,7 @@ public static string SpellCheck_InfoText=>T("SpellCheck.InfoText");
 public static string Function_Edit=>T("Function.Edit");
 ///<summary>&quot;Edit {0}&quot;</summary> 
 public static string LaunchButton_Label(object parameter0)=>string.Format(T("LaunchButton.Label"), parameter0);
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Web.VisualEditor", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Web.VisualEditor", key);
 } 
 
 	}

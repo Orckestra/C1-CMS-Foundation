@@ -9,7 +9,7 @@ using Composite.Data.DynamicTypes;
 using Composite.Data.ProcessControlled;
 using Composite.Data.Types;
 
-using Texts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_C1Console_Search;
+using Texts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_C1Console_Search.Untranslated;
 
 namespace Composite.C1Console.Search.Crawling
 {
@@ -74,7 +74,7 @@ namespace Composite.C1Console.Search.Crawling
             {
                 Limit = 100,
                 MinHitCount = 1,
-                GetValuePreviewFunction = GetFacetValuePreviewFunction()
+                PreviewFunction = GetFacetValuePreviewFunction()
             };
         }
 
@@ -131,7 +131,7 @@ namespace Composite.C1Console.Search.Crawling
         }
 
         /// <exclude />
-        public virtual string GetFieldLabel(PropertyInfo propertyInfo, CultureInfo cultureInfo)
+        public virtual string GetFieldLabel(PropertyInfo propertyInfo)
         {
             var fieldName = GetDocumentFieldName(propertyInfo);
             if (fieldName == DefaultDocumentFieldNames.Description)
@@ -158,15 +158,15 @@ namespace Composite.C1Console.Search.Crawling
         }
 
         /// <exclude />
-        protected virtual DocumentFieldPreview.GetValuePreviewDelegate GetPreviewFunction()
+        protected virtual DocumentFieldPreview.ValuePreviewDelegate GetPreviewFunction()
         {
-            return (value, culture) => value?.ToString();
+            return value => value?.ToString();
         }
 
         /// <exclude />
-        protected virtual DocumentFieldFacet.GetFacetValuePreviewDelegate GetFacetValuePreviewFunction()
+        protected virtual DocumentFieldFacet.FacetValuePreviewDelegate GetFacetValuePreviewFunction()
         {
-            return (obj, culture) => obj;
+            return obj => obj;
         }
 
         private static bool IsFieldSortable(PropertyInfo propertyInfo)

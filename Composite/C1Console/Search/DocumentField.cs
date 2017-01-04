@@ -1,7 +1,4 @@
-﻿using System;
-using System.Globalization;
-
-namespace Composite.C1Console.Search
+﻿namespace Composite.C1Console.Search
 {
     /// <summary>
     /// Contains information about the facet.
@@ -9,7 +6,7 @@ namespace Composite.C1Console.Search
     public class DocumentFieldFacet
     {
         /// <exclude />
-        public delegate string GetFacetValuePreviewDelegate(string value, CultureInfo culture);
+        public delegate string FacetValuePreviewDelegate(string value);
 
         /// <summary>
         /// Gets or sets the maximum number of choices to return. The default value is 0 which means - all.
@@ -34,7 +31,7 @@ namespace Composite.C1Console.Search
         /// <summary>
         /// A function to get a label for a given facet value.
         /// </summary>
-        public GetFacetValuePreviewDelegate GetValuePreviewFunction { get; set; }
+        public FacetValuePreviewDelegate PreviewFunction { get; set; }
 
         //public int FieldOrder { get; set; }
     }
@@ -104,12 +101,12 @@ namespace Composite.C1Console.Search
     public sealed class DocumentFieldPreview
     {
         /// <exclude />
-        public delegate string GetValuePreviewDelegate(object value, CultureInfo culture);
+        public delegate string ValuePreviewDelegate(object value);
 
         /// <summary>
         /// A function reference to preview the field value.
         /// </summary>
-        public GetValuePreviewDelegate PreviewFunction { get; set; }
+        public ValuePreviewDelegate PreviewFunction { get; set; }
 
         /// <summary>
         /// Indicates whether sorting for the given field should be enabled.
@@ -146,7 +143,7 @@ namespace Composite.C1Console.Search
             Name = name;
             Facet = facetInformation;
             Preview = previewInformation;
-            GetFieldLabel = ci => name;
+            Label = name;
         }
 
         /// <summary>
@@ -155,9 +152,9 @@ namespace Composite.C1Console.Search
         public string Name { get; }
 
         /// <summary>
-        /// A function to get the field label in the given culture.
+        /// A function to get the field label in the given culture. ${,}
         /// </summary>
-        public Func<CultureInfo, string> GetFieldLabel { get; set; }
+        public string Label { get; set; }
 
         /// <summary>
         /// Indicates whether faceted search is enabled for this field.

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using Composite.C1Console.Security;
 using Composite.Core.Linq;
@@ -201,19 +200,19 @@ namespace Composite.C1Console.Search.Crawling
                     null,
                     new DocumentFieldPreview
                     {
-                        PreviewFunction = (value, culture) => value?.ToString(),
+                        PreviewFunction = value => value?.ToString(),
                         Sortable = true,
                         FieldOrder = 1
                     })
                 {
-                    GetFieldLabel = c => Texts.FieldNames_Label
+                    Label = Texts.Untranslated.FieldNames_Label
                 },
 
                 new DocumentField(
                     DefaultDocumentFieldNames.DataType,
                     new DocumentFieldFacet
                     {
-                        GetValuePreviewFunction = GetDataTypeLabel,
+                        PreviewFunction = GetDataTypeLabel,
                         MinHitCount = 1
                     },
                     new DocumentFieldPreview
@@ -223,19 +222,19 @@ namespace Composite.C1Console.Search.Crawling
                         FieldOrder = 2
                     })
                 {
-                    GetFieldLabel = c => Texts.FieldNames_DataType
+                    Label = Texts.Untranslated.FieldNames_DataType
                 },
 
                 new DocumentField(
                     DefaultDocumentFieldNames.HasUrl,
                     new DocumentFieldFacet
                     {
-                        GetValuePreviewFunction = (value, culture) => value,
+                        PreviewFunction = value => value,
                         MinHitCount = 1
                     }, 
                     null)
                 {
-                    GetFieldLabel = culture => null
+                    Label = null
                 },
 
                 new DocumentField(
@@ -243,17 +242,17 @@ namespace Composite.C1Console.Search.Crawling
                     new DocumentFieldFacet
                     {
                         FacetType = FacetType.MultipleValues,
-                        GetValuePreviewFunction = (value, culture) => value,
+                        PreviewFunction = value => value,
                         MinHitCount = 1
                     },
                     null)
                 {
-                    GetFieldLabel = culture => "Console Access"
+                    Label = null
                 }
             };
         }
 
-        private static string GetDataTypeLabel(object datatype, CultureInfo culture)
+        private static string GetDataTypeLabel(object datatype)
         {
             var str = (string)datatype;
 
@@ -270,7 +269,7 @@ namespace Composite.C1Console.Search.Crawling
                     return Texts.DataType_MediaFile;
                 }
 
-                var descriptor = DataMetaDataFacade.GetDataTypeDescriptor(dataTypeId, false);
+                var descriptor = DataMetaDataFacade.GetDataTypeDescriptor(dataTypeId);
                 if (descriptor != null)
                 {
                     return descriptor.Title;

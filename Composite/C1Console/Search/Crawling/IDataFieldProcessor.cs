@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Globalization;
 using System.Reflection;
 
 namespace Composite.C1Console.Search.Crawling
@@ -57,6 +56,6 @@ namespace Composite.C1Console.Search.Crawling
         /// <param name="propertyInfo"></param>
         /// <param name="cultureInfo"></param>
         /// <returns></returns>
-        string GetFieldLabel(PropertyInfo propertyInfo, CultureInfo cultureInfo);
+        string GetFieldLabel(PropertyInfo propertyInfo);
     }
 }
