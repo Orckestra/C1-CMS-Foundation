@@ -13,7 +13,8 @@ function mapStateToProps(state) {
 		resultColumns: columnSelector(state),
 		results: rowSelector(state),
 		searchQuery: state.getIn(['options', 'values', currentPageNameSelector(state)]) || Immutable.fromJS({ text: '', sortInReverseOrder: false }),
-		searchString: searchQuerySelector(state)
+		searchString: searchQuerySelector(state),
+		searchActive: !!state.getIn(['activity', 'PROVIDER.GET'])
 	};
 }
 

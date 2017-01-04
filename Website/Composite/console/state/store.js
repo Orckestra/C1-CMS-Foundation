@@ -3,6 +3,7 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import { combineReducers } from 'redux-immutablejs';
 import layout from 'console/state/reducers/layout.js';
 import dataFields from 'console/state/reducers/dataFields.js';
+import activity from 'console/state/reducers/activity.js';
 import options from 'console/state/reducers/options.js';
 import logs from 'console/state/reducers/logs.js';
 import providers from 'console/state/reducers/providers.js';
@@ -14,6 +15,7 @@ import initState from 'console/state/initState.js';
 import Immutable from 'immutable';
 
 let reducers = {
+	activity,
 	layout,
 	dataFields,
 	options,

@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import styled from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 import colors from 'console/components/colors.js';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import Immutable from 'immutable';
@@ -7,6 +7,16 @@ import Input from 'console/components/presentation/Input.js';
 import Icon from 'console/components/presentation/Icon.js';
 import SearchResults from 'console/components/presentation/SearchResults.js';
 import SearchFacets from 'console/components/presentation/SearchFacets.js';
+
+const rotate360 = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(-360deg);
+  }
+`;
 
 export const SearchContainer = styled.div`
 width: 100%;
@@ -30,9 +40,13 @@ export const SearchIcon = styled(Icon)`
 position: absolute;
 top: 23px;
 right: 31px;
+transform-origin: 9.25px 9.75px;
 
-&:hover {
-	fill: ${colors.buttonHighlightColor};
+${props => props.id === 'magnifier' ?
+	css`&:hover {
+		fill: ${colors.buttonHighlightColor};
+	}` :
+	css`animation: ${rotate360} 2s linear infinite;`
 }
 `;
 export const SearchResultPane = styled.div`
@@ -71,7 +85,7 @@ const SearchPage = props => {
 						searchAction();
 					}
 				}}/>
-			<SearchIcon id="magnifier" onClick={searchAction}/>
+			<SearchIcon id={props.searchActive ? 'refresh' : 'magnifier'} onClick={searchAction}/>
 			<SearchFacets facetGroups={props.facetGroups} searchQuery={props.searchQuery} updateQuery={searchQueryUpdater}/>
 		</SearchSidebar>
 		<SearchResultPane>
@@ -103,7 +117,8 @@ SearchPage.propTypes = {
 	actions: PropTypes.shape({
 		performSearch: PropTypes.func.isRequired,
 		setOption: PropTypes.func.isRequired
-	}).isRequired
+	}).isRequired,
+	searchActive: PropTypes.bool
 };
 
 export default SearchPage;

@@ -51,9 +51,9 @@ describe('SearchFacets', () => {
 		expect(renderer, 'to have rendered', <searchUi.FacetList>
 					<searchUi.FacetGroup key='testgroup'>
 						<searchUi.FacetHeader>Test group 1</searchUi.FacetHeader>
-						<searchUi.Facet key='facet1'><searchUi.FacetSelector checked={true}/>Facet One</searchUi.Facet>
-						<searchUi.Facet key='facet2'><searchUi.FacetSelector checked={false}/>Facet Two</searchUi.Facet>
-						<searchUi.Facet key='facet3'><searchUi.FacetSelector checked={true}/>Facet Three</searchUi.Facet>
+						<searchUi.Facet key='facet1'><searchUi.FacetSelector checked={true}/>Facet One [1]</searchUi.Facet>
+						<searchUi.Facet key='facet2'><searchUi.FacetSelector checked={false}/>Facet Two [3]</searchUi.Facet>
+						<searchUi.Facet key='facet3'><searchUi.FacetSelector checked={true}/>Facet Three [2]</searchUi.Facet>
 					</searchUi.FacetGroup>
 				</searchUi.FacetList>);
 	});
