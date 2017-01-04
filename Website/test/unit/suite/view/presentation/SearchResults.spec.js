@@ -63,40 +63,40 @@ describe('SearchResults', () => {
 		renderer.render(<SearchResults {...props}/>);
 		expect(renderer, 'to have rendered', <searchUi.ResultTable>
 			<searchUi.ResultTableHead>
-				<tr>
+				<searchUi.ResultTableRow>
 					<searchUi.ResultTableHeadCell key='name'>Label</searchUi.ResultTableHeadCell>
 					<searchUi.ResultTableHeadCell key='type'>Data type</searchUi.ResultTableHeadCell>
 					<searchUi.ResultTableHeadCell key='description'>Description</searchUi.ResultTableHeadCell>
 					<searchUi.ResultTableHeadCell key='creationDate'>Created</searchUi.ResultTableHeadCell>
 					<searchUi.ResultTableHeadCell key='createdBy'>Author</searchUi.ResultTableHeadCell>
 					<searchUi.ResultTableHeadCell key='published'>Published?</searchUi.ResultTableHeadCell>
-				</tr>
+				</searchUi.ResultTableRow>
 			</searchUi.ResultTableHead>
 			<searchUi.ResultTableBody>
-				<tr>
+				<searchUi.ResultTableRow>
 					<searchUi.ResultTableBodyCell key='name'>Components</searchUi.ResultTableBodyCell>
 					<searchUi.ResultTableBodyCell key='type'>C1 Page</searchUi.ResultTableBodyCell>
 					<searchUi.ResultTableBodyCell key='description'>This section contains pages that show off the different layouts and styling options.</searchUi.ResultTableBodyCell>
 					<searchUi.ResultTableBodyCell key='creationDate'>2016 Dec 14</searchUi.ResultTableBodyCell>
 					<searchUi.ResultTableBodyCell key='createdBy'>admin</searchUi.ResultTableBodyCell>
 					<searchUi.ResultTableBodyCell key='published'>published</searchUi.ResultTableBodyCell>
-				</tr>
-				<tr>
+				</searchUi.ResultTableRow>
+				<searchUi.ResultTableRow>
 					<searchUi.ResultTableBodyCell key='name'>Navigation</searchUi.ResultTableBodyCell>
 					<searchUi.ResultTableBodyCell key='type'>C1 Page</searchUi.ResultTableBodyCell>
 					<searchUi.ResultTableBodyCell key='description'>Test things like deep structures and labels that are darn long.</searchUi.ResultTableBodyCell>
 					<searchUi.ResultTableBodyCell key='creationDate'>2016 Dec 14</searchUi.ResultTableBodyCell>
 					<searchUi.ResultTableBodyCell key='createdBy'>admin</searchUi.ResultTableBodyCell>
 					<searchUi.ResultTableBodyCell key='published'>published</searchUi.ResultTableBodyCell>
-				</tr>
-				<tr>
+				</searchUi.ResultTableRow>
+				<searchUi.ResultTableRow>
 					<searchUi.ResultTableBodyCell key='name'>Styles</searchUi.ResultTableBodyCell>
 					<searchUi.ResultTableBodyCell key='type'>C1 Page</searchUi.ResultTableBodyCell>
 					<searchUi.ResultTableBodyCell key='description'>This page contains different elements that you can define with the Visual Editor in the CMS Console.</searchUi.ResultTableBodyCell>
 					<searchUi.ResultTableBodyCell key='creationDate'>2016 Dec 14</searchUi.ResultTableBodyCell>
 					<searchUi.ResultTableBodyCell key='createdBy'>admin</searchUi.ResultTableBodyCell>
 					<searchUi.ResultTableBodyCell key='published'>published</searchUi.ResultTableBodyCell>
-				</tr>
+				</searchUi.ResultTableRow>
 			</searchUi.ResultTableBody>
 		</searchUi.ResultTable>);
 	});

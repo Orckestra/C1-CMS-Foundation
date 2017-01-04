@@ -7,10 +7,14 @@ export const ResultTable = styled.table`
 width: 100%;
 max-height: calc(100% - 32px);
 border-collapse: collapse;
+table-layout: fixed;
 `;
 export const ResultTableHead = styled.thead``;
 export const ResultTableBody = styled.tbody`
 overflow-y: scroll;
+`;
+export const ResultTableRow = styled.tr`
+width: 100%;
 `;
 export const ResultTableHeadCell = styled.th`
 height: 26px;
@@ -34,6 +38,10 @@ font-weight: normal;
 `;
 export const ResultTableBodyCell = styled.td`
 height: 26px;
+padding: 5px;
+white-space: nowrap;
+text-overflow: ellipsis;
+overflow: hidden;
 border-bottom: 1px solid ${colors.borderColor};
 
 &.active {
@@ -48,22 +56,23 @@ border-bottom: 1px solid ${colors.borderColor};
 }
 `;
 
+
 const SearchResults = props => <ResultTable>
 	<ResultTableHead>
-		<tr>
+		<ResultTableRow>
 			{props.resultColumns.map(col => <ResultTableHeadCell key={col.get('fieldName')}>{col.get('label')}</ResultTableHeadCell>).toArray()}
-		</tr>
+		</ResultTableRow>
 	</ResultTableHead>
 	<ResultTableBody>
 		{props.results.map(row =>
-			<tr key={row.hashCode()}>
+			<ResultTableRow key={row.hashCode()}>
 				{props.resultColumns.map(col => <ResultTableBodyCell key={col.get('fieldName')}>
 					{col.get('fieldName') === props.urlColumn ?
 						<a href={row.get('url')} target="_top">{row.getIn(['values', col.get('fieldName')])}</a> :
 						row.getIn(['values', col.get('fieldName')])
 					}
 				</ResultTableBodyCell>).toArray()}
-			</tr>
+			</ResultTableRow>
 		).toArray()}
 	</ResultTableBody>
 </ResultTable>;
@@ -74,7 +83,7 @@ SearchResults.propTypes = {
 	resultColumns: ImmutablePropTypes.listOf(ImmutablePropTypes.mapContains({
 		fieldName: PropTypes.string.isRequired
 	})).isRequired,
-	urlColumn: PropTypes.string,
+	urlColumn: PropTypes.string
 };
 
 export default SearchResults;
