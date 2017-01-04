@@ -86,7 +86,11 @@ const SearchPage = props => {
 					}
 				}}/>
 			<SearchIcon id={props.searchActive ? 'refresh' : 'magnifier'} onClick={searchAction}/>
-			<SearchFacets facetGroups={props.facetGroups} searchQuery={props.searchQuery} updateQuery={searchQueryUpdater}/>
+			<SearchFacets
+				facetGroups={props.facetGroups}
+				searchQuery={props.searchQuery}
+				updateQuery={searchQueryUpdater}
+			/>
 		</SearchSidebar>
 		<SearchResultPane>
 			{!props.searchString && !props.results.size ? null :
@@ -94,7 +98,14 @@ const SearchPage = props => {
 					<ResultHeader>{props.results.size} results for '{props.searchString}'</ResultHeader> :
 					<ResultHeader>No results found for '{props.searchString}'</ResultHeader>
 			}
-			<SearchResults resultColumns={props.resultColumns} results={props.results} urlColumn={props.pageDef.get('urlColumn')}/>
+			<SearchResults
+				searchQuery={props.searchQuery}
+				updateQuery={searchQueryUpdater}
+				performSearch={searchAction}
+				resultColumns={props.resultColumns}
+				results={props.results}
+				urlColumn={props.pageDef.get('urlColumn')}
+			/>
 		</SearchResultPane>
 	</SearchContainer>;
 };

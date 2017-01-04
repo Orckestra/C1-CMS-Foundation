@@ -55,7 +55,11 @@ describe('SearchResults', () => {
 						published: 'published'
 					}
 				}
-			])
+			]),
+			searchQuery: Immutable.fromJS({
+				sortBy: 'type',
+				sortInReverseOrder: false
+			})
 		};
 	});
 
@@ -65,7 +69,7 @@ describe('SearchResults', () => {
 			<searchUi.ResultTableHead>
 				<searchUi.ResultTableRow>
 					<searchUi.ResultTableHeadCell key='name'>Label</searchUi.ResultTableHeadCell>
-					<searchUi.ResultTableHeadCell key='type'>Data type</searchUi.ResultTableHeadCell>
+					<searchUi.ResultTableHeadCell key='type'>Data type<searchUi.SortIcon id='chevron-down'/></searchUi.ResultTableHeadCell>
 					<searchUi.ResultTableHeadCell key='description'>Description</searchUi.ResultTableHeadCell>
 					<searchUi.ResultTableHeadCell key='creationDate'>Created</searchUi.ResultTableHeadCell>
 					<searchUi.ResultTableHeadCell key='createdBy'>Author</searchUi.ResultTableHeadCell>
@@ -98,6 +102,23 @@ describe('SearchResults', () => {
 					<searchUi.ResultTableBodyCell key='published'>published</searchUi.ResultTableBodyCell>
 				</searchUi.ResultTableRow>
 			</searchUi.ResultTableBody>
+		</searchUi.ResultTable>);
+	});
+
+	it('should render sorting arrows correctly', () => {
+		props.searchQuery = props.searchQuery.set('sortInReverseOrder', true);
+		renderer.render(<SearchResults {...props}/>);
+		expect(renderer, 'to have rendered', <searchUi.ResultTable>
+			<searchUi.ResultTableHead>
+				<searchUi.ResultTableRow>
+					<searchUi.ResultTableHeadCell key='name'>Label</searchUi.ResultTableHeadCell>
+					<searchUi.ResultTableHeadCell key='type'>Data type<searchUi.SortIcon id='chevron-up'/></searchUi.ResultTableHeadCell>
+					<searchUi.ResultTableHeadCell key='description'>Description</searchUi.ResultTableHeadCell>
+					<searchUi.ResultTableHeadCell key='creationDate'>Created</searchUi.ResultTableHeadCell>
+					<searchUi.ResultTableHeadCell key='createdBy'>Author</searchUi.ResultTableHeadCell>
+					<searchUi.ResultTableHeadCell key='published'>Published?</searchUi.ResultTableHeadCell>
+				</searchUi.ResultTableRow>
+			</searchUi.ResultTableHead>
 		</searchUi.ResultTable>);
 	});
 });

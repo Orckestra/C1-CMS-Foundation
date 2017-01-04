@@ -92,6 +92,9 @@ describe('SearchPage', () => {
 			<searchUi.SearchResultPane>
 				<searchUi.ResultHeader>3 results for 'Test'</searchUi.ResultHeader>
 				<SearchResults
+					searchQuery={{ text: 'Test', sortInReverseOrder: false }}
+					updateQuery={expect.it('to be a function')}
+					performSearch={expect.it('to be a function')}
 					resultColumns={Immutable.fromJS([{ fieldName: 'label' }, { fieldName: 'type' }])}
 					results={Immutable.fromJS([{ label: 'Components' }, { label: 'Navigation' }, { label: 'Styles' }])}
 				/>
