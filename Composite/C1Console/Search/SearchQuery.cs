@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using Composite.C1Console.Search.Crawling;
 using Composite.C1Console.Security;
+using Composite.Core.Threading;
 using Composite.Data;
 
 namespace Composite.C1Console.Search
@@ -140,7 +141,10 @@ namespace Composite.C1Console.Search
 
             var tokens = new List<string> {userName};
 
-            tokens.AddRange(UserGroupFacade.GetUserGroupIds(userName).Select(id => id.ToString()));
+            using (ThreadDataManager.EnsureInitialize())
+            {
+                tokens.AddRange(UserGroupFacade.GetUserGroupIds(userName).Select(id => id.ToString()));
+            }
 
             Selection.Add(new SearchQuerySelection
             {

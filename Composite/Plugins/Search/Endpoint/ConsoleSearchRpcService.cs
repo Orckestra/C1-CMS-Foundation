@@ -9,6 +9,7 @@ using Composite.C1Console.Users;
 using Composite.Core.Application;
 using Composite.Core.Linq;
 using Composite.Core.ResourceSystem;
+using Composite.Core.Threading;
 using Composite.Core.WebClient;
 using Composite.Core.WebClient.Services.WampRouter;
 using Microsoft.Extensions.DependencyInjection;
@@ -167,6 +168,7 @@ namespace Composite.Plugins.Search.Endpoint
             if (query.Selections == null) return null;
 
             return (from selection in query.Selections
+                    where selection.Values.Length > 0
                     let facetField = facetFields.First(ff => ff.Name == selection.FieldName)
                     select new ConsoleSearchResultFacetField
                     {
