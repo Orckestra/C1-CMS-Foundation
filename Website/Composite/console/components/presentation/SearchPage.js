@@ -58,7 +58,11 @@ width: calc(100% - 290px);
 height: 100%;
 `;
 export const ResultHeader = styled.h1`
-margin-left: 15px;
+font-family: 'Roboto Condensed', sans-serif;
+font-weight: normal;
+font-size: 18px;
+text-transform: uppercase;
+margin: 18px 15px 16px;
 `;
 
 const SearchPage = props => {

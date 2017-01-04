@@ -13,7 +13,14 @@ margin-right: -15px;
 padding-right: 15px;
 `;
 export const FacetGroup = styled.div``;
-export const FacetHeader = styled.h2``;
+export const FacetHeader = styled.h2`
+color: ${colors.dialogHeaderColor};
+font-family: 'Roboto Condensed', sans-serif;
+font-weight: normal;
+font-style: italic;
+font-size: 14px;
+text-transform: uppercase;
+`;
 export const Facet = styled.div``;
 export const FacetSelector = styled(Input)`
 margin-right: 10px;
