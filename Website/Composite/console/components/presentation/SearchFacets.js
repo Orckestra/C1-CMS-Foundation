@@ -11,6 +11,7 @@ height: calc(100% - 32px);
 overflow-y: auto;
 margin-right: -15px;
 padding-right: 15px;
+user-select: none;
 `;
 export const FacetGroup = styled.div``;
 export const FacetHeader = styled.h2`
@@ -59,24 +60,21 @@ const SearchFacets = props => {
 		};
 	}
 	return <FacetList>
-		{
-			/* Get list of facet groups, render one header and group for each */
-			props.facetGroups.map(group => <FacetGroup key={group.get('fieldName')}>
-				<FacetHeader>{group.get('label')}</FacetHeader>
-				{group.get('facets').map(facet => <Facet key={facet.get('value')}>
-					<FacetSelector
-						id={group.get('fieldName') + '_' +  facet.get('value')}
-						checked={!!facet.get('checked')}
-						onClick={setFacet(group.get('fieldName'), facet.get('value'))}
-						onChange={() => {}/* To calm warnings about onChange missing */}
-					/>
-					<label htmlFor={group.get('fieldName') + '_' +  facet.get('value')}>
-						{facet.get('label').slice(0, 30) + (facet.get('label').length > 30 ? '... ' : ' ')}
-						[{facet.get('hitCount')}]
-					</label>
-				</Facet>).toArray()}
-			</FacetGroup>).toArray()
-		}
+		{props.facetGroups.map(group => <FacetGroup key={group.get('fieldName')}>
+			<FacetHeader>{group.get('label')}</FacetHeader>
+			{group.get('facets').map(facet => <Facet key={facet.get('value')}>
+				<FacetSelector
+					id={group.get('fieldName') + '_' +  facet.get('value')}
+					checked={!!facet.get('checked')}
+					onClick={setFacet(group.get('fieldName'), facet.get('value'))}
+					onChange={() => {}/* To calm warnings about onChange missing */}
+				/>
+				<label htmlFor={group.get('fieldName') + '_' +  facet.get('value')}>
+					{facet.get('label').slice(0, 30) + (facet.get('label').length > 30 ? '\u2026 ' : ' ')}
+					[{facet.get('hitCount')}]
+				</label>
+			</Facet>).toArray()}
+		</FacetGroup>).toArray()}
 	</FacetList>;
 };
 

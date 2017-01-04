@@ -6,72 +6,69 @@ import Icon from 'console/components/presentation/Icon.js';
 
 export const ResultTable = styled.table`
 width: 100%;
-max-height: calc(100% - 32px);
+height: calc(100% - 56px);
+display: block;
 border-collapse: collapse;
-table-layout: fixed;
 `;
-export const ResultTableHead = styled.thead``;
+export const ResultTableHead = styled.thead`
+display: block;
+user-select: none;
+padding-right: 13px;
+border-top: 1px solid ${colors.borderColor};
+background-color: ${colors.darkBackground};
+`;
 export const ResultTableBody = styled.tbody`
+display: block;
+height: calc(100% - 38px);
 overflow-y: scroll;
 `;
 export const ResultTableRow = styled.tr`
+display: table;
+table-layout: fixed;
 width: 100%;
+border-bottom: 1px solid ${colors.borderColor};
 `;
 export const SortIcon = styled(Icon)`
 width: 10px;
 height: 10px;
 margin-left: 4px;
 `;
-export const ResultTableHeadCell = styled.th`
+
+const cellStyle = css`
 height: 26px;
-border-top: 1px solid ${colors.borderColor};
-border-bottom: 1px solid ${colors.borderColor};
-background-color: ${colors.darkBackground};
-text-align: left;
-font-weight: normal;
-cursor: default;
-
-${
-	props => props.sortable ?
-		css`
-			cursor: pointer;
-			&:hover {
-				text-decoration: underline;
-			}
-		` :
-		''
-}
-
-&.active {
-	font-weight: bold;
-}
-
+padding: 5px;
 &:first-child {
 	padding-left: 15px;
-	border-left: 1px solid ${colors.borderColor};
 }
 &:last-child {
 	padding-right: 15px;
 }
 `;
+export const ResultTableHeadCell = styled.th`
+${cellStyle}
+text-align: left;
+font-weight: normal;
+cursor: default;
+${props => props.sortable ?
+	css`
+		cursor: pointer;
+		&:hover {
+			text-decoration: underline;
+		}` :
+	''
+}
+&:first-child {
+	border-left: 1px solid ${colors.borderColor};
+}
+`;
 export const ResultTableBodyCell = styled.td`
-height: 26px;
-padding: 5px;
+${cellStyle}
 white-space: nowrap;
 text-overflow: ellipsis;
 overflow: hidden;
-border-bottom: 1px solid ${colors.borderColor};
-
-&.active {
-	font-weight: bold;
-}
-
-&:first-child {
-	padding-left: 15px;
-}
-&:last-child {
-	padding-right: 15px;
-}
+`;
+export const ResultLink = styled.a`
+color: #333;
 `;
 
 const SearchResults = props => {
@@ -105,7 +102,7 @@ const SearchResults = props => {
 				<ResultTableRow key={row.hashCode()}>
 					{props.resultColumns.map(col => <ResultTableBodyCell key={col.get('fieldName')}>
 						{col.get('fieldName') === props.urlColumn ?
-							<a href={row.get('url')} target="_top">{row.getIn(['values', col.get('fieldName')])}</a> :
+							<ResultLink href={row.get('url')} target="_top">{row.getIn(['values', col.get('fieldName')])}</ResultLink> :
 							row.getIn(['values', col.get('fieldName')])
 						}
 					</ResultTableBodyCell>).toArray()}
