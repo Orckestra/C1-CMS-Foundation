@@ -5,7 +5,9 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Composite.C1Console.Search;
+using Composite.C1Console.Search.Crawling;
 using Composite.C1Console.Users;
+using Composite.Core;
 using Composite.Core.Application;
 using Composite.Core.Linq;
 using Composite.Core.ResourceSystem;
@@ -51,11 +53,8 @@ namespace Composite.Plugins.Search.Endpoint
         {
             if (_searchProvider == null || query == null) return null;
 
-            var consoleCulture = UserSettings.CultureInfo;
-            var consoleUiCulture = UserSettings.C1ConsoleUiLanguage;
-
-            Thread.CurrentThread.CurrentCulture = consoleCulture;
-            Thread.CurrentThread.CurrentUICulture = consoleUiCulture;
+            Thread.CurrentThread.CurrentCulture = UserSettings.CultureInfo;
+            Thread.CurrentThread.CurrentUICulture = UserSettings.C1ConsoleUiLanguage;
 
             var documentSources = _docSourceProviders.SelectMany(dsp => dsp.GetDocumentSources()).ToList();
             var allFields = documentSources.SelectMany(ds => ds.CustomFields).ToList();
@@ -118,6 +117,7 @@ namespace Composite.Plugins.Search.Endpoint
             };
 
             searchQuery.FilterByUser(UserSettings.Username);
+            searchQuery.AddDefaultFieldFacet(DefaultDocumentFieldNames.Source);
 
             var result = await _searchProvider.SearchAsync(searchQuery);
 
@@ -132,7 +132,18 @@ namespace Composite.Plugins.Search.Endpoint
                 };
             }
 
-            var dataSourceNames = new HashSet<string>(documents.Select(d => d.Source).Distinct());
+            HashSet<string> dataSourceNames;
+            Facet[] dsFacets;
+            if (result.Facets != null && result.Facets.TryGetValue(DefaultDocumentFieldNames.Source, out dsFacets))
+            {
+                dataSourceNames = new HashSet<string>(dsFacets.Select(v => v.Value));
+            }
+            else
+            {
+                Log.LogWarning(nameof(ConsoleSearchRpcService), "The search provider did not return the list of document sources");
+                dataSourceNames = new HashSet<string>(documents.Select(d => d.Source).Distinct());
+            }
+
 
             var dataSources = documentSources.Where(d => dataSourceNames.Contains(d.Name)).ToList();
             var previewFields = RemoveDuplicateKeys(
@@ -156,7 +167,7 @@ namespace Composite.Plugins.Search.Endpoint
                     Url = GetFocusUrl(doc.SerializedEntityToken),
                     Values = GetPreviewValues(doc, previewFields)
                 }).ToArray(),
-                FacetFields = GetFacets(result, facetFields, consoleCulture),
+                FacetFields = GetFacets(result, facetFields),
                 TotalHits = result.TotalHits
             };
         }
@@ -183,7 +194,7 @@ namespace Composite.Plugins.Search.Endpoint
                     }).ToArray();
         }
 
-        private ConsoleSearchResultFacetField[] GetFacets(SearchResult queryResult, ICollection<DocumentField> facetFields, CultureInfo culture)
+        private ConsoleSearchResultFacetField[] GetFacets(SearchResult queryResult, ICollection<DocumentField> facetFields)
         {
             if (queryResult.Facets == null)
             {

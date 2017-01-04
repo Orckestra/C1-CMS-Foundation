@@ -11,6 +11,13 @@
         public static readonly string Label = "label";
 
         /// <summary>
+        /// The name of the source field. 
+        /// The source field contains a name of the document source that created the search document.
+        /// It is used both for updating documents for a given source as well as filtering search result columns.
+        /// </summary>
+        public static readonly string Source = "src";
+
+        /// <summary>
         /// The name of the description field.
         /// </summary>
         public static readonly string Description = "desc";

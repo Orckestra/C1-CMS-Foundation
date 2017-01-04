@@ -193,15 +193,15 @@ namespace Composite.C1Console.Search
         public IEnumerable<SearchQuerySortOption> SortOptions { get; set; }
 
 
-        private void AddDefaultFieldFacet(string fieldName)
+        internal void AddDefaultFieldFacet(string fieldName)
         {
-            if (Facets.Any(f => f.Key == DefaultDocumentFieldNames.HasUrl))
+            if (Facets.Any(f => f.Key == fieldName))
             {
                 return;
             }
 
             Facets.Add(new KeyValuePair<string, DocumentFieldFacet>(
-                    DefaultDocumentFieldNames.HasUrl,
+                    fieldName,
                     SearchDocumentBuilder.GetDefaultDocumentFields()
                     .Single(f => f.Name == fieldName)
                     .Facet));

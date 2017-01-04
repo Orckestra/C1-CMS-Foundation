@@ -209,6 +209,19 @@ namespace Composite.C1Console.Search.Crawling
                 },
 
                 new DocumentField(
+                    DefaultDocumentFieldNames.Source,
+                    new DocumentFieldFacet
+                    {
+                        PreviewFunction = value => value,
+                        FacetType = FacetType.SingleValue,
+                        MinHitCount = 1
+                    },
+                    null)
+                {
+                    Label = null
+                },
+
+                new DocumentField(
                     DefaultDocumentFieldNames.DataType,
                     new DocumentFieldFacet
                     {
