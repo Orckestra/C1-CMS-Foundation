@@ -1,13 +1,12 @@
 import Wampy from 'wampy';
 import pageFetcher from 'console/mocks/services/pageMock.js';
 import { valueFetcher, valuePutter } from 'console/mocks/services/valueMock.js';
-import { getFunctions, pickFunction } from 'console/mocks/services/functionMock.js';
 
 let url = new URL('/Composite/api/Router', location.href);
 url.protocol = 'ws:';
 
 function RPCWrapper (handler) {
-	return (args) => [{}, handler(...args)];
+	return (args) => [{}, [handler(...args)]]; // Mock RPCs will now behave like WampSharp RPCs
 }
 
 // XXX: This is nasty. Happily it's also temporary.
@@ -20,19 +19,13 @@ export function waitFor() {
 }
 
 const client = new Wampy(url.href, {
-	realm: 'realm1',
+	realm: 'realm',
 	onConnect: () => {
 		Promise.all([
-			registerMock('alive', () => true),
 			// Register other mock rpcs.
 			registerMock('struct.page', pageFetcher),
 			registerMock('data.values.load', valueFetcher),
 			registerMock('data.values.save', valuePutter),
-			registerMock('provider.components.list', getFunctions),
-			registerMock('provider.components.pick', pickFunction),
-			registerMock('struct.dialog.cancel', dialogName =>
-				console.log('Canceling and closing', dialogName) // eslint-disable-line no-console
-			),
 		]).then(unblock);
 	}
 });

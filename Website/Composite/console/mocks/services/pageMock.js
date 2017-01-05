@@ -317,6 +317,70 @@ const pages = {
 		label: 'SVG Spritesheet',
 		type: 'spritesheet'
 	},
+	// 'component-selector-shim': {
+	// 	name: 'component-selector-shim',
+	// 	type: 'dialogPageShim',
+	// 	dialog: {
+	// 		name: 'component-selector',
+	// 		panes: [{
+	// 			name: 'component-list',
+	// 			type: 'palette',
+	// 			headline: 'Select a component',
+	// 			filter: 'left-aside',
+	// 			categories: ['gallery', 'popular'],
+	// 			topics: [
+	// 				{
+	// 					name: 'elementUpdate',
+	// 					uri: 'components.new'
+	// 				}
+	// 			],
+	// 			providers: [
+	// 				{
+	// 					name: 'elementSource',
+	// 					uri: 'components.get',
+	// 					protocol: 'wamp'
+	// 				},
+	// 				{
+	// 					name: 'elementInsert',
+	// 					protocol: 'post',
+	// 					response: 'Dialog.RESPONSE_ACCEPT',
+	// 					action: 'DialogPageBinding.ACTION_RESPONSE',
+	// 					markup: ['selectedComponentDefinition'],
+	// 					uri: ''
+	// 				},
+	// 				{
+	// 					name: 'componentListCancel',
+	// 					protocol: 'post',
+	// 					response: 'DialogPageBinding.ACTION_RESPONSE',
+	// 					action: 'Dialog.RESPONSE_CANCEL',
+	// 					uri: ''
+	// 				}
+	// 			],
+	// 			elements: {
+	// 				fetch: 'elementSource',
+	// 				update: 'elementUpdate'
+	// 			},
+	// 			buttons: [
+	// 				{
+	// 					name: 'cancelButton',
+	// 					label: 'Cancel',
+	// 					action: {
+	// 						provider: 'componentListCancel'
+	// 					}
+	// 				},
+	// 				{
+	// 					name: 'finishButton',
+	// 					label: 'Next',
+	// 					style: 'main',
+	// 					action: {
+	// 						sendData: true,
+	// 						provider: 'elementInsert'
+	// 					}
+	// 				}
+	// 			]
+	// 		}]
+	// 	}
+	// },
 	'component-selector-shim': {
 		name: 'component-selector-shim',
 		type: 'dialogPageShim',
@@ -328,10 +392,11 @@ const pages = {
 					type: 'palette',
 					headline: 'Select a component',
 					context: 'left-aside',
+					categories: ['gallery', 'popular'],
 					provider: {
 						name: 'elementSource',
 						protocol: 'wamp',
-						uri: 'mock.provider.components.list'
+						uri: 'components.get'
 					},
 					finishButton: {
 						label: 'Next',
@@ -339,20 +404,40 @@ const pages = {
 					},
 					finishProvider: {
 						name: 'elementInsert',
-						protocol: 'wamp',
-						uri: 'mock.provider.components.pick'
+						protocol: 'post',
+						response: 'Dialog.RESPONSE_ACCEPT',
+						action: 'DialogPageBinding.ACTION_RESPONSE',
+						markup: ['selectedComponentDefinition'],
+						uri: ''
 					},
 					cancelButton: {
 						label: 'Cancel'
 					},
 					cancelProvider: {
 						name: 'componentListCancel',
-						protocol: 'wamp',
-						uri: 'mock.struct.dialog.cancel'
+						protocol: 'post',
+						response: 'DialogPageBinding.ACTION_RESPONSE',
+						action: 'Dialog.RESPONSE_CANCEL',
+						uri: ''
 					}
 				}
 			]
 		}
+	},
+	search: {
+		name: 'search',
+		label: 'Search',
+		type: 'search',
+		placeholder: 'Search here',
+		searchProvider: 'searchProvider',
+		providers: [
+			{
+				name: 'searchProvider',
+				protocol: 'wamp',
+				uri: 'search.query'
+			}
+		],
+		urlColumn: 'label'
 	}
 };
 

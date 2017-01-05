@@ -54,31 +54,7 @@ body, input, textarea, select, button {
 
 document.title = 'Orckestra CMS: ' + location.hostname;
 
-const initialState = {
-	pageDefs: {
-		'svg-sprites': {
-			name: 'svg-sprites',
-			label: 'SVG Spritesheet',
-			type: 'spritesheet'
-		},
-		search: {
-			name: 'search',
-			label: 'Search',
-			type: 'search',
-			placeholder: 'Search here',
-			searchProvider: 'searchProvider',
-			providers: ['searchProvider'],
-			urlColumn: 'label'
-		}
-	},
-	providerDefs: {
-		searchProvider: {
-			name: 'searchProvider',
-			protocol: 'wamp',
-			uri: 'search.query'
-		}
-	}
-};
+const initialState = {};
 const store = configureStore(initialState);
 function whenReadyRender() {
 	if (document.readyState === 'complete') {
