@@ -63,7 +63,6 @@ const initialState = {
 		}
 	}
 };
-
 const store = configureStore(initialState);
 function whenReadyRender() {
 	if (document.readyState === 'complete') {

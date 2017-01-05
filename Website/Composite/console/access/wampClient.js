@@ -1,23 +1,30 @@
+// TODO: Remove this when proper services available.
+import { waitFor } from 'console/mocks/mockServer.js';
+
 import Wampy from 'wampy';
 let currentClients = {};
 
 function getClient(realm) {
-	if (currentClients[realm]) {
-		return Promise.resolve(currentClients[realm]);
-	} else {
-		return new Promise((resolve, reject) => {
-			let url = new URL('/Composite/api/Router', location.href);
-			url.protocol = 'ws:';
-			const client = new Wampy(url.href, {
-				realm,
-				onConnect: () => {
-					currentClients[realm] = client;
-					resolve(client);
-				},
-				onError: err => reject(err)
+	// TODO: Rip out the whole waiting rigmarole when not relying on mock services...
+	return waitFor()
+	.then(() => {
+		if (currentClients[realm]) {
+			return Promise.resolve(currentClients[realm]);
+		} else {
+			return new Promise((resolve, reject) => {
+				let url = new URL('/Composite/api/Router', location.href);
+				url.protocol = 'ws:';
+				const client = new Wampy(url.href, {
+					realm,
+					onConnect: () => {
+						currentClients[realm] = client;
+						resolve(client);
+					},
+					onError: err => reject(err)
+				});
 			});
-		});
-	}
+		}
+	});
 }
 
 function close(realm) {
