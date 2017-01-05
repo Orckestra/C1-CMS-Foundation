@@ -4,6 +4,7 @@ import { openPage, setPage } from 'console/state/reducers/layout.js';
 import { getLogDates, getLogPage } from 'console/state/actions/logs.js';
 import { getProviderPage } from 'console/state/actions/fetchFromProvider.js';
 import { subscribe } from 'console/state/observers.js';
+import WAMPClient from 'console/access/wampClient.js';
 
 const actionList = {
 	getLogDates,
@@ -35,6 +36,12 @@ const pageLoaders = {
 		return Promise.all(loading);
 	},
 	dialogPageShim: (pageName, getState, dispatch) => {
+		let context;
+		if (location.search && /(\?|&)containerClasses/.test(location.search)) {
+			context = location.search.replace(/^\?(?:.*&)?containerClasses=(.+?)?(?:&.*)?$/, '$1');
+		} else {
+			context = '';
+		}
 		let dialogName = getState().getIn(['pageDefs', pageName, 'dialog']);
 		let dialogDef = getState().getIn(['dialogDefs', dialogName]);
 		let paneIndex = getState().getIn(['dialogData', dialogName, 'showPane']) || 0;
@@ -42,7 +49,19 @@ const pageLoaders = {
 		let paneDef = getState().getIn(['dialogPaneDefs', paneName]);
 		if (paneDef.get('type') === 'palette') {
 			let provider = getState().getIn(['providerDefs', paneDef.get('provider')]).toJS();
-			return dispatch(getProviderPage(provider, dialogName, paneDef.get('context')));
+			// XXX: Context extraction is hard coded and ugly AF.
+			// Needs to be in page structure data where it belongs,
+			return dispatch(getProviderPage(provider, dialogName, /**/context/*/paneDef.get('context')/**/))
+			.then(() => {
+				// Subscribe to component update
+				let topic = getState().getIn(['providerDefs', paneDef.get('updateTopic'), 'uri']);
+				if (topic) {
+					WAMPClient.subscribe(topic, () => {
+						// Fetch new list if event
+						dispatch(getProviderPage(provider, dialogName, /**/context/*/paneDef.get('context')/**/));
+					});
+				}
+			});
 		} else {
 			return Promise.resolve();
 		}

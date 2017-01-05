@@ -56,6 +56,7 @@ describe('ConnectDialog', () => {
 				testpane: {
 					name: 'testpane',
 					test: 'this is data',
+					categories: ['tag1', 'tag2', 'tag3', 'tag4'],
 					type: 'testType',
 					provider: 'elementSource'
 				}
@@ -74,40 +75,91 @@ describe('ConnectDialog', () => {
 				'test.provider.elements': {
 					testdialog: [
 						{
-							name: 'group1',
-							label: 'First group',
-							entries: [
-								{
-									name: 'entry1',
-									label: 'First entry',
-									description: 'All manner of words',
-									previewUrl: '/path/to/image1.png'
-								},
-								{
-									name: 'entry2',
-									label: 'Second entry',
-									description: 'Some other words',
-									previewUrl: '/path/to/image2.png'
+							name: 'entry1',
+							title: 'First component',
+							description: 'All manner of words',
+							groupingTags: [
+								'tag1',
+								'tag2',
+								'unusedtag'
+							],
+							containerClasses: [
+								'narrow',
+								'footer'
+							],
+							componentDefinition: {
+								html: {
+									body: {}
 								}
-							]
+							}
 						},
 						{
-							name: 'group2',
-							label: 'Second group',
-							entries: [
-								{
-									name: 'entry3',
-									label: 'Third entry',
-									description: 'Words to live by',
-									previewUrl: '/path/to/image3.png'
-								},
-								{
-									name: 'entry4',
-									label: 'Fourth entry',
-									description: 'Words to die for',
-									previewUrl: '/path/to/image4.png'
+							name: 'entry2',
+							title: 'Second component',
+							description: 'Even more words',
+							groupingTags: [
+								'tag1',
+								'tag2'
+							],
+							containerClasses: [
+								'narrow',
+								'footer'
+							],
+							componentDefinition: {
+								html: {
+									body: {}
 								}
-							]
+							}
+						},
+						{
+							name: 'entry3',
+							title: 'Third component',
+							description: 'Even more words',
+							groupingTags: [
+								'tag2',
+								'tag3'
+							],
+							containerClasses: [
+								'narrow',
+								'footer'
+							],
+							componentDefinition: {
+								html: {
+									body: {}
+								}
+							}
+						},
+						{
+							name: 'entry4',
+							title: 'Fourth component',
+							description: 'Even more words',
+							groupingTags: [
+								'tag3'
+							],
+							containerClasses: [
+								'narrow',
+								'footer'
+							],
+							componentDefinition: {
+								html: {
+									body: {}
+								}
+							}
+						},
+						{
+							name: 'entry5',
+							title: 'Fifth component',
+							description: 'Wooooords',
+							groupingTags: ['unusedtag'],
+							containerClasses: [
+								'narrow',
+								'footer'
+							],
+							componentDefinition: {
+								html: {
+									body: {}
+								}
+							}
 						}
 					]
 				}
@@ -135,13 +187,21 @@ describe('ConnectDialog', () => {
 					pageDef={Immutable.fromJS({ dialog: 'testdialog'})}
 					dialogDef={Immutable.fromJS({ name: 'testdialog', panes: [{ test: 'this is data' }] })}
 					itemGroups={Immutable.fromJS([
-						{ name: 'group1', entries: [
+						{ name: 'tag1', entries: [
 							{ name: 'entry1' },
 							{ name: 'entry2' }
 						]},
-						{ name: 'group2', entries: [
+						{ name: 'tag2', entries: [
+							{ name: 'entry1' },
+							{ name: 'entry2' },
+							{ name: 'entry3' }
+						]},
+						{ name: 'tag3', entries: [
 							{ name: 'entry3' },
 							{ name: 'entry4' }
+						]},
+						{ name: 'uncategorized', entries: [
+							{ name: 'entry5' }
 						]}
 					])}
 					dialogData={Immutable.fromJS({

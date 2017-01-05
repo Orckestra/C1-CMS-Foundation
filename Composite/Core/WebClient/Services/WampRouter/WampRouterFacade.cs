@@ -1,5 +1,3 @@
-using Composite.Core.Application;
-
 namespace Composite.Core.WebClient.Services.WampRouter
 {
     /// <summary>
@@ -23,19 +21,51 @@ namespace Composite.Core.WebClient.Services.WampRouter
         }
 
         /// <summary>
-        /// Method for registering publisher
+        /// Method for registering callee
         /// </summary>
-        /// <param name="realmName"></param>
-        /// <param name="topicName"></param>
-        /// <param name="eventObservable"></param>
-        /// <typeparam name="T"></typeparam>
+        /// <param name="instance"></param>
         /// <returns></returns>
-        public static bool RegisterPublisher<T1,T2>(string realmName, string topicName, IWampEventHandler<T1,T2> eventObservable)
+        public static bool RegisterCallee(IRpcService instance)
         {
             var wampRouter = ServiceLocator.GetRequiredService<WampRouter>();
             if (wampRouter == null)
                 return false;
-            wampRouter.RegisterPublisher(realmName, topicName, eventObservable);
+            wampRouter.RegisterCallee(instance);
+            return true;
+        }
+
+        /// <summary>
+        /// Method for registering publisher
+        /// </summary>
+        /// <param name="realmName"></param>
+        /// <param name="eventObservable"></param>
+        /// <typeparam name="TObservable"></typeparam>
+        /// <typeparam name="TResult"></typeparam>
+        /// <returns></returns>
+        public static bool RegisterPublisher<TObservable,TResult>
+            (string realmName, IWampEventHandler<TObservable, TResult> eventObservable)
+        {
+            var wampRouter = ServiceLocator.GetRequiredService<WampRouter>();
+            if (wampRouter == null)
+                return false;
+            wampRouter.RegisterPublisher(realmName, eventObservable);
+            return true;
+        }
+
+        /// <summary>
+        /// Method for registering publisher
+        /// </summary>
+        /// <param name="eventObservable"></param>
+        /// <typeparam name="TObservable"></typeparam>
+        /// <typeparam name="TResult"></typeparam>
+        /// <returns></returns>
+        public static bool RegisterPublisher<TObservable,TResult>
+            (IWampEventHandler<TObservable, TResult> eventObservable)
+        {
+            var wampRouter = ServiceLocator.GetRequiredService<WampRouter>();
+            if (wampRouter == null)
+                return false;
+            wampRouter.RegisterPublisher(eventObservable);
             return true;
         }
     }

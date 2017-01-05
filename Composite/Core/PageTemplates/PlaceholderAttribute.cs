@@ -19,6 +19,11 @@ namespace Composite.Core.PageTemplates
         public string Title { get; set; }
 
         /// <summary>
+        /// A comma seperated list of container class names. These class names are used to filter Component options in editors and to style the editing area.
+        /// </summary>
+        public string ContainerClasses { get; set; }
+
+        /// <summary>
         /// Determines whether current placeholder is the default placeholder
         /// </summary>
         public bool IsDefault { get; set; }

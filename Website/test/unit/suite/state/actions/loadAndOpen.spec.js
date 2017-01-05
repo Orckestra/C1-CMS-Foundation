@@ -200,7 +200,7 @@ describe('loadAndOpenPage', () => {
 			)
 			.then(() =>
 				expect(innerDispatch, 'to have calls satisfying', [
-					{ args: [ { type: 'PROVIDER.GET', provider: { protocol: 'wamp', uri: 'mock.provider.test' }, page: 'testdialog', params: [ 'testing' ] } ]},
+					{ args: [ { type: 'PROVIDER.GET', provider: { protocol: 'wamp', uri: 'mock.provider.test' }, page: 'testdialog', params: [ '' ] } ]},
 					{ args: [ { type: 'PROVIDER.STORE', providerName: 'mock.provider.test', page: 'testdialog' } ]},
 					{ args: [ { type: 'PROVIDER.GET_DONE', provider: { protocol: 'wamp', uri: 'mock.provider.test' }, page: 'testdialog' } ]}
 				])

@@ -140,7 +140,7 @@ var ViewDefinitions = {
 		position: DockBinding.MAIN,
 		label: "Sprite SVG",
 		image: "${icon:icon}",
-		url: "${root}/console/?page=svg-sprites"
+		url: "${root}/console/?pageId=svg-sprites"
 	}),
 
 	/*

@@ -45,6 +45,8 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
 
         /// <exclude />
         public Dictionary<string, string> PlaceholderDefinitions { get; set; }
+        /// <exclude />
+        public Dictionary<string, string> PlaceholderContainerClasses { get; set; }
 
         /// <exclude />
         public Dictionary<string,string> NamedXhtmlFragments { get; set; }
@@ -69,6 +71,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
             _userControlType = userControlType;
             this.NamedXhtmlFragments = new Dictionary<string, string>();
             this.PlaceholderDefinitions = new Dictionary<string, string>();
+            this.PlaceholderContainerClasses = new Dictionary<string, string>();
         }
 
         public override void BindStateToControlProperties()
@@ -91,6 +94,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
             _userControl.EmbedableFieldsTypes = this.EmbedableFieldsTypes;
             _userControl.DefaultPlaceholderId = this.DefaultPlaceholderId;
             _userControl.PlaceholderDefinitions = this.PlaceholderDefinitions;
+            _userControl.PlaceholderContainerClasses = this.PlaceholderContainerClasses;
             _userControl.NamedXhtmlFragments = this.NamedXhtmlFragments;
             _userControl.ClassConfigurationName = this.ClassConfigurationName;
 

@@ -2,7 +2,7 @@ import expect from 'unittest/helpers/expect.js';
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
 import Immutable from 'immutable';
-import Palette, { ItemGroup, ItemGroupTitle, Item, Preview, Label, Description } from 'console/components/presentation/Palette.js';
+import Palette, { ItemGroup, ItemGroupTitle, Item, PreviewImage, PreviewIcon, InfoBox, Label, Description } from 'console/components/presentation/Palette.js';
 
 describe('Palette', () => {
 	let renderer, props;
@@ -13,37 +13,37 @@ describe('Palette', () => {
 			itemGroups: Immutable.fromJS([
 				{
 					name: 'group1',
-					label: 'First group',
+					title: 'First group',
 					entries: [
 						{
-							name: 'entry1',
-							label: 'First entry',
+							id: 'entry1',
+							title: 'First entry',
 							description: 'All manner of words',
-							previewImageUrl: '/path/to/image1.png'
+							componentImage: { customImageUri: '/path/to/image1.png' } // Media URI resolves to /media/ reference
 						},
 						{
-							name: 'entry2',
-							label: 'Second entry',
+							id: 'entry2',
+							title: 'Second entry',
 							description: 'Some other words',
-							previewImageUrl: '/path/to/image2.png'
+							componentImage: { iconName: 'testicon', customImageUri: '/path/to/image2.png' }
 						}
 					]
 				},
 				{
 					name: 'group2',
-					label: 'Second group',
+					title: 'Second group',
 					entries: [
 						{
-							name: 'entry3',
-							label: 'Third entry',
+							id: 'entry3',
+							title: 'Third entry',
 							description: 'Words to live by',
-							previewImageUrl: '/path/to/image3.png'
+							componentImage: { iconName: 'testicon' }
 						},
 						{
-							name: 'entry4',
-							label: 'Fourth entry',
+							id: 'entry4',
+							title: 'Fourth entry',
 							description: 'Words to die for',
-							previewImageUrl: '/path/to/image4.png'
+							componentImage: {}
 						}
 					]
 				}
@@ -63,27 +63,35 @@ describe('Palette', () => {
 			<ItemGroup key='group1'>
 				<ItemGroupTitle>First group</ItemGroupTitle>
 				<Item key='entry1' active={false}>
-					<Preview image='/path/to/image1.png'/>
-					<Label>First entry</Label>
-					<Description>All manner of words</Description>
+					<PreviewImage image='/path/to/image1.png'/>
+					<InfoBox>
+						<Label>First entry</Label>
+						<Description>All manner of words</Description>
+					</InfoBox>
 				</Item>
 				<Item key='entry2' active={true}>
-					<Preview image='/path/to/image2.png'/>
-					<Label>Second entry</Label>
-					<Description>Some other words</Description>
+					<PreviewImage image='/path/to/image2.png'/>
+					<InfoBox>
+						<Label>Second entry</Label>
+						<Description>Some other words</Description>
+					</InfoBox>
 				</Item>
 			</ItemGroup>
 			<ItemGroup key='group2'>
 				<ItemGroupTitle>Second group</ItemGroupTitle>
 				<Item key='entry3' active={false}>
-					<Preview image='/path/to/image3.png'/>
-					<Label>Third entry</Label>
-					<Description>Words to live by</Description>
+					<PreviewIcon id='testicon'/>
+					<InfoBox>
+						<Label>Third entry</Label>
+						<Description>Words to live by</Description>
+					</InfoBox>
 				</Item>
 				<Item key='entry4' active={false}>
-					<Preview image='/path/to/image4.png'/>
-					<Label>Fourth entry</Label>
-					<Description>Words to die for</Description>
+					<PreviewIcon id='base-function-function'/>
+					<InfoBox>
+						<Label>Fourth entry</Label>
+						<Description>Words to die for</Description>
+					</InfoBox>
 				</Item>
 			</ItemGroup>
 		</div>);

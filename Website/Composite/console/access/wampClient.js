@@ -41,20 +41,32 @@ window.addEventListener('beforeunload', closeAll);
 
 const WAMPClient = {
 	call: (uri, ...args) => {
-		return getClient('realm1')
+		return getClient('realm')
 		.then(client =>
 			new Promise((resolve, reject) =>
-				client.call(uri, args, { onSuccess: (r1, r2) => {
+				client.call(uri, args, { onSuccess: result => {
 					// Unpick the way Wampy passes data: (see https://github.com/KSDaemon/wampy.js/blob/dev/Migrating.md)
-					if (r1 && r1.length === 0) {
+					if (Array.isArray(result) && result.length === 1) {
 						// RPC returned non-array
-						resolve(r2);
+						resolve(result[0]);
 					} else {
 						// RPC returned array
-						resolve(r1);
+						resolve(result);
 					}
 				}, onError: reject })
 			)
+		);
+	},
+	subscribe: (uri, handler) => {
+		return getClient('realm')
+		.then(client =>
+			new Promise((resolve, reject) => {
+				client.subscribe(uri, {
+					onSuccess: (...args) => resolve(args),
+					onError: (message, details) => reject({message, details}),
+					onEvent: handler // Potentially needs argument unwrapping
+				});
+			})
 		);
 	}
 };

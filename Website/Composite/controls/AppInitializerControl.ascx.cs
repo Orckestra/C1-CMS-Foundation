@@ -43,9 +43,9 @@ public partial class AppInitializerControl : System.Web.UI.UserControl
             }
         }
 
-        CookieHandler.Set("CompositeVersionString", nowversion, DateTime.Now.AddYears(23));
+        CookieHandler.Set("CompositeVersionString", nowversion, DateTime.Now.AddDays(28));
 
-        if ((RuntimeInformation.IsDebugBuild == false) && (isUpdated == true))
+        if (!RuntimeInformation.IsDebugBuild && isUpdated)
         {
             string url = "updated.aspx";
             if (CookieHandler.Get("mode") == "develop")

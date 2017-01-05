@@ -43,14 +43,15 @@ StageBinding.placeholderWidth = null;
 /**
  * Hide OR show a ViewDefinition on stage (dependant on its current status).
  * @param {string} handle
+ * @param {Binding?} contextSource
  */
-StageBinding.handleViewPresentation = function ( handle ) {
+StageBinding.handleViewPresentation = function ( handle, contextSource) {
 
 	if ( StageBinding.isViewOpen ( handle )) {
 		EventBroadcaster.broadcast ( BroadcastMessages.CLOSE_VIEW, handle );
 	} else {
 		var definition = ViewDefinitions [ handle ];
-		StageBinding.presentViewDefinition ( definition );
+		StageBinding.presentViewDefinition(definition, contextSource);
 	}
 }
 
@@ -87,8 +88,9 @@ StageBinding.selectBrowserTab = function () {
 /**
  * Present ViewDefinition on stage.
  * @param {ViewDefinition} definition
+ * @param {Binding?} contextSource
  */
-StageBinding.presentViewDefinition = function ( definition ) {
+StageBinding.presentViewDefinition = function (definition, contextSource) {
 
 	if ( definition.label != null ) {
 		var string = StringBundle.getString ( "ui", "Website.App.StatusBar.Opening" );
@@ -96,7 +98,7 @@ StageBinding.presentViewDefinition = function ( definition ) {
 	} else {
 		StatusBar.busy ();
 	}
-	StageBinding.bindingInstance._presentViewDefinition ( definition );
+	StageBinding.bindingInstance._presentViewDefinition(definition, contextSource);
 }
 
 /**
@@ -803,7 +805,7 @@ StageBinding.prototype.handleAttachedDock = function ( dockBinding ) {
  * Presenting the ViewDefinition on stage.
  * @param {ViewDefinition} viewDefinition
  */
-StageBinding.prototype._presentViewDefinition = function ( viewDefinition ) {
+StageBinding.prototype._presentViewDefinition = function (viewDefinition, contextSource) {
 
 	var target = null;
 	var isAbort = false;
@@ -871,8 +873,19 @@ StageBinding.prototype._presentViewDefinition = function ( viewDefinition ) {
 	}
 
 	if ( !isAbort ) {
-		if ( target != null ) {
-			this._view ( target, null, viewDefinition, true );
+		if (target != null) {
+			if (contextSource != undefined && Interfaces.isImplemented(IContextContainerBinding, target)) {
+				var contextContainer = ContextContainer.getContextContainer(contextSource);
+				if (contextContainer != null) {
+					target.setContextContainer(contextContainer);
+
+					//TODO: Move resolving URL
+					if (viewDefinition && viewDefinition.argument && viewDefinition.argument.url) {
+						viewDefinition.argument.url = ContextContainer.resolve(viewDefinition.argument.url, contextContainer);
+					}
+				};
+			}
+			this._view(target, null, viewDefinition, true);
 		} else {
 			throw "StageBinding: Could not position view: " + viewDefinition.handle;
 		}

@@ -7,7 +7,7 @@ let pageName;
 if (location.search && /(\?|&)pageId=/.test(location.search)) {
 	pageName = location.search.replace(/^\?(?:.*&)?pageId=(.+?)?(?:&.*)?$/, '$1');
 } else {
-	pageName = 'edit-language';
+	pageName = 'component-selector-shim';
 }
 
 export default function initState(store) {

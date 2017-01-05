@@ -66,7 +66,6 @@ const Dialog = props => {
 	let cancelProvider = paneDef.get('cancelProvider') && paneDef.get('cancelProvider').toJS ? paneDef.get('cancelProvider').toJS() : null;
 	let cancelAction = cancelButton ? () => {
 		// Cancel and close dialog
-		// TODO: Do this in the framework of the new UI
 		if (cancelProvider) {
 			// Fire off a call to the provider if one exists, send dialog name.
 			props.dispatch(fireAction(cancelProvider, props.dialogDef.get('name')));
@@ -75,17 +74,19 @@ const Dialog = props => {
 	let nextButton = paneDef.get('nextButton') ? paneDef.get('nextButton').toJS() : null;
 	let nextAction = paneDef.get('nextButton') ? () => {
 		// Switch to next pane - set or increment dialogData[showPane]
-		props.dispatch(setDialogState(props.dialogDef.get('name'), props.dialogData.set('showPane', (props.dialogDef.get('showPane') || 0) + 1)));
 	} : null;
 	let finishButton = paneDef.get('finishButton') ? paneDef.get('finishButton').toJS() : null;
 	let finishAction = paneDef.get('finishButton') && paneDef.get('finishProvider') && paneDef.get('finishProvider').toJS ? () => {
 		// Complete dialog activity, send back data using provider
 		props.dispatch(fireAction(paneDef.get('finishProvider').toJS(), props.dialogDef.get('name'), props.dialogData.toJS()));
 	} : null;
-	return <DialogBox>
+	return <DialogBox
+		onContextMenu={event => {
+			event.preventDefault(); // To not show the default menu
+		}}>
 		{paneDef.get('headline') ? <DialogTitle>{paneDef.get('headline')}</DialogTitle> : null}
 		<DialogPane>
-			<Pane dialogName={props.dialogDef.get('name')} paneDef={paneDef} itemGroups={props.itemGroups} dialogData={props.dialogData} dispatch={props.dispatch}/>
+			<Pane dialogName={props.dialogDef.get('name')} paneDef={paneDef} itemGroups={props.itemGroups} dialogData={props.dialogData} dispatch={props.dispatch} nextAction={nextAction || finishAction}/>
 		</DialogPane>
 		<DialogButtonGroup>
 			{ cancelButton ? <ActionButton action={cancelAction} {...cancelButton}/> : null}

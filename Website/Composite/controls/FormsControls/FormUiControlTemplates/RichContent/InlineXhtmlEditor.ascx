@@ -65,6 +65,7 @@
 	label="<%= HttpUtility.HtmlAttributeEncode(String.Format( Composite.Core.ResourceSystem.StringResourceSystemFacade.GetString("Composite.Web.VisualEditor","LaunchButton.Label"), FormControlLabel)) %>" 
 	value="<%= _currentStringValue %>" 
 	formattingconfiguration="<%= this.ClassConfigurationName %>"
+    containerclasses="<%= this.ContainerClasses %>"
     embedablefieldstypenames="<%= HttpUtility.HtmlAttributeEncode(this.EmbedableFieldsTypesString) %>"
 	name="<%= this.UniqueID %>"
 	callbackid="<%= this.UniqueID %>"

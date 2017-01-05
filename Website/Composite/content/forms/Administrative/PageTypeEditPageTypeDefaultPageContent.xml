@@ -19,6 +19,12 @@
               <cms:bind source="DefaultPageContent.PlaceHolderId" />
             </TextBox.Text>
           </TextBox>
+          <TextBox Label="${Composite.Plugins.PageTypeElementProvider, PageType.EditPageTypeDefaultPageContentWorkflow.PlaceHolderContainerClassesTextBox.Label}"
+                   Help="${Composite.Plugins.PageTypeElementProvider, PageType.EditPageTypeDefaultPageContentWorkflow.PlaceHolderContainerClassesTextBox.Help}">
+            <TextBox.Text>
+              <cms:bind source="DefaultPageContent.ContainerClasses" />
+            </TextBox.Text>
+          </TextBox>
 
         </FieldGroup>
       </PlaceHolder>

@@ -3,6 +3,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import styled from 'styled-components';
 import colors from 'console/components/colors.js';
 import { setDialogState } from 'console/state/reducers/dialog.js';
+import Icon from 'console/components/presentation/Icon.js';
 
 // two-dimensional structure: Categories containing components.
 // Category has headline, open state, contains list of components
@@ -33,7 +34,7 @@ export const Item = styled.div`
 	border-color: ${colors.borderColor};
 	border-style: ${ props => props.active ? 'solid' : 'dashed' };
 `;
-export const Preview = styled.div`
+export const PreviewImage = styled.div`
 	width: 100px;
 	height: 100px;
 	position: absolute;
@@ -43,46 +44,76 @@ export const Preview = styled.div`
 	border-radius: 5px;
 	border: 1px solid ${colors.borderColor};
 	background-color: white;
-	background-image: url(${ props => props.image });
+	background-image: url('${ props => props.image }');
 	background-position: center center;
 	background-repeat: no-repeat;
+	background-size: cover;
 `;
-export const Label = styled.h3`
+export const PreviewIcon = styled(Icon)`
+	width: 100px;
+	height: 100px;
+	position: absolute;
+	left: 20px;
+	top: 15px;
+	padding: 5px;
+	border-radius: 5px;
+	border: 1px solid ${colors.borderColor};
+	background-color: white;
+`;
+export const InfoBox = styled.div`
 	position: absolute;
 	left: 150px;
-	top: 0;
-	font-weight: normal;
-	color: ${colors.fieldLabelColor};
-`;
-export const Description = styled.p`
-	position: absolute;
-	left: 150px;
-	top: 26px;
+	top: 15px;
 	width: 260px;
-	max-height: 80px;
+	height: 112px;
 	overflow-y: auto;
 `;
+export const Label = styled.h3`
+	font-weight: normal;
+	color: ${colors.fieldLabelColor};
+	margin: 0 0 10px;
+`;
+export const Description = styled.p`
+margin: 10px 0;
+`;
+
+function resolveMediaURI(uri) {
+	return uri;
+}
 
 const Palette = props => {
 	return <div>
 		{props.itemGroups.map(itemGroup =>
 			<ItemGroup
 				key={itemGroup.get('name')}>
-				<ItemGroupTitle>{itemGroup.get('label')}</ItemGroupTitle>
+				<ItemGroupTitle>{itemGroup.get('title')}</ItemGroupTitle>
 				{itemGroup.get('entries').map(item => {
-					let itemName = item.get('name');
+					let itemName = item.get('id');
+					const selectItem = () => props.dispatch(
+						setDialogState(
+							props.dialogName,
+							props.dialogData
+							.set('selectedItem', itemName)
+							.set('selectedComponentDefinition', item.get('componentDefinition'))
+						)
+					);
 					return <Item
-						key={item.get('name')}
-						onClick={() => props.dispatch(
-							setDialogState(
-								props.dialogName,
-								props.dialogData.set('selectedItem', itemName)
-							)
-						)}
+						key={itemName}
+						onClick={selectItem}
+						onDoubleClick={() => {
+							selectItem();
+							(props.nextAction && props.nextAction());
+						}}
 						active={itemName === props.dialogData.get('selectedItem')}>
-						<Preview image={item.get('previewImageUrl')}/>
-						<Label>{item.get('label')}</Label>
-						<Description>{item.get('description')}</Description>
+						{
+							item.getIn(['componentImage', 'customImageUri']) ?
+							<PreviewImage image={resolveMediaURI(item.getIn(['componentImage', 'customImageUri']))}/> :
+							<PreviewIcon id={item.getIn(['componentImage', 'iconName']) || 'base-function-function'}/>
+						}
+						<InfoBox>
+							<Label>{item.get('title')}</Label>
+							<Description>{item.get('description')}</Description>
+						</InfoBox>
 					</Item>;
 				}).toArray()}
 			</ItemGroup>
@@ -102,7 +133,8 @@ Palette.propTypes = {
 	itemGroups: ImmutablePropTypes.listOf(ImmutablePropTypes.mapContains({
 		entries: ImmutablePropTypes.listOf(ImmutablePropTypes.map).isRequired
 	})).isRequired,
-	dispatch: PropTypes.func.isRequired
+	dispatch: PropTypes.func.isRequired,
+	nextAction: PropTypes.func
 };
 
 export default Palette;

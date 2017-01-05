@@ -22,6 +22,7 @@ namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunc
         public const string CompositeName = CompositeWidgetFunctionBase.CommonNamespace + ".XhtmlDocument." + _functionName;
 
         public const string ClassConfigurationNameParameterName = "ClassConfigurationName";
+        public const string ContainerClassesParameterName = "ContainerClasses";
         public const string EmbedableFieldTypeParameterName = "EmbedableFieldsType";
 
 
@@ -42,6 +43,7 @@ namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunc
             var pageId = parameters.GetParameter<Guid>(StringSelector.PreviewPageIdParameterName);
             var templateId = parameters.GetParameter<Guid>(StringSelector.PreviewTemplateIdParameterName);
             string placeholderName = parameters.GetParameter<string>(StringSelector.PreviewPlaceholderParameterName);
+            string containerClasses = parameters.GetParameter<string>(ContainerClassesParameterName);
 
             if (pageId != Guid.Empty)
             {
@@ -56,6 +58,11 @@ namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunc
             if (!string.IsNullOrEmpty(placeholderName))
             {
                 element.Add(new XAttribute("PreviewPlaceholder", placeholderName));
+            }
+
+            if (!string.IsNullOrWhiteSpace(containerClasses))
+            {
+                element.Add(new XAttribute("ContainerClasses", containerClasses));
             }
 
             Type embedableFieldType = parameters.GetParameter<Type>(VisualXhtmlEditorFuntion.EmbedableFieldTypeParameterName);
@@ -78,6 +85,13 @@ namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunc
 
         private void SetParameterProfiles(string classConfigurationName)
         {
+            base.AddParameterProfile(new ParameterProfile(VisualXhtmlEditorFuntion.ContainerClassesParameterName,
+                    typeof(string), false,
+                    new ConstantValueProvider(""), StandardWidgetFunctions.TextBoxWidget, null,
+                    "Container Classes",
+                    new HelpDefinition("Class names to attach to the editor (for styling) and to use for filtering components. Seperate multiple names with space or comma.")
+            ));
+
             ParameterProfile classConfigNamePP =
                 new ParameterProfile(VisualXhtmlEditorFuntion.ClassConfigurationNameParameterName,
                     typeof(string), false,

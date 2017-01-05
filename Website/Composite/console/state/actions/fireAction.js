@@ -1,5 +1,6 @@
 import requestJSON from 'console/access/requestJSON.js';
 import WAMPClient from 'console/access/wampClient.js';
+import outerFrameCallback from 'console/access/postFrame.js';
 
 const prefix = 'SERVER_ACTION.';
 
@@ -41,6 +42,9 @@ export function fireAction(provider, pageName, ...params) {
 			});
 		} else if (provider.protocol === 'wamp') {
 			request = WAMPClient.call(provider.uri, pageName, ...params);
+		} else if (provider.protocol === 'post') {
+			// Get postFrame accessor, fire with appropriate info
+			request = outerFrameCallback(provider, params[0]);
 		} else {
 			dispatch({
 				type: FIRE_ACTION_FAILED,
