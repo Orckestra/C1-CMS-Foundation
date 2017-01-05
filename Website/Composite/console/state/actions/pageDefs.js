@@ -4,9 +4,10 @@ import { pageSchema } from 'console/state/normalizingSchema.js';
 import { addDefinition } from 'console/state/reducers/definitions.js';
 
 const prefix = 'PAGE_DEF.';
-export const LOAD_PAGE_DEF = prefix + 'LOAD';
-export const LOAD_PAGE_DEF_DONE = LOAD_PAGE_DEF + '.DONE';
-export const LOAD_PAGE_DEF_FAILED = LOAD_PAGE_DEF + '.FAIL';
+const loadPageDefActionType = prefix + 'LOAD';
+export const LOAD_PAGE_DEF = loadPageDefActionType + '_COMMENCE';
+export const LOAD_PAGE_DEF_DONE = loadPageDefActionType + '_DONE';
+export const LOAD_PAGE_DEF_FAILED = loadPageDefActionType + '_FAIL';
 
 const pageDefEndpointURI = 'structure.page';
 

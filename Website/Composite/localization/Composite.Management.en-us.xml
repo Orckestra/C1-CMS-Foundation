@@ -280,7 +280,9 @@
   <string key="VirtualElementProviderElementProvider.RootActions.SetTimezoneLabel" value="Time Zone Settings" />
   <string key="VirtualElementProviderElementProvider.RootActions.SetTimezoneTooltip" value="Time zone to be displayed for all users within the console" />
   <string key="VirtualElementProviderElementProvider.RootActions.GlobalSetting" value="Global Settings" />
-  <string key="VirtualElementProviderElementProvider.RootActions.RestartApplicationLabel" value="Restart server" />
+	<string key="VirtualElementProviderElementProvider.RootActions.RebuildSearchIndexLabel" value="Rebuild search index" />
+	<string key="VirtualElementProviderElementProvider.RootActions.RebuildSearchIndexTooltip" value="Initiate search index rebuilding" />
+	<string key="VirtualElementProviderElementProvider.RootActions.RestartApplicationLabel" value="Restart server" />
   <string key="VirtualElementProviderElementProvider.RootActions.RestartApplicationTooltip" value="Restart the server" />
   <string key="SendMessageToConsolesWorkflow.Layout.Label" value="Broadcast Message to All {applicationname} Consoles" />
   <string key="SendMessageToConsolesWorkflow.TitleTextBox.Label" value="Title" />

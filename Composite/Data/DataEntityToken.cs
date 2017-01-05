@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -173,11 +174,11 @@ namespace Composite.Data
 
 
         /// <exclude />
-        public override void OnGetPrettyHtml(EntityTokenHtmlPrettyfier prettyfier)
+        public override void OnGetPrettyHtml(EntityTokenHtmlPrettyfier prettifier)
         {
-            prettyfier.OnWriteId = (token, helper) =>
+            prettifier.OnWriteId = (token, helper) =>
             {
-                IDataId dataId = DataIdSerializer.Deserialize(this.Id,this.VersionId);
+                IDataId dataId = DataIdSerializer.Deserialize(this.Id, this.VersionId);
 
                 var sb = new StringBuilder();
                 sb.Append("<b>DataId</b><br />");
@@ -187,7 +188,7 @@ namespace Composite.Data
                     sb.Append("<b>" + propertyInfo.Name + ":</b> " + propertyInfo.GetValue(dataId, null).ToString() + "<br />");
                 }
 
-                helper.AddFullRow(new string[] { "<b>Id</b>", sb.ToString() });
+                helper.AddFullRow(new [] { "<b>Id</b>", sb.ToString() });
             };
         }
 
@@ -214,7 +215,14 @@ namespace Composite.Data
             {
                 if (_serializedId == null)
                 {
-                    var keyPropertyNames = this.InterfaceType.GetCustomAttributesRecursively<KeyPropertyNameAttribute>().Select(f=>f.KeyPropertyName);
+                    if (!GetVersionKeyPropertyNames().Any())
+                    {
+                        return this.DataSourceId.DataId.Serialize(null);
+                    }
+
+                    var keyPropertyNames = this.InterfaceType
+                        .GetCustomAttributesRecursively<KeyPropertyNameAttribute>()
+                        .Select(f=>f.KeyPropertyName);
 
                     _serializedId = this.DataSourceId.DataId.Serialize(keyPropertyNames);
                 }
@@ -229,18 +237,24 @@ namespace Composite.Data
             {
                 if (_serializedVersionId == null)
                 {
-                    var versionKeyPropertyNames = this.InterfaceType.GetCustomAttributesRecursively<VersionKeyPropertyNameAttribute>().Select(f=>f.VersionKeyPropertyName);
-                    
+                    var versionKeyPropertyNames = GetVersionKeyPropertyNames();
+                    if (!versionKeyPropertyNames.Any())
+                    {
+                        return "";
+                    }
+
                     _serializedVersionId = this.DataSourceId.DataId.Serialize(versionKeyPropertyNames);
                 }
 
                 return _serializedVersionId;
             }
         }
-        
-        private void CheckValidity()
+
+
+        private IEnumerable<string> GetVersionKeyPropertyNames()
         {
-            Verify.That(IsValid(), "Failed to deserialize data from serialized data source identifier. Probably the data has been removed from data source.");
+            return this.InterfaceType.GetCustomAttributesRecursively<VersionKeyPropertyNameAttribute>()
+                .Select(f => f.VersionKeyPropertyName);
         }
     }
 }

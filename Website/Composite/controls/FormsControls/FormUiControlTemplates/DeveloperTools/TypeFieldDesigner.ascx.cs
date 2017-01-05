@@ -163,6 +163,7 @@ namespace CompositeTypeFieldDesigner
             }
 
             InitDataUrlProperties();
+            InitSearchProperties();
 
             DeleteButton.Enabled = !SelectedFieldIsKeyField;
 
@@ -171,6 +172,7 @@ namespace CompositeTypeFieldDesigner
             plhFieldProperties.DataBind();
             plhDataUrl.DataBind();
             plhAdvancedFieldProperties.DataBind();
+            plhSearch.DataBind();
         }
 
 
@@ -431,6 +433,54 @@ namespace CompositeTypeFieldDesigner
 
             _dataUrlOrderUpdated = true;
         }
+
+
+
+        private void InitSearchProperties()
+        {
+            var field = SelectedField;
+
+            if (field == null) return;
+
+            bool fieldIsSearchable = IsSearchable && !SelectedFieldIsKeyField;
+
+            Type fieldType = field.InstanceType;
+            bool isDataReference = !string.IsNullOrEmpty(field.ForeignKeyReferenceTypeName);
+
+            bool indexTextEnabled = fieldIsSearchable
+                && !isDataReference 
+                && (fieldType == typeof(string));
+
+            bool searchPreviewEnabled = fieldIsSearchable
+                && !isDataReference
+                && (fieldType == typeof(string)
+                || fieldType == typeof(DateTime)
+                || fieldType == typeof(DateTime?)
+                || fieldType == typeof(decimal)
+                || fieldType == typeof(decimal?)
+                || fieldType == typeof(int)
+                || fieldType == typeof(int?)
+                || fieldType == typeof(bool));
+
+            bool facetedSearchEnabled = fieldIsSearchable
+                && !isDataReference
+                && (fieldType == typeof(string)
+                || fieldType == typeof(DateTime)
+                || fieldType == typeof(DateTime?)
+                || fieldType == typeof(bool));
+
+            plhSearch.Visible = indexTextEnabled || searchPreviewEnabled || facetedSearchEnabled;
+
+            plhSearch_IndexText.Visible = indexTextEnabled;
+            plhSearch_FieldPreview.Visible = searchPreviewEnabled;
+            plhSearch_FacetedSearch.Visible = facetedSearchEnabled;
+
+            chkIndexText.Checked = indexTextEnabled && field.SearchProfile != null && field.SearchProfile.IndexText;
+            chkSearchPreview.Checked = searchPreviewEnabled && field.SearchProfile != null && field.SearchProfile.EnablePreview;
+            chkFacetField.Checked = facetedSearchEnabled && field.SearchProfile != null && field.SearchProfile.IsFacet;
+        }
+
+
 
         private string GetUrlSegmentPreview(DataFieldDescriptor field)
         {
@@ -1408,6 +1458,8 @@ namespace CompositeTypeFieldDesigner
             Field_Save_UpdateTreeOrderingProfile(field);
 
             Field_Save_UpdateDataUrl(field, CanAppearInDataRoute);
+
+            Field_Save_SearchProfile(field);
         }
 
         private bool Field_Save_UpdateName(DataFieldDescriptor field, DataInput nameInput)
@@ -1542,6 +1594,27 @@ namespace CompositeTypeFieldDesigner
 
                 urlSegment.DataUrlProfile.Order = index++;
             }
+        }
+
+
+        private void Field_Save_SearchProfile(DataFieldDescriptor field)
+        {
+            bool indexText = chkIndexText.Checked;
+            bool searchPreview = chkSearchPreview.Checked;
+            bool facet = chkFacetField.Checked;
+
+            SearchProfile profile = null;
+            if (indexText || searchPreview || facet)
+            {
+                profile = new SearchProfile
+                {
+                    IndexText = indexText,
+                    EnablePreview = searchPreview,
+                    IsFacet = facet
+                };
+            }
+
+            field.SearchProfile = profile;
         }
 
 

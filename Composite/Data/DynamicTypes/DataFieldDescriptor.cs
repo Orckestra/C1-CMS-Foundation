@@ -90,6 +90,11 @@ namespace Composite.Data.DynamicTypes
         public DataUrlProfile DataUrlProfile { get; set; }
 
         /// <summary>
+        /// Describe whether the field should be a part of search index.
+        /// </summary>
+        public SearchProfile SearchProfile { get; set; }
+
+        /// <summary>
         /// Describe how this field should influence ordering of items in a tree view
         /// </summary>
         public DataFieldTreeOrderingProfile TreeOrderingProfile { get; set; }
@@ -120,10 +125,7 @@ namespace Composite.Data.DynamicTypes
         /// <summary>
         /// Permanent unique id for the field. This should never change.
         /// </summary>
-        public Guid Id
-        {
-            get { return _id; }
-        }
+        public Guid Id => _id;
 
 
         /// <summary>
@@ -257,8 +259,9 @@ namespace Composite.Data.DynamicTypes
                 Position = this.Position,
                 ValidationFunctionMarkup = this.ValidationFunctionMarkup != null ? new List<string>(this.ValidationFunctionMarkup) : null,
                 NewInstanceDefaultFieldValue = this.NewInstanceDefaultFieldValue,
-                DataUrlProfile = this.DataUrlProfile != null ? this.DataUrlProfile.Clone() : null,
-                DefaultValue = this.DefaultValue != null ? this.DefaultValue.Clone() : null
+                DataUrlProfile = this.DataUrlProfile?.Clone(),
+                SearchProfile = this.SearchProfile?.Clone(),
+                DefaultValue = this.DefaultValue?.Clone()
             };
         }
 
@@ -321,7 +324,15 @@ namespace Composite.Data.DynamicTypes
                     this.DataUrlProfile.Format != null ? new XAttribute("Format", this.DataUrlProfile.Format) : null));
             }
 
-            if (this.TreeOrderingProfile != null && this.TreeOrderingProfile.OrderPriority.HasValue)
+            if (this.SearchProfile != null)
+            {
+                element.Add(new XElement(nameof(SearchProfile),
+                    new XAttribute(CamelCase(nameof(SearchProfile.IndexText)), this.SearchProfile.IndexText),
+                    new XAttribute(CamelCase(nameof(SearchProfile.EnablePreview)), this.SearchProfile.EnablePreview),
+                    new XAttribute(CamelCase(nameof(SearchProfile.IsFacet)), this.SearchProfile.IsFacet)));
+            }
+
+            if (this.TreeOrderingProfile?.OrderPriority != null)
             {
                 element.Add(new XElement("TreeOrderingProfile", 
                     new XAttribute("orderPriority", this.TreeOrderingProfile.OrderPriority),
@@ -342,7 +353,10 @@ namespace Composite.Data.DynamicTypes
             return element;
         }
 
-
+        private static string CamelCase(string str)
+        {
+            return char.ToLowerInvariant(str[0]) + str.Substring(1);
+        }
 
         /// <summary>
         /// Deserialize a <see cref="DataFieldDescriptor"/>.
@@ -374,7 +388,7 @@ namespace Composite.Data.DynamicTypes
             XElement treeOrderingProfileElement = element.Element("TreeOrderingProfile");
             XElement validationFunctionMarkupsElement = element.Element("ValidationFunctionMarkups");
             XElement dataUrlProfileElement = element.Element("DataUrlProfile");
-
+            XElement searchProfileElement = element.Element(nameof(SearchProfile));
             
             
             
@@ -447,6 +461,18 @@ namespace Composite.Data.DynamicTypes
                 }
 
                 dataFieldDescriptor.DataUrlProfile = new DataUrlProfile {Order = order, Format = format};
+            }
+
+            if (searchProfileElement != null)
+            {
+                Func<string, bool> getAttr = fieldName => (bool)searchProfileElement.GetRequiredAttribute(CamelCase(fieldName));
+
+                dataFieldDescriptor.SearchProfile = new SearchProfile
+                {
+                    IndexText = getAttr(nameof(DynamicTypes.SearchProfile.IndexText)),
+                    EnablePreview = getAttr(nameof(DynamicTypes.SearchProfile.EnablePreview)),
+                    IsFacet = getAttr(nameof(DynamicTypes.SearchProfile.IsFacet))
+                };
             }
 
             if (treeOrderingProfileElement != null)

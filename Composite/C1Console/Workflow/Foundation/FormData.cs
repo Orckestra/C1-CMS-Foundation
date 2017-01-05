@@ -13,6 +13,7 @@ using Composite.Data.Validation.ClientValidationRules;
 using Composite.Core.Xml;
 using Composite.Core.Threading;
 using System.Globalization;
+using Composite.C1Console.Elements;
 
 
 namespace Composite.C1Console.Workflow.Foundation
@@ -30,11 +31,7 @@ namespace Composite.C1Console.Workflow.Foundation
         public string FormDefinition { get; set; }
 
         /// <exclude />
-        public string CustomToolbarDefinition { get; set; }
-
-
-        /// <exclude />
-        public IFormMarkupProvider CustomToolbarMarkupProvider { get; set; }
+        public List<Tuple<string, XDocument, ActionGroupPriority>> CustomToolbarItems { get; set; }
 
         /// <exclude />
         public IFormMarkupProvider FormMarkupProvider { get; set; }
@@ -58,7 +55,7 @@ namespace Composite.C1Console.Workflow.Foundation
         /// <exclude />
         public XElement Serialize()
         {
-            using (var cultureInvariant = new ThreadCultureScope(CultureInfo.InvariantCulture))
+            using (new ThreadCultureScope(CultureInfo.InvariantCulture))
             {
                 IXmlSerializer xmlSerializer = new XmlSerializer(new IValueXmlSerializer[] {
                 new SystemPrimitivValueXmlSerializer(),
@@ -96,24 +93,17 @@ namespace Composite.C1Console.Workflow.Foundation
                     }
                 }
 
-
-                XElement customToolbarDefinitionElement = new XElement("CustomToolbarDefinition");
-                if (this.CustomToolbarDefinition != null)
+                XElement customToolBarItems = null;
+                if (CustomToolbarItems != null && CustomToolbarItems.Count > 0)
                 {
-                    customToolbarDefinitionElement.Add(new XAttribute("value", this.CustomToolbarDefinition));
+                    customToolBarItems = new XElement(nameof(CustomToolbarItems),
+                        CustomToolbarItems.Select(tuple => new XElement("item",
+                        new XAttribute("id", tuple.Item1.ToString()),
+                        new XAttribute("markup", tuple.Item2.ToString()),
+                        new XAttribute("priority", (int)tuple.Item3)))
+                        .OfType<object>()
+                        .ToArray());
                 }
-                else if (this.CustomToolbarMarkupProvider != null)
-                {
-                    using (XmlReader xmlReader = this.CustomToolbarMarkupProvider.GetReader())
-                    {
-                        xmlReader.MoveToContent();
-                        XElement element = (XElement)XDocument.ReadFrom(xmlReader);
-                        XDocument document = new XDocument(element);
-                        string content = document.GetDocumentAsString();
-                        customToolbarDefinitionElement.Add(new XAttribute("value", content));
-                    }
-                }
-
 
                 XElement containerTypeElement = xmlSerializer.Serialize(typeof(IFlowUiContainerType), this.ContainerType);
 
@@ -133,12 +123,16 @@ namespace Composite.C1Console.Workflow.Foundation
                 var formDataElement = new XElement("FormData",
                     containerLabelElement,
                     formDefinitionElement,
-                    customToolbarDefinitionElement,
+                    customToolBarItems,
                     new XElement("ContainerType", containerTypeElement),
                     new XElement("Bindings", bindingsElement),
                     new XElement("BindingsValidationRules", bindingsValidationRulesElement)
                 );
-                if (excludedEventsElement != null) formDataElement.Add(new XElement("ExcludedEvents", excludedEventsElement));
+
+                if (excludedEventsElement != null)
+                {
+                    formDataElement.Add(new XElement("ExcludedEvents", excludedEventsElement));
+                }
 
                 if (this.EventHandleFilterType != null)
                 {
@@ -154,7 +148,7 @@ namespace Composite.C1Console.Workflow.Foundation
         /// <exclude />
         public static FormData Deserialize(XElement serializedData)
         {
-            using (var cultureInvariant = new ThreadCultureScope(CultureInfo.InvariantCulture))
+            using (new ThreadCultureScope(CultureInfo.InvariantCulture))
             {
                 IXmlSerializer xmlSerializer = new XmlSerializer(new IValueXmlSerializer[] {
                 new SystemPrimitivValueXmlSerializer(),
@@ -185,13 +179,19 @@ namespace Composite.C1Console.Workflow.Foundation
                     formData.FormMarkupProvider = new StringBasedFormMarkupProvider(formDefinitionValueAttribute.Value);
                 }
 
-                XElement customToolbarDefinitionElement = serializedData.Elements("CustomToolbarDefinition").Single();
-                XAttribute customToolbarDefinitionValueAttribute = customToolbarDefinitionElement.Attribute("value");
-                if (customToolbarDefinitionValueAttribute != null)
+                formData.CustomToolbarItems = new List<Tuple<string, XDocument, ActionGroupPriority>>();
+
+                var customToolbarItemsElement = serializedData.Elements(nameof(CustomToolbarItems)).FirstOrDefault();
+                if (customToolbarItemsElement != null)
                 {
-                    formData.CustomToolbarDefinition = customToolbarDefinitionValueAttribute.Value;
-                    formData.CustomToolbarMarkupProvider = new StringBasedFormMarkupProvider(customToolbarDefinitionValueAttribute.Value);
+                    formData.CustomToolbarItems.AddRange(
+                        customToolbarItemsElement.Elements().Select(element =>
+                            new Tuple<string, XDocument, ActionGroupPriority>(
+                                (string)element.Attribute("id"),
+                                XDocument.Parse((string) element.Attribute("markup")),
+                                (ActionGroupPriority) ((int)element.Attribute("priority")))));
                 }
+
 
                 XElement containerTypeElement = serializedData.Elements("ContainerType").Single();
                 object containerType = xmlSerializer.Deserialize(containerTypeElement.Elements().Single());

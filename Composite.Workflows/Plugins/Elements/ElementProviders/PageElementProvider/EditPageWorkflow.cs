@@ -354,20 +354,9 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                             DataFacade.Update(data);
                         }
 
-                        // NOTE: updating originalPage object, in order to make XML & SQL provider work in the same way
-                        originalPage.TemplateId = selectedPage.TemplateId;
-                        originalPage.PageTypeId = selectedPage.PageTypeId;
-                        originalPage.Title = selectedPage.Title;
-                        originalPage.MenuTitle = selectedPage.MenuTitle;
-                        originalPage.UrlTitle = selectedPage.UrlTitle;
-                        originalPage.FriendlyUrl = selectedPage.FriendlyUrl;
-                        originalPage.Description = selectedPage.Description;
-                        originalPage.PublicationStatus = selectedPage.PublicationStatus;
-                        originalPage.SourceCultureName = selectedPage.SourceCultureName;
-                        DataFacade.Update(originalPage);
-
                         var contentDictionary = GetBinding<Dictionary<string, string>>("NamedXhtmlFragments");
-                        var existingContents = DataFacade.GetData<IPagePlaceholderContent>(f => f.PageId == selectedPage.Id && f.VersionId == selectedPage.VersionId).ToList();
+                        var existingContents = DataFacade.GetData<IPagePlaceholderContent>(
+                            f => f.PageId == selectedPage.Id && f.VersionId == selectedPage.VersionId).ToList();
 
                         foreach (var existingContent in existingContents)
                         {
@@ -383,7 +372,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                             }
                         }
 
-                        foreach (var contentDictionaryElement in contentDictionary.Where(f => existingContents.Any(existing => existing.PlaceHolderId == f.Key) == false))
+                        foreach (var contentDictionaryElement in contentDictionary
+                            .Where(f => !existingContents.Any(existing => existing.PlaceHolderId == f.Key)))
                         {
                             var newContent = DataFacade.BuildNew<IPagePlaceholderContent>();
                             newContent.PageId = selectedPage.Id;
@@ -395,6 +385,18 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
                             DataFacade.AddNew(newContent);
                         }
+
+                        // NOTE: updating originalPage object, in order to make XML & SQL provider work in the same way
+                        originalPage.TemplateId = selectedPage.TemplateId;
+                        originalPage.PageTypeId = selectedPage.PageTypeId;
+                        originalPage.Title = selectedPage.Title;
+                        originalPage.MenuTitle = selectedPage.MenuTitle;
+                        originalPage.UrlTitle = selectedPage.UrlTitle;
+                        originalPage.FriendlyUrl = selectedPage.FriendlyUrl;
+                        originalPage.Description = selectedPage.Description;
+                        originalPage.PublicationStatus = selectedPage.PublicationStatus;
+                        originalPage.SourceCultureName = selectedPage.SourceCultureName;
+                        DataFacade.Update(originalPage);
                     }
 
                     transactionScope.Complete();
@@ -572,10 +574,10 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
             TrimFieldValues(selectedPage);
 
-            if (!FieldHasValidLength(selectedPage.Title, "Title", 255)
-                || !FieldHasValidLength(selectedPage.MenuTitle, "MenuTitle", 64)
-                || !FieldHasValidLength(selectedPage.UrlTitle, "UrlTitle", 64)
-                || !FieldHasValidLength(selectedPage.FriendlyUrl, "FriendlyUrl", 64))
+            if (!FieldHasValidLength(selectedPage.Title, nameof(IPage.Title), 255)
+                || !FieldHasValidLength(selectedPage.MenuTitle, nameof(IPage.MenuTitle), 64)
+                || !FieldHasValidLength(selectedPage.UrlTitle, nameof(IPage.UrlTitle), 64)
+                || !FieldHasValidLength(selectedPage.FriendlyUrl, nameof(IPage.FriendlyUrl), 64))
             {
                 e.Result = false;
                 return;
@@ -608,7 +610,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 }
             }
 
-            if (string.IsNullOrEmpty(selectedPage.FriendlyUrl) == false)
+            if (!string.IsNullOrEmpty(selectedPage.FriendlyUrl))
             {
                 var usedFriendlyUrls = DataFacade.GetData<IPage>(f => f.FriendlyUrl != null && f.FriendlyUrl != string.Empty && f.Id != selectedPage.Id).Select(f => f.FriendlyUrl).ToList();
 

@@ -2,7 +2,6 @@
 <%@ Import Namespace="System.Web.Routing" %>
 <%@ Import Namespace="Composite.Core.Routing" %>
 <%@ Import Namespace="Composite.Core.WebClient" %>
-<%@ Import Namespace="System.Web.Http" %>
 
 <script RunAt="server">
 
@@ -13,9 +12,6 @@
         ApplicationLevelEventHandlers.LogApplicationLevelErrors = true;
 
         ApplicationLevelEventHandlers.Application_Start(sender, e);
-
-        GlobalConfiguration.Configuration.MapHttpAttributeRoutes();
-        GlobalConfiguration.Configuration.EnsureInitialized();
 
         RegisterRoutes(RouteTable.Routes);
     }

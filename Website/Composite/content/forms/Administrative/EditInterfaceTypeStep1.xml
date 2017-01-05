@@ -7,9 +7,11 @@
         <cms:binding name="DataFieldDescriptors" type="System.Object" />
         <cms:binding name="HasCaching" type="System.Boolean" />
         <cms:binding name="HasPublishing" type="System.Boolean" />
+        <cms:binding name="IsSearchable" type="System.Boolean" />
         <cms:binding name="KeyFieldName" type="System.String" optional="true" />
         <cms:binding name="LabelFieldName" type="System.String" optional="true" />
         <cms:binding name="InternalUrlPrefix" type="System.String" optional="true" />
+        <cms:binding name="CustomEvent01Handler" type="System.EventHandler" />
     </cms:bindings>
     <cms:layout iconhandle="generated-type-edit">
         <cms:layout.label>
@@ -49,19 +51,30 @@
                                 <cms:bind source="HasPublishing" />
                             </CheckBox.Checked>
                         </CheckBox>
-                    </PlaceHolder>
+												<CheckBox Label="${Composite.Plugins.GeneratedDataTypesElementProvider, EditorCommon.IsSearchable}" ItemLabel="${Composite.Plugins.GeneratedDataTypesElementProvider, EditorCommon.IsSearchable}">
+													<CheckBox.Checked>
+														<cms:bind source="IsSearchable" />
+													</CheckBox.Checked>
+													<CheckBox.CheckedChangedEventHandler>
+														<cms:read source="CustomEvent01Handler"/>
+													</CheckBox.CheckedChangedEventHandler>
+												</CheckBox>
+									</PlaceHolder>
                 </FieldGroup>
             </PlaceHolder>
             <internal:TypeFieldDesigner Label="${Composite.Plugins.GeneratedDataTypesElementProvider, EditorCommon.LabelFields}" KeyFieldReadOnly="true">
                 <internal:TypeFieldDesigner.Fields>
                     <cms:bind source="DataFieldDescriptors" />
                 </internal:TypeFieldDesigner.Fields>
-              <internal:TypeFieldDesigner.KeyFieldName>
-                <cms:bind source="KeyFieldName" />
-              </internal:TypeFieldDesigner.KeyFieldName>
+                <internal:TypeFieldDesigner.KeyFieldName>
+                    <cms:bind source="KeyFieldName" />
+                </internal:TypeFieldDesigner.KeyFieldName>
                 <internal:TypeFieldDesigner.LabelFieldName>
                     <cms:bind source="LabelFieldName" />
                 </internal:TypeFieldDesigner.LabelFieldName>
+								<internal:TypeFieldDesigner.IsSearchable>
+									<cms:read source="IsSearchable" />
+								</internal:TypeFieldDesigner.IsSearchable>
             </internal:TypeFieldDesigner>
 
         </TabPanels>

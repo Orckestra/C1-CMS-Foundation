@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Reactive.Subjects;
-using System.Web.Http;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using WampSharp.AspNet.WebSockets.Server;
 using WampSharp.Binding;
 using WampSharp.Logging;
 using WampSharp.V2;
@@ -11,12 +11,6 @@ using WampSharp.V2.Realm;
 
 namespace Composite.Core.WebClient.Services.WampRouter
 {
-    /// <exclude />
-    [Route("Composite/api/Router")]
-    public class MyRouterController : AspNetWebsocketTransform.RouterController
-    {
-    }
-
     internal class WampRouter
     {
         private const string DefaultRealmName = "realm";
@@ -75,8 +69,10 @@ namespace Composite.Core.WebClient.Services.WampRouter
 
         private void StartWampRouter()
         {
-            _host = new WampHost();
-            _host.RegisterTransport(new AspNetWebsocketTransform(),
+            _host = new WampAuthenticationHost(new UserNameBasedAuthenticationFactory());
+            
+            _host.RegisterTransport(new AspNetWebSocketTransport("Composite/api/Router"
+                ,new UserNameBasedCookieAuthenticationFactory()),
                 new JTokenJsonBinding(new JsonSerializer()
                 { ContractResolver = new CamelCasePropertyNamesContractResolver()}));
             
@@ -95,6 +91,7 @@ namespace Composite.Core.WebClient.Services.WampRouter
         {
             Log.LogVerbose(nameof(WampRouter), "A connection error occured");
         }
+        
     }
 }
 

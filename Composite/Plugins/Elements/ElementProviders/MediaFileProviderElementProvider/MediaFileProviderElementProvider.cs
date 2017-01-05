@@ -37,21 +37,21 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
         private ElementProviderContext _context;
         private readonly bool _showOnlyImages;
         private string _rootLabel;
-        private ResourceHandle FolderIcon { get { return CommonElementIcons.Folder; } }
-        private ResourceHandle OpenFolderIcon { get { return CommonElementIcons.FolderOpen; } }
-        private ResourceHandle EmptyFolderIcon { get { return CommonElementIcons.FolderOpen; } }
-        private static ResourceHandle ReadOnlyFolderOpen { get { return GetIconHandle("media-read-only-folder-open"); } }
-        private static ResourceHandle ReadOnlyFolderClosed { get { return GetIconHandle("media-read-only-folder-closed"); } }
-        public static ResourceHandle AddMediaFolder { get { return GetIconHandle("media-add-media-folder"); } }
-        public static ResourceHandle AddMediaFile { get { return GetIconHandle("media-add-media-file"); } }
-        public static ResourceHandle DownloadFile { get { return GetIconHandle("media-download-file"); } } 
-        public static ResourceHandle ReplaceMediaFile { get { return GetIconHandle("media-replace-media-file"); } }        
-        public static ResourceHandle UploadZipFile { get { return GetIconHandle("media-upload-zip-file"); } }
-        public static ResourceHandle EditImageFile { get { return GetIconHandle("media-edit-image-file"); } }
-        public static ResourceHandle EditMediaFolder { get { return GetIconHandle("media-edit-media-folder"); } }
-        public static ResourceHandle EditMediaFile { get { return GetIconHandle("media-edit-media-file"); } }
-        public static ResourceHandle DeleteMediaFolder { get { return GetIconHandle("media-delete-media-folder"); } }
-        public static ResourceHandle DeleteMediaFile { get { return GetIconHandle("media-delete-media-file"); } }
+        private ResourceHandle FolderIcon => CommonElementIcons.Folder;
+        private ResourceHandle OpenFolderIcon => CommonElementIcons.FolderOpen;
+        private ResourceHandle EmptyFolderIcon => CommonElementIcons.FolderOpen;
+        private static ResourceHandle ReadOnlyFolderOpen => GetIconHandle("media-read-only-folder-open");
+        private static ResourceHandle ReadOnlyFolderClosed => GetIconHandle("media-read-only-folder-closed");
+        public static ResourceHandle AddMediaFolder => GetIconHandle("media-add-media-folder");
+        public static ResourceHandle AddMediaFile => GetIconHandle("media-add-media-file");
+        public static ResourceHandle DownloadFile => GetIconHandle("media-download-file");
+        public static ResourceHandle ReplaceMediaFile => GetIconHandle("media-replace-media-file");
+        public static ResourceHandle UploadZipFile => GetIconHandle("media-upload-zip-file");
+        public static ResourceHandle EditImageFile => GetIconHandle("media-edit-image-file");
+        public static ResourceHandle EditMediaFolder => GetIconHandle("media-edit-media-folder");
+        public static ResourceHandle EditMediaFile => GetIconHandle("media-edit-media-file");
+        public static ResourceHandle DeleteMediaFolder => GetIconHandle("media-delete-media-folder");
+        public static ResourceHandle DeleteMediaFile => GetIconHandle("media-delete-media-file");
 
         private static readonly ActionGroup PrimaryFolderActionGroup = new ActionGroup("Folder", ActionGroupPriority.PrimaryMedium);
         private static readonly ActionGroup PrimaryFileActionGroup = new ActionGroup("File", ActionGroupPriority.PrimaryMedium);
@@ -223,7 +223,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
         {
             if (!(entityToken is DataEntityToken))
             {
-                throw new ArgumentException(string.Format("Got '{0}' expected '{1}'", typeof (EntityToken), typeof (DataEntityToken)));
+                throw new ArgumentException($"Got '{typeof (EntityToken)}' expected '{typeof (DataEntityToken)}'");
             }
             
             var token = (DataEntityToken) entityToken;
@@ -238,7 +238,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
                 return GetFileProperties((IMediaFile) token.Data);
             }
                 
-            throw new ArgumentException(string.Format("Unexpected type of data '{0}' in token", token.Data.GetType()));
+            throw new ArgumentException($"Unexpected type of data '{token.Data.GetType()}' in token");
         }
 
 
@@ -266,10 +266,12 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
                 IMediaFileFolder mediaFileFolder = dataEntityToken.Data as IMediaFileFolder;
                 if (mediaFileFolder != null)
                 {
-                    if (mediaFileFolder.Path.IsDirectChildOf("/", '/') == false) continue;
+                    if (!mediaFileFolder.Path.IsDirectChildOf("/", '/')) continue;
 
                     storeId = mediaFileFolder.StoreId;
                 }
+
+                if(storeId == null) continue;
 
                 var newEntityToken = new MediaRootFolderProviderEntityToken(storeId);
 
@@ -354,11 +356,11 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
             IData draggedData = ((DataEntityToken)draggedEntityToken).Data;
 
             string path;
-            if ((newParentEntityToken is DataEntityToken))
+            if (newParentEntityToken is DataEntityToken)
             {
                 path = ((IMediaFileFolder)((DataEntityToken)newParentEntityToken).Data).Path;
             }
-            else if ((newParentEntityToken is MediaRootFolderProviderEntityToken))
+            else if (newParentEntityToken is MediaRootFolderProviderEntityToken)
             {
                 path = "/";
             }
@@ -403,12 +405,12 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
                     string draggedFolderName = draggedFolder.Path.Remove(0, index + 1);
 
                     string newPath = path;
-                    if (path.EndsWith("/") == false)
+                    if (!path.EndsWith("/"))
                     {
-                        newPath = string.Format("{0}/", path);
+                        newPath = $"{path}/";
                     }
 
-                    string targetPath = string.Format("{0}{1}", newPath, draggedFolderName);
+                    string targetPath = $"{newPath}{draggedFolderName}";
 
                     using (var scope = Composite.Data.Transactions.TransactionsFacade.CreateNewScope())
                     {
@@ -459,7 +461,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
                     int counter = 1;
                     while (fileNames.Contains(newFilename))
                     {
-                        newFilename = string.Format("{0}({1}){2}", draggedFilenamePre, counter++, draggedFilenamePost);
+                        newFilename = $"{draggedFilenamePre}({counter++}){draggedFilenamePost}";
                     }
 
                     newWorkflowMediaFile.FileName = newFilename;
@@ -536,9 +538,8 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
                             folderInfo.Path == path
                           select folderInfo).FirstOrDefault();
 
-            return folder == null ? null : folder.GetDataEntityToken();
-            
-        }      
+            return folder?.GetDataEntityToken();
+        }
 
 
 
@@ -597,7 +598,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
                              orderby item.FileName
                              select item).Where(predicate).Evaluate().Select(CreateFileElement).ToList();
 
-                result = result != null ? result.Concat(files) : files;
+                result = result?.Concat(files) ?? files;
             }
 
             return result != null ? result.Evaluate() : Enumerable.Empty<Element>();
@@ -1149,18 +1150,12 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
     [ActionExecutor(typeof(EditImageActionExecutor))]
     internal sealed class EditImageActionToken : ActionToken
     {
-        static private IEnumerable<PermissionType> _permissionTypes = new PermissionType[] { PermissionType.Edit };
+        private static readonly IEnumerable<PermissionType> _permissionTypes = new [] { PermissionType.Edit };
 
-        public override IEnumerable<PermissionType> PermissionTypes
-        {
-            get { return _permissionTypes; }
-        }
+        public override IEnumerable<PermissionType> PermissionTypes => _permissionTypes;
 
 
-        public override string Serialize()
-        {
-            return "EditImage";
-        }
+        public override string Serialize() => "EditImage";
 
 
         public static ActionToken Deserialize(string serializedData)
@@ -1172,18 +1167,12 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
     [ActionExecutor(typeof(DownloadFileActionExecutor))]
     internal sealed class DownloadFileActionToken : ActionToken
     {
-        static private IEnumerable<PermissionType> _permissionTypes = new [] { PermissionType.Read };
+        private static readonly IEnumerable<PermissionType> _permissionTypes = new [] { PermissionType.Read };
 
-        public override IEnumerable<PermissionType> PermissionTypes
-        {
-            get { return _permissionTypes; }
-        }
+        public override IEnumerable<PermissionType> PermissionTypes => _permissionTypes;
 
 
-        public override string Serialize()
-        {
-            return "DownloadFile";
-        }
+        public override string Serialize() => "DownloadFile";
 
 
         public static ActionToken Deserialize(string serializedData)

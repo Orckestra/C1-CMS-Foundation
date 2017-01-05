@@ -98,8 +98,19 @@
   <string key="512CharMax" value="512 character maximum" />
   <string key="1024CharMax" value="1024 character maximum" />
   <string key="Unlimited" value="Unlimited length" />
-  
-  <string key="DecimalNumberFormat" value="Decimal number format" />
+
+	<string key="SearchGroupLabel" value="Search" />
+	<string key="Search.TextSearch" value="Text Search" />
+	<string key="Search.IndexText.Label" value="Index text content" />
+	<string key="Search.IndexText.Help" value="When checked, the text content of the field will be searchable." />
+	<string key="Search.SearchResults" value="Search Results" />
+	<string key="Search.FieldPreview.Label" value="Enable field preview" />
+	<string key="Search.FieldPreview.Help" value="When checked, the field will appear in the search results table as a column." />
+	<string key="Search.FacetedSearch" value="Faceted Search" />
+	<string key="Search.Facet.Label" value="Enable faceted search" />
+	<string key="Search.Facet.Help" value="When checked, the field will appear in search results as a facet." />
+
+	<string key="DecimalNumberFormat" value="Decimal number format" />
   <string key="1DecimalPlace" value="1 decimal place" />
   <string key="nDecimalPlaces" value="{0} decimal places" />
 

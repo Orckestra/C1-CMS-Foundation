@@ -144,6 +144,22 @@ namespace Composite.Core.Linq
 
             return result;
         }
+
+        internal static IEnumerable<T> ExcludeDuplicateKeys<T, TKey>(this IEnumerable<T> sequence, Func<T, TKey> getKeyFunc)
+        {
+            var keys = new HashSet<TKey>();
+
+            foreach (var el in sequence)
+            {
+                TKey key = getKeyFunc(el);
+
+                if (keys.Contains(key)) continue;
+
+                keys.Add(key);
+
+                yield return el;
+            }
+        }
     }
 
 
@@ -157,40 +173,21 @@ namespace Composite.Core.Linq
         /// <exclude />
         public static List<U> ToList<T, U>(this IEnumerable<T> source, Func<T, U> convertor)
         {
-            List<U> result = new List<U>();
-
-            foreach (T item in source)
-            {
-                result.Add(convertor(item));
-            }
-
-            return result;
+            return source.Select(convertor).ToList();
         }
-
 
 
         /// <exclude />
         public static List<object> ToListOfObjects(this IEnumerable enumerable)
         {
-            var result = new List<object>();
-
-            foreach (object o in enumerable)
-            {
-                result.Add(o);
-            }
-
-            return result;
+            return enumerable.Cast<object>().ToList();
         }
-
 
 
         /// <exclude />
         public static IEnumerable<object> ToEnumerableOfObjects(this IEnumerable enumerable)
         {
-            foreach (object o in enumerable)
-            {
-                yield return o;
-            }
+            return enumerable.Cast<object>();
         }
     }
 }

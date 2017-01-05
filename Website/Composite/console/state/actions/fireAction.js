@@ -3,10 +3,10 @@ import WAMPClient from 'console/access/wampClient.js';
 import outerFrameCallback from 'console/access/postFrame.js';
 
 const prefix = 'SERVER_ACTION.';
-
-export const FIRE_ACTION = prefix + 'FIRE';
-export const FIRE_ACTION_DONE = prefix + 'DONE';
-export const FIRE_ACTION_FAILED = prefix + 'FAILED';
+const fireActionType = prefix + 'FIRE';
+export const FIRE_ACTION = fireActionType + '_COMMENCE';
+export const FIRE_ACTION_DONE = fireActionType + '_DONE';
+export const FIRE_ACTION_FAILED = fireActionType + '_FAILED';
 
 // TODO: Rig to handle WAMP endpoints
 
