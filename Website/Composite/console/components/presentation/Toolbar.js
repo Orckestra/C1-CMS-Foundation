@@ -9,7 +9,8 @@ const Div = styled.div`
 	padding: 15px 10px 20px;
 
 	&.rightAligned {
-		text-align: right; // TODO: Needs better way
+	${''/* TODO: Needs better way to right-align toolbar items */}
+		text-align: right;
 	}
 	&.rightAligned > * {
 		text-align: left;

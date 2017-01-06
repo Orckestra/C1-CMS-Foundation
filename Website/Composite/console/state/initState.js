@@ -2,14 +2,21 @@ import { loadAndOpenPage } from 'console/state/actions/loadAndOpen.js';
 
 // The intent is that this should be as small as possible, instead initializing
 // from server data
-let pageName;
+
+let runStartActions;
 // Temporary. Intent is to let localstorage control location
 if (location.search && /(\?|&)pageId=/.test(location.search)) {
-	pageName = location.search.replace(/^\?(?:.*&)?pageId=(.+?)?(?:&.*)?$/, '$1');
+	runStartActions = store => {
+		let pageName = location.search.replace(/^\?(?:.*&)?pageId=(.+?)?(?:&.*)?$/, '$1');
+		store.dispatch(loadAndOpenPage(pageName));
+	};
 } else {
-	pageName = 'component-selector-shim';
+	runStartActions = store => {
+		let pageName = 'content-browser';
+		store.dispatch(loadAndOpenPage(pageName));
+	};
 }
 
 export default function initState(store) {
-	store.dispatch(loadAndOpenPage(pageName));
+	runStartActions(store);
 }
