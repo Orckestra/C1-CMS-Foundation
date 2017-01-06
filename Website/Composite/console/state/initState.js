@@ -12,7 +12,7 @@ if (location.search && /(\?|&)pageId=/.test(location.search)) {
 	};
 } else {
 	runStartActions = store => {
-		let pageName = 'content-browser';
+		let pageName = 'other-page';
 		store.dispatch(loadAndOpenPage(pageName));
 	};
 }

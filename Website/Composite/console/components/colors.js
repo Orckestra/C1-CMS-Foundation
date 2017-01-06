@@ -1,4 +1,7 @@
 export default {
+	appMenuColor: '#333',
+	appMenuItemColor: '#9A9A9A',
+	appMenuItemActiveColor: '#22B980',
 	baseFontColor: '#333',
 	buttonTextColor: '#575757',
 	borderColor: '#ccc',

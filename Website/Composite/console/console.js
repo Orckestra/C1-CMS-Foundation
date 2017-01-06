@@ -5,6 +5,7 @@ import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import configureStore from 'console/state/store.js';
 import ConnectDockPanel from 'console/components/container/ConnectDockPanel.js';
+import ConnectPerspectives from 'console/components/container/ConnectPerspectives.js';
 import { injectGlobal } from 'styled-components';
 import 'console/iconIndex.js';
 
@@ -54,13 +55,59 @@ body, input, textarea, select, button {
 
 document.title = 'Orckestra CMS: ' + location.hostname;
 
-const initialState = {};
+const initialState = {
+	perspectiveDefs: {
+		'console-search': {
+			name: 'console-search',
+			icon: 'magnifier',
+			label: 'Search',
+			rootPage: 'search'
+		},
+		content: {
+			name: 'content',
+			icon: 'perspective-content',
+			label: 'Content',
+			rootPage: 'content-browser'
+		},
+		media: {
+			name: 'media',
+			icon: 'perspective-media',
+			label: 'Media',
+			rootPage: 'media-browser'
+		},
+		data: {
+			name: 'data',
+			icon: 'perspective-datas',
+			label: 'Data',
+			rootPage: 'data-browser'
+		},
+		layout: {
+			name: 'layout',
+			icon: 'perspective-design',
+			label: 'Layout',
+			rootPage: 'layout-browser'
+		},
+		functions: {
+			name: 'functions',
+			icon: 'perspective-functions',
+			label: 'Functions',
+			rootPage: 'functions-browser'
+		},
+		system: {
+			name: 'system',
+			icon: 'perspective-system',
+			label: 'System',
+			rootPage: 'system-browser'
+		}
+	}
+};
 const store = configureStore(initialState);
 function whenReadyRender() {
 	if (document.readyState === 'complete') {
+		let Root = location.search ? ConnectDockPanel : ConnectPerspectives;
 		render(
 			<Provider store={store}>
-				<ConnectDockPanel/>
+				<Root/>
 			</Provider>,
 			document.querySelector('body > div.entry')
 		);

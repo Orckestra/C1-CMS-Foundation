@@ -32,7 +32,8 @@ let reducers = {
 	'dataField',
 	'dialog',
 	'dialogPane',
-	'provider'
+	'provider',
+	'perspective'
 ].forEach(typeName => {
 	reducers[typeName + 'Defs'] = getDefinitionReducer(typeName);
 });

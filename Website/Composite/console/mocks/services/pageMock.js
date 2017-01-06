@@ -317,6 +317,7 @@ const pages = {
 		label: 'SVG Spritesheet',
 		type: 'spritesheet'
 	},
+// New style of provider-heavy page. Not implemented yet.
 	// 'component-selector-shim': {
 	// 	name: 'component-selector-shim',
 	// 	type: 'dialogPageShim',
@@ -438,6 +439,48 @@ const pages = {
 			}
 		],
 		urlColumn: 'label'
+	},
+	'content-browser': {
+		name: 'content-browser',
+		label: 'Content',
+		type: 'document', // 'browser',
+		toolbars: [],
+		tabs: []
+	},
+	'media-browser': {
+		name: 'media-browser',
+		label: 'Media',
+		type: 'document', // 'browser',
+		toolbars: [],
+		tabs: []
+	},
+	'data-browser': {
+		name: 'data-browser',
+		label: 'Data',
+		type: 'document', // 'browser',
+		toolbars: [],
+		tabs: []
+	},
+	'layout-browser': {
+		name: 'layout-browser',
+		label: 'Layout',
+		type: 'document', // 'browser',
+		toolbars: [],
+		tabs: []
+	},
+	'functions-browser': {
+		name: 'functions-browser',
+		label: 'Functions',
+		type: 'document', // 'browser',
+		toolbars: [],
+		tabs: []
+	},
+	'system-browser': {
+		name: 'system-browser',
+		label: 'System',
+		type: 'document', // 'browser',
+		toolbars: [],
+		tabs: []
 	}
 };
 
