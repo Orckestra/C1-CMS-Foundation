@@ -7,6 +7,7 @@ using System.Workflow.Activities;
 using System.Workflow.ComponentModel;
 using System.Workflow.ComponentModel.Compiler;
 using System.Workflow.Runtime;
+using System.Xml.Linq;
 using Composite.C1Console.Actions;
 using Composite.C1Console.Events;
 using Composite.C1Console.Users;
@@ -632,7 +633,7 @@ namespace Composite.C1Console.Workflow.Activities
 
         private void OnDeliverFormData(Dictionary<string, object> bindings, Dictionary<string, List<ClientValidationRule>> bindingsValidationRules)
         {
-            var parameters = new OnDeliverFormDataParameters()
+            var parameters = new OnDeliverFormDataParameters
             {
                 Bindings = bindings,
                 BindingsValidationRules = bindingsValidationRules
@@ -654,10 +655,7 @@ namespace Composite.C1Console.Workflow.Activities
         /// <param name="customToolbarDefinition">String containing a valid Form Definition markup document</param>
         public void SetCustomToolbarDefinition(string customToolbarDefinition)
         {
-            ExternalDataExchangeService externalDataExchangeService = WorkflowFacade.WorkflowRuntime.GetService<ExternalDataExchangeService>();
-
-            IFormsWorkflowActivityService formsWorkflowActivityService = externalDataExchangeService.GetService(typeof(IFormsWorkflowActivityService)) as IFormsWorkflowActivityService;
-            formsWorkflowActivityService.DeliverCustomToolbarDefinition(WorkflowEnvironment.WorkflowInstanceId, customToolbarDefinition);
+            SetCustomToolbarDefinition(new StringBasedFormMarkupProvider(customToolbarDefinition));
         }
 
 
@@ -668,11 +666,26 @@ namespace Composite.C1Console.Workflow.Activities
         /// <param name="customToolbarMarkupProvider">Markup provider that can deliver a valid Form Definition markup document</param>
         protected void SetCustomToolbarDefinition(IFormMarkupProvider customToolbarMarkupProvider)
         {
-            ExternalDataExchangeService externalDataExchangeService = WorkflowFacade.WorkflowRuntime.GetService<ExternalDataExchangeService>();
-            var formsWorkflowActivityService = externalDataExchangeService.GetService(typeof(IFormsWorkflowActivityService)) as IFormsWorkflowActivityService;
-            formsWorkflowActivityService.DeliverCustomToolbarDefinition(WorkflowEnvironment.WorkflowInstanceId, customToolbarMarkupProvider);
+            var externalDataExchangeService = WorkflowFacade.WorkflowRuntime.GetService<ExternalDataExchangeService>();
+            var fwas = externalDataExchangeService.GetService<IFormsWorkflowActivityService>();
+            fwas.DeliverCustomToolbarDefinition(WorkflowEnvironment.WorkflowInstanceId, customToolbarMarkupProvider);
         }
 
+
+        /// <summary>
+        /// Adds a custom toolbar item.
+        /// </summary>
+        /// <param name="itemId">The item id.</param>
+        /// <param name="markup">The markup.</param>
+        /// <param name="priority">The priority - is used for sorting multiple toolbar items.</param>
+        public void AddCustomToolbarItem(string itemId, XDocument markup, ActionGroupPriority priority)
+        {
+            var externalDataExchangeService = WorkflowFacade.WorkflowRuntime.GetService<ExternalDataExchangeService>();
+            var fwas = externalDataExchangeService.GetService<IFormsWorkflowActivityService>();
+
+            Verify.That(WorkflowInstanceId == WorkflowEnvironment.WorkflowInstanceId, "Unexpected workflow id!");
+            fwas.AddCustomToolbarItem(WorkflowInstanceId, itemId, markup, priority);
+        }
 
 
         /// <exclude />
@@ -889,6 +902,14 @@ namespace Composite.C1Console.Workflow.Activities
             }
 
             return isValid;
+        }
+    }
+
+    internal static class ExternalDataExchangeServiceExtensions
+    {
+        public static T GetService<T>(this ExternalDataExchangeService serviceContainer) where T : class
+        {
+            return serviceContainer.GetService(typeof (T)) as T;
         }
     }
 }

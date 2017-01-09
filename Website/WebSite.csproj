@@ -88,9 +88,9 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Collections.Immutable">
-      <HintPath>..\Packages\Microsoft.Bcl.Immutable.1.1.20-beta\lib\portable-net45+win8\System.Collections.Immutable.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="System.Collections.Immutable, Version=1.1.37.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Packages\System.Collections.Immutable.1.2.0\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -2824,7 +2824,7 @@
     </PostBuildEvent>
     <PostBuildEvent>if not exist "$(ProjectDir)\bin\ExtraDllVersion" (
  md "$(ProjectDir)\bin\ExtraDllVersion"
- copy "$(ProjectDir)\..\Packages\System.Collections.Immutable.1.2.0\lib\netstandard1.0\*.dll" "$(ProjectDir)\bin\ExtraDllVersion" /y
+ copy "$(ProjectDir)\..\Packages\Microsoft.Bcl.Immutable.1.1.20-beta\lib\portable-net45+win8\*.dll" "$(ProjectDir)\bin\ExtraDllVersion" /y
   )</PostBuildEvent>
   </PropertyGroup>
 </Project>

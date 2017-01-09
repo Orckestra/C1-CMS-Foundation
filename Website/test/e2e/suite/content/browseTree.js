@@ -25,14 +25,14 @@ module.exports = {
 		systemView.openTreeNode('Getting Started');
 		//     Child pages appear below the page.
 		systemView.assertTreeNodeHasChild('Getting Started');
-		// 6  Locate the “Tests” page. The page is present below “Getting Started”.
-		systemView.assertTreeNodeHasChild('Getting Started', 'Tests');
-		// 7  Select the “Tests” page The “Test” page gets selected in the tree.
-		systemView.openTreeNode('Tests')
-		//     The “Test” page’s content loads in the browser view.
+	    // 6  Locate the “Components” page. The page is present below “Getting Started”.
+		systemView.assertTreeNodeHasChild('Getting Started', 'Components');
+	    // 7  Select the “Components” page The “Test” page gets selected in the tree.
+		systemView.openTreeNode('Components')
+	    //     The “Components” page’s content loads in the browser view.
 		content
-			.assertBrowserContains('div.content-column > h1', 'Test the design')
+			.assertBrowserContains('div.content-column > h1', 'Test components')
 		//     The URL in the address bar reads “http://<website>/Getting-Started/Tests/c1mode(unpublished)
-			.assertBrowserUrl('/Getting-Started/Tests/c1mode(unpublished)')
+			.assertBrowserUrl('/Getting-Started/components/c1mode(unpublished)')
 	}
 };
