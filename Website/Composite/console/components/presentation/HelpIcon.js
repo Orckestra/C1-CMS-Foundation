@@ -24,7 +24,6 @@ const Span = styled.span`
 	}
 `;
 
-// TODO: Get this working again. Set a prop to control visibility?
 const Helper = styled.div`
 	position: absolute;
 	z-index: 100;
@@ -41,23 +40,25 @@ const Helper = styled.div`
 	line-height: 15px;
 	visibility: hidden;
 	opacity: 0;
-	transition: opacity 0.2s, visibility 0.2s
+	transition: opacity 0.2s, visibility 0.2s;
+	transition-delay: 2s;
+
+	&.shown {
+		visibility: visible;
+		opacity: 1;
+		transition-delay: 0s;
+	}
 `;
 
 const HelpIcon = ({text}) => {
 	let helper;
 
 	function showHelper() {
-		helper.style.visibility = 'visible';
-		helper.style.opacity = 1;
+		helper.className += ' shown';
 	}
 
 	function hideHelper() {
-		let savedHelper = helper;
-		setTimeout(() => {
-			savedHelper.style.visibility = 'hidden';
-			savedHelper.style.opacity = 0;
-		}, 2000);
+		helper.className = helper.className.replace(' shown', '');
 	}
 
 	return (
@@ -66,7 +67,6 @@ const HelpIcon = ({text}) => {
 			onMouseOut={hideHelper}>
 			<Helper
 				innerRef={comp => { helper = comp; }}
-				style={{visibility: 'hidden', opacity: 0}}
 				className="helper">
 				{text}
 			</Helper>
