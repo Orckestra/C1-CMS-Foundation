@@ -64,14 +64,16 @@ describe('Perspectives', () => {
 					<uiElements.MainLogo/><uiElements.MainLabel/>
 				</uiElements.MainIdentity>
 				<uiElements.MenuButton/>
-				<uiElements.Perspective>
-					<uiElements.PerspectiveIcon id='magnifier'/>
-					<uiElements.PerspectiveLabel>Search</uiElements.PerspectiveLabel>
-				</uiElements.Perspective>
-				<uiElements.Perspective>
-					<uiElements.PerspectiveIcon id='perspective-content'/>
-					<uiElements.PerspectiveLabel>Content</uiElements.PerspectiveLabel>
-				</uiElements.Perspective>
+				<uiElements.PerspectiveMenu>
+					<uiElements.Perspective>
+						<uiElements.PerspectiveIcon id='magnifier'/>
+						<uiElements.PerspectiveLabel>Search</uiElements.PerspectiveLabel>
+					</uiElements.Perspective>
+					<uiElements.Perspective>
+						<uiElements.PerspectiveIcon id='perspective-content'/>
+						<uiElements.PerspectiveLabel>Content</uiElements.PerspectiveLabel>
+					</uiElements.Perspective>
+				</uiElements.PerspectiveMenu>
 			</uiElements.Explorer>
 			<uiElements.Dock>
 				<uiElements.DockPanel>
