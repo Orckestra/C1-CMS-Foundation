@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import Perspectives from 'console/components/presentation/Perspectives';
 import { perspectiveDefsSelector } from 'console/state/selectors/perspectiveSelector.js';
-import { setPerspective } from 'console/state/reducers/layout.js';
+import { setPerspective, toggleExplorer } from 'console/state/reducers/layout.js';
 import { loadAndOpenPage } from 'console/state/actions/loadAndOpen.js';
 
 function mapStateToProps(state) {
@@ -15,7 +15,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
 	return {
 		setPerspective: name => dispatch(setPerspective(name)),
-		loadPage: pageName => dispatch(loadAndOpenPage(pageName))
+		loadPage: pageName => dispatch(loadAndOpenPage(pageName)),
+		toggleExplorer: () => dispatch(toggleExplorer())
 	};
 }
 

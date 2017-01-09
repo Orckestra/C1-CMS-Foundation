@@ -21,6 +21,10 @@ sizes.explorerTopHeight = sizes.identityTopPadding +
 	sizes.menuButtonHeight;
 sizes.perspectiveFullHeight = 2 * sizes.perspectiveVerticalPadding + sizes.perspectiveHeight;
 
+const timing = {
+	explorerOpen: '200ms'
+};
+
 function listHeight(listSize) {
 	return listSize * sizes.perspectiveFullHeight;
 }
@@ -28,6 +32,8 @@ function listHeight(listSize) {
 export const PerspectiveWrapper = styled.div`
 width: 100%;
 height: 100%;
+user-select: none;
+white-space: nowrap;
 `;
 export const Explorer = styled.div`
 position: absolute;
@@ -35,12 +41,9 @@ box-sizing: border-box;
 background-color: ${colors.appMenuColor};
 color: ${colors.appMenuItemColor};
 height: 100%;
-width: ${sizes.closedExplorerWidth}px;
+width: ${sizes.openExplorerWidth}px;
 padding-left: 13px;
 overflow: hidden;
-.open & {
-	width: ${sizes.openExplorerWidth}px;
-}
 `;
 export const MainIdentity = styled.div`
 padding-top: ${sizes.identityTopPadding}px;
@@ -48,11 +51,13 @@ padding-top: ${sizes.identityTopPadding}px;
 export const MainLogo = styled.img``;
 MainLogo.defaultProps = { src: '/Composite/images/branding/brand-icon.png' };
 export const MainLabel = styled.img`
-display: none;
+display: inline;
 margin-left: 13px;
+opacity: 0;
+transition: opacity ${timing.explorerOpen};
 
 .open & {
-	display: inline;
+	opacity: 1;
 }
 `;
 MainLabel.defaultProps = { src: '/Composite/images/branding/brand-text.svg' };
@@ -66,6 +71,7 @@ padding-left: 15px;
 padding-right: 15px;
 margin-left: -15px;
 overflow-y: scroll;
+overflow-x: hidden;
 `;
 const ScrollIcon = styled(Icon)`
 height: 6px;
@@ -97,16 +103,30 @@ export const PerspectiveIcon = styled(Icon)`
 vertical-align: middle;
 `;
 export const PerspectiveLabel = styled.p`
-display: none;
+display: inline;
 vertical-align: middle;
 margin-left: 38px;
 text-transform: uppercase;
 font-weight: bold;
 font-family: Arial;
 font-size: 12px;
+opacity: 0;
+transition: opacity ${timing.explorerOpen};
 
 .open & {
-	display: inline;
+	opacity: 1;
+}
+`;
+
+export const DockOverlay = styled.div`
+position: absolute;
+right: 0;
+height: 100%;
+width: calc(100% - ${sizes.openExplorerWidth}px);
+visibility: hidden;
+
+.open & {
+	visibility: visible;
 }
 `;
 
@@ -115,10 +135,12 @@ position: absolute;
 right: 0;
 height: 100%;
 width: calc(100% - ${sizes.closedExplorerWidth}px);
+transform: translateX(0);
 background-color: ${colors.appMenuColor};
+transition: transform ${timing.explorerOpen};
 
 .open & {
-	width: calc(100% - ${sizes.openExplorerWidth}px);
+	transform: translateX(${sizes.openExplorerWidth - sizes.closedExplorerWidth}px);
 }
 `;
 export const DockPanel = styled.div`
@@ -134,15 +156,18 @@ function openPerspective(perspectiveDef, props) {
 	if (!props.layout.getIn(['perspectives', perspectiveDef.get('name'), 'currentPage'])) {
 		props.loadPage(perspectiveDef.get('rootPage'));
 	}
+	if (props.layout.get('perspectivesOpen')) {
+		props.toggleExplorer();
+	}
 }
 
 // TODO: Add functionality to scroll up and down when clicking scroll icons
-const Perspectives = props => <PerspectiveWrapper /**/className='open'/**/>
+const Perspectives = props => <PerspectiveWrapper className={props.layout.get('perspectivesOpen') ? 'open' : ''}>
 	<Explorer>
 		<MainIdentity>
 			<MainLogo/><MainLabel/>
 		</MainIdentity>
-		<MenuButton id={/**/'arrow-left'/*/'menu'/**/}/>
+		<MenuButton id={props.layout.get('perspectivesOpen') ? 'arrow-left' : 'menu'} onClick={props.toggleExplorer}/>
 		<PerspectiveMenu menuSize={props.layout.get('perspectives').size}>
 			<ScrollIconUp id="explorer-scroll-up" menuSize={props.layout.get('perspectives').size}/>
 			{props.layout.get('perspectives').keySeq().map(perspectiveName => {
@@ -164,6 +189,7 @@ const Perspectives = props => <PerspectiveWrapper /**/className='open'/**/>
 			<ConnectDockPanel/>
 		</DockPanel>
 	</Dock>
+	<DockOverlay onClick={props.toggleExplorer}/>
 </PerspectiveWrapper>;
 
 Perspectives.propTypes = {
@@ -171,7 +197,8 @@ Perspectives.propTypes = {
 	perspectiveDefs: ImmutablePropTypes.map.isRequired,
 	layout: ImmutablePropTypes.map.isRequired,
 	setPerspective: PropTypes.func.isRequired,
-	loadPage: PropTypes.func.isRequired
+	loadPage: PropTypes.func.isRequired,
+	toggleExplorer: PropTypes.func.isRequired
 };
 
 export default Perspectives;

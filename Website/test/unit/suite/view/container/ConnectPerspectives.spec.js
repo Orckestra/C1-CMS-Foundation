@@ -40,6 +40,7 @@ describe('ConnectPerspectives', () => {
 			},
 			layout: {
 				currentPerspective: 'console-search',
+				perspectivesOpen: false,
 				perspectives: {
 					'console-search': {
 						currentPage: 'search'
@@ -62,6 +63,7 @@ describe('ConnectPerspectives', () => {
 			identityName='C1 CMS'
 			setPerspective={expect.it('to be a function')}
 			loadPage={expect.it('to be a function')}
+			toggleExplorer={expect.it('to be a function')}
 			perspectiveDefs={Immutable.fromJS({
 				'console-search': { name: 'console-search' },
 				content: { name: 'content' }

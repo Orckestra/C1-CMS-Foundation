@@ -8,6 +8,7 @@ describe('Layout', () => {
 			expect(actions, 'to have property', 'SELECT_LOCATION')
 			.and('to have property', 'OPEN_PAGE')
 			.and('to have property', 'CLOSE_PAGE')
+			.and('to have property', 'TOGGLE_EXPLORER')
 		);
 
 		describe('setPerspective', () => {
@@ -105,12 +106,21 @@ describe('Layout', () => {
 				.and('to have property', 'tabNames', ['settings', 'content', 'preview']);
 			});
 		});
+
+		describe('togglePerspective', () => {
+			let toggleExplorer = actions.toggleExplorer;
+			it('creates action to toggle the explorer open/close state', () => {
+				let action = toggleExplorer();
+				return expect(action, 'to be an action of type', actions.TOGGLE_EXPLORER);
+			});
+		});
 	});
 
 	describe('reducer', () => {
 		// This is safe, as it's a const immutable
 		const initialState = Immutable.Map({
 			currentPerspective: 'system',
+			perspectivesOpen: false,
 			perspectives: Immutable.OrderedMap({
 				content: Immutable.Map({
 					currentPage: 'browser',
@@ -404,6 +414,27 @@ describe('Layout', () => {
 						}
 					}
 				});
+			});
+		});
+
+		describe('toggle explorer', () => {
+			let action;
+			beforeEach(() => {
+				action = {
+					type: actions.TOGGLE_EXPLORER
+				};
+			});
+
+			it('opens a closed explorer', () => {
+				let oldState = initialState;
+				let newState = layout(oldState, action);
+				return expect(newState.get('perspectivesOpen'), 'to be true');
+			});
+
+			it('closes an open explorer', () => {
+				let oldState = initialState.set('perspectivesOpen', true);
+				let newState = layout(oldState, action);
+				return expect(newState.get('perspectivesOpen'), 'to be false');
 			});
 		});
 	});

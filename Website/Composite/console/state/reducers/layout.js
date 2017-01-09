@@ -47,6 +47,12 @@ export function openPage(pageName, tabNames) {
 // Close page
 export const CLOSE_PAGE = prefix + 'CLOSE_PAGE';
 
+// open/close perspective explorer
+export const TOGGLE_EXPLORER = prefix + 'TOGGLE_EXPLORER';
+export function toggleExplorer() {
+	return {type: TOGGLE_EXPLORER };
+}
+
 // Show seo, dev, log, help
 // Hide seo, dev, log, help
 // Move split seo, dev, log, help
@@ -121,6 +127,8 @@ export default function layout(state = initialState, action) {
 				action.pageName
 			]);
 		});
+	case TOGGLE_EXPLORER:
+		return state.set('perspectivesOpen', !state.get('perspectivesOpen'));
 	default:
 		return state;
 	}
