@@ -13,7 +13,7 @@ function getClient(realm) {
 		} else {
 			return new Promise((resolve, reject) => {
 				let url = new URL('/Composite/api/Router', location.href);
-				url.protocol = 'ws:';
+				url.protocol = url.protocol.replace('http', 'ws');
 				const client = new Wampy(url.href, {
 					realm,
 					onConnect: () => {
