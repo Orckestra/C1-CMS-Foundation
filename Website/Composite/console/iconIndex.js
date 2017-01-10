@@ -2,6 +2,7 @@ import spriteSheet from 'console/icons.svg!';
 
 spriteSheet.style.display = 'none';
 spriteSheet.id = 'spritesheet';
+
 // support hot reloading
 function insertSpriteSheet() {
 	if (document.readyState === 'complete') {
@@ -15,4 +16,4 @@ function insertSpriteSheet() {
 }
 
 insertSpriteSheet();
-document.onreadystatechange = insertSpriteSheet;
+document.addEventListener('readystatechange', insertSpriteSheet);

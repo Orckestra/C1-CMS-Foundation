@@ -113,5 +113,5 @@ function whenReadyRender() {
 		);
 	}
 }
-document.onreadystatechange = whenReadyRender;
+document.addEventListener('readystatechange', whenReadyRender);
 whenReadyRender();
