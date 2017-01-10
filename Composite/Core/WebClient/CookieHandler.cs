@@ -24,9 +24,10 @@ namespace Composite.Core.WebClient
 
             cookieName = GetApplicationSpecificCookieName(cookieName);
 
-            if (!context.IsWebSocketRequest)
+            if (context.Items["setCookies"]!=null)
             {
-                var responseCookie = GetCookie(context.Response.Cookies, cookieName);
+                var setCookies = context.Items["setCookies"] as HttpCookieCollection;
+                var responseCookie = GetCookie(setCookies, cookieName);
                 if (responseCookie != null)
                 {
                     return responseCookie.Value;
@@ -61,9 +62,14 @@ namespace Composite.Core.WebClient
 
         internal static HttpCookie SetCookieInternal(string cookieName, string value)
         {
+            var context = HttpContext.Current;
+            Verify.That(context != null, "HttpContext is not available.");
+
             cookieName = GetApplicationSpecificCookieName(cookieName);
-            var cookie = HttpContext.Current.Response.Cookies[cookieName];
+            var cookie = context.Response.Cookies[cookieName];
             cookie.Value = value;
+
+            context.Items["setCookies"] = context.Response.Cookies;
 
             return cookie;
         }
