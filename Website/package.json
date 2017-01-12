@@ -14,8 +14,8 @@
   "devDependencies": {
     "JSONPath": "^0.10.0",
     "autoprefixer-core": "^5.2.1",
+    "chromedriver": "^2.26.1",
     "chokidar-socket-emitter": "0.5.4",
-    "chromedriver": "2.25.3",
     "csswring": "^3.0.5",
     "eslint": "3.1.1",
     "eslint-plugin-mocha": "4.0.0",
@@ -226,11 +226,6 @@
           "lodash": "^4.15.0",
           "supports-color": "^3.1.2"
         }
-      },
-      "npm:unexpected@10.18.1": {
-        "main": "unexpected.js",
-        "dependencies": {},
-        "jspmPackage": true
       }
     }
   }

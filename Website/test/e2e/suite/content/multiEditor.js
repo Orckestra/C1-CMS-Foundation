@@ -12,7 +12,7 @@ module.exports = {
 		.selectTreeNodeAction("Venus Starter Site", "Edit Page")
 		.page.editor()
 			.selectEditOnContent(1)
-			.clickDataBySibilings("Statement content")
+			.clickDataBySibilings("Сontent")
 			.changeElementContent('h1 > em', 'Jupiter')
 			.acceptChanges()
 			.clickDataBySibilings("Background Image")
