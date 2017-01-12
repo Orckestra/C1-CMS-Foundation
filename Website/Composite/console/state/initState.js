@@ -1,5 +1,4 @@
 import { loadAndOpenPage } from 'console/state/actions/loadAndOpen.js';
-
 // The intent is that this should be as small as possible, instead initializing
 // from server data
 
@@ -12,7 +11,12 @@ if (location.search && /(\?|&)pageId=/.test(location.search)) {
 	};
 } else {
 	runStartActions = store => {
-		let pageName = 'other-page';
+		let state = store.getState();
+		let pageName = state.getIn([
+			'perspectiveDefs',
+			state.getIn(['layout', 'currentPerspective']),
+			'rootPage'
+		]);
 		store.dispatch(loadAndOpenPage(pageName));
 	};
 }

@@ -14,8 +14,8 @@
   "devDependencies": {
     "JSONPath": "^0.10.0",
     "autoprefixer-core": "^5.2.1",
-    "chromedriver": "^2.26.1",
     "chokidar-socket-emitter": "0.5.4",
+    "chromedriver": "^2.26.1",
     "csswring": "^3.0.5",
     "eslint": "3.1.1",
     "eslint-plugin-mocha": "4.0.0",
@@ -31,7 +31,7 @@
     "istanbul": "^0.4.3",
     "istanbul-lib-coverage": "1.0.0",
     "jsdom": "9.4.1",
-    "jspm": "0.17.0-beta.28",
+    "jspm": "0.17.0-beta.32",
     "less": "^2.1.2",
     "load-grunt-tasks": "3.5.0",
     "mocha": "3.0.1",
@@ -230,4 +230,3 @@
     }
   }
 }
-

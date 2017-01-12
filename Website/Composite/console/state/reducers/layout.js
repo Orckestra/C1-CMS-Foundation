@@ -61,7 +61,6 @@ const initialState = Immutable.Map({
 	currentPerspective: 'content',
 	perspectivesOpen: false,
 	perspectives: Immutable.OrderedMap({
-		'console-search': Immutable.Map(),
 		content: Immutable.Map(),
 		media: Immutable.Map(),
 		data: Immutable.Map(),

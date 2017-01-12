@@ -57,12 +57,6 @@ document.title = 'Orckestra CMS: ' + location.hostname;
 
 const initialState = {
 	perspectiveDefs: {
-		'console-search': {
-			name: 'console-search',
-			icon: 'magnifier',
-			label: 'Search',
-			rootPage: 'search'
-		},
 		content: {
 			name: 'content',
 			icon: 'perspective-content',
@@ -98,6 +92,36 @@ const initialState = {
 			icon: 'perspective-system',
 			label: 'System',
 			rootPage: 'system-browser'
+		}
+	},
+	pageTree: {
+		contentRoot: {
+			name: 'contentRoot',
+			children: ['websites', 'other', 'stuff']
+		},
+		websites: {
+			name: 'websites',
+			iconBase: 'page-root',
+			label: 'Websites',
+			open: true,
+			childrenLoaded: true,
+			children: ['venusRoot']
+		},
+		venusRoot: {
+			name: 'venusRoot',
+			label: 'Venus'
+		},
+		other: {
+			name: 'other',
+			label: 'Other',
+			open: false,
+			childrenLoaded: false,
+			children: ['foo', 'bar']
+		},
+		stuff: {
+			name: 'stuff',
+			label: 'Stuff',
+			icon: 'page'
 		}
 	}
 };

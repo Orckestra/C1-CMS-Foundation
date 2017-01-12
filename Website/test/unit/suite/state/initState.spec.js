@@ -1,6 +1,7 @@
 import loadModules from 'unittest/helpers/moduleLoader.js';
 import expect from 'unittest/helpers/expect.js';
 import sinon from 'sinon';
+import Immutable from 'immutable';
 
 describe('initState', () => {
 	let initState;
@@ -16,7 +17,17 @@ describe('initState', () => {
 	let store;
 	beforeEach(() => {
 		store = {
-			dispatch: sinon.spy().named('dispatch')
+			dispatch: sinon.spy().named('dispatch'),
+			getState: () => Immutable.fromJS({
+				perspectiveDefs: {
+					test: {
+						rootPage: 'testpage'
+					}
+				},
+				layout: {
+					currentPerspective: 'test'
+				}
+			})
 		};
 	});
 

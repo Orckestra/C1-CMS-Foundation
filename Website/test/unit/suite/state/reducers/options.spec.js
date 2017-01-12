@@ -67,7 +67,7 @@ describe('Options', () => {
 			});
 
 			it('overwrites the value of the given option field', () => {
-				oldState.test1 = 'old';
+				oldState = oldState.set('test1', 'old');
 				let newState = options(oldState, { type: actions.SET_OPTION, name: 'test1', value: 'was set' });
 				return expect(newState, 'not to be', oldState)
 				.and('to satisfy', {

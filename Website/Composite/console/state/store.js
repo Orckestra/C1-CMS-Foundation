@@ -6,6 +6,7 @@ import dataFields from 'console/state/reducers/dataFields.js';
 import activity from 'console/state/reducers/activity.js';
 import options from 'console/state/reducers/options.js';
 import logs from 'console/state/reducers/logs.js';
+import pageTree from 'console/state/reducers/pageTree.js';
 import providers from 'console/state/reducers/providers.js';
 import dialogData from 'console/state/reducers/dialog.js';
 import getDefinitionReducer from 'console/state/reducers/definitions.js';
@@ -20,6 +21,7 @@ let reducers = {
 	dataFields,
 	options,
 	logs,
+	pageTree,
 	providers,
 	dialogData
 };

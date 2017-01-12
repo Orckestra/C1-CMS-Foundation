@@ -443,44 +443,62 @@ const pages = {
 	'content-browser': {
 		name: 'content-browser',
 		label: 'Content',
-		type: 'document', // 'browser',
-		toolbars: [],
-		tabs: []
+		type: 'browser',
+		rootNode: 'contentRoot',
+		provider: {
+			protocol: 'wamp',
+			uri: 'mock.struct.node'
+		}
 	},
 	'media-browser': {
 		name: 'media-browser',
 		label: 'Media',
-		type: 'document', // 'browser',
-		toolbars: [],
-		tabs: []
+		type: 'browser',
+		rootNode: 'mediaRoot',
+		provider: {
+			protocol: 'wamp',
+			uri: 'mock.struct.node'
+		}
 	},
 	'data-browser': {
 		name: 'data-browser',
 		label: 'Data',
-		type: 'document', // 'browser',
-		toolbars: [],
-		tabs: []
+		type: 'browser',
+		rootNode: 'dataRoot',
+		provider: {
+			protocol: 'wamp',
+			uri: 'mock.struct.node'
+		}
 	},
 	'layout-browser': {
 		name: 'layout-browser',
 		label: 'Layout',
-		type: 'document', // 'browser',
-		toolbars: [],
-		tabs: []
+		type: 'browser',
+		rootNode: 'layoutRoot',
+		provider: {
+			protocol: 'wamp',
+			uri: 'mock.struct.node'
+		}
 	},
 	'functions-browser': {
 		name: 'functions-browser',
 		label: 'Functions',
-		type: 'document', // 'browser',
-		toolbars: [],
-		tabs: []
+		type: 'browser',
+		rootNode: 'functionsRoot',
+		provider: {
+			protocol: 'wamp',
+			uri: 'mock.struct.node'
+		}
 	},
 	'system-browser': {
 		name: 'system-browser',
 		label: 'System',
-		type: 'document', // 'browser',
-		toolbars: [],
-		tabs: []
+		type: 'browser',
+		rootNode: 'systemRoot',
+		provider: {
+			protocol: 'wamp',
+			uri: 'mock.struct.node'
+		}
 	}
 };
 
