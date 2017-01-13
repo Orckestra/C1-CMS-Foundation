@@ -5,6 +5,7 @@ export default {
 	baseFontColor: '#333',
 	buttonTextColor: '#575757',
 	borderColor: '#ccc',
+	browserLines: '#999',
 	darkBackground: '#EFEFEF',
 	buttonDropShadowColor: '#DDD',
 	buttonHighlightColor: '#22B980',

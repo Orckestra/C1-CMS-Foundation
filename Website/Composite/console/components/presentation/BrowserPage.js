@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import styled from 'styled-components';
 import colors from 'console/components/colors.js';
@@ -10,14 +10,47 @@ export const Browser = styled.div`
 	width: ${props => props.splitPosition}px;
 	border-right: 1px solid ${colors.borderColor};
 	overflow: auto;
+	padding-top: 5px;
 `;
 
 export const NodeGroup = styled.div`
-	margin-left: 40px;
+	margin-left: 25px;
+	position: relative;
+
+	&::before {
+		content: '';
+		position: absolute;
+		top: -8px;
+		bottom: 0;
+		left: -5px;
+		width: 0;
+		border-left: 1px solid ${colors.browserLines};
+	}
 `;
 
 export const Node = styled.div`
 	position: relative;
+	margin-left: 5px;
+
+
+	&:not(.top):before {
+		content: "";
+		display: block;
+		width: 18px;
+		height: 0;
+		border-top: 1px solid  ${colors.browserLines};
+		margin-top: -1px;
+		position: absolute;
+		top: 8px;
+		left: -10px;
+	}
+
+	&:not(.top):last-child:before {
+		background: ${colors.darkBackground};
+		height: auto;
+		top: 10px;
+		bottom: 0;
+	}
 `;
 
 export const NodeName = styled.p`
@@ -29,9 +62,11 @@ export const NodeOpen = styled(Icon)`
 	height: 10px;
 	width: 10px;
 	position: absolute;
-	top: 3px;
-	left: 3px;
+	top: 0px;
+	left: 0px;
+	padding: 3px;
 	color: ${props => props.open ? colors.buttonHighlightColor : colors.baseFontColor};
+	background-color: ${colors.darkBackground};
 `;
 export const NodeIcon = styled(Icon)`
 	position: absolute;
@@ -42,36 +77,68 @@ export const NodeIcon = styled(Icon)`
 `;
 
 function getNodeIcon(node) {
-	if (node.get('children')) {
+	if (node.get('icon')) {
+		return node.get('icon');
+	} else {
 		let base = node.get('iconBase') || 'data-interface';
 		return base + (node.get('open') ? '-open' : '-closed');
-	} else {
-		return node.get('icon') || 'unknown';
 	}
 }
 
-function renderNodeSubTree(node) {
-	if (typeof node === 'string') return null;
-	return [
-		<Node key={node.get('name')}>
-			{node.get('children') ? <NodeOpen id={node.get('open') ? 'chevron-down' : 'chevron-right'} open={node.get('open')}/> : null}
-			<NodeIcon id={getNodeIcon(node)}/>
-			<NodeName>{node.get('label')}</NodeName>
-		</Node>,
-		<NodeGroup key={node.get('name') + '_children'}>
-			{node.get('children') ? node.get('children').map(renderNodeSubTree).toArray() : null}
-		</NodeGroup>
-	];
-}
+export const TreeNode = props => (
+	<Node className={props.className}>
+		{props.node.get('children') ? (
+			props.node.get('open') ?
+				<NodeOpen
+					onClick={() => props.actions.closeNode(props.node.get('name'))}
+					id='chevron-down'
+					open={true}/> :
+				<NodeOpen
+					onClick={props.node.get('childrenLoaded') ?
+						() => props.actions.openNode(props.node.get('name')) :
+						() => props.actions.loadChildren(props.node.get('name'))
+					}
+					id='chevron-right'
+					open={false}/>
+			) :
+			null}
+		<NodeIcon id={getNodeIcon(props.node)}/>
+		<NodeName>{props.node.get('label')}</NodeName>
+		{props.node.get('childrenLoaded') && props.node.get('open') ?
+			<NodeGroup className="nodeChildren">
+				{props.node.get('children').map(node => (
+					<TreeNode key={node.get('name')} actions={props.actions} node={node}/>
+				)).toArray()}
+			</NodeGroup>
+			: null}
+	</Node>
+);
+
+TreeNode.propTypes = {
+	node: ImmutablePropTypes.map.isRequired,
+	className: PropTypes.string,
+	actions: PropTypes.shape({
+		openNode: PropTypes.func.isRequired,
+		closeNode: PropTypes.func.isRequired,
+		loadChildren: PropTypes.func.isRequired
+	}).isRequired
+};
 
 const BrowserPage = props => (
 	<Browser splitPosition={400}>
-		{props.tree.get('children').map(renderNodeSubTree).toArray()}
+		{props.tree.get('children').map(node => (
+			<TreeNode key={node.get('name')} actions={props.actions} className='top' node={node}/>
+		)).toArray()}
 	</Browser>
 );
 
 BrowserPage.propTypes = {
-	tree: ImmutablePropTypes.map
+	tree: ImmutablePropTypes.map,
+	actions: PropTypes.shape({
+		openNode: PropTypes.func.isRequired,
+		closeNode: PropTypes.func.isRequired,
+		loadChildren: PropTypes.func.isRequired
+	})
 };
 
 export default BrowserPage;

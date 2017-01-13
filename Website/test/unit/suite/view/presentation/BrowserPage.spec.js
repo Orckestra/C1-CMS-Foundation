@@ -37,26 +37,9 @@ describe('BrowserPage', () => {
 	it('renders a browser', () => {
 		renderer.render(<BrowserPage {...props}/>);
 		return expect(renderer, 'to have rendered', <uiElements.Browser>
-			<uiElements.NodeGroup>
-				<uiElements.Node>
-					<uiElements.NodeIcon id='test'/>
-				</uiElements.Node>
-				<uiElements.NodeGroup>
-					<uiElements.Node>
-						<uiElements.NodeIcon id='folder'/>
-					</uiElements.Node>
-				</uiElements.NodeGroup>
-			</uiElements.NodeGroup>
-			<uiElements.NodeGroup>
-				<uiElements.Node>
-					<uiElements.NodeIcon id='folder'/>
-				</uiElements.Node>
-			</uiElements.NodeGroup>
-			<uiElements.NodeGroup>
-				<uiElements.Node>
-					<uiElements.NodeIcon id='folder'/>
-				</uiElements.Node>
-			</uiElements.NodeGroup>
+			<uiElements.TreeNode/>
+			<uiElements.TreeNode/>
+			<uiElements.TreeNode/>
 		</uiElements.Browser>);
 	});
 });

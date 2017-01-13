@@ -12,9 +12,9 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
 	return {
 		actions: {
-			loadNode: pageName => { console.log('load', pageName); },
-			openNode: pageName => dispatch(openNode(pageName)),
-			closeNode: pageName => dispatch(closeNode(pageName))
+			loadChildren: nodeName => { console.log('load', nodeName); },
+			openNode: nodeName => dispatch(openNode(nodeName)),
+			closeNode: nodeName => dispatch(closeNode(nodeName))
 		}
 	};
 }
