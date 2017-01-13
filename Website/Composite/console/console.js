@@ -1,5 +1,6 @@
 import 'systemjs-hot-reloader/default-listener';
 
+import wampTest from 'console/access/wampTest.js';
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
@@ -144,16 +145,20 @@ const initialState = {
 		}
 	}
 };
-const store = configureStore(initialState);
 function whenReadyRender() {
 	if (document.readyState === 'complete') {
 		let Root = location.search ? ConnectDockPanel : ConnectPerspectives;
-		render(
-			<Provider store={store}>
-				<Root/>
-			</Provider>,
-			document.querySelector('body > div.entry')
-		);
+		wampTest
+		.then(() => {
+			const store = configureStore(initialState);
+			render(
+				<Provider store={store}>
+					<Root/>
+				</Provider>,
+				document.querySelector('body > div.entry')
+			);
+		})
+		.catch(err => { throw err; });
 	}
 }
 document.addEventListener('readystatechange', whenReadyRender);

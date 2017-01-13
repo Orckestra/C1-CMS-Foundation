@@ -211,6 +211,11 @@
       "npm:ms@0.7.2": {
         "jspmNodeConversion": false,
         "format": "cjs"
+      },
+      "npm:unexpected@10.18.1": {
+        "main": "unexpected.js",
+        "dependencies": {},
+        "jspmPackage": true
       }
     }
   }
