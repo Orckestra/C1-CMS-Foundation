@@ -77,12 +77,31 @@ export const Description = styled.p`
 margin: 10px 0;
 `;
 
+export const NoComponentsLabel = styled.div`
+	color: ${colors.fieldLabelColor};
+	margin: 150px auto;
+	text-align: center;
+	font-size: 24px;
+`;
+export const NoComponentsIcon = styled(Icon)`
+	height: 60px;
+	width: 60px;
+`;
+NoComponentsIcon.defaultProps = { id: 'close'};
+
 function resolveMediaURI(uri) {
 	return uri;
 }
 
 const Palette = props => {
 	return <div>
+		{props.itemGroups.size === 0 ?
+			<NoComponentsLabel>
+				<NoComponentsIcon/><br/>
+				No selectable components
+				{/* TODO: Message should be drawn from dialog pane def. */}
+			</NoComponentsLabel> :
+			null}
 		{props.itemGroups.map(itemGroup =>
 			<ItemGroup
 				key={itemGroup.get('name')}>

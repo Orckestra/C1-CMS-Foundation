@@ -321,7 +321,7 @@ SystemJS.config({
     "domain": "npm:jspm-nodelibs-domain@0.2.0",
     "events": "npm:jspm-nodelibs-events@0.2.0",
     "fs": "npm:jspm-nodelibs-fs@0.2.0",
-    "http": "npm:jspm-nodelibs-http@0.2.0",
+    "http": "github:jspm/nodelibs-http@0.2.0-alpha",
     "https": "npm:jspm-nodelibs-https@0.2.0",
     "path": "npm:jspm-nodelibs-path@0.2.1",
     "process": "npm:jspm-nodelibs-process@0.2.0",
@@ -852,15 +852,6 @@ SystemJS.config({
         "regenerator-runtime": "npm:regenerator-runtime@0.10.1"
       }
     },
-    "npm:stream-http@2.6.1": {
-      "map": {
-        "inherits": "npm:inherits@2.0.3",
-        "readable-stream": "npm:readable-stream@2.2.2",
-        "builtin-status-codes": "npm:builtin-status-codes@3.0.0",
-        "to-arraybuffer": "npm:to-arraybuffer@1.0.1",
-        "xtend": "npm:xtend@4.0.1"
-      }
-    },
     "npm:asn1.js@4.9.1": {
       "map": {
         "bn.js": "npm:bn.js@4.11.6",
@@ -916,9 +907,18 @@ SystemJS.config({
         "glamor": "npm:glamor@2.20.20"
       }
     },
-    "npm:jspm-nodelibs-http@0.2.0": {
+    "npm:stream-http@2.5.0": {
       "map": {
-        "http-browserify": "npm:stream-http@2.6.1"
+        "inherits": "npm:inherits@2.0.3",
+        "readable-stream": "npm:readable-stream@2.2.2",
+        "to-arraybuffer": "npm:to-arraybuffer@1.0.1",
+        "xtend": "npm:xtend@4.0.1",
+        "builtin-status-codes": "npm:builtin-status-codes@2.0.0"
+      }
+    },
+    "github:jspm/nodelibs-http@0.2.0-alpha": {
+      "map": {
+        "http-browserify": "npm:stream-http@2.5.0"
       }
     }
   }
