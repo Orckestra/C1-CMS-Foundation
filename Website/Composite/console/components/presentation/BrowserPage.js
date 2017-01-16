@@ -53,6 +53,7 @@ export const Node = styled.div`
 	}
 `;
 
+export const NodeLabel = styled.div``;
 export const NodeName = styled.p`
 	padding-left: 45px;
 	margin: 10px 0;
@@ -102,8 +103,10 @@ export const TreeNode = props => (
 					open={false}/>
 			) :
 			null}
-		<NodeIcon id={getNodeIcon(props.node)}/>
-		<NodeName>{props.node.get('label')}</NodeName>
+		<NodeLabel>
+			<NodeIcon id={getNodeIcon(props.node)}/>
+			<NodeName>{props.node.get('label')}</NodeName>
+		</NodeLabel>
 		{props.node.get('childrenLoaded') && props.node.get('open') ?
 			<NodeGroup className="nodeChildren">
 				{props.node.get('children').map(node => (
@@ -126,9 +129,11 @@ TreeNode.propTypes = {
 
 const BrowserPage = props => (
 	<Browser splitPosition={400}>
-		{props.tree.get('children').map(node => (
-			<TreeNode key={node.get('name')} actions={props.actions} className='top' node={node}/>
-		)).toArray()}
+		{props.tree.get('children') ?
+			props.tree.get('children').map(node => (
+				<TreeNode key={node.get('name')} actions={props.actions} className='top' node={node}/>
+			)).toArray() :
+			null}
 	</Browser>
 );
 
