@@ -1,18 +1,19 @@
 import { connect } from 'react-redux';
 import BrowserPage from 'console/components/presentation/BrowserPage.js';
 import { openNode, closeNode } from 'console/state/reducers/pageTree.js';
+import { loadTreeNodes } from 'console/state/actions/loadTreeNodes.js';
 import { currentTreeSelector } from 'console/state/selectors/pageTreeSelector.js';
 
 function mapStateToProps(state) {
 	return {
-		tree: currentTreeSelector(state),
+		tree: currentTreeSelector(state)
 	};
 }
 
 function mapDispatchToProps(dispatch) {
 	return {
 		actions: {
-			loadChildren: nodeName => { console.log('load', nodeName); },
+			loadChildren: provider => node => dispatch(loadTreeNodes(provider, node)),
 			openNode: nodeName => dispatch(openNode(nodeName)),
 			closeNode: nodeName => dispatch(closeNode(nodeName))
 		}

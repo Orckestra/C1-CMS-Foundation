@@ -4,6 +4,10 @@ const prefix = 'PAGE_TREE.';
 export const SET_NODE = prefix + 'SET_NODE';
 export function setNode(name, node) {
 	if (typeof node === 'object') {
+		if (node.children) {
+			node.childrenLoaded = node.childrenLoaded || false;
+			node.open = node.open || false;
+		}
 		return {
 			type: SET_NODE,
 			name,

@@ -97,7 +97,7 @@ export const TreeNode = props => (
 				<NodeOpen
 					onClick={props.node.get('childrenLoaded') ?
 						() => props.actions.openNode(props.node.get('name')) :
-						() => props.actions.loadChildren(props.node.get('name'))
+						() => props.actions.loadChildren(props.node.toJS())
 					}
 					id='chevron-right'
 					open={false}/>
@@ -127,17 +127,22 @@ TreeNode.propTypes = {
 	}).isRequired
 };
 
-const BrowserPage = props => (
-	<Browser splitPosition={400}>
-		{props.tree.get('children') ?
-			props.tree.get('children').map(node => (
-				<TreeNode key={node.get('name')} actions={props.actions} className='top' node={node}/>
-			)).toArray() :
-			null}
-	</Browser>
-);
+const BrowserPage = props => {
+	let actions = Object.assign({}, props.actions);
+	actions.loadChildren = actions.loadChildren(props.tabDef.get('provider').toJS());
+	return (
+		<Browser splitPosition={400}>
+			{props.tree.get('children') ?
+				props.tree.get('children').map(node => (
+					<TreeNode key={node.get('name')} actions={actions} className='top' node={node}/>
+				)).toArray() :
+				null}
+		</Browser>
+	);
+};
 
 BrowserPage.propTypes = {
+	tabDef: ImmutablePropTypes.map,
 	tree: ImmutablePropTypes.map,
 	actions: PropTypes.shape({
 		openNode: PropTypes.func.isRequired,

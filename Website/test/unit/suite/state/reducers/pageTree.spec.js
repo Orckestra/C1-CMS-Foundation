@@ -24,10 +24,24 @@ describe('Page tree', () => {
 		let setNode = actions.setNode;
 
 		it('creates action for setting a tree node', () => {
+			let action = setNode('testnode', { name: 'testnode' });
+			return expect(action, 'to be an action of type', actions.SET_NODE)
+			.and('to have property', 'name', 'testnode')
+			.and('to have property', 'node', { name: 'testnode' });
+		});
+
+		it('adds flags to branch nodes', () => {
 			let action = setNode('testnode', { name: 'testnode', children: [] });
 			return expect(action, 'to be an action of type', actions.SET_NODE)
 			.and('to have property', 'name', 'testnode')
-			.and('to have property', 'node', { name: 'testnode', children: [] });
+			.and('to have property', 'node', { name: 'testnode', childrenLoaded: false, open: false, children: [] });
+		});
+
+		it('does not override flags', () => {
+			let action = setNode('testnode', { name: 'testnode', childrenLoaded: true, open: true, children: [] });
+			return expect(action, 'to be an action of type', actions.SET_NODE)
+			.and('to have property', 'name', 'testnode')
+			.and('to have property', 'node', { name: 'testnode', childrenLoaded: true, open: true, children: [] });
 		});
 	});
 

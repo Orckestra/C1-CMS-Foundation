@@ -443,9 +443,54 @@ const pages = {
 	'content-explorer': {
 		name: 'content-explorer',
 		label: 'Content',
-		type: 'browser',
+		type: 'explorer',
+		toolbars: [
+			{
+				name: 'content-browser-node-action-placeholder',
+				items: []
+			},
+			{
+				name: 'browser-navigation-toolbar',
+				style: 'dark',
+				items: [
+					{
+						type: 'button',
+						name: 'navigation.showNodes',
+						icon: 'nodes',
+						action: 'toggleNodeTree'
+					},
+					{
+						type: 'button',
+						name: 'navigation.back',
+						style: 'join-right',
+						icon: 'previous',
+						action: 'navigateBack'
+					},
+					{
+						type: 'button',
+						name: 'navigation.forward',
+						style: 'join-left',
+						icon: 'next',
+						action: 'navigateForward'
+					},
+					{
+						type: 'button',
+						name: 'navigation.refresh',
+						icon: 'refresh',
+						action: 'browserRefresh'
+					},
+					{
+						type: 'button',
+						name: 'navigation.home',
+						icon: 'home',
+						action: 'navigateHome'
+					},
+				]
+			}
+		],
 		tabs: [{
 			name: 'content-browser',
+			type: 'browser',
 			rootNode: 'contentRoot',
 			provider: {
 				protocol: 'wamp',
@@ -456,9 +501,10 @@ const pages = {
 	'media-explorer': {
 		name: 'media-explorer',
 		label: 'Media',
-		type: 'browser',
+		type: 'explorer',
 		tabs: [{
 			name: 'media-browser',
+			type: 'browser',
 			rootNode: 'mediaRoot',
 			provider: {
 				protocol: 'wamp',
@@ -469,9 +515,10 @@ const pages = {
 	'data-explorer': {
 		name: 'data-explorer',
 		label: 'Data',
-		type: 'browser',
+		type: 'explorer',
 		tabs: [{
 			name: 'data-browser',
+			type: 'browser',
 			rootNode: 'dataRoot',
 			provider: {
 				protocol: 'wamp',
@@ -482,9 +529,10 @@ const pages = {
 	'layout-explorer': {
 		name: 'layout-explorer',
 		label: 'Layout',
-		type: 'browser',
+		type: 'explorer',
 		tabs: [{
 			name: 'layout-browser',
+			type: 'browser',
 			rootNode: 'layoutRoot',
 			provider: {
 				protocol: 'wamp',
@@ -495,9 +543,10 @@ const pages = {
 	'functions-explorer': {
 		name: 'functions-explorer',
 		label: 'Functions',
-		type: 'browser',
+		type: 'explorer',
 		tabs: [{
 			name: 'functions-browser',
+			type: 'browser',
 			rootNode: 'functionsRoot',
 			provider: {
 				protocol: 'wamp',
@@ -508,9 +557,10 @@ const pages = {
 	'system-explorer': {
 		name: 'system-explorer',
 		label: 'System',
-		type: 'browser',
+		type: 'explorer',
 		tabs: [{
 			name: 'system-browser',
+			type: 'browser',
 			rootNode: 'systemRoot',
 			provider: {
 				protocol: 'wamp',

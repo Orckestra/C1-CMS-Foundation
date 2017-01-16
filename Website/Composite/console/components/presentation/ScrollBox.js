@@ -18,7 +18,6 @@ const style = css`
 
 	.toolbar + & {
 		height: calc(100% - 71px);
-		border-top: 1px solid ${colors.borderColor};
 	}
 
 	.toolbar + .toolbar + & {

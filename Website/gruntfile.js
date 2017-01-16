@@ -260,7 +260,7 @@ module.exports = function (grunt) {
 					.replace('<svg', '<symbol id="icon-' + fileName + '"')
 					.replace('</svg>', '</symbol>')
 					.replace('xlink:href="#', 'xlink:href="#icon-')
-					.replace(/(?:stroke|fill)="#(?:([0-9a-eA-E])\1{2,5})"/g, '')
+					.replace(/(?:stroke|fill)="#(?:([0-9a-eA-E])\1{2,5}|([0-9a-eA-E]{2})\2{2})"/g, '')
 					 + '\r\n';
 			});
 			outputText += '</svg>\r\n';

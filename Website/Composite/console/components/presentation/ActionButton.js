@@ -1,7 +1,38 @@
 import React, { PropTypes } from 'react';
 import Icon from 'console/components/presentation/Icon.js';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import colors from 'console/components/colors.js';
+
+const buttonStyleSheet = {
+	main: css`
+		border: 1px solid ${colors.buttonHighlightColor};
+		background-image: linear-gradient(to bottom, ${colors.buttonHighlightColor} 0%, ${colors.buttonShadingColor} 100%);
+		color: white;
+		padding-top: 4px;
+		padding-bottom: 4px;
+	`,
+	'join-right': css`
+		border-top-right-radius: 0;
+		border-bottom-right-radius: 0;
+		margin-right: 0px;
+		&:hover {
+			border-right-color: ${colors.borderColor};
+		}
+	`,
+	'join-left': css`
+		border-top-left-radius: 0;
+		border-bottom-left-radius: 0;
+		margin-left: -1px;
+		&:hover {
+			border-left-color: ${colors.borderColor};
+		}
+	`
+};
+
+function getStyles(props) {
+	let buttonStyles = props.buttonStyle.split(' ');
+	return buttonStyles.map(styleName => buttonStyleSheet[styleName]);
+}
 
 const Button = styled.button`
 	text-transform: uppercase;
@@ -24,14 +55,9 @@ const Button = styled.button`
 		opacity: 0.4;
 	}
 
-	&.main {
-		border: 1px solid ${colors.buttonHighlightColor};
-		background-image: linear-gradient(to bottom, ${colors.buttonHighlightColor} 0%, ${colors.buttonShadingColor} 100%);
-		color: white;
-		padding-top: 4px;
-		padding-bottom: 4px;
-	}
+	${getStyles}
 `;
+Button.defaultProps = { buttonStyle: '' };
 
 const Label = styled.span`
 svg + & {
@@ -40,7 +66,7 @@ svg + & {
 `;
 
 const ActionButton = ({ label, action, icon, disabled, style }) => (
-	<Button onClick={() => action()} disabled={disabled} className={style}>
+	<Button onClick={() => action()} disabled={disabled} buttonStyle={style}>
 		{icon ? <Icon id={icon}/> : null}
 		{label ? <Label>{label}</Label> : null }
 	</Button>

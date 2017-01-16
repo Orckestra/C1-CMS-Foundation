@@ -36,8 +36,12 @@ Tab.propTypes = {
 };
 
 const TabBarDiv = styled.div`
-	border-bottom: 1px solid ${colors.borderColor};
+	margin-top: -1px;
 	position: relative;
+	&:first-child {
+		margin-top: 0;
+		border-bottom: 1px solid ${colors.borderColor};
+	}
 `;
 
 const TabBar = props => (

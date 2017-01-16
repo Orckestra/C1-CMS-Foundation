@@ -7,10 +7,26 @@ export const LOAD_TREE_NODES = loadPageDefActionType + '_COMMENCE';
 export const LOAD_TREE_NODES_DONE = loadPageDefActionType + '_DONE';
 export const LOAD_TREE_NODES_FAILED = loadPageDefActionType + '_FAIL';
 
-export function loadTreeNodes(provider, nodeNames) {
+export function loadTreeNodes(provider, node) {
 	return (dispatch) => {
-		let uri = provider.get('uri');
-		dispatch({ type: LOAD_TREE_NODES, nodeNames });
-		return WAMPClient.call(uri, nodeNames);
+		dispatch({ type: LOAD_TREE_NODES, provider, node });
+		return WAMPClient.call(provider.uri, node.children)
+		.then(nodes => {
+			if (nodes) {
+				nodes.forEach(node => {
+					dispatch(setNode(node.name, node));
+				});
+				node.childrenLoaded = true;
+				node.open = true;
+				dispatch(setNode(node.name, node));
+				dispatch({ type: LOAD_TREE_NODES_DONE, provider, node });
+			} else {
+				dispatch({ type: LOAD_TREE_NODES_FAILED, provider, node, message: 'No nodes returned' });
+			}
+		})
+		.catch(err => {
+			dispatch({ type: LOAD_TREE_NODES_FAILED, provider, node, message: err.message, stack: err.stack });
+			//console.error(err); // eslint-disable-line no-console
+		});
 	};
 }

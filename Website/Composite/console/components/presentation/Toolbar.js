@@ -7,6 +7,7 @@ import Select from 'console/components/presentation/Select.js';
 
 const Div = styled.div`
 	padding: 15px 10px 20px;
+	border-bottom: 1px solid ${colors.borderColor};
 
 	&.rightAligned {
 	${''/* TODO: Needs better way to right-align toolbar items */}
@@ -25,7 +26,6 @@ const Div = styled.div`
 	}
 
 	& + & {
-		border-top: 1px solid ${colors.borderColor};
 		padding-bottom: 15px;
 
 	}

@@ -30,7 +30,18 @@ describe('BrowserPage', () => {
 						children: ['test31']
 					}
 				]
-			})
+			}),
+			tabDef: Immutable.fromJS({
+				provider: {
+					protocol: 'wamp',
+					uri: 'test.nothing'
+				}
+			}),
+			actions: {
+				openNode: () => {},
+				closeNode: () => {},
+				loadChildren: () => () => () => {}
+			}
 		};
 	});
 

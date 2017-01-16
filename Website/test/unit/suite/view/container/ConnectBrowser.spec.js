@@ -1,22 +1,12 @@
-import loadModules from 'unittest/helpers/moduleLoader.js';
 import expect from 'unittest/helpers/expect.js';
 import sinon from 'sinon';
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
 import Immutable from 'immutable';
+import ConnectBrowser from 'console/components/container/ConnectBrowser.js';
 import BrowserPage from 'console/components/presentation/BrowserPage.js';
 
 describe('ConnectBrowser', () => {
-	let ConnectBrowser;
-	before(done => {
-		loadModules([
-			{
-				module: 'console/components/container/ConnectBrowser.js',
-				moduleCb: m => { ConnectBrowser = m.default; }
-			}
-		], () => done());
-	});
-
 	let renderer, state, store, props;
 	beforeEach(() => {
 		renderer = TestUtils.createRenderer();
@@ -25,12 +15,22 @@ describe('ConnectBrowser', () => {
 				currentPerspective: 'test',
 				perspectives: {
 					test: {
-						currentPage: 'testbrowser'
+						currentPage: 'testexplorer',
+						testexplorer: {
+							currentTab: 'testbrowser'
+						}
 					}
 				}
 			},
 			pageDefs: {
+				testexplorer: {
+					name: 'testexplorer',
+					tabs: ['testbrowser']
+				}
+			},
+			tabDefs: {
 				testbrowser: {
+					name: 'testbrowser',
 					rootNode: 'testRoot'
 				}
 			},
@@ -104,7 +104,11 @@ describe('ConnectBrowser', () => {
 						]
 					})}
 					// pageDef={{}}
-					actions={{}}
+					actions={{
+						openNode: expect.it('to be a function'),
+						closeNode: expect.it('to be a function'),
+						loadChildren: expect.it('to be a function')
+					}}
 					store={store}/>
 			),
 			expect(store.dispatch, 'was not called'),

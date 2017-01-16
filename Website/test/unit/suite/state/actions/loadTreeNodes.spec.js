@@ -28,11 +28,17 @@ describe('Tree nodes', () => {
 	);
 
 	describe('loadTreeNodes', () => {
-		let dispatch, wampCall, loadTreeNodes;
+		let dispatch, wampCall, loadTreeNodes, provider, rootNode, rawNodes;
 		beforeEach(() => {
 			loadTreeNodes = actions.loadTreeNodes;
 			dispatch = sinon.spy().named('dispatch');
-			let rawNodes = [
+			rootNode = {
+				name: 'testNodeRoot',
+				childrenLoaded: false,
+				open: false,
+				children: ['testNode1', 'testNode2']
+			};
+			rawNodes = [
 				{
 					name: 'testNode1',
 					label: 'Testing node #1',
@@ -45,9 +51,10 @@ describe('Tree nodes', () => {
 					icon: 'page'
 				}
 			];
+			provider = { uri: 'mock.struct.node' };
 			wampCall = sinon.stub().named('wampCall').returns(Promise.reject('Wrong parameters'));
-			wampCall.withArgs('mock.struct.node', ['failNode']).returns(Promise.reject(new Error('test error')));
-			wampCall.withArgs('mock.struct.node', ['testNode1', 'testNode2']).returns(Promise.resolve(rawNodes));
+			wampCall.withArgs(provider.uri, ['failNode']).returns(Promise.reject(new Error('test error')));
+			wampCall.withArgs(provider.uri, ['testNode1', 'testNode2']).returns(Promise.resolve(rawNodes));
 			WAMPClient.setMock(wampCall);
 		});
 
@@ -57,11 +64,26 @@ describe('Tree nodes', () => {
 
 		it('creates a thunk that loads nodes and saves them to state', () => {
 			return expect(() =>
-				expect(loadTreeNodes, 'when called with', ['testNode11'])
+				expect(loadTreeNodes, 'when called with', [provider, rootNode])
 				.then(thunk =>
 					expect(thunk, 'to be a function')
+					.and('when called with', [dispatch])
 				),
-				'not to error');
+				'not to error')
+			.then(() =>
+				expect([dispatch], 'to have calls satisfying', [
+					{ spy: dispatch, args: [{ type: actions.LOAD_TREE_NODES, provider, node: rootNode }] },
+					{ spy: dispatch, args: [{ type: SET_NODE, name: 'testNode1', node: rawNodes[0] }] },
+					{ spy: dispatch, args: [{ type: SET_NODE, name: 'testNode2', node: rawNodes[1] }] },
+					{ spy: dispatch, args: [{ type: SET_NODE, name: 'testNodeRoot', node: {
+						name: 'testNodeRoot',
+						childrenLoaded: true,
+						open: true,
+						children: ['testNode1', 'testNode2']
+					} }] },
+					{ spy: dispatch, args: [{ type: actions.LOAD_TREE_NODES_DONE, provider, node: rootNode }] }
+				])
+			);
 		});
 	});
 });
