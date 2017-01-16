@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { currentPageSelector } from 'console/state/selectors/pageSelector.js';
+import { tabSelector } from 'console/state/selectors/tabSelector.js';
 import Immutable from 'immutable';
 
 const allNodesSelector = state => state.get('pageTree');
@@ -21,9 +21,9 @@ function getNodeAndLoadedChildren(name, allNodes) {
 
 export const currentTreeSelector = createSelector(
 	allNodesSelector,
-	currentPageSelector,
-	(nodes, pageDef) => {
-		let root = nodes.get(pageDef.get('rootNode') || '');
+	tabSelector,
+	(nodes, tabDef) => {
+		let root = nodes.get(tabDef.get('rootNode') || '');
 		if (root) {
 			root = root.set('children', root.get('children').map(nodeName => getNodeAndLoadedChildren(nodeName, nodes)));
 			return root;

@@ -440,65 +440,83 @@ const pages = {
 		],
 		urlColumn: 'label'
 	},
-	'content-browser': {
-		name: 'content-browser',
+	'content-explorer': {
+		name: 'content-explorer',
 		label: 'Content',
 		type: 'browser',
-		rootNode: 'contentRoot',
-		provider: {
-			protocol: 'wamp',
-			uri: 'mock.struct.node'
-		}
+		tabs: [{
+			name: 'content-browser',
+			rootNode: 'contentRoot',
+			provider: {
+				protocol: 'wamp',
+				uri: 'mock.struct.node'
+			}
+		}]
 	},
-	'media-browser': {
-		name: 'media-browser',
+	'media-explorer': {
+		name: 'media-explorer',
 		label: 'Media',
 		type: 'browser',
-		rootNode: 'mediaRoot',
-		provider: {
-			protocol: 'wamp',
-			uri: 'mock.struct.node'
-		}
+		tabs: [{
+			name: 'media-browser',
+			rootNode: 'mediaRoot',
+			provider: {
+				protocol: 'wamp',
+				uri: 'mock.struct.node'
+			}
+		}]
 	},
-	'data-browser': {
-		name: 'data-browser',
+	'data-explorer': {
+		name: 'data-explorer',
 		label: 'Data',
 		type: 'browser',
-		rootNode: 'dataRoot',
-		provider: {
-			protocol: 'wamp',
-			uri: 'mock.struct.node'
-		}
+		tabs: [{
+			name: 'data-browser',
+			rootNode: 'dataRoot',
+			provider: {
+				protocol: 'wamp',
+				uri: 'mock.struct.node'
+			}
+		}]
 	},
-	'layout-browser': {
-		name: 'layout-browser',
+	'layout-explorer': {
+		name: 'layout-explorer',
 		label: 'Layout',
 		type: 'browser',
-		rootNode: 'layoutRoot',
-		provider: {
-			protocol: 'wamp',
-			uri: 'mock.struct.node'
-		}
+		tabs: [{
+			name: 'layout-browser',
+			rootNode: 'layoutRoot',
+			provider: {
+				protocol: 'wamp',
+				uri: 'mock.struct.node'
+			}
+		}]
 	},
-	'functions-browser': {
-		name: 'functions-browser',
+	'functions-explorer': {
+		name: 'functions-explorer',
 		label: 'Functions',
 		type: 'browser',
-		rootNode: 'functionsRoot',
-		provider: {
-			protocol: 'wamp',
-			uri: 'mock.struct.node'
-		}
+		tabs: [{
+			name: 'functions-browser',
+			rootNode: 'functionsRoot',
+			provider: {
+				protocol: 'wamp',
+				uri: 'mock.struct.node'
+			}
+		}]
 	},
-	'system-browser': {
-		name: 'system-browser',
+	'system-explorer': {
+		name: 'system-explorer',
 		label: 'System',
 		type: 'browser',
-		rootNode: 'systemRoot',
-		provider: {
-			protocol: 'wamp',
-			uri: 'mock.struct.node'
-		}
+		tabs: [{
+			name: 'system-browser',
+			rootNode: 'systemRoot',
+			provider: {
+				protocol: 'wamp',
+				uri: 'mock.struct.node'
+			}
+		}]
 	}
 };
 

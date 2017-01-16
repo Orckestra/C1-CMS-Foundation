@@ -62,37 +62,37 @@ const initialState = {
 			name: 'content',
 			icon: 'perspective-content',
 			label: 'Content',
-			rootPage: 'content-browser'
+			rootPage: 'content-explorer'
 		},
 		media: {
 			name: 'media',
 			icon: 'perspective-media',
 			label: 'Media',
-			rootPage: 'media-browser'
+			rootPage: 'media-explorer'
 		},
 		data: {
 			name: 'data',
 			icon: 'perspective-datas',
 			label: 'Data',
-			rootPage: 'data-browser'
+			rootPage: 'data-explorer'
 		},
 		layout: {
 			name: 'layout',
 			icon: 'perspective-design',
 			label: 'Layout',
-			rootPage: 'layout-browser'
+			rootPage: 'layout-explorer'
 		},
 		functions: {
 			name: 'functions',
 			icon: 'perspective-functions',
 			label: 'Functions',
-			rootPage: 'functions-browser'
+			rootPage: 'functions-explorer'
 		},
 		system: {
 			name: 'system',
 			icon: 'perspective-system',
 			label: 'System',
-			rootPage: 'system-browser'
+			rootPage: 'system-explorer'
 		}
 	},
 	pageTree: {
