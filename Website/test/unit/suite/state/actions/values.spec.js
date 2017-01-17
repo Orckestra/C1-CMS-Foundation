@@ -1,27 +1,11 @@
-import loadModules from 'unittest/helpers/moduleLoader.js';
 import expect from 'unittest/helpers/expect.js';
 import sinon from 'sinon';
 import Immutable from 'immutable';
+import { STORE_VALUES, COMMIT_PAGE } from 'console/state/reducers/dataFields.js';
+import * as actions from 'console/state/actions/values.js';
+import WAMPClient from 'console/access/wampClient.js';
 
 describe('Load/save values', () => {
-	let STORE_VALUES, COMMIT_PAGE, WAMPClient, actions;
-	before(done => {
-		loadModules([
-			{
-				module: 'console/state/reducers/dataFields.js',
-				moduleCb: m => { ({ STORE_VALUES, COMMIT_PAGE } = m); }
-			},
-			{
-				module: 'console/state/actions/values.js',
-				moduleCb: m => { actions = m; }
-			},
-			{
-				module: 'console/access/wampClient.js',
-				moduleCb: m => { WAMPClient = m.default; }
-			}
-		], () => done());
-	});
-
 	afterEach(() => {
 		WAMPClient.reset();
 	});

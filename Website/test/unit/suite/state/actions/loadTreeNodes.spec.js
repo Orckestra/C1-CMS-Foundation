@@ -1,26 +1,10 @@
-import loadModules from 'unittest/helpers/moduleLoader.js';
 import expect from 'unittest/helpers/expect.js';
 import sinon from 'sinon';
+import { SET_NODE } from 'console/state/reducers/pageTree.js';
+import * as actions from 'console/state/actions/loadTreeNodes.js';
+import WAMPClient from 'console/access/wampClient.js';
 
 describe('Tree nodes', () => {
-	let SET_NODE, WAMPClient, actions;
-	before(done => {
-		loadModules([
-			{
-				module: 'console/state/reducers/pageTree.js',
-				moduleCb: m => { SET_NODE = m.SET_NODE; }
-			},
-			{
-				module: 'console/state/actions/loadTreeNodes.js',
-				moduleCb: m => { actions = m; }
-			},
-			{
-				module: 'console/access/wampClient.js',
-				moduleCb: m => { WAMPClient = m.default; }
-			}
-		], () => done());
-	});
-
 	it('has action descriptors', () =>
 		expect(actions, 'to have property', 'LOAD_TREE_NODES')
 		.and('to have property', 'LOAD_TREE_NODES_DONE')

@@ -1,26 +1,10 @@
-import loadModules from 'unittest/helpers/moduleLoader.js';
 import expect from 'unittest/helpers/expect.js';
 import sinon from 'sinon';
+import WAMPClient from 'console/access/wampClient.js';
+import { STORE_PROVIDER_DATA } from 'console/state/reducers/providers.js';
+import * as actions from 'console/state/actions/fetchFromProvider.js';
 
 describe('Data providers', () => {
-	let STORE_PROVIDER_DATA, actions, WAMPClient;
-	before(done => {
-		loadModules([
-			{
-				module: 'console/state/reducers/providers.js',
-				moduleCb: m => { STORE_PROVIDER_DATA = m.STORE_PROVIDER_DATA; }
-			},
-			{
-				module: 'console/state/actions/fetchFromProvider.js',
-				moduleCb: m => { actions = m; }
-			},
-			{
-				module: 'console/access/wampClient.js',
-				moduleCb: m => { WAMPClient = m.default; }
-			}
-		], () => done());
-	});
-
 	it('has action descriptors', () =>
 		expect(actions, 'to have property', 'GET_PROVIDER')
 			.and('to have property', 'GET_PROVIDER_DONE')

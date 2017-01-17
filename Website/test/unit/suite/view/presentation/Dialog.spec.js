@@ -4,25 +4,9 @@ import TestUtils from 'react-addons-test-utils';
 import Immutable from 'immutable';
 import Palette from 'console/components/presentation/Palette.js';
 import ActionButton from 'console/components/presentation/ActionButton.js';
-import loadModules from 'unittest/helpers/moduleLoader.js';
+import Dialog, { DialogBox, DialogTitle, DialogPane, DialogButtonGroup } from 'console/components/presentation/Dialog.js';
 
 describe('Dialog', () => {
-	let Dialog, DialogBox, DialogTitle, DialogPane, DialogButtonGroup;
-	before(done => {
-		loadModules([
-			{
-				module: 'console/components/presentation/Dialog.js',
-				moduleCb: m => {
-					Dialog = m.default;
-					DialogBox = m.DialogBox;
-					DialogTitle = m.DialogTitle;
-					DialogPane = m.DialogPane;
-					DialogButtonGroup = m.DialogButtonGroup;
-				}
-			}
-		], () => done());
-	});
-
 	let renderer, minimalProps, fullProps;
 	beforeEach(() => {
 		renderer = TestUtils.createRenderer();

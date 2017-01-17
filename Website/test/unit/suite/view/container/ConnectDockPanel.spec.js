@@ -1,25 +1,12 @@
-import loadModules from 'unittest/helpers/moduleLoader.js';
 import expect from 'unittest/helpers/expect.js';
 import sinon from 'sinon';
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
 import Immutable from 'immutable';
+import ConnectDockPanel from 'console/components/container/ConnectDockPanel.js';
+import SwitchPanel from 'console/components/presentation/SwitchPanel.js';
 
 describe('ConnectDockPanel', () => {
-	let ConnectDockPanel, SwitchPanel;
-	before(done => {
-		loadModules([
-			{
-				module: 'console/components/container/ConnectDockPanel.js',
-				moduleCb: m => { ConnectDockPanel = m.default; }
-			},
-			{
-				module: 'console/components/presentation/SwitchPanel.js',
-				moduleCb: m => { SwitchPanel = m.default; }
-			}
-		], () => done());
-	});
-
 	let renderer, state, store, props;
 	beforeEach(() => {
 		renderer = TestUtils.createRenderer();

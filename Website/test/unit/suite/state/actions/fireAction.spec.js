@@ -1,23 +1,9 @@
-import loadModules from 'unittest/helpers/moduleLoader.js';
 import expect from 'unittest/helpers/expect.js';
 import sinon from 'sinon';
+import * as actions from 'console/state/actions/fireAction.js';
+import WAMPClient from 'console/access/wampClient.js';
 
 describe('Fire server action', () => {
-	let actions, WAMPClient;
-	before(done => {
-		loadModules([
-			{
-				module: 'console/state/actions/fireAction.js',
-				moduleCb: m => { actions = m; }
-			},
-			{
-				module: 'console/access/wampClient.js',
-				moduleCb: m => { WAMPClient = m.default; }
-			}
-		], () => done());
-	});
-
-
 	it('has action descriptors', () =>
 		expect(actions, 'to have property', 'FIRE_ACTION')
 		.and('to have property', 'FIRE_ACTION_DONE')

@@ -3,23 +3,10 @@ import sinon from 'sinon';
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
 import Immutable from 'immutable';
-import loadModules from 'unittest/helpers/moduleLoader.js';
+import ConnectPerspectives from 'console/components/container/ConnectPerspectives.js';
+import Perspectives from 'console/components/presentation/Perspectives.js';
 
 describe('ConnectPerspectives', () => {
-	let ConnectPerspectives, Perspectives;
-	before(done => {
-		loadModules([
-			{
-				module: 'console/components/container/ConnectPerspectives.js',
-				moduleCb: m => { ConnectPerspectives = m.default; }
-			},
-			{
-				module: 'console/components/presentation/Perspectives.js',
-				moduleCb: m => { Perspectives = m.default; }
-			}
-		], () => done());
-	});
-
 	let renderer, state, store;
 	beforeEach(() => {
 		renderer = TestUtils.createRenderer();

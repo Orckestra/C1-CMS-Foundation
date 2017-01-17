@@ -1,33 +1,14 @@
-import loadModules from 'unittest/helpers/moduleLoader.js';
 import expect from 'unittest/helpers/expect.js';
 import sinon from 'sinon';
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
 import Immutable from 'immutable';
+import ConnectToolbarFrame from 'console/components/container/ConnectToolbarFrame.js';
+import ToolbarFrame from 'console/components/presentation/ToolbarFrame.js';
+import { UPDATE_VALUE } from 'console/state/reducers/dataFields.js';
+import { SET_OPTION } from 'console/state/reducers/options.js';
 
 describe('ConnectToolbarFrame', () => {
-	let ConnectToolbarFrame, ToolbarFrame, UPDATE_VALUE, SET_OPTION;
-	before(done => {
-		loadModules([
-			{
-				module: 'console/components/container/ConnectToolbarFrame.js',
-				moduleCb: m => { ConnectToolbarFrame = m.default; }
-			},
-			{
-				module: 'console/components/presentation/ToolbarFrame.js',
-				moduleCb: m => { ToolbarFrame = m.default; }
-			},
-			{
-				module: 'console/state/reducers/dataFields.js',
-				moduleCb: m => { UPDATE_VALUE = m.UPDATE_VALUE; }
-			},
-			{
-				module: 'console/state/reducers/options.js',
-				moduleCb: m => { SET_OPTION = m.SET_OPTION; }
-			}
-		], () => done());
-	});
-
 	let renderer, state, store, props;
 	beforeEach(() => {
 		renderer = TestUtils.createRenderer();

@@ -1,26 +1,10 @@
-import loadModules from 'unittest/helpers/moduleLoader.js';
 import expect from 'unittest/helpers/expect.js';
 import sinon from 'sinon';
+import { STORE_DEF } from 'console/state/reducers/definitions.js';
+import * as actions from 'console/state/actions/pageDefs.js';
+import WAMPClient from 'console/access/wampClient.js';
 
 describe('Get page definitions', () => {
-	let STORE_DEF, WAMPClient, actions;
-	before(done => {
-		loadModules([
-			{
-				module: 'console/state/reducers/definitions.js',
-				moduleCb: m => { STORE_DEF = m.STORE_DEF; }
-			},
-			{
-				module: 'console/state/actions/pageDefs.js',
-				moduleCb: m => { actions = m; }
-			},
-			{
-				module: 'console/access/wampClient.js',
-				moduleCb: m => { WAMPClient = m.default; }
-			}
-		], () => done());
-	});
-
 	it('has action descriptors', () =>
 		expect(actions, 'to have property', 'LOAD_PAGE_DEF')
 		.and('to have property', 'LOAD_PAGE_DEF_DONE')

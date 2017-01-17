@@ -2,27 +2,11 @@ import expect from 'unittest/helpers/expect.js';
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
 import Immutable from 'immutable';
-import loadModules from 'unittest/helpers/moduleLoader.js';
+import ConnectDockPanel from 'console/components/container/ConnectDockPanel.js';
+import Perspectives, * as uiElements from 'console/components/presentation/Perspectives.js';
 
 
 describe('Perspectives', () => {
-	let ConnectDockPanel, Perspectives, uiElements;
-	before(done => {
-		loadModules([
-			{
-				module: 'console/components/container/ConnectDockPanel.js',
-				moduleCb: m => { ConnectDockPanel = m.default; }
-			},
-			{
-				module: 'console/components/presentation/Perspectives.js',
-				moduleCb: m => {
-					Perspectives = m.default;
-					uiElements = m;
-				}
-			}
-		], () => done());
-	});
-
 	let renderer, props;
 	beforeEach(() => {
 		renderer = TestUtils.createRenderer();

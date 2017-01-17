@@ -2,23 +2,11 @@ import expect from 'unittest/helpers/expect.js';
 import sinon from 'sinon';
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
-import loadModules from 'unittest/helpers/moduleLoader.js';
 import SearchPage from 'console/components/presentation/SearchPage.js';
 import Immutable from 'immutable';
+import ConnectSearchPage from 'console/components/container/ConnectSearchPage.js';
 
 describe('ConnectSearchPage', () => {
-	let ConnectSearchPage;
-	before(done => {
-		loadModules([
-			{
-				module: 'console/components/container/ConnectSearchPage.js',
-				moduleCb: m => {
-					ConnectSearchPage = m.default;
-				}
-			}
-		], () => done());
-	});
-
 	let renderer, state, store;
 	beforeEach(() => {
 		renderer = TestUtils.createRenderer();
