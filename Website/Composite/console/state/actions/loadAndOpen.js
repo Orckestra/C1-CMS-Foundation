@@ -82,7 +82,7 @@ export function loadAndOpenPage(pageName) {
 					[];
 				let loading = [];
 				dispatch(openPage(pageName, tabs));
-				dispatch(setPage(pageName));
+				dispatch(setPage(pageName, tabs[0]));
 				let loader = pageLoaders[pageDef.get('type')];
 				if (loader) {
 					loading.push(loader(pageName, getState, dispatch));

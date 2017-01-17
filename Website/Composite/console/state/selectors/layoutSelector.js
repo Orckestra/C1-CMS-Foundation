@@ -37,3 +37,19 @@ export const currentTabNameSelector = createSelector(
 	currentPageSelector,
 	page => page.get('currentTab')
 );
+
+const tabsSelector = createSelector(
+	currentPageSelector,
+	page => page.get('tabs') || Immutable.List()
+);
+
+const currentTabSelector = createSelector(
+	currentTabNameSelector,
+	tabsSelector,
+	(tabName, tabs) => tabs.get(tabName) || Immutable.Map()
+);
+
+export const currentPreviewSelector = createSelector(
+	currentTabSelector,
+	tab => tab.get('previewLocation')
+);

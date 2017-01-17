@@ -31,6 +31,7 @@ describe('BrowserPage', () => {
 					}
 				]
 			}),
+			selectedNode: 'test2',
 			tabDef: Immutable.fromJS({
 				provider: {
 					protocol: 'wamp',
@@ -40,7 +41,8 @@ describe('BrowserPage', () => {
 			actions: {
 				openNode: () => {},
 				closeNode: () => {},
-				loadChildren: () => () => () => {}
+				loadChildren: () => () => () => {},
+				selectNode: () => {}
 			}
 		};
 	});

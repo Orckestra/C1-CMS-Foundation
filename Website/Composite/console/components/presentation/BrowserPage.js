@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import colors from 'console/components/colors.js';
 import Icon from 'console/components/presentation/Icon.js';
 
@@ -11,6 +11,7 @@ export const Browser = styled.div`
 	border-right: 1px solid ${colors.borderColor};
 	overflow: auto;
 	padding-top: 5px;
+	cursor: default;
 `;
 
 export const NodeGroup = styled.div`
@@ -41,29 +42,44 @@ export const Node = styled.div`
 		border-top: 1px solid  ${colors.browserLines};
 		margin-top: -1px;
 		position: absolute;
-		top: 8px;
+		top: 13px;
 		left: -10px;
 	}
 
 	&:not(.top):last-child:before {
 		background: ${colors.darkBackground};
 		height: auto;
-		top: 10px;
+		top: 15px;
 		bottom: 0;
 	}
 `;
 
-export const NodeLabel = styled.div``;
+export const NodeLabel = styled.div`
+	margin: 5px 0 0;
+	margin-left: 40px;
+`;
+
 export const NodeName = styled.p`
-	padding-left: 45px;
-	margin: 10px 0;
-	height: 20px;
+	margin: 0;
+	margin-left: 5px;
+	padding: 5px;
+	height: 16px;
+	width: min-content;
+	border-radius: 3px;
+
+	${props => props.selected ?
+		css`
+			color: white;
+			background-color: ${colors.buttonHighlightColor};
+		` :
+		''
+	}
 `;
 export const NodeOpen = styled(Icon)`
 	height: 10px;
 	width: 10px;
 	position: absolute;
-	top: 0px;
+	top: 5px;
 	left: 0px;
 	padding: 3px;
 	color: ${props => props.open ? colors.buttonHighlightColor : colors.baseFontColor};
@@ -71,10 +87,17 @@ export const NodeOpen = styled(Icon)`
 `;
 export const NodeIcon = styled(Icon)`
 	position: absolute;
-	top: -2px;
+	top: 3px;
 	left: 20px;
 	height: 18px;
 	width: 18px;
+
+	${props => props.selected ?
+		css`
+			color: ${colors.buttonHighlightColor};
+		` :
+		''
+	}
 `;
 
 function getNodeIcon(node) {
@@ -103,14 +126,14 @@ export const TreeNode = props => (
 					open={false}/>
 			) :
 			null}
-		<NodeLabel>
-			<NodeIcon id={getNodeIcon(props.node)}/>
-			<NodeName>{props.node.get('label')}</NodeName>
+		<NodeLabel onClick={() => props.actions.selectNode(props.node.get('name'))}>
+			<NodeIcon id={getNodeIcon(props.node)} selected={props.selectedNode === props.node.get('name')}/>
+			<NodeName selected={props.selectedNode === props.node.get('name')}>{props.node.get('label')}</NodeName>
 		</NodeLabel>
 		{props.node.get('childrenLoaded') && props.node.get('open') ?
 			<NodeGroup className="nodeChildren">
 				{props.node.get('children').map(node => (
-					<TreeNode key={node.get('name')} actions={props.actions} node={node}/>
+					<TreeNode key={node.get('name')} actions={props.actions} node={node} selectedNode={props.selectedNode}/>
 				)).toArray()}
 			</NodeGroup>
 			: null}
@@ -120,6 +143,7 @@ export const TreeNode = props => (
 TreeNode.propTypes = {
 	node: ImmutablePropTypes.map.isRequired,
 	className: PropTypes.string,
+	selectedNode: PropTypes.string,
 	actions: PropTypes.shape({
 		openNode: PropTypes.func.isRequired,
 		closeNode: PropTypes.func.isRequired,
@@ -134,7 +158,7 @@ const BrowserPage = props => {
 		<Browser splitPosition={400}>
 			{props.tree.get('children') ?
 				props.tree.get('children').map(node => (
-					<TreeNode key={node.get('name')} actions={actions} className='top' node={node}/>
+					<TreeNode key={node.get('name')} actions={actions} className='top' node={node} selectedNode={props.selectedNode}/>
 				)).toArray() :
 				null}
 		</Browser>
@@ -144,6 +168,7 @@ const BrowserPage = props => {
 BrowserPage.propTypes = {
 	tabDef: ImmutablePropTypes.map,
 	tree: ImmutablePropTypes.map,
+	selectedNode: PropTypes.string,
 	actions: PropTypes.shape({
 		openNode: PropTypes.func.isRequired,
 		closeNode: PropTypes.func.isRequired,

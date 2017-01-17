@@ -28,13 +28,13 @@ describe('ActionButton', () => {
 		);
 	});
 
-	it('should render a button with a class', () => {
+	it('should render a button with a style', () => {
 		props.style = 'main';
 		renderer.render(
 			<ActionButton {...props}/>
 		);
 		return expect(renderer, 'to have rendered',
-			<StyledButton className='main'>{props.label}</StyledButton>
+			<StyledButton buttonStyle='main'>{props.label}</StyledButton>
 		);
 	});
 

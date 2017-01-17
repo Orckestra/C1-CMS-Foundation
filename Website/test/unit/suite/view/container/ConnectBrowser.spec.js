@@ -16,8 +16,15 @@ describe('ConnectBrowser', () => {
 				perspectives: {
 					test: {
 						currentPage: 'testexplorer',
-						testexplorer: {
-							currentTab: 'testbrowser'
+						pages: {
+							testexplorer: {
+								currentTab: 'testbrowser',
+								tabs: {
+									testbrowser: {
+										previewLocation: 'test11'
+									}
+								}
+							}
 						}
 					}
 				}
@@ -103,11 +110,12 @@ describe('ConnectBrowser', () => {
 							}
 						]
 					})}
-					// pageDef={{}}
+					selectedNode='test11'
 					actions={{
 						openNode: expect.it('to be a function'),
 						closeNode: expect.it('to be a function'),
-						loadChildren: expect.it('to be a function')
+						loadChildren: expect.it('to be a function'),
+						selectNode: expect.it('to be a function')
 					}}
 					store={store}/>
 			),
