@@ -1,3 +1,4 @@
+import 'url-polyfill';
 import Wampy from 'wampy';
 import React from 'react';
 import { render } from 'react-dom';

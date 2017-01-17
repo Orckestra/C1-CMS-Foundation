@@ -1,3 +1,4 @@
+import 'url-polyfill';
 // TODO: Remove this when proper services available.
 import { waitFor } from 'console/mocks/mockServer.js';
 
