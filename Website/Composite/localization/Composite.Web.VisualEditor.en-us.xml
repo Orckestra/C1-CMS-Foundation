@@ -184,4 +184,10 @@
   
   <!-- inline editor button -->
   <string key="LaunchButton.Label" value="Edit {0}" />
+
+  <!-- Components -->
+  <string key="Components.LaunchButton.Label" value="Components" />
+  <string key="Components.Window.Headline" value="Select a component" />
+  <string key="Components.Window.Ok" value="OK" />
+  <string key="Components.Window.Cancel" value="Cancel" />
 </strings>

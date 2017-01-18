@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
 using Composite.Core;
+using Composite.Core.ResourceSystem;
 using Composite.Core.WebClient.Services.WampRouter;
 using Composite.Plugins.Components.ComponentTags;
 using WampSharp.V2.Rpc;
@@ -42,8 +43,10 @@ namespace Composite.Plugins.Components.ComponentsEndpoint
         public string Name => "component-list";
         /// <exclude />
         public string Type => "palette";
+
         /// <exclude />
-        public string Headline => "Select a component";
+        public string Headline => StringResourceSystemFacade.GetString("Composite.Web.VisualEditor",
+                    "Components.Window.Headline");
         /// <exclude />
         public string Context => "left-aside";
         /// <exclude />
@@ -76,7 +79,8 @@ namespace Composite.Plugins.Components.ComponentsEndpoint
     public class FinishButton : ButtonResponse
     {
         /// <exclude />
-        public override string Label => "OK";
+        public override string Label => StringResourceSystemFacade.GetString("Composite.Web.VisualEditor",
+                    "Components.Window.Ok");
         /// <exclude />
         public override string Style => "main";
     }
@@ -102,7 +106,8 @@ namespace Composite.Plugins.Components.ComponentsEndpoint
     public class CancelButton : ButtonResponse
     {
         /// <exclude />
-        public override string Label => "Cancel";
+        public override string Label => StringResourceSystemFacade.GetString("Composite.Web.VisualEditor",
+                    "Components.Window.Cancel");
         /// <exclude />
         public override string Style => "";
     }
