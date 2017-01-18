@@ -24,7 +24,11 @@ export const useProvider = (provider, caller, inputData) => dispatch => {
 		});
 	};
 	if (provider.protocol) {
-		dispatch({ type: USE_PROVIDER, provider, caller });
+		let action = { type: USE_PROVIDER, provider, caller };
+		if (provider.sendData) {
+			action.data = inputData;
+		}
+		dispatch(action);
 		let request;
 		if (provider.protocol === 'wamp') {
 			if (provider.sendData) {
@@ -49,11 +53,20 @@ export const useProvider = (provider, caller, inputData) => dispatch => {
 			return;
 		}
 		return request
+		.then(innerCall)
 		.then(() => {
-			dispatch({ type: USE_PROVIDER_DONE, provider, caller });
+			let action = { type: USE_PROVIDER_DONE, provider, caller };
+			if (provider.sendData) {
+				action.data = inputData;
+			}
+			dispatch(action);
 		})
 		.catch(err => {
-			dispatch({ type: USE_PROVIDER_FAILED, provider, caller, message: err.message, stack: err.stack });
+			let action = { type: USE_PROVIDER_FAILED, provider, caller, message: err.message, stack: err.stack };
+			if (provider.sendData) {
+				action.data = inputData;
+			}
+			dispatch(action);
 			//console.error(err); // eslint-disable-line no-console
 		});
 	} else {
