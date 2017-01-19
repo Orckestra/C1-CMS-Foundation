@@ -36,10 +36,10 @@ namespace Composite.Plugins.Components.FileBasedComponentProvider
         private const string Title = "title";
         private const string Description = "description";
         private const string Tags = "tags";
-        private const string ContainerClass = "container-class";
+        private const string ContainerClass = "container-classes";
         private const string Image = "image";
         private const string Icon = "icon";
-        private const string AntiTags = "container-anti-class";
+        private const string AntiTags = "container-anti-classes";
 
         private readonly ComponentChangeNotifier _changeNotifier;
         private readonly string _providerDirectory;
