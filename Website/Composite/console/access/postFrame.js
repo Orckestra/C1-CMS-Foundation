@@ -1,11 +1,13 @@
 // Finds an object in the outer console application.
 // Will throw if no such application exists (i.e. top === undefined)
+/* istanbul ignore next */
 function getApplicationObject(path) {
 	path = path.split('.');
 	return getInObject(top, path);
 }
 
 // Provides Immutable.Iterator#getIn() functionality for ordnary JS objects.
+/* istanbul ignore next */
 function getInObject(obj, path) {
 	let name = path.shift();
 	if (obj[name]) {
@@ -23,6 +25,7 @@ function getInObject(obj, path) {
  XXX: DEPRECATED AT START OF LIFE - do not use this unless you have to.
  FIXME: Hardcoded to return function markup, needs to be more general
 */
+/* istanbul ignore next */
 export default function outerFrameCallback(provider, obj) {
 	if (top && top.Application) {
 		var target = {
