@@ -5,6 +5,7 @@ import TestUtils from 'react-addons-test-utils';
 import Immutable from 'immutable';
 import Dialog from 'console/components/presentation/Dialog.js';
 import ConnectDialog from 'console/components/container/ConnectDialog.js';
+import actionLocator from 'console/state/actionLocator.js';
 
 describe('ConnectDialog', () => {
 	let renderer, state, store, props;
@@ -151,13 +152,25 @@ describe('ConnectDialog', () => {
 		store = {
 			state,
 			subscribe: sinon.spy().named('subscribe'),
-			dispatch: sinon.spy().named('dispatch'),
+			dispatch: sinon.spy(action => {
+				if (typeof action === 'function') {
+					return Promise.resolve(action(store.dispatch));
+				} else {
+					return action;
+				}
+			}).named('dispatch'),
 			getState: sinon.spy(() => store.state).named('getState')
 		};
 		props = {
 			test: 'value',
 			pageDef: Immutable.Map({ dialog: 'testdialog'})
 		};
+		actionLocator.register('testAction', (provider, name, data) => ({
+			type: 'TEST',
+			provider,
+			name,
+			data
+		}));
 	});
 
 	it('renders a Dialog with props and panel type to show', () => {
@@ -190,10 +203,24 @@ describe('ConnectDialog', () => {
 					dialogData={Immutable.fromJS({
 						selectedItem: 'entry2'
 					})}
-					dispatch={store.dispatch}
+					actions={{
+						useProvider: expect.it(
+								'when called with', [{ name: 'testprovider', callAction: 'testAction' }, 'callerName'],
+								'when called with', [{ data: 'test data' }],
+								'to be a', 'Promise'
+							)
+					}}
 					store={store}/>
-			),
-			expect(store.dispatch, 'was not called'),
+			)
+			.then(() => expect(store.dispatch, 'to have calls satisfying', [
+				{ args: [expect.it('to be a function')] },
+				{ args: [{
+					type: 'TEST',
+					provider: 'callerName',
+					name: { data: 'test data' },
+					data: undefined
+				}] }
+			])),
 			expect(store.subscribe, 'was not called'),
 			expect(store.getState, 'was called')
 		]);

@@ -2,7 +2,6 @@ import React, { PropTypes } from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import styled from 'styled-components';
 import colors from 'console/components/colors.js';
-import { setDialogState } from 'console/state/reducers/dialog.js';
 import Icon from 'console/components/presentation/Icon.js';
 
 // two-dimensional structure: Categories containing components.
@@ -94,6 +93,8 @@ function resolveMediaURI(uri) {
 }
 
 const Palette = props => {
+	let selectProvider = props.paneDef.get('select').toJS();
+	let updateDialogData = props.useProvider(selectProvider, props.dialogName);
 	return <div>
 		{props.itemGroups.size === 0 ?
 			<NoComponentsLabel>
@@ -108,13 +109,10 @@ const Palette = props => {
 				<ItemGroupTitle>{itemGroup.get('title')}</ItemGroupTitle>
 				{itemGroup.get('entries').map(item => {
 					let itemName = item.get('id');
-					const selectItem = () => props.dispatch(
-						setDialogState(
-							props.dialogName,
-							props.dialogData
-							.set('selectedItem', itemName)
-							.set('selectedComponentDefinition', item.get('componentDefinition'))
-						)
+					const selectItem = () => updateDialogData(
+						props.dialogData
+						.set('selectedItem', itemName)
+						.set('selectedData', item.get('componentDefinition'))
 					);
 					return <Item
 						key={itemName}
@@ -152,7 +150,7 @@ Palette.propTypes = {
 	itemGroups: ImmutablePropTypes.listOf(ImmutablePropTypes.mapContains({
 		entries: ImmutablePropTypes.listOf(ImmutablePropTypes.map).isRequired
 	})).isRequired,
-	dispatch: PropTypes.func.isRequired,
+	useProvider: PropTypes.func.isRequired,
 	nextAction: PropTypes.func
 };
 

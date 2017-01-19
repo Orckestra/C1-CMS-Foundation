@@ -48,12 +48,13 @@ describe('Palette', () => {
 					]
 				}
 			]),
-			paneDef: Immutable.Map({
-				name: 'testdpalette'
+			paneDef: Immutable.fromJS({
+				name: 'testpalette',
+				select: {}
 			}),
 			dialogName: 'testdialog',
 			dialogData: Immutable.Map({ selectedItem: 'entry2' }),
-			dispatch: () => {}
+			useProvider: () => () => {}
 		};
 	});
 

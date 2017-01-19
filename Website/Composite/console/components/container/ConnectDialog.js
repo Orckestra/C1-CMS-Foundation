@@ -3,6 +3,7 @@ import { currentPaletteElementList } from 'console/state/selectors/paletteDialog
 import { currentDialogDefSelector } from 'console/state/selectors/dialogSelector.js';
 import Dialog from 'console/components/presentation/Dialog.js';
 import Immutable from 'immutable';
+import { useProvider } from 'console/state/actions/useProvider.js';
 
 function mapStateToProps(state, ownProps) {
 	// Harvest dialog identity from pageDef
@@ -15,6 +16,14 @@ function mapStateToProps(state, ownProps) {
 	};
 }
 
-const ConnectDialog = connect(mapStateToProps)(Dialog);
+function mapDispatchToProps(dispatch) {
+	return {
+		actions: {
+			useProvider: (provider, name) => data => dispatch(useProvider(provider, name, data))
+		}
+	};
+}
+
+const ConnectDialog = connect(mapStateToProps, mapDispatchToProps)(Dialog);
 
 export default ConnectDialog;

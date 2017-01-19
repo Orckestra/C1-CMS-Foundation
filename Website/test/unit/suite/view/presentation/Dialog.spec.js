@@ -16,7 +16,7 @@ describe('Dialog', () => {
 				name: 'testdialog',
 				panes: Immutable.List()
 			}),
-			dispatch: () => {}
+			actions: { useProvider: () => () => {} }
 		};
 		fullProps = {
 			dialogData: Immutable.Map(),
@@ -41,7 +41,7 @@ describe('Dialog', () => {
 				]
 			}),
 			itemGroups: Immutable.List(),
-			dispatch: () => {}
+			actions: { useProvider: () => () => {} }
 		};
 	});
 
@@ -55,7 +55,11 @@ describe('Dialog', () => {
 		return expect(renderer, 'to have rendered', <DialogBox>
 			<DialogTitle>Palette!</DialogTitle>
 			<DialogPane>
-				<Palette dialogName='testdialog' paneDef={Immutable.Map({ name: 'testpalette' })} itemGroups={Immutable.List()} dispatch={expect.it('to be a function')} />
+				<Palette
+					dialogName='testdialog'
+					paneDef={Immutable.Map({ name: 'testpalette' })}
+					itemGroups={Immutable.List()}
+					useProvider={expect.it('to be a function')} />
 			</DialogPane>
 			<DialogButtonGroup>
 				<ActionButton label='Cancel'/>

@@ -28,10 +28,9 @@ export default function outerFrameCallback(provider, obj) {
 		var target = {
 			response: getApplicationObject(provider.response)
 		};
-		let markup = provider.markup && getInObject(obj, provider.markup);
-		if (markup) {
+		if (obj) {
 			target.result = {
-				FunctionMarkup: markup,
+				FunctionMarkup: obj,
 				RequireConfiguration: true
 			};
 		}

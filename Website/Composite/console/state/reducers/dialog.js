@@ -1,4 +1,5 @@
 import Immutable from 'immutable';
+import actionLocator from 'console/state/actionLocator.js';
 
 const prefix = 'DIALOG.';
 export const SET_DIALOG_STATE = prefix + 'SET_STATE';
@@ -9,6 +10,7 @@ export function setDialogState(dialogName, data) {
 		data
 	};
 }
+actionLocator.register('setDialogState', setDialogState);
 
 const initialState = Immutable.Map();
 

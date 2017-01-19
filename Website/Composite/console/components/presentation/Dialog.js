@@ -5,8 +5,6 @@ import colors from 'console/components/colors.js';
 import Palette from 'console/components/presentation/Palette.js';
 import ActionButton from 'console/components/presentation/ActionButton.js';
 import Immutable from 'immutable';
-import { fireAction } from 'console/state/actions/fireAction.js';
-import { setDialogState } from 'console/state/reducers/dialog.js';
 
 const paneTypes = {
 	palette: Palette
@@ -64,29 +62,43 @@ const Dialog = props => {
 	let Pane = paneTypes[paneDef.get('type')] || (() => null);
 	let cancelButton = paneDef.get('cancelButton') ? paneDef.get('cancelButton').toJS() : null;
 	let cancelProvider = paneDef.get('cancelProvider') && paneDef.get('cancelProvider').toJS ? paneDef.get('cancelProvider').toJS() : null;
-	let cancelAction = cancelButton ? () => {
+	let cancelAction = null;
+	if (cancelProvider) {
 		// Cancel and close dialog
-		if (cancelProvider) {
-			// Fire off a call to the provider if one exists, send dialog name.
-			props.dispatch(fireAction(cancelProvider, props.dialogDef.get('name')));
-		}
-	} : null;
+		cancelAction = props.actions.useProvider(cancelProvider, props.dialogDef.get('name'));
+	}
 	let nextButton = paneDef.get('nextButton') ? paneDef.get('nextButton').toJS() : null;
 	let nextAction = paneDef.get('nextButton') ? () => {
 		// Switch to next pane - set or increment dialogData[showPane]
 	} : null;
 	let finishButton = paneDef.get('finishButton') ? paneDef.get('finishButton').toJS() : null;
-	let finishAction = paneDef.get('finishButton') && paneDef.get('finishProvider') && paneDef.get('finishProvider').toJS ? () => {
-		// Complete dialog activity, send back data using provider
-		props.dispatch(fireAction(paneDef.get('finishProvider').toJS(), props.dialogDef.get('name'), props.dialogData.toJS()));
-	} : null;
+	let finishProvider = paneDef.get('finishProvider') && paneDef.get('finishProvider').toJS ? paneDef.get('finishProvider').toJS() : null;
+	let finishAction = null;
+	if (paneDef.get('finishButton') && finishProvider) {
+		let action = props.actions.useProvider(
+			finishProvider,
+			props.dialogDef.get('name')
+		);
+		finishAction = () => {
+			let payload = props.dialogData.getIn(finishProvider.markup);
+			payload = Immutable.Iterable.isIterable(payload) ? payload.toJS() : payload;
+			// Complete dialog activity, send back data using provider
+			action(payload);
+		};
+	}
 	return <DialogBox
 		onContextMenu={event => {
 			event.preventDefault(); // To not show the default menu
 		}}>
 		{paneDef.get('headline') ? <DialogTitle>{paneDef.get('headline')}</DialogTitle> : null}
 		<DialogPane>
-			<Pane dialogName={props.dialogDef.get('name')} paneDef={paneDef} itemGroups={props.itemGroups} dialogData={props.dialogData} dispatch={props.dispatch} nextAction={nextAction || finishAction}/>
+			<Pane
+				dialogName={props.dialogDef.get('name')}
+				paneDef={paneDef}
+				itemGroups={props.itemGroups}
+				dialogData={props.dialogData}
+				useProvider={props.actions.useProvider}
+				nextAction={nextAction || finishAction}/>
 		</DialogPane>
 		<DialogButtonGroup>
 			{ cancelButton ? <ActionButton action={cancelAction} {...cancelButton}/> : null}
@@ -105,7 +117,9 @@ Dialog.propTypes = {
 		headline: PropTypes.string,
 		panes: ImmutablePropTypes.list.isRequired
 	}).isRequired,
-	dispatch: PropTypes.func.isRequired,
+	actions: PropTypes.shape({
+		useProvider: PropTypes.func.isRequired,
+	}).isRequired,
 	itemGroups: ImmutablePropTypes.list
 };
 

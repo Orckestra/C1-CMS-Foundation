@@ -22,7 +22,7 @@ describe('Provider activities', () => {
 		describe('Local', () => {
 			beforeEach(() => {
 				provider = {
-					action: 'testAction'
+					callAction: 'testAction'
 				};
 				actionLocator.register('testAction', function (caller, data) {
 					return {
@@ -36,7 +36,7 @@ describe('Provider activities', () => {
 			describe('without data', () => {
 				it('dispatches the provider\'s action without data attached', () =>
 					expect(useProvider(provider, caller), 'to be a function')
-					.and('when called with', [dispatch])
+					.and('when called with', [dispatch], 'to be a', 'Promise')
 					.then(() =>
 						expect(dispatch, 'to have calls satisfying', [
 							{ args: [
@@ -60,7 +60,7 @@ describe('Provider activities', () => {
 
 				it('dispatches the provider\'s action with data attached', () =>
 					expect(useProvider(provider, caller, data), 'to be a function')
-					.and('when called with', [dispatch])
+					.and('when called with', [dispatch], 'to be a', 'Promise')
 					.then(() =>
 						expect(dispatch, 'to have calls satisfying', [
 							{ args: [expect.it('to be an action of type', 'TEST')
@@ -87,7 +87,7 @@ describe('Provider activities', () => {
 					protocol: 'wat?'
 				};
 				return expect(useProvider(provider, caller), 'to be a function')
-				.and('when called with', [dispatch])
+				.and('when called with', [dispatch], 'to be a', 'Promise')
 				.then(() =>
 					expect([dispatch], 'to have calls satisfying', [
 						{ spy: dispatch, args: [{ type: actions.USE_PROVIDER,  provider, caller }] },
@@ -108,7 +108,7 @@ describe('Provider activities', () => {
 
 				it('makes a remote call, without further actions or data sent', () =>
 					expect(useProvider(provider, caller), 'to be a function')
-					.and('when called with', [dispatch])
+					.and('when called with', [dispatch], 'to be a', 'Promise')
 					.then(() =>
 						Promise.all([
 							expect(dispatch, 'to have calls satisfying', [
@@ -132,7 +132,7 @@ describe('Provider activities', () => {
 
 				it('sends word of unhandled errors', () =>
 					expect(useProvider(provider, 'failCaller'), 'to be a function')
-					.and('when called with', [dispatch])
+					.and('when called with', [dispatch], 'to be a', 'Promise')
 					.then(() =>
 						expect([dispatch], 'to have calls satisfying', [
 							{ spy: dispatch, args: [{ type: actions.USE_PROVIDER,  provider, caller: 'failCaller' }] },
@@ -159,7 +159,7 @@ describe('Provider activities', () => {
 
 				it('makes a remote call, with data sent', () =>
 					expect(useProvider(provider, caller, inData), 'to be a function')
-					.and('when called with', [dispatch])
+					.and('when called with', [dispatch], 'to be a', 'Promise')
 					.then(() =>
 						Promise.all([
 							expect(dispatch, 'to have calls satisfying', [
@@ -183,7 +183,7 @@ describe('Provider activities', () => {
 
 				it('sends word of unhandled errors', () =>
 					expect(useProvider(provider, 'failCaller', inData), 'to be a function')
-					.and('when called with', [dispatch])
+					.and('when called with', [dispatch], 'to be a', 'Promise')
 					.then(() =>
 						expect([dispatch], 'to have calls satisfying', [
 							{ spy: dispatch, args: [{ type: actions.USE_PROVIDER,  provider, caller: 'failCaller' }] },
@@ -204,7 +204,7 @@ describe('Provider activities', () => {
 						};
 					});
 					provider = {
-						action: 'testAction',
+						callAction: 'testAction',
 						protocol: 'wamp',
 						uri: 'test.fetch'
 					};
@@ -217,7 +217,7 @@ describe('Provider activities', () => {
 
 				it('makes a remote call, with action', () =>
 					expect(useProvider(provider, caller), 'to be a function')
-					.and('when called with', [dispatch])
+					.and('when called with', [dispatch], 'to be a', 'Promise')
 					.then(() =>
 						Promise.all([
 							expect(dispatch, 'to have calls satisfying', [
@@ -246,7 +246,7 @@ describe('Provider activities', () => {
 
 				it('sends word of unhandled errors', () =>
 					expect(useProvider(provider, 'failCaller'), 'to be a function')
-					.and('when called with', [dispatch])
+					.and('when called with', [dispatch], 'to be a', 'Promise')
 					.then(() =>
 						expect([dispatch], 'to have calls satisfying', [
 							{ spy: dispatch, args: [{ type: actions.USE_PROVIDER,  provider, caller: 'failCaller' }] },
@@ -267,7 +267,7 @@ describe('Provider activities', () => {
 						};
 					});
 					provider = {
-						action: 'testAction',
+						callAction: 'testAction',
 						protocol: 'wamp',
 						uri: 'test.post',
 						sendData: true
@@ -284,7 +284,7 @@ describe('Provider activities', () => {
 
 				it('makes a remote call, with data sent', () =>
 					expect(useProvider(provider, caller, inData), 'to be a function')
-					.and('when called with', [dispatch])
+					.and('when called with', [dispatch], 'to be a', 'Promise')
 					.then(() =>
 						Promise.all([
 							expect(dispatch, 'to have calls satisfying', [
@@ -313,7 +313,7 @@ describe('Provider activities', () => {
 
 				it('sends word of unhandled errors', () =>
 					expect(useProvider(provider, 'failCaller', inData), 'to be a function')
-					.and('when called with', [dispatch])
+					.and('when called with', [dispatch], 'to be a', 'Promise')
 					.then(() =>
 						expect([dispatch], 'to have calls satisfying', [
 							{ spy: dispatch, args: [{ type: actions.USE_PROVIDER,  provider, caller: 'failCaller' }] },

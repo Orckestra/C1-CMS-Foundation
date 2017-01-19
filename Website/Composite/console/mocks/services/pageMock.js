@@ -346,7 +346,7 @@ const pages = {
 	// 					protocol: 'post',
 	// 					response: 'Dialog.RESPONSE_ACCEPT',
 	// 					action: 'DialogPageBinding.ACTION_RESPONSE',
-	// 					markup: ['selectedComponentDefinition'],
+	// 					markup: ['selectedData'],
 	// 					uri: ''
 	// 				},
 	// 				{
@@ -393,7 +393,11 @@ const pages = {
 					type: 'palette',
 					headline: 'Select a component',
 					context: 'left-aside',
-					categories: ['gallery', 'popular'],
+					categories: ['Media', 'music'],
+					select: {
+						callAction: 'setDialogState',
+						sendData: true
+					},
 					provider: {
 						name: 'elementSource',
 						protocol: 'wamp',
@@ -406,10 +410,10 @@ const pages = {
 					finishProvider: {
 						name: 'elementInsert',
 						protocol: 'post',
+						sendData: true,
 						response: 'Dialog.RESPONSE_ACCEPT',
 						action: 'DialogPageBinding.ACTION_RESPONSE',
-						markup: ['selectedComponentDefinition'],
-						uri: ''
+						markup: ['selectedData']
 					},
 					cancelButton: {
 						label: 'Cancel'
@@ -418,8 +422,7 @@ const pages = {
 						name: 'componentListCancel',
 						protocol: 'post',
 						response: 'DialogPageBinding.ACTION_RESPONSE',
-						action: 'Dialog.RESPONSE_CANCEL',
-						uri: ''
+						action: 'Dialog.RESPONSE_CANCEL'
 					}
 				}
 			]

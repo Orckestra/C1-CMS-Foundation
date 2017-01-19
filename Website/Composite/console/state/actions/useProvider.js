@@ -11,8 +11,8 @@ export const USE_PROVIDER_FAILED = useName + '_FAILED';
 export const useProvider = (provider, caller, inputData) => dispatch => {
 	let innerCall = outputData => {
 		let action;
-		if (provider.action) {
-			let actionCreator = actionLocator.get(provider.action);
+		if (provider.callAction) {
+			let actionCreator = actionLocator.get(provider.callAction);
 			action = actionCreator(caller, outputData);
 		}
 		return new Promise((resolve) => {
@@ -50,7 +50,7 @@ export const useProvider = (provider, caller, inputData) => dispatch => {
 				caller,
 				message: 'Unknown protocol: ' + provider.protocol
 			});
-			return;
+			return Promise.resolve();
 		}
 		return request
 		.then(innerCall)
@@ -70,6 +70,6 @@ export const useProvider = (provider, caller, inputData) => dispatch => {
 			//console.error(err); // eslint-disable-line no-console
 		});
 	} else {
-		innerCall(inputData);
+		return innerCall(inputData);
 	}
 };
