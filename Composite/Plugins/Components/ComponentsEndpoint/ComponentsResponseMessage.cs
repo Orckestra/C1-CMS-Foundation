@@ -50,6 +50,9 @@ namespace Composite.Plugins.Components.ComponentsEndpoint
         /// <exclude />
         public string Context => "left-aside";
         /// <exclude />
+        public string NoItemsText => StringResourceSystemFacade.GetString("Composite.Web.VisualEditor",
+                    "Components.Window.NoItems");
+        /// <exclude />
         public IEnumerable<string> Categories { get; }
         /// <exclude />
         public Provider Provider => new Provider();

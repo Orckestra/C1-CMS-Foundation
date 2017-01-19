@@ -188,6 +188,7 @@
   <!-- Components -->
   <string key="Components.LaunchButton.Label" value="Components" />
   <string key="Components.Window.Headline" value="Select a component" />
+  <string key="Components.Window.NoItems" value="No selectable components" />
   <string key="Components.Window.Ok" value="OK" />
   <string key="Components.Window.Cancel" value="Cancel" />
 </strings>
