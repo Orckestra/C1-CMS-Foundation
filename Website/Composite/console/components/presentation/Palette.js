@@ -99,8 +99,7 @@ const Palette = props => {
 		{props.itemGroups.size === 0 ?
 			<NoComponentsLabel>
 				<NoComponentsIcon/><br/>
-				No selectable components
-				{/* TODO: Message should be drawn from dialog pane def. */}
+				{props.paneDef.get('noItemsText')}
 			</NoComponentsLabel> :
 			null}
 		{props.itemGroups.map(itemGroup =>
