@@ -353,8 +353,8 @@ const pages = {
 	// 				{
 	// 					name: 'componentListCancel',
 	// 					protocol: 'post',
-	// 					response: 'DialogPageBinding.ACTION_RESPONSE',
-	// 					action: 'Dialog.RESPONSE_CANCEL',
+	// 					response: 'Dialog.RESPONSE_CANCEL',
+	// 					action: 'DialogPageBinding.ACTION_RESPONSE',
 	// 					uri: ''
 	// 				}
 	// 			],
@@ -423,8 +423,8 @@ const pages = {
 					cancelProvider: {
 						name: 'componentListCancel',
 						protocol: 'post',
-						response: 'DialogPageBinding.ACTION_RESPONSE',
-						action: 'Dialog.RESPONSE_CANCEL'
+						response: 'Dialog.RESPONSE_CANCEL',
+						action: 'DialogPageBinding.ACTION_RESPONSE'
 					}
 				}
 			]

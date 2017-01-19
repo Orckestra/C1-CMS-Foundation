@@ -83,7 +83,9 @@ const Dialog = props => {
 			let payload = props.dialogData.getIn(finishProvider.markup);
 			payload = Immutable.Iterable.isIterable(payload) ? payload.toJS() : payload;
 			// Complete dialog activity, send back data using provider
-			action(payload);
+			if (payload) {
+				action(payload);
+			}
 		};
 	}
 	return <DialogBox
