@@ -21,7 +21,7 @@ module.exports = {
 		.page.editor()
 			.selectContent(1)
 			.clickLabel("${string:Composite.Web.VisualEditor:Components.LaunchButton.Label}")
-			.clickText("xhtml-Function-set-params")
+			.clickText("function-set-params")
 			.clickText("OK")
 			.clickDataBySibilings("Text")
 			.changeElementContent('h1', 'Some Title')
