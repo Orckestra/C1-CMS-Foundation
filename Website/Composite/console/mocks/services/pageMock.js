@@ -327,6 +327,7 @@ const pages = {
 	// 			name: 'component-list',
 	// 			type: 'palette',
 	// 			headline: 'Select a component',
+	// 			noItemsText: 'No selectable component',
 	// 			filter: 'left-aside',
 	// 			categories: ['gallery', 'popular'],
 	// 			topics: [
@@ -392,6 +393,7 @@ const pages = {
 					name: 'component-list',
 					type: 'palette',
 					headline: 'Select a component',
+					noItemsText: 'No selectable component',
 					context: 'left-aside',
 					categories: ['Media', 'music'],
 					select: {
