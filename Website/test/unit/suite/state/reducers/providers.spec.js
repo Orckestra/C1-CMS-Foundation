@@ -12,9 +12,8 @@ describe('Providers', () => {
 			let storeData = actions.storeData;
 			it('creates action for storing a provider\'s data', () => {
 				let entries = [ 'test1', 'test2', 'test3', 'test4', 'test5', 'test6' ];
-				let action = storeData('test', 'page1', entries);
+				let action = storeData('page1', entries);
 				return expect(action, 'to be an action of type', actions.STORE_PROVIDER_DATA)
-					.and('to have property', 'providerName', 'test')
 					.and('to have property', 'page', 'page1')
 					.and('to have property', 'data', entries);
 			});
@@ -40,31 +39,20 @@ describe('Providers', () => {
 		beforeEach(() => {
 			action = {
 				type: actions.STORE_PROVIDER_DATA,
-				providerName: 'test',
 				page: 'page1',
 				data: [ 'test1', 'test2', 'test3', 'test4', 'test5', 'test6' ]
 			};
 		});
 
-		it('Adds a new log page', () => {
+		it('Adds a new page', () => {
 			let oldState = Immutable.fromJS({
-				test: {
-					'otherpage': ['no', 'change']
-				},
-				other: {
-					'something': ['no', 'touchy']
-				}
+				otherpage: ['no', 'change']
 			});
 			let newState = providers(oldState, action);
 			return expect(newState, 'not to be', oldState)
 			.and('to equal', Immutable.fromJS({
-				test: {
-					'otherpage': ['no', 'change'],
-					'page1': [ 'test1', 'test2', 'test3', 'test4', 'test5', 'test6' ]
-				},
-				other: {
-					'something': ['no', 'touchy']
-				}
+				otherpage: ['no', 'change'],
+				page1: [ 'test1', 'test2', 'test3', 'test4', 'test5', 'test6' ]
 			}));
 		});
 	});

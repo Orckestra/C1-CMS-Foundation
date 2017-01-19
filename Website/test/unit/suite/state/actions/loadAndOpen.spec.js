@@ -63,7 +63,9 @@ describe('loadAndOpenPage', () => {
 				providerDefs: {
 					elementSource: {
 						protocol: 'wamp',
-						uri: 'mock.provider.test'
+						uri: 'mock.provider.test',
+						sendData: true,
+						callAction: 'storeProviderData'
 					}
 				}
 			}),
@@ -200,9 +202,9 @@ describe('loadAndOpenPage', () => {
 			)
 			.then(() =>
 				expect(innerDispatch, 'to have calls satisfying', [
-					{ args: [ { type: 'PROVIDER.GET_COMMENCE', provider: { protocol: 'wamp', uri: 'mock.provider.test' }, page: 'testdialog', params: [ '' ] } ]},
-					{ args: [ { type: 'PROVIDER.STORE', providerName: 'mock.provider.test', page: 'testdialog' } ]},
-					{ args: [ { type: 'PROVIDER.GET_DONE', provider: { protocol: 'wamp', uri: 'mock.provider.test' }, page: 'testdialog' } ]}
+					{ args: [ { type: 'PROVIDER.USE_COMMENCE', provider: { protocol: 'wamp', uri: 'mock.provider.test' }, caller: 'testdialog' } ]},
+					{ args: [ { type: 'PROVIDER.STORE', page: 'testdialog' } ]},
+					{ args: [ { type: 'PROVIDER.USE_DONE', provider: { protocol: 'wamp', uri: 'mock.provider.test' }, caller: 'testdialog' } ]}
 				])
 			);
 		});

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { setOption } from 'console/state/reducers/options.js';
-import { getProviderPage } from 'console/state/actions/fetchFromProvider.js';
+import { useProvider } from 'console/state/actions/useProvider.js';
 import { searchQuerySelector, facetSelector, columnSelector, rowSelector } from 'console/state/selectors/searchSelector.js';
 import { currentPageNameSelector } from 'console/state/selectors/layoutSelector.js';
 import SearchPage from 'console/components/presentation/SearchPage.js';
@@ -21,7 +21,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
 	return {
 		actions: {
-			performSearch: (provider, pageName) => values => dispatch(getProviderPage(provider, pageName, values)),
+			performSearch: provider => values => dispatch(useProvider(provider, 'consoleSearch', values)),
 			setOption: fieldName => value => dispatch(setOption(fieldName, value))
 		}
 	};

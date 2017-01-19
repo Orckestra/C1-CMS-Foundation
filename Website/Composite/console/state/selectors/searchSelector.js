@@ -9,14 +9,7 @@ const allOptionsSelector = state => state.get('options');
 export const searchSelector = createSelector(
 	providerSelector,
 	currentPageSelector,
-	(provider, pageDef) => pageDef && provider.getIn([
-		pageDef.getIn([
-			'providers',
-			pageDef.get('searchProvider'),
-			'uri'
-		]),
-		pageDef.get('name')
-	]) || Immutable.Map()
+	(provider, pageDef) => pageDef && provider.get('consoleSearch') || Immutable.Map()
 );
 
 export const searchQuerySelector = createSelector(

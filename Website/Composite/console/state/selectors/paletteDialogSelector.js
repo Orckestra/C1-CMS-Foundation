@@ -10,7 +10,6 @@ const rawProviderDataSelector = createSelector(
 	providersSelector,
 	(dialogDef, paneDef, providers) =>
 		providers.getIn([
-			paneDef.getIn(['provider', 'uri']),
 			dialogDef.get('name')
 		]) || Immutable.List()
 );

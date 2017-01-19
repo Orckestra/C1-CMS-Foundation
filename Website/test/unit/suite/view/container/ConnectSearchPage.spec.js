@@ -50,83 +50,81 @@ describe('ConnectSearchPage', () => {
 				}
 			},
 			providers: {
-				'search.query': {
-					search: {
-						columns: [
-							{
-								fieldName: 'col1',
-								label: 'Column 1',
-								sortable: false
-							},
-							{
-								fieldName: 'col2',
-								label: 'Column 2',
-								sortable: true
+				consoleSearch: {
+					columns: [
+						{
+							fieldName: 'col1',
+							label: 'Column 1',
+							sortable: false
+						},
+						{
+							fieldName: 'col2',
+							label: 'Column 2',
+							sortable: true
+						}
+					],
+					rows: [
+						{
+							label: 'Value',
+							url: '/address1',
+							values: {
+								col1: 'Value',
+								col2: 'One'
 							}
-						],
-						rows: [
-							{
-								label: 'Value',
-								url: '/address1',
-								values: {
-									col1: 'Value',
-									col2: 'One'
-								}
-							},
-							{
-								label: 'Other value',
-								url: '/address1',
-								values: {
-									col1: 'Other value',
-									col2: 'Two'
-								}
-							},
-							{
-								label: 'And another',
-								url: '/address1',
-								values: {
-									col1: 'And another',
-									col2: 'One'
-								}
-							},
-							{
-								label: 'Yet more',
-								url: '/address1',
-								values: {
-									col1: 'Yet more',
-									col2: 'Two'
-								}
-							},
-							{
-								label: 'Last one',
-								url: '/address1',
-								values: {
-									col1: 'Last one',
-									col2: 'One'
-								}
+						},
+						{
+							label: 'Other value',
+							url: '/address1',
+							values: {
+								col1: 'Other value',
+								col2: 'Two'
 							}
-						],
-						totalHits: 5,
-						facetFields: [
-							{
-								fieldName: 'col2',
-								label: 'Column 2',
-								facets: [
-									{
-										value: '1',
-										label: 'One',
-										hitCount: 3
-									},
-									{
-										value: '2',
-										label: 'Two',
-										hitCount: 2
-									}
-								]
+						},
+						{
+							label: 'And another',
+							url: '/address1',
+							values: {
+								col1: 'And another',
+								col2: 'One'
 							}
-						],
-						queryText: 'testquery'
-					}
+						},
+						{
+							label: 'Yet more',
+							url: '/address1',
+							values: {
+								col1: 'Yet more',
+								col2: 'Two'
+							}
+						},
+						{
+							label: 'Last one',
+							url: '/address1',
+							values: {
+								col1: 'Last one',
+								col2: 'One'
+							}
+						}
+					],
+					totalHits: 5,
+					facetFields: [
+						{
+							fieldName: 'col2',
+							label: 'Column 2',
+							facets: [
+								{
+									value: '1',
+									label: 'One',
+									hitCount: 3
+								},
+								{
+									value: '2',
+									label: 'Two',
+									hitCount: 2
+								}
+							]
+						}
+					],
+					queryText: 'testquery'
 				}
 			}
 		});
@@ -150,7 +148,10 @@ describe('ConnectSearchPage', () => {
 					searchProvider: {
 						name: 'searchProvider',
 						protocol: 'wamp',
-						uri: 'search.query'
+						uri: 'search.query',
+						callAction: 'storeProviderData',
+						sendData: true,
+						sendNoCaller: true
 					}
 				},
 				linkColumn: 'col1'
@@ -167,7 +168,10 @@ describe('ConnectSearchPage', () => {
 					searchProvider: {
 						name: 'searchProvider',
 						protocol: 'wamp',
-						uri: 'search.query'
+						uri: 'search.query',
+						callAction: 'storeProviderData',
+						sendData: true,
+						sendNoCaller: true
 					}
 				},
 				linkColumn: 'col1'

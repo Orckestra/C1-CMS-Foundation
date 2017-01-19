@@ -181,6 +181,32 @@ describe('Provider activities', () => {
 					)
 				);
 
+				it('when requested sends only data, not caller', () => {
+					provider.sendNoCaller = true;
+					wampCall.withArgs(provider.uri, inData).returns(Promise.resolve());
+					return expect(useProvider(provider, caller, inData), 'to be a function')
+					.and('when called with', [dispatch], 'to be a', 'Promise')
+					.then(() =>
+						Promise.all([
+							expect(dispatch, 'to have calls satisfying', [
+								{ args: [
+									expect.it('to be an action of type', actions.USE_PROVIDER)
+									.and('to have property', 'caller', caller)
+									.and('to have property', 'data', inData)
+								] },
+								{ args: [
+									expect.it('to be an action of type', actions.USE_PROVIDER_DONE)
+									.and('to have property', 'caller', caller)
+									.and('to have property', 'data', inData)
+								] }
+							]),
+							expect(wampCall, 'to have calls satisfying', [
+								{ args: [provider.uri, inData] }
+							]),
+						])
+					);
+				});
+
 				it('sends word of unhandled errors', () =>
 					expect(useProvider(provider, 'failCaller', inData), 'to be a function')
 					.and('when called with', [dispatch], 'to be a', 'Promise')

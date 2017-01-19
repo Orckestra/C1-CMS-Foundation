@@ -30,12 +30,15 @@ export const useProvider = (provider, caller, inputData) => dispatch => {
 		}
 		dispatch(action);
 		let request;
+		let args = [];
+		if (!provider.sendNoCaller) {
+			args.push(caller);
+		}
+		if (provider.sendData) {
+			args.push(inputData);
+		}
 		if (provider.protocol === 'wamp') {
-			if (provider.sendData) {
-				request = WAMPClient.call(provider.uri, caller, inputData);
-			} else {
-				request = WAMPClient.call(provider.uri, caller);
-			}
+			request = WAMPClient.call(provider.uri, ...args);
 		} else if (provider.protocol === 'post') {
 			// Obsolescent protocol, for compatibility with old UI
 			if (provider.sendData) {

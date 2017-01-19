@@ -56,97 +56,95 @@ describe('ConnectDialog', () => {
 				}
 			},
 			providers: {
-				'test.provider.elements': {
-					testdialog: [
-						{
-							name: 'entry1',
-							title: 'First component',
-							description: 'All manner of words',
-							groupingTags: [
-								'tag1',
-								'tag2',
-								'unusedtag'
-							],
-							containerClasses: [
-								'narrow',
-								'footer'
-							],
-							componentDefinition: {
-								html: {
-									body: {}
-								}
-							}
-						},
-						{
-							name: 'entry2',
-							title: 'Second component',
-							description: 'Even more words',
-							groupingTags: [
-								'tag1',
-								'tag2'
-							],
-							containerClasses: [
-								'narrow',
-								'footer'
-							],
-							componentDefinition: {
-								html: {
-									body: {}
-								}
-							}
-						},
-						{
-							name: 'entry3',
-							title: 'Third component',
-							description: 'Even more words',
-							groupingTags: [
-								'tag2',
-								'tag3'
-							],
-							containerClasses: [
-								'narrow',
-								'footer'
-							],
-							componentDefinition: {
-								html: {
-									body: {}
-								}
-							}
-						},
-						{
-							name: 'entry4',
-							title: 'Fourth component',
-							description: 'Even more words',
-							groupingTags: [
-								'tag3'
-							],
-							containerClasses: [
-								'narrow',
-								'footer'
-							],
-							componentDefinition: {
-								html: {
-									body: {}
-								}
-							}
-						},
-						{
-							name: 'entry5',
-							title: 'Fifth component',
-							description: 'Wooooords',
-							groupingTags: ['unusedtag'],
-							containerClasses: [
-								'narrow',
-								'footer'
-							],
-							componentDefinition: {
-								html: {
-									body: {}
-								}
+				testdialog: [
+					{
+						name: 'entry1',
+						title: 'First component',
+						description: 'All manner of words',
+						groupingTags: [
+							'tag1',
+							'tag2',
+							'unusedtag'
+						],
+						containerClasses: [
+							'narrow',
+							'footer'
+						],
+						componentDefinition: {
+							html: {
+								body: {}
 							}
 						}
-					]
-				}
+					},
+					{
+						name: 'entry2',
+						title: 'Second component',
+						description: 'Even more words',
+						groupingTags: [
+							'tag1',
+							'tag2'
+						],
+						containerClasses: [
+							'narrow',
+							'footer'
+						],
+						componentDefinition: {
+							html: {
+								body: {}
+							}
+						}
+					},
+					{
+						name: 'entry3',
+						title: 'Third component',
+						description: 'Even more words',
+						groupingTags: [
+							'tag2',
+							'tag3'
+						],
+						containerClasses: [
+							'narrow',
+							'footer'
+						],
+						componentDefinition: {
+							html: {
+								body: {}
+							}
+						}
+					},
+					{
+						name: 'entry4',
+						title: 'Fourth component',
+						description: 'Even more words',
+						groupingTags: [
+							'tag3'
+						],
+						containerClasses: [
+							'narrow',
+							'footer'
+						],
+						componentDefinition: {
+							html: {
+								body: {}
+							}
+						}
+					},
+					{
+						name: 'entry5',
+						title: 'Fifth component',
+						description: 'Wooooords',
+						groupingTags: ['unusedtag'],
+						containerClasses: [
+							'narrow',
+							'footer'
+						],
+						componentDefinition: {
+							html: {
+								body: {}
+							}
+						}
+					}
+				]
 			}
 		});
 		store = {

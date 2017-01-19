@@ -403,7 +403,10 @@ const pages = {
 					provider: {
 						name: 'elementSource',
 						protocol: 'wamp',
-						uri: 'components.get'
+						uri: 'components.get',
+						callAction: 'storeProviderData',
+						sendData: true,
+						sendNoCaller: true
 					},
 					finishButton: {
 						label: 'Next',
@@ -440,7 +443,10 @@ const pages = {
 			{
 				name: 'searchProvider',
 				protocol: 'wamp',
-				uri: 'search.query'
+				uri: 'search.query',
+				callAction: 'storeProviderData',
+				sendData: true,
+				sendNoCaller: true
 			}
 		],
 		urlColumn: 'label'
