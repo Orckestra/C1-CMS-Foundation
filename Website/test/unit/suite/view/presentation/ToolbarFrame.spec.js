@@ -12,7 +12,7 @@ describe('ToolbarFrame', () => {
 	let renderer, props, pageActions;
 	beforeEach(() => {
 		pageActions = {
-			fireAction: () => {},
+			useProvider: () => {},
 			update: () => {},
 			setOption: () => {},
 			save: () => {},
@@ -24,8 +24,8 @@ describe('ToolbarFrame', () => {
 				{
 					name: 'test/toolbar',
 					items: [
-						{ name: 'test/onebutton', type: 'button', label: 'One', action: 'oneaction' },
-						{ name: 'test/twobutton', type: 'button', label: 'Two', action: 'twoaction' },
+						{ name: 'test/onebutton', type: 'button', label: 'One', provider: { callAction: 'oneaction' } },
+						{ name: 'test/twobutton', type: 'button', label: 'Two', provider: { callAction: 'twoaction' } },
 						{ name: 'test/save', type: 'button', label: 'Save', action: 'save' }
 					]
 				}
@@ -43,7 +43,7 @@ describe('ToolbarFrame', () => {
 			dirty: false,
 			actions: {
 				save: sinon.spy(() => pageActions.save).named('save'),
-				fireAction: sinon.spy(() => pageActions.fireAction).named('fireAction'),
+				useProvider: sinon.spy(() => pageActions.useProvider).named('useProvider'),
 				setOption: sinon.spy(() => pageActions.setOption).named('setOption'),
 				setTab: sinon.spy(() => pageActions.setTab).named('setTab')
 			},
@@ -69,8 +69,8 @@ describe('ToolbarFrame', () => {
 			'to have props exhaustively satisfying', {
 				name: 'test/toolbar',
 				items: [
-					{ name: 'test/onebutton', type: 'button', label: 'One', action: pageActions.fireAction },
-					{ name: 'test/twobutton', type: 'button', label: 'Two', action: pageActions.fireAction },
+					{ name: 'test/onebutton', type: 'button', label: 'One', action: pageActions.useProvider },
+					{ name: 'test/twobutton', type: 'button', label: 'Two', action: pageActions.useProvider },
 					{ name: 'test/save', type: 'button', label: 'Save', action: pageActions.save, disabled: true }
 				]
 			}
@@ -85,15 +85,15 @@ describe('ToolbarFrame', () => {
 				'to have props satisfying', {
 					name: 'test/toolbar',
 					items: [
-						{ action: expect.it('to be', pageActions.fireAction) },
-						{ action: expect.it('to be', pageActions.fireAction) },
+						{ action: expect.it('to be', pageActions.useProvider) },
+						{ action: expect.it('to be', pageActions.useProvider) },
 						{ action: expect.it('to be', pageActions.save) }
 					]
 				}),
 			expect(props.actions.save, 'to have a call satisfying', { args: ['test'] }),
-			expect(props.actions.fireAction, 'to have calls exhaustively satisfying', [
-				{ args: ['oneaction', 'test'] },
-				{ args: ['twoaction', 'test'] },
+			expect(props.actions.useProvider, 'to have calls exhaustively satisfying', [
+				{ args: [{ callAction: 'oneaction' }, 'test'] },
+				{ args: [{ callAction: 'twoaction' }, 'test'] },
 			])
 		]);
 	});

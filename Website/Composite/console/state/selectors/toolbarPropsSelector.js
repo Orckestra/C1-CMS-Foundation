@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-// import Immutable from 'immutable';
+import Immutable from 'immutable';
 
 const toolbarsSelector = props => props.toolbars;
 const actionsSelector = props => props.actions;
@@ -22,7 +22,13 @@ export const toolbarPropsSelector = createSelector(
 			} else if (item.get('type') === 'select' || item.get('type') === 'checkboxGroup') {
 				return item.set('onChange', actions.setOption(item.get('name')));
 			} else {
-				return item.set('action', actions.fireAction(item.get('action'), pageName));
+				let provider = item.get('provider');
+				if (Immutable.Iterable.isIterable(provider)) {
+					provider = provider.toJS();
+				} else {
+					provider = null;
+				}
+				return item.set('action', actions.useProvider(provider, pageName)).delete('provider');
 			}
 		}))
 	)

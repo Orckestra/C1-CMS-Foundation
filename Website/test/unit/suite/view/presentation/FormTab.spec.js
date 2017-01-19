@@ -32,14 +32,12 @@ describe('FormTab', () => {
 			])
 		};
 		pageActions = {
-			fireAction: () => {},
 			update: () => {},
 			save: () => {}
 		};
 		state = {
 			actions: {
 				save: sinon.spy(() => pageActions.save).named('save'),
-				fireAction: sinon.spy(() => pageActions.fireAction).named('fireAction'),
 				updateValue: sinon.spy(() => pageActions.update).named('updateValue')
 			},
 			dirtyPages: [],
@@ -50,7 +48,7 @@ describe('FormTab', () => {
 		renderer.render(<FormTab name='test' {...props} {...state}/>);
 	});
 
-	it('renders a form page with a toolbar and field sets', () => expect(
+	it('renders a form with field sets', () => expect(
 		renderer, 'to have exactly rendered',
 		<StyledDiv>
 			<Fieldset

@@ -139,7 +139,7 @@ describe('ConnectToolbarFrame', () => {
 				save: expect.it('to be a function')
 					.and('when called with', ['pagename'], 'to be a function')
 					.and('when called with', ['pagename'], 'when called', 'to be undefined'), // Result is call to store.dispatch
-				fireAction: expect.it('to be a function')
+				useProvider: expect.it('to be a function')
 					.and('when called with', ['pagename', 'actionId'], 'to be a function')
 					.and('when called with', ['pagename', 'actionId'], 'when called with', [['val1', 'val2']], 'to be undefined') // Result is call to store.dispatch
 			}}/>)

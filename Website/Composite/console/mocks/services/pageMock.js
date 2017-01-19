@@ -33,7 +33,7 @@ const pages = {
 						name: 'edit-language.toolbar.save',
 						label: 'Save',
 						icon: 'save',
-						action: 'save'
+						provider: { callAction: 'save' }
 					}
 				]
 			}
@@ -135,7 +135,7 @@ const pages = {
 						name: 'other-page.toolbar.save',
 						label: 'Save',
 						icon: 'save',
-						action: 'save'
+						provider: { callAction: 'save' }
 					}
 				]
 			},
@@ -147,13 +147,13 @@ const pages = {
 						type: 'button',
 						name: 'other-page.toolbar2.sysviewToggle',
 						icon: 'nodes',
-						action: 'sysviewToggle'
+						provider: { callAction: 'sysviewToggle' }
 					},
 					{
 						type: 'button',
 						name: 'other-page.toolbar2.labeled',
 						label: 'Stuff',
-						action: 'sysviewToggle'
+						provider: { callAction: 'sysviewToggle' }
 					},
 					{
 						type: 'select',
@@ -241,7 +241,7 @@ const pages = {
 						name: 'tabbed-page.toolbar.save',
 						label: 'Save',
 						icon: 'save',
-						action: 'save'
+						provider: { callAction: 'save' }
 					}
 				]
 			}
@@ -266,14 +266,14 @@ const pages = {
 						name: 'server-log.toolbar.delete',
 						label: 'Delete old',
 						icon: 'trash',
-						action: 'deleteOld'
+						provider: { callAction: 'deleteOld' }
 					},
 					{
 						type: 'button',
 						name: 'server-log.toolbar.refresh',
 						label: 'Refresh',
 						icon: 'refresh',
-						action: 'refresh'
+						provider: { callAction: 'refresh' }
 					},
 					{
 						type: 'checkboxGroup',
@@ -462,33 +462,33 @@ const pages = {
 						type: 'button',
 						name: 'navigation.showNodes',
 						icon: 'nodes',
-						action: 'toggleNodeTree'
+						provider: { callAction: 'toggleNodeTree' }
 					},
 					{
 						type: 'button',
 						name: 'navigation.back',
 						style: 'join-right',
 						icon: 'previous',
-						action: 'navigateBack'
+						provider: { callAction: 'navigateBack' }
 					},
 					{
 						type: 'button',
 						name: 'navigation.forward',
 						style: 'join-left',
 						icon: 'next',
-						action: 'navigateForward'
+						provider: { callAction: 'navigateForward' }
 					},
 					{
 						type: 'button',
 						name: 'navigation.refresh',
 						icon: 'refresh',
-						action: 'browserRefresh'
+						provider: { callAction: 'browserRefresh' }
 					},
 					{
 						type: 'button',
 						name: 'navigation.home',
 						icon: 'home',
-						action: 'navigateHome'
+						provider: { callAction: 'navigateHome' }
 					},
 				]
 			}

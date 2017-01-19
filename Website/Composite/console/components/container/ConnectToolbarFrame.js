@@ -7,7 +7,7 @@ import ToolbarFrame from 'console/components/presentation/ToolbarFrame.js';
 import { saveValues } from 'console/state/actions/values.js';
 import { updateFieldValue } from 'console/state/reducers/dataFields.js';
 import { setOption } from 'console/state/reducers/options.js';
-import { fireAction } from 'console/state/actions/fireAction.js';
+import { useProvider } from 'console/state/actions/useProvider.js';
 import { setTab } from 'console/state/reducers/layout.js';
 import Immutable from 'immutable';
 
@@ -32,7 +32,7 @@ function mapDispatchToProps(dispatch) {
 			save: pageName => () => dispatch(saveValues(pageName)),
 			setOption: fieldName => value => dispatch(setOption(fieldName, value)),
 			updateValue: (pageName, fieldName) => value => dispatch(updateFieldValue(pageName, fieldName, value)),
-			fireAction: (pageName, actionId) => values => dispatch(fireAction(pageName, actionId, values)),
+			useProvider: (provider, name) => data => dispatch(useProvider(provider, name, data)),
 			setTab: tabName => () => dispatch(setTab(tabName))
 		}
 	};
