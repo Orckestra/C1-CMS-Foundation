@@ -36,7 +36,7 @@ namespace Composite.Plugins.Components.FileBasedComponentProvider
         private const string Title = "title";
         private const string Description = "description";
         private const string Tags = "tags";
-        private const string ContainerClass = "container-classes";
+        private const string ContainerClasses = "container-classes";
         private const string Image = "image";
         private const string Icon = "icon";
         private const string AntiTags = "container-anti-classes";
@@ -127,7 +127,7 @@ namespace Composite.Plugins.Components.FileBasedComponentProvider
                 }
 
                 var containerClasses =
-                    ContainerClassManager.ParseToList(xElement.GetAttributeValue(Namespaces.Components + ContainerClass));
+                    ContainerClassManager.ParseToList(xElement.GetAttributeValue(Namespaces.Components + ContainerClasses));
 
                 var antiTags =
                     ContainerClassManager.ParseToList(xElement.GetAttributeValue(Namespaces.Components + AntiTags));
