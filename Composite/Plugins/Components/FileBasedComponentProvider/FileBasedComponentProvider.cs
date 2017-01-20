@@ -108,7 +108,7 @@ namespace Composite.Plugins.Components.FileBasedComponentProvider
                 var title = xElement.GetAttributeValue(Namespaces.Components + Title) ??
                             Path.GetFileNameWithoutExtension(componentFile);
 
-                var description = xElement.GetAttributeValue(Namespaces.Components + Description) ?? title;
+                var description = xElement.GetAttributeValue(Namespaces.Components + Description) ?? "";
 
                 var groupingTagsRaw = xElement.GetAttributeValue(Namespaces.Components + Tags) ??
                                         GuessGroupingTagsBasedOnPath(componentFile);
