@@ -11,7 +11,7 @@ SourceEditorInsertToolbarButtonBinding.superclass = EditorToolBarButtonBinding.p
  * @depreacated
  *
 SourceEditorInsertToolbarButtonBinding._translate = function ( code ) {
-	
+
 	code = code.replace ( /&/gi, "&amp;" );
 	code = code.replace ( /</g, "&lt;" );
 	code = code.replace ( />/g, "&gt;" );
@@ -28,7 +28,7 @@ function SourceEditorInsertToolbarButtonBinding () {
 	 * @type {SystemLogger}
 	 */
 	this.logger = SystemLogger.getLogger ( "SourceEditorInsertToolbarButtonBinding" );
-	
+
 	/*
 	 * Returnable.
 	 */
@@ -39,7 +39,7 @@ function SourceEditorInsertToolbarButtonBinding () {
  * Identifies binding.
  */
 SourceEditorInsertToolbarButtonBinding.prototype.toString = function () {
-	
+
 	return "[SourceEditorInsertToolbarButtonBinding]";
 }
 
@@ -47,7 +47,7 @@ SourceEditorInsertToolbarButtonBinding.prototype.toString = function () {
  * @overloads {ButtonBinding#onBindingAttach}
  */
 SourceEditorInsertToolbarButtonBinding.prototype.onBindingAttach = function () {
-	
+
 	SourceEditorInsertToolbarButtonBinding.superclass.onBindingAttach.call ( this );
 	this.popupBinding.addActionListener ( MenuItemBinding.ACTION_COMMAND, this );
 	var codemirrorwindow = this.bindingWindow.bindingMap.codemirrorwindow;
@@ -71,15 +71,15 @@ SourceEditorInsertToolbarButtonBinding.prototype.initializeSourceEditorComponent
  * @param {Action} action
  */
 SourceEditorInsertToolbarButtonBinding.prototype.handleAction = function ( action ) {
-	
+
 	SourceEditorInsertToolbarButtonBinding.superclass.handleAction.call ( this, action );
-	
+
 	var binding = action.target;
-	
+
 	switch ( action.type ) {
-			
+
 		case MenuItemBinding.ACTION_COMMAND :
-			
+
 			var cmd = binding.getProperty ( "cmd" );
 			var val = binding.getProperty ( "val" );
 			this.handleCommand ( cmd, null, val );
@@ -125,16 +125,16 @@ SourceEditorInsertToolbarButtonBinding.prototype.handleCommand = function ( cmd,
 SourceEditorInsertToolbarButtonBinding.prototype._injectLinkable = function ( handle ) {
 
 	var def = ViewDefinitions [ handle ];
-	
+
 	var self = this;
 	def.handler = {
 		handleDialogResponse : function ( response, result ) {
-			if ( response == Dialog.RESPONSE_ACCEPT ) {	
+			if ( response == Dialog.RESPONSE_ACCEPT ) {
 				self._inject ( result.getFirst ());
 			}
 		}
-	}		
-	
+	}
+
 	Dialog.invokeDefinition ( def );
 }
 
@@ -147,7 +147,7 @@ SourceEditorInsertToolbarButtonBinding.prototype._injectFunction = function () {
 	def.argument.nodes = [{
 		key : "AllFunctionsElementProvider"
 	}];
-	
+
 	var self = this;
 	def.handler = {
 		handleDialogResponse : function ( response, result ) {
@@ -162,8 +162,8 @@ SourceEditorInsertToolbarButtonBinding.prototype._injectFunction = function () {
 			}
 		}
 	}
-	
-	Dialog.invokeDefinition ( def );
+
+	Dialog.invokeDefinition(def, this._editorBinding);
 }
 
 /**
@@ -171,17 +171,17 @@ SourceEditorInsertToolbarButtonBinding.prototype._injectFunction = function () {
  * @param {string} markup
  */
 SourceEditorInsertToolbarButtonBinding.prototype._injectFunctionConfiguration = function ( markup ) {
-		
+
 	var self = this;
 	var handler = {
-		handleDialogResponse : function ( response, result ) {		
+		handleDialogResponse : function ( response, result ) {
 			if ( response == Dialog.RESPONSE_ACCEPT ) {
 			    self._injectFunctionMarkup(result);
 			}
 		}
 	}
-	
-	EditorBinding.invokeFunctionEditorDialog(markup, handler);
+
+	EditorBinding.invokeFunctionEditorDialog(markup, handler, undefined, this._editorBinding);
 }
 
 /**

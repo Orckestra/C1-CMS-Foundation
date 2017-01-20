@@ -2,7 +2,7 @@ VisualMultiTemplateEditorBinding.prototype = new VisualMultiEditorBinding;
 VisualMultiTemplateEditorBinding.prototype.constructor = VisualMultiTemplateEditorBinding;
 VisualMultiTemplateEditorBinding.superclass = VisualMultiEditorBinding.prototype;
 
-/** 
+/**
  * The VisualMultiTemplateEditorBinding supports multiple GROUPED content areas.
  * @class
  */
@@ -12,7 +12,7 @@ function VisualMultiTemplateEditorBinding () {
 	 * @type {SystemLogger}
 	 */
 	this.logger = SystemLogger.getLogger ( "VisualMultiTemplateEditorBinding" );
-	
+
 	/**
 	 * Cache content of deselected template placeholders, restore on reselection.
 	 * @type {Map<string><string>}
@@ -50,7 +50,7 @@ VisualMultiTemplateEditorBinding.prototype.toString = function () {
  * @return
  */
 VisualMultiTemplateEditorBinding.prototype.onBindingAttach = function () {
-	
+
 	VisualMultiTemplateEditorBinding.superclass.onBindingAttach.call ( this );
 	this._oldtextareas = new Map ();
 
@@ -85,16 +85,16 @@ VisualMultiTemplateEditorBinding.prototype._onPageInitialize = function ( bindin
  * @overloads {VisualMultiEditorBinding#_initialize}
  */
 VisualMultiTemplateEditorBinding.prototype._initialize = function () {
-	
+
 	var self = this;
-	
+
 	/*
 	 * Rig up selector.
 	 */
 	var selector = this.getDescendantBindingByLocalName ( "selector" );
 	selector.attach ();
 	this._populateTemplateSelector ();
-	
+
 	/*
 	 * Contained page selector is wired to control main page selector.
 	 * When selection changes, main page performs a postback.
@@ -107,7 +107,7 @@ VisualMultiTemplateEditorBinding.prototype._initialize = function () {
 			}, 0 );
 		}
 	});
-	
+
 	/*
 	 * Show the template toolbar.
 	 */
@@ -126,7 +126,7 @@ VisualMultiTemplateEditorBinding.prototype._initialize = function () {
  * Populate template selector from hidden selector selections.
  */
 VisualMultiTemplateEditorBinding.prototype._populateTemplateSelector = function () {
-	
+
 	var hiddenselector = this.getDescendantBindingByLocalName ( "selector" );
 	var templateselector = this.getContentWindow ().bindingMap.templateselector;
 	hiddenselector.selections.each ( function ( selection ) {
@@ -141,7 +141,7 @@ VisualMultiTemplateEditorBinding.prototype._populateTemplateSelector = function 
  * Template selection changed. This event must be channelized to the hidden selector.
  */
 VisualMultiTemplateEditorBinding.prototype._onTemplateSelectionChanged = function () {
-	
+
 	var hiddenselector = this.getDescendantBindingByLocalName ( "selector" );
 	var templateselector = this.getContentWindow ().bindingMap.templateselector;
 	hiddenselector.selectByValue ( templateselector.getValue ());
@@ -156,23 +156,23 @@ VisualMultiTemplateEditorBinding.prototype._onTemplateSelectionChanged = functio
 VisualMultiTemplateEditorBinding.prototype._parsePlaceHolders = function (textareas) {
 
 	/*
-	 * Reset textareas Map but keep a copy of the old 
-	 * map content in order to persist content changes. 
+	 * Reset textareas Map but keep a copy of the old
+	 * map content in order to persist content changes.
 	 * Similarly named placeholder will inherit cache.
 	 */
 	var nev = this._textareas;
 	var old = this._oldtextareas;
-	
-	if ( nev != null ) {	
+
+	if ( nev != null ) {
 		nev.each ( function ( key, value ) {
 			old.set ( key, value );
 		});
 	}
-	
+
 	this._textareas = new Map ();
-	
+
 	/*
-	 * Nifty function to persist changes. 
+	 * Nifty function to persist changes.
 	 * @param {string} placeholderid
 	 * @param {string} placeholdermarkup
 	 * @return {string}
@@ -184,36 +184,37 @@ VisualMultiTemplateEditorBinding.prototype._parsePlaceHolders = function (textar
 		}
 		return result;
 	}
-	
+
 	/*
 	 * Rig up textareas.
 	 */
 	while ( textareas.hasNext ()) {
 		var textarea = textareas.getNext ();
 		var placeholderid = textarea.getAttribute ( "placeholderid" );
-		this._textareas.set ( placeholderid, 
+		this._textareas.set ( placeholderid,
 			{
 				placeholderid       : placeholderid,
 				placeholdername 	: textarea.getAttribute ( "placeholdername" ),
 				placeholdermarkup 	: compute ( placeholderid, textarea.value ),
 				textareaelement		: textarea,
-				isSelected 			: textarea.getAttribute ( "selected" ) == "true"
+				isSelected 			: textarea.getAttribute ( "selected" ) == "true",
+				containerclasses	: textarea.getAttribute ( "containerclasses" )
 			}
 		);
 	}
-	
+
 	/*
 	 * Populate the tree and locate the selected treenode.
 	 * TODO: Don't copy paste this step from super class!
 	 */
 	var selected = null;
 	var templatetree = this.getContentWindow ().bindingMap.templatetree;
-	
+
 	var treenodes = new Map ();
 	this._textareas.each ( function ( name, object ) {
-		var treenode = templatetree.add ( 
-			TreeNodeBinding.newInstance ( 
-				templatetree.bindingDocument 
+		var treenode = templatetree.add (
+			TreeNodeBinding.newInstance (
+				templatetree.bindingDocument
 			)
 		);
 		treenode.setLabel ( object.placeholdername );
@@ -225,20 +226,20 @@ VisualMultiTemplateEditorBinding.prototype._parsePlaceHolders = function (textar
 			selected = treenode;
 		}
 	});
-	
+
 	templatetree.attachRecursive ();
-	
+
 	/*
-	 * This convoluted setup ensures that a placeholder  
-	 * will be selected that matches the last selected    
+	 * This convoluted setup ensures that a placeholder
+	 * will be selected that matches the last selected
 	 * placeholder (before template was changed).
 	 */
 	if ( selected != null ) {
-	
+
 		var isDefaultBehavior = true;
-		
+
 		if ( this._oldtextareas.hasEntries ()) {
-			
+
 			isDefaultBehavior = false;
 			var map = new Map ();
 			this._textareas.each ( function ( id, object ) {
@@ -248,7 +249,7 @@ VisualMultiTemplateEditorBinding.prototype._parsePlaceHolders = function (textar
 				isDefaultBehavior = true;
 			}
 		}
-		
+
 		if ( isDefaultBehavior ) {
 			var object = this._textareas.get ( selected.textareaname );
 			this._textareaname = selected.textareaname;
@@ -263,7 +264,7 @@ VisualMultiTemplateEditorBinding.prototype._parsePlaceHolders = function (textar
 	}
 };
 
-/** 
+/**
  * @overloads {VisualMultiEditorBinding#_placeHolderSelected}
  * @param {string} name
  */
@@ -293,7 +294,7 @@ VisualMultiTemplateEditorBinding.prototype._getElementsByTagName = function (nod
 
 
 /**
- * Some pretty hacked stuff going on here. Stuff like this should not be communicated 
+ * Some pretty hacked stuff going on here. Stuff like this should not be communicated
  * through the page DOM, but via a dedicated service offering structured data. Oh well...
  * @implements {IUpdateHandler}
  * @overloads {VisualMultiEditorBinding#updateElement}
@@ -302,15 +303,15 @@ VisualMultiTemplateEditorBinding.prototype._getElementsByTagName = function (nod
  * @return {boolean}
  */
 VisualMultiTemplateEditorBinding.prototype.updateElement = function ( newelement, oldelement ) {
-	
+
 	var newselector = this._getElementsByTagName(newelement, "selector" ).item ( 0 );
 	var oldselector = this._getElementsByTagName(oldelement, "selector" ).item ( 0 );
-	
+
 	var hasChanges = false;
 	var templateChanged = false;
-	
+
 	if ( newselector != null && oldselector != null ) {
-		var newselections = new List ( this._getElementsByTagName(newselector, "selection" )); 
+		var newselections = new List ( this._getElementsByTagName(newselector, "selection" ));
 		var oldselections = new List ( this._getElementsByTagName(oldselector, "selection" ));
 		if ( newselections.getLength () != oldselections.getLength ()) {
 			hasChanges = true;
@@ -334,7 +335,7 @@ VisualMultiTemplateEditorBinding.prototype.updateElement = function ( newelement
 			});
 		}
 	}
-	
+
 	if ( hasChanges ) {
 		var div = this.bindingElement.getElementsByTagName ( "div" ).item ( 1 );
 		this.bindingWindow.DocumentManager.detachBindings ( div, true );
@@ -347,7 +348,7 @@ VisualMultiTemplateEditorBinding.prototype.updateElement = function ( newelement
 		this.updateTemplatePreview();
 	}
 
-	
+
 	return VisualMultiTemplateEditorBinding.superclass.updateElement.call(this, newelement, oldelement, templateChanged);
 
 
@@ -374,7 +375,7 @@ VisualMultiTemplateEditorBinding.prototype.disableDialogMode = function () {
 }
 
 /**
- * Get placeholder width 
+ * Get placeholder width
  * @return {int}
  */
 VisualMultiTemplateEditorBinding.prototype.getPlaceholderWidth = function (placeholderId) {
@@ -408,7 +409,7 @@ VisualMultiTemplateEditorBinding.prototype.updateTemplatePreview = function (syn
 			self._templatePreview = result;
 			self.updateBodyWidth();
 		});
-	
+
 }
 
 
@@ -435,4 +436,20 @@ VisualMultiTemplateEditorBinding.prototype.getImageTagForFunctionCall = function
 	var templateId = this.getDescendantBindingByLocalName("selector").getValue();
 	var width = this.getEffectiveWidth();
 	return XhtmlTransformationsService.GetImageTagForFunctionCall2(markup, pageId, templateId, placeholder, width);
+}
+
+VisualMultiTemplateEditorBinding.prototype.getContextContainer = function () {
+
+	var result = null;
+	var pageId = this._pageId;
+	var containerClasses = this.getContainerClasses();
+
+	var ancestorContainer = ContextContainer.getAncestorContextContainer(this);
+	result = (ancestorContainer == null) ? new ContextContainer() : ancestorContainer.clone();
+	if (containerClasses != undefined) {
+		result.setContainerClasses(containerClasses);
+	}
+	result.setProperty("pageId", pageId);
+
+	return result;
 }

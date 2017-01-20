@@ -18,7 +18,7 @@ function HTMLDataDialogBinding () {
  * Identifies binding.
  */
 HTMLDataDialogBinding.prototype.toString = function () {
-	
+
 	return "[HTMLDataDialogBinding]";
 }
 
@@ -26,7 +26,7 @@ HTMLDataDialogBinding.prototype.toString = function () {
  * @overloads {StringDataDialogBinding#onBindingAttach}
  */
 HTMLDataDialogBinding.prototype.onBindingAttach = function () {
-	
+
 	if ( this.getProperty ( "label" ) == null ) {
 		this.setProperty ( "label", "Edit HTML" ); // TODO: stringbundle this!
 	}
@@ -37,9 +37,9 @@ HTMLDataDialogBinding.prototype.onBindingAttach = function () {
  * @overwrites {DataDialogBinding#fireCommand}
  */
 HTMLDataDialogBinding.prototype.fireCommand = function () {
-	
+
 	this.dispatchAction ( DataDialogBinding.ACTION_COMMAND );
-	
+
 	/*
 	 * Build argument for editor configuration.
 	 */
@@ -54,7 +54,7 @@ HTMLDataDialogBinding.prototype.fireCommand = function () {
             "previewpageid"	            : this.getProperty ( "previewpageid" )
 		}
 	}
-	
+
 	/*
 	 * The dialoghandler is defined by superclass.
 	 * @see {DataDialogBinding}
@@ -62,7 +62,19 @@ HTMLDataDialogBinding.prototype.fireCommand = function () {
 	var definition = ViewDefinitions [ "Composite.Management.VisualEditorDialog" ];
 	definition.handler = this._handler;
 	definition.argument = argument;
-	StageBinding.presentViewDefinition ( definition );
-	
+
+	StageBinding.presentViewDefinition ( definition , this);
+
 	this._releaseKeyboard ();
+}
+
+HTMLDataDialogBinding.prototype.getContextContainer = function () {
+
+	var result = null;
+	if (this.getProperty("containerclasses") != undefined) {
+		var ancestorContainer = ContextContainer.getAncestorContextContainer(this);
+		result = (ancestorContainer == null) ? new ContextContainer() : ancestorContainer.clone();
+		result.setContainerClasses(this.getProperty("containerclasses"));
+	}
+	return result;
 }

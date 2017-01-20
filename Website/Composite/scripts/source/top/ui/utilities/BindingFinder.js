@@ -72,6 +72,40 @@ _BindingFinder.prototype = {
 	},
 
 	/**
+	 * Get ancestor binding by Interface.
+	 * @param {Binding} source
+	 * @param {interface} intf
+	 * @param {boolean} isTraverse If set to true, cross iframe boundaries.
+ 	 * @return {Binding}
+	 */
+	getAncestorBindingByInterface: function (source, intf, isTraverse) {
+
+		var result = null;
+		if (Binding.exists(source)) {
+			var node = source.bindingElement;
+			while (result == null && node != null) {
+				node = node.parentNode;
+				if (node != null) {
+					if (UserInterface.hasBinding(node)) {
+						var binding = UserInterface.getBinding(node);
+						if ( Interfaces.isImplemented(intf, binding)) {
+							result = binding;
+						}
+					} else if (isTraverse && node.nodeType == Node.DOCUMENT_NODE) {
+						var win = DOMUtil.getParentWindow(node);
+						if (win != null) {
+							node = win.frameElement;
+						} else {
+							break;
+						}
+					}
+				}
+			}
+		}
+		return result;
+	},
+
+	/**
 	 * Get ancestor binding by nodename.
 	 * @param {Binding} source
 	 * @param {string} nodename

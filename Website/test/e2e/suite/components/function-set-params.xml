@@ -1,0 +1,12 @@
+<f:function name="Orckestra.Web.Html.ImageAndTextTeaser" xmlns:f="http://www.composite.net/ns/function/1.0" xmlns="http://www.w3.org/1999/xhtml">
+	<f:param name="Image" value="MediaArchive:969705d6-adc5-4311-8186-641e59bbbddb" />
+	<f:param name="Text">
+		<html>
+			<head>
+			</head>
+			<body>
+			<h1>Preset Title</h1>
+			</body>
+		</html>
+	</f:param>
+</f:function>
