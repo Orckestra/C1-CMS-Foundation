@@ -88,9 +88,9 @@ const Dialog = props => {
 			<Pane dialogName={props.dialogDef.get('name')} paneDef={paneDef} itemGroups={props.itemGroups} dialogData={props.dialogData} dispatch={props.dispatch} nextAction={nextAction || finishAction}/>
 		</DialogPane>
 		<DialogButtonGroup>
-			{ cancelButton ? <ActionButton action={cancelAction} {...cancelButton}/> : null}
 			{ nextButton ? <ActionButton action={nextAction} {...nextButton}/> : null}
-			{ finishButton ? <ActionButton action={finishAction} {...finishButton}/> : null}
+			{ finishButton ? <ActionButton action={finishAction} {...finishButton} disabled={!props.dialogData.get('selectedItem')}/> : null}
+			{ cancelButton ? <ActionButton action={cancelAction} {...cancelButton}/> : null}
 		</DialogButtonGroup>
 	</DialogBox>;
 };

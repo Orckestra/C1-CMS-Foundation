@@ -74,9 +74,9 @@ describe('Dialog', () => {
 				<Palette dialogName='testdialog' paneDef={Immutable.Map({ name: 'testpalette' })} itemGroups={Immutable.List()} dispatch={expect.it('to be a function')} />
 			</DialogPane>
 			<DialogButtonGroup>
-				<ActionButton label='Cancel'/>
 				<ActionButton label='Next'/>
 				<ActionButton label='Finish'/>
+				<ActionButton label='Cancel'/>
 			</DialogButtonGroup>
 		</DialogBox>);
 	});

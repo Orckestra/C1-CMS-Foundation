@@ -112,7 +112,7 @@ namespace Composite.Plugins.Components.ComponentsEndpoint
         public override string Label => StringResourceSystemFacade.GetString("Composite.Web.VisualEditor",
                     "Components.Window.Cancel");
         /// <exclude />
-        public override string Style => "";
+        public override string Style => "dialog";
     }
 
     /// <exclude />
