@@ -40,6 +40,11 @@ module.exports = function (grunt) {
 			files: [
 				{ expand: true, cwd: 'bower_components/autobahnjs', src: ['autobahn.js'], dest: 'Composite/lib/autobahnjs' },
 			]
+		},
+		'babel-polyfill': {
+			files: [
+				{ expand: true, cwd: 'bower_components/babel-polyfill', src: ['browser-polyfill.js'], dest: 'Composite/lib/babel' },
+			]
 		}
 	});
 

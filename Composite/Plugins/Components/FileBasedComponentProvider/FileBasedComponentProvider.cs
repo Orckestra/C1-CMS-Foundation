@@ -36,10 +36,10 @@ namespace Composite.Plugins.Components.FileBasedComponentProvider
         private const string Title = "title";
         private const string Description = "description";
         private const string Tags = "tags";
-        private const string ContainerClass = "container-class";
+        private const string ContainerClasses = "container-classes";
         private const string Image = "image";
         private const string Icon = "icon";
-        private const string AntiTags = "container-anti-class";
+        private const string AntiTags = "container-anti-classes";
 
         private readonly ComponentChangeNotifier _changeNotifier;
         private readonly string _providerDirectory;
@@ -108,7 +108,7 @@ namespace Composite.Plugins.Components.FileBasedComponentProvider
                 var title = xElement.GetAttributeValue(Namespaces.Components + Title) ??
                             Path.GetFileNameWithoutExtension(componentFile);
 
-                var description = xElement.GetAttributeValue(Namespaces.Components + Description) ?? title;
+                var description = xElement.GetAttributeValue(Namespaces.Components + Description) ?? "";
 
                 var groupingTagsRaw = xElement.GetAttributeValue(Namespaces.Components + Tags) ??
                                         GuessGroupingTagsBasedOnPath(componentFile);
@@ -127,7 +127,7 @@ namespace Composite.Plugins.Components.FileBasedComponentProvider
                 }
 
                 var containerClasses =
-                    ContainerClassManager.ParseToList(xElement.GetAttributeValue(Namespaces.Components + ContainerClass));
+                    ContainerClassManager.ParseToList(xElement.GetAttributeValue(Namespaces.Components + ContainerClasses));
 
                 var antiTags =
                     ContainerClassManager.ParseToList(xElement.GetAttributeValue(Namespaces.Components + AntiTags));

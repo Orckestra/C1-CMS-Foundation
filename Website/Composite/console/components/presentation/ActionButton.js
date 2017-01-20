@@ -44,7 +44,9 @@ const Button = styled.button`
 	padding: 6px 11px;
 	line-height: 18px;
 	height: 36px;
+	min-width: 100px;
 	box-shadow: 0 2px 2px -2px ${colors.buttonDropShadowColor};
+	text-align: left;
 
 	&:hover {
 		color: ${colors.buttonHighlightColor};
@@ -56,13 +58,23 @@ const Button = styled.button`
 	}
 
 	${getStyles}
+
+	&.dialog {
+		color: ${colors.buttonHighlightColor};
+		border-color: ${colors.buttonHighlightColor};
+	}
 `;
 Button.defaultProps = { buttonStyle: '' };
 
 const Label = styled.span`
-svg + & {
-	padding-left: 10px;
-}
+	display: inline-block;
+	text-align: center;
+	width: 100%;
+
+	svg + & {
+		padding-left: 10px;
+		text-align: left;
+	}
 `;
 
 const ActionButton = ({ label, action, icon, disabled, style }) => (

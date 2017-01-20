@@ -26,6 +26,9 @@ namespace Composite.Plugins.Components.ComponentsEndpoint
         /// <exclude />
         public string Name => "component-selector";
         /// <exclude />
+        public string SearchPlaceholder => StringResourceSystemFacade.GetString("Composite.Web.VisualEditor",
+                    "Components.Window.DialogFilterPlaceholder");
+        /// <exclude />
         public List<Pane> Panes => new List<Pane>() { new Pane() };
     }
 
@@ -112,7 +115,7 @@ namespace Composite.Plugins.Components.ComponentsEndpoint
         public override string Label => StringResourceSystemFacade.GetString("Composite.Web.VisualEditor",
                     "Components.Window.Cancel");
         /// <exclude />
-        public override string Style => "";
+        public override string Style => "dialog";
     }
 
     /// <exclude />

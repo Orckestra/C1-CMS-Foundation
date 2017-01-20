@@ -2,7 +2,7 @@ import expect from 'unittest/helpers/expect.js';
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
 import Immutable from 'immutable';
-import Palette, { ItemGroup, ItemGroupTitle, Item, PreviewImage, PreviewIcon, InfoBox, Label, Description } from 'console/components/presentation/Palette.js';
+import Palette, { ItemGroup, ItemGroupTop, ItemGroupTitle, Item, PreviewImage, PreviewIcon, InfoBox, Label, Description } from 'console/components/presentation/Palette.js';
 
 describe('Palette', () => {
 	let renderer, props;
@@ -62,7 +62,9 @@ describe('Palette', () => {
 		renderer.render(<Palette {...props}/>);
 		return expect(renderer, 'to have rendered', <div>
 			<ItemGroup key='group1'>
-				<ItemGroupTitle>First group</ItemGroupTitle>
+				<ItemGroupTop>
+					<ItemGroupTitle>First group</ItemGroupTitle>
+				</ItemGroupTop>
 				<Item key='entry1' active={false}>
 					<PreviewImage image='/path/to/image1.png'/>
 					<InfoBox>
@@ -79,7 +81,9 @@ describe('Palette', () => {
 				</Item>
 			</ItemGroup>
 			<ItemGroup key='group2'>
-				<ItemGroupTitle>Second group</ItemGroupTitle>
+				<ItemGroupTop>
+					<ItemGroupTitle>Second group</ItemGroupTitle>
+				</ItemGroupTop>
 				<Item key='entry3' active={false}>
 					<PreviewIcon id='testicon'/>
 					<InfoBox>

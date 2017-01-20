@@ -62,9 +62,9 @@ describe('Dialog', () => {
 					useProvider={expect.it('to be a function')} />
 			</DialogPane>
 			<DialogButtonGroup>
-				<ActionButton label='Cancel'/>
 				<ActionButton label='Next'/>
 				<ActionButton label='Finish'/>
+				<ActionButton label='Cancel'/>
 			</DialogButtonGroup>
 		</DialogBox>);
 	});
