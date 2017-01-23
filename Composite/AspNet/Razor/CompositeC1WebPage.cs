@@ -28,12 +28,22 @@ namespace Composite.AspNet.Razor
         /// <summary>
         /// Gets a <see cref="DataConnection"/> object.
         /// </summary>
-		public DataConnection Data => _data;
+        public DataConnection Data
+        {
+            get
+            {
+                var result = _data ?? (WebPageContext.Current?.Page as CompositeC1WebPage)?.Data;
+
+                Verify.IsNotNull(result, nameof(DataConnection) + " instance has already been disposed");
+
+                return result;
+            }
+        }
 
         /// <summary>
         /// Gets a <see cref="SitemapNavigator"/> object.
         /// </summary>
-		public SitemapNavigator Sitemap => Data.SitemapNavigator;
+        public SitemapNavigator Sitemap => Data.SitemapNavigator;
 
 
         /// <summary>
