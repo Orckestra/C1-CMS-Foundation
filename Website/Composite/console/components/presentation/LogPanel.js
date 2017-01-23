@@ -18,6 +18,8 @@ function getTextHeight(message) {
 }
 
 const StyledTable = styled(Table)`
+border: 0 none transparent;
+
 .public_fixedDataTableCell_cellContent {
 	padding: 5px;
 }

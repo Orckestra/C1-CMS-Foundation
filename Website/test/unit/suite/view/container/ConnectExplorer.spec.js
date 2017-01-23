@@ -61,6 +61,14 @@ describe('ConnectExplorer', () => {
 			test={'value'}
 			dirty={false}
 			actions={{
-			}}/>);
+				useProvider: expect.it('to be a function')
+					.and(
+						'when called with', [{ test: 'provider' }, 'testname'],
+						'when called with', [{ test: 'data' }]
+					)
+			}}/>)
+			.then(() => expect(store.dispatch, 'to have calls satisfying', [
+				{ args: [expect.it('to be a function')] }
+			]));
 	});
 });

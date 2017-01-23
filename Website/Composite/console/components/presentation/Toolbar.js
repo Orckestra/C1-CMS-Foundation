@@ -27,14 +27,7 @@ const Div = styled.div`
 
 	& + & {
 		padding-bottom: 15px;
-
 	}
-	& + & button {
-		height: 30px;
-		padding-top: 5px;
-		padding-bottom: 5px;
-	}
-
 `;
 
 const Toolbar = props => (

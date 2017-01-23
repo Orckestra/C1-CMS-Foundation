@@ -146,12 +146,15 @@ const pages = {
 					{
 						type: 'button',
 						name: 'other-page.toolbar2.sysviewToggle',
+						style: 'small',
 						icon: 'nodes',
 						provider: { callAction: 'sysviewToggle' }
 					},
 					{
 						type: 'button',
 						name: 'other-page.toolbar2.labeled',
+						style: 'icon-right',
+						icon: 'cancel',
 						label: 'Stuff',
 						provider: { callAction: 'sysviewToggle' }
 					},
@@ -466,6 +469,7 @@ const pages = {
 				items: [
 					{
 						type: 'button',
+						style: 'small',
 						name: 'navigation.showNodes',
 						icon: 'nodes',
 						provider: { callAction: 'toggleNodeTree' }
@@ -473,25 +477,27 @@ const pages = {
 					{
 						type: 'button',
 						name: 'navigation.back',
-						style: 'join-right',
+						style: 'join-right small',
 						icon: 'previous',
 						provider: { callAction: 'navigateBack' }
 					},
 					{
 						type: 'button',
 						name: 'navigation.forward',
-						style: 'join-left',
+						style: 'join-left small',
 						icon: 'next',
 						provider: { callAction: 'navigateForward' }
 					},
 					{
 						type: 'button',
+						style: 'small',
 						name: 'navigation.refresh',
 						icon: 'refresh',
 						provider: { callAction: 'browserRefresh' }
 					},
 					{
 						type: 'button',
+						style: 'small',
 						name: 'navigation.home',
 						icon: 'home',
 						provider: { callAction: 'navigateHome' }

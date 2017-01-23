@@ -109,23 +109,26 @@ function getNodeIcon(node) {
 	}
 }
 
+export function getNodeOpenToggler(node, actions) {
+	if (node.get('open') && node.get('childrenLoaded')) {
+		return () => actions.closeNode(node.get('name'));
+	} else {
+		if (node.get('childrenLoaded')) {
+			return () => actions.openNode(node.get('name'));
+		} else {
+			return () => actions.loadChildren(node.toJS());
+		}
+	}
+}
+
 export const TreeNode = props => (
 	<Node className={props.className}>
 		{props.node.get('children') ? (
-			props.node.get('open') ?
-				<NodeOpen
-					onClick={() => props.actions.closeNode(props.node.get('name'))}
-					id='chevron-down'
-					open={true}/> :
-				<NodeOpen
-					onClick={props.node.get('childrenLoaded') ?
-						() => props.actions.openNode(props.node.get('name')) :
-						() => props.actions.loadChildren(props.node.toJS())
-					}
-					id='chevron-right'
-					open={false}/>
-			) :
-			null}
+			<NodeOpen
+				onClick={getNodeOpenToggler(props.node, props.actions)}
+				id={props.node.get('open') ? 'chevron-down' : 'chevron-right'}
+				open={props.node.get('open')}/>
+			) : null}
 		<NodeLabel onClick={() => props.actions.selectNode(props.node.get('name'))}>
 			<NodeIcon id={getNodeIcon(props.node)} selected={props.selectedNode === props.node.get('name')}/>
 			<NodeName selected={props.selectedNode === props.node.get('name')}>{props.node.get('label')}</NodeName>
@@ -155,7 +158,7 @@ const BrowserPage = props => {
 	let actions = Object.assign({}, props.actions);
 	actions.loadChildren = actions.loadChildren(props.tabDef.get('provider').toJS());
 	return (
-		<Browser splitPosition={400}>
+		<Browser splitPosition={props.splitPosition}>
 			{props.tree.get('children') ?
 				props.tree.get('children').map(node => (
 					<TreeNode key={node.get('name')} actions={actions} className='top' node={node} selectedNode={props.selectedNode}/>
@@ -169,6 +172,7 @@ BrowserPage.propTypes = {
 	tabDef: ImmutablePropTypes.map,
 	tree: ImmutablePropTypes.map,
 	selectedNode: PropTypes.string,
+	splitPosition: PropTypes.number.isRequired,
 	actions: PropTypes.shape({
 		openNode: PropTypes.func.isRequired,
 		closeNode: PropTypes.func.isRequired,

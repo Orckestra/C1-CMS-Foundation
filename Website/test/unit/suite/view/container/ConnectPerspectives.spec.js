@@ -48,9 +48,9 @@ describe('ConnectPerspectives', () => {
 		renderer.render(<ConnectPerspectives store={store}/>);
 		return expect(renderer, 'to have rendered', <Perspectives
 			identityName='C1 CMS'
-			setPerspective={expect.it('to be a function')}
-			loadPage={expect.it('to be a function')}
-			toggleExplorer={expect.it('to be a function')}
+			setPerspective={expect.it('to be a function').and('when called with', ['name'])}
+			loadPage={expect.it('to be a function').and('when called with', ['name'])}
+			toggleExplorer={expect.it('to be a function').and('when called')}
 			perspectiveDefs={Immutable.fromJS({
 				'console-search': { name: 'console-search' },
 				content: { name: 'content' }
@@ -64,6 +64,13 @@ describe('ConnectPerspectives', () => {
 					content: {}
 				}
 			})}
-		/>);
+		/>)
+		.then(() =>
+			expect(store.dispatch, 'to have calls satisfying', [
+				{ args: [{ type: 'LAYOUT.SELECT_LOCATION', perspective: 'name' }] },
+				{ args: [expect.it('to be a function')] },
+				{ args: [{ type: 'LAYOUT.TOGGLE_EXPLORER' }] }
+			])
+		);
 	});
 });

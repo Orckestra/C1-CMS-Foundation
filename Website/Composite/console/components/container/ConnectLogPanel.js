@@ -26,7 +26,6 @@ const SizedCLP = Dimensions({
 
 const CleanScrollBox = styled(ScrollBox)`
 	padding: 0;
-	border-top: 0 !important;
 	overflow: hidden;
 `;
 

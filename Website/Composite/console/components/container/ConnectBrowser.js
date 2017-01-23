@@ -9,7 +9,8 @@ import { currentPreviewSelector } from 'console/state/selectors/layoutSelector.j
 function mapStateToProps(state) {
 	return {
 		tree: currentTreeSelector(state),
-		selectedNode: currentPreviewSelector(state)
+		selectedNode: currentPreviewSelector(state),
+		splitPosition: 400
 	};
 }
 

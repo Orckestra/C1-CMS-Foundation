@@ -7,6 +7,7 @@ import ConnectToolbarFrame from 'console/components/container/ConnectToolbarFram
 import ToolbarFrame from 'console/components/presentation/ToolbarFrame.js';
 import { UPDATE_VALUE } from 'console/state/reducers/dataFields.js';
 import { SET_OPTION } from 'console/state/reducers/options.js';
+import { SELECT_LOCATION } from 'console/state/reducers/layout.js';
 
 describe('ConnectToolbarFrame', () => {
 	let renderer, state, store, props;
@@ -115,7 +116,8 @@ describe('ConnectToolbarFrame', () => {
 		return expect(renderer, 'to have rendered', <ToolbarFrame
 			{...props}
 			pageName='testpage'
-			toolbars={[{
+			tabDefs={Immutable.fromJS([{}])}
+			toolbars={Immutable.fromJS([{
 				name: 'hasItemDefs',
 				items: [
 					{ type: 'button', name: 'saveIt', action: 'save' },
@@ -126,28 +128,27 @@ describe('ConnectToolbarFrame', () => {
 			}, {
 				name: 'hasNoItemDefs',
 				items: []
-			}]}
+			}])}
 			test={'value'}
 			dirty={false}
 			actions={{
 				updateValue: expect.it('to be a function')
-					.and('when called with', ['pagename', 'fieldname'], 'to be a function')
 					.and('when called with', ['pagename', 'fieldname'], 'when called with', ['value'], 'to be undefined'), // Result is call to store.dispatch
 				setOption: expect.it('to be a function')
-					.and('when called with', ['fieldname'], 'to be a function')
 					.and('when called with', ['fieldname'], 'when called with', ['value'], 'to be undefined'), // Result is call to store.dispatch
 				save: expect.it('to be a function')
-					.and('when called with', ['pagename'], 'to be a function')
 					.and('when called with', ['pagename'], 'when called', 'to be undefined'), // Result is call to store.dispatch
 				useProvider: expect.it('to be a function')
-					.and('when called with', ['pagename', 'actionId'], 'to be a function')
-					.and('when called with', ['pagename', 'actionId'], 'when called with', [['val1', 'val2']], 'to be undefined') // Result is call to store.dispatch
+					.and('when called with', ['pagename', 'actionId'], 'when called with', [['val1', 'val2']], 'to be undefined'), // Result is call to store.dispatch
+				setTab: expect.it('to be a function')
+					.and('when called with', ['tabname'], 'when called', 'to be undefined'), // Result is call to store.dispatch
 			}}/>)
 		.then(() => expect(store.dispatch, 'to have calls satisfying', [
 			{ args: [{ type: UPDATE_VALUE, pageName: 'pagename', fieldName: 'fieldname', newValue: 'value' }]},
 			{ args: [{ type: SET_OPTION, name: 'fieldname', value: 'value' }]},
 			{ args: [expect.it('to be a function')]},
-			{ args: [expect.it('to be a function')]}
+			{ args: [expect.it('to be a function')]},
+			{ args: [{ type: SELECT_LOCATION, tab: 'tabname' }]},
 		]));
 	});
 });

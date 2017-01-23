@@ -2,11 +2,8 @@ import expect from 'unittest/helpers/expect.js';
 import sinon from 'sinon';
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
-import ActionButton from 'console/components/presentation/ActionButton.js';
-import Icon from 'console/components/presentation/Icon.js';
-import styled from 'styled-components';
-
-const StyledButton = styled.button``;
+import ActionButton, * as elements from 'console/components/presentation/ActionButton.js';
+const getStyles = elements.getStyles;
 
 describe('ActionButton', () => {
 	let renderer, props;
@@ -24,7 +21,7 @@ describe('ActionButton', () => {
 			<ActionButton {...props}/>
 		);
 		return expect(renderer, 'to have rendered',
-			<StyledButton>{props.label}</StyledButton>
+			<elements.Button><elements.Label>{props.label}</elements.Label></elements.Button>
 		);
 	});
 
@@ -34,7 +31,7 @@ describe('ActionButton', () => {
 			<ActionButton {...props}/>
 		);
 		return expect(renderer, 'to have rendered',
-			<StyledButton buttonStyle='main'>{props.label}</StyledButton>
+			<elements.Button buttonStyle='main'><elements.Label>{props.label}</elements.Label></elements.Button>
 		);
 	});
 
@@ -44,7 +41,7 @@ describe('ActionButton', () => {
 			<ActionButton {...props}/>
 		);
 		return expect(renderer, 'to have rendered',
-			<StyledButton disabled={true}>{props.label}</StyledButton>
+			<elements.Button disabled={true}><elements.Label>{props.label}</elements.Label></elements.Button>
 		);
 	});
 
@@ -54,10 +51,10 @@ describe('ActionButton', () => {
 			<ActionButton {...props}/>
 		);
 		return expect(renderer, 'to have rendered',
-			<StyledButton>
-				<Icon id='test'/>
-				{props.label}
-			</StyledButton>
+			<elements.Button>
+				<elements.ButtonIcon id='test'/>
+				<elements.Label>{props.label}</elements.Label>
+			</elements.Button>
 		);
 	});
 	it('should render a button with icon and no label', () => {
@@ -67,9 +64,9 @@ describe('ActionButton', () => {
 			<ActionButton {...props}/>
 		);
 		return expect(renderer, 'to have rendered',
-			<StyledButton>
-				<Icon id='test'/>
-			</StyledButton>
+			<elements.Button>
+				<elements.ButtonIcon id='test'/>
+			</elements.Button>
 		);
 	});
 
@@ -81,5 +78,24 @@ describe('ActionButton', () => {
 			.then(() => {
 				return expect(props.action, 'was called once');
 			});
+	});
+
+	describe('getStyles', () => {
+		it('gets a style based on an id', () =>
+			expect(getStyles, 'when called with', [{ buttonStyle: 'small' }], 'to satisfy', [
+				[ '\n\t\tmin-width: 42px;\n\t' ]
+			])
+		);
+
+		it('gets multiple styles if specified', () =>
+			expect(getStyles, 'when called with', [{ buttonStyle: 'small main' }], 'to satisfy', [
+				[ '\n\t\tmin-width: 42px;\n\t' ],
+				[
+					'\n\t\tborder: 1px solid ', '#22B980',
+					';\n\t\tbackground-image: linear-gradient(to bottom, ', '#22B980', ' 0%, ', '#1ea371',
+					' 100%);\n\t\tcolor: white;\n\t\tpadding-top: 4px;\n\t\tpadding-bottom: 4px;\n\t'
+				]
+			])
+		);
 	});
 });

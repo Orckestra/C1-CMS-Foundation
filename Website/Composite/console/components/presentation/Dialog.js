@@ -6,6 +6,7 @@ import Palette from 'console/components/presentation/Palette.js';
 import ActionButton from 'console/components/presentation/ActionButton.js';
 import Immutable from 'immutable';
 import { setDialogState } from 'console/state/reducers/dialog.js';
+import SwitchPanel from 'console/components/presentation/SwitchPanel.js';
 import Input from 'console/components/presentation/Input.js';
 import Icon from 'console/components/presentation/Icon.js';
 
@@ -74,35 +75,27 @@ right: 31px;
 
 const Dialog = props => {
 	let paneDef = props.dialogDef.getIn(['panes', props.dialogData.get('showPane') || 0]) || Immutable.Map();
-	let Pane = paneTypes[paneDef.get('type')] || (() => null);
-	let cancelButton = paneDef.get('cancelButton') ? paneDef.get('cancelButton').toJS() : null;
-	let cancelProvider = paneDef.get('cancelProvider') && paneDef.get('cancelProvider').toJS ? paneDef.get('cancelProvider').toJS() : null;
-	let cancelAction = null;
-	if (cancelProvider) {
-		// Cancel and close dialog
-		cancelAction = props.actions.useProvider(cancelProvider, props.dialogDef.get('name'));
-	}
-	let nextButton = paneDef.get('nextButton') ? paneDef.get('nextButton').toJS() : null;
-	let nextAction = paneDef.get('nextButton') ? () => {
-		// Switch to next pane - set or increment dialogData[showPane]
-	} : null;
-	let finishButton = paneDef.get('finishButton') ? paneDef.get('finishButton').toJS() : null;
-	let finishProvider = paneDef.get('finishProvider') && paneDef.get('finishProvider').toJS ? paneDef.get('finishProvider').toJS() : null;
-	let finishAction = null;
-	if (paneDef.get('finishButton') && finishProvider) {
-		let action = props.actions.useProvider(
-			finishProvider,
-			props.dialogDef.get('name')
-		);
-		finishAction = () => {
-			let payload = props.dialogData.getIn(finishProvider.markup);
-			payload = Immutable.Iterable.isIterable(payload) ? payload.toJS() : payload;
-			// Complete dialog activity, send back data using provider
-			if (payload) {
-				action(payload);
+	let nextAction;
+	let buttons = ['next', 'finish', 'cancel'].map(name => {
+		let button = paneDef.get(name + 'Button') ? paneDef.get(name + 'Button').toJS() : null;
+		let provider = paneDef.get(name + 'Provider') && paneDef.get(name + 'Provider').toJS ? paneDef.get(name + 'Provider').toJS() : null;
+		if (provider && button) {
+			let action = props.actions.useProvider(provider, props.dialogDef.get('name'));
+			if (provider.sendData) {
+				let innerAction = action;
+				action = () => {
+					let payload = props.dialogData.getIn(provider.markup);
+					innerAction(payload);
+				};
 			}
-		};
-	}
+			if (name !== 'cancel') {
+				nextAction = action;
+			}
+			return <ActionButton key={name} action={action} {...button}/>;
+		} else {
+			return null;
+		}
+	});
 	return <DialogBox
 		onContextMenu={event => {
 			event.preventDefault(); // To not show the default menu
@@ -120,18 +113,18 @@ const Dialog = props => {
 			)}/>
 		<SearchIcon id='magnifier'/>
 		<DialogPane>
-			<Pane
+			<SwitchPanel
+				showType={paneDef.get('type')}
+				panelTypes={paneTypes}
 				dialogName={props.dialogDef.get('name')}
 				paneDef={paneDef}
 				itemGroups={props.itemGroups}
 				dialogData={props.dialogData}
 				useProvider={props.actions.useProvider}
-				nextAction={nextAction || finishAction}/>
+				nextAction={nextAction}/>
 		</DialogPane>
 		<DialogButtonGroup>
-			{ nextButton ? <ActionButton action={nextAction} {...nextButton}/> : null}
-			{ finishButton ? <ActionButton action={finishAction} {...finishButton} disabled={!props.dialogData.get('selectedItem')}/> : null}
-			{ cancelButton ? <ActionButton action={cancelAction} {...cancelButton}/> : null}
+			{buttons}
 		</DialogButtonGroup>
 	</DialogBox>;
 };

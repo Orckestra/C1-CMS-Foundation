@@ -102,49 +102,29 @@ const Select = styled(ReactSelect)`
 	.toolbar & {
 		width: 150px;
 		margin: 2px 10px 2px 0;
-		vertical-align: -15px;
 	}
 
 	.toolbar & .Select-input {
-		line-height: 34px;
-		height: 34px;
+		line-height: 32px;
+		height: 32px;
 	}
 	.toolbar & .Select-placeholder {
-		line-height: 34px;
+		line-height: 32px;
 	}
 	.toolbar & .Select-control {
 		border-radius: 4px;
 	}
 	.toolbar & .Select-arrow:after {
-		top: 15px;
-	}
-	.toolbar & .Select-arrow:before {
-		top: 15px;
-	}
-	.toolbar &.is-open .Select-arrow:after {
-		top: 16px;
-	}
-	.toolbar &.is-open .Select-arrow:before {
-		top: 15px;
-	}
-
-	.toolbar + .toolbar .Select {
-		vertical-align: -12px;
-	}
-	.toolbar + .toolbar .Select-input {
-		height: 28px;
-	}
-	.toolbar + .toolbar .Select-arrow:after {
-		top: 13px;
-	}
-	.toolbar + .toolbar .Select-arrow:before {
-		top: 13px;
-	}
-	.toolbar + .toolbar &.is-open .Select-arrow:after {
 		top: 14px;
 	}
-	.toolbar + .toolbar &.is-open .Select-arrow:before {
-		top: 13px;
+	.toolbar & .Select-arrow:before {
+		top: 14px;
+	}
+	.toolbar &.is-open .Select-arrow:after {
+		top: 15px;
+	}
+	.toolbar &.is-open .Select-arrow:before {
+		top: 14px;
 	}
 `;
 

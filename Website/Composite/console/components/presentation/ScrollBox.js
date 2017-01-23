@@ -1,7 +1,6 @@
-import styled, { css } from 'styled-components';
-import colors from 'console/components/colors.js';
+import styled from 'styled-components';
 
-const style = css`
+const ScrollBox = styled.div`
 	display: block;
 	padding: 30px 30px 20px 40px;
 	width: 100%;
@@ -32,11 +31,5 @@ const style = css`
 		height: calc(100% - 137px);
 	}
 `;
-
-export function scrollboxStyle(comp) {
-	return styled(comp)`${style}`;
-}
-
-const ScrollBox = styled.div`${style}`;
 
 export default ScrollBox;

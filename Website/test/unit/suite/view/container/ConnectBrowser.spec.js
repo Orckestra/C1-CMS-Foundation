@@ -112,14 +112,33 @@ describe('ConnectBrowser', () => {
 					})}
 					selectedNode='test11'
 					actions={{
-						openNode: expect.it('to be a function'),
-						closeNode: expect.it('to be a function'),
-						loadChildren: expect.it('to be a function'),
+						openNode: expect.it('to be a function')
+							.and(
+								'when called with', ['node']
+							),
+						closeNode: expect.it('to be a function')
+							.and(
+								'when called with', ['node']
+							),
+						loadChildren: expect.it('to be a function')
+							.and(
+								'when called with', [{ test: 'provider' }],
+								'when called with', [{ test: 'node' }]
+							),
 						selectNode: expect.it('to be a function')
+							.and(
+								'when called with', ['node']
+							)
 					}}
+					splitPosition={400}
 					store={store}/>
-			),
-			expect(store.dispatch, 'was not called'),
+			)
+			.then(expect(store.dispatch, 'to have calls satisfying', [
+				{ args: [{ type: 'PAGE_TREE.OPEN_NODE', name: 'node' }]},
+				{ args: [{ type: 'PAGE_TREE.CLOSE_NODE', name: 'node' }]},
+				{ args: [expect.it('to be a function')]},
+				{ args: [{ type: 'LAYOUT.SELECT_LOCATION', preview: 'node' }]}
+			])),
 			expect(store.subscribe, 'was not called'),
 			expect(store.getState, 'was called')
 		]);

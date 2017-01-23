@@ -182,9 +182,15 @@ describe('ConnectSearchPage', () => {
 			searchQuery={Immutable.fromJS({ text: 'changed', sortInReverseOrder: false })}
 			searchString='testquery'
 			actions={{
-				performSearch: expect.it('to be a function'),
+				performSearch: expect.it('to be a function')
+					.and('when called with', [{ test: 'provider' }], 'when called with', [{ test: 'values' }]),
 				setOption: expect.it('to be a function')
+					.and('when called with', ['fieldName'], 'when called with', ['value'])
 			}}
-		/>);
+		/>)
+		.then(() => expect(store.dispatch, 'to have calls satisfying', [
+			{ args: [expect.it('to be a function')] },
+			{ args: [{ type: 'OPTIONS.SET', name: 'fieldName', value: 'value' }] }
+		]));
 	});
 });

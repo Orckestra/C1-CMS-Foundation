@@ -118,4 +118,11 @@ describe('ConnectLogPanel', () => {
 			]}
 		/>);
 	});
+
+	it('handles missing placeholder', () => {
+		store.stateObj = state.deleteIn(['tabDefs', 'tab1', 'placeholder']);
+		renderer.render(<ConnectLogPanel containerHeight={1000} containerWidth={1500} store={store}/>);
+		let placeholderFunc = renderer.getRenderOutput().props.placeholder;
+		return expect(placeholderFunc, 'when called', 'to equal', 'No data');
+	});
 });
