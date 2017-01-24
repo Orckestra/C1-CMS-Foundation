@@ -55,6 +55,12 @@ namespace Composite.Core.Logging
             LogEntry(title, message, null, category, severity, priority, eventid);
         }
 
+        /// <exclude />
+        static private void LogEntry(string title, string message, Exception exc, Category category, System.Diagnostics.TraceEventType severity)
+        {
+            LogEntry(title, message, exc, category, severity, -1, 0);
+        }
+
         static private void LogEntry(string title, string message, Exception exc, Category category, System.Diagnostics.TraceEventType severity, int priority, int eventid)
         {
             var entry = new Microsoft.Practices.EnterpriseLibrary.Logging.LogEntry();
@@ -91,24 +97,10 @@ namespace Composite.Core.Logging
         }
 
         /// <exclude />
-        static public void LogEntry(string title, string message, Exception exc, Category category, System.Diagnostics.TraceEventType severity, int priority)
-        {
-            LogEntry(title, message, exc, category, severity, priority, 0);
-        }
-
-
-        /// <exclude />
         static public void LogEntry(string title, string message, Category category, System.Diagnostics.TraceEventType severity)
         {
             LogEntry(title, message, category, severity, -1, 0);
         }
-
-        /// <exclude />
-        static public void LogEntry(string title, string message, Exception exc, Category category, System.Diagnostics.TraceEventType severity)
-        {
-            LogEntry(title, message, exc, category, severity, -1, 0);
-        }
-
 
         /// <exclude />
         static public void LogError(string title, string message)
