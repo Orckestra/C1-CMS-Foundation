@@ -26,9 +26,11 @@ namespace Composite.C1Console.Events
             if (consoleMessageQueueItem == null) throw new ArgumentNullException("consoleMessageQueueItem");
 
             _messageQeueue.Enqueue(consoleMessageQueueItem, receiverConsoleId);
+
+            ChangeEvent?.Invoke(receiverConsoleId, EventArgs.Empty);
         }
 
-
+        internal static event EventHandler ChangeEvent;
 
         /// <exclude />
         public static IEnumerable<ConsoleMessageQueueElement> GetQueueElements(int currentConsoleCounter, string consoleId)
