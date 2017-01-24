@@ -6,6 +6,9 @@ import Palette from 'console/components/presentation/Palette.js';
 import ActionButton from 'console/components/presentation/ActionButton.js';
 import Immutable from 'immutable';
 import { fireAction } from 'console/state/actions/fireAction.js';
+import { setDialogState } from 'console/state/reducers/dialog.js';
+import Input from 'console/components/presentation/Input.js';
+import Icon from 'console/components/presentation/Icon.js';
 
 const paneTypes = {
 	palette: Palette
@@ -57,6 +60,18 @@ export const DialogButtonGroup = styled.div`
 	padding: ${sizes.buttonsPaddingTop}px ${sizes.sidePadding}px ${sizes.buttonsPaddingBottom}px;
 	text-align: right;
 `;
+export const SearchField = styled(Input)`
+position: absolute;
+top: 10px;
+right: 20px;
+width: 200px;
+padding-right: 30px;
+`;
+export const SearchIcon = styled(Icon)`
+position: absolute;
+top: 18px;
+right: 31px;
+`;
 
 const Dialog = props => {
 	let paneDef = props.dialogDef.getIn(['panes', props.dialogData.get('showPane') || 0]) || Immutable.Map();
@@ -84,13 +99,24 @@ const Dialog = props => {
 			event.preventDefault(); // To not show the default menu
 		}}>
 		{paneDef.get('headline') ? <DialogTitle>{paneDef.get('headline')}</DialogTitle> : null}
+		<SearchField
+			placeholder={props.dialogDef.get('searchPlaceholder')}
+			value={props.dialogData.get('filterText')}
+			onChange={event => props.dispatch(
+				setDialogState(
+					props.dialogDef.get('name'),
+					props.dialogData
+					.set('filterText', event.target.value)
+				)
+			)}/>
+		<SearchIcon id='magnifier'/>
 		<DialogPane>
-			<Pane dialogName={props.dialogDef.get('name')} paneDef={paneDef} itemGroups={props.itemGroups} dialogData={props.dialogData} dispatch={props.dispatch}/>
+			<Pane dialogName={props.dialogDef.get('name')} paneDef={paneDef} itemGroups={props.itemGroups} dialogData={props.dialogData} dispatch={props.dispatch} nextAction={nextAction || finishAction}/>
 		</DialogPane>
 		<DialogButtonGroup>
-			{ cancelButton ? <ActionButton action={cancelAction} {...cancelButton}/> : null}
 			{ nextButton ? <ActionButton action={nextAction} {...nextButton}/> : null}
-			{ finishButton ? <ActionButton action={finishAction} {...finishButton}/> : null}
+			{ finishButton ? <ActionButton action={finishAction} {...finishButton} disabled={!props.dialogData.get('selectedItem')}/> : null}
+			{ cancelButton ? <ActionButton action={cancelAction} {...cancelButton}/> : null}
 		</DialogButtonGroup>
 	</DialogBox>;
 };

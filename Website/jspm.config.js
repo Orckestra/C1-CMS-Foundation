@@ -42,8 +42,8 @@ SystemJS.config({
       "tweetnacl": "npm:tweetnacl@0.13.3",
       "jodid25519": "npm:jodid25519@1.0.2",
       "ecc-jsbn": "npm:ecc-jsbn@0.1.1",
-      "dns": "github:jspm/nodelibs-dns@0.2.0-alpha",
-      "dgram": "github:jspm/nodelibs-dgram@0.2.0-alpha",
+      "dns": "npm:jspm-nodelibs-dns@0.2.0",
+      "dgram": "npm:jspm-nodelibs-dgram@0.2.0",
       "babel-plugin-transform-react-jsx": "npm:babel-plugin-transform-react-jsx@6.8.0",
       "unexpected-mitm": "npm:unexpected-mitm@9.3.4",
       "zurvan": "npm:zurvan@0.3.2",
@@ -289,14 +289,14 @@ SystemJS.config({
     "immutable": "npm:immutable@3.8.1",
     "github/url-polyfill": "github:github/url-polyfill@0.5.6",
     "bluebird": "npm:bluebird@3.4.6",
-    "module": "github:jspm/nodelibs-module@0.2.0-alpha",
+    "module": "npm:jspm-nodelibs-module@0.2.0",
     "plugin-babel": "npm:systemjs-plugin-babel@0.0.13",
     "magicpen-media": "npm:magicpen-media@1.5.1",
     "messy": "npm:messy@6.12.2",
-    "net": "github:jspm/nodelibs-net@0.2.0-alpha",
+    "net": "npm:jspm-nodelibs-net@0.2.0",
     "os": "github:jspm/nodelibs-os@0.2.0-alpha",
-    "punycode": "github:jspm/nodelibs-punycode@0.2.0-alpha",
-    "querystring": "github:jspm/nodelibs-querystring@0.2.0-alpha",
+    "punycode": "npm:jspm-nodelibs-punycode@0.2.0",
+    "querystring": "npm:jspm-nodelibs-querystring@0.2.0",
     "rc-table": "npm:rc-table@5.0.3",
     "react": "npm:react@15.3.2",
     "react-dimensions": "npm:react-dimensions@1.3.0",
@@ -304,12 +304,12 @@ SystemJS.config({
     "react-select": "npm:react-select@1.0.0-rc.2",
     "redux-immutablejs": "npm:redux-immutablejs@0.0.8",
     "redux-observer": "npm:redux-observer@1.0.0",
-    "repl": "github:jspm/nodelibs-repl@0.2.0-alpha",
+    "repl": "npm:jspm-nodelibs-repl@0.2.0",
     "reselect": "npm:reselect@2.5.4",
     "styled-components": "npm:styled-components@1.1.1",
     "text": "github:systemjs/plugin-text@0.0.9",
-    "tls": "github:jspm/nodelibs-tls@0.2.0-alpha",
-    "tty": "github:jspm/nodelibs-tty@0.2.0-alpha",
+    "tls": "npm:jspm-nodelibs-tls@0.2.0",
+    "tty": "npm:jspm-nodelibs-tty@0.2.0",
     "unexpected": "npm:unexpected@10.18.1",
     "unexpected-messy": "npm:unexpected-messy@6.2.0",
     "constants": "github:jspm/nodelibs-constants@0.2.0-alpha",
@@ -534,56 +534,16 @@ SystemJS.config({
     "npm:util-deprecate@1.0.2": {
       "map": {}
     },
-    "github:jspm/nodelibs-url@0.2.0-alpha": {
-      "map": {
-        "url-browserify": "npm:url@0.11.0"
-      }
-    },
     "npm:url@0.11.0": {
       "map": {
         "punycode": "npm:punycode@1.3.2",
         "querystring": "npm:querystring@0.2.0"
       }
     },
-    "github:jspm/nodelibs-zlib@0.2.0-alpha": {
-      "map": {
-        "zlib-browserify": "npm:browserify-zlib@0.1.4"
-      }
-    },
-    "github:jspm/nodelibs-string_decoder@0.2.0-alpha": {
-      "map": {
-        "string_decoder-browserify": "npm:string_decoder@0.10.31"
-      }
-    },
-    "github:jspm/nodelibs-stream@0.2.0-alpha": {
-      "map": {
-        "stream-browserify": "npm:stream-browserify@2.0.1"
-      }
-    },
     "npm:stream-browserify@2.0.1": {
       "map": {
         "inherits": "npm:inherits@2.0.3",
         "readable-stream": "npm:readable-stream@2.2.2"
-      }
-    },
-    "github:jspm/nodelibs-buffer@0.2.0-alpha": {
-      "map": {
-        "buffer-browserify": "npm:buffer@4.9.1"
-      }
-    },
-    "github:jspm/nodelibs-http@0.2.0-alpha": {
-      "map": {
-        "http-browserify": "npm:stream-http@2.5.0"
-      }
-    },
-    "github:jspm/nodelibs-crypto@0.2.0-alpha": {
-      "map": {
-        "crypto-browserify": "npm:crypto-browserify@3.11.0"
-      }
-    },
-    "github:jspm/nodelibs-domain@0.2.0-alpha": {
-      "map": {
-        "domain-browserify": "npm:domain-browser@1.1.7"
       }
     },
     "npm:gettemporaryfilepath@0.0.1": {
@@ -615,19 +575,9 @@ SystemJS.config({
         "iconv-lite": "npm:iconv-lite@0.4.5"
       }
     },
-    "github:jspm/nodelibs-os@0.2.0-alpha": {
-      "map": {
-        "os-browserify": "npm:os-browserify@0.2.1"
-      }
-    },
     "npm:rfc2231@1.3.0": {
       "map": {
         "iconv-lite": "npm:iconv-lite@0.4.5"
-      }
-    },
-    "github:jspm/nodelibs-punycode@0.2.0-alpha": {
-      "map": {
-        "punycode-browserify": "npm:punycode@1.4.1"
       }
     },
     "npm:buffer@4.9.1": {
@@ -872,6 +822,56 @@ SystemJS.config({
       "map": {
         "bowser": "npm:bowser@1.5.0",
         "hyphenate-style-name": "npm:hyphenate-style-name@1.0.2"
+      }
+    },
+    "npm:jspm-nodelibs-punycode@0.2.0": {
+      "map": {
+        "punycode-browserify": "npm:punycode@1.4.1"
+      }
+    },
+    "github:jspm/nodelibs-buffer@0.2.0-alpha": {
+      "map": {
+        "buffer-browserify": "npm:buffer@4.9.1"
+      }
+    },
+    "github:jspm/nodelibs-stream@0.2.0-alpha": {
+      "map": {
+        "stream-browserify": "npm:stream-browserify@2.0.1"
+      }
+    },
+    "github:jspm/nodelibs-domain@0.2.0-alpha": {
+      "map": {
+        "domain-browserify": "npm:domain-browser@1.1.7"
+      }
+    },
+    "github:jspm/nodelibs-zlib@0.2.0-alpha": {
+      "map": {
+        "zlib-browserify": "npm:browserify-zlib@0.1.4"
+      }
+    },
+    "github:jspm/nodelibs-string_decoder@0.2.0-alpha": {
+      "map": {
+        "string_decoder-browserify": "npm:string_decoder@0.10.31"
+      }
+    },
+    "github:jspm/nodelibs-http@0.2.0-alpha": {
+      "map": {
+        "http-browserify": "npm:stream-http@2.5.0"
+      }
+    },
+    "github:jspm/nodelibs-url@0.2.0-alpha": {
+      "map": {
+        "url-browserify": "npm:url@0.11.0"
+      }
+    },
+    "github:jspm/nodelibs-os@0.2.0-alpha": {
+      "map": {
+        "os-browserify": "npm:os-browserify@0.2.1"
+      }
+    },
+    "github:jspm/nodelibs-crypto@0.2.0-alpha": {
+      "map": {
+        "crypto-browserify": "npm:crypto-browserify@3.11.0"
       }
     }
   }

@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { currentDialogDefSelector, currentDialogPaneDefSelector } from 'console/state/selectors/dialogSelector.js';
+import { currentDialogDefSelector, currentDialogPaneDefSelector, currentDialogDataSelector } from 'console/state/selectors/dialogSelector.js';
 import Immutable from 'immutable';
 
 const providersSelector = state => state.get('providers');
@@ -15,6 +15,22 @@ const rawProviderDataSelector = createSelector(
 		]) || Immutable.List()
 );
 
+const filteredElementsSelector = createSelector(
+	rawProviderDataSelector,
+	currentDialogDataSelector,
+	(elements, dialogData) => {
+		let filterText = (dialogData.get('filterText') || '').toLowerCase();
+		if (/\w/.test(filterText)) {
+			return elements.filter(element => {
+				let searchText = (element.get('title') + ' ' + element.get('description')).toLowerCase();
+				return searchText.indexOf(filterText) !== -1;
+			});
+		} else {
+			return elements;
+		}
+	}
+);
+
 const categorySelector = createSelector(
 	currentDialogPaneDefSelector,
 	paneDef => paneDef.get('categories') || Immutable.List()
@@ -22,7 +38,7 @@ const categorySelector = createSelector(
 
 const categorizedElementListSelector = createSelector(
 	categorySelector,
-	rawProviderDataSelector,
+	filteredElementsSelector,
 	(categories, rawData) => {
 		let categoryMap = {
 			uncategorized: []

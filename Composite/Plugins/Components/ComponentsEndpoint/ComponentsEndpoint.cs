@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Castle.Core.Internal;
 using Composite.C1Console.RichContent.Components;
+using Composite.C1Console.RichContent.ContainerClasses;
 using Composite.Core.Application;
 using Composite.Core.WebClient.Services.WampRouter;
 using WampSharp.V2.Rpc;
@@ -46,14 +47,20 @@ namespace Composite.Plugins.Components.ComponentsEndpoint
         /// </summary>
         /// <returns>list of Components</returns>
         [WampProcedure("components.get")]
-        public IEnumerable<Component> GetComponents(string containerclass=null)
+        public IEnumerable<Component> GetComponents(string containerclass = null)
         {
-            
-            if (!containerclass.IsNullOrEmpty())
+            var sepratedContainerClass = ContainerClassManager.ParseToList(containerclass).ToList();
+
+            if (!sepratedContainerClass.IsNullOrEmpty())
             {
-                return _componentManager.GetComponents().Where(f => (f.ContainerClasses.Contains(containerclass)  ||
-                                        f.ContainerClasses.IsNullOrEmpty()) &&
-                                        !f.AntiTags.Contains(containerclass));
+                return
+                    _componentManager.GetComponents()
+                        .Where(
+                            f =>
+                                (f.ContainerClasses.IsNullOrEmpty() ||
+                                 f.ContainerClasses.Intersect(sepratedContainerClass).Any()) &&
+                                (f.AntiTags.IsNullOrEmpty() || 
+                                !f.AntiTags.Intersect(sepratedContainerClass).Any()));
             }
             return _componentManager.GetComponents();
         }

@@ -2,12 +2,12 @@
  * TinyMCE initialization.
  */
 var config = {
-			
+
 	mode : "exact",
 	elements : "editor",
 	theme : "composite",
 	browsers : "msie,gecko",
-	plugins: "autolink,composite,compositelink,table,compositetable,compositeimage,compositerendering,compositecharmap,compositefield,compositetext,compositespellcheck,compositeimageresize,paste,lists",
+	plugins: "autolink,composite,compositelink,table,compositetable,compositeimage,compositerendering,compositecharmap,compositefield,compositetext,compositespellcheck,compositeimageresize,compositecomponent,paste,lists",
 	entity_encoding : "raw",
 	convert_fonts_to_spans : false,
 	apply_source_formatting : false,
@@ -130,7 +130,7 @@ config.theme = "-" + config.theme;
 
 
 /*
- * Init TinyMCE. 
+ * Init TinyMCE.
  */
 config.formats = formats;
 window.tinyMCE.init ( config );
@@ -166,29 +166,29 @@ var tinyInstance = null;
 /** @type {tinymce.themes.CompositeTheme} */
 var tinyTheme = null;
 
-/** 
+/**
  * Called when tinyInstance initialized.
  * @param {object} inst
  */
 function onInstanceInitialize ( inst ) {
-	
+
 	tinyEngine = tinyMCE;
 	tinyInstance = inst;
 	tinyTheme = inst.theme;
-	
+
 	// make TinyMCE aware of our buttons and stuff.
 	Format.configure ( tinyInstance );
 	tinyTheme.registerNodeChangeHandler ( Format );
-	
+
 	// The toolbar will access this at some point...
-	tinyTheme.formatGroups = groups; 
-	
+	tinyTheme.formatGroups = groups;
+
 	var head = tinyInstance.dom.doc.getElementsByTagName('head')[0];
 
 	/*
 	 * Load CSS.
 	 */
-	
+
 	var styles = new List ( doc.getElementsByTagName ( "style" ));
 	styles.each(function(style) {
 		var file = style.getAttribute("file");
@@ -222,16 +222,16 @@ function onInstanceInitialize ( inst ) {
 	}
 
 	if ( top.EventBroadcaster != null ) {
-		
+
 		/*
 		 * Broadcast intercepted by VisualEditorBinding.
 		 */
-		top.EventBroadcaster.broadcast ( 
+		top.EventBroadcaster.broadcast (
 			top.BroadcastMessages.TINYMCE_INITIALIZED, {
-			
+
 				// this will identify us to the correct editor
 				broadcastWindow	: window,
-				
+
 				// this is what the editor needs to know
 				tinyEngine : tinyEngine,
 				tinyInstance : tinyInstance,

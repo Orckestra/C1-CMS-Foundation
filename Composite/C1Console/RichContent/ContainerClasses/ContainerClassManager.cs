@@ -64,7 +64,7 @@ namespace Composite.C1Console.RichContent.ContainerClasses
         /// <returns></returns>
         public static IList<string> MergeContainerClasses(IEnumerable<string> originalClassList, IEnumerable<string> updatedClassList)
         {
-            return updatedClassList.Union(originalClassList, new EqualOrAntonymComparer()).ToList();
+            return updatedClassList.Union(originalClassList ?? Enumerable.Empty<string>(), new EqualOrAntonymComparer()).ToList();
         }
 
         /// <summary>

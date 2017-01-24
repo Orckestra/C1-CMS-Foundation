@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
 using Composite.Core;
+using Composite.Core.ResourceSystem;
 using Composite.Core.WebClient.Services.WampRouter;
 using Composite.Plugins.Components.ComponentTags;
 using WampSharp.V2.Rpc;
@@ -25,6 +26,9 @@ namespace Composite.Plugins.Components.ComponentsEndpoint
         /// <exclude />
         public string Name => "component-selector";
         /// <exclude />
+        public string SearchPlaceholder => StringResourceSystemFacade.GetString("Composite.Web.VisualEditor",
+                    "Components.Window.DialogFilterPlaceholder");
+        /// <exclude />
         public List<Pane> Panes => new List<Pane>() { new Pane() };
     }
 
@@ -42,10 +46,15 @@ namespace Composite.Plugins.Components.ComponentsEndpoint
         public string Name => "component-list";
         /// <exclude />
         public string Type => "palette";
+
         /// <exclude />
-        public string Headline => "Select a component";
+        public string Headline => StringResourceSystemFacade.GetString("Composite.Web.VisualEditor",
+                    "Components.Window.Headline");
         /// <exclude />
         public string Context => "left-aside";
+        /// <exclude />
+        public string NoItemsText => StringResourceSystemFacade.GetString("Composite.Web.VisualEditor",
+                    "Components.Window.NoItems");
         /// <exclude />
         public IEnumerable<string> Categories { get; }
         /// <exclude />
@@ -76,7 +85,8 @@ namespace Composite.Plugins.Components.ComponentsEndpoint
     public class FinishButton : ButtonResponse
     {
         /// <exclude />
-        public override string Label => "Next";
+        public override string Label => StringResourceSystemFacade.GetString("Composite.Web.VisualEditor",
+                    "Components.Window.Ok");
         /// <exclude />
         public override string Style => "main";
     }
@@ -102,9 +112,10 @@ namespace Composite.Plugins.Components.ComponentsEndpoint
     public class CancelButton : ButtonResponse
     {
         /// <exclude />
-        public override string Label => "Cancel";
+        public override string Label => StringResourceSystemFacade.GetString("Composite.Web.VisualEditor",
+                    "Components.Window.Cancel");
         /// <exclude />
-        public override string Style => "";
+        public override string Style => "dialog";
     }
 
     /// <exclude />
