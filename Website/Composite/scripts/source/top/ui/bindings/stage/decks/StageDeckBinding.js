@@ -53,6 +53,11 @@ function StageDeckBinding () {
 	this.isReady = false;
 
 	/**
+	 * @type {boolean}
+	 */
+	this.isDefaultStageDeck = true;
+
+	/**
 	 * This flag is flipped once the *real* content is loaded.
 	 * @type {boolean}
 	 */
@@ -243,15 +248,23 @@ StageDeckBinding.prototype.initialize = function () {
 
 	if (!this._isStageDeckBindingInitialized) {
 		this.path = this.perspectiveNode.getPropertyBag() ? this.perspectiveNode.getPropertyBag().Path : null;
-		if (!this.path)
-			top.app.bindingMap.stagedeckscover.show ();
-		this.windowBinding = this.add (
+
+		this.isDefaultStageDeck = this.path == undefined;
+
+		top.app.bindingMap.stagedeckscover.show();
+
+		this.windowBinding = this.add(
 			WindowBinding.newInstance ( this.bindingDocument )
 		);
-		var url = this.path ? this.path : (StageDeckBinding.DEFAULT_URL + "?handle=" + this.handle);
+		var url = this.isDefaultStageDeck ? (StageDeckBinding.DEFAULT_URL + "?handle=" + this.handle) : this.path;
 		this.windowBinding.setURL ( url );
 		this.windowBinding.attach ();
 		this._isStageDeckBindingInitialized = true;
+		if (!this.isDefaultStageDeck) {
+			top.app.bindingMap.stagedeckscover.hide();
+			this.dispatchAction(StageDeckBinding.ACTION_LOADED);
+			this.dispatchAction(StageBinding.ACTION_DECK_LOADED);
+		}
 	}
 }
 

@@ -12,7 +12,7 @@ function StartPageBinding () {
 	 * @type {SystemLogger}
 	 */
 	this.logger = SystemLogger.getLogger ( "StartPageBinding" );
-	
+
 	/**
 	 * This object gets loaded in the start page frame.
 	 * @type {CompositeStart}
@@ -36,7 +36,7 @@ function StartPageBinding () {
  * Identifies binding.
  */
 StartPageBinding.prototype.toString = function () {
-	
+
 	return "[StartPageBinding]";
 }
 
@@ -70,7 +70,7 @@ StartPageBinding.prototype.onBindingRegister = function () {
  * @overloads {PageBinding#onBindingAttach}
  */
 StartPageBinding.prototype.onBindingAttach = function () {
-	
+
 	/*
 	 * compositestart/CompositeStart.aspx
 	 */
@@ -80,6 +80,8 @@ StartPageBinding.prototype.onBindingAttach = function () {
 			"GetStartPage.ashx?random=" + KeyMaster.getUniqueKey()
 		);
 	}
+
+	this.dispatchAction(StageBinding.ACTION_START_LOADED);
 }
 
 /**
@@ -108,11 +110,11 @@ StartPageBinding.prototype.handleEvent = function (e) {
 StartPageBinding.prototype.handleAction = function ( action ) {
 
 	StartPageBinding.superclass.handleAction.call ( this, action );
-	
+
 	var binding = action.target;
-	
+
 	switch ( action.type ) {
-	
+
 		case WindowBinding.ACTION_ONLOAD :
 			if ( action.target == bindingMap.start ) {
 				this._starter = bindingMap.start.getContentWindow ().CompositeStart;
@@ -125,7 +127,7 @@ StartPageBinding.prototype.handleAction = function ( action ) {
 				}
 			}
 			break;
-			
+
 		case ControlBinding.ACTION_COMMAND :
 			if ( action.target == bindingMap.closecontrol ) {
 				if ( bindingMap.cover ) {
@@ -182,14 +184,14 @@ StartPageBinding.prototype.stop = function () {
 StartPageBinding.prototype.handleBroadcast = function ( broadcast, arg ) {
 
 	StartPageBinding.superclass.handleBroadcast.call ( this, broadcast, arg );
-	
+
 	switch ( broadcast ) {
-			
+
 		case BroadcastMessages.START_COMPOSITE:
 			this._isShowingStart = true;
 			this.start();
 			break;
-			
+
 		case BroadcastMessages.STOP_COMPOSITE :
 			this.stop();
 			break;

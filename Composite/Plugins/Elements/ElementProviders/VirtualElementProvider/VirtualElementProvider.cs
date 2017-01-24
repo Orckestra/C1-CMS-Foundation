@@ -275,7 +275,7 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
                     }
                 });
             }
-            
+
             element.AddAction(new ElementAction(new RestartApplicationActionToken())
             {
                 VisualData = new ActionVisualizedData
@@ -598,6 +598,7 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
             if (placeholderElementNode != null)
             {
                 element.PropertyBag["Path"] = placeholderElementNode.Path;
+                element.PropertyBag["IsNotDefault"] = placeholderElementNode.IsNotDefault;
             }
 
             return element;
@@ -687,7 +688,7 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
     }
 
 
-    
+
 
     [ActionExecutor(typeof(RebuildSearchIndexActionExecutor))]
     internal sealed class RebuildSearchIndexActionToken : ActionToken
@@ -714,7 +715,7 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
         public static ActionToken Deserialize(string serializedData) => new RestartApplicationActionToken();
     }
 
-    
+
     internal sealed class RebuildSearchIndexActionExecutor : IActionExecutor
     {
         public FlowToken Execute(EntityToken entityToken, ActionToken actionToken, FlowControllerServicesContainer flowControllerServicesContainer)

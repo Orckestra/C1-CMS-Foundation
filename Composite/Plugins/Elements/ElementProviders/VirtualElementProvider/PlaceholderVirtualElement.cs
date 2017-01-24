@@ -13,5 +13,14 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
             get { return (string)base[_path]; }
             set { base[_path] = value; }
         }
+
+
+        private const string _IsNotDefault = "IsNotDefault";
+        [ConfigurationProperty(_IsNotDefault)]
+        public string IsNotDefault
+        {
+            get { return (string)base[_IsNotDefault]; }
+            set { base[_IsNotDefault] = value; }
+        }
     }
 }
