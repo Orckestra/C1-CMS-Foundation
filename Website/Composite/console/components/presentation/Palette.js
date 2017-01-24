@@ -43,16 +43,18 @@ export const ItemGroupCount = styled.div`
 export const Item = styled.div`
 	float: left;
 	width: 420px;
-	height: ${props => props.closed ? 0 : 140}px;
 	margin-right: 15px;
-	margin-bottom: ${props => props.closed ? 0 : 15}px;
 	position: relative;
-	background-color: ${ props => props.active ? colors.darkBackground : 'white' };
 	border-radius: 5px;
-	border-width: ${props => props.closed ? 0 : 1}px;
 	border-color: ${colors.borderColor};
-	border-style: ${ props => props.active ? 'solid' : 'dashed' };
-	opacity: ${props => props.closed ? 0 : 1};
+	${props => props.active ?
+		'background-color: ' + colors.darkBackground + '; border-style: solid;' :
+		'	background-color: white; border-style: dashed;'
+	}
+	${props => props.closed ?
+		'height: 0; margin-bottom: 0; border-width: 0; opacity: 0;' :
+		'height: 140px; margin-bottom: 15px; border-width: 1px; opacity: 1;'
+	}
 	transition:
 		opacity ${itemOpenCloseTime},
 		height ${itemOpenCloseTime},
@@ -118,10 +120,30 @@ NoComponentsIcon.defaultProps = { id: 'close'};
 function resolveMediaURI(uri) {
 	return uri;
 }
+function getUpdater(props) {
+	let selectProvider = props.paneDef.get('select').toJS();
+	return props.useProvider(selectProvider, props.dialogName);
+}
+
+export function toggleGroupOpen(itemGroup, props) {
+	let updateDialogData = getUpdater(props);
+	return () => {
+		let closed = props.dialogData.get('closed') || Immutable.Map();
+		closed = closed.set(itemGroup.get('name'), !closed.get(itemGroup.get('name')));
+		updateDialogData(props.dialogData.set('closed', closed));
+	};
+}
+
+export function itemSelector(item, props) {
+	let updateDialogData = getUpdater(props);
+	return () => updateDialogData(
+		props.dialogData
+		.set('selectedItem', item.get('id'))
+		.set('selectedData', item.get('componentDefinition'))
+	);
+}
 
 const Palette = props => {
-	let selectProvider = props.paneDef.get('select').toJS();
-	let updateDialogData = props.useProvider(selectProvider, props.dialogName);
 	return <div>
 		{props.itemGroups.size === 0 ?
 			<NoComponentsLabel>
@@ -133,11 +155,7 @@ const Palette = props => {
 			<ItemGroup
 				key={itemGroup.get('name')}>
 				<ItemGroupTop
-					onClick={() => {
-						let closed = props.dialogData.get('closed') || Immutable.Map();
-						closed = closed.set(itemGroup.get('name'), !closed.get(itemGroup.get('name')));
-						updateDialogData(props.dialogData.set('closed', closed));
-					}}>
+					onClick={toggleGroupOpen(itemGroup, props)}>
 					<ItemGroupSwitch
 						id={props.dialogData.getIn(['closed', itemGroup.get('name')]) ?
 							'chevron-right' :
@@ -149,30 +167,28 @@ const Palette = props => {
 				</ItemGroupTop>
 				{itemGroup.get('entries').map(item => {
 					let itemName = item.get('id');
-					const selectItem = () => updateDialogData(
-						props.dialogData
-						.set('selectedItem', itemName)
-						.set('selectedData', item.get('componentDefinition'))
+					const selectItem = itemSelector(item, props);
+					return (
+						<Item
+							closed={props.dialogData.getIn(['closed', itemGroup.get('name')])}
+							key={itemName}
+							onClick={selectItem}
+							onDoubleClick={() => {
+								selectItem();
+								(props.nextAction && props.nextAction());
+							}}
+							active={itemName === props.dialogData.get('selectedItem')}>
+							{
+								item.getIn(['componentImage', 'customImageUri']) ?
+								<PreviewImage image={resolveMediaURI(item.getIn(['componentImage', 'customImageUri']))}/> :
+								<PreviewIcon id={item.getIn(['componentImage', 'iconName']) || 'base-function-function'}/>
+							}
+							<InfoBox>
+								<Label>{item.get('title')}</Label>
+								<Description>{item.get('description')}</Description>
+							</InfoBox>
+						</Item>
 					);
-					return <Item
-						closed={props.dialogData.getIn(['closed', itemGroup.get('name')])}
-						key={itemName}
-						onClick={selectItem}
-						onDoubleClick={() => {
-							selectItem();
-							(props.nextAction && props.nextAction());
-						}}
-						active={itemName === props.dialogData.get('selectedItem')}>
-						{
-							item.getIn(['componentImage', 'customImageUri']) ?
-							<PreviewImage image={resolveMediaURI(item.getIn(['componentImage', 'customImageUri']))}/> :
-							<PreviewIcon id={item.getIn(['componentImage', 'iconName']) || 'base-function-function'}/>
-						}
-						<InfoBox>
-							<Label>{item.get('title')}</Label>
-							<Description>{item.get('description')}</Description>
-						</InfoBox>
-					</Item>;
 				}).toArray()}
 			</ItemGroup>
 		).toArray()}

@@ -2,7 +2,8 @@ import expect from 'unittest/helpers/expect.js';
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
 import Immutable from 'immutable';
-import Palette, { ItemGroup, ItemGroupTop, ItemGroupTitle, Item, PreviewImage, PreviewIcon, InfoBox, Label, Description } from 'console/components/presentation/Palette.js';
+import sinon from 'sinon';
+import Palette, * as p from 'console/components/presentation/Palette.js';
 
 describe('Palette', () => {
 	let renderer, props;
@@ -50,55 +51,192 @@ describe('Palette', () => {
 			]),
 			paneDef: Immutable.fromJS({
 				name: 'testpalette',
-				select: {}
+				select: {},
+				noItemsText: 'Testing no items'
 			}),
 			dialogName: 'testdialog',
-			dialogData: Immutable.Map({ selectedItem: 'entry2' }),
+			dialogData: Immutable.fromJS({ selectedItem: 'entry2', closed: { group2: true } }),
 			useProvider: () => () => {}
 		};
+	});
+
+	it('renders an empty palette', () => {
+		props.itemGroups = Immutable.List();
+		renderer.render(<Palette {...props}/>);
+		return expect(renderer, 'to have exactly rendered', <div>
+			<p.NoComponentsLabel>
+				<p.NoComponentsIcon/><br/>
+				Testing no items
+			</p.NoComponentsLabel>
+		</div>);
 	});
 
 	it('renders a palette', () => {
 		renderer.render(<Palette {...props}/>);
 		return expect(renderer, 'to have rendered', <div>
-			<ItemGroup key='group1'>
-				<ItemGroupTop>
-					<ItemGroupTitle>First group</ItemGroupTitle>
-				</ItemGroupTop>
-				<Item key='entry1' active={false}>
-					<PreviewImage image='/path/to/image1.png'/>
-					<InfoBox>
-						<Label>First entry</Label>
-						<Description>All manner of words</Description>
-					</InfoBox>
-				</Item>
-				<Item key='entry2' active={true}>
-					<PreviewImage image='/path/to/image2.png'/>
-					<InfoBox>
-						<Label>Second entry</Label>
-						<Description>Some other words</Description>
-					</InfoBox>
-				</Item>
-			</ItemGroup>
-			<ItemGroup key='group2'>
-				<ItemGroupTop>
-					<ItemGroupTitle>Second group</ItemGroupTitle>
-				</ItemGroupTop>
-				<Item key='entry3' active={false}>
-					<PreviewIcon id='testicon'/>
-					<InfoBox>
-						<Label>Third entry</Label>
-						<Description>Words to live by</Description>
-					</InfoBox>
-				</Item>
-				<Item key='entry4' active={false}>
-					<PreviewIcon id='base-function-function'/>
-					<InfoBox>
-						<Label>Fourth entry</Label>
-						<Description>Words to die for</Description>
-					</InfoBox>
-				</Item>
-			</ItemGroup>
+			<p.ItemGroup key='group1'>
+				<p.ItemGroupTop>
+					<p.ItemGroupTitle>First group</p.ItemGroupTitle>
+				</p.ItemGroupTop>
+				<p.Item key='entry1' active={false}>
+					<p.PreviewImage image='/path/to/image1.png'/>
+					<p.InfoBox>
+						<p.Label>First entry</p.Label>
+						<p.Description>All manner of words</p.Description>
+					</p.InfoBox>
+				</p.Item>
+				<p.Item key='entry2' active={true}>
+					<p.PreviewImage image='/path/to/image2.png'/>
+					<p.InfoBox>
+						<p.Label>Second entry</p.Label>
+						<p.Description>Some other words</p.Description>
+					</p.InfoBox>
+				</p.Item>
+			</p.ItemGroup>
+			<p.ItemGroup key='group2'>
+				<p.ItemGroupTop>
+					<p.ItemGroupTitle>Second group</p.ItemGroupTitle>
+				</p.ItemGroupTop>
+				<p.Item key='entry3' active={false} closed>
+					<p.PreviewIcon id='testicon'/>
+					<p.InfoBox>
+						<p.Label>Third entry</p.Label>
+						<p.Description>Words to live by</p.Description>
+					</p.InfoBox>
+				</p.Item>
+				<p.Item key='entry4' active={false} closed>
+					<p.PreviewIcon id='base-function-function'/>
+					<p.InfoBox>
+						<p.Label>Fourth entry</p.Label>
+						<p.Description>Words to die for</p.Description>
+					</p.InfoBox>
+				</p.Item>
+			</p.ItemGroup>
 		</div>);
+	});
+
+	it('can select items', () => {
+		let useProv2 = sinon.spy().named('useProvider2');
+		let useProv1 = sinon.spy(() => useProv2).named('useProvider1');
+		return expect(p.itemSelector(
+			Immutable.fromJS({
+				id: 'test',
+				componentDefinition: 'testDef'
+			}),
+			{
+				dialogName: 'testdialog',
+				dialogData: Immutable.Map(),
+				paneDef: Immutable.fromJS({ select: { test: 'provider' }}),
+				useProvider: useProv1
+			}
+		), 'to be a function')
+		.and('when called')
+		.then(() => Promise.all([
+			expect(useProv1, 'to have calls satisfying', [
+				{ args: [{ test: 'provider' }, 'testdialog'] }
+			]),
+			expect(useProv2, 'to have calls satisfying', [
+				{ args: [Immutable.fromJS({
+					selectedItem: 'test',
+					selectedData: 'testDef'
+				})] }
+			])
+		]));
+	});
+
+	it('can open item groups', () => {
+		let useProv2 = sinon.spy().named('useProvider2');
+		let useProv1 = sinon.spy(() => useProv2).named('useProvider1');
+		return expect(p.toggleGroupOpen(
+			Immutable.fromJS({
+				name: 'test'
+			}),
+			{
+				dialogName: 'testdialog',
+				dialogData: Immutable.fromJS({
+					closed: {
+						test: true
+					}
+				}),
+				paneDef: Immutable.fromJS({ select: { test: 'provider' }}),
+				useProvider: useProv1
+			}
+		), 'to be a function')
+		.and('when called')
+		.then(() => Promise.all([
+			expect(useProv1, 'to have calls satisfying', [
+				{ args: [{ test: 'provider' }, 'testdialog'] }
+			]),
+			expect(useProv2, 'to have calls satisfying', [
+				{ args: [Immutable.fromJS({
+					closed: {
+						test: false
+					}
+				})] }
+			])
+		]));
+	});
+
+	it('can close item groups', () => {
+		let useProv2 = sinon.spy().named('useProvider2');
+		let useProv1 = sinon.spy(() => useProv2).named('useProvider1');
+		return expect(p.toggleGroupOpen(
+			Immutable.fromJS({
+				name: 'test'
+			}),
+			{
+				dialogName: 'testdialog',
+				dialogData: Immutable.fromJS({
+					closed: {
+						test: false
+					}
+				}),
+				paneDef: Immutable.fromJS({ select: { test: 'provider' }}),
+				useProvider: useProv1
+			}
+		), 'to be a function')
+		.and('when called')
+		.then(() => Promise.all([
+			expect(useProv1, 'to have calls satisfying', [
+				{ args: [{ test: 'provider' }, 'testdialog'] }
+			]),
+			expect(useProv2, 'to have calls satisfying', [
+				{ args: [Immutable.fromJS({
+					closed: {
+						test: true
+					}
+				})] }
+			])
+		]));
+	});
+
+	it('can close the first item group', () => {
+		let useProv2 = sinon.spy().named('useProvider2');
+		let useProv1 = sinon.spy(() => useProv2).named('useProvider1');
+		return expect(p.toggleGroupOpen(
+			Immutable.fromJS({
+				name: 'test'
+			}),
+			{
+				dialogName: 'testdialog',
+				dialogData: Immutable.fromJS({
+				}),
+				paneDef: Immutable.fromJS({ select: { test: 'provider' }}),
+				useProvider: useProv1
+			}
+		), 'to be a function')
+		.and('when called')
+		.then(() => Promise.all([
+			expect(useProv1, 'to have calls satisfying', [
+				{ args: [{ test: 'provider' }, 'testdialog'] }
+			]),
+			expect(useProv2, 'to have calls satisfying', [
+				{ args: [Immutable.fromJS({
+					closed: {
+						test: true
+					}
+				})] }
+			])
+		]));
 	});
 });
