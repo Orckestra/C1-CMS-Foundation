@@ -11,7 +11,6 @@ using Composite.Core;
 using Composite.Core.Application;
 using Composite.Core.Linq;
 using Composite.Core.ResourceSystem;
-using Composite.Core.Threading;
 using Composite.Core.WebClient;
 using Composite.Core.WebClient.Services.WampRouter;
 using Microsoft.Extensions.DependencyInjection;
@@ -79,13 +78,15 @@ namespace Composite.Plugins.Search.Endpoint
             {
                 foreach (var selection in query.Selections)
                 {
+                    string fieldName = ExtractFieldName(selection.FieldName);
+
                     var field = allFields.Where(f => f.Facet != null)
-                        .FirstOrDefault(f => f.Name == selection.FieldName);
-                    Verify.IsNotNull(field, $"Failed to find a facet field by name '{selection.FieldName}'");
+                        .FirstOrDefault(f => f.Name == fieldName);
+                    Verify.IsNotNull(field, $"Failed to find a facet field by name '{fieldName}'");
 
                     selections.Add(new SearchQuerySelection
                     {
-                        FieldName = selection.FieldName,
+                        FieldName = fieldName,
                         Values = selection.Values,
                         Operation = field.Facet.FacetType == FacetType.SingleValue 
                             ? SearchQuerySelectionOperation.Or
@@ -97,12 +98,14 @@ namespace Composite.Plugins.Search.Endpoint
             var sortOptions = new List<SearchQuerySortOption>();
             if (!string.IsNullOrEmpty(query.SortBy))
             {
+                string sortByFieldName = ExtractFieldName(query.SortBy);
+
                 var sortTermsAs = allFields
-                    .Where(f => f.Name == query.SortBy && f.Preview != null && f.Preview.Sortable)
+                    .Where(f => f.Name == sortByFieldName && f.Preview != null && f.Preview.Sortable)
                     .Select(f => f.Preview.SortTermsAs)
                     .FirstOrDefault();
 
-                sortOptions.Add(new SearchQuerySortOption(query.SortBy, query.SortInReverseOrder, sortTermsAs));
+                sortOptions.Add(new SearchQuerySortOption(sortByFieldName, query.SortInReverseOrder, sortTermsAs));
             }
 
             var culture = !string.IsNullOrEmpty(query.CultureName) 
@@ -157,7 +160,7 @@ namespace Composite.Plugins.Search.Endpoint
                 QueryText = query.Text,
                 Columns = previewFields.Select(pf => new ConsoleSearchResultColumn
                 {
-                    FieldName = pf.Name,
+                    FieldName = MakeFieldNameJsFriendly(pf.Name),
                     Label = StringResourceSystemFacade.ParseString(pf.Label),
                     Sortable = pf.Preview.Sortable
                 }).ToArray(),
@@ -183,7 +186,7 @@ namespace Composite.Plugins.Search.Endpoint
                     let facetField = facetFields.First(ff => ff.Name == selection.FieldName)
                     select new ConsoleSearchResultFacetField
                     {
-                        FieldName = selection.FieldName,
+                        FieldName = MakeFieldNameJsFriendly(selection.FieldName),
                         Label = StringResourceSystemFacade.ParseString(facetField.Label),
                         Facets = selection.Values.Select(value => new ConsoleSearchResultFacetValue
                         {
@@ -211,7 +214,7 @@ namespace Composite.Plugins.Search.Endpoint
 
                 result.Add(new ConsoleSearchResultFacetField
                 {
-                    FieldName = field.Name,
+                    FieldName = MakeFieldNameJsFriendly(field.Name),
                     Label = StringResourceSystemFacade.ParseString(field.Label),
                     Facets = values.Select(v => new ConsoleSearchResultFacetValue
                     {
@@ -237,10 +240,22 @@ namespace Composite.Plugins.Search.Endpoint
                 if (!searchDocument.FieldValues.TryGetValue(field.Name, out value)) continue;
 
                 var stringValue = (field.Preview.PreviewFunction ?? (v => v?.ToString()))(value);
-                result[field.Name] = stringValue;
+                result[MakeFieldNameJsFriendly(field.Name)] = stringValue;
             }
 
             return result;
+        }
+
+        private static string MakeFieldNameJsFriendly(string fieldName)
+        {
+            return char.IsUpper(fieldName[0])
+                ? "_" + fieldName
+                : fieldName;
+        }
+
+        private static string ExtractFieldName(string jsFriendlyFieldName)
+        {
+            return jsFriendlyFieldName.StartsWith("_") ? jsFriendlyFieldName.Substring(1) : jsFriendlyFieldName;
         }
 
         private string GetFocusUrl(string serializedEntityToken)
