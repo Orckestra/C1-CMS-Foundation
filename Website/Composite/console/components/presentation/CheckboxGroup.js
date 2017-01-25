@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import styled from 'styled-components';
-import Input from 'console/components/presentation/Input.js';
+import Checkbox from 'console/components/presentation/Checkbox.js';
 
 const Div = styled.div`
 	display: inline-block;
@@ -27,7 +27,7 @@ const CheckboxGroup = props => {
 		<Div className='checkboxGroup'>
 			{props.options.reduce((elements, cbProps) => {
 				let value = (props.value.indexOf(cbProps.value) !== -1) || false;
-				elements.push(<Input
+				elements.push(<Checkbox
 					key={cbProps.name}
 					id={cbProps.name}
 					type='checkbox'
