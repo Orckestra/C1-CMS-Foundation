@@ -54,7 +54,6 @@ namespace Composite.Search.Crawling
         /// Gets the field label in a given locale.
         /// </summary>
         /// <param name="propertyInfo"></param>
-        /// <param name="cultureInfo"></param>
         /// <returns></returns>
         string GetFieldLabel(PropertyInfo propertyInfo);
     }

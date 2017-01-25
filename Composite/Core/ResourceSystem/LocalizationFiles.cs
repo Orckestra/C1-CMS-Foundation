@@ -29,73 +29,6 @@ namespace Composite.Core.ResourceSystem
 		
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
-	   public static class Composite_C1Console_Search {
-///<summary>&quot;Search here...&quot;</summary> 
-public static string SearchPage_SearchHerePlaceholder=>T("SearchPage.SearchHerePlaceholder");
-///<summary>&quot;No results found for &apos;{0}&apos;&quot;</summary> 
-public static string SearchPage_NoResultFound_Template=>T("SearchPage.NoResultFound");
-///<summary>&quot;No results found for &apos;{0}&apos;&quot;</summary> 
-public static string SearchPage_NoResultFound(object parameter0)=>string.Format(T("SearchPage.NoResultFound"), parameter0);
-///<summary>&quot;1 result found for &apos;{0}&apos;&quot;</summary> 
-public static string SearchPage_SingleResultFound_Template=>T("SearchPage.SingleResultFound");
-///<summary>&quot;1 result found for &apos;{0}&apos;&quot;</summary> 
-public static string SearchPage_SingleResultFound(object parameter0)=>string.Format(T("SearchPage.SingleResultFound"), parameter0);
-///<summary>&quot;{1} results for &apos;{0}&apos;&quot;</summary> 
-public static string SearchPage_MultipleResultsFound_Template=>T("SearchPage.MultipleResultsFound");
-///<summary>&quot;{1} results for &apos;{0}&apos;&quot;</summary> 
-public static string SearchPage_MultipleResultsFound(object parameter0,object parameter1)=>string.Format(T("SearchPage.MultipleResultsFound"), parameter0,parameter1);
-///<summary>&quot;Page&quot;</summary> 
-public static string DataType_Page=>T("DataType.Page");
-///<summary>&quot;Media File&quot;</summary> 
-public static string DataType_MediaFile=>T("DataType.MediaFile");
-///<summary>&quot;Label&quot;</summary> 
-public static string FieldNames_Label=>T("FieldNames.Label");
-///<summary>&quot;Description&quot;</summary> 
-public static string FieldNames_Description=>T("FieldNames.Description");
-///<summary>&quot;Data Type&quot;</summary> 
-public static string FieldNames_DataType=>T("FieldNames.DataType");
-///<summary>&quot;Creation Date&quot;</summary> 
-public static string FieldNames_CreationDate=>T("FieldNames.CreationDate");
-///<summary>&quot;Created By&quot;</summary> 
-public static string FieldNames_CreatedBy=>T("FieldNames.CreatedBy");
-///<summary>&quot;Publication Status&quot;</summary> 
-public static string FieldNames_PublicationStatus=>T("FieldNames.PublicationStatus");
-///<summary>&quot;MIME Type&quot;</summary> 
-public static string FieldNames_MimeType=>T("FieldNames.MimeType");
-private static string T(string key) => StringResourceSystemFacade.GetString("Composite.C1Console.Search", key);
-/// <exclude />
-public static class Untranslated {
-///<summary>&quot;Search here...&quot;</summary>
-public const string SearchPage_SearchHerePlaceholder="${Composite.C1Console.Search,SearchPage.SearchHerePlaceholder}";
-///<summary>&quot;No results found for &apos;{0}&apos;&quot;</summary>
-public const string SearchPage_NoResultFound="${Composite.C1Console.Search,SearchPage.NoResultFound}";
-///<summary>&quot;1 result found for &apos;{0}&apos;&quot;</summary>
-public const string SearchPage_SingleResultFound="${Composite.C1Console.Search,SearchPage.SingleResultFound}";
-///<summary>&quot;{1} results for &apos;{0}&apos;&quot;</summary>
-public const string SearchPage_MultipleResultsFound="${Composite.C1Console.Search,SearchPage.MultipleResultsFound}";
-///<summary>&quot;Page&quot;</summary>
-public const string DataType_Page="${Composite.C1Console.Search,DataType.Page}";
-///<summary>&quot;Media File&quot;</summary>
-public const string DataType_MediaFile="${Composite.C1Console.Search,DataType.MediaFile}";
-///<summary>&quot;Label&quot;</summary>
-public const string FieldNames_Label="${Composite.C1Console.Search,FieldNames.Label}";
-///<summary>&quot;Description&quot;</summary>
-public const string FieldNames_Description="${Composite.C1Console.Search,FieldNames.Description}";
-///<summary>&quot;Data Type&quot;</summary>
-public const string FieldNames_DataType="${Composite.C1Console.Search,FieldNames.DataType}";
-///<summary>&quot;Creation Date&quot;</summary>
-public const string FieldNames_CreationDate="${Composite.C1Console.Search,FieldNames.CreationDate}";
-///<summary>&quot;Created By&quot;</summary>
-public const string FieldNames_CreatedBy="${Composite.C1Console.Search,FieldNames.CreatedBy}";
-///<summary>&quot;Publication Status&quot;</summary>
-public const string FieldNames_PublicationStatus="${Composite.C1Console.Search,FieldNames.PublicationStatus}";
-///<summary>&quot;MIME Type&quot;</summary>
-public const string FieldNames_MimeType="${Composite.C1Console.Search,FieldNames.MimeType}";
-
-}} 
-
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	   public static class Composite_C1Console_SecurityViolation {
 ///<summary>&quot;Security violation&quot;</summary> 
 public static string LayoutLabel=>T("LayoutLabel");
@@ -6697,6 +6630,77 @@ public static string EditXsltFunctionWorkflow_MissingPageTitle=>T("EditXsltFunct
 public static string EditXsltFunctionWorkflow_MissingPageMessage=>T("EditXsltFunctionWorkflow.MissingPageMessage");
 private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Plugins.XsltBasedFunction", key);
 } 
+
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+	   public static class Composite_Search {
+///<summary>&quot;Search&quot;</summary> 
+public static string SearchPerspective_Label=>T("SearchPerspective.Label");
+///<summary>&quot;Search here...&quot;</summary> 
+public static string SearchPage_SearchHerePlaceholder=>T("SearchPage.SearchHerePlaceholder");
+///<summary>&quot;No results found for &apos;{0}&apos;&quot;</summary> 
+public static string SearchPage_NoResultFound_Template=>T("SearchPage.NoResultFound");
+///<summary>&quot;No results found for &apos;{0}&apos;&quot;</summary> 
+public static string SearchPage_NoResultFound(object parameter0)=>string.Format(T("SearchPage.NoResultFound"), parameter0);
+///<summary>&quot;1 result found for &apos;{0}&apos;&quot;</summary> 
+public static string SearchPage_SingleResultFound_Template=>T("SearchPage.SingleResultFound");
+///<summary>&quot;1 result found for &apos;{0}&apos;&quot;</summary> 
+public static string SearchPage_SingleResultFound(object parameter0)=>string.Format(T("SearchPage.SingleResultFound"), parameter0);
+///<summary>&quot;{1} results for &apos;{0}&apos;&quot;</summary> 
+public static string SearchPage_MultipleResultsFound_Template=>T("SearchPage.MultipleResultsFound");
+///<summary>&quot;{1} results for &apos;{0}&apos;&quot;</summary> 
+public static string SearchPage_MultipleResultsFound(object parameter0,object parameter1)=>string.Format(T("SearchPage.MultipleResultsFound"), parameter0,parameter1);
+///<summary>&quot;Page&quot;</summary> 
+public static string DataType_Page=>T("DataType.Page");
+///<summary>&quot;Media File&quot;</summary> 
+public static string DataType_MediaFile=>T("DataType.MediaFile");
+///<summary>&quot;Label&quot;</summary> 
+public static string FieldNames_Label=>T("FieldNames.Label");
+///<summary>&quot;Description&quot;</summary> 
+public static string FieldNames_Description=>T("FieldNames.Description");
+///<summary>&quot;Data Type&quot;</summary> 
+public static string FieldNames_DataType=>T("FieldNames.DataType");
+///<summary>&quot;Creation Date&quot;</summary> 
+public static string FieldNames_CreationDate=>T("FieldNames.CreationDate");
+///<summary>&quot;Created By&quot;</summary> 
+public static string FieldNames_CreatedBy=>T("FieldNames.CreatedBy");
+///<summary>&quot;Publication Status&quot;</summary> 
+public static string FieldNames_PublicationStatus=>T("FieldNames.PublicationStatus");
+///<summary>&quot;MIME Type&quot;</summary> 
+public static string FieldNames_MimeType=>T("FieldNames.MimeType");
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Search", key);
+/// <exclude />
+public static class Untranslated {
+///<summary>&quot;Search&quot;</summary>
+public const string SearchPerspective_Label="${Composite.Search,SearchPerspective.Label}";
+///<summary>&quot;Search here...&quot;</summary>
+public const string SearchPage_SearchHerePlaceholder="${Composite.Search,SearchPage.SearchHerePlaceholder}";
+///<summary>&quot;No results found for &apos;{0}&apos;&quot;</summary>
+public const string SearchPage_NoResultFound="${Composite.Search,SearchPage.NoResultFound}";
+///<summary>&quot;1 result found for &apos;{0}&apos;&quot;</summary>
+public const string SearchPage_SingleResultFound="${Composite.Search,SearchPage.SingleResultFound}";
+///<summary>&quot;{1} results for &apos;{0}&apos;&quot;</summary>
+public const string SearchPage_MultipleResultsFound="${Composite.Search,SearchPage.MultipleResultsFound}";
+///<summary>&quot;Page&quot;</summary>
+public const string DataType_Page="${Composite.Search,DataType.Page}";
+///<summary>&quot;Media File&quot;</summary>
+public const string DataType_MediaFile="${Composite.Search,DataType.MediaFile}";
+///<summary>&quot;Label&quot;</summary>
+public const string FieldNames_Label="${Composite.Search,FieldNames.Label}";
+///<summary>&quot;Description&quot;</summary>
+public const string FieldNames_Description="${Composite.Search,FieldNames.Description}";
+///<summary>&quot;Data Type&quot;</summary>
+public const string FieldNames_DataType="${Composite.Search,FieldNames.DataType}";
+///<summary>&quot;Creation Date&quot;</summary>
+public const string FieldNames_CreationDate="${Composite.Search,FieldNames.CreationDate}";
+///<summary>&quot;Created By&quot;</summary>
+public const string FieldNames_CreatedBy="${Composite.Search,FieldNames.CreatedBy}";
+///<summary>&quot;Publication Status&quot;</summary>
+public const string FieldNames_PublicationStatus="${Composite.Search,FieldNames.PublicationStatus}";
+///<summary>&quot;MIME Type&quot;</summary>
+public const string FieldNames_MimeType="${Composite.Search,FieldNames.MimeType}";
+
+}} 
 
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 

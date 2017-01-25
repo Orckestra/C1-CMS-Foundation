@@ -9,7 +9,7 @@ using Composite.Data.DynamicTypes;
 using Composite.Data.ProcessControlled;
 using Composite.Data.Types;
 
-using Texts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_C1Console_Search.Untranslated;
+using Texts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_Search.Untranslated;
 
 namespace Composite.Search.Crawling
 {

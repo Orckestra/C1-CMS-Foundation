@@ -1,6 +1,6 @@
 ﻿using Composite.Plugins.Components.ComponentsEndpoint;
 
-using Texts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_C1Console_Search;
+using Texts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_Search;
 
 namespace Composite.Plugins.Search.Endpoint
 {

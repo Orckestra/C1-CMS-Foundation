@@ -3,7 +3,7 @@
 namespace Composite.Search
 {
     /// <summary>
-    /// Listener to the <see cref="Composite.C1Console.Search.DocumentSources"/> changes.
+    /// Listener to the <see cref="Composite.Search.DocumentSources"/> changes.
     /// </summary>
     public interface IDocumentSourceListener
     {
