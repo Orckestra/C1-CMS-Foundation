@@ -16,27 +16,6 @@ const Input = styled.input`
 	&:focus {
 		border-color: ${colors.fieldFocusColor};
 	}
-
-	&[type="checkbox"]{
-		position: relative;
-		border-radius: 4px;
-		width: 18px;
-		height: 18px;
-		appearance: none;
-	}
-
-	&[type="checkbox"]:checked {
-		background-color: ${colors.fieldFocusColor};
-	}
-	&[type="checkbox"]:checked::after {
-		content: "\u2713";
-		font-size: 14px;
-		font-weight: bold;
-		color: white;
-		position: absolute;
-		top: -2px;
-		left: 2px;
-	}
 `;
 
 Input.defaultProps = {

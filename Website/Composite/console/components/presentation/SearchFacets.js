@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import colors from 'console/components/colors.js';
 import Immutable from 'immutable';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import Input from 'console/components/presentation/Input.js';
+import Checkbox from 'console/components/presentation/Checkbox.js';
 
 export const FacetList = styled.div`
 border-top: 1px solid ${colors.borderColor};
@@ -23,13 +23,9 @@ font-size: 14px;
 text-transform: uppercase;
 `;
 export const Facet = styled.div``;
-export const FacetSelector = styled(Input)`
+export const FacetSelector = styled(Checkbox)`
 margin-right: 10px;
 `;
-
-FacetSelector.defaultProps = {
-	type: 'checkbox'
-};
 
 const SearchFacets = props => {
 	function setFacet(name, value) {
