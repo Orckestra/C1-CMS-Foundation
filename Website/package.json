@@ -58,7 +58,7 @@
       "redux-observer": "npm:redux-observer@^1.0.0",
       "redux-thunk": "npm:redux-thunk@^2.1.0",
       "reselect": "npm:reselect@^2.5.4",
-      "styled-components": "npm:styled-components@1.3",
+      "styled-components": "npm:styled-components@1.4.0",
       "svg": "github:npbenjohnson/plugin-svg@^0.1.0",
       "text": "github:systemjs/plugin-text@^0.0.9",
       "url-polyfill": "github:github/url-polyfill@^0.5.6",
@@ -113,7 +113,7 @@
       "querystring": "npm:jspm-nodelibs-querystring@^0.2.0",
       "react": "npm:react@^15.3.2",
       "react-dom": "npm:react-dom@^15.3.2",
-      "readline": "npm:jspm-nodelibs-readline@^0.2.0",
+      "readline": "github:jspm/nodelibs-readline@^0.2.0-alpha",
       "redux": "npm:redux@^3.5.2",
       "repl": "npm:jspm-nodelibs-repl@^0.2.0",
       "stream": "github:jspm/nodelibs-stream@^0.2.0-alpha",
@@ -204,12 +204,6 @@
           "process": "@empty"
         }
       },
-      "npm:lodash@4.17.2": {
-        "map": {
-          "buffer": "@empty",
-          "process": "@empty"
-        }
-      },
       "npm:ms@0.7.1": {
         "jspmNodeConversion": false,
         "format": "cjs"
@@ -220,4 +214,4 @@
       }
     }
   }
-}
+}
