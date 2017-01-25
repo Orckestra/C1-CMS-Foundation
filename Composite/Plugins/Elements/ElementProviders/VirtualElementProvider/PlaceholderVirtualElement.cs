@@ -15,12 +15,12 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
         }
 
 
-        private const string _IsNotDefault = "IsNotDefault";
-        [ConfigurationProperty(_IsNotDefault)]
-        public string IsNotDefault
+        private const string _IsTool = "IsTool";
+        [ConfigurationProperty(_IsTool)]
+        public string IsTool
         {
-            get { return (string)base[_IsNotDefault]; }
-            set { base[_IsNotDefault] = value; }
+            get { return (string)base[_IsTool]; }
+            set { base[_IsTool] = value; }
         }
     }
 }

@@ -598,7 +598,7 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
             if (placeholderElementNode != null)
             {
                 element.PropertyBag["Path"] = placeholderElementNode.Path;
-                element.PropertyBag["IsNotDefault"] = placeholderElementNode.IsNotDefault;
+                element.PropertyBag["IsTool"] = placeholderElementNode.IsTool;
             }
 
             return element;

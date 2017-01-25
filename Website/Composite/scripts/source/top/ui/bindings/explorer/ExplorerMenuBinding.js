@@ -241,7 +241,7 @@ ExplorerMenuBinding.prototype.setSelectionDefault = function () {
 		this._list.each(function(button) {
 			if (button.node && button.node.getPropertyBag) {
 				var propertyBag = button.node.getPropertyBag();
-				if (propertyBag && propertyBag.IsNotDefault) {
+				if (propertyBag && propertyBag.IsTool) {
 					return true;
 				}
 			}
