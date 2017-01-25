@@ -131,7 +131,7 @@ namespace Composite.Plugins.Search.Endpoint
             {
                 return new ConsoleSearchResult
                 {
-                    QueryText = string.Empty,
+                    QueryText = query.Text,
                     FacetFields = EmptyFacetsFromSelections(query, facetFields),
                     TotalHits = 0
                 };
