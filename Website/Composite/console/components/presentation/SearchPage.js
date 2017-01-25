@@ -99,7 +99,7 @@ const SearchPage = props => {
 		<SearchResultPane>
 			{!props.searchString && !props.results.size ? null :
 				props.results.size ?
-					<ResultHeader>{props.results.size} results for '{props.searchString}'</ResultHeader> :
+					<ResultHeader>{props.results.size} result(s) for '{props.searchString}'</ResultHeader> :
 					<ResultHeader>No results found for '{props.searchString}'</ResultHeader>
 			}
 			<SearchResults

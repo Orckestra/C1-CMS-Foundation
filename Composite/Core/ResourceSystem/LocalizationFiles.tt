@@ -111,18 +111,18 @@ namespace Composite.Core.ResourceSystem
 					parametersCount++;
 				}
 
+				var xmlComment = "///<summary>&quot;%comment%&quot;</summary> \r\n"
+							   .Replace("%comment%", XmlEncode(value).Replace("\r\n", "\r\n ///"));
 
-				output.Append("///<summary>&quot;%comment%&quot;</summary> \r\n"
-							   .Replace("%comment%", XmlEncode(value).Replace("\r\n", "\r\n ///")));
+				output.Append(xmlComment);
 
+				output.Append("public static string %property%=>T(\"%key%\");\r\n"
+								.Replace("%comment%", XmlEncode(value).Replace("\r\n", "\r\n ///"))
+								.Replace("%key%", key)
+								.Replace("%property%", propertyName + (parametersCount > 0 ? "_Template" : "") ));
 
-				if( parametersCount == 0 ) {
-					output.Append("public static string %property%=>T(\"%key%\");\r\n"
-								   .Replace("%comment%", XmlEncode(value).Replace("\r\n", "\r\n ///"))
-								   .Replace("%key%", key)
-								   .Replace("%property%", propertyName));
-				}
-                else {
+				if(parametersCount > 0) 
+				{
 					string[] parametersDefinitions = new string[parametersCount];
 					string[] parametersReferences = new string[parametersCount];
 
@@ -134,6 +134,7 @@ namespace Composite.Core.ResourceSystem
 					string parametersDefinitionsStr = string.Join(",", parametersDefinitions);
 					string parametersReferencesStr = string.Join(",", parametersReferences);
 
+					output.Append(xmlComment);
 					output.Append("public static string %property%(%parametersDef%)=>string.Format(T(\"%key%\"), %parametersRef%);\r\n"
 								   .Replace("%key%", key)
 								   .Replace("%property%", propertyName)

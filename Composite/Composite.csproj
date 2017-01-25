@@ -1203,6 +1203,7 @@
     <Compile Include="Plugins\Routing\Pages\DefaultPageUrlProvider.cs" />
     <Compile Include="Plugins\Routing\UrlFormatters\StringReplaceUrlFormatter.cs" />
     <Compile Include="Plugins\Routing\UrlFormatters\ToLowerCaseUrlFormatter.cs" />
+    <Compile Include="Plugins\Search\Endpoint\ConsoleSearchPageStructure.cs" />
     <Compile Include="Plugins\Search\Endpoint\ConsoleSearchQuery.cs" />
     <Compile Include="Plugins\Search\Endpoint\ConsoleSearchResult.cs" />
     <Compile Include="Plugins\Search\Endpoint\ConsoleSearchRpcService.cs" />

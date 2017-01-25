@@ -30,7 +30,8 @@ export const pageSchema = new Schema('pageDefs', { idAttribute: 'name' });
 pageSchema.define({
 	tabs: arrayOf(tabSchema),
 	toolbars: arrayOf(toolbarSchema),
-	dialog: dialogSchema
+	dialog: dialogSchema,
+	providers: arrayOf(providerSchema)
 });
 
 export default arrayOf(pageSchema);

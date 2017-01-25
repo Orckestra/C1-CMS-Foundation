@@ -34,6 +34,8 @@ namespace Composite.Plugins.Search.Endpoint
     /// <exclude />
     public class ConsoleSearchRpcService : IRpcService
     {
+        internal const string WampProcedureName = "search.query";
+
         private readonly ISearchProvider _searchProvider;
         private readonly IEnumerable<ISearchDocumentSourceProvider> _docSourceProviders;
 
@@ -47,7 +49,7 @@ namespace Composite.Plugins.Search.Endpoint
         }
 
         /// <exclude />
-        [WampProcedure("search.query")]
+        [WampProcedure(WampProcedureName)]
         public async Task<ConsoleSearchResult> QueryAsync(ConsoleSearchQuery query)
         {
             if (_searchProvider == null || query == null) return null;
