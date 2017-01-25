@@ -27,6 +27,10 @@ display: table;
 table-layout: fixed;
 width: 100%;
 border-bottom: 1px solid ${colors.borderColor};
+
+&:empty {
+	border-bottom: 0 none transparent;
+}
 `;
 export const SortIcon = styled(Icon)`
 width: 10px;
