@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
 
-namespace Composite.C1Console.Search.Crawling
+namespace Composite.Search.Crawling
 {
     /// <summary>
     /// Extracts indexable information for a data type field.
@@ -54,7 +54,6 @@ namespace Composite.C1Console.Search.Crawling
         /// Gets the field label in a given locale.
         /// </summary>
         /// <param name="propertyInfo"></param>
-        /// <param name="cultureInfo"></param>
         /// <returns></returns>
         string GetFieldLabel(PropertyInfo propertyInfo);
     }

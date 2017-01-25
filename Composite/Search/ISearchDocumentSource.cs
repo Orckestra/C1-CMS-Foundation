@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
 
-namespace Composite.C1Console.Search
+namespace Composite.Search
 {
     /// <summary>
     /// Represents a search document source (f.e. cms pages, media, etc.)

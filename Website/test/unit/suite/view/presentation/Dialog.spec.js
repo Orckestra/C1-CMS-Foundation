@@ -67,7 +67,10 @@ describe('Dialog', () => {
 		return expect(renderer, 'to have exactly rendered', (
 			<d.DialogBox onContextMenu={expect.it('to be a function').and('when called with', [{ preventDefault: eventSpy }])}>
 				<d.DialogTitle>Palette!</d.DialogTitle>
-				<d.SearchField onChange={expect.it('to be a function').and('when called with', [{ target: { value: 'foo' }}])}/>
+				<d.SearchField
+					onChange={expect.it('to be a function').and('when called with', [{ target: { value: 'foo' }}])}
+					onInput={expect.it('to be a function')}
+				/>
 				<d.SearchIcon id='magnifier'/>
 				<d.DialogPane>
 					<SwitchPanel

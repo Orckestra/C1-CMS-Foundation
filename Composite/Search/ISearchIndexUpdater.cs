@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-namespace Composite.C1Console.Search
+namespace Composite.Search
 {
     /// <summary>
     /// An interface for updating a search index.

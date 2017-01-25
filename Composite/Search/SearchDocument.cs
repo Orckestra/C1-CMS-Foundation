@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Composite.C1Console.Security;
 
-namespace Composite.C1Console.Search
+namespace Composite.Search
 {
     /// <summary>
     /// Represents a console document to be indexed and searched for.

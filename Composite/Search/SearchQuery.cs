@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using Composite.C1Console.Search.Crawling;
+using Composite.Search.Crawling;
 using Composite.C1Console.Security;
 using Composite.Core.Threading;
 using Composite.Data;
 
-namespace Composite.C1Console.Search
+namespace Composite.Search
 {
     /// <summary>
     /// Defines how multiple selected values should be resolved (should all or them much the document or any)

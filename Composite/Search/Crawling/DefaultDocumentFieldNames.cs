@@ -1,4 +1,4 @@
-﻿namespace Composite.C1Console.Search.Crawling
+﻿namespace Composite.Search.Crawling
 {
     /// <summary>
     /// Contains default document field names

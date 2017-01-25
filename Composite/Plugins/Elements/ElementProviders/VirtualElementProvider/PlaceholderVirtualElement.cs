@@ -13,5 +13,14 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
             get { return (string)base[_path]; }
             set { base[_path] = value; }
         }
+
+
+        private const string _IsTool = "IsTool";
+        [ConfigurationProperty(_IsTool)]
+        public string IsTool
+        {
+            get { return (string)base[_IsTool]; }
+            set { base[_IsTool] = value; }
+        }
     }
 }

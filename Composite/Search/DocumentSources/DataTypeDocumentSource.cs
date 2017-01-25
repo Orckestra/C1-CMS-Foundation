@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using Composite.C1Console.Search.Crawling;
+using Composite.Search.Crawling;
 using Composite.Core;
 using Composite.Core.Linq;
 using Composite.Core.Routing;
@@ -12,7 +12,7 @@ using Composite.Data.DynamicTypes;
 using Composite.Data.ProcessControlled;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
 
-namespace Composite.C1Console.Search.DocumentSources
+namespace Composite.Search.DocumentSources
 {
     internal class DataTypeDocumentSource : ISearchDocumentSource
     {

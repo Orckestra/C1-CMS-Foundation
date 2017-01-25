@@ -23,6 +23,7 @@ describe('SearchPage', () => {
 						uri: 'content.search' // TBD
 					}
 				},
+				multipleResultsFound: '{1} results for \'{0}\'',
 				linkColumn: 'label'
 			}),
 			facetGroups: Immutable.fromJS([
@@ -73,7 +74,7 @@ describe('SearchPage', () => {
 			searchString: 'Test',
 			actions: {
 				setOption: () => () => () => {},
-				performSearch: () => {}
+				performSearch: () => () => {}
 			}
 		};
 	});

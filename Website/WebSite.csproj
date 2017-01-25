@@ -657,6 +657,9 @@
     <Content Include="Composite\images\touch-cursor.png" />
     <Content Include="Composite\images\welcome\accept-green.svg" />
     <Content Include="Composite\images\welcome\cancel.svg" />
+    <Content Include="Composite\localization\Composite.Search.en-us.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Composite\localization\Composite.Plugins.Components.en-us.xml" />
     <Content Include="Composite\localization\Composite.Plugins.TimezoneDisplayNames.en-us.xml" />
     <Content Include="Composite\localization\Composite.Plugins.TimezoneAbbreviations.en-us.xml" />
@@ -687,6 +690,7 @@
     <Content Include="App_Data\Composite\PhantomJs\config.json" />
     <Content Include="Composite\services\Setup\web.config" />
     <Content Include="App_Data\Composite\DebugBuild.Composite.config" />
+    <Content Include="Composite\content\views\simplesearch\SimpleSearch.cshtml" />
     <None Include="Composite\styles\default\splash.less" />
     <Content Include="Composite\GenerateIconSprite.aspx" />
     <Content Include="Composite\images\editfunction.png" />

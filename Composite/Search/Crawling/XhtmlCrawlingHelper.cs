@@ -4,7 +4,7 @@ using System.Xml.Linq;
 using Composite.Core;
 using Composite.Core.Xml;
 
-namespace Composite.C1Console.Search.Crawling
+namespace Composite.Search.Crawling
 {
     internal class XhtmlCrawlingHelper
     {

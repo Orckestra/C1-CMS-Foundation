@@ -7,7 +7,7 @@ using Composite.Data;
 using Composite.Data.ProcessControlled;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
 
-namespace Composite.C1Console.Search.DocumentSources
+namespace Composite.Search.DocumentSources
 {
     internal class DataChangesIndexNotifier
     {

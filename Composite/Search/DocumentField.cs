@@ -1,4 +1,4 @@
-﻿namespace Composite.C1Console.Search
+﻿namespace Composite.Search
 {
     /// <summary>
     /// Contains information about the facet.

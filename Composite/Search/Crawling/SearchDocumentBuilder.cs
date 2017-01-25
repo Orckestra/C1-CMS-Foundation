@@ -5,9 +5,9 @@ using Composite.C1Console.Security;
 using Composite.Core.Linq;
 using Composite.Data;
 
-using Texts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_C1Console_Search;
+using Texts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_Search;
 
-namespace Composite.C1Console.Search.Crawling
+namespace Composite.Search.Crawling
 {
     /// <summary>
     /// A helper class to create search documents based of IData instances

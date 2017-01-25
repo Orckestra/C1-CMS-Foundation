@@ -65,6 +65,10 @@ text-transform: uppercase;
 margin: 18px 15px 16px;
 `;
 
+function interpolateString(str, ...params) {
+	return str.replace(/\{(\d+)\}/g, (match, num) => params[parseInt(num, 10)]);
+}
+
 const SearchPage = props => {
 	let searchQueryUpdater = props.actions.setOption(props.pageDef.get('name'));
 	let searchChangeHandler = event => {
@@ -99,13 +103,16 @@ const SearchPage = props => {
 		<SearchResultPane>
 			{!props.searchString && !props.results.size ? null :
 				props.results.size ?
-					<ResultHeader>{props.results.size} results for '{props.searchString}'</ResultHeader> :
-					<ResultHeader>No results found for '{props.searchString}'</ResultHeader>
+					(props.results.size > 1 ?
+						<ResultHeader>{interpolateString(props.pageDef.get('multipleResultsFound'), props.searchString, props.results.size)}</ResultHeader> :
+						<ResultHeader>{interpolateString(props.pageDef.get('singleResultFound'), props.searchString)}</ResultHeader>
+					) :
+					<ResultHeader>{interpolateString(props.pageDef.get('noResultsFound'), props.searchString)}</ResultHeader>
 			}
 			<SearchResults
 				searchQuery={props.searchQuery}
 				updateQuery={searchQueryUpdater}
-				performSearch={searchAction}
+				performSearch={fireSearch}
 				resultColumns={props.resultColumns}
 				results={props.results}
 				urlColumn={props.pageDef.get('urlColumn')}

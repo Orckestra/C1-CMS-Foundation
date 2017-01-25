@@ -8,7 +8,7 @@ using Composite.Core.Types;
 using Composite.Data;
 using SearchableFieldInfo = System.Collections.Generic.KeyValuePair<System.Reflection.PropertyInfo, Composite.Data.SearchableFieldAttribute>;
 
-namespace Composite.C1Console.Search.Crawling
+namespace Composite.Search.Crawling
 {
     internal static class DataTypeSearchReflectionHelper
     {

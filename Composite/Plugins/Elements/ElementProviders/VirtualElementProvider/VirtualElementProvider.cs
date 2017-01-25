@@ -8,7 +8,7 @@ using Composite.C1Console.Actions;
 using Composite.C1Console.Elements;
 using Composite.C1Console.Elements.Foundation;
 using Composite.C1Console.Elements.Plugins.ElementProvider;
-using Composite.C1Console.Search;
+using Composite.Search;
 using Composite.Core;
 using Composite.Core.Extensions;
 using Composite.Core.ResourceSystem;
@@ -275,7 +275,7 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
                     }
                 });
             }
-            
+
             element.AddAction(new ElementAction(new RestartApplicationActionToken())
             {
                 VisualData = new ActionVisualizedData
@@ -598,6 +598,7 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
             if (placeholderElementNode != null)
             {
                 element.PropertyBag["Path"] = placeholderElementNode.Path;
+                element.PropertyBag["IsTool"] = placeholderElementNode.IsTool;
             }
 
             return element;
@@ -687,7 +688,7 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
     }
 
 
-    
+
 
     [ActionExecutor(typeof(RebuildSearchIndexActionExecutor))]
     internal sealed class RebuildSearchIndexActionToken : ActionToken
@@ -714,7 +715,7 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
         public static ActionToken Deserialize(string serializedData) => new RestartApplicationActionToken();
     }
 
-    
+
     internal sealed class RebuildSearchIndexActionExecutor : IActionExecutor
     {
         public FlowToken Execute(EntityToken entityToken, ActionToken actionToken, FlowControllerServicesContainer flowControllerServicesContainer)

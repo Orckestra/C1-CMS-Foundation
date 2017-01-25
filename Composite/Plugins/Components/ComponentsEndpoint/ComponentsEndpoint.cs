@@ -6,6 +6,7 @@ using Composite.C1Console.RichContent.Components;
 using Composite.C1Console.RichContent.ContainerClasses;
 using Composite.Core.Application;
 using Composite.Core.WebClient.Services.WampRouter;
+using Composite.Plugins.Search.Endpoint;
 using WampSharp.V2.Rpc;
 
 namespace Composite.Plugins.Components.ComponentsEndpoint
@@ -37,8 +38,14 @@ namespace Composite.Plugins.Components.ComponentsEndpoint
         /// </summary>
         /// <returns>list of Components</returns>
         [WampProcedure("structure.page")]
-        public ComponentsResponseMessage Get()
+        public object Get(string name)
         {
+            // TODO: use an interface to resolve a page structure object
+            if (name == "search")
+            {
+                return new ConsoleSearchPageStructure();
+            }
+
             return new ComponentsResponseMessage();
         }
 

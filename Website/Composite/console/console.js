@@ -145,6 +145,7 @@ const initialState = {
 		}
 	}
 };
+
 function whenReadyRender() {
 	if (document.readyState === 'complete') {
 		let Root = location.search ? ConnectDockPanel : ConnectPerspectives;
