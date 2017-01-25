@@ -17,6 +17,7 @@ export const ItemGroup = styled.div`
 `;
 export const ItemGroupTop = styled.div`
 	position: relative;
+	display: inline-block;
 	width: max-content;
 	cursor: default;
 `;
@@ -131,27 +132,29 @@ const Palette = props => {
 		{props.itemGroups.map(itemGroup =>
 			<ItemGroup
 				key={itemGroup.get('name')}>
-				<ItemGroupTop
-					onClick={() => {
-						let closed = props.dialogData.get('closed') || Immutable.Map();
-						closed = closed.set(itemGroup.get('name'), !closed.get(itemGroup.get('name')));
-						props.dispatch(
-							setDialogState(
-								props.dialogName,
-								props.dialogData
-								.set('closed', closed)
-							)
-						);
-					}}>
-					<ItemGroupSwitch
-						id={props.dialogData.getIn(['closed', itemGroup.get('name')]) ?
-							'chevron-right' :
-							'chevron-down'
-						}
-					/>
-					<ItemGroupCount>({itemGroup.get('entries').size})</ItemGroupCount>
-					<ItemGroupTitle>{itemGroup.get('title')}</ItemGroupTitle>
-				</ItemGroupTop>
+				<div>
+					<ItemGroupTop
+						onClick={() => {
+							let closed = props.dialogData.get('closed') || Immutable.Map();
+							closed = closed.set(itemGroup.get('name'), !closed.get(itemGroup.get('name')));
+							props.dispatch(
+								setDialogState(
+									props.dialogName,
+									props.dialogData
+									.set('closed', closed)
+								)
+							);
+						}}>
+						<ItemGroupSwitch
+							id={props.dialogData.getIn(['closed', itemGroup.get('name')]) ?
+								'chevron-right' :
+								'chevron-down'
+							}
+						/>
+						<ItemGroupCount>({itemGroup.get('entries').size})</ItemGroupCount>
+						<ItemGroupTitle>{itemGroup.get('title')}</ItemGroupTitle>
+					</ItemGroupTop>
+				</div>
 				{itemGroup.get('entries').map(item => {
 					let itemName = item.get('id');
 					const selectItem = () => props.dispatch(
