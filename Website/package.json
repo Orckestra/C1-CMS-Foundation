@@ -226,11 +226,6 @@
           "lodash": "^4.15.0",
           "supports-color": "^3.1.2"
         }
-      },
-      "npm:unexpected@10.18.1": {
-        "main": "unexpected.js",
-        "dependencies": {},
-        "jspmPackage": true
       }
     }
   }

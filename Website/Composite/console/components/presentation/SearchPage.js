@@ -105,7 +105,7 @@ const SearchPage = props => {
 			<SearchResults
 				searchQuery={props.searchQuery}
 				updateQuery={searchQueryUpdater}
-				performSearch={searchAction}
+				performSearch={fireSearch}
 				resultColumns={props.resultColumns}
 				results={props.results}
 				urlColumn={props.pageDef.get('urlColumn')}

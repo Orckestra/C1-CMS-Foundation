@@ -73,7 +73,7 @@ describe('SearchPage', () => {
 			searchString: 'Test',
 			actions: {
 				setOption: () => () => () => {},
-				performSearch: () => {}
+				performSearch: () => () => {}
 			}
 		};
 	});

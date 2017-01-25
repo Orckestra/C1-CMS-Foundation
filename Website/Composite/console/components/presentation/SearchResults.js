@@ -85,7 +85,7 @@ const SearchResults = props => {
 								searchQuery = searchQuery.set('sortBy', col.get('fieldName')).set('sortInReverseOrder', false);
 							}
 							props.updateQuery(searchQuery);
-							props.performSearch();
+							props.performSearch(searchQuery);
 						} :
 						() => {};
 					return <ResultTableHeadCell key={col.get('fieldName')} onClick={sort} sortable={col.get('sortable')}>
