@@ -308,6 +308,7 @@ SystemJS.config({
     "repl": "npm:jspm-nodelibs-repl@0.2.0",
     "reselect": "npm:reselect@2.5.4",
     "styled-components": "npm:styled-components@1.4.0",
+    "supports-color": "npm:supports-color@3.2.3",
     "text": "github:systemjs/plugin-text@0.0.9",
     "tls": "npm:jspm-nodelibs-tls@0.2.0",
     "tty": "npm:jspm-nodelibs-tty@0.2.0",
@@ -910,6 +911,11 @@ SystemJS.config({
         "bn.js": "npm:bn.js@4.11.6",
         "inherits": "npm:inherits@2.0.3",
         "minimalistic-assert": "npm:minimalistic-assert@1.0.0"
+      }
+    },
+    "npm:supports-color@3.2.3": {
+      "map": {
+        "has-flag": "npm:has-flag@1.0.0"
       }
     }
   }

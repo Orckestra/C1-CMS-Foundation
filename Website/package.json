@@ -58,7 +58,8 @@
       "redux-observer": "npm:redux-observer@^1.0.0",
       "redux-thunk": "npm:redux-thunk@^2.1.0",
       "reselect": "npm:reselect@^2.5.4",
-      "styled-components": "npm:styled-components@1.4.0",
+      "styled-components": "npm:styled-components@^1.4.0",
+      "supports-color": "npm:supports-color@^3.2.3",
       "svg": "github:npbenjohnson/plugin-svg@^0.1.0",
       "text": "github:systemjs/plugin-text@^0.0.9",
       "url-polyfill": "github:github/url-polyfill@^0.5.6",
@@ -211,6 +212,11 @@
       "npm:ms@0.7.2": {
         "jspmNodeConversion": false,
         "format": "cjs"
+      },
+      "npm:unexpected@10.18.1": {
+        "main": "unexpected.js",
+        "dependencies": {},
+        "jspmPackage": true
       }
     }
   }

@@ -75,11 +75,12 @@ describe('Palette', () => {
 		renderer.render(<Palette {...props}/>);
 		return expect(renderer, 'to have rendered', <div>
 			<p.ItemGroup key='group1'>
-				<p.ItemGroupTop>
-					<p.ItemGroupTitle>First group</p.ItemGroupTitle>
-				</p.ItemGroupTop>
+				<div>
+					<p.ItemGroupTop>
+						<p.ItemGroupTitle>First group</p.ItemGroupTitle>
+					</p.ItemGroupTop>
+				</div>
 				<p.Item key='entry1' active={false}>
-					<p.PreviewImage image='/path/to/image1.png'/>
 					<p.InfoBox>
 						<p.Label>First entry</p.Label>
 						<p.Description>All manner of words</p.Description>
@@ -94,11 +95,12 @@ describe('Palette', () => {
 				</p.Item>
 			</p.ItemGroup>
 			<p.ItemGroup key='group2'>
-				<p.ItemGroupTop>
-					<p.ItemGroupTitle>Second group</p.ItemGroupTitle>
-				</p.ItemGroupTop>
+				<div>
+					<p.ItemGroupTop>
+						<p.ItemGroupTitle>Second group</p.ItemGroupTitle>
+					</p.ItemGroupTop>
+				</div>
 				<p.Item key='entry3' active={false} closed>
-					<p.PreviewIcon id='testicon'/>
 					<p.InfoBox>
 						<p.Label>Third entry</p.Label>
 						<p.Description>Words to live by</p.Description>

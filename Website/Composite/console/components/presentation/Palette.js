@@ -16,7 +16,8 @@ export const ItemGroup = styled.div`
 `;
 export const ItemGroupTop = styled.div`
 	position: relative;
-	width: min-content;
+	display: inline-block;
+	width: max-content;
 	cursor: default;
 `;
 export const ItemGroupTitle = styled.h2`
@@ -154,17 +155,19 @@ const Palette = props => {
 		{props.itemGroups.map(itemGroup =>
 			<ItemGroup
 				key={itemGroup.get('name')}>
-				<ItemGroupTop
+				<div>
+					<ItemGroupTop
 					onClick={toggleGroupOpen(itemGroup, props)}>
-					<ItemGroupSwitch
-						id={props.dialogData.getIn(['closed', itemGroup.get('name')]) ?
-							'chevron-right' :
-							'chevron-down'
-						}
-					/>
-					<ItemGroupCount>({itemGroup.get('entries').size})</ItemGroupCount>
-					<ItemGroupTitle>{itemGroup.get('title')}</ItemGroupTitle>
-				</ItemGroupTop>
+						<ItemGroupSwitch
+							id={props.dialogData.getIn(['closed', itemGroup.get('name')]) ?
+								'chevron-right' :
+								'chevron-down'
+							}
+						/>
+						<ItemGroupCount>({itemGroup.get('entries').size})</ItemGroupCount>
+						<ItemGroupTitle>{itemGroup.get('title')}</ItemGroupTitle>
+					</ItemGroupTop>
+				</div>
 				{itemGroup.get('entries').map(item => {
 					let itemName = item.get('id');
 					const selectItem = itemSelector(item, props);
