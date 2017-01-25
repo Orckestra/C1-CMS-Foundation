@@ -8,7 +8,7 @@ using Composite.C1Console.Actions;
 using Composite.C1Console.Elements;
 using Composite.C1Console.Elements.Foundation;
 using Composite.C1Console.Elements.Plugins.ElementProvider;
-using Composite.C1Console.Search;
+using Composite.Search;
 using Composite.Core;
 using Composite.Core.Extensions;
 using Composite.Core.ResourceSystem;

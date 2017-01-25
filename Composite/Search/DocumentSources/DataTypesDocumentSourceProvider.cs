@@ -2,7 +2,7 @@
 using System.Linq;
 using Composite.Data;
 
-namespace Composite.C1Console.Search.DocumentSources
+namespace Composite.Search.DocumentSources
 {
     class DataTypesDocumentSourceProvider: ISearchDocumentSourceProvider
     {

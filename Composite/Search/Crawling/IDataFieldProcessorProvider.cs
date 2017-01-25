@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace Composite.C1Console.Search.Crawling
+namespace Composite.Search.Crawling
 {
     /// <summary>
     /// Allows augmenting crawling data types for search related information.

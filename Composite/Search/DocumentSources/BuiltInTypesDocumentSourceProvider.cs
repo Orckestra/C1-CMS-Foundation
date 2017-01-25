@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Composite.C1Console.Search.DocumentSources
+namespace Composite.Search.DocumentSources
 {
     internal class BuiltInTypesDocumentSourceProvider: ISearchDocumentSourceProvider
     {

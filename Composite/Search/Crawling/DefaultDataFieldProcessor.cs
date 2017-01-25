@@ -11,7 +11,7 @@ using Composite.Data.Types;
 
 using Texts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_C1Console_Search.Untranslated;
 
-namespace Composite.C1Console.Search.Crawling
+namespace Composite.Search.Crawling
 {
     /// <summary>
     /// The default data field processor.

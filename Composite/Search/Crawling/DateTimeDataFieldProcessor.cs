@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 
-namespace Composite.C1Console.Search.Crawling
+namespace Composite.Search.Crawling
 {
     /// <summary>
     /// The default field processor for <see cref="DateTime"/> fields.

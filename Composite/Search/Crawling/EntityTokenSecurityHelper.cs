@@ -8,7 +8,7 @@ using Composite.Core.Threading;
 using Composite.Data;
 using Composite.Data.Types;
 
-namespace Composite.C1Console.Search.Crawling
+namespace Composite.Search.Crawling
 {
     internal static class EntityTokenSecurityHelper
     {

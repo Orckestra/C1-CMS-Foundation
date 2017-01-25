@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Composite.C1Console.Search
+namespace Composite.Search
 {
     /// <summary>
     /// A search provider.

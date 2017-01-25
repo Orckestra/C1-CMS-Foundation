@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Composite.C1Console.Search.DocumentSources;
+using Composite.Search.DocumentSources;
 using Composite.Core;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Composite.C1Console.Search
+namespace Composite.Search
 {
     /// <summary>
     /// Console search functionality

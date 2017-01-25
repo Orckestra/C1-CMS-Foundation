@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-namespace Composite.C1Console.Search
+namespace Composite.Search
 {
     /// <summary>
     /// Listener to the <see cref="Composite.C1Console.Search.DocumentSources"/> changes.
