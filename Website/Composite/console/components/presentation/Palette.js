@@ -17,7 +17,7 @@ export const ItemGroup = styled.div`
 `;
 export const ItemGroupTop = styled.div`
 	position: relative;
-	width: min-content;
+	width: max-content;
 	cursor: default;
 `;
 export const ItemGroupTitle = styled.h2`
