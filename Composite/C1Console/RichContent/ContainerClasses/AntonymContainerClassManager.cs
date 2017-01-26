@@ -8,7 +8,7 @@ using Composite.Core.Xml;
 
 namespace Composite.C1Console.RichContent.ContainerClasses
 {
-    public static class AntonymContainerClassManager
+    internal static class AntonymContainerClassManager
     {
         private static readonly Dictionary<string, string> AntonymDictionaryFromConfig = AntonymContainerClassLoader();
 

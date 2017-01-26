@@ -8,7 +8,6 @@ using WampSharp.V2.Rpc;
 
 namespace Composite.Plugins.Components.ComponentsEndpoint
 {
-#warning heavily mocked!
     /// <exclude />
     public class ComponentsResponseMessage
     {

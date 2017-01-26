@@ -2,16 +2,12 @@
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Composite.C1Console.RichContent.Components
 {
     [ApplicationStartup()]
-    public class ComponentChangeNotifierRegistrator
+    internal class ComponentChangeNotifierRegistrator
     {
-        /// <exclude>
         public void ConfigureServices(IServiceCollection serviceCollection)
         {
             serviceCollection.AddSingleton(typeof(ComponentChangeNotifier));
@@ -19,33 +15,47 @@ namespace Composite.C1Console.RichContent.Components
     }
 
 
+    /// <summary>
+    /// Component change structure
+    /// </summary>
     public class ComponentChange
     {
+        /// <summary>
+        /// Provider's Id, e.g. provider's class name
+        /// </summary>
         public string ProviderId { get; set; }
 
     }
 
+    /// <summary>
+    /// This class manages change notifiers subscribed in component providers
+    /// </summary>
     public class ComponentChangeNotifier : IObservable<ComponentChange>
     {
+        /// <exclude />
         public ComponentChangeNotifier()
         {
-            observers = new List<IObserver<ComponentChange>>();
+            _observers = new List<IObserver<ComponentChange>>();
         }
 
-        private List<IObserver<ComponentChange>> observers;
+        private readonly List<IObserver<ComponentChange>> _observers;
 
+        /// <summary>
+        /// Use this method to subscribe an observer
+        /// </summary>
+        /// <param name="observer"></param>
         public IDisposable Subscribe(IObserver<ComponentChange> observer)
         {
-            if (!observers.Contains(observer))
-                observers.Add(observer);
-            return new Unsubscriber(observers, observer);
+            if (!_observers.Contains(observer))
+                _observers.Add(observer);
+            return new Unsubscriber(_observers, observer);
         }
 
 
         private class Unsubscriber : IDisposable
         {
-            private List<IObserver<ComponentChange>> _observers;
-            private IObserver<ComponentChange> _observer;
+            private readonly List<IObserver<ComponentChange>> _observers;
+            private readonly IObserver<ComponentChange> _observer;
 
             public Unsubscriber(List<IObserver<ComponentChange>> observers, IObserver<ComponentChange> observer)
             {
@@ -60,10 +70,14 @@ namespace Composite.C1Console.RichContent.Components
             }
         }
 
+        /// <summary>
+        /// Notify a change in the provider
+        /// </summary>
+        /// <param name="providerId"></param>
         public void ProviderChange(string providerId)
         {
             var change = new ComponentChange { ProviderId = providerId };
-            foreach (var observer in observers)
+            foreach (var observer in _observers)
             {
                 observer.OnNext(change);
             }
