@@ -6,7 +6,7 @@ import unexpectedSinon from 'unexpected-sinon';
 import unexpectedDom from 'unexpected-dom';
 import unexpectedMitm from 'unexpected-mitm';
 import unexpectedZurvan from 'unexpected-zurvan';
-import unexpectedImmutable from 'unittest/helpers/unexpected-immutable.js';
+import unexpectedImmutable from 'unexpected-immutable';
 import TestUtils from 'react-addons-test-utils';
 
 // define our instance of the `expect` function to use
