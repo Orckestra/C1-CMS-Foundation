@@ -320,7 +320,7 @@ SystemJS.config({
     "domain": "npm:jspm-nodelibs-domain@0.2.0",
     "events": "npm:jspm-nodelibs-events@0.2.0",
     "fs": "npm:jspm-nodelibs-fs@0.2.0",
-    "http": "npm:jspm-nodelibs-http@0.2.0",
+    "http": "github:jspm/nodelibs-http@0.2.0-alpha",
     "https": "npm:jspm-nodelibs-https@0.2.0",
     "path": "npm:jspm-nodelibs-path@0.2.0",
     "process": "github:jspm/nodelibs-process@0.2.0-alpha",
@@ -864,14 +864,14 @@ SystemJS.config({
         "stream-browserify": "npm:stream-browserify@2.0.1"
       }
     },
-    "npm:jspm-nodelibs-http@0.2.0": {
-      "map": {
-        "http-browserify": "npm:stream-http@2.5.0"
-      }
-    },
     "npm:jspm-nodelibs-os@0.2.0": {
       "map": {
         "os-browserify": "npm:os-browserify@0.2.1"
+      }
+    },
+    "github:jspm/nodelibs-http@0.2.0-alpha": {
+      "map": {
+        "http-browserify": "npm:stream-http@2.5.0"
       }
     }
   }
