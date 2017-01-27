@@ -47,7 +47,7 @@ const HiddenCheckbox = styled.input`
 `;
 
 const Checkbox = props => (
-	<Wrapper>
+	<Wrapper className={props.className}>
 		<HiddenCheckbox type='checkbox' {...props}/>
 		<VisualCheckbox checked={props.checked} htmlFor={props.id}/>
 	</Wrapper>
