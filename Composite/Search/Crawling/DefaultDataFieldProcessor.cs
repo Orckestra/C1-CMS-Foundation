@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using Composite.Core.ResourceSystem;
 using Composite.Core.Types;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
 using Composite.Data.ProcessControlled;
+using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
 using Composite.Data.Types;
 
 using Texts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_Search.Untranslated;
@@ -85,7 +87,7 @@ namespace Composite.Search.Crawling
             {
                 Sortable = IsFieldSortable(propertyInfo),
                 SortTermsAs = GetFieldSortingMethod(propertyInfo.PropertyType),
-                PreviewFunction = GetPreviewFunction(),
+                PreviewFunction = GetPreviewFunction(propertyInfo),
                 FieldOrder = 100
             };
         }
@@ -158,9 +160,32 @@ namespace Composite.Search.Crawling
         }
 
         /// <exclude />
-        protected virtual DocumentFieldPreview.ValuePreviewDelegate GetPreviewFunction()
+        protected virtual DocumentFieldPreview.ValuePreviewDelegate GetPreviewFunction(PropertyInfo propertyInfo)
         {
+            if (propertyInfo.DeclaringType == typeof (IPublishControlled) 
+                && propertyInfo.Name == nameof(IPublishControlled.PublicationStatus))
+            {
+                return value => GetLocalizedPublicationStatus((string)value);
+            }
+
             return value => value?.ToString();
+        }
+
+        private static string GetLocalizedPublicationStatus(string status)
+        {
+            switch (status)
+            {
+                case GenericPublishProcessController.Published:
+                    return LocalizationFiles.Composite_Management.PublishingStatus_published;
+                case GenericPublishProcessController.Draft:
+                    return LocalizationFiles.Composite_Management.PublishingStatus_draft;
+                case GenericPublishProcessController.AwaitingApproval:
+                    return LocalizationFiles.Composite_Management.PublishingStatus_awaitingApproval;
+                case GenericPublishProcessController.AwaitingPublication:
+                    return LocalizationFiles.Composite_Management.PublishingStatus_awaitingPublication;
+            }
+
+            return status;
         }
 
         /// <exclude />
