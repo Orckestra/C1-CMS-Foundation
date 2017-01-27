@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Composite.C1Console.Security;
 using Composite.Search.Crawling;
 using Composite.Core;
 using Composite.Core.Extensions;
@@ -37,8 +38,13 @@ namespace Composite.Search.DocumentSources
             });
 
             _changesIndexNotifier = new DataChangesIndexNotifier(
-                _listeners, typeof(IPage), 
-                data => FromPage((IPage) data),
+                _listeners, typeof(IPage),
+                data =>
+                {
+                    var page = (IPage) data;
+                    var entityToken = GetAdministratedEntityToken(page);
+                    return entityToken != null ? FromPage(page, entityToken) : null;
+                },
                 data => GetDocumentId((IPage) data));
 
             _changesIndexNotifier.Start();
@@ -68,11 +74,13 @@ namespace Composite.Search.DocumentSources
 
             foreach (var unpublishedPage in unpublishedPages)
             {
+                var entityToken = unpublishedPage.GetDataEntityToken();
+
                 IPage publishedPage;
                 if (publishedPages.TryGetValue(new Tuple<Guid, Guid>(unpublishedPage.Id, unpublishedPage.VersionId), 
                         out publishedPage))
                 {
-                    yield return FromPage(publishedPage);
+                    yield return FromPage(publishedPage, entityToken);
 
                     if (unpublishedPage.PublicationStatus == GenericPublishProcessController.Published)
                     {
@@ -81,13 +89,13 @@ namespace Composite.Search.DocumentSources
                     }
                 }
 
-                yield return FromPage(unpublishedPage);
+                yield return FromPage(unpublishedPage, entityToken);
             }
         }
 
         public ICollection<DocumentField> CustomFields => _customFields.Value;
 
-        private SearchDocument FromPage(IPage page)
+        private SearchDocument FromPage(IPage page, EntityToken entityToken)
         {
             string label = page.MenuTitle;
             if (string.IsNullOrWhiteSpace(label))
@@ -121,14 +129,21 @@ namespace Composite.Search.DocumentSources
 
             string url = isPublished ? PageUrls.BuildUrl(page, UrlKind.Internal) : null;
 
-            var entityToken = page.GetDataEntityToken();
+            return documentBuilder.BuildDocument(Name, documentId, label, null, entityToken, url);
+        }
 
-            if (isPublished)
+        private EntityToken GetAdministratedEntityToken(IPage page)
+        {
+            if (page.DataSourceId.PublicationScope == PublicationScope.Published)
             {
-                entityToken.DataSourceId.DataScopeIdentifier = DataScopeIdentifier.Administrated;
+                return page.GetDataEntityToken();
             }
 
-            return documentBuilder.BuildDocument(Name, documentId, label, null, entityToken, url);
+            using (new DataScope(PublicationScope.Unpublished, page.DataSourceId.LocaleScope))
+            {
+                var unpublishedPage = PageManager.GetPageById(page.Id, page.VersionId, true);
+                return unpublishedPage?.GetDataEntityToken();
+            }
         }
 
         private string GetDocumentId(IPage page)

@@ -251,6 +251,7 @@
     <Compile Include="C1Console\RichContent\ContainerClasses\AntonymContainerClassManager.cs" />
     <Compile Include="C1Console\RichContent\ContainerClasses\ContainerClassManager.cs" />
     <Compile Include="C1Console\RichContent\ContainerClasses\EqualOrAntonymComparer.cs" />
+    <Compile Include="Core\WebClient\PageStructureRpc.cs" />
     <Compile Include="Search\Crawling\DefaultDocumentFieldNames.cs" />
     <Compile Include="Search\Crawling\EntityTokenSecurityHelper.cs" />
     <Compile Include="Search\Crawling\IDataFieldProcessorProvider.cs" />

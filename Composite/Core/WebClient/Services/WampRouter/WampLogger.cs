@@ -29,10 +29,15 @@ namespace Composite.Core.WebClient.Services.WampRouter
                 switch (logLevel)
                 {
                     case LogLevel.Fatal:
+                        Core.Log.LogError(nameof(WampLogger), FormatMessage(messageFunc, formatParameters));
                         Core.Log.LogCritical(nameof(WampLogger), exception);
                         break;
                     case LogLevel.Error:
                         Core.Log.LogError(nameof(WampLogger), FormatMessage(messageFunc, formatParameters));
+                        if (exception != null)
+                        {
+                            Core.Log.LogError(nameof(WampLogger), exception);
+                        }
                         break;
                     case LogLevel.Warn:
                         Core.Log.LogWarning(nameof(WampLogger), FormatMessage(messageFunc, formatParameters));
@@ -49,13 +54,13 @@ namespace Composite.Core.WebClient.Services.WampRouter
 
             private string FormatMessage(Func<string> messageFunc, params object[] formatParameters)
             {
-                var message = messageFunc.Invoke();
+                var message = messageFunc();
                 Regex needle = new Regex(@"\{(.*?)\}");
                 
                 int i = 0;
                 while (needle.IsMatch(message))
                 {
-                    message = needle.Replace(message, "^"+i.ToString()+"#", 1);
+                    message = needle.Replace(message, "^" + i + "#", 1);
                     i++;
                 }
 
