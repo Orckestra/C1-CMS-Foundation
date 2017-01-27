@@ -136,7 +136,7 @@ Dialog.propTypes = {
 	dialogDef: ImmutablePropTypes.mapContains({
 		name: PropTypes.string.isRequired,
 		headline: PropTypes.string,
-		dialogData: ImmutablePropTypes.map.isRequired,
+		updateData: ImmutablePropTypes.map.isRequired,
 		panes: ImmutablePropTypes.list.isRequired
 	}).isRequired,
 	actions: PropTypes.shape({
