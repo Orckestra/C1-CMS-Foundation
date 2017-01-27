@@ -85,20 +85,14 @@ namespace Composite.C1Console.Trees
         /// <exclude />
         public override IEnumerable<EntityToken> GetEntityTokens(EntityToken childEntityToken, TreeNodeDynamicContext dynamicContext)
         {
-            IEnumerable<object> labels;
+            IEnumerable<object> labels = GetObjects(dynamicContext, true);
 
-            if (!this.LocalizationEnabled)
+            if (this.LocalizationEnabled)
             {
-                labels = GetObjects(dynamicContext, true);
-            }
-            else
-            {
-                List<object> orgLabels = GetObjects(dynamicContext, true);
                 using (new DataScope(UserSettings.ForeignLocaleCultureInfo))
                 {
                     List<object> foreignLabels = GetObjects(dynamicContext, true);
-                    orgLabels.AddRange(foreignLabels);
-                    labels = orgLabels.Distinct();
+                    labels = labels.Concat(foreignLabels).Distinct();
                 }
             }
 
@@ -157,11 +151,7 @@ namespace Composite.C1Console.Trees
 
 
 
-        internal override Type CurrentDataInterfaceType
-        {
-            get { return this.InterfaceType; }
-        }
-
+        internal override Type CurrentDataInterfaceType => this.InterfaceType;
 
 
         /// <exclude />
@@ -1080,7 +1070,7 @@ namespace Composite.C1Console.Trees
             }
             else
             {
-                this.GroupingValuesFieldName = string.Format("■{0}_{1}", this.FieldName, dataFolderElementCount);
+                this.GroupingValuesFieldName = $"■{this.FieldName}_{dataFolderElementCount}";
             }
 
           
@@ -1105,15 +1095,10 @@ namespace Composite.C1Console.Trees
         }
 
 
-
-        private bool LocalizationEnabled
-        {
-            get
-            {
-                return this.ShowForeignItems && !UserSettings.ActiveLocaleCultureInfo.Equals(UserSettings.ForeignLocaleCultureInfo);
-            }
-        }
-
+        private bool LocalizationEnabled => 
+            this.ShowForeignItems
+            && UserValidationFacade.IsLoggedIn()
+            && !UserSettings.ActiveLocaleCultureInfo.Equals(UserSettings.ForeignLocaleCultureInfo);
 
 
         private static Type GetTupleType(int filedCount)
