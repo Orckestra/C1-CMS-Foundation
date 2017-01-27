@@ -38,7 +38,8 @@ export const ItemGroupSwitch = styled(Icon)`
 `;
 export const ItemGroupCount = styled.div`
 	position: absolute;
-	right: -35px;
+	right: -20px;
+	transform: translateX(100%);
 	top: 0;
 `;
 export const Item = styled.div`
