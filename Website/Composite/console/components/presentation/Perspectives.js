@@ -151,7 +151,7 @@ width: 100%;
 height: 100%;
 `;
 
-function openPerspective(perspectiveDef, props) {
+export function openPerspective(perspectiveDef, props) {
 	props.setPerspective(perspectiveDef.get('name'));
 	if (!props.layout.getIn(['perspectives', perspectiveDef.get('name'), 'currentPage'])) {
 		props.loadPage(perspectiveDef.get('rootPage'));

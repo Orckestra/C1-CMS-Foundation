@@ -2,8 +2,9 @@ import expect from 'unittest/helpers/expect.js';
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
 import Immutable from 'immutable';
+import sinon from 'sinon';
 import ConnectDockPanel from 'console/components/container/ConnectDockPanel.js';
-import Perspectives, * as uiElements from 'console/components/presentation/Perspectives.js';
+import Perspectives, * as p from 'console/components/presentation/Perspectives.js';
 
 
 describe('Perspectives', () => {
@@ -35,36 +36,94 @@ describe('Perspectives', () => {
 					content: {}
 				}
 			}),
-			setPerspective: () => {}, // Mock this for test later
-			loadPage: () => {} // Mock this for test later
+			setPerspective: sinon.spy().named('setPerspective'),
+			loadPage: sinon.spy().named('loadPage'),
+			toggleExplorer: sinon.spy().named('toggleExplorer')
 		};
 	});
 
 	it('renders perspective browser', () => {
 		renderer.render(<Perspectives {...props}/>);
-		return expect(renderer, 'to have rendered', <uiElements.PerspectiveWrapper>
-			<uiElements.Explorer>
-				<uiElements.MainIdentity>
-					<uiElements.MainLogo/><uiElements.MainLabel/>
-				</uiElements.MainIdentity>
-				<uiElements.MenuButton/>
-				<uiElements.PerspectiveMenu>
-					<uiElements.Perspective>
-						<uiElements.PerspectiveIcon id='magnifier'/>
-						<uiElements.PerspectiveLabel>Search</uiElements.PerspectiveLabel>
-					</uiElements.Perspective>
-					<uiElements.Perspective>
-						<uiElements.PerspectiveIcon id='perspective-content'/>
-						<uiElements.PerspectiveLabel>Content</uiElements.PerspectiveLabel>
-					</uiElements.Perspective>
-				</uiElements.PerspectiveMenu>
-			</uiElements.Explorer>
-			<uiElements.Dock>
-				<uiElements.DockPanel>
-					<ConnectDockPanel/>
-				</uiElements.DockPanel>
-			</uiElements.Dock>
+		return expect(renderer, 'to have rendered', (
+			<p.PerspectiveWrapper className=''>
+				<p.Explorer>
+					<p.MainIdentity>
+						<p.MainLogo/><p.MainLabel/>
+					</p.MainIdentity>
+					<p.MenuButton onClick={expect.it('to be', props.toggleExplorer)}/>
+					<p.MainIdentity>
+						<p.Perspective onClick={expect.it('to be a function').and('not to error')}>
+							<p.PerspectiveIcon id='magnifier'/>
+							<p.PerspectiveLabel>Search</p.PerspectiveLabel>
+						</p.Perspective>
+						<p.Perspective onClick={expect.it('to be a function').and('not to error')}>
+							<p.PerspectiveIcon id='perspective-content'/>
+							<p.PerspectiveLabel>Content</p.PerspectiveLabel>
+						</p.Perspective>
+					</p.MainIdentity>
+				</p.Explorer>
+				<p.Dock>
+					<p.DockPanel>
+						<ConnectDockPanel/>
+					</p.DockPanel>
+				</p.Dock>
+			</p.PerspectiveWrapper>
+		))
+		.then(() => expect(props.setPerspective, 'to have calls satisfying', [
+			{ args: ['console-search'] },
+			{ args: ['content'] },
+			{ args: ['console-search'] }
+		]));
+	});
 
-		</uiElements.PerspectiveWrapper>);
+	it('renders open perspective browser', () => {
+		props.layout = props.layout.set('perspectivesOpen', true);
+		renderer.render(<Perspectives {...props}/>);
+		return expect(renderer, 'to have rendered', (
+			<p.PerspectiveWrapper className='open'/>
+		));
+	});
+
+	describe('openPerspective function', () => {
+		let openPerspective = p.openPerspective;
+
+		it('can open a perspective', () => {
+			let perspectiveDef = props.perspectiveDefs.get('console-search');
+			expect(openPerspective, 'when called with', [perspectiveDef, props])
+			.then(() => Promise.all([
+				expect(props.setPerspective, 'to have calls satisfying', [
+					{ args: ['console-search'] }
+				]),
+				expect(props.loadPage, 'was not called'),
+				expect(props.toggleExplorer, 'was not called')
+			]));
+		});
+
+		it('can load a perspective while opening it', () => {
+			let perspectiveDef = props.perspectiveDefs.get('content');
+			expect(openPerspective, 'when called with', [perspectiveDef, props])
+			.then(() => Promise.all([
+				expect(props.setPerspective, 'to have calls satisfying', [
+					{ args: ['content'] }
+				]),
+				expect(props.loadPage, 'to have calls satisfying', [
+					{ args: ['content-browser'] }
+				]),
+				expect(props.toggleExplorer, 'was not called')
+			]));
+		});
+
+		it('closes the perspective list on select', () => {
+			let perspectiveDef = props.perspectiveDefs.get('console-search');
+			props.layout = props.layout.set('perspectivesOpen', true);
+			expect(openPerspective, 'when called with', [perspectiveDef, props])
+			.then(() => Promise.all([
+				expect(props.setPerspective, 'to have calls satisfying', [
+					{ args: ['console-search'] }
+				]),
+				expect(props.loadPage, 'was not called'),
+				expect(props.toggleExplorer, 'was called once')
+			]));
+		});
 	});
 });
