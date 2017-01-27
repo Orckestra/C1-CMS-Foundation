@@ -5,16 +5,12 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Composite.C1Console.RichContent.Components
 {
-    /// <exclude>
     [ApplicationStartup()]
-    public class ComponentManagerRegistrator
+    internal class ComponentManagerRegistrator
     {
-        /// <exclude>
         public void ConfigureServices(IServiceCollection serviceCollection)
         {
             serviceCollection.AddSingleton(typeof(ComponentManager));
@@ -44,8 +40,8 @@ namespace Composite.C1Console.RichContent.Components
             _log.LogVerbose(nameof(ComponentManager), "Registering {0} IComponentProvider instances: {1}", _providers.Count, string.Join(",", _providers.Select(f => f.ProviderId)));
         }
 
-        private ILog _log;
-        private List<IComponentProvider> _providers;
+        private readonly ILog _log;
+        private readonly List<IComponentProvider> _providers;
         private IDisposable _notifierUnsubscriber;
         private List<Component> _componentCache;
 

@@ -224,7 +224,10 @@ module.exports = function (grunt) {
     grunt.config("svgmin", {
         options: {
             plugins: [
-              { removeAttrs: { attrs: ['width', 'height'] } },
+              { removeAttrs: { attrs: [
+                'g:width', 'g:height',
+                'svg:width', 'svg:height'
+              ] } },
               { removeDesc: false },
               { removeUselessDefs: false },
               { removeEmptyAttrs: false },
