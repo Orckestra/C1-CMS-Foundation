@@ -13,13 +13,13 @@ export default function (expect) {
 			return this.baseType.identify(value) &&
 				value.type &&
 				/^styled\b/.test(value.type.displayName);
+				// && (console.log('SC:', value.type.target, value.type.rules.length) || true);
 		},
 		equal: function (a, b, equal) {
-			console.log('comparing SCs');
+			// console.log('comparing SCs');
 			return this.baseType.equal(a, b, equal) &&
-				a.type.target === b.type.target &&
-				Array.equals(a.type.rules, b.type.rules) &&
-				(console.log('match') || true);
+				Array.equals(a.type.rules, b.type.rules);// &&
+				// (console.log('match') || true);
 		}
 		// inspect(value, depth, output, inspect) {
 		// 	return htmlLikeReactElement.inspect(value, depth, output, inspect);
