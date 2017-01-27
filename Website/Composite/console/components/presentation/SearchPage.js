@@ -88,6 +88,7 @@ const SearchPage = props => {
 				placeholder={props.pageDef.get('placeholder')}
 				value={props.searchQuery.get('text')}
 				onChange={searchChangeHandler}
+				onInput={searchChangeHandler}
 				onKeyPress={event => {
 					if (event.key === 'Enter') {
 						searchAction();
