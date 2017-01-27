@@ -5,7 +5,6 @@ import colors from 'console/components/colors.js';
 import Palette from 'console/components/presentation/Palette.js';
 import ActionButton from 'console/components/presentation/ActionButton.js';
 import Immutable from 'immutable';
-import { setDialogState } from 'console/state/reducers/dialog.js';
 import SwitchPanel from 'console/components/presentation/SwitchPanel.js';
 import Input from 'console/components/presentation/Input.js';
 import Icon from 'console/components/presentation/Icon.js';
@@ -96,12 +95,11 @@ const Dialog = props => {
 			return null;
 		}
 	});
-	const searchFunction = event => props.dispatch(
-		setDialogState(
-			props.dialogDef.get('name'),
-			props.dialogData
-			.set('filterText', event.target.value)
-		)
+	let selectProvider = props.dialogDef.get('updateData').toJS();
+	const dataUpdater = props.actions.useProvider(selectProvider, props.dialogDef.get('name'));
+	const searchFunction = event => dataUpdater(
+		props.dialogData
+		.set('filterText', event.target.value)
 	);
 	return <DialogBox
 		onContextMenu={event => {
@@ -122,7 +120,7 @@ const Dialog = props => {
 				paneDef={paneDef}
 				itemGroups={props.itemGroups}
 				dialogData={props.dialogData}
-				useProvider={props.actions.useProvider}
+				updateDialogData={dataUpdater}
 				nextAction={nextAction}/>
 		</DialogPane>
 		<DialogButtonGroup>
@@ -138,6 +136,7 @@ Dialog.propTypes = {
 	dialogDef: ImmutablePropTypes.mapContains({
 		name: PropTypes.string.isRequired,
 		headline: PropTypes.string,
+		dialogData: ImmutablePropTypes.map.isRequired,
 		panes: ImmutablePropTypes.list.isRequired
 	}).isRequired,
 	actions: PropTypes.shape({

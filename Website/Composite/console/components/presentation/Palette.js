@@ -121,23 +121,17 @@ NoComponentsIcon.defaultProps = { id: 'close'};
 function resolveMediaURI(uri) {
 	return uri;
 }
-function getUpdater(props) {
-	let selectProvider = props.paneDef.get('select').toJS();
-	return props.useProvider(selectProvider, props.dialogName);
-}
 
 export function toggleGroupOpen(itemGroup, props) {
-	let updateDialogData = getUpdater(props);
 	return () => {
 		let closed = props.dialogData.get('closed') || Immutable.Map();
 		closed = closed.set(itemGroup.get('name'), !closed.get(itemGroup.get('name')));
-		updateDialogData(props.dialogData.set('closed', closed));
+		props.updateDialogData(props.dialogData.set('closed', closed));
 	};
 }
 
 export function itemSelector(item, props) {
-	let updateDialogData = getUpdater(props);
-	return () => updateDialogData(
+	return () => props.updateDialogData(
 		props.dialogData
 		.set('selectedItem', item.get('id'))
 		.set('selectedData', item.get('componentDefinition'))
@@ -199,7 +193,6 @@ const Palette = props => {
 };
 
 Palette.propTypes = {
-	dialogName: PropTypes.string.isRequired,
 	dialogData: ImmutablePropTypes.mapContains({
 		selectedItem: PropTypes.string
 	}),
@@ -210,7 +203,7 @@ Palette.propTypes = {
 	itemGroups: ImmutablePropTypes.listOf(ImmutablePropTypes.mapContains({
 		entries: ImmutablePropTypes.listOf(ImmutablePropTypes.map).isRequired
 	})).isRequired,
-	useProvider: PropTypes.func.isRequired,
+	updateDialogData: PropTypes.func.isRequired,
 	nextAction: PropTypes.func
 };
 

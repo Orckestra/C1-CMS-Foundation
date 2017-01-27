@@ -54,9 +54,8 @@ describe('Palette', () => {
 				select: {},
 				noItemsText: 'Testing no items'
 			}),
-			dialogName: 'testdialog',
 			dialogData: Immutable.fromJS({ selectedItem: 'entry2', closed: { group2: true } }),
-			useProvider: () => () => {}
+			updateDialogData: () => {}
 		};
 	});
 
@@ -118,26 +117,21 @@ describe('Palette', () => {
 	});
 
 	it('can select items', () => {
-		let useProv2 = sinon.spy().named('useProvider2');
-		let useProv1 = sinon.spy(() => useProv2).named('useProvider1');
+		let useProv = sinon.spy().named('updateDialogData');
 		return expect(p.itemSelector(
 			Immutable.fromJS({
 				id: 'test',
 				componentDefinition: 'testDef'
 			}),
 			{
-				dialogName: 'testdialog',
 				dialogData: Immutable.Map(),
 				paneDef: Immutable.fromJS({ select: { test: 'provider' }}),
-				useProvider: useProv1
+				updateDialogData: useProv
 			}
 		), 'to be a function')
 		.and('when called')
 		.then(() => Promise.all([
-			expect(useProv1, 'to have calls satisfying', [
-				{ args: [{ test: 'provider' }, 'testdialog'] }
-			]),
-			expect(useProv2, 'to have calls satisfying', [
+			expect(useProv, 'to have calls satisfying', [
 				{ args: [Immutable.fromJS({
 					selectedItem: 'test',
 					selectedData: 'testDef'
@@ -147,29 +141,24 @@ describe('Palette', () => {
 	});
 
 	it('can open item groups', () => {
-		let useProv2 = sinon.spy().named('useProvider2');
-		let useProv1 = sinon.spy(() => useProv2).named('useProvider1');
+		let useProv = sinon.spy().named('updateDialogData');
 		return expect(p.toggleGroupOpen(
 			Immutable.fromJS({
 				name: 'test'
 			}),
 			{
-				dialogName: 'testdialog',
 				dialogData: Immutable.fromJS({
 					closed: {
 						test: true
 					}
 				}),
 				paneDef: Immutable.fromJS({ select: { test: 'provider' }}),
-				useProvider: useProv1
+				updateDialogData: useProv
 			}
 		), 'to be a function')
 		.and('when called')
 		.then(() => Promise.all([
-			expect(useProv1, 'to have calls satisfying', [
-				{ args: [{ test: 'provider' }, 'testdialog'] }
-			]),
-			expect(useProv2, 'to have calls satisfying', [
+			expect(useProv, 'to have calls satisfying', [
 				{ args: [Immutable.fromJS({
 					closed: {
 						test: false
@@ -180,29 +169,24 @@ describe('Palette', () => {
 	});
 
 	it('can close item groups', () => {
-		let useProv2 = sinon.spy().named('useProvider2');
-		let useProv1 = sinon.spy(() => useProv2).named('useProvider1');
+		let useProv = sinon.spy().named('updateDialogData');
 		return expect(p.toggleGroupOpen(
 			Immutable.fromJS({
 				name: 'test'
 			}),
 			{
-				dialogName: 'testdialog',
 				dialogData: Immutable.fromJS({
 					closed: {
 						test: false
 					}
 				}),
 				paneDef: Immutable.fromJS({ select: { test: 'provider' }}),
-				useProvider: useProv1
+				updateDialogData: useProv
 			}
 		), 'to be a function')
 		.and('when called')
 		.then(() => Promise.all([
-			expect(useProv1, 'to have calls satisfying', [
-				{ args: [{ test: 'provider' }, 'testdialog'] }
-			]),
-			expect(useProv2, 'to have calls satisfying', [
+			expect(useProv, 'to have calls satisfying', [
 				{ args: [Immutable.fromJS({
 					closed: {
 						test: true
@@ -213,26 +197,21 @@ describe('Palette', () => {
 	});
 
 	it('can close the first item group', () => {
-		let useProv2 = sinon.spy().named('useProvider2');
-		let useProv1 = sinon.spy(() => useProv2).named('useProvider1');
+		let useProv = sinon.spy().named('updateDialogData');
 		return expect(p.toggleGroupOpen(
 			Immutable.fromJS({
 				name: 'test'
 			}),
 			{
-				dialogName: 'testdialog',
 				dialogData: Immutable.fromJS({
 				}),
 				paneDef: Immutable.fromJS({ select: { test: 'provider' }}),
-				useProvider: useProv1
+				updateDialogData: useProv
 			}
 		), 'to be a function')
 		.and('when called')
 		.then(() => Promise.all([
-			expect(useProv1, 'to have calls satisfying', [
-				{ args: [{ test: 'provider' }, 'testdialog'] }
-			]),
-			expect(useProv2, 'to have calls satisfying', [
+			expect(useProv, 'to have calls satisfying', [
 				{ args: [Immutable.fromJS({
 					closed: {
 						test: true

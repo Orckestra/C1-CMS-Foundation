@@ -391,6 +391,10 @@ const pages = {
 		type: 'dialogPageShim',
 		dialog: {
 			name: 'component-selector',
+			updateData: {
+				callAction: 'setDialogState',
+				sendData: true
+			},
 			panes: [
 				{
 					name: 'component-list',
@@ -399,10 +403,6 @@ const pages = {
 					noItemsText: 'No selectable component',
 					context: 'left-aside',
 					categories: ['Media', 'music'],
-					select: {
-						callAction: 'setDialogState',
-						sendData: true
-					},
 					provider: {
 						name: 'elementSource',
 						protocol: 'wamp',

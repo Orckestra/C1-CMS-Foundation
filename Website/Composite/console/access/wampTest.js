@@ -18,7 +18,7 @@ const Warning = styled.div`
 const test = new Promise((resolve, reject) => {
 	let url = new URL('/Composite/api/Router', location.href);
 	url.protocol = url.protocol.replace('http', 'ws');
-	const client = new Wampy(url.href, {
+	new Wampy(url.href, {
 		realm: 'realm',
 		maxRetries: 0,
 		onConnect: () => {

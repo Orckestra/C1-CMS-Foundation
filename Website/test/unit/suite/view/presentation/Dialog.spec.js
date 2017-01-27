@@ -15,9 +15,10 @@ describe('Dialog', () => {
 		eventSpy = sinon.spy().named('eventSpy');
 		minimalProps = {
 			dialogData: Immutable.Map(),
-			dialogDef: Immutable.Map({
+			dialogDef: Immutable.fromJS({
 				name: 'testdialog',
-				panes: Immutable.List()
+				panes: [],
+				updateData: {}
 			}),
 			actions: { useProvider: (a, b) => c => useProviderSpy(a, b, c) }
 		};
@@ -27,6 +28,10 @@ describe('Dialog', () => {
 			}),
 			dialogDef: Immutable.fromJS({
 				name: 'testdialog',
+				updateData: {
+					callAction: 'testAction',
+					sendData: true
+				},
 				panes: [
 					{
 						name: 'testpalette',
@@ -46,14 +51,13 @@ describe('Dialog', () => {
 							sendData: true,
 							markup: ['test']
 						}
-					}
+					},
 				]
 			}),
 			itemGroups: Immutable.List(),
 			actions: {
 				useProvider: (a, b) => c => useProviderSpy(a, b, c)
-			},
-			dispatch: sinon.spy().named('dispatch')
+			}
 		};
 	});
 
@@ -81,7 +85,7 @@ describe('Dialog', () => {
 						itemGroups={Immutable.List()}
 						dialogData={Immutable.Map()}
 						nextAction={expect.it('to be a function')}
-						useProvider={expect.it('to be a function')} />
+						updateDialogData={expect.it('to be a function')} />
 				</d.DialogPane>
 				<d.DialogButtonGroup>
 					<ActionButton label='Finish' action={expect.it('to be a function').and('not to error')}/>
@@ -91,11 +95,9 @@ describe('Dialog', () => {
 		))
 		.then(() => Promise.all([
 			expect(eventSpy, 'was called'),
-			expect(fullProps.dispatch, 'to have calls satisfying', [
-				{ args: [{ type: 'DIALOG.SET_STATE', dialogName: 'testdialog', data: Immutable.Map({ filterText: 'foo' }) }] }
-			]),
 			expect(useProviderSpy, 'to have calls satisfying', [
-				{ args: [ { sendData: true, markup: [ 'test' ] }, 'testdialog', 'data'] },
+				{ args: [{ sendData: true, callAction: 'testAction' }, 'testdialog', { test: 'data', filterText: 'foo' }] },
+				{ args: [{ sendData: true, markup: [ 'test' ] }, 'testdialog', 'data'] },
 				{ args: [{}, 'testdialog', undefined] }
 			])
 		]));
