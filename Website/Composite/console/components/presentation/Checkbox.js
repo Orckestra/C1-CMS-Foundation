@@ -1,29 +1,61 @@
-import styled from 'styled-components';
+import React, { PropTypes } from 'react';
+import styled, { css } from 'styled-components';
 import colors from 'console/components/colors.js';
-import Input from 'console/components/presentation/Input.js';
 
-const Checkbox = styled(Input)`
+const Wrapper = styled.div`
+	display: inline-block;
 	position: relative;
+	vertical-align: middle;
+	margin: 2px 1px 7px 2px;
+	width: 18px;
+	height: 18px;
+`;
+
+const VisualCheckbox = styled.label`
+	display: inline-block;
+	position: absolute;
+	vertical-align: middle;
+	border: 1px solid #ccc;
+	border-radius: 5px;
 	border-radius: 4px;
 	width: 18px;
 	height: 18px;
-	appearance: none;
 	padding: 0;
+	margin: 0;
+	background-color: #fff;
 
-	&:checked {
+	${props => props.checked ? css`
 		background-color: ${colors.fieldFocusColor};
-	}
-	&:checked::after {
-		content: "\u2713";
-		font-size: 24px;
-		font-weight: bold;
-		color: white;
-		position: absolute;
-		top: -2px;
-		left: 2px;
+		&::after {
+			content: "\u2713";
+			font-size: 14px;
+			font-weight: bold;
+			color: white;
+			position: absolute;
+			top: -1px;
+			left: 3px;
+		}
+	` : ''}
+
+	input:focus + & {
+		border-color: ${colors.fieldFocusColor};
 	}
 `;
 
-Checkbox.defaultProps = { type: 'checkbox' };
+const HiddenCheckbox = styled.input`
+	position: absolute;
+`;
+
+const Checkbox = props => (
+	<Wrapper>
+		<HiddenCheckbox type='checkbox' {...props}/>
+		<VisualCheckbox checked={props.checked} htmlFor={props.id}/>
+	</Wrapper>
+);
+
+Checkbox.propTypes = {
+	checked: PropTypes.bool,
+	id: PropTypes.string.isRequired
+};
 
 export default Checkbox;
