@@ -452,6 +452,9 @@ const pages = {
 				sendNoCaller: true
 			}
 		],
+		noResultsFound: 'No results found for \'{0}\'',
+		oneResultFound: '1 result found for \'{0}\'',
+		multipleResultsFound: '{1} results found for \'{0}\'',
 		urlColumn: 'label'
 	},
 	'content-explorer': {
