@@ -792,6 +792,15 @@ VisualEditorBinding.prototype.focus = function () {
 	}
 }
 
+
+/**
+* RestoreFocus
+*/
+VisualEditorBinding.prototype.restoreEditorFocus = function () {
+
+	this._tinyInstance.focus();
+}
+
 /**
  * Set result. This is intended for clientside processing.
  * @param {string} result
