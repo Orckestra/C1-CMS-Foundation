@@ -266,6 +266,7 @@
     <Compile Include="Search\DocumentSources\DataChangesIndexNotifier.cs" />
     <Compile Include="Search\DocumentSources\DataTypeDocumentSource.cs" />
     <Compile Include="Search\DocumentSources\DataTypesDocumentSourceProvider.cs" />
+    <Compile Include="Search\DocumentSources\IndexUpdateActionContainer.cs" />
     <Compile Include="Search\DocumentSources\MediaLibraryDocumentSource.cs" />
     <Compile Include="Search\DocumentSources\CmsPageDocumentSource.cs" />
     <Compile Include="Search\IDocumentSourceListener.cs" />
