@@ -4,6 +4,7 @@ import React from 'react';
 import TestUtils from 'react-addons-test-utils';
 import HelpIcon from 'console/components/presentation/HelpIcon.js';
 import DataField from 'console/components/presentation/DataField.js';
+import Checkbox from 'console/components/presentation/Checkbox.js';
 import StatelessWrapper from 'unittest/helpers/StatelessWrapper.js';
 import Select from 'react-select';
 import Immutable from 'immutable';
@@ -288,8 +289,7 @@ describe('DataField', () => {
 			return expect(renderer, 'to have rendered',
 			<StyledDiv>
 				<StyledH4>{props.headline}</StyledH4>
-				<StyledInput
-					type={props.type}
+				<Checkbox
 					id={props.name}
 					checked={state.value}/>
 				<StyledLabel htmlFor={props.name}>{props.label}</StyledLabel>
@@ -304,8 +304,7 @@ describe('DataField', () => {
 			return expect(renderer, 'to have rendered',
 			<StyledDiv>
 				<StyledH4>{props.headline}</StyledH4>
-				<StyledInput
-					type={props.type}
+				<Checkbox
 					id={props.name}
 					checked={false}/>
 				<StyledLabel htmlFor={props.name}>{props.label}</StyledLabel>
@@ -320,8 +319,7 @@ describe('DataField', () => {
 			return expect(renderer, 'to have rendered',
 			<StyledDiv>
 				<StyledH4>{props.headline}</StyledH4>
-				<StyledInput
-					type={props.type}
+				<Checkbox
 					id={props.name}
 					checked={state.value}/>
 				<HelpIcon text={props.help}/>
@@ -337,8 +335,8 @@ describe('DataField', () => {
 				</StatelessWrapper>
 			);
 			return expect(
-				component, 'queried for', <StyledInput/>,
-			'to have rendered', <StyledInput checked={true}/>
+				component, 'queried for', <Checkbox/>,
+			'to have rendered', <Checkbox checked={true}/>
 			)
 			.then(() => expect(component,'with event change', 'on', <StyledInput/>))
 			.then(() => expect(props.updateValue, 'was called'));
