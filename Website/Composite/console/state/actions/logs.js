@@ -6,9 +6,11 @@ const logDateURL = '/Composite/api/Logger/GetDates';
 const logURL = '/Composite/api/Logger/GetData';
 const prefix = 'LOGS.';
 
-export const GET_LOG_DATES = prefix + 'GET_DATES';
-export const GET_LOG_DATES_DONE = GET_LOG_DATES + '_DONE';
-export const GET_LOG_DATES_FAILED = GET_LOG_DATES + '_FAILED';
+const getLogActionType = prefix + 'GET_DATES';
+export const GET_LOG_DATES = getLogActionType + '_COMMENCE';
+export const GET_LOG_DATES_DONE = getLogActionType + '_DONE';
+export const GET_LOG_DATES_FAILED = getLogActionType + '_FAILED';
+
 export const getLogDates = dateSelectorName => (dispatch, getState) => {
 	dispatch({ type: GET_LOG_DATES, dateSelectorName });
 	return requestJSON(logDateURL)

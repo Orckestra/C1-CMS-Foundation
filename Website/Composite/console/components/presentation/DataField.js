@@ -3,6 +3,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import HelpIcon from 'console/components/presentation/HelpIcon.js';
 import Select from 'console/components/presentation/Select.js';
 import Input from 'console/components/presentation/Input.js';
+import Checkbox from 'console/components/presentation/Checkbox.js';
 import styled from 'styled-components';
 import colors from 'console/components/colors.js';
 
@@ -32,8 +33,7 @@ const DataField = props => {
 		handleChange = function (event) {
 			props.updateValue(event.target.checked);
 		};
-		inputElement = <Input
-			type={props.type}
+		inputElement = <Checkbox
 			id={props.name}
 			value={props.value || false}
 			checked={props.value || false}

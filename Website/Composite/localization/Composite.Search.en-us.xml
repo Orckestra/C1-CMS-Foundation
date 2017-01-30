@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<strings>
+	<string key="SearchPerspective.Label" value="Search" />
+
+	<string key="SearchPage.SearchHerePlaceholder" value="Search here..." />
+	<string key="SearchPage.NoResultFound" value="No results found for '{0}'" />
+	<string key="SearchPage.SingleResultFound" value="1 result found for '{0}'" />
+	<string key="SearchPage.MultipleResultsFound" value="{1} results for '{0}'" />
+
+	<string key="DataType.Page" value="Page" />
+	<string key="DataType.MediaFile" value="Media File" />
+	
+	<string key="FieldNames.Label" value="Label" />
+	<string key="FieldNames.Description" value="Description" />
+	<string key="FieldNames.DataType" value="Data Type" />
+	<string key="FieldNames.CreationDate" value="Creation Date" />
+	<string key="FieldNames.CreatedBy" value="Created By" />
+	<string key="FieldNames.PublicationStatus" value="Publication Status" />
+	<string key="FieldNames.MimeType" value="MIME Type" />
+</strings>

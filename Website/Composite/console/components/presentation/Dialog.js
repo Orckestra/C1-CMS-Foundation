@@ -94,6 +94,13 @@ const Dialog = props => {
 		// Complete dialog activity, send back data using provider
 		props.dispatch(fireAction(paneDef.get('finishProvider').toJS(), props.dialogDef.get('name'), props.dialogData.toJS()));
 	} : null;
+	const searchFunction = event => props.dispatch(
+		setDialogState(
+			props.dialogDef.get('name'),
+			props.dialogData
+			.set('filterText', event.target.value)
+		)
+	);
 	return <DialogBox
 		onContextMenu={event => {
 			event.preventDefault(); // To not show the default menu
@@ -102,13 +109,8 @@ const Dialog = props => {
 		<SearchField
 			placeholder={props.dialogDef.get('searchPlaceholder')}
 			value={props.dialogData.get('filterText')}
-			onChange={event => props.dispatch(
-				setDialogState(
-					props.dialogDef.get('name'),
-					props.dialogData
-					.set('filterText', event.target.value)
-				)
-			)}/>
+			onChange={searchFunction}
+			onInput={searchFunction}/>
 		<SearchIcon id='magnifier'/>
 		<DialogPane>
 			<Pane dialogName={props.dialogDef.get('name')} paneDef={paneDef} itemGroups={props.itemGroups} dialogData={props.dialogData} dispatch={props.dispatch} nextAction={nextAction || finishAction}/>

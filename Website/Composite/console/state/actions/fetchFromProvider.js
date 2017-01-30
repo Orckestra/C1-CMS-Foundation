@@ -6,9 +6,10 @@ import { storeData } from 'console/state/reducers/providers.js';
 // Access endpoint
 const prefix = 'PROVIDER.';
 
-export const GET_PROVIDER = prefix + 'GET';
-export const GET_PROVIDER_DONE = GET_PROVIDER + '_DONE';
-export const GET_PROVIDER_FAILED = GET_PROVIDER + '_FAILED';
+const getActionType = prefix + 'GET';
+export const GET_PROVIDER = getActionType + '_COMMENCE';
+export const GET_PROVIDER_DONE = getActionType + '_DONE';
+export const GET_PROVIDER_FAILED = getActionType + '_FAILED';
 
 function stringifySearchParam(param) {
 	if (Array.isArray(param)) {

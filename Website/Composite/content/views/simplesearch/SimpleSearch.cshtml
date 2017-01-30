@@ -1,0 +1,256 @@
+﻿@using System.Globalization
+@using Composite.Search
+@using Composite.C1Console.Security
+@using Composite.C1Console.Users
+@using Composite.Core
+@using Composite.Core.WebClient
+@using Composite.Plugins.Search.Endpoint
+
+
+@functions {
+
+	const string FacetSelectionPrefix = "chk_";
+}
+
+@{
+	if (!UserValidationFacade.IsLoggedIn())
+	{
+		@: No user logged in
+		return;
+	}
+
+	if (!SearchFacade.SearchEnabled)
+	{
+		@: The search functionality is not enabled
+		return;
+	}
+
+	string text = null;
+	EntityToken searchRoot = null;
+	ConsoleSearchResult result = null;
+	string sortField = null;
+	bool sortByAscending = true;
+	IList<DocumentField> facetFields = null;
+
+	if (IsPost)
+	{
+		text = Request["q"];
+		sortField = Request["sf"];
+		sortByAscending = bool.Parse(Request["sfd"]);
+
+		//string root = Request["r"];
+		//if (root != null)
+		//{
+		//	searchRoot = EntityTokenSerializer.Deserialize(UrlUtils.UnZipContent(root));
+		//}
+
+		if (!string.IsNullOrWhiteSpace(text))
+		{
+			var selections = new List<ConsoleSearchQuerySelection>();
+			foreach (string key in Request.Form.Keys)
+			{
+				if (key.StartsWith(FacetSelectionPrefix))
+				{
+					string fieldName = key.Substring(FacetSelectionPrefix.Length);
+					string[] values = Request.Form[key].Split(',');
+
+					selections.Add(new ConsoleSearchQuerySelection
+					{
+						FieldName = fieldName,
+						Values = values
+					});
+				}
+			}
+			var query = new ConsoleSearchQuery
+			{
+				Text = text,
+				Selections = selections.ToArray(),
+				CultureName = UserSettings.ActiveLocaleCultureInfo.Name,
+				SortBy = sortField,
+				SortInReverseOrder = !sortByAscending
+			};
+
+			var service = new ConsoleSearchRpcService(
+				ServiceLocator.GetService<ISearchProvider>(),
+				ServiceLocator.GetServices<ISearchDocumentSourceProvider>());
+			//result = SearchFacade.ConsoleSearchRpcService(query, true, searchRoot).Result;
+
+			result = service.QueryAsync(query).Result;
+		}
+	}
+}
+<html>
+<head>
+	<style type="text/css">
+		 table thead { background-color: grey;font-weight: bold; color: white }
+		 table thead a { color: white;}
+		 table tbody tr:nth-child(even) { background-color: #EEEEEE }
+		 table td { padding: 2px 10px }
+		 table { padding-bottom: 10px; }
+
+		 .facets { clear: both; padding-bottom: 20px; width: 100%; }
+		 .facets .facet { width: 300px; float: left; }
+
+		 .clearfix:after {
+			visibility: hidden;
+			display: block;
+			font-size: 0;
+			content: " ";
+			clear: both;
+			height: 0;
+			}
+	</style>
+	<script type="text/javascript">
+		function Sort(fieldName, isAsc) {
+			document.getElementById('sortField').value = fieldName;
+			document.getElementById('sortAsc').value = isAsc ? 'true' : 'false';
+			document.getElementById("search").submit();
+		}
+	</script>
+</head>
+<body>
+
+<h1>Search</h1>
+<form method="POST" id="search">
+	<div>
+		<input name="q" type="text" class="searchfield" value="@text"/>
+
+		<input id="sortField" name="sf" value="@sortField" type="hidden"/>
+		<input id="sortAsc" name="sfd" value="@sortByAscending.ToString()" type="hidden" />
+	</div>
+	<input type="submit"/>
+
+	@if (result != null)
+	{
+		@ResultFacets(result)
+	}
+</form>
+	
+@if (result != null)
+{
+	@ResultTable(result, sortField, sortByAscending)
+
+	if (!string.IsNullOrEmpty(sortField))
+	{
+		<div>
+			Sorted by: @sortField
+		</div>
+	}
+
+	<div>
+		Total hits: @result.TotalHits
+	</div>
+}
+
+</body>
+</html>
+
+@helper ResultFacets(ConsoleSearchResult result)
+{
+	if (result.FacetFields == null)
+	{
+		return;
+	}
+
+	<div class="facets clearfix">
+		@foreach (var facetField in result.FacetFields)
+		{
+			string checkBoxName = FacetSelectionPrefix + facetField.FieldName;
+			string[] preselectedValues = (Request.Form[checkBoxName] ?? "").Split(',');
+
+			<div class="facet">
+				<h2>@facetField.Label</h2>
+				@{
+					int optionIndex = 0;
+				}
+				@foreach (var facet in facetField.Facets)
+				{
+					optionIndex++;
+
+					bool @checked = preselectedValues.Contains(facet.Value);
+
+					<div>
+						<input type="checkbox" id="@checkBoxName@optionIndex" name="@checkBoxName" value="@facet.Value"
+						       @if (@checked)
+						       {<text>checked="checked"</text>}
+							/>
+						<label for="@checkBoxName@optionIndex">
+							@facet.Label [@facet.HitCount]
+						</label>
+					</div>
+				}
+			</div>
+		}
+	</div>
+}
+
+@helper ResultTable(ConsoleSearchResult result, string sortField, bool sortAscending)
+{
+	if (result.TotalHits == 0)
+	{
+		return;
+	}
+
+	<div class="results">
+		<table>
+			<thead>
+			<tr>
+				@foreach (var column in result.Columns)
+				{
+					var fieldName = column.FieldName;
+
+					<td>
+						@if (column.Sortable)
+						{
+							if (fieldName == sortField)
+							{
+								@(sortAscending ? "▲" : "▼")
+							}
+
+							<a href="#" onclick="Sort('@fieldName', @((fieldName != sortField || !sortAscending) ? "true" : "false"))">
+								<label title="@fieldName">
+									@column.Label
+								</label>
+							</a>
+						}
+						else
+						{
+							<label title="@fieldName">
+								@column.Label
+							</label>
+						}
+					</td>
+				}
+			</tr>
+			</thead>
+			<tbody>
+				@foreach (var row in result.Rows)
+				{
+					int index = 0;
+					<tr class="hit">
+						@foreach (var column in result.Columns)
+						{
+							string value;
+							bool isFirst = index++ == 0;
+							<td>
+								@if (row.Values.TryGetValue(column.FieldName, out value))
+								{
+									if (isFirst)
+									{
+										<a href="@row.Url" target="_top">
+											@value
+										</a>
+									}
+									else
+									{
+										@value
+									}
+								}
+							</td>
+						}
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+}

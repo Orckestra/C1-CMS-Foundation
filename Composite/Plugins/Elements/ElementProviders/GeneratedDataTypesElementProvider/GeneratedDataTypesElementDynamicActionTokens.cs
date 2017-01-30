@@ -15,14 +15,14 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
         /// <exclude />
         public static void OnBeforeInitialize()
         {
-            DataActionTokenResolverFacade.RegisterDefault<IData>(ActionIdentifier.Edit, f => new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.EditDataWorkflow")));
-            DataActionTokenResolverFacade.RegisterDefault<IData>(ActionIdentifier.Delete, f => new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.DeleteDataWorkflow")));
-            DataActionTokenResolverFacade.RegisterDefault<IData>(ActionIdentifier.Duplicate, f => new DuplicateActionToken());
         }
-        /// <exclude />
-        public static void OnInitialized()
-        {
 
+        /// <exclude />
+        public static void OnInitialized(DataActionTokenResolver resolver)
+        {
+            resolver.RegisterDefault<IData>(ActionIdentifier.Edit, f => new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.EditDataWorkflow")));
+            resolver.RegisterDefault<IData>(ActionIdentifier.Delete, f => new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.DeleteDataWorkflow")));
+            resolver.RegisterDefault<IData>(ActionIdentifier.Duplicate, f => new DuplicateActionToken());
         }
     }
 }

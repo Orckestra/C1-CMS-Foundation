@@ -6,7 +6,7 @@ module.exports = {
 		content
 			.prepare();	
 	},
-	'can edit front page': function (browser) {
+	'can add simple component': function (browser) {
 		browser
 		.selectPerspective("System")
 		.openTreeNode("/")
@@ -21,6 +21,7 @@ module.exports = {
 		.page.editor()
 			.selectContent(1)
 			.clickLabel("${string:Composite.Web.VisualEditor:Components.LaunchButton.Label}")
+			.pause(browser.globals.timeouts.basic)
 			.clickText("xhtml-Simple")
 			.clickText("OK")
 		.clickSave()

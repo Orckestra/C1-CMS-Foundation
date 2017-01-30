@@ -28,7 +28,7 @@ namespace Composite.Plugins.Components
     }
 
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-    public class ComponentProviderData : NameTypeConfigurationElement
+    internal class ComponentProviderData : NameTypeConfigurationElement
     {
         [ConfigurationProperty("directory", IsRequired = false, DefaultValue = "~/App_Data/Components")]
         public string Directory

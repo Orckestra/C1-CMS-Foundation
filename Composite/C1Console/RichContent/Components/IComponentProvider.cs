@@ -2,6 +2,9 @@
 
 namespace Composite.C1Console.RichContent.Components
 {
+    /// <summary>
+    /// Component provider interface
+    /// </summary>
     public interface IComponentProvider
     {
         /// <summary>

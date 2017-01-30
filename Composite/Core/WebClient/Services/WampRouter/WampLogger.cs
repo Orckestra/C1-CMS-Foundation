@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Text.RegularExpressions;
+using Composite.Core.Logging;
 using WampSharp.Logging;
+using LogLevel = WampSharp.Logging.LogLevel;
 
 namespace Composite.Core.WebClient.Services.WampRouter
 {
@@ -26,42 +29,63 @@ namespace Composite.Core.WebClient.Services.WampRouter
             public bool Log(LogLevel logLevel, Func<string> messageFunc, Exception exception,
                 params object[] formatParameters)
             {
-                switch (logLevel)
+                if (exception is OperationCanceledException)
                 {
-                    case LogLevel.Fatal:
-                        Core.Log.LogCritical(nameof(WampLogger), exception);
-                        break;
-                    case LogLevel.Error:
-                        Core.Log.LogError(nameof(WampLogger), FormatMessage(messageFunc, formatParameters));
-                        break;
-                    case LogLevel.Warn:
-                        Core.Log.LogWarning(nameof(WampLogger), FormatMessage(messageFunc, formatParameters));
-                        break;
-                    case LogLevel.Info:
-                        Core.Log.LogInformation(nameof(WampLogger), FormatMessage(messageFunc, formatParameters));
-                        break;
-                    case LogLevel.Trace:
-                        Core.Log.LogVerbose(nameof(WampLogger), FormatMessage(messageFunc, formatParameters));
-                        break;
+                    return true;
                 }
+
+                if (messageFunc != null)
+                {
+                    var eventType = GetTraceEventType(logLevel);
+
+                    var message = FormatMessage(messageFunc, formatParameters);
+
+                    LoggingService.LogEntry(nameof(WampLogger), message, LoggingService.Category.General, eventType);
+                }
+
+                if (exception != null)
+                {
+                    Core.Log.LogError(nameof(WampLogger), exception);
+                }
+
                 return true;
             }
 
+            private static TraceEventType GetTraceEventType(LogLevel logLevel)
+            {
+                switch (logLevel)
+                {
+                    case LogLevel.Fatal:
+                        return TraceEventType.Critical;
+                    case LogLevel.Error:
+                        return TraceEventType.Error;
+                    case LogLevel.Warn:
+                        return TraceEventType.Warning;
+                    case LogLevel.Info:
+                        return TraceEventType.Information;
+                    case LogLevel.Trace:
+                    case LogLevel.Debug:
+                        return TraceEventType.Verbose;
+                }
+
+                return TraceEventType.Warning;
+            }
+
+
             private string FormatMessage(Func<string> messageFunc, params object[] formatParameters)
             {
-                var message = messageFunc.Invoke();
-                Regex needle = new Regex(@"\{(.*?)\}");
-                
+                var message = messageFunc();
+                var needle = new Regex(@"\{(.*?)\}");
+
                 int i = 0;
                 while (needle.IsMatch(message))
                 {
-                    message = needle.Replace(message, "^"+i.ToString()+"#", 1);
+                    message = needle.Replace(message, "^" + i + "#", 1);
                     i++;
                 }
 
-                return string.Format(message.Replace('#','}').Replace('^', '{'), formatParameters);
+                return string.Format(message.Replace('#', '}').Replace('^', '{'), formatParameters);
             }
-
         }
     }
 }

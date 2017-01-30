@@ -11,7 +11,7 @@ using WampSharp.V2.Rpc;
 namespace Composite.Plugins.Components.ComponentsEndpoint
 {
     [ApplicationStartup]
-    class ComponentsEndpoint
+    internal class ComponentsEndpoint
     {
         public static void OnInitialized(ComponentManager componentManager, ComponentChangeNotifier componentChangeNotifier)
         {
@@ -27,19 +27,9 @@ namespace Composite.Plugins.Components.ComponentsEndpoint
     {
         private static ComponentManager _componentManager;
 
-        public ComponentsRpcService(ComponentManager componentManager)
+        internal ComponentsRpcService(ComponentManager componentManager)
         {
             _componentManager = componentManager;
-        }
-
-        /// <summary>
-        /// To get all components
-        /// </summary>
-        /// <returns>list of Components</returns>
-        [WampProcedure("structure.page")]
-        public ComponentsResponseMessage Get()
-        {
-            return new ComponentsResponseMessage();
         }
 
         /// <summary>
@@ -84,21 +74,33 @@ namespace Composite.Plugins.Components.ComponentsEndpoint
         }
     }
 
+    /// <summary>
+    /// Publisher for interaction with components
+    /// </summary>
     public class ComponentPublisher : IWampEventHandler<ComponentChange,bool>
     {
         private readonly ComponentChangeNotifier _componentChangeNotifier;
 
+        /// <summary>
+        /// Change in components topic
+        /// </summary>
         public static string Topic => "components.new";
 
         string IWampEventHandler<ComponentChange, bool>.Topic => Topic;
 
+        /// <summary>
+        /// Event to observe when there is any change in components
+        /// </summary>
         public IObservable<ComponentChange> Event => _componentChangeNotifier;
 
-        public ComponentPublisher(ComponentChangeNotifier componentChangeNotifier)
+        internal ComponentPublisher(ComponentChangeNotifier componentChangeNotifier)
         {
             _componentChangeNotifier = componentChangeNotifier;
         }
 
+        /// <summary>
+        /// Data returning after any change happens in components
+        /// </summary>
         public bool GetNewData()
         {
             return true;

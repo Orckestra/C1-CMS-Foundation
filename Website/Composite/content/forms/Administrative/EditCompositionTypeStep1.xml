@@ -40,7 +40,7 @@
           </PlaceHolder>
         </FieldGroup>
       </PlaceHolder>
-      <internal:TypeFieldDesigner Label="${Composite.Plugins.GeneratedDataTypesElementProvider, EditorCommon.LabelFields}">
+      <internal:TypeFieldDesigner Label="${Composite.Plugins.GeneratedDataTypesElementProvider, EditorCommon.LabelFields}" IsSearchable="true">
         <internal:TypeFieldDesigner.Fields>
           <cms:bind source="DataFieldDescriptors" />
         </internal:TypeFieldDesigner.Fields>

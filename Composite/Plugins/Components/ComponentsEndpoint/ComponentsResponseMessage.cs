@@ -8,7 +8,6 @@ using WampSharp.V2.Rpc;
 
 namespace Composite.Plugins.Components.ComponentsEndpoint
 {
-#warning heavily mocked!
     /// <exclude />
     public class ComponentsResponseMessage
     {
@@ -72,7 +71,7 @@ namespace Composite.Plugins.Components.ComponentsEndpoint
     }
 
     /// <exclude />
-    public class Provider : ProviderResponce
+    public class Provider : ProviderResponse
     {
         /// <exclude />
         public override string Name => "elementSource";
@@ -92,7 +91,7 @@ namespace Composite.Plugins.Components.ComponentsEndpoint
     }
 
     /// <exclude />
-    public class FinishProvider : ProviderResponce
+    public class FinishProvider : ProviderResponse
     {
         /// <exclude />
         public override string Name => "elementInsert";
@@ -119,7 +118,7 @@ namespace Composite.Plugins.Components.ComponentsEndpoint
     }
 
     /// <exclude />
-    public class CancelProvider : ProviderResponce
+    public class CancelProvider : ProviderResponse
     {
         /// <exclude />
         public override string Name => "componentListCancel";
@@ -135,7 +134,7 @@ namespace Composite.Plugins.Components.ComponentsEndpoint
     }
 
     /// <exclude />
-    public class UpdateProvider : ProviderResponce
+    public class UpdateProvider : ProviderResponse
     {
         /// <exclude />
         public override string Name => "updateTopic";
@@ -157,7 +156,7 @@ namespace Composite.Plugins.Components.ComponentsEndpoint
     /// <summary>
     /// Page structure provider contract
     /// </summary>
-    public abstract class ProviderResponce
+    public abstract class ProviderResponse
     {
         /// <summary>
         /// provider's name

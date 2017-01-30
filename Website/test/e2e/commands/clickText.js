@@ -9,7 +9,8 @@ ClickText.prototype.command = function (vlaue) {
     
     this.client.api
         .useXpath()
-		.click('//*[normalize-space(text())="'+vlaue+'"]').useCss()
+		.moveToElement('//*[normalize-space(text())="'+vlaue+'"]',null,null)
+		.mouseButtonClick('left').useCss()
         
     return this.client.api;
 };

@@ -1,5 +1,5 @@
 /**
- * Apparently this needs to adjusted on a system scope scale, although it 
+ * Apparently this needs to adjusted on a system scope scale, although it
  * simply get's switched whenever native keys are toggled for any document.
  */
 StandardEventHandler.isBackAllowed = false;
@@ -8,41 +8,41 @@ StandardEventHandler.isBackAllowed = false;
  * @param {DOMDocument} doc
  * @param {boolean} isMouseHandlerOnly
  */
-function StandardEventHandler ( doc, isMouseHandlerOnly ) { 
+function StandardEventHandler ( doc, isMouseHandlerOnly ) {
 
 	/**
 	 * @type {SystemLogger}
 	 */
 	this.logger = SystemLogger.getLogger ( "StandardEventHandler [" + doc.title +"]" );
-	
+
 	/**
 	 * @type {DOMDocument}
 	 */
 	this._contextDocument = doc;
-	
+
 	/**
 	 * @type {DOMDocumentView}
 	 */
 	this._contextWindow = DOMUtil.getParentWindow ( doc );
-	
+
 	/**
-	 * Don't set this property directly! Please use methods below. 
+	 * Don't set this property directly! Please use methods below.
 	 * @see {StandardEventHandler#enableNativeKeys}
 	 * @see {StandardEventHandler#disableNativeKeys}
 	 * @type {boolean}
 	 */
 	this.hasNativeKeys = false;
-	
+
 	/**
 	 * @type {boolean}
 	 */
 	this._isAllowTabs = false;
-	
+
 	/**
 	 * @type {boolean}
 	 */
 	this._isMouseHandlerOnly = isMouseHandlerOnly;
-	
+
 	/*
 	 * Add listeners.
 	 */
@@ -53,9 +53,9 @@ function StandardEventHandler ( doc, isMouseHandlerOnly ) {
  * Add listeners.
  */
 StandardEventHandler.prototype._addListeners = function () {
-	
+
 	var doc = this._contextDocument;
-	
+
 	DOMEvents.addEventListener( doc, DOMEvents.MOUSEDOWN, this);
 	DOMEvents.addEventListener ( doc, DOMEvents.MOUSEUP, this );
 	DOMEvents.addEventListener ( doc, DOMEvents.MOUSEMOVE, this );
@@ -79,14 +79,14 @@ StandardEventHandler.prototype._addListeners = function () {
 			}
 		})
 	}
-	
+
 	if ( !this._isMouseHandlerOnly ) {
-		
+
 		DOMEvents.addEventListener ( doc, DOMEvents.KEYDOWN, this );
 		DOMEvents.addEventListener ( doc, DOMEvents.KEYUP, this );
-		
+
 		if ( this._contextWindow.WindowManager == null ) {
-			if ( Client.isExplorer ) {
+			if (Client.isExplorer || Client.isExplorer11) {
 				DOMEvents.addEventListener ( doc, DOMEvents.FOCUSIN, this );
 				DOMEvents.addEventListener ( doc, DOMEvents.FOCUSOUT, this );
 			} else {
@@ -96,7 +96,7 @@ StandardEventHandler.prototype._addListeners = function () {
 				}
 			}
 		}
-		
+
 		/*
 		 * Setup global focus listeners.
 		 * TODO: Make reliable for IE!
@@ -114,11 +114,11 @@ StandardEventHandler.prototype._addListeners = function () {
 				}
 			}
 		}
-		
+
 		DOMEvents.addEventListener ( this._contextWindow, DOMEvents.BLUR, handler );
 		DOMEvents.addEventListener ( this._contextWindow, DOMEvents.FOCUS, handler );
 	}
-	
+
 	/*
 	 * Supress CTRL+S (TODO: handle this elsewhere!)
 	 */
@@ -140,12 +140,12 @@ StandardEventHandler.prototype._addListeners = function () {
 	}
 }
 
-/** 
+/**
  * @implements {IEventListener}
  * @param {MouseEvent} e
  */
 StandardEventHandler.prototype.handleEvent = function ( e ) {
-		
+
 	switch ( e.type ) {
 		case DOMEvents.MOUSEDOWN :
 			this._handleMouseDown ( e );
@@ -175,29 +175,29 @@ StandardEventHandler.prototype.handleEvent = function ( e ) {
 }
 
 /**
- * Broadcast mousedown globally. For framework pages, locate nearest binding 
- * instance to make it dispatch the "bindingactivated" action. This action is 
+ * Broadcast mousedown globally. For framework pages, locate nearest binding
+ * instance to make it dispatch the "bindingactivated" action. This action is
  * probably consumed by nearest containing {@link DockBinding}.
  * @param {MouseEvent} e
  */
 StandardEventHandler.prototype._handleMouseDown = function ( e ) {
-	
+
 	Application.trackMousePosition ( e );
 	EventBroadcaster.broadcast ( BroadcastMessages.MOUSEEVENT_MOUSEDOWN, e );
-	
+
 	/*
 	 * Only left mouse button will activate and migrate.
 	 */
 	if ( e.button != ButtonStateManager.RIGHT_BUTTON ) {
-		
+
 		var node = DOMEvents.getTarget ( e );
 		while ( node != null ) {
 			switch ( node.nodeType ) {
 				case Node.ELEMENT_NODE :
 					var binding = UserInterface.getBinding ( node );
 					if ( binding != null ) {
-						binding.dispatchAction ( 
-							Binding.ACTION_ACTIVATED 
+						binding.dispatchAction (
+							Binding.ACTION_ACTIVATED
 						);
 					}
 					node = binding != null ? null : node.parentNode;
@@ -212,48 +212,48 @@ StandardEventHandler.prototype._handleMouseDown = function ( e ) {
 		}
 	}
 }
-	
+
 /*
  * Broadcast mouseup globally.
  * @param {MouseEvent} e
  */
 StandardEventHandler.prototype._handleMouseUp = function ( e ) {
-	
+
 	Application.trackMousePosition ( e );
 	EventBroadcaster.broadcast ( BroadcastMessages.MOUSEEVENT_MOUSEUP, e );
 }
-	
+
 /**
  * Broadcast mousemove globally *only* while mousetracking.
  * TODO: Broadcast mouseup if button is not pressed!
  * @param {MouseEvent} e
  */
 StandardEventHandler.prototype._handleMouseMove = function ( e ) {
-	
+
 	try {
-		
+
 		var isTracking = Application.trackMousePosition ( e );
 		if ( isTracking ) {
 			EventBroadcaster.broadcast ( BroadcastMessages.MOUSEEVENT_MOUSEMOVE, e );
 		}
-		
+
 		/*
-		 * IE may spontaneously believe that no window has focus. If the   
-		 * mousemove event is registered, this is not obviously not the case. 
-		 * Therefore we can safely FOCUS our window, kicking IE back on track. 
+		 * IE may spontaneously believe that no window has focus. If the
+		 * mousemove event is registered, this is not obviously not the case.
+		 * Therefore we can safely FOCUS our window, kicking IE back on track.
 		 * This fixes a bug where the backspace key stopped working.
 		 * TODO: Figure out why this was disabled...
 		 *
 		if ( Client.isExplorer ) {
-			
+
 			if ( Application.isBlurred ) {
-				
+
 				var doc = this._contextDocument;
 				var win = this._contextWindow;
-				
+
 				/*
-				 * The contentEditable document MUST be activated by a 
-				 * mousedown WHEN another window has the focus. That's 
+				 * The contentEditable document MUST be activated by a
+				 * mousedown WHEN another window has the focus. That's
 				 * why we focus the parent window in this case.
 				 *
 				if ( doc.body.contentEditable == "true" ) {
@@ -263,11 +263,11 @@ StandardEventHandler.prototype._handleMouseMove = function ( e ) {
 			}
 		}
 		*/
-		
+
 	} catch ( exception ) { // don't want to throw errors continually onmousemove
-		DOMEvents.removeEventListener ( 
-			this._contextDocument, 
-			DOMEvents.MOUSEMOVE, 
+		DOMEvents.removeEventListener (
+			this._contextDocument,
+			DOMEvents.MOUSEMOVE,
 			this
 		);
 		throw ( exception );
@@ -287,9 +287,9 @@ StandardEventHandler.prototype._handleTouchStart = function (e) {
  * @param {KeyEvent} e
  */
 StandardEventHandler.prototype._handleKeyDown = function ( e, isTabHandled, fromNativeKeys ) {
-	
+
 	/*
-	 * This should only happen in the currently active window, 
+	 * This should only happen in the currently active window,
 	 * but the keypress should still be propagated for KeyBinding.
 	 */
 	if ( e.keyCode == KeyEventCodes.VK_TAB ) {
@@ -305,10 +305,10 @@ StandardEventHandler.prototype._handleKeyDown = function ( e, isTabHandled, from
 		}
 		isTabHandled = true;
 	}
-	
+
 	/*
-	 * Prevent standard browser page navigation keys. Theorectically, the check 
-	 * for shift and controls keys should *not* be performed. For some unknown 
+	 * Prevent standard browser page navigation keys. Theorectically, the check
+	 * for shift and controls keys should *not* be performed. For some unknown
 	 * reason, however, pressing these keys will switch the value of hasNativeKeys...
 	 * TODO: Investigate why!
 	 */
@@ -323,7 +323,7 @@ StandardEventHandler.prototype._handleKeyDown = function ( e, isTabHandled, from
 			case KeyEventCodes.VK_PAGE_DOWN :
 					DOMEvents.preventDefault ( e );
 			 	break;
-		} 
+		}
 	}
 
 	if ( e.keyCode == KeyEventCodes.VK_BACK ) {
@@ -331,15 +331,15 @@ StandardEventHandler.prototype._handleKeyDown = function ( e, isTabHandled, from
 			DOMEvents.preventDefault ( e );
 		}
 	}
-	
+
 	var isHandled = KeySetBinding.handleKey ( this._contextDocument, e );
 	if ( !isHandled ) {
 		switch ( e.keyCode ) {
-			
+
 			case KeyEventCodes.VK_PAGE_UP :
 			case KeyEventCodes.VK_PAGE_DOWN :
 				/*
-				 * Strangely, these keys may stop working in this._contextWindow, 
+				 * Strangely, these keys may stop working in this._contextWindow,
 				 * even while allowed, when an ANCESTOR frame preventDefaults them.
 				 */
 				break;
@@ -361,7 +361,7 @@ StandardEventHandler.prototype._handleKeyDown = function ( e, isTabHandled, from
  * @param {KeyEvent} e
  */
 StandardEventHandler.prototype._handleTab = function ( e ) {
-	
+
 	if ( !this._isAllowTabs ) {
 		if ( !e.ctrlKey ) {
 			if ( e.shiftKey ) {
@@ -378,12 +378,12 @@ StandardEventHandler.prototype._handleTab = function ( e ) {
  * @param {Event} e
  */
 StandardEventHandler.prototype._handleFocus = function ( e ) {
-	
+
 	var isFocus = false;
 	var target = DOMEvents.getTarget ( e );
 	var name = target.nodeName.toLowerCase ();
-	
-	switch ( name ) {	
+
+	switch ( name ) {
 		case "input" :
 		case "textarea" :
 		case "select" :
@@ -408,24 +408,24 @@ StandardEventHandler.prototype._handleFocus = function ( e ) {
  * @param {KeyEvent} e
  */
 StandardEventHandler.prototype._handleKeyUp = function ( e ) {
-	
+
 	/*
-	 * Simply broadcast the keyup event globally 
+	 * Simply broadcast the keyup event globally
 	 * via the {@link Keyboard} singleton.
 	 */
 	Keyboard.keyUp ( e );
 }
 
 /**
- * Enable native keys. 
+ * Enable native keys.
  * @param {boolean} isAllowTabs Relevant for editors
  */
 StandardEventHandler.prototype.enableNativeKeys = function ( isAllowTabs ) {
-	
+
 	this._isAllowTabs = ( isAllowTabs == true ? true : false );
-	
-	/* Timeout hack prevents open dialogs from closing when  
-	 * a SelectBoxBinding changes selection. Also, it allows  
+
+	/* Timeout hack prevents open dialogs from closing when
+	 * a SelectBoxBinding changes selection. Also, it allows
 	 * one control to disable keys *before* another enables it.
 	 */
 	var self = this;
@@ -434,7 +434,7 @@ StandardEventHandler.prototype.enableNativeKeys = function ( isAllowTabs ) {
 		StandardEventHandler.isBackAllowed = true;
 	}, 0 );
 }
-	
+
 /**
  * Disable native keys. This will always dissalow tabs.
  */

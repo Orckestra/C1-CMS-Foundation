@@ -104,9 +104,9 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Collections.Immutable, Version=1.2.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Collections.Immutable.1.2.0\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="System.Collections.Immutable, Version=1.1.37.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Packages\System.Collections.Immutable.1.2.0\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
     </Reference>
     <Reference Include="System.configuration" />
     <Reference Include="System.Configuration.Install" />
@@ -251,6 +251,33 @@
     <Compile Include="C1Console\RichContent\ContainerClasses\AntonymContainerClassManager.cs" />
     <Compile Include="C1Console\RichContent\ContainerClasses\ContainerClassManager.cs" />
     <Compile Include="C1Console\RichContent\ContainerClasses\EqualOrAntonymComparer.cs" />
+    <Compile Include="Core\WebClient\PageStructureRpc.cs" />
+    <Compile Include="Search\Crawling\DefaultDocumentFieldNames.cs" />
+    <Compile Include="Search\Crawling\EntityTokenSecurityHelper.cs" />
+    <Compile Include="Search\Crawling\IDataFieldProcessorProvider.cs" />
+    <Compile Include="Search\Crawling\SearchDocumentBuilder.cs" />
+    <Compile Include="Search\Crawling\DateTimeDataFieldProcessor.cs" />
+    <Compile Include="Search\Crawling\DefaultDataFieldProcessor.cs" />
+    <Compile Include="Search\Crawling\IDataFieldProcessor.cs" />
+    <Compile Include="Search\Crawling\XhtmlCrawlingHelper.cs" />
+    <Compile Include="Search\DocumentField.cs" />
+    <Compile Include="Search\Crawling\DataTypeSearchReflectionHelper.cs" />
+    <Compile Include="Search\DocumentSources\BuiltInTypesDocumentSourceProvider.cs" />
+    <Compile Include="Search\DocumentSources\DataChangesIndexNotifier.cs" />
+    <Compile Include="Search\DocumentSources\DataTypeDocumentSource.cs" />
+    <Compile Include="Search\DocumentSources\DataTypesDocumentSourceProvider.cs" />
+    <Compile Include="Search\DocumentSources\IndexUpdateActionContainer.cs" />
+    <Compile Include="Search\DocumentSources\MediaLibraryDocumentSource.cs" />
+    <Compile Include="Search\DocumentSources\CmsPageDocumentSource.cs" />
+    <Compile Include="Search\IDocumentSourceListener.cs" />
+    <Compile Include="Search\ISearchIndexUpdater.cs" />
+    <Compile Include="Search\ISearchDocumentSource.cs" />
+    <Compile Include="Search\ISearchDocumentSourceProvider.cs" />
+    <Compile Include="Search\ISearchProvider.cs" />
+    <Compile Include="Search\SearchDocument.cs" />
+    <Compile Include="Search\SearchFacade.cs" />
+    <Compile Include="Search\SearchQuery.cs" />
+    <Compile Include="Search\SearchResult.cs" />
     <Compile Include="C1Console\Trees\GenericDuplicateDataActionNode.cs" />
     <Compile Include="C1Console\Elements\IServiceUrlToEntityTokenMapper.cs" />
     <Compile Include="C1Console\Events\OpenSlideViewQueueItem.cs" />
@@ -275,6 +302,9 @@
     <Compile Include="Core\WebClient\Services\WampRouter\WampRouterResolverRegistry.cs" />
     <Compile Include="Data\DataScopeServicesFacade.cs" />
     <Compile Include="Data\DataServiceScopeManager.cs" />
+    <Compile Include="Data\DynamicTypes\SearchProfile.cs" />
+    <Compile Include="Data\SearchableTypeAttribute.cs" />
+    <Compile Include="Data\SearchableFieldAttribute.cs" />
     <Compile Include="Data\Types\IVersioned.cs" />
     <Compile Include="Data\Types\IVersionedDataHelper.cs" />
     <Compile Include="Data\Types\PageInsertPosition.cs" />
@@ -412,6 +442,7 @@
     <Compile Include="Plugins\Commands\ConsoleCommandHandlers\ConsoleCommandHelper.cs" />
     <Compile Include="Plugins\Commands\ConsoleCommandHandlers\FocusElement.cs" />
     <Compile Include="Plugins\Commands\ConsoleCommandHandlers\FocusData.cs" />
+    <Compile Include="Plugins\Elements\ElementProviders\VirtualElementProvider\PlaceholderVirtualElement.cs" />
     <Compile Include="Plugins\Forms\WebChannel\UiControlFactories\TemplatedHierarchicalSelectorUiControlFactory.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -1174,6 +1205,10 @@
     <Compile Include="Plugins\Routing\Pages\DefaultPageUrlProvider.cs" />
     <Compile Include="Plugins\Routing\UrlFormatters\StringReplaceUrlFormatter.cs" />
     <Compile Include="Plugins\Routing\UrlFormatters\ToLowerCaseUrlFormatter.cs" />
+    <Compile Include="Plugins\Search\Endpoint\ConsoleSearchPageStructure.cs" />
+    <Compile Include="Plugins\Search\Endpoint\ConsoleSearchQuery.cs" />
+    <Compile Include="Plugins\Search\Endpoint\ConsoleSearchResult.cs" />
+    <Compile Include="Plugins\Search\Endpoint\ConsoleSearchRpcService.cs" />
     <Compile Include="Plugins\Security\LoginProviderPlugins\DataBasedFormLoginProvider\UserFormLoginManager.cs" />
     <Compile Include="Plugins\Security\LoginSessionStores\WampContextBasedLoginSessionStore\WampContextBasedBasedLoginSessionStore.cs" />
     <Compile Include="Plugins\Security\PasswordRules\DifferentCharacterGroups\DifferentCharacterGroupsPasswordRule.cs" />
