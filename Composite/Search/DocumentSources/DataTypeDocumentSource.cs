@@ -40,8 +40,7 @@ namespace Composite.Search.DocumentSources
 
             _isPublishable = typeof (IPublishControlled).IsAssignableFrom(_interfaceType);
 
-            _customFields = new Lazy<ICollection<DocumentField>>(() =>
-                DataTypeSearchReflectionHelper.GetDocumentFields(_interfaceType).Evaluate());
+            _customFields = new Lazy<ICollection<DocumentField>>(GetDocumentFields);
 
             _changesIndexNotifier = new DataChangesIndexNotifier(
                 _listeners, _interfaceType, FromData, GetDocumentId);
@@ -143,11 +142,21 @@ namespace Composite.Search.DocumentSources
             return uniqueKey + scopeSuffix;
         }
 
+        ICollection<DocumentField> GetDocumentFields()
+        {
+            return DataTypeSearchReflectionHelper.GetDocumentFields(_interfaceType).Evaluate();
+        }
+
         private static void OnStoreCreated(DataTypeDescriptor dataTypeDescriptor)
         {
             if (!dataTypeDescriptor.Searchable) return;
 
             var indexUpdater = ServiceLocator.GetService<ISearchIndexUpdater>();
+
+            if (dataTypeDescriptor.IsCodeGenerated)
+            {
+                indexUpdater?.StopProcessingUpdates();
+            }
 
             indexUpdater?.Populate(GetStoreName(dataTypeDescriptor));
         }
@@ -157,6 +166,11 @@ namespace Composite.Search.DocumentSources
             if (!dataTypeDescriptor.Searchable) return;
 
             var indexUpdater = ServiceLocator.GetService<ISearchIndexUpdater>();
+
+            if (dataTypeDescriptor.IsCodeGenerated)
+            {
+                indexUpdater?.StopProcessingUpdates();
+            }
 
             indexUpdater?.Remove(GetStoreName(dataTypeDescriptor));
         }

@@ -35,5 +35,10 @@ namespace Composite.Search
         /// </summary>
         /// <param name="cultureInfo"></param>
         void DropCollection(CultureInfo cultureInfo);
+
+        /// <summary>
+        /// Notifies the search updater that no updates should be processed until a website restart.
+        /// </summary>
+        void StopProcessingUpdates();
     }
 }
