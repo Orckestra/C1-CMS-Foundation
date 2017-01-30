@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Reflection;
 
 namespace Composite.Search.Crawling
 {
@@ -15,7 +16,7 @@ namespace Composite.Search.Crawling
         }
 
         /// <exclude />
-        protected override DocumentFieldPreview.ValuePreviewDelegate GetPreviewFunction()
+        protected override DocumentFieldPreview.ValuePreviewDelegate GetPreviewFunction(PropertyInfo propertyInfo)
         {
             return value =>
             {

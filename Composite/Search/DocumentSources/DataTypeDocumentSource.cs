@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Composite.C1Console.Security;
 using Composite.Search.Crawling;
 using Composite.Core;
 using Composite.Core.Linq;
@@ -16,6 +17,8 @@ namespace Composite.Search.DocumentSources
 {
     internal class DataTypeDocumentSource : ISearchDocumentSource
     {
+        const string LogTitle = nameof(DataTypeDocumentSource);
+
         private readonly List<IDocumentSourceListener> _listeners = new List<IDocumentSourceListener>();
         private readonly Type _interfaceType;
         private readonly DataChangesIndexNotifier _changesIndexNotifier;
@@ -37,8 +40,7 @@ namespace Composite.Search.DocumentSources
 
             _isPublishable = typeof (IPublishControlled).IsAssignableFrom(_interfaceType);
 
-            _customFields = new Lazy<ICollection<DocumentField>>(() =>
-                DataTypeSearchReflectionHelper.GetDocumentFields(_interfaceType).Evaluate());
+            _customFields = new Lazy<ICollection<DocumentField>>(GetDocumentFields);
 
             _changesIndexNotifier = new DataChangesIndexNotifier(
                 _listeners, _interfaceType, FromData, GetDocumentId);
@@ -104,7 +106,26 @@ namespace Composite.Search.DocumentSources
                 url = InternalUrls.TryBuildInternalUrl(data.ToDataReference());
             }
 
-            return docBuilder.BuildDocument(Name, documentId, label, null, data.GetDataEntityToken(), url);
+            var entityToken = GetConsoleEntityToken(data);
+            if (entityToken == null)
+            {
+                Log.LogWarning(LogTitle, $"Failed to obtain an entity token for a data item of type '{data.DataSourceId.InterfaceType}'");
+                return null;
+            }
+
+            return docBuilder.BuildDocument(Name, documentId, label, null, entityToken, url);
+        }
+
+        private EntityToken GetConsoleEntityToken(IData data)
+        {
+            if (!(data is IPublishControlled)
+                || data.DataSourceId.DataScopeIdentifier == DataScopeIdentifier.Administrated)
+            {
+                return data.GetDataEntityToken();
+            }
+
+            var administratedData = DataFacade.GetDataFromOtherScope(data, DataScopeIdentifier.Administrated).FirstOrDefault();
+            return administratedData?.GetDataEntityToken();
         }
 
         private string GetDocumentId(IData data)
@@ -121,11 +142,21 @@ namespace Composite.Search.DocumentSources
             return uniqueKey + scopeSuffix;
         }
 
+        ICollection<DocumentField> GetDocumentFields()
+        {
+            return DataTypeSearchReflectionHelper.GetDocumentFields(_interfaceType).Evaluate();
+        }
+
         private static void OnStoreCreated(DataTypeDescriptor dataTypeDescriptor)
         {
             if (!dataTypeDescriptor.Searchable) return;
 
             var indexUpdater = ServiceLocator.GetService<ISearchIndexUpdater>();
+
+            if (dataTypeDescriptor.IsCodeGenerated)
+            {
+                indexUpdater?.StopProcessingUpdates();
+            }
 
             indexUpdater?.Populate(GetStoreName(dataTypeDescriptor));
         }
@@ -135,6 +166,11 @@ namespace Composite.Search.DocumentSources
             if (!dataTypeDescriptor.Searchable) return;
 
             var indexUpdater = ServiceLocator.GetService<ISearchIndexUpdater>();
+
+            if (dataTypeDescriptor.IsCodeGenerated)
+            {
+                indexUpdater?.StopProcessingUpdates();
+            }
 
             indexUpdater?.Remove(GetStoreName(dataTypeDescriptor));
         }

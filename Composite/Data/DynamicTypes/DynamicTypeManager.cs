@@ -15,7 +15,7 @@ using Composite.Core.Types;
 
 namespace Composite.Data.DynamicTypes
 {
-    /// <summary>    
+    /// <summary>
     /// This class is used for handling DataTypeDescriptors for all C1 data types. 
     /// Building new from reflection and getting already stored.
     /// 
@@ -38,11 +38,28 @@ namespace Composite.Data.DynamicTypes
         internal delegate void DataStoreChangedEventHandler(UpdateDataTypeDescriptor updateDataTypeDescriptor);
         internal delegate void LocalizationEventHandler(CultureInfo culture);
 
+        /// <summary>
+        /// Raised after data stores are created for a data type.
+        /// </summary>
         internal static event DataStoreEventHandler OnStoreCreated;
+
+        /// <summary>
+        /// Raised after a data type is removed from the system.
+        /// </summary>
         internal static event DataStoreEventHandler OnStoreDropped;
+
+        /// <summary>
+        /// Raised after a data type is updated.
+        /// </summary>
         internal static event DataStoreChangedEventHandler OnStoreUpdated;
 
+        /// <summary>
+        /// Raised after the data stores created for a new locale.
+        /// </summary>
         internal static event LocalizationEventHandler OnLocaleAdded;
+        /// <summary>
+        /// Raised after the data stores related to a locale are removed.
+        /// </summary>
         internal static event LocalizationEventHandler OnLocaleRemoved;
 
 
