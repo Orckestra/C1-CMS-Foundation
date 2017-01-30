@@ -170,6 +170,7 @@ const Palette = props => {
 						<Item
 							closed={props.dialogData.getIn(['closed', itemGroup.get('name')])}
 							key={itemName}
+							id={itemName}
 							onClick={selectItem}
 							onDoubleClick={() => {
 								selectItem();

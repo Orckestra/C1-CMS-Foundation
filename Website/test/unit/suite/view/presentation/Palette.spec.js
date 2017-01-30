@@ -55,7 +55,8 @@ describe('Palette', () => {
 				noItemsText: 'Testing no items'
 			}),
 			dialogData: Immutable.fromJS({ selectedItem: 'entry2', closed: { group2: true } }),
-			updateDialogData: () => {}
+			updateDialogData: sinon.spy().named('updateDialogData'),
+			nextAction: sinon.spy().named('nextAction')
 		};
 	});
 
@@ -114,6 +115,17 @@ describe('Palette', () => {
 				</p.Item>
 			</p.ItemGroup>
 		</div>);
+	});
+
+	it('can select on finish with a double click', () => {
+		renderer.render(<Palette {...props}/>);
+		return expect(renderer, 'with event', 'doubleClick', 'on', <p.Item id='entry2'/>)
+		.then(() => Promise.all([
+			expect(props.updateDialogData, 'to have calls satisfying', [
+				{args: [Immutable.fromJS({ selectedItem: 'entry2' })]}
+			]),
+			expect(props.nextAction, 'was called')
+		]));
 	});
 
 	it('can select items', () => {
