@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Linq;
 using Composite.Core;
 using Composite.Core.Xml;
+using Composite.Functions;
 
 namespace Composite.Search.Crawling
 {
@@ -68,8 +70,36 @@ namespace Composite.Search.Crawling
 
         private void ProcessFunctionCall(XElement functionNode)
         {
-            // TODO: process parameteres
-            // TODO: add a function reference
+            var functionName = functionNode.GetAttributeValue("name");
+            if(functionName == null) return;
+
+            IFunction function;
+            try
+            {
+                function = FunctionFacade.GetFunction(functionName);
+                if (function == null) return;
+            }
+            catch
+            {
+                return;
+            }
+
+            foreach (var paramElement in functionNode.Elements())
+            {
+                var parameterName = paramElement.GetAttributeValue("name");
+                if(parameterName == null) continue;
+
+                var profile = function.ParameterProfiles.FirstOrDefault(p => p.Name == parameterName);
+                if (profile != null)
+                {
+                    if (profile.Type == typeof (XhtmlDocument))
+                    {
+                        ProcessElement(paramElement);
+                    }
+
+                    // TODO: handle the other parameter types
+                }
+            }
         }
     }
 }
