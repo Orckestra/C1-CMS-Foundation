@@ -61,9 +61,11 @@ describe('Palette', () => {
 		renderer.render(<Palette {...props}/>);
 		return expect(renderer, 'to have rendered', <div>
 			<ItemGroup key='group1'>
-				<ItemGroupTop>
-					<ItemGroupTitle>First group</ItemGroupTitle>
-				</ItemGroupTop>
+				<div>
+					<ItemGroupTop>
+						<ItemGroupTitle>First group</ItemGroupTitle>
+					</ItemGroupTop>
+				</div>
 				<Item key='entry1' active={false}>
 					<PreviewImage image='/path/to/image1.png'/>
 					<InfoBox>
@@ -80,9 +82,11 @@ describe('Palette', () => {
 				</Item>
 			</ItemGroup>
 			<ItemGroup key='group2'>
-				<ItemGroupTop>
-					<ItemGroupTitle>Second group</ItemGroupTitle>
-				</ItemGroupTop>
+				<div>
+					<ItemGroupTop>
+						<ItemGroupTitle>Second group</ItemGroupTitle>
+					</ItemGroupTop>
+				</div>
 				<Item key='entry3' active={false}>
 					<PreviewIcon id='testicon'/>
 					<InfoBox>

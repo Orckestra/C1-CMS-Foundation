@@ -69,9 +69,6 @@ namespace Composite.Plugins.Components.FileBasedComponentProvider
         /// <exclude />
         public IEnumerable<Component> GetComponents()
         {
-            // search files, build up list here. No reason to cache locally in this provider.
-            _changeNotifier.ProviderChange(this.ProviderId);
-
             return GetAllComponents();
         }
 
