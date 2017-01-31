@@ -5,6 +5,7 @@ using Composite.Core.Application.Plugins.ApplicationOnlineHandler.Runtime;
 using Composite.Core.Application.Plugins.ApplicationStartupHandler;
 using Composite.Core.Application.Plugins.ApplicationStartupHandler.Runtime;
 using Composite.Core.Collections.Generic;
+using Microsoft.Extensions.DependencyInjection;
 
 
 namespace Composite.Core.Application.Foundation.PluginFacades
@@ -14,27 +15,41 @@ namespace Composite.Core.Application.Foundation.PluginFacades
         private static ResourceLocker<Resources> _resourceLocker = new ResourceLocker<Resources>(new Resources(), Resources.Initialize);
 
 
-        public static void OnBeforeInitialize(string handlerName)
+        public static void ConfigureServices(string handlerName, IServiceCollection serviceCollection)
         {
-            Verify.ArgumentNotNullOrEmpty(handlerName, handlerName);
+            Verify.ArgumentNotNullOrEmpty(handlerName, nameof(handlerName));
+            Verify.ArgumentNotNull(serviceCollection, nameof(serviceCollection));
 
             using (_resourceLocker.Locker)
             {
                 IApplicationStartupHandler provider = GetApplicationStartupHandler(handlerName);
 
-                provider.OnBeforeInitialize();
+                provider.ConfigureServices(serviceCollection);
             }
         }
 
-        public static void OnInitialized(string handlerName)
+
+        public static void OnBeforeInitialize(string handlerName, IServiceProvider serviceProvider)
         {
-            Verify.ArgumentNotNullOrEmpty(handlerName, handlerName);
+            Verify.ArgumentNotNullOrEmpty(handlerName, nameof(handlerName));
 
             using (_resourceLocker.Locker)
             {
                 IApplicationStartupHandler provider = GetApplicationStartupHandler(handlerName);
 
-                provider.OnInitialized();
+                provider.OnBeforeInitialize(serviceProvider);
+            }
+        }
+
+        public static void OnInitialized(string handlerName, IServiceProvider serviceProvider)
+        {
+            Verify.ArgumentNotNullOrEmpty(handlerName, nameof(handlerName));
+
+            using (_resourceLocker.Locker)
+            {
+                IApplicationStartupHandler provider = GetApplicationStartupHandler(handlerName);
+
+                provider.OnInitialized(serviceProvider);
             }
         }
 

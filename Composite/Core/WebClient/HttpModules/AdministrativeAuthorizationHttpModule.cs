@@ -60,10 +60,10 @@ namespace Composite.Core.WebClient.HttpModules
             {
                 adminFolderExists = C1Directory.Exists(adminRootPath);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 // we fail miserably here when write permissions are missing, also the default exception is exceptionally crappy
-                throw new IOException("Please ensure that the web application process has permissions to read and modify the entire web app directory structure.");
+                throw new IOException("Please ensure that the web application process has permissions to read and modify the entire web app directory structure.", ex);
             }
 
             if (adminFolderExists)
@@ -83,6 +83,11 @@ namespace Composite.Core.WebClient.HttpModules
 
         public void Init(HttpApplication context)
         {
+            if (!SystemSetupFacade.IsSystemFirstTimeInitialized)
+            {
+                return;
+            }
+
             context.AuthorizeRequest += context_AuthorizeRequest;
         }
 
@@ -150,10 +155,10 @@ namespace Composite.Core.WebClient.HttpModules
                 string redirectUrl =$"{_loginPagePath}?ReturnUrl={HttpUtility.UrlEncode(url.PathAndQuery, Encoding.UTF8)}";
                 context.Response.Redirect(redirectUrl, true);
                 return;
-                
+
             }
 
-            // On authenticated request make sure these resources gets compiled / launched. 
+            // On authenticated request make sure these resources gets compiled / launched.
             if (IsConsoleOnline)
             {
                 BrowserRender.EnsureReadiness();

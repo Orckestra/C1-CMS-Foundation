@@ -166,7 +166,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
                 // validating phase
                 foreach (IData data in dataset)
                 {
-                    Verify.ArgumentCondition(data != null, "dataset", "The enumeration dataset may not contain nulls");
+                    Verify.ArgumentCondition(data != null, nameof(dataset), "The enumeration dataset may not contain nulls");
                     ValidationHelper.Validate(data);
 
                     XElement newElement;
@@ -175,7 +175,10 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
                     IDataId dataId = dataTypeStore.Helper.CreateDataId(newElement);
                     XElement violatingElement = fileRecord.RecordSet.Index[dataId];
 
-                    Verify.ArgumentCondition(violatingElement == null, "dataset", "Key violation error. A data element with the same dataId is already added");
+                    if (violatingElement != null)
+                    {
+                        throw new ArgumentException(nameof(dataset), "Key violation error. A data element with the same dataId is already added. Type: " + typeof(T).FullName);
+                    }
 
                     validatedElements.Add(newData.DataSourceId, newElement);
                     resultList.Add(newData);
@@ -255,12 +258,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
         {
             var transaction = Transaction.Current;
 
-            if (transaction == null)
-            {
-                return;
-            }
-
-            if (transaction.TransactionInformation.Status == TransactionStatus.Aborted)
+            if (transaction?.TransactionInformation.Status == TransactionStatus.Aborted)
             {
                 Log.LogWarning(LogTitle, new TransactionException("Transaction is in aborted state"));
             }

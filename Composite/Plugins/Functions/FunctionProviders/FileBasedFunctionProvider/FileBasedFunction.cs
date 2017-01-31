@@ -58,7 +58,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
 			    foreach (var param in Parameters.Values)
 			    {
 			        BaseValueProvider defaultValueProvider = new NoValueValueProvider();
-			        WidgetFunctionProvider widgetProvider = null;
+			        WidgetFunctionProvider widgetProvider = param.WidgetProvider;
 			        string label = param.Name;
 			        bool isRequired = true;
 			        string helpText = String.Empty;
@@ -81,8 +81,6 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
 			            {
 			                defaultValueProvider = new ConstantValueProvider(param.Attribute.DefaultValue);
 			            }
-
-			            widgetProvider = param.WidgetProvider;
 
 			            hideInSimpleView = param.Attribute.HideInSimpleView;
 			        }

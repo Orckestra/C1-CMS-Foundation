@@ -65,7 +65,7 @@ namespace Composite.C1Console.Security
         /// <exclude />
         public static IEnumerable<PermissionType> GetLocallyDefinedUserGroupPermissionTypes(string username, EntityToken entityToken)
         {
-            List<Guid> userGroupIds = UserGroupFacade.GetUserGroupIds(username);
+            var userGroupIds = UserGroupFacade.GetUserGroupIds(username);
 
             IEnumerable<PermissionType> permissionTypes = new List<PermissionType>();
             foreach (Guid userGroupId in userGroupIds)
@@ -171,7 +171,7 @@ namespace Composite.C1Console.Security
             }
             else
             {
-                List<Guid> userGroupIds = UserGroupFacade.GetUserGroupIds(userToken.Username);
+                var userGroupIds = UserGroupFacade.GetUserGroupIds(userToken.Username);
 
                 var localDefinedUserGroupPermissionTypes = new List<PermissionType>();
                 foreach (Guid userGroupId in userGroupIds)
@@ -341,7 +341,7 @@ namespace Composite.C1Console.Security
         /// <exclude />
         public static IEnumerable<UserGroupPermissionDefinition> GetUserGroupPermissionDefinitions(string username)
         {
-            List<Guid> userGroupIds = UserGroupFacade.GetUserGroupIds(username);
+            var userGroupIds = UserGroupFacade.GetUserGroupIds(username);
 
             foreach (Guid userGroupId in userGroupIds)
             {

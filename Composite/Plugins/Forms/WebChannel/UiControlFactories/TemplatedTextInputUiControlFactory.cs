@@ -22,10 +22,6 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public abstract class TextInputTemplateUserControlBase : UserControl, IPostBackDataHandler
     {
-        private string _formControlLabel;
-        private string _text;
-        private bool _spellCheck = true;
-
         /// <exclude />
         protected abstract void BindStateToProperties();
 
@@ -46,18 +42,10 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
         }
 
         /// <exclude />
-        public string Text
-        {
-            get { return _text; }
-            set { _text = value; }
-        }
+        public string Text { get; set; }
 
         /// <exclude />
-        public string FormControlLabel
-        {
-            get { return _formControlLabel; }
-            set { _formControlLabel = value; }
-        }
+        public string FormControlLabel { get; set; }
 
         /// <exclude />
         public bool Required
@@ -66,11 +54,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
         }
 
         /// <exclude />
-        public bool SpellCheck
-        {
-            get { return _spellCheck; }
-            set { _spellCheck = value; }
-        }
+        public bool SpellCheck { get; set; } = true;
 
         /// <exclude />
         public List<ClientValidationRule> ClientValidationRules { get; set; }
@@ -102,7 +86,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
 
     internal sealed class TemplatedTextInputUiControl : TextInputUiControl, IWebUiControl
     {
-        private Type _userControlType;
+        private readonly Type _userControlType;
         private TextInputTemplateUserControlBase _userControl;
 
         internal TemplatedTextInputUiControl(Type userControlType)
@@ -136,9 +120,9 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
             return _userControl;
         }
 
-        public bool IsFullWidthControl { get { return false; } }
+        public bool IsFullWidthControl => false;
 
-        public string ClientName { get { return _userControl.GetDataFieldClientName(); } }
+        public string ClientName => _userControl.GetDataFieldClientName();
     }
 
 
@@ -152,7 +136,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
 
         public override IUiControl CreateControl()
         {
-            TemplatedTextInputUiControl control = new TemplatedTextInputUiControl(this.UserControlType);
+            var control = new TemplatedTextInputUiControl(this.UserControlType);
 
             return control;
         }

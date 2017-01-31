@@ -1,11 +1,11 @@
-﻿<svg width="18" height="18" xmlns="http://www.w3.org/2000/svg">
+﻿<svg width="18" height="18" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
   <!-- Generator: Sketch 3.3.2 (12043) - http://www.bohemiancoding.com/sketch -->
   <title>edit</title>
   <desc>Created with Sketch.</desc>
   <g>
     <title>Layer 1</title>
     <g fill="#666" stroke="#666">
-      <g id="pencil" viewBox="0 0 18 18" fill="none">
+      <g id="pencil" fill="none">
         <path id="Stroke-191" d="m1.798645,15.747375l1.928284,-5.16095l9.008728,-8.819886l3.025574,2.974122l-8.916442,9.01367l-5.046143,1.993043z"/>
         <path id="Stroke-192" d="m13.078,7.079l-2.828,-2.829" stroke="#666"/>
         <path id="Stroke-193" d="m6.800415,13.741455l-3.020447,-2.974977" stroke="#666"/>

@@ -116,7 +116,7 @@ namespace Composite.Data
         {
             Verify.That(DataServiceScopeStack.Count > 0, nameof(DataServiceScopeStack) + " underflow");
 
-            DataServiceScopeStack.Pop();
+            DataServiceScopeStack.Pop().ForEach(f => (f as IDisposable)?.Dispose());
         }
 
         internal static void PushDataServiceScope()

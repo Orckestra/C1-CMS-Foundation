@@ -1,6 +1,6 @@
 /*
- * This fellow is a superclass for editors based on the contentEditable interface. 
- * This should give us a unified way of accessing the editable document, and 
+ * This fellow is a superclass for editors based on the contentEditable interface.
+ * This should give us a unified way of accessing the editable document, and
  * to setup contextmenus and stuff for the editor. @see {BespinEditorBinding}
  */
 
@@ -28,7 +28,7 @@ EditorBinding.URL_DIALOG_MOZ_CONFIGURE = "${root}/content/dialogs/wysiwygeditor/
 /**
  *
  */
-EditorBinding.URL_UPDATERENDERING = "${root}/content/dialogs/functions/editFunctionCall.aspx?type={0}";
+EditorBinding.URL_UPDATERENDERING = "${root}/content/dialogs/functions/editFunctionCall.aspx?type={0}&pageId={context:pageId}&containerClasses={context:containerClasses}";
 
 /**
  * The number of the beast.
@@ -37,7 +37,7 @@ EditorBinding.URL_UPDATERENDERING = "${root}/content/dialogs/functions/editFunct
 EditorBinding.ABSURD_NUMBER = -999999999;
 
 /**
- * Used to preserve line-break entity &#xA; in source code. 
+ * Used to preserve line-break entity &#xA; in source code.
  * @type {String}
  */
 EditorBinding.LINE_BREAK_ENTITY_HACK = "C1.LINE.BREAK.ENTITY.HACK";
@@ -45,7 +45,7 @@ EditorBinding.LINE_BREAK_ENTITY_HACK = "C1.LINE.BREAK.ENTITY.HACK";
 
 
 // EDITITOR COMPONENT STUFF ..............................................
-EditorBinding.invokeFunctionEditorDialog = function (markup, handler, type )
+EditorBinding.invokeFunctionEditorDialog = function (markup, handler, type, contextSource)
 {
     type = type?type:'';
     var settings = FunctionService.GetCustomEditorSettingsByMarkup(markup);
@@ -69,7 +69,7 @@ EditorBinding.invokeFunctionEditorDialog = function (markup, handler, type )
     	url: settings ? settings.Url : EditorBinding.URL_UPDATERENDERING.replace('{0}', type),
         list: new List([{ name: "functionmarkup", value: markup }])
     }
-    StageBinding.presentViewDefinition(def);
+    StageBinding.presentViewDefinition(def, contextSource);
 }
 
 
@@ -87,17 +87,17 @@ EditorBinding._components = new Map ();
 EditorBinding._editors = new Map ();
 
 /**
- * Editor compontens can register themselves around here  
+ * Editor compontens can register themselves around here
  * to be initialized when TinyMCE or CodePress is loaded.
  * @param {IWysiwygEditorComponent} binding
  * @param {WindowBinding} windowBinding
  */
 EditorBinding.registerComponent = function ( binding, windowBinding ) {
-	
+
 	var components = EditorBinding._components;
 	var editors = EditorBinding._editors;
 	var key = windowBinding.key;
-	
+
 	/*
 	 * This if-else is ugly - refactor!
 	 */
@@ -105,7 +105,7 @@ EditorBinding.registerComponent = function ( binding, windowBinding ) {
 	if ( !isImplemented ) {
 		isImplemented = Interfaces.isImplemented ( ISourceEditorComponent, binding );
 	}
-	
+
 	if ( isImplemented ) {
 		if ( editors.has ( key )) { // already initialized
 			editors.get ( key ).initializeEditorComponent ( binding );
@@ -121,21 +121,21 @@ EditorBinding.registerComponent = function ( binding, windowBinding ) {
 }
 
 /**
- * When an editor instance is initialized, it will 
+ * When an editor instance is initialized, it will
  * fetch associated components and initialize them.
  * @param {EditorBinding} editor
  * @param {WindowBinding} windowBinding
  * @return {List<IWysiwygEditorComponent>}
  */
 EditorBinding.claimComponents = function ( editor, windowBinding ) {
-	
+
 	var components = EditorBinding._components;
 	var editors = EditorBinding._editors;
 	var key = windowBinding.key;
-	
+
 	// Register editor as initialized.
 	editors.set ( key, editor );
-	
+
 	// Fetch associated components
 	var list = null;
 	if ( components.has ( key )) {
@@ -148,7 +148,7 @@ EditorBinding.claimComponents = function ( editor, windowBinding ) {
 
 /**
  * @class
- * In order to function elegantly as a DataBinding, we should probably refactor 
+ * In order to function elegantly as a DataBinding, we should probably refactor
  * the inheritance chain. For now, we simply implement the required interface.
  * @implements {@link IData}
  */
@@ -158,105 +158,105 @@ function EditorBinding () {
 	 * @type {SystemLogger}
 	 */
 	this.logger = SystemLogger.getLogger ( "EditorBinding" );
-	
+
 	/**
 	 * Subclass must define.
 	 * @type {string}
 	 */
 	this.action_initialized = null;
-	
-	/** 
+
+	/**
 	 * Subclass must define.
 	 * @type {string}
 	 */
 	this.url_default = null;
-	
-	/** 
+
+	/**
 	 * @type {EditorPopupBinding}
 	 */
 	this._popupBinding = null;
-	
+
 	/**
 	 * This is the string value of postbackable textarea.
 	 * @type {string}
 	 */
 	this._startContent = null;
-	
+
 	/**
-	 * An object with two properties, start and length. Used to cache   
+	 * An object with two properties, start and length. Used to cache
 	 * and restore the selection while document is out of focus.
 	 * @type {object}
 	 */
 	this._explorerBookmark = null;
-	
+
 	/**
 	 * Flipped when editor content changes first time.
 	 * @type {boolean}
 	 */
 	this.isDirty = false;
-	
+
 	/**
 	 * Flipped when editor launches and closed a dialog.
 	 * @type {boolean}
 	 */
 	this.isDialogMode = false;
-	
+
 	/**
 	 * @implements {IFocusable}
 	 * @type {boolean}
 	 */
 	this.isFocusable = true;
-	
+
 	/**
 	 * @implements {IFocusable}
 	 * @type {boolean}
 	 */
 	this.isFocused = false;
-	
+
 	/**
 	 * Flipped when editable document is handled.
 	 * @type {boolean}
 	 */
 	this._isActivated = false;
-	
+
 	/**
 	 * This will hide the "flash of white" in Explorer.
 	 * @type {Binding}
 	 */
 	this._Binding = null;
-	
+
 	/**
-	 * The URL to load. Defined during initialization 
+	 * The URL to load. Defined during initialization
 	 * so that subclasses don't inherit the value.
 	 */
 	this._url = null;
-	
+
 	/**
 	 * Dont relay events dispatched by any descendant binding.
 	 * @overloads {Binding#isBlockingActions}
 	 * @type {boolean}
 	 */
 	this.isBlockingActions = true;
-	
+
 	/**
 	 * Flipped when the finalize method invokes.
 	 * TODO: Investigate - do we still need this?
 	 * @type {boolean}
 	 */
 	this._isFinalized = false;
-	
+
 	/**
 	 * The bookmark thingy.
 	 * @type {object}
 	 */
 	this._bookmark = null;
-	
+
 	/**
 	 * Used to determine when a dirty flag should be raised.
 	 * @type {string}
 	 */
 	this._checksum = null;
-	
+
 	/**
 	 * Divert focus crawler.
 	 * @type {Map<string><boolean>}
@@ -277,14 +277,14 @@ EditorBinding.prototype.toString = function () {
  * @overloads {WindowBinding#onBindingRegister}
  */
 EditorBinding.prototype.onBindingRegister = function () {
-	
+
 	EditorBinding.superclass.onBindingRegister.call ( this );
-	
+
 	/*
 	 * Mount the URL.
 	 */
 	this._url = this.url_default;
-	
+
 	/*
 	 * Hides the "flash of white" when loading in explorer.
 	 */
@@ -293,7 +293,7 @@ EditorBinding.prototype.onBindingRegister = function () {
 	);
 
 	/*
-	* Register as DataBinding so that we 
+	* Register as DataBinding so that we
 	* may masquerade as a DataBinding.
 	*/
 	var name = this.getProperty("name");
@@ -307,14 +307,14 @@ EditorBinding.prototype.onBindingRegister = function () {
  * @overloads {WindowBinding#onBindingAttach}
  */
 EditorBinding.prototype.onBindingAttach = function () {
-	
+
 	Application.lock ( this ); // unlocked by method _initialize!
-	
+
 	// Hello.
 	if ( this.hasCallBackID ()) {
 		Binding.dotnetify ( this );
 	}
-	
+
 	this._setup ();
 	this.setURL ( this._url );
 
@@ -326,12 +326,12 @@ EditorBinding.prototype.onBindingAttach = function () {
 }
 
 /**
- * Find start content 
+ * Find start content
  */
 EditorBinding.prototype._setup = function () {
 
 	/*
-	 * Extract content from the textarea, unless 
+	 * Extract content from the textarea, unless
 	 * already specified programatically.
 	 */
 	var value = this.getProperty ( "value" );
@@ -343,14 +343,14 @@ EditorBinding.prototype._setup = function () {
 }
 
 /**
- * Unregister when disposed. 
+ * Unregister when disposed.
  * TODO: UNREGISTER PAGE EDITOR!
  * @overloads {Binding#onBindingDispose}
  */
 EditorBinding.prototype.onBindingDispose = function () {
-	
+
 	EditorBinding.superclass.onBindingDispose.call ( this );
-	
+
 	var name = this.getProperty ( "name" );
 	if ( name != null ) {
 		var dataManager = this.bindingWindow.DataManager;
@@ -365,15 +365,15 @@ EditorBinding.prototype._initialize = function () {
 
 	this.subscribe ( BroadcastMessages.STAGEDIALOG_OPENED );
 	this.subscribe ( BroadcastMessages.MOUSEEVENT_MOUSEUP );
-	
+
 	// if all else failed, at least we have a string
 	if ( this._startContent == null ) {
 		this._startContent = new String ( "" );
 	}
-	
+
 	// setup internal events
 	this.addEditorEvents ();
-	
+
 	// present startcontent - explorer needs a short break here
 	var self = this;
 	setTimeout ( function () {
@@ -385,7 +385,7 @@ EditorBinding.prototype._initialize = function () {
  * Finalize initialization.
  */
 EditorBinding.prototype._finalize = function () {
-	
+
 	this.resetUndoRedo ();
 	this._popupBinding = this.getEditorPopupBinding ();
 	Application.unlock ( this );
@@ -402,7 +402,7 @@ EditorBinding.prototype.initializeEditorComponents = function ( windowBinding ) 
 	var components = EditorBinding.claimComponents ( this, windowBinding );
 	if ( components != null ) {
 		while ( components.hasNext ()) {
-			this.initializeEditorComponent ( 
+			this.initializeEditorComponent (
 				components.getNext ()
 			);
 		}
@@ -429,9 +429,9 @@ EditorBinding.prototype._registerWithDataManager = function ( name ) {
  * Setup event handling inside the editable document.
  */
 EditorBinding.prototype.addEditorEvents = function () {
-	
+
 	var editorDocument = this.getEditorDocument ();
-	
+
 	if ( editorDocument != null ) {
 		Application.framework ( editorDocument );
 		DOMEvents.addEventListener ( editorDocument, DOMEvents.CONTEXTMENU, this );
@@ -439,7 +439,7 @@ EditorBinding.prototype.addEditorEvents = function () {
 		DOMEvents.addEventListener ( editorDocument, DOMEvents.MOUSEDOWN, this );
 		DOMEvents.addEventListener ( editorDocument, DOMEvents.MOUSEMOVE, this );
 	}
-	
+
 	/*
 	 * Why this?
 	 */
@@ -452,7 +452,7 @@ EditorBinding.prototype.addEditorEvents = function () {
 }
 
 /**
- * Check for dirty. Note that VisualEditorPageBinding invokes this 
+ * Check for dirty. Note that VisualEditorPageBinding invokes this
  * method on an interval (at least in Internet Explorer).
  * @param {boolean} isHiddenChange
  */
@@ -475,7 +475,7 @@ EditorBinding.prototype.checkForDirty = function ( isHiddenChange ) {
  * @return
  */
 EditorBinding.prototype._checkForRealDirty = function () {
-	
+
 	var checksum = this.getCheckSum ();
 	if (checksum != this._checksum) {
 		this.bindingWindow.DataManager.dirty(this);
@@ -488,7 +488,7 @@ EditorBinding.prototype._checkForRealDirty = function () {
  * @return {string}
  */
 EditorBinding.prototype.getCheckSum = function () {
-	
+
 	var result = null;
 	if ( Binding.exists ( this._pageBinding )) {
 		result = this._pageBinding.getCheckSum ( this._checksum );
@@ -511,7 +511,7 @@ EditorBinding.prototype.handleEvent = function (e) {
 
 		/*
 		* Note that the contextmenu is build when first shown.
-		*/ 
+		*/
 		case DOMEvents.CONTEXTMENU:
 			if (Client.isFirefox && e.ctrlKey) {
 				// nothing, default FF contextmenu
@@ -524,7 +524,7 @@ EditorBinding.prototype.handleEvent = function (e) {
 
 		/*
 		* Check for dirty on all keystrokes.
-		*/ 
+		*/
 		case DOMEvents.KEYPRESS:
 			this.checkForDirty();
 			if (!this._isActivated || this.isFocusable && !this.isFocused) {
@@ -534,7 +534,7 @@ EditorBinding.prototype.handleEvent = function (e) {
 
 		/*
 		* Activate editor on editor mousedown.
-		*/ 
+		*/
 		case DOMEvents.MOUSEDOWN:
 
 			if (target.ownerDocument == this.getEditorDocument()) {
@@ -545,10 +545,10 @@ EditorBinding.prototype.handleEvent = function (e) {
 			break;
 
 		/*
-		* A pityful and desperate attempt to fix the case where IE thinks 
-		* that no window has the current focus combined with IE's assumption 
-		* that mousedown on a contenteditable document should not invoke focus. 
-		*/ 
+		* A pityful and desperate attempt to fix the case where IE thinks
+		* that no window has the current focus combined with IE's assumption
+		* that mousedown on a contenteditable document should not invoke focus.
+		*/
 		case DOMEvents.MOUSEMOVE:
 			if (Client.isAnyExplorer) {
 				if (Application.isBlurred) {
@@ -566,7 +566,7 @@ EditorBinding.prototype.handleEvent = function (e) {
  * @param {MouseEvent} e
  */
 EditorBinding.prototype.handleContextMenu = function ( e ) {
-	
+
 	this.createBookmark ();
 	this._popupBinding.snapToMouse ( e );
 }
@@ -577,13 +577,13 @@ EditorBinding.prototype.handleContextMenu = function ( e ) {
  * @param {object} arg
  */
 EditorBinding.prototype.handleBroadcast = function ( broadcast, arg ) {
-	
+
 	EditorBinding.superclass.handleBroadcast.call ( this, broadcast, arg );
-	
+
 	var target = null;
-	
+
 	switch ( broadcast ) {
-		
+
 		case BroadcastMessages.STAGEDIALOG_OPENED:
 
 			if (this._isActivated) {
@@ -591,18 +591,18 @@ EditorBinding.prototype.handleBroadcast = function ( broadcast, arg ) {
 			}
 			break;
 		/*
-		 * When a mouseup was performed on something, we need to analyze 
-		 * whether or not this something should deactivate the editor. 
+		 * When a mouseup was performed on something, we need to analyze
+		 * whether or not this something should deactivate the editor.
 		 */
 		case BroadcastMessages.MOUSEEVENT_MOUSEUP :
-				
+
 			if ( !this.isDialogMode ) {
 				try {
 					var isDeactivate = true;
 					if ( arg instanceof Binding ) {
 						if ( Interfaces.isImplemented ( IEditorControlBinding, arg ) == true ) {
 							if ( arg.isEditorControlBinding ) {
-								isDeactivate = false; 
+								isDeactivate = false;
 							}
 						}
 					} else {
@@ -622,43 +622,43 @@ EditorBinding.prototype.handleBroadcast = function ( broadcast, arg ) {
 				}
 			}
 			break;
-	}	
+	}
 }
 
 /**
  * Activate editor.
- * @param {boolean} isActivate 
+ * @param {boolean} isActivate
  */
 EditorBinding.prototype._activateEditor = function ( isActivate ) {
-	
+
 	if ( isActivate != this._isActivated ) {
-		
+
 		this._isActivated = isActivate;
 		EditorBinding.isActive = isActivate;
-		
+
 		var handler = this.getEditorWindow ().standardEventHandler;
 		var broadcaster = this.getContentWindow ().bindingMap.broadcasterIsActive;
-		
+
 		if ( broadcaster != null ) {
 			if ( isActivate ) {
-				 
+
 				if ( this.hasBookmark ()) {
 					this.deleteBookmark (); // no need to keep old bookmarks around
 				}
 				broadcaster.enable ();
-				
+
 				if ( Client.isExplorer ) { // fixes a glitch where Explorer needs multiple activations.
 					this._sanitizeExplorer ();
 				}
-				
+
 				this.focus ();
 				handler.enableNativeKeys ( true );
-				
+
 			} else {
-				
+
 				broadcaster.disable ();
 				handler.disableNativeKeys ();
-				this.blur (); 
+				this.blur ();
 			}
 		} else {
 			throw "Required broadcaster not found";
@@ -667,11 +667,11 @@ EditorBinding.prototype._activateEditor = function ( isActivate ) {
 }
 
 /**
- * Invoke this whenever Explorer appears not to fully 
+ * Invoke this whenever Explorer appears not to fully
  * realize that we are in contentEditable mode.
  */
 EditorBinding.prototype._sanitizeExplorer = function () {
-	
+
 	if ( Client.isExplorer ) {
 		var range = this.getEditorDocument ().selection.createRange ();
 		range.select ();
@@ -679,9 +679,9 @@ EditorBinding.prototype._sanitizeExplorer = function () {
 }
 
 /**
- * Invoke this whenever Mozilla appears not to fully 
+ * Invoke this whenever Mozilla appears not to fully
  * realize that we are in contentEditable mode.
- * 
+ *
  * @see {https://bugzilla.mozilla.org/show_bug.cgi?id=520395}
  * @see {https://bugzilla.mozilla.org/show_bug.cgi?id=429308}
  * @see {https://bugzilla.mozilla.org/show_bug.cgi?id=454191}
@@ -696,19 +696,19 @@ EditorBinding.prototype._sanitizeExplorer = function () {
  * @see {http://tinymce.moxiecode.com/punbb/viewtopic.php?pid=13366}
  */
 EditorBinding.prototype._sanitizeMozilla = function () {
-	
+
 	/*
-	 * This has now been hacked into TinyMCE source code by 
+	 * This has now been hacked into TinyMCE source code by
 	 * adding a timeout to the place in "Editor.js" where it says:
-	 * 
+	 *
 	 * // Design mode must be set here once again to fix a bug where
-	 * // Ctrl+A/Delete/Backspace didn't work if the editor was added 
+	 * // Ctrl+A/Delete/Backspace didn't work if the editor was added
 	 * // using mceAddControl then removed then added again
 	 */
 }
 
 /**
- * Returns true if text is selected or in IE - strangely - if an 
+ * Returns true if text is selected or in IE - strangely - if an
  * image is selected (even simply right-clicked).
  * This method is not really handled elegantly.
  * @return {boolean}
@@ -731,8 +731,8 @@ EditorBinding.prototype.hasSelection = function () {
 				if (img != null) {
 
 					/*
-					* Major hack. Should not be performed here, but the  
-					* class check will at least prevent the Link button 
+					* Major hack. Should not be performed here, but the
+					* class check will at least prevent the Link button
 					* from being enabled when a Function is selected.
 					*/
 					if (!VisualEditorBinding.isReservedElement(img)) {
@@ -754,16 +754,16 @@ EditorBinding.prototype.hasSelection = function () {
  * @return {boolean}
  */
 EditorBinding.prototype.isCommandEnabled = function ( command ) {
-	
+
 	var result = true; // by default enabling all commands!
-	
+
 	switch ( command ) {
 		case "Cut" :
 		case "Copy" :
 		case "Paste" :
 			result = this.getEditorDocument ().queryCommandEnabled ( command );
 			break;
-	}	
+	}
 	return result;
 }
 
@@ -774,25 +774,25 @@ EditorBinding.prototype.isCommandEnabled = function ( command ) {
  * @param {string} val
  */
 EditorBinding.prototype.handleCommand = function ( cmd, gui, val ) {
-	
+
 	var isCommandHandled = false;
-	
+
 	// IE neeeds this!
 	this.restoreBookmark ();
-	
+
 	switch ( cmd ) {
-	
+
 		case "Cut" :
 		case "Copy" :
 		case "Paste" :
-			
+
 			var value = null;
 			if ( cmd == "Paste" ) {
 				value = null;
 			} else {
 				value = this.hasSelection ();
 			}
-			
+
 			try { // mozilla may throw a clipboard security exception here
 				this.getEditorDocument ().execCommand ( cmd, gui, value );
 			} catch ( mozillaSecurityException ) {
@@ -802,16 +802,16 @@ EditorBinding.prototype.handleCommand = function ( cmd, gui, val ) {
 					throw "Clipboard operation malfunction. Contact your developer.";
 				}
 			} finally {
-				isCommandHandled = true; 
+				isCommandHandled = true;
 			}
 		break;
 	}
-	
-	return isCommandHandled;		
+
+	return isCommandHandled;
 }
 
 /**
- * Get button for command. Probably the contextmenu want's to know, but TinyMCE plugins may also ask. 
+ * Get button for command. Probably the contextmenu want's to know, but TinyMCE plugins may also ask.
  * @param {string} cmd
  * @return {EditorToolBarButtonBinding}
  */
@@ -831,7 +831,7 @@ EditorBinding.prototype.getButtonForCommand = function ( cmd ) {
  * @return {string}
  */
 EditorBinding.prototype.getName = function () {
-	
+
 	return this.getProperty ( "name" );
 }
 
@@ -847,7 +847,7 @@ EditorBinding.prototype.dirty = DataBinding.prototype.dirty;
  * @return {string}
  */
 EditorBinding.prototype.clean = function () {
-	
+
 	this.isDirty = false;
 	this._checksum = this.getCheckSum ();
 }
@@ -856,17 +856,17 @@ EditorBinding.prototype.clean = function () {
  * Enable dialog mode.
  */
 EditorBinding.prototype.enableDialogMode = function () {
-	
+
 	if ( !this.isDialogMode ) {
 		this.isDialogMode = true;
 		if ( !this.hasBookmark ()) {
 			this.createBookmark ();
 		}
-		
-		/* 
-		 * The activate-stuff seems required for Mozilla to keep track 
-		 * on, whether or not backspace should be allowed. We bet it 
-		 * could be fixed in a better way. Backspace is switched back on 
+
+		/*
+		 * The activate-stuff seems required for Mozilla to keep track
+		 * on, whether or not backspace should be allowed. We bet it
+		 * could be fixed in a better way. Backspace is switched back on
 		 * when user focuses the editor window with the mouse...
 		 */
 		var self = this;
@@ -880,18 +880,18 @@ EditorBinding.prototype.enableDialogMode = function () {
  * Disable dialog mode.
  */
 EditorBinding.prototype.disableDialogMode = function () {
-	
+
 	if ( this.isDialogMode ) {
 		if ( this.hasBookmark ()) {
 			this.restoreBookmark ();
 		}
 
 		/*
-		 * Allows for the popup to close before any 
+		 * Allows for the popup to close before any
 		 * buttonclick disables editor toolbar.
-		 * Maybe invoke this method AFTER dialog 
+		 * Maybe invoke this method AFTER dialog
 		 * is closed somehow?
-		 */	
+		 */
 		var self = this;
 		setTimeout ( function () {
 			self.isDialogMode = false;
@@ -901,13 +901,13 @@ EditorBinding.prototype.disableDialogMode = function () {
 }
 
 /**
- * Blur editor. Simply by transferring the focus 
+ * Blur editor. Simply by transferring the focus
  * to an inputfield, then hiding the inputfield.
  */
 EditorBinding.prototype.blurEditor = function () {
-	
+
 	var input = this.getContentDocument ().getElementById ( "focusableinput" );
-	
+
 	if ( input != null ) {
 		input.style.display = "block";
 		FocusBinding.focusElement ( input );
@@ -924,20 +924,20 @@ EditorBinding.prototype.blurEditor = function () {
  * @overloads {WindowBinding#handleAction}
  */
 EditorBinding.prototype.handleAction = function ( action ) {
-	
+
 	EditorBinding.superclass.handleAction.call ( this, action );
-	
+
 	var binding = action.target;
 	var self = this;
 	var iframe = this.shadowTree.iframe;
-	
+
 	switch ( action.type ) {
-		
+
 		/*
 		 * Dispatch dirty events. Remember that this.isBlockingActions!
 		 */
 		case Binding.ACTION_DIRTY :
-			
+
 			if ( action.target != this ) {
 				this.checkForDirty ();
 			}
@@ -951,19 +951,19 @@ EditorBinding.prototype.handleAction = function ( action ) {
  * @param {PageBinding} binding
  */
 EditorBinding.prototype._onPageInitialize = function ( binding ) {
-	
-	/* 
-	 * Flex the content and hide the cover. Note that flex is repeated  
-	 * on the finalize method in order to fix editors in lazy tabpanels. 
+
+	/*
+	 * Flex the content and hide the cover. Note that flex is repeated
+	 * on the finalize method in order to fix editors in lazy tabpanels.
 	 */
 	if ( this._pageBinding == null ) {
-		
+
 		this.reflex ();
 		if ( this._coverBinding != null && this._coverBinding.isVisible ) {
 			this._coverBinding.hide ();
 		}
 	}
-	
+
 	EditorBinding.superclass._onPageInitialize.call ( this, binding );
 }
 
@@ -973,7 +973,7 @@ EditorBinding.prototype._onPageInitialize = function ( binding ) {
  * @param {Element} element
  */
 EditorBinding.prototype.handleElement = function ( element ) {
-	
+
 	return true; // do handle element update
 };
 
@@ -983,7 +983,7 @@ EditorBinding.prototype.handleElement = function ( element ) {
  * @param {Element} element
  */
 EditorBinding.prototype.updateElement = function ( element ) {
-	
+
 	return true; // stop crawling descendants
 };
 
@@ -1003,15 +1003,29 @@ EditorBinding.prototype.focus = DataBinding.prototype.focus;
 EditorBinding.prototype.blur = DataBinding.prototype.blur;
 
 /**
- * Manifest. This will write form elements into page DOM 
+ * Manifest. This will write form elements into page DOM
  * so that the server recieves something on form submit.
  * @implements {IData}
  */
 EditorBinding.prototype.manifest = function () {
-	
+
 	this.shadowTree.dotnetinput.value = encodeURIComponent ( this.getValue ());
 };
 
+
+/**
+ * @implements {IContextContainerBinding}
+ */
+// ContextContainer ......................................................
+EditorBinding.prototype.getContextContainer = HTMLDataDialogBinding.prototype.getContextContainer;
+
+/**
+ * @implements {IContextContainerBinding}
+ */
+EditorBinding.prototype.setContextContainer = function (contextContainer) {
+
+	//nothing now;
+}
 
 // ABSTRACT METHODS ......................................................
 

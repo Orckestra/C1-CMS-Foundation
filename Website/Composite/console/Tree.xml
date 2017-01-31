@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Place this file in Website\App_Data\Composite\TreeDefinitions\ -->
+<ElementStructure xmlns="http://www.composite.net/ns/management/trees/treemarkup/1.0" xmlns:f="http://www.composite.net/ns/function/1.0">
+
+	  <ElementStructure.AutoAttachments>
+	    <NamedParent Name="Content" Position="Bottom" />
+	  </ElementStructure.AutoAttachments>
+
+	  <ElementRoot>
+	    <Children>
+				<Element Label="Languages" Id="language.edit.new" Icon="log">
+					<Actions>
+						<CustomUrlAction Label="Edit Language" Url="~/Composite/console/?page=edit-language" Icon="log-viewlog" />
+					</Actions>
+				</Element>
+	    </Children>
+	  </ElementRoot>
+
+	</ElementStructure>

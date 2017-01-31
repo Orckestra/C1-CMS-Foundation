@@ -12,6 +12,11 @@ namespace Composite.Core.WebClient.HttpModules
     {
         public void Init(HttpApplication context)
         {
+            if (!SystemSetupFacade.IsSystemFirstTimeInitialized)
+            {
+                return;
+            }
+
             var moduleInstance = new ModuleInstance();
             context.AuthorizeRequest += moduleInstance.AuthorizeRequest;
             context.EndRequest += moduleInstance.EndRequest;

@@ -17,7 +17,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
     partial class EditInterfaceTypeWorkflow
     {
         #region Designer generated code
-        
+
         /// <summary> 
         /// Required method for Designer support - do not modify 
         /// the contents of this method with the code editor.
@@ -28,6 +28,9 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             this.CanModifyActivities = true;
             this.setStateActivity3 = new System.Workflow.Activities.SetStateActivity();
             this.finalizeStateCodeActivity = new System.Workflow.Activities.CodeActivity();
+            this.setStateActivity5 = new System.Workflow.Activities.SetStateActivity();
+            this.codeActivity_refreshView = new System.Workflow.Activities.CodeActivity();
+            this.customEvent01HandleExternalEventActivity1 = new Composite.C1Console.Workflow.Activities.CustomEvent01HandleExternalEventActivity();
             this.setStateActivity2 = new System.Workflow.Activities.SetStateActivity();
             this.saveHandleExternalEventActivity1 = new Composite.C1Console.Workflow.Activities.SaveHandleExternalEventActivity();
             this.documentFormActivity1 = new Composite.C1Console.Workflow.Activities.DocumentFormActivity();
@@ -36,6 +39,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             this.setStateActivity1 = new System.Workflow.Activities.SetStateActivity();
             this.cancelHandleExternalEventActivity1 = new Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity();
             this.finalizeStateInitializationActivity = new System.Workflow.Activities.StateInitializationActivity();
+            this.editState_IsSearchableChanged = new System.Workflow.Activities.EventDrivenActivity();
             this.saveStep1StateEventDrivenActivity = new System.Workflow.Activities.EventDrivenActivity();
             this.step1StateInitializationActivity = new System.Workflow.Activities.StateInitializationActivity();
             this.initialStateInitializationActivity = new System.Workflow.Activities.StateInitializationActivity();
@@ -55,6 +59,22 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             this.finalizeStateCodeActivity.Name = "finalizeStateCodeActivity";
             this.finalizeStateCodeActivity.ExecuteCode += new System.EventHandler(this.finalizeStateCodeActivity_ExecuteCode);
             // 
+            // setStateActivity5
+            // 
+            this.setStateActivity5.Name = "setStateActivity5";
+            this.setStateActivity5.TargetStateName = "step1StateActivity";
+            // 
+            // codeActivity_refreshView
+            // 
+            this.codeActivity_refreshView.Name = "codeActivity_refreshView";
+            this.codeActivity_refreshView.ExecuteCode += new System.EventHandler(this.codeActivity_refreshViewHandler);
+            // 
+            // customEvent01HandleExternalEventActivity1
+            // 
+            this.customEvent01HandleExternalEventActivity1.EventName = "CustomEvent01";
+            this.customEvent01HandleExternalEventActivity1.InterfaceType = typeof(Composite.C1Console.Workflow.IFormsWorkflowEventService);
+            this.customEvent01HandleExternalEventActivity1.Name = "customEvent01HandleExternalEventActivity1";
+            // 
             // setStateActivity2
             // 
             this.setStateActivity2.Name = "setStateActivity2";
@@ -69,6 +89,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             // documentFormActivity1
             // 
             this.documentFormActivity1.ContainerLabel = null;
+            this.documentFormActivity1.CustomToolbarDefinitionFileName = null;
             this.documentFormActivity1.FormDefinitionFileName = "/Administrative/EditInterfaceTypeStep1.xml";
             this.documentFormActivity1.Name = "documentFormActivity1";
             // 
@@ -98,6 +119,13 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             this.finalizeStateInitializationActivity.Activities.Add(this.finalizeStateCodeActivity);
             this.finalizeStateInitializationActivity.Activities.Add(this.setStateActivity3);
             this.finalizeStateInitializationActivity.Name = "finalizeStateInitializationActivity";
+            // 
+            // editState_IsSearchableChanged
+            // 
+            this.editState_IsSearchableChanged.Activities.Add(this.customEvent01HandleExternalEventActivity1);
+            this.editState_IsSearchableChanged.Activities.Add(this.codeActivity_refreshView);
+            this.editState_IsSearchableChanged.Activities.Add(this.setStateActivity5);
+            this.editState_IsSearchableChanged.Name = "editState_IsSearchableChanged";
             // 
             // saveStep1StateEventDrivenActivity
             // 
@@ -135,6 +163,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             // 
             this.step1StateActivity.Activities.Add(this.step1StateInitializationActivity);
             this.step1StateActivity.Activities.Add(this.saveStep1StateEventDrivenActivity);
+            this.step1StateActivity.Activities.Add(this.editState_IsSearchableChanged);
             this.step1StateActivity.Name = "step1StateActivity";
             // 
             // initialStateActivity1
@@ -157,10 +186,60 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
         }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         #endregion
 
         private SetStateActivity setStateActivity1;
-        private Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity1;
+        private C1Console.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity1;
         private EventDrivenActivity cancelEventDrivenActivity;
         private StateActivity finalStateActivity;
         private StateActivity finalizeStateActivity;
@@ -169,64 +248,17 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
         private StateInitializationActivity finalizeStateInitializationActivity;
         private StateInitializationActivity step1StateInitializationActivity;
         private StateInitializationActivity initialStateInitializationActivity;
-        private Composite.C1Console.Workflow.Activities.DocumentFormActivity documentFormActivity1;
+        private C1Console.Workflow.Activities.DocumentFormActivity documentFormActivity1;
         private CodeActivity initialStateCodeActivity;
         private SetStateActivity setStateActivity2;
-        private Composite.C1Console.Workflow.Activities.SaveHandleExternalEventActivity saveHandleExternalEventActivity1;
+        private C1Console.Workflow.Activities.SaveHandleExternalEventActivity saveHandleExternalEventActivity1;
         private EventDrivenActivity saveStep1StateEventDrivenActivity;
         private CodeActivity finalizeStateCodeActivity;
         private SetStateActivity setStateActivity3;
+        private SetStateActivity setStateActivity5;
+        private CodeActivity codeActivity_refreshView;
+        private C1Console.Workflow.Activities.CustomEvent01HandleExternalEventActivity customEvent01HandleExternalEventActivity1;
+        private EventDrivenActivity editState_IsSearchableChanged;
         private StateActivity initialStateActivity1;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
 }

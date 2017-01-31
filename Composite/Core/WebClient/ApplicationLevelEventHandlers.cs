@@ -7,19 +7,24 @@ using System.Web;
 using Composite.C1Console.Actions.Data;
 using Composite.C1Console.Elements;
 using Composite.C1Console.Events;
+using Composite.Search;
+using Composite.Search.DocumentSources;
 using Composite.Core.Application;
 using Composite.Core.Configuration;
 using Composite.Core.Extensions;
+using Composite.Core.Implementation;
 using Composite.Core.Instrumentation;
 using Composite.Core.Logging;
 using Composite.Core.Routing;
 using Composite.Core.Threading;
 using Composite.Core.Types;
+using Composite.Core.WebClient.Services.WampRouter;
+using Composite.Data;
 using Composite.Data.Types;
 using Composite.Functions;
 using Composite.Plugins.Elements.UrlToEntityToken;
 using Composite.Plugins.Routing.InternalUrlConverters;
-
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Composite.Core.WebClient
 {
@@ -30,7 +35,7 @@ namespace Composite.Core.WebClient
     public static class ApplicationLevelEventHandlers
     {
         private const string _verboseLogEntryTitle = "RGB(205, 92, 92)ApplicationEventHandler";
-        readonly static object _syncRoot = new object();
+        static readonly object _syncRoot = new object();
         private static DateTime _startTime;
         private static bool _systemIsInitialized;
         private static readonly ConcurrentDictionary<string, Func<HttpContext, string>> _c1PageCustomStringProviders = new ConcurrentDictionary<string, Func<HttpContext, string>>();
@@ -91,16 +96,15 @@ namespace Composite.Core.WebClient
             UrlToEntityTokenFacade.Register(new DataUrlToEntityTokenMapper());
             UrlToEntityTokenFacade.Register(new ServerLogUrlToEntityTokenMapper());
 
-            RoutedData.ConfigureServices(ServiceLocator.ServiceCollection);
-
-
-            using (new LogExecutionTime(_verboseLogEntryTitle, "Initializing dynamic data action tokens"))
-            {
-                DataActionTokenResolverRegistry.Register(ServiceLocator.ServiceCollection);
-            }
+            var services = ServiceLocator.ServiceCollection;
+            services.AddLogging();
+            services.AddRoutedData();
+            services.AddDataActionTokenResolver();
+            services.AddDefaultSearchDocumentSourceProviders();
 
             InternalUrls.Register(new MediaInternalUrlConverter());
             InternalUrls.Register(new PageInternalUrlConverter());
+
 
             VersionedDataHelper.Initialize();
         }
@@ -165,7 +169,10 @@ namespace Composite.Core.WebClient
 
             ThreadDataManager.InitializeThroughHttpContext();
 
+            if (SystemSetupFacade.IsSystemFirstTimeInitialized)
+            {
             ServiceLocator.CreateRequestServicesScope(context);
+            }
 
             if (LogRequestDetails)
             {
@@ -339,14 +346,19 @@ namespace Composite.Core.WebClient
 
             using (GlobalInitializerFacade.GetPreInitHandlersScope())
             {
-                ApplicationStartupFacade.FireBeforeSystemInitialize();
+                ApplicationStartupFacade.FireConfigureServices(ServiceLocator.ServiceCollection);
+
+                ServiceLocator.BuildServiceProvider();
+                ServiceLocator.CreateRequestServicesScope(HttpContext.Current);
+
+                ApplicationStartupFacade.FireBeforeSystemInitialize(ServiceLocator.ServiceProvider);
             }
 
             TempDirectoryFacade.OnApplicationStart();
 
             HostnameBindingsFacade.Initialize();
 
-            ApplicationStartupFacade.FireSystemInitialized();
+            ApplicationStartupFacade.FireSystemInitialized(ServiceLocator.ServiceProvider);
 
             ThreadDataManager.FinalizeThroughHttpContext();
         }

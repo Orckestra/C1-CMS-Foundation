@@ -14,11 +14,17 @@
 /Website/Composite/styles/styles.*
 /Website/Composite/content/forms/InstalledPackages
 /Website/Composite/lib
+/Website/Composite/console.js
+/Website/Composite/console.js.map
 /Website/Frontend
 /Website/node_modules
+/Website/jspm_packages
+/Website/coverage
 /Website/Composite/images/sprite.svg
+/Website/Composite/console/icons.svg
 /Website/Views
 /Website/Web.config
+/Website/test/e2e/screenshots/
 
 /Website/Blog*.ashx
 /Website/Newsletter.ashx
@@ -28,6 +34,5 @@
 /Bin/Composite.Workflows.dll
 
 /Packages/
-
 selenium-debug.log
 /Website/test/e2e/reports/

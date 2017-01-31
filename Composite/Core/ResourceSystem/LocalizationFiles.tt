@@ -69,7 +69,7 @@ namespace Composite.Core.ResourceSystem
 "
 	                           .Replace("%classname%", className));
 
-       GenerateLocalizationProperties(filePath, friendlyFileName, classDefinitions);
+       GenerateLocalizationProperties(filePath, friendlyFileName, classDefinitions, className.Contains("Search"));
 
 	   classDefinitions.Append("} \r\n");
 	}
@@ -79,9 +79,12 @@ namespace Composite.Core.ResourceSystem
     return propertyDefinitions.ToString() + classDefinitions.ToString();
 }
 
-        private static void GenerateLocalizationProperties(string filePath, string friendlyFileName, StringBuilder output)
+        private static void GenerateLocalizationProperties(string filePath, string friendlyFileName, StringBuilder output, bool generateConstants)
         {
             XDocument xdoc = XDocument.Load(filePath);
+
+			var constants = new StringBuilder();
+
             foreach(var element in xdoc.Root.Elements())
             {
                 var keyAttr = element.Attribute("key");
@@ -108,18 +111,18 @@ namespace Composite.Core.ResourceSystem
 					parametersCount++;
 				}
 
+				var xmlComment = "///<summary>&quot;%comment%&quot;</summary> \r\n"
+							   .Replace("%comment%", XmlEncode(value).Replace("\r\n", "\r\n ///"));
 
-				output.Append("///<summary>&quot;%comment%&quot;</summary> \r\n"
-							   .Replace("%comment%", XmlEncode(value).Replace("\r\n", "\r\n ///")));
+				output.Append(xmlComment);
 
+				output.Append("public static string %property%=>T(\"%key%\");\r\n"
+								.Replace("%comment%", XmlEncode(value).Replace("\r\n", "\r\n ///"))
+								.Replace("%key%", key)
+								.Replace("%property%", propertyName + (parametersCount > 0 ? "_Template" : "") ));
 
-				if( parametersCount == 0 ) {
-					output.Append("public static string %property%=>T(\"%key%\");\r\n"
-								   .Replace("%comment%", XmlEncode(value).Replace("\r\n", "\r\n ///"))
-								   .Replace("%key%", key)
-								   .Replace("%property%", propertyName));
-				}
-                else {
+				if(parametersCount > 0) 
+				{
 					string[] parametersDefinitions = new string[parametersCount];
 					string[] parametersReferences = new string[parametersCount];
 
@@ -131,20 +134,32 @@ namespace Composite.Core.ResourceSystem
 					string parametersDefinitionsStr = string.Join(",", parametersDefinitions);
 					string parametersReferencesStr = string.Join(",", parametersReferences);
 
+					output.Append(xmlComment);
 					output.Append("public static string %property%(%parametersDef%)=>string.Format(T(\"%key%\"), %parametersRef%);\r\n"
 								   .Replace("%key%", key)
 								   .Replace("%property%", propertyName)
 								   .Replace("%parametersDef%", parametersDefinitionsStr)
 								   .Replace("%parametersRef%", parametersReferencesStr));
 				}
-            }
 
+				constants.AppendLine("///<summary>&quot;%comment%&quot;</summary>\r\npublic const string %property%=\"${%fileName%,%key%}\";"
+									.Replace("%comment%", XmlEncode(value).Replace("\r\n", "\r\n ///"))
+									.Replace("%property%", propertyName)
+									.Replace("%fileName%", friendlyFileName)
+									.Replace("%key%", key));
+            }
+			
             output.Append(
-@"     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString(""" + friendlyFileName + @""", key);
-        }
+@"private static string T(string key) => StringResourceSystemFacade.GetString(""" + friendlyFileName + @""", key);
 ");
+			if(generateConstants) {
+				output.Append(
+@"/// <exclude />
+public static class Untranslated {
+" + constants + @"
+}");
+
+			}
         }
 
 	private static string XmlEncode(string text)

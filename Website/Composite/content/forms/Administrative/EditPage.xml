@@ -115,6 +115,10 @@
         <internal:PageContentEditor.NamedXhtmlFragments>
           <cms:bind source="NamedXhtmlFragments" />
         </internal:PageContentEditor.NamedXhtmlFragments>
+        <internal:PageContentEditor.PageTypeId>
+          <cms:read source="SelectedPage.PageTypeId" />
+        </internal:PageContentEditor.PageTypeId>
+
       </internal:PageContentEditor>
       
 			<f:NullCheck>

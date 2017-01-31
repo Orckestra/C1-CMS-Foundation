@@ -36,7 +36,7 @@ VisualEditorBinding.getTinyLessClassName = function (classname) {
  * @return {string}
  */
 VisualEditorBinding.getStructuredContent = function ( content ) {
-	
+
 	var result = null;
 	WebServiceProxy.isFaultHandler = false;
 	var soap = XhtmlTransformationsService.TinyContentToStructuredContent ( content );
@@ -59,16 +59,16 @@ VisualEditorBinding.getStructuredContent = function ( content ) {
  * @return {string}
  */
 VisualEditorBinding.getTinyContent = function ( content, binding ) {
-	
+
 	var result = null;
-	
+
 	/*
 	 * Some content seems to be needed for the webservice to return valid fragment.
 	 */
 	if (content == null || !content.replace(/\s*/gm, '').length) {
 		content = VisualEditorBinding.DEFAULT_CONTENT;
 	}
-	
+
 	/*
 	 * If webservice fails to convert structured markup,
 	 * a dialog will be presented and null will be returned.
@@ -80,7 +80,7 @@ VisualEditorBinding.getTinyContent = function ( content, binding ) {
 		var dialogHandler = {
 			handleDialogResponse : function () {
 				/*
-				 * Otherwise the save button could be disabled 
+				 * Otherwise the save button could be disabled
 				 * indefinitely during save scenario
 				 */
 				binding.dispatchAction ( Binding.ACTION_VALID );
@@ -88,8 +88,8 @@ VisualEditorBinding.getTinyContent = function ( content, binding ) {
 		};
 		Dialog.invokeModal (
 			VisualEditorBinding.URL_DIALOG_CONTENTERROR,
-			dialogHandler, 
-			dialogArgument 
+			dialogHandler,
+			dialogArgument
 		);
 	} else {
 		result = soap.XhtmlFragment;
@@ -137,7 +137,7 @@ VisualEditorBinding.isReservedElement = function (element) {
 		return true;
 	if (VisualEditorBinding.isHtmlElement(element))
 		return true;
-	return false; 
+	return false;
 }
 
 
@@ -189,40 +189,40 @@ VisualEditorBinding.isHtmlElement = function (element) {
  * @class
  */
 function VisualEditorBinding () {
-	
+
 	/**
 	 * @type {SystemLogger}
 	 */
 	this.logger = SystemLogger.getLogger ( "VisualEditorBinding" );
-	
+
 	/**
 	 * @type {string}
 	 */
 	this.action_initialized = VisualEditorBinding.ACTION_INITIALIZED;
-	
+
 	/**
 	 * @type {string}
 	 */
 	this.url_default = "${root}/content/misc/editors/visualeditor/visualeditor.aspx";
-	
+
 	/**
 	 * The TinyMCE engine.
-	 * @type {TinyMCE_Engine} 
+	 * @type {TinyMCE_Engine}
 	 */
 	this._tinyEngine = null;
-	
+
 	/**
 	 * The TinyMCE instance.
 	 * @type {tinymce.Editor}
 	 */
 	this._tinyInstance = null;
-	
+
 	/**
 	 * The TinyMCE theme.
 	 * @type {TinyMCE_CompositeTheme}
 	 */
 	this._tinyTheme = null;
-	
+
 	/**
 	 * @type {VisualEditorFieldGroupConfiguration}
 	 */
@@ -245,7 +245,7 @@ function VisualEditorBinding () {
 	 * @type {string}
 	 */
 	this._previewTemplateId = null;
-	
+
     /**
 	 * Preview placeholder.
 	 * @type {string}
@@ -262,36 +262,36 @@ function VisualEditorBinding () {
  * @overloads {EditorBinding#onBindingRegister}
  */
 VisualEditorBinding.prototype.onBindingRegister = function () {
-	
-	/* 
-	 * Force an early indexation of VisualEditorBinding strings  
+
+	/*
+	 * Force an early indexation of VisualEditorBinding strings
 	 * to supress occasional glitches in string fetching.
 	 */
 	VisualEditorBinding.superclass.onBindingRegister.call ( this );
-	
+
 	// load strings
 	StringBundle.getString ( "Composite.Web.VisualEditor", "Preload.Key" );
 
-	
+
 }
 
 /**
  * @overloads {WindowBinding#onBindingAttach}
  */
 VisualEditorBinding.prototype.onBindingAttach = function () {
-	
+
 	// fields config
 	var fieldsconfig = this.getProperty ( "embedablefieldstypenames" );
 	if ( fieldsconfig != null ) {
 		this.embedableFieldConfiguration = VisualEditorFieldGroupConfiguration.getConfiguration ( fieldsconfig );
 	}
-	
+
 	// formatting config
 	var config = this.getProperty ( "formattingconfiguration" );
 	if ( config != null ) {
 		this._url += "?config=" + config;
 	}
-	
+
 	this._previewPageId = this.getProperty ("previewpageid");
 	if (this._previewPageId == null) {
 	    this._previewPageId = '00000000-0000-0000-0000-000000000000';
@@ -305,7 +305,7 @@ VisualEditorBinding.prototype.onBindingAttach = function () {
 	this._previewPlaceholder = this.getProperty("previewplaceholder");
 
 	VisualEditorBinding.superclass.onBindingAttach.call ( this );
-	
+
 	this.subscribe ( BroadcastMessages.TINYMCE_INITIALIZED );
 	this.subscribe ( this.bindingWindow.WindowManager.WINDOW_RESIZED_BROADCAST);
 
@@ -325,19 +325,19 @@ VisualEditorBinding.prototype.toString = function () {
  * @param {object} arg
  */
 VisualEditorBinding.prototype.handleBroadcast = function ( broadcast, arg ) {
-	
+
 	VisualEditorBinding.superclass.handleBroadcast.call ( this, broadcast, arg );
-	
+
 	var windowBinding = this.getContentWindow ().bindingMap.tinywindow;
 	var contentWindow = windowBinding.getContentWindow ();
-	
+
 	switch ( broadcast ) {
 
 		/*
 		 * TinyMCE initialized.
 		 */
 		case BroadcastMessages.TINYMCE_INITIALIZED :
-			
+
 			if ( arg.broadcastWindow == contentWindow ) {
 
 				this._tinyEngine = arg.tinyEngine;
@@ -352,7 +352,7 @@ VisualEditorBinding.prototype.handleBroadcast = function ( broadcast, arg ) {
 
 				this.initializeEditorComponents ( windowBinding );
 				this._initialize ();
-				
+
 				this.unsubscribe ( BroadcastMessages.TINYMCE_INITIALIZED );
 			}
 			break;
@@ -364,8 +364,8 @@ VisualEditorBinding.prototype.handleBroadcast = function ( broadcast, arg ) {
 };
 
 /**
- * Initialize components collected during startup. After startup, 
- * this method is invoked directly when bindings register themselves 
+ * Initialize components collected during startup. After startup,
+ * this method is invoked directly when bindings register themselves
  * through method EditorBinding.registerComponent.
  * @param {IEditorComponent} binding
  */
@@ -387,15 +387,15 @@ VisualEditorBinding.prototype._finalize = function () {
 	VisualEditorBinding.superclass._finalize.call(this);
 
 	/*
-	* Normalize start content and extract HEAD and BODY section before we 
-	* feed it to TinyMCE. Normalization is required while old solutions 
-	* are upgraded to the new setup (with HEAD and BODY sections). 
+	* Normalize start content and extract HEAD and BODY section before we
+	* feed it to TinyMCE. Normalization is required while old solutions
+	* are upgraded to the new setup (with HEAD and BODY sections).
 	*/
 	this._startContent = this.normalizeToDocument(this._startContent);
 	this._startContent = this.extractBody(this._startContent);
 
 	/*
-	* Inject BODY markup into TinyMCE. From now on, injection  
+	* Inject BODY markup into TinyMCE. From now on, injection
 	* is handled by the VisualEditorPageBinding.
 	*/
 	var tinyContent = VisualEditorBinding.getTinyContent(this._startContent, this);
@@ -408,6 +408,7 @@ VisualEditorBinding.prototype._finalize = function () {
 	this._tinyInstance.undoManager.add();
 
 	this.updateBodyWidth();
+	this.updateCssClasses();
 
 	this._maybeShowEditor();
 
@@ -419,17 +420,17 @@ VisualEditorBinding.prototype._finalize = function () {
  * @param {PageBinding} binding
  */
 VisualEditorBinding.prototype._onPageInitialize = function ( binding ) {
-	
+
 	VisualEditorBinding.superclass._onPageInitialize.call ( this, binding );
 	this._maybeShowEditor ();
 };
 
 /**
- * Stuff is not always loaded in a tight sequence arund here, so  
- * we make sure not to show the editor until we are ready. 
+ * Stuff is not always loaded in a tight sequence arund here, so
+ * we make sure not to show the editor until we are ready.
  */
 VisualEditorBinding.prototype._maybeShowEditor = function () {
-	
+
 	if ( this._isFinalized && this._pageBinding != null ) {
 		this._checksum = this.getCheckSum ();
 		this._pageBinding.showEditor ( true );
@@ -437,13 +438,13 @@ VisualEditorBinding.prototype._maybeShowEditor = function () {
 };
 
 /**
- * Extract BODY section and return it. TinyMCE 
+ * Extract BODY section and return it. TinyMCE
  * should alwasy be fed BODY content only.
  * @param {string} html
  * @return {string}
  */
 VisualEditorBinding.prototype.extractBody = function ( html ) {
-	
+
 	var result = null;
 	var re = /(<body\s*[^>]*>)([\S\s]*)(<\/body>)/i;
 	var match = html.match(re);
@@ -458,13 +459,13 @@ VisualEditorBinding.prototype.extractBody = function ( html ) {
 }
 
 /**
- * Restore HTML markup and convert HTML fragment to normalized HTML document.   
+ * Restore HTML markup and convert HTML fragment to normalized HTML document.
  * This must be done whenever content is extracted from TinyMCE.
  * @param {string} body
  * @return {string}
  */
 VisualEditorBinding.prototype.normalizeToDocument = function ( markup ) {
-	
+
 	var result = markup;
 	if ( !this._isNormalizedDocument ( markup )) {
 		result = this._getHtmlMarkup().replace("${body}", markup);
@@ -478,7 +479,7 @@ VisualEditorBinding.prototype.normalizeToDocument = function ( markup ) {
  * @return {boolean}
  */
 VisualEditorBinding.prototype._isNormalizedDocument = function ( markup ) {
-	
+
 	var result = false;
 	var doc = XMLParser.parse ( markup, true );
 	if ( doc != null ) {
@@ -501,7 +502,7 @@ VisualEditorBinding.prototype._isNormalizedDocument = function ( markup ) {
  * @return {string}
  */
 VisualEditorBinding.prototype._getHtmlMarkup = function () {
-	
+
 	return this._xhtml != null ? this._xhtml : VisualEditorBinding.XHTML;
 }
 
@@ -514,13 +515,13 @@ VisualEditorBinding.prototype._getHtmlMarkup = function () {
  * @return {boolean} ... This is always true; maybe refactor something?
  */
 VisualEditorBinding.prototype.handleCommand = function ( cmd, gui, val ) {
-	
+
 	/*
-	 * The superclass handles special commmands "copy" and "paste" 
+	 * The superclass handles special commmands "copy" and "paste"
 	 * thay may invoke a warning dialog in unprivileged Mozillas.
 	 */
 	var isCommandHandled = VisualEditorBinding.superclass.handleCommand.call ( this, cmd, gui, val );
-	
+
 	/*
 	 * Otherwise, the command gets realyed to the TinyMCE instance.
 	 */
@@ -533,7 +534,7 @@ VisualEditorBinding.prototype.handleCommand = function ( cmd, gui, val ) {
 		}
 		isCommandHandled = true;
 	}
-	
+
 	return isCommandHandled;
 };
 
@@ -558,7 +559,7 @@ VisualEditorBinding.prototype.handleContextMenu = function ( e ) {
  * @return {DOMDocumentView}
  */
 VisualEditorBinding.prototype.getEditorWindow = function () {
-	
+
 	return DOMUtil.getParentWindow ( this.getEditorDocument ());
 };
 
@@ -567,7 +568,7 @@ VisualEditorBinding.prototype.getEditorWindow = function () {
  * @return {DOMDocument}
  */
 VisualEditorBinding.prototype.getEditorDocument = function () {
-	
+
 	return this._tinyInstance.getDoc ();
 };
 
@@ -576,7 +577,7 @@ VisualEditorBinding.prototype.getEditorDocument = function () {
  * @return {VisualEditorPopupBinding}
  */
 VisualEditorBinding.prototype.getEditorPopupBinding = function () {
-	
+
 	return app.bindingMap.visualeditorpopup;
 };
 
@@ -584,7 +585,7 @@ VisualEditorBinding.prototype.getEditorPopupBinding = function () {
  * Create selection bookmark.
  */
 VisualEditorBinding.prototype.createBookmark = function () {
-	
+
 	this._bookmark = this._tinyInstance.selection.getBookmark ( true );
 };
 
@@ -604,7 +605,7 @@ VisualEditorBinding.prototype.restoreBookmark = function () {
  * @return {boolean}
  */
 VisualEditorBinding.prototype.hasBookmark = function () {
-	
+
 	return this._bookmark != null;
 };
 
@@ -612,7 +613,7 @@ VisualEditorBinding.prototype.hasBookmark = function () {
  * Delete bookmark.
  */
 VisualEditorBinding.prototype.deleteBookmark = function () {
-	
+
 	this._bookmark = null;
 };
 
@@ -633,7 +634,7 @@ VisualEditorBinding.prototype.resetUndoRedo = function () {
  * @return {string}
  *
 VisualEditorBinding.prototype.getCheckSum = function () {
-	
+
 	var result = null;
 	if ( Binding.exists ( this._pageBinding )) {
 		result = this._pageBinding.getCheckSum ( this._checksum );
@@ -651,7 +652,7 @@ VisualEditorBinding.prototype.getCheckSum = function () {
  * @return {boolean}
  */
 VisualEditorBinding.prototype.validate = function () {
-	
+
 	return this._pageBinding.validate ();
 };
 
@@ -661,10 +662,10 @@ VisualEditorBinding.prototype.validate = function () {
  * @return {string}
  */
 VisualEditorBinding.prototype.getValue = function () {
-	
+
 	/*
-	 * The content is probably valid at this point because the validate 
-	 * method has been invoked. We can save some time here by not duplicating 
+	 * The content is probably valid at this point because the validate
+	 * method has been invoked. We can save some time here by not duplicating
 	 * validation, although theoretically we should.
 	 */
 	return this._pageBinding.getContent ();
@@ -675,7 +676,7 @@ VisualEditorBinding.prototype.getValue = function () {
  * @param {string} value
  */
 VisualEditorBinding.prototype.setValue = function ( value ) {
-	
+
 	if ( this._isFinalized ) {
 		if ( Binding.exists ( this._pageBinding )) {
 			this._pageBinding.setContent ( value );
@@ -699,9 +700,9 @@ VisualEditorBinding.prototype.getResult = function () {};
  * @overloads {EditorBinding#clean}
  */
 VisualEditorBinding.prototype.clean = function () {
-	
+
 	VisualEditorBinding.superclass.clean.call ( this );
-	
+
 	if ( this._pageBinding != null ) {
 		this._pageBinding.clean ();
 	}
@@ -728,7 +729,7 @@ VisualEditorBinding.prototype.getImageTagForFunctionCall = function (markup) {
 }
 
 /**
- * Get effective width 
+ * Get effective width
  * @return {int}
  */
 
@@ -741,11 +742,11 @@ VisualEditorBinding.prototype.getEffectiveWidth = function () {
 }
 
 /**
- * Get placeholder width 
+ * Get placeholder width
  * @return {int}
  */
 VisualEditorBinding.prototype.getPlaceholderWidth = function () {
-	
+
 	return StageBinding.placeholderWidth;
 }
 
@@ -765,6 +766,18 @@ VisualEditorBinding.prototype.updateBodyWidth = function (width) {
 	}
 }
 
+VisualEditorBinding.prototype.updateCssClasses = function () {
+
+	var contextContainer = ContextContainer.getContextContainer(this);
+	if (contextContainer != null) {
+		var body = this._tinyInstance.getBody();
+		body.className = "";
+		contextContainer.getContainerClassesList().each(function(className) {
+			CSSUtil.attachClassName(body, className);
+		});
+	}
+}
+
 /**
 * Focus
 * @overloads {EditorBinding#focus}
@@ -777,6 +790,15 @@ VisualEditorBinding.prototype.focus = function () {
 	if (Client.isExplorer && this._tinyInstance) {
 		this._tinyInstance.selection.setRng(this._tinyInstance.selection.getRng());
 	}
+}
+
+
+/**
+* RestoreFocus
+*/
+VisualEditorBinding.prototype.restoreEditorFocus = function () {
+
+	this._tinyInstance.focus();
 }
 
 /**

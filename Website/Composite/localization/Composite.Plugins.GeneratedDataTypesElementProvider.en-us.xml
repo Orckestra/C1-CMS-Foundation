@@ -86,6 +86,7 @@
   <string key="EditorCommon.InternalUrlPrefixLabel" value="Short URL name" />
   <string key="EditorCommon.InternalUrlPrefixHelp" value="When specified, allows data items of the current type to be referenced in content. The internal links will have format '~/{ShortURLName}({id})', f.e. '~/product(aIkH34F)" />
   <string key="EditorCommon.HasCaching" value="Has caching" />
+	<string key="EditorCommon.IsSearchable" value="Is searchable" />
   <string key="EditorCommon.HasPublishing" value="Has publishing" />
   <string key="EditorCommon.HasLocalization" value="Is localizable data" />
   <string key="DeleteGeneratedDataStep1.LabelFieldGroup" value="Delete Data?" />

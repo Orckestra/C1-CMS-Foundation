@@ -1,21 +1,21 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using Composite.Data;
 using Composite.Data.Types;
-using Composite.Core.Collections.Generic;
 
 
 namespace Composite.C1Console.Security
 {
-    /// <summary>    
+    /// <summary>
+    /// Provides a cached lookup to user group ids related to a user
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public static class UserGroupFacade
 	{
-        private static readonly Hashtable<string, List<Guid>> _cache = new Hashtable<string, List<Guid>>();
-        private static readonly object _lock = new object();
+        private static readonly ConcurrentDictionary<string, List<Guid>> _cache = new ConcurrentDictionary<string, List<Guid>>();
 
 
         static UserGroupFacade()
@@ -28,39 +28,29 @@ namespace Composite.C1Console.Security
 
 
         /// <exclude />
-        public static List<Guid> GetUserGroupIds(string username)
+        public static IReadOnlyCollection<Guid> GetUserGroupIds(string username)
         {
-            List<Guid> userGroupIds;
+            Verify.ArgumentNotNullOrEmpty(username, nameof(username));
 
-            if (_cache.TryGetValue(username, out userGroupIds) == false)
+            return _cache.GetOrAdd(username, name =>
             {
-                IUser user = DataFacade.GetData<IUser>().Where(f => string.Compare(f.Username, username, StringComparison.InvariantCultureIgnoreCase) == 0).Single();
+                IUser user = DataFacade.GetData<IUser>()
+                    .SingleOrDefault(f => string.Compare(f.Username, name, StringComparison.InvariantCultureIgnoreCase) == 0);
 
-                userGroupIds =
+                Verify.IsNotNull(user, "Failed to find user by name '{0}'", name);
+
+                return 
                     (from ur in DataFacade.GetData<IUserUserGroupRelation>()
                      where ur.UserId == user.Id
                      select ur.UserGroupId).ToList();
-
-                lock (_lock)
-                {
-                    if (_cache.ContainsKey(username) == false)
-                    {
-                        _cache.Add(username, userGroupIds);
-                    }
-                }
-            }
-
-            return userGroupIds;
+            });
         }
 
 
 
         private static void OnDataChanged(object sender, StoreEventArgs storeEventArgs)
         {
-            lock (_lock)
-            {
-                _cache.Clear();
-            }
+            _cache.Clear();
         }
 	}
 }

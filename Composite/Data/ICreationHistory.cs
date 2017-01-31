@@ -14,6 +14,7 @@ namespace Composite.Data
         [DefaultFieldNowDateTimeValue()]
         [FunctionBasedNewInstanceDefaultFieldValue("<f:function xmlns:f=\"http://www.composite.net/ns/function/1.0\" name=\"Composite.Utils.Date.Now\" />")]
         [FieldPosition(502)]
+        [SearchableField(false, true, true)]
         DateTime CreationDate { get; set; }
 
 
@@ -22,6 +23,7 @@ namespace Composite.Data
         [ImmutableFieldId("{617E34B5-E035-4107-9109-DB0B33078B2B}")]
         [DefaultFieldStringValue("")]
         [FieldPosition(503)]
+        [SearchableField(false, true, true)]
         string CreatedBy { get; set; }
 	}
 }

@@ -55,6 +55,9 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
 
         /// <exclude />
         public bool KeyFieldReadOnly { get; set; }
+
+        /// <exclude />
+        public bool IsSearchable { get; set; }
     }
 
 
@@ -91,6 +94,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
             _userControl.KeyFieldName = KeyFieldName;
             _userControl.LabelFieldName = this.LabelFieldName;
             _userControl.KeyFieldReadOnly = KeyFieldReadOnly;
+            _userControl.IsSearchable = IsSearchable;
 
             return _userControl;
         }
