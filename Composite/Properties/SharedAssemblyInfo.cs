@@ -9,7 +9,7 @@ using System.Reflection;
 
 [assembly: AssemblyCompany("Orckestra Inc")]
 [assembly: AssemblyProduct("Orckestra CMS")]
-[assembly: AssemblyCopyright("Copyright © Orckestra Inc 2016")]
+[assembly: AssemblyCopyright("Copyright © Orckestra Inc 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
