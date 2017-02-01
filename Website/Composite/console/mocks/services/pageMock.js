@@ -464,7 +464,14 @@ const pages = {
 		toolbars: [
 			{
 				name: 'content-browser-node-action-placeholder',
-				items: []
+				items: [
+					{
+						type: 'button',
+						name: 'mock',
+						label: 'Fake button',
+						provider: { callAction: 'doNothing' }
+					}
+				]
 			},
 			{
 				name: 'browser-navigation-toolbar',

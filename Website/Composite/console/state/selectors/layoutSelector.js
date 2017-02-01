@@ -43,7 +43,7 @@ const tabsSelector = createSelector(
 	page => page.get('tabs') || Immutable.List()
 );
 
-const currentTabSelector = createSelector(
+export const currentTabSelector = createSelector(
 	currentTabNameSelector,
 	tabsSelector,
 	(tabName, tabs) => tabs.get(tabName) || Immutable.Map()

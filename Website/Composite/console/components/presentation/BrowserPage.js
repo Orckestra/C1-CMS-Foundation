@@ -3,15 +3,32 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import styled, { css } from 'styled-components';
 import colors from 'console/components/colors.js';
 import Icon from 'console/components/presentation/Icon.js';
+import Splitter from 'console/components/presentation/Splitter.js';
+import ScrollBox from 'console/components/presentation/ScrollBox.js';
+
+export const Wrapper = styled(ScrollBox)`
+	padding: 0;
+`;
 
 export const Browser = styled.div`
 	background-color: ${colors.darkBackground};
 	height: 100%;
 	width: ${props => props.splitPosition}px;
+	box-sizing: border-box;
 	border-right: 1px solid ${colors.borderColor};
 	overflow: auto;
 	padding-top: 5px;
 	cursor: default;
+`;
+
+export const Preview = styled.div`
+	position: absolute;
+	top: 0;
+	right: 0;
+	height: 100%;
+	width: calc(100% - ${props => props.splitPosition}px);
+	box-sizing: border-box;
+	background-color: ${colors.darkBackground};
 `;
 
 export const NodeGroup = styled.div`
@@ -158,13 +175,17 @@ const BrowserPage = props => {
 	let actions = Object.assign({}, props.actions);
 	actions.loadChildren = actions.loadChildren(props.tabDef.get('provider').toJS());
 	return (
-		<Browser splitPosition={props.splitPosition}>
-			{props.tree.get('children') ?
+		<Wrapper>
+			<Browser splitPosition={props.splitPosition}>
+				{props.tree.get('children') ?
 				props.tree.get('children').map(node => (
 					<TreeNode key={node.get('name')} actions={actions} className='top' node={node} selectedNode={props.selectedNode}/>
 				)).toArray() :
 				null}
-		</Browser>
+			</Browser>
+			<Preview splitPosition={props.splitPosition}/>
+			<Splitter splitPosition={props.splitPosition} updatePosition={props.actions.updatePosition}/>
+		</Wrapper>
 	);
 };
 
@@ -176,7 +197,8 @@ BrowserPage.propTypes = {
 	actions: PropTypes.shape({
 		openNode: PropTypes.func.isRequired,
 		closeNode: PropTypes.func.isRequired,
-		loadChildren: PropTypes.func.isRequired
+		loadChildren: PropTypes.func.isRequired,
+		updatePosition: PropTypes.func.isRequired
 	})
 };
 

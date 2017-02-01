@@ -3,7 +3,8 @@ import React from 'react';
 import TestUtils from 'react-addons-test-utils';
 import Immutable from 'immutable';
 import sinon from 'sinon';
-import BrowserPage, * as uiElements from 'console/components/presentation/BrowserPage.js';
+import BrowserPage, * as b from 'console/components/presentation/BrowserPage.js';
+import Splitter from 'console/components/presentation/Splitter.js';
 
 describe('BrowserPage', () => {
 	let renderer, props, actions;
@@ -13,7 +14,8 @@ describe('BrowserPage', () => {
 			openNode: () => {},
 			closeNode: () => {},
 			loadChildren: () => () => () => {},
-			selectNode: () => {}
+			selectNode: () => {},
+			updateSplitPosition: () => {}
 		};
 		props = {
 			tree: Immutable.fromJS({
@@ -57,7 +59,8 @@ describe('BrowserPage', () => {
 				openNode: () => actions.openNode,
 				closeNode: () => actions.closeNode,
 				loadChildren: () => () => () => actions.loadChildren,
-				selectNode: () => actions.selectNode
+				selectNode: () => actions.selectNode,
+				updatePosition: () => actions.updateSplitPosition
 			}
 		};
 	});
@@ -65,77 +68,81 @@ describe('BrowserPage', () => {
 	it('renders a browser', () => {
 		renderer.render(<BrowserPage {...props}/>);
 		return expect(renderer, 'to have rendered', (
-			<uiElements.Browser splitPosition={350}>
-				<uiElements.TreeNode key='test1' node={props.tree.getIn(['children', 0])} actions={props.actions}/>
-				<uiElements.TreeNode key='test2' node={props.tree.getIn(['children', 1])} actions={props.actions}/>
-				<uiElements.TreeNode key='test3' node={props.tree.getIn(['children', 2])} actions={props.actions}/>
-			</uiElements.Browser>
+			<b.Wrapper>
+				<b.Browser splitPosition={350}>
+					<b.TreeNode key='test1' node={props.tree.getIn(['children', 0])} actions={props.actions}/>
+					<b.TreeNode key='test2' node={props.tree.getIn(['children', 1])} actions={props.actions}/>
+					<b.TreeNode key='test3' node={props.tree.getIn(['children', 2])} actions={props.actions}/>
+				</b.Browser>
+				<b.Preview/>
+				<Splitter/>
+			</b.Wrapper>
 		));
 	});
 
 	it('renders tree node with children', () => {
-		renderer.render(<uiElements.TreeNode key='test1' node={props.tree.getIn(['children', 0])} actions={props.actions}/>);
+		renderer.render(<b.TreeNode key='test1' node={props.tree.getIn(['children', 0])} actions={props.actions}/>);
 		return expect(renderer, 'to have rendered', (
-			<uiElements.Node>
-				<uiElements.NodeOpen id='chevron-down'/>
-				<uiElements.NodeLabel>
-					<uiElements.NodeIcon id='test-open'/>
-					<uiElements.NodeName>
+			<b.Node>
+				<b.NodeOpen id='chevron-down'/>
+				<b.NodeLabel>
+					<b.NodeIcon id='test-open'/>
+					<b.NodeName>
 						Node 1
-					</uiElements.NodeName>
-				</uiElements.NodeLabel>
-				<uiElements.NodeGroup>
-					<uiElements.TreeNode  key='test11' node={props.tree.getIn(['children', 0, 'children', 0])} actions={props.actions}/>
-				</uiElements.NodeGroup>
-			</uiElements.Node>
+					</b.NodeName>
+				</b.NodeLabel>
+				<b.NodeGroup>
+					<b.TreeNode  key='test11' node={props.tree.getIn(['children', 0, 'children', 0])} actions={props.actions}/>
+				</b.NodeGroup>
+			</b.Node>
 		));
 	});
 
 	it('renders closed tree node with unloaded children', () => {
-		renderer.render(<uiElements.TreeNode key='test2' node={props.tree.getIn(['children', 1])} actions={props.actions}/>);
+		renderer.render(<b.TreeNode key='test2' node={props.tree.getIn(['children', 1])} actions={props.actions}/>);
 		return expect(renderer, 'to have rendered', (
-			<uiElements.Node>
-				<uiElements.NodeOpen id='chevron-right'/>
-				<uiElements.NodeLabel>
-					<uiElements.NodeIcon id='test-closed'/>
-					<uiElements.NodeName>
+			<b.Node>
+				<b.NodeOpen id='chevron-right'/>
+				<b.NodeLabel>
+					<b.NodeIcon id='test-closed'/>
+					<b.NodeName>
 						Node 2
-					</uiElements.NodeName>
-				</uiElements.NodeLabel>
-			</uiElements.Node>
+					</b.NodeName>
+				</b.NodeLabel>
+			</b.Node>
 		));
 	});
 
 	it('renders leaf tree node', () => {
-		renderer.render(<uiElements.TreeNode key='test3' node={props.tree.getIn(['children', 2])} actions={props.actions}/>);
+		renderer.render(<b.TreeNode key='test3' node={props.tree.getIn(['children', 2])} actions={props.actions}/>);
 		return expect(renderer, 'to have rendered', (
-			<uiElements.Node>
-				<uiElements.NodeLabel>
-					<uiElements.NodeIcon id='test'/>
-					<uiElements.NodeName>
+			<b.Node>
+				<b.NodeLabel>
+					<b.NodeIcon id='test'/>
+					<b.NodeName>
 						Node 3
-					</uiElements.NodeName>
-				</uiElements.NodeLabel>
-			</uiElements.Node>
+					</b.NodeName>
+				</b.NodeLabel>
+			</b.Node>
 		));
 	});
 
 	it('renders leaf tree node without icon', () => {
-		renderer.render(<uiElements.TreeNode  key='test11' node={props.tree.getIn(['children', 0, 'children', 0])} actions={props.actions}/>);
+		renderer.render(<b.TreeNode  key='test11' node={props.tree.getIn(['children', 0, 'children', 0])} actions={props.actions}/>);
 		return expect(renderer, 'to have rendered', (
-			<uiElements.Node>
-				<uiElements.NodeLabel>
-					<uiElements.NodeIcon id='data-interface-closed'/>
-					<uiElements.NodeName>
+			<b.Node>
+				<b.NodeLabel>
+					<b.NodeIcon id='data-interface-closed'/>
+					<b.NodeName>
 						Subnode 1.1
-					</uiElements.NodeName>
-				</uiElements.NodeLabel>
-			</uiElements.Node>
+					</b.NodeName>
+				</b.NodeLabel>
+			</b.Node>
 		));
 	});
 
 	describe('node opener functions', () => {
-		let getOpener = uiElements.getNodeOpenToggler, actions, node;
+		let getOpener = b.getNodeOpenToggler, actions, node;
 		beforeEach(() => {
 			node = Immutable.fromJS({
 				name: 'test',

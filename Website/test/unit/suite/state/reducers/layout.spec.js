@@ -9,6 +9,7 @@ describe('Layout', () => {
 			.and('to have property', 'OPEN_PAGE')
 			.and('to have property', 'CLOSE_PAGE')
 			.and('to have property', 'TOGGLE_EXPLORER')
+			.and('to have property', 'SET_VALUE')
 		);
 
 		describe('setPerspective', () => {
@@ -113,6 +114,40 @@ describe('Layout', () => {
 				let action = toggleExplorer();
 				return expect(action, 'to be an action of type', actions.TOGGLE_EXPLORER);
 			});
+		});
+	});
+
+	describe('setValue', () => {
+		let setValue = actions.setValue;
+		it('creates action to set a value on a layout object', () => {
+			let action = setValue('page', 'testkey', 'testvalue');
+			return expect(action, 'to be an action of type', actions.SET_VALUE)
+			.and('to have property', 'level', 'page')
+			.and('to have property', 'key', 'testkey')
+			.and('to have property', 'value', 'testvalue');
+		});
+
+		it('sets a default level if no valid level given', () => {
+			let action = setValue('not a level', 'testkey', 'testvalue');
+			return expect(action, 'to be an action of type', actions.SET_VALUE)
+			.and('to have property', 'level', 'perspective')
+			.and('to have property', 'key', 'testkey')
+			.and('to have property', 'value', 'testvalue');
+		});
+
+		it('gives empty action if invalid key given (next level container)', () => {
+			let action = setValue('page', 'tabs', 'testvalue');
+			return expect(action, 'to be an action of type', actions.SET_VALUE)
+			.and('not to have property', 'level')
+			.and('not to have property', 'key')
+			.and('not to have property', 'value');
+		});
+		it('gives empty action if invalid key given (current selection indicator)', () => {
+			let action = setValue('page', 'currentTab', 'testvalue');
+			return expect(action, 'to be an action of type', actions.SET_VALUE)
+			.and('not to have property', 'level')
+			.and('not to have property', 'key')
+			.and('not to have property', 'value');
 		});
 	});
 
@@ -435,6 +470,101 @@ describe('Layout', () => {
 				let oldState = initialState.set('perspectivesOpen', true);
 				let newState = layout(oldState, action);
 				return expect(newState.get('perspectivesOpen'), 'to be false');
+			});
+		});
+
+		describe('set value', () => {
+			let action;
+			beforeEach(() => {
+				action = {
+					type: actions.SET_VALUE,
+					level: 'page',
+					key: 'testkey',
+					value: 'testvalue'
+				};
+			});
+
+			it('sets a value on a layout object', () => {
+				let oldState = initialState;
+				let newState = layout(oldState, action);
+				return expect(newState.getIn(
+					['perspectives', 'system', 'pages', 'browser', 'testkey']
+				), 'to be', 'testvalue');
+			});
+		});
+	});
+
+	describe('digChangeAndReturnLayout', () => {
+		let object;
+		let digChangeAndReturnLayout = actions.digChangeAndReturnLayout;
+		beforeEach(() => {
+			object = Immutable.Map({
+				currentPerspective: 'system',
+				perspectivesOpen: false,
+				perspectives: Immutable.OrderedMap({
+					system: Immutable.Map({
+						currentPage: 'frontpage',
+						pages: Immutable.OrderedMap({
+							frontpage: Immutable.Map({
+								currentTab: 'content',
+								tabs: Immutable.OrderedMap({
+									content: Immutable.Map()
+								})
+							})
+						})
+					})
+				})
+			});
+		});
+
+		it('sets key/value pair on an object when level is matched', () => {
+			return expect(digChangeAndReturnLayout, 'when called with', [
+				2,
+				'testkey',
+				'testvalue',
+				object.getIn(['perspectives', 'system', 'pages', 'frontpage', 'tabs', 'content']),
+				2
+			], 'to satisfy', {
+				testkey: 'testvalue'
+			});
+		});
+
+		it('sets key/value pair on lower level if not at level yet', () => {
+			return expect(digChangeAndReturnLayout, 'when called with', [
+				2,
+				'testkey',
+				'testvalue',
+				object.getIn(['perspectives', 'system', 'pages', 'frontpage']),
+				1
+			], 'to satisfy', {
+				tabs: {
+					content: {
+						testkey: 'testvalue'
+					}
+				}
+			});
+		});
+
+		it('sets key/value pair on specified level when starting from root', () => {
+			return expect(digChangeAndReturnLayout, 'when called with', [
+				2,
+				'testkey',
+				'testvalue',
+				object
+			], 'to satisfy', {
+				perspectives: {
+					system: {
+						pages: {
+							frontpage: {
+								tabs: {
+									content: {
+										testkey: 'testvalue'
+									}
+								}
+							}
+						}
+					}
+				}
 			});
 		});
 	});

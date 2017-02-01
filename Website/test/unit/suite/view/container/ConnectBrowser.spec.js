@@ -21,7 +21,8 @@ describe('ConnectBrowser', () => {
 								currentTab: 'testbrowser',
 								tabs: {
 									testbrowser: {
-										previewLocation: 'test11'
+										previewLocation: 'test11',
+										splitPosition: 350
 									}
 								}
 							}
@@ -130,7 +131,7 @@ describe('ConnectBrowser', () => {
 								'when called with', ['node']
 							)
 					}}
-					splitPosition={400}
+					splitPosition={350}
 					store={store}/>
 			)
 			.then(expect(store.dispatch, 'to have calls satisfying', [

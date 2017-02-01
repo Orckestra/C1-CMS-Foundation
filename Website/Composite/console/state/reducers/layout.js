@@ -53,6 +53,32 @@ export function toggleExplorer() {
 	return {type: TOGGLE_EXPLORER };
 }
 
+function capitalizeFirstLetter(string) {
+	return string.charAt(0).toUpperCase() + string.slice(1);
+}
+// set value on layout object
+export const SET_VALUE = prefix + 'SET_VALUE';
+const pageLevels = ['perspective', 'page', 'tab'];
+export function setValue(level, key, value) {
+	let levelIndex = pageLevels.indexOf(level);
+	if (levelIndex === -1) {
+		level = pageLevels[0];
+		levelIndex = 0;
+	}
+	let levelUp = pageLevels[levelIndex + 1];
+	if (levelUp && (key === levelUp + 's' || key === 'current' + capitalizeFirstLetter(levelUp))) {
+		return {
+			type: SET_VALUE
+		};
+	}
+	return {
+		type: SET_VALUE,
+		level,
+		key,
+		value
+	};
+}
+
 // Show seo, dev, log, help
 // Hide seo, dev, log, help
 // Move split seo, dev, log, help
@@ -69,6 +95,17 @@ const initialState = Immutable.Map({
 		system: Immutable.Map()
 	})
 });
+
+export function digChangeAndReturnLayout(levelIndex, key, value, currentObject, currentIndex = -1) {
+	if (levelIndex === currentIndex) {
+		return currentObject.set(key, value);
+	} else {
+		let newIndex = currentIndex + 1;
+		let name = currentObject.get('current' + capitalizeFirstLetter(pageLevels[newIndex]));
+		let newObject = currentObject.getIn([pageLevels[newIndex] + 's', name]) || Immutable.Map;
+		return currentObject.setIn([pageLevels[newIndex] + 's', name], digChangeAndReturnLayout(levelIndex, key, value, newObject, newIndex));
+	}
+}
 
 export default function layout(state = initialState, action) {
 	switch (action.type) {
@@ -128,6 +165,8 @@ export default function layout(state = initialState, action) {
 		});
 	case TOGGLE_EXPLORER:
 		return state.set('perspectivesOpen', !state.get('perspectivesOpen'));
+	case SET_VALUE:
+		return digChangeAndReturnLayout(pageLevels.indexOf(action.level), action.key, action.value, state);
 	default:
 		return state;
 	}
