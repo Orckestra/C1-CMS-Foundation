@@ -17,7 +17,7 @@
 
 	private bool ViewState_Checked
 	{
-		get { return (bool) ViewState[ViewStateKey]; }
+		get { return (bool) (ViewState[ViewStateKey] ?? this.Checked); }
 		set { ViewState[ViewStateKey] = value; }
 	}
 
