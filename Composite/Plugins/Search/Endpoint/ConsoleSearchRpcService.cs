@@ -192,7 +192,7 @@ namespace Composite.Plugins.Search.Endpoint
                         Label = StringResourceSystemFacade.ParseString(facetField.Label),
                         Facets = selection.Values.Select(value => new ConsoleSearchResultFacetValue
                         {
-                            Label = facetField.Facet.PreviewFunction(value),
+                            Label = (facetField.Facet.PreviewFunction ?? (v => v))(value),
                             Value = value,
                             HitCount = 0
                         }).ToArray()
@@ -222,7 +222,7 @@ namespace Composite.Plugins.Search.Endpoint
                     {
                         Value = v.Value,
                         HitCount = v.HitCount,
-                        Label = field.Facet.PreviewFunction(v.Value)
+                        Label = (field.Facet.PreviewFunction ?? (value => value))(v.Value)
                     }).ToArray()
                 });
             }
