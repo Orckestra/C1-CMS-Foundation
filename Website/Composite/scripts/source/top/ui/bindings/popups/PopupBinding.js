@@ -159,6 +159,12 @@ function PopupBinding () {
 	 */
 	this.hasImages = true;
 
+	/**
+	 * @type {boolean}
+	 */
+	this.isManaged = false;
+
+
 	/*
 	 * Returnable.
 	 */
@@ -468,9 +474,12 @@ PopupBinding.prototype.show = function () {
 
 		if ( this._bodyBinding instanceof MenuBodyBinding ) {
 			this._bodyBinding.refreshMenuGroups();
-			this._bodyBinding.grabKeyboard();
-			this._bodyBinding.bindingElement.tabIndex = "-1";
-			this._bodyBinding.bindingElement.focus();
+
+			if (!this.isManaged) {
+				this._bodyBinding.grabKeyboard();
+				this._bodyBinding.bindingElement.tabIndex = "-1";
+				this._bodyBinding.bindingElement.focus();
+			}
 		}
 
 		/**
