@@ -174,7 +174,7 @@ namespace Composite.Search
         /// <summary>
         /// Maximum amount of documents returned.
         /// </summary>
-        public int MaxDocumentsNumber;
+        public int MaxDocumentsNumber { get; set; }
 
         /// <summary>
         /// Facets to be returned.
