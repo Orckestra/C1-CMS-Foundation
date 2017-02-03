@@ -6,6 +6,7 @@ const nodes = {
 	websites: {
 		name: 'websites',
 		label: 'Websites',
+		icon: 'browser-green',
 		children: ['venusRoot'],
 		actions: [
 			{
@@ -52,7 +53,22 @@ const nodes = {
 	},
 	venusRoot: {
 		name: 'venusRoot',
-		label: 'Venus'
+		label: 'Venus',
+		icon: 'page',
+		children: ['sub1', 'sub2']
+	},
+	sub1: {
+		name: 'sub1',
+		label: 'Sub-Page 1',
+		children: ['sub11']
+	},
+	sub11: {
+		name: 'sub11',
+		label: 'Sub-Page 1.1'
+	},
+	sub2: {
+		name: 'sub2',
+		label: 'Sub-Page 2'
 	},
 	other: {
 		name: 'other',
@@ -60,7 +76,8 @@ const nodes = {
 	},
 	stuff: {
 		name: 'stuff',
-		label: 'Stuff'
+		label: 'Stuff',
+		icon: 'page'
 	}
 };
 
