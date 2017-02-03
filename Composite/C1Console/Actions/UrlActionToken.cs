@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Composite.C1Console.Security;
 using Composite.C1Console.Events;
 using System.Web;
@@ -15,7 +13,6 @@ namespace Composite.C1Console.Actions
     [ActionExecutor(typeof(UrlActionTokenActionExecutor))]
     public sealed class UrlActionToken : ActionToken
     {
-        private readonly IEnumerable<PermissionType> _permissionTypes;
         /// <summary>
         /// To add a custom URL action
         /// </summary>
@@ -24,20 +21,19 @@ namespace Composite.C1Console.Actions
         /// <param name="permissionTypes"></param>
         public UrlActionToken(string label, string url, IEnumerable<PermissionType> permissionTypes)
         {
-            this.Url = url;
-            _permissionTypes = permissionTypes;
+            Label = label;
+            Url = url;
+            PermissionTypes = permissionTypes;
         }
 
         /// <exclude />
-        public string Label { get; private set; }
-        /// <exclude />
-        public string Url { get; private set; }
+        public string Label { get; }
 
         /// <exclude />
-        public override IEnumerable<PermissionType> PermissionTypes
-        {
-            get { return _permissionTypes; }
-        }
+        public string Url { get; }
+
+        /// <exclude />
+        public override IEnumerable<PermissionType> PermissionTypes { get; }
 
         /// <exclude />
         public override string Serialize()
@@ -67,9 +63,18 @@ namespace Composite.C1Console.Actions
 
             string serializedEntityToken = EntityTokenSerializer.Serialize(entityToken);
 
-            string url = string.Format("{0}?EntityToken={1}", urlActionToken.Url, HttpUtility.UrlEncode(serializedEntityToken));
+            string url = urlActionToken.Url;
 
-            ConsoleMessageQueueFacade.Enqueue(new OpenViewMessageQueueItem { Url = url, ViewId = Guid.NewGuid().ToString(), ViewType = ViewType.Main, Label = urlActionToken.Label }, currentConsoleId);
+            string extendedUrl = $"{url}{(url.Contains("?") ? "&" : "?")}EntityToken={HttpUtility.UrlEncode(serializedEntityToken)}";
+
+            ConsoleMessageQueueFacade.Enqueue(
+                new OpenViewMessageQueueItem
+                {
+                    Url = extendedUrl,
+                    ViewId = Guid.NewGuid().ToString(),
+                    ViewType = ViewType.Main,
+                    Label = urlActionToken.Label
+                }, currentConsoleId);
 
             return null;
         }

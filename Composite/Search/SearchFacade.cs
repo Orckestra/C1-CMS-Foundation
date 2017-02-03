@@ -50,6 +50,8 @@ namespace Composite.Search
         {
             services.AddSingleton<ISearchDocumentSourceProvider>(new BuiltInTypesDocumentSourceProvider());
             services.AddSingleton<ISearchDocumentSourceProvider>(new DataTypesDocumentSourceProvider());
+
+            services.AddScoped<IndexUpdateActionContainer>();
         }
     }
 }

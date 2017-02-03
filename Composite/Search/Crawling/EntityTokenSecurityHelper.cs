@@ -135,7 +135,7 @@ namespace Composite.Search.Crawling
                     pd.EntityToken, pd.Username,
                     HasAccess = pd.PermissionTypes.Contains(PermissionType.Read)
                 })
-                .Where(a => a.EntityToken!= null)
+                .Where(a => a.EntityToken != null && a.EntityToken.IsValid())
                 .GroupBy(a => a.EntityToken)
                 .ToDictionary(group => group.Key, 
                             group => group.Select(a => new UserAccess {UserName = a.Username, HasAccess = a.HasAccess })
@@ -161,7 +161,7 @@ namespace Composite.Search.Crawling
                     pd.UserGroupId,
                     HasAccess = pd.PermissionTypes.Contains(PermissionType.Read)
                 })
-                .Where(a => a.EntityToken != null)
+                .Where(a => a.EntityToken != null && a.EntityToken.IsValid())
                 .GroupBy(a => a.EntityToken)
                 .ToDictionary(group => group.Key,
                             group => group.Select(a => new GroupAccess

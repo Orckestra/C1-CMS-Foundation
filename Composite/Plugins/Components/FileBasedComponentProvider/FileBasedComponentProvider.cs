@@ -52,6 +52,8 @@ namespace Composite.Plugins.Components.FileBasedComponentProvider
             _changeNotifier = changeNotifier;
 
             var componentProviderSetting = ComponentProviderSettings.GetProviderPath(nameof(FileBasedComponentProvider));
+            Verify.IsNotNull(componentProviderSetting, "No components configuration found for the provider " + nameof(FileBasedComponentProvider));
+            
             _providerDirectory = componentProviderSetting.Directory;
             _searchPattern = componentProviderSetting.FileSearchPattern;
             _searchOption = componentProviderSetting.TopDirectoryOnly

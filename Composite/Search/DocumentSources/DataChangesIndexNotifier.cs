@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Composite.Core;
 using Composite.Core.Extensions;
 using Composite.Data;
 using Composite.Data.ProcessControlled;
@@ -31,9 +32,24 @@ namespace Composite.Search.DocumentSources
 
         public void Start()
         {
-            DataEventSystemFacade.SubscribeToDataAfterAdd(_interfaceType, Data_OnAfterAdd, true);
-            DataEventSystemFacade.SubscribeToDataAfterUpdate(_interfaceType, Data_OnAfterUpdate, true);
-            DataEventSystemFacade.SubscribeToDataDeleted(_interfaceType, Data_OnDeleted, true);
+            DataEventSystemFacade.SubscribeToDataAfterAdd(_interfaceType,
+                (sender, args) => GetActionContainer().Add(() => Data_OnAfterAdd(sender, args)),
+                true);
+
+            DataEventSystemFacade.SubscribeToDataAfterUpdate(_interfaceType,
+                (sender, args) => GetActionContainer().Add(() => Data_OnAfterUpdate(sender, args)),
+                true);
+
+            DataEventSystemFacade.SubscribeToDataDeleted(_interfaceType, 
+                (sender, args) => GetActionContainer().Add(() => Data_OnDeleted(sender, args)),
+                true);
+        }
+
+        private IndexUpdateActionContainer GetActionContainer()
+        {
+            var service = ServiceLocator.GetService<IndexUpdateActionContainer>();
+
+            return service ?? new IndexUpdateActionContainer();
         }
 
         private IEnumerable<CultureInfo> GetCultures(IData data)
@@ -47,9 +63,11 @@ namespace Composite.Search.DocumentSources
             return DataLocalizationFacade.ActiveLocalizationCultures;
         }
 
+        private bool IgnoreNotification(DataEventArgs args) => !_listeners.Any();
+
         private void Data_OnAfterAdd(object sender, DataEventArgs dataEventArgs)
         {
-            if (!_listeners.Any()) return;
+            if (IgnoreNotification(dataEventArgs)) return;
 
             var data = dataEventArgs.Data;
 
@@ -69,7 +87,7 @@ namespace Composite.Search.DocumentSources
 
         private void Data_OnAfterUpdate(object sender, DataEventArgs dataEventArgs)
         {
-            if (!_listeners.Any()) return;
+            if (IgnoreNotification(dataEventArgs)) return;
 
             var data = dataEventArgs.Data;
             bool toBeDeleted = IsPublishedDataFromUnpublishedScope(data);
@@ -91,7 +109,7 @@ namespace Composite.Search.DocumentSources
 
         private void Data_OnDeleted(object sender, DataEventArgs dataEventArgs)
         {
-            if (!_listeners.Any()) return;
+            if (IgnoreNotification(dataEventArgs)) return;
 
             var data = dataEventArgs.Data;
             DeleteDocuments(data);

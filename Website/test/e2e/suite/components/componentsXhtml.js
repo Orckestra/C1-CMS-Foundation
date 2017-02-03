@@ -21,7 +21,7 @@ module.exports = {
 		.page.editor()
 			.selectContent(1)
 			.clickLabel("${string:Composite.Web.VisualEditor:Components.LaunchButton.Label}")
-			.pause(5000)
+			.pause(browser.globals.timeouts.basic)
 			.clickText("xhtml-Simple")
 			.clickText("OK")
 		.clickSave()
