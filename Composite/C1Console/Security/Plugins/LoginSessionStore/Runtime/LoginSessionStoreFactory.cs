@@ -15,12 +15,14 @@ namespace Composite.C1Console.Security.Plugins.LoginSessionStore.Runtime
 
         public new ILoginSessionStore CreateDefault()
         {
-            var loginSessionstores =
-                (ServiceLocator.GetServices<INoneConfigurationBasedLoginSessionStore>()??
-                Enumerable.Empty<ILoginSessionStore>())
-                .Union(new[] { base.CreateDefault() });
+            if (ServiceLocator.HasService(typeof(INoneConfigurationBasedLoginSessionStore)))
+            {
+                var loginSessionstores = ServiceLocator.GetServices<INoneConfigurationBasedLoginSessionStore>().Union(new[] { base.CreateDefault() });
 
-            return new LoginSessionStoreResolver(loginSessionstores);
+                return new LoginSessionStoreResolver(loginSessionstores);
+            }
+
+            return new LoginSessionStoreResolver(new[] { base.CreateDefault() });
         }
     }
 }
