@@ -463,17 +463,6 @@ const pages = {
 		type: 'explorer',
 		toolbars: [
 			{
-				name: 'content-browser-node-action-placeholder',
-				items: [
-					{
-						type: 'button',
-						name: 'mock',
-						label: 'Fake button',
-						provider: { callAction: 'doNothing' }
-					}
-				]
-			},
-			{
 				name: 'browser-navigation-toolbar',
 				style: 'dark',
 				items: [

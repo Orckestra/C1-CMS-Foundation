@@ -29,6 +29,19 @@ describe('loadAndOpenPage', () => {
 						name: 'shimpage',
 						dialog: 'testdialog',
 						type: 'dialogPageShim'
+					},
+					explorerPage: {
+						name: 'explorerPage',
+						type: 'explorer',
+						tabs: ['browser']
+					}
+				},
+				tabDefs: {
+					browser: {
+						rootNode: 'testNodeRoot',
+						provider: {
+							test: 'provider'
+						}
 					}
 				},
 				toolbarDefs: {
@@ -66,6 +79,18 @@ describe('loadAndOpenPage', () => {
 						uri: 'mock.provider.test',
 						sendData: true,
 						callAction: 'storeProviderData'
+					}
+				},
+				pageTree: {
+					testNodeRoot: {
+						name: 'testNodeRoot',
+						children: ['testNode1', 'testNode2']
+					},
+					testNode1: {
+						name: 'testNode1',
+						label: 'Testing node #1',
+						iconBase: 'test',
+						children: ['subnode1', 'subnode2', 'subnode3']
 					}
 				}
 			}),
@@ -205,6 +230,35 @@ describe('loadAndOpenPage', () => {
 					{ args: [ { type: 'PROVIDER.USE_COMMENCE', provider: { protocol: 'wamp', uri: 'mock.provider.test' }, caller: 'testdialog' } ]},
 					{ args: [ { type: 'PROVIDER.STORE', page: 'testdialog' } ]},
 					{ args: [ { type: 'PROVIDER.USE_DONE', provider: { protocol: 'wamp', uri: 'mock.provider.test' }, caller: 'testdialog' } ]}
+				])
+			);
+		});
+	});
+
+	describe('for explorer page', () => {
+		it('fetches page nodes', () => {
+			let innerDispatch = sinon.spy().named('innerDispatch');
+			return expect(loadAndOpenPage, 'when called with', ['explorerPage'])
+			.then(thunk =>
+				expect(thunk, 'to be a function')
+				.and('when called with', [store.dispatch, store.getState], 'to be fulfilled')
+			)
+			.then(() =>
+				expect(store.dispatch, 'to have calls satisfying', [
+					{ args: [{ type: 'LAYOUT.OPEN_PAGE', pageName: 'explorerPage', tabNames: ['browser'] }] },
+					{ args: [{ type: 'LAYOUT.SELECT_LOCATION', page: 'explorerPage' }] },
+					{ args: [
+						expect.it('to be a function') // Load provider data
+						.and('when called with', [innerDispatch], 'to be fulfilled')
+					] }
+				])
+			)
+			.then(() =>
+				expect(innerDispatch, 'to have calls satisfying', [
+					{ args: [ { type: 'TREE_NODES.LOAD_COMMENCE', provider: { test: 'provider' } } ]},
+					// This sends a failure message because it was not mocked up completely,
+					// but the function is tested elsewhere, q.v.
+					{ args: [ { type: 'TREE_NODES.LOAD_FAIL', provider: { test: 'provider' }, message: 'Root node "testNodeRoot" not found' } ]}
 				])
 			);
 		});

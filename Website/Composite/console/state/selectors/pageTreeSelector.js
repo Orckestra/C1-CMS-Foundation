@@ -1,12 +1,13 @@
 import { createSelector } from 'reselect';
 import { tabSelector } from 'console/state/selectors/tabSelector.js';
+import { currentPreviewSelector } from 'console/state/selectors/layoutSelector.js';
 import Immutable from 'immutable';
 
 const allNodesSelector = state => state.get('pageTree');
 
 function getNodeAndLoadedChildren(name, allNodes) {
 	let node = allNodes.get(name);
-	if (node.get('childrenLoaded') && node.get('children') && node.get('open')) {
+	if (node && node.get('childrenLoaded') && node.get('children') && node.get('open')) {
 		node = node.set(
 			'children',
 			node
@@ -31,4 +32,15 @@ export const currentTreeSelector = createSelector(
 			return Immutable.Map();
 		}
 	}
+);
+
+export const currentTreeNodeActions = createSelector(
+	allNodesSelector,
+	currentPreviewSelector,
+	(nodes, preview) => nodes.getIn([preview, 'actions']) || Immutable.List()
+);
+
+export const currentTreeNodeToolbar = createSelector(
+	currentTreeNodeActions,
+	items => Immutable.Map({name: 'content-browser-node-action-placeholder', items })
 );

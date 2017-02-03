@@ -1,5 +1,6 @@
 import { loadPageDef } from 'console/state/actions/pageDefs.js';
 import { loadValues } from 'console/state/actions/values.js';
+import { loadRootNode } from 'console/state/actions/loadTreeNodes.js';
 import { openPage, setPage } from 'console/state/reducers/layout.js';
 import { getLogDates, getLogPage } from 'console/state/actions/logs.js';
 import { useProvider } from 'console/state/actions/useProvider.js';
@@ -57,6 +58,12 @@ const pageLoaders = {
 		} else {
 			return Promise.resolve();
 		}
+	},
+	explorer: (pageName, getState, dispatch) => {
+		let pageDef = getState().getIn(['pageDefs', pageName]);
+		let tabDef = getState().getIn(['tabDefs', pageDef.getIn(['tabs', 0])]);
+		let rootNodeName = tabDef.get('rootNode');
+		return dispatch(loadRootNode(tabDef.get('provider').toJS(), rootNodeName));
 	}
 };
 

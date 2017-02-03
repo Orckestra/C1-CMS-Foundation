@@ -5,8 +5,9 @@ import ActionButton from 'console/components/presentation/ActionButton.js';
 import CheckboxGroup from 'console/components/presentation/CheckboxGroup.js';
 import Select from 'console/components/presentation/Select.js';
 
-const Div = styled.div`
+const ToolbarBox = styled.div`
 	padding: 15px 10px 20px;
+	height: 38px;
 	border-bottom: 1px solid ${colors.borderColor};
 
 	&.rightAligned {
@@ -31,7 +32,7 @@ const Div = styled.div`
 `;
 
 const Toolbar = props => (
-	<Div className={'toolbar' + (props.style ? ' ' + props.style : '')}>
+	<ToolbarBox className={'toolbar' + (props.style ? ' ' + props.style : '')}>
 		{props.items.map(item => {
 			switch (item.get('type')) {
 			case 'checkboxGroup':
@@ -50,7 +51,7 @@ const Toolbar = props => (
 					{...item.toJS()}/>;
 			}
 		}).filter(item => !!item)}
-	</Div>
+	</ToolbarBox>
 );
 
 Toolbar.propTypes = {

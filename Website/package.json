@@ -87,7 +87,7 @@
       "unexpected-immutable": "npm:unexpected-immutable@^0.1.0",
       "unexpected-mitm": "npm:unexpected-mitm@^9.1.6",
       "unexpected-react": "npm:unexpected-react@^3.2.3",
-      "unexpected-sinon": "npm:unexpected-sinon@^10.5.1",
+      "unexpected-sinon": "npm:unexpected-sinon@^10.6.1",
       "unexpected-zurvan": "npm:unexpected-zurvan@^0.1.0",
       "zurvan": "npm:zurvan@^0.3.2"
     },
@@ -110,7 +110,7 @@
       "net": "npm:jspm-nodelibs-net@^0.2.0",
       "os": "npm:jspm-nodelibs-os@^0.2.0",
       "path": "npm:jspm-nodelibs-path@^0.2.0",
-      "process": "npm:jspm-nodelibs-process@^0.2.0",
+      "process": "github:jspm/nodelibs-process@^0.2.0-alpha",
       "punycode": "npm:jspm-nodelibs-punycode@^0.2.0",
       "querystring": "npm:jspm-nodelibs-querystring@^0.2.0",
       "react": "npm:react@^15.3.2",

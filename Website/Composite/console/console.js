@@ -94,55 +94,6 @@ const initialState = {
 			label: 'System',
 			rootPage: 'system-explorer'
 		}
-	},
-	pageTree: {
-		contentRoot: {
-			name: 'contentRoot',
-			children: ['websites', 'other', 'stuff']
-		},
-		websites: {
-			name: 'websites',
-			iconBase: 'page-root',
-			label: 'Websites',
-			open: true,
-			childrenLoaded: true,
-			children: ['venusRoot']
-		},
-		venusRoot: {
-			name: 'venusRoot',
-			label: 'Venus',
-			icon: 'page',
-			childrenLoaded: true,
-			open: true,
-			children: ['sub1', 'sub2']
-		},
-		sub1: {
-			name: 'sub1',
-			label: 'Sub-Page 1',
-			childrenLoaded: true,
-			open: false,
-			children: ['sub11']
-		},
-		sub11: {
-			name: 'sub11',
-			label: 'Sub-Page 1.1'
-		},
-		sub2: {
-			name: 'sub2',
-			label: 'Sub-Page 2'
-		},
-		other: {
-			name: 'other',
-			label: 'Other',
-			open: false,
-			childrenLoaded: false,
-			children: ['foo', 'bar']
-		},
-		stuff: {
-			name: 'stuff',
-			label: 'Stuff',
-			icon: 'page'
-		}
 	}
 };
 

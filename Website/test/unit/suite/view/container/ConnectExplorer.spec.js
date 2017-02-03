@@ -21,7 +21,9 @@ describe('ConnectExplorer', () => {
 							contentExplorer: {
 								currentTab: 'contentBrowser',
 								tabs: {
-									contentBrowser: {}
+									contentBrowser: {
+										preview: 'selected'
+									}
 								}
 							}
 						}
@@ -31,7 +33,7 @@ describe('ConnectExplorer', () => {
 			pageDefs: {
 				'contentExplorer': {
 					name: 'contentExplorer',
-					toolbars: [],
+					toolbars: ['navigator'],
 					tabs: ['contentBrowser']
 				}
 			},
@@ -40,6 +42,17 @@ describe('ConnectExplorer', () => {
 					name: 'contentBrowser'
 				}
 			},
+			pageTree: {
+				selected: {
+					actions: []
+				}
+			},
+			toolbarDefs: {
+				navigator: {
+					name: 'navigator',
+					items: []
+				}
+			}
 		});
 		store = {
 			subscribe: sinon.spy().named('subscribe'),
@@ -56,7 +69,10 @@ describe('ConnectExplorer', () => {
 		return expect(renderer, 'to have rendered', <ToolbarFrame
 			{...props}
 			pageName='contentExplorer'
-			toolbars={Immutable.List()}
+			toolbars={Immutable.fromJS([
+				{ name: 'content-browser-node-action-placeholder', items: [] },
+				{ name: 'navigator', items: [] }
+			])}
 			tabDefs={Immutable.List([Immutable.Map({ name: 'contentBrowser' })])}
 			test={'value'}
 			dirty={false}
