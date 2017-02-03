@@ -2,6 +2,8 @@
 
 The test suite runs in [Mocha](https://mochajs.org/) and uses the [Unexpected](http://unexpected.js.org/) test assertion library. It is set up to be run through JSPM, using the `jspm run unittest/runner.js` and `jspm run unittest/coverage.js` commands, but scripts have been added to the package.json file permitting the test suite and coverage to be run through `npm test` and `npm run coverage` respectively.
 
+All files ending in `.js` in the `suite/` directory and its subdirectories will be run as tests. Subdirectories will be processed as BDD contexts, similar to a `describe()` call wrapping all files in the directory. The directory name, capitalized, will be used as the description text.
+
 ## Overall structure
 
 Test files generally map one-to-one with source files - `loadAndOpen.spec.js` contains tests for the code found in `loadAndOpen.js`. The same is true of directory structure. This is intended to make it easier to find and update test files. 
