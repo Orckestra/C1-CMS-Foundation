@@ -1,0 +1,13 @@
+# Application state
+
+[Redux](http://redux.js.org/) handles the state, and provides a single source of information for the application. The two fundamental parts of the system are reducers (functions which take a state and an action and return a state where the action has taken place) and action creators (which build actions according to information passed as parameters). Both of these are found in the `reducers/` directory.
+
+In order to handle asynchronous activity, we use the [`redux-thunk`](https://github.com/gaearon/redux-thunk) middleware. A thunk is _"a subroutine that is created, often automatically, to assist a call to another subroutine"_ per [Wikipedia](https://en.wikipedia.org/wiki/Thunk). In our case, it's a routine used to dispatch one or more actions in preparation of, and as a response to one or more asynchronous calls. These can be found in the `actions/` directory.
+
+Drawing information out of the state in a sensible way (i.e. that fits the needs of the application rendering code) is done via selectors. These are memoizing functions that pull information out of a state and process it into the shape needed. They are primarily referenced by container components. Please reference the code in the `selectors` directory.
+
+`store.js` contains the main entry point to the state store, hooking up reducers and middleware. To add reducers, you will need to do it here.
+
+`actionLocator.js` provides a simple implementation of a singleton service library, allowing reference-based access to thunk and action creators. This is used by the `useProvider` thunk creator, in particular, allowing it to use any action in the library to process data.
+
+`normalizingSchema.js` holds the various schemas used to normalize data from the server into a flat state structure. A page definition, for example, comes from the server as a nested structure containing references to toolbars and tabs, which in turn reference other elements with definitions. Normalizing changes this structure so page definitions have names of the toolbar and tabs, which reference the separately stored tab and toolbar definitions. See also `reducers/definitions.js` and its reference in `store.js`.

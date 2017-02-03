@@ -1,5 +1,5 @@
 import 'url-polyfill';
-// TODO: Remove this when proper services available.
+// TODO: Remove the below when proper services available.
 import { waitFor } from 'console/mocks/mockServer.js';
 
 import Wampy from 'wampy';
@@ -9,6 +9,7 @@ function getClient(realm) {
 	// TODO: Rip out the whole waiting rigmarole when not relying on mock services...
 	return waitFor()
 	.then(() => {
+		// Keep this vvv
 		if (currentClients[realm]) {
 			return Promise.resolve(currentClients[realm]);
 		} else {
@@ -25,6 +26,7 @@ function getClient(realm) {
 				});
 			});
 		}
+		// Keep this ^^^
 	});
 }
 
