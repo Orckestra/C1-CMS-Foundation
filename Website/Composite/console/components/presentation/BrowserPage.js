@@ -38,9 +38,9 @@ export const NodeGroup = styled.div`
 	&::before {
 		content: '';
 		position: absolute;
-		top: -8px;
+		top: -5px;
 		bottom: 0;
-		left: -5px;
+		left: -1px;
 		width: 0;
 		border-left: 1px solid ${colors.browserLines};
 	}
@@ -60,13 +60,13 @@ export const Node = styled.div`
 		margin-top: -1px;
 		position: absolute;
 		top: 13px;
-		left: -10px;
+		left: -6px;
 	}
 
 	&:not(.top):last-child:before {
 		background: ${colors.darkBackground};
 		height: auto;
-		top: 15px;
+		top: 13px;
 		bottom: 0;
 	}
 `;
@@ -97,7 +97,7 @@ export const NodeOpen = styled(Icon)`
 	width: 10px;
 	position: absolute;
 	top: 5px;
-	left: 0px;
+	left: 3px;
 	padding: 3px;
 	color: ${props => props.open ? colors.buttonHighlightColor : colors.baseFontColor};
 	background-color: ${colors.darkBackground};
