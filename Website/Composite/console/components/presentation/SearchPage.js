@@ -75,7 +75,9 @@ const SearchPage = props => {
 		searchQueryUpdater(props.searchQuery.set('text', event.target.value));
 	};
 	let fireSearch = props.actions.performSearch(
-		(props.pageDef.getIn(['providers', props.pageDef.get('searchProvider')]) || Immutable.Map()).toJS(),
+		(props.pageDef.getIn(['providers', props.pageDef.get('searchProvider')]) ||
+			(console.warn('Provider missing in SearchPage definition') ||  // eslint-disable-line no-console
+				Immutable.Map())).toJS(),
 		props.pageDef.get('name')
 	);
 	let searchAction = () => {

@@ -1,6 +1,7 @@
 import expect from 'unittest/helpers/expect.js';
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
+import sinon from 'sinon';
 import SearchResults, * as searchUi from 'console/components/presentation/SearchResults.js';
 import Immutable from 'immutable';
 
@@ -9,10 +10,10 @@ describe('SearchResults', () => {
 	beforeEach(() => {
 		renderer = TestUtils.createRenderer();
 		props = {
-			linkColumn: 'label',
+			urlColumn: 'label',
 			resultColumns: Immutable.fromJS([
-				{ fieldName: 'label', label: 'Label' },
-				{ fieldName: 'type', label: 'Data type' },
+				{ fieldName: 'label', label: 'Label', sortable: true },
+				{ fieldName: 'type', label: 'Data type', sortable: true },
 				{ fieldName: 'description', label: 'Description' },
 				{ fieldName: 'creationDate', label: 'Created' },
 				{ fieldName: 'createdBy', label: 'Author' },
@@ -59,13 +60,15 @@ describe('SearchResults', () => {
 			searchQuery: Immutable.fromJS({
 				sortBy: 'type',
 				sortInReverseOrder: false
-			})
+			}),
+			updateQuery: sinon.spy().named('updateQuery'),
+			performSearch: sinon.spy().named('performSearch')
 		};
 	});
 
 	it('should render a table of search results', () => {
 		renderer.render(<SearchResults {...props}/>);
-		expect(renderer, 'to have rendered', <searchUi.ResultTable>
+		return expect(renderer, 'to have rendered', <searchUi.ResultTable>
 			<searchUi.ResultTableHead>
 				<searchUi.ResultTableRow>
 					<searchUi.ResultTableHeadCell key='name'>Label</searchUi.ResultTableHeadCell>
@@ -78,7 +81,7 @@ describe('SearchResults', () => {
 			</searchUi.ResultTableHead>
 			<searchUi.ResultTableBody>
 				<searchUi.ResultTableRow>
-					<searchUi.ResultTableBodyCell key='name'>Components</searchUi.ResultTableBodyCell>
+					<searchUi.ResultTableBodyCell key='name'><searchUi.ResultLink>Components</searchUi.ResultLink></searchUi.ResultTableBodyCell>
 					<searchUi.ResultTableBodyCell key='type'>C1 Page</searchUi.ResultTableBodyCell>
 					<searchUi.ResultTableBodyCell key='description'>This section contains pages that show off the different layouts and styling options.</searchUi.ResultTableBodyCell>
 					<searchUi.ResultTableBodyCell key='creationDate'>2016 Dec 14</searchUi.ResultTableBodyCell>
@@ -86,7 +89,7 @@ describe('SearchResults', () => {
 					<searchUi.ResultTableBodyCell key='published'>published</searchUi.ResultTableBodyCell>
 				</searchUi.ResultTableRow>
 				<searchUi.ResultTableRow>
-					<searchUi.ResultTableBodyCell key='name'>Navigation</searchUi.ResultTableBodyCell>
+					<searchUi.ResultTableBodyCell key='name'><searchUi.ResultLink>Navigation</searchUi.ResultLink></searchUi.ResultTableBodyCell>
 					<searchUi.ResultTableBodyCell key='type'>C1 Page</searchUi.ResultTableBodyCell>
 					<searchUi.ResultTableBodyCell key='description'>Test things like deep structures and labels that are darn long.</searchUi.ResultTableBodyCell>
 					<searchUi.ResultTableBodyCell key='creationDate'>2016 Dec 14</searchUi.ResultTableBodyCell>
@@ -94,7 +97,7 @@ describe('SearchResults', () => {
 					<searchUi.ResultTableBodyCell key='published'>published</searchUi.ResultTableBodyCell>
 				</searchUi.ResultTableRow>
 				<searchUi.ResultTableRow>
-					<searchUi.ResultTableBodyCell key='name'>Styles</searchUi.ResultTableBodyCell>
+					<searchUi.ResultTableBodyCell key='name'><searchUi.ResultLink>Styles</searchUi.ResultLink></searchUi.ResultTableBodyCell>
 					<searchUi.ResultTableBodyCell key='type'>C1 Page</searchUi.ResultTableBodyCell>
 					<searchUi.ResultTableBodyCell key='description'>This page contains different elements that you can define with the Visual Editor in the CMS Console.</searchUi.ResultTableBodyCell>
 					<searchUi.ResultTableBodyCell key='creationDate'>2016 Dec 14</searchUi.ResultTableBodyCell>
@@ -108,7 +111,7 @@ describe('SearchResults', () => {
 	it('should render sorting arrows correctly', () => {
 		props.searchQuery = props.searchQuery.set('sortInReverseOrder', true);
 		renderer.render(<SearchResults {...props}/>);
-		expect(renderer, 'to have rendered', <searchUi.ResultTable>
+		return expect(renderer, 'to have rendered', <searchUi.ResultTable>
 			<searchUi.ResultTableHead>
 				<searchUi.ResultTableRow>
 					<searchUi.ResultTableHeadCell key='name'>Label</searchUi.ResultTableHeadCell>
@@ -119,6 +122,21 @@ describe('SearchResults', () => {
 					<searchUi.ResultTableHeadCell key='published'>Published?</searchUi.ResultTableHeadCell>
 				</searchUi.ResultTableRow>
 			</searchUi.ResultTableHead>
-		</searchUi.ResultTable>);
+		</searchUi.ResultTable>)
+		.and(
+			'with event', 'click', 'on', <searchUi.ResultTableHeadCell id='description'/>,
+			'with event', 'click', 'on', <searchUi.ResultTableHeadCell id='type'/>,
+			'with event', 'click', 'on', <searchUi.ResultTableHeadCell id='label'/>
+		)
+		.then(() => Promise.all([
+			expect(props.updateQuery, 'to have calls satisfying', [
+				{args: [Immutable.Map({ sortBy: 'type', sortInReverseOrder: false })]},
+				{args: [Immutable.Map({ sortBy: 'label', sortInReverseOrder: false })]}
+			]),
+			expect(props.performSearch, 'to have calls satisfying', [
+				{args: [Immutable.Map({ sortBy: 'type', sortInReverseOrder: false })]},
+				{args: [Immutable.Map({ sortBy: 'label', sortInReverseOrder: false })]}
+			])
+		]));
 	});
 });

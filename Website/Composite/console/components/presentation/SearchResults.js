@@ -92,7 +92,7 @@ const SearchResults = props => {
 							props.performSearch(searchQuery);
 						} :
 						() => {};
-					return <ResultTableHeadCell key={col.get('fieldName')} onClick={sort} sortable={col.get('sortable')}>
+					return <ResultTableHeadCell key={col.get('fieldName')} id={col.get('fieldName')} onClick={sort} sortable={col.get('sortable')}>
 						{col.get('label')}
 						{props.searchQuery.get('sortBy') === col.get('fieldName') ?
 						<SortIcon id={props.searchQuery.get('sortInReverseOrder') ? 'chevron-up' : 'chevron-down'}/> :
