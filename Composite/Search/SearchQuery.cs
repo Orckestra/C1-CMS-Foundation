@@ -102,7 +102,7 @@ namespace Composite.Search
         /// Filters search results by data types.
         /// </summary>
         /// <param name="dataTypes"></param>
-        public void FilterByDataTypes(IEnumerable<Type> dataTypes)
+        public void FilterByDataTypes(params Type[] dataTypes)
         {
             Verify.ArgumentNotNull(dataTypes, nameof(dataTypes));
 

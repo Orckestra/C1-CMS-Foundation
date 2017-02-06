@@ -10,7 +10,10 @@ using SearchableFieldInfo = System.Collections.Generic.KeyValuePair<System.Refle
 
 namespace Composite.Search.Crawling
 {
-    internal static class DataTypeSearchReflectionHelper
+    /// <summary>
+    /// A helper class for extracting search related information frome the data types.
+    /// </summary>
+    public static class DataTypeSearchReflectionHelper
     {
         private static readonly ConcurrentDictionary<Type, IEnumerable<SearchableFieldInfo>> DocumentFieldsCache =
             new ConcurrentDictionary<Type, IEnumerable<SearchableFieldInfo>>();
@@ -19,7 +22,7 @@ namespace Composite.Search.Crawling
             new ConcurrentDictionary<PropertyInfo, IDataFieldProcessor>();
 
 
-        public static IEnumerable<SearchableFieldInfo> GetSearchableFields(Type interfaceType)
+        internal static IEnumerable<SearchableFieldInfo> GetSearchableFields(Type interfaceType)
         {
             if (!typeof(IData).IsAssignableFrom(interfaceType)) return Enumerable.Empty<SearchableFieldInfo>();
 
@@ -41,7 +44,7 @@ namespace Composite.Search.Crawling
             });
         }
 
-        public static IDataFieldProcessor GetDataFieldProcessor(PropertyInfo propertyInfo)
+        internal static IDataFieldProcessor GetDataFieldProcessor(PropertyInfo propertyInfo)
         {
             return DataFieldProcessors.GetOrAdd(propertyInfo, pi =>
             {
@@ -63,7 +66,12 @@ namespace Composite.Search.Crawling
 
 
 
-
+        /// <summary>
+        /// Gets an enumeration of the search document fields from a data type.
+        /// </summary>
+        /// <param name="interfaceType"></param>
+        /// <param name="includeDefaultFields"></param>
+        /// <returns></returns>
         public static IEnumerable<DocumentField> GetDocumentFields(Type interfaceType, bool includeDefaultFields = true)
         {
             var defaultFields = includeDefaultFields
