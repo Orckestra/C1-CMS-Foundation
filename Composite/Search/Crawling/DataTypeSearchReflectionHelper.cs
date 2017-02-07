@@ -6,6 +6,7 @@ using System.Reflection;
 using Composite.Core;
 using Composite.Core.Types;
 using Composite.Data;
+using Composite.Data.ProcessControlled;
 using SearchableFieldInfo = System.Collections.Generic.KeyValuePair<System.Reflection.PropertyInfo, Composite.Data.SearchableFieldAttribute>;
 
 namespace Composite.Search.Crawling
@@ -58,6 +59,12 @@ namespace Composite.Search.Crawling
                 if (propertyType == typeof (DateTime) || propertyType == typeof (DateTime?))
                 {
                     return new DateTimeDataFieldProcessor();
+                }
+
+                if (propertyInfo.DeclaringType == typeof(IPublishControlled) 
+                    && propertyInfo.Name == nameof(IPublishControlled.PublicationStatus))
+                {
+                    return new PublicationStatusDataFieldProcessor();
                 }
 
                 return new DefaultDataFieldProcessor();

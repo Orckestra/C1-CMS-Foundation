@@ -36,7 +36,7 @@ namespace Composite.Search.Crawling
         }
 
         /// <exclude />
-        protected override DocumentFieldFacet.FacetValuePreviewDelegate GetFacetValuePreviewFunction()
+        protected override DocumentFieldFacet.FacetValuePreviewDelegate GetFacetValuePreviewFunction(PropertyInfo propertyInfo)
         {
             return value =>
             {
