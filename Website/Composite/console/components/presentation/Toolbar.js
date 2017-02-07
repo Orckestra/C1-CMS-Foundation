@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import styled from 'styled-components';
 import colors from 'console/components/colors.js';
 import ActionButton from 'console/components/presentation/ActionButton.js';
+import ComboButton from 'console/components/presentation/ComboButton.js';
 import CheckboxGroup from 'console/components/presentation/CheckboxGroup.js';
 import Select from 'console/components/presentation/Select.js';
 
@@ -43,6 +44,11 @@ const Toolbar = props => (
 					option.label = option.label || option.value;
 				});
 				return <Select key={item.name} clearable={false} multi={false} simpleValue={true} {...item}/>;
+			case 'combobutton':
+				if (!(item.get('buttons') && item.get('buttons').size > 0)) return null;
+				return <ComboButton
+					key={item.get('name')}
+					{...item.toJS()}/>;
 			case 'button':
 			default:
 				if (!((item.get('label') || item.get('icon')) && item.get('action'))) return null;

@@ -12,9 +12,8 @@ const nodes = {
 			{
 				name: 'add',
 				type: 'combobutton',
-				group: 'add',
 				menu: true,
-				icon: 'icon-page-add-page',
+				icon: 'page-add-page',
 				buttons: [
 					{
 						name: 'addHome',

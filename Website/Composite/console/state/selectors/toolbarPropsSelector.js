@@ -6,6 +6,11 @@ const actionsSelector = props => props.actions;
 const pageNameSelector = props => props.pageName;
 const dirtySelector = props => props.dirty;
 
+function replaceProviderWithFunction(item, func) {
+	let actionProvider = item.get('action').toJS;
+	return item.set('action', func(actionProvider, item.get('name')));
+}
+
 // Combines actions and toolbar items
 export const toolbarPropsSelector = createSelector(
 	toolbarsSelector,
@@ -21,6 +26,11 @@ export const toolbarPropsSelector = createSelector(
 				});
 			} else if (item.get('type') === 'select' || item.get('type') === 'checkboxGroup') {
 				return item.set('onChange', actions.setOption(item.get('name')));
+			} else if (item.get('type') === 'combobutton') {
+				return item.set('buttons',
+					item.get('buttons').map(
+						button => replaceProviderWithFunction(button, actions.useProvider)
+					));
 			} else {
 				let provider = item.get('provider');
 				if (Immutable.Iterable.isIterable(provider)) {
