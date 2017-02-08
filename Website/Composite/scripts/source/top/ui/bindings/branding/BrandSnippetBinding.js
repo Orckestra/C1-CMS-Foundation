@@ -22,7 +22,7 @@ BrandSnippetBinding.snippetLoading = false;
 BrandSnippetBinding.snippetLoaded = false;
 
 /**
- * Load SVG images 
+ * Load SVG images
  */
 BrandSnippetBinding.snippetLoad = function (binding) {
 
@@ -37,13 +37,12 @@ BrandSnippetBinding.snippetLoad = function (binding) {
 		}
 	}
 
-	if (!BrandSnippetBinding.snippetLoading) {
 		BrandSnippetBinding.snippetLoading = true;
 		var request = new XMLHttpRequest();
 		request.onload = onsnippetload;
 		request.open('GET', Resolver.resolve(binding.getSnippetBrandedUrl()));
 		request.send();
-	}
+
 }
 
 /**
@@ -62,7 +61,7 @@ function BrandSnippetBinding() {
 	return this;
 }
 
-/** 
+/**
  * Identifies binding.
  */
 BrandSnippetBinding.prototype.toString = function () {
@@ -71,7 +70,7 @@ BrandSnippetBinding.prototype.toString = function () {
 }
 
 
-/** 
+/**
  * @overloads {Binding#onBindingRegister}
  */
 BrandSnippetBinding.prototype.onBindingRegister = function () {
@@ -80,7 +79,7 @@ BrandSnippetBinding.prototype.onBindingRegister = function () {
 	BrandSnippetBinding.snippetLoad(this);
 }
 
-/** 
+/**
  * @overloads {Binding#onBindingAttach}
  */
 BrandSnippetBinding.prototype.onBindingAttach = function () {
