@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>OrckestraCmsFoundation.Assemblies</id>
-    <title>Orckestra CMS Foundation Assemblies</title>
+    <id>C1CMS.Assemblies</id>
+    <title>C1 CMS Assemblies</title>
     <version>$version$</version>
     <authors>Orckestra A/S</authors>
     <owners>Orckestra A/S</owners>
@@ -10,10 +10,10 @@
     <projectUrl>https://github.com/Orckestra/CMS-Foundation</projectUrl>
     <!--iconUrl></iconUrl-->
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
-    <description>Contains dll-s distributed with Orckestra CMS Foundation.</description>
+    <description>Contains dll-s distributed with C1 CMS.</description>
     <releaseNotes></releaseNotes>
-    <copyright>Copyright 2016</copyright>
-    <tags>OrckestraCms</tags>
+    <copyright>Copyright 2017</copyright>
+    <tags>C1CMS</tags>
     <dependencies>
       <dependency id="Microsoft.AspNet.Razor" version="3.2.3" />
       <dependency id="Microsoft.AspNet.WebPages" version="3.2.3" />
