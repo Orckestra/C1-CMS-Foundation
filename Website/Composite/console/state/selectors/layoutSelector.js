@@ -12,7 +12,7 @@ export const currentPerspectiveNameSelector = createSelector(
 	layout => layout.get('currentPerspective')
 );
 
-const currentPerspectiveSelector = createSelector(
+export const currentPerspectiveSelector = createSelector(
 	perspectivesSelector,
 	currentPerspectiveNameSelector,
 	(perspectives, name) => perspectives.get(name)

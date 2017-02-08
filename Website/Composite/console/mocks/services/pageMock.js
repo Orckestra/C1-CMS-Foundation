@@ -460,6 +460,7 @@ const pages = {
 	'content-explorer': {
 		name: 'content-explorer',
 		label: 'Content',
+		icon: 'perspective-content',
 		type: 'explorer',
 		toolbars: [
 			{
@@ -516,6 +517,7 @@ const pages = {
 	},
 	'media-explorer': {
 		name: 'media-explorer',
+		icon: 'perspective-media',
 		label: 'Media',
 		type: 'explorer',
 		tabs: [{
@@ -530,6 +532,7 @@ const pages = {
 	},
 	'data-explorer': {
 		name: 'data-explorer',
+		icon: 'perspective-data',
 		label: 'Data',
 		type: 'explorer',
 		tabs: [{
@@ -544,6 +547,7 @@ const pages = {
 	},
 	'layout-explorer': {
 		name: 'layout-explorer',
+		icon: 'perspective-layout',
 		label: 'Layout',
 		type: 'explorer',
 		tabs: [{
@@ -558,6 +562,7 @@ const pages = {
 	},
 	'functions-explorer': {
 		name: 'functions-explorer',
+		icon: 'perspective-functions',
 		label: 'Functions',
 		type: 'explorer',
 		tabs: [{
@@ -572,6 +577,7 @@ const pages = {
 	},
 	'system-explorer': {
 		name: 'system-explorer',
+		icon: 'perspective-system',
 		label: 'System',
 		type: 'explorer',
 		tabs: [{

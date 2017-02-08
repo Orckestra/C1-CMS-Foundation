@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import colors from 'console/components/colors.js';
 import Icon from 'console/components/presentation/Icon.js';
 import ConnectDockPanel from 'console/components/container/ConnectDockPanel.js';
+import ConnectDockTabs from 'console/components/container/ConnectDockTabs.js';
 
 const sizes = {
 	closedExplorerWidth: 50,
@@ -118,7 +119,7 @@ transition: opacity ${timing.explorerOpen};
 }
 `;
 
-export const DockOverlay = styled.div`
+export const ContentOverlay = styled.div`
 position: absolute;
 right: 0;
 height: 100%;
@@ -130,7 +131,7 @@ visibility: hidden;
 }
 `;
 
-export const Dock = styled.div`
+export const Content = styled.div`
 position: absolute;
 right: 0;
 height: 100%;
@@ -143,7 +144,7 @@ transition: transform ${timing.explorerOpen};
 	transform: translateX(${sizes.openExplorerWidth - sizes.closedExplorerWidth}px);
 }
 `;
-export const DockPanel = styled.div`
+export const ContentPanel = styled.div`
 overflow: hidden;
 border-top-left-radius: 5px;
 background-color: white;
@@ -184,12 +185,13 @@ const Perspectives = props => <PerspectiveWrapper className={props.layout.get('p
 			<ScrollIconDown id="explorer-scroll-down" menuSize={props.layout.get('perspectives').size}/>
 		</PerspectiveMenu>
 	</Explorer>
-	<Dock>
-		<DockPanel>
+	<Content>
+		<ContentPanel>
+			<ConnectDockTabs/>
 			<ConnectDockPanel/>
-		</DockPanel>
-	</Dock>
-	<DockOverlay onClick={props.toggleExplorer}/>
+		</ContentPanel>
+	</Content>
+	<ContentOverlay onClick={props.toggleExplorer}/>
 </PerspectiveWrapper>;
 
 Perspectives.propTypes = {

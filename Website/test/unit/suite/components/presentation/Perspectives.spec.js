@@ -4,8 +4,8 @@ import TestUtils from 'react-addons-test-utils';
 import Immutable from 'immutable';
 import sinon from 'sinon';
 import ConnectDockPanel from 'console/components/container/ConnectDockPanel.js';
-import Perspectives, * as p from 'console/components/presentation/Perspectives.js';
-
+import ConnectDockTabs from 'console/components/container/ConnectDockTabs.js';
+import Perspectives, { openPerspective, PerspectiveWrapper, Explorer, MainIdentity, MainLogo, MainLabel, MenuButton, Perspective, PerspectiveIcon, PerspectiveLabel, Content, ContentPanel } from 'console/components/presentation/Perspectives.js';
 
 describe('Perspectives', () => {
 	let renderer, props;
@@ -27,6 +27,9 @@ describe('Perspectives', () => {
 					rootPage: 'search'
 				}
 			}),
+			pageList: Immutable.fromJS([
+
+			]),
 			layout: Immutable.fromJS({
 				currentPerspective: 'console-search',
 				perspectives: {
@@ -45,29 +48,30 @@ describe('Perspectives', () => {
 	it('renders perspective browser', () => {
 		renderer.render(<Perspectives {...props}/>);
 		return expect(renderer, 'to have rendered', (
-			<p.PerspectiveWrapper className=''>
-				<p.Explorer>
-					<p.MainIdentity>
-						<p.MainLogo/><p.MainLabel/>
-					</p.MainIdentity>
-					<p.MenuButton onClick={expect.it('to be', props.toggleExplorer)}/>
-					<p.MainIdentity>
-						<p.Perspective onClick={expect.it('to be a function').and('not to error')}>
-							<p.PerspectiveIcon id='magnifier'/>
-							<p.PerspectiveLabel>Search</p.PerspectiveLabel>
-						</p.Perspective>
-						<p.Perspective onClick={expect.it('to be a function').and('not to error')}>
-							<p.PerspectiveIcon id='perspective-content'/>
-							<p.PerspectiveLabel>Content</p.PerspectiveLabel>
-						</p.Perspective>
-					</p.MainIdentity>
-				</p.Explorer>
-				<p.Dock>
-					<p.DockPanel>
+			<PerspectiveWrapper className=''>
+				<Explorer>
+					<MainIdentity>
+						<MainLogo/><MainLabel/>
+					</MainIdentity>
+					<MenuButton onClick={expect.it('to be', props.toggleExplorer)}/>
+					<MainIdentity>
+						<Perspective onClick={expect.it('to be a function').and('not to error')}>
+							<PerspectiveIcon id='magnifier'/>
+							<PerspectiveLabel>Search</PerspectiveLabel>
+						</Perspective>
+						<Perspective onClick={expect.it('to be a function').and('not to error')}>
+							<PerspectiveIcon id='perspective-content'/>
+							<PerspectiveLabel>Content</PerspectiveLabel>
+						</Perspective>
+					</MainIdentity>
+				</Explorer>
+				<Content>
+					<ContentPanel>
+						<ConnectDockTabs/>
 						<ConnectDockPanel/>
-					</p.DockPanel>
-				</p.Dock>
-			</p.PerspectiveWrapper>
+					</ContentPanel>
+				</Content>
+			</PerspectiveWrapper>
 		))
 		.then(() => expect(props.setPerspective, 'to have calls satisfying', [
 			{ args: ['console-search'] },
@@ -80,13 +84,11 @@ describe('Perspectives', () => {
 		props.layout = props.layout.set('perspectivesOpen', true);
 		renderer.render(<Perspectives {...props}/>);
 		return expect(renderer, 'to have rendered', (
-			<p.PerspectiveWrapper className='open'/>
+			<PerspectiveWrapper className='open'/>
 		));
 	});
 
 	describe('openPerspective function', () => {
-		let openPerspective = p.openPerspective;
-
 		it('can open a perspective', () => {
 			let perspectiveDef = props.perspectiveDefs.get('console-search');
 			expect(openPerspective, 'when called with', [perspectiveDef, props])
