@@ -8,7 +8,7 @@ using System.Collections.Generic;
 namespace Composite.Data
 {
     /// <summary>
-    /// Provide access to the Orckestra CMS sitemap structure and primary page attributes.
+    /// Provide access to the C1 CMS sitemap structure and primary page attributes.
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "Sitemap")]
     public class SitemapNavigator : ImplementationContainer<SitemapNavigatorImplementation>

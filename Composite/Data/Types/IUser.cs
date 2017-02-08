@@ -9,7 +9,7 @@ using Microsoft.Practices.EnterpriseLibrary.Validation.Validators;
 namespace Composite.Data.Types
 {
     /// <summary>    
-    /// This data interface represents a administrative user in Orckestra CMS. This can be used to query users through a <see cref="Composite.Data.DataConnection"/>. 
+    /// This data interface represents a administrative user in C1 CMS. This can be used to query users through a <see cref="Composite.Data.DataConnection"/>. 
     /// </summary>
     [AutoUpdateble]
     [KeyPropertyName(nameof(Id))]

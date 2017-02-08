@@ -23,6 +23,8 @@
                         <div id="logo1" class="brand-logo dark"></div>
                     </div>
  </a>
+        <h2>Credits</h2>
+        <p>C1 CMS is developed by <a href="http://www.orckestra.com/">Orckestra Inc</a>.</p>
 				<h2>Visual Editor</h2>
 				<p>
 					powered by<br />

@@ -6,7 +6,7 @@ using Composite.C1Console.Security;
 namespace Composite.Core.PageTemplates
 {
     /// <summary>
-    /// Describes a page layout to the Orckestra CMS core so it may set up editing UI
+    /// Describes a page layout to the C1 CMS core so it may set up editing UI
     /// </summary>
     public class PageTemplateDescriptor
     {
