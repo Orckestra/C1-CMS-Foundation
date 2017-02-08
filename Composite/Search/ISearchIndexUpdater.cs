@@ -15,14 +15,14 @@ namespace Composite.Search
         /// <summary>
         /// Rebuilds search data for the given data source.
         /// </summary>
-        /// <param name="dataSource"></param>
-        void Populate(string dataSource);
+        /// <param name="searchDocumentSource"></param>
+        void Populate(string searchDocumentSource);
 
         /// <summary>
         /// Removes search documents received from the given data source.
         /// </summary>
-        /// <param name="dataSource"></param>
-        void Remove(string dataSource);
+        /// <param name="searchDocumentSource"></param>
+        void Remove(string searchDocumentSource);
 
         /// <summary>
         /// Creates a search document collection for the given culture.

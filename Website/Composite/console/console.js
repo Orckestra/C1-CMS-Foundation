@@ -53,7 +53,7 @@ body, input, textarea, select, button {
 `;
 
 
-document.title = 'Orckestra CMS: ' + location.hostname;
+document.title = 'C1 CMS: ' + location.hostname;
 
 const initialState = {
 	pageDefs: {

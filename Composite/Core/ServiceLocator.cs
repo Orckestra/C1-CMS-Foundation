@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Composite.Core.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Composite.Core
@@ -19,7 +20,7 @@ namespace Composite.Core
     {
         private const string HttpContextKey = "HttpApplication.ServiceScope";
         private static IServiceCollection _serviceCollection = new ServiceCollection();
-        private static IServiceProvider _serviceProvider = null;
+        private static IServiceProvider _serviceProvider;
         private static ConcurrentDictionary<Type, bool> _hasTypeLookup = new ConcurrentDictionary<Type, bool>();
         private static Func<IServiceCollection, IServiceProvider> _serviceProviderBuilder = s => s.BuildServiceProvider();
 
@@ -122,6 +123,12 @@ namespace Composite.Core
         internal static bool HasService(Type serviceType)
         {
             Verify.ArgumentNotNull(serviceType, nameof(serviceType));
+
+            if (!SystemSetupFacade.IsSystemFirstTimeInitialized || SystemSetupFacade.SetupIsRunning)
+            {
+                return false;
+            }
+
             Verify.IsNotNull(_serviceProvider, "IServiceProvider not build - call out of expected sequence.");
 
             bool hasType;

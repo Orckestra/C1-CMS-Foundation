@@ -10,7 +10,7 @@ using Composite.Functions;
 namespace Composite.AspNet.Razor
 {
     /// <summary>
-    /// Defines a Orckestra CMS razor control
+    /// Defines a C1 CMS razor control
     /// </summary>
 	public abstract class CompositeC1WebPage : WebPage, IDisposable
 	{

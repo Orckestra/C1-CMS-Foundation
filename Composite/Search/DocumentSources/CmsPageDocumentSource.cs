@@ -103,10 +103,15 @@ namespace Composite.Search.DocumentSources
                 label = page.Title;
             }
 
+            bool isPublished = page.DataSourceId.PublicationScope == PublicationScope.Published;
+            string documentId = GetDocumentId(page);
+
             var documentBuilder = new SearchDocumentBuilder();
 
             documentBuilder.SetDataType(typeof(IPage));
             documentBuilder.CrawlData(page);
+
+            string url;
 
             using (new DataConnection(page.DataSourceId.PublicationScope, page.DataSourceId.LocaleScope))
             {
@@ -122,12 +127,9 @@ namespace Composite.Search.DocumentSources
                 {
                     Log.LogWarning(LogTitle, ex);
                 }
+
+                url = isPublished ? PageUrls.BuildUrl(page, UrlKind.Internal) : null;
             }
-
-            bool isPublished = page.DataSourceId.PublicationScope == PublicationScope.Published;
-            string documentId = GetDocumentId(page);
-
-            string url = isPublished ? PageUrls.BuildUrl(page, UrlKind.Internal) : null;
 
             return documentBuilder.BuildDocument(Name, documentId, label, null, entityToken, url);
         }
