@@ -403,7 +403,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     <assemblyBinding xmlns=""urn:schemas-microsoft-com:asm.v1"">
                      <dependentAssembly>
                         <assemblyIdentity name=""{0}"" publicKeyToken=""{1}"" culture=""neutral""/>
-                        <!-- This binding redirect was added by Orckestra CMS package installer -->
+                        <!-- This binding redirect was added by C1 CMS package installer -->
                         <bindingRedirect oldVersion=""0.0.0.0-{2}"" newVersion=""{2}"" />
                      </dependentAssembly>
                     </assemblyBinding>", assemblyName.Name, publicKeyToken, newTargetVersionStr)).Elements().Single());

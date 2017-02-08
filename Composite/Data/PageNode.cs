@@ -11,7 +11,7 @@ using Composite.Data.Types;
 namespace Composite.Data
 {
     /// <summary>
-    /// Represents a page in the Orckestra CMS sitemap hierarchy.
+    /// Represents a page in the C1 CMS sitemap hierarchy.
     /// </summary>
     public class PageNode
     {

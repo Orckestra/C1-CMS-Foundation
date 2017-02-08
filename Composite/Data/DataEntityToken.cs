@@ -10,7 +10,7 @@ using Composite.Core.Types;
 namespace Composite.Data
 {
     /// <summary>
-    /// EntityToken that represents a C1 Data item. EntityToken is used through out Orckestra CMS to describe artifacts that can have security settings and be navigated and this class make it easy
+    /// EntityToken that represents a C1 Data item. EntityToken is used through out C1 CMS to describe artifacts that can have security settings and be navigated and this class make it easy
     /// to move between data items and EntityToken.
     /// </summary>
     [SecurityAncestorProvider(typeof(DataSecurityAncestorProvider))]

@@ -78,7 +78,7 @@
 
   <xs:complexType name="DataTypeType">
     <xs:annotation>
-      <xs:documentation xml:lang="en-us">A Orckestra CMS data type</xs:documentation>
+      <xs:documentation xml:lang="en-us">A C1 CMS data type</xs:documentation>
     </xs:annotation>
     <xs:attribute name="Type" use="required" type="xs:string" />
 

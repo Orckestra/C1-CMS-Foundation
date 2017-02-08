@@ -272,7 +272,7 @@
 	<string key="Composite.Web.Html.Template.CommonMetaTags.param.Designer.label" value="Designer" />
 	<string key="Composite.Web.Html.Template.CommonMetaTags.param.Designer.help" value="Who designed this website? Show it in the 'Designer' meta tag. Default is not to emit the meta tag." />
 	<string key="Composite.Web.Html.Template.CommonMetaTags.param.ShowGenerator.label" value="Show generator" />
-	<string key="Composite.Web.Html.Template.CommonMetaTags.param.ShowGenerator.help" value="Show the world you support Orckestra CMS Foundation - free open source!" />
+	<string key="Composite.Web.Html.Template.CommonMetaTags.param.ShowGenerator.help" value="Show the world you support C1 CMS Foundation - free open source!" />
 	<string key="Composite.Web.Html.Template.LangAttribute.description" value="Appends a lang='(language code)' attribute the the parent element, reflecting the language of the current page. You can put this just below the &lt;html /&gt; tag." />
   <string key="Composite.Web.Html.Template.PageTemplateFeature.description" value="Includes a named Page Template Feature at this location. Page Template Features can contain HTML and functional snippets and are managed on the Layout perspective." />
   <string key="Composite.Web.Html.Template.PageTemplateFeature.param.FeatureName.label" value="Feature name" />

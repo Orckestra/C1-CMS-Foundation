@@ -188,7 +188,7 @@ SEODOMParser.prototype = {
 			name = name.toLowerCase ();
 			switch ( name ) {
 				case "c1.menutitle" :
-				case "c1.urltitle" :
+			    case "c1.urlseowords":
 				case "description" :
 					var text = element.getAttribute ( "content" );
 					if ( text ) {
@@ -200,7 +200,7 @@ SEODOMParser.prototype = {
 									case "c1.menutitle" :
 										result.isInMenuTitle = true;
 										break;
-									case "c1.urltitle" :
+								    case "c1.urlseowords":
 										result.isInURL = true;
 										break;
 									case "description" :

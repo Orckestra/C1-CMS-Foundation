@@ -19,7 +19,7 @@ namespace Composite.Core.PageTemplates
         IEnumerable<PageTemplateDescriptor> GetPageTemplates();
 
         /// <summary>
-        /// Factory that give Orckestra CMS a IPageLayouter capable of rendering a Orckestra CMS page with the specified layout ID.
+        /// Factory that give C1 CMS a IPageLayouter capable of rendering a C1 CMS page with the specified layout ID.
         /// The factory will be called for each individual page rendering 
         /// </summary>
         /// <returns></returns>
