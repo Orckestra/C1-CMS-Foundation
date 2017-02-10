@@ -18,4 +18,4 @@ Head over to https://orckestracms.codeplex.com/discussions to ask questions
 ## Who are we? ##
 Orckestra is the company driving the development of C1 CMS Foundation. We have a team  working full time on this CMS and on other cool stuff you can add to it. We are situated in Austin, Montreal, Copenhagen and Kiev. We specialize in enterprise commerce software. 
 
-You can visit us at http://cms.orckestra.com and http://www.orckestra.com/
+You can visit us at http://c1.orckestra.com and http://www.orckestra.com/
