@@ -18,7 +18,6 @@ namespace Composite.C1Console.Security
         {
             return EntityTokenSerializer.Deserialize(serializedObject);
         }
-
     }
 
 
@@ -29,7 +28,7 @@ namespace Composite.C1Console.Security
     /// EntityToken is used through out C1 CMS to describe artifacts that can have security settings. Also see <see cref="Composite.Data.DataEntityToken"/>.
     /// </summary>
     /// <remarks>
-    /// When subclassing this class and adding properties that have an impack when identity (equiallity)
+    /// When subclassing this class and adding properties that have an impact when identity (equality)
     /// of the subclass, remember to overload Equal and GetHashCode!
     /// </remarks>
     [DebuggerDisplay("Type = {Type}, Source = {Source}, Id = {Id}")]
@@ -62,7 +61,7 @@ namespace Composite.C1Console.Security
         /// The state of the EntityToken. Invalid entity tokens will be automatically removed from the system.
         /// </summary>
         /// <returns>The state of the EntityToken.</returns>
-        public virtual bool IsValid() { return true; }
+        public virtual bool IsValid() => true;
 
 
         /// <summary>
@@ -110,11 +109,11 @@ namespace Composite.C1Console.Security
         {
             dic = StringConversionServices.ParseKeyValueCollection(serializedEntityToken);
 
-            if ((dic.ContainsKey("_EntityToken_Type_") == false) ||
-                (dic.ContainsKey("_EntityToken_Source_") == false) ||
-                (dic.ContainsKey("_EntityToken_Id_") == false))
+            if (!dic.ContainsKey("_EntityToken_Type_") ||
+                !dic.ContainsKey("_EntityToken_Source_") ||
+                !dic.ContainsKey("_EntityToken_Id_"))
             {
-                throw new ArgumentException("The serializedEntityToken is not a serialized entity token", "serializedEntityToken");
+                throw new ArgumentException("Is not a serialized entity token", nameof(serializedEntityToken));
             }
 
             type = StringConversionServices.DeserializeValueString(dic["_EntityToken_Type_"]);
@@ -142,16 +141,16 @@ namespace Composite.C1Console.Security
 
 
         /// <exclude />
-        public virtual string OnGetTypePrettyHtml() { return this.Type; }
+        public virtual string OnGetTypePrettyHtml() => this.Type;
 
         /// <exclude />
-        public virtual string OnGetSourcePrettyHtml() { return this.Source; }
+        public virtual string OnGetSourcePrettyHtml() => this.Source;
 
         /// <exclude />
-        public virtual string OnGetIdPrettyHtml() { return this.Id; }
+        public virtual string OnGetIdPrettyHtml() => this.Id;
 
         /// <exclude />
-        public virtual string OnGetExtraPrettyHtml() { return null; }
+        public virtual string OnGetExtraPrettyHtml() => null;
 
 
         /// <exclude />
@@ -174,23 +173,21 @@ namespace Composite.C1Console.Security
         /// <exclude />
         public bool EqualsWithVersionIgnore(object obj)
         {
-            EntityToken entityToken = obj as EntityToken;
+            var entityToken = obj as EntityToken;
 
             if (entityToken == null) return false;
 
-
             ValidateEntityToken();
 
-            if (entityToken.GetHashCode() != GetHashCode()) return false;
-
-            return entityToken.Id == this.Id &&
+            return entityToken.GetHashCode() == GetHashCode() &&
+                   entityToken.Id == this.Id &&
                    entityToken.Type == this.Type &&
                    entityToken.Source == this.Source &&
                    entityToken.GetType() == this.GetType();
         }
 
         /// <exclude />
-        public virtual string VersionId { get;  } = "";
+        public virtual string VersionId { get; } = "";
 
 
         /// <exclude />
@@ -229,7 +226,7 @@ namespace Composite.C1Console.Security
         /// <exclude />
         public override string ToString()
         {
-            return string.Format("Source = {0}, Type = {1}, Id = {2}", this.Source, this.Type, this.Id);
+            return $"Source = {this.Source}, Type = {this.Type}, Id = {this.Id}";
         }
 
 
@@ -240,9 +237,9 @@ namespace Composite.C1Console.Security
 
             _entityTokenUniquenessValidated = true;
 
-            if ((string.IsNullOrEmpty(this.Type)) &&
-                (string.IsNullOrEmpty(this.Source)) &&
-                (string.IsNullOrEmpty(this.Id)))
+            if (string.IsNullOrEmpty(this.Type) &&
+                string.IsNullOrEmpty(this.Source) &&
+                string.IsNullOrEmpty(this.Id))
             {
                 ThrowNotUniqueException();
             }
@@ -250,7 +247,7 @@ namespace Composite.C1Console.Security
 
         private void ThrowNotUniqueException()
         {
-            throw new InvalidOperationException(string.Format("EntityTokens should be unique for the given element. The properties Type, Source and Id may not all be empty string. This is not the case for this type {0}", GetType()));
+            throw new InvalidOperationException($"EntityTokens should be unique for the given element. The properties Type, Source and Id may not all be empty string. This is not the case for this type {GetType()}");
         }
     }
 }
