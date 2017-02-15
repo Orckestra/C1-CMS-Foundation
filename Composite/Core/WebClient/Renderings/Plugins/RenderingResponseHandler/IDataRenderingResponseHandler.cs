@@ -4,7 +4,7 @@
 namespace Composite.Core.WebClient.Renderings.Plugins.RenderingResponseHandler
 {
     /// <summary>
-    /// Orckestra CMS allow you to build a RenderingResponseHandler plug-in. It enables developers to intercept 
+    /// C1 CMS allow you to build a RenderingResponseHandler plug-in. It enables developers to intercept 
     /// page and media requests and control if the request should be accepted or redirected and if the rendered 
     /// resource is allowed to be publicly cached.
     /// </summary>

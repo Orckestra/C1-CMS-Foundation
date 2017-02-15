@@ -12,10 +12,10 @@ using Composite.Core.IO;
 namespace Composite.Core.Xml
 {
     /// <summary>
-    /// Represents an XHTML Document inside Orckestra CMS. 
+    /// Represents an XHTML Document inside C1 CMS. 
     /// 
     /// This structure can contain both head elements and body elements (content) and XhtmlDocuments that are being rendered
-    /// can be nested within each other. The Orckestra CMS core will normalize such a nested structure when rendering a page, ensuring head elementsa flow to the top level
+    /// can be nested within each other. The C1 CMS core will normalize such a nested structure when rendering a page, ensuring head elementsa flow to the top level
     /// document and body content is left, ultimately yielding one complete and correctly structured xhtml page.
     /// </summary>
     [XhtmlDocumentConverter]

@@ -8,7 +8,7 @@ namespace Composite.Core.Configuration.BuildinPlugins.GlobalSettingsProvider
 {
     internal sealed class BuildinGlobalSettingsProvider : IGlobalSettingsProvider
     {
-        private string _applicationName = "Orckestra CMS";
+        private string _applicationName = "C1 CMS";
         private string _applicationShortName = "C1";
         private string _brandedVersionAssemblySource = "Composite";
         private string _configurationDirectory = "~";

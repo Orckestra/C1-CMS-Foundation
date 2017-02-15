@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using Composite.Core.ResourceSystem;
 using Composite.Core.Types;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
-using Composite.Data.ProcessControlled;
-using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
 using Composite.Data.Types;
 
 using Texts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_Search.Untranslated;
@@ -76,7 +72,7 @@ namespace Composite.Search.Crawling
             {
                 Limit = 100,
                 MinHitCount = 1,
-                PreviewFunction = GetFacetValuePreviewFunction()
+                PreviewFunction = GetFacetValuePreviewFunction(propertyInfo)
             };
         }
 
@@ -143,7 +139,6 @@ namespace Composite.Search.Crawling
 
             if (fieldName == DefaultDocumentFieldNames.CreationTime) return Texts.FieldNames_CreationDate;
             if (propertyInfo.Name == nameof(ICreationHistory.CreatedBy)) return Texts.FieldNames_CreatedBy;
-            if (propertyInfo.Name == nameof(IPublishControlled.PublicationStatus)) return Texts.FieldNames_PublicationStatus;
             if (propertyInfo.Name == nameof(IMediaFile.MimeType)) return Texts.FieldNames_MimeType;
 
             var frpAttribute = propertyInfo.GetCustomAttribute<FormRenderingProfileAttribute>();
@@ -152,44 +147,32 @@ namespace Composite.Search.Crawling
                 return frpAttribute.Label;
             }
 
-            var dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(propertyInfo.DeclaringType);
-            var fieldDescriptor = dataTypeDescriptor?.Fields.FirstOrDefault(f => f.Name == propertyInfo.Name);
-            var label = fieldDescriptor?.FormRenderingProfile?.Label;
+            Guid immutableTypeId;
+            DataTypeDescriptor dataTypeDescriptor;
+            if (propertyInfo.DeclaringType.TryGetImmutableTypeId(out immutableTypeId)
+                && DynamicTypeManager.TryGetDataTypeDescriptor(immutableTypeId, out dataTypeDescriptor))
+            {
+                var fieldDescriptor = dataTypeDescriptor?.Fields.FirstOrDefault(f => f.Name == propertyInfo.Name);
+                var label = fieldDescriptor?.FormRenderingProfile?.Label;
+                if (label != null)
+                {
+                    return label;
+                }
+            }
 
-            return label ?? propertyInfo.Name;
+            return propertyInfo.Name;
         }
 
         /// <exclude />
         protected virtual DocumentFieldPreview.ValuePreviewDelegate GetPreviewFunction(PropertyInfo propertyInfo)
         {
-            if (propertyInfo.DeclaringType == typeof (IPublishControlled) 
-                && propertyInfo.Name == nameof(IPublishControlled.PublicationStatus))
-            {
-                return value => GetLocalizedPublicationStatus((string)value);
-            }
-
             return value => value?.ToString();
         }
 
-        private static string GetLocalizedPublicationStatus(string status)
-        {
-            switch (status)
-            {
-                case GenericPublishProcessController.Published:
-                    return LocalizationFiles.Composite_Management.PublishingStatus_published;
-                case GenericPublishProcessController.Draft:
-                    return LocalizationFiles.Composite_Management.PublishingStatus_draft;
-                case GenericPublishProcessController.AwaitingApproval:
-                    return LocalizationFiles.Composite_Management.PublishingStatus_awaitingApproval;
-                case GenericPublishProcessController.AwaitingPublication:
-                    return LocalizationFiles.Composite_Management.PublishingStatus_awaitingPublication;
-            }
 
-            return status;
-        }
 
         /// <exclude />
-        protected virtual DocumentFieldFacet.FacetValuePreviewDelegate GetFacetValuePreviewFunction()
+        protected virtual DocumentFieldFacet.FacetValuePreviewDelegate GetFacetValuePreviewFunction(PropertyInfo propertyInfo)
         {
             return obj => obj;
         }

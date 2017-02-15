@@ -114,8 +114,7 @@ namespace Composite.Core.WebClient.Setup
                 ApplicationLevelEventHandlers.ApplicationStartInitialize();
 
                 Log.LogInformation(VerboseLogTitle, "Creating first locale: " + language);
-                LocalizationFacade.AddLocale(locale, "", true, false);
-                LocalizationFacade.SetDefaultLocale(locale);
+                LocalizationFacade.AddLocale(locale, "", true, false, true);
 
 
                 Log.LogInformation(VerboseLogTitle, "Creating first user: " + username);

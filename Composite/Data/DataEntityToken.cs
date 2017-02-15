@@ -10,7 +10,7 @@ using Composite.Core.Types;
 namespace Composite.Data
 {
     /// <summary>
-    /// EntityToken that represents a C1 Data item. EntityToken is used through out Orckestra CMS to describe artifacts that can have security settings and be navigated and this class make it easy
+    /// EntityToken that represents a C1 Data item. EntityToken is used through out C1 CMS to describe artifacts that can have security settings and be navigated and this class make it easy
     /// to move between data items and EntityToken.
     /// </summary>
     [SecurityAncestorProvider(typeof(DataSecurityAncestorProvider))]
@@ -78,11 +78,7 @@ namespace Composite.Data
         public override string VersionId => this.SerializedVersionId;
 
         /// <exclude />
-        public override bool IsValid()
-        {
-            return this.Data != null;
-        }
-
+        public override bool IsValid() => this.Data != null;
 
 
         /// <exclude />
@@ -92,14 +88,9 @@ namespace Composite.Data
             {
                 if (_interfaceType == null)
                 {
-                    if (_dataSourceId != null)
-                    {
-                        _interfaceType = _dataSourceId.InterfaceType;
-                    }
-                    else
-                    {
-                        _interfaceType = TypeManager.TryGetType(this.Type);
-                    }
+                    _interfaceType = _dataSourceId != null 
+                        ? _dataSourceId.InterfaceType 
+                        : TypeManager.TryGetType(this.Type);
                 }
 
                 return _interfaceType;
@@ -180,9 +171,10 @@ namespace Composite.Data
             {
                 IDataId dataId = DataIdSerializer.Deserialize(this.Id, this.VersionId);
 
-                var sb = new StringBuilder();
-                sb.Append("<b>DataId</b><br />");
-                sb.Append("<b>Type:</b> " + dataId.GetType() + "<br />");
+                var sb = new StringBuilder()
+                        .Append("<b>DataId</b><br />")
+                        .Append($"<b>Type:</b> {dataId.GetType()}<br />");
+
                 foreach (PropertyInfo propertyInfo in dataId.GetType().GetPropertiesRecursively())
                 {
                     sb.Append("<b>" + propertyInfo.Name + ":</b> " + propertyInfo.GetValue(dataId, null).ToString() + "<br />");
@@ -215,14 +207,7 @@ namespace Composite.Data
             {
                 if (_serializedId == null)
                 {
-                    if (!GetVersionKeyPropertyNames().Any())
-                    {
-                        return this.DataSourceId.DataId.Serialize(null);
-                    }
-
-                    var keyPropertyNames = this.InterfaceType
-                        .GetCustomAttributesRecursively<KeyPropertyNameAttribute>()
-                        .Select(f=>f.KeyPropertyName);
+                    var keyPropertyNames = GetVersionKeyPropertyNames().Any() ? GetKeyPropertyNames() : null;
 
                     _serializedId = this.DataSourceId.DataId.Serialize(keyPropertyNames);
                 }
@@ -238,16 +223,20 @@ namespace Composite.Data
                 if (_serializedVersionId == null)
                 {
                     var versionKeyPropertyNames = GetVersionKeyPropertyNames();
-                    if (!versionKeyPropertyNames.Any())
-                    {
-                        return "";
-                    }
 
-                    _serializedVersionId = this.DataSourceId.DataId.Serialize(versionKeyPropertyNames);
+                    _serializedVersionId = versionKeyPropertyNames.Any() 
+                        ? this.DataSourceId.DataId.Serialize(versionKeyPropertyNames)
+                        : string.Empty;
                 }
 
                 return _serializedVersionId;
             }
+        }
+
+        private IEnumerable<string> GetKeyPropertyNames()
+        {
+            return this.InterfaceType.GetCustomAttributesRecursively<KeyPropertyNameAttribute>()
+                .Select(f => f.KeyPropertyName);
         }
 
 

@@ -255,6 +255,7 @@
     <Compile Include="Search\Crawling\DefaultDocumentFieldNames.cs" />
     <Compile Include="Search\Crawling\EntityTokenSecurityHelper.cs" />
     <Compile Include="Search\Crawling\IDataFieldProcessorProvider.cs" />
+    <Compile Include="Search\Crawling\PublicationStatusDataFieldProcessor.cs" />
     <Compile Include="Search\Crawling\SearchDocumentBuilder.cs" />
     <Compile Include="Search\Crawling\DateTimeDataFieldProcessor.cs" />
     <Compile Include="Search\Crawling\DefaultDataFieldProcessor.cs" />

@@ -58,13 +58,8 @@ namespace Composite.Data.Foundation
 
         public S Execute<S>(Expression expression)
         {
-            bool pullIntoMemory = ShouldBePulledIntoMemory(expression);
-
-            var handleInProviderVisitor = new DataFacadeQueryableExpressionVisitor(pullIntoMemory);
-
-            Expression newExpression = handleInProviderVisitor.Visit(expression);
-
-            IQueryable source = handleInProviderVisitor.Queryable;
+            IQueryable source;
+            var newExpression = BuildSqlCompatibleExpression(expression, out source);
 
             return (S)source.Provider.Execute(newExpression);
         }
@@ -86,30 +81,39 @@ namespace Composite.Data.Foundation
                 }
             }
 
-            bool pullIntoMemory = ShouldBePulledIntoMemory(_currentExpression);
+            IQueryable source;
+            var newExpression = BuildSqlCompatibleExpression(_currentExpression, out source);
+
+            IQueryable<T> queryable = (IQueryable<T>)source.Provider.CreateQuery(newExpression);
+
+            return queryable.GetEnumerator();
+        }
+
+
+        private static Expression BuildSqlCompatibleExpression(Expression expression, out IQueryable source)
+        {
+            bool pullIntoMemory = ShouldBePulledIntoMemory(expression);
+
             var handleInProviderVisitor = new DataFacadeQueryableExpressionVisitor(pullIntoMemory);
 
-            Expression newExpression = handleInProviderVisitor.Visit(_currentExpression);
+            var newExpression = handleInProviderVisitor.Visit(expression);
 
             // Checking if the source contains queries both from SQL and Composite.Data.Caching.CachingQueryable in-memory queries. 
             // In this case, we can replace CachingQueryable instances with sql queries which allows building correct sql statements.
             var analyzer = new QueryableAnalyzerVisitor();
             analyzer.Visit(newExpression);
 
-            if(analyzer.CachedSqlQueries > 1
+            if (analyzer.CachedSqlQueries > 1
                || (analyzer.SqlQueries > 0 && analyzer.CachedSqlQueries > 0))
             {
                 newExpression = new CachedQueryExtractorVisitor().Visit(newExpression);
                 newExpression = handleInProviderVisitor.Visit(newExpression);
             }
 
-            // Executing the query
-            IQueryable source = handleInProviderVisitor.Queryable;
-            IQueryable<T> queryable = (IQueryable<T>)source.Provider.CreateQuery(newExpression);
+            source = handleInProviderVisitor.Queryable;
 
-            return queryable.GetEnumerator();
+            return newExpression;
         }
-
 
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -136,11 +140,7 @@ namespace Composite.Data.Foundation
 
 
 
-        public Type ElementType
-        {
-            get { return typeof(T); }
-        }
-
+        public Type ElementType => typeof(T);
 
 
         public object Execute(Expression expression)
@@ -152,33 +152,15 @@ namespace Composite.Data.Foundation
 
 
 
-        public Expression Expression
-        {
-            get
-            {
-                if (_currentExpression != null)
-                {
-                    return _currentExpression;
-                }
-                
-                return Expression.Constant(this);
-            }
-        }
+        public Expression Expression => _currentExpression ?? Expression.Constant(this);
 
 
+        public ICollection<IQueryable> Sources => _sources;
 
-        public ICollection<IQueryable> Sources
-        {
-            get { return _sources; }
-        }
-
-        public Type InterfaceType
-        {
-            get { return typeof (T); }
-        }
+        public Type InterfaceType => typeof (T);
 
 
-        private bool ShouldBePulledIntoMemory(Expression expression)
+        private static bool ShouldBePulledIntoMemory(Expression expression)
         {
             var analyzer = new QueryableAnalyzerVisitor();
             analyzer.Visit(expression);
@@ -195,10 +177,7 @@ namespace Composite.Data.Foundation
             }
         }
 
-        public IQueryProvider Provider
-        {
-            get { return this; }
-        }
+        public IQueryProvider Provider => this;
 
 
         private class QueryableAnalyzerVisitor : ExpressionVisitor
