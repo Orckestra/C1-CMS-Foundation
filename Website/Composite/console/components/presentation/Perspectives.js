@@ -173,6 +173,7 @@ const Perspectives = props => <PerspectiveWrapper className={props.layout.get('p
 			<ScrollIconUp id="explorer-scroll-up" menuSize={props.layout.get('perspectives').size}/>
 			{props.layout.get('perspectives').keySeq().map(perspectiveName => {
 				let perspectiveDef = props.perspectiveDefs.get(perspectiveName);
+				if (!perspectiveDef) return null;
 				return <Perspective
 					active={props.layout.get('currentPerspective') === perspectiveName}
 					key={perspectiveDef.get('name')}

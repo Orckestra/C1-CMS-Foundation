@@ -9,7 +9,7 @@ export const perspectiveDefsSelector = createSelector(
 
 export const perspectiveDefsListSelector = createSelector(
 	perspectiveDefsSelector,
-	perspectiveDefs => perspectiveDefs.toList()
+	perspectiveDefs => perspectiveDefs.toList() || Immutable.List()
 );
 
 // export const currentPerspectiveDefSelector = createSelector(

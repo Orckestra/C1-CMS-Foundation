@@ -7,7 +7,7 @@ describe('initState', () => {
 	let store;
 	beforeEach(() => {
 		store = {
-			dispatch: sinon.spy().named('dispatch'),
+			dispatch: sinon.stub().named('dispatch').returns(Promise.resolve()),
 			getState: () => Immutable.fromJS({
 				perspectiveDefs: {
 					test: {
@@ -21,11 +21,12 @@ describe('initState', () => {
 		};
 	});
 
-	it('loads definitions, sets page list, the shown page', () =>
+	it('loads perspectives, loads page definitions, sets page list, the shown page', () =>
 		expect(initState, 'when called with', [store], 'to be undefined')
 		.then(() =>
 			expect(store.dispatch, 'to have calls satisfying', [
-				{ spy: store.dispatch, args: [expect.it('to be a function')]}
+				{ args: [expect.it('to be a function')]},
+				{ args: [expect.it('to be a function')]}
 			])
 		)
 	);

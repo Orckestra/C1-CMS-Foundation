@@ -56,46 +56,7 @@ body, input, textarea, select, button {
 
 document.title = 'Orckestra CMS: ' + location.hostname;
 
-const initialState = {
-	perspectiveDefs: {
-		content: {
-			name: 'content',
-			icon: 'perspective-content',
-			label: 'Content',
-			rootPage: 'content-explorer'
-		},
-		media: {
-			name: 'media',
-			icon: 'perspective-media',
-			label: 'Media',
-			rootPage: 'media-explorer'
-		},
-		data: {
-			name: 'data',
-			icon: 'perspective-datas',
-			label: 'Data',
-			rootPage: 'data-explorer'
-		},
-		layout: {
-			name: 'layout',
-			icon: 'perspective-design',
-			label: 'Layout',
-			rootPage: 'layout-explorer'
-		},
-		functions: {
-			name: 'functions',
-			icon: 'perspective-functions',
-			label: 'Functions',
-			rootPage: 'functions-explorer'
-		},
-		system: {
-			name: 'system',
-			icon: 'perspective-system',
-			label: 'System',
-			rootPage: 'system-explorer'
-		}
-	}
-};
+const initialState = {};
 
 function whenReadyRender() {
 	if (document.readyState === 'complete') {

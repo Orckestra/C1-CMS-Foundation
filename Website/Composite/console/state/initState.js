@@ -1,3 +1,4 @@
+import { loadPerspectives } from 'console/state/actions/loadPerspectives.js';
 import { loadAndOpenPage } from 'console/state/actions/loadAndOpen.js';
 // The intent is that this should be as small as possible, instead initializing
 // from server data
@@ -10,15 +11,17 @@ if (location.search && /(\?|&)pageId=/.test(location.search)) {
 		store.dispatch(loadAndOpenPage(pageName));
 	};
 } else {
-	runStartActions = store => {
-		let state = store.getState();
-		let pageName = state.getIn([
-			'perspectiveDefs',
-			state.getIn(['layout', 'currentPerspective']),
-			'rootPage'
-		]);
-		store.dispatch(loadAndOpenPage(pageName));
-	};
+	runStartActions = store =>
+		store.dispatch(loadPerspectives())
+		.then(() => {
+			let state = store.getState();
+			let pageName = state.getIn([
+				'perspectiveDefs',
+				state.getIn(['layout', 'currentPerspective']),
+				'rootPage'
+			]);
+			store.dispatch(loadAndOpenPage(pageName));
+		});
 }
 
 export default function initState(store) {

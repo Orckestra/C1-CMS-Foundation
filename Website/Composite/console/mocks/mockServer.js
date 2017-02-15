@@ -2,6 +2,7 @@ import Wampy from 'wampy';
 import pageFetcher from 'console/mocks/services/pageMock.js';
 import { valueFetcher, valuePutter } from 'console/mocks/services/valueMock.js';
 import nodeFetcher from 'console/mocks/services/treeNodeMock.js';
+import getPerspectives from 'console/mocks/services/perspectiveMock.js';
 
 let url = new URL('/Composite/api/Router', location.href);
 url.protocol = 'ws:';
@@ -28,6 +29,7 @@ const client = new Wampy(url.href, {
 			registerMock('data.values.load', valueFetcher),
 			registerMock('data.values.save', valuePutter),
 			registerMock('struct.node', nodeFetcher),
+			registerMock('struct.perspectives', getPerspectives),
 		]).then(unblock);
 	}
 });
