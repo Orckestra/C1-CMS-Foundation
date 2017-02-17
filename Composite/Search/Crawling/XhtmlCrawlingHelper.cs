@@ -76,8 +76,10 @@ namespace Composite.Search.Crawling
             IFunction function;
             try
             {
-                function = FunctionFacade.GetFunction(functionName);
-                if (function == null) return;
+                if (!FunctionFacade.TryGetFunction(out function, functionName))
+                {
+                    return;
+                }
             }
             catch
             {

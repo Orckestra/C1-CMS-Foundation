@@ -43,7 +43,7 @@ namespace Composite.Search.DocumentSources
                 {
                     var page = (IPage) data;
                     var entityToken = GetAdministratedEntityToken(page);
-                    return entityToken != null ? FromPage(page, entityToken) : null;
+                    return entityToken != null ? FromPage(page, entityToken, null) : null;
                 },
                 data => GetDocumentId((IPage) data));
 
@@ -72,6 +72,10 @@ namespace Composite.Search.DocumentSources
                 publishedPages = conn.Get<IPage>().ToDictionary(page => new Tuple<Guid, Guid>(page.Id, page.VersionId));
             }
 
+            var unpublishedMetaData = GetAllMetaData(PublicationScope.Unpublished, culture);
+            var publishedMetaData = GetAllMetaData(PublicationScope.Published, culture);
+
+
             foreach (var unpublishedPage in unpublishedPages)
             {
                 var entityToken = unpublishedPage.GetDataEntityToken();
@@ -80,7 +84,7 @@ namespace Composite.Search.DocumentSources
                 if (publishedPages.TryGetValue(new Tuple<Guid, Guid>(unpublishedPage.Id, unpublishedPage.VersionId), 
                         out publishedPage))
                 {
-                    yield return FromPage(publishedPage, entityToken);
+                    yield return FromPage(publishedPage, entityToken, publishedMetaData);
 
                     if (unpublishedPage.PublicationStatus == GenericPublishProcessController.Published)
                     {
@@ -89,13 +93,13 @@ namespace Composite.Search.DocumentSources
                     }
                 }
 
-                yield return FromPage(unpublishedPage, entityToken);
+                yield return FromPage(unpublishedPage, entityToken, unpublishedMetaData);
             }
         }
 
         public ICollection<DocumentField> CustomFields => _customFields.Value;
 
-        private SearchDocument FromPage(IPage page, EntityToken entityToken)
+        private SearchDocument FromPage(IPage page, EntityToken entityToken, Dictionary<Tuple<Guid, Guid>, List<IData>> allMetaData)
         {
             string label = page.MenuTitle;
             if (string.IsNullOrWhiteSpace(label))
@@ -118,10 +122,20 @@ namespace Composite.Search.DocumentSources
                 var placeholders = PageManager.GetPlaceholderContent(page.Id, page.VersionId);
                 placeholders.ForEach(pl => documentBuilder.CrawlData(pl, true));
 
+                List<IData> metaData;
+
+                if (allMetaData != null)
+                {
+                    allMetaData.TryGetValue(new Tuple<Guid, Guid>(page.Id, page.VersionId), out metaData);
+                }
+                else
+                {
+                    metaData = GetMetaData(page.Id, page.VersionId, page.DataSourceId.PublicationScope, page.DataSourceId.LocaleScope);
+                }
+
                 try
                 {
-                    page.GetMetaData()
-                        .ForEach(pageMetaData => documentBuilder.CrawlData(pageMetaData));
+                    metaData?.ForEach(pageMetaData => documentBuilder.CrawlData(pageMetaData));
                 }
                 catch (Exception ex)
                 {
@@ -158,6 +172,48 @@ namespace Composite.Search.DocumentSources
                 versionId = UrlUtils.CompressGuid(page.VersionId);
             }
             return $"{UrlUtils.CompressGuid(page.Id)}{versionId}" + (isUnpublished ? "u" : "");
+        }
+
+        private Dictionary<Tuple<Guid, Guid>, List<IData>> GetAllMetaData(PublicationScope publicationScope, CultureInfo culture)
+        {
+            var result = new Dictionary<Tuple<Guid, Guid>, List<IData>>();
+
+            using (var conn = new DataConnection(publicationScope, culture))
+            {
+                conn.DisableServices();
+
+                foreach (var metaDataType in PageMetaDataFacade.GetAllMetaDataTypes()
+                    .Where(type => typeof(IPageMetaData).IsAssignableFrom(type)))
+                {
+                    foreach (var dataItem in DataFacade.GetData(metaDataType).OfType<IPageMetaData>())
+                    {
+                        var key = new Tuple<Guid, Guid>(dataItem.PageId, dataItem.VersionId);
+                        var list = result.GetOrAdd(key, () => new List<IData>());
+                        list.Add(dataItem);
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        private List<IData> GetMetaData(Guid pageId, Guid versionId, PublicationScope publicationScope, CultureInfo culture)
+        {
+            var result = new List<IData>();
+
+            using (var conn = new DataConnection(publicationScope, culture))
+            {
+                conn.DisableServices();
+
+                foreach (var metaDataType in PageMetaDataFacade.GetAllMetaDataTypes()
+                    .Where(type => typeof(IPageMetaData).IsAssignableFrom(type)))
+                {
+                    result.AddRange(DataFacade.GetData(metaDataType).OfType<IPageMetaData>()
+                        .Where(md => md.PageId == pageId && md.VersionId == versionId));
+                }
+            }
+
+            return result;
         }
     }
 }
