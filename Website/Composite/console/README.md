@@ -4,6 +4,8 @@ This is a JavaScript-based single page application, using React, Redux and WAMP 
 
 Be sure to look at the README files in the subdirectories of this folder, and in the `/Website/Composite/test/unit/` folder.
 
+Also see the `architecture.md` document for further explanation of overall architectural thoughts.
+
 ## Development
 
 In order to install the required libraries and run tests and build scripts, you will need to verify the following:

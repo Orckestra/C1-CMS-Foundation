@@ -1,3 +1,9 @@
+/**
+A provider is, at its root, a JS object with a set of information that allows a
+specific set of actions to be taken. The `useProvider` thunk creator will take
+such a provider, and perform the actions involved. This test suite demonstrates
+the functionality.
+*/
 import expect from 'unittest/helpers/expect.js';
 import sinon from 'sinon';
 import WAMPClient from 'console/access/wampClient.js';
@@ -20,6 +26,11 @@ describe('Provider activities', () => {
 		});
 
 		describe('Local', () => {
+			/**
+				A provider without a protocol will be handled locally. This can be used
+				to dispatch actions without contacting the server. Actions named here
+				should be available in the action locator by that name.
+			*/
 			beforeEach(() => {
 				provider = {
 					callAction: 'testAction'
@@ -50,6 +61,10 @@ describe('Provider activities', () => {
 			});
 
 			describe('with data', () => {
+				/**
+					A local provider with the `sendData` flag set will use the data it was
+					given when calling the action dispatcher as data for the action.
+				*/
 				let data;
 				beforeEach(() => {
 					provider.sendData = true;
@@ -97,6 +112,11 @@ describe('Provider activities', () => {
 			});
 
 			describe('Signal', () => {
+				/**
+					If you neither send data to an RPC nor expect data back from it, it's
+					considered a signal. While supported, consider whether reworking these
+					into PubSub topics is feasible.
+				*/
 				beforeEach(() => {
 					provider = {
 						protocol: 'wamp',
@@ -143,6 +163,10 @@ describe('Provider activities', () => {
 			});
 
 			describe('Save', () => {
+				/**
+					Providers that have a remote access protocol and the `sendData`flag
+					are considered saves. They will send data to the server.
+				*/
 				let inData;
 				beforeEach(() => {
 					provider = {
@@ -220,6 +244,11 @@ describe('Provider activities', () => {
 			});
 
 			describe('Fetch', () => {
+				/**
+					Providers with remote access and an action to be called will access
+					the indicated RPC, and use the response data to feed the action
+					creator they found in the action locator.
+				*/
 				let outData;
 				beforeEach(() => {
 					actionLocator.register('testAction', function (caller, data) {
@@ -283,6 +312,12 @@ describe('Provider activities', () => {
 			});
 
 			describe('Post', () => {
+				/**
+					Post is a combination save and fetch. The accessed RPC expects to be
+					sent data, and provides back data in return. A search function is an
+					example. The signature of such a provider is having a remote protocol,
+					the `sendData`flag, and an action to call with the resulting response.
+				*/
 				let inData, outData;
 				beforeEach(() => {
 					actionLocator.register('testAction', function (caller, data) {
