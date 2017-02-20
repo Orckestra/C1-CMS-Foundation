@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Xml.Linq;
 using Composite.Core.Caching;
 using Composite.Core.Extensions;
 using Composite.Core.Routing;
+using Composite.Core.Routing.Pages;
 using Composite.Data;
 using Composite.Data.Types;
 using Composite.Functions;
@@ -334,9 +336,9 @@ namespace Composite.Core.WebClient.Renderings.Page
             if (UserValidationFacade.IsLoggedIn())
             {
                 bool emitMenuTitleMetaTag = string.IsNullOrEmpty(page.MenuTitle) == false;
-                bool emitUrlTitleMetaTag = string.IsNullOrEmpty(page.UrlTitle) == false;
+                bool emitUrlMetaTag = string.IsNullOrEmpty(page.UrlTitle) == false;
 
-                if (emitMenuTitleMetaTag || emitUrlTitleMetaTag)
+                if (emitMenuTitleMetaTag || emitUrlMetaTag)
                 {
                     xhtmlDocument.Head.Add(
                         new XComment("The C1.* meta tags are only emitted when you are logged in"),
@@ -352,12 +354,19 @@ namespace Composite.Core.WebClient.Renderings.Page
                                 new XAttribute("content", page.MenuTitle)));
                     }
 
-                    if (emitUrlTitleMetaTag)
+                    if (emitUrlMetaTag)
                     {
+                        var editPreview = PageRenderer.RenderingReason == RenderingReason.PreviewUnsavedChanges;
+
+                        var pageUrl = string.Format("{0}{1}{2}",
+                            PageUrls.BuildUrl(page, UrlKind.Public).Replace("/c1mode(unpublished)", "").Replace("/c1mode(relative)",""),
+                            editPreview ? "/" + page.UrlTitle : C1PageRoute.GetPathInfo(),
+                            editPreview ? "" : HttpContext.Current.Request.Url.Query);
+
                         xhtmlDocument.Head.Add(
                             new XElement(Namespaces.Xhtml + "meta",
-                                new XAttribute("name", "C1.urltitle"),
-                                new XAttribute("content", page.UrlTitle)));
+                                new XAttribute("name", "C1.urlseowords"),
+                                new XAttribute("content", pageUrl)));
                     }
                 }
             }

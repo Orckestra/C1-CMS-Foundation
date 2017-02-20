@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -9,7 +10,7 @@ using Composite.Core.Types;
 namespace Composite.Data
 {
     /// <summary>
-    /// EntityToken that represents a C1 Data item. EntityToken is used through out Orckestra CMS to describe artifacts that can have security settings and be navigated and this class make it easy
+    /// EntityToken that represents a C1 Data item. EntityToken is used through out C1 CMS to describe artifacts that can have security settings and be navigated and this class make it easy
     /// to move between data items and EntityToken.
     /// </summary>
     [SecurityAncestorProvider(typeof(DataSecurityAncestorProvider))]
@@ -77,11 +78,7 @@ namespace Composite.Data
         public override string VersionId => this.SerializedVersionId;
 
         /// <exclude />
-        public override bool IsValid()
-        {
-            return this.Data != null;
-        }
-
+        public override bool IsValid() => this.Data != null;
 
 
         /// <exclude />
@@ -91,14 +88,9 @@ namespace Composite.Data
             {
                 if (_interfaceType == null)
                 {
-                    if (_dataSourceId != null)
-                    {
-                        _interfaceType = _dataSourceId.InterfaceType;
-                    }
-                    else
-                    {
-                        _interfaceType = TypeManager.TryGetType(this.Type);
-                    }
+                    _interfaceType = _dataSourceId != null 
+                        ? _dataSourceId.InterfaceType 
+                        : TypeManager.TryGetType(this.Type);
                 }
 
                 return _interfaceType;
@@ -173,21 +165,22 @@ namespace Composite.Data
 
 
         /// <exclude />
-        public override void OnGetPrettyHtml(EntityTokenHtmlPrettyfier prettyfier)
+        public override void OnGetPrettyHtml(EntityTokenHtmlPrettyfier prettifier)
         {
-            prettyfier.OnWriteId = (token, helper) =>
+            prettifier.OnWriteId = (token, helper) =>
             {
-                IDataId dataId = DataIdSerializer.Deserialize(this.Id,this.VersionId);
+                IDataId dataId = DataIdSerializer.Deserialize(this.Id, this.VersionId);
 
-                var sb = new StringBuilder();
-                sb.Append("<b>DataId</b><br />");
-                sb.Append("<b>Type:</b> " + dataId.GetType() + "<br />");
+                var sb = new StringBuilder()
+                        .Append("<b>DataId</b><br />")
+                        .Append($"<b>Type:</b> {dataId.GetType()}<br />");
+
                 foreach (PropertyInfo propertyInfo in dataId.GetType().GetPropertiesRecursively())
                 {
                     sb.Append("<b>" + propertyInfo.Name + ":</b> " + propertyInfo.GetValue(dataId, null).ToString() + "<br />");
                 }
 
-                helper.AddFullRow(new string[] { "<b>Id</b>", sb.ToString() });
+                helper.AddFullRow(new [] { "<b>Id</b>", sb.ToString() });
             };
         }
 
@@ -214,7 +207,7 @@ namespace Composite.Data
             {
                 if (_serializedId == null)
                 {
-                    var keyPropertyNames = this.InterfaceType.GetCustomAttributesRecursively<KeyPropertyNameAttribute>().Select(f=>f.KeyPropertyName);
+                    var keyPropertyNames = GetVersionKeyPropertyNames().Any() ? GetKeyPropertyNames() : null;
 
                     _serializedId = this.DataSourceId.DataId.Serialize(keyPropertyNames);
                 }
@@ -229,18 +222,28 @@ namespace Composite.Data
             {
                 if (_serializedVersionId == null)
                 {
-                    var versionKeyPropertyNames = this.InterfaceType.GetCustomAttributesRecursively<VersionKeyPropertyNameAttribute>().Select(f=>f.VersionKeyPropertyName);
-                    
-                    _serializedVersionId = this.DataSourceId.DataId.Serialize(versionKeyPropertyNames);
+                    var versionKeyPropertyNames = GetVersionKeyPropertyNames();
+
+                    _serializedVersionId = versionKeyPropertyNames.Any() 
+                        ? this.DataSourceId.DataId.Serialize(versionKeyPropertyNames)
+                        : string.Empty;
                 }
 
                 return _serializedVersionId;
             }
         }
-        
-        private void CheckValidity()
+
+        private IEnumerable<string> GetKeyPropertyNames()
         {
-            Verify.That(IsValid(), "Failed to deserialize data from serialized data source identifier. Probably the data has been removed from data source.");
+            return this.InterfaceType.GetCustomAttributesRecursively<KeyPropertyNameAttribute>()
+                .Select(f => f.KeyPropertyName);
+        }
+
+
+        private IEnumerable<string> GetVersionKeyPropertyNames()
+        {
+            return this.InterfaceType.GetCustomAttributesRecursively<VersionKeyPropertyNameAttribute>()
+                .Select(f => f.VersionKeyPropertyName);
         }
     }
 }

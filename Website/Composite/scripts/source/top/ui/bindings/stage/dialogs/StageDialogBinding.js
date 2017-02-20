@@ -4,8 +4,8 @@ StageDialogBinding.superclass = DialogBinding.prototype;
 
 /**
  * @class
- * The StageDialogBinding builds a bridge between dialogs and pages. 
- * TODO: Consider why and how some of this stuff can be moved to regular dialogs. 
+ * The StageDialogBinding builds a bridge between dialogs and pages.
+ * TODO: Consider why and how some of this stuff can be moved to regular dialogs.
  */
 function StageDialogBinding () {
 
@@ -13,29 +13,34 @@ function StageDialogBinding () {
 	 * @type {SystemLogger}
 	 */
 	this.logger = SystemLogger.getLogger ( "StageDialogBinding" );
-	
+
 	/**
 	 * @type {ViewBinding}
 	 */
 	this._viewBinding = null;
-	
+
+	/**
+	 * @type {ContextContainer}
+	 */
+	this._contextContainer = null;
+
 	/**
 	 * @type {DialogPageBinding}
 	 */
 	this._pageBinding = null;
-	
+
 	/**
 	 * @type {IDialogResponseHandler}
 	 */
 	this._dialogResponseHandler = null;
-	
+
 	/**
-	 * First loaded PageBinding may set a width and height. 
+	 * First loaded PageBinding may set a width and height.
 	 * Subsequent PageBindings may only increase the height.
 	 * @type {boolean}
 	 */
 	this._isFirstPage = true;
-	
+
 	/*
 	 * Returnable.
 	 */
@@ -54,9 +59,9 @@ StageDialogBinding.prototype.toString = function () {
  * @overloads {DialogBinding#onBindingRegister}
  */
 StageDialogBinding.prototype.onBindingRegister = function () {
-	
-	StageDialogBinding.superclass.onBindingRegister.call ( this );	
-	
+
+	StageDialogBinding.superclass.onBindingRegister.call ( this );
+
 	this.addActionListener ( PageBinding.ACTION_INITIALIZED );
 	this.addActionListener ( PageBinding.ACTION_DETACHED );
 	this.addActionListener ( DialogPageBinding.ACTION_RESPONSE );
@@ -69,7 +74,7 @@ StageDialogBinding.prototype.onBindingRegister = function () {
 	this.addActionListener ( PageBinding.ACTION_UPDATING );
 	this.addActionListener ( PageBinding.ACTION_UPDATED );
 	this.addActionListener ( DialogBinding.ACTION_CLOSE );
-	
+
 	this.subscribe ( BroadcastMessages.KEY_ESCAPE );
 }
 
@@ -78,7 +83,7 @@ StageDialogBinding.prototype.onBindingRegister = function () {
  * @overloads {DialogBinding#onBindingAttach}
  */
 StageDialogBinding.prototype.onBindingAttach = function () {
-	
+
 	StageDialogBinding.superclass.onBindingAttach.call ( this );
 	this.defaultSetup ();
 }
@@ -88,13 +93,13 @@ StageDialogBinding.prototype.onBindingAttach = function () {
  * @param {DialogViewDefinition} definition
  */
 StageDialogBinding.prototype.prepareNewView = function ( definition ) {
-	
+
 	if ( definition instanceof DialogViewDefinition ) {
-	
+
 		var viewBinding = ViewBinding.newInstance ( this.bindingDocument );
 		viewBinding.setDefinition ( definition );
 		viewBinding.setType ( ViewBinding.TYPE_DIALOGVIEW );
-		
+
 		// TODO: move to method
 		if ( definition.handler ) {
 			if ( Interfaces.isImplemented ( IDialogResponseHandler, definition.handler )) {
@@ -103,14 +108,14 @@ StageDialogBinding.prototype.prepareNewView = function ( definition ) {
 				throw "IDialogResponseHandler not implemented";
 			}
 		}
-		
+
 		/*
 		FLOATING DOCKS!
 		var setBinding = UserInterface.getBinding ( this.bindingElement.parentNode );
 		viewBinding.snapToBinding ( this._body );
 		setBinding.add ( viewBinding );
 		*/
-		
+
 		this._viewBinding = viewBinding;
 		this._body.add ( viewBinding );
 		viewBinding.attach ();
@@ -127,61 +132,61 @@ StageDialogBinding.prototype.prepareNewView = function ( definition ) {
  * @param {Action} action
  */
 StageDialogBinding.prototype.handleAction = function ( action ) {
-	
+
 	StageDialogBinding.superclass.handleAction.call ( this, action );
-	
+
 	var binding = action.target;
-	
+
 	switch ( action.type ) {
-	
+
 		case PageBinding.ACTION_INITIALIZED :
 			this._handleInitializedPageBinding ( binding );
 			action.consume ();
 			break;
-			
-		case PageBinding.ACTION_DETACHED : 
+
+		case PageBinding.ACTION_DETACHED :
 			if ( binding.bindingDocument == this._viewBinding.getContentDocument ()) {
 				this._pageBinding = null;
 			}
 			action.consume ();
 			break;
-			
+
 		case DialogPageBinding.ACTION_RESPONSE :
 			if ( binding.response ) {
 				this._handleDialogPageResponse ( binding );
 			}
 			action.consume ();
 			break;
-			
+
 		case Binding.ACTION_INVALID :
 			this._disableDialogAcceptButton ( true );
 			action.consume ();
 			break;
-			
+
 		case Binding.ACTION_VALID :
 			this._disableDialogAcceptButton ( false );
 			action.consume ();
 			break;
-		
+
 		case ViewBinding.ACTION_ONCLOSE :
-			this.close (); 
+			this.close ();
 			action.consume ();
 			break;
-			
+
 		case ViewBinding.ACTION_CLOSED :
 			this._isFirstPage = true;
 			action.consume ();
 			break;
-			
+
 		case ErrorBinding.ACTION_INITIALIZE :
 			action.consume ();
 			break;
-			
+
 		case PageBinding.ACTION_UPDATING :
 			this._isUpdating = true;
 			action.consume ();
 			break;
-		
+
 		case PageBinding.ACTION_UPDATED :
 			if ( this._isUpdating ) {
 				this._isUpdating = false;
@@ -189,7 +194,7 @@ StageDialogBinding.prototype.handleAction = function ( action ) {
 			}
 			action.consume ();
 			break;
-		
+
 		/*
 		 * TODO: Are we adding this listener in the first place?
 		 */
@@ -199,7 +204,7 @@ StageDialogBinding.prototype.handleAction = function ( action ) {
 			}
 			action.consume ();
 			break;
-			
+
 		case DialogBinding.ACTION_CLOSE :
 			if ( binding == this ) {
 				this._viewBinding.dispose ();
@@ -215,11 +220,11 @@ StageDialogBinding.prototype.handleAction = function ( action ) {
  * @param {object} arg
  */
 StageDialogBinding.prototype.handleBroadcast = function ( broadcast, arg ) {
-	
+
 	StageDialogBinding.superclass.handleBroadcast.call ( this, broadcast, arg );
-	
+
 	switch ( broadcast ) {
-			
+
 		case BroadcastMessages.KEY_ESCAPE :
 			if ( this.isVisible == true ) { // RENAME ISOPEN!
 				if ( !PopupBinding.hasActiveInstances ()) {
@@ -235,7 +240,7 @@ StageDialogBinding.prototype.handleBroadcast = function ( broadcast, arg ) {
  * @param {boolean} isForce
  */
 StageDialogBinding.prototype._fit = function ( isForce ) {
-	
+
 	var crawler = new FitnessCrawler ();
 	var list = new List ();
 	if ( isForce ) {
@@ -243,10 +248,10 @@ StageDialogBinding.prototype._fit = function ( isForce ) {
 	}
 	crawler.crawl ( this.bindingElement, list );
 	crawler.dispose ();
-	
+
 	if ( list.hasEntries ()) {
 		/*
-		 * Fit all fitness members, starting from the innermost 
+		 * Fit all fitness members, starting from the innermost
 		 * location in the subtree. Then dispose the member list.
 		 */
 		list.reverse ();
@@ -263,16 +268,16 @@ StageDialogBinding.prototype._fit = function ( isForce ) {
  * @param {List<IFit>}
  */
 StageDialogBinding.prototype._fitMe = function () {
-	
+
 	if ( this._pageBinding != null ) {
-		
+
 		this._pageBinding.enableAutoHeightLayoutMode ( true );
 		this._fixAutoHeight ( this._pageBinding );
 		this._pageBinding.enableAutoHeightLayoutMode ( false );
-		
+
 		var height = this.getDimension ().h;
 		this.reflex ( true );
-				
+
 		// Still the same height? Explorer can mess it up here.
 		var self = this;
 		if ( this.getDimension ().h == height ) {
@@ -288,9 +293,9 @@ StageDialogBinding.prototype._fitMe = function () {
  * @param {MenuItemBinding} menuItemBinding
  */
 StageDialogBinding.prototype._handleContextMenuItemBinding = function ( menuItemBinding ) {
-	
+
 	var cmd = menuItemBinding.getProperty ( "cmd" );
-	
+
 	switch ( cmd ) {
 		case DialogTitleBarPopupBinding.CMD_CLOSE :
 			this._defaultClose ();
@@ -322,9 +327,9 @@ StageDialogBinding.prototype._viewSource = DockTabBinding.prototype._viewSource;
  * @param {PageBinding} pageBinding
  */
 StageDialogBinding.prototype._handleInitializedPageBinding = function ( pageBinding ) {
-	
+
 	if ( pageBinding.bindingDocument == this._viewBinding.getContentDocument ()) {
-		
+
 		if ( pageBinding instanceof DialogPageBinding ) {
 			if ( this._pageBinding == null ) { // grab image and label only from first page!
 				this._parsePageBinding ( pageBinding );
@@ -344,17 +349,17 @@ StageDialogBinding.prototype._handleInitializedPageBinding = function ( pageBind
 			EventBroadcaster.broadcast ( BroadcastMessages.VIEW_COMPLETED, this._viewBinding.getHandle ());
 			EventBroadcaster.broadcast ( BroadcastMessages.STAGEDIALOG_OPENED );
 		}
-		
+
 	} else if ( pageBinding.isDialogSubPage ) {
-		
+
 		this._pageBinding.enableAutoHeightLayoutMode ( true );
 		this._fixAutoHeight ( pageBinding );
 		this._pageBinding.enableAutoHeightLayoutMode ( false );
-		
+
 		this._fit ( true );
 		this.reflex ( true );
 	}
-	
+
 	/*
 	 * Flip this flag!
 	 */
@@ -366,13 +371,13 @@ StageDialogBinding.prototype._handleInitializedPageBinding = function ( pageBind
  * @param {boolean} isDisabled
  */
 StageDialogBinding.prototype._disableDialogAcceptButton = function ( isDisabled ) {
-	
+
 	var buttonElement = this._viewBinding.getContentDocument ().getElementById ( "dialogacceptbutton" );
 	if ( buttonElement ) {
 		var buttonBinding = UserInterface.getBinding ( buttonElement );
 		buttonBinding.setDisabled ( isDisabled );
 	}
-} 
+}
 
 /**
  * Handle DialogPage response.
@@ -391,7 +396,7 @@ StageDialogBinding.prototype._handleDialogPageResponse = function (binding) {
 	setTimeout(function () {
 		self.close();
 	}, 0);
-} 
+}
 
 /**
  * Make sure that the close button fires a returnvalue of "cancel".
@@ -399,11 +404,11 @@ StageDialogBinding.prototype._handleDialogPageResponse = function (binding) {
  * @param {ControlBinding} control
  */
 StageDialogBinding.prototype.handleInvokedControl = function ( control ) {
-	
-	if ( control.controlType == ControlBinding.TYPE_CLOSE ) { 
+
+	if ( control.controlType == ControlBinding.TYPE_CLOSE ) {
 		this._defaultClose ();
 	}
-	
+
 	StageDialogBinding.superclass.handleInvokedControl.call ( this, control );
 }
 
@@ -412,10 +417,10 @@ StageDialogBinding.prototype.handleInvokedControl = function ( control ) {
  * @overloads {DialogBinding#buildDescendantBindings}
  */
 StageDialogBinding.prototype.buildDescendantBindings = function () {
-	
+
 	StageDialogBinding.superclass.buildDescendantBindings.call ( this );
 	this._titlebar.setContextMenu ( app.bindingMap.dialogtitlebarpopup );
-	
+
 	/*
 	 * Note that this overwrites!
 	 */
@@ -432,18 +437,18 @@ StageDialogBinding.prototype.buildDescendantBindings = function () {
 }
 
 /**
- * Parse contained DialogPageBinding. 
+ * Parse contained DialogPageBinding.
  * @param {DialogPageBinding} pageBinding
  */
 StageDialogBinding.prototype._parsePageBinding = function ( pageBinding ) {
-	
+
 	var label		= pageBinding.label;
 	var image 		= pageBinding.image;
 	var width 		= pageBinding.width;
 	var height		= pageBinding.height;
 	var controls 	= pageBinding.controls;
 	var isResizable = pageBinding.isResizable;
-	
+
 	if ( label ) {
 		this.setLabel ( label );
 	}
@@ -451,17 +456,17 @@ StageDialogBinding.prototype._parsePageBinding = function ( pageBinding ) {
 		this.setImage ( image );
 	}
 	if ( width || height ) {
-		
+
 		var old = this.getDimension ();
 		var nev = new Dimension ();
-		
+
 		if ( this._isFirstPage ) { // only set width on first page!
 			nev.w = width ? width : old.w;
 		} else {
 			nev.w = old.w;
 		}
 		nev.h = ( height != null && height != "auto" ) ? height : old.h; // never set height on autoheight dialogs!
-		
+
 		if (this._isResizable) {
 			nev.h = (top.window.innerHeight < nev.h) ? top.window.innerHeight : nev.h;
 			nev.w = ( top.window.innerWidth < nev.w) ? top.window.innerWidth : nev.w;
@@ -478,15 +483,15 @@ StageDialogBinding.prototype._parsePageBinding = function ( pageBinding ) {
 			this.controlBindings [ type ].show ();
 		}
 	}
-	
+
 	if ( isResizable != this._isResizable ) {
-		this.setResizable ( isResizable ); 
+		this.setResizable ( isResizable );
 	}
 	if ( height == "auto" ) {
 		this._fixAutoHeight ( pageBinding );
 	}
 	if ( pageBinding == this._pageBinding ) { // only on dialog open!
-		this.centerOnScreen (); 
+		this.centerOnScreen ();
 	}
 	if ( !this.isOpen ) {
 		this.reflex ( true );
@@ -499,16 +504,16 @@ StageDialogBinding.prototype._parsePageBinding = function ( pageBinding ) {
  * @param {PageBinding} pageBinding
  */
 StageDialogBinding.prototype._fixAutoHeight = function ( pageBinding ) {
-	
+
 	var dim = this.getDimension ();
 	var width = 0;
 	var height = 0;
-	
+
 	if ( pageBinding.isDialogSubPage ) {
 		pageBinding = this._pageBinding;
 	}
 	if ( this._isFirstPage ) {
-		width = pageBinding.width != null ? pageBinding.width : dim.w; 
+		width = pageBinding.width != null ? pageBinding.width : dim.w;
 	} else {
 		width = dim.w;
 	}
@@ -521,7 +526,7 @@ StageDialogBinding.prototype._fixAutoHeight = function ( pageBinding ) {
 	height += border.top + border.bottom;
 
 
-	
+
 	//if ( height < dim.h ) { // never shrink the dialog - only expand it.
 	//	height = dim.h;
 	//}
@@ -548,11 +553,11 @@ StageDialogBinding.prototype._fixAutoHeight = function ( pageBinding ) {
  * TODO: rig this up so that we close the dialog before handling the response!
  */
 StageDialogBinding.prototype._defaultClose = function () {
-	
+
 	if ( this._dialogResponseHandler != null ) {
 		this._dialogResponseHandler.handleDialogResponse (
 			Dialog.RESPONSE_CANCEL
-		); 
+		);
 	}
 	this.close ();
 }
@@ -561,7 +566,7 @@ StageDialogBinding.prototype._defaultClose = function () {
  * Focucs content when opened.
  */
 StageDialogBinding.prototype.open = function () {
-	
+
 	StageDialogBinding.superclass.open.call ( this );
 	if ( this.isVisible == true ) {
 		this._viewBinding.onActivate ();
@@ -575,7 +580,7 @@ StageDialogBinding.prototype.open = function () {
 StageDialogBinding.prototype.close = function () {
 
 	StageDialogBinding.superclass.close.call ( this );
-	
+
 	if ( !Client.hasTransitions ) {
 		this._viewBinding.dispose ();
 		this.defaultSetup ();
@@ -593,7 +598,7 @@ StageDialogBinding.prototype.close = function () {
  * Invoke default setup on dialog close.
  */
 StageDialogBinding.prototype.defaultSetup = function () {
-	
+
 	this.setImage ( LabelBinding.DEFAULT_IMAGE );
 	this.setLabel ( "" );
 	this.setDimension ( new Dimension ( DialogBinding.DEFAULT_WIDTH, DialogBinding.DEFAULT_HEIGHT ));
@@ -601,10 +606,10 @@ StageDialogBinding.prototype.defaultSetup = function () {
 	this.controlBindings [ ControlBinding.TYPE_MAXIMIZE ].hide ();
 	this.controlBindings [ ControlBinding.TYPE_MINIMIZE ].hide ();
 	this.controlBindings [ ControlBinding.TYPE_CLOSE ].show ();
-	
+
 	this._pageBinding = null;
 	this._dialogResponseHandler = null;
-	
+
 	if ( !this._isResizable ) {
 		this.setResizable ( true );
 	}
@@ -615,10 +620,10 @@ StageDialogBinding.prototype.defaultSetup = function () {
  * @param {Point} p
  */
 StageDialogBinding.prototype.setPosition = function ( p ) {
-	
+
 	StageDialogBinding.superclass.setPosition.call ( this, p );
 	this._body.dispatchAction (
-		Binding.ACTION_POSITIONCHANGED 
+		Binding.ACTION_POSITIONCHANGED
 	);
 }
 
@@ -631,7 +636,7 @@ StageDialogBinding.prototype.setDimension = function ( dim ) {
 
 	StageDialogBinding.superclass.setDimension.call ( this, dim );
 	this._body.dispatchAction (
-		Binding.ACTION_DIMENSIONCHANGED 
+		Binding.ACTION_DIMENSIONCHANGED
 	);
 }
 
@@ -660,6 +665,23 @@ StageDialogBinding.prototype.deActivate = function () {
 		this._viewBinding.onDeactivate ();
 	}
 }
+
+/**
+ * @implements {IContextContainerBinding}
+ */
+StageDialogBinding.prototype.getContextContainer = function () {
+
+	return this._contextContainer;
+}
+
+/**
+ * @implements {IContextContainerBinding}
+ */
+StageDialogBinding.prototype.setContextContainer = function (contextContainer) {
+
+	this._contextContainer = contextContainer;
+}
+
 
 /**
  * StageDialogBinding factory.

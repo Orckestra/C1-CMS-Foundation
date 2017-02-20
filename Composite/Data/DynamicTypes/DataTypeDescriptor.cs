@@ -18,7 +18,7 @@ using Composite.Data.Types;
 namespace Composite.Data.DynamicTypes
 {
     /// <summary>
-    /// Describes a data type in Orckestra CMS
+    /// Describes a data type in C1 CMS
     /// </summary>
     [DebuggerDisplay("Type name = {Namespace + '.' + Name}")]
     public class DataTypeDescriptor
@@ -255,10 +255,14 @@ namespace Composite.Data.DynamicTypes
         public bool IsCodeGenerated { get; private set; }
 
         /// <summary>
-        /// When true data of this type may be cached.
+        /// When <value>true</value> data of this type may be cached.
         /// </summary>
         public bool Cachable { get; internal set; }
 
+        /// <summary>
+        /// When <value>true</value> the data of this type is searchable.
+        /// </summary>
+        public bool Searchable { get; internal set; }
 
         /// <summary>
         /// When true this type has a physical sortorder specified.
@@ -443,7 +447,7 @@ namespace Composite.Data.DynamicTypes
 
 
         /// <summary>
-        /// True when the data type is associated to Orckestra CMS pages as an agregation
+        /// True when the data type is associated to C1 CMS pages as an agregation
         /// </summary>
         public bool IsPageFolderDataType
         {
@@ -456,7 +460,7 @@ namespace Composite.Data.DynamicTypes
 
 
         /// <summary>
-        /// True when the data type is associated to Orckestra CMS pages as an composition
+        /// True when the data type is associated to C1 CMS pages as an composition
         /// </summary>
         public bool IsPageMetaDataType
         {
@@ -595,6 +599,7 @@ namespace Composite.Data.DynamicTypes
                 this.Title != null ? new XAttribute("title", this.Title) : null,
                 new XAttribute("isCodeGenerated", this.IsCodeGenerated),
                 new XAttribute("cachable", this.Cachable),
+                new XAttribute("searchable", this.Searchable),
                 this.LabelFieldName != null ? new XAttribute("labelFieldName", this.LabelFieldName) : null,
                 !string.IsNullOrEmpty(this.InternalUrlPrefix) ? new XAttribute("internalUrlPrefix", this.InternalUrlPrefix) : null,
                 this.TypeManagerTypeName != null ? new XAttribute("typeManagerTypeName", this.TypeManagerTypeName) : null,
@@ -649,6 +654,7 @@ namespace Composite.Data.DynamicTypes
 
             bool isCodeGenerated = (bool) element.GetRequiredAttribute("isCodeGenerated");
             XAttribute cachableAttribute = element.Attribute("cachable");
+            XAttribute searchableAttribute = element.Attribute("searchable");
             XAttribute buildNewHandlerTypeNameAttribute = element.Attribute("buildNewHandlerTypeName");
             XElement dataAssociationsElement = element.GetRequiredElement("DataAssociations");
             XElement dataScopesElement = element.GetRequiredElement("DataScopes");
@@ -664,10 +670,13 @@ namespace Composite.Data.DynamicTypes
             string typeManagerTypeName = (string) element.Attribute("typeManagerTypeName");
 
             bool cachable = cachableAttribute != null && (bool)cachableAttribute;
+            bool searchable = searchableAttribute != null && (bool)searchableAttribute;
+            
 
             var dataTypeDescriptor = new DataTypeDescriptor(dataTypeId, @namespace, name, isCodeGenerated)
             {
-                Cachable = cachable
+                Cachable = cachable,
+                Searchable = searchable
             };
 
             if (titleAttribute != null) dataTypeDescriptor.Title = titleAttribute.Value;

@@ -12,40 +12,40 @@ function VisualEditorSimpleToolBarBinding () {
 	 * @type {SystemLogger}
 	 */
 	this.logger = SystemLogger.getLogger ( "VisualEditorSimpleToolBarBinding" );
-	
+
 	/**
 	 * Indexing toolbarbuttons by value of the cmd attribute.
 	 * @type {Map<string><EditorToolBarButtonBinding>}
 	 */
 	this._buttons = null;
-	 
+
 	/**
 	 * Supress nodechange instructions while toolbar is handled.
 	 * @type {boolean}
 	 */
 	this._isToolBarUpdate = false;
-	
+
 	/**
 	 * @type {boolean}
 	 */
 	this._isAlignmentDisabled = false;
-	
+
 	/**
 	 * @type {HTMLElement}
 	 *
 	this._element = null;
-	
+
 	/**
 	 * @type {String}
 	 *
 	this._classname = null;
 	*/
-	
+
 	/**
 	 * @type {List<ToolBarButtonBinding>}
 	 */
 	this.priorities = null;
-	
+
 	/*
 	 * Returnable.
 	 */
@@ -56,7 +56,7 @@ function VisualEditorSimpleToolBarBinding () {
  * Identifies binding.
  */
 VisualEditorSimpleToolBarBinding.prototype.toString = function () {
-	
+
 	return "[VisualEditorSimpleToolBarBinding]";
 }
 
@@ -65,7 +65,7 @@ VisualEditorSimpleToolBarBinding.prototype.toString = function () {
  * @overloads {ToolBarBinding#onBindingRegister}
  */
 VisualEditorSimpleToolBarBinding.prototype.onBindingRegister = function () {
-	
+
 	VisualEditorSimpleToolBarBinding.superclass.onBindingRegister.call ( this );
 	this.propertyMethodMap [ "isdisabled" ] = this.setDisabled;
 	this.addActionListener ( ButtonBinding.ACTION_COMMAND );
@@ -86,7 +86,7 @@ VisualEditorSimpleToolBarBinding.prototype.onBindingAttach = function () {
 	 * toolbar buttons index.
 	 */
 	this._buttons = new Map ();
-	
+
 	/*
 	 * Index existing buttons.
 	 */
@@ -95,13 +95,13 @@ VisualEditorSimpleToolBarBinding.prototype.onBindingAttach = function () {
 		var button = buttons.getNext ();
 		var cmd = button.getProperty ( "cmd" );
 		if ( cmd != null ) {
-			this._buttons.set ( 
-				cmd, 
-				button 
+			this._buttons.set (
+				cmd,
+				button
 			);
 		}
 	}
-	
+
 	/*
 	 * Mount and index configuration buttons.
 	 */
@@ -115,17 +115,17 @@ VisualEditorSimpleToolBarBinding.prototype.onBindingAttach = function () {
 				if ( this._buttons.has ( format.id )) {
 					throw "Duplicate format ID: " + format.id;
 				} else {
-					this._buttons.set ( 
-						format.id, 
-						button 
+					this._buttons.set (
+						format.id,
+						button
 					);
 				}
 			}
 		}, this );
 		this.addFirst ( groupBinding );
 		groupBinding.attachRecursive ();
-	}, this ); 
-	
+	}, this );
+
 	/*
 	 * Compute priorities
 	 */
@@ -141,13 +141,13 @@ VisualEditorSimpleToolBarBinding.prototype.onBindingAttach = function () {
 		return p2 - p1;
 	});
 	this.priorities = new List ( array );
-	
-	/* 
+
+	/*
 	 * Hookup on theme transmission.
 	 */
 	this._tinyTheme.registerNodeChangeHandler ( this );
-	
-	/* 
+
+	/*
 	 * Hookup on TinyMCE internal events.
 	 */
 	DOMEvents.addEventListener ( this._tinyInstance.getDoc (), DOMEvents.MOUSEUP, this );
@@ -160,14 +160,14 @@ VisualEditorSimpleToolBarBinding.prototype.onBindingAttach = function () {
  * @returns {EditorToolBarButtonBinding}
  */
 VisualEditorSimpleToolBarBinding.prototype._getButton = function ( format ) {
-	
+
 	var button = EditorToolBarButtonBinding.newInstance ( this.bindingDocument );
-	
+
 	var cmd = format.id;
 	var label = format.button.label;
 	var image = format.button.image;
 	var notes = format.button.notes;
-	
+
 	if ( label != null && label != "" ) {
 		button.setLabel ( label );
 	}
@@ -177,12 +177,12 @@ VisualEditorSimpleToolBarBinding.prototype._getButton = function ( format ) {
 	if ( notes != null && notes != "" ) {
 		button.setToolTip ( notes );
 	}
-	
+
 	button.disable ();
 	button.setProperty ( "cmd", cmd );
 	button.setType ( ButtonBinding.TYPE_CHECKBUTTON );
 	button.format = format;
-	
+
 	return button;
 }
 
@@ -192,9 +192,9 @@ VisualEditorSimpleToolBarBinding.prototype._getButton = function ( format ) {
  * @param {DOMElement} element
  */
 VisualEditorSimpleToolBarBinding.prototype.handleNodeChange = function ( element ) {
-	
+
 	if ( !this._isToolBarUpdate ) {
-		
+
 		var hasSelection = this._editorBinding.hasSelection();
 		//Buttons should be always enabled for ipad, becouse iPad does not always handle selection changes.
 		if (Client.isPad) {
@@ -216,7 +216,7 @@ VisualEditorSimpleToolBarBinding.prototype.handleNodeChange = function ( element
 				}
 			}
 		}, this )
-		
+
 		var tiny = this._tinyInstance;
 
 		//skip rendering functions objects
@@ -229,7 +229,7 @@ VisualEditorSimpleToolBarBinding.prototype.handleNodeChange = function ( element
 					}
 				}
 			})
-		} 
+		}
 		else
 			// disable more buttons
 			this._buttons.each ( function ( key, button ) {
@@ -244,7 +244,7 @@ VisualEditorSimpleToolBarBinding.prototype.handleNodeChange = function ( element
 					}
 				}
 			})
-		
+
 		// check buttons
 		this.priorities.each ( function ( button ) {
 			var result = true;
@@ -258,7 +258,7 @@ VisualEditorSimpleToolBarBinding.prototype.handleNodeChange = function ( element
 			}
 			return result;
 		}, this );
-		
+
 
 		if (this._buttons.has("InsertUnorderedList"))  {
 			// hack this button
@@ -277,7 +277,7 @@ VisualEditorSimpleToolBarBinding.prototype.handleNodeChange = function ( element
 				b2.check(true);
 			}
 		}
-		
+
 
 		if (this._buttons.has("Indent") && this._buttons.has("Outdent")) {
 			var indentButton = this._buttons.get("Indent");
@@ -331,9 +331,9 @@ VisualEditorSimpleToolBarBinding.prototype.handleNodeChange = function ( element
  * @param {Action} action
  */
 VisualEditorSimpleToolBarBinding.prototype.handleAction = function ( action ) {
-	
+
 	VisualEditorSimpleToolBarBinding.superclass.handleAction.call ( this, action );
-	
+
 	var button = null;
 	var binding = action.target;
 
@@ -358,59 +358,59 @@ VisualEditorSimpleToolBarBinding.prototype.handleAction = function ( action ) {
  * @param {EditorToolBarButton} button
  */
 VisualEditorSimpleToolBarBinding.prototype._handleButton = function ( button ) {
-	
+
 	if ( button.cmd != null ) {
-		
+
 		var isRelay = true;
 		var isUndoRedo = false;
-	
+
 		switch ( button.cmd ) {
-			
+
 			case "compositeswitchmode" :
 				this.bindingWindow.bindingMap.editorpage.switchEditingMode ();
 				isRelay = false;
 				break;
-				
+
 			case "Undo" :
 				this._tinyInstance.undoManager.undo ();
 				this._editorBinding.checkForDirty ();
 				isUndoRedo = true;
 				isRelay = false;
 				break;
-				
+
 			case "Redo" :
 				this._tinyInstance.undoManager.redo ();
 				this._editorBinding.checkForDirty ();
 				isUndoRedo = true;
 				isRelay = false;
 				break;
-				
+
 			case "unlink" :
 				this._buttons.get ( "compositeInsertLink" ).disable ();
 				this._buttons.get ( "unlink" ).disable ();
 				this._editorBinding.checkForDirty ();
 				break;
-				
+
 			case "compositeCleanup" :
 				this._cleanup ();
 				this._editorBinding.checkForDirty ();
 				isRealy = false;
 				break;
 		}
-		
+
 		if ( isUndoRedo ) {
 			this._editorBinding.blurEditor ();
 		}
-		
+
 		if ( isRelay ) {
-			
+
 			/*
-			 * Relay command execution to TinyMCE. Note that 
-			 * we disable nodechange awareness for the duration 
+			 * Relay command execution to TinyMCE. Note that
+			 * we disable nodechange awareness for the duration
 			 * of this operation (leads to weird toolbar behavior).
 			 */
 			this._isToolBarUpdate = true;
-			
+
 			/*
 			 * Not the most elegant way to handle this...
 			 */
@@ -431,13 +431,14 @@ VisualEditorSimpleToolBarBinding.prototype._handleButton = function ( button ) {
 					this._tinyInstance.formatter.remove ( button.cmd );
 				}
 			} else {
-				this._editorBinding.handleCommand ( 
+				this._editorBinding.handleCommand (
 					button.cmd, button.val, button.gui
 				);
 			}
-			
+
 			var self = this;
-			setTimeout ( function () {
+			setTimeout(function () {
+				//self._editorBinding.restoreEditorFocus();
 				self._isToolBarUpdate = false;
 			}, 0 );
 		}
@@ -449,8 +450,8 @@ VisualEditorSimpleToolBarBinding.prototype._handleButton = function ( button ) {
  * @param {boolean} isDisable
  */
 VisualEditorSimpleToolBarBinding.prototype._disableAlignment = function ( isDisable ) {
-	
-	if ( isDisable != this._isAlignmentDisabled ) {	
+
+	if ( isDisable != this._isAlignmentDisabled ) {
 		var buttons = this._buttons;
 		new List ([ "JustifyLeft", "JustifyRight", "JustifyCenter", "JustifyFull" ]).each (
 			function ( cmd ) {
@@ -464,13 +465,13 @@ VisualEditorSimpleToolBarBinding.prototype._disableAlignment = function ( isDisa
 	}
 }
 
-/** 
+/**
  * Exposing buttons so that outside fellows can control the toolbar.
  * @param {string} cmd
  * @return {EditorToolBarButtonBinding}
  */
 VisualEditorSimpleToolBarBinding.prototype.getButtonForCommand = function ( cmd ) {
-	
+
 	return this._buttons.get ( cmd );
 }
 
@@ -480,9 +481,9 @@ VisualEditorSimpleToolBarBinding.prototype.getButtonForCommand = function ( cmd 
  * @param {boolean} isDisabled
  */
 VisualEditorSimpleToolBarBinding.prototype.setDisabled = function ( isDisabled ) {
-	
+
 	/*
-	 * Timeout should allow another view to focus 
+	 * Timeout should allow another view to focus
 	 * any databinding before we update buttons.
 	 */
 	var self = this;
@@ -518,14 +519,14 @@ VisualEditorSimpleToolBarBinding.prototype.setDisabled = function ( isDisabled )
 			}
 		});
 	}, 10 );
-	
+
 	// this._element = null;
 }
 
 VisualEditorSimpleToolBarBinding.prototype._cleanup = function () {
-	
+
 	//alert ( this + ": TODO!" );
-	
+
 	var markup = this._editorBinding.getValue ();
 	// alert ( this + ":\n\n" + markup );
 }

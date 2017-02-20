@@ -33,6 +33,8 @@ namespace Composite.Core.Xml
             Namespaces.Xsi = "http://www.w3.org/2001/XMLSchema-instance";
             Namespaces.Xsd = "http://www.w3.org/2001/XMLSchema";
 
+            Namespaces.Components = "http://www.composite.net/ns/components/1.0";
+
             _canonicalPrefixes.Add(Namespaces.Function10, "f");
             _canonicalPrefixes.Add(Namespaces.Svg, "svg");
             _canonicalPrefixes.Add(Namespaces.Rendering10, "rendering");
@@ -72,7 +74,7 @@ namespace Composite.Core.Xml
         public static XNamespace Localization10 { get; private set; }
 
         /// <summary>
-        /// Namespace for ASP.NET Web Forms in Orckestra CMS pages: http://www.composite.net/ns/asp.net/controls
+        /// Namespace for ASP.NET Web Forms in C1 CMS pages: http://www.composite.net/ns/asp.net/controls
         /// </summary>
         public static XNamespace AspNetControls { get; private set; }
 
@@ -92,7 +94,7 @@ namespace Composite.Core.Xml
         public static XNamespace XmlNs { get; private set; }
 
         /// <summary>
-        /// Namespace for XHTML documents in Orckestra CMS: http://www.w3.org/1999/xhtml
+        /// Namespace for XHTML documents in C1 CMS: http://www.w3.org/1999/xhtml
         /// </summary>
         public static XNamespace Xhtml { get; private set; }
 
@@ -115,6 +117,11 @@ namespace Composite.Core.Xml
         /// Namespace
         /// </summary>
         public static XNamespace Xsd { get; private set; }
+
+        /// <summary>
+        /// Namespace
+        /// </summary>
+        public static XNamespace Components { get; private set; }
 
         /// <summary>
         /// If known returns a canonical prefix for a given XML namespace

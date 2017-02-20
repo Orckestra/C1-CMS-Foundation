@@ -13,27 +13,29 @@ namespace Composite.Core.WebClient.Services.TreeServiceObjects.ExtensionMethods
         {
             var clientActions =
                 from action in actions
-                orderby action.VisualData.ActionLocation.ActionGroup.Priority, action.VisualData.ActionLocation.ActionGroup.Name, action.VisualData.ActionLocation.ActionType
+                let visualData = action.VisualData
+                let actionLocation = visualData.ActionLocation
+                orderby actionLocation.ActionGroup.Priority, actionLocation.ActionGroup.Name, actionLocation.ActionType
                 select new ClientAction
                       {
                           ActionToken = ActionTokenSerializer.Serialize(action.ActionHandle.ActionToken, true),
-                          Label = action.VisualData.Label,
-                          ToolTip = action.VisualData.ToolTip,
-                          Disabled = action.VisualData.Disabled,
-                          Icon = action.VisualData.Icon,
-                          BulkExecutionDialog = action.VisualData.BulkExecutionDialog,
-                          CheckboxStatus = GetCheckboxStatusString(action.VisualData.ActionCheckedStatus),
-                          ActivePositions = (int)action.VisualData.ActivePositions,
-                          TagValue = action.TagValue,                          
+                          Label = visualData.Label,
+                          ToolTip = visualData.ToolTip,
+                          Disabled = visualData.Disabled,
+                          Icon = visualData.Icon,
+                          BulkExecutionDialog = visualData.BulkExecutionDialog,
+                          CheckboxStatus = GetCheckboxStatusString(visualData.ActionCheckedStatus),
+                          ActivePositions = (int)visualData.ActivePositions,
+                          TagValue = action.TagValue,
                           ActionCategory = new ClientActionCategory
                                {
-                                   GroupId = CalculateActionCategoryGroupId(action.VisualData.ActionLocation),
-                                   GroupName = action.VisualData.ActionLocation.ActionGroup.Name,
-                                   Name = action.VisualData.ActionLocation.ActionType.ToString(),
-                                   IsInFolder = action.VisualData.ActionLocation.IsInFolder,
-                                   IsInToolbar = action.VisualData.ActionLocation.IsInToolbar,
-                                   FolderName = action.VisualData.ActionLocation.FolderName,
-                                   ActionBundle = action.VisualData.ActionLocation.ActionBundle
+                                   GroupId = CalculateActionCategoryGroupId(actionLocation.ActionGroup),
+                                   GroupName = actionLocation.ActionGroup.Name,
+                                   Name = actionLocation.ActionType.ToString(),
+                                   IsInFolder = actionLocation.IsInFolder,
+                                   IsInToolbar = actionLocation.IsInToolbar,
+                                   FolderName = actionLocation.FolderName,
+                                   ActionBundle = actionLocation.ActionBundle
                           }
                       };
 
@@ -56,10 +58,9 @@ namespace Composite.Core.WebClient.Services.TreeServiceObjects.ExtensionMethods
             }
         }
 
-        private static string CalculateActionCategoryGroupId(ActionLocation actionLocation)
+        private static string CalculateActionCategoryGroupId(ActionGroup actionGroup)
         {
-            // trying to aqvoid overflow - might be lamo way
-            return "Key" + Math.Abs(Math.Abs(actionLocation.ActionGroup.Priority.GetHashCode()) - Math.Abs(actionLocation.ActionGroup.Name.GetHashCode())).ToString();
+            return "Key" + (actionGroup.Priority + actionGroup.Name).GetHashCode();
         }
 
     }

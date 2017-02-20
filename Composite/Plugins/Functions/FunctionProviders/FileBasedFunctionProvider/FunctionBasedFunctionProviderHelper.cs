@@ -13,7 +13,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
     /// </summary>
     public static class FunctionBasedFunctionProviderHelper
     {
-        private static readonly string LogTitle = typeof (FunctionBasedFunctionProviderHelper).FullName;
+        private static readonly string LogTitle = typeof(FunctionBasedFunctionProviderHelper).FullName;
 
         /// <summary>
         /// Gets the function description from the <see cref="FunctionAttribute" />.
@@ -44,7 +44,8 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
         /// <returns></returns>
         public static IDictionary<string, FunctionParameter> GetParameters(object functionObject, Type baseFunctionType, string filePath)
         {
-            var dict = new Dictionary<string, FunctionParameter>();
+            var functionParameters = new Dictionary<string, FunctionParameter>();
+            IDictionary<string, WidgetFunctionProvider> parameterWidgets = GetParameterWidgets(functionObject);
 
             var type = functionObject.GetType();
             while (type != baseFunctionType && type != null)
@@ -59,15 +60,13 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
                     // Skipping explicitly ignored attributes
                     if (property.GetCustomAttributes(typeof(FunctionParameterIgnoreAttribute), false).Any()) continue;
 
-
                     var propType = property.PropertyType;
                     var name = property.Name;
 
                     FunctionParameterAttribute attr = null;
                     var attributes = property.GetCustomAttributes(typeof(FunctionParameterAttribute), false).Cast<FunctionParameterAttribute>().ToList();
 
-
-                    if(attributes.Count > 1)
+                    if (attributes.Count > 1)
                     {
                         Log.LogWarning(LogTitle, "More than one '{0}' attribute defined on property '{1}'. Location: '{2}'"
                                                  .FormatWith(typeof(FunctionParameterAttribute).Name, name, filePath));
@@ -77,13 +76,14 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
                         attr = attributes.FirstOrDefault();
                     }
 
-                    WidgetFunctionProvider widgetProvider = null;
+                    WidgetFunctionProvider attibuteBasedWidgetProvider = null;
+                    WidgetFunctionProvider methodBasedWidgetProvider = null;
 
                     if (attr != null && attr.HasWidgetMarkup)
                     {
                         try
                         {
-                            widgetProvider = attr.GetWidgetFunctionProvider(type, property);
+                            attibuteBasedWidgetProvider = attr.GetWidgetFunctionProvider(type, property);
                         }
                         catch (Exception ex)
                         {
@@ -93,16 +93,32 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
                         }
                     }
 
-                    if (!dict.ContainsKey(name))
+                    parameterWidgets.TryGetValue(name, out methodBasedWidgetProvider);
+
+                    if (methodBasedWidgetProvider!=null && attibuteBasedWidgetProvider!=null)
                     {
-                        dict.Add(name, new FunctionParameter(name, propType, attr, widgetProvider));
+                        Log.LogWarning(LogTitle, "Widget for property {0} is defined in both {1} attribute and in {2}() method. Remove one of the definitions. Location: '{3}'"
+                                                 .FormatWith(property.Name, nameof(FunctionParameterAttribute), nameof(IParameterWidgetsProvider.GetParameterWidgets), filePath));
+                    }
+
+                    if (!functionParameters.ContainsKey(name))
+                    {
+                        functionParameters.Add(name, new FunctionParameter(name, propType, attr, attibuteBasedWidgetProvider ?? methodBasedWidgetProvider));
                     }
                 }
 
                 type = type.BaseType;
             }
 
-            return dict;
+            return functionParameters;
+        }
+
+        private static IDictionary<string, WidgetFunctionProvider> GetParameterWidgets(object functionObject)
+        {
+            var widgetsProvider = functionObject as IParameterWidgetsProvider;
+            IDictionary<string, WidgetFunctionProvider> parameterWidgets = widgetsProvider != null ? widgetsProvider.GetParameterWidgets() : null;
+
+            return parameterWidgets ?? new Dictionary<string, WidgetFunctionProvider>();
         }
     }
 }

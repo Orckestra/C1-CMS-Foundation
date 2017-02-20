@@ -158,3 +158,12 @@ Changes in 5.1 or later
               <add userControlVirtualPath="~/Composite/controls/FormsControls/FormUiControlTemplates/Selectors/SvgIconSelector.ascx" cacheCompiledUserControlType="true" type="Composite.Plugins.Forms.WebChannel.UiControlFactories.TemplatedSvgIconSelectorUiControlFactory, Composite" name="SvgIconSelector" />
               <add userControlVirtualPath="~/Composite/controls/FormsControls/FormUiControlTemplates/Selectors/SvgIconSelector.ascx" cacheCompiledUserControlType="true" type="Composite.Plugins.Forms.WebChannel.UiControlFactories.TemplatedSvgIconSelectorUiControlFactory, Composite" name="ConsoleIconSelector" svgSpritePath="~/Composite/images/sprite.svg" />
 - Added a global configuration settings @applicationShortName
+
+Changes in 6.0 or later
+-Added <section name="Composite.Plugins.Components.ComponentProviderConfiguration" type="Composite.Plugins.Components.ComponentProviderSettings, Composite" /> to configSections. It would be used to define configurations for component providers
+-Added ComponentProviderConfiguration values in 
+  <Composite.Plugins.Components.ComponentProviderConfiguration>
+    <ComponentProviders>
+      <add name="FileBasedComponentProvider" type="Composite.Plugins.Components.FileBasedComponentProvider, Composite" directory="~/App_Data/Components" fileSearchPattern="*.xml" topDirectoryOnly="false"/>
+    </ComponentProviders>
+  </Composite.Plugins.Components.ComponentProviderConfiguration>

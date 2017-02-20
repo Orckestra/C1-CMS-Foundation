@@ -12,7 +12,6 @@ using Composite.Core;
 using Composite.Core.Application;
 using Composite.Core.Application.Plugins.ApplicationStartupHandler;
 using Composite.Core.Configuration;
-using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Core.Types;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,32 +20,52 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 namespace Composite.Core.Application
 {
     /// <summary>    
-    /// Using this attribute on a class with the following two static methods,
-    /// will cause C1 to call those two methods in the initialization phase of C1.
-    /// This can be used to register event handlers ans such.
-    /// The static class should have these two static methods:
+    /// Using this attribute on a class will cause the CMS to call methods on it at startup. 
+    /// The following methods will be called, if they exist:
+    /// 
     /// <code>
+    /// /* This handler will be called first, before C1 initialization, and allow you to register services exposed by <see cref="Composite.Core.ServiceLocator"/>
+    /// public void ConfigureServices(<see cref="Microsoft.Extensions.DependencyInjection.IServiceCollection"/> serviceCollection) {}
     /// /* This handler will be called before C1 initialization. The data layer cannot be used here. */
-    /// public static void OnBeforeInitialize() {}
+    /// public void OnBeforeInitialize() {}
     /// /* This handler will be called after initialization of C1 core. */
-    /// public static void OnInitialized() {}
+    /// public void OnInitialized() {}
     /// </code>
     /// </summary>
     /// <example>
+    /// To register a service on <see cref="Composite.Core.ServiceLocator"/>:
+    /// <code>
+    /// [ApplicationStartup]
+    /// public class MyServiceRegistration
+    /// {
+    ///     public void ConfigureServices(IServiceCollection serviceCollection)
+    ///     {
+    ///         // Register a singleton service that will be retrievable via Composite.Core.ServiceLocator
+    ///         serviceCollection.AddSingleton(typeof(ITestStuff), typeof(TestStuff));
+    ///     }
+    /// } 
+    /// </code>
+    /// 
+    /// If OnBeforeInitialize() or OnInitialized() has any parameters, they will be provided via the ServiceLocator.
+    /// 
     /// <code>
     /// [ApplicationStartup]
     /// public class MyAppStartupHandler
     /// {
-    ///     public static void OnBeforeInitialize()
+    ///     public void OnBeforeInitialize()
     ///     {
     ///     }
     ///     
-    ///     public static void OnInitialized()
+    ///     public void OnInitialized(Composite.Core.Logging.ILog log)
     ///     {
+    ///         log.LogInformation("Dependency Injection supported here");
     ///     }
     /// } 
     /// </code>
     /// </example>
+    /// <notes>
+    /// Class and method can be static, but do not need to be. 
+    /// </notes>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public sealed class ApplicationStartupAttribute : Attribute
     {
@@ -67,6 +86,44 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
     [ConfigurationElementType(typeof(NonConfigurableApplicationStartupHandler))]
     public sealed class AttributeBasedApplicationStartupHandler : IApplicationStartupHandler
     {
+        /// <exclude />
+        public void ConfigureServices(IServiceCollection serviceCollection)
+        {
+            var serviceCollectionParameter = new object[] { serviceCollection };
+            foreach (var startupHandler in _startupHandlers)
+            {
+                var methodInfo = startupHandler.ConfigureServicesMethod;
+
+                if (methodInfo != null)
+                {
+                    if (methodInfo.IsStatic)
+                    {
+                        methodInfo.Invoke(null, serviceCollectionParameter);
+                    }
+                    else
+                    {
+                        var instance = Activator.CreateInstance(methodInfo.DeclaringType);
+                        methodInfo.Invoke(instance, serviceCollectionParameter);
+                    }
+                }
+            }
+        }
+
+
+        /// <exclude />
+        public void OnBeforeInitialize(IServiceProvider serviceProvider)
+        {
+            ExecuteEventHandlers(serviceProvider, handler => handler.OnBeforeInitializeMethod);
+        }
+
+
+        /// <exclude />
+        public void OnInitialized(IServiceProvider serviceProvider)
+        {
+            ExecuteEventHandlers(serviceProvider, handler => handler.OnInitializedMethod);
+        }
+
+
         private class StartupHandlerInfo
         {
             public StartupHandlerInfo(Type type, ApplicationStartupAttribute attribute)
@@ -78,15 +135,17 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
             public Type Type { get; }
             public ApplicationStartupAttribute Attribute { get; }
 
-            public MethodInfo OnBeforeInitialeMethod { get; set; }
+            public MethodInfo OnBeforeInitializeMethod { get; set; }
             public MethodInfo OnInitializedMethod { get; set; }
+            public MethodInfo ConfigureServicesMethod { get; set; }
         }
 
         private static readonly string LogTitle = typeof (AttributeBasedApplicationStartupHandler).Name;
         private static readonly string CacheFileName = "StartupHandlersCache.xml";
 
-        private static readonly string OnBeforeInitializeMethodName = "OnBeforeInitialize";
-        private static readonly string OnInitializedMethodName = "OnInitialized";
+        private static readonly string OnBeforeInitializeMethodName = nameof(IApplicationStartupHandler.OnBeforeInitialize);
+        private static readonly string OnInitializedMethodName = nameof(IApplicationStartupHandler.OnInitialized);
+        private static readonly string ConfigureServicesMethodName = nameof(IApplicationStartupHandler.ConfigureServices);
 
         private readonly List<StartupHandlerInfo> _startupHandlers = new List<StartupHandlerInfo>();
 
@@ -148,31 +207,13 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
             {
                 var type = startupHandler.Type;
 
-                MethodInfo onBeforeInitializeMethod, onInitializedMethod;
+                var methods = type.GetMethods();
 
-                GetPublicStaticMethod(type, OnBeforeInitializeMethodName, out onBeforeInitializeMethod);
-                GetPublicStaticMethod(type, OnInitializedMethodName, out onInitializedMethod);
+                startupHandler.ConfigureServicesMethod = methods.FirstOrDefault(m => m.Name == ConfigureServicesMethodName && m.GetParameters().Length == 1 && m.GetParameters()[0].ParameterType == typeof(IServiceCollection));
+                startupHandler.OnBeforeInitializeMethod = methods.FirstOrDefault(m => m.Name == OnBeforeInitializeMethodName);
+                startupHandler.OnInitializedMethod = methods.FirstOrDefault(m => m.Name == OnInitializedMethodName);
 
-                startupHandler.OnBeforeInitialeMethod = onBeforeInitializeMethod;
-                startupHandler.OnInitializedMethod = onInitializedMethod;
-                
                 _startupHandlers.Add(startupHandler);
-            }
-        }
-
-        private static void GetPublicStaticMethod(Type type, string methodName, out MethodInfo methodInfo)
-        {
-            methodInfo = type.GetMethods().FirstOrDefault(m => m.Name == methodName);
-            if (methodInfo == null)
-            {
-                throw new InvalidOperationException(
-                    $"The type '{type}' is a missing public static method named '{methodName}'," 
-                    + $" taking no arguments or accepting a parameter of type {nameof(IServiceCollection)}");
-            }
-
-            if(!methodInfo.IsStatic)
-            {
-                throw new InvalidOperationException($"Method '{type}' in type '{methodName}' should be static");
             }
         }
 
@@ -199,7 +240,7 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
             {
                 if(ex is IOException || ex is UnauthorizedAccessException)
                 {
-                    Log.LogWarning(LogTitle, "Failed to open file '{0}'".FormatWith(CacheFilePath));
+                    Log.LogWarning(LogTitle, $"Failed to open file '{CacheFilePath}'");
                     Log.LogError(LogTitle, ex);
                     return result;
                 }
@@ -212,7 +253,7 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
 
                 if(innerEx is XmlException || innerEx is SerializationException)
                 {
-                    Log.LogWarning(LogTitle, "Failed to deserialize file '{0}'".FormatWith(CacheFilePath));
+                    Log.LogWarning(LogTitle, $"Failed to deserialize file '{CacheFilePath}'");
                     Log.LogError(LogTitle, ex);
                     return result;
                 }
@@ -220,9 +261,7 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
                 throw;
             }
 
-            if(cached != null 
-                && cached.Assemblies != null 
-                && cached.Assemblies.Length != 0)
+            if (cached?.Assemblies != null && cached.Assemblies.Length != 0)
             {
                 result.AddRange(cached.Assemblies);
             }
@@ -279,7 +318,7 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
             }
             catch (ReflectionTypeLoadException ex)
             {
-                Log.LogWarning(LogTitle, "Failed to load assembly '{0}'".FormatWith(filePath));
+                Log.LogWarning(LogTitle, $"Failed to load assembly '{filePath}'");
                 if(ex.LoaderExceptions != null && ex.LoaderExceptions.Length > 0)
                 {
                     Log.LogError(LogTitle, ex.LoaderExceptions[0]);
@@ -373,7 +412,7 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
             }
             catch (UnauthorizedAccessException)
             {
-                Log.LogWarning(LogTitle, "Failed to open file '{0}'".FormatWith(CacheFilePath));
+                Log.LogWarning(LogTitle, $"Failed to open file '{CacheFilePath}'");
             }
         }
 
@@ -387,7 +426,7 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
             }
             catch (TypeLoadException exception)
             {
-                Log.LogError(LogTitle, new Exception("Failed to load assembly '{0}'".FormatWith(assembly.FullName), exception));
+                Log.LogError(LogTitle, new Exception($"Failed to load assembly '{assembly.FullName}'", exception));
                 types = null;
                 return false;
             }
@@ -397,7 +436,7 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
                     ? exception.LoaderExceptions.First()
                     : exception;
                 
-                Log.LogError(LogTitle, new Exception("Failed to load assembly '{0}'".FormatWith(assembly.FullName), exceptionToLog));
+                Log.LogError(LogTitle, new Exception($"Failed to load assembly '{assembly.FullName}'", exceptionToLog));
 
                 types = null;
                 return false;
@@ -413,23 +452,6 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
         }
 
 
-        private object[] GetParameters(MethodInfo methodInfo)
-        {
-            var parameters = methodInfo.GetParameters();
-            if (parameters.Length == 0)
-            {
-                return null;
-            }
-
-            if (parameters.Length == 1 && parameters[0].ParameterType == typeof (IServiceCollection))
-            {
-                return new object[] { ServiceLocator.ServiceCollection };
-            }
-
-            throw new InvalidOperationException("Application startup does not support the specified method signature on method '{0}' of type '{1}'"
-                .FormatWith(methodInfo.Name, methodInfo.DeclaringType.FullName));
-        }
-
         private static XmlSerializer GetSerializer()
         {
             // NOTE: Performance critical to have serializer inside Composite.Core.XmlSerializers.dll
@@ -442,13 +464,7 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
         }
 
 
-        private static string CacheDirectoryPath
-        {
-            get
-            {
-                return PathUtil.Resolve(GlobalSettingsFacade.CacheDirectory);
-            }
-        }
+        private static string CacheDirectoryPath => PathUtil.Resolve(GlobalSettingsFacade.CacheDirectory);
 
 
         private string CacheFilePath
@@ -465,48 +481,46 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
         }
 
 
-        /// <exclude />
-        public void OnBeforeInitialize()
+        private void ExecuteEventHandlers(IServiceProvider serviceProvider, Func<StartupHandlerInfo,MethodInfo> methodLocator)
         {
-            foreach (var startupHandler in _startupHandlers)
+            foreach (var startupHandler in _startupHandlers.Where(h => methodLocator(h) != null))
             {
-                var methodInfo = startupHandler.OnBeforeInitialeMethod;
-                methodInfo.Invoke(null, GetParameters(methodInfo));
-            }
-        }
-
-
-        /// <exclude />
-        public void OnInitialized()
-        {
-            foreach (var startupHandler in _startupHandlers)
-            {
-                MethodInfo methodInfo = startupHandler.OnInitializedMethod;
+                MethodInfo methodInfo = methodLocator(startupHandler);
 
                 try
                 {
-                    methodInfo.Invoke(null, GetParameters(methodInfo));
+                    InvokeWithServices(serviceProvider, methodInfo);
                 }
-                catch (TargetInvocationException ex)
+                catch (Exception ex)
                 {
+                    var type = methodInfo.DeclaringType;
+                    var message = $"Failed to execute startup handler. Type: '{type.FullName}', Assembly: '{type.Assembly.FullName}'";
+
                     if (startupHandler.Attribute.AbortStartupOnException)
                     {
-                        throw;
+                        throw new InvalidOperationException(message, ex);
                     }
 
-                    Log.LogError(LogTitle, "Failed to execute startup handler. Type: '{0}', Assembly: '{1}'",
-                                           methodInfo.DeclaringType.FullName, methodInfo.DeclaringType.Assembly.FullName);
+                    Log.LogError(LogTitle, message);
 
-                    Log.LogError(LogTitle, ex.InnerException);
+                    Log.LogError(LogTitle, ex is TargetInvocationException ? ex.InnerException : ex);
                 }
             }
         }
 
-        
+
+        private static void InvokeWithServices(IServiceProvider serviceProvider, MethodInfo methodInfo)
+        {
+            object[] methodArguments = methodInfo.GetParameters().Select(p => serviceProvider.GetRequiredService(p.ParameterType)).ToArray();
+            object methodClass = methodInfo.IsStatic ? null : ActivatorUtilities.GetServiceOrCreateInstance(serviceProvider, methodInfo.DeclaringType);
+
+            methodInfo.Invoke(methodClass, methodArguments);
+        }
+
 
         private static void LogAssemblyLoadException(string filePath, Exception e)
         {
-            var logEx = new InvalidOperationException("Failed to load types from file '{0}'".FormatWith(filePath), e);
+            var logEx = new InvalidOperationException($"Failed to load types from file '{filePath}'", e);
             Log.LogError(LogTitle, logEx);
 
             Exception toExamine = e;
@@ -543,7 +557,7 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
         public class AssemblyInfo
         {
             /// <exclude />
-            public string AssemblyName { get; set; }            // Assembly name
+            public string AssemblyName { get; set; }
 
             /// <exclude />
             public DateTime LastModified { get; set; }

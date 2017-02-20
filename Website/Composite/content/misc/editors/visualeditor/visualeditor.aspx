@@ -7,7 +7,7 @@
 		<control:styleloader runat="server" />
 		<control:scriptloader type="sub" runat="server" />
 		<link rel="stylesheet" type="text/css" href="visualeditor.css.aspx"/>
-		
+
 		<script type="text/javascript" src="bindings/VisualEditorPageBinding.js"></script>
 		<script type="text/javascript" src="bindings/VisualEditorBoxBinding.js"></script>
 		<script type="text/javascript" src="bindings/VisualEditorToolBarBinding.js"></script>
@@ -20,7 +20,7 @@
 		<script type="text/javascript" src="bindings/VisualEditorInsertPlusFieldsToolBarButtonBinding.js"></script>
 		<script type="text/javascript" src="bindings/VisualEditorPropertiesToolBarGroupBinding.js"></script>
 		<script type="text/javascript" src="bindings/TemplateTreeBinding.js"></script>
-		
+
 		<ui:bindingmappingset>
 			<ui:bindingmapping element="ui:toolbarbutton" binding="EditorToolBarButtonBinding" />
 			<ui:bindingmapping element="ui:selector" binding="EditorSelectorBinding" />
@@ -31,10 +31,10 @@
 			<ui:broadcaster id="broadcasterCanUndo" isdisabled="true" />
 			<ui:broadcaster id="broadcasterCanRedo" isdisabled="true" />
 		</ui:broadcasterset>
-		
+
 	</head>
 	<body>
-	
+
 		<ui:popupset>
 			<ui:popup id="pastepopup">
 				<ui:menubody>
@@ -48,6 +48,7 @@
 					<ui:menugroup rel="insertions">
 						<ui:menuitem cmd="compositeInsertTable" val="insert" gui="true" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelTable}" image="${icon:table}" binding="EditorMenuItemBinding" />
 						<ui:menuitem cmd="compositeInsertImage" val="insert" gui="true" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelImage}" image="${icon:image}" binding="EditorMenuItemBinding" />
+						<ui:menuitem cmd="compositeInsertComponent" val="insert" gui="true" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelComponent}" image="${icon:functioncall}" binding="EditorMenuItemBinding" />
 						<ui:menuitem cmd="compositeInsertRendering" val="insert" gui="true" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelRendering}" image="${icon:functioncall}" binding="EditorMenuItemBinding" />
 						<ui:menuitem cmd="compositeInsertCharacter" val="insert" gui="true" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelCharacter}" image="${icon:specialchar}" binding="EditorMenuItemBinding" />
 						<ui:menuitem cmd="compositeInsertFieldParent" val="insert" gui="true" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelField}" image="${icon:field}" image-disabled="${icon:field-disabled}" binding="EditorMenuItemBinding" isdisabled="true" />
@@ -102,7 +103,7 @@
 					</ui:tree>
 				</ui:splitpanel>
 			</ui:splitbox>
-			
+
 		</ui:page>
 	</body>
 </html>

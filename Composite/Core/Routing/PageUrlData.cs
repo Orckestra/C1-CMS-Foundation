@@ -7,7 +7,7 @@ using Composite.Data.Types;
 namespace Composite.Core.Routing
 {
     /// <summary>
-    /// Information stored in a Orckestra CMS page url
+    /// Information stored in a C1 CMS page url
     /// </summary>
     public class PageUrlData
     {

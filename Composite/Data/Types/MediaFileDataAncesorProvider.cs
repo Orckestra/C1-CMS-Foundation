@@ -1,52 +1,48 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Composite.Data.Hierarchy;
-using Composite.Data;
-using Composite.Data.Types;
 using Composite.Core.Extensions;
 
 namespace Composite.Data.Types
 {
     internal sealed class MediaFileDataAncesorProvider : IDataAncestorProvider
 	{
-
         public IData GetParent(IData data)
         {
-            IData parent = null;
+            string parentFolderPath;
+            string storeId;
+
             if (data is IMediaFile)
             {
-                IMediaFile file = (IMediaFile)data;
+                var file = (IMediaFile)data;
 
-                parent = (from item in DataFacade.GetData<IMediaFileFolder>()
-                          where item.Path == file.FolderPath && item.StoreId == file.StoreId
-                          select item).FirstOrDefault();
- 
+                parentFolderPath = file.FolderPath;
+                storeId = file.StoreId;
             }
             else if (data is IMediaFileFolder)
             {
-                IMediaFileFolder folder = (IMediaFileFolder)data;
+                var folder = (IMediaFileFolder) data;
 
                 int lastIndex = folder.Path.LastIndexOf('/');
-                if(lastIndex == 0)
+                if (lastIndex == 0)
                 {
                     return null;
                 }
 
-                string parentPath = folder.Path.Substring(0, lastIndex);
-                parent = (from item in DataFacade.GetData<IMediaFileFolder>()
-                          where item.Path == parentPath && item.StoreId == folder.StoreId
-                          select item).FirstOrDefault();
+                parentFolderPath = folder.Path.Substring(0, lastIndex);
+                storeId = folder.StoreId;
             }
             else
             {
-                throw new ArgumentException("Must be either of type IMediaFile or IMediaFileFolder", "data");
+                throw new ArgumentException("Must be either of type IMediaFile or IMediaFileFolder", nameof(data));
             }
 
+            var queryable = DataFacade.GetData<IMediaFileFolder>();
 
-            return parent;
+            return queryable.IsEnumerableQuery()
+                ? queryable.AsEnumerable()
+                           .FirstOrDefault(item => item.Path == parentFolderPath && item.StoreId == storeId)
+                : queryable.FirstOrDefault(item => item.Path == parentFolderPath && item.StoreId == storeId);
         }
-
     }
 }

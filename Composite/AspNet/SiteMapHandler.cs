@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Web;
 using System.Xml;
 using Composite.Core;
 using Composite.Core.Extensions;
+using Composite.Core.Linq;
 using Composite.Core.WebClient;
 using Composite.Data;
 using Composite.Data.Types;
@@ -125,15 +125,8 @@ namespace Composite.AspNet
 
         private CultureInfo GetActiveCulture(string languageCode)
         {
-            foreach (var culture in DataLocalizationFacade.ActiveLocalizationCultures)
-            {
-                if (culture.Name.Equals(languageCode, StringComparison.OrdinalIgnoreCase))
-                {
-                    return culture;
-                }
-            }
-
-            return null;
+            return DataLocalizationFacade.ActiveLocalizationCultures
+                .FirstOrDefault(culture => culture.Name.Equals(languageCode, StringComparison.OrdinalIgnoreCase));
         }
 
 
@@ -212,20 +205,27 @@ namespace Composite.AspNet
             Guid homePageId = Guid.Parse(sitemapNode.Key);
             string cultureName = sitemapNode.Culture.Name;
 
-            var bestMatch = bindings.SingleOrDefault(h => h.HomePageId == homePageId && h.Culture == cultureName);
+            var bestMatch = FindMatch(bindings, homePageId, cultureName);
             if (bestMatch != null)
             {
                 return bestMatch;
             }
 
             string defaultCulture = DataLocalizationFacade.DefaultLocalizationCulture.Name;
-            var secondBestMatch = bindings.SingleOrDefault(h => h.HomePageId == homePageId && h.Culture == defaultCulture);
+            var secondBestMatch = FindMatch(bindings, homePageId, defaultCulture);
             if (secondBestMatch != null)
             {
                 return secondBestMatch;
             }
 
             return  bindings.OrderBy(b => b.Hostname).FirstOrDefault(h => h.HomePageId == homePageId);
+        }
+
+        private IHostnameBinding FindMatch(IEnumerable<IHostnameBinding> bindings, Guid homePageId, string cultureName)
+        {
+            return bindings.Where(h => h.HomePageId == homePageId && h.Culture == cultureName)
+                .SingleOrDefaultOrException("There are multiple hostname bindings refering to the same home page id '{0}' and the same culture '{1}'",
+                    homePageId, cultureName);
         }
 
         private void WriteFullSiteMap(XmlWriter writer, SiteMapProvider provider)

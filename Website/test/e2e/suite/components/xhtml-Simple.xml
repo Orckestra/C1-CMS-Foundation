@@ -1,0 +1,8 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+	</head>
+	<body>
+		<h1>Simple content</h1>
+		<p>This is just a simple block of xhtml. Once selected, this should just be inserted into the document as is and no function dialog is expected.</p>
+	</body>
+</html>

@@ -34,12 +34,12 @@ namespace Composite.Data.Streams
     /// (like <see cref="Composite.Data.Types.IMediaFile"/> for a custom Media File Provider) expose access to stream reads/writes by annotating 
     /// the class implementing <see cref="Composite.Data.Types.IFile"/> with the <see cref="FileStreamManagerAttribute"/> attribute, 
     /// passing the type of a <see cref="IFileStreamManager"/> as attribute parameter.
-    /// Orckestra CMS will, via the attribute on the <see cref="Composite.Data.Types.IFile"/>, get the type responsible for stream reads/writes.
+    /// C1 CMS will, via the attribute on the <see cref="Composite.Data.Types.IFile"/>, get the type responsible for stream reads/writes.
     /// 
     /// The class implementing this interface is expected to provide read/write access to the file store being introduced by a file oriented File Provider.
     /// </summary>
     /// <example>
-    /// Here is an example of how to inform Orckestra CMS about IFileStreamManager
+    /// Here is an example of how to inform C1 CMS about IFileStreamManager
     /// <code>
     /// [FileStreamManager(typeof(MyFileStreamManager))]
     /// public abstract class SomeFile : IFile

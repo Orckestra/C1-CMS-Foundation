@@ -16,16 +16,15 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
         /// <exclude />
         public static void OnBeforeInitialize()
         {
-            DataActionTokenResolverFacade.RegisterDefault<IPage>(ActionIdentifier.Add, f => new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PageElementProvider.AddNewPageWorkflow")) { DoIgnoreEntityTokenLocking = true, Payload = SerializerHandlerFacade.Serialize(f) });
-            DataActionTokenResolverFacade.RegisterDefault<IPage>(ActionIdentifier.Edit, f => new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PageElementProvider.EditPageWorkflow")));
-            DataActionTokenResolverFacade.RegisterDefault<IPage>(ActionIdentifier.Delete, f => new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PageElementProvider.DeletePageWorkflow")));
-            DataActionTokenResolverFacade.RegisterDefault<IPage>(ActionIdentifier.Duplicate, f => new DuplicateActionToken());
         }
 
         /// <exclude />
-        public static void OnInitialized()
+        public static void OnInitialized(DataActionTokenResolver resolver)
         {
-
+            resolver.RegisterDefault<IPage>(ActionIdentifier.Add, f => new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PageElementProvider.AddNewPageWorkflow")) { DoIgnoreEntityTokenLocking = true, Payload = SerializerHandlerFacade.Serialize(f) });
+            resolver.RegisterDefault<IPage>(ActionIdentifier.Edit, f => new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PageElementProvider.EditPageWorkflow")));
+            resolver.RegisterDefault<IPage>(ActionIdentifier.Delete, f => new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PageElementProvider.DeletePageWorkflow")));
+            resolver.RegisterDefault<IPage>(ActionIdentifier.Duplicate, f => new DuplicateActionToken());
         }
     }
 }

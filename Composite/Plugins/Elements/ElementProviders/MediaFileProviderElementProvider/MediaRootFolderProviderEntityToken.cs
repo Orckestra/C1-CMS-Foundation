@@ -10,37 +10,25 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
     [SecurityAncestorProvider(typeof(MediaFileProviderEntityTokenSecurityAncestorProvider))]
     public sealed class MediaRootFolderProviderEntityToken : EntityToken
 	{
-        private string _id;
-
         /// <exclude />
         public MediaRootFolderProviderEntityToken(string parentFolder)
         {
-            _id = parentFolder;
+            Verify.ArgumentNotNull(parentFolder, nameof(parentFolder));
+
+            Id = parentFolder;
         }
 
         /// <exclude />
-    	public override string  Type
-        {
-	        get { return ""; }
-        }
+        public override string Type => "";
 
         /// <exclude />
-        public override string  Source
-        {
-	        get { return ""; }
-        }
+        public override string Source => "";
 
         /// <exclude />
-        public override string  Id
-        {
-	        get { return _id; }
-        }
+        public override string Id { get; }
 
         /// <exclude />
-        public override string  Serialize()
-        {
-            return DoSerialize();
-        }
+        public override string  Serialize() => DoSerialize();
 
         /// <exclude />
         public static EntityToken Deserialize(string serializedData)

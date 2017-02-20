@@ -1,22 +1,232 @@
 {
   "name": "CompositeC1",
   "version": "1.0.0",
+  "scripts": {
+    "test": "npm run unit:test",
+    "lint": "npm run lintconsole",
+    "coverage": "npm run unit:cov",
+    "unit:test": "jspm run test/unit/runner.js",
+    "unit:cov": "jspm run test/unit/coverage.js",
+    "watch": "chokidar-socket-emitter -p Composite/console/",
+    "buildconsole": "jspm build CMSConsole Composite/console.js --minify --production",
+    "lintconsole": "eslint Composite/console test/unit/"
+  },
   "devDependencies": {
     "JSONPath": "^0.10.0",
     "autoprefixer-core": "^5.2.1",
-    "chromedriver": "2.21.2",
+    "chromedriver": "^2.26.1",
+    "chokidar-socket-emitter": "0.5.4",
     "csswring": "^3.0.5",
+    "eslint": "3.1.1",
+    "eslint-plugin-mocha": "4.0.0",
+    "eslint-plugin-react": "5.2.2",
     "grunt": "~0.4.5",
     "grunt-contrib-copy": "0.8.2",
     "grunt-contrib-less": "^1.0.0",
     "grunt-contrib-uglify": "^0.9.1",
     "grunt-contrib-watch": "~0.6.1",
     "grunt-postcss": "^0.5.5",
+    "grunt-svgmin": "3.2.0",
     "iedriver": "2.53.1",
+    "istanbul": "^0.4.3",
+    "istanbul-lib-coverage": "1.0.0",
+    "jsdom": "9.4.1",
+    "jspm": "0.17.0-beta.28",
     "less": "^2.1.2",
+    "load-grunt-tasks": "3.5.0",
+    "mocha": "3.0.1",
     "nightwatch": "0.9.3",
+    "node-fetch": "1.6.0",
     "rimraf": "2.5.4",
     "selenium-server-standalone-jar": "2.53.1",
+    "systemjs": "^0.19.36",
+    "systemjs-istanbul-hook": "0.1.1",
     "xml2js": "^0.4.10"
+  },
+  "jspm": {
+    "main": "Composite/console/console.js",
+    "dependencies": {
+      "fixed-data-table-2": "npm:fixed-data-table-2@^0.7.6",
+      "github/url-polyfill": "github:github/url-polyfill@^0.5.6",
+      "normalizr": "npm:normalizr@^2.2.1",
+      "plugin-babel": "npm:systemjs-plugin-babel@^0.0.13",
+      "rc-table": "npm:rc-table@^5.0.3",
+      "react-dimensions": "npm:react-dimensions@^1.3.0",
+      "react-redux": "npm:react-redux@^4.4.5",
+      "react-select": "npm:react-select@^1.0.0-beta14",
+      "redux-immutablejs": "npm:redux-immutablejs@^0.0.8",
+      "redux-observer": "npm:redux-observer@^1.0.0",
+      "redux-thunk": "npm:redux-thunk@^2.1.0",
+      "reselect": "npm:reselect@^2.5.4",
+      "styled-components": "npm:styled-components@^1.1.1",
+      "svg": "github:npbenjohnson/plugin-svg@^0.1.0",
+      "text": "github:systemjs/plugin-text@^0.0.9",
+      "url-polyfill": "github:github/url-polyfill@^0.5.6",
+      "wampy": "npm:wampy@^4.0.0",
+      "whatwg-fetch": "npm:whatwg-fetch@^1.0.0"
+    },
+    "devDependencies": {
+      "babel-plugin-transform-react-jsx": "npm:babel-plugin-transform-react-jsx@^6.8.0",
+      "babel-runtime": "npm:babel-runtime@^5.8.24",
+      "core-js": "npm:core-js@^1.2.0",
+      "dgram": "npm:jspm-nodelibs-dgram@^0.2.0",
+      "dns": "npm:jspm-nodelibs-dns@^0.2.0",
+      "ecc-jsbn": "npm:ecc-jsbn@~0.1.1",
+      "glob": "npm:glob@^7.0.5",
+      "jodid25519": "npm:jodid25519@^1.0.0",
+      "jsbn": "npm:jsbn@0.1",
+      "react-addons-test-utils": "npm:react-addons-test-utils@^15.3.0",
+      "react-immutable-proptypes": "npm:react-immutable-proptypes@^2.1.0",
+      "sinon": "npm:sinon@^1.17.5",
+      "source-map": "npm:source-map@0.2",
+      "systemjs-hot-reloader": "github:capaj/systemjs-hot-reloader@^0.6.0",
+      "systemjs-hot-reloader-store": "github:peteruithoven/systemjs-hot-reloader-store@^1.0.0",
+      "tweetnacl": "npm:tweetnacl@0.13",
+      "unexpected-dom": "npm:unexpected-dom@^3.1.0",
+      "unexpected-mitm": "npm:unexpected-mitm@^9.1.6",
+      "unexpected-react": "npm:unexpected-react@^3.2.3",
+      "unexpected-sinon": "npm:unexpected-sinon@^10.5.1",
+      "unexpected-zurvan": "npm:unexpected-zurvan@^0.1.0",
+      "zurvan": "npm:zurvan@^0.3.2"
+    },
+    "peerDependencies": {
+      "assert": "npm:jspm-nodelibs-assert@^0.2.0",
+      "bluebird": "npm:bluebird@^3.0.0",
+      "buffer": "github:jspm/nodelibs-buffer@^0.2.0-alpha",
+      "child_process": "npm:jspm-nodelibs-child_process@^0.2.0",
+      "constants": "npm:jspm-nodelibs-constants@^0.2.0",
+      "crypto": "npm:jspm-nodelibs-crypto@^0.2.0",
+      "domain": "npm:jspm-nodelibs-domain@^0.2.0",
+      "events": "github:jspm/nodelibs-events@^0.2.0-alpha",
+      "fs": "github:jspm/nodelibs-fs@^0.2.0-alpha",
+      "http": "github:jspm/nodelibs-http@^0.2.0-alpha",
+      "https": "npm:jspm-nodelibs-https@^0.2.0",
+      "immutable": "npm:immutable@^3.8.1",
+      "magicpen-media": "npm:magicpen-media@^1.5.0",
+      "messy": "npm:messy@^6.12.0",
+      "module": "npm:jspm-nodelibs-module@^0.2.0",
+      "net": "npm:jspm-nodelibs-net@^0.2.0",
+      "os": "npm:jspm-nodelibs-os@^0.2.0",
+      "path": "github:jspm/nodelibs-path@^0.2.0-alpha",
+      "process": "github:jspm/nodelibs-process@^0.2.0-alpha",
+      "punycode": "npm:jspm-nodelibs-punycode@^0.2.0",
+      "querystring": "npm:jspm-nodelibs-querystring@^0.2.0",
+      "react": "npm:react@^15.3.2",
+      "react-dom": "npm:react-dom@^15.3.2",
+      "redux": "npm:redux@^3.5.2",
+      "repl": "npm:jspm-nodelibs-repl@^0.2.0",
+      "stream": "github:jspm/nodelibs-stream@^0.2.0-alpha",
+      "string_decoder": "npm:jspm-nodelibs-string_decoder@^0.2.0",
+      "tls": "npm:jspm-nodelibs-tls@^0.2.0",
+      "tty": "npm:jspm-nodelibs-tty@^0.2.0",
+      "unexpected": "npm:unexpected@^10.10.0",
+      "unexpected-messy": "npm:unexpected-messy@^6.0.0",
+      "url": "github:jspm/nodelibs-url@^0.2.0-alpha",
+      "util": "github:jspm/nodelibs-util@^0.2.0-alpha",
+      "vm": "npm:jspm-nodelibs-vm@^0.2.0",
+      "zlib": "npm:jspm-nodelibs-zlib@^0.2.0"
+    },
+    "overrides": {
+      "github:github/url-polyfill@0.5.6": {
+        "main": "url.js"
+      },
+      "github:socketio/socket.io-client@1.5.0": {
+        "main": "socket.io.js"
+      },
+      "npm:babel-runtime@5.8.38": {
+        "main": false,
+        "dependencies": {},
+        "optionalDependencies": {
+          "core-js": "^1.2.0"
+        }
+      },
+      "npm:bluebird@3.4.6": {
+        "meta": {
+          "js/browser/bluebird.js": {
+            "format": "global"
+          },
+          "js/browser/bluebird.min.js": {
+            "format": "global"
+          }
+        }
+      },
+      "npm:browserify-zlib@0.1.4": {
+        "dependencies": {
+          "readable-stream": "^2.0.2",
+          "pako": "~0.2.0"
+        },
+        "map": {
+          "_stream_transform": "readable-stream/transform"
+        }
+      },
+      "npm:debug@2.2.0": {
+        "main": "browser.js",
+        "jspmNodeConversion": false,
+        "format": "cjs",
+        "map": {
+          "./browser.js": {
+            "node": "./node.js"
+          },
+          "fs": "@node/fs",
+          "net": "@node/net",
+          "tty": "@node/tty",
+          "util": "@node/util"
+        }
+      },
+      "npm:debug@2.3.2": {
+        "main": "browser.js",
+        "jspmNodeConversion": false,
+        "format": "cjs",
+        "map": {
+          "./browser.js": {
+            "node": "./node.js"
+          },
+          "fs": "@node/fs",
+          "net": "@node/net",
+          "tty": "@node/tty",
+          "util": "@node/util"
+        }
+      },
+      "npm:inherits@2.0.1": {
+        "ignore": [
+          "test.js"
+        ]
+      },
+      "npm:inherits@2.0.3": {
+        "ignore": [
+          "test.js"
+        ]
+      },
+      "npm:lodash@4.16.4": {
+        "map": {
+          "buffer": "@empty",
+          "process": "@empty"
+        }
+      },
+      "npm:lodash@4.17.2": {
+        "map": {
+          "buffer": "@empty",
+          "process": "@empty"
+        }
+      },
+      "npm:ms@0.7.1": {
+        "jspmNodeConversion": false,
+        "format": "cjs"
+      },
+      "npm:ms@0.7.2": {
+        "jspmNodeConversion": false,
+        "format": "cjs"
+      },
+      "npm:styled-components@1.1.1": {
+        "dependencies": {
+          "buffer": "^5.0.0",
+          "fbjs": "^0.8.4",
+          "glamor": "^2.15.5",
+          "inline-style-prefixer": "^2.0.4",
+          "lodash": "^4.15.0",
+          "supports-color": "^3.1.2"
+        }
+      }
+    }
   }
 }

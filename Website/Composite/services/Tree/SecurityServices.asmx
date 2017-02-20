@@ -48,9 +48,9 @@ namespace Composite.Services
             List<UserPermissions> inheritedPermissions = new List<UserPermissions>();
             foreach (string username in UserValidationFacade.AllUsernames.OrderBy(f => f))
             {
-                UserToken dataUserToken = new UserToken(username);
+                var dataUserToken = new UserToken(username);
 
-                List<Guid> userGroupIds = UserGroupFacade.GetUserGroupIds(username);
+                var userGroupIds = UserGroupFacade.GetUserGroupIds(username);
 
                 Dictionary<Guid, IEnumerable<PermissionType>> presetUserGroupPermissions = new Dictionary<Guid, IEnumerable<PermissionType>>();
                 foreach (UserPermissions userPermissions in entityUserGroupPermissions.OrderBy(f => f.UserName))
@@ -262,11 +262,11 @@ namespace Composite.Services
                                                     UserToken userToken, 
                                                     EntityToken entityToken)
         {
-            bool checkInheritence = true;
+            bool checkInheritance = true;
             UserPermissions entityUserPermission = entityUserPermissions.FirstOrDefault(f => f.UserName == userToken.Username);
             if (entityUserPermission != null)
             {
-                checkInheritence = false;
+                checkInheritance = false;
                 if (!entityUserPermission.PermissionTypes.Contains(PermissionType.Administrate.ToString()))
                 {
                     return false;
@@ -274,7 +274,7 @@ namespace Composite.Services
             }
 
             bool? adminPermissionsSet = null;
-            List<Guid> userGroupIds = UserGroupFacade.GetUserGroupIds(userToken.Username);
+            var userGroupIds = UserGroupFacade.GetUserGroupIds(userToken.Username);
             foreach (Guid userGroupId in userGroupIds)
             {
                 IUserGroup userGroup = DataFacade.GetData<IUserGroup>(f => f.Id == userGroupId).Single();
@@ -282,7 +282,7 @@ namespace Composite.Services
                 UserPermissions entityUserGroupPermission = entityUserGroupPermissions.FirstOrDefault(f => f.UserName == userGroup.Name);
                 if (entityUserGroupPermission != null)
                 {
-                    checkInheritence = false;
+                    checkInheritance = false;
 
                     if (!adminPermissionsSet.HasValue || !adminPermissionsSet.Value)
                     {
@@ -302,7 +302,7 @@ namespace Composite.Services
                 return false;
             }
 
-            return !checkInheritence || (PermissionTypeFacade.GetInheritedPermissionsTypes(userToken, entityToken).Any(f => f == PermissionType.Administrate));
+            return !checkInheritance || PermissionTypeFacade.GetInheritedPermissionsTypes(userToken, entityToken).Any(f => f == PermissionType.Administrate);
         }
 
 

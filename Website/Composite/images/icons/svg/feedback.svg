@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg width="17px" height="15px" xmlns="http://www.w3.org/2000/svg">
+<svg width="17px" height="15px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 17 15">
   <g stroke="#666" fill="white">
-    <g id="feedback" viewBox="0 0 17 15"  stroke-linejoin="round" stroke-width="1" fill="none" >
+    <g id="feedback" stroke-linejoin="round" stroke-width="1" fill="none" >
       <path d="M8.12335206,12.5315552 C7.17868539,12.5315552 6.1962295,12.463651 5.3602295,12.2089844 L0.491821294,14.4839478 L2.63333333,11.0552 C1.214,9.91986667 0.491821294,8.33853342 0.491821294,6.58853342 C0.491821294,3.13386676 3.76533334,0.509643562 8,0.509643562 C12.2346667,0.509643562 15.4997559,3.13386674 15.4997559,6.58853341 C15.4997559,10.0432001 12.3580187,12.5315552 8.12335206,12.5315552 Z" id="Stroke-1063"></path>
       <path d="M4.52075195,5 L8.51123047,5" id="Stroke-1064" stroke-linecap="round"></path>
       <path d="M4.51647949,7 L11.4643555,7" id="Stroke-1065" stroke-linecap="round"></path>

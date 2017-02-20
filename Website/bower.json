@@ -1,7 +1,9 @@
 {
-	"name": "ASP.NET",
-	"private": true,
-	"dependencies": {
-		"codemirror": "5.9.0"
-	}
+  "name": "ASP.NET",
+  "private": true,
+  "dependencies": {
+    "codemirror": "5.9.0",
+    "autobahnjs": "autobahn#^0.10.1",
+    "babel-polyfill": "^0.0.1"
+  }
 }

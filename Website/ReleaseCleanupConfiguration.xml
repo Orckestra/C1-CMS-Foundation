@@ -13,8 +13,8 @@
 			<Directory path="\Composite\content\dialogs\querytreeeditor" />
 			<Directory path="\Composite\content\dialogs\tests" />
 			<Directory path="\Composite\content\views\dev\developer\tests" />
-      <Directory path="\Composite\content\misc\editors\visualeditor\tiny_mce_NEWER" />
-      <Directory path="\Composite\content\views\search" />
+			<Directory path="\Composite\content\misc\editors\visualeditor\tiny_mce_NEWER" />
+			<Directory path="\Composite\content\views\search" />
 			<Directory path="\Composite\images\icons\harmony" />
 			<Directory path="\Composite\images\icons\mimetypes" />
 			<Directory path="\Composite\images\icons\republic" />
@@ -26,8 +26,7 @@
 			<File path="\App_Data\Composite\clean.bat" />
 			<File path="\App_Data\Composite\AddOnDescriptions_RENAME.xml" />
 			<File path="\App_Data\Composite\Composite.modified.config" />
-			<File
-				path="\App_Data\Composite\ReleaseBuild.Composite.config.changeHistory.txt" />
+			<File path="\App_Data\Composite\ReleaseBuild.Composite.config.changeHistory.txt" />
 			<File path="\Renderers\ExecuteFunction.ashx" />
 			<File path="\.project" />
 			<File path="\vwd.webinfo" />
@@ -42,15 +41,19 @@
 		<Directories>
 			<Directory path="\Composite\scripts\source" />
 			<Directory path="\Composite\applets" />
-      <Directory path="\bower_components" />
+			<Directory path="\bower_components" />
+			<Directory path="\jspm_packages" />
 		</Directories>
 		<Files>
 			<File path="\Composite\scripts\compressed\sub-uncompressed.js" />
 			<File path="\Composite\scripts\compressed\top-uncompressed.js" />
-      <File path="\.bowerrc" />
-      <File path="\bower.json" />
-      <File path="\gruntfile.js" />
-      <File path="\package.json" />
+			<File path="\.bowerrc" />
+			<File path="\.eslintignore" />
+			<File path="\.eslintrc.json" />
+			<File path="\bower.json" />
+			<File path="\gruntfile.js" />
+			<File path="\package.json" />
+			<File path="\jspm.config.js" />
 			<File path="\ReleaseCleanupConfiguration.xml" />
 		</Files>
 	</Target>

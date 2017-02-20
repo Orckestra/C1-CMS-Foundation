@@ -2,8 +2,6 @@
 using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
-using Composite.C1Console.Events;
-using Composite.Core.Collections.Generic;
 using Composite.Core.Types;
 using Composite.Core.WebClient.Renderings.Data;
 using Composite.Data.DynamicTypes;
@@ -22,15 +20,6 @@ namespace Composite.Data.GeneratedTypes
     /// </summary>
     public static class InterfaceCodeGenerator
     {
-        private static readonly ResourceLocker<Resources> ResourceLocker = new ResourceLocker<Resources>(new Resources(), Resources.Initialize);
-
-
-        static InterfaceCodeGenerator()
-        {
-            GlobalEventSystemFacade.SubscribeToFlushEvent(args => Flush());
-        }
-
-
         /// <summary>
         /// Adds the assembly references required by the supplied <see cref="DataTypeDescriptor"/> to the supplied  <see cref="CodeGenerationBuilder"/>
         /// </summary>
@@ -93,21 +82,21 @@ namespace Composite.Data.GeneratedTypes
                     propertyNamesToSkip.AddRange(superInterface.GetAllProperties().Select(p => p.Name));
                 }
 
-                AddInterfaceAttributes(codeTypeDeclaration, dataTypeDescriptor);
+                AddInterfaceAttributes(codeTypeDeclaration.CustomAttributes, dataTypeDescriptor);
                 AddInterfaceProperties(codeTypeDeclaration, dataTypeDescriptor, propertyNamesToSkip);
 
                 return codeTypeDeclaration;
             }
             catch (Exception ex)
             {
-                throw new InvalidOperationException(string.Format("Failed to generate interface for type '{0}'", dataTypeDescriptor.TypeManagerTypeName), ex);
+                throw new InvalidOperationException($"Failed to generate interface for type '{dataTypeDescriptor.TypeManagerTypeName}'", ex);
             }
         }
 
 
-        private static void AddInterfaceAttributes(CodeTypeDeclaration codeTypeDeclaration, DataTypeDescriptor dataTypeDescriptor)
+        private static void AddInterfaceAttributes(CodeAttributeDeclarationCollection attributes, DataTypeDescriptor dataTypeDescriptor)
         {
-            codeTypeDeclaration.CustomAttributes.Add(
+            attributes.Add(
                 new CodeAttributeDeclaration(
                     typeof(AutoUpdatebleAttribute).FullName,
                     new CodeAttributeArgument[] {
@@ -115,7 +104,7 @@ namespace Composite.Data.GeneratedTypes
                 ));
 
 
-            codeTypeDeclaration.CustomAttributes.Add(
+            attributes.Add(
                 new CodeAttributeDeclaration(
                     typeof(DataScopeAttribute).FullName,
                     new [] { 
@@ -125,17 +114,17 @@ namespace Composite.Data.GeneratedTypes
                 ));
 
 
-            codeTypeDeclaration.CustomAttributes.Add(
+            attributes.Add(
                 new CodeAttributeDeclaration(
                     typeof(RelevantToUserTypeAttribute).FullName,
                     new [] { 
                         new CodeAttributeArgument(
-                            new CodePrimitiveExpression( UserType.Developer.ToString() ))
+                            new CodePrimitiveExpression( nameof(UserType.Developer) ))
                     }
                 ));
 
 
-            codeTypeDeclaration.CustomAttributes.Add(
+            attributes.Add(
                 new CodeAttributeDeclaration(
                     typeof(CodeGeneratedAttribute).FullName,
                     new CodeAttributeArgument[] {
@@ -143,7 +132,7 @@ namespace Composite.Data.GeneratedTypes
                 ));
 
 
-            codeTypeDeclaration.CustomAttributes.Add(
+            attributes.Add(
                 new CodeAttributeDeclaration(
                     typeof(DataAncestorProviderAttribute).FullName,
                     new [] {
@@ -153,7 +142,7 @@ namespace Composite.Data.GeneratedTypes
                     }
                 ));
 
-            codeTypeDeclaration.CustomAttributes.Add(
+            attributes.Add(
                 new CodeAttributeDeclaration(
                     typeof(ImmutableTypeIdAttribute).FullName,
                     new [] {
@@ -169,7 +158,7 @@ namespace Composite.Data.GeneratedTypes
               ),
               XhtmlRenderingType.Embedable.ToString());
 
-            codeTypeDeclaration.CustomAttributes.Add(
+            attributes.Add(
                 new CodeAttributeDeclaration(
                     typeof(KeyTemplatedXhtmlRendererAttribute).FullName,
                     new [] {
@@ -186,7 +175,7 @@ namespace Composite.Data.GeneratedTypes
 
                 if (!isDefinedOnSuperInterface)
                 {
-                    codeTypeDeclaration.CustomAttributes.Add(
+                    attributes.Add(
                         new CodeAttributeDeclaration(
                             typeof(KeyPropertyNameAttribute).FullName,
                             new [] {
@@ -198,7 +187,7 @@ namespace Composite.Data.GeneratedTypes
 
             if (dataTypeDescriptor.StoreSortOrderFieldNames.Count > 0)
             {
-                codeTypeDeclaration.CustomAttributes.Add(
+                attributes.Add(
                 new CodeAttributeDeclaration(
                     typeof(StoreSortOrderAttribute).FullName,
                     dataTypeDescriptor.StoreSortOrderFieldNames.Select(name => new CodeAttributeArgument(new CodePrimitiveExpression(name))).ToArray()
@@ -207,7 +196,7 @@ namespace Composite.Data.GeneratedTypes
 
             if (!string.IsNullOrEmpty(dataTypeDescriptor.Title))
             {
-                codeTypeDeclaration.CustomAttributes.Add(
+                attributes.Add(
                     new CodeAttributeDeclaration(
                         typeof(TitleAttribute).FullName,
                         new CodeAttributeArgument(
@@ -218,7 +207,7 @@ namespace Composite.Data.GeneratedTypes
 
             if (!string.IsNullOrEmpty(dataTypeDescriptor.LabelFieldName))
             {
-                codeTypeDeclaration.CustomAttributes.Add(
+                attributes.Add(
                     new CodeAttributeDeclaration(
                         typeof(LabelPropertyNameAttribute).FullName,
                         new CodeAttributeArgument(
@@ -229,7 +218,7 @@ namespace Composite.Data.GeneratedTypes
 
             if (!string.IsNullOrEmpty(dataTypeDescriptor.InternalUrlPrefix))
             {
-                codeTypeDeclaration.CustomAttributes.Add(
+                attributes.Add(
                     new CodeAttributeDeclaration(
                         typeof (InternalUrlAttribute).FullName,
                         new CodeAttributeArgument(
@@ -239,31 +228,26 @@ namespace Composite.Data.GeneratedTypes
             }
 
 
-            foreach (DataTypeAssociationDescriptor dataTypeAssociationDescriptor in dataTypeDescriptor.DataAssociations)
+            foreach (var dataTypeAssociationDescriptor in dataTypeDescriptor.DataAssociations)
             {
-                codeTypeDeclaration.CustomAttributes.Add(
+                attributes.Add(
                     new CodeAttributeDeclaration(
                         typeof(DataAssociationAttribute).FullName,
-                        new [] {
-                            new CodeAttributeArgument( new CodeTypeOfExpression(dataTypeAssociationDescriptor.AssociatedInterfaceType)),
-                            new CodeAttributeArgument(new CodePrimitiveExpression(dataTypeAssociationDescriptor.ForeignKeyPropertyName)),
-                            new CodeAttributeArgument(new CodeFieldReferenceExpression(new CodeTypeReferenceExpression(typeof(DataAssociationType)),dataTypeAssociationDescriptor.AssociationType.ToString()))
-                        }
+                        new CodeAttributeArgument(new CodeTypeOfExpression(dataTypeAssociationDescriptor.AssociatedInterfaceType)),
+                        new CodeAttributeArgument(new CodePrimitiveExpression(dataTypeAssociationDescriptor.ForeignKeyPropertyName)),
+                        new CodeAttributeArgument(new CodeFieldReferenceExpression(new CodeTypeReferenceExpression(typeof(DataAssociationType)),dataTypeAssociationDescriptor.AssociationType.ToString()))
                     ));
             }
 
 
-            if (dataTypeDescriptor.SuperInterfaces.Contains(typeof(IPageMetaData)) == false)
+            if (!dataTypeDescriptor.SuperInterfaces.Contains(typeof(IPageMetaData)))
             {
                 if (dataTypeDescriptor.SuperInterfaces.Contains(typeof(IPublishControlled)))
                 {
-                    codeTypeDeclaration.CustomAttributes.Add(
+                    attributes.Add(
                         new CodeAttributeDeclaration(
-                            typeof(PublishProcessControllerTypeAttribute).FullName,
-                            new[] {
-                            new CodeAttributeArgument(new CodeTypeOfExpression(typeof(GenericPublishProcessController)))
-                        }
-                        ));
+                            typeof(PublishProcessControllerTypeAttribute).FullName, 
+                            new CodeAttributeArgument(new CodeTypeOfExpression(typeof(GenericPublishProcessController)))));
                 }
             }
 
@@ -271,26 +255,32 @@ namespace Composite.Data.GeneratedTypes
             if (dataTypeDescriptor.Cachable)
             {
                 // [CachingAttribute(CachingType.Full)]
-                codeTypeDeclaration.CustomAttributes.Add(
+                attributes.Add(
                     new CodeAttributeDeclaration(
-                        typeof(CachingAttribute).FullName,
-                        new CodeAttributeArgument[] {
-                            new CodeAttributeArgument(
-                                new CodeFieldReferenceExpression(
-                                    new CodeTypeReferenceExpression(typeof(CachingType)),
-                                    "Full"
+                        typeof(CachingAttribute).FullName, 
+                        new CodeAttributeArgument(
+                            new CodeFieldReferenceExpression(
+                                new CodeTypeReferenceExpression(typeof(CachingType)),
+                                nameof(CachingType.Full)
                                 )
-                            )
-                        }
+                            )));
+            }
+
+            if (dataTypeDescriptor.Searchable)
+            {
+                // [SearchableTypeAttribute]
+                attributes.Add(
+                    new CodeAttributeDeclaration(
+                        typeof(SearchableTypeAttribute).FullName
                     ));
             }
         }
 
 
 
-        private static void AddInterfaceProperties(CodeTypeDeclaration codeTypeDeclaratoin, DataTypeDescriptor dataTypeDescriptor, List<string> propertyNamesToSkip)
+        private static void AddInterfaceProperties(CodeTypeDeclaration codeTypeDeclaration, DataTypeDescriptor dataTypeDescriptor, List<string> propertyNamesToSkip)
         {
-            foreach (DataFieldDescriptor dataFieldDescriptor in dataTypeDescriptor.Fields.Where(dfd => dfd.Inherited == false))
+            foreach (var dataFieldDescriptor in dataTypeDescriptor.Fields.Where(dfd => !dfd.Inherited))
             {
                 if (propertyNamesToSkip.Contains(dataFieldDescriptor.Name)) continue;
 
@@ -302,43 +292,35 @@ namespace Composite.Data.GeneratedTypes
                     HasSet = true
                 };
 
-                AddPropertyAttributes(codeMemberProperty, dataFieldDescriptor, dataTypeDescriptor.KeyPropertyNames.Contains(dataFieldDescriptor.Name));
+                AddPropertyAttributes(codeMemberProperty.CustomAttributes, dataFieldDescriptor, 
+                    dataTypeDescriptor.KeyPropertyNames.Contains(dataFieldDescriptor.Name));
 
-                codeTypeDeclaratoin.Members.Add(codeMemberProperty);
+                codeTypeDeclaration.Members.Add(codeMemberProperty);
             }
         }
 
 
 
-        private static void AddPropertyAttributes(CodeMemberProperty codeMemberProperty, DataFieldDescriptor dataFieldDescriptor, bool isKeyField)
+        private static void AddPropertyAttributes(CodeAttributeDeclarationCollection customAttributes, DataFieldDescriptor dataFieldDescriptor, bool isKeyField)
         {
-            codeMemberProperty.CustomAttributes.Add(
+            customAttributes.Add(
                     new CodeAttributeDeclaration(
-                        typeof(ImmutableFieldIdAttribute).FullName,
-                        new CodeAttributeArgument[] {
-                            new CodeAttributeArgument(new CodePrimitiveExpression(dataFieldDescriptor.Id.ToString()))
-                        }
-                    ));
+                        typeof(ImmutableFieldIdAttribute).FullName, 
+                        new CodeAttributeArgument(new CodePrimitiveExpression(dataFieldDescriptor.Id.ToString()))));
 
             if (isKeyField && dataFieldDescriptor.InstanceType == typeof(Guid) && dataFieldDescriptor.NewInstanceDefaultFieldValue == null)
             {
-                codeMemberProperty.CustomAttributes.Add(
+                customAttributes.Add(
                     new CodeAttributeDeclaration(
-                        typeof(FunctionBasedNewInstanceDefaultFieldValueAttribute).FullName,
-                        new CodeAttributeArgument[] {
-                            new CodeAttributeArgument(new CodePrimitiveExpression(@"<f:function name=""Composite.Utils.Guid.NewGuid"" xmlns:f=""http://www.composite.net/ns/function/1.0"" />"))
-                        }
-                    ));
+                        typeof(FunctionBasedNewInstanceDefaultFieldValueAttribute).FullName, 
+                        new CodeAttributeArgument(new CodePrimitiveExpression(@"<f:function name=""Composite.Utils.Guid.NewGuid"" xmlns:f=""http://www.composite.net/ns/function/1.0"" />"))));
             }
             else if (dataFieldDescriptor.NewInstanceDefaultFieldValue != null)
             {
-                codeMemberProperty.CustomAttributes.Add(
+                customAttributes.Add(
                     new CodeAttributeDeclaration(
-                        typeof(FunctionBasedNewInstanceDefaultFieldValueAttribute).FullName,
-                        new CodeAttributeArgument[] {
-                            new CodeAttributeArgument(new CodePrimitiveExpression(dataFieldDescriptor.NewInstanceDefaultFieldValue))
-                        }
-                    ));
+                        typeof(FunctionBasedNewInstanceDefaultFieldValueAttribute).FullName, 
+                        new CodeAttributeArgument(new CodePrimitiveExpression(dataFieldDescriptor.NewInstanceDefaultFieldValue))));
             }
 
 
@@ -367,11 +349,11 @@ namespace Composite.Data.GeneratedTypes
 
             if (dataFieldDescriptor.IsNullable)
             {
-                arguments.Add(new CodeAttributeArgument("IsNullable", new CodePrimitiveExpression(true)));
+                arguments.Add(new CodeAttributeArgument(nameof(StoreFieldTypeAttribute.IsNullable), new CodePrimitiveExpression(true)));
             }
 
 
-            codeMemberProperty.CustomAttributes.Add(
+            customAttributes.Add(
                 new CodeAttributeDeclaration(
                     typeof(StoreFieldTypeAttribute).FullName,
                     arguments.ToArray()
@@ -390,7 +372,7 @@ namespace Composite.Data.GeneratedTypes
                             )
                         );
 
-                    codeMemberProperty.CustomAttributes.Add(codeAttributeDeclaration);
+                    customAttributes.Add(codeAttributeDeclaration);
                 }
             }
 
@@ -399,7 +381,7 @@ namespace Composite.Data.GeneratedTypes
                 if (!dataFieldDescriptor.InstanceType.IsValueType)
                 {
                     var notNullAttribute = new CodeAttributeDeclaration(new CodeTypeReference(typeof(Microsoft.Practices.EnterpriseLibrary.Validation.Validators.NotNullValidatorAttribute)));
-                    codeMemberProperty.CustomAttributes.Add(notNullAttribute);
+                    customAttributes.Add(notNullAttribute);
                 }
 
                 if (dataFieldDescriptor.StoreType.IsDateTime)
@@ -409,11 +391,11 @@ namespace Composite.Data.GeneratedTypes
                     // 1753 is what sql server has as minimum date...
                     dateRangeAttribute.Arguments.Add(new CodeAttributeArgument(new CodePrimitiveExpression("1753-01-01T00:00:00")));
                     dateRangeAttribute.Arguments.Add(new CodeAttributeArgument(new CodePrimitiveExpression("9999-12-31T23:59:59")));
-                    codeMemberProperty.CustomAttributes.Add(dateRangeAttribute);
+                    customAttributes.Add(dateRangeAttribute);
                 }
                 else if (dataFieldDescriptor.ForeignKeyReferenceTypeName != null && dataFieldDescriptor.InstanceType == typeof(Guid))
                 {
-                    codeMemberProperty.CustomAttributes.Add(new CodeAttributeDeclaration(new CodeTypeReference(typeof(GuidNotEmptyAttribute))));
+                    customAttributes.Add(new CodeAttributeDeclaration(new CodeTypeReference(typeof(GuidNotEmptyAttribute))));
                 }
             }
 
@@ -425,7 +407,7 @@ namespace Composite.Data.GeneratedTypes
                     new CodeAttributeArgument(new CodePrimitiveExpression(dataFieldDescriptor.Position))
                 );
 
-                codeMemberProperty.CustomAttributes.Add(fieldPositionAttribute);
+                customAttributes.Add(fieldPositionAttribute);
             }
 
 
@@ -441,7 +423,7 @@ namespace Composite.Data.GeneratedTypes
                     new CodeAttributeArgument(new CodePrimitiveExpression(0)),
                     new CodeAttributeArgument(new CodePrimitiveExpression(max)));
 
-                codeMemberProperty.CustomAttributes.Add(stringLengthAttribute);
+                customAttributes.Add(stringLengthAttribute);
             }
 
             if (dataFieldDescriptor.StoreType.PhysicalStoreType == PhysicalStoreFieldType.Integer)
@@ -452,7 +434,7 @@ namespace Composite.Data.GeneratedTypes
                     new CodeAttributeArgument(new CodePrimitiveExpression(Int32.MinValue)),
                     new CodeAttributeArgument(new CodePrimitiveExpression(Int32.MaxValue)));
 
-                codeMemberProperty.CustomAttributes.Add(integerRangeValidatorAttribute);
+                customAttributes.Add(integerRangeValidatorAttribute);
             }
 
             if (dataFieldDescriptor.StoreType.IsDecimal)
@@ -462,7 +444,7 @@ namespace Composite.Data.GeneratedTypes
                 int precision = dataFieldDescriptor.StoreType.NumericScale;
 
                 decimalPrecisionAttribute.Arguments.Add(new CodeAttributeArgument(new CodePrimitiveExpression(precision)));
-                codeMemberProperty.CustomAttributes.Add(decimalPrecisionAttribute);
+                customAttributes.Add(decimalPrecisionAttribute);
             }
 
             if (dataFieldDescriptor.DefaultValue != null)
@@ -471,7 +453,7 @@ namespace Composite.Data.GeneratedTypes
 
                 if (codeAttributeDeclaration != null)
                 {
-                    codeMemberProperty.CustomAttributes.Add(codeAttributeDeclaration);
+                    customAttributes.Add(codeAttributeDeclaration);
                 }
             }
 
@@ -480,34 +462,38 @@ namespace Composite.Data.GeneratedTypes
                 var codeAttributeArgument = new List<CodeAttributeArgument> 
                 {
                     new CodeAttributeArgument(new CodePrimitiveExpression(dataFieldDescriptor.ForeignKeyReferenceTypeName)),
-                    new CodeAttributeArgument("AllowCascadeDeletes", new CodePrimitiveExpression(true))
+                    new CodeAttributeArgument(nameof(ForeignKeyAttribute.AllowCascadeDeletes), new CodePrimitiveExpression(true))
                 };
 
                 if (!dataFieldDescriptor.IsNullable)
                 {
+                    CodeExpression defaultValue;
+
                     if (dataFieldDescriptor.InstanceType == typeof(Guid))
                     {
-                        codeAttributeArgument.Add(new CodeAttributeArgument("NullReferenceValue", new CodePrimitiveExpression("{00000000-0000-0000-0000-000000000000}")));
+                        defaultValue = new CodePrimitiveExpression("{00000000-0000-0000-0000-000000000000}");
                     }
                     else if (dataFieldDescriptor.InstanceType == typeof(string))
                     {
-                        codeAttributeArgument.Add(new CodeAttributeArgument("NullReferenceValue", new CodePrimitiveExpression(null)));
+                        defaultValue = new CodePrimitiveExpression(null);
                     }
                     else if (dataFieldDescriptor.InstanceType == typeof(int))
                     {
-                        codeAttributeArgument.Add(new CodeAttributeArgument("NullReferenceValue", new CodePrimitiveExpression(0)));
+                        defaultValue = new CodePrimitiveExpression(0);
                     }
                     else
                     {
                         throw new NotImplementedException();
                     }
+
+                    codeAttributeArgument.Add(new CodeAttributeArgument(nameof(ForeignKeyAttribute.NullReferenceValue), defaultValue));
                 }
                 else if (dataFieldDescriptor.InstanceType == typeof(string))
                 {
-                    codeAttributeArgument.Add(new CodeAttributeArgument("NullableString", new CodePrimitiveExpression(true)));
+                    codeAttributeArgument.Add(new CodeAttributeArgument(nameof(ForeignKeyAttribute.NullableString), new CodePrimitiveExpression(true)));
                 }
 
-                codeMemberProperty.CustomAttributes.Add(
+                customAttributes.Add(
                     new CodeAttributeDeclaration(
                         typeof(ForeignKeyAttribute).FullName,
                         codeAttributeArgument.ToArray()
@@ -526,7 +512,7 @@ namespace Composite.Data.GeneratedTypes
                     args.Add( new CodeAttributeArgument(new CodePrimitiveExpression(dataFieldDescriptor.TreeOrderingProfile.OrderDescending)));
                 }
 
-                codeMemberProperty.CustomAttributes.Add(
+                customAttributes.Add(
                         new CodeAttributeDeclaration(
                             typeof(TreeOrderingAttribute).FullName, 
                             args.ToArray()
@@ -537,37 +523,23 @@ namespace Composite.Data.GeneratedTypes
 
             if (dataFieldDescriptor.DataUrlProfile != null)
             {
-                codeMemberProperty.CustomAttributes.Add(dataFieldDescriptor.DataUrlProfile.GetCodeAttributeDeclaration());
+                customAttributes.Add(dataFieldDescriptor.DataUrlProfile.GetCodeAttributeDeclaration());
+            }
+
+            var attribute = dataFieldDescriptor.SearchProfile?.GetCodeAttributeDeclaration();
+            if (attribute != null)
+            {
+                customAttributes.Add(attribute);
             }
 
 
             if (dataFieldDescriptor.GroupByPriority != 0)
             {
-                codeMemberProperty.CustomAttributes.Add(
+                customAttributes.Add(
                         new CodeAttributeDeclaration(
                             typeof(GroupByPriorityAttribute).FullName,
                                 new CodeAttributeArgument( new CodePrimitiveExpression( dataFieldDescriptor.GroupByPriority ) )
                         ));
-                
-            }
-
-        }
-
-
-
-        private static void Flush()
-        {
-            ResourceLocker.ResetInitialization();
-        }
-
-
-        private sealed class Resources
-        {
-            public Dictionary<DataTypeDescriptor, Type> CompiledInterfaces { get; set; }
-
-            public static void Initialize(Resources resources)
-            {
-                resources.CompiledInterfaces = new Dictionary<DataTypeDescriptor, Type>();
             }
         }
     }

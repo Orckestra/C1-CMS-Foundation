@@ -77,6 +77,7 @@
 			<ui:deck id="shutdowndeck">
 				<p>Shutting down...</p>
 			</ui:deck>
+			<ui:brandsnippet snippetName="company-logo" />
 		</ui:decks>
 	</ui:splash>
 </div>

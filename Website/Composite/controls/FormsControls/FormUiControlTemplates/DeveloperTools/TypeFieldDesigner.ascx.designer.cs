@@ -216,11 +216,25 @@ namespace CompositeTypeFieldDesigner {
 
         protected global::Composite.Core.WebClient.UiControlLib.CheckBox chkShowInDataUrl;
 
+        protected global::Composite.Core.WebClient.UiControlLib.CheckBox chkIndexText;
+
+        protected global::Composite.Core.WebClient.UiControlLib.CheckBox chkSearchPreview;
+
+        protected global::Composite.Core.WebClient.UiControlLib.CheckBox chkFacetField;
+
         protected global::System.Web.UI.WebControls.PlaceHolder plhKeyFieldProperties;
 
         protected global::System.Web.UI.WebControls.PlaceHolder plhFieldProperties;
 
         protected global::System.Web.UI.WebControls.PlaceHolder plhDataUrl;
+
+        protected global::System.Web.UI.WebControls.PlaceHolder plhSearch;
+
+        protected global::System.Web.UI.WebControls.PlaceHolder plhSearch_IndexText;
+
+        protected global::System.Web.UI.WebControls.PlaceHolder plhSearch_FieldPreview;
+
+        protected global::System.Web.UI.WebControls.PlaceHolder plhSearch_FacetedSearch;
 
         protected global::System.Web.UI.WebControls.PlaceHolder plhAdvancedFieldProperties;
 

@@ -91,6 +91,7 @@
 					<ui:menugroup rel="insertions">
 						<ui:menuitem cmd="compositeInsertTable" val="insert" gui="true" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelTable}" image="${icon:table}" binding="EditorMenuItemBinding"/>
 						<ui:menuitem cmd="compositeInsertImage" val="insert" gui="true" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelImage}" image="${icon:image}" binding="EditorMenuItemBinding"/>
+            <ui:menuitem cmd="compositeInsertComponent" val="insert" gui="true" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelComponent}" image="${icon:functioncall}" binding="EditorMenuItemBinding" />
 						<ui:menuitem cmd="compositeInsertRendering" val="insert" gui="true" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelRendering}" image="${icon:functioncall}" binding="EditorMenuItemBinding"/>
 						<ui:menuitem cmd="compositeInsertCharacter" val="insert" gui="true" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelCharacter}" image="${icon:specialchar}" binding="EditorMenuItemBinding"/>
 						<ui:menuitem cmd="compositeInsertFieldParent" val="insert" gui="true" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelField}" image="${icon:field}" binding="EditorMenuItemBinding" isdisabled="true"/>

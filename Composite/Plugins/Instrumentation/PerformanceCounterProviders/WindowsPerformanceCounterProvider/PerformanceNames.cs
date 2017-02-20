@@ -4,8 +4,8 @@ namespace Composite.Plugins.Instrumentation.PerformanceCounterProviders.WindowsP
 {
 	internal static class PerformanceNames
 	{
-        public static string CategoryName { get { return "Orckestra CMS"; } }
-        public static string CategoryDescription { get { return "Orckestra CMS"; } }
+        public static string CategoryName { get { return "C1 CMS"; } }
+        public static string CategoryDescription { get { return "C1 CMS"; } }
 
         public static string SystemStartupCountName { get { return "SystemStartupCount"; } }
         public static string SystemStartupCountDescription { get { return "SystemStartupCount"; } }

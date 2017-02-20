@@ -8,16 +8,15 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
     {
         public static void OnBeforeInitialize()
         {
-            DataActionTokenResolverFacade.RegisterDefault<IData>(ActionIdentifier.SendForPublication, f => new GenericPublishProcessController.AwaitingPublicationActionToken());
-            DataActionTokenResolverFacade.RegisterDefault<IData>(ActionIdentifier.Publish, f => new GenericPublishProcessController.PublishActionToken());
-            DataActionTokenResolverFacade.RegisterDefault<IData>(ActionIdentifier.SendForApproval, f => new GenericPublishProcessController.AwaitingApprovalActionToken());
-            DataActionTokenResolverFacade.RegisterDefault<IData>(ActionIdentifier.SendToDraft, f => new GenericPublishProcessController.DraftActionToken());
-            DataActionTokenResolverFacade.RegisterDefault<IData>(ActionIdentifier.Unpublish, f => new GenericPublishProcessController.UnpublishActionToken());
         }
 
-        public static void OnInitialized()
+        public static void OnInitialized(DataActionTokenResolver resolver)
         {
-
+            resolver.RegisterDefault<IData>(ActionIdentifier.SendForPublication, f => new GenericPublishProcessController.AwaitingPublicationActionToken());
+            resolver.RegisterDefault<IData>(ActionIdentifier.Publish, f => new GenericPublishProcessController.PublishActionToken());
+            resolver.RegisterDefault<IData>(ActionIdentifier.SendForApproval, f => new GenericPublishProcessController.AwaitingApprovalActionToken());
+            resolver.RegisterDefault<IData>(ActionIdentifier.SendToDraft, f => new GenericPublishProcessController.DraftActionToken());
+            resolver.RegisterDefault<IData>(ActionIdentifier.Unpublish, f => new GenericPublishProcessController.UnpublishActionToken());
         }
     }
 }
