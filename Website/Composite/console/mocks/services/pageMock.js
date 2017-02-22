@@ -135,7 +135,7 @@ const pages = {
 						name: 'other-page.toolbar.save',
 						label: 'Save',
 						icon: 'save',
-						provider: { callAction: 'save' }
+						provider: { name: 'save', callAction: 'save' }
 					}
 				]
 			},
@@ -148,7 +148,7 @@ const pages = {
 						name: 'other-page.toolbar2.sysviewToggle',
 						style: 'small',
 						icon: 'nodes',
-						provider: { callAction: 'sysviewToggle' }
+						provider: { name: 'sysviewToggle', callAction: 'sysviewToggle' }
 					},
 					{
 						type: 'button',
@@ -156,7 +156,7 @@ const pages = {
 						style: 'icon-right',
 						icon: 'cancel',
 						label: 'Stuff',
-						provider: { callAction: 'sysviewToggle' }
+						provider: { name: 'sysviewToggle', callAction: 'sysviewToggle' }
 					},
 					{
 						type: 'select',
@@ -251,6 +251,8 @@ const pages = {
 		]
 	},
 	'server-log': {
+		// This page is not very useful as an example - structure needs reworking
+		// and server end points need to be re-established.
 		name: 'server-log',
 		label: 'Server log',
 		type: 'document',
@@ -320,7 +322,6 @@ const pages = {
 		label: 'SVG Spritesheet',
 		type: 'spritesheet'
 	},
-// New style of provider-heavy page. Not implemented yet.
 	'component-selector-shim': {
 		name: 'component-selector-shim',
 		type: 'dialogPageShim',
@@ -403,7 +404,7 @@ const pages = {
 			}
 		],
 		noResultsFound: 'No results found for \'{0}\'',
-		oneResultFound: '1 result found for \'{0}\'',
+		singleResultFound: '1 result found for \'{0}\'',
 		multipleResultsFound: '{1} results found for \'{0}\'',
 		urlColumn: 'label'
 	},
@@ -422,35 +423,35 @@ const pages = {
 						style: 'small',
 						name: 'navigation.showNodes',
 						icon: 'nodes',
-						provider: { callAction: 'toggleNodeTree' }
+						provider: { name: 'toggleNodeTree', callAction: 'toggleNodeTree' }
 					},
 					{
 						type: 'button',
 						name: 'navigation.back',
 						style: 'join-right small',
 						icon: 'previous',
-						provider: { callAction: 'navigateBack' }
+						provider: { name: 'navigateBack', callAction: 'navigateBack' }
 					},
 					{
 						type: 'button',
 						name: 'navigation.forward',
 						style: 'join-left small',
 						icon: 'next',
-						provider: { callAction: 'navigateForward' }
+						provider: { name: 'navigateForward', callAction: 'navigateForward' }
 					},
 					{
 						type: 'button',
 						style: 'small',
 						name: 'navigation.refresh',
 						icon: 'refresh',
-						provider: { callAction: 'browserRefresh' }
+						provider: { name: 'browserRefresh', callAction: 'browserRefresh' }
 					},
 					{
 						type: 'button',
 						style: 'small',
 						name: 'navigation.home',
 						icon: 'home',
-						provider: { callAction: 'navigateHome' }
+						provider: { name: 'navigateHome', callAction: 'navigateHome' }
 					},
 				]
 			}

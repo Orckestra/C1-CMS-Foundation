@@ -1,43 +1,14 @@
 import { createSelector } from 'reselect';
 import Immutable from 'immutable';
 import { currentPageSelector } from 'console/state/selectors/pageSelector.js';
+import { hydrateChild, hydrateChildren } from 'console/state/utilities.js';
+
 
 const dialogDefsSelector = state => state.get('dialogDefs');
 const dialogPaneDefsSelector = state => state.get('dialogPaneDefs');
 const providerDefsSelector = state => state.get('providerDefs');
 const itemDefsSelector = state => state.get('itemDefs');
 const dialogDataSelector = state => state.get('dialogData');
-
-function hydrateChild(parent, childDefs, name, mutator) {
-	if (parent.get(name)) {
-		let childDef = childDefs.get(parent.get(name));
-		if (mutator) {
-			childDef = mutator(childDef);
-		}
-		return parent.set(
-			name,
-			childDef
-		);
-	} else {
-		return parent;
-	}
-}
-
-function hydrateChildren(parent, childDefs, name, childMutator) {
-	let list = parent.get(name);
-	if (list && Immutable.Iterable.isIndexed(list)) {
-		list = list.map(childName => {
-			let childDef = childDefs.get(childName);
-			if (childMutator) {
-				childDef = childMutator(childDef);
-			}
-			return childDef;
-		});
-		return parent.set(name, list);
-	} else {
-		return parent;
-	}
-}
 
 export const currentDialogDefSelector = createSelector(
 	currentPageSelector,

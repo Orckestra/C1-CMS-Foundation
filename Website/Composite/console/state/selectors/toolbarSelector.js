@@ -1,27 +1,24 @@
 import { createSelector } from 'reselect';
 import { currentPageSelector } from 'console/state/selectors/pageSelector.js';
 import Immutable from 'immutable';
+import { hydrateChild, hydrateChildren } from 'console/state/utilities.js';
 
 const toolbarDefSelector = state => state.get('toolbarDefs');
 const itemDefSelector = state => state.get('itemDefs');
+const providerDefSelector = state => state.get('providerDefs');
 const optionsSelector = state => state.get('options');
-
-const exists = x => x;
 
 export const toolbarAssemblySelector = createSelector(
 	currentPageSelector,
 	toolbarDefSelector,
 	itemDefSelector,
-	(pageDef, toolbarDefs, itemDefs) =>
-		pageDef.get('toolbars')
-			.map(toolbarName => toolbarDefs.get(toolbarName))
-			.filter(exists)
-			.map(toolbar => {
-				let items = toolbar.get('items')
-					.map(itemName => itemDefs.get(itemName))
-					.filter(exists);
-				return toolbar.set('items', items);
-			})
+	providerDefSelector,
+	(pageDef, toolbarDefs, itemDefs, providerDefs) =>
+		hydrateChildren(pageDef, toolbarDefs, 'toolbars', toolbar =>
+			hydrateChildren(toolbar, itemDefs, 'items', item =>
+				hydrateChild(item, providerDefs, 'provider')
+			)
+		).get('toolbars')
 );
 
 export const toolbarSelector = createSelector(
