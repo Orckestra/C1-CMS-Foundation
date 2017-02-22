@@ -27,12 +27,17 @@ describe('ConnectDialog', () => {
 			pageDefs: {
 				dialogShim: {
 					name: 'dialogShim',
+					type: 'dialogPageShim',
 					dialog: 'testdialog'
 				}
 			},
 			dialogDefs: {
 				testdialog: {
 					name: 'testdialog',
+					updateData: {
+						callAction: 'setDialogState',
+						sendData: true
+					},
 					panes: ['testpane']
 				}
 			},
@@ -42,12 +47,51 @@ describe('ConnectDialog', () => {
 					test: 'this is data',
 					categories: ['tag1', 'tag2', 'tag3', 'tag4'],
 					type: 'testType',
-					provider: 'elementSource'
+					providers: ['elementSource', 'elementUpdate'],
+					elements: {
+						fetch: 'elementSource',
+						update: 'elementUpdate'
+					},
+					buttons: ['cancelButton', 'finishButton']
+				}
+			},
+			itemDefs: {
+				cancelButton: {
+					name: 'cancelButton',
+					label: 'Cancel',
+					provider: 'componentListCancel'
+				},
+				finishButton: {
+					name: 'finishButton',
+					label: 'Next',
+					style: 'main',
+					provider: 'elementInsert'
 				}
 			},
 			providerDefs: {
 				elementSource: {
+					name: 'elementSource',
 					uri: 'test.provider.elements'
+				},
+				elementUpdate: {
+					name: 'elementUpdate',
+					uri: 'test.provider.elements.update'
+				},
+				componentListCancel: {
+					name: 'componentListCancel',
+					protocol: 'post',
+					response: 'Dialog.RESPONSE_CANCEL',
+					action: 'DialogPageBinding.ACTION_RESPONSE',
+					uri: ''
+				},
+				elementInsert: {
+					name: 'elementInsert',
+					protocol: 'post',
+					response: 'Dialog.RESPONSE_ACCEPT',
+					action: 'DialogPageBinding.ACTION_RESPONSE',
+					markup: ['selectedData'],
+					sendData: true,
+					uri: ''
 				}
 			},
 			dialogData: {
@@ -179,7 +223,56 @@ describe('ConnectDialog', () => {
 				<Dialog
 					test='value'
 					pageDef={Immutable.fromJS({ dialog: 'testdialog'})}
-					dialogDef={Immutable.fromJS({ name: 'testdialog', panes: [{ test: 'this is data' }] })}
+					dialogDef={Immutable.fromJS({
+						name: 'testdialog',
+						updateData: {
+							callAction: 'setDialogState',
+							sendData: true
+						},
+						panes: [{
+							name: 'testpane',
+							test: 'this is data',
+							categories: ['tag1', 'tag2', 'tag3', 'tag4'],
+							type: 'testType',
+							elements: {
+								fetch: {
+									name: 'elementSource',
+									uri: 'test.provider.elements'
+								},
+								update: {
+									name: 'elementUpdate',
+									uri: 'test.provider.elements.update'
+								}
+							},
+							buttons: [
+								{
+									name: 'cancelButton',
+									label: 'Cancel',
+									provider: {
+										name: 'componentListCancel',
+										protocol: 'post',
+										response: 'Dialog.RESPONSE_CANCEL',
+										action: 'DialogPageBinding.ACTION_RESPONSE',
+										uri: ''
+									}
+								},
+								{
+									name: 'finishButton',
+									label: 'Next',
+									style: 'main',
+									provider: {
+										name: 'elementInsert',
+										protocol: 'post',
+										response: 'Dialog.RESPONSE_ACCEPT',
+										action: 'DialogPageBinding.ACTION_RESPONSE',
+										markup: ['selectedData'],
+										sendData: true,
+										uri: ''
+									}
+								}
+							]
+						}]
+					})}
 					itemGroups={Immutable.fromJS([
 						{ name: 'tag1', entries: [
 							{ name: 'entry1' },

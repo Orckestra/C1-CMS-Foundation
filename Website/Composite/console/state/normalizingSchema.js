@@ -12,21 +12,22 @@ tabSchema.define({
 	fieldsets: arrayOf(fieldsetSchema),
 });
 
+export const providerSchema = new Schema('providerDefs', { idAttribute: 'name' });
+
 export const itemSchema = new Schema('itemDefs', { idAttribute: 'name' });
+itemSchema.define({
+	provider: providerSchema
+});
 
 export const toolbarSchema = new Schema('toolbarDefs', { idAttribute: 'name' });
 toolbarSchema.define({
 	items: arrayOf(itemSchema)
 });
 
-export const providerSchema = new Schema('providerDefs', { idAttribute: 'name' });
-
 export const dialogPaneSchema = new Schema('dialogPaneDefs', { idAttribute: 'name' });
 dialogPaneSchema.define({
-	provider: providerSchema,
-	updateTopic: providerSchema,
-	cancelProvider: providerSchema,
-	finishProvider: providerSchema
+	providers: arrayOf(providerSchema),
+	buttons: arrayOf(itemSchema)
 });
 
 export const dialogSchema = new Schema('dialogDefs', { idAttribute: 'name' });

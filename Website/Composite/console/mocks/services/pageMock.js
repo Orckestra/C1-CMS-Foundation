@@ -321,71 +321,6 @@ const pages = {
 		type: 'spritesheet'
 	},
 // New style of provider-heavy page. Not implemented yet.
-	// 'component-selector-shim': {
-	// 	name: 'component-selector-shim',
-	// 	type: 'dialogPageShim',
-	// 	dialog: {
-	// 		name: 'component-selector',
-	// 		panes: [{
-	// 			name: 'component-list',
-	// 			type: 'palette',
-	// 			headline: 'Select a component',
-	// 			noItemsText: 'No selectable component',
-	// 			filter: 'left-aside',
-	// 			categories: ['gallery', 'popular'],
-	// 			topics: [
-	// 				{
-	// 					name: 'elementUpdate',
-	// 					uri: 'components.new'
-	// 				}
-	// 			],
-	// 			providers: [
-	// 				{
-	// 					name: 'elementSource',
-	// 					uri: 'components.get',
-	// 					protocol: 'wamp'
-	// 				},
-	// 				{
-	// 					name: 'elementInsert',
-	// 					protocol: 'post',
-	// 					response: 'Dialog.RESPONSE_ACCEPT',
-	// 					action: 'DialogPageBinding.ACTION_RESPONSE',
-	// 					markup: ['selectedData'],
-	// 					uri: ''
-	// 				},
-	// 				{
-	// 					name: 'componentListCancel',
-	// 					protocol: 'post',
-	// 					response: 'Dialog.RESPONSE_CANCEL',
-	// 					action: 'DialogPageBinding.ACTION_RESPONSE',
-	// 					uri: ''
-	// 				}
-	// 			],
-	// 			elements: {
-	// 				fetch: 'elementSource',
-	// 				update: 'elementUpdate'
-	// 			},
-	// 			buttons: [
-	// 				{
-	// 					name: 'cancelButton',
-	// 					label: 'Cancel',
-	// 					action: {
-	// 						provider: 'componentListCancel'
-	// 					}
-	// 				},
-	// 				{
-	// 					name: 'finishButton',
-	// 					label: 'Next',
-	// 					style: 'main',
-	// 					action: {
-	// 						sendData: true,
-	// 						provider: 'elementInsert'
-	// 					}
-	// 				}
-	// 			]
-	// 		}]
-	// 	}
-	// },
 	'component-selector-shim': {
 		name: 'component-selector-shim',
 		type: 'dialogPageShim',
@@ -395,15 +330,15 @@ const pages = {
 				callAction: 'setDialogState',
 				sendData: true
 			},
-			panes: [
-				{
-					name: 'component-list',
-					type: 'palette',
-					headline: 'Select a component',
-					noItemsText: 'No selectable component',
-					context: 'left-aside',
-					categories: ['Media', 'music'],
-					provider: {
+			panes: [{
+				name: 'component-list',
+				type: 'palette',
+				headline: 'Select a component',
+				noItemsText: 'No selectable component',
+				filter: 'left-aside',
+				categories: ['gallery', 'popular'],
+				providers: [
+					{
 						name: 'elementSource',
 						protocol: 'wamp',
 						uri: 'components.get',
@@ -411,29 +346,44 @@ const pages = {
 						sendData: true,
 						sendNoCaller: true
 					},
-					finishButton: {
-						label: 'Next',
-						style: 'main'
-					},
-					finishProvider: {
-						name: 'elementInsert',
-						protocol: 'post',
-						sendData: true,
-						response: 'Dialog.RESPONSE_ACCEPT',
-						action: 'DialogPageBinding.ACTION_RESPONSE',
-						markup: ['selectedData']
-					},
-					cancelButton: {
-						label: 'Cancel'
-					},
-					cancelProvider: {
-						name: 'componentListCancel',
-						protocol: 'post',
-						response: 'Dialog.RESPONSE_CANCEL',
-						action: 'DialogPageBinding.ACTION_RESPONSE'
+					{
+						name: 'elementUpdate',
+						uri: 'components.new'
 					}
-				}
-			]
+				],
+				elements: {
+					fetch: 'elementSource',
+					update: 'elementUpdate'
+				},
+				buttons: [
+					{
+						name: 'finishButton',
+						label: 'Next',
+						style: 'main',
+						next: true,
+						provider: {
+							name: 'elementInsert',
+							protocol: 'post',
+							response: 'Dialog.RESPONSE_ACCEPT',
+							action: 'DialogPageBinding.ACTION_RESPONSE',
+							markup: ['selectedData'],
+							sendData: true,
+							uri: ''
+						}
+					},
+					{
+						name: 'cancelButton',
+						label: 'Cancel',
+						provider: {
+							name: 'componentListCancel',
+							protocol: 'post',
+							response: 'Dialog.RESPONSE_CANCEL',
+							action: 'DialogPageBinding.ACTION_RESPONSE',
+							uri: ''
+						}
+					}
+				]
+			}]
 		}
 	},
 	search: {

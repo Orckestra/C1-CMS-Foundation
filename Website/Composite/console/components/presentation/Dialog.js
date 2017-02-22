@@ -75,9 +75,8 @@ right: 31px;
 const Dialog = props => {
 	let paneDef = props.dialogDef.getIn(['panes', props.dialogData.get('showPane') || 0]) || Immutable.Map();
 	let nextAction;
-	let buttons = ['next', 'finish', 'cancel'].map(name => {
-		let button = paneDef.get(name + 'Button') ? paneDef.get(name + 'Button').toJS() : null;
-		let provider = paneDef.get(name + 'Provider') && paneDef.get(name + 'Provider').toJS ? paneDef.get(name + 'Provider').toJS() : null;
+	let buttons = (paneDef.get('buttons') || Immutable.List()).map(button => {
+		let provider = button.get('provider').toJS();
 		if (provider && button) {
 			let action = props.actions.useProvider(provider, props.dialogDef.get('name'));
 			if (provider.sendData) {
@@ -87,14 +86,15 @@ const Dialog = props => {
 					innerAction(payload);
 				};
 			}
-			if (name !== 'cancel') {
+			if (button.get('next')) {
 				nextAction = action;
 			}
-			return <ActionButton key={name} action={action} {...button}/>;
+			let buttonProps = button.delete('provider').toJS();
+			return <ActionButton key={button.get('name')} action={action} {...buttonProps}/>;
 		} else {
 			return null;
 		}
-	});
+	}).toArray();
 	let selectProvider = props.dialogDef.get('updateData').toJS();
 	const dataUpdater = props.actions.useProvider(selectProvider, props.dialogDef.get('name'));
 	const searchFunction = event => dataUpdater(

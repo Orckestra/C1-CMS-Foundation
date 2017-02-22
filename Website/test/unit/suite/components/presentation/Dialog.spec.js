@@ -18,7 +18,7 @@ describe('Dialog', () => {
 			dialogDef: Immutable.fromJS({
 				name: 'testdialog',
 				panes: [],
-				updateData: {}
+				updateData: { test: 'minimal' }
 			}),
 			actions: { useProvider: (a, b) => c => useProviderSpy(a, b, c) }
 		};
@@ -28,31 +28,52 @@ describe('Dialog', () => {
 			}),
 			dialogDef: Immutable.fromJS({
 				name: 'testdialog',
-				updateData: {
-					callAction: 'testAction',
-					sendData: true
-				},
-				panes: [
-					{
-						name: 'testpalette',
-						headline: 'Palette!',
-						type: 'palette',
-						cancelButton: {
-							label: 'Cancel'
+				updateData: { test: 'fullData' },
+				panes: [{
+					name: 'testpalette',
+					test: 'this is data',
+					headline: 'Palette!',
+					categories: ['tag1', 'tag2', 'tag3', 'tag4'],
+					type: 'palette',
+					elements: {
+						fetch: {
+							name: 'elementSource',
+							uri: 'test.provider.elements'
 						},
-						nextButton: {
-							label: 'Next'
-						},
-						finishButton: {
-							label: 'Finish'
-						},
-						cancelProvider: {},
-						finishProvider: {
-							sendData: true,
-							markup: ['test']
+						update: {
+							name: 'elementUpdate',
+							uri: 'test.provider.elements.update'
 						}
 					},
-				]
+					buttons: [
+						{
+							name: 'finishButton',
+							label: 'Finish',
+							style: 'main',
+							next: true,
+							provider: {
+								name: 'elementInsert',
+								protocol: 'post',
+								response: 'Dialog.RESPONSE_ACCEPT',
+								action: 'DialogPageBinding.ACTION_RESPONSE',
+								markup: ['test'],
+								sendData: true,
+								uri: ''
+							}
+						},
+						{
+							name: 'cancelButton',
+							label: 'Cancel',
+							provider: {
+								name: 'componentListCancel',
+								protocol: 'post',
+								response: 'Dialog.RESPONSE_CANCEL',
+								action: 'DialogPageBinding.ACTION_RESPONSE',
+								uri: ''
+							}
+						}
+					]
+				}]
 			}),
 			itemGroups: Immutable.List(),
 			actions: {
@@ -88,17 +109,41 @@ describe('Dialog', () => {
 						updateDialogData={expect.it('to be a function')} />
 				</d.DialogPane>
 				<d.DialogButtonGroup>
-					<ActionButton label='Finish' action={expect.it('to be a function').and('not to error')}/>
-					<ActionButton label='Cancel' action={expect.it('to be a function').and('not to error')}/>
+					<ActionButton
+						name="finishButton"
+						style='main'
+						next={true}
+						label='Finish'
+						action={expect.it('to be a function').and('not to error')}/>
+					<ActionButton
+						label='Cancel'
+						name='cancelButton'
+						action={expect.it('to be a function').and('not to error')}/>
 				</d.DialogButtonGroup>
 			</d.DialogBox>
 		))
 		.then(() => Promise.all([
 			expect(eventSpy, 'was called'),
 			expect(useProviderSpy, 'to have calls satisfying', [
-				{ args: [{ sendData: true, callAction: 'testAction' }, 'testdialog', { test: 'data', filterText: 'foo' }] },
-				{ args: [{ sendData: true, markup: [ 'test' ] }, 'testdialog', 'data'] },
-				{ args: [{}, 'testdialog', undefined] }
+				{ args: [{
+					test: 'fullData'
+				}, 'testdialog', { test: 'data', filterText: 'foo' }] },
+				{ args: [{
+					name: 'elementInsert',
+					protocol: 'post',
+					response: 'Dialog.RESPONSE_ACCEPT',
+					action: 'DialogPageBinding.ACTION_RESPONSE',
+					markup: ['test'],
+					sendData: true,
+					uri: ''
+				}, 'testdialog', 'data'] },
+				{ args: [{
+					name: 'componentListCancel',
+					protocol: 'post',
+					response: 'Dialog.RESPONSE_CANCEL',
+					action: 'DialogPageBinding.ACTION_RESPONSE',
+					uri: ''
+				}, 'testdialog', undefined] }
 			])
 		]));
 	});

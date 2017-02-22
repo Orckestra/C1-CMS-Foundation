@@ -70,7 +70,9 @@ describe('loadAndOpenPage', () => {
 						name: 'testpalette',
 						type: 'palette',
 						context: 'testing',
-						provider: 'elementSource'
+						elements: {
+							fetch: 'elementSource'
+						}
 					}
 				},
 				providerDefs: {

@@ -43,11 +43,11 @@ const pageLoaders = {
 		let paneName = dialogDef.getIn(['panes', paneIndex]);
 		let paneDef = getState().getIn(['dialogPaneDefs', paneName]);
 		if (paneDef.get('type') === 'palette') {
-			let provider = getState().getIn(['providerDefs', paneDef.get('provider')]).toJS();
+			let provider = getState().getIn(['providerDefs', paneDef.getIn(['elements', 'fetch'])]).toJS();
 			return dispatch(useProvider(provider, dialogName, paneDef.get('context')))
 			.then(() => {
 				// Subscribe to component update
-				let topic = getState().getIn(['providerDefs', paneDef.get('updateTopic'), 'uri']);
+				let topic = getState().getIn(['providerDefs', paneDef.getIn(['elements', 'update']), 'uri']);
 				if (topic) {
 					WAMPClient.subscribe(topic, () => {
 						// Fetch new list if event
