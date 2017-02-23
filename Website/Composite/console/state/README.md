@@ -8,6 +8,6 @@ Drawing information out of the state in a sensible way (i.e. that fits the needs
 
 `store.js` contains the main entry point to the state store, hooking up reducers and middleware. To add reducers, you will need to do it here.
 
-`actionLocator.js` provides a simple implementation of a singleton service library, allowing reference-based access to thunk and action creators. This is used by the `useProvider` thunk creator, in particular, allowing it to use any action in the library to process data.
+`actionLocator.js` provides a simple implementation of a singleton service library, allowing reference-based access to thunk and action creators. This is used by the `useProvider` thunk creator, in particular, allowing it to use any action in the library to process data. A couple of action creators (in `reducers/providers.js` and `reducers/dialog.js`) are registered with it, and can be used as examples of how to do this.
 
 `normalizingSchema.js` holds the various schemas used to normalize data from the server into a flat state structure. A page definition, for example, comes from the server as a nested structure containing references to toolbars and tabs, which in turn reference other elements with definitions. Normalizing changes this structure so page definitions have names of the toolbar and tabs, which reference the separately stored tab and toolbar definitions. See also `reducers/definitions.js` and its reference in `store.js`.
