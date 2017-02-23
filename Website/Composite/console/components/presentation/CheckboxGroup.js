@@ -2,11 +2,11 @@ import React, { PropTypes } from 'react';
 import styled from 'styled-components';
 import Checkbox from 'console/components/presentation/Checkbox.js';
 
-const Div = styled.div`
+export const GroupWrapper = styled.div.withConfig({ displayName: 'GroupWrapper' })`
 	display: inline-block;
 `;
 
-const Label = styled.label`
+export const CheckboxLabel = styled.label.withConfig({ displayName: 'CheckboxLabel' })`
 	display: inline-block;
 	padding-left: 5px;
 	padding-right: 15px;
@@ -24,7 +24,7 @@ const CheckboxGroup = props => {
 		props.onChange(value);
 	};
 	return (
-		<Div className='checkboxGroup'>
+		<GroupWrapper className='checkboxGroup'>
 			{props.options.reduce((elements, cbProps) => {
 				let value = (props.value.indexOf(cbProps.value) !== -1) || false;
 				elements.push(<Checkbox
@@ -35,12 +35,12 @@ const CheckboxGroup = props => {
 					checked={value}
 					onChange={getBoxChanger(cbProps.value)}
 					/>);
-				elements.push(<Label
+				elements.push(<CheckboxLabel
 					key={cbProps.name + 'Key'}
-					htmlFor={cbProps.name}>{cbProps.label}</Label>);
+					htmlFor={cbProps.name}>{cbProps.label}</CheckboxLabel>);
 				return elements;
 			}, [])}
-		</Div>
+		</GroupWrapper>
 	);
 };
 

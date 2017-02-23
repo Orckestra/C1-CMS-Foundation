@@ -6,7 +6,7 @@ import ComboButton from 'console/components/presentation/ComboButton.js';
 import CheckboxGroup from 'console/components/presentation/CheckboxGroup.js';
 import Select from 'console/components/presentation/Select.js';
 
-const ToolbarBox = styled.div`
+export const ToolbarBox = styled.div.withConfig({ displayName: 'ToolbarBox' })`
 	padding: 15px 10px 20px;
 	height: 38px;
 	border-bottom: 1px solid ${colors.borderColor};

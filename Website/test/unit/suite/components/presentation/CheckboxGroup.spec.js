@@ -2,13 +2,8 @@ import expect from 'unittest/helpers/expect.js';
 import React from 'react';
 import sinon from 'sinon';
 import TestUtils from 'react-addons-test-utils';
-import CheckboxGroup from 'console/components/presentation/CheckboxGroup.js';
+import CheckboxGroup, * as c from 'console/components/presentation/CheckboxGroup.js';
 import Checkbox from 'console/components/presentation/Checkbox.js';
-
-import styled from 'styled-components';
-
-const StyledDiv = styled.div``;
-const StyledLabel = styled.label``;
 
 describe('CheckboxGroup', () => {
 	let renderer, props;
@@ -36,13 +31,13 @@ describe('CheckboxGroup', () => {
 	it('renders a row of checkboxes', () => {
 		renderer.render(<CheckboxGroup {...props}/>);
 		return expect(renderer, 'to have rendered',
-			<StyledDiv>
-				<Checkbox type="checkbox" id='test/cbg/test1' value={true} checked={true}/><StyledLabel htmlFor='test/cbg/test1'>One</StyledLabel>
-				<Checkbox type="checkbox" id='test/cbg/test2' value={true} checked={true}/><StyledLabel htmlFor='test/cbg/test2'>Two</StyledLabel>
-				<Checkbox type="checkbox" id='test/cbg/test3' value={false}/><StyledLabel htmlFor='test/cbg/test3'>Three</StyledLabel>
-				<Checkbox type="checkbox" id='test/cbg/test4' value={true} checked={true}/><StyledLabel htmlFor='test/cbg/test4'>Four</StyledLabel>
-				<Checkbox type="checkbox" id='test/cbg/test5' value={false}/><StyledLabel htmlFor='test/cbg/test5'>Five</StyledLabel>
-			</StyledDiv>
+			<c.GroupWrapper>
+				<Checkbox type="checkbox" id='test/cbg/test1' value={true} checked={true}/><c.CheckboxLabel htmlFor='test/cbg/test1'>One</c.CheckboxLabel>
+				<Checkbox type="checkbox" id='test/cbg/test2' value={true} checked={true}/><c.CheckboxLabel htmlFor='test/cbg/test2'>Two</c.CheckboxLabel>
+				<Checkbox type="checkbox" id='test/cbg/test3' value={false}/><c.CheckboxLabel htmlFor='test/cbg/test3'>Three</c.CheckboxLabel>
+				<Checkbox type="checkbox" id='test/cbg/test4' value={true} checked={true}/><c.CheckboxLabel htmlFor='test/cbg/test4'>Four</c.CheckboxLabel>
+				<Checkbox type="checkbox" id='test/cbg/test5' value={false}/><c.CheckboxLabel htmlFor='test/cbg/test5'>Five</c.CheckboxLabel>
+			</c.GroupWrapper>
 		);
 	});
 

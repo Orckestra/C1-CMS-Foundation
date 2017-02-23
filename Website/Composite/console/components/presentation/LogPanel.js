@@ -17,7 +17,7 @@ function getTextHeight(message) {
 	}
 }
 
-const StyledTable = styled(Table)`
+export const StyledTable = styled(Table).withConfig({ displayName: 'StyledTable' })`
 border: 0 none transparent;
 
 .public_fixedDataTableCell_cellContent {

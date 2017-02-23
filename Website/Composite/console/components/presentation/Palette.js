@@ -11,16 +11,16 @@ import Icon from 'console/components/presentation/Icon.js';
 
 const itemOpenCloseTime = '200ms';
 
-export const ItemGroup = styled.div`
+export const ItemGroup = styled.div.withConfig({ displayName: 'ItemGroup' })`
 	overflow: hidden;
 `;
-export const ItemGroupTop = styled.div`
+export const ItemGroupTop = styled.div.withConfig({ displayName: 'ItemGroupTop' })`
 	position: relative;
 	display: inline-block;
 	width: max-content;
 	cursor: default;
 `;
-export const ItemGroupTitle = styled.h2`
+export const ItemGroupTitle = styled.h2.withConfig({ displayName: 'ItemGroupTitle' })`
 	color: ${colors.dialogHeaderColor};
 	margin-top: 0;
 	font-family: 'Roboto Condensed', sans-serif;
@@ -29,20 +29,20 @@ export const ItemGroupTitle = styled.h2`
 	font-weight: normal;
 	text-transform: uppercase;
 `;
-export const ItemGroupSwitch = styled(Icon)`
+export const ItemGroupSwitch = styled(Icon).withConfig({ displayName: 'ItemGroupSwitch' })`
 	position: absolute;
 	right: -15px;
 	top: 3px;
 	height: 10px;
 	width: 10px;
 `;
-export const ItemGroupCount = styled.div`
+export const ItemGroupCount = styled.div.withConfig({ displayName: 'ItemGroupCount' })`
 	position: absolute;
 	right: -20px;
 	transform: translateX(100%);
 	top: 0;
 `;
-export const Item = styled.div`
+export const Item = styled.div.withConfig({ displayName: 'Item' })`
 	float: left;
 	width: 420px;
 	margin-right: 15px;
@@ -64,7 +64,7 @@ export const Item = styled.div`
 		background-color ${itemOpenCloseTime},
 		margin-bottom ${itemOpenCloseTime};
 `;
-export const PreviewImage = styled.div`
+export const PreviewImage = styled.div.withConfig({ displayName: 'PreviewImage' })`
 	width: 100px;
 	height: 100px;
 	position: absolute;
@@ -79,7 +79,7 @@ export const PreviewImage = styled.div`
 	background-repeat: no-repeat;
 	background-size: cover;
 `;
-export const PreviewIcon = styled(Icon)`
+export const PreviewIcon = styled(Icon).withConfig({ displayName: 'PreviewIcon' })`
 	width: 100px;
 	height: 100px;
 	position: absolute;
@@ -90,7 +90,7 @@ export const PreviewIcon = styled(Icon)`
 	border: 1px solid ${colors.borderColor};
 	background-color: white;
 `;
-export const InfoBox = styled.div`
+export const InfoBox = styled.div.withConfig({ displayName: 'InfoBox' })`
 	position: absolute;
 	left: 150px;
 	top: 15px;
@@ -98,22 +98,22 @@ export const InfoBox = styled.div`
 	height: 112px;
 	overflow-y: auto;
 `;
-export const Label = styled.h3`
+export const Label = styled.h3.withConfig({ displayName: 'Label' })`
 	font-weight: normal;
 	color: ${colors.fieldLabelColor};
 	margin: 0 0 10px;
 `;
-export const Description = styled.p`
+export const Description = styled.p.withConfig({ displayName: 'Description' })`
 margin: 10px 0;
 `;
 
-export const NoComponentsLabel = styled.div`
+export const NoComponentsLabel = styled.div.withConfig({ displayName: 'NoComponentsLabel' })`
 	color: ${colors.fieldLabelColor};
 	margin: 150px auto;
 	text-align: center;
 	font-size: 24px;
 `;
-export const NoComponentsIcon = styled(Icon)`
+export const NoComponentsIcon = styled(Icon).withConfig({ displayName: 'NoComponentsIcon' })`
 	height: 60px;
 	width: 60px;
 `;

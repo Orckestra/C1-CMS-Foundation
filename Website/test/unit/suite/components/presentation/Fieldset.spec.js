@@ -1,13 +1,9 @@
 import expect from 'unittest/helpers/expect.js';
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
-import Fieldset from 'console/components/presentation/Fieldset.js';
+import Fieldset, * as f from 'console/components/presentation/Fieldset.js';
 import DataField from 'console/components/presentation/DataField.js';
 import Immutable from 'immutable';
-import styled from 'styled-components';
-
-const StyledFieldset = styled.fieldset``;
-const StyledLegend = styled.legend``;
 
 describe('Fieldset', () => {
 	let renderer, props, updater;
@@ -27,22 +23,22 @@ describe('Fieldset', () => {
 		props.label = 'Here be fields';
 		renderer.render(<Fieldset {...props}/>);
 		return expect(renderer, 'to have rendered',
-			<StyledFieldset>
-				<StyledLegend>Here be fields</StyledLegend>
+			<f.FieldsetWrapper>
+				<f.FieldsetLegend>Here be fields</f.FieldsetLegend>
 				<DataField name="first" updateValue={updater}/>
 				<DataField name="second" updateValue={updater}/>
 				<DataField name="third" updateValue={updater}/>
-			</StyledFieldset>
+			</f.FieldsetWrapper>
 		);
 	});
 	it('renders an unlabeled set of data fields', () => {
 		renderer.render(<Fieldset {...props}/>);
 		return expect(renderer, 'to have exactly rendered',
-			<StyledFieldset>
+			<f.FieldsetWrapper>
 				<DataField name="first" updateValue={updater}/>
 				<DataField name="second" updateValue={updater}/>
 				<DataField name="third" updateValue={updater}/>
-			</StyledFieldset>
+			</f.FieldsetWrapper>
 		);
 	});
 });

@@ -27,13 +27,13 @@ const sizes = {
 };
 
 // TODO: Restyle for use as actual dialogs, add overlays where needed, etc.
-export const DialogBox = styled.div`
+export const DialogBox = styled.div.withConfig({ displayName: 'DialogBox' })`
 	background-color: ${colors.fieldsetBackgroundColor};
 	height: 100%;
 /*	max-width: 880px;
 	overflow: hidden;*/
 `;
-export const DialogTitle = styled.h1`
+export const DialogTitle = styled.h1.withConfig({ displayName: 'DialogTitle' })`
 	margin: 0;
 	padding: ${sizes.titlePaddingTop}px ${sizes.sidePadding}px ${sizes.titlePaddingBottom}px;
 	font-size: ${sizes.titleHeight}px;
@@ -43,7 +43,7 @@ export const DialogTitle = styled.h1`
 	color: ${colors.dialogHeaderColor};
 `;
 
-export const DialogPane = styled.div`
+export const DialogPane = styled.div.withConfig({ displayName: 'DialogPane' })`
 	border-top: ${sizes.paneBorder}px solid ${colors.borderColor};
 	border-bottom: ${sizes.paneBorder}px solid ${colors.borderColor};
 	padding: ${sizes.panePaddingTop}px ${sizes.sidePadding}px ${sizes.panePaddingBottom}px;
@@ -55,18 +55,18 @@ export const DialogPane = styled.div`
 	overflow-y: auto;
 `;
 
-export const DialogButtonGroup = styled.div`
+export const DialogButtonGroup = styled.div.withConfig({ displayName: 'DialogButtonGroup' })`
 	padding: ${sizes.buttonsPaddingTop}px ${sizes.sidePadding}px ${sizes.buttonsPaddingBottom}px;
 	text-align: right;
 `;
-export const SearchField = styled(Input)`
+export const SearchField = styled(Input).withConfig({ displayName: 'SearchField' })`
 position: absolute;
 top: 10px;
 right: 20px;
 width: 200px;
 padding-right: 30px;
 `;
-export const SearchIcon = styled(Icon)`
+export const SearchIcon = styled(Icon).withConfig({ displayName: 'SearchIcon' })`
 position: absolute;
 top: 18px;
 right: 31px;

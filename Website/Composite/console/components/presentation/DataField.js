@@ -7,7 +7,7 @@ import Checkbox from 'console/components/presentation/Checkbox.js';
 import styled from 'styled-components';
 import colors from 'console/components/colors.js';
 
-const Headline = styled.h4`
+export const Headline = styled.h4.withConfig({ displayName: 'Headline' })`
 	display: block;
 	margin: 0;
 	font-weight: normal;
@@ -15,14 +15,14 @@ const Headline = styled.h4`
 	color: ${colors.fieldLabelColor};
 `;
 
-const Label = styled.label`
+export const DatafieldLabel = styled.label.withConfig({ displayName: 'DatafieldLabel' })`
 	display: inline-block;
 	padding-left: 10px;
 	padding-right: 0;
 	width: calc(100% - 56px);
 `;
 
-const DataFieldWrapper = styled.div`
+export const DataFieldWrapper = styled.div.withConfig({ displayName: 'DataFieldWrapper' })`
 	position: relative;
 `;
 
@@ -76,7 +76,7 @@ const DataField = props => {
 				null}
 			{inputElement}
 			{props.label ?
-				<Label htmlFor={props.name}>{props.label}</Label> :
+				<DatafieldLabel htmlFor={props.name}>{props.label}</DatafieldLabel> :
 				null}
 			{props.help ? <HelpIcon text={props.help} /> : null}
 		</DataFieldWrapper>

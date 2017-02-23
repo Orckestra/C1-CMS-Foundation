@@ -1,10 +1,7 @@
 import expect from 'unittest/helpers/expect.js';
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
-import Icon from 'console/components/presentation/Icon.js';
-import styled from 'styled-components';
-
-const StyledSvg = styled.svg``;
+import Icon, { Svg } from 'console/components/presentation/Icon.js';
 
 describe('Icon', () => {
 	let renderer;
@@ -14,6 +11,6 @@ describe('Icon', () => {
 
 	it('renders an svg icon', () => {
 		renderer.render(<Icon id='foo'/>);
-		return expect(renderer, 'to have rendered', <StyledSvg><use xlinkHref={'#icon-foo'}/></StyledSvg>);
+		return expect(renderer, 'to have rendered', <Svg><use xlinkHref={'#icon-foo'}/></Svg>);
 	});
 });

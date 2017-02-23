@@ -6,7 +6,7 @@ import selectStylesheet from 'react-select/dist/react-select.css!text';
 injectGlobal`${selectStylesheet}`;
 
 // This stylesheet is as complex as it is to override the built-in theme of react-select.
-const Select = styled(ReactSelect)`
+const Select = styled(ReactSelect).withConfig({ displayName: 'Select' })`
 	vertical-align: middle;
 	display: inline-block;
 	width: calc(100% - 34px);

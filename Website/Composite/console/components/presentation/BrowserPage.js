@@ -6,11 +6,11 @@ import Icon from 'console/components/presentation/Icon.js';
 import Splitter from 'console/components/presentation/Splitter.js';
 import ScrollBox from 'console/components/presentation/ScrollBox.js';
 
-export const Wrapper = styled(ScrollBox)`
+export const Wrapper = styled(ScrollBox).withConfig({ displayName: 'Wrapper' })`
 	padding: 0;
 `;
 
-export const Browser = styled.div`
+export const Browser = styled.div.withConfig({ displayName: 'Browser' })`
 	background-color: ${colors.darkBackground};
 	height: 100%;
 	width: ${props => props.splitPosition}px;
@@ -21,7 +21,7 @@ export const Browser = styled.div`
 	cursor: default;
 `;
 
-export const Preview = styled.div`
+export const Preview = styled.div.withConfig({ displayName: 'Preview' })`
 	position: absolute;
 	top: 0;
 	right: 0;
@@ -31,7 +31,7 @@ export const Preview = styled.div`
 	background-color: ${colors.darkBackground};
 `;
 
-export const NodeGroup = styled.div`
+export const NodeGroup = styled.div.withConfig({ displayName: 'NodeGroup' })`
 	margin-left: 25px;
 	position: relative;
 
@@ -46,7 +46,7 @@ export const NodeGroup = styled.div`
 	}
 `;
 
-export const Node = styled.div`
+export const Node = styled.div.withConfig({ displayName: 'Node' })`
 	position: relative;
 	margin-left: 5px;
 
@@ -71,12 +71,12 @@ export const Node = styled.div`
 	}
 `;
 
-export const NodeLabel = styled.div`
+export const NodeLabel = styled.div.withConfig({ displayName: 'NodeLabel' })`
 	margin: 5px 0 0;
 	margin-left: 40px;
 `;
 
-export const NodeName = styled.p`
+export const NodeName = styled.p.withConfig({ displayName: 'NodeName' })`
 	margin: 0;
 	margin-left: 5px;
 	padding: 5px;
@@ -92,7 +92,7 @@ export const NodeName = styled.p`
 		''
 	}
 `;
-export const NodeOpen = styled(Icon)`
+export const NodeOpen = styled(Icon).withConfig({ displayName: 'NodeOpen' })`
 	height: 10px;
 	width: 10px;
 	position: absolute;
@@ -102,7 +102,7 @@ export const NodeOpen = styled(Icon)`
 	color: ${props => props.open ? colors.buttonHighlightColor : colors.baseFontColor};
 	background-color: ${colors.darkBackground};
 `;
-export const NodeIcon = styled(Icon)`
+export const NodeIcon = styled(Icon).withConfig({ displayName: 'NodeIcon' })`
 	position: absolute;
 	top: 3px;
 	left: 20px;

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const ScrollBox = styled.div`
+const ScrollBox = styled.div.withConfig({ displayName: 'ScrollBox' })`
 	display: block;
 	padding: 30px 30px 20px 40px;
 	width: 100%;

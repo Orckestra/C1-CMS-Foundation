@@ -4,25 +4,25 @@ import colors from 'console/components/colors.js';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import Icon from 'console/components/presentation/Icon.js';
 
-export const ResultTable = styled.table`
+export const ResultTable = styled.table.withConfig({ displayName: 'ResultTable' })`
 width: 100%;
 height: calc(100% - 56px);
 display: block;
 border-collapse: collapse;
 `;
-export const ResultTableHead = styled.thead`
+export const ResultTableHead = styled.thead.withConfig({ displayName: 'ResultTableHead' })`
 display: block;
 user-select: none;
 padding-right: 13px;
 border-top: 1px solid ${colors.borderColor};
 background-color: ${colors.darkBackground};
 `;
-export const ResultTableBody = styled.tbody`
+export const ResultTableBody = styled.tbody.withConfig({ displayName: 'ResultTableBody' })`
 display: block;
 height: calc(100% - 38px);
 overflow-y: scroll;
 `;
-export const ResultTableRow = styled.tr`
+export const ResultTableRow = styled.tr.withConfig({ displayName: 'ResultTableRow' })`
 display: table;
 table-layout: fixed;
 width: 100%;
@@ -32,7 +32,7 @@ border-bottom: 1px solid ${colors.borderColor};
 	border-bottom: 0 none transparent;
 }
 `;
-export const SortIcon = styled(Icon)`
+export const SortIcon = styled(Icon).withConfig({ displayName: 'SortIcon' })`
 width: 10px;
 height: 10px;
 margin-left: 4px;
@@ -48,7 +48,7 @@ padding: 5px;
 	padding-right: 15px;
 }
 `;
-export const ResultTableHeadCell = styled.th`
+export const ResultTableHeadCell = styled.th.withConfig({ displayName: 'ResultTableHeadCell' })`
 ${cellStyle}
 text-align: left;
 font-weight: normal;
@@ -65,13 +65,13 @@ ${props => props.sortable ?
 	border-left: 1px solid ${colors.borderColor};
 }
 `;
-export const ResultTableBodyCell = styled.td`
+export const ResultTableBodyCell = styled.td.withConfig({ displayName: 'ResultTableBodyCell' })`
 ${cellStyle}
 white-space: nowrap;
 text-overflow: ellipsis;
 overflow: hidden;
 `;
-export const ResultLink = styled.a`
+export const ResultLink = styled.a.withConfig({ displayName: 'ResultLink' })`
 color: #333;
 `;
 

@@ -47,7 +47,7 @@ export function getStyles(props) {
 	return buttonStyles.map(styleName => buttonStyleSheet[styleName]);
 }
 
-export const Button = styled.button`
+export const Button = styled.button.withConfig({ displayName: 'Button' })`
 	position: relative;
 	vertical-align: middle;
 	text-transform: uppercase;
@@ -80,13 +80,13 @@ export const Button = styled.button`
 `;
 Button.defaultProps = { buttonStyle: '' };
 
-export const ButtonIcon = styled(Icon)`
+export const ButtonIcon = styled(Icon).withConfig({ displayName: 'ButtonIcon' })`
 	position: absolute;
 	top: 8px;
 	left: 11px;
 `;
 
-export const ButtonLabel = styled.span`
+export const ButtonLabel = styled.span.withConfig({ displayName: 'ButtonLabel' })`
 	display: inline-block;
 	text-align: center;
 	width: 100%;

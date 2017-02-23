@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import colors from 'console/components/colors.js';
 
-const Input = styled.input`
+const Input = styled.input.withConfig({ displayName: 'Input' })`
 	vertical-align: middle;
 	display: inline-block;
 	border: 1px solid #ccc;

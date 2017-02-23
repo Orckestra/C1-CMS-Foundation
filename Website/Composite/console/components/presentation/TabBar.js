@@ -3,14 +3,14 @@ import styled, { css } from 'styled-components';
 import colors from 'console/components/colors.js';
 import Icon from 'console/components/presentation/Icon.js';
 
-export const TabIcon = styled(Icon)`
+export const TabIcon = styled(Icon).withConfig({ displayName: 'TabIcon' })`
 	width: 18px;
 	height: 18px;
 	position: absolute;
 	left: 19px;
 `;
 
-export const TabDiv = styled.div`
+export const TabDiv = styled.div.withConfig({ displayName: 'TabDiv' })`
 	width: 50px;
 	border: 1px solid ${colors.borderColor};
 	border-radius: 5px 5px 0 0;
@@ -57,7 +57,7 @@ Tab.propTypes = {
 	onClick: PropTypes.func
 };
 
-export const TabBarDiv = styled.div`
+export const TabBarDiv = styled.div.withConfig({ displayName: 'TabBarDiv' })`
 	margin-top: -1px;
 	position: relative;
 	${props => props.dock ? css`

@@ -30,13 +30,13 @@ function listHeight(listSize) {
 	return listSize * sizes.perspectiveFullHeight;
 }
 
-export const PerspectiveWrapper = styled.div`
+export const PerspectiveWrapper = styled.div.withConfig({ displayName: 'PerspectiveWrapper' })`
 width: 100%;
 height: 100%;
 user-select: none;
 white-space: nowrap;
 `;
-export const Explorer = styled.div`
+export const Explorer = styled.div.withConfig({ displayName: 'Explorer' })`
 position: absolute;
 box-sizing: border-box;
 background-color: ${colors.appMenuColor};
@@ -46,12 +46,12 @@ width: ${sizes.openExplorerWidth}px;
 padding-left: 13px;
 overflow: hidden;
 `;
-export const MainIdentity = styled.div`
+export const MainIdentity = styled.div.withConfig({ displayName: 'MainIdentity' })`
 padding-top: ${sizes.identityTopPadding}px;
 `;
-export const MainLogo = styled.img``;
+export const MainLogo = styled.img.withConfig({ displayName: 'MainLogo' })``;
 MainLogo.defaultProps = { src: '/Composite/images/branding/brand-icon.png' };
-export const MainLabel = styled.img`
+export const MainLabel = styled.img.withConfig({ displayName: 'MainLabel' })`
 display: inline;
 margin-left: 13px;
 opacity: 0;
@@ -62,10 +62,10 @@ transition: opacity ${timing.explorerOpen};
 }
 `;
 MainLabel.defaultProps = { src: '/Composite/images/branding/brand-text.svg' };
-export const MenuButton = styled(Icon)`
+export const MenuButton = styled(Icon).withConfig({ displayName: 'MenuButton' })`
 padding-top: ${sizes.menuButtonTopPadding}px;
 `;
-export const PerspectiveMenu = styled.div`
+export const PerspectiveMenu = styled.div.withConfig({ displayName: 'PerspectiveMenu' })`
 width: 100%;
 height: calc(100% - ${sizes.explorerTopHeight}px);
 padding-left: 15px;
@@ -74,7 +74,7 @@ margin-left: -15px;
 overflow-y: scroll;
 overflow-x: hidden;
 `;
-const ScrollIcon = styled(Icon)`
+const ScrollIcon = styled(Icon).withConfig({ displayName: 'ScrollIcon' })`
 height: 6px;
 width: 38px;
 position: absolute;
@@ -89,21 +89,21 @@ padding-top: 1px;
 	display: block;
 }
 `;
-export const ScrollIconUp = styled(ScrollIcon)`
+export const ScrollIconUp = styled(ScrollIcon).withConfig({ displayName: 'ScrollIconUp' })`
 top: ${sizes.explorerTopHeight + 3}px;
 `;
-export const ScrollIconDown = styled(ScrollIcon)`
+export const ScrollIconDown = styled(ScrollIcon).withConfig({ displayName: 'ScrollIconDown' })`
 bottom: 0;
 `;
-export const Perspective = styled.div`
+export const Perspective = styled.div.withConfig({ displayName: 'Perspective' })`
 padding-top: ${sizes.perspectiveVerticalPadding}px;
 padding-bottom: ${sizes.perspectiveVerticalPadding}px;
 ${ props => props.active ? 'color: ' + colors.appMenuItemActiveColor + ';' : ''}
 `;
-export const PerspectiveIcon = styled(Icon)`
+export const PerspectiveIcon = styled(Icon).withConfig({ displayName: 'PerspectiveIcon' })`
 vertical-align: middle;
 `;
-export const PerspectiveLabel = styled.p`
+export const PerspectiveLabel = styled.p.withConfig({ displayName: 'PerspectiveLabel' })`
 display: inline;
 vertical-align: middle;
 margin-left: 38px;
@@ -119,7 +119,7 @@ transition: opacity ${timing.explorerOpen};
 }
 `;
 
-export const ContentOverlay = styled.div`
+export const ContentOverlay = styled.div.withConfig({ displayName: 'ContentOverlay' })`
 position: absolute;
 right: 0;
 height: 100%;
@@ -131,7 +131,7 @@ visibility: hidden;
 }
 `;
 
-export const Content = styled.div`
+export const Content = styled.div.withConfig({ displayName: 'Content' })`
 position: absolute;
 right: 0;
 height: 100%;
@@ -144,7 +144,7 @@ transition: transform ${timing.explorerOpen};
 	transform: translateX(${sizes.openExplorerWidth - sizes.closedExplorerWidth}px);
 }
 `;
-export const ContentPanel = styled.div`
+export const ContentPanel = styled.div.withConfig({ displayName: 'ContentPanel' })`
 overflow: hidden;
 border-top-left-radius: 5px;
 background-color: white;

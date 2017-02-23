@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import styled from 'styled-components';
 import colors from 'console/components/colors.js';
 
-export const SliderWrapper = styled.div`
+export const SliderWrapper = styled.div.withConfig({ displayName: 'SliderWrapper' })`
 	height: 100%;
 	width: 10px;
 	${({ active, movement }) => active ? 'transform: translateX(' + movement + 'px);' : ''}
@@ -14,7 +14,7 @@ export const SliderWrapper = styled.div`
 	transition: transform 80ms;
 `;
 
-export const SplitSlider = styled.div`
+export const SplitSlider = styled.div.withConfig({ displayName: 'SplitSlider' })`
 	height: 100%;
 	width: 10px;
 	cursor: ew-resize;

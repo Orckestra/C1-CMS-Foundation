@@ -5,7 +5,7 @@ import Immutable from 'immutable';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import Checkbox from 'console/components/presentation/Checkbox.js';
 
-export const FacetList = styled.div`
+export const FacetList = styled.div.withConfig({ displayName: 'FacetList' })`
 border-top: 1px solid ${colors.borderColor};
 height: calc(100% - 32px);
 overflow-y: auto;
@@ -13,8 +13,8 @@ margin-right: -15px;
 padding-right: 15px;
 user-select: none;
 `;
-export const FacetGroup = styled.div``;
-export const FacetHeader = styled.h2`
+export const FacetGroup = styled.div.withConfig({ displayName: 'FacetGroup' })``;
+export const FacetHeader = styled.h2.withConfig({ displayName: 'FacetHeader' })`
 color: ${colors.dialogHeaderColor};
 font-family: 'Roboto Condensed', sans-serif;
 font-weight: normal;
@@ -22,8 +22,8 @@ font-style: italic;
 font-size: 14px;
 text-transform: uppercase;
 `;
-export const Facet = styled.div``;
-export const FacetSelector = styled(Checkbox)`
+export const Facet = styled.div.withConfig({ displayName: 'Facet' })``;
+export const FacetSelector = styled(Checkbox).withConfig({ displayName: 'FacetSelector' })`
 margin-right: 10px;
 `;
 

@@ -58,7 +58,7 @@
       "redux-observer": "npm:redux-observer@^1.0.0",
       "redux-thunk": "npm:redux-thunk@^2.1.0",
       "reselect": "npm:reselect@^2.5.4",
-      "styled-components": "npm:styled-components@^1.4.0",
+      "styled-components": "npm:styled-components@2.0.0-4",
       "supports-color": "npm:supports-color@^3.2.3",
       "svg": "github:npbenjohnson/plugin-svg@^0.1.0",
       "text": "github:systemjs/plugin-text@^0.0.9",
@@ -80,7 +80,7 @@
       "react-immutable-proptypes": "npm:react-immutable-proptypes@^2.1.0",
       "sinon": "npm:sinon@^1.17.5",
       "source-map": "npm:source-map@0.2",
-      "systemjs-hot-reloader": "github:capaj/systemjs-hot-reloader@^0.6.0",
+      "systemjs-hot-reloader": "github:alexisvincent/systemjs-hot-reloader@^0.6.0",
       "systemjs-hot-reloader-store": "github:peteruithoven/systemjs-hot-reloader-store@^1.0.0",
       "tweetnacl": "npm:tweetnacl@0.13",
       "unexpected-dom": "npm:unexpected-dom@^3.1.0",
@@ -216,4 +216,4 @@
       }
     }
   }
-}
+}

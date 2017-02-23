@@ -1,15 +1,11 @@
 import expect from 'unittest/helpers/expect.js';
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
-import Toolbar from 'console/components/presentation/Toolbar.js';
+import Toolbar, { ToolbarBox } from 'console/components/presentation/Toolbar.js';
 import ActionButton from 'console/components/presentation/ActionButton.js';
 import CheckboxGroup from 'console/components/presentation/CheckboxGroup.js';
-import Select from 'react-select';
+import Select from 'console/components/presentation/Select.js';
 import Immutable from 'immutable';
-import styled from 'styled-components';
-
-const StyledDiv = styled.div``;
-const StyledSelect = styled(Select)``;
 
 describe('Toolbar', () => {
 	let renderer, props, actions;
@@ -56,11 +52,11 @@ describe('Toolbar', () => {
 		it('renders them', () => {
 			renderer.render(<Toolbar {...props}/>);
 			return expect(renderer, 'to have rendered',
-				<StyledDiv className='toolbar'>
+				<ToolbarBox className='toolbar'>
 					<ActionButton label='Label1' action={actions.first} icon='save'/>
 					<ActionButton label='Label2' action={actions.second}/>
 					<ActionButton label='Label3' action={actions.third} disabled={true}/>
-				</StyledDiv>
+				</ToolbarBox>
 			);
 		});
 
@@ -68,10 +64,10 @@ describe('Toolbar', () => {
 			props.items = props.items.deleteIn([2], 'action');
 			renderer.render(<Toolbar {...props}/>);
 			return expect(renderer, 'to have rendered',
-				<StyledDiv className='toolbar'>
+				<ToolbarBox className='toolbar'>
 					<ActionButton label='Label1' action={actions.first} icon='save'/>
 					<ActionButton label='Label2' action={actions.second}/>
-				</StyledDiv>
+				</ToolbarBox>
 			);
 		});
 
@@ -82,10 +78,10 @@ describe('Toolbar', () => {
 			});
 			renderer.render(<Toolbar {...props}/>);
 			return expect(renderer, 'to have rendered',
-				<StyledDiv className='toolbar'>
+				<ToolbarBox className='toolbar'>
 					<ActionButton action={actions.first} icon='save'/>
 					<ActionButton label='Label2' action={actions.second}/>
-				</StyledDiv>
+				</ToolbarBox>
 			);
 		});
 	});
@@ -110,14 +106,14 @@ describe('Toolbar', () => {
 		it('renders them', () => {
 			renderer.render(<Toolbar {...props}/>);
 			return expect(renderer, 'to have rendered',
-				<StyledDiv className='toolbar'>
-					<StyledSelect placeholder='Select date' options={[
+				<ToolbarBox className='toolbar'>
+					<Select placeholder='Select date' options={[
 						{ value: '2016-09-23', label: '2016-09-23' },
 						{ value: '2016-09-22', label: '2016-09-22' },
 						{ value: '2016-09-21', label: 'That day' },
 						{ value: '2016-09-20', label: '2016-09-20' }
 					]} clearable={false} multi={false} simpleValue={true}/>
-			</StyledDiv>
+			</ToolbarBox>
 			);
 		});
 	});
@@ -143,7 +139,7 @@ describe('Toolbar', () => {
 		it('renders them', () => {
 			renderer.render(<Toolbar {...props}/>);
 			return expect(renderer, 'to have rendered',
-				<StyledDiv className='toolbar'>
+				<ToolbarBox className='toolbar'>
 					<CheckboxGroup
 						name='first'
 						options={[
@@ -155,7 +151,7 @@ describe('Toolbar', () => {
 						]}
 						value={['One', 'Two', 'Three', 'Four']}
 						/>
-				</StyledDiv>
+				</ToolbarBox>
 			);
 		});
 	});
@@ -165,7 +161,7 @@ describe('Toolbar', () => {
 			props.style = 'light rightAligned';
 			renderer.render(<Toolbar {...props}/>);
 			return expect(renderer, 'to have rendered',
-				<StyledDiv className='toolbar light rightAligned'/>
+				<ToolbarBox className='toolbar light rightAligned'/>
 			);
 		});
 	});

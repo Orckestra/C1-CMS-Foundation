@@ -1,12 +1,9 @@
 import expect from 'unittest/helpers/expect.js';
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
-import { LogPanel } from 'console/components/presentation/LogPanel.js';
-import { Table, Column } from 'fixed-data-table-2';
+import { LogPanel, StyledTable } from 'console/components/presentation/LogPanel.js';
+import { Column } from 'fixed-data-table-2';
 import Immutable from 'immutable';
-import styled from 'styled-components';
-
-const StyledTable = styled(Table)``;
 
 describe('LogPanel', () => {
 	let renderer, props;

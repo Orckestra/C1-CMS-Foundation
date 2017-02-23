@@ -1,12 +1,8 @@
 import expect from 'unittest/helpers/expect.js';
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
-import HelpIcon from 'console/components/presentation/HelpIcon.js';
+import HelpIcon, * as h from 'console/components/presentation/HelpIcon.js';
 import StatelessWrapper from 'unittest/helpers/StatelessWrapper.js';
-import styled from 'styled-components';
-
-const StyledDiv = styled.div``;
-const StyledSpan = styled.span``;
 
 describe('HelpIcon', () => {
 	let renderer, text;
@@ -18,13 +14,13 @@ describe('HelpIcon', () => {
 
 	it('displays an icon', () => expect(
 		renderer, 'to have rendered',
-		<StyledSpan/>
+		<h.Indicator/>
 	));
 
 	it('renders but does not display the help text', () =>
 		expect(
-			renderer, 'queried for', <StyledDiv/>, 'to have rendered',
-			<StyledDiv className={expect.it('not to match', /shown/)}>{text}</StyledDiv>
+			renderer, 'queried for', <h.Helper/>, 'to have rendered',
+			<h.Helper className={expect.it('not to match', /shown/)}>{text}</h.Helper>
 		)
 	);
 

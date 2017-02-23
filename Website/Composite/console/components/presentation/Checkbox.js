@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import styled, { css } from 'styled-components';
 import colors from 'console/components/colors.js';
 
-const Wrapper = styled.div`
+const Wrapper = styled.div.withConfig({ displayName: 'Wrapper' })`
 	display: inline-block;
 	position: relative;
 	vertical-align: middle;
@@ -11,7 +11,7 @@ const Wrapper = styled.div`
 	height: 18px;
 `;
 
-const VisualCheckbox = styled.label`
+const VisualCheckbox = styled.label.withConfig({ displayName: 'VisualCheckbox' })`
 	display: inline-block;
 	position: absolute;
 	vertical-align: middle;
@@ -42,7 +42,7 @@ const VisualCheckbox = styled.label`
 	}
 `;
 
-const HiddenCheckbox = styled.input`
+const HiddenCheckbox = styled.input.withConfig({ displayName: 'HiddenCheckbox' })`
 	position: absolute;
 `;
 

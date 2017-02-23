@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import styled from 'styled-components';
 
-const Svg = styled.svg`
+export const Svg = styled.svg.withConfig({ displayName: 'Svg' })`
 	height: 20px;
 	width: 20px;
 	stroke: currentColor;

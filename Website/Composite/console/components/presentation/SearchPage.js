@@ -18,12 +18,12 @@ const rotate360 = keyframes`
   }
 `;
 
-export const SearchContainer = styled.div`
+export const SearchContainer = styled.div.withConfig({ displayName: 'SearchContainer' })`
 width: 100%;
 height: 100%;
 position: relative;
 `;
-export const SearchSidebar = styled.div`
+export const SearchSidebar = styled.div.withConfig({ displayName: 'SearchSidebar' })`
 box-sizing: border-box;
 position: absolute;
 top: 0;
@@ -33,10 +33,10 @@ height: 100%;
 padding: 15px;
 background-color: ${colors.darkBackground};
 `;
-export const SearchField = styled(Input)`
+export const SearchField = styled(Input).withConfig({ displayName: 'SearchField' })`
 padding-right: 30px;
 `;
-export const SearchIcon = styled(Icon)`
+export const SearchIcon = styled(Icon).withConfig({ displayName: 'SearchIcon' })`
 position: absolute;
 top: 23px;
 right: 31px;
@@ -49,7 +49,7 @@ ${props => props.id === 'magnifier' ?
 	css`animation: ${rotate360} 2s linear infinite;`
 }
 `;
-export const SearchResultPane = styled.div`
+export const SearchResultPane = styled.div.withConfig({ displayName: 'SearchResultPane' })`
 box-sizing: border-box;
 position: absolute;
 top: 0;
@@ -57,7 +57,7 @@ right: 0;
 width: calc(100% - 290px);
 height: 100%;
 `;
-export const ResultHeader = styled.h1`
+export const ResultHeader = styled.h1.withConfig({ displayName: 'ResultHeader' })`
 font-family: 'Roboto Condensed', sans-serif;
 font-weight: normal;
 font-size: 18px;

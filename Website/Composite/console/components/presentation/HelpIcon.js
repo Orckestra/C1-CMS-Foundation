@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import styled from 'styled-components';
 import colors from 'console/components/colors.js';
 
-const Span = styled.span`
+export const Indicator = styled.span.withConfig({ displayName: 'Indicator' })`
 	position: absolute;
 	right: 0;
 
@@ -24,7 +24,7 @@ const Span = styled.span`
 	}
 `;
 
-const Helper = styled.div`
+export const Helper = styled.div.withConfig({ displayName: 'Helper' })`
 	position: absolute;
 	z-index: 100;
 	top: 2px;
@@ -62,7 +62,7 @@ const HelpIcon = ({text}) => {
 	}
 
 	return (
-		<Span
+		<Indicator
 			onClick={showHelper}
 			onMouseOut={hideHelper}>
 			<Helper
@@ -70,7 +70,7 @@ const HelpIcon = ({text}) => {
 				className="helper">
 				{text}
 			</Helper>
-		</Span>
+		</Indicator>
 	);
 };
 

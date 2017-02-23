@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import colors from 'console/components/colors.js';
 import { Button, ButtonIcon, ButtonLabel } from 'console/components/presentation/Button.js';
 
-export const ButtonWrapper = styled.div`
+export const ButtonWrapper = styled.div.withConfig({ displayName: 'ButtonWrapper' })`
 	display: inline-block;
 	position: relative;
 	border: 1px solid ${colors.borderColor};
@@ -17,19 +17,19 @@ export const ButtonWrapper = styled.div`
 	}
 `;
 
-export const InnerButton = styled(Button)`
+export const InnerButton = styled(Button).withConfig({ displayName: 'InnerButton' })`
 	border: 0 none transparent;
 	margin: 0;
 	height: 32px;
 `;
 
-export const TopButton = styled(InnerButton)`
+export const TopButton = styled(InnerButton).withConfig({ displayName: 'TopButton' })`
 	border-top-right-radius: 0;
 	border-bottom-right-radius: 0;
 	margin-right: 0px;
 `;
 
-export const MenuButton = styled(InnerButton)`
+export const MenuButton = styled(InnerButton).withConfig({ displayName: 'MenuButton' })`
 	width: 22px;
 	min-width: inherit;
 	border-top-left-radius: 0;
@@ -37,14 +37,14 @@ export const MenuButton = styled(InnerButton)`
 	margin-left: 0px;
 `;
 
-export const DropdownIcon = styled(ButtonIcon)`
+export const DropdownIcon = styled(ButtonIcon).withConfig({ displayName: 'DropdownIcon' })`
 	top: 12px;
 	left: 3px;
 	width: 10px !important;
 	height: 10px !important;
 `;
 
-export const DropdownMenu = styled.div`
+export const DropdownMenu = styled.div.withConfig({ displayName: 'DropdownMenu' })`
 	position: absolute;
 	border: 1px solid ${colors.borderColor};
 	border-radius: 4px;
@@ -59,7 +59,7 @@ export const DropdownMenu = styled.div`
 	transition: visibility 150ms, opacity 150ms;
 `;
 
-export const DropdownItem = styled.div`
+export const DropdownItem = styled.div.withConfig({ displayName: 'DropdownItem' })`
 	padding: 6px 11px;
 	width: 100%;
 

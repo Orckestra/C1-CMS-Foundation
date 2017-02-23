@@ -4,7 +4,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import styled from 'styled-components';
 import colors from 'console/components/colors.js';
 
-const FieldsetStyle = styled.fieldset`
+export const FieldsetWrapper = styled.fieldset.withConfig({ displayName: 'FieldsetWrapper' })`
 	float: left;
 	position: relative;
 	border: 1px solid ${colors.borderColor};
@@ -14,7 +14,7 @@ const FieldsetStyle = styled.fieldset`
 	width: 394px;
 	background-color: ${colors.fieldsetBackgroundColor};
 `;
-const Legend = styled.legend`
+export const FieldsetLegend = styled.legend.withConfig({ displayName: 'FieldsetLegend' })`
 	position: absolute;
 	top: -36px;
 	left: -1px;
@@ -28,14 +28,14 @@ const Legend = styled.legend`
 `;
 
 const Fieldset = ({ label, fields }) => (
-	<FieldsetStyle>
-		{label ? <Legend>{label}</Legend> : null}
+	<FieldsetWrapper>
+		{label ? <FieldsetLegend>{label}</FieldsetLegend> : null}
 		{
 			fields.map(field => (
 				<DataField key={field.get('name')} name={field.get('name')} {...field.toObject()}/>
 			)).toArray()
 		}
-	</FieldsetStyle>
+	</FieldsetWrapper>
 );
 
 Fieldset.propTypes = {

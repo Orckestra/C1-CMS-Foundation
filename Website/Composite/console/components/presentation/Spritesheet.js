@@ -7,7 +7,7 @@ import colors from 'console/components/colors.js';
 
 const isMime = /mimetype/;
 
-const IconList = styled.div`
+const IconList = styled.div.withConfig({ displayName: 'IconList' })`
 	&:after {
 		content: '';
 		display: block;
@@ -15,7 +15,7 @@ const IconList = styled.div`
 	}
 `;
 
-const IconCell = styled.div`
+const IconCell = styled.div.withConfig({ displayName: 'IconCell' })`
 	float: left;
 	height: 24px;
 	width: 380px;
@@ -23,7 +23,7 @@ const IconCell = styled.div`
 	color: #999;
 `;
 
-const IconLabel = styled.span`
+const IconLabel = styled.span.withConfig({ displayName: 'IconLabel' })`
 	line-height: 24px;
 	margin-left: 15px;
 	vertical-align: 10px;

@@ -5,7 +5,7 @@ import Immutable from 'immutable';
 import sinon from 'sinon';
 import ConnectDockPanel from 'console/components/container/ConnectDockPanel.js';
 import ConnectDockTabs from 'console/components/container/ConnectDockTabs.js';
-import Perspectives, { openPerspective, PerspectiveWrapper, Explorer, MainIdentity, MainLogo, MainLabel, MenuButton, Perspective, PerspectiveIcon, PerspectiveLabel, Content, ContentPanel } from 'console/components/presentation/Perspectives.js';
+import Perspectives, { openPerspective, PerspectiveWrapper, Explorer, MainIdentity, MainLogo, MainLabel, MenuButton, PerspectiveMenu, Perspective, PerspectiveIcon, PerspectiveLabel, Content, ContentPanel } from 'console/components/presentation/Perspectives.js';
 
 describe('Perspectives', () => {
 	let renderer, props;
@@ -54,7 +54,7 @@ describe('Perspectives', () => {
 						<MainLogo/><MainLabel/>
 					</MainIdentity>
 					<MenuButton onClick={expect.it('to be', props.toggleExplorer)}/>
-					<MainIdentity>
+					<PerspectiveMenu>
 						<Perspective onClick={expect.it('to be a function').and('not to error')}>
 							<PerspectiveIcon id='magnifier'/>
 							<PerspectiveLabel>Search</PerspectiveLabel>
@@ -63,7 +63,7 @@ describe('Perspectives', () => {
 							<PerspectiveIcon id='perspective-content'/>
 							<PerspectiveLabel>Content</PerspectiveLabel>
 						</Perspective>
-					</MainIdentity>
+					</PerspectiveMenu>
 				</Explorer>
 				<Content>
 					<ContentPanel>
