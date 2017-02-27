@@ -1,17 +1,25 @@
 ﻿using Composite.Core.IO;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web.Compilation;
+using System.Web.Hosting;
 using System.Xml.Linq;
+using Composite.Core.Extensions;
 
 namespace Composite.Core.WebClient
 {
     internal static class BuildManagerHelper
     {
+        private static DateTime? _delayPreloadTo = null;
+        private static TimeSpan _preloadDelay = TimeSpan.FromSeconds(2);
+
         private static readonly string LogTitle = typeof (BuildManagerHelper).Name;
         private static int _preloadingInitiated;
 
@@ -33,15 +41,12 @@ namespace Composite.Core.WebClient
                 const string configFileFilePath = "~/App_Data/Composite/Composite.config";
                 var config = XDocument.Load(PathUtil.Resolve(configFileFilePath));
 
-                var controlPathes = (from element in config.Descendants()
+                var controlPathes = from element in config.Descendants()
                     let userControlVirtualPath = (string) element.Attribute("userControlVirtualPath")
                     where userControlVirtualPath != null
-                    select userControlVirtualPath).ToList();
+                    select userControlVirtualPath;
 
-                var stopWatch = new Stopwatch();
-                stopWatch.Start();
-
-                Log.LogVerbose(LogTitle, "Preloading all the controls, starting");
+                var controlsToCompile = new List<string>();
 
                 foreach (var controlPath in controlPathes)
                 {
@@ -51,52 +56,72 @@ namespace Composite.Core.WebClient
                         continue;
                     }
 
-                    try
-                    {
-                        BuildManagerHelper.GetCompiledType(controlPath);
-                    }
-                    catch (ThreadAbortException)
-                    {
-                        // this exception is automatically rethrown after this catch
-                    }
-                    catch (Exception ex)
-                    {
-                        Log.LogWarning(LogTitle, ex);
-                    }
+                    controlsToCompile.Add(controlPath);
                 }
 
-                stopWatch.Stop();
-
-                Log.LogVerbose(LogTitle, "Preloading all the controls: " + stopWatch.ElapsedMilliseconds + "ms");
 
                 Func<string, bool> isAshxAsmxPath = f => f == ".ashx" || f == ".asmx";
                 Func<string, bool> isAspNetPath = f => f == ".aspx" || isAshxAsmxPath(f);
                 var aspnetPaths = DirectoryUtils.GetFilesRecursively(PathUtil.Resolve("~/Composite")).Where(f => isAshxAsmxPath(Path.GetExtension(f)))
                     .Concat(DirectoryUtils.GetFilesRecursively(PathUtil.Resolve("~/Renderers")).Where(f => isAspNetPath(Path.GetExtension(f))))
+                    .Select(PathUtil.GetWebsitePath)
                     .ToList();
 
-                stopWatch.Reset();
-                stopWatch.Start();
-
-                foreach (var aspnetPath in aspnetPaths)
+                var compileGroups = new List<Tuple<string, ICollection<string>>>()
                 {
-                    try
+                    new Tuple<string, ICollection<string>>("ASP.NET controls", controlsToCompile),
+                    new Tuple<string, ICollection<string>>("ASP.NET pages and handlers", aspnetPaths),
+                };
+
+
+                foreach (var compileGroup in compileGroups)
+                {
+                    if (HostingEnvironment.ApplicationHost.ShutdownInitiated()) return;
+
+                    Log.LogVerbose(LogTitle, "Preloading " + compileGroup.Item1);
+
+                    var stopWatch = new Stopwatch();
+                    stopWatch.Start();
+
+                    foreach (var virtualPath in compileGroup.Item2)
                     {
-                        BuildManagerHelper.GetCompiledType(PathUtil.GetWebsitePath(aspnetPath));
+                        while (true)
+                        {
+                            if (HostingEnvironment.ApplicationHost.ShutdownInitiated()) return;
+
+                            Thread.MemoryBarrier();
+                            var waitUntil = _delayPreloadTo;
+                            var now = DateTime.Now;
+
+                            if (waitUntil == null || waitUntil <= now)
+                            {
+                                break;
+                            }
+
+                            Thread.Sleep(waitUntil.Value - now);
+                        }
+
+                        try
+                        {
+                            using (new DisableUrlMedataScope())
+                            {
+                                BuildManager.GetCompiledType(virtualPath);
+                            }
+                        }
+                        catch (ThreadAbortException)
+                        {
+                            // this exception is automatically rethrown after this catch
+                        }
+                        catch (Exception ex)
+                        {
+                            Log.LogWarning(LogTitle, ex);
+                        }
                     }
-                    catch (ThreadAbortException)
-                    {
-                        // this exception is automatically rethrown after this catch
-                    }
-                    catch (Exception ex)
-                    {
-                        Log.LogWarning("BuildManagerHelper", ex);
-                    }
+
+                    stopWatch.Stop();
+
+                    Log.LogVerbose(LogTitle, $"Preloading {compileGroup.Item1} completed in {stopWatch.ElapsedMilliseconds} ms");
                 }
-
-                stopWatch.Stop();
-
-                Log.LogVerbose(LogTitle, "Preloading all asp.net files: " + stopWatch.ElapsedMilliseconds + "ms");
             }
             catch (ThreadAbortException)
             {
@@ -131,14 +156,12 @@ namespace Composite.Core.WebClient
                 return;
             }
 
-            var systemWeb = typeof (System.Web.TraceMode).Assembly;
+            var systemWeb = typeof(System.Web.TraceMode).Assembly;
             Type cachedPathData = systemWeb.GetType("System.Web.CachedPathData", false);
-            if (cachedPathData == null) return;
 
-            FieldInfo field = cachedPathData.GetField("s_doNotCacheUrlMetadata", BindingFlags.Static | BindingFlags.NonPublic);
-            if (field == null) return;
+            var field = cachedPathData?.GetField("s_doNotCacheUrlMetadata", BindingFlags.Static | BindingFlags.NonPublic);
 
-            field.SetValue(null, disableCaching);
+            field?.SetValue(null, disableCaching);
         }
 
         /// <summary>
@@ -146,10 +169,12 @@ namespace Composite.Core.WebClient
         /// </summary>
         public static IDisposable DisableUrlMetadataCachingScope()
         {
+            _delayPreloadTo = DateTime.Now.Add(_preloadDelay);
+
             return new DisableUrlMedataScope();
         }
 
-        public class DisableUrlMedataScope : IDisposable
+        internal class DisableUrlMedataScope : IDisposable
         {
             public DisableUrlMedataScope()
             {
