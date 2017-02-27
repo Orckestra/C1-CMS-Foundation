@@ -56,7 +56,7 @@ namespace Composite.Core.WebClient.Services.WampRouter
             {
                 if (realm.TopicContainer.TopicUris.FirstOrDefault(f => f.Equals(eventObservable.Topic)) == null)
                 {
-                    Log.LogWarning(nameof(WampRouter),
+                    Log.LogVerbose(nameof(WampRouter),
                         $"Trying to publish on topic: {eventObservable.Topic}, but there is no subscriber to this topic");
                 }
                 else
