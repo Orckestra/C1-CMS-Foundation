@@ -20,6 +20,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
             Title = string.Empty;
             Description = string.Empty;
             MimeType = string.Empty;
+            Tags = string.Empty;
             DataSourceId = new DataSourceId(typeof(IMediaFile));
         }
 
@@ -35,6 +36,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
             CreationTime = file.CreationTime;
             DataSourceId = file.DataSourceId;
             Description = file.Description;
+            Tags = file.Tags;
             FileName = file.FileName;
             FolderPath = file.FolderPath;
             IsReadOnly = file.IsReadOnly;
@@ -95,6 +97,9 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
             set;
         }
 
+        /// <exclude />
+        public string Tags { get; set; }
+
 
 
         /// <exclude />
@@ -120,6 +125,14 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
         {
             get;
             set;
+        }
+
+        public string MediaURL
+        {
+            get
+            {
+                return Composite.Core.Routing.MediaUrls.BuildUrl(this);
+            }
         }
 
 

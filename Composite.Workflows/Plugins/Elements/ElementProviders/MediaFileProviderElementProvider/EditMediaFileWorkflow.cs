@@ -31,7 +31,9 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
 
             this.Bindings.Add("FileDataFileName", file.FileName);
             this.Bindings.Add("FileDataTitle", file.Title);
+            this.Bindings.Add("FileDataURL", file.MediaURL);
             this.Bindings.Add("FileDataDescription", file.Description);
+            this.Bindings.Add("FileDataTags", file.Tags);
             this.Bindings.Add("ProvidesMetaData", store.ProvidesMetadata);
 
             this.BindingsValidationRules.Add("FileDataTitle", new List<ClientValidationRule> { new StringLengthClientValidationRule(0, 256) });
@@ -50,6 +52,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
             file.FileName = this.GetBinding<string>("FileDataFileName");
             file.Title = this.GetBinding<string>("FileDataTitle");
             file.Description = this.GetBinding<string>("FileDataDescription");
+            file.Tags = this.GetBinding<string>("FileDataTags");
 
             DataFacade.Update(file);
 

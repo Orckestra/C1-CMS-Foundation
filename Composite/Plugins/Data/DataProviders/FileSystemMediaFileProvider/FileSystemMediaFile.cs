@@ -65,6 +65,14 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemMediaFileProvider
             set;
         }
 
+        public string MediaURL
+        {
+            get
+            {
+                return Composite.Core.Routing.MediaUrls.BuildUrl(this);
+            }
+        }
+
 
 
         public string Title
@@ -82,6 +90,17 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemMediaFileProvider
 
 
         public string Description
+        {
+            get
+            {
+                return "";
+            }
+            set
+            {
+            }
+        }
+
+        public string Tags
         {
             get
             {

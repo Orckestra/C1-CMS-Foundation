@@ -47,6 +47,11 @@ namespace Composite.Data.Types
         [ImmutableFieldId("{6993c337-88c6-4e90-a1c2-64aeb73f0650}")]
         string Description { get; set; }
 
+        /// <exclude />
+        [StoreFieldType(PhysicalStoreFieldType.LargeString, IsNullable = true)]
+        [ImmutableFieldId("{ef096303-74b9-4b90-9626-2cefecd0a3ce}")]
+        string Tags { get; set; }
+
 
         /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.String, 128, IsNullable = true)]

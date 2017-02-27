@@ -45,7 +45,7 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemMediaFileProvider
             {
                 if (_store == null)
                 {
-                    _store = new MediaArchiveStore(_storeId, _storeTitle, _storeDescription, _context.CreateDataSourceId(new MediaDataId() { MediaType = _storeType }, typeof(IMediaFileStore)));
+                    _store = new MediaArchiveStore(_storeId, _storeTitle, _storeDescription,  _context.CreateDataSourceId(new MediaDataId() { MediaType = _storeType }, typeof(IMediaFileStore)));
                 }
                 return _store;
             }
@@ -404,7 +404,7 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemMediaFileProvider
 
 
 
-            public MediaArchiveStore(string id, string title, string description, DataSourceId dataSourceId)
+            public MediaArchiveStore(string id, string title, string description,DataSourceId dataSourceId)
             {
                 Id = id;
                 Title = title;
@@ -431,6 +431,12 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemMediaFileProvider
 
 
             public string Description
+            {
+                get;
+                set;
+            }
+
+            public string Tags
             {
                 get;
                 set;

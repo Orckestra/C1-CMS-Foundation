@@ -23,6 +23,7 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
             this.FolderPath = file.FolderPath;
             this.Title = file.Title;
             this.Description = file.Description;
+            this.Tags = file.Tags;
             this.MimeType = file.MimeType;
             this.Length = file.Length;
             this.IsReadOnly = false;
@@ -50,7 +51,12 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
             set { /* Do nothing. Used for deserialization purpouses */ }
         }
 
-
+        public string MediaURL {
+            get
+            {
+                return Composite.Core.Routing.MediaUrls.BuildUrl(this);
+            }
+        }
 
         public string StoreId
         {
@@ -81,6 +87,8 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
             get;
             set;
         }
+
+        public string Tags { get; set; }
 
         public string Culture
         {
