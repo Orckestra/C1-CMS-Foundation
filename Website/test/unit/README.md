@@ -6,7 +6,9 @@ All files ending in `.js` in the `suite/` directory and its subdirectories will 
 
 ## Overall structure
 
-Test files generally map one-to-one with source files - `loadAndOpen.spec.js` contains tests for the code found in `loadAndOpen.js`. The same is true of directory structure. This is intended to make it easier to find and update test files. 
+Test files generally map one-to-one with source files - `loadAndOpen.spec.js` contains tests for the code found in `loadAndOpen.js`. The same is true of directory structure. This is intended to make it easier to find and update test files.
+
+Files with a name like `_setup.js` are used for setup and teardown functionality for entire directories. Of especial note here is the one found in `suite/`, which sets up the mock of the `WAMPClient` class. This does not call the `beforeEach()` or `afterEach()` functions of Mocha, as it instead sets up a general mock to provide testable calls to the entire suite.
 
 ## Running tests
 
