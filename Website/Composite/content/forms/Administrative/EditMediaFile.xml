@@ -52,7 +52,7 @@
           <cms:read source="ProvidesMetaData" />
         </f:BooleanCheck.CheckValue>
         <f:BooleanCheck.WhenTrue>
-          <TextBox Label="${Composite.Management, Website.Forms.Administrative.EditMediaFile.LabelMediaURL}" Help="${Composite.Management, Website.Forms.Administrative.EditMediaFile.HelpMediaURL}" Required="false">
+          <TextBox Type="ReadOnly" Label="${Composite.Management, Website.Forms.Administrative.EditMediaFile.LabelMediaURL}" Help="${Composite.Management, Website.Forms.Administrative.EditMediaFile.HelpMediaURL}" Required="false">
             <cms:read source="FileDataURL" />
           </TextBox>
         </f:BooleanCheck.WhenTrue>

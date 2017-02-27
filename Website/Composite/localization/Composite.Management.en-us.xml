@@ -581,6 +581,8 @@
   <string key="Website.Forms.Administrative.AddNewMediaFile.MissingUploadedFile.Message" value="Please select a file to upload" />
   <string key="Website.Forms.Administrative.AddNewMediaFile.FileExists.Message" value="A file with the same name exists. Check allow overwrite or change the filename" />
   <string key="Website.Forms.Administrative.AddNewMediaFile.TotalFilenameToLong.Message" value="The total length of the filename (folder and filename) is too long" />
+  <string key="Website.Forms.Administrative.AddNewMediaFile.TagsTextBox.Help" value="Add tags to your media item seperated by a comma (,)" />
+  <string key="Website.Forms.Administrative.AddNewMediaFile.TagsTextBox.Label" value="Tags" />  
   <string key="Website.Forms.Administrative.AddNewMediaFolder.Label.AddNewMediaFolder" value="Add New Media Folder" />
   <string key="Website.Forms.Administrative.AddNewMediaFolder.LabelFolderName" value="Folder Name" />
   <string key="Website.Forms.Administrative.AddNewMediaFolder.HelpFolderName" value="" />
