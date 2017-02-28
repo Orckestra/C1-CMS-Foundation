@@ -25,9 +25,9 @@ namespace Composite.C1Console.Trees
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class DataFolderElementsTreeNode : DataFilteringTreeNode
     {
-        private readonly MethodInfo StringStartsWithMethodInfo = typeof(string).GetMethods().First(f => f.Name == "StartsWith");
-        private readonly MethodInfo StringSubstringMethodInfo = typeof(string).GetMethods().Where(f => f.Name == "Substring").Skip(1).First();
-        private readonly MethodInfo ToUpperCompareMethodInfo = typeof(string).GetMethods().First(f => f.Name == "ToUpper");
+        private readonly MethodInfo StringStartsWithMethodInfo = typeof(string).GetMethods().First(f => f.Name == nameof(string.StartsWith));
+        private readonly MethodInfo StringSubstringMethodInfo = typeof(string).GetMethods().Where(f => f.Name == nameof(string.Substring)).Skip(1).First();
+        private readonly MethodInfo ToUpperCompareMethodInfo = typeof(string).GetMethods().First(f => f.Name == nameof(string.ToUpper));
 
         /// <exclude />
         public Type InterfaceType { get; internal set; }            // Required
@@ -85,17 +85,7 @@ namespace Composite.C1Console.Trees
         /// <exclude />
         public override IEnumerable<EntityToken> GetEntityTokens(EntityToken childEntityToken, TreeNodeDynamicContext dynamicContext)
         {
-            IEnumerable<object> labels = GetObjects(dynamicContext, true);
-
-            if (this.LocalizationEnabled)
-            {
-                using (new DataScope(UserSettings.ForeignLocaleCultureInfo))
-                {
-                    List<object> foreignLabels = GetObjects(dynamicContext, true);
-                    labels = labels.Concat(foreignLabels).Distinct();
-                }
-            }
-
+            IEnumerable<object> labels = GetCurrentAndLocalizableObjects<object>(dynamicContext, true);
 
             Type childGeneratingDataElementsReferenceType = null;
             object childGeneratingDataElementsReferenceValue = null;
@@ -195,9 +185,10 @@ namespace Composite.C1Console.Trees
             {
                 if (this.IsTopFolderParent)
                 {
-                    DataEntityToken dataEntityToken = (DataEntityToken)dynamicContext.Piggybag
+                    var dataEntityToken = dynamicContext.Piggybag
                         .GetParentEntityTokens(parentEntityToken)
-                        .FirstOrDefault(f => f is DataEntityToken && ((DataEntityToken)f).InterfaceType == ChildGeneratingParentIdFilterNode.ParentFilterType);
+                        .OfType<DataEntityToken>()
+                        .FirstOrDefault(f => f.InterfaceType == ChildGeneratingParentIdFilterNode.ParentFilterType);
                     
                     if (dataEntityToken != null)
                     {
@@ -206,7 +197,7 @@ namespace Composite.C1Console.Trees
 
                         referenceType = this.ChildGeneratingParentIdFilterNode.KeyPropertyInfo.DeclaringType;
                         referenceValue = this.ChildGeneratingParentIdFilterNode.KeyPropertyInfo.GetValue(data, null);
-                    }                    
+                    }
                 }
                 else
                 {
@@ -223,23 +214,7 @@ namespace Composite.C1Console.Trees
                 return CreateFolderRangeElements(parentEntityToken, referenceType, referenceValue, dynamicContext);
             }
 
-            IEnumerable<object> objects;
-
-            if (!this.LocalizationEnabled)
-            {
-                objects = GetObjects(dynamicContext);
-            }
-            else
-            {
-                List<object> orgObjects = GetObjects(dynamicContext);
-                using (new DataScope(UserSettings.ForeignLocaleCultureInfo))
-                {
-                    List<object> foreignObjects = GetObjects(dynamicContext);
-                    orgObjects.AddRange(foreignObjects);
-                    orgObjects.Sort(); // TODO: Check if sorting here is necessary
-                    objects = orgObjects.Distinct();
-                }
-            }
+            IEnumerable<object> objects = GetCurrentAndLocalizableObjects<object>(dynamicContext);
 
             if (this.FirstLetterOnly)
             {
@@ -272,7 +247,7 @@ namespace Composite.C1Console.Trees
 
             foreach (var pair in objectsAndLabels)
             {
-                Element element = CreateElement(
+                yield return CreateElement(
                     parentEntityToken,
                     referenceType,
                     referenceValue,
@@ -280,8 +255,6 @@ namespace Composite.C1Console.Trees
                     pair.Label,
                     f => f.GroupingValues.Add(this.GroupingValuesFieldName, ConvertGroupingValue(pair.Object))
                 );
-
-                yield return element;
             }
         }
 
@@ -322,35 +295,18 @@ namespace Composite.C1Console.Trees
 
         private IEnumerable<Element> CreateFolderRangeElements(EntityToken parentEntityToken, Type referenceType, object referenceValue, TreeNodeDynamicContext dynamicContext)
         {
-            IEnumerable<int> indexes;
-            if (this.Display == LeafDisplayMode.Lazy)
+            var indexes = Enumerable.Empty<int>();
+
+            if (this.Display != LeafDisplayMode.Lazy)
             {
-                indexes = new List<int>();
-            }
-            else
-            {
-                if (!this.LocalizationEnabled)
-                {
-                    indexes = GetObjects<int>(dynamicContext);
-                }
-                else
-                {
-                    List<int> orgObjects = GetObjects<int>(dynamicContext);
-                    using (new DataScope(UserSettings.ForeignLocaleCultureInfo))
-                    {
-                        List<int> foreignObjects = GetObjects<int>(dynamicContext);
-                        orgObjects.AddRange(foreignObjects);
-                        orgObjects.Sort();
-                        indexes = orgObjects.Distinct();
-                    }
-                }
+                indexes = GetCurrentAndLocalizableObjects<int>(dynamicContext);
             }
 
 
             foreach (IFolderRange folderRange in this.FolderRanges.Ranges)
             {
                 bool contained = indexes.Contains(folderRange.Index);
-                if ((this.Display == LeafDisplayMode.Compact) && (contained == false)) continue;
+                if (this.Display == LeafDisplayMode.Compact && !contained) continue;
 
                 Element element = CreateElement(
                     parentEntityToken,
@@ -377,15 +333,9 @@ namespace Composite.C1Console.Trees
 
         private IEnumerable<Element> CreateFirstLetterOnlyElements(EntityToken parentEntityToken, Type referenceType, object referenceValue, TreeNodeDynamicContext dynamicContext, IEnumerable<object> objects)
         {
-            foreach (object obj in objects)
+            foreach (string label in objects.OfType<string>())
             {
-                if (obj == null) continue;
-
-                string stringObject = (string)obj;
-
-                string label = stringObject;
-
-                Element element = CreateElement(
+                yield return CreateElement(
                     parentEntityToken,
                     referenceType,
                     referenceValue, 
@@ -393,8 +343,6 @@ namespace Composite.C1Console.Trees
                     label,
                     f => f.GroupingValues.Add(this.GroupingValuesFieldName, label)
                 );
-
-                yield return element;
             }
         }
 
@@ -591,32 +539,29 @@ namespace Composite.C1Console.Trees
             return expression;
         }
 
-        private List<object> GetObjects(TreeNodeDynamicContext dynamicContext, bool includeAllGroupingFields = false)
+        private List<T> GetObjects<T>(TreeNodeDynamicContext dynamicContext, bool includeAllGroupingFields = false)
         {
-            Expression expression = GetObjectsExpression(dynamicContext, includeAllGroupingFields);
-
-            return ExpressionHelper.GetObjects(this.InterfaceType, expression);
-        }
-
-
-
-        private List<T> GetObjects<T>(TreeNodeDynamicContext dynamicContext)
-        {
-            Expression expression = GetObjectsExpression(dynamicContext);
+            var expression = GetObjectsExpression(dynamicContext, includeAllGroupingFields);
 
             return ExpressionHelper.GetCastedObjects<T>(this.InterfaceType, expression);
         }
 
-        
 
-        private bool UseChildGeneratingFilterExpression
+        private IEnumerable<T> GetCurrentAndLocalizableObjects<T>(TreeNodeDynamicContext dynamicContext, bool includeAllGroupingFields = false)
         {
-            get
+            IEnumerable<T> objects = GetObjects<T>(dynamicContext, includeAllGroupingFields);
+
+            if (!this.LocalizationEnabled) return objects;
+
+            using (new DataScope(UserSettings.ForeignLocaleCultureInfo))
             {
-                return this.IsTopFolderParent && this.Display != LeafDisplayMode.Lazy;
+                var foreignObjects = GetObjects<T>(dynamicContext, includeAllGroupingFields);
+                return objects.Concat(foreignObjects).Distinct();
             }
         }
 
+
+        private bool UseChildGeneratingFilterExpression => IsTopFolderParent && Display != LeafDisplayMode.Lazy;
 
 
         internal override Expression CreateFilterExpression(ParameterExpression parameterExpression, TreeNodeDynamicContext dynamicContext, IList<int> filtersToSkip = null)
@@ -675,7 +620,7 @@ namespace Composite.C1Console.Trees
                 {
                     // This will only happen if we are searching up and are given another entity token that
                     // TreeDataFieldGroupingElementEntityToken and DataEntityToken or TreeSimpleElementEntityToken 
-                    throw new NotImplementedException(string.Format("Unsupported child entity token type '{0}'", dynamicContext.CurrentEntityToken.GetType()));
+                    throw new NotImplementedException($"Unsupported child entity token type '{dynamicContext.CurrentEntityToken.GetType()}'");
                 }
             }
             else
@@ -718,7 +663,7 @@ namespace Composite.C1Console.Trees
                 {
                     // This will only happen if we are searching up and are given another entity token that
                     // TreeDataFieldGroupingElementEntityToken and DataEntityToken or TreeSimpleElementEntityToken 
-                    throw new NotImplementedException(string.Format("Unsupported child entity token type '{0}'", dynamicContext.CurrentEntityToken.GetType()));
+                    throw new NotImplementedException($"Unsupported child entity token type '{dynamicContext.CurrentEntityToken.GetType()}'");
                 }
             }
 
@@ -855,36 +800,26 @@ namespace Composite.C1Console.Trees
         {
             string castedValue = (string)value;
 
-            if (castedValue != "")
+            if (castedValue == "")
             {
-                Expression expression = Expression.Condition(
+                return Expression.Equal(fieldExpression, Expression.Constant(""));
+            }
+
+            return Expression.Condition(
                     Expression.NotEqual(
                         fieldExpression,
                         Expression.Constant(null)
-                    ),
+                        ),
                     Expression.Call(
                         Expression.Call(
                             fieldExpression,
                             this.ToUpperCompareMethodInfo
-                        ),
+                            ),
                         this.StringStartsWithMethodInfo,
                         Expression.Constant(castedValue)
-                    ),
+                        ),
                     Expression.Constant(false)
                 );
-
-                return expression;
-            }
-            else
-            {
-                Expression expression =
-                    Expression.Equal(
-                        fieldExpression,
-                        Expression.Constant("")
-                    );
-
-                return expression;
-            }
         }
 
 
@@ -1088,7 +1023,7 @@ namespace Composite.C1Console.Trees
 
             this.KeyPropertyInfo = this.InterfaceType.GetKeyProperties()[0];
 
-            if (typeof(ILocalizedControlled).IsAssignableFrom(this.InterfaceType) == false)
+            if (!typeof(ILocalizedControlled).IsAssignableFrom(this.InterfaceType))
             {
                 this.ShowForeignItems = false;
             }
@@ -1096,8 +1031,9 @@ namespace Composite.C1Console.Trees
 
 
         private bool LocalizationEnabled => 
-            this.ShowForeignItems
+            ShowForeignItems
             && UserValidationFacade.IsLoggedIn()
+            && UserSettings.ForeignLocaleCultureInfo != null
             && !UserSettings.ActiveLocaleCultureInfo.Equals(UserSettings.ForeignLocaleCultureInfo);
 
 
@@ -1139,7 +1075,7 @@ namespace Composite.C1Console.Trees
         /// <exclude />
         public override string ToString()
         {
-            return string.Format("DataFolderElementsTreeNode, Id = {0}, DataType = {1}, FieldName = {2}, {3}", this.Id, this.InterfaceType, this.FieldName, this.ParentString());
+            return $"DataFolderElementsTreeNode, Id = {this.Id}, DataType = {this.InterfaceType}, FieldName = {this.FieldName}, {this.ParentString()}";
         }
     }
 }

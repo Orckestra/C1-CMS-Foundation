@@ -8,26 +8,13 @@ using Composite.Data;
 
 namespace Composite.Core.Linq
 {
-	internal static class ExpressionHelper
-	{
-        public static List<object> GetObjects(Type interfaceType, Expression sourceExpression)
-        {
-            List<object> result = DataFacade.GetData(interfaceType).Provider.CreateQuery(sourceExpression).ToListOfObjects();
-
-            return result;
-        }
-
-
-
+    internal static class ExpressionHelper
+    {
         public static List<T> GetCastedObjects<T>(Type interfaceType, Expression sourceExpression)
         {
-            List<T> result =
-                DataFacade.GetData(interfaceType).Provider.CreateQuery(sourceExpression).
-                    ToEnumerableOfObjects().
-                    Cast<T>().
-                    ToList();
-
-            return result;
+            return DataFacade.GetData(interfaceType).Provider
+                             .CreateQuery(sourceExpression)
+                             .Cast<T>().ToList();
         }
 
 
@@ -50,7 +37,7 @@ namespace Composite.Core.Linq
                 }
             }
 
-            throw new InvalidOperationException(string.Format("The interface '{0}' or any of its superinterfaces does not contain a field named '{1}'", parameterExpression.Type, fieldName));
+            throw new InvalidOperationException($"The interface '{parameterExpression.Type}' or any of its superinterfaces does not contain a field named '{fieldName}'");
         }
 
 
@@ -59,7 +46,7 @@ namespace Composite.Core.Linq
         {
             Expression fieldParameterExpression = GetPropertyParameterExpression(currentInterfaceType, actualPropertyDeclaringType, parameterExpression);
 
-            Expression expression = ExpressionHelper.CreatePropertyExpression(fieldName, fieldParameterExpression);
+            Expression expression = CreatePropertyExpression(fieldName, fieldParameterExpression);
 
             return expression;
         }
@@ -148,10 +135,10 @@ namespace Composite.Core.Linq
                 PropertyInfo propertyInfo = kvp.Item1;
                 object value = kvp.Item2;
 
-                Expression left = LambdaExpression.Property(parameterExpression, propertyInfo);
-                Expression right = Expression.Constant(value);
+                var left = Expression.Property(parameterExpression, propertyInfo);
+                var right = Expression.Constant(value);
 
-                Expression filter = Expression.Equal(left, right);
+                var filter = Expression.Equal(left, right);
 
                 currentExpression = currentExpression == null ? filter : Expression.And(currentExpression, filter);
             }
