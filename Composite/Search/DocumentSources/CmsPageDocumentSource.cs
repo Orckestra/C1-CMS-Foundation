@@ -39,7 +39,7 @@ namespace Composite.Search.DocumentSources
 
             _changesIndexNotifier = new DataChangesIndexNotifier(
                 _listeners, typeof(IPage),
-                data =>
+                (data, culture) =>
                 {
                     var page = (IPage) data;
                     var entityToken = GetAdministratedEntityToken(page);

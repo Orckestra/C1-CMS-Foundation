@@ -60,7 +60,8 @@ namespace Composite.Search.DocumentSources
             using (new DataConnection(PublicationScope.Published, culture))
             {
                 var dataSet = DataFacade.GetData(_interfaceType).Cast<IData>().Evaluate();
-                foreach (var document in dataSet.Select(FromData).Where(doc => doc != null))
+
+                foreach (var document in dataSet.Select(d => FromData(d, culture)).Where(doc => doc != null))
                 {
                     yield return document;
                 }
@@ -75,7 +76,8 @@ namespace Composite.Search.DocumentSources
                         .Where(data => data.PublicationStatus != GenericPublishProcessController.Published)
                         .Evaluate();
 
-                    foreach (var document in dataSet.Select(FromData).Where(doc => doc != null))
+                    foreach (var document in dataSet.Select(data => FromData(data, culture))
+                                                    .Where(doc => doc != null))
                     {
                         yield return document;
                     }
@@ -85,35 +87,38 @@ namespace Composite.Search.DocumentSources
 
         public ICollection<DocumentField> CustomFields => _customFields.Value;
 
-        private SearchDocument FromData(IData data)
+        private SearchDocument FromData(IData data, CultureInfo culture)
         {
-            string label = data.GetLabel();
-            if (string.IsNullOrEmpty(label))
+            using (new DataScope(culture))
             {
-                // Having a label is a requirement for a data item to be searchable
-                return null;
+                string label = data.GetLabel();
+                if (string.IsNullOrEmpty(label))
+                {
+                    // Having a label is a requirement for a data item to be searchable
+                    return null;
+                }
+
+                var docBuilder = new SearchDocumentBuilder();
+                docBuilder.CrawlData(data);
+                docBuilder.SetDataType(_interfaceType);
+
+                string documentId = GetDocumentId(data);
+                string url = null;
+                if (InternalUrls.DataTypeSupported(data.DataSourceId.InterfaceType)
+                    && (!_isPublishable || (data.DataSourceId.PublicationScope == PublicationScope.Published)))
+                {
+                    url = InternalUrls.TryBuildInternalUrl(data.ToDataReference());
+                }
+
+                var entityToken = GetConsoleEntityToken(data);
+                if (entityToken == null)
+                {
+                    Log.LogWarning(LogTitle, $"Failed to obtain an entity token for a data item of type '{data.DataSourceId.InterfaceType}'");
+                    return null;
+                }
+
+                return docBuilder.BuildDocument(Name, documentId, label, null, entityToken, url);
             }
-
-            var docBuilder = new SearchDocumentBuilder();
-            docBuilder.CrawlData(data);
-            docBuilder.SetDataType(_interfaceType);
-
-            string documentId = GetDocumentId(data);
-            string url = null;
-            if (InternalUrls.DataTypeSupported(data.DataSourceId.InterfaceType)
-                && (!_isPublishable || (data.DataSourceId.PublicationScope == PublicationScope.Published)))
-            {
-                url = InternalUrls.TryBuildInternalUrl(data.ToDataReference());
-            }
-
-            var entityToken = GetConsoleEntityToken(data);
-            if (entityToken == null)
-            {
-                Log.LogWarning(LogTitle, $"Failed to obtain an entity token for a data item of type '{data.DataSourceId.InterfaceType}'");
-                return null;
-            }
-
-            return docBuilder.BuildDocument(Name, documentId, label, null, entityToken, url);
         }
 
         private EntityToken GetConsoleEntityToken(IData data)

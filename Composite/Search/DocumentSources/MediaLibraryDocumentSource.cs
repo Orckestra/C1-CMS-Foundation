@@ -23,7 +23,7 @@ namespace Composite.Search.DocumentSources
 
             _changesIndexNotifier = new DataChangesIndexNotifier(
                 _listeners, typeof(IMediaFile),
-                data => FromMediaFile((IMediaFile)data),
+                (data, culture) => FromMediaFile((IMediaFile)data),
                 data => ((IMediaFile)data).Id.ToString());
             _changesIndexNotifier.Start();
         }
