@@ -28,10 +28,11 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
             DataEntityToken token = (DataEntityToken)this.EntityToken;
             IMediaFile file = (IMediaFile)token.Data;
             IMediaFileStore store = DataFacade.GetData<IMediaFileStore>(x => x.Id == file.StoreId).First();
+            var mediaURL = Composite.Core.Routing.MediaUrls.BuildUrl(file);
 
             this.Bindings.Add("FileDataFileName", file.FileName);
             this.Bindings.Add("FileDataTitle", file.Title);
-            this.Bindings.Add("FileDataURL", file.MediaURL);
+            this.Bindings.Add("FileDataURL", mediaURL);
             this.Bindings.Add("FileDataDescription", file.Description);
             this.Bindings.Add("FileDataTags", file.Tags);
             this.Bindings.Add("ProvidesMetaData", store.ProvidesMetadata);

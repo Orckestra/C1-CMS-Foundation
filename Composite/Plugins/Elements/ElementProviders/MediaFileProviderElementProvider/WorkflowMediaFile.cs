@@ -127,16 +127,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
             set;
         }
 
-        public string MediaURL
-        {
-            get
-            {
-                return Composite.Core.Routing.MediaUrls.BuildUrl(this);
-            }
-        }
-
-
-
+        
         /// <exclude />
         public DateTime? CreationTime
         {

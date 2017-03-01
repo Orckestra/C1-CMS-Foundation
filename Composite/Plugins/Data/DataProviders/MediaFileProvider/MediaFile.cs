@@ -51,13 +51,6 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
             set { /* Do nothing. Used for deserialization purpouses */ }
         }
 
-        public string MediaURL {
-            get
-            {
-                return Composite.Core.Routing.MediaUrls.BuildUrl(this);
-            }
-        }
-
         public string StoreId
         {
             get;

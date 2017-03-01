@@ -100,14 +100,7 @@ namespace Composite.Plugins.Data.DataProviders.VirtualImageFileProvider
             }
         }
 
-        public string MediaURL
-        {
-            get
-            {
-                return Composite.Core.Routing.MediaUrls.BuildUrl(this);
-            }
-        }
-
+       
         public string Culture
         {
             get

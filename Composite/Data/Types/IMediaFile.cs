@@ -75,11 +75,6 @@ namespace Composite.Data.Types
         string MimeType { get; }
 
         /// <exclude />
-        [ImmutableFieldId("{ae5be3d2-c239-48a0-a833-3d23a263a40f}")]
-       string MediaURL { get; }
-
-
-        /// <exclude />
         [ImmutableFieldId("{BCD0C1A2-9769-4209-8D43-DB7DDBABBB8B}")]
         [StoreFieldType(PhysicalStoreFieldType.Integer, IsNullable=true)]
         int? Length { get; }
