@@ -2818,9 +2818,5 @@
   <PropertyGroup>
     <PostBuildEvent>
     </PostBuildEvent>
-    <PostBuildEvent>if not exist "$(ProjectDir)\bin\ExtraDllVersion" (
- md "$(ProjectDir)\bin\ExtraDllVersion"
- copy "$(ProjectDir)\..\Packages\Microsoft.Bcl.Immutable.1.1.20-beta\lib\portable-net45+win8\*.dll" "$(ProjectDir)\bin\ExtraDllVersion" /y
-  )</PostBuildEvent>
   </PropertyGroup>
 </Project>
