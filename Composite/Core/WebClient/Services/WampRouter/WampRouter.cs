@@ -19,8 +19,17 @@ namespace Composite.Core.WebClient.Services.WampRouter
         public WampRouter()
         {
             LogProvider.SetCurrentLogProvider(new WampLogger());
-
-            StartWampRouter();
+            try
+            {
+                StartWampRouter();
+                Log.LogInformation(nameof(WampRouter),"Wamp router initiated successfully");
+            }
+            catch (Exception e)
+            {
+                Log.LogCritical(nameof(WampRouter), "Wamp router could not be instantiated");
+                Log.LogCritical(nameof(WampRouter), e);
+            }
+            
         }
 
         public void RegisterCallee(IRpcService instance)
