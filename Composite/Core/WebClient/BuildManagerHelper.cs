@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Compilation;
@@ -18,7 +17,8 @@ namespace Composite.Core.WebClient
     internal static class BuildManagerHelper
     {
         private static DateTime? _delayPreloadTo = null;
-        private static TimeSpan _preloadDelay = TimeSpan.FromSeconds(2);
+        private static TimeSpan PreloadDelay = TimeSpan.FromSeconds(2);
+        private static TimeSpan InitializationDelay = TimeSpan.FromSeconds(30);
 
         private static readonly string LogTitle = typeof (BuildManagerHelper).Name;
         private static int _preloadingInitiated;
@@ -34,10 +34,19 @@ namespace Composite.Core.WebClient
             }
         }
 
+        private static bool IsRestarting => HostingEnvironment.ApplicationHost.ShutdownInitiated();
+
         private static void LoadAllControls()
         {
             try
             {
+                const int waitSlice = 500;
+                for (int i = 0; i < InitializationDelay.Milliseconds / waitSlice; i++)
+                {
+                    if(IsRestarting) return;
+                    Thread.Sleep(waitSlice);
+                }
+
                 const string configFileFilePath = "~/App_Data/Composite/Composite.config";
                 var config = XDocument.Load(PathUtil.Resolve(configFileFilePath));
 
@@ -52,7 +61,7 @@ namespace Composite.Core.WebClient
                 {
                     if (!C1File.Exists(PathUtil.Resolve(controlPath)))
                     {
-                        Log.LogWarning(LogTitle, "Missing a control file '{0}' referenced in '{1}'", controlPath, configFileFilePath);
+                        Log.LogWarning(LogTitle, $"Missing a control file '{controlPath}' referenced in '{configFileFilePath}'");
                         continue;
                     }
 
@@ -87,7 +96,7 @@ namespace Composite.Core.WebClient
                     {
                         while (true)
                         {
-                            if (HostingEnvironment.ApplicationHost.ShutdownInitiated()) return;
+                            if (IsRestarting) return;
 
                             Thread.MemoryBarrier();
                             var waitUntil = _delayPreloadTo;
@@ -139,9 +148,9 @@ namespace Composite.Core.WebClient
         /// <returns></returns>
         public static Type GetCompiledType(string virtualPath)
         {
-            using(BuildManagerHelper.DisableUrlMetadataCachingScope())
+            using (DisableUrlMetadataCachingScope())
             {
-                return System.Web.Compilation.BuildManager.GetCompiledType(virtualPath);
+                return BuildManager.GetCompiledType(virtualPath);
             }
         }
 
@@ -169,7 +178,7 @@ namespace Composite.Core.WebClient
         /// </summary>
         public static IDisposable DisableUrlMetadataCachingScope()
         {
-            _delayPreloadTo = DateTime.Now.Add(_preloadDelay);
+            _delayPreloadTo = DateTime.Now.Add(PreloadDelay);
 
             return new DisableUrlMedataScope();
         }

@@ -34,7 +34,7 @@ namespace Composite.Core.WebClient
         private static DateTime _lastUsageDate = DateTime.MinValue;
         private static readonly TimeSpan RecycleOnIdleInterval = TimeSpan.FromSeconds(30); 
         private const int RecycleTimerInterval_ms = 10000;
-        private const int EnsureReadinessDelay_ms = 3000;
+        private const int EnsureReadinessDelay_ms = 30000;
 
         private static volatile bool Enabled = true;
         private static volatile bool ServerAvailabilityChecked;
@@ -55,7 +55,13 @@ namespace Composite.Core.WebClient
             HttpCookie[] cookies = GetAuthenticationCookies(context);
             Task.Factory.StartNew(async () =>
             {
-                await Task.Delay(EnsureReadinessDelay_ms);
+                const int delaySlice = 500;
+                for (int i = 0; i < EnsureReadinessDelay_ms / delaySlice; i++)
+                {
+                    if (!SystemFullyOnline) return;
+                    await Task.Delay(delaySlice);
+                }
+                
                 await CheckServerAvailabilityAsync(context, cookies);
             });
         }
@@ -179,16 +185,11 @@ namespace Composite.Core.WebClient
         }
 
 
-        private static bool SystemFullyOnline
-        {
-            get
-            {
-                return ApplicationOnlineHandlerFacade.IsApplicationOnline 
-                    && GlobalInitializerFacade.SystemCoreInitialized 
-                    && !GlobalInitializerFacade.SystemCoreInitializing 
-                    && SystemSetupFacade.IsSystemFirstTimeInitialized;
-            }
-        }
+        private static bool SystemFullyOnline => 
+            ApplicationOnlineHandlerFacade.IsApplicationOnline 
+            && GlobalInitializerFacade.SystemCoreInitialized 
+            && !GlobalInitializerFacade.SystemCoreInitializing 
+            && SystemSetupFacade.IsSystemFirstTimeInitialized;
 
 
         private static async Task CheckServerAvailabilityAsync(HttpContext context, HttpCookie[] cookies)
