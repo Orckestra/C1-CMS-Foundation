@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Reactive.Subjects;
+using System.Web.Routing;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using WampSharp.AspNet.WebSockets.Server;
@@ -14,6 +15,7 @@ namespace Composite.Core.WebClient.Services.WampRouter
     internal class WampRouter
     {
         private const string DefaultRealmName = "realm";
+        private const string WampConsoleUrl = "api/Router";
         private WampHost _host;
 
         public WampRouter()
@@ -22,11 +24,11 @@ namespace Composite.Core.WebClient.Services.WampRouter
             try
             {
                 StartWampRouter();
-                Log.LogInformation(nameof(WampRouter),"Wamp router initiated successfully");
+                Log.LogInformation(nameof(WampRouter),"WAMP router initiated successfully");
             }
             catch (Exception e)
             {
-                Log.LogCritical(nameof(WampRouter), "Wamp router could not be instantiated");
+                Log.LogCritical(nameof(WampRouter), "WAMP router could not be instantiated");
                 Log.LogCritical(nameof(WampRouter), e);
             }
             
@@ -63,7 +65,7 @@ namespace Composite.Core.WebClient.Services.WampRouter
 
             observableEvent.Subscribe(x =>
             {
-                if (realm.TopicContainer.TopicUris.FirstOrDefault(f => f.Equals(eventObservable.Topic)) == null)
+                if (!realm.TopicContainer.TopicUris.Any(f => f.Equals(eventObservable.Topic)))
                 {
                     Log.LogVerbose(nameof(WampRouter),
                         $"Trying to publish on topic: {eventObservable.Topic}, but there is no subscriber to this topic");
@@ -72,35 +74,61 @@ namespace Composite.Core.WebClient.Services.WampRouter
                 {
                     subject.OnNext(eventObservable.GetNewData());
                 }
-                    
             });
         }
 
         private void StartWampRouter()
         {
             _host = new WampAuthenticationHost(new UserNameBasedAuthenticationFactory());
-            
-            _host.RegisterTransport(new AspNetWebSocketTransport("Composite/api/Router"
-                ,new UserNameBasedCookieAuthenticationFactory()),
-                new JTokenJsonBinding(new JsonSerializer()
-                { ContractResolver = new CamelCasePropertyNamesContractResolver()}));
+
+            string routeUrl =  UrlUtils.ResolveAdminUrl(WampConsoleUrl);
+            if (routeUrl.StartsWith("/"))
+            {
+                routeUrl = routeUrl.Substring(1);
+            }
+
+            _host.RegisterTransport(
+                new AspNetWebSocketTransport(routeUrl, new UserNameBasedCookieAuthenticationFactory()),
+                new JTokenJsonBinding(new JsonSerializer
+                {
+                    ContractResolver = new CamelCasePropertyNamesContractResolver()
+                }));
             
             IWampHostedRealm realm = _host.RealmContainer.GetRealmByName(DefaultRealmName);
 
             realm.SessionCreated += SessionCreated;
             realm.SessionClosed += SessionRemoved;
             _host.Open();
+
+            FixWampRoute(routeUrl);
         }
+
+        private static void FixWampRoute(string routeUrl)
+        {
+            var routes = RouteTable.Routes;
+
+            for (int i = 0; i < routes.Count; i++)
+            {
+                var route = routes[i] as Route;
+                if (route?.Url == routeUrl)
+                {
+                    routes.Remove(route);
+                    routes.Add(new WampRouteWrapper(route));
+                    return;
+                }
+            }
+        }
+
+
         private static void SessionCreated(object sender, WampSessionCreatedEventArgs e)
         {
-            Log.LogVerbose(nameof(WampRouter),"A new wamp client is connected");
+            Log.LogVerbose(nameof(WampRouter),"A new WAMP client is connected");
         }
 
         private static void SessionRemoved(object sender, WampSessionCloseEventArgs e)
         {
             Log.LogVerbose(nameof(WampRouter), "A connection error occured");
         }
-        
     }
 }
 
