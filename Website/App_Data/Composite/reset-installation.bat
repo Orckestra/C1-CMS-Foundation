@@ -201,4 +201,6 @@ del ..\..\bin\Composite.Forms.*.*
 del ..\..\bin\Composite.XmlSerializers.dll
 del ..\..\bin\WebGrease.dll
 
-
+:: components
+del /q "..\Components\*"
+FOR /D %%p IN ("..\Components\*.*") DO rmdir "%%p" /s /q
