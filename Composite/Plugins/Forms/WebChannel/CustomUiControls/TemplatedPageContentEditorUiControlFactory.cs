@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
 using System.Web.UI;
 using Composite.C1Console.Forms;
 using Composite.C1Console.Forms.Foundation;
@@ -57,6 +58,9 @@ namespace Composite.Plugins.Forms.WebChannel.CustomUiControls
 
         /// <exclude />
         public string ClassConfigurationName { get; set; }
+
+        /// <exclude />
+        public Guid PageTypeId { get; set; }
     }
 
     internal sealed class TemplatedPageContentEditorUiControl : UiControl, IWebUiControl
@@ -80,6 +84,8 @@ namespace Composite.Plugins.Forms.WebChannel.CustomUiControls
         [FormsProperty()]
         public string ClassConfigurationName { get; set; }
 
+        [FormsProperty()]
+        public Guid PageTypeId { get; set; }
 
         private Type _userControlType;
         private PageContentEditorTemplateUserControlBase _userControl;
@@ -114,7 +120,8 @@ namespace Composite.Plugins.Forms.WebChannel.CustomUiControls
             _userControl.SelectableTemplateIds = this.SelectableTemplateIds;
             _userControl.NamedXhtmlFragments = this.NamedXhtmlFragments;
             _userControl.ClassConfigurationName = this.ClassConfigurationName;
-			_userControl.PageId = this.PageId;
+            _userControl.PageId = this.PageId;
+            _userControl.PageTypeId = this.PageTypeId;
 
             return _userControl;
         }

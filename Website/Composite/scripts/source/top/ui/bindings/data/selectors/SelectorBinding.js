@@ -381,7 +381,9 @@ SelectorBinding.prototype.buildPopup = function () {
 	popupBinding.addActionListener ( PopupBinding.ACTION_SHOW, this );
 	popupBinding.addActionListener ( MenuItemBinding.ACTION_COMMAND, this );
 	popupBinding.addActionListener ( PopupBinding.ACTION_HIDE, this );
-	this._buttonBinding.setPopup ( popupBinding );
+	this._buttonBinding.setPopup(popupBinding);
+
+	this._popupBinding.isManaged = true;
 }
 
 /**

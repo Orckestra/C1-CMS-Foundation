@@ -24,6 +24,7 @@ module.exports = {
 					.enter()
 					.assert.attributeEquals('body', 'contenteditable', 'true')
 					.section.editorBody
+					.waitForElementVisible(selector,this.api.globals.timeouts.basic)
 					.assert.visible(selector)
 					.replaceContent(selector, newContent)
 				return this;
@@ -56,6 +57,18 @@ module.exports = {
 					.waitForElementPresent('iframe[src="/Composite/content/dialogs/postback/postbackdialog.aspx"]',this.api.globals.timeouts.basic)
 					return this;
 			},
+			selectContent: function (number) {
+				this
+					.enter()
+					.assert.attributeEquals('body', 'contenteditable', 'true')
+					.client.api.useXpath()
+					.waitForElementVisible('//*[@id="tinymce"]/*['+number+']',this.api.globals.timeouts.basic)
+					.moveToElement('//*[@id="tinymce"]/*['+number+']',null,null)
+					.click('//*[@id="tinymce"]/*['+number+']')
+					.selectFrame('toolbar[binding="VisualEditorToolBarBinding"]')
+					.waitForElementPresent('//*[local-name()="labeltext"][text()="Function Properties…"]',this.api.globals.timeouts.basic)
+					return this;
+			},
 			acceptChanges: function (){
 				this
 					.enter()
@@ -70,6 +83,11 @@ module.exports = {
 					.client.api.useXpath()
 					.selectFrameWithXpath('//*[@callbackid="buttonAccept"]')
 					.click('//*[@callbackid="buttonAccept"]').useCss();
+					return this;
+			},
+			pause: function (number){
+				this
+					.client.api.pause(number)
 					return this;
 			}
 		}

@@ -14,6 +14,7 @@
         [ImmutableFieldId("{FAB1CF0C-66B0-11DC-A47E-CF6356D89593}")]
         [DefaultFieldStringValue("")]
         [FieldPosition(50)]
+        [SearchableField(false, true, true)]
         string PublicationStatus { get; set; }
 	}
 }

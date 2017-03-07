@@ -63,7 +63,7 @@ namespace Composite.Core.PageTemplates
         {
             var provider = PageTemplateProviderRegistry.GetProviderByTemplateId(pageTemplateId);
 
-            Verify.IsNotNull(provider, "Failed to get page template with id '{0}'. The template may contain errors preventing it to compile. Check the Orckestra CMS log for possible compilation errors.", pageTemplateId);
+            Verify.IsNotNull(provider, "Failed to get page template with id '{0}'. The template may contain errors preventing it to compile. Check the C1 CMS log for possible compilation errors.", pageTemplateId);
 
             return provider.BuildPageRenderer(pageTemplateId);
         }

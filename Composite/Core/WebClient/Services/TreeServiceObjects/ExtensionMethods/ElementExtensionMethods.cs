@@ -15,9 +15,9 @@ namespace Composite.Core.WebClient.Services.TreeServiceObjects.ExtensionMethods
         /// <exclude />
         public static ClientElement GetClientElement(this Element element)
         {
-            if (element.VisualData.Icon == null || element.Actions.Any(a => a.VisualData.Icon == null))
+            if (element.VisualData.Icon == null || element.Actions.Any(a => a.VisualData?.Icon == null))
             {
-                throw new InvalidOperationException(string.Format("Unable to create ClientElement from Element with entity token '{0}'. The element or one of its actions is missing an icon definition.", element.ElementHandle.EntityToken.Serialize()));
+                throw new InvalidOperationException($"Unable to create ClientElement from Element with entity token '{element.ElementHandle.EntityToken.Serialize()}'. The element or one of its actions is missing an icon definition.");
             }
 
             string entityToken = EntityTokenSerializer.Serialize(element.ElementHandle.EntityToken, true);
@@ -26,7 +26,7 @@ namespace Composite.Core.WebClient.Services.TreeServiceObjects.ExtensionMethods
             
             var clientElement = new ClientElement
                    {
-                       ElementKey = string.Format("{0}{1}{2}", element.ElementHandle.ProviderName, entityToken, piggyBag), 
+                       ElementKey = $"{element.ElementHandle.ProviderName}{entityToken}{piggyBag}", 
                        ProviderName = element.ElementHandle.ProviderName,
                        EntityToken = entityToken,
                        Piggybag = piggyBag,
@@ -69,11 +69,7 @@ namespace Composite.Core.WebClient.Services.TreeServiceObjects.ExtensionMethods
         public static List<ClientElement> ToClientElementList(this List<Element> elements)
         {
             var list = new List<ClientElement>(elements.Count);
-
-            foreach (Element element in elements)
-            {
-                list.Add(element.GetClientElement());
-            }
+            list.AddRange(elements.Select(element => element.GetClientElement()));
 
             return list;
         }
@@ -85,14 +81,7 @@ namespace Composite.Core.WebClient.Services.TreeServiceObjects.ExtensionMethods
         {
             if (propertyBag == null || propertyBag.Count == 0) return null;
 
-            var result = new List<KeyValuePair>();
-
-            foreach (KeyValuePair<string, string> kvp in propertyBag)
-            {
-                result.Add(new KeyValuePair(kvp.Key, kvp.Value));
-            }
-
-            return result;
+            return propertyBag.Select(kvp => new KeyValuePair(kvp.Key, kvp.Value)).ToList();
         }
 
     }

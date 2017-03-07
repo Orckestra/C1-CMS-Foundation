@@ -134,7 +134,7 @@ namespace Composite.Data.GeneratedTypes
 
             var dataTypeChangeDescriptor = new DataTypeChangeDescriptor(oldDataTypeDescriptor, dataTypeDescriptor);
 
-            UpdateDataTypeDescriptor updateDataTypeDescriptor = new UpdateDataTypeDescriptor(oldDataTypeDescriptor, dataTypeDescriptor);
+            var updateDataTypeDescriptor = new UpdateDataTypeDescriptor(oldDataTypeDescriptor, dataTypeDescriptor);
 
             DynamicTypeManager.AlterStore(updateDataTypeDescriptor, false);
         }
@@ -150,8 +150,8 @@ namespace Composite.Data.GeneratedTypes
         {
             if (dataTypeDescriptor.IsPageMetaDataType)
             {
-                DataFieldDescriptor dataFieldDescriptor = dataTypeDescriptor.Fields[PageMetaDataFacade.MetaDataType_MetaDataDefinitionFieldName];
-                if ((dataFieldDescriptor != null) && (dataFieldDescriptor.ForeignKeyReferenceTypeName != null)) // This should never fail, but want to be sure
+                var dataFieldDescriptor = dataTypeDescriptor.Fields[nameof(IPageMetaData.FieldName)];
+                if (dataFieldDescriptor?.ForeignKeyReferenceTypeName != null) // This should never fail, but want to be sure
                 {
                     dataFieldDescriptor.ForeignKeyReferenceTypeName = null;
                     

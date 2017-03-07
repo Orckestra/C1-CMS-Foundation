@@ -48,7 +48,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
                     using (new DataScope(DataScopeIdentifier.Administrated))
                     {
-                        sourcePage = DataFacade.GetData<IPage>(f => f.Id == sourcePageId).Single();
+                        sourcePage = DataFacade.GetData<IPage>(f => f.Id == sourcePageId && f.VersionId == sourcePageVersionId).Single();
                         sourcePage = sourcePage.GetTranslationSource();
 
                         using (new DataScope(sourcePage.DataSourceId.DataScopeIdentifier))

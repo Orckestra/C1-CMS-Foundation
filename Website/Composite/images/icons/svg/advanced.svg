@@ -1,6 +1,6 @@
-<svg width="18" height="18" xmlns="http://www.w3.org/2000/svg">
+<svg width="18" height="18" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
     <g fill="#666" stroke="#666" >
-      <g id="advanced" viewBox="0 0 18 18" stroke-linejoin="round" fill="none">
+      <g id="advanced" stroke-linejoin="round" fill="none">
         <g>
           <g>
             <path d="m13.5112,5c0,0.82901 -0.671997,1.5 -1.5,1.5c-0.828003,0 -1.5,-0.67099 -1.5,-1.5c0,-0.828003 0.671997,-1.5 1.5,-1.5c0.828003,0 1.5,0.671997 1.5,1.5l0,0z" />

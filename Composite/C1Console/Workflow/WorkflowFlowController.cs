@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Xml;
+using System.Xml.Linq;
 using Composite.C1Console.Actions;
 using Composite.C1Console.Forms.Flows;
 using Composite.C1Console.Tasks;
@@ -14,16 +16,9 @@ namespace Composite.C1Console.Workflow
 {
     internal sealed class WorkflowFlowController : IFlowController
     {
-        private static readonly string LogTitle = typeof (WorkflowFlowController).Name;
-        private FlowControllerServicesContainer _servicesContainer;
+        private static readonly string LogTitle = nameof (WorkflowFlowController);
 
-
-
-        public FlowControllerServicesContainer ServicesContainer
-        {
-            set { _servicesContainer = value; }
-        }
-
+        public FlowControllerServicesContainer ServicesContainer { set; private get; }
 
 
         public IFlowUiDefinition GetCurrentUiDefinition(FlowToken flowToken)
@@ -61,7 +56,7 @@ namespace Composite.C1Console.Workflow
             if (formFunction.FormDefinition != null)
             {
                 formFlowUiDefinition = new FormFlowUiDefinition(
-                           new XmlTextReader(new StringReader(formFunction.FormDefinition)),
+                           ToXmlReader(formFunction.FormDefinition),
                            formFunction.ContainerType,
                            formFunction.ContainerLabel,
                            formFunction.Bindings,
@@ -83,15 +78,11 @@ namespace Composite.C1Console.Workflow
                 throw new NotImplementedException();
             }
 
-            if (!string.IsNullOrEmpty(formFunction.CustomToolbarDefinition))
+            var markup = GetCustomToolbarMarkup(formFunction);
+            if (markup != null)
             {
-                formFlowUiDefinition.SetCustomToolbarMarkupProvider(new XmlTextReader(new StringReader(formFunction.CustomToolbarDefinition)));
+                formFlowUiDefinition.SetCustomToolbarMarkupProvider(markup);
             }
-            else if (formFunction.CustomToolbarMarkupProvider != null)
-            {
-                formFlowUiDefinition.SetCustomToolbarMarkupProvider(formFunction.CustomToolbarMarkupProvider);
-            }
-
 
             AddEventHandles(formFlowUiDefinition, workflowFlowToken.WorkflowInstanceId);
 
@@ -99,11 +90,67 @@ namespace Composite.C1Console.Workflow
         }
 
 
+        private XmlReader GetCustomToolbarMarkup(FormData formData)
+        {
+            if (formData.CustomToolbarItems == null || formData.CustomToolbarItems.Count == 0)
+            {
+                return null;
+            }
+
+            var parts = formData.CustomToolbarItems
+                .OrderBy(t => t.Item3)
+                .Select(t => t.Item2)
+                .ToList();
+
+            if (parts.Count == 1) return ToXmlReader(parts[0]);
+
+            var templateDocument = XDocument.Parse(@"<?xml version=""1.0"" encoding=""utf-8""?>
+<cms:formdefinition xmlns=""http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0"" xmlns:internal=""http://www.composite.net/ns/management/bindingforms/internal.ui.controls.lib/1.0"" xmlns:f=""http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0"" xmlns:cms=""http://www.composite.net/ns/management/bindingforms/1.0"">
+  <cms:bindings>
+  </cms:bindings>
+  <cms:layout>
+    <PlaceHolder>
+    </PlaceHolder>
+  </cms:layout>
+</cms:formdefinition>");
+
+            XElement bindings = GetBindingsElement(templateDocument);
+            XElement layout = GetLayoutOrPlaceholderElement(templateDocument);
+
+            foreach (var part in parts)
+            {
+                bindings.Add(GetBindingsElement(part).Elements());
+                layout.Add(GetLayoutOrPlaceholderElement(part).Elements());
+            }
+
+            return ToXmlReader(templateDocument);
+        }
+
+        private XElement GetBindingsElement(XDocument templateDocument)
+        {
+            return templateDocument.Descendants().FirstOrDefault(d => d.Name.LocalName == "bindings");
+        }
+
+        private XElement GetLayoutOrPlaceholderElement(XDocument doc)
+        {
+            var layoutElement = doc.Descendants().FirstOrDefault(d => d.Name.LocalName == "layout");
+            Verify.IsNotNull(layoutElement, "Failed to find 'layout' element");
+            var firstElement = layoutElement.Elements().FirstOrDefault();
+            if (firstElement != null && firstElement.Name.LocalName == "PlaceHolder")
+            {
+                return firstElement;
+            }
+
+            return layoutElement;
+        }
+
+        private XmlReader ToXmlReader(XDocument document) => ToXmlReader(document.ToString());
+
+        private XmlReader ToXmlReader(string str) => new XmlTextReader(new StringReader(str));
+
 
         public void CancelFlow(FlowToken flowToken)
         {
-            WorkflowFlowToken workflowFlowToken = (WorkflowFlowToken)flowToken;
-
             OnCancel(flowToken, null, null);
         }
 
@@ -300,10 +347,7 @@ namespace Composite.C1Console.Workflow
                 Log.LogVerbose(LogTitle, "Cancel event suppressed because the workflow was terminated ({0})", workflowFlowToken.WorkflowInstanceId);
             }
 
-            if (serviceContainer != null)
-            {
-                serviceContainer.GetService<IFormFlowRenderingService>().RerenderView();
-            }
+            serviceContainer?.GetService<IFormFlowRenderingService>().RerenderView();
         }
 
 
@@ -360,7 +404,7 @@ namespace Composite.C1Console.Workflow
 
         private static void OnCustomEvent(int customEventNumber, FlowToken flowToken, Dictionary<string, object> bindings, FlowControllerServicesContainer serviceContainer)
         {
-            if (customEventNumber < 1 || customEventNumber > 5) throw new ArgumentException("Number must be between 1 and 5", "customEventNumber");
+            if (customEventNumber < 1 || customEventNumber > 5) throw new ArgumentException("Number must be between 1 and 5", nameof(customEventNumber));
 
             WorkflowFlowToken workflowFlowToken = (WorkflowFlowToken)flowToken;
 

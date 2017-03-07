@@ -126,7 +126,25 @@ namespace Composite.Core.Localization
         /// <param name="addAccessToAllUsers"></param>
         /// <param name="makeFlush"></param>
         public static void AddLocale(CultureInfo cultureInfo, string urlMappingName, bool addAccessToAllUsers = true, bool makeFlush = true)
-        {            
+        {
+            AddLocale(cultureInfo, urlMappingName, addAccessToAllUsers, makeFlush, false);
+        }
+
+
+
+
+        /// <summary>
+        /// Adds a locale to the system. Throws exception if the given locale has already been installed or
+        /// if the given url mapping name has already been used. If the given locale is the first, its set 
+        /// to be the default locale.
+        /// </summary>
+        /// <param name="cultureInfo"></param>
+        /// <param name="urlMappingName"></param>
+        /// <param name="addAccessToAllUsers"></param>
+        /// <param name="makeFlush"></param>
+        /// <param name="isDefault"></param>
+        internal static void AddLocale(CultureInfo cultureInfo, string urlMappingName, bool addAccessToAllUsers, bool makeFlush, bool isDefault)
+        {
             using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope())
             {
                 Verify.That(!IsLocaleInstalled(cultureInfo), "The locale '{0}' has already been added to the system", cultureInfo);
@@ -141,6 +159,7 @@ namespace Composite.Core.Localization
                 systemActiveLocale.Id = Guid.NewGuid();
                 systemActiveLocale.CultureName = cultureInfo.Name;
                 systemActiveLocale.UrlMappingName = urlMappingName;
+                systemActiveLocale.IsDefault = isDefault;
                 DataFacade.AddNew(systemActiveLocale);
 
                 if (addAccessToAllUsers)

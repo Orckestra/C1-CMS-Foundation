@@ -386,7 +386,7 @@ namespace Composite.Data.Types
 
 
         /// <summary>
-        /// This method will delete the pagestructure corrosponding to the given page if this 
+        /// This method will delete the pagestructure corresponding to the given page if this 
         /// page is the last page.
         /// </summary>
         /// <param name="page">The page that is about to be deleted.</param>

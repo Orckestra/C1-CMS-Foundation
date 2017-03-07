@@ -152,7 +152,7 @@ ExplorerMenuBinding.prototype.handleAction = function (action) {
 			var radioGroupBinding = action.target;
 			var buttonBinding = radioGroupBinding.getCheckedButtonBinding();
 			var handle = buttonBinding.handle;
-			
+
 			this._selectedHandle = handle;
 			this._selectedTag = buttonBinding.node.getTag();
 			this.dispatchAction ( ExplorerMenuBinding.ACTION_SELECTIONCHANGED );
@@ -236,7 +236,20 @@ ExplorerMenuBinding.prototype.getSelectionTag = function () {
 ExplorerMenuBinding.prototype.setSelectionDefault = function () {
 
 	if (this._list.hasEntries()) {
-		this._list.getFirst().check();
+		var defaultButton = this._list.getFirst();
+
+		this._list.each(function(button) {
+			if (button.node && button.node.getPropertyBag) {
+				var propertyBag = button.node.getPropertyBag();
+				if (propertyBag && propertyBag.IsTool) {
+					return true;
+				}
+			}
+			defaultButton = button;
+			return false;
+		}, this);
+
+		defaultButton.check();
 	}
 }
 

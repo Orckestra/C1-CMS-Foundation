@@ -8,7 +8,7 @@ using Composite.Core.Serialization;
 namespace Composite.Data.DynamicTypes
 {
     /// <summary>    
-    /// Describe a field on a Orckestra CMS data type, see <see cref="DataTypeDescriptor"/>.
+    /// Describe a field on a C1 CMS data type, see <see cref="DataTypeDescriptor"/>.
     /// </summary>
     [Serializable()]
     public sealed class StoreFieldType

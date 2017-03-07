@@ -28,11 +28,6 @@ namespace Composite.Data
     {
         private static readonly Guid DefaultCompositionContainerId = new Guid("eb210a75-be25-401f-b0d4-b3787bce36fa");
 
-        internal static readonly string MetaDataType_IdFieldName = nameof(IPageMetaData.Id);
-        internal static readonly string MetaDataType_PageReferenceFieldName = nameof(IPageMetaData.PageId);
-        internal static readonly string MetaDataType_PageReferenceFieldVersionName = nameof(IPageMetaData.VersionId);
-        internal static readonly string MetaDataType_MetaDataDefinitionFieldName = nameof(IPageMetaData.FieldName);
-
         /// <summary>
         /// Returns all possible meta data types. This is NOT types that only have been defined on any pages or page type
         /// </summary>
@@ -106,7 +101,7 @@ namespace Composite.Data
 
 
         /// <summary>
-        /// Returns the composition container given the page metadata defintion name
+        /// Returns the composition container given the page metadata definition name
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
@@ -214,7 +209,7 @@ namespace Composite.Data
             {
                 if (IsDefinitionAllowed(pageMetaDataDefinition, page))
                 {
-                    if (resultPageMetaDataDefinitions.Where(f => f.Name == pageMetaDataDefinition.Name).Any() == false)
+                    if (!resultPageMetaDataDefinitions.Any(f => f.Name == pageMetaDataDefinition.Name))
                     {
                         resultPageMetaDataDefinitions.Add(pageMetaDataDefinition);
                     }
@@ -257,7 +252,7 @@ namespace Composite.Data
             {
                 Guid parentPageId = Composite.Data.PageManager.GetParentId(pageId);
 
-                if ((definingPageId != Guid.Empty) && (parentPageId == Guid.Empty)) return -1; // Page is not a (sub)child of _pageId                
+                if (definingPageId != Guid.Empty && parentPageId == Guid.Empty) return -1; // Page is not a (sub)child of _pageId
 
                 pageId = parentPageId;
                 count++;
@@ -271,10 +266,12 @@ namespace Composite.Data
         /// <exclude />
         public static IEnumerable<IData> GetMetaData(string definitionName, Type metaDataType)
         {
-            //TODO: Consider caching here            
-            ParameterExpression parameterExpression = Expression.Parameter(metaDataType);
+            Verify.ArgumentNotNull(definitionName, nameof(definitionName));
+            Verify.ArgumentNotNull(metaDataType, nameof(metaDataType));
 
-            LambdaExpression lambdaExpression = Expression.Lambda(
+            var parameterExpression = Expression.Parameter(metaDataType);
+
+            var lambdaExpression = Expression.Lambda(
                 Expression.Equal(
                     Expression.Property(
                         parameterExpression,
@@ -288,7 +285,7 @@ namespace Composite.Data
                 parameterExpression
             );
 
-            Expression whereExpression = ExpressionCreator.Where(DataFacade.GetData(metaDataType).Expression, lambdaExpression);
+            var whereExpression = ExpressionCreator.Where(DataFacade.GetData(metaDataType).Expression, lambdaExpression);
 
             IEnumerable<IData> datas = ExpressionHelper.GetCastedObjects<IData>(metaDataType, whereExpression);
 
@@ -338,7 +335,9 @@ namespace Composite.Data
         /// <exclude />
         public static IData GetMetaData(this IPage page, string definitionName, Type metaDataType)
         {
-            return GetMetaData(page.Id,page.VersionId, definitionName, metaDataType);
+            Verify.ArgumentNotNull(page, nameof(page));
+
+            return GetMetaData(page.Id, page.VersionId, definitionName, metaDataType);
         }
 
 
@@ -346,48 +345,41 @@ namespace Composite.Data
         /// <exclude />
         public static IData GetMetaData(Guid pageId, Guid pageVersionId, string definitionName, Type metaDataType)
         {
-            //TODO: Consider caching here            
-            ParameterExpression parameterExpression = Expression.Parameter(metaDataType);
+            Verify.ArgumentNotNull(definitionName, nameof(definitionName));
+            Verify.ArgumentNotNull(metaDataType, nameof(metaDataType));
 
-            LambdaExpression lambdaExpression = Expression.Lambda(
+            //TODO: Consider caching here
+            var parameterExpression = Expression.Parameter(metaDataType);
+
+            var lambdaExpression = Expression.Lambda(
                 Expression.And(
-                Expression.And(
-                    Expression.Equal(
-                        Expression.Property(
-                            parameterExpression,
-                            PageMetaDataFacade.GetDefinitionNamePropertyInfo(metaDataType)
+                    Expression.And(
+                        Expression.Equal(
+                            Expression.Property(
+                                parameterExpression,
+                                GetDefinitionPageReferencePropertyInfo(metaDataType)
+                            ),
+                            Expression.Constant(pageId, typeof(Guid))
                         ),
-                        Expression.Constant(
-                            definitionName,
-                            typeof(string)
+                        Expression.Equal(
+                            Expression.Property(
+                                parameterExpression,
+                                GetDefinitionPageReferencePropertyVersionInfo(metaDataType)
+                            ),
+                            Expression.Constant(pageVersionId, typeof(Guid))
                         )
                     ),
                     Expression.Equal(
                         Expression.Property(
                             parameterExpression,
-                            GetDefinitionPageReferencePropertyInfo(metaDataType)
+                            GetDefinitionNamePropertyInfo(metaDataType)
                         ),
-                        Expression.Constant(
-                            pageId,
-                            typeof(Guid)
-                        )
-                    )
-                ),
-                    Expression.Equal(
-                        Expression.Property(
-                            parameterExpression,
-                            GetDefinitionPageReferencePropertyVersionInfo(metaDataType)
-                        ),
-                        Expression.Constant(
-                            pageVersionId,
-                            typeof(Guid)
-                        )
-                    )
-                ),
+                        Expression.Constant(definitionName, typeof(string))
+                    )),
                 parameterExpression
             );
 
-            Expression whereExpression = ExpressionCreator.Where(DataFacade.GetData(metaDataType).Expression, lambdaExpression);
+            var whereExpression = ExpressionCreator.Where(DataFacade.GetData(metaDataType).Expression, lambdaExpression);
 
             IEnumerable<IData> dataset = ExpressionHelper.GetCastedObjects<IData>(metaDataType, whereExpression);
 
@@ -496,21 +488,24 @@ namespace Composite.Data
         /// <exclude />
         public static bool IsDefinitionAllowed(Guid definingItemId, string name, string label, Guid metaDataTypeId)
         {
-            IEnumerable<IPageMetaDataDefinition> pageMetaDataDefinitions = DataFacade.GetData<IPageMetaDataDefinition>().Where(f => f.Name == name).Evaluate();
+            var pageMetaDataDefinitions = DataFacade.GetData<IPageMetaDataDefinition>().Where(f => f.Name == name).Evaluate();
             
             foreach (IPageMetaDataDefinition pageMetaDataDefinition in pageMetaDataDefinitions)
             {
-                if ((pageMetaDataDefinition.DefiningItemId == definingItemId) &&
-                    (pageMetaDataDefinition.MetaDataTypeId == metaDataTypeId) && 
-                    (pageMetaDataDefinition.Label != label) &&
-                    (pageMetaDataDefinitions.Count() == 1))
+                if (pageMetaDataDefinition.DefiningItemId == definingItemId &&
+                    pageMetaDataDefinition.MetaDataTypeId == metaDataTypeId && 
+                    pageMetaDataDefinition.Label != label &&
+                    pageMetaDataDefinitions.Count() == 1)
                 {
                     return true; // Allow renaming of label
                 }
 
-                if (pageMetaDataDefinition.Label != label) return false;
-                if (pageMetaDataDefinition.MetaDataTypeId != metaDataTypeId) return false;
-                if (pageMetaDataDefinition.DefiningItemId == definingItemId) return false;
+                if (pageMetaDataDefinition.Label != label
+                    || pageMetaDataDefinition.MetaDataTypeId != metaDataTypeId
+                    || pageMetaDataDefinition.DefiningItemId == definingItemId)
+                {
+                    return false;
+                }
             }
 
             return true;
@@ -864,17 +859,11 @@ namespace Composite.Data
 
 
 
-        private static bool ExistInOtherScope(IPage page, IEnumerable<IPageMetaDataDefinition> otherPageMetaDataDefinition)
+        private static bool ExistInOtherScope(IPage page, IEnumerable<IPageMetaDataDefinition> otherPageMetaDataDefinitions)
         {
-            foreach (IPageMetaDataDefinition pageMetaDataDefinition in otherPageMetaDataDefinition)
-            {
-                bool isAllowed = IsDefinitionAllowed(pageMetaDataDefinition, page);
-                if (isAllowed) return true;
-            }
-
-            return false;
+            return otherPageMetaDataDefinitions.Any(
+                definition => IsDefinitionAllowed(definition, page));
         }
-
 
 
         /// <exclude />
@@ -893,7 +882,7 @@ namespace Composite.Data
 
 
         /// <summary>
-        /// Updates the given metadata item with new Id and setting the metadata defintion name and defining item id
+        /// Updates the given metadata item with new Id and setting the metadata definition name and defining item id
         /// </summary>
         /// <param name="metaData"></param>
         /// <param name="metaDataDefinitionName"></param>
@@ -902,7 +891,7 @@ namespace Composite.Data
         {
             Type interfaceType = metaData.DataSourceId.InterfaceType;
 
-            PropertyInfo idPropertyInfo = interfaceType.GetPropertiesRecursively().SingleOrDefault(f => f.Name == MetaDataType_IdFieldName);
+            PropertyInfo idPropertyInfo = interfaceType.GetPropertiesRecursively().SingleOrDefault(f => f.Name == nameof(IPageMetaData.Id));
             idPropertyInfo.SetValue(metaData, Guid.NewGuid(), null);
 
             PropertyInfo namePropertyInfo = GetDefinitionNamePropertyInfo(interfaceType);
@@ -920,7 +909,7 @@ namespace Composite.Data
         /// <exclude />
         public static PropertyInfo GetDefinitionNamePropertyInfo(Type metaDataType)
         {
-            return metaDataType.GetPropertiesRecursively().Single(f => f.Name == MetaDataType_MetaDataDefinitionFieldName);
+            return typeof (IPageMetaData).GetProperty(nameof(IPageMetaData.FieldName));
         }
 
 
@@ -928,13 +917,13 @@ namespace Composite.Data
         /// <exclude />
         public static PropertyInfo GetDefinitionPageReferencePropertyInfo(Type metaDataType)
         {
-            return metaDataType.GetPropertiesRecursively().Last(f => f.Name == MetaDataType_PageReferenceFieldName);
+            return typeof(IPageRelatedData).GetProperty(nameof(IPageRelatedData.PageId));
         }
 
         /// <exclude />
         public static PropertyInfo GetDefinitionPageReferencePropertyVersionInfo(Type metaDataType)
         {
-            return metaDataType.GetPropertiesRecursively().Last(f => f.Name == MetaDataType_PageReferenceFieldVersionName);
+            return typeof(IVersioned).GetProperty(nameof(IVersioned.VersionId));
         }
 
 
@@ -960,9 +949,6 @@ namespace Composite.Data
 
 
 
-        private static Guid GetPageIdOrNull(this IPage page)
-        {
-            return page?.Id ?? Guid.Empty;
-        }
+        private static Guid GetPageIdOrNull(this IPage page) => page?.Id ?? Guid.Empty;
     }
 }

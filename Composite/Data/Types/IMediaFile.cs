@@ -6,7 +6,7 @@ using Composite.Core.WebClient.Renderings.Data;
 namespace Composite.Data.Types
 {
     /// <summary>    
-    /// This data interface represents a media file in Orckestra CMS. This can be used to query media through a <see cref="Composite.Data.DataConnection"/>. 
+    /// This data interface represents a media file in C1 CMS. This can be used to query media through a <see cref="Composite.Data.DataConnection"/>. 
     /// </summary>
     [Title("C1 Media File")]
     [KeyPropertyName("KeyPath")]
@@ -45,12 +45,14 @@ namespace Composite.Data.Types
         /// <exclude />
         [ImmutableFieldId("{22FB743F-1731-426e-BB22-78A08F956749}")]
         [StoreFieldType(PhysicalStoreFieldType.String, 256)]
+        [SearchableField(true, false, false)]
         string Title { get; set; }
 
 
         /// <exclude />
         [ImmutableFieldId("{FA75B9B1-82D3-47ce-80F8-BAEF4CDE43FD}")]
         [StoreFieldType(PhysicalStoreFieldType.LargeString)]
+        [SearchableField(true, true, false)]
         string Description { get; set; }
 
 
@@ -63,6 +65,7 @@ namespace Composite.Data.Types
         /// <exclude />
         [ImmutableFieldId("{EBF481B7-7A5D-4678-93E9-1FF189311404}")]
         [StoreFieldType(PhysicalStoreFieldType.String, 256)]
+        [SearchableField(false, true, true)]
         string MimeType { get; }
 
 
@@ -75,6 +78,7 @@ namespace Composite.Data.Types
         /// <exclude />
         [ImmutableFieldId("{6BBE4326-998A-4111-BA6F-CC05A518CF6A}")]
         [StoreFieldType(PhysicalStoreFieldType.DateTime, IsNullable = true)]
+        [SearchableField(false, true, true)]
         DateTime? CreationTime { get; }
 
 

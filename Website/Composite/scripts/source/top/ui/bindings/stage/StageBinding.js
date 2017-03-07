@@ -4,6 +4,8 @@ StageBinding.superclass = FocusBinding.prototype;
 
 StageBinding.ACTION_DECK_LOADED = "stage deck loaded";
 StageBinding.CLASSNAME_EMPTY = "empty";
+StageBinding.ACTION_START_LOADED = "stage start loaded";
+
 
 /**
  * Static reference to the single StageBinding instance. Assigned on startup.
@@ -43,14 +45,15 @@ StageBinding.placeholderWidth = null;
 /**
  * Hide OR show a ViewDefinition on stage (dependant on its current status).
  * @param {string} handle
+ * @param {Binding?} contextSource
  */
-StageBinding.handleViewPresentation = function ( handle ) {
+StageBinding.handleViewPresentation = function ( handle, contextSource) {
 
 	if ( StageBinding.isViewOpen ( handle )) {
 		EventBroadcaster.broadcast ( BroadcastMessages.CLOSE_VIEW, handle );
 	} else {
 		var definition = ViewDefinitions [ handle ];
-		StageBinding.presentViewDefinition ( definition );
+		StageBinding.presentViewDefinition(definition, contextSource);
 	}
 }
 
@@ -87,8 +90,9 @@ StageBinding.selectBrowserTab = function () {
 /**
  * Present ViewDefinition on stage.
  * @param {ViewDefinition} definition
+ * @param {Binding?} contextSource
  */
-StageBinding.presentViewDefinition = function ( definition ) {
+StageBinding.presentViewDefinition = function (definition, contextSource) {
 
 	if ( definition.label != null ) {
 		var string = StringBundle.getString ( "ui", "Website.App.StatusBar.Opening" );
@@ -96,7 +100,7 @@ StageBinding.presentViewDefinition = function ( definition ) {
 	} else {
 		StatusBar.busy ();
 	}
-	StageBinding.bindingInstance._presentViewDefinition ( definition );
+	StageBinding.bindingInstance._presentViewDefinition(definition, contextSource);
 }
 
 /**
@@ -231,6 +235,8 @@ StageBinding.prototype.onBindingRegister = function () {
 	app.bindingMap.explorer.addActionListener(ExplorerBinding.ACTION_INITIALIZED, this);
 	app.bindingMap.explorer.addActionListener(ExplorerMenuBinding.ACTION_SELECTIONCHANGED, this);
 
+	app.bindingMap.app.addActionListener(StageBinding.ACTION_START_LOADED, this);
+
 	/*
 	 * Initialize root actions.
 	 */
@@ -338,13 +344,6 @@ StageBinding.prototype._onStageReady = function () {
 	if ( !this._isStageReady ) {
 		if (top.app.bindingMap.maindecks) {
 			top.app.bindingMap.maindecks.select("stagedeck");
-			if (Application.hasStartPage && KickStart.justLogged && !Client.isPad) {
-				EventBroadcaster.broadcast(BroadcastMessages.START_COMPOSITE);
-			} else {
-				if (ViewBinding.hasInstance("Composite.Management.Start")) {
-					ViewBinding.getInstance("Composite.Management.Start").hide();
-				}
-			}
 		}
 
 		EventBroadcaster.broadcast ( BroadcastMessages.STAGE_INITIALIZED );
@@ -545,6 +544,15 @@ StageBinding.prototype.handleAction = function ( action ) {
 			}
 			break;
 
+		case StageBinding.ACTION_START_LOADED:
+			if (Application.hasStartPage && KickStart.justLogged && !Client.isPad) {
+				EventBroadcaster.broadcast(BroadcastMessages.START_COMPOSITE);
+			} else {
+				if (ViewBinding.hasInstance("Composite.Management.Start")) {
+					ViewBinding.getInstance("Composite.Management.Start").hide();
+				}
+			}
+			break;
 		/**
 		 * @see {StageBoxHandlerAbstraction#handleAction}
 		 */
@@ -578,23 +586,26 @@ StageBinding.prototype.handleAction = function ( action ) {
 				}
 			}
 
-			//NEW UI: LOAD Browser to first tab
-			var deck = action.target;
+			if (binding.isDefaultStageDeck) {
 
-			this._activeViewDefinitions["Composite.Management.Browser"] = deck.definition;
+				//NEW UI: LOAD Browser to first tab
+				var deck = action.target;
 
-			var browserViewDefinition = ViewDefinitions["Composite.Management.Browser"];
-			browserViewDefinition.image = deck.definition.image;
-			browserViewDefinition.label = deck.definition.label;
-			browserViewDefinition.toolTip = deck.definition.toolTip;
+				this._activeViewDefinitions["Composite.Management.Browser"] = deck.definition;
 
-			browserViewDefinition.argument["SystemViewDefinition"] = deck.definition;
-			browserViewDefinition.argument["URL"] = null;
-			browserViewDefinition.argument.image = deck.definition.image;
-			browserViewDefinition.argument.label = deck.definition.label;
-			browserViewDefinition.argument.toolTip = deck.definition.toolTip;
-			deck._browserTab = deck._dockBindings.get("main").prepareNewView(browserViewDefinition);
-			deck._browserTab.isExplorerTab = true;
+				var browserViewDefinition = ViewDefinitions["Composite.Management.Browser"];
+				browserViewDefinition.image = deck.definition.image;
+				browserViewDefinition.label = deck.definition.label;
+				browserViewDefinition.toolTip = deck.definition.toolTip;
+
+				browserViewDefinition.argument["SystemViewDefinition"] = deck.definition;
+				browserViewDefinition.argument["URL"] = null;
+				browserViewDefinition.argument.image = deck.definition.image;
+				browserViewDefinition.argument.label = deck.definition.label;
+				browserViewDefinition.argument.toolTip = deck.definition.toolTip;
+				deck._browserTab = deck._dockBindings.get("main").prepareNewView(browserViewDefinition);
+				deck._browserTab.isExplorerTab = true;
+			}
 			break;
 
 		/*
@@ -674,7 +685,12 @@ StageBinding.prototype.handleHash = function (target) {
 	if (target && target.location && target.location.hash) {
 		var serializedMessage = target.location.hash.replace(/^#/, '');
 		if (serializedMessage) {
-			target.location.hash = "";
+			if (target.history && target.history.replaceState) {
+				target.history.replaceState({}, target.document.title, target.location.href.split('#')[0]);
+			} else {
+				target.location.hash = "";
+			}
+
 			MessageQueue.placeConsoleCommand(decodeURIComponent(serializedMessage));
 			MessageQueue.update();
 			EventBroadcaster.broadcast(BroadcastMessages.COMPOSITE_STOP);
@@ -803,7 +819,7 @@ StageBinding.prototype.handleAttachedDock = function ( dockBinding ) {
  * Presenting the ViewDefinition on stage.
  * @param {ViewDefinition} viewDefinition
  */
-StageBinding.prototype._presentViewDefinition = function ( viewDefinition ) {
+StageBinding.prototype._presentViewDefinition = function (viewDefinition, contextSource) {
 
 	var target = null;
 	var isAbort = false;
@@ -853,10 +869,14 @@ StageBinding.prototype._presentViewDefinition = function ( viewDefinition ) {
 					default :
 
 						// targetting the main stage.
-						var selectedDeck = this._decksBinding.getSelectedDeckBinding ();
-						target = selectedDeck.getDockBindingByReference (
-							viewDefinition.position
-						);
+						var selectedDeck = this._decksBinding.getSelectedDeckBinding();
+						if (selectedDeck.isPlaceholder()) {
+							target = this._dockBindings.get(DockBinding.ABSRIGHTTOP);
+						} else {
+							target = selectedDeck.getDockBindingByReference(
+								viewDefinition.position
+							);
+						}
 
 						// hide start stuff if present.
 						if ( this._isShowingStart ) {
@@ -871,8 +891,19 @@ StageBinding.prototype._presentViewDefinition = function ( viewDefinition ) {
 	}
 
 	if ( !isAbort ) {
-		if ( target != null ) {
-			this._view ( target, null, viewDefinition, true );
+		if (target != null) {
+			if (contextSource != undefined && Interfaces.isImplemented(IContextContainerBinding, target)) {
+				var contextContainer = ContextContainer.getContextContainer(contextSource);
+				if (contextContainer != null) {
+					target.setContextContainer(contextContainer);
+
+					//TODO: Move resolving URL
+					if (viewDefinition && viewDefinition.argument && viewDefinition.argument.url) {
+						viewDefinition.argument.url = ContextContainer.resolve(viewDefinition.argument.url, contextContainer);
+					}
+				};
+			}
+			this._view(target, null, viewDefinition, true);
 		} else {
 			throw "StageBinding: Could not position view: " + viewDefinition.handle;
 		}

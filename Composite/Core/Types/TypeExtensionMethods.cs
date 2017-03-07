@@ -86,7 +86,7 @@ namespace Composite.Core.Types
             // A compatibility fix, returning the same "PageId" property twice usually leads to an error
             if (typeof (IPageData).IsAssignableFrom(type))
             {
-                properties.RemoveAll(p => p.Name == "PageId" && p.DeclaringType == typeof (IPageData));
+                properties.RemoveAll(p => p.Name == nameof (IPageData.PageId) && p.DeclaringType == typeof (IPageData));
             }
 
             return properties;

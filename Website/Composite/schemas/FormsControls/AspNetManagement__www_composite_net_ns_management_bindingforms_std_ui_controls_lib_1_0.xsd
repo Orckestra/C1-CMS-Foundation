@@ -208,6 +208,16 @@
             </xsd:sequence>
           </xsd:complexType>
         </xsd:element>
+        <xsd:element name="DateSelector.Required">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
         <xsd:element name="DateSelector.Label">
           <xsd:complexType mixed="true">
             <xsd:sequence maxOccurs="1" minOccurs="0">
@@ -239,6 +249,7 @@
     </xsd:sequence>
     <xsd:attribute name="Date" type="xsd:string" use="optional" />
     <xsd:attribute name="ReadOnly" type="xsd:boolean" use="optional" />
+    <xsd:attribute name="Required" type="xsd:boolean" use="optional" />
     <xsd:attribute name="Label" type="xsd:string" use="optional" />
     <xsd:attribute name="Help" type="xsd:string" use="optional" />
   </xsd:complexType>
@@ -257,6 +268,16 @@
           </xsd:complexType>
         </xsd:element>
         <xsd:element name="DateTimeSelector.ReadOnly">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="DateTimeSelector.Required">
           <xsd:complexType mixed="true">
             <xsd:sequence maxOccurs="1" minOccurs="0">
               <xsd:choice>
@@ -297,6 +318,7 @@
     </xsd:sequence>
     <xsd:attribute name="Date" type="xsd:string" use="optional" />
     <xsd:attribute name="ReadOnly" type="xsd:boolean" use="optional" />
+    <xsd:attribute name="Required" type="xsd:boolean" use="optional" />
     <xsd:attribute name="Label" type="xsd:string" use="optional" />
     <xsd:attribute name="Help" type="xsd:string" use="optional" />
   </xsd:complexType>
@@ -392,6 +414,17 @@
             </xsd:sequence>
           </xsd:complexType>
         </xsd:element>
+        <xsd:element name="BoolSelector.SelectionChangedEventHandler">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:bind" />
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
         <xsd:element name="BoolSelector.Label">
           <xsd:complexType mixed="true">
             <xsd:sequence maxOccurs="1" minOccurs="0">
@@ -424,6 +457,7 @@
     <xsd:attribute name="IsTrue" type="xsd:boolean" use="optional" />
     <xsd:attribute name="TrueLabel" type="xsd:string" use="optional" />
     <xsd:attribute name="FalseLabel" type="xsd:string" use="optional" />
+    <xsd:attribute name="SelectionChangedEventHandler" type="xsd:string" use="optional" />
     <xsd:attribute name="Label" type="xsd:string" use="optional" />
     <xsd:attribute name="Help" type="xsd:string" use="optional" />
   </xsd:complexType>
@@ -1327,6 +1361,16 @@
             </xsd:sequence>
           </xsd:complexType>
         </xsd:element>
+        <xsd:element name="MarkupEditor.ContainerClasses">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
         <xsd:element name="MarkupEditor.EmbedableFieldsTypes">
           <xsd:complexType mixed="true">
             <xsd:sequence maxOccurs="1" minOccurs="0">
@@ -1398,6 +1442,7 @@
     </xsd:sequence>
     <xsd:attribute name="Xhtml" type="xsd:string" use="optional" />
     <xsd:attribute name="ClassConfigurationName" type="xsd:string" use="optional" />
+    <xsd:attribute name="ContainerClasses" type="xsd:string" use="optional" />
     <xsd:attribute name="EmbedableFieldsTypes" type="xsd:string" use="optional" />
     <xsd:attribute name="PreviewPageId" type="xsd:string" use="optional" />
     <xsd:attribute name="PreviewTemplateId" type="xsd:string" use="optional" />
@@ -1420,6 +1465,16 @@
           </xsd:complexType>
         </xsd:element>
         <xsd:element name="XsltEditor.ClassConfigurationName">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="XsltEditor.ContainerClasses">
           <xsd:complexType mixed="true">
             <xsd:sequence maxOccurs="1" minOccurs="0">
               <xsd:choice>
@@ -1500,6 +1555,7 @@
     </xsd:sequence>
     <xsd:attribute name="Xhtml" type="xsd:string" use="optional" />
     <xsd:attribute name="ClassConfigurationName" type="xsd:string" use="optional" />
+    <xsd:attribute name="ContainerClasses" type="xsd:string" use="optional" />
     <xsd:attribute name="EmbedableFieldsTypes" type="xsd:string" use="optional" />
     <xsd:attribute name="PreviewPageId" type="xsd:string" use="optional" />
     <xsd:attribute name="PreviewTemplateId" type="xsd:string" use="optional" />
@@ -2237,6 +2293,16 @@
             </xsd:sequence>
           </xsd:complexType>
         </xsd:element>
+        <xsd:element name="XhtmlEditor.ContainerClasses">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
         <xsd:element name="XhtmlEditor.EmbedableFieldsTypes">
           <xsd:complexType mixed="true">
             <xsd:sequence maxOccurs="1" minOccurs="0">
@@ -2308,6 +2374,7 @@
     </xsd:sequence>
     <xsd:attribute name="Xhtml" type="xsd:string" use="optional" />
     <xsd:attribute name="ClassConfigurationName" type="xsd:string" use="optional" />
+    <xsd:attribute name="ContainerClasses" type="xsd:string" use="optional" />
     <xsd:attribute name="EmbedableFieldsTypes" type="xsd:string" use="optional" />
     <xsd:attribute name="PreviewPageId" type="xsd:string" use="optional" />
     <xsd:attribute name="PreviewTemplateId" type="xsd:string" use="optional" />
@@ -2319,6 +2386,16 @@
     <xsd:sequence maxOccurs="unbounded" minOccurs="0">
       <xsd:choice>
         <xsd:element name="MultiContentXhtmlEditor.PlaceholderDefinitions">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="MultiContentXhtmlEditor.PlaceholderContainerClasses">
           <xsd:complexType mixed="true">
             <xsd:sequence maxOccurs="1" minOccurs="0">
               <xsd:choice>
@@ -2392,6 +2469,7 @@
       </xsd:choice>
     </xsd:sequence>
     <xsd:attribute name="PlaceholderDefinitions" type="xsd:string" use="optional" />
+    <xsd:attribute name="PlaceholderContainerClasses" type="xsd:string" use="optional" />
     <xsd:attribute name="DefaultPlaceholderId" type="xsd:string" use="optional" />
     <xsd:attribute name="NamedXhtmlFragments" type="xsd:string" use="optional" />
     <xsd:attribute name="ClassConfigurationName" type="xsd:string" use="optional" />
@@ -2414,6 +2492,16 @@
           </xsd:complexType>
         </xsd:element>
         <xsd:element name="InlineXhtmlEditor.ClassConfigurationName">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="InlineXhtmlEditor.ContainerClasses">
           <xsd:complexType mixed="true">
             <xsd:sequence maxOccurs="1" minOccurs="0">
               <xsd:choice>
@@ -2494,6 +2582,7 @@
     </xsd:sequence>
     <xsd:attribute name="Xhtml" type="xsd:string" use="optional" />
     <xsd:attribute name="ClassConfigurationName" type="xsd:string" use="optional" />
+    <xsd:attribute name="ContainerClasses" type="xsd:string" use="optional" />
     <xsd:attribute name="EmbedableFieldsTypes" type="xsd:string" use="optional" />
     <xsd:attribute name="PreviewPageId" type="xsd:string" use="optional" />
     <xsd:attribute name="PreviewTemplateId" type="xsd:string" use="optional" />

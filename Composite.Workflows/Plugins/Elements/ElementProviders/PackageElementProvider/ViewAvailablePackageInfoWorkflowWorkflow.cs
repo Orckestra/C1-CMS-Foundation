@@ -125,7 +125,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
         {
             // Valid package names:
             //  "Composite.Community.Versioning"
-            //  "Orckestra CMS 3.0"
+            //  "C1 CMS 3.0"
             string name = packageDescription.Name.Trim();
 
             string documentTitle = name;

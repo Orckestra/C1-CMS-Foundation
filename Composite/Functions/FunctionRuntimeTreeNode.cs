@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Xml.Linq;
-using Composite.Core.Application;
+using Composite.Core;
 using Composite.Data;
 using Composite.Functions.Foundation;
 using Composite.Core.Instrumentation;
@@ -139,13 +139,7 @@ namespace Composite.Functions
 
         private static object TryGetInjectedValue(Type type)
         {
-            var services = ServiceLocator.RequestServices ?? ServiceLocator.ApplicationServices;
-            if (services != null)
-            {
-                return services.GetService(type);
-            }
-
-            return null;
+            return ServiceLocator.GetService(type);
         }
 
         /// <exclude />

@@ -23,6 +23,7 @@ namespace Composite.Data.Types
         /// <exclude />
         [ImmutableFieldId("{4FD98564-6077-4c6d-86E1-9C7F44B65E50}")]
         [StoreFieldType(PhysicalStoreFieldType.String, 128)]
+        [SearchableField(true, false, false)]
         string FileName { get; set; }
     }
 

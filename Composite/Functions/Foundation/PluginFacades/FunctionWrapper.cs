@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Web;
 using System.Xml.Linq;
 using Composite.Core.Xml;
 using Composite.C1Console.Security;
@@ -97,7 +98,7 @@ namespace Composite.Functions.Foundation.PluginFacades
             }
             catch (Exception ex)
             {
-                if (_functionToWrap.ReturnType == typeof(XhtmlDocument))
+                if (_functionToWrap.ReturnType == typeof(XhtmlDocument) || (_functionToWrap.ReturnType == typeof(void) && ex is HttpCompileException))
                 {
                     XElement errorBoxHtml;
                     if (context.ProcessException(_functionToWrap.CompositeName(), ex, LogTitle, out errorBoxHtml))

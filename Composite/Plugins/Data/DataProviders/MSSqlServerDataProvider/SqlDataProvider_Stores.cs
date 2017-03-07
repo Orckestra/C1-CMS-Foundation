@@ -281,11 +281,22 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                     }
                 }
 
-                var types = CodeGenerationManager.CompileRuntimeTempTypes(codeGenerationBuilder, false).ToArray();
-
-                foreach (var toCompile in compilationData)
+                Type[] types = null;
+                try
                 {
-                    toCompile.PopulateFieldsAction(types);
+                    types = CodeGenerationManager.CompileRuntimeTempTypes(codeGenerationBuilder, false).ToArray();
+                }
+                catch (Exception ex)
+                {
+                    Log.LogWarning(LogTitle, ex);
+                }
+
+                if (types != null)
+                {
+                    foreach (var toCompile in compilationData)
+                    {
+                        toCompile.PopulateFieldsAction(types);
+                    }
                 }
             }
 

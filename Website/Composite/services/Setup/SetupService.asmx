@@ -21,52 +21,57 @@ namespace Composite.Core.WebClient.Setup
     public class SetupService : System.Web.Services.WebService
     {
         private static readonly string LogTitle = typeof (SetupService).FullName;
-        
+
         [WebMethod]
         public CheckResult[] CheckRequirements(bool dummy)
         {
             return new[]
             {
                 new CheckResult {
-                	Key = "permissions",
+                    Key = "permissions",
                     Title = "Web directory permissions",
                     Success = HasWritePermission()
                 },
                 new CheckResult {
-                	Key = "pathlength",
+                    Key = "pathlength",
                     Title = "Base path length",
                     Success = BasePathNotToLong()
                 },
                 new CheckResult {
-                	Key = "connection",
+                    Key = "connection",
                     Title = "Outbound HTTPS/SOAP connection",
                     Success = HasConnectionToPackageServer()
                 },
                 new CheckResult {
-                	Key = "browser",
+                    Key = "browser",
                     Title = "Browser type and version",
                     Success = BrowserCheck()
                 },
                 new CheckResult {
-                	Key = "diskspace",
+                    Key = "diskspace",
                     Title = "Disk space requirements",
                     Success = DiskSpaceCheck()
                 },
                 new CheckResult {
-                	Key = "iisversion",
-                    Title = "Web server version",
+                    Key = "iisversion",
+                    Title = "IIS (Web Server) version",
                     Success = WebServerVersionCheck()
+                },
+                new CheckResult {
+                    Key = "websockets",
+                    Title = "IIS WebSocket support installed",
+                    Success = WebsocketCheck()
                 }
             };
         }
 
-        
-        
+
+
         [WebMethod]
         public XmlDocument GetSetupDescription(bool dummy)
         {
             XElement setupDescription = SetupServiceFacade.GetSetupDescription();
-            
+
             // Remove urls 
             foreach (XElement element in setupDescription.Descendants(SetupServiceFacade.PackageElementName))
             {
@@ -76,11 +81,11 @@ namespace Composite.Core.WebClient.Setup
                     urlAttribute.Remove();
                 }
             }
-            
+
             XmlDocument doc = new XmlDocument();
 
             doc.LoadXml(setupDescription.ToString());
-            
+
             return doc;
         }
 
@@ -91,9 +96,9 @@ namespace Composite.Core.WebClient.Setup
         {
             return SetupServiceFacade.GetGetLicense();
         }
-        
-        
-        
+
+
+
         [WebMethod]
         public LanguageDef[] GetLanguages(bool dummy)
         {
@@ -106,7 +111,7 @@ namespace Composite.Core.WebClient.Setup
             bool selectionDone = false;
             foreach (XElement element in languagesXml.Elements("Language"))
             {
-                
+
                 bool selected = false;
 
                 if (string.IsNullOrEmpty(clientPreferredCultureName))
@@ -122,7 +127,7 @@ namespace Composite.Core.WebClient.Setup
                         selectionDone = selected;
                     }
                 }
-                
+
                 LanguageDef languageDef = new LanguageDef
                 {
                     Title = element.Attribute("Title").Value,
@@ -135,8 +140,8 @@ namespace Composite.Core.WebClient.Setup
 
             return languages.ToArray();
         }
-        
-        
+
+
 
         [WebMethod]
         public bool SetUp(string setupDescriptionXML, string username, string email, string password, string language, string consolelanguage, bool newsletter)
@@ -188,16 +193,16 @@ namespace Composite.Core.WebClient.Setup
             catch (Exception)
             {
                 if (RuntimeInformation.IsDebugBuild) throw;
-                
+
                 return false;
-            }            
+            }
         }
 
         private static void CheckAccessToFile(string file)
         {
             FileAttributes fa = C1File.GetAttributes(file);
             bool isReadOnly = (fa & FileAttributes.ReadOnly) > 0;
-            
+
             if(isReadOnly)
             {
                 C1File.SetAttributes(file, fa ^ FileAttributes.ReadOnly);
@@ -207,7 +212,7 @@ namespace Composite.Core.WebClient.Setup
 
             C1File.SetCreationTimeUtc(file, creationTime.AddDays(-1));
             C1File.SetCreationTimeUtc(file, creationTime);
-            
+
             if(isReadOnly)
             {
                 C1File.SetAttributes(file, fa);
@@ -217,18 +222,18 @@ namespace Composite.Core.WebClient.Setup
         private static bool FileIsReadOnly(string file)
         {
             bool @readonly = (File.GetAttributes(file) & FileAttributes.ReadOnly) > 0;
-            
+
             if(@readonly)
-            { 
+            {
                 Log.LogError(LogTitle, "File '{0}' is read only".FormatWith(Path.GetFileName(file)));
             }
-            
-            return @readonly; 
+
+            return @readonly;
         }
-        
+
         private static void TestNtfsAccessToFolder(string testDir)
         {
-            string filePath = Path.Combine(testDir, "NtfsSecurityTest.xml"); 
+            string filePath = Path.Combine(testDir, "NtfsSecurityTest.xml");
 
             if (C1File.Exists(filePath))
             {
@@ -282,7 +287,21 @@ namespace Composite.Core.WebClient.Setup
         {
             string iisVersion = Context.Request.ServerVariables["SERVER_SOFTWARE"];
 
-            return (iisVersion != "Microsoft-IIS/5.0") && (iisVersion != "Microsoft-IIS/5.1");
+            return (iisVersion != "Microsoft-IIS/5.0") && (iisVersion != "Microsoft-IIS/5.1") && (iisVersion != "Microsoft-IIS/6.0") && (iisVersion != "Microsoft-IIS/7.0") && (iisVersion != "Microsoft-IIS/7.5");
+        }
+
+        private bool WebsocketCheck()
+        {
+            try
+            {
+                Context.AcceptWebSocketRequest( f=> null );
+            }
+            catch (Exception ex)
+            {
+                return ex.HResult != -2146233031;
+            }
+
+            return false;
         }
 
         private bool DiskSpaceCheck()
@@ -302,7 +321,7 @@ namespace Composite.Core.WebClient.Setup
             catch (Exception)
             {
                 if (RuntimeInformation.IsDebugBuild) throw;
-                
+
                 return false;
             }
         }
@@ -323,7 +342,7 @@ namespace Composite.Core.WebClient.Setup
             public String Key { get; set; }
             public bool Selected { get; set; }
         }
-        
+
 
 
         [DllImport("kernel32", CharSet = CharSet.Auto)]

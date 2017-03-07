@@ -181,7 +181,16 @@
   <string key="SpellCheck.InfoText" value="To get suggestions for a misspelled word, press your SHIFT key down when you invoke the context menu." />
 
   <string key="Function.Edit" value="Edit" />
-  
+
   <!-- inline editor button -->
   <string key="LaunchButton.Label" value="Edit {0}" />
+
+  <!-- Components -->
+  <string key="Components.LaunchButton.Label" value="Components" />
+  <string key="ContextMenu.LabelComponent" value="Component..." />
+  <string key="Components.Window.Headline" value="Select a component" />
+  <string key="Components.Window.NoItems" value="No selectable components" />
+  <string key="Components.Window.DialogFilterPlaceholder" value="Filter..." />
+  <string key="Components.Window.Ok" value="OK" />
+  <string key="Components.Window.Cancel" value="Cancel" />
 </strings>

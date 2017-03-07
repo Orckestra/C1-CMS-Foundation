@@ -25,11 +25,11 @@ module.exports = {
 		systemView.openTreeNode('Getting Started');
 		//     Child pages appear below the page.
 		systemView.assertTreeNodeHasChild('Getting Started');
-		// 6  Locate the “Components” page. The page is present below “Getting Started”.
+	    // 6  Locate the “Components” page. The page is present below “Getting Started”.
 		systemView.assertTreeNodeHasChild('Getting Started', 'Components');
-		// 7  Select the “Components” page The “Test” page gets selected in the tree.
+	    // 7  Select the “Components” page The “Test” page gets selected in the tree.
 		systemView.openTreeNode('Components')
-		//     The “Components” page’s content loads in the browser view.
+	    //     The “Components” page’s content loads in the browser view.
 		content
 			.assertBrowserContains('div.content-column > h1', 'Test components')
 		//     The URL in the address bar reads “http://<website>/Getting-Started/components/c1mode(unpublished)

@@ -36,10 +36,7 @@ public static string LayoutLabel=>T("LayoutLabel");
 public static string Title=>T("Title");
 ///<summary>&quot;You do not have permission to execute the action. Contact your administrator for more information.&quot;</summary> 
 public static string Description=>T("Description");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.C1Console.SecurityViolation", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.C1Console.SecurityViolation", key);
 } 
 
     /// <exclude />
@@ -54,21 +51,39 @@ public static string KeyFacade_ErrorTreeNode_ShowMessage_ToolTip=>T("KeyFacade.E
 ///<summary>&quot;Error message&quot;</summary> 
 public static string KeyFacade_ErrorTreeNode_ShowMessage_Title=>T("KeyFacade.ErrorTreeNode.ShowMessage.Title");
 ///<summary>&quot;Unknown exception happened: &apos;{0}&apos;&quot;</summary> 
+public static string TreeValidationError_Common_UnknownException_Template=>T("TreeValidationError.Common.UnknownException");
+///<summary>&quot;Unknown exception happened: &apos;{0}&apos;&quot;</summary> 
 public static string TreeValidationError_Common_UnknownException(object parameter0)=>string.Format(T("TreeValidationError.Common.UnknownException"), parameter0);
+///<summary>&quot;Unknown element &apos;{0}&apos;&quot;</summary> 
+public static string TreeValidationError_Common_UnknownElement_Template=>T("TreeValidationError.Common.UnknownElement");
 ///<summary>&quot;Unknown element &apos;{0}&apos;&quot;</summary> 
 public static string TreeValidationError_Common_UnknownElement(object parameter0)=>string.Format(T("TreeValidationError.Common.UnknownElement"), parameter0);
 ///<summary>&quot;The required attribute &apos;{0}&apos; is missing&quot;</summary> 
+public static string TreeValidationError_Common_MissingAttribute_Template=>T("TreeValidationError.Common.MissingAttribute");
+///<summary>&quot;The required attribute &apos;{0}&apos; is missing&quot;</summary> 
 public static string TreeValidationError_Common_MissingAttribute(object parameter0)=>string.Format(T("TreeValidationError.Common.MissingAttribute"), parameter0);
+///<summary>&quot;The attribute &apos;{0}&apos; has a value that is not allowed&quot;</summary> 
+public static string TreeValidationError_Common_WrongAttributeValue_Template=>T("TreeValidationError.Common.WrongAttributeValue");
 ///<summary>&quot;The attribute &apos;{0}&apos; has a value that is not allowed&quot;</summary> 
 public static string TreeValidationError_Common_WrongAttributeValue(object parameter0)=>string.Format(T("TreeValidationError.Common.WrongAttributeValue"), parameter0);
 ///<summary>&quot;The type &apos;{0}&apos; does not contain a property named &apos;{1}&apos;&quot;</summary> 
+public static string TreeValidationError_Common_MissingProperty_Template=>T("TreeValidationError.Common.MissingProperty");
+///<summary>&quot;The type &apos;{0}&apos; does not contain a property named &apos;{1}&apos;&quot;</summary> 
 public static string TreeValidationError_Common_MissingProperty(object parameter0,object parameter1)=>string.Format(T("TreeValidationError.Common.MissingProperty"), parameter0,parameter1);
+///<summary>&quot;The type &apos;{0}&apos; could not be found&quot;</summary> 
+public static string TreeValidationError_Common_UnknownInterfaceType_Template=>T("TreeValidationError.Common.UnknownInterfaceType");
 ///<summary>&quot;The type &apos;{0}&apos; could not be found&quot;</summary> 
 public static string TreeValidationError_Common_UnknownInterfaceType(object parameter0)=>string.Format(T("TreeValidationError.Common.UnknownInterfaceType"), parameter0);
 ///<summary>&quot;The type &apos;{0}&apos; does not implement the interface &apos;{1}&apos;&quot;</summary> 
+public static string TreeValidationError_Common_NotImplementingIData_Template=>T("TreeValidationError.Common.NotImplementingIData");
+///<summary>&quot;The type &apos;{0}&apos; does not implement the interface &apos;{1}&apos;&quot;</summary> 
 public static string TreeValidationError_Common_NotImplementingIData(object parameter0,object parameter1)=>string.Format(T("TreeValidationError.Common.NotImplementingIData"), parameter0,parameter1);
 ///<summary>&quot;The value &apos;{0}&apos; is not allowed as a permission type value&quot;</summary> 
+public static string TreeValidationError_Common_WrongPermissionValue_Template=>T("TreeValidationError.Common.WrongPermissionValue");
+///<summary>&quot;The value &apos;{0}&apos; is not allowed as a permission type value&quot;</summary> 
 public static string TreeValidationError_Common_WrongPermissionValue(object parameter0)=>string.Format(T("TreeValidationError.Common.WrongPermissionValue"), parameter0);
+///<summary>&quot;The value &apos;{0}&apos; is not allowed as a location value&quot;</summary> 
+public static string TreeValidationError_Common_WrongLocationValue_Template=>T("TreeValidationError.Common.WrongLocationValue");
 ///<summary>&quot;The value &apos;{0}&apos; is not allowed as a location value&quot;</summary> 
 public static string TreeValidationError_Common_WrongLocationValue(object parameter0)=>string.Format(T("TreeValidationError.Common.WrongLocationValue"), parameter0);
 ///<summary>&quot;No function markup provided as a child element&quot;</summary> 
@@ -78,9 +93,15 @@ public static string TreeValidationError_Common_WrongFunctionMarkup=>T("TreeVali
 ///<summary>&quot;Missing root element in tree markup&quot;</summary> 
 public static string TreeValidationError_Markup_NoRootElement=>T("TreeValidationError.Markup.NoRootElement");
 ///<summary>&quot;Syntax error: {0} at line {1} position {2}&quot;</summary> 
+public static string TreeValidationError_Markup_SchemaError_Template=>T("TreeValidationError.Markup.SchemaError");
+///<summary>&quot;Syntax error: {0} at line {1} position {2}&quot;</summary> 
 public static string TreeValidationError_Markup_SchemaError(object parameter0,object parameter1,object parameter2)=>string.Format(T("TreeValidationError.Markup.SchemaError"), parameter0,parameter1,parameter2);
 ///<summary>&quot;The attachment point &apos;{0}&apos; is unknown&quot;</summary> 
+public static string TreeValidationError_AutoAttachments_UnknownAttachmentPoint_Template=>T("TreeValidationError.AutoAttachments.UnknownAttachmentPoint");
+///<summary>&quot;The attachment point &apos;{0}&apos; is unknown&quot;</summary> 
 public static string TreeValidationError_AutoAttachments_UnknownAttachmentPoint(object parameter0)=>string.Format(T("TreeValidationError.AutoAttachments.UnknownAttachmentPoint"), parameter0);
+///<summary>&quot;The attachment position &apos;{0}&apos; is unknown&quot;</summary> 
+public static string TreeValidationError_AutoAttachments_UnknownAttachmentPosition_Template=>T("TreeValidationError.AutoAttachments.UnknownAttachmentPosition");
 ///<summary>&quot;The attachment position &apos;{0}&apos; is unknown&quot;</summary> 
 public static string TreeValidationError_AutoAttachments_UnknownAttachmentPosition(object parameter0)=>string.Format(T("TreeValidationError.AutoAttachments.UnknownAttachmentPosition"), parameter0);
 ///<summary>&quot;No elements are allowed in trees that are used with data attached trees&quot;</summary> 
@@ -90,39 +111,69 @@ public static string TreeValidationError_ElementRoot_ShareRootElementByIdNotAllo
 ///<summary>&quot;The value of the Id is not allowed. The Id should be non-empty, not start with NodeAutoId_ and not be RootTreeNode&quot;</summary> 
 public static string TreeValidationError_SimpleElement_WrongIdValue=>T("TreeValidationError.SimpleElement.WrongIdValue");
 ///<summary>&quot;The id value &apos;{0}&apos; has already been used in this tree&quot;</summary> 
+public static string TreeValidationError_SimpleElement_AlreadyUsedId_Template=>T("TreeValidationError.SimpleElement.AlreadyUsedId");
+///<summary>&quot;The id value &apos;{0}&apos; has already been used in this tree&quot;</summary> 
 public static string TreeValidationError_SimpleElement_AlreadyUsedId(object parameter0)=>string.Format(T("TreeValidationError.SimpleElement.AlreadyUsedId"), parameter0);
+///<summary>&quot;The data interface &apos;{0}&apos; is used more than once as a child under the same parent element and this is not allowed&quot;</summary> 
+public static string TreeValidationError_DataElementsTreeNode_SameInterfaceUsedTwice_Template=>T("TreeValidationError.DataElementsTreeNode.SameInterfaceUsedTwice");
 ///<summary>&quot;The data interface &apos;{0}&apos; is used more than once as a child under the same parent element and this is not allowed&quot;</summary> 
 public static string TreeValidationError_DataElementsTreeNode_SameInterfaceUsedTwice(object parameter0)=>string.Format(T("TreeValidationError.DataElementsTreeNode.SameInterfaceUsedTwice"), parameter0);
 ///<summary>&quot;The same interface &apos;{0}&apos; is used as parent type as parent filter and this is not allowed&quot;</summary> 
+public static string TreeValidationError_DataElementsTreeNode_SameParentFilterInterfaceUsedTwice_Template=>T("TreeValidationError.DataElementsTreeNode.SameParentFilterInterfaceUsedTwice");
+///<summary>&quot;The same interface &apos;{0}&apos; is used as parent type as parent filter and this is not allowed&quot;</summary> 
 public static string TreeValidationError_DataElementsTreeNode_SameParentFilterInterfaceUsedTwice(object parameter0)=>string.Format(T("TreeValidationError.DataElementsTreeNode.SameParentFilterInterfaceUsedTwice"), parameter0);
+///<summary>&quot;More than one parent filter is pointing to the interface &apos;{0}&apos;. Change the Display value to Lazy&quot;</summary> 
+public static string TreeValidationError_DataElementsTreeNode_MoreThanOnParentFilterIsPointingToMe_Template=>T("TreeValidationError.DataElementsTreeNode.MoreThanOnParentFilterIsPointingToMe");
 ///<summary>&quot;More than one parent filter is pointing to the interface &apos;{0}&apos;. Change the Display value to Lazy&quot;</summary> 
 public static string TreeValidationError_DataElementsTreeNode_MoreThanOnParentFilterIsPointingToMe(object parameter0)=>string.Format(T("TreeValidationError.DataElementsTreeNode.MoreThanOnParentFilterIsPointingToMe"), parameter0);
 ///<summary>&quot;Type attribute is missing&quot;</summary> 
 public static string TreeValidationError_DataFolderElements_MissingInterfaceType=>T("TreeValidationError.DataFolderElements.MissingInterfaceType");
 ///<summary>&quot;The interface type &apos;{0}&apos; does not match the parent elements interface type &apos;{1}&apos;&quot;</summary> 
+public static string TreeValidationError_DataFolderElements_WrongInterfaceType_Template=>T("TreeValidationError.DataFolderElements.WrongInterfaceType");
+///<summary>&quot;The interface type &apos;{0}&apos; does not match the parent elements interface type &apos;{1}&apos;&quot;</summary> 
 public static string TreeValidationError_DataFolderElements_WrongInterfaceType(object parameter0,object parameter1)=>string.Format(T("TreeValidationError.DataFolderElements.WrongInterfaceType"), parameter0,parameter1);
 ///<summary>&quot;DateFormat attribute requires that the property &apos;{0}&apos; should be of type &apos;{1}&apos; but is type &apos;{2}&apos;&quot;</summary> 
+public static string TreeValidationError_DataFolderElements_DateFormetNotAllowed_Template=>T("TreeValidationError.DataFolderElements.DateFormetNotAllowed");
+///<summary>&quot;DateFormat attribute requires that the property &apos;{0}&apos; should be of type &apos;{1}&apos; but is type &apos;{2}&apos;&quot;</summary> 
 public static string TreeValidationError_DataFolderElements_DateFormetNotAllowed(object parameter0,object parameter1,object parameter2)=>string.Format(T("TreeValidationError.DataFolderElements.DateFormetNotAllowed"), parameter0,parameter1,parameter2);
+///<summary>&quot;The property &apos;{0}&apos; is of type Date and this requires the DateFormat attribute to be present&quot;</summary> 
+public static string TreeValidationError_DataFolderElements_DateFormetIsMissing_Template=>T("TreeValidationError.DataFolderElements.DateFormetIsMissing");
 ///<summary>&quot;The property &apos;{0}&apos; is of type Date and this requires the DateFormat attribute to be present&quot;</summary> 
 public static string TreeValidationError_DataFolderElements_DateFormetIsMissing(object parameter0)=>string.Format(T("TreeValidationError.DataFolderElements.DateFormetIsMissing"), parameter0);
 ///<summary>&quot;Ranges and first-letter-only not allowed at the same time&quot;</summary> 
 public static string TreeValidationError_DataFolderElements_RangesAndFirstLetterOnlyNotAllowed=>T("TreeValidationError.DataFolderElements.RangesAndFirstLetterOnlyNotAllowed");
 ///<summary>&quot;First-letter-only requires that the property &apos;{0}&apos; should be of type &apos;{1}&apos; but is type &apos;{2}&apos;&quot;</summary> 
+public static string TreeValidationError_DataFolderElements_WrongFirstLetterOnlyPropertyType_Template=>T("TreeValidationError.DataFolderElements.WrongFirstLetterOnlyPropertyType");
+///<summary>&quot;First-letter-only requires that the property &apos;{0}&apos; should be of type &apos;{1}&apos; but is type &apos;{2}&apos;&quot;</summary> 
 public static string TreeValidationError_DataFolderElements_WrongFirstLetterOnlyPropertyType(object parameter0,object parameter1,object parameter2)=>string.Format(T("TreeValidationError.DataFolderElements.WrongFirstLetterOnlyPropertyType"), parameter0,parameter1,parameter2);
+///<summary>&quot;Only data child elements with the same interface type as the folder grouping (&apos;{0}&apos;) are allowed&quot;</summary> 
+public static string TreeValidationError_DataFolderElements_WrongDateChildInterfaceType_Template=>T("TreeValidationError.DataFolderElements.WrongDateChildInterfaceType");
 ///<summary>&quot;Only data child elements with the same interface type as the folder grouping (&apos;{0}&apos;) are allowed&quot;</summary> 
 public static string TreeValidationError_DataFolderElements_WrongDateChildInterfaceType(object parameter0)=>string.Format(T("TreeValidationError.DataFolderElements.WrongDateChildInterfaceType"), parameter0);
 ///<summary>&quot;Switching from the interface type &apos;{0}&apos; to a different interface type &apos;{1}&apos; is not allowed in the same folder grouping group&quot;</summary> 
+public static string TreeValidationError_DataFolderElements_InterfaceTypeSwitchNotAllowed_Template=>T("TreeValidationError.DataFolderElements.InterfaceTypeSwitchNotAllowed");
+///<summary>&quot;Switching from the interface type &apos;{0}&apos; to a different interface type &apos;{1}&apos; is not allowed in the same folder grouping group&quot;</summary> 
 public static string TreeValidationError_DataFolderElements_InterfaceTypeSwitchNotAllowed(object parameter0,object parameter1)=>string.Format(T("TreeValidationError.DataFolderElements.InterfaceTypeSwitchNotAllowed"), parameter0,parameter1);
+///<summary>&quot;Using the field name &apos;{0}&apos; twice in the same grouping tree is not allowed&quot;</summary> 
+public static string TreeValidationError_DataFolderElements_SameFieldUsedTwice_Template=>T("TreeValidationError.DataFolderElements.SameFieldUsedTwice");
 ///<summary>&quot;Using the field name &apos;{0}&apos; twice in the same grouping tree is not allowed&quot;</summary> 
 public static string TreeValidationError_DataFolderElements_SameFieldUsedTwice(object parameter0)=>string.Format(T("TreeValidationError.DataFolderElements.SameFieldUsedTwice"), parameter0);
 ///<summary>&quot;Maximum one parent id filter node can be used on data elements used in groupings&quot;</summary> 
 public static string TreeValidationError_DataFolderElements_TooManyParentIdFilters=>T("TreeValidationError.DataFolderElements.TooManyParentIdFilters");
 ///<summary>&quot;The type &apos;{0}&apos; is not in the parent tree of this node or specified as an attachment points type&quot;</summary> 
+public static string TreeValidationError_ParentIdFilterNode_TypeIsNotInParentTree_Template=>T("TreeValidationError.ParentIdFilterNode.TypeIsNotInParentTree");
+///<summary>&quot;The type &apos;{0}&apos; is not in the parent tree of this node or specified as an attachment points type&quot;</summary> 
 public static string TreeValidationError_ParentIdFilterNode_TypeIsNotInParentTree(object parameter0)=>string.Format(T("TreeValidationError.ParentIdFilterNode.TypeIsNotInParentTree"), parameter0);
+///<summary>&quot;The operator &apos;{0}&apos; is unknown or not supported&quot;</summary> 
+public static string TreeValidationError_FieldFilter_UnknownOperatorName_Template=>T("TreeValidationError.FieldFilter.UnknownOperatorName");
 ///<summary>&quot;The operator &apos;{0}&apos; is unknown or not supported&quot;</summary> 
 public static string TreeValidationError_FieldFilter_UnknownOperatorName(object parameter0)=>string.Format(T("TreeValidationError.FieldFilter.UnknownOperatorName"), parameter0);
 ///<summary>&quot;The string value &apos;{0}&apos; could not be converted to the type &apos;{1}&apos;&quot;</summary> 
+public static string TreeValidationError_FieldFilter_ValueCouldNotBeConverted_Template=>T("TreeValidationError.FieldFilter.ValueCouldNotBeConverted");
+///<summary>&quot;The string value &apos;{0}&apos; could not be converted to the type &apos;{1}&apos;&quot;</summary> 
 public static string TreeValidationError_FieldFilter_ValueCouldNotBeConverted(object parameter0,object parameter1)=>string.Format(T("TreeValidationError.FieldFilter.ValueCouldNotBeConverted"), parameter0,parameter1);
+///<summary>&quot;The operator &apos;{0}&apos; is not supported for the type &apos;{1}&apos;&quot;</summary> 
+public static string TreeValidationError_FieldFilter_OperatorNotSupportedForType_Template=>T("TreeValidationError.FieldFilter.OperatorNotSupportedForType");
 ///<summary>&quot;The operator &apos;{0}&apos; is not supported for the type &apos;{1}&apos;&quot;</summary> 
 public static string TreeValidationError_FieldFilter_OperatorNotSupportedForType(object parameter0,object parameter1)=>string.Format(T("TreeValidationError.FieldFilter.OperatorNotSupportedForType"), parameter0,parameter1);
 ///<summary>&quot;Function markup is missing&quot;</summary> 
@@ -130,19 +181,35 @@ public static string TreeValidationError_FunctionFilter_MissingFunctionMarkup=>T
 ///<summary>&quot;The function could not be created for the provided function markup&quot;</summary> 
 public static string TreeValidationError_FunctionFilter_WrongFunctionMarkup=>T("TreeValidationError.FunctionFilter.WrongFunctionMarkup");
 ///<summary>&quot;The function does not return value of the type &apos;{0}&apos;&quot;</summary> 
+public static string TreeValidationError_FunctionFilter_WrongReturnValue_Template=>T("TreeValidationError.FunctionFilter.WrongReturnValue");
+///<summary>&quot;The function does not return value of the type &apos;{0}&apos;&quot;</summary> 
 public static string TreeValidationError_FunctionFilter_WrongReturnValue(object parameter0)=>string.Format(T("TreeValidationError.FunctionFilter.WrongReturnValue"), parameter0);
+///<summary>&quot;The return type of the expression returned by the function is &apos;{0}&apos;, &apos;{1}&apos; was expected&quot;</summary> 
+public static string TreeValidationError_FunctionFilter_WrongFunctionReturnType_Template=>T("TreeValidationError.FunctionFilter.WrongFunctionReturnType");
 ///<summary>&quot;The return type of the expression returned by the function is &apos;{0}&apos;, &apos;{1}&apos; was expected&quot;</summary> 
 public static string TreeValidationError_FunctionFilter_WrongFunctionReturnType(object parameter0,object parameter1)=>string.Format(T("TreeValidationError.FunctionFilter.WrongFunctionReturnType"), parameter0,parameter1);
 ///<summary>&quot;The parameter count of expression returned by the function is &apos;{0}&apos;, 1 was expected&quot;</summary> 
+public static string TreeValidationError_FunctionFilter_WrongFunctionParameterCount_Template=>T("TreeValidationError.FunctionFilter.WrongFunctionParameterCount");
+///<summary>&quot;The parameter count of expression returned by the function is &apos;{0}&apos;, 1 was expected&quot;</summary> 
 public static string TreeValidationError_FunctionFilter_WrongFunctionParameterCount(object parameter0)=>string.Format(T("TreeValidationError.FunctionFilter.WrongFunctionParameterCount"), parameter0);
+///<summary>&quot;The expressions parameter type returned by the function is &apos;{0}&apos;, &apos;{1}&apos; was expected&quot;</summary> 
+public static string TreeValidationError_FunctionFilter_WrongFunctionParameterType_Template=>T("TreeValidationError.FunctionFilter.WrongFunctionParameterType");
 ///<summary>&quot;The expressions parameter type returned by the function is &apos;{0}&apos;, &apos;{1}&apos; was expected&quot;</summary> 
 public static string TreeValidationError_FunctionFilter_WrongFunctionParameterType(object parameter0,object parameter1)=>string.Format(T("TreeValidationError.FunctionFilter.WrongFunctionParameterType"), parameter0,parameter1);
 ///<summary>&quot;The file &apos;{0}&apos; does not exist&quot;</summary> 
+public static string TreeValidationError_CustomFormMarkup_MissingFile_Template=>T("TreeValidationError.CustomFormMarkup.MissingFile");
+///<summary>&quot;The file &apos;{0}&apos; does not exist&quot;</summary> 
 public static string TreeValidationError_CustomFormMarkup_MissingFile(object parameter0)=>string.Format(T("TreeValidationError.CustomFormMarkup.MissingFile"), parameter0);
+///<summary>&quot;The custom markup path &apos;{0}&apos; is wrongly formatted. Use ~/Dir1/Dir2/File.xml&quot;</summary> 
+public static string TreeValidationError_CustomFormMarkup_BadMarkupPath_Template=>T("TreeValidationError.CustomFormMarkup.BadMarkupPath");
 ///<summary>&quot;The custom markup path &apos;{0}&apos; is wrongly formatted. Use ~/Dir1/Dir2/File.xml&quot;</summary> 
 public static string TreeValidationError_CustomFormMarkup_BadMarkupPath(object parameter0)=>string.Format(T("TreeValidationError.CustomFormMarkup.BadMarkupPath"), parameter0);
 ///<summary>&quot;The file &apos;{0}&apos; does not contain valid XML markup.&quot;</summary> 
+public static string TreeValidationError_CustomFormMarkup_InvalidXml_Template=>T("TreeValidationError.CustomFormMarkup.InvalidXml");
+///<summary>&quot;The file &apos;{0}&apos; does not contain valid XML markup.&quot;</summary> 
 public static string TreeValidationError_CustomFormMarkup_InvalidXml(object parameter0)=>string.Format(T("TreeValidationError.CustomFormMarkup.InvalidXml"), parameter0);
+///<summary>&quot;The function does not return value of the type &apos;{0}&apos;&quot;</summary> 
+public static string TreeValidationError_ReportFunctionAction_WrongReturnValue_Template=>T("TreeValidationError.ReportFunctionAction.WrongReturnValue");
 ///<summary>&quot;The function does not return value of the type &apos;{0}&apos;&quot;</summary> 
 public static string TreeValidationError_ReportFunctionAction_WrongReturnValue(object parameter0)=>string.Format(T("TreeValidationError.ReportFunctionAction.WrongReturnValue"), parameter0);
 ///<summary>&quot;The edit data action only applies to elements that produce data elements&quot;</summary> 
@@ -150,39 +217,69 @@ public static string TreeValidationError_GenericEditDataAction_OwnerIsNotDataNod
 ///<summary>&quot;The delete data action only applies to elements that produce data elements&quot;</summary> 
 public static string TreeValidationError_GenericDeleteDataAction_OwnerIsNotDataNode=>T("TreeValidationError.GenericDeleteDataAction.OwnerIsNotDataNode");
 ///<summary>&quot;The dialog type &apos;{0}&apos; is not supported&quot;</summary> 
+public static string TreeValidationError_MessageBoxAction_UnknownDialogType_Template=>T("TreeValidationError.MessageBoxAction.UnknownDialogType");
+///<summary>&quot;The dialog type &apos;{0}&apos; is not supported&quot;</summary> 
 public static string TreeValidationError_MessageBoxAction_UnknownDialogType(object parameter0)=>string.Format(T("TreeValidationError.MessageBoxAction.UnknownDialogType"), parameter0);
+///<summary>&quot;Too many &apos;{0}&apos; elements, only one is allowed&quot;</summary> 
+public static string TreeValidationError_CustomUrlAction_TooManyPostParameterElements_Template=>T("TreeValidationError.CustomUrlAction.TooManyPostParameterElements");
 ///<summary>&quot;Too many &apos;{0}&apos; elements, only one is allowed&quot;</summary> 
 public static string TreeValidationError_CustomUrlAction_TooManyPostParameterElements(object parameter0)=>string.Format(T("TreeValidationError.CustomUrlAction.TooManyPostParameterElements"), parameter0);
 ///<summary>&quot;The view type &apos;{0}&apos; is not supported&quot;</summary> 
+public static string TreeValidationError_CustomUrlAction_UnknownViewType_Template=>T("TreeValidationError.CustomUrlAction.UnknownViewType");
+///<summary>&quot;The view type &apos;{0}&apos; is not supported&quot;</summary> 
 public static string TreeValidationError_CustomUrlAction_UnknownViewType(object parameter0)=>string.Format(T("TreeValidationError.CustomUrlAction.UnknownViewType"), parameter0);
+///<summary>&quot;The direction value &apos;{0}&apos; is wrong, should be either &apos;ascending&apos; or &apos;descending&apos;&quot;</summary> 
+public static string TreeValidationError_FieldOrderBy_UnknownDirection_Template=>T("TreeValidationError.FieldOrderBy.UnknownDirection");
 ///<summary>&quot;The direction value &apos;{0}&apos; is wrong, should be either &apos;ascending&apos; or &apos;descending&apos;&quot;</summary> 
 public static string TreeValidationError_FieldOrderBy_UnknownDirection(object parameter0)=>string.Format(T("TreeValidationError.FieldOrderBy.UnknownDirection"), parameter0);
 ///<summary>&quot;The type &apos;{0}&apos; does not contain a field named &apos;{1}&apos;&quot;</summary> 
+public static string TreeValidationError_FieldOrderBy_UnknownField_Template=>T("TreeValidationError.FieldOrderBy.UnknownField");
+///<summary>&quot;The type &apos;{0}&apos; does not contain a field named &apos;{1}&apos;&quot;</summary> 
 public static string TreeValidationError_FieldOrderBy_UnknownField(object parameter0,object parameter1)=>string.Format(T("TreeValidationError.FieldOrderBy.UnknownField"), parameter0,parameter1);
 ///<summary>&quot;&apos;{0}&apos; is in wrong format, use the format: {1}&quot;</summary> 
+public static string TreeValidationError_DataFieldValueHelper_WrongFormat_Template=>T("TreeValidationError.DataFieldValueHelper.WrongFormat");
+///<summary>&quot;&apos;{0}&apos; is in wrong format, use the format: {1}&quot;</summary> 
 public static string TreeValidationError_DataFieldValueHelper_WrongFormat(object parameter0,object parameter1)=>string.Format(T("TreeValidationError.DataFieldValueHelper.WrongFormat"), parameter0,parameter1);
+///<summary>&quot;The interface &apos;{0}&apos; is not contained in the current element or any of its parents&quot;</summary> 
+public static string TreeValidationError_DataFieldValueHelper_InterfaceNotInParentTree_Template=>T("TreeValidationError.DataFieldValueHelper.InterfaceNotInParentTree");
 ///<summary>&quot;The interface &apos;{0}&apos; is not contained in the current element or any of its parents&quot;</summary> 
 public static string TreeValidationError_DataFieldValueHelper_InterfaceNotInParentTree(object parameter0)=>string.Format(T("TreeValidationError.DataFieldValueHelper.InterfaceNotInParentTree"), parameter0);
 ///<summary>&quot;The range value is wrongly formatted&quot;</summary> 
 public static string TreeValidationError_Range_WrongFormat=>T("TreeValidationError.Range.WrongFormat");
 ///<summary>&quot;The property &apos;{0}&apos; is of type &apos;{1}&apos; which does not support ranges&quot;</summary> 
+public static string TreeValidationError_Range_UnsupportedType_Template=>T("TreeValidationError.Range.UnsupportedType");
+///<summary>&quot;The property &apos;{0}&apos; is of type &apos;{1}&apos; which does not support ranges&quot;</summary> 
 public static string TreeValidationError_Range_UnsupportedType(object parameter0,object parameter1)=>string.Format(T("TreeValidationError.Range.UnsupportedType"), parameter0,parameter1);
+///<summary>&quot;The value first value ({0}) in a range should be lesser than second value ({1})&quot;</summary> 
+public static string TreeValidationError_Range_MinMaxError_Template=>T("TreeValidationError.Range.MinMaxError");
 ///<summary>&quot;The value first value ({0}) in a range should be lesser than second value ({1})&quot;</summary> 
 public static string TreeValidationError_Range_MinMaxError(object parameter0,object parameter1)=>string.Format(T("TreeValidationError.Range.MinMaxError"), parameter0,parameter1);
 ///<summary>&quot;The max value of a range should be less than the min value of the succeeding range&quot;</summary> 
 public static string TreeValidationError_Range_NextRangeError=>T("TreeValidationError.Range.NextRangeError");
 ///<summary>&quot;From {0} to {1}&quot;</summary> 
+public static string TreeRanges_IntRange_Closed_Template=>T("TreeRanges.IntRange.Closed");
+///<summary>&quot;From {0} to {1}&quot;</summary> 
 public static string TreeRanges_IntRange_Closed(object parameter0,object parameter1)=>string.Format(T("TreeRanges.IntRange.Closed"), parameter0,parameter1);
 ///<summary>&quot;{0} or less&quot;</summary> 
+public static string TreeRanges_IntRange_MinOpenEnded_Template=>T("TreeRanges.IntRange.MinOpenEnded");
+///<summary>&quot;{0} or less&quot;</summary> 
 public static string TreeRanges_IntRange_MinOpenEnded(object parameter0)=>string.Format(T("TreeRanges.IntRange.MinOpenEnded"), parameter0);
+///<summary>&quot;{0} or more&quot;</summary> 
+public static string TreeRanges_IntRange_MaxOpenEnded_Template=>T("TreeRanges.IntRange.MaxOpenEnded");
 ///<summary>&quot;{0} or more&quot;</summary> 
 public static string TreeRanges_IntRange_MaxOpenEnded(object parameter0)=>string.Format(T("TreeRanges.IntRange.MaxOpenEnded"), parameter0);
 ///<summary>&quot;Other&quot;</summary> 
 public static string TreeRanges_IntRange_Other=>T("TreeRanges.IntRange.Other");
 ///<summary>&quot;From {0} to {1}&quot;</summary> 
+public static string TreeRanges_StringRange_Closed_Template=>T("TreeRanges.StringRange.Closed");
+///<summary>&quot;From {0} to {1}&quot;</summary> 
 public static string TreeRanges_StringRange_Closed(object parameter0,object parameter1)=>string.Format(T("TreeRanges.StringRange.Closed"), parameter0,parameter1);
 ///<summary>&quot;{0} and before&quot;</summary> 
+public static string TreeRanges_StringRange_MinOpenEnded_Template=>T("TreeRanges.StringRange.MinOpenEnded");
+///<summary>&quot;{0} and before&quot;</summary> 
 public static string TreeRanges_StringRange_MinOpenEnded(object parameter0)=>string.Format(T("TreeRanges.StringRange.MinOpenEnded"), parameter0);
+///<summary>&quot;{0} and after&quot;</summary> 
+public static string TreeRanges_StringRange_MaxOpenEnded_Template=>T("TreeRanges.StringRange.MaxOpenEnded");
 ///<summary>&quot;{0} and after&quot;</summary> 
 public static string TreeRanges_StringRange_MaxOpenEnded(object parameter0)=>string.Format(T("TreeRanges.StringRange.MaxOpenEnded"), parameter0);
 ///<summary>&quot;Other&quot;</summary> 
@@ -290,13 +387,12 @@ public static string LocalizeData_ShowError_InfoTable_Caption=>T("LocalizeData.S
 ///<summary>&quot;The following fields has a reference to a data type. You should translate these data items before you can translate this data item&quot;</summary> 
 public static string LocalizeData_ShowError_Description=>T("LocalizeData.ShowError.Description");
 ///<summary>&quot;The field &apos;{0}&apos; is referencing data of type &apos;{1}&apos; with the label &apos;{2}&apos;&quot;</summary> 
+public static string LocalizeData_ShowError_FieldErrorFormat_Template=>T("LocalizeData.ShowError.FieldErrorFormat");
+///<summary>&quot;The field &apos;{0}&apos; is referencing data of type &apos;{1}&apos; with the label &apos;{2}&apos;&quot;</summary> 
 public static string LocalizeData_ShowError_FieldErrorFormat(object parameter0,object parameter1,object parameter2)=>string.Format(T("LocalizeData.ShowError.FieldErrorFormat"), parameter0,parameter1,parameter2);
 ///<summary>&quot;This data has already been translated. The translated version belongs to a different group.&quot;</summary> 
 public static string LocalizeData_ShowError_AlreadyTranslated=>T("LocalizeData.ShowError.AlreadyTranslated");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.C1Console.Trees", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.C1Console.Trees", key);
 } 
 
     /// <exclude />
@@ -328,6 +424,8 @@ public static string ChangeOwnPasswordWorkflow_Dialog_Validation_NewPasswordFiel
 public static string ChangeOwnPasswordWorkflow_Dialog_Validation_PasswordsAreTheSame=>T("ChangeOwnPasswordWorkflow.Dialog.Validation.PasswordsAreTheSame");
 ///<summary>&quot;The new password may not be an empty string.&quot;</summary> 
 public static string ChangeOwnPasswordWorkflow_Dialog_Validation_NewPasswordIsEmpty=>T("ChangeOwnPasswordWorkflow.Dialog.Validation.NewPasswordIsEmpty");
+///<summary>&quot;The new password must be at least {0} characters long.&quot;</summary> 
+public static string ChangeOwnPasswordWorkflow_Dialog_Validation_NewPasswordTooShort_Template=>T("ChangeOwnPasswordWorkflow.Dialog.Validation.NewPasswordTooShort");
 ///<summary>&quot;The new password must be at least {0} characters long.&quot;</summary> 
 public static string ChangeOwnPasswordWorkflow_Dialog_Validation_NewPasswordTooShort(object parameter0)=>string.Format(T("ChangeOwnPasswordWorkflow.Dialog.Validation.NewPasswordTooShort"), parameter0);
 ///<summary>&quot;Password change isn&apos;t supported.&quot;</summary> 
@@ -375,7 +473,11 @@ public static string ChangeForeignLocaleWorkflow_ForeignCultureSelector_Help=>T(
 ///<summary>&quot;The active language has been changed&quot;</summary> 
 public static string ChangeOwnActiveLocaleWorkflow_CloseAllViews_Message=>T("ChangeOwnActiveLocaleWorkflow.CloseAllViews.Message");
 ///<summary>&quot;Password should be at least {0} characters long.&quot;</summary> 
+public static string PasswordRules_MinimumLength_Template=>T("PasswordRules.MinimumLength");
+///<summary>&quot;Password should be at least {0} characters long.&quot;</summary> 
 public static string PasswordRules_MinimumLength(object parameter0)=>string.Format(T("PasswordRules.MinimumLength"), parameter0);
+///<summary>&quot;Password should not match any of the previously used {0} passwords.&quot;</summary> 
+public static string PasswordRules_EnforcePasswordHistory_Template=>T("PasswordRules.EnforcePasswordHistory");
 ///<summary>&quot;Password should not match any of the previously used {0} passwords.&quot;</summary> 
 public static string PasswordRules_EnforcePasswordHistory(object parameter0)=>string.Format(T("PasswordRules.EnforcePasswordHistory"), parameter0);
 ///<summary>&quot;Password should contain 3/4 of the following items: uppercase letters, lowercase letters, numbers, symbols.&quot;</summary> 
@@ -395,18 +497,19 @@ public static string ChangePasswordForm_ConfirmPassword=>T("ChangePasswordForm.C
 ///<summary>&quot;Change Password&quot;</summary> 
 public static string ChangePasswordForm_ChangePasswordButton=>T("ChangePasswordForm.ChangePasswordButton");
 ///<summary>&quot;Password is older than {0} days. Please change your password.&quot;</summary> 
+public static string ChangePasswordForm_PasswordExpiredMessage_Template=>T("ChangePasswordForm.PasswordExpiredMessage");
+///<summary>&quot;Password is older than {0} days. Please change your password.&quot;</summary> 
 public static string ChangePasswordForm_PasswordExpiredMessage(object parameter0)=>string.Format(T("ChangePasswordForm.PasswordExpiredMessage"), parameter0);
 ///<summary>&quot;The old password is incorrect.&quot;</summary> 
 public static string ChangePasswordForm_IncorrectOldPassword=>T("ChangePasswordForm.IncorrectOldPassword");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.C1Console.Users", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.C1Console.Users", key);
 } 
 
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	   public static class Composite_Core_PackageSystem_PackageFragmentInstallers {
+///<summary>&quot;The package composite version requirements does not match the current composite version &apos;{0}&apos;. Expected version range [{1} - {2}]&quot;</summary> 
+public static string PackageManager_CompositeVersionMisMatch_Template=>T("PackageManager.CompositeVersionMisMatch");
 ///<summary>&quot;The package composite version requirements does not match the current composite version &apos;{0}&apos;. Expected version range [{1} - {2}]&quot;</summary> 
 public static string PackageManager_CompositeVersionMisMatch(object parameter0,object parameter1,object parameter2)=>string.Format(T("PackageManager.CompositeVersionMisMatch"), parameter0,parameter1,parameter2);
 ///<summary>&quot;Package is already installed&quot;</summary> 
@@ -414,31 +517,57 @@ public static string PackageManager_PackageAlreadyInstalled=>T("PackageManager.P
 ///<summary>&quot;A newer version of the package is already installed&quot;</summary> 
 public static string PackageManager_NewerVersionInstalled=>T("PackageManager.NewerVersionInstalled");
 ///<summary>&quot;Could not locate the package directory path &apos;{0}&apos;&quot;</summary> 
+public static string PackageManager_MissingPackageDirectory_Template=>T("PackageManager.MissingPackageDirectory");
+///<summary>&quot;Could not locate the package directory path &apos;{0}&apos;&quot;</summary> 
 public static string PackageManager_MissingPackageDirectory(object parameter0)=>string.Format(T("PackageManager.MissingPackageDirectory"), parameter0);
 ///<summary>&quot;The package is marked as non uninstallable&quot;</summary> 
 public static string PackageManager_Uninstallable=>T("PackageManager.Uninstallable");
 ///<summary>&quot;Could not locate the package zip file path &apos;{0}&apos;&quot;</summary> 
+public static string PackageManager_MissingZipFile_Template=>T("PackageManager.MissingZipFile");
+///<summary>&quot;Could not locate the package zip file path &apos;{0}&apos;&quot;</summary> 
 public static string PackageManager_MissingZipFile(object parameter0)=>string.Format(T("PackageManager.MissingZipFile"), parameter0);
+///<summary>&quot;Could not locate the package uninstall file path &apos;{0}&apos;&quot;</summary> 
+public static string PackageManager_MissingUninstallFile_Template=>T("PackageManager.MissingUninstallFile");
 ///<summary>&quot;Could not locate the package uninstall file path &apos;{0}&apos;&quot;</summary> 
 public static string PackageManager_MissingUninstallFile(object parameter0)=>string.Format(T("PackageManager.MissingUninstallFile"), parameter0);
 ///<summary>&quot;Missing &apos;{0}&apos; element.&quot;</summary> 
+public static string PackageManager_MissingElement_Template=>T("PackageManager.MissingElement");
+///<summary>&quot;Missing &apos;{0}&apos; element.&quot;</summary> 
 public static string PackageManager_MissingElement(object parameter0)=>string.Format(T("PackageManager.MissingElement"), parameter0);
+///<summary>&quot;Missing &apos;{0}&apos; attribute.&quot;</summary> 
+public static string PackageManager_MissingAttribute_Template=>T("PackageManager.MissingAttribute");
 ///<summary>&quot;Missing &apos;{0}&apos; attribute.&quot;</summary> 
 public static string PackageManager_MissingAttribute(object parameter0)=>string.Format(T("PackageManager.MissingAttribute"), parameter0);
 ///<summary>&quot;&apos;{0}&apos; attribute value is not a valid value.&quot;</summary> 
+public static string PackageManager_InvalidAttributeValue_Template=>T("PackageManager.InvalidAttributeValue");
+///<summary>&quot;&apos;{0}&apos; attribute value is not a valid value.&quot;</summary> 
 public static string PackageManager_InvalidAttributeValue(object parameter0)=>string.Format(T("PackageManager.InvalidAttributeValue"), parameter0);
+///<summary>&quot;&apos;{0}&apos; element value is not a valid value&quot;</summary> 
+public static string PackageManager_InvalidElementValue_Template=>T("PackageManager.InvalidElementValue");
 ///<summary>&quot;&apos;{0}&apos; element value is not a valid value&quot;</summary> 
 public static string PackageManager_InvalidElementValue(object parameter0)=>string.Format(T("PackageManager.InvalidElementValue"), parameter0);
 ///<summary>&quot;Expected exactly two elements, &apos;{0}&apos; and &apos;{1}&apos;&quot;</summary> 
+public static string ConfigurationTransformationPackageFragmentInstaller_ExpectedExactlyTwoElements_Template=>T("ConfigurationTransformationPackageFragmentInstaller.ExpectedExactlyTwoElements");
+///<summary>&quot;Expected exactly two elements, &apos;{0}&apos; and &apos;{1}&apos;&quot;</summary> 
 public static string ConfigurationTransformationPackageFragmentInstaller_ExpectedExactlyTwoElements(object parameter0,object parameter1)=>string.Format(T("ConfigurationTransformationPackageFragmentInstaller.ExpectedExactlyTwoElements"), parameter0,parameter1);
+///<summary>&quot;Missing &apos;{0}&apos; element.&quot;</summary> 
+public static string ConfigurationTransformationPackageFragmentInstaller_MissingElement_Template=>T("ConfigurationTransformationPackageFragmentInstaller.MissingElement");
 ///<summary>&quot;Missing &apos;{0}&apos; element.&quot;</summary> 
 public static string ConfigurationTransformationPackageFragmentInstaller_MissingElement(object parameter0)=>string.Format(T("ConfigurationTransformationPackageFragmentInstaller.MissingElement"), parameter0);
 ///<summary>&quot;Missing &apos;{0}&apos; attribute.&quot;</summary> 
+public static string ConfigurationTransformationPackageFragmentInstaller_MissingAttribute_Template=>T("ConfigurationTransformationPackageFragmentInstaller.MissingAttribute");
+///<summary>&quot;Missing &apos;{0}&apos; attribute.&quot;</summary> 
 public static string ConfigurationTransformationPackageFragmentInstaller_MissingAttribute(object parameter0)=>string.Format(T("ConfigurationTransformationPackageFragmentInstaller.MissingAttribute"), parameter0);
+///<summary>&quot;The path &apos;{0}&apos; does not exist in the ZIP.&quot;</summary> 
+public static string ConfigurationTransformationPackageFragmentInstaller_PathDoesNotExist_Template=>T("ConfigurationTransformationPackageFragmentInstaller.PathDoesNotExist");
 ///<summary>&quot;The path &apos;{0}&apos; does not exist in the ZIP.&quot;</summary> 
 public static string ConfigurationTransformationPackageFragmentInstaller_PathDoesNotExist(object parameter0)=>string.Format(T("ConfigurationTransformationPackageFragmentInstaller.PathDoesNotExist"), parameter0);
 ///<summary>&quot;Unable to parse ZIP&apos;ed XSLT file &apos;{0}&apos;. {1}&quot;</summary> 
+public static string ConfigurationTransformationPackageFragmentInstaller_UnableToParsXslt_Template=>T("ConfigurationTransformationPackageFragmentInstaller.UnableToParsXslt");
+///<summary>&quot;Unable to parse ZIP&apos;ed XSLT file &apos;{0}&apos;. {1}&quot;</summary> 
 public static string ConfigurationTransformationPackageFragmentInstaller_UnableToParsXslt(object parameter0,object parameter1)=>string.Format(T("ConfigurationTransformationPackageFragmentInstaller.UnableToParsXslt"), parameter0,parameter1);
+///<summary>&quot;The XSLT file &apos;{0}&apos; will generate an invalid Configuration file. {1}&quot;</summary> 
+public static string ConfigurationTransformationPackageFragmentInstaller_XsltWillGeneratedInvalid_Template=>T("ConfigurationTransformationPackageFragmentInstaller.XsltWillGeneratedInvalid");
 ///<summary>&quot;The XSLT file &apos;{0}&apos; will generate an invalid Configuration file. {1}&quot;</summary> 
 public static string ConfigurationTransformationPackageFragmentInstaller_XsltWillGeneratedInvalid(object parameter0,object parameter1)=>string.Format(T("ConfigurationTransformationPackageFragmentInstaller.XsltWillGeneratedInvalid"), parameter0,parameter1);
 ///<summary>&quot;Only one &apos;Types&apos; element allowed&quot;</summary> 
@@ -446,43 +575,81 @@ public static string DataPackageFragmentInstaller_OnlyOneElement=>T("DataPackage
 ///<summary>&quot;Missing &apos;Types&apos; element&quot;</summary> 
 public static string DataPackageFragmentInstaller_MissingElement=>T("DataPackageFragmentInstaller.MissingElement");
 ///<summary>&quot;Missing {0} attribute in the configuration&quot;</summary> 
+public static string DataPackageFragmentInstaller_MissingAttribute_Template=>T("DataPackageFragmentInstaller.MissingAttribute");
+///<summary>&quot;Missing {0} attribute in the configuration&quot;</summary> 
 public static string DataPackageFragmentInstaller_MissingAttribute(object parameter0)=>string.Format(T("DataPackageFragmentInstaller.MissingAttribute"), parameter0);
+///<summary>&quot;Wrong DataScopeIdentifier ({0}) name in the configuration&quot;</summary> 
+public static string DataPackageFragmentInstaller_WrongDataScopeIdentifier_Template=>T("DataPackageFragmentInstaller.WrongDataScopeIdentifier");
 ///<summary>&quot;Wrong DataScopeIdentifier ({0}) name in the configuration&quot;</summary> 
 public static string DataPackageFragmentInstaller_WrongDataScopeIdentifier(object parameter0)=>string.Format(T("DataPackageFragmentInstaller.WrongDataScopeIdentifier"), parameter0);
 ///<summary>&quot;Wrong culture ({0}) name in the configuration&quot;</summary> 
+public static string DataPackageFragmentInstaller_WrongLocale_Template=>T("DataPackageFragmentInstaller.WrongLocale");
+///<summary>&quot;Wrong culture ({0}) name in the configuration&quot;</summary> 
 public static string DataPackageFragmentInstaller_WrongLocale(object parameter0)=>string.Format(T("DataPackageFragmentInstaller.WrongLocale"), parameter0);
+///<summary>&quot;Missing file &apos;{0}&apos; in the package zip&quot;</summary> 
+public static string DataPackageFragmentInstaller_MissingFile_Template=>T("DataPackageFragmentInstaller.MissingFile");
 ///<summary>&quot;Missing file &apos;{0}&apos; in the package zip&quot;</summary> 
 public static string DataPackageFragmentInstaller_MissingFile(object parameter0)=>string.Format(T("DataPackageFragmentInstaller.MissingFile"), parameter0);
 ///<summary>&quot;The data interface type &apos;{0}&apos; has not been configured in the system&quot;</summary> 
+public static string DataPackageFragmentInstaller_TypeNotConfigured_Template=>T("DataPackageFragmentInstaller.TypeNotConfigured");
+///<summary>&quot;The data interface type &apos;{0}&apos; has not been configured in the system&quot;</summary> 
 public static string DataPackageFragmentInstaller_TypeNotConfigured(object parameter0)=>string.Format(T("DataPackageFragmentInstaller.TypeNotConfigured"), parameter0);
+///<summary>&quot;The data interface type &apos;{0}&apos; does not inherit the interface &apos;{1}&apos;&quot;</summary> 
+public static string DataPackageFragmentInstaller_TypeNotInheriting_Template=>T("DataPackageFragmentInstaller.TypeNotInheriting");
 ///<summary>&quot;The data interface type &apos;{0}&apos; does not inherit the interface &apos;{1}&apos;&quot;</summary> 
 public static string DataPackageFragmentInstaller_TypeNotInheriting(object parameter0,object parameter1)=>string.Format(T("DataPackageFragmentInstaller.TypeNotInheriting"), parameter0,parameter1);
 ///<summary>&quot;The data interface type &apos;{0}&apos; does not have a property named &apos;{1}&apos;&quot;</summary> 
+public static string DataPackageFragmentInstaller_MissingProperty_Template=>T("DataPackageFragmentInstaller.MissingProperty");
+///<summary>&quot;The data interface type &apos;{0}&apos; does not have a property named &apos;{1}&apos;&quot;</summary> 
 public static string DataPackageFragmentInstaller_MissingProperty(object parameter0,object parameter1)=>string.Format(T("DataPackageFragmentInstaller.MissingProperty"), parameter0,parameter1);
+///<summary>&quot;The data interface type &apos;{0}&apos; does not have a writable property named &apos;{1}&apos;&quot;</summary> 
+public static string DataPackageFragmentInstaller_MissingWritableProperty_Template=>T("DataPackageFragmentInstaller.MissingWritableProperty");
 ///<summary>&quot;The data interface type &apos;{0}&apos; does not have a writable property named &apos;{1}&apos;&quot;</summary> 
 public static string DataPackageFragmentInstaller_MissingWritableProperty(object parameter0,object parameter1)=>string.Format(T("DataPackageFragmentInstaller.MissingWritableProperty"), parameter0,parameter1);
 ///<summary>&quot;Could not convert the value &apos;{0}&apos; to the type &apos;{1}&apos;&quot;</summary> 
+public static string DataPackageFragmentInstaller_ConversionFailed_Template=>T("DataPackageFragmentInstaller.ConversionFailed");
+///<summary>&quot;Could not convert the value &apos;{0}&apos; to the type &apos;{1}&apos;&quot;</summary> 
 public static string DataPackageFragmentInstaller_ConversionFailed(object parameter0,object parameter1)=>string.Format(T("DataPackageFragmentInstaller.ConversionFailed"), parameter0,parameter1);
+///<summary>&quot;The property &apos;{0}&apos; on the interface &apos;{1}&apos; is missing a value.&quot;</summary> 
+public static string DataPackageFragmentInstaller_MissingPropertyVaule_Template=>T("DataPackageFragmentInstaller.MissingPropertyVaule");
 ///<summary>&quot;The property &apos;{0}&apos; on the interface &apos;{1}&apos; is missing a value.&quot;</summary> 
 public static string DataPackageFragmentInstaller_MissingPropertyVaule(object parameter0,object parameter1)=>string.Format(T("DataPackageFragmentInstaller.MissingPropertyVaule"), parameter0,parameter1);
 ///<summary>&quot;Data type &apos;{0}&apos;: {1} record(s) already installed&quot;</summary> 
+public static string DataPackageFragmentInstaller_DataExists_Template=>T("DataPackageFragmentInstaller.DataExists");
+///<summary>&quot;Data type &apos;{0}&apos;: {1} record(s) already installed&quot;</summary> 
 public static string DataPackageFragmentInstaller_DataExists(object parameter0,object parameter1)=>string.Format(T("DataPackageFragmentInstaller.DataExists"), parameter0,parameter1);
+///<summary>&quot;Missing data type descriptor for the type {0}&quot;</summary> 
+public static string DataPackageFragmentInstaller_MissingTypeDescriptor_Template=>T("DataPackageFragmentInstaller.MissingTypeDescriptor");
 ///<summary>&quot;Missing data type descriptor for the type {0}&quot;</summary> 
 public static string DataPackageFragmentInstaller_MissingTypeDescriptor(object parameter0)=>string.Format(T("DataPackageFragmentInstaller.MissingTypeDescriptor"), parameter0);
 ///<summary>&quot;The data type &apos;{0}&apos; is not localized but a locale is specified in the configuration&quot;</summary> 
+public static string DataPackageFragmentInstaller_TypeNonLocalizedWithLocale_Template=>T("DataPackageFragmentInstaller.TypeNonLocalizedWithLocale");
+///<summary>&quot;The data type &apos;{0}&apos; is not localized but a locale is specified in the configuration&quot;</summary> 
 public static string DataPackageFragmentInstaller_TypeNonLocalizedWithLocale(object parameter0)=>string.Format(T("DataPackageFragmentInstaller.TypeNonLocalizedWithLocale"), parameter0);
 ///<summary>&quot;The data type &apos;{0}&apos; is localized but no locale is specified in the configuration&quot;</summary> 
+public static string DataPackageFragmentInstaller_TypeLocalizedWithoutLocale_Template=>T("DataPackageFragmentInstaller.TypeLocalizedWithoutLocale");
+///<summary>&quot;The data type &apos;{0}&apos; is localized but no locale is specified in the configuration&quot;</summary> 
 public static string DataPackageFragmentInstaller_TypeLocalizedWithoutLocale(object parameter0)=>string.Format(T("DataPackageFragmentInstaller.TypeLocalizedWithoutLocale"), parameter0);
+///<summary>&quot;Referenced data missing. Type: {0}, {1}: &apos;{2}&apos;&quot;</summary> 
+public static string DataPackageFragmentInstaller_ReferencedDataMissing_Template=>T("DataPackageFragmentInstaller.ReferencedDataMissing");
 ///<summary>&quot;Referenced data missing. Type: {0}, {1}: &apos;{2}&apos;&quot;</summary> 
 public static string DataPackageFragmentInstaller_ReferencedDataMissing(object parameter0,object parameter1,object parameter2)=>string.Format(T("DataPackageFragmentInstaller.ReferencedDataMissing"), parameter0,parameter1,parameter2);
 ///<summary>&quot;Only one &apos;Types&apos; element allowed&quot;</summary> 
 public static string DataPackageFragmentUninstaller_OnlyOneElement=>T("DataPackageFragmentUninstaller.OnlyOneElement");
 ///<summary>&quot;Missing {0} attribute in the configuration&quot;</summary> 
+public static string DataPackageFragmentUninstaller_MissingAttribute_Template=>T("DataPackageFragmentUninstaller.MissingAttribute");
+///<summary>&quot;Missing {0} attribute in the configuration&quot;</summary> 
 public static string DataPackageFragmentUninstaller_MissingAttribute(object parameter0)=>string.Format(T("DataPackageFragmentUninstaller.MissingAttribute"), parameter0);
+///<summary>&quot;The data type &apos;{0}&apos; does not contain a key property named &apos;{1}&apos;&quot;</summary> 
+public static string DataPackageFragmentUninstaller_MissingKeyProperty_Template=>T("DataPackageFragmentUninstaller.MissingKeyProperty");
 ///<summary>&quot;The data type &apos;{0}&apos; does not contain a key property named &apos;{1}&apos;&quot;</summary> 
 public static string DataPackageFragmentUninstaller_MissingKeyProperty(object parameter0,object parameter1)=>string.Format(T("DataPackageFragmentUninstaller.MissingKeyProperty"), parameter0,parameter1);
 ///<summary>&quot;Data item &apos;{0}&apos; of type {1} is referenced from a data item &apos;{2}&apos; of type &apos;{3}&apos;&quot;</summary> 
+public static string DataPackageFragmentUninstaller_DataIsReferenced_Template=>T("DataPackageFragmentUninstaller.DataIsReferenced");
+///<summary>&quot;Data item &apos;{0}&apos; of type {1} is referenced from a data item &apos;{2}&apos; of type &apos;{3}&apos;&quot;</summary> 
 public static string DataPackageFragmentUninstaller_DataIsReferenced(object parameter0,object parameter1,object parameter2,object parameter3)=>string.Format(T("DataPackageFragmentUninstaller.DataIsReferenced"), parameter0,parameter1,parameter2,parameter3);
+///<summary>&quot;Page type &apos;{0}&apos; is referenced by page &apos;{1}&apos;&quot;</summary> 
+public static string DataPackageFragmentUninstaller_PageTypeIsReferenced_Template=>T("DataPackageFragmentUninstaller.PageTypeIsReferenced");
 ///<summary>&quot;Page type &apos;{0}&apos; is referenced by page &apos;{1}&apos;&quot;</summary> 
 public static string DataPackageFragmentUninstaller_PageTypeIsReferenced(object parameter0,object parameter1)=>string.Format(T("DataPackageFragmentUninstaller.PageTypeIsReferenced"), parameter0,parameter1);
 ///<summary>&quot;Only one &apos;Types&apos; element allowed&quot;</summary> 
@@ -490,17 +657,29 @@ public static string DataTypePackageFragmentInstaller_OnlyOneElement=>T("DataTyp
 ///<summary>&quot;Missing &apos;Types&apos; element&quot;</summary> 
 public static string DataTypePackageFragmentInstaller_MissingElement=>T("DataTypePackageFragmentInstaller.MissingElement");
 ///<summary>&quot;Missing {0} attribute in the configuration&quot;</summary> 
+public static string DataTypePackageFragmentInstaller_MissingAttribute_Template=>T("DataTypePackageFragmentInstaller.MissingAttribute");
+///<summary>&quot;Missing {0} attribute in the configuration&quot;</summary> 
 public static string DataTypePackageFragmentInstaller_MissingAttribute(object parameter0)=>string.Format(T("DataTypePackageFragmentInstaller.MissingAttribute"), parameter0);
+///<summary>&quot;The data interface type &apos;{0}&apos; has not been configured in the system&quot;</summary> 
+public static string DataTypePackageFragmentInstaller_TypeNotConfigured_Template=>T("DataTypePackageFragmentInstaller.TypeNotConfigured");
 ///<summary>&quot;The data interface type &apos;{0}&apos; has not been configured in the system&quot;</summary> 
 public static string DataTypePackageFragmentInstaller_TypeNotConfigured(object parameter0)=>string.Format(T("DataTypePackageFragmentInstaller.TypeNotConfigured"), parameter0);
 ///<summary>&quot;The data interface type &apos;{0}&apos; does not inherit the interface &apos;{1}&apos;&quot;</summary> 
+public static string DataTypePackageFragmentInstaller_TypeNotInheriting_Template=>T("DataTypePackageFragmentInstaller.TypeNotInheriting");
+///<summary>&quot;The data interface type &apos;{0}&apos; does not inherit the interface &apos;{1}&apos;&quot;</summary> 
 public static string DataTypePackageFragmentInstaller_TypeNotInheriting(object parameter0,object parameter1)=>string.Format(T("DataTypePackageFragmentInstaller.TypeNotInheriting"), parameter0,parameter1);
 ///<summary>&quot;The interface type &apos;{0}&apos; is already exists in the system&quot;</summary> 
+public static string DataTypePackageFragmentInstaller_TypeExists_Template=>T("DataTypePackageFragmentInstaller.TypeExists");
+///<summary>&quot;The interface type &apos;{0}&apos; is already exists in the system&quot;</summary> 
 public static string DataTypePackageFragmentInstaller_TypeExists(object parameter0)=>string.Format(T("DataTypePackageFragmentInstaller.TypeExists"), parameter0);
+///<summary>&quot;Failed to build a data type descriptor for interface &apos;{0}&apos;&quot;</summary> 
+public static string DataTypePackageFragmentInstaller_InterfaceCodeError_Template=>T("DataTypePackageFragmentInstaller.InterfaceCodeError");
 ///<summary>&quot;Failed to build a data type descriptor for interface &apos;{0}&apos;&quot;</summary> 
 public static string DataTypePackageFragmentInstaller_InterfaceCodeError(object parameter0)=>string.Format(T("DataTypePackageFragmentInstaller.InterfaceCodeError"), parameter0);
 ///<summary>&quot;Only one &apos;Types&apos; element allowed&quot;</summary> 
 public static string DataTypePackageFragmentUninstaller_OnlyOneElement=>T("DataTypePackageFragmentUninstaller.OnlyOneElement");
+///<summary>&quot;Missing {0} attribute in the configuration&quot;</summary> 
+public static string DataTypePackageFragmentUninstaller_MissingAttribute_Template=>T("DataTypePackageFragmentUninstaller.MissingAttribute");
 ///<summary>&quot;Missing {0} attribute in the configuration&quot;</summary> 
 public static string DataTypePackageFragmentUninstaller_MissingAttribute(object parameter0)=>string.Format(T("DataTypePackageFragmentUninstaller.MissingAttribute"), parameter0);
 ///<summary>&quot;Wrong attribute format in the configuration&quot;</summary> 
@@ -512,13 +691,21 @@ public static string DynamicDataTypePackageFragmentInstaller_MissingElement=>T("
 ///<summary>&quot;Error xml parsing the dataTypeDescriptor attribute&quot;</summary> 
 public static string DynamicDataTypePackageFragmentInstaller_DataTypeDescriptorParseError=>T("DynamicDataTypePackageFragmentInstaller.DataTypeDescriptorParseError");
 ///<summary>&quot;Error while deserializing a DataType. Error text: {0}.&quot;</summary> 
+public static string DynamicDataTypePackageFragmentInstaller_DataTypeDescriptorDeserializeError_Template=>T("DynamicDataTypePackageFragmentInstaller.DataTypeDescriptorDeserializeError");
+///<summary>&quot;Error while deserializing a DataType. Error text: {0}.&quot;</summary> 
 public static string DynamicDataTypePackageFragmentInstaller_DataTypeDescriptorDeserializeError(object parameter0)=>string.Format(T("DynamicDataTypePackageFragmentInstaller.DataTypeDescriptorDeserializeError"), parameter0);
 ///<summary>&quot;Cannot find a referenced type &apos;{0}&apos;.&quot;</summary> 
+public static string DynamicDataTypePackageFragmentInstaller_MissingReferencedType_Template=>T("DynamicDataTypePackageFragmentInstaller.MissingReferencedType");
+///<summary>&quot;Cannot find a referenced type &apos;{0}&apos;.&quot;</summary> 
 public static string DynamicDataTypePackageFragmentInstaller_MissingReferencedType(object parameter0)=>string.Format(T("DynamicDataTypePackageFragmentInstaller.MissingReferencedType"), parameter0);
+///<summary>&quot;The interface type &apos;{0}&apos; is already exists in the system&quot;</summary> 
+public static string DynamicDataTypePackageFragmentInstaller_TypeExists_Template=>T("DynamicDataTypePackageFragmentInstaller.TypeExists");
 ///<summary>&quot;The interface type &apos;{0}&apos; is already exists in the system&quot;</summary> 
 public static string DynamicDataTypePackageFragmentInstaller_TypeExists(object parameter0)=>string.Format(T("DynamicDataTypePackageFragmentInstaller.TypeExists"), parameter0);
 ///<summary>&quot;Only one &apos;Types&apos; element allowed&quot;</summary> 
 public static string DynamicDataTypePackageFragmentUninstaller_OnlyOneElement=>T("DynamicDataTypePackageFragmentUninstaller.OnlyOneElement");
+///<summary>&quot;Missing {0} attribute in the configuration&quot;</summary> 
+public static string DynamicDataTypePackageFragmentUninstaller_MissingAttribute_Template=>T("DynamicDataTypePackageFragmentUninstaller.MissingAttribute");
 ///<summary>&quot;Missing {0} attribute in the configuration&quot;</summary> 
 public static string DynamicDataTypePackageFragmentUninstaller_MissingAttribute(object parameter0)=>string.Format(T("DynamicDataTypePackageFragmentUninstaller.MissingAttribute"), parameter0);
 ///<summary>&quot;Wrong attribute format in the configuration&quot;</summary> 
@@ -528,15 +715,23 @@ public static string FilePackageFragmentInstaller_OnlyOneFilesElement=>T("FilePa
 ///<summary>&quot;Only one &apos;Directories&apos; element allowed&quot;</summary> 
 public static string FilePackageFragmentInstaller_OnlyOneDirectoriesElement=>T("FilePackageFragmentInstaller.OnlyOneDirectoriesElement");
 ///<summary>&quot;Missing {0} attribute in the configuration&quot;</summary> 
+public static string FilePackageFragmentInstaller_MissingAttribute_Template=>T("FilePackageFragmentInstaller.MissingAttribute");
+///<summary>&quot;Missing {0} attribute in the configuration&quot;</summary> 
 public static string FilePackageFragmentInstaller_MissingAttribute(object parameter0)=>string.Format(T("FilePackageFragmentInstaller.MissingAttribute"), parameter0);
 ///<summary>&quot;The &apos;deleteTargetDirectory&apos; attribute can only be applied to directories, not files&quot;</summary> 
 public static string FilePackageFragmentInstaller_DeleteTargetDirectoryNotAllowed=>T("FilePackageFragmentInstaller.DeleteTargetDirectoryNotAllowed");
 ///<summary>&quot;Wrong attribute value format, bool value expected&quot;</summary> 
 public static string FilePackageFragmentInstaller_WrongAttributeBoolFormat=>T("FilePackageFragmentInstaller.WrongAttributeBoolFormat");
 ///<summary>&quot;The install zip-file does not contain the file &apos;{0}&apos;&quot;</summary> 
+public static string FilePackageFragmentInstaller_MissingFile_Template=>T("FilePackageFragmentInstaller.MissingFile");
+///<summary>&quot;The install zip-file does not contain the file &apos;{0}&apos;&quot;</summary> 
 public static string FilePackageFragmentInstaller_MissingFile(object parameter0)=>string.Format(T("FilePackageFragmentInstaller.MissingFile"), parameter0);
 ///<summary>&quot;The file &apos;{0}&apos; already exists&quot;</summary> 
+public static string FilePackageFragmentInstaller_FileExists_Template=>T("FilePackageFragmentInstaller.FileExists");
+///<summary>&quot;The file &apos;{0}&apos; already exists&quot;</summary> 
 public static string FilePackageFragmentInstaller_FileExists(object parameter0)=>string.Format(T("FilePackageFragmentInstaller.FileExists"), parameter0);
+///<summary>&quot;File &apos;{0}&apos; marked as &apos;Read Only&apos; and therefore cannot be overwritten.&quot;</summary> 
+public static string FilePackageFragmentInstaller_FileReadOnly_Template=>T("FilePackageFragmentInstaller.FileReadOnly");
 ///<summary>&quot;File &apos;{0}&apos; marked as &apos;Read Only&apos; and therefore cannot be overwritten.&quot;</summary> 
 public static string FilePackageFragmentInstaller_FileReadOnly(object parameter0)=>string.Format(T("FilePackageFragmentInstaller.FileReadOnly"), parameter0);
 ///<summary>&quot;The &apos;assemblyLoad&apos; attribute can only be applied to files, not directories&quot;</summary> 
@@ -550,6 +745,8 @@ public static string FilePackageFragmentInstaller_OnlyUpdateAndOnlyAddNotAllowed
 ///<summary>&quot;The &apos;onlyAdd&apos; and &apos;allowOverwrite&apos; attributes are now allowed on the same element&quot;</summary> 
 public static string FilePackageFragmentInstaller_OnlyAddAndAllowOverwriteNotAllowed=>T("FilePackageFragmentInstaller.OnlyAddAndAllowOverwriteNotAllowed");
 ///<summary>&quot;The install zip-file does not contain the directory &apos;{0}&apos;&quot;</summary> 
+public static string FilePackageFragmentInstaller_MissingDirectory_Template=>T("FilePackageFragmentInstaller.MissingDirectory");
+///<summary>&quot;The install zip-file does not contain the directory &apos;{0}&apos;&quot;</summary> 
 public static string FilePackageFragmentInstaller_MissingDirectory(object parameter0)=>string.Format(T("FilePackageFragmentInstaller.MissingDirectory"), parameter0);
 ///<summary>&quot;Uninstall.xml contains file pathes, binded to the original website location, and therefore the package cannot be uninstalled safely.&quot;</summary> 
 public static string FilePackageFragmentInstaller_WrongBasePath=>T("FilePackageFragmentInstaller.WrongBasePath");
@@ -558,25 +755,41 @@ public static string FilePackageFragmentUninstaller_OnlyOneFilesElement=>T("File
 ///<summary>&quot;Only one &apos;Areas&apos; element allowed&quot;</summary> 
 public static string VirtualElementProviderNodePackageFragmentInstaller_OnlyOneElement=>T("VirtualElementProviderNodePackageFragmentInstaller.OnlyOneElement");
 ///<summary>&quot;Could not find the type &apos;{0}&apos;&quot;</summary> 
+public static string VirtualElementProviderNodePackageFragmentInstaller_MissingType_Template=>T("VirtualElementProviderNodePackageFragmentInstaller.MissingType");
+///<summary>&quot;Could not find the type &apos;{0}&apos;&quot;</summary> 
 public static string VirtualElementProviderNodePackageFragmentInstaller_MissingType(object parameter0)=>string.Format(T("VirtualElementProviderNodePackageFragmentInstaller.MissingType"), parameter0);
+///<summary>&quot;Could not find the icon &apos;{0}&apos;&quot;</summary> 
+public static string VirtualElementProviderNodePackageFragmentInstaller_MissingIcon_Template=>T("VirtualElementProviderNodePackageFragmentInstaller.MissingIcon");
 ///<summary>&quot;Could not find the icon &apos;{0}&apos;&quot;</summary> 
 public static string VirtualElementProviderNodePackageFragmentInstaller_MissingIcon(object parameter0)=>string.Format(T("VirtualElementProviderNodePackageFragmentInstaller.MissingIcon"), parameter0);
 ///<summary>&quot;Only one &apos;Areas&apos; element allowed&quot;</summary> 
 public static string VirtualElementProviderNodePackageFragmentUninstaller_OnlyOneElement=>T("VirtualElementProviderNodePackageFragmentUninstaller.OnlyOneElement");
 ///<summary>&quot;Missing {0} attribute in the configuration&quot;</summary> 
+public static string VirtualElementProviderNodePackageFragmentUninstaller_MissingAttribute_Template=>T("VirtualElementProviderNodePackageFragmentUninstaller.MissingAttribute");
+///<summary>&quot;Missing {0} attribute in the configuration&quot;</summary> 
 public static string VirtualElementProviderNodePackageFragmentUninstaller_MissingAttribute(object parameter0)=>string.Format(T("VirtualElementProviderNodePackageFragmentUninstaller.MissingAttribute"), parameter0);
+///<summary>&quot;File &apos;{0}&apos; not found&quot;</summary> 
+public static string FileXslTransformationPackageFragmentInstaller_FileNotFound_Template=>T("FileXslTransformationPackageFragmentInstaller.FileNotFound");
 ///<summary>&quot;File &apos;{0}&apos; not found&quot;</summary> 
 public static string FileXslTransformationPackageFragmentInstaller_FileNotFound(object parameter0)=>string.Format(T("FileXslTransformationPackageFragmentInstaller.FileNotFound"), parameter0);
 ///<summary>&quot;File &apos;{0}&apos; marked as &apos;Read Only&apos; and therefore cannot be overwritten.&quot;</summary> 
+public static string FileXslTransformationPackageFragmentInstaller_FileReadOnly_Template=>T("FileXslTransformationPackageFragmentInstaller.FileReadOnly");
+///<summary>&quot;File &apos;{0}&apos; marked as &apos;Read Only&apos; and therefore cannot be overwritten.&quot;</summary> 
 public static string FileXslTransformationPackageFragmentInstaller_FileReadOnly(object parameter0)=>string.Format(T("FileXslTransformationPackageFragmentInstaller.FileReadOnly"), parameter0);
+///<summary>&quot;File &apos;{0}&apos; was marked as &apos;Read Only&apos;. This file attribute was explicitly removed and the file was updated normally.&quot;</summary> 
+public static string FileXslTransformationPackageFragmentInstaller_FileReadOnlyOverride_Template=>T("FileXslTransformationPackageFragmentInstaller.FileReadOnlyOverride");
 ///<summary>&quot;File &apos;{0}&apos; was marked as &apos;Read Only&apos;. This file attribute was explicitly removed and the file was updated normally.&quot;</summary> 
 public static string FileXslTransformationPackageFragmentInstaller_FileReadOnlyOverride(object parameter0)=>string.Format(T("FileXslTransformationPackageFragmentInstaller.FileReadOnlyOverride"), parameter0);
 ///<summary>&quot;Only one &apos;PackageVersions&apos; element allowed&quot;</summary> 
 public static string PackageVersionBumperFragmentInstaller_OnlyOneElement=>T("PackageVersionBumperFragmentInstaller.OnlyOneElement");
 ///<summary>&quot;Missing {0} attribute in the configuration&quot;</summary> 
+public static string PackageVersionBumperFragmentInstaller_MissingAttribute_Template=>T("PackageVersionBumperFragmentInstaller.MissingAttribute");
+///<summary>&quot;Missing {0} attribute in the configuration&quot;</summary> 
 public static string PackageVersionBumperFragmentInstaller_MissingAttribute(object parameter0)=>string.Format(T("PackageVersionBumperFragmentInstaller.MissingAttribute"), parameter0);
 ///<summary>&quot;Wrong attribute value format, Guid value expected&quot;</summary> 
 public static string PackageVersionBumperFragmentInstaller_WrongAttributeGuidFormat=>T("PackageVersionBumperFragmentInstaller.WrongAttributeGuidFormat");
+///<summary>&quot;The package id duplicate: &apos;{0}&apos;&quot;</summary> 
+public static string PackageVersionBumperFragmentInstaller_PackageIdDuplicate_Template=>T("PackageVersionBumperFragmentInstaller.PackageIdDuplicate");
 ///<summary>&quot;The package id duplicate: &apos;{0}&apos;&quot;</summary> 
 public static string PackageVersionBumperFragmentInstaller_PackageIdDuplicate(object parameter0)=>string.Format(T("PackageVersionBumperFragmentInstaller.PackageIdDuplicate"), parameter0);
 ///<summary>&quot;Wrong attribute value format, Version value expected (x.y.z)&quot;</summary> 
@@ -584,15 +797,21 @@ public static string PackageVersionBumperFragmentInstaller_WrongAttributeVersion
 ///<summary>&quot;Only one &apos;PackageVersions&apos; element allowed&quot;</summary> 
 public static string PackageVersionBumperFragmentUninstaller_OnlyOneElement=>T("PackageVersionBumperFragmentUninstaller.OnlyOneElement");
 ///<summary>&quot;Missing {0} attribute in the configuration&quot;</summary> 
+public static string PackageVersionBumperFragmentUninstaller_MissingAttribute_Template=>T("PackageVersionBumperFragmentUninstaller.MissingAttribute");
+///<summary>&quot;Missing {0} attribute in the configuration&quot;</summary> 
 public static string PackageVersionBumperFragmentUninstaller_MissingAttribute(object parameter0)=>string.Format(T("PackageVersionBumperFragmentUninstaller.MissingAttribute"), parameter0);
 ///<summary>&quot;Wrong attribute value format, Guid value expected&quot;</summary> 
 public static string PackageVersionBumperFragmentUninstaller_WrongAttributeGuidFormat=>T("PackageVersionBumperFragmentUninstaller.WrongAttributeGuidFormat");
+///<summary>&quot;The package id duplicate: &apos;{0}&apos;&quot;</summary> 
+public static string PackageVersionBumperFragmentUninstaller_PackageIdDuplicate_Template=>T("PackageVersionBumperFragmentUninstaller.PackageIdDuplicate");
 ///<summary>&quot;The package id duplicate: &apos;{0}&apos;&quot;</summary> 
 public static string PackageVersionBumperFragmentUninstaller_PackageIdDuplicate(object parameter0)=>string.Format(T("PackageVersionBumperFragmentUninstaller.PackageIdDuplicate"), parameter0);
 ///<summary>&quot;Wrong attribute value format, Version value expected (x.y.z)&quot;</summary> 
 public static string PackageVersionBumperFragmentUninstaller_WrongAttributeVersionFormat=>T("PackageVersionBumperFragmentUninstaller.WrongAttributeVersionFormat");
 ///<summary>&quot;A public RSA key is missing in the package configuration&quot;</summary> 
 public static string PackageLicenseFragmentInstaller_MissingPublicKeyElement=>T("PackageLicenseFragmentInstaller.MissingPublicKeyElement");
+///<summary>&quot;File &apos;{0}&apos; does not exist.&quot;</summary> 
+public static string FileModifyPackageFragmentInstaller_FileDoesNotExist_Template=>T("FileModifyPackageFragmentInstaller.FileDoesNotExist");
 ///<summary>&quot;File &apos;{0}&apos; does not exist.&quot;</summary> 
 public static string FileModifyPackageFragmentInstaller_FileDoesNotExist(object parameter0)=>string.Format(T("FileModifyPackageFragmentInstaller.FileDoesNotExist"), parameter0);
 ///<summary>&quot;Invalid license key&quot;</summary> 
@@ -604,21 +823,30 @@ public static string License_ExpiredTitle=>T("License.ExpiredTitle");
 ///<summary>&quot;The trial period of the package has expired. You need to obtain a valid license.&quot;</summary> 
 public static string License_ExpiredMessage=>T("License.ExpiredMessage");
 ///<summary>&quot;Failed to get license information. ProductId: {0}&quot;</summary> 
+public static string License_Failed_Template=>T("License.Failed");
+///<summary>&quot;Failed to get license information. ProductId: {0}&quot;</summary> 
 public static string License_Failed(object parameter0)=>string.Format(T("License.Failed"), parameter0);
+///<summary>&quot;The Windows user under which this C1 instance is running does not have write permission to file or folder &apos;{0}&apos;.&quot;</summary> 
+public static string NotEnoughNtfsPermissions_Template=>T("NotEnoughNtfsPermissions");
 ///<summary>&quot;The Windows user under which this C1 instance is running does not have write permission to file or folder &apos;{0}&apos;.&quot;</summary> 
 public static string NotEnoughNtfsPermissions(object parameter0)=>string.Format(T("NotEnoughNtfsPermissions"), parameter0);
 ///<summary>&quot;Only one &apos;{0}&apos; element allowed&quot;</summary> 
+public static string PackageFragmentInstaller_OnlyOneElementAllowed_Template=>T("PackageFragmentInstaller.OnlyOneElementAllowed");
+///<summary>&quot;Only one &apos;{0}&apos; element allowed&quot;</summary> 
 public static string PackageFragmentInstaller_OnlyOneElementAllowed(object parameter0)=>string.Format(T("PackageFragmentInstaller.OnlyOneElementAllowed"), parameter0);
+///<summary>&quot;Unexpected element name &apos;{0}&apos;, only allowed element name is &apos;{1}&apos;&quot;</summary> 
+public static string PackageFragmentInstaller_IncorrectElement_Template=>T("PackageFragmentInstaller.IncorrectElement");
 ///<summary>&quot;Unexpected element name &apos;{0}&apos;, only allowed element name is &apos;{1}&apos;&quot;</summary> 
 public static string PackageFragmentInstaller_IncorrectElement(object parameter0,object parameter1)=>string.Format(T("PackageFragmentInstaller.IncorrectElement"), parameter0,parameter1);
 ///<summary>&quot;Missing &apos;{0}&apos; attribute.&quot;</summary> 
+public static string PackageFragmentInstaller_MissingAttribute_Template=>T("PackageFragmentInstaller.MissingAttribute");
+///<summary>&quot;Missing &apos;{0}&apos; attribute.&quot;</summary> 
 public static string PackageFragmentInstaller_MissingAttribute(object parameter0)=>string.Format(T("PackageFragmentInstaller.MissingAttribute"), parameter0);
 ///<summary>&quot;Missing element &apos;{0}&apos;.&quot;</summary> 
+public static string PackageFragmentInstaller_MissingElement_Template=>T("PackageFragmentInstaller.MissingElement");
+///<summary>&quot;Missing element &apos;{0}&apos;.&quot;</summary> 
 public static string PackageFragmentInstaller_MissingElement(object parameter0)=>string.Format(T("PackageFragmentInstaller.MissingElement"), parameter0);
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", key);
 } 
 
     /// <exclude />
@@ -1046,10 +1274,7 @@ public static string sah_RU=>T("sah-RU");
 public static string ii_CN=>T("ii-CN");
 ///<summary>&quot;Yoruba, Nigeria&quot;</summary> 
 public static string yo_NG=>T("yo-NG");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Cultures", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Cultures", key);
 } 
 
     /// <exclude />
@@ -1071,10 +1296,7 @@ public static string SameUserHeading_Description=>T("SameUserHeading.Description
 public static string AnotherUserHeading_Title=>T("AnotherUserHeading.Title");
 ///<summary>&quot;If the item is changed simultaneously by multiple users changes may get lost. Press OK to proceed or cancel to abort.&quot;</summary> 
 public static string AnotherUserHeading_Description=>T("AnotherUserHeading.Description");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.EntityTokenLocked", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.EntityTokenLocked", key);
 } 
 
     /// <exclude />
@@ -1083,15 +1305,23 @@ public static string AnotherUserHeading_Description=>T("AnotherUserHeading.Descr
 ///<summary>&quot;One or more types are referencing this type. Renaming is not possible&quot;</summary> 
 public static string TypesAreReferencing=>T("TypesAreReferencing");
 ///<summary>&quot;The type name &apos;{0}&apos; appears in the namespace &apos;{1}&apos; - this is not allowed&quot;</summary> 
+public static string TypeNameInNamespace_Template=>T("TypeNameInNamespace");
+///<summary>&quot;The type name &apos;{0}&apos; appears in the namespace &apos;{1}&apos; - this is not allowed&quot;</summary> 
 public static string TypeNameInNamespace(object parameter0,object parameter1)=>string.Format(T("TypeNameInNamespace"), parameter0,parameter1);
 ///<summary>&quot;A type with the same name already exists&quot;</summary> 
 public static string TypesNameClash=>T("TypesNameClash");
 ///<summary>&quot;No fields added&quot;</summary> 
 public static string MissingFields=>T("MissingFields");
 ///<summary>&quot;The type name &apos;{0}&apos; is not a valid identifier.&quot;</summary> 
+public static string TypeNameIsInvalidIdentifier_Template=>T("TypeNameIsInvalidIdentifier");
+///<summary>&quot;The type name &apos;{0}&apos; is not a valid identifier.&quot;</summary> 
 public static string TypeNameIsInvalidIdentifier(object parameter0)=>string.Format(T("TypeNameIsInvalidIdentifier"), parameter0);
 ///<summary>&quot;The field name &apos;{0}&apos; can not be used&quot;</summary> 
+public static string FieldNameCannotBeUsed_Template=>T("FieldNameCannotBeUsed");
+///<summary>&quot;The field name &apos;{0}&apos; can not be used&quot;</summary> 
 public static string FieldNameCannotBeUsed(object parameter0)=>string.Format(T("FieldNameCannotBeUsed"), parameter0);
+///<summary>&quot;The specified &apos;Type namespace&apos; is already in use as a &apos;Type name&apos; (namespace + name). Consider changing the name of &apos;{0}&apos; to &apos;{0}.Item&apos;.&quot;</summary> 
+public static string NameSpaceIsTypeTypeName_Template=>T("NameSpaceIsTypeTypeName");
 ///<summary>&quot;The specified &apos;Type namespace&apos; is already in use as a &apos;Type name&apos; (namespace + name). Consider changing the name of &apos;{0}&apos; to &apos;{0}.Item&apos;.&quot;</summary> 
 public static string NameSpaceIsTypeTypeName(object parameter0)=>string.Format(T("NameSpaceIsTypeTypeName"), parameter0);
 ///<summary>&quot;Type name belongs to a reserved namespace.&quot;</summary> 
@@ -1100,10 +1330,7 @@ public static string NamespaceIsReserved=>T("NamespaceIsReserved");
 public static string CompileErrorWhileAddingType=>T("CompileErrorWhileAddingType");
 ///<summary>&quot;Cannot change a data type since it will cause some compilation errors.&quot;</summary> 
 public static string CompileErrorWhileChangingType=>T("CompileErrorWhileChangingType");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.GeneratedTypes", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.GeneratedTypes", key);
 } 
 
     /// <exclude />
@@ -1669,6 +1896,10 @@ public static string VirtualElementProviderElementProvider_RootActions_SetTimezo
 public static string VirtualElementProviderElementProvider_RootActions_SetTimezoneTooltip=>T("VirtualElementProviderElementProvider.RootActions.SetTimezoneTooltip");
 ///<summary>&quot;Global Settings&quot;</summary> 
 public static string VirtualElementProviderElementProvider_RootActions_GlobalSetting=>T("VirtualElementProviderElementProvider.RootActions.GlobalSetting");
+///<summary>&quot;Rebuild search index&quot;</summary> 
+public static string VirtualElementProviderElementProvider_RootActions_RebuildSearchIndexLabel=>T("VirtualElementProviderElementProvider.RootActions.RebuildSearchIndexLabel");
+///<summary>&quot;Initiate search index rebuilding&quot;</summary> 
+public static string VirtualElementProviderElementProvider_RootActions_RebuildSearchIndexTooltip=>T("VirtualElementProviderElementProvider.RootActions.RebuildSearchIndexTooltip");
 ///<summary>&quot;Restart server&quot;</summary> 
 public static string VirtualElementProviderElementProvider_RootActions_RestartApplicationLabel=>T("VirtualElementProviderElementProvider.RootActions.RestartApplicationLabel");
 ///<summary>&quot;Restart the server&quot;</summary> 
@@ -1698,6 +1929,8 @@ public static string SetTimezoneWorkflow_WarningText_Text=>T("SetTimezoneWorkflo
 ///<summary>&quot;Login&quot;</summary> 
 public static string LoginWebRequestHandler_Login=>T("LoginWebRequestHandler.Login");
 ///<summary>&quot;Login to {0}&quot;</summary> 
+public static string LoginWebRequestHandler_Header_Template=>T("LoginWebRequestHandler.Header");
+///<summary>&quot;Login to {0}&quot;</summary> 
 public static string LoginWebRequestHandler_Header(object parameter0)=>string.Format(T("LoginWebRequestHandler.Header"), parameter0);
 ///<summary>&quot;Incorrect user name or password&quot;</summary> 
 public static string LoginWebRequestHandler_LoginFailed=>T("LoginWebRequestHandler.LoginFailed");
@@ -1710,13 +1943,23 @@ public static string LoginWebRequestHandler_LogInAsOtherUser=>T("LoginWebRequest
 ///<summary>&quot;Wrong username or password.&quot;</summary> 
 public static string LoginWebRequestHandler_WrongUserNameOrPassword=>T("LoginWebRequestHandler.WrongUserNameOrPassword");
 ///<summary>&quot;The supplied Windows login, {0}\{1} is not registered in the user database. You must use a different login.&quot;</summary> 
+public static string LoginWebRequestHandler_UserNameNotRegistered_Template=>T("LoginWebRequestHandler.UserNameNotRegistered");
+///<summary>&quot;The supplied Windows login, {0}\{1} is not registered in the user database. You must use a different login.&quot;</summary> 
 public static string LoginWebRequestHandler_UserNameNotRegistered(object parameter0,object parameter1)=>string.Format(T("LoginWebRequestHandler.UserNameNotRegistered"), parameter0,parameter1);
+///<summary>&quot;The type {0} is not an interface.&quot;</summary> 
+public static string DataInterfaceValidator_TypeNotAnInterface_Template=>T("DataInterfaceValidator.TypeNotAnInterface");
 ///<summary>&quot;The type {0} is not an interface.&quot;</summary> 
 public static string DataInterfaceValidator_TypeNotAnInterface(object parameter0)=>string.Format(T("DataInterfaceValidator.TypeNotAnInterface"), parameter0);
 ///<summary>&quot;The interface type {0} does not implement the interface {1}.&quot;</summary> 
+public static string DataInterfaceValidator_TypeDoesNotImplementInterface_Template=>T("DataInterfaceValidator.TypeDoesNotImplementInterface");
+///<summary>&quot;The interface type {0} does not implement the interface {1}.&quot;</summary> 
 public static string DataInterfaceValidator_TypeDoesNotImplementInterface(object parameter0,object parameter1)=>string.Format(T("DataInterfaceValidator.TypeDoesNotImplementInterface"), parameter0,parameter1);
 ///<summary>&quot;The property {0} on the interface type {1} is not a accepted type.&quot;</summary> 
+public static string DataInterfaceValidator_NotAcceptedType_Template=>T("DataInterfaceValidator.NotAcceptedType");
+///<summary>&quot;The property {0} on the interface type {1} is not a accepted type.&quot;</summary> 
 public static string DataInterfaceValidator_NotAcceptedType(object parameter0,object parameter1)=>string.Format(T("DataInterfaceValidator.NotAcceptedType"), parameter0,parameter1);
+///<summary>&quot;The interface {0} is not a valid IData interface.&quot;</summary> 
+public static string DataInterfaceValidator_NotValidIDataInterface_Template=>T("DataInterfaceValidator.NotValidIDataInterface");
 ///<summary>&quot;The interface {0} is not a valid IData interface.&quot;</summary> 
 public static string DataInterfaceValidator_NotValidIDataInterface(object parameter0)=>string.Format(T("DataInterfaceValidator.NotValidIDataInterface"), parameter0);
 ///<summary>&quot;Cascade delete error&quot;</summary> 
@@ -1779,6 +2022,8 @@ public static string MediaFileProviderElementProvider_MediaFileItemToolTip=>T("M
 public static string MediaFileProviderElementProvider_OrganizedFilesAndFoldersToolTip=>T("MediaFileProviderElementProvider.OrganizedFilesAndFoldersToolTip");
 ///<summary>&quot;Error&quot;</summary> 
 public static string MediaFileProviderElementProvider_ErrorMessageTitle=>T("MediaFileProviderElementProvider.ErrorMessageTitle");
+///<summary>&quot;File &apos;{0}&apos; already exists in folder &apos;{1}&apos;&quot;</summary> 
+public static string MediaFileProviderElementProvider_FileAlreadyExistsMessage_Template=>T("MediaFileProviderElementProvider.FileAlreadyExistsMessage");
 ///<summary>&quot;File &apos;{0}&apos; already exists in folder &apos;{1}&apos;&quot;</summary> 
 public static string MediaFileProviderElementProvider_FileAlreadyExistsMessage(object parameter0,object parameter1)=>string.Format(T("MediaFileProviderElementProvider.FileAlreadyExistsMessage"), parameter0,parameter1);
 ///<summary>&quot;Failure&quot;</summary> 
@@ -2002,7 +2247,11 @@ public static string ServerLog_LabelButtonRefresh=>T("ServerLog.LabelButtonRefre
 ///<summary>&quot;No log data available...&quot;</summary> 
 public static string ServerLog_EmptyLabel=>T("ServerLog.EmptyLabel");
 ///<summary>&quot;Only the {0} most recent log entries are shown. Open the log for more entries.&quot;</summary> 
+public static string ServerLog_LogEntriesRemovedBrowserViewLabel_Template=>T("ServerLog.LogEntriesRemovedBrowserViewLabel");
+///<summary>&quot;Only the {0} most recent log entries are shown. Open the log for more entries.&quot;</summary> 
 public static string ServerLog_LogEntriesRemovedBrowserViewLabel(object parameter0)=>string.Format(T("ServerLog.LogEntriesRemovedBrowserViewLabel"), parameter0);
+///<summary>&quot;Only the {0} most recent log entries are shown. {1} entries exists for the current search. Either narrow the search or use the log viewer tool from http://docs.composite.net/Configuration/Logging for full log access.&quot;</summary> 
+public static string ServerLog_LogEntriesRemovedLabel_Template=>T("ServerLog.LogEntriesRemovedLabel");
 ///<summary>&quot;Only the {0} most recent log entries are shown. {1} entries exists for the current search. Either narrow the search or use the log viewer tool from http://docs.composite.net/Configuration/Logging for full log access.&quot;</summary> 
 public static string ServerLog_LogEntriesRemovedLabel(object parameter0,object parameter1)=>string.Format(T("ServerLog.LogEntriesRemovedLabel"), parameter0,parameter1);
 ///<summary>&quot;Date&quot;</summary> 
@@ -2204,6 +2453,8 @@ public static string Website_App_LabelPaste=>T("Website.App.LabelPaste");
 ///<summary>&quot;Refresh&quot;</summary> 
 public static string Website_App_LabelRefresh=>T("Website.App.LabelRefresh");
 ///<summary>&quot;Only first {0} elements are shown in the tree.&quot;</summary> 
+public static string Website_App_LimitedElementsShown_Template=>T("Website.App.LimitedElementsShown");
+///<summary>&quot;Only first {0} elements are shown in the tree.&quot;</summary> 
 public static string Website_App_LimitedElementsShown(object parameter0)=>string.Format(T("Website.App.LimitedElementsShown"), parameter0);
 ///<summary>&quot;Loading...&quot;</summary> 
 public static string Website_App_LabelLoading=>T("Website.App.LabelLoading");
@@ -2222,9 +2473,15 @@ public static string Website_App_ToolTipUnMinimize=>T("Website.App.ToolTipUnMini
 ///<summary>&quot;Close&quot;</summary> 
 public static string Website_App_ToolTipClose=>T("Website.App.ToolTipClose");
 ///<summary>&quot;Opening {0}...&quot;</summary> 
+public static string Website_App_StatusBar_Opening_Template=>T("Website.App.StatusBar.Opening");
+///<summary>&quot;Opening {0}...&quot;</summary> 
 public static string Website_App_StatusBar_Opening(object parameter0)=>string.Format(T("Website.App.StatusBar.Opening"), parameter0);
 ///<summary>&quot;Refreshing {0}...&quot;</summary> 
+public static string Website_App_StatusBar_Refreshing_Template=>T("Website.App.StatusBar.Refreshing");
+///<summary>&quot;Refreshing {0}...&quot;</summary> 
 public static string Website_App_StatusBar_Refreshing(object parameter0)=>string.Format(T("Website.App.StatusBar.Refreshing"), parameter0);
+///<summary>&quot;Loading {0}...&quot;</summary> 
+public static string Website_App_StatusBar_Loading_Template=>T("Website.App.StatusBar.Loading");
 ///<summary>&quot;Loading {0}...&quot;</summary> 
 public static string Website_App_StatusBar_Loading(object parameter0)=>string.Format(T("Website.App.StatusBar.Loading"), parameter0);
 ///<summary>&quot;Error&quot;</summary> 
@@ -2442,15 +2699,23 @@ public static string AspNetUiControl_Selector_BrokenReference=>T("AspNetUiContro
 ///<summary>&quot;(no selection)&quot;</summary> 
 public static string AspNetUiControl_Selector_NoSelection=>T("AspNetUiControl.Selector.NoSelection");
 ///<summary>&quot;No matches for &apos;{0}&apos;&quot;</summary> 
+public static string AspNetUiControl_Selector_NoMatchesFor_Template=>T("AspNetUiControl.Selector.NoMatchesFor");
+///<summary>&quot;No matches for &apos;{0}&apos;&quot;</summary> 
 public static string AspNetUiControl_Selector_NoMatchesFor(object parameter0)=>string.Format(T("AspNetUiControl.Selector.NoMatchesFor"), parameter0);
 ///<summary>&quot;This field contains a broken reference&quot;</summary> 
 public static string Validation_BrokenReference=>T("Validation.BrokenReference");
 ///<summary>&quot;This field is required.&quot;</summary> 
 public static string Validation_RequiredField=>T("Validation.RequiredField");
 ///<summary>&quot;Only {0} digit(s) after decimal point allowed&quot;</summary> 
+public static string Validation_Decimal_SymbolsAfterPointAllowed_Template=>T("Validation.Decimal.SymbolsAfterPointAllowed");
+///<summary>&quot;Only {0} digit(s) after decimal point allowed&quot;</summary> 
 public static string Validation_Decimal_SymbolsAfterPointAllowed(object parameter0)=>string.Format(T("Validation.Decimal.SymbolsAfterPointAllowed"), parameter0);
 ///<summary>&quot;Only {0} digit(s) before decimal point allowed&quot;</summary> 
+public static string Validation_Decimal_SymbolsBeforePointAllowed_Template=>T("Validation.Decimal.SymbolsBeforePointAllowed");
+///<summary>&quot;Only {0} digit(s) before decimal point allowed&quot;</summary> 
 public static string Validation_Decimal_SymbolsBeforePointAllowed(object parameter0)=>string.Format(T("Validation.Decimal.SymbolsBeforePointAllowed"), parameter0);
+///<summary>&quot;Invalid date string: &apos;{0}&apos;. Use the format &apos;{1}&apos;.&quot;</summary> 
+public static string Validation_DateTime_InvalidDateFormat_Template=>T("Validation.DateTime.InvalidDateFormat");
 ///<summary>&quot;Invalid date string: &apos;{0}&apos;. Use the format &apos;{1}&apos;.&quot;</summary> 
 public static string Validation_DateTime_InvalidDateFormat(object parameter0,object parameter1)=>string.Format(T("Validation.DateTime.InvalidDateFormat"), parameter0,parameter1);
 ///<summary>&quot;The specified value is either too big or too small. The acceptable range is from -2,147,483,648 to 2,147,483,647&quot;</summary> 
@@ -2474,7 +2739,11 @@ public static string Validation_InvalidField_Email=>T("Validation.InvalidField.E
 ///<summary>&quot;Invalid GUID&quot;</summary> 
 public static string Validation_InvalidField_Guid=>T("Validation.InvalidField.Guid");
 ///<summary>&quot;{0} characters minimum&quot;</summary> 
+public static string Validation_StringLength_Min_Template=>T("Validation.StringLength.Min");
+///<summary>&quot;{0} characters minimum&quot;</summary> 
 public static string Validation_StringLength_Min(object parameter0)=>string.Format(T("Validation.StringLength.Min"), parameter0);
+///<summary>&quot;{0} characters maximum&quot;</summary> 
+public static string Validation_StringLength_Max_Template=>T("Validation.StringLength.Max");
 ///<summary>&quot;{0} characters maximum&quot;</summary> 
 public static string Validation_StringLength_Max(object parameter0)=>string.Format(T("Validation.StringLength.Max"), parameter0);
 ///<summary>&quot;Page Browser&quot;</summary> 
@@ -2482,13 +2751,16 @@ public static string Browser_Label=>T("Browser.Label");
 ///<summary>&quot;Browse unpublished pages&quot;</summary> 
 public static string Browser_ToolTip=>T("Browser.ToolTip");
 ///<summary>&quot;Copy{count} of {0}&quot;</summary> 
+public static string Duplication_Text_Template=>T("Duplication.Text");
+///<summary>&quot;Copy{count} of {0}&quot;</summary> 
 public static string Duplication_Text(object parameter0)=>string.Format(T("Duplication.Text"), parameter0);
 ///<summary>&quot;Original&quot;</summary> 
 public static string DefaultVersionName=>T("DefaultVersionName");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Management", key);
-        }
+///<summary>&quot;{0} selected&quot;</summary> 
+public static string Selector_Count_Template=>T("Selector.Count");
+///<summary>&quot;{0} selected&quot;</summary> 
+public static string Selector_Count(object parameter0)=>string.Format(T("Selector.Count"), parameter0);
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Management", key);
 } 
 
     /// <exclude />
@@ -2501,13 +2773,14 @@ public static string EmptyNamespace=>T("EmptyNamespace");
 ///<summary>&quot;Namespace can not contain the same name part multiple times&quot;</summary> 
 public static string DuplicateElementNamespace=>T("DuplicateElementNamespace");
 ///<summary>&quot;The name &apos;{0}&apos; is not a valid identifier&quot;</summary> 
+public static string InvalidIdentifier_Template=>T("InvalidIdentifier");
+///<summary>&quot;The name &apos;{0}&apos; is not a valid identifier&quot;</summary> 
 public static string InvalidIdentifier(object parameter0)=>string.Format(T("InvalidIdentifier"), parameter0);
 ///<summary>&quot;The name &apos;{0}&apos; is not a valid identifier. Identifiers may not start with digits.&quot;</summary> 
+public static string InvalidIdentifierDigit_Template=>T("InvalidIdentifierDigit");
+///<summary>&quot;The name &apos;{0}&apos; is not a valid identifier. Identifiers may not start with digits.&quot;</summary> 
 public static string InvalidIdentifierDigit(object parameter0)=>string.Format(T("InvalidIdentifierDigit"), parameter0);
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.NameValidation", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.NameValidation", key);
 } 
 
     /// <exclude />
@@ -2533,10 +2806,7 @@ public static string AdministrateLabel=>T("AdministrateLabel");
 public static string ClearPermissionsLabel=>T("ClearPermissionsLabel");
 ///<summary>&quot;This operation would remove your administrative permissions from this entity. You can not remove your own administrative permissions.&quot;</summary> 
 public static string AdminLockoutMessage=>T("AdminLockoutMessage");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Permissions", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Permissions", key);
 } 
 
     /// <exclude />
@@ -2558,6 +2828,8 @@ public static string AllFunctionsElementProvider_GenerateDocumentationTooltip=>T
 public static string AllFunctionsElementProvider_ViewFunctionInformation=>T("AllFunctionsElementProvider.ViewFunctionInformation");
 ///<summary>&quot;View function information&quot;</summary> 
 public static string AllFunctionsElementProvider_ViewFunctionInformationTooltip=>T("AllFunctionsElementProvider.ViewFunctionInformationTooltip");
+///<summary>&quot;Test: {0}&quot;</summary> 
+public static string FunctionTesterWorkflow_Layout_Label_Template=>T("FunctionTesterWorkflow.Layout.Label");
 ///<summary>&quot;Test: {0}&quot;</summary> 
 public static string FunctionTesterWorkflow_Layout_Label(object parameter0)=>string.Format(T("FunctionTesterWorkflow.Layout.Label"), parameter0);
 ///<summary>&quot;Functions&quot;</summary> 
@@ -2588,10 +2860,15 @@ public static string FunctionTesterWorkflow_PublicScope_Label=>T("FunctionTester
 public static string AllFunctionsElementProvider_FunctionTester_Label=>T("AllFunctionsElementProvider.FunctionTester.Label");
 ///<summary>&quot;Test function&quot;</summary> 
 public static string AllFunctionsElementProvider_FunctionTester_ToolTip=>T("AllFunctionsElementProvider.FunctionTester.ToolTip");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Plugins.AllFunctionsElementProvider", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Plugins.AllFunctionsElementProvider", key);
+} 
+
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+	   public static class Composite_Plugins_Components {
+///<summary>&quot;E-Commerce&quot;</summary> 
+public static string Tags_Ecommerce=>T("Tags.Ecommerce");
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Plugins.Components", key);
 } 
 
     /// <exclude />
@@ -2673,6 +2950,8 @@ public static string DisableLocalization=>T("DisableLocalization");
 public static string DisableLocalizationToolTip=>T("DisableLocalizationToolTip");
 ///<summary>&quot;Not yet approved or published&quot;</summary> 
 public static string DisabledData=>T("DisabledData");
+///<summary>&quot;(undefined [{0}])&quot;</summary> 
+public static string UndefinedLabelTemplate_Template=>T("UndefinedLabelTemplate");
 ///<summary>&quot;(undefined [{0}])&quot;</summary> 
 public static string UndefinedLabelTemplate(object parameter0)=>string.Format(T("UndefinedLabelTemplate"), parameter0);
 ///<summary>&quot;(undefined)&quot;</summary> 
@@ -2769,6 +3048,8 @@ public static string EditorCommon_InternalUrlPrefixLabel=>T("EditorCommon.Intern
 public static string EditorCommon_InternalUrlPrefixHelp=>T("EditorCommon.InternalUrlPrefixHelp");
 ///<summary>&quot;Has caching&quot;</summary> 
 public static string EditorCommon_HasCaching=>T("EditorCommon.HasCaching");
+///<summary>&quot;Is searchable&quot;</summary> 
+public static string EditorCommon_IsSearchable=>T("EditorCommon.IsSearchable");
 ///<summary>&quot;Has publishing&quot;</summary> 
 public static string EditorCommon_HasPublishing=>T("EditorCommon.HasPublishing");
 ///<summary>&quot;Is localizable data&quot;</summary> 
@@ -2794,6 +3075,8 @@ public static string DeleteAggregationTypeWorkflow_Text=>T("DeleteAggregationTyp
 ///<summary>&quot;Error&quot;</summary> 
 public static string DeleteAggregationTypeWorkflow_ErrorTitle=>T("DeleteAggregationTypeWorkflow.ErrorTitle");
 ///<summary>&quot;Cannot delete type &apos;{0}&apos; since it is used by a page type.&quot;</summary> 
+public static string DeleteAggregationTypeWorkflow_IsUsedByPageType_Template=>T("DeleteAggregationTypeWorkflow.IsUsedByPageType");
+///<summary>&quot;Cannot delete type &apos;{0}&apos; since it is used by a page type.&quot;</summary> 
 public static string DeleteAggregationTypeWorkflow_IsUsedByPageType(object parameter0)=>string.Format(T("DeleteAggregationTypeWorkflow.IsUsedByPageType"), parameter0);
 ///<summary>&quot;Delete Datatype&quot;</summary> 
 public static string DeleteCompositionTypeWorkflow_LabelFieldGroup=>T("DeleteCompositionTypeWorkflow.LabelFieldGroup");
@@ -2802,7 +3085,11 @@ public static string DeleteCompositionTypeWorkflow_Text=>T("DeleteCompositionTyp
 ///<summary>&quot;Error&quot;</summary> 
 public static string DeleteCompositionTypeWorkflow_ErrorTitle=>T("DeleteCompositionTypeWorkflow.ErrorTitle");
 ///<summary>&quot;Cannot delete type &apos;{0}&apos; since there&apos;re types that referenced to it.&quot;</summary> 
+public static string DeleteCompositionTypeWorkflow_TypeIsReferenced_Template=>T("DeleteCompositionTypeWorkflow.TypeIsReferenced");
+///<summary>&quot;Cannot delete type &apos;{0}&apos; since there&apos;re types that referenced to it.&quot;</summary> 
 public static string DeleteCompositionTypeWorkflow_TypeIsReferenced(object parameter0)=>string.Format(T("DeleteCompositionTypeWorkflow.TypeIsReferenced"), parameter0);
+///<summary>&quot;Cannot delete type &apos;{0}&apos; since it is used by a page type.&quot;</summary> 
+public static string DeleteCompositionTypeWorkflow_IsUsedByPageType_Template=>T("DeleteCompositionTypeWorkflow.IsUsedByPageType");
 ///<summary>&quot;Cannot delete type &apos;{0}&apos; since it is used by a page type.&quot;</summary> 
 public static string DeleteCompositionTypeWorkflow_IsUsedByPageType(object parameter0)=>string.Format(T("DeleteCompositionTypeWorkflow.IsUsedByPageType"), parameter0);
 ///<summary>&quot;To Xml&quot;</summary> 
@@ -2850,6 +3137,8 @@ public static string LocalizeDataWorkflow_ShowError_AlreadyTranslated=>T("Locali
 ///<summary>&quot;The following fields has a reference to a data type. You should translate these data items before you can translate this data item&quot;</summary> 
 public static string LocalizeDataWorkflow_ShowError_Description=>T("LocalizeDataWorkflow.ShowError.Description");
 ///<summary>&quot;The field &apos;{0}&apos; is referencing data of type &apos;{1}&apos; with the label &apos;{2}&apos;&quot;</summary> 
+public static string LocalizeDataWorkflow_ShowError_FieldErrorFormat_Template=>T("LocalizeDataWorkflow.ShowError.FieldErrorFormat");
+///<summary>&quot;The field &apos;{0}&apos; is referencing data of type &apos;{1}&apos; with the label &apos;{2}&apos;&quot;</summary> 
 public static string LocalizeDataWorkflow_ShowError_FieldErrorFormat(object parameter0,object parameter1,object parameter2)=>string.Format(T("LocalizeDataWorkflow.ShowError.FieldErrorFormat"), parameter0,parameter1,parameter2);
 ///<summary>&quot;Error&quot;</summary> 
 public static string AddNewInterfaceTypeStep1_ErrorTitle=>T("AddNewInterfaceTypeStep1.ErrorTitle");
@@ -2864,11 +3153,10 @@ public static string DataTypeDescriptorToXmlLabel=>T("DataTypeDescriptorToXmlLab
 ///<summary>&quot;This type has custom form markup&quot;</summary> 
 public static string FormMarkupInfo_Dialog_Label=>T("FormMarkupInfo.Dialog.Label");
 ///<summary>&quot;Your field changes will not affect the form for editing data. Do &apos;{0}&apos; to change the form or delete the file &apos;{1}&apos;.&quot;</summary> 
+public static string FormMarkupInfo_Message_Template=>T("FormMarkupInfo.Message");
+///<summary>&quot;Your field changes will not affect the form for editing data. Do &apos;{0}&apos; to change the form or delete the file &apos;{1}&apos;.&quot;</summary> 
 public static string FormMarkupInfo_Message(object parameter0,object parameter1)=>string.Format(T("FormMarkupInfo.Message"), parameter0,parameter1);
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", key);
 } 
 
     /// <exclude />
@@ -2902,10 +3190,7 @@ public static string UndoPublishedChangesToolTip=>T("UndoPublishedChangesToolTip
 public static string ValidationErrorTitle=>T("ValidationErrorTitle");
 ///<summary>&quot;The data did not validate with the following errors:&quot;</summary> 
 public static string ValidationErrorMessage=>T("ValidationErrorMessage");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", key);
 } 
 
     /// <exclude />
@@ -2973,10 +3258,7 @@ public static string RemoveSystemLocaleWorkflow_Abort_Title=>T("RemoveSystemLoca
 public static string RemoveSystemLocaleWorkflow_Abort_Description=>T("RemoveSystemLocaleWorkflow.Abort.Description");
 ///<summary>&quot;Remove this language?&quot;</summary> 
 public static string RemoveSystemLocaleWorkflow_Confirm_Description=>T("RemoveSystemLocaleWorkflow.Confirm.Description");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Plugins.LocalizationElementProvider", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Plugins.LocalizationElementProvider", key);
 } 
 
     /// <exclude />
@@ -2995,11 +3277,19 @@ public static string DeleteMasterPageAction_ToolTip=>T("DeleteMasterPageAction.T
 ///<summary>&quot;Validation error&quot;</summary> 
 public static string EditTemplate_Validation_DialogTitle=>T("EditTemplate.Validation.DialogTitle");
 ///<summary>&quot;Compilation failed: {0}&quot;</summary> 
+public static string EditTemplate_Validation_CompilationFailed_Template=>T("EditTemplate.Validation.CompilationFailed");
+///<summary>&quot;Compilation failed: {0}&quot;</summary> 
 public static string EditTemplate_Validation_CompilationFailed(object parameter0)=>string.Format(T("EditTemplate.Validation.CompilationFailed"), parameter0);
+///<summary>&quot;Page template class does not inherit &apos;{0}&apos;&quot;</summary> 
+public static string EditTemplate_Validation_IncorrectBaseClass_Template=>T("EditTemplate.Validation.IncorrectBaseClass");
 ///<summary>&quot;Page template class does not inherit &apos;{0}&apos;&quot;</summary> 
 public static string EditTemplate_Validation_IncorrectBaseClass(object parameter0)=>string.Format(T("EditTemplate.Validation.IncorrectBaseClass"), parameter0);
 ///<summary>&quot;Failed to evaluate page template property &apos;{0}&apos;. Exception: {1}&quot;</summary> 
+public static string EditTemplate_Validation_PropertyError_Template=>T("EditTemplate.Validation.PropertyError");
+///<summary>&quot;Failed to evaluate page template property &apos;{0}&apos;. Exception: {1}&quot;</summary> 
 public static string EditTemplate_Validation_PropertyError(object parameter0,object parameter1)=>string.Format(T("EditTemplate.Validation.PropertyError"), parameter0,parameter1);
+///<summary>&quot;It is not allowed to change the template ID through the current workflow. The original template ID is &apos;{0}&apos;&quot;</summary> 
+public static string EditTemplate_Validation_TemplateIdChanged_Template=>T("EditTemplate.Validation.TemplateIdChanged");
 ///<summary>&quot;It is not allowed to change the template ID through the current workflow. The original template ID is &apos;{0}&apos;&quot;</summary> 
 public static string EditTemplate_Validation_TemplateIdChanged(object parameter0)=>string.Format(T("EditTemplate.Validation.TemplateIdChanged"), parameter0);
 ///<summary>&quot;Add New Master Page Template&quot;</summary> 
@@ -3018,10 +3308,7 @@ public static string AddNewMasterPagePageTemplate_LabelCopyFromEmptyOption=>T("A
 public static string AddNewMasterPagePageTemplateWorkflow_TitleInUseTitle=>T("AddNewMasterPagePageTemplateWorkflow.TitleInUseTitle");
 ///<summary>&quot;The title is too long (used as part of a filename).&quot;</summary> 
 public static string AddNewMasterPagePageTemplateWorkflow_TitleTooLong=>T("AddNewMasterPagePageTemplateWorkflow.TitleTooLong");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Plugins.MasterPagePageTemplate", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Plugins.MasterPagePageTemplate", key);
 } 
 
     /// <exclude />
@@ -3085,6 +3372,8 @@ public static string AddFunction_TypeMustNotHaveOverloads=>T("AddFunction.TypeMu
 public static string AddFunction_MethodNameIsEmpty=>T("AddFunction.MethodNameIsEmpty");
 ///<summary>&quot;Namespace must be like A.B.C - not start and end with .&quot;</summary> 
 public static string AddFunction_InvalidNamespace=>T("AddFunction.InvalidNamespace");
+///<summary>&quot;The function name &apos;{0}&apos; is already used&quot;</summary> 
+public static string AddFunction_NameAlreadyUsed_Template=>T("AddFunction.NameAlreadyUsed");
 ///<summary>&quot;The function name &apos;{0}&apos; is already used&quot;</summary> 
 public static string AddFunction_NameAlreadyUsed(object parameter0)=>string.Format(T("AddFunction.NameAlreadyUsed"), parameter0);
 ///<summary>&quot;Edit Method Based Query&quot;</summary> 
@@ -3184,21 +3473,30 @@ public static string InlineFunctionMethodTemplate_WithParameters=>T("InlineFunct
 ///<summary>&quot;Method using data connection&quot;</summary> 
 public static string InlineFunctionMethodTemplate_DataConnection=>T("InlineFunctionMethodTemplate.DataConnection");
 ///<summary>&quot;A public static class named {0} is missing from the code. This class should contain the function method.&quot;</summary> 
+public static string CSharpInlineFunction_OnMissingContainerType_Template=>T("CSharpInlineFunction.OnMissingContainerType");
+///<summary>&quot;A public static class named {0} is missing from the code. This class should contain the function method.&quot;</summary> 
 public static string CSharpInlineFunction_OnMissingContainerType(object parameter0)=>string.Format(T("CSharpInlineFunction.OnMissingContainerType"), parameter0);
+///<summary>&quot;The namespace in the code &apos;{0}&apos; does not match the given function namespace &apos;{1}&apos;.&quot;</summary> 
+public static string CSharpInlineFunction_OnNamespaceMismatch_Template=>T("CSharpInlineFunction.OnNamespaceMismatch");
 ///<summary>&quot;The namespace in the code &apos;{0}&apos; does not match the given function namespace &apos;{1}&apos;.&quot;</summary> 
 public static string CSharpInlineFunction_OnNamespaceMismatch(object parameter0,object parameter1)=>string.Format(T("CSharpInlineFunction.OnNamespaceMismatch"), parameter0,parameter1);
 ///<summary>&quot;The given function name &apos;{0}&apos; was not found or not public static in the class &apos;{1}&apos;.&quot;</summary> 
+public static string CSharpInlineFunction_OnMissionMethod_Template=>T("CSharpInlineFunction.OnMissionMethod");
+///<summary>&quot;The given function name &apos;{0}&apos; was not found or not public static in the class &apos;{1}&apos;.&quot;</summary> 
 public static string CSharpInlineFunction_OnMissionMethod(object parameter0,object parameter1)=>string.Format(T("CSharpInlineFunction.OnMissionMethod"), parameter0,parameter1);
+///<summary>&quot;The parameter &apos;{0}&apos; has not been added to &apos;Input Parameters&apos; - to call your function you need to add the parameter and give it either a test or default value.&quot;</summary> 
+public static string CSharpInlineFunction_MissingParameterDefinition_Template=>T("CSharpInlineFunction.MissingParameterDefinition");
 ///<summary>&quot;The parameter &apos;{0}&apos; has not been added to &apos;Input Parameters&apos; - to call your function you need to add the parameter and give it either a test or default value.&quot;</summary> 
 public static string CSharpInlineFunction_MissingParameterDefinition(object parameter0)=>string.Format(T("CSharpInlineFunction.MissingParameterDefinition"), parameter0);
 ///<summary>&quot;The parameter &apos;{0}&apos; is expecting test value of type &apos;{1}&apos;, got value of type &apos;{2}&apos;.&quot;</summary> 
+public static string CSharpInlineFunction_WrongParameterTestValueType_Template=>T("CSharpInlineFunction.WrongParameterTestValueType");
+///<summary>&quot;The parameter &apos;{0}&apos; is expecting test value of type &apos;{1}&apos;, got value of type &apos;{2}&apos;.&quot;</summary> 
 public static string CSharpInlineFunction_WrongParameterTestValueType(object parameter0,object parameter1,object parameter2)=>string.Format(T("CSharpInlineFunction.WrongParameterTestValueType"), parameter0,parameter1,parameter2);
 ///<summary>&quot;The parameter &apos;{0}&apos; defined on &apos;Input Parameters&apos; must have a test or default value before your function can be evaluated.&quot;</summary> 
+public static string CSharpInlineFunction_MissingParameterTestOrDefaultValue_Template=>T("CSharpInlineFunction.MissingParameterTestOrDefaultValue");
+///<summary>&quot;The parameter &apos;{0}&apos; defined on &apos;Input Parameters&apos; must have a test or default value before your function can be evaluated.&quot;</summary> 
 public static string CSharpInlineFunction_MissingParameterTestOrDefaultValue(object parameter0)=>string.Format(T("CSharpInlineFunction.MissingParameterTestOrDefaultValue"), parameter0);
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Plugins.MethodBasedFunctionProviderElementProvider", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Plugins.MethodBasedFunctionProviderElementProvider", key);
 } 
 
     /// <exclude />
@@ -3472,7 +3770,7 @@ public static string AddPackageSource_Step1_UrlLabel=>T("AddPackageSource.Step1.
 public static string AddPackageSource_Step1_UrlHelp=>T("AddPackageSource.Step1.UrlHelp");
 ///<summary>&quot;The entered text was not a valid URL&quot;</summary> 
 public static string AddPackageSource_Step1_UrlNotValid=>T("AddPackageSource.Step1.UrlNotValid");
-///<summary>&quot;The server is not a Orckestra CMS package server&quot;</summary> 
+///<summary>&quot;The server is not a C1 CMS package server&quot;</summary> 
 public static string AddPackageSource_Step1_UrlNonPackageServer=>T("AddPackageSource.Step1.UrlNonPackageServer");
 ///<summary>&quot;Add Package Server Source&quot;</summary> 
 public static string AddPackageSource_Step2_LayoutLabel=>T("AddPackageSource.Step2.LayoutLabel");
@@ -3490,10 +3788,7 @@ public static string DeletePackageSource_Step1_Text=>T("DeletePackageSource.Step
 public static string ConfirmLicense_ExpiredTitle=>T("ConfirmLicense.ExpiredTitle");
 ///<summary>&quot;The trial period of the package has expired. You need to obtain a valid license.&quot;</summary> 
 public static string ConfirmLicense_ExpiredMessage=>T("ConfirmLicense.ExpiredMessage");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", key);
 } 
 
     /// <exclude />
@@ -3501,6 +3796,8 @@ public static string ConfirmLicense_ExpiredMessage=>T("ConfirmLicense.ExpiredMes
 	   public static class Composite_Plugins_PageElementProvider {
 ///<summary>&quot;Add New Page&quot;</summary> 
 public static string AddNewPageStep1_DialogLabel=>T("AddNewPageStep1.DialogLabel");
+///<summary>&quot;Add New {0}&quot;</summary> 
+public static string AddNewPageStep1_DialogLabelFormat_Template=>T("AddNewPageStep1.DialogLabelFormat");
 ///<summary>&quot;Add New {0}&quot;</summary> 
 public static string AddNewPageStep1_DialogLabelFormat(object parameter0)=>string.Format(T("AddNewPageStep1.DialogLabelFormat"), parameter0);
 ///<summary>&quot;General settings&quot;</summary> 
@@ -3570,6 +3867,8 @@ public static string EditPage_LabelUrlTitle=>T("EditPage.LabelUrlTitle");
 ///<summary>&quot;URL title was rewritten&quot;</summary> 
 public static string EditPage_UrlTitleFormattedTitle=>T("EditPage.UrlTitleFormattedTitle");
 ///<summary>&quot;According to the current URL replacement rules, URL title was changed to &apos;{0}&apos;&quot;</summary> 
+public static string EditPage_UrlTitleFormattedMessage_Template=>T("EditPage.UrlTitleFormattedMessage");
+///<summary>&quot;According to the current URL replacement rules, URL title was changed to &apos;{0}&apos;&quot;</summary> 
 public static string EditPage_UrlTitleFormattedMessage(object parameter0)=>string.Format(T("EditPage.UrlTitleFormattedMessage"), parameter0);
 ///<summary>&quot;The entry specified in this field is shown in the browser address bar as a part of the URL address. The field is used by search engines&quot;</summary> 
 public static string EditPage_HelpUrlTitle=>T("EditPage.HelpUrlTitle");
@@ -3590,6 +3889,8 @@ public static string EditPage_PageTypeSelectorLabel=>T("EditPage.PageTypeSelecto
 ///<summary>&quot;The page type selection defines the role of the page, like &apos;a normal page&apos; or &apos;a blog&apos;. The options available depend on features installed.&quot;</summary> 
 public static string EditPage_PageTypeSelectorHelp=>T("EditPage.PageTypeSelectorHelp");
 ///<summary>&quot;{0} characters maximum&quot;</summary> 
+public static string EditPage_MaxLength_Template=>T("EditPage.MaxLength");
+///<summary>&quot;{0} characters maximum&quot;</summary> 
 public static string EditPage_MaxLength(object parameter0)=>string.Format(T("EditPage.MaxLength"), parameter0);
 ///<summary>&quot;Delete page?&quot;</summary> 
 public static string DeletePage_LabelFieldGroup=>T("DeletePage.LabelFieldGroup");
@@ -3597,6 +3898,8 @@ public static string DeletePage_LabelFieldGroup=>T("DeletePage.LabelFieldGroup")
 public static string DeletePageStep1_Title=>T("DeletePageStep1.Title");
 ///<summary>&quot;All subpages will also be deleted. Continue?&quot;</summary> 
 public static string DeletePageStep1_Description=>T("DeletePageStep1.Description");
+///<summary>&quot;Delete page &apos;{0}&apos;?&quot;</summary> 
+public static string DeletePageStep2_Text_Template=>T("DeletePageStep2.Text");
 ///<summary>&quot;Delete page &apos;{0}&apos;?&quot;</summary> 
 public static string DeletePageStep2_Text(object parameter0)=>string.Format(T("DeletePageStep2.Text"), parameter0);
 ///<summary>&quot;Another page is using the specified URL title. URL titles must be unique among pages with the same parent.&quot;</summary> 
@@ -3619,6 +3922,8 @@ public static string PageElementProvider_RootLabel=>T("PageElementProvider.RootL
 public static string PageElementProvider_RootLabelToolTip=>T("PageElementProvider.RootLabelToolTip");
 ///<summary>&quot;Add Website&quot;</summary> 
 public static string PageElementProvider_AddPageAtRoot=>T("PageElementProvider.AddPageAtRoot");
+///<summary>&quot;Add {0}&quot;</summary> 
+public static string PageElementProvider_AddPageAtRootFormat_Template=>T("PageElementProvider.AddPageAtRootFormat");
 ///<summary>&quot;Add {0}&quot;</summary> 
 public static string PageElementProvider_AddPageAtRootFormat(object parameter0)=>string.Format(T("PageElementProvider.AddPageAtRootFormat"), parameter0);
 ///<summary>&quot;Add new homepage&quot;</summary> 
@@ -3649,6 +3954,8 @@ public static string PageElementProvider_LocalizePage=>T("PageElementProvider.Lo
 public static string PageElementProvider_LocalizePageToolTip=>T("PageElementProvider.LocalizePageToolTip");
 ///<summary>&quot;Add page&quot;</summary> 
 public static string PageElementProvider_AddSubPage=>T("PageElementProvider.AddSubPage");
+///<summary>&quot;Add {0}&quot;</summary> 
+public static string PageElementProvider_AddSubPageFormat_Template=>T("PageElementProvider.AddSubPageFormat");
 ///<summary>&quot;Add {0}&quot;</summary> 
 public static string PageElementProvider_AddSubPageFormat(object parameter0)=>string.Format(T("PageElementProvider.AddSubPageFormat"), parameter0);
 ///<summary>&quot;Add new page below the selected&quot;</summary> 
@@ -3747,10 +4054,7 @@ public static string ViewUnpublishedItems_DateModifiedLabel=>T("ViewUnpublishedI
 public static string ViewUnpublishedItems_PublishConfirmTitle=>T("ViewUnpublishedItems.PublishConfirmTitle");
 ///<summary>&quot;You are about to publish these pages. Continue?&quot;</summary> 
 public static string ViewUnpublishedItems_PublishConfirmText=>T("ViewUnpublishedItems.PublishConfirmText");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", key);
 } 
 
     /// <exclude />
@@ -3807,7 +4111,11 @@ public static string EditXmlPageTemplate_LabelTemplateTitleHelp=>T("EditXmlPageT
 ///<summary>&quot;Unable to Save Template&quot;</summary> 
 public static string EditXmlPageTemplateWorkflow_InvalidXmlTitle=>T("EditXmlPageTemplateWorkflow.InvalidXmlTitle");
 ///<summary>&quot;The page template markup did not validate. {0}&quot;</summary> 
+public static string EditXmlPageTemplateWorkflow_InvalidXmlMessage_Template=>T("EditXmlPageTemplateWorkflow.InvalidXmlMessage");
+///<summary>&quot;The page template markup did not validate. {0}&quot;</summary> 
 public static string EditXmlPageTemplateWorkflow_InvalidXmlMessage(object parameter0)=>string.Format(T("EditXmlPageTemplateWorkflow.InvalidXmlMessage"), parameter0);
+///<summary>&quot;Cannot rename a template - the file with the name &apos;{0}&apos; already exists.&quot;</summary> 
+public static string EditXmlPageTemplateWorkflow_CannotRenameFileExists_Template=>T("EditXmlPageTemplateWorkflow.CannotRenameFileExists");
 ///<summary>&quot;Cannot rename a template - the file with the name &apos;{0}&apos; already exists.&quot;</summary> 
 public static string EditXmlPageTemplateWorkflow_CannotRenameFileExists(object parameter0)=>string.Format(T("EditXmlPageTemplateWorkflow.CannotRenameFileExists"), parameter0);
 ///<summary>&quot;Title already used&quot;</summary> 
@@ -3821,7 +4129,11 @@ public static string DeletePageTemplateWorkflow_CascadeDeleteErrorTitle=>T("Dele
 ///<summary>&quot;The type is referenced by another type that does not allow cascade deletes. This operation is halted.&quot;</summary> 
 public static string DeletePageTemplateWorkflow_CascadeDeleteErrorMessage=>T("DeletePageTemplateWorkflow.CascadeDeleteErrorMessage");
 ///<summary>&quot;There are {0} page[s] referencing this template: {1}&quot;</summary> 
+public static string DeletePageTemplateWorkflow_PageReference_Template=>T("DeletePageTemplateWorkflow.PageReference");
+///<summary>&quot;There are {0} page[s] referencing this template: {1}&quot;</summary> 
 public static string DeletePageTemplateWorkflow_PageReference(object parameter0,object parameter1)=>string.Format(T("DeletePageTemplateWorkflow.PageReference"), parameter0,parameter1);
+///<summary>&quot;There are {0} page type[s] referencing this template: {1}&quot;</summary> 
+public static string DeletePageTemplateWorkflow_PageTypeReference_Template=>T("DeletePageTemplateWorkflow.PageTypeReference");
 ///<summary>&quot;There are {0} page type[s] referencing this template: {1}&quot;</summary> 
 public static string DeletePageTemplateWorkflow_PageTypeReference(object parameter0,object parameter1)=>string.Format(T("DeletePageTemplateWorkflow.PageTypeReference"), parameter0,parameter1);
 ///<summary>&quot;Add New Page Template&quot;</summary> 
@@ -3836,10 +4148,7 @@ public static string AddNewPageTemplate_TemplateType_Razor=>T("AddNewPageTemplat
 public static string AddNewPageTemplate_TemplateType_MasterPage=>T("AddNewPageTemplate.TemplateType.MasterPage");
 ///<summary>&quot;XML&quot;</summary> 
 public static string AddNewPageTemplate_TemplateType_XML=>T("AddNewPageTemplate.TemplateType.XML");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Plugins.PageTemplateElementProvider", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Plugins.PageTemplateElementProvider", key);
 } 
 
     /// <exclude />
@@ -3889,10 +4198,7 @@ public static string AddWorkflow_NameNotValidInFilename=>T("AddWorkflow.NameNotV
 public static string DeleteWorkflow_Title=>T("DeleteWorkflow.Title");
 ///<summary>&quot;If this feature is in use by page templates, this action could lead to errors.&quot;</summary> 
 public static string DeleteWorkflow_Text=>T("DeleteWorkflow.Text");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Plugins.PageTemplateFeatureElementProvider", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Plugins.PageTemplateFeatureElementProvider", key);
 } 
 
     /// <exclude />
@@ -4031,9 +4337,13 @@ public static string PageType_EditPageTypeWorkflow_ValidationError_HomepageRelat
 ///<summary>&quot;Delete This Page Type?&quot;</summary> 
 public static string PageType_DeletePageTypeWorkflow_Confirm_Layout_Label=>T("PageType.DeletePageTypeWorkflow.Confirm.Layout.Label");
 ///<summary>&quot;Delete the page type {0}?&quot;</summary> 
+public static string PageType_DeletePageTypeWorkflow_Confirm_Layout_Messeage_Template=>T("PageType.DeletePageTypeWorkflow.Confirm.Layout.Messeage");
+///<summary>&quot;Delete the page type {0}?&quot;</summary> 
 public static string PageType_DeletePageTypeWorkflow_Confirm_Layout_Messeage(object parameter0)=>string.Format(T("PageType.DeletePageTypeWorkflow.Confirm.Layout.Messeage"), parameter0);
 ///<summary>&quot;Page Type in Use&quot;</summary> 
 public static string PageType_DeletePageTypeWorkflow_PagesRefering_Layout_Label=>T("PageType.DeletePageTypeWorkflow.PagesRefering.Layout.Label");
+///<summary>&quot;The page type {0} is in use and it is not possible to delete it&quot;</summary> 
+public static string PageType_DeletePageTypeWorkflow_PagesRefering_Layout_Message_Template=>T("PageType.DeletePageTypeWorkflow.PagesRefering.Layout.Message");
 ///<summary>&quot;The page type {0} is in use and it is not possible to delete it&quot;</summary> 
 public static string PageType_DeletePageTypeWorkflow_PagesRefering_Layout_Message(object parameter0)=>string.Format(T("PageType.DeletePageTypeWorkflow.PagesRefering.Layout.Message"), parameter0);
 ///<summary>&quot;Add Default Content&quot;</summary> 
@@ -4043,19 +4353,27 @@ public static string PageType_AddPageTypeDefaultPageContentWorkflow_PlaceHolderI
 ///<summary>&quot;The ID of the placeholder. You can write a non-existing ID and create the placeholder afterwards (by editing Page Template markup).&quot;</summary> 
 public static string PageType_AddPageTypeDefaultPageContentWorkflow_PlaceHolderIdTextBox_Help=>T("PageType.AddPageTypeDefaultPageContentWorkflow.PlaceHolderIdTextBox.Help");
 ///<summary>&quot;No templates with {0}&quot;</summary> 
+public static string PageType_AddPageTypeDefaultPageContentWorkflow_NonExistingPlaceholderId_Title_Template=>T("PageType.AddPageTypeDefaultPageContentWorkflow.NonExistingPlaceholderId.Title");
+///<summary>&quot;No templates with {0}&quot;</summary> 
 public static string PageType_AddPageTypeDefaultPageContentWorkflow_NonExistingPlaceholderId_Title(object parameter0)=>string.Format(T("PageType.AddPageTypeDefaultPageContentWorkflow.NonExistingPlaceholderId.Title"), parameter0);
+///<summary>&quot;Please note that the Placeholder ID you specified &apos;{0}&apos;, is currently not in any Layout Template.&quot;</summary> 
+public static string PageType_AddPageTypeDefaultPageContentWorkflow_NonExistingPlaceholderId_Message_Template=>T("PageType.AddPageTypeDefaultPageContentWorkflow.NonExistingPlaceholderId.Message");
 ///<summary>&quot;Please note that the Placeholder ID you specified &apos;{0}&apos;, is currently not in any Layout Template.&quot;</summary> 
 public static string PageType_AddPageTypeDefaultPageContentWorkflow_NonExistingPlaceholderId_Message(object parameter0)=>string.Format(T("PageType.AddPageTypeDefaultPageContentWorkflow.NonExistingPlaceholderId.Message"), parameter0);
 ///<summary>&quot;Edit default content&quot;</summary> 
 public static string PageType_EditPageTypeDefaultPageContentWorkflow_Layout_Label=>T("PageType.EditPageTypeDefaultPageContentWorkflow.Layout.Label");
 ///<summary>&quot;Settings&quot;</summary> 
 public static string PageType_EditPageTypeDefaultPageContentWorkflow_SettingsPlaceHolder_Label=>T("PageType.EditPageTypeDefaultPageContentWorkflow.SettingsPlaceHolder.Label");
-///<summary>&quot;Placeholder Info&quot;</summary> 
+///<summary>&quot;Placeholder Settings&quot;</summary> 
 public static string PageType_EditPageTypeDefaultPageContentWorkflow_SettingsFieldGroup_Label=>T("PageType.EditPageTypeDefaultPageContentWorkflow.SettingsFieldGroup.Label");
 ///<summary>&quot;Placeholder ID&quot;</summary> 
 public static string PageType_EditPageTypeDefaultPageContentWorkflow_PlaceHolderIdTextBox_Label=>T("PageType.EditPageTypeDefaultPageContentWorkflow.PlaceHolderIdTextBox.Label");
 ///<summary>&quot;The ID of the placeholder. You can write a non-existing ID and create the placeholder afterwards (edit Page Template markup).&quot;</summary> 
 public static string PageType_EditPageTypeDefaultPageContentWorkflow_PlaceHolderIdTextBox_Help=>T("PageType.EditPageTypeDefaultPageContentWorkflow.PlaceHolderIdTextBox.Help");
+///<summary>&quot;Container Classes&quot;</summary> 
+public static string PageType_EditPageTypeDefaultPageContentWorkflow_PlaceHolderContainerClassesTextBox_Label=>T("PageType.EditPageTypeDefaultPageContentWorkflow.PlaceHolderContainerClassesTextBox.Label");
+///<summary>&quot;Extra &apos;Container Classes&apos; to add to this placeholder when user is editing this type of page. Container classes let you style the editor and control which components can be added.&quot;</summary> 
+public static string PageType_EditPageTypeDefaultPageContentWorkflow_PlaceHolderContainerClassesTextBox_Help=>T("PageType.EditPageTypeDefaultPageContentWorkflow.PlaceHolderContainerClassesTextBox.Help");
 ///<summary>&quot;Content&quot;</summary> 
 public static string PageType_EditPageTypeDefaultPageContentWorkflow_ContentXhtmlEditor_Label=>T("PageType.EditPageTypeDefaultPageContentWorkflow.ContentXhtmlEditor.Label");
 ///<summary>&quot;Add Metadata Field&quot;</summary> 
@@ -4085,6 +4403,8 @@ public static string PageType_AddPageTypeMetaDataFieldWorkflow_ValidationError_M
 ///<summary>&quot;Delete This Metadata Field?&quot;</summary> 
 public static string PageType_DeletePageTypeMetaDataFieldWorkflow_Confirm_Layout_Label=>T("PageType.DeletePageTypeMetaDataFieldWorkflow.Confirm.Layout.Label");
 ///<summary>&quot;Delete the Metadata field {0}? Warning: all its existing Metadata items will also be deleted&quot;</summary> 
+public static string PageType_DeletePageTypeMetaDataFieldWorkflow_Confirm_Layout_Message_Template=>T("PageType.DeletePageTypeMetaDataFieldWorkflow.Confirm.Layout.Message");
+///<summary>&quot;Delete the Metadata field {0}? Warning: all its existing Metadata items will also be deleted&quot;</summary> 
 public static string PageType_DeletePageTypeMetaDataFieldWorkflow_Confirm_Layout_Message(object parameter0)=>string.Format(T("PageType.DeletePageTypeMetaDataFieldWorkflow.Confirm.Layout.Message"), parameter0);
 ///<summary>&quot;Edit Metadata Field&quot;</summary> 
 public static string PageType_EditPageTypeMetaDataFieldWorkflow_Layout_Label=>T("PageType.EditPageTypeMetaDataFieldWorkflow.Layout.Label");
@@ -4110,10 +4430,7 @@ public static string PageType_EditPageTypeMetaDataFieldWorkflow_ValidationError_
 public static string PageType_EditPageTypeMetaDataFieldWorkflow_ValidationError_MetaDataTypeNotExisting_Title=>T("PageType.EditPageTypeMetaDataFieldWorkflow.ValidationError.MetaDataTypeNotExisting.Title");
 ///<summary>&quot;The Metadata type has been deleted from the system and can no longer be added to any page types&quot;</summary> 
 public static string PageType_EditPageTypeMetaDataFieldWorkflow_ValidationError_MetaDataTypeNotExisting_Message=>T("PageType.EditPageTypeMetaDataFieldWorkflow.ValidationError.MetaDataTypeNotExisting.Message");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Plugins.PageTypeElementProvider", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Plugins.PageTypeElementProvider", key);
 } 
 
     /// <exclude />
@@ -4164,17 +4481,18 @@ public static string AddNewRazorFunctionWorkflow_TotalNameTooLang=>T("AddNewRazo
 ///<summary>&quot;Validation Error&quot;</summary> 
 public static string EditRazorFunctionWorkflow_Validation_DialogTitle=>T("EditRazorFunctionWorkflow.Validation.DialogTitle");
 ///<summary>&quot;Compilation failed: {0}&quot;</summary> 
+public static string EditRazorFunctionWorkflow_Validation_CompilationFailed_Template=>T("EditRazorFunctionWorkflow.Validation.CompilationFailed");
+///<summary>&quot;Compilation failed: {0}&quot;</summary> 
 public static string EditRazorFunctionWorkflow_Validation_CompilationFailed(object parameter0)=>string.Format(T("EditRazorFunctionWorkflow.Validation.CompilationFailed"), parameter0);
+///<summary>&quot;Razor function should inherit &apos;{0}&apos;&quot;</summary> 
+public static string EditRazorFunctionWorkflow_Validation_IncorrectBaseClass_Template=>T("EditRazorFunctionWorkflow.Validation.IncorrectBaseClass");
 ///<summary>&quot;Razor function should inherit &apos;{0}&apos;&quot;</summary> 
 public static string EditRazorFunctionWorkflow_Validation_IncorrectBaseClass(object parameter0)=>string.Format(T("EditRazorFunctionWorkflow.Validation.IncorrectBaseClass"), parameter0);
 ///<summary>&quot;Delete Razor Function?&quot;</summary> 
 public static string DeleteRazorFunctionWorkflow_ConfirmDeleteTitle=>T("DeleteRazorFunctionWorkflow.ConfirmDeleteTitle");
 ///<summary>&quot;Delete the selected Razor function?&quot;</summary> 
 public static string DeleteRazorFunctionWorkflow_ConfirmDeleteMessage=>T("DeleteRazorFunctionWorkflow.ConfirmDeleteMessage");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Plugins.RazorFunction", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Plugins.RazorFunction", key);
 } 
 
     /// <exclude />
@@ -4211,17 +4529,22 @@ public static string AddNewRazorPageTemplateWorkflow_TitleTooLong=>T("AddNewRazo
 ///<summary>&quot;Validation error&quot;</summary> 
 public static string EditTemplate_Validation_DialogTitle=>T("EditTemplate.Validation.DialogTitle");
 ///<summary>&quot;Compilation failed: {0}&quot;</summary> 
+public static string EditTemplate_Validation_CompilationFailed_Template=>T("EditTemplate.Validation.CompilationFailed");
+///<summary>&quot;Compilation failed: {0}&quot;</summary> 
 public static string EditTemplate_Validation_CompilationFailed(object parameter0)=>string.Format(T("EditTemplate.Validation.CompilationFailed"), parameter0);
+///<summary>&quot;Page template class does not inherit &apos;{0}&apos;&quot;</summary> 
+public static string EditTemplate_Validation_IncorrectBaseClass_Template=>T("EditTemplate.Validation.IncorrectBaseClass");
 ///<summary>&quot;Page template class does not inherit &apos;{0}&apos;&quot;</summary> 
 public static string EditTemplate_Validation_IncorrectBaseClass(object parameter0)=>string.Format(T("EditTemplate.Validation.IncorrectBaseClass"), parameter0);
 ///<summary>&quot;Failed to evaluate page template property &apos;{0}&apos;. Excepton: {1}&quot;</summary> 
+public static string EditTemplate_Validation_PropertyError_Template=>T("EditTemplate.Validation.PropertyError");
+///<summary>&quot;Failed to evaluate page template property &apos;{0}&apos;. Excepton: {1}&quot;</summary> 
 public static string EditTemplate_Validation_PropertyError(object parameter0,object parameter1)=>string.Format(T("EditTemplate.Validation.PropertyError"), parameter0,parameter1);
 ///<summary>&quot;It is not allowed to change template id through current workflow. Original template id is &apos;{0}&apos;&quot;</summary> 
+public static string EditTemplate_Validation_TemplateIdChanged_Template=>T("EditTemplate.Validation.TemplateIdChanged");
+///<summary>&quot;It is not allowed to change template id through current workflow. Original template id is &apos;{0}&apos;&quot;</summary> 
 public static string EditTemplate_Validation_TemplateIdChanged(object parameter0)=>string.Format(T("EditTemplate.Validation.TemplateIdChanged"), parameter0);
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Plugins.RazorPageTemplate", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Plugins.RazorPageTemplate", key);
 } 
 
     /// <exclude />
@@ -4347,10 +4670,7 @@ public static string DeleteSqlFunction_Text=>T("DeleteSqlFunction.Text");
 public static string CascadeDeleteErrorTitle=>T("CascadeDeleteErrorTitle");
 ///<summary>&quot;The type is referenced by another type that does not allow cascade deletes. This operation is halted&quot;</summary> 
 public static string CascadeDeleteErrorMessage=>T("CascadeDeleteErrorMessage");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Plugins.SqlFunction", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Plugins.SqlFunction", key);
 } 
 
     /// <exclude />
@@ -4876,7 +5196,7 @@ public static string Composite_Web_Html_Template_CommonMetaTags_param_Designer_l
 public static string Composite_Web_Html_Template_CommonMetaTags_param_Designer_help=>T("Composite.Web.Html.Template.CommonMetaTags.param.Designer.help");
 ///<summary>&quot;Show generator&quot;</summary> 
 public static string Composite_Web_Html_Template_CommonMetaTags_param_ShowGenerator_label=>T("Composite.Web.Html.Template.CommonMetaTags.param.ShowGenerator.label");
-///<summary>&quot;Show the world you support Orckestra CMS Foundation - free open source!&quot;</summary> 
+///<summary>&quot;Show the world you support C1 CMS Foundation - free open source!&quot;</summary> 
 public static string Composite_Web_Html_Template_CommonMetaTags_param_ShowGenerator_help=>T("Composite.Web.Html.Template.CommonMetaTags.param.ShowGenerator.help");
 ///<summary>&quot;Appends a lang=&apos;(language code)&apos; attribute the the parent element, reflecting the language of the current page. You can put this just below the &lt;html /&gt; tag.&quot;</summary> 
 public static string Composite_Web_Html_Template_LangAttribute_description=>T("Composite.Web.Html.Template.LangAttribute.description");
@@ -5258,10 +5578,7 @@ public static string Composite_Utils_Dictionary_EnumerableToDictionary_param_Key
 public static string Composite_Utils_Dictionary_EnumerableToDictionary_param_ValuePropertyName_label=>T("Composite.Utils.Dictionary.EnumerableToDictionary.param.ValuePropertyName.label");
 ///<summary>&quot;The name of the property on each object which value will be used for values in the dictionary.&quot;</summary> 
 public static string Composite_Utils_Dictionary_EnumerableToDictionary_param_ValuePropertyName_help=>T("Composite.Utils.Dictionary.EnumerableToDictionary.param.ValuePropertyName.help");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Plugins.StandardFunctions", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Plugins.StandardFunctions", key);
 } 
 
     /// <exclude />
@@ -5523,10 +5840,7 @@ public static string TimezoneAbbreviations_Tonga_Standard_Time=>T("TimezoneAbbre
 public static string TimezoneAbbreviations_Samoa_Standard_Time=>T("TimezoneAbbreviations.Samoa Standard Time");
 ///<summary>&quot;LINT&quot;</summary> 
 public static string TimezoneAbbreviations_Line_Islands_Standard_Time=>T("TimezoneAbbreviations.Line Islands Standard Time");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Plugins.TimezoneAbbreviations", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Plugins.TimezoneAbbreviations", key);
 } 
 
     /// <exclude />
@@ -5794,10 +6108,7 @@ public static string TimezoneDisplayName_Tonga_Standard_Time=>T("TimezoneDisplay
 public static string TimezoneDisplayName_Samoa_Standard_Time=>T("TimezoneDisplayName.Samoa Standard Time");
 ///<summary>&quot;(UTC+14:00) Kiritimati Island&quot;</summary> 
 public static string TimezoneDisplayName_Line_Islands_Standard_Time=>T("TimezoneDisplayName.Line Islands Standard Time");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Plugins.TimezoneDisplayNames", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Plugins.TimezoneDisplayNames", key);
 } 
 
     /// <exclude />
@@ -5848,17 +6159,18 @@ public static string AddNewUserControlFunctionWorkflow_TotalNameTooLang=>T("AddN
 ///<summary>&quot;Validation Error&quot;</summary> 
 public static string EditUserControlFunctionWorkflow_Validation_DialogTitle=>T("EditUserControlFunctionWorkflow.Validation.DialogTitle");
 ///<summary>&quot;Compilation failed: {0}&quot;</summary> 
+public static string EditUserControlFunctionWorkflow_Validation_CompilationFailed_Template=>T("EditUserControlFunctionWorkflow.Validation.CompilationFailed");
+///<summary>&quot;Compilation failed: {0}&quot;</summary> 
 public static string EditUserControlFunctionWorkflow_Validation_CompilationFailed(object parameter0)=>string.Format(T("EditUserControlFunctionWorkflow.Validation.CompilationFailed"), parameter0);
+///<summary>&quot;The User Control function should inherit &apos;{0}&apos;&quot;</summary> 
+public static string EditUserControlFunctionWorkflow_Validation_IncorrectBaseClass_Template=>T("EditUserControlFunctionWorkflow.Validation.IncorrectBaseClass");
 ///<summary>&quot;The User Control function should inherit &apos;{0}&apos;&quot;</summary> 
 public static string EditUserControlFunctionWorkflow_Validation_IncorrectBaseClass(object parameter0)=>string.Format(T("EditUserControlFunctionWorkflow.Validation.IncorrectBaseClass"), parameter0);
 ///<summary>&quot;Delete User Control Function?&quot;</summary> 
 public static string DeleteUserControlFunctionWorkflow_ConfirmDeleteTitle=>T("DeleteUserControlFunctionWorkflow.ConfirmDeleteTitle");
 ///<summary>&quot;Delete the selected User Control?&quot;</summary> 
 public static string DeleteUserControlFunctionWorkflow_ConfirmDeleteMessage=>T("DeleteUserControlFunctionWorkflow.ConfirmDeleteMessage");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Plugins.UserControlFunction", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Plugins.UserControlFunction", key);
 } 
 
     /// <exclude />
@@ -5916,10 +6228,7 @@ public static string DeleteUserGroup_DeleteUserGroupInitialStep_UserGroupHasUser
 public static string DeleteUserGroup_DeleteUserGroupStep1_LabelFieldGroup=>T("DeleteUserGroup.DeleteUserGroupStep1.LabelFieldGroup");
 ///<summary>&quot;Delete the selected user group?&quot;</summary> 
 public static string DeleteUserGroup_DeleteUserGroupStep1_Text=>T("DeleteUserGroup.DeleteUserGroupStep1.Text");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Plugins.UserGroupElementProvider", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Plugins.UserGroupElementProvider", key);
 } 
 
     /// <exclude />
@@ -6049,10 +6358,7 @@ public static string VisualFunctionElementProviderHelper_EditToolTip=>T("VisualF
 public static string VisualFunctionElementProviderHelper_DeleteLabel=>T("VisualFunctionElementProviderHelper.DeleteLabel");
 ///<summary>&quot;Delete visual function&quot;</summary> 
 public static string VisualFunctionElementProviderHelper_DeleteToolTip=>T("VisualFunctionElementProviderHelper.DeleteToolTip");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Plugins.VisualFunction", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Plugins.VisualFunction", key);
 } 
 
     /// <exclude />
@@ -6119,6 +6425,8 @@ public static string UploadAndExtractZipFile_OverwriteExistingHelp=>T("UploadAnd
 ///<summary>&quot;Overwrite existing files&quot;</summary> 
 public static string UploadAndExtractZipFile_OverwriteExistingItemLabel=>T("UploadAndExtractZipFile.OverwriteExistingItemLabel");
 ///<summary>&quot;File &apos;{0}&apos; exists both in the zip and on the website. Choose to overwrite files to complete this action&quot;</summary> 
+public static string UploadAndExtractZipFile_FileExistsError_Template=>T("UploadAndExtractZipFile.FileExistsError");
+///<summary>&quot;File &apos;{0}&apos; exists both in the zip and on the website. Choose to overwrite files to complete this action&quot;</summary> 
 public static string UploadAndExtractZipFile_FileExistsError(object parameter0)=>string.Format(T("UploadAndExtractZipFile.FileExistsError"), parameter0);
 ///<summary>&quot;No file was uploaded&quot;</summary> 
 public static string UploadAndExtractZipFile_FileNotUploaded=>T("UploadAndExtractZipFile.FileNotUploaded");
@@ -6128,6 +6436,8 @@ public static string UploadAndExtractZipFile_NotZip=>T("UploadAndExtractZipFile.
 public static string UploadAndExtractZipFile_ErrorDialogLabel=>T("UploadAndExtractZipFile.ErrorDialogLabel");
 ///<summary>&quot;Upload failed unexpectedly. Please see log for details&quot;</summary> 
 public static string UploadAndExtractZipFile_UnexpectedError=>T("UploadAndExtractZipFile.UnexpectedError");
+///<summary>&quot;Existing file &apos;{0}&apos; is marked as read only. No files were uploaded&quot;</summary> 
+public static string UploadAndExtractZipFile_ExistingFileReadOnly_Template=>T("UploadAndExtractZipFile.ExistingFileReadOnly");
 ///<summary>&quot;Existing file &apos;{0}&apos; is marked as read only. No files were uploaded&quot;</summary> 
 public static string UploadAndExtractZipFile_ExistingFileReadOnly(object parameter0)=>string.Format(T("UploadAndExtractZipFile.ExistingFileReadOnly"), parameter0);
 ///<summary>&quot;New Folder&quot;</summary> 
@@ -6159,11 +6469,19 @@ public static string UploadWebsiteFileTitle=>T("UploadWebsiteFileTitle");
 ///<summary>&quot;Upload file&quot;</summary> 
 public static string UploadWebsiteFileToolTip=>T("UploadWebsiteFileToolTip");
 ///<summary>&quot;Show in &quot;{0}&quot;&quot;</summary> 
+public static string AddFolderToWhiteListTitle_Template=>T("AddFolderToWhiteListTitle");
+///<summary>&quot;Show in &quot;{0}&quot;&quot;</summary> 
 public static string AddFolderToWhiteListTitle(object parameter0)=>string.Format(T("AddFolderToWhiteListTitle"), parameter0);
+///<summary>&quot;Control if this folder should be visible in &quot;{0}&quot;&quot;</summary> 
+public static string AddFolderToWhiteListToolTip_Template=>T("AddFolderToWhiteListToolTip");
 ///<summary>&quot;Control if this folder should be visible in &quot;{0}&quot;&quot;</summary> 
 public static string AddFolderToWhiteListToolTip(object parameter0)=>string.Format(T("AddFolderToWhiteListToolTip"), parameter0);
 ///<summary>&quot;Show in &quot;{0}&quot;&quot;</summary> 
+public static string RemoveFolderFromWhiteListTitle_Template=>T("RemoveFolderFromWhiteListTitle");
+///<summary>&quot;Show in &quot;{0}&quot;&quot;</summary> 
 public static string RemoveFolderFromWhiteListTitle(object parameter0)=>string.Format(T("RemoveFolderFromWhiteListTitle"), parameter0);
+///<summary>&quot;Control if this folder should be visible in &quot;{0}&quot;&quot;</summary> 
+public static string RemoveFolderFromWhiteListToolTip_Template=>T("RemoveFolderFromWhiteListToolTip");
 ///<summary>&quot;Control if this folder should be visible in &quot;{0}&quot;&quot;</summary> 
 public static string RemoveFolderFromWhiteListToolTip(object parameter0)=>string.Format(T("RemoveFolderFromWhiteListToolTip"), parameter0);
 ///<summary>&quot;Error&quot;</summary> 
@@ -6174,10 +6492,7 @@ public static string DeleteWebsiteFileWorkflow_DeleteErrorMessage=>T("DeleteWebs
 public static string DeleteWebsiteFolderWorkflow_DeleteErrorTitle=>T("DeleteWebsiteFolderWorkflow.DeleteErrorTitle");
 ///<summary>&quot;Could not delete the folder&quot;</summary> 
 public static string DeleteWebsiteFolderWorkflow_DeleteErrorMessage=>T("DeleteWebsiteFolderWorkflow.DeleteErrorMessage");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Plugins.WebsiteFileElementProvider", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Plugins.WebsiteFileElementProvider", key);
 } 
 
     /// <exclude />
@@ -6225,6 +6540,8 @@ public static string EditXsltFunctionWorkflow_InvalidNamespace=>T("EditXsltFunct
 public static string EditXsltFunctionWorkflow_InvalidFileName=>T("EditXsltFunctionWorkflow.InvalidFileName");
 ///<summary>&quot;Invalid function name&quot;</summary> 
 public static string EditXsltFunctionWorkflow_InvalidName=>T("EditXsltFunctionWorkflow.InvalidName");
+///<summary>&quot;Cannot rename the function, file &apos;{0}&apos; already exists.&quot;</summary> 
+public static string EditXsltFunctionWorkflow_CannotRenameFileExists_Template=>T("EditXsltFunctionWorkflow.CannotRenameFileExists");
 ///<summary>&quot;Cannot rename the function, file &apos;{0}&apos; already exists.&quot;</summary> 
 public static string EditXsltFunctionWorkflow_CannotRenameFileExists(object parameter0)=>string.Format(T("EditXsltFunctionWorkflow.CannotRenameFileExists"), parameter0);
 ///<summary>&quot;The total length of the name and the namespace is too long (used to name the XSL file).&quot;</summary> 
@@ -6311,11 +6628,79 @@ public static string EditXsltFunctionWorkflow_MissingActiveLanguageMessage=>T("E
 public static string EditXsltFunctionWorkflow_MissingPageTitle=>T("EditXsltFunctionWorkflow.MissingPageTitle");
 ///<summary>&quot;To edit a XSLT function at least one page has to be added.&quot;</summary> 
 public static string EditXsltFunctionWorkflow_MissingPageMessage=>T("EditXsltFunctionWorkflow.MissingPageMessage");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Plugins.XsltBasedFunction", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Plugins.XsltBasedFunction", key);
 } 
+
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+	   public static class Composite_Search {
+///<summary>&quot;Search&quot;</summary> 
+public static string SearchPerspective_Label=>T("SearchPerspective.Label");
+///<summary>&quot;Search here...&quot;</summary> 
+public static string SearchPage_SearchHerePlaceholder=>T("SearchPage.SearchHerePlaceholder");
+///<summary>&quot;No results found for &apos;{0}&apos;&quot;</summary> 
+public static string SearchPage_NoResultFound_Template=>T("SearchPage.NoResultFound");
+///<summary>&quot;No results found for &apos;{0}&apos;&quot;</summary> 
+public static string SearchPage_NoResultFound(object parameter0)=>string.Format(T("SearchPage.NoResultFound"), parameter0);
+///<summary>&quot;1 result found for &apos;{0}&apos;&quot;</summary> 
+public static string SearchPage_SingleResultFound_Template=>T("SearchPage.SingleResultFound");
+///<summary>&quot;1 result found for &apos;{0}&apos;&quot;</summary> 
+public static string SearchPage_SingleResultFound(object parameter0)=>string.Format(T("SearchPage.SingleResultFound"), parameter0);
+///<summary>&quot;{1} results for &apos;{0}&apos;&quot;</summary> 
+public static string SearchPage_MultipleResultsFound_Template=>T("SearchPage.MultipleResultsFound");
+///<summary>&quot;{1} results for &apos;{0}&apos;&quot;</summary> 
+public static string SearchPage_MultipleResultsFound(object parameter0,object parameter1)=>string.Format(T("SearchPage.MultipleResultsFound"), parameter0,parameter1);
+///<summary>&quot;Page&quot;</summary> 
+public static string DataType_Page=>T("DataType.Page");
+///<summary>&quot;Media File&quot;</summary> 
+public static string DataType_MediaFile=>T("DataType.MediaFile");
+///<summary>&quot;Label&quot;</summary> 
+public static string FieldNames_Label=>T("FieldNames.Label");
+///<summary>&quot;Description&quot;</summary> 
+public static string FieldNames_Description=>T("FieldNames.Description");
+///<summary>&quot;Data Type&quot;</summary> 
+public static string FieldNames_DataType=>T("FieldNames.DataType");
+///<summary>&quot;Creation Date&quot;</summary> 
+public static string FieldNames_CreationDate=>T("FieldNames.CreationDate");
+///<summary>&quot;Created By&quot;</summary> 
+public static string FieldNames_CreatedBy=>T("FieldNames.CreatedBy");
+///<summary>&quot;Publication Status&quot;</summary> 
+public static string FieldNames_PublicationStatus=>T("FieldNames.PublicationStatus");
+///<summary>&quot;MIME Type&quot;</summary> 
+public static string FieldNames_MimeType=>T("FieldNames.MimeType");
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Search", key);
+/// <exclude />
+public static class Untranslated {
+///<summary>&quot;Search&quot;</summary>
+public const string SearchPerspective_Label="${Composite.Search,SearchPerspective.Label}";
+///<summary>&quot;Search here...&quot;</summary>
+public const string SearchPage_SearchHerePlaceholder="${Composite.Search,SearchPage.SearchHerePlaceholder}";
+///<summary>&quot;No results found for &apos;{0}&apos;&quot;</summary>
+public const string SearchPage_NoResultFound="${Composite.Search,SearchPage.NoResultFound}";
+///<summary>&quot;1 result found for &apos;{0}&apos;&quot;</summary>
+public const string SearchPage_SingleResultFound="${Composite.Search,SearchPage.SingleResultFound}";
+///<summary>&quot;{1} results for &apos;{0}&apos;&quot;</summary>
+public const string SearchPage_MultipleResultsFound="${Composite.Search,SearchPage.MultipleResultsFound}";
+///<summary>&quot;Page&quot;</summary>
+public const string DataType_Page="${Composite.Search,DataType.Page}";
+///<summary>&quot;Media File&quot;</summary>
+public const string DataType_MediaFile="${Composite.Search,DataType.MediaFile}";
+///<summary>&quot;Label&quot;</summary>
+public const string FieldNames_Label="${Composite.Search,FieldNames.Label}";
+///<summary>&quot;Description&quot;</summary>
+public const string FieldNames_Description="${Composite.Search,FieldNames.Description}";
+///<summary>&quot;Data Type&quot;</summary>
+public const string FieldNames_DataType="${Composite.Search,FieldNames.DataType}";
+///<summary>&quot;Creation Date&quot;</summary>
+public const string FieldNames_CreationDate="${Composite.Search,FieldNames.CreationDate}";
+///<summary>&quot;Created By&quot;</summary>
+public const string FieldNames_CreatedBy="${Composite.Search,FieldNames.CreatedBy}";
+///<summary>&quot;Publication Status&quot;</summary>
+public const string FieldNames_PublicationStatus="${Composite.Search,FieldNames.PublicationStatus}";
+///<summary>&quot;MIME Type&quot;</summary>
+public const string FieldNames_MimeType="${Composite.Search,FieldNames.MimeType}";
+
+}} 
 
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
@@ -6335,6 +6720,8 @@ public static string AddNewFunctionDialogLabel=>T("AddNewFunctionDialogLabel");
 ///<summary>&quot;Select Function&quot;</summary> 
 public static string SetNewFunctionDialogLabel=>T("SetNewFunctionDialogLabel");
 ///<summary>&quot;Value for parameter &apos;{0}&apos;&quot;</summary> 
+public static string ComplexFunctionCallDialogLabel_Template=>T("ComplexFunctionCallDialogLabel");
+///<summary>&quot;Value for parameter &apos;{0}&apos;&quot;</summary> 
 public static string ComplexFunctionCallDialogLabel(object parameter0)=>string.Format(T("ComplexFunctionCallDialogLabel"), parameter0);
 ///<summary>&quot;Parameter Type&quot;</summary> 
 public static string ParameterTypeLabel=>T("ParameterTypeLabel");
@@ -6345,9 +6732,15 @@ public static string ReturnTypeLabel=>T("ReturnTypeLabel");
 ///<summary>&quot;Validation failed&quot;</summary> 
 public static string ValidationFailedAlertTitle=>T("ValidationFailedAlertTitle");
 ///<summary>&quot;Function &apos;{0}&apos; does not exist.&quot;</summary> 
+public static string FunctionNotFound_Template=>T("FunctionNotFound");
+///<summary>&quot;Function &apos;{0}&apos; does not exist.&quot;</summary> 
 public static string FunctionNotFound(object parameter0)=>string.Format(T("FunctionNotFound"), parameter0);
 ///<summary>&quot;Required parameter &apos;{0}&apos; has not been defined.&quot;</summary> 
+public static string RequiredParameterNotDefined_Template=>T("RequiredParameterNotDefined");
+///<summary>&quot;Required parameter &apos;{0}&apos; has not been defined.&quot;</summary> 
 public static string RequiredParameterNotDefined(object parameter0)=>string.Format(T("RequiredParameterNotDefined"), parameter0);
+///<summary>&quot;Incorrect type cast. Parameter name: &apos;{0}&apos;, function name: &apos;{1}&apos;.&quot;</summary> 
+public static string IncorrectTypeCast_Template=>T("IncorrectTypeCast");
 ///<summary>&quot;Incorrect type cast. Parameter name: &apos;{0}&apos;, function name: &apos;{1}&apos;.&quot;</summary> 
 public static string IncorrectTypeCast(object parameter0,object parameter1)=>string.Format(T("IncorrectTypeCast"), parameter0,parameter1);
 ///<summary>&quot;Default&quot;</summary> 
@@ -6368,10 +6761,7 @@ public static string SetNewButtonLabel=>T("SetNewButtonLabel");
 public static string ToolBar_LabelSource=>T("ToolBar.LabelSource");
 ///<summary>&quot;Design&quot;</summary> 
 public static string ToolBar_LabelDesign=>T("ToolBar.LabelDesign");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Web.FormControl.FunctionCallsDesigner", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Web.FormControl.FunctionCallsDesigner", key);
 } 
 
     /// <exclude />
@@ -6451,10 +6841,7 @@ public static string SpaceInNameError=>T("SpaceInNameError");
 public static string NameEmptyError=>T("NameEmptyError");
 ///<summary>&quot;Another parameter uses this name. Parameter names must be unique.&quot;</summary> 
 public static string NameAlreadyInUseError=>T("NameAlreadyInUseError");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Web.FormControl.FunctionParameterDesigner", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Web.FormControl.FunctionParameterDesigner", key);
 } 
 
     /// <exclude />
@@ -6555,6 +6942,8 @@ public static string GroupByPriorityNone=>T("GroupByPriorityNone");
 ///<summary>&quot;Group by this field&quot;</summary> 
 public static string GroupByPriorityFirst=>T("GroupByPriorityFirst");
 ///<summary>&quot;Group as {0}. priority&quot;</summary> 
+public static string GroupByPriorityN_Template=>T("GroupByPriorityN");
+///<summary>&quot;Group as {0}. priority&quot;</summary> 
 public static string GroupByPriorityN(object parameter0)=>string.Format(T("GroupByPriorityN"), parameter0);
 ///<summary>&quot;You can specify that a field should be used to group data - this can improve readability when viewing long lists. Use priority when multiple fields are used for grouping.&quot;</summary> 
 public static string GroupByPriorityHelp=>T("GroupByPriorityHelp");
@@ -6567,7 +6956,11 @@ public static string TreeOrderingFirstAscending=>T("TreeOrderingFirstAscending")
 ///<summary>&quot;Order descending (Z-A)&quot;</summary> 
 public static string TreeOrderingFirstDescending=>T("TreeOrderingFirstDescending");
 ///<summary>&quot;Order {0}. ascending&quot;</summary> 
+public static string TreeOrderingNAscending_Template=>T("TreeOrderingNAscending");
+///<summary>&quot;Order {0}. ascending&quot;</summary> 
 public static string TreeOrderingNAscending(object parameter0)=>string.Format(T("TreeOrderingNAscending"), parameter0);
+///<summary>&quot;Order {0}. descending&quot;</summary> 
+public static string TreeOrderingNDescending_Template=>T("TreeOrderingNDescending");
 ///<summary>&quot;Order {0}. descending&quot;</summary> 
 public static string TreeOrderingNDescending(object parameter0)=>string.Format(T("TreeOrderingNDescending"), parameter0);
 ///<summary>&quot;You can specify that a field should be used to order data in the tree view - this can improve readability when a field is used to position elements on the website.&quot;</summary> 
@@ -6626,10 +7019,32 @@ public static string _512CharMax=>T("512CharMax");
 public static string _1024CharMax=>T("1024CharMax");
 ///<summary>&quot;Unlimited length&quot;</summary> 
 public static string Unlimited=>T("Unlimited");
+///<summary>&quot;Search&quot;</summary> 
+public static string SearchGroupLabel=>T("SearchGroupLabel");
+///<summary>&quot;Text Search&quot;</summary> 
+public static string Search_TextSearch=>T("Search.TextSearch");
+///<summary>&quot;Index text content&quot;</summary> 
+public static string Search_IndexText_Label=>T("Search.IndexText.Label");
+///<summary>&quot;When checked, the text content of the field will be searchable.&quot;</summary> 
+public static string Search_IndexText_Help=>T("Search.IndexText.Help");
+///<summary>&quot;Search Results&quot;</summary> 
+public static string Search_SearchResults=>T("Search.SearchResults");
+///<summary>&quot;Enable field preview&quot;</summary> 
+public static string Search_FieldPreview_Label=>T("Search.FieldPreview.Label");
+///<summary>&quot;When checked, the field will appear in the search results table as a column.&quot;</summary> 
+public static string Search_FieldPreview_Help=>T("Search.FieldPreview.Help");
+///<summary>&quot;Faceted Search&quot;</summary> 
+public static string Search_FacetedSearch=>T("Search.FacetedSearch");
+///<summary>&quot;Enable faceted search&quot;</summary> 
+public static string Search_Facet_Label=>T("Search.Facet.Label");
+///<summary>&quot;When checked, the field will appear in search results as a facet.&quot;</summary> 
+public static string Search_Facet_Help=>T("Search.Facet.Help");
 ///<summary>&quot;Decimal number format&quot;</summary> 
 public static string DecimalNumberFormat=>T("DecimalNumberFormat");
 ///<summary>&quot;1 decimal place&quot;</summary> 
 public static string _1DecimalPlace=>T("1DecimalPlace");
+///<summary>&quot;{0} decimal places&quot;</summary> 
+public static string nDecimalPlaces_Template=>T("nDecimalPlaces");
 ///<summary>&quot;{0} decimal places&quot;</summary> 
 public static string nDecimalPlaces(object parameter0)=>string.Format(T("nDecimalPlaces"), parameter0);
 ///<summary>&quot;Reference Type&quot;</summary> 
@@ -6650,10 +7065,7 @@ public static string NotAnOptionalTypeError=>T("NotAnOptionalTypeError");
 public static string NoWidgetSelected=>T("NoWidgetSelected");
 ///<summary>&quot;(no widget specified)&quot;</summary> 
 public static string NoWidgetSelectedLabel=>T("NoWidgetSelectedLabel");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Web.FormControl.TypeFieldDesigner", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Web.FormControl.TypeFieldDesigner", key);
 } 
 
     /// <exclude />
@@ -6707,10 +7119,7 @@ public static string AddressBar_Invalid_DialogText_InternalError=>T("AddressBar.
 public static string AddressBar_Invalid_DialogTitle_Default=>T("AddressBar.Invalid.DialogTitle.Default");
 ///<summary>&quot;An error prevents the URL from being loaded.&quot;</summary> 
 public static string AddressBar_Invalid_DialogText_Default=>T("AddressBar.Invalid.DialogText.Default");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Web.PageBrowser", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Web.PageBrowser", key);
 } 
 
     /// <exclude />
@@ -6748,10 +7157,7 @@ public static string NoKeywords=>T("NoKeywords");
 public static string IncorrectHtml=>T("IncorrectHtml");
 ///<summary>&quot;Add SEO word ...&quot;</summary> 
 public static string AddKeywordInputPlaceholder=>T("AddKeywordInputPlaceholder");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Web.SEOAssistant", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Web.SEOAssistant", key);
 } 
 
     /// <exclude />
@@ -6805,10 +7211,7 @@ public static string Insert_MediaURL_Label=>T("Insert.MediaURL.Label");
 public static string Insert_FrontendURL_Label=>T("Insert.FrontendURL.Label");
 ///<summary>&quot;Function Markup&quot;</summary> 
 public static string Insert_FunctionMarkup_Label=>T("Insert.FunctionMarkup.Label");
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Web.SourceEditor", key);
-        }
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Web.SourceEditor", key);
 } 
 
     /// <exclude />
@@ -7141,11 +7544,24 @@ public static string SpellCheck_InfoText=>T("SpellCheck.InfoText");
 ///<summary>&quot;Edit&quot;</summary> 
 public static string Function_Edit=>T("Function.Edit");
 ///<summary>&quot;Edit {0}&quot;</summary> 
+public static string LaunchButton_Label_Template=>T("LaunchButton.Label");
+///<summary>&quot;Edit {0}&quot;</summary> 
 public static string LaunchButton_Label(object parameter0)=>string.Format(T("LaunchButton.Label"), parameter0);
-     private static string T(string key) 
-       { 
-            return StringResourceSystemFacade.GetString("Composite.Web.VisualEditor", key);
-        }
+///<summary>&quot;Components&quot;</summary> 
+public static string Components_LaunchButton_Label=>T("Components.LaunchButton.Label");
+///<summary>&quot;Component...&quot;</summary> 
+public static string ContextMenu_LabelComponent=>T("ContextMenu.LabelComponent");
+///<summary>&quot;Select a component&quot;</summary> 
+public static string Components_Window_Headline=>T("Components.Window.Headline");
+///<summary>&quot;No selectable components&quot;</summary> 
+public static string Components_Window_NoItems=>T("Components.Window.NoItems");
+///<summary>&quot;Filter...&quot;</summary> 
+public static string Components_Window_DialogFilterPlaceholder=>T("Components.Window.DialogFilterPlaceholder");
+///<summary>&quot;OK&quot;</summary> 
+public static string Components_Window_Ok=>T("Components.Window.Ok");
+///<summary>&quot;Cancel&quot;</summary> 
+public static string Components_Window_Cancel=>T("Components.Window.Cancel");
+private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Web.VisualEditor", key);
 } 
 
 	}

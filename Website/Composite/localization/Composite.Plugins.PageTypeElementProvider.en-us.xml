@@ -76,9 +76,11 @@
   <string key="PageType.AddPageTypeDefaultPageContentWorkflow.NonExistingPlaceholderId.Message" value="Please note that the Placeholder ID you specified '{0}', is currently not in any Layout Template." />
   <string key="PageType.EditPageTypeDefaultPageContentWorkflow.Layout.Label" value="Edit default content" />
   <string key="PageType.EditPageTypeDefaultPageContentWorkflow.SettingsPlaceHolder.Label" value="Settings" />
-  <string key="PageType.EditPageTypeDefaultPageContentWorkflow.SettingsFieldGroup.Label" value="Placeholder Info" />
+  <string key="PageType.EditPageTypeDefaultPageContentWorkflow.SettingsFieldGroup.Label" value="Placeholder Settings" />
   <string key="PageType.EditPageTypeDefaultPageContentWorkflow.PlaceHolderIdTextBox.Label" value="Placeholder ID" />
   <string key="PageType.EditPageTypeDefaultPageContentWorkflow.PlaceHolderIdTextBox.Help" value="The ID of the placeholder. You can write a non-existing ID and create the placeholder afterwards (edit Page Template markup)." />
+  <string key="PageType.EditPageTypeDefaultPageContentWorkflow.PlaceHolderContainerClassesTextBox.Label" value="Container Classes" />
+  <string key="PageType.EditPageTypeDefaultPageContentWorkflow.PlaceHolderContainerClassesTextBox.Help" value="Extra 'Container Classes' to add to this placeholder when user is editing this type of page. Container classes let you style the editor and control which components can be added." />
   <string key="PageType.EditPageTypeDefaultPageContentWorkflow.ContentXhtmlEditor.Label" value="Content" />
   <string key="PageType.AddPageTypeMetaDataFieldWorkflow.Layout.Label" value="Add Metadata Field" />
   <string key="PageType.AddPageTypeMetaDataFieldWorkflow.FieldGroup.Label" value="" />

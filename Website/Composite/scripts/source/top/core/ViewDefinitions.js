@@ -2,16 +2,16 @@
  * @type {HashMap<string><ViewDefinition>}
  */
 var ViewDefinitions = {
-		
+
 	/*
-	 * The "null" definition is substituted for other definitions 
+	 * The "null" definition is substituted for other definitions
 	 * when a view gets released from server control.
 	 */
 	"Composite.Management.Null" : new HostedViewDefinition ({
 		isMutable	: true,
 		handle 		: "Composite.Management.Null"
 	}),
-	
+
 	/*
 	 * Postback dialog.
 	 */
@@ -25,9 +25,9 @@ var ViewDefinitions = {
 			"list"	: null
 		}
 	}),
-	
+
 	/*
-	 * Postback view. Load framework file using HTTP post (in addition to GET).  
+	 * Postback view. Load framework file using HTTP post (in addition to GET).
 	 * Use this to display framework stuff. Pages with a PageBinding, that is.
 	 */
 	"Composite.Management.PostBackView" : new HostedViewDefinition ({
@@ -40,9 +40,9 @@ var ViewDefinitions = {
 			"list"	: null
 		}
 	}),
-	 
+
 	/*
-	 * Generic views. Load PageBinding and inject any URL into a WindowBinding. 
+	 * Generic views. Load PageBinding and inject any URL into a WindowBinding.
 	 * Use this to display non-framework stuff such as previews and thingies.
 	 */
 	"Composite.Management.GenericView" : new HostedViewDefinition ({
@@ -85,11 +85,11 @@ var ViewDefinitions = {
 	"Composite.Management.Start" : new HostedViewDefinition ({
 		handle 		: "Composite.Management.Start",
 		position 	: DockBinding.START,
-		label 		: "Welcome Travellers", 
+		label 		: "Welcome Travellers",
 		isFloating	: false,
 		url 		: "${root}/content/views/start/start.aspx"
 	}),
-	
+
 	/*
 	 * About.
 	 */
@@ -98,7 +98,7 @@ var ViewDefinitions = {
 		position 	: Dialog.MODAL,
 		url 		: "${root}/content/dialogs/about/about.aspx"
 	}),
-	
+
 	/*
 	 * Permission editor.
 	 */
@@ -111,7 +111,7 @@ var ViewDefinitions = {
 			serializedEntityToken : "entityTokenType='Composite\\.Plugins\\.Elements\\.ElementProviders\\.VirtualElementProvider\\.VirtualElementProviderEntityToken,Composite'entityToken='_EntityToken_Type_=\\'Composite\\\\\\.Plugins\\\\\\.Elements\\\\\\.ElementProviders\\\\\\.VirtualElementProvider\\\\\\.VirtualElementProviderEntityToken,Composite\\'_EntityToken_Source_=\\'VirtualElementProvider\\'_EntityToken_Id_=\\'DesignPerspective\\''\""
 		}
 	}),
-	
+
 	/*
 	 * System Log.
 	 */
@@ -121,17 +121,17 @@ var ViewDefinitions = {
 		label 		: "System Log",
 		url 		: "${root}/content/views/dev/systemlog/systemlog.aspx"
 	}),
-	
+
 	/*
 	 * Developer Panel.
 	 */
 	"Composite.Management.Developer" : new HostedViewDefinition ({
 		handle 		: "Composite.Management.Developer",
 		position 	: DockBinding.ABSBOTTOMRIGHT,
-		label 		: "Developer", 
+		label 		: "Developer",
 		url 		: "${root}/content/views/dev/developer/developer.aspx"
 	}),
-	
+
 	/*
 	 * Icon Pack Sprite SVG.
 	 */
@@ -140,9 +140,9 @@ var ViewDefinitions = {
 		position: DockBinding.MAIN,
 		label: "Sprite SVG",
 		image: "${icon:icon}",
-		url: "${root}/content/views/dev/icons/svg/sprite.cshtml"
+		url: "${root}/console/?pageId=svg-sprites"
 	}),
-	
+
 	/*
 	 * Options dialog.
 	 */
@@ -152,7 +152,7 @@ var ViewDefinitions = {
 		url 		: "${root}/content/dialogs/options/options.aspx",
 		label		: "Options"
 	}),
-	
+
 	/*
 	 * VisualEditor dialog.
 	 */
@@ -167,7 +167,7 @@ var ViewDefinitions = {
 			"embedablefieldstypenames"	: null
 		}
 	}),
-	
+
 	/*
 	 * MultiSelector dialog.
 	 */
@@ -177,7 +177,7 @@ var ViewDefinitions = {
 		position 	: Dialog.MODAL,
 		url 		: "${root}/content/dialogs/multiselector/multiselectordialog.aspx"
 	}),
-	
+
 	/*
 	 * Search view.
 	 */
@@ -189,7 +189,7 @@ var ViewDefinitions = {
 		image		: "${icon:view_search}",
 		argument	: null
 	}),
-	
+
 	/*
 	 * Page Browser.
 	 */
@@ -205,7 +205,7 @@ var ViewDefinitions = {
 		url			: "${root}/content/views/browser/browser.aspx",
 		argument	: { "URL" : null }
 	}),
-	
+
 	/*
 	 * SEO Assistant.
 	 */
@@ -218,7 +218,7 @@ var ViewDefinitions = {
 		image		: "${icon:seoassistant}",
 		toolTip		: "${string:Composite.Web.SEOAssistant:SEOAssistant.ToolTip}"
 	}),
-	
+
 	/*
 	 * Source code viewer.
 	 */
@@ -227,12 +227,12 @@ var ViewDefinitions = {
 		handle 		: "Composite.Management.SourceCodeViewer",
 		position	:  DockBinding.ABSBOTTOMLEFT,
 		url			: "${root}/content/views/dev/viewsource/viewsource.aspx",
-		argument 	: { 
+		argument 	: {
 			"action" : null, // {string}
 			"viewBinding" : null // {ViewBinding}
 		}
 	}),
-	
+
 	/*
 	 * User source code viewer.
 	 */
@@ -241,12 +241,12 @@ var ViewDefinitions = {
 		handle 		: "Composite.User.SourceCodeViewer",
 		position	:  DockBinding.BOTTOMLEFT,
 		url			: "${root}/content/views/dev/viewsource/viewsource.aspx",
-		argument 	: { 
+		argument 	: {
 			"action" : null, // {string}
 			"viewBinding" : null // {ViewBinding}
 		}
 	}),
-	
+
 	/*
 	 * Help.
 	 */
@@ -257,7 +257,7 @@ var ViewDefinitions = {
 		position	:  DockBinding.ABSRIGHTTOP,
 		url			: "${root}/content/views/help/help.aspx"
 	}),
-	
+
 	/*
 	 * Translations.
 	 */
@@ -268,10 +268,10 @@ var ViewDefinitions = {
 		label		: "Translations",
 		image		: "${icon:users-changepublicculture}"
 	}),
-	
-	
+
+
 	// SELECTORS ......................................................................
-	
+
 	/*
 	 * Image selector.
 	 */
@@ -314,7 +314,7 @@ var ViewDefinitions = {
 			}]
 		}
 	}),
-	
+
 	/*
 	 * Embeddable media selector.
 	 */
@@ -335,7 +335,7 @@ var ViewDefinitions = {
 			}]
 		}
 	}),
-	
+
 	/*
 	 * Frontend file selector.
 	 */
@@ -354,7 +354,7 @@ var ViewDefinitions = {
 			}]
 		}
 	}),
-	
+
 	/*
 	 * Page URL selector.
 	 */
@@ -394,7 +394,7 @@ var ViewDefinitions = {
             }]
         }
     }),
-	
+
 	/*
 	 * Linkable element selector (selecting pages and media files).
 	 */
@@ -416,7 +416,7 @@ var ViewDefinitions = {
 			]
 		}
 	}),
-	
+
 	/*
 	 * Media selector (images and other stuff).
 	 */
@@ -435,7 +435,7 @@ var ViewDefinitions = {
 			]
 		}
 	}),
-	
+
 	/*
 	 * Function selector (ALL TYPES).
 	 */
@@ -455,7 +455,7 @@ var ViewDefinitions = {
 			}]
 		}
 	}),
-	
+
 	/*
 	 * Function selector (widget functions).
 	 */
@@ -474,7 +474,7 @@ var ViewDefinitions = {
 			}]
 		}
 	}),
-	
+
 	/*
 	 * Function selector (XHTML types).
 	 */
@@ -495,4 +495,3 @@ var ViewDefinitions = {
 		}
 	})
 }
-
