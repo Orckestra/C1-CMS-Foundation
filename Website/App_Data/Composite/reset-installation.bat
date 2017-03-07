@@ -170,6 +170,7 @@ del ..\..\Frontend\Composite\Search\SimplePageSearch\Styles.css
 
 :: LESS cleanup
 del ..\..\bin\Composite.Web.Css.Less.dll
+del ..\..\bin\Orckestra.Web.Css.Less.dll
 
 
 :: Package create cleanup
