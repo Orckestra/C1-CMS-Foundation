@@ -17,8 +17,8 @@ namespace Composite.C1Console.Trees
 
         private static readonly ActionGroup ApplicationsActionGroup = new ActionGroup("Applications", ActionGroupPriority.TargetedAppendMedium);
 
-        private static readonly List<PermissionType> AddPermissionTypes = new List<PermissionType> { PermissionType.Administrate };
-        private static readonly List<PermissionType> RemovePermissionTypes = new List<PermissionType> { PermissionType.Administrate };
+        private static readonly List<PermissionType> AddPermissionTypes = new List<PermissionType> { PermissionType.Administrate, PermissionType.Configure };
+        private static readonly List<PermissionType> RemovePermissionTypes = new List<PermissionType> { PermissionType.Administrate, PermissionType.Configure };
 
 
         public IEnumerable<ElementAction> GetActions(EntityToken entityToken)
