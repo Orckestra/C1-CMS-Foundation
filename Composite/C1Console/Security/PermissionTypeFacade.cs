@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Composite.C1Console.Elements;
 using Composite.C1Console.Security.Foundation.PluginFacades;
 using Composite.C1Console.Security.Foundation;
 using Composite.Core;
@@ -576,27 +577,27 @@ namespace Composite.C1Console.Security
             }
 
             // Call resursively on all parents
-            List<EntityToken> parentEntityTokens = ParentsFacade.GetAllParents(entityToken);
+            var parentEntityTokens = ParentsFacade.GetAllParents(entityToken);
 
-            IEnumerable<PermissionType> parentsPermisstionTypes = new List<PermissionType>();
-            foreach (EntityToken parentEntityToken in parentEntityTokens)
+            var parentsPermissionTypes = Enumerable.Empty<PermissionType>();
+            foreach (var parentEntityToken in parentEntityTokens)
             {
-                EntityTokenPair pair = new EntityTokenPair(entityToken, parentEntityToken);
-                if (alreadyProcessedTokens.Contains(pair) == false)
-                {
-                    alreadyProcessedTokens.Add(pair);
+                var pair = new EntityTokenPair(entityToken, parentEntityToken);
+                if (alreadyProcessedTokens.Contains(pair)) continue;
+                
+                alreadyProcessedTokens.Add(pair);
 
-                    IEnumerable<PermissionType> thisParentPermisstionTypes = RecursiveUpdateCurrentUserPermissionTypes(userToken, parentEntityToken, userPermissionDefinitions, alreadyProcessedTokens);
+                var thisParentPermissionTypes = RecursiveUpdateCurrentUserPermissionTypes(userToken, parentEntityToken, userPermissionDefinitions, alreadyProcessedTokens);
+                var filteredPermissions = FilterParentPermissions(userToken, parentEntityToken, thisParentPermissionTypes);
 
-                    parentsPermisstionTypes = parentsPermisstionTypes.Concat(thisParentPermisstionTypes);
-                }
+                parentsPermissionTypes = parentsPermissionTypes.Concat(filteredPermissions);
             }
 
-            List<PermissionType> permisstionTypes = parentsPermisstionTypes.Distinct().ToList();
+            List<PermissionType> permissionTypes = parentsPermissionTypes.Distinct().ToList();
 
-            PermissionTypeFacadeCaching.SetUserPermissionTypes(userToken, entityToken, permisstionTypes);
+            PermissionTypeFacadeCaching.SetUserPermissionTypes(userToken, entityToken, permissionTypes);
 
-            return permisstionTypes;
+            return permissionTypes;
         }
 
 
@@ -614,7 +615,7 @@ namespace Composite.C1Console.Security
             IEnumerable<UserGroupPermissionDefinition> selectedUserGroupPermissionDefinitions = userGroupPermissionDefinitions.Where(f => entityToken.EqualsWithVersionIgnore(f.EntityToken));
 
             List<PermissionType> thisPermisstionTypes = new List<PermissionType>();
-            foreach (UserGroupPermissionDefinition userGroupPermissionDefinition in selectedUserGroupPermissionDefinitions)
+            foreach (var userGroupPermissionDefinition in selectedUserGroupPermissionDefinitions)
             {
                 List<PermissionType> groupPermissionTypes = userGroupPermissionDefinition.PermissionTypes.ToList();
 
@@ -642,15 +643,15 @@ namespace Composite.C1Console.Security
             IEnumerable<PermissionType> parentsPermisstionTypes = new List<PermissionType>();
             foreach (EntityToken parentEntityToken in parentEntityTokens)
             {
-                EntityTokenPair pair = new EntityTokenPair(entityToken, parentEntityToken);
-                if (alreadyProcessedTokens.Contains(pair) == false)
-                {
-                    alreadyProcessedTokens.Add(pair);
+                var pair = new EntityTokenPair(entityToken, parentEntityToken);
+                if (alreadyProcessedTokens.Contains(pair)) continue;
 
-                    IEnumerable<PermissionType> thisParentPermisstionTypes = RecursiveUpdateCurrentUserGroupPermissionTypes(userToken, parentEntityToken, userGroupPermissionDefinitions, alreadyProcessedTokens);
+                alreadyProcessedTokens.Add(pair);
 
-                    parentsPermisstionTypes = parentsPermisstionTypes.Concat(thisParentPermisstionTypes);
-                }
+                var thisParentPermissionTypes = RecursiveUpdateCurrentUserGroupPermissionTypes(userToken, parentEntityToken, userGroupPermissionDefinitions, alreadyProcessedTokens);
+                var filteredPermissionTypes = FilterParentPermissions(userToken, entityToken, thisParentPermissionTypes);
+
+                parentsPermisstionTypes = parentsPermisstionTypes.Concat(filteredPermissionTypes);
             }
 
             List<PermissionType> permisstionTypes = parentsPermisstionTypes.Distinct().ToList();
@@ -659,12 +660,31 @@ namespace Composite.C1Console.Security
 
             return permisstionTypes;
         }
-        
+
+        private static IEnumerable<PermissionType> FilterParentPermissions(
+            UserToken userToken, EntityToken entityToken, IReadOnlyCollection<PermissionType> permissions)
+        {
+            if (!permissions.Any()
+                || !ElementFacade.IsPerspectiveEntityToken(entityToken))
+            {
+                return permissions;
+            }
+
+            bool perspectiveVisible = UserPerspectiveFacade.PerspectiveVisible(userToken.Username, entityToken);
+
+            if (perspectiveVisible) return permissions;
+
+            bool alwaysInheritReadPermission = true; // TODO: use a config setting here
+
+            return alwaysInheritReadPermission
+                ? permissions.Where(p => p == PermissionType.Read)
+                : Enumerable.Empty<PermissionType>();
+        }
 
 
         private static IEnumerable<PermissionType> GetInheritedGroupPermissionsTypesRecursivly(EntityToken entityToken, IEnumerable<UserGroupPermissionDefinition> userGroupPermissionDefinitions, List<EntityToken> visitedParents = null)
         {
-            UserGroupPermissionDefinition selectedUserGroupPermissionDefinition = userGroupPermissionDefinitions.Where(f => entityToken.EqualsWithVersionIgnore(f.EntityToken)).SingleOrDefault();
+            var selectedUserGroupPermissionDefinition = userGroupPermissionDefinitions.SingleOrDefault(f => entityToken.EqualsWithVersionIgnore(f.EntityToken));
             if (selectedUserGroupPermissionDefinition != null)
             {
                 if (selectedUserGroupPermissionDefinition.PermissionTypes.Contains(PermissionType.ClearPermissions) == false)
@@ -714,8 +734,8 @@ namespace Composite.C1Console.Security
             }
 
 
-            public EntityToken FirstEntityToken { get; private set; }
-            public EntityToken SecondEntityToken { get; private set; }
+            public EntityToken FirstEntityToken { get; }
+            public EntityToken SecondEntityToken { get; }
 
 
             public override int GetHashCode()
