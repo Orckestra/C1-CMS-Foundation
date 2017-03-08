@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Globalization;
@@ -479,6 +479,10 @@ namespace Composite.Core.Configuration
 
         /// <exclude />
         public static TimeZoneInfo TimeZone => _globalSettingsFacade.TimeZone;
+
+        /// <exclude />
+        public static bool InheritGlobalReadPermissionOnHiddenPerspectives
+            => _globalSettingsFacade.InheritGlobalReadPermissionOnHiddenPerspectives;
 
         // Overload
         /// <exclude />

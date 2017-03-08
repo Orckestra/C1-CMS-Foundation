@@ -141,5 +141,7 @@ namespace Composite.Core.Configuration.BuildinPlugins.GlobalSettingsProvider
         public bool FunctionPreviewEnabled => _functionPreviewEnabled;
 
         public TimeZoneInfo TimeZone => _timezone;
+
+        public bool InheritGlobalReadPermissionOnHiddenPerspectives => false;
     }
 }
