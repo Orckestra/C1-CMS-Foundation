@@ -108,7 +108,9 @@ namespace Composite.Data
             {
                 if (_dataSourceId == null)
                 {
-                    _dataSourceId = DataSourceId.Deserialize(_serializedDataSourceId);
+                    var dataSourceId = DataSourceId.Deserialize(_serializedDataSourceId);
+                    _dataSourceId = dataSourceId;
+                    _interfaceType = dataSourceId.InterfaceType;
                 }
 
                 return _dataSourceId;

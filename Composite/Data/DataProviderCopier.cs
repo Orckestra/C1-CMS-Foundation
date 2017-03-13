@@ -254,9 +254,10 @@ namespace Composite.Data
                         {
                             AddData(interfaceType, dataset, targetDataProvider);
                         }
-                        catch (Exception)
+                        catch (Exception e)
                         {
-                            Log.LogWarning(LogTitle, "Adding failed.");
+                            Log.LogError(LogTitle, $"Adding failed while adding {interfaceType.Namespace}.{interfaceType.Name} because {e.Message}");
+                            Log.LogError(LogTitle,e.InnerException);
                             throw;
                         }
                     }

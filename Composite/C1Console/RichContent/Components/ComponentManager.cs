@@ -76,7 +76,6 @@ namespace Composite.C1Console.RichContent.Components
         void IObserver<ComponentChange>.OnNext(ComponentChange value)
         {
             _componentCache = null;
-            _log.LogInformation(nameof(ComponentManager), "We should flush some cache here.." + value.ProviderId);
         }
         #endregion
     }
