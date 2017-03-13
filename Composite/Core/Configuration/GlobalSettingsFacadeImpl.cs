@@ -353,5 +353,8 @@ namespace Composite.Core.Configuration
         public bool FunctionPreviewEnabled => GlobalSettingsProviderPluginFacade.FunctionPreviewEnabled;
 
         public TimeZoneInfo TimeZone => GlobalSettingsProviderPluginFacade.TimeZone;
+
+        public bool InheritGlobalReadPermissionOnHiddenPerspectives =>
+            GlobalSettingsProviderPluginFacade.InheritGlobalReadPermissionOnHiddenPerspectives;
     }
 }
