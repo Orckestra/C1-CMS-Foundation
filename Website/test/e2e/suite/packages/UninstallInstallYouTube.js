@@ -9,10 +9,10 @@ module.exports = {
 	'Uninstall and Install YouTube': function (browser) {
 		
 		browser
-		.uninstallLocalPackage("Composite.Media.YouTube")
+		.uninstallLocalPackage("Orckestra.Media.YouTube")
 
 		browser
-		.installPackage("Composite.Media", "Composite.Media.YouTube")
+		.installPackage("Orckestra.Media", "Orckestra.Media.YouTube")
 		
 	},
 	afterEach: function (browser, done) {

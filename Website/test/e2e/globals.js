@@ -25,6 +25,7 @@ var templatesOnly = {
 }
 	
 module.exports = {
+	asyncHookTimeout : 20000,
 	timeouts : timeouts,
 	setupOptions : setupOptions,
 	starterSites : starterSites,	

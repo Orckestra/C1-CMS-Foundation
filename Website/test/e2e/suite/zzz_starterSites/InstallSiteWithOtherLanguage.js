@@ -1,10 +1,16 @@
-var resetSite = require('../../reset.js');
+var reset = require('../../reset.js');
 
 module.exports = {
 	'@tags': ['install'],
-	beforeEach: function (browser) {
-	// 0 Reset the website
-		resetSite();
+	beforeEach: function (browser, done) {
+		reset(function (err) {
+			if (err) {
+				browser.end();
+				console.error(err);
+				process.exit(1);
+			}
+			done();
+		});
 	},
 	
 	'install Venus starter site with French (CA)': function (browser) {
