@@ -4,11 +4,12 @@ using System.Globalization;
 using Composite.Core.Serialization;
 using Composite.Core.Types;
 using Composite.Data.Foundation;
+using Composite.Data.Types;
 
 
 namespace Composite.Data
 {
-    /// <summary>    
+    /// <summary>
     /// Uniquely identify a data element (table record in sql speak), its type and what provider it came from.
     /// </summary>
     public sealed class DataSourceId
@@ -19,7 +20,7 @@ namespace Composite.Data
         private DataScopeIdentifier _dataScopeIdentifier;
         private CultureInfo _localeScope;
         private string _serializedData;
-        private Dictionary<string, object> _tagInformation;        
+        private Dictionary<string, object> _tagInformation;
 
         /// <summary>
         /// This is for internal use only!
@@ -46,7 +47,7 @@ namespace Composite.Data
         /// </summary>
         public DataSourceId(IDataId dataId, string providerName, Type interfaceType, DataScopeIdentifier dataScope, CultureInfo localeScope)
         {
-            // This constructor has to be extremely fast, we have up to 100.000 objects reated while some requests
+            // This constructor has to be extremely fast, we have up to 100.000 objects related while some requests
             if (dataId == null) throw new ArgumentNullException("dataId");
             if (string.IsNullOrEmpty(providerName)) throw new ArgumentNullException("providerName");
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");
@@ -166,7 +167,7 @@ namespace Composite.Data
         {
             IDataId dataId = EnsureDataIdType(_dataId);
 
-            if ((_serializedData == null) || (dataId != _dataId))
+            if (_serializedData == null || dataId != _dataId)
             {
                 string s = SerializationFacade.Serialize(this.DataId);
 
@@ -224,26 +225,23 @@ namespace Composite.Data
         {
             dataSourceId = null;
 
-            Dictionary<string, string> dic = StringConversionServices.ParseKeyValueCollection(serializedDataSourceId);
+            var dic = StringConversionServices.ParseKeyValueCollection(serializedDataSourceId);
 
-            if ((dic.ContainsKey("_dataIdType_") == false) ||
-                (dic.ContainsKey("_dataId_") == false) ||                
-                (dic.ContainsKey("_interfaceType_") == false) ||
-                (dic.ContainsKey("_dataScope_") == false) ||
-                (dic.ContainsKey("_localeScope_") == false))
+            if (!dic.ContainsKey("_dataIdType_") ||
+                !dic.ContainsKey("_dataId_") ||
+                !dic.ContainsKey("_interfaceType_") ||
+                !dic.ContainsKey("_dataScope_") ||
+                !dic.ContainsKey("_localeScope_"))
             {
                 if (throwException)
                 {
-                    throw new ArgumentException("The serializedDataSourceId is not a serialized data source id", "serializedDataSourceId");
+                    throw new ArgumentException("The argument is not a serialized " + nameof(DataSourceId), nameof(serializedDataSourceId));
                 }
-                else
-                {
-                    return false;
-                }
+                return false;
             }
 
             string serializedDataId = StringConversionServices.DeserializeValueString(dic["_dataId_"]);
-            string dataIdType = StringConversionServices.DeserializeValueString(dic["_dataIdType_"]);
+            string dataIdTypeName = StringConversionServices.DeserializeValueString(dic["_dataIdType_"]);
 
             string providerName;
             if (dic.ContainsKey("_providerName_"))
@@ -253,33 +251,35 @@ namespace Composite.Data
             else
             {
                 providerName = DataProviderRegistry.DefaultDynamicTypeDataProviderName;
-            }            
-            
+            }
+
             string interfaceTypeName = StringConversionServices.DeserializeValueString(dic["_interfaceType_"]);
             string dataScope = StringConversionServices.DeserializeValueString(dic["_dataScope_"]);
             string localeScope = StringConversionServices.DeserializeValueString(dic["_localeScope_"]);
-
-            Type type = TypeManager.TryGetType(dataIdType);
-            if (type == null)
-            {
-                if (throwException)
-                {
-                    throw new InvalidOperationException(string.Format("The type {0} could not be found", dataIdType));
-                }
-                return false;
-            }
-
-            IDataId dataId = SerializationFacade.Deserialize<IDataId>(type, serializedDataId);
 
             Type interfaceType = TypeManager.TryGetType(interfaceTypeName);
             if (interfaceType == null)
             {
                 if (throwException)
                 {
-                    throw new InvalidOperationException(string.Format("The type {0} could not be found", interfaceType));
+                    throw new InvalidOperationException($"The type '{interfaceTypeName}' could not be found");
                 }
                 return false;
             }
+
+            Type dataIdType = TypeManager.TryGetType(dataIdTypeName);
+            if (dataIdType == null)
+            {
+                if (throwException)
+                {
+                    throw new InvalidOperationException($"The type '{dataIdTypeName}' could not be found");
+                }
+                return false;
+            }
+
+            serializedDataId = FixSerializedDataId(serializedDataId, interfaceType);
+
+            IDataId dataId = SerializationFacade.Deserialize<IDataId>(dataIdType, serializedDataId);
 
             CultureInfo cultureInfo = CultureInfo.CreateSpecificCulture(localeScope);
 
@@ -288,6 +288,15 @@ namespace Composite.Data
             return true;
         }
 
+        private static string FixSerializedDataId(string serializedDataId, Type interfaceType)
+        {
+            if (interfaceType == typeof (IPage) && !serializedDataId.Contains(nameof(IPage.VersionId)))
+            {
+                return serializedDataId + "," + serializedDataId.Replace(nameof(IPage.Id), nameof(IPage.VersionId));
+            }
+
+            return serializedDataId;
+        }
 
 
         /// <exclude />

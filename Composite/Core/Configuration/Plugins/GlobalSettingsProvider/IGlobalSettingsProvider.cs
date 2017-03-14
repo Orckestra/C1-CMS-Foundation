@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Composite.Core.Configuration.Plugins.GlobalSettingsProvider.Runtime;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
@@ -87,5 +87,7 @@ namespace Composite.Core.Configuration.Plugins.GlobalSettingsProvider
         bool FunctionPreviewEnabled { get; }
 
         TimeZoneInfo TimeZone { get; }
+
+        bool InheritGlobalReadPermissionOnHiddenPerspectives { get; }
     }
 }

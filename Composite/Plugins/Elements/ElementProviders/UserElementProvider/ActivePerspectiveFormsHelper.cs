@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using Composite.C1Console.Elements;
@@ -15,9 +15,9 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public sealed class ActivePerspectiveFormsHelper
 	{
-        private List<Element> _perspectiveElements;
-        private List<XElement> _bindingElements = null;
-        private XElement _fieldGroupElement = null;
+        private readonly List<Element> _perspectiveElements;
+        private List<XElement> _bindingElements;
+        private XElement _fieldGroupElement;
 
         private static readonly string MultiKeySelectorOptionsBindingName = "ActivePerspectiveFormsHelper_Options";
         private static readonly string MultiKeySelectorSelectedBindingName = "ActivePerspectiveFormsHelper_Selected";
@@ -39,32 +39,13 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
         /// <exclude />
         public void UpdateWithNewBindings(Dictionary<string, object> bindings, IEnumerable<string> selectedSerializedEntityTokens)
         {
-            Dictionary<string, string> options = new Dictionary<string, string>();
-            foreach (Element perspectiveElement in _perspectiveElements)
-            {
-                options.Add(
-                    EntityTokenSerializer.Serialize(perspectiveElement.ElementHandle.EntityToken),
-                    perspectiveElement.VisualData.Label
-                );
-            }
+            var options = _perspectiveElements.ToDictionary(
+                perspectiveElement => EntityTokenSerializer.Serialize(perspectiveElement.ElementHandle.EntityToken),
+                perspectiveElement => perspectiveElement.VisualData.Label);
 
-            if (bindings.ContainsKey(MultiKeySelectorOptionsBindingName) == false)
-            {
-                bindings.Add(MultiKeySelectorOptionsBindingName, options);
-            }
-            else
-            {
-                bindings[MultiKeySelectorOptionsBindingName] = options;
-            }
+            bindings[MultiKeySelectorOptionsBindingName] = options;
 
-            if (bindings.ContainsKey(MultiKeySelectorSelectedBindingName) == false)
-            {
-                bindings.Add(MultiKeySelectorSelectedBindingName, selectedSerializedEntityTokens.ToList());
-            }
-            else
-            {
-                bindings[MultiKeySelectorSelectedBindingName] = selectedSerializedEntityTokens.ToList();
-            }
+            bindings[MultiKeySelectorSelectedBindingName] = selectedSerializedEntityTokens.ToList();
         }
 
 
@@ -72,12 +53,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
         /// <exclude />
         public static IEnumerable<string> GetSelectedSerializedEntityTokens(Dictionary<string, object> bindings)
         {
-            List<string> serializedEntityTokens = (List<string>)bindings[MultiKeySelectorSelectedBindingName];
-
-            foreach (string serializedEntityToken in serializedEntityTokens)
-            {
-                yield return serializedEntityToken;
-            }
+            return (List<string>)bindings[MultiKeySelectorSelectedBindingName];
         }
 
 

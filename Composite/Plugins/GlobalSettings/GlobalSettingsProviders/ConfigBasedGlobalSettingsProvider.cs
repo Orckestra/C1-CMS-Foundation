@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
 
@@ -241,7 +241,14 @@ namespace Composite.Plugins.GlobalSettings.GlobalSettingsProviders
 
         public bool FunctionPreviewEnabled => _configurationData.FunctionPreviewEnabled;
 
-        public TimeZoneInfo TimeZone => TimeZoneInfo.FindSystemTimeZoneById(_configurationData.TimeZone.IsNullOrEmpty()?TimeZoneInfo.Local.Id: _configurationData.TimeZone);
+        public TimeZoneInfo TimeZone => 
+            TimeZoneInfo.FindSystemTimeZoneById(
+                _configurationData.TimeZone.IsNullOrEmpty() 
+                    ? TimeZoneInfo.Local.Id
+                    : _configurationData.TimeZone);
+
+        public bool InheritGlobalReadPermissionOnHiddenPerspectives =>
+            _configurationData.InheritGlobalReadPermissionOnHiddenPerspectives;
     }
 
     internal class ConfigCachingSettings: ICachingSettings
@@ -690,6 +697,16 @@ namespace Composite.Plugins.GlobalSettings.GlobalSettingsProviders
             }
             set { base[TimeZonePropertyName] = value; }
         }
+
+        private const string InheritGlobalReadPermissionOnHiddenPerspectivesPropertyName
+            = "inheritGlobalReadPermissionOnHiddenPerspectives";
+        [ConfigurationProperty(InheritGlobalReadPermissionOnHiddenPerspectivesPropertyName, DefaultValue = false)]
+        public bool InheritGlobalReadPermissionOnHiddenPerspectives
+        {
+            get { return (bool)base[InheritGlobalReadPermissionOnHiddenPerspectivesPropertyName]; }
+            set { base[InheritGlobalReadPermissionOnHiddenPerspectivesPropertyName] = value; }
+        }
+  
     }
 
 
