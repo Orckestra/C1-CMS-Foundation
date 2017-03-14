@@ -6,16 +6,11 @@ using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Threading;
 
 namespace Composite.AspNet.Roslyn
 {
     internal class CSharpCompiler : CommonCompiler
     {
-        [CompilerGenerated]
-        private static Func<SyntaxTree, bool> _treePredicate;
-
 		public CSharpCompiler(CSharpCodeProvider oldProvider) : base(oldProvider)
         {
         }

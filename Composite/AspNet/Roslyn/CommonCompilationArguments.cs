@@ -22,9 +22,6 @@ namespace Composite.AspNet.Roslyn
 
         internal string Win32ResourceFile;
 
-        [CompilerGenerated]
-        private static Func<string, AssemblyMetadata> _getAssemblyMetaData;
-
 		internal CommandLineArguments CmdArguments => this.cmdArguments;
 
         internal List<MetadataReference> MetadataReferences
