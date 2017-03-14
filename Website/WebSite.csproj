@@ -173,9 +173,6 @@
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Web.Mobile" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Xml.ReaderWriter, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Xml.ReaderWriter.4.3.0\lib\net46\System.Xml.ReaderWriter.dll</HintPath>
-    </Reference>
     <Reference Include="TidyNet, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\bin\TidyNet.dll</HintPath>
@@ -2820,6 +2817,11 @@
 
       if not exist "$(ProjectDir)Frontend\Config\VisualEditor\common.xml" (
       copy "$(ProjectDir)Frontend\Config\VisualEditor\Default.common.xml" "$(ProjectDir)Frontend\Config\VisualEditor\common.xml"
+      )
+
+      rem Adding System.Xml.ReaderWriter.dll as a reference causes a compilation error in our build environment
+      if not exist "$(TargetDir)\System.Xml.ReaderWriter.dll" (
+      copy "$(ProjectDir)\..\Packages\System.Xml.ReaderWriter.4.3.0\lib\net46\System.Xml.ReaderWriter.dll" "$(TargetDir)\System.Xml.ReaderWriter.dll"
       )
 
       cd "$(ProjectDir)"
