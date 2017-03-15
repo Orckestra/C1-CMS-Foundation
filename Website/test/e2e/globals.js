@@ -25,10 +25,11 @@ var templatesOnly = {
 }
 	
 module.exports = {
+	siteLocation : "",
 	asyncHookTimeout : 20000,
 	timeouts : timeouts,
 	setupOptions : setupOptions,
-	starterSites : starterSites,	
+	starterSites : starterSites,
 	beforeEach: function (browser, done) {
 		browser.resizeWindow(1400, 1000, done);
 	},
