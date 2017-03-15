@@ -1,5 +1,6 @@
 var util = require('util');
 var events = require('events');
+var Q = require('q');
 
 function SelectFrameWithXpath() {
 	events.EventEmitter.call(this);
@@ -95,10 +96,24 @@ function findSelectorInsideFrame(client, selector) {
 	});
 }
 
+function retry(operation, delay) {
+	return operation().then(function(reason) {
+		if(reason){
+			return true;
+		}
+		if(delay>60000){
+			return false;
+		}
+		console.log('did not find selector retrying after '+delay+' ms');
+        return Q.delay(delay).then(retry.bind(null, operation, delay * 2 ));
+		
+    });
+}
+
 SelectFrameWithXpath.prototype.command = function(selector, noReset) {
 	var reset = noReset ? Promise.resolve() : framePromise(this.client.api, null);
 	reset
-	.then(() => findSelectorInsideFrame(this.client.api, selector))
+	.then(() => retry(()=>findSelectorInsideFrame(this.client.api, selector),500))
 	.then(found => {
 		if (!found) {
 			this.client.assertion(false, 'not found', 'found', 'Did not find selector <' + selector + '> in any frame.', this.abortOnFailure, this._stackTrace);
