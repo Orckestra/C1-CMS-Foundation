@@ -144,6 +144,7 @@ const fs = require('fs');
 const globals = require(process.cwd()+'/Website/test/e2e/globals');
 
 var basepath = globals.siteLocation || process.cwd()+'/Website';
+var sourcepath = process.cwd()+'/Website';
 
 function copyFile(source, target) {
 	return new Promise(function(resolve, reject) {
@@ -195,9 +196,9 @@ module.exports = function reset(callback) {
 	})])} )
 	.then(function () {
 		return Promise.all([
-			copyFile(basepath + '/DebugBuild.Web.config',
+			copyFile(sourcepath + '/ReleaseBuild.Web.config',
 				basepath + '/Web.config'),
-			copyFile(basepath + '/App_Data/Composite/DebugBuild.Composite.config',
+			copyFile(sourcepath + '/App_Data/Composite/ReleaseBuild.Composite.config',
 				basepath + '/App_Data/Composite/Composite.config')
 		]);
 	})
