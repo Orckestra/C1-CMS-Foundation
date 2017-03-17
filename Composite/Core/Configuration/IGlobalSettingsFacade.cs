@@ -44,5 +44,6 @@ namespace Composite.Core.Configuration
         bool PrettifyRenderFunctionExceptions { get; }
         bool FunctionPreviewEnabled { get; }
         TimeZoneInfo TimeZone { get; }
+        bool InheritGlobalReadPermissionOnHiddenPerspectives { get; }
     }
 }

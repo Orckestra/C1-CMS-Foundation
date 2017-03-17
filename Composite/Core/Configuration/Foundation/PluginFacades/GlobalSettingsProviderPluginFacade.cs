@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
 using Composite.Core.Collections.Generic;
@@ -332,6 +332,9 @@ namespace Composite.Core.Configuration.Foundation.PluginFacades
         public static bool FunctionPreviewEnabled => UseReaderLock(p => p.FunctionPreviewEnabled);
 
         public static TimeZoneInfo TimeZone => UseReaderLock(p => p.TimeZone);
+
+        public static bool InheritGlobalReadPermissionOnHiddenPerspectives =>
+            UseReaderLock(p => p.InheritGlobalReadPermissionOnHiddenPerspectives);
 
 
         private static void Flush()

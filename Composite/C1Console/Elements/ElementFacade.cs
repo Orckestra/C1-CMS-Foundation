@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
@@ -10,8 +10,10 @@ using Composite.C1Console.Elements.Plugins.ElementProvider;
 using Composite.C1Console.Elements.Security;
 using Composite.C1Console.Forms.DataServices;
 using Composite.C1Console.Forms.Flows;
+using Composite.C1Console.Security;
 using Composite.Core.Logging;
 using Composite.Core.Instrumentation;
+using Composite.Plugins.Elements.ElementProviders.VirtualElementProvider;
 
 
 namespace Composite.C1Console.Elements
@@ -22,6 +24,8 @@ namespace Composite.C1Console.Elements
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class ElementFacade
     {
+        private static IEnumerable<EntityToken> _perspectiveEntityTokens = null;
+
         /// <exclude />
         public static IEnumerable<Element> GetRoots(SearchToken searchToken)
         {
@@ -109,11 +113,8 @@ namespace Composite.C1Console.Elements
             {
                 return ElementProviderPluginFacade.GetForeignLabeledProperties(elementHandle.ProviderName, elementHandle.EntityToken);
             }
-            else
-            {
-                return ElementProviderPluginFacade.GetLabeledProperties(elementHandle.ProviderName, elementHandle.EntityToken);
-            }
 
+            return ElementProviderPluginFacade.GetLabeledProperties(elementHandle.ProviderName, elementHandle.EntityToken);
         }
 
 
@@ -250,6 +251,22 @@ namespace Composite.C1Console.Elements
             return GetPerspectiveElements(false);
         }
 
+
+        internal static bool IsPerspectiveEntityToken(EntityToken entityToken)
+        {
+            if (!(entityToken is VirtualElementProviderEntityToken))
+            {
+                return false;
+            }
+
+            if (_perspectiveEntityTokens == null)
+            {
+                _perspectiveEntityTokens =
+                    GetPerspectiveElementsWithNoSecurity().Select(e => e.ElementHandle.EntityToken).ToList();
+            }
+
+            return _perspectiveEntityTokens.Contains(entityToken);
+        }
 
 
         internal static bool IsLocaleAwareElementProvider(ElementProviderHandle elementProviderHandle)

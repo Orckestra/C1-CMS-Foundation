@@ -41,16 +41,21 @@ namespace Composite.C1Console.Security
         /// <exclude />
         public static IEnumerable<EntityToken> GetEntityTokens(Guid userGroupId)
         {
-            return
-                GetSerializedEntityTokens(userGroupId).Select(f => EntityTokenSerializer.Deserialize(f));
+            return GetSerializedEntityTokens(userGroupId).Select(EntityTokenSerializer.Deserialize);
         }
 
+
+        /// <exclude />
+        public static IEnumerable<EntityToken> GetEntityTokens(string username)
+        {
+            return GetSerializedEntityTokens(username).Select(EntityTokenSerializer.Deserialize);
+        }
 
 
         /// <exclude />
         public static void SetEntityTokens(Guid userGroupId, IEnumerable<EntityToken> entityTokens)
         {
-            SetSerializedEntityTokens(userGroupId, entityTokens.Select(f => EntityTokenSerializer.Serialize(f)));
+            SetSerializedEntityTokens(userGroupId, entityTokens.Select(EntityTokenSerializer.Serialize));
         }
 
 
@@ -62,13 +67,13 @@ namespace Composite.C1Console.Security
 
             foreach (string serializedEntityToken in serializedEntityTokens)
             {
-                IUserGroupActivePerspective activePerspective = DataFacade.BuildNew<IUserGroupActivePerspective>();
+                var activePerspective = DataFacade.BuildNew<IUserGroupActivePerspective>();
 
                 activePerspective.Id = Guid.NewGuid();
                 activePerspective.UserGroupId = userGroupId;
                 activePerspective.SerializedEntityToken = serializedEntityToken;
                 
-                DataFacade.AddNew<IUserGroupActivePerspective>(activePerspective);
+                DataFacade.AddNew(activePerspective);
             }
         }
 

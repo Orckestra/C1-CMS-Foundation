@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Composite.Data;
 using Composite.Data.Types;
 
@@ -28,8 +27,7 @@ namespace Composite.C1Console.Security
         /// <exclude />
         public static IEnumerable<EntityToken> GetEntityTokens(string username )
         {
-            return
-                GetSerializedEntityTokens(username).Select(f => EntityTokenSerializer.Deserialize(f));
+            return GetSerializedEntityTokens(username).Select(EntityTokenSerializer.Deserialize);
         }
 
 
@@ -37,7 +35,7 @@ namespace Composite.C1Console.Security
         /// <exclude />
         public static void SetEntityTokens(string username, IEnumerable<EntityToken> entityTokens)
         {
-            SetSerializedEntityTokens(username, entityTokens.Select(f => EntityTokenSerializer.Serialize(f)));
+            SetSerializedEntityTokens(username, entityTokens.Select(EntityTokenSerializer.Serialize));
         }
 
 
@@ -49,13 +47,13 @@ namespace Composite.C1Console.Security
 
             foreach (string serializedEntityToken in serializedEntityTokens)
             {
-                IUserActivePerspective activePerspective = DataFacade.BuildNew<IUserActivePerspective>();
+                var activePerspective = DataFacade.BuildNew<IUserActivePerspective>();
 
                 activePerspective.Username = username;
                 activePerspective.SerializedEntityToken = serializedEntityToken;
                 activePerspective.Id = Guid.NewGuid();
 
-                DataFacade.AddNew<IUserActivePerspective>(activePerspective);
+                DataFacade.AddNew(activePerspective);
             }
         }
 
@@ -66,5 +64,15 @@ namespace Composite.C1Console.Security
         {
             DataFacade.Delete<IUserActivePerspective>(f => f.Username == username);
         }
+
+
+	    internal static bool PerspectiveVisible(string username, EntityToken perspectiveEntityToken)
+	    {
+            Verify.ArgumentNotNull(username, nameof(username));
+            Verify.ArgumentNotNull(perspectiveEntityToken, nameof(perspectiveEntityToken));
+
+            return GetEntityTokens(username).Contains(perspectiveEntityToken)
+	               || UserGroupPerspectiveFacade.GetEntityTokens(username).Contains(perspectiveEntityToken);
+	    }
     }
 }

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Composite.Data.Hierarchy;
 using Composite.Data.Hierarchy.DataAncestorProviders;
 
@@ -10,10 +10,11 @@ namespace Composite.Data.Types
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [AutoUpdateble]
-    [KeyPropertyName("Id")]
+    [KeyPropertyName(nameof(Id))]
     [DataScope(DataScopeIdentifier.PublicName)]
     [ImmutableTypeId("{A7C6D249-1A71-4486-A252-706D8E1981D8}")]
     [DataAncestorProvider(typeof(NoAncestorDataAncestorProvider))]
+    [Caching(CachingType.Full)]
     public interface IUserActivePerspective : IData
     {
         /// <exclude />

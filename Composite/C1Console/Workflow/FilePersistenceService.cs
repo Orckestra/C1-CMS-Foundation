@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -125,24 +125,35 @@ namespace Composite.C1Console.Workflow
 
         protected override void SaveCompletedContextActivity(Activity activity)
         {
-            Guid contextGuid = (Guid)activity.GetValue(Activity.ActivityContextGuidProperty);
-            SerializeActivity(activity, contextGuid);
+            SaveWorkflowInstanceState(activity);
         }
 
 
 
         protected override void SaveWorkflowInstanceState(Activity rootActivity, bool unlock)
         {
-            Guid contextGuid = (Guid)rootActivity.GetValue(Activity.ActivityContextGuidProperty);
-            SerializeActivity(rootActivity, contextGuid);
+            SaveWorkflowInstanceState(rootActivity);
         }
 
 
         protected override bool UnloadOnIdle(Activity activity)
         {
-            return GetPersistingType(activity) == WorkflowPersistingType.Idle;
+            var persistingType = GetPersistingType(activity);
+
+            if (persistingType == WorkflowPersistingType.Shutdown)
+            {
+                SaveWorkflowInstanceState(activity);
+            }
+
+            return persistingType == WorkflowPersistingType.Idle;
         }
 
+
+        private void SaveWorkflowInstanceState(Activity activity)
+        {
+            Guid workflowId = (Guid)activity.GetValue(Activity.ActivityContextGuidProperty);
+            SerializeActivity(activity, workflowId);
+        }
 
 
         protected override void UnlockWorkflowInstanceState(Activity rootActivity)
