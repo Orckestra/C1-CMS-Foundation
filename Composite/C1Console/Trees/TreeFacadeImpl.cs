@@ -627,12 +627,12 @@ namespace Composite.C1Console.Trees
             PropertyInfo propertyInfo = interfaceType.GetKeyProperties()[0];
             string keyValue = ValueTypeConverter.Convert<string>(propertyInfo.GetValue(dataEventArgs.Data, null));
 
-            IEnumerable<IDataItemTreeAttachmentPoint> attachmentPoints =
-                from d in DataFacade.GetData<IDataItemTreeAttachmentPoint>()
-                where
-                    d.InterfaceType == TypeManager.SerializeType(interfaceType) &&
-                    d.KeyValue == keyValue
-                select d;
+            var serializedInterfaceType = TypeManager.SerializeType(interfaceType);
+
+            var attachmentPoints = 
+                DataFacade.GetData<IDataItemTreeAttachmentPoint>()
+                          .Where(ap => ap.KeyValue == keyValue
+                                 && ap.InterfaceType == serializedInterfaceType);
 
             DataFacade.Delete<IDataItemTreeAttachmentPoint>(attachmentPoints);
         }

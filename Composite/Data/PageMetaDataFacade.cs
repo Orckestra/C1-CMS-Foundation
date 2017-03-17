@@ -379,12 +379,17 @@ namespace Composite.Data
                 parameterExpression
             );
 
-            var whereExpression = ExpressionCreator.Where(DataFacade.GetData(metaDataType).Expression, lambdaExpression);
+            using (var conn = new DataConnection())
+            {
+                conn.DisableServices();
 
-            IEnumerable<IData> dataset = ExpressionHelper.GetCastedObjects<IData>(metaDataType, whereExpression);
+                var whereExpression = ExpressionCreator.Where(DataFacade.GetData(metaDataType).Expression, lambdaExpression);
 
-            return dataset.SingleOrDefaultOrException("There're multiple meta data on a page. Page '{0}', definition name '{1}', meta type '{2}'",
-                                                      pageId, definitionName, metaDataType.FullName);
+                IEnumerable<IData> dataset = ExpressionHelper.GetCastedObjects<IData>(metaDataType, whereExpression);
+
+                return dataset.SingleOrDefaultOrException("There're multiple meta data on a page. Page '{0}', definition name '{1}', meta type '{2}'",
+                                                          pageId, definitionName, metaDataType.FullName);
+            }
         }
 
 

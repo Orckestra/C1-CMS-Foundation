@@ -41,9 +41,13 @@ namespace Composite.Data
 
         internal static bool TryValidateDeleteSuccess(this IData dataToDelete)
         {
-            var referees = GetNotOptionalRefereesRecursively(dataToDelete);
+            var foundDataset = new Dictionary<DataSourceId, Tuple<IData, ForeignPropertyInfo>>();
 
-            return referees.All(referee => referee.Item2.AllowCascadeDeletes);
+            GetRefereesRecursively(dataToDelete, true, 
+                (type, foreignKey) => !foreignKey.IsOptionalReference 
+                    && (!foreignKey.AllowCascadeDeletes || DataReferenceRegistry.GetRefereeTypes(type).Count > 0), foundDataset);
+
+            return foundDataset.All(kvp => kvp.Value.Item2.AllowCascadeDeletes);
         }
 
 
@@ -301,14 +305,23 @@ namespace Composite.Data
         /// <exclude />
         public static List<IData> GetNotOptionalReferences<T>(T data, bool allScopes) where T : IData
         {
-            return GetNotOptionalReferencesInt(data, allScopes).Select(t => t.Item1).ToList();
+            return GetReferencesInt(data, allScopes, (type, fp) => !fp.IsOptionalReference)
+                    .Select(t => t.Item1).ToList();
+        }
+
+        /// <exclude />
+        internal static List<IData> GetReferences(IData data, bool allScopes, Func<Type, ForeignPropertyInfo, bool> foreignKeyFilter)
+        {
+            return GetReferencesInt(data, allScopes, foreignKeyFilter)
+                    .Select(t => t.Item1).ToList();
         }
 
 
         /// <exclude />
-        internal static IList<Tuple<IData, ForeignPropertyInfo>> GetNotOptionalReferencesInt<T>(T data, bool allScopes) where T : IData
+        internal static IList<Tuple<IData, ForeignPropertyInfo>> GetReferencesInt(
+            IData data, bool allScopes, Func<Type, ForeignPropertyInfo, bool> propertyFilter) 
         {
-            Verify.ArgumentNotNull(data, "data");
+            Verify.ArgumentNotNull(data, nameof(data));
 
             var result = new List<Tuple<IData, ForeignPropertyInfo>>();
 
@@ -317,10 +330,9 @@ namespace Composite.Data
 
             foreach (var referencedType in referencedTypes)
             {
-
                 foreach (var foreignKeyProperty in GetForeignKeyProperties(referencedType, dataType))
                 {
-                    if (foreignKeyProperty.IsOptionalReference)
+                    if (!propertyFilter(referencedType, foreignKeyProperty))
                     {
                         continue;
                     }
@@ -556,35 +568,23 @@ namespace Composite.Data
 
         /// <exclude />
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
-        public static List<IData> GetReferees(this IData referencedData, Type refereeType, IEnumerable<PropertyInfo> foreignKeyPropertys, bool allScopes)
+        public static List<IData> GetReferees(this IData referencedData, Type refereeType, IEnumerable<PropertyInfo> foreignKeyProperties, bool allScopes)
         {
             Verify.ArgumentNotNull(referencedData, "referencedData");
 
-            return GetReferees(referencedData, false, refereeType, foreignKeyPropertys, allScopes);
+            return GetReferees(referencedData, false, refereeType, foreignKeyProperties, allScopes);
         }
 
 
 
-        internal static IEnumerable<Tuple<IData, ForeignPropertyInfo>> GetNotOptionalRefereesRecursively(this IData referencedData)
+        internal static IEnumerable<Tuple<IData, ForeignPropertyInfo>> GetNotOptionalRefereesRecursively(
+            this IData referencedData, bool allScopes = true)
         {
             Verify.ArgumentNotNull(referencedData, "referencedData");
 
             var foundDataset = new Dictionary<DataSourceId, Tuple<IData, ForeignPropertyInfo>>();
 
-            GetNotOptionalRefereesRecursively(referencedData, true, foundDataset);
-
-            return foundDataset.Values;
-        }
-
-
-
-        internal static IEnumerable<Tuple<IData, ForeignPropertyInfo>> GetNotOptionalRefereesRecursively(this IData referencedData, bool allScopes)
-        {
-            Verify.ArgumentNotNull(referencedData, "referencedData");
-
-            var foundDataset = new Dictionary<DataSourceId, Tuple<IData, ForeignPropertyInfo>>();
-
-            GetNotOptionalRefereesRecursively(referencedData, allScopes, foundDataset);
+            GetRefereesRecursively(referencedData, allScopes, (t, f) => !f.IsOptionalReference, foundDataset);
 
             return foundDataset.Values;
         }
@@ -624,12 +624,14 @@ namespace Composite.Data
 
 
 
-        private static void GetNotOptionalRefereesRecursively(IData referencedData, bool allScopes, Dictionary<DataSourceId, Tuple<IData, ForeignPropertyInfo>> foundDataset)
+        private static void GetRefereesRecursively(IData referencedData, bool allScopes, 
+            Func<Type, ForeignPropertyInfo, bool> foreignKeyPredicate,
+            Dictionary<DataSourceId, Tuple<IData, ForeignPropertyInfo>> foundDataset)
         {
-            Verify.ArgumentNotNull(referencedData, "foundDataset");
-            Verify.ArgumentNotNull(foundDataset, "referencedData");
+            Verify.ArgumentNotNull(referencedData, nameof(foundDataset));
+            Verify.ArgumentNotNull(foundDataset, nameof(referencedData));
 
-            IList<Tuple<IData, ForeignPropertyInfo>> referees = GetNotOptionalReferencesInt(referencedData, allScopes);
+            IList<Tuple<IData, ForeignPropertyInfo>> referees = GetReferencesInt(referencedData, allScopes, foreignKeyPredicate);
 
             foreach (var data in referees)
             {
@@ -637,7 +639,7 @@ namespace Composite.Data
                 {
                     foundDataset.Add(data.Item1.DataSourceId, data);
 
-                    GetNotOptionalRefereesRecursively(data.Item1, allScopes, foundDataset);
+                    GetRefereesRecursively(data.Item1, allScopes, foreignKeyPredicate, foundDataset);
                 }
             }
         }
@@ -648,15 +650,15 @@ namespace Composite.Data
         {
             List<IData> result = new List<IData>();
 
-            foreach (ForeignPropertyInfo foreignKeyProperyInfo in foreignKeyProperyInfos)
+            foreach (ForeignPropertyInfo foreignKeyPropertyInfo in foreignKeyProperyInfos)
             {
-                if (!referencedData.DataSourceId.InterfaceType.IsAssignableFrom(foreignKeyProperyInfo.TargetType))
+                if (!referencedData.DataSourceId.InterfaceType.IsAssignableFrom(foreignKeyPropertyInfo.TargetType))
                 {
                     continue;
                 }
-                object sourceKeyValue = foreignKeyProperyInfo.TargetKeyPropertyInfo.GetValue(referencedData, null);
+                object sourceKeyValue = foreignKeyPropertyInfo.TargetKeyPropertyInfo.GetValue(referencedData, null);
 
-                result.AddRange(GetReferences(dataset, foreignKeyProperyInfo, sourceKeyValue, returnOnFirstFound).Cast<IData>());
+                result.AddRange(GetReferences(dataset, foreignKeyPropertyInfo, sourceKeyValue, returnOnFirstFound).Cast<IData>());
                 if (returnOnFirstFound && result.Count > 0)
                 {
                     break;
