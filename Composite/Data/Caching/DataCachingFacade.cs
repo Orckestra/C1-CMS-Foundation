@@ -4,16 +4,17 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using Composite.Core.Linq;
 using Composite.Data.DynamicTypes;
 using Composite.Data.Foundation;
 using Composite.Data.Foundation.PluginFacades;
 using Composite.C1Console.Events;
 using Composite.Core.Configuration;
 
+using ScopeKey = System.Tuple<Composite.Data.DataScopeIdentifier, System.Globalization.CultureInfo>;
+
 using TypeData = System.Collections.Concurrent.ConcurrentDictionary<
     System.Tuple<Composite.Data.DataScopeIdentifier, System.Globalization.CultureInfo>,
-    Composite.Data.Caching.DataCachingFacade.CachedTable>;
+    Composite.Data.Caching.CachedTable>;
 
 namespace Composite.Data.Caching
 {
@@ -46,30 +47,6 @@ namespace Composite.Data.Caching
         }
 
 
-        /// <summary>
-        /// Cached table
-        /// </summary>
-        public class CachedTable
-        {
-            /// <summary>
-            /// Initializes a new instance of the <see cref="CachedTable"/> class.
-            /// </summary>
-            /// <param name="queryable">The queryable.</param>
-            public CachedTable(IQueryable queryable)
-            {
-                Queryable = queryable;
-            }
-
-            /// <summary>
-            /// The queryable data
-            /// </summary>
-            public IQueryable Queryable;
-
-            /// <summary>
-            /// Row by key table
-            /// </summary>
-            public Dictionary<object, IEnumerable<IData>> RowsByKey;
-        }
 
         /// <summary>
         /// Gets a value indicating if data caching is enabled
@@ -134,19 +111,18 @@ namespace Composite.Data.Caching
 
                 if(_maximumSize != -1)
                 {
-                    List<IData> cuttedTable = TakeElements(wholeTable, _maximumSize + 1);
+                    List<T> cuttedTable = TakeElements(wholeTable, _maximumSize + 1).Cast<T>().ToList();
                     if(cuttedTable.Count > _maximumSize)
                     {
                         DisableCachingForType(typeof (T));
 
                         return Verify.ResultNotNull(wholeTable);
                     }
-                    cachedTable = new CachedTable(cuttedTable.Cast<T>().AsQueryable());
-
+                    cachedTable = new CachedTable<T>(cuttedTable);
                 }
                 else
                 {
-                    cachedTable = new CachedTable(wholeTable.Evaluate().AsQueryable());
+                    cachedTable = new CachedTable<T>(wholeTable.ToList());
                 }
 
                 typeData[cacheKey] = cachedTable;
@@ -233,6 +209,45 @@ namespace Composite.Data.Caching
         }
 
 
+        /// <summary>
+        /// Removes the specified data collection from the cache. 
+        /// The items should belong to the same interface type and the same data scope.
+        /// </summary>
+        /// <param name="dataset"></param>
+        internal static void RemoveFromCache(IReadOnlyCollection<IData> dataset)
+        {
+            if (dataset.Count == 0) return;
+
+            var groupedData = from data in dataset
+                let ds = data.DataSourceId
+                group data by new
+                {
+                    ds.InterfaceType,
+                    ds.DataScopeIdentifier,
+                    ds.LocaleScope
+                };
+
+            foreach (var group in groupedData)
+            {
+                TypeData typeData;
+                if (!_cachedData.TryGetValue(group.Key.InterfaceType, out typeData))
+                {
+                    continue;
+                }
+
+                var scopeKey = new ScopeKey(group.Key.DataScopeIdentifier, group.Key.LocaleScope);
+                CachedTable cachedTable;
+                if (!typeData.TryGetValue(scopeKey, out cachedTable))
+                {
+                    continue;
+                }
+
+                cachedTable.Remove(group);
+            }
+
+            // TODO: clear cache on transaction rollback?
+        }
+
         internal static void ClearCache(Type interfaceType, DataScopeIdentifier dataScopeIdentifier, CultureInfo localizationScope)
         {
             TypeData typeData;
@@ -268,13 +283,13 @@ namespace Composite.Data.Caching
 
 
         
-        private static List<IData> TakeElements(IQueryable queryable, int count)
+        private static IQueryable TakeElements(IQueryable queryable, int count)
         {
             MethodInfo method = GetQueryableTakeMethodInfo(queryable.ElementType);
 
             var resultTable = (IQueryable) method.Invoke(null, new object[] {queryable, count});
 
-            return resultTable.ToDataList();
+            return resultTable;
         }
 
         private static MethodInfo GetQueryableTakeMethodInfo(Type type)

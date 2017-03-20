@@ -25,7 +25,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
         public ICollection<XElement> ReadOnlyElementsList;
         public DateTime LastModified;
         public DateTime FileModificationDate;
-        public DataCachingFacade.CachedTable CachedTable;
+        public CachedTable CachedTable;
         public bool Dirty = false; // Determines whether the inner XElement list is dirty
 
 

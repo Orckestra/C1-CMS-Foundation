@@ -44,9 +44,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
                 var list = new List<T>(elements.Count);
                 list.AddRange(elements.Select(fun));
 
-                var queryable = list.AsQueryable();
-
-                fileRecord.CachedTable = new DataCachingFacade.CachedTable(queryable);
+                fileRecord.CachedTable = new CachedTable<T>(list);
             }
 
             return new CachingQueryable<T>(fileRecord.CachedTable, () => fileRecord.CachedTable.Queryable);

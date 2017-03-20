@@ -537,8 +537,7 @@ namespace Composite.Data
 
                     if (DataCachingFacade.IsTypeCacheable(interfaceTypePair.Key))
                     {
-                        var dataSourceId = interfaceTypePair.Value.First().DataSourceId;
-                        DataCachingFacade.ClearCache(interfaceTypePair.Key, dataSourceId.DataScopeIdentifier, dataSourceId.LocaleScope);
+                        DataCachingFacade.RemoveFromCache(interfaceTypePair.Value);
                     }
                 }
             }
