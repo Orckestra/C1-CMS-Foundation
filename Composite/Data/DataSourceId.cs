@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using Composite.Core.Serialization;
@@ -14,9 +14,6 @@ namespace Composite.Data
     /// </summary>
     public sealed class DataSourceId
     {
-        private IDataId _dataId;
-        private string _providerName;
-        private Type _interfaceType;
         private DataScopeIdentifier _dataScopeIdentifier;
         private CultureInfo _localeScope;
         private string _serializedData;
@@ -33,8 +30,8 @@ namespace Composite.Data
 
 
             this.DataId = dataId;
-            _providerName = providerName;
-            _interfaceType = interfaceType;
+            ProviderName = providerName;
+            InterfaceType = interfaceType;
             _dataScopeIdentifier = DataScopeManager.MapByType(interfaceType);
             _localeScope = LocalizationScopeManager.MapByType(interfaceType);
             this.ExistsInStore = true;
@@ -55,8 +52,8 @@ namespace Composite.Data
             if (localeScope == null) throw new ArgumentNullException("localeScope");
 
             this.DataId = dataId;
-            _providerName = providerName;
-            _interfaceType = interfaceType;
+            ProviderName = providerName;
+            InterfaceType = interfaceType;
             _dataScopeIdentifier = dataScope;
             _localeScope = localeScope;
             this.ExistsInStore = true;
@@ -78,42 +75,19 @@ namespace Composite.Data
         /// <summary>
         /// Object which the data provider can use to uniquely identify the 'table record' in its own store matching a data element. 
         /// </summary>
-        public IDataId DataId
-        {
-            get 
-            {
-                _dataId = EnsureDataIdType(_dataId);
-
-                return _dataId; 
-            }
-            internal set 
-            { 
-                _dataId = value; 
-            }
-        }
-
+        public IDataId DataId { get; }
 
 
         /// <summary>
         /// Name of the data provider responsible for the data element.
         /// </summary>
-        public string ProviderName
-        {
-            get { return _providerName; }
-            internal set { _providerName = value; }
-        }
-
+        public string ProviderName { get; }
 
 
         /// <summary>
-        /// The interface used for the data element. This is expected to be inpmelenting IData.
+        /// The interface used for the data element. This is expected to be implementing IData.
         /// </summary>
-        public Type InterfaceType
-        {
-            get { return _interfaceType; }
-            internal set { _interfaceType = value; }
-        }
-
+        public Type InterfaceType { get; }
 
 
         /// <summary>
@@ -130,11 +104,7 @@ namespace Composite.Data
         /// <summary>
         /// The publication scope (published or unpublished) from which the data element originate.
         /// </summary>
-        public PublicationScope PublicationScope
-        {
-            get { return _dataScopeIdentifier.Name == DataScopeIdentifier.PublicName ? Data.PublicationScope.Published : Data.PublicationScope.Unpublished; }
-        }
-
+        public PublicationScope PublicationScope => _dataScopeIdentifier.ToPublicationScope();
 
 
         /// <summary>
@@ -154,7 +124,6 @@ namespace Composite.Data
         public bool ExistsInStore
         {
             get;
-            internal set;
         }
 
 
@@ -165,9 +134,7 @@ namespace Composite.Data
         /// <returns>Serialized as string</returns>
         public string Serialize()
         {
-            IDataId dataId = EnsureDataIdType(_dataId);
-
-            if (_serializedData == null || dataId != _dataId)
+            if (_serializedData == null)
             {
                 string s = SerializationFacade.Serialize(this.DataId);
 
@@ -175,12 +142,12 @@ namespace Composite.Data
                 StringConversionServices.SerializeKeyValuePair(sb, "_dataId_", s);
                 StringConversionServices.SerializeKeyValuePair(sb, "_dataIdType_", TypeManager.SerializeType(this.DataId.GetType()));
                 
-                if (_providerName != DataProviderRegistry.DefaultDynamicTypeDataProviderName)
+                if (ProviderName != DataProviderRegistry.DefaultDynamicTypeDataProviderName)
                 {
-                    StringConversionServices.SerializeKeyValuePair(sb, "_providerName_", _providerName);
+                    StringConversionServices.SerializeKeyValuePair(sb, "_providerName_", ProviderName);
                 }
                 
-                StringConversionServices.SerializeKeyValuePair(sb, "_interfaceType_", TypeManager.SerializeType(_interfaceType));
+                StringConversionServices.SerializeKeyValuePair(sb, "_interfaceType_", TypeManager.SerializeType(InterfaceType));
                 StringConversionServices.SerializeKeyValuePair(sb, "_dataScope_", DataScopeIdentifier.Serialize());
                 StringConversionServices.SerializeKeyValuePair(sb, "_localeScope_", LocaleScope.Name);
 
@@ -243,15 +210,9 @@ namespace Composite.Data
             string serializedDataId = StringConversionServices.DeserializeValueString(dic["_dataId_"]);
             string dataIdTypeName = StringConversionServices.DeserializeValueString(dic["_dataIdType_"]);
 
-            string providerName;
-            if (dic.ContainsKey("_providerName_"))
-            {
-                providerName = StringConversionServices.DeserializeValueString(dic["_providerName_"]);
-            }
-            else
-            {
-                providerName = DataProviderRegistry.DefaultDynamicTypeDataProviderName;
-            }
+            string providerName = dic.ContainsKey("_providerName_") 
+                ? StringConversionServices.DeserializeValueString(dic["_providerName_"]) 
+                : DataProviderRegistry.DefaultDynamicTypeDataProviderName;
 
             string interfaceTypeName = StringConversionServices.DeserializeValueString(dic["_interfaceType_"]);
             string dataScope = StringConversionServices.DeserializeValueString(dic["_dataScope_"]);
@@ -300,11 +261,7 @@ namespace Composite.Data
 
 
         /// <exclude />
-        public override string ToString()
-        {
-            return Serialize();
-        }
-
+        public override string ToString() => Serialize();
 
 
         /// <exclude />
@@ -322,33 +279,20 @@ namespace Composite.Data
         /// <exclude />
         public bool Equals(DataSourceId dataSourceId)
         {
-            if (dataSourceId == null) return false;
-
-            return dataSourceId.ToString() == ToString();
+            return dataSourceId != null && dataSourceId.ToString() == ToString();
         }
 
 
 
         /// <exclude />
-        public override int GetHashCode()
-        {
-            return ToString().GetHashCode();
-        }
-
+        public override int GetHashCode() => ToString().GetHashCode();
 
 
         internal void SetTag(string id, object value)
         {
             InitializeTagInformation();
 
-            if (_tagInformation.ContainsKey(id))
-            {
-                _tagInformation[id] = value;
-            }
-            else
-            {
-                _tagInformation.Add(id, value);
-            }
+            _tagInformation[id] = value;
         }
 
 
@@ -359,10 +303,7 @@ namespace Composite.Data
 
             InitializeTagInformation();
 
-            if (_tagInformation.ContainsKey(id))
-            {
-                _tagInformation.Remove(id);
-            }
+            _tagInformation.Remove(id);
         }
 
 
@@ -388,14 +329,6 @@ namespace Composite.Data
              {
                  _tagInformation = new Dictionary<string, object>();
              }
-        }
-
-
-
-        private static IDataId EnsureDataIdType(IDataId dataId)
-        {
-            // After the new build manager this should always be the right type
-            return dataId;
         }
     }
 }
