@@ -353,7 +353,7 @@ namespace Composite.Data
             {
                 if (!DataTypeTypesManager.IsAllowedDataTypeAssembly(typeof(T)))
                 {
-                    string message = string.Format("The data interface '{0}' is not located in an assembly in the website Bin folder. Please move it to that location", typeof(T));
+                    string message = $"The data interface '{typeof(T)}' is not located in an assembly in the website Bin folder. Please move it to that location";
                     Log.LogError(LogTitle, message);
                     throw new InvalidOperationException(message);
                 }
@@ -364,13 +364,11 @@ namespace Composite.Data
 
                     if (writeableProviders.Count == 0)
                     {
-                        Log.LogVerbose(LogTitle, string.Format("Type data interface '{0}' is marked auto updateble and is not supported by any providers. Adding it to the default dynamic type data provider", typeof(T)));
+                        Log.LogVerbose(LogTitle, $"Type data interface '{typeof(T)}' is marked auto updateble and is not supported by any providers. Adding it to the default dynamic type data provider");
 
-                        List<T> result;
                         DynamicTypeManager.EnsureCreateStore(typeof(T));
 
-                        result = AddNew<T>(datas, false, suppressEventing, performForeignKeyIntegrityCheck, performValidation, null);
-                        return result;
+                        return AddNew<T>(datas, false, suppressEventing, performForeignKeyIntegrityCheck, performValidation, null);
                     }
                 }
             }
@@ -380,7 +378,7 @@ namespace Composite.Data
                 return AddNew_AddingMethod<T>(writeableProviders[0], datas, suppressEventing, performForeignKeyIntegrityCheck, performValidation);
             }
 
-            throw new InvalidOperationException(string.Format("{0} writeable data providers exists for data '{1}'.", writeableProviders.Count, typeof(T)));
+            throw new InvalidOperationException($"{writeableProviders.Count} writeable data providers exists for data '{typeof(T)}'.");
         }
         
 
@@ -395,17 +393,17 @@ namespace Composite.Data
 
 
             List<string> writeableProviders = DataProviderRegistry.GetWriteableDataProviderNamesByInterfaceType(typeof(T));
-            if (writeableProviders.Contains(providerName) == false)
+            if (!writeableProviders.Contains(providerName))
             {
-                Log.LogVerbose(LogTitle, string.Format("Type data interface '{0}' is marked auto updateble and is not supported by the provider '{1}', adding it", typeof(T), providerName));
+                Log.LogVerbose(LogTitle, $"Type data interface '{typeof(T)}' is marked auto updateable and is not supported by the provider '{providerName}', adding it");
 
                 DynamicTypeManager.EnsureCreateStore(typeof(T), providerName);
             }
 
             writeableProviders = DataProviderRegistry.GetWriteableDataProviderNamesByInterfaceType(typeof(T));
-            if (writeableProviders.Contains(providerName) == false)
+            if (!writeableProviders.Contains(providerName))
             {
-                throw new InvalidOperationException(string.Format("The writeable data providers '{0}' does not support the interface '{1}'.", providerName, typeof(T)));
+                throw new InvalidOperationException($"The writeable data providers '{providerName}' does not support the interface '{typeof(T)}'.");
             }
 
 
@@ -423,7 +421,7 @@ namespace Composite.Data
             }
 
 
-            if (suppressEventing == false)
+            if (!suppressEventing)
             {
                 foreach (T data in dataset)
                 {
@@ -433,12 +431,9 @@ namespace Composite.Data
 
             List<T> addedDataset = DataProviderPluginFacade.AddNew<T>(providerName, dataset);
 
-            if (DataCachingFacade.IsTypeCacheable(typeof(T)))
-            {
-                DataCachingFacade.ClearCache(typeof(T));
-            }
+            DataCachingFacade.ClearCache(typeof(T), DataScopeManager.MapByType(typeof(T)), LocalizationScopeManager.MapByType(typeof(T)));
 
-            if (suppressEventing == false)
+            if (!suppressEventing)
             {
                 foreach (T data in addedDataset)
                 {
@@ -542,7 +537,8 @@ namespace Composite.Data
 
                     if (DataCachingFacade.IsTypeCacheable(interfaceTypePair.Key))
                     {
-                        DataCachingFacade.ClearCache(interfaceTypePair.Key, interfaceTypePair.Value.First().DataSourceId.DataScopeIdentifier);
+                        var dataSourceId = interfaceTypePair.Value.First().DataSourceId;
+                        DataCachingFacade.ClearCache(interfaceTypePair.Key, dataSourceId.DataScopeIdentifier, dataSourceId.LocaleScope);
                     }
                 }
             }
