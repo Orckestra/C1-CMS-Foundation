@@ -147,16 +147,18 @@ var basepath = globals.siteLocation || process.cwd()+'/Website';
 var sourcepath = process.cwd()+'/Website';
 
 function copyFile(source, target) {
+	var id = Math.ceil(10000 * Math.random());
+	var tmpFileLoc = basepath + '/tmp' + id;
 	return new Promise(function(resolve, reject) {
 		var reader = fs.createReadStream(source);
 		reader.on('error', reject);
-		var id = Math.ceil(10000 * Math.random());
-		var writer = fs.createWriteStream('tmp' + id);
+		
+		var writer = fs.createWriteStream(tmpFileLoc);
 		writer.on('error', reject);
 		writer.on('finish', function () { resolve(id); });
 		reader.pipe(writer);
 	}).then(function (id) {
-		fs.renameSync('tmp' + id, target);
+		fs.renameSync(tmpFileLoc, target);
 	});
 }
 function delay() {
