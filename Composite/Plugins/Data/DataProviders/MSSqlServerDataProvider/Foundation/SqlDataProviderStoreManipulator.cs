@@ -814,7 +814,8 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
         {
             string defaultInfo = string.Empty;
             string fieldName = fieldDescriptor.Name;
-            bool isKeyField = dataTypeDescriptor.KeyPropertyNames.Contains(fieldName);
+            bool isKeyField = dataTypeDescriptor.KeyPropertyNames.Contains(fieldName)
+                || fieldDescriptor.ForeignKeyReferenceTypeName != null;
 
             if (TranslatesIntoDefaultConstraint(fieldDescriptor.DefaultValue))
             {
