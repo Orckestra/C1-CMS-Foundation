@@ -110,7 +110,7 @@ namespace Composite.Plugins.Components.FileBasedComponentProvider
 
                 var description = StringResourceSystemFacade.ParseString(xElement.GetAttributeValue(Namespaces.Components + Description)) ?? "";
 
-                var groupingTagsRaw = xElement.GetAttributeValue(Namespaces.Components + Tags) ??
+                var groupingTagsRaw = StringResourceSystemFacade.ParseString(xElement.GetAttributeValue(Namespaces.Components + Tags)) ??
                                         GuessGroupingTagsBasedOnPath(componentFile);
 
                 List<string> groupingTags = new List<string>();
