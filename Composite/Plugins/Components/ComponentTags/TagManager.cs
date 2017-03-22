@@ -47,18 +47,7 @@ namespace Composite.Plugins.Components.ComponentTags
         {
             if (_tagToTitleMap.ContainsKey(tag))
             {
-                string localeTag;
-                var isTagHasLocale = StringResourceSystemFacade.TryGetString("Composite.Plugins.Components",
-                    _tagToTitleMap[tag].Replace("{","").Replace("}",""),
-                    out localeTag);
-                if (isTagHasLocale)
-                {
-                    return localeTag;
-                }
-                else
-                {
-                    return _tagToTitleMap[tag];
-                }
+                return StringResourceSystemFacade.ParseString(_tagToTitleMap[tag]);
             }
 
             return tag;
