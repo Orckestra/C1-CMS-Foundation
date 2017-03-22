@@ -15,11 +15,14 @@ namespace Composite.Search.DocumentSources
 
         private readonly Lazy<ICollection<DocumentField>> _customFields;
         private readonly DataChangesIndexNotifier _changesIndexNotifier;
+        private readonly IEnumerable<ISearchDocumentBuilderExtension> _docBuilderExtensions;
 
-        public MediaLibraryDocumentSource()
+        public MediaLibraryDocumentSource(IEnumerable<ISearchDocumentBuilderExtension> extensions)
         {
             _customFields = new Lazy<ICollection<DocumentField>>(() =>
                 DataTypeSearchReflectionHelper.GetDocumentFields(typeof(IMediaFile)).Evaluate());
+
+            _docBuilderExtensions = extensions;
 
             _changesIndexNotifier = new DataChangesIndexNotifier(
                 _listeners, typeof(IMediaFile),
@@ -59,12 +62,12 @@ namespace Composite.Search.DocumentSources
 
             string documentId = mediaFile.Id.ToString();
 
-            var docBuilder = new SearchDocumentBuilder();
+            var docBuilder = new SearchDocumentBuilder(_docBuilderExtensions);
 
             docBuilder.SetDataType(typeof(IMediaFile));
             docBuilder.CrawlData(mediaFile);
 
-            return docBuilder.BuildDocument(Name, documentId, label, null, mediaFile.GetDataEntityToken(), null);
+            return docBuilder.BuildDocument(Name, documentId, label, null, mediaFile.GetDataEntityToken());
         }
     }
 }

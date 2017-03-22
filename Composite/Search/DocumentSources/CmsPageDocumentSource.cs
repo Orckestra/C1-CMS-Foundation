@@ -22,8 +22,9 @@ namespace Composite.Search.DocumentSources
         private readonly List<IDocumentSourceListener> _listeners = new List<IDocumentSourceListener>();
         private readonly DataChangesIndexNotifier _changesIndexNotifier;
         private readonly Lazy<ICollection<DocumentField>> _customFields;
+        private readonly IEnumerable<ISearchDocumentBuilderExtension> _docBuilderExtensions;
 
-        public CmsPageDocumentSource()
+        public CmsPageDocumentSource(IEnumerable<ISearchDocumentBuilderExtension> extensions)
         {
             _customFields = new Lazy<ICollection<DocumentField>>(() =>
             {
@@ -36,6 +37,8 @@ namespace Composite.Search.DocumentSources
                        .ExcludeDuplicateKeys(f => f.Name)
                        .Evaluate();
             });
+
+            _docBuilderExtensions = extensions;
 
             _changesIndexNotifier = new DataChangesIndexNotifier(
                 _listeners, typeof(IPage),
@@ -110,17 +113,18 @@ namespace Composite.Search.DocumentSources
             bool isPublished = page.DataSourceId.PublicationScope == PublicationScope.Published;
             string documentId = GetDocumentId(page);
 
-            var documentBuilder = new SearchDocumentBuilder();
-
-            documentBuilder.SetDataType(typeof(IPage));
-            documentBuilder.CrawlData(page);
-
-            string url;
+            var docBuilder = new SearchDocumentBuilder(_docBuilderExtensions);
+            docBuilder.SetDataType(typeof(IPage));
 
             using (new DataConnection(page.DataSourceId.PublicationScope, page.DataSourceId.LocaleScope))
             {
+                if (isPublished)
+                {
+                    docBuilder.Url = PageUrls.BuildUrl(page, UrlKind.Internal);
+                }
+
                 var placeholders = PageManager.GetPlaceholderContent(page.Id, page.VersionId);
-                placeholders.ForEach(pl => documentBuilder.CrawlData(pl, true));
+                placeholders.ForEach(pl => docBuilder.CrawlData(pl, true));
 
                 List<IData> metaData;
 
@@ -135,17 +139,17 @@ namespace Composite.Search.DocumentSources
 
                 try
                 {
-                    metaData?.ForEach(pageMetaData => documentBuilder.CrawlData(pageMetaData));
+                    metaData?.ForEach(pageMetaData => docBuilder.CrawlData(pageMetaData));
                 }
                 catch (Exception ex)
                 {
                     Log.LogWarning(LogTitle, ex);
                 }
-
-                url = isPublished ? PageUrls.BuildUrl(page, UrlKind.Internal) : null;
             }
 
-            return documentBuilder.BuildDocument(Name, documentId, label, null, entityToken, url);
+            docBuilder.CrawlData(page);
+
+            return docBuilder.BuildDocument(Name, documentId, label, null, entityToken);
         }
 
         private EntityToken GetAdministratedEntityToken(IPage page)

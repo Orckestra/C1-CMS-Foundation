@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Composite.C1Console.Security;
+using Composite.Core;
+using Composite.Core.Extensions;
 using Composite.Core.Linq;
 using Composite.Data;
 
@@ -18,21 +20,44 @@ namespace Composite.Search.Crawling
         private readonly List<KeyValuePair<string, object>> _fieldValues = new List<KeyValuePair<string, object>>();
         private readonly List<KeyValuePair<string, string[]>> _facetFieldValues = new List<KeyValuePair<string, string[]>>();
 
+        private readonly IEnumerable<ISearchDocumentBuilderExtension> _extensions;
+
+        /// <summary>
+        /// Creates a new instance of <see cref="SearchDocumentBuilder"/>.
+        /// </summary>
+        [Obsolete("Use an overload taking extensions as a parameter.")]
+        public SearchDocumentBuilder(): this(null)
+        {
+        }
+
+        /// <summary>
+        /// Creates a new instance of <see cref="SearchDocumentBuilder"/>.
+        /// </summary>
+        public SearchDocumentBuilder(IEnumerable<ISearchDocumentBuilderExtension> extensions)
+        {
+            _extensions = extensions;
+        }
+
         /// <summary>
         /// Collected text parts.
         /// </summary>
-        public IEnumerable<string> TextParts => _textParts;
+        public ICollection<string> TextParts => _textParts;
 
         /// <summary>
         /// Collected field values to be available in search results.
         /// </summary>
-        public IEnumerable<KeyValuePair<string, object>> FieldPreviewValues => _fieldValues;
+        public ICollection<KeyValuePair<string, object>> FieldPreviewValues => _fieldValues;
 
         /// <summary>
         /// Collected facet field values
         /// </summary>
-        public IEnumerable<KeyValuePair<string, string[]>> FacetFieldValues => _facetFieldValues;
+        public ICollection<KeyValuePair<string, string[]>> FacetFieldValues => _facetFieldValues;
 
+
+        /// <summary>
+        /// The document url. Setting a not empty value makes the document searchable from the frontend.
+        /// </summary>
+        public string Url { get; set; }
 
         /// <summary>
         /// Sets the interface type, name of which will be used for populating the "Data Type" column in the search results.
@@ -122,6 +147,32 @@ namespace Composite.Search.Crawling
                     }
                 }
             }
+
+            _extensions?.ForEach(e =>
+            {
+                try
+                {
+                    e.Populate(this, data);
+                }
+                catch (Exception ex)
+                {
+                    Log.LogError(nameof(SearchDocumentBuilder), ex);
+                }
+            });
+        }
+
+        /// <exclude />
+        [Obsolete("Use an overload that does not take a Url parameter and use the Url property instead.")]
+        public SearchDocument BuildDocument(
+            string source,
+            string documentId,
+            string label,
+            string versionName,
+            EntityToken entityToken,
+            string url)
+        {
+            Url = Url ?? url;
+            return BuildDocument(source, documentId, label, versionName, entityToken);
         }
 
         /// <summary>
@@ -132,15 +183,13 @@ namespace Composite.Search.Crawling
         /// <param name="label">The label of the item in the tree</param>
         /// <param name="versionName">The version name of the item</param>
         /// <param name="entityToken">The entity token.</param>
-        /// <param name="url">The document url. Setting a not empty value makes the document searchable from the frontend.</param>
         /// <returns></returns>
         public SearchDocument BuildDocument(
             string source, 
             string documentId, 
             string label, 
             string versionName, 
-            EntityToken entityToken, 
-            string url)
+            EntityToken entityToken)
         {
             Verify.ArgumentNotNullOrEmpty(source, nameof(source));
             Verify.ArgumentNotNullOrEmpty(documentId, nameof(documentId));
@@ -148,7 +197,7 @@ namespace Composite.Search.Crawling
 
             _fieldValues.Add(new KeyValuePair<string, object>(DefaultDocumentFieldNames.Label, label));
 
-            if (!string.IsNullOrWhiteSpace(url))
+            if (!string.IsNullOrWhiteSpace(Url))
             {
                 _facetFieldValues.Add(new KeyValuePair<string, string[]>(DefaultDocumentFieldNames.HasUrl, new[] { "1" }));
             }
@@ -159,7 +208,7 @@ namespace Composite.Search.Crawling
             {
                 ElementBundleName = versionName,
                 FullText = _textParts,
-                Url = url,
+                Url = Url,
                 FieldValues = _fieldValues
                     .ExcludeDuplicateKeys(pair => pair.Key)
                     .ToDictionary(pair => pair.Key, pair => pair.Value),

@@ -48,8 +48,18 @@ namespace Composite.Search
 
         internal static void AddDefaultSearchDocumentSourceProviders(this IServiceCollection services)
         {
-            services.AddSingleton<ISearchDocumentSourceProvider>(new BuiltInTypesDocumentSourceProvider());
-            services.AddSingleton<ISearchDocumentSourceProvider>(new DataTypesDocumentSourceProvider());
+            services.AddSingleton<CmsPageDocumentSource>();
+            services.AddSingleton<MediaLibraryDocumentSource>();
+
+            services.Add(new ServiceDescriptor(
+                typeof(ISearchDocumentSourceProvider), 
+                typeof(BuiltInTypesDocumentSourceProvider), 
+                ServiceLifetime.Singleton));
+
+            services.Add(new ServiceDescriptor(
+                typeof(ISearchDocumentSourceProvider),
+                typeof(DataTypesDocumentSourceProvider),
+                ServiceLifetime.Singleton));
 
             services.AddScoped<IndexUpdateActionContainer>();
         }

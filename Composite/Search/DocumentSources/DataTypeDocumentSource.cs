@@ -95,16 +95,16 @@ namespace Composite.Search.DocumentSources
             }
 
             var docBuilder = new SearchDocumentBuilder();
-            docBuilder.CrawlData(data);
             docBuilder.SetDataType(_interfaceType);
 
             string documentId = GetDocumentId(data);
-            string url = null;
-            if (InternalUrls.DataTypeSupported(data.DataSourceId.InterfaceType)
-                && (!_isPublishable || (data.DataSourceId.PublicationScope == PublicationScope.Published)))
+            if (InternalUrls.DataTypeSupported(_interfaceType)
+                && (!_isPublishable || data.DataSourceId.PublicationScope == PublicationScope.Published))
             {
-                url = InternalUrls.TryBuildInternalUrl(data.ToDataReference());
+                docBuilder.Url = InternalUrls.TryBuildInternalUrl(data.ToDataReference());
             }
+
+            docBuilder.CrawlData(data);
 
             var entityToken = GetConsoleEntityToken(data);
             if (entityToken == null)
@@ -113,7 +113,7 @@ namespace Composite.Search.DocumentSources
                 return null;
             }
 
-            return docBuilder.BuildDocument(Name, documentId, label, null, entityToken, url);
+            return docBuilder.BuildDocument(Name, documentId, label, null, entityToken);
         }
 
         private EntityToken GetConsoleEntityToken(IData data)
