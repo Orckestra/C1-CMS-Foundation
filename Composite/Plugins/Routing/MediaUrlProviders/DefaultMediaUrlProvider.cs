@@ -108,7 +108,7 @@ namespace Composite.Plugins.Routing.MediaUrlProviders
             string legalFilePath = RemoveFilePathIllegalCharacters(path);
             string extension = Path.GetExtension(legalFilePath);
 
-            if (!MimeTypeInfo.IsIisServable(extension))
+            if (!MimeTypeInfo.IsIisServeable(extension))
             {
                 path = path.Replace('.', '_');
             }

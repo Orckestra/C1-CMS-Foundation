@@ -8,14 +8,13 @@ using System.Web.Configuration;
 using System.Web.Hosting;
 using System.Xml.Linq;
 using Composite.C1Console.Forms.CoreUiControls;
-using Composite.Core.Extensions;
 using Composite.Core.ResourceSystem;
 using Composite.Core.ResourceSystem.Icons;
 
 
 namespace Composite.Core.IO
 {
-    /// <summary>    
+    /// <summary>
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
@@ -34,7 +33,7 @@ namespace Composite.Core.IO
                                MimeTypeInfo.Resx, MimeTypeInfo.MasterPage, MimeTypeInfo.CsHtml, MimeTypeInfo.Svg };
 
         // file types we don't expect IIS to block
-        private static readonly HashSet<string> _iisServableTypes = new HashSet<string>();
+        private static readonly HashSet<string> _iisServeableTypes = new HashSet<string>();
 
         private static ResourceHandle GetIconHandle(string name)
         {
@@ -42,179 +41,91 @@ namespace Composite.Core.IO
         }
 
         /// <exclude />
-        public static string Jpeg
-        {
-            get { return "image/jpeg";}
-        }
+        public static string Default => "application/octet-stream";
 
         /// <exclude />
-        public static string Default
-        {
-            get { return "application/octet-stream"; }
-        }
+        public static string Jpeg => "image/jpeg";
 
         /// <exclude />
-        public static string Gif
-        {
-            get { return "image/gif"; }
-        }
+        public static string Gif => "image/gif";
 
         /// <exclude />
-        public static string Bmp
-        {
-            get { return "image/bmp"; }
-        }
+        public static string Bmp => "image/bmp";
 
         /// <exclude />
-        public static string Png
-        {
-            get { return "image/png"; }
-        }
+        public static string Png => "image/png";
 
         /// <exclude />
-        public static string Tiff
-        {
-            get { return "image/tiff"; }
-        }
+        public static string Tiff => "image/tiff";
 
         /// <exclude />
-        public static string Css
-        {
-            get { return "text/css"; }
-        }
+        public static string Css => "text/css";
 
         /// <exclude />
-        public static string Sass
-        {
-            get { return "text/x-sass"; }
-        }
-
+        public static string Sass => "text/x-sass";
 
         /// <exclude />
-        public static string Js
-        {
-            get { return "text/js"; }
-        }
+        public static string Js => "text/js";
 
         /// <exclude />
-        public static string Xml
-        {
-            get { return "text/xml"; }
-        }
+        public static string Xml => "text/xml";
 
         /// <exclude />
-        public static string Text
-        {
-            get { return "text/plain"; }
-        }
+        public static string Text => "text/plain";
 
         /// <exclude />
-        public static string Html
-        {
-            get { return "text/html"; }
-        }
+        public static string Html => "text/html";
 
         /// <exclude />
-        public static string Flash
-        {
-            get { return "application/x-shockwave-flash"; }
-        }
+        public static string Flash => "application/x-shockwave-flash";
 
         /// <exclude />
-        public static string QuickTime
-        {
-            get { return "video/quicktime"; }
-        }
+        public static string QuickTime => "video/quicktime";
 
         /// <exclude />
-        public static string Wmv
-        {
-            get { return "video/x-ms-wmv"; }
-        }
+        public static string Wmv => "video/x-ms-wmv";
 
         /// <exclude />
-        public static string Asf
-        {
-            get { return "video/x-ms-asf"; }
-        }
+        public static string Asf => "video/x-ms-asf";
 
         /// <exclude />
-        public static string Avi
-        {
-            get { return "video/x-msvideo"; }
-        }
+        public static string Avi => "video/x-msvideo";
 
         /// <exclude />
-        public static string Flv
-        {
-            get { return "video/x-flv"; }
-        }
+        public static string Flv => "video/x-flv";
 
         /// <exclude />
-        public static string Director
-        {
-            get { return "application/x-director"; }
-        }
+        public static string Director => "application/x-director";
 
         /// <exclude />
-        public static string CSharp
-        {
-            get { return "text/x-csharp"; }
-        }
+        public static string CSharp => "text/x-csharp";
 
         /// <exclude />
-        public static string CsHtml
-        {
-            get { return "application/x-cshtml"; }
-        }
+        public static string CsHtml => "application/x-cshtml";
 
         /// <exclude />
-        public static string Svg
-        {
-            get { return "image/svg+xml"; }
-        }
+        public static string Svg => "image/svg+xml";
 
         /// <exclude />
-        public static string Ascx
-        {
-            get { return "application/x-ascx"; }
-        }
+        public static string Ascx => "application/x-ascx";
 
         /// <exclude />
-        public static string Aspx
-        {
-            get { return "application/x-aspx"; }
-        }
+        public static string Aspx => "application/x-aspx";
 
         /// <exclude />
-        public static string Asax
-        {
-            get { return "application/x-asax"; }
-        }
+        public static string Asax => "application/x-asax";
 
         /// <exclude />
-        public static string Ashx
-        {
-            get { return "application/x-ashx"; }
-        }
+        public static string Ashx => "application/x-ashx";
 
         /// <exclude />
-        public static string Asmx
-        {
-            get { return "application/x-asmx"; }
-        }
+        public static string Asmx => "application/x-asmx";
 
         /// <exclude />
-        public static string Resx
-        {
-            get { return "application/x-resx"; }
-        }
+        public static string Resx => "application/x-resx";
 
         /// <exclude />
-        public static string MasterPage
-        {
-            get { return "application/x-master-page"; }
-        }
+        public static string MasterPage => "application/x-master-page";
 
 
         /// <exclude />
@@ -333,7 +244,7 @@ namespace Composite.Core.IO
 
             if (iisServable)
             {
-                _iisServableTypes.Add(canonicalMimeTypeName);
+                _iisServeableTypes.Add(canonicalMimeTypeName);
             }
         }
 
@@ -391,7 +302,7 @@ namespace Composite.Core.IO
                 }
                 else
 	            {
-                    _iisServableTypes.Add(mimeType);
+                    _iisServeableTypes.Add(mimeType);
 	            }
             }
 	    }
@@ -419,12 +330,7 @@ namespace Composite.Core.IO
         /// <exclude />
         public static ResourceHandle GetResourceHandleFromMimeType(string mimeType)
         {
-            if (mimeType == null)
-            {
-                return GetIconHandle("mimetype-unknown");
-            }
-
-            if (_mimeTypeToResourceName.ContainsKey(mimeType))
+            if (mimeType != null && _mimeTypeToResourceName.ContainsKey(mimeType))
             {
                 return GetIconHandle(_mimeTypeToResourceName[mimeType]);
             }
@@ -463,16 +369,15 @@ namespace Composite.Core.IO
         {
             string fileName = System.IO.Path.GetFileName(uploadedFile.FileName);
 
-            string mimeTypeFromExtension = MimeTypeInfo.GetCanonicalFromExtension(System.IO.Path.GetExtension(fileName));
+            string mimeTypeFromExtension = GetCanonicalFromExtension(System.IO.Path.GetExtension(fileName));
             if (mimeTypeFromExtension != MimeTypeInfo.Default)
             {
-                Log.LogInformation(LogTitle, "Uploading file '{0}'. MIME type from extension: '{1}'"
-                                                .FormatWith(fileName, mimeTypeFromExtension));
+                Log.LogInformation(LogTitle, $"Uploading file '{fileName}'. MIME type from extension: '{mimeTypeFromExtension}'");
 
                 return mimeTypeFromExtension;
             }
             
-            string mimeTypeFromBrowser = MimeTypeInfo.GetCanonical(uploadedFile.ContentType);
+            string mimeTypeFromBrowser = GetCanonical(uploadedFile.ContentType);
 
             // Default MIME type for Chrome is "application/xml"
             // Default MIME type for IE is "text/plain"
@@ -480,15 +385,14 @@ namespace Composite.Core.IO
             if (mimeTypeFromBrowser != "application/xml"
                 && mimeTypeFromBrowser != "text/plain")
             {
-                Log.LogInformation(LogTitle, "Uploading file '{0}'. Browser provided MIME type: '{1}'. Canonical MIME type: '{2}'"
-                                        .FormatWith(fileName, uploadedFile.ContentType ?? string.Empty, mimeTypeFromBrowser));
-                
+                Log.LogInformation(LogTitle, $"Uploading file '{fileName}'. " +
+                    $"Browser provided MIME type: '{uploadedFile.ContentType}'. " +
+                    $"Canonical MIME type: '{mimeTypeFromBrowser}'");
 
                 return mimeTypeFromBrowser;
             }
-            
-            Log.LogInformation(LogTitle, "Uploading file '{0}'. Applying default MIME type '{1}'"
-                                            .FormatWith(fileName, MimeTypeInfo.Default));
+
+            Log.LogInformation(LogTitle, $"Uploading file '{fileName}'. Applying default MIME type '{Default}'");
 
             return MimeTypeInfo.Default;
         }
@@ -512,9 +416,9 @@ namespace Composite.Core.IO
         /// </summary>
         /// <param name="extension">The extension.</param>
         /// <returns>
-        ///   <c>true</c> if the extension is 'IIS servable'; otherwise, <c>false</c>.
+        ///   <c>true</c> if the extension is 'IIS serveable'; otherwise, <c>false</c>.
         /// </returns>
-        internal static bool IsIisServable(string extension)
+        internal static bool IsIisServeable(string extension)
         {
             extension = extension.ToLowerInvariant();
 
@@ -523,18 +427,11 @@ namespace Composite.Core.IO
                 extension = extension.Substring(1);
             }
 
-            bool servable;
-            if (_iisServableExtensions.TryGetValue(extension, out servable))
+            return _iisServableExtensions.GetOrAdd(extension, ext =>
             {
-                return servable;
-            }
-
-            string mimeType = GetCanonicalFromExtension(extension);
-            servable = _iisServableTypes.Contains(mimeType);
-
-            _iisServableExtensions.TryAdd(extension, servable);
-
-            return servable;
+                string mimeType = GetCanonicalFromExtension(extension);
+                return _iisServeableTypes.Contains(mimeType);
+            });
         }
     }
 }
