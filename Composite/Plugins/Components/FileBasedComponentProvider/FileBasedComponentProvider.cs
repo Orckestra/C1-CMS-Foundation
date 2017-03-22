@@ -14,6 +14,7 @@ using Castle.Core.Internal;
 using Composite.C1Console.RichContent.ContainerClasses;
 using Composite.Core;
 using Composite.Core.IO;
+using Composite.Core.ResourceSystem;
 using Composite.Core.Xml;
 using Composite.Plugins.Components.ComponentTags;
 
@@ -104,12 +105,12 @@ namespace Composite.Plugins.Components.FileBasedComponentProvider
                 var hashedXmlBytes = ((HashAlgorithm)CryptoConfig.CreateFromName("MD5")).ComputeHash(xmlBytes);
                 var id = new Guid(hashedXmlBytes);
 
-                var title = xElement.GetAttributeValue(Namespaces.Components + Title) ??
+                var title = StringResourceSystemFacade.ParseString(xElement.GetAttributeValue(Namespaces.Components + Title)) ??
                             Path.GetFileNameWithoutExtension(componentFile);
 
-                var description = xElement.GetAttributeValue(Namespaces.Components + Description) ?? "";
+                var description = StringResourceSystemFacade.ParseString(xElement.GetAttributeValue(Namespaces.Components + Description)) ?? "";
 
-                var groupingTagsRaw = xElement.GetAttributeValue(Namespaces.Components + Tags) ??
+                var groupingTagsRaw = StringResourceSystemFacade.ParseString(xElement.GetAttributeValue(Namespaces.Components + Tags)) ??
                                         GuessGroupingTagsBasedOnPath(componentFile);
 
                 List<string> groupingTags = new List<string>();

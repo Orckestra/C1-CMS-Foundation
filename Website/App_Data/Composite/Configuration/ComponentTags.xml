@@ -1,4 +1,4 @@
 <Tags>
-	<Tag name="ecommerce" title="{Tags.Ecommerce}"/>
+	<Tag name="ecommerce" title="${Composite.Plugins.Components, Tags.Ecommerce}"/>
 	<Tag name="media" title="Media"/>
 </Tags>
