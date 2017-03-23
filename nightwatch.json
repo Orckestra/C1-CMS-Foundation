@@ -29,7 +29,9 @@
       "silent": true,
 	  "end_session_on_fail": true,
       "skip_testcases_on_fail": false,
-	  "exclude" : ["Website/test/e2e/suite/010_setupPackages/installSQLPackage.js"],
+	  "exclude" : [	"Website/test/e2e/suite/010_setupPackages/installSQLPackage.js",
+					"Website/test/e2e/suite/packages",
+					"Website/test/e2e/suite/zzz_starterSites"],
 	  "globals": {
 		"connectionString": ""
 	  },
@@ -52,7 +54,13 @@
 	
 	"sql": {
 		"exclude" : ["Website/test/e2e/suite/000_setup/installSite.js",
-					 "Website/test/e2e/suite/010_setupPackages/installVerboseLoggingPackage.js"]
+					 "Website/test/e2e/suite/010_setupPackages/installVerboseLoggingPackage.js",
+					 "Website/test/e2e/suite/packages",
+					 "Website/test/e2e/suite/zzz_starterSites"]
+	},
+	
+	"starter":	{
+		"exclude" : ["Website/test/e2e/suite/010_setupPackages/installSQLPackage.js"]
 	},
 	
     "firefox" : {

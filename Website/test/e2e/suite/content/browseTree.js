@@ -32,7 +32,7 @@ module.exports = {
 	    //     The “Components” page’s content loads in the browser view.
 		content
 			.assertBrowserContains('div.content-column > h1', 'Test components')
-		//     The URL in the address bar reads “http://<website>/Getting-Started/Tests/c1mode(unpublished)
+		//     The URL in the address bar reads “http://<website>/Getting-Started/components/c1mode(unpublished)
 			.assertBrowserUrl('/Getting-Started/components/c1mode(unpublished)')
 	}
 };

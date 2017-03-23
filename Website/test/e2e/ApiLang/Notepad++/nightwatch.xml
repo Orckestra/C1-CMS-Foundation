@@ -237,5 +237,47 @@
 				<Param name="packageName" />
 			</Overload>
 		</KeyWord>
+		<KeyWord name="installCommercialPackage" func="yes">
+			<Overload retVal="browser" >
+				<Param name="category" />
+				<Param name="packageName" />
+			</Overload>
+		</KeyWord>			
+		<KeyWord name="installLocalPackage" func="yes">
+			<Overload retVal="browser" >
+				<Param name="packagePath" />
+				<Param name="packageName" />
+			</Overload>
+		</KeyWord>		
+		<KeyWord name="uninstallLocalPackage" func="yes">
+			<Overload retVal="browser" >
+				<Param name="packageName" />
+			</Overload>
+		</KeyWord>
+		<KeyWord name="installLocale" func="yes">
+			<Overload retVal="browser" >
+				<Param name="language" />
+				<Param name="code" />
+			</Overload>
+		</KeyWord>		
+		<KeyWord name="uninstallLocale" func="yes">
+			<Overload retVal="browser" >
+				<Param name="language" />
+			</Overload>
+		</KeyWord>
+		<KeyWord name="installWebsite" func="yes">
+			<Overload retVal="browser" >
+				<Param name="setupOption" />
+				<Param name="starterSite" />
+				<Param name="expectedLanguage" />
+				<Param name="newLanguage" />
+				<Param name="newLanguageCode" />				
+			</Overload>
+		</KeyWord>
+		<KeyWord name="logOut" func="yes">
+			<Overload retVal="browser" >
+				<Param name="userName" />
+			</Overload>
+		</KeyWord>		
 	</AutoComplete>
 </NotepadPlus>

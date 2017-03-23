@@ -7,6 +7,7 @@ using Composite.Core;
 using Composite.Core.Types;
 using Composite.Data;
 using Composite.Data.ProcessControlled;
+using Composite.Data.Types;
 using SearchableFieldInfo = System.Collections.Generic.KeyValuePair<System.Reflection.PropertyInfo, Composite.Data.SearchableFieldAttribute>;
 
 namespace Composite.Search.Crawling
@@ -65,6 +66,12 @@ namespace Composite.Search.Crawling
                     && propertyInfo.Name == nameof(IPublishControlled.PublicationStatus))
                 {
                     return new PublicationStatusDataFieldProcessor();
+                }
+
+                if (propertyInfo.DeclaringType == typeof(IFile)
+                    && propertyInfo.Name == nameof(IFile.FileName))
+                {
+                    return new FileNameDataFieldProcessor();
                 }
 
                 return new DefaultDataFieldProcessor();

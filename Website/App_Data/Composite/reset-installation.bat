@@ -170,6 +170,7 @@ del ..\..\Frontend\Composite\Search\SimplePageSearch\Styles.css
 
 :: LESS cleanup
 del ..\..\bin\Composite.Web.Css.Less.dll
+del ..\..\bin\Orckestra.Web.Css.Less.dll
 
 
 :: Package create cleanup
@@ -200,4 +201,6 @@ del ..\..\bin\Composite.Forms.*.*
 del ..\..\bin\Composite.XmlSerializers.dll
 del ..\..\bin\WebGrease.dll
 
-
+:: components
+del /q "..\Components\*"
+FOR /D %%p IN ("..\Components\*.*") DO rmdir "%%p" /s /q

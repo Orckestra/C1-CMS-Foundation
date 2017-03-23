@@ -1,4 +1,4 @@
-<%@ WebService Language="C#" Class="Composite.Services.TreeServices" %>
+﻿<%@ WebService Language="C#" Class="Composite.Services.TreeServices" %>
 
 using System;
 using System.Linq;
@@ -60,11 +60,14 @@ namespace Composite.Services
                 string username = UserValidationFacade.GetUsername();
 
                 List<Element> allPerspectives = ElementFacade.GetPerspectiveElementsWithNoSecurity().ToList();
-                List<string> activePerspectiveEntityTokens = UserPerspectiveFacade.GetSerializedEntityTokens(username).ToList();
-                activePerspectiveEntityTokens.AddRange(UserGroupPerspectiveFacade.GetSerializedEntityTokens(username));
-                activePerspectiveEntityTokens = activePerspectiveEntityTokens.Distinct().ToList();
+                List<string> activePerspectiveEntityTokens = 
+						UserPerspectiveFacade.GetSerializedEntityTokens(username)
+						.Concat(UserGroupPerspectiveFacade.GetSerializedEntityTokens(username))
+						.Distinct().ToList();
 
-                List<ClientElement> activePerspectives = allPerspectives.Where(f => activePerspectiveEntityTokens.Contains(EntityTokenSerializer.Serialize(f.ElementHandle.EntityToken))).ToList().ToClientElementList();
+                List<ClientElement> activePerspectives = allPerspectives
+						.Where(f => activePerspectiveEntityTokens.Contains(EntityTokenSerializer.Serialize(f.ElementHandle.EntityToken)))
+						.ToList().ToClientElementList();
 
                 foreach (ClientElement clientElement in activePerspectives)
                 {

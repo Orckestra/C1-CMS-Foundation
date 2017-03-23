@@ -1,4 +1,5 @@
-using System;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -22,14 +23,15 @@ namespace Composite.C1Console.Workflow
         private Guid[] _abortedWorkflows;
         private readonly object _syncRoot = new object();
 
+        private C1FileSystemWatcher _fileWatcher;
+
+        private readonly ConcurrentDictionary<Guid, byte> _createdWorkflows = new ConcurrentDictionary<Guid, byte>();
 
         public FileWorkflowPersistenceService(string baseDirectory)
         {
             _baseDirectory = baseDirectory;
             this.PersistAll = false;
         }
-
-
 
         public bool PersistAll { get; set; }
 
@@ -42,22 +44,52 @@ namespace Composite.C1Console.Workflow
         {
             foreach (string filePath in C1Directory.GetFiles(_baseDirectory, "*.bin"))
             {
-                string guidString = Path.GetFileNameWithoutExtension(filePath);
-
-                Guid guid = Guid.Empty;
-                try
+                Guid workflowId;
+                if (TryParseWorkflowId(filePath, out workflowId))
                 {
-                    guid = new Guid(guidString);
-                }
-                catch { }
-
-                if (guid != Guid.Empty)
-                {
-                    yield return guid;
+                    yield return workflowId;
                 }
             }
         }
 
+        private bool TryParseWorkflowId(string filePath, out Guid workflowId)
+        {
+            string guidString = Path.GetFileNameWithoutExtension(filePath);
+            return Guid.TryParse(guidString ?? "", out workflowId);
+        }
+
+        public void ListenToDynamicallyAddedWorkflows(Action<Guid> onWorkflowFileAdded)
+        {
+            Verify.IsNull(_fileWatcher, "The method has already been invoked");
+
+            Action<string> handleWorkflowAdded = name =>
+            {
+                try
+                {
+                    Guid workflowId;
+                    if (TryParseWorkflowId(name, out workflowId) 
+                        && !_createdWorkflows.ContainsKey(workflowId))
+                    {
+                        onWorkflowFileAdded(workflowId);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log.LogError(LogTitle, ex);
+                }
+            };
+
+            var fileWatcher = new C1FileSystemWatcher(_baseDirectory, "*.bin")
+            {
+                IncludeSubdirectories = false
+            };
+
+            fileWatcher.Created += (sender, args) => handleWorkflowAdded(args.Name);
+            fileWatcher.Renamed += (sender, args) => handleWorkflowAdded(args.Name);
+
+            fileWatcher.EnableRaisingEvents = true;
+            _fileWatcher = fileWatcher;
+        }
 
 
         public bool RemovePersistedWorkflow(Guid instanceId)
@@ -77,6 +109,9 @@ namespace Composite.C1Console.Workflow
                     return false;
                 }
             }
+
+            byte _;
+            _createdWorkflows.TryRemove(instanceId, out _);
 
             return true;
         }
@@ -125,24 +160,35 @@ namespace Composite.C1Console.Workflow
 
         protected override void SaveCompletedContextActivity(Activity activity)
         {
-            Guid contextGuid = (Guid)activity.GetValue(Activity.ActivityContextGuidProperty);
-            SerializeActivity(activity, contextGuid);
+            SaveWorkflowInstanceState(activity);
         }
 
 
 
         protected override void SaveWorkflowInstanceState(Activity rootActivity, bool unlock)
         {
-            Guid contextGuid = (Guid)rootActivity.GetValue(Activity.ActivityContextGuidProperty);
-            SerializeActivity(rootActivity, contextGuid);
+            SaveWorkflowInstanceState(rootActivity);
         }
 
 
         protected override bool UnloadOnIdle(Activity activity)
         {
-            return GetPersistingType(activity) == WorkflowPersistingType.Idle;
+            var persistingType = GetPersistingType(activity);
+
+            if (persistingType == WorkflowPersistingType.Shutdown)
+            {
+                SaveWorkflowInstanceState(activity);
+            }
+
+            return persistingType == WorkflowPersistingType.Idle;
         }
 
+
+        private void SaveWorkflowInstanceState(Activity activity)
+        {
+            Guid workflowId = (Guid)activity.GetValue(Activity.ActivityContextGuidProperty);
+            SerializeActivity(activity, workflowId);
+        }
 
 
         protected override void UnlockWorkflowInstanceState(Activity rootActivity)
@@ -178,6 +224,8 @@ namespace Composite.C1Console.Workflow
             IFormatter formatter = new BinaryFormatter();
             formatter.SurrogateSelector = ActivitySurrogateSelector.Default;
 
+            _createdWorkflows[id] = 0;
+
             using (var stream = new C1FileStream(filename, FileMode.OpenOrCreate))
             {
                 try
@@ -201,10 +249,12 @@ namespace Composite.C1Console.Workflow
             string filename = GetFileName(id);
             object result;
 
-            IFormatter formatter = new BinaryFormatter();
-            formatter.SurrogateSelector = ActivitySurrogateSelector.Default;
+            var formatter = new BinaryFormatter
+            {
+                SurrogateSelector = ActivitySurrogateSelector.Default
+            };
 
-            using (C1FileStream stream = new C1FileStream(filename, FileMode.Open))
+            using (var stream = new C1FileStream(filename, FileMode.Open))
             {
                 result = Activity.Load(stream, rootActivity, formatter);
                 stream.Close();
@@ -219,16 +269,14 @@ namespace Composite.C1Console.Workflow
         {
             lock (_syncRoot)
             {
-                List<Guid> newList = new List<Guid>(_abortedWorkflows ?? new Guid[0]);
-                newList.Add(id);
-
-                _abortedWorkflows = newList.ToArray();
+                _abortedWorkflows = (_abortedWorkflows ?? Array.Empty<Guid>())
+                                    .Concat(new [] {id}).ToArray();
             }
         }
 
         private string GetFileName(Guid id)
         {
-            return Path.Combine(this._baseDirectory, id.ToString() + ".bin");
+            return Path.Combine(this._baseDirectory, $"{id}.bin");
         }
     }
 }
