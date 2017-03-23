@@ -143,6 +143,7 @@ const removePaths = [
 	'Frontend/Images/',
 	'Frontend/Composite/',
 	'bin/Composite.Generated.dll',
+	'ZipTest/'
 ]
 const rimraf = require('rimraf');
 const fs = require('fs');
