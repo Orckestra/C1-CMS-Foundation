@@ -32,8 +32,7 @@ namespace Composite.Plugins.Elements.ElementProviders.AllFunctionsElementProvide
                 EntityToken resultEntityToken = new BaseFunctionFolderElementEntityToken(id);
 
 
-                IEnumerable<EntityToken> resultEntityTokens;
-                if (!result.TryGetValue(entityToken, out resultEntityTokens))
+                if (!result.TryGetValue(entityToken, out IEnumerable<EntityToken> resultEntityTokens))
                 {
                     resultEntityTokens = new List<EntityToken>();
                     result.Add(entityToken, resultEntityTokens);
