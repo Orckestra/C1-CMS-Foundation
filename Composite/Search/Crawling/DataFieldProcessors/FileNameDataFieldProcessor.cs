@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Composite.Search.Crawling
+namespace Composite.Search.Crawling.DataFieldProcessors
 {
     internal class FileNameDataFieldProcessor: DefaultDataFieldProcessor
     {

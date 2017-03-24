@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Reflection;
 
-namespace Composite.Search.Crawling
+namespace Composite.Search.Crawling.DataFieldProcessors
 {
     /// <summary>
     /// The default field processor for <see cref="DateTime"/> fields.

@@ -3,7 +3,7 @@ using Composite.Core.ResourceSystem;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
 using Texts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_Search.Untranslated;
 
-namespace Composite.Search.Crawling
+namespace Composite.Search.Crawling.DataFieldProcessors
 {
     internal class PublicationStatusDataFieldProcessor: DefaultDataFieldProcessor
     {

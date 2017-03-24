@@ -8,6 +8,7 @@ using System.Web.Configuration;
 using System.Web.Hosting;
 using System.Xml.Linq;
 using Composite.C1Console.Forms.CoreUiControls;
+using Composite.Core.Localization;
 using Composite.Core.ResourceSystem;
 using Composite.Core.ResourceSystem.Icons;
 
@@ -410,6 +411,11 @@ namespace Composite.Core.IO
             return canonicalMimeType.StartsWith("text") || _textMimeTypes.Contains(canonicalMimeType);
         }
 
+
+        internal static string TryGetLocalizedName(string mimeType)
+        {
+            return StringResourceSystemFacade.GetString("MimeTypes", mimeType, false);
+        }
 
         /// <summary>
         /// Indicates whether a file of a specific extension is expected to be allowed by IIS

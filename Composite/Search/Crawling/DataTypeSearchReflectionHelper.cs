@@ -8,6 +8,7 @@ using Composite.Core.Types;
 using Composite.Data;
 using Composite.Data.ProcessControlled;
 using Composite.Data.Types;
+using Composite.Search.Crawling.DataFieldProcessors;
 using SearchableFieldInfo = System.Collections.Generic.KeyValuePair<System.Reflection.PropertyInfo, Composite.Data.SearchableFieldAttribute>;
 
 namespace Composite.Search.Crawling
@@ -72,6 +73,12 @@ namespace Composite.Search.Crawling
                     && propertyInfo.Name == nameof(IFile.FileName))
                 {
                     return new FileNameDataFieldProcessor();
+                }
+
+                if (propertyInfo.DeclaringType == typeof(IMediaFile)
+                    && propertyInfo.Name == nameof(IMediaFile.MimeType))
+                {
+                    return new MimeTypeDataFieldProcessor();
                 }
 
                 return new DefaultDataFieldProcessor();

@@ -16,5 +16,5 @@
 	<string key="FieldNames.CreationDate" value="Creation Date" />
 	<string key="FieldNames.CreatedBy" value="Created By" />
 	<string key="FieldNames.PublicationStatus" value="Publication Status" />
-	<string key="FieldNames.MimeType" value="MIME Type" />
+	<string key="FieldNames.MimeType" value="Media Type" />
 </strings>
