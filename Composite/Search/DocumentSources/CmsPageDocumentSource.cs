@@ -60,14 +60,21 @@ namespace Composite.Search.DocumentSources
             _listeners.Add(sourceListener);
         }
 
-        public IEnumerable<SearchDocument> GetAllSearchDocuments(CultureInfo culture)
+        public IEnumerable<DocumentWithContinuationToken> GetSearchDocuments(CultureInfo culture, string continuationToken = null)
         {
             ICollection<IPage> unpublishedPages;
+
+            var (lastPageId, lastPagesPublicationScope) = ParseContinuationToken(continuationToken);
 
             using (var conn = new DataConnection(PublicationScope.Unpublished, culture))
             {
                 unpublishedPages = conn.Get<IPage>().Evaluate();
             }
+
+            unpublishedPages = unpublishedPages
+                .Where(p => p.Id.CompareTo(lastPageId) >= 0)
+                .OrderBy(p => p.Id)
+                .ToList();
 
             var publishedPages = new Dictionary<Tuple<Guid, Guid>, IPage>();
             using (var conn = new DataConnection(PublicationScope.Published, culture))
@@ -84,10 +91,15 @@ namespace Composite.Search.DocumentSources
                 var entityToken = unpublishedPage.GetDataEntityToken();
 
                 IPage publishedPage;
-                if (publishedPages.TryGetValue(new Tuple<Guid, Guid>(unpublishedPage.Id, unpublishedPage.VersionId), 
+                if (unpublishedPage.Id.CompareTo(lastPageId) > 0
+                    && publishedPages.TryGetValue(new Tuple<Guid, Guid>(unpublishedPage.Id, unpublishedPage.VersionId), 
                         out publishedPage))
                 {
-                    yield return FromPage(publishedPage, entityToken, publishedMetaData);
+                    yield return new DocumentWithContinuationToken
+                    {
+                        Document = FromPage(publishedPage, entityToken, publishedMetaData),
+                        ContinuationToken = GetContinuationToken(publishedPage)
+                    };
 
                     if (unpublishedPage.PublicationStatus == GenericPublishProcessController.Published)
                     {
@@ -96,11 +108,34 @@ namespace Composite.Search.DocumentSources
                     }
                 }
 
-                yield return FromPage(unpublishedPage, entityToken, unpublishedMetaData);
+                if (unpublishedPage.Id.CompareTo(lastPageId) > 0
+                    || lastPagesPublicationScope == PublicationScope.Published)
+                {
+                    yield return new DocumentWithContinuationToken
+                    {
+                        Document = FromPage(unpublishedPage, entityToken, unpublishedMetaData),
+                        ContinuationToken = GetContinuationToken(unpublishedPage)
+                    };
+                }
             }
         }
 
+        private (Guid lastPage , PublicationScope publicationScope) ParseContinuationToken(string continuationToken)
+        {
+            if (continuationToken == null)
+            {
+                return (Guid.Empty, PublicationScope.Unpublished);
+            }
+
+            var values = continuationToken.Split(':');
+            return (Guid.Parse(values[0]), (PublicationScope) Enum.Parse(typeof(PublicationScope), values[1]));
+        }
+
+        private string GetContinuationToken(IPage page) => $"{page.Id}:{page.DataSourceId.PublicationScope}";
+
+
         public ICollection<DocumentField> CustomFields => _customFields.Value;
+
 
         private SearchDocument FromPage(IPage page, EntityToken entityToken, Dictionary<Tuple<Guid, Guid>, List<IData>> allMetaData)
         {

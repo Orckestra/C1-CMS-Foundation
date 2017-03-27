@@ -40,16 +40,25 @@ namespace Composite.Search.DocumentSources
             _listeners.Add(sourceListener);
         }
 
-        public IEnumerable<SearchDocument> GetAllSearchDocuments(CultureInfo culture)
+        public IEnumerable<DocumentWithContinuationToken> GetSearchDocuments(CultureInfo culture, string continuationToken = null)
         {
             IEnumerable<IMediaFile> mediaFiles;
 
+            Guid lastMediaFileId = continuationToken == null ? Guid.Empty : new Guid(continuationToken);
+
             using (var conn = new DataConnection())
             {
-                mediaFiles = conn.Get<IMediaFile>().Evaluate();
+                mediaFiles = conn.Get<IMediaFile>()
+                    .Where(m => m.Id.CompareTo(lastMediaFileId) > 0)
+                    .OrderBy(m => m.Id)
+                    .Evaluate();
             }
 
-            return mediaFiles.Select(FromMediaFile);
+            return mediaFiles.Select(m => new DocumentWithContinuationToken
+            {
+                Document = FromMediaFile(m),
+                ContinuationToken = m.Id.ToString()
+            });
         }
 
         private SearchDocument FromMediaFile(IMediaFile mediaFile)

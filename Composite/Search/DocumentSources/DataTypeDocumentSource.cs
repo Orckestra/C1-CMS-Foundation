@@ -5,8 +5,10 @@ using System.Linq;
 using Composite.C1Console.Security;
 using Composite.Search.Crawling;
 using Composite.Core;
+using Composite.Core.Extensions;
 using Composite.Core.Linq;
 using Composite.Core.Routing;
+using Composite.Core.Types;
 using Composite.Core.WebClient;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
@@ -55,35 +57,110 @@ namespace Composite.Search.DocumentSources
             _listeners.Add(sourceListener);
         }
 
-        public IEnumerable<SearchDocument> GetAllSearchDocuments(CultureInfo culture)
+        public IEnumerable<DocumentWithContinuationToken> GetSearchDocuments(CultureInfo culture, string continuationToken = null)
         {
-            using (new DataConnection(PublicationScope.Published, culture))
-            {
-                var dataSet = DataFacade.GetData(_interfaceType).Cast<IData>().Evaluate();
+            var (continueFromScope, continueFromKey) = ParseCToken(continuationToken);
 
-                foreach (var document in dataSet.Select(d => FromData(d, culture)).Where(doc => doc != null))
+            if (continueFromScope == PublicationScope.Published)
+            {
+                var documents = GetDocumentsFromScope(PublicationScope.Published, culture, continueFromKey);
+                foreach (var doc in documents)
                 {
-                    yield return document;
+                    yield return doc;
                 }
             }
+
 
             if (typeof (IPublishControlled).IsAssignableFrom(_interfaceType))
             {
-                using (new DataConnection(PublicationScope.Unpublished, culture))
-                {
-                    var dataSet = DataFacade.GetData(_interfaceType)
-                        .Cast<IPublishControlled>()
-                        .Where(data => data.PublicationStatus != GenericPublishProcessController.Published)
-                        .Evaluate();
+                var documents = GetDocumentsFromScope(PublicationScope.Unpublished, culture,
+                    continueFromScope == PublicationScope.Unpublished ? continueFromKey : null);
 
-                    foreach (var document in dataSet.Select(data => FromData(data, culture))
-                                                    .Where(doc => doc != null))
-                    {
-                        yield return document;
-                    }
+                foreach (var doc in documents)
+                {
+                    yield return doc;
                 }
             }
         }
+
+        private IEnumerable<DocumentWithContinuationToken> GetDocumentsFromScope(
+            PublicationScope publicationScope,
+            CultureInfo culture,
+            object continueFromKey)
+        {
+            using (new DataConnection(publicationScope, culture))
+            {
+                var query = DataFacade.GetData(_interfaceType);
+
+                query = FilterAndOrderByKey(query, continueFromKey);
+
+                if (publicationScope == PublicationScope.Unpublished)
+                {
+                    query = query
+                        .Cast<IPublishControlled>()
+                        .Where(data => data.PublicationStatus != GenericPublishProcessController.Published);
+                }
+                var dataSet = query.Cast<IData>().Evaluate();
+
+                foreach (var data in dataSet)
+                {
+                    var document = FromData(data, culture);
+                    if (document == null) continue;
+
+                    yield return new DocumentWithContinuationToken
+                    {
+                        Document = document,
+                        ContinuationToken = GetContinuationToken(data, PublicationScope.Unpublished)
+                    };
+                }
+            }
+        }
+
+        private IQueryable FilterAndOrderByKey(IQueryable dataset, object continueFromKey)
+        {
+            var keyProperties = _interfaceType.GetKeyProperties();
+            if (keyProperties.Count > 1
+                || !keyProperties.All(property => typeof(IComparable).IsAssignableFrom(property.PropertyType)))
+            {
+                return dataset.Cast<IData>(); // Not supported
+            }
+        
+            var keyProperty = keyProperties.Single();
+
+            if (continueFromKey != null)
+            {
+                dataset = dataset.Cast<IData>()
+                    .Where(data => (keyProperty.GetValue(data) as IComparable).CompareTo(continueFromKey) > 0)
+                    .AsQueryable();
+            }
+
+            return dataset.OrderBy(_interfaceType, keyProperty.Name);
+        }
+
+        private (PublicationScope continueFromScope, object continueFromKey) ParseCToken(string continuationToken)
+        {
+            if (continuationToken == null)
+            {
+                return (PublicationScope.Published, null);
+            }
+ 
+            int separator = continuationToken.IndexOf(':');
+            string keyStr = continuationToken.Substring(separator);
+            object key = ValueTypeConverter.Convert(keyStr, _interfaceType.GetKeyProperties().Single().PropertyType);
+            var scope = (PublicationScope) Enum.Parse(typeof(PublicationScope), continuationToken.Substring(0, separator-1));
+
+            return (scope, key);
+        }
+
+        private string GetContinuationToken(IData data, PublicationScope publicationScope)
+        {
+            if (_interfaceType.GetKeyProperties().Count > 1) return null; // Not supported
+
+            var key = data.GetUniqueKey();
+            string keyStr = ValueTypeConverter.Convert<string>(key);
+            return $"{publicationScope}:{keyStr}";
+        }
+
 
         public ICollection<DocumentField> CustomFields => _customFields.Value;
 

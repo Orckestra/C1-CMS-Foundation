@@ -185,7 +185,8 @@ namespace Composite.Plugins.Search.Endpoint
 
             return (from selection in query.Selections
                     where selection.Values.Length > 0
-                    let facetField = facetFields.First(ff => ff.Name == selection.FieldName)
+                    let facetField = facetFields.Where(ff => ff.Name == selection.FieldName)
+                                     .FirstOrException($"Facet field '{selection.FieldName}' not found")
                     select new ConsoleSearchResultFacetField
                     {
                         FieldName = MakeFieldNameJsFriendly(selection.FieldName),
