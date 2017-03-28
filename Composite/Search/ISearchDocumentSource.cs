@@ -28,7 +28,7 @@ namespace Composite.Search
         /// <summary>
         /// Gets the custom fields.
         /// </summary>
-        ICollection<DocumentField> CustomFields { get; }
+        IReadOnlyCollection<DocumentField> CustomFields { get; }
 
         /// <summary>
         /// Subscribes the given search document sourceListener to the source.

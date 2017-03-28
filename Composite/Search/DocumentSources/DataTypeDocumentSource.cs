@@ -24,7 +24,7 @@ namespace Composite.Search.DocumentSources
         private readonly List<IDocumentSourceListener> _listeners = new List<IDocumentSourceListener>();
         private readonly Type _interfaceType;
         private readonly DataChangesIndexNotifier _changesIndexNotifier;
-        private readonly Lazy<ICollection<DocumentField>> _customFields;
+        private readonly Lazy<IReadOnlyCollection<DocumentField>> _customFields;
 
         private readonly bool _isPublishable;
 
@@ -42,7 +42,7 @@ namespace Composite.Search.DocumentSources
 
             _isPublishable = typeof (IPublishControlled).IsAssignableFrom(_interfaceType);
 
-            _customFields = new Lazy<ICollection<DocumentField>>(GetDocumentFields);
+            _customFields = new Lazy<IReadOnlyCollection<DocumentField>>(GetDocumentFields);
 
             _changesIndexNotifier = new DataChangesIndexNotifier(
                 _listeners, _interfaceType, FromData, GetDocumentId);
@@ -110,7 +110,7 @@ namespace Composite.Search.DocumentSources
                     yield return new DocumentWithContinuationToken
                     {
                         Document = document,
-                        ContinuationToken = GetContinuationToken(data, PublicationScope.Unpublished)
+                        ContinuationToken = GetContinuationToken(data, publicationScope)
                     };
                 }
             }
@@ -127,14 +127,17 @@ namespace Composite.Search.DocumentSources
         
             var keyProperty = keyProperties.Single();
 
+            dataset = dataset.OrderBy(_interfaceType, keyProperty.Name);
+
             if (continueFromKey != null)
             {
                 dataset = dataset.Cast<IData>()
+                    .ToList()
                     .Where(data => (keyProperty.GetValue(data) as IComparable).CompareTo(continueFromKey) > 0)
                     .AsQueryable();
             }
 
-            return dataset.OrderBy(_interfaceType, keyProperty.Name);
+            return dataset;
         }
 
         private (PublicationScope continueFromScope, object continueFromKey) ParseCToken(string continuationToken)
@@ -145,9 +148,11 @@ namespace Composite.Search.DocumentSources
             }
  
             int separator = continuationToken.IndexOf(':');
-            string keyStr = continuationToken.Substring(separator);
-            object key = ValueTypeConverter.Convert(keyStr, _interfaceType.GetKeyProperties().Single().PropertyType);
-            var scope = (PublicationScope) Enum.Parse(typeof(PublicationScope), continuationToken.Substring(0, separator-1));
+            string keyStr = continuationToken.Substring(separator + 1);
+            var keyPropertyType = _interfaceType.GetKeyProperties().Single().PropertyType;
+
+            object key = ValueTypeConverter.Convert(keyStr, keyPropertyType);
+            var scope = (PublicationScope) Enum.Parse(typeof(PublicationScope), continuationToken.Substring(0, separator));
 
             return (scope, key);
         }
@@ -162,7 +167,7 @@ namespace Composite.Search.DocumentSources
         }
 
 
-        public ICollection<DocumentField> CustomFields => _customFields.Value;
+        public IReadOnlyCollection<DocumentField> CustomFields => _customFields.Value;
 
         private SearchDocument FromData(IData data, CultureInfo culture)
         {
@@ -224,9 +229,9 @@ namespace Composite.Search.DocumentSources
             return uniqueKey + scopeSuffix;
         }
 
-        ICollection<DocumentField> GetDocumentFields()
+        List<DocumentField> GetDocumentFields()
         {
-            return DataTypeSearchReflectionHelper.GetDocumentFields(_interfaceType).Evaluate();
+            return DataTypeSearchReflectionHelper.GetDocumentFields(_interfaceType).ToList();
         }
 
         private static void OnStoreCreated(DataTypeDescriptor dataTypeDescriptor)

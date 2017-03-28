@@ -13,14 +13,14 @@ namespace Composite.Search.DocumentSources
     {
         private readonly List<IDocumentSourceListener> _listeners = new List<IDocumentSourceListener>();
 
-        private readonly Lazy<ICollection<DocumentField>> _customFields;
+        private readonly Lazy<IReadOnlyCollection<DocumentField>> _customFields;
         private readonly DataChangesIndexNotifier _changesIndexNotifier;
         private readonly IEnumerable<ISearchDocumentBuilderExtension> _docBuilderExtensions;
 
         public MediaLibraryDocumentSource(IEnumerable<ISearchDocumentBuilderExtension> extensions)
         {
-            _customFields = new Lazy<ICollection<DocumentField>>(() =>
-                DataTypeSearchReflectionHelper.GetDocumentFields(typeof(IMediaFile)).Evaluate());
+            _customFields = new Lazy<IReadOnlyCollection<DocumentField>>(() =>
+                DataTypeSearchReflectionHelper.GetDocumentFields(typeof(IMediaFile)).ToList());
 
             _docBuilderExtensions = extensions;
 
@@ -33,7 +33,7 @@ namespace Composite.Search.DocumentSources
 
         public string Name => typeof(IMediaFile).FullName;
 
-        public ICollection<DocumentField> CustomFields => _customFields.Value;
+        public IReadOnlyCollection<DocumentField> CustomFields => _customFields.Value;
 
         public void Subscribe(IDocumentSourceListener sourceListener)
         {

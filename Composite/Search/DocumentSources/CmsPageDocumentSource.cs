@@ -21,12 +21,12 @@ namespace Composite.Search.DocumentSources
 
         private readonly List<IDocumentSourceListener> _listeners = new List<IDocumentSourceListener>();
         private readonly DataChangesIndexNotifier _changesIndexNotifier;
-        private readonly Lazy<ICollection<DocumentField>> _customFields;
+        private readonly Lazy<IReadOnlyCollection<DocumentField>> _customFields;
         private readonly IEnumerable<ISearchDocumentBuilderExtension> _docBuilderExtensions;
 
         public CmsPageDocumentSource(IEnumerable<ISearchDocumentBuilderExtension> extensions)
         {
-            _customFields = new Lazy<ICollection<DocumentField>>(() =>
+            _customFields = new Lazy<IReadOnlyCollection<DocumentField>>(() =>
             {
                 var pageDocFields = DataTypeSearchReflectionHelper.GetDocumentFields(typeof (IPage));
                 var metaDataFields = PageMetaDataFacade.GetAllMetaDataTypes()
@@ -35,7 +35,7 @@ namespace Composite.Search.DocumentSources
                 return pageDocFields
                        .Concat(metaDataFields)
                        .ExcludeDuplicateKeys(f => f.Name)
-                       .Evaluate();
+                       .ToList();
             });
 
             _docBuilderExtensions = extensions;
@@ -134,7 +134,7 @@ namespace Composite.Search.DocumentSources
         private string GetContinuationToken(IPage page) => $"{page.Id}:{page.DataSourceId.PublicationScope}";
 
 
-        public ICollection<DocumentField> CustomFields => _customFields.Value;
+        public IReadOnlyCollection<DocumentField> CustomFields => _customFields.Value;
 
 
         private SearchDocument FromPage(IPage page, EntityToken entityToken, Dictionary<Tuple<Guid, Guid>, List<IData>> allMetaData)
