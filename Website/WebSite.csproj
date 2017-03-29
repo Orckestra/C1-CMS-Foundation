@@ -121,10 +121,6 @@
     <Reference Include="System.Security.Cryptography.Primitives, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Security.Cryptography.Primitives.4.3.0\lib\net46\System.Security.Cryptography.Primitives.dll</HintPath>
     </Reference>
-    <Reference Include="System.Threading.Tasks.Dataflow, Version=4.5.24.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Composite\bin\Debug\System.Threading.Tasks.Dataflow.dll</HintPath>
-    </Reference>
     <Reference Include="System.Transactions" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.Web.DynamicData" />
@@ -2820,6 +2816,11 @@
       if not exist "$(TargetDir)\System.Xml.ReaderWriter.dll" (
       copy "$(ProjectDir)\..\Packages\System.Xml.ReaderWriter.4.3.0\lib\net46\System.Xml.ReaderWriter.dll" "$(TargetDir)\System.Xml.ReaderWriter.dll"
       )
+
+      if not exist "$(TargetDir)\System.Threading.Tasks.Dataflow.dll" (
+      copy "$(ProjectDir)\..\Packages\System.Threading.Tasks.Dataflow.4.6.0\lib\netstandard1.1\System.Threading.Tasks.Dataflow.dll" "$(TargetDir)\System.Threading.Tasks.Dataflow.dll"
+      )
+
 
       cd "$(ProjectDir)"
       .\node_modules\.bin\jspm install --quick
