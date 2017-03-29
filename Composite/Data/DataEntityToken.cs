@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -146,7 +146,11 @@ namespace Composite.Data
                 {
                     try
                     {
-                        DataSourceId dataSourceId = DataSourceId.Deserialize(this.SerializedDataSourceId);
+                        DataSourceId dataSourceId;
+                        if (!DataSourceId.TryDeserialize(this.SerializedDataSourceId, out dataSourceId))
+                        {
+                            return null;
+                        }
 
                         _data = DataFacade.GetDataFromDataSourceId(dataSourceId);
                     }
