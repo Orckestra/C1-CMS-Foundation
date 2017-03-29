@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Composite.C1Console.Security;
 using Composite.Core;
 using Composite.Core.Extensions;
@@ -155,6 +156,7 @@ namespace Composite.Search.Crawling
                     e.Populate(this, data);
                 }
                 catch (Exception ex)
+                when (!(ex is ThreadAbortException))
                 {
                     Log.LogError(nameof(SearchDocumentBuilder), ex);
                 }
