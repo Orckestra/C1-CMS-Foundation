@@ -26,7 +26,8 @@ namespace Composite.Core.IO
         private static readonly IDictionary<string, string> _toCanonical = new Dictionary<string, string>();
         private static readonly IDictionary<string, string> _extensionToCanonical = new Dictionary<string, string>();
         private static readonly IDictionary<string, string> _mimeTypeToResourceName = new Dictionary<string, string>();
-        private static readonly ConcurrentDictionary<string, bool> _iisServableExtensions = new ConcurrentDictionary<string, bool>();
+        private static readonly IDictionary<string, string> _mimeTypeToExtension = new Dictionary<string, string>();
+        private static readonly ConcurrentDictionary<string, bool> _iisServeableExtensions = new ConcurrentDictionary<string, bool>();
 
         private static List<string> _textMimeTypes =
             new List<string> { MimeTypeInfo.Css, MimeTypeInfo.Js, MimeTypeInfo.Xml, MimeTypeInfo.Text, MimeTypeInfo.Html, MimeTypeInfo.Sass,
@@ -251,7 +252,9 @@ namespace Composite.Core.IO
 
         private static bool AddExtensionMapping(string extension, string mimeType)
         {
-            if(!_extensionToCanonical.ContainsKey(extension))
+            _mimeTypeToExtension[mimeType] = extension;
+
+            if (!_extensionToCanonical.ContainsKey(extension))
             {
                 _extensionToCanonical.Add(extension, mimeType);
                 return true;
@@ -338,6 +341,12 @@ namespace Composite.Core.IO
             return GetIconHandle("mimetype-unknown");
         }
 
+
+        /// <exclude />
+        public static string GetExtensionFromMimeType(string mimeType)
+        {
+            return _mimeTypeToExtension.TryGetValue(mimeType, out string extension) ? extension : null;
+        }
 
 
         /// <exclude />
@@ -433,7 +442,7 @@ namespace Composite.Core.IO
                 extension = extension.Substring(1);
             }
 
-            return _iisServableExtensions.GetOrAdd(extension, ext =>
+            return _iisServeableExtensions.GetOrAdd(extension, ext =>
             {
                 string mimeType = GetCanonicalFromExtension(extension);
                 return _iisServeableTypes.Contains(mimeType);
