@@ -38,11 +38,13 @@ namespace Composite.Search.Crawling
         private static Dictionary<EntityToken, List<GroupAccess>> _allUserGroupAccessDefinitions;
 
         public static void GetUsersAndGroupsWithReadAccess(EntityToken entityToken,
+            out IEnumerable<EntityToken> ancestors,
             out IEnumerable<string> users,
             out IEnumerable<Guid> userGroups)
         {
             var userSet = new HashSet<string>();
             var userGroupSet = new HashSet<Guid>();
+            var ancestorsSet = new HashSet<EntityToken>();
 
             using (ThreadDataManager.EnsureInitialize())
             {
@@ -51,11 +53,12 @@ namespace Composite.Search.Crawling
                     ImmutableHashSet<string>.Empty,
                     ImmutableHashSet<Guid>.Empty,
                     userSet, 
-                    userGroupSet, 
-                    new HashSet<EntityToken>(),
+                    userGroupSet,
+                    ancestorsSet,
                     20);
             }
 
+            ancestors = ancestorsSet;
             users = userSet;
             userGroups = userGroupSet;
         }

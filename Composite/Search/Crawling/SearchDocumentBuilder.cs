@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading;
 using Composite.C1Console.Security;
 using Composite.Core;
 using Composite.Core.Extensions;
 using Composite.Core.Linq;
+using Composite.Core.WebClient;
 using Composite.Data;
 using Composite.Data.Types;
 using Texts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_Search;
@@ -24,6 +27,8 @@ namespace Composite.Search.Crawling
         private readonly IEnumerable<ISearchDocumentBuilderExtension> _extensions;
 
         private IPage _currentPage;
+
+        private static readonly MD5 HashingAlgorithm = MD5.Create();
 
         /// <summary>
         /// Creates a new instance of <see cref="SearchDocumentBuilder"/>.
@@ -230,9 +235,10 @@ namespace Composite.Search.Crawling
 
         private void AddAccessField(EntityToken entityToken)
         {
+            IEnumerable<EntityToken> ancestors;
             IEnumerable<string> users;
             IEnumerable<Guid> groups;
-            EntityTokenSecurityHelper.GetUsersAndGroupsWithReadAccess(entityToken, out users, out groups);
+            EntityTokenSecurityHelper.GetUsersAndGroupsWithReadAccess(entityToken, out ancestors, out users, out groups);
 
             var tokens = users.Concat(groups.Select(g => g.ToString())).ToArray();
 
@@ -242,8 +248,24 @@ namespace Composite.Search.Crawling
                     DefaultDocumentFieldNames.ConsoleAccess,
                     tokens));
             }
+
+            if (ancestors.Any())
+            {
+                var ancestorTokens = ancestors.Select(GetEntityTokenHash).ToArray();
+
+                _facetFieldValues.Add(new KeyValuePair<string, string[]>(
+                    DefaultDocumentFieldNames.Ancestors,
+                    ancestorTokens));
+            }
         }
 
+        internal static string GetEntityTokenHash(EntityToken entityToken)
+        {
+            var entityTokenString = EntityTokenSerializer.Serialize(entityToken);
+            var bytes = Encoding.UTF8.GetBytes(entityTokenString);
+
+            return UrlUtils.CompressGuid(new Guid(HashingAlgorithm.ComputeHash(bytes)));
+        }
 
         /// <summary>
         /// Gets the list of default document fields
@@ -313,7 +335,17 @@ namespace Composite.Search.Crawling
                     new DocumentFieldFacet
                     {
                         FacetType = FacetType.MultipleValues,
-                        PreviewFunction = value => value,
+                        MinHitCount = 1
+                    },
+                    null)
+                {
+                    Label = null
+                },
+                new DocumentField(
+                    DefaultDocumentFieldNames.Ancestors,
+                    new DocumentFieldFacet
+                    {
+                        FacetType = FacetType.MultipleValues,
                         MinHitCount = 1
                     },
                     null)

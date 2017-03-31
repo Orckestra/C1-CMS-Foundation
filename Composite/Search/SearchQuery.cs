@@ -132,6 +132,24 @@ namespace Composite.Search
 
 
         /// <summary>
+        /// Filters the results, so only entity tokens that have at least one of the given entity tokens
+        /// as an ancestor, will be returned. This enables searching for the child elements in the console
+        /// and searching for data that belongs to a specific website on frontend.
+        /// </summary>
+        public void FilterByAncestors(params EntityToken[] entityTokens)
+        {
+            Selection.Add(new SearchQuerySelection
+            {
+                FieldName = DefaultDocumentFieldNames.Ancestors,
+                Operation = SearchQuerySelectionOperation.Or,
+                Values = entityTokens.Select(SearchDocumentBuilder.GetEntityTokenHash).ToArray()
+            });
+
+            AddDefaultFieldFacet(DefaultDocumentFieldNames.Ancestors);
+        }
+
+
+        /// <summary>
         /// Filtering search results to which the given user does not have read access permission.
         /// </summary>
         /// <param name="userName"></param>
