@@ -45,6 +45,6 @@
         /// <summary>
         /// The name of the creation time field.
         /// </summary>
-        public static readonly string CreationTime = "ctime";
+        public static readonly string LastUpdated = "lastupdated";
     }
 }

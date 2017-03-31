@@ -53,6 +53,8 @@ namespace Composite.Core.ResourceSystem
 
 		string className = fileIdentifier;
 
+		if(className == "MimeTypes") continue;
+
 /*
 		propertyDefinitions.Append(@" 
     /// <exclude />

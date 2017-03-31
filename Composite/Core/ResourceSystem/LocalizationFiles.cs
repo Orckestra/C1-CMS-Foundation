@@ -6660,13 +6660,13 @@ public static string FieldNames_Label=>T("FieldNames.Label");
 public static string FieldNames_Description=>T("FieldNames.Description");
 ///<summary>&quot;Data Type&quot;</summary> 
 public static string FieldNames_DataType=>T("FieldNames.DataType");
-///<summary>&quot;Creation Date&quot;</summary> 
-public static string FieldNames_CreationDate=>T("FieldNames.CreationDate");
-///<summary>&quot;Created By&quot;</summary> 
-public static string FieldNames_CreatedBy=>T("FieldNames.CreatedBy");
+///<summary>&quot;Last Updated&quot;</summary> 
+public static string FieldNames_LastUpdated=>T("FieldNames.LastUpdated");
+///<summary>&quot;Updated By&quot;</summary> 
+public static string FieldNames_UpdatedBy=>T("FieldNames.UpdatedBy");
 ///<summary>&quot;Publication Status&quot;</summary> 
 public static string FieldNames_PublicationStatus=>T("FieldNames.PublicationStatus");
-///<summary>&quot;MIME Type&quot;</summary> 
+///<summary>&quot;Media Type&quot;</summary> 
 public static string FieldNames_MimeType=>T("FieldNames.MimeType");
 private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Search", key);
 /// <exclude />
@@ -6691,13 +6691,13 @@ public const string FieldNames_Label="${Composite.Search,FieldNames.Label}";
 public const string FieldNames_Description="${Composite.Search,FieldNames.Description}";
 ///<summary>&quot;Data Type&quot;</summary>
 public const string FieldNames_DataType="${Composite.Search,FieldNames.DataType}";
-///<summary>&quot;Creation Date&quot;</summary>
-public const string FieldNames_CreationDate="${Composite.Search,FieldNames.CreationDate}";
-///<summary>&quot;Created By&quot;</summary>
-public const string FieldNames_CreatedBy="${Composite.Search,FieldNames.CreatedBy}";
+///<summary>&quot;Last Updated&quot;</summary>
+public const string FieldNames_LastUpdated="${Composite.Search,FieldNames.LastUpdated}";
+///<summary>&quot;Updated By&quot;</summary>
+public const string FieldNames_UpdatedBy="${Composite.Search,FieldNames.UpdatedBy}";
 ///<summary>&quot;Publication Status&quot;</summary>
 public const string FieldNames_PublicationStatus="${Composite.Search,FieldNames.PublicationStatus}";
-///<summary>&quot;MIME Type&quot;</summary>
+///<summary>&quot;Media Type&quot;</summary>
 public const string FieldNames_MimeType="${Composite.Search,FieldNames.MimeType}";
 
 }} 

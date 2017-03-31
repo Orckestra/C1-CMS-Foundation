@@ -49,10 +49,10 @@ namespace Composite.Search.Crawling
                 return DefaultDocumentFieldNames.Description;
             }
 
-            if ((pi.Name == nameof(ICreationHistory.CreationDate) || pi.Name == nameof(IMediaFile.CreationTime))
+            if ((pi.Name == nameof(IChangeHistory.ChangeDate) || pi.Name == nameof(IMediaFile.CreationTime))
                 && (pi.PropertyType == typeof(DateTime) || pi.PropertyType == typeof(DateTime?)))
             {
-                return DefaultDocumentFieldNames.CreationTime;
+                return DefaultDocumentFieldNames.LastUpdated;
             }
 
             return $"{pi.ReflectedType.Name}.{pi.Name}";
@@ -130,8 +130,8 @@ namespace Composite.Search.Crawling
                 return Texts.FieldNames_Description;
             }
 
-            if (fieldName == DefaultDocumentFieldNames.CreationTime) return Texts.FieldNames_CreationDate;
-            if (propertyInfo.Name == nameof(ICreationHistory.CreatedBy)) return Texts.FieldNames_CreatedBy;
+            if (fieldName == DefaultDocumentFieldNames.LastUpdated) return Texts.FieldNames_LastUpdated;
+            if (propertyInfo.Name == nameof(IChangeHistory.ChangedBy)) return Texts.FieldNames_UpdatedBy;
             if (propertyInfo.Name == nameof(IMediaFile.MimeType)) return Texts.FieldNames_MimeType;
 
             var frpAttribute = propertyInfo.GetCustomAttribute<FormRenderingProfileAttribute>();
