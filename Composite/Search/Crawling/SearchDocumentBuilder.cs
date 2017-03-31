@@ -7,7 +7,7 @@ using Composite.Core;
 using Composite.Core.Extensions;
 using Composite.Core.Linq;
 using Composite.Data;
-
+using Composite.Data.Types;
 using Texts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_Search;
 
 namespace Composite.Search.Crawling
@@ -22,6 +22,8 @@ namespace Composite.Search.Crawling
         private readonly List<KeyValuePair<string, string[]>> _facetFieldValues = new List<KeyValuePair<string, string[]>>();
 
         private readonly IEnumerable<ISearchDocumentBuilderExtension> _extensions;
+
+        private IPage _currentPage;
 
         /// <summary>
         /// Creates a new instance of <see cref="SearchDocumentBuilder"/>.
@@ -98,6 +100,11 @@ namespace Composite.Search.Crawling
             var interfaceType = data.DataSourceId.InterfaceType;
             var fields = DataTypeSearchReflectionHelper.GetSearchableFields(interfaceType);
 
+            if (data is IPage page)
+            {
+                _currentPage = page;
+            }
+
             foreach (var field in fields)
             {
                 var propertyInfo = field.Key;
@@ -120,7 +127,7 @@ namespace Composite.Search.Crawling
                     var textParts = fieldProcessor.GetTextParts(value);
                     if (textParts != null)
                     {
-                        _textParts.AddRange(textParts);
+                        _textParts.AddRange(textParts.SelectMany(ProcessXhtml));
                     }
                 }
 
@@ -314,6 +321,24 @@ namespace Composite.Search.Crawling
                     Label = null
                 }
             };
+        }
+
+        private IEnumerable<string> ProcessXhtml(string textFragment)
+        {
+            if (textFragment.StartsWith("<html"))
+            {
+                var crawler = new XhtmlCrawlingHelper();
+                crawler.SetPageContext(_currentPage);
+                crawler.CrawlXhtml(textFragment);
+                foreach (var fragment in crawler.TextParts)
+                {
+                    yield return fragment;
+                }
+            }
+            else
+            {
+                yield return textFragment;
+            }
         }
 
         private static string GetDataTypeLabel(object datatype)

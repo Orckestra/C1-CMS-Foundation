@@ -19,17 +19,10 @@ namespace Composite.Search.Crawling
         /// <exclude />
         public virtual IEnumerable<string> GetTextParts(object value)
         {
-            var text = value as string;
-            if (text == null) return null;
-
-            if (text.StartsWith("<html"))
+            if (value is string str)
             {
-                var crawler = new XhtmlCrawlingHelper();
-                crawler.CrawlXhtml(text);
-                return crawler.TextParts;
+                yield return str;
             }
-            
-            return new[] { text };
         }
 
         /// <exclude />

@@ -151,6 +151,8 @@ namespace Composite.Search.DocumentSources
             var docBuilder = new SearchDocumentBuilder(_docBuilderExtensions);
             docBuilder.SetDataType(typeof(IPage));
 
+            docBuilder.CrawlData(page);
+
             using (new DataConnection(page.DataSourceId.PublicationScope, page.DataSourceId.LocaleScope))
             {
                 if (isPublished)
@@ -181,8 +183,6 @@ namespace Composite.Search.DocumentSources
                     Log.LogWarning(LogTitle, ex);
                 }
             }
-
-            docBuilder.CrawlData(page);
 
             return docBuilder.BuildDocument(Name, documentId, label, null, entityToken);
         }

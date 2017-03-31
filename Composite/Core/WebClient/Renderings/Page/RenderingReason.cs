@@ -18,12 +18,16 @@
         /// </summary>
         C1ConsoleBrowserPageView = 2,
         /// <summary>
-        /// A page is reneder from withing an "Edit page" workflow
+        /// A page is rendered from withing an "Edit page" workflow
         /// </summary>
         PreviewUnsavedChanges = 4,
         /// <summary>
         /// A page is rendered to generate an image to be used for function/template visualization
         /// </summary>
-        ScreenshotGeneration = 8
+        ScreenshotGeneration = 8,
+        /// <summary>
+        /// A page is rendered to build a search index.
+        /// </summary>
+        BuildSearchIndex = 16
     }
 }
