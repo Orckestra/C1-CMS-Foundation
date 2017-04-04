@@ -254,6 +254,8 @@
     <Content Include="Composite\content\branding\brand-main.inc">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Composite\content\branding\company-logo-branded.inc" />
+    <Content Include="Composite\content\branding\company-logo.inc" />
     <Content Include="Composite\content\branding\includes.inc">
       <SubType>Designer</SubType>
     </Content>
