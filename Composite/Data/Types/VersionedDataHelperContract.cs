@@ -29,6 +29,16 @@ namespace Composite.Data.Types
         /// </summary>
         public abstract List<VersionedExtraProperties> GetExtraProperties<T>(T data) where T : IVersioned;
 
+        /// <summary>
+        /// Orders the selected data.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="dataset"></param>
+        /// <returns></returns>
+        public virtual IEnumerable<T> Order<T>(IEnumerable<T> dataset) where T : IVersioned
+        {
+            return dataset;
+        }
     }
 
     /// <summary>
@@ -36,7 +46,7 @@ namespace Composite.Data.Types
     /// </summary>
     public static class VersionedDataHelper
     {
-        private static List<VersionedDataHelperContract> _instances;
+        private static readonly List<VersionedDataHelperContract> _services = new List<VersionedDataHelperContract>();
 
         static VersionedDataHelper()
         {
@@ -58,19 +68,14 @@ namespace Composite.Data.Types
         /// <summary>
         /// Returns if there are any versioning package instances available
         /// </summary>
-        public static bool IsThereAnyVersioningServices => _instances!=null && _instances.Count > 0;
+        public static bool IsThereAnyVersioningServices => _services.Any();
 
         /// <summary>
         /// Registers instances of versioning packages
         /// </summary>
         public static void RegisterVersionHelper(VersionedDataHelperContract vpc)
         {
-            if (_instances == null)
-            {
-                _instances = new List<VersionedDataHelperContract>();
-            }
-
-            _instances.Add(vpc);
+            _services.Add(vpc);
         }
 
         /// <summary>
@@ -81,45 +86,70 @@ namespace Composite.Data.Types
             var defaultVersionName =
                 Core.ResourceSystem.LocalizationFiles.Composite_Management.DefaultVersionName;
 
-            if (_instances == null)
+            if (_services.Count == 0)
             {
                 return defaultVersionName;
             }
 
-            return _instances.Select(p => p.LocalizedVersionName(str)).Any(name => name != null)?
-                string.Join(",", _instances.Select(p => p.LocalizedVersionName(str)).Where(name => name != null)): defaultVersionName;
+            var versionNames = _services
+                .Select(p => p.LocalizedVersionName(str))
+                .Where(name => name != null).ToList();
+
+            return versionNames.Any() ? string.Join(",", versionNames) : defaultVersionName;
         }
 
         /// <summary>
         /// Returns column name and tooltip for the extra fields in publication overview
         /// </summary>
-        public static List<VersionedExtraPropertiesColumnInfo> GetExtraPropertiesNames()
+        public static IEnumerable<VersionedExtraPropertiesColumnInfo> GetExtraPropertyNames()
         {
-            return _instances?.SelectMany(p => p.GetExtraPropertiesNames() ?? new List<VersionedExtraPropertiesColumnInfo>()).ToList();
+            return _services?.SelectMany(p => p.GetExtraPropertiesNames() ?? Enumerable.Empty<VersionedExtraPropertiesColumnInfo>()).ToList();
         }
 
         /// <summary>
         /// Returns values for the extra fields in publication overview
         /// </summary>
-        public static List<VersionedExtraProperties> GetExtraProperties<T>(this T str) where T : IVersioned
+        public static IEnumerable<VersionedExtraProperties> GetExtraProperties<T>(this T str) where T : IVersioned
         {
-            return _instances?.SelectMany(p => p.GetExtraProperties(str) ?? new List<VersionedExtraProperties>()).ToList();
+            return _services.SelectMany(p => p.GetExtraProperties(str) ?? Enumerable.Empty<VersionedExtraProperties>()).ToList();
         }
 
         /// <summary>
         /// Returns currently live version name for the IVersioned data
         /// </summary>
-        public static string GetLiveVersionName<T>(this T str) where T : IVersioned
+        public static string GetLiveVersionName<T>(this T data) where T : IVersioned
         {
-            if (_instances == null)
+            if (!_services.Any())
             {
                 return null;
             }
 
-            var versionNames = _instances.Select(p => p.GetLiveVersionName(str)).Where(name => name != null).ToList();
+            var versionNames = _services.Select(p => p.GetLiveVersionName(data)).Where(name => name != null).ToList();
             return versionNames.Any() ? string.Join(",", versionNames) : null;
         }
 
+
+        /// <summary>
+        /// Orders the data given in the dataset.
+        /// </summary>
+        /// <typeparam name="TDataType">The data type.</typeparam>
+        /// <param name="dataset">The data set to be ordered.</param>
+        /// <returns></returns>
+        public static IEnumerable<TDataType> OrderByVersions<TDataType>(this IEnumerable<TDataType> dataset) where TDataType : IVersioned
+        {
+            if (dataset is ICollection<TDataType> collection && collection.Count < 2)
+            {
+                return collection;
+            }
+
+            var result = dataset;
+            foreach (var service in _services)
+            {
+                result = service.Order(result);
+            }
+
+            return result;
+        }
     }
 
     /// <summary>

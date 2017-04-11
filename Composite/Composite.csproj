@@ -251,6 +251,7 @@
     <Compile Include="Core\WebClient\PageStructureRpc.cs" />
     <Compile Include="Core\WebClient\Services\WampRouter\WampRouteWrapper.cs" />
     <Compile Include="Data\Caching\CachedTable.cs" />
+    <Compile Include="Data\Types\VersionedDataHelperContract.cs" />
     <Compile Include="Search\Crawling\DataFieldProcessors\DateTimeDataFieldProcessor.cs" />
     <Compile Include="Search\Crawling\DataFieldProcessors\FileNameDataFieldProcessor.cs" />
     <Compile Include="Search\Crawling\DataFieldProcessors\MimeTypeDataFieldProcessor.cs" />
@@ -309,7 +310,6 @@
     <Compile Include="Data\SearchableTypeAttribute.cs" />
     <Compile Include="Data\SearchableFieldAttribute.cs" />
     <Compile Include="Data\Types\IVersioned.cs" />
-    <Compile Include="Data\Types\IVersionedDataHelper.cs" />
     <Compile Include="Data\Types\PageInsertPosition.cs" />
     <Compile Include="Data\ICreationHistory.cs" />
     <Compile Include="Data\VersionKeyPropertyName.cs" />

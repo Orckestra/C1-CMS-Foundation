@@ -507,8 +507,10 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 into pageVersionGroups
                 let versions = pageVersionGroups.ToList()
                 let liveVersionName = versions.Count == 1 ? null : versions[0].GetLiveVersionName()
-                select pageVersionGroups.OrderByDescending(v => v.LocalizedVersionName() == liveVersionName).ToList())
-                    .SelectMany(v => v);
+                select versions
+                    .OrderByVersions()
+                    .OrderByDescending(v => v.LocalizedVersionName() == liveVersionName))
+                .SelectMany(v => v);
         }
 
 
