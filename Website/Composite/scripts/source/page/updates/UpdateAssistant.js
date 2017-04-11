@@ -154,9 +154,11 @@ _UpdateAssistant.prototype = {
 		var request = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Msxml2.XMLHTTP.3.0");
 
 		if (request != null) {
+			Application.lock(target);
 			request.open(method, target, (handler != null ? true : false));
 			if (handler != null) {
 				function action() {
+					Application.unlock(target);
 					if (request.readyState == 4) {
 						var errorType = request.getResponseHeader("X-Error-Type");
 						// Handle error
