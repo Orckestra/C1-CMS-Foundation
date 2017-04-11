@@ -88,7 +88,9 @@ namespace Composite.Services
         [WebMethod]
         public List<ClientElement> GetUnpublishedElements(string dummy)
         {
-            var rootElement = ElementFacade.GetPerspectiveElements(false).First();
+            var rootElement = ElementFacade.GetPerspectiveElements(false)
+                    .FirstOrDefault(e => e.TagValue == "Content");
+
             var allElements = GetPublishControlledDescendants(rootElement.ElementHandle);
 
             var publicationStates = new Dictionary<string, string>
