@@ -528,6 +528,7 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
             to.CultureInfo = from.Culture;
             to.Description = from.Description;
             to.FileName = from.FileName;
+            to.Tags = from.Tags;
             to.FolderPath = from.FolderPath;
             to.Length = from.Length;
             to.MimeType = MimeTypeInfo.GetCanonical(from.MimeType);
@@ -617,7 +618,6 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
             public string Title { get; set; }
 
             public string Description { get; set; }
-
 
             public bool IsReadOnly
             {

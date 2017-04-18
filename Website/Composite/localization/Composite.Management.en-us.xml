@@ -581,6 +581,8 @@
   <string key="Website.Forms.Administrative.AddNewMediaFile.MissingUploadedFile.Message" value="Please select a file to upload" />
   <string key="Website.Forms.Administrative.AddNewMediaFile.FileExists.Message" value="A file with the same name exists. Check allow overwrite or change the filename" />
   <string key="Website.Forms.Administrative.AddNewMediaFile.TotalFilenameToLong.Message" value="The total length of the filename (folder and filename) is too long" />
+  <string key="Website.Forms.Administrative.AddNewMediaFile.TagsTextBox.Help" value="Add tags to your media item seperated by a comma (,)" />
+  <string key="Website.Forms.Administrative.AddNewMediaFile.TagsTextBox.Label" value="Tags" />  
   <string key="Website.Forms.Administrative.AddNewMediaFolder.Label.AddNewMediaFolder" value="Add New Media Folder" />
   <string key="Website.Forms.Administrative.AddNewMediaFolder.LabelFolderName" value="Folder Name" />
   <string key="Website.Forms.Administrative.AddNewMediaFolder.HelpFolderName" value="" />
@@ -623,6 +625,10 @@
   <string key="Website.Forms.Administrative.EditMediaFile.HelpFileName" value="The file name to use when the media file is downloaded." />
   <string key="Website.Forms.Administrative.EditMediaFile.LabelDescription" value="Description" />
   <string key="Website.Forms.Administrative.EditMediaFile.HelpDescription" value="A description of the media file content" />
+  <string key="Website.Forms.Administrative.EditMediaFile.LabelTags" value="Tags" />
+  <string key="Website.Forms.Administrative.EditMediaFile.HelpTags" value="Provide tags for the media file content (Delimited by commas (,))" />
+  <string key="Website.Forms.Administrative.EditMediaFile.LabelMediaURL" value="URL" />
+  <string key="Website.Forms.Administrative.EditMediaFile.HelpMediaURL" value="This is the URL for your media File" />
   <string key="Website.Forms.Administrative.EditMediaFile.TotalFilenameToLong.Message" value="The total length of the filename (folder and filename) is too long" />
   <string key="Website.Forms.Administrative.EditMediaFile.FileExists.Message" value="A file with the same name already exists in this folder." />
   <string key="Website.Forms.Administrative.EditMediaFolder.LabelFieldGroup" value="Folder Properties" />

@@ -4,6 +4,7 @@
     <cms:binding name="Filename" type="System.String" />
     <cms:binding name="Title" type="System.String" />
     <cms:binding name="Description" type="System.String" />
+    <cms:binding name="Tags" type="System.String" />
     <cms:binding name="AllowOverwrite" type="System.Boolean"/>
   </cms:bindings>
   <cms:layout iconhandle="media-add-media-file" label="${Composite.Management, Website.Forms.Administrative.AddNewMediaFile.Layout.Label}">
@@ -28,6 +29,13 @@
                 Help="${Composite.Management, Website.Forms.Administrative.AddNewMediaFile.DescriptionTextBox.Help}">
         <TextArea.Text>
           <cms:bind source="Description" />
+        </TextArea.Text>
+      </TextArea>
+      
+       <TextArea Label="${Composite.Management, Website.Forms.Administrative.AddNewMediaFile.TagsTextBox.Label}" 
+                Help="${Composite.Management, Website.Forms.Administrative.AddNewMediaFile.TagsTextBox.Help}">
+        <TextArea.Text>
+          <cms:bind source="Tags" />
         </TextArea.Text>
       </TextArea>
 
