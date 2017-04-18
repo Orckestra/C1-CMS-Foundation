@@ -126,8 +126,8 @@ namespace Composite.Plugins.Search.Endpoint
 
             var result = await _searchProvider.SearchAsync(searchQuery);
 
-            var documents = result.Documents.Evaluate();
-            if (!documents.Any())
+            var items = result.Items.Evaluate();
+            if (!items.Any())
             {
                 return new ConsoleSearchResult
                 {
@@ -136,6 +136,8 @@ namespace Composite.Plugins.Search.Endpoint
                     TotalHits = 0
                 };
             }
+
+            var documents = items.Select(m => m.Document);
 
             HashSet<string> dataSourceNames;
             Facet[] dsFacets;

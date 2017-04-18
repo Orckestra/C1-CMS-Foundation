@@ -195,6 +195,11 @@ namespace Composite.Search
         public int MaxDocumentsNumber { get; set; }
 
         /// <summary>
+        /// When set to true, highlihts will be included in the search results.
+        /// </summary>
+        public bool IncludeHighlights { get; set; }
+
+        /// <summary>
         /// Facets to be returned.
         /// </summary>
         public ICollection<KeyValuePair<string, DocumentFieldFacet>> Facets { get; set; } 
