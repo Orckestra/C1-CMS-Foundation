@@ -41,7 +41,10 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
             {
                 if (InterfaceConfigurationManipulator.ConfigurationExists(_dataProviderContext.ProviderName, dataTypeDescriptor))
                 {
-                    throw new InvalidOperationException(string.Format("SqlDataProvider configuration already contains a interface named '{0}'. Remove it from the configuration and restart the application.", dataTypeDescriptor.TypeManagerTypeName));
+                    var filePath = InterfaceConfigurationManipulator.GetConfigurationFilePath(_dataProviderContext.ProviderName);
+
+                    throw new InvalidOperationException(
+                        $"SqlDataProvider configuration already contains a interface named '{dataTypeDescriptor.TypeManagerTypeName}', Id: '{dataTypeDescriptor.DataTypeId}'. Remove it from the configuration file '{filePath}' and restart the application.");
                 }
             }
 
@@ -278,11 +281,22 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                     }
                 }
 
-                var types = CodeGenerationManager.CompileRuntimeTempTypes(codeGenerationBuilder, false).ToArray();
-
-                foreach (var toCompile in compilationData)
+                Type[] types = null;
+                try
                 {
-                    toCompile.PopulateFieldsAction(types);
+                    types = CodeGenerationManager.CompileRuntimeTempTypes(codeGenerationBuilder, false).ToArray();
+                }
+                catch (Exception ex)
+                {
+                    Log.LogWarning(LogTitle, ex);
+                }
+
+                if (types != null)
+                {
+                    foreach (var toCompile in compilationData)
+                    {
+                        toCompile.PopulateFieldsAction(types);
+                    }
                 }
             }
 
@@ -505,11 +519,16 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
             try
             {
-                interfaceType = dataTypes != null ? dataTypes[dataTypeId] : DataTypeTypesManager.GetDataType(dataTypeDescriptor);
+                if (dataTypes == null
+                    || !dataTypes.TryGetValue(dataTypeId, out interfaceType)
+                    || interfaceType == null)
+                {
+                    interfaceType = DataTypeTypesManager.GetDataType(dataTypeDescriptor);
+                }
 
                 if (interfaceType == null)
                 {
-                    Log.LogError(LogTitle, "The data interface type '{0}' does not exists and is not code generated. It will not be unusable", dataTypeDescriptor.TypeManagerTypeName);
+                    Log.LogWarning(LogTitle, "The data interface type '{0}' does not exists and is not code generated. It will not be unusable", dataTypeDescriptor.TypeManagerTypeName);
                     return result;
                 }
 

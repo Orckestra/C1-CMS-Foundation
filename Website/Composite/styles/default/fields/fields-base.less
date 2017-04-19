@@ -250,6 +250,16 @@ ui|fielddata {
 	input {
 		padding: 5px 0 0 7px;
 	}
+
+	ui|datainputselector,
+	ui|datainputdialog,
+	ui|datainputbutton,
+	ui|urlinputdialog
+	{
+		input {
+			padding-right: 32px;
+		}
+	}
 }
 
 ui|datainput {
@@ -268,7 +278,8 @@ ui|multiselector,
 ui|datadialog,
 ui|postbackdialog,
 ui|htmldatadialog,
-ui|editortextbox {
+ui|editortextbox,
+ui|hierarchicalselector {
 	padding: 2px;
 
 	input {
@@ -298,6 +309,13 @@ ui|editortextbox {
 		ui|labeltext {
 			font-weight: bold;
 			border-color: @field-error-color;
+		}
+	}
+
+	&.focused{
+		ui|box,
+		ui|clickbutton ui|labelbox {
+			border: 1px solid @primary-color;
 		}
 	}
 }

@@ -5,22 +5,22 @@ using System.Configuration;
 using System.Linq;
 using System.Web.Hosting;
 using Composite.C1Console.Actions;
-using Composite.C1Console.Events;
 using Composite.C1Console.Elements;
 using Composite.C1Console.Elements.Foundation;
 using Composite.C1Console.Elements.Plugins.ElementProvider;
+using Composite.Search;
 using Composite.Core;
 using Composite.Core.Extensions;
 using Composite.Core.ResourceSystem;
 using Composite.Core.ResourceSystem.Icons;
 using Composite.C1Console.Security;
-using Composite.Core.WebClient;
 using Composite.C1Console.Workflow;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 using Microsoft.Practices.ObjectBuilder;
 
 using UserTexts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_C1Console_Users;
+using Texts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_Management;
 
 
 namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
@@ -42,12 +42,13 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
         public static ResourceHandle ChangeOwnPasswordIcon => GetIconHandle("users-changeownpassword");
         public static ResourceHandle ChangeOwnCultureIcon => GetIconHandle("users-changeownculture");
         public static ResourceHandle SendMessageIcon => GetIconHandle("balloon");
+        public static ResourceHandle RebuildSearchIndexIcon => GetIconHandle("refresh");
         public static ResourceHandle RestartApplicationIcon => GetIconHandle("restart-application");
         public static ResourceHandle ManageSecurityIcon => GetIconHandle("security-manage-permissions");
         public static ResourceHandle ChangeOwnActiveAndForeignLocaleIcon => GetIconHandle("localization-changelocale");
 
         private static readonly string LogTitle = typeof (VirtualElementProvider).Name;
-        private static readonly HashSet<string> _notLoadedVirtualElements = new HashSet<string>(); 
+        private static readonly HashSet<string> _notLoadedVirtualElements = new HashSet<string>();
 
         private readonly VirtualElementProviderData _configuration;
 
@@ -95,7 +96,7 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
             };
 
             root.ElementExternalActionAdding = root.ElementExternalActionAdding.Remove(ElementExternalActionAdding.AllowGlobal);
-            
+
             AddRootActions(root);
 
             return new [] { root };
@@ -162,31 +163,32 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
             });
 
 
-
-            element.AddAction(new ElementAction(new ActionHandle(
-                new WorkflowActionToken(
-                    WorkflowFacade.GetWorkflowType("Composite.C1Console.Users.Workflows.ChangeOwnPasswordWorkflow"),
-                    new PermissionType[] { }
-                )
-                { DoIgnoreEntityTokenLocking = true }))
+            if (UserValidationFacade.CanSetUserPassword)
             {
-                VisualData = new ActionVisualizedData
+                element.AddAction(new ElementAction(new ActionHandle(
+                    new WorkflowActionToken(
+                        WorkflowFacade.GetWorkflowType("Composite.C1Console.Users.Workflows.ChangeOwnPasswordWorkflow"),
+                        new PermissionType[] { }
+                    )
+                    { DoIgnoreEntityTokenLocking = true }))
                 {
-                    Label = UserTexts.ChangeOwnPasswordWorkflow_ElementActionLabel,
-                    ToolTip = UserTexts.ChangeOwnPasswordWorkflow_ElementActionToolTip,
-                    Icon = VirtualElementProvider.ChangeOwnPasswordIcon,
-                    Disabled = false,
-                    ActionLocation = new ActionLocation
+                    VisualData = new ActionVisualizedData
                     {
-                        ActionType = ActionType.Add,
-                        IsInFolder = false,
-                        IsInToolbar = true,
-                        ActionGroup = PrimaryActionGroup
-                    }
-                },
-                TagValue = "User"
-            });
-
+                        Label = UserTexts.ChangeOwnPasswordWorkflow_ElementActionLabel,
+                        ToolTip = UserTexts.ChangeOwnPasswordWorkflow_ElementActionToolTip,
+                        Icon = VirtualElementProvider.ChangeOwnPasswordIcon,
+                        Disabled = false,
+                        ActionLocation = new ActionLocation
+                        {
+                            ActionType = ActionType.Add,
+                            IsInFolder = false,
+                            IsInToolbar = true,
+                            ActionGroup = PrimaryActionGroup
+                        }
+                    },
+                    TagValue = "User"
+                });
+            }
 
             // Other actions
 
@@ -206,11 +208,34 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
                         ActionType = ActionType.Other,
                         IsInFolder = false,
                         IsInToolbar = false,
-                        ActionGroup = PrimaryActionGroup
+                        ActionGroup = PrimaryActionGroup,
+                        ActionBundle = StringResourceSystemFacade.GetString("Composite.Management", "VirtualElementProviderElementProvider.RootActions.GlobalSetting")
                     }
                 }
             });
 
+            element.AddAction(
+                    new ElementAction(
+                        new ActionHandle(
+                            new WorkflowActionToken(
+                                WorkflowFacade.GetWorkflowType("Composite.C1Console.Tools.SetTimeZoneWorkflow"))))
+                    {
+                        VisualData = new ActionVisualizedData
+                        {
+                            Label = StringResourceSystemFacade.GetString("Composite.Management", "VirtualElementProviderElementProvider.RootActions.SetTimezoneLabel"),
+                            ToolTip = StringResourceSystemFacade.GetString("Composite.Management", "VirtualElementProviderElementProvider.RootActions.SetTimezoneTooltip"),
+                            Icon = VirtualElementProvider.ChangeOwnCultureIcon,
+                            Disabled = false,
+                            ActionLocation = new ActionLocation
+                            {
+                                ActionType = ActionType.Other,
+                                IsInFolder = false,
+                                IsInToolbar = false,
+                                ActionGroup = PrimaryActionGroup,
+                                ActionBundle = StringResourceSystemFacade.GetString("Composite.Management", "VirtualElementProviderElementProvider.RootActions.GlobalSetting")
+                            }
+                        }
+                    });
 
             element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.C1Console.Tools.SendMessageToConsolesWorkflow"))))
             {
@@ -230,14 +255,34 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
                 }
             });
 
+            if (ServiceLocator.HasService(typeof (ISearchIndexUpdater)))
+            {
+                element.AddAction(new ElementAction(new RebuildSearchIndexActionToken())
+                {
+                    VisualData = new ActionVisualizedData
+                    {
+                        Label = Texts.VirtualElementProviderElementProvider_RootActions_RebuildSearchIndexLabel,
+                        ToolTip = Texts.VirtualElementProviderElementProvider_RootActions_RebuildSearchIndexTooltip,
+                        Icon = RebuildSearchIndexIcon,
+                        Disabled = false,
+                        ActionLocation = new ActionLocation
+                        {
+                            ActionType = ActionType.Other,
+                            IsInFolder = false,
+                            IsInToolbar = false,
+                            ActionGroup = PrimaryActionGroup
+                        }
+                    }
+                });
+            }
 
-            element.AddAction(new ElementAction(new ActionHandle(new RestartApplicationActionToken()))
+            element.AddAction(new ElementAction(new RestartApplicationActionToken())
             {
                 VisualData = new ActionVisualizedData
                 {
-                    Label = StringResourceSystemFacade.GetString("Composite.Management", "VirtualElementProviderElementProvider.RootActions.RestartApplicationLabel"),
-                    ToolTip = StringResourceSystemFacade.GetString("Composite.Management", "VirtualElementProviderElementProvider.RootActions.RestartApplicationTooltip"),
-                    Icon = VirtualElementProvider.RestartApplicationIcon,
+                    Label = Texts.VirtualElementProviderElementProvider_RootActions_RestartApplicationLabel,
+                    ToolTip = Texts.VirtualElementProviderElementProvider_RootActions_RestartApplicationTooltip,
+                    Icon = RestartApplicationIcon,
                     Disabled = false,
                     ActionLocation = new ActionLocation
                     {
@@ -351,7 +396,7 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
                         _notLoadedVirtualElements.Add(elementName);
                     }
                 }
-                
+
                 result = null;
             }
 
@@ -469,7 +514,7 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
                 {
                     if(_notLoadedVirtualElements.Contains(attachProviderElement.Name)) continue;
                 }
-                
+
 
                 string providerName = attachProviderElement.ProviderName;
                 var childElements = ElementFacade.GetRootsWithNoSecurity(new ElementProviderHandle(providerName), null).ToList();
@@ -500,7 +545,7 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
                 VisualData = new ElementVisualizedData
                 {
                     Label = StringResourceSystemFacade.ParseString(simpleElementNode.Label),
-                    HasChildren = true // fixing refresh problem easy way... was: HasChildren(baseElementNode) 
+                    HasChildren = true // fixing refresh problem easy way... was: HasChildren(baseElementNode)
                 }
             };
 
@@ -549,6 +594,12 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
                 element.VisualData.Icon = CommonElementIcons.FolderDisabled;
             }
 
+            var placeholderElementNode = simpleElementNode as PlaceholderVirtualElement;
+            if (placeholderElementNode != null)
+            {
+                element.PropertyBag["Path"] = placeholderElementNode.Path;
+                element.PropertyBag["IsTool"] = placeholderElementNode.IsTool;
+            }
 
             return element;
         }
@@ -573,7 +624,7 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
 
                 //return children.Count != 0;
             }
-            
+
             throw new NotSupportedException(string.Format("The element node type '{0}' is not supported", baseElementNode.GetType()));
         }
 
@@ -639,34 +690,45 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
 
 
 
+    [ActionExecutor(typeof(RebuildSearchIndexActionExecutor))]
+    internal sealed class RebuildSearchIndexActionToken : ActionToken
+    {
+        private static readonly IEnumerable<PermissionType> _permissionType = new [] { PermissionType.Administrate };
+
+        public override IEnumerable<PermissionType> PermissionTypes => _permissionType;
+
+        public override string Serialize() => nameof(RebuildSearchIndexActionToken);
+
+        public static ActionToken Deserialize(string serializedData) => new RebuildSearchIndexActionToken();
+    }
+
+
     [ActionExecutor(typeof(RestartApplicationActionExecutor))]
     internal sealed class RestartApplicationActionToken : ActionToken
     {
-        private static IEnumerable<PermissionType> _permissionType = new PermissionType[] { PermissionType.Administrate };
+        private static readonly IEnumerable<PermissionType> _permissionType = new [] { PermissionType.Administrate };
 
-        public RestartApplicationActionToken()
+        public override IEnumerable<PermissionType> PermissionTypes => _permissionType;
+
+        public override string Serialize() => nameof(RestartApplicationActionToken);
+
+        public static ActionToken Deserialize(string serializedData) => new RestartApplicationActionToken();
+    }
+
+
+    internal sealed class RebuildSearchIndexActionExecutor : IActionExecutor
+    {
+        public FlowToken Execute(EntityToken entityToken, ActionToken actionToken, FlowControllerServicesContainer flowControllerServicesContainer)
         {
-        }
+            var service = ServiceLocator.GetService<ISearchIndexUpdater>();
+            service?.Rebuild();
 
-        public override IEnumerable<PermissionType> PermissionTypes
-        {
-            get { return _permissionType; }
-        }
-
-        public override string Serialize()
-        {
-            return "RestartApplicationActionToken";
-        }
-
-
-        public static ActionToken Deserialize(string serializedData)
-        {
-            return new RestartApplicationActionToken();
+            return null;
         }
     }
 
 
-    internal sealed class RestartApplicationActionExecutor : Composite.C1Console.Actions.IActionExecutor
+    internal sealed class RestartApplicationActionExecutor : IActionExecutor
     {
         public FlowToken Execute(EntityToken entityToken, ActionToken actionToken, FlowControllerServicesContainer flowControllerServicesContainer)
         {

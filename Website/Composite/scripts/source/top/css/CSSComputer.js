@@ -50,7 +50,7 @@ _CSSComputer.prototype = {
 	 * @param {DOMElement} element
 	 * @return {object}
 	 */
-	_getMargin : function ( element ) {
+	getMargin : function ( element ) {
 		return this._getComplexResult ( this._margins, element );
 	},
 	
@@ -107,6 +107,14 @@ _CSSComputer.prototype = {
 	 */
 	getBackgroundColor : function ( element ) {
 		return DOMUtil.getComputedStyle ( element, Client.isExplorer ? "backgroundColor" : "background-color" );
+	},
+
+	/**
+ * @param {DOMElement} element
+ * @return {string}
+ */
+	getWidth : function(element) {
+		return DOMUtil.getComputedStyle(element, "width");
 	}
 }
 

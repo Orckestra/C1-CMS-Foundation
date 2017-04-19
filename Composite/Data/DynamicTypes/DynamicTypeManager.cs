@@ -4,6 +4,8 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using Composite.Core;
+using Composite.Core.Configuration;
+using Composite.Core.Extensions;
 using Composite.Core.Instrumentation;
 using Composite.Data.Foundation;
 using Composite.Data.Foundation.PluginFacades;
@@ -13,7 +15,7 @@ using Composite.Core.Types;
 
 namespace Composite.Data.DynamicTypes
 {
-    /// <summary>    
+    /// <summary>
     /// This class is used for handling DataTypeDescriptors for all C1 data types. 
     /// Building new from reflection and getting already stored.
     /// 
@@ -32,6 +34,34 @@ namespace Composite.Data.DynamicTypes
         public static IDynamicTypeManager Implementation { get { return _dynamicTypeManager; } set { _dynamicTypeManager = value; } }
 
 
+        internal delegate void DataStoreEventHandler(DataTypeDescriptor dataTypeDescriptor);
+        internal delegate void DataStoreChangedEventHandler(UpdateDataTypeDescriptor updateDataTypeDescriptor);
+        internal delegate void LocalizationEventHandler(CultureInfo culture);
+
+        /// <summary>
+        /// Raised after data stores are created for a data type.
+        /// </summary>
+        internal static event DataStoreEventHandler OnStoreCreated;
+
+        /// <summary>
+        /// Raised after a data type is removed from the system.
+        /// </summary>
+        internal static event DataStoreEventHandler OnStoreDropped;
+
+        /// <summary>
+        /// Raised after a data type is updated.
+        /// </summary>
+        internal static event DataStoreChangedEventHandler OnStoreUpdated;
+
+        /// <summary>
+        /// Raised after the data stores created for a new locale.
+        /// </summary>
+        internal static event LocalizationEventHandler OnLocaleAdded;
+        /// <summary>
+        /// Raised after the data stores related to a locale are removed.
+        /// </summary>
+        internal static event LocalizationEventHandler OnLocaleRemoved;
+
 
         /// <exclude />
         public static DataTypeDescriptor BuildNewDataTypeDescriptor(Type typeToDescript)
@@ -47,9 +77,9 @@ namespace Composite.Data.DynamicTypes
         {
             DataTypeDescriptor dataTypeDescriptor;
 
-            if (TryGetDataTypeDescriptor(typeToDescript.GetImmutableTypeId(), out dataTypeDescriptor) == false)
+            if (!TryGetDataTypeDescriptor(typeToDescript.GetImmutableTypeId(), out dataTypeDescriptor))
             {
-                dataTypeDescriptor = BuildNewDataTypeDescriptor(typeToDescript); ;
+                dataTypeDescriptor = BuildNewDataTypeDescriptor(typeToDescript);
             }
 
             return dataTypeDescriptor;
@@ -59,10 +89,10 @@ namespace Composite.Data.DynamicTypes
 
         // Overload
         /// <exclude />
-        public static DataTypeDescriptor GetDataTypeDescriptor(Guid immuteableTypeId)
+        public static DataTypeDescriptor GetDataTypeDescriptor(Guid immutableTypeId)
         {
             DataTypeDescriptor dataTypeDescriptor;
-            TryGetDataTypeDescriptor(immuteableTypeId, out dataTypeDescriptor);
+            TryGetDataTypeDescriptor(immutableTypeId, out dataTypeDescriptor);
 
             return dataTypeDescriptor;
         }
@@ -79,9 +109,9 @@ namespace Composite.Data.DynamicTypes
 
 
         /// <exclude />
-        public static bool TryGetDataTypeDescriptor(Guid immuteableTypeId, out DataTypeDescriptor dataTypeDescriptor)
+        public static bool TryGetDataTypeDescriptor(Guid immutableTypeId, out DataTypeDescriptor dataTypeDescriptor)
         {
-            return _dynamicTypeManager.TryGetDataTypeDescriptor(immuteableTypeId, out dataTypeDescriptor);
+            return _dynamicTypeManager.TryGetDataTypeDescriptor(immutableTypeId, out dataTypeDescriptor);
         }
 
 
@@ -140,12 +170,16 @@ namespace Composite.Data.DynamicTypes
         public static void CreateStore(string providerName, DataTypeDescriptor typeDescriptor, bool doFlush)
         {
             _dynamicTypeManager.CreateStores(providerName, new[] { typeDescriptor }, doFlush);
+
+            OnStoreCreated?.Invoke(typeDescriptor);
         }
 
         /// <exclude />
         public static void CreateStores(string providerName, IReadOnlyCollection<DataTypeDescriptor> typeDescriptors, bool doFlush)
         {
             _dynamicTypeManager.CreateStores(providerName, typeDescriptors, doFlush);
+
+            typeDescriptors.ForEach(td => OnStoreCreated?.Invoke(td));
         }
 
 
@@ -155,7 +189,7 @@ namespace Composite.Data.DynamicTypes
         public static void AlterStore(UpdateDataTypeDescriptor updateDataTypeDescriptor)
         {
             AlterStore(updateDataTypeDescriptor, false);
-        }        
+        }
 
 
 
@@ -163,6 +197,8 @@ namespace Composite.Data.DynamicTypes
         public static void AlterStore(UpdateDataTypeDescriptor updateDataTypeDescriptor, bool forceRecompile)
         {
             _dynamicTypeManager.AlterStore(updateDataTypeDescriptor, forceRecompile);
+
+            OnStoreUpdated?.Invoke(updateDataTypeDescriptor);
         }
 
 
@@ -199,6 +235,8 @@ namespace Composite.Data.DynamicTypes
             {
                 DataProviderRegistry.UnregisterDataType(interfaceType, providerName);
             }
+
+            OnStoreDropped?.Invoke(typeDescriptor);
         }
 
 
@@ -216,6 +254,8 @@ namespace Composite.Data.DynamicTypes
         public static void AddLocale(string providerName, CultureInfo cultureInfo)
         {
             _dynamicTypeManager.AddLocale(providerName, cultureInfo);
+
+            OnLocaleAdded?.Invoke(cultureInfo);
         }
 
 
@@ -233,6 +273,8 @@ namespace Composite.Data.DynamicTypes
         public static void RemoveLocale(string providerName, CultureInfo cultureInfo)
         {
             _dynamicTypeManager.RemoveLocale(providerName, cultureInfo);
+
+            OnLocaleRemoved?.Invoke(cultureInfo);
         }
 
 
@@ -242,7 +284,6 @@ namespace Composite.Data.DynamicTypes
         /// This method will create the store if the interfaceType has not been configured.
         /// </summary>
         /// <param name="interfaceType"></param>
-        // Helper
         public static void EnsureCreateStore(Type interfaceType)
         {
             EnsureCreateStore(interfaceType, null);
@@ -259,36 +300,43 @@ namespace Composite.Data.DynamicTypes
         // Helper
         public static void EnsureCreateStore(Type interfaceType, string providerName)
         {
-            DataTypeDescriptor dataTypeDescriptor;
-            if (!TryGetDataTypeDescriptor(interfaceType, out dataTypeDescriptor))
-            {
-                dataTypeDescriptor = BuildNewDataTypeDescriptor(interfaceType);
-            }
+            IEnumerable<string> dynamicProviderNames;
 
             if (providerName == null)
             {
-                // Checking if any of exising dynamic data providers already has a store for the specified interface type
-                if (DataProviderRegistry.DynamicDataProviderNames
-                    .Select(DataProviderPluginFacade.GetDataProvider)
-                    .Cast<IDynamicDataProvider>()
-                    .Any(dynamicDataProvider => dynamicDataProvider.GetKnownInterfaces().Contains(interfaceType)))
-                {
-                    return;
-                }
-
+                // Checking if any of existing dynamic data providers already has a store for the specified interface type
                 providerName = DataProviderRegistry.DefaultDynamicTypeDataProviderName;
+                dynamicProviderNames = DataProviderRegistry.DynamicDataProviderNames;
             }
             else
             {
-                var dataProvider = (IDynamicDataProvider) DataProviderPluginFacade.GetDataProvider(providerName);
-                if (dataProvider.GetKnownInterfaces().Contains(interfaceType))
+                dynamicProviderNames = new[] {providerName};
+            }
+
+            var possibleMatches = dynamicProviderNames
+                .Select(DataProviderPluginFacade.GetDataProvider)
+                .Cast<IDynamicDataProvider>()
+                .SelectMany(dynamicDataProvider => dynamicDataProvider.GetKnownInterfaces())
+                .Where(i => i.FullName == interfaceType.FullName);
+
+            foreach(var match in possibleMatches)
+            {
+                if(match == interfaceType) return;
+
+                if (match.GetImmutableTypeId() == interfaceType.GetImmutableTypeId())
                 {
-                    return;
+                    throw new InvalidOperationException($"The same type '{match.FullName}' is loaded in memory twice. Location 1: '{match.Assembly.Location}', location 2: {interfaceType.Assembly.Location}");
                 }
             }
 
+            var dataTypeDescriptor = BuildNewDataTypeDescriptor(interfaceType);
+
             CreateStore(providerName, dataTypeDescriptor, true);
-            CodeGenerationManager.GenerateCompositeGeneratedAssembly(true);
+
+            if (!SystemSetupFacade.SetupIsRunning)
+            {
+                CodeGenerationManager.GenerateCompositeGeneratedAssembly(true);
+            }
         }
         
 
@@ -332,7 +380,20 @@ namespace Composite.Data.DynamicTypes
             using (TimerProfilerFacade.CreateTimerProfiler(interfaceType.ToString()))
             {
                 var newDataTypeDescriptor = BuildNewDataTypeDescriptor(interfaceType);
+
                 var oldDataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(newDataTypeDescriptor.DataTypeId);
+
+                if (interfaceType.IsGenerated())
+                {
+                    var customFields = oldDataTypeDescriptor.Fields.Where(f => !f.Inherited &&
+                                                                               !oldDataTypeDescriptor.KeyPropertyNames
+                                                                                   .Contains(f.Name));
+                    foreach (var field in customFields)
+                    {
+                        newDataTypeDescriptor.Fields.Remove(newDataTypeDescriptor.Fields[field.Name]);
+                        newDataTypeDescriptor.Fields.Add(field);
+                    }
+                }
 
                 if (oldDataTypeDescriptor == null)
                 {
@@ -340,13 +401,16 @@ namespace Composite.Data.DynamicTypes
                     return false;
                 }
 
-                var dataTypeChangeDescriptor = new DataTypeChangeDescriptor(oldDataTypeDescriptor, newDataTypeDescriptor);                
+                var dataTypeChangeDescriptor = new DataTypeChangeDescriptor(oldDataTypeDescriptor, newDataTypeDescriptor);
 
                 if (!dataTypeChangeDescriptor.AlteredTypeHasChanges) return false;
 
-                Log.LogVerbose("DynamicTypeManager", "Updating the store for interface type '{0}' on the '{1}' data provider", interfaceType, providerName);
+                Log.LogVerbose(nameof(DynamicTypeManager),
+                    "Updating the store for interface type '{0}' on the '{1}' data provider", interfaceType,
+                    providerName);
 
-                var updateDataTypeDescriptor = new UpdateDataTypeDescriptor(oldDataTypeDescriptor, newDataTypeDescriptor, providerName);
+                var updateDataTypeDescriptor = new UpdateDataTypeDescriptor(oldDataTypeDescriptor, newDataTypeDescriptor,
+                    providerName);
 
                 AlterStore(updateDataTypeDescriptor, makeAFlush);
 

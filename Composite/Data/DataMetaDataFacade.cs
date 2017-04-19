@@ -4,6 +4,7 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Xml;
 using System.Xml.Linq;
 using Composite.C1Console.Events;
@@ -20,7 +21,7 @@ using Composite.Data.DynamicTypes.Foundation;
 
 namespace Composite.Data
 {
-    /// <summary>    
+    /// <summary>
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
@@ -171,19 +172,18 @@ namespace Composite.Data
 
         /// <summary>
         /// This method will return the data type descriptor for the given data type id.
-        /// If the data type descriptor has not yet been created (file not existing) and 
-        /// the <paramref name="allowDataTypeCreation"/> is set to true,
-        /// this method will try getting it through the <see cref="Composite.Data.DynamicTypes.Foundation.ReflectionBasedDescriptorBuilder"/> 
-        /// that will try locating the type from the data type id using refelction 
+        /// If the data type descriptor has not yet been created (file not existing) and
+        /// the <paramref name="allowTypeMetaDataCreation"/> is set to true,
+        /// this method will try getting it through the <see cref="Composite.Data.DynamicTypes.Foundation.ReflectionBasedDescriptorBuilder"/>
+        /// that will try locating the type from the data type id using reflection
         /// going through know assemblies.
         /// </summary>
         /// <param name="dataTypeId">The id of the data type.</param>
-        /// <param name="allowDataTypeCreation">
-        /// If this is true and the data type descriptor does not exists, it will try to
-        /// be created.
+        /// <param name="allowTypeMetaDataCreation">
+        /// If this is <value>true</value> and the data type descriptor does not exists, the method will try to create it.
         /// </param>
         /// <returns></returns>
-        public static DataTypeDescriptor GetDataTypeDescriptor(Guid dataTypeId, bool allowDataTypeCreation = false)
+        public static DataTypeDescriptor GetDataTypeDescriptor(Guid dataTypeId, bool allowTypeMetaDataCreation = false)
         {
             Initialize();
 
@@ -194,11 +194,16 @@ namespace Composite.Data
             if (dataTypeDescriptor != null) return dataTypeDescriptor;
 
 
-            if (!allowDataTypeCreation) return null;
-
+            if (!allowTypeMetaDataCreation) return null;
 
             foreach (Assembly assembly in AssemblyFacade.GetLoadedAssembliesFromBin())
             {
+                if (!AssemblyFacade.AssemblyPotentiallyUsesType(assembly, typeof(IData)))
+                {
+                    // Ignoring assemblies that aren't referencing Composite.dll
+                    continue;
+                }
+
                 Type[] types;
                 try
                 {
@@ -206,15 +211,22 @@ namespace Composite.Data
                 }
                 catch(ReflectionTypeLoadException ex)
                 {
-                    throw new InvalidOperationException("Failed to get types from assembly '{0}'".FormatWith(assembly.FullName), ex);
+                    if (assembly == typeof (IData).Assembly)
+                    {
+                        // It is critical to be able to load types from Composite.dll
+                        Log.LogError(LogTitle, ex.LoaderExceptions.FirstOrDefault());
+                        throw new InvalidOperationException($"Failed to load '{typeof(IData).Assembly.FullName}', check log file for the details", ex);
+                    }
+                    Log.LogWarning($"Failed to get types from assembly '{assembly.FullName}'", ex);
+                    continue;
                 }
 
-                foreach (Type type in types )
+                foreach (Type type in types)
                 {
                     if (type.GetInterfaces().Contains(typeof(IData)))
                     {
                         ImmutableTypeIdAttribute attribute = type.GetCustomAttributes(false).OfType<ImmutableTypeIdAttribute>().SingleOrDefault();
-                        if ((attribute == null) || (attribute.ImmutableTypeId != dataTypeId)) continue;
+                        if (attribute == null || attribute.ImmutableTypeId != dataTypeId) continue;
 
                         DataTypeDescriptor newDataTypeDescriptor = ReflectionBasedDescriptorBuilder.Build(type);
                         PersistMetaData(newDataTypeDescriptor);
@@ -225,9 +237,44 @@ namespace Composite.Data
             }
 
 
-            Log.LogError(LogTitle, string.Format("No data type found with the given data type id '{0}'", dataTypeId));
+            Log.LogError(LogTitle, $"No data type found with the given data type id '{dataTypeId}'");
 
             return null;
+        }
+
+
+        /// <summary>
+        /// This method will return the data type descriptor for the given data type id.
+        /// If the data type descriptor has not yet been created (file not existing) and
+        /// the <paramref name="allowTypeMetaDataCreation"/> is set to true,
+        /// this method will try getting it through the <see cref="Composite.Data.DynamicTypes.Foundation.ReflectionBasedDescriptorBuilder"/>
+        /// based on <paramref name="interfaceType"/>.
+        /// </summary>
+        /// <param name="interfaceType">The data type.</param>
+        /// <param name="allowTypeMetaDataCreation">
+        /// If this is true and the data type descriptor does not exists, it will be created.
+        /// </param>
+        /// <returns></returns>
+        public static DataTypeDescriptor GetDataTypeDescriptor(Type interfaceType, bool allowTypeMetaDataCreation = false)
+        {
+            Verify.ArgumentNotNull(interfaceType, nameof(interfaceType));
+
+            Initialize();
+
+            DataTypeDescriptor dataTypeDescriptor;
+
+            Guid dataTypeId = interfaceType.GetImmutableTypeId();
+
+            _dataTypeDescriptorCache.TryGetValue(dataTypeId, out dataTypeDescriptor);
+
+            if (dataTypeDescriptor != null) return dataTypeDescriptor;
+
+            if (!allowTypeMetaDataCreation) return null;
+
+            var newDataTypeDescriptor = ReflectionBasedDescriptorBuilder.Build(interfaceType);
+            PersistMetaData(newDataTypeDescriptor);
+
+            return newDataTypeDescriptor;
         }
 
 

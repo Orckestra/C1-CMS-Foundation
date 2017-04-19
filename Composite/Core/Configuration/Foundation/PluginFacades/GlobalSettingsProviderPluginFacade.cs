@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Globalization;
 using Composite.Core.Collections.Generic;
-using Composite.Core.Configuration;
 using Composite.C1Console.Events;
 using Composite.Core.Configuration.BuildinPlugins.GlobalSettingsProvider;
 using Composite.Core.Configuration.Plugins.GlobalSettingsProvider;
@@ -19,7 +17,7 @@ namespace Composite.Core.Configuration.Foundation.PluginFacades
 
         static GlobalSettingsProviderPluginFacade()
         {
-            GlobalEventSystemFacade.SubscribeToFlushEvent(OnFlush);
+            GlobalEventSystemFacade.SubscribeToFlushEvent(args => Flush());
         }
 
 
@@ -29,6 +27,26 @@ namespace Composite.Core.Configuration.Foundation.PluginFacades
             get
             {
                 return UseReaderLock(provider => provider.ApplicationName);
+            }
+        }
+
+
+
+        public static string ApplicationShortName
+        {
+            get
+            {
+                return UseReaderLock(provider => provider.ApplicationShortName);
+            }
+        }
+
+
+
+        public static string BrandedVersionAssemblySource
+        {
+            get
+            {
+                return UseReaderLock(provider => provider.BrandedVersionAssemblySource);
             }
         }
 
@@ -311,16 +329,14 @@ namespace Composite.Core.Configuration.Foundation.PluginFacades
         }
 
 
+        public static bool FunctionPreviewEnabled => UseReaderLock(p => p.FunctionPreviewEnabled);
+
+        public static TimeZoneInfo TimeZone => UseReaderLock(p => p.TimeZone);
+
+
         private static void Flush()
         {
             _resourceLocker.ResetInitialization();
-        }
-
-
-
-        private static void OnFlush(FlushEventArgs args)
-        {
-            Flush();
         }
 
 
@@ -329,7 +345,7 @@ namespace Composite.Core.Configuration.Foundation.PluginFacades
         {
             Flush();
 
-            throw new ConfigurationErrorsException(string.Format("Failed to load the configuration section '{0}' from the configuration.", GlobalSettingsProviderSettings.SectionName), ex);
+            throw new ConfigurationErrorsException($"Failed to load the configuration section '{GlobalSettingsProviderSettings.SectionName}' from the configuration.", ex);
         }
 
         private delegate T ExecuteDelegate<T>(IGlobalSettingsProvider provider);
@@ -349,9 +365,10 @@ namespace Composite.Core.Configuration.Foundation.PluginFacades
 
             public static void Initialize(Resources resources)
             {
-                if ((RuntimeInformation.IsDebugBuild) &&
-                            ((ConfigurationServices.ConfigurationSource == null) ||
-                             (ConfigurationServices.ConfigurationSource.GetSection(GlobalSettingsProviderSettings.SectionName) == null)))
+                var configSource = ConfigurationServices.ConfigurationSource;
+
+                if (RuntimeInformation.IsUnittest
+                    && configSource?.GetSection(GlobalSettingsProviderSettings.SectionName) == null)
                 {
                     resources.Provider = new BuildinGlobalSettingsProvider();
                 }

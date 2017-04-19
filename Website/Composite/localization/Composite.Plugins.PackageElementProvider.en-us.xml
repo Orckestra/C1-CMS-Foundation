@@ -12,6 +12,8 @@
   <string key="PackageSourcesFolderToolTip" value="Package sources" />
   <string key="ViewAvailableInformationLabel" value="Package Info" />
   <string key="ViewAvailableInformationToolTip" value="View package information" />
+  <string key="InstallLabel" value="Install" />
+  <string key="InstallToolTip" value="Install this C1 Package on your system" />
   <string key="ViewInstalledInformationLabel" value="Package Info" />
   <string key="ViewInstalledInformationToolTip" value="View package information" />
   <string key="InstallLocalPackageLabel" value="Install Local Package..." />
@@ -31,6 +33,10 @@
   <string key="ViewAvailableInformation.TrialInformationLabel" value="Trial information" />
   <string key="ViewAvailableInformation.TrialInformationText" value="This is a commercial package, available for free in the trial period. When the trial period has expired functionality may be degraded, unless you choose to purchase a license." />
   <string key="ViewAvailableInformation.TrialDaysLabel" value="Free trial period (days)" />
+	
+	<string key="ViewAvailableInformation.LicenseInformationGroupLabel" value="License Information" />
+	<string key="ViewAvailableInformation.SubscriptionNameLabel" value="Subscription Name" />
+	<string key="ViewAvailableInformation.LicenseExpirationDateLabel" value="License Expiration Date" />
 
 
   <string key="ViewAvailableInformation.InstallationInfoFieldGroupLabel" value="Installation Info" />
@@ -39,7 +45,8 @@
   <string key="ViewAvailableInformation.PackageSourceTextLabel" value="Source" />
 
 
-  <string key="ViewAvailableInformation.PriceTextLabel" value="Price (USD)" />
+  <string key="ViewAvailableInformation.PriceTextLabel" value="Price" />
+  <string key="ViewAvailableInformation.SubscriptionListLabel" value="Subscriptions that include this package" />
   <string key="ViewAvailableInformation.Toolbar.InstallLabel" value="Install" />
   <string key="ViewAvailableInformation.Toolbar.ReadMoreLabel" value="Read more" />
   <string key="ViewAvailableInformation.ShowError.MessageTitle" value="Already Installed" />
@@ -56,6 +63,10 @@
   <string key="ViewInstalledInformation.TrialInformationLabel" value="Trial information" />
   <string key="ViewInstalledInformation.TrialInformationText" value="This is a commercial package, available for free in the trial period. When the trial period has expired functionality may be degraded, unless you choose to purchase a license." />
   <string key="ViewInstalledInformation.TrialExpireLabel" value="Trial expiration date" />
+	
+	<string key="ViewInstalledInformation.LicenseInformationGroupLabel" value="License Information" />
+	<string key="ViewInstalledInformation.SubscriptionNameLabel" value="Subscription Name" />
+	<string key="ViewInstalledInformation.LicenseExpirationDateLabel" value="License Expiration Date" />
 
   <string key="ViewInstalledInformation.Toolbar.UninstallLabel" value="Uninstall" />
   <string key="ViewInstalledInformation.Toolbar.PurchaseLabel" value="Purchase this!" />
@@ -131,7 +142,7 @@
   <string key="AddPackageSource.Step1.UrlLabel" value="Package web service URL" />
   <string key="AddPackageSource.Step1.UrlHelp" value="Packages can be hosted on remote servers. The package web service URL will be validated in the next step." />
   <string key="AddPackageSource.Step1.UrlNotValid" value="The entered text was not a valid URL" />
-  <string key="AddPackageSource.Step1.UrlNonPackageServer" value="The server is not a Composite C1 package server" />
+  <string key="AddPackageSource.Step1.UrlNonPackageServer" value="The server is not a C1 CMS package server" />
   <string key="AddPackageSource.Step2.LayoutLabel" value="Add Package Server Source" />
   <string key="AddPackageSource.Step2.HeadingTitle" value="Server URL is valid" />
   <string key="AddPackageSource.Step2.HeadingNoHttpsDescription" value="Note that the HTTP protocol is used on this connection. This implies that all information will be send unencrypted. Click Finish to add the source." />

@@ -121,6 +121,19 @@ ui|menu { //usage: top menubar and ImageEditor menubar
 ui|menubody {
 	display: block;
 	padding: 0;
+
+	&.textonly {
+		ui|labelbox{
+			svg {
+				display: none;
+			}
+			&.image-and-text {
+				ui|labeltext{
+					margin-left: 0;
+				}
+			}
+		}
+	}
 }
 
 ui|menugroup {
@@ -163,8 +176,51 @@ ui|menuitem {
 		top: 10px;
 	}
 
-	.submenuindicator {
-		display: none;
+	&[type="menucontainer"] {
+		> .menuitemlabel{
+
+			> ui|labelbody {
+				padding-right: 16px;
+			}
+
+			&:before, &:after {
+					content: "";
+					position: absolute;
+					width: 0;
+					height: 0;
+					border-style: solid;
+			}
+
+			&:before {
+					top: 10px;
+					right: 10px;
+					border-width: 5px 0 5px 5px;
+					border-color: transparent transparent transparent @primary-color;
+			}
+
+			&:after {
+					top: 11px;
+					right: 11px;
+					border-width: 4px 0 4px 4px;
+					border-color: transparent transparent transparent #fff;
+			}
+
+			&.hover{
+				&:before {
+					top: 10px;
+					right: 10px;
+					border-width: 5px 5px 5px 0;
+					border-color: transparent #fff transparent transparent;
+				}
+
+				&:after {
+					top: 11px;
+					right: 10px;
+					border-width: 4px 4px 4px 0;
+					border-color: transparent @primary-color transparent transparent;
+				}
+			}
+		}
 	}
 
 	ui|menupopup {

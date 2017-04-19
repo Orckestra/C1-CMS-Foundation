@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using Composite.C1Console.Security;
@@ -8,7 +10,7 @@ using Composite.Core.Types;
 namespace Composite.Data
 {
     /// <summary>
-    /// EntityToken that represents a C1 Data item. EntityToken is used through out Composite C1 to describe artifacts that can have security settings and be navigated and this class make it easy
+    /// EntityToken that represents a C1 Data item. EntityToken is used through out C1 CMS to describe artifacts that can have security settings and be navigated and this class make it easy
     /// to move between data items and EntityToken.
     /// </summary>
     [SecurityAncestorProvider(typeof(DataSecurityAncestorProvider))]
@@ -17,10 +19,11 @@ namespace Composite.Data
         private IData _data;
         private bool _dataInitialized;
         private string _serializedDataSourceId;
-        private string _serializedDataId = null;
-        private string _serializedInterfaceType = null;
-        private Type _interfaceType = null;
-        private DataSourceId _dataSourceId = null;
+        private string _serializedId; 
+        private string _serializedVersionId;
+        private string _serializedInterfaceType;
+        private Type _interfaceType;
+        private DataSourceId _dataSourceId;
 
 
         internal DataEntityToken(IData data)
@@ -28,7 +31,7 @@ namespace Composite.Data
             Verify.ArgumentNotNull(data, "data");
 
             _data = data;
-            _dataInitialized = true;            
+            _dataInitialized = true;
             _serializedDataSourceId = null;
             _dataSourceId = _data.DataSourceId;
             Verify.ArgumentCondition(_dataSourceId != null, "data", "DataSourceId can not be null");
@@ -65,23 +68,14 @@ namespace Composite.Data
 
 
         /// <exclude />
-        public override string Source
-        {
-            get
-            {              
-                return this.DataSourceId.ProviderName;
-            }
-        }
-
+        public override string Source => this.DataSourceId.ProviderName;
 
 
         /// <exclude />
-        public override string Id
-        {
-            get { return this.SerializedDataId; }
-        }
+        public override string Id => this.SerializedId;
 
-
+        /// <exclude />
+        public override string VersionId => this.SerializedVersionId;
 
         /// <exclude />
         public override bool IsValid()
@@ -155,7 +149,7 @@ namespace Composite.Data
         {
             get
             {
-                if (_dataInitialized == false)
+                if (!_dataInitialized)
                 {
                     try
                     {
@@ -180,13 +174,13 @@ namespace Composite.Data
 
 
         /// <exclude />
-        public override void OnGetPrettyHtml(EntityTokenHtmlPrettyfier prettyfier)
+        public override void OnGetPrettyHtml(EntityTokenHtmlPrettyfier prettifier)
         {
-            prettyfier.OnWriteId = (token, helper) =>
+            prettifier.OnWriteId = (token, helper) =>
             {
-                IDataId dataId = DataIdSerializer.Deserialize(this.Id);
+                IDataId dataId = DataIdSerializer.Deserialize(this.Id, this.VersionId);
 
-                StringBuilder sb = new StringBuilder();
+                var sb = new StringBuilder();
                 sb.Append("<b>DataId</b><br />");
                 sb.Append("<b>Type:</b> " + dataId.GetType() + "<br />");
                 foreach (PropertyInfo propertyInfo in dataId.GetType().GetPropertiesRecursively())
@@ -194,7 +188,7 @@ namespace Composite.Data
                     sb.Append("<b>" + propertyInfo.Name + ":</b> " + propertyInfo.GetValue(dataId, null).ToString() + "<br />");
                 }
 
-                helper.AddFullRow(new string[] { "<b>Id</b>", sb.ToString() });
+                helper.AddFullRow(new [] { "<b>Id</b>", sb.ToString() });
             };
         }
 
@@ -215,24 +209,52 @@ namespace Composite.Data
 
 
 
-        private string SerializedDataId
+        private string SerializedId
         {
             get
             {
-                if (_serializedDataId == null)
+                if (_serializedId == null)
                 {
-                    _serializedDataId = this.DataSourceId.DataId.Serialize();
+                    if (!GetVersionKeyPropertyNames().Any())
+                    {
+                        return this.DataSourceId.DataId.Serialize(null);
+                    }
+
+                    var keyPropertyNames = this.InterfaceType
+                        .GetCustomAttributesRecursively<KeyPropertyNameAttribute>()
+                        .Select(f=>f.KeyPropertyName);
+
+                    _serializedId = this.DataSourceId.DataId.Serialize(keyPropertyNames);
                 }
 
-                return _serializedDataId;
+                return _serializedId;
+            }
+        }
+
+        private string SerializedVersionId
+        {
+            get
+            {
+                if (_serializedVersionId == null)
+                {
+                    var versionKeyPropertyNames = GetVersionKeyPropertyNames();
+                    if (!versionKeyPropertyNames.Any())
+                    {
+                        return "";
+                    }
+
+                    _serializedVersionId = this.DataSourceId.DataId.Serialize(versionKeyPropertyNames);
+                }
+
+                return _serializedVersionId;
             }
         }
 
 
-
-        private void CheckValidity()
+        private IEnumerable<string> GetVersionKeyPropertyNames()
         {
-            Verify.That(IsValid(), "Failed to deserialize data from serialized data source identifier. Probably the data has been removed from data source.");
+            return this.InterfaceType.GetCustomAttributesRecursively<VersionKeyPropertyNameAttribute>()
+                .Select(f => f.VersionKeyPropertyName);
         }
     }
 }

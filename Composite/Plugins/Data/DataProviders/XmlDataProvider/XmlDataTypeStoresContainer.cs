@@ -10,12 +10,12 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
     {
         private readonly string _providerName;
 
-        private readonly List<Type> _supportedInterface = new List<Type>();
-        private readonly List<Type> _knownInterface = new List<Type>();
-        private readonly List<Type> _generatedInterface = new List<Type>();
+        private readonly List<Type> _supportedInterfaces = new List<Type>();
+        private readonly List<Type> _knownInterfaces = new List<Type>();
+        private readonly List<Type> _generatedInterfaces = new List<Type>();
 
         // Data type -> XmlDataTypeStore
-        private readonly Dictionary<Type, XmlDataTypeStore> _dataTypeStores = new Dictionary<Type, XmlDataTypeStore>();        
+        private readonly Dictionary<Type, XmlDataTypeStore> _dataTypeStores = new Dictionary<Type, XmlDataTypeStore>();
 
 
         public XmlDataTypeStoresContainer(string providerName)
@@ -27,29 +27,28 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
         /// <summary>
         /// All working data types 
         /// </summary>
-        public IEnumerable<Type> SupportedInterface { get { return _supportedInterface; } }
+        public IEnumerable<Type> SupportedInterfaces => _supportedInterfaces;
 
 
         /// <summary>
         /// All data types, including non working due to config error or something else
         /// </summary>
-        public IEnumerable<Type> KnownInterfaces { get { return _knownInterface; } }
+        public IEnumerable<Type> KnownInterfaces => _knownInterfaces;
 
 
         /// <summary>
         /// All working generated data types
         /// </summary>
-        public IEnumerable<Type> GeneratedInterfaces { get { return _generatedInterface; } }
-
+        public IEnumerable<Type> GeneratedInterfaces => _generatedInterfaces;
 
 
         public XmlDataTypeStore GetDataTypeStore(Type interfaceType)
         {
             XmlDataTypeStore result;
 
-            if (_dataTypeStores.TryGetValue(interfaceType, out result) == false)
+            if (!_dataTypeStores.TryGetValue(interfaceType, out result))
             {
-                throw new ArgumentException(string.Format("The interface type '{0}' is not supported by the XmlDataProvider named '{1}", interfaceType, _providerName));
+                throw new ArgumentException($"The interface type '{interfaceType}' is not supported by the XmlDataProvider named '{_providerName}");
             }
 
             return result;
@@ -64,14 +63,16 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
         /// <param name="xmlDataTypeStore"></param>
         internal void AddSupportedDataTypeStore(Type interfaceType, XmlDataTypeStore xmlDataTypeStore)
         {
+            Verify.That(!_dataTypeStores.ContainsKey(interfaceType), $"Interface type {interfaceType.FullName} has already been registered");
+
             _dataTypeStores.Add(interfaceType, xmlDataTypeStore);
 
-            _supportedInterface.Add(interfaceType);
+            _supportedInterfaces.Add(interfaceType);
             AddKnownInterface(interfaceType);
 
             if (xmlDataTypeStore.IsGeneratedDataType)
             {
-                _generatedInterface.Add(interfaceType);
+                _generatedInterfaces.Add(interfaceType);
             }
         }
 
@@ -79,22 +80,24 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
         internal void UpdateSupportedDataTypeStore(Type interfaceType, XmlDataTypeStore xmlDataTypeStore)
         {
-            Type type = _dataTypeStores.Where(f => f.Value.DataTypeDescriptor.DataTypeId == interfaceType.GetImmutableTypeId()).Select(f => f.Key).Single();
+            Guid typeId = interfaceType.GetImmutableTypeId();
+            Type type = _dataTypeStores.Where(f => f.Value.DataTypeDescriptor.DataTypeId == typeId).Select(f => f.Key).Single();
+
             _dataTypeStores.Remove(type);
             _dataTypeStores.Add(interfaceType, xmlDataTypeStore);
 
-            _supportedInterface.Remove(type);
-            _supportedInterface.Add(interfaceType);
+            _supportedInterfaces.Remove(type);
+            _supportedInterfaces.Add(interfaceType);
 
-            _knownInterface.Remove(type);
-            _knownInterface.Add(interfaceType);
+            _knownInterfaces.Remove(type);
+            _knownInterfaces.Add(interfaceType);
         }
 
 
 
         internal void AddKnownInterface(Type interfaceType)
         {
-            _knownInterface.Add(interfaceType);
+            _knownInterfaces.Add(interfaceType);
         }
     }
 }

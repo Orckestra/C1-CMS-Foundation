@@ -77,6 +77,13 @@ RadioDataGroupBinding.prototype.onBindingAttach = function () {
 			self.focus ( true );
 		}
 	});
+
+	var onchange = this.getProperty("onchange");
+	if (onchange) {
+		this.onValueChange = function () {
+			Binding.evaluate(onchange, this);
+		};
+	}
 }
 
 /**
@@ -100,7 +107,8 @@ RadioDataGroupBinding.prototype.handleAction = function ( action ) {
 	
 	switch ( action.type ) {
 		case RadioGroupBinding.ACTION_SELECTIONCHANGED :
-			this.dirty ();
+			this.dirty();
+			this.onValueChange();
 			break;
 	}
 }
@@ -308,4 +316,6 @@ RadioDataGroupBinding.prototype.setValue = function ( value ) {}
  * @implements {IData}
  * @param {object} result
  */
-RadioDataGroupBinding.prototype.setResult = function ( result ) {}
+RadioDataGroupBinding.prototype.setResult = function (result) { }
+
+RadioDataGroupBinding.prototype.onValueChange = function () { }

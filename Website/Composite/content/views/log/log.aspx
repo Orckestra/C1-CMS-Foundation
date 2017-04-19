@@ -13,7 +13,7 @@
 		<script type="text/javascript">
 		    DocumentManager.isDocumentSelectable = true;
 		</script>
-        <% if(HideToolbar) { %>
+        <% if(IsBrowserView) { %>
             <style>
                 #toolbar { display: none; }
             </style>
@@ -51,10 +51,13 @@
 					</ui:toolbarbody>
 				</ui:toolbar>
 				<ui:scrollbox id="scrollbox">
-					<asp:PlaceHolder ID="LogHolder" runat="server" />
+					<asp:PlaceHolder  runat="server" ID="LogHolder" />
 					<asp:PlaceHolder runat="server" ID="EmptyLabelPlaheHolder" Visible="false">
 						<div id="emptylabel"><ui:text label="${string:ServerLog.EmptyLabel}"/></div>
 					</asp:PlaceHolder>
+                    <asp:PlaceHolder runat="server" ID="LogEntriesRemovedPlaceHolder">
+                        <div id="logentriesremovedlabel"><asp:Label runat="server" ID="LogEntriesRemovedLabel" /></div>
+                    </asp:PlaceHolder>
 				</ui:scrollbox>
 			</ui:page>
 		</form>

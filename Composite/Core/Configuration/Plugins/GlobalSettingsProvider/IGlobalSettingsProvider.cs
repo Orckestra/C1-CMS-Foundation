@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Composite.Core.Configuration.Plugins.GlobalSettingsProvider.Runtime;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
@@ -9,7 +10,11 @@ namespace Composite.Core.Configuration.Plugins.GlobalSettingsProvider
     [ConfigurationNameMapper(typeof(GlobalSettingsProviderDefaultNameRetriever))]
     internal interface IGlobalSettingsProvider
     {        
-        string ApplicationName { get; } 
+        string ApplicationName { get; }
+
+        string ApplicationShortName { get; }
+
+        string BrandedVersionAssemblySource { get; }
 
         string DefaultCultureName { get; }
 
@@ -78,5 +83,9 @@ namespace Composite.Core.Configuration.Plugins.GlobalSettingsProvider
         bool PrettifyPublicMarkup { get; }
 
         bool PrettifyRenderFunctionExceptions { get; }
+
+        bool FunctionPreviewEnabled { get; }
+
+        TimeZoneInfo TimeZone { get; }
     }
 }

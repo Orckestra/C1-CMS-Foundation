@@ -6,10 +6,11 @@ using Composite.C1Console.Events;
 using Composite.C1Console.Forms.CoreUiControls;
 using Composite.C1Console.Workflow;
 using Composite.C1Console.Workflow.Activities;
+using Composite.Core;
 using Composite.Data;
 using Composite.Data.Types;
-using ICSharpCode.SharpZipLib.Zip;
 
+using Texts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_Management;
 
 namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementProvider
 {
@@ -34,19 +35,19 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
             string storeId;
             if (this.EntityToken is MediaRootFolderProviderEntityToken)
             {
-                MediaRootFolderProviderEntityToken token = (MediaRootFolderProviderEntityToken)this.EntityToken;
+                var token = (MediaRootFolderProviderEntityToken)this.EntityToken;
                 parentFolderPath = "/";
                 storeId = token.Id;
             }
             else
             {
-                DataEntityToken token = (DataEntityToken)this.EntityToken;
+                var token = (DataEntityToken)this.EntityToken;
                 IMediaFileFolder parentFolder = (IMediaFileFolder)token.Data;
                 parentFolderPath = parentFolder.Path;
                 storeId = parentFolder.StoreId;
             }
 
-            string providerName = DataFacade.GetData<IMediaFileStore>().Where(x => x.Id == storeId).First().DataSourceId.ProviderName;
+            string providerName = DataFacade.GetData<IMediaFileStore>().First(x => x.Id == storeId).DataSourceId.ProviderName;
 
             UploadedFile file = new UploadedFile();
 
@@ -71,7 +72,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
             {
                 if(uploadedFile.FileName.EndsWith(".docx"))
                 {
-                    ShowUploadError("${Composite.Management, Website.Forms.Administrative.AddZipMediaFile.CannotUploadDocxFile}");
+                    ShowUploadError(Texts.Website_Forms_Administrative_AddZipMediaFile_CannotUploadDocxFile);
                     return;
                 }
 
@@ -82,15 +83,16 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
                         ZipMediaFileExtractor.AddZip(providerName, parentFolderPath, readStream, recreateFolders, overwrite);
                         _zipHasBeenUploaded = true;
                     }
-                    catch (ZipException)
+                    catch (Exception ex)
                     {
+                        Log.LogError(nameof(AddMediaZipFileWorkflow), ex);
                     }
                 }
             }
 
             if (!_zipHasBeenUploaded)
             {
-                ShowUploadError("${Composite.Management, Website.Forms.Administrative.AddZipMediaFile.WrongUploadedFile.Message}");
+                ShowUploadError(Texts.Website_Forms_Administrative_AddZipMediaFile_WrongUploadedFile_Message);
             }
         }
 
@@ -117,9 +119,9 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
         {
             UploadedFile uploadedFile = this.GetBinding<UploadedFile>("UploadedFile");
 
-            if (uploadedFile.HasFile == false)
+            if (!uploadedFile.HasFile)
             {
-                ShowUploadError("${Composite.Management, Website.Forms.Administrative.AddZipMediaFile.MissingUploadedFile.Message}");
+                ShowUploadError(Texts.Website_Forms_Administrative_AddZipMediaFile_MissingUploadedFile_Message);
                 e.Result = false;
                 return;
             }
@@ -129,10 +131,10 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
 
         private void ShowUploadError(string message)
         {
-            //TODO: Cannot show an error bubble on file selector since the control doesn't support it. Should be fixed on client js 
+            //TODO: Cannot show an error bubble on file selector since the control doesn't support it. Should be fixed on client js
             //this.ShowFieldMessage("UploadedFile", "${Composite.Management, Website.Forms.Administrative.AddZipMediaFile.MissingUploadedFile.Message}");
-            this.ShowMessage(DialogType.Error, 
-                "${Composite.Management, Website.Forms.Administrative.AddZipMediaFile.Error.Title}",
+            this.ShowMessage(DialogType.Error,
+                Texts.Website_Forms_Administrative_AddZipMediaFile_Error_Title,
                 message);
         }
     }

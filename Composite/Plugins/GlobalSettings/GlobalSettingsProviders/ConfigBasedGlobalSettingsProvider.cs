@@ -4,6 +4,7 @@ using System.Configuration;
 
 using Composite.Core.Configuration;
 using Composite.Core.Configuration.Plugins.GlobalSettingsProvider;
+using Composite.Core.Extensions;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 using Microsoft.Practices.ObjectBuilder;
@@ -39,6 +40,17 @@ namespace Composite.Plugins.GlobalSettings.GlobalSettingsProviders
             get { return _configurationData.ApplicationName; }
         }
 
+
+        public string ApplicationShortName
+        {
+            get { return _configurationData.ApplicationShortName; }
+        }
+
+
+        public string BrandedVersionAssemblySource
+        {
+            get { return _configurationData.BrandedVersionAssemblySource; }
+        }
 
 
         public string DefaultCultureName
@@ -226,6 +238,10 @@ namespace Composite.Plugins.GlobalSettings.GlobalSettingsProviders
                 return _configurationData.PrettifyRenderFunctionExceptions;
             }
         }
+
+        public bool FunctionPreviewEnabled => _configurationData.FunctionPreviewEnabled;
+
+        public TimeZoneInfo TimeZone => TimeZoneInfo.FindSystemTimeZoneById(_configurationData.TimeZone.IsNullOrEmpty()?TimeZoneInfo.Local.Id: _configurationData.TimeZone);
     }
 
     internal class ConfigCachingSettings: ICachingSettings
@@ -277,13 +293,13 @@ namespace Composite.Plugins.GlobalSettings.GlobalSettingsProviders
     {
         private readonly string _resourceCacheDirectory;
         private readonly int _serverChacheMinutes;
-        private readonly int _clientCacheinutes;
+        private readonly int _clientCacheMinutes;
 
         internal ConfigResourceCacheSettings(string resourceCacheDirectory, int serverCacheMinutes, int clientCacheMinutes)
         {
             _resourceCacheDirectory = resourceCacheDirectory;
             _serverChacheMinutes = serverCacheMinutes;
-            _clientCacheinutes = clientCacheMinutes;
+            _clientCacheMinutes = clientCacheMinutes;
         }
 
         public string ResourceCacheDirectory
@@ -300,7 +316,7 @@ namespace Composite.Plugins.GlobalSettings.GlobalSettingsProviders
 
         public int ClientCacheMinutes
         {
-            get { return _clientCacheinutes; }
+            get { return _clientCacheMinutes; }
             set { throw new NotSupportedException(GetType().ToString()); }
         }
     }
@@ -323,12 +339,29 @@ namespace Composite.Plugins.GlobalSettings.GlobalSettingsProviders
     internal sealed class ConfigBasedGlobalSettingsProviderData : GlobalSettingsProviderData
     {
         private const string _applicationNamePropertyName = "applicationName";
-        [ConfigurationProperty(_applicationNamePropertyName, IsRequired = true, DefaultValue = "Composite Management Console")]
+        [ConfigurationProperty(_applicationNamePropertyName, IsRequired = true, DefaultValue = "C1 CMS")]
         public string ApplicationName
         {
             get { return (string)base[_applicationNamePropertyName]; }
             set { base[_applicationNamePropertyName] = value; }
         }
+
+        private const string _applicationShortNamePropertyName = "applicationShortName";
+        [ConfigurationProperty(_applicationShortNamePropertyName, IsRequired = true, DefaultValue = "CMS")]
+        public string ApplicationShortName
+        {
+            get { return (string)base[_applicationShortNamePropertyName]; }
+            set { base[_applicationShortNamePropertyName] = value; }
+        }
+
+        private const string _brandedVersionAssemblySourcePropertyName = "brandedVersionAssemblySource";
+        [ConfigurationProperty(_brandedVersionAssemblySourcePropertyName, IsRequired = false, DefaultValue = "Composite")]
+        public string BrandedVersionAssemblySource
+        {
+            get { return (string)base[_brandedVersionAssemblySourcePropertyName]; }
+            set { base[_brandedVersionAssemblySourcePropertyName] = value; }
+        }
+        
 
 
         private const string _defaultCultureNamePropertyName = "defaultCultureName";
@@ -638,6 +671,24 @@ namespace Composite.Plugins.GlobalSettings.GlobalSettingsProviders
         {
             get { return (bool)base[_prettifyRenderFunctionExceptionsPropertyName]; }
             set { base[_prettifyRenderFunctionExceptionsPropertyName] = value; }
+        }
+
+        private const string _functionPreviewEnabledPropertyName = "functionPreviewEnabled";
+        [ConfigurationProperty(_functionPreviewEnabledPropertyName, DefaultValue = true)]
+        public bool FunctionPreviewEnabled
+        {
+            get { return (bool)base[_functionPreviewEnabledPropertyName]; }
+            set { base[_functionPreviewEnabledPropertyName] = value; }
+        }
+
+        private const string TimeZonePropertyName = "timezone";
+        [ConfigurationProperty(TimeZonePropertyName, DefaultValue = null)]
+        public string TimeZone {
+            get
+            {
+                return (string)base[TimeZonePropertyName]; 
+            }
+            set { base[TimeZonePropertyName] = value; }
         }
     }
 

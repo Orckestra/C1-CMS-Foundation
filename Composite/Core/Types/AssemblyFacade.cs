@@ -179,5 +179,17 @@ namespace Composite.Core.Types
 
             return assemblies;
         }
+
+        internal static bool AssemblyPotentiallyUsesType(Assembly assembly, Type type)
+        {
+            Verify.ArgumentNotNull(assembly, nameof(assembly));
+            Verify.ArgumentNotNull(type, nameof(type));
+
+            var typeAssembly = type.Assembly;
+            string typeAssemblyName = typeAssembly.GetName().Name;
+
+            return assembly == typeAssembly
+                   || assembly.GetReferencedAssemblies().Any(r => r.Name == typeAssemblyName);
+        }
 	}
 }

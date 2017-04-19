@@ -9,18 +9,15 @@ using Composite.Core.Configuration;
 using Composite.Core.IO;
 using Microsoft.Practices.EnterpriseLibrary.Logging;
 using Microsoft.Practices.EnterpriseLibrary.Logging.Configuration;
- 
 
 namespace Composite.Core.Logging
 {
-    /// <summary>    
-    /// </summary>
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public static class LoggingService
     {
         /// <exclude />
-        [FlagsAttribute()]
+        [Flags]
         public enum Category
         {
             /// <exclude />
@@ -39,24 +36,35 @@ namespace Composite.Core.Logging
         static LoggingService()
         {
             MethodInfo getRuntimeResourceStringMethodInfo = typeof(Environment)
-                .GetMethod("GetRuntimeResourceString", BindingFlags.NonPublic | BindingFlags.Static, null, new [] {typeof(string)}, null );
+                .GetMethod("GetRuntimeResourceString", BindingFlags.NonPublic | BindingFlags.Static, null, new[] { typeof(string) }, null);
 
             // NOTE: "Magic" strings, shouldn't be modified
             BeginOfInnerExceptionMarker = "---> ";
-            EndOfInnerExceptionMarker = Environment.NewLine +  "   " + 
-                (string) getRuntimeResourceStringMethodInfo.Invoke(null, new object[] { "Exception_EndOfInnerExceptionStack" });
+            EndOfInnerExceptionMarker = Environment.NewLine + "   " +
+                (string)getRuntimeResourceStringMethodInfo.Invoke(null, new object[] { "Exception_EndOfInnerExceptionStack" });
 
-            ExceptionToStringInternal_MethodInfo = typeof (Exception).GetMethod("ToString", BindingFlags.Instance | BindingFlags.NonPublic);
+            ExceptionToStringInternal_MethodInfo = typeof(Exception).GetMethod("ToString", BindingFlags.Instance | BindingFlags.NonPublic);
 
             GlobalEventSystemFacade.SubscribeToFlushEvent(OnFlush);
         }
 
 
         /// <exclude />
-        static public void LogEntry(string title, string message, Category category, System.Diagnostics.TraceEventType severity, int priority, int eventid)
+        public static void LogEntry(string title, string message, Category category, System.Diagnostics.TraceEventType severity, int priority, int eventid)
+        {
+            LogEntry(title, message, null, category, severity, priority, eventid);
+        }
+
+        /// <exclude />
+        static private void LogEntry(string title, string message, Exception exc, Category category, System.Diagnostics.TraceEventType severity)
+        {
+            LogEntry(title, message, exc, category, severity, -1, 0);
+        }
+
+        static private void LogEntry(string title, string message, Exception exc, Category category, System.Diagnostics.TraceEventType severity, int priority, int eventid)
         {
             var entry = new Microsoft.Practices.EnterpriseLibrary.Logging.LogEntry();
-            
+
             // TODO: refactor this code
             entry.Title = string.Format("({0} - {1}) {2}", AppDomain.CurrentDomain.Id, Thread.CurrentThread.ManagedThreadId, title);
             entry.Message = message;
@@ -74,9 +82,13 @@ namespace Composite.Core.Logging
                 entry.Categories.Add("Audit");
             }
 
+            if (exc != null)
+            {
+                entry.ExtendedProperties.Add("Exception", exc);
+            }
+
             _resourceLocker.Resources.Writer.Write(entry);
         }
-
 
         /// <exclude />
         static public void LogEntry(string title, string message, Category category, System.Diagnostics.TraceEventType severity, int priority)
@@ -84,14 +96,11 @@ namespace Composite.Core.Logging
             LogEntry(title, message, category, severity, priority, 0);
         }
 
-
         /// <exclude />
         static public void LogEntry(string title, string message, Category category, System.Diagnostics.TraceEventType severity)
         {
             LogEntry(title, message, category, severity, -1, 0);
         }
-
-
 
         /// <exclude />
         static public void LogError(string title, string message)
@@ -124,7 +133,7 @@ namespace Composite.Core.Logging
         /// <exclude />
         static public void LogError(string title, Exception e)
         {
-            LogEntry(title, PrettyExceptionCallStack(e), Category.General, System.Diagnostics.TraceEventType.Error);
+            LogEntry(title, PrettyExceptionCallStack(e), e, Category.General, System.Diagnostics.TraceEventType.Error);
         }
 
 
@@ -159,7 +168,7 @@ namespace Composite.Core.Logging
         /// <exclude />
         static public void LogCritical(string title, Exception e)
         {
-            LogEntry(title, PrettyExceptionCallStack(e), Category.General, System.Diagnostics.TraceEventType.Critical);
+            LogEntry(title, PrettyExceptionCallStack(e), e, Category.General, System.Diagnostics.TraceEventType.Critical);
         }
 
 
@@ -233,7 +242,7 @@ namespace Composite.Core.Logging
         /// <exclude />
         static public void LogWarning(string title, Exception e)
         {
-            LogEntry(title, PrettyExceptionCallStack(e), Category.General, System.Diagnostics.TraceEventType.Warning);
+            LogEntry(title, PrettyExceptionCallStack(e), e, Category.General, System.Diagnostics.TraceEventType.Warning);
         }
 
 
@@ -259,6 +268,15 @@ namespace Composite.Core.Logging
                 return PrettyExceptionCallStack(ex.InnerException) + Environment.NewLine + cleanException;
             }
 
+            var loaderException = ex as ReflectionTypeLoadException;
+            if (loaderException?.LoaderExceptions != null)
+            {
+                foreach (var innerEx in loaderException.LoaderExceptions)
+                {
+                    serializedException += Environment.NewLine + PrettyExceptionCallStack(innerEx);
+                }
+            }
+
             return serializedException;
         }
 
@@ -270,7 +288,7 @@ namespace Composite.Core.Logging
                 : BeginOfInnerExceptionMarker + InnerExceptionToString(exception.InnerException) + EndOfInnerExceptionMarker;
 
             int offset = serializedException.IndexOf(innerExceptionText, StringComparison.InvariantCulture);
-            if(offset < 0)
+            if (offset < 0)
             {
                 clearedSerializedException = null;
                 return false;
@@ -282,7 +300,7 @@ namespace Composite.Core.Logging
 
         private static string InnerExceptionToString(Exception exception)
         {
-            return (string) ExceptionToStringInternal_MethodInfo.Invoke(exception, new object[] { true, true });
+            return (string)ExceptionToStringInternal_MethodInfo.Invoke(exception, new object[] { true, true });
         }
 
         private sealed class Resources

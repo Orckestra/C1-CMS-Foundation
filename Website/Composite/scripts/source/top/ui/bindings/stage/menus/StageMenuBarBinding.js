@@ -36,10 +36,18 @@ StageMenuBarBinding.prototype.onBindingAttach = function () {
 	if ( System.hasActivePerspectives ) {
 		this.addActionListener ( MenuItemBinding.ACTION_COMMAND );
 	} else {
-		Binding.prototype.hide.call ( this ); // this.hide () burned by MenuContainerBinding#hide
+		var self = this;
+		setTimeout(function () {
+			var menus = self.getChildBindingsByLocalName("menu");
+			while (menus.hasNext()) {
+				var menu = menus.getNext();
+				if (menu.bindingElement.id != "usermenu") {
+					Binding.prototype.hide.call(menu); // this.hide () burned by MenuContainerBinding#hide
+				}
+			}
+		}, 0);
 	}
 }
-
 
 /** 
  * Invoke system actions. These are hardwired to act on the root SystemNode.

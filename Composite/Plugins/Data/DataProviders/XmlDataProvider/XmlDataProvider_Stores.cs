@@ -146,10 +146,9 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
                 try
                 {
-                    interfaceType = dataTypes[dataTypeDescriptor.DataTypeId];
-                    if (interfaceType == null)
+                    if (!dataTypes.TryGetValue(dataTypeDescriptor.DataTypeId, out interfaceType) || interfaceType == null)
                     {
-                        Log.LogError(LogTitle, "The data interface type '{0}' does not exists and is not code generated. It will not be usable", dataTypeDescriptor.TypeManagerTypeName);
+                        Log.LogWarning(LogTitle, "The data interface type '{0}' does not exists and is not code generated. It will not be usable", dataTypeDescriptor.TypeManagerTypeName);
                         continue;
                     }
 

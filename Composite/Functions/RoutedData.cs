@@ -1,7 +1,7 @@
 ﻿using System;
 using Composite.Core.WebClient.Renderings.Page;
 using Composite.Data;
-using Microsoft.Framework.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using Composite.Core.Routing;
 using Composite.Core.Routing.Pages;
 using System.Web;
@@ -48,7 +48,7 @@ namespace Composite.Functions
         /// Registers function parameter types that enable data url routing.
         /// </summary>
         /// <param name="serviceCollection"></param>
-        public static void ConfigureServices(IServiceCollection serviceCollection)
+        public static void AddRoutedData(this IServiceCollection serviceCollection)
         {
             Action<Type> registerType = type => serviceCollection.Add(new ServiceDescriptor(type, type, ServiceLifetime.Scoped));
 

@@ -1,9 +1,9 @@
 namespace Composite.C1Console.Events
 {
-    /// <summary>    
+    /// <summary>
     /// </summary>
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public enum ViewType
     {
         /// <exclude />

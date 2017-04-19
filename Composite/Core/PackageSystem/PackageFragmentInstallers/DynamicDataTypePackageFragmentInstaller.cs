@@ -7,6 +7,7 @@ using Composite.Data.DynamicTypes;
 using Composite.Data.GeneratedTypes;
 using Composite.Core.Extensions;
 using Composite.Core.Types;
+using Composite.Data.Types;
 
 
 namespace Composite.Core.PackageSystem.PackageFragmentInstallers
@@ -84,6 +85,14 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     validationResult.AddFatal(GetText("DynamicDataTypePackageFragmentInstaller.TypeExists").FormatWith(type));
                 }
 
+                if (dataTypeDescriptor.SuperInterfaces.Any(f=>f.Name==nameof(IVersioned)))
+                {
+                    if (dataTypeDescriptor.Fields.All(f => f.Name != nameof(IVersioned.VersionId)))
+                    {
+                        dataTypeDescriptor.Fields.Add(new DataFieldDescriptor(Guid.NewGuid(), nameof(IVersioned.VersionId),StoreFieldType.Guid, typeof(Guid),true ));
+                    }
+                }
+            
                 foreach (var field in dataTypeDescriptor.Fields)
                 {
                     if(!field.ForeignKeyReferenceTypeName.IsNullOrEmpty())

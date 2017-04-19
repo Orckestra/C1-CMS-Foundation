@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Specialized;
+using System.Management;
+using System.Web;
 using Composite.Core.Extensions;
 using Composite.Core.WebClient;
 using Composite.Core.WebClient.Media;
@@ -266,9 +268,14 @@ namespace Composite.Core.Routing
                 urlProvider = _defaultMediaUrlProvider.Value;
             }
 
+             
+            
+
             if (mediaUrlData.QueryParameters.Count > 0)
             {
+                string mediaUrl;
                 var resizingOptions = ResizingOptions.Parse(mediaUrlData.QueryParameters);
+                var noneResizingOptions = mediaUrlData.QueryParameters;
 
                 if (!resizingOptions.IsEmpty)
                 {
@@ -276,8 +283,28 @@ namespace Composite.Core.Routing
                         ? urlProvider as IResizableImageUrlProvider
                         : _defaultMediaUrlProvider.Value;
 
-                    return imageResizableUrlProvider.GetResizedImageUrl(mediaUrlData.MediaStore, mediaUrlData.MediaId, resizingOptions);
+                    mediaUrl = imageResizableUrlProvider.GetResizedImageUrl(mediaUrlData.MediaStore, mediaUrlData.MediaId, resizingOptions);
+
+                    foreach (var key in HttpUtility.ParseQueryString(resizingOptions.ToString()).AllKeys)
+                    {
+                        noneResizingOptions.Remove(key);
+                    }
                 }
+                else
+                {
+                    mediaUrl = urlProvider.GetPublicMediaUrl(mediaUrlData.MediaStore, mediaUrlData.MediaId);
+                }
+
+                if (noneResizingOptions.Count > 0)
+                {
+                    var urlBuilder = new UrlBuilder(mediaUrl);
+
+                    urlBuilder.AddQueryParameters(noneResizingOptions);
+
+                    return urlBuilder.ToString();
+                }
+
+                return mediaUrl;
             }
 
             return urlProvider.GetPublicMediaUrl(mediaUrlData.MediaStore, mediaUrlData.MediaId);

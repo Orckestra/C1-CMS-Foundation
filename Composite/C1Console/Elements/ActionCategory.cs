@@ -224,5 +224,11 @@ namespace Composite.C1Console.Elements
         /// Not implemented at client level. Setting a folder name will have no effect.
         /// </summary>
         public string FolderName { get; set; }
+
+        /// <summary>
+        /// Bundle actions behind a drop down button. If multiple actions on an element share ActionBundle value, they can be compounded in the client UI.
+        /// </summary>
+        public string ActionBundle { get; set; }
+
     }
 }

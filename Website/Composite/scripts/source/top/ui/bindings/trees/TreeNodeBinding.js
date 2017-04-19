@@ -32,63 +32,68 @@ function TreeNodeBinding () {
 	 * @type {SystemLogger}
 	 */
 	this.logger = SystemLogger.getLogger ( "TreeNodeBinding" );
-	
+
 	/**
 	 * @type {boolean}
 	 */
 	this.hasBeenOpened = false;
-	
+
 	/**
 	 * @type {boolean}
 	 */
 	this.isDisabled	= false;
-	
+
 	/**
 	 * @type {boolean}
 	 */
 	this.isFocused = false;
-	
+
 	/**
 	 * @type {boolean}
 	 */
 	this.isOpen = false;
-	
+
+	/**
+	 * @type {boolean}
+	 */
+	this.isPinned = false;
+
 	/**
 	 * @type {boolean}
 	 */
 	this.isContainer = false;
-	
+
 	/**
 	 * @type {ImageProfile}
 	 */
 	this.imageProfile = null;
-	
+
 	/**
 	 * @type {string}
 	 */
 	this.image = null;
-	
+
 	/**
 	 * @type {string}
 	 */
 	this.imageHover = null;
-	
+
 	/**
 	 * @type {string}
 	 */
 	this.imageActive = null;
-	
+
 	/**
 	 * @type {string}
 	 */
 	this.imageDisabled = null;
-	
+
 	/**
 	 * The ancestor TreeBinding.
 	 * @type {TreeBinding}
 	 */
 	this.containingTreeBinding = null;
-	
+
 	/*
 	 * Return this.
 	 */
@@ -110,10 +115,10 @@ TreeNodeBinding.prototype.serialize = function () {
 
 	var result = TreeNodeBinding.superclass.serialize.call ( this );
 	if ( result ) {
-	
+
 		result.label = this.getLabel ();
 		result.image = this.getImage ();
-		
+
 		var handle = this.getHandle ();
 		if ( handle && handle != this.key ) {
 			result.handle = handle;
@@ -138,9 +143,9 @@ TreeNodeBinding.prototype.serialize = function () {
  * @overloads {Binding#onBindingRegister}
  */
 TreeNodeBinding.prototype.onBindingRegister = function () {
-	
+
 	TreeNodeBinding.superclass.onBindingRegister.call ( this );
-	
+
 	this.propertyMethodMap [ "label" ] = this.setLabel;
 	this.propertyMethodMap [ "image" ] = this.setImage;
 	this.propertyMethodMap [ "tooltip" ] = this.setToolTip;
@@ -154,8 +159,9 @@ TreeNodeBinding.prototype.onBindingRegister = function () {
 TreeNodeBinding.prototype.onBindingAttach = function () {
 
 	TreeBinding.superclass.onBindingAttach.call ( this );
-	
+
 	this.isOpen	= this.isOpen ? true : this.getProperty ( "open" );
+	this.isPinned = this.isPinned ? true : this.getProperty("pin");
 	if ( !this.isContainer ) {
 		this.isContainer = this.hasChildren ();
 	}
@@ -166,13 +172,13 @@ TreeNodeBinding.prototype.onBindingAttach = function () {
 	}
 	this.addActionListener ( TreeNodeBinding.ACTION_FOCUSED );
 	this.addEventListener ( UpdateManager.EVENT_AFTERUPDATE );
-	
+
 	/*
 	 * We do this last so that the tree may at this point change label etc.
 	 */
 	this._registerWithAncestorTreeBinding ();
 }
-	
+
 /**
  * Overloads {Binding#onBindingDispose}
  */
@@ -194,10 +200,10 @@ TreeNodeBinding.prototype.onBindingDispose = function () {
 }
 
 /**
- * Register with containing {@link TreeBinding}. 
- * To conserve computations, a pointer to the tree 
- * is copied from the nearest parent tree member. 
- * We cannot simply target the parent element 
+ * Register with containing {@link TreeBinding}.
+ * To conserve computations, a pointer to the tree
+ * is copied from the nearest parent tree member.
+ * We cannot simply target the parent element
  * since this could be a {@link UpdatePanelBinding}.
  */
 TreeNodeBinding.prototype._registerWithAncestorTreeBinding = function () {
@@ -218,12 +224,12 @@ TreeNodeBinding.prototype._registerWithAncestorTreeBinding = function () {
 }
 
 /**
- * The treenode will get registered by this index. 
+ * The treenode will get registered by this index.
  * Subclasses can overwrite this method for added pleasure.
  * @return {string}
  */
 TreeNodeBinding.prototype.getHandle = function () {
-	
+
 	var result = this.key;
 	var handle = this.getProperty ( "handle" );
 	if ( handle ) {
@@ -237,7 +243,7 @@ TreeNodeBinding.prototype.getHandle = function () {
  * @param {string} handle
  */
 TreeNodeBinding.prototype.setHandle = function ( handle ) {
-	
+
 	this.setProperty ( "handle", handle );
 }
 
@@ -245,7 +251,7 @@ TreeNodeBinding.prototype.setHandle = function ( handle ) {
  * Build DOM content.
  */
 TreeNodeBinding.prototype.buildDOMContent = function () {
-	
+
 	var url				= this.getProperty ( "url" );
 	var label 			= this.getProperty ( "label" );
 	var tooltip 		= this.getProperty ( "tooltip" );
@@ -254,7 +260,7 @@ TreeNodeBinding.prototype.buildDOMContent = function () {
 	var onblur 			= this.getProperty ( "onbindingblur" );
 	var focused 		= this.getProperty ( "focused" );
 	var callbackid 		= this.getProperty ( "callbackid" );
-	
+
 	/*
 	 * Build URL
 	 */
@@ -264,7 +270,7 @@ TreeNodeBinding.prototype.buildDOMContent = function () {
 		this.bindingElement.appendChild ( link );
 		this.shadowTree.link = link;
 	}
-	
+
 	/*
 	 * Build label
 	 */
@@ -275,25 +281,25 @@ TreeNodeBinding.prototype.buildDOMContent = function () {
 		this.addFirst ( this.labelBinding );
 	}
 	this.shadowTree.label = this.labelBinding; // in order to exclude from serialization!
-	
+
 	if ( this.dragger != null ) { // have to transfer listeners to make the setup work!
-	
+
 		this.removeEventListener ( DOMEvents.MOUSEDOWN, this.dragger );
 		this.removeEventListener ( DOMEvents.MOUSEMOVE, this.dragger );
 		this.removeEventListener ( DOMEvents.MOUSEUP, this.dragger );
-		
+
 		this.labelBinding.addEventListener ( DOMEvents.MOUSEDOWN, this.dragger );
 		this.labelBinding.addEventListener ( DOMEvents.MOUSEMOVE, this.dragger );
 		this.labelBinding.addEventListener ( DOMEvents.MOUSEUP, this.dragger );
-		
+
 	}
-	
+
 	// TEMP!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	// Binding.prototype._initializeBindingDragAndDropFeatures overload??? DRAGREJECT!
 	if ( this.isContainer && !this.dragAccept ) {
 		this.acceptor = new BindingAcceptor ( this );
 	}
-	
+
 	if ( label != null ) {
 		this.setLabel ( label );
 	}
@@ -303,15 +309,15 @@ TreeNodeBinding.prototype.buildDOMContent = function () {
 	if ( !this.imageProfile ) {
 		this._computeImageProfile ();
 	}
-	this.setImage ( 
+	this.setImage (
 		this.computeImage ()
 	);
 	if ( this.isContainer ) {
 		this.updateClassNames ();
 	}
-	
+
 	var manager = this.bindingWindow.WindowManager;
-	
+
 	if ( oncommand != null ) {
 		this.oncommand = function () {
 			Binding.evaluate ( oncommand, this );
@@ -327,13 +333,13 @@ TreeNodeBinding.prototype.buildDOMContent = function () {
 			Binding.evaluate ( onblur, this );
 		};
 	}
-	
+
 	if ( focused == true ) {
 		this.focus ();
 	}
-	
+
 	/*
-	 * Setup ASP.NET callback. One can only wonder why we need a 
+	 * Setup ASP.NET callback. One can only wonder why we need a
 	 * hidden field in order to communicate with the server...
 	 */
 	if ( callbackid != null ) {
@@ -347,13 +353,13 @@ TreeNodeBinding.prototype.buildDOMContent = function () {
  * @param {Action} action
  */
 TreeNodeBinding.prototype.handleAction = function ( action ) {
-	
+
 	TreeNodeBinding.superclass.handleAction.call ( this, action );
-	
+
 	switch ( action.type ) {
-		
+
 		/*
-		 * Make sure that a focused treenode is always  
+		 * Make sure that a focused treenode is always
 		 * visible by opening ancestor treenodes.
 		 */
 		case TreeNodeBinding.ACTION_FOCUSED :
@@ -367,13 +373,13 @@ TreeNodeBinding.prototype.handleAction = function ( action ) {
 }
 
 /**
- * Enable dragging. Special setup, adding event listeners to 
+ * Enable dragging. Special setup, adding event listeners to
  * label, because treenodes consume the onmousedown event.
  * @overwrites {Binding#enableDragging}
  */
 TreeNodeBinding.prototype.enableDragging = function () {
-	
-	/* 
+
+	/*
 	 * DISABLED!
 	 *
 	this.isDraggable = true;
@@ -398,22 +404,22 @@ TreeNodeBinding.prototype.disableDragging = function () {
 }
 
 /**
- * Accept dragged binding. 
+ * Accept dragged binding.
  * @implements {IAcceptable}
  * @param {Binding} binding
  * @param @optional {int} index
  * @return {boolean}
  */
 TreeNodeBinding.prototype.accept = function ( binding, index ) {
-	
+
 	var isAccept = true;
-	
+
 	if ( binding instanceof TreeNodeBinding ) {
-		
+
 		var isAncestor = false;
 		var element = this.bindingElement;
 		var treeElement = this.containingTreeBinding.bindingElement;
-		
+
 		while ( !isAncestor && element != treeElement ) {
 			if ( element == binding.getBindingElement ()) {
 				isAncestor = true;
@@ -421,7 +427,7 @@ TreeNodeBinding.prototype.accept = function ( binding, index ) {
 				element = element.parentNode;
 			}
 		}
-		
+
 		if ( isAncestor ) {
 			Dialog.error ( "Not Allowed", "You cannot move a folder into itself." );
 			isAccept = false;
@@ -431,32 +437,32 @@ TreeNodeBinding.prototype.accept = function ( binding, index ) {
 	} else {
 		isAccept = false;
 	}
-	
+
 	return isAccept;
 }
 
 /**
- * Accept treenode.If properties get lost in transfer, remember 
+ * Accept treenode.If properties get lost in transfer, remember
  * to update the {@link TreeNodeBinding#serialize} method.
  * @param {Binding} binding
  * @param @optional {int}
  */
 TreeNodeBinding.prototype.acceptTreeNodeBinding = function ( binding, index ) {
-	
+
 	var serial = binding.serializeToString ();
 	var parser = new BindingParser ( this.bindingDocument );
 	var element	= parser.parseFromString ( serial ).getFirst ();
-	
+
 	index = index ? index : this.containingTreeBinding.getDropIndex ();
 	var children = this.getChildElementsByLocalName ( "treenode" );
 	this.bindingElement.insertBefore ( element, children.get ( index ));
-	this.bindingWindow.DocumentManager.attachBindings ( 
-		this.bindingElement 
+	this.bindingWindow.DocumentManager.attachBindings (
+		this.bindingElement
 	);
-	
+
 	/*
 	 * This part does not work because the "image" attribute
-	 * has been set on bindingElement opon binding attach. 
+	 * has been set on bindingElement opon binding attach.
 	 * Fortunately we don't need it just now.
 	 *
 	if ( !this.isContainer ) {
@@ -465,12 +471,12 @@ TreeNodeBinding.prototype.acceptTreeNodeBinding = function ( binding, index ) {
 		this.updateClassNames ();
 		this._computeImageProfile ();
 		alert ( this.imageProfile.getDefaultImage ());
-		this.setImage ( 
+		this.setImage (
 			this.computeImage ()
 		);
 	}
 	*/
-	
+
 	binding.dispose ();
 }
 
@@ -479,7 +485,7 @@ TreeNodeBinding.prototype.acceptTreeNodeBinding = function ( binding, index ) {
  * @implements {IAcceptable}
  */
 TreeNodeBinding.prototype.showAcceptance = function () {
-	
+
 	this.containingTreeBinding.enablePositionIndicator ( this );
 }
 
@@ -488,7 +494,7 @@ TreeNodeBinding.prototype.showAcceptance = function () {
  * @implements {IAcceptable}
  */
 TreeNodeBinding.prototype.hideAcceptance = function () {
-	
+
 	this.containingTreeBinding.disablePositionIndicator ();
 }
 
@@ -500,18 +506,18 @@ TreeNodeBinding.prototype._computeImageProfile = function () {
 	var image 			= this.getProperty ( "image" );
 	var imageActive 	= this.getProperty ( "image-active" );
 	var imageDisabled 	= this.getProperty ( "image-disabled" );
-		
-	imageActive = imageActive ? imageActive : this.isContainer ? 
-		image ? image : TreeNodeBinding.DEFAULT_FOLDER_OPEN : 
+
+	imageActive = imageActive ? imageActive : this.isContainer ?
+		image ? image : TreeNodeBinding.DEFAULT_FOLDER_OPEN :
 		image ? image : TreeNodeBinding.DEFAULT_ITEM;
-	
-	imageDisabled = imageDisabled ? imageDisabled : this.isContainer ? 
-		image ? image : TreeNodeBinding.DEFAULT_FOLDER_DISABLED : 
+
+	imageDisabled = imageDisabled ? imageDisabled : this.isContainer ?
+		image ? image : TreeNodeBinding.DEFAULT_FOLDER_DISABLED :
 		image ? image : TreeNodeBinding.DEFAULT_ITEM_DISABLED;
-	
-	image = image ? image : this.isContainer ? 
+
+	image = image ? image : this.isContainer ?
 		TreeNodeBinding.DEFAULT_FOLDER_CLOSED : TreeNodeBinding.DEFAULT_ITEM;
-	
+
 	this.imageProfile = new ImageProfile ({
 		image 			: image,
 		imageHover 		: null,
@@ -605,11 +611,11 @@ TreeNodeBinding.prototype.getToolTip = function () {
  * @return {string}
  */
 TreeNodeBinding.prototype.computeImage = function () {
-	
+
 	var defaultImage = this.imageProfile.getDefaultImage ();
 	var activeImage = this.imageProfile.getActiveImage ();
 	activeImage = activeImage ? activeImage : defaultImage;
-	
+
 	return this.isOpen ? activeImage : defaultImage;
 }
 
@@ -619,19 +625,19 @@ TreeNodeBinding.prototype.computeImage = function () {
  * @param {MouseEvent} e
  */
 TreeNodeBinding.prototype.handleEvent = function ( e ) {
-	
+
 	TreeNodeBinding.superclass.handleEvent.call ( this, e );
-	
+
 	var target 		= DOMEvents.getTarget ( e );
 	var label		= this.labelBinding.bindingElement;
 	var labelBody 	= this.labelBinding.shadowTree.labelBody;
 	var labelText	= this.labelBinding.shadowTree.labelText;
-	
+
 	/*
 	 * Tree navigation.
 	 */
 	switch ( e.type ) {
-	
+
 		case DOMEvents.MOUSEDOWN :
 			if (target == label) {
 				this._onAction(e);
@@ -645,11 +651,11 @@ TreeNodeBinding.prototype.handleEvent = function ( e ) {
 		case DOMEvents.DOUBLECLICK :
 			this._onAction ( e );
 			break;
-			
+
 		case UpdateManager.EVENT_AFTERUPDATE :
-			
+
 			/*
-			 * Hack a glitch where UpdateManager would  
+			 * Hack a glitch where UpdateManager would
 			 * insert treenodes before our label.
 			 */
 			if ( target.parentNode == this.bindingElement && target.__updateType == Update.TYPE_INSERT ) {
@@ -663,14 +669,14 @@ TreeNodeBinding.prototype.handleEvent = function ( e ) {
 			}
 			break;
 	}
-	
+
 	/*
 	 * Drag session timeouts.
 	 */
 	if ( BindingDragger.isDragging && this.isContainer && !this.isOpen ) {
 		switch ( e.type ) {
 			case DOMEvents.MOUSEOVER :
-			case DOMEvents.MOUSEOUT : 
+			case DOMEvents.MOUSEOUT :
 			 	switch ( target ) {
 					case label :
 					case labelBody :
@@ -684,12 +690,12 @@ TreeNodeBinding.prototype.handleEvent = function ( e ) {
 }
 
 /**
- * When dragging over a closed folder, the folder should open. 
+ * When dragging over a closed folder, the folder should open.
  * Let's do it by setting and clearing a timeout.
  * @param {MouseEvent} e
  */
 TreeNodeBinding.prototype._folderDragOverTimeout = function ( e ) {
-	
+
 	var self = this;
 	switch ( e.type ) {
 		case DOMEvents.MOUSEOVER :
@@ -709,9 +715,9 @@ TreeNodeBinding.prototype._folderDragOverTimeout = function ( e ) {
  * @private
  */
 TreeNodeBinding.prototype._onAction = function ( e ) {
-	
+
 	var isAction = true;
-	
+
 	if ( e.type == "mousedown" ) {
 		var isLeftButton = e.button == ( e.target ? 0 : 1 );
 		if ( !isLeftButton ) {
@@ -743,8 +749,8 @@ TreeNodeBinding.prototype.fireCommand = function () {
 }
 
 /**
- * This will dispatch an event to the containing TreeBinding 
- * which in turn will invoke the focus method below. 
+ * This will dispatch an event to the containing TreeBinding
+ * which in turn will invoke the focus method below.
  * @param {MouseEvent}
  */
 TreeNodeBinding.prototype._onFocus = function ( e ) {
@@ -753,9 +759,9 @@ TreeNodeBinding.prototype._onFocus = function ( e ) {
 	if ( e != null ) {
 		isMultiSelection = e.shiftKey;
 	}
-	this.dispatchAction ( isMultiSelection ? 
-		TreeNodeBinding.ACTION_ONMULTIFOCUS : 
-		TreeNodeBinding.ACTION_ONFOCUS 
+	this.dispatchAction ( isMultiSelection ?
+		TreeNodeBinding.ACTION_ONMULTIFOCUS :
+		TreeNodeBinding.ACTION_ONFOCUS
 	);
 	if ( e != null ) {
 		this.stopPropagation ( e );
@@ -771,14 +777,14 @@ TreeNodeBinding.prototype._onFocus = function ( e ) {
 }
 
 /**
- * Call the server. This must be done whenever the client is 
- * setting the focus; it should not be done when the server 
+ * Call the server. This must be done whenever the client is
+ * setting the focus; it should not be done when the server
  * is setting the focus. Also invoked by the TreeBinding!
  * @see {TreeBinding#_focusDefault}
  * @returns
  */
 TreeNodeBinding.prototype.callback = function () {
-	
+
 	if ( this.hasCallBackID ()) {
 		var self = this;
 		setTimeout ( function () { // minimize freezing sensation
@@ -791,7 +797,7 @@ TreeNodeBinding.prototype.callback = function () {
  * Focus the treenode managed. This method should only be invoked by the {@link TreeBinding}.
  */
 TreeNodeBinding.prototype.invokeManagedFocus = function () {
-	
+
 	if ( !this.isFocused ) {
 		this.isFocused = true;
 		this.setProperty ( "focused", true );
@@ -804,7 +810,7 @@ TreeNodeBinding.prototype.invokeManagedFocus = function () {
  * Focus the treenode (public access point).
  */
 TreeNodeBinding.prototype.focus = function () {
-	
+
 	this.setProperty ( "focused", true );
 	if ( this.isAttached ) {
 		this._onFocus ();
@@ -828,7 +834,7 @@ TreeNodeBinding.prototype.blur = function () {
 }
 
 /**
- * Preventing event propagation internally in the tree 
+ * Preventing event propagation internally in the tree
  * while still broadcasting a global mousedown event.
  * @param {MouseEvent} e
  * @private
@@ -862,7 +868,7 @@ TreeNodeBinding.prototype.open = function () {
  */
 TreeNodeBinding.prototype.close = function () {
 
-	if ( this.isContainer && this.isOpen ) {
+	if ( this.isContainer && this.isOpen && !this.isPinned) {
 		this.isOpen = false;
 		this.setProperty ( "open", false );
 		this.dispatchAction ( TreeNodeBinding.ACTION_CLOSE );
@@ -875,7 +881,7 @@ TreeNodeBinding.prototype.close = function () {
  * Updates treenode classnames when a container type node is handled.
  */
 TreeNodeBinding.prototype.updateClassNames = function () {
-		
+
 	if ( this.isContainer ) {
 		if ( !this.hasClassName ( "container" )) {
 			this.attachClassName ( "container" );
@@ -905,7 +911,7 @@ TreeNodeBinding.prototype.updateClassNames = function () {
  * Dispose descendant treenodes.
  */
 TreeNodeBinding.prototype.empty = function () {
-	
+
 	var descendants = this.getDescendantBindingsByLocalName ( "treenode" );
 	descendants.each ( function ( treenode ) {
 		treenode.dispose ();
@@ -917,7 +923,7 @@ TreeNodeBinding.prototype.empty = function () {
  * TODO: implement some interface around here!
  */
 TreeNodeBinding.prototype.showDrag = function () {
-	
+
 	this.attachClassName ( TreeNodeBinding.CLASSNAME_DRAGGED );
 }
 
@@ -926,7 +932,7 @@ TreeNodeBinding.prototype.showDrag = function () {
  * TODO: implement some interface around here!
  */
 TreeNodeBinding.prototype.hideDrag = function () {
-	
+
 	this.detachClassName ( TreeNodeBinding.CLASSNAME_DRAGGED );
 }
 
@@ -935,7 +941,7 @@ TreeNodeBinding.prototype.hideDrag = function () {
  * @return {boolean}
  */
 TreeNodeBinding.prototype.hasChildren = function () {
-	
+
 	return this.bindingElement.hasChildNodes ();
 }
 
@@ -945,13 +951,13 @@ TreeNodeBinding.prototype.hasChildren = function () {
  * @param {Element} element
  */
 TreeNodeBinding.prototype.handleElement = function ( element ) {
-	
+
 	/*
-	 * The problem here is that the server may move focus to 
-	 * this treenode in one postback response, but if the 
-	 * next response KEEPS he focus there are no CHANGES 
-	 * to the response. This way, user may be allowed to 
-	 * change focus in second attempt. Always nice to have 
+	 * The problem here is that the server may move focus to
+	 * this treenode in one postback response, but if the
+	 * next response KEEPS he focus there are no CHANGES
+	 * to the response. This way, user may be allowed to
+	 * change focus in second attempt. Always nice to have
 	 * the UI state on both the client and the server...
 	 */
 	var focused = element.getAttribute ( "focused" );
@@ -960,7 +966,7 @@ TreeNodeBinding.prototype.handleElement = function ( element ) {
 			this.focus ();
 		}
 	}
-	
+
 	return false; // continue updates as normally!
 }
 

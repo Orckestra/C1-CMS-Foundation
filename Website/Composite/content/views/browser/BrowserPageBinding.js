@@ -14,7 +14,9 @@ BrowserPageBinding.VIEWMODE_LOCALSTORAGE_KEY = "COMPOSITE_BROWSERPAGEBINDING_VIE
 BrowserPageBinding.VIEW_MODES = Object.freeze({
 	Unpublic: 1,
 	Public: 2
-})
+});
+
+BrowserPageBinding.BUNDLE_CLASSNAME = "bundleselector";
 
 
 /**
@@ -33,13 +35,7 @@ function BrowserPageBinding() {
 	this._startURL = null;
 
 	/**
-	 * See below...
-	 * @type {Map<string><object>}
-	 */
-	this._currents = new Map();
-
-	/**
-	 * This will be set to an index in the map declared above. it has two properties: 
+	 * This will be set to an index in the map declared above. it has two properties:
 	 *     history {List<string>}
 	 *     index {int}
 	 * @type {object}
@@ -78,11 +74,6 @@ function BrowserPageBinding() {
 	this._isPushingUrl = false;
 
 	/**
-	 * @type {boolean}
-	 */
-	this._isDisposing = false;
-
-	/**
 	 * @type {BrowserTabBoxBinding}
 	 */
 	this._box = null;
@@ -95,10 +86,10 @@ function BrowserPageBinding() {
 
 
 	/**
-	 * Locker to validate that result of async request is actual
+	 * Key to validate that result of async request is actual
 	 * @type {string}
 	 */
-	this._asyncLocker = null;
+	this._stateKey = null;
 
 
 	this._frameTransformIndex = 1;
@@ -129,12 +120,11 @@ BrowserPageBinding.prototype.onBindingRegister = function () {
 
 	this.addActionListener(WindowBinding.ACTION_ONLOAD);
 	this.addActionListener(TabBoxBinding.ACTION_SELECTED);
-	this.addActionListener(TabBoxBinding.ACTION_UPDATED);
-	this.addActionListener(BrowserTabBinding.ACTIONVENT_CLOSE);
 	this.addActionListener(ViewBinding.ACTION_LOADED);
 	this.addActionListener(PageBinding.ACTION_INITIALIZED);
 	this.addActionListener(SplitterBinding.ACTION_DRAGSTART);
 	this.addActionListener(SplitterBinding.ACTION_DRAGGED);
+	this.addActionListener(SystemTreeNodeBinding.ACTION_REFRESHED);
 }
 
 /**
@@ -150,6 +140,27 @@ BrowserPageBinding.prototype.handleBroadcast = function (broadcast, arg) {
 		case BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED:
 			if (arg.syncHandle == this.getSyncHandle() && !(arg.source instanceof GenericViewBinding) && arg.actionProfile) {
 				var self = this;
+
+				var bundleselector = this.getBundleSelector();
+				//TODO move this
+
+				var treenode = this.getSystemTree().getFocusedTreeNodeBindings().getFirst();
+				if (treenode.node.isMultiple()) {
+					var list = new List();
+					treenode.node.getDatas().each(function(data) {
+						list.add(new SelectorBindingSelection(data.BundleElementName ? data.BundleElementName : data.Label, data.EntityToken, data.EntityToken === treenode.node.getEntityToken()));
+					});
+					bundleselector.populateFromList(list);
+					bundleselector.show();
+				} else {
+					bundleselector.hide();
+				}
+
+				this.bindingWindow.bindingMap.navbar.flex();
+
+				//TODO end move this
+
+
 				//IE Require timeout for first time
 				setTimeout(function () {
 					self.push(arg.actionProfile.Node, true);
@@ -178,27 +189,13 @@ BrowserPageBinding.prototype.handleBroadcast = function (broadcast, arg) {
  */
 BrowserPageBinding.prototype.refreshView = function () {
 
-	var selectedTreeNode = this.getSystemTree().getFocusedTreeNodeBindings().getFirst();
-	if (selectedTreeNode) {
-		selectedTreeNode.focus();
-		this.push(selectedTreeNode.node, true, true);
+	var treenode = this.getSystemTree().getFocusedTreeNodeBindings().getFirst();
+	if (treenode) {
+		treenode.focus();
+		this.push(treenode.node, true, true);
 	} else {
 		this.push(this.getSystemPage().node, false, true);
 	}
-}
-
-/**
- * @overloads {Binding#onBindingDispose}
- */
-BrowserPageBinding.prototype.onBindingDispose = function () {
-
-	/*
-	 * This will instruct Prism not to  
-	 * disable forced cache when closing.
-	 * @see {BrowserPageBinding#handleEvent}
-	 */
-	BrowserPageBinding.superclass.onBindingDispose.call(this);
-	this._isDisposing = true;
 }
 
 /**
@@ -256,6 +253,8 @@ BrowserPageBinding.prototype.onBeforePageInitialize = function () {
 
 	var devicepopup = window.bindingMap.devicepopup;
 	devicepopup.addActionListener(MenuItemBinding.ACTION_COMMAND, this);
+
+	this.addActionListener(PathBinding.ACTION_COMMAND);
 
 	// Subscribe to current tab selected
 	var dockPanelViewBinding = this.getAncestorBindingByType(ViewBinding, true);
@@ -324,7 +323,7 @@ BrowserPageBinding.prototype.onAfterPageInitialize = function () {
 
 /**
 * Set Current View Mode
-* @param {viewMode} 
+* @param {viewMode}
 */
 BrowserPageBinding.prototype.setCurrentViewMode = function (viewMode) {
 
@@ -344,7 +343,8 @@ BrowserPageBinding.prototype.setCurrentViewMode = function (viewMode) {
  */
 BrowserPageBinding.prototype.push = function (node, isManual, isForce) {
 
-	this._asyncLocker = null;
+	this.newState();
+
 	this.bindingWindow.bindingMap.cover.hide();
 	var self = this;
 	if (typeof (node) == "string" || node instanceof String) {
@@ -355,17 +355,31 @@ BrowserPageBinding.prototype.push = function (node, isManual, isForce) {
 		if (entityToken) {
 			if (this._entityToken != entityToken || isForce) {
 
-				var isPublic = self._currentViewMode == BrowserPageBinding.VIEW_MODES.Public;
+				var propertyBag = node.getPropertyBag();
+				if (propertyBag && propertyBag.BrowserUrl) {
+					var isExternalUrl = propertyBag.BrowserUrl.indexOf("//") > -1 && propertyBag.BrowserUrl.split("//")[1].split("/")[0] == window.location.host;
+					if (isExternalUrl || propertyBag.BrowserToolingOn === "false") {
+						self.pushNodeURL(node, propertyBag.BrowserUrl, isManual);
+					} else {
+						self.pushURL(propertyBag.BrowseUrl, isManual);
+					}
+				} else {
+					var isPublic = self._currentViewMode == BrowserPageBinding.VIEW_MODES.Public;
 
-				TreeService.GetBrowserUrlByEntityToken(entityToken, isPublic, function (resultUrl) {
-					setTimeout(function () {
-						if (resultUrl) {
-							self.pushURL(resultUrl, isManual);
-						} else {
-							self.pushToken(node, isManual);
-						}
-					}, 0);
-				});
+					TreeService.GetBrowserUrlByEntityToken(entityToken, isPublic, function (result) {
+						setTimeout(function () {
+							if (result && result.Url) {
+								if (result.ToolingOn) {
+									self.pushURL(result.Url, isManual);
+								} else {
+									self.pushNodeURL(node, result.Url, isManual);
+								}
+							} else {
+								self.pushToken(node, isManual);
+							}
+						}, 0);
+					});
+				}
 
 				this._entityToken = entityToken;
 			}
@@ -375,11 +389,13 @@ BrowserPageBinding.prototype.push = function (node, isManual, isForce) {
 }
 
 /**
- * Add Url to order
+ * Add Url to view
  * @param {string} url
  * @return
  */
 BrowserPageBinding.prototype.pushURL = function (url, isManual) {
+
+	this.toolingOn = true;
 	this.isBrowserTab = false;
 
 	if (url && url != this._box.getLocation()) {
@@ -391,7 +407,6 @@ BrowserPageBinding.prototype.pushURL = function (url, isManual) {
 			this.setURL(url);
 		}
 		this._updateAddressBar(url);
-		this.bindingWindow.bindingMap.addressbar.showAddreesbar();
 	}
 }
 
@@ -402,7 +417,7 @@ BrowserPageBinding.prototype.getAbsoluteUrl = function (url) {
 }
 
 /**
- * Add Url to order
+ * Add Node to view
  * @param {string} url
  * @return
  */
@@ -415,14 +430,36 @@ BrowserPageBinding.prototype.pushToken = function (node, isManual) {
 	tab.tree.setNode(node);
 	this._updateHistory({ node: node });
 	this._updateBroadcasters();
-	this.bindingWindow.bindingMap.addressbar.showBreadcrumb(node);
+	this._updateAddressBar(node);
+	if (!isManual) {
+		this.getSystemTree()._focusTreeNodeByEntityToken(node.getEntityToken());
+	}
+}
+
+
+/**
+ * Add External url to view
+ * @param {string} url
+ * @return
+ */
+BrowserPageBinding.prototype.pushNodeURL = function (node, url, isManual) {
+	url = Resolver.resolve(url);
+
+	this.toolingOn = false;
+
+	this._updateHistory({ node: node });
+	this._updateBroadcasters();
+	this._updateAddressBar(node);
+
+	this.setFrameURL(url);
+
 	if (!isManual) {
 		this.getSystemTree()._focusTreeNodeByEntityToken(node.getEntityToken());
 	}
 }
 
 /**
- * Load URL in selected tab.
+ * Load URL in browser frame.
  * @param {string} url
  * @return
  */
@@ -433,6 +470,26 @@ BrowserPageBinding.prototype.setURL = function (url) {
 	var cover = window.bindingMap.cover;
 	cover.show();
 	this._box.setURL(url);
+}
+
+/**
+ * Load  URL in simple frame.
+ * @param {string} url
+ * @return
+ */
+
+BrowserPageBinding.prototype.setFrameURL = function (url) {
+	var customView = this._box.getCustomViewTabBinding();
+		if (customView.iframe.src) {
+		customView.iframe.src = "about:blank";
+		customView.iframe.onload = function () {
+			customView.iframe.onload = null;
+			customView.iframe.src = url;
+		};
+	} else {
+		customView.iframe.src = url;
+	}
+	this._box.select(customView, true);
 }
 
 /**
@@ -466,22 +523,15 @@ BrowserPageBinding.prototype.handleAction = function (action) {
 			action.consume();
 			break;
 
-		case TabBoxBinding.ACTION_UPDATED:
-			this._handleTabBoxUpdate();
-			action.consume();
-			break;
-
-		case BrowserTabBinding.ACTIONVENT_CLOSE:
-			this._isDisposing = true;
-			action.consume();
-			break;
 		case GenericViewBinding.ACTION_COMMAND:
 			this.getSystemTree().handleBroadcast(BroadcastMessages.SYSTEMTREEBINDING_FOCUS, action.target.node.getEntityToken());
 			break;
+
 		case ViewBinding.ACTION_LOADED:
 			this.dispatchAction(StageBinding.ACTION_DECK_LOADED);
 			action.consume();
 			break;
+
 		case PageBinding.ACTION_INITIALIZED:
 			if (binding instanceof SystemPageBinding) {
 				EventBroadcaster.broadcast(BroadcastMessages.STAGEDECK_CHANGED, this.getSyncHandle());
@@ -489,23 +539,37 @@ BrowserPageBinding.prototype.handleAction = function (action) {
 				action.consume();
 			}
 			break;
+
 		case SplitterBinding.ACTION_DRAGSTART:
 			window.bindingMap.cover.show();
 			break;
+
 		case SplitterBinding.ACTION_DRAGGED:
 			window.bindingMap.cover.hide();
 			break;
+
 		case FocusBinding.ACTION_FOCUS:
 			//TODO add check target
 			if (action.target instanceof DockPanelBinding) {
 				this.onBrowserTabSelected();
 			}
 			break;
+
 		case FocusBinding.ACTION_BLUR:
 			//TODO add check target
 			if (action.target instanceof DockPanelBinding) {
 				this.onBrowserTabUnselected();
 			}
+			break;
+
+		case SystemTreeNodeBinding.ACTION_REFRESHED:
+			this._autoExpand();
+			action.consume();
+			break;
+
+		case PathBinding.ACTION_COMMAND:
+			this.push(binding.node);
+			action.consume();
 			break;
 	}
 }
@@ -514,8 +578,8 @@ BrowserPageBinding.prototype.handleAction = function (action) {
  * Clear history
  */
 BrowserPageBinding.prototype._clearHistory = function () {
-	if (!this._current) {
 
+	if (!this._current) {
 		this._current = {
 			history: new List(),
 			index: parseInt(-1)
@@ -553,7 +617,7 @@ BrowserPageBinding.prototype._handleSelectedTab = function () {
 	this._updateBroadcasters();
 
 	/*
-	 * Broadcast contained markup for various panels to intercept. Since the markup   
+	 * Broadcast contained markup for various panels to intercept. Since the markup
 	 * extraction requires a server roundtrip, we check for subscribers first.
 	 */
 	if (EventBroadcaster.hasSubscribers(BroadcastMessages.XHTML_MARKUP_ON)) {
@@ -570,34 +634,6 @@ BrowserPageBinding.prototype._handleSelectedTab = function () {
 }
 
 /**
- * @param {BrowserTabBoxBinding} tabbox
- */
-BrowserPageBinding.prototype._handleTabBoxUpdate = function () {
-
-	//var box = this._box;
-
-	//switch (box.updateType) {
-
-	//    case TabBoxBinding.UPDATE_DETACH:
-	//    case TabBoxBinding.UPDATE_ATTACH:
-
-	//        var tabs = UserInterface.getBinding(box.getTabsElement());
-	//        if (box.getTabBindings().getLength() == 1) {
-	//            if (tabs.isVisible) {
-	//                tabs.hide();
-	//                this.reflex();
-	//            }
-	//        } else {
-	//            if (!tabs.isVisible) {
-	//                tabs.show();
-	//                this.reflex();
-	//            }
-	//        }
-	//        break;
-	//}
-}
-
-/**
  * Handle loaded document.
  * @param {WindowBinding} binding
  */
@@ -605,7 +641,7 @@ BrowserPageBinding.prototype._handleDocumentLoad = function (binding) {
 
 	var url = new String(binding.getContentDocument().location);
 
-	this._asyncLocker = KeyMaster.getUniqueKey();
+	this.newState();
 
 	/*
 	 * Update stuff.
@@ -617,15 +653,7 @@ BrowserPageBinding.prototype._handleDocumentLoad = function (binding) {
 	this._updateTabBox(url);
 
 	/*
-	 * Cache control.
-	 */
-	if (Client.isPrism == true) {
-		Prism.enableCache();
-	}
-
-
-	/*
-	 * Broadcast contained markup for various panels to intercept. Since the markup   
+	 * Broadcast contained markup for various panels to intercept. Since the markup
 	 * extraction requires a server roundtrip, we check for subscribers first.
 	 */
 	if (EventBroadcaster.hasSubscribers(BroadcastMessages.XHTML_MARKUP_ON)) {
@@ -643,9 +671,9 @@ BrowserPageBinding.prototype._handleDocumentLoad = function (binding) {
 
 	if (!this._isPushingUrl) {
 		var self = this;
-		var asyncLocker = this._asyncLocker;
+		var stateKey = self.getState();
 		TreeService.GetEntityTokenByPageUrl(url, function (entityToken) {
-			if (asyncLocker === self._asyncLocker) {
+			if (stateKey === self.getState()) {
 				self._entityToken = entityToken;
 				EventBroadcaster.broadcast(
 					BroadcastMessages.SYSTEMTREEBINDING_FOCUS,
@@ -677,14 +705,12 @@ BrowserPageBinding.prototype._updateAddressBar = function (url) {
 
 	var bar = this.bindingWindow.bindingMap.addressbar;
 	if (bar != null) {
-		var asyncLocker = this._asyncLocker;
-		var self = this;
-		PageService.ConvertRelativePageUrlToAbsolute(url, function (result) {
-			if (asyncLocker === self._asyncLocker) {
-				bar.setValue(result);
-			}
-		});
 
+		if (typeof (url) == "string" || url instanceof String) {
+			bar.showAddreesbar(url);
+		} else if (url instanceof SystemNode) {
+			bar.showBreadcrumb(url, System.getParents(url.getHandle()));
+		}
 	}
 }
 
@@ -725,14 +751,6 @@ BrowserPageBinding.prototype._updateHistory = function (item) {
  */
 BrowserPageBinding.prototype._handleCommand = function (cmd, binding) {
 
-	/*
-	 * Because of a bug in the history object in Prism 0.91,
-	 * we cannot invoke history.back and stuff. We have 
-	 * to load new URLs from our own history. This will 
-	 * destroy native history.back in document, so please 
-	 * fix at some point... 
-	 * @see https://bugzilla.mozilla.org/show_bug.cgi?id=429550
-	 */
 	switch (cmd) {
 		case "back":
 			this._isHistoryBrowsing = true;
@@ -836,7 +854,7 @@ BrowserPageBinding.prototype._updateBroadcasters = function () {
 		forward.disable();
 	}
 
-	if (this._box.getGeneticViewTabBinding().isSelected) {
+	if (!this.toolingOn || this._box.getGeneticViewTabBinding().isSelected) {
 		browserview.disable();
 	} else {
 		browserview.enable();
@@ -937,12 +955,6 @@ BrowserPageBinding.prototype.handleEvent = function (e) {
 
 		case DOMEvents.UNLOAD:
 
-			if (!this._isDisposing) {
-				cover.show();
-				if (Client.isPrism) {
-					Prism.disableCache();
-				}
-			}
 			break;
 		case DOMEvents.MOUSEDOWN:
 			this._box.focus();
@@ -1040,23 +1052,13 @@ BrowserPageBinding.prototype.loadDeviceList = function () {
  * @param {string} url
  */
 BrowserPageBinding.prototype.setCustomUrl = function (url) {
-	var customView = this._box.getCustomViewTabBinding();
 	var targetUrl = this.getUrl();
 	url = Resolver.resolve(url);
 	url = url.replace("{url}", targetUrl);
 	url = url.replace("{encodedurl}", encodeURIComponent(this._isRequirePublicNet ? targetUrl.replace(/\/c1mode\(unpublished\)/, "") : targetUrl));
 	//replace 2nd and next '?' to '&'
 	url = url.replace(/(\?)(.+)/g, function (a, b, c) { return b + c.replace(/\?/g, "&") });
-	if (customView.iframe.src) {
-		customView.iframe.src = "about:blank";
-		customView.iframe.onload = function () {
-			customView.iframe.onload = null;
-			customView.iframe.src = url;
-		};
-	} else {
-		customView.iframe.src = url;
-	}
-	this._box.select(customView, true);
+	this.setFrameURL(url);
 }
 
 /**
@@ -1068,7 +1070,7 @@ BrowserPageBinding.prototype.getUrl = function (url) {
 
 /**
  * Set client width/height for browser iframe
- * For touch device view the Frame Overlay is created to imitate touch device: hand cursor, skip hover effects. 
+ * For touch device view the Frame Overlay is created to imitate touch device: hand cursor, skip hover effects.
  * For touch device view next should work: focus form fields, handle click events, scroll on MOUSE WHEEL, on KEY UP/DOWN, fit window area by using CSS transform.scale feature.
  * @param {int} width
  */
@@ -1144,7 +1146,7 @@ BrowserPageBinding.prototype.setScreen = function (dim, touch) {
 	}
 }
 
-/** 
+/**
   Helper fucntions with Device Frame
 */
 BrowserPageBinding.prototype.getScrollbarWidth = function () {
@@ -1213,3 +1215,76 @@ BrowserPageBinding.prototype.onBrowserTabUnselected = function () {
 		 this.getSystemPage().node
 	);
 }
+
+/**
+ * new State
+ */
+BrowserPageBinding.prototype.newState = function () {
+
+	this._stateKey = KeyMaster.getUniqueKey();
+	return this._stateKey;
+}
+
+/**
+ * new State
+ */
+BrowserPageBinding.prototype.getState = function () {
+
+	return this._stateKey;
+}
+
+
+BrowserPageBinding.prototype.getBundleSelector = function () {
+
+	if (!this.shadowTree.bundleselector) {
+		var addressrightgroup = this.bindingWindow.bindingMap.addressrightgroup;
+		var selector = SelectorBinding.newInstance(this.bindingDocument);
+		selector.setProperty("textonly", true);
+		addressrightgroup.bindingElement.insertBefore(selector.bindingElement, addressrightgroup.bindingElement.firstChild);
+		selector.attach();
+		selector.attachClassName(BrowserPageBinding.BUNDLE_CLASSNAME);
+		this.shadowTree.bundleselector = selector;
+
+		selector.addActionListener(SelectorBinding.ACTION_SELECTIONCHANGED, {
+			handleAction: (function (action) {
+				var binding = action.target;
+
+				switch (action.type) {
+					case SelectorBinding.ACTION_SELECTIONCHANGED:
+						if (selector === binding) {
+							var entityToken = binding.getValue();
+							this.getSystemTree()._focusTreeNodeByEntityToken(entityToken);
+						}
+						break;
+				}
+			}).bind(this)
+		});
+
+	}
+
+	return this.shadowTree.bundleselector;
+}
+
+
+/**
+ * Auto expand tree
+ */
+BrowserPageBinding.prototype._autoExpand = function () {
+
+	var tree = this.getSystemTree();
+	var treebody = tree.getTreeBodyBinding();
+	var width = treebody.bindingElement.clientWidth;
+	var scrollWidth = treebody.bindingElement.scrollWidth;
+	if (scrollWidth > width)
+	{
+		var splitbox = this.bindingWindow.bindingMap.browsersplitbox;
+		var splitter = splitbox.getSplitterBindings().getFirst();
+		var maxwidth = Math.floor(splitbox.getInnerWidth() / 2);
+		var offset = Math.min(maxwidth, scrollWidth + 10) - width;
+		if(offset > 0){
+			splitter.offset = offset;
+			splitbox.refreshLayout();
+		}
+	}
+}
+

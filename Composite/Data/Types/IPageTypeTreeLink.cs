@@ -50,7 +50,11 @@ namespace Composite.Data.Types
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class IPageTypeTreeLinkExtensionMethods
     {
-        /// <exclude />
+        /// <summary>
+        /// Removes data items that refer to trees that are not registered.
+        /// </summary>
+        /// <param name="pageTypeTreeLinks"></param>
+        /// <returns></returns>
         public static IEnumerable<IPageTypeTreeLink> RemoveDeadLinks(this IEnumerable<IPageTypeTreeLink> pageTypeTreeLinks)
         {
             foreach (IPageTypeTreeLink pageTypeTreeLink in pageTypeTreeLinks)

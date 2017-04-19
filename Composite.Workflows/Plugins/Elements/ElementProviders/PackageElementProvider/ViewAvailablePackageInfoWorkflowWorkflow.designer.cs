@@ -18,7 +18,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
     partial class ViewAvailablePackageInfoWorkflowWorkflow
     {
         #region Designer generated code
-        
+
         /// <summary> 
         /// Required method for Designer support - do not modify 
         /// the contents of this� method with the code editor.
@@ -179,7 +179,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
             this.eventDrivenActivity_GlobalCancel.Activities.Add(this.setStateActivity1);
             this.eventDrivenActivity_GlobalCancel.Name = "eventDrivenActivity_GlobalCancel";
             // 
-            // ViewAvailableAddOnInfoWorkflowWorkflow
+            // ViewAvailablePackageInfoWorkflowWorkflow
             // 
             this.Activities.Add(this.eventDrivenActivity_GlobalCancel);
             this.Activities.Add(this.initializeStateActivity);
@@ -189,25 +189,138 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
             this.CompletedStateName = "finalStateActivity";
             this.DynamicUpdateCondition = null;
             this.InitialStateName = "initializeStateActivity";
-            this.Name = "ViewAvailableAddOnInfoWorkflowWorkflow";
+            this.Name = "ViewAvailablePackageInfoWorkflowWorkflow";
             this.CanModifyActivities = false;
 
         }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         #endregion
 
-        private Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity1;
+        private C1Console.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity1;
         private StateInitializationActivity initializeStateInitializationActivity;
         private SetStateActivity setStateActivity1;
         private StateActivity finalStateActivity;
         private StateActivity initializeStateActivity;
         private StateInitializationActivity viewStateInitializationActivity;
         private StateActivity viewStateActivity;
-        private Composite.C1Console.Workflow.Activities.DocumentFormActivity viewDocumentFormActivity;
+        private C1Console.Workflow.Activities.DocumentFormActivity viewDocumentFormActivity;
         private CodeActivity viewStateCodeActivity_Initialize;
         private EventDrivenActivity viewSateEventDrivenActivity_Install;
         private SetStateActivity setStateActivity2;
-        private Composite.C1Console.Workflow.Activities.CustomEvent01HandleExternalEventActivity customEvent01HandleExternalEventActivity1;
+        private C1Console.Workflow.Activities.CustomEvent01HandleExternalEventActivity customEvent01HandleExternalEventActivity1;
         private CodeActivity installAddOnCodeActivity_Execute;
         private SetStateActivity setStateActivity3;
         private StateInitializationActivity installAddOnStateInitializationActivity;
@@ -219,119 +332,5 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
         private IfElseActivity ifElseActivity_AddOnDescriptionExists;
         private CodeActivity viewCodeActivity_ShowMessage;
         private EventDrivenActivity eventDrivenActivity_GlobalCancel;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
 }

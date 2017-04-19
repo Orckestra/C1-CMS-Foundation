@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Transactions;
 using Composite.C1Console.Actions;
+using Composite.C1Console.Actions.Data;
 using Composite.C1Console.Events;
 using Composite.C1Console.Elements;
 using Composite.Core.Linq;
@@ -17,12 +18,14 @@ using Microsoft.Practices.EnterpriseLibrary.Validation;
 using Composite.Data.Types;
 
 
+using ManagementStrings = Composite.Core.ResourceSystem.LocalizationFiles.Composite_Management;
+
 namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController
 {
-    /// <summary>    
+    /// <summary>
     /// </summary>
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public sealed class GenericPublishProcessController : IPublishProcessController
     {
         private static readonly string _oldPublishedStatusTag = "OldPublishedStatus";
@@ -38,6 +41,9 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
 
         /// <exclude />
         public const string Published = "published";
+
+        /// <exclude />
+        public static string BulkPublishingCommandsTag { get; } = "BulkPublishingCommands";
 
         private static readonly string _backToAwaitingApproval = "awaitingApprovalBack";
         private static readonly string _forwardToAwaitingApproval = "awaitingApprovalForward";
@@ -106,13 +112,13 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
 
             _transitionNames = new Dictionary<string, string>
             {
-                {Draft, "Draft"},
-                {AwaitingApproval, "Awaiting Approval"},
-                {AwaitingPublication, "Awaiting Publication"},
-                {Published, "Published"}
+                {Draft, ManagementStrings.PublishingStatus_draft},
+                {AwaitingApproval, ManagementStrings.PublishingStatus_awaitingApproval},
+                {AwaitingPublication, ManagementStrings.PublishingStatus_awaitingPublication},
+                {Published, ManagementStrings.PublishingStatus_published}
             };
 
-            Func<ElementAction> sendBackToDraftAction = () => new ElementAction(new ActionHandle(new DraftActionToken()))
+            Func<ElementAction> sendBackToDraftAction = () => new ElementAction(new ActionHandle(new ProxyDataActionToken(ActionIdentifier.SendToDraft) { DoIgnoreEntityTokenLocking = true }))
             {
                 VisualData = new ActionVisualizedData
                 {
@@ -127,11 +133,12 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
                         IsInToolbar = true,
                         ActionGroup = WorkflowActionGroup
                     }
-                }
+                },
+                TagValue = BulkPublishingCommandsTag
             };
 
 
-            Func<ElementAction> sendForwardToAwaitingApprovalAction = () => new ElementAction(new ActionHandle(new AwaitingApprovalActionToken()))
+            Func<ElementAction> sendForwardToAwaitingApprovalAction = () => new ElementAction(new ActionHandle(new ProxyDataActionToken(ActionIdentifier.SendForApproval) { DoIgnoreEntityTokenLocking = true }))
             {
                 VisualData = new ActionVisualizedData
                 {
@@ -146,11 +153,12 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
                         IsInToolbar = true,
                         ActionGroup = WorkflowActionGroup
                     }
-                }
+                },
+                TagValue = BulkPublishingCommandsTag
             };
 
 
-            Func<ElementAction> sendForwardToAwaitingPublicationAction = () => new ElementAction(new ActionHandle(new AwaitingPublicationActionToken()))
+            Func<ElementAction> sendForwardToAwaitingPublicationAction = () => new ElementAction(new ActionHandle(new ProxyDataActionToken(ActionIdentifier.SendForPublication) { DoIgnoreEntityTokenLocking = true }))
             {
                 VisualData = new ActionVisualizedData
                 {
@@ -165,11 +173,12 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
                         IsInToolbar = true,
                         ActionGroup = WorkflowActionGroup
                     }
-                }
+                },
+                TagValue = BulkPublishingCommandsTag
             };
 
 
-            Func<ElementAction> publishAction = () => new ElementAction(new ActionHandle(new PublishActionToken()))
+            Func<ElementAction> publishAction = () => new ElementAction(new ActionHandle(new ProxyDataActionToken(ActionIdentifier.Publish) {DoIgnoreEntityTokenLocking = true}))
             {
                 VisualData = new ActionVisualizedData
                 {
@@ -177,19 +186,26 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
                     ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "PublishToolTip"),
                     Icon = GenericPublishProcessController.Publish,
                     Disabled = false,
+                    BulkExecutionDialog = new DialogStrings
+                    {
+                        Title = LocalizationFiles.Composite_Plugins_PageElementProvider.ViewUnpublishedItems_PublishConfirmTitle,
+                        Text = LocalizationFiles.Composite_Plugins_PageElementProvider.ViewUnpublishedItems_PublishConfirmText
+                    },
                     ActionLocation = new ActionLocation
                     {
                         ActionType = ActionType.Other,
                         IsInFolder = false,
                         IsInToolbar = true,
-                        ActionGroup = WorkflowActionGroup
+                        ActionGroup = WorkflowActionGroup,
+                        ActionBundle = "Publish"
                     }
-                }
+                },
+                TagValue = BulkPublishingCommandsTag
             };
 
 
             // "arrow pointing left when state change is going backwards" actions
-            Func<ElementAction> sendBackToAwaitingApprovalAction = () => new ElementAction(new ActionHandle(new AwaitingApprovalActionToken()))
+            Func<ElementAction> sendBackToAwaitingApprovalAction = () => new ElementAction(new ActionHandle(new ProxyDataActionToken(ActionIdentifier.SendForApproval) { DoIgnoreEntityTokenLocking = true }))
             {
                 VisualData = new ActionVisualizedData
                 {
@@ -204,11 +220,12 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
                         IsInToolbar = true,
                         ActionGroup = WorkflowActionGroup
                     }
-                }
+                },
+                TagValue = BulkPublishingCommandsTag
             };
 
 
-            Func<ElementAction> sendBackToAwaitingPublicationAction = () => new ElementAction(new ActionHandle(new AwaitingPublicationActionToken()))
+            Func<ElementAction> sendBackToAwaitingPublicationAction = () => new ElementAction(new ActionHandle(new ProxyDataActionToken(ActionIdentifier.SendForPublication) { DoIgnoreEntityTokenLocking = true }))
             {
                 VisualData = new ActionVisualizedData
                 {
@@ -223,12 +240,13 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
                         IsInToolbar = true,
                         ActionGroup = WorkflowActionGroup
                     }
-                }
+                },
+                TagValue = BulkPublishingCommandsTag,
             };
 
 
-            // disabled actions 
-            Func<ElementAction> draftActionDisabled = () => new ElementAction(new ActionHandle(new DraftActionToken()))
+            // disabled actions
+            Func<ElementAction> draftActionDisabled = () => new ElementAction(new ActionHandle(new ProxyDataActionToken(ActionIdentifier.SendToDraft) { DoIgnoreEntityTokenLocking = true }))
             {
                 VisualData = new ActionVisualizedData
                 {
@@ -243,11 +261,12 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
                         IsInToolbar = true,
                         ActionGroup = WorkflowActionGroup
                     }
-                }
+                },
+                TagValue = BulkPublishingCommandsTag
             };
 
 
-            Func<ElementAction> awaitingApprovalActionDisabled = () => new ElementAction(new ActionHandle(new AwaitingApprovalActionToken()))
+            Func<ElementAction> awaitingApprovalActionDisabled = () => new ElementAction(new ActionHandle(new ProxyDataActionToken(ActionIdentifier.SendForApproval) { DoIgnoreEntityTokenLocking = true }))
             {
                 VisualData = new ActionVisualizedData
                 {
@@ -262,11 +281,12 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
                         IsInToolbar = true,
                         ActionGroup = WorkflowActionGroup
                     }
-                }
+                },
+                TagValue = BulkPublishingCommandsTag
             };
-                               
 
-            Func<ElementAction> awaitingPublicationActionDisabled = () => new ElementAction(new ActionHandle(new AwaitingPublicationActionToken()))
+
+            Func<ElementAction> awaitingPublicationActionDisabled = () => new ElementAction(new ActionHandle(new ProxyDataActionToken(ActionIdentifier.SendForPublication) { DoIgnoreEntityTokenLocking = true }))
             {
                 VisualData = new ActionVisualizedData
                 {
@@ -281,11 +301,13 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
                         IsInToolbar = true,
                         ActionGroup = WorkflowActionGroup
                     }
-                }
+                },
+                TagValue = BulkPublishingCommandsTag
             };
-                
-                
-            Func<ElementAction> publishActionDisabled = () => new ElementAction(new ActionHandle(new DisabledActionToken())) 
+
+
+
+            Func<ElementAction> publishActionDisabled = () => new ElementAction(new ActionHandle(new DisabledActionToken()))
             {
                 VisualData = new ActionVisualizedData
                 {
@@ -300,7 +322,8 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
                         IsInToolbar = true,
                         ActionGroup = WorkflowActionGroup
                     }
-                }
+                },
+                TagValue = BulkPublishingCommandsTag
             };
 
             _visualTransitionsActions = new Dictionary<string, Func<ElementAction>>
@@ -338,17 +361,21 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
 
             var publishControlled = (IPublishControlled)data;
 
-            IList<string> visualTrans = _visualTransitions[publishControlled.PublicationStatus];
+            IList<string> visualTrans;
+            if (!_visualTransitions.TryGetValue(publishControlled.PublicationStatus, out visualTrans))
+            {
+                throw new InvalidOperationException($"Unknown publication state '{publishControlled.PublicationStatus}'");
+            }
 
             var clientActions = visualTrans.Select(newState => _visualTransitionsActions[newState]()).ToList();
 
 
-            IData publicData = DataFacade.GetDataFromOtherScope(data, DataScopeIdentifier.Public, true).FirstOrDefault();
+            IData publicData = DataFacade.GetDataFromOtherScope(data, DataScopeIdentifier.Public, true, false).FirstOrDefault();
             if (publicData != null)
             {
-                var unpublishAction = new ElementAction(new ActionHandle(new UnpublishActionToken()))
+                var unpublishAction = new ElementAction(new ActionHandle(new ProxyDataActionToken(ActionIdentifier.Unpublish) { DoIgnoreEntityTokenLocking = true }))
                 {
-                    VisualData = new ActionVisualizedData()
+                    VisualData = new ActionVisualizedData
                     {
                         Label = StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "Unpublish"),
                         ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.GenericPublishProcessController", "UnpublishToolTip"),
@@ -575,10 +602,10 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
                                     DataFacade.Delete(referees, CascadeDeleteType.Disable);
                                 }
 
-                                
+
                                 DataFacade.Delete(data, CascadeDeleteType.Disable);
                             }
-                            
+
                             transactionScope.Complete();
                         }
                     }
@@ -604,7 +631,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
                     {
                         throw new ArgumentException("Unknown action token", "actionToken");
                     }
-                    
+
                     DataFacade.Update(publishControlled);
 
                     treeRefresher.PostRefreshMesseges(publishControlled.GetDataEntityToken());
@@ -650,7 +677,6 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
         }
 
 
-        [IgnoreEntityTokenLocking()]
         [ActionExecutor(typeof(PublishActionExecutor))]
         internal sealed class PublishActionToken : ActionToken
         {
@@ -661,6 +687,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
                 get { return _permissionTypes; }
             }
 
+            public override bool IgnoreEntityTokenLocking => true;
 
             public override string Serialize()
             {
@@ -675,7 +702,6 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
         }
 
 
-        [IgnoreEntityTokenLocking()]
         [ActionExecutor(typeof(PublishActionExecutor))]
         internal sealed class UnpublishActionToken : ActionToken
         {
@@ -686,6 +712,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
                 get { return _permissionTypes; }
             }
 
+            public override bool IgnoreEntityTokenLocking => true;
 
             public override string Serialize()
             {
@@ -695,12 +722,11 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
 
             public static ActionToken Deserialize(string serializedData)
             {
-                return new UnpublishActionToken();
+                return new ProxyDataActionToken(ActionIdentifier.Unpublish);
             }
         }
 
 
-        [IgnoreEntityTokenLocking()]
         [ActionExecutor(typeof(PublishActionExecutor))]
         internal sealed class UndoPublishedChangesActionToken : ActionToken
         {
@@ -711,6 +737,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
                 get { return _permissionTypes; }
             }
 
+            public override bool IgnoreEntityTokenLocking => true;
 
             public override string Serialize()
             {
@@ -725,7 +752,6 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
         }
 
 
-        [IgnoreEntityTokenLocking()]
         [ActionExecutor(typeof(PublishActionExecutor))]
         internal sealed class DraftActionToken : ActionToken
         {
@@ -736,6 +762,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
                 get { return _permissionTypes; }
             }
 
+            public override bool IgnoreEntityTokenLocking => true;
 
             public override string Serialize()
             {
@@ -750,7 +777,6 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
         }
 
 
-        [IgnoreEntityTokenLocking()]
         [ActionExecutor(typeof(PublishActionExecutor))]
         internal sealed class AwaitingApprovalActionToken : ActionToken
         {
@@ -761,6 +787,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
                 get { return _permissionTypes; }
             }
 
+            public override bool IgnoreEntityTokenLocking => true;
 
             public override string Serialize()
             {
@@ -775,7 +802,6 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
         }
 
 
-        [IgnoreEntityTokenLocking()]
         [ActionExecutor(typeof(PublishActionExecutor))]
         internal sealed class AwaitingPublicationActionToken : ActionToken
         {
@@ -786,6 +812,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
                 get { return _permissionTypes; }
             }
 
+            public override bool IgnoreEntityTokenLocking => true;
 
             public override string Serialize()
             {

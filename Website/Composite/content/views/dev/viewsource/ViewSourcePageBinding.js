@@ -131,7 +131,16 @@ ViewSourcePageBinding.prototype._inject = function () {
 		var area = document.getElementById ( "raw" );
 		var doc = this._windowBinding.getContentDocument ();
 		
-		if ( Client.isExplorer && this._action == DockTabPopupBinding.CMD_VIEWGENERATED ) {
+		if(Client.isEdge) {
+			var markup = this._getMarkup();
+			// raw output only!
+			area.value = markup;
+			doc.body.innerHTML = "Only raw source available in Microsoft Edge.";
+			var tabbox = window.bindingMap.tabbox;
+			var rawtab = window.bindingMap.rawtab;
+			tabbox.select(rawtab);
+
+		} else if (Client.isExplorer && this._action == DockTabPopupBinding.CMD_VIEWGENERATED) {
 			
 			var markup = this._doc.body.innerHTML;
 			
@@ -139,7 +148,8 @@ ViewSourcePageBinding.prototype._inject = function () {
 			area.value = markup;
 			doc.body.innerHTML = "Only raw source available in Internet Explorer.";
 		
-		} else {
+		} 
+		else {
 		
 			var markup = this._getMarkup ();
 			

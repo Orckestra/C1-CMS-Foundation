@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading;
 using Composite.C1Console.Events;
 using Composite.Core.Collections.Generic;
+using Composite.Core.Configuration;
 using Composite.Core.Extensions;
 using Composite.Core.ResourceSystem.Plugins.ResourceProvider;
 using Composite.Core.ResourceSystem.Plugins.ResourceProvider.Runtime;
@@ -15,11 +16,13 @@ namespace Composite.Core.ResourceSystem.Foundation.PluginFacades
 {
     internal static class ResourceProviderPluginFacade
     {
+        const string ApplicationNameReference = "{applicationname}";
+
         private static ResourceLocker<Resources> _resourceLocker = new ResourceLocker<Resources>(new Resources(), Resources.Initialize, false);
 
         static ResourceProviderPluginFacade()
         {
-            GlobalEventSystemFacade.SubscribeToFlushEvent(OnFlushEvent);
+            GlobalEventSystemFacade.SubscribeToFlushEvent(args => Flush());
         }
 
 
@@ -61,13 +64,25 @@ namespace Composite.Core.ResourceSystem.Foundation.PluginFacades
                 var result = provider.GetString(section, stringId, cultureInfo);
                 if(result != null)
                 {
-                    return result;
+                    return ReplaceReferences(result);
                 }
             }
 
             return null;
         }
 
+
+        private static string ReplaceReferences(string localizedString)
+        {
+            if (localizedString == null) return null;
+
+            if (localizedString.IndexOf(ApplicationNameReference, 0, StringComparison.Ordinal) > -1)
+            {
+                localizedString = localizedString.Replace(ApplicationNameReference, GlobalSettingsFacade.ApplicationName);
+            }
+
+            return localizedString;
+        }
 
 
         public static IEnumerable<CultureInfo> GetSupportedStringCultures()
@@ -104,13 +119,15 @@ namespace Composite.Core.ResourceSystem.Foundation.PluginFacades
                 {
                     if(!result.ContainsKey(kvp.Key))
                     {
-                        result.Add(kvp.Key, kvp.Value);
+                        result.Add(kvp.Key, ReplaceReferences(kvp.Value));
                     }
                 }
             }
 
             return result;
         }
+
+
         #endregion
 
 
@@ -173,14 +190,6 @@ namespace Composite.Core.ResourceSystem.Foundation.PluginFacades
         {
             _resourceLocker.ResetInitialization();
         }
-
-
-
-        private static void OnFlushEvent(FlushEventArgs args)
-        {
-            Flush();
-        }
-
 
 
         private static void HandleConfigurationError(Exception ex)

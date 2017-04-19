@@ -48,6 +48,9 @@ StageDecksBinding.prototype.mountDefinition = function ( definition ) {
 	deckBinding.handle = definition.handle;
 	deckBinding.perspectiveNode = definition.node;
 	deckBinding.definition = definition;
+	if (Application.isTestEnvironment) {
+		deckBinding.setProperty("data-qa", "perspective" + definition.label);
+	}
 	this._decks [ deckBinding.handle ] = deckBinding;
 	this.add ( deckBinding );
 	deckBinding.attach ();

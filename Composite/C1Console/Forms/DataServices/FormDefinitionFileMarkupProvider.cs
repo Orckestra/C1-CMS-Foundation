@@ -14,7 +14,7 @@ namespace Composite.C1Console.Forms.DataServices
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
-    public class FormDefinitionFileMarkupProvider : IFormMarkupProvider
+    public class FormDefinitionFileMarkupProvider : IFormMarkupProvider, ITestAutomationLocatorInformation
     {
         private readonly string _formPath;
 
@@ -27,6 +27,14 @@ namespace Composite.C1Console.Forms.DataServices
             _formPath = formPath;
         }
 
+        /// <exclude />
+        public string TestAutomationLocator
+        {
+            get
+            {
+                return Path.GetFileNameWithoutExtension(_formPath);
+            }
+        }
 
         /// <exclude />
         public XmlReader GetReader()

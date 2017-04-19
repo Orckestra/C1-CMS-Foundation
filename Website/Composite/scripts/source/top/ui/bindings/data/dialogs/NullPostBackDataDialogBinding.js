@@ -31,6 +31,12 @@ function NullPostBackDataDialogBinding () {
 	 */
 	this._selector = null;
 	
+	/**
+	* Focus works on internal selecter
+	* @overwrites {SelectorBinding#isFocusable}
+	*/
+	this.isFocusable = false;
+
 	/*
 	 * Returnable.
 	 */

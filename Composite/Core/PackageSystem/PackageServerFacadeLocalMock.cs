@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
@@ -9,8 +10,6 @@ using Composite.C1Console.Events;
 using Composite.Core.Logging;
 using Composite.Core.PackageSystem.Foundation;
 using Composite.Core.Xml;
-using ICSharpCode.SharpZipLib.Checksums;
-using ICSharpCode.SharpZipLib.Zip;
 
 
 namespace Composite.Core.PackageSystem
@@ -136,21 +135,17 @@ namespace Composite.Core.PackageSystem
             UTF8Encoding encoding = new UTF8Encoding();
             byte[] buffer = encoding.GetBytes(content);
 
-            MemoryStream outputStream = new MemoryStream();
+            var outputStream = new MemoryStream();
 
-            ZipOutputStream zipStream = new ZipOutputStream(outputStream);
+            var zipArchive = new ZipArchive(outputStream);
 
-            Crc32 crc = new Crc32();
-            crc.Update(buffer);
+            var zipEntry = zipArchive.CreateEntry("install.xml");
+            using (var stream = zipEntry.Open())
+            {
+                stream.Write(buffer, 0, buffer.Length);
+            }
 
-            ZipEntry zipEntry = new ZipEntry("install.xml");
-            zipEntry.Size = buffer.Length;
-            zipEntry.Crc = crc.Value;
-            zipEntry.DateTime = DateTime.Now;
-
-            zipStream.PutNextEntry(zipEntry);
-            zipStream.Write(buffer, 0, buffer.Length);
-            zipStream.Finish();
+            zipEntry.LastWriteTime = DateTimeOffset.Now;
 
             outputStream.Seek(0, SeekOrigin.Begin);
 
@@ -244,7 +239,7 @@ namespace Composite.Core.PackageSystem
                         SystemLockingType systemLockingType;
                         packageElement.Attribute("systemLocking").TryDeserialize(out systemLockingType);
                         extraInfo.SystemLockingType = systemLockingType;
-                    }                    
+                    }
 
                     packageDescriptions.Add(new KeyValuePair<PackageDescription, ExtraInfo>(packageDescription, extraInfo));
                 }

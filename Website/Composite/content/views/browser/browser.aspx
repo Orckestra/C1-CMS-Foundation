@@ -10,13 +10,9 @@
 	<link rel="stylesheet" type="text/css" href="browser.css.aspx" />
 	<script type="text/javascript" src="BrowserAddressBarBinding.js"></script>
 	<script type="text/javascript" src="BrowserPageBinding.js"></script>
-	<script type="text/javascript" src="BrowserPathBinding.js"></script>
 	<script type="text/javascript" src="BrowserToolBarBinding.js"></script>
 	<script type="text/javascript" src="BrowserTabBoxBinding.js"></script>
-	<script type="text/javascript" src="BrowserTabBinding.js"></script>
 	<script type="text/javascript" src="LanguageSelectorBinding.js"></script>
-
-	
 </head>
 <body>
 	<ui:broadcasterset>
@@ -53,7 +49,7 @@
 			<ui:toolbarbody/>
 			<ui:toolbarbody id="moreactionstoolbargroup">
 				<ui:toolbargroup>
-					<ui:toolbarbutton id="moreactionsbutton" label="More" image="${icon:chevron-right-circle}" popup="moreactionspopup" flip="true"/>
+					<ui:toolbarbutton id="moreactionsbutton" label="${string:Composite.Management:Website.Misc.Toolbar.LabelShowMoreActions}" image="${icon:chevron-right-circle}" popup="moreactionspopup" flip="true"/>
 				</ui:toolbargroup>
 			</ui:toolbarbody>
 		</ui:toolbar>
@@ -78,7 +74,7 @@
 				</ui:toolbargroup>
 			</ui:toolbarbody>
 		</ui:toolbar>
-		<ui:splitbox id="app1horizontalsplitbox" orient="horizontal" layout="2:7" class="line" >
+		<ui:splitbox id="browsersplitbox" orient="horizontal" layout="2:7" class="line" >
 			<ui:splitpanel type="explorer" id="explorerpanel">
 				<div style="width:100%" ></div>
 			</ui:splitpanel>

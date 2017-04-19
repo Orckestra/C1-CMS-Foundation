@@ -10,10 +10,12 @@
 		<cms:binding name="HasPublishing" type="System.Boolean" />
 		<cms:binding name="HasSorting" type="System.Boolean" />
 		<cms:binding name="HasLocalization" type="System.Boolean" />
+		<cms:binding name="IsSearchable" type="System.Boolean" />
 		<cms:binding name="KeyFieldName" type="System.String" />
 		<cms:binding name="LabelFieldName" type="System.String" optional="true" />
 		<cms:binding name="InternalUrlPrefix" type="System.String" optional="true" />
 		<cms:binding name="KeyFieldReadOnly" type="System.Boolean" />
+    <cms:binding name="CustomEvent01Handler" type="System.EventHandler" />
 	</cms:bindings>
 	<cms:layout iconhandle="generated-type-add">
 		<TabPanels>
@@ -64,6 +66,14 @@
 								<cms:bind source="HasLocalization" />
 							</CheckBox.Checked>
 						</CheckBox>
+						<CheckBox Label="${Composite.Plugins.GeneratedDataTypesElementProvider, EditorCommon.IsSearchable}" ItemLabel="${Composite.Plugins.GeneratedDataTypesElementProvider, EditorCommon.IsSearchable}">
+							<CheckBox.Checked>
+								<cms:bind source="IsSearchable" />
+							</CheckBox.Checked>
+							<CheckBox.CheckedChangedEventHandler>
+								<cms:read source="CustomEvent01Handler"/>
+							</CheckBox.CheckedChangedEventHandler>
+						</CheckBox>
 					</PlaceHolder>
 				</FieldGroup>
 			</PlaceHolder>
@@ -80,6 +90,9 @@
 				<internal:TypeFieldDesigner.KeyFieldReadOnly>
 					<cms:bind source="KeyFieldReadOnly" />
 				</internal:TypeFieldDesigner.KeyFieldReadOnly>
+				<internal:TypeFieldDesigner.IsSearchable>
+					<cms:read source="IsSearchable" />
+				</internal:TypeFieldDesigner.IsSearchable>
 			</internal:TypeFieldDesigner>
 		</TabPanels>
 	</cms:layout>

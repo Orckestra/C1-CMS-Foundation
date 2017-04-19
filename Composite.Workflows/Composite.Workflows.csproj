@@ -11,7 +11,7 @@
     <RootNamespace>Composite</RootNamespace>
     <AssemblyName>Composite.Workflows</AssemblyName>
     <ProjectTypeGuids>{14822709-B5A1-4724-98CA-57A101D1B079};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
@@ -61,10 +61,6 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ICSharpCode.SharpZipLib, Version=0.85.5.452, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\bin\ICSharpCode.SharpZipLib.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\bin\Microsoft.Practices.EnterpriseLibrary.Common.dll</HintPath>
@@ -96,6 +92,7 @@
     </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Drawing.Design" />
+    <Reference Include="System.IO.Compression" />
     <Reference Include="System.Management" />
     <Reference Include="System.Runtime.Serialization">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
@@ -113,9 +110,9 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Web.Services" />
-    <Reference Include="System.Web.WebPages, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Bin\System.Web.WebPages.dll</HintPath>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Workflow.Activities">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
@@ -231,6 +228,12 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="C1Console\Scheduling\PublishControlledHelper.cs" />
+    <Compile Include="C1Console\Tools\SetTimeZoneWorkflow.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="C1Console\Tools\SetTimeZoneWorkflow.designer.cs">
+      <DependentUpon>SetTimeZoneWorkflow.cs</DependentUpon>
+    </Compile>
     <Compile Include="Plugins\Elements\ElementProviders\AllFunctionsElementProvider\FunctionTesterWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -445,18 +448,6 @@
     </Compile>
     <Compile Include="Plugins\Elements\ElementProviders\PageElementProvider\LocalizePageWorkflow.designer.cs">
       <DependentUpon>LocalizePageWorkflow.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Plugins\Elements\ElementProviders\PageElementProvider\PagePublishSchedulerWorkflow.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Plugins\Elements\ElementProviders\PageElementProvider\PagePublishSchedulerWorkflow.designer.cs">
-      <DependentUpon>PagePublishSchedulerWorkflow.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Plugins\Elements\ElementProviders\PageElementProvider\PageUnpublishSchedulerWorkflow.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Plugins\Elements\ElementProviders\PageElementProvider\PageUnpublishSchedulerWorkflow.designer.cs">
-      <DependentUpon>PageUnpublishSchedulerWorkflow.cs</DependentUpon>
     </Compile>
     <Compile Include="Plugins\Elements\ElementProviders\PageElementProvider\UndoUnpublishedChangesWorkflow.cs">
       <SubType>Component</SubType>
@@ -698,6 +689,12 @@
     <Compile Include="Plugins\Elements\ElementProviders\VisualFunctionProviderElementProvider\EditVisualFunctionWorkflow.designer.cs">
       <DependentUpon>EditVisualFunctionWorkflow.cs</DependentUpon>
     </Compile>
+    <Compile Include="Plugins\Elements\ElementProviders\WebsiteFileElementProvider\UploadAndExtractZipFileWorkflow.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Plugins\Elements\ElementProviders\WebsiteFileElementProvider\UploadAndExtractZipFileWorkflow.Designer.cs">
+      <DependentUpon>UploadAndExtractZipFileWorkflow.cs</DependentUpon>
+    </Compile>
     <Compile Include="Plugins\Elements\ElementProviders\WebsiteFileElementProvider\AddNewWebsiteFileWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -784,6 +781,9 @@
       <DependentUpon>EditXsltFunctionWorkflow.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="..\Composite\Properties\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\AddNewCompositionTypeWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -1107,12 +1107,6 @@
     <EmbeddedResource Include="Plugins\Elements\ElementProviders\PageElementProvider\LocalizePageWorkflow.layout">
       <DependentUpon>LocalizePageWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Plugins\Elements\ElementProviders\PageElementProvider\PagePublishSchedulerWorkflow.layout">
-      <DependentUpon>PagePublishSchedulerWorkflow.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Plugins\Elements\ElementProviders\PageElementProvider\PageUnpublishSchedulerWorkflow.layout">
-      <DependentUpon>PageUnpublishSchedulerWorkflow.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Plugins\Elements\ElementProviders\PageElementProvider\UndoUnpublishedChangesWorkflow.layout">
       <DependentUpon>UndoUnpublishedChangesWorkflow.cs</DependentUpon>
     </EmbeddedResource>
@@ -1223,6 +1217,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Plugins\Elements\ElementProviders\VisualFunctionProviderElementProvider\EditVisualFunctionWorkflow.layout">
       <DependentUpon>EditVisualFunctionWorkflow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\WebsiteFileElementProvider\UploadAndExtractZipFileWorkflow.layout">
+      <DependentUpon>UploadAndExtractZipFileWorkflow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Plugins\Elements\ElementProviders\WebsiteFileElementProvider\AddNewWebsiteFileWorkflow.layout">
       <DependentUpon>AddNewWebsiteFileWorkflow.cs</DependentUpon>
@@ -1358,7 +1355,9 @@
       <Name>Composite</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Composite.C1Console.RichContent.ContainerClasses;
 using Composite.Core.Extensions;
 using Composite.Core.Instrumentation;
 using Composite.Core.WebClient.Renderings.Page;
@@ -69,8 +70,10 @@ namespace Composite.Core.PageTemplates
                         throw new InvalidOperationException("Placeholder '{0}' defined multiple times".FormatWith(placeholderId));
                     }
 
+                    var containerClasses = ContainerClassManager.ParseToList(placeholderAttribute.ContainerClasses).ToList();
+
                     placeholderProperties.Add(placeholderId, property);
-                    placeholders.Add(new PlaceholderDescriptor { Id = placeholderId, Title = placeholderLabel });
+                    placeholders.Add(new PlaceholderDescriptor { Id = placeholderId, Title = placeholderLabel, ContainerClasses = containerClasses });
                     
 
                     if (placeholderAttribute.IsDefault)

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Specialized;
 using System.Configuration;
 using System.Web.UI;
 using Composite.C1Console.Forms;
@@ -17,11 +18,8 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
-    public abstract class BoolSelectorTemplateUserControlBase : UserControl
+    public abstract class BoolSelectorTemplateUserControlBase : UserControl, IPostBackDataHandler
     {
-        private string _formControlLabel;
-        private bool _isTrue;
-
         /// <exclude />
         protected abstract void BindStateToProperties();
 
@@ -42,30 +40,42 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
         }
 
         /// <exclude />
-        public bool IsTrue
-        {
-            get { return _isTrue; }
-            set { _isTrue = value; }
-        }
+        public bool IsTrue { get; set; }
 
         /// <exclude />
-        public string FormControlLabel
-        {
-            get { return _formControlLabel; }
-            set { _formControlLabel = value; }
-        }
-
+        public string FormControlLabel { get; set; }
 
         /// <exclude />
         public string TrueLabel { get; set; }
 
         /// <exclude />
         public string FalseLabel { get; set; }
+
+        /// <exclude />
+        public EventHandler SelectionChangedEventHandler { get; set; }
+
+        /// <summary>
+        /// When implemented by a class, processes postback data for an ASP.NET server control.
+        /// </summary>
+        /// <param name="postDataKey"></param>
+        /// <param name="postCollection"></param>
+        /// <returns></returns>
+        public virtual bool LoadPostData(string postDataKey, NameValueCollection postCollection)
+        {
+            return false;
+        }
+
+        /// <summary>
+        /// When implemented by a class, signals the server control to notify the ASP.NET application that the state of the control has changed.
+        /// </summary>
+        public virtual void RaisePostDataChangedEvent()
+        {
+        }
     }
 
     internal sealed class TemplatedBoolSelectorUiControl : BoolSelectorUiControl, IWebUiControl
     {
-        private Type _userControlType;
+        private readonly Type _userControlType;
         private BoolSelectorTemplateUserControlBase _userControl;
 
         internal TemplatedBoolSelectorUiControl(Type userControlType)
@@ -93,13 +103,14 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
             _userControl.IsTrue = this.IsTrue;
             _userControl.TrueLabel = this.TrueLabel;
             _userControl.FalseLabel = this.FalseLabel;
+            _userControl.SelectionChangedEventHandler += this.SelectionChangedEventHandler;
 
             return _userControl;
         }
 
-        public bool IsFullWidthControl { get { return false; } }
+        public bool IsFullWidthControl => false;
 
-        public string ClientName { get { return _userControl.GetDataFieldClientName(); } }
+        public string ClientName => _userControl.GetDataFieldClientName();
     }
 
 
@@ -112,7 +123,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
 
         public override IUiControl CreateControl()
         {
-            TemplatedBoolSelectorUiControl control = new TemplatedBoolSelectorUiControl(this.UserControlType);
+            var control = new TemplatedBoolSelectorUiControl(this.UserControlType);
 
             return control;
         }

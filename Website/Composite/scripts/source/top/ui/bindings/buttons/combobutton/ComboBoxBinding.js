@@ -28,24 +28,6 @@ ComboBoxBinding.prototype.toString = function () {
 }
 
 /**
-* Observe how the binding gets disposed and replaced by a simple text node.
-* TODO: This is silly, just keep the element and add some text!
-* @overloads {Binding#onBindingAttach}
-*/
-ComboBoxBinding.prototype.onBindingAttach = function () {
-
-	ComboBoxBinding.superclass.onBindingAttach.call(this);
-
-	var text = this.bindingDocument.createTextNode(
-		Resolver.resolve("\u25BC")
-	);
-
-	this.bindingElement.appendChild(text);
-
-	
-}
-
-/**
 * ComboBoxBinding factory.
 * @param {DOMDocument} ownerDocument
 * @return {ComboBoxBinding}

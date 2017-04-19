@@ -25,6 +25,8 @@ namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunc
         /// <exclude />
         public const string ClassConfigurationNameParameterName = "ClassConfigurationName";
         /// <exclude />
+        public const string ContainerClassesParameterName = "ContainerClasses";
+        /// <exclude />
         public const string PreviewPageIdParameterName = "PreviewPageId";
         /// <exclude />
         public const string PreviewTemplateIdParameterName = "PreviewTemplateId";
@@ -54,6 +56,7 @@ namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunc
             var pageId = parameters.GetParameter<Guid>(PreviewPageIdParameterName);
             var templateId = parameters.GetParameter<Guid>(PreviewTemplateIdParameterName);
             string placeholderName = parameters.GetParameter<string>(PreviewPlaceholderParameterName);
+            string containerClasses = parameters.GetParameter<string>(ContainerClassesParameterName);
 
             if (pageId != Guid.Empty)
             {
@@ -70,6 +73,11 @@ namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunc
                 element.Add(new XAttribute("PreviewPlaceholder", placeholderName));
             }
 
+            if (!string.IsNullOrWhiteSpace(containerClasses))
+            {
+                element.Add(new XAttribute("ContainerClasses", containerClasses));
+            }
+
             return element;
         }
 
@@ -82,6 +90,13 @@ namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunc
                     new ConstantValueProvider(DefaultConfiguration), StandardWidgetFunctions.TextBoxWidget, null,
                     "Class configuration name", 
                     new HelpDefinition("The visual editor can be configured to offer the editor a special set of class names for formatting xhtml elements. The default value is '" + DefaultConfiguration + "'")
+            ));
+
+            base.AddParameterProfile(new ParameterProfile(ContainerClassesParameterName,
+                    typeof(string), false,
+                    new ConstantValueProvider(""), StandardWidgetFunctions.TextBoxWidget, null,
+                    "Container Classes",
+                    new HelpDefinition("Class names to attach to the editor (for styling) and to use for filtering components. Seperate multiple names with space or comma.")
             ));
 
             BuildInlineXhtmlEditorParameters().ForEach(AddParameterProfile);

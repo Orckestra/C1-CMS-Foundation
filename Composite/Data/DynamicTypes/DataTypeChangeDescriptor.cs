@@ -14,7 +14,7 @@ namespace Composite.Data.DynamicTypes
     {
         private readonly DataTypeDescriptor _original;
         private readonly DataTypeDescriptor _altered;
-        private bool _originalTypeDataExists = true;
+        private readonly bool _originalTypeDataExists;
 
 
         /// <exclude />
@@ -43,10 +43,10 @@ namespace Composite.Data.DynamicTypes
             get
             {
                 bool alteredTypeHasChanges = false;
-                alteredTypeHasChanges |= (this.AlteredType.IsCodeGenerated != this.OriginalType.IsCodeGenerated);
-                alteredTypeHasChanges |= (this.AlteredType.Name != this.OriginalType.Name);
+                alteredTypeHasChanges |= this.AlteredType.IsCodeGenerated != this.OriginalType.IsCodeGenerated;
+                alteredTypeHasChanges |= this.AlteredType.Name != this.OriginalType.Name;
                 //                alteredTypeHasChanges |= (this.AlteredType.Title != this.OriginalType.Title);
-                alteredTypeHasChanges |= (this.AlteredType.Namespace != this.OriginalType.Namespace);
+                alteredTypeHasChanges |= this.AlteredType.Namespace != this.OriginalType.Namespace;
                 // Do we really need to regenerated the type if it has a new type manager type name?
                 //alteredTypeHasChanges |= (this.AlteredType.TypeManagerTypeName != this.OriginalType.TypeManagerTypeName);
                 alteredTypeHasChanges |= this.AddedFields.Any();
@@ -58,6 +58,7 @@ namespace Composite.Data.DynamicTypes
                 alteredTypeHasChanges |= this.AddedDataScopes.Any();
                 alteredTypeHasChanges |= this.DeletedDataScopes.Any();
                 alteredTypeHasChanges |= IndexesChanged;
+                alteredTypeHasChanges |= VersionKeyFieldsChanged;
                 return alteredTypeHasChanges;
             }
         }
@@ -65,27 +66,17 @@ namespace Composite.Data.DynamicTypes
 
 
         /// <exclude />
-        public DataTypeDescriptor OriginalType
-        {
-            get { return _original; }
-        }
-
+        public DataTypeDescriptor OriginalType => _original;
 
 
         /// <exclude />
-        public DataTypeDescriptor AlteredType
-        {
-            get { return _altered; }
-        }
+        public DataTypeDescriptor AlteredType => _altered;
 
 
         /// <summary>
         /// True when the system contains data of the original type. Allowable schema changes can be limited when data exists.
         /// </summary>
-        public bool OriginalTypeDataExists
-        {
-            get { return _originalTypeDataExists; }
-        }
+        public bool OriginalTypeDataExists => _originalTypeDataExists;
 
 
         /// <summary>
@@ -169,7 +160,7 @@ namespace Composite.Data.DynamicTypes
         }
 
 
-        IEnumerable<DataFieldDescriptor> GetKeyProperties_Orininal()
+        IEnumerable<DataFieldDescriptor> GetKeyProperties_Original()
         {
             return _original.KeyPropertyNames
                 .Select(name => _original.Fields.Where(fld => fld.Name == name)
@@ -190,7 +181,7 @@ namespace Composite.Data.DynamicTypes
         {
             get
             {
-                return GetKeyProperties_Orininal().Except(GetKeyProperties_Altered(), new DataFieldIdEqualityComparer());
+                return GetKeyProperties_Original().Except(GetKeyProperties_Altered(), new DataFieldIdEqualityComparer());
             }
         }
 
@@ -202,7 +193,7 @@ namespace Composite.Data.DynamicTypes
         {
             get
             {
-                return GetKeyProperties_Altered().Except(GetKeyProperties_Orininal(), new DataFieldIdEqualityComparer());
+                return GetKeyProperties_Altered().Except(GetKeyProperties_Original(), new DataFieldIdEqualityComparer());
             }
         }
 
@@ -213,26 +204,35 @@ namespace Composite.Data.DynamicTypes
         {
             get
             {
-                return !GetKeyProperties_Orininal().SequenceEqual(GetKeyProperties_Altered(), new DataFieldIdEqualityComparer());
+                return !GetKeyProperties_Original().SequenceEqual(GetKeyProperties_Altered(), new DataFieldIdEqualityComparer());
             }
         }
 
         /// <summary>
-        /// Returns <value>true</value> is indexes have changed
+        /// Returns <value>true</value> if indexes have changed
         /// </summary>
         public bool IndexesChanged
         {
             get
             {
-                var origninalIndexes = OriginalType.Indexes;
+                var originalIndexes = OriginalType.Indexes;
                 var newIndexes = AlteredType.Indexes;
 
                 Func<IReadOnlyCollection<DataTypeIndex>, string> serializeIndexes =
                     indexes => string.Join("|", indexes.Select(i => i.ToString()).OrderBy(a => a));
 
-                return serializeIndexes(origninalIndexes) != serializeIndexes(newIndexes);
+                return serializeIndexes(originalIndexes) != serializeIndexes(newIndexes);
             }
         }
+
+
+        /// <summary>
+        /// Returns <value>true</value> if version key fields have changed
+        /// </summary>
+        public bool VersionKeyFieldsChanged
+            => !_original.VersionKeyPropertyNames.SequenceEqual(_altered.VersionKeyPropertyNames);
+        
+
 
         /// <summary>
         /// Returns key fields that exists in both the original and altered type. Fields may have changed name or type.
@@ -287,7 +287,7 @@ namespace Composite.Data.DynamicTypes
         /// <exclude />
         public class ExistingFieldInfo
         {
-            private DataFieldDescriptor _originalField;
+            private readonly DataFieldDescriptor _originalField;
             private DataFieldDescriptor _alteredField;
 
             internal ExistingFieldInfo(DataFieldDescriptor originalField, DataFieldDescriptor alteredField)
@@ -297,10 +297,7 @@ namespace Composite.Data.DynamicTypes
             }
 
             /// <exclude />
-            public DataFieldDescriptor OriginalField
-            {
-                get { return _originalField; }
-            }
+            public DataFieldDescriptor OriginalField => _originalField;
 
 
             /// <exclude />

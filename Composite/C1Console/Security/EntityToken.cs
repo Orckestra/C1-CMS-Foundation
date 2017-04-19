@@ -26,7 +26,7 @@ namespace Composite.C1Console.Security
 
 
     /// <summary>
-    /// EntityToken is used through out Composite C1 to describe artifacts that can have security settings. Also see <see cref="Composite.Data.DataEntityToken"/>.
+    /// EntityToken is used through out C1 CMS to describe artifacts that can have security settings. Also see <see cref="Composite.Data.DataEntityToken"/>.
     /// </summary>
     /// <remarks>
     /// When subclassing this class and adding properties that have an impack when identity (equiallity)
@@ -166,6 +166,18 @@ namespace Composite.C1Console.Security
 
             if (entityToken == null) return false;
 
+            if (entityToken.GetVersionHashCode() != GetVersionHashCode()) return false;
+
+            return entityToken.VersionId == this.VersionId && EqualsWithVersionIgnore(entityToken);
+        }
+
+        /// <exclude />
+        public bool EqualsWithVersionIgnore(object obj)
+        {
+            EntityToken entityToken = obj as EntityToken;
+
+            if (entityToken == null) return false;
+
 
             ValidateEntityToken();
 
@@ -177,6 +189,8 @@ namespace Composite.C1Console.Security
                    entityToken.GetType() == this.GetType();
         }
 
+        /// <exclude />
+        public virtual string VersionId { get;  } = "";
 
 
         /// <exclude />
@@ -198,6 +212,19 @@ namespace Composite.C1Console.Security
             return this.HashCode;
         }
 
+        /// <exclude />
+        public int GetVersionHashCode()
+        {
+            if (this.VersionHashCode == 0)
+            {
+                this.VersionHashCode = this.VersionId.GetHashCode();
+            }
+
+            return this.VersionHashCode;
+        }
+
+        /// <exclude />
+        protected int VersionHashCode { get; set; }
 
         /// <exclude />
         public override string ToString()

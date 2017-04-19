@@ -77,6 +77,10 @@ ui|dialogpage, ui|wizardpage {
 	ui|pagebody {
 		padding: 20px 25px;
 		border-top: 1px solid @dialog-border-color;
+
+		&.filled {
+			padding: 0;
+		}
 	}
 }
 
@@ -84,9 +88,9 @@ ui|dialogpage {
 
 	&.with-top-toolbar {
 
-		ui|toolbar {
+		ui|toolbar:first-child {
 			padding-top: 0;
-			background: #fff;
+			background: @dialog-header-bg-color;
 		}
 
 		ui|pagebody {
@@ -128,7 +132,7 @@ ui|dialogpage {
 		width: 430px;
 		border: solid 1px @fields-group-border-color;
 		border-width: 0 1px;
-		background: @fields-group-bg-color;
+		background: transparent;
 		padding: 0 17px;
 
 		&.first {
@@ -168,6 +172,17 @@ ui|dialogpage.functionview-basic {
 			display: inline-block;
 		}
 		/* IE 10, 11 */
+
+
+		ui|fielddata {
+			width: @functionsbasic-column-width;
+		}
+
+		&.fieldhelp {
+			ui|fielddata {
+				width: @functionsbasic-column-width - 30px;
+			}
+		}
 	}
 
 
@@ -187,7 +202,7 @@ ui|dialogpage.functionview-basic {
 	&.with-top-toolbar {
 		ui|toolbar {
 			padding-top: 0;
-			background: #fff;
+			background: @dialog-header-bg-color;
 		}
 	}
 

@@ -50,7 +50,7 @@ namespace Composite.Data.DynamicTypes.Foundation
             {
                 foreach (PropertyInfo propertyInfo in superInterfaceType.GetProperties())
                 {
-                    if (propertyInfo.Name == "PageId" && propertyInfo.DeclaringType == typeof(IPageData))
+                    if (propertyInfo.Name == nameof(IPageData.PageId) && propertyInfo.DeclaringType == typeof(IPageData))
                     {
                         continue;
                     }
@@ -61,7 +61,7 @@ namespace Composite.Data.DynamicTypes.Foundation
                 }
             }
 
-            ValidateAndAddKeyProperties(typeDescriptor.KeyPropertyNames, type, superInterfaces);
+            ValidateAndAddKeyProperties(typeDescriptor.KeyPropertyNames, typeDescriptor.VersionKeyPropertyNames, type);
 
             string[] storeSortOrder = DynamicTypeReflectionFacade.GetSortOrder(type);
             if (storeSortOrder != null)
@@ -74,7 +74,7 @@ namespace Composite.Data.DynamicTypes.Foundation
 
             CheckSortOrder(typeDescriptor);
 
-            foreach (DataScopeIdentifier dataScopeIdentifier in DynamicTypeReflectionFacade.GetDataScopes(type))
+            foreach (var dataScopeIdentifier in DynamicTypeReflectionFacade.GetDataScopes(type))
             {
                 if (!typeDescriptor.DataScopes.Contains(dataScopeIdentifier))
                 {
@@ -86,7 +86,8 @@ namespace Composite.Data.DynamicTypes.Foundation
             {
                 if (typeDescriptor.Fields[keyPropertyName] == null)
                 {
-                    throw new InvalidOperationException(string.Format("The type '{0}' has a non existing key property specified by the attribute '{1}'", type, typeof(KeyPropertyNameAttribute)));
+                    throw new InvalidOperationException(
+                        $"The type '{type}' has a non existing key property specified by the attribute '{typeof (KeyPropertyNameAttribute)}'");
                 }
             }
 
@@ -97,7 +98,7 @@ namespace Composite.Data.DynamicTypes.Foundation
                 {
                     if (typeDescriptor.Fields[field.Item1] == null)
                     {
-                        throw new InvalidOperationException(string.Format("Index field '{0}' is not defined", field.Item1));
+                        throw new InvalidOperationException($"Index field '{field.Item1}' is not defined");
                     }
                 }
 
@@ -111,29 +112,48 @@ namespace Composite.Data.DynamicTypes.Foundation
             return typeDescriptor;
         }
 
-        static void ValidateAndAddKeyProperties(DataFieldNameCollection keyProperties, Type interfaceType, IList<Type> superInterfacesType)
+        static void ValidateAndAddKeyProperties(
+            DataFieldNameCollection keyProperties,
+            DataFieldNameCollection versionKeyProperties, 
+            Type interfaceType)
         {
-            foreach (string propertyName in DataAttributeFacade.GetKeyPropertyNames(interfaceType))
+            foreach (string propertyName in interfaceType.GetKeyPropertyNames())
             {
-                PropertyInfo property = interfaceType.GetProperty(propertyName);
-                if (property == null)
-                {
-                    foreach (Type superInterface in superInterfacesType)
-                    {
-                        property = superInterface.GetProperty(propertyName);
-                        if(property != null) break;
-                    }
-                }
-
-                Verify.IsNotNull(property, "Missing property '{0}' on type '{1}' or one of its interfaces".FormatWith(propertyName, interfaceType));
+                PropertyInfo property = FindProperty(interfaceType, propertyName);
 
                 if (DynamicTypeReflectionFacade.IsKeyField(property))
                 {
                     keyProperties.Add(propertyName, false);
                 }
             }
+
+            foreach (string propertyName in interfaceType.GetVersionKeyPropertyNames())
+            {
+                FindProperty(interfaceType, propertyName);
+
+                versionKeyProperties.Add(propertyName, false);
+            }
         }
 
+
+        internal static PropertyInfo FindProperty(Type interfaceType, string propertyName)
+        {
+            PropertyInfo property = interfaceType.GetProperty(propertyName);
+            if (property == null)
+            {
+                List<Type> superInterfaces = interfaceType.GetInterfacesRecursively(t => typeof(IData).IsAssignableFrom(t) && t != typeof(IData));
+
+                foreach (Type superInterface in superInterfaces)
+                {
+                    property = superInterface.GetProperty(propertyName);
+                    if (property != null) break;
+                }
+            }
+
+            Verify.IsNotNull(property, $"Missing property '{propertyName}' on type '{interfaceType}' or one of its interfaces");
+
+            return property;
+        }
 
         internal static DataFieldDescriptor BuildFieldDescriptor(PropertyInfo propertyInfo, bool inherited)
         {
@@ -150,7 +170,9 @@ namespace Composite.Data.DynamicTypes.Foundation
                 IsNullable = DynamicTypeReflectionFacade.IsNullable(propertyInfo),
                 ForeignKeyReferenceTypeName = DynamicTypeReflectionFacade.ForeignKeyReferenceTypeName(propertyInfo),
                 GroupByPriority = DynamicTypeReflectionFacade.GetGroupByPriority(propertyInfo),
-                TreeOrderingProfile = DynamicTypeReflectionFacade.GetTreeOrderingProfile(propertyInfo)
+                TreeOrderingProfile = DynamicTypeReflectionFacade.GetTreeOrderingProfile(propertyInfo),
+                NewInstanceDefaultFieldValue = DynamicTypeReflectionFacade.NewInstanceDefaultFieldValue(propertyInfo),
+                IsReadOnly = !propertyInfo.CanWrite
             };
 
             var formRenderingProfile = DynamicTypeReflectionFacade.GetFormRenderingProfile(propertyInfo);
@@ -173,18 +195,8 @@ namespace Composite.Data.DynamicTypes.Foundation
             //}
 
             int position;
-            if (DynamicTypeReflectionFacade.TryGetFieldPosition(propertyInfo, out position))
-            {
-                fieldDescriptor.Position = position;
-            }
-            else
-            {
-                fieldDescriptor.Position = 1000;
-            }
-
-            fieldDescriptor.NewInstanceDefaultFieldValue = DynamicTypeReflectionFacade.NewInstanceDefaultFieldValue(propertyInfo);
-
-            fieldDescriptor.IsReadOnly = !propertyInfo.CanWrite;
+            fieldDescriptor.Position = DynamicTypeReflectionFacade.TryGetFieldPosition(propertyInfo, out position) 
+                ? position : 1000;
 
             return fieldDescriptor;
         }
@@ -225,7 +237,7 @@ namespace Composite.Data.DynamicTypes.Foundation
 
             if (typeDescriptor.StoreSortOrderFieldNames.Count != typeDescriptor.Fields.Count)
             {
-                throw new InvalidOperationException(string.Format("The store sort order attribute should list all the fields of the interface"));
+                throw new InvalidOperationException("The store sort order attribute should list all the fields of the interface");
             }
         }
     }

@@ -13,7 +13,7 @@
 
 	<control:scriptloader type="sub" runat="server" />
 	<control:styleloader runat="server" />
-
+	<control:brandingSnippet runat="server" SnippetName="includes" />
 	<ui:bindingmappingset>
 		<ui:bindingmapping element="ui:splitbox" binding="StageSplitBoxBinding" />
 		<ui:bindingmapping element="ui:splitpanel" binding="StageSplitPanelBinding" />
@@ -118,14 +118,14 @@
 		<%--		<ui:menu label="${string:Website.App.LabelView}">
 			<ui:menupopup>
 				<ui:menubody>
-					
+
 					<ui:menugroup>
 						<ui:menuitem binding="StartMenuItemBinding" label="${string:Website.App.LabelViewCompositeStart}" image="${icon:composite}" />
 					</ui:menugroup>
 				</ui:menubody>
 			</ui:menupopup>
 		</ui:menu>--%>
-		<ui:menu label="Developer" rel="developermode" class="last">
+		<ui:menu label="Developer" rel="developermode" id="developermenu" class="last">
 			<ui:menupopup>
 				<ui:menubody>
 					<ui:menugroup>
@@ -147,11 +147,11 @@
 		<%--		<ui:menu label="${string:Website.App.LabelTools}">
 			<ui:menupopup>
 				<ui:menubody>
-					
+
 				</ui:menubody>
 			</ui:menupopup>
 		</ui:menu>--%>
-		<ui:menu image="${icon:help}" class="icon" tooltip="${string:Website.App.LabelHelp}">
+		<ui:menu image="${icon:help}" id="helpmenu" class="icon" tooltip="${string:Website.App.LabelHelp}">
 			<ui:menupopup>
 				<ui:menubody>
 					<ui:menugroup>
@@ -160,23 +160,23 @@
 					</ui:menugroup>
 					<ui:menugroup>
 						<div class="brand-about-menuitem" onclick="Commands.about()">
-							<img alt="brand" src="images/branding/brand-icon.svg" />
+							<img alt="brand" src="images/branding/brand-icon.png?cacheversion=<%= DateTime.Now.TimeOfDay %>" />
 							<div class="menuitem-text">
-								<ui:text label="${string:Website.App.LabelAbout}"></ui:text><%=Composite.Core.Configuration.GlobalSettingsFacade.ApplicationName%>
+								<ui:text label="${string:Website.App.LabelAbout}"></ui:text>
 							</div>
 						</div>
 					</ui:menugroup>
 				</ui:menubody>
 			</ui:menupopup>
 		</ui:menu>
-		<ui:menu image="${icon:settings}" class="icon" tooltip="${string:Website.App.LabelSettings}">
+		<ui:menu image="${icon:settings}" id="settingsmenu" class="icon" tooltip="${string:Website.App.LabelSettings}">
 			<ui:menupopup>
 				<ui:menubody>
 					<ui:menugroup id="toolsmenugroup" />
 				</ui:menubody>
 			</ui:menupopup>
 		</ui:menu>
-		<ui:menu binding="LocalizationSelectorBinding">
+		<ui:menu id="localizationmenu" binding="LocalizationSelectorBinding">
 			<ui:menupopup>
 				<ui:menubody>
 					<ui:menugroup>
@@ -200,13 +200,13 @@
 		<ui:explorermenu id="explorermenu">
 			<ui:explorertoolbar>
 				<ui:toolbarbody align="left">
-					<ui:toolbargroup>
+					<ui:toolbargroup class="clearfix">
 						<div class="brand-name">
 							<div class="brand-icon">
-								<img src="images/branding/brand-icon.svg" alt="brand" onclick="EventBroadcaster.broadcast(BroadcastMessages.START_COMPOSITE);" />
+								<img src="images/branding/brand-icon.png?cacheversion=<%= DateTime.Now.TimeOfDay %>" alt="brand" onclick="EventBroadcaster.broadcast(BroadcastMessages.START_COMPOSITE);" />
 							</div>
 							<div class="brand-text">
-								<img src="images/branding/brand-text.svg" alt="brand" />
+								<img src="images/branding/brand-text.svg?cacheversion=<%= DateTime.Now.TimeOfDay %>" alt="brand" />
 							</div>
 						</div>
 						<ui:toolbarbutton id="menutogglebutton" class="menu-toggle" image="${icon:menu}" oncommand="top.app.bindingMap.explorermenu.toggle()" />
@@ -214,6 +214,9 @@
 				</ui:toolbarbody>
 				<ui:toolbarbody class="max">
 					<ui:toolbargroup class="max textonly" />
+				</ui:toolbarbody>
+				<ui:toolbarbody class="brand-main">
+					<control:brandingSnippet SnippetName="brand-main" runat="server" />
 				</ui:toolbarbody>
 			</ui:explorertoolbar>
 		</ui:explorermenu>
@@ -234,21 +237,14 @@
 							<ui:splitpanel>
 								<ui:decks id="maindecks">
 									<ui:deck id="startdeck">
-										<ui:decks>
-											<ui:deck>
-												<ui:dock id="startdock" reference="start" type="start">
-													<ui:docktabs>
-														<ui:docktab handle="Composite.Management.Start" />
-													</ui:docktabs>
-													<ui:dockpanels>
-														<ui:dockpanel />
-													</ui:dockpanels>
-												</ui:dock>
-											</ui:deck>
-											<ui:deck id="defaultstartdeck">
-												<ui:window id="defaultstartwindow" url="${root}/content/misc/defaultstart/defaultstart.aspx" />
-											</ui:deck>
-										</ui:decks>
+										<ui:dock id="startdock" reference="start" type="start">
+											<ui:docktabs>
+												<ui:docktab handle="Composite.Management.Start" />
+											</ui:docktabs>
+											<ui:dockpanels>
+												<ui:dockpanel />
+											</ui:dockpanels>
+										</ui:dock>
 									</ui:deck>
 									<ui:deck id="stagedeck">
 										<ui:cover id="stagedeckscover" busy="false" />

@@ -30,7 +30,9 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
 
 
         internal LogFileInfo FileConnection;
-        internal readonly object _syncRoot = new object();
+        readonly object _syncRoot = new object();
+
+        public object SyncRoot => _syncRoot;
 
         public FileLogger(string logDirectoryPath, bool flushImmediately)
         {
@@ -107,7 +109,7 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
                         thrownException = exception;
                     }
                 }
-                // ThreadAbortException should have a higher prioriry, and therefore we're doing rethrow in a separate block
+                // ThreadAbortException should have a higher priority, and therefore we're doing rethrow in a separate block
                 if (thrownException != null) throw thrownException;
             }
         }
@@ -295,8 +297,7 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
                                                   StartupTime = creationDate,
                                                   FileName = fileName,
                                                   FilePath = filePath,
-                                                  FileStream = stream,
-                                                  OldEntries = new string[0]
+                                                  FileStream = stream
                                               };
 
                         WriteUTF8EncodingHeader(stream);
@@ -317,8 +318,7 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
                                               StartupTime = creationDate,
                                               FileName = fileName,
                                               FilePath = filePath,
-                                              FileStream = stream,
-                                              OldEntries = alreadyWritten
+                                              FileStream = stream
                                           };
                     return;
                 }

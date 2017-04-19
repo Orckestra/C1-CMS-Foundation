@@ -1,6 +1,7 @@
 ﻿// #define BrowserRender_NoCache
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Web;
 using Composite.C1Console.Events;
@@ -10,13 +11,13 @@ using Composite.Core.IO;
 using Composite.Core.PackageSystem;
 using Composite.Core.Parallelization;
 using Composite.Data.Plugins.DataProvider.Streams;
-using Composite.Plugins.Security.LoginSessionStores.HttpContextBasedLoginSessionStore;
 using Timer = System.Timers.Timer;
 using System.Threading.Tasks;
+using Composite.Core.WebClient.PhantomJs;
 
 namespace Composite.Core.WebClient
 {
-    internal static partial class BrowserRender
+    internal static class BrowserRender
     {
         private static readonly string LogTitle = typeof (BrowserRender).Name;
         private static readonly string CacheImagesFolder = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.CacheDirectory), "PreviewImages");
@@ -39,39 +40,23 @@ namespace Composite.Core.WebClient
         private static volatile bool ServerAvailabilityChecked;
         private static readonly AsyncLock _serverAvailabilityCheckLock = new AsyncLock();
 
-        public enum RenderingResultStatus
-        {
-            Success = 0,
-            Redirect = 1,
-            Error = 2,
-            Timeout = 3,
-            PhantomServerTimeout = 4,
-            PhantomServerIncorrectResponse = 5
-        }
-
-        public class RenderingResult
-        {
-            public RenderingResultStatus Status { get; set; }
-            public string FilePath { get; set; }
-            public string Output { get; set; }
-            public string RedirectUrl { get; set; }
-        }
-
         /// <summary>
         /// Ensures that the BrowserRenderer service is launched, without blocking the current thread
         /// </summary>
         public static void EnsureReadiness()
         {
+            if (!GlobalSettingsFacade.FunctionPreviewEnabled) return;
+
             _lastUsageDate = DateTime.Now;
             if (ServerAvailabilityChecked) return;
 
             var context = HttpContext.Current;
 
-            HttpCookie authenticationCookie = GetAuthenticationCooke(context);
+            HttpCookie[] cookies = GetAuthenticationCookies(context);
             Task.Factory.StartNew(async () =>
             {
                 await Task.Delay(EnsureReadinessDelay_ms);
-                await CheckServerAvailabilityAsync(context, authenticationCookie);
+                await CheckServerAvailabilityAsync(context, cookies);
             });
         }
 
@@ -103,6 +88,7 @@ namespace Composite.Core.WebClient
 
             string outputImageFileName = Path.Combine(dropFolder, urlHash + ".png");
             string outputFileName = Path.Combine(dropFolder, urlHash + ".output");
+            string redirectLogFileName = Path.Combine(dropFolder, urlHash + ".redirect");
             string errorFileName = Path.Combine(dropFolder, urlHash + ".error");
 
             if (C1File.Exists(outputImageFileName) || C1File.Exists(outputFileName))
@@ -110,7 +96,7 @@ namespace Composite.Core.WebClient
 #if BrowserRender_NoCache
                 File.Delete(outputFileName);
 #else
-                string output = C1File.Exists(outputFileName) ? C1File.ReadAllText(outputFileName) : null;
+                string[] output = C1File.Exists(outputFileName) ? C1File.ReadAllLines(outputFileName) : null;
 
                 return new RenderingResult { FilePath = outputImageFileName, Output = output, Status = RenderingResultStatus.Success};
 #endif
@@ -125,7 +111,7 @@ namespace Composite.Core.WebClient
 
             if (result.Status >= RenderingResultStatus.Error)
             {
-                C1File.WriteAllText(errorFileName, result.Output);
+                C1File.WriteAllLines(errorFileName, result.Output);
             }
 
             if (!Enabled)
@@ -135,7 +121,11 @@ namespace Composite.Core.WebClient
 
             if (result.Status == RenderingResultStatus.Success)
             {
-                C1File.WriteAllText(outputFileName, result.Output);
+                C1File.WriteAllLines(outputFileName, result.Output);
+            }
+            else if (result.Status == RenderingResultStatus.Redirect)
+            {
+                C1File.WriteAllLines(redirectLogFileName, result.Output);
             }
 
             return result;
@@ -161,8 +151,8 @@ namespace Composite.Core.WebClient
 
         private static async Task<RenderingResult> MakePreviewRequestAsync(HttpContext context, string url, string outputFileName, string mode)
         {
-            var authenticationCookie = GetAuthenticationCooke(context);
-            await CheckServerAvailabilityAsync(context, authenticationCookie);
+            var cookies = GetAuthenticationCookies(context);
+            await CheckServerAvailabilityAsync(context, cookies);
 
             if (!Enabled)
             {
@@ -171,15 +161,21 @@ namespace Composite.Core.WebClient
 
             _lastUsageDate = DateTime.Now;
 
-            return await PhantomServer.RenderUrlAsync(authenticationCookie, url, outputFileName, mode);
+            return await PhantomServer.RenderUrlAsync(cookies, url, outputFileName, mode);
         }
 
-        private static HttpCookie GetAuthenticationCooke(HttpContext context)
+        private static HttpCookie[] GetAuthenticationCookies(HttpContext context)
         {
-            // TODO: generate a short life cookie
-            string authenticationCookieName = CookieHandler.GetApplicationSpecificCookieName(HttpContextBasedLoginSessionStore.AuthCookieName);
+            var allCookies = context.Request.Cookies;
+            var result = new List<HttpCookie>();
 
-            return context.Request.Cookies[authenticationCookieName];
+            foreach (string cookieName in allCookies)
+            {
+                var cookie = allCookies[cookieName];
+                result.Add(cookie);
+            }
+
+            return result.ToArray();
         }
 
 
@@ -187,14 +183,17 @@ namespace Composite.Core.WebClient
         {
             get
             {
-                return (ApplicationOnlineHandlerFacade.IsApplicationOnline && GlobalInitializerFacade.SystemCoreInitialized && !GlobalInitializerFacade.SystemCoreInitializing && SystemSetupFacade.IsSystemFirstTimeInitialized);
+                return ApplicationOnlineHandlerFacade.IsApplicationOnline 
+                    && GlobalInitializerFacade.SystemCoreInitialized 
+                    && !GlobalInitializerFacade.SystemCoreInitializing 
+                    && SystemSetupFacade.IsSystemFirstTimeInitialized;
             }
         }
 
 
-        private static async Task CheckServerAvailabilityAsync(HttpContext context, HttpCookie authenticationCookie)
+        private static async Task CheckServerAvailabilityAsync(HttpContext context, HttpCookie[] cookies)
         {
-            if (ServerAvailabilityChecked || authenticationCookie == null) return;
+            if (ServerAvailabilityChecked || cookies == null) return;
 
             using (await _serverAvailabilityCheckLock.LockAsync())
             {
@@ -210,7 +209,15 @@ namespace Composite.Core.WebClient
 
                     string outputFileName = Path.Combine(TempDirectoryFacade.TempDirectoryPath, "phantomtest.png");
 
-                    await PhantomServer.RenderUrlAsync(authenticationCookie, testUrl, outputFileName, "test");
+                    var result = await PhantomServer.RenderUrlAsync(cookies, testUrl, outputFileName, "test");
+
+                    if (result.Status == RenderingResultStatus.PhantomServerTimeout
+                        || result.Status == RenderingResultStatus.PhantomServerIncorrectResponse
+                        || result.Status == RenderingResultStatus.PhantomServerNoOutput)
+                    {
+                        Enabled = false;
+                        Log.LogWarning(LogTitle, "The function preview feature will be turned off as PhantomJs server failed to complete a test HTTP request");
+                    }
                 }
                 catch (Exception ex)
                 {

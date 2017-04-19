@@ -31,7 +31,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
                 return new EntityToken[] { new WebsiteFileElementProviderEntityToken(castedEntityToken.Source, newFolderPath, castedEntityToken.RootPath) };
             }
             
-            return new EntityToken[] { new WebsiteFileElementProviderRootEntityToken(castedEntityToken.Source) };
+            return new EntityToken[] { new WebsiteFileElementProviderRootEntityToken(castedEntityToken.Source, castedEntityToken.RootPath) };
         }
     }
 }

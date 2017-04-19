@@ -1,5 +1,6 @@
 using System;
 using System.Globalization;
+using System.Linq;
 using System.Workflow.Activities;
 using Composite.C1Console.Actions;
 using Composite.C1Console.Events;
@@ -11,7 +12,7 @@ using Composite.C1Console.Workflow;
 
 namespace Composite.Plugins.Elements.ElementProviders.LocalizationElementProvider
 {
-    [EntityTokenLock()]
+    [EntityTokenLock]
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
     public sealed partial class RemoveSystemLocaleWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
@@ -72,10 +73,26 @@ namespace Composite.Plugins.Elements.ElementProviders.LocalizationElementProvide
             
             ISystemActiveLocale systemActiveLocale = this.GetDataItemFromEntityToken<ISystemActiveLocale>();
 
-            LocalizationFacade.RemoveLocale(systemActiveLocale.CultureName);                       
+            var cultureName = systemActiveLocale.CultureName;
 
-            ConsoleMessageQueueFacade.Enqueue(new CollapseAndRefreshConsoleMessageQueueItem(), null);
+            var consolesToBeUpdated = 
+                (from consoleInformation in DataFacade.GetData<IUserConsoleInformation>()
+                join userSettings in DataFacade.GetData<IUserSettings>()
+                    on consoleInformation.Username equals userSettings.Username
+                where userSettings.CurrentActiveLocaleCultureName == cultureName
+                      || userSettings.ForeignLocaleCultureName == cultureName
+                select consoleInformation.ConsoleId).ToList();
+
+            LocalizationFacade.RemoveLocale(cultureName);
+
+            foreach (var consoleId in consolesToBeUpdated)
+            {
+                ConsoleMessageQueueFacade.Enqueue(new CollapseAndRefreshConsoleMessageQueueItem(), consoleId);
+            }
+            
             ConsoleMessageQueueFacade.Enqueue(new BroadcastMessageQueueItem { Name = "LocalesUpdated", Value = "" }, null);
+
+            SelectElement(new LocalizationElementProviderRootEntityToken());
 
             deleteTreeRefresher.PostRefreshMesseges();
         }

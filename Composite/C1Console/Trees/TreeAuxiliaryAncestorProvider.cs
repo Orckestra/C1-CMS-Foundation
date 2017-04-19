@@ -74,7 +74,7 @@ namespace Composite.C1Console.Trees
                     }
                     catch (Exception ex)
                     {
-                        Log.LogError("TreeFacade", string.Format("The tree '{0}' failed to return parent entity tokens and are ignored", treeId));
+                        Log.LogError("TreeFacade", $"The tree '{treeId}' failed to return parent entity tokens and are ignored");
                         Log.LogError("TreeFacade", ex);
                     }
                 }
@@ -101,13 +101,16 @@ namespace Composite.C1Console.Trees
                             }
                             catch (Exception ex)
                             {
-                                Log.LogError("TreeFacade", "The tree '{0}' failed to return parent entity tokens and are ignored", treeNode.Tree.TreeId);
+                                Log.LogError("TreeFacade", $"The tree '{treeNode.Tree.TreeId}' failed to return parent entity tokens and are ignored");
                                 Log.LogError("TreeFacade", ex);
                             }
                         }
 
                         if (concatList != null)
                         {
+                            // Filtering the current element to avoid loops while resolving security
+                            concatList = concatList.Where(e => !entityToken.Equals(e));
+
                             IEnumerable<EntityToken> existingList;
                             if (result.TryGetValue(entityToken, out existingList))
                             {

@@ -51,6 +51,11 @@ div#emptylabel {
 	border-top: 1px solid #ddd;
 }
 
+div#logentriesremovedlabel {
+	padding: 1em;
+	border-top: 1px solid #ddd;
+}
+
 #toolbar datalabeltext {
     width: auto;
     margin-right: 15px;

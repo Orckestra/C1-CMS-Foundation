@@ -18,15 +18,28 @@ namespace Composite.Core.Serialization
 
             serializedObject = null;
 
-            if (objectToSerializeType.IsGenericType == false) return false;
 
+            bool isArray = objectToSerializeType.IsArray;
+            if (!objectToSerializeType.IsGenericType && !isArray) return false;
+
+            if (isArray)
+            {
+                objectToSerializeType = objectToSerializeType.GetInterfaces()
+                    .FirstOrDefault(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof (ICollection<>));
+
+                if (objectToSerializeType == null)
+                {
+                    return false;
+                }
+            }
+            
             Type genericType = objectToSerializeType.GetGenericTypeDefinition();
 
             MethodInfo methodInfo;
 
-            if (genericType == typeof(List<>))
+            if (genericType == typeof(List<>) || genericType == typeof(ICollection<>))
             {
-                methodInfo = StaticReflection.GetGenericMethodInfo(o => SerializeList<object>(null, null));
+                methodInfo = StaticReflection.GetGenericMethodInfo(o => SerializeCollection<object>(null, null));
             }
             else if (genericType == typeof(Dictionary<,>))
             {
@@ -119,7 +132,7 @@ namespace Composite.Core.Serialization
 
 
 
-        private static XElement SerializeList<T>(List<T> listToSerialize, IXmlSerializer xmlSerializer)
+        private static XElement SerializeCollection<T>(ICollection<T> listToSerialize, IXmlSerializer xmlSerializer)
         {
             XElement result = new XElement("List");
 

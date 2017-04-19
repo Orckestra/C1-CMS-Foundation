@@ -10,12 +10,12 @@ using Composite.Functions;
 namespace Composite.AspNet.Razor
 {
     /// <summary>
-    /// Defines a composite C1 razor control
+    /// Defines a C1 CMS razor control
     /// </summary>
 	public abstract class CompositeC1WebPage : WebPage, IDisposable
 	{
 		private bool _disposed;
-		private readonly DataConnection _data;
+		private DataConnection _data;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CompositeC1WebPage"/> class.
@@ -28,36 +28,34 @@ namespace Composite.AspNet.Razor
         /// <summary>
         /// Gets a <see cref="DataConnection"/> object.
         /// </summary>
-		public DataConnection Data
-		{
-            get { return _data; }
-		}
+        public DataConnection Data
+        {
+            get
+            {
+                var result = _data ?? (WebPageContext.Current?.Page as CompositeC1WebPage)?.Data;
+
+                Verify.IsNotNull(result, nameof(DataConnection) + " instance has already been disposed");
+
+                return result;
+            }
+        }
 
         /// <summary>
         /// Gets a <see cref="SitemapNavigator"/> object.
         /// </summary>
-		public SitemapNavigator Sitemap
-		{
-			get { return Data.SitemapNavigator; }
-		}
+        public SitemapNavigator Sitemap => Data.SitemapNavigator;
 
 
         /// <summary>
         /// Gets the home page node.
         /// </summary>
-		public PageNode HomePageNode
-		{
-			get { return Sitemap.CurrentHomePageNode; }
-		}
+		public PageNode HomePageNode => Sitemap.CurrentHomePageNode;
 
 
         /// <summary>
         /// Gets the current page node.
         /// </summary>
-		public PageNode CurrentPageNode
-		{
-			get { return Sitemap.CurrentPageNode; }
-		}
+		public PageNode CurrentPageNode => Sitemap.CurrentPageNode;
 
 
         /// <summary>
@@ -148,6 +146,15 @@ namespace Composite.AspNet.Razor
         }
 
         /// <exclude />
+        public override void ExecutePageHierarchy()
+        {
+            base.ExecutePageHierarchy();
+
+            _data.Dispose();
+            _data = null;
+        }
+
+        /// <exclude />
 		public void Dispose()
 		{
 			Dispose(true);
@@ -158,15 +165,14 @@ namespace Composite.AspNet.Razor
         /// <exclude />
 		protected virtual void Dispose(bool disposing)
 		{
-			if (!_disposed)
-			{
-				if (disposing)
-				{
-                    _data.Dispose();
-				}
+            if (_disposed) return;
 
-				_disposed = true;
-			}
+            if (disposing)
+            {
+                _data?.Dispose();
+            }
+
+            _disposed = true;
 		}
 
         /// <exclude />

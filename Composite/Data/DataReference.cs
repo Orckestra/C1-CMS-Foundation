@@ -7,7 +7,7 @@ using System.Linq.Expressions;
 namespace Composite.Data
 {
     /// <summary>
-    /// Represents a reference to a Composite C1 IData item. Unlike <see cref="DataReference{T}"/> this class signals
+    /// Represents a reference to a C1 CMS IData item. Unlike <see cref="DataReference{T}"/> this class signals
     /// that a data reference need not be set for this to be in a valid state.
     /// </summary>
     /// <typeparam name="T">The C1 Data Type (<see cref="IData"/>) being referenced</typeparam>
@@ -30,7 +30,7 @@ namespace Composite.Data
 
 
     /// <summary>
-    /// Represents a reference to a Composite C1 IData item. 
+    /// Represents a reference to a C1 CMS IData item. 
     /// </summary>
     /// <typeparam name="T">The C1 Data Type (<see cref="IData"/>) being referenced</typeparam>
     [DataReferenceConverter]
@@ -57,7 +57,7 @@ namespace Composite.Data
         {
             if (keyValue != null)
             {
-                Type realKeyType = typeof(T).GetKeyProperties().Single().PropertyType;
+                Type realKeyType = typeof(T).GetSingleKeyProperty().PropertyType;
                 if (keyValue.GetType() != realKeyType)
                 {
                     _keyValue = ValueTypeConverter.Convert(keyValue, realKeyType);
@@ -91,13 +91,7 @@ namespace Composite.Data
         /// <summary>
         /// The type of the data item. This type inherits from IData.
         /// </summary>
-        public Type ReferencedType
-        {
-            get
-            {
-                return typeof(T);
-            }
-        }
+        public Type ReferencedType => typeof(T);
 
 
         /// <summary>
@@ -118,25 +112,13 @@ namespace Composite.Data
         /// <summary>
         /// The key value of the data item being referenced, like the Guid for a page id.
         /// </summary>
-        public object KeyValue
-        {
-            get
-            {
-                return _keyValue;
-            }
-        }
+        public object KeyValue => _keyValue;
 
 
         /// <summary>
         /// The data item being referenced.
         /// </summary>
-        IData IDataReference.Data
-        {
-            get
-            {
-                return this.Data;
-            }
-        }
+        IData IDataReference.Data => this.Data;
 
 
         /// <summary>

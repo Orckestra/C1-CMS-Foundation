@@ -1,32 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
-using System.Transactions;
 using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Data;
 using Composite.Data.Transactions;
 using Composite.Data.Types;
-using ICSharpCode.SharpZipLib.Zip;
 
 
 namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementProvider
 {
-    /// <summary>    
+    /// <summary>
     /// </summary>
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public sealed class ZipMediaFileExtractor
     {
-        private static readonly TimeSpan extrationTimeout = TimeSpan.FromMinutes(15);
+        private static readonly TimeSpan ExtrationTimeout = TimeSpan.FromMinutes(15);
 
 
         /// <exclude />
         public static void AddZip(string providerName, string parentPath, Stream compressedStream, bool recreateDirStructure, bool overwrite)
         {
-            if (string.IsNullOrEmpty(providerName)) throw new ArgumentNullException("providerName");
-            if (string.IsNullOrEmpty(parentPath)) throw new ArgumentNullException("parentPath");
+            Verify.ArgumentNotNullOrEmpty(providerName, nameof(providerName));
+            Verify.ArgumentNotNullOrEmpty(parentPath, nameof(parentPath));
 
             IList<IMediaFile> files;
             IList<IMediaFileFolder> folders;
@@ -35,10 +34,9 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
 
             if (recreateDirStructure)
             {
-                FolderComparer folderComparer = new FolderComparer();
-                IEnumerable<IMediaFileFolder> currentDirs = DataFacade.GetData<IMediaFileFolder>().Where(x => x.Path.StartsWith(parentPath));
-                IEnumerable<IMediaFileFolder> intersection = currentDirs.Intersect(folders, folderComparer);
-                folders = folders.Except(intersection, folderComparer).ToList();
+                var folderComparer = new FolderComparer();
+                var currentDirs = DataFacade.GetData<IMediaFileFolder>().Where(x => x.Path.StartsWith(parentPath));
+                folders = folders.Except(currentDirs, folderComparer).ToList();
 
                 DataFacade.AddNew<IMediaFileFolder>(folders, providerName);
                 AddFiles(providerName, files, overwrite);
@@ -66,7 +64,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
         {
             foreach (IMediaFile file in files)
             {
-                using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope(extrationTimeout))
+                using (var transactionScope = TransactionsFacade.CreateNewScope(ExtrationTimeout))
                 {
                     EnsureFolderExistence(file.FolderPath);
 
@@ -123,34 +121,36 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
             folders = new List<IMediaFileFolder>();
             files = new List<IMediaFile>();
 
-            using (ZipInputStream zipInputStream = new ZipInputStream(compressedStream))
+            using (var zipArchive = new ZipArchive(compressedStream))
             {
-                ZipEntry theEntry;
-                while ((theEntry = zipInputStream.GetNextEntry()) != null)
+                foreach (var entry in zipArchive.Entries)
                 {
-                    if (theEntry.IsDirectory)
+                    if (entry.FullName.EndsWith("/"))
                     {
-                        CreateFoldersRec(folders, parentPath, theEntry.Name);
+                        CreateFoldersRec(folders, parentPath, entry.FullName);
                     }
                     else
                     {
-                        string directory = theEntry.Name.GetDirectory('/');
+                        var directory = entry.FullName.GetDirectory('/');
 
-                        WorkflowMediaFile mediaFile = new WorkflowMediaFile();
-                        int length = CopyZipData(zipInputStream, mediaFile);
+                        string fileName = entry.Name;
 
-                        mediaFile.FileName = Path.GetFileName(theEntry.Name);
-                        mediaFile.Title = mediaFile.FileName.GetNameWithoutExtension();
-                        mediaFile.FolderPath = parentPath.Combine(directory, '/');
+                        var mediaFile = new WorkflowMediaFile
+                        {
+                            FileName = fileName,
+                            Title = fileName.GetNameWithoutExtension(),
+                            FolderPath = parentPath.Combine(directory, '/'),
+                            CreationTime = DateTime.Now,
+                            Culture = C1Console.Users.UserSettings.ActiveLocaleCultureInfo.Name,
+                            LastWriteTime = DateTime.Now,
+                            MimeType = MimeTypeInfo.GetCanonicalFromExtension(Path.GetExtension(fileName))
+                        };
 
-                        mediaFile.CreationTime = DateTime.Now;
-                        mediaFile.Culture = C1Console.Users.UserSettings.ActiveLocaleCultureInfo.Name;
-                        mediaFile.LastWriteTime = DateTime.Now;
+                        int length = CopyZipData(entry.Open(), mediaFile);
                         mediaFile.Length = length;
-                        mediaFile.MimeType = MimeTypeInfo.GetCanonicalFromExtension(Path.GetExtension(theEntry.Name));
 
                         files.Add(mediaFile);
-                        
+
                         if (directory != "")
                         {
                             CreateFoldersRec(folders, parentPath, directory);
@@ -184,21 +184,21 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
 
         private static string ReduceFolderPath(string folderPath)
         {
-            int offset = folderPath.LastIndexOf("/", folderPath.Length - 2, StringComparison.Ordinal);
+            var offset = folderPath.LastIndexOf("/", folderPath.Length - 2, StringComparison.Ordinal);
+
             return (offset > 0) ? folderPath.Substring(0, offset) : null;
         }
 
         private static int CopyZipData(Stream from, WorkflowMediaFile mediaFile)
         {
-            int fileSize = 0;
+            var fileSize = 0;
 
-            using (Stream streamWriter = mediaFile.GetNewWriteStream())
+            using (var streamWriter = mediaFile.GetNewWriteStream())
             {
-                int size = 2048;
-                byte[] data = new byte[2048];
+                var data = new byte[2048];
                 while (true)
                 {
-                    size = from.Read(data, 0, data.Length);
+                    var size = @from.Read(data, 0, data.Length);
                     if (size > 0)
                     {
                         streamWriter.Write(data, 0, size);

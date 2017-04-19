@@ -31,7 +31,7 @@ namespace Composite.C1Console.Users.Workflows
                     from l in DataLocalizationFacade.ActiveLocalizationCultures
                     select l;
 
-            List<KeyValuePair<string, string>> foreignCulturesDictionary = foreignCultures.Select(f => new KeyValuePair<string, string>(f.Name, DataLocalizationFacade.GetCultureTitle(f))).ToList();
+            List<KeyValuePair<string, string>> foreignCulturesDictionary = foreignCultures.Select(f => new KeyValuePair<string, string>(f.Name, DataLocalizationFacade.GetCultureTitle(f))).OrderBy(f => f.Value).ToList();
             foreignCulturesDictionary.Insert(0, new KeyValuePair<string, string>("NONE", StringResourceSystemFacade.GetString("Composite.C1Console.Users", "ChangeForeignLocaleWorkflow.NoForeignLocaleLabel")));
 
             string selectedForeignCultureName = "NONE";

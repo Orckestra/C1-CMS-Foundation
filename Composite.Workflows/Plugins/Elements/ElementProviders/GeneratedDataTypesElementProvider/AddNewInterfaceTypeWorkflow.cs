@@ -39,6 +39,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             public const string HasPublishing = "HasPublishing";
             public const string HasSorting = "HasSorting";
             public const string HasLocalization = "HasLocalization";
+            public const string IsSearchable = nameof(IsSearchable);
             public const string KeyFieldReadOnly = "KeyFieldReadOnly";
         }
 
@@ -65,6 +66,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 {BindingNames.HasPublishing, false},
                 {BindingNames.HasSorting, false},
                 {BindingNames.HasLocalization, false},
+                {BindingNames.IsSearchable, true},
                 {BindingNames.KeyFieldName, dataFieldDescriptors.First().Name},
                 {BindingNames.LabelFieldName, ""},
                 {BindingNames.KeyFieldReadOnly, false}
@@ -102,6 +104,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 bool hasPublishing = this.GetBinding<bool>(BindingNames.HasPublishing);
                 bool hasSorting = this.GetBinding<bool>(BindingNames.HasSorting);
                 bool hasLocalization = this.GetBinding<bool>(BindingNames.HasLocalization);
+                bool isSearchable = this.GetBinding<bool>(BindingNames.IsSearchable);
                 string keyFieldName = this.GetBinding<string>(BindingNames.KeyFieldName);
                 string labelFieldName = this.GetBinding<string>(BindingNames.LabelFieldName);
                 string internalUrlPrefix = this.GetBinding<string>(BindingNames.InternalUrlPrefix);
@@ -149,9 +152,9 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                     return;
                 }
 
-                if(interfaceType != null)
+                if (interfaceType != null)
                 {
-                    if(hasLocalization != DataLocalizationFacade.IsLocalized(interfaceType)
+                    if (hasLocalization != DataLocalizationFacade.IsLocalized(interfaceType)
                         && DataFacade.GetData(interfaceType).ToDataEnumerable().Any())
                     {
                         this.ShowMessage(
@@ -170,6 +173,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                     helper.SetPublishControlled(hasPublishing);
                     helper.SetSortable(hasSorting);
                     helper.SetLocalizedControlled(hasLocalization);
+                    helper.SetSearchable(isSearchable);
                 }
 
                 helper.SetNewTypeFullName(typeName, typeNamespace);
@@ -213,7 +217,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                                      : GeneratedDataTypesElementProviderRootEntityToken.GlobalDataTypeFolderId
                 );
 
-                if(originalTypeDataExists)
+                if (originalTypeDataExists)
                 {
                     SetSaveStatus(true);
                 }
@@ -248,6 +252,11 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
                 this.ShowMessage(DialogType.Error, ex.Message, ex.Message);
             }
+        }
+
+        private void codeActivity_RefreshViewHandler(object sender, EventArgs e)
+        {
+            RerenderView();
         }
     }
 }

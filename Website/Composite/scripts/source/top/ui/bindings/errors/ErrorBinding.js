@@ -10,11 +10,11 @@ ErrorBinding.ACTION_INITIALIZE = "error initialize";
  * @param {IData} binding
  */
 ErrorBinding.presentError = function ( error, binding ) {
-	
+
 	if ( Interfaces.isImplemented ( IData, binding ) == true ) {
-		
+
 		/*
-		 * Analyze environment in order to determine whether or not we are 
+		 * Analyze environment in order to determine whether or not we are
 		 * in a dialog, in which case another BalloonSetBinding is used.
 		 * TODO: refactor with getAncestorBindingByType ( xxx, true )???
 		 */
@@ -29,15 +29,30 @@ ErrorBinding.presentError = function ( error, binding ) {
 					break;
 			}
 		}
-		var balloonset = isDialog ? 
-			top.app.bindingMap.dialogballoonset : 
+		var balloonset = isDialog ?
+			top.app.bindingMap.dialogballoonset :
 			top.app.bindingMap.balloonset;
-		var balloon = balloonset.add (
-			BalloonBinding.newInstance ( top.app.document )
-		);
-		balloon.setLabel ( error.text );
-		balloon.snapTo ( binding );
-		balloon.attach ();
+
+		var balloon = null;
+
+		balloonset.getDescendantBindingsByType(BalloonBinding).each(function (balloonBinding) {
+			if (balloonBinding.isSnapTo(binding)) {
+				balloon = balloonBinding;
+				return false;
+			}
+			return true;
+		}, this);
+
+		if (balloon != null) {
+			balloon.setLabel(error.text);
+		} else {
+			balloon = balloonset.add(
+				BalloonBinding.newInstance(top.app.document)
+			);
+			balloon.setLabel(error.text);
+			balloon.snapTo(binding);
+			balloon.attach();
+		}
 	}
 }
 
@@ -50,7 +65,7 @@ function ErrorBinding () {
 	 * @type {SystemLogger}
 	 */
 	this.logger = SystemLogger.getLogger ( "ErrorBinding" );
-	
+
 	/*
 	 * Returnable.
 	 */
@@ -61,7 +76,7 @@ function ErrorBinding () {
  * Identifies binding.
  */
 ErrorBinding.prototype.toString = function () {
-	
+
 	return "[ErrorBinding]";
 }
 
@@ -70,22 +85,22 @@ ErrorBinding.prototype.toString = function () {
  * @overloads {Binding#onBindingAttach}
  */
 ErrorBinding.prototype.onBindingAttach = function () {
-	
+
 	ErrorBinding.superclass.onBindingAttach.call ( this );
-	
+
 	var dataManager = this.bindingWindow.DataManager;
 	var text = this.getProperty ( "text" );
 	var name = this.getProperty ( "targetname" );
-	
+
 	var binding = dataManager.getDataBinding ( name );
 	if ( binding ) {
 		ErrorBinding.presentError ({
 			text : text
 		}, binding );
-	} else {
-		alert ( "ErrorBinding dysfunction: No such DataBinding!\n" + name );
+	} else if (window.console) {
+		console.error ( "ErrorBinding dysfunction: No such DataBinding!\n" + name );
 		if ( name.indexOf ( "_" ) >-1 ) {
-			alert ( "Name contaings '_' - replace with '$' ?" );
+			console.error ( "Name contains '_' - replace with '$' ?" );
 		}
 	}
 	this.dispose ();

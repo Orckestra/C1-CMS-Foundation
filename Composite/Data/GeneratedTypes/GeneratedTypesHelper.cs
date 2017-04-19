@@ -50,6 +50,7 @@ namespace Composite.Data.GeneratedTypes
         private string _newTypeTitle;
         private bool _cachable;
         private bool _sortable;
+        private bool _searchable;
         private bool _publishControlled;
         private bool _localizedControlled;
 
@@ -170,6 +171,17 @@ namespace Composite.Data.GeneratedTypes
         }
 
 
+        /// <exclude />
+        public bool IsSearchable
+        {
+            get
+            {
+                Verify.IsNotNull(_oldDataTypeDescriptor, "No old data type specified");
+
+                return _oldDataTypeDescriptor.Searchable;
+            }
+        }
+
 
         /// <exclude />
         public bool IsPublishControlled
@@ -206,7 +218,9 @@ namespace Composite.Data.GeneratedTypes
 
 
 
-        /// <exclude />
+        /// <summary>
+        /// Returns <value>true</value> if the date type is a page meta data type.
+        /// </summary>
         public bool IsEditProcessControlledAllowed
         {
             get
@@ -461,6 +475,13 @@ namespace Composite.Data.GeneratedTypes
         }
 
         /// <exclude />
+        public void SetSearchable(bool searchable)
+        {
+            _searchable = searchable;
+        }
+
+
+        /// <exclude />
         public void SetPublishControlled(bool isPublishControlled)
         {
             Verify.That(IsEditProcessControlledAllowed, "Not allowed to change this value");
@@ -474,6 +495,18 @@ namespace Composite.Data.GeneratedTypes
             Verify.That(IsEditProcessControlledAllowed, "Not allowed to change this value");
 
             _localizedControlled = isLocalizedControlled;
+        }
+
+
+        /// <exclude />
+        [Obsolete("Left for backward compatibility")]
+        public void SetNewFieldDescriptors(IEnumerable<DataFieldDescriptor> newDataFieldDescriptors, string labelFieldName)
+        {
+            var idField = BuildIdField();
+
+            var fields = new[] { idField };
+
+            SetNewFieldDescriptors(fields.Concat(newDataFieldDescriptors), IdFieldName, labelFieldName);
         }
 
 
@@ -746,6 +779,7 @@ namespace Composite.Data.GeneratedTypes
                 _newLabelFieldName,
                 _newInternalUrlPrefix,
                 _cachable,
+                _searchable,
                 _publishControlled,
                 _sortable,
                 _localizedControlled,
@@ -764,6 +798,7 @@ namespace Composite.Data.GeneratedTypes
             string labelFieldName,
             string internalUrlPrefix,
             bool cachable,
+            bool searchable,
             bool publishControlled,
             bool sortable,
             bool localizedControlled,
@@ -776,6 +811,7 @@ namespace Composite.Data.GeneratedTypes
             var dataTypeDescriptor = new DataTypeDescriptor(id, typeNamespace, typeName, true)
             {
                 Cachable = cachable,
+                Searchable = searchable,
                 Title = typeTitle,
                 LabelFieldName = labelFieldName,
                 InternalUrlPrefix = internalUrlPrefix
@@ -851,7 +887,9 @@ namespace Composite.Data.GeneratedTypes
         /// <returns></returns>
         public static DataFieldDescriptor BuildIdField()
         {
-            return new DataFieldDescriptor(Guid.NewGuid(), IdFieldName, StoreFieldType.Guid, typeof (Guid));
+            var idFieldDescriptor = new DataFieldDescriptor(Guid.NewGuid(), IdFieldName, StoreFieldType.Guid, typeof (Guid));
+            idFieldDescriptor.DataUrlProfile = new DataUrlProfile { Order = 0 };
+            return idFieldDescriptor;
         }
 
         private string KeyFieldName
@@ -892,11 +930,15 @@ namespace Composite.Data.GeneratedTypes
 
         private DataTypeDescriptor CreateUpdatedDataTypeDescriptor()
         {
-            var dataTypeDescriptor = new DataTypeDescriptor(_oldDataTypeDescriptor.DataTypeId, _newTypeNamespace, _newTypeName, true);
+            var dataTypeDescriptor = new DataTypeDescriptor(
+                _oldDataTypeDescriptor.DataTypeId, _newTypeNamespace, _newTypeName, true)
+            {
+                Cachable = _cachable,
+                Searchable = _searchable
+            };
 
             dataTypeDescriptor.DataScopes.Add(DataScopeIdentifier.Public);
 
-            dataTypeDescriptor.Cachable = _cachable;
 
 
             Type[] indirectlyInheritedInterfaces =
@@ -1021,9 +1063,9 @@ namespace Composite.Data.GeneratedTypes
             DataFieldDescriptor targetKeyDataFieldDescriptor = targetDataTypeDescriptor.Fields[targetKeyFieldName];
 
             foreignKeyFieldName = fieldName ??
-                                  string.Format("{0}{1}ForeignKey", targetDataTypeDescriptor.Name, targetKeyFieldName);
+                                  $"{targetDataTypeDescriptor.Name}{targetKeyFieldName}ForeignKey";
 
-            WidgetFunctionProvider widgetFunctionProvider = StandardWidgetFunctions.GetDataReferenceWidget(targetType);
+            var widgetFunctionProvider = StandardWidgetFunctions.GetDataReferenceWidget(targetType);
 
             return new DataFieldDescriptor(
                             Guid.NewGuid(),
@@ -1072,7 +1114,7 @@ namespace Composite.Data.GeneratedTypes
 
             if (dataFieldDescriptor.ForeignKeyReferenceTypeName != null)
             {
-                DataTypeAssociationDescriptor dataTypeAssociationDescriptor = dataTypeDescriptor.DataAssociations.FirstOrDefault();
+                var dataTypeAssociationDescriptor = dataTypeDescriptor.DataAssociations.FirstOrDefault();
 
                 if (dataTypeAssociationDescriptor != null)
                 {

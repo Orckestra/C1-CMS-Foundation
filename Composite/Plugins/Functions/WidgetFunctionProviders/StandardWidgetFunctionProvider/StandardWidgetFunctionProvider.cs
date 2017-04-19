@@ -108,6 +108,8 @@ namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunc
             _widgetStaticTypeFunctions.Add(new PageReferenceSelectorWidgetFunction(_entityTokenFactory));
             _widgetStaticTypeFunctions.Add(new NullablePageReferenceSelectorWidgetFunction(_entityTokenFactory));
             _widgetStaticTypeFunctions.Add(new FontIconSelectorWidgetFuntion(_entityTokenFactory));
+            _widgetStaticTypeFunctions.Add(new SvgIconSelectorWidgetFuntion(_entityTokenFactory));
+            _widgetStaticTypeFunctions.Add(new ConsoleIconSelectorWidgetFuntion(_entityTokenFactory));
         }
 
 

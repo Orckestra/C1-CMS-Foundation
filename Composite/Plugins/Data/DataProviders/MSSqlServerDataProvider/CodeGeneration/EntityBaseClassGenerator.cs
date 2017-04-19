@@ -3,6 +3,7 @@ using System.CodeDom;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
+using System.Linq;
 using System.Reflection;
 using Composite.Core.Types;
 using Composite.Data;
@@ -29,10 +30,12 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
 
         public CodeTypeDeclaration CreateClass()
         {
-            CodeTypeDeclaration codeTypeDeclaration = new CodeTypeDeclaration(_entityBaseClassName);
+            var codeTypeDeclaration = new CodeTypeDeclaration(_entityBaseClassName)
+            {
+                IsClass = true,
+                TypeAttributes = TypeAttributes.Public | TypeAttributes.Abstract
+            };
 
-            codeTypeDeclaration.IsClass = true;
-            codeTypeDeclaration.TypeAttributes = TypeAttributes.Public | TypeAttributes.Abstract;
             codeTypeDeclaration.BaseTypes.Add(typeof(INotifyPropertyChanged));
             codeTypeDeclaration.BaseTypes.Add(typeof(INotifyPropertyChanging));
             codeTypeDeclaration.BaseTypes.Add(typeof(IEntity));
@@ -58,8 +61,10 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
 
         private static void AddConstructor(CodeTypeDeclaration declaration)
         {
-            CodeConstructor constructor = new CodeConstructor();
-            constructor.Attributes = MemberAttributes.Public;
+            var constructor = new CodeConstructor
+            {
+                Attributes = MemberAttributes.Public
+            };
 
             constructor.Statements.Add(
                 new CodeAssignStatement(
@@ -78,16 +83,18 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
 
         private void AddIEntityImplementation(CodeTypeDeclaration declaration)
         {
-            CodeMemberMethod method = new CodeMemberMethod();
-            method.Name = "Commit";
-            method.Attributes = MemberAttributes.Public | MemberAttributes.Final;
+            var method = new CodeMemberMethod
+            {
+                Name = "Commit",
+                Attributes = MemberAttributes.Public | MemberAttributes.Final
+            };
 
             foreach (DataFieldDescriptor dataFieldDescriptor in _dataTypeDescriptor.Fields)
             {
                 string propertyName = dataFieldDescriptor.Name;
 
-                string fieldName = string.Format("_{0}", propertyName);
-                string nullableFieldName = string.Format("_{0}Nullable", propertyName);
+                string fieldName = $"_{propertyName}";
+                string nullableFieldName = $"_{propertyName}Nullable";
 
                 method.Statements.Add(
                     new CodeConditionStatement(
@@ -144,17 +151,19 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
 
         private void AddIDataSourceProperty(CodeTypeDeclaration declaration)
         {
-            PropertyInfo propertyInfo = typeof(IData).GetProperty("DataSourceId");
+            PropertyInfo propertyInfo = typeof(IData).GetProperty(nameof(IData.DataSourceId));
 
-            CodeMemberProperty codeProperty = new CodeMemberProperty();
-            codeProperty.Attributes = MemberAttributes.Public | MemberAttributes.Final;
-            codeProperty.Name = propertyInfo.Name;
-            codeProperty.HasGet = true;
-            codeProperty.HasSet = false;
-            codeProperty.Type = new CodeTypeReference(propertyInfo.PropertyType);
+            var codeProperty = new CodeMemberProperty
+            {
+                Attributes = MemberAttributes.Public | MemberAttributes.Final,
+                Name = propertyInfo.Name,
+                HasGet = true,
+                HasSet = false,
+                Type = new CodeTypeReference(propertyInfo.PropertyType)
+            };
 
-            List<CodeExpression> dataIdConstructorParms = new List<CodeExpression>();
-            foreach (string propertyName in _dataTypeDescriptor.KeyPropertyNames)
+            var dataIdConstructorParms = new List<CodeExpression>();
+            foreach (string propertyName in _dataTypeDescriptor.PhysicalKeyFields.Select(f=>f.Name))
             {
                 dataIdConstructorParms.Add(
                     new CodePropertyReferenceExpression(
@@ -221,8 +230,8 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
                 string propertyName = dataFieldDescriptor.Name;
                 Type propertyType = dataFieldDescriptor.InstanceType;
 
-                string fieldName = string.Format("_{0}", propertyName);
-                string nullableFieldName = string.Format("_{0}Nullable", propertyName);
+                string fieldName = $"_{propertyName}";
+                string nullableFieldName = $"_{propertyName}Nullable";
 
                 AddPropertiesAddField(declaration, propertyType, fieldName);
                 AddPropertiesAddNullableField(declaration, propertyType, nullableFieldName);
@@ -234,10 +243,12 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
 
         private static void AddPropertiesAddField(CodeTypeDeclaration declaration, Type propertyType, string fieldName)
         {
-            CodeMemberField fieldMember = new CodeMemberField();
-            fieldMember.Name = fieldName;
-            fieldMember.Type = new CodeTypeReference(propertyType);
-            fieldMember.Attributes = MemberAttributes.Family;
+            var fieldMember = new CodeMemberField
+            {
+                Name = fieldName,
+                Type = new CodeTypeReference(propertyType),
+                Attributes = MemberAttributes.Family
+            };
 
             declaration.Members.Add(fieldMember);
         }
@@ -246,12 +257,14 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
 
         private static void AddPropertiesAddNullableField(CodeTypeDeclaration declaration, Type propertyType, string fieldName)
         {
-            CodeMemberField fieldMember = new CodeMemberField();
-            fieldMember.Name = fieldName;
-            fieldMember.Type = new CodeTypeReference(typeof(ExtendedNullable<>).FullName, new CodeTypeReference(propertyType));
-            fieldMember.Attributes = MemberAttributes.Family;
+            var fieldMember = new CodeMemberField
+            {
+                Name = fieldName,
+                Type = new CodeTypeReference(typeof (ExtendedNullable<>).FullName, new CodeTypeReference(propertyType)),
+                Attributes = MemberAttributes.Family,
+                InitExpression = new CodePrimitiveExpression(null)
+            };
 
-            fieldMember.InitExpression = new CodePrimitiveExpression(null);
 
             declaration.Members.Add(fieldMember);
         }
@@ -260,12 +273,14 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
 
         private static void AddPropertiesAddProperty(CodeTypeDeclaration declaration, string propertyName, Type propertyType, string fieldName, string nullableFieldName)
         {
-            CodeMemberProperty propertyMember = new CodeMemberProperty();
-            propertyMember.Name = propertyName;
-            propertyMember.Type = new CodeTypeReference(propertyType);
-            propertyMember.Attributes = MemberAttributes.Public;
-            propertyMember.HasSet = true;
-            propertyMember.HasGet = true;
+            var propertyMember = new CodeMemberProperty
+            {
+                Name = propertyName,
+                Type = new CodeTypeReference(propertyType),
+                Attributes = MemberAttributes.Public,
+                HasSet = true,
+                HasGet = true
+            };
 
 
             propertyMember.GetStatements.Add(

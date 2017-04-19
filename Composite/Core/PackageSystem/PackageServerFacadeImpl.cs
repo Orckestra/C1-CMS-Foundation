@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.ServiceModel;
 using Composite.Core.PackageSystem.Foundation;
 using Composite.Core.PackageSystem.WebServiceClient;
@@ -11,6 +12,8 @@ namespace Composite.Core.PackageSystem
 {
     internal sealed class PackageServerFacadeImpl : IPackageServerFacade
     {
+        const string LogTitle = nameof(PackageServerFacade);
+
         private readonly PackageServerFacadeImplCache _packageServerFacadeImplCache = new PackageServerFacadeImplCache();
 
 
@@ -18,10 +21,13 @@ namespace Composite.Core.PackageSystem
         {
             try
             {
-                var basicHttpBinding = new BasicHttpBinding { MaxReceivedMessageSize = int.MaxValue };
-                basicHttpBinding.Security.Mode = BasicHttpSecurityMode.Transport;
+                var basicHttpBinding = new BasicHttpBinding
+                {
+                    MaxReceivedMessageSize = int.MaxValue,
+                    Security = {Mode = BasicHttpSecurityMode.Transport}
+                };
 
-                var client = new PackagesSoapClient(basicHttpBinding, new EndpointAddress(string.Format("https://{0}", packageServerUrl)));
+                var client = new PackagesSoapClient(basicHttpBinding, new EndpointAddress($"https://{packageServerUrl}"));
 
                 client.IsOperational();
                 return ServerUrlValidationResult.Https;
@@ -33,7 +39,7 @@ namespace Composite.Core.PackageSystem
             try
             {
                 var basicHttpBinding = new BasicHttpBinding { MaxReceivedMessageSize = int.MaxValue };
-                var client = new PackagesSoapClient(basicHttpBinding, new EndpointAddress(string.Format("http://{0}", packageServerUrl)));
+                var client = new PackagesSoapClient(basicHttpBinding, new EndpointAddress($"http://{packageServerUrl}"));
 
                 client.IsOperational();
                 return ServerUrlValidationResult.Http;
@@ -61,16 +67,29 @@ namespace Composite.Core.PackageSystem
             }
             catch (Exception ex)
             {
-                Log.LogError("PackageServerFacade", ex);
+                Log.LogError(LogTitle, ex);
             }
 
             packageDescriptions = new List<PackageDescription>();
             if (packageDescriptors != null)
             {
-                foreach (PackageDescriptor packageDescriptor in packageDescriptors)
+                foreach (var packageDescriptor in packageDescriptors)
                 {
                     if (ValidatePackageDescriptor(packageDescriptor))
                     {
+                        var subscriptionList = new List<Subscription>();
+                        if (packageDescriptor.Subscriptions !=null)
+                        {
+                            subscriptionList = packageDescriptor.Subscriptions.Select(
+                                f => new Subscription
+                                {
+                                    Id = f.Id,
+                                    Name = f.Name,
+                                    DetailsUrl = f.DetailsUrl,
+                                    Purchasable = f.Purchasable
+                                }).ToList();
+                        }
+
                         packageDescriptions.Add(new PackageDescription
                         {
                             PackageFileDownloadUrl = packageDescriptor.PackageFileDownloadUrl,
@@ -90,9 +109,11 @@ namespace Composite.Core.PackageSystem
                             PriceCurrency = packageDescriptor.PriceCurrency,
                             ReadMoreUrl = packageDescriptor.ReadMoreUrl,
                             TechicalDetails = packageDescriptor.TechicalDetails,
-                            TrialPeriodDays = packageDescriptor.TrialPeriodDays,
+                            TrialPeriodDays = packageDescriptor.TrialPeriodDays ?? 0,
                             UpgradeAgreementMandatory = packageDescriptor.UpgradeAgreementMandatory,
-                            Vendor = packageDescriptor.Author
+                            Vendor = packageDescriptor.Author,
+                            ConsoleBrowserUrl = packageDescriptor.ConsoleBrowserUrl,
+                            AvailableInSubscriptions = subscriptionList
                         });
                     }
                 }
@@ -109,16 +130,14 @@ namespace Composite.Core.PackageSystem
         {
             PackagesSoapClient client = CreateClient(packageServerUrl);
 
-            string eulaText = client.GetEulaText(eulaId, userCulture.ToString());
-
-            return eulaText;
+            return client.GetEulaText(eulaId, userCulture.ToString());
         }
 
 
 
         public Stream GetInstallFileStream(string packageFileDownloadUrl)
         {
-            Log.LogVerbose("PackageServerFacade", string.Format("Downloading file: {0}", packageFileDownloadUrl));
+            Log.LogVerbose(LogTitle, $"Downloading file: {packageFileDownloadUrl}");
 
             var client = new System.Net.WebClient();
             return client.OpenRead(packageFileDownloadUrl);
@@ -165,7 +184,8 @@ namespace Composite.Core.PackageSystem
             string newVersion;
             if (!VersionStringHelper.ValidateVersion(packageDescriptor.PackageVersion, out newVersion))
             {
-                Log.LogWarning("PackageServerFacade", string.Format("The package '{0}' ({1}) did not validate and is skipped", packageDescriptor.Name, packageDescriptor.Id));
+                Log.LogWarning(LogTitle,
+                    $"The package '{packageDescriptor.Name}' ({packageDescriptor.Id}) did not validate and is skipped");
                 return false;
             }
 
@@ -173,7 +193,8 @@ namespace Composite.Core.PackageSystem
 
             if (!VersionStringHelper.ValidateVersion(packageDescriptor.MinCompositeVersionSupported, out newVersion))
             {
-                Log.LogWarning("PackageServerFacade", string.Format("The package '{0}' ({1}) did not validate and is skipped", packageDescriptor.Name, packageDescriptor.Id));
+                Log.LogWarning(LogTitle,
+                    $"The package '{packageDescriptor.Name}' ({packageDescriptor.Id}) did not validate and is skipped");
                 return false;
             }
 
@@ -181,7 +202,8 @@ namespace Composite.Core.PackageSystem
 
             if (!VersionStringHelper.ValidateVersion(packageDescriptor.MaxCompositeVersionSupported, out newVersion))
             {
-                Log.LogWarning("PackageServerFacade", string.Format("The package '{0}' ({1}) did not validate and is skipped", packageDescriptor.Name, packageDescriptor.Id));
+                Log.LogWarning(LogTitle,
+                    $"The package '{packageDescriptor.Name}' ({packageDescriptor.Id}) did not validate and is skipped");
                 return false;
             }
 
@@ -210,7 +232,7 @@ namespace Composite.Core.PackageSystem
             }
 
             basicHttpBinding.MaxReceivedMessageSize = int.MaxValue;
-
+            
             return new PackagesSoapClient(basicHttpBinding, new EndpointAddress(packageServerUrl));
         }
     }

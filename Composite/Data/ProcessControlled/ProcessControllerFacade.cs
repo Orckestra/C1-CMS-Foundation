@@ -44,21 +44,30 @@ namespace Composite.Data.ProcessControlled
         /// <param name="data"></param>
         public static void FullDelete(IData data)
         {
+            FullDelete(new[] {data});
+        }
+
+
+        internal static void FullDelete(IEnumerable<IData> dataset)
+        {
             using (var transactionScope = TransactionsFacade.CreateNewScope())
             {
-                using (new DataScope(DataScopeIdentifier.Administrated))
+                foreach (var data in dataset)
                 {
                     if (data is IPublishControlled)
                     {
                         using (new DataScope(DataScopeIdentifier.Public))
-                        {                        
+                        {
                             IEnumerable<IData> datasDelete = DataFacade.GetDataFromOtherScope(data, DataScopeIdentifier.Public).Evaluate();
-                        
+
                             DataFacade.Delete(datasDelete, CascadeDeleteType.Disable);
                         }
                     }
 
-                    DataFacade.Delete(data);
+                    using (new DataScope(DataScopeIdentifier.Administrated))
+                    {
+                        DataFacade.Delete(data);
+                    }
                 }
 
                 transactionScope.Complete();

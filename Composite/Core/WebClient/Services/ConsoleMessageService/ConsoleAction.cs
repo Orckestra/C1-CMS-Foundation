@@ -33,6 +33,9 @@ namespace Composite.Core.WebClient.Services.ConsoleMessageService
         public OpenExternalViewParams OpenExternalViewParams { get; set; }
 
         /// <exclude />
+        public OpenSlideViewParams OpenSlideViewParams { get; set; }
+
+        /// <exclude />
         public DownloadFileParams DownloadFileParams { get; set; }
 
         /// <exclude />

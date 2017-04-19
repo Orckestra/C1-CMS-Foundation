@@ -15,8 +15,12 @@
 			<ui:editorpage id="formcontrolpage" 
             	image="<%= Server.HtmlEncode ( this.ContainerIconClientString ) %>"
 			    label="<%= Server.HtmlEncode ( this.ContainerLabel ) %>"
-                labelfield="<%= Server.HtmlEncode( GetTitleFieldControlId() ) %>">
-			    
+                labelfield="<%= Server.HtmlEncode( GetTitleFieldControlId() ) %>"
+				<% if (this.ContainerTooltip != null) { %>
+					tooltip="<%= Server.HtmlEncode ( this.ContainerTooltip ) %>"
+				<% } %>
+			>
+
 				<ui:broadcasterset>
 					<ui:broadcaster id="broadcasterCanSave" isdisabled="true" />
 				</ui:broadcasterset> 

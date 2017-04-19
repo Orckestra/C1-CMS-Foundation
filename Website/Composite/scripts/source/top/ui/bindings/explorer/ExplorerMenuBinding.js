@@ -3,6 +3,9 @@ ExplorerMenuBinding.prototype.constructor = ExplorerMenuBinding;
 ExplorerMenuBinding.superclass = Binding.prototype;
 ExplorerMenuBinding.ACTION_SELECTIONCHANGED = "explorermenu selectionchanged";
 
+ExplorerMenuBinding.SCROLLUP_CLASSNAME = "scrollup";
+ExplorerMenuBinding.SCROLLDOWN_CLASSNAME = "scrolldown";
+
 /**
  * @class
  */
@@ -63,6 +66,7 @@ ExplorerMenuBinding.prototype.onBindingRegister = function () {
 	ExplorerMenuBinding.superclass.onBindingRegister.call(this);
 	this.addActionListener(RadioGroupBinding.ACTION_SELECTIONCHANGED, this);
 	this.subscribe(this.bindingWindow.WindowManager.WINDOW_RESIZED_BROADCAST);
+	this.addEventListener(DOMEvents.SCROLL);
 }
 
 /**
@@ -122,6 +126,9 @@ ExplorerMenuBinding.prototype._mountMinButton = function (definition) {
 	button.setToolTip(definition.label); // use label as tooltip
 	button.handle = definition.handle;
 	button.node = definition.node;
+	if (Application.isTestEnvironment) {
+		button.setProperty("data-qa", definition.node.getTag());
+	}
 	this._group.add(button);
 	this._list.add(button);
 	button.attach();
@@ -145,12 +152,29 @@ ExplorerMenuBinding.prototype.handleAction = function (action) {
 			var radioGroupBinding = action.target;
 			var buttonBinding = radioGroupBinding.getCheckedButtonBinding();
 			var handle = buttonBinding.handle;
-			
+
 			this._selectedHandle = handle;
 			this._selectedTag = buttonBinding.node.getTag();
 			this.dispatchAction ( ExplorerMenuBinding.ACTION_SELECTIONCHANGED );
 
 			action.consume();
+			break;
+	}
+}
+
+/**
+ * @implements {IEventHandler}
+ * @overloads {Binding#handleEvent}
+ * @param {MouseEvent} e
+ */
+ExplorerMenuBinding.prototype.handleEvent = function (e) {
+
+	ExplorerMenuBinding.superclass.handleEvent.call(this, e);
+
+	switch (e.type) {
+
+		case DOMEvents.SCROLL:
+			this.updateScroll();
 			break;
 	}
 }
@@ -167,6 +191,7 @@ ExplorerMenuBinding.prototype.handleBroadcast = function (broadcast, arg) {
 	switch (broadcast) {
 		case this.bindingWindow.WindowManager.WINDOW_RESIZED_BROADCAST:
 			this.collapse();
+			this.updateScroll();
 			break;
 	}
 }
@@ -211,7 +236,20 @@ ExplorerMenuBinding.prototype.getSelectionTag = function () {
 ExplorerMenuBinding.prototype.setSelectionDefault = function () {
 
 	if (this._list.hasEntries()) {
-		this._list.getFirst().check();
+		var defaultButton = this._list.getFirst();
+
+		this._list.each(function(button) {
+			if (button.node && button.node.getPropertyBag) {
+				var propertyBag = button.node.getPropertyBag();
+				if (propertyBag && propertyBag.IsTool) {
+					return true;
+				}
+			}
+			defaultButton = button;
+			return false;
+		}, this);
+
+		defaultButton.check();
 	}
 }
 
@@ -220,7 +258,7 @@ ExplorerMenuBinding.prototype.setSelectionDefault = function () {
  * Toogle explorer
  */
 ExplorerMenuBinding.prototype.toggle = function () {
-    if (top.app.bindingMap.app.hasClassName("exploler-expanded")) {
+	if (top.app.bindingMap.app.hasClassName("exploler-expanded")) {
 		this.collapse();
 	} else {
 		this.expand();
@@ -231,7 +269,7 @@ ExplorerMenuBinding.prototype.toggle = function () {
  * Collapse explorer
  */
 ExplorerMenuBinding.prototype.collapse = function () {
-    top.app.bindingMap.app.detachClassName("exploler-expanded");
+	top.app.bindingMap.app.detachClassName("exploler-expanded");
 	top.app.bindingMap.menutogglebutton.setImage("${icon:menu}");
 
 }
@@ -241,6 +279,27 @@ ExplorerMenuBinding.prototype.collapse = function () {
  * Expand explorer
  */
 ExplorerMenuBinding.prototype.expand = function () {
-    top.app.bindingMap.app.attachClassName("exploler-expanded");
+	top.app.bindingMap.app.attachClassName("exploler-expanded");
 	top.app.bindingMap.menutogglebutton.setImage("${icon:arrow-left}");
+}
+
+/**
+ * Toogle explorer
+ */
+ExplorerMenuBinding.prototype.updateScroll = function () {
+	var scrollTop = this.bindingElement.scrollTop;
+	var scrollHeight = this.bindingElement.scrollHeight;
+	var clientHeight = this.bindingElement.clientHeight;
+	if (scrollTop === 0){
+		ExplorerBinding.bindingInstance.detachClassName(ExplorerMenuBinding.SCROLLUP_CLASSNAME);
+	} else {
+		ExplorerBinding.bindingInstance.attachClassName(ExplorerMenuBinding.SCROLLUP_CLASSNAME);
+	}
+
+	if (scrollTop + clientHeight < scrollHeight) {
+		this.attachClassName(ExplorerMenuBinding.SCROLLDOWN_CLASSNAME);
+	} else {
+		this.detachClassName(ExplorerMenuBinding.SCROLLDOWN_CLASSNAME);
+	}
+
 }

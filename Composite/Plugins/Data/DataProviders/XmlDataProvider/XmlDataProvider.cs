@@ -65,7 +65,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
         public IEnumerable<Type> GetSupportedInterfaces()
         {
-            return _xmlDataTypeStoresContainer.SupportedInterface;
+            return _xmlDataTypeStoresContainer.SupportedInterfaces;
         }
 
 

@@ -35,6 +35,12 @@ namespace Composite.Core.IO.Plugins.IOProvider
 
 
         /// <summary>
+        /// Gets or sets the size of an internal buffer.
+        /// </summary>
+        int InternalBufferSize { get; set; }
+
+
+        /// <summary>
         /// Adds or removes an event handler when new items are created.
         /// </summary>
         event FileSystemEventHandler Created;

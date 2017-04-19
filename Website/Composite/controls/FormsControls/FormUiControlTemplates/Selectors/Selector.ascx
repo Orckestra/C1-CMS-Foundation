@@ -3,7 +3,7 @@
 
 <script runat="server">
     
-    protected override void BindStateToProperties()
+    public override void BindStateToProperties()
     {
         this.SelectedKeys = new List<string> { clientSelector.SelectedValue };
     }
@@ -28,7 +28,7 @@
     }
 
 
-    protected override void InitializeViewState()
+    public override void InitializeViewState()
     {
         List<KeyLabelPair> options = this.GetOptions();
 

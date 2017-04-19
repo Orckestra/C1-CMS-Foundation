@@ -91,13 +91,13 @@ namespace Composite.Core.PackageSystem
                             FlushOnCompletion = (bool)flushOnCompletionAttribute,
                             ReloadConsoleOnCompletion = (bool)reloadConsoleOnCompletionAttribute,
                             SystemLockingType = systemLockingType,
-                            PackageServerAddress = packageServerAddressAttribute != null ? packageServerAddressAttribute.Value : null,
+                            PackageServerAddress = packageServerAddressAttribute?.Value,
                             PackageInstallPath = packageDirectory
                         };
                     }
                     else
                     {
-                        throw new InvalidOperationException(string.Format("{0} does not exist", filename));
+                        throw new InvalidOperationException($"'{filename}' does not exist");
                     }
                 }
                 else
@@ -186,8 +186,11 @@ namespace Composite.Core.PackageSystem
                 {
                     return new PackageManagerInstallProcess(new List<PackageFragmentValidationResult>
                     {
-                        new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, 
-                            GetText("PackageManager.CompositeVersionMisMatch")) }, zipFilename);
+                        new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal,
+                            Texts.PackageManager_CompositeVersionMisMatch(
+                                RuntimeInformation.ProductVersion, 
+                                packageInformation.MinCompositeVersionSupported,
+                                packageInformation.MaxCompositeVersionSupported)) }, zipFilename);
                 }
 
                 bool updatingInstalledPackage = false;
@@ -411,20 +414,22 @@ namespace Composite.Core.PackageSystem
             else return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(GetText("PackageManager.InvalidAttributeValue"), PackageSystemSettings.VersionAttributeName), maximumCompositeVersionAttribute);
 
 
-            packageInformation = new PackageInformation();
-            packageInformation.Id = id;
-            packageInformation.Name = nameAttribute.Value;
-            packageInformation.GroupName = groupNameAttribute.Value;
-            packageInformation.Author = authorAttribute.Value;
-            packageInformation.Website = websiteAttribute.Value;
-            packageInformation.Version = versionAttribute.Value;
-            packageInformation.CanBeUninstalled = canBeUninstalled;
-            packageInformation.SystemLockingType = systemLockingType;
-            packageInformation.Description = packageInformationElement.Value;
-            packageInformation.FlushOnCompletion = flushOnCompletion;
-            packageInformation.ReloadConsoleOnCompletion = reloadConsoleOnCompletion;
-            packageInformation.MinCompositeVersionSupported = new Version(minimumCompositeVersionAttribute.Value);
-            packageInformation.MaxCompositeVersionSupported = new Version(maximumCompositeVersionAttribute.Value);
+            packageInformation = new PackageInformation
+            {
+                Id = id,
+                Name = nameAttribute.Value,
+                GroupName = groupNameAttribute.Value,
+                Author = authorAttribute.Value,
+                Website = websiteAttribute.Value,
+                Version = versionAttribute.Value,
+                CanBeUninstalled = canBeUninstalled,
+                SystemLockingType = systemLockingType,
+                Description = packageInformationElement.Value,
+                FlushOnCompletion = flushOnCompletion,
+                ReloadConsoleOnCompletion = reloadConsoleOnCompletion,
+                MinCompositeVersionSupported = new Version(minimumCompositeVersionAttribute.Value),
+                MaxCompositeVersionSupported = new Version(maximumCompositeVersionAttribute.Value)
+            };
 
             return null;
         }
@@ -479,7 +484,7 @@ namespace Composite.Core.PackageSystem
 
         private static string CreatePackageDirectoryName(PackageInformation packageInformation)
         {
-            string directoryName = string.Format("{0}", packageInformation.Id);
+            string directoryName = $"{packageInformation.Id}";
 
             return Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.PackageDirectory), directoryName);
         }

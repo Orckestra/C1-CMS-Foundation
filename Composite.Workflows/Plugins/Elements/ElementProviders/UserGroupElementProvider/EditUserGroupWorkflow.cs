@@ -97,7 +97,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserGroupElementProvider
                  where ug.Name == userGroup.Name
                  select ug).Any();
 
-            e.Result = exists == false;
+            e.Result = !exists;
         }
 
 
@@ -116,8 +116,8 @@ namespace Composite.Plugins.Elements.ElementProviders.UserGroupElementProvider
             IUserGroup userGroup = this.GetBinding<IUserGroup>("UserGroup");
             List<string> newUserGroupEntityTokens = ActivePerspectiveFormsHelper.GetSelectedSerializedEntityTokens(this.Bindings).ToList();
 
-            // If current user belongs to currenctly edited group -> checking that user won't lost access "Users" perspective
-            if (!ValidateUserPreservsAdminRights(userGroup, newUserGroupEntityTokens))
+            // If current user belongs to currently edited group -> checking that user won't lost access "Users" perspective
+            if (!ValidateUserPreservesAdminRights(userGroup, newUserGroupEntityTokens))
             {
                 return;
             }
@@ -140,7 +140,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserGroupElementProvider
 
             SetSaveStatus(true);
 
-            LoggingService.LogVerbose("UserManagement", String.Format("C1 Console user group '{0}' updated by '{1}'.", userGroup.Name, UserValidationFacade.GetUsername()), LoggingService.Category.Audit);
+            LoggingService.LogVerbose("UserManagement", $"C1 Console user group '{userGroup.Name}' updated by '{UserValidationFacade.GetUsername()}'.", LoggingService.Category.Audit);
 
             if (userGroup.Name != this.GetBinding<string>("OldName"))
             {
@@ -152,14 +152,14 @@ namespace Composite.Plugins.Elements.ElementProviders.UserGroupElementProvider
             }
         }
 
-        private bool ValidateUserPreservsAdminRights(IUserGroup userGroup, List<string> newUserGroupEntityTokens)
+        private bool ValidateUserPreservesAdminRights(IUserGroup userGroup, List<string> newUserGroupEntityTokens)
         {
             string systemPerspectiveEntityToken = EntityTokenSerializer.Serialize(AttachingPoint.SystemPerspective.EntityToken);
 
             Guid groupId = userGroup.Id;
             string userName = UserSettings.Username;
 
-            List<Guid> userGroupIds = UserGroupFacade.GetUserGroupIds(userName);
+            var userGroupIds = UserGroupFacade.GetUserGroupIds(userName);
 
             HashSet<Guid> groupsWithAccessToSystemPerspective = new HashSet<Guid>(GetGroupsThatHasAccessToPerspective(systemPerspectiveEntityToken));
 

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
+using System.Linq;
 using Composite.Core.Logging;
 
 
@@ -18,7 +20,7 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
         {
             _fileLogger = fileLogger;
 
-            lock (_fileLogger._syncRoot)
+            lock (_fileLogger.SyncRoot)
             {
                 var fileConnection = _fileLogger.FileConnection;
 
@@ -45,39 +47,75 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
         {
             get
             {
-                lock (_fileLogger._syncRoot)
+                DateTime readUntil;
+                int count;
+                string filePath;
+
+                lock (_fileLogger.SyncRoot)
                 {
-                    return _fileLogger.FileConnection.OldEntries.Length +
-                           _fileLogger.FileConnection.NewEntries.Count;
+                    var fileConn = _fileLogger.FileConnection;
+
+                    var firstEntry = fileConn.NewEntries.First();
+                    readUntil = firstEntry?.TimeStamp ?? DateTime.MaxValue;
+
+                    count = fileConn.NewEntries.Count;
+
+                    filePath = fileConn.FilePath;
                 }
+
+                using (var fs = File.Open(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                {
+                    foreach (var logEntry in LogReaderHelper.ParseLogLines(fs))
+                    {
+                        if (logEntry.TimeStamp >= readUntil) { break; }
+
+                        count++;
+                    }
+                }
+
+                return count;
             }
         }
 
         public override IEnumerable<LogEntry> GetLogEntries(DateTime timeFrom, DateTime timeTo)
         {
-            if (timeFrom < _fileLogger.StartupTime)
-            {
-                var parserEnumerable = PlainFileReader.ParseLogLines(_fileLogger.FileConnection.OldEntries);
-                foreach (var logEntry in parserEnumerable)
-                {
-                    yield return logEntry;
-                }
-            }
-            
-            LogEntry[] newEntries = null;
+            Verify.That(timeFrom <= timeTo, "An incorrect time interval given.");
 
-            lock (_fileLogger._syncRoot)
+            string filePath;
+            LogEntry[] newEntries;
+
+            lock (_fileLogger.SyncRoot)
             {
-                var fileConnection = _fileLogger.FileConnection;
-                if (fileConnection != null)
-                {
-                    newEntries = fileConnection.NewEntries.ToArray();
-                }
+                var fileConn = _fileLogger.FileConnection;
+                newEntries = fileConn.NewEntries.ToArray();
+
+                filePath = fileConn.FilePath;
             }
 
-            if (newEntries != null)
+            DateTime readUntil = newEntries.FirstOrDefault()?.TimeStamp.AddMilliseconds(-1) ?? DateTime.Now;
+
+            if (timeFrom <= readUntil)
             {
-                foreach (var logEntry in newEntries) yield return logEntry;
+                using (var fs = File.Open(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                {
+                    var parserEnumerable = LogReaderHelper.ParseLogLines(fs);
+                    foreach (var logEntry in parserEnumerable)
+                    {
+                        if(logEntry.TimeStamp < timeFrom) continue;
+                        if (logEntry.TimeStamp > timeTo 
+                            || logEntry.TimeStamp > readUntil) break;
+
+                        yield return logEntry;
+                    }
+                }
+            }
+
+            foreach (var logEntry in newEntries)
+            {
+                if (logEntry.TimeStamp < timeFrom) continue;
+                if (logEntry.TimeStamp > timeTo) break;
+
+                yield return logEntry;
             }
         }
 

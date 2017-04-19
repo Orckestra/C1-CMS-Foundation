@@ -11,7 +11,7 @@
     <AssemblyName>Composite</AssemblyName>
     <ProjectTypeGuids>{14822709-B5A1-4724-98CA-57A101D1B079};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
@@ -66,17 +66,18 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ICSharpCode.SharpZipLib, Version=0.81.0.1407, Culture=neutral, PublicKeyToken=1b03e6acf1164f73">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\bin\ICSharpCode.SharpZipLib.dll</HintPath>
+    <Reference Include="Castle.Core, Version=3.3.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <HintPath>..\packages\Castle.Core.3.3.1\lib\net45\Castle.Core.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Microsoft.Framework.DependencyInjection, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Bin\Microsoft.Framework.DependencyInjection.dll</HintPath>
+    <Reference Include="Microsoft.Extensions.DependencyInjection, Version=1.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.1.1.0\lib\netstandard1.1\Microsoft.Extensions.DependencyInjection.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Framework.DependencyInjection.Abstractions">
-      <HintPath>..\Bin\Microsoft.Framework.DependencyInjection.Abstractions.dll</HintPath>
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=1.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.1.1.0\lib\netstandard1.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -94,16 +95,62 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\bin\Microsoft.Practices.ObjectBuilder.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.WebSockets, Version=0.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.WebSockets.0.2.3.1\lib\net45\Microsoft.WebSockets.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.5\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Collections.Immutable, Version=1.1.37.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Packages\System.Collections.Immutable.1.2.0\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
+    </Reference>
     <Reference Include="System.configuration" />
     <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
+    <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Diagnostics.DiagnosticSource.4.3.0\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.IO.Compression" />
     <Reference Include="System.Management" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Net.WebSockets, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Net.WebSockets.4.0.0\lib\net46\System.Net.WebSockets.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.WebSockets.Client, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Net.WebSockets.Client.4.0.0\lib\net46\System.Net.WebSockets.Client.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Reactive.Core, Version=3.0.0.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reactive.Core.3.0.0\lib\net46\System.Reactive.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Reactive.Interfaces, Version=3.0.0.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reactive.Interfaces.3.0.0\lib\net45\System.Reactive.Interfaces.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Reactive.Linq, Version=3.0.0.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reactive.Linq.3.0.0\lib\net46\System.Reactive.Linq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Reactive.PlatformServices, Version=3.0.0.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reactive.PlatformServices.3.0.0\lib\net46\System.Reactive.PlatformServices.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Reactive.Windows.Threading, Version=3.0.0.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reactive.Windows.Threading.3.0.0\lib\net45\System.Reactive.Windows.Threading.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Runtime.Serialization">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
@@ -113,24 +160,29 @@
     <Reference Include="System.ServiceModel.Web">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Threading.Tasks.Dataflow, Version=4.6.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Dataflow.4.6.0\lib\netstandard1.1\System.Threading.Tasks.Dataflow.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Transactions" />
+    <Reference Include="System.ValueTuple, Version=4.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.0.0-rc3-24212-01\lib\netstandard1.1\System.ValueTuple.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Web.Razor, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Bin\System.Web.Razor.dll</HintPath>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Web.Services">
       <Private>False</Private>
     </Reference>
-    <Reference Include="System.Web.WebPages, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Bin\System.Web.WebPages.dll</HintPath>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Web.WebPages.Razor, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Bin\System.Web.WebPages.Razor.dll</HintPath>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Workflow.Activities" />
@@ -143,27 +195,134 @@
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data.Linq" />
-    <Reference Include="System.Web" />
+    <Reference Include="System.Web">
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System.XML" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="TidyNet">
       <HintPath>..\bin\TidyNet.dll</HintPath>
     </Reference>
+    <Reference Include="WampSharp, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WampSharp.1.2.5.32-beta\lib\net45\WampSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="WampSharp.AspNet.WebSockets.Server, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WampSharp.AspNet.WebSockets.Server.1.2.5.32-beta\lib\net45\WampSharp.AspNet.WebSockets.Server.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="WampSharp.NewtonsoftJson, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WampSharp.NewtonsoftJson.1.2.5.32-beta\lib\net45\WampSharp.NewtonsoftJson.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="WampSharp.WebSockets, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WampSharp.WebSockets.1.2.5.32-beta\lib\net45\WampSharp.WebSockets.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AspNet\CompositeC1SiteMapProvider.cs" />
+    <Compile Include="AspNet\CmsPageSiteMapProvider.cs" />
     <Compile Include="AspNet\Razor\RazorFunction.cs" />
     <Compile Include="AspNet\Razor\RazorHelper.cs" />
     <Compile Include="AspNet\Razor\RazorPageTemplate.cs" />
     <Compile Include="AspNet\Razor\CompositeC1WebPage.cs" />
-    <Compile Include="AspNet\CompositeC1SiteMapNode.cs" />
-    <Compile Include="AspNet\SiteMapContainer.cs" />
+    <Compile Include="AspNet\CmsPageSiteMapNode.cs" />
     <Compile Include="AspNet\SiteMapContext.cs" />
     <Compile Include="AspNet\SiteMapHandler.cs" />
     <Compile Include="AspNet\SiteMapNodeChangeFrequency.cs" />
     <Compile Include="AspNet\UserControlFunction.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="C1Console\Actions\Data\ActionIdentifier.cs" />
+    <Compile Include="C1Console\Actions\Data\DataActionTokenRegisterHandler.cs" />
+    <Compile Include="C1Console\Actions\Data\DataActionTokenResolver.cs" />
+    <Compile Include="C1Console\Actions\Data\DataActionTokenResolverFacade.cs" />
+    <Compile Include="C1Console\Actions\Data\DataActionTokenResolverRegistry.cs" />
+    <Compile Include="C1Console\Actions\DuplicateActionToken.cs" />
+    <Compile Include="C1Console\RichContent\Components\Component.cs" />
+    <Compile Include="C1Console\RichContent\Components\ComponentChangeNotifier.cs" />
+    <Compile Include="C1Console\RichContent\Components\ComponentManager.cs" />
+    <Compile Include="C1Console\RichContent\Components\IComponentProvider.cs" />
+    <Compile Include="C1Console\Forms\ITestAutomationLocatorInformation.cs" />
+    <Compile Include="C1Console\Elements\DialogStrings.cs" />
+    <Compile Include="C1Console\Security\Plugins\LoginSessionStore\INoneConfigurationBasedLoginSessionStore.cs" />
+    <Compile Include="C1Console\Security\Plugins\LoginSessionStore\Runtime\LoginSessionStoreResolver.cs" />
+    <Compile Include="C1Console\RichContent\ContainerClasses\AntonymContainerClassManager.cs" />
+    <Compile Include="C1Console\RichContent\ContainerClasses\ContainerClassManager.cs" />
+    <Compile Include="C1Console\RichContent\ContainerClasses\EqualOrAntonymComparer.cs" />
+    <Compile Include="Core\WebClient\PageStructureRpc.cs" />
+    <Compile Include="Search\Crawling\DefaultDocumentFieldNames.cs" />
+    <Compile Include="Search\Crawling\EntityTokenSecurityHelper.cs" />
+    <Compile Include="Search\Crawling\IDataFieldProcessorProvider.cs" />
+    <Compile Include="Search\Crawling\PublicationStatusDataFieldProcessor.cs" />
+    <Compile Include="Search\Crawling\SearchDocumentBuilder.cs" />
+    <Compile Include="Search\Crawling\DateTimeDataFieldProcessor.cs" />
+    <Compile Include="Search\Crawling\DefaultDataFieldProcessor.cs" />
+    <Compile Include="Search\Crawling\IDataFieldProcessor.cs" />
+    <Compile Include="Search\Crawling\XhtmlCrawlingHelper.cs" />
+    <Compile Include="Search\DocumentField.cs" />
+    <Compile Include="Search\Crawling\DataTypeSearchReflectionHelper.cs" />
+    <Compile Include="Search\DocumentSources\BuiltInTypesDocumentSourceProvider.cs" />
+    <Compile Include="Search\DocumentSources\DataChangesIndexNotifier.cs" />
+    <Compile Include="Search\DocumentSources\DataTypeDocumentSource.cs" />
+    <Compile Include="Search\DocumentSources\DataTypesDocumentSourceProvider.cs" />
+    <Compile Include="Search\DocumentSources\IndexUpdateActionContainer.cs" />
+    <Compile Include="Search\DocumentSources\MediaLibraryDocumentSource.cs" />
+    <Compile Include="Search\DocumentSources\CmsPageDocumentSource.cs" />
+    <Compile Include="Search\IDocumentSourceListener.cs" />
+    <Compile Include="Search\ISearchIndexUpdater.cs" />
+    <Compile Include="Search\ISearchDocumentSource.cs" />
+    <Compile Include="Search\ISearchDocumentSourceProvider.cs" />
+    <Compile Include="Search\ISearchProvider.cs" />
+    <Compile Include="Search\SearchDocument.cs" />
+    <Compile Include="Search\SearchFacade.cs" />
+    <Compile Include="Search\SearchQuery.cs" />
+    <Compile Include="Search\SearchResult.cs" />
+    <Compile Include="C1Console\Trees\GenericDuplicateDataActionNode.cs" />
+    <Compile Include="C1Console\Elements\IServiceUrlToEntityTokenMapper.cs" />
+    <Compile Include="C1Console\Events\OpenSlideViewQueueItem.cs" />
+    <Compile Include="C1Console\Workflow\FormsWorkflowExtensions.cs" />
+    <Compile Include="C1Console\Workflow\IFormsWorkflowExtension.cs" />
+    <Compile Include="Core\Extensions\DateTimeExtensionMethods.cs" />
+    <Compile Include="Core\WebClient\PhantomJs\PhantomServer.cs" />
+    <Compile Include="Core\WebClient\PhantomJs\RenderingResult.cs" />
+    <Compile Include="Core\WebClient\PhantomJs\RenderingResultStatus.cs" />
+    <Compile Include="Core\WebClient\PhantomJs\RenderPreviewRequest.cs" />
+    <Compile Include="Core\Logging\ILog.cs" />
+    <Compile Include="Core\WebClient\Services\ConsoleMessageService\OpenSlideViewParams.cs" />
+    <Compile Include="Core\WebClient\Services\WampRouter\IRpcService.cs" />
+    <Compile Include="Core\WebClient\Services\WampRouter\IWampEventHandler.cs" />
+    <Compile Include="Core\WebClient\Services\WampRouter\UserNameBasedAuthenticationFactory.cs" />
+    <Compile Include="Core\WebClient\Services\WampRouter\UserNameBasedAuthorizer.cs" />
+    <Compile Include="Core\WebClient\Services\WampRouter\UserNameBasedCookieAuthenticationFactory.cs" />
+    <Compile Include="Core\WebClient\Services\WampRouter\UserNameBasedCookieAuthenticator.cs" />
+    <Compile Include="Core\WebClient\Services\WampRouter\WampLogger.cs" />
+    <Compile Include="Core\WebClient\Services\WampRouter\WampRouter.cs" />
+    <Compile Include="Core\WebClient\Services\WampRouter\WampRouterFacade.cs" />
+    <Compile Include="Core\WebClient\Services\WampRouter\WampRouterResolverRegistry.cs" />
+    <Compile Include="Data\DataScopeServicesFacade.cs" />
+    <Compile Include="Data\DataServiceScopeManager.cs" />
+    <Compile Include="Data\DynamicTypes\SearchProfile.cs" />
+    <Compile Include="Data\SearchableTypeAttribute.cs" />
+    <Compile Include="Data\SearchableFieldAttribute.cs" />
+    <Compile Include="Data\Types\IVersioned.cs" />
+    <Compile Include="Data\Types\IVersionedDataHelper.cs" />
+    <Compile Include="Data\Types\PageInsertPosition.cs" />
+    <Compile Include="Data\ICreationHistory.cs" />
+    <Compile Include="Data\VersionKeyPropertyName.cs" />
+    <Compile Include="Plugins\Components\ComponentProviderSettings.cs" />
+    <Compile Include="Plugins\Components\ComponentsEndpoint\ComponentsEndpoint.cs" />
+    <Compile Include="Plugins\Components\ComponentsEndpoint\ComponentsResponseMessage.cs" />
+    <Compile Include="Plugins\Components\ComponentTags\TagManager.cs" />
+    <Compile Include="Plugins\Components\FileBasedComponentProvider\FileBasedComponentProvider.cs" />
+    <Compile Include="Plugins\Elements\ElementProviders\PageElementProvider\PageAddActionExecuter.cs" />
+    <Compile Include="Plugins\Elements\ElementProviders\PageElementProvider\PageAddActionToken.cs" />
+    <Compile Include="C1Console\Actions\Data\ProxyDataActionExecuter.cs" />
+    <Compile Include="C1Console\Actions\Data\ProxyDataActionToken.cs" />
+    <Compile Include="Data\ProcessControlled\ProcessControllers\GenericPublishProcessController\GenericPublishProcessDynamicActionTokens.cs" />
+    <Compile Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\GeneratedDataTypesElementDynamicActionTokens.cs" />
+    <Compile Include="Plugins\Elements\ElementProviders\PageElementProvider\PageElementDynamicActionTokens.cs" />
     <Compile Include="C1Console\Elements\IUrlToEntityTokenMapper.cs" />
     <Compile Include="C1Console\Elements\UrlToEntityTokenFacade.cs" />
     <Compile Include="C1Console\Commands\ConsoleCommandFacade.cs" />
@@ -176,7 +335,10 @@
     <Compile Include="C1Console\Commands\Plugins\ConsoleCommandHandler\Runtime\ConsoleCommandHandlerSettings.cs" />
     <Compile Include="C1Console\Drawing\FunctionPresentation.cs" />
     <Compile Include="C1Console\Elements\ElementProviderHelpers\DataGroupingProviderHelper\ElipsisEntityToken.cs" />
+    <Compile Include="C1Console\Forms\CoreUiControls\SvgIconSelectorUiControl.cs" />
     <Compile Include="C1Console\Forms\CoreUiControls\FontIconSelectorUiControl.cs" />
+    <Compile Include="C1Console\Forms\CoreUiControls\HierarchicalSelectorUiControl.cs" />
+    <Compile Include="C1Console\Forms\CoreUiControls\HierarchicalSelectorUiControlFactoryData.cs" />
     <Compile Include="C1Console\Security\Foundation\PluginFacades\PasswordRulePluginFacade.cs" />
     <Compile Include="C1Console\Security\PasswordPolicyFacade.cs" />
     <Compile Include="C1Console\Security\Plugins\PasswordPolicy\IPasswordRule.cs" />
@@ -187,7 +349,7 @@
     <Compile Include="C1Console\Security\Plugins\PasswordPolicy\Runtime\PasswordPolicySettings.cs" />
     <Compile Include="C1Console\Security\UserLockoutReason.cs" />
     <Compile Include="C1Console\Trees\SortDirection.cs" />
-    <Compile Include="Core\Application\ServiceLocator.cs" />
+    <Compile Include="Core\ServiceLocator.cs" />
     <Compile Include="Core\Application\Job.cs" />
     <Compile Include="Core\Caching\FileRelatedDataCache.cs" />
     <Compile Include="Core\Extensions\StackTraceExtensionMethods.cs" />
@@ -221,6 +383,7 @@
     <Compile Include="Core\Routing\IInternalUrlConverter.cs" />
     <Compile Include="Core\Routing\IMediaUrlProvider.cs" />
     <Compile Include="Core\Routing\InternalUrls.cs" />
+    <Compile Include="Core\WebClient\Services\TreeServiceObjects\ClientBrowserViewSettings.cs" />
     <Compile Include="Data\DynamicTypes\DataUrlProfile.cs" />
     <Compile Include="Data\InternalUrlAttribute.cs" />
     <Compile Include="Data\PageRenderingHistory.cs" />
@@ -235,7 +398,6 @@
     <Compile Include="Core\Routing\Pages\SeoFriendlyRedirectRouteHandler.cs" />
     <Compile Include="Core\Threading\ThreadCultureScope.cs" />
     <Compile Include="Core\WebClient\BrowserRender.cs" />
-    <Compile Include="Core\WebClient\BrowserRender_PhantomServer.cs" />
     <Compile Include="Core\WebClient\BuildManagerHelper.cs" />
     <Compile Include="Core\WebClient\Captcha\CaptchaConfiguration.cs" />
     <Compile Include="Core\WebClient\Renderings\FunctionPreview.cs" />
@@ -282,6 +444,18 @@
     <Compile Include="Plugins\Commands\ConsoleCommandHandlers\ConsoleCommandHelper.cs" />
     <Compile Include="Plugins\Commands\ConsoleCommandHandlers\FocusElement.cs" />
     <Compile Include="Plugins\Commands\ConsoleCommandHandlers\FocusData.cs" />
+    <Compile Include="Plugins\Elements\ElementProviders\VirtualElementProvider\PlaceholderVirtualElement.cs" />
+    <Compile Include="Plugins\Forms\WebChannel\UiControlFactories\TemplatedHierarchicalSelectorUiControlFactory.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Plugins\Forms\WebChannel\UiControlFactories\TemplatedSvgIconSelectorUiControlFactory.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Plugins\Functions\FunctionProviders\FileBasedFunctionProvider\IParameterWidgetsProvider.cs" />
+    <Compile Include="Plugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\Utils\ConsoleIconSelectorWidgetFuntion.cs" />
+    <Compile Include="Plugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\Utils\SvgIconSelectorWidgetFuntion.cs" />
+    <Compile Include="Plugins\Logging\LogTraceListeners\FileLogTraceListener\CircullarList.cs" />
+    <Compile Include="Plugins\Logging\LogTraceListeners\FileLogTraceListener\LogReaderHelper.cs" />
     <Compile Include="Plugins\Routing\InternalUrlConverters\DataInternalUrlConverter.cs" />
     <Compile Include="Plugins\Routing\InternalUrlProviders\DataInternalUrlProvider.cs" />
     <Compile Include="Plugins\Routing\MediaUrlProviders\DefaultMediaUrlProvider.cs" />
@@ -1033,7 +1207,12 @@
     <Compile Include="Plugins\Routing\Pages\DefaultPageUrlProvider.cs" />
     <Compile Include="Plugins\Routing\UrlFormatters\StringReplaceUrlFormatter.cs" />
     <Compile Include="Plugins\Routing\UrlFormatters\ToLowerCaseUrlFormatter.cs" />
+    <Compile Include="Plugins\Search\Endpoint\ConsoleSearchPageStructure.cs" />
+    <Compile Include="Plugins\Search\Endpoint\ConsoleSearchQuery.cs" />
+    <Compile Include="Plugins\Search\Endpoint\ConsoleSearchResult.cs" />
+    <Compile Include="Plugins\Search\Endpoint\ConsoleSearchRpcService.cs" />
     <Compile Include="Plugins\Security\LoginProviderPlugins\DataBasedFormLoginProvider\UserFormLoginManager.cs" />
+    <Compile Include="Plugins\Security\LoginSessionStores\WampContextBasedLoginSessionStore\WampContextBasedBasedLoginSessionStore.cs" />
     <Compile Include="Plugins\Security\PasswordRules\DifferentCharacterGroups\DifferentCharacterGroupsPasswordRule.cs" />
     <Compile Include="Plugins\Security\PasswordRules\DoNotUseUserName\DoNotUseUserNamePasswordRule.cs" />
     <Compile Include="Plugins\Security\PasswordRules\EnforcePasswordHistory\EnforcePasswordHistoryPasswordRule.cs" />
@@ -1090,6 +1269,7 @@
     <Compile Include="C1Console\Users\UserSettingsMock.cs" />
     <Compile Include="Data\Validation\Validators\StringSizeValidatorAttribute.cs" />
     <Compile Include="Plugins\Elements\UrlToEntityToken\DataUrlToEntityTokenMapper.cs" />
+    <Compile Include="Properties\SharedAssemblyInfo.cs" />
     <Compile Include="Verify.cs" />
     <Compile Include="C1Console\Events\BroadcastMessageQueueItem.cs" />
     <Compile Include="C1Console\Events\CollapseAndRefreshConsoleMessageQueueItem.cs" />
@@ -1409,7 +1589,6 @@
     <Compile Include="Core\WebClient\HttpModules\AdministrativeAuthorizationHttpModule.cs" />
     <Compile Include="Core\WebClient\HttpModules\AdministrativeCultureSetterHttpModule.cs" />
     <Compile Include="Core\WebClient\HttpModules\AdministrativeDataScopeSetterHttpModule.cs" />
-    <Compile Include="Core\WebClient\HttpModules\AdministrativeOutputGZipperHttpModule.cs" />
     <Compile Include="Core\WebClient\HttpModules\AdministrativeResponseFilterHttpModule.cs" />
     <Compile Include="Core\WebClient\MediaUrlHelper.cs" />
     <Compile Include="Core\WebClient\PageUrlHelper.cs" />
@@ -1607,7 +1786,6 @@
     <Compile Include="C1Console\Security\BuildinPlugins\BuildinUserPermissionDefinitionProvider\BuildinUserRoleDefinitionProvider.cs" />
     <Compile Include="C1Console\Security\ConstructorBasedUserPermissionDefinition.cs" />
     <Compile Include="C1Console\Security\Foundation\PluginFacades\UserRoleDefinitionProviderPluginFacade.cs" />
-    <Compile Include="C1Console\Security\IgnoreEntityTokenLocking.cs" />
     <Compile Include="C1Console\Security\ParentsFacade.cs" />
     <Compile Include="C1Console\Security\PermissionDescriptor.cs" />
     <Compile Include="C1Console\Security\PermissionType.cs" />
@@ -1842,9 +2020,6 @@
     <Compile Include="C1Console\Actions\ActionExecutorAttribute.cs" />
     <Compile Include="C1Console\Actions\ActionExecutorFacade.cs" />
     <Compile Include="C1Console\Actions\ActionResult.cs" />
-    <Compile Include="C1Console\Actions\DataActionFacade.cs" />
-    <Compile Include="C1Console\Actions\DataActionProviderContext.cs" />
-    <Compile Include="C1Console\Actions\DataActionSourceId.cs" />
     <Compile Include="C1Console\Actions\FlowControllerAttribute.cs" />
     <Compile Include="C1Console\Actions\FlowControllerFacade.cs" />
     <Compile Include="C1Console\Actions\FlowControllerServicesContainer.cs" />
@@ -1852,25 +2027,14 @@
     <Compile Include="C1Console\Actions\FlowToken.cs" />
     <Compile Include="C1Console\Actions\FlowUiDefinitionBase.cs" />
     <Compile Include="C1Console\Actions\Foundation\ActionExecutorCache.cs" />
-    <Compile Include="C1Console\Actions\Foundation\DataActionProviderPluginRegistry.cs" />
     <Compile Include="C1Console\Actions\Foundation\FlowExecutorCache.cs" />
-    <Compile Include="C1Console\Actions\Foundation\PluginFacades\DataActionProviderPluginFacade.cs" />
     <Compile Include="C1Console\Actions\IActionExecutionService.cs" />
     <Compile Include="C1Console\Actions\IActionExecutor.cs" />
-    <Compile Include="C1Console\Actions\IDataAction.cs" />
-    <Compile Include="C1Console\Actions\IDataActionId.cs" />
     <Compile Include="C1Console\Actions\IFlowController.cs" />
     <Compile Include="C1Console\Actions\IFlowControllerService.cs" />
     <Compile Include="C1Console\Actions\IFlowUiContainerType.cs" />
     <Compile Include="C1Console\Actions\IFlowUiDefinition.cs" />
     <Compile Include="C1Console\Actions\NullFlow.cs" />
-    <Compile Include="C1Console\Actions\Plugins\DataActionProvider\DataActionProviderData.cs" />
-    <Compile Include="C1Console\Actions\Plugins\DataActionProvider\IDataActionProvider.cs" />
-    <Compile Include="C1Console\Actions\Plugins\DataActionProvider\NonConfigurableDataActionProvider.cs" />
-    <Compile Include="C1Console\Actions\Plugins\DataActionProvider\Runtime\DataActionProviderCustomFactory.cs" />
-    <Compile Include="C1Console\Actions\Plugins\DataActionProvider\Runtime\DataActionProviderDefaultNameRetriever.cs" />
-    <Compile Include="C1Console\Actions\Plugins\DataActionProvider\Runtime\DataActionProviderFactory.cs" />
-    <Compile Include="C1Console\Actions\Plugins\DataActionProvider\Runtime\DataActionProviderSettings.cs" />
     <Compile Include="C1Console\Actions\StandardUiContainerTypes.cs" />
     <Compile Include="Core\Collections\Generic\CastEnumerable.cs" />
     <Compile Include="Core\Collections\Generic\CastEnumerator.cs" />
@@ -2415,7 +2579,7 @@
     <Compile Include="C1Console\Workflow\ActivityExtensionMethods.cs" />
     <Compile Include="C1Console\Workflow\AllowPersistingWorkflowAttribute.cs" />
     <Compile Include="C1Console\Workflow\EntityTokenLockAttribute.cs" />
-    <Compile Include="C1Console\Workflow\FilePersisetenceService.cs" />
+    <Compile Include="C1Console\Workflow\FilePersistenceService.cs" />
     <Compile Include="C1Console\Workflow\FormsEventArgs.cs" />
     <Compile Include="C1Console\Workflow\Foundation\FormData.cs" />
     <Compile Include="C1Console\Workflow\Foundation\FormsWorkflowActivityService.cs" />
@@ -2455,7 +2619,9 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>LocalizationFiles.cs</LastGenOutput>
     </None>
-    <None Include="Plugins\Functions\FunctionProviders\app.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Data\Types\ExtensionMethods\Use_parent_namespace.txt" />
@@ -2495,12 +2661,12 @@
     </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Windows Workflow Foundation\v3.5\Workflow.Targets" />
   <Target Name="BeforeBuild">
   </Target>
-  <Target Name="AfterBuild">    
+  <Target Name="AfterBuild">
   </Target>
   -->
   <PropertyGroup>

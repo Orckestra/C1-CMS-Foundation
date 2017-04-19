@@ -210,7 +210,7 @@ namespace Composite.Core.WebClient
         }
 
         /**
-         * Attempt remote connection. We stress-test the connection by 
+         * Attempt remote connection. We test the connection by 
          * looking for the exact document title "Start" in the response. 
          */
         [SuppressMessage("Composite.IO", "Composite.DoNotUseConfigurationManagerClass:DoNotUseConfigurationManagerClass")]
@@ -220,6 +220,11 @@ namespace Composite.Core.WebClient
             try
             {
                 string uri = ConfigurationManager.AppSettings["Composite.StartPage.Url"];
+
+                if (string.IsNullOrEmpty(uri))
+                {
+                    return false;
+                }
 
                 XDocument loaded = null;
                 Task task = Task.Factory.StartNew(() => loaded = TryLoad(uri));

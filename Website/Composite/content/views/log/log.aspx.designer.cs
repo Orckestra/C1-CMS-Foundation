@@ -100,4 +100,8 @@ public partial class Composite_content_views_log_log {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::System.Web.UI.WebControls.PlaceHolder EmptyLabelPlaheHolder;
+
+    protected global::System.Web.UI.WebControls.PlaceHolder LogEntriesRemovedPlaceHolder;
+    protected global::System.Web.UI.WebControls.Label LogEntriesRemovedLabel;
+
 }

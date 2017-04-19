@@ -11,6 +11,7 @@ using Composite.Data;
 using Composite.Data.DynamicTypes;
 using Composite.Data.Plugins.DataProvider;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
+using Composite.Data.Types;
 
 
 namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
@@ -62,8 +63,10 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                     var oldDataScopeConfigurationElement = fileForLanguage.Value;
                     var newDataScopeConfigurationElement = newConfigurationElement.DataScopes[scopeIdentifier.Name][cultureName];
 
-                    newFieldValues = new Dictionary<string, object>();
-                    newFieldValues.Add("PublicationStatus", GenericPublishProcessController.Published);
+                    newFieldValues = new Dictionary<string, object>
+                    {
+                        {"PublicationStatus", GenericPublishProcessController.Published}
+                    };
 
                     CopyData(updateDescriptor.ProviderName, dataTypeChangeDescriptor, oldDataScopeConfigurationElement, newDataScopeConfigurationElement, newFieldValues);
                 }
@@ -77,8 +80,10 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                     var oldDataScopeConfigurationElement = fileByLanguage.Value;
                     var newDataScopeConfigurationElement = newConfigurationElement.DataScopes[DataScopeIdentifier.AdministratedName][fileByLanguage.Key];
 
-                    newFieldValues = new Dictionary<string, object>();
-                    newFieldValues.Add("PublicationStatus", GenericPublishProcessController.Published);
+                    newFieldValues = new Dictionary<string, object>
+                    {
+                        {"PublicationStatus", GenericPublishProcessController.Published}
+                    };
 
                     CopyData(updateDescriptor.ProviderName, dataTypeChangeDescriptor, oldDataScopeConfigurationElement, newDataScopeConfigurationElement, newFieldValues, false);
                 }
@@ -122,8 +127,10 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                             {
                                 var newDataScopeConfigurationElement = newConfigurationElement.DataScopes[dataScopeIdentifier][locale.Name];
 
-                                var nfv = new Dictionary<string, object>(newFieldValues);
-                                nfv.Add("SourceCultureName", locale.Name);
+                                var nfv = new Dictionary<string, object>(newFieldValues)
+                                {
+                                    {"SourceCultureName", locale.Name}
+                                };
 
                                 CopyData(updateDescriptor.ProviderName, dataTypeChangeDescriptor, oldDataScopeConfigurationElement, newDataScopeConfigurationElement, nfv, false);
                             }
@@ -178,6 +185,28 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
             List<XElement> newElements = new List<XElement>();
 
+            bool addingVersionId = dataTypeChangeDescriptor.AddedFields.Any(f => f.Name == nameof(IVersioned.VersionId))
+                                   && dataTypeChangeDescriptor.AlteredType.SuperInterfaces.Any(s => s == typeof (IVersioned));
+
+            string versionIdSourceFieldName = null;
+            if (addingVersionId)
+            {
+                if (dataTypeChangeDescriptor.AlteredType.DataTypeId == typeof(IPage).GetImmutableTypeId())
+                {
+                    versionIdSourceFieldName = nameof(IPage.Id);
+                }
+                else
+                {
+                    versionIdSourceFieldName = dataTypeChangeDescriptor.AlteredType.Fields
+                        .Where(f => f.InstanceType == typeof(Guid)
+                                    && (f.ForeignKeyReferenceTypeName?.Contains(typeof(IPage).FullName) ?? false))
+                        .OrderByDescending(f => f.Name == nameof(IPageData.PageId))
+                        .Select(f => f.Name)
+                        .FirstOrDefault();
+                }
+            }
+
+
             foreach (XElement oldElement in oldDocument.Root.Elements())
             {
                 List<XAttribute> newChildAttributes = new List<XAttribute>();
@@ -222,25 +251,34 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
                 foreach (DataFieldDescriptor fieldDescriptor in dataTypeChangeDescriptor.AddedFields)
                 {
-                    if (fieldDescriptor.IsNullable == false
-                        && !newChildAttributes.Any(attr => attr.Name == fieldDescriptor.Name))
+                    if (addingVersionId && fieldDescriptor.Name == nameof(IVersioned.VersionId) && versionIdSourceFieldName != null)
                     {
-                        XAttribute newChildAttribute = new XAttribute(fieldDescriptor.Name, GetDefaultValue(fieldDescriptor));
-
-                        if (newFieldValues.ContainsKey(fieldDescriptor.Name))
+                        if (!oldElement.Attributes().Any(a => a.Name.LocalName == nameof(IVersioned.VersionId)))
                         {
-                            newChildAttribute.SetValue(newFieldValues[fieldDescriptor.Name]);
+                            var sourceFieldValue = (Guid)oldElement.Attribute(versionIdSourceFieldName);
+
+                            newChildAttributes.Add(new XAttribute(fieldDescriptor.Name, sourceFieldValue));
                         }
 
-                        newChildAttributes.Add(newChildAttribute);
+                        continue;
+                    }
+
+                    if (!fieldDescriptor.IsNullable
+                        && !newChildAttributes.Any(attr => attr.Name == fieldDescriptor.Name))
+                    {
+                        object value;
+                        if (!newFieldValues.TryGetValue(fieldDescriptor.Name, out value))
+                        {
+                            value = GetDefaultValue(fieldDescriptor);
+                        }
+
+                        newChildAttributes.Add(new XAttribute(fieldDescriptor.Name, value));
                     }
                     else if (newFieldValues.ContainsKey(fieldDescriptor.Name))
                     {
                         XAttribute attribute = newChildAttributes.SingleOrDefault(attr => attr.Name == fieldDescriptor.Name);
-                        if (attribute != null)
-                        {
-                            attribute.SetValue(newFieldValues[fieldDescriptor.Name]);
-                        }
+
+                        attribute?.SetValue(newFieldValues[fieldDescriptor.Name]);
                     }
                 }
 
@@ -254,11 +292,9 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                 C1File.Delete(oldFilename);
             }
 
-            XElement newRoot = new XElement(XmlDataProviderDocumentWriter.GetRootElementName(newDataScopeConfigurationElement.ElementName));
-            newRoot.Add(newElements);
-
-            XDocument newDocument = new XDocument();
-            newDocument.Add(newRoot);
+            var newDocument = new XDocument(
+                new XElement(XmlDataProviderDocumentWriter.GetRootElementName(newDataScopeConfigurationElement.ElementName),
+                    newElements));
 
             XDocumentUtils.Save(newDocument, newFilename);
         }

@@ -15,7 +15,7 @@ using Composite.Core.ResourceSystem.Icons;
 namespace Composite.Core.WebClient.Services.ConsoleMessageService
 {
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public static class ConsoleMessageServiceFacade
     {
         /// <exclude />
@@ -34,7 +34,7 @@ namespace Composite.Core.WebClient.Services.ConsoleMessageService
 
             GetMessagesResult result = new GetMessagesResult();
             result.CurrentSequenceNumber = ConsoleMessageQueueFacade.CurrentChangeNumber;
-            
+
             List<ConsoleMessageQueueElement> messageQueueElements = ConsoleMessageQueueFacade.GetQueueElements(lastKnownChangeNumber, consoleId).ToList();
             if (messageQueueElements.Any() && messageQueueElements.Max(f => f.QueueItemNumber) > result.CurrentSequenceNumber)
             {
@@ -169,7 +169,27 @@ namespace Composite.Core.WebClient.Services.ConsoleMessageService
                     ActionType = ActionType.OpenExternalView,
                     OpenExternalViewParams = openExternalViewParams
                 });
-            }      
+            }
+
+            // Open slide views...
+            foreach (ConsoleMessageQueueElement queueElement in messageQueueElements.Where(f => f.QueueItem is OpenSlideViewQueueItem))
+            {
+                var openSlideView = (OpenSlideViewQueueItem)queueElement.QueueItem;
+
+                var openSlideViewParams = new OpenSlideViewParams
+                {
+                    ViewId = openSlideView.ViewId,
+                    EntityToken = openSlideView.EntityToken,
+                    Url = openSlideView.Url
+                };
+
+                newMessages.Add(new ConsoleAction
+                {
+                    SequenceNumber = queueElement.QueueItemNumber,
+                    ActionType = ActionType.OpenSlideView,
+                    OpenSlideViewParams = openSlideViewParams
+                });
+            }
 
 
             // Download files...
@@ -444,10 +464,10 @@ namespace Composite.Core.WebClient.Services.ConsoleMessageService
         private static string GetImage(ResourceHandle resourceHandle)
         {
             if (resourceHandle == null) return null;
-	        
+
 		    return string.Format("${{icon:{0}:{1}}}",
 			        resourceHandle.ResourceNamespace, resourceHandle.ResourceName);
-	      
+
         }
     }
 }

@@ -25,6 +25,7 @@ namespace Composite.Data.Types
         /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.Guid)]
         [ImmutableFieldId("{2B266EF3-AD8C-4CFD-8407-211A2CF3044E}")]
+        [ForeignKey(typeof(IUser), "Id", AllowCascadeDeletes = true)]
         Guid UserId { get; set; }
 
         /// <exclude />

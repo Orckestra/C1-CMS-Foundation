@@ -44,6 +44,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
         private static ResourceHandle DeleteWebsiteFile { get { return GetIconHandle("website-delete-website-file"); } }
         private static ResourceHandle EditWebsiteFile { get { return GetIconHandle("website-edit-website-file"); } }
         private static ResourceHandle UploadWebsiteFile { get { return GetIconHandle("website-upload-website-file"); } }
+        private static ResourceHandle UploadAndExtractZipFile { get { return GetIconHandle("website-upload-zip-file"); } }
         private static ResourceHandle DownloadWebsiteFile { get { return GetIconHandle("media-download-file"); } } 
         private static ResourceHandle AddFolderToWhiteList { get { return GetIconHandle("website-add-folder-to-whitelist"); } }
         private static ResourceHandle RemoveFolderFromWhiteList { get { return GetIconHandle("website-remove-folder-from-whitelist"); } }
@@ -56,6 +57,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
 
         private static readonly PermissionType[] _addNewWebsiteFolderPermissionTypes = new PermissionType[] { PermissionType.Add };
         private static readonly PermissionType[] _addNewWebsiteFilePermissionTypes = new PermissionType[] { PermissionType.Add };
+        private static readonly PermissionType[] _uploadAndExtractZipFileWorkflow = new PermissionType[] { PermissionType.Add };
         private static readonly PermissionType[] _deleteWebsiteFolderPermissionTypes = new PermissionType[] { PermissionType.Delete };
         private static readonly PermissionType[] _deleteWebsiteFilePermissionTypes = new PermissionType[] { PermissionType.Delete };
         private static readonly PermissionType[] _editWebsiteFilePermissionTypes = new PermissionType[] { PermissionType.Edit };
@@ -92,7 +94,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
 
         public IEnumerable<Element> GetRoots(SearchToken seachToken)
         {
-            Element element = new Element(_context.CreateElementHandle(new WebsiteFileElementProviderRootEntityToken(_context.ProviderName)))
+            Element element = new Element(_context.CreateElementHandle(new WebsiteFileElementProviderRootEntityToken(_context.ProviderName, _rootPath)))
             {
                 VisualData = new ElementVisualizedData()
                 {
@@ -166,7 +168,29 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
                                ActionType = ActionType.Add,
                                IsInFolder = false,
                                IsInToolbar = true,
-                               ActionGroup = PrimaryFolderActionGroup
+                               ActionGroup = PrimaryFolderActionGroup,
+                               ActionBundle = "Upload"
+                           }
+                       }
+                   });
+
+                element.AddAction(
+                   new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider.UploadAndExtractZipFileWorkflow"), _uploadAndExtractZipFileWorkflow)))
+                   {
+                       VisualData = new ActionVisualizedData
+                       {
+                           Label = StringResourceSystemFacade.GetString("Composite.Plugins.WebsiteFileElementProvider", "UploadAndExtractZipFileTitle"),
+                           ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.WebsiteFileElementProvider", "UploadAndExtractZipFileToolTip"),
+                           Icon = WebsiteFileElementProvider.UploadAndExtractZipFile,
+                           Disabled = false,
+                           ActivePositions = ElementActionActivePosition.NavigatorTree | ElementActionActivePosition.SelectorTree,
+                           ActionLocation = new ActionLocation
+                           {
+                               ActionType = ActionType.Add,
+                               IsInFolder = false,
+                               IsInToolbar = true,
+                               ActionGroup = PrimaryFolderActionGroup,
+                               ActionBundle = "Upload"
                            }
                        }
                    });
@@ -433,7 +457,30 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
                            ActionType = ActionType.Add,
                            IsInFolder = false,
                            IsInToolbar = true,
-                           ActionGroup = PrimaryFolderActionGroup
+                           ActionGroup = PrimaryFolderActionGroup,
+                           ActionBundle = "Upload"
+
+                       }
+                   }
+               });
+
+            folderActions.Add(
+               new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider.UploadAndExtractZipFileWorkflow"), _uploadAndExtractZipFileWorkflow)))
+               {
+                   VisualData = new ActionVisualizedData
+                   {
+                       Label = StringResourceSystemFacade.GetString("Composite.Plugins.WebsiteFileElementProvider", "UploadAndExtractZipFileTitle"),
+                       ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.WebsiteFileElementProvider", "UploadAndExtractZipFileToolTip"),
+                       Icon = WebsiteFileElementProvider.UploadAndExtractZipFile,
+                       Disabled = false,
+                       ActivePositions = ElementActionActivePosition.NavigatorTree | ElementActionActivePosition.SelectorTree,
+                       ActionLocation = new ActionLocation
+                       {
+                           ActionType = ActionType.Add,
+                           IsInFolder = false,
+                           IsInToolbar = true,
+                           ActionGroup = PrimaryFolderActionGroup,
+                           ActionBundle = "Upload"
                        }
                    }
                });

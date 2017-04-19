@@ -12,13 +12,11 @@ using Composite.Data.DynamicTypes;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
 using Composite.Data.Types;
 using Composite.Data.Validation;
-using Composite.Core.Linq;
 using Composite.Core.ResourceSystem;
 using Composite.Core.Extensions;
 using Composite.C1Console.Users;
-using Composite.C1Console.Trees;
 using Composite.C1Console.Workflow;
-
+using Composite.Core.Serialization;
 using Microsoft.Practices.EnterpriseLibrary.Validation;
 
 
@@ -28,8 +26,15 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
     public sealed partial class AddNewPageWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         [NonSerialized]
-        private List<IPageType> _selectablePageTypes = null;
+        private List<IPageType> _selectablePageTypes;
 
+        private static class SortOrder
+        {
+            internal static string Bottom = "Bottom";
+            internal static string Top = "Top";
+            internal static string Relative = "Relative";
+            internal static string Alphabetic = "Alphabetic";
+        }
 
         public AddNewPageWorkflow()
         {
@@ -53,7 +58,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 return selectedPage.Id;
             }
 
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
 
@@ -84,8 +89,13 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
 
 
-        private Guid? GetDefaultPageTypeId(IEnumerable<IPageType> selectablePageTypes)
+        private Guid? GetDefaultPageTypeId(ICollection<IPageType> selectablePageTypes)
         {
+            if (!string.IsNullOrEmpty(Payload))
+            {
+                return ((IPage)SerializerHandlerFacade.Deserialize(Payload)).PageTypeId;
+            }
+
             if (!(this.EntityToken is PageElementProviderEntityToken))
             {
                 IPage parentPage = this.GetDataItemFromEntityToken<IPage>();
@@ -101,9 +111,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 }
             }
 
-            var pageType = selectablePageTypes.FirstOrDefault();
-
-            return pageType != null ? pageType.Id : new Guid?();
+            return selectablePageTypes.FirstOrDefault()?.Id;
         }
 
 
@@ -177,19 +185,19 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
         private void CheckPageTypeExists(object sender, ConditionalEventArgs e)
         {
+            PageTypeHomepageRelation relationToExclude;
 
             if (this.EntityToken is PageElementProviderEntityToken)
             {
-                e.Result =
-                    DataFacade.GetData<IPageType>().
-                    Any(f => f.Available && f.HomepageRelation != PageTypeHomepageRelation.OnlySubPages.ToString());
+                relationToExclude = PageTypeHomepageRelation.OnlySubPages;
             }
             else
             {
-                e.Result =
-                    DataFacade.GetData<IPageType>().
-                    Any(f => f.Available && f.HomepageRelation != PageTypeHomepageRelation.OnlyHomePages.ToString());
+                relationToExclude = PageTypeHomepageRelation.OnlyHomePages;
             }
+
+            e.Result = DataFacade.GetData<IPageType>()
+                .Any(f => f.Available && f.HomepageRelation != relationToExclude.ToString());
         }
 
 
@@ -245,7 +253,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             }
             else
             {
-                throw new NotImplementedException();
+                throw new NotSupportedException();
             }
 
 
@@ -257,17 +265,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
             Guid parentId = GetParentId();
 
-            Dictionary<string, object> bindings = new Dictionary<string, object>();
-
-
-
-            List<KeyValuePair<Guid, string>> pageTypeOptions =
-                selectablePageTypes.
-                Select(f => new KeyValuePair<Guid, string>(f.Id, f.Name)).
-                ToList();
-
-            bindings.Add("PageTypeOptions", pageTypeOptions);
-
+            string pageType = selectablePageTypes.First(f => f.Id == pageTypeId).Name;
 
             IPage newPage = DataFacade.BuildNew<IPage>();
             newPage.Id = Guid.NewGuid();
@@ -279,29 +277,36 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             newPage.FriendlyUrl = "";
             newPage.PublicationStatus = GenericPublishProcessController.Draft;
 
-            bindings.Add("NewPage", newPage);
 
-            bindings.Add("UrlTitleIsRequired", true /* ThereAreOtherPages()*/);
 
             int existingPagesCount = PageServices.GetChildrenCount(parentId);
-            Dictionary<string, string> sortOrder = new Dictionary<string, string>();
-            sortOrder.Add("Bottom", GetText("AddNewPageStep1.LabelAddToBottom"));
+            var sortOrder = new Dictionary<string, string>
+            {
+                {SortOrder.Bottom, GetText("AddNewPageStep1.LabelAddToBottom")}
+            };
             if (existingPagesCount > 0)
             {
-                sortOrder.Add("Top", GetText("AddNewPageStep1.LabelAddToTop"));
+                sortOrder.Add(SortOrder.Top, GetText("AddNewPageStep1.LabelAddToTop"));
                 if (existingPagesCount > 1)
                 {
-                    sortOrder.Add("Relative", GetText("AddNewPageStep1.LabelAddBelowOtherPage"));
+                    sortOrder.Add(SortOrder.Relative, GetText("AddNewPageStep1.LabelAddBelowOtherPage"));
                 }
 
                 bool isAlpabeticOrdered = PageServices.IsChildrenAlphabeticOrdered(parentId);
                 if (isAlpabeticOrdered)
                 {
-                    sortOrder.Add("Alphabetic", GetText("AddNewPageStep1.LabelAddAlphabetic"));
+                    sortOrder.Add(SortOrder.Alphabetic, GetText("AddNewPageStep1.LabelAddAlphabetic"));
                 }
             }
-            bindings.Add("SortOrder", sortOrder);
-            bindings.Add("SelectedSortOrder", sortOrder.Keys.First());
+
+            var bindings = new Dictionary<string, object>
+            {
+                {"NewPage", newPage},
+                {"Title", string.Format(GetText("AddNewPageStep1.DialogLabelFormat"), pageType)},
+                {"UrlTitleIsRequired", true},
+                {"SortOrder", sortOrder},
+                {"SelectedSortOrder", sortOrder.Keys.First()}
+            };
 
             if (parentId == Guid.Empty)
             {
@@ -323,7 +328,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             IPage newPage = this.GetBinding<IPage>("NewPage");
             var dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(typeof(IPage));
 
-            e.Result = this.GetBinding<string>("SelectedSortOrder") != "Relative"
+            e.Result = this.GetBinding<string>("SelectedSortOrder") != SortOrder.Relative
                        && UrlTitleIsUniqueAmongSiblings()
                        && newPage.UrlTitle.Length <= dataTypeDescriptor.Fields["UrlTitle"].StoreType.MaximumLength
                        && newPage.MenuTitle.Length <= dataTypeDescriptor.Fields["MenuTitle"].StoreType.MaximumLength;
@@ -364,7 +369,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 }
             }
 
-            DataTypeDescriptor dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(typeof(IPage));
+            var dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(typeof(IPage));
 
             if (newPage.UrlTitle.Length > dataTypeDescriptor.Fields["UrlTitle"].StoreType.MaximumLength)
             {
@@ -413,7 +418,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
             SetDefaultValues(newPage);
 
-            if (this.GetBinding<string>("SelectedSortOrder") == "Relative")
+            if (this.GetBinding<string>("SelectedSortOrder") == SortOrder.Relative)
             {
                 Dictionary<Guid, string> existingPages = PageServices.GetChildren(GetParentId()).ToDictionary(page => page.Id, page => page.Title);
 
@@ -433,96 +438,48 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
         {
             AddNewTreeRefresher addNewTreeRefresher = this.CreateAddNewTreeRefresher(this.EntityToken);
 
-            Guid parentId = GetParentId();
-
             IPage newPage = this.GetBinding<IPage>("NewPage");
             newPage.SourceCultureName = UserSettings.ActiveLocaleCultureInfo.Name;
 
-            IPageType selectedPageType = DataFacade.GetData<IPageType>().Single(f => f.Id == newPage.PageTypeId);
-
-            IQueryable<IPageTypePageTemplateRestriction> templateRestrictions =
-                DataFacade.GetData<IPageTypePageTemplateRestriction>().
-                Where(f => f.PageTypeId == newPage.PageTypeId);
-
-            if (selectedPageType.DefaultTemplateId != Guid.Empty)
+            Guid pageTypeId = newPage.PageTypeId;
+            Guid? defaultPageTemplateId = PageServices.GetDefaultPageTemplateId(pageTypeId);
+            if (defaultPageTemplateId != null)
             {
-                newPage.TemplateId = selectedPageType.DefaultTemplateId;
-            }
-            else if (templateRestrictions.Any())
-            {
-                newPage.TemplateId = templateRestrictions.First().PageTemplateId;
+                newPage.TemplateId = defaultPageTemplateId.Value;
             }
 
-            bool addToTop = this.GetBinding<string>("SelectedSortOrder") == "Top";
-            bool addToBottom = this.GetBinding<string>("SelectedSortOrder") == "Bottom";
-            bool addToAlphabetic = this.GetBinding<string>("SelectedSortOrder") == "Alphabetic";
-            bool addToRelative = this.GetBinding<string>("SelectedSortOrder") == "Relative";
+            string sortOrder = this.GetBinding<string>("SelectedSortOrder");
+
+            Guid parentId = GetParentId();
 
             using (new DataScope(DataScopeIdentifier.Administrated))
             {
-                if (addToTop)
+                IPageInsertionPosition position;
+
+                if (sortOrder == SortOrder.Top)
                 {
-                    newPage = newPage.AddPageAtTop(parentId);
+                    position = PageInsertPosition.Top;
                 }
-                else if (addToBottom)
+                else if (sortOrder == SortOrder.Bottom)
                 {
-                    newPage = newPage.AddPageAtBottom(parentId);
+                    position = PageInsertPosition.Bottom;
                 }
-                else if (addToAlphabetic)
+                else if (sortOrder == SortOrder.Alphabetic)
                 {
-                    newPage = newPage.AddPageAlphabetic(parentId);
+                    position = PageInsertPosition.Alphabetic;
                 }
-                else if (addToRelative)
+                else if (sortOrder == SortOrder.Relative)
                 {
                     Guid relativeSelectedPageId = this.GetBinding<Guid>("RelativeSelectedPageId");
 
-                    newPage = newPage.AddPageAfter(parentId, relativeSelectedPageId);
+                    position = PageInsertPosition.After(relativeSelectedPageId);
                 }
-            }
+                else
+                {
+                    throw new InvalidOperationException($"Not handled page instert position '{sortOrder}'");
+                }
 
-            // Adding default page content
-            IEnumerable<IPageTypeDefaultPageContent> pageTypeDefaultPageContents =
-                DataFacade.GetData<IPageTypeDefaultPageContent>().
-                Where(f => f.PageTypeId == selectedPageType.Id).
-                Evaluate();
-
-            foreach (IPageTypeDefaultPageContent pageTypeDefaultPageContent in pageTypeDefaultPageContents)
-            {
-                IPagePlaceholderContent pagePlaceholderContent = DataFacade.BuildNew<IPagePlaceholderContent>();
-                pagePlaceholderContent.PageId = newPage.Id;
-                pagePlaceholderContent.PlaceHolderId = pageTypeDefaultPageContent.PlaceHolderId;
-                pagePlaceholderContent.Content = pageTypeDefaultPageContent.Content;
-                DataFacade.AddNew<IPagePlaceholderContent>(pagePlaceholderContent);
-            }
-
-
-            // Adding page folders
-            IEnumerable<IPageTypeDataFolderTypeLink> pageTypeDataFolderTypeLinks =
-                DataFacade.GetData<IPageTypeDataFolderTypeLink>().
-                Where(f => f.PageTypeId == selectedPageType.Id).
-                Evaluate().
-                RemoveDeadLinks();
-
-            foreach (IPageTypeDataFolderTypeLink pageTypeDataFolderTypeLink in pageTypeDataFolderTypeLinks)
-            {
-                newPage.AddFolderDefinition(pageTypeDataFolderTypeLink.DataTypeId);
-            }
-
-
-            // Adding applications
-            IEnumerable<IPageTypeTreeLink> pageTypeTreeLinks =
-                DataFacade.GetData<IPageTypeTreeLink>().
-                Where(f => f.PageTypeId == selectedPageType.Id).
-                Evaluate().
-                RemoveDeadLinks();
-
-
-            foreach (IPageTypeTreeLink pageTypeTreeLink in pageTypeTreeLinks)
-            {
-                Tree tree = TreeFacade.GetTree(pageTypeTreeLink.TreeId);
-                if (tree.HasAttachmentPoints(newPage.GetDataEntityToken())) continue;
-
-                TreeFacade.AddPersistedAttachmentPoint(pageTypeTreeLink.TreeId, typeof(IPage), newPage.Id);
+                newPage = newPage.Add(parentId, position);
             }
 
             SetSaveStatus(true);
@@ -557,7 +514,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             IPage newPage = this.GetBinding<IPage>("NewPage");
             IPageType selectedPageType = DataFacade.GetData<IPageType>().Single(f => f.Id == newPage.PageTypeId);
 
-            if ((selectedPageType.PresetMenuTitle) && (page.MenuTitle.IsNullOrEmpty()))
+            if (selectedPageType.PresetMenuTitle && page.MenuTitle.IsNullOrEmpty())
             {
                 page.MenuTitle = page.Title;
             }
@@ -567,9 +524,9 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 page.UrlTitle = GenerateUrlTitleFromTitle(page.Title);
 
                 int i = 2;
-                while (UrlTitleIsUniqueAmongSiblings() == false)
+                while (!UrlTitleIsUniqueAmongSiblings())
                 {
-                    page.UrlTitle = string.Format("{0}{1}", GenerateUrlTitleFromTitle(page.Title), i);
+                    page.UrlTitle = $"{GenerateUrlTitleFromTitle(page.Title)}{i}";
                     i++;
                 }
 

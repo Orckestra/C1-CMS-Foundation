@@ -117,7 +117,7 @@ namespace Composite.Data
                 return date => date.Year == year && date.Month == month && date.Day == day;
             }
 
-            public RelativeRoute GetRoute(DateTime fieldValue)
+            public RelativeRoute GetRoute(DateTime fieldValue, bool searchSignificant)
             {
                 switch (_format)
                 {

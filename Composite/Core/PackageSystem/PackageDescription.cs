@@ -1,11 +1,9 @@
 ﻿using System;
 using Composite.Core.Serialization;
-
+using System.Collections.Generic;
 
 namespace Composite.Core.PackageSystem
 {
-    /// <summary>    
-    /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [SerializerHandler(typeof(PropertySerializerHandler))]
@@ -70,5 +68,25 @@ namespace Composite.Core.PackageSystem
 
         /// <exclude />
         public string Vendor { get; set; }
+
+        /// <exclude />
+        public string ConsoleBrowserUrl { get; set; }
+
+        /// <exclude />
+        public List<Subscription> AvailableInSubscriptions { get; set; }
+    }
+
+
+    /// <exclude />
+    public sealed class Subscription
+    {
+        /// <exclude />
+        public Guid Id { get; set; }
+        /// <exclude />
+        public string Name { get; set; }
+        /// <exclude />
+        public string DetailsUrl { get; set; }
+        /// <exclude />
+        public bool Purchasable { get; set; }
     }
 }

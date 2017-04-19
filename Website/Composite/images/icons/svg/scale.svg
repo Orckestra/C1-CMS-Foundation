@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"[]>
-<svg xmlns="http://www.w3.org/2000/svg">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 25">
   <g fill="#999">
-    <g id="scale" stroke="none" viewBox="0 0 25.001 25.001" >
+    <g id="scale" stroke="none" >
       <g>
         <path d="M25,23.077v0.962c0,0.531-0.43,0.962-0.962,0.962h-0.962c-0.531,0-0.962-0.43-0.962-0.962
 		s0.43-0.962,0.962-0.962c0-0.531,0.43-0.962,0.962-0.962S25,22.545,25,23.077z M24.038,10.538c-0.531,0-0.962,0.43-0.962,0.961v2

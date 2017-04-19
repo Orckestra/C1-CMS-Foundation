@@ -29,7 +29,7 @@ namespace Composite.Plugins.Commands.ConsoleCommandHandlers
                 return;
             }
 
-            var keyProperty = type.GetKeyProperties().Single();
+            var keyProperty = type.GetSingleKeyProperty();
 
             object key = ValueTypeConverter.Convert(keyString, keyProperty.PropertyType);
 

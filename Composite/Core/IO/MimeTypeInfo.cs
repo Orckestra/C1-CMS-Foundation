@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
+using System.Web;
 using System.Web.Configuration;
 using System.Web.Hosting;
 using System.Xml.Linq;
@@ -25,10 +26,7 @@ namespace Composite.Core.IO
         private static readonly IDictionary<string, string> _toCanonical = new Dictionary<string, string>();
         private static readonly IDictionary<string, string> _extensionToCanonical = new Dictionary<string, string>();
         private static readonly IDictionary<string, string> _mimeTypeToResourceName = new Dictionary<string, string>();
-        private static readonly IDictionary<string, bool> _iisServableExtensions = new Dictionary<string, bool>();
-
-
-        private static readonly MethodInfo _getMimeMappingMethodInfo;
+        private static readonly ConcurrentDictionary<string, bool> _iisServableExtensions = new ConcurrentDictionary<string, bool>();
 
         private static List<string> _textMimeTypes =
             new List<string> { MimeTypeInfo.Css, MimeTypeInfo.Js, MimeTypeInfo.Xml, MimeTypeInfo.Text, MimeTypeInfo.Html, MimeTypeInfo.Sass,
@@ -36,7 +34,7 @@ namespace Composite.Core.IO
                                MimeTypeInfo.Resx, MimeTypeInfo.MasterPage, MimeTypeInfo.CsHtml, MimeTypeInfo.Svg };
 
         // file types we don't expect IIS to block
-        private static List<string> _iisServableTypes = new List<string>();
+        private static readonly HashSet<string> _iisServableTypes = new HashSet<string>();
 
         private static ResourceHandle GetIconHandle(string name)
         {
@@ -309,15 +307,9 @@ namespace Composite.Core.IO
             AddExtensionMapping("ogv", "video/ogg");
             AddExtensionMapping("webm", "video/webm");
             AddExtensionMapping("svg", "image/svg+xml");
-            AddExtensionMapping("svgz", "mage/svg+xml");
+            AddExtensionMapping("svgz", "image/svg+xml");
             AddExtensionMapping("flv4", "video/mp4");
             AddExtensionMapping("eot", "application/vnd.ms-fontobject");
-
-            Type mimeMappingType = typeof (System.Web.HttpUtility).Assembly.GetType("System.Web.MimeMapping");
-
-            // Method System.Web.MimeMapping.GetMimeMapping() is public in .NET v4.5, and private in .NET v4.0
-            _getMimeMappingMethodInfo = mimeMappingType.GetMethod("GetMimeMapping", BindingFlags.Static | BindingFlags.Public)
-                                        ?? mimeMappingType.GetMethod("GetMimeMapping", BindingFlags.Static | BindingFlags.NonPublic);
         }
 
         private static void RegisterMimeType(string canonicalMimeTypeName, string extension, string resourceName = null, bool iisServable = false)
@@ -456,13 +448,14 @@ namespace Composite.Core.IO
                 extension = extension.Substring(1);
             }
 
-            if (_extensionToCanonical.ContainsKey(extension.ToLowerInvariant()))
+            string mimeType;
+            if (_extensionToCanonical.TryGetValue(extension, out mimeType))
             {
-                return _extensionToCanonical[extension];
+                return mimeType;
             }
 
             string fileName = "filename." + extension;
-            return _getMimeMappingMethodInfo.Invoke(null, new object[] { fileName }) as string;
+            return MimeMapping.GetMimeMapping(fileName);
         }
 
         /// <exclude />
@@ -530,24 +523,18 @@ namespace Composite.Core.IO
                 extension = extension.Substring(1);
             }
 
-            if (_iisServableExtensions.ContainsKey(extension))
+            bool servable;
+            if (_iisServableExtensions.TryGetValue(extension, out servable))
             {
-                return _iisServableExtensions[extension];
-            }
-            else
-            {
-                lock (_iisServableExtensions)
-                {
-                    string mimeType = GetCanonicalFromExtension(extension);
-                    bool servable = _iisServableTypes.Contains(mimeType);
-                    if (!_iisServableExtensions.ContainsKey(extension))
-                    {
-                        _iisServableExtensions.Add(extension, servable);
-                    }
-                    return servable;
-                }
+                return servable;
             }
 
+            string mimeType = GetCanonicalFromExtension(extension);
+            servable = _iisServableTypes.Contains(mimeType);
+
+            _iisServableExtensions.TryAdd(extension, servable);
+
+            return servable;
         }
     }
 }

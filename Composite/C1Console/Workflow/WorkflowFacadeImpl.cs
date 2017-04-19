@@ -36,7 +36,7 @@ namespace Composite.C1Console.Workflow
         private static readonly string LogTitle = "WorkflowFacade";
         private static readonly string LogTitleColored = "RGB(194, 252, 131)" + LogTitle;
 
-        private static readonly TimeSpan _oldFileExistensTimeout = TimeSpan.FromDays(30.0);
+        private static readonly TimeSpan OldFileExistenceTimeout = TimeSpan.FromDays(30.0);
 
         private Thread _initializeThread;
         private readonly object _initializeThreadLock = new object();
@@ -47,7 +47,7 @@ namespace Composite.C1Console.Workflow
         private ExternalDataExchangeService _externalDataExchangeService;
         private FormsWorkflowEventService _formsWorkflowEventService;
         private ManualWorkflowSchedulerService _manualWorkflowSchedulerService;
-        private FileWorkFlowPersisetenceService _fileWorkFlowPersistenceService;
+        private FileWorkflowPersistenceService _fileWorkflowPersistenceService;
 
         private readonly ResourceLocker<Resources> _resourceLocker = new ResourceLocker<Resources>(new Resources(), Resources.InitializeResources);
 
@@ -56,8 +56,8 @@ namespace Composite.C1Console.Workflow
 
         public WorkflowFacadeImpl()
         {
-            string serializedWorflowsDirectory = PathUtil.Resolve(GlobalSettingsFacade.SerializedWorkflowsDirectory);
-            string parentDirectory = Path.GetDirectoryName(serializedWorflowsDirectory);
+            string serializedWorkflowsDirectory = PathUtil.Resolve(GlobalSettingsFacade.SerializedWorkflowsDirectory);
+            string parentDirectory = Path.GetDirectoryName(serializedWorkflowsDirectory);
             string lockFileDirectory = Path.Combine(parentDirectory, "LockFiles");
 
             if (!C1Directory.Exists(lockFileDirectory)) C1Directory.CreateDirectory(lockFileDirectory);
@@ -323,11 +323,11 @@ namespace Composite.C1Console.Workflow
 
             Verify.That(attributes.Count <= 1, "More than one attribute of type '{0}' found", typeof(AllowPersistingWorkflowAttribute).FullName);
 
-            var persistanceType = attributes.Count == 1 ? attributes[0].WorkflowPersistingType : WorkflowPersistingType.Never;
+            var persistenceType = attributes.Count == 1 ? attributes[0].WorkflowPersistingType : WorkflowPersistingType.Never;
 
             using (_resourceLocker.Locker)
             {
-                _resourceLocker.Resources.WorkflowPersistingTypeDictionary.Add(instanceId, persistanceType);
+                _resourceLocker.Resources.WorkflowPersistingTypeDictionary.Add(instanceId, persistenceType);
             }
         }
 
@@ -368,11 +368,11 @@ namespace Composite.C1Console.Workflow
 
 
 
-        public void AcquireLock(Guid isntanceId, EntityToken entityToken)
+        public void AcquireLock(Guid instanceId, EntityToken entityToken)
         {
             Verify.That(!ActionLockingFacade.IsLocked(entityToken), "The entityToken is already locked");
 
-            ActionLockingFacade.AcquireLock(entityToken, isntanceId);
+            ActionLockingFacade.AcquireLock(entityToken, instanceId);
         }
 
 
@@ -474,7 +474,7 @@ namespace Composite.C1Console.Workflow
                 WorkflowInstanceStatus workflowInstanceStatus;
                 if (!_resourceLocker.Resources.WorkflowStatusDictionary.TryGetValue(instanceId, out workflowInstanceStatus))
                 {
-                    throw new InvalidOperationException(string.Format("The workflow with the id '{0}' is unknown", instanceId));
+                    throw new InvalidOperationException($"The workflow with the id '{instanceId}' is unknown");
                 }
 
                 if (workflowInstanceStatus == WorkflowInstanceStatus.Idle)
@@ -818,7 +818,7 @@ namespace Composite.C1Console.Workflow
             _workflowRuntime = null;
             _externalDataExchangeService = null;
             _manualWorkflowSchedulerService = null;
-            _fileWorkFlowPersistenceService = null;
+            _fileWorkflowPersistenceService = null;
             _formsWorkflowEventService = null;
 
             _resourceLocker.ResetInitialization();
@@ -948,8 +948,8 @@ namespace Composite.C1Console.Workflow
             _manualWorkflowSchedulerService = new ManualWorkflowSchedulerService(true);
             workflowRuntime.AddService(_manualWorkflowSchedulerService);
 
-            _fileWorkFlowPersistenceService = new FileWorkFlowPersisetenceService(SerializedWorkflowsDirectory);
-            workflowRuntime.AddService(_fileWorkFlowPersistenceService);
+            _fileWorkflowPersistenceService = new FileWorkflowPersistenceService(SerializedWorkflowsDirectory);
+            workflowRuntime.AddService(_fileWorkflowPersistenceService);
 
             _externalDataExchangeService = new ExternalDataExchangeService();
             workflowRuntime.AddService(_externalDataExchangeService);
@@ -1077,7 +1077,7 @@ namespace Composite.C1Console.Workflow
                 }
             }
 
-            var message = new StringBuilder("Worflow ").Append(change);
+            var message = new StringBuilder("Workflow ").Append(change);
 
             if (activityTypeName != null)
             {
@@ -1127,12 +1127,12 @@ namespace Composite.C1Console.Workflow
 
         private void LoadPersistedWorkflows()
         {
-            foreach (Guid instanceId in _fileWorkFlowPersistenceService.GetPersistedWorkflows())
+            foreach (Guid instanceId in _fileWorkflowPersistenceService.GetPersistedWorkflows())
             {
                 if (!_resourceLocker.Resources.WorkflowStatusDictionary.ContainsKey(instanceId) 
                     || _resourceLocker.Resources.WorkflowStatusDictionary[instanceId] != WorkflowInstanceStatus.Running)
                 {
-                    // This will make the runtime load the persised workflow
+                    // This will make the runtime load the persisted workflow
                     WorkflowInstance workflowInstance = null;
                     try
                     {
@@ -1140,7 +1140,7 @@ namespace Composite.C1Console.Workflow
                     }
                     catch (InvalidOperationException)
                     {
-                        _fileWorkFlowPersistenceService.RemovePersistedWorkflow(instanceId);
+                        _fileWorkflowPersistenceService.RemovePersistedWorkflow(instanceId);
                     }
 
                     if (workflowInstance != null
@@ -1209,7 +1209,7 @@ namespace Composite.C1Console.Workflow
 
                 foreach (Guid instanceId in instanceIds)
                 {
-                    _fileWorkFlowPersistenceService.RemovePersistedWorkflow(instanceId);
+                    _fileWorkflowPersistenceService.RemovePersistedWorkflow(instanceId);
                 }
             }
         }
@@ -1218,9 +1218,9 @@ namespace Composite.C1Console.Workflow
 
         private void UnloadWorkflowsSilent()
         {
-            _fileWorkFlowPersistenceService.PersistAll = true;
+            _fileWorkflowPersistenceService.PersistAll = true;
 
-            var abortedWorkflows = new HashSet<Guid>(_fileWorkFlowPersistenceService.GetAbortedWorkflows());
+            var abortedWorkflows = new HashSet<Guid>(_fileWorkflowPersistenceService.GetAbortedWorkflows());
 
             foreach (Guid instanceId in _resourceLocker.Resources.WorkflowStatusDictionary.Keys.ToList())
             {
@@ -1232,7 +1232,7 @@ namespace Composite.C1Console.Workflow
                 UnloadSilent(instanceId);
             }
 
-            _fileWorkFlowPersistenceService.PersistAll = false;
+            _fileWorkflowPersistenceService.PersistAll = false;
         }
 
 
@@ -1335,7 +1335,7 @@ namespace Composite.C1Console.Workflow
         {
             using (GlobalInitializerFacade.CoreIsInitializedScope)
             {
-                _fileWorkFlowPersistenceService.RemovePersistedWorkflow(instanceId);
+                _fileWorkflowPersistenceService.RemovePersistedWorkflow(instanceId);
             }
         }
 
@@ -1366,7 +1366,7 @@ namespace Composite.C1Console.Workflow
                 {
                     DateTime creationTime = C1File.GetLastWriteTime(filename);
 
-                    if (DateTime.Now.Subtract(creationTime) > _oldFileExistensTimeout)
+                    if (DateTime.Now.Subtract(creationTime) > OldFileExistenceTimeout)
                     {
                         Guid instanceId = new Guid(Path.GetFileNameWithoutExtension(filename));
 
@@ -1384,7 +1384,7 @@ namespace Composite.C1Console.Workflow
 
                         C1File.Delete(filename);
 
-                        Log.LogVerbose(LogTitle, string.Format("Old workflow instance file deleted {0}", filename));
+                        Log.LogVerbose(LogTitle, $"Old workflow instance file deleted {filename}");
                     }
                 }
             }

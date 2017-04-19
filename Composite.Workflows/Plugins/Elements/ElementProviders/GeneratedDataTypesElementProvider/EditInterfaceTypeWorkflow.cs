@@ -44,6 +44,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             public const string HasCaching = "HasCaching";
             public const string HasPublishing = "HasPublishing";
             public const string HasSorting = "HasSorting";
+            public const string IsSearchable = "IsSearchable";
 
             public const string OldTypeName = "OldTypeName";
             public const string OldTypeNamespace = "OldTypeNamespace";
@@ -85,6 +86,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 {BindingNames.HasCaching, helper.IsCachable},
                 {BindingNames.HasPublishing, helper.IsPublishControlled},
                 {BindingNames.HasSorting, helper.IsSortable},
+                {BindingNames.IsSearchable, helper.IsSearchable},
                 {BindingNames.DataFieldDescriptors, fieldDescriptors},
                 {BindingNames.OldTypeName, dataTypeDescriptor.Name},
                 {BindingNames.OldTypeNamespace, dataTypeDescriptor.Namespace}
@@ -118,13 +120,14 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 bool hasCaching = this.GetBinding<bool>(BindingNames.HasCaching);
                 bool hasPublishing = this.GetBinding<bool>(BindingNames.HasPublishing);
                 bool hasSorting = this.GetBinding<bool>(BindingNames.HasSorting);
+                bool isSearchable = this.GetBinding<bool>(BindingNames.IsSearchable);
                 string keyFieldName = this.GetBinding<string>(BindingNames.KeyFieldName);
                 string labelFieldName = this.GetBinding<string>(BindingNames.LabelFieldName);
                 string internalUrlPrefix = this.GetBinding<string>(BindingNames.InternalUrlPrefix);
                 var dataFieldDescriptors = this.GetBinding<List<DataFieldDescriptor>>(BindingNames.DataFieldDescriptors);
 
                 var helper = new GeneratedTypesHelper(oldType);
-                bool hasLocalization = typeof (ILocalizedControlled).IsAssignableFrom(oldType);
+                bool hasLocalization = typeof(ILocalizedControlled).IsAssignableFrom(oldType);
 
                 string errorMessage;
                 if (!helper.ValidateNewTypeName(typeName, out errorMessage))
@@ -165,6 +168,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 if (helper.IsEditProcessControlledAllowed)
                 {
                     helper.SetCachable(hasCaching);
+                    helper.SetSearchable(isSearchable);
                     helper.SetPublishControlled(hasPublishing);
                     helper.SetSortable(hasSorting);
                     helper.SetLocalizedControlled(hasLocalization);
@@ -231,7 +235,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 return;
             }
 
-            if(!DataFacade.GetData<IGeneratedTypeWhiteList>(item => item.TypeManagerTypeName == newTypeName).Any())
+            if (!DataFacade.GetData<IGeneratedTypeWhiteList>(item => item.TypeManagerTypeName == newTypeName).Any())
             {
                 var newWhiteListItem = DataFacade.BuildNew<IGeneratedTypeWhiteList>();
                 newWhiteListItem.TypeManagerTypeName = newTypeName;
@@ -245,6 +249,11 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
         private static string GetSerializedTypeName(string typeNamespace, string typeName)
         {
             return "DynamicType:" + (typeName.Length == 0 ? typeName : typeNamespace + "." + typeName);
+        }
+
+        private void codeActivity_refreshViewHandler(object sender, EventArgs e)
+        {
+            RerenderView();
         }
     }
 }

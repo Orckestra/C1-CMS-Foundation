@@ -66,39 +66,82 @@ ui|toolbargroup {
 	}
 }
 
-ui|toolbar.btns-group {
-	ui|toolbargroup {
-		border: 1px solid @base-border-color;
-		border-radius: 3px;
-		margin: 4px 5px;
-		padding: 0;
-		overflow: hidden;
+ui|toolbar.btns-group ui|toolbargroup,
+ui|toolbargroup.btns-group {
+	border: 1px solid @base-border-color;
+	border-radius: 3px;
+	margin: 4px 5px;
+	padding: 0;
+	overflow: hidden;
 
-		&:empty {
-			display: none;
+	&:empty {
+		display: none;
+	}
+
+	ui|toolbarbutton {
+		border-color: transparent;
+		margin: 0;
+		border-radius: 0;
+		text-transform: none;
+
+		+ ui|toolbarbutton {
+			border-color: transparent transparent transparent @base-border-color;
 		}
 
-		ui|toolbarbutton {
-			border-color: transparent;
-			margin: 0;
-			border-radius: 0;
-			text-transform: none;
+		ui|labelbox {
+			padding: 5px 9px;
+		}
 
-			+ ui|toolbarbutton {
-				border-color: transparent transparent transparent @base-border-color;
-			}
-
-			ui|labelbox {
-				padding: 5px 9px;
-			}
-
-			ui|labelbody {
-				min-width: 18px;
-			}
+		ui|labelbody {
+			min-width: 18px;
 		}
 	}
 }
 
 ui|toolbarlabel {
 	padding: 6px 0;
+}
+
+ui|path {
+	width: 100%;
+	float: left;
+	height: 32px;
+	overflow: hidden;
+}
+
+ui|path ui|toolbarbutton {
+	border: 0;
+	text-transform: none;
+	padding-right: 10px;
+	margin-right: -10px !important;
+	margin-left: 2px !important;
+}
+
+ui|path ui|toolbarbutton.isdisabled {
+	opacity: 1;
+}
+
+ui|path ui|toolbarbutton + ui|toolbarbutton:before {
+	content: "/";
+	display: block;
+	position: absolute;
+	color: #ddd;
+	left: 0;
+	top: 6px;
+}
+
+ui|path ui|toolbarbutton ui|labelbox {
+	padding: 6px 1px 6px 7px;
+}
+
+ui|path ui|toolbarbutton:after {
+	content: "...";
+	display: block;
+	position: absolute;
+	right: 0;
+	top: 6px;
+}
+
+ui|path ui|toolbarbutton:last-child:after {
+	display: none;
 }

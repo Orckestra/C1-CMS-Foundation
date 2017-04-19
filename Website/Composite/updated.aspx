@@ -2,10 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"  xmlns:control="http://www.composite.net/ns/uicontrol">
 
 <%@ Page Language="C#" %>
-
 <head>
     <title><%= Composite.Core.Configuration.GlobalSettingsFacade.ApplicationName %> was updated</title>
-    <link rel="stylesheet" type="text/css" href="updated.css.aspx" />
      <% Response.WriteFile("favicon.inc"); %>
     <control:styleloader runat="server" />
     <script type="text/javascript" src="updated.js"></script>
@@ -15,7 +13,7 @@
         <div class="splash-bg"></div>
         <div id="splash" class="splash">
             <div class="splash-inner">
-                <div class="logo"></div>
+                <control:brandingSnippet runat="server" SnippetName="logo" />
                 <div id="updated">
                     <div id="head">
                         <div id="heading">

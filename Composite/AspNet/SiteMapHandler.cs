@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Web;
 using System.Xml;
+using Composite.Core;
 using Composite.Core.Extensions;
+using Composite.Core.Linq;
 using Composite.Core.WebClient;
 using Composite.Data;
 using Composite.Data.Types;
@@ -19,78 +19,66 @@ namespace Composite.AspNet
     /// </summary>
     public class SiteMapHandler : IHttpHandler
     {
-        private const string _ns = "http://www.sitemaps.org/schemas/sitemap/0.9";
+        private const string SiteMapNamespace = "http://www.sitemaps.org/schemas/sitemap/0.9";
 
-        private HttpContext _context;
-        private XmlWriter _writer;
+        private Uri _requestUrl;
 
-        bool IHttpHandler.IsReusable
-        {
-            get { return false; }
-        }
+        bool IHttpHandler.IsReusable => false;
 
         void IHttpHandler.ProcessRequest(HttpContext context)
         {
-            _context = context;
+            _requestUrl = context.Request.Url;
 
-            string content;
+            context.Response.ContentType = "text/xml";
+            context.Response.ContentEncoding = Encoding.UTF8;
 
-            using (var ms = new MemoryStream())
+            var provider = SiteMap.Provider;
+
+            var writer = XmlWriter.Create(context.Response.OutputStream, 
+                new XmlWriterSettings {Encoding = Encoding.UTF8, Indent = true});
+
+            writer.WriteStartDocument();
+
+            if (IsRootRequest(context.Request.RawUrl))
             {
-                var provider = SiteMap.Provider;
+                var rootNodes = ((CmsPageSiteMapProvider) provider).GetRootNodes();
 
-                _writer = XmlWriter.Create(ms, new XmlWriterSettings {Encoding = Encoding.UTF8, Indent = true});
-
-                _writer.WriteStartDocument();
-
-                if (IsRootRequest())
+                if (rootNodes.Count > 1)
                 {
-                    var rootNodes = ((CompositeC1SiteMapProvider) provider).GetRootNodes().ToList();
-
-                    if (rootNodes.Count > 1)
-                    {
-                        WriteSiteMapList(rootNodes);
-                    }
-                    else
-                    {
-                        var rootNode = rootNodes.FirstOrDefault();
-
-                        if (rootNode != null)
-                        {
-                            Thread.CurrentThread.CurrentCulture = rootNode.Culture;
-                            WriteFullSiteMap(provider);
-                        }
-                    }
+                    WriteSiteMapList(writer, rootNodes);
                 }
                 else
                 {
-                    IPage rootPage = ExtractRootPageFromSiteMapUrl(context.Request.RawUrl);
+                    var rootNode = rootNodes.FirstOrDefault();
 
-                    if(rootPage == null)
+                    if (rootNode != null)
                     {
-                        Write404();
-                        return;
-                    }
-
-                    using(new SiteMapContext(rootPage))
-                    {
-                        WriteFullSiteMap(provider);
+                        using (new DataScope(rootNode.Culture))
+                        {
+                            WriteFullSiteMap(writer, provider);
+                        }
                     }
                 }
+            }
+            else
+            {
+                IPage rootPage = ExtractRootPageFromSiteMapUrl(context.Request.RawUrl);
 
-                _writer.WriteEndDocument();
+                if(rootPage == null)
+                {
+                    Write404(context.Response);
+                    return;
+                }
 
-                _writer.Flush();
-
-                content = Encoding.UTF8.GetString(ms.ToArray());
+                using(new SiteMapContext(rootPage))
+                {
+                    WriteFullSiteMap(writer, provider);
+                }
             }
 
-            _context.Response.Clear();
+            writer.WriteEndDocument();
 
-            _context.Response.ContentType = "text/xml";
-            _context.Response.ContentEncoding = Encoding.UTF8;
-
-            _context.Response.Write(content);
+            writer.Flush();
         }
 
         private IPage ExtractRootPageFromSiteMapUrl(string relativeUrl)
@@ -129,29 +117,22 @@ namespace Composite.AspNet
             return null;
         }
 
-        private void Write404()
+        private void Write404(HttpResponse response)
         {
-            _context.Response.Clear();
-            _context.Response.StatusCode = 404;
+            response.Clear();
+            response.StatusCode = 404;
         }
 
         private CultureInfo GetActiveCulture(string languageCode)
         {
-            foreach (var culture in DataLocalizationFacade.ActiveLocalizationCultures)
-            {
-                if (culture.Name.Equals(languageCode, StringComparison.OrdinalIgnoreCase))
-                {
-                    return culture;
-                }
-            }
-
-            return null;
+            return DataLocalizationFacade.ActiveLocalizationCultures
+                .FirstOrDefault(culture => culture.Name.Equals(languageCode, StringComparison.OrdinalIgnoreCase));
         }
 
 
         private bool MatchHostname(IHostnameBinding binding)
         {
-            var host = _context.Request.Url.Host;
+            var host = _requestUrl.Host;
 
             if (binding.Hostname == host)
             {
@@ -163,9 +144,9 @@ namespace Composite.AspNet
                           .Any(alias => alias == host);
         }
 
-        private void WriteSiteMapList(IEnumerable<CompositeC1SiteMapNode> rootNodes)
+        private void WriteSiteMapList(XmlWriter writer, IEnumerable<CmsPageSiteMapNode> rootNodes)
         {
-            _writer.WriteStartElement("sitemapindex", _ns);
+            writer.WriteStartElement("sitemapindex", SiteMapNamespace);
 
             List<IHostnameBinding> bindings;
 
@@ -180,7 +161,7 @@ namespace Composite.AspNet
 
                 using(new DataScope(PublicationScope.Published, node.Culture))
                 {
-                    IPage page = PageManager.GetPageById(node.PageNode.Id);
+                    IPage page = PageManager.GetPageById(node.Page.Id);
                     if(page != null)
                     {
                         urlTitle = page.UrlTitle;
@@ -189,51 +170,49 @@ namespace Composite.AspNet
 
                 IHostnameBinding binding = FindMatchingBinding(node, bindings);
 
-                _writer.WriteStartElement("sitemap");
+                writer.WriteStartElement("sitemap");
 
-                var uri = _context.Request.Url;
-
-                _writer.WriteStartElement("loc");
+                writer.WriteStartElement("loc");
 
                 string hostnameUrl;
 
                 if (binding == null || MatchHostname(binding))
                 {
                     hostnameUrl = "{0}://{1}{2}".FormatWith(
-                        uri.Scheme,
-                        uri.Host,
-                        uri.IsDefaultPort ? string.Empty : ":" + uri.Port);
+                        _requestUrl.Scheme,
+                        _requestUrl.Host,
+                        _requestUrl.IsDefaultPort ? string.Empty : ":" + _requestUrl.Port);
                 }
                 else
                 {
                     hostnameUrl = "http://" + binding.Hostname;
                 }
 
-                _writer.WriteString(hostnameUrl + "{0}/{1}{2}/sitemap.xml".FormatWith(
+                writer.WriteString(hostnameUrl + "{0}/{1}{2}/sitemap.xml".FormatWith(
                                     UrlUtils.PublicRootPath,
                                     node.Culture,
                                     urlTitle.IsNullOrEmpty() ? string.Empty : "/" + urlTitle));
-                _writer.WriteEndElement();
+                writer.WriteEndElement();
 
-                _writer.WriteEndElement();
+                writer.WriteEndElement();
             }
 
-            _writer.WriteEndElement();
+            writer.WriteEndElement();
         }
 
-        private IHostnameBinding FindMatchingBinding(CompositeC1SiteMapNode sitemapNode, List<IHostnameBinding> bindings)
+        private IHostnameBinding FindMatchingBinding(CmsPageSiteMapNode sitemapNode, List<IHostnameBinding> bindings)
         {
             Guid homePageId = Guid.Parse(sitemapNode.Key);
             string cultureName = sitemapNode.Culture.Name;
 
-            var bestMatch = bindings.SingleOrDefault(h => h.HomePageId == homePageId && h.Culture == cultureName);
+            var bestMatch = FindMatch(bindings, homePageId, cultureName);
             if (bestMatch != null)
             {
                 return bestMatch;
             }
 
             string defaultCulture = DataLocalizationFacade.DefaultLocalizationCulture.Name;
-            var secondBestMatch = bindings.SingleOrDefault(h => h.HomePageId == homePageId && h.Culture == defaultCulture);
+            var secondBestMatch = FindMatch(bindings, homePageId, defaultCulture);
             if (secondBestMatch != null)
             {
                 return secondBestMatch;
@@ -242,44 +221,56 @@ namespace Composite.AspNet
             return  bindings.OrderBy(b => b.Hostname).FirstOrDefault(h => h.HomePageId == homePageId);
         }
 
-        private void WriteFullSiteMap(SiteMapProvider provider)
+        private IHostnameBinding FindMatch(IEnumerable<IHostnameBinding> bindings, Guid homePageId, string cultureName)
         {
-            _writer.WriteStartElement("urlset", _ns);
-
-            WriteElement(provider.RootNode);
-
-            _writer.WriteEndElement();
+            return bindings.Where(h => h.HomePageId == homePageId && h.Culture == cultureName)
+                .SingleOrDefaultOrException("There are multiple hostname bindings refering to the same home page id '{0}' and the same culture '{1}'",
+                    homePageId, cultureName);
         }
 
-        private bool IsRootRequest()
+        private void WriteFullSiteMap(XmlWriter writer, SiteMapProvider provider)
         {
-            string url = _context.Request.RawUrl;
+            writer.WriteStartElement("urlset", SiteMapNamespace);
 
-            return string.Equals(url, UrlUtils.PublicRootPath + "/sitemap.xml", StringComparison.OrdinalIgnoreCase);
+            WriteElement(writer, provider.RootNode, new HashSet<string>());
+
+            writer.WriteEndElement();
         }
 
-        private void WriteElement(SiteMapNode node)
+        private bool IsRootRequest(string relativeUrl)
         {
-            _writer.WriteStartElement("url");
+            return string.Equals(relativeUrl, UrlUtils.PublicRootPath + "/sitemap.xml", StringComparison.OrdinalIgnoreCase);
+        }
 
-            _writer.WriteStartElement("loc");
-            _writer.WriteString(String.Format("{0}://{1}{2}", _context.Request.Url.Scheme, _context.Request.Url.Host, node.Url));
-            _writer.WriteEndElement();
+        private void WriteElement(XmlWriter writer, SiteMapNode node, HashSet<string> alreadyVisitedNodes)
+        {
+            if (alreadyVisitedNodes.Contains(node.Key))
+            {
+                Log.LogError(nameof(SiteMapHandler), $"Loop in sitemap nodes detected. Node key: '{node.Key}'");
+                return;
+            }
+            alreadyVisitedNodes.Add(node.Key);
 
-            var baseNode = node as CompositeC1SiteMapNode;
+            writer.WriteStartElement("url");
+
+            writer.WriteStartElement("loc");
+            writer.WriteString($"{_requestUrl.Scheme}://{_requestUrl.Host}{node.Url}");
+            writer.WriteEndElement();
+
+            var baseNode = node as CmsPageSiteMapNode;
             if (baseNode != null)
             {
                 var lastEdited = baseNode.LastModified;
-                _writer.WriteStartElement("lastmod");
-                _writer.WriteString(lastEdited.ToUniversalTime().ToString("u").Replace(" ", "T"));
-                _writer.WriteEndElement();
+                writer.WriteStartElement("lastmod");
+                writer.WriteString(lastEdited.ToUniversalTime().ToString("u").Replace(" ", "T"));
+                writer.WriteEndElement();
 
                 var changeFrequency = baseNode.ChangeFrequency;
                 if (changeFrequency.HasValue)
                 {
-                    _writer.WriteStartElement("changefreq");
-                    _writer.WriteString(changeFrequency.Value.ToString().ToLowerInvariant());
-                    _writer.WriteEndElement();
+                    writer.WriteStartElement("changefreq");
+                    writer.WriteString(changeFrequency.Value.ToString().ToLowerInvariant());
+                    writer.WriteEndElement();
                 }
 
                 var priority = baseNode.Priority;
@@ -287,18 +278,18 @@ namespace Composite.AspNet
                 {
                     if (priority > 1 && priority < 10)
                     {
-                        _writer.WriteStartElement("priority");
-                        _writer.WriteString(((decimal) priority.Value/10).ToString("0.0", CultureInfo.InvariantCulture));
-                        _writer.WriteEndElement();
+                        writer.WriteStartElement("priority");
+                        writer.WriteString(((decimal) priority.Value/10).ToString("0.0", CultureInfo.InvariantCulture));
+                        writer.WriteEndElement();
                     }
                 }
             }
 
-            _writer.WriteEndElement();
+            writer.WriteEndElement();
 
             foreach (SiteMapNode child in node.ChildNodes)
             {
-                WriteElement(child);
+                WriteElement(writer, child, alreadyVisitedNodes);
             }
         }
     }

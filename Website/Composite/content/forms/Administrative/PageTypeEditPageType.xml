@@ -35,7 +35,6 @@
             </TextBox.Text>
           </TextBox>
 
-
           <TextArea Label="${Composite.Plugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.DescriptionTextArea.Label}"
                     Help="${Composite.Plugins.PageTypeElementProvider, PageType.EditPageTypeWorkflow.DescriptionTextArea.Help}">
             <TextArea.Text>

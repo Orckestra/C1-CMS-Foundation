@@ -1,5 +1,8 @@
-﻿using System;
+﻿//#define ConnectionLeakCheck
+
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using Composite.Core.Threading;
@@ -13,10 +16,14 @@ namespace Composite.Core.Implementation
     /// </summary>
     public class DataConnectionImplementation : DataConnectionBase, IDisposable
     {
+#if ConnectionLeakCheck
+        private string _allocationCallStack;
+#endif
+        
         private IDisposable _threadDataManager;
         private readonly DataScope _dataScope;
 
-
+        internal DataScope DataScope => _dataScope;
         /// <summary>
         /// Stateless constructor. This is used when implementations of static methods needs to be called
         /// Used when New and AllLocales are called
@@ -44,14 +51,18 @@ namespace Composite.Core.Implementation
         private void InitializeThreadData()
         {
             _threadDataManager = ThreadDataManager.EnsureInitialize();
-        }
 
-        /// <summary>
-        /// Documentation pending
-        /// </summary>
-        /// <typeparam name="TData"></typeparam>
-        /// <returns></returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", MessageId = "Get", Justification = "This is what we want")]
+#if ConnectionLeakCheck
+            _allocationCallStack = new StackTrace().ToString();
+#endif
+    }
+
+    /// <summary>
+    /// Documentation pending
+    /// </summary>
+    /// <typeparam name="TData"></typeparam>
+    /// <returns></returns>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", MessageId = "Get", Justification = "This is what we want")]
         public virtual IQueryable<TData> Get<TData>()
             where TData : class, IData
         {
@@ -178,39 +189,19 @@ namespace Composite.Core.Implementation
         /// <summary>
         /// Documentation pending
         /// </summary>
-        public virtual PublicationScope CurrentPublicationScope
-        {
-            get
-            {
-                return this.PublicationScope;
-            }
-        }
-
+        public virtual PublicationScope CurrentPublicationScope => this.PublicationScope;
 
 
         /// <summary>
         /// Documentation pending
         /// </summary>
-        public virtual CultureInfo CurrentLocale
-        {
-            get
-            {
-                return this.Locale;
-            }
-        }
+        public virtual CultureInfo CurrentLocale => this.Locale;
 
 
         /// <summary>
         /// Documentation pending
         /// </summary>
-        public virtual IEnumerable<CultureInfo> AllLocales
-        {
-            get
-            {
-                return DataLocalizationFacade.ActiveLocalizationCultures;
-            }
-        }
-
+        public virtual IEnumerable<CultureInfo> AllLocales => DataLocalizationFacade.ActiveLocalizationCultures;
 
 
         /// <summary>
@@ -227,6 +218,10 @@ namespace Composite.Core.Implementation
         /// <exclude />
         ~DataConnectionImplementation()
         {
+#if ConnectionLeakCheck
+            Log.LogError(nameof(DataConnection), "Not disposed data connection allocated at: " + _allocationCallStack);
+#endif
+
             Dispose(false);
         }
 

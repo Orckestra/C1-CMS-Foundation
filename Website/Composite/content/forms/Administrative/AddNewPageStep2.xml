@@ -5,8 +5,12 @@
     <cms:binding name="ExistingPages" type="System.Collections.IEnumerable" optional="true" />
     <cms:binding name="RelativeSelectedPageId" type="System.Guid" optional="true" />
     <cms:binding name="UrlTitleIsRequired" type="System.Boolean"/>
+    <cms:binding name="Title" type="System.String"/>
   </cms:bindings>
   <cms:layout>
+    <cms:layout.label>
+      <cms:read source="Title"/>
+    </cms:layout.label>
     <PlaceHolder>
       <FieldGroup>
         <TextBox Label="${Composite.Plugins.PageElementProvider, AddNewPageStep2.LabelUrlTitle}" Help="${Composite.Plugins.PageElementProvider, AddNewPageStep2.HelpUrlTitle}" SpellCheck="false">

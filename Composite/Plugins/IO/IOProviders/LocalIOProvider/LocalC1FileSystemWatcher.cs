@@ -12,21 +12,23 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
     internal class LocalC1FileSystemWatcher : IC1FileSystemWatcher
     {
         private const string LogTitle = "LocalC1FileSystemWatcher";
-        private FileSystemWatcher _fileSystemWatcher;
+        private readonly FileSystemWatcher _fileSystemWatcher;
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileSystemWatcherClass:DoNotUseFileSystemWatcherClass")]
         public LocalC1FileSystemWatcher(string path, string filter)
         {
             if (filter == null)
             {
-                _fileSystemWatcher = new FileSystemWatcher(path);
-                _fileSystemWatcher.InternalBufferSize = 8192;
+                _fileSystemWatcher = new FileSystemWatcher(path)
+                {
+                    InternalBufferSize = 8192
+                };
             }
             else
             {
                 _fileSystemWatcher = new FileSystemWatcher(path, filter);
             }
-            _fileSystemWatcher.Error += new ErrorEventHandler(_fileSystemWatcher_Error);
+            _fileSystemWatcher.Error += _fileSystemWatcher_Error;
         }
 
 
@@ -112,6 +114,13 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
             }
         }
 
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileSystemWatcherClass:DoNotUseFileSystemWatcherClass")]
+        public int InternalBufferSize
+        {
+            get { return _fileSystemWatcher.InternalBufferSize; }
+            set { _fileSystemWatcher.InternalBufferSize = value; }
+        }
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileSystemWatcherClass:DoNotUseFileSystemWatcherClass")]

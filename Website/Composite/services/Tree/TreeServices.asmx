@@ -14,6 +14,7 @@ using Composite.C1Console.Security;
 using Composite.C1Console.Users;
 using Composite.Core;
 using Composite.Core.IO;
+using Composite.Core.ResourceSystem;
 using Composite.Core.Routing;
 using Composite.Core.Xml;
 using Composite.Core.Types;
@@ -22,7 +23,10 @@ using Composite.Core.WebClient.FlowMediators;
 using Composite.Core.WebClient.Services.TreeServiceObjects.ExtensionMethods;
 using Composite.Data;
 using Composite.Data.ProcessControlled;
+using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
 using Composite.Data.Types;
+using Composite.Core.Extensions;
+using Texts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_Plugins_PageElementProvider;
 
 // Search token stuff
 using Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementProvider;
@@ -78,7 +82,131 @@ namespace Composite.Services
             }
         }
 
+        [WebMethod]
+        public List<ClientElement> GetUnpublishedElements(string dummy)
+        {
+            var rootElement = ElementFacade.GetPerspectiveElements(false).First();
+            var allElements = GetPublishControlledDescendants(rootElement.ElementHandle);
 
+            var publicationStates = new Dictionary<string, string>
+            {
+                {GenericPublishProcessController.Draft, StringResourceSystemFacade.GetString("Composite.Management", "PublishingStatus.draft")},
+                {GenericPublishProcessController.AwaitingApproval, StringResourceSystemFacade.GetString("Composite.Management", "PublishingStatus.awaitingApproval")},
+                {GenericPublishProcessController.AwaitingPublication, StringResourceSystemFacade.GetString("Composite.Management", "PublishingStatus.awaitingPublication")}
+            };
+
+            List<Tuple<Element, IPublishControlled>> actionRequiredPages =
+                 (from element in allElements
+                  let publishControlledData = (IPublishControlled)((DataEntityToken)element.ElementHandle.EntityToken).Data
+                  where publishControlledData.PublicationStatus != "published"
+                  select new Tuple<Element, IPublishControlled>(element, publishControlledData)).ToList();
+
+            foreach (var actionRequiredPage in actionRequiredPages)
+            {
+                var propertyBag = actionRequiredPage.Item1.PropertyBag;
+                var data = actionRequiredPage.Item2;
+
+                  
+                propertyBag[Texts.ViewUnpublishedItems_PageTitleLabel] = data.GetLabel();
+
+                var publicationStatus = data.PublicationStatus;
+                propertyBag[Texts.ViewUnpublishedItems_StatusLabel] = publicationStates.ContainsKey(publicationStatus)
+                    ? publicationStates[publicationStatus]
+                    : "Unknown State";
+
+                var versionedData = data as IVersioned;
+                if (versionedData != null)
+                {
+                    string versionName = versionedData.LocalizedVersionName(); // TODO: type cast?
+                    if (!string.IsNullOrEmpty(versionName))
+                    {
+                        propertyBag[Texts.ViewUnpublishedItems_VersionLabel] = versionName;
+                    }
+                }
+
+                Func<DateTime, string> toSortableString = date => String.Format("{0:s}", date);
+
+                var changeHistory = data as IChangeHistory;
+                if (changeHistory != null)
+                {
+                    propertyBag[Texts.ViewUnpublishedItems_DateModifiedLabel] = changeHistory.ChangeDate.ToTimeZoneDateTimeString();
+                    propertyBag[Texts.ViewUnpublishedItems_DateModifiedLabel+"Sortable"] = toSortableString(changeHistory.ChangeDate);
+                    propertyBag[Texts.ViewUnpublishedItems_LabelChangedBy] = changeHistory.ChangedBy;
+                    propertyBag[Texts.ViewUnpublishedItems_LabelChangedBy+"Sortable"] = changeHistory.ChangedBy;
+                }
+                var creationHistory = data as ICreationHistory;
+                if (creationHistory != null)
+                {
+                    propertyBag[Texts.ViewUnpublishedItems_DateCreatedLabel] =
+                        creationHistory.CreationDate.ToTimeZoneDateTimeString();
+                    propertyBag[Texts.ViewUnpublishedItems_DateCreatedLabel+"Sortable"] =
+                        toSortableString(creationHistory.CreationDate);
+                }
+
+                try
+                {
+                    if (data is IVersioned)
+                    {
+                        foreach (
+                            var x in (data as IVersioned).GetExtraProperties() ?? new List<VersionedExtraProperties>())
+                        {
+                            propertyBag[x.ColumnName] = x.Value;
+                            propertyBag[x.ColumnName + "Sortable"] = x.SortableValue;
+
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log.LogCritical(LogTitle, "Problem getting extra properties from version packages");
+                    Log.LogCritical(LogTitle, ex);
+                    throw;
+                }
+
+            }
+            return actionRequiredPages.Select(pair => pair.Item1).ToList().ToClientElementList();
+        }
+
+        IEnumerable<Element> GetPublishControlledDescendants(ElementHandle elementHandle)
+        {
+            HashSet<string> elementBundles = null;
+
+            var children = ElementFacade.GetChildren(elementHandle, new SearchToken()) ?? Enumerable.Empty<Element>();
+            foreach (var child in children)
+            {
+                if (IsPublishControlled(child))
+                {
+                    yield return child;
+                }
+
+                string elementBundle = child.VisualData.ElementBundle;
+                if (elementBundle != null)
+                {
+                    elementBundles = elementBundles ?? new HashSet<string>();
+                    if (elementBundles.Contains(elementBundle))
+                    {
+                        continue;
+                    }
+
+                    elementBundles.Add(elementBundle);
+                }
+
+                if (child.VisualData.HasChildren)
+                {
+                    foreach (var element in GetPublishControlledDescendants(child.ElementHandle))
+                    {
+                        yield return element;
+                    }
+                }
+            }
+        }
+
+        private bool IsPublishControlled(Element v)
+        {
+            var entityToken = v.ElementHandle.EntityToken as DataEntityToken;
+            return entityToken != null
+                   && typeof (IPublishControlled).IsAssignableFrom(entityToken.InterfaceType);
+        }
 
         [WebMethod]
         public List<ClientElement> GetElements(ClientElement clientElement)
@@ -90,7 +218,15 @@ namespace Composite.Services
         [WebMethod]
         public List<ClientElement> GetRootElements(string dummy)
         {
-            return GetElementsBySearchToken(null, null);
+            try
+            {
+                return GetElementsBySearchToken(null, null);
+            }
+            catch (Exception ex)
+            {
+                Log.LogCritical(LogTitle, ex);
+                throw;
+            }
         }
 
 
@@ -133,17 +269,25 @@ namespace Composite.Services
         [WebMethod]
         public List<ClientElement> GetElementsBySearchToken(ClientElement clientElement, string serializedSearchToken)
         {
-            VerifyClientElement(clientElement);
-
-            if (clientElement == null || string.IsNullOrEmpty(clientElement.ProviderName))
+            try
             {
-                return new List<ClientElement> { TreeServicesFacade.GetRoot() };
+
+                VerifyClientElement(clientElement);
+
+                if (clientElement == null || string.IsNullOrEmpty(clientElement.ProviderName))
+                {
+                    return new List<ClientElement> { TreeServicesFacade.GetRoot() };
+                }
+
+                List<ClientElement> clientElements = TreeServicesFacade.GetChildren(clientElement.ProviderName, clientElement.EntityToken, clientElement.Piggybag, serializedSearchToken);
+                RemoveDuplicateActions(clientElements);
+                return clientElements;
             }
-
-            List<ClientElement> clientElements = TreeServicesFacade.GetChildren(clientElement.ProviderName, clientElement.EntityToken, clientElement.Piggybag, serializedSearchToken);
-            RemoveDuplicateActions(clientElements);
-            return clientElements;
-
+            catch (Exception ex)
+            {
+                Log.LogCritical(LogTitle, ex);
+                throw;
+            }
         }
 
 
@@ -151,7 +295,15 @@ namespace Composite.Services
         [WebMethod]
         public List<ClientElement> GetNamedRoots(string name)
         {
-            return GetNamedRootsBySearchToken(name, null);
+            try
+            {
+                return GetNamedRootsBySearchToken(name, null);
+            }
+            catch (Exception ex)
+            {
+                Log.LogCritical(LogTitle, ex);
+                throw;
+            }
         }
 
 
@@ -178,38 +330,23 @@ namespace Composite.Services
 
 
         [WebMethod]
-        public string GetBrowserUrlByEntityToken(string serializedEntityToken, bool showPublished)
+        public ClientBrowserViewSettings GetBrowserUrlByEntityToken(string serializedEntityToken, bool showPublished)
         {
 
             var entityToken = EntityTokenSerializer.Deserialize(serializedEntityToken);
 
             using (new DataScope(showPublished ? PublicationScope.Published : PublicationScope.Unpublished))
             {
-                if (showPublished && entityToken is DataEntityToken)
+                var browserViewSettings = UrlToEntityTokenFacade.TryGetBrowserViewSettings(entityToken, showPublished);
+
+                if (browserViewSettings != null)
                 {
-                    var dataEntityToken = entityToken as DataEntityToken;
-                    if (dataEntityToken.DataSourceId.PublicationScope == PublicationScope.Unpublished
-                        && DataFacade.GetSupportedDataScopes(dataEntityToken.InterfaceType)
-                            .Contains(DataScopeIdentifier.Public))
-                    {
-                        var data = dataEntityToken.Data;
-                        if (data != null)
-                        {
-                            var key = data.GetUniqueKey();
-                            var publicData = DataFacade.TryGetDataByUniqueKey(dataEntityToken.InterfaceType, key);
-                            if (publicData != null)
-                            {
-                                entityToken = publicData.GetDataEntityToken();
-                            }
-                            else
-                            {
-                                return null;
-                            }
-                        }
-                    }
+                    return new ClientBrowserViewSettings { Url = browserViewSettings.Url, ToolingOn = browserViewSettings.ToolingOn };
                 }
-                return UrlToEntityTokenFacade.TryGetUrl(entityToken);
+
             }
+
+            return null;
         }
 
 
@@ -503,6 +640,18 @@ namespace Composite.Services
                         return EntityTokenSerializer.Serialize(data.GetDataEntityToken(), true);
                     }
                 }
+            }
+
+            return null;
+        }
+
+        [WebMethod]
+        public string GetWidgetEntityToken(string name)
+        {
+            Functions.IWidgetFunction function;
+            if (Functions.FunctionFacade.TryGetWidgetFunction(out function, name))
+            {
+                return EntityTokenSerializer.Serialize(function.EntityToken, true);
             }
 
             return null;

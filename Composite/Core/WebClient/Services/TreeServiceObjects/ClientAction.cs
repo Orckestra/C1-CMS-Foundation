@@ -1,5 +1,6 @@
 using Composite.Core.ResourceSystem;
 using System;
+using Composite.C1Console.Elements;
 
 
 namespace Composite.Core.WebClient.Services.TreeServiceObjects
@@ -34,6 +35,9 @@ namespace Composite.Core.WebClient.Services.TreeServiceObjects
 
         /// <exclude />
         public int ActivePositions { get; set; }
+
+        /// <exclude />
+        public DialogStrings BulkExecutionDialog { get; set; }
 
         /// <exclude />
         public string ActionKey 

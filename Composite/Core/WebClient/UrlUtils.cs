@@ -378,7 +378,7 @@ namespace Composite.Core.WebClient
             const char separator = '|';
             const char spaceReplacement = '-';
 
-            var symbolsToEncode = new Hashset<char>(new[] { '<', '>', '*', '%', '&', '\\', '?' });
+            var symbolsToEncode = new Hashset<char>(new[] { '<', '>', '*', '%', '&', '\\', '?', '/' });
 
             symbolsToEncode.Add(separator);
             symbolsToEncode.Add(spaceReplacement);

@@ -8,7 +8,7 @@ using Composite.Core.Implementation;
 namespace Composite.Data
 {
     /// <summary>
-    /// Represents a connection to the Composite C1 data system.
+    /// Represents a connection to the C1 CMS data system.
     /// </summary>
     /// <example>
     /// Here is an example of how to use it
@@ -25,15 +25,43 @@ namespace Composite.Data
     public class DataConnection : ImplementationContainer<DataConnectionImplementation>, IDisposable
     {
         //private ImplementationContainer<PageDataConnection> _pageDataConnection;
-        private ImplementationContainer<SitemapNavigator> _sitemapNavigator;
+        private readonly ImplementationContainer<SitemapNavigator> _sitemapNavigator;
 
+        private bool _disposed;
 
+        
+        /// <summary>
+        /// Resolve service of a specific type that is attached to connection's data scope
+        /// </summary>
+        /// <param name="t"></param>
+        /// <returns></returns>
+        public object GetService(Type t)
+        {
+            return ImplementationFactory.CurrentFactory.ResolveService(t);
+        }
+
+        /// <summary>
+        /// attach service to data connection
+        /// </summary>
+        /// <param name="service"></param>
+        public void AddService(object service)
+        {
+            Implementation.DataScope.AddService(service);
+        }
+
+        /// <summary>
+        /// disable all services in the data connection
+        /// </summary>
+        public void DisableServices()
+        {
+            Implementation.DataScope.DisableServices();
+        }
 
         /// <summary>
         /// Creates a new <see cref="DataConnection"/> instance inheriting the <see cref="Composite.Data.PublicationScope"/>
         /// and locale set on the call stack. When outside an existing scope this default to PublicationScope,Published and the
         /// default language on the website. You should use this constructure unless you need to force data to come from an alternative 
-        /// scope. <see cref="DataConnection"/> can be used to access the Composite C1 storage.
+        /// scope. <see cref="DataConnection"/> can be used to access the C1 CMS storage.
         /// </summary>
         /// <example>
         /// Here is an example of how to use it
@@ -60,7 +88,7 @@ namespace Composite.Data
 
         /// <summary>
         /// Creates a new <see cref="DataConnection"/> instance with the given <paramref name="scope"/>
-        /// and current (or default) locale. <see cref="DataConnection"/> can be used to access the Composite C1 storage.
+        /// and current (or default) locale. <see cref="DataConnection"/> can be used to access the C1 CMS storage.
         /// </summary>
         /// <param name="scope">The <see cref="Composite.Data.PublicationScope"/> data should be read from.</param>
         /// <example>
@@ -90,7 +118,7 @@ namespace Composite.Data
 
         /// <summary>
         /// Creates a new <see cref="DataConnection"/> instance with current or default <see cref="Composite.Data.PublicationScope"/>
-        /// and the given <paramref name="locale"/>. <see cref="DataConnection"/> can be used to access the Composite C1 storage.
+        /// and the given <paramref name="locale"/>. <see cref="DataConnection"/> can be used to access the C1 CMS storage.
         /// </summary>
         /// <param name="locale">The desired locale. This should be one of the locale found in <see cref="Composite.Data.DataConnection.AllLocales"/></param>
         /// <example>
@@ -118,7 +146,7 @@ namespace Composite.Data
 
         /// <summary>
         /// Creates a new <see cref="DataConnection"/> instance with the given <paramref name="scope"/>
-        /// and the given <paramref name="locale"/>. <see cref="DataConnection"/> can be used to access the Composite C1 storage.
+        /// and the given <paramref name="locale"/>. <see cref="DataConnection"/> can be used to access the C1 CMS storage.
         /// </summary>
         /// <param name="scope">The <see cref="Composite.Data.PublicationScope"/> data should be read from.</param>
         /// <param name="locale">The desired locale. This should be one of the locale found in <see cref="Composite.Data.DataConnection.AllLocales"/></param>
@@ -503,12 +531,18 @@ namespace Composite.Data
         /// <exclude />
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing)
+            if (!disposing) return;
+
+            if (_disposed)
             {
-                this.DisposeImplementation();
-                //_pageDataConnection.Implementation.DisposeImplementation();
-                _sitemapNavigator.Implementation.DisposeImplementation();
+                throw new ObjectDisposedException(nameof(DataConnection));
             }
+
+            this.DisposeImplementation();
+            
+            _sitemapNavigator.Implementation.DisposeImplementation();
+
+            _disposed = true;
         }
     }
 }

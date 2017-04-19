@@ -10,17 +10,17 @@
 	    <asp:PlaceHolder ID="HeaderPlaceHolder" runat="server" />
 	</head>
 	<body>
-	    <form id="form1" runat="server" class="updateXXXform updateXXXzone">
-		    <ui:dialogpage 
+	    <form id="form1" runat="server" class="updateDISABLEDform updatezone">
+		    <ui:dialogpage
 		    	id="formcontrolpage"
-		    	label="<%= Server.HtmlEncode( this.ContainerLabel )%>" 
+		    	label="<%= Server.HtmlEncode( this.ContainerLabel )%>"
 		    	image="<%= Server.HtmlEncode( this.ContainerIconClientString )%>"
 		        resizable="false">
-		        
-		        <aspui:Feedback runat="server" 
-		        	ID="ctlFeedback" 
+
+		        <aspui:Feedback runat="server"
+		        	ID="ctlFeedback"
 		        	OnCommand="OnMessage" />
-		        
+
 				<asp:PlaceHolder ID="customBroadcasterSets" runat="server" />
 				<asp:PlaceHolder ID="formPlaceHolder" runat="server"/>
 				<div style="display: none;" id="clientmessages">

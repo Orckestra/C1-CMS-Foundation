@@ -17,6 +17,11 @@ function FunctionEditorPageBinding () {
 	 */
 	this._isSourceMode = false;
 	
+	/**
+	 * Enable flexbox behavior.
+	 * @type {boolean}
+	 */
+	this.isFlexible = true;
 	/*
 	 * Returnable.
 	 */

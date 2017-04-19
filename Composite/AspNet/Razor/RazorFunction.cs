@@ -1,12 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using Composite.Core.Xml;
+using Composite.Functions;
+using Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvider;
 
 namespace Composite.AspNet.Razor
 {
     /// <summary>
     /// Base class for c1 functions based on razor 
     /// </summary>
-    public abstract class RazorFunction : CompositeC1WebPage
+    public abstract class RazorFunction : CompositeC1WebPage, IParameterWidgetsProvider
+
     {
         /// <summary>
         /// Gets the function description. Override this to make a custom description.
@@ -35,5 +39,12 @@ namespace Composite.AspNet.Razor
         {
             get { return typeof (XhtmlDocument); }
         }
+
+        /// <exclude />
+        public virtual IDictionary<string, WidgetFunctionProvider> GetParameterWidgets()
+        {
+            return null;
+        }
+
     }
 }

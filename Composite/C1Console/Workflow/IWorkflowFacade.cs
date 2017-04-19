@@ -28,7 +28,7 @@ namespace Composite.C1Console.Workflow
         void RunWorkflow(Guid instanceId);
         void RunWorkflow(WorkflowInstance workflowInstance);
         void AbortWorkflow(Guid instanceId);
-        void AcquireLock(Guid isntanceId, EntityToken entityToken);
+        void AcquireLock(Guid instanceId, EntityToken entityToken);
         #endregion
 
 

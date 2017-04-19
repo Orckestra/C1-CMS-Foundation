@@ -825,8 +825,13 @@ TabBoxBinding.prototype.getBestTab = function ( missingTabBinding ) {
 TabBoxBinding.prototype.moveToOrdinalPosition = function ( tabBinding, index ) {
 	
 	var target = this.bindingDocument.getElementById ( tabBinding.bindingElement.id ); // ie!
-	var tab = this.getTabElements ().get ( index );
-	this._tabsElement.insertBefore ( target, tab );
+	var tab = this.getTabElements().get(index);
+	while (tab && tab.getAttribute("pinned") === "true") {
+		tab = this.getTabElements().get(++index);
+	}
+	if (tab) {
+		this._tabsElement.insertBefore(target, tab);
+	}
 	this.updateType = TabBoxBinding.UPDATE_ORDINAL;
 	this.dispatchAction ( TabBoxBinding.ACTION_UPDATED );
 }

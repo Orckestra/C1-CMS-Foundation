@@ -23,10 +23,11 @@ namespace Composite.C1Console.Forms
         private CompileContext _context;
         private Dictionary<string, object> _bindingObjects;
 
-        private IUiControl _uiControl = null;
-        private CompileTreeNode _rootCompilerNode = null;
+        private IUiControl _uiControl;
+        private CompileTreeNode _rootCompilerNode;
 
         private string _label;
+        private string _tooltip;
         private string _iconHandle;
 
 
@@ -81,11 +82,13 @@ namespace Composite.C1Console.Forms
         {
             _bindingObjects = bindingObjects;
 
-            _context = new CompileContext();
-            _context.BindingObjects = bindingObjects;
-            _context.BindingsValidationRules = bindingsValidationRules;
-            _context.CurrentChannel = channel;
-            _context.CustomControlIdPrefix = customControlIdPrefix;
+            _context = new CompileContext
+            {
+                BindingObjects = bindingObjects,
+                BindingsValidationRules = bindingsValidationRules,
+                CurrentChannel = channel,
+                CustomControlIdPrefix = customControlIdPrefix
+            };
 
             _rootCompilerNode = BuildFromXmlPhase.BuildTree(doc);
 
@@ -100,7 +103,7 @@ namespace Composite.C1Console.Forms
 
             ExtractUiArtifactsPhase extractUiArtifacts = new ExtractUiArtifactsPhase();
 
-            extractUiArtifacts.ExtractUiArtifacts(_rootCompilerNode, out _uiControl, out _label, out _iconHandle);
+            extractUiArtifacts.ExtractUiArtifacts(_rootCompilerNode, out _uiControl, out _label, out _tooltip, out _iconHandle);
         }
 
         /// <summary>
@@ -135,16 +138,13 @@ namespace Composite.C1Console.Forms
         public Dictionary<string, string> GetBindingToClientIDMapping()
         {
             var result = new Dictionary<string, string>();
-            FormFlowUiDefinitionRenderer.ResolveBindingPathToCliendIDMappings(_uiControl as IWebUiControl, result);
+            FormFlowUiDefinitionRenderer.ResolveBindingPathToClientIDMappings(_uiControl as IWebUiControl, result);
 
             return result;
         } 
 
         /// <exclude />
-        public IUiControl UiControl
-        {
-            get { return _uiControl; }
-        }
+        public IUiControl UiControl => _uiControl;
 
 
         /// <exclude />
@@ -155,6 +155,10 @@ namespace Composite.C1Console.Forms
                 return !string.IsNullOrEmpty(_label) ? _label : _uiControl.Label;
             }
         }
+
+
+        /// <exclude />
+        public string Tooltip => _tooltip;
 
 
         /// <exclude />
@@ -175,22 +179,16 @@ namespace Composite.C1Console.Forms
                 string[] resourceParts = _iconHandle.Split(',');
                 if (resourceParts.Length != 2)
                     throw new InvalidOperationException(
-                        string.Format("Invalid icon resource name '{0}'. Only one comma expected.", _iconHandle));
+                        $"Invalid icon resource name '{_iconHandle}'. Only one comma expected.");
 
                 return new ResourceHandle(resourceParts[0].Trim(), resourceParts[1].Trim());
             }
         }
 
         /// <exclude />
-        public Dictionary<string, object> BindingObjects
-        {
-            get { return _bindingObjects; }
-        }
+        public Dictionary<string, object> BindingObjects => _bindingObjects;
 
         /// <exclude />
-        public CompileTreeNode RootCompileTreeNode
-        {
-            get { return _rootCompilerNode; }
-        }
+        public CompileTreeNode RootCompileTreeNode => _rootCompilerNode;
     }
 }

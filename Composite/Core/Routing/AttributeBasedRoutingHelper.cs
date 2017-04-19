@@ -5,6 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using Composite.Core.Extensions;
+using Composite.Core.Types;
 using Composite.Data;
 
 namespace Composite.Core.Routing
@@ -16,6 +17,13 @@ namespace Composite.Core.Routing
             public Attribute Attribute;
             public PropertyInfo Property;
             public IRelativeRouteToPredicateMapper Mapper;
+        }
+
+
+        internal interface IRelativeRouteResover : IRelativeRouteToPredicateMapper
+        {
+            /// <exclude />
+            IData TryGetData(Guid pageId, RelativeRoute routePart);
         }
 
 
@@ -50,9 +58,14 @@ namespace Composite.Core.Routing
         }
 
         internal class DataTypeRelativeRouteToPredicateMapper<TDataType> 
-            : IRelativeRouteToPredicateMapper<TDataType> where TDataType : class, IData
+            : IRelativeRouteResover, 
+              IRelativeRouteToPredicateMapper<TDataType> where TDataType : class, IData
         {
             private readonly PropertyUrlMapping[] _mappings;
+
+            private readonly PropertyUrlMapping _keyMapping;
+            private readonly int _keyFieldUrlSegmentOffset;
+
 
             /// <summary>
             /// Invoked via reflection.
@@ -61,6 +74,28 @@ namespace Composite.Core.Routing
             public DataTypeRelativeRouteToPredicateMapper(PropertyUrlMapping[] mappings)
             {
                 _mappings = mappings;
+
+                var keyProperties = typeof(TDataType).GetKeyProperties();
+                if (keyProperties.Count == 1)
+                {
+                    var keyProperty = keyProperties[0];
+                    var keyValueProviderType =
+                        typeof(IRelativeRouteValueProvider<>).MakeGenericType(keyProperty.PropertyType);
+
+                    int pathSegmentsToIgnore = 0;
+                    for (int i = 0; i < _mappings.Length; i++)
+                    {
+                        var propertyMapping = _mappings[i];
+                        if (propertyMapping.Property == keyProperty
+                            && keyValueProviderType.IsInstanceOfType(propertyMapping.Mapper))
+                        {
+                            _keyMapping = propertyMapping;
+                            _keyFieldUrlSegmentOffset = pathSegmentsToIgnore;
+                        }
+
+                        pathSegmentsToIgnore += propertyMapping.Mapper.PathSegmentsCount;
+                    }
+                }
             }
 
             public int PathSegmentsCount
@@ -129,7 +164,7 @@ namespace Composite.Core.Routing
                 return Expression.Lambda<Func<TDataType, bool>>(filterExpression, parameterExpression);
             }
 
-            public RelativeRoute GetRoute(TDataType dataItem)
+            public RelativeRoute GetRoute(TDataType dataItem, bool searchSignificant)
             {
                 Verify.ArgumentNotNull(dataItem, "dataItem");
 
@@ -144,7 +179,9 @@ namespace Composite.Core.Routing
                         return null;
                     }
 
-                    var relativeRoute = InvokeMapper(mapping.Mapper, mapping.Property.PropertyType, filedValue);
+                    bool fieldSearchSignificant = searchSignificant && (_keyMapping == null || mapping == _keyMapping);
+
+                    var relativeRoute = InvokeMapper(mapping.Mapper, mapping.Property.PropertyType, filedValue, fieldSearchSignificant);
                     if (relativeRoute == null)
                     {
                         return null;
@@ -172,10 +209,14 @@ namespace Composite.Core.Routing
                 };
             }
 
-            private RelativeRoute InvokeMapper(IRelativeRouteToPredicateMapper mapper, Type fieldType, object fieldValue)
+            private RelativeRoute InvokeMapper(
+                IRelativeRouteToPredicateMapper mapper, 
+                Type fieldType, 
+                object fieldValue, 
+                bool searchSignificant)
             {
                 var @interface = typeof(IRelativeRouteToPredicateMapper<>).MakeGenericType(fieldType);
-                return @interface.GetMethod("GetRoute").Invoke(mapper, new[] { fieldValue }) as RelativeRoute;
+                return @interface.GetMethod("GetRoute").Invoke(mapper, new[] { fieldValue, searchSignificant }) as RelativeRoute;
             }
 
             private Expression GetFieldFilter(
@@ -186,6 +227,74 @@ namespace Composite.Core.Routing
             {
                 var @interface = typeof(IRelativeRouteToPredicateMapper<>).MakeGenericType(propertyType);
                 return @interface.GetMethod("GetPredicate").Invoke(mapper, new object[] { pageId, relativeRoute }) as Expression;
+            }
+
+            public IData TryGetData(Guid pageId, RelativeRoute routePart)
+            {
+                if (routePart.PathSegments.Length != PathSegmentsCount)
+                {
+                    return null;
+                }
+
+                // Searching by key, if key value is provided by mappers
+                if (_keyMapping != null)
+                {
+                    var keyRoutePart = new RelativeRoute
+                    {
+                        PathSegments = routePart.PathSegments.Skip(_keyFieldUrlSegmentOffset)
+                            .Take(_keyMapping.Mapper.PathSegmentsCount).ToArray(),
+                        QueryString = routePart.QueryString
+                    };
+
+                    return TryDataByKeyProperty(_keyMapping, keyRoutePart);
+                }
+
+                // Searching by a fields predicate otherwise
+                var predicate = GetPredicate(pageId, routePart);
+                if (predicate == null)
+                {
+                    return null;
+                }
+
+                var dataSet = DataFacade.GetData<TDataType>(predicate).Take(2).ToList();
+
+                if (dataSet.Count == 0)
+                {
+                    return null;
+                }
+
+                if (dataSet.Count > 1)
+                {
+                    throw new DataUrlCollisionException(typeof(TDataType), routePart);
+                }
+
+                return dataSet[0];
+            }
+
+            private IData TryDataByKeyProperty(PropertyUrlMapping propertyMapping, RelativeRoute keyRoutePart)
+            {
+                var method = StaticReflection.GetGenericMethodInfo(() => TryDataByKeyProperty<Guid>(null, null));
+
+                var genericMethod = method.MakeGenericMethod(propertyMapping.Property.PropertyType);
+                return genericMethod.Invoke(this, new object[] {propertyMapping, keyRoutePart}) as TDataType;
+            }
+
+
+            private TDataType TryDataByKeyProperty<TKeyType>(PropertyUrlMapping propertyMapping, RelativeRoute keyRoutePart)
+            {
+                var valueProvider = propertyMapping.Mapper as IRelativeRouteValueProvider<TKeyType>;
+                if (valueProvider == null)
+                {
+                    return null;
+                }
+
+                TKeyType key;
+                if (!valueProvider.TryGetValue(keyRoutePart, out key))
+                {
+                    return null;
+                }
+
+                return DataFacade.TryGetDataByUniqueKey(typeof (TDataType), key) as TDataType;
             }
         }
     }

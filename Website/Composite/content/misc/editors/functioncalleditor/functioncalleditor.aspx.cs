@@ -8,6 +8,7 @@ using System.Web.Caching;
 using System.Web.UI;
 using System.Xml;
 using System.Xml.Linq;
+using System.Xml.XPath;
 using System.Xml.Xsl;
 using Composite;
 using Composite.C1Console.Events;
@@ -23,6 +24,7 @@ using Composite.Core.Xml;
 using Composite.Functions;
 using Composite.Plugins.Elements.ElementProviders.AllFunctionsElementProvider;
 using Composite.Plugins.Forms.WebChannel.UiControlFactories;
+
 
 /// <summary>
 /// Summary description for functioneditor
@@ -355,6 +357,11 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
         if (_state.AllowSelectingInputParameters)
         {
             InputParameterNodeIDs = CalculateGetInputParamaterFunctionCalls(FunctionMarkup, TreePathToIdMapping);
+        }
+
+        if (_state.WidgetFunctionSelection) {
+            var functionName = ((IEnumerable)FunctionMarkup.XPathEvaluate("//*[local-name()='widgetfunction']/@name")).Cast<XAttribute>().Select(d => d.Value).FirstOrDefault();
+            btnSetNewFunction.Attributes["value"] = functionName;
         }
 
     }

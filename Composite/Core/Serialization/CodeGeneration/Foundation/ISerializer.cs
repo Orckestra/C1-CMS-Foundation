@@ -11,7 +11,7 @@ namespace Composite.Core.Serialization.CodeGeneration.Foundation
     public interface ISerializer
     {
         /// <exclude />
-        void Serialize(object propertyClass, StringBuilder serializedValues);
+        void Serialize(object propertyClass, StringBuilder serializedValues, IEnumerable<string> propertyNames=null);
 
         /// <exclude />
         object Deserialize(Dictionary<string, string> objectState);

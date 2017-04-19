@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using Composite.Core.Logging;
 
@@ -11,19 +10,18 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
         public string FileName;
         public string FilePath;
         public FileStream FileStream;
-        public string[] OldEntries; // Keeping old log entries in memory isn't a good idea, easely can eat up 10-20 megabytes of memory
-        public List<LogEntry> NewEntries = new List<LogEntry>();
+        public CircularList<LogEntry> NewEntries = new CircularList<LogEntry>(100);
         public DateTime CreationDate;
         public DateTime StartupTime;
 
-        private bool disposed = false;
+        private bool _disposed;
 
         public void Dispose()
         {
-            if (!disposed)
+            if (!_disposed)
             {
                 FileStream.Close();
-                disposed = true;
+                _disposed = true;
             }
         }
 

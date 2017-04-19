@@ -23,10 +23,10 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
         private DateTime? _date;
 
         /// <exclude />
-        protected abstract void BindStateToProperties();
+        public abstract void BindStateToProperties();
 
         /// <exclude />
-        protected abstract void InitializeViewState();
+        public abstract void InitializeViewState();
 
         /// <exclude />
         public abstract string GetDataFieldClientName();
@@ -77,6 +77,13 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
         }
 
         /// <exclude />
+        public bool Required
+        {
+            get;
+            set;
+        }
+
+        /// <exclude />
         public string FormControlLabel
         {
             get { return _formControlLabel; }
@@ -88,7 +95,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
 
     internal sealed class TemplatedDateTimeSelectorUiControl : DateTimeSelectorUiControl, IWebUiControl, IValidatingUiControl
     {
-        private Type _userControlType;
+        private readonly Type _userControlType;
         private DateTimeSelectorTemplateUserControlBase _userControl;
 
         internal TemplatedDateTimeSelectorUiControl(Type userControlType)
@@ -117,35 +124,30 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
             _userControl.ReadOnly = this.ReadOnly;
             _userControl.ShowHours = this.ShowHours;
             _userControl.IsValid = true;
+            _userControl.Required = this.Required;
 
             return _userControl;
         }
 
-        public bool IsFullWidthControl { get { return false; } }
+        public bool IsFullWidthControl => false;
 
-        public string ClientName { get { return _userControl.GetDataFieldClientName(); } }
+        public string ClientName => _userControl.GetDataFieldClientName();
 
-        public bool IsValid
-        {
-            get { return _userControl.IsValid; }
-        }
+        public bool IsValid => _userControl.IsValid;
 
         public bool ShowHours
         {
             get; set;
         }
 
-        public string ValidationError
-        {
-            get { return _userControl.ValidationError; }
-        }
+        public string ValidationError => _userControl.ValidationError;
     }
 
 
     [ConfigurationElementType(typeof(TemplatedDateTimeSelectorUiControlFactoryData))]
     internal sealed class TemplatedDateTimeSelectorUiControlFactory : Base.BaseTemplatedUiControlFactory
     {
-        private bool _showHours;
+        private readonly bool _showHours;
 
         public TemplatedDateTimeSelectorUiControlFactory(TemplatedDateTimeSelectorUiControlFactoryData data)
             : base(data)
@@ -155,11 +157,10 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
 
         public override IUiControl CreateControl()
         {
-            TemplatedDateTimeSelectorUiControl control = new TemplatedDateTimeSelectorUiControl(this.UserControlType);
-
-            control.ShowHours = _showHours;
-
-            return control;
+            return new TemplatedDateTimeSelectorUiControl(this.UserControlType)
+            {
+                ShowHours = _showHours
+            };
         }
     }
 

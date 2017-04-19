@@ -1,28 +1,31 @@
-@namespace url("http://www.w3.org/1999/xhtml");
 @namespace ui url("http://www.w3.org/1999/xhtml");
 
-ui|toolbarbody.max {
-	overflow: hidden;
-	#moz padding-right: 6px;
-}
 ui|datainput#treeselectionresult {
-	width: 100%;
-	position: relative;
-	left: -1px;
+	opacity: 1;
 }
 
-ui|pagebody {
-	position: relative;	/* contain the cover */
-}
-ui|datainput#treeselectionresult input {
-	padding-top: 6px;
-	#moz padding-top: 0;
-	padding-left: 8px;
-	width: 100%;
-	height: 30px;
-	#moz height: 29px;
-}
 ui|datainput#treeselectionresult ui|box {
-	height: 32px;
-	#moz height: 31px;
+	border: none;
+	background: none;
+}
+
+ui|datainput#treeselectionresult ui|box input {
+	text-align: center;
+	background: none;
+	color: #343434;
+	padding: 10px 0 0 0 !important;
+	font-size: 12px;
+	width: 100%;
+	text-align: left;
+}
+#addressbar input {
+	width: 100%;
+	height: 100%;
+	padding-top: 2px;
+	padding-left: 5px;
+	background-color: #fff;
+}
+ui|datainput#addressbar ui|box,
+ui|datainput#addressbar ui|toolbarbutton {
+	background-color: #fff;
 }

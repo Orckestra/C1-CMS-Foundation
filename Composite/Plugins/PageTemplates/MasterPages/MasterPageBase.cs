@@ -7,8 +7,8 @@ using Composite.Plugins.PageTemplates.MasterPages.Controls.Rendering;
 namespace Composite.Plugins.PageTemplates.MasterPages
 {
     /// <summary>
-    /// Base class for ASP.NET MasterPage classes in Composite C1. Inheriting from this bring common features like easy data and sitemap access. 
-    /// This class is intended for use in shared MasterPages, to create a MasterPage based page template for Composite C1 use <see cref="Composite.Plugins.PageTemplates.MasterPages.MasterPagePageTemplate"/>.
+    /// Base class for ASP.NET MasterPage classes in C1 CMS. Inheriting from this bring common features like easy data and sitemap access. 
+    /// This class is intended for use in shared MasterPages, to create a MasterPage based page template for C1 CMS use <see cref="Composite.Plugins.PageTemplates.MasterPages.MasterPagePageTemplate"/>.
     /// </summary>
     public abstract class MasterPageBase : MasterPage
     {

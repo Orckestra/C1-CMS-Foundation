@@ -10,7 +10,7 @@ namespace Composite.Core.Implementation
     /// </summary>
     public class C1FileSystemWatcherImplementation
     {
-        private IC1FileSystemWatcher _fileSystemWatcher;
+        private readonly IC1FileSystemWatcher _fileSystemWatcher;
 
 
         /// <summary>
@@ -90,6 +90,24 @@ namespace Composite.Core.Implementation
                 _fileSystemWatcher.IncludeSubdirectories = value;
             }
         }
+
+
+
+        /// <summary>
+        /// See <see cref="Composite.Core.IO.C1FileSystemWatcher"/>.
+        /// </summary>
+        public virtual int InternalBufferSize
+        {
+            get
+            {
+                return _fileSystemWatcher.InternalBufferSize;
+            }
+            set
+            {
+                _fileSystemWatcher.InternalBufferSize = value;
+            }
+        }
+        
 
 
 

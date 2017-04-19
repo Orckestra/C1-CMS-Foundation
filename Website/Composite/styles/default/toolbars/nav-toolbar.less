@@ -1,10 +1,25 @@
-﻿.nav-toolbar {
+﻿ui|toolbar.nav-toolbar {
 	border-top: solid 1px @base-border-color;
 
 	ui|toolbarbody {
+
 		&.alignright {
+
 			ui|toolbarbutton {
-				margin-left: 2px;
+				margin-left: 8px;
+				margin-right: 2px;
+			}
+
+			ui|selector {
+				margin: 0 0 0 6px;
+
+				ui|clickbutton {
+					margin: 0;
+
+					> ui|labelbox{
+						padding: 7px 30px 8px 11px;
+					}
+				}
 			}
 		}
 	}

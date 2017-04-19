@@ -40,6 +40,8 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
 
         private void uploadCodeActivity_ExecuteCode(object sender, EventArgs e)
         {
+            UpdateTreeRefresher updateTreeRefresher = this.CreateUpdateTreeRefresher(this.EntityToken);
+
             FlowControllerServicesContainer flowControllerServicesContainer = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
             var managementConsoleMessageService = flowControllerServicesContainer.GetService<IManagementConsoleMessageService>();
 
@@ -76,6 +78,8 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
             SetSaveStatus(true);
 
             SelectElement(mediaFile.GetDataEntityToken());
+
+            updateTreeRefresher.PostRefreshMesseges(mediaFile.GetDataEntityToken());
         }
 
 

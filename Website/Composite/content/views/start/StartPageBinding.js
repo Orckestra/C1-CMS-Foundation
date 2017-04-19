@@ -2,6 +2,7 @@ StartPageBinding.prototype = new PageBinding;
 StartPageBinding.prototype.constructor = StartPageBinding;
 StartPageBinding.superclass = PageBinding.prototype;
 
+StartPageBinding.VIEW_CLASSNAME = "startpage-view";
 /**
  * @class
  */
@@ -11,7 +12,7 @@ function StartPageBinding () {
 	 * @type {SystemLogger}
 	 */
 	this.logger = SystemLogger.getLogger ( "StartPageBinding" );
-	
+
 	/**
 	 * This object gets loaded in the start page frame.
 	 * @type {CompositeStart}
@@ -23,13 +24,19 @@ function StartPageBinding () {
 	 * @type {boolean}
 	 */
 	this._isShowingStart = false;
+
+	/**
+	 * Container ViewBinding.
+	 * @type {ViewBinding}
+	 */
+	this._viewBinding = null;
 }
 
 /**
  * Identifies binding.
  */
 StartPageBinding.prototype.toString = function () {
-	
+
 	return "[StartPageBinding]";
 }
 
@@ -39,13 +46,23 @@ StartPageBinding.prototype.toString = function () {
 StartPageBinding.prototype.onBindingRegister = function () {
 
 	StartPageBinding.superclass.onBindingRegister.call ( this );
-	this.addActionListener ( WindowBinding.ACTION_ONLOAD );
-	this.addActionListener ( ControlBinding.ACTION_COMMAND );
-	EventBroadcaster.subscribe ( BroadcastMessages.START_COMPOSITE, this );
-	EventBroadcaster.subscribe ( BroadcastMessages.STOP_COMPOSITE , this );
-	EventBroadcaster.subscribe ( BroadcastMessages.COMPOSITE_START, this );
-	EventBroadcaster.subscribe ( BroadcastMessages.COMPOSITE_STOP, this );
-	EventBroadcaster.subscribe ( BroadcastMessages.KEY_ESCAPE, this );
+
+	Application.hasStartPage = Application.hasExternalConnection;
+
+	if (Application.hasStartPage) {
+		this.addActionListener(WindowBinding.ACTION_ONLOAD);
+		this.addActionListener(ControlBinding.ACTION_COMMAND);
+		EventBroadcaster.subscribe(BroadcastMessages.START_COMPOSITE, this);
+		EventBroadcaster.subscribe(BroadcastMessages.STOP_COMPOSITE, this);
+		EventBroadcaster.subscribe(BroadcastMessages.COMPOSITE_START, this);
+		EventBroadcaster.subscribe(BroadcastMessages.COMPOSITE_STOP, this);
+		EventBroadcaster.subscribe(BroadcastMessages.KEY_ESCAPE, this);
+		this._viewBinding = this.getAncestorBindingByType(ViewBinding, true);
+		if (this._viewBinding) {
+			DOMEvents.addEventListener(this._viewBinding.bindingElement, DOMEvents.CLICK, this);
+			this._viewBinding.attachClassName(StartPageBinding.VIEW_CLASSNAME);
+		}
+	}
 }
 
 /**
@@ -53,14 +70,36 @@ StartPageBinding.prototype.onBindingRegister = function () {
  * @overloads {PageBinding#onBindingAttach}
  */
 StartPageBinding.prototype.onBindingAttach = function () {
-	
+
 	/*
 	 * compositestart/CompositeStart.aspx
 	 */
-	StartPageBinding.superclass.onBindingAttach.call ( this );
-	this.bindingWindow.bindingMap.start.setURL ( 
-		"GetStartPage.ashx?random=" + KeyMaster.getUniqueKey ()
-	);
+	StartPageBinding.superclass.onBindingAttach.call(this);
+	if (Application.hasStartPage) {
+		this.bindingWindow.bindingMap.start.setURL(
+			"GetStartPage.ashx?random=" + KeyMaster.getUniqueKey()
+		);
+	}
+
+	this.dispatchAction(StageBinding.ACTION_START_LOADED);
+}
+
+/**
+ * @overloads {PageBinding#handleEvent}
+ * @implements {IEventListener}
+ * @param {Event} e
+ */
+StartPageBinding.prototype.handleEvent = function (e) {
+
+	StartPageBinding.superclass.handleEvent.call(this, e);
+	var element = DOMEvents.getTarget(e);
+	switch (e.type) {
+		case DOMEvents.CLICK:
+			if (this._viewBinding && this._viewBinding.bindingElement == element) {
+				this.stop();
+			}
+			break;
+	}
 }
 
 /**
@@ -71,11 +110,11 @@ StartPageBinding.prototype.onBindingAttach = function () {
 StartPageBinding.prototype.handleAction = function ( action ) {
 
 	StartPageBinding.superclass.handleAction.call ( this, action );
-	
+
 	var binding = action.target;
-	
+
 	switch ( action.type ) {
-	
+
 		case WindowBinding.ACTION_ONLOAD :
 			if ( action.target == bindingMap.start ) {
 				this._starter = bindingMap.start.getContentWindow ().CompositeStart;
@@ -88,7 +127,7 @@ StartPageBinding.prototype.handleAction = function ( action ) {
 				}
 			}
 			break;
-			
+
 		case ControlBinding.ACTION_COMMAND :
 			if ( action.target == bindingMap.closecontrol ) {
 				if ( bindingMap.cover ) {
@@ -145,14 +184,14 @@ StartPageBinding.prototype.stop = function () {
 StartPageBinding.prototype.handleBroadcast = function ( broadcast, arg ) {
 
 	StartPageBinding.superclass.handleBroadcast.call ( this, broadcast, arg );
-	
+
 	switch ( broadcast ) {
-			
+
 		case BroadcastMessages.START_COMPOSITE:
 			this._isShowingStart = true;
 			this.start();
 			break;
-			
+
 		case BroadcastMessages.STOP_COMPOSITE :
 			this.stop();
 			break;

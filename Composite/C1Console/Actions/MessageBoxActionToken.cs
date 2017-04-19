@@ -23,20 +23,26 @@ namespace Composite.C1Console.Actions
         }
     }
 
-
-
+    /// <summary>
+    /// To add a message box action
+    /// </summary>
     [ActionExecutor(typeof(MessageBoxActionTokenActionExecutor))]
-    internal sealed class MessageBoxActionToken : ActionToken
+    public sealed class MessageBoxActionToken : ActionToken
     {
-        private List<PermissionType> _permissionTypes;
+        private readonly List<PermissionType> _permissionTypes;
 
-
+        /// <summary>
+        /// To add a message box action
+        /// </summary>
+        /// <param name="title"></param>
+        /// <param name="message"></param>
+        /// <param name="dialogType"></param>
         public MessageBoxActionToken(string title, string message, DialogType dialogType)
             :this(title, message, dialogType, new List<PermissionType>() { PermissionType.Add, PermissionType.Administrate, PermissionType.Approve, PermissionType.Delete, PermissionType.Edit, PermissionType.Publish, PermissionType.Read })
         {            
         }
 
-
+        /// <exclude />
         public MessageBoxActionToken(string title, string message, DialogType dialogType, List<PermissionType> permissionTypes)
         {
             _permissionTypes = permissionTypes;
@@ -45,18 +51,20 @@ namespace Composite.C1Console.Actions
             this.DialogType = dialogType;
         }
 
-
+        /// <exclude />
         public string Title { get; private set; }
+        /// <exclude />
         public string Message { get; private set; }
+        /// <exclude />
         public DialogType DialogType { get; private set; }
 
-
+        /// <exclude />
         public override IEnumerable<PermissionType> PermissionTypes
         {
             get { return _permissionTypes; }
         }
 
-
+        /// <exclude />
         public override string Serialize()
         {
             StringBuilder sb = new StringBuilder();
@@ -69,7 +77,7 @@ namespace Composite.C1Console.Actions
             return sb.ToString();
         }
 
-
+        /// <exclude />
         public static ActionToken Deserialize(string serializedData)
         {
             Dictionary<string, string> dic = StringConversionServices.ParseKeyValueCollection(serializedData);

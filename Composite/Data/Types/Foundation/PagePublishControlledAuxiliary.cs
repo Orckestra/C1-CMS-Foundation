@@ -19,7 +19,7 @@ namespace Composite.Data.Types.Foundation
             {
                 pagePlaceholderContents =
                     (from content in DataFacade.GetData<IPagePlaceholderContent>()
-                     where content.PageId == page.Id
+                     where content.PageId == page.Id && content.VersionId == page.VersionId
                      select content).ToList();
             }
 
@@ -29,7 +29,8 @@ namespace Composite.Data.Types.Foundation
                 {
                     using (new DataScope(DataScopeIdentifier.Public))
                     {
-                        DataFacade.Delete<IPagePlaceholderContent>(f => f.PageId == page.Id);
+                        DataFacade.Delete<IPagePlaceholderContent>(
+                            f => f.PageId == page.Id && f.VersionId == page.VersionId);
                     }
 
                     foreach (var pagePlaceholderContent in pagePlaceholderContents)

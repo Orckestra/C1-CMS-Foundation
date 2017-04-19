@@ -37,11 +37,6 @@
 			<xsl:if test="count($pre-siblings-matches)=0">
 
 				<ui:treenode label="{$namespaceSection}" open="true" callbackid="{//clickhandler/@callbackid}" handle="Namespace:{$namespaceSections}">
-			
-					<!-- 
-					<xsl:attribute name="image">${root}/services/Icon/GetIcon.ashx?resourceName=Namespace_section&amp;resourceNamespace=Composite.Icons&amp;size=normal</xsl:attribute>
-					<xsl:attribute name="image-active">${root}/services/Icon/GetIcon.ashx?resourceName=namespace_section_active&amp;resourceNamespace=Composite.Icons&amp;size=normal</xsl:attribute>
-					-->
 					<xsl:apply-templates select="/*/f:function[starts-with(@name,$namespaceSections)]" mode="printNamespace">
 						<xsl:with-param name="parentNamespaceSections" select="$namespaceSections" />
 						<xsl:sort select="@name" />

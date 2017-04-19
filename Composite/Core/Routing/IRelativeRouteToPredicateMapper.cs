@@ -55,15 +55,28 @@ namespace Composite.Core.Routing
         /// Gets a predicate for filtering data based on a url segment
         /// </summary>
         /// <param name="pageId"></param>
-        /// <param name="route">The relative route</param>
+        /// <param name="routePart">The relative route</param>
         /// <returns></returns>
-        Expression<Func<T, bool>> GetPredicate(Guid pageId, RelativeRoute route);
+        Expression<Func<T, bool>> GetPredicate(Guid pageId, RelativeRoute routePart);
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="fieldValue"></param>
+        /// <param name="searchSignificant">When <value>false</value>, the generated relative route will not be used for database querying.</param>
         /// <returns></returns>
-        RelativeRoute GetRoute(T fieldValue);
+        RelativeRoute GetRoute(T fieldValue, bool searchSignificant);
+    }
+
+    /// <exclude />
+    public interface IRelativeRouteValueProvider<T> : IRelativeRouteToPredicateMapper
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="routePart"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        bool TryGetValue(RelativeRoute routePart, out T value);
     }
 }

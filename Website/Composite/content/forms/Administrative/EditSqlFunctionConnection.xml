@@ -8,7 +8,7 @@
     <cms:layout.label>
       <cms:read source="SqlConnection.Name" />
     </cms:layout.label>
-    <FieldGroup Label="${Composite.Plugins.SqlFunction, AddEditSqlFunctionConnection.LabelFieldGroup}">
+    <FieldGroup Label="${Composite.Plugins.SqlFunction, EditSqlFunctionConnection.LabelFieldGroup}">
       <TextBox Label="${Composite.Plugins.SqlFunction, EditSqlFunctionConnection.LabelName}" Help="${Composite.Plugins.SqlFunction, EditSqlFunctionConnection.HelpName}">
         <TextBox.Text>
           <cms:bind source="SqlConnection.Name" />

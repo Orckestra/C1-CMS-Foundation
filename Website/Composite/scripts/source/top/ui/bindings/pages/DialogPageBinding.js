@@ -110,6 +110,16 @@ DialogPageBinding.prototype.parseDOMProperties = function () {
 
 	DialogPageBinding.superclass.parseDOMProperties.call ( this );
 	
+	var isBranded = this.getProperty("branded");
+	var dialog = this.getAncestorBindingByType(DialogBinding, true);
+	if (dialog) {
+		if (isBranded) {
+			dialog.attachClassName("branded");
+		} else {
+			dialog.detachClassName("branded");
+		}
+	}
+
 	if ( this.width == null ) {
 		var width = this.getProperty ( "width" );
 		if ( !width ) {

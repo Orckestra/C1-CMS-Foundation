@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Linq;
 using Composite.Core.IO;
 using System.Reflection;
+using Composite.Core;
+using Composite.Core.Configuration;
 
 
 namespace Composite
@@ -11,10 +14,10 @@ namespace Composite
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public static class RuntimeInformation
 	{
-        private static bool _isUnitTestDetermined = false;
-        private static bool _isUnitTest = false;
-        private static string _uniqueInstanceName = null;
-        private static string _uniqueInstanceNameSafe = null;
+        private static bool? _isUnitTest;
+        private static string _uniqueInstanceName;
+        private static string _uniqueInstanceNameSafe;
+        private static readonly Lazy<Version> _brandedAssemblyName = new Lazy<Version>(GetBrandedProductVersion);
 
         /// <exclude />
         public static bool IsDebugBuild
@@ -31,13 +34,7 @@ namespace Composite
 
 
         /// <exclude />
-	    public static bool AppDomainLockingDisabled
-	    {
-            get
-            {
-                return IsUnittest;
-            }
-	    }
+	    public static bool AppDomainLockingDisabled => IsUnittest;
 
 
         /// <exclude />
@@ -45,35 +42,26 @@ namespace Composite
         {
             get
             {
-                if (_isUnitTestDetermined==false)
+                if (!_isUnitTest.HasValue)
                 {
-                    _isUnitTest = RuntimeInformation.IsUnittestImpl;
-                    _isUnitTestDetermined = true;
+                    _isUnitTest = IsUnittestEnvironment();
                 }
 
-                return _isUnitTest;
+                return _isUnitTest.Value;
             }
         }
 
 
-        private static bool IsUnittestImpl
+        private static bool IsUnittestEnvironment()
         {
-            get
-            {
-                if (AppDomain.CurrentDomain.SetupInformation.ApplicationName == null)
-                {
-                    return true;
-                }
+            var domain = AppDomain.CurrentDomain;
+            string applicationName = domain.SetupInformation.ApplicationName;
 
-                if (AppDomain.CurrentDomain.SetupInformation.ApplicationName == "vstesthost.exe")
-                {
-                    return true;
-                }
-
-                return false;
-            }
+            return domain.FriendlyName.StartsWith("NUnit ")
+                || applicationName == null || applicationName == "vstesthost.exe";
         }
 
+        internal static bool TestAutomationEnabled => true;
 
 
         /// <exclude />
@@ -85,6 +73,45 @@ namespace Composite
             }
         }
 
+
+        /// <summary>
+        /// A version number to be shown in UI.
+        /// </summary>
+        public static Version BrandedProductVersion
+        {
+            get
+            {
+                return _brandedAssemblyName.Value ?? ProductVersion;
+            }
+        }
+
+
+        private static Version GetBrandedProductVersion()
+        {
+            try
+            {
+                string assemblyName = GlobalSettingsFacade.BrandedVersionAssemblySource;
+                if (assemblyName == null)
+                {
+                    return null;
+                }
+
+                var asm = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a.GetName().Name == assemblyName);
+                if (asm == null)
+                {
+                    Log.LogWarning(nameof(RuntimeInformation),
+                        $"Failed to find branded product version source assembly by name '{assemblyName}'");
+                    return null;
+                }
+
+                return asm.GetName().Version;
+            }
+            catch (Exception ex)
+            {
+                Log.LogError(nameof(RuntimeInformation),  ex);
+                return null;
+            }
+        }
 
 
         /// <exclude />
@@ -109,7 +136,7 @@ namespace Composite
                 if (_uniqueInstanceName == null)
                 {
                     string baseString = PathUtil.BaseDirectory.ToLowerInvariant();
-                    _uniqueInstanceName = string.Format("C1@{0}", PathUtil.CleanFileName(baseString));
+                    _uniqueInstanceName = $"C1@{PathUtil.CleanFileName(baseString)}";
                 }
 
                 return _uniqueInstanceName;
@@ -126,7 +153,7 @@ namespace Composite
                 if (_uniqueInstanceNameSafe == null)
                 {
                     string baseString = PathUtil.BaseDirectory.ToLowerInvariant().Replace(@"\", "-").Replace("/", "-");
-                    _uniqueInstanceNameSafe = string.Format("C1@{0}", PathUtil.CleanFileName(baseString));
+                    _uniqueInstanceNameSafe = $"C1@{PathUtil.CleanFileName(baseString)}";
                 }
 
                 return _uniqueInstanceNameSafe;

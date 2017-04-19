@@ -37,7 +37,7 @@ namespace Composite.Services
 				new KeyValuePair
 				{
 					Key = "ProductVersion",
-					Value = Composite.RuntimeInformation.ProductVersion.ToString()
+					Value = Composite.RuntimeInformation.BrandedProductVersion.ToString()
 				},
 				new KeyValuePair
 				{
@@ -65,7 +65,7 @@ namespace Composite.Services
 				new KeyValuePair
 				{
 					Key = "Core Development",
-					Value = "Marcus Wendt;Dmitry Dzygin;Taras Nakonechnyi;Inna Boitsun"
+					Value = "Marcus Wendt;Dmitry Dzygin;Taras Nakonechnyi;Morteza Kasravi;Gert Sønderby;Inna Boitsun"
 				},
 				new KeyValuePair
 				{
