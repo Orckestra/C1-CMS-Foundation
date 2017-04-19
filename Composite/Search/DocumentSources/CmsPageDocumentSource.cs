@@ -8,6 +8,7 @@ using Composite.Core;
 using Composite.Core.Extensions;
 using Composite.Core.Linq;
 using Composite.Core.Routing;
+using Composite.Core.Routing.Foundation.PluginFacades;
 using Composite.Core.WebClient;
 using Composite.Data;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
@@ -182,6 +183,13 @@ namespace Composite.Search.DocumentSources
                 {
                     Log.LogWarning(LogTitle, ex);
                 }
+            }
+
+            if (!string.IsNullOrEmpty(page.UrlTitle) 
+                && !UrlFormattersPluginFacade.FormatUrl(page.Title, true).Equals(page.UrlTitle, StringComparison.OrdinalIgnoreCase)
+                && !UrlFormattersPluginFacade.FormatUrl(page.Title, false).Equals(page.UrlTitle, StringComparison.OrdinalIgnoreCase))
+            {
+                docBuilder.TextParts.Add(page.UrlTitle);
             }
 
             return docBuilder.BuildDocument(Name, documentId, label, null, entityToken);
