@@ -81,7 +81,7 @@ namespace Composite.Core.WebClient.Services.WampRouter
         {
             _host = new WampAuthenticationHost(new UserNameBasedAuthenticationFactory());
 
-            string routeUrl =  UrlUtils.ResolveAdminUrl(WampConsoleUrl);
+            string routeUrl = $"{UrlUtils.AdminFolderName}/{WampConsoleUrl}";
             if (routeUrl.StartsWith("/"))
             {
                 routeUrl = routeUrl.Substring(1);

@@ -185,8 +185,11 @@
       <DependentUpon>ShowFunctionInfo.aspx</DependentUpon>
     </Compile>
     <Content Include="App_Data\Composite\Configuration\Entities.xml" />
+    <Content Include="Composite\console\access\postFrame.js" />
     <Content Include="Composite\console\access\requestJSON.js" />
+    <Content Include="Composite\console\access\utils.js" />
     <Content Include="Composite\console\access\wampClient.js" />
+    <Content Include="Composite\console\access\wampTest.js" />
     <Content Include="Composite\console\components\colors.js" />
     <Content Include="Composite\console\components\container\ConnectDialog.js" />
     <Content Include="Composite\console\components\container\ConnectDockPanel.js" />

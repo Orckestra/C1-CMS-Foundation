@@ -2,6 +2,7 @@ import Wampy from 'wampy';
 import React from 'react';
 import { render } from 'react-dom';
 import styled from 'styled-components';
+import { getBaseUrl } from './utils.js';
 
 const Warning = styled.div`
 	max-width: 400px;
@@ -15,7 +16,8 @@ const Warning = styled.div`
 `;
 
 const test = new Promise((resolve, reject) => {
-	let url = new URL('/Composite/api/Router', location.href);
+
+	let url = new URL(getBaseUrl() + '/Composite/api/Router', location.href);
 	let isConnected = false;
 	url.protocol = url.protocol.replace('http', 'ws');
 	const client = new Wampy(url.href, {
