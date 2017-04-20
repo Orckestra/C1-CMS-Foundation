@@ -16,32 +16,37 @@ const Warning = styled.div`
 
 const test = new Promise((resolve, reject) => {
 	let url = new URL('/Composite/api/Router', location.href);
+	let isConnected = false;
 	url.protocol = url.protocol.replace('http', 'ws');
 	const client = new Wampy(url.href, {
 		realm: 'realm',
 		maxRetries: 0,
 		onConnect: () => {
 			resolve();
+			isConnected = true;
+			client.disconnect();
 		},
 		onError: err => {
-			render(
-				<Warning>
-					<h1>Problem establishing WebSocket connection to server</h1>
-					<p>
-						There is an issue with connecting to the server – this
-						could indicate that the web server does not support
-						WebSocket requests.
-					</p>
-					<p>
-						For more information,<span> </span>
-						<a href="http://docs.composite.net/Getting-started/Setup-check-failures?errors=websockets" target="_blank">
-							please read more about WebSocket requirements.
-						</a>
-					</p>
-				</Warning>,
-				document.querySelector('body > div.entry')
-			);
-			reject(err);
+			if (!isConnected) { //FF throw error on disconnect and on server restarted
+				render(
+					<Warning>
+						<h1>Problem establishing WebSocket connection to server</h1>
+						<p>
+							There is an issue with connecting to the server – this
+							could indicate that the web server does not support
+							WebSocket requests.
+						</p>
+						<p>
+							For more information,<span> </span>
+							<a href="http://docs.composite.net/Getting-started/Setup-check-failures?errors=websockets" target="_blank">
+								please read more about WebSocket requirements.
+							</a>
+						</p>
+					</Warning>,
+					document.querySelector('body > div.entry')
+				);
+				reject(err);
+			}
 		}
 	});
 });
