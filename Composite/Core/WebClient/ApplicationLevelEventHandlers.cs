@@ -105,6 +105,8 @@ namespace Composite.Core.WebClient
             InternalUrls.Register(new MediaInternalUrlConverter());
             InternalUrls.Register(new PageInternalUrlConverter());
 
+            services.AddSingleton<IMailer>(new SmtpMailer());
+
 
             VersionedDataHelper.Initialize();
         }

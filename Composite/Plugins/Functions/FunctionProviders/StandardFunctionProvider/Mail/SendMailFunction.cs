@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Net.Mail;
 using System.Web;
+using Composite.Core;
+using Composite.Core.Application;
 using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Core.Logging;
@@ -11,6 +13,7 @@ using Composite.Data;
 using Composite.Data.Types;
 using Composite.Functions;
 using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Mail
 {
@@ -112,8 +115,10 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
                 }
                
 
-                SmtpClient client = new SmtpClient();
-                client.Send(mailMessage);
+
+                var mailer = ServiceLocator.ApplicationServices.GetService<IMailer>();
+
+                mailer.Send(mailMessage);
 
                 return true;
             }
