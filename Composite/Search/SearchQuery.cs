@@ -81,6 +81,34 @@ namespace Composite.Search
     }
 
     /// <summary>
+    /// Search query hightlight settings.
+    /// </summary>
+    public sealed class SearchQueryHighlightSettings
+    {
+        /// <summary>
+        /// When set to <value>true</value>, highlihts will be included in the search results.
+        /// </summary>
+        public bool Enabled { get; set; }
+
+        /// <summary>
+        /// Maximum amount of highlight fragments.
+        /// </summary>
+        public int FragmentsCount { get; set; } = 1;
+
+        /// <summary>
+        /// Maximum fragment size. The default is 100 characters.
+        /// </summary>
+        public int FragmentSize { get; set; } = 100;
+
+        /// <summary>
+        /// Maximum amount of the full text field characters to be analyzed when extracting fragments to highlight.
+        /// The default value is 51200.
+        /// </summary>
+        public int MaxAnalyzedChars { get; set; } = 51200;
+    }
+
+
+    /// <summary>
     /// A search query.
     /// </summary>
     public sealed class SearchQuery
@@ -195,11 +223,6 @@ namespace Composite.Search
         public int MaxDocumentsNumber { get; set; }
 
         /// <summary>
-        /// When set to true, highlihts will be included in the search results.
-        /// </summary>
-        public bool IncludeHighlights { get; set; }
-
-        /// <summary>
         /// Facets to be returned.
         /// </summary>
         public ICollection<KeyValuePair<string, DocumentFieldFacet>> Facets { get; set; } 
@@ -214,6 +237,11 @@ namespace Composite.Search
         /// Sort options.
         /// </summary>
         public IEnumerable<SearchQuerySortOption> SortOptions { get; set; }
+
+        /// <summary>
+        /// Highlight settings.
+        /// </summary>
+        public SearchQueryHighlightSettings HighlightSettings { get; set; } = new SearchQueryHighlightSettings();
 
 
         internal void AddDefaultFieldFacet(string fieldName)
