@@ -288,6 +288,8 @@
     <Compile Include="C1Console\Workflow\FormsWorkflowExtensions.cs" />
     <Compile Include="C1Console\Workflow\IFormsWorkflowExtension.cs" />
     <Compile Include="Core\Extensions\DateTimeExtensionMethods.cs" />
+    <Compile Include="Core\IMailer.cs" />
+    <Compile Include="Core\SmtpMailer.cs" />
     <Compile Include="Core\WebClient\PhantomJs\PhantomServer.cs" />
     <Compile Include="Core\WebClient\PhantomJs\RenderingResult.cs" />
     <Compile Include="Core\WebClient\PhantomJs\RenderingResultStatus.cs" />
