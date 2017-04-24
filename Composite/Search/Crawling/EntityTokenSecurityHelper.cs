@@ -47,12 +47,13 @@ namespace Composite.Search.Crawling
             var ancestorsSet = new HashSet<EntityToken>();
 
             using (ThreadDataManager.EnsureInitialize())
+            using (new DataScope(DataScopeIdentifier.Administrated))
             {
                 CollectUsersAndGroupsRec(entityToken,
-                    GetUserAccessDefinitions(), GetUserGroupAccessDefinitions(), 
+                    GetUserAccessDefinitions(), GetUserGroupAccessDefinitions(),
                     ImmutableHashSet<string>.Empty,
                     ImmutableHashSet<Guid>.Empty,
-                    userSet, 
+                    userSet,
                     userGroupSet,
                     ancestorsSet,
                     20);
@@ -114,7 +115,7 @@ namespace Composite.Search.Crawling
 
             foreach (var parent in parents)
             {
-                if(alreadyVisited.Contains(parent)) return;
+                if(alreadyVisited.Contains(parent)) continue;
 
                 CollectUsersAndGroupsRec(parent, 
                     userAccessDefinitions, groupAccessDefinitions, 
