@@ -34,6 +34,13 @@ namespace Composite.Data
 
             DataEvents<IPage>.OnAfterUpdate += (sender, args) => PageUpdated((IPage) args.Data);
             DataEvents<IPage>.OnDeleted += (sender, args) => PageUpdated((IPage)args.Data);
+            DataEvents<IPage>.OnStoreChanged += (sender, args) =>
+            {
+                if (!args.DataEventsFired)
+                {
+                    _renderedPages.Clear();
+                }
+            };
         }
 
         private static string GetCacheKey(IPage page)
