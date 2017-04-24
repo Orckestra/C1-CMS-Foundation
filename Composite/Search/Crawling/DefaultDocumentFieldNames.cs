@@ -1,4 +1,6 @@
-﻿namespace Composite.Search.Crawling
+﻿using System;
+
+namespace Composite.Search.Crawling
 {
     /// <summary>
     /// Contains default document field names
@@ -46,5 +48,23 @@
         /// The name of the creation time field.
         /// </summary>
         public static readonly string LastUpdated = "lastupdated";
+
+        /// <summary>
+        /// Gets the field name for the given data type property
+        /// </summary>
+        /// <param name="dataType">The data type.</param>
+        /// <param name="propertyName">The property name.</param>
+        /// <returns></returns>
+        public static string GetFieldName(Type dataType, string propertyName)
+        {
+            Verify.ArgumentNotNull(dataType, nameof(dataType));
+            Verify.ArgumentNotNull(propertyName, nameof(propertyName));
+
+            var propertyInfo = dataType.GetProperty(propertyName);
+            Verify.IsNotNull(propertyInfo, "Type '{0}' does not have a prorety '{1}'", dataType.FullName, propertyName);
+
+            var processor = DataTypeSearchReflectionHelper.GetDataFieldProcessor(propertyInfo);
+            return processor.GetDocumentFieldName(propertyInfo);
+        }
     }
 }

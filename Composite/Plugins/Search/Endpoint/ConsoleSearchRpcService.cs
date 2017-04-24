@@ -122,7 +122,7 @@ namespace Composite.Plugins.Search.Endpoint
             };
 
             searchQuery.FilterByUser(UserSettings.Username);
-            searchQuery.AddDefaultFieldFacet(DefaultDocumentFieldNames.Source);
+            searchQuery.AddFieldFacet(DefaultDocumentFieldNames.Source);
 
             var result = await _searchProvider.SearchAsync(searchQuery);
 

@@ -35,7 +35,7 @@ namespace Composite.Search
         public string FieldName { get; set; }
 
         /// <summary>
-        /// The array of values.
+        /// The array of values that are required to appear in the search documents.
         /// </summary>
         public string[] Values { get; set; }
 
@@ -43,6 +43,11 @@ namespace Composite.Search
         /// Defines how multiple selected values should be resolved.
         /// </summary>
         public SearchQuerySelectionOperation Operation { get; set; }
+
+        /// <summary>
+        /// The array of field values, documents containing which, should not appear in the results.
+        /// </summary>
+        public string[] NotValues { get; set; }
     }
 
 
@@ -140,8 +145,6 @@ namespace Composite.Search
                 Operation = SearchQuerySelectionOperation.Or,
                 Values = dataTypes.Select(type => type.GetImmutableTypeId().ToString()).ToArray()
             });
-
-            AddDefaultFieldFacet(DefaultDocumentFieldNames.DataType);
         }
 
         /// <summary>
@@ -154,8 +157,6 @@ namespace Composite.Search
                 FieldName = DefaultDocumentFieldNames.HasUrl,
                 Values = new [] {"1"}
             });
-
-            AddDefaultFieldFacet(DefaultDocumentFieldNames.HasUrl);
         }
 
 
@@ -172,8 +173,6 @@ namespace Composite.Search
                 Operation = SearchQuerySelectionOperation.Or,
                 Values = entityTokens.Select(SearchDocumentBuilder.GetEntityTokenHash).ToArray()
             });
-
-            AddDefaultFieldFacet(DefaultDocumentFieldNames.Ancestors);
         }
 
 
@@ -198,8 +197,6 @@ namespace Composite.Search
                 Operation = SearchQuerySelectionOperation.Or,
                 Values = tokens.ToArray()
             });
-
-            AddDefaultFieldFacet(DefaultDocumentFieldNames.ConsoleAccess);
         }
 
         /// <summary>
@@ -244,18 +241,35 @@ namespace Composite.Search
         public SearchQueryHighlightSettings HighlightSettings { get; set; } = new SearchQueryHighlightSettings();
 
 
-        internal void AddDefaultFieldFacet(string fieldName)
+        /// <summary>
+        /// Will indicate that the search results should return facet information for the given field.
+        /// </summary>
+        /// <param name="fieldName"></param>
+        public void AddFieldFacet(string fieldName)
         {
+            Verify.ArgumentNotNullOrEmpty(fieldName, nameof(fieldName));
+
             if (Facets.Any(f => f.Key == fieldName))
             {
                 return;
             }
 
+            var field = SearchDocumentBuilder.GetDefaultDocumentFields()
+                .FirstOrDefault(f => f.Name == fieldName);
+
+            if (field == null)
+            {
+                field = SearchFacade.DocumentSources.SelectMany(f => f.CustomFields)
+                    .FirstOrDefault(f => f.Name == fieldName);
+
+                Verify.IsNotNull(field, $"Failed to find a document field by name '{fieldName}'");
+            }
+
+            Verify.IsNotNull(field.Facet, $"Faceted search is enabled for the field '{fieldName}'");
+
             Facets.Add(new KeyValuePair<string, DocumentFieldFacet>(
                     fieldName,
-                    SearchDocumentBuilder.GetDefaultDocumentFields()
-                    .Single(f => f.Name == fieldName)
-                    .Facet));
+                    field.Facet));
         }
     }
 }
