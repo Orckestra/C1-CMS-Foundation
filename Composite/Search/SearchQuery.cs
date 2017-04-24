@@ -265,7 +265,7 @@ namespace Composite.Search
                 Verify.IsNotNull(field, $"Failed to find a document field by name '{fieldName}'");
             }
 
-            Verify.IsNotNull(field.Facet, $"Faceted search is enabled for the field '{fieldName}'");
+            Verify.IsNotNull(field.Facet, $"Faceted search is not enabled for the field '{fieldName}'");
 
             Facets.Add(new KeyValuePair<string, DocumentFieldFacet>(
                     fieldName,

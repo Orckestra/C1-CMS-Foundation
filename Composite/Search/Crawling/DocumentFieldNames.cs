@@ -2,6 +2,28 @@
 
 namespace Composite.Search.Crawling
 {
+    [Obsolete("Use DocumentFieldNames instead", true)]
+    /// <exclude/>
+    public static class DefaultDocumentFieldNames
+    {
+        /// <exclude/>
+        public static readonly string Label = DocumentFieldNames.Label;
+        /// <exclude/>
+        public static readonly string Source = DocumentFieldNames.Source;
+        /// <exclude/>
+        public static readonly string Description = DocumentFieldNames.Description;
+        /// <exclude/>
+        public static readonly string DataType = DocumentFieldNames.DataType;
+        /// <exclude/>
+        public static readonly string ConsoleAccess = DocumentFieldNames.ConsoleAccess;
+        /// <exclude/>
+        public static readonly string Ancestors = DocumentFieldNames.Ancestors;
+        /// <exclude/>
+        public static readonly string HasUrl = DocumentFieldNames.HasUrl;
+        /// <exclude/>
+        public static readonly string LastUpdated = DocumentFieldNames.LastUpdated;
+    }
+
     /// <summary>
     /// Contains default document field names
     /// </summary>
