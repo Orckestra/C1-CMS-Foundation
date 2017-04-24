@@ -122,7 +122,7 @@ namespace Composite.Plugins.Search.Endpoint
             };
 
             searchQuery.FilterByUser(UserSettings.Username);
-            searchQuery.AddFieldFacet(DefaultDocumentFieldNames.Source);
+            searchQuery.AddFieldFacet(DocumentFieldNames.Source);
 
             var result = await _searchProvider.SearchAsync(searchQuery);
 
@@ -141,7 +141,7 @@ namespace Composite.Plugins.Search.Endpoint
 
             HashSet<string> dataSourceNames;
             Facet[] dsFacets;
-            if (result.Facets != null && result.Facets.TryGetValue(DefaultDocumentFieldNames.Source, out dsFacets))
+            if (result.Facets != null && result.Facets.TryGetValue(DocumentFieldNames.Source, out dsFacets))
             {
                 dataSourceNames = new HashSet<string>(dsFacets.Select(v => v.Value));
             }

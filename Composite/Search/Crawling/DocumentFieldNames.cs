@@ -5,7 +5,7 @@ namespace Composite.Search.Crawling
     /// <summary>
     /// Contains default document field names
     /// </summary>
-    public static class DefaultDocumentFieldNames
+    public static class DocumentFieldNames
     {
         /// <summary>
         /// The name of the label field.

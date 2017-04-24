@@ -141,7 +141,7 @@ namespace Composite.Search
 
             Selection.Add(new SearchQuerySelection
             {
-                FieldName = DefaultDocumentFieldNames.DataType,
+                FieldName = DocumentFieldNames.DataType,
                 Operation = SearchQuerySelectionOperation.Or,
                 Values = dataTypes.Select(type => type.GetImmutableTypeId().ToString()).ToArray()
             });
@@ -154,7 +154,7 @@ namespace Composite.Search
         {
             Selection.Add(new SearchQuerySelection
             {
-                FieldName = DefaultDocumentFieldNames.HasUrl,
+                FieldName = DocumentFieldNames.HasUrl,
                 Values = new [] {"1"}
             });
         }
@@ -169,7 +169,7 @@ namespace Composite.Search
         {
             Selection.Add(new SearchQuerySelection
             {
-                FieldName = DefaultDocumentFieldNames.Ancestors,
+                FieldName = DocumentFieldNames.Ancestors,
                 Operation = SearchQuerySelectionOperation.Or,
                 Values = entityTokens.Select(SearchDocumentBuilder.GetEntityTokenHash).ToArray()
             });
@@ -193,7 +193,7 @@ namespace Composite.Search
 
             Selection.Add(new SearchQuerySelection
             {
-                FieldName = DefaultDocumentFieldNames.ConsoleAccess,
+                FieldName = DocumentFieldNames.ConsoleAccess,
                 Operation = SearchQuerySelectionOperation.Or,
                 Values = tokens.ToArray()
             });

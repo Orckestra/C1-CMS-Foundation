@@ -46,13 +46,13 @@ namespace Composite.Search.Crawling
         {
             if (pi.Name == nameof(IPage.Description) && pi.PropertyType == typeof(string))
             {
-                return DefaultDocumentFieldNames.Description;
+                return DocumentFieldNames.Description;
             }
 
             if ((pi.Name == nameof(IChangeHistory.ChangeDate) || pi.Name == nameof(IMediaFile.CreationTime))
                 && (pi.PropertyType == typeof(DateTime) || pi.PropertyType == typeof(DateTime?)))
             {
-                return DefaultDocumentFieldNames.LastUpdated;
+                return DocumentFieldNames.LastUpdated;
             }
 
             return $"{pi.ReflectedType.Name}.{pi.Name}";
@@ -125,12 +125,12 @@ namespace Composite.Search.Crawling
         public virtual string GetFieldLabel(PropertyInfo propertyInfo)
         {
             var fieldName = GetDocumentFieldName(propertyInfo);
-            if (fieldName == DefaultDocumentFieldNames.Description)
+            if (fieldName == DocumentFieldNames.Description)
             {
                 return Texts.FieldNames_Description;
             }
 
-            if (fieldName == DefaultDocumentFieldNames.LastUpdated) return Texts.FieldNames_LastUpdated;
+            if (fieldName == DocumentFieldNames.LastUpdated) return Texts.FieldNames_LastUpdated;
             if (propertyInfo.Name == nameof(IChangeHistory.ChangedBy)) return Texts.FieldNames_UpdatedBy;
             if (propertyInfo.Name == nameof(IMediaFile.MimeType)) return Texts.FieldNames_MimeType;
 

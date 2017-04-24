@@ -90,8 +90,8 @@ namespace Composite.Search.Crawling
         /// Sets the data type name, which will be used for populating the "Data Type" column in the search results.
         public void SetDataType(string dataTypeName)
         {
-            _fieldValues.Add(new KeyValuePair<string, object>(DefaultDocumentFieldNames.DataType, dataTypeName));
-            _facetFieldValues.Add(new KeyValuePair<string, string[]>(DefaultDocumentFieldNames.DataType, new[] { dataTypeName }));
+            _fieldValues.Add(new KeyValuePair<string, object>(DocumentFieldNames.DataType, dataTypeName));
+            _facetFieldValues.Add(new KeyValuePair<string, string[]>(DocumentFieldNames.DataType, new[] { dataTypeName }));
         }
 
         /// <summary>
@@ -209,11 +209,11 @@ namespace Composite.Search.Crawling
             Verify.ArgumentNotNullOrEmpty(documentId, nameof(documentId));
             Verify.ArgumentNotNullOrEmpty(label, nameof(label));
 
-            _fieldValues.Add(new KeyValuePair<string, object>(DefaultDocumentFieldNames.Label, label));
+            _fieldValues.Add(new KeyValuePair<string, object>(DocumentFieldNames.Label, label));
 
             if (!string.IsNullOrWhiteSpace(Url))
             {
-                _facetFieldValues.Add(new KeyValuePair<string, string[]>(DefaultDocumentFieldNames.HasUrl, new[] { "1" }));
+                _facetFieldValues.Add(new KeyValuePair<string, string[]>(DocumentFieldNames.HasUrl, new[] { "1" }));
             }
 
             AddAccessField(entityToken);
@@ -245,7 +245,7 @@ namespace Composite.Search.Crawling
             if (tokens.Any())
             {
                 _facetFieldValues.Add(new KeyValuePair<string, string[]>(
-                    DefaultDocumentFieldNames.ConsoleAccess,
+                    DocumentFieldNames.ConsoleAccess,
                     tokens));
             }
 
@@ -254,7 +254,7 @@ namespace Composite.Search.Crawling
                 var ancestorTokens = ancestors.Select(GetEntityTokenHash).ToArray();
 
                 _facetFieldValues.Add(new KeyValuePair<string, string[]>(
-                    DefaultDocumentFieldNames.Ancestors,
+                    DocumentFieldNames.Ancestors,
                     ancestorTokens));
             }
         }
@@ -276,7 +276,7 @@ namespace Composite.Search.Crawling
             return new[]
             {
                 new DocumentField(
-                    DefaultDocumentFieldNames.Label,
+                    DocumentFieldNames.Label,
                     null,
                     new DocumentFieldPreview
                     {
@@ -289,7 +289,7 @@ namespace Composite.Search.Crawling
                 },
 
                 new DocumentField(
-                    DefaultDocumentFieldNames.Source,
+                    DocumentFieldNames.Source,
                     new DocumentFieldFacet
                     {
                         PreviewFunction = value => value,
@@ -302,7 +302,7 @@ namespace Composite.Search.Crawling
                 },
 
                 new DocumentField(
-                    DefaultDocumentFieldNames.DataType,
+                    DocumentFieldNames.DataType,
                     new DocumentFieldFacet
                     {
                         PreviewFunction = GetDataTypeLabel,
@@ -319,7 +319,7 @@ namespace Composite.Search.Crawling
                 },
 
                 new DocumentField(
-                    DefaultDocumentFieldNames.HasUrl,
+                    DocumentFieldNames.HasUrl,
                     new DocumentFieldFacet
                     {
                         PreviewFunction = value => value,
@@ -331,7 +331,7 @@ namespace Composite.Search.Crawling
                 },
 
                 new DocumentField(
-                    DefaultDocumentFieldNames.ConsoleAccess,
+                    DocumentFieldNames.ConsoleAccess,
                     new DocumentFieldFacet
                     {
                         FacetType = FacetType.MultipleValues,
@@ -342,7 +342,7 @@ namespace Composite.Search.Crawling
                     Label = null
                 },
                 new DocumentField(
-                    DefaultDocumentFieldNames.Ancestors,
+                    DocumentFieldNames.Ancestors,
                     new DocumentFieldFacet
                     {
                         FacetType = FacetType.MultipleValues,
