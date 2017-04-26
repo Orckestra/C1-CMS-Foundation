@@ -61,13 +61,7 @@ namespace Composite.Data.ExtendedDataType.Debug
 
 
         /// <exclude />
-        public List<DataFieldDescriptor> DataFieldDescriptors
-        {
-            get
-            {
-                return _dataFieldDescriptors;
-            }
-        }
+        public List<DataFieldDescriptor> DataFieldDescriptors => _dataFieldDescriptors;
 
 
         private void Initialize()
@@ -75,7 +69,7 @@ namespace Composite.Data.ExtendedDataType.Debug
             int counter = 1;
             while (true)
             {
-                string typeName = string.Format("{0}{1}", _namePrefix, counter++);
+                string typeName = $"{_namePrefix}{counter++}";
 
                 if (!DataMetaDataFacade.GeneratedTypeDataTypeDescriptors.Any(d => d.Name == typeName))
                 {
@@ -91,7 +85,7 @@ namespace Composite.Data.ExtendedDataType.Debug
                 {
                     Position = 10,
                     IsNullable = true,
-                    DataUrlProfile = new DataUrlProfile()
+                    DataUrlProfile = new DataUrlProfile
                     {
                         Format = DataUrlSegmentFormat.DateTime_Year,
                         Order = 1
@@ -106,6 +100,10 @@ namespace Composite.Data.ExtendedDataType.Debug
                     {
                         OrderPriority = 1,
                         OrderDescending = false,
+                    },
+                    SearchProfile = new SearchProfile
+                    {
+                        IndexText = true
                     }
                 }, 
                 new DataFieldDescriptor(Guid.NewGuid(), "MyIntField", StoreFieldType.Integer, typeof(int))

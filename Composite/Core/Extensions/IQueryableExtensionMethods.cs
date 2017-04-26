@@ -167,18 +167,18 @@ namespace Composite.Core.Extensions
             Verify.IsNotNull(type, "type cannot be null");
 
             string[] props = property.Split('.');
-            Type paramenetType = type;
-            ParameterExpression arg = Expression.Parameter(paramenetType, "x");
+            Type parameterType = type;
+            ParameterExpression arg = Expression.Parameter(parameterType, "x");
             Expression expr = arg;
             foreach (string prop in props)
             {
                 // use reflection (not ComponentModel) to mirror LINQ
-                PropertyInfo pi = paramenetType.GetPropertiesRecursively(f=>f.Name == prop).FirstOrDefault();
+                PropertyInfo pi = parameterType.GetPropertiesRecursively(f=>f.Name == prop).FirstOrDefault();
                 Verify.IsNotNull(pi, "Could not find property '{0}' on type '{1}'", property, type);
                 expr = Expression.Property(expr, pi);
-                paramenetType = pi.PropertyType;
+                parameterType = pi.PropertyType;
             }
-            Type delegateType = typeof(Func<,>).MakeGenericType(type, paramenetType);
+            Type delegateType = typeof(Func<,>).MakeGenericType(type, parameterType);
             LambdaExpression lambda = Expression.Lambda(delegateType, expr, arg);
 
             object result = typeof(Queryable).GetMethods().Single(
@@ -186,99 +186,9 @@ namespace Composite.Core.Extensions
                             && method.IsGenericMethodDefinition
                             && method.GetGenericArguments().Length == 2
                             && method.GetParameters().Length == 2)
-                    .MakeGenericMethod(type, paramenetType)
+                    .MakeGenericMethod(type, parameterType)
                     .Invoke(null, new object[] { source, lambda });
             return (IOrderedQueryable)result;
         }
-
-
-
-        #region Obsolete
-
-        //public static IQueryable<T> TakeRandom<T>(this IQueryable<T> source, int elementsToTake) where T : class, IData
-        //{
-        //    Verify.ArgumentCondition(elementsToTake > 0 && elementsToTake <= 25, "elementsToTake",
-        //                             "Value should be between 1 and 25.");
-
-        //    int totalElementCount = source.Count();
-
-        //    if (totalElementCount == 0)
-        //    {
-        //        return new T[0].AsQueryable();
-        //    }
-
-        //    if (totalElementCount < elementsToTake)
-        //    {
-        //        elementsToTake = totalElementCount;
-        //    }
-
-
-        //    var subqueries = new IQueryable<T>[elementsToTake];
-
-        //    int position = 0;
-        //    foreach (int nextIndex in GetUniqueRandomSequence(0, totalElementCount - 1, elementsToTake))
-        //    {
-        //        subqueries[position++] = source.Skip(nextIndex).Take(1);
-        //    }
-
-        //    // Merging subqueries into a binary tree
-        //    int queryCount = elementsToTake;
-        //    while (queryCount > 1)
-        //    {
-        //        for (int i = 0; i < (queryCount + 1) / 2; i++)
-        //        {
-        //            subqueries[i] = (i * 2 < queryCount - 1)
-        //                                ? subqueries[i * 2].Concat(subqueries[i * 2 + 1])
-        //                                : subqueries[i * 2];
-        //        }
-        //        queryCount = (queryCount + 1) / 2;
-        //    }
-
-        //    return subqueries[0];
-        //}
-
-        //private static IEnumerable<int> GetUniqueRandomSequence(int minValue, int maxValue, int count)
-        //{
-        //    int range = maxValue - minValue + 1;
-
-        //    if (count > range) throw new InvalidOperationException("'count' exceed number of possible unique random values");
-
-        //    var random = new Random();
-
-        //    if((double)count / range >= 0.3)
-        //    {
-        //        var values = new int[range];
-        //        for(int i=0; i<range; i++) values[i] = i;
-
-        //        int valuesLeft = range;
-        //        for (int i = 0; i < count; i++) 
-        //        {
-        //            int index = random.Next(0, valuesLeft);
-        //            yield return minValue + values[index];
-
-        //            if (index < valuesLeft - 1)
-        //            {
-        //                values[index] = values[valuesLeft - 1];
-        //            }
-
-        //            valuesLeft--;
-        //        }
-        //        yield break;
-        //    }
-            
-        //    // Another algoritm to get the values
-        //    List<int> usedNumbers = new List<int>(count);
-        //    while (usedNumbers.Count < count)
-        //    {
-        //        int randomInt = random.Next(minValue, maxValue);
-        //        if (usedNumbers.Contains(randomInt) == false)
-        //        {
-        //            usedNumbers.Add(randomInt);
-        //            yield return randomInt;
-        //        }
-        //    }
-        //}
-
-        #endregion Obsolete
     }
 }

@@ -156,6 +156,7 @@ _UpdateAssistant.prototype = {
 		if (request != null) {
 			request.open(method, target, (handler != null ? true : false));
 			if (handler != null) {
+				Application.lock(target);
 				function action() {
 					if (request.readyState == 4) {
 						var errorType = request.getResponseHeader("X-Error-Type");
@@ -180,6 +181,7 @@ _UpdateAssistant.prototype = {
 								handler.handleResponse(dom);
 							}
 						}
+						Application.unlock(target);
 					}
 				}
 				/*

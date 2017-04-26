@@ -35,7 +35,7 @@ namespace Composite.Search
         public string FieldName { get; set; }
 
         /// <summary>
-        /// The array of values.
+        /// The array of values that are required to appear in the search documents.
         /// </summary>
         public string[] Values { get; set; }
 
@@ -43,6 +43,11 @@ namespace Composite.Search
         /// Defines how multiple selected values should be resolved.
         /// </summary>
         public SearchQuerySelectionOperation Operation { get; set; }
+
+        /// <summary>
+        /// The array of field values, documents containing which, should not appear in the results.
+        /// </summary>
+        public string[] NotValues { get; set; }
     }
 
 
@@ -81,6 +86,34 @@ namespace Composite.Search
     }
 
     /// <summary>
+    /// Search query hightlight settings.
+    /// </summary>
+    public sealed class SearchQueryHighlightSettings
+    {
+        /// <summary>
+        /// When set to <value>true</value>, highlihts will be included in the search results.
+        /// </summary>
+        public bool Enabled { get; set; }
+
+        /// <summary>
+        /// Maximum amount of highlight fragments.
+        /// </summary>
+        public int FragmentsCount { get; set; } = 1;
+
+        /// <summary>
+        /// Maximum fragment size. The default is 100 characters.
+        /// </summary>
+        public int FragmentSize { get; set; } = 100;
+
+        /// <summary>
+        /// Maximum amount of the full text field characters to be analyzed when extracting fragments to highlight.
+        /// The default value is 51200.
+        /// </summary>
+        public int MaxAnalyzedChars { get; set; } = 51200;
+    }
+
+
+    /// <summary>
     /// A search query.
     /// </summary>
     public sealed class SearchQuery
@@ -108,12 +141,10 @@ namespace Composite.Search
 
             Selection.Add(new SearchQuerySelection
             {
-                FieldName = DefaultDocumentFieldNames.DataType,
+                FieldName = DocumentFieldNames.DataType,
                 Operation = SearchQuerySelectionOperation.Or,
                 Values = dataTypes.Select(type => type.GetImmutableTypeId().ToString()).ToArray()
             });
-
-            AddDefaultFieldFacet(DefaultDocumentFieldNames.DataType);
         }
 
         /// <summary>
@@ -123,11 +154,25 @@ namespace Composite.Search
         {
             Selection.Add(new SearchQuerySelection
             {
-                FieldName = DefaultDocumentFieldNames.HasUrl,
+                FieldName = DocumentFieldNames.HasUrl,
                 Values = new [] {"1"}
             });
+        }
 
-            AddDefaultFieldFacet(DefaultDocumentFieldNames.HasUrl);
+
+        /// <summary>
+        /// Filters the results, so only entity tokens that have at least one of the given entity tokens
+        /// as an ancestor, will be returned. This enables searching for the child elements in the console
+        /// and searching for data that belongs to a specific website on frontend.
+        /// </summary>
+        public void FilterByAncestors(params EntityToken[] entityTokens)
+        {
+            Selection.Add(new SearchQuerySelection
+            {
+                FieldName = DocumentFieldNames.Ancestors,
+                Operation = SearchQuerySelectionOperation.Or,
+                Values = entityTokens.Select(SearchDocumentBuilder.GetEntityTokenHash).ToArray()
+            });
         }
 
 
@@ -148,12 +193,10 @@ namespace Composite.Search
 
             Selection.Add(new SearchQuerySelection
             {
-                FieldName = DefaultDocumentFieldNames.ConsoleAccess,
+                FieldName = DocumentFieldNames.ConsoleAccess,
                 Operation = SearchQuerySelectionOperation.Or,
                 Values = tokens.ToArray()
             });
-
-            AddDefaultFieldFacet(DefaultDocumentFieldNames.ConsoleAccess);
         }
 
         /// <summary>
@@ -192,19 +235,41 @@ namespace Composite.Search
         /// </summary>
         public IEnumerable<SearchQuerySortOption> SortOptions { get; set; }
 
+        /// <summary>
+        /// Highlight settings.
+        /// </summary>
+        public SearchQueryHighlightSettings HighlightSettings { get; set; } = new SearchQueryHighlightSettings();
 
-        internal void AddDefaultFieldFacet(string fieldName)
+
+        /// <summary>
+        /// Will indicate that the search results should return facet information for the given field.
+        /// </summary>
+        /// <param name="fieldName"></param>
+        public void AddFieldFacet(string fieldName)
         {
+            Verify.ArgumentNotNullOrEmpty(fieldName, nameof(fieldName));
+
             if (Facets.Any(f => f.Key == fieldName))
             {
                 return;
             }
 
+            var field = SearchDocumentBuilder.GetDefaultDocumentFields()
+                .FirstOrDefault(f => f.Name == fieldName);
+
+            if (field == null)
+            {
+                field = SearchFacade.DocumentSources.SelectMany(f => f.CustomFields)
+                    .FirstOrDefault(f => f.Name == fieldName);
+
+                Verify.IsNotNull(field, $"Failed to find a document field by name '{fieldName}'");
+            }
+
+            Verify.IsNotNull(field.Facet, $"Faceted search is not enabled for the field '{fieldName}'");
+
             Facets.Add(new KeyValuePair<string, DocumentFieldFacet>(
                     fieldName,
-                    SearchDocumentBuilder.GetDefaultDocumentFields()
-                    .Single(f => f.Name == fieldName)
-                    .Facet));
+                    field.Facet));
         }
     }
 }

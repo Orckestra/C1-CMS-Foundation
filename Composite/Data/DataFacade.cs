@@ -659,29 +659,27 @@ namespace Composite.Data
         /// <exclude />
         public static IEnumerable<IData> TryGetDataVersionsByUniqueKey(Type interfaceType, DataKeyPropertyCollection dataKeyPropertyCollection)
         {
-            if (interfaceType == null) throw new ArgumentNullException("interfaceType");
-            if (dataKeyPropertyCollection == null) throw new ArgumentNullException("dataKeyPropertyCollection");
+            Verify.ArgumentNotNull(interfaceType, nameof(interfaceType));
+            Verify.ArgumentNotNull(dataKeyPropertyCollection, nameof(dataKeyPropertyCollection));
 
             LambdaExpression lambdaExpression = GetPredicateExpressionByUniqueKey(interfaceType, dataKeyPropertyCollection);
 
             MethodInfo methodInfo = GetGetDataWithPredicatMethodInfo(interfaceType);
 
-            IQueryable queryable = (IQueryable)methodInfo.Invoke(null, new object[] { lambdaExpression });
+            var queryable = (IQueryable)methodInfo.Invoke(null, new object[] { lambdaExpression });
 
-            var datas = queryable.OfType<IData>();
-
-            return datas;
+            return ((IEnumerable) queryable).Cast<IData>();
         }
 
         // Overload
         /// <exclude />
         public static IData GetDataByUniqueKey(Type interfaceType, object dataKeyValue)
         {
-            Verify.ArgumentNotNull(interfaceType, "interfaceType");
+            Verify.ArgumentNotNull(interfaceType, nameof(interfaceType));
 
-            PropertyInfo propertyInfo = DataAttributeFacade.GetKeyProperties(interfaceType).Single();
+            PropertyInfo propertyInfo = interfaceType.GetKeyProperties().Single();
 
-            DataKeyPropertyCollection dataKeyPropertyCollection = new DataKeyPropertyCollection();
+            var dataKeyPropertyCollection = new DataKeyPropertyCollection();
             dataKeyPropertyCollection.AddKeyProperty(propertyInfo, dataKeyValue);
 
             IData data = TryGetDataByUniqueKey(interfaceType, dataKeyPropertyCollection);

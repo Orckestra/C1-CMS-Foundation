@@ -5,8 +5,10 @@ using System.Linq;
 using Composite.C1Console.Security;
 using Composite.Search.Crawling;
 using Composite.Core;
+using Composite.Core.Extensions;
 using Composite.Core.Linq;
 using Composite.Core.Routing;
+using Composite.Core.Types;
 using Composite.Core.WebClient;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
@@ -22,7 +24,7 @@ namespace Composite.Search.DocumentSources
         private readonly List<IDocumentSourceListener> _listeners = new List<IDocumentSourceListener>();
         private readonly Type _interfaceType;
         private readonly DataChangesIndexNotifier _changesIndexNotifier;
-        private readonly Lazy<ICollection<DocumentField>> _customFields;
+        private readonly Lazy<IReadOnlyCollection<DocumentField>> _customFields;
 
         private readonly bool _isPublishable;
 
@@ -40,7 +42,7 @@ namespace Composite.Search.DocumentSources
 
             _isPublishable = typeof (IPublishControlled).IsAssignableFrom(_interfaceType);
 
-            _customFields = new Lazy<ICollection<DocumentField>>(GetDocumentFields);
+            _customFields = new Lazy<IReadOnlyCollection<DocumentField>>(GetDocumentFields);
 
             _changesIndexNotifier = new DataChangesIndexNotifier(
                 _listeners, _interfaceType, FromData, GetDocumentId);
@@ -55,65 +57,150 @@ namespace Composite.Search.DocumentSources
             _listeners.Add(sourceListener);
         }
 
-        public IEnumerable<SearchDocument> GetAllSearchDocuments(CultureInfo culture)
+        public IEnumerable<DocumentWithContinuationToken> GetSearchDocuments(CultureInfo culture, string continuationToken = null)
         {
-            using (new DataConnection(PublicationScope.Published, culture))
+            var (continueFromScope, continueFromKey) = ParseCToken(continuationToken);
+
+            if (continueFromScope == PublicationScope.Published)
             {
-                var dataSet = DataFacade.GetData(_interfaceType).Cast<IData>().Evaluate();
-                foreach (var document in dataSet.Select(FromData).Where(doc => doc != null))
+                var documents = GetDocumentsFromScope(PublicationScope.Published, culture, continueFromKey);
+                foreach (var doc in documents)
                 {
-                    yield return document;
+                    yield return doc;
                 }
             }
 
+
             if (typeof (IPublishControlled).IsAssignableFrom(_interfaceType))
             {
-                using (new DataConnection(PublicationScope.Unpublished, culture))
-                {
-                    var dataSet = DataFacade.GetData(_interfaceType)
-                        .Cast<IPublishControlled>()
-                        .Where(data => data.PublicationStatus != GenericPublishProcessController.Published)
-                        .Evaluate();
+                var documents = GetDocumentsFromScope(PublicationScope.Unpublished, culture,
+                    continueFromScope == PublicationScope.Unpublished ? continueFromKey : null);
 
-                    foreach (var document in dataSet.Select(FromData).Where(doc => doc != null))
-                    {
-                        yield return document;
-                    }
+                foreach (var doc in documents)
+                {
+                    yield return doc;
                 }
             }
         }
 
-        public ICollection<DocumentField> CustomFields => _customFields.Value;
-
-        private SearchDocument FromData(IData data)
+        private IEnumerable<DocumentWithContinuationToken> GetDocumentsFromScope(
+            PublicationScope publicationScope,
+            CultureInfo culture,
+            object continueFromKey)
         {
-            string label = data.GetLabel();
-            if (string.IsNullOrEmpty(label))
+            using (new DataConnection(publicationScope, culture))
             {
-                // Having a label is a requirement for a data item to be searchable
-                return null;
+                var query = DataFacade.GetData(_interfaceType);
+
+                query = FilterAndOrderByKey(query, continueFromKey);
+
+                if (publicationScope == PublicationScope.Unpublished)
+                {
+                    query = query
+                        .Cast<IPublishControlled>()
+                        .Where(data => data.PublicationStatus != GenericPublishProcessController.Published);
+                }
+                var dataSet = query.Cast<IData>().Evaluate();
+
+                foreach (var data in dataSet)
+                {
+                    var document = FromData(data, culture);
+                    if (document == null) continue;
+
+                    yield return new DocumentWithContinuationToken
+                    {
+                        Document = document,
+                        ContinuationToken = GetContinuationToken(data, publicationScope)
+                    };
+                }
+            }
+        }
+
+        private IQueryable FilterAndOrderByKey(IQueryable dataset, object continueFromKey)
+        {
+            var keyProperties = _interfaceType.GetKeyProperties();
+            if (keyProperties.Count > 1
+                || !keyProperties.All(property => typeof(IComparable).IsAssignableFrom(property.PropertyType)))
+            {
+                return dataset.Cast<IData>(); // Not supported
+            }
+        
+            var keyProperty = keyProperties.Single();
+
+            dataset = dataset.OrderBy(_interfaceType, keyProperty.Name);
+
+            if (continueFromKey != null)
+            {
+                dataset = dataset.Cast<IData>()
+                    .ToList()
+                    .Where(data => (keyProperty.GetValue(data) as IComparable).CompareTo(continueFromKey) > 0)
+                    .AsQueryable();
             }
 
-            var docBuilder = new SearchDocumentBuilder();
-            docBuilder.CrawlData(data);
-            docBuilder.SetDataType(_interfaceType);
+            return dataset;
+        }
 
-            string documentId = GetDocumentId(data);
-            string url = null;
-            if (InternalUrls.DataTypeSupported(data.DataSourceId.InterfaceType)
-                && (!_isPublishable || (data.DataSourceId.PublicationScope == PublicationScope.Published)))
+        private (PublicationScope continueFromScope, object continueFromKey) ParseCToken(string continuationToken)
+        {
+            if (continuationToken == null)
             {
-                url = InternalUrls.TryBuildInternalUrl(data.ToDataReference());
+                return (PublicationScope.Published, null);
             }
+ 
+            int separator = continuationToken.IndexOf(':');
+            string keyStr = continuationToken.Substring(separator + 1);
+            var keyPropertyType = _interfaceType.GetKeyProperties().Single().PropertyType;
 
-            var entityToken = GetConsoleEntityToken(data);
-            if (entityToken == null)
+            object key = ValueTypeConverter.Convert(keyStr, keyPropertyType);
+            var scope = (PublicationScope) Enum.Parse(typeof(PublicationScope), continuationToken.Substring(0, separator));
+
+            return (scope, key);
+        }
+
+        private string GetContinuationToken(IData data, PublicationScope publicationScope)
+        {
+            if (_interfaceType.GetKeyProperties().Count > 1) return null; // Not supported
+
+            var key = data.GetUniqueKey();
+            string keyStr = ValueTypeConverter.Convert<string>(key);
+            return $"{publicationScope}:{keyStr}";
+        }
+
+
+        public IReadOnlyCollection<DocumentField> CustomFields => _customFields.Value;
+
+        private SearchDocument FromData(IData data, CultureInfo culture)
+        {
+            using (new DataScope(culture))
             {
-                Log.LogWarning(LogTitle, $"Failed to obtain an entity token for a data item of type '{data.DataSourceId.InterfaceType}'");
-                return null;
-            }
+                string label = data.GetLabel();
+                if (string.IsNullOrEmpty(label))
+                {
+                    // Having a label is a requirement for a data item to be searchable
+                    return null;
+                }
 
-            return docBuilder.BuildDocument(Name, documentId, label, null, entityToken, url);
+                var docBuilder = new SearchDocumentBuilder();
+                docBuilder.SetDataType(_interfaceType);
+
+                string documentId = GetDocumentId(data);
+                if (InternalUrls.DataTypeSupported(_interfaceType)
+                    && (!_isPublishable || data.DataSourceId.PublicationScope == PublicationScope.Published))
+                {
+                    docBuilder.Url = InternalUrls.TryBuildInternalUrl(data.ToDataReference());
+                }
+
+                docBuilder.CrawlData(data);
+
+                var entityToken = GetConsoleEntityToken(data);
+                if (entityToken == null)
+                {
+                    Log.LogWarning(LogTitle, $"Failed to obtain an entity token for a data item of type '{data.DataSourceId.InterfaceType}'");
+                    return null;
+                }
+
+                return docBuilder.BuildDocument(Name, documentId, label, null, entityToken);
+            }
         }
 
         private EntityToken GetConsoleEntityToken(IData data)
@@ -142,9 +229,9 @@ namespace Composite.Search.DocumentSources
             return uniqueKey + scopeSuffix;
         }
 
-        ICollection<DocumentField> GetDocumentFields()
+        List<DocumentField> GetDocumentFields()
         {
-            return DataTypeSearchReflectionHelper.GetDocumentFields(_interfaceType).Evaluate();
+            return DataTypeSearchReflectionHelper.GetDocumentFields(_interfaceType).ToList();
         }
 
         private static void OnStoreCreated(DataTypeDescriptor dataTypeDescriptor)

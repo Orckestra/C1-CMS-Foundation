@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -383,8 +383,6 @@ namespace Composite.Data.Types
             }
         }
 
-
-
         /// <summary>
         /// This method will delete the pagestructure corresponding to the given page if this 
         /// page is the last page.
@@ -392,12 +390,18 @@ namespace Composite.Data.Types
         /// <param name="page">The page that is about to be deleted.</param>
         public static void DeletePageStructure(this IPage page)
         {
+            DeletePageStructure(page, true);
+        }
+
+        
+        internal static void DeletePageStructure(this IPage page, bool updateSiblingsOrder)
+        {
             if (ExistsInOtherLocale(page))
             {
                 return;
             }
-            IPageStructure structureInfo = DataFacade.GetData<IPageStructure>(f => f.Id == page.Id).SingleOrDefault();
 
+            var structureInfo = DataFacade.GetData<IPageStructure>(false).SingleOrDefault(f => f.Id == page.Id);
             if (structureInfo == null)
             {
                 return;
@@ -405,6 +409,8 @@ namespace Composite.Data.Types
 
             int localOrdering = structureInfo.LocalOrdering;
             DataFacade.Delete<IPageStructure>(structureInfo);
+
+            if (!updateSiblingsOrder) return;
 
             List<IPageStructure> siblings =
                 DataFacade.GetData<IPageStructure>(
@@ -417,10 +423,10 @@ namespace Composite.Data.Types
                 return;
             }
 
-            for (int i = 0; i < siblings.Count; i++)
+            foreach (IPageStructure sibling in siblings)
             {
-                siblings[i].LocalOrdering--;
-                DataFacade.Update(siblings[i]);
+                sibling.LocalOrdering--;
+                DataFacade.Update(sibling);
             }
         }
 
@@ -502,34 +508,39 @@ namespace Composite.Data.Types
         {
             using (var transactionScope = TransactionsFacade.CreateNewScope())
             {
-                List<CultureInfo> cultures = DataLocalizationFacade.ActiveLocalizationCultures.ToList();
-                cultures.Remove(page.DataSourceId.LocaleScope);
-
-                List<IPage> pagesToDelete = page.GetSubChildren().ToList();
-
-                foreach (IPage childPage in pagesToDelete)
+                using (var conn = new DataConnection())
                 {
-                    if (!ExistInOtherLocale(cultures, childPage))
+                    conn.DisableServices();
+
+                    var cultures = DataLocalizationFacade.ActiveLocalizationCultures.ToList();
+                    cultures.Remove(page.DataSourceId.LocaleScope);
+
+                    List<IPage> pagesToDelete = page.GetSubChildren().ToList();
+
+                    foreach (IPage childPage in pagesToDelete)
                     {
-                        RemoveAllFolderAndMetaDataDefinitions(childPage);
+                        if (!ExistInOtherLocale(cultures, childPage))
+                        {
+                            RemoveAllFolderAndMetaDataDefinitions(childPage);
+                        }
+
+                        childPage.DeletePageStructure(false);
+                        ProcessControllerFacade.FullDelete(childPage);
                     }
 
-                    childPage.DeletePageStructure();
-                    ProcessControllerFacade.FullDelete(childPage);
+
+                    if (!ExistInOtherLocale(cultures, page))
+                    {
+                        RemoveAllFolderAndMetaDataDefinitions(page);
+                    }
+
+                    page.DeletePageStructure();
+
+                    Guid pageId = page.Id;
+                    var pageVersions = DataFacade.GetData<IPage>(p => p.Id == pageId).ToList();
+
+                    ProcessControllerFacade.FullDelete(pageVersions);
                 }
-                
-
-                if (!ExistInOtherLocale(cultures, page))
-                {
-                    RemoveAllFolderAndMetaDataDefinitions(page);
-                }
-
-                page.DeletePageStructure();
-
-                Guid pageId = page.Id;
-                var pageVersions = DataFacade.GetData<IPage>(p => p.Id == pageId).ToList();
-
-                ProcessControllerFacade.FullDelete(pageVersions);
 
                 transactionScope.Complete();
             }

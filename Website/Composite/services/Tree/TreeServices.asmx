@@ -1,4 +1,4 @@
-<%@ WebService Language="C#" Class="Composite.Services.TreeServices" %>
+﻿<%@ WebService Language="C#" Class="Composite.Services.TreeServices" %>
 
 using System;
 using System.Linq;
@@ -60,11 +60,14 @@ namespace Composite.Services
                 string username = UserValidationFacade.GetUsername();
 
                 List<Element> allPerspectives = ElementFacade.GetPerspectiveElementsWithNoSecurity().ToList();
-                List<string> activePerspectiveEntityTokens = UserPerspectiveFacade.GetSerializedEntityTokens(username).ToList();
-                activePerspectiveEntityTokens.AddRange(UserGroupPerspectiveFacade.GetSerializedEntityTokens(username));
-                activePerspectiveEntityTokens = activePerspectiveEntityTokens.Distinct().ToList();
+                List<string> activePerspectiveEntityTokens = 
+						UserPerspectiveFacade.GetSerializedEntityTokens(username)
+						.Concat(UserGroupPerspectiveFacade.GetSerializedEntityTokens(username))
+						.Distinct().ToList();
 
-                List<ClientElement> activePerspectives = allPerspectives.Where(f => activePerspectiveEntityTokens.Contains(EntityTokenSerializer.Serialize(f.ElementHandle.EntityToken))).ToList().ToClientElementList();
+                List<ClientElement> activePerspectives = allPerspectives
+						.Where(f => activePerspectiveEntityTokens.Contains(EntityTokenSerializer.Serialize(f.ElementHandle.EntityToken)))
+						.ToList().ToClientElementList();
 
                 foreach (ClientElement clientElement in activePerspectives)
                 {
@@ -85,7 +88,9 @@ namespace Composite.Services
         [WebMethod]
         public List<ClientElement> GetUnpublishedElements(string dummy)
         {
-            var rootElement = ElementFacade.GetPerspectiveElements(false).First();
+            var rootElement = ElementFacade.GetPerspectiveElements(false)
+                    .FirstOrDefault(e => e.TagValue == "Content");
+
             var allElements = GetPublishControlledDescendants(rootElement.ElementHandle);
 
             var publicationStates = new Dictionary<string, string>

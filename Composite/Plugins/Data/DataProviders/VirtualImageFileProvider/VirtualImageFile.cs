@@ -88,6 +88,19 @@ namespace Composite.Plugins.Data.DataProviders.VirtualImageFileProvider
             }
         }
 
+        public string Tags
+        {
+            get
+            {
+                return _sourceFile.Tags;
+            }
+            set
+            {
+                _sourceFile.Tags = value; ;
+            }
+        }
+
+       
         public string Culture
         {
             get

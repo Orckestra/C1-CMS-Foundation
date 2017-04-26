@@ -70,7 +70,6 @@ namespace Composite.Data.Types
         [ImmutableFieldId("{C9A81ADE-DAD5-4740-A891-DF1CE2FAB498}")]
         [Composite.Data.Validation.Validators.RegexValidator(@"^[\s-\p{Ll}\p{Lu}\p{Lt}\p{Lo}\p{Nd}\p{Pc}\p{Lm}]*$")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1056:UriPropertiesShouldNotBeStrings", Justification = "We want a string here")]
-        [SearchableField(true, false, false)]
         string UrlTitle { get; set; }
 
 

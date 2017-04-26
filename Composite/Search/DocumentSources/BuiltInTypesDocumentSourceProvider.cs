@@ -4,20 +4,19 @@ namespace Composite.Search.DocumentSources
 {
     internal class BuiltInTypesDocumentSourceProvider: ISearchDocumentSourceProvider
     {
-        private readonly List<ISearchDocumentSource> _documentSources;
+        private readonly ISearchDocumentSource[] _documentSources;
 
-        public BuiltInTypesDocumentSourceProvider()
+        public BuiltInTypesDocumentSourceProvider(
+            CmsPageDocumentSource cmsPageDocumentSource,
+            MediaLibraryDocumentSource mediaLibraryDocumentSource)
         {
-            _documentSources = new List<ISearchDocumentSource>
+            _documentSources = new ISearchDocumentSource[]
             {
-                new CmsPageDocumentSource(),
-                new MediaLibraryDocumentSource()
+                cmsPageDocumentSource,
+                mediaLibraryDocumentSource
             };
         }
 
-        public IEnumerable<ISearchDocumentSource> GetDocumentSources()
-        {
-            return _documentSources;
-        }
+        public IEnumerable<ISearchDocumentSource> GetDocumentSources() => _documentSources;
     }
 }

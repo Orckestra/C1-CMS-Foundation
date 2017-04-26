@@ -1,9 +1,7 @@
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Reflection;
 using System.Security;
 using System.Text;
-using Composite.Core.Extensions;
 using Composite.Core.Serialization;
 using Composite.Core.Types;
 
@@ -37,7 +35,7 @@ namespace Composite.C1Console.Security
 
             if (serializedEntityToken == null)
             {
-                throw new InvalidCastException(string.Format("'{0}' Serialize returned null", entityToken.GetType()));
+                throw new InvalidCastException($"'{entityToken.GetType()}' Serialize returned null");
             }
 
             StringConversionServices.SerializeKeyValuePair(sb, "entityToken", serializedEntityToken);
@@ -53,25 +51,25 @@ namespace Composite.C1Console.Security
 
 
         /// <exclude />
-        public static EntityToken Deserialize(string serialziedEntityToken)
+        public static EntityToken Deserialize(string serializedEntityToken)
         {
-            return Deserialize(serialziedEntityToken, false);
+            return Deserialize(serializedEntityToken, false);
         }
 
 
 
         /// <exclude />
-        public static EntityToken Deserialize(string serialziedEntityToken, bool includeHashValue)
+        public static EntityToken Deserialize(string serializedEntityToken, bool includeHashValue)
         {
-            if (string.IsNullOrEmpty(serialziedEntityToken)) throw new ArgumentNullException("serialziedEntityToken");
+            if (string.IsNullOrEmpty(serializedEntityToken)) throw new ArgumentNullException(nameof(serializedEntityToken));
 
-            Dictionary<string, string> dic = StringConversionServices.ParseKeyValueCollection(serialziedEntityToken);
+            var dic = StringConversionServices.ParseKeyValueCollection(serializedEntityToken);
 
             if (!dic.ContainsKey("entityTokenType")  ||
                 !dic.ContainsKey("entityToken") ||
                 (includeHashValue && !dic.ContainsKey("entityTokenHash")))
             {
-                throw new ArgumentException("Failed to deserialize the value. Is has to be searized with EntityTokenSerializer.", "serialziedEntityToken");
+                throw new ArgumentException("Failed to deserialize the value. Is has to be serialized with EntityTokenSerializer.", nameof(serializedEntityToken));
             }
 
             string entityTokenTypeString = StringConversionServices.DeserializeValueString(dic["entityTokenType"]);
@@ -93,7 +91,7 @@ namespace Composite.C1Console.Security
             MethodInfo methodInfo = entityType.GetMethod("Deserialize", BindingFlags.Public | BindingFlags.Static);
             if (methodInfo == null)
             {
-                throw new InvalidOperationException(string.Format("The entity token {0} is missing a public static Deserialize method taking a string as parameter and returning an {1}", entityType, typeof(EntityToken)));
+                throw new InvalidOperationException($"The entity token {entityType} is missing a public static Deserialize method taking a string as parameter and returning an {typeof(EntityToken)}");
             }
 
 
@@ -104,12 +102,12 @@ namespace Composite.C1Console.Security
             }
             catch (Exception ex)
             {
-                throw new EntityTokenSerializerException("Failed to deserialize entity token '{0}'".FormatWith(entityTokenString), ex);
+                throw new EntityTokenSerializerException($"Failed to deserialize entity token '{entityTokenString}'", ex);
             }
 
             if (entityToken == null)
             {
-                throw new EntityTokenSerializerException("Deserialization function returned null value. EntityToken: '{0}'".FormatWith(entityTokenString));
+                throw new EntityTokenSerializerException($"Deserialization function returned null value. EntityToken: '{entityTokenString}'");
             }
 
             return entityToken;
@@ -118,10 +116,10 @@ namespace Composite.C1Console.Security
 
 
         /// <exclude />
-        public static T Deserialize<T>(string serialziedEntityToken)
+        public static T Deserialize<T>(string serializedEntityToken)
             where T : EntityToken
         {
-            return (T)Deserialize(serialziedEntityToken);
+            return (T)Deserialize(serializedEntityToken);
         }
     }
 }

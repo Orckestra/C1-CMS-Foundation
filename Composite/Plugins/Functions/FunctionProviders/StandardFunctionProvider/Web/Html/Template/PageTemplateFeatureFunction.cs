@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Threading;
-using System.Xml.Linq;
+using Composite.Core.WebClient.Renderings.Page;
 using Composite.Core.Xml;
 using Composite.Functions;
 using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
@@ -24,7 +23,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
                 WidgetFunctionProvider featureNameSelector =
                     StandardWidgetFunctions.DropDownList(
                         this.GetType(),
-                        "FeatureNames",
+                        nameof(FeatureNames),
                         false,
                         true);
 
@@ -46,6 +45,11 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
 
         public override object Execute(ParameterList parameters, FunctionContextContainer context)
         {
+            if (PageRenderer.RenderingReason == RenderingReason.BuildSearchIndex)
+            {
+                return null;
+            }
+
             string featureName = parameters.GetParameter<string>("FeatureName");
 
             return PageTemplateFeatureFacade.GetPageTemplateFeature(featureName);

@@ -4,6 +4,8 @@
     <cms:binding name="FileDataFileName" type="System.String" />
     <cms:binding name="FileDataTitle" type="System.String" optional="true"/>
     <cms:binding name="FileDataDescription" type="System.String" optional="true"/>
+    <cms:binding name="FileDataTags" type="System.String" optional="true"/>
+    <cms:binding name="FileDataURL" type="System.String" optional="true"/>
     <cms:binding name="ProvidesMetaData" type="System.Boolean" />
   </cms:bindings>
   <cms:layout iconhandle="media-edit-media-file">
@@ -33,6 +35,26 @@
           <TextArea Label="${Composite.Management, Website.Forms.Administrative.EditMediaFile.LabelDescription}" Help="${Composite.Management, Website.Forms.Administrative.EditMediaFile.HelpDescription}">            
               <cms:bind source="FileDataDescription" />            
           </TextArea>
+        </f:BooleanCheck.WhenTrue>
+      </f:BooleanCheck>
+      <f:BooleanCheck>
+        <f:BooleanCheck.CheckValue>
+          <cms:read source="ProvidesMetaData" />
+        </f:BooleanCheck.CheckValue>
+        <f:BooleanCheck.WhenTrue>
+          <TextArea Label="${Composite.Management, Website.Forms.Administrative.EditMediaFile.LabelTags}" Help="${Composite.Management, Website.Forms.Administrative.EditMediaFile.HelpTags}">
+            <cms:bind source="FileDataTags" />
+          </TextArea>
+        </f:BooleanCheck.WhenTrue>
+      </f:BooleanCheck>
+      <f:BooleanCheck>
+        <f:BooleanCheck.CheckValue>
+          <cms:read source="ProvidesMetaData" />
+        </f:BooleanCheck.CheckValue>
+        <f:BooleanCheck.WhenTrue>
+          <TextBox Type="ReadOnly" Label="${Composite.Management, Website.Forms.Administrative.EditMediaFile.LabelMediaURL}" Help="${Composite.Management, Website.Forms.Administrative.EditMediaFile.HelpMediaURL}" Required="false">
+            <cms:read source="FileDataURL" />
+          </TextBox>
         </f:BooleanCheck.WhenTrue>
       </f:BooleanCheck>
     </FieldGroup>

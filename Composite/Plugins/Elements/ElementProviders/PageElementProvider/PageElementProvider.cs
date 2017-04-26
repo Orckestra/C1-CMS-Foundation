@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Composite.C1Console.Actions;
@@ -268,14 +268,14 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
         public IEnumerable<Element> GetChildren(EntityToken entityToken, SearchToken searchToken)
         {
-            if (entityToken is AssociatedDataElementProviderHelperEntityToken)
+            if (entityToken is AssociatedDataElementProviderHelperEntityToken associatedData)
             {
-                return _pageAssociatedHelper.GetChildren((AssociatedDataElementProviderHelperEntityToken)entityToken, false);
+                return _pageAssociatedHelper.GetChildren(associatedData, false);
             }
 
-            if (entityToken is DataGroupingProviderHelperEntityToken)
+            if (entityToken is DataGroupingProviderHelperEntityToken dataGrouping)
             {
-                return _pageAssociatedHelper.GetChildren((DataGroupingProviderHelperEntityToken)entityToken, false);
+                return _pageAssociatedHelper.GetChildren(dataGrouping, false);
             }
 
             using (new DataScope(DataScopeIdentifier.Administrated))
@@ -300,16 +300,16 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
         public IEnumerable<Element> GetForeignChildren(EntityToken entityToken, SearchToken searchToken)
         {
-            if (entityToken is DataEntityToken && ((DataEntityToken)entityToken).Data == null) return new Element[] { };
+            if (entityToken is DataEntityToken dataEntityToken && dataEntityToken.Data == null) return Array.Empty<Element>();
 
-            if (entityToken is AssociatedDataElementProviderHelperEntityToken)
+            if (entityToken is AssociatedDataElementProviderHelperEntityToken associatedData)
             {
-                return _pageAssociatedHelper.GetChildren((AssociatedDataElementProviderHelperEntityToken)entityToken, true);
+                return _pageAssociatedHelper.GetChildren(associatedData, true);
             }
 
-            if (entityToken is DataGroupingProviderHelperEntityToken)
+            if (entityToken is DataGroupingProviderHelperEntityToken dataGrouping)
             {
-                return _pageAssociatedHelper.GetChildren((DataGroupingProviderHelperEntityToken)entityToken, true);
+                return _pageAssociatedHelper.GetChildren(dataGrouping, true);
             }
 
             IEnumerable<IPage> pages;
@@ -443,9 +443,9 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 return Guid.Empty;
             }
 
-            if (entityToken is DataEntityToken)
+            if (entityToken is DataEntityToken dataEntityToken)
             {
-                IPage parentPage = ((DataEntityToken)entityToken).Data as IPage;
+                IPage parentPage = dataEntityToken.Data as IPage;
 
                 return parentPage?.Id;
             }
@@ -507,8 +507,10 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 into pageVersionGroups
                 let versions = pageVersionGroups.ToList()
                 let liveVersionName = versions.Count == 1 ? null : versions[0].GetLiveVersionName()
-                select pageVersionGroups.OrderByDescending(v => v.LocalizedVersionName() == liveVersionName).ToList())
-                    .SelectMany(v => v);
+                select versions
+                    .OrderByVersions()
+                    .OrderByDescending(v => v.LocalizedVersionName() == liveVersionName))
+                .SelectMany(v => v);
         }
 
 
@@ -546,9 +548,9 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             {
                 newParentPageId = Guid.Empty;
             }
-            else if (newParentEntityToken is DataEntityToken)
+            else if (newParentEntityToken is DataEntityToken dataEntityToken)
             {
-                IPage newParentPage = (IPage)((DataEntityToken)newParentEntityToken).Data;
+                IPage newParentPage = dataEntityToken.Data as IPage;
                 newParentPageId = newParentPage.Id;
             }
             else

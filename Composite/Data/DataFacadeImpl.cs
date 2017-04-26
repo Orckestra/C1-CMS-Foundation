@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -353,7 +353,7 @@ namespace Composite.Data
             {
                 if (!DataTypeTypesManager.IsAllowedDataTypeAssembly(typeof(T)))
                 {
-                    string message = string.Format("The data interface '{0}' is not located in an assembly in the website Bin folder. Please move it to that location", typeof(T));
+                    string message = $"The data interface '{typeof(T)}' is not located in an assembly in the website Bin folder. Please move it to that location";
                     Log.LogError(LogTitle, message);
                     throw new InvalidOperationException(message);
                 }
@@ -364,13 +364,11 @@ namespace Composite.Data
 
                     if (writeableProviders.Count == 0)
                     {
-                        Log.LogVerbose(LogTitle, string.Format("Type data interface '{0}' is marked auto updateble and is not supported by any providers. Adding it to the default dynamic type data provider", typeof(T)));
+                        Log.LogVerbose(LogTitle, $"Type data interface '{typeof(T)}' is marked auto updateble and is not supported by any providers. Adding it to the default dynamic type data provider");
 
-                        List<T> result;
                         DynamicTypeManager.EnsureCreateStore(typeof(T));
 
-                        result = AddNew<T>(datas, false, suppressEventing, performForeignKeyIntegrityCheck, performValidation, null);
-                        return result;
+                        return AddNew<T>(datas, false, suppressEventing, performForeignKeyIntegrityCheck, performValidation, null);
                     }
                 }
             }
@@ -380,7 +378,7 @@ namespace Composite.Data
                 return AddNew_AddingMethod<T>(writeableProviders[0], datas, suppressEventing, performForeignKeyIntegrityCheck, performValidation);
             }
 
-            throw new InvalidOperationException(string.Format("{0} writeable data providers exists for data '{1}'.", writeableProviders.Count, typeof(T)));
+            throw new InvalidOperationException($"{writeableProviders.Count} writeable data providers exists for data '{typeof(T)}'.");
         }
         
 
@@ -395,17 +393,17 @@ namespace Composite.Data
 
 
             List<string> writeableProviders = DataProviderRegistry.GetWriteableDataProviderNamesByInterfaceType(typeof(T));
-            if (writeableProviders.Contains(providerName) == false)
+            if (!writeableProviders.Contains(providerName))
             {
-                Log.LogVerbose(LogTitle, string.Format("Type data interface '{0}' is marked auto updateble and is not supported by the provider '{1}', adding it", typeof(T), providerName));
+                Log.LogVerbose(LogTitle, $"Type data interface '{typeof(T)}' is marked auto updateable and is not supported by the provider '{providerName}', adding it");
 
                 DynamicTypeManager.EnsureCreateStore(typeof(T), providerName);
             }
 
             writeableProviders = DataProviderRegistry.GetWriteableDataProviderNamesByInterfaceType(typeof(T));
-            if (writeableProviders.Contains(providerName) == false)
+            if (!writeableProviders.Contains(providerName))
             {
-                throw new InvalidOperationException(string.Format("The writeable data providers '{0}' does not support the interface '{1}'.", providerName, typeof(T)));
+                throw new InvalidOperationException($"The writeable data providers '{providerName}' does not support the interface '{typeof(T)}'.");
             }
 
 
@@ -423,7 +421,7 @@ namespace Composite.Data
             }
 
 
-            if (suppressEventing == false)
+            if (!suppressEventing)
             {
                 foreach (T data in dataset)
                 {
@@ -433,12 +431,9 @@ namespace Composite.Data
 
             List<T> addedDataset = DataProviderPluginFacade.AddNew<T>(providerName, dataset);
 
-            if (DataCachingFacade.IsTypeCacheable(typeof(T)))
-            {
-                DataCachingFacade.ClearCache(typeof(T));
-            }
+            DataCachingFacade.ClearCache(typeof(T), DataScopeManager.MapByType(typeof(T)), LocalizationScopeManager.MapByType(typeof(T)));
 
-            if (suppressEventing == false)
+            if (!suppressEventing)
             {
                 foreach (T data in addedDataset)
                 {
@@ -477,19 +472,17 @@ namespace Composite.Data
 
             if (cascadeDeleteType != CascadeDeleteType.Disable)
             {
-                foreach (IData element in dataset)
+                foreach (IData data in dataset)
                 {
-                    Verify.ArgumentCondition(element != null, nameof(dataset), "dataset may not contain nulls");
+                    Verify.ArgumentCondition(data != null, nameof(dataset), "dataset may not contain nulls");
 
-                    if (!element.IsDataReferred()) continue;
-
-                    Type interfaceType = element.DataSourceId.InterfaceType;
+                    Type interfaceType = data.DataSourceId.InterfaceType;
 
                     // Not deleting references if the data is versioned and not all of the 
                     // versions of the element are to be deleted
-                    if (element is IVersioned)
+                    if (data is IVersioned && interfaceType.GetKeyProperties().Count == 1)
                     {
-                        var key = element.GetUniqueKey();
+                        var key = data.GetUniqueKey();
                         var versions = DataFacade.TryGetDataVersionsByUniqueKey(interfaceType, key).ToList();
 
                         if (versions.Count > 1 
@@ -500,29 +493,36 @@ namespace Composite.Data
                         }
                     }
 
-                    Verify.IsTrue(cascadeDeleteType != CascadeDeleteType.Disallow, "One of the given datas is referenced by one or more datas");
-
-                    element.RemoveOptionalReferences();
-
-                    IEnumerable<IData> referees;
-                    using (new DataScope(element.DataSourceId.DataScopeIdentifier))
+                    using (new DataScope(data.DataSourceId.DataScopeIdentifier))
                     {
-                        // For some weird reason, this line does not work.... /MRJ
-                        // IEnumerable<IData> referees = dataset.GetRefereesRecursively();
-                        referees = element.GetReferees(referencesFromAllScopes)
-                                           .Where(reference => !dataPendingDeletion.Contains(reference.DataSourceId))
-                                           .Evaluate();
-                    }
+                        var allReferences = DataReferenceFacade.GetRefereesInt(data, referencesFromAllScopes, (a, b) => true);
 
-                    foreach (IData referee in referees)
-                    {
-                        if (!referee.CascadeDeleteAllowed(interfaceType))
+                        if (allReferences.Count == 0) continue;
+
+                        Verify.IsTrue(cascadeDeleteType != CascadeDeleteType.Disallow, "One of the given datas is referenced by one or more datas");
+
+                        var optionalReferences = allReferences.Where(kvp => kvp.Item2.IsOptionalReference);
+                        var notOptionalReferences = allReferences.Where(kvp => !kvp.Item2.IsOptionalReference 
+                            && !dataPendingDeletion.Contains(kvp.Item1.DataSourceId)).Evaluate();
+
+                        foreach (var reference in optionalReferences)
                         {
-                            throw new InvalidOperationException("One of the given datas is referenced by one or more datas that does not allow cascade delete");
+                            var referee = reference.Item1;
+                            reference.Item2.SourcePropertyInfo.SetValue(referee, null, null);
+                            DataFacade.Update(referee, false, true, false);
                         }
-                    }
 
-                    Delete<IData>(referees, suppressEventing, cascadeDeleteType, referencesFromAllScopes);
+                        foreach (var refereeInfo in notOptionalReferences)
+                        {
+                            if (!refereeInfo.Item2.AllowCascadeDeletes)
+                            {
+                                throw new InvalidOperationException("One of the given data items is referenced by one or more data items that do not allow cascade delete.");
+                            }
+                        }
+
+                        var toDelete = notOptionalReferences.Select(_ => _.Item1);
+                        Delete<IData>(toDelete, suppressEventing, cascadeDeleteType, referencesFromAllScopes);
+                    }
                 }
             }
 
@@ -537,7 +537,7 @@ namespace Composite.Data
 
                     if (DataCachingFacade.IsTypeCacheable(interfaceTypePair.Key))
                     {
-                        DataCachingFacade.ClearCache(interfaceTypePair.Key, interfaceTypePair.Value.First().DataSourceId.DataScopeIdentifier);
+                        DataCachingFacade.RemoveFromCache(interfaceTypePair.Value);
                     }
                 }
             }

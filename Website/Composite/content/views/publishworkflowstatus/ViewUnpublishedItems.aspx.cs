@@ -7,7 +7,7 @@ public partial class ViewUnpublishedItems : System.Web.UI.Page
     {
         if (!this.IsPostBack)
         {
-            headerRepeater.DataSource = VersionedDataHelper.GetExtraPropertiesNames();
+            headerRepeater.DataSource = VersionedDataHelper.GetExtraPropertyNames();
             headerRepeater.DataBind();
         }
 

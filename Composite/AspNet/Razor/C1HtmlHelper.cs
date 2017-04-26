@@ -407,6 +407,7 @@ namespace Composite.AspNet.Razor
         /// </summary>
         /// <param name="name">Function name.</param>
         /// <returns></returns>
+        [Obsolete("Use Function method directly on the Razor page")]
         public IHtmlString Function(string name)
         {
             return Function(name, null);
@@ -418,6 +419,7 @@ namespace Composite.AspNet.Razor
         /// <param name="name">Function name.</param>
         /// <param name="parameters">The parameters.</param>
         /// <returns></returns>
+        [Obsolete("Use Function method directly on the Razor page")]
         public IHtmlString Function(string name, object parameters)
         {
             return Function(name, Functions.ObjectToDictionary(parameters));
@@ -429,6 +431,7 @@ namespace Composite.AspNet.Razor
         /// <param name="name">Function name.</param>
         /// <param name="parameters">The parameters.</param>
         /// <returns></returns>
+        [Obsolete("Use Function method directly on the Razor page")]
         public IHtmlString Function(string name, IDictionary<string, object> parameters)
         {
             return Function(name, parameters, new FunctionContextContainer());

@@ -122,12 +122,12 @@ namespace Composite.Plugins.Search.Endpoint
             };
 
             searchQuery.FilterByUser(UserSettings.Username);
-            searchQuery.AddDefaultFieldFacet(DefaultDocumentFieldNames.Source);
+            searchQuery.AddFieldFacet(DocumentFieldNames.Source);
 
             var result = await _searchProvider.SearchAsync(searchQuery);
 
-            var documents = result.Documents.Evaluate();
-            if (!documents.Any())
+            var items = result.Items.Evaluate();
+            if (!items.Any())
             {
                 return new ConsoleSearchResult
                 {
@@ -137,9 +137,11 @@ namespace Composite.Plugins.Search.Endpoint
                 };
             }
 
+            var documents = items.Select(m => m.Document);
+
             HashSet<string> dataSourceNames;
             Facet[] dsFacets;
-            if (result.Facets != null && result.Facets.TryGetValue(DefaultDocumentFieldNames.Source, out dsFacets))
+            if (result.Facets != null && result.Facets.TryGetValue(DocumentFieldNames.Source, out dsFacets))
             {
                 dataSourceNames = new HashSet<string>(dsFacets.Select(v => v.Value));
             }
@@ -185,7 +187,8 @@ namespace Composite.Plugins.Search.Endpoint
 
             return (from selection in query.Selections
                     where selection.Values.Length > 0
-                    let facetField = facetFields.First(ff => ff.Name == selection.FieldName)
+                    let facetField = facetFields.Where(ff => ff.Name == selection.FieldName)
+                                     .FirstOrException($"Facet field '{selection.FieldName}' not found")
                     select new ConsoleSearchResultFacetField
                     {
                         FieldName = MakeFieldNameJsFriendly(selection.FieldName),

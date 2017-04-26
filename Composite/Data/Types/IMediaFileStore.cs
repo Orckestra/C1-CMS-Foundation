@@ -19,7 +19,6 @@
         /// <exclude />
         string Description { get; }
 
-
         /// <exclude />
         bool IsReadOnly { get; }
 

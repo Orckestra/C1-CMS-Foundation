@@ -51,22 +51,30 @@ namespace Composite.C1Console.Trees
         {
             using (_resourceLocker.Locker)
             {
+                var resources = _resourceLocker.Resources;
+
                 if (!GlobalInitializerFacade.IsReinitializingTheSystem)
                 {
-                    DataEventSystemFacade.SubscribeToDataAfterAdd<IDataItemTreeAttachmentPoint>(OnUpdateTreeAttachmentPoints, true);
-                    DataEventSystemFacade.SubscribeToDataDeleted<IDataItemTreeAttachmentPoint>(OnUpdateTreeAttachmentPoints, true);
-                    DataEventSystemFacade.SubscribeToStoreChanged<IDataItemTreeAttachmentPoint>(OnTreeAttachmentPointsStoreChange, true);
+                    DataEvents<IDataItemTreeAttachmentPoint>.OnAfterAdd += OnUpdateTreeAttachmentPoints;
+                    DataEvents<IDataItemTreeAttachmentPoint>.OnDeleted += OnUpdateTreeAttachmentPoints;
+                    DataEvents<IDataItemTreeAttachmentPoint>.OnStoreChanged += OnTreeAttachmentPointsStoreChange;
 
                     GeneratedTypesFacade.SubscribeToUpdateTypeEvent(OnDataTypeChanged);
 
-                    var treeAuxiliaryAncestorProvider = new C1Console.Trees.TreeAuxiliaryAncestorProvider();
-                    AuxiliarySecurityAncestorFacade.AddAuxiliaryAncestorProvider<TreeSimpleElementEntityToken>(treeAuxiliaryAncestorProvider, true);
-                    AuxiliarySecurityAncestorFacade.AddAuxiliaryAncestorProvider<TreeFunctionElementGeneratorEntityToken>(treeAuxiliaryAncestorProvider, true);
-                    AuxiliarySecurityAncestorFacade.AddAuxiliaryAncestorProvider<TreeDataFieldGroupingElementEntityToken>(treeAuxiliaryAncestorProvider, true);
-                    AuxiliarySecurityAncestorFacade.AddAuxiliaryAncestorProvider<DataEntityToken>(treeAuxiliaryAncestorProvider, true);
-                    AuxiliarySecurityAncestorFacade.AddAuxiliaryAncestorProvider<TreePerspectiveEntityToken>(treeAuxiliaryAncestorProvider, true);
+                    var treeAuxiliaryAncestorProvider = new TreeAuxiliaryAncestorProvider();
+                    var entityTokenTypes = new[]
+                    {
+                        typeof (TreeSimpleElementEntityToken),
+                        typeof (TreeFunctionElementGeneratorEntityToken),
+                        typeof (TreeDataFieldGroupingElementEntityToken),
+                        typeof (DataEntityToken),
+                        typeof (TreePerspectiveEntityToken)
+                    };
 
-                    _resourceLocker.Resources.PersistentAttachmentPoints = new Dictionary<string, List<IAttachmentPoint>>();
+                    entityTokenTypes.ForEach(type => AuxiliarySecurityAncestorFacade
+                            .AddAuxiliaryAncestorProvider(type, treeAuxiliaryAncestorProvider, true));
+
+                    resources.PersistentAttachmentPoints = new Dictionary<string, List<IAttachmentPoint>>();
 
                     LoadAllTrees();
                     InitializeTreeAttachmentPoints();
@@ -79,10 +87,9 @@ namespace Composite.C1Console.Trees
                     fileWatcher.Renamed += OnReloadTrees;
                     fileWatcher.EnableRaisingEvents = true;
 
-                    _resourceLocker.Resources.FileSystemWatcher = fileWatcher;
+                    resources.FileSystemWatcher = fileWatcher;
 
-
-                    _resourceLocker.Resources.RootEntityToken = ElementFacade.GetRootsWithNoSecurity().First().ElementHandle.EntityToken;
+                    resources.RootEntityToken = ElementFacade.GetRootsWithNoSecurity().First().ElementHandle.EntityToken;
                 }
             }
         }
@@ -267,8 +274,8 @@ namespace Composite.C1Console.Trees
                             var sb = new StringBuilder();
                             foreach (ValidationError validationError in tree.BuildResult.ValidationErrors)
                             {
-                                sb.AppendLine(string.Format("{0} at {1}", validationError.Message, validationError.XPath));
-                                Log.LogError("TreeFacade", string.Format("{0} at {1} in {2}", validationError.Message, validationError.XPath, filename));
+                                sb.AppendLine($"{validationError.Message} at {validationError.XPath}");
+                                Log.LogError("TreeFacade", $"{validationError.Message} at {validationError.XPath} in {filename}");
                             }
 
                             //Tree errorTree = CreateErrorTree(treeId, sb.ToString());
@@ -494,7 +501,7 @@ namespace Composite.C1Console.Trees
 
         /// <summary>
         /// This will add a attachment point until the system flushes.
-        /// This can be used by element provider implementors to attach trees to their exising trees.
+        /// This can be used by element provider implementors to attach trees to their existing trees.
         /// </summary>
         /// <param name="treeId"></param>
         /// <param name="entityToken"></param>
@@ -620,12 +627,12 @@ namespace Composite.C1Console.Trees
             PropertyInfo propertyInfo = interfaceType.GetKeyProperties()[0];
             string keyValue = ValueTypeConverter.Convert<string>(propertyInfo.GetValue(dataEventArgs.Data, null));
 
-            IEnumerable<IDataItemTreeAttachmentPoint> attachmentPoints =
-                from d in DataFacade.GetData<IDataItemTreeAttachmentPoint>()
-                where
-                    d.InterfaceType == TypeManager.SerializeType(interfaceType) &&
-                    d.KeyValue == keyValue
-                select d;
+            var serializedInterfaceType = TypeManager.SerializeType(interfaceType);
+
+            var attachmentPoints = 
+                DataFacade.GetData<IDataItemTreeAttachmentPoint>()
+                          .Where(ap => ap.KeyValue == keyValue
+                                 && ap.InterfaceType == serializedInterfaceType);
 
             DataFacade.Delete<IDataItemTreeAttachmentPoint>(attachmentPoints);
         }

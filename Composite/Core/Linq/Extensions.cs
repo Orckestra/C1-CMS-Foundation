@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -116,7 +116,7 @@ namespace Composite.Core.Linq
         /// <param name="exceptionOnMultipleResults">Exception format for multiple rows found</param>
         /// <param name="formatArgs">Format arguments</param>
         /// <returns></returns>
-        [StringFormatMethod("formatArgs")]
+        [StringFormatMethod("exceptionOnMultipleResults")]
         public static T SingleOrDefaultOrException<T>(this IEnumerable<T> query, string exceptionOnMultipleResults, params object[] formatArgs)
         {
             var result = query.ToList();

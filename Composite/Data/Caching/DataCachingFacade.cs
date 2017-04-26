@@ -1,20 +1,20 @@
-using System;
-using System.Collections;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using Composite.Core.Linq;
 using Composite.Data.DynamicTypes;
 using Composite.Data.Foundation;
 using Composite.Data.Foundation.PluginFacades;
 using Composite.C1Console.Events;
 using Composite.Core.Configuration;
 
+using ScopeKey = System.Tuple<Composite.Data.DataScopeIdentifier, System.Globalization.CultureInfo>;
+
 using TypeData = System.Collections.Concurrent.ConcurrentDictionary<
-    Composite.Data.DataScopeIdentifier,
-    System.Collections.Concurrent.ConcurrentDictionary<System.Globalization.CultureInfo, Composite.Data.Caching.DataCachingFacade.CachedTable>>;
+    System.Tuple<Composite.Data.DataScopeIdentifier, System.Globalization.CultureInfo>,
+    Composite.Data.Caching.CachedTable>;
 
 namespace Composite.Data.Caching
 {
@@ -26,10 +26,10 @@ namespace Composite.Data.Caching
         private static readonly string CacheName = "DataAccess";
 
         private static readonly ConcurrentDictionary<Type, TypeData> _cachedData = new ConcurrentDictionary<Type, TypeData>();
+        private static readonly ConcurrentDictionary<Type, byte> _disabledTypes = new ConcurrentDictionary<Type, byte>();
 
         private static bool _isEnabled = true;
         private static int _maximumSize = -1;
-        private static Hashtable _disabledTypes = new Hashtable();
         private static MethodInfo _queryableTakeMathodInfo;
 
 
@@ -41,36 +41,12 @@ namespace Composite.Data.Caching
             {
                 if (!args.DataEventsFired)
                 {
-                    ClearCache(args.DataType, args.PublicationScope);
+                    ClearCache(args.DataType, args.PublicationScope, args.Locale);
                 }
             };
         }
 
 
-        /// <summary>
-        /// Cached table
-        /// </summary>
-        public class CachedTable
-        {
-            /// <summary>
-            /// Initializes a new instance of the <see cref="CachedTable"/> class.
-            /// </summary>
-            /// <param name="queryable">The queryable.</param>
-            public CachedTable(IQueryable queryable)
-            {
-                Queryable = queryable;
-            }
-
-            /// <summary>
-            /// The queryable data
-            /// </summary>
-            public IQueryable Queryable;
-
-            /// <summary>
-            /// Row by key table
-            /// </summary>
-            public Dictionary<object, IEnumerable<IData>> RowsByKey;
-        }
 
         /// <summary>
         /// Gets a value indicating if data caching is enabled
@@ -114,16 +90,15 @@ namespace Composite.Data.Caching
         {
             Verify.That(_isEnabled, "The cache is disabled.");
 
-            DataScopeIdentifier dataScopeIdentifier = DataScopeManager.MapByType(typeof(T));
-            CultureInfo localizationScope = LocalizationScopeManager.MapByType(typeof(T));
+            var dataScopeIdentifier = DataScopeManager.MapByType(typeof(T));
+            var localizationScope = LocalizationScopeManager.MapByType(typeof(T));
 
             var typeData = _cachedData.GetOrAdd(typeof(T), t => new TypeData());
 
-            var dataScopeData = typeData.GetOrAdd(dataScopeIdentifier, scope => new ConcurrentDictionary<CultureInfo, CachedTable>());
-
+            var cacheKey = new Tuple<DataScopeIdentifier, CultureInfo>(dataScopeIdentifier, localizationScope);
 
             CachedTable cachedTable;
-            if (!dataScopeData.TryGetValue(localizationScope, out cachedTable))
+            if (!typeData.TryGetValue(cacheKey, out cachedTable))
             {
                 IQueryable<T> wholeTable = getQueryFunc();
 
@@ -136,22 +111,21 @@ namespace Composite.Data.Caching
 
                 if(_maximumSize != -1)
                 {
-                    List<IData> cuttedTable = TakeElements(wholeTable, _maximumSize + 1);
+                    List<T> cuttedTable = TakeElements(wholeTable, _maximumSize + 1).Cast<T>().ToList();
                     if(cuttedTable.Count > _maximumSize)
                     {
                         DisableCachingForType(typeof (T));
 
                         return Verify.ResultNotNull(wholeTable);
                     }
-                    cachedTable = new CachedTable(cuttedTable.Cast<T>().AsQueryable());
-
+                    cachedTable = new CachedTable<T>(cuttedTable);
                 }
                 else
                 {
-                    cachedTable = new CachedTable(wholeTable.Evaluate().AsQueryable());
+                    cachedTable = new CachedTable<T>(wholeTable.ToList());
                 }
 
-                dataScopeData[localizationScope] = cachedTable;
+                typeData[cacheKey] = cachedTable;
             }
 
             var typedData = cachedTable.Queryable as IQueryable<T>;
@@ -198,9 +172,20 @@ namespace Composite.Data.Caching
         /// <param name="publicationScope">The publication scope to flush</param>
         public static void ClearCache(Type interfaceType, PublicationScope publicationScope)
         {
-            ClearCache(interfaceType,DataScopeIdentifier.FromPublicationScope(publicationScope));
+            ClearCache(interfaceType, DataScopeIdentifier.FromPublicationScope(publicationScope));
         }
 
+
+        /// <summary>
+        /// Flush cached data for a data type in the specified data scope.
+        /// </summary>
+        /// <param name="interfaceType">The type of data to flush from the cache</param>
+        /// <param name="publicationScope">The publication scope to flush</param>
+        /// <param name="localizationScope">The localization scope to flush</param>
+        public static void ClearCache(Type interfaceType, PublicationScope publicationScope, CultureInfo localizationScope)
+        {
+            ClearCache(interfaceType, DataScopeIdentifier.FromPublicationScope(publicationScope), localizationScope);
+        }
 
         /// <summary>
         /// Flush cached data for a data type in the specified data scope.
@@ -212,15 +197,70 @@ namespace Composite.Data.Caching
             TypeData typeData;
             if(!_cachedData.TryGetValue(interfaceType, out typeData)) return;
 
-            if (dataScopeIdentifier == null)
-            {
-                dataScopeIdentifier = DataScopeManager.MapByType(interfaceType);
-            }
+            dataScopeIdentifier = dataScopeIdentifier ?? DataScopeManager.MapByType(interfaceType);
 
-            ConcurrentDictionary<CultureInfo, CachedTable> data;
-            typeData.TryRemove(dataScopeIdentifier, out data);
+            var toRemove = typeData.Keys.Where(key => key.Item1 == dataScopeIdentifier).ToList();
+
+            foreach (var key in toRemove)
+            {
+                CachedTable value;
+                typeData.TryRemove(key, out value);
+            }
         }
 
+
+        /// <summary>
+        /// Removes the specified data collection from the cache. 
+        /// The items should belong to the same interface type and the same data scope.
+        /// </summary>
+        /// <param name="dataset"></param>
+        internal static void RemoveFromCache(IReadOnlyCollection<IData> dataset)
+        {
+            if (dataset.Count == 0) return;
+
+            var groupedData = from data in dataset
+                let ds = data.DataSourceId
+                group data by new
+                {
+                    ds.InterfaceType,
+                    ds.DataScopeIdentifier,
+                    ds.LocaleScope
+                };
+
+            foreach (var group in groupedData)
+            {
+                TypeData typeData;
+                if (!_cachedData.TryGetValue(group.Key.InterfaceType, out typeData))
+                {
+                    continue;
+                }
+
+                var scopeKey = new ScopeKey(group.Key.DataScopeIdentifier, group.Key.LocaleScope);
+                CachedTable cachedTable;
+                if (!typeData.TryGetValue(scopeKey, out cachedTable))
+                {
+                    continue;
+                }
+
+                cachedTable.Remove(group);
+            }
+
+            // TODO: clear cache on transaction rollback?
+        }
+
+        internal static void ClearCache(Type interfaceType, DataScopeIdentifier dataScopeIdentifier, CultureInfo localizationScope)
+        {
+            TypeData typeData;
+            if (!_cachedData.TryGetValue(interfaceType, out typeData)) return;
+
+            dataScopeIdentifier = dataScopeIdentifier ?? DataScopeManager.MapByType(interfaceType);
+            localizationScope = localizationScope ?? LocalizationScopeManager.MapByType(interfaceType);
+
+            var key = new Tuple<DataScopeIdentifier, CultureInfo>(dataScopeIdentifier, localizationScope);
+
+            CachedTable value;
+            typeData.TryRemove(key, out value);
+        }
 
 
         /// <summary>
@@ -229,7 +269,7 @@ namespace Composite.Data.Caching
         internal static void Flush()
         {
             _cachedData.Clear();
-            _disabledTypes = new Hashtable();
+            _disabledTypes.Clear();
         }
 
 
@@ -243,13 +283,13 @@ namespace Composite.Data.Caching
 
 
         
-        private static List<IData> TakeElements(IQueryable queryable, int count)
+        private static IQueryable TakeElements(IQueryable queryable, int count)
         {
             MethodInfo method = GetQueryableTakeMethodInfo(queryable.ElementType);
 
             var resultTable = (IQueryable) method.Invoke(null, new object[] {queryable, count});
 
-            return resultTable.ToDataList();
+            return resultTable;
         }
 
         private static MethodInfo GetQueryableTakeMethodInfo(Type type)
@@ -272,13 +312,7 @@ namespace Composite.Data.Caching
 
         private static void DisableCachingForType(Type type)
         {
-            lock (_disabledTypes)
-            {
-                if (!_disabledTypes.ContainsKey(type))
-                {
-                    _disabledTypes.Add(type, string.Empty);
-                }
-            }
+            _disabledTypes.TryAdd(type, 0);
 
             TypeData data;
             _cachedData.TryRemove(type, out data);

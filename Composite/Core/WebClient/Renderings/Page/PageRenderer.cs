@@ -85,7 +85,7 @@ namespace Composite.Core.WebClient.Renderings.Page
         /// <exclude />
         public static XhtmlDocument ParsePlaceholderContent(IPagePlaceholderContent placeholderContent)
         {
-            if (placeholderContent == null || string.IsNullOrEmpty(placeholderContent.Content))
+            if (string.IsNullOrEmpty(placeholderContent?.Content))
             {
                 return new XhtmlDocument();
             }
@@ -137,7 +137,7 @@ namespace Composite.Core.WebClient.Renderings.Page
                             }
                             catch (Exception ex)
                             {
-                                throw new InvalidOperationException(string.Format("Failed to set id '{0}' on element", placeHolderId), ex);
+                                throw new InvalidOperationException($"Failed to set id '{placeHolderId}' on element", ex);
                             }
                         }
                     }
@@ -292,17 +292,14 @@ namespace Composite.Core.WebClient.Renderings.Page
 
         private static string AttributeValueLowered(this XElement element, string attributeName)
         {
-            string v = (string)element.Attribute(attributeName);
-            if (v != null) v = v.ToLowerInvariant();
-            return v;
+            string value = (string)element.Attribute(attributeName);
+            return value?.ToLowerInvariant();
         }
 
         private static int GetHeadNodePriority(XNode headNode)
         {
-            if (headNode is XElement)
+            if (headNode is XElement headElement)
             {
-                XElement headElement = (XElement)headNode;
-
                 if (headElement.Name.LocalName == "title") return 0;
                 if (headElement.Name.LocalName == "meta")
                 {
@@ -358,8 +355,10 @@ namespace Composite.Core.WebClient.Renderings.Page
                     {
                         var editPreview = PageRenderer.RenderingReason == RenderingReason.PreviewUnsavedChanges;
 
+                        string url = PageUrls.BuildUrl(page) ?? PageUrls.BuildUrl(page, UrlKind.Internal);
+
                         var pageUrl = string.Format("{0}{1}{2}",
-                            PageUrls.BuildUrl(page, UrlKind.Public).Replace("/c1mode(unpublished)", "").Replace("/c1mode(relative)",""),
+                            url.Replace("/c1mode(unpublished)", "").Replace("/c1mode(relative)",""),
                             editPreview ? "/" + page.UrlTitle : C1PageRoute.GetPathInfo(),
                             editPreview ? "" : HttpContext.Current.Request.Url.Query);
 
@@ -435,17 +434,15 @@ namespace Composite.Core.WebClient.Renderings.Page
 
             foreach (XElement elem in document.Descendants(RenderingElementNames.PageMetaTagDescription).ToList())
             {
-                if (string.IsNullOrEmpty(page.Description) == false)
-                {
-                    elem.ReplaceWith(
-                        new XElement(Namespaces.Xhtml + "meta",
-                            new XAttribute("name", "description"),
-                            new XAttribute("content", page.Description)));
-                }
-                else
+                if (string.IsNullOrEmpty(page.Description))
                 {
                     elem.Remove();
+                    continue;
                 }
+
+                elem.ReplaceWith(new XElement(Namespaces.Xhtml + "meta",
+                                    new XAttribute("name", "description"),
+                                    new XAttribute("content", page.Description)));
             }
 
         }
@@ -553,14 +550,14 @@ namespace Composite.Core.WebClient.Renderings.Page
 
         private static IEnumerable<XElement> GetXElements(object source)
         {
-            if (source is XElement)
+            if (source is XElement element)
             {
-                yield return (XElement)source;
+                yield return element;
             }
 
-            if (source is IEnumerable<XNode>)
+            if (source is IEnumerable<XNode> nodes)
             {
-                foreach (XElement xElement in ((IEnumerable<XNode>)source).OfType<XElement>())
+                foreach (var xElement in nodes.OfType<XElement>())
                 {
                     yield return xElement;
                 }
@@ -612,7 +609,7 @@ namespace Composite.Core.WebClient.Renderings.Page
         /// <exclude />
         public static bool DisableAspNetPostback(Control c)
         {
-            bool formDisabled = false;
+            bool formDisabled;
             DisableAspNetPostback(c, out formDisabled);
             return formDisabled;
         }
@@ -622,9 +619,9 @@ namespace Composite.Core.WebClient.Renderings.Page
         {
             formDisabled = false;
 
-            if (c is HtmlForm)
+            if (c is HtmlForm form)
             {
-                ((HtmlForm)c).Attributes.Add("onsubmit", "alert('Postback disabled in preview mode'); return false;");
+                form.Attributes.Add("onsubmit", "alert('Postback disabled in preview mode'); return false;");
                 formDisabled = true;
                 return;
             }

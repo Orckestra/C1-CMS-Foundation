@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,7 +26,7 @@ using Composite.Data.Types;
 
 namespace Composite.Workflows.Plugins.Elements.ElementProviders.AllFunctionsElementProvider
 {
-    [AllowPersistingWorkflow(WorkflowPersistingType.Shutdown)]
+    [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
     public sealed partial class FunctionTesterWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         public FunctionTesterWorkflow()

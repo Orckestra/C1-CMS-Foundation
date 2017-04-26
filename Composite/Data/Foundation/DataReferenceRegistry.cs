@@ -26,12 +26,13 @@ namespace Composite.Data.Foundation
 
 
 
-        public static List<Type> GetRefereeTypes(Type referencedType)
+        public static IReadOnlyCollection<Type> GetRefereeTypes(Type referencedType)
         {
             Verify.ArgumentNotNull(referencedType, "referencedType");
 
             List<Type> refereeTypes = new List<Type>();
 
+            // TODO: rewrite using concurrent dictionaries
             using (GlobalInitializerFacade.CoreIsInitializedScope)
             {
                 foreach (var key in _referencedToReferees.Keys)
@@ -49,10 +50,10 @@ namespace Composite.Data.Foundation
         [Obsolete("Use 'GetForeignKeyProperties' instead")]
         public static List<ForeignPropertyInfo> GetForeignKeyPropertyInfos(Type refereeType)
         {
-            return GetForeignKeyProperties(refereeType);
+            return GetForeignKeyProperties(refereeType).ToList();
         }
 
-        public static List<ForeignPropertyInfo> GetForeignKeyProperties(Type refereeType)
+        public static IReadOnlyCollection<ForeignPropertyInfo> GetForeignKeyProperties(Type refereeType)
         {
             Verify.ArgumentNotNull(refereeType, "refereeType");
 
@@ -62,11 +63,11 @@ namespace Composite.Data.Foundation
             {
                 if (!_foreignKeyProperties.TryGetValue(refereeType, out foreignKeyProperties))
                 {
-                    return new List<ForeignPropertyInfo>();
+                    return Array.Empty<ForeignPropertyInfo>();
                 }
             }
 
-            return new List<ForeignPropertyInfo>(foreignKeyProperties);
+            return foreignKeyProperties;
         }
 
 

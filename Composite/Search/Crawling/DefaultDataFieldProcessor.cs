@@ -19,17 +19,10 @@ namespace Composite.Search.Crawling
         /// <exclude />
         public virtual IEnumerable<string> GetTextParts(object value)
         {
-            var text = value as string;
-            if (text == null) return null;
-
-            if (text.StartsWith("<html"))
+            if (value is string str)
             {
-                var crawler = new XhtmlCrawlingHelper();
-                crawler.CrawlXhtml(text);
-                return crawler.TextParts;
+                yield return str;
             }
-            
-            return new[] { text };
         }
 
         /// <exclude />
@@ -53,13 +46,13 @@ namespace Composite.Search.Crawling
         {
             if (pi.Name == nameof(IPage.Description) && pi.PropertyType == typeof(string))
             {
-                return DefaultDocumentFieldNames.Description;
+                return DocumentFieldNames.Description;
             }
 
-            if ((pi.Name == nameof(ICreationHistory.CreationDate) || pi.Name == nameof(IMediaFile.CreationTime))
+            if ((pi.Name == nameof(IChangeHistory.ChangeDate) || pi.Name == nameof(IMediaFile.CreationTime))
                 && (pi.PropertyType == typeof(DateTime) || pi.PropertyType == typeof(DateTime?)))
             {
-                return DefaultDocumentFieldNames.CreationTime;
+                return DocumentFieldNames.LastUpdated;
             }
 
             return $"{pi.ReflectedType.Name}.{pi.Name}";
@@ -132,13 +125,13 @@ namespace Composite.Search.Crawling
         public virtual string GetFieldLabel(PropertyInfo propertyInfo)
         {
             var fieldName = GetDocumentFieldName(propertyInfo);
-            if (fieldName == DefaultDocumentFieldNames.Description)
+            if (fieldName == DocumentFieldNames.Description)
             {
                 return Texts.FieldNames_Description;
             }
 
-            if (fieldName == DefaultDocumentFieldNames.CreationTime) return Texts.FieldNames_CreationDate;
-            if (propertyInfo.Name == nameof(ICreationHistory.CreatedBy)) return Texts.FieldNames_CreatedBy;
+            if (fieldName == DocumentFieldNames.LastUpdated) return Texts.FieldNames_LastUpdated;
+            if (propertyInfo.Name == nameof(IChangeHistory.ChangedBy)) return Texts.FieldNames_UpdatedBy;
             if (propertyInfo.Name == nameof(IMediaFile.MimeType)) return Texts.FieldNames_MimeType;
 
             var frpAttribute = propertyInfo.GetCustomAttribute<FormRenderingProfileAttribute>();

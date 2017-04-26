@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -65,14 +65,13 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             var brokenReferences = new List<IData>();
             foreach (var data in dataToDelete)
             {
-                var references = DataReferenceFacade.GetNotOptionalReferences(data);
+                var references = DataReferenceFacade.GetReferences(data, false, 
+                    (type, fp) => !fp.IsOptionalReference 
+                                  && type != typeof(IPagePlaceholderContent)
+                                  && fp.SourcePropertyInfo.DeclaringType != typeof(IPageRelatedData));
+
                 foreach (var reference in references)
                 {
-                    if (reference is IPagePlaceholderContent)
-                    {
-                        continue;
-                    }
-
                     DataSourceId dataSourceId = reference.DataSourceId;
                     if (dataToDelete.Any(elem => elem.DataSourceId.Equals(dataSourceId))
                         || brokenReferences.Any(brokenRef => brokenRef.DataSourceId.Equals(dataSourceId)))

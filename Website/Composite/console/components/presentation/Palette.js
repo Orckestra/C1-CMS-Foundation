@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+﻿import React, { PropTypes } from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import Immutable from 'immutable';
 import styled from 'styled-components';
@@ -12,6 +12,9 @@ import Icon from 'console/components/presentation/Icon.js';
 
 const itemOpenCloseTime = '200ms';
 
+const PaletteList = styled.div`
+	margin-right: -10px;
+`;
 export const ItemGroup = styled.div`
 	overflow: hidden;
 `;
@@ -123,7 +126,7 @@ function resolveMediaURI(uri) {
 }
 
 const Palette = props => {
-	return <div>
+	return <PaletteList>
 		{props.itemGroups.size === 0 ?
 			<NoComponentsLabel>
 				<NoComponentsIcon/><br/>
@@ -188,7 +191,7 @@ const Palette = props => {
 				}).toArray()}
 			</ItemGroup>
 		).toArray()}
-	</div>;
+	</PaletteList>;
 };
 
 Palette.propTypes = {

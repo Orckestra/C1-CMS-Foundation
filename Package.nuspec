@@ -6,29 +6,31 @@
     <version>$version$</version>
     <authors>Orckestra A/S</authors>
     <owners>Orckestra A/S</owners>
-    <licenseUrl>http://cms.orckestra.com/MPL11</licenseUrl>
+    <licenseUrl>https://c1.orckestra.com/MPL11</licenseUrl>
     <projectUrl>https://github.com/Orckestra/CMS-Foundation</projectUrl>
     <!--iconUrl></iconUrl-->
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>Contains dll-s distributed with C1 CMS.</description>
     <releaseNotes></releaseNotes>
     <copyright>Copyright 2017</copyright>
-    <tags>C1CMS</tags>
+    <tags>C1CMS OrckestraCMS CompositeC1 cms</tags>
     <dependencies>
       <dependency id="Microsoft.AspNet.Razor" version="3.2.3" />
       <dependency id="Microsoft.AspNet.WebPages" version="3.2.3" />
-      <dependency id="Microsoft.Extensions.DependencyInjection" version="1.1.0" />
-      <dependency id="Microsoft.Extensions.DependencyInjection.Abstractions" version="1.1.0" />
       <dependency id="Microsoft.Web.Infrastructure" version="1.0.0.0"/>
     </dependencies>
   </metadata>
   <files>
-    <file src="Bin\Composite.dll" target="lib\Composite.dll" />
-    <file src="Bin\Composite.Workflows.dll" target="lib\Composite.Workflows.dll" />
-    <file src="Bin\Microsoft.Practices.EnterpriseLibrary.Common.dll" target="lib\Microsoft.Practices.EnterpriseLibrary.Common.dll" />
-    <file src="Bin\Microsoft.Practices.EnterpriseLibrary.Logging.dll" target="lib\Microsoft.Practices.EnterpriseLibrary.Logging.dll" />
-    <file src="Bin\Microsoft.Practices.EnterpriseLibrary.Validation.dll" target="lib\Microsoft.Practices.EnterpriseLibrary.Validation.dll" />
-    <file src="Bin\Microsoft.Practices.ObjectBuilder.dll" target="lib\Microsoft.Practices.ObjectBuilder.dll" />
-    <file src="Bin\TidyNet.dll" target="lib\TidyNet.dll" />
+    <file src="Install.ps1" target="tools\" />
+    <file src="Bin\Composite.dll" target="lib\net461\" />
+    <file src="Bin\Composite.Workflows.dll" target="lib\net461\" />
+    <file src="Bin\Microsoft.Practices.EnterpriseLibrary.Common.dll" target="lib\net461\" />
+    <file src="Bin\Microsoft.Practices.EnterpriseLibrary.Logging.dll" target="lib\net461\" />
+    <file src="Bin\Microsoft.Practices.EnterpriseLibrary.Validation.dll" target="lib\net461\" />
+    <file src="Bin\Microsoft.Practices.ObjectBuilder.dll" target="lib\net461\" />
+    <file src="Bin\TidyNet.dll" target="lib\net461\" />
+	<!-- Not referencing Microsoft.Extensions.DependencyInjection via dependencies as they pull 50+ NuGet packages from .NET Core -->
+	<file src="packages\Microsoft.Extensions.DependencyInjection.1.1.0\lib\netstandard1.1\Microsoft.Extensions.DependencyInjection.dll" target="lib\net461\" />
+	<file src="packages\Microsoft.Extensions.DependencyInjection.Abstractions.1.1.0\lib\netstandard1.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll" target="lib\net461\" />	
   </files>
 </package>

@@ -13,8 +13,8 @@
 	<string key="FieldNames.Label" value="Label" />
 	<string key="FieldNames.Description" value="Description" />
 	<string key="FieldNames.DataType" value="Data Type" />
-	<string key="FieldNames.CreationDate" value="Creation Date" />
-	<string key="FieldNames.CreatedBy" value="Created By" />
+	<string key="FieldNames.LastUpdated" value="Last Updated" />
+	<string key="FieldNames.UpdatedBy" value="Updated By" />
 	<string key="FieldNames.PublicationStatus" value="Publication Status" />
-	<string key="FieldNames.MimeType" value="MIME Type" />
+	<string key="FieldNames.MimeType" value="Media Type" />
 </strings>

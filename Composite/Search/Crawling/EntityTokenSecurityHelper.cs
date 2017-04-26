@@ -38,24 +38,28 @@ namespace Composite.Search.Crawling
         private static Dictionary<EntityToken, List<GroupAccess>> _allUserGroupAccessDefinitions;
 
         public static void GetUsersAndGroupsWithReadAccess(EntityToken entityToken,
+            out IEnumerable<EntityToken> ancestors,
             out IEnumerable<string> users,
             out IEnumerable<Guid> userGroups)
         {
             var userSet = new HashSet<string>();
             var userGroupSet = new HashSet<Guid>();
+            var ancestorsSet = new HashSet<EntityToken>();
 
             using (ThreadDataManager.EnsureInitialize())
+            using (new DataScope(DataScopeIdentifier.Administrated))
             {
                 CollectUsersAndGroupsRec(entityToken,
-                    GetUserAccessDefinitions(), GetUserGroupAccessDefinitions(), 
+                    GetUserAccessDefinitions(), GetUserGroupAccessDefinitions(),
                     ImmutableHashSet<string>.Empty,
                     ImmutableHashSet<Guid>.Empty,
-                    userSet, 
-                    userGroupSet, 
-                    new HashSet<EntityToken>(),
+                    userSet,
+                    userGroupSet,
+                    ancestorsSet,
                     20);
             }
 
+            ancestors = ancestorsSet;
             users = userSet;
             userGroups = userGroupSet;
         }
@@ -111,7 +115,7 @@ namespace Composite.Search.Crawling
 
             foreach (var parent in parents)
             {
-                if(alreadyVisited.Contains(parent)) return;
+                if(alreadyVisited.Contains(parent)) continue;
 
                 CollectUsersAndGroupsRec(parent, 
                     userAccessDefinitions, groupAccessDefinitions, 

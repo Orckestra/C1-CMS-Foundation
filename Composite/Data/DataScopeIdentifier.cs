@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Diagnostics;
 
 
@@ -58,10 +58,10 @@ namespace Composite.Data
 
             switch (serializedData)
             {
-                case "public":
+                case PublicName:
                     return DataScopeIdentifier.Public;
 
-                case "administrated":
+                case AdministratedName:
                     return DataScopeIdentifier.Administrated;
 
                 default:
@@ -73,7 +73,7 @@ namespace Composite.Data
         /// <exclude />
         public PublicationScope ToPublicationScope()
         {
-            return Name == "public" ? PublicationScope.Published : PublicationScope.Unpublished;
+            return Name == PublicName ? PublicationScope.Published : PublicationScope.Unpublished;
         }
 
 

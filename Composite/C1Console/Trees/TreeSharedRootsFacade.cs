@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Composite.C1Console.Elements;
 using Composite.C1Console.Elements.Foundation;
 using Composite.C1Console.Elements.Foundation.PluginFacades;
-using Composite.C1Console.Elements.Plugins.ElementAttachingProvider;
 using Composite.C1Console.Security;
 using Composite.C1Console.Trees.Foundation;
 using Composite.C1Console.Trees.Foundation.AttachmentPoints;
@@ -24,80 +22,65 @@ namespace Composite.C1Console.Trees
 
     internal static class TreeSharedRootsFacade
     {
-        private volatile static Dictionary<string, CustomTreePerspectiveInfo> _sharedRootFolders;
+        private static volatile IReadOnlyDictionary<string, CustomTreePerspectiveInfo> _sharedRootFolders;
         private static string _elementAttachingProviderName;
         private static readonly object _lock = new object();
 
-        public static Dictionary<string, CustomTreePerspectiveInfo> SharedRootFolders
+        public static IReadOnlyDictionary<string, CustomTreePerspectiveInfo> SharedRootFolders => GetSharedRootsInt(null);
+        
+
+        public static void Initialize(string elementAttachingProviderName = null)
         {
-            get
+            GetSharedRootsInt(elementAttachingProviderName);
+        }
+
+        private static IReadOnlyDictionary<string, CustomTreePerspectiveInfo> GetSharedRootsInt(string elementAttachingProviderName)
+        {
+            var result = _sharedRootFolders;
+            if (result != null) return result;
+
+            lock (_lock)
             {
-                var result = _sharedRootFolders;
+                result = _sharedRootFolders;
+                if (result != null) return result;
 
-                if (result != null)
+                if (_elementAttachingProviderName == null)
                 {
-                    return result;
+                    _elementAttachingProviderName = elementAttachingProviderName ?? GetElementAttachingProviderName();
                 }
 
-                lock (_lock)
-                {
-                    Initialize();
+                result = GetSharedRoots(_elementAttachingProviderName);
+                _sharedRootFolders = result;
 
-                    return _sharedRootFolders;
-                }
+                return result;
             }
         }
 
 
-        public static void Initialize(string elementAttachingProviderName = null)
+        private static string GetElementAttachingProviderName()
         {
-            if (_sharedRootFolders != null) return;
-
-            lock (_lock)
+            foreach (string providerName in ElementAttachingProviderRegistry.ElementAttachingProviderNames)
             {
-                if (_sharedRootFolders != null) return;
-
-                if (_elementAttachingProviderName == null)
+                var provider = ElementAttachingProviderPluginFacade.GetElementAttachingProvider(providerName);
+                if (provider is TreeElementAttachingProvider)
                 {
-                    if (elementAttachingProviderName == null)
-                    {
-                        foreach (string providerName in ElementAttachingProviderRegistry.ElementAttachingProviderNames)
-                        {
-                            IElementAttachingProvider elementAttachingProvider = ElementAttachingProviderPluginFacade.GetElementAttachingProvider(providerName);
-                            if (elementAttachingProvider is TreeElementAttachingProvider)
-                            {
-                                _elementAttachingProviderName = providerName;
-                                break;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        _elementAttachingProviderName = elementAttachingProviderName;
-                    }
+                    return  providerName;
                 }
-
-                DoInitialize(_elementAttachingProviderName);
             }
+            return null;
         }
 
 
         public static void Clear()
         {
-            lock (_lock)
-            {
-                _sharedRootFolders = null;
-            }
+            _sharedRootFolders = null;
         }
 
 
 
-        private static void DoInitialize(string elementAttachingProviderName)
+        private static IReadOnlyDictionary<string, CustomTreePerspectiveInfo> GetSharedRoots(string elementAttachingProviderName)
         {
             var sharedRootFolders = new Dictionary<string, CustomTreePerspectiveInfo>();
-
-            var treeNodeDynamicContext = new TreeNodeDynamicContext(TreeNodeDynamicContextDirection.Down);
-            treeNodeDynamicContext.Piggybag = new Dictionary<string, string>();
 
             foreach (var tree in TreeFacade.AllTrees)
             {
@@ -161,7 +144,7 @@ namespace Composite.C1Console.Trees
                 tree.RootTreeNode = childTreeNode;
             }
             
-            _sharedRootFolders = sharedRootFolders;
+            return sharedRootFolders;
         }
     }
 }

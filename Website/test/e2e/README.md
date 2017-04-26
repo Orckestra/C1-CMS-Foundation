@@ -14,6 +14,16 @@ The next step is installing nightwatch itself. This is done by issuing the comma
 
 Nightwatch expects to find the CMS running on localhost, port 8080. You can either change your Visual Studio or WebMatrix/IIS setup to use this port, or edit the `nightwatch.json` configuration file found in the project root. You can edit the line that says `"launch_url" : "http://localhost:8080"` to reflect the URL used.
 
+You may need to consider installing the latest:
+
+* chromedriver (if running tests in Chrome)
+* robocopy (used for reseting the website and installing various Starter Site options)
+
+Go to /Website and run these commands there:
+
+* `npm install --save-dev chromedriver@latest`
+* `npm install --save-dev robocopy@latest`
+
 Finally, navigate to the root directory of your CMS working copy. This will usually be named `CMS`, but you may have named it otherwise when cloning it. In this directory, you can then start the tests by running `nightwatch` from your command line. This will run the whole test suite, starting with installing the Venus starter site.
 
 Due to certain technical limitations, nightwatch must always be run from the working directory, and cannot be run from any subdirectory.
