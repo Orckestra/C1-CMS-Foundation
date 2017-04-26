@@ -228,6 +228,7 @@
     <Compile Include="AspNet\SiteMapContext.cs" />
     <Compile Include="AspNet\SiteMapHandler.cs" />
     <Compile Include="AspNet\SiteMapNodeChangeFrequency.cs" />
+    <Compile Include="AspNet\TempAssembliesFix.cs" />
     <Compile Include="AspNet\UserControlFunction.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
