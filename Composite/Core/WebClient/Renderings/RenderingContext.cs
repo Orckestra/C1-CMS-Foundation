@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Web;
+using System.Web.WebPages;
 using System.Xml.Linq;
 using Composite.C1Console.Security;
 using Composite.Core.Extensions;
@@ -20,10 +21,10 @@ namespace Composite.Core.WebClient.Renderings
     /// Rendering context
     /// </summary>
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
-    public sealed class RenderingContext: IDisposable
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+    public sealed class RenderingContext : IDisposable
     {
-        private static readonly string LogTitle = typeof (RenderingContext).Name;
+        private static readonly string LogTitle = typeof(RenderingContext).Name;
 
         /// <summary>
         /// Indicates whether performance profiling is enabled.
@@ -193,11 +194,11 @@ namespace Composite.Core.WebClient.Renderings
 
         private void InitializeFromHttpContextInternal()
         {
-            HttpContext httpContext = HttpContext.Current;
+            var httpContext = new HttpContextWrapper(HttpContext.Current);
             var request = httpContext.Request;
             var response = httpContext.Response;
 
-           ProfilingEnabled = request.Url.OriginalString.Contains("c1mode=perf");
+            ProfilingEnabled = request.Url.OriginalString.Contains("c1mode=perf");
             if (ProfilingEnabled)
             {
                 if (!UserValidationFacade.IsLoggedIn())
@@ -220,17 +221,17 @@ namespace Composite.Core.WebClient.Renderings
                 Page = (IPage)HttpRuntime.Cache.Get(_previewKey + "_SelectedPage");
                 C1PageRoute.PageUrlData = new PageUrlData(Page);
 
-                PageRenderer.RenderingReason = (RenderingReason) HttpRuntime.Cache.Get(_previewKey + "_RenderingReason");
+                PageRenderer.RenderingReason = (RenderingReason)HttpRuntime.Cache.Get(_previewKey + "_RenderingReason");
             }
             else
             {
-                PageUrlData pageUrl = C1PageRoute.PageUrlData ??  PageUrls.UrlProvider.ParseInternalUrl(request.Url.OriginalString);
+                PageUrlData pageUrl = C1PageRoute.PageUrlData ?? PageUrls.UrlProvider.ParseInternalUrl(request.Url.OriginalString);
                 Page = pageUrl.GetPage();
 
                 _cachedUrl = request.Url.PathAndQuery;
 
-                PageRenderer.RenderingReason = new UrlSpace(httpContext).ForceRelativeUrls 
-                    ? RenderingReason.C1ConsoleBrowserPageView 
+                PageRenderer.RenderingReason = new UrlSpace(httpContext).ForceRelativeUrls
+                    ? RenderingReason.C1ConsoleBrowserPageView
                     : RenderingReason.PageView;
             }
 
@@ -257,12 +258,31 @@ namespace Composite.Core.WebClient.Renderings
             Verify.IsNotNull(httpContext.Handler, "HttpHandler isn't defined");
 
             var aspnetPage = (System.Web.UI.Page)httpContext.Handler;
-            
+
+            OverrideDisplayMode(httpContext);
+
             var pageRenderer = PageTemplateFacade.BuildPageRenderer(Page.TemplateId);
             pageRenderer.AttachToPage(aspnetPage, pageRenderingJob);
         }
 
-        private void ValidateViewUnpublishedRequest(HttpContext httpContext)
+        private static void OverrideDisplayMode(HttpContextBase httpContext)
+        {
+            var displayMode = httpContext.Request.QueryString["c1displaymode"];
+            if (!String.IsNullOrEmpty(displayMode))
+            {
+                if (displayMode.Equals("mobile", StringComparison.OrdinalIgnoreCase))
+                {
+                    httpContext.SetOverriddenBrowser(BrowserOverride.Mobile);
+                }
+
+                if (displayMode.Equals("desktop", StringComparison.OrdinalIgnoreCase))
+                {
+                    httpContext.SetOverriddenBrowser(BrowserOverride.Desktop);
+                }
+            }
+        }
+
+        private void ValidateViewUnpublishedRequest(HttpContextBase httpContext)
         {
             bool isPreviewingUrl = httpContext.Request.Url.OriginalString.Contains(DefaultPageUrlProvider.UrlMarker_RelativeUrl);
             bool isUnpublishedPage = Page != null && Page.DataSourceId.PublicationScope != PublicationScope.Published;
@@ -306,7 +326,7 @@ namespace Composite.Core.WebClient.Renderings
 
             return false;
         }
-        
+
         private static string GetLoginRedirectUrl(string url)
         {
             return UrlUtils.PublicRootPath + "/Composite/Login.aspx?ReturnUrl=" +

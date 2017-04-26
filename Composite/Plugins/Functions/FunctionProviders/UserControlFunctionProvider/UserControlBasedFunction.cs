@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Web;
 using System.Web.UI;
 using Composite.AspNet;
@@ -52,7 +53,11 @@ namespace Composite.Plugins.Functions.FunctionProviders.UserControlFunctionProvi
             Page currentPage = httpContext.Handler as Page;
             Verify.IsNotNull(currentPage, "The Current HttpContext Handler must be a " + typeof (Page).FullName);
 
-            var userControl = currentPage.LoadControl(VirtualPath);
+            var directory = Path.GetDirectoryName(VirtualPath);
+            var function = Path.GetFileNameWithoutExtension(VirtualPath);
+            var virtualPath = DisplayModesFileResolver.ResolveFileInInDirectory(directory, function, ".ascx", new HttpContextWrapper(httpContext));
+
+            var userControl = currentPage.LoadControl(virtualPath);
 
 
             foreach (var param in parameters.AllParameterNames)

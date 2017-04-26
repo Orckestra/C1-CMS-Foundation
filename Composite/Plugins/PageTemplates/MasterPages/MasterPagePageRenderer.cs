@@ -1,8 +1,10 @@
 ﻿using System;
+using System.IO;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Xml.Linq;
 using System.Linq;
+using System.Web;
+using Composite.AspNet;
 using Composite.C1Console.Security;
 using Composite.Core.Collections.Generic;
 using Composite.Core.Extensions;
@@ -11,10 +13,9 @@ using Composite.Core.WebClient.Renderings.Page;
 using Composite.Core.Xml;
 using Composite.Data.Types;
 
-
 namespace Composite.Plugins.PageTemplates.MasterPages
 {
-    internal class MasterPagePageRenderer: IPageRenderer
+    internal class MasterPagePageRenderer : IPageRenderer
     {
         private static readonly string PageRenderingJob_Key = "MasterPages.PageRenderingJob";
 
@@ -41,10 +42,10 @@ namespace Composite.Plugins.PageTemplates.MasterPages
             Guid templateId = contentToRender.Page.TemplateId;
             var rendering = _renderingInfo[templateId];
 
-            if(rendering == null)
+            if (rendering == null)
             {
                 Exception loadingException = _loadingExceptions[templateId];
-                if(loadingException != null)
+                if (loadingException != null)
                 {
                     throw loadingException;
                 }
@@ -52,10 +53,14 @@ namespace Composite.Plugins.PageTemplates.MasterPages
                 Verify.ThrowInvalidOperationException("Failed to get master page by template ID '{0}'. Check for compilation errors".FormatWith(templateId));
             }
 
-            aspnetPage.MasterPageFile = rendering.VirtualPath;
+            var dir = Path.GetDirectoryName(rendering.VirtualPath);
+            var template = Path.GetFileNameWithoutExtension(rendering.VirtualPath);
+            var file = DisplayModesFileResolver.ResolveFileInInDirectory(dir, template, ".master", new HttpContextWrapper(HttpContext.Current));
+
+            aspnetPage.MasterPageFile = file;
             aspnetPage.PreRender += (e, args) => PageOnPreRender(aspnetPage, contentToRender.Page);
 
-            var master = aspnetPage.Master as MasterPagePageTemplate;
+            var master = aspnetPage.Master;
             TemplateDefinitionHelper.BindPlaceholders(master, contentToRender, rendering.PlaceholderProperties, null);
         }
 
@@ -76,7 +81,7 @@ namespace Composite.Plugins.PageTemplates.MasterPages
                 {
                     string xml = string.Join(string.Empty, xhtmlDocument.Head.Nodes().Select(node => node.ToString()));
 
-                    aspnetPage.Header.Controls.Add(new Literal {Text = xml});
+                    aspnetPage.Header.Controls.Add(new Literal { Text = xml });
                 }
             }
         }
