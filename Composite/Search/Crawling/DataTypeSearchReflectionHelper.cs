@@ -95,11 +95,11 @@ namespace Composite.Search.Crawling
         /// <returns></returns>
         public static IEnumerable<DocumentField> GetDocumentFields(Type interfaceType, bool includeDefaultFields = true)
         {
-            var defaultFields = includeDefaultFields
+            var fields = includeDefaultFields
                 ? SearchDocumentBuilder.GetDefaultDocumentFields()
                 : Enumerable.Empty<DocumentField>();
 
-            return defaultFields.Concat(
+            fields = fields.Concat(
                 from info in GetSearchableFields(interfaceType)
                 let prop = info.Key
                 let attr = info.Value
@@ -112,6 +112,15 @@ namespace Composite.Search.Crawling
                 {
                     Label = processor.GetFieldLabel(prop)
                 });
+
+            if (includeDefaultFields)
+            {
+                fields = fields.Concat(
+                    ServiceLocator.GetServices<IDocumentFieldProvider>()
+                        .SelectMany(fp => fp.GetCustomFields(interfaceType)));
+            }
+
+            return fields;
         }
     }
 }
