@@ -77,6 +77,11 @@ namespace Composite.Search.Crawling
                 return;
             }
 
+            if (element.Name.LocalName == "script" || element.Name.LocalName == "noscript")
+            {
+                return;
+            }
+
             if (element.Name.LocalName == "a")
             {
                 // TODO: process "href" attribute for page/data references
