@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Composite.Core;
 using Composite.Core.Routing;
 using Composite.Core.Types;
 using Composite.Data;
@@ -36,6 +37,24 @@ namespace Composite.Plugins.Routing.InternalUrlConverters
             if(data == null) return null;
 
             var pageUrlData = DataUrls.TryGetPageUrlData(data.ToDataReference());
+
+            if (internalDataUrl.IndexOf("?", StringComparison.Ordinal) > 0)
+            {
+                var parameters = new UrlBuilder(internalDataUrl).GetQueryParameters();
+
+                if (parameters.HasKeys())
+                {
+                    if (pageUrlData.QueryParameters == null)
+                    {
+                        pageUrlData.QueryParameters = parameters;
+                    }
+                    else
+                    {
+                        pageUrlData.QueryParameters.Add(parameters);
+                    }
+                }
+            }
+
             return pageUrlData != null ? PageUrls.BuildUrl(pageUrlData, UrlKind.Public, urlSpace) : null;
         }
 
