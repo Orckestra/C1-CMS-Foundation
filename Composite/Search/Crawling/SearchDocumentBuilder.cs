@@ -393,7 +393,7 @@ namespace Composite.Search.Crawling
                 var descriptor = DataMetaDataFacade.GetDataTypeDescriptor(dataTypeId);
                 if (descriptor != null)
                 {
-                    return descriptor.Title;
+                    return descriptor.Title ?? descriptor.Name;
                 }
             }
 
