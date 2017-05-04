@@ -728,9 +728,9 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
     [ActionExecutor(typeof(DownloadFileActionExecutor))]
     internal sealed class DownloadFileActionToken : ActionToken
     {
-        private static readonly PermissionType[] _permissionTypes = { PermissionType.Administrate, PermissionType.Edit };
+        internal static readonly PermissionType[] RequiredPermissionTypes = { PermissionType.Administrate, PermissionType.Edit };
 
-        public override IEnumerable<PermissionType> PermissionTypes => _permissionTypes;
+        public override IEnumerable<PermissionType> PermissionTypes => RequiredPermissionTypes;
 
         public override string Serialize() => "DownloadFile";
 

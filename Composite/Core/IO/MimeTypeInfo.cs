@@ -414,7 +414,7 @@ namespace Composite.Core.IO
         /// </summary>
         /// <param name="mimeType"></param>
         /// <returns></returns>
-        internal static bool IsTextFile(string mimeType)
+        public static bool IsTextFile(string mimeType)
         {
             string canonicalMimeType = GetCanonical(mimeType);
 
@@ -426,7 +426,7 @@ namespace Composite.Core.IO
         /// </summary>
         /// <param name="mimeType"></param>
         /// <returns></returns>
-        internal static bool IsBrowserPreviewableFile(string mimeType)
+        public static bool IsBrowserPreviewableFile(string mimeType)
         {
             return mimeType == Pdf
                    || mimeType == Html
