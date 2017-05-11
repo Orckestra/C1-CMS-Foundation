@@ -83,13 +83,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.XsltBasedFunctionProvide
 
 
         /// <exclude />
-        public IEnumerable<IFunction> Functions
-        {
-            get
-            {
-                yield break;
-            }
-        }
+        public IEnumerable<IFunction> Functions => Enumerable.Empty<IFunction>();
 
 
 
@@ -106,7 +100,10 @@ namespace Composite.Plugins.Functions.FunctionProviders.XsltBasedFunctionProvide
         /// <exclude />
         public static void ResolveImportIncludePaths(XContainer doc)
         {
-            IEnumerable<XElement> imports = doc.Descendants().Where(f => f.Name == Namespaces.Xsl + "import" || f.Name == Namespaces.Xsl + "include").ToList();
+            IEnumerable<XElement> imports = doc.Descendants().Where(
+                f => f.Name == Namespaces.Xsl + "import" 
+                  || f.Name == Namespaces.Xsl + "include");
+
             foreach (XElement import in imports)
             {
                 XAttribute hrefAttribute = import.Attribute("href");
@@ -124,7 +121,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.XsltBasedFunctionProvide
         {
             private readonly IXsltFunction _xsltFunction; // go through XsltFunction instead of this
             private IEnumerable<ParameterProfile> _parameterProfiles;
-            private volatile IEnumerable<NamedFunctionCall> _FunctionCalls;
+            private volatile IEnumerable<NamedFunctionCall> _functionCalls;
             private readonly object _lock = new object();
             private bool _subscribedToFileChanges;
             private readonly Hashtable<CultureInfo, XslCompiledTransform> _xslTransformations = new Hashtable<CultureInfo, XslCompiledTransform>();
@@ -137,31 +134,28 @@ namespace Composite.Plugins.Functions.FunctionProviders.XsltBasedFunctionProvide
 
 
 
-
             public object Execute(ParameterList parameters, FunctionContextContainer context)
             {
                 Guid xsltFunctionId = this._xsltFunction.Id;
 
-                if (_FunctionCalls == null)
+                if (_functionCalls == null)
                 {
                     lock (_lock)
                     {
-                        if (_FunctionCalls == null)
+                        if (_functionCalls == null)
                         {
-                            _FunctionCalls = RenderHelper.GetValidatedFunctionCalls(xsltFunctionId);
+                            _functionCalls = RenderHelper.GetValidatedFunctionCalls(xsltFunctionId);
                         }
                     }
                 }
 
-                TransformationInputs transformationInput = RenderHelper.BuildInputDocument(_FunctionCalls, parameters, false);
+                TransformationInputs transformationInput = RenderHelper.BuildInputDocument(_functionCalls, parameters, false);
 
                 XDocument newTree = new XDocument();
 
                 using (XmlWriter writer = new LimitedDepthXmlWriter(newTree.CreateWriter()))
                 {
-                    XslCompiledTransform xslTransformer = GetXslCompiledTransform();
-
-                    XsltArgumentList transformArgs = new XsltArgumentList();
+                    var transformArgs = new XsltArgumentList();
                     XslExtensionsManager.Register(transformArgs);
 
                     if (transformationInput.ExtensionDefinitions != null)
@@ -172,14 +166,15 @@ namespace Composite.Plugins.Functions.FunctionProviders.XsltBasedFunctionProvide
                         }
                     }
 
+                    var xslTransformer = GetXslCompiledTransform();
                     xslTransformer.Transform(transformationInput.InputDocument.CreateReader(), transformArgs, writer);
                 }
 
-                if (this._xsltFunction.OutputXmlSubType == "XHTML")
+                if (this._xsltFunction.OutputXmlSubType == nameof(OutputXmlSubType.XHTML))
                 {
-
                     return new XhtmlDocument(newTree);
                 }
+
                 return newTree.Root;
             }
 
@@ -187,7 +182,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.XsltBasedFunctionProvide
 
             private XslCompiledTransform GetXslCompiledTransform()
             {
-                CultureInfo currentCultureInfo = LocalizationScopeManager.CurrentLocalizationScope;
+                var currentCultureInfo = LocalizationScopeManager.CurrentLocalizationScope;
                 XslCompiledTransform xslCompiledTransform;
 
                 if (_xslTransformations.TryGetValue(currentCultureInfo, out xslCompiledTransform))
@@ -199,60 +194,67 @@ namespace Composite.Plugins.Functions.FunctionProviders.XsltBasedFunctionProvide
                 {
                     if (!_xslTransformations.TryGetValue(currentCultureInfo, out xslCompiledTransform))
                     {
-                        using (
-                            DebugLoggingScope.CompletionTime(this.GetType(), "Loading and compiling {0}".FormatWith(_xsltFunction.XslFilePath)))
-                        {
-                            string folderPath = Path.GetDirectoryName(_xsltFunction.XslFilePath);
-                            string fileName = Path.GetFileName(_xsltFunction.XslFilePath);
+                        xslCompiledTransform = BuildCompiledTransform();
 
-                            IXsltFile xsltFileHandle = null;
-
-                            try
-                            {
-                                var xsltFileHandles =
-                                    (from file in DataFacade.GetData<IXsltFile>()
-                                     where String.Equals(file.FolderPath, folderPath, StringComparison.OrdinalIgnoreCase)
-                                           && String.Equals(file.FileName, fileName, StringComparison.OrdinalIgnoreCase)
-                                     select file).ToList();
-
-                                Verify.That(xsltFileHandles.Count == 1, "XSLT file path {0} found {1} times. Only one instance was expected.".FormatWith(_xsltFunction.XslFilePath, xsltFileHandles.Count));
-                                xsltFileHandle = xsltFileHandles[0];
-                            }
-                            catch (Exception ex)
-                            {
-                                Log.LogError("XsltBasedFunctionProvider", ex);    
-                                throw;
-                            }
-
-                            if(!_subscribedToFileChanges)
-                            {
-                                xsltFileHandle.SubscribeOnChanged(ClearCachedData);
-                                _subscribedToFileChanges = true;
-                            }
-
-                            xslCompiledTransform = new XslCompiledTransform();
-
-
-                            XDocument doc;
-                            using (Stream xsltSourceStream = xsltFileHandle.GetReadStream())
-                            {
-                                using (XmlReader xmlReader = XmlReader.Create(xsltSourceStream))
-                                {
-                                    doc = XDocument.Load(xmlReader);
-                                }
-                            }
-
-                            ResolveImportIncludePaths(doc);
-
-                            LocalizationParser.Parse(doc);
-
-                            xslCompiledTransform.Load(doc.CreateReader(), XsltSettings.TrustedXslt, new XmlUrlResolver());
-
-                            _xslTransformations.Add(currentCultureInfo, xslCompiledTransform);
-                        }
+                        _xslTransformations.Add(currentCultureInfo, xslCompiledTransform);
                     }
                 }
                 return xslCompiledTransform;
+            }
+
+            private XslCompiledTransform BuildCompiledTransform()
+            {
+                using (DebugLoggingScope.CompletionTime(this.GetType(), $"Loading and compiling {_xsltFunction.XslFilePath}"))
+                {
+                    string folderPath = Path.GetDirectoryName(_xsltFunction.XslFilePath);
+                    string fileName = Path.GetFileName(_xsltFunction.XslFilePath);
+
+                    IXsltFile xsltFileHandle;
+
+                    try
+                    {
+                        var xsltFileHandles =
+                        (from file in DataFacade.GetData<IXsltFile>()
+                            where String.Equals(file.FolderPath, folderPath, StringComparison.OrdinalIgnoreCase)
+                                  && String.Equals(file.FileName, fileName, StringComparison.OrdinalIgnoreCase)
+                            select file).ToList();
+
+                        Verify.That(xsltFileHandles.Count == 1, "XSLT file path {0} found {1} times. Only one instance was expected.", _xsltFunction.XslFilePath, xsltFileHandles.Count);
+                        xsltFileHandle = xsltFileHandles[0];
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.LogError("XsltBasedFunctionProvider", ex);
+                        throw;
+                    }
+
+                    if (!_subscribedToFileChanges)
+                    {
+                        xsltFileHandle.SubscribeOnChanged(ClearCachedData);
+                        _subscribedToFileChanges = true;
+                    }
+
+                    var xslCompiledTransform = new XslCompiledTransform();
+
+
+                    XDocument doc;
+                    using (Stream xsltSourceStream = xsltFileHandle.GetReadStream())
+                    {
+                        using (XmlReader xmlReader = XmlReader.Create(xsltSourceStream))
+                        {
+                            doc = XDocument.Load(xmlReader);
+                        }
+                    }
+
+                    ResolveImportIncludePaths(doc);
+
+                    LocalizationParser.Parse(doc);
+
+                    xslCompiledTransform.Load(doc.CreateReader(), XsltSettings.TrustedXslt, new XmlUrlResolver());
+
+
+                    return xslCompiledTransform;
+                }
             }
 
             private void ClearCachedData(string filePath, FileChangeType changeType)
@@ -264,33 +266,13 @@ namespace Composite.Plugins.Functions.FunctionProviders.XsltBasedFunctionProvide
             }
 
 
-            public string Name
-            {
-                get
-                {
-                    return _xsltFunction.Name;
-                }
-            }
+            public string Name => _xsltFunction.Name;
 
 
-
-            public string Namespace
-            {
-                get
-                {
-                    return _xsltFunction.Namespace;
-                }
-            }
+            public string Namespace => _xsltFunction.Namespace;
 
 
-            public string Description
-            {
-                get
-                {
-                    return _xsltFunction.Description;
-                }
-            }
-
+            public string Description => _xsltFunction.Description;
 
 
             public Type ReturnType
@@ -328,14 +310,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.XsltBasedFunctionProvide
             }
 
 
-
-            public EntityToken EntityToken
-            {
-                get
-                {
-                    return _xsltFunction.GetDataEntityToken();
-                }
-            }
+            public EntityToken EntityToken => _xsltFunction.GetDataEntityToken();
         }
 
     }

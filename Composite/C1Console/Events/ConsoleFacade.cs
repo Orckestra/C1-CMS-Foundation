@@ -26,11 +26,7 @@ namespace Composite.C1Console.Events
 
 
         /// <exclude />
-        public string ConsoleId
-        {
-            get;
-            private set;
-        }
+        public string ConsoleId { get; }
     }
 
 
@@ -41,13 +37,13 @@ namespace Composite.C1Console.Events
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class ConsoleFacade
     {
-        private static readonly string LogTitle = "ConsoleFacade";
+        private static readonly string LogTitle = nameof(ConsoleFacade);
 
         /// <exclude />
         public delegate void ConsoleClosedEventDelegate(ConsoleClosedEventArgs args);
 
-        private static TimeSpan? _timeout = null; 
-        private static bool _initialized = false;
+        private static TimeSpan? _timeout;
+        private static bool _initialized;
         private static readonly object _lock = new object();
         private static event ConsoleClosedEventDelegate _consoleClosedEvent;
 
@@ -59,7 +55,7 @@ namespace Composite.C1Console.Events
             {
                 lock (_lock)
                 {
-                    if (_initialized == false)
+                    if (!_initialized)
                     {
                         WorkflowInstance workflowInstance = WorkflowFacade.CreateNewWorkflow(WorkflowFacade.GetWorkflowType("Composite.C1Console.Events.Workflows.UserConsoleInformationScavengerWorkflow"));
                         workflowInstance.Start();
@@ -97,19 +93,16 @@ namespace Composite.C1Console.Events
         /// <exclude />
         public static void CloseConsole(string consoleId)
         {
-            UnregisterConsole(UserSettings.Username, consoleId);            
+            UnregisterConsole(UserSettings.Username, consoleId);
         }
 
 
         /// <exclude />
         public static IEnumerable<string> GetConsoleIdsByUsername(string username)
         {
-            List<string> consoleIds =
-                (from d in DataFacade.GetData<IUserConsoleInformation>()
-                 where d.Username == username                        
-                 select d.ConsoleId).ToList();
-
-            return consoleIds;
+            return (from d in DataFacade.GetData<IUserConsoleInformation>()
+                    where d.Username == username
+                    select d.ConsoleId).ToList();
         }
 
 
@@ -127,14 +120,14 @@ namespace Composite.C1Console.Events
 
                 if (userConsoleInformation == null)
                 {
-                    Log.LogVerbose(LogTitle, string.Format("New console registred by '{0}' id = '{1}'", username, consoleId));
+                    Log.LogVerbose(LogTitle, $"New console registred by '{username}' id = '{consoleId}'");
 
                     userConsoleInformation = DataFacade.BuildNew<IUserConsoleInformation>();
                     userConsoleInformation.Id = Guid.NewGuid();
                     userConsoleInformation.Username = username;
                     userConsoleInformation.ConsoleId = consoleId;
                     userConsoleInformation.TimeStamp = DateTime.Now;
-                    userConsoleInformation = DataFacade.AddNew<IUserConsoleInformation>(userConsoleInformation);
+                    DataFacade.AddNew<IUserConsoleInformation>(userConsoleInformation);
                 }
                 else
                 {
@@ -187,7 +180,7 @@ namespace Composite.C1Console.Events
                 {
                     if (now - userConsoleInformation.TimeStamp > Timeout)
                     {
-                        Log.LogVerbose(LogTitle, "The console '{0}' owned by the user '{1}' timed out, closing it", userConsoleInformation.ConsoleId, userConsoleInformation.Username);
+                        Log.LogWarning(LogTitle, "The console '{0}' owned by the user '{1}' timed out, closing it", userConsoleInformation.ConsoleId, userConsoleInformation.Username);
                         DataFacade.Delete<IUserConsoleInformation>(userConsoleInformation);
                         FireConsoleClosedEvent(userConsoleInformation.ConsoleId);
                     }
@@ -197,31 +190,14 @@ namespace Composite.C1Console.Events
 
 
 
-        private static TimeSpan Timeout
-        {
-            get
-            {
-                if (_timeout.HasValue == false)
-                {
-                    _timeout = GlobalSettingsFacade.ConsoleTimeout;
-                }
-
-                return _timeout.Value;
-            }
-        }
-
+        private static TimeSpan Timeout => _timeout ?? (_timeout = GlobalSettingsFacade.ConsoleTimeout).Value;
 
 
         private static void FireConsoleClosedEvent(string consoleId)
         {
             lock (_lock)
             {
-                ConsoleClosedEventDelegate consoleClosedEvent = _consoleClosedEvent;
-
-                if (consoleClosedEvent != null)
-                {
-                    consoleClosedEvent(new ConsoleClosedEventArgs(consoleId));
-                }
+                _consoleClosedEvent?.Invoke(new ConsoleClosedEventArgs(consoleId));
             }
         }
     }

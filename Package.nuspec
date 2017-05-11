@@ -7,7 +7,7 @@
     <authors>Orckestra A/S</authors>
     <owners>Orckestra A/S</owners>
     <licenseUrl>https://c1.orckestra.com/MPL11</licenseUrl>
-    <projectUrl>https://github.com/Orckestra/CMS-Foundation</projectUrl>
+    <projectUrl>https://github.com/Orckestra/C1-CMS-Foundation</projectUrl>
     <!--iconUrl></iconUrl-->
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>Contains dll-s distributed with C1 CMS.</description>
