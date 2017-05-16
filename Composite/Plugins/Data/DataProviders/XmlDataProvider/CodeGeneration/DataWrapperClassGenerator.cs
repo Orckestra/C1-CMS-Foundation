@@ -167,7 +167,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
                             new CodeThisReferenceExpression(),
                             fieldName
                         ),
-                        "Value"
+                        nameof(ExtendedNullable<string>.Value)
                     ));
 
                 statments.Add(AddCommitDataMethodFinalHelper(dataFieldDescriptor, newStatements));
@@ -248,22 +248,16 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
                                                     new CodeThisReferenceExpression(),
                                                     WrappedElementFieldName
                                                 ),
-                                                "Add",
-                                                new CodeExpression[] {
-                                                    new CodeVariableReferenceExpression(elementVariableName)                                                    
-                                                }
-                                            )
+                                                "Add", 
+                                                new CodeVariableReferenceExpression(elementVariableName))
                                         )
                                     },
                                     new CodeStatement[] {
                                         new CodeExpressionStatement(
                                             new CodeMethodInvokeExpression(
                                                 new CodeVariableReferenceExpression(elementVariableName),
-                                                "SetValue",
-                                                new CodeExpression[] {
-                                                    valueExpression
-                                                }
-                                            )
+                                                "SetValue", 
+                                                valueExpression)
                                         ),
                                     }
                                 )
@@ -279,8 +273,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
                                         new CodeExpressionStatement(
                                             new CodeMethodInvokeExpression(
                                                 new CodeVariableReferenceExpression(elementVariableName),
-                                                "Remove",
-                                                new CodeExpression[] {}
+                                                "Remove"
                                             )
                                         )
                                     }
@@ -347,6 +340,16 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
             {
                 string nullableFieldName = CreateNullableFieldName(dataFieldDescriptor);
 
+                var nullableFieldReference = new CodeFieldReferenceExpression(
+                    new CodeThisReferenceExpression(),
+                    nullableFieldName
+                );
+
+                var nullableFieldValueReference = new CodePropertyReferenceExpression(
+                    nullableFieldReference,
+                    nameof(ExtendedNullable<string>.Value)
+                );
+
                 // CODEGEN:
                 // private ExtendedNullable<string> _emailNullable;
 
@@ -401,21 +404,12 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
                 property.GetStatements.Add(
                     new CodeConditionStatement(
                         new CodeBinaryOperatorExpression(
-                            new CodeFieldReferenceExpression(
-                                new CodeThisReferenceExpression(),
-                                nullableFieldName
-                                ),
+                            nullableFieldReference,
                             CodeBinaryOperatorType.IdentityInequality,
                             new CodePrimitiveExpression(null)
                             ),
                         new CodeMethodReturnStatement(
-                            new CodePropertyReferenceExpression(
-                                new CodeFieldReferenceExpression(
-                                    new CodeThisReferenceExpression(),
-                                    nullableFieldName
-                                    ),
-                                "Value"
-                                )
+                            nullableFieldValueReference
                             )
                         ));
 
@@ -506,30 +500,12 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
 
 
                 // CODEGEN:
-                // this._emailNullable = new ExtendedNullable<{Type}>();
+                // this._emailNullable = value; // Using the implicit cast to ExtendedEnumerable<>
 
                 property.GetStatements.Add(
                     new CodeAssignStatement(
-                        new CodeFieldReferenceExpression(
-                            new CodeThisReferenceExpression(),
-                            nullableFieldName
-                        ),
-                        new CodeObjectCreateExpression(nullableType)));
-
-                // CODEGEN:
-                // this._emailNullable.Value = value;
-
-                property.GetStatements.Add(
-                    new CodeAssignStatement(
-                        new CodePropertyReferenceExpression(
-                            new CodeFieldReferenceExpression(
-                                new CodeThisReferenceExpression(),
-                                nullableFieldName
-                            ),
-                            nameof(ExtendedNullable<string>.Value)
-                        ),
-                        new CodeVariableReferenceExpression("value")
-                    ));
+                        nullableFieldReference,
+                        new CodeVariableReferenceExpression("value")));
 
                 // CODEGEN:
                 // return value;
@@ -542,40 +518,32 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
                 {
                     // CODEGEN:
                     // if(this.[fieldName] == null) {
-                    //   this.[fieldName] = new ExtendedNullable<...>(); 
+                    //   this.[fieldName] = value; 
                     // }
-
+                    // else 
+                    // {
+                    //    // this._emailNullable.Value = value;
+                    // }
                     property.SetStatements.Add(
                        new CodeConditionStatement(
                            new CodeBinaryOperatorExpression(
-                               new CodeFieldReferenceExpression(
-                                   new CodeThisReferenceExpression(),
-                                   nullableFieldName
-                                   ),
+                               nullableFieldReference,
                                CodeBinaryOperatorType.IdentityEquality,
                                new CodePrimitiveExpression(null)
                                ),
-                           new CodeAssignStatement(
-                               new CodeFieldReferenceExpression(
-                                   new CodeThisReferenceExpression(),
-                                   nullableFieldName
-                                   ),
-                               new CodeObjectCreateExpression(nullableType))));
-
-                    // CODEGEN:
-                    // this._emailNullable.Value = value;
-
-                    property.SetStatements.Add(
-                        new CodeAssignStatement(
-                            new CodePropertyReferenceExpression(
-                                new CodeFieldReferenceExpression(
-                                    new CodeThisReferenceExpression(),
-                                    nullableFieldName
-                                ),
-                                nameof(ExtendedNullable<string>.Value)
-                            ),
-                            new CodePropertySetValueReferenceExpression()
-                        ));
+                           new CodeStatement[]
+                           {
+                               new CodeAssignStatement(
+                                   nullableFieldReference,
+                                   new CodePropertySetValueReferenceExpression())
+                           },
+                           new CodeStatement[]
+                           {
+                               new CodeAssignStatement(
+                                   nullableFieldValueReference,
+                                   new CodePropertySetValueReferenceExpression()
+                               )
+                           }));
 
                     // CODEGEN:
                     // this._isSet_email = true;
