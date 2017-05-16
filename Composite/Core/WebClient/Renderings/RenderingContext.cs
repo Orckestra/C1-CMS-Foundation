@@ -49,8 +49,6 @@ namespace Composite.Core.WebClient.Renderings
         /// <value><c>true</c> if page caching is disabled; otherwise, <c>false</c>.</value>
         public bool CachingDisabled { get; private set; }
 
-        private static readonly string ProfilerXslPath = UrlUtils.AdminRootPath + "/Transformations/page_profiler.xslt";
-
         private static readonly List<string> _prettifyErrorUrls = new List<string>();
         private static int _prettifyErrorCount;
 
@@ -176,18 +174,12 @@ namespace Composite.Core.WebClient.Renderings
 
             Measurement measurement = Profiler.EndProfiling();
 
-            string xmlHeader = @"<?xml version=""1.0""?>
-                             <?xml-stylesheet type=""text/xsl"" href=""{0}""?>"
-                    .FormatWith(ProfilerXslPath);
+            var url = new UrlBuilder(HttpContext.Current.Request.Url.ToString())
+            {
+                ["c1mode"] = null
+            };
 
-            XElement reportXml = ProfilerReport.BuildReportXml(measurement);
-            var url = new UrlBuilder(HttpContext.Current.Request.Url.ToString());
-            url["c1mode"] = null;
-
-            reportXml.Add(new XAttribute("url", url),
-                          new XAttribute("consoleUrl", UrlUtils.AdminRootPath));
-
-            return xmlHeader + reportXml;
+            return ProfilerReport.BuildReport(measurement, url);
         }
 
 
