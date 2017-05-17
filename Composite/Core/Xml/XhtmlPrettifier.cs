@@ -40,7 +40,7 @@ namespace Composite.Core.Xml
             new NamespaceName { Name = "body", Namespace = "" }
         });
 
-        private static readonly HashSet<NamespaceName> InlineElements = new HashSet<NamespaceName>(new []
+        internal static readonly HashSet<NamespaceName> InlineElements = new HashSet<NamespaceName>(new []
         {
             new NamespaceName { Name = "a", Namespace = "" }, 
             new NamespaceName { Name = "abbr", Namespace = "" }, 
@@ -695,7 +695,7 @@ namespace Composite.Core.Xml
 
 
 
-        private sealed class NamespaceName
+        internal sealed class NamespaceName
         {
             public string Name;
             public string Namespace;
