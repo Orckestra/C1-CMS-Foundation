@@ -2,6 +2,7 @@
 using System.CodeDom;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
 using Composite.Core.Types;
@@ -159,9 +160,9 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
             {
                 string fieldName = CreateNullableFieldName(dataFieldDescriptor);
 
-                List<CodeStatement> newStatements = AddCommitDataMethodHelper(
+                var newStatements = AddCommitDataMethodHelper(
                     "attribute",
-                    new CodePrimitiveExpression(dataFieldDescriptor.Name),
+                    new CodeFieldReferenceExpression(null, CreateXNameFieldName(dataFieldDescriptor)),
                     new CodePropertyReferenceExpression(
                         new CodeFieldReferenceExpression(
                             new CodeThisReferenceExpression(),
@@ -181,17 +182,18 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
 
 
 
-        private static CodeStatement AddCommitDataMethodFinalHelper(DataFieldDescriptor dataFieldDescriptor, List<CodeStatement> statements)
+        private static CodeStatement AddCommitDataMethodFinalHelper(DataFieldDescriptor dataFieldDescriptor, IEnumerable<CodeStatement> statements)
         {
             // CODEGEN:
             // if (this._isSet_email && this._emailNullable != null) {
             //     [statements]
+            //     _isSet_email = false;
             // }
 
             string fieldName = CreateNullableFieldName(dataFieldDescriptor);
 
             // this._isSet_email
-            var expression1 = 
+            var fieldIsSetFieldReference = 
                 new CodeFieldReferenceExpression(
                     new CodeThisReferenceExpression(),
                     IsSetFieldName(dataFieldDescriptor)
@@ -208,83 +210,25 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
             );
 
             return new CodeConditionStatement(
-                new CodeBinaryOperatorExpression(expression1, CodeBinaryOperatorType.BooleanAnd, expression2),
-                    statements.ToArray()
+                new CodeBinaryOperatorExpression(
+                    fieldIsSetFieldReference, CodeBinaryOperatorType.BooleanAnd, expression2),
+                    statements.Concat(new [] {
+                        // CODEGEN:
+                        // this._isSetEmail = false;
+                        new CodeAssignStatement(
+                            fieldIsSetFieldReference,
+                            new CodePrimitiveExpression(false)
+                        )}).ToArray()
                 );
         }
 
 
 
-        private static List<CodeStatement> AddCommitDataMethodHelper(string elementVariableName, CodeExpression tagNameExpression, CodeExpression valueExpression)
+        private static CodeStatement[] AddCommitDataMethodHelper(string elementVariableName, CodeExpression attributeNameExpression, CodeExpression valueExpression)
         {
-            CodeStatement[] innerStatements = new CodeStatement[] {
-                        new CodeConditionStatement(
-                            new CodeBinaryOperatorExpression(
-                                valueExpression,
-                                CodeBinaryOperatorType.IdentityInequality,
-                                new CodePrimitiveExpression(null)
-                            ),
-                            new CodeStatement[] {
-                                new CodeConditionStatement(
-                                    new CodeBinaryOperatorExpression(
-                                        new CodeVariableReferenceExpression(elementVariableName),
-                                        CodeBinaryOperatorType.IdentityEquality,
-                                        new CodePrimitiveExpression(null)
-                                    ),
-                                    new CodeStatement[] {
-                                        new CodeAssignStatement(
-                                            new CodeVariableReferenceExpression(elementVariableName),
-                                            new CodeObjectCreateExpression(
-                                                typeof(XAttribute),
-                                                new CodeExpression[] {
-                                                    tagNameExpression,
-                                                    valueExpression
-                                                }
-                                            )
-                                        ),
-                                        new CodeExpressionStatement(
-                                            new CodeMethodInvokeExpression(
-                                                new CodeFieldReferenceExpression(
-                                                    new CodeThisReferenceExpression(),
-                                                    WrappedElementFieldName
-                                                ),
-                                                "Add", 
-                                                new CodeVariableReferenceExpression(elementVariableName))
-                                        )
-                                    },
-                                    new CodeStatement[] {
-                                        new CodeExpressionStatement(
-                                            new CodeMethodInvokeExpression(
-                                                new CodeVariableReferenceExpression(elementVariableName),
-                                                "SetValue", 
-                                                valueExpression)
-                                        ),
-                                    }
-                                )
-                            },
-                            new CodeStatement[] {
-                                new CodeConditionStatement(
-                                    new CodeBinaryOperatorExpression(
-                                        new CodeVariableReferenceExpression(elementVariableName),
-                                        CodeBinaryOperatorType.IdentityInequality,
-                                        new CodePrimitiveExpression(null)
-                                    ),
-                                    new CodeStatement[] {
-                                        new CodeExpressionStatement(
-                                            new CodeMethodInvokeExpression(
-                                                new CodeVariableReferenceExpression(elementVariableName),
-                                                "Remove"
-                                            )
-                                        )
-                                    }
-                                )
-                            }
-                        )
-                    };
+            var elementVariable = new CodeVariableReferenceExpression(elementVariableName);
 
-
-            var statements = new List<CodeStatement>
-            {
+            return new CodeStatement[] {
                 new CodeVariableDeclarationStatement(
                     typeof(XAttribute),
                     elementVariableName,
@@ -293,15 +237,73 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
                             new CodeThisReferenceExpression(),
                             WrappedElementFieldName
                         ),
-                        "Attribute", 
-                        tagNameExpression)
+                        "Attribute",
+                        attributeNameExpression)
+                ),
+                new CodeConditionStatement(
+                    new CodeBinaryOperatorExpression(
+                        valueExpression,
+                        CodeBinaryOperatorType.IdentityInequality,
+                        new CodePrimitiveExpression(null)
+                    ),
+                    new CodeStatement[] {
+                        new CodeConditionStatement(
+                            new CodeBinaryOperatorExpression(
+                                elementVariable,
+                                CodeBinaryOperatorType.IdentityEquality,
+                                new CodePrimitiveExpression(null)
+                            ),
+                            new CodeStatement[] {
+                                new CodeAssignStatement(
+                                    elementVariable,
+                                    new CodeObjectCreateExpression(
+                                        typeof(XAttribute),
+                                        attributeNameExpression,
+                                        valueExpression
+                                    )
+                                ),
+                                new CodeExpressionStatement(
+                                    new CodeMethodInvokeExpression(
+                                        new CodeFieldReferenceExpression(
+                                            new CodeThisReferenceExpression(),
+                                            WrappedElementFieldName
+                                        ),
+                                        "Add",
+                                        elementVariable)
+                                )
+                            },
+                            new CodeStatement[] {
+                                new CodeExpressionStatement(
+                                    new CodeMethodInvokeExpression(
+                                        elementVariable,
+                                        "SetValue", 
+                                        valueExpression)
+                                ),
+                            }
+                        )
+                    },
+                    // CODEGEN:
+                    // else if (attribute != null)
+                    // {
+                    //   attribute.Remove();
+                    // }
+                    new CodeStatement[] {
+                        new CodeConditionStatement(
+                            new CodeBinaryOperatorExpression(
+                                elementVariable,
+                                CodeBinaryOperatorType.IdentityInequality,
+                                new CodePrimitiveExpression(null)
+                            ),
+                            new CodeExpressionStatement(
+                                new CodeMethodInvokeExpression(
+                                    elementVariable,
+                                    "Remove"
+                                )
+                            )
+                        )
+                    }
                 )
             };
-
-            statements.AddRange(innerStatements);
-
-
-            return statements;
         }
 
 
