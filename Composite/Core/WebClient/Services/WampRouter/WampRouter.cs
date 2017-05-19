@@ -24,7 +24,7 @@ namespace Composite.Core.WebClient.Services.WampRouter
             try
             {
                 StartWampRouter();
-                Log.LogInformation(nameof(WampRouter),"WAMP router initiated successfully");
+                Log.LogVerbose(nameof(WampRouter),"WAMP router initiated successfully");
             }
             catch (Exception e)
             {
