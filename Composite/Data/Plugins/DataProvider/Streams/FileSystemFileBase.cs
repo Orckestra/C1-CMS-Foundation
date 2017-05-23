@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using Composite.Core.Configuration;
@@ -83,22 +83,6 @@ namespace Composite.Data.Plugins.DataProvider.Streams
 
             this.TemporaryFileStream = null;
             this.TemporaryFilePath = null;
-        }
-
-        /// <exclude />
-        [SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass")]
-        ~FileSystemFileBase()
-        {
-            if (TemporaryFilePath != null)
-            {
-                try
-                {
-                    File.Delete(TemporaryFilePath);
-                }
-                catch
-                {
-                }
-            }
         }
     }
 }
