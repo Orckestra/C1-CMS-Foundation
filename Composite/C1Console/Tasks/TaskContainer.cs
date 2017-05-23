@@ -17,8 +17,8 @@ namespace Composite.C1Console.Tasks
     {
         private static readonly string LogTitle = typeof (TaskContainer).Name;
 
-        private List<Task> _tasks;
-        private bool _disposed = false;
+        private readonly List<Task> _tasks;
+        private bool _disposed;
 
 
 
@@ -96,15 +96,22 @@ namespace Composite.C1Console.Tasks
         /// <exclude />
         ~TaskContainer()
         {
-            Dispose();
+            Dispose(false);
         }
-
 
 
         /// <exclude />
         public void Dispose()
         {
-            if (_disposed == false)
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+
+        /// <exclude />
+        public void Dispose(bool disposing)
+        {
+            if (disposing && !_disposed)
             {
                 _disposed = true;
 
