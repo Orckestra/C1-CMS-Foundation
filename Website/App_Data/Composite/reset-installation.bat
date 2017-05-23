@@ -1,4 +1,4 @@
-del DataMetaData\*.xml
+﻿del DataMetaData\*.xml
 del DataStores\*.xml
 del Configuration\DynamicSqlDataProvider.config
 del Configuration\DynamicXmlDataProvider.config
@@ -46,7 +46,6 @@ del TreeDefinitions\PageType.xml.backup
 
 :: Basic cleanup
 rd ..\..\Frontend\Composite  /S /Q
-rd ..\..\App_Data\UserControls /S /Q
 rd ..\..\App_Data\PageTemplateFeatures /S /Q
 
 :: Razor cleanup
@@ -55,6 +54,13 @@ rd ..\..\App_Data\Razor /S /Q
 md ..\..\App_Data\Razor
 copy ..\..\App_Data\Razor.web.config ..\..\App_Data\Razor\web.config
 del ..\..\App_Data\Razor.web.config /f
+
+:: UserControls cleanup
+copy ..\..\App_Data\UserControls\web.config ..\..\App_Data\UserControls.web.config
+rd ..\..\App_Data\UserControls /S /Q
+md ..\..\App_Data\UserControls
+copy ..\..\App_Data\UserControls.web.config ..\..\App_Data\UserControls\web.config
+del ..\..\App_Data\UserControls.web.config /f
 
 
 :: PageTemplates cleanup
