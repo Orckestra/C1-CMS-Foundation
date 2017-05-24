@@ -259,7 +259,19 @@ namespace Composite.Search.Crawling
             public void Dispose()
             {
                 HttpContext.Current = _originalContext;
+#if LeakCheck
+                GC.SuppressFinalize(this);
+#endif
             }
+
+#if LeakCheck
+            private string stack = Environment.StackTrace;
+            /// <exclude />
+            ~FakeHttpContext()
+            {
+                Composite.Core.Instrumentation.DisposableResourceTracer.RegisterFinalizerExecution(stack);
+            }
+#endif
         }
     }
 }

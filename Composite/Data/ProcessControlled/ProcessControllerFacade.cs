@@ -397,7 +397,19 @@ namespace Composite.Data.ProcessControlled
             public void Dispose()
             {
                 ProcessControllersCounter.Counter--;
+#if LeakCheck
+                GC.SuppressFinalize(this);
+#endif
             }
+
+#if LeakCheck
+            private string stack = Environment.StackTrace;
+            /// <exclude />
+            ~NoProcessControllersDisposable()
+            {
+                Composite.Core.Instrumentation.DisposableResourceTracer.RegisterFinalizerExecution(stack);
+            }
+#endif
         }
 
 

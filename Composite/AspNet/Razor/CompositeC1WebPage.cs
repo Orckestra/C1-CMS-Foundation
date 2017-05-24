@@ -170,8 +170,10 @@ namespace Composite.AspNet.Razor
 		{
 			Dispose(true);
 
-			GC.SuppressFinalize(this);
-		}
+#if LeakCheck
+                GC.SuppressFinalize(this);
+#endif
+        }
 
         /// <exclude />
 		protected virtual void Dispose(bool disposing)
@@ -186,10 +188,14 @@ namespace Composite.AspNet.Razor
             _disposed = true;
 		}
 
+#if LeakCheck
+        private string stack = Environment.StackTrace;
         /// <exclude />
-		~CompositeC1WebPage()
-		{
-			Dispose(false);
-		}
+        ~CompositeC1WebPage()
+        {
+            Composite.Core.Instrumentation.DisposableResourceTracer.RegisterFinalizerExecution(stack);
+            Dispose(false);
+        }
+#endif        
 	}
 }

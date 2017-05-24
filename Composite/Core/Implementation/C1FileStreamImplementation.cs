@@ -221,7 +221,9 @@ namespace Composite.Core.Implementation
         public void Dispose()
         {
             Dispose(true);
+#if LeakCheck
             GC.SuppressFinalize(this);
+#endif
         }
 
 
@@ -231,7 +233,7 @@ namespace Composite.Core.Implementation
         /// <exclude />
         ~C1FileStreamImplementation()
         {
-            Composite.Core.Instrumentation.DisposableResourceTracer.Register(stack);
+            Composite.Core.Instrumentation.DisposableResourceTracer.RegisterFinalizerExecution(stack);
             Dispose(false);
         }
 #endif

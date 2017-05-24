@@ -299,7 +299,7 @@ using(Composite.Core.Threading.ThreadDataManager.EnsureInitialize())
             ~ThreadDataManagerScope()
             {
 #if LeakCheck
-                Composite.Core.Instrumentation.DisposableResourceTracer.Register(stack);
+                Composite.Core.Instrumentation.DisposableResourceTracer.RegisterFinalizerExecution(stack);
 #endif
                 Dispose(false);
             }

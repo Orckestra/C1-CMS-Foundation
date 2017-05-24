@@ -76,7 +76,19 @@ namespace Composite.Core.Application
             public void Dispose()
             {
                 ApplicationOnlineHandlerFacade.TurnApplicationOnline();
+#if LeakCheck
+                GC.SuppressFinalize(this);
+#endif
             }
+
+#if LeakCheck
+            private string stack = Environment.StackTrace;
+            /// <exclude />
+            ~TurnOffToken()
+            {
+                Composite.Core.Instrumentation.DisposableResourceTracer.RegisterFinalizerExecution(stack);
+            }
+#endif
         }
     }
 }

@@ -13,8 +13,9 @@ namespace Composite.Core.Instrumentation
 #if LeakCheck
     /// <summary>
     /// This class only provide functionality if the conditional compilation symbol #LeakCheck is defined. 
-    /// It is defined for this build...
-    /// It is NOT defined for this build...
+    /// See the <see cref="RegisterFinalizerExecution(string)"/> method for how to feed this class data.
+    /// When appPool shuts down a xml file with stack traces and count will be written to the root. This file indicate areas where (tooled) IDisposable classes were not
+    /// disposed as expected.
     /// </summary>
     public static class DisposableResourceTracer
     {
@@ -23,6 +24,7 @@ namespace Composite.Core.Instrumentation
         private static object _dumpLock = new object();
         private static bool dumpAlways = false;
 
+        /// <exclude />
         public static readonly DateTime TraceStart = DateTime.Now;
 
         static DisposableResourceTracer()
@@ -36,7 +38,23 @@ namespace Composite.Core.Instrumentation
             DumpStacks();
         }
 
-        public static void Register(string stack)
+        /// Register a stack trace - expected usage if for this to be called from IDisposable finalizers, indicating they did not dispose as expected from user code.
+        /// <example>
+        /// #if LeakCheck
+        ///     private string stack = Environment.StackTrace;
+        ///     ~MyDisposableClass()
+        ///     {
+        ///         Composite.Core.Instrumentation.DisposableResourceTracer.Register(stack);
+        ///     }
+        /// #endif
+        /// </example>
+        /// You should ensure finalizer is not called, when Dispose() execute as expected. Put the following inside your Dispose() method:
+        /// <example>
+        /// #if LeakCheck
+        ///     GC.SuppressFinalize(this);
+        /// #endif
+        /// </example>
+        public static void RegisterFinalizerExecution(string stack)
         {
             lock (_lock)
             {
@@ -81,6 +99,10 @@ namespace Composite.Core.Instrumentation
             }
         }
 
+        /// <summary>
+        /// Returns the currently registered stacks - since stacks are typically only registered when GC Generation 2 heap is cleaned - and this happens rarely - the result here is not guaranteed to be complete...
+        /// </summary>
+        /// <returns></returns>
         public static Dictionary<string, int> GetStacks()
         {
             lock (_lock)

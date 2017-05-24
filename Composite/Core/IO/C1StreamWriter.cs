@@ -606,7 +606,7 @@ namespace Composite.Core.IO
         /// </summary>
         ~C1StreamWriter()
         {
-            Composite.Core.Instrumentation.DisposableResourceTracer.Register(stack);
+            Composite.Core.Instrumentation.DisposableResourceTracer.RegisterFinalizerExecution(stack);
             Dispose(false);
         }
 #endif

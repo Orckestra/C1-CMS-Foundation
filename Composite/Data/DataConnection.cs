@@ -515,7 +515,9 @@ namespace Composite.Data
         public void Dispose()
         {
             Dispose(true);
+#if LeakCheck
             GC.SuppressFinalize(this);
+#endif
         }
 
 
@@ -525,7 +527,7 @@ namespace Composite.Data
         /// <exclude />
         ~DataConnection()
         {
-            Composite.Core.Instrumentation.DisposableResourceTracer.Register(stack);
+            Composite.Core.Instrumentation.DisposableResourceTracer.RegisterFinalizerExecution(stack);
             Dispose(false);
         }
 #endif

@@ -64,5 +64,14 @@ namespace Composite.Plugins.PageTemplates.MasterPages
 
             base.Dispose();
         }
+
+#if LeakCheck
+        private string stack = Environment.StackTrace;
+        /// <exclude />
+        ~MasterPageBase()
+        {
+            Composite.Core.Instrumentation.DisposableResourceTracer.RegisterFinalizerExecution(stack);
+        }
+#endif
     }
 }

@@ -213,7 +213,19 @@ namespace Composite.Core.Collections.Generic
             public void Dispose()
             {
                 _resourceLocker.Exit();
+#if LeakCheck
+                GC.SuppressFinalize(this);
+#endif
             }
+
+#if LeakCheck
+            private string stack = Environment.StackTrace;
+            /// <exclude />
+            ~ResourceLockerToken()
+            {
+                Composite.Core.Instrumentation.DisposableResourceTracer.RegisterFinalizerExecution(stack);
+            }
+#endif
         }
     }
 }

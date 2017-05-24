@@ -422,7 +422,19 @@ namespace Composite.C1Console.Actions
             public void Dispose()
             {
                 ActionLockingFacade.Exit();
+#if LeakCheck
+                GC.SuppressFinalize(this);
+#endif
             }
+
+#if LeakCheck
+            private string stack = Environment.StackTrace;
+            /// <exclude />
+            ~LockerToken()
+            {
+                Composite.Core.Instrumentation.DisposableResourceTracer.RegisterFinalizerExecution(stack);
+            }
+#endif
         }
     }
 }

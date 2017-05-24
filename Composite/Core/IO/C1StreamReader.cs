@@ -270,7 +270,7 @@ namespace Composite.Core.IO
         /// </summary>
         ~C1StreamReader()
         {
-            Composite.Core.Instrumentation.DisposableResourceTracer.Register(stack);
+            Composite.Core.Instrumentation.DisposableResourceTracer.RegisterFinalizerExecution(stack);
             Dispose(false);
         }
 #endif

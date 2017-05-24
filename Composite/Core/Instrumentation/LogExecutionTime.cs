@@ -24,6 +24,18 @@ namespace Composite.Core.Instrumentation
         {
             int executionTime = Environment.TickCount - _startTime;
             Log.LogVerbose(_logTitle, "Finished: " + _message + " ({0} ms)".FormatWith(executionTime));
+#if LeakCheck
+            GC.SuppressFinalize(this);
+#endif
         }
+
+#if LeakCheck
+        private string stack = Environment.StackTrace;
+        /// <exclude />
+        ~LogExecutionTime()
+        {
+            Composite.Core.Instrumentation.DisposableResourceTracer.RegisterFinalizerExecution(stack);
+        }
+#endif
     }
 }

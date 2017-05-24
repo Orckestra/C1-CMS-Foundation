@@ -268,7 +268,9 @@ namespace Composite.Core.IO
         void IDisposable.Dispose()
         {
             Dispose(true);
+#if LeakCheck
             GC.SuppressFinalize(this);
+#endif
         }
 
 #if LeakCheck
@@ -278,7 +280,7 @@ namespace Composite.Core.IO
         /// </summary>
         ~C1FileSystemWatcher()
         {
-            Composite.Core.Instrumentation.DisposableResourceTracer.Register(stack);
+            Composite.Core.Instrumentation.DisposableResourceTracer.RegisterFinalizerExecution(stack);
             Dispose(false);
         }
 #endif

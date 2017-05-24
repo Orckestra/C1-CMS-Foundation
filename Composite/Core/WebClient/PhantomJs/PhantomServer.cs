@@ -309,7 +309,7 @@ namespace Composite.Core.WebClient.PhantomJs
         ~PhantomServer()
         {
 #if LeakCheck
-            Composite.Core.Instrumentation.DisposableResourceTracer.Register(stack);
+            Composite.Core.Instrumentation.DisposableResourceTracer.RegisterFinalizerExecution(stack);
 #endif
             // Finalizer calls Dispose(false)
             Dispose(false);

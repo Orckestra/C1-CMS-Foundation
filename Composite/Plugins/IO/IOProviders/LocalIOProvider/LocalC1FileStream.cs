@@ -125,6 +125,18 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
         {
             _fileStream?.Dispose();
             _fileStream = null;
+#if LeakCheck
+            GC.SuppressFinalize(this);
+#endif
         }
+
+#if LeakCheck
+        private string stack = Environment.StackTrace;
+        /// <exclude />
+        ~LocalC1FileStream()
+        {
+            Composite.Core.Instrumentation.DisposableResourceTracer.RegisterFinalizerExecution(stack);
+        }
+#endif
     }
 }

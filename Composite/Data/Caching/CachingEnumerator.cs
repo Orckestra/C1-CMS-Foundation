@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System;
 using Composite.Data.Foundation.CodeGeneration;
@@ -24,10 +24,20 @@ namespace Composite.Data.Caching
         public void Dispose()
         {
             _enumerator.Dispose();
+#if LeakCheck
+                GC.SuppressFinalize(this);
+#endif
         }
 
-
-        object IEnumerator.Current => WrapperConstructor(_enumerator.Current);
+#if LeakCheck
+        private string stack = Environment.StackTrace;
+        /// <exclude />
+        ~CachingEnumerator()
+        {
+            Composite.Core.Instrumentation.DisposableResourceTracer.RegisterFinalizerExecution(stack);
+        }
+#endif
+            object IEnumerator.Current => WrapperConstructor(_enumerator.Current);
 
 
         public bool MoveNext()

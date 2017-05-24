@@ -99,7 +99,7 @@ namespace Composite.C1Console.Tasks
         /// <exclude />
         ~TaskContainer()
         {
-            Composite.Core.Instrumentation.DisposableResourceTracer.Register(stack);
+            Composite.Core.Instrumentation.DisposableResourceTracer.RegisterFinalizerExecution(stack);
             Dispose(false);
         }
 #endif
@@ -108,7 +108,9 @@ namespace Composite.C1Console.Tasks
         public void Dispose()
         {
             Dispose(true);
+#if LeakCheck
             GC.SuppressFinalize(this);
+#endif
         }
 
 

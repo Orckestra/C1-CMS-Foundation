@@ -77,6 +77,9 @@ namespace Composite.Core.Application
         /// <exclude />
         public void Dispose()
         {
+#if LeakCheck
+            GC.SuppressFinalize(this);
+#endif
             if (!HostingEnvironment.IsHosted)
             {
                 return;
@@ -88,5 +91,15 @@ namespace Composite.Core.Application
             //_callbackFieldInfo.SetValue(_fileChangesManager, _savedCallbackValue);
             //_isFCNDisabledFieldInfo.SetValue(_fileChangesManager, (Int32)0);
         }
+
+#if LeakCheck
+        private string stack = Environment.StackTrace;
+        /// <exclude />
+        ~ShutdownGuard()
+        {
+            Composite.Core.Instrumentation.DisposableResourceTracer.RegisterFinalizerExecution(stack);
+        }
+#endif
+
     }
 }

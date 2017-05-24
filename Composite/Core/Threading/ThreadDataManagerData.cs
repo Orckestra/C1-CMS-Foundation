@@ -105,8 +105,20 @@ namespace Composite.Core.Threading
         {
             OnDispose?.Invoke();
             _disposed = true;
+
+#if LeakCheck
+            GC.SuppressFinalize(this);
+#endif
         }
 
+#if LeakCheck
+        private string stack = Environment.StackTrace;
+        /// <exclude />
+        ~ThreadDataManagerData()
+        {
+            Composite.Core.Instrumentation.DisposableResourceTracer.RegisterFinalizerExecution(stack);
+        }
+#endif
         #endregion
     }
 }
