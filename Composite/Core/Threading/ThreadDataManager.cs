@@ -293,8 +293,14 @@ using(Composite.Core.Threading.ThreadDataManager.EnsureInitialize())
             }
 
 
+#if LeakCheck
+            private string stack = Environment.StackTrace;
+#endif
             ~ThreadDataManagerScope()
             {
+#if LeakCheck
+                Composite.Core.Instrumentation.DisposableResourceTracer.Register(stack);
+#endif
                 Dispose(false);
             }
         }

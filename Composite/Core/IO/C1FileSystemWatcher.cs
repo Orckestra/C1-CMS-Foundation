@@ -268,16 +268,20 @@ namespace Composite.Core.IO
         void IDisposable.Dispose()
         {
             Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
+#if LeakCheck
+        private string stack = Environment.StackTrace;
         /// <summary>
         /// Destructor.
         /// </summary>
         ~C1FileSystemWatcher()
         {
+            Composite.Core.Instrumentation.DisposableResourceTracer.Register(stack);
             Dispose(false);
         }
-
+#endif
 
         /// <summary>
         /// Disposes the stream.

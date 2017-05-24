@@ -91,14 +91,15 @@ namespace Composite.Core.Implementation
             GC.SuppressFinalize(this);
         }
 
-
-
+#if LeakCheck
+        private string stack = Environment.StackTrace;
         /// <exclude />
         ~PageDataConnectionImplementation()
         {
+            Composite.Core.Instrumentation.DisposableResourceTracer.Register(stack);
             Dispose(false);
         }
-
+#endif
 
 
         /// <exclude />

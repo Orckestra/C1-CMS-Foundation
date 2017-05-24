@@ -93,12 +93,16 @@ namespace Composite.C1Console.Tasks
         }
 
 
+#if LeakCheck
+        private string stack = Environment.StackTrace;
+
         /// <exclude />
         ~TaskContainer()
         {
+            Composite.Core.Instrumentation.DisposableResourceTracer.Register(stack);
             Dispose(false);
         }
-
+#endif
 
         /// <exclude />
         public void Dispose()

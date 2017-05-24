@@ -176,14 +176,17 @@ namespace Composite.Core.Implementation
 
 
 
+#if LeakCheck
+        private string stack = Environment.StackTrace;
         /// <summary>
         /// See <see cref="Composite.Core.IO.C1StreamReader"/>.
         /// </summary>
         ~C1StreamReaderImplementation()
         {
+            Composite.Core.Instrumentation.DisposableResourceTracer.Register(stack);
             Dispose(false);
         }
-
+#endif
 
 
         /// <summary>

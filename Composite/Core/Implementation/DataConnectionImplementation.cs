@@ -1,6 +1,4 @@
-﻿//#define ConnectionLeakCheck
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -16,10 +14,6 @@ namespace Composite.Core.Implementation
     /// </summary>
     public class DataConnectionImplementation : DataConnectionBase, IDisposable
     {
-#if ConnectionLeakCheck
-        private string _allocationCallStack;
-#endif
-        
         private IDisposable _threadDataManager;
         private readonly DataScope _dataScope;
 
@@ -42,10 +36,6 @@ namespace Composite.Core.Implementation
         private void InitializeThreadData()
         {
             _threadDataManager = ThreadDataManager.EnsureInitialize();
-
-#if ConnectionLeakCheck
-            _allocationCallStack = new StackTrace().ToString();
-#endif
     }
 
     /// <summary>
@@ -187,16 +177,15 @@ namespace Composite.Core.Implementation
 
 
 
-        /// <exclude />
+#if LeakCheck
+        private string stack = Environment.StackTrace;
+/// <exclude />
         ~DataConnectionImplementation()
         {
-#if ConnectionLeakCheck
-            Log.LogError(nameof(DataConnection), "Not disposed data connection allocated at: " + _allocationCallStack);
-#endif
-
+            Composite.Core.Instrumentation.DisposableResourceTracer.Register(stack);
             Dispose(false);
         }
-
+#endif
 
 
         /// <summary>

@@ -215,11 +215,14 @@ namespace Composite.Core.Application
             }
 
 
-
+#if LeakCheck
+            private string stack = Environment.StackTrace;
             ~DisposableLock()
             {
+                Composite.Core.Instrumentation.DisposableResourceTracer.Register(stack);
                 Dispose(false);
             }
+#endif
         }
     }
 }

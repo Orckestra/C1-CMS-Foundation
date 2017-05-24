@@ -549,12 +549,15 @@ namespace Composite.Core.Implementation
 
 
 
+#if LeakCheck
+        private string stack = Environment.StackTrace;
         /// <exclude />
         ~C1StreamWriterImplementation()
         {
+            Composite.Core.Instrumentation.DisposableResourceTracer.Register(stack);
             Dispose(false);
         }
-
+#endif
 
 
         /// <summary>

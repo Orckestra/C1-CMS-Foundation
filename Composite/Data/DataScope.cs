@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Globalization;
 
 
@@ -92,11 +92,15 @@ namespace Composite.Data
         {
         }
 
+#if LeakCheck
+            private string stack = Environment.StackTrace;
         /// <exclude />
         ~DataScope()
         {
+            Composite.Core.Instrumentation.DisposableResourceTracer.Register(stack);
             Dispose(false);
         }
+#endif
 
         /// <exclude />
         public void Dispose()
