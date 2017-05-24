@@ -148,10 +148,13 @@ namespace Composite.Core.Xml
 
                 if (firstCompileError != null)
                 {
-                    string filePath = (string) GetPropertyValue(firstCompileError, "FileName");
-                    int line = (int) GetPropertyValue(firstCompileError, "Line");
+                    string filePath = (string)GetPropertyValue(firstCompileError, "FileName");
+                    int line = (int)GetPropertyValue(firstCompileError, "Line");
 
-                    return SourceCodePreview(filePath, line);
+                    if (!string.IsNullOrEmpty(filePath))
+                    {
+                        return SourceCodePreview(filePath, line);
+                    }
                 }
             }
 
