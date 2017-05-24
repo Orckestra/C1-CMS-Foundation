@@ -1,6 +1,4 @@
 ﻿using System;
-using Composite.Core.Collections.Generic;
-
 
 namespace Composite.Core.Implementation
 {
@@ -12,8 +10,8 @@ namespace Composite.Core.Implementation
     public class ImplementationContainer<T>
         where T : class
     {
-        private T _implementation = null;
-        private bool _disposed = false;
+        private T _implementation;
+        private bool _disposed;
         private readonly Func<T> _create;
 
 
@@ -54,12 +52,7 @@ namespace Composite.Core.Implementation
         {
             _disposed = true;
 
-            IDisposable disposable = _implementation as IDisposable;
-
-            if (disposable != null)
-            {
-                disposable.Dispose();
-            }
+            (_implementation as IDisposable)?.Dispose();
 
             _implementation = null;
         }
