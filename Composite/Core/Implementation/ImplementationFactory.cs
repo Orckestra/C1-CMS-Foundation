@@ -39,13 +39,8 @@ namespace Composite.Core.Implementation
         /// <summary>
         /// Documentation pending
         /// </summary>
-        public virtual DataConnectionImplementation StatelessDataConnection
-        {
-            get
-            {
-                return new DataConnectionImplementation();
-            }
-        }
+        public virtual StatelessDataConnectionImplementation StatelessDataConnection 
+            => new StatelessDataConnectionImplementation();
 
         internal object ResolveService(Type t)
         {

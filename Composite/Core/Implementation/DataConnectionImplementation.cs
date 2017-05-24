@@ -24,15 +24,6 @@ namespace Composite.Core.Implementation
         private readonly DataScope _dataScope;
 
         internal DataScope DataScope => _dataScope;
-        /// <summary>
-        /// Stateless constructor. This is used when implementations of static methods needs to be called
-        /// Used when New and AllLocales are called
-        /// </summary>
-        public DataConnectionImplementation()
-        {
-            InitializeThreadData();
-            InitializeScope();
-        }
 
 
         /// <summary>
@@ -171,21 +162,6 @@ namespace Composite.Core.Implementation
         }
 
 
-
-        /// <summary>
-        /// Documentation pending
-        /// </summary>
-        /// <typeparam name="TData"></typeparam>
-        /// <returns></returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", MessageId = "New", Justification = "This is what we want")]
-        public virtual TData New<TData>()
-            where TData : class, IData
-        {
-            return DataFacade.BuildNew<TData>();
-        }
-
-
-
         /// <summary>
         /// Documentation pending
         /// </summary>
@@ -198,10 +174,6 @@ namespace Composite.Core.Implementation
         public virtual CultureInfo CurrentLocale => this.Locale;
 
 
-        /// <summary>
-        /// Documentation pending
-        /// </summary>
-        public virtual IEnumerable<CultureInfo> AllLocales => DataLocalizationFacade.ActiveLocalizationCultures;
 
 
         /// <summary>
