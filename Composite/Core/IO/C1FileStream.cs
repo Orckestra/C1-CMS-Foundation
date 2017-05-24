@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Runtime.InteropServices;
 using Composite.Core.Implementation;
 
 
@@ -13,10 +12,10 @@ namespace Composite.Core.IO
     /// See System.IO.FileStream for more documentation on the methods of this class.
     /// See <see cref="Composite.Core.IO.Plugins.IOProvider.IC1FileStream"/>. 
     /// </summary>
-    public class C1FileStream : Stream, IDisposable
+    public class C1FileStream : Stream
     {
-        private bool _disposed = false;
-        private ImplementationContainer<C1FileStreamImplementation> _implementation;
+        private bool _disposed;
+        private readonly ImplementationContainer<C1FileStreamImplementation> _implementation;
 
 
 
@@ -94,27 +93,13 @@ namespace Composite.Core.IO
         /// <summary>
         /// Name of the file.
         /// </summary>
-        public string Name
-        {
-            get
-            {
-                return _implementation.Implementation.Name;
-            }
-        }
-
+        public string Name => _implementation.Implementation.Name;
 
 
         /// <summary>
         /// Size of the file in bytes.
         /// </summary>
-        public override long Length
-        {
-            get
-            {
-                return _implementation.Implementation.Length;
-            }
-        }
-
+        public override long Length => _implementation.Implementation.Length;
 
 
         /// <summary>
@@ -210,40 +195,19 @@ namespace Composite.Core.IO
         /// <summary>
         /// Returns true if its possible to read from the stream.
         /// </summary>
-        public override bool CanRead
-        {
-            get
-            {
-                return _implementation.Implementation.CanRead;
-            }
-        }
-
+        public override bool CanRead => _implementation.Implementation.CanRead;
 
 
         /// <summary>
         /// Returns true if its possible to seek in the stream.
         /// </summary>
-        public override bool CanSeek
-        {
-            get
-            {
-                return _implementation.Implementation.CanSeek;
-            }
-        }
-
+        public override bool CanSeek => _implementation.Implementation.CanSeek;
 
 
         /// <summary>
         /// Returns true if its possible to write to the stream.
         /// </summary>
-        public override bool CanWrite
-        {
-            get
-            {
-                return _implementation.Implementation.CanWrite;
-            }
-        }
-
+        public override bool CanWrite => _implementation.Implementation.CanWrite;
 
 
         /// <summary>
@@ -268,27 +232,6 @@ namespace Composite.Core.IO
 
 
         /// <summary>
-        /// Closes the file stream.
-        /// </summary>
-        public override void Close()
-        {
-            base.Close();
-            Dispose(true);
-        }
-
-
-
-        /// <summary>
-        /// Destructor.
-        /// </summary>
-        ~C1FileStream()
-        {
-            Dispose(false);
-        }
-      
-
-
-        /// <summary>
         /// Disposes the file stream.
         /// </summary>
         /// <param name="disposing"></param>
@@ -297,57 +240,8 @@ namespace Composite.Core.IO
             if (disposing && !_disposed)
             {
                 _disposed = true;
-                _implementation.DisposeImplementation();                
+                _implementation.DisposeImplementation();
             }
         }
-
-
-
-        //public virtual bool IsAsync 
-        //{ 
-        //    get 
-        //    { 
-        //        throw new NotImplementedException(); 
-        //    } 
-        //}
-
-
-
-        ////[Obsolete("This property has been deprecated.  Please use FileStream's SafeFileHandle property instead.  http://go.microsoft.com/fwlink/?linkid=14202")]
-        //public virtual IntPtr Handle 
-        //{ 
-        //    get 
-        //    { 
-        //        throw new NotImplementedException(); 
-        //    } 
-        //}
-
-
-
-        //public FileSecurity GetAccessControl() 
-        //{ 
-        //    throw new NotImplementedException(); 
-        //}
-
-
-
-        //public void SetAccessControl(FileSecurity fileSecurity) 
-        //{ 
-        //    throw new NotImplementedException(); 
-        //}
-
-
-
-        //public virtual void Lock(long position, long length) 
-        //{ 
-        //    throw new NotImplementedException(); 
-        //}
-
-
-
-        //public virtual void Unlock(long position, long length) 
-        //{ 
-        //    throw new NotImplementedException(); 
-        //}
     }
 }

@@ -20,14 +20,9 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
         {
             if (!_disposed)
             {
-                FileStream.Close();
+                FileStream.Dispose();
                 _disposed = true;
             }
-        }
-
-        ~LogFileInfo()
-        {
-            Dispose();
         }
     }
 }
