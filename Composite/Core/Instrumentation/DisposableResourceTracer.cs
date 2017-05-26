@@ -23,6 +23,10 @@ namespace Composite.Core.Instrumentation
         private static object _lock = new object();
         private static object _dumpLock = new object();
         private static bool dumpAlways = false;
+        private const string _redundant = @"   at System.Environment.GetStackTrace(Exception e, Boolean needFileInfo)
+   at System.Environment.get_StackTrace()
+";
+
 
         /// <exclude />
         public static readonly DateTime TraceStart = DateTime.Now;
@@ -58,14 +62,15 @@ namespace Composite.Core.Instrumentation
         {
             lock (_lock)
             {
+                string topStack = GetMinimalStackTop(stack);
                 int count = 0;
-                if (stacks.TryGetValue(stack, out count))
+                if (stacks.TryGetValue(topStack, out count))
                 {
-                    stacks[stack] = count + 1;
+                    stacks[topStack] = count + 1;
                 }
                 else
                 {
-                    stacks.Add(stack, 1);
+                    stacks.Add(topStack, 1);
                 }
             }
 
@@ -78,8 +83,6 @@ namespace Composite.Core.Instrumentation
             string fileName = String.Format("DisposableResourceTrace_{0}.xml", TraceStart.ToString("yyyy_MM_dd_HH_mm_ss"));
             string fullPath = Path.Combine(rootDir, fileName);
 
-            var redundant = @"   at System.Environment.GetStackTrace(Exception e, Boolean needFileInfo)
-   at System.Environment.get_StackTrace()";
             var stacks = GetStacks();
 
             var ordered = stacks.OrderByDescending(f => f.Value);
@@ -90,13 +93,33 @@ namespace Composite.Core.Instrumentation
                 , new XAttribute("seconds", (DateTime.Now - TraceStart).TotalSeconds)
                 );
             dumpDoc.Add(
-                ordered.Select(f => new XElement("Trace", new XAttribute("count", f.Value), f.Key.Replace(redundant,"")))
+                ordered.Select(f => new XElement("Trace", new XAttribute("count", f.Value), f.Key))
                 );
 
             lock (_dumpLock)
             {
                 dumpDoc.Save(fullPath);
             }
+        }
+
+        private static string GetMinimalStackTop(string stack)
+        {
+            string[] stackLines = stack.Replace(_redundant,"").Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+
+            bool foundCaller = false;
+            int lineNum = 1;
+
+            StringBuilder sb = new StringBuilder(stackLines[0]+"\n");
+
+            while(!foundCaller && lineNum < stackLines.Length)
+            {
+                string line = stackLines[lineNum];
+                sb.AppendLine(line);
+                foundCaller = line.TrimStart().StartsWith("at Composite.") && !line.Contains("..ctor") && !line.Contains(".get_");
+                lineNum++;
+            }
+
+            return sb.ToString();
         }
 
         /// <summary>

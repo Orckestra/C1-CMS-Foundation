@@ -832,6 +832,9 @@ namespace Composite
 
             public void Dispose()
             {
+#if LeakCheck
+                GC.SuppressFinalize(this);
+#endif
                 if (!_isWriterLock)
                 {
                     ReleaseReaderLock();
@@ -861,9 +864,6 @@ namespace Composite
                 #endregion
 
                 ReleaseWriterLock();
-#if LeakCheck
-                GC.SuppressFinalize(this);
-#endif
             }
 
 #if LeakCheck
