@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Composite.Data;
@@ -89,6 +89,7 @@ namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunc
             _widgetStaticTypeFunctions.Add(new TextBoxWidgetFuntion(_entityTokenFactory));
             _widgetStaticTypeFunctions.Add(new TextAreaWidgetFuntion(_entityTokenFactory));
             _widgetStaticTypeFunctions.Add(new String.SelectorWidgetFunction(_entityTokenFactory));
+            _widgetStaticTypeFunctions.Add(new String.HierarchicalSelectorWidgetFunction(_entityTokenFactory));
             _widgetStaticTypeFunctions.Add(new DataIdMultiSelectorWidgetFunction(_entityTokenFactory));
             _widgetStaticTypeFunctions.Add(new String.VisualXhtmlEditorFuntion(_entityTokenFactory));
             _widgetStaticTypeFunctions.Add(new String.UrlComboBoxWidgetFunction(_entityTokenFactory));
