@@ -7,6 +7,11 @@ namespace Composite.C1Console.Forms.CoreUiControls
     [ControlValueProperty("SelectedKeys")]
     internal abstract class HierarchicalSelectorUiControl : UiControl
     {
+        internal HierarchicalSelectorUiControl()
+        {
+            this.AutoSelectParents = true;
+        }
+
         [BindableProperty]
         [FormsProperty]
         public IEnumerable<object> SelectedKeys { get; set; }
@@ -16,6 +21,9 @@ namespace Composite.C1Console.Forms.CoreUiControls
 
         [FormsProperty]
         public bool AutoSelectChildren { get; set; }
+
+        [FormsProperty]
+        public bool AutoSelectParents { get; set; }
 
         [FormsProperty]
         public bool Required { get; set; }
