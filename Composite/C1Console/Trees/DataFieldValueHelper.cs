@@ -62,7 +62,15 @@ namespace Composite.C1Console.Trees
                     }
                     else if (entry.PropertyInfo.PropertyType == typeof(DateTime))
                     {
-                        value = ((DateTime)value).ToString("yyyy MM dd");
+                        value = ((DateTime)value).ToString(entry.Format ?? "yyyy MM dd");
+                    }
+                    else if (entry.PropertyInfo.PropertyType == typeof(Decimal))
+                    {
+                        value = ((Decimal)value).ToString(entry.Format ?? "G");
+                    }
+                    else if (entry.PropertyInfo.PropertyType == typeof(int))
+                    {
+                        value = ((int)value).ToString(entry.Format ?? "G");
                     }
                 }
                 else
@@ -99,9 +107,12 @@ namespace Composite.C1Console.Trees
 
                 string value = match.Groups["string"].Value;
                 string[] values = value.Split(':');
-                if (values.Length != 4)
+                if (values.Length != 4 && values.Length != 5)
                 {
-                    ownerTreeNode.AddValidationError("TreeValidationError.DataFieldValueHelper.WrongFormat", match.Value, string.Format(@"{0}[InterfaceType]:[FieldName]}}", PreFix));
+                    ownerTreeNode.AddValidationError("TreeValidationError.DataFieldValueHelper.WrongFormat", 
+                        match.Value, 
+                        string.Format(@"{0}[InterfaceType]:[FieldName]}}", PreFix),
+                        string.Format(@"{0}[InterfaceType]:[FieldName]:[Format]}}", PreFix));
                     return;
                 }
 
@@ -139,12 +150,15 @@ namespace Composite.C1Console.Trees
                     return;
                 }
 
+                string format = (values.Length == 5 ? values[4] : null);
+
                 bool isReferencingProperty = DataReferenceFacade.GetForeignKeyProperties(interfaceType).Any(f => f.SourcePropertyInfo.Equals(propertyInfo));
 
                 DataFieldValueHelperEntry entry = new DataFieldValueHelperEntry(
                     match.Value,
                     interfaceType,
                     propertyInfo,
+                    format,
                     isReferencingProperty
                 );
 
@@ -160,11 +174,12 @@ namespace Composite.C1Console.Trees
 
         private sealed class DataFieldValueHelperEntry
         {
-            public DataFieldValueHelperEntry(string match, Type interfaceType, PropertyInfo propertyInfo, bool isReference)
+            public DataFieldValueHelperEntry(string match, Type interfaceType, PropertyInfo propertyInfo, string format, bool isReference)
             {
                 this.Match = match;
                 this.InterfaceType = interfaceType;
                 this.PropertyInfo = propertyInfo;
+                this.Format = format;
                 this.IsReference = isReference;
             }
 
@@ -172,6 +187,7 @@ namespace Composite.C1Console.Trees
             public string Match { get; private set; }
             public Type InterfaceType { get; private set; }
             public PropertyInfo PropertyInfo { get; private set; }
+            public string Format { get; private set; }
             public bool IsReference { get; private set; }
 
 

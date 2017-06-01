@@ -70,7 +70,7 @@
   <string key="TreeValidationError.FieldOrderBy.UnknownDirection" value="The direction value '{0}' is wrong, should be either 'ascending' or 'descending'" />
   <string key="TreeValidationError.FieldOrderBy.UnknownField" value="The type '{0}' does not contain a field named '{1}'" />
 
-  <string key="TreeValidationError.DataFieldValueHelper.WrongFormat" value="'{0}' is in wrong format, use the format: {1}" />
+  <string key="TreeValidationError.DataFieldValueHelper.WrongFormat" value="'{0}' is in wrong format, use the format {1} for raw values or {2} for formatted values. For format options, see the .ToString() oprions for the field type, ex 'yyyy MMM' for DateTime" />
   <string key="TreeValidationError.DataFieldValueHelper.InterfaceNotInParentTree" value="The interface '{0}' is not contained in the current element or any of its parents" />
 
   <string key="TreeValidationError.Range.WrongFormat" value="The range value is wrongly formatted" />
