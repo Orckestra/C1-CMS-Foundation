@@ -271,18 +271,17 @@ namespace Composite.C1Console.Trees
                         {
                             Log.LogError(LogTitle, "Tree {0} was not loaded due to the following validation errors", treeId);
 
-                            var sb = new StringBuilder();
                             foreach (ValidationError validationError in tree.BuildResult.ValidationErrors)
                             {
-                                sb.AppendLine($"{validationError.Message} at {validationError.XPath}");
-                                Log.LogError("TreeFacade", $"{validationError.Message} at {validationError.XPath} in {filename}");
+                                if (string.IsNullOrEmpty(validationError.XPath))
+                                {
+                                    Log.LogError("TreeFacade", $"{validationError.Message} in {filename}");
+                                }
+                                else
+                                {
+                                    Log.LogError("TreeFacade", $"{validationError.Message} at {validationError.XPath} in {filename}");
+                                }
                             }
-
-                            //Tree errorTree = CreateErrorTree(treeId, sb.ToString());
-                            //if (_resourceLocker.Resources.Trees.ContainsKey(errorTree.TreeId) == false)
-                            //{
-                            //    _resourceLocker.Resources.Trees.Add(errorTree.TreeId, errorTree);
-                            //}
                         }
                         else
                         {
