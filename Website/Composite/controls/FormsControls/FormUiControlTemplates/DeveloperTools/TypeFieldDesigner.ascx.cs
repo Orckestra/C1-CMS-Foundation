@@ -463,11 +463,11 @@ namespace CompositeTypeFieldDesigner
                 || fieldType == typeof(bool));
 
             bool facetedSearchEnabled = fieldIsSearchable
-                && !isDataReference
-                && (fieldType == typeof(string)
-                || fieldType == typeof(DateTime)
-                || fieldType == typeof(DateTime?)
-                || fieldType == typeof(bool));
+                && (isDataReference 
+                    || fieldType == typeof(string)
+                    || fieldType == typeof(DateTime)
+                    || fieldType == typeof(DateTime?)
+                    || fieldType == typeof(bool));
 
             plhSearch.Visible = indexTextEnabled || searchPreviewEnabled || facetedSearchEnabled;
 
