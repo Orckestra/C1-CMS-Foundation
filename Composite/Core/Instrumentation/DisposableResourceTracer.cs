@@ -115,7 +115,7 @@ namespace Composite.Core.Instrumentation
             {
                 string line = stackLines[lineNum];
                 sb.AppendLine(line);
-                foundCaller = line.TrimStart().StartsWith("at Composite.") && !line.Contains("..ctor") && !line.Contains(".get_");
+                foundCaller = line.TrimStart().StartsWith("at Composite.") && !line.Contains("..ctor") && !line.Contains(".get_") && !line.Contains(".Threading.");
                 lineNum++;
             }
 
