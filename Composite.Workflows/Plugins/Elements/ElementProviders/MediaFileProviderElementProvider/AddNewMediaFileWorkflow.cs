@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Workflow.Activities;
@@ -195,6 +195,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
         private void finalizeCodeActivity_Finalize_ExecuteCode(object sender, EventArgs e)
         {
             AddNewTreeRefresher addNewTreeRefresher = this.CreateAddNewTreeRefresher(this.EntityToken);
+            DataEntityToken focusEntityToken;
 
             UploadedFile uploadedFile = this.GetBinding<UploadedFile>("UploadedFile");
             string filename;
@@ -235,9 +236,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
 
                     IMediaFile addedFile = DataFacade.AddNew<IMediaFile>(mediaFile, store.DataSourceId.ProviderName);
 
-                    addNewTreeRefresher.PostRefreshMesseges(addedFile.GetDataEntityToken());
-
-                    SelectElement(addedFile.GetDataEntityToken());
+                    focusEntityToken = addedFile.GetDataEntityToken();
                 }
                 else
                 {
@@ -261,13 +260,14 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
                     DataFacade.Update(existingFile);
                     DataFacade.Update(fileData);
 
-                    addNewTreeRefresher.PostRefreshMesseges(existingFile.GetDataEntityToken());
-
-                    SelectElement(existingFile.GetDataEntityToken());
+                    focusEntityToken = existingFile.GetDataEntityToken();
                 }
 
                 transactionScope.Complete();
             }
-        }        
+
+            addNewTreeRefresher.PostRefreshMesseges(focusEntityToken);
+            SelectElement(focusEntityToken);
+        }
     }
 }
