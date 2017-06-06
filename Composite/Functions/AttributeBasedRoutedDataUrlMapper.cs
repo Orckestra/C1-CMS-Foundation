@@ -52,22 +52,23 @@ namespace Composite.Functions
             string pathInfo = pageUrlData.PathInfo;
             bool pathIsEmpty = string.IsNullOrEmpty(pathInfo);
 
-            if (pathIsEmpty && !pageUrlData.HasQueryParameters)
+            int pathInfoSegmentsExpected = _mapper.PathSegmentsCount;
+
+            if (pathIsEmpty && (pathInfoSegmentsExpected > 0 || !pageUrlData.HasQueryParameters))
             {
                 return new RoutedDataModel(GetDataQueryable);
             }
 
-            int totalSegments = _mapper.PathSegmentsCount;
-            if (pathIsEmpty != (totalSegments == 0))
+            if (pathIsEmpty != (pathInfoSegmentsExpected == 0))
             {
                 return null;
             }
 
             string[] segments = !pathIsEmpty
                 ? pathInfo.Split(new[] {'/'}, StringSplitOptions.RemoveEmptyEntries)
-                : new string[0];
+                : Array.Empty<string>();
 
-            if (segments.Length != totalSegments)
+            if (segments.Length != pathInfoSegmentsExpected)
             {
                 return null;
             }
