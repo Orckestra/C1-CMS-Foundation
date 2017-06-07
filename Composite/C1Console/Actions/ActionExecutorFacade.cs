@@ -1,19 +1,19 @@
-//#warning REMARK THIS!!!
+﻿//#warning REMARK THIS!!!
 //#define NO_SECURITY
 using System;
 using System.Collections.Generic;
 using Composite.C1Console.Actions.Foundation;
 using Composite.C1Console.Actions.Workflows;
 using Composite.C1Console.Events;
-using Composite.Core.Logging;
 using Composite.C1Console.Security;
 using Composite.C1Console.Tasks;
 using Composite.C1Console.Workflow;
+using Composite.Core;
 
 
 namespace Composite.C1Console.Actions
 {
-    /// <summary>    
+    /// <summary>
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
@@ -42,7 +42,7 @@ namespace Composite.C1Console.Actions
             IEnumerable<UserPermissionDefinition> userPermissionDefinitions = PermissionTypeFacade.GetUserPermissionDefinitions(username);
             IEnumerable<UserGroupPermissionDefinition> userGroupPermissionDefinitions = PermissionTypeFacade.GetUserGroupPermissionDefinitions(username);
             SecurityResult securityResult = SecurityResolver.Resolve(UserValidationFacade.GetUserToken(), actionToken, entityToken, userPermissionDefinitions, userGroupPermissionDefinitions);
-            if ((securityResult != SecurityResult.Allowed) && (entityToken.GetType() != typeof(SecurityViolationWorkflowEntityToken)))
+            if (securityResult != SecurityResult.Allowed && !(entityToken is SecurityViolationWorkflowEntityToken))
             {
                 return ExecuteSecurityViolation(actionToken, entityToken, flowControllerServicesContainer);
             }
@@ -50,72 +50,71 @@ namespace Composite.C1Console.Actions
 
             bool ignoreLocking = actionToken.IsIgnoreEntityTokenLocking();
 
-            if ((ignoreLocking) ||
-                (ActionLockingFacade.IsLocked(entityToken) == false))
-            {
-                IActionExecutor actionExecutor = ActionExecutorCache.GetActionExecutor(actionToken);
-
-                ActionEventSystemFacade.FireOnBeforeActionExecution(entityToken, actionToken);
-
-                FlowToken flowToken;
-                using (TaskContainer taskContainer = TaskManagerFacade.CreateNewTasks(entityToken, actionToken, taskManagerEvent))
-                {
-                    ITaskManagerFlowControllerService taskManagerService = null;
-                    if (flowControllerServicesContainer.GetService(typeof(ITaskManagerFlowControllerService)) == null)
-                    {
-                        taskManagerService = new TaskManagerFlowControllerService(taskContainer);
-                        flowControllerServicesContainer.AddService(taskManagerService);
-                    }
-
-                    try
-                    {
-                        if ((actionExecutor is IActionExecutorSerializedParameters))
-                        {
-                            string serializedEntityToken = EntityTokenSerializer.Serialize(entityToken);
-                            string serializedActionToken = ActionTokenSerializer.Serialize(actionToken);
-
-                            flowToken = Execute(actionExecutor as IActionExecutorSerializedParameters,
-                                                serializedEntityToken, serializedActionToken, actionToken,
-                                                flowControllerServicesContainer);
-                        }
-                        else
-                        {
-                            flowToken = Execute(actionExecutor, entityToken, actionToken,
-                                                flowControllerServicesContainer);
-                        }
-                    }
-                    finally
-                    {
-                        if (taskManagerService != null)
-                        {
-                            flowControllerServicesContainer.RemoveService(taskManagerService);
-                        }
-                    }
-
-                    taskContainer.SetOnIdleTaskManagerEvent(new FlowTaskManagerEvent(flowToken));
-                    taskContainer.UpdateTasksWithFlowToken(flowToken);
-
-                    taskContainer.SaveTasks();
-                }
-
-                ActionEventSystemFacade.FireOnAfterActionExecution(entityToken, actionToken, flowToken);
-
-                IManagementConsoleMessageService managementConsoleMessageService = flowControllerServicesContainer.GetService<IManagementConsoleMessageService>();
-                if (managementConsoleMessageService != null)
-                {
-                    FlowControllerFacade.RegisterNewFlowInformation(flowToken, entityToken, actionToken, managementConsoleMessageService.CurrentConsoleId);
-                }
-                else
-                {
-                    LoggingService.LogWarning("ActionExecutorFacade", "Missing ManagementConsoleMessageService, can not register the flow");
-                }
-
-                return flowToken;
-            }
-            else
+            if (!ignoreLocking && ActionLockingFacade.IsLocked(entityToken))
             {
                 return ExecuteEntityTokenLocked(actionToken, entityToken, flowControllerServicesContainer);
             }
+
+            IActionExecutor actionExecutor = ActionExecutorCache.GetActionExecutor(actionToken);
+
+            ActionEventSystemFacade.FireOnBeforeActionExecution(entityToken, actionToken);
+
+            FlowToken flowToken;
+            using (TaskContainer taskContainer = TaskManagerFacade.CreateNewTasks(entityToken, actionToken, taskManagerEvent))
+            {
+                ITaskManagerFlowControllerService taskManagerService = null;
+                if (flowControllerServicesContainer.GetService(typeof(ITaskManagerFlowControllerService)) == null)
+                {
+                    taskManagerService = new TaskManagerFlowControllerService(taskContainer);
+                    flowControllerServicesContainer.AddService(taskManagerService);
+                }
+
+                try
+                {
+                    if (actionExecutor is IActionExecutorSerializedParameters)
+                    {
+                        string serializedEntityToken = EntityTokenSerializer.Serialize(entityToken);
+                        string serializedActionToken = ActionTokenSerializer.Serialize(actionToken);
+
+                        flowToken = Execute(actionExecutor as IActionExecutorSerializedParameters,
+                            serializedEntityToken, serializedActionToken, actionToken,
+                            flowControllerServicesContainer);
+                    }
+                    else
+                    {
+                        flowToken = Execute(actionExecutor, entityToken, actionToken,
+                            flowControllerServicesContainer);
+                    }
+                }
+                finally
+                {
+                    if (taskManagerService != null)
+                    {
+                        flowControllerServicesContainer.RemoveService(taskManagerService);
+                    }
+                }
+
+                taskContainer.SetOnIdleTaskManagerEvent(new FlowTaskManagerEvent(flowToken));
+                taskContainer.UpdateTasksWithFlowToken(flowToken);
+
+                taskContainer.SaveTasks();
+            }
+
+            ActionEventSystemFacade.FireOnAfterActionExecution(entityToken, actionToken, flowToken);
+
+            IManagementConsoleMessageService managementConsoleMessageService = flowControllerServicesContainer
+                .GetService<IManagementConsoleMessageService>();
+            if (managementConsoleMessageService != null)
+            {
+                FlowControllerFacade.RegisterNewFlowInformation(flowToken, entityToken, actionToken,
+                    managementConsoleMessageService.CurrentConsoleId);
+            }
+            else
+            {
+                Log.LogWarning(nameof(ActionExecutorFacade), "Missing ManagementConsoleMessageService, can not register the flow");
+            }
+
+            return flowToken;
         }
 
 
@@ -152,12 +151,7 @@ namespace Composite.C1Console.Actions
         {
             FlowToken result = actionExecutor.Execute(serializedEntityToken, serializedActionToken, actionToken, flowControllerServicesContainer);
 
-            if (result == null)
-            {
-                result = new NullFlowToken();
-            }
-
-            return result;
+            return result ?? new NullFlowToken();
         }
 
 
@@ -166,12 +160,7 @@ namespace Composite.C1Console.Actions
         {
             FlowToken result = actionExecutor.Execute(entityToken, actionToken, flowControllerServicesContainer);
 
-            if (result == null)
-            {
-                result = new NullFlowToken();
-            }
-
-            return result;
+            return result ?? new NullFlowToken();
         }
     }
 }

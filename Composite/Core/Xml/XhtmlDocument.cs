@@ -89,27 +89,14 @@ namespace Composite.Core.Xml
         /// <summary>
         /// The head element for the XHTML Document
         /// </summary>
-        public XElement Head
-        {
-            get
-            {
-                return this.Root.Element(_head_XName);
-            }
-        }
+        public XElement Head => this.Root.Element(_head_XName);
 
 
 
         /// <summary>
         /// The body element for the XHTML Document
         /// </summary>
-        public XElement Body
-        {
-            get
-            {
-                return this.Root.Element(_body_XName);
-            }
-        }
-
+        public XElement Body => this.Root.Element(_body_XName);
 
 
         /// <summary>
@@ -225,9 +212,9 @@ namespace Composite.Core.Xml
                 }
             }
 
-            if (nodes.Count == 1 && nodes[0] is XElement && (nodes[0] as XElement).Name.LocalName == "html")
+            if (nodes.Count == 1 && nodes[0] is XElement element && element.Name.LocalName == "html")
             {
-                return new XhtmlDocument(nodes[0] as XElement);
+                return new XhtmlDocument(element);
             }
 
             var document = new XhtmlDocument();
@@ -315,24 +302,16 @@ namespace Composite.Core.Xml
         {
             Verify.ArgumentNotNull(value, "value");
 
-            if (targetType == typeof(XhtmlDocument) && value is XElement)
+            if (targetType == typeof(XhtmlDocument) && value is XElement element)
             {
-                XElement valueCasted = (XElement)value;
-                targetValue = new XhtmlDocument(valueCasted);
+                targetValue = new XhtmlDocument(element);
                 return true;
             }
 
-            if (targetType == typeof(XElement) && value is XhtmlDocument)
+            if ((targetType == typeof(XElement) || targetType == typeof(XNode))
+                && value is XhtmlDocument document)
             {
-                XhtmlDocument valueCasted = (XhtmlDocument)value;
-                targetValue = valueCasted.Root;
-                return true;
-            }
-
-            if (targetType == typeof(XNode) && value is XhtmlDocument)
-            {
-                XhtmlDocument valueCasted = (XhtmlDocument)value;
-                targetValue = valueCasted.Root;
+                targetValue = document.Root;
                 return true;
             }
 

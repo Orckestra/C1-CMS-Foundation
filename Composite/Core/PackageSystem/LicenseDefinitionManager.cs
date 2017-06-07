@@ -106,15 +106,15 @@ namespace Composite.Core.PackageSystem
                 InstallationId = (Guid)doc.Descendants("InstallationId").Single(),
                 ProductId = (Guid)doc.Descendants("ProductId").Single(),
                 Permanent = (bool)doc.Descendants("Permanent").Single(),
-                Expires = (doc.Descendants("Expires").Any() ? (DateTime)doc.Descendants("Expires").Single() : DateTime.MaxValue),
+                Expires = (DateTime?)doc.Descendants("Expires").SingleOrDefault() ?? DateTime.MaxValue,
                 LicenseKey = doc.Descendants("LicenseKey").Single().Value,
-                PurchaseUrl = (doc.Descendants("PurchaseUrl").Any() ? doc.Descendants("PurchaseUrl").Single().Value : ""),
+                PurchaseUrl = doc.Descendants("PurchaseUrl").SingleOrDefault()?.Value ?? "",
                 LicenseFileName = filePath
             };
 
             if (licenseDefinition.InstallationId != InstallationInformationFacade.InstallationId)
             {
-                Log.LogError(LogTitle, string.Format("The license for the product '{0}' ({1}) does not match the current installation", licenseDefinition.ProductId, licenseDefinition.ProductName));
+                Log.LogError(LogTitle, $"The license for the product '{licenseDefinition.ProductId}' ({licenseDefinition.ProductName}) does not match the current installation");
                 return null;
             }
 
@@ -145,7 +145,7 @@ namespace Composite.Core.PackageSystem
 
         private static string GetObsoleteLicenseFilename(Guid productId)
         {
-            return Path.Combine(_packageLicenseDirectory, string.Format("{0}.xml", productId));
+            return Path.Combine(_packageLicenseDirectory, $"{productId}.xml");
         }
     }
 }
