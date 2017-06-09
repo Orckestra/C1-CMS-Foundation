@@ -780,7 +780,8 @@ namespace Composite.Plugins.Routing.Pages
                 {
                     if (hostnameBinding.Hostname != urlSpace.Hostname)
                     {
-                        result.Append("http://").Append(hostnameBinding.Hostname);
+                        result.AppendFormat("http{0}://", hostnameBinding.EnforceHttps ? "s" : "")
+                              .Append(hostnameBinding.Hostname);
                     }
                 }
                 else
