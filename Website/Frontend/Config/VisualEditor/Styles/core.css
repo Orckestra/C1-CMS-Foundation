@@ -1,4 +1,4 @@
-/*
+﻿/*
     Consider NOT changing this file.
 
     This is fallback styling, ensuring the visual editor content look ok.
@@ -121,7 +121,7 @@ img.compositeFunctionWysiwygRepresentation {
 
 img.compositeFunctionWysiwygRepresentation.loaded{
     background-image:url('../../../../Composite/images/functionheaderbackground.png');
-    background-size: 2400px 60px;
+    background-size: 8000px 60px;
     background-repeat: no-repeat;
     background-position: top right;
     background-color: none;
@@ -132,7 +132,7 @@ img.compositeFunctionWysiwygRepresentation.loaded{
 }
 
 img.compositeFunctionWysiwygRepresentation.loaded:hover {
-    background-position: right -1100px top;
+    background-position: right -3900px top;
 }
 
 img.compositeFunctionWysiwygRepresentation.loaded.editHover {
