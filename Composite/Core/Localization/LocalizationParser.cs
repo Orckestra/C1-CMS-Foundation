@@ -16,7 +16,7 @@ namespace Composite.Core.Localization
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class LocalizationParser
     {
-        private static Regex _attributRegex = new Regex(@"\$\((?<type>[^:]+):(?<id>[^\)]+)\)");
+        private static readonly Regex _attributRegex = new Regex(@"\$\((?<type>[^:]+):(?<id>[^\)]+)\)");
 
 
         /// <exclude />
@@ -35,16 +35,16 @@ namespace Composite.Core.Localization
                     else if (element.Name.LocalName == "switch")
                     {
                         HandleSwitchElement(element);
-                    }                   
+                    }
                 }
 
                 IEnumerable<XAttribute> attributes = element.Attributes().ToList();
                 foreach (XAttribute attribute in attributes)
                 {
                     Match match = _attributRegex.Match(attribute.Value);
-                    if ((match.Success) && (match.Groups["type"].Value == "lang")) 
+                    if (match.Success && match.Groups["type"].Value == "lang") 
                     {
-                        string newValue = StringResourceSystemFacade.ParseString(string.Format("${{{0}}}", match.Groups["id"].Value));
+                        string newValue = StringResourceSystemFacade.ParseString($"${{{match.Groups["id"].Value}}}");
                         attribute.SetValue(newValue);
                     }
                 }
@@ -56,9 +56,9 @@ namespace Composite.Core.Localization
         private static void HandleStringElement(XElement element)
         {
             XAttribute attribute = element.Attribute("key");
-            if (attribute == null) throw new InvalidOperationException(string.Format("Missing attibute named 'key' at {0}", element));
+            if (attribute == null) throw new InvalidOperationException($"Missing attibute named 'key' at {element}");
 
-            string newValue = StringResourceSystemFacade.ParseString(string.Format("${{{0}}}", attribute.Value));
+            string newValue = StringResourceSystemFacade.ParseString($"${{{attribute.Value}}}");
 
             element.ReplaceWith(newValue);
         }
@@ -67,14 +67,14 @@ namespace Composite.Core.Localization
 
         private static void HandleSwitchElement(XElement element)
         {
-            XElement defaultElement = element.Element(((XNamespace)LocalizationXmlConstants.XmlNamespace) + "default");
+            XElement defaultElement = element.Element((XNamespace)LocalizationXmlConstants.XmlNamespace + "default");
             Verify.IsNotNull(defaultElement, "Missing element named 'default' at {0}", element);
 
 
             XElement newValueParent = defaultElement;
 
             CultureInfo currentCultureInfo = LocalizationScopeManager.CurrentLocalizationScope;
-            foreach (XElement whenElement in element.Elements(((XNamespace)LocalizationXmlConstants.XmlNamespace) + "when"))
+            foreach (XElement whenElement in element.Elements((XNamespace)LocalizationXmlConstants.XmlNamespace + "when"))
             {
                 XAttribute cultureAttribute = whenElement.Attribute("culture");
                 Verify.IsNotNull(cultureAttribute, "Missing attriubte named 'culture' at {0}", whenElement);

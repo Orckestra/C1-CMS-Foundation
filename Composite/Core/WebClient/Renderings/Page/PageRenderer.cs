@@ -54,8 +54,8 @@ namespace Composite.Core.WebClient.Renderings.Page
         {
             Verify.ArgumentNotNull(page, "page");
             Verify.ArgumentNotNull(functionContextContainer, "functionContextContainer");
-            Verify.ArgumentCondition((functionContextContainer.XEmbedableMapper as XEmbeddedControlMapper) != null,
-                "functionContextContainer", "Unknown or missing XEmbedable mapper on context container. Use GetPageRenderFunctionContextContainer().");
+            Verify.ArgumentCondition(functionContextContainer.XEmbedableMapper is XEmbeddedControlMapper,
+                "functionContextContainer", $"Unknown or missing XEmbedable mapper on context container. Use {nameof(GetPageRenderFunctionContextContainer)}().");
 
             CurrentPage = page;
 
@@ -252,35 +252,63 @@ namespace Composite.Core.WebClient.Renderings.Page
         {
             using (TimerProfilerFacade.CreateTimerProfiler())
             {
-                ExecuteEmbeddedFunctions(document.Root, contextContainer);
+                using (Profiler.Measure("Executing embedded functions"))
+                {
+                    ExecuteEmbeddedFunctions(document.Root, contextContainer);
+                }
 
-                ResolvePageFields(document, page);
+                using (Profiler.Measure("Resolving page fields"))
+                {
+                    ResolvePageFields(document, page);
+                }
 
-                NormalizeAspNetForms(document);
+                using (Profiler.Measure("Normalizing ASP.NET forms"))
+                {
+                    NormalizeAspNetForms(document);
+                }
 
                 if (document.Root.Name != Namespaces.Xhtml + "html")
                 {
                     return new LiteralControl(document.ToString());
                 }
 
-                XhtmlDocument xhtmlDocument = new XhtmlDocument(document);
-                NormalizeXhtmlDocument(xhtmlDocument);
+                var xhtmlDocument = new XhtmlDocument(document);
 
-                ResolveRelativePaths(xhtmlDocument);
+                using (Profiler.Measure("Normalizing XHTML document"))
+                {
+                    NormalizeXhtmlDocument(xhtmlDocument);
+                }
 
-                PrioritizeHeadNodex(xhtmlDocument);
+                using (Profiler.Measure("Resolving relative paths"))
+                {
+                    ResolveRelativePaths(xhtmlDocument);
+                }
 
-                AppendC1MetaTags(page, xhtmlDocument);
+                using (Profiler.Measure("Sorting <head> elements"))
+                {
+                    PrioritizeHeadNodes(xhtmlDocument);
+                }
 
-                LocalizationParser.Parse(xhtmlDocument);
+                using (Profiler.Measure("Appending C1 meta tags"))
+                {
+                    AppendC1MetaTags(page, xhtmlDocument);
+                }
 
-                return xhtmlDocument.AsAspNetControl(mapper);
+                using (Profiler.Measure("Parsing localization strings"))
+                {
+                    LocalizationParser.Parse(xhtmlDocument);
+                }
+
+                using (Profiler.Measure("Converting XHTML document into an ASP.NET control"))
+                {
+                    return xhtmlDocument.AsAspNetControl(mapper);
+                }
             }
         }
 
-        private static void PrioritizeHeadNodex(XhtmlDocument xhtmlDocument)
+        private static void PrioritizeHeadNodes(XhtmlDocument xhtmlDocument)
         {
-            List<Tuple<int, XNode>> prioritizedHeadNodes = new List<Tuple<int, XNode>>();
+            var prioritizedHeadNodes = new List<Tuple<int, XNode>>();
             foreach (var node in xhtmlDocument.Head.Nodes().ToList())
             {
                 int p = GetHeadNodePriority(node);

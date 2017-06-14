@@ -1,10 +1,10 @@
-//#define PROFILE_MODE
+﻿//#define PROFILE_MODE
 using Composite.Core.Instrumentation.Foundation;
 
 
 namespace Composite.Core.Instrumentation
 {
-    /// <summary>    
+    /// <summary>
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
@@ -13,36 +13,26 @@ namespace Composite.Core.Instrumentation
         /// <exclude />
         public static TimerProfiler CreateTimerProfiler()
         {
+#if PROFILE_MODE
             if (RuntimeInformation.IsDebugBuild)
             {
-#if PROFILE_MODE
                 return new XmlTimerProfiler();
-#else
-                return new NoopTimerProfiler();
+            }
 #endif
-            }
-            else
-            {
-                return new NoopTimerProfiler();
-            }
+            return NoopTimerProfiler.Instance;
         }
 
 
         /// <exclude />
         public static TimerProfiler CreateTimerProfiler(string message)
         {
+#if PROFILE_MODE
             if (RuntimeInformation.IsDebugBuild)
             {
-#if PROFILE_MODE
                 return new XmlTimerProfiler(message);
-#else
-                return new NoopTimerProfiler();
+            }
 #endif
-            }
-            else
-            {
-                return new NoopTimerProfiler();
-            }
+            return NoopTimerProfiler.Instance;
         }
     }
 }

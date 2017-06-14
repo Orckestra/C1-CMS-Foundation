@@ -52,7 +52,7 @@ namespace Composite.Plugins.PageTemplates.Razor
                     throw loadingException;
                 }
 
-                Verify.ThrowInvalidOperationException("Missing template '{0}'".FormatWith(templateId));
+                Verify.ThrowInvalidOperationException($"Missing template '{templateId}'");
             }
 
             string output;
@@ -61,9 +61,9 @@ namespace Composite.Plugins.PageTemplates.Razor
             RazorPageTemplate webPage = null;
             try
             {
-                webPage = WebPageBase.CreateInstanceFromVirtualPath(renderingInfo.ControlVirtualPath) as AspNet.Razor.RazorPageTemplate;
+                webPage = WebPageBase.CreateInstanceFromVirtualPath(renderingInfo.ControlVirtualPath) as RazorPageTemplate;
                 Verify.IsNotNull(webPage, "Razor compilation failed or base type does not inherit '{0}'",
-                                 typeof (AspNet.Razor.RazorPageTemplate).FullName);
+                                 typeof (RazorPageTemplate).FullName);
 
                 webPage.Configure();
 
@@ -94,16 +94,18 @@ namespace Composite.Plugins.PageTemplates.Razor
             }
             finally
             {
-                if (webPage != null)
-                {
-                    webPage.Dispose();
-                }
+                webPage?.Dispose();
             }
 
-            XDocument resultDocument = XDocument.Parse(output);
+            var resultDocument = XDocument.Parse(output);
             
             var controlMapper = (IXElementToControlMapper)functionContextContainer.XEmbedableMapper;
-            Control control = PageRenderer.Render(resultDocument, functionContextContainer, controlMapper, _job.Page);
+            Control control;
+
+            using (Profiler.Measure("Rendering the page"))
+            {
+                control = PageRenderer.Render(resultDocument, functionContextContainer, controlMapper, _job.Page);
+            }
 
             using (Profiler.Measure("ASP.NET controls: PagePreInit"))
             {
