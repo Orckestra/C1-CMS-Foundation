@@ -617,24 +617,34 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
             if (IsEditActionAllowed(websiteFile))
             {
                 fileActions.Add(
-                    new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider.EditWebsiteFileTextContentWorkflow"), _editWebsiteFilePermissionTypes)))
-                     {
-                         VisualData = new ActionVisualizedData
-                         {
-                             Label = StringResourceSystemFacade.GetString("Composite.Plugins.WebsiteFileElementProvider", "EditWebsiteFileTitle"),
-                             ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.WebsiteFileElementProvider", "EditWebsiteFileToolTip"),
-                             Icon = EditWebsiteFile,
-                             Disabled = websiteFile.IsReadOnly,
-                             ActionLocation = new ActionLocation
-                             {
-                                 ActionType = ActionType.Edit,
-                                 IsInFolder = false,
-                                 IsInToolbar = true,
-                                 ActionGroup = PrimaryFileActionGroup
-                             }
-                         }
-                     });
-            }
+                        new ElementAction(new ActionHandle(
+                            websiteFile.MimeType==MimeTypeInfo.Resx?
+                                (ActionToken) new UrlActionToken(websiteFile.FileName, EditWebsiteFile,
+                                    UrlUtils.ResolvePublicUrl($"Composite/content/misc/editors/resxeditor/resxeditor.aspx?f={websiteFile.FullPath}"), _editWebsiteFilePermissionTypes):
+                            new WorkflowActionToken(
+                                WorkflowFacade.GetWorkflowType(
+                                    "Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider.EditWebsiteFileTextContentWorkflow"),
+                                _editWebsiteFilePermissionTypes)))
+                        {
+                            VisualData = new ActionVisualizedData
+                            {
+                                Label = StringResourceSystemFacade.GetString(
+                                    "Composite.Plugins.WebsiteFileElementProvider", "EditWebsiteFileTitle"),
+                                ToolTip = StringResourceSystemFacade.GetString(
+                                    "Composite.Plugins.WebsiteFileElementProvider", "EditWebsiteFileToolTip"),
+                                Icon = EditWebsiteFile,
+                                Disabled = websiteFile.IsReadOnly,
+                                ActionLocation = new ActionLocation
+                                {
+                                    ActionType = ActionType.Edit,
+                                    IsInFolder = false,
+                                    IsInToolbar = true,
+                                    ActionGroup = PrimaryFileActionGroup
+                                }
+                            }
+                        });
+                }
+            
 
             return fileActions;
         }

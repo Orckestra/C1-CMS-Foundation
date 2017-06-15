@@ -1,0 +1,176 @@
+﻿@namespace url("http://www.w3.org/1999/xhtml");
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+html, input, textarea, button, select, td, th {
+	font-family: "Open Sans", sans-serif;
+	font-size: 13px;
+}
+
+th {
+	font-weight: 600;
+	line-height: 18px;
+}
+
+td {
+	font-weight: 400;
+}
+
+a {
+	color: #333333;
+}
+
+.title {
+	font-size: 18px;
+}
+
+ui|toolbargroup {
+	height: 30px;
+	line-height: 30px;
+}
+
+ui|toolbargroup ui|toolbarbutton {
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+
+ui|toolbargroup + ui|toolbargroup {
+	border-left: 1px solid #ccc;
+	padding-left: 20px;
+	margin-left: 10px;
+}
+
+ui|toolbargroup.btns-group ui|toolbarbutton ui|labelbox {
+	padding: 4px 24px;
+	text-transform: uppercase;
+}
+
+ui|toolbargroup.btns-group ui|toolbarbutton[active="true"] {
+	background: #EFEFEF;
+}
+
+ui|toolbarbutton.back {
+	background-color: #f7f7f7;
+    color: #333333;
+}
+
+ui|radiodatagroup {
+	margin: 0;
+	padding: 0;
+}
+
+.table th:last-child,
+.table td:last-child {
+	width: 100%;
+}
+
+.table td {
+	overflow: visible;
+	color: inherit;
+	padding: 6px 13px 7px !important;
+}
+
+.table th {
+	padding-left: 13px !important;
+}
+
+.table .text-primary td {
+	font-weight: 600;
+}
+
+.table .hidden {
+	visibility: hidden;
+}
+
+.table .hilite .hidden{
+	visibility: visible;
+}
+
+.table tr[live='true'] .icon {
+	margin: 0 -16px 0 7px;
+}
+
+.table tr[live='false'] .icon{
+	display: none;
+}
+
+.calendar table {
+	position: absolute;
+	background: #FFF;
+	z-index: 5;
+}
+
+.date a div {
+	display: inline-block;
+}
+.table thead a {
+	float: left;
+	position: relative;
+	margin-right: 51px;
+	display: block;
+}
+
+.table ui|toolbarbutton {
+	margin: 3px -8px;
+}
+
+.table ui|toolbarbutton ui|labelbox {
+	padding: 5px 5px;
+}
+
+.table ui|fieldhelp {
+	float: left;
+	width: 20px;
+	margin-top: -4px;
+	margin-left: -20px;
+}
+
+.table ui|fieldhelp ui|clickbutton.fieldhelp:after {
+	font-family: "Open Sans";
+	height: 15px;
+	width: 15px;
+	line-height: 15px;
+}
+
+.table thead a[direction='asc']:after,
+.table thead a[direction='desc']:after {
+	position: absolute;
+	content: "";
+	width: 0;
+	height: 0;
+	right: -17px;
+	top: 7px;
+	border-style: solid;
+	border-width: 0 4px 4px 4px;
+	border-color: transparent transparent #989898 transparent;
+}
+
+.table thead a[direction='desc']:after {
+	border-width: 4px 4px 0 4px;
+	border-color: #989898 transparent transparent transparent;
+}
+
+.center {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	height: 30%;
+	width: 50%;
+	margin: -10% 0 0 -25%;
+	text-align: center;
+	color: #999;
+}
+
+.center h1 {
+	font-family: "Open Sans";
+	font-size: 24px;
+	font-weight: 400;
+	line-height: 33px;
+}
+
+.center ui|toolbarbutton {
+	margin: 0 auto;
+	float: none;
+	width: auto;
+	display: inline-block;
+	height: auto;
+}
