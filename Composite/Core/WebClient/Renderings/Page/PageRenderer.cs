@@ -7,7 +7,6 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Xml.Linq;
 using Composite.Core.Caching;
-using Composite.Core.Extensions;
 using Composite.Core.Routing;
 using Composite.Core.Routing.Pages;
 using Composite.Data;
@@ -99,48 +98,38 @@ namespace Composite.Core.WebClient.Renderings.Page
                 catch (Exception) { }
             }
 
-            return XhtmlDocument.Parse("<html xmlns='{0}'><head/><body>{1}</body></html>".FormatWith(Namespaces.Xhtml, placeholderContent.Content));
+            return XhtmlDocument.Parse($"<html xmlns='{Namespaces.Xhtml}'><head/><body>{placeholderContent.Content}</body></html>");
         }
 
         private static void ResolvePlaceholders(XDocument document, IEnumerable<IPagePlaceholderContent> placeholderContents)
         {
             using (TimerProfilerFacade.CreateTimerProfiler())
             {
-                List<XElement> placeHolders = document.Descendants(RenderingElementNames.PlaceHolder).ToList();
+                var placeHolders = 
+                    (from  placeholder in document.Descendants(RenderingElementNames.PlaceHolder)
+                    let idAttribute = placeholder.Attribute(RenderingElementNames.PlaceHolderIdAttribute)
+                    where idAttribute != null
+                    select new { Element = placeholder, IdAttribute = idAttribute}).ToList();
 
-                if (placeHolders.Any())
+                foreach (var placeholder in placeHolders)
                 {
-                    foreach (XElement placeHolder in placeHolders.Where(f => f.Attribute(RenderingElementNames.PlaceHolderIdAttribute) != null))
-                    {
-                        IPagePlaceholderContent placeHolderContent =
-                            placeholderContents
-                            .FirstOrDefault(f => f.PlaceHolderId == placeHolder.Attribute(RenderingElementNames.PlaceHolderIdAttribute).Value);
+                    string placeHolderId = placeholder.IdAttribute.Value;
+                    placeholder.IdAttribute.Remove();
 
-                        string placeHolderId = null;
+                    IPagePlaceholderContent placeHolderContent =
+                        placeholderContents.FirstOrDefault(f => f.PlaceHolderId == placeHolderId);
 
-                        XAttribute idAttribute = placeHolder.Attribute("id");
-                        if (idAttribute != null)
-                        {
-                            placeHolderId = idAttribute.Value;
-                            idAttribute.Remove();
-                        }
+                    XhtmlDocument xhtmlDocument = ParsePlaceholderContent(placeHolderContent);
+                    placeholder.Element.ReplaceWith(xhtmlDocument.Root);
 
-                        XhtmlDocument xhtmlDocument = ParsePlaceholderContent(placeHolderContent);
-                        placeHolder.ReplaceWith(xhtmlDocument.Root);
-
-
-                        if (placeHolderId != null)
-                        {
-                            try
-                            {
-                                placeHolder.Add(new XAttribute("id", placeHolderId));
-                            }
-                            catch (Exception ex)
-                            {
-                                throw new InvalidOperationException($"Failed to set id '{placeHolderId}' on element", ex);
-                            }
-                        }
-                    }
+                    //try
+                    //{
+                    //    placeholder.Element.Add(new XAttribute(RenderingElementNames.PlaceHolderIdAttribute, placeHolderId));
+                    //}
+                    //catch (Exception ex)
+                    //{
+                    //    throw new InvalidOperationException($"Failed to set id '{placeHolderId}' on element", ex);
+                    //}
                 }
             }
         }

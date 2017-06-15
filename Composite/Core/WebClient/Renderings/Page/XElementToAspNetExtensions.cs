@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,6 +20,11 @@ namespace Composite.Core.WebClient.Renderings.Page
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public static class XElementToAspNetExtensions
     {
+        private static readonly XName XName_Id = "id";
+        private static readonly XName XName_Xmlns = "xmlns";
+        private static readonly XName XName_Title = Namespaces.Xhtml + "title";
+        private static readonly XName XName_Meta = Namespaces.Xhtml + "meta";
+
         /// <exclude />
         public static Control AsAspNetControl(this XhtmlDocument xhtmlDocument)
         {
@@ -48,9 +52,10 @@ namespace Composite.Core.WebClient.Renderings.Page
                 if (xhtmlDocument.DocumentType != null)
                 {
                     string docType = xhtmlDocument.DocumentType.ToString();
-                    if (docType.Contains("[]"))
+                    var offset = docType.IndexOf("[]", StringComparison.Ordinal);
+                    if (offset >= 0)
                     {
-                        docType = docType.Remove(docType.IndexOf("[]", StringComparison.Ordinal), 2);
+                        docType = docType.Remove(offset, 2);
                     }
 
                     pageHolder.Controls.Add(new LiteralControl(docType));
@@ -100,7 +105,7 @@ namespace Composite.Core.WebClient.Renderings.Page
 
             if (!controlMapper.TryGetControlFromXElement(element, out control))
             {
-                if (IsHtmlControlElement(element) || element.Attribute("id") != null)
+                if (IsHtmlControlElement(element) || element.Attribute(XName_Id) != null)
                 {
                     control = new HtmlGenericControl(element.Name.LocalName)
                     {
@@ -129,10 +134,10 @@ namespace Composite.Core.WebClient.Renderings.Page
 
             if (!sourceNs.Equals(namespaceToRemove) 
                 && sourceNs != source.Parent.Name.Namespace 
-                && source.Attribute("xmlns") == null
+                && source.Attribute(XName_Xmlns) == null
                 && (sourceNs == Namespaces.Xhtml.NamespaceName || sourceNs == Namespaces.Svg.NamespaceName))
             {
-                copy.Add(new XAttribute("xmlns", source.Name.Namespace));
+                copy.Add(new XAttribute(XName_Xmlns, source.Name.Namespace));
             }
 
             copy.Add(source.Attributes().Where(a => a.Name.Namespace == namespaceToRemove)
@@ -254,7 +259,7 @@ namespace Composite.Core.WebClient.Renderings.Page
                 }
 
                 string localName = attribute.Name.LocalName;
-                if (localName != "xmlns"
+                if (localName != XName_Xmlns
                     || (copyXmlnsAttribute
                         && (source.Parent == null || source.Name.Namespace != source.Parent.Name.Namespace)))
                 {
@@ -286,7 +291,7 @@ namespace Composite.Core.WebClient.Renderings.Page
 
             CopyAttributes(headSource, headControl);
 
-            XElement titleElement = headSource.Elements(Namespaces.Xhtml + "title").LastOrDefault();
+            XElement titleElement = headSource.Elements(XName_Title).LastOrDefault();
             if (titleElement != null)
             {
                 HtmlTitle existingControl = headControl.Controls.OfType<HtmlTitle>().FirstOrDefault();
@@ -300,7 +305,7 @@ namespace Composite.Core.WebClient.Renderings.Page
                 headControl.Controls.AddAt(0, new HtmlTitle { Text = HttpUtility.HtmlEncode(titleElement.Value) });
             }
 
-            var metaTags = headSource.Elements().Where(f => f.Name == Namespaces.Xhtml + "meta");
+            var metaTags = headSource.Elements().Where(f => f.Name == XName_Meta);
             int metaTagPosition = Math.Min(1, headControl.Controls.Count);
             foreach (var metaTag in metaTags)
             {
@@ -312,7 +317,9 @@ namespace Composite.Core.WebClient.Renderings.Page
                 headControl.Controls.AddAt(metaTagPosition++, metaControl);
             }
 
-            ExportChildNodes(headSource.Nodes().Where(f => ((f is XElement) == false || ((XElement)f).Name != Namespaces.Xhtml + "title" && ((XElement)f).Name != Namespaces.Xhtml + "meta")), headControl, controlMapper);
+            ExportChildNodes(headSource.Nodes().Where(f => 
+                !(f is XElement element) || (element.Name != XName_Title && element.Name != XName_Meta)), 
+                headControl, controlMapper);
 
             headControl.RemoveDuplicates();
         }
@@ -323,7 +330,6 @@ namespace Composite.Core.WebClient.Renderings.Page
         {
             HashSet<string> uniqueIdValues = new HashSet<string>();
             HashSet<string> uniqueMetaNameValues = new HashSet<string>();
-            HashSet<string> uniqueMetaPropertyValues = new HashSet<string>();
             HashSet<string> uniqueScriptAttributes = new HashSet<string>();
             HashSet<string> uniqueLinkAttributes = new HashSet<string>();
 
@@ -331,8 +337,10 @@ namespace Composite.Core.WebClient.Renderings.Page
 
             // Leaving last instances of each meta tag, and first instances of script/link tags
             var priorityOrderedControls = new List<HtmlControl>();
-            priorityOrderedControls.AddRange(controls.Where(c => c.TagName.ToLowerInvariant() == "meta").Reverse());
-            priorityOrderedControls.AddRange(controls.Where(c => c.TagName.ToLowerInvariant() != "meta"));
+
+            var ignoreCase = StringComparison.OrdinalIgnoreCase;
+            priorityOrderedControls.AddRange(controls.Where(c => c.TagName.Equals("meta", ignoreCase)).Reverse());
+            priorityOrderedControls.AddRange(controls.Where(c => !c.TagName.Equals("meta", ignoreCase)));
 
             foreach (HtmlControl c in priorityOrderedControls)
             {
@@ -364,15 +372,10 @@ namespace Composite.Core.WebClient.Renderings.Page
 
         private static string AttributesAsString(this HtmlControl c)
         {
-            var keys = new List<string>();
-            IEnumerator keysEnum = c.Attributes.Keys.GetEnumerator();
-
-            while (keysEnum.MoveNext())
-                keys.Add((string)keysEnum.Current);
-
             var str = new StringBuilder(c.ClientID);
+            var keys = c.Attributes.Keys.Cast<string>().OrderBy(f => f);
 
-            foreach (string key in keys.OrderBy(f => f))
+            foreach (string key in keys)
             {
                 str.Append(key);
                 str.Append("=\"");
@@ -387,12 +390,13 @@ namespace Composite.Core.WebClient.Renderings.Page
         {
             if (!string.IsNullOrEmpty(uniqueString))
             {
-                if (uniqueList.Contains(uniqueString.ToLowerInvariant()))
+                var lowered = uniqueString.ToLowerInvariant();
+                if (uniqueList.Contains(lowered))
                 {
                     return true;
                 }
 
-                uniqueList.Add(uniqueString.ToLowerInvariant());
+                uniqueList.Add(lowered);
             }
 
             return false;
