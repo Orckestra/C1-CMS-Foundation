@@ -236,57 +236,71 @@ namespace Composite.Core.WebClient.Renderings.Page
         }
 
 
+        internal static void ProcessPageDocument(
+            XDocument document, 
+            FunctionContextContainer contextContainer,
+            IPage page)
+        {
+            using (Profiler.Measure("Executing embedded functions"))
+            {
+                ExecuteEmbeddedFunctions(document.Root, contextContainer);
+            }
+
+            using (Profiler.Measure("Resolving page fields"))
+            {
+                ResolvePageFields(document, page);
+            }
+
+            using (Profiler.Measure("Normalizing ASP.NET forms"))
+            {
+                NormalizeAspNetForms(document);
+            }
+        }
+
+        internal static void ProcessXhtmlDocument(XhtmlDocument xhtmlDocument, IPage page)
+        {
+            using (Profiler.Measure("Normalizing XHTML document"))
+            {
+                NormalizeXhtmlDocument(xhtmlDocument);
+            }
+
+            using (Profiler.Measure("Resolving relative paths"))
+            {
+                ResolveRelativePaths(xhtmlDocument);
+            }
+
+            using (Profiler.Measure("Sorting <head> elements"))
+            {
+                PrioritizeHeadNodes(xhtmlDocument);
+            }
+
+            using (Profiler.Measure("Appending C1 meta tags"))
+            {
+                AppendC1MetaTags(page, xhtmlDocument);
+            }
+
+            using (Profiler.Measure("Parsing localization strings"))
+            {
+                LocalizationParser.Parse(xhtmlDocument);
+            }
+        }
+
+
         /// <exclude />
         public static Control Render(XDocument document, FunctionContextContainer contextContainer, IXElementToControlMapper mapper, IPage page)
         {
             using (TimerProfilerFacade.CreateTimerProfiler())
             {
-                using (Profiler.Measure("Executing embedded functions"))
-                {
-                    ExecuteEmbeddedFunctions(document.Root, contextContainer);
-                }
+                ProcessPageDocument(document, contextContainer, page);
 
-                using (Profiler.Measure("Resolving page fields"))
-                {
-                    ResolvePageFields(document, page);
-                }
-
-                using (Profiler.Measure("Normalizing ASP.NET forms"))
-                {
-                    NormalizeAspNetForms(document);
-                }
-
-                if (document.Root.Name != Namespaces.Xhtml + "html")
+                if (document.Root.Name != RenderingElementNames.Html)
                 {
                     return new LiteralControl(document.ToString());
                 }
 
                 var xhtmlDocument = new XhtmlDocument(document);
 
-                using (Profiler.Measure("Normalizing XHTML document"))
-                {
-                    NormalizeXhtmlDocument(xhtmlDocument);
-                }
-
-                using (Profiler.Measure("Resolving relative paths"))
-                {
-                    ResolveRelativePaths(xhtmlDocument);
-                }
-
-                using (Profiler.Measure("Sorting <head> elements"))
-                {
-                    PrioritizeHeadNodes(xhtmlDocument);
-                }
-
-                using (Profiler.Measure("Appending C1 meta tags"))
-                {
-                    AppendC1MetaTags(page, xhtmlDocument);
-                }
-
-                using (Profiler.Measure("Parsing localization strings"))
-                {
-                    LocalizationParser.Parse(xhtmlDocument);
-                }
+                ProcessXhtmlDocument(xhtmlDocument, page);
 
                 using (Profiler.Measure("Converting XHTML document into an ASP.NET control"))
                 {
@@ -294,6 +308,7 @@ namespace Composite.Core.WebClient.Renderings.Page
                 }
             }
         }
+
 
         private static void PrioritizeHeadNodes(XhtmlDocument xhtmlDocument)
         {
@@ -414,19 +429,18 @@ namespace Composite.Core.WebClient.Renderings.Page
                     hardRootedPathAttribute.Value = applicationVirtualPath + hardRootedPathAttribute.Value;
                 }
             }
-
-
         }
 
 
 
         private static void NormalizeAspNetForms(XDocument document)
         {
-            List<XElement> aspNetFormElements = document.Descendants(Namespaces.AspNetControls + "form").Reverse().ToList();
+            var aspNetFormXName = Namespaces.AspNetControls + "form";
+            List<XElement> aspNetFormElements = document.Descendants(aspNetFormXName).Reverse().ToList();
 
             foreach (XElement aspNetFormElement in aspNetFormElements)
             {
-                if (aspNetFormElement.Ancestors(Namespaces.AspNetControls + "form").Any())
+                if (aspNetFormElement.Ancestors(aspNetFormXName).Any())
                 {
                     aspNetFormElement.ReplaceWith(aspNetFormElement.Nodes());
                 }
@@ -461,7 +475,6 @@ namespace Composite.Core.WebClient.Renderings.Page
                                     new XAttribute("name", "description"),
                                     new XAttribute("content", page.Description)));
             }
-
         }
 
 

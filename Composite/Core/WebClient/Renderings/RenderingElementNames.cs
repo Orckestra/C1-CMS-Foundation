@@ -10,6 +10,9 @@ namespace Composite.Core.WebClient.Renderings
 	public static class RenderingElementNames
     {
         /// <exclude />
+        public static XName Html { get; } = Namespaces.Xhtml + "html";
+
+        /// <exclude />
         public static XName PlaceHolder { get; } = Namespaces.Rendering10 + "placeholder";
 
         /// <exclude />
