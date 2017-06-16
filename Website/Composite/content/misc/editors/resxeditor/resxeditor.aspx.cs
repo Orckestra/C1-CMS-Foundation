@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml.Linq;
+using Castle.Core.Internal;
 using Composite.C1Console.Actions;
+using Composite.C1Console.Events;
+using Composite.C1Console.Security;
 using Composite.Core.IO;
 using Composite.Core.ResourceSystem;
 using Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider;
@@ -20,9 +24,15 @@ public partial class ResxEditor : System.Web.UI.Page, IPostBackEventHandler
         set { ViewState["FileName"] = value; }
     }
 
+    public string CultureName
+    {
+        get { return (string)ViewState["CultureName"]; }
+        set { ViewState["CultureName"] = value; }
+    }
+
     public string PageTitle
     {
-        get { return Path.GetFileName(FileName); }
+        get { return Path.GetFileName(GetCurrentAlternateFileName(FileName)); }
     }
 
     public bool OtherCultureExist
@@ -41,6 +51,17 @@ public partial class ResxEditor : System.Web.UI.Page, IPostBackEventHandler
             OtherCultureExist = false;
 
             FileName = Request.QueryString["f"];
+
+            CultureName = Request.QueryString["t"];
+
+            if (CultureName != null)
+            {
+                OtherCultureExist = true;
+                Save(null, null);
+                var entityToken = new WebsiteFileElementProviderEntityToken("WebsiteFileElementProvider",
+                    Path.GetDirectoryName(FileName), Path.GetDirectoryName(PathUtil.BaseDirectory));
+                ConsoleMessageQueueFacade.Enqueue(new RefreshTreeMessageQueueItem { EntityToken = entityToken }, null);
+            }
 
             if (!FileName.EndsWith(".resx", StringComparison.OrdinalIgnoreCase))
             {
@@ -65,13 +86,13 @@ public partial class ResxEditor : System.Web.UI.Page, IPostBackEventHandler
             if (loc != null)
             {
                 culList = culList.Union(new[] { new ListItem { Text = loc.DisplayName, Value = loc.Name } });
-                CultureSelector.SelectedValue = loc.Name;
+                CultureName = loc.Name;
             }
 
-            CultureSelector.DataSource = culList;
-            CultureSelector.DataTextField = "Text";
-            CultureSelector.DataValueField = "Value";
-            CultureSelector.DataBind();
+            //CultureSelector.DataSource = culList;
+            //CultureSelector.DataTextField = "Text";
+            //CultureSelector.DataValueField = "Value";
+            //CultureSelector.DataBind();
 
             this.BindGridView();
         }
@@ -90,7 +111,7 @@ public partial class ResxEditor : System.Web.UI.Page, IPostBackEventHandler
             foreach (var node in topicNodes)
             {
                 var xAttribute = node.Attribute("name");
-                if (xAttribute != null) res.Add(xAttribute.Value, node.Value);
+                if (xAttribute != null) res.Add(xAttribute.Value, node.Descendants("value").First().Value);
 
             }
 
@@ -127,7 +148,7 @@ public partial class ResxEditor : System.Web.UI.Page, IPostBackEventHandler
                         });
                         if (target != null)
                         {
-                            target.Value = original ?? "";
+                            target.Descendants("value").Single().Value = original ?? "";
                         }
                     }
                 }
@@ -155,7 +176,7 @@ public partial class ResxEditor : System.Web.UI.Page, IPostBackEventHandler
                         });
                         if (target != null)
                         {
-                            target.Value = translated ?? "";
+                            target.Descendants("value").Single().Value = translated ?? "";
                         }
                     }
                 }
@@ -171,8 +192,8 @@ public partial class ResxEditor : System.Web.UI.Page, IPostBackEventHandler
     {
         return Path.GetDirectoryName(file) +
             Path.DirectorySeparatorChar +
-            Path.GetFileNameWithoutExtension(file) + "." +
-               CultureSelector.SelectedItem.Value + Path.GetExtension(file);
+            Path.GetFileNameWithoutExtension(file) + ((!CultureName.IsNullOrEmpty())?".":"") +
+               CultureName + Path.GetExtension(file);
     }
 
     private void BindGridView()
@@ -210,13 +231,13 @@ public partial class ResxEditor : System.Web.UI.Page, IPostBackEventHandler
     }
 
 
-    protected void Culture_OnSelectedIndexChanged(object sender, EventArgs e)
-    {
-        OtherCultureExist = true;
-        ListItem removeItem = CultureSelector.Items.FindByValue("Select Another Culture");
-        CultureSelector.Items.Remove(removeItem);
-        BindGridView();
-    }
+    //protected void Culture_OnSelectedIndexChanged(object sender, EventArgs e)
+    //{
+    //    OtherCultureExist = true;
+    //    ListItem removeItem = CultureSelector.Items.FindByValue("Select Another Culture");
+    //    CultureSelector.Items.Remove(removeItem);
+    //    BindGridView();
+    //}
 
     protected void TextBox_OnKeyPress()
     {

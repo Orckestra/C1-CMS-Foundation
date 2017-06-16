@@ -1,5 +1,7 @@
 ﻿<%@ Page Async="true" Language="C#" Debug="true" AutoEventWireup="true" CodeFile="resxeditor.aspx.cs" Inherits="ResxEditor" %>
 
+<%@ Import Namespace="Composite.Core.ResourceSystem" %>
+
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://www.w3.org/1999/xhtml" xmlns:control="http://www.composite.net/ns/uicontrol">
 <control:httpheaders runat="server" />
 <head>
@@ -8,63 +10,68 @@
 	<link rel="stylesheet" type="text/css" href="resxeditor.css.aspx" />
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans:600,400" rel="stylesheet" type="text/css" />
 	<script type="text/javascript" src="bindings/RowContainerBinding.js"></script>
-	<script type="text/javascript" src="bindings/ResxEditorPageBinding.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
 </head>
 <body>
 	<form runat="server" class="updateform updatezone">
-		<ui:page label="<%# PageTitle%>" image="${icon:page-list-unpublished-items}">
-			<ui:toolbar id="toolbar">
+		<ui:editorpage label="<%= PageTitle%>" image="${icon:page-list-unpublished-items}">
+			<ui:toolbar id="toolbar" class="document-toolbar">
 				<ui:toolbarbody>
-					<aspui:selector runat="server" id="CultureSelector" OnSelectedIndexChanged="Culture_OnSelectedIndexChanged" autopostback="True" />
-						<aspui:ToolbarButton id="SaveButton" ImageUrl="${icon:save}" ImageUrlWhenDisabled="${icon:save-disabled}" label="Save" 
-							text="Save"
-							oncommand="Save"
-							runat="server"
-							Enabled="False"/>
+					<aspui:toolbarbutton id="SaveButton" imageurl="${icon:save}" imageurlwhendisabled="${icon:save-disabled}" label="Save"
+						text="${string:Composite.Web.SourceEditor:ResxEditor.Save}"
+						oncommand="Save"
+						runat="server"
+						enabled="False" />
 				</ui:toolbarbody>
 			</ui:toolbar>
 			<ui:pagebody>
 				<ui:scrollbox id="scrollbox">
 					<table class="table">
-						<asp:Repeater ID="DataRepeater" runat="server" >
+						<asp:Repeater ID="DataRepeater" runat="server">
 							<HeaderTemplate>
 								<thead>
 									<tr class="head">
 										<th>
-											Label 
+											<%= LocalizationFiles.Composite_Web_SourceEditor.ResxEditor_Label %> 
 										</th>
 										<th>
-											English Text 
+											<%= LocalizationFiles.Composite_Web_SourceEditor.ResxEditor_OriginalText %> 
 										</th>
 										<% if (OtherCultureExist)
 											{ %>
-											<th>
-												Translated Text
-											</th>
+										<th>
+											<%= LocalizationFiles.Composite_Web_SourceEditor.ResxEditor_TranslatedText %> 
+										</th>
 										<% } %>
 										<th></th>
 									</tr>
 								</thead>
 								<tbody id="tbody" binding="RowContainerBinding">
-									</HeaderTemplate>
-										<ItemTemplate>
-											<tr>
-												<td>
-													<asp:Label ID="Label" runat="server" Text='<%#Eval("Label") %>'></asp:Label>
-												</td>
-												<td>
-													<aspui:TextBox ID="Original" Width="400px" runat="server" Text='<%#Eval("Original") %>' onkeyup="enable(this)" AutoPostBack="True" ReadOnly="<%#OtherCultureExist==true%>"></aspui:TextBox>
-												</td>
-												<% if (OtherCultureExist){ %>
-													<td>
-														<aspui:TextBox ID="Translated" Width="400px" runat="server" Text='<%#Eval("Translated") %>' onkeyup="enable(this)" AutoPostBack="True"></aspui:TextBox>
-													</td>
-												<% } %>
-												<td></td>
-											</tr>
-										</ItemTemplate>
-									<FooterTemplate>
+							</HeaderTemplate>
+							<ItemTemplate>
+								<tr>
+									<td>
+										<asp:Label ID="Label" runat="server" Text='<%#Eval("Label") %>'></asp:Label>
+									</td>
+									<% if (!OtherCultureExist)
+										{ %>
+									<td>
+										<aspui:textbox cssclass="inputs" id="Original" width="400px" runat="server" text='<%#Eval("Original") %>' onkeyup="enable(this)" autopostback="True"></aspui:textbox>
+									</td>
+									<% } %>
+									<% if (OtherCultureExist)
+										{ %>
+									<td>
+										<asp:Label ID="Original2" Width="400px" runat="server" CssClass="label" Text='<%#Eval("Original") %>'></asp:Label>
+									</td>
+									<td>
+										<aspui:textbox cssclass="inputs" id="Translated" width="400px" runat="server" text='<%#Eval("Translated") %>' onkeyup="enable(this)" autopostback="True"></aspui:textbox>
+									</td>
+									<% } %>
+									<td></td>
+								</tr>
+							</ItemTemplate>
+							<FooterTemplate>
 								</tbody>
 
 							</FooterTemplate>
@@ -73,14 +80,20 @@
 				</ui:scrollbox>
 
 			</ui:pagebody>
-		</ui:page>
+		</ui:editorpage>
 
 	</form>
 
 </body>
-	<script>
-		function enable(selectObj) {
-			__doPostBack('<%= Page.ClientID %>', selectObj.name);
+<script>
+	function enable(selectObj) {
+		__doPostBack('<%= Page.ClientID %>', selectObj.name);
+	}
+	$('.inputs').keydown(function (e) {
+		if (e.which === 13) {
+			var index = $('.inputs').index(this) + 1;
+			$('.inputs').eq(index).focus().select();
 		}
-	</script>
+	});
+</script>
 </html>

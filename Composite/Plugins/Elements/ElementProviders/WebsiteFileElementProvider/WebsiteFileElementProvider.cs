@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using Composite.C1Console.Actions;
@@ -643,7 +644,45 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
                                 }
                             }
                         });
+                
+                if (websiteFile.MimeType == MimeTypeInfo.Resx)
+                {
+                    var files = Directory.GetFiles(Path.GetDirectoryName(websiteFile.FullPath));
+                    foreach (var cultureInfo in StringResourceSystemFacade.GetSupportedCultures()
+                            .Where(f => f.Name != "en-US"))
+                    {
+                        if (!files.Any(f => cultureInfo.Name!="" && f.EndsWith(cultureInfo.Name + ".Resx", StringComparison.OrdinalIgnoreCase)))
+                        {
+
+                        fileActions.Add(
+                            new ElementAction(new ActionHandle(
+                                new UrlActionToken(websiteFile.FileName, EditWebsiteFile,
+                                    UrlUtils.ResolvePublicUrl(
+                                        $"Composite/content/misc/editors/resxeditor/resxeditor.aspx?f={websiteFile.FullPath}&t={cultureInfo.Name}"),
+                                    _editWebsiteFilePermissionTypes)
+                            ))
+                            {
+                                VisualData = new ActionVisualizedData
+                                {
+                                    Label = string.Format(StringResourceSystemFacade.GetString(
+                                        "Composite.Web.SourceEditor", "ResxEditor.TranslateTo.Label"), cultureInfo.DisplayName),
+                                    ToolTip = string.Format(StringResourceSystemFacade.GetString(
+                                        "Composite.Web.SourceEditor", "ResxEditor.TranslateTo.Tooltip"), cultureInfo.DisplayName),
+                                    Icon = EditWebsiteFile,
+                                    Disabled = websiteFile.IsReadOnly,
+                                    ActionLocation = new ActionLocation
+                                    {
+                                        ActionType = ActionType.Add,
+                                        IsInFolder = false,
+                                        IsInToolbar = true,
+                                        ActionGroup = PrimaryFileActionGroup
+                                    }
+                                }
+                            });
+                        }
+                    }
                 }
+            }
             
 
             return fileActions;

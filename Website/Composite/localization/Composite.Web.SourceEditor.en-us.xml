@@ -36,4 +36,12 @@
 	<string key="Insert.MediaURL.Label" value="Media URL"/>
 	<string key="Insert.FrontendURL.Label" value="Frontend URL"/>
 	<string key="Insert.FunctionMarkup.Label" value="Function Markup"/>
+	
+  <!--Resx editor strings-->
+	<string key="ResxEditor.TranslateTo.Label" value="Translate To {0}"/>
+	<string key="ResxEditor.TranslateTo.Tooltip" value="Translate To {0}"/>
+	<string key="ResxEditor.Label" value="Label"/>
+	<string key="ResxEditor.OriginalText" value="Original Text"/>
+	<string key="ResxEditor.TranslatedText" value="Translated Text"/>
+	<string key="ResxEditor.Save" value="Save"/>
 </strings>

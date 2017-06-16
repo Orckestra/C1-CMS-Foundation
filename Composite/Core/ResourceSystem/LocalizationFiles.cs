@@ -236,10 +236,10 @@ public static string TreeValidationError_FieldOrderBy_UnknownDirection(object pa
 public static string TreeValidationError_FieldOrderBy_UnknownField_Template=>T("TreeValidationError.FieldOrderBy.UnknownField");
 ///<summary>&quot;The type &apos;{0}&apos; does not contain a field named &apos;{1}&apos;&quot;</summary> 
 public static string TreeValidationError_FieldOrderBy_UnknownField(object parameter0,object parameter1)=>string.Format(T("TreeValidationError.FieldOrderBy.UnknownField"), parameter0,parameter1);
-///<summary>&quot;&apos;{0}&apos; is in wrong format, use the format: {1}&quot;</summary> 
+///<summary>&quot;&apos;{0}&apos; is in wrong format, use the format {1} for raw values or {2} for formatted values. For format options, see the .ToString() oprions for the field type, ex &apos;yyyy MMM&apos; for DateTime&quot;</summary> 
 public static string TreeValidationError_DataFieldValueHelper_WrongFormat_Template=>T("TreeValidationError.DataFieldValueHelper.WrongFormat");
-///<summary>&quot;&apos;{0}&apos; is in wrong format, use the format: {1}&quot;</summary> 
-public static string TreeValidationError_DataFieldValueHelper_WrongFormat(object parameter0,object parameter1)=>string.Format(T("TreeValidationError.DataFieldValueHelper.WrongFormat"), parameter0,parameter1);
+///<summary>&quot;&apos;{0}&apos; is in wrong format, use the format {1} for raw values or {2} for formatted values. For format options, see the .ToString() oprions for the field type, ex &apos;yyyy MMM&apos; for DateTime&quot;</summary> 
+public static string TreeValidationError_DataFieldValueHelper_WrongFormat(object parameter0,object parameter1,object parameter2)=>string.Format(T("TreeValidationError.DataFieldValueHelper.WrongFormat"), parameter0,parameter1,parameter2);
 ///<summary>&quot;The interface &apos;{0}&apos; is not contained in the current element or any of its parents&quot;</summary> 
 public static string TreeValidationError_DataFieldValueHelper_InterfaceNotInParentTree_Template=>T("TreeValidationError.DataFieldValueHelper.InterfaceNotInParentTree");
 ///<summary>&quot;The interface &apos;{0}&apos; is not contained in the current element or any of its parents&quot;</summary> 
@@ -2522,6 +2522,10 @@ public static string Website_Forms_Administrative_AddNewMediaFile_MissingUploade
 public static string Website_Forms_Administrative_AddNewMediaFile_FileExists_Message=>T("Website.Forms.Administrative.AddNewMediaFile.FileExists.Message");
 ///<summary>&quot;The total length of the filename (folder and filename) is too long&quot;</summary> 
 public static string Website_Forms_Administrative_AddNewMediaFile_TotalFilenameToLong_Message=>T("Website.Forms.Administrative.AddNewMediaFile.TotalFilenameToLong.Message");
+///<summary>&quot;Add tags to your media item seperated by a comma (,)&quot;</summary> 
+public static string Website_Forms_Administrative_AddNewMediaFile_TagsTextBox_Help=>T("Website.Forms.Administrative.AddNewMediaFile.TagsTextBox.Help");
+///<summary>&quot;Tags&quot;</summary> 
+public static string Website_Forms_Administrative_AddNewMediaFile_TagsTextBox_Label=>T("Website.Forms.Administrative.AddNewMediaFile.TagsTextBox.Label");
 ///<summary>&quot;Add New Media Folder&quot;</summary> 
 public static string Website_Forms_Administrative_AddNewMediaFolder_Label_AddNewMediaFolder=>T("Website.Forms.Administrative.AddNewMediaFolder.Label.AddNewMediaFolder");
 ///<summary>&quot;Folder Name&quot;</summary> 
@@ -2606,6 +2610,14 @@ public static string Website_Forms_Administrative_EditMediaFile_HelpFileName=>T(
 public static string Website_Forms_Administrative_EditMediaFile_LabelDescription=>T("Website.Forms.Administrative.EditMediaFile.LabelDescription");
 ///<summary>&quot;A description of the media file content&quot;</summary> 
 public static string Website_Forms_Administrative_EditMediaFile_HelpDescription=>T("Website.Forms.Administrative.EditMediaFile.HelpDescription");
+///<summary>&quot;Tags&quot;</summary> 
+public static string Website_Forms_Administrative_EditMediaFile_LabelTags=>T("Website.Forms.Administrative.EditMediaFile.LabelTags");
+///<summary>&quot;Provide tags for the media file content (Delimited by commas (,))&quot;</summary> 
+public static string Website_Forms_Administrative_EditMediaFile_HelpTags=>T("Website.Forms.Administrative.EditMediaFile.HelpTags");
+///<summary>&quot;URL&quot;</summary> 
+public static string Website_Forms_Administrative_EditMediaFile_LabelMediaURL=>T("Website.Forms.Administrative.EditMediaFile.LabelMediaURL");
+///<summary>&quot;This is the URL for your media File&quot;</summary> 
+public static string Website_Forms_Administrative_EditMediaFile_HelpMediaURL=>T("Website.Forms.Administrative.EditMediaFile.HelpMediaURL");
 ///<summary>&quot;The total length of the filename (folder and filename) is too long&quot;</summary> 
 public static string Website_Forms_Administrative_EditMediaFile_TotalFilenameToLong_Message=>T("Website.Forms.Administrative.EditMediaFile.TotalFilenameToLong.Message");
 ///<summary>&quot;A file with the same name already exists in this folder.&quot;</summary> 
@@ -7211,6 +7223,22 @@ public static string Insert_MediaURL_Label=>T("Insert.MediaURL.Label");
 public static string Insert_FrontendURL_Label=>T("Insert.FrontendURL.Label");
 ///<summary>&quot;Function Markup&quot;</summary> 
 public static string Insert_FunctionMarkup_Label=>T("Insert.FunctionMarkup.Label");
+///<summary>&quot;Translate To {0}&quot;</summary> 
+public static string ResxEditor_TranslateTo_Label_Template=>T("ResxEditor.TranslateTo.Label");
+///<summary>&quot;Translate To {0}&quot;</summary> 
+public static string ResxEditor_TranslateTo_Label(object parameter0)=>string.Format(T("ResxEditor.TranslateTo.Label"), parameter0);
+///<summary>&quot;Translate To {0}&quot;</summary> 
+public static string ResxEditor_TranslateTo_Tooltip_Template=>T("ResxEditor.TranslateTo.Tooltip");
+///<summary>&quot;Translate To {0}&quot;</summary> 
+public static string ResxEditor_TranslateTo_Tooltip(object parameter0)=>string.Format(T("ResxEditor.TranslateTo.Tooltip"), parameter0);
+///<summary>&quot;Label&quot;</summary> 
+public static string ResxEditor_Label=>T("ResxEditor.Label");
+///<summary>&quot;Original Text&quot;</summary> 
+public static string ResxEditor_OriginalText=>T("ResxEditor.OriginalText");
+///<summary>&quot;Translated Text&quot;</summary> 
+public static string ResxEditor_TranslatedText=>T("ResxEditor.TranslatedText");
+///<summary>&quot;Save&quot;</summary> 
+public static string ResxEditor_Save=>T("ResxEditor.Save");
 private static string T(string key) => StringResourceSystemFacade.GetString("Composite.Web.SourceEditor", key);
 } 
 
