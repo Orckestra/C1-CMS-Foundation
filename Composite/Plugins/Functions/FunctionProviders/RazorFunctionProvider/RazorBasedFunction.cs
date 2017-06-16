@@ -13,16 +13,21 @@ using Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvider;
 namespace Composite.Plugins.Functions.FunctionProviders.RazorFunctionProvider
 {
     [DebuggerDisplay("Razor function: {Namespace + '.' + Name}")]
-    internal class RazorBasedFunction : FileBasedFunction<RazorBasedFunction>
+    internal class RazorBasedFunction : FileBasedFunction<RazorBasedFunction>, IDynamicFunction
 	{
-		public RazorBasedFunction(string ns, string name, string description, IDictionary<string, FunctionParameter> parameters, Type returnType, string virtualPath, FileBasedFunctionProvider<RazorBasedFunction> provider)
+		public RazorBasedFunction(string ns, string name, string description, 
+            IDictionary<string, FunctionParameter> parameters, Type returnType, string virtualPath, 
+            bool preventCaching,
+            FileBasedFunctionProvider<RazorBasedFunction> provider)
 			: base(ns, name, description, parameters, returnType, virtualPath, provider)
 		{
-		}
+		    PreventFunctionOutputCaching = preventCaching;
+        }
 
-        public RazorBasedFunction(string ns, string name, string description, Type returnType, string virtualPath, FileBasedFunctionProvider<RazorBasedFunction> provider)
+        public RazorBasedFunction(string ns, string name, string description, Type returnType, string virtualPath, bool preventCaching, FileBasedFunctionProvider<RazorBasedFunction> provider)
             : base(ns, name, description, returnType, virtualPath, provider)
         {
+            PreventFunctionOutputCaching = preventCaching;
         }
 
         protected override void InitializeParameters()
@@ -36,12 +41,14 @@ namespace Composite.Plugins.Functions.FunctionProviders.RazorFunctionProvider
                     razorPage = WebPage.CreateInstanceFromVirtualPath(VirtualPath);
                 }
 
-                if (!(razorPage is RazorFunction))
+                var razorFunction = razorPage as RazorFunction;
+                if (razorFunction == null)
                 {
                     throw new InvalidOperationException($"Failed to initialize function from cache. Path: '{VirtualPath}'");
                 }
 
-                Parameters = FunctionBasedFunctionProviderHelper.GetParameters(razorPage as RazorFunction, typeof (RazorFunction), VirtualPath);
+                Parameters = FunctionBasedFunctionProviderHelper.GetParameters(razorFunction, typeof (RazorFunction), VirtualPath);
+                PreventFunctionOutputCaching = razorFunction.PreventFunctionOutputCaching;
             }
             finally
             {
@@ -51,21 +58,21 @@ namespace Composite.Plugins.Functions.FunctionProviders.RazorFunctionProvider
 
 		public override object Execute(ParameterList parameters, FunctionContextContainer context)
 		{
-		    Action<WebPageBase> setParametersAction = webPageBase =>
+		    void SetParametersAction(WebPageBase webPageBase)
 		    {
-                foreach (var param in parameters.AllParameterNames)
-                {
-                    var parameter = Parameters[param];
+		        foreach (var param in parameters.AllParameterNames)
+		        {
+		            var parameter = Parameters[param];
 
-                    object parameterValue = parameters.GetParameter(param);
+		            object parameterValue = parameters.GetParameter(param);
 
-                    parameter.SetValue(webPageBase, parameterValue);
-			    }
-		    };
+		            parameter.SetValue(webPageBase, parameterValue);
+		        }
+		    }
 
-            try
+		    try
             {
-                return RazorHelper.ExecuteRazorPage(VirtualPath, setParametersAction, ReturnType, context);
+                return RazorHelper.ExecuteRazorPage(VirtualPath, SetParametersAction, ReturnType, context);
             }
             catch (Exception ex)
             {
@@ -102,5 +109,8 @@ namespace Composite.Plugins.Functions.FunctionProviders.RazorFunctionProvider
                 }
             }
         }
+
+        /// <exclude />
+	    public bool PreventFunctionOutputCaching { get; protected set; }
 	}
 }

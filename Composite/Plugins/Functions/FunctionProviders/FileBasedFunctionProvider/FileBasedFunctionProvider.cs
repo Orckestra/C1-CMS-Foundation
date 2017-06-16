@@ -109,7 +109,8 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
 
                             function = InstantiateFunctionFromCache(virtualPath, @namespace, name,
                                                                     cachedFunctionInfo.ReturnType,
-                                                                    cachedFunctionInfo.Description);
+                                                                    cachedFunctionInfo.Description,
+                                                                    cachedFunctionInfo.PreventCaching);
                         }
                     }
                     catch (ThreadAbortException)
@@ -213,13 +214,15 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
         /// <param name="name">The name.</param>
         /// <param name="returnType">Cached value of return type.</param>
         /// <param name="cachedDescription">Cached value of the description.</param>
+        /// <param name="preventCaching">Cached PreventFunctionOutputCache property value.</param>
         /// <returns></returns>
         protected virtual IFunction InstantiateFunctionFromCache(
             string virtualPath,
             string @namespace,
             string name,
             Type returnType,
-            string cachedDescription)
+            string cachedDescription,
+            bool preventCaching)
         {
             return InstantiateFunction(virtualPath, @namespace, name);
         }
@@ -280,6 +283,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
         {
             public Type ReturnType { get; private set; }
             public string Description { get; private set; }
+            public bool PreventCaching { get; private set; }
 
             private CachedFunctionInformation() {}
 
@@ -287,6 +291,8 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
             {
                 ReturnType = function.ReturnType;
                 Description = function.Description;
+                PreventCaching = function is IDynamicFunction dynamicFunction
+                                 && dynamicFunction.PreventFunctionOutputCaching;
             }
 
             public static void Serialize(CachedFunctionInformation data, string filePath)
@@ -296,6 +302,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
                 if (data != null)
                 {
                     lines.Add(TypeManager.SerializeType(data.ReturnType));
+                    lines.Add(data.PreventCaching.ToString());
                     lines.AddRange(data.Description.Split(new [] { Environment.NewLine }, StringSplitOptions.None));
                 }
 
@@ -313,9 +320,15 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
                 Type type = TypeManager.TryGetType(lines[0]);
                 if (type == null) return null;
 
-                string description = string.Join(Environment.NewLine, lines.Skip(1));
+                bool preventCaching = bool.Parse(lines[1]);
+                string description = string.Join(Environment.NewLine, lines.Skip(2));
 
-                return new CachedFunctionInformation { Description = description, ReturnType = type };
+                return new CachedFunctionInformation
+                {
+                    Description = description,
+                    PreventCaching = preventCaching,
+                    ReturnType = type
+                };
             }
         }
 	}

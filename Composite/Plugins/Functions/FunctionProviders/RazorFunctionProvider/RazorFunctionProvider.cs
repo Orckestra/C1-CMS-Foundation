@@ -40,8 +40,13 @@ namespace Composite.Plugins.Functions.FunctionProviders.RazorFunctionProvider
                 var functionParameters = FunctionBasedFunctionProviderHelper.GetParameters(
                     razorFunction, typeof(RazorFunction), virtualPath);
 
-                return new RazorBasedFunction(@namespace, name, razorFunction.FunctionDescription, functionParameters,
-                    razorFunction.FunctionReturnType, virtualPath, this);
+                return new RazorBasedFunction(@namespace, name, 
+                    razorFunction.FunctionDescription, 
+                    functionParameters,
+                    razorFunction.FunctionReturnType, 
+                    virtualPath,
+                    razorFunction.PreventFunctionOutputCaching,
+                    this);
             }
             finally
             {
@@ -49,11 +54,11 @@ namespace Composite.Plugins.Functions.FunctionProviders.RazorFunctionProvider
             }
         }
 
-        protected override IFunction InstantiateFunctionFromCache(string virtualPath, string @namespace, string name, Type returnType, string cachedDescription)
+        protected override IFunction InstantiateFunctionFromCache(string virtualPath, string @namespace, string name, Type returnType, string cachedDescription, bool preventCaching)
         {
             if (returnType != null)
             {
-                return new RazorBasedFunction(@namespace, name, cachedDescription, returnType, virtualPath, this);
+                return new RazorBasedFunction(@namespace, name, cachedDescription, returnType, virtualPath, preventCaching, this);
             }
 
             return InstantiateFunction(virtualPath, @namespace, name);

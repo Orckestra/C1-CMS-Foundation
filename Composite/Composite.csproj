@@ -256,6 +256,7 @@
     <Compile Include="Core\WebClient\Services\WampRouter\WampRouteWrapper.cs" />
     <Compile Include="Data\Caching\CachedTable.cs" />
     <Compile Include="Data\Types\VersionedDataHelperContract.cs" />
+    <Compile Include="Functions\IDynamicFunction.cs" />
     <Compile Include="Plugins\Elements\UrlToEntityToken\WebsiteFileUrlToEntityTokenMapper.cs" />
     <Compile Include="Plugins\Elements\UrlToEntityToken\MediaUrlToEntityTokenMapper.cs" />
     <Compile Include="Plugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\String\HierarchicalSelectorWidgetFunction.cs" />

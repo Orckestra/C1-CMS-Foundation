@@ -125,14 +125,19 @@ namespace Composite.Core.PageTemplates
 
                 if (functionContextContainer != null)
                 {
+                    bool allFunctionsExecuted = false;
+
                     using (Profiler.Measure($"Evaluating placeholder '{placeholderId}'"))
                     {
-                        PageRenderer.ExecuteEmbeddedFunctions(placeholderXhtml.Root, functionContextContainer);
+                        allFunctionsExecuted = PageRenderer.ExecuteCachebleFuctions(placeholderXhtml.Root, functionContextContainer);
                     }
 
-                    using (Profiler.Measure("Normalizing XHTML document"))
+                    if (allFunctionsExecuted)
                     {
-                        PageRenderer.NormalizeXhtmlDocument(placeholderXhtml);
+                        using (Profiler.Measure("Normalizing XHTML document"))
+                        {
+                            PageRenderer.NormalizeXhtmlDocument(placeholderXhtml);
+                        }
                     }
                 }
 

@@ -125,7 +125,7 @@ namespace Composite.Core.Caching
             }
             catch (Exception ex)
             {
-                Log.LogWarning(LogTitle, "Failed to load cached data. Cache '{0}', file: '{1}'", cacheFileName);
+                Log.LogWarning(LogTitle, $"Failed to load cached data. Cache '{key}', file: '{cacheFileName}'");
                 Log.LogWarning(LogTitle, ex);
 
                 cachedData = null;

@@ -30,6 +30,7 @@ namespace Composite.Core.WebClient.Renderings.Page
         private static readonly string LogTitle = typeof(PageRenderer).Name;
         private static readonly NameBasedAttributeComparer _nameBasedAttributeComparer = new NameBasedAttributeComparer();
 
+        private static readonly XName XName_function = Namespaces.Function10 + "function";
 
         /// <exclude />
         public static FunctionContextContainer GetPageRenderFunctionContextContainer()
@@ -236,27 +237,6 @@ namespace Composite.Core.WebClient.Renderings.Page
         }
 
 
-        internal static void ProcessPageDocument(
-            XDocument document, 
-            FunctionContextContainer contextContainer,
-            IPage page)
-        {
-            using (Profiler.Measure("Executing embedded functions"))
-            {
-                ExecuteEmbeddedFunctions(document.Root, contextContainer);
-            }
-
-            using (Profiler.Measure("Resolving page fields"))
-            {
-                ResolvePageFields(document, page);
-            }
-
-            using (Profiler.Measure("Normalizing ASP.NET forms"))
-            {
-                NormalizeAspNetForms(document);
-            }
-        }
-
         internal static void ProcessXhtmlDocument(XhtmlDocument xhtmlDocument, IPage page)
         {
             using (Profiler.Measure("Normalizing XHTML document"))
@@ -291,7 +271,20 @@ namespace Composite.Core.WebClient.Renderings.Page
         {
             using (TimerProfilerFacade.CreateTimerProfiler())
             {
-                ProcessPageDocument(document, contextContainer, page);
+                using (Profiler.Measure("Executing embedded functions"))
+                {
+                    ExecuteEmbeddedFunctions(document.Root, contextContainer);
+                }
+
+                using (Profiler.Measure("Resolving page fields"))
+                {
+                    ResolvePageFields(document, page);
+                }
+
+                using (Profiler.Measure("Normalizing ASP.NET forms"))
+                {
+                    NormalizeAspNetForms(document);
+                }
 
                 if (document.Root.Name != RenderingElementNames.Html)
                 {
@@ -445,7 +438,6 @@ namespace Composite.Core.WebClient.Renderings.Page
                     aspNetFormElement.ReplaceWith(aspNetFormElement.Nodes());
                 }
             }
-
         }
 
 
@@ -472,111 +464,151 @@ namespace Composite.Core.WebClient.Renderings.Page
                 }
 
                 elem.ReplaceWith(new XElement(Namespaces.Xhtml + "meta",
-                                    new XAttribute("name", "description"),
-                                    new XAttribute("content", page.Description)));
+                    new XAttribute("name", "description"),
+                    new XAttribute("content", page.Description)));
             }
         }
 
-
-
-        /// <exclude />
-        public static void ExecuteEmbeddedFunctions(XElement element, FunctionContextContainer contextContainer)
+        /// <summary>
+        /// Executes functions that match the predicate recursively,
+        /// 
+        /// </summary>
+        /// <param name="element"></param>
+        /// <param name="functionContext"></param>
+        /// <param name="functionShouldBeExecuted">A predicate that defines whether a function should be executed based on its name.</param>
+        /// <returns><value>True</value> if all of the functions has matched the predicate</returns>
+        internal static bool ExecuteFunctionsRec(
+            XElement element, 
+            FunctionContextContainer functionContext,
+            Predicate<string> functionShouldBeExecuted = null)
         {
-            using (TimerProfilerFacade.CreateTimerProfiler())
+            if (element.Name != XName_function)
             {
-                IEnumerable<XElement> functionCallDefinitions = element.DescendantsAndSelf(Namespaces.Function10 + "function")
-                                                                       .Where(f => !f.Ancestors(Namespaces.Function10 + "function").Any());
-
-                var functionCalls = functionCallDefinitions.ToList();
-                if (functionCalls.Count == 0) return;
-
-                object[] functionExecutionResults = new object[functionCalls.Count];
-
-                for (int i = 0; i < functionCalls.Count; i++)
+                var children = element.Elements();
+                if (element.Elements(XName_function).Any())
                 {
-                    XElement functionCallDefinition = functionCalls[i];
-                    string functionName = null;
+                    // Allows replacing the function elements without breaking the iterator
+                    children = children.ToList(); 
+                }
 
-                    object functionResult;
-                    try
-                    {
-                        // Evaluating function calls in parameters
-                        IEnumerable<XElement> parameters = functionCallDefinition.Elements();
-
-                        foreach (XElement parameterNode in parameters)
-                        {
-                            ExecuteEmbeddedFunctions(parameterNode, contextContainer);
-                        }
-
-
-                        // Executing a function call
-                        BaseRuntimeTreeNode runtimeTreeNode = FunctionTreeBuilder.Build(functionCallDefinition);
-
-                        functionName = runtimeTreeNode.GetAllSubFunctionNames().FirstOrDefault();
-
-                        object result = runtimeTreeNode.GetValue(contextContainer);
-
-                        if (result != null)
-                        {
-                            // Evaluating functions in a result of a function call
-                            object embedableResult = contextContainer.MakeXEmbedable(result);
-
-                            foreach (XElement xelement in GetXElements(embedableResult))
-                            {
-                                ExecuteEmbeddedFunctions(xelement, contextContainer);
-                            }
-
-                            functionResult = embedableResult;
-                        }
-                        else
-                        {
-                            functionResult = null;
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        using (Profiler.Measure("PageRenderer. Loggin an exception"))
-                        {
-                            XElement errorBoxHtml;
-
-                            if (!contextContainer.ProcessException(functionName, ex, LogTitle, out errorBoxHtml))
-                            {
-                                throw;
-                            }
-
-                            functionResult = errorBoxHtml;
-                        }
-                    }
-
-                    functionExecutionResults[i] = functionResult;
-                };
-
-                // Applying changes
-                for (int i = 0; i < functionCalls.Count; i++)
+                bool allChildrenExecuted = true;
+                foreach (var childElement in children)
                 {
-                    XElement functionCall = functionCalls[i];
-                    object functionCallResult = functionExecutionResults[i];
-                    if (functionCallResult != null)
+                    if (!ExecuteFunctionsRec(childElement, functionContext, functionShouldBeExecuted))
                     {
-                        if (functionCallResult is XAttribute && functionCall.Parent != null)
-                        {
-                            functionCall.Parent.Add(functionCallResult);
-                            functionCall.Remove();
-                        }
-                        else
-                        {
-                            functionCall.ReplaceWith(functionCallResult);
-                        }
+                        allChildrenExecuted = false;
                     }
-                    else
+                }
+                return allChildrenExecuted;
+            }
+
+            bool allRecFunctionsExecuted = true;
+
+            string functionName = (string) element.Attribute("name");
+            object result;
+            try
+            {
+                // Evaluating function calls in parameters
+                IEnumerable<XElement> parameters = element.Elements();
+
+                bool allParametersEvaluated = true;
+                foreach (XElement parameterNode in parameters.ToList())
+                {
+                    if (!ExecuteFunctionsRec(parameterNode, functionContext, functionShouldBeExecuted))
                     {
-                        functionCall.Remove();
+                        allParametersEvaluated = false;
+                    }
+                }
+
+                if (!allParametersEvaluated)
+                {
+                    return false;
+                }
+
+                if (functionShouldBeExecuted != null &&
+                    !functionShouldBeExecuted(functionName))
+                {
+                    return false;
+                }
+
+                // Executing a function call
+                BaseRuntimeTreeNode runtimeTreeNode = FunctionTreeBuilder.Build(element);
+                result = runtimeTreeNode.GetValue(functionContext);
+
+                if (result != null)
+                {
+                    // Evaluating functions in a result of a function call
+                    result = functionContext.MakeXEmbedable(result);
+
+                    foreach (XElement xelement in GetXElements(result).ToList())
+                    {
+                        if (!ExecuteFunctionsRec(xelement, functionContext, functionShouldBeExecuted))
+                        {
+                            allRecFunctionsExecuted = false;
+                        }
                     }
                 }
             }
+            catch (Exception ex)
+            {
+                using (Profiler.Measure("PageRenderer. Logging an exception"))
+                {
+                    XElement errorBoxHtml;
+
+                    if (!functionContext.ProcessException(functionName, ex, LogTitle, out errorBoxHtml))
+                    {
+                        throw;
+                    }
+
+                    result = errorBoxHtml;
+                }
+            }
+
+            ReplaceFunctionWithResult(element, result);
+
+            return allRecFunctionsExecuted;
         }
 
+        /// <exclude />
+        public static void ExecuteEmbeddedFunctions(XElement element, FunctionContextContainer functionContext)
+        {
+            ExecuteFunctionsRec(element, functionContext, null);
+        }
 
+        /// <summary>
+        /// Executes all cacheble (not dynamic) functions and returs <value>True</value> 
+        /// if all of the functions were cacheble.
+        /// </summary>
+        /// <param name="element"></param>
+        /// <param name="functionContext"></param>
+        /// <returns></returns>
+        internal static bool ExecuteCachebleFuctions(XElement element, FunctionContextContainer functionContext)
+        {
+            return ExecuteFunctionsRec(element, functionContext, name =>
+            {
+                var function = FunctionFacade.GetFunction(name) as IDynamicFunction;
+                return function == null || !function.PreventFunctionOutputCaching;
+            });
+        }
+
+        private static void ReplaceFunctionWithResult(XElement functionCall, object result)
+        {
+            if (result == null)
+            {
+                functionCall.Remove();
+                return;
+            }
+
+            if (result is XAttribute && functionCall.Parent != null)
+            {
+                functionCall.Parent.Add(result);
+                functionCall.Remove();
+            }
+            else
+            {
+                functionCall.ReplaceWith(result);
+            }
+        }
 
         private static IEnumerable<XElement> GetXElements(object source)
         {

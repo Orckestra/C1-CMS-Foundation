@@ -10,7 +10,6 @@ namespace Composite.AspNet.Razor
     /// Base class for c1 functions based on razor 
     /// </summary>
     public abstract class RazorFunction : CompositeC1WebPage, IParameterWidgetsProvider
-
     {
         /// <summary>
         /// Gets the function description. Override this to make a custom description.
@@ -21,10 +20,7 @@ namespace Composite.AspNet.Razor
         ///    get { return "Will show recent Twitter activity for a given keyword."; }
         ///}
         /// </example>
-        public virtual string FunctionDescription
-        {
-            get { return string.Empty; }
-        }
+        public virtual string FunctionDescription => string.Empty;
 
         /// <summary>
         /// Gets the return type. By default this is XhtmlDocument (html). Override this to set another return type, like string or XElement.
@@ -35,10 +31,12 @@ namespace Composite.AspNet.Razor
         ///    get { return typeof(string); }
         ///}
         /// </example>
-        public virtual Type FunctionReturnType
-        {
-            get { return typeof (XhtmlDocument); }
-        }
+        public virtual Type FunctionReturnType => typeof (XhtmlDocument);
+
+        /// <summary>
+        /// Determines whether the function output can be cached.
+        /// </summary>
+        public virtual bool PreventFunctionOutputCaching => false;
 
         /// <exclude />
         public virtual IDictionary<string, WidgetFunctionProvider> GetParameterWidgets()
