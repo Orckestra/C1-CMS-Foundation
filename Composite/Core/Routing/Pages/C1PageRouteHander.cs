@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Collections.Concurrent;
 using System.Linq;
 using System.Web;
 using System.Web.Compilation;
@@ -10,6 +11,8 @@ using System.Web.UI;
 using System.Xml.Linq;
 using Composite.Core.Extensions;
 using Composite.Core.Linq;
+using Composite.Core.PageTemplates;
+
 
 namespace Composite.Core.Routing.Pages
 {
@@ -51,7 +54,7 @@ namespace Composite.Core.Routing.Pages
                     _handlerType = Type.GetType(typeAttr.Value);
                     if(_handlerType == null)
                     {
-                        Log.LogError(typeof(C1PageRouteHandler).Name, "Failed to load type '{0}'", typeAttr.Value);
+                        Log.LogError(typeof(C1PageRouteHandler).Name, $"Failed to load type '{typeAttr.Value}'");
                     }
                 }
             }
@@ -90,12 +93,26 @@ namespace Composite.Core.Routing.Pages
                 context.Response.Cache.SetCacheability(HttpCacheability.NoCache);
             }
 
+            if (IsSlimPageRenderer(_pageUrlData.GetPage().TemplateId))
+            {
+                return new CmsPageHttpHandler();
+            }
+
             if (_handlerType != null)
             {
                 return (IHttpHandler)Activator.CreateInstance(_handlerType);
             }
             
             return (IHttpHandler)BuildManager.CreateInstanceFromVirtualPath("~/Renderers/Page.aspx", typeof(Page));
+        }
+
+        private static readonly ConcurrentDictionary<Guid, bool> _pageRendererTypCache
+            = new ConcurrentDictionary<Guid, bool>();
+
+        private bool IsSlimPageRenderer(Guid pageTemplate)
+        {
+            return _pageRendererTypCache.GetOrAdd(pageTemplate, 
+                templateId => PageTemplateFacade.BuildPageRenderer(templateId) is ISlimPageRenderer);
         }
     }
 }

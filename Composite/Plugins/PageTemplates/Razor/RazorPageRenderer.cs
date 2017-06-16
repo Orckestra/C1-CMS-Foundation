@@ -14,7 +14,7 @@ using Composite.Functions;
 
 namespace Composite.Plugins.PageTemplates.Razor
 {
-    internal class RazorPageRenderer : IPageRenderer
+    internal class RazorPageRenderer : IPageRenderer, ISlimPageRenderer
     {
         private readonly Hashtable<Guid, TemplateRenderingInfo> _renderingInfo;
         private readonly Hashtable<Guid, Exception> _loadingExceptions;
