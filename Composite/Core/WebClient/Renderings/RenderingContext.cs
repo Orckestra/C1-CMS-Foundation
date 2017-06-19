@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 using System.Web;
 using Composite.C1Console.Security;
 using Composite.Core.Extensions;
@@ -240,7 +241,11 @@ namespace Composite.Core.WebClient.Renderings
 
             PageRenderer.CurrentPage = Page;
 
-            _dataScope = new DataScope(Page.DataSourceId.PublicationScope, Page.DataSourceId.LocaleScope);
+            var culture = Page.DataSourceId.LocaleScope;
+
+            _dataScope = new DataScope(Page.DataSourceId.PublicationScope, culture);
+            Thread.CurrentThread.CurrentCulture = culture;
+            Thread.CurrentThread.CurrentUICulture = culture;
 
             var pagePlaceholderContents = GetPagePlaceholderContents();
             PageContentToRender = new PageContentToRender(Page, pagePlaceholderContents, PreviewMode);
