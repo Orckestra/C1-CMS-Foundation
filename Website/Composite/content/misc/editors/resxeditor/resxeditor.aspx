@@ -23,12 +23,6 @@
 			</ui:broadcasterset> 
 			<ui:toolbar id="toolbar" class="document-toolbar">
 				<ui:toolbarbody>
-				<%--	<aspui:ToolbarButton id="savebutton" imageurl="${icon:save}" imageurlwhendisabled="${icon:save-disabled}" label="save"
-						text="${string:Composite.Web.SourceEditor:ResxEditor.Save}"
-						client_oncommand="this.dispatchAction(EditorPageBinding.ACTION_SAVE)"
-						runat="server"
-					    ObservesClientBroadcaster= "broadcasterCanSave"/>--%>
-
 					<ui:toolbarbutton
 						oncommand="this.dispatchAction(EditorPageBinding.ACTION_SAVE)"
 						id="savebutton"
@@ -38,7 +32,6 @@
 						observes="broadcasterCanSave"/>
 				</ui:toolbarbody>
 			</ui:toolbar>
-			
 				<ui:scrollbox id="scrollbox">
 					<table class="table">
 						<asp:Repeater ID="DataRepeater" runat="server">
@@ -65,21 +58,27 @@
 							<ItemTemplate>
 								<tr>
 									<td>
-										<asp:Label ID="Label" runat="server" Text='<%#Eval("Label") %>'></asp:Label>
+										<asp:Label ID="Label" runat="server" Text='<%#Eval("Label") %>' />
 									</td>
 									<% if (!OtherCultureExist)
 										{ %>
 									<td>
-										<aspui:DataInput  cssclass="inputs" id="Original" width="400px" runat="server" text='<%#Eval("Original") %>' ></aspui:DataInput>
+										<div class="inputbox">
+											<aspui:DataInput id="Original" runat="server" text='<%#Eval("Original") %>' />
+										</div>
 									</td>
 									<% } %>
 									<% if (OtherCultureExist)
 										{ %>
 									<td>
-										<asp:Label ID="Original2" Width="400px" runat="server" CssClass="label" Text='<%#Eval("Original") %>'></asp:Label>
+										<div class="label">
+											<asp:Label ID="Original2" runat="server" Text='<%#Eval("Original") %>' />
+										</div>
 									</td>
 									<td>
-										<aspui:DataInput  cssclass="inputs" id="Translated" width="400px" runat="server" text='<%#Eval("Translated") %>' ></aspui:DataInput>
+										<div class="inputbox">
+											<aspui:DataInput id="Translated" runat="server" text='<%#Eval("Translated") %>' />
+										</div>
 									</td>
 									<% } %>
 									<td></td>

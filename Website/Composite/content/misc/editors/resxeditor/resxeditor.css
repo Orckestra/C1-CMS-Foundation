@@ -20,8 +20,14 @@ td {
 }
 
 .label {
+	width: 400px;
 	word-wrap: normal;
 	white-space: normal !important;
+}
+
+.inputbox input {
+	margin-top: 4px;
+	width: 400px;
 }
 
 .table th:last-child,
