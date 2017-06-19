@@ -13,17 +13,29 @@
 </head>
 <body>
 	<form runat="server" class="updateform updatezone">
+		 
 		<ui:editorpage label="<%= PageTitle%>" image="${icon:page-list-unpublished-items}">
+			<aspui:Feedback runat="server"
+                    ID="ctlFeedback"
+                    OnCommand="OnMessage" />
 			<ui:broadcasterset>
 				<ui:broadcaster id="broadcasterCanSave" isdisabled="true"/>
 			</ui:broadcasterset> 
 			<ui:toolbar id="toolbar" class="document-toolbar">
 				<ui:toolbarbody>
-					<aspui:ToolbarButton id="savebutton" imageurl="${icon:save}" imageurlwhendisabled="${icon:save-disabled}" label="save"
+				<%--	<aspui:ToolbarButton id="savebutton" imageurl="${icon:save}" imageurlwhendisabled="${icon:save-disabled}" label="save"
 						text="${string:Composite.Web.SourceEditor:ResxEditor.Save}"
-						oncommand="Save"
+						client_oncommand="this.dispatchAction(EditorPageBinding.ACTION_SAVE)"
 						runat="server"
-					    ObservesClientBroadcaster= "broadcasterCanSave"/>
+					    ObservesClientBroadcaster= "broadcasterCanSave"/>--%>
+
+					<ui:toolbarbutton
+						oncommand="this.dispatchAction(EditorPageBinding.ACTION_SAVE)"
+						id="savebutton"
+						image="${icon:save}"
+						image-disabled="${icon:save-disabled}"
+						label="${string:Composite.Web.SourceEditor:ResxEditor.Save}"
+						observes="broadcasterCanSave"/>
 				</ui:toolbarbody>
 			</ui:toolbar>
 			
@@ -80,8 +92,6 @@
 						</asp:Repeater>
 					</table>
 				</ui:scrollbox>
-
-			
 		</ui:editorpage>
 
 	</form>

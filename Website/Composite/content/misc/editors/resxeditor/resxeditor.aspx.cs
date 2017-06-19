@@ -168,7 +168,26 @@ public partial class ResxEditor : System.Web.UI.Page
 
             await Task.Run(() => xdoc.Save(GetCurrentAlternateFileName(FileName)));
         }
+        SaveStatus(true);
+    }
 
+    public void OnMessage()
+    {
+        string message = ctlFeedback.GetPostedMessage();
+
+        if (message == "save")
+        {
+            Save(null, null);
+            ctlFeedback.SetStatus(true);
+            SaveStatus(true);
+        }
+    }
+
+    protected void SaveStatus(bool succeeded)
+    {
+        var viewId = Request["__VIEWID"];
+        var consoleId = Request["__CONSOLEID"];
+        ConsoleMessageQueueFacade.Enqueue(new SaveStatusConsoleMessageQueueItem { ViewId = viewId, Succeeded = succeeded }, consoleId);
     }
 
     private string GetCurrentAlternateFileName(string file)
