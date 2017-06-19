@@ -3,20 +3,15 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
-using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml.Linq;
 using Castle.Core.Internal;
-using Composite.C1Console.Actions;
 using Composite.C1Console.Events;
-using Composite.C1Console.Security;
 using Composite.Core.IO;
-using Composite.Core.ResourceSystem;
 using Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider;
 
-public partial class ResxEditor : System.Web.UI.Page, IPostBackEventHandler
+public partial class ResxEditor : System.Web.UI.Page
 {
     public string FileName
     {
@@ -78,21 +73,10 @@ public partial class ResxEditor : System.Web.UI.Page, IPostBackEventHandler
                 OtherCultureExist = true;
             }
 
-            SaveButton.Enabled = false;
-
-            var culList = new[] { new ListItem { Text = "Select Another Culture", Value = null } }.Concat(StringResourceSystemFacade.GetSupportedCultures().
-                Where(f => f.Name != "en-US").Select(t => new ListItem { Text = t.DisplayName, Value = t.Name }));
-
             if (loc != null)
             {
-                culList = culList.Union(new[] { new ListItem { Text = loc.DisplayName, Value = loc.Name } });
                 CultureName = loc.Name;
             }
-
-            //CultureSelector.DataSource = culList;
-            //CultureSelector.DataTextField = "Text";
-            //CultureSelector.DataValueField = "Value";
-            //CultureSelector.DataBind();
 
             this.BindGridView();
         }
@@ -185,7 +169,6 @@ public partial class ResxEditor : System.Web.UI.Page, IPostBackEventHandler
             await Task.Run(() => xdoc.Save(GetCurrentAlternateFileName(FileName)));
         }
 
-        SaveButton.Enabled = false;
     }
 
     private string GetCurrentAlternateFileName(string file)
@@ -230,24 +213,6 @@ public partial class ResxEditor : System.Web.UI.Page, IPostBackEventHandler
         DataRepeater.DataBind();
     }
 
-
-    //protected void Culture_OnSelectedIndexChanged(object sender, EventArgs e)
-    //{
-    //    OtherCultureExist = true;
-    //    ListItem removeItem = CultureSelector.Items.FindByValue("Select Another Culture");
-    //    CultureSelector.Items.Remove(removeItem);
-    //    BindGridView();
-    //}
-
-    protected void TextBox_OnKeyPress()
-    {
-        SaveButton.Enabled = true;
-    }
-
-    public void RaisePostBackEvent(string eventArgument)
-    {
-        TextBox_OnKeyPress();
-    }
 
     public class Phrase
     {

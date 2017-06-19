@@ -24,10 +24,6 @@ td {
 	white-space: normal !important;
 }
 
-ui|pagebody {
-	margin-top: 30px;
-}
-
 .table th:last-child,
 .table td:last-child {
 	width: 100%;

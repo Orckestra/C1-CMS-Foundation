@@ -10,21 +10,23 @@
 	<link rel="stylesheet" type="text/css" href="resxeditor.css.aspx" />
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans:600,400" rel="stylesheet" type="text/css" />
 	<script type="text/javascript" src="bindings/RowContainerBinding.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
 </head>
 <body>
 	<form runat="server" class="updateform updatezone">
 		<ui:editorpage label="<%= PageTitle%>" image="${icon:page-list-unpublished-items}">
+			<ui:broadcasterset>
+				<ui:broadcaster id="broadcasterCanSave" isdisabled="true"/>
+			</ui:broadcasterset> 
 			<ui:toolbar id="toolbar" class="document-toolbar">
 				<ui:toolbarbody>
-					<aspui:toolbarbutton id="SaveButton" imageurl="${icon:save}" imageurlwhendisabled="${icon:save-disabled}" label="Save"
+					<aspui:ToolbarButton id="savebutton" imageurl="${icon:save}" imageurlwhendisabled="${icon:save-disabled}" label="save"
 						text="${string:Composite.Web.SourceEditor:ResxEditor.Save}"
 						oncommand="Save"
 						runat="server"
-						enabled="False" />
+					    ObservesClientBroadcaster= "broadcasterCanSave"/>
 				</ui:toolbarbody>
 			</ui:toolbar>
-			<ui:pagebody>
+			
 				<ui:scrollbox id="scrollbox">
 					<table class="table">
 						<asp:Repeater ID="DataRepeater" runat="server">
@@ -56,7 +58,7 @@
 									<% if (!OtherCultureExist)
 										{ %>
 									<td>
-										<aspui:textbox cssclass="inputs" id="Original" width="400px" runat="server" text='<%#Eval("Original") %>' onkeyup="enable(this)" autopostback="True"></aspui:textbox>
+										<aspui:DataInput  cssclass="inputs" id="Original" width="400px" runat="server" text='<%#Eval("Original") %>' ></aspui:DataInput>
 									</td>
 									<% } %>
 									<% if (OtherCultureExist)
@@ -65,7 +67,7 @@
 										<asp:Label ID="Original2" Width="400px" runat="server" CssClass="label" Text='<%#Eval("Original") %>'></asp:Label>
 									</td>
 									<td>
-										<aspui:textbox cssclass="inputs" id="Translated" width="400px" runat="server" text='<%#Eval("Translated") %>' onkeyup="enable(this)" autopostback="True"></aspui:textbox>
+										<aspui:DataInput  cssclass="inputs" id="Translated" width="400px" runat="server" text='<%#Eval("Translated") %>' ></aspui:DataInput>
 									</td>
 									<% } %>
 									<td></td>
@@ -79,21 +81,11 @@
 					</table>
 				</ui:scrollbox>
 
-			</ui:pagebody>
+			
 		</ui:editorpage>
 
 	</form>
 
 </body>
-<script>
-	function enable(selectObj) {
-		__doPostBack('<%= Page.ClientID %>', selectObj.name);
-	}
-	$('.inputs').keydown(function (e) {
-		if (e.which === 13) {
-			var index = $('.inputs').index(this) + 1;
-			$('.inputs').eq(index).focus().select();
-		}
-	});
-</script>
+
 </html>
