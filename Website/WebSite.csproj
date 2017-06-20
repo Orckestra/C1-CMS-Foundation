@@ -281,7 +281,6 @@
     <Content Include="Composite\content\forms\Administrative\SetTimeZone_select.xml" />
     <Content Include="Composite\content\forms\Administrative\DeletePage_ConfirmAllVersionsDeletion.xml" />
     <Content Include="Composite\content\forms\Administrative\WebsiteFileElementProviderUploadAndExtractZipFile.xml" />
-    <Content Include="Composite\content\misc\editors\resxeditor\Bindings\ResxEditorPageBinding.js" />
     <Content Include="Composite\content\misc\editors\resxeditor\Bindings\rowContainerBinding.js" />
     <Content Include="Composite\content\misc\editors\resxeditor\resxeditor.aspx" />
     <Content Include="Composite\content\misc\editors\resxeditor\resxeditor.css" />

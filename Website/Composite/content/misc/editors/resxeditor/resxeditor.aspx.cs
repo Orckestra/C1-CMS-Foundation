@@ -94,8 +94,11 @@ public partial class ResxEditor : System.Web.UI.Page
             var topicNodes = xdoc.Descendants("data");
             foreach (var node in topicNodes)
             {
-                var xAttribute = node.Attribute("name");
-                if (xAttribute != null) res.Add(xAttribute.Value, node.Descendants("value").First().Value);
+                if (node.Attributes().Any(f => f.Name == XNamespace.Xml + "space" && f.Value == "preserve"))
+                {
+                    var xAttribute = node.Attribute("name");
+                    if (xAttribute != null) res.Add(xAttribute.Value, node.Descendants("value").First().Value);
+                }
 
             }
 
@@ -194,7 +197,7 @@ public partial class ResxEditor : System.Web.UI.Page
     {
         return Path.GetDirectoryName(file) +
             Path.DirectorySeparatorChar +
-            Path.GetFileNameWithoutExtension(file) + ((!CultureName.IsNullOrEmpty())?".":"") +
+            Path.GetFileNameWithoutExtension(file) + ((!CultureName.IsNullOrEmpty()) ? "." : "") +
                CultureName + Path.GetExtension(file);
     }
 

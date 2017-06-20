@@ -13,14 +13,13 @@
 </head>
 <body>
 	<form runat="server" class="updateform updatezone">
-		 
 		<ui:editorpage label="<%= PageTitle%>" image="${icon:page-list-unpublished-items}">
-			<aspui:Feedback runat="server"
-                    ID="ctlFeedback"
-                    OnCommand="OnMessage" />
+			<aspui:feedback runat="server"
+				id="ctlFeedback"
+				oncommand="OnMessage" />
 			<ui:broadcasterset>
-				<ui:broadcaster id="broadcasterCanSave" isdisabled="true"/>
-			</ui:broadcasterset> 
+				<ui:broadcaster id="broadcasterCanSave" isdisabled="true" />
+			</ui:broadcasterset>
 			<ui:toolbar id="toolbar" class="document-toolbar">
 				<ui:toolbarbody>
 					<ui:toolbarbutton
@@ -29,72 +28,68 @@
 						image="${icon:save}"
 						image-disabled="${icon:save-disabled}"
 						label="${string:Composite.Web.SourceEditor:ResxEditor.Save}"
-						observes="broadcasterCanSave"/>
+						observes="broadcasterCanSave" />
 				</ui:toolbarbody>
 			</ui:toolbar>
-				<ui:scrollbox id="scrollbox">
-					<table class="table">
-						<asp:Repeater ID="DataRepeater" runat="server">
-							<HeaderTemplate>
-								<thead>
-									<tr class="head">
-										<th>
-											<%= LocalizationFiles.Composite_Web_SourceEditor.ResxEditor_Label %> 
-										</th>
-										<th>
-											<%= LocalizationFiles.Composite_Web_SourceEditor.ResxEditor_OriginalText %> 
-										</th>
-										<% if (OtherCultureExist)
-											{ %>
-										<th>
-											<%= LocalizationFiles.Composite_Web_SourceEditor.ResxEditor_TranslatedText %> 
-										</th>
-										<% } %>
-										<th></th>
-									</tr>
-								</thead>
-								<tbody id="tbody" binding="RowContainerBinding">
-							</HeaderTemplate>
-							<ItemTemplate>
-								<tr>
-									<td>
-										<asp:Label ID="Label" runat="server" Text='<%#Eval("Label") %>' />
-									</td>
-									<% if (!OtherCultureExist)
-										{ %>
-									<td>
-										<div class="inputbox">
-											<aspui:DataInput id="Original" runat="server" text='<%#Eval("Original") %>' />
-										</div>
-									</td>
-									<% } %>
+			<ui:scrollbox id="scrollbox">
+				<table class="table">
+					<asp:Repeater ID="DataRepeater" runat="server">
+						<HeaderTemplate>
+							<thead>
+								<tr class="head">
+									<th>
+										<%= LocalizationFiles.Composite_Web_SourceEditor.ResxEditor_Label %> 
+									</th>
+									<th>
+										<%= LocalizationFiles.Composite_Web_SourceEditor.ResxEditor_OriginalText %> 
+									</th>
 									<% if (OtherCultureExist)
 										{ %>
-									<td>
-										<div class="label">
-											<asp:Label ID="Original2" runat="server" Text='<%#Eval("Original") %>' />
-										</div>
-									</td>
-									<td>
-										<div class="inputbox">
-											<aspui:DataInput id="Translated" runat="server" text='<%#Eval("Translated") %>' />
-										</div>
-									</td>
+									<th>
+										<%= LocalizationFiles.Composite_Web_SourceEditor.ResxEditor_TranslatedText %> 
+									</th>
 									<% } %>
-									<td></td>
+									<th></th>
 								</tr>
-							</ItemTemplate>
-							<FooterTemplate>
-								</tbody>
-
-							</FooterTemplate>
-						</asp:Repeater>
-					</table>
-				</ui:scrollbox>
+							</thead>
+							<tbody id="tbody" binding="RowContainerBinding">
+						</HeaderTemplate>
+						<ItemTemplate>
+							<tr>
+								<td>
+									<asp:Label ID="Label" runat="server" Text='<%#Eval("Label") %>' />
+								</td>
+								<% if (!OtherCultureExist)
+									{ %>
+								<td>
+									<div class="inputbox">
+										<aspui:datainput id="Original" runat="server" text='<%#Eval("Original")%>' />
+									</div>
+								</td>
+								<% } %>
+								<% if (OtherCultureExist)
+									{ %>
+								<td>
+									<div class="label">
+										<asp:Label ID="Original2" runat="server" Text='<%#Eval("Original")%>' />
+									</div>
+								</td>
+								<td>
+									<div class="inputbox">
+										<aspui:datainput id="Translated" runat="server" text='<%#Eval("Translated")%>' language='<%#CultureName%>' />
+									</div>
+								</td>
+								<% } %>
+								<td></td>
+							</tr>
+						</ItemTemplate>
+						<FooterTemplate>
+							</tbody>
+						</FooterTemplate>
+					</asp:Repeater>
+				</table>
+			</ui:scrollbox>
 		</ui:editorpage>
-
 	</form>
-
 </body>
-
 </html>

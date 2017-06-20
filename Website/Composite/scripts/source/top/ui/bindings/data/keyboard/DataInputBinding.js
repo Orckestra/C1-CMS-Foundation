@@ -1,4 +1,4 @@
-DataInputBinding.prototype = new DataBinding;
+﻿DataInputBinding.prototype = new DataBinding;
 DataInputBinding.prototype.constructor = DataInputBinding;
 DataInputBinding.superclass = DataBinding.prototype;
 
@@ -298,8 +298,17 @@ DataInputBinding.prototype._buildDOMContent = function () {
 	}
 
 	if (this.spellcheck && Client.hasSpellcheck) {
-		var currentLang = Localization.currentLang();
-		if (currentLang != null) {
+        var currentLang = Localization.currentLang();
+        var parentLangAttribute = null;
+        if (this.shadowTree.input.parentNode != null) {
+            if (this.shadowTree.input.parentNode.parentElement!=null) {
+                parentLangAttribute = this.shadowTree.input.parentNode.parentElement.getAttribute("lang");
+	        }
+        }
+		if (parentLangAttribute != null) {
+			this.shadowTree.input.setAttribute("spellcheck", "true");
+			this.shadowTree.input.setAttribute("lang", parentLangAttribute);
+		} else if (currentLang != null) {
 			this.shadowTree.input.setAttribute("spellcheck", "true");
 			this.shadowTree.input.setAttribute("lang", Localization.currentLang());
 		} else {
