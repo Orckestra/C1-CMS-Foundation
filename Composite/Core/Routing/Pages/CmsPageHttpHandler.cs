@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.Caching;
 using System.Web;
+using System.Web.Caching;
 using System.Web.UI;
 using System.Xml.Linq;
 using Composite.Core.Configuration;
@@ -13,6 +15,39 @@ using Composite.Core.Xml;
 
 namespace Composite.Core.Routing.Pages
 {
+    [Serializable]
+    internal class DonutCacheEntry
+    {
+        private XDocument _document;
+
+        public DonutCacheEntry()
+        {
+        }
+
+        public DonutCacheEntry(HttpContext context, XDocument document)
+        {
+            Document = new XDocument(document);
+
+            var headers = context.Response.Headers;
+
+            var headersCopy = new List<HeaderElement>(headers.Count);
+            foreach (var name in headers.AllKeys)
+            {
+                headersCopy.Add(new HeaderElement(name, headers[name]));
+            }
+
+            OutputHeaders = headersCopy;
+        }
+
+        public XDocument Document
+        {
+            get => new XDocument(_document);
+            set => _document = value;
+        }
+
+        public IReadOnlyCollection<HeaderElement> OutputHeaders { get; set; }
+    }
+
     /// <summary>
     /// Renders page tempates without building a Web Form's control tree.
     /// Contains a custom implementation of "donut caching".
@@ -38,13 +73,27 @@ namespace Composite.Core.Routing.Pages
                 var functionContext = PageRenderer.GetPageRenderFunctionContextContainer();
 
                 XDocument document;
+                DonutCacheEntry cacheEntry;
                 using (Profiler.Measure("Cache lookup"))
                 {
-                    document = GetFromCache(cacheKey);
+                    cacheEntry = GetFromCache(context, cacheKey);
                 }
 
                 bool allFunctionsExecuted = false;
-                if (document == null)
+                bool preventResponseCaching = false;
+
+                if (cacheEntry != null)
+                {
+                    document = cacheEntry.Document;
+                    foreach (var header in cacheEntry.OutputHeaders)
+                    {
+                        context.Response.Headers[header.Name] = header.Value;
+                    }
+
+                    // Making sure this response will not go to the output cache
+                    preventResponseCaching = true;
+                }
+                else
                 {
                     if (renderingContext.RunResponseHandlers())
                     {
@@ -64,14 +113,13 @@ namespace Composite.Core.Routing.Pages
 
                     if (!allFunctionsExecuted && ServerSideCachingEnabled(context))
                     {
-                        context.Response.Cache.SetNoServerCaching();
+                        preventResponseCaching = true;
 
-                        AddToCache(cacheKey, document);
+                        using (Profiler.Measure("Adding to cache"))
+                        {
+                            AddToCache(context, cacheKey, new DonutCacheEntry(context, document));
+                        }
                     }
-                }
-                else
-                {
-                    context.Response.Cache.SetNoServerCaching();
                 }
 
                 if (!allFunctionsExecuted)
@@ -115,6 +163,11 @@ namespace Composite.Core.Routing.Pages
 
                 var response = context.Response;
 
+                if (preventResponseCaching)
+                {
+                    context.Response.Cache.SetNoServerCaching();
+                }
+
                 // Inserting perfomance profiling information
                 if (renderingContext.ProfilingEnabled)
                 {
@@ -129,10 +182,18 @@ namespace Composite.Core.Routing.Pages
 
         private bool ServerSideCachingEnabled(HttpContext context)
         {
+            if (context.Response.StatusCode != 200)
+            {
+                return false;
+            }
+
+#if !DEBUG
             var cacheability = GetPageCacheablity(context);
 
             // TODO: a proper check here
             return cacheability > HttpCacheability.NoCache;
+#endif
+            return true;
         }
 
         private HttpCacheability GetPageCacheablity(HttpContext context)
@@ -146,29 +207,39 @@ namespace Composite.Core.Routing.Pages
             }
         }
 
-        private XDocument GetFromCache(string cacheKey)
+        private DonutCacheEntry GetFromCache(HttpContext context, string cacheKey)
         {
-            // TODO: set the response headers as well
+            var provider = GetCacheProvider(context);
 
-            var result = MemoryCache.Default.Get(cacheKey) as XDocument;
-            if (result != null)
+            if (provider == null) 
             {
-                result = new XDocument(result);
+                return MemoryCache.Default.Get(cacheKey) as DonutCacheEntry;
             }
 
-            return result;
+            return provider.Get(cacheKey) as DonutCacheEntry;
         }
 
-        private void AddToCache(string cacheKey, XDocument document)
+        private void AddToCache(HttpContext context, string cacheKey, DonutCacheEntry entry)
         {
-            // TODO: use the standard ASP.NET cache storage providers
-            // TODO: preserve the response headers as well
+            var provider = GetCacheProvider(context);
 
-            var copy = new XDocument(document);
-            MemoryCache.Default.Add(cacheKey, copy, new CacheItemPolicy
+            if (provider == null)
             {
-                SlidingExpiration = TimeSpan.FromSeconds(60)
-            });
+                MemoryCache.Default.Add(cacheKey, entry, new CacheItemPolicy
+                {
+                    SlidingExpiration = TimeSpan.FromSeconds(60)
+                });
+                return;
+            }
+            
+            provider.Add(cacheKey, entry, DateTime.UtcNow.AddSeconds(60));
+        }
+
+        OutputCacheProvider GetCacheProvider(HttpContext context)
+        {
+            var cacheName = context.ApplicationInstance.GetOutputCacheProviderName(context);
+
+            return cacheName != "AspNetInternalProvider" ? OutputCache.Providers?[cacheName] : null;
         }
 
         private string GetCacheKey(HttpContext context)
