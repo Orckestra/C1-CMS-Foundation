@@ -57,29 +57,29 @@
 						<ItemTemplate>
 							<tr>
 								<td>
-									<ui:fielddata>
-										<asp:Label ID="Label" runat="server" Text='<%#Eval("Label") %>' />
-									</ui:fielddata>
+									<asp:Label ID="Label" runat="server" Text='<%#Eval("Label") %>' />
 								</td>
 								<% if (!OtherCultureExist)
 									{ %>
 								<td>
-									<ui:fielddata class="inputbox">
-										<aspui:datainput id="Original" runat="server" text='<%#Eval("Original")%>' />
-									</ui:fielddata>
+									<ui:field>
+										<ui:fielddata class="inputbox">
+											<aspui:datainput id="Original" runat="server" text='<%#Eval("Original")%>' />
+										</ui:fielddata>
+									</ui:field>
 								</td>
 								<% } %>
 								<% if (OtherCultureExist)
 									{ %>
 								<td>
-									<ui:fielddata class="label">
-										<asp:Label ID="Original2" runat="server" Text='<%#Eval("Original")%>' />
-									</ui:fielddata>
+									<asp:Label ID="Original2" runat="server" Text='<%#Eval("Original")%>' />
 								</td>
 								<td>
-									<ui:fielddata class="inputbox">
-										<aspui:datainput id="Translated" runat="server" text='<%#Eval("Translated")%>' language='<%#CultureName%>' />
-									</ui:fielddata>
+									<ui:field>
+										<ui:fielddata class="inputbox">
+											<aspui:datainput id="Translated" runat="server" text='<%#Eval("Translated")%>' language='<%#CultureName%>' />
+										</ui:fielddata>
+									</ui:field>
 								</td>
 								<% } %>
 								<td></td>

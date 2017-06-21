@@ -648,8 +648,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
                 if (websiteFile.MimeType == MimeTypeInfo.Resx)
                 {
                     var files = Directory.GetFiles(Path.GetDirectoryName(websiteFile.FullPath));
-                    foreach (var cultureInfo in DataLocalizationFacade.ActiveLocalizationCultures
-                            .Where(f => f.Name != "en-US"))
+                    foreach (var cultureInfo in DataLocalizationFacade.ActiveLocalizationCultures)
                     {
                         if (!files.Any(f => cultureInfo.Name!="" && f.EndsWith(cultureInfo.Name + ".Resx", StringComparison.OrdinalIgnoreCase)))
                         {
