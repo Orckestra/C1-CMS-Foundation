@@ -1,4 +1,5 @@
-﻿<%@ Page Async="true" Language="C#" Debug="true" AutoEventWireup="true" CodeFile="resxeditor.aspx.cs" Inherits="ResxEditor" %>
+﻿<%@ Page Async="true" Language="C#" Debug="true" AutoEventWireup="true" CodeFile="resxeditor.aspx.cs" Inherits="ResxEditor"
+	ValidateRequest="false" %>
 
 <%@ Import Namespace="Composite.Core.ResourceSystem" %>
 
