@@ -26,7 +26,6 @@ td {
 }
 
 .inputbox input {
-	margin-top: 4px;
 	width: 400px;
 }
 
@@ -38,11 +37,6 @@ td {
 .table td {
 	overflow: visible;
 	color: inherit;
-	padding: 6px 13px 7px !important;
-}
-
-.table th {
-	padding-left: 13px !important;
 }
 
 .table .hidden {
