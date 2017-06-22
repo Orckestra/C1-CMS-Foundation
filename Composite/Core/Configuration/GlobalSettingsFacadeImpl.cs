@@ -203,16 +203,7 @@ namespace Composite.Core.Configuration
                 return GlobalSettingsProviderPluginFacade.PackageLicenseDirectory;
             }
         }
-        
 
-
-        public IResourceCacheSettings ResourceCacheSettings
-        {
-            get
-            {
-                return GlobalSettingsProviderPluginFacade.ResourceCacheSettings;
-            }
-        }
 
 
         public IEnumerable<string> NonProbableAssemblyNames
@@ -247,7 +238,10 @@ namespace Composite.Core.Configuration
         {
             lock (_lock)
             {
-                if (_addedNonProbableAssemblyNames.Contains(assemblyNamePatern) == false) throw new InvalidOperationException("The assembly name pattern has not been added");
+                if (!_addedNonProbableAssemblyNames.Contains(assemblyNamePatern))
+                {
+                    throw new InvalidOperationException("The assembly name pattern has not been added");
+                }
                 _addedNonProbableAssemblyNames.Remove(assemblyNamePatern);
             }
         }

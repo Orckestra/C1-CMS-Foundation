@@ -151,15 +151,7 @@ namespace Composite.Plugins.GlobalSettings.GlobalSettingsProviders
         {
             get { return _configurationData.PackageLicenseDirectory; }
         }
-        
 
-        public IResourceCacheSettings ResourceCacheSettings
-        {
-            get
-            {
-                return new ConfigResourceCacheSettings(_configurationData.ResourceCacheDirectory, _configurationData.ServerCacheMinutes, _configurationData.ClientCacheMinutes);
-            }
-        }
 
         public IEnumerable<string> NonProbableAssemblyNames
         {
@@ -288,46 +280,10 @@ namespace Composite.Plugins.GlobalSettings.GlobalSettingsProviders
             Size = data.Size;
         }
 
-        public string Name { get; private set; }
-        public bool Enabled { get; private set; }
-        public int Size { get; private set; }
+        public string Name { get; }
+        public bool Enabled { get; }
+        public int Size { get; }
     }
-
-
-
-
-    internal class ConfigResourceCacheSettings : IResourceCacheSettings
-    {
-        private readonly string _resourceCacheDirectory;
-        private readonly int _serverChacheMinutes;
-        private readonly int _clientCacheMinutes;
-
-        internal ConfigResourceCacheSettings(string resourceCacheDirectory, int serverCacheMinutes, int clientCacheMinutes)
-        {
-            _resourceCacheDirectory = resourceCacheDirectory;
-            _serverChacheMinutes = serverCacheMinutes;
-            _clientCacheMinutes = clientCacheMinutes;
-        }
-
-        public string ResourceCacheDirectory
-        {
-            get { return _resourceCacheDirectory; }
-            set { throw new NotSupportedException(GetType().ToString()); }
-        }
-
-        public int ServerCacheMinutes
-        {
-            get { return _serverChacheMinutes; }
-            set { throw new NotSupportedException(GetType().ToString()); }
-        }
-
-        public int ClientCacheMinutes
-        {
-            get { return _clientCacheMinutes; }
-            set { throw new NotSupportedException(GetType().ToString()); }
-        }
-    }
-
 
 
 
@@ -529,7 +485,8 @@ namespace Composite.Plugins.GlobalSettings.GlobalSettingsProviders
 
 
         private const string _resourceCacheDirectory = "resourceCacheDirectory";
-        [ConfigurationProperty(_resourceCacheDirectory, IsRequired = true)]
+        [Obsolete]
+        [ConfigurationProperty(_resourceCacheDirectory, IsRequired = false)]
         public string ResourceCacheDirectory
         {
             get { return (string)base[_resourceCacheDirectory]; }
@@ -540,6 +497,7 @@ namespace Composite.Plugins.GlobalSettings.GlobalSettingsProviders
 
         private const string _clientCacheMinutesProperty = "clientCacheMinutes";
         public static readonly int DefaultClientCacheMinutes = A_WEEK_IN_MINUTES;
+        [Obsolete]
         [ConfigurationProperty(_clientCacheMinutesProperty, IsRequired = false, DefaultValue = A_WEEK_IN_MINUTES)]
         public int ClientCacheMinutes
         {
@@ -551,6 +509,7 @@ namespace Composite.Plugins.GlobalSettings.GlobalSettingsProviders
 
         private const string _serverCacheMinutesProperty = "serverCacheMinutes";
         public static readonly int DefaultServerCacheMinutes = A_DAY_IN_MINUTES;
+        [Obsolete]
         [ConfigurationProperty(_serverCacheMinutesProperty, IsRequired = false, DefaultValue = A_DAY_IN_MINUTES)]
         public int ServerCacheMinutes
         {
