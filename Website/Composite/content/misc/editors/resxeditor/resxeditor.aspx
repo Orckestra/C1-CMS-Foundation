@@ -73,7 +73,7 @@
 								<% if (OtherCultureExist)
 									{ %>
 								<td>
-									<asp:Label ID="Original2" runat="server" Text='<%#Eval("Original")%>' />
+									<asp:Literal ID="Original2" runat="server" Text='<%#Eval("Original")%>' />
 								</td>
 								<td>
 									<ui:field>

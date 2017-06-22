@@ -644,13 +644,16 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
                                 }
                             }
                         });
-                
-                if (websiteFile.MimeType == MimeTypeInfo.Resx)
+
+                if (websiteFile.MimeType == MimeTypeInfo.Resx && 
+                    !CultureInfo.GetCultures(CultureTypes.SpecificCultures).
+                    Any(f => f.Name != "" && 
+                    websiteFile.FileName.EndsWith("." + f.Name + ".Resx", StringComparison.OrdinalIgnoreCase)))
                 {
                     var files = Directory.GetFiles(Path.GetDirectoryName(websiteFile.FullPath));
                     foreach (var cultureInfo in DataLocalizationFacade.ActiveLocalizationCultures)
                     {
-                        if (!files.Any(f => cultureInfo.Name!="" && f.EndsWith(cultureInfo.Name + ".Resx", StringComparison.OrdinalIgnoreCase)))
+                        if (!files.Any(f => cultureInfo.Name!="" && f.EndsWith("." + cultureInfo.Name + ".Resx", StringComparison.OrdinalIgnoreCase)))
                         {
 
                         fileActions.Add(
