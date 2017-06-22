@@ -9,6 +9,7 @@ using System.Web.Hosting;
 using System.Web.Routing;
 using System.Web.UI;
 using System.Xml.Linq;
+using Composite.AspNet;
 using Composite.Core.Extensions;
 using Composite.Core.Linq;
 using Composite.Core.PageTemplates;
@@ -54,7 +55,7 @@ namespace Composite.Core.Routing.Pages
                     _handlerType = Type.GetType(typeAttr.Value);
                     if(_handlerType == null)
                     {
-                        Log.LogError(typeof(C1PageRouteHandler).Name, $"Failed to load type '{typeAttr.Value}'");
+                        Log.LogError(nameof(C1PageRouteHandler), $"Failed to load type '{typeAttr.Value}'");
                     }
                 }
             }
