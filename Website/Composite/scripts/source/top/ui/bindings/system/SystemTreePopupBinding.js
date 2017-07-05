@@ -1,4 +1,4 @@
-SystemTreePopupBinding.prototype = new PopupBinding;
+﻿SystemTreePopupBinding.prototype = new PopupBinding;
 SystemTreePopupBinding.prototype.constructor = SystemTreePopupBinding;
 SystemTreePopupBinding.superclass = PopupBinding.prototype;
 
@@ -404,10 +404,21 @@ SystemTreePopupBinding.prototype.snapToMouse = function ( e ) {
 				// visually empty space - this should not open the popup!
 				break;
 			default :
-				node = DOMUtil.getAncestorByLocalName ( "treenode", node );
-				if ( node != null ) {
-					binding = UserInterface.getBinding ( node );
-					if ( binding.isDisabled ) { // no contextmenu for disabled treenodes
+				var target = DOMUtil.getAncestorByLocalName("treenode", node);
+				if (target == null) {
+					//TODO: Optimize this
+					var explorertoolbarbutton = DOMUtil.getAncestorByLocalName("explorertoolbarbutton", node);
+					var explorertoolbarbuttonBinding = UserInterface.getBinding(explorertoolbarbutton);
+					if (explorertoolbarbuttonBinding && explorertoolbarbuttonBinding.node && explorertoolbarbuttonBinding.isChecked )
+					{
+						target = explorertoolbarbutton;
+						this._node = explorertoolbarbuttonBinding.node;
+						this._actionProfile = this.getCompiledActionProfile(explorertoolbarbuttonBinding.node);
+					}
+				}
+				if (target != null) {
+					binding = UserInterface.getBinding(target);
+					if (binding.isDisabled) { // no contextmenu for disabled treenodes
 						binding = null;
 					}
 				}
@@ -429,4 +440,38 @@ SystemTreePopupBinding.prototype.snapToMouse = function ( e ) {
 			SystemTreePopupBinding.superclass.snapToMouse.call ( this, e );
 		}
 	}
+}
+
+
+/**
+ * @return {Map<string><List<SystemAction>>}
+ */
+SystemTreePopupBinding.prototype.getCompiledActionProfile = function (node) {
+	var result = new Map();
+
+	var actionProfile = node.getActionProfile();
+
+	if (actionProfile != null) {
+		var self = this;
+		actionProfile.each(
+			function (groupid, list) {
+				var newList = new List();
+				list.each(function (systemAction) {
+					if (systemAction.getActivePositions() & 1) {
+						//if (!self._actionGroup || self._actionGroup[systemAction.getGroupName()]) {
+						newList.add(systemAction);
+						//}
+					}
+				});
+				if (newList.hasEntries()) {
+					result.set(groupid, newList);
+				}
+			}
+		);
+	}
+
+	result.activePosition = 1;
+	result.Node = node;
+
+	return result;
 }
