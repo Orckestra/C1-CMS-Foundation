@@ -614,22 +614,29 @@ namespace Composite.Core.WebClient.Renderings.Page
         {
             using (TimerProfilerFacade.CreateTimerProfiler())
             {
-                XElement nestedDocument = rootDocument.Root.Descendants(Namespaces.Xhtml + "html").FirstOrDefault();
-
-                while (nestedDocument != null)
+                while (true)
                 {
-                    XhtmlDocument nestedXhtml = new XhtmlDocument(nestedDocument);
+                    XElement nestedDocument = rootDocument.Root.Descendants(XhtmlDocument.XName_html).FirstOrDefault();
 
-                    rootDocument.Root.Add(nestedXhtml.Root.Attributes().Except(rootDocument.Root.Attributes(), _nameBasedAttributeComparer));
+                    if (nestedDocument == null) break;
+                    
+                    var nestedHead = nestedDocument.Element(XhtmlDocument.XName_head);
+                    var nestedBody = nestedDocument.Element(XhtmlDocument.XName_body);
+
+                    Verify.IsNotNull(nestedHead, "XHTML document is missing <head /> element");
+                    Verify.IsNotNull(nestedBody, "XHTML document is missing <body /> element");
+
+                    rootDocument.Root.Add(nestedDocument.Attributes().Except(rootDocument.Root.Attributes(), _nameBasedAttributeComparer));
+
                     // making <meta property="..." /> from nested documents appear first. We will not filter them later and this ensure desired precedence 
-                    rootDocument.Head.AddFirst(nestedXhtml.Head.Elements().Where(f=>f.Name.LocalName=="meta" && f.Attribute("property")!=null));
-                    rootDocument.Head.Add(nestedXhtml.Head.Nodes().Where(f => !(f is XElement) || !(((XElement)f).Name.LocalName == "meta" && ((XElement)f).Attribute("property") != null)));
-                    rootDocument.Head.Add(nestedXhtml.Head.Attributes().Except(rootDocument.Head.Attributes(), _nameBasedAttributeComparer));
-                    rootDocument.Body.Add(nestedXhtml.Body.Attributes().Except(rootDocument.Body.Attributes(), _nameBasedAttributeComparer));
+                    bool IsMetaProperty(XElement e) => e.Name.LocalName == "meta" && e.Attribute("property") != null;
 
-                    nestedDocument.ReplaceWith(nestedXhtml.Body.Nodes());
+                    rootDocument.Head.AddFirst(nestedHead.Elements().Where(IsMetaProperty));
+                    rootDocument.Head.Add(nestedHead.Nodes().Where(f => !(f is XElement e && IsMetaProperty(e))));
+                    rootDocument.Head.Add(nestedHead.Attributes().Except(rootDocument.Head.Attributes(), _nameBasedAttributeComparer));
+                    rootDocument.Body.Add(nestedBody.Attributes().Except(rootDocument.Body.Attributes(), _nameBasedAttributeComparer));
 
-                    nestedDocument = rootDocument.Root.Descendants(Namespaces.Xhtml + "html").FirstOrDefault();
+                    nestedDocument.ReplaceWith(nestedBody.Nodes());
                 }
             }
         }
