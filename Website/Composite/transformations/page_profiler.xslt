@@ -15,134 +15,135 @@
 
         <div id="__C1PerformanceTrace">
           <style>
-            body, html {
-            margin: 0;
-            padding: 0;
-            }
-            #__C1PerformanceTrace
-            {
-            background-color: white;
-            color: #333;
-            font-family:"Segoe UI",Tahoma,sans-serif;
-            font-size: 14px;
-            padding: 0;
-            }
+              body, html {
+              margin: 0;
+              padding: 0;
+              }
+              #__C1PerformanceTrace
+              {
+              background-color: white;
+              color: #333;
+              font-family:"Segoe UI",Tahoma,sans-serif;
+              font-size: 14px;
+              padding: 0;
+              }
 
-            #__C1PerformanceTrace a {
-            color: #22B980;
-            }
+              #__C1PerformanceTrace a {
+              color: #22B980;
+              }
 
-            #__C1PerformanceTrace .dl {
-            margin: 20px;
-            }
+              #__C1PerformanceTrace .dl {
+              margin: 20px;
+              }
 
-            #__C1PerformanceTrace .info {
-            display: inline-block;
-            width: 18px;
-            height: 18px;
-            line-height: 18px;
-            border-radius: 50%;
-            text-align: center;
-            cursor: pointer;
-            background: #fcf8e3;
-            border: solid 1px #faebcc;
-            font-weight: bold;
-            color: #999;
-            position: relative;
-            }
+              #__C1PerformanceTrace .info {
+              display: inline-block;
+              width: 18px;
+              height: 18px;
+              line-height: 18px;
+              border-radius: 50%;
+              text-align: center;
+              cursor: pointer;
+              background: #fcf8e3;
+              border: solid 1px #faebcc;
+              font-weight: bold;
+              color: #999;
+              position: relative;
+              }
 
-            #__C1PerformanceTrace .info small {
-            display: none;
-            font-weight: normal;
-            color: #333;
-            position: absolute;
-            left: 25px;
-            top: 0;
-            background: #F7F7F7;
-            border: solid 1px #ddd;
-            padding: 5px 15px;
-            text-align: left;
-            min-width: 400px;
+              #__C1PerformanceTrace .info small {
+              display: none;
+              font-weight: normal;
+              color: #333;
+              position: absolute;
+              left: 25px;
+              top: 0;
+              background: #F7F7F7;
+              border: solid 1px #ddd;
+              padding: 5px 15px;
+              text-align: left;
+              min-width: 400px;
 
-            }
+              }
 
-            #__C1PerformanceTrace .info:hover small {
-            display: block;
-            }
+              #__C1PerformanceTrace .info:hover small {
+              display: block;
+              }
 
-            #__C1PerformanceTrace table {
-            font-size: 13px;
-            width: 100%;
-            margin: 0;
-            border-collapse: collapse;
-            border-spacing: 0;
-            table-layout: fixed;
-            border: 1px solid #ddd;
-            }
+              #__C1PerformanceTrace table {
+              font-size: 13px;
+              width: 100%;
+              margin: 0;
+              border-collapse: collapse;
+              border-spacing: 0;
+              table-layout: fixed;
+              border: 1px solid #ddd;
+              }
 
-            #__C1PerformanceTrace #orderedByTime {
-            display: none;
-            }
+              #__C1PerformanceTrace #orderedByTime,
+              #__C1PerformanceTrace #orderedByMemory {
+              display: none;
+              }
 
-            #__C1PerformanceTrace th, #__C1PerformanceTrace td {
-            overflow: hidden;
-            text-align: right;
-            white-space: nowrap;
-            border: 1px solid #ddd;
-            padding: 4px 15px;
-            }
+              #__C1PerformanceTrace th, #__C1PerformanceTrace td {
+              overflow: hidden;
+              text-align: right;
+              white-space: nowrap;
+              border: 1px solid #ddd;
+              padding: 4px 15px;
+              }
 
-            #__C1PerformanceTrace tr.head th {
-            background: #F7F7F7;
-            border-bottom-width: 2px;
-            padding: 6px 15px;
-            }
+              #__C1PerformanceTrace tr.head th {
+              background: #F7F7F7;
+              border-bottom-width: 2px;
+              padding: 6px 15px;
+              }
 
-            #__C1PerformanceTrace tr:hover {
-            background-color: #f5f5f5;
-            }
+              #__C1PerformanceTrace tr:hover {
+              background-color: #f5f5f5;
+              }
 
-            #__C1PerformanceTrace tfoot td {
-            text-align: left;
-            font-size: 85%;
-            background: #F7F7F7;
-            border: 0;
-            }
+              #__C1PerformanceTrace tfoot td {
+              text-align: left;
+              font-size: 85%;
+              background: #F7F7F7;
+              border: 0;
+              }
 
-            #__C1PerformanceTrace tr.weak, #__C1PerformanceTrace td.weak {
-            color: gray;
-            }
+              #__C1PerformanceTrace tr.weak, #__C1PerformanceTrace td.weak {
+              color: gray;
+              }
 
-            #__C1PerformanceTrace span.weak {
-            color: gray;
-            }
+              #__C1PerformanceTrace span.weak {
+              color: gray;
+              }
 
-            #__C1PerformanceTrace .btn {
-            display: inline-block;
-            font-size: 14px;
-            cursor: pointer;
-            border: 1px solid #cccccc;
-            border-radius: 4px;
-            background: #fff;
-            padding: 3px 8px;
-            margin: 0 2px;
+              #__C1PerformanceTrace .btn {
+              display: inline-block;
+              font-size: 14px;
+              cursor: pointer;
+              border: 1px solid #cccccc;
+              border-radius: 4px;
+              background: #fff;
+              padding: 3px 8px;
+              margin: 0 2px;
 
-            }
+              }
 
-            #__C1PerformanceTrace .btn.active {
-            font-weight: bold;
-            cursor: default;
-            }
+              #__C1PerformanceTrace .btn.active {
+              font-weight: bold;
+              cursor: default;
+              }
 
-            .__TracePersent { text-align: right; padding-right: 5px; }
-            .__TraceOwn { text-align: right; padding-right: 5px; }
-            .__TraceTotalTime { text-align: right; padding-right: 5px;  }
-            #__C1PerformanceTrace td.__TraceName { text-align: left; padding-right: 50px; background-repeat: no-repeat }
-            .__TraceMemoryUsage { text-align: right; padding-right: 5px;  }
+              .__TracePersent { text-align: right; padding-right: 5px; }
+              .__TraceOwn { text-align: right; padding-right: 5px; }
+              .__TraceTotalTime { text-align: right; padding-right: 5px;  }
+              #__C1PerformanceTrace td.__TraceName { text-align: left; padding-right: 50px; background-repeat: no-repeat }
+              .__TraceMemoryUsage { text-align: right; padding-right: 5px;  }
 
-            .__ParallelColumn {text-align: center;}
+              .__ParallelColumn {text-align: center;}
 
-            .__parallel { color: blue; }
+              .__parallel { color: blue; }
           </style>
 
           <script language="javascript" type="text/javascript">
