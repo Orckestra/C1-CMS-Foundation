@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Composite.C1Console.Events;
@@ -207,23 +207,19 @@ namespace Composite.Core.WebClient.FlowMediators
         /// <exclude />
         public static List<ClientLabeledProperty> GetLabeledProperties(string providerName, string serializedEntityToken, string piggybag)
         {
-                EntityToken elementEntityToken = EntityTokenSerializer.Deserialize(serializedEntityToken);
-                ElementHandle elementHandle = new ElementHandle(providerName, elementEntityToken, piggybag);
+            var elementEntityToken = EntityTokenSerializer.Deserialize(serializedEntityToken);
+            var elementHandle = new ElementHandle(providerName, elementEntityToken, piggybag);
 
-                IEnumerable<LabeledProperty> labeledProperties;
-                if (UserSettings.ForeignLocaleCultureInfo == null || UserSettings.ForeignLocaleCultureInfo.Equals(UserSettings.ActiveLocaleCultureInfo))
-                {
-                    labeledProperties = ElementFacade.GetLabeledProperties(elementHandle);
-                }
-                else
-                {
-                    labeledProperties = ElementFacade.GetForeignLabeledProperties(elementHandle);
-                }
+            bool showForeign = UserSettings.ForeignLocaleCultureInfo != null 
+                              && UserSettings.ForeignLocaleCultureInfo.Equals(UserSettings.ActiveLocaleCultureInfo);
 
+            var labeledProperties = showForeign 
+                ? ElementFacade.GetForeignLabeledProperties(elementHandle) 
+                : ElementFacade.GetLabeledProperties(elementHandle);
 
-                return
-                    (from property in labeledProperties
-                     select new ClientLabeledProperty(property)).ToList();
+            return
+                (from property in labeledProperties
+                 select new ClientLabeledProperty(property)).ToList();
         }
 
 
@@ -282,8 +278,14 @@ namespace Composite.Core.WebClient.FlowMediators
         }
 
         
-        internal static List<RefreshChildrenInfo> FindEntityToken(EntityToken ancestorEntityToken, EntityToken entityToken, List<RefreshChildrenParams> openedNodes)
+        internal static List<RefreshChildrenInfo> FindEntityToken(EntityToken ancestorEntityToken, EntityToken entityToken, List<RefreshChildrenParams> nodesToRefresh)
         {
+            var openedNodes = nodesToRefresh.Select(node => new 
+            {
+                EntityToken = EntityTokenSerializer.Deserialize(node.EntityToken),
+                ElementData = node
+            }).ToList();
+
             foreach (List<EntityToken> ancestorChain in GetAncestorChains(ancestorEntityToken, entityToken))
             {
                 if (ancestorChain == null || ancestorChain.Count == 0)
@@ -295,12 +297,12 @@ namespace Composite.Core.WebClient.FlowMediators
 
                 int lastAlreadyOpenedNodeIndex = 0;
                 while (lastAlreadyOpenedNodeIndex + 1 < ancestorChain.Count
-                       && openedNodes.Any(node => EntityTokenSerializer.Deserialize(node.EntityToken).Equals(ancestorEntityTokens[lastAlreadyOpenedNodeIndex + 1])))
+                       && openedNodes.Any(node => node.EntityToken.Equals(ancestorEntityTokens[lastAlreadyOpenedNodeIndex + 1])))
                 {
                     lastAlreadyOpenedNodeIndex++;
                 }
 
-                var openNode = openedNodes.FirstOrDefault(node => EntityTokenSerializer.Deserialize(node.EntityToken).Equals(ancestorEntityTokens[lastAlreadyOpenedNodeIndex]));
+                var openNode = openedNodes.FirstOrDefault(node => node.EntityToken.Equals(ancestorEntityTokens[lastAlreadyOpenedNodeIndex]));
                 if (openNode == null)
                 {
                     return null;
@@ -311,15 +313,15 @@ namespace Composite.Core.WebClient.FlowMediators
                 nodesToBeExpanded.AddRange(ancestorEntityTokens.Skip(lastAlreadyOpenedNodeIndex));
                 nodesToBeExpanded.RemoveAt(nodesToBeExpanded.Count - 1);
                 // Last node is a target one, so doesn't have to be expanded
-                nodesToBeExpanded.AddRange(openedNodes.Select(s => EntityTokenSerializer.Deserialize(s.EntityToken)));
+                nodesToBeExpanded.AddRange(openedNodes.Select(node => node.EntityToken));
 
                 var result = new List<RefreshChildrenInfo>();
                 // Expanding all the nodes, and checking if all of the nodes in the ancestor chain is marked 
                 // as seen in TreeLockBehaviour
                 bool success =
-                    ExpandNodesRec(openNode.EntityToken,
-                               openNode.ProviderName,
-                               openNode.Piggybag,
+                    ExpandNodesRec(openNode.ElementData.EntityToken,
+                               openNode.ElementData.ProviderName,
+                               openNode.ElementData.Piggybag,
                                nodesToBeExpanded,
                                result,
                                ancestorEntityTokens);
@@ -432,7 +434,7 @@ namespace Composite.Core.WebClient.FlowMediators
             }
             visitedParents.Add(descendant);
 
-            List<EntityToken> parents = ParentsFacade.GetAllParents(descendant);            
+            List<EntityToken> parents = ParentsFacade.GetAllParents(descendant);
             if (parents.Count == 0)
             {
                 var newChain = new List<EntityToken> {descendant};
