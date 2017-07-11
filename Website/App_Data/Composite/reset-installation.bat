@@ -1,7 +1,6 @@
 ﻿:: clean up
 del DataMetaData\*.* /q
 del DataStores\*.* /q
-pause
 del Configuration\DynamicSqlDataProvider.config
 del Configuration\DynamicXmlDataProvider.config
 del Configuration\InstallationInformation.xml
