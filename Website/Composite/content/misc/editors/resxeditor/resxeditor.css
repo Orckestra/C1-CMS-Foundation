@@ -1,0 +1,48 @@
+﻿@namespace url("http://www.w3.org/1999/xhtml");
+@namespace ui url("http://www.w3.org/1999/xhtml");
+
+html, input, textarea, button, select, td, th {
+	font-family: "Open Sans", sans-serif;
+	font-size: 13px;
+}
+
+th {
+	font-weight: 600;
+	line-height: 18px;
+}
+
+td {
+	font-weight: 400;
+}
+
+.title {
+	font-size: 18px;
+}
+
+.label {
+	width: 400px;
+	word-wrap: normal;
+	white-space: normal !important;
+}
+
+.inputbox input {
+	width: 400px;
+}
+
+.table th:last-child,
+.table td:last-child {
+	width: 100%;
+}
+
+.table td {
+	overflow: visible;
+	color: inherit;
+}
+
+.table .hidden {
+	visibility: hidden;
+}
+
+.table .hilite .hidden{
+	visibility: visible;
+}

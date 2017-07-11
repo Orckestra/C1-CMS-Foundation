@@ -1,4 +1,4 @@
-RequestBinding.prototype = new Binding;
+﻿RequestBinding.prototype = new Binding;
 RequestBinding.prototype.constructor = RequestBinding;
 RequestBinding.superclass = Binding.prototype;
 
@@ -13,7 +13,9 @@ RequestBinding.CALLBACK_ID = "__REQUEST";
  * poluate in order to let the server know who we are...
  * @type {String}
  */
-RequestBinding.INPUT_ID = "__CONSOLEID"
+RequestBinding.INPUT_ID = "__CONSOLEID";
+
+RequestBinding.VIEW_ID = "__VIEWID";
 
 /**
  * @class
@@ -52,6 +54,17 @@ RequestBinding.prototype.onBindingAttach = function () {
 	var input = this.bindingDocument.getElementById ( RequestBinding.INPUT_ID );
 	if ( input != null ) {
 		input.value = Application.CONSOLE_ID;
+	}
+
+	input = this.bindingDocument.getElementById(RequestBinding.VIEW_ID);
+	if (input != null) {
+
+		var viewBinding = this.getAncestorBindingByType(ViewBinding, true);
+		if (viewBinding != null && viewBinding.getHandle)
+		{
+			input.value = viewBinding.getHandle();
+		}
+		
 	}
 }
 

@@ -39,6 +39,7 @@
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
+    <LangVersion>default</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -177,6 +178,13 @@
     <Compile Include="Composite\content\misc\editors\functioncalleditor\functioncalleditor.aspx.designer.cs">
       <DependentUpon>functioncalleditor.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Composite\content\misc\editors\resxeditor\resxeditor.aspx.cs">
+      <DependentUpon>resxeditor.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Composite\content\misc\editors\resxeditor\resxeditor.aspx.designer.cs">
+      <DependentUpon>resxeditor.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Composite\content\views\functioninfo\ShowFunctionInfo.aspx.cs">
       <DependentUpon>ShowFunctionInfo.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -273,6 +281,9 @@
     <Content Include="Composite\content\forms\Administrative\SetTimeZone_select.xml" />
     <Content Include="Composite\content\forms\Administrative\DeletePage_ConfirmAllVersionsDeletion.xml" />
     <Content Include="Composite\content\forms\Administrative\WebsiteFileElementProviderUploadAndExtractZipFile.xml" />
+    <Content Include="Composite\content\misc\editors\resxeditor\Bindings\rowContainerBinding.js" />
+    <Content Include="Composite\content\misc\editors\resxeditor\resxeditor.aspx" />
+    <Content Include="Composite\content\misc\editors\resxeditor\resxeditor.css" />
     <Content Include="Composite\content\misc\editors\visualeditor\tinymce\plugins\compositecomponent\plugin.min.js" />
     <Content Include="Composite\content\views\browser\deviceoptions.xml">
       <SubType>Designer</SubType>
