@@ -1,4 +1,4 @@
-BrowserTabBoxBinding.prototype = new TabBoxBinding;
+﻿BrowserTabBoxBinding.prototype = new TabBoxBinding;
 BrowserTabBoxBinding.prototype.constructor = BrowserTabBoxBinding;
 BrowserTabBoxBinding.superclass = TabBoxBinding.prototype;
 
@@ -186,7 +186,12 @@ BrowserTabBoxBinding.prototype.getLocation = function () {
 	
 	var tab = this.getBrowserTabBinding();
 	var win = tab.browserwindow;
-	return new String ( win.getContentDocument ().location );
+	var doc = win.getContentDocument();
+	if (doc == null) {
+		return undefined;
+	} else {
+		return new String(win.getContentDocument().location);
+	}
 }
 
 

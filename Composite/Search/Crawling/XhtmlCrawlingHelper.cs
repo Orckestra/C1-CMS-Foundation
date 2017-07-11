@@ -33,7 +33,9 @@ namespace Composite.Search.Crawling
         public void SetPageContext(IPage page)
         {
             _page = page;
-        } 
+        }
+
+        public bool CrawlFunctionParameters { get; set; }
 
         /// <summary>
         /// Crawls xhtml content and extracts text parts
@@ -156,20 +158,24 @@ namespace Composite.Search.Crawling
                 return;
             }
 
-            foreach (var paramElement in functionNode.Elements())
+            if (CrawlFunctionParameters)
             {
-                var parameterName = paramElement.GetAttributeValue("name");
-                if(parameterName == null) continue;
-
-                var profile = function.ParameterProfiles.FirstOrDefault(p => p.Name == parameterName);
-                if (profile != null)
+                foreach (var paramElement in functionNode.Elements())
                 {
-                    if (profile.Type == typeof (XhtmlDocument))
-                    {
-                        ProcessElement(paramElement);
-                    }
+                    var parameterName = paramElement.GetAttributeValue("name");
+                    if (parameterName == null) continue;
 
-                    // TODO: handle the other parameter types
+                    var profile = function.ParameterProfiles.FirstOrDefault(p => p.Name == parameterName);
+                    if (profile != null)
+                    {
+                        if (profile.Type == typeof(XhtmlDocument) 
+                            || profile.Type == typeof(Lazy<XhtmlDocument>))
+                        {
+                            ProcessElement(paramElement);
+                        }
+
+                        // TODO: handle the other parameter types
+                    }
                 }
             }
 

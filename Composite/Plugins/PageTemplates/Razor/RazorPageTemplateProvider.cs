@@ -240,7 +240,7 @@ namespace Composite.Plugins.PageTemplates.Razor
                 return false;
             }
 
-            if (webPage == null || !(webPage is RazorPageTemplate))
+            if (!(webPage is RazorPageTemplate))
             {
                 parsedTemplate = null;
                 placeholderProperties = null;

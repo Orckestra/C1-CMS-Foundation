@@ -24,7 +24,7 @@ namespace Composite.C1Console.Elements
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class ElementFacade
     {
-        private static IEnumerable<EntityToken> _perspectiveEntityTokens = null;
+        private static IEnumerable<EntityToken> _perspectiveEntityTokens;
 
         /// <exclude />
         public static IEnumerable<Element> GetRoots(SearchToken searchToken)
@@ -159,8 +159,6 @@ namespace Composite.C1Console.Elements
         {
             if (elementHandle == null) throw new ArgumentNullException("elementHandle");
 
-            if (elementHandle == null) throw new ArgumentNullException("elementHandle");
-
             SearchToken searchToken;
 
             if (ElementProviderPluginFacade.GetNewSearchToken(elementHandle.ProviderName, elementHandle.EntityToken, out searchToken) == false)
@@ -283,7 +281,7 @@ namespace Composite.C1Console.Elements
             if (providerName == null) throw new ArgumentNullException("providerName");
             
             IEnumerable<Element> roots;
-            if ((useForeign == false) || (ElementProviderPluginFacade.IsLocaleAwareElementProvider(providerName) == false))
+            if (!useForeign || !ElementProviderPluginFacade.IsLocaleAwareElementProvider(providerName))
             {
                 roots = ElementProviderPluginFacade.GetRoots(providerName, searchToken).ToList();
             }
@@ -298,10 +296,8 @@ namespace Composite.C1Console.Elements
             {
                 return roots.FilterActions();
             }
-            else
-            {
-                return roots;
-            }
+
+            return roots;
         }
 
 
@@ -315,7 +311,7 @@ namespace Composite.C1Console.Elements
             IEnumerable<Element> children;
             if (ElementProviderRegistry.ElementProviderNames.Contains(elementHandle.ProviderName))
             {
-                if ((useForeign == false) || (ElementProviderPluginFacade.IsLocaleAwareElementProvider(elementHandle.ProviderName) == false))
+                if (!useForeign || !ElementProviderPluginFacade.IsLocaleAwareElementProvider(elementHandle.ProviderName))
                 {
                     children = ElementProviderPluginFacade.GetChildren(elementHandle.ProviderName, elementHandle.EntityToken, searchToken).Evaluate();
                 }
@@ -330,17 +326,17 @@ namespace Composite.C1Console.Elements
             }
             else
             {
-                throw new InvalidOperationException(string.Format("No element provider named '{0}' found", elementHandle.ProviderName));
+                throw new InvalidOperationException($"No element provider named '{elementHandle.ProviderName}' found");
             }
 
             foreach (Element element in children)
             {
-                if (element.VisualData.HasChildren == false)
+                if (!element.VisualData.HasChildren)
                 {
                     element.VisualData.HasChildren = ElementAttachingProviderFacade.HaveCustomChildElements(element.ElementHandle.EntityToken, element.ElementHandle.Piggyback);
                 }
             }
-                        
+
             children = ElementAttachingProviderFacade.AttachElements(elementHandle.EntityToken, elementHandle.Piggyback, children).Evaluate();
 
             int totalElementCount = children.Count();

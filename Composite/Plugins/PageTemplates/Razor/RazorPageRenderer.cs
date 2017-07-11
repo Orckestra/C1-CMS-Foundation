@@ -7,7 +7,6 @@ using System.Web.WebPages;
 using System.Xml.Linq;
 using Composite.AspNet.Razor;
 using Composite.Core.Collections.Generic;
-using Composite.Core.Extensions;
 using Composite.Core.Instrumentation;
 using Composite.Core.PageTemplates;
 using Composite.Core.WebClient.Renderings.Page;
@@ -39,9 +38,9 @@ namespace Composite.Plugins.PageTemplates.Razor
             _aspnetPage.Init += RendererPage;
         }
 
-        private void RendererPage(object sender, EventArgs e)
+        public XDocument Render(PageContentToRender contentToRender, FunctionContextContainer functionContextContainer)
         {
-            Guid templateId = _job.Page.TemplateId;
+            Guid templateId = contentToRender.Page.TemplateId;
             var renderingInfo = _renderingInfo[templateId];
 
             if (renderingInfo == null)
@@ -52,32 +51,29 @@ namespace Composite.Plugins.PageTemplates.Razor
                     throw loadingException;
                 }
 
-                Verify.ThrowInvalidOperationException("Missing template '{0}'".FormatWith(templateId));
+                Verify.ThrowInvalidOperationException($"Missing template '{templateId}'");
             }
 
             string output;
-            FunctionContextContainer functionContextContainer;
 
             RazorPageTemplate webPage = null;
             try
             {
-                webPage = WebPageBase.CreateInstanceFromVirtualPath(renderingInfo.ControlVirtualPath) as AspNet.Razor.RazorPageTemplate;
+                webPage = WebPageBase.CreateInstanceFromVirtualPath(renderingInfo.ControlVirtualPath) as RazorPageTemplate;
                 Verify.IsNotNull(webPage, "Razor compilation failed or base type does not inherit '{0}'",
-                                 typeof (AspNet.Razor.RazorPageTemplate).FullName);
+                    typeof(RazorPageTemplate).FullName);
 
                 webPage.Configure();
 
-                functionContextContainer = PageRenderer.GetPageRenderFunctionContextContainer();
-
                 using (Profiler.Measure("Evaluating placeholders"))
                 {
-                    TemplateDefinitionHelper.BindPlaceholders(webPage, _job, renderingInfo.PlaceholderProperties,
-                                                              functionContextContainer);
+                    TemplateDefinitionHelper.BindPlaceholders(webPage, contentToRender, renderingInfo.PlaceholderProperties,
+                        functionContextContainer);
                 }
 
                 // Executing razor code
                 var httpContext = new HttpContextWrapper(HttpContext.Current);
-                var startPage = StartPage.GetStartPage(webPage, "_PageStart", new[] {"cshtml"});
+                var startPage = StartPage.GetStartPage(webPage, "_PageStart", new[] { "cshtml" });
                 var pageContext = new WebPageContext(httpContext, webPage, startPage);
                 pageContext.PageData.Add(RazorHelper.PageContext_FunctionContextContainer, functionContextContainer);
 
@@ -94,16 +90,25 @@ namespace Composite.Plugins.PageTemplates.Razor
             }
             finally
             {
-                if (webPage != null)
-                {
-                    webPage.Dispose();
-                }
+                webPage?.Dispose();
             }
 
-            XDocument resultDocument = XDocument.Parse(output);
-            
+            return XDocument.Parse(output);
+        }
+
+        private void RendererPage(object sender, EventArgs e)
+        {
+            var functionContextContainer = PageRenderer.GetPageRenderFunctionContextContainer();
+
+            var resultDocument = Render(_job, functionContextContainer);
+
             var controlMapper = (IXElementToControlMapper)functionContextContainer.XEmbedableMapper;
-            Control control = PageRenderer.Render(resultDocument, functionContextContainer, controlMapper, _job.Page);
+            Control control;
+
+            using (Profiler.Measure("Rendering the page"))
+            {
+                control = PageRenderer.Render(resultDocument, functionContextContainer, controlMapper, _job.Page);
+            }
 
             using (Profiler.Measure("ASP.NET controls: PagePreInit"))
             {

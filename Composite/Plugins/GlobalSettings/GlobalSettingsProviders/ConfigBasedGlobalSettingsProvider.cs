@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
-
+using System.Linq;
 using Composite.Core.Configuration;
 using Composite.Core.Configuration.Plugins.GlobalSettingsProvider;
 using Composite.Core.Extensions;
@@ -29,215 +29,67 @@ namespace Composite.Plugins.GlobalSettings.GlobalSettingsProviders
         }
 
 
-        public string AppCodeDirectory
-        {
-            get { return _configurationData.AppCodeDirectory; }
-        }
+        public string AppCodeDirectory => _configurationData.AppCodeDirectory;
 
+        public string ApplicationName => _configurationData.ApplicationName;
 
-        public string ApplicationName
-        {
-            get { return _configurationData.ApplicationName; }
-        }
+        public string ApplicationShortName => _configurationData.ApplicationShortName;
 
+        public string BrandedVersionAssemblySource => _configurationData.BrandedVersionAssemblySource;
 
-        public string ApplicationShortName
-        {
-            get { return _configurationData.ApplicationShortName; }
-        }
+        public string DefaultCultureName => _configurationData.DefaultCultureName;
 
+        public string ConfigurationDirectory => _configurationData.ConfigurationDirectory;
 
-        public string BrandedVersionAssemblySource
-        {
-            get { return _configurationData.BrandedVersionAssemblySource; }
-        }
+        public string GeneratedAssembliesDirectory => _configurationData.GeneratedAssembliesDirectory;
 
+        public string SerializedWorkflowsDirectory => _configurationData.SerializedWorkflowsDirectory;
 
-        public string DefaultCultureName
-        {
-            get { return _configurationData.DefaultCultureName; }
-        }
+        public string SerializedConsoleMessagesDirectory => _configurationData.SerializedConsoleMessagesDirectory;
 
+        public string BinDirectory => _configurationData.BinDirectory;
 
+        public string TempDirectory => _configurationData.TempDirectory;
 
-        public string ConfigurationDirectory
-        {
-            get { return _configurationData.ConfigurationDirectory; }
-        }
+        public string CacheDirectory => _configurationData.CacheDirectory;
 
+        public string PackageDirectory => _configurationData.PackageDirectory;
 
+        public string AutoPackageInstallDirectory => _configurationData.AutoPackageInstallDirectory;
 
-        public string GeneratedAssembliesDirectory
-        {
-            get { return _configurationData.GeneratedAssembliesDirectory; }
-        }
+        public string TreeDefinitionsDirectory => _configurationData.TreeDefinitionsDirectory;
 
+        public string PageTemplateFeaturesDirectory => _configurationData.PageTemplateFeaturesDirectory;
 
+        public string DataMetaDataDirectory => _configurationData.DataMetaDataDirectory;
 
-        public string SerializedWorkflowsDirectory
-        {
-            get { return _configurationData.SerializedWorkflowsDirectory; }
-        }
+        public string InlineCSharpFunctionDirectory => _configurationData.InlineCSharpFunctionDirectory;
 
+        public string PackageLicenseDirectory => _configurationData.PackageLicenseDirectory;
 
+        public IEnumerable<string> NonProbableAssemblyNames => _nonProbeableAssemblyNames;
 
-        public string SerializedConsoleMessagesDirectory
-        {
-            get { return _configurationData.SerializedConsoleMessagesDirectory; }
-        }
+        public int ConsoleMessageQueueItemSecondToLive => _configurationData.ConsoleMessageQueueItemSecondToLive;
 
+        public bool EnableDataTypesAutoUpdate => _configurationData.EnableDataTypesAutoUpdate;
 
+        public bool BroadcastConsoleElementChanges => _configurationData.BroadcastConsoleElementChanges;
 
-        public string BinDirectory
-        {
-            get { return _configurationData.BinDirectory; }
-        }
+        public string AutoCreatedAdministratorUserName => _configurationData.AutoCreatedAdministratorUserName;
 
+        public bool OnlyTranslateWhenApproved => _configurationData.OnlyTranslateWhenApproved;
 
+        public string WorkflowTimeout => _configurationData.WorkflowTimeout;
 
-        public string TempDirectory
-        {
-            get { return _configurationData.TempDirectory; }
-        }
+        public string ConsoleTimeout => _configurationData.ConsoleTimeout;
 
+        public ICachingSettings Caching => _cachingSettings;
 
-        public string CacheDirectory
-        {
-            get { return _configurationData.CacheDirectory; }
-        }
-        
+        public int ImageQuality => _configurationData.ImageQuality;
 
-        public string PackageDirectory
-        {
-            get { return _configurationData.PackageDirectory; }
-        }
+        public bool PrettifyPublicMarkup => _configurationData.PrettifyPublicMarkup;
 
-
-
-        public string AutoPackageInstallDirectory
-        {
-            get { return _configurationData.AutoPackageInstallDirectory; }
-        }
-
-
-
-        public string TreeDefinitionsDirectory
-        {
-            get { return _configurationData.TreeDefinitionsDirectory; }
-        }
-
-
-
-        public string PageTemplateFeaturesDirectory
-        {
-            get { return _configurationData.PageTemplateFeaturesDirectory; }
-        }
-
-        
-
-        public string DataMetaDataDirectory
-        {
-            get { return _configurationData.DataMetaDataDirectory; }
-        }
-
-
-        public string InlineCSharpFunctionDirectory
-        {
-            get { return _configurationData.InlineCSharpFunctionDirectory; }
-        }
-
-
-        public string PackageLicenseDirectory
-        {
-            get { return _configurationData.PackageLicenseDirectory; }
-        }
-        
-
-        public IResourceCacheSettings ResourceCacheSettings
-        {
-            get
-            {
-                return new ConfigResourceCacheSettings(_configurationData.ResourceCacheDirectory, _configurationData.ServerCacheMinutes, _configurationData.ClientCacheMinutes);
-            }
-        }
-
-        public IEnumerable<string> NonProbableAssemblyNames
-        {
-            get { return _nonProbeableAssemblyNames; }
-        }
-
-
-
-        public int ConsoleMessageQueueItemSecondToLive
-        {
-            get { return _configurationData.ConsoleMessageQueueItemSecondToLive; }
-        }
-
-
-        public bool EnableDataTypesAutoUpdate
-        {
-            get { return _configurationData.EnableDataTypesAutoUpdate; }
-        }
-
-
-        public bool BroadcastConsoleElementChanges
-        {
-            get { return _configurationData.BroadcastConsoleElementChanges; }
-        }
-
-
-        public string AutoCreatedAdministratorUserName
-        {
-            get { return _configurationData.AutoCreatedAdministratorUserName; }
-        }
-
-
-        public bool OnlyTranslateWhenApproved
-        {
-            get { return _configurationData.OnlyTranslateWhenApproved; }
-        }
-
-
-        public string WorkflowTimeout
-        {
-            get { return _configurationData.WorkflowTimeout; }
-        }
-
-
-
-        public string ConsoleTimeout
-        {
-            get { return _configurationData.ConsoleTimeout; }
-        }
-
-        public ICachingSettings Caching
-        {
-            get { return _cachingSettings; }
-        }
-
-        public int ImageQuality
-        {
-            get
-            {
-                return _configurationData.ImageQuality;
-            }
-        }
-
-        public bool PrettifyPublicMarkup
-        {
-            get
-            {
-                return _configurationData.PrettifyPublicMarkup;
-            }
-        }
-        
-        public bool PrettifyRenderFunctionExceptions
-        {
-            get
-            {
-                return _configurationData.PrettifyRenderFunctionExceptions;
-            }
-        }
+        public bool PrettifyRenderFunctionExceptions => _configurationData.PrettifyRenderFunctionExceptions;
 
         public bool FunctionPreviewEnabled => _configurationData.FunctionPreviewEnabled;
 
@@ -260,19 +112,14 @@ namespace Composite.Plugins.GlobalSettings.GlobalSettingsProviders
             _data = data;
         }
 
-        public bool Enabled
-        {
-            get { return _data.Enabled; }
-        }
+        public bool Enabled => _data.Enabled;
 
         public IEnumerable<ICacheSettings> Caches
         {
             get
             {
-                foreach(var element in _data)
-                {
-                    yield return new ConfigCacheSettings(element as CacheSettingsElement);
-                }
+                return _data.Cast<CacheSettingsElement>()
+                            .Select(element => new ConfigCacheSettings(element));
             }
         }
     }
@@ -284,50 +131,14 @@ namespace Composite.Plugins.GlobalSettings.GlobalSettingsProviders
         public ConfigCacheSettings(CacheSettingsElement data)
         {
             Name = data.Name;
-            Enabled = data.Enabled;           
+            Enabled = data.Enabled;
             Size = data.Size;
         }
 
-        public string Name { get; private set; }
-        public bool Enabled { get; private set; }
-        public int Size { get; private set; }
+        public string Name { get; }
+        public bool Enabled { get; }
+        public int Size { get; }
     }
-
-
-
-
-    internal class ConfigResourceCacheSettings : IResourceCacheSettings
-    {
-        private readonly string _resourceCacheDirectory;
-        private readonly int _serverChacheMinutes;
-        private readonly int _clientCacheMinutes;
-
-        internal ConfigResourceCacheSettings(string resourceCacheDirectory, int serverCacheMinutes, int clientCacheMinutes)
-        {
-            _resourceCacheDirectory = resourceCacheDirectory;
-            _serverChacheMinutes = serverCacheMinutes;
-            _clientCacheMinutes = clientCacheMinutes;
-        }
-
-        public string ResourceCacheDirectory
-        {
-            get { return _resourceCacheDirectory; }
-            set { throw new NotSupportedException(GetType().ToString()); }
-        }
-
-        public int ServerCacheMinutes
-        {
-            get { return _serverChacheMinutes; }
-            set { throw new NotSupportedException(GetType().ToString()); }
-        }
-
-        public int ClientCacheMinutes
-        {
-            get { return _clientCacheMinutes; }
-            set { throw new NotSupportedException(GetType().ToString()); }
-        }
-    }
-
 
 
 
@@ -529,7 +340,8 @@ namespace Composite.Plugins.GlobalSettings.GlobalSettingsProviders
 
 
         private const string _resourceCacheDirectory = "resourceCacheDirectory";
-        [ConfigurationProperty(_resourceCacheDirectory, IsRequired = true)]
+        [Obsolete]
+        [ConfigurationProperty(_resourceCacheDirectory, IsRequired = false)]
         public string ResourceCacheDirectory
         {
             get { return (string)base[_resourceCacheDirectory]; }
@@ -540,6 +352,7 @@ namespace Composite.Plugins.GlobalSettings.GlobalSettingsProviders
 
         private const string _clientCacheMinutesProperty = "clientCacheMinutes";
         public static readonly int DefaultClientCacheMinutes = A_WEEK_IN_MINUTES;
+        [Obsolete]
         [ConfigurationProperty(_clientCacheMinutesProperty, IsRequired = false, DefaultValue = A_WEEK_IN_MINUTES)]
         public int ClientCacheMinutes
         {
@@ -551,6 +364,7 @@ namespace Composite.Plugins.GlobalSettings.GlobalSettingsProviders
 
         private const string _serverCacheMinutesProperty = "serverCacheMinutes";
         public static readonly int DefaultServerCacheMinutes = A_DAY_IN_MINUTES;
+        [Obsolete]
         [ConfigurationProperty(_serverCacheMinutesProperty, IsRequired = false, DefaultValue = A_DAY_IN_MINUTES)]
         public int ServerCacheMinutes
         {
@@ -759,6 +573,3 @@ namespace Composite.Plugins.GlobalSettings.GlobalSettingsProviders
         }
     }
 }
-
-
-

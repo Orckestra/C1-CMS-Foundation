@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -441,28 +441,26 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
         private IEnumerable<Element> GetChildren(EntityToken entityToken, SearchToken searchToken, bool showForeignChildren)
         {
-            if (entityToken is GeneratedDataTypesElementProviderRootEntityToken)
+            if (entityToken is GeneratedDataTypesElementProviderRootEntityToken rootEntityToken)
             {
-                return GetRootChildren(searchToken, entityToken as GeneratedDataTypesElementProviderRootEntityToken);
+                return GetRootChildren(searchToken, rootEntityToken);
             }
 
-            if (entityToken is GeneratedDataTypesElementProviderTypeEntityToken)
+            if (entityToken is GeneratedDataTypesElementProviderTypeEntityToken castedEntityToken)
             {
-                var castedEntityToken = entityToken as GeneratedDataTypesElementProviderTypeEntityToken;
-
                 string typeManagerName = castedEntityToken.SerializedTypeName;
 
                 Type type = TypeManager.TryGetType(typeManagerName);
 
                 if (type == null)
                 {
-                    return null;
+                    return Enumerable.Empty<Element>();
                 }
 
                 // These are never shown in the tree
                 if (typeof(IPageMetaData).IsAssignableFrom(type))
                 {
-                    return new List<Element>();
+                    return Enumerable.Empty<Element>();
                 }
 
                 IEnumerable<Element> elements = _dataGroupingProviderHelper.GetRootGroupFolders(type, entityToken, showForeignChildren);
@@ -470,16 +468,17 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 return elements.ToList();
             }
 
-            if (entityToken is DataGroupingProviderHelperEntityToken)
+            if (entityToken is DataGroupingProviderHelperEntityToken dataGroupingEntityToken)
             {
-                List<Element> elements = _dataGroupingProviderHelper.GetGroupChildren(entityToken as DataGroupingProviderHelperEntityToken, showForeignChildren).ToList();
+                List<Element> elements = _dataGroupingProviderHelper
+                    .GetGroupChildren(dataGroupingEntityToken, showForeignChildren).ToList();
 
                 return elements;
             }
 
             if (entityToken is DataEntityToken)
             {
-                return new List<Element>();
+                return Enumerable.Empty<Element>();
             }
 
             throw new InvalidOperationException("This code should not be reachable");

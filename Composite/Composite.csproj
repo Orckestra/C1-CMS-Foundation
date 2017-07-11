@@ -2464,7 +2464,6 @@
     <Compile Include="Core\Configuration\SimpleNameTypeConfigurationElementCollection.cs" />
     <Compile Include="C1Console\Events\GlobalEventSystemFacade.cs" />
     <Compile Include="Core\Configuration\BuildinPlugins\GlobalSettingsProvider\BuildinGlobalSettingsProvider.cs" />
-    <Compile Include="Core\Configuration\BuildinPlugins\GlobalSettingsProvider\BuildinResourceCacheSettings.cs" />
     <Compile Include="Core\Configuration\GlobalSettingsFacade.cs" />
     <Compile Include="Core\Configuration\Plugins\GlobalSettingsProvider\GlobalSettingsProviderData.cs" />
     <Compile Include="Core\Configuration\Foundation\PluginFacades\GlobalSettingsProviderPluginFacade.cs" />
@@ -2474,7 +2473,6 @@
     <Compile Include="Core\Configuration\Plugins\GlobalSettingsProvider\Runtime\GlobalSettingsProviderDefaultNameRetriever.cs" />
     <Compile Include="Core\Configuration\Plugins\GlobalSettingsProvider\Runtime\GlobalSettingsProviderFactory.cs" />
     <Compile Include="Core\Configuration\Plugins\GlobalSettingsProvider\Runtime\GlobalSettingsProviderSettings.cs" />
-    <Compile Include="Core\Configuration\IResourceCacheSettings.cs" />
     <Compile Include="Core\IO\PathUtil.cs" />
     <Compile Include="Core\Logging\LoggingService.cs" />
     <Compile Include="Core\Logging\LogLevel.cs" />

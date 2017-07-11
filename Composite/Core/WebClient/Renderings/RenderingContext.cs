@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Web;
-using System.Xml.Linq;
 using Composite.C1Console.Security;
 using Composite.Core.Extensions;
 using Composite.Core.Instrumentation;
@@ -42,6 +41,8 @@ namespace Composite.Core.WebClient.Renderings
         /// </summary>
         /// <value>The page.</value>
         public IPage Page { get; private set; }
+
+        internal PageContentToRender PageContentToRender { get; private set; }
 
         /// <summary>
         /// Indicates whether page caching is disabled.
@@ -123,10 +124,8 @@ namespace Composite.Core.WebClient.Renderings
         {
             using (Profiler.Measure("Converting internal urls to public"))
             {
-                xhtml = InternalUrls.ConvertInternalUrlsToPublic(xhtml);
+                return InternalUrls.ConvertInternalUrlsToPublic(xhtml);
             }
-
-            return xhtml;
         }
 
         /// <exclude />
@@ -156,7 +155,7 @@ namespace Composite.Core.WebClient.Renderings
                                 Log.LogWarning(LogTitle, "Failed to format output xhtml in a pretty way - your page output is likely not strict xml. Url: " + (HttpUtility.UrlDecode(_cachedUrl) ?? "undefined"));
                                 if (maxWarningsToShow == _prettifyErrorCount)
                                 {
-                                    Log.LogInformation(LogTitle, "{0} xhtml format errors logged since startup. No more will be logged until next startup.", maxWarningsToShow);
+                                    Log.LogInformation(LogTitle, $"{maxWarningsToShow} xhtml format errors logged since startup. No more will be logged until next startup.");
                                 }
                             }
                         }
@@ -244,14 +243,22 @@ namespace Composite.Core.WebClient.Renderings
             _dataScope = new DataScope(Page.DataSourceId.PublicationScope, Page.DataSourceId.LocaleScope);
 
             var pagePlaceholderContents = GetPagePlaceholderContents();
-            var pageRenderingJob = new PageContentToRender(Page, pagePlaceholderContents, PreviewMode);
+            PageContentToRender = new PageContentToRender(Page, pagePlaceholderContents, PreviewMode);
 
-            Verify.IsNotNull(httpContext.Handler, "HttpHandler isn't defined");
+            AttachRendererToAspNetPage(httpContext);
+        }
 
-            var aspnetPage = (System.Web.UI.Page)httpContext.Handler;
-            
+        private void AttachRendererToAspNetPage(HttpContext context)
+        {
+            Verify.IsNotNull(context.Handler, "HttpHandler isn't defined");
+            var aspnetPage = context.Handler as System.Web.UI.Page;
+            if (aspnetPage == null)
+            {
+                return;
+            }
+
             var pageRenderer = PageTemplateFacade.BuildPageRenderer(Page.TemplateId);
-            pageRenderer.AttachToPage(aspnetPage, pageRenderingJob);
+            pageRenderer.AttachToPage(aspnetPage, PageContentToRender);
         }
 
         private void ValidateViewUnpublishedRequest(HttpContext httpContext)
@@ -310,10 +317,7 @@ namespace Composite.Core.WebClient.Renderings
         {
             PageRenderingHistory.MarkPageAsRendered(this.Page);
 
-            if (_dataScope != null)
-            {
-                _dataScope.Dispose();
-            }
+            _dataScope?.Dispose();
 
             if (PreviewMode)
             {
