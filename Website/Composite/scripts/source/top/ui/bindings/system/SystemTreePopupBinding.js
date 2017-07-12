@@ -45,6 +45,11 @@ function SystemTreePopupBinding () {
 	this._keepBundleState = false;
 
 	/**
+	 * @type {boolean}
+	 */
+	this._isExplorerActionProfile = false;
+
+	/**
 	 * @type {TreeNodeBinding}
 	 */
 	this.selectedTreeNodeBinding = null;
@@ -84,6 +89,7 @@ SystemTreePopupBinding.prototype.handleBroadcast = function ( broadcast, arg ) {
 				//TODO: refactor with updating API
 				this._node = arg.actionProfile.Node;
 				this._actionProfile = arg.actionProfile;
+				this._isExplorerActionProfile = false;
 			} else {
 				this._currentProfileKey = null;
 			}
@@ -131,9 +137,11 @@ SystemTreePopupBinding.prototype._setupClipboardItems = function () {
 	var copy = this.getMenuItemForCommand ( SystemTreePopupBinding.CMD_COPY );
 	var paste = this.getMenuItemForCommand ( SystemTreePopupBinding.CMD_PASTE );
 
-	cut.setDisabled ( !SystemTreePopupBinding.isCutAllowed );
-	copy.setDisabled ( !SystemTreePopupBinding.isCutAllowed );
-	paste.setDisabled ( SystemTreeBinding.clipboard == null );
+	cut.setDisabled(!SystemTreePopupBinding.isCutAllowed || this._isExplorerActionProfile);
+	copy.setDisabled(!SystemTreePopupBinding.isCutAllowed || this._isExplorerActionProfile );
+	paste.setDisabled(SystemTreeBinding.clipboard == null || this._isExplorerActionProfile);
+
+	
 }
 
 /**
@@ -414,6 +422,7 @@ SystemTreePopupBinding.prototype.snapToMouse = function ( e ) {
 						target = explorertoolbarbutton;
 						this._node = explorertoolbarbuttonBinding.node;
 						this._actionProfile = this.getCompiledActionProfile(explorertoolbarbuttonBinding.node);
+						this._isExplorerActionProfile = true;
 					}
 				}
 				if (target != null) {
