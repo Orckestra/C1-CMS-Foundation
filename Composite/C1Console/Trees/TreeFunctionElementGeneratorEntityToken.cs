@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using Composite.C1Console.Security;
 using Composite.C1Console.Security.SecurityAncestorProviders;
+using Composite.Core;
 using Composite.Core.Serialization;
+using Newtonsoft.Json;
 
 
 namespace Composite.C1Console.Trees
@@ -13,9 +12,9 @@ namespace Composite.C1Console.Trees
     internal sealed class TreeFunctionElementGeneratorEntityToken : EntityToken, IEntityTokenContainingParentEntityToken
     {
         private EntityToken _parentEntityToken;
-        private string _treeNodeId;
-        private string _treeId;
-        private string _serializedParentEntityToken;
+        private readonly string _treeNodeId;
+        private readonly string _treeId;
+        private readonly string _serializedParentEntityToken;
 
 
         public TreeFunctionElementGeneratorEntityToken(string treeNodeId, string treeId, string serializedParentEntityToken, string elementId)
@@ -26,23 +25,22 @@ namespace Composite.C1Console.Trees
             this.ElementId = elementId;
         }
 
-
-        public override string Type
+        [JsonConstructor]
+        private TreeFunctionElementGeneratorEntityToken(string id, string source, EntityToken parentEntityToken, string elementId)
         {
-            get { return _serializedParentEntityToken; }
+            _treeNodeId = id;
+            _treeId = source;
+            _parentEntityToken = parentEntityToken;
+            this.ElementId = elementId;
         }
 
-
-        public override string Source
-        {
-            get { return _treeId; }
-        }
+        public override string Type => _serializedParentEntityToken;
 
 
-        public override string Id
-        {
-            get { return _treeNodeId; }
-        }
+        public override string Source => _treeId;
+
+
+        public override string Id => _treeNodeId;
 
 
         public string ElementId
@@ -52,16 +50,10 @@ namespace Composite.C1Console.Trees
         }
 
 
-        public string TreeNodeId
-        {
-            get
-            {
-                return this.Id;
-            }
-        }
+        public string TreeNodeId => this.Id;
 
 
-
+        [JsonIgnore]
         public EntityToken ParentEntityToken
         {
             get
@@ -86,16 +78,29 @@ namespace Composite.C1Console.Trees
 
         public override string Serialize()
         {
-            StringBuilder sb = new StringBuilder();
-            DoSerialize(sb);
-
-            StringConversionServices.SerializeKeyValuePair(sb, "ElementId", this.ElementId);
-
-            return sb.ToString();
+            return CompositeJsonSerializer.Serialize(this);
         }
 
 
+
         public static EntityToken Deserialize(string serializedEntityToken)
+        {
+            EntityToken entityToken;
+            if (CompositeJsonSerializer.IsJsonSerialized(serializedEntityToken))
+            {
+                entityToken = CompositeJsonSerializer.Deserialize<TreeFunctionElementGeneratorEntityToken>(serializedEntityToken);
+            }
+            else
+            {
+                entityToken = DeserializeLegacy(serializedEntityToken);
+                Log.LogVerbose(nameof(TreeFunctionElementGeneratorEntityToken), entityToken.GetType().FullName);
+            }
+            return entityToken;
+        }
+
+
+
+        public static EntityToken DeserializeLegacy(string serializedEntityToken)
         {
             string type, source, id;
             Dictionary<string, string> dic;
@@ -106,8 +111,6 @@ namespace Composite.C1Console.Trees
 
             return new TreeFunctionElementGeneratorEntityToken(id, source, type, elementId);
         }
-
-
 
         public override int GetHashCode()
         {

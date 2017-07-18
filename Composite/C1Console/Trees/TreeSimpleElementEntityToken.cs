@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using Composite.C1Console.Security;
 using Composite.C1Console.Security.SecurityAncestorProviders;
+using Newtonsoft.Json;
 
 
 namespace Composite.C1Console.Trees
@@ -27,44 +28,26 @@ namespace Composite.C1Console.Trees
         }
 
         /// <exclude />
-        public override string Type
-        {
-            get { return _serializedParentEntityToken; }
-        }
+        public override string Type => _serializedParentEntityToken;
 
 
-        /// <exclude />
-        public override string Source
-        {
-            get { return _treeId; }
-        }
+	    /// <exclude />
+        public override string Source => _treeId;
 
+
+	    /// <exclude />
+        public override string Id => _treeNodeId;
 
         /// <exclude />
-        public override string Id
-        {
-            get { return _treeNodeId; }
-        }
+        [JsonIgnore]
+        public string TreeNodeId => this.Id;
 
         /// <exclude />
-        public string TreeNodeId
-        {
-            get
-            {
-                return this.Id;
-            }
-        }
+        [JsonIgnore]
+        public string SerializedParentEntityToken => _serializedParentEntityToken;
 
-        /// <exclude />
-        public string SerializedParentEntityToken
-        {
-            get
-            {
-                return _serializedParentEntityToken;
-            }
-        }
-
-        /// <exclude />
+	    /// <exclude />
+        [JsonIgnore]
         public EntityToken ParentEntityToken
         {
             get
