@@ -11,7 +11,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
     {
         public IEnumerable<EntityToken> GetParents(EntityToken entityToken)
         {
-            if (entityToken == null) throw new ArgumentNullException("entityToken");
+            if (entityToken == null) throw new ArgumentNullException(nameof(entityToken));
 
             var castedEntityToken = (PackageElementProviderInstalledPackageItemEntityToken)entityToken;
 
@@ -27,10 +27,6 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
     }
 
 
-
-
-    /// <summary>    
-    /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [SecurityAncestorProvider(typeof(PackageElementProviderInstalledPackageItemEntityTokenAncestorProvider))]
@@ -60,61 +56,29 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 
 
         /// <exclude />
-        public override string Type
-        {
-            get { return ""; }
-        }
+        public override string Type => "";
 
 
         /// <exclude />
-        public override string Source
-        {
-            get { return ""; }
-        }
+        public override string Source => "";
 
 
         /// <exclude />
-        public override string Id
-        {
-            get { return this.PackageId.ToString(); }
-        }
+        public override string Id => this.PackageId.ToString();
 
 
         /// <exclude />
         public override string Serialize()
         {
-            StringBuilder sb = new StringBuilder();
-
-            StringConversionServices.SerializeKeyValuePair(sb, "_GroupName_", this.GroupName);
-            StringConversionServices.SerializeKeyValuePair(sb, "_IsLocalInstalled_", this.IsLocalInstalled);
-            StringConversionServices.SerializeKeyValuePair(sb, "_CanBeUninstalled_", this.CanBeUninstalled);
-
-            DoSerialize(sb);
-
-            return sb.ToString();
+            return CompositeJsonSerializer.Serialize(this);
         }
 
 
         /// <exclude />
         public static EntityToken Deserialize(string serializedEntityToken)
         {
-            string type, source, id;
-            Dictionary<string, string> dic;
-
-            DoDeserialize(serializedEntityToken, out type, out source, out id, out dic);
-
-            if (!dic.ContainsKey("_GroupName_")
-                || !dic.ContainsKey("_IsLocalInstalled_")
-                || !dic.ContainsKey("_CanBeUninstalled_"))
-            {
-                throw new ArgumentException("serializedEntityToken is of wrong format");
-            }
-
-            string groupName = StringConversionServices.DeserializeValueString(dic["_GroupName_"]);
-            bool isLocalInstalled = StringConversionServices.DeserializeValueBool(dic["_IsLocalInstalled_"]);
-            bool canBeUninstalled = StringConversionServices.DeserializeValueBool(dic["_CanBeUninstalled_"]);
-
-            return new PackageElementProviderInstalledPackageItemEntityToken(new Guid(id), groupName, isLocalInstalled, canBeUninstalled);
+            return CompositeJsonSerializer
+                .Deserialize<PackageElementProviderInstalledPackageItemEntityToken>(serializedEntityToken);
         }
 
 
