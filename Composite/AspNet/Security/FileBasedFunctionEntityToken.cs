@@ -1,5 +1,6 @@
 ﻿using System;
 using Composite.C1Console.Security;
+using Newtonsoft.Json;
 
 namespace Composite.AspNet.Security
 {
@@ -36,6 +37,7 @@ namespace Composite.AspNet.Security
         /// <value>
         /// The name of the function provider.
         /// </value>
+        [JsonIgnore]
         public string FunctionProviderName
         {
             get { return Source; }
@@ -47,6 +49,7 @@ namespace Composite.AspNet.Security
         /// <value>
         /// The name of the function.
         /// </value>
+        [JsonIgnore]
         public string FunctionName
         {
             get { return Id; }
