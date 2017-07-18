@@ -127,7 +127,7 @@ ExplorerBinding.prototype.onBindingRegister = function () {
 
 	ExplorerBinding.superclass.onBindingRegister.call(this);
 
-	this.setContextMenu(top.app.bindingMap.systemtreepopup);
+	this.setContextMenu(top.app.bindingMap.explorerpopup);
 }
 
 
