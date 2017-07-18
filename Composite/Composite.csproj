@@ -251,6 +251,7 @@
     <Compile Include="C1Console\RichContent\ContainerClasses\EqualOrAntonymComparer.cs" />
     <Compile Include="Core\Implementation\StatelessDataConnectionImplementation.cs" />
     <Compile Include="Core\Instrumentation\DisposableResourceTracer.cs" />
+    <Compile Include="Core\Serialization\CompositeJsonSerializer.cs" />
     <Compile Include="Core\WebClient\PageStructureRpc.cs" />
     <Compile Include="Core\WebClient\Services\WampRouter\WampRouteWrapper.cs" />
     <Compile Include="Data\Caching\CachedTable.cs" />

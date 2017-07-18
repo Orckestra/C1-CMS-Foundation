@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
@@ -70,8 +70,6 @@ namespace Composite.C1Console.Security
         /// <returns>a string representation of the entity token</returns>
         public abstract string Serialize();
 
-
-
         /// <exclude />
         protected void DoSerialize(StringBuilder stringBuilder)
         {
@@ -80,16 +78,10 @@ namespace Composite.C1Console.Security
             StringConversionServices.SerializeKeyValuePair(stringBuilder, "_EntityToken_Id_", Id);
         }
 
-
-
         /// <exclude />
         protected string DoSerialize()
         {
-            StringBuilder sb = new StringBuilder();
-
-            DoSerialize(sb);
-
-            return sb.ToString();
+            return CompositeJsonSerializer.Serialize(this);
         }
 
 
@@ -97,12 +89,31 @@ namespace Composite.C1Console.Security
         /// <exclude />
         protected static void DoDeserialize(string serializedEntityToken, out string type, out string source, out string id)
         {
-            Dictionary<string, string> dic;
+            if(CompositeJsonSerializer.IsJsonSerialized(serializedEntityToken))
+            {
+                var entityToken =
+                    CompositeJsonSerializer.Deserialize<Dictionary<string, string>>(serializedEntityToken);
+                if (entityToken.ContainsKey(nameof(Type)) &&
+                    entityToken.ContainsKey(nameof(Source)) &&
+                    entityToken.ContainsKey(nameof(Id)))
+                {
+                    type = entityToken[nameof(Type)];
+                    source = entityToken[nameof(Source)];
+                    id = entityToken[nameof(Id)];
+                }
+                else
+                {
+                    throw new ArgumentException("Is not a serialized entity token", nameof(serializedEntityToken));
+                }
+            }
+            else
+            {
+                Dictionary<string, string> dic;
 
-            DoDeserialize(serializedEntityToken, out type, out source, out id, out dic);
+                DoDeserialize(serializedEntityToken, out type, out source, out id, out dic);
+            }
+            
         }
-
-
 
         /// <exclude />
         protected static void DoDeserialize(string serializedEntityToken, out string type, out string source, out string id, out Dictionary<string, string> dic)
