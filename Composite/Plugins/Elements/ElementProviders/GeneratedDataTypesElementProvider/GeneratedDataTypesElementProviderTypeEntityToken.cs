@@ -1,8 +1,9 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Composite.C1Console.Security;
+using Composite.Core;
 using Composite.Core.Serialization;
+using Newtonsoft.Json;
 
 
 namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider
@@ -14,39 +15,29 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
     [SecurityAncestorProvider(typeof(GeneratedDataTypesElementProviderSecurityAncestorProvider))]
     public sealed class GeneratedDataTypesElementProviderTypeEntityToken : EntityToken
     {
-        private string _id;
-        private string _providerName;
+        private readonly string _providerName;
 
 
         /// <exclude />
-        public GeneratedDataTypesElementProviderTypeEntityToken(string serializedTypeName, string providerName, string id)
+        [JsonConstructor]
+        public GeneratedDataTypesElementProviderTypeEntityToken(string serializedTypeName, string source, string id)
         {
-            _id = id;
-            _providerName = providerName;
+            Id = id;
+            _providerName = source;
             this.SerializedTypeName = serializedTypeName;
         }
 
-
+        
         /// <exclude />
-        public override string Type
-        {
-            get { return "GeneratedDataTypesElementProvider"; }
-        }
+        public override string Type => "GeneratedDataTypesElementProvider";
 
 
         /// <exclude />
-        public override string Source
-        {
-            get { return _providerName; }
-            
-        }
+        public override string Source => _providerName;
 
 
         /// <exclude />
-        public override string Id
-        {
-            get { return _id; }
-        }
+        public override string Id { get; }
 
 
         /// <exclude />
@@ -60,25 +51,36 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
         /// <exclude />
         public override string Serialize()
         {
-            StringBuilder sb = new StringBuilder();
-
-            DoSerialize(sb);
-
-            StringConversionServices.SerializeKeyValuePair(sb, "_SerializedTypeName_", this.SerializedTypeName);
-
-            return sb.ToString();
+            return CompositeJsonSerializer.Serialize(this);
         }
 
 
         /// <exclude />
         public static EntityToken Deserialize(string serializedEntityToken)
         {
+            EntityToken entityToken;
+            if (CompositeJsonSerializer.IsJsonSerialized(serializedEntityToken))
+            {
+                entityToken = CompositeJsonSerializer
+                    .Deserialize<GeneratedDataTypesElementProviderTypeEntityToken>(serializedEntityToken);
+            }
+            else
+            {
+                entityToken = DeserializeLegacy(serializedEntityToken);
+                Log.LogVerbose(nameof(GeneratedDataTypesElementProviderTypeEntityToken), entityToken.GetType().FullName);
+            }
+            return entityToken;
+        }
+
+        /// <exclude />
+        public static EntityToken DeserializeLegacy(string serializedEntityToken)
+        {
             string type, source, id;
             Dictionary<string, string> dic;
 
             DoDeserialize(serializedEntityToken, out type, out source, out id, out dic);
 
-            if (dic.ContainsKey("_SerializedTypeName_") == false) 
+            if (dic.ContainsKey("_SerializedTypeName_") == false)
             {
                 throw new ArgumentException("The serializedEntityToken is not a serialized entity token", "serializedEntityToken");
             }
@@ -87,7 +89,6 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
             return new GeneratedDataTypesElementProviderTypeEntityToken(serializedTypeName, source, id);
         }
-
 
         /// <exclude />
         public override bool Equals(object obj)
