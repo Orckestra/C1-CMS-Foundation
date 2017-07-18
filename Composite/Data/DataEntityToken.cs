@@ -26,6 +26,8 @@ namespace Composite.Data
         private string _serializedVersionId;
         private string _serializedInterfaceType;
         private Type _interfaceType;
+
+        [JsonProperty(PropertyName = "dataSourceId")]
         private DataSourceId _dataSourceId;
 
 
@@ -43,13 +45,20 @@ namespace Composite.Data
         }
 
 
-        [JsonConstructor]
         private DataEntityToken(string serializedDataSourceId)
         {
             _data = null;
             _dataInitialized = false;
             _serializedDataSourceId = serializedDataSourceId;
             _dataSourceId = null;
+        }
+
+        [JsonConstructor]
+        private DataEntityToken(DataSourceId dataSourceId)
+        {
+            _data = DataFacade.GetDataFromDataSourceId(dataSourceId);
+            _dataInitialized = true;
+            _dataSourceId = dataSourceId;
         }
 
         /// <exclude />
@@ -213,7 +222,6 @@ namespace Composite.Data
         }
 
 
-        [JsonProperty]
         private string SerializedDataSourceId
         {
             get
