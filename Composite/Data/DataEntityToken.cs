@@ -4,7 +4,10 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using Composite.C1Console.Security;
+using Composite.Core;
+using Composite.Core.Serialization;
 using Composite.Core.Types;
+using Newtonsoft.Json;
 
 
 namespace Composite.Data
@@ -40,7 +43,7 @@ namespace Composite.Data
         }
 
 
-
+        [JsonConstructor]
         private DataEntityToken(string serializedDataSourceId)
         {
             _data = null;
@@ -49,9 +52,8 @@ namespace Composite.Data
             _dataSourceId = null;
         }
 
-
-
         /// <exclude />
+        [JsonIgnore]
         public override string Type
         {
             get
@@ -68,13 +70,16 @@ namespace Composite.Data
 
 
         /// <exclude />
+        [JsonIgnore]
         public override string Source => this.DataSourceId.ProviderName;
 
 
         /// <exclude />
+        [JsonIgnore]
         public override string Id => this.SerializedId;
 
         /// <exclude />
+        [JsonIgnore]
         public override string VersionId => this.SerializedVersionId;
 
         /// <exclude />
@@ -82,6 +87,7 @@ namespace Composite.Data
 
 
         /// <exclude />
+        [JsonIgnore]
         public Type InterfaceType
         {
             get
@@ -102,6 +108,7 @@ namespace Composite.Data
         /// <summary>
         /// The <see cref="Composite.Data.DataSourceId"/> for the data object. 
         /// </summary>
+        [JsonIgnore]
         public DataSourceId DataSourceId
         {
             get
@@ -122,22 +129,37 @@ namespace Composite.Data
         /// <exclude />
         public override string Serialize()
         {
-            return this.SerializedDataSourceId;
+            return CompositeJsonSerializer.Serialize(this);
         }
 
 
 
         /// <exclude />
-        public static EntityToken Deserialize(string serializedData)
+        public static EntityToken Deserialize(string serializedEntityToken)
+        {
+            EntityToken entityToken;
+            if (CompositeJsonSerializer.IsJsonSerialized(serializedEntityToken))
+            {
+                entityToken = CompositeJsonSerializer.Deserialize<DataEntityToken>(serializedEntityToken);
+            }
+            else
+            {
+                entityToken = DeserializeLegacy(serializedEntityToken);
+                Log.LogVerbose(nameof(DataEntityToken), entityToken.GetType().FullName);
+            }
+            return entityToken;
+        }
+
+        /// <exclude />
+        public static EntityToken DeserializeLegacy(string serializedData)
         {
             return new DataEntityToken(serializedData);
         }
 
-
-
         /// <summary>
         /// Retrieve the data object. Cast this to the expected IData interface to access the data fields.
         /// </summary>
+        [JsonIgnore]
         public IData Data
         {
             get
@@ -191,7 +213,7 @@ namespace Composite.Data
         }
 
 
-
+        [JsonProperty]
         private string SerializedDataSourceId
         {
             get
