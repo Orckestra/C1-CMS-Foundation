@@ -1,58 +1,47 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Composite.Data;
 using Composite.C1Console.Security;
 using Composite.Core.Serialization;
 using Composite.Core.Types;
+using Newtonsoft.Json;
 
 
 namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper
 {
-    /// <summary>    
-    /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [SecurityAncestorProvider(typeof(AssociatedDataElementProviderHelperSecurityAncestorProvider))]
     public sealed class AssociatedDataElementProviderHelperEntityToken : EntityToken
     {
-        private string _type;
-        private string _providerName;
-        private string _id;
+        private readonly string _providerName;
 
         private int _hashCode = 0;
 
 
         /// <exclude />
+        [JsonConstructor]
         public AssociatedDataElementProviderHelperEntityToken(string type, string providerName, string id, string payload)
         {
-            _type = type;
+            Type = type;
             _providerName = providerName;
-            _id = id;
+            Id = id;
 
             this.Payload = payload;
         }
 
 
         /// <exclude />
-        public override string Type
-        {
-            get { return _type; }
-        }
+        public override string Type { get; }
 
 
         /// <exclude />
-        public override string Source
-        {
-            get { return _providerName; }
-        }
+        [JsonProperty(PropertyName = "providerName")]
+        public override string Source => _providerName;
 
 
         /// <exclude />
-        public override string Id
-        {
-            get { return _id; }
-        }
+        public override string Id { get; }
 
 
         /// <exclude />
@@ -99,32 +88,15 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
         /// <exclude />
         public override string Serialize()
         {
-            StringBuilder sb = new StringBuilder();
-
-            DoSerialize(sb);
-
-            StringConversionServices.SerializeKeyValuePair(sb, "_Payload_", this.Payload);
-
-            return sb.ToString();
+            return CompositeJsonSerializer.Serialize(this);
         }
 
 
         /// <exclude />
         public static EntityToken Deserialize(string serializedEntityToken)
         {
-            string type, source, id;
-            Dictionary<string, string> dic;
-
-            DoDeserialize(serializedEntityToken, out type, out source, out id, out dic);
-
-            if (dic.ContainsKey("_Payload_") == false) 
-            {
-                throw new ArgumentException("The serializedEntityToken is not a serialized entity token", "serializedEntityToken");
-            }
-
-            string payload = StringConversionServices.DeserializeValueString(dic["_Payload_"]);
-
-            return new AssociatedDataElementProviderHelperEntityToken(type, source, id, payload);
+            return CompositeJsonSerializer
+                .Deserialize<AssociatedDataElementProviderHelperEntityToken>(serializedEntityToken);
         }
 
 
