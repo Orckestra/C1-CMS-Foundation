@@ -37,7 +37,6 @@ namespace Composite.Data
         /// <summary>
         /// This is for internal use only!
         /// </summary>
-        [JsonConstructor]
         public DataSourceId(IDataId dataId, string providerName, Type interfaceType, DataScopeIdentifier dataScopeIdentifier, CultureInfo localeScope)
         {
             // This constructor has to be extremely fast, we have up to 100.000 objects related while some requests
@@ -50,6 +49,19 @@ namespace Composite.Data
             this.ExistsInStore = true;
         }
 
+        [JsonConstructor]
+        private DataSourceId(IDataId dataId, string providerName, Type interfaceType, DataScopeIdentifier dataScopeIdentifier, string localeScope)
+        {
+            // This constructor has to be extremely fast, we have up to 100.000 objects related while some requests
+            
+            this.DataId = dataId ?? throw new ArgumentNullException(nameof(dataId));
+            ProviderName = providerName ?? DataProviderRegistry.DefaultDynamicTypeDataProviderName;
+            if (string.IsNullOrEmpty(providerName)) throw new ArgumentNullException(nameof(providerName));
+            InterfaceType = interfaceType ?? throw new ArgumentNullException(nameof(interfaceType));
+            DataScopeIdentifier = dataScopeIdentifier ?? throw new ArgumentNullException(nameof(dataScopeIdentifier));
+            LocaleScope = CultureInfo.CreateSpecificCulture(localeScope);
+            this.ExistsInStore = true;
+        }
 
 
         /// <summary>
@@ -74,6 +86,11 @@ namespace Composite.Data
         /// </summary>
         public string ProviderName { get; }
 
+        private bool ShouldSerializeProviderName()
+        {
+            // don't serialize ProviderName if it is default 
+            return (ProviderName != DataProviderRegistry.DefaultDynamicTypeDataProviderName);
+        }
 
         /// <summary>
         /// The interface used for the data element. This is expected to be implementing IData.
@@ -96,8 +113,11 @@ namespace Composite.Data
         /// <summary>
         /// The language from which the data element originate.
         /// </summary>
+        [JsonIgnore]
         public CultureInfo LocaleScope { get; internal set; }
 
+        [JsonProperty(PropertyName = "localeScope")]
+        private string LocalScopeName => LocaleScope.Name;
 
         /// <summary>
         /// True when the data element represents a physically stored element
