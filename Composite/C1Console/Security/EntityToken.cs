@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using Composite.Core.Serialization;
+using Newtonsoft.Json;
 
 
 namespace Composite.C1Console.Security
@@ -198,6 +199,7 @@ namespace Composite.C1Console.Security
         }
 
         /// <exclude />
+        [JsonIgnore]
         public virtual string VersionId { get; } = "";
 
 
