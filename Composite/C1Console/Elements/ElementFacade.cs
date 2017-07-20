@@ -7,7 +7,6 @@ using Composite.C1Console.Actions;
 using Composite.C1Console.Elements.Foundation;
 using Composite.C1Console.Elements.Foundation.PluginFacades;
 using Composite.C1Console.Elements.Plugins.ElementProvider;
-using Composite.C1Console.Elements.Security;
 using Composite.C1Console.Forms.DataServices;
 using Composite.C1Console.Forms.Flows;
 using Composite.C1Console.Security;
