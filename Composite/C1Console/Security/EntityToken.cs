@@ -82,7 +82,9 @@ namespace Composite.C1Console.Security
         /// <exclude />
         protected string DoSerialize()
         {
-            return CompositeJsonSerializer.Serialize(this);
+            return CompositeJsonSerializer.Serialize(
+                new Dictionary<string, string>() {{nameof(Type), Type},
+                    { nameof(Source), Source}, {nameof(Id), Id}});
         }
 
 
