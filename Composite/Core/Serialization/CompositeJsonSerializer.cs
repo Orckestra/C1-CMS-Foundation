@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Security;
-using System.Text.RegularExpressions;
 using Composite.C1Console.Security;
 using Composite.Core.Types;
 using Newtonsoft.Json;
@@ -16,15 +15,9 @@ namespace Composite.Core.Serialization
     /// </summary>
     public static class CompositeJsonSerializer
     {
-        private const string ObjectKeyString = "obj";
+        private const string ObjectKeyString = "meta:obj";
         private const string TypeKeyString = "meta:type";
         private const string HashKeyString = "meta:hash";
-
-        private static readonly Regex WrappedJsonObjectRegex =
-            new Regex($"{{(?\'obj\'[\\s\\S]*),\\\"{TypeKeyString}\\\":\"(?\'type\'[\\s\\S]*?)\"(?(?=,\\\"{HashKeyString}\\\":),\\\"{HashKeyString}\\\":\"(?\'hash\'[\\s\\S]*)\"|(?:))}}", RegexOptions.Compiled|RegexOptions.ExplicitCapture);
-
-        private static readonly Regex WrappedLegacyObjectRegex =
-            new Regex($"{{\\\"{ObjectKeyString}\\\":(?\'obj\'[\\s\\S]*),\\\"{TypeKeyString}\\\":\"(?\'type\'[\\s\\S]*?)\"(?(?=,\\\"{HashKeyString}\\\":),\\\"{HashKeyString}\\\":\"(?\'hash\'[\\s\\S]*)\"|(?:))}}", RegexOptions.Compiled | RegexOptions.ExplicitCapture);
 
         /// <summary>
         /// Check if string is serilized with JsonSerializer
@@ -33,9 +26,7 @@ namespace Composite.Core.Serialization
         /// <returns></returns>
         public static bool IsJsonSerialized(string str)
         {
-            if (str.StartsWith("{"))
-                return true;
-            return false;
+            return str.StartsWith("{");
         }
 
         /// <summary>
@@ -93,13 +84,14 @@ namespace Composite.Core.Serialization
         /// Serialize with a wrapper containing the serialized object, its hash sign and its type
         /// </summary>
         /// <param name="obj">Object to serialize</param>
-        /// <param name="hashSign">To calculate the hash sign</param>
+        /// <param name="shouldSign">To calculate the hash sign</param>
         /// <returns>seialized string</returns>
-        public static string Serialize(object obj, bool hashSign)
+        public static string Serialize(object obj, bool shouldSign)
         {
             var type = obj.GetType();
-            MethodInfo methodInfo = type.GetMethod("Serialize");
+            var methodInfo = type.GetMethod("Serialize");
             string serializedData = "";
+
             if (methodInfo == null)
             {
                 serializedData = Serialize(obj);
@@ -109,21 +101,21 @@ namespace Composite.Core.Serialization
                 serializedData = (string)methodInfo.Invoke(obj, null);
             }
 
-            var hash = hashSign ? HashSigner.GetSignedHash(serializedData).GetHashCode() : 0;
+            var hash = shouldSign ? HashSigner.GetSignedHash(serializedData).GetHashCode() : 0;
 
             if (IsJsonSerialized(serializedData))
             {
                 return "{" + serializedData.Substring(1, serializedData.Length - 2) +
                        ",\"" + TypeKeyString + "\":\"" + type.FullName + ", " +
                        type.Assembly.GetName().Name + "\"" +
-                       (hashSign ? ",\"" + HashKeyString + "\":\"" + hash + "\"}" : "}");
+                       (shouldSign ? ",\"" + HashKeyString + "\":\"" + hash + "\"}" : "}");
             }
             else
             {
                 return "{\"" + ObjectKeyString + "\":\"" + serializedData +
                        "\",\"" + TypeKeyString + "\":\"" + type.FullName + ", " +
                        type.Assembly.GetName().Name + "\"" +
-                       (hashSign ? ",\"" + HashKeyString + "\":\"" + hash + "\"}" : "}");
+                       (shouldSign ? ",\"" + HashKeyString + "\":\"" + hash + "\"}" : "}");
             }
         }
 
@@ -191,42 +183,36 @@ namespace Composite.Core.Serialization
         /// Deserialize strings into object with specified type from a hash signed wrapper
         /// </summary>
         /// <param name="str">Serilaized string</param>
-        /// <param name="hashSign">Is signed</param>
+        /// <param name="isSigned">Is signed</param>
         /// <typeparam name="T">Type of returned object</typeparam>
         /// <returns>The object</returns>
-        public static T Deserialize<T>(string str, bool hashSign)
+        public static T Deserialize<T>(string str, bool isSigned)
         {
-            MatchCollection matches=null;
-            bool legacyStyleSerilized = str.StartsWith("{\"" + ObjectKeyString);
+            var legacyStyleSerilized = str.StartsWith("{\"" + ObjectKeyString+"\":\"");
+
+            string obj;
+            var hash = 0;
+            var type = TypeManager.TryGetType(str.GetValue(TypeKeyString));
+
+            if (type==null)
+                throw new SerializationException();
+
+            if (isSigned)
+            {
+                if(!int.TryParse(str.GetValue(HashKeyString),out hash))
+                    throw new SerializationException();
+            }
 
             if (legacyStyleSerilized)
             {
-                matches = WrappedLegacyObjectRegex.Matches(str);
+                obj = str.GetValue(ObjectKeyString);
             }
             else
             {
-                matches = WrappedJsonObjectRegex.Matches(str);
+                obj = "{" + str.Substring(1, str.LastIndexOf(TypeKeyString, StringComparison.InvariantCulture) - 3) + "}";
             }
 
-            if (matches == null || matches.Count > 1)
-                throw new SerializationException($"Incorrect Serilization: {str}");
-            
-            Match match = matches[0];
-
-            int hash = hashSign ? int.Parse(match.Groups["hash"].Value) : 0;
-            var type = TypeManager.GetType(match.Groups["type"].Value);
-            var obj = match.Groups["obj"].Value;
-
-            if (legacyStyleSerilized)
-            {
-                obj = obj.Trim('"');
-            }
-            else
-            {
-                obj = "{" + obj + "}";
-            }
-
-            if (hashSign)
+            if (isSigned)
             {
                 if (!HashSigner.ValidateSignedHash(obj, new HashValue(hash)))
                 {
@@ -241,20 +227,21 @@ namespace Composite.Core.Serialization
             return (T)methodInfo.Invoke(null, new object[] { obj });
         }
 
+        private static string GetValue(this string str, string key)
+        {
+            var searchterm = "\"" + key + "\":\"";
+            var valueStartIndex = str.LastIndexOf(searchterm,StringComparison.InvariantCulture) + searchterm.Length;
+            var valueLength = str.IndexOf("\"", valueStartIndex,StringComparison.InvariantCulture) - valueStartIndex;
+            var value = str.Substring(valueStartIndex, valueLength);
+            return value;
+        }
+
         private class JsonTypeConverter : JsonConverter
         {
             public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
             {
-                if (value is Type)
-                {
-                    var type = (Type) value;
-                    writer.WriteValue(type.FullName + ", " + type.Assembly.GetName().Name);
-                }
-                else
-                {
-                    var t = JToken.FromObject(value);
-                    t.WriteTo(writer);
-                }
+                var type = (Type) value;
+                writer.WriteValue(type.FullName + ", " + type.Assembly.GetName().Name);
             }
 
             public override object ReadJson(JsonReader reader, Type objectType, object existingValue,
@@ -270,6 +257,7 @@ namespace Composite.Core.Serialization
                 return typeof(Type).IsAssignableFrom(objectType);
             }
         }
+
 
         private class PartialJsonConvertor : JsonConverter
         {
