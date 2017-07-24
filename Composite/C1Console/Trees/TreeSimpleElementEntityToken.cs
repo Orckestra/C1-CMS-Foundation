@@ -22,7 +22,6 @@ namespace Composite.C1Console.Trees
         private readonly string _serializedParentEntityToken;
 
         /// <exclude />
-        
         public TreeSimpleElementEntityToken(string treeNodeId, string treeId, string serializedParentEntityToken)
         {
             _treeNodeId = treeNodeId;
@@ -31,21 +30,31 @@ namespace Composite.C1Console.Trees
         }
 
         [JsonConstructor]
-        private TreeSimpleElementEntityToken(string treeNodeId, string treeId, JRaw parentEntityToken)
+        private TreeSimpleElementEntityToken(string treeNodeId, string treeId, JRaw parentEntityToken, string serializedParentEntityToken)
         {
             _treeNodeId = treeNodeId;
             _treeId = treeId;
-            _serializedParentEntityToken = parentEntityToken.Value.ToString();
+            _serializedParentEntityToken = parentEntityToken?.Value.ToString() ?? serializedParentEntityToken;
         }
 
         /// <exclude />
-        //[JsonProperty(PropertyName = "serializedParentEntityToken")]
-        //[JsonConverter(typeof(CompositeJsonSerializer.StringAsJsonConverter))]
-        [JsonIgnore]
+        [JsonProperty(PropertyName = "serializedParentEntityToken")]
         public override string Type => _serializedParentEntityToken;
+
+        /// <exclude />
+        public bool ShouldSerializeType()
+        {
+            return !CompositeJsonSerializer.IsJsonSerialized(_serializedParentEntityToken);
+        }
 
         [JsonProperty(PropertyName = "parentEntityToken")]
         private JRaw rawSerializedParentEntityToken => new JRaw(_serializedParentEntityToken);
+
+        /// <exclude />
+        public bool ShouldSerializerawSerializedParentEntityToken()
+        {
+            return CompositeJsonSerializer.IsJsonSerialized(_serializedParentEntityToken);
+        }
 
         /// <exclude />
         [JsonProperty(PropertyName = "treeId")]
