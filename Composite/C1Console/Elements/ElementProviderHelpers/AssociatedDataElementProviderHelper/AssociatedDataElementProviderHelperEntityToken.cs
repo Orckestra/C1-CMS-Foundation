@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Composite.Data;
 using Composite.C1Console.Security;
+using Composite.Core;
 using Composite.Core.Serialization;
 using Composite.Core.Types;
 using Newtonsoft.Json;
@@ -95,10 +96,37 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
         /// <exclude />
         public static EntityToken Deserialize(string serializedEntityToken)
         {
-            return CompositeJsonSerializer
-                .Deserialize<AssociatedDataElementProviderHelperEntityToken>(serializedEntityToken);
+            EntityToken entityToken;
+            if (CompositeJsonSerializer.IsJsonSerialized(serializedEntityToken))
+            {
+                entityToken = CompositeJsonSerializer
+                    .Deserialize<AssociatedDataElementProviderHelperEntityToken>(serializedEntityToken);
+            }
+            else
+            {
+                entityToken = DeserializeLegacy(serializedEntityToken);
+                Log.LogVerbose(nameof(AssociatedDataElementProviderHelperEntityToken), entityToken.GetType().FullName);
+            }
+            return entityToken;
         }
 
+        /// <exclude />
+        public static EntityToken DeserializeLegacy(string serializedEntityToken)
+        {
+            string type, source, id;
+            Dictionary<string, string> dic;
+
+            DoDeserialize(serializedEntityToken, out type, out source, out id, out dic);
+
+            if (dic.ContainsKey("_Payload_") == false)
+            {
+                throw new ArgumentException("The serializedEntityToken is not a serialized entity token", "serializedEntityToken");
+            }
+
+            string payload = StringConversionServices.DeserializeValueString(dic["_Payload_"]);
+
+            return new AssociatedDataElementProviderHelperEntityToken(type, source, id, payload);
+        }
 
         /// <exclude />
         public override bool Equals(object obj)
