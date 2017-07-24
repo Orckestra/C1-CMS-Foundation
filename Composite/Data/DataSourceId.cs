@@ -86,7 +86,8 @@ namespace Composite.Data
         /// </summary>
         public string ProviderName { get; }
 
-        private bool ShouldSerializeProviderName()
+        /// <exclude />
+        public bool ShouldSerializeProviderName()
         {
             // don't serialize ProviderName if it is default 
             return (ProviderName != DataProviderRegistry.DefaultDynamicTypeDataProviderName);
