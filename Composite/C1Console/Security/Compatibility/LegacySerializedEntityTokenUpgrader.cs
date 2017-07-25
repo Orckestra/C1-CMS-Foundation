@@ -148,7 +148,7 @@ namespace Composite.C1Console.Security.Compatibility
                                     var entityToken = EntityTokenSerializer.Deserialize(token);
                                     var tokenReserialized = EntityTokenSerializer.Serialize(entityToken);
 
-                                    if (tokenReserialized!=token)
+                                    if (tokenReserialized != token)
                                     {
                                         tokenProperty.SetValue(rowItem, tokenReserialized);
                                         rowChange = true;
@@ -156,7 +156,7 @@ namespace Composite.C1Console.Security.Compatibility
                                 }
                                 catch (Exception ex)
                                 {
-                                    _log.LogError(nameof(LegacySerializedEntityTokenUpgrader), ex);
+                                    _log.LogError(nameof(LegacySerializedEntityTokenUpgrader), "Failed to upgrade old token {0} from data type {1} as EntityToken.\n{2}", token, dataType.FullName, ex);
                                 }
                             }
 
@@ -164,6 +164,7 @@ namespace Composite.C1Console.Security.Compatibility
                             {
                                 try
                                 {
+                                    token = EnsureValidDataSourceId(token);
                                     var dataSourceId = DataSourceId.Deserialize(token);
                                     var dataSourceIdReserialized = dataSourceId.Serialize();
 
@@ -175,7 +176,7 @@ namespace Composite.C1Console.Security.Compatibility
                                 }
                                 catch (Exception ex)
                                 {
-                                    _log.LogError(nameof(LegacySerializedEntityTokenUpgrader), ex);
+                                    _log.LogError(nameof(LegacySerializedEntityTokenUpgrader), "Failed to upgrade old token {0} from data type {1} as DataSourceId.\n{2}", token, dataType.FullName, ex);
                                 }
                             }
 
@@ -184,6 +185,24 @@ namespace Composite.C1Console.Security.Compatibility
                     }
                 }
             }
+        }
+
+        private static string EnsureValidDataSourceId(string token)
+        {
+            try
+            {
+                // fixing specific data inconsistency, where old serialized data id's for versioned data do not reflect versionid property added in a later version
+                if (token.Contains("Composite_Data_Types_IPagePlaceholderContentDataId") && !token.Contains("VersionId"))
+                {
+                    var pageId = Guid.Parse(token.Substring(19, 36));
+                    token = token.Replace("'_dataIdType_", String.Format(",\\ VersionId=\\'{0}\\''_dataIdType_", pageId));
+                }
+            }
+            catch(Exception) {
+                // if we have an issue, caller will act 
+            }
+
+            return token;
         }
     }
 }
