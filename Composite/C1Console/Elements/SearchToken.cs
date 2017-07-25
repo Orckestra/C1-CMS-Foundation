@@ -22,7 +22,7 @@ namespace Composite.C1Console.Elements
         /// <returns>String representation</returns>
         public string Serialize()
         {
-            return CompositeJsonSerializer.Serialize(this);
+            return CompositeJsonSerializer.SerializeObject(this);
         }
 
 
