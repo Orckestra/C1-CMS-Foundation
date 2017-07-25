@@ -56,7 +56,6 @@ namespace Composite.Data
             
             this.DataId = dataId ?? throw new ArgumentNullException(nameof(dataId));
             ProviderName = providerName ?? DataProviderRegistry.DefaultDynamicTypeDataProviderName;
-            if (string.IsNullOrEmpty(providerName)) throw new ArgumentNullException(nameof(providerName));
             InterfaceType = interfaceType ?? throw new ArgumentNullException(nameof(interfaceType));
             DataScopeIdentifier = dataScopeIdentifier ?? throw new ArgumentNullException(nameof(dataScopeIdentifier));
             LocaleScope = CultureInfo.CreateSpecificCulture(localeScope);
@@ -172,17 +171,13 @@ namespace Composite.Data
 
         private static bool Deserialize(string serializedDataSourceId, out DataSourceId dataSourceId, bool throwException)
         {
-            dataSourceId = null;
             if(CompositeJsonSerializer.IsJsonSerialized(serializedDataSourceId))
             {
                 dataSourceId = CompositeJsonSerializer.Deserialize<DataSourceId>(serializedDataSourceId);
                 return true;
             }
-            else
-            {
-                return DeserializeLegacy(serializedDataSourceId, out dataSourceId, throwException);
-            }
-            return false;
+
+            return DeserializeLegacy(serializedDataSourceId, out dataSourceId, throwException);
         }
 
         private static bool DeserializeLegacy(string serializedDataSourceId, out DataSourceId dataSourceId, bool throwException)

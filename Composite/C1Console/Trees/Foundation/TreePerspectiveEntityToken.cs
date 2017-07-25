@@ -89,6 +89,7 @@ namespace Composite.C1Console.Trees.Foundation
             return entityToken;
         }
 
+        /// <exclude />
         public static EntityToken DeserializeLegacy(string serializedEntityToken)
         {
             return new TreePerspectiveEntityToken(serializedEntityToken);
