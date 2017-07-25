@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using Newtonsoft.Json;
 
 
 namespace Composite.Data
@@ -29,12 +30,11 @@ namespace Composite.Data
             return DataScopeIdentifier.Public;
         }
 
-
-        private DataScopeIdentifier(string dataScope)
+        [JsonConstructor]
+        private DataScopeIdentifier(string name)
         {
-            this.Name = dataScope;
+            this.Name = name;
         }
-
 
         /// <exclude />
         public string Name

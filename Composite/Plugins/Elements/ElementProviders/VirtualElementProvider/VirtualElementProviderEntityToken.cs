@@ -1,6 +1,9 @@
-using System;
+﻿using System;
 using Composite.C1Console.Security;
+using Composite.Core;
+using Composite.Core.Serialization;
 using Composite.Core.Types;
+using Newtonsoft.Json;
 
 
 namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
@@ -13,57 +16,72 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
     [SecurityAncestorProvider(typeof(VirtualElementProviderSecurityAncestorProvider))]
     public sealed class VirtualElementProviderEntityToken : EntityToken
     {
-        private readonly string _source;
-        private readonly string _id;
-        private readonly string _type;
-
+        private string _type;
 
         /// <exclude />
         public VirtualElementProviderEntityToken()
         {
-            _type = TypeManager.SerializeType(this.GetType());
         }
 
 
         /// <exclude />
+        [JsonConstructor]
         public VirtualElementProviderEntityToken(string source, string id)
-            :this()
         {
-            _source = source;
-            _id = id;            
+            Source = source;
+            Id = id;            
         }
 
 
         /// <exclude />
+        [JsonIgnore]
         public override string Type
         {
-            get { return _type; }
+            get
+            {
+                if (_type == null)
+                {
+                    _type= TypeManager.SerializeType(this.GetType());
+                }
+
+                return _type;
+            }
         }
 
 
         /// <exclude />
-        public override string Source
-        {
-            get { return _source; }
-        }
+        public override string Source { get; }
 
 
         /// <exclude />
-        public override string Id
-        {
-            get { return _id; }
-        }
+        public override string Id { get; }
 
 
         /// <exclude />
         public override string Serialize()
         {
-            return DoSerialize();
+            return CompositeJsonSerializer.Serialize(this);
         }
-
 
         /// <exclude />
         public static EntityToken Deserialize(string serializedEntityToken)
+        {
+            EntityToken entityToken;
+            if (CompositeJsonSerializer.IsJsonSerialized(serializedEntityToken))
+            {
+                entityToken =
+                    CompositeJsonSerializer.Deserialize<VirtualElementProviderEntityToken>(serializedEntityToken);
+            }
+            else
+            {
+                entityToken = DeserializeLegacy(serializedEntityToken);
+                Log.LogVerbose(nameof(VirtualElementProviderEntityToken), entityToken.GetType().FullName);
+            }
+            return entityToken;
+        }
+
+        /// <exclude />
+        public static EntityToken DeserializeLegacy(string serializedEntityToken)
         {
             string type, source, id;
 

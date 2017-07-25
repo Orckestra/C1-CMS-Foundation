@@ -4,7 +4,11 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using Composite.C1Console.Security;
+using Composite.Core.Serialization;
 using Composite.Core.Types;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using WampSharp.V2.Binding.Contracts;
 
 
 namespace Composite.Data
@@ -14,6 +18,7 @@ namespace Composite.Data
     /// to move between data items and EntityToken.
     /// </summary>
     [SecurityAncestorProvider(typeof(DataSecurityAncestorProvider))]
+    [JsonObject(MemberSerialization.OptIn)]
     public sealed class DataEntityToken : EntityToken
     {
         private IData _data;
@@ -40,7 +45,6 @@ namespace Composite.Data
         }
 
 
-
         private DataEntityToken(string serializedDataSourceId)
         {
             _data = null;
@@ -49,7 +53,14 @@ namespace Composite.Data
             _dataSourceId = null;
         }
 
-
+        [JsonConstructor]
+        private DataEntityToken(JRaw dataSourceId)
+        {
+            _data = null;
+            _dataInitialized = false;
+            _serializedDataSourceId = dataSourceId.Value.ToString();
+            _dataSourceId = null;
+        }
 
         /// <exclude />
         public override string Type
@@ -190,7 +201,8 @@ namespace Composite.Data
             };
         }
 
-
+        [JsonProperty(PropertyName = "dataSourceId")]
+        private JRaw rawSerializedDataSourceId => new JRaw(_serializedDataSourceId);
 
         private string SerializedDataSourceId
         {

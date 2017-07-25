@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Composite.C1Console.Security;
+using Newtonsoft.Json;
 
 
 namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
@@ -25,6 +26,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
             this.GroupName = groupName;
         }
 
+	    [JsonIgnore]
         public string GroupName { get; private set; }
         
         public override string Type

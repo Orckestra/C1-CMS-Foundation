@@ -1,22 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Composite.C1Console.Security;
+using Composite.Core;
 using Composite.Core.IO;
 using Composite.Core.Serialization;
+using Newtonsoft.Json;
 
 
 namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
 {
-    /// <summary>    
-    /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [SecurityAncestorProvider(typeof(WebsiteFileProviderEntityTokenSecurityAncestorProvider))]
     public sealed class WebsiteFileElementProviderEntityToken : EntityToken
     {
-        private static readonly string _baseDirectory;
-        private readonly string _providerName;
+        private static readonly string BaseDirectory;
         private readonly string _relativePath;
 
         static WebsiteFileElementProviderEntityToken()
@@ -27,69 +25,68 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
                 baseDirectory = baseDirectory.Substring(0, baseDirectory.Length - 1);
             }
 
-            _baseDirectory = baseDirectory;
+            BaseDirectory = baseDirectory;
         }
 
         /// <exclude />
+        [JsonConstructor]
         public WebsiteFileElementProviderEntityToken(string providerName, string path, string rootPath)
         {
             Verify.ArgumentNotNull(path, "path");
             Verify.ArgumentNotNull(rootPath, "rootPath");
             Verify.ArgumentCondition(path.StartsWith(rootPath, StringComparison.OrdinalIgnoreCase), "path", "Path should start with root path");
 
-            Verify.That(rootPath.StartsWith(_baseDirectory, StringComparison.OrdinalIgnoreCase), "Path does not belong to the website");
+            Verify.That(rootPath.StartsWith(BaseDirectory, StringComparison.OrdinalIgnoreCase), "Path does not belong to the website");
 
-            _relativePath = path.Substring(_baseDirectory.Length);
+            _relativePath = path.Substring(BaseDirectory.Length);
 
             this.Path = path;
             this.RootPath = rootPath;
-            _providerName = providerName;
+            ProviderName = providerName;
         }
 
 
         /// <exclude />
-        public string ProviderName
-        {
-            get { return _providerName; }
-        }
+        public string ProviderName { get; }
 
 
         /// <exclude />
-        public override string Type
-        {
-            get { return ""; }
-        }
+        public override string Type => "";
 
 
         /// <exclude />
-        public override string Source
-        {
-            get { return _providerName; }
-        }
+        public override string Source => ProviderName;
 
 
         /// <exclude />
-        public override string Id
-        {
-            get { return _relativePath; }
-        }
+        public override string Id => _relativePath;
 
 
         /// <exclude />
         public override string Serialize()
         {
-            StringBuilder sb = new StringBuilder();
-
-            DoSerialize(sb);
-
-            StringConversionServices.SerializeKeyValuePair(sb, "root", RelativeRootPath);
-             
-            return sb.ToString();
+            return CompositeJsonSerializer.Serialize(this);
         }
 
 
         /// <exclude />
         public static EntityToken Deserialize(string serializedData)
+        {
+            EntityToken entityToken;
+            if (CompositeJsonSerializer.IsJsonSerialized(serializedData))
+            {
+                entityToken = CompositeJsonSerializer.Deserialize<WebsiteFileElementProviderEntityToken>(serializedData);
+            }
+            else
+            {
+                entityToken = DeserializeLegacy(serializedData);
+                Log.LogVerbose(nameof(WebsiteFileElementProviderEntityToken), entityToken.GetType().FullName);
+            }
+            return entityToken;
+        }
+
+        /// <exclude />
+        public static EntityToken DeserializeLegacy(string serializedData)
         {
             Dictionary<string, string> dic;
             string type, source, id;
@@ -97,18 +94,17 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
             EntityToken.DoDeserialize(serializedData, out type, out source, out id, out dic);
 
             // Backward compatibility
-            if(dic.ContainsKey("RootPath"))
+            if (dic.ContainsKey("RootPath"))
             {
                 string rootPath = StringConversionServices.DeserializeValueString(dic["RootPath"]);
 
                 return new WebsiteFileElementProviderEntityToken(source, id, rootPath);
             }
-            
+
             string relativeRootPath = StringConversionServices.DeserializeValueString(dic["root"]);
 
-            return new WebsiteFileElementProviderEntityToken(source, _baseDirectory + id, _baseDirectory + relativeRootPath);
+            return new WebsiteFileElementProviderEntityToken(source, BaseDirectory + id, BaseDirectory + relativeRootPath);
         }
-
 
         /// <exclude />
         public string Path
@@ -117,11 +113,9 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
             private set;
         }
 
-        private string RelativeRootPath
-        {
-            get { return RootPath.Substring(_baseDirectory.Length); }
-        }
+        private string RelativeRootPath => RootPath.Substring(BaseDirectory.Length);
 
+        [JsonProperty]
         internal string RootPath
         {
             get;
@@ -129,10 +123,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
         }
 
 
-        internal bool IsRoot
-        {
-            get { return this.Path == this.RootPath; }
-        }
+        internal bool IsRoot => this.Path == this.RootPath;
 
 
         /// <exclude />

@@ -244,6 +244,7 @@
     <Compile Include="C1Console\RichContent\Components\IComponentProvider.cs" />
     <Compile Include="C1Console\Forms\ITestAutomationLocatorInformation.cs" />
     <Compile Include="C1Console\Elements\DialogStrings.cs" />
+    <Compile Include="C1Console\Security\Compatibility\LegacySerializedEntityTokenUpgrader.cs" />
     <Compile Include="C1Console\Security\Plugins\LoginSessionStore\INoneConfigurationBasedLoginSessionStore.cs" />
     <Compile Include="C1Console\Security\Plugins\LoginSessionStore\Runtime\LoginSessionStoreResolver.cs" />
     <Compile Include="C1Console\RichContent\ContainerClasses\AntonymContainerClassManager.cs" />
@@ -251,6 +252,7 @@
     <Compile Include="C1Console\RichContent\ContainerClasses\EqualOrAntonymComparer.cs" />
     <Compile Include="Core\Implementation\StatelessDataConnectionImplementation.cs" />
     <Compile Include="Core\Instrumentation\DisposableResourceTracer.cs" />
+    <Compile Include="Core\Serialization\CompositeJsonSerializer.cs" />
     <Compile Include="Core\WebClient\PageStructureRpc.cs" />
     <Compile Include="Core\WebClient\Services\WampRouter\WampRouteWrapper.cs" />
     <Compile Include="Data\Caching\CachedTable.cs" />

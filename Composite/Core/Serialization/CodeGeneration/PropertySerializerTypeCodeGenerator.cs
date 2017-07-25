@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.CodeDom;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -81,113 +81,9 @@ namespace Composite.Core.Serialization.CodeGeneration
                 )
             );
 
-            AddSerializeMethod(declaration, propertyClassTypeName, properties);
             AddDeserializeMethod(declaration, propertyClassTypeName, properties);
 
             return declaration;
-        }
-
-
-
-        private static void AddSerializeMethod(CodeTypeDeclaration declaration, string propertyClassTypeName, IList<Tuple<string, Type>> properties)
-        {
-            CodeMemberMethod method = new CodeMemberMethod();
-            method.Name = "Serialize";
-            method.ReturnType = new CodeTypeReference(typeof(void));
-            method.Attributes = MemberAttributes.Public | MemberAttributes.Final;
-            method.Parameters.Add(new CodeParameterDeclarationExpression(typeof(object), "propertyClass"));
-            method.Parameters.Add(new CodeParameterDeclarationExpression(typeof(StringBuilder), "serializedValues"));
-            method.Parameters.Add(new CodeParameterDeclarationExpression(typeof(IEnumerable<string>), "propertyNames"));
-
-
-            method.Statements.Add(new CodeVariableDeclarationStatement(
-                    propertyClassTypeName,
-                    "classToSerialize"
-                ));
-
-            method.Statements.Add(new CodeTryCatchFinallyStatement(
-                    new CodeStatement[] {
-                            new CodeAssignStatement(
-                                new CodeVariableReferenceExpression("classToSerialize"),
-                                new CodeCastExpression(
-                                    propertyClassTypeName,
-                                    new CodeVariableReferenceExpression("propertyClass"))
-                            )
-                    },
-                    new CodeCatchClause[] {
-                         new CodeCatchClause("e", new CodeTypeReference(typeof(Exception)), new CodeStatement[] {
-                            new CodeThrowExceptionStatement(
-                                new CodeObjectCreateExpression(
-                                    new CodeTypeReference(typeof(ArgumentException)),
-                                    new CodeExpression[] {
-                                        new CodePrimitiveExpression(
-                                            string.Format("The supplied propertyClass is not of type '{0}'", propertyClassTypeName)
-                                        ),
-                                        new CodeVariableReferenceExpression("e")
-                                    }                                    
-                                )
-                            )
-                        })
-                    }
-                ));
-
-
-            bool isFirst = true;
-            foreach (var property in properties)
-            {
-                if (isFirst)
-                {
-                    isFirst = false;
-                }
-                else
-                {
-                    method.Statements.Add(new CodeExpressionStatement(
-                            new CodeMethodInvokeExpression(
-                                new CodeVariableReferenceExpression("serializedValues"),
-                                "Append",
-                                new CodeExpression[] {
-                                    new CodePrimitiveExpression(", ")        
-                                }
-                            )
-                        ));
-                }
-                
-                Type propertyType;
-                string methodName;
-                if (!property.Item2.IsArray)
-                {
-                    propertyType = property.Item2;
-                    methodName = "SerializeKeyValuePair";
-                }
-                else
-                {
-                    propertyType = property.Item2.GetElementType();
-                    methodName = "SerializeKeyValueArrayPair";
-                }
-
-                method.Statements.Add(new CodeExpressionStatement(
-                        new CodeMethodInvokeExpression(
-                            new CodeMethodReferenceExpression(
-                                new CodeTypeReferenceExpression(typeof(StringConversionServices)),
-                                methodName,
-                                new CodeTypeReference[] {
-                                    new CodeTypeReference(propertyType), 
-                                }
-                            ),
-                            new CodeExpression[] {
-                                new CodeVariableReferenceExpression("serializedValues"),
-                                new CodePrimitiveExpression(property.Item1),
-                                new CodePropertyReferenceExpression(
-                                    new CodeVariableReferenceExpression("classToSerialize"),
-                                    property.Item1
-                                ),new CodeVariableReferenceExpression("propertyNames")
-                            }
-                        )
-                    ));
-            }
-
-
-            declaration.Members.Add(method);
         }
 
 

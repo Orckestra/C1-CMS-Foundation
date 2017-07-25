@@ -1,18 +1,21 @@
 ﻿using System.Diagnostics;
 using Composite.C1Console.Security;
 using Composite.C1Console.Security.SecurityAncestorProviders;
-
+using Composite.Core.Serialization;
+using Newtonsoft.Json;
+using Composite.Core;
+using Newtonsoft.Json.Linq;
 
 namespace Composite.C1Console.Trees
 {
     /// <summary>    
     /// </summary>
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     [SecurityAncestorProvider(typeof(NoAncestorSecurityAncestorProvider))]
     [DebuggerDisplay("Id = {Id}, TreeId = {Source}, ParentEntityToken = {Type}")]
     public sealed class TreeSimpleElementEntityToken : EntityToken, IEntityTokenContainingParentEntityToken
-	{
+    {
         private EntityToken _parentEntityToken;
         private readonly string _treeNodeId;
         private readonly string _treeId;
@@ -26,45 +29,52 @@ namespace Composite.C1Console.Trees
             _serializedParentEntityToken = serializedParentEntityToken;
         }
 
-        /// <exclude />
-        public override string Type
+        [JsonConstructor]
+        private TreeSimpleElementEntityToken(string treeNodeId, string treeId, JRaw parentEntityToken, string serializedParentEntityToken)
         {
-            get { return _serializedParentEntityToken; }
-        }
-
-
-        /// <exclude />
-        public override string Source
-        {
-            get { return _treeId; }
-        }
-
-
-        /// <exclude />
-        public override string Id
-        {
-            get { return _treeNodeId; }
+            _treeNodeId = treeNodeId;
+            _treeId = treeId;
+            _serializedParentEntityToken = parentEntityToken?.Value.ToString() ?? serializedParentEntityToken;
         }
 
         /// <exclude />
-        public string TreeNodeId
+        [JsonProperty(PropertyName = "serializedParentEntityToken")]
+        public override string Type => _serializedParentEntityToken;
+
+        /// <exclude />
+        public bool ShouldSerializeType()
         {
-            get
-            {
-                return this.Id;
-            }
+            return !CompositeJsonSerializer.IsJsonSerialized(_serializedParentEntityToken);
+        }
+
+        [JsonProperty(PropertyName = "parentEntityToken")]
+        private JRaw rawSerializedParentEntityToken => new JRaw(_serializedParentEntityToken);
+
+        /// <exclude />
+        public bool ShouldSerializerawSerializedParentEntityToken()
+        {
+            return CompositeJsonSerializer.IsJsonSerialized(_serializedParentEntityToken);
         }
 
         /// <exclude />
-        public string SerializedParentEntityToken
-        {
-            get
-            {
-                return _serializedParentEntityToken;
-            }
-        }
+        [JsonProperty(PropertyName = "treeId")]
+        public override string Source => _treeId;
+
 
         /// <exclude />
+        [JsonProperty(PropertyName = "treeNodeId")]
+        public override string Id => _treeNodeId;
+
+        /// <exclude />
+        [JsonIgnore]
+        public string TreeNodeId => this.Id;
+
+        /// <exclude />
+        [JsonIgnore]
+        public string SerializedParentEntityToken => _serializedParentEntityToken;
+
+        /// <exclude />
+        [JsonIgnore]
         public EntityToken ParentEntityToken
         {
             get
@@ -89,11 +99,29 @@ namespace Composite.C1Console.Trees
         /// <exclude />
         public override string Serialize()
         {
-            return DoSerialize();
+            return CompositeJsonSerializer.Serialize(this);
         }
 
         /// <exclude />
         public static EntityToken Deserialize(string serializedEntityToken)
+        {
+            EntityToken entityToken;
+            if (CompositeJsonSerializer.IsJsonSerialized(serializedEntityToken))
+            {
+                entityToken =
+                    CompositeJsonSerializer.Deserialize<TreeSimpleElementEntityToken>(serializedEntityToken);
+            }
+            else
+            {
+                entityToken = DeserializeLegacy(serializedEntityToken);
+                Log.LogVerbose(nameof(TreeSimpleElementEntityToken), entityToken.GetType().FullName);
+            }
+            return entityToken;
+
+        }
+
+        /// <exclude />
+        public static EntityToken DeserializeLegacy(string serializedEntityToken)
         {
             string type, source, id;
 
@@ -122,11 +150,11 @@ namespace Composite.C1Console.Trees
                 type = string.Format(@"<div style=""border: 1px solid blue;"">{0}</div>", parentEntityToken.OnGetTypePrettyHtml());
             }
             else
-            {                
+            {
                 type = parentEntityToken.Type;
             }
 
             return string.Format("<b>ParentEntityToken:</b><br /><b>Type:</b> {0}<br /><b>Source:</b> {1}<br /><b>Id:</b>{2}<br />", type, parentEntityToken.Source, parentEntityToken.Id);
-        }        
+        }
     }
 }
