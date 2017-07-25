@@ -1785,7 +1785,7 @@
     <Compile Include="Data\Types\IPageTemplateFile.cs" />
     <Compile Include="C1Console\Elements\ElementProviderHelpers\VisualFunctionElementProviderHelper\Foundation\RenderingFunctionNames.cs" />
     <Compile Include="C1Console\Elements\ElementProviderHelpers\VisualFunctionElementProviderHelper\VisualFunctionElementProviderHelper.cs" />
-    <Compile Include="C1Console\Elements\Security\ElementSecurityFacade.cs" />
+    <Compile Include="C1Console\Elements\ElementActionSecurityExtensions.cs" />
     <Compile Include="Functions\IDowncastableFunction.cs" />
     <Compile Include="Core\Logging\DebugLoggingScope.cs" />
     <Compile Include="Core\WebClient\Renderings\Page\PageAssociationScopeEnum.cs" />

@@ -67,6 +67,7 @@ namespace Composite.Services
 
                 List<ClientElement> activePerspectives = allPerspectives
                         .Where(f => activePerspectiveEntityTokens.Contains(EntityTokenSerializer.Serialize(f.ElementHandle.EntityToken)))
+                        .FilterActions()
                         .ToList().ToClientElementList();
 
                 return activePerspectives;

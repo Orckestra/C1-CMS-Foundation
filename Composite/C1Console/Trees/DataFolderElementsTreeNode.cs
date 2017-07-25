@@ -816,7 +816,7 @@ namespace Composite.C1Console.Trees
                             this.ToUpperCompareMethodInfo
                             ),
                         this.StringStartsWithMethodInfo,
-                        Expression.Constant(castedValue)
+                        Expression.Constant(castedValue.ToUpperInvariant())
                         ),
                     Expression.Constant(false)
                 );

@@ -73,7 +73,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
             {
                 metaTags.Add(new XElement(Namespaces.Xhtml + "meta",
                     new XAttribute("name", "Generator"),
-                    new XAttribute("content", "C1 CMS Foundation - Free Open Source from Orckestra and https://github.com/Orckestra/CMS-Foundation")));
+                    new XAttribute("content", "C1 CMS Foundation - Free Open Source from Orckestra and https://github.com/Orckestra/C1-CMS-Foundation")));
             }
 
             return metaTags;

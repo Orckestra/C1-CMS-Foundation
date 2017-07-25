@@ -1,4 +1,4 @@
-StageBinding.prototype = new FocusBinding;
+﻿StageBinding.prototype = new FocusBinding;
 StageBinding.prototype.constructor = StageBinding;
 StageBinding.superclass = FocusBinding.prototype;
 
@@ -102,6 +102,38 @@ StageBinding.presentViewDefinition = function (definition, contextSource) {
 	}
 	StageBinding.bindingInstance._presentViewDefinition(definition, contextSource);
 }
+
+
+/**
+ * @param {string} handle
+ * @return {Promise}
+ */
+StageBinding.select = function (perspectiveElementKey) {
+
+	var promise = new Promise(function (resolve, reject) {
+		if (perspectiveElementKey && perspectiveElementKey != StageBinding.getSelectionHandle()) {
+			var handler = {
+				handleBroadcast: function (broadcast, arg) {
+					switch (broadcast) {
+						case BroadcastMessages.STAGEDECK_CHANGED:
+							if (arg == perspectiveElementKey) {
+								EventBroadcaster.unsubscribe(BroadcastMessages.STAGEDECK_CHANGED, this);
+								resolve();
+							}
+							break;
+					}
+				}
+			}
+			EventBroadcaster.subscribe(BroadcastMessages.STAGEDECK_CHANGED, handler);
+			StageBinding.setSelectionByHandle(perspectiveElementKey);
+		} else {
+			resolve();
+		}
+	});
+	
+	return promise;
+}
+
 
 /**
  * @class

@@ -1,4 +1,4 @@
-/**
+﻿/**
 * MessageQueue!
 */
 window.MessageQueue = new function () {
@@ -327,32 +327,18 @@ window.MessageQueue = new function () {
 				case "SelectElement":
 
 					var perspectiveElementKey = action.SelectElementParams.PerspectiveElementKey;
-					if (perspectiveElementKey && perspectiveElementKey != StageBinding.getSelectionHandle()) {
-						var handler = {
-							handleBroadcast: function(broadcast, arg) {
-								switch (broadcast) {
-								case BroadcastMessages.STAGEDECK_CHANGED:
-									if (arg == perspectiveElementKey) {
-										StageBinding.selectBrowserTab();
-										EventBroadcaster.broadcast(
-											BroadcastMessages.SYSTEMTREEBINDING_FOCUS,
-											action.SelectElementParams.EntityToken
-										);
-										EventBroadcaster.unsubscribe(BroadcastMessages.STAGEDECK_CHANGED, this);
-									}
-									break;
-								}
-							}
-						}
-						EventBroadcaster.subscribe(BroadcastMessages.STAGEDECK_CHANGED, handler);
-						StageBinding.setSelectionByHandle(perspectiveElementKey);
-					} else {
-						EventBroadcaster.broadcast(
-											BroadcastMessages.SYSTEMTREEBINDING_FOCUS,
-											action.SelectElementParams.EntityToken
-										);
-					}
+					var entityToken = action.SelectElementParams.EntityToken;
 
+					StageBinding.select(perspectiveElementKey)
+						.then(
+						function () {
+							StageBinding.selectBrowserTab();
+							EventBroadcaster.broadcast(
+								BroadcastMessages.SYSTEMTREEBINDING_FOCUS,
+								entityToken
+							);
+						}
+						)
 
 					this._nextAction();
 					break;
