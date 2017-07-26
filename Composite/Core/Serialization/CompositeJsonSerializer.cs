@@ -72,6 +72,11 @@ namespace Composite.Core.Serialization
         /// <returns>seialized string</returns>
         public static string SerializePartial(object obj, IEnumerable<string> propertyNames)
         {
+            if (propertyNames == null)
+            {
+                return SerializeObject(obj);
+            }
+
             var serializedData =
                 JsonConvert.SerializeObject(obj, new PartialJsonConvertor(propertyNames, obj.GetType()));
 
@@ -273,8 +278,8 @@ namespace Composite.Core.Serialization
             public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
             {
                 var o = new JObject();
+
                 o.AddFirst(new JProperty("$type", _type.FullName + ", " + _type.Assembly.GetName().Name));
-                if (_propertyNames == null) return;
 
                 var jsonSerializer = new JsonSerializer()
                 {
