@@ -202,8 +202,8 @@ namespace Composite.C1Console.Actions
 
             var newPlaceholders = new List<IPagePlaceholderContent>();
             var placeholders =
-                DataFacade.GetData<IPagePlaceholderContent>().
-                    Where(ph => ph.PageId == sourcePageId
+                DataFacade.GetData<IPagePlaceholderContent>(false)
+                    .Where(ph => ph.PageId == sourcePageId
                                  && ph.VersionId == sourceVersionId)
                     .ToList();
 

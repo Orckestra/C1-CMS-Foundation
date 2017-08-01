@@ -204,7 +204,7 @@ namespace Composite.Data
                 return cachedValue;
             }
 
-            var list = DataFacade.GetData<IPagePlaceholderContent>()
+            var list = DataFacade.GetData<IPagePlaceholderContent>(false)
                 .Where(f => f.PageId == pageId 
                             && f.VersionId == versionId).ToList();
 

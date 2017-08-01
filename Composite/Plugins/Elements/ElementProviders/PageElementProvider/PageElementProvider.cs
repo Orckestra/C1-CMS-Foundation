@@ -550,7 +550,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             }
             else if (newParentEntityToken is DataEntityToken dataEntityToken)
             {
-                IPage newParentPage = dataEntityToken.Data as IPage;
+                IPage newParentPage = (IPage)dataEntityToken.Data;
                 newParentPageId = newParentPage.Id;
             }
             else
@@ -595,7 +595,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
                     draggedPage.MoveTo(newParentPageId, realDropIndex, false);
                     
-                    DataFacade.Update(draggedPage);
+                    DataFacade.Update(draggedPage, false, false, true);
 
                     EntityTokenCacheFacade.ClearCache(draggedPage.GetDataEntityToken());
 
