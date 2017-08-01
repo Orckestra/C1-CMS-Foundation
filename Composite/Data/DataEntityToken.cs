@@ -4,11 +4,9 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using Composite.C1Console.Security;
-using Composite.Core.Serialization;
 using Composite.Core.Types;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using WampSharp.V2.Binding.Contracts;
 
 
 namespace Composite.Data
@@ -194,7 +192,7 @@ namespace Composite.Data
 
                 foreach (PropertyInfo propertyInfo in dataId.GetType().GetPropertiesRecursively())
                 {
-                    sb.Append("<b>" + propertyInfo.Name + ":</b> " + propertyInfo.GetValue(dataId, null).ToString() + "<br />");
+                    sb.Append($"<b>{propertyInfo.Name}:</b> {propertyInfo.GetValue(dataId, null)}<br />");
                 }
 
                 helper.AddFullRow(new [] { "<b>Id</b>", sb.ToString() });

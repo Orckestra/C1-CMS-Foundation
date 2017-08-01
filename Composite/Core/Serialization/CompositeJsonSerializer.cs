@@ -83,7 +83,7 @@ namespace Composite.Core.Serialization
             return serializedData;
         }
 
-        
+
 
         /// <summary>
         /// Serialize with a wrapper containing the serialized object, its hash sign and its type
@@ -95,7 +95,7 @@ namespace Composite.Core.Serialization
         {
             var type = obj.GetType();
             var methodInfo = type.GetMethod("Serialize");
-            string serializedData = "";
+            string serializedData;
 
             if (methodInfo == null)
             {
@@ -108,20 +108,14 @@ namespace Composite.Core.Serialization
 
             var hash = shouldSign ? HashSigner.GetSignedHash(serializedData).GetHashCode() : 0;
 
-            if (IsJsonSerialized(serializedData))
-            {
-                return "{" + serializedData.Substring(1, serializedData.Length - 2) +
-                       ",\"" + TypeKeyString + "\":\"" + type.FullName + ", " +
-                       type.Assembly.GetName().Name + "\"" +
-                       (shouldSign ? ",\"" + HashKeyString + "\":\"" + hash + "\"}" : "}");
-            }
-            else
-            {
-                return "{\"" + ObjectKeyString + "\":\"" + serializedData +
-                       "\",\"" + TypeKeyString + "\":\"" + type.FullName + ", " +
-                       type.Assembly.GetName().Name + "\"" +
-                       (shouldSign ? ",\"" + HashKeyString + "\":\"" + hash + "\"}" : "}");
-            }
+            var serializedProperties = IsJsonSerialized(serializedData)
+                ? serializedData.Substring(1, serializedData.Length - 2)
+                : $@"""{ObjectKeyString}"":""{serializedData}""";
+
+            return "{" + serializedProperties 
+                + $@",""{TypeKeyString}"":""{GetSerializedTypeName(type)}""" 
+                + (shouldSign ? $@",""{HashKeyString}"":""{hash}""" : "") 
+                + "}";
         }
 
         /// <summary>
@@ -193,7 +187,7 @@ namespace Composite.Core.Serialization
         /// <returns>The object</returns>
         public static T Deserialize<T>(string str, bool isSigned)
         {
-            var legacyStyleSerilized = str.StartsWith("{\"" + ObjectKeyString+"\":\"");
+            var legacyStyleSerilized = str.StartsWith("{\"" + ObjectKeyString + "\":\"");
 
             string obj;
             var hash = 0;
@@ -241,12 +235,17 @@ namespace Composite.Core.Serialization
             return value;
         }
 
+        private static string GetSerializedTypeName(Type type)
+        {
+            return $"{type.FullName}, {type.Assembly.GetName().Name}";
+        }
+
         private class JsonTypeConverter : JsonConverter
         {
             public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
             {
                 var type = (Type) value;
-                writer.WriteValue(type.FullName + ", " + type.Assembly.GetName().Name);
+                writer.WriteValue(GetSerializedTypeName(type));
             }
 
             public override object ReadJson(JsonReader reader, Type objectType, object existingValue,
@@ -279,9 +278,9 @@ namespace Composite.Core.Serialization
             {
                 var o = new JObject();
 
-                o.AddFirst(new JProperty("$type", _type.FullName + ", " + _type.Assembly.GetName().Name));
+                o.AddFirst(new JProperty("$type", GetSerializedTypeName(_type)));
 
-                var jsonSerializer = new JsonSerializer()
+                var jsonSerializer = new JsonSerializer
                 {
                     TypeNameAssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple,
                     TypeNameHandling = TypeNameHandling.Objects,
