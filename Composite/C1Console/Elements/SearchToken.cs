@@ -33,9 +33,31 @@ namespace Composite.C1Console.Elements
         /// <returns>Deserialized SearchToken</returns>
         public static SearchToken Deserialize( string serializedSearchToken )
         {
-            Verify.ArgumentNotNullOrEmpty("serializedSearchToken", serializedSearchToken);
+            Verify.ArgumentNotNullOrEmpty(serializedSearchToken, nameof(serializedSearchToken));
 
-            return CompositeJsonSerializer.Deserialize<SearchToken>(serializedSearchToken);
+            if (serializedSearchToken.StartsWith("{"))
+            {
+                return CompositeJsonSerializer.Deserialize<SearchToken>(serializedSearchToken);
+            }
+
+            return DeserializeLegacy(serializedSearchToken);
+        }
+
+        private static SearchToken DeserializeLegacy(string serializedSearchToken)
+        {
+            Verify.ArgumentNotNullOrEmpty(serializedSearchToken, nameof(serializedSearchToken));
+            Verify.ArgumentCondition(serializedSearchToken.IndexOf('|') > -1, nameof(serializedSearchToken), "Malformed serializedSearchToken - must be formated like '<class name>|<serialized values>'");
+
+            string[] parts = serializedSearchToken.Split('|');
+
+            string className = parts[0];
+            string serializedSearchTokenWithoutClassName = parts[1];
+
+            Type searchTokenType = TypeManager.GetType(className);
+
+            SearchToken searchToken = (SearchToken)SerializationFacade.Deserialize(searchTokenType, serializedSearchTokenWithoutClassName);
+
+            return searchToken;
         }
     }
 
