@@ -1,24 +1,12 @@
-using System;
-using System.Data;
-using System.Configuration;
-using System.Collections;
+﻿using System;
 using System.Linq;
-using System.Web;
-using System.Web.Security;
 using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
-using System.Web.UI.HtmlControls;
 using Composite.Core.Serialization;
 using System.Collections.Generic;
-using Composite.Core.Types;
-using System.Reflection;
 using Composite.C1Console.Security;
 using System.Xml.Linq;
-using System.Text;
 using Composite.Data.Types;
 using Composite.Data;
-using Composite.Core.WebClient;
 
 
 public partial class Spikes_RelationshipGraph_Default : System.Web.UI.Page
@@ -59,12 +47,24 @@ public partial class Spikes_RelationshipGraph_Default : System.Web.UI.Page
         }
     }
 
+    private void AddPersissionsLine(List<object> elements, string entity, IEnumerable<PermissionType> permissions)
+    {
+        var permissionLabels = permissions.Select(p => new PermissionDescriptor(p).Label).OrderBy(l => l).ToList();
+
+        if (permissionLabels.Count == 0) return;
+
+        elements.Add(new XElement("span", 
+                        new XAttribute("style", "padding-left: 15px;"),
+                        entity + " = " + string.Join(", ", permissionLabels)));
+        elements.Add(new XElement("br"));
+    }
+
 
     private void PrettyPrintEntityToken(EntityToken entityToken, string color)
     {
-        List<object> idList = new List<object>();
+        var idList = new List<object>();
 
-        if (entityToken.Id.Contains("=") == true)
+        if (entityToken.Id.Contains("="))
         {
             Dictionary<string, string> dic = StringConversionServices.ParseKeyValueCollection(entityToken.Id);
 
@@ -72,11 +72,10 @@ public partial class Spikes_RelationshipGraph_Default : System.Web.UI.Page
 
             foreach (KeyValuePair<string, string> kvp in dic)
             {
-                idList.Add(new XElement("span", new XAttribute("style", "padding-left: 15px;"),
-                               string.Format("{0} = {1}", kvp.Key, kvp.Value)));
+                idList.Add(new XElement("span", new XAttribute("style", "padding-left: 15px; color: " + color),
+                    string.Format("{0} = {1}", kvp.Key, kvp.Value)));
                 idList.Add(new XElement("br"));
             }
-
         }
         else
         {
@@ -84,103 +83,52 @@ public partial class Spikes_RelationshipGraph_Default : System.Web.UI.Page
         }
 
 
-
-
-
-
-
-
-
-
-        List<object> usersermisstionsDefinedHere = new List<object>();        
-        List<object> currentUsersPermisstionTypes = new List<object>();
+        var userPermissionsDefinedHere = new List<object>();
+        var currentUsersPermissionTypes = new List<object>();
 
         string serializedEntityToken = EntityTokenSerializer.Serialize(entityToken);
 
-        IEnumerable<string> usernames = UserValidationFacade.AllUsernames;
+        var usernames = UserValidationFacade.AllUsernames.OrderBy(u => u).ToList();
 
         foreach (string username in usernames)
         {
-            IEnumerable<PermissionType> userPermissionTypes = PermissionTypeFacade.GetLocallyDefinedUserPermissionTypes(new UserToken(username), entityToken);
+            IEnumerable<PermissionType> userPermissionTypes = PermissionTypeFacade.GetLocallyDefinedUserPermissionTypes(
+                new UserToken(username), entityToken);
 
-            StringBuilder sb = new StringBuilder();
-            foreach (PermissionType permissionType in userPermissionTypes)
-            {
-                if (sb.ToString() != "")
-                {
-                    sb.Append(", ");
-                }
+            AddPersissionsLine(userPermissionsDefinedHere, username, userPermissionTypes);
 
-                sb.Append(new PermissionDescriptor(permissionType).Label);
-            }
+            var currentPermissionTypes = PermissionTypeFacade.GetCurrentPermissionTypes(
+                new UserToken(username), entityToken, 
+                PermissionTypeFacade.GetUserPermissionDefinitions(username), 
+                PermissionTypeFacade.GetUserGroupPermissionDefinitions(username));
 
-            usersermisstionsDefinedHere.Add(new XElement("span", new XAttribute("style", "padding-left: 15px;"), string.Format("{0} = {1}", username, sb.ToString())));
-            usersermisstionsDefinedHere.Add(new XElement("br"));
-
-
-
-            IEnumerable<PermissionType> currentPermissionTypes = PermissionTypeFacade.GetCurrentPermissionTypes(new UserToken(username), entityToken, PermissionTypeFacade.GetUserPermissionDefinitions(username), PermissionTypeFacade.GetUserGroupPermissionDefinitions(username));
-            
-
-            StringBuilder currentSb = new StringBuilder();
-            foreach (PermissionType permissionType in currentPermissionTypes)
-            {
-                if (currentSb.ToString() != "")
-                {
-                    currentSb.Append(", ");
-                }
-
-                currentSb.Append(new PermissionDescriptor(permissionType).Label);
-            }
-
-            currentUsersPermisstionTypes.Add(new XElement("span", new XAttribute("style", "padding-left: 15px;"), string.Format("{0} = {1}", username, currentSb.ToString())));
-            currentUsersPermisstionTypes.Add(new XElement("br"));
+            AddPersissionsLine(currentUsersPermissionTypes, username, currentPermissionTypes);
         }
 
 
-        List<object> userGroupPermissionsDefinedHere = new List<object>();
-        List<object> inheritedGroupPermissions = new List<object>();
+        var userGroupPermissionsDefinedHere = new List<object>();
+        var inheritedGroupPermissions = new List<object>();
 
-        List<IUserGroup> userGroups = DataFacade.GetData<IUserGroup>().ToList();
+        var userGroups = DataFacade.GetData<IUserGroup>().OrderBy(ug => ug.Name).ToList();
         foreach (IUserGroup userGroup in userGroups)
         {
-            IEnumerable<PermissionType> userGroupPermissionTypes = PermissionTypeFacade.GetLocallyDefinedUserGroupPermissionTypes(userGroup.Id, entityToken);
+            var userGroupPermissionTypes = PermissionTypeFacade.GetLocallyDefinedUserGroupPermissionTypes(userGroup.Id, entityToken);
 
-            StringBuilder sb = new StringBuilder();
-            foreach (PermissionType permissionType in userGroupPermissionTypes)
-            {
-                if (sb.ToString() != "")
-                {
-                    sb.Append(", ");
-                }
-
-                sb.Append(new PermissionDescriptor(permissionType).Label);
-            }
-
-            userGroupPermissionsDefinedHere.Add(new XElement("span", new XAttribute("style", "padding-left: 15px;"), string.Format("{0} = {1}", userGroup.Name, sb.ToString())));
-            userGroupPermissionsDefinedHere.Add(new XElement("br"));
-
+            AddPersissionsLine(userGroupPermissionsDefinedHere, userGroup.Name, userGroupPermissionTypes);
 
             IEnumerable<PermissionType> inheritedUserGroupPermissionTypes = PermissionTypeFacade.GetInheritedGroupPermissionsTypes(userGroup.Id, entityToken);
-            sb = new StringBuilder();
-            foreach (PermissionType permissionType in inheritedUserGroupPermissionTypes)
-            {
-                if (sb.ToString() != "")
-                {
-                    sb.Append(", ");
-                }
 
-                sb.Append(new PermissionDescriptor(permissionType).Label);
-            }
-
-            inheritedGroupPermissions.Add(new XElement("span", new XAttribute("style", "padding-left: 15px;"), string.Format("{0} = {1}", userGroup.Name, sb.ToString())));
-            inheritedGroupPermissions.Add(new XElement("br"));
+            AddPersissionsLine(inheritedGroupPermissions, userGroup.Name, inheritedUserGroupPermissionTypes);
         }
 
 
 
-        XElement element =
-            new XElement("div", new XAttribute("style", string.Format("border:2px; border-style: solid; border-color: {0}; margin-bottom: 2px; margin-left:5px; margin-right:5px; padding: 3px;", color)),
+        var element =
+            new XElement("div",
+                new XAttribute("style",
+                    string.Format(
+                        "border:2px; border-style: solid; border-color: {0}; margin-bottom: 2px; margin-left:5px; margin-right:5px; padding: 3px;",
+                        color)),
                 new XElement("b", "Runtime type: "),
                 entityToken.GetType().ToString(),
                 new XElement("br"),
@@ -196,30 +144,49 @@ public partial class Spikes_RelationshipGraph_Default : System.Web.UI.Page
                 new XElement("b", "Id: "),
                 idList,
                 new XElement("br"),
-                new XElement("b", "Serialized entity token: "), 
+                new XElement("b", "Serialized entity token: "),
                 serializedEntityToken,
                 new XElement("br"),
+                new XElement("br"));
 
-                new XElement("b", "Users permissions defined here: "), 
-                new XElement("br"),
-                usersermisstionsDefinedHere,                
-                new XElement("br"),
 
-                new XElement("b", "Current users permissions here: "), 
+        if (currentUsersPermissionTypes.Any())
+        {
+            element.Add(
+                new XElement("b", "Resolved users permissions here: "),
                 new XElement("br"),
-                currentUsersPermisstionTypes,
-                new XElement("br"),
+                currentUsersPermissionTypes,
+                new XElement("br"));
+        }
 
-                new XElement("b", "User group permissions defined here: "), 
+
+        if (userPermissionsDefinedHere.Any())
+        {
+            element.Add(
+                new XElement("b", "Users permissions defined here: "),
                 new XElement("br"),
-                userGroupPermissionsDefinedHere,
-                new XElement("br"),
-                
-                new XElement("b", "Inherted user group permissions: "), 
+                userPermissionsDefinedHere,
+                new XElement("br"));
+        }
+
+        if (inheritedGroupPermissions.Any())
+        {
+            element.Add(
+                new XElement("b", "Inherted user group permissions: "),
                 new XElement("br"),
                 inheritedGroupPermissions,
-                new XElement("br")
-            );
+                new XElement("br"));
+        }
+
+        if (userGroupPermissionsDefinedHere.Any())
+        {
+            element.Add(
+                new XElement("b", "User group permissions defined here: "),
+                new XElement("br"),
+                userGroupPermissionsDefinedHere,
+                new XElement("br"));
+        }
+
 
         RelationshipGraphHolder.Controls.Add(new LiteralControl(element.ToString()));
     }
