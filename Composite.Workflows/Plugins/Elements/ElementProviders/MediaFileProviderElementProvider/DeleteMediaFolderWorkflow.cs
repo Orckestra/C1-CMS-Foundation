@@ -1,18 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Transactions;
 using System.Workflow.Activities;
 using Composite.C1Console.Actions;
 using Composite.C1Console.Events;
 using Composite.Data;
 using Composite.Data.Types;
 using Composite.Data.Types.StoreIdFilter;
-using Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper;
 using Composite.Core.Linq;
-using Composite.Core.ResourceSystem;
 using Composite.Data.Transactions;
 using Composite.C1Console.Workflow;
+
+using Texts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_Management;
 
 
 namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementProvider
@@ -28,13 +27,13 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
 
         private void HasDataReferences(object sender, ConditionalEventArgs e)
         {
-            DataEntityToken token = (DataEntityToken)this.EntityToken;
-            IMediaFileFolder folder = (IMediaFileFolder)token.Data;
+            var token = (DataEntityToken)this.EntityToken;
+            var folder = (IMediaFileFolder)token.Data;
 
             string storeId = folder.StoreId;
             string parentPath = folder.Path;
 
-            string innerElementsPathPrefix = string.Format("{0}/", parentPath);
+            string innerElementsPathPrefix = $"{parentPath}/";
 
             var fileQueryable = new StoreIdFilterQueryable<IMediaFile>(DataFacade.GetData<IMediaFile>(), storeId);
             IEnumerable<IMediaFile> childFiles =
@@ -72,7 +71,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
             DeleteTreeRefresher treeRefresher = this.CreateDeleteTreeRefresher(this.EntityToken);
             DataEntityToken token = (DataEntityToken)this.EntityToken;
 
-            using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope())
+            using (var transactionScope = TransactionsFacade.CreateNewScope())
             {
                 IMediaFileFolder folder = DataFacade.GetDataFromDataSourceId(token.DataSourceId, false) as IMediaFileFolder;
 
@@ -81,11 +80,9 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
                 {
                     if (!DataFacade.WillDeleteSucceed(folder))
                     {
-                        this.ShowMessage(
-                                DialogType.Error,
-                                StringResourceSystemFacade.GetString("Composite.Management", "DeleteMediaFolderWorkflow.CascadeDeleteErrorTitle"),
-                                StringResourceSystemFacade.GetString("Composite.Management", "DeleteMediaFolderWorkflow.CascadeDeleteErrorMessage")
-                            );
+                        this.ShowMessage(DialogType.Error,
+                                Texts.DeleteMediaFolderWorkflow_CascadeDeleteErrorTitle,
+                                Texts.DeleteMediaFolderWorkflow_CascadeDeleteErrorMessage);
 
                         return;
                     }
@@ -101,16 +98,16 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
 
         private void codeActivity1_ExecuteCode(object sender, EventArgs e)
         {
-            DataEntityToken token = (DataEntityToken)this.EntityToken;
-            IMediaFileFolder folder = (IMediaFileFolder)token.Data;
+            var token = (DataEntityToken)this.EntityToken;
+            var folder = (IMediaFileFolder)token.Data;
 
             string storeId = folder.StoreId;
             string parentPath = folder.Path;
 
-            StoreIdFilterQueryable<IMediaFileFolder> folderQueryable = new StoreIdFilterQueryable<IMediaFileFolder>(DataFacade.GetData<IMediaFileFolder>(), storeId);
-            StoreIdFilterQueryable<IMediaFile> fileQueryable = new StoreIdFilterQueryable<IMediaFile>(DataFacade.GetData<IMediaFile>(), storeId);
+            var folderQueryable = new StoreIdFilterQueryable<IMediaFileFolder>(DataFacade.GetData<IMediaFileFolder>(), storeId);
+            var fileQueryable = new StoreIdFilterQueryable<IMediaFile>(DataFacade.GetData<IMediaFile>(), storeId);
 
-            string innerElementsPathPrefix = string.Format("{0}/", parentPath);
+            string innerElementsPathPrefix = $"{parentPath}/";
 
             bool anyFiles =
                 (from item in fileQueryable
@@ -122,15 +119,11 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
                  where item.Path.StartsWith(innerElementsPathPrefix)
                  select item).Any();
 
+            var message = !anyFiles && !anyFolders
+                ? Texts.Website_Forms_Administrative_DeleteMediaFolder_Text
+                : Texts.Website_Forms_Administrative_DeleteMediaFolder_HasChildringText;
 
-            if ((anyFiles == false) && (anyFolders == false))
-            {
-                this.Bindings.Add("MessageText", StringResourceSystemFacade.GetString("Composite.Management", "Website.Forms.Administrative.DeleteMediaFolder.Text"));
-            }
-            else
-            {
-                this.Bindings.Add("MessageText", StringResourceSystemFacade.GetString("Composite.Management", "Website.Forms.Administrative.DeleteMediaFolder.HasChildringText"));
-            }
+            this.Bindings.Add("MessageText", message);
         }
     }
 }
