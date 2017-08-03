@@ -811,7 +811,7 @@
     <Compile Include="C1Console\Actions\Workflow\SecurityViolationWorkflowEntityToken.cs" />
     <Compile Include="C1Console\Elements\Plugins\ElementAttachingProvider\ElementAttachingProviderData.cs" />
     <Compile Include="C1Console\Elements\Plugins\ElementAttachingProvider\IElementAttachingProvider.cs" />
-    <Compile Include="C1Console\Elements\Plugins\ElementAttachingProvider\IMultibleResultElementAttachingProvider.cs" />
+    <Compile Include="C1Console\Elements\Plugins\ElementAttachingProvider\IMultipleResultElementAttachingProvider.cs" />
     <Compile Include="C1Console\Elements\Plugins\ElementAttachingProvider\NonConfigurableElementAttachingProvider.cs" />
     <Compile Include="C1Console\Elements\Plugins\ElementAttachingProvider\Runtime\ElementAttachingProviderCustomFactory.cs" />
     <Compile Include="C1Console\Elements\Plugins\ElementAttachingProvider\Runtime\ElementAttachingProviderDefaultNameRetriever.cs" />
