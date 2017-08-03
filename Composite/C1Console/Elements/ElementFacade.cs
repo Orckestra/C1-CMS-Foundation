@@ -289,6 +289,11 @@ namespace Composite.C1Console.Elements
                 roots = ElementProviderPluginFacade.GetForeignRoots(providerName, searchToken).ToList();
             }
 
+            if (performSecurityCheck)
+            {
+                roots = roots.FilterElements();
+            }
+
             ElementActionProviderFacade.AddActions(roots, providerName);
 
             if (performSecurityCheck)
@@ -300,45 +305,54 @@ namespace Composite.C1Console.Elements
         }
 
 
-
-        private static IEnumerable<Element> GetChildren(ElementHandle elementHandle, SearchToken searchToken, bool performSecurityCheck, bool useForeign)
+        private static IEnumerable<Element> GetChildrenFromProvider(ElementHandle elementHandle, SearchToken searchToken, bool useForeign)
         {
-            if (elementHandle == null) throw new ArgumentNullException("elementHandle");
-
-            IPerformanceCounterToken performanceToken = PerformanceCounterFacade.BeginElementCreation();
-
-            IEnumerable<Element> children;
             if (ElementProviderRegistry.ElementProviderNames.Contains(elementHandle.ProviderName))
             {
                 if (!useForeign || !ElementProviderPluginFacade.IsLocaleAwareElementProvider(elementHandle.ProviderName))
                 {
-                    children = ElementProviderPluginFacade.GetChildren(elementHandle.ProviderName, elementHandle.EntityToken, searchToken).Evaluate();
+                    return ElementProviderPluginFacade.GetChildren(elementHandle.ProviderName, elementHandle.EntityToken, searchToken);
                 }
-                else
-                {
-                    children = ElementProviderPluginFacade.GetForeignChildren(elementHandle.ProviderName, elementHandle.EntityToken, searchToken).Evaluate();
-                }
-            }
-            else if (ElementAttachingProviderRegistry.ElementAttachingProviderNames.Contains(elementHandle.ProviderName))
-            {
-                children = ElementAttachingProviderPluginFacade.GetChildren(elementHandle.ProviderName, elementHandle.EntityToken, elementHandle.Piggyback).Evaluate();
-            }
-            else
-            {
-                throw new InvalidOperationException($"No element provider named '{elementHandle.ProviderName}' found");
+
+                return ElementProviderPluginFacade.GetForeignChildren(elementHandle.ProviderName, elementHandle.EntityToken, searchToken);
             }
 
-            foreach (Element element in children)
+            if (ElementAttachingProviderRegistry.ElementAttachingProviderNames.Contains(elementHandle.ProviderName))
             {
-                if (!element.VisualData.HasChildren)
+                return ElementAttachingProviderPluginFacade.GetChildren(elementHandle.ProviderName, elementHandle.EntityToken, elementHandle.Piggyback);
+            }
+
+            throw new InvalidOperationException($"No element provider named '{elementHandle.ProviderName}' found");
+        }
+
+
+        private static IEnumerable<Element> GetChildren(ElementHandle elementHandle, SearchToken searchToken, bool performSecurityCheck, bool useForeign)
+        {
+            Verify.ArgumentNotNull(elementHandle, nameof(elementHandle));
+
+            var performanceToken = PerformanceCounterFacade.BeginElementCreation();
+
+            var children = GetChildrenFromProvider(elementHandle, searchToken, useForeign).Evaluate();
+
+            var originalChildren = children;
+
+            children = ElementAttachingProviderFacade.AttachElements(elementHandle.EntityToken, elementHandle.Piggyback, children).Evaluate();
+
+            int totalElementCount = children.Count;
+
+            if (performSecurityCheck)
+            {
+                children = children.FilterElements().Evaluate();
+            }
+
+            // Evaluating HasChildren for not attached elements
+            foreach (Element element in originalChildren)
+            {
+                if (children.Contains(element) && !element.VisualData.HasChildren)
                 {
                     element.VisualData.HasChildren = ElementAttachingProviderFacade.HaveCustomChildElements(element.ElementHandle.EntityToken, element.ElementHandle.Piggyback);
                 }
             }
-
-            children = ElementAttachingProviderFacade.AttachElements(elementHandle.EntityToken, elementHandle.Piggyback, children).Evaluate();
-
-            int totalElementCount = children.Count();
 
             ElementActionProviderFacade.AddActions(children, elementHandle.ProviderName);
 
@@ -347,7 +361,7 @@ namespace Composite.C1Console.Elements
                 children = children.FilterActions().Evaluate();
             }
 
-            PerformanceCounterFacade.EndElementCreation(performanceToken, children.Count(), totalElementCount);
+            PerformanceCounterFacade.EndElementCreation(performanceToken, children.Count, totalElementCount);
 
             return children;
         }
