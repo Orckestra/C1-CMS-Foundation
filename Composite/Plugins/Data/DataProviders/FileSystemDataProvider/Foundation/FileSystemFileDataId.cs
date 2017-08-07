@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Composite.Data;
 
 
@@ -10,7 +10,7 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemDataProvider.Foundation
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class FileSystemFileDataId : IDataId
     {
-        private string _fullPath = null;
+        private string _fullPath;
 
 
         /// <exclude />
@@ -33,5 +33,13 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemDataProvider.Foundation
             }
             set { _fullPath = value; }
         }
+
+
+        /// <exclude />
+        public override int GetHashCode() => _fullPath.GetHashCode();
+
+
+        /// <exclude />
+        public override bool Equals(object obj) => obj is FileSystemFileDataId dataId && dataId.FullPath == _fullPath;
     }
 }

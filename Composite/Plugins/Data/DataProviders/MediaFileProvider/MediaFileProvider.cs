@@ -600,6 +600,12 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
 
             /// <exclude />
             public Guid Id { get; set; }
+
+            /// <exclude />
+            public override bool Equals(object obj) => obj is MediaDataId mediaId && mediaId.Id == Id;
+
+            /// <exclude />
+            public override int GetHashCode() => Id.GetHashCode();
         }
 
 
