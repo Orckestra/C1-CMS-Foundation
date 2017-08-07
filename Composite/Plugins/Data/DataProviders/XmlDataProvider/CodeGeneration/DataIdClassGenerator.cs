@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.CodeDom;
 using System.ComponentModel;
 using System.Linq;
@@ -126,20 +126,14 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
                             new CodeVariableReferenceExpression(attributeVariableName),
                             CodeBinaryOperatorType.IdentityEquality,
                             new CodePrimitiveExpression(null)
-                        ),
-                        new CodeStatement[] {
-                            new CodeThrowExceptionStatement(
-                                new CodeObjectCreateExpression(
-                                    typeof(InvalidOperationException),
-                                    new CodeExpression[] {
-                                        new CodePrimitiveExpression(
-                                            string.Format("Missing '{0}' attribute in a data store file.", keyField.Name)
-                                        )
-                                    }
-                                )
-                            )
-                        }
-                    ));
+                        ), 
+                        new CodeThrowExceptionStatement(
+                            new CodeObjectCreateExpression(
+                                typeof(InvalidOperationException), 
+                                new CodePrimitiveExpression(
+                                    $"Missing '{keyField.Name}' attribute in a data store file."
+                                ))
+                        )));
 
                 // CODEGEN: 
                 // _propertyId = (Guid) attrId;
@@ -220,7 +214,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
 
             CodeExpression condition = null;
 
-            foreach (string keyPropertyName in _dataTypeDescriptor.KeyPropertyNames)
+            foreach (string keyPropertyName in _dataTypeDescriptor.PhysicalKeyFields.Select(f => f.Name))
             {
                 string propertyFieldName = MakePropertyFieldName(_dataTypeDescriptor.Fields[keyPropertyName].Name);
 
@@ -267,7 +261,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
             var method = new CodeMemberMethod
             {
                 Attributes = MemberAttributes.Public | MemberAttributes.Override,
-                Name = "GetHashCode",
+                Name = nameof(GetHashCode),
                 ReturnType = new CodeTypeReference(typeof (int))
             };
 
@@ -275,7 +269,6 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
 
             CodeExpression hashCodeExpression = null;
 
-#warning We DO want IDataId classes to reflect both id and VersionId for data, right?
             foreach (string keyPropertyName in _dataTypeDescriptor.PhysicalKeyFields.Select(f=>f.Name))
             {
                 string propertyFieldName = MakePropertyFieldName(_dataTypeDescriptor.Fields[keyPropertyName].Name);
@@ -283,7 +276,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
                 CodeExpression hashCodePart =
                     new CodeMethodInvokeExpression(
                     new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), propertyFieldName),
-                    "GetHashCode");
+                    nameof(GetHashCode));
 
                 if (hashCodeExpression == null)
                 {
@@ -293,7 +286,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
                 {
                     hashCodeExpression = new CodeMethodInvokeExpression(
                         new CodeMethodReferenceExpression(new CodeTypeReferenceExpression(typeof(DataProviderHelperBase)),
-                        "Xor"),
+                        nameof(DataProviderHelperBase.Xor)),
                         hashCodeExpression, hashCodePart);
                 }
             }
@@ -316,14 +309,8 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
         }
 
 
-        private static string MakePropertyFieldName(string name)
-        {
-            return string.Format("_property{0}", name);
-        }
+        private static string MakePropertyFieldName(string name) => $"_property{name}";
 
-        private static string MakeXNameFieldName(string name)
-        {
-            return string.Format("_{0}XName", name);
-        }
+        private static string MakeXNameFieldName(string name) => $"_{name}XName";
     }    
 }
