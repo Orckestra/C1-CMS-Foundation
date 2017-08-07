@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ElementStructure xmlns="http://www.composite.net/ns/management/trees/treemarkup/1.0" xmlns:f="http://www.composite.net/ns/function/1.0">
+
+	<ElementStructure.AutoAttachments>
+		<NamedParent Name="System" Position="Bottom" />
+	</ElementStructure.AutoAttachments>
+
+	<ElementRoot>
+		<Children>
+			<DataElements Type="Composite.Data.Types.IUrlConfiguration, Composite" Label="${Orckestra.Tools.UrlConfiguration, Tree.ConfigurationElementLabel}" Icon="housefolder" ToolTip="${Orckestra.Tools.UrlConfiguration, Tree.ConfigurationElementToolTip}">
+				<Actions>
+					<EditDataAction CustomFormMarkupPath="~/Composite/content/forms/Administrative/UrlConfiguration.xml" Label="${Orckestra.Tools.UrlConfiguration, Tree.ConfigurationElementEditLabel}" ToolTip="${Orckestra.Tools.UrlConfiguration, Tree.ConfigurationElementEditToolTip}" Icon="media-edit-media-folder"/>
+        </Actions>
+
+				<Children>
+					<Element Id="Hostnames" Label="${Orckestra.Tools.UrlConfiguration, Tree.HostnamesFolderLabel}" ToolTip="${Orckestra.Tools.UrlConfiguration, Tree.HostnamesFolderToolTip}" Icon="folder" OpenedIcon="folder-open">
+						<Actions>
+							<AddDataAction Type="Composite.Data.Types.IHostnameBinding" CustomFormMarkupPath="~/Composite/content/forms/Administrative/Hostnames.xml" Label="${Orckestra.Tools.UrlConfiguration, Tree.AddHostnameLabel}" ToolTip="${Orckestra.Tools.UrlConfiguration, Tree.AddHostnameToolTip}" Icon="home-add"/>
+						</Actions>
+						<Children>
+
+							<DataElements Type="Composite.Data.Types.IHostnameBinding, Composite" Icon="home">
+								<OrderBy>
+									<Field FieldName="Hostname" Direction="ascending"/>
+								</OrderBy>
+								<Actions>
+									<EditDataAction CustomFormMarkupPath="~/Composite/content/forms/Administrative/Hostnames.xml" Icon="home-edit" Label="${Orckestra.Tools.UrlConfiguration, Tree.EditHostnameLabel}" ToolTip="${Orckestra.Tools.UrlConfiguration, Tree.EditHostnameToolTip}" />
+									<DeleteDataAction Icon="home-delete"  Label="${Orckestra.Tools.UrlConfiguration, Tree.DeleteHostnameLabel}" ToolTip="${Orckestra.Tools.UrlConfiguration, Tree.DeleteHostnameToolTip}"/>
+								</Actions>
+							</DataElements>
+						</Children>
+					</Element>
+				</Children>
+			</DataElements>
+		</Children>
+	</ElementRoot>
+	
+</ElementStructure>
