@@ -138,6 +138,8 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
 
             var argument = new CodeArgumentReferenceExpression(argumentName);
 
+            // CODEGEN: obj != null && typeof(TestDataId).IsAssignableFrom(obj.GetType())
+
             CodeExpression condition =
                 new CodeBinaryOperatorExpression(
                     new CodeBinaryOperatorExpression(
@@ -198,7 +200,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
             var method = new CodeMemberMethod
             {
                 Attributes = MemberAttributes.Public | MemberAttributes.Override,
-                Name = "GetHashCode",
+                Name = nameof(GetHashCode),
                 ReturnType = new CodeTypeReference(typeof(int))
             };
 
@@ -214,7 +216,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
                 CodeExpression hashCodePart =
                     new CodeMethodInvokeExpression(
                         new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), propertyFieldName),
-                        "GetHashCode");
+                        nameof(GetHashCode));
 
                 if (hashCodeExpression == null)
                 {
@@ -224,7 +226,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
                 {
                     hashCodeExpression = new CodeMethodInvokeExpression(
                         new CodeMethodReferenceExpression(new CodeTypeReferenceExpression(typeof(DataProviderHelperBase)),
-                            "Xor"),
+                            nameof(DataProviderHelperBase.Xor)),
                         hashCodeExpression, hashCodePart);
                 }
             }
@@ -246,7 +248,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
                         new CodePrimitiveExpression(0)),
                     new CodeAssignStatement(hashCodeFieldReference, new CodePrimitiveExpression(-1)))));
 
-            // "return __hashcode.Value;"
+            // "return __hashcode"
             method.Statements.Add(new CodeMethodReturnStatement(hashCodeFieldReference));
 
             declaration.Members.Add(hashcodeField);

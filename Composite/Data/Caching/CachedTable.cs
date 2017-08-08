@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Composite.Core.Linq;
 
 namespace Composite.Data.Caching
 {
@@ -67,7 +66,7 @@ namespace Composite.Data.Caching
                 var existingRows = _items;
 
 
-                var updated = new List<T>(existingRows.Count + dataset.Count());
+                var updated = new List<T>(existingRows.Count);
 
                 int updatedTotal = 0;
                 foreach (var data in existingRows)
