@@ -41,6 +41,24 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
 
             AuxiliarySecurityAncestorFacade.AddAuxiliaryAncestorProvider<DataEntityToken>(this);
             AuxiliarySecurityAncestorFacade.AddAuxiliaryAncestorProvider<DataGroupingProviderHelperEntityToken>(this);
+
+            DataEventSystemFacade.SubscribeToDataAfterUpdate(typeof(IData), (sender, args) =>
+            {
+                if (!OnOwnsType(args.DataType)) return;
+
+                var dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(args.DataType);
+
+                IEnumerable<DataFieldDescriptor> groupingDataFieldDescriptors =
+                    from dfd in dataTypeDescriptor.Fields
+                    where dfd.GroupByPriority != 0
+                    orderby dfd.GroupByPriority
+                    select dfd;
+
+                if (groupingDataFieldDescriptors.Any())
+                {
+                    EntityTokenCacheFacade.ClearCache(args.Data.GetDataEntityToken());
+                }
+            }, false);
         }
 
 
