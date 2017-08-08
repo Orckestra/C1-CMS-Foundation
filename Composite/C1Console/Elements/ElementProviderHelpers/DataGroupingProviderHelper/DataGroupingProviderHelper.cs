@@ -63,8 +63,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
 
             foreach (EntityToken entityToken in entityTokens)
             {
-                var groupingEntityToken = entityToken as DataGroupingProviderHelperEntityToken;
-                if (groupingEntityToken != null)
+                if (entityToken is DataGroupingProviderHelperEntityToken groupingEntityToken)
                 {
                     var parent = GetGroupingEntityTokenParent(groupingEntityToken);
 
@@ -76,8 +75,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
                 }
 
 
-                var dataEntityToken = entityToken as DataEntityToken;
-                if (dataEntityToken != null)
+                if (entityToken is DataEntityToken dataEntityToken)
                 {
                     var parent = GetDataEntityTokenParent(dataEntityToken);
                     if (parent != null)
@@ -99,9 +97,11 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
                 return OnGetRootParentEntityToken(type, groupingEntityToken);
             }
 
-            var newGroupingParentEntityToken = new DataGroupingProviderHelperEntityToken(groupingEntityToken.Type);
-            newGroupingParentEntityToken.Payload = this.OnGetPayload(groupingEntityToken);
-            newGroupingParentEntityToken.GroupingValues = new Dictionary<string, object>();
+            var newGroupingParentEntityToken = new DataGroupingProviderHelperEntityToken(groupingEntityToken.Type)
+            {
+                Payload = this.OnGetPayload(groupingEntityToken),
+                GroupingValues = new Dictionary<string, object>()
+            };
             foreach (var kvp in groupingEntityToken.GroupingValues.Take(groupingEntityToken.GroupingValues.Count - 1))
             {
                 newGroupingParentEntityToken.GroupingValues.Add(kvp.Key, NormalizeGroupingValue(kvp.Value));
@@ -133,9 +133,11 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
 
             IData data = dataEntityToken.Data;
 
-            var parentToken = new DataGroupingProviderHelperEntityToken(dataEntityToken.Type);
-            parentToken.Payload = this.OnGetPayload(dataEntityToken);
-            parentToken.GroupingValues = new Dictionary<string, object>();
+            var parentToken = new DataGroupingProviderHelperEntityToken(dataEntityToken.Type)
+            {
+                Payload = this.OnGetPayload(dataEntityToken),
+                GroupingValues = new Dictionary<string, object>()
+            };
             foreach (DataFieldDescriptor dfd in groupingDataFieldDescriptors)
             {
                 PropertyInfo propertyInfo = interfaceType.GetPropertiesRecursively().Single(f => f.Name == dfd.Name);
@@ -149,7 +151,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
 
         private static object NormalizeGroupingValue(object value)
         {
-            return value is DateTime ? ((DateTime)value).Date : value;
+            return (value as DateTime?)?.Date ?? value;
         }
 
 
@@ -212,7 +214,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
                     bool listingLimitReached = elements.Count == MaxElementsToShow;
 
                     var labelFieldDescriptor = dataTypeDescriptor.Fields.FirstOrDefault(f => f.Name == dataTypeDescriptor.LabelFieldName);
-                    if (labelFieldDescriptor != null && labelFieldDescriptor.ForeignKeyReferenceTypeName != null && labelFieldDescriptor.TreeOrderingProfile.OrderPriority.HasValue)
+                    if (labelFieldDescriptor?.ForeignKeyReferenceTypeName != null && labelFieldDescriptor.TreeOrderingProfile.OrderPriority.HasValue)
                     {
                         elements = (labelFieldDescriptor.TreeOrderingProfile.OrderDescending ?
                             elements.OrderByDescending(f => f.VisualData.Label) :
@@ -243,7 +245,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
 
         private IEnumerable<Element> GetRootGroupFolders(Type interfaceType, EntityToken parentEntityToken, DataFieldDescriptor firstDataFieldDescriptor, PropertyInfo propertyInfo)
         {
-            Func<IData, bool> filter = (this.OnGetLeafsFilter != null) ? this.OnGetLeafsFilter(parentEntityToken) : null;
+            Func<IData, bool> filter = OnGetLeafsFilter?.Invoke(parentEntityToken);
 
             IQueryable queryable = GetFilteredData(interfaceType, filter);
 
@@ -295,7 +297,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
 
         private IEnumerable<Element> GetRootGroupFoldersFoldersLeafs(Type interfaceType, Func<IData, bool> filter, bool isForeign)
         {
-            Func<IData, Element> func = (isForeign ? OnCreateGhostedLeafElement : OnCreateLeafElement);
+            Func<IData, Element> func = isForeign ? OnCreateGhostedLeafElement : OnCreateLeafElement;
 
             IQueryable source = DataFacade.GetData(interfaceType);
 
@@ -372,7 +374,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
             {
                 // Grouping ordering has ben changed, at the moment the best thing we can do its to return no elements
                 // TODO: This class and the whole attach element provider stuff should be redone
-                return new Element[] { };
+                return Enumerable.Empty<Element>();
             }
 
             Func<IData, bool> filter = null;
@@ -415,7 +417,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
                     if (!dataTypeDescriptor.Fields.Any(f => f.TreeOrderingProfile.OrderPriority.HasValue && f.ForeignKeyReferenceTypeName == null))
                     {
                         var labelFieldDescriptor = dataTypeDescriptor.Fields.FirstOrDefault(f => f.Name == dataTypeDescriptor.LabelFieldName);
-                        if (labelFieldDescriptor != null && labelFieldDescriptor.ForeignKeyReferenceTypeName != null)
+                        if (labelFieldDescriptor?.ForeignKeyReferenceTypeName != null)
                         {
                             elements = (labelFieldDescriptor.TreeOrderingProfile.OrderDescending ?
                                 elements.OrderByDescending(f => f.VisualData.Label) :
@@ -492,10 +494,10 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
 
             if (filter == null) return queryable;
 
-            var dataQueryable = (queryable as IQueryable<IData>).Where(filter).AsQueryable();
+            var dataQueryable = ((IQueryable<IData>) queryable).Where(filter).AsQueryable();
 
             return GenericCastMethodInfo
-                   .MakeGenericMethod(new[] { interfaceType })
+                   .MakeGenericMethod(interfaceType)
                    .Invoke(null, new object[] { dataQueryable }) as IQueryable;
         }
 
@@ -530,9 +532,11 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
 
             foreach (object obj in queryable)
             {
-                var entityToken = new DataGroupingProviderHelperEntityToken(TypeManager.SerializeType(interfaceType));
-                entityToken.Payload = this.OnGetPayload(parentEntityToken);
-                entityToken.GroupingValues = new Dictionary<string, object>();
+                var entityToken = new DataGroupingProviderHelperEntityToken(TypeManager.SerializeType(interfaceType))
+                {
+                    Payload = this.OnGetPayload(parentEntityToken),
+                    GroupingValues = new Dictionary<string, object>()
+                };
 
                 foreach (var kvp in propertyInfoValueCollection.PropertyValues)
                 {
@@ -541,13 +545,12 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
                 entityToken.GroupingValues.Add(propertyInfo.Name, obj);
 
 
-                Element element = new Element(_elementProviderContext.CreateElementHandle(entityToken));
+                var element = new Element(_elementProviderContext.CreateElementHandle(entityToken));
 
 
-                string label = (obj == null ? string.Format(_undefinedLabelValue, dataFieldDescriptor.Name) : obj.ToString());
-                if (obj is DateTime)
+                string label = obj?.ToString() ?? string.Format(_undefinedLabelValue, dataFieldDescriptor.Name);
+                if (obj is DateTime dt)
                 {
-                    DateTime dt = (DateTime)obj;
                     label = dt.ToString("yyyy-MM-dd");
                 }
 
@@ -589,7 +592,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
             {
                 if (dataFieldDescriptor.GroupByPriority != i)
                 {
-                    throw new InvalidOperationException(string.Format("Group by priority not correct for the type '{0}'", interfaceType));
+                    throw new InvalidOperationException($"Group by priority not correct for the type '{interfaceType}'");
                 }
 
                 i++;
