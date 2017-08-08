@@ -193,6 +193,7 @@
       <DependentUpon>ShowFunctionInfo.aspx</DependentUpon>
     </Compile>
     <Content Include="App_Data\Composite\Configuration\Entities.xml" />
+    <Content Include="App_Data\Composite\TreeDefinitions\UrlConfiguration.xml" />
     <Content Include="Composite\console\access\postFrame.js" />
     <Content Include="Composite\console\access\requestJSON.js" />
     <Content Include="Composite\console\access\utils.js" />
@@ -278,8 +279,10 @@
     </Content>
     <Content Include="Composite\content\branding\start-page-content.inc" />
     <Content Include="Composite\content\branding\start-page-js.inc" />
+    <Content Include="Composite\content\forms\Administrative\Hostnames.xml" />
     <Content Include="Composite\content\forms\Administrative\SetTimeZone_select.xml" />
     <Content Include="Composite\content\forms\Administrative\DeletePage_ConfirmAllVersionsDeletion.xml" />
+    <Content Include="Composite\content\forms\Administrative\UrlConfiguration.xml" />
     <Content Include="Composite\content\forms\Administrative\WebsiteFileElementProviderUploadAndExtractZipFile.xml" />
     <Content Include="Composite\content\misc\editors\resxeditor\Bindings\rowContainerBinding.js" />
     <Content Include="Composite\content\misc\editors\resxeditor\resxeditor.aspx" />
