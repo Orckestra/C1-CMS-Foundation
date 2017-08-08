@@ -89,7 +89,7 @@ namespace Composite.Data
         public bool ShouldSerializeProviderName()
         {
             // don't serialize ProviderName if it is default 
-            return (ProviderName != DataProviderRegistry.DefaultDynamicTypeDataProviderName);
+            return ProviderName != DataProviderRegistry.DefaultDynamicTypeDataProviderName;
         }
 
         /// <summary>
@@ -257,11 +257,7 @@ namespace Composite.Data
         /// <exclude />
         public override bool Equals(object obj)
         {
-            if (obj == null) return false;
-
-            DataSourceId dataSourceId = obj as DataSourceId;
-
-            return Equals(dataSourceId);
+            return obj is DataSourceId dataSourceId && Equals(dataSourceId);
         }
 
 
@@ -269,13 +265,21 @@ namespace Composite.Data
         /// <exclude />
         public bool Equals(DataSourceId dataSourceId)
         {
-            return dataSourceId != null && dataSourceId.ToString() == ToString();
+            return dataSourceId != null
+                && dataSourceId.ProviderName == ProviderName
+                && dataSourceId.DataId.Equals(DataId)
+                && dataSourceId.InterfaceType == InterfaceType
+                && dataSourceId.DataScopeIdentifier.Equals(DataScopeIdentifier)
+                && dataSourceId.LocaleScope.Name.Equals(LocaleScope.Name);
         }
 
 
 
         /// <exclude />
-        public override int GetHashCode() => ToString().GetHashCode();
+        public override int GetHashCode()
+            => DataId.GetHashCode() ^ InterfaceType.GetHashCode() ^ ProviderName.GetHashCode()
+               ^ DataScopeIdentifier.GetHashCode() ^ LocaleScope.GetHashCode();
+
 
 
         internal void SetTag(string id, object value)
