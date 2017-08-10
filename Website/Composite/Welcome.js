@@ -445,7 +445,7 @@ var Welcome = new function () {
 		});
 
 		var target = document.getElementById("setupfields");
-		var groups = new List(target.getElementsByTagName(Client.isExplorer || Client.isWebKit ? "radiodatagroup" : "ui:radiodatagroup"));
+		var groups = new List(DOMUtil.getElementsByTagName (target, "radiodatagroup"));
 
 		// update setup result
 		groups.each(function (group) {
