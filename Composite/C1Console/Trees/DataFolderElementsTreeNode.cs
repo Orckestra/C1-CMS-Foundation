@@ -193,7 +193,7 @@ namespace Composite.C1Console.Trees
                     if (dataEntityToken != null)
                     {
                         var data = dataEntityToken.Data;
-                        Verify.IsNotNull(data, "data is null, " + dataEntityToken);
+                        if (data == null) return Enumerable.Empty<Element>();
 
                         referenceType = this.ChildGeneratingParentIdFilterNode.KeyPropertyInfo.DeclaringType;
                         referenceValue = this.ChildGeneratingParentIdFilterNode.KeyPropertyInfo.GetValue(data, null);
