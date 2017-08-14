@@ -1,5 +1,6 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Workflow.Runtime;
@@ -73,7 +74,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
                 if(usersWithTheSameName.Any())
                 {
                     ShowFieldMessage(BindingNames.Username,
-                        StringResourceSystemFacade.GetString("Composite.Management", "UserElementProvider.UserLoginIsAlreadyUsed"));
+                        LocalizationFiles.Composite_Management.UserElementProvider_UserLoginIsAlreadyUsed);
 
                     isValid = false;
                 }
@@ -104,8 +105,8 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 
             managementConsoleMessageService.ShowMessage(
                 DialogType.Message,
-                StringResourceSystemFacade.GetString("Composite.Management", "UserElementProvider.MissingActiveLanguageTitle"),
-                StringResourceSystemFacade.GetString("Composite.Management", "UserElementProvider.MissingActiveLanguageMessage"));
+                LocalizationFiles.Composite_Management.UserElementProvider_MissingActiveLanguageTitle,
+                LocalizationFiles.Composite_Management.UserElementProvider_MissingActiveLanguageMessage);
         }
 
 
@@ -155,7 +156,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 
             foreach (ValidationResult result in validationResults)
             {
-                this.ShowFieldMessage(string.Format("{0}.{1}", BindingNames.NewUser, result.Key), result.Message);
+                this.ShowFieldMessage($"{BindingNames.NewUser}.{result.Key}", result.Message);
             }
 
             IQueryable<IUser> usersWithTheSameName =
@@ -165,7 +166,9 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 
             if (usersWithTheSameName.Any())
             {
-                this.ShowFieldMessage(BindingNames.Username, StringResourceSystemFacade.GetString("Composite.Management", "AddNewUserWorkflow.UsernameDuplicateError"));
+                this.ShowFieldMessage(BindingNames.Username,
+                    LocalizationFiles.Composite_Management.AddNewUserWorkflow_UsernameDuplicateError);
+                
             }
         }
 
@@ -202,7 +205,10 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 
             addNewTreeRefresher.PostRefreshMesseges(newUser.GetDataEntityToken());
 
-            LoggingService.LogVerbose("UserManagement", String.Format("New C1 Console user '{0}' created by '{1}'.", newUser.Username, UserValidationFacade.GetUsername()), LoggingService.Category.Audit);
+            LoggingService.LogEntry("UserManagement",
+                $"New C1 Console user '{newUser.Username}' created by '{UserValidationFacade.GetUsername()}'.", 
+                LoggingService.Category.Audit,
+                TraceEventType.Information);
 
 
             this.ExecuteWorklow(newUser.GetDataEntityToken(), typeof(EditUserWorkflow));
