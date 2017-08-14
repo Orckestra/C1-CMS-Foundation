@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Composite.C1Console.Security;
+using Newtonsoft.Json;
 
 namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProviderHelper
 {
@@ -22,27 +23,19 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
         }
 
         /// <exclude />
-        public override string Type
-        {
-            get { return _serializedParentEntityToken; }
-        }
+        public override string Type => _serializedParentEntityToken;
 
 
         /// <exclude />
-        public override string Source
-        {
-            get { return ""; }
-        }
+        public override string Source => "";
 
 
         /// <exclude />
-        public override string Id
-        {
-            get { return ""; }
-        }
+        public override string Id => "";
 
 
         /// <exclude />
+        [JsonIgnore]
         public EntityToken ParentEntityToken
         {
             get

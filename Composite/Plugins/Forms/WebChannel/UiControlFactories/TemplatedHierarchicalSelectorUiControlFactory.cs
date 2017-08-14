@@ -49,6 +49,9 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
         public bool AutoSelectChildren { get; set; }
 
         /// <exclude />
+        public bool AutoSelectParents { get; set; }
+
+        /// <exclude />
         public bool Required { get; set; }
     }
 
@@ -84,6 +87,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
             _userControl.SelectedKeys = this.SelectedKeys;
             _userControl.TreeNodes = this.TreeNodes;
             _userControl.AutoSelectChildren = this.AutoSelectChildren;
+            _userControl.AutoSelectParents = this.AutoSelectParents;
             _userControl.Required = this.Required;
 
             return _userControl;

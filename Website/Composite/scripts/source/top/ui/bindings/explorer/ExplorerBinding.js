@@ -1,4 +1,4 @@
-ExplorerBinding.prototype = new FlexBoxBinding;
+﻿ExplorerBinding.prototype = new FlexBoxBinding;
 ExplorerBinding.prototype.constructor = ExplorerBinding;
 ExplorerBinding.superclass = FlexBoxBinding.prototype;
 ExplorerBinding.ACTION_INITIALIZED = "explorer initialized";
@@ -118,6 +118,18 @@ ExplorerBinding.prototype.onBindingAttach = function () {
 		this.getDescendantBindingByLocalName ( "explorermenu" )
 	);
 }
+
+
+/**
+ * @overloads {TreeBinding#onBindingRegister}
+ */
+ExplorerBinding.prototype.onBindingRegister = function () {
+
+	ExplorerBinding.superclass.onBindingRegister.call(this);
+
+	this.setContextMenu(top.app.bindingMap.explorerpopup);
+}
+
 
 /**
  * @overloads {Binding#onBindingInitialize}

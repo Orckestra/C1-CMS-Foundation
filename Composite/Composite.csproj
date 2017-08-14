@@ -42,7 +42,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;CODE_ANALYSIS</DefineConstants>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRules>
     </CodeAnalysisRules>
@@ -57,7 +57,8 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;CODE_ANALYSIS</DefineConstants>
+    <DefineConstants>
+    </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRules>
@@ -228,7 +229,6 @@
     <Compile Include="AspNet\SiteMapContext.cs" />
     <Compile Include="AspNet\SiteMapHandler.cs" />
     <Compile Include="AspNet\SiteMapNodeChangeFrequency.cs" />
-    <Compile Include="AspNet\TempAssembliesFix.cs" />
     <Compile Include="AspNet\UserControlFunction.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -244,15 +244,22 @@
     <Compile Include="C1Console\RichContent\Components\IComponentProvider.cs" />
     <Compile Include="C1Console\Forms\ITestAutomationLocatorInformation.cs" />
     <Compile Include="C1Console\Elements\DialogStrings.cs" />
+    <Compile Include="C1Console\Security\Compatibility\LegacySerializedEntityTokenUpgrader.cs" />
     <Compile Include="C1Console\Security\Plugins\LoginSessionStore\INoneConfigurationBasedLoginSessionStore.cs" />
     <Compile Include="C1Console\Security\Plugins\LoginSessionStore\Runtime\LoginSessionStoreResolver.cs" />
     <Compile Include="C1Console\RichContent\ContainerClasses\AntonymContainerClassManager.cs" />
     <Compile Include="C1Console\RichContent\ContainerClasses\ContainerClassManager.cs" />
     <Compile Include="C1Console\RichContent\ContainerClasses\EqualOrAntonymComparer.cs" />
+    <Compile Include="Core\Implementation\StatelessDataConnectionImplementation.cs" />
+    <Compile Include="Core\Instrumentation\DisposableResourceTracer.cs" />
+    <Compile Include="Core\Serialization\CompositeJsonSerializer.cs" />
     <Compile Include="Core\WebClient\PageStructureRpc.cs" />
     <Compile Include="Core\WebClient\Services\WampRouter\WampRouteWrapper.cs" />
     <Compile Include="Data\Caching\CachedTable.cs" />
     <Compile Include="Data\Types\VersionedDataHelperContract.cs" />
+    <Compile Include="Plugins\Elements\UrlToEntityToken\WebsiteFileUrlToEntityTokenMapper.cs" />
+    <Compile Include="Plugins\Elements\UrlToEntityToken\MediaUrlToEntityTokenMapper.cs" />
+    <Compile Include="Plugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\String\HierarchicalSelectorWidgetFunction.cs" />
     <Compile Include="Search\Crawling\DataFieldProcessors\DateTimeDataFieldProcessor.cs" />
     <Compile Include="Search\Crawling\DataFieldProcessors\FileNameDataFieldProcessor.cs" />
     <Compile Include="Search\Crawling\DataFieldProcessors\MimeTypeDataFieldProcessor.cs" />
@@ -804,7 +811,7 @@
     <Compile Include="C1Console\Actions\Workflow\SecurityViolationWorkflowEntityToken.cs" />
     <Compile Include="C1Console\Elements\Plugins\ElementAttachingProvider\ElementAttachingProviderData.cs" />
     <Compile Include="C1Console\Elements\Plugins\ElementAttachingProvider\IElementAttachingProvider.cs" />
-    <Compile Include="C1Console\Elements\Plugins\ElementAttachingProvider\IMultibleResultElementAttachingProvider.cs" />
+    <Compile Include="C1Console\Elements\Plugins\ElementAttachingProvider\IMultipleResultElementAttachingProvider.cs" />
     <Compile Include="C1Console\Elements\Plugins\ElementAttachingProvider\NonConfigurableElementAttachingProvider.cs" />
     <Compile Include="C1Console\Elements\Plugins\ElementAttachingProvider\Runtime\ElementAttachingProviderCustomFactory.cs" />
     <Compile Include="C1Console\Elements\Plugins\ElementAttachingProvider\Runtime\ElementAttachingProviderDefaultNameRetriever.cs" />
@@ -1778,7 +1785,7 @@
     <Compile Include="Data\Types\IPageTemplateFile.cs" />
     <Compile Include="C1Console\Elements\ElementProviderHelpers\VisualFunctionElementProviderHelper\Foundation\RenderingFunctionNames.cs" />
     <Compile Include="C1Console\Elements\ElementProviderHelpers\VisualFunctionElementProviderHelper\VisualFunctionElementProviderHelper.cs" />
-    <Compile Include="C1Console\Elements\Security\ElementSecurityFacade.cs" />
+    <Compile Include="C1Console\Elements\ElementActionSecurityExtensions.cs" />
     <Compile Include="Functions\IDowncastableFunction.cs" />
     <Compile Include="Core\Logging\DebugLoggingScope.cs" />
     <Compile Include="Core\WebClient\Renderings\Page\PageAssociationScopeEnum.cs" />
@@ -2459,7 +2466,6 @@
     <Compile Include="Core\Configuration\SimpleNameTypeConfigurationElementCollection.cs" />
     <Compile Include="C1Console\Events\GlobalEventSystemFacade.cs" />
     <Compile Include="Core\Configuration\BuildinPlugins\GlobalSettingsProvider\BuildinGlobalSettingsProvider.cs" />
-    <Compile Include="Core\Configuration\BuildinPlugins\GlobalSettingsProvider\BuildinResourceCacheSettings.cs" />
     <Compile Include="Core\Configuration\GlobalSettingsFacade.cs" />
     <Compile Include="Core\Configuration\Plugins\GlobalSettingsProvider\GlobalSettingsProviderData.cs" />
     <Compile Include="Core\Configuration\Foundation\PluginFacades\GlobalSettingsProviderPluginFacade.cs" />
@@ -2469,7 +2475,6 @@
     <Compile Include="Core\Configuration\Plugins\GlobalSettingsProvider\Runtime\GlobalSettingsProviderDefaultNameRetriever.cs" />
     <Compile Include="Core\Configuration\Plugins\GlobalSettingsProvider\Runtime\GlobalSettingsProviderFactory.cs" />
     <Compile Include="Core\Configuration\Plugins\GlobalSettingsProvider\Runtime\GlobalSettingsProviderSettings.cs" />
-    <Compile Include="Core\Configuration\IResourceCacheSettings.cs" />
     <Compile Include="Core\IO\PathUtil.cs" />
     <Compile Include="Core\Logging\LoggingService.cs" />
     <Compile Include="Core\Logging\LogLevel.cs" />

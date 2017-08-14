@@ -231,43 +231,45 @@ namespace Composite.C1Console.Trees
         /// <exclude />
         public override int GetHashCode()
         {
-            if (_hashCode == 0)
+            if (_hashCode != 0)
             {
-                _hashCode = base.GetHashCode();
+                return _hashCode;
+            }
 
-                if (this.GroupingValues != null)
+            int hashCode = base.GetHashCode();
+
+            if (this.GroupingValues != null)
+            {
+                foreach (var kvp in this.GroupingValues/*.SortByKeys()*/)
                 {
-                    foreach (var kvp in this.GroupingValues.SortByKeys())
+                    hashCode ^= kvp.Key.GetHashCode();
+                    if (kvp.Value != null)
                     {
-                        _hashCode ^= kvp.Key.GetHashCode();
-                        if (kvp.Value != null)
-                        {
-                            _hashCode ^= kvp.Value.GetHashCode();
-                        }
+                        hashCode ^= kvp.Value.GetHashCode();
                     }
-                }
-
-                if (this.FolderRangeValues != null)
-                {
-                    foreach (var kvp in this.FolderRangeValues.SortByKeys())
-                    {
-                        _hashCode ^= kvp.Key.GetHashCode();
-                        _hashCode ^= kvp.Value.GetHashCode();
-                    }
-                }
-
-                if (this.ChildGeneratingDataElementsReferenceType != null)
-                {
-                    _hashCode ^= ChildGeneratingDataElementsReferenceType.GetHashCode();
-                }
-
-                if (this.ChildGeneratingDataElementsReferenceValue != null)
-                {
-                    _hashCode ^= ChildGeneratingDataElementsReferenceValue.GetHashCode();
                 }
             }
 
-            return _hashCode;
+            if (this.FolderRangeValues != null)
+            {
+                foreach (var kvp in this.FolderRangeValues/*.SortByKeys()*/)
+                {
+                    hashCode ^= kvp.Key.GetHashCode();
+                    hashCode ^= kvp.Value.GetHashCode();
+                }
+            }
+
+            if (this.ChildGeneratingDataElementsReferenceType != null)
+            {
+                hashCode ^= ChildGeneratingDataElementsReferenceType.GetHashCode();
+            }
+
+            if (this.ChildGeneratingDataElementsReferenceValue != null)
+            {
+                hashCode ^= ChildGeneratingDataElementsReferenceValue.GetHashCode();
+            }
+
+            return _hashCode = hashCode;
         }
 
 

@@ -66,17 +66,17 @@ namespace Composite.Core.Types
 
             if (filesToCompile.Count == 0) return new CompatibilityCheckResult();
 
-            CSharpCodeProvider csCompiler = new CSharpCodeProvider();
+            var csCompiler = new CSharpCodeProvider();
 
             List<Assembly> referencedAssemblies = new List<Assembly>();
-            Dictionary<string, List<CodeTypeDeclaration>> codeTypeDeclarations = new Dictionary<string, List<CodeTypeDeclaration>>();
+            var codeTypeDeclarations = new Dictionary<string, List<CodeTypeDeclaration>>();
 
-            foreach (DataTypeDescriptor dataTypeDescriptor in DataMetaDataFacade.GeneratedTypeDataTypeDescriptors)
+            foreach (var dataTypeDescriptor in DataMetaDataFacade.GeneratedTypeDataTypeDescriptors)
             {
-                if (!includeDataTypeDescriptor && (dataTypeDescriptor.DataTypeId == dataTypeDescriptorToTest.DataTypeId)) continue;
+                if (!includeDataTypeDescriptor && dataTypeDescriptor.DataTypeId == dataTypeDescriptorToTest.DataTypeId) continue;
 
                 DataTypeDescriptor dataTypeDescriptorToUse = dataTypeDescriptor;
-                if (includeDataTypeDescriptor && (dataTypeDescriptor.DataTypeId == dataTypeDescriptorToTest.DataTypeId)) dataTypeDescriptorToUse = dataTypeDescriptorToTest;
+                if (includeDataTypeDescriptor && dataTypeDescriptor.DataTypeId == dataTypeDescriptorToTest.DataTypeId) dataTypeDescriptorToUse = dataTypeDescriptorToTest;
 
                 referencedAssemblies.AddRange(InterfaceCodeGenerator.GetReferencedAssemblies(dataTypeDescriptorToUse));
                 CodeTypeDeclaration codeTypeDeclaration = InterfaceCodeGenerator.CreateCodeTypeDeclaration(dataTypeDescriptorToUse);
@@ -96,12 +96,12 @@ namespace Composite.Core.Types
                 {
                     using (var sw = new StreamWriter(file))
                     {
-                        CodeNamespace codeNamespace = new CodeNamespace(dataTypeDescriptorToUse.Namespace);
+                        var codeNamespace = new CodeNamespace(dataTypeDescriptorToUse.Namespace);
                         codeNamespace.Types.Add(codeTypeDeclaration);
                         csCompiler.GenerateCodeFromNamespace(codeNamespace, sw, new CodeGeneratorOptions());
                     }
 
-                    StringBuilder sb = new StringBuilder();
+                    var sb = new StringBuilder();
                     using (var sw = new StringWriter(sb))
                     {
                         csCompiler.GenerateCodeFromMember(codeTypeDeclaration, sw, new CodeGeneratorOptions());
@@ -112,27 +112,30 @@ namespace Composite.Core.Types
             filesToCompile.Sort();
 
 
-            CompilerParameters compilerParameters = new CompilerParameters();
-            compilerParameters.GenerateExecutable = false;
-            compilerParameters.GenerateInMemory = true;
+            var compilerParameters = new CompilerParameters
+            {
+                GenerateExecutable = false,
+                GenerateInMemory = true
+            };
 
             compilerParameters.ReferencedAssemblies.AddRangeIfNotContained(referencedAssemblies.Select(f => f.Location).ToArray());
             compilerParameters.ReferencedAssemblies.AddRangeIfNotContained(CodeGenerationManager.CompiledAssemblies.Select(f => f.Location).ToArray());
-            compilerParameters.AddAssemblyLocationsFromBin();
             compilerParameters.AddLoadedAssemblies(false);
+            compilerParameters.AddAssemblyLocationsFromBin();
             compilerParameters.AddCommonAssemblies();
             compilerParameters.RemoveGeneratedAssemblies();
 
-            CodeCompileUnit codeCompileUnit = new CodeCompileUnit();
+
+            var codeCompileUnit = new CodeCompileUnit();
             foreach (var kvp in codeTypeDeclarations)
             {
-                CodeNamespace codeNamespace = new CodeNamespace(kvp.Key);
+                var codeNamespace = new CodeNamespace(kvp.Key);
                 codeNamespace.Types.AddRange(kvp.Value.ToArray());
                 codeCompileUnit.Namespaces.Add(codeNamespace);
             }
 
-            CSharpCodeProvider compiler = new CSharpCodeProvider();
-            CompilerResults compileResult = compiler.CompileAssemblyFromFile(compilerParameters, filesToCompile.ToArray());
+            var compiler = new CSharpCodeProvider();
+            var compileResult = compiler.CompileAssemblyFromFile(compilerParameters, filesToCompile.ToArray());
 
             if (compileResult.Errors.Count == 0) return new CompatibilityCheckResult();
 

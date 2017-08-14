@@ -247,6 +247,18 @@ namespace Composite.Search
         /// <param name="fieldName"></param>
         public void AddFieldFacet(string fieldName)
         {
+            AddFieldFacet(fieldName, null, null);
+        }
+
+
+        /// <summary>
+        /// Will indicate that the search results should return facet information for the given field.
+        /// </summary>
+        /// <param name="fieldName"></param>
+        /// <param name="values">The array of values that are required to appear in the search documents.</param>
+        /// <param name="notValues">The array of values that are required not to appear in the search documents.</param>
+        public void AddFieldFacet(string fieldName, string[] values, string[] notValues)
+        {
             Verify.ArgumentNotNullOrEmpty(fieldName, nameof(fieldName));
 
             if (Facets.Any(f => f.Key == fieldName))
@@ -270,6 +282,20 @@ namespace Composite.Search
             Facets.Add(new KeyValuePair<string, DocumentFieldFacet>(
                     fieldName,
                     field.Facet));
+
+            if ((values != null && values.Length > 0) 
+                || (notValues != null && notValues.Length > 0))
+            {
+                Selection.Add(new SearchQuerySelection
+                {
+                    FieldName = fieldName,
+                    Values = values,
+                    NotValues = notValues,
+                    Operation = field.Facet.FacetType == FacetType.SingleValue 
+                    ? SearchQuerySelectionOperation.Or
+                    : SearchQuerySelectionOperation.And
+                });
+            }
         }
     }
 }

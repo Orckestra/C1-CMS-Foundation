@@ -470,7 +470,19 @@ namespace Composite
             public void Dispose()
             {
                 _preInitHandlersRunning = false;
+#if LeakCheck
+                GC.SuppressFinalize(this);
+#endif
             }
+
+#if LeakCheck
+            private string stack = Environment.StackTrace;
+            /// <exclude />
+            ~PreInitHandlersScope()
+            {
+                Composite.Core.Instrumentation.DisposableResourceTracer.RegisterFinalizerExecution(stack);
+            }
+#endif
         }
 
 
@@ -820,6 +832,9 @@ namespace Composite
 
             public void Dispose()
             {
+#if LeakCheck
+                GC.SuppressFinalize(this);
+#endif
                 if (!_isWriterLock)
                 {
                     ReleaseReaderLock();
@@ -850,6 +865,15 @@ namespace Composite
 
                 ReleaseWriterLock();
             }
+
+#if LeakCheck
+            private string stack = Environment.StackTrace;
+            /// <exclude />
+            ~LockerToken()
+            {
+                Composite.Core.Instrumentation.DisposableResourceTracer.RegisterFinalizerExecution(stack);
+            }
+#endif
         }
         #endregion
 

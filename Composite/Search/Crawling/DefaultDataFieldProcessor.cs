@@ -167,6 +167,24 @@ namespace Composite.Search.Crawling
         /// <exclude />
         protected virtual DocumentFieldFacet.FacetValuePreviewDelegate GetFacetValuePreviewFunction(PropertyInfo propertyInfo)
         {
+            var foreignKey = propertyInfo.GetCustomAttributes<ForeignKeyAttribute>().FirstOrDefault();
+            if (foreignKey != null)
+            {
+                var targetType = foreignKey.InterfaceType;
+                if (targetType != null
+                    && DynamicTypeManager.TryGetDataTypeDescriptor(targetType, out DataTypeDescriptor typeDescriptor)
+                    && !string.IsNullOrEmpty(typeDescriptor.LabelFieldName))
+                {
+                    return key =>
+                    {
+                        if (key == null) return string.Empty;
+
+                        var data = DataFacade.TryGetDataByUniqueKey(targetType, key);
+                        return data?.GetLabel() ?? key.ToString();
+                    };
+                }
+            }
+
             return obj => obj;
         }
 

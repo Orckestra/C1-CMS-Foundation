@@ -108,7 +108,7 @@ namespace Composite.Core
         /// <summary>
         /// Gets an application service provider
         /// </summary>
-        internal static IServiceProvider ServiceProvider
+        public static IServiceProvider ServiceProvider
         {
             get
             {

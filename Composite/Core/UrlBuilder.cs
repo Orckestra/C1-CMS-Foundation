@@ -113,7 +113,19 @@ namespace Composite.Core
                 public void Dispose()
                 {
                     HttpContext.Current = _context;
+#if LeakCheck
+                    GC.SuppressFinalize(this);
+#endif
                 }
+
+#if LeakCheck
+                private string stack = Environment.StackTrace;
+                /// <exclude />
+                ~NoHttpContext()
+                {
+                    Composite.Core.Instrumentation.DisposableResourceTracer.RegisterFinalizerExecution(stack);
+                }
+#endif
             }
         }
 

@@ -1,4 +1,4 @@
-HierarchicalSelectorBinding.prototype = new DataBinding;
+﻿HierarchicalSelectorBinding.prototype = new DataBinding;
 HierarchicalSelectorBinding.prototype.constructor = HierarchicalSelectorBinding;
 HierarchicalSelectorBinding.superclass = DataBinding.prototype;
 
@@ -101,6 +101,7 @@ HierarchicalSelectorBinding.prototype._buildDOMContent = function () {
 HierarchicalSelectorBinding.prototype._parseDOMProperties = function () {
 
 	this.autoSelectChildren = this.getProperty("autoselectchildren") === true;
+    this.autoSelectParents = this.getProperty("autoselectparents") === true;
 	this.isRequired = this.getProperty("required") === true;
 	this.hasCounter = this.getProperty("hascounter") === true;
 }

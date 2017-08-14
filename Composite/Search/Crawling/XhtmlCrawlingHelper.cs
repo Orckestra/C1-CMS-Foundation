@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
@@ -27,10 +28,14 @@ namespace Composite.Search.Crawling
 
         private IPage _page;
 
+        private readonly StringBuilder _currentFragment = new StringBuilder();
+
         public void SetPageContext(IPage page)
         {
             _page = page;
-        } 
+        }
+
+        public bool CrawlFunctionParameters { get; set; }
 
         /// <summary>
         /// Crawls xhtml content and extracts text parts
@@ -41,24 +46,47 @@ namespace Composite.Search.Crawling
             try
             {
                 var doc = XhtmlDocument.Parse(xhtml);
+
                 CrawlXhtml(doc);
+
+                CompleteTextFragment();
 
                 return true;
             }
             catch (Exception ex)
             {
                 Log.LogError(nameof(XhtmlCrawlingHelper), ex);
+
+                _currentFragment.Clear();
                 return false;
             }
         }
 
         private void CrawlXhtml(XhtmlDocument document) => ProcessNode(document.Body);
 
+        private void AppendToCurrentTextFragment(string text)
+        {
+            _currentFragment.Append(text);
+        }
+
+        private void CompleteTextFragment()
+        {
+            if (_currentFragment.Length == 0) return;
+
+            var str = _currentFragment.ToString();
+            if (!string.IsNullOrWhiteSpace(str))
+            {
+                _textParts.Add(str);
+            }
+
+            _currentFragment.Clear();
+        }
+
         private void ProcessNode(XNode node)
         {
             if (node is XText textNode)
             {
-                _textParts.Add(textNode.Value);
+                AppendToCurrentTextFragment(textNode.Value);
                 return;
             }
 
@@ -87,9 +115,28 @@ namespace Composite.Search.Crawling
                 // TODO: process "href" attribute for page/data references
             }
 
+            bool isInlineElement = XhtmlPrettifier.InlineElements.Contains(
+                new XhtmlPrettifier.NamespaceName {
+                    Name = element.Name.LocalName,
+                    Namespace = ""
+                });
+
+            bool isFragmentContinuation = element.Name.LocalName != "br"
+                    && (element.Name.LocalName == "body" || isInlineElement);
+
+            if (!isFragmentContinuation)
+            {
+                CompleteTextFragment();
+            }
+
             foreach (var childNode in element.Nodes())
             {
                 ProcessNode(childNode);
+            }
+
+            if (!isFragmentContinuation)
+            {
+                CompleteTextFragment();
             }
         }
 
@@ -111,20 +158,24 @@ namespace Composite.Search.Crawling
                 return;
             }
 
-            foreach (var paramElement in functionNode.Elements())
+            if (CrawlFunctionParameters)
             {
-                var parameterName = paramElement.GetAttributeValue("name");
-                if(parameterName == null) continue;
-
-                var profile = function.ParameterProfiles.FirstOrDefault(p => p.Name == parameterName);
-                if (profile != null)
+                foreach (var paramElement in functionNode.Elements())
                 {
-                    if (profile.Type == typeof (XhtmlDocument))
-                    {
-                        ProcessElement(paramElement);
-                    }
+                    var parameterName = paramElement.GetAttributeValue("name");
+                    if (parameterName == null) continue;
 
-                    // TODO: handle the other parameter types
+                    var profile = function.ParameterProfiles.FirstOrDefault(p => p.Name == parameterName);
+                    if (profile != null)
+                    {
+                        if (profile.Type == typeof(XhtmlDocument) 
+                            || profile.Type == typeof(Lazy<XhtmlDocument>))
+                        {
+                            ProcessElement(paramElement);
+                        }
+
+                        // TODO: handle the other parameter types
+                    }
                 }
             }
 
@@ -146,7 +197,7 @@ namespace Composite.Search.Crawling
                     }
                     else
                     {
-                        _textParts.Add(str);
+                        AppendToCurrentTextFragment(str);
                     }
                 }
             }
@@ -214,7 +265,19 @@ namespace Composite.Search.Crawling
             public void Dispose()
             {
                 HttpContext.Current = _originalContext;
+#if LeakCheck
+                GC.SuppressFinalize(this);
+#endif
             }
+
+#if LeakCheck
+            private string stack = Environment.StackTrace;
+            /// <exclude />
+            ~FakeHttpContext()
+            {
+                Composite.Core.Instrumentation.DisposableResourceTracer.RegisterFinalizerExecution(stack);
+            }
+#endif
         }
     }
 }

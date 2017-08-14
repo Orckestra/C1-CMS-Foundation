@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Composite.C1Console.Security;
 using Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvider;
+using Newtonsoft.Json;
 
 namespace Composite.Core.PageTemplates
 {
@@ -28,6 +29,7 @@ namespace Composite.Core.PageTemplates
         /// <summary>
         /// Gets the template id.
         /// </summary>
+        [JsonIgnore]
         public Guid TemplateId
         {
             get { return new Guid(_id); }

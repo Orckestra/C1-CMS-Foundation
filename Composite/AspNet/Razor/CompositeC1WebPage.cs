@@ -5,6 +5,8 @@ using System.Xml.Linq;
 using Composite.Data;
 using System.Threading;
 using System.Collections.Generic;
+using System.Linq;
+using Composite.Core.Extensions;
 using Composite.Functions;
 
 namespace Composite.AspNet.Razor
@@ -16,6 +18,8 @@ namespace Composite.AspNet.Razor
 	{
 		private bool _disposed;
 		private DataConnection _data;
+
+        private List<IDisposable> _childPages = new List<IDisposable>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CompositeC1WebPage"/> class.
@@ -84,25 +88,16 @@ namespace Composite.AspNet.Razor
         /// <summary>
         /// Gets to letter ISO Language Name representing the pages language - use this like &lt;html lang="@Lang" /&gt;
         /// </summary>
-        public string Lang
-        {
-            get
-            {
-                return Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName;
-            }
-        }
+        public string Lang => Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName;
 
 
-        /// <summary>
+	    /// <summary>
         /// Gets the function context container.
         /// </summary>
-        public FunctionContextContainer FunctionContextContainer
-        {
-            get { return GetFunctionContext(); }
-        }
+        public FunctionContextContainer FunctionContextContainer => GetFunctionContext();
 
 
-		/// <summary>
+	    /// <summary>
 		/// Executes a C1 Function.
 		/// </summary>
 		/// <param name="name">Function name.</param>
@@ -156,7 +151,23 @@ namespace Composite.AspNet.Razor
             return PageData[RazorHelper.PageContext_FunctionContextContainer];
         }
 
-        /// <exclude />
+	    /// <exclude />
+	    protected override void ConfigurePage(WebPageBase parentPage)
+	    {
+	        base.ConfigurePage(parentPage);
+
+	        if (parentPage is CompositeC1WebPage parentC1Page)
+	        {
+	            if (parentC1Page._childPages == null)
+	            {
+	                parentC1Page._childPages = new List<IDisposable>();
+	            }
+
+	            parentC1Page._childPages.Add(this);
+            }
+	    }
+
+	    /// <exclude />
         public override void ExecutePageHierarchy()
         {
             base.ExecutePageHierarchy();
@@ -170,8 +181,10 @@ namespace Composite.AspNet.Razor
 		{
 			Dispose(true);
 
-			GC.SuppressFinalize(this);
-		}
+#if LeakCheck
+                GC.SuppressFinalize(this);
+#endif
+        }
 
         /// <exclude />
 		protected virtual void Dispose(bool disposing)
@@ -180,16 +193,22 @@ namespace Composite.AspNet.Razor
 
             if (disposing)
             {
+                (_childPages as IEnumerable<IDisposable>)?.Reverse().ForEach(c => c.Dispose());
+
                 _data?.Dispose();
             }
 
             _disposed = true;
 		}
 
+#if LeakCheck
+        private string stack = Environment.StackTrace;
         /// <exclude />
-		~CompositeC1WebPage()
-		{
-			Dispose(false);
-		}
+        ~CompositeC1WebPage()
+        {
+            Composite.Core.Instrumentation.DisposableResourceTracer.RegisterFinalizerExecution(stack);
+            Dispose(false);
+        }
+#endif
 	}
 }

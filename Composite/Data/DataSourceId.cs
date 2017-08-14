@@ -5,6 +5,7 @@ using Composite.Core.Serialization;
 using Composite.Core.Types;
 using Composite.Data.Foundation;
 using Composite.Data.Types;
+using Newtonsoft.Json;
 
 
 namespace Composite.Data
@@ -14,8 +15,6 @@ namespace Composite.Data
     /// </summary>
     public sealed class DataSourceId
     {
-        private DataScopeIdentifier _dataScopeIdentifier;
-        private CultureInfo _localeScope;
         private string _serializedData;
         private Dictionary<string, object> _tagInformation;
 
@@ -24,16 +23,12 @@ namespace Composite.Data
         /// </summary>
         public DataSourceId(IDataId dataId, string providerName, Type interfaceType)
         {
-            if (null == dataId) throw new ArgumentNullException("dataId");
-            if (string.IsNullOrEmpty(providerName)) throw new ArgumentNullException("providerName");
-            if (null == interfaceType) throw new ArgumentNullException("interfaceType");
-
-
-            this.DataId = dataId;
+            if (string.IsNullOrEmpty(providerName)) throw new ArgumentNullException(nameof(providerName));
+            this.DataId = dataId ?? throw new ArgumentNullException(nameof(dataId));
             ProviderName = providerName;
-            InterfaceType = interfaceType;
-            _dataScopeIdentifier = DataScopeManager.MapByType(interfaceType);
-            _localeScope = LocalizationScopeManager.MapByType(interfaceType);
+            InterfaceType = interfaceType ?? throw new ArgumentNullException(nameof(interfaceType));
+            DataScopeIdentifier = DataScopeManager.MapByType(interfaceType);
+            LocaleScope = LocalizationScopeManager.MapByType(interfaceType);
             this.ExistsInStore = true;
         }
 
@@ -42,23 +37,30 @@ namespace Composite.Data
         /// <summary>
         /// This is for internal use only!
         /// </summary>
-        public DataSourceId(IDataId dataId, string providerName, Type interfaceType, DataScopeIdentifier dataScope, CultureInfo localeScope)
+        public DataSourceId(IDataId dataId, string providerName, Type interfaceType, DataScopeIdentifier dataScopeIdentifier, CultureInfo localeScope)
         {
             // This constructor has to be extremely fast, we have up to 100.000 objects related while some requests
-            if (dataId == null) throw new ArgumentNullException("dataId");
-            if (string.IsNullOrEmpty(providerName)) throw new ArgumentNullException("providerName");
-            if (interfaceType == null) throw new ArgumentNullException("interfaceType");
-            if (dataScope == null) throw new ArgumentNullException("dataScope");
-            if (localeScope == null) throw new ArgumentNullException("localeScope");
-
-            this.DataId = dataId;
+            if (string.IsNullOrEmpty(providerName)) throw new ArgumentNullException(nameof(providerName));
+            this.DataId = dataId ?? throw new ArgumentNullException(nameof(dataId));
             ProviderName = providerName;
-            InterfaceType = interfaceType;
-            _dataScopeIdentifier = dataScope;
-            _localeScope = localeScope;
+            InterfaceType = interfaceType ?? throw new ArgumentNullException(nameof(interfaceType));
+            DataScopeIdentifier = dataScopeIdentifier ?? throw new ArgumentNullException(nameof(dataScopeIdentifier));
+            LocaleScope = localeScope ?? throw new ArgumentNullException(nameof(localeScope));
             this.ExistsInStore = true;
         }
 
+        [JsonConstructor]
+        private DataSourceId(IDataId dataId, string providerName, Type interfaceType, DataScopeIdentifier dataScopeIdentifier, string localeScope)
+        {
+            // This constructor has to be extremely fast, we have up to 100.000 objects related while some requests
+            
+            this.DataId = dataId ?? throw new ArgumentNullException(nameof(dataId));
+            ProviderName = providerName ?? DataProviderRegistry.DefaultDynamicTypeDataProviderName;
+            InterfaceType = interfaceType ?? throw new ArgumentNullException(nameof(interfaceType));
+            DataScopeIdentifier = dataScopeIdentifier ?? throw new ArgumentNullException(nameof(dataScopeIdentifier));
+            LocaleScope = CultureInfo.CreateSpecificCulture(localeScope);
+            this.ExistsInStore = true;
+        }
 
 
         /// <summary>
@@ -83,6 +85,12 @@ namespace Composite.Data
         /// </summary>
         public string ProviderName { get; }
 
+        /// <exclude />
+        public bool ShouldSerializeProviderName()
+        {
+            // don't serialize ProviderName if it is default 
+            return ProviderName != DataProviderRegistry.DefaultDynamicTypeDataProviderName;
+        }
 
         /// <summary>
         /// The interface used for the data element. This is expected to be implementing IData.
@@ -93,40 +101,32 @@ namespace Composite.Data
         /// <summary>
         /// The data scope (language and published/unpublished) from which the data element originate.
         /// </summary>
-        public DataScopeIdentifier DataScopeIdentifier
-        {
-            get { return _dataScopeIdentifier; }
-            internal set { _dataScopeIdentifier = value; }
-        }
-
-
+        public DataScopeIdentifier DataScopeIdentifier { get; internal set; }
 
         /// <summary>
         /// The publication scope (published or unpublished) from which the data element originate.
         /// </summary>
-        public PublicationScope PublicationScope => _dataScopeIdentifier.ToPublicationScope();
+        [JsonIgnore]
+        public PublicationScope PublicationScope => DataScopeIdentifier.ToPublicationScope();
 
 
         /// <summary>
         /// The language from which the data element originate.
         /// </summary>
-        public CultureInfo LocaleScope
-        {
-            get { return _localeScope;  }
-            internal set { _localeScope = value; }
-        }
+        [JsonIgnore]
+        public CultureInfo LocaleScope { get; internal set; }
 
-
+        [JsonProperty(PropertyName = "localeScope")]
+        private string LocalScopeName => LocaleScope.Name;
 
         /// <summary>
         /// True when the data element represents a physically stored element
         /// </summary>
+        [JsonIgnore]
         public bool ExistsInStore
         {
             get;
         }
-
-
 
         /// <summary>
         /// Serialize to string
@@ -134,30 +134,11 @@ namespace Composite.Data
         /// <returns>Serialized as string</returns>
         public string Serialize()
         {
-            if (_serializedData == null)
-            {
-                string s = SerializationFacade.Serialize(this.DataId);
-
-                System.Text.StringBuilder sb = new System.Text.StringBuilder();
-                StringConversionServices.SerializeKeyValuePair(sb, "_dataId_", s);
-                StringConversionServices.SerializeKeyValuePair(sb, "_dataIdType_", TypeManager.SerializeType(this.DataId.GetType()));
-                
-                if (ProviderName != DataProviderRegistry.DefaultDynamicTypeDataProviderName)
-                {
-                    StringConversionServices.SerializeKeyValuePair(sb, "_providerName_", ProviderName);
-                }
-                
-                StringConversionServices.SerializeKeyValuePair(sb, "_interfaceType_", TypeManager.SerializeType(InterfaceType));
-                StringConversionServices.SerializeKeyValuePair(sb, "_dataScope_", DataScopeIdentifier.Serialize());
-                StringConversionServices.SerializeKeyValuePair(sb, "_localeScope_", LocaleScope.Name);
-
-                _serializedData = sb.ToString();
-            }
-
-            return _serializedData;
+            return _serializedData ?? (_serializedData = CompositeJsonSerializer.Serialize(this));
         }
 
 
+        
 
         /// <summary>
         /// Recreate a DataSourceId based on a serialized string representation of it.
@@ -190,6 +171,17 @@ namespace Composite.Data
 
         private static bool Deserialize(string serializedDataSourceId, out DataSourceId dataSourceId, bool throwException)
         {
+            if(CompositeJsonSerializer.IsJsonSerialized(serializedDataSourceId))
+            {
+                dataSourceId = CompositeJsonSerializer.Deserialize<DataSourceId>(serializedDataSourceId);
+                return true;
+            }
+
+            return DeserializeLegacy(serializedDataSourceId, out dataSourceId, throwException);
+        }
+
+        private static bool DeserializeLegacy(string serializedDataSourceId, out DataSourceId dataSourceId, bool throwException)
+        {
             dataSourceId = null;
 
             var dic = StringConversionServices.ParseKeyValueCollection(serializedDataSourceId);
@@ -210,8 +202,8 @@ namespace Composite.Data
             string serializedDataId = StringConversionServices.DeserializeValueString(dic["_dataId_"]);
             string dataIdTypeName = StringConversionServices.DeserializeValueString(dic["_dataIdType_"]);
 
-            string providerName = dic.ContainsKey("_providerName_") 
-                ? StringConversionServices.DeserializeValueString(dic["_providerName_"]) 
+            string providerName = dic.ContainsKey("_providerName_")
+                ? StringConversionServices.DeserializeValueString(dic["_providerName_"])
                 : DataProviderRegistry.DefaultDynamicTypeDataProviderName;
 
             string interfaceTypeName = StringConversionServices.DeserializeValueString(dic["_interfaceType_"]);
@@ -251,15 +243,13 @@ namespace Composite.Data
 
         private static string FixSerializedDataId(string serializedDataId, Type interfaceType)
         {
-            if (interfaceType == typeof (IPage) && !serializedDataId.Contains(nameof(IPage.VersionId)))
+            if (interfaceType == typeof(IPage) && !serializedDataId.Contains(nameof(IPage.VersionId)))
             {
                 return serializedDataId + "," + serializedDataId.Replace(nameof(IPage.Id), nameof(IPage.VersionId));
             }
 
             return serializedDataId;
         }
-
-
         /// <exclude />
         public override string ToString() => Serialize();
 
@@ -267,11 +257,7 @@ namespace Composite.Data
         /// <exclude />
         public override bool Equals(object obj)
         {
-            if (obj == null) return false;
-
-            DataSourceId dataSourceId = obj as DataSourceId;
-
-            return Equals(dataSourceId);
+            return obj is DataSourceId dataSourceId && Equals(dataSourceId);
         }
 
 
@@ -279,13 +265,21 @@ namespace Composite.Data
         /// <exclude />
         public bool Equals(DataSourceId dataSourceId)
         {
-            return dataSourceId != null && dataSourceId.ToString() == ToString();
+            return dataSourceId != null
+                && dataSourceId.ProviderName == ProviderName
+                && dataSourceId.DataId.Equals(DataId)
+                && dataSourceId.InterfaceType == InterfaceType
+                && dataSourceId.DataScopeIdentifier.Equals(DataScopeIdentifier)
+                && dataSourceId.LocaleScope.Name.Equals(LocaleScope.Name);
         }
 
 
 
         /// <exclude />
-        public override int GetHashCode() => ToString().GetHashCode();
+        public override int GetHashCode()
+            => DataId.GetHashCode() ^ InterfaceType.GetHashCode() ^ ProviderName.GetHashCode()
+               ^ DataScopeIdentifier.GetHashCode() ^ LocaleScope.GetHashCode();
+
 
 
         internal void SetTag(string id, object value)

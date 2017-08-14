@@ -4,7 +4,7 @@ using Composite.C1Console.Security;
 
 namespace Composite.C1Console.Elements.Plugins.ElementAttachingProvider
 {
-	internal interface IMultibleResultElementAttachingProvider : IElementAttachingProvider
+	internal interface IMultipleResultElementAttachingProvider : IElementAttachingProvider
 	{
         /// <summary>
         /// If null is returned, the result is ignored

@@ -42,6 +42,13 @@
 		<ui:popup id="moreactionspopup" position="bottom" />
 		<ui:popup id="visualeditorpopup" binding="VisualEditorPopupBinding" />
 		<ui:popup id="sourcecodeeditorpopup" binding="CodeMirrorEditorPopupBinding" />
+		<ui:popup id="explorerpopup" binding="ExplorerPopupBinding">
+			<ui:menubody>
+				<ui:menugroup rel="treeoperations">
+					<ui:menuitem label="${string:Website.App.LabelRefresh}" cmd="refresh" image="${icon:refresh}" image-disabled="${icon:refresh-disabled}" />
+				</ui:menugroup>
+			</ui:menubody>
+		</ui:popup>
 		<ui:popup id="systemtreepopup" binding="SystemTreePopupBinding">
 			<ui:menubody>
 				<ui:menugroup rel="treeoperations">

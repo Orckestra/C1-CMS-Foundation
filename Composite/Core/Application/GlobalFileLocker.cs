@@ -155,7 +155,9 @@ namespace Composite.Core.Application
             public void Dispose()
             {
                 Dispose(true);
+#if LeakCheck
                 GC.SuppressFinalize(this);
+#endif
             }
 
 
@@ -170,11 +172,14 @@ namespace Composite.Core.Application
             }
 
 
-
+#if LeakCheck
+            private string stack = Environment.StackTrace;
             ~DisposableLock()
             {
+                Composite.Core.Instrumentation.DisposableResourceTracer.RegisterFinalizerExecution(stack);
                 Dispose(false);
             }
+#endif
         }
     }
 }

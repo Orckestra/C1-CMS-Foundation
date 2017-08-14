@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics.CodeAnalysis;
@@ -8,7 +7,6 @@ using System.Web.Configuration;
 using System.Web.Hosting;
 using System.Xml.Linq;
 using Composite.C1Console.Forms.CoreUiControls;
-using Composite.Core.Localization;
 using Composite.Core.ResourceSystem;
 using Composite.Core.ResourceSystem.Icons;
 
@@ -83,6 +81,9 @@ namespace Composite.Core.IO
 
         /// <exclude />
         public static string QuickTime => "video/quicktime";
+
+        /// <exclude />
+        public static string Pdf = "application/pdf";
 
         /// <exclude />
         public static string Wmv => "video/x-ms-wmv";
@@ -175,7 +176,7 @@ namespace Composite.Core.IO
             // Applications
             RegisterMimeType("application/postscript", "eps", "mimetype-pps", true);
             RegisterMimeType("application/msaccess", "mdb", "mimetype-mdb", true);
-            RegisterMimeType("application/pdf", "pdf", "mimetype-pdf", true);
+            RegisterMimeType(Pdf, "pdf", "mimetype-pdf", true);
             RegisterMimeType("application/vnd.ms-powerpoint", "ppt", "mimetype-ppt", true);
             RegisterMimeType("application/vnd.openxmlformats-officedocument.presentationml.presentation", "pptx", "mimetype-ppt", true);
             RegisterMimeType("application/msword", "doc", "mimetype-doc", true);
@@ -413,13 +414,24 @@ namespace Composite.Core.IO
         /// </summary>
         /// <param name="mimeType"></param>
         /// <returns></returns>
-        internal static bool IsTextFile(string mimeType)
+        public static bool IsTextFile(string mimeType)
         {
             string canonicalMimeType = GetCanonical(mimeType);
 
             return canonicalMimeType.StartsWith("text") || _textMimeTypes.Contains(canonicalMimeType);
         }
 
+        /// <summary>
+        /// Indicates whether a file of a given mime type can be previewed by browser in an iframe.
+        /// </summary>
+        /// <param name="mimeType"></param>
+        /// <returns></returns>
+        public static bool IsBrowserPreviewableFile(string mimeType)
+        {
+            return mimeType == Pdf
+                   || mimeType == Html
+                   || mimeType == Text;
+        }
 
         internal static string TryGetLocalizedName(string mimeType)
         {

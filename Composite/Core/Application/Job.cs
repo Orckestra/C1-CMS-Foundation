@@ -102,9 +102,19 @@ namespace Composite.Core.Application
         public void Dispose()
         {
             Dispose(true);
+#if LeakCheck
             GC.SuppressFinalize(this);
+#endif
         }
 
+#if LeakCheck
+        private string stack = Environment.StackTrace;
+        /// <exclude />
+        ~Job()
+        {
+            Composite.Core.Instrumentation.DisposableResourceTracer.RegisterFinalizerExecution(stack);
+        }
+#endif
         #endregion
 
         private void Dispose(bool disposing)

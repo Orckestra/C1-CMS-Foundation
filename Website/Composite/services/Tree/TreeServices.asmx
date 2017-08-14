@@ -60,20 +60,15 @@ namespace Composite.Services
                 string username = UserValidationFacade.GetUsername();
 
                 List<Element> allPerspectives = ElementFacade.GetPerspectiveElementsWithNoSecurity().ToList();
-                List<string> activePerspectiveEntityTokens = 
-						UserPerspectiveFacade.GetSerializedEntityTokens(username)
-						.Concat(UserGroupPerspectiveFacade.GetSerializedEntityTokens(username))
-						.Distinct().ToList();
+                List<string> activePerspectiveEntityTokens =
+                        UserPerspectiveFacade.GetSerializedEntityTokens(username)
+                        .Concat(UserGroupPerspectiveFacade.GetSerializedEntityTokens(username))
+                        .Distinct().ToList();
 
                 List<ClientElement> activePerspectives = allPerspectives
-						.Where(f => activePerspectiveEntityTokens.Contains(EntityTokenSerializer.Serialize(f.ElementHandle.EntityToken)))
-						.ToList().ToClientElementList();
-
-                foreach (ClientElement clientElement in activePerspectives)
-                {
-                    clientElement.Actions.Clear();
-                    clientElement.ActionKeys.Clear();
-                }
+                        .Where(f => activePerspectiveEntityTokens.Contains(EntityTokenSerializer.Serialize(f.ElementHandle.EntityToken)))
+                        .FilterElementsAndActions()
+                        .ToList().ToClientElementList();
 
                 return activePerspectives;
             }
@@ -111,7 +106,7 @@ namespace Composite.Services
                 var propertyBag = actionRequiredPage.Item1.PropertyBag;
                 var data = actionRequiredPage.Item2;
 
-                  
+
                 propertyBag[Texts.ViewUnpublishedItems_PageTitleLabel] = data.GetLabel();
 
                 var publicationStatus = data.PublicationStatus;

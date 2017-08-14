@@ -1,7 +1,6 @@
 ﻿using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -35,7 +34,7 @@ namespace Composite.Core.Types
         /// <param name="includeAppCode">if set to <c>true</c> reference to App_Code will be included to results.</param>
         public static void AddLoadedAssemblies(this CompilerParameters compilerParameters, bool includeAppCode)
         {
-            Dictionary<string, string> foundAssemblyLocations = new Dictionary<string, string>();
+            var foundAssemblyLocations = new Dictionary<string, string>();
 
             IEnumerable<Assembly> assemblies = AppDomain.CurrentDomain.GetAssemblies().Where(AssemblyHasLocation);
                 
@@ -51,7 +50,7 @@ namespace Composite.Core.Types
                 string locationKey = Path.GetFileName(location).ToLowerInvariant();
 
 
-                if (foundAssemblyLocations.ContainsKey(locationKey) == false)
+                if (!foundAssemblyLocations.ContainsKey(locationKey))
                 {
                     foundAssemblyLocations.Add(locationKey, location);
                 }
@@ -81,7 +80,7 @@ namespace Composite.Core.Types
         /// <param name="compilerParameters"></param>
         public static void AddCommonAssemblies(this CompilerParameters compilerParameters)
         {
-            List<string> commonAssemblies = new List<string>()
+            var commonAssemblies = new List<string>
             {
                 typeof(System.Linq.Expressions.Expression).Assembly.Location,
                 typeof(System.Xml.Linq.XElement).Assembly.Location,
@@ -109,12 +108,8 @@ namespace Composite.Core.Types
                 Select(f => f).
                 ToList();
 
-            foreach (string assemblyToRemove in assembliesToRemove)
-            {
-                compilerParameters.ReferencedAssemblies.Remove(assemblyToRemove);
-            }
+            assembliesToRemove.ForEach(compilerParameters.ReferencedAssemblies.Remove);
         }
-
 
 
 
@@ -136,7 +131,7 @@ namespace Composite.Core.Types
                 return assembly.ManifestModule.Name != "<Unknown>" &&
                        assembly.ManifestModule.FullyQualifiedName != "<In Memory Module>" &&
                        assembly.ManifestModule.ScopeName != "RefEmit_InMemoryManifestModule" &&
-                       string.IsNullOrEmpty(assembly.Location) == false;
+                       !string.IsNullOrEmpty(assembly.Location);
             }
             catch (Exception)
             {

@@ -1,4 +1,4 @@
-<%@ Control Language="C#" Inherits="Composite.Plugins.Forms.WebChannel.UiControlFactories.HierarchicalSelectorTemplateUserControlBase" %>
+﻿<%@ Control Language="C#" Inherits="Composite.Plugins.Forms.WebChannel.UiControlFactories.HierarchicalSelectorTemplateUserControlBase" %>
 <%@ Import Namespace="Composite.C1Console.Forms.CoreUiControls" %>
 <%@ Import Namespace="Composite.Core.Extensions" %>
 <%@ Import Namespace="Composite.Core.Types" %>
@@ -95,6 +95,7 @@
 <ui:hierarchicalselector name="<%= this.ClientID %>"
 	 required="<%= Required ? "true" : "false" %>"
 	 autoselectchildren="<%= AutoSelectChildren ? "true" : "false" %>"
+	 autoselectparents="<%= AutoSelectParents ? "true" : "false" %>"
      hascounter="true"
     >
 	<%= _treeXhml %>

@@ -1,4 +1,4 @@
-ExplorerToolBarButtonBinding.prototype = new ToolBarButtonBinding;
+﻿ExplorerToolBarButtonBinding.prototype = new ToolBarButtonBinding;
 ExplorerToolBarButtonBinding.prototype.constructor = ExplorerToolBarButtonBinding;
 ExplorerToolBarButtonBinding.superclass = ToolBarButtonBinding.prototype;
 ExplorerToolBarButtonBinding.TYPE_NORMAL = "normal";
@@ -44,12 +44,39 @@ ExplorerToolBarButtonBinding.prototype.toString = function () {
  * @overloads {Binding#onBindingAttach}
  */
 ExplorerToolBarButtonBinding.prototype.onBindingAttach = function () {
-	
+
+	this.addEventListener(DOMEvents.MOUSEUP); 
 	var isLargeButton = this.explorerToolBarButtonType == ExplorerToolBarButtonBinding.TYPE_LARGE;
 	var imageSizeParameter = isLargeButton ? ToolBarBinding.IMAGESIZE_LARGE : ToolBarBinding.IMAGESIZE_NORMAL;
-	this.imageProfile = this.node.getImageProfile ( imageSizeParameter );
+	this.imageProfile = this.node.getImageProfile(imageSizeParameter);
+
 	ExplorerToolBarButtonBinding.superclass.onBindingAttach.call ( this );
 }
+
+
+/**
+ * @implements {IEventListener}
+ * @overloads {Binding#handleEvent}
+ * @param {MouseEvent} e
+ */
+ExplorerToolBarButtonBinding.prototype.handleEvent = function (e) {
+
+	ExplorerToolBarButtonBinding.superclass.handleEvent.call(this, e);
+
+	if (!this.isDisabled && !BindingDragger.isDragging) {
+
+		switch (e.type) {
+			case DOMEvents.MOUSEUP:
+				if (e.button != ButtonStateManager.RIGHT_BUTTON) {
+					if (this.isChecked) {
+						StageBinding.bindingInstance.selectBrowserTab();
+					}
+				}
+				break;
+		}
+	}
+}
+
 
 /**
  * ExplorerToolBarButtonBinding factory.
@@ -60,7 +87,6 @@ ExplorerToolBarButtonBinding.prototype.onBindingAttach = function () {
 ExplorerToolBarButtonBinding.newInstance = function ( ownerDocument, explorerToolBarButtonType ) {
 
 	var nodename = "ui:explorertoolbarbutton";
-	
 	var element = DOMUtil.createElementNS ( Constants.NS_UI, nodename, ownerDocument );
 	var binding = UserInterface.registerBinding ( element, ExplorerToolBarButtonBinding );
 	binding.explorerToolBarButtonType = explorerToolBarButtonType;

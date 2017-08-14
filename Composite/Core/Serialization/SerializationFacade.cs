@@ -1,13 +1,10 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Composite.Core.Collections.Generic;
 using Composite.C1Console.Events;
-using Composite.Core.Extensions;
 using Composite.Core.Serialization.CodeGeneration;
 using Composite.Core.Serialization.CodeGeneration.Foundation;
 using Composite.Core.Types;
-using Composite.Core.Logging;
 
 
 namespace Composite.Core.Serialization
@@ -23,28 +20,6 @@ namespace Composite.Core.Serialization
             GlobalEventSystemFacade.SubscribeToFlushEvent(OnFlushEvent);
         }
 
-
-        public static string Serialize(object propertyClass)
-        {
-            ISerializer serializer = GetSerializer(propertyClass.GetType());
-
-            StringBuilder sb = new StringBuilder();
-
-            serializer.Serialize(propertyClass, sb);
-
-            return sb.ToString();
-        }
-
-        public static string Serialize(object propertyClass, IEnumerable<string> propertyNames)
-        {
-            ISerializer serializer = GetSerializer(propertyClass.GetType());
-
-            StringBuilder sb = new StringBuilder();
-
-            serializer.Serialize(propertyClass, sb, propertyNames);
-
-            return sb.ToString();
-        }
 
         public static object Deserialize(Type propertyClassType, string serializedProperties)
         {

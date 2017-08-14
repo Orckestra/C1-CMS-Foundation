@@ -20,14 +20,22 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
         {
             if (!_disposed)
             {
-                FileStream.Close();
+                FileStream.Dispose();
                 _disposed = true;
             }
+
+#if LeakCheck
+            GC.SuppressFinalize(this);
+#endif
         }
 
+#if LeakCheck
+        private string stack = Environment.StackTrace;
+        /// <exclude />
         ~LogFileInfo()
         {
-            Dispose();
+            Composite.Core.Instrumentation.DisposableResourceTracer.RegisterFinalizerExecution(stack);
         }
+#endif
     }
 }

@@ -42,14 +42,16 @@ namespace Composite.Core.Linq
         /// <returns>Evaluated collection.</returns>
         public static ICollection<T> Evaluate<T>(this IEnumerable<T> enumerable)
         {
-            if (enumerable is T[])
+            Verify.ArgumentNotNull(enumerable, nameof(enumerable));
+
+            if (enumerable is T[] array)
             {
-                return enumerable as T[];
+                return array;
             }
 
-            if (enumerable is ICollection<T>)
+            if (enumerable is ICollection<T> collection)
             {
-                return enumerable as ICollection<T>;
+                return collection;
             }
 
             return new List<T>(enumerable);

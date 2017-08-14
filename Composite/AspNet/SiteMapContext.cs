@@ -48,8 +48,19 @@ namespace Composite.AspNet
         {
             var top = SiteMapStack.Pop();
             Verify.That(object.ReferenceEquals(top, this), "SiteMapContext weren't disposed properly");
+#if LeakCheck
+            GC.SuppressFinalize(this);
+#endif
         }
 
+#if LeakCheck
+        private string stack = Environment.StackTrace;
+        /// <exclude />
+        ~SiteMapContext()
+        {
+            Composite.Core.Instrumentation.DisposableResourceTracer.RegisterFinalizerExecution(stack);
+        }
+#endif
 
 
         private static Stack<SiteMapContext> SiteMapStack

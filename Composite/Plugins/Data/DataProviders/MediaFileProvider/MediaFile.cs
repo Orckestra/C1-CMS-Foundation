@@ -3,6 +3,7 @@ using Composite.Data.Types;
 using Composite.Data;
 using Composite.Data.Plugins.DataProvider.Streams;
 using Composite.Data.Streams;
+using Newtonsoft.Json;
 
 
 namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
@@ -10,12 +11,11 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
     [FileStreamManager(typeof(FileSystemFileStreamManager))]
     internal class MediaFile : FileSystemFileBase, IMediaFile 
 	{
-        private readonly DataSourceId _dataSourceId;
-        private string _keyPath;
+	    private string _keyPath;
 
         public MediaFile(IMediaFileData file, string storeId, DataSourceId dataSourceId, string filePath)
         {
-            _dataSourceId = dataSourceId;
+            DataSourceId = dataSourceId;
             StoreId = storeId;
 
             this.Id = file.Id;
@@ -34,18 +34,39 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
             this.SystemPath = filePath;
         }
 
+	    [JsonConstructor]
+	    private MediaFile(Guid id,string fileName,string folderPath,string title,string description,
+            string tags,string mimeType,int? length,bool isReadOnly,string culture,DateTime creationTime,
+            DateTime lastWriteTime,string storeId, DataSourceId dataSourceId, string filePath)
+	    {
+	        DataSourceId = dataSourceId;
+	        StoreId = storeId;
 
-        public Guid Id
+	        this.Id = id;
+	        this.FileName = fileName;
+	        this.FolderPath = folderPath;
+	        this.Title = title;
+	        this.Description = description;
+	        this.Tags = tags;
+	        this.MimeType = mimeType;
+	        this.Length = length;
+	        this.IsReadOnly = isReadOnly;
+	        this.Culture = culture;
+	        this.CreationTime = creationTime;
+	        this.LastWriteTime = lastWriteTime;
+
+	        this.SystemPath = filePath;
+	        
+        }
+
+	    public Guid Id
         {
             get; internal set;
         }
 
-        public string KeyPath
-        {
-            get { return _keyPath ?? (_keyPath = this.GetKeyPath()); }
-        }
+        public string KeyPath => _keyPath ?? (_keyPath = this.GetKeyPath());
 
-        public string CompositePath
+	    public string CompositePath
         {
             get { return this.GetCompositePath(); }
             set { /* Do nothing. Used for deserialization purpouses */ }
@@ -120,9 +141,6 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
         }
 
 
-        public DataSourceId DataSourceId
-        {
-            get { return _dataSourceId; }
-        }
-    }
+        public DataSourceId DataSourceId { get; }
+	}
 }

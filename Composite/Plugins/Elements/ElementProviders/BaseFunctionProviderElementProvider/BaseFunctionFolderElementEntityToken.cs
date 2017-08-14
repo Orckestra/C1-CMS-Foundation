@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading;
 using Composite.C1Console.Security;
 using Composite.Core.Extensions;
+using Newtonsoft.Json;
 
 
 namespace Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElementProvider
@@ -66,6 +67,7 @@ namespace Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElemen
         /// <summary>
         /// Gets the function namespace.
         /// </summary>
+        [JsonIgnore]
         public string FunctionNamespace
         {
             get
@@ -81,6 +83,7 @@ namespace Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElemen
         /// <value>
         /// The name of the function provider.
         /// </value>
+        [JsonIgnore]
         public string ElementProviderName
         {
             get

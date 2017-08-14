@@ -302,8 +302,15 @@ namespace Composite.Core.WebClient.PhantomJs
             GC.SuppressFinalize(this);
         }
 
+
+#if LeakCheck
+        private string stack = Environment.StackTrace;
+#endif
         ~PhantomServer()
         {
+#if LeakCheck
+            Composite.Core.Instrumentation.DisposableResourceTracer.RegisterFinalizerExecution(stack);
+#endif
             // Finalizer calls Dispose(false)
             Dispose(false);
         }

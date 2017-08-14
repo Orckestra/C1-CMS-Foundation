@@ -171,19 +171,22 @@ namespace Composite.Core.Implementation
         public void Dispose()
         {
             Dispose(true);
+#if LeakCheck
             GC.SuppressFinalize(this);
+#endif
         }
 
 
 
-        /// <summary>
-        /// See <see cref="Composite.Core.IO.C1StreamReader"/>.
-        /// </summary>
+#if LeakCheck
+        private string stack = Environment.StackTrace;
+        /// <exclude />
         ~C1StreamReaderImplementation()
         {
+            Composite.Core.Instrumentation.DisposableResourceTracer.RegisterFinalizerExecution(stack);
             Dispose(false);
         }
-
+#endif
 
 
         /// <summary>

@@ -403,7 +403,16 @@ namespace Composite.Data.DynamicTypes
 
                 var dataTypeChangeDescriptor = new DataTypeChangeDescriptor(oldDataTypeDescriptor, newDataTypeDescriptor);
 
-                if (!dataTypeChangeDescriptor.AlteredTypeHasChanges) return false;
+                if (!dataTypeChangeDescriptor.AlteredTypeHasChanges)
+                {
+                    if (dataTypeChangeDescriptor.TypeHasMetaDataChanges)
+                    {
+                        Log.LogInformation(nameof(DynamicTypeManager), $"Updating data type descriptor for type '{newDataTypeDescriptor.GetFullInterfaceName()}'");
+                        DataMetaDataFacade.PersistMetaData(newDataTypeDescriptor);
+                    }
+
+                    return false;
+                }
 
                 Log.LogVerbose(nameof(DynamicTypeManager),
                     "Updating the store for interface type '{0}' on the '{1}' data provider", interfaceType,

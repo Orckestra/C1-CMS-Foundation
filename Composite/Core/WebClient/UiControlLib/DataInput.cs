@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-
+using Castle.Core.Internal;
 using Composite.Core.WebClient.UiControlLib.Foundation;
 
 
@@ -51,6 +51,10 @@ namespace Composite.Core.WebClient.UiControlLib
         public virtual DataInputType InputType { get; set; }
 
         /// <exclude />
+        [Category("Appearance"), DefaultValue(""), Description("Language to use for spell check for input field")]
+        public virtual string Language { get; set; }
+
+        /// <exclude />
         [Category("Appearance"), DefaultValue(0), Description("The required minimum length of this field. Default is 0 (no minimum).")]
         public virtual int MinLength { get; set; }
 
@@ -86,6 +90,11 @@ namespace Composite.Core.WebClient.UiControlLib
             {
                 writer.AddAttribute("callbackid", this.ClientID);
                 writer.AddAttribute("onvaluechange", "this.dispatchAction ( PageBinding.ACTION_DOPOSTBACK )");
+            }
+
+            if (!this.Language.IsNullOrEmpty())
+            {
+                writer.AddAttribute("lang", Language);
             }
 
             if (!Enabled)

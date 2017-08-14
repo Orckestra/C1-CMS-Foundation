@@ -2,8 +2,8 @@
 
 namespace Composite.Search.Crawling
 {
-    [Obsolete("Use DocumentFieldNames instead", true)]
     /// <exclude/>
+    [Obsolete("Use DocumentFieldNames instead", true)]
     public static class DefaultDocumentFieldNames
     {
         /// <exclude/>

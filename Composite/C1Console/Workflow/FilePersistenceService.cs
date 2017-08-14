@@ -257,7 +257,6 @@ namespace Composite.C1Console.Workflow
             using (var stream = new C1FileStream(filename, FileMode.Open))
             {
                 result = Activity.Load(stream, rootActivity, formatter);
-                stream.Close();
             }
 
             // Log.LogVerbose(LogTitle, $"Workflow loaded. Id = {id}, Type = {result.GetType()}");

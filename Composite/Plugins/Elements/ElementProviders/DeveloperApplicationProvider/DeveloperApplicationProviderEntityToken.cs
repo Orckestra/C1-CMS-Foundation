@@ -3,6 +3,7 @@ using Composite.C1Console.Security;
 using Composite.C1Console.Security.SecurityAncestorProviders;
 using Composite.Core.Configuration;
 using Composite.Core.IO;
+using Newtonsoft.Json;
 
 
 namespace Composite.Plugins.Elements.ElementProviders.DeveloperApplicationProvider
@@ -65,6 +66,7 @@ namespace Composite.Plugins.Elements.ElementProviders.DeveloperApplicationProvid
 
 
         /// <exclude />
+        [JsonIgnore]
         public string Filename
         {
             get { return this.Source; }
@@ -72,6 +74,7 @@ namespace Composite.Plugins.Elements.ElementProviders.DeveloperApplicationProvid
 
 
         /// <exclude />
+        [JsonIgnore]
         public string FullTreePath
         {
             get

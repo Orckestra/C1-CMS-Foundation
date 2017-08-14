@@ -193,7 +193,19 @@ namespace Composite.Core.WebClient
             public void Dispose()
             {
                 DisableUrlMetadataCaching(false);
+#if LeakCheck
+                GC.SuppressFinalize(this);
+#endif
             }
+
+#if LeakCheck
+            private string stack = Environment.StackTrace;
+            /// <exclude />
+            ~DisableUrlMedataScope()
+            {
+                Composite.Core.Instrumentation.DisposableResourceTracer.RegisterFinalizerExecution(stack);
+            }
+#endif
         }
     }
 }

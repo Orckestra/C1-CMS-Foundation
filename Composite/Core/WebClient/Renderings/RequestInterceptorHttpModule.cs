@@ -32,28 +32,50 @@ namespace Composite.Core.WebClient.Renderings
                 return;
             }
 
+            IHostnameBinding hostnameBinding = HostnameBindingsFacade.GetBindingForCurrentRequest();
+
+            if (hostnameBinding != null
+                && hostnameBinding.EnforceHttps
+                && !httpContext.Request.IsSecureConnection)
+            {
+                RedirectToHttps(httpContext);
+                return;
+            }
+
             if (HandleMediaRequest(httpContext))
             {
                 return;
             }
 
-            SetCultureByHostname();
+            SetCultureByHostname(hostnameBinding);
 
             PrettifyPublicMarkup(httpContext);
 
             HandleRootRequestInClassicMode(httpContext);
         }
 
-        static void SetCultureByHostname()
+        private void RedirectToHttps(HttpContext context)
         {
-            IHostnameBinding hostnameBinding = HostnameBindingsFacade.GetBindingForCurrentRequest();
-            if(hostnameBinding != null && !hostnameBinding.Culture.IsNullOrEmpty())
+            var url = context.Request.Url.ToString();
+
+            const string expectedPrefix = "http:";
+            Verify.That(url.StartsWith(expectedPrefix, StringComparison.OrdinalIgnoreCase), "Unexpected protocol, url: '{0}'", url);
+
+            var redirectUrl = "https:" + url.Substring(expectedPrefix.Length);
+            context.Response.Redirect(redirectUrl, false);
+        }
+
+        static void SetCultureByHostname(IHostnameBinding hostnameBinding)
+        {
+            if ((hostnameBinding?.Culture).IsNullOrEmpty())
             {
-                var cultureInfo = new CultureInfo(hostnameBinding.Culture);
-                var thread = System.Threading.Thread.CurrentThread;
-                thread.CurrentCulture = cultureInfo;
-                thread.CurrentUICulture = cultureInfo;
+                return;
             }
+            
+            var cultureInfo = new CultureInfo(hostnameBinding.Culture);
+            var thread = System.Threading.Thread.CurrentThread;
+            thread.CurrentCulture = cultureInfo;
+            thread.CurrentUICulture = cultureInfo;
         }
 
 

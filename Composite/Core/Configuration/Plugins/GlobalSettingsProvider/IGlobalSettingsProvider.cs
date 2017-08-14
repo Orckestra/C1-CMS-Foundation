@@ -48,8 +48,6 @@ namespace Composite.Core.Configuration.Plugins.GlobalSettingsProvider
 
         string PackageLicenseDirectory { get; }
 
-        IResourceCacheSettings ResourceCacheSettings { get; }
-
         /// <summary>
         /// List of assembly names to exclude from type probing. Use "*" as wildcard, like. "System.*"
         /// </summary>

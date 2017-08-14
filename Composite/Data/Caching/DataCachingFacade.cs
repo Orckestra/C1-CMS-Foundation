@@ -8,6 +8,7 @@ using Composite.Data.DynamicTypes;
 using Composite.Data.Foundation;
 using Composite.Data.Foundation.PluginFacades;
 using Composite.C1Console.Events;
+using Composite.Core;
 using Composite.Core.Configuration;
 
 using ScopeKey = System.Tuple<Composite.Data.DataScopeIdentifier, System.Globalization.CultureInfo>;
@@ -211,10 +212,34 @@ namespace Composite.Data.Caching
 
         /// <summary>
         /// Removes the specified data collection from the cache. 
-        /// The items should belong to the same interface type and the same data scope.
         /// </summary>
         /// <param name="dataset"></param>
-        internal static void RemoveFromCache(IReadOnlyCollection<IData> dataset)
+        internal static void RemoveDataFromCache(IReadOnlyCollection<IData> dataset)
+        {
+            UpdateCachedTables(dataset, (table, data) => table.Remove(data));
+        }
+
+        /// <summary>
+        /// Removes the specified data collection from the cache. 
+        /// </summary>
+        /// <param name="dataset"></param>
+        internal static void UpdateCachedData(IReadOnlyCollection<IData> dataset)
+        {
+            UpdateCachedTables(dataset, (table, data) => table.Update(data));
+        }
+
+        /// <summary>
+        /// Adds the specified data collection to the cache. 
+        /// </summary>
+        /// <param name="dataset"></param>
+        internal static void AddDataToCache(IReadOnlyCollection<IData> dataset)
+        {
+            UpdateCachedTables(dataset, (table, data) => table.Add(data));
+        }
+
+        internal static void UpdateCachedTables(
+            IReadOnlyCollection<IData> dataset,
+            Func<CachedTable, IEnumerable<IData>, bool> action)
         {
             if (dataset.Count == 0) return;
 
@@ -242,7 +267,14 @@ namespace Composite.Data.Caching
                     continue;
                 }
 
-                cachedTable.Remove(group);
+                bool success = action(cachedTable, group);
+                if (!success)
+                {
+                    var key = group.Key;
+                    Log.LogError(nameof(DataCachingFacade), $"Cache out of sync for type '{key.InterfaceType}' scope '{key.DataScopeIdentifier}' culture '{key.LocaleScope}'");
+
+                    ClearCache(key.InterfaceType, key.DataScopeIdentifier, key.LocaleScope);
+                }
             }
 
             // TODO: clear cache on transaction rollback?

@@ -13,6 +13,7 @@ using Composite.Core.Linq;
 using Composite.Core.ResourceSystem;
 using Composite.Core.WebClient;
 using Composite.Core.WebClient.Services.WampRouter;
+using Composite.Data;
 using Microsoft.Extensions.DependencyInjection;
 using WampSharp.V2.Rpc;
 
@@ -159,24 +160,27 @@ namespace Composite.Plugins.Search.Endpoint
                         .Where(f => f.FieldValuePreserved), 
                     f => f.Name).ToList();
 
-            return new ConsoleSearchResult
+            using (new DataConnection(culture))
             {
-                QueryText = query.Text,
-                Columns = previewFields.Select(pf => new ConsoleSearchResultColumn
+                return new ConsoleSearchResult
                 {
-                    FieldName = MakeFieldNameJsFriendly(pf.Name),
-                    Label = StringResourceSystemFacade.ParseString(pf.Label),
-                    Sortable = pf.Preview.Sortable
-                }).ToArray(),
-                Rows = documents.Select(doc => new ConsoleSearchResultRow
-                {
-                    Label = doc.Label,
-                    Url = GetFocusUrl(doc.SerializedEntityToken),
-                    Values = GetPreviewValues(doc, previewFields)
-                }).ToArray(),
-                FacetFields = GetFacets(result, facetFields),
-                TotalHits = result.TotalHits
-            };
+                    QueryText = query.Text,
+                    Columns = previewFields.Select(pf => new ConsoleSearchResultColumn
+                    {
+                        FieldName = MakeFieldNameJsFriendly(pf.Name),
+                        Label = StringResourceSystemFacade.ParseString(pf.Label),
+                        Sortable = pf.Preview.Sortable
+                    }).ToArray(),
+                    Rows = documents.Select(doc => new ConsoleSearchResultRow
+                    {
+                        Label = doc.Label,
+                        Url = GetFocusUrl(doc.SerializedEntityToken),
+                        Values = GetPreviewValues(doc, previewFields)
+                    }).ToArray(),
+                    FacetFields = GetFacets(result, facetFields),
+                    TotalHits = result.TotalHits
+                };
+            }
         }
 
         private ConsoleSearchResultFacetField[] EmptyFacetsFromSelections(

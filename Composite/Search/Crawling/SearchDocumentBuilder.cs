@@ -359,9 +359,14 @@ namespace Composite.Search.Crawling
         {
             if (textFragment.StartsWith("<html"))
             {
-                var crawler = new XhtmlCrawlingHelper();
+                var crawler = new XhtmlCrawlingHelper
+                {
+                    CrawlFunctionParameters = _currentPage?.DataSourceId.PublicationScope == PublicationScope.Unpublished
+                };
+
                 crawler.SetPageContext(_currentPage);
                 crawler.CrawlXhtml(textFragment);
+
                 foreach (var fragment in crawler.TextParts)
                 {
                     yield return fragment;
@@ -393,7 +398,7 @@ namespace Composite.Search.Crawling
                 var descriptor = DataMetaDataFacade.GetDataTypeDescriptor(dataTypeId);
                 if (descriptor != null)
                 {
-                    return descriptor.Title;
+                    return descriptor.Title ?? descriptor.Name;
                 }
             }
 

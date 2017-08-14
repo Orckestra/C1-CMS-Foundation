@@ -125,19 +125,22 @@ namespace Composite.Core.PageTemplates
 
                 if (functionContextContainer != null)
                 {
-                    using (Profiler.Measure("Evaluating placeholder '{0}'".FormatWith(placeholderId)))
+                    using (Profiler.Measure($"Evaluating placeholder '{placeholderId}'"))
                     {
                         PageRenderer.ExecuteEmbeddedFunctions(placeholderXhtml.Root, functionContextContainer);
                     }
 
-                    PageRenderer.NormalizeXhtmlDocument(placeholderXhtml);
+                    using (Profiler.Measure("Normalizing XHTML document"))
+                    {
+                        PageRenderer.NormalizeXhtmlDocument(placeholderXhtml);
+                    }
                 }
 
                 PageRenderer.ResolveRelativePaths(placeholderXhtml);
-                    
+
                 PropertyInfo property = placeholderProperties[placeholderId];
 
-                if (!property.ReflectedType.IsAssignableFrom(template.GetType()))
+                if (!property.ReflectedType.IsInstanceOfType(template))
                 {
                     string propertyName = property.Name;
                     property = template.GetType().GetProperty(property.Name);

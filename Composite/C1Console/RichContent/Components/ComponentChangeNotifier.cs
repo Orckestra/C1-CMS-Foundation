@@ -67,14 +67,26 @@ namespace Composite.C1Console.RichContent.Components
             {
                 if (_observer != null && _observers.Contains(_observer))
                     _observers.Remove(_observer);
+#if LeakCheck
+                GC.SuppressFinalize(this);
+#endif
             }
+
+#if LeakCheck
+            private string stack = Environment.StackTrace;
+            /// <exclude />
+            ~Unsubscriber()
+            {
+                Composite.Core.Instrumentation.DisposableResourceTracer.RegisterFinalizerExecution(stack);
+            }
+#endif
         }
 
-        /// <summary>
-        /// Notify a change in the provider
-        /// </summary>
-        /// <param name="providerId"></param>
-        public void ProviderChange(string providerId)
+            /// <summary>
+            /// Notify a change in the provider
+            /// </summary>
+            /// <param name="providerId"></param>
+            public void ProviderChange(string providerId)
         {
             var change = new ComponentChange { ProviderId = providerId };
             foreach (var observer in _observers)

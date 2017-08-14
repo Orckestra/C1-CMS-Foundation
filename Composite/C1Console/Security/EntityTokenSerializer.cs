@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Reflection;
 using System.Security;
-using System.Text;
 using Composite.Core.Serialization;
 using Composite.Core.Types;
-
+using Composite.Core;
 
 namespace Composite.C1Console.Security
 {
@@ -27,29 +26,10 @@ namespace Composite.C1Console.Security
         {
             Verify.ArgumentNotNull(entityToken, "entityToken");
 
-            var sb = new StringBuilder();
-
-            StringConversionServices.SerializeKeyValuePair(sb, "entityTokenType", TypeManager.SerializeType(entityToken.GetType()));
-            
-            string serializedEntityToken = entityToken.Serialize();
-
-            if (serializedEntityToken == null)
-            {
-                throw new InvalidCastException($"'{entityToken.GetType()}' Serialize returned null");
-            }
-
-            StringConversionServices.SerializeKeyValuePair(sb, "entityToken", serializedEntityToken);
-
-            if (includeHashValue)
-            {
-                StringConversionServices.SerializeKeyValuePair(sb, "entityTokenHash", HashSigner.GetSignedHash(serializedEntityToken).Serialize());
-            }
-
-            return sb.ToString();
+            return CompositeJsonSerializer.Serialize(entityToken, includeHashValue);
         }
 
-
-
+        
         /// <exclude />
         public static EntityToken Deserialize(string serializedEntityToken)
         {
@@ -63,9 +43,35 @@ namespace Composite.C1Console.Security
         {
             if (string.IsNullOrEmpty(serializedEntityToken)) throw new ArgumentNullException(nameof(serializedEntityToken));
 
+            EntityToken entityToken;
+            if (CompositeJsonSerializer.IsJsonSerialized(serializedEntityToken))
+            {
+                entityToken =
+                    CompositeJsonSerializer
+                        .Deserialize<EntityToken>(serializedEntityToken,
+                            includeHashValue);
+            }
+            else
+            {
+                entityToken = DeserializeLegacy(serializedEntityToken, includeHashValue);
+                Log.LogVerbose(nameof(EntityTokenSerializer), entityToken.GetType().FullName);
+            }
+
+            if (entityToken == null)
+            {
+                throw new EntityTokenSerializerException($"Deserialization function returned null value. EntityToken: '{serializedEntityToken}'");
+            }
+
+            return entityToken;
+            
+            
+        }
+
+        private static EntityToken DeserializeLegacy(string serializedEntityToken, bool includeHashValue)
+        {
             var dic = StringConversionServices.ParseKeyValueCollection(serializedEntityToken);
 
-            if (!dic.ContainsKey("entityTokenType")  ||
+            if (!dic.ContainsKey("entityTokenType") ||
                 !dic.ContainsKey("entityToken") ||
                 (includeHashValue && !dic.ContainsKey("entityTokenHash")))
             {
@@ -94,7 +100,6 @@ namespace Composite.C1Console.Security
                 throw new InvalidOperationException($"The entity token {entityType} is missing a public static Deserialize method taking a string as parameter and returning an {typeof(EntityToken)}");
             }
 
-
             EntityToken entityToken;
             try
             {
@@ -102,17 +107,16 @@ namespace Composite.C1Console.Security
             }
             catch (Exception ex)
             {
-                throw new EntityTokenSerializerException($"Failed to deserialize entity token '{entityTokenString}'", ex);
+                throw new EntityTokenSerializerException($"Failed to deserialize entity token '{serializedEntityToken}'", ex);
             }
 
             if (entityToken == null)
             {
-                throw new EntityTokenSerializerException($"Deserialization function returned null value. EntityToken: '{entityTokenString}'");
+                throw new EntityTokenSerializerException($"Deserialization function returned null value. EntityToken: '{serializedEntityToken}'");
             }
 
             return entityToken;
         }
-
 
 
         /// <exclude />

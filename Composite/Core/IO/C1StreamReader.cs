@@ -263,15 +263,17 @@ namespace Composite.Core.IO
         }
 
 
-
+#if LeakCheck
+        private string stack = Environment.StackTrace;
         /// <summary>
         /// Destructor.
         /// </summary>
         ~C1StreamReader()
         {
+            Composite.Core.Instrumentation.DisposableResourceTracer.RegisterFinalizerExecution(stack);
             Dispose(false);
         }
-
+#endif
 
 
         /// <summary>

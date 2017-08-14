@@ -1,4 +1,4 @@
-StageDeckBinding.prototype = new DeckBinding;
+﻿StageDeckBinding.prototype = new DeckBinding;
 StageDeckBinding.prototype.constructor = StageDeckBinding;
 StageDeckBinding.superclass = DeckBinding.prototype;
 
@@ -275,7 +275,14 @@ StageDeckBinding.prototype.getBrowserTab = function () {
 
 StageDeckBinding.prototype.getBrowserPage = function () {
 
-	return this.getBrowserTab().getAssociatedView().getContentWindow().bindingMap.browserpage;
+	var browserTab = this.getBrowserTab();
+	if (browserTab == null) return null;
+	var associatedView = browserTab.getAssociatedView();
+	if (associatedView == null) return null;
+	var contentWindow = associatedView.getContentWindow();
+	if (contentWindow == null) return null;
+	if (contentWindow.bindingMap == null) return null;
+	return contentWindow.bindingMap.browserpage;
 }
 
 StageDeckBinding.prototype.getSystemTree = function () {

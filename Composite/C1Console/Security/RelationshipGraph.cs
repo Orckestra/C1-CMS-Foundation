@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -6,6 +6,7 @@ using System.Text;
 using Composite.Core.Extensions;
 using Composite.C1Console.Security.Foundation;
 using Composite.C1Console.Users;
+using Composite.Core.Linq;
 
 
 namespace Composite.C1Console.Security
@@ -392,12 +393,12 @@ namespace Composite.C1Console.Security
                 sb.AppendLine("Level: " + level.Level);
                 foreach (EntityToken entityToken in level.Entities)
                 {
-                    sb.AppendLine("Native: Type = " + entityToken.Type + " Source = " + entityToken.Source + " Id = " + entityToken.Id);
+                    sb.AppendLine($"Native: Type = {entityToken.Type} Source = {entityToken.Source} Id = {entityToken.Id}");
                 }
 
                 foreach (EntityToken entityToken in level.HookedEntities)
                 {
-                    sb.AppendLine("Hooked: Type = " + entityToken.Type + " Source = " + entityToken.Source + " Id = " + entityToken.Id);
+                    sb.AppendLine($"Hooked: Type = {entityToken.Type} Source = {entityToken.Source} Id = {entityToken.Id}");
                 }
 
                 sb.AppendLine("---------");
@@ -407,21 +408,14 @@ namespace Composite.C1Console.Security
         }
 
 
-        internal int LevelCount
-        {
-            get
-            {
-                return _levels.Count;
-            }
-        }
-
+        internal int LevelCount => _levels.Count;
 
 
         internal RelationshipGraphLevel GetLevel(int level)
         {
             string userName = UserValidationFacade.IsLoggedIn() ? UserSettings.Username : null;
 
-            while ((_levels.Count - 1 < level) && (_moreLevelsToExpend))
+            while (_levels.Count - 1 < level && _moreLevelsToExpend)
             {
                 ExpandNextLevel(userName);
             }
@@ -462,7 +456,7 @@ namespace Composite.C1Console.Security
                     IEnumerable<EntityToken> parentEntityTokens;
                     if (!EntityTokenCacheFacade.GetCachedNativeParents(node.EntityToken, out parentEntityTokens, userName))
                     {
-                        parentEntityTokens = SecurityAncestorFacade.GetParents(node.EntityToken);
+                        parentEntityTokens = SecurityAncestorFacade.GetParents(node.EntityToken)?.Evaluate();
 
                         EntityTokenCacheFacade.AddNativeCache(node.EntityToken, parentEntityTokens);
                     }
@@ -482,7 +476,7 @@ namespace Composite.C1Console.Security
                         IEnumerable<EntityToken> auxiliaryParentEntityTokens = AuxiliarySecurityAncestorFacade.GetParents(node.EntityToken);
                         IEnumerable<EntityToken> hookingParentEntityTokens = HookingFacade.GetHookies(node.EntityToken);
 
-                        parentEntityTokens = auxiliaryParentEntityTokens.ConcatOrDefault(hookingParentEntityTokens);
+                        parentEntityTokens = auxiliaryParentEntityTokens.ConcatOrDefault(hookingParentEntityTokens)?.Evaluate();
 
                         EntityTokenCacheFacade.AddHookingCache(node.EntityToken, parentEntityTokens);
                     }
@@ -490,7 +484,7 @@ namespace Composite.C1Console.Security
                     if (parentEntityTokens != null)
                     {
                         AddNewParentEntityTokens(node, parentEntityTokens, RelationshipGraphNodeType.Hooking, levelNumber);
-                    }                        
+                    }
                 }
             }
         }

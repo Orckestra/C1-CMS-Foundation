@@ -1,3 +1,4 @@
+
 del DataMetaData\*.xml
 del DataStores\*.xml
 del Configuration\DynamicSqlDataProvider.config
@@ -31,7 +32,6 @@ md ApplicationState\SerializedWorkflows
 rd ..\..\Composite\InstalledPackages /S /Q
 rd ..\..\Views /S /Q
 rd Azure /S /Q
-md Azure
 rd InlineCSharpFunctions /S /Q
 md InlineCSharpFunctions
 
@@ -46,26 +46,32 @@ del TreeDefinitions\PageType.xml.backup
 
 :: Basic cleanup
 rd ..\..\Frontend\Composite  /S /Q
-rd ..\..\App_Data\UserControls /S /Q
 rd ..\..\App_Data\PageTemplateFeatures /S /Q
 
 :: Razor cleanup
 copy ..\..\App_Data\Razor\web.config ..\..\App_Data\Razor.web.config
-rd ..\..\App_Data\Razor /S /Q
-md ..\..\App_Data\Razor
+del /q ..\..\App_Data\Razor
+FOR /D %%p IN (..\..\App_Data\Razor\*.*) DO rmdir "%%p" /s /q
 copy ..\..\App_Data\Razor.web.config ..\..\App_Data\Razor\web.config
 del ..\..\App_Data\Razor.web.config /f
+
+:: UserControls cleanup
+copy ..\..\App_Data\UserControls\web.config ..\..\App_Data\UserControls.web.config
+del /q ..\..\App_Data\UserControls
+FOR /D %%p IN (..\..\App_Data\UserControls\*.*) DO rmdir "%%p" /s /q
+copy ..\..\App_Data\UserControls.web.config ..\..\App_Data\UserControls\web.config
+del ..\..\App_Data\UserControls.web.config /f
 
 
 :: PageTemplates cleanup
 copy ..\..\App_Data\PageTemplates\web.config ..\..\App_Data\PageTemplates.web.config
-rd ..\..\App_Data\PageTemplates /S /Q
-md ..\..\App_Data\PageTemplates
+del /q ..\..\App_Data\PageTemplates
+FOR /D %%p IN (..\..\App_Data\PageTemplates\*.*) DO rmdir "%%p" /s /q
 copy ..\..\App_Data\PageTemplates.web.config ..\..\App_Data\PageTemplates\web.config
 del ..\..\App_Data\PageTemplates.web.config /f
 
 :: License file cleanup
-del PackageLicenses\*.* /y
+del PackageLicenses\*.* /q
 
 :: Assembly cleanup
 rmdir ..\..\bin /S /Q

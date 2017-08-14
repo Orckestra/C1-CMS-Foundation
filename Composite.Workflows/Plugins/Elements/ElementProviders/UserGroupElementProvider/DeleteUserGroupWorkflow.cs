@@ -1,4 +1,5 @@
-using System;
+﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using Composite.Data;
 using Composite.Data.Types;
@@ -51,7 +52,10 @@ namespace Composite.Plugins.Elements.ElementProviders.UserGroupElementProvider
 
             DataFacade.Delete(userGroup);
 
-            LoggingService.LogVerbose("UserManagement", String.Format("C1 Console user group '{0}' deleted by '{1}'.", userGroup.Name, UserValidationFacade.GetUsername()), LoggingService.Category.Audit);
+            LoggingService.LogEntry("UserManagement",
+                $"C1 Console user group '{userGroup.Name}' deleted by '{UserValidationFacade.GetUsername()}'.", 
+                LoggingService.Category.Audit,
+                TraceEventType.Information);
 
             deleteTreeRefresher.PostRefreshMesseges();
         }
