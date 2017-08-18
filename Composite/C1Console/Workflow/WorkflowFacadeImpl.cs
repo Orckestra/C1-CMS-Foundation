@@ -197,12 +197,12 @@ namespace Composite.C1Console.Workflow
             }
             catch (WorkflowValidationFailedException exp)
             {
-                StringBuilder errors = new StringBuilder();
+                var errors = new StringBuilder();
                 foreach (ValidationError error in exp.Errors)
                 {
-
                     errors.AppendLine(error.ToString());
                 }
+
                 Log.LogError("WorkflowFacade", errors.ToString());
                 throw;
             }
@@ -1215,12 +1215,15 @@ namespace Composite.C1Console.Workflow
             if (HostingEnvironment.ApplicationHost.ShutdownInitiated()) return;
             Log.LogInformation(LogTitle, "New workflow detected: " + instanceId);
 
-            LoadPersistedWorkflow(instanceId);
-
-            string formDataFilename = GetFormDataFileName(instanceId);
-            if (C1File.Exists(formDataFilename))
+            using (ThreadDataManager.EnsureInitialize())
             {
-                TryLoadPersistedFormData(formDataFilename);
+                LoadPersistedWorkflow(instanceId);
+
+                string formDataFilename = GetFormDataFileName(instanceId);
+                if (C1File.Exists(formDataFilename))
+                {
+                    TryLoadPersistedFormData(formDataFilename);
+                }
             }
         }
 
@@ -1429,9 +1432,7 @@ namespace Composite.C1Console.Workflow
 
         private static bool ConsoleIdEquals(FlowControllerServicesContainer flowControllerServicesContainer, string consoleId)
         {
-            if (flowControllerServicesContainer == null) return false;
-
-            var managementConsoleMessageService = flowControllerServicesContainer.GetService<IManagementConsoleMessageService>();
+            var managementConsoleMessageService = flowControllerServicesContainer?.GetService<IManagementConsoleMessageService>();
 
             if (managementConsoleMessageService == null) return false;
 
@@ -1460,16 +1461,16 @@ namespace Composite.C1Console.Workflow
                 this.EventHandleFilters = new Dictionary<Type, IEventHandleFilter>();
             }
 
-            public Dictionary<Guid, WorkflowInstanceStatus> WorkflowStatusDictionary { get; set; }
-            public Dictionary<Guid, FormData> FormData { get; set; }
-            public Dictionary<Guid, FlowControllerServicesContainer> FlowControllerServicesContainers { get; set; }
+            public Dictionary<Guid, WorkflowInstanceStatus> WorkflowStatusDictionary { get; }
+            public Dictionary<Guid, FormData> FormData { get; }
+            public Dictionary<Guid, FlowControllerServicesContainer> FlowControllerServicesContainers { get; }
 
-            public Dictionary<Guid, WorkflowPersistingType> WorkflowPersistingTypeDictionary { get; set; }
+            public Dictionary<Guid, WorkflowPersistingType> WorkflowPersistingTypeDictionary { get; }
 
-            public Dictionary<Guid, Semaphore> WorkflowIdleWaitSemaphores { get; set; }
-            public Dictionary<int, Exception> ExceptionFromWorkflow { get; set; }
+            public Dictionary<Guid, Semaphore> WorkflowIdleWaitSemaphores { get; private set; }
+            public Dictionary<int, Exception> ExceptionFromWorkflow { get; private set; }
 
-            public Dictionary<Type, IEventHandleFilter> EventHandleFilters { get; set; }
+            public Dictionary<Type, IEventHandleFilter> EventHandleFilters { get; }
 
             public static void InitializeResources(Resources resources)
             {
