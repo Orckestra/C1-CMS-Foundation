@@ -88,51 +88,55 @@ namespace Composite.C1Console.Security
         }
 
 
-
         /// <exclude />
         protected static void DoDeserialize(string serializedEntityToken, out string type, out string source, out string id)
         {
-            if(CompositeJsonSerializer.IsJsonSerialized(serializedEntityToken))
-            {
-                var entityToken =
-                    CompositeJsonSerializer.Deserialize<Dictionary<string, string>>(serializedEntityToken);
-                if (entityToken.ContainsKey(nameof(Type)) &&
-                    entityToken.ContainsKey(nameof(Source)) &&
-                    entityToken.ContainsKey(nameof(Id)))
-                {
-                    type = entityToken[nameof(Type)];
-                    source = entityToken[nameof(Source)];
-                    id = entityToken[nameof(Id)];
-                }
-                else
-                {
-                    throw new ArgumentException("Is not a serialized entity token", nameof(serializedEntityToken));
-                }
-            }
-            else
-            {
-                Dictionary<string, string> dic;
-
-                DoDeserialize(serializedEntityToken, out type, out source, out id, out dic);
-            }
-            
+            DoDeserialize(serializedEntityToken, out type, out source, out id, 
+                          out Dictionary<string, string> _);
         }
 
-        /// <exclude />
-        protected static void DoDeserialize(string serializedEntityToken, out string type, out string source, out string id, out Dictionary<string, string> dic)
-        {
-            dic = StringConversionServices.ParseKeyValueCollection(serializedEntityToken);
 
-            if (!dic.ContainsKey("_EntityToken_Type_") ||
-                !dic.ContainsKey("_EntityToken_Source_") ||
-                !dic.ContainsKey("_EntityToken_Id_"))
+        /// <exclude />
+        protected static void DoDeserialize(string serializedEntityToken, out string type, out string source, out string id, out Dictionary<string, string> dictionary)
+        {
+            if (!CompositeJsonSerializer.IsJsonSerialized(serializedEntityToken))
+            {
+                DoDeserializeLegacy(serializedEntityToken, out type, out source, out id, out dictionary);
+                return;
+            }
+
+            var properties = CompositeJsonSerializer.Deserialize<Dictionary<string, string>>(serializedEntityToken);
+
+            if (!properties.TryGetValue(nameof(Type), out type)
+                || !properties.TryGetValue(nameof(Source), out source)
+                || !properties.TryGetValue(nameof(Id), out id))
             {
                 throw new ArgumentException("Is not a serialized entity token", nameof(serializedEntityToken));
             }
 
-            type = StringConversionServices.DeserializeValueString(dic["_EntityToken_Type_"]);
-            source = StringConversionServices.DeserializeValueString(dic["_EntityToken_Source_"]);
-            id = StringConversionServices.DeserializeValueString(dic["_EntityToken_Id_"]);
+            properties.Remove(nameof(Type));
+            properties.Remove(nameof(Source));
+            properties.Remove(nameof(Id));
+
+            dictionary = properties;
+        }
+
+
+        /// <exclude />
+        private static void DoDeserializeLegacy(string serializedEntityToken, out string type, out string source, out string id, out Dictionary<string, string> dic)
+        {
+            dic = StringConversionServices.ParseKeyValueCollection(serializedEntityToken);
+            
+            if (!dic.TryGetValue("_EntityToken_Type_", out string serializedType) ||
+                !dic.TryGetValue("_EntityToken_Source_", out string serializedSource) ||
+                !dic.TryGetValue("_EntityToken_Id_", out string serializedId))
+            {
+                throw new ArgumentException("Is not a serialized entity token", nameof(serializedEntityToken));
+            }
+
+            type = StringConversionServices.DeserializeValueString(serializedType);
+            source = StringConversionServices.DeserializeValueString(serializedSource);
+            id = StringConversionServices.DeserializeValueString(serializedId);
         }
 
 
@@ -145,7 +149,7 @@ namespace Composite.C1Console.Security
         /// <exclude />
         public virtual string GetPrettyHtml(Dictionary<string, string> piggybag)
         {
-            EntityTokenHtmlPrettyfier entityTokenHtmlPrettyfier = new EntityTokenHtmlPrettyfier(this, piggybag);
+            var entityTokenHtmlPrettyfier = new EntityTokenHtmlPrettyfier(this, piggybag);
 
             OnGetPrettyHtml(entityTokenHtmlPrettyfier);
 
@@ -175,13 +179,10 @@ namespace Composite.C1Console.Security
         /// <exclude />
         public override bool Equals(object obj)
         {
-            EntityToken entityToken = obj as EntityToken;
-
-            if (entityToken == null) return false;
-
-            if (entityToken.GetVersionHashCode() != GetVersionHashCode()) return false;
-
-            return entityToken.VersionId == this.VersionId && EqualsWithVersionIgnore(entityToken);
+            return obj is EntityToken entityToken
+                   && entityToken.GetVersionHashCode() == GetVersionHashCode()
+                   && entityToken.VersionId == this.VersionId 
+                   && EqualsWithVersionIgnore(entityToken);
         }
 
         /// <exclude />
