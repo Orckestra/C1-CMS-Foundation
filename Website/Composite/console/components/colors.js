@@ -1,16 +1,22 @@
-export default {
-	baseFontColor: '#333',
+﻿export default {
+    primaryColor: '#22B980',
+    baseFontColor: '#333',
+    mutedTextColor: '#999',
+    borderColor: '#ccc',
+    darkBackground: '#EFEFEF',
+
+	/* BUTTON */
 	buttonTextColor: '#575757',
-	borderColor: '#ccc',
-	darkBackground: '#EFEFEF',
 	buttonDropShadowColor: '#DDD',
 	buttonHighlightColor: '#22B980',
-	buttonShadingColor: '#1ea371',
+    buttonShadingColor: '#1ea371',
+	/* end BUTTON */
+
 	fieldsetBackgroundColor: '#F7F7F7',
 	fieldsetLegendColor: '#22B980',
 	fieldFocusColor: '#22B980',
 	dialogHeaderColor: '#22B980',
-	fieldLabelColor: '#999',
+    fieldLabelColor: '#999',
 	scrollbarThumbColor: '#CACACA',
 	scrollbarTrackColor: '#FAFAFA',
 	tableBorderColor: '#DDD',
