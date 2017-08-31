@@ -1,8 +1,8 @@
-# C1 CMS Foundation
+# C1 CMS Foundation[![Reviews here...!](http://hackathon.composite.net/maw/github/reviews.png)](https://www.facebook.com/pg/C1CMS/reviews)
 
 C1 CMS Foundation - a .NET based Web Content Management System, open source and a bundle of joy!
 
-[![screen shots from the new C1 user interface (the C1 Console)](http://hackathon.composite.net/maw/github/6-pack-screenshots-small.png)](http://hackathon.composite.net/maw/github/6-pack-screenshots.png)
+[![screen shots from the new C1 user interface (the C1 Console)](http://hackathon.composite.net/maw/github/6-pack-screenshots-smallr.png)](http://hackathon.composite.net/maw/github/6-pack-screenshots.png)
 
 [![Join the chat at https://gitter.im/Orckestra/C1-CMS](https://badges.gitter.im/Orckestra/C1-CMS.svg)](https://gitter.im/Orckestra/C1-CMS?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
