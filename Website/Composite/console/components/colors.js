@@ -14,9 +14,11 @@
 
 	fieldsetBackgroundColor: '#F7F7F7',
 	fieldsetLegendColor: '#22B980',
-	fieldFocusColor: '#22B980',
-	dialogHeaderColor: '#22B980',
+    fieldFocusColor: '#22B980',
+    fieldBorderColor: '#ccc',
     fieldLabelColor: '#999',
+
+    dialogHeaderColor: '#22B980',
 	scrollbarThumbColor: '#CACACA',
 	scrollbarTrackColor: '#FAFAFA',
 	tableBorderColor: '#DDD',
