@@ -1,5 +1,7 @@
 ﻿import React, { PropTypes } from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
+import DataFieldWrapper from 'console/components/presentation/DataFieldWrapper.js';
+import DataFieldLabel from 'console/components/presentation/DataFieldLabel.js';
 import HelpIcon from 'console/components/presentation/HelpIcon.js';
 import Select from 'console/components/presentation/Select.js';
 import Input from 'console/components/presentation/Input.js';
@@ -16,18 +18,6 @@ const Headline = styled.h4`
 	color: ${colors.fieldLabelColor};
 `;
 
-const Label = styled.label`
-	display: inline-block;
-	margin: 0;
-	font-size: 12px;
-	padding: 5px 0 4px 0;
-	color: ${colors.fieldLabelColor};
-	width: calc(100% - 56px);
-`;
-
-const DataFieldWrapper = styled.div`
-	position: relative;
-`;
 
 const DataField = props => {
 	let handleChange, defaultOption, inputElement, options;
@@ -82,7 +72,7 @@ const DataField = props => {
             }
 			
 			{props.label ?
-				<Label htmlFor={props.name}>{props.label}</Label> :
+                <DataFieldLabel htmlFor={props.name}>{props.label}</DataFieldLabel> :
                 null}
             {inputElement}
 			{props.help ? <HelpIcon text={props.help} /> : null}
