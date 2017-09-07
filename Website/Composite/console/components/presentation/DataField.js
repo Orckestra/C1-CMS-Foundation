@@ -39,42 +39,42 @@ const DataField = props => {
 		options = props.options.toJS();
 		defaultOption = options.filter(option => option.value === props.value)[0];
 		inputElement = <Select
-				id={props.name}
-				value={defaultOption}
-				clearable={false}
-				multi={false}
-				options={options}
-                onChange={handleChange}
-  				placeholder={props.placeholder}>
-			</Select>;
-        break;
-    case 'textarea':
-            inputElement = <TextArea
-             {...props}
-             withHelp={props.help ? true : false} />;
-            break;
+			id={props.name}
+			value={defaultOption}
+			clearable={false}
+			multi={false}
+			options={options}
+			onChange={handleChange}
+			placeholder={props.placeholder}>
+		</Select>;
+		break;
+	case 'textarea':
+		inputElement = <TextArea
+			{...props}
+			withHelp={props.help ? true : false} />;
+		break;
 	default:
-            inputElement = <Input
-            {...props}
+		inputElement = <Input
+			{...props}
 			onContextMenu={event => {
 				event.stopPropagation(); // to ensure default context menu is shown here
-            }}
-            withHelp={props.help ? true : false}
-			/>;
+			}}
+			withHelp={props.help ? true : false}
+		/>;
 	}
 
 	return (
 		<DataFieldWrapper>
-            {
+			{
 				// props.headline ?
 				//	<Headline>{props.headline}</Headline> :
-                //	null
-            }
+				//	null
+			}
 			
 			{props.label ?
-                <DataFieldLabel htmlFor={props.name}>{props.label}</DataFieldLabel> :
-                null}
-            {inputElement}
+				<DataFieldLabel htmlFor={props.name}>{props.label}</DataFieldLabel> :
+				null}
+			{inputElement}
 			{props.help ? <HelpIcon text={props.help} /> : null}
 		</DataFieldWrapper>
 	);
@@ -83,7 +83,7 @@ const DataField = props => {
 DataField.propTypes = {
 	type: PropTypes.string,
 	options: ImmutablePropTypes.listOf(ImmutablePropTypes.map),
-    updateValue: PropTypes.func,
+	updateValue: PropTypes.func,
 	name: PropTypes.string.isRequired,
 	headline: PropTypes.string,
 	label: PropTypes.string,
