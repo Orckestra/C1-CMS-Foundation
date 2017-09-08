@@ -209,6 +209,8 @@
     <Content Include="Composite\console\components\presentation\ActionButton.js" />
     <Content Include="Composite\console\components\presentation\CheckboxGroup.js" />
     <Content Include="Composite\console\components\presentation\DataField.js" />
+    <Content Include="Composite\console\components\presentation\DataFieldLabel.js" />
+    <Content Include="Composite\console\components\presentation\DataFieldWrapper.js" />
     <Content Include="Composite\console\components\presentation\Dialog.js" />
     <Content Include="Composite\console\components\presentation\Fieldset.js" />
     <Content Include="Composite\console\components\presentation\FormTab.js" />

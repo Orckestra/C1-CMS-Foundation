@@ -18,6 +18,11 @@ const Headline = styled.h4`
 	color: ${colors.fieldLabelColor};
 `;
 
+const Error = styled.span`
+	color: red;
+	font-size: 12px;
+`;
+
 
 const DataField = props => {
 	let handleChange, defaultOption, inputElement, options;
@@ -76,6 +81,7 @@ const DataField = props => {
 				null}
 			{inputElement}
 			{props.help ? <HelpIcon text={props.help} /> : null}
+			{props.error ? <Error>{props.error}</Error> : null}
 		</DataFieldWrapper>
 	);
 };
