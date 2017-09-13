@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
+using Composite.C1Console.Security;
 using Composite.C1Console.Users;
 using Composite.Core.Extensions;
 using Composite.Core.IO;
@@ -116,9 +117,12 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     }
                     else if (dataType.AddToCurrentLocale)
                     {
-                        using (new DataScope(UserSettings.ActiveLocaleCultureInfo))
+                        Verify.That(UserValidationFacade.IsLoggedIn(), "Cannot add to the current locale as there's no logged in user.");
+
+                        var currentLocale = UserSettings.ActiveLocaleCultureInfo;
+                        using (new DataScope(currentLocale))
                         {
-                            XElement element = AddData(dataType, UserSettings.ActiveLocaleCultureInfo);
+                            XElement element = AddData(dataType, currentLocale);
                             typeElement.Add(element);
                         }
                     }
@@ -135,7 +139,11 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     }
                     else
                     {
-                        using (new DataScope(UserSettings.ActiveLocaleCultureInfo))
+                        var locale = UserValidationFacade.IsLoggedIn()
+                            ? UserSettings.ActiveLocaleCultureInfo
+                            : DataLocalizationFacade.DefaultLocalizationCulture;
+                        
+                        using (new DataScope(locale))
                         {
                             XElement element = AddData(dataType, null);
                             typeElement.Add(element);
