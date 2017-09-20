@@ -8,6 +8,9 @@ using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
+using System.Web.Hosting;
+using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Core.Logging;
 
@@ -25,10 +28,14 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
         private DateTime _lockFileUpdatedLast = DateTime.MinValue;
 #endif
 
+        private static readonly TimeSpan FileStreamFlushInterval = TimeSpan.FromSeconds(5);
+        private static readonly TimeSpan FileStreamCloseOnIdleInterval = TimeSpan.FromSeconds(10);
+
         private readonly string _logDirectoryPath;
         private readonly bool _flushImmediately;
 
         public static event ThreadStart OnReset;
+        private static Task _flushOnIdleTask;
 
 
         internal LogFileInfo FileConnection;
@@ -47,11 +54,50 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
             }
             _flushImmediately = flushImmediately;
 
+            _flushOnIdleTask = Task.Factory.StartNew(FlushOnIdle);
+
 #if UseLockFiles
             TouchLockFile();
 #endif
         }
-        
+
+        private void FlushOnIdle()
+        {
+            Predicate<LogFileInfo> fileShouldBeClosed = logFile =>
+                logFile.LastUsageTime != null && DateTime.Now - logFile.LastUsageTime.Value > FileStreamCloseOnIdleInterval;
+
+            Predicate<LogFileInfo> fileStreamShouldBeFlushed = logFile =>
+            {
+                var lastFlushTime = logFile.LastFlushTime ?? logFile.StartupTime;
+                return logFile.LastUsageTime != null && logFile.LastUsageTime.Value > lastFlushTime
+                       && DateTime.Now - lastFlushTime > FileStreamFlushInterval;
+            };
+
+            while (!HostingEnvironment.ApplicationHost.ShutdownInitiated())
+            {
+                Thread.Sleep(500);
+
+                var conn = this.FileConnection;
+                if (conn != null && (fileShouldBeClosed(conn) || fileStreamShouldBeFlushed(conn)))
+                {
+                    lock (SyncRoot)
+                    {
+                        conn = this.FileConnection;
+                        if (conn != null)
+                        {
+                            if (fileShouldBeClosed(conn))
+                            {
+                                CloseLogFile(true);
+                            }
+                            else if (fileStreamShouldBeFlushed(conn))
+                            {
+                                Flush(true);
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
 
         public DateTime StartupTime
@@ -60,12 +106,8 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
             {
                 lock (_syncRoot)
                 {
-                    if (FileConnection != null)
-                    {
-                        return FileConnection.StartupTime;
-                    }
+                    return FileConnection?.StartupTime ?? DateTime.Now;
                 }
-                return DateTime.Now;
             }
         }
 
@@ -77,20 +119,22 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
 
             byte[] bytes = Encoding.UTF8.GetBytes(logLine + "\n");
 
-            EnsureInitialize();
-
             lock (_syncRoot)
             {
-                FileConnection.NewEntries.Add(entry);
-
                 // Checking whether we should change the file after midnight
                 int dayNumber = entry.TimeStamp.Day;
 
-                if (dayNumber != FileConnection.CreationDate.Day
-                   && dayNumber == DateTime.Now.Day)
+                var now = DateTime.Now;
+
+                if (FileConnection != null && dayNumber != FileConnection.CreationDate.Day
+                   && dayNumber == now.Day)
                 {
-                    ResetInitialization();
+                    CloseLogFile(true);
                 }
+
+                EnsureInitialize();
+
+                FileConnection.NewEntries.Add(entry);
 
                 // Writing the file in the "catch" block in order to prevent chance of corrupting the file by experiencing ThreadAbortException.
                 Exception thrownException = null;
@@ -99,13 +143,15 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
                 }
                 finally
                 {
+                    
                     try
                     {
                         FileConnection.FileStream.Write(bytes, 0, bytes.Length);
+                        FileConnection.LastUsageTime = now;
 
                         if (_flushImmediately)
                         {
-                            FileConnection.FileStream.Flush();
+                            Flush(false);
                         }
                     }
                     catch (Exception exception)
@@ -123,8 +169,6 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirectoryClass:DoNotUseDirectoryClass", Justification = "This is what we want, touch is used later on")]
         public LogFileReader[] GetLogFiles()
         {
-            EnsureInitialize();
-
 #if UseLockFiles
             if (MoreThanOneAppDomainRunning()) return Array.Empty<LogFileReader>();
 #endif
@@ -142,6 +186,8 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
                     currentlyOpenedFileName = FileConnection.FileName;
 
                     result.Add(new CurrentFileReader(this));
+
+                    FileConnection.LastUsageTime = DateTime.Now;
                 }
             }
 
@@ -182,7 +228,7 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
             return result.ToArray();
         }
 
-        internal void Flush()
+        internal void Flush(bool silent)
         {
             lock (_syncRoot)
             {
@@ -192,9 +238,11 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
                     {
                         FileConnection.FileStream.Flush();
                     }
-                    catch (Exception)
+                    catch (Exception) when (silent)
                     {
                     }
+
+                    FileConnection.LastFlushTime = DateTime.Now;
                 }
             }
         }
@@ -374,20 +422,17 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
         }
 #endif
 
-
-        private void ResetInitialization()
+        private void CloseLogFile(bool raiseOnResetEvent)
         {
-            lock (_syncRoot)
+            if (FileConnection != null)
             {
-                if (FileConnection != null)
-                {
-                    FileConnection.Dispose();
-                    FileConnection = null;
-                }
+                FileConnection.Dispose();
+                FileConnection = null;
+            }
 
+            if (raiseOnResetEvent)
+            {
                 OnReset?.Invoke();
-
-                EnsureInitialize();
             }
         }
 
@@ -435,11 +480,7 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
             {
                 if (disposing)
                 {
-                    if (FileConnection != null)
-                    {
-                        FileConnection.Dispose();
-                        FileConnection = null;
-                    }
+                    CloseLogFile(false);
                 }
 
                 _disposed = true;
