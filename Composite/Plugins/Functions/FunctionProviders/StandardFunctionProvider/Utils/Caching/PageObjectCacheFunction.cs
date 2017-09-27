@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Linq;
 using System.Web;
 using System.Xml.Linq;
-using Composite.Functions;
+using Composite.Core;
 using Composite.Core.Linq;
 using Composite.Core.WebClient.Renderings.Page;
+using Composite.Functions;
 using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
 using Composite.Data;
 using System.Threading;
@@ -55,7 +57,8 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
         }
 
 
-        readonly object _lock = new object();
+        readonly ConcurrentDictionary<string, object> _lockCollection = new ConcurrentDictionary<string, object>();
+        bool _poteintialKeysLeakLogged = false;
 
         public override object Execute(ParameterList parameters, FunctionContextContainer context)
         {
@@ -64,14 +67,23 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
                 return parameters.GetParameter<object>("ObjectToCache");
             }
 
+            var cache = HttpRuntime.Cache;
             string cacheKey = BuildCacheKey(parameters);
 
-            object result = HttpRuntime.Cache.Get(cacheKey);
+            object result = cache.Get(cacheKey);
             if (result == null)
             {
-                lock (_lock)
+                var lockObject = _lockCollection.GetOrAdd(cacheKey, key => new object());
+
+                lock (lockObject)
                 {
-                    result = HttpRuntime.Cache.Get(cacheKey);
+                    if (_lockCollection.Count > 50000 && !_poteintialKeysLeakLogged)
+                    {
+                        _poteintialKeysLeakLogged = true;
+                        Log.LogWarning(nameof(PageObjectCacheFunction), "Potential memory leak in the locks collection");
+                    }
+
+                    result = cache.Get(cacheKey);
                     if (result == null)
                     {
                         result = parameters.GetParameter<object>("ObjectToCache");
@@ -80,19 +92,19 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
                         {
                             result = EvaluateLazyResult(result, context);
 
-                            int secondsToCache = parameters.GetParameter<int>("SecondsToCache"); 
+                            int secondsToCache = parameters.GetParameter<int>("SecondsToCache");
 
-                            HttpRuntime.Cache.Add(
-                                cacheKey, 
-                                result, 
-                                null, 
+                            cache.Add(
+                                cacheKey,
+                                result,
+                                null,
                                 DateTime.Now.AddSeconds(secondsToCache),
-                                TimeSpan.Zero, 
-                                System.Web.Caching.CacheItemPriority.Default, 
+                                TimeSpan.Zero,
+                                System.Web.Caching.CacheItemPriority.Default,
                                 null);
                         }
                     }
-                } 
+                }
             }
 
             return result;
@@ -100,15 +112,15 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
 
         private static object EvaluateLazyResult(object result, FunctionContextContainer context)
         {
-            if (result is XDocument)
+            if (result is XDocument document)
             {
-                PageRenderer.ExecuteEmbeddedFunctions((result as XDocument).Root, context);
+                PageRenderer.ExecuteEmbeddedFunctions(document.Root, context);
                 return result;
             }
 
-            if (result is IEnumerable<XNode>)
+            if (result is IEnumerable<XNode> xNodes)
             {
-                return EvaluateLazyResult(result as IEnumerable<XNode>, context);
+                return EvaluateLazyResult(xNodes, context);
             }
 
             return result;
@@ -126,10 +138,8 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
             {
                 node.Remove();
 
-                if (node is XElement)
+                if (node is XElement element)
                 {
-                    var element = (XElement)node;
-
                     if (element.Name == FunctionXName)
                     {
                         var functionTreeNode = (FunctionRuntimeTreeNode)FunctionTreeBuilder.Build(element);
