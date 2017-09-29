@@ -397,19 +397,12 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
 
                 if (publishControlled.PublicationStatus == Draft)
                 {
-                    if (ProcessControllerAttributesFacade.IsActionIgnored(elementProviderType, GenericPublishProcessControllerActionTypeNames.UndoUnpublishedChanges) == false)
+                    if (!ProcessControllerAttributesFacade.IsActionIgnored(elementProviderType, GenericPublishProcessControllerActionTypeNames.UndoUnpublishedChanges))
                     {
-                        ActionToken actionToken;
-
                         IActionTokenProvider actionTokenProvider = ProcessControllerAttributesFacade.GetActionTokenProvider(elementProviderType, GenericPublishProcessControllerActionTypeNames.UndoUnpublishedChanges);
-                        if (actionTokenProvider != null)
-                        {
-                            actionToken = actionTokenProvider.GetActionToken(GenericPublishProcessControllerActionTypeNames.UndoUnpublishedChanges, data);
-                        }
-                        else
-                        {
-                            actionToken = new UndoPublishedChangesActionToken();
-                        }
+
+                        var actionToken = actionTokenProvider?.GetActionToken(GenericPublishProcessControllerActionTypeNames.UndoUnpublishedChanges, data)
+                                                             ?? new UndoPublishedChangesActionToken();
 
                         var undoPublishedChangesAction = new ElementAction(new ActionHandle(actionToken))
                         {
