@@ -3,3 +3,4 @@
 */*.*
 !/console/**/*
 !/styles/default/**/*
+!/README.md
