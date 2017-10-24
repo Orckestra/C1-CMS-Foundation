@@ -5,6 +5,8 @@
 	// IE8 filter
 	@opacity-ie: (@opacity * 100);
 	filter: ~"alpha(opacity=@{opacity-ie})";
+	// fix transparency artifacts in Chrome(61)
+	-webkit-backface-visibility: hidden;
 }
 
 // Clearfix
