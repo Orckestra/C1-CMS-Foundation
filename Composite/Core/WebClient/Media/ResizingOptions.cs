@@ -20,6 +20,8 @@ namespace Composite.Core.WebClient.Media
         private const string ResizedImageKeys = "~/App_Data/Composite/Media/ResizingOptions.xml";
         private static string _resizedImageKeysFilePath;
 
+        private int? _qualityOverride;
+
         /// <summary>
         /// Image heigth
         /// </summary>
@@ -41,19 +43,32 @@ namespace Composite.Core.WebClient.Media
         public int? MaxWidth { get; set; }
 
         /// <summary>
-        /// Image quality (when doing lossy compression)
-        /// </summary>
-        private int? QualityOverride { get; set; }
-
-        /// <summary>
         /// Indicate if resizing options has a default or non-default quality setting (used when doing lossy compression). 
         /// </summary>
-        public bool CustomQuality => QualityOverride.HasValue;
+        public bool CustomQuality => _qualityOverride.HasValue;
 
         /// <summary>
         /// Image quality (when doing lossy compression)
         /// </summary>
-        public int Quality => QualityOverride ?? GlobalSettingsFacade.ImageQuality;
+        public int Quality
+        {
+            get => _qualityOverride ?? GlobalSettingsFacade.ImageQuality;
+
+            set
+            {
+                _qualityOverride = value;
+
+                if (_qualityOverride < 1)
+                {
+                    _qualityOverride = 1;
+                }
+
+                if (_qualityOverride > 100)
+                {
+                    _qualityOverride = 100;
+                }
+            }
+        }
 
         /// <summary>
         /// Resizing action
@@ -63,7 +78,7 @@ namespace Composite.Core.WebClient.Media
         /// <summary>
         /// Indicates whether any options were specified
         /// </summary>
-        public bool IsEmpty => Height == null && Width == null && MaxHeight == null && MaxWidth == null && QualityOverride == null;
+        public bool IsEmpty => Height == null && Width == null && MaxHeight == null && MaxWidth == null && _qualityOverride == null;
 
         /// <exclude />
         public ResizingOptions() { }
@@ -104,7 +119,7 @@ namespace Composite.Core.WebClient.Media
                 Width = ParseOptionalIntAttribute(e, "width");
                 MaxHeight = ParseOptionalIntAttribute(e, "maxheight");
                 MaxWidth = ParseOptionalIntAttribute(e, "maxwidth");
-                QualityOverride = ParseOptionalIntAttribute(e, "quality");
+                _qualityOverride = ParseOptionalIntAttribute(e, "quality");
 
                 var attr = e.Attribute("action");
                 if (attr != null)
@@ -157,17 +172,7 @@ namespace Composite.Core.WebClient.Media
             str = queryString["q"];
             if (!string.IsNullOrEmpty(str))
             {
-                result.QualityOverride = int.Parse(str);
-
-                if (result.QualityOverride < 1)
-                {
-                    result.QualityOverride = 1;
-                }
-
-                if (result.QualityOverride > 100)
-                {
-                    result.QualityOverride = 100;
-                }
+                result.Quality = int.Parse(str);
             }
 
             var action = queryString["action"];
@@ -228,7 +233,7 @@ namespace Composite.Core.WebClient.Media
         public override string ToString()
         {
             var sb = new StringBuilder();
-            var parameters = new[] { Width, Height, MaxWidth, MaxHeight, QualityOverride };
+            var parameters = new[] { Width, Height, MaxWidth, MaxHeight, _qualityOverride };
             var parameterNames = new[] { "w", "h", "mw", "mh", "q" };
 
             for (var i = 0; i < parameters.Length; i++)
