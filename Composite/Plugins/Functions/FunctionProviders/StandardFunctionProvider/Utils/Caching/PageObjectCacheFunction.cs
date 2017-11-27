@@ -147,6 +147,11 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
                         var functionCallResult = functionTreeNode.GetValue(context);
                         if (functionCallResult != null)
                         {
+                            if (functionCallResult is XDocument document)
+                            {
+                                functionCallResult = document.Root;
+                            }
+
                             resultList.Add(functionCallResult);
 
                             if (functionCallResult is XObject || functionCallResult is IEnumerable<XObject>)
