@@ -242,8 +242,6 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
                 
                 OutputToResponse(context, inputStream);
             }
-
-            context.Response.Flush();
         }
         catch (HttpException)
         {
