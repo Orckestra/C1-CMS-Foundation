@@ -45,7 +45,7 @@ namespace Composite.Plugins.Routing.MediaUrlProviders
         /// <exclude />
         public string GetResizedImageUrl(string storeId, Guid mediaId, ResizingOptions resizingOptions)
         {
-            IMediaFile file = GetFileById(storeId, mediaId);
+            IMediaFile file = MediaUrlHelper.GetFileById(storeId, mediaId);
             if (file == null)
             {
                 return null;
@@ -144,24 +144,6 @@ namespace Composite.Plugins.Routing.MediaUrlProviders
             result.Replace(" ", "%20");
 
             return result.ToString();
-        }
-
-
-        private static IMediaFile GetFileById(string storeId, Guid fileId)
-        {
-            using (new DataScope(DataScopeIdentifier.Public))
-            {
-                var query = DataFacade.GetData<IMediaFile>();
-
-                if (query.IsEnumerableQuery())
-                {
-                    return (query as IEnumerable<IMediaFile>)
-                        .FirstOrDefault(f => f.Id == fileId && f.StoreId == storeId);
-                }
-
-                return query
-                    .FirstOrDefault(f => f.StoreId == storeId && f.Id == fileId);
-            }
         }
 
 
