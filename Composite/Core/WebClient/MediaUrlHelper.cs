@@ -6,7 +6,9 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Composite.Core.Extensions;
 using Composite.Core.Routing;
+using Composite.Core.Types;
 using Composite.Data;
+using Composite.Data.Caching;
 using Composite.Data.Types;
 using Composite.Plugins.Routing.InternalUrlConverters;
 
@@ -21,7 +23,31 @@ namespace Composite.Core.WebClient
 	{
 	    private static readonly string DefaultMediaStore = "MediaArchive";
         private static readonly Regex GuidRegex = new Regex(@"^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$");
-        //private static readonly string LogTitle = typeof(MediaUrlHelper).Name;
+
+	    private static readonly int MediaFileCacheSize = 2000;
+        private static readonly Cache<string, ExtendedNullable<IMediaFile>> _mediaFileCache = new Cache<string, ExtendedNullable<IMediaFile>>("Media files", MediaFileCacheSize);
+
+	    static MediaUrlHelper()
+	    {
+	        void OnMediaFileChanged(object sender, DataEventArgs args)
+	        {
+	            if (args.Data is IMediaFile mediaFile)
+	            {
+	                _mediaFileCache.Remove(GetCacheKey(mediaFile.StoreId, mediaFile.Id));
+	            }
+	        }
+
+	        DataEvents<IMediaFile>.OnAfterAdd += OnMediaFileChanged;
+	        DataEvents<IMediaFile>.OnAfterUpdate += OnMediaFileChanged;
+	        DataEvents<IMediaFile>.OnDeleted += OnMediaFileChanged;
+	        DataEvents<IMediaFile>.OnStoreChanged += (s, a) =>
+	        {
+	            if (!a.DataEventsFired)
+	            {
+	                _mediaFileCache.Clear();
+                }
+	        };
+	    }
 
         /// <exclude />
         public static string GetUrl(IMediaFile file)
@@ -131,21 +157,30 @@ namespace Composite.Core.WebClient
             return result;
         }
 
-        private static IMediaFile GetFileById(string storeId, Guid fileId)
+        internal static string GetCacheKey(string storeId, Guid fileId) => storeId + fileId;
+
+        internal static IMediaFile GetFileById(string storeId, Guid fileId)
         {
+            string cacheKey = GetCacheKey(storeId, fileId);
+            var cachedValue = _mediaFileCache.Get(cacheKey);
+            if (cachedValue != null)
+            {
+                return cachedValue.Value;
+            }
+
             using (new DataScope(DataScopeIdentifier.Public))
             {
                 var query = DataFacade.GetData<IMediaFile>();
 
-                if (query.IsEnumerableQuery())
-                {
-                    return (query as IEnumerable<IMediaFile>)
-                        .FirstOrDefault(f => f.Id == fileId && f.StoreId == storeId);
-                }
+                var result = query.IsEnumerableQuery()
+                    ? (query as IEnumerable<IMediaFile>).FirstOrDefault(f => f.Id == fileId && f.StoreId == storeId)
+                    : query.FirstOrDefault(f => f.StoreId == storeId && f.Id == fileId);
 
-                return query
-                    .FirstOrDefault(f => f.StoreId == storeId && f.Id == fileId);
+                _mediaFileCache.Add(cacheKey, new ExtendedNullable<IMediaFile> { Value = result });
+
+                return result;
             }
+
         }
 
         private static IMediaFile GetFileByCompositePath(string storeId, string compositePath)
