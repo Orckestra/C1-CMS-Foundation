@@ -19,6 +19,7 @@ using Composite.Core.Extensions;
 using Composite.Core.WebClient;
 using Composite.Core.WebClient.Media;
 using Composite.Core.WebClient.Renderings;
+using Composite.Data.Plugins.DataProvider.Streams;
 
 
 public class ShowMedia : IHttpHandler, IReadOnlySessionState
@@ -37,6 +38,43 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
         public readonly long Offset;
         public readonly long Length;
     }
+
+    private class FileOrStream
+    {
+        readonly string _fileName;
+        readonly IMediaFile _mediaFile;
+
+        public FileOrStream(string fileName)
+        {
+            _fileName = fileName;
+        }
+
+        public FileOrStream(IMediaFile mediaFile)
+        {
+            _mediaFile = mediaFile;
+
+            if (mediaFile is FileSystemFileBase)
+            {
+                _fileName = ((FileSystemFileBase) _mediaFile).SystemPath;
+            }
+        }
+
+        public bool IsFile
+        {
+            get { return _fileName != null; }
+        }
+
+        public string GetFilePath()
+        {
+            return _fileName;
+        }
+
+        public Stream OpenReadStream()
+        {
+            return _mediaFile.GetReadStream();
+        }
+    }
+
 
     public void ProcessRequest(HttpContext context)
     {
@@ -90,9 +128,9 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
         }
     }
 
-    private static bool ExecuteResponseHandlers(HttpContext context, IMediaFile file)
+    private static bool ExecuteResponseHandlers(HttpContext context, IMediaFile mediaFile)
     {
-        RenderingResponseHandlerResult responseHandling = RenderingResponseHandlerFacade.GetDataResponseHandling(file.GetDataEntityToken());
+        RenderingResponseHandlerResult responseHandling = RenderingResponseHandlerFacade.GetDataResponseHandling(mediaFile.GetDataEntityToken());
 
         if (responseHandling != null)
         {
@@ -157,30 +195,50 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
         Stream inputStream = null;
         try
         {
+            FileOrStream source;
 
             if (file.MimeType == "image/jpeg" || file.MimeType == "image/gif" || file.MimeType == "image/png"
                 || file.MimeType == "image/bmp" || file.MimeType == "image/tiff")
             {
-                inputStream = ProcessImageResizing(context, file);
+                source = ProcessImageResizing(context, file);
             }
             else
             {
-                inputStream = file.GetReadStream();
+                source = new FileOrStream(file);
             }
 
             long? length = null;
+            bool canSeek;
 
-            if (inputStream.CanSeek && inputStream.Length != 0)
+            if (source.IsFile)
             {
-                length = inputStream.Length;
+                var fileInfo = new FileInfo(source.GetFilePath());
+                if (!fileInfo.Exists)
+                {
+                    context.Response.StatusCode = 404;
+                    return;
+                }
+
+                length = fileInfo.Length;
+                canSeek = true;
             }
-            else if (file.Length.HasValue && file.Length > 0)
+            else
             {
-                length = file.Length;
+                inputStream = source.OpenReadStream();
+
+                canSeek = inputStream.CanSeek;
+
+                if (canSeek && inputStream.Length != 0)
+                {
+                    length = inputStream.Length;
+                }
+                else if (file.Length.HasValue && file.Length > 0)
+                {
+                    length = file.Length;
+                }
             }
 
-
-            bool canAcceptRanges = inputStream.CanSeek && length != null && length > 0;
+            bool canAcceptRanges = canSeek && length != null && length > 0;
             if (canAcceptRanges)
             {
                 context.Response.AddHeader("Accept-Ranges", "bytes");
@@ -228,9 +286,16 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
 
                 foreach (var rangeSegment in rangeSegments)
                 {
-                    inputStream.Seek(rangeSegment.Offset, SeekOrigin.Begin);
+                    if (source.IsFile)
+                    {
+                        context.Response.WriteFile(source.GetFilePath(), rangeSegment.Offset, rangeSegment.Length);
+                    }
+                    else
+                    {
+                        inputStream.Seek(rangeSegment.Offset, SeekOrigin.Begin);
 
-                    OutputToResponse(context, new LimitedStream(inputStream, rangeSegment.Length));
+                        OutputToResponse(context, new LimitedStream(inputStream, rangeSegment.Length));
+                    }
                 }
             }
             else
@@ -240,7 +305,14 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
                     context.Response.AddHeader("Content-Length", ((int)length).ToString(CultureInfo.InvariantCulture));
                 }
 
-                OutputToResponse(context, inputStream);
+                if (source.IsFile)
+                {
+                    context.Response.WriteFile(source.GetFilePath());
+                }
+                else
+                {
+                    OutputToResponse(context, inputStream);
+                }
             }
         }
         catch (HttpException)
@@ -432,13 +504,13 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
         }
     }
 
-    private static Stream ProcessImageResizing(HttpContext context, IMediaFile file)
+    private static FileOrStream ProcessImageResizing(HttpContext context, IMediaFile file)
     {
         var resizingOptions = ResizingOptions.Parse(context.Server, context.Request.QueryString);
 
         if (resizingOptions == null || resizingOptions.IsEmpty)
         {
-            return file.GetReadStream();
+            return new FileOrStream(file);
         }
 
         //Determine the content type, and save
@@ -477,14 +549,14 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
             string resizedImageFilePath = ImageResizer.GetResizedImage(context.Server, file, resizingOptions, imgType);
 
             return resizedImageFilePath != null
-                ? new C1FileStream(resizedImageFilePath, FileMode.OpenOrCreate, FileAccess.Read)
-                : file.GetReadStream();
+                ? new FileOrStream(resizedImageFilePath)
+                : new FileOrStream(file);
         }
         catch (Exception ex)
         {
             Log.LogVerbose("Composite.Media.ImageResize", ex.Message);
         }
-        return file.GetReadStream();
+        return new FileOrStream(file);
     }
 
     /// <summary>
