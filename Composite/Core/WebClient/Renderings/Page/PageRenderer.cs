@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -282,6 +282,11 @@ namespace Composite.Core.WebClient.Renderings.Page
             using (Profiler.Measure("Parsing localization strings"))
             {
                 LocalizationParser.Parse(xhtmlDocument);
+            }
+
+            using (Profiler.Measure("Converting URLs from internal to public format (XhtmlDocument)"))
+            {
+                InternalUrls.ConvertInternalUrlsToPublic(xhtmlDocument);
             }
         }
 
