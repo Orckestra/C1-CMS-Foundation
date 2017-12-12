@@ -277,6 +277,15 @@ namespace Composite.Core.WebClient.Renderings.Page
             {
                 InternalUrls.ConvertInternalUrlsToPublic(xhtmlDocument);
             }
+
+            var filters = ServiceLocator.GetServices<IPageContentFilter>().OrderBy(f => f.Order).ToList();
+            if (filters.Any())
+            {
+                using (Profiler.Measure("Executing custom filters"))
+                {
+                    filters.ForEach(_ => _.Filter(xhtmlDocument, page));
+                }
+            }
         }
 
                 return xhtmlDocument.AsAspNetControl(mapper);
