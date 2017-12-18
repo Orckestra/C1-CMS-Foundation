@@ -144,7 +144,7 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
 
                 if (newHostname != null)
                 {
-                    var url = context.Request.Url.ToString();
+                    var url = new Uri(context.Request.Url, context.Request.RawUrl).ToString();
                     int offset = url.IndexOf(hostname, StringComparison.OrdinalIgnoreCase);
                     if (offset > 0)
                     {
