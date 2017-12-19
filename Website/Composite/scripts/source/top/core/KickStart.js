@@ -476,3 +476,34 @@ var KickStart = new function () {
 		UpdateManager.isEnabled = false;
 	}
 }
+
+/*
+* Fix chrome interval focus on a username and a password for the saved password, issue #505
+*/
+if (typeof KickStart !== 'undefined' && typeof EventBroadcaster !== 'undefined' && EventBroadcaster.subscribe && /Chrome/.test(navigator.userAgent)) {
+	KickStart.subscribeToRemoveObsoluteDecks = function () {
+		if (!this.isSubscribedToRemoveObsoluteDecks) {
+			this.isSubscribedToRemoveObsoluteDecks = true;
+			EventBroadcaster.subscribe(BroadcastMessages.APPLICATION_LOGIN, {
+				handleBroadcast: function () {
+					try {
+						if (typeof top !== 'undefined' && top.bindingMap && typeof DocumentManager !== 'undefined' && DocumentManager.detachBindings) {
+							var obsoletedDecks = ["logindeck", "changepassworddeck"];
+							for (var i = 0; i < obsoletedDecks.length; i++) {
+								obsoletedDeckName = obsoletedDecks[i];
+								if (top.bindingMap[obsoletedDeckName]) {
+									obsoletedDeck = top.bindingMap[obsoletedDeckName];
+									if (obsoletedDeck && obsoletedDeck.bindingElement) {
+										DocumentManager.detachBindings(obsoletedDeck.bindingElement, true);
+										obsoletedDeck.bindingElement.innerHTML = "";
+									}
+								}
+							}
+						}
+					} catch (e) { };
+				}
+			});
+		}
+	};
+	KickStart.subscribeToRemoveObsoluteDecks();
+}
