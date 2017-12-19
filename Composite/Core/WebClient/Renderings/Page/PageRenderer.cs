@@ -16,7 +16,9 @@ using Composite.Core.Localization;
 using Composite.Core.WebClient.Renderings.Template;
 using Composite.Core.Xml;
 using Composite.C1Console.Security;
+using Composite.Core.Application;
 using Composite.Core.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Composite.Core.WebClient.Renderings.Page
 {
@@ -271,22 +273,20 @@ namespace Composite.Core.WebClient.Renderings.Page
                 AppendC1MetaTags(page, xhtmlDocument);
 
                 LocalizationParser.Parse(xhtmlDocument);
-            }
 
-            using (Profiler.Measure("Converting URLs from internal to public format (XhtmlDocument)"))
-            {
-                InternalUrls.ConvertInternalUrlsToPublic(xhtmlDocument);
-            }
-
-            var filters = ServiceLocator.GetServices<IPageContentFilter>().OrderBy(f => f.Order).ToList();
-            if (filters.Any())
-            {
-                using (Profiler.Measure("Executing custom filters"))
+                using (Profiler.Measure("Converting URLs from internal to public format (XhtmlDocument)"))
                 {
-                    filters.ForEach(_ => _.Filter(xhtmlDocument, page));
+                    InternalUrls.ConvertInternalUrlsToPublic(xhtmlDocument);
                 }
-            }
-        }
+
+                var filters = ServiceLocator.ApplicationServices.GetServices<IPageContentFilter>().OrderBy(f => f.Order).ToList();
+                if (filters.Any())
+                {
+                    using (Profiler.Measure("Executing custom filters"))
+                    {
+                        filters.ForEach(_ => _.Filter(xhtmlDocument, page));
+                    }
+                }
 
                 return xhtmlDocument.AsAspNetControl(mapper);
             }

@@ -14,11 +14,13 @@ using Composite.C1Console.Security;
 using Composite.Data;
 using Composite.Data.Types;
 using Composite.Core;
+using Composite.Core.Application;
 using Composite.Core.IO;
 using Composite.Core.Extensions;
 using Composite.Core.WebClient;
 using Composite.Core.WebClient.Media;
 using Composite.Core.WebClient.Renderings;
+using Microsoft.Extensions.DependencyInjection;
 
 
 public class ShowMedia : IHttpHandler, IReadOnlySessionState
@@ -99,7 +101,7 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
             if (responseHandling.PreventPublicCaching)
             {
                 var hostname = context.Request.Url.Host;
-                var mappers = ServiceLocator.GetServices<INonCachebleRequestHostnameMapper>();
+                var mappers = ServiceLocator.ApplicationServices.GetServices<INonCachebleRequestHostnameMapper>();
                 var newHostname = mappers
                         .Select(m => m.GetRedirectToHostname(hostname))
                         .FirstOrDefault(h => !string.IsNullOrWhiteSpace(h) && h != hostname);

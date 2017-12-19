@@ -1,7 +1,9 @@
+using Composite.Core.Application;
 using Composite.Data;
 using Composite.Core.WebClient.Renderings.Foundation;
 using Composite.Core.WebClient.Renderings.Foundation.PluginFacades;
 using Composite.Core.WebClient.Renderings.Plugins.RenderingResponseHandler;
+using Microsoft.Extensions.DependencyInjection;
 
 
 namespace Composite.Core.WebClient.Renderings
@@ -22,7 +24,7 @@ namespace Composite.Core.WebClient.Renderings
                 }
             }
 
-            foreach (var responseHandler in ServiceLocator.GetServices<IDataRenderingResponseHandler>())
+            foreach (var responseHandler in ServiceLocator.ApplicationServices.GetServices<IDataRenderingResponseHandler>())
             {
                 var result = responseHandler.GetDataResponseHandling(requestedItemEntityToken);
 
