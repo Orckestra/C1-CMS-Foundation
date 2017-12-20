@@ -478,12 +478,12 @@ var KickStart = new function () {
 }
 
 /*
-* Fix chrome interval focus on a username and a password for the saved password, issue #505
+* Fix chrome interval focus on a username and a password for the saved password, issue #504
 */
 if (typeof KickStart !== 'undefined' && typeof EventBroadcaster !== 'undefined' && EventBroadcaster.subscribe && /Chrome/.test(navigator.userAgent)) {
-	KickStart.subscribeToRemoveObsoluteDecks = function () {
-		if (!this.isSubscribedToRemoveObsoluteDecks) {
-			this.isSubscribedToRemoveObsoluteDecks = true;
+	KickStart.subscribeToRemoveObsoleteDecks = function () {
+		if (!this.isSubscribedToRemoveObsoleteDecks) {
+			this.isSubscribedToRemoveObsoleteDecks = true;
 			EventBroadcaster.subscribe(BroadcastMessages.APPLICATION_LOGIN, {
 				handleBroadcast: function () {
 					try {
@@ -505,5 +505,5 @@ if (typeof KickStart !== 'undefined' && typeof EventBroadcaster !== 'undefined' 
 			});
 		}
 	};
-	KickStart.subscribeToRemoveObsoluteDecks();
+	KickStart.subscribeToRemoveObsoleteDecks();
 }
