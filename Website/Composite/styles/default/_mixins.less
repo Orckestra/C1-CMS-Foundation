@@ -39,3 +39,21 @@
 	-ms-user-select: @value; /* IE 10+ */
 	user-select: @value; /* Likely future */
 }
+
+.chrome63-column-input-fields-fixes() {
+	//Fix issue https://github.com/Orckestra/C1-CMS-Foundation/issues/506
+	@media screen and (-webkit-min-device-pixel-ratio:0) and (min-resolution:.001dpcm) {
+		ui|fielddata {
+			ui|datainput {
+				ui|box {
+					overflow: visible;
+					padding: 0 2px;
+
+					input {
+						padding-left: 5px;
+					}
+				}
+			}
+		}
+	}
+}
