@@ -274,12 +274,8 @@ SelectorBinding.prototype.buildDOMContent = function () {
 	this.buildSelections ();
 
 	this.bindingElement.tabIndex = 0;
-	if ( Client.isExplorer == true ) {
+	if ( Client.isExplorer === true ) {
 		this.bindingElement.hideFocus = true;
-	}
-
-	if (Client.isEdge) {
-		this.isSearchSelectionEnabled = false;
 	}
 }
 
@@ -921,6 +917,8 @@ SelectorBinding.prototype._applySearchSelection = function () {
 			*/
 			this._popupBinding._enableTab(true);
 
+			this._popupBinding.snapTo(this._buttonBinding.bindingElement);
+			this._popupBinding.fitOnScreen();
 		}
 	}
 }
