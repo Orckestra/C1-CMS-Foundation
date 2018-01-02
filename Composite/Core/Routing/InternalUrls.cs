@@ -171,7 +171,10 @@ namespace Composite.Core.Routing
             return result;
         }
 
-        private static bool IsLinkAttribute(XName attrName) => attrName.LocalName == "src" || attrName.LocalName == "href";
+        private static bool IsLinkAttribute(XName attrName) =>
+            attrName.LocalName == "src"
+            || attrName.LocalName == "href"
+            || attrName.LocalName == "srcset";
 
 
         /// <summary>
