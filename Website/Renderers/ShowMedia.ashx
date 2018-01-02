@@ -1,4 +1,4 @@
-﻿<%@ WebHandler Language="C#" Class="ShowMedia" %>
+<%@ WebHandler Language="C#" Class="ShowMedia" %>
 
 using System;
 using System.Collections.Generic;
@@ -134,6 +134,29 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
 
         if (responseHandling != null)
         {
+            if (responseHandling.PreventPublicCaching)
+            {
+                var hostname = context.Request.Url.Host;
+                var mappers = ServiceLocator.GetServices<INonCachebleRequestHostnameMapper>();
+                var newHostname = mappers
+                        .Select(m => m.GetRedirectToHostname(hostname))
+                        .FirstOrDefault(h => !string.IsNullOrWhiteSpace(h) && h != hostname);
+
+                if (newHostname != null)
+                {
+                    var url = new Uri(context.Request.Url, context.Request.RawUrl).ToString();
+                    int offset = url.IndexOf(hostname, StringComparison.OrdinalIgnoreCase);
+                    if (offset > 0)
+                    {
+                        var newUrl = url.Substring(0, offset) + newHostname + url.Substring(offset + hostname.Length);
+                        context.Response.RedirectPermanent(newUrl, false);
+                        return true;
+                    }
+                }
+
+                context.Response.Cache.SetCacheability(HttpCacheability.Private);
+            }
+
             bool redirecting = responseHandling.RedirectRequesterTo != null;
 
             if (redirecting)

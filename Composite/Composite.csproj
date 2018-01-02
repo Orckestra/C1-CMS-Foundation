@@ -254,6 +254,8 @@
     <Compile Include="Core\Instrumentation\DisposableResourceTracer.cs" />
     <Compile Include="Core\Serialization\CompositeJsonSerializer.cs" />
     <Compile Include="Core\WebClient\PageStructureRpc.cs" />
+    <Compile Include="Core\WebClient\Renderings\Page\IPageContentFilter.cs" />
+    <Compile Include="Core\WebClient\Renderings\INonCachebleRequestHostnameMapper.cs" />
     <Compile Include="Core\WebClient\Services\WampRouter\WampRouteWrapper.cs" />
     <Compile Include="Data\Caching\CachedTable.cs" />
     <Compile Include="Data\Types\VersionedDataHelperContract.cs" />
