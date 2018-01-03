@@ -253,6 +253,7 @@
     <Compile Include="Core\Implementation\StatelessDataConnectionImplementation.cs" />
     <Compile Include="Core\Instrumentation\DisposableResourceTracer.cs" />
     <Compile Include="Core\Serialization\CompositeJsonSerializer.cs" />
+    <Compile Include="Core\Serialization\CompositeSerializationBinder.cs" />
     <Compile Include="Core\WebClient\PageStructureRpc.cs" />
     <Compile Include="Core\WebClient\Renderings\Page\IPageContentFilter.cs" />
     <Compile Include="Core\WebClient\Renderings\INonCachebleRequestHostnameMapper.cs" />
