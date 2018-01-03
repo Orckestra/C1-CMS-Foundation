@@ -35,7 +35,7 @@ module.exports = {
 					.setUsername(username || 'admin')
 					.setPassword(password || '123456')
 					.click('@submitButton')
-					.waitForElementNotVisible('@usernameField', this.api.globals.timeouts.basic);
+					.waitForElementNotPresent('@usernameField', this.api.globals.timeouts.basic);
 			}
 		}
 	]
