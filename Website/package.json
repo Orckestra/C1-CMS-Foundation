@@ -9,14 +9,14 @@
     "unit:cov": "jspm run test/unit/coverage.js",
     "watch": "chokidar-socket-emitter -p Composite/console/",
     "buildconsole": "jspm build CMSConsole Composite/console.js --minify --production",
-    "lintconsole": "eslint Composite/console test/unit/"
+    "lintconsole": "eslint Composite/console test/unit/",
+    "precommit": "lint-staged"
   },
   "devDependencies": {
     "JSONPath": "^0.10.0",
     "autoprefixer-core": "^5.2.1",
-    "chromedriver": "^2.34.0",
     "chokidar-socket-emitter": "0.5.4",
-    "chromedriver": "^2.26.1",
+    "chromedriver": "^2.34.0",
     "csswring": "^3.0.5",
     "eslint": "3.1.1",
     "eslint-plugin-mocha": "4.0.0",
@@ -28,12 +28,14 @@
     "grunt-contrib-watch": "~0.6.1",
     "grunt-postcss": "^0.5.5",
     "grunt-svgmin": "3.2.0",
+    "husky": "0.14.3",
     "iedriver": "2.53.1",
     "istanbul": "^0.4.3",
     "istanbul-lib-coverage": "1.0.0",
     "jsdom": "9.4.1",
     "jspm": "0.17.0-beta.32",
     "less": "^2.1.2",
+    "lint-staged": "6.0.0",
     "load-grunt-tasks": "3.5.0",
     "mocha": "3.0.1",
     "nightwatch": "0.9.3",
@@ -45,6 +47,10 @@
     "systemjs-istanbul-hook": "0.1.1",
     "xml2js": "^0.4.10"
   },
+	"lint-staged": {
+		"Composite/console/**/*.js": "eslint",
+		"test/unit/**/*.js": "eslint"
+	},
   "jspm": {
     "main": "Composite/console/console.js",
     "dependencies": {
