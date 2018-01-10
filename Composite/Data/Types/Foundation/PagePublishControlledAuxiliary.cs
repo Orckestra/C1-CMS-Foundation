@@ -18,7 +18,7 @@ namespace Composite.Data.Types.Foundation
             using (new DataScope(DataScopeIdentifier.Administrated))
             {
                 pagePlaceholderContents =
-                    (from content in DataFacade.GetData<IPagePlaceholderContent>()
+                    (from content in DataFacade.GetData<IPagePlaceholderContent>(false)
                      where content.PageId == page.Id && content.VersionId == page.VersionId
                      select content).ToList();
             }

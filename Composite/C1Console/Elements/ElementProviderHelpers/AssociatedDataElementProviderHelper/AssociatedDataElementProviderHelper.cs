@@ -80,11 +80,8 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
 
         public AssociatedDataElementProviderHelper(ElementProviderContext elementProviderContext, EntityToken rootEntityToken, bool addVisualFunctionActions)
         {
-            if (elementProviderContext == null) throw new ArgumentNullException("elementProviderContext");
-            if (rootEntityToken == null) throw new ArgumentNullException("rootEntityToken");
-
-            _elementProviderContext = elementProviderContext;
-            _rootEntityToken = rootEntityToken;
+            _elementProviderContext = elementProviderContext ?? throw new ArgumentNullException(nameof(elementProviderContext));
+            _rootEntityToken = rootEntityToken ?? throw new ArgumentNullException(nameof(rootEntityToken));
             _addVisualFunctionActions = addVisualFunctionActions;
 
             _dataGroupingProviderHelper = new DataGroupingProviderHelper.DataGroupingProviderHelper(elementProviderContext)
@@ -115,8 +112,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
 
         private Guid GetPageId(EntityToken entityToken)
         {
-            var dataGroupingEntityToken = entityToken as DataGroupingProviderHelperEntityToken;
-            if (dataGroupingEntityToken != null)
+            if (entityToken is DataGroupingProviderHelperEntityToken dataGroupingEntityToken)
             {
                 if(dataGroupingEntityToken.Payload.IsNullOrEmpty())
                 {
@@ -126,19 +122,17 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
                 return new Guid(dataGroupingEntityToken.Payload);
             }
 
-            var pageFolderElementEntityToken = entityToken as AssociatedDataElementProviderHelperEntityToken;
-            if( pageFolderElementEntityToken != null)
+            if(entityToken is AssociatedDataElementProviderHelperEntityToken pageFolderElementEntityToken)
             {
                 return new Guid(pageFolderElementEntityToken.Id);
             }
 
-            var dataEntityToken = entityToken as DataEntityToken;
-            if(dataEntityToken != null)
+            if(entityToken is DataEntityToken dataEntityToken)
             {
                 return (dataEntityToken.Data as IPageRelatedData).PageId;
             }
 
-            throw new InvalidOperationException("Unexpected entity token type '{0}'".FormatWith(entityToken.GetType().FullName));
+            throw new InvalidOperationException($"Unexpected entity token type '{entityToken.GetType().FullName}'");
         }
 
         private EntityToken GetParentEntityToken(Type interfaceType, EntityToken entityToken)
@@ -373,9 +367,9 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
                     Label = label,
                     ToolTip = label,
                     HasChildren = false,
-                    Icon = (data is IPublishControlled 
-                    ? DataIconLookup[((IPublishControlled)data).PublicationStatus] 
-                    : DataIconFacade.DataPublishedIcon)
+                    Icon = data is IPublishControlled publishedControlled
+                            ? DataIconLookup[publishedControlled.PublicationStatus] 
+                            : DataIconFacade.DataPublishedIcon
                 }
             };
 

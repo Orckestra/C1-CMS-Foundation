@@ -33,6 +33,11 @@
         /// </summary>
         public FacetValuePreviewDelegate PreviewFunction { get; set; }
 
+        /// <summary>
+        /// When <value>true</value>, information about not selected facet values should be returned when querying the facet.
+        /// </summary>
+        public bool ExpandSelection { get; set; } = true;
+
         //public int FieldOrder { get; set; }
     }
 

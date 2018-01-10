@@ -65,8 +65,7 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemMediaFileProvider
             set;
         }
 
-
-
+        
         public string Title
         {
             get
@@ -82,6 +81,17 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemMediaFileProvider
 
 
         public string Description
+        {
+            get
+            {
+                return "";
+            }
+            set
+            {
+            }
+        }
+
+        public string Tags
         {
             get
             {

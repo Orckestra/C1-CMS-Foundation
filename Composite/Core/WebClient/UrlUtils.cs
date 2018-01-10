@@ -105,6 +105,10 @@ namespace Composite.Core.WebClient
         }
 
 
+        /// <exclude />
+        internal static string AdminFolderName => _adminFolderName;
+
+
         /// <summary>
         /// Determines whether the current request is administration console request. 
         /// (Requests to [/virtual path]/Composite/*)

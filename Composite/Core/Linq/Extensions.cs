@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,14 +42,16 @@ namespace Composite.Core.Linq
         /// <returns>Evaluated collection.</returns>
         public static ICollection<T> Evaluate<T>(this IEnumerable<T> enumerable)
         {
-            if (enumerable is T[])
+            Verify.ArgumentNotNull(enumerable, nameof(enumerable));
+
+            if (enumerable is T[] array)
             {
-                return enumerable as T[];
+                return array;
             }
 
-            if (enumerable is ICollection<T>)
+            if (enumerable is ICollection<T> collection)
             {
-                return enumerable as ICollection<T>;
+                return collection;
             }
 
             return new List<T>(enumerable);
@@ -116,7 +118,7 @@ namespace Composite.Core.Linq
         /// <param name="exceptionOnMultipleResults">Exception format for multiple rows found</param>
         /// <param name="formatArgs">Format arguments</param>
         /// <returns></returns>
-        [StringFormatMethod("formatArgs")]
+        [StringFormatMethod("exceptionOnMultipleResults")]
         public static T SingleOrDefaultOrException<T>(this IEnumerable<T> query, string exceptionOnMultipleResults, params object[] formatArgs)
         {
             var result = query.ToList();

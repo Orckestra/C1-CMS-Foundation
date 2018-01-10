@@ -186,7 +186,19 @@ namespace Composite.Core.Instrumentation
 #endif
 
                 _stack.Pop();
+#if LeakCheck
+                GC.SuppressFinalize(this);
+#endif
             }
+
+#if LeakCheck
+            private string stack = Environment.StackTrace;
+            /// <exclude />
+            ~InfoCollector()
+            {
+                Composite.Core.Instrumentation.DisposableResourceTracer.RegisterFinalizerExecution(stack);
+            }
+#endif
         }
 
         internal static void AddSubMeasurement(Measurement measurement)

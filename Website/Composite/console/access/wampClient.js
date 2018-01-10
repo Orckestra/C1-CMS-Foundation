@@ -3,6 +3,7 @@ import 'url-polyfill';
 import { waitFor } from 'console/mocks/mockServer.js';
 
 import Wampy from 'wampy';
+import { getBaseUrl } from './utils.js';
 let currentClients = {};
 
 function getClient(realm) {

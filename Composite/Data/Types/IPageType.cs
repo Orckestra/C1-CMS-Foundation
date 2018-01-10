@@ -86,7 +86,7 @@ namespace Composite.Data.Types
                                     || (childPage != null && f.Id == childPage.PageTypeId))
                         .Evaluate();
 
-            ICollection<IPageTypeParentRestriction> parentRestrictions = null;
+            ICollection<IPageTypeParentRestriction> allParentRestrictions = null;
 
             var result = new List<IPageType>();
             foreach (IPageType pageType in pageTypes)
@@ -97,11 +97,12 @@ namespace Composite.Data.Types
                     continue;
                 }
 
-                parentRestrictions = parentRestrictions ??
-                    DataFacade.GetData<IPageTypeParentRestriction>().AsEnumerable()
-                        .Where(f => f.PageTypeId == pageType.Id).ToList();
+                allParentRestrictions = allParentRestrictions ?? DataFacade.GetData<IPageTypeParentRestriction>().ToList();
 
-                if (parentRestrictions.Count == 0 || parentRestrictions.Any(f => f.AllowedParentPageTypeId == parentPage.PageTypeId))
+                var parentRestrictions = allParentRestrictions.Where(f => f.PageTypeId == pageType.Id).ToList();
+
+                if (parentRestrictions.Count == 0 
+                    || parentRestrictions.Any(f => f.AllowedParentPageTypeId == parentPage.PageTypeId))
                 {
                     result.Add(pageType);
                 }

@@ -1,17 +1,16 @@
 ﻿using System;
 using Composite.Data.Types;
 using Composite.Data;
+using Newtonsoft.Json;
 
 
 namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
 {
     internal sealed class MediaFileFolder : IMediaFileFolder
     {
-        private readonly DataSourceId _dataSourceId;
-
         public MediaFileFolder(IMediaFolderData folder, string storeId, DataSourceId dataSourceId)
         {
-            _dataSourceId = dataSourceId;
+            DataSourceId = dataSourceId;
 
             Id = folder.Id;
             Description = folder.Description;
@@ -20,20 +19,30 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
             Path = folder.Path;
         }
 
+        [JsonConstructor]
+        private MediaFileFolder(Guid id,string description,string title,string path, string storeId, DataSourceId dataSourceId)
+        {
+            DataSourceId = dataSourceId;
+
+            Id = id;
+            Description = description;
+            Title = title;
+            StoreId = storeId;
+            Path = path;
+        }
+
         public Guid Id
         {
             get; private set;
         }
 
-        public string KeyPath
-        {
-            get { return this.GetKeyPath(); }
-        }
+        public string KeyPath => this.GetKeyPath();
 
+        [JsonIgnore]
         public string CompositePath
         {
-            get { return this.GetCompositePath(); }
-            set { throw new NotImplementedException(); }
+            get => this.GetCompositePath();
+            set => throw new NotImplementedException();
         }
 
         public string StoreId
@@ -66,9 +75,6 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
             set;
         }
 
-        public DataSourceId DataSourceId
-        {
-            get { return _dataSourceId; }
-        }
+        public DataSourceId DataSourceId { get; }
     }
 }

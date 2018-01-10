@@ -1,6 +1,7 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
 using System.Xml;
 using Composite.C1Console.Actions;
 using Composite.Core.Collections.Generic;
@@ -20,52 +21,45 @@ namespace Composite.C1Console.Elements.Foundation.PluginFacades
 
         static ElementProviderPluginFacade()
         {
-            GlobalEventSystemFacade.SubscribeToFlushEvent(OnFlushEvent);
+            GlobalEventSystemFacade.SubscribeToFlushEvent(args => Flush());
         }
 
 
 
         public static IEnumerable<Element> GetRoots(string providerName, SearchToken seachToken)
         {
-            if (string.IsNullOrEmpty(providerName)) throw new ArgumentNullException("providerName");
+            Verify.ArgumentNotNullOrEmpty(providerName, nameof(providerName));
 
             IEnumerable<Element> roots = GetElementProvider(providerName).GetRoots(seachToken);
 
-            if (roots == null) return new List<Element>();
-
-            return roots;
+            return roots ?? Enumerable.Empty<Element>();
         }
 
 
 
         public static IEnumerable<Element> GetChildren(string providerName, EntityToken entityToken, SearchToken seachToken)
         {
-            if (string.IsNullOrEmpty(providerName)) throw new ArgumentNullException("providerName");
-            if (entityToken == null) throw new ArgumentNullException("entityToken");
+            Verify.ArgumentNotNullOrEmpty(providerName, nameof(providerName));
+            Verify.ArgumentNotNull(entityToken, nameof(entityToken));
 
             IEnumerable<Element> children = GetElementProvider(providerName).GetChildren(entityToken, seachToken);
 
-            if (children == null) return new List<Element>();
-
-            return children;
+            return children ?? Enumerable.Empty<Element>();
         }
 
 
 
         public static IEnumerable<LabeledProperty> GetLabeledProperties(string providerName, EntityToken entityToken)
         {
-            if (string.IsNullOrEmpty(providerName)) throw new ArgumentNullException("providerName");
-            if (entityToken == null) throw new ArgumentNullException("entityToken");
+            Verify.ArgumentNotNullOrEmpty(providerName, nameof(providerName));
+            Verify.ArgumentNotNull(entityToken, nameof(entityToken));
 
             ILabeledPropertiesElementProvider labledElementProvider = GetElementProvider(providerName) as ILabeledPropertiesElementProvider;
-            if (labledElementProvider == null) throw new ArgumentException(string.Format("The Element Provider identified by the specified provider name does not implement {0}", typeof(ILabeledPropertiesElementProvider)));
-
+            if (labledElementProvider == null) throw new ArgumentException($"The Element Provider identified by the specified provider name does not implement {typeof(ILabeledPropertiesElementProvider)}");
 
             IEnumerable<LabeledProperty> properties = labledElementProvider.GetLabeledProperties(entityToken);
 
-            if (properties == null) return new List<LabeledProperty>();
-
-            return properties;
+            return properties ?? Enumerable.Empty<LabeledProperty>();
         }
 
 
@@ -73,17 +67,15 @@ namespace Composite.C1Console.Elements.Foundation.PluginFacades
 #pragma warning disable 612
         public static List<EntityTokenHook> GetHooks(string providerName)
         {
-            if (string.IsNullOrEmpty(providerName)) throw new ArgumentNullException("providerName");
+            Verify.ArgumentNotNullOrEmpty(providerName, nameof(providerName));
 
             IElementProvider provider = GetElementProvider(providerName) as IElementProvider;
-            if (provider == null) throw new ArgumentException(string.Format("The Element Provider identified by the specified provider name does not implement {0}", typeof(IElementProvider)));
+            if (provider == null) throw new ArgumentException($"The Element Provider identified by the specified provider name does not implement {typeof(IElementProvider)}");
 
 
             List<EntityTokenHook> hooks = provider.GetHooks();
 
-            if (hooks == null) return new List<EntityTokenHook>();
-
-            return hooks;
+            return hooks ?? new List<EntityTokenHook>();
         }
 #pragma warning restore 612
 
@@ -91,10 +83,10 @@ namespace Composite.C1Console.Elements.Foundation.PluginFacades
 
         public static bool ContainsLocalizedData(string providerName)
         {
-            if (string.IsNullOrEmpty(providerName)) throw new ArgumentNullException("providerName");
+            Verify.ArgumentNotNullOrEmpty(providerName, nameof(providerName));
 
-            ILocaleAwareElementProvider provider = GetElementProvider(providerName) as ILocaleAwareElementProvider;
-            if (provider == null) throw new ArgumentException(string.Format("The Element Provider identified by the specified provider name does not implement {0}", typeof(ILocaleAwareElementProvider)));
+            var provider = GetElementProvider(providerName) as ILocaleAwareElementProvider;
+            if (provider == null) throw new ArgumentException($"The Element Provider identified by the specified provider name does not implement {typeof(ILocaleAwareElementProvider)}");
 
             return provider.ContainsLocalizedData;
         }
@@ -103,10 +95,10 @@ namespace Composite.C1Console.Elements.Foundation.PluginFacades
 
         public static IEnumerable<Element> GetForeignRoots(string providerName, SearchToken seachToken)
         {
-            if (string.IsNullOrEmpty(providerName)) throw new ArgumentNullException("providerName");
+            Verify.ArgumentNotNullOrEmpty(providerName, nameof(providerName));
 
             ILocaleAwareElementProvider provider = GetElementProvider(providerName) as ILocaleAwareElementProvider;
-            if (provider == null) throw new ArgumentException(string.Format("The Element Provider identified by the specified provider name does not implement {0}", typeof(ILocaleAwareElementProvider)));
+            if (provider == null) throw new ArgumentException($"The Element Provider identified by the specified provider name does not implement {typeof(ILocaleAwareElementProvider)}");
 
             return provider.GetForeignRoots(seachToken);
         }
@@ -115,11 +107,11 @@ namespace Composite.C1Console.Elements.Foundation.PluginFacades
 
         public static IEnumerable<Element> GetForeignChildren(string providerName, EntityToken entityToken, SearchToken seachToken)
         {
-            if (string.IsNullOrEmpty(providerName)) throw new ArgumentNullException("providerName");
-            if (entityToken == null) throw new ArgumentNullException("entityToken");
+            Verify.ArgumentNotNullOrEmpty(providerName, nameof(providerName));
+            Verify.ArgumentNotNull(entityToken, nameof(entityToken));
 
-            ILocaleAwareElementProvider provider = GetElementProvider(providerName) as ILocaleAwareElementProvider;
-            if (provider == null) throw new ArgumentException(string.Format("The Element Provider identified by the specified provider name does not implement {0}", typeof(ILocaleAwareElementProvider)));
+            var provider = GetElementProvider(providerName) as ILocaleAwareElementProvider;
+            if (provider == null) throw new ArgumentException($"The Element Provider identified by the specified provider name does not implement {typeof(ILocaleAwareElementProvider)}");
 
             return provider.GetForeignChildren(entityToken, seachToken);
         }
@@ -128,10 +120,10 @@ namespace Composite.C1Console.Elements.Foundation.PluginFacades
 
         public static IEnumerable<LabeledProperty> GetForeignLabeledProperties(string providerName, EntityToken entityToken)
         {
-            if (string.IsNullOrEmpty(providerName)) throw new ArgumentNullException("providerName");
+            Verify.ArgumentNotNullOrEmpty(providerName, nameof(providerName));
 
             ILocaleAwareLabeledPropertiesElementProvider provider = GetElementProvider(providerName) as ILocaleAwareLabeledPropertiesElementProvider;
-            if (provider == null) throw new ArgumentException(string.Format("The Element Provider identified by the specified provider name does not implement {0}", typeof(ILocaleAwareElementProvider)));
+            if (provider == null) throw new ArgumentException($"The Element Provider identified by the specified provider name does not implement {typeof(ILocaleAwareElementProvider)}");
 
             return provider.GetForeignLabeledProperties(entityToken);
         }
@@ -140,11 +132,11 @@ namespace Composite.C1Console.Elements.Foundation.PluginFacades
 
         public static object GetData(string providerName, string dataName)
         {
-            if (string.IsNullOrEmpty(providerName)) throw new ArgumentNullException("providerName");
-            if (string.IsNullOrEmpty(dataName)) throw new ArgumentNullException("dataName");
+            Verify.ArgumentNotNullOrEmpty(providerName, nameof(providerName));
+            Verify.ArgumentNotNullOrEmpty(dataName, nameof(dataName));
 
             IDataExchangingElementProvider provider = GetElementProvider(providerName) as IDataExchangingElementProvider;
-            if (provider == null) throw new ArgumentException(string.Format("The Element Provider identified by the specified provider name does not implement {0}", typeof(IDataExchangingElementProvider)));
+            if (provider == null) throw new ArgumentException($"The Element Provider identified by the specified provider name does not implement {typeof(IDataExchangingElementProvider)}");
 
             return provider.GetData(dataName);
         }
@@ -153,10 +145,10 @@ namespace Composite.C1Console.Elements.Foundation.PluginFacades
 
         public static bool GetNewSearchToken(string providerName, EntityToken entityToken, out SearchToken searchToken)
         {
-            if (string.IsNullOrEmpty(providerName)) throw new ArgumentNullException("providerName");
-            if (entityToken == null) throw new ArgumentNullException("entityToken");
+            Verify.ArgumentNotNullOrEmpty(providerName, nameof(providerName));
+            Verify.ArgumentNotNull(entityToken, nameof(entityToken));
 
-            ICustomSearchElementProvider provider = GetElementProvider(providerName) as ICustomSearchElementProvider;
+            var provider = GetElementProvider(providerName) as ICustomSearchElementProvider;
 
             if (provider == null)
             {
@@ -172,10 +164,10 @@ namespace Composite.C1Console.Elements.Foundation.PluginFacades
 
         public static bool GetSearchFormDefinition(string providerName, EntityToken entityToken, out XmlReader formDefinition)
         {
-            if (string.IsNullOrEmpty(providerName)) throw new ArgumentNullException("providerName");
-            if (entityToken == null) throw new ArgumentNullException("entityToken");
+            Verify.ArgumentNotNullOrEmpty(providerName, nameof(providerName));
+            Verify.ArgumentNotNull(entityToken, nameof(entityToken));
 
-            ICustomSearchElementProvider provider = GetElementProvider(providerName) as ICustomSearchElementProvider;
+            var provider = GetElementProvider(providerName) as ICustomSearchElementProvider;
 
             if (provider == null)
             {
@@ -191,10 +183,10 @@ namespace Composite.C1Console.Elements.Foundation.PluginFacades
 
         public static bool GetSearchFormBindings(string providerName, EntityToken entityToken, out Dictionary<string, object> bindings)
         {
-            if (string.IsNullOrEmpty(providerName)) throw new ArgumentNullException("providerName");
-            if (entityToken == null) throw new ArgumentNullException("entityToken");
+            Verify.ArgumentNotNullOrEmpty(providerName, nameof(providerName));
+            Verify.ArgumentNotNull(entityToken, nameof(entityToken));
 
-            ICustomSearchElementProvider provider = GetElementProvider(providerName) as ICustomSearchElementProvider;
+            var provider = GetElementProvider(providerName) as ICustomSearchElementProvider;
 
             if (provider == null)
             {
@@ -211,13 +203,13 @@ namespace Composite.C1Console.Elements.Foundation.PluginFacades
 
         public static bool OnElementDraggedAndDropped(string providerName, EntityToken draggedEntityToken, EntityToken newParentEntityToken, int dropIndex, DragAndDropType dragAndDropType, FlowControllerServicesContainer draggedElementFlowControllerServicesContainer)
         {
-            if (string.IsNullOrEmpty(providerName)) throw new ArgumentNullException("providerName");
-            if (draggedEntityToken == null) throw new ArgumentNullException("draggedEntityToken");
-            if (newParentEntityToken == null) throw new ArgumentNullException("newParentEntityToken");
-            if (draggedElementFlowControllerServicesContainer == null) throw new ArgumentNullException("draggedElementFlowControllerServicesContainer");
+            Verify.ArgumentNotNullOrEmpty(providerName, nameof(providerName));
+            Verify.ArgumentNotNull(draggedEntityToken, nameof(draggedEntityToken));
+            Verify.ArgumentNotNull(newParentEntityToken, nameof(newParentEntityToken));
+            Verify.ArgumentNotNull(draggedElementFlowControllerServicesContainer, nameof(draggedElementFlowControllerServicesContainer));
 
-            IDragAndDropElementProvider provider = GetElementProvider(providerName) as IDragAndDropElementProvider;
-            if (provider == null) throw new ArgumentException(string.Format("The Element Provider identified byu the specified provider name does not implement {0}", typeof(IDragAndDropElementProvider)));
+            var provider = GetElementProvider(providerName) as IDragAndDropElementProvider;
+            if (provider == null) throw new ArgumentException($"The Element Provider identified byu the specified provider name does not implement {typeof(IDragAndDropElementProvider)}");
 
             return provider.OnElementDraggedAndDropped(draggedEntityToken, newParentEntityToken, dropIndex, dragAndDropType, draggedElementFlowControllerServicesContainer);
         }
@@ -226,7 +218,7 @@ namespace Composite.C1Console.Elements.Foundation.PluginFacades
 
         public static bool IsLocaleAwareElementProvider(string providerName)
         {
-            ILocaleAwareElementProvider elementProvider = GetElementProvider(providerName) as ILocaleAwareElementProvider;
+            var elementProvider = GetElementProvider(providerName) as ILocaleAwareElementProvider;
 
             return elementProvider != null;
         }
@@ -237,7 +229,7 @@ namespace Composite.C1Console.Elements.Foundation.PluginFacades
         {
             IHooklessElementProvider provider;
 
-            if (_resourceLocker.Resources.ProviderCache.TryGetValue(providerName, out provider) == false)
+            if (!_resourceLocker.Resources.ProviderCache.TryGetValue(providerName, out provider))
             {
                 try
                 {
@@ -254,7 +246,7 @@ namespace Composite.C1Console.Elements.Foundation.PluginFacades
 
                     using (_resourceLocker.Locker)
                     {
-                        if (_resourceLocker.Resources.ProviderCache.ContainsKey(providerName) == false)
+                        if (!_resourceLocker.Resources.ProviderCache.ContainsKey(providerName))
                         {
                             _resourceLocker.Resources.ProviderCache.Add(providerName, provider);
                         }
@@ -283,28 +275,21 @@ namespace Composite.C1Console.Elements.Foundation.PluginFacades
 
 
 
-        private static void OnFlushEvent(FlushEventArgs args)
-        {
-            Flush();
-        }
-
-
-
         private static void HandleConfigurationError(Exception ex)
         {
             Flush();
 
-            throw new ConfigurationErrorsException(string.Format("Failed to load the configuration section '{0}' from the configuration.", ElementProviderSettings.SectionName), ex);
+            throw new ConfigurationErrorsException($"Failed to load the configuration section '{ElementProviderSettings.SectionName}' from the configuration.", ex);
         }
 
 
 
         private sealed class Resources
         {
-            public ElementProviderFactory Factory { get; set; }
-            public HooklessElementProviderFactory HooklessFactory { get; set; }
+            public ElementProviderFactory Factory { get; private set; }
+            public HooklessElementProviderFactory HooklessFactory { get; private set; }
 
-            public Dictionary<string, IHooklessElementProvider> ProviderCache { get; set; }
+            public Dictionary<string, IHooklessElementProvider> ProviderCache { get; private set; }
 
             public static void Initialize(Resources resources)
             {

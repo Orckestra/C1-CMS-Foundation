@@ -7,6 +7,8 @@ using Composite.Core;
 using Composite.Core.Types;
 using Composite.Data;
 using Composite.Data.ProcessControlled;
+using Composite.Data.Types;
+using Composite.Search.Crawling.DataFieldProcessors;
 using SearchableFieldInfo = System.Collections.Generic.KeyValuePair<System.Reflection.PropertyInfo, Composite.Data.SearchableFieldAttribute>;
 
 namespace Composite.Search.Crawling
@@ -67,6 +69,18 @@ namespace Composite.Search.Crawling
                     return new PublicationStatusDataFieldProcessor();
                 }
 
+                if (propertyInfo.DeclaringType == typeof(IFile)
+                    && propertyInfo.Name == nameof(IFile.FileName))
+                {
+                    return new FileNameDataFieldProcessor();
+                }
+
+                if (propertyInfo.DeclaringType == typeof(IMediaFile)
+                    && propertyInfo.Name == nameof(IMediaFile.MimeType))
+                {
+                    return new MimeTypeDataFieldProcessor();
+                }
+
                 return new DefaultDataFieldProcessor();
             });
         }
@@ -81,11 +95,11 @@ namespace Composite.Search.Crawling
         /// <returns></returns>
         public static IEnumerable<DocumentField> GetDocumentFields(Type interfaceType, bool includeDefaultFields = true)
         {
-            var defaultFields = includeDefaultFields
+            var fields = includeDefaultFields
                 ? SearchDocumentBuilder.GetDefaultDocumentFields()
                 : Enumerable.Empty<DocumentField>();
 
-            return defaultFields.Concat(
+            fields = fields.Concat(
                 from info in GetSearchableFields(interfaceType)
                 let prop = info.Key
                 let attr = info.Value
@@ -98,6 +112,15 @@ namespace Composite.Search.Crawling
                 {
                     Label = processor.GetFieldLabel(prop)
                 });
+
+            if (includeDefaultFields)
+            {
+                fields = fields.Concat(
+                    ServiceLocator.GetServices<IDocumentFieldProvider>()
+                        .SelectMany(fp => fp.GetCustomFields(interfaceType)));
+            }
+
+            return fields;
         }
     }
 }

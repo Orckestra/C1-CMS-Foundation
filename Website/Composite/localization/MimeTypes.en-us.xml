@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<strings>
+	<string key="image/jpeg" value="JPEG Image" />
+	<string key="image/png" value="PNG Image" />
+	<string key="image/gif" value="GIF Image" />
+	<string key="image/bmp" value="BMP Image" />
+	<string key="image/tiff" value="TIFF Image" />
+	<string key="image/svg+xml" value="SVG Image" />
+	
+	<string key="application/pdf" value="Adobe PDF" />
+	<string key="application/msword" value="Microsoft Word Document" />
+	<string key="application/vnd.ms-excel" value="Microsoft Excel" />
+	<string key="application/vnd.ms-powerpoint" value="Microsoft PowerPoint" />
+	<string key="application/vnd.openxmlformats-officedocument.wordprocessingml.document" value="Word Document" />	
+	<string key="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" value="Spreadsheet" />
+	<string key="application/vnd.openxmlformats-officedocument.presentationml.presentation" value="Presentation" />
+	<string key="application/vnd.openxmlformats-officedocument.presentationml.slideshow" value="Presentation (Slideshow)" />
+	<string key="application/x-shockwave-flash" value="Adobe Flash" />
+	<string key="application/zip" value="ZIP Archive" />
+	<string key="application/octet-stream" value="Binary File" />
+
+	<string key="video/x-ms-wmv" value="WMV Video" />
+	<string key="video/mp4" value="MP4 Video" />
+	<string key="video/quicktime" value="QuickTime Video" />
+	<string key="audio/mpeg" value="MPEG Audio" />
+
+	<string key="text/html" value="HTML" />
+	<string key="text/plain" value="Plain Text" />
+	<string key="text/xml" value="XML" />
+</strings>

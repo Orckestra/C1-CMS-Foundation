@@ -355,7 +355,19 @@ namespace Composite.C1Console.Drawing
                 _titleFont.Dispose();
                 _buttonFont.Dispose();
                 _functionIcon.Dispose();
+#if LeakCheck
+                GC.SuppressFinalize(this);
+#endif
             }
+
+#if LeakCheck
+            private string stack = Environment.StackTrace;
+            /// <exclude />
+            ~FunctionHeader()
+            {
+                Composite.Core.Instrumentation.DisposableResourceTracer.RegisterFinalizerExecution(stack);
+            }
+#endif
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using Composite.C1Console.Actions;
@@ -27,27 +28,27 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
     internal sealed class WebsiteFileElementProvider : IHooklessElementProvider, IDataExchangingElementProvider
     {
         private ElementProviderContext _context;
-        private string _rootPath;
-        private string _rootLabel;
-        private string _folderWhiteListKeyName;
-        private List<string> _manageableKeyNames;
-        private List<string> _manageableKeyNameLabels;
+        private readonly string _rootPath;
+        private readonly string _rootLabel;
+        private readonly string _folderWhiteListKeyName;
+        private readonly List<string> _manageableKeyNames;
+        private readonly List<string> _manageableKeyNameLabels;
 
-        private static ResourceHandle FolderIcon { get { return CommonElementIcons.Folder; } }
-        private static ResourceHandle OpenFolderIcon { get { return CommonElementIcons.FolderOpen; } }
-        private static ResourceHandle EmptyFolderIcon { get { return CommonElementIcons.FolderOpen; } }
-        private static ResourceHandle ReadOnlyFolderOpen { get { return GetIconHandle("website-read-only-folder-open"); } }
-        private static ResourceHandle ReadOnlyFolderClosed { get { return GetIconHandle("website-read-only-folder-closed"); } }
-        private static ResourceHandle AddWebsiteFolder { get { return GetIconHandle("website-add-website-folder"); } }
-        private static ResourceHandle AddWebsiteFile { get { return GetIconHandle("website-create-website-file"); } }
-        private static ResourceHandle DeleteWebsiteFolder { get { return GetIconHandle("website-delete-website-folder"); } }
-        private static ResourceHandle DeleteWebsiteFile { get { return GetIconHandle("website-delete-website-file"); } }
-        private static ResourceHandle EditWebsiteFile { get { return GetIconHandle("website-edit-website-file"); } }
-        private static ResourceHandle UploadWebsiteFile { get { return GetIconHandle("website-upload-website-file"); } }
-        private static ResourceHandle UploadAndExtractZipFile { get { return GetIconHandle("website-upload-zip-file"); } }
-        private static ResourceHandle DownloadWebsiteFile { get { return GetIconHandle("media-download-file"); } } 
-        private static ResourceHandle AddFolderToWhiteList { get { return GetIconHandle("website-add-folder-to-whitelist"); } }
-        private static ResourceHandle RemoveFolderFromWhiteList { get { return GetIconHandle("website-remove-folder-from-whitelist"); } }
+        private static ResourceHandle FolderIcon => CommonElementIcons.Folder;
+        private static ResourceHandle OpenFolderIcon => CommonElementIcons.FolderOpen;
+        private static ResourceHandle EmptyFolderIcon => CommonElementIcons.FolderOpen;
+        private static ResourceHandle ReadOnlyFolderOpen => GetIconHandle("website-read-only-folder-open");
+        private static ResourceHandle ReadOnlyFolderClosed => GetIconHandle("website-read-only-folder-closed");
+        private static ResourceHandle AddWebsiteFolder => GetIconHandle("website-add-website-folder");
+        private static ResourceHandle AddWebsiteFile => GetIconHandle("website-create-website-file");
+        private static ResourceHandle DeleteWebsiteFolder => GetIconHandle("website-delete-website-folder");
+        private static ResourceHandle DeleteWebsiteFile => GetIconHandle("website-delete-website-file");
+        private static ResourceHandle EditWebsiteFile => GetIconHandle("website-edit-website-file");
+        private static ResourceHandle UploadWebsiteFile => GetIconHandle("website-upload-website-file");
+        private static ResourceHandle UploadAndExtractZipFile => GetIconHandle("website-upload-zip-file");
+        private static ResourceHandle DownloadWebsiteFile => GetIconHandle("media-download-file");
+        private static ResourceHandle AddFolderToWhiteList => GetIconHandle("website-add-folder-to-whitelist");
+        private static ResourceHandle RemoveFolderFromWhiteList => GetIconHandle("website-remove-folder-from-whitelist");
 
 
         private static readonly ActionGroup PrimaryFolderActionGroup = new ActionGroup(ActionGroupPriority.PrimaryHigh);
@@ -55,14 +56,14 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
 //        private static readonly ActionGroup PrimaryFileToolsActionGroup = new ActionGroup("FileTools", ActionGroupPriority.PrimaryMedium);
         private static readonly ActionGroup PrimaryFolderToolsActionGroup = new ActionGroup("FolderTools", ActionGroupPriority.PrimaryMedium);
 
-        private static readonly PermissionType[] _addNewWebsiteFolderPermissionTypes = new PermissionType[] { PermissionType.Add };
-        private static readonly PermissionType[] _addNewWebsiteFilePermissionTypes = new PermissionType[] { PermissionType.Add };
-        private static readonly PermissionType[] _uploadAndExtractZipFileWorkflow = new PermissionType[] { PermissionType.Add };
-        private static readonly PermissionType[] _deleteWebsiteFolderPermissionTypes = new PermissionType[] { PermissionType.Delete };
-        private static readonly PermissionType[] _deleteWebsiteFilePermissionTypes = new PermissionType[] { PermissionType.Delete };
-        private static readonly PermissionType[] _editWebsiteFilePermissionTypes = new PermissionType[] { PermissionType.Edit };
-        private static readonly PermissionType[] _uploadWebsiteFilePermissionTypes = new PermissionType[] { PermissionType.Add };
-        private static readonly PermissionType[] _changeWhiteListPermissionTypes = new PermissionType[] { PermissionType.Administrate };
+        private static readonly PermissionType[] _addNewWebsiteFolderPermissionTypes = { PermissionType.Add };
+        private static readonly PermissionType[] _addNewWebsiteFilePermissionTypes = { PermissionType.Add };
+        private static readonly PermissionType[] _uploadAndExtractZipFileWorkflow = { PermissionType.Add };
+        private static readonly PermissionType[] _deleteWebsiteFolderPermissionTypes = { PermissionType.Delete };
+        private static readonly PermissionType[] _deleteWebsiteFilePermissionTypes = { PermissionType.Delete };
+        private static readonly PermissionType[] _editWebsiteFilePermissionTypes = { PermissionType.Edit };
+        private static readonly PermissionType[] _uploadWebsiteFilePermissionTypes = { PermissionType.Add };
+        private static readonly PermissionType[] _changeWhiteListPermissionTypes = { PermissionType.Administrate };
 
 
         public WebsiteFileElementProvider(WebsiteFileElementProviderData objectConfiguration)
@@ -70,7 +71,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
             _rootLabel = objectConfiguration.RootLabel;
             _folderWhiteListKeyName = objectConfiguration.FolderWhiteListKeyName;
 
-            if (string.IsNullOrEmpty(objectConfiguration.ManageableKeyNames) == false)
+            if (!string.IsNullOrEmpty(objectConfiguration.ManageableKeyNames))
             {
                 _manageableKeyNames = objectConfiguration.ManageableKeyNames.Split(',').ToList();
                 _manageableKeyNameLabels = StringResourceSystemFacade.SplitParseableStrings(objectConfiguration.ManageableKeyNameLabels, ',').ToList();
@@ -87,7 +88,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
 
         public ElementProviderContext Context
         {
-            set { _context = value; }
+            set => _context = value;
         }
 
 
@@ -109,7 +110,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
             //element.MovabilityInfo.AddDropType(typeof(WebsiteFolder));
             //element.MovabilityInfo.AddDropType(typeof(WebsiteFile));
 
-            List<IFolderWhiteList> myWhiteLists = DataFacade.GetData<IFolderWhiteList>(f => f.KeyName == _folderWhiteListKeyName).ToList();
+            //List<IFolderWhiteList> myWhiteLists = DataFacade.GetData<IFolderWhiteList>(f => f.KeyName == _folderWhiteListKeyName).ToList();
 
             if (string.IsNullOrEmpty(_folderWhiteListKeyName) || DataFacade.GetData<IFolderWhiteList>(f => f.KeyName == _folderWhiteListKeyName && f.TildeBasedPath == "~\\").Any())
             {
@@ -195,7 +196,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
                        }
                    });
 
-                List<ElementAction> actionsToAppend = new List<ElementAction>();
+                var actionsToAppend = new List<ElementAction>();
                 IEnumerable<IFolderWhiteList> manageableFolderWhiteLists = DataFacade.GetData<IFolderWhiteList>().ToList();
                 AppendFolderManagementActions( PathUtil.BaseDirectory, manageableFolderWhiteLists, actionsToAppend);
 
@@ -213,37 +214,27 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
             {
                 return GetChildrenOnPath(_rootPath, searchToken);
             }
-            else if (entityToken is WebsiteFileElementProviderEntityToken)
+
+            if (entityToken is WebsiteFileElementProviderEntityToken websiteFileEntityToken)
             {
-                string path = ((WebsiteFileElementProviderEntityToken)entityToken).Path;
+                string path = websiteFileEntityToken.Path;
 
                 if (C1Directory.Exists(path))
                 {
                     return GetChildrenOnPath(path, searchToken);
                 }
-                else
-                {
-                    return new Element[] { };
-                }
+
+                return new Element[] { };
             }
-            else
-            {
-                throw new NotImplementedException();
-            }
+
+            throw new NotImplementedException();
         }
 
 
 
         public object GetData(string name)
         {
-            if (name == "RootPath")
-            {
-                return _rootPath;
-            }
-            else
-            {
-                return null;
-            }
+            return name == "RootPath" ? _rootPath : null;
         }
 
 
@@ -265,9 +256,9 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
         {
             foreach (WebsiteFile websiteFile in websiteFiles)
             {
-                Element element = new Element(_context.CreateElementHandle(new WebsiteFileElementProviderEntityToken(_context.ProviderName, websiteFile.FullPath, _rootPath)))
+                var element = new Element(_context.CreateElementHandle(new WebsiteFileElementProviderEntityToken(_context.ProviderName, websiteFile.FullPath, _rootPath)))
                 {
-                    VisualData = new ElementVisualizedData()
+                    VisualData = new ElementVisualizedData
                     {
                         Label = websiteFile.FileName,
                         ToolTip = websiteFile.FileName,
@@ -298,16 +289,16 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
             IEnumerable<IFolderWhiteList> manageableFolderWhiteLists = DataFacade.GetData<IFolderWhiteList>().ToList();
 
             IEnumerable<IFolderWhiteList> myWhiteLists = null;
-            if (string.IsNullOrEmpty(_folderWhiteListKeyName) == false)
+            if (!string.IsNullOrEmpty(_folderWhiteListKeyName))
             {
                 myWhiteLists = DataFacade.GetData<IFolderWhiteList>(f=>f.KeyName==_folderWhiteListKeyName).ToList();
             }
 
             foreach (WebsiteFolder websiteFolder in websiteFolders)
             {
-                Element element = new Element(_context.CreateElementHandle(new WebsiteFileElementProviderEntityToken(_context.ProviderName, websiteFolder.FullPath, _rootPath)))
+                var element = new Element(_context.CreateElementHandle(new WebsiteFileElementProviderEntityToken(_context.ProviderName, websiteFolder.FullPath, _rootPath)))
                 {
-                    VisualData = new ElementVisualizedData()
+                    VisualData = new ElementVisualizedData
                     {
                         Label = websiteFolder.FolderName,
                         ToolTip = websiteFolder.FolderName,
@@ -346,7 +337,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
                     select folder;
             }
 
-            if (string.IsNullOrEmpty(_folderWhiteListKeyName) == false)
+            if (!string.IsNullOrEmpty(_folderWhiteListKeyName))
             {
                 List<IFolderWhiteList> whiteList = DataFacade.GetData<IFolderWhiteList>().Where(f => f.KeyName == _folderWhiteListKeyName).ToList();
 
@@ -363,7 +354,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
 
         private IEnumerable<WebsiteFile> GetFilesOnPath(string parentPath, SearchToken searchToken)
         {
-            if (string.IsNullOrEmpty(_folderWhiteListKeyName) == false)
+            if (!string.IsNullOrEmpty(_folderWhiteListKeyName))
             {
                 string parentTildaPath = IFolderWhiteListExtensions.GetTildePath(parentPath);
                 // NOTE: linq2sql conversion doesn't support xxx.StartsWith(someParameter) construction, that's why we're using two ling statements to get the data
@@ -523,14 +514,14 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
                 string keyName = _manageableKeyNames[i];
                 string itemLabel = StringResourceSystemFacade.ParseString(_manageableKeyNameLabels[i]);
 
-                ResourceHandle icon = null;
-                string label = null;
-                string tooltip = null;
-                WorkflowActionToken workflowActionToken = null;
+                ResourceHandle icon;
+                string label;
+                string tooltip;
+                WorkflowActionToken workflowActionToken;
 
-                ActionCheckedStatus checkedStatus = ActionCheckedStatus.Uncheckable;
-
-                if (manageableFolderWhiteLists.Where(f => f.KeyName == keyName && f.TildeBasedPath == IFolderWhiteListExtensions.GetTildePath(websiteFolderPath)).Any())
+                ActionCheckedStatus checkedStatus;
+                var tildeBasedPath = IFolderWhiteListExtensions.GetTildePath(websiteFolderPath);
+                if (manageableFolderWhiteLists.Any(f => f.KeyName == keyName && f.TildeBasedPath == tildeBasedPath))
                 {
                     workflowActionToken = new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider.RemoveWebsiteFolderFromWhiteListWorkflow"), _changeWhiteListPermissionTypes);
                     label = StringResourceSystemFacade.GetString("Composite.Plugins.WebsiteFileElementProvider", "RemoveFolderFromWhiteListTitle");
@@ -627,24 +618,74 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
             if (IsEditActionAllowed(websiteFile))
             {
                 fileActions.Add(
-                    new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider.EditWebsiteFileTextContentWorkflow"), _editWebsiteFilePermissionTypes)))
-                     {
-                         VisualData = new ActionVisualizedData
-                         {
-                             Label = StringResourceSystemFacade.GetString("Composite.Plugins.WebsiteFileElementProvider", "EditWebsiteFileTitle"),
-                             ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.WebsiteFileElementProvider", "EditWebsiteFileToolTip"),
-                             Icon = EditWebsiteFile,
-                             Disabled = websiteFile.IsReadOnly,
-                             ActionLocation = new ActionLocation
-                             {
-                                 ActionType = ActionType.Edit,
-                                 IsInFolder = false,
-                                 IsInToolbar = true,
-                                 ActionGroup = PrimaryFileActionGroup
-                             }
-                         }
-                     });
+                        new ElementAction(new ActionHandle(
+                            websiteFile.MimeType==MimeTypeInfo.Resx?
+                                (ActionToken) new UrlActionToken(websiteFile.FileName, EditWebsiteFile,
+                                    UrlUtils.ResolvePublicUrl($"Composite/content/misc/editors/resxeditor/resxeditor.aspx?f={websiteFile.FullPath}"), _editWebsiteFilePermissionTypes):
+                            new WorkflowActionToken(
+                                WorkflowFacade.GetWorkflowType(
+                                    "Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider.EditWebsiteFileTextContentWorkflow"),
+                                _editWebsiteFilePermissionTypes)))
+                        {
+                            VisualData = new ActionVisualizedData
+                            {
+                                Label = StringResourceSystemFacade.GetString(
+                                    "Composite.Plugins.WebsiteFileElementProvider", "EditWebsiteFileTitle"),
+                                ToolTip = StringResourceSystemFacade.GetString(
+                                    "Composite.Plugins.WebsiteFileElementProvider", "EditWebsiteFileToolTip"),
+                                Icon = EditWebsiteFile,
+                                Disabled = websiteFile.IsReadOnly,
+                                ActionLocation = new ActionLocation
+                                {
+                                    ActionType = ActionType.Edit,
+                                    IsInFolder = false,
+                                    IsInToolbar = true,
+                                    ActionGroup = PrimaryFileActionGroup
+                                }
+                            }
+                        });
+
+                if (websiteFile.MimeType == MimeTypeInfo.Resx && 
+                    !CultureInfo.GetCultures(CultureTypes.SpecificCultures).
+                    Any(f => f.Name != "" && 
+                    websiteFile.FileName.EndsWith("." + f.Name + ".Resx", StringComparison.OrdinalIgnoreCase)))
+                {
+                    var files = Directory.GetFiles(Path.GetDirectoryName(websiteFile.FullPath));
+                    foreach (var cultureInfo in DataLocalizationFacade.ActiveLocalizationCultures)
+                    {
+                        if (!files.Any(f => cultureInfo.Name!="" && f.EndsWith("." + cultureInfo.Name + ".Resx", StringComparison.OrdinalIgnoreCase)))
+                        {
+
+                        fileActions.Add(
+                            new ElementAction(new ActionHandle(
+                                new UrlActionToken(websiteFile.FileName, EditWebsiteFile,
+                                    UrlUtils.ResolvePublicUrl(
+                                        $"Composite/content/misc/editors/resxeditor/resxeditor.aspx?f={websiteFile.FullPath}&t={cultureInfo.Name}"),
+                                    _editWebsiteFilePermissionTypes)
+                            ))
+                            {
+                                VisualData = new ActionVisualizedData
+                                {
+                                    Label = string.Format(StringResourceSystemFacade.GetString(
+                                        "Composite.Web.SourceEditor", "ResxEditor.TranslateTo.Label"), cultureInfo.DisplayName),
+                                    ToolTip = string.Format(StringResourceSystemFacade.GetString(
+                                        "Composite.Web.SourceEditor", "ResxEditor.TranslateTo.Tooltip"), cultureInfo.DisplayName),
+                                    Icon = EditWebsiteFile,
+                                    Disabled = websiteFile.IsReadOnly,
+                                    ActionLocation = new ActionLocation
+                                    {
+                                        ActionType = ActionType.Add,
+                                        IsInFolder = false,
+                                        IsInToolbar = true,
+                                        ActionGroup = PrimaryFileActionGroup
+                                    }
+                                }
+                            });
+                        }
+                    }
+                }
             }
+            
 
             return fileActions;
         }
@@ -653,7 +694,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
 
         private static bool IsDeleteActionAllowed(WebsiteEntity websiteEntity)
         {
-            if ((websiteEntity is WebsiteFile))
+            if (websiteEntity is WebsiteFile)
             {
                 return true;
                 //WebsiteFile websiteFile = websiteEntity as WebsiteFile;
@@ -662,7 +703,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
 
                 //return _editableMimeTypes.Contains(canonical);
             }
-            else if ((websiteEntity is WebsiteFolder))
+            if (websiteEntity is WebsiteFolder)
             {
                 //return false;
                 // Deleting a folder causes the webserver to restart...
@@ -672,19 +713,15 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
 
                 return true;
             }
-            else
-            {
-                throw new NotImplementedException();
-            }
+
+            throw new NotImplementedException();
         }
 
 
         private static bool IsEditActionAllowed(WebsiteEntity websiteEntity)
         {
-            if (websiteEntity is WebsiteFile)
+            if (websiteEntity is WebsiteFile websiteFile)
             {
-                WebsiteFile websiteFile = websiteEntity as WebsiteFile;
-
                 return MimeTypeInfo.IsTextFile(websiteFile.MimeType);
             }
 
@@ -713,10 +750,8 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
 
     internal sealed class DownloadFileActionExecutor : IActionExecutor
     {
-        public FlowToken Execute(EntityToken entityToken, ActionToken actionToken, FlowControllerServicesContainer flowControllerServicesContainer)
+        public static string GetDownloadLink(WebsiteFileElementProviderEntityToken fileToken)
         {
-            var fileToken = (WebsiteFileElementProviderEntityToken)entityToken;
-
             var urlString = new UrlBuilder(UrlUtils.AdminRootPath + "/services/Admin/DownloadFile.ashx");
 
             string relativeFilePath = fileToken.Path.Substring(fileToken.RootPath.Length);
@@ -724,9 +759,18 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
             urlString["file"] = relativeFilePath;
             urlString["provider"] = fileToken.Source;
 
+            return urlString.ToString();
+        }
+
+        public FlowToken Execute(EntityToken entityToken, ActionToken actionToken, FlowControllerServicesContainer flowControllerServicesContainer)
+        {
+            var fileToken = (WebsiteFileElementProviderEntityToken)entityToken;
+
+            string downloadLink = GetDownloadLink(fileToken);
+
             string currentConsoleId = flowControllerServicesContainer.GetService<IManagementConsoleMessageService>().CurrentConsoleId;
 
-            ConsoleMessageQueueFacade.Enqueue(new DownloadFileMessageQueueItem(urlString.ToString()), currentConsoleId);
+            ConsoleMessageQueueFacade.Enqueue(new DownloadFileMessageQueueItem(downloadLink), currentConsoleId);
 
             return null;
         }
@@ -735,32 +779,16 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
     [ActionExecutor(typeof(DownloadFileActionExecutor))]
     internal sealed class DownloadFileActionToken : ActionToken
     {
-        private static readonly IEnumerable<PermissionType> _permissionTypes = new[] { PermissionType.Administrate, PermissionType.Edit };
+        internal static readonly PermissionType[] RequiredPermissionTypes = { PermissionType.Administrate, PermissionType.Edit };
 
-        public override IEnumerable<PermissionType> PermissionTypes
-        {
-            get { return _permissionTypes; }
-        }
+        public override IEnumerable<PermissionType> PermissionTypes => RequiredPermissionTypes;
 
-
-        public override string Serialize()
-        {
-            return "DownloadFile";
-        }
+        public override string Serialize() => "DownloadFile";
 
 
-        public static ActionToken Deserialize(string serializedData)
-        {
-            return new DownloadFileActionToken();
-        }
+        public static ActionToken Deserialize(string serializedData) => new DownloadFileActionToken();
 
-        public override bool IgnoreEntityTokenLocking
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool IgnoreEntityTokenLocking => true;
     }
 
 
@@ -814,9 +842,6 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
             get { return (string)base[_manageableKeyNameLabels]; }
             set { base[_manageableKeyNameLabels] = value; }
         }
-
-
-
     }
 
 

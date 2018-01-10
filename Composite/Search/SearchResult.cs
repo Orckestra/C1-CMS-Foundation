@@ -20,6 +20,27 @@ namespace Composite.Search
     }
 
     /// <summary>
+    /// Represents a search result item, which consists of the document as well as highlighted matched terms.
+    /// </summary>
+    public sealed class SearchResultItem
+    {
+        /// <summary>
+        /// Gets the underlying search document.
+        /// </summary>
+        public SearchDocument Document { get; set; }
+
+        /// <summary>
+        /// Returns the label of the documents with highlighted matched terms.
+        /// </summary>
+        public string LabelHtmlHighlight { get; set; }
+
+        /// <summary>
+        /// Returns text fragments of the full text field with highlighted matched terms.
+        /// </summary>
+        public string[] FullTextHtmlHighlights { get; set; }
+    }
+
+    /// <summary>
     /// Search result.
     /// </summary>
     public sealed class SearchResult
@@ -27,7 +48,7 @@ namespace Composite.Search
         /// <summary>
         /// Found documents.
         /// </summary>
-        public IEnumerable<SearchDocument> Documents { get; set; }
+        public IEnumerable<SearchResultItem> Items { get; set; }
 
         /// <summary>
         /// Total documents found.
@@ -40,6 +61,6 @@ namespace Composite.Search
         public IDictionary<string, Facet[]> Facets { get; set; }
 
         /// <exclude />
-        public static SearchResult Empty => new SearchResult { Documents = Enumerable.Empty<SearchDocument>() };
+        public static SearchResult Empty => new SearchResult { Items = Enumerable.Empty<SearchResultItem>() };
     }
 }

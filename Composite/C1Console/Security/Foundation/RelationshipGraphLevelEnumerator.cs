@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 
 
@@ -21,7 +21,19 @@ namespace Composite.C1Console.Security.Foundation
 
         public void Dispose()
         {
+#if LeakCheck
+            System.GC.SuppressFinalize(this);
+#endif
         }
+
+#if LeakCheck
+        private string stack = System.Environment.StackTrace;
+        /// <exclude />
+        ~RelationshipGraphLevelEnumerator()
+        {
+            Composite.Core.Instrumentation.DisposableResourceTracer.RegisterFinalizerExecution(stack);
+        }
+#endif
 
         object IEnumerator.Current
         {

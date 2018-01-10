@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -7,6 +7,7 @@ using Composite.C1Console.Security.Plugins.PasswordPolicy.Runtime;
 using Composite.Core.Collections.Generic;
 using Composite.Core.Configuration;
 using Composite.C1Console.Events;
+using Composite.Core;
 using Composite.Data.Types;
 
 
@@ -14,7 +15,7 @@ namespace Composite.C1Console.Security.Foundation.PluginFacades
 {
     internal static class PasswordRulePluginFacade
     {
-        private static ResourceLocker<Resources> _resourceLocker = new ResourceLocker<Resources>(new Resources(), Resources.DoInitializeResources);
+        private static readonly ResourceLocker<Resources> _resourceLocker = new ResourceLocker<Resources>(new Resources(), Resources.DoInitializeResources);
 
 
         static PasswordRulePluginFacade()
@@ -51,7 +52,7 @@ namespace Composite.C1Console.Security.Foundation.PluginFacades
             get
             {
                 var settings = GetSettings();
-                return settings != null ? settings.PasswordExpirationTimeInDays : 0;
+                return settings?.PasswordExpirationTimeInDays ?? 0;
             }
         }
 
@@ -60,7 +61,7 @@ namespace Composite.C1Console.Security.Foundation.PluginFacades
             get
             {
                 var settings = GetSettings();
-                return settings != null ? settings.PasswordHistoryLength : 0;
+                return settings?.PasswordHistoryLength ?? 0;
             }
         }
         
@@ -68,9 +69,7 @@ namespace Composite.C1Console.Security.Foundation.PluginFacades
         {
             var configuration = ConfigurationServices.ConfigurationSource;
 
-            if (configuration == null) return null;
-
-            return configuration.GetSection(PasswordPolicySettings.SectionName) as PasswordPolicySettings;
+            return configuration?.GetSection(PasswordPolicySettings.SectionName) as PasswordPolicySettings;
         }
 
 
@@ -91,7 +90,7 @@ namespace Composite.C1Console.Security.Foundation.PluginFacades
         {
             Flush();
 
-            throw new ConfigurationErrorsException(string.Format("Failed to load the configuration section '{0}' from the configuration.", PasswordPolicySettings.SectionName), ex);
+            throw new ConfigurationErrorsException($"Failed to load the configuration section '{PasswordPolicySettings.SectionName}' from the configuration.", ex);
         }
 
 
@@ -99,12 +98,17 @@ namespace Composite.C1Console.Security.Foundation.PluginFacades
         private sealed class Resources
         {
             PasswordRuleFactory Factory { get; set; }
-            public IReadOnlyCollection<IPasswordRule> PasswordRules { get; set; }
+            public IReadOnlyCollection<IPasswordRule> PasswordRules { get; private set; }
 
             public static void DoInitializeResources(Resources resources)
             {
                 var settings = GetSettings();
-                if (settings == null) return;
+                if (settings == null)
+                {
+                    Log.LogWarning(nameof(PasswordRulePluginFacade), $"Composite.config is missing '{PasswordPolicySettings.SectionName}' section");
+                    resources.PasswordRules = new IPasswordRule[0];
+                    return;
+                }
 
                 try
                 {

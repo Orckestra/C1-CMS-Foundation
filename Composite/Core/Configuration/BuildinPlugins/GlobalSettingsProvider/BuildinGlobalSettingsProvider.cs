@@ -25,7 +25,6 @@ namespace Composite.Core.Configuration.BuildinPlugins.GlobalSettingsProvider
         private string _dataMetaDataDirectory = "~/DataMetaData";
         private string _inlineCSharpFunctionDirectory = "~/InlineCSharpFunctions";
         private string _packageLicenseDirectory = "~/PackageLicenses";
-        private readonly IResourceCacheSettings _resourceCacheSettings = new BuildinResourceCacheSettings();
         private readonly ICachingSettings _cachingSettings = new BuildinCachingSettings();
         private readonly List<string> _nonProbableAssemblyNames = new List<string>();
         private readonly int _consoleMessageQueueSecondToLive = TimeSpan.FromMinutes(10).Seconds;
@@ -102,9 +101,6 @@ namespace Composite.Core.Configuration.BuildinPlugins.GlobalSettingsProvider
         public string PackageLicenseDirectory => _packageLicenseDirectory;
 
 
-        public IResourceCacheSettings ResourceCacheSettings => _resourceCacheSettings;
-
-
         public IEnumerable<string> NonProbableAssemblyNames => _nonProbableAssemblyNames;
 
 
@@ -141,5 +137,7 @@ namespace Composite.Core.Configuration.BuildinPlugins.GlobalSettingsProvider
         public bool FunctionPreviewEnabled => _functionPreviewEnabled;
 
         public TimeZoneInfo TimeZone => _timezone;
+
+        public bool InheritGlobalReadPermissionOnHiddenPerspectives => false;
     }
 }

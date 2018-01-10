@@ -16,7 +16,7 @@ namespace Composite.C1Console.Security
 
         static AuxiliarySecurityAncestorFacade()
         {
-            GlobalEventSystemFacade.SubscribeToFlushEvent(OnFlushEvent);
+            GlobalEventSystemFacade.SubscribeToFlushEvent(args => _implementation.Flush());
         }
 
 
@@ -27,7 +27,7 @@ namespace Composite.C1Console.Security
         /// <exclude />
         public static IEnumerable<EntityToken> GetParents(EntityToken entityToken)
         {
-            return _implementation.GetParents(entityToken);                                 
+            return _implementation.GetParents(entityToken);
         }
 
 
@@ -89,20 +89,6 @@ namespace Composite.C1Console.Security
         public static IEnumerable<IAuxiliarySecurityAncestorProvider> GetAuxiliaryAncestorProviders(Type entityTokenType)
         {
             return _implementation.GetAuxiliaryAncestorProviders(entityTokenType);
-        }
-
-
-
-        private static void Flush()
-        {
-            _implementation.Flush();
-        }
-
-
-
-        private static void OnFlushEvent(FlushEventArgs args)
-        {
-            Flush();
         }
 	}
 }

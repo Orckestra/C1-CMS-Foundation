@@ -244,7 +244,19 @@ namespace Composite.Core.IO.Zip
                 _innerStream.Dispose();
 
                 _disposeAction();
+#if LeakCheck
+                GC.SuppressFinalize(this);
+#endif
             }
+
+#if LeakCheck
+            private string stack = Environment.StackTrace;
+            /// <exclude />
+            ~StreamWrapper()
+            {
+                Composite.Core.Instrumentation.DisposableResourceTracer.RegisterFinalizerExecution(stack);
+            }
+#endif
         }
     }
 }

@@ -119,6 +119,18 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
         public void Dispose()
         {
             _streamReader.Dispose();
+#if LeakCheck
+            System.GC.SuppressFinalize(this);
+#endif
         }
+
+#if LeakCheck
+        private string stack = System.Environment.StackTrace;
+        /// <exclude />
+        ~LocalC1StreamReader()
+        {
+            Composite.Core.Instrumentation.DisposableResourceTracer.RegisterFinalizerExecution(stack);
+        }
+#endif
     }
 }

@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Xml.Linq;
 using Composite.C1Console.Security;
+using Composite.Core.WebClient;
 
 
 namespace Composite.Core.Instrumentation
@@ -12,6 +13,22 @@ namespace Composite.Core.Instrumentation
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class ProfilerReport
     {
+        private static readonly string ProfilerXslPath = UrlUtils.AdminRootPath + "/Transformations/page_profiler.xslt";
+
+        /// <exclude />
+        public static string BuildReport(Measurement measurement, string url)
+        {
+            string xmlHeader = $@"<?xml version=""1.0""?>
+                             <?xml-stylesheet type=""text/xsl"" href=""{ProfilerXslPath}""?>";
+
+            XElement reportXml = ProfilerReport.BuildReportXml(measurement);
+
+            reportXml.Add(new XAttribute("url", url),
+                new XAttribute("consoleUrl", UrlUtils.AdminRootPath));
+
+            return xmlHeader + reportXml;
+        }
+
         /// <exclude />
         public static XElement BuildReportXml(Measurement measurement)
         {
@@ -40,7 +57,7 @@ namespace Composite.Core.Instrumentation
 
             long ownTime = measurement.TotalTime - measurement.Nodes.Select(childNode => childNode.TotalTime).Sum();
 
-            var entityToken = measurement.EntityTokenFactory != null ? measurement.EntityTokenFactory() : null;
+            var entityToken = measurement.EntityTokenFactory?.Invoke();
             string serializedEntityToken = entityToken != null
                 ? EntityTokenSerializer.Serialize(entityToken, true)
                 : null;

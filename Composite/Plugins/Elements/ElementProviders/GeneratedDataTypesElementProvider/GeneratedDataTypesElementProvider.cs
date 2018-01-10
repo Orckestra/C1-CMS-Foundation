@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -70,13 +70,10 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
     [ActionExecutor(typeof(DataTypeDescriptorToXmlActionExecutor))]
     public sealed class DataTypeDescriptorToXmlActionToken : ActionToken
     {
-        private static PermissionType[] _permissionTypes = new PermissionType[] { PermissionType.Administrate };
+        private static readonly PermissionType[] _permissionTypes = { PermissionType.Administrate };
 
         /// <exclude />
-        public override IEnumerable<PermissionType> PermissionTypes
-        {
-            get { return _permissionTypes; }
-        }
+        public override IEnumerable<PermissionType> PermissionTypes => _permissionTypes;
 
         /// <exclude />
         public override string Serialize()
@@ -105,52 +102,52 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
 
         /// <exclude />
-        public static ResourceHandle RootOpen { get { return GetIconHandle("generated-root-open"); } }
+        public static ResourceHandle RootOpen => GetIconHandle("generated-root-open");
 
         /// <exclude />
-        public static ResourceHandle RootClosed { get { return GetIconHandle("generated-root-closed"); } }
+        public static ResourceHandle RootClosed => GetIconHandle("generated-root-closed");
 
         /// <exclude />
-        public static ResourceHandle DynamicDataTypeIconOpen { get { return GetIconHandle("generated-type-open"); } }
+        public static ResourceHandle DynamicDataTypeIconOpen => GetIconHandle("generated-type-open");
 
         /// <exclude />
-        public static ResourceHandle DynamicDataTypeIconClosed { get { return GetIconHandle("generated-type-closed"); } }
+        public static ResourceHandle DynamicDataTypeIconClosed => GetIconHandle("generated-type-closed");
 
         /// <exclude />
-        public static ResourceHandle InterfaceOpen { get { return GetIconHandle("data-interface-open"); } }
+        public static ResourceHandle InterfaceOpen => GetIconHandle("data-interface-open");
 
         /// <exclude />
-        public static ResourceHandle InterfaceClosed { get { return GetIconHandle("data-interface-closed"); } }
+        public static ResourceHandle InterfaceClosed => GetIconHandle("data-interface-closed");
 
         /// <exclude />
-        public static ResourceHandle AddDataTypeIcon { get { return GetIconHandle("generated-type-add"); } }
+        public static ResourceHandle AddDataTypeIcon => GetIconHandle("generated-type-add");
 
         /// <exclude />
-        public static ResourceHandle EditDataTypeIcon { get { return GetIconHandle("generated-type-edit"); } }
+        public static ResourceHandle EditDataTypeIcon => GetIconHandle("generated-type-edit");
 
         /// <exclude />
-        public static ResourceHandle DeleteDataTypeIcon { get { return GetIconHandle("generated-type-delete"); } }
+        public static ResourceHandle DeleteDataTypeIcon => GetIconHandle("generated-type-delete");
 
         /// <exclude />
-        public static ResourceHandle LocalizeDataTypeIcon { get { return GetIconHandle("generated-type-localize"); } }
+        public static ResourceHandle LocalizeDataTypeIcon => GetIconHandle("generated-type-localize");
 
         /// <exclude />
-        public static ResourceHandle DelocalizeDataTypeIcon { get { return GetIconHandle("generated-type-delocalize"); } }
+        public static ResourceHandle DelocalizeDataTypeIcon => GetIconHandle("generated-type-delocalize");
 
         /// <exclude />
-        public static ResourceHandle AddDataIcon { get { return GetIconHandle("generated-type-data-add"); } }
+        public static ResourceHandle AddDataIcon => GetIconHandle("generated-type-data-add");
 
         /// <exclude />
-        public static ResourceHandle DuplicateDataIcon { get { return GetIconHandle("copy"); } }
+        public static ResourceHandle DuplicateDataIcon => GetIconHandle("copy");
 
         /// <exclude />
-        public static ResourceHandle EditDataIcon { get { return GetIconHandle("generated-type-data-edit"); } }
+        public static ResourceHandle EditDataIcon => GetIconHandle("generated-type-data-edit");
 
         /// <exclude />
-        public static ResourceHandle DeleteDataIcon { get { return GetIconHandle("generated-type-data-delete"); } }
+        public static ResourceHandle DeleteDataIcon => GetIconHandle("generated-type-data-delete");
 
         /// <exclude />
-        public static ResourceHandle LocalizeDataIcon { get { return GetIconHandle("generated-type-data-localize"); } }
+        public static ResourceHandle LocalizeDataIcon => GetIconHandle("generated-type-data-localize");
 
         /// <exclude />
         public static ResourceHandle ListUnpublishedItemsIcon = GetIconHandle("generated-type-list-unpublished-items");
@@ -159,30 +156,30 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
         public static ResourceHandle ShowincontentareaIcon = GetIconHandle("generated-type-showincontentarea");
 
         /// <exclude />
-        public static ResourceHandle EditFormMarkupIcon { get { return GetIconHandle("generated-type-form-markup-edit"); } }
+        public static ResourceHandle EditFormMarkupIcon => GetIconHandle("generated-type-form-markup-edit");
 
         /// <exclude />
-        public static ResourceHandle ToXmlIcon { get { return GetIconHandle("generated-type-to-xml"); } }
+        public static ResourceHandle ToXmlIcon => GetIconHandle("generated-type-to-xml");
 
         /// <exclude />
         public static readonly Dictionary<string, ResourceHandle> DataIconLookup;
 
         /// <exclude />
-        public static ResourceHandle ErrorIcon { get { return GetIconHandle("error"); } }
+        public static ResourceHandle ErrorIcon => GetIconHandle("error");
 
         private static readonly ActionGroup PrimaryActionGroup = new ActionGroup(ActionGroupPriority.PrimaryHigh);
         private static readonly ActionGroup ViewActionGroup = new ActionGroup("View", ActionGroupPriority.PrimaryLow);
         private static readonly ActionGroup AppendedActionGroup = new ActionGroup("Develop", ActionGroupPriority.GeneralAppendMedium);
 
-        private static readonly PermissionType[] _addNewInterfaceTypePermissionTypes = new PermissionType[] { PermissionType.Add };
-        private static readonly PermissionType[] _editInterfaceTypePermissionTypes = new PermissionType[] { PermissionType.Edit };
-        private static readonly PermissionType[] _editFormMarkupPermissionTypes = new PermissionType[] { PermissionType.Edit };
-        private static readonly PermissionType[] _deleteInterfaceTypePermissionTypes = new PermissionType[] { PermissionType.Delete };
+        private static readonly PermissionType[] _addNewInterfaceTypePermissionTypes = { PermissionType.Add };
+        private static readonly PermissionType[] _editInterfaceTypePermissionTypes = { PermissionType.Edit };
+        private static readonly PermissionType[] _editFormMarkupPermissionTypes = { PermissionType.Edit };
+        private static readonly PermissionType[] _deleteInterfaceTypePermissionTypes = { PermissionType.Delete };
 
-        private static readonly PermissionType[] _addNewDataPermissionTypes = new PermissionType[] { PermissionType.Add };
-        private static readonly PermissionType[] _editDataPermissionTypes = new PermissionType[] { PermissionType.Edit };
-        private static readonly PermissionType[] _deleteDataPermissionTypes = new PermissionType[] { PermissionType.Delete };
-        private static readonly PermissionType[] _localizeDataPermissionTypes = new PermissionType[] { PermissionType.Add };
+        private static readonly PermissionType[] _addNewDataPermissionTypes = { PermissionType.Add };
+        private static readonly PermissionType[] _editDataPermissionTypes = { PermissionType.Edit };
+        private static readonly PermissionType[] _deleteDataPermissionTypes = { PermissionType.Delete };
+        private static readonly PermissionType[] _localizeDataPermissionTypes = { PermissionType.Add };
 
 
 
@@ -229,12 +226,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                         if (PageFolderFacade.GetAllFolderTypes().Contains(type)) return false;
                         if (PageMetaDataFacade.GetAllMetaDataTypes().Contains(type)) return false;
 
-                        if (_websiteItemsView)
-                        {
-                            return IsTypeWhiteListed(type);
-                        }
-
-                        return true;
+                        return !_websiteItemsView || IsTypeWhiteListed(type);
                     },
                     OnGetPayload = token => null
                 };
@@ -441,28 +433,26 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
         private IEnumerable<Element> GetChildren(EntityToken entityToken, SearchToken searchToken, bool showForeignChildren)
         {
-            if (entityToken is GeneratedDataTypesElementProviderRootEntityToken)
+            if (entityToken is GeneratedDataTypesElementProviderRootEntityToken rootEntityToken)
             {
-                return GetRootChildren(searchToken, entityToken as GeneratedDataTypesElementProviderRootEntityToken);
+                return GetRootChildren(searchToken, rootEntityToken);
             }
 
-            if (entityToken is GeneratedDataTypesElementProviderTypeEntityToken)
+            if (entityToken is GeneratedDataTypesElementProviderTypeEntityToken castedEntityToken)
             {
-                var castedEntityToken = entityToken as GeneratedDataTypesElementProviderTypeEntityToken;
-
                 string typeManagerName = castedEntityToken.SerializedTypeName;
 
                 Type type = TypeManager.TryGetType(typeManagerName);
 
                 if (type == null)
                 {
-                    return null;
+                    return Enumerable.Empty<Element>();
                 }
 
                 // These are never shown in the tree
                 if (typeof(IPageMetaData).IsAssignableFrom(type))
                 {
-                    return new List<Element>();
+                    return Enumerable.Empty<Element>();
                 }
 
                 IEnumerable<Element> elements = _dataGroupingProviderHelper.GetRootGroupFolders(type, entityToken, showForeignChildren);
@@ -470,16 +460,17 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 return elements.ToList();
             }
 
-            if (entityToken is DataGroupingProviderHelperEntityToken)
+            if (entityToken is DataGroupingProviderHelperEntityToken dataGroupingEntityToken)
             {
-                List<Element> elements = _dataGroupingProviderHelper.GetGroupChildren(entityToken as DataGroupingProviderHelperEntityToken, showForeignChildren).ToList();
+                List<Element> elements = _dataGroupingProviderHelper
+                    .GetGroupChildren(dataGroupingEntityToken, showForeignChildren).ToList();
 
                 return elements;
             }
 
             if (entityToken is DataEntityToken)
             {
-                return new List<Element>();
+                return Enumerable.Empty<Element>();
             }
 
             throw new InvalidOperationException("This code should not be reachable");
@@ -790,7 +781,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
         private static ElementAction GetChangeLocalizationElementAction(Type type, bool isEditable)
         {
-            if (DataLocalizationFacade.IsLocalized(type) == false)
+            if (!DataLocalizationFacade.IsLocalized(type))
             {
                 return
                     new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.EnableTypeLocalizationWorkflow"), _editInterfaceTypePermissionTypes)))
@@ -800,7 +791,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                             Label = GetText("EnableLocalization"),
                             ToolTip = GetText("EnableLocalizationToolTip"),
                             Icon = GeneratedDataTypesElementProvider.LocalizeDataTypeIcon,
-                            Disabled = DataLocalizationFacade.ActiveLocalizationCultures.Any() == false || !isEditable,
+                            Disabled = !DataLocalizationFacade.ActiveLocalizationCultures.Any() || !isEditable,
                             ActionLocation = new ActionLocation
                             {
                                 ActionType = ActionType.Other,
@@ -1290,7 +1281,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
     {
         public IHooklessElementProvider Assemble(IBuilderContext context, HooklessElementProviderData objectConfiguration, IConfigurationSource configurationSource, ConfigurationReflectionCache reflectionCache)
         {
-            GeneratedDataTypesElementProviderData data = (GeneratedDataTypesElementProviderData)objectConfiguration;
+            var data = (GeneratedDataTypesElementProviderData)objectConfiguration;
 
             return new GeneratedDataTypesElementProvider(data.OnlyShowGlobalDatas);
         }

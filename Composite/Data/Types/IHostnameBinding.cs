@@ -14,7 +14,7 @@ namespace Composite.Data.Types
     [KeyPropertyName("Id")]
     [LabelPropertyName("Hostname")]
     [DataScope(DataScopeIdentifier.PublicName)]
-    [CachingAttribute(CachingType.Full)]
+    [Caching(CachingType.Full)]
     [DataAncestorProvider(typeof(NoAncestorDataAncestorProvider))]
     public interface IHostnameBinding : IData
     {
@@ -61,5 +61,14 @@ namespace Composite.Data.Types
         [StoreFieldType(PhysicalStoreFieldType.Boolean)]
         [ImmutableFieldId("{A554BD68-C2F5-6F6F-4D3B-1FC2760BDE38}")]
         bool IncludeCultureInUrl { get; set; }
+
+        /// <summary>
+        /// When set to <value>true</value>, the system will generate HTTPS links to the hostname and 
+        /// will make automatic redirects from HTTP to HTTPS for the given hostname.
+        /// </summary>
+        [StoreFieldType(PhysicalStoreFieldType.Boolean)]
+        [DefaultFieldBoolValue(false)]
+        [ImmutableFieldId("{1F45F2E7-2FAF-4F33-ACCA-BFF32EF7818A}")]
+        bool EnforceHttps { get; set; }
     }
 }

@@ -94,7 +94,9 @@ namespace Composite.Core.WebClient
         private static void InitializeServices()
         {
             UrlToEntityTokenFacade.Register(new DataUrlToEntityTokenMapper());
+            UrlToEntityTokenFacade.Register(new MediaUrlToEntityTokenMapper());
             UrlToEntityTokenFacade.Register(new ServerLogUrlToEntityTokenMapper());
+            UrlToEntityTokenFacade.Register(new WebsiteFileUrlToEntityTokenMapper());
 
             var services = ServiceLocator.ServiceCollection;
             services.AddLogging();
@@ -104,6 +106,8 @@ namespace Composite.Core.WebClient
 
             InternalUrls.Register(new MediaInternalUrlConverter());
             InternalUrls.Register(new PageInternalUrlConverter());
+
+            services.AddSingleton<IMailer>(new SmtpMailer());
 
 
             VersionedDataHelper.Initialize();

@@ -55,6 +55,12 @@ namespace Composite.Data.Types
         [SearchableField(true, true, false)]
         string Description { get; set; }
 
+        /// <exclude />
+        [ImmutableFieldId("{016372B5-9692-4C2D-B64D-8FC6594BBCFF}")]
+        [StoreFieldType(PhysicalStoreFieldType.LargeString)]
+        [SearchableField(true, true, false)]
+        string Tags { get; set; }
+
 
         /// <exclude />
         [ImmutableFieldId("{D4B7D47E-49CF-43c9-AC36-4134B136860A}")]
@@ -67,7 +73,6 @@ namespace Composite.Data.Types
         [StoreFieldType(PhysicalStoreFieldType.String, 256)]
         [SearchableField(false, true, true)]
         string MimeType { get; }
-
 
         /// <exclude />
         [ImmutableFieldId("{BCD0C1A2-9769-4209-8D43-DB7DDBABBB8B}")]

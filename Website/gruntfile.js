@@ -1,4 +1,4 @@
-/// <vs BeforeBuild='less' AfterBuild='less, postcss' />
+﻿/// <vs BeforeBuild='less' AfterBuild='less, postcss' />
 module.exports = function (grunt) {
 
   'use strict';
@@ -41,10 +41,27 @@ module.exports = function (grunt) {
         { expand: true, cwd: 'bower_components/autobahnjs', src: ['autobahn.js'], dest: 'Composite/lib/autobahnjs' },
       ]
     },
+    'promise-polyfill': {
+      files: [
+        { expand: true, cwd: 'bower_components/promise-polyfill', src: ['promise.js'], dest: 'Composite/lib/promise' },
+      ]
+    },
     'babel-polyfill': {
       files: [
         { expand: true, cwd: 'bower_components/babel-polyfill', src: ['browser-polyfill.js'], dest: 'Composite/lib/babel' },
       ]
+    },
+    tinymce: {
+        files: function () {
+            let tinymceDestFolder = "Composite/content/misc/editors/visualeditor/tinymce";
+            let tinymcePlugins = ["autolink", "lists", "paste", "table"];
+            let tinymceFiles = [{ expand: true, cwd: 'bower_components/tinymce', src: ['tinymce.min.js'], dest: `${tinymceDestFolder}` }];
+            tinymcePlugins.forEach(function (pluginName, index) {
+                tinymceFiles.push({ expand: true, cwd: `bower_components/tinymce/plugins/${pluginName}`, src: ['*.min.js'], dest: `${tinymceDestFolder}/plugins/${pluginName}` });
+            });
+            tinymceFiles.push({ expand: true, cwd: `bower_components/tinymce/skins/lightgray`, src: ['**'], dest: `${tinymceDestFolder}/skins/lightgray` });
+            return tinymceFiles;
+        }()
     }
   });
 

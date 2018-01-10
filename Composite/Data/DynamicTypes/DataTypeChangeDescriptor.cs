@@ -9,7 +9,7 @@ namespace Composite.Data.DynamicTypes
     /// <summary>    
     /// </summary>
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public sealed class DataTypeChangeDescriptor
     {
         private readonly DataTypeDescriptor _original;
@@ -45,7 +45,6 @@ namespace Composite.Data.DynamicTypes
                 bool alteredTypeHasChanges = false;
                 alteredTypeHasChanges |= this.AlteredType.IsCodeGenerated != this.OriginalType.IsCodeGenerated;
                 alteredTypeHasChanges |= this.AlteredType.Name != this.OriginalType.Name;
-                //                alteredTypeHasChanges |= (this.AlteredType.Title != this.OriginalType.Title);
                 alteredTypeHasChanges |= this.AlteredType.Namespace != this.OriginalType.Namespace;
                 // Do we really need to regenerated the type if it has a new type manager type name?
                 //alteredTypeHasChanges |= (this.AlteredType.TypeManagerTypeName != this.OriginalType.TypeManagerTypeName);
@@ -63,6 +62,17 @@ namespace Composite.Data.DynamicTypes
             }
         }
 
+
+        /// <summary>
+        /// Indicates if type's metadata should be updated.
+        /// </summary>
+        internal bool TypeHasMetaDataChanges =>
+            !OriginalType.IsCodeGenerated
+            && (OriginalType.Title != AlteredType.Title
+                || OriginalType.LabelFieldName != AlteredType.LabelFieldName
+                || OriginalType.Cachable != AlteredType.Cachable
+                || OriginalType.Searchable != AlteredType.Searchable
+                || OriginalType.InternalUrlPrefix != AlteredType.InternalUrlPrefix);
 
 
         /// <exclude />

@@ -1,6 +1,4 @@
-﻿//#define ConnectionLeakCheck
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -16,23 +14,10 @@ namespace Composite.Core.Implementation
     /// </summary>
     public class DataConnectionImplementation : DataConnectionBase, IDisposable
     {
-#if ConnectionLeakCheck
-        private string _allocationCallStack;
-#endif
-        
         private IDisposable _threadDataManager;
         private readonly DataScope _dataScope;
 
         internal DataScope DataScope => _dataScope;
-        /// <summary>
-        /// Stateless constructor. This is used when implementations of static methods needs to be called
-        /// Used when New and AllLocales are called
-        /// </summary>
-        public DataConnectionImplementation()
-        {
-            InitializeThreadData();
-            InitializeScope();
-        }
 
 
         /// <summary>
@@ -51,10 +36,6 @@ namespace Composite.Core.Implementation
         private void InitializeThreadData()
         {
             _threadDataManager = ThreadDataManager.EnsureInitialize();
-
-#if ConnectionLeakCheck
-            _allocationCallStack = new StackTrace().ToString();
-#endif
     }
 
     /// <summary>
@@ -171,21 +152,6 @@ namespace Composite.Core.Implementation
         }
 
 
-
-        /// <summary>
-        /// Documentation pending
-        /// </summary>
-        /// <typeparam name="TData"></typeparam>
-        /// <returns></returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", MessageId = "New", Justification = "This is what we want")]
-        public virtual TData New<TData>()
-            where TData : class, IData
-        {
-            return DataFacade.BuildNew<TData>();
-        }
-
-
-
         /// <summary>
         /// Documentation pending
         /// </summary>
@@ -198,10 +164,6 @@ namespace Composite.Core.Implementation
         public virtual CultureInfo CurrentLocale => this.Locale;
 
 
-        /// <summary>
-        /// Documentation pending
-        /// </summary>
-        public virtual IEnumerable<CultureInfo> AllLocales => DataLocalizationFacade.ActiveLocalizationCultures;
 
 
         /// <summary>
@@ -210,21 +172,22 @@ namespace Composite.Core.Implementation
         public void Dispose()
         {
             Dispose(true);
+#if LeakCheck
             GC.SuppressFinalize(this);
+#endif
         }
 
 
 
-        /// <exclude />
+#if LeakCheck
+        private string stack = Environment.StackTrace;
+/// <exclude />
         ~DataConnectionImplementation()
         {
-#if ConnectionLeakCheck
-            Log.LogError(nameof(DataConnection), "Not disposed data connection allocated at: " + _allocationCallStack);
-#endif
-
+            Composite.Core.Instrumentation.DisposableResourceTracer.RegisterFinalizerExecution(stack);
             Dispose(false);
         }
-
+#endif
 
 
         /// <summary>

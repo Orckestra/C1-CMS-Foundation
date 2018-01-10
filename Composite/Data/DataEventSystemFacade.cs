@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using Composite.C1Console.Events;
@@ -670,9 +670,19 @@ namespace Composite.Data
                 if(!_active) return;
 
                 Counter(-1);
-
+#if LeakCheck
+                GC.SuppressFinalize(this);
+#endif
             }
 
+#if LeakCheck
+            private string stack = Environment.StackTrace;
+            /// <exclude />
+            ~SuppressEventScope()
+            {
+                Composite.Core.Instrumentation.DisposableResourceTracer.RegisterFinalizerExecution(stack);
+            }
+#endif
             #endregion
         }
 

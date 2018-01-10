@@ -118,40 +118,16 @@ namespace Composite.Core.WebClient.Services.WysiwygEditor
         /// <returns>A fully structured XHTML document, incl. html, head and body elements.</returns>
         public static TidyHtmlResult TidyHtml(string htmlMarkup)
         {
-            byte[] htmlByteArray = Encoding.UTF8.GetBytes(htmlMarkup);
-
             Tidy tidy = GetXhtmlConfiguredTidy();
 
             List<string> namespacePrefixedElementNames = LocateNamespacePrefixedElementNames(htmlMarkup);
             Dictionary<string, string> namespacePrefixToUri = LocateNamespacePrefixToUriDeclarations(htmlMarkup);
-            List<string> badNamespacePrefixedElementNames = namespacePrefixedElementNames.Where(s => namespacePrefixToUri.Where(d => s.StartsWith(d.Key)).Any() == false).ToList();
+            List<string> badNamespacePrefixedElementNames = namespacePrefixedElementNames
+                .Where(s => !namespacePrefixToUri.Any(d => s.StartsWith(d.Key))).ToList();
             AllowNamespacePrefixedElementNames(tidy, namespacePrefixedElementNames);
             AllowHtml5ElementNames(tidy);
 
-            TidyMessageCollection tidyMessages = new TidyMessageCollection();
-            string xhtml = "";
-
-            using (MemoryStream inputStream = new MemoryStream(htmlByteArray))
-            {
-                using (MemoryStream outputStream = new MemoryStream())
-                {
-                    tidy.Parse(inputStream, outputStream, tidyMessages);
-                    outputStream.Position = 0;
-                    C1StreamReader sr = new C1StreamReader(outputStream);
-                    xhtml = sr.ReadToEnd();
-                }
-            }
-
-            if (tidyMessages.Errors > 0)
-            {
-                StringBuilder errorMessageBuilder = new StringBuilder();
-                foreach (TidyMessage message in tidyMessages)
-                {
-                    if (message.Level == MessageLevel.Error)
-                        errorMessageBuilder.AppendLine(message.ToString());
-                }
-                throw new InvalidOperationException(string.Format("Failed to parse html:\n\n{0}", errorMessageBuilder.ToString()));
-            }
+            string xhtml = ParseMarkup(htmlMarkup, tidy, out TidyMessageCollection tidyMessages);
 
             if (xhtml.IndexOf("<html>")>-1)
             {
@@ -179,8 +155,8 @@ namespace Composite.Core.WebClient.Services.WysiwygEditor
             XDocument outputResult;
             if (badNamespacePrefixedElementNames.Any())
             {
-                string badDeclared = string.Join(" ", badNamespacePrefixes.Select(p => string.Format("xmlns:{0}='#bad'", p)).ToArray());
-                XDocument badDoc = XDocument.Parse(string.Format("<root {0}>{1}</root>", badDeclared, xhtml));
+                string badDeclared = string.Join(" ", badNamespacePrefixes.Select(p => $"xmlns:{p}='#bad'"));
+                XDocument badDoc = XDocument.Parse($"<root {badDeclared}>{xhtml}</root>");
                 badDoc.Descendants().Attributes().Where(e => e.Name.Namespace == "#bad").Remove();
                 badDoc.Descendants().Where(e => e.Name.Namespace == "#bad").Remove();
                 outputResult = new XDocument(badDoc.Root.Descendants().First());
@@ -191,6 +167,40 @@ namespace Composite.Core.WebClient.Services.WysiwygEditor
             }
 
             return new TidyHtmlResult { Output = outputResult, ErrorSummary = messageBuilder.ToString() };
+        }
+
+        private static string ParseMarkup(string markup, Tidy tidy, out TidyMessageCollection tidyMessages)
+        {
+            string result;
+
+            tidyMessages = new TidyMessageCollection();
+            byte[] htmlByteArray = Encoding.UTF8.GetBytes(markup);
+
+            using (var inputStream = new MemoryStream(htmlByteArray))
+            {
+                using (var outputStream = new MemoryStream())
+                {
+                    tidy.Parse(inputStream, outputStream, tidyMessages);
+                    outputStream.Position = 0;
+                    using (var sr = new C1StreamReader(outputStream))
+                    {
+                        result = sr.ReadToEnd();
+                    }
+                }
+            }
+
+            if (tidyMessages.Errors > 0)
+            {
+                var errorMessageBuilder = new StringBuilder();
+                foreach (TidyMessage message in tidyMessages)
+                {
+                    if (message.Level == MessageLevel.Error)
+                        errorMessageBuilder.AppendLine(message.ToString());
+                }
+                throw new InvalidOperationException($"Failed to parse html:\n\n{errorMessageBuilder}");
+            }
+
+            return result;
         }
 
 
@@ -210,38 +220,13 @@ namespace Composite.Core.WebClient.Services.WysiwygEditor
                 // take the slow road below...
             }
 
-            byte[] xmlByteArray = Encoding.UTF8.GetBytes(xmlMarkup);
-
             Tidy tidy = GetXmlConfiguredTidy();
 
             List<string> namespacePrefixedElementNames = LocateNamespacePrefixedElementNames(xmlMarkup);
             AllowNamespacePrefixedElementNames(tidy, namespacePrefixedElementNames);
             AllowHtml5ElementNames(tidy);
 
-            TidyMessageCollection tidyMessages = new TidyMessageCollection();
-            string xml = "";
-
-            using (MemoryStream inputStream = new MemoryStream(xmlByteArray))
-            {
-                using (MemoryStream outputStream = new MemoryStream())
-                {
-                    tidy.Parse(inputStream, outputStream, tidyMessages);
-                    outputStream.Position = 0;
-                    C1StreamReader sr = new C1StreamReader(outputStream);
-                    xml = sr.ReadToEnd();
-                }
-            }
-
-            if (tidyMessages.Errors > 0)
-            {
-                StringBuilder errorMessageBuilder = new StringBuilder();
-                foreach (TidyMessage message in tidyMessages)
-                {
-                    if (message.Level == MessageLevel.Error)
-                        errorMessageBuilder.AppendLine(message.ToString());
-                }
-                throw new InvalidOperationException(string.Format("Failed to parse html:\n\n{0}", errorMessageBuilder.ToString()));
-            }
+            string xml = ParseMarkup(xmlMarkup, tidy, out TidyMessageCollection _);
 
             xml = RemoveDuplicateAttributes(xml);
 
@@ -257,7 +242,7 @@ namespace Composite.Core.WebClient.Services.WysiwygEditor
             XmlWriterSettings settings = CustomizedWriterSettings();
             using (var memoryStream = new MemoryStream())
             {
-                using (XmlWriter writer = XmlWriter.Create(memoryStream, settings))
+                using (var writer = XmlWriter.Create(memoryStream, settings))
                 {
                     XNamespace xhtml = "http://www.w3.org/1999/xhtml";
                     XElement bodyElement = source.Descendants(xhtml + "body").First();
@@ -267,9 +252,12 @@ namespace Composite.Core.WebClient.Services.WysiwygEditor
                         element.WriteTo(writer);
                     }
 
-                    writer.Flush();
-                    memoryStream.Position = 0;
-                    var sr = new C1StreamReader(memoryStream);
+                    writer.Close();
+                }
+
+                memoryStream.Position = 0;
+                using (var sr = new C1StreamReader(memoryStream))
+                {
                     bodyInnerXhtml = sr.ReadToEnd();
                 }
             }
@@ -311,14 +299,14 @@ namespace Composite.Core.WebClient.Services.WysiwygEditor
 
         private static XmlWriterSettings CustomizedWriterSettings()
         {
-            var settings = new XmlWriterSettings();
-            settings.OmitXmlDeclaration = true;
-            settings.ConformanceLevel = ConformanceLevel.Fragment;
-            settings.CloseOutput = false;
-            settings.Indent = true;
-            settings.IndentChars = "\t";
-
-            return settings;
+            return new XmlWriterSettings
+            {
+                OmitXmlDeclaration = true,
+                ConformanceLevel = ConformanceLevel.Fragment,
+                CloseOutput = false,
+                Indent = true,
+                IndentChars = "\t"
+            };
         }
 
 
@@ -452,7 +440,7 @@ namespace Composite.Core.WebClient.Services.WysiwygEditor
 
             foreach (Match match in matches)
             {
-                string prefixedElementName = string.Format("{0}:{1}", match.Groups[1].Value, match.Groups[2].Value);
+                string prefixedElementName = $"{match.Groups[1].Value}:{match.Groups[2].Value}";
                 if (!prefixedElementNames.Contains(prefixedElementName))
                 {
                     prefixedElementNames.Add(prefixedElementName);
@@ -500,7 +488,7 @@ namespace Composite.Core.WebClient.Services.WysiwygEditor
                 }
                 else
                 {
-                    if (prefixToUri[prefix] != uri) throw new NotImplementedException(string.Format("The namespace prefix {0} is used to identify multiple namespaces. This may be legal XML but is not supported here", prefix));
+                    if (prefixToUri[prefix] != uri) throw new NotImplementedException($"The namespace prefix {prefix} is used to identify multiple namespaces. This may be legal XML but is not supported here");
                 }
             }
             return prefixToUri;

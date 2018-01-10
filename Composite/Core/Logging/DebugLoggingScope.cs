@@ -91,7 +91,20 @@ namespace Composite.Core.Logging
             {
                 LoggingService.LogVerbose(_scopeName, string.Format("Finished {0} ({1} ms)", _actionInfo, endTickCount - _startTickCount));
             }
+#if LeakCheck
+            GC.SuppressFinalize(this);
+#endif
         }
+
+
+#if LeakCheck
+        private string stack = Environment.StackTrace;
+        /// <exclude />
+        ~DebugLoggingScope()
+        {
+            Composite.Core.Instrumentation.DisposableResourceTracer.RegisterFinalizerExecution(stack);
+        }
+#endif
 
 
         private class NoActionDisposable : IDisposable

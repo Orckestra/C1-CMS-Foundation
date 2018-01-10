@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Workflow.Activities;
@@ -100,6 +100,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
             this.Bindings.Add("AllowOverwrite", false);
             this.Bindings.Add("Title", "");
             this.Bindings.Add("Description", "");
+            this.Bindings.Add("Tags", "");
         }
 
 
@@ -194,6 +195,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
         private void finalizeCodeActivity_Finalize_ExecuteCode(object sender, EventArgs e)
         {
             AddNewTreeRefresher addNewTreeRefresher = this.CreateAddNewTreeRefresher(this.EntityToken);
+            DataEntityToken focusEntityToken;
 
             UploadedFile uploadedFile = this.GetBinding<UploadedFile>("UploadedFile");
             string filename;
@@ -219,6 +221,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
                     mediaFile.FolderPath = this.FolderPath;
                     mediaFile.Title = this.GetBinding<string>("Title");
                     mediaFile.Description = this.GetBinding<string>("Description");
+                    mediaFile.Tags = this.GetBinding<string>("Tags");
                     mediaFile.Culture = C1Console.Users.UserSettings.ActiveLocaleCultureInfo.Name;
                     mediaFile.Length = uploadedFile.ContentLength;
                     mediaFile.MimeType = MimeTypeInfo.GetMimeType(uploadedFile);
@@ -233,9 +236,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
 
                     IMediaFile addedFile = DataFacade.AddNew<IMediaFile>(mediaFile, store.DataSourceId.ProviderName);
 
-                    addNewTreeRefresher.PostRefreshMesseges(addedFile.GetDataEntityToken());
-
-                    SelectElement(addedFile.GetDataEntityToken());
+                    focusEntityToken = addedFile.GetDataEntityToken();
                 }
                 else
                 {
@@ -244,6 +245,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
 
                     fileData.Title = this.GetBinding<string>("Title");
                     fileData.Description = this.GetBinding<string>("Description");
+                    fileData.Tags = this.GetBinding<string>("Tags");
                     fileData.MimeType = MimeTypeInfo.GetMimeType(uploadedFile);
                     fileData.Length = uploadedFile.ContentLength;
 
@@ -258,13 +260,14 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
                     DataFacade.Update(existingFile);
                     DataFacade.Update(fileData);
 
-                    addNewTreeRefresher.PostRefreshMesseges(existingFile.GetDataEntityToken());
-
-                    SelectElement(existingFile.GetDataEntityToken());
+                    focusEntityToken = existingFile.GetDataEntityToken();
                 }
 
                 transactionScope.Complete();
             }
-        }        
+
+            addNewTreeRefresher.PostRefreshMesseges(focusEntityToken);
+            SelectElement(focusEntityToken);
+        }
     }
 }

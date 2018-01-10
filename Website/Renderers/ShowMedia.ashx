@@ -1,4 +1,4 @@
-﻿<%@ WebHandler Language="C#" Class="ShowMedia" %>
+<%@ WebHandler Language="C#" Class="ShowMedia" %>
 
 using System;
 using System.Collections.Generic;
@@ -19,25 +19,63 @@ using Composite.Core.Extensions;
 using Composite.Core.WebClient;
 using Composite.Core.WebClient.Media;
 using Composite.Core.WebClient.Renderings;
+using Composite.Data.Plugins.DataProvider.Streams;
 
 
 public class ShowMedia : IHttpHandler, IReadOnlySessionState
 {
     private const int CopyBufferSize = 8192;
     private static readonly string MediaUrl_PublicPrefix = UrlUtils.PublicRootPath + "/media/";
-    
+
     private class Range
     {
-        public Range(long offset, long length) 
+        public Range(long offset, long length)
         {
             Offset = offset;
             Length = length;
         }
-        
+
         public readonly long Offset;
         public readonly long Length;
     }
-    
+
+    private class FileOrStream
+    {
+        readonly string _fileName;
+        readonly IMediaFile _mediaFile;
+
+        public FileOrStream(string fileName)
+        {
+            _fileName = fileName;
+        }
+
+        public FileOrStream(IMediaFile mediaFile)
+        {
+            _mediaFile = mediaFile;
+
+            if (mediaFile is FileSystemFileBase)
+            {
+                _fileName = ((FileSystemFileBase) _mediaFile).SystemPath;
+            }
+        }
+
+        public bool IsFile
+        {
+            get { return _fileName != null; }
+        }
+
+        public string GetFilePath()
+        {
+            return _fileName;
+        }
+
+        public Stream OpenReadStream()
+        {
+            return _mediaFile.GetReadStream();
+        }
+    }
+
+
     public void ProcessRequest(HttpContext context)
     {
         using (GlobalInitializerFacade.CoreIsInitializedScope)
@@ -64,7 +102,7 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
                 {
                     throw;
                 }
-                
+
                 context.Response.StatusCode = 500;
             }
 
@@ -72,7 +110,7 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
             {
                 return;
             }
-            
+
             try
             {
                 ValidateAndSend(context, file);
@@ -90,12 +128,35 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
         }
     }
 
-    private static bool ExecuteResponseHandlers(HttpContext context, IMediaFile file)
+    private static bool ExecuteResponseHandlers(HttpContext context, IMediaFile mediaFile)
     {
-        RenderingResponseHandlerResult responseHandling = RenderingResponseHandlerFacade.GetDataResponseHandling(file.GetDataEntityToken());
+        RenderingResponseHandlerResult responseHandling = RenderingResponseHandlerFacade.GetDataResponseHandling(mediaFile.GetDataEntityToken());
 
         if (responseHandling != null)
         {
+            if (responseHandling.PreventPublicCaching)
+            {
+                var hostname = context.Request.Url.Host;
+                var mappers = ServiceLocator.GetServices<INonCachebleRequestHostnameMapper>();
+                var newHostname = mappers
+                        .Select(m => m.GetRedirectToHostname(hostname))
+                        .FirstOrDefault(h => !string.IsNullOrWhiteSpace(h) && h != hostname);
+
+                if (newHostname != null)
+                {
+                    var url = new Uri(context.Request.Url, context.Request.RawUrl).ToString();
+                    int offset = url.IndexOf(hostname, StringComparison.OrdinalIgnoreCase);
+                    if (offset > 0)
+                    {
+                        var newUrl = url.Substring(0, offset) + newHostname + url.Substring(offset + hostname.Length);
+                        context.Response.RedirectPermanent(newUrl, false);
+                        return true;
+                    }
+                }
+
+                context.Response.Cache.SetCacheability(HttpCacheability.Private);
+            }
+
             bool redirecting = responseHandling.RedirectRequesterTo != null;
 
             if (redirecting)
@@ -112,7 +173,7 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
 
         return false;
     }
-    
+
     private static void ValidateAndSend(HttpContext context, IMediaFile file)
     {
         if (ExecuteResponseHandlers(context, file))
@@ -145,7 +206,7 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
             context.Response.Cache.SetCacheability(HttpCacheability.Public);
 
             checkIfModifiedSince = true;
-        } 
+        }
         else if (!UserValidationFacade.IsLoggedIn())
         {
             context.Response.Cache.SetExpires(DateTime.Now.AddMinutes(60));
@@ -157,35 +218,55 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
         Stream inputStream = null;
         try
         {
+            FileOrStream source;
 
             if (file.MimeType == "image/jpeg" || file.MimeType == "image/gif" || file.MimeType == "image/png"
                 || file.MimeType == "image/bmp" || file.MimeType == "image/tiff")
             {
-                inputStream = ProcessImageResizing(context, file);
+                source = ProcessImageResizing(context, file);
             }
             else
             {
-                inputStream = file.GetReadStream();
+                source = new FileOrStream(file);
             }
 
             long? length = null;
+            bool canSeek;
 
-            if (inputStream.CanSeek && inputStream.Length != 0)
+            if (source.IsFile)
             {
-                length = inputStream.Length;
+                var fileInfo = new FileInfo(source.GetFilePath());
+                if (!fileInfo.Exists)
+                {
+                    context.Response.StatusCode = 404;
+                    return;
+                }
+
+                length = fileInfo.Length;
+                canSeek = true;
             }
-            else if (file.Length.HasValue && file.Length > 0)
+            else
             {
-                length = file.Length;
+                inputStream = source.OpenReadStream();
+
+                canSeek = inputStream.CanSeek;
+
+                if (canSeek && inputStream.Length != 0)
+                {
+                    length = inputStream.Length;
+                }
+                else if (file.Length.HasValue && file.Length > 0)
+                {
+                    length = file.Length;
+                }
             }
 
-            
-            bool canAcceptRanges = inputStream.CanSeek && length != null && length > 0;
+            bool canAcceptRanges = canSeek && length != null && length > 0;
             if (canAcceptRanges)
             {
                 context.Response.AddHeader("Accept-Ranges", "bytes");
-            }            
-            
+            }
+
             if (checkIfModifiedSince && file.LastWriteTime != null)
             {
                 var lastModified = file.LastWriteTime.Value;
@@ -211,10 +292,10 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
                 }
             }
 
-           
+
             string rangeStr = context.Request.Headers["Range"];
-            
-            if(canAcceptRanges && !rangeStr.IsNullOrEmpty())
+
+            if (canAcceptRanges && !rangeStr.IsNullOrEmpty())
             {
                 List<Range> rangeSegments = ParseRanges(rangeStr, length.Value);
 
@@ -223,14 +304,21 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
 
                 int totalLength = (int)rangeSegments.Select(rs => rs.Length).Sum();
                 Verify.That(totalLength <= length.Value, "Combined download range is bigger then stream length");
-                
+
                 context.Response.AddHeader("Content-Length", totalLength.ToString(CultureInfo.InvariantCulture));
-                
+
                 foreach (var rangeSegment in rangeSegments)
                 {
-                    inputStream.Seek(rangeSegment.Offset, SeekOrigin.Begin);
+                    if (source.IsFile)
+                    {
+                        context.Response.WriteFile(source.GetFilePath(), rangeSegment.Offset, rangeSegment.Length);
+                    }
+                    else
+                    {
+                        inputStream.Seek(rangeSegment.Offset, SeekOrigin.Begin);
 
-                    OutputToResponse(context, new LimitedStream(inputStream, rangeSegment.Length));
+                        OutputToResponse(context, new LimitedStream(inputStream, rangeSegment.Length));
+                    }
                 }
             }
             else
@@ -239,11 +327,16 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
                 {
                     context.Response.AddHeader("Content-Length", ((int)length).ToString(CultureInfo.InvariantCulture));
                 }
-                
-                OutputToResponse(context, inputStream);
-            }
 
-            context.Response.Flush();
+                if (source.IsFile)
+                {
+                    context.Response.WriteFile(source.GetFilePath());
+                }
+                else
+                {
+                    OutputToResponse(context, inputStream);
+                }
+            }
         }
         catch (HttpException)
         {
@@ -258,7 +351,7 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
             }
         }
     }
-    
+
     private static bool UrlContainsTimestamp(HttpContext context, IMediaFile file)
     {
         string url = context.Request.RawUrl;
@@ -268,22 +361,23 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
         string[] urlParts = url.Substring(MediaUrl_PublicPrefix.Length).Split('/');
 
         Guid tempGuid;
-        
-        return urlParts.Length >= 2 
+
+        return urlParts.Length >= 2
             && Guid.TryParse(urlParts[0], out tempGuid)
-            && urlParts[1].Length == 6 
+            && urlParts[1].Length == 6
             && urlParts[1] == GetTimeStampHash(file);
     }
 
-    
+
     private static string GetTimeStampHash(IMediaFile file)
     {
         int hash = file.LastWriteTime.Value.ToUniversalTime().GetHashCode();
         return Convert.ToBase64String(BitConverter.GetBytes(hash)).Substring(0, 6).Replace('+', '-').Replace('/', '_');
     }
-    
-    
-    private static void OutputToResponse(HttpContext context, Stream inputStream) {
+
+
+    private static void OutputToResponse(HttpContext context, Stream inputStream)
+    {
         var response = context.Response;
 
         byte[] buffer = new byte[CopyBufferSize];
@@ -303,14 +397,14 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
                 {
                     return;
                 }
-                
+
                 // Flushing to prevent unnecessary memory usage
                 response.Flush();
             }
         }
     }
-    
-    
+
+
     private static List<Range> ParseRanges(string rangesStr, long streamLength)
     {
         const string requiredPrefix = "bytes=";
@@ -319,7 +413,7 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
         rangesStr = rangesStr.Substring(requiredPrefix.Length);
         var result = new List<Range>();
 
-        foreach (string rangeStr in rangesStr.Split(new [] {','}, StringSplitOptions.RemoveEmptyEntries))
+        foreach (string rangeStr in rangesStr.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
         {
             try
             {
@@ -332,7 +426,7 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
                 Verify.That(beginOffset != null || endOffset != null, "Parameters missing");
 
 
-                if(beginOffset == null)
+                if (beginOffset == null)
                 {
                     Verify.That(endOffset <= streamLength, "The segment is bigger than the lenght of the file");
 
@@ -341,26 +435,26 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
                 }
 
                 Verify.That(beginOffset < streamLength, "Begin offset is out of range");
-                
-                if(endOffset == null)
+
+                if (endOffset == null)
                 {
                     result.Add(new Range(beginOffset.Value, streamLength - beginOffset.Value));
                     continue;
                 }
-                
+
                 Verify.That(beginOffset <= endOffset, "End offset should be greater than begin offset");
 
                 result.Add(new Range(beginOffset.Value, endOffset.Value - beginOffset.Value + 1));
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new InvalidOperationException("Incorrect range segment '{0}'. Range: '{1}'".FormatWith(rangeStr, rangesStr), ex);
             }
-        } 
+        }
 
         return result;
     }
-    
+
     private static string BuildContentRangeResponseHeader(List<Range> rangeSegments, long length)
     {
         var contentRangeHeader = new StringBuilder();
@@ -379,7 +473,7 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
 
         return contentRangeHeader.ToString();
     }
-    
+
     private static DateTime? ParseDateTimeHeader(HttpContext context, string headerName)
     {
         string header = context.Request.Headers[headerName];
@@ -433,13 +527,13 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
         }
     }
 
-    private static Stream ProcessImageResizing(HttpContext context, IMediaFile file)
+    private static FileOrStream ProcessImageResizing(HttpContext context, IMediaFile file)
     {
         var resizingOptions = ResizingOptions.Parse(context.Server, context.Request.QueryString);
 
         if (resizingOptions == null || resizingOptions.IsEmpty)
         {
-            return file.GetReadStream();
+            return new FileOrStream(file);
         }
 
         //Determine the content type, and save
@@ -476,18 +570,18 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
         try
         {
             string resizedImageFilePath = ImageResizer.GetResizedImage(context.Server, file, resizingOptions, imgType);
-            
-            return resizedImageFilePath != null 
-                ? new C1FileStream(resizedImageFilePath, FileMode.OpenOrCreate, FileAccess.Read)
-                : file.GetReadStream();
+
+            return resizedImageFilePath != null
+                ? new FileOrStream(resizedImageFilePath)
+                : new FileOrStream(file);
         }
         catch (Exception ex)
         {
             Log.LogVerbose("Composite.Media.ImageResize", ex.Message);
         }
-        return file.GetReadStream();
+        return new FileOrStream(file);
     }
-    
+
     /// <summary>
     /// Allows reading only limited amount bytes from inner stream
     /// </summary>
@@ -496,14 +590,14 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
         private readonly Stream _innerStream;
         private readonly long _size;
         private long _position;
-        
+
         public LimitedStream(Stream innerStream, long size)
         {
             _innerStream = innerStream;
             _size = size;
             _position = 0;
         }
-        
+
         public override void Flush()
         {
         }
@@ -520,7 +614,7 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
 
         public override int Read(byte[] buffer, int offset, int count)
         {
-            if(_position >= _size)
+            if (_position >= _size)
             {
                 return 0;
             }

@@ -86,6 +86,19 @@ namespace Composite.Core.Threading
 
                 _disposed = true;                
             }
+
+#if LeakCheck
+            GC.SuppressFinalize(this);
+#endif
         }
+
+#if LeakCheck
+        private string stack = Environment.StackTrace;
+        /// <exclude />
+        ~ThreadCultureScope()
+        {
+            Composite.Core.Instrumentation.DisposableResourceTracer.RegisterFinalizerExecution(stack);
+        }
+#endif
     }
 }

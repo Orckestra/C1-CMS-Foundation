@@ -76,7 +76,7 @@ namespace Composite.Data.Caching
         private bool _enabled = true;
         private bool _clearOnFlush = true;
         private int _maxSize;
-        private int _defaultMaximumSize;
+        private readonly int _defaultMaximumSize;
 
 
         /// <exclude />
@@ -101,21 +101,15 @@ namespace Composite.Data.Caching
 
 
         /// <exclude />
-        public bool Enabled
-        {
-            get { return _enabled; }
-        }
+        public bool Enabled => _enabled;
 
 
         /// <exclude />
-        public string Name { get; private set; }
+        public string Name { get; }
 
 
         /// <exclude />
-        protected object Get(object key)
-        {
-            return _table[key];
-        }
+        protected object Get(object key) => _table[key];
 
 
         /// <exclude />
@@ -130,7 +124,7 @@ namespace Composite.Data.Caching
             {
                 if (_maxSize != -1 && _table.Count > _maxSize)
                 {
-                    Log.LogWarning("Cache", "Clearing cache '{0}' as it exceeded maximum size {1} elements. Edit configuration file to increase the cache size.", Name, _maxSize);
+                    Log.LogWarning("Cache", $"Clearing cache '{Name}' as it exceeded maximum size {_maxSize} elements. Edit configuration file /App_Data/Composite/Composite.config to increase the cache size.");
                     _table.Clear();
                 }
 

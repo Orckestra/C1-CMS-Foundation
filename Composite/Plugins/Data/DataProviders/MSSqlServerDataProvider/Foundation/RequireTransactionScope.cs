@@ -35,6 +35,19 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
             {
                 _scope.Dispose();
             }
+
+#if LeakCheck
+            GC.SuppressFinalize(this);
+#endif
         }
+
+#if LeakCheck
+        private string stack = Environment.StackTrace;
+        /// <exclude />
+        ~RequireTransactionScope()
+        {
+            Composite.Core.Instrumentation.DisposableResourceTracer.RegisterFinalizerExecution(stack);
+        }
+#endif
     }
 }

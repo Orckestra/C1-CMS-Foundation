@@ -13,40 +13,52 @@ namespace Composite.Search.DocumentSources
     {
         private readonly List<IDocumentSourceListener> _listeners = new List<IDocumentSourceListener>();
 
-        private readonly Lazy<ICollection<DocumentField>> _customFields;
+        private readonly Lazy<IReadOnlyCollection<DocumentField>> _customFields;
         private readonly DataChangesIndexNotifier _changesIndexNotifier;
+        private readonly IEnumerable<ISearchDocumentBuilderExtension> _docBuilderExtensions;
 
-        public MediaLibraryDocumentSource()
+        public MediaLibraryDocumentSource(IEnumerable<ISearchDocumentBuilderExtension> extensions)
         {
-            _customFields = new Lazy<ICollection<DocumentField>>(() =>
-                DataTypeSearchReflectionHelper.GetDocumentFields(typeof(IMediaFile)).Evaluate());
+            _customFields = new Lazy<IReadOnlyCollection<DocumentField>>(() =>
+                DataTypeSearchReflectionHelper.GetDocumentFields(typeof(IMediaFile)).ToList());
+
+            _docBuilderExtensions = extensions;
 
             _changesIndexNotifier = new DataChangesIndexNotifier(
                 _listeners, typeof(IMediaFile),
-                data => FromMediaFile((IMediaFile)data),
+                (data, culture) => FromMediaFile((IMediaFile)data),
                 data => ((IMediaFile)data).Id.ToString());
             _changesIndexNotifier.Start();
         }
 
         public string Name => typeof(IMediaFile).FullName;
 
-        public ICollection<DocumentField> CustomFields => _customFields.Value;
+        public IReadOnlyCollection<DocumentField> CustomFields => _customFields.Value;
 
         public void Subscribe(IDocumentSourceListener sourceListener)
         {
             _listeners.Add(sourceListener);
         }
 
-        public IEnumerable<SearchDocument> GetAllSearchDocuments(CultureInfo culture)
+        public IEnumerable<DocumentWithContinuationToken> GetSearchDocuments(CultureInfo culture, string continuationToken = null)
         {
             IEnumerable<IMediaFile> mediaFiles;
 
+            Guid lastMediaFileId = continuationToken == null ? Guid.Empty : new Guid(continuationToken);
+
             using (var conn = new DataConnection())
             {
-                mediaFiles = conn.Get<IMediaFile>().Evaluate();
+                mediaFiles = conn.Get<IMediaFile>()
+                    .Where(m => m.Id.CompareTo(lastMediaFileId) > 0)
+                    .OrderBy(m => m.Id)
+                    .Evaluate();
             }
 
-            return mediaFiles.Select(FromMediaFile);
+            return mediaFiles.Select(m => new DocumentWithContinuationToken
+            {
+                Document = FromMediaFile(m),
+                ContinuationToken = m.Id.ToString()
+            });
         }
 
         private SearchDocument FromMediaFile(IMediaFile mediaFile)
@@ -59,12 +71,12 @@ namespace Composite.Search.DocumentSources
 
             string documentId = mediaFile.Id.ToString();
 
-            var docBuilder = new SearchDocumentBuilder();
+            var docBuilder = new SearchDocumentBuilder(_docBuilderExtensions);
 
             docBuilder.SetDataType(typeof(IMediaFile));
             docBuilder.CrawlData(mediaFile);
 
-            return docBuilder.BuildDocument(Name, documentId, label, null, mediaFile.GetDataEntityToken(), null);
+            return docBuilder.BuildDocument(Name, documentId, label, null, mediaFile.GetDataEntityToken());
         }
     }
 }

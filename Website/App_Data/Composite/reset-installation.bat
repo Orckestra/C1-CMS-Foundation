@@ -1,3 +1,4 @@
+
 del DataMetaData\*.xml
 del DataStores\*.xml
 del Configuration\DynamicSqlDataProvider.config
@@ -5,7 +6,6 @@ del Configuration\DynamicXmlDataProvider.config
 del Configuration\InstallationInformation.xml
 del Configuration\SystemInitialized.xml
 del Configuration\FirstTimeStart.xml
-del ..\..\Bin\Composite.Generated.dll 
 del ..\..\app_offline.htm /F
 rd Packages /S /Q
 md Packages
@@ -32,7 +32,6 @@ md ApplicationState\SerializedWorkflows
 rd ..\..\Composite\InstalledPackages /S /Q
 rd ..\..\Views /S /Q
 rd Azure /S /Q
-md Azure
 rd InlineCSharpFunctions /S /Q
 md InlineCSharpFunctions
 
@@ -47,32 +46,39 @@ del TreeDefinitions\PageType.xml.backup
 
 :: Basic cleanup
 rd ..\..\Frontend\Composite  /S /Q
-rd ..\..\App_Data\UserControls /S /Q
 rd ..\..\App_Data\PageTemplateFeatures /S /Q
 
 :: Razor cleanup
 copy ..\..\App_Data\Razor\web.config ..\..\App_Data\Razor.web.config
-rd ..\..\App_Data\Razor /S /Q
-md ..\..\App_Data\Razor
+del /q ..\..\App_Data\Razor
+FOR /D %%p IN (..\..\App_Data\Razor\*.*) DO rmdir "%%p" /s /q
 copy ..\..\App_Data\Razor.web.config ..\..\App_Data\Razor\web.config
 del ..\..\App_Data\Razor.web.config /f
+
+:: UserControls cleanup
+copy ..\..\App_Data\UserControls\web.config ..\..\App_Data\UserControls.web.config
+del /q ..\..\App_Data\UserControls
+FOR /D %%p IN (..\..\App_Data\UserControls\*.*) DO rmdir "%%p" /s /q
+copy ..\..\App_Data\UserControls.web.config ..\..\App_Data\UserControls\web.config
+del ..\..\App_Data\UserControls.web.config /f
 
 
 :: PageTemplates cleanup
 copy ..\..\App_Data\PageTemplates\web.config ..\..\App_Data\PageTemplates.web.config
-rd ..\..\App_Data\PageTemplates /S /Q
-md ..\..\App_Data\PageTemplates
+del /q ..\..\App_Data\PageTemplates
+FOR /D %%p IN (..\..\App_Data\PageTemplates\*.*) DO rmdir "%%p" /s /q
 copy ..\..\App_Data\PageTemplates.web.config ..\..\App_Data\PageTemplates\web.config
 del ..\..\App_Data\PageTemplates.web.config /f
 
+:: License file cleanup
+del PackageLicenses\*.* /q
+
+:: Assembly cleanup
+rmdir ..\..\bin /S /Q
+mkdir ..\..\bin
 
 :: Starter site cleanup 
 del ..\..\favicon.ico
-del ..\..\Bin\dotless.Core.dll
-del ..\..\Bin\Antlr3.Runtime.dll
-del ..\..\Bin\WebGrease.dll
-del ..\..\Bin\System.Web.Optimization.dll
-del ..\..\Bin\Composite.Search.SimplePageSearch.dll
 
 rd /s /q ..\..\Frontend\Scripts
 rd /s /q ..\..\Frontend\Styles
@@ -80,13 +86,9 @@ rd /s /q ..\..\Frontend\Images
 rd /s /q ..\..\Frontend\Composite
 
 
-
-
 :: Blog cleanup
 del ..\..\BlogRssFeed.ashx
 del ..\..\BlogCommentsRssFeed.ashx
-del ..\..\Bin\Composite.Community.Blog.dll
-del ..\..\Bin\CookComputing.XmlRpcV2.dll
 del ..\..\BlogMetaWeblog.ashx
 del ..\..\App_GlobalResources\Composite\Community\Blog.resx
 del ..\..\App_GlobalResources\Composite\Community\Blog.ru-ru.resx
@@ -96,21 +98,7 @@ del TreeDefinitions\Composite.Community.Blog.Entries.xml
 del TreeDefinitions\Composite.Community.Blog.Entries.xmll
 
 
-:: Razor package cleanup
-del ..\..\Bin\CompositeC1Contrib.RazorFunctions.dll
-del ..\..\Bin\Microsoft.Web.*.dll
-:: del ..\..\Bin\System.Web.*.dll
-
-
-:: Extranet cleanup
-del ..\..\Bin\Composite.Community.Extranet.dll
-
-
 :: Newsletter cleanup
-del ..\..\Bin\Composite.Community.Newsletter.dll
-del ..\..\Bin\Composite.Community.Newsletter.SubjectBased.dll
-del ..\..\Bin\Composite.Community.Newsletter.DataTypeBased.dll
-del ..\..\Bin\Composite.Community.Newsletter.FunctionBased.dll
 del ..\..\Newsletter.ashx
 del ..\..\App_Data\Composite\TreeDefinitions\Composite.Community.Newsletter.SubjectBased.xml
 rd /s /q ..\..\App_Data\NewsletterType
@@ -122,7 +110,6 @@ rd /s /q ..\..\Frontend\Composite
 
 
 :: Event calender cleanup
-del ..\..\Bin\Composite.Community.EventCalendar.dll
 del ..\..\App_Data\Composite\TreeDefinitions\Composite.Community.EventCalendar.EventsApp.xml
 
 
@@ -135,7 +122,6 @@ del ..\..\App_Data\Composite\TreeDefinitions\Composite.Community.ContactForm.xml
 del ..\..\App_Data\Composite\TreeDefinitions\Composite.Community.ContactFrom.EmailTemplate.xml 
 
 :: Versioning cleanup
-del ..\..\Bin\Composite.Versioning.ContentVersioning.dll
 del TreeDefinitions\Composite.Versioning.ContentVersioning.xml
 
 
@@ -168,14 +154,10 @@ del Configuration\DynamicXmlDataProvider.config
 :: Omni corp cleanup
 del ..\..\Frontend\Composite\Search\SimplePageSearch\Styles.css
 
-:: LESS cleanup
-del ..\..\bin\Composite.Web.Css.Less.dll
-
 
 :: Package create cleanup
 
 rd ..\..\Composite\content\forms\InstalledPackages\Composite.Tools.PackageCreator /S /Q
-del ..\..\Bin\Composite.Tools.PackageCreator.dll 
 del ..\..\Composite\InstalledPackages\localization\Composite.Tools.PackageCreator.en-us.xml
 rd /s /q ..\..\App_Data\PackageCreator
 
@@ -190,14 +172,6 @@ rd /s /q ..\..\RSS
 rd /s /q ..\..\App_GlobalResources
 
 
-:: assemblies
-del ..\..\bin\Composite.Tools.*.*
-del ..\..\bin\Composite.Community.*.*
-del ..\..\bin\Composite.Web.*.*
-del ..\..\bin\Composite.Tools.*.*
-del ..\..\bin\Composite.Media.*.*
-del ..\..\bin\Composite.Forms.*.*
-del ..\..\bin\Composite.XmlSerializers.dll
-del ..\..\bin\WebGrease.dll
-
-
+:: components
+del /q "..\Components\*"
+FOR /D %%p IN ("..\Components\*.*") DO rmdir "%%p" /s /q

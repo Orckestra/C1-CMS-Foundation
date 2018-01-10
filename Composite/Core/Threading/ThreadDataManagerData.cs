@@ -48,7 +48,7 @@ namespace Composite.Core.Threading
             CheckNotDisposed();
 
             ThreadDataManagerData current = this;
-            while ((current != null) && (current.Data.ContainsKey(key) == false))
+            while (current != null && !current.Data.ContainsKey(key))
             {
                 current = current.Parent;
             }
@@ -69,14 +69,7 @@ namespace Composite.Core.Threading
         {
             CheckNotDisposed();
 
-            if (this.Data.ContainsKey(key) == false)
-            {
-                this.Data.Add(key, value);
-            }
-            else
-            {
-                this.Data[key] = value;
-            }
+            this.Data[key] = value;
         }
 
         /// <exclude />
@@ -96,10 +89,7 @@ namespace Composite.Core.Threading
         }
 
         /// <exclude />
-        public object this[object key]
-        {
-            get { return GetValue(key); }
-        }
+        public object this[object key] => GetValue(key);
 
         /// <exclude />
         public void CheckNotDisposed()
@@ -113,13 +103,22 @@ namespace Composite.Core.Threading
         /// <exclude />
         public void Dispose()
         {
-            if (OnDispose != null)
-            {
-                OnDispose();
-            }
+            OnDispose?.Invoke();
             _disposed = true;
+
+#if LeakCheck
+            GC.SuppressFinalize(this);
+#endif
         }
 
+#if LeakCheck
+        private string stack = Environment.StackTrace;
+        /// <exclude />
+        ~ThreadDataManagerData()
+        {
+            Composite.Core.Instrumentation.DisposableResourceTracer.RegisterFinalizerExecution(stack);
+        }
+#endif
         #endregion
     }
 }

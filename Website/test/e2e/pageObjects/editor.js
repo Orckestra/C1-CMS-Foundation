@@ -24,6 +24,7 @@ module.exports = {
 					.enter()
 					.assert.attributeEquals('body', 'contenteditable', 'true')
 					.section.editorBody
+					.waitForElementVisible(selector,this.api.globals.timeouts.basic)
 					.assert.visible(selector)
 					.replaceContent(selector, newContent)
 				return this;

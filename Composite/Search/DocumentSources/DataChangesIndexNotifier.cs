@@ -12,16 +12,18 @@ namespace Composite.Search.DocumentSources
 {
     internal class DataChangesIndexNotifier
     {
+        const string LogTitle = nameof(DataChangesIndexNotifier);
+
         private readonly IEnumerable<IDocumentSourceListener> _listeners;
         private readonly Type _interfaceType;
 
-        private Func<IData, SearchDocument> GetDocument { get; }
+        private Func<IData, CultureInfo, SearchDocument> GetDocument { get; }
         private Func<IData, string> GetDocumentId { get; }
 
         public DataChangesIndexNotifier(
             IEnumerable<IDocumentSourceListener> listeners,
             Type interfaceType, 
-            Func<IData, SearchDocument> getDocumentFunc,
+            Func<IData, CultureInfo, SearchDocument> getDocumentFunc,
             Func<IData, string> getDocumentIdFunc)
         {
             _listeners = listeners;
@@ -69,19 +71,26 @@ namespace Composite.Search.DocumentSources
         {
             if (IgnoreNotification(dataEventArgs)) return;
 
-            var data = dataEventArgs.Data;
-
-            if (IsPublishedDataFromUnpublishedScope(data))
+            try
             {
-                return;
+                var data = dataEventArgs.Data;
+
+                if (IsPublishedDataFromUnpublishedScope(data))
+                {
+                    return;
+                }
+
+                foreach (var culture in GetCultures(data))
+                {
+                    var document = GetDocument(data, culture);
+                    if (document == null) continue;
+
+                    _listeners.ForEach(l => l.Create(culture, document));
+                }
             }
-
-            var document = GetDocument(data);
-            if(document == null) return;
-
-            foreach (var culture in GetCultures(data))
+            catch (Exception ex)
             {
-                _listeners.ForEach(l => l.Create(culture, document));
+                Log.LogError(LogTitle, ex);
             }
         }
 
@@ -89,21 +98,28 @@ namespace Composite.Search.DocumentSources
         {
             if (IgnoreNotification(dataEventArgs)) return;
 
-            var data = dataEventArgs.Data;
-            bool toBeDeleted = IsPublishedDataFromUnpublishedScope(data);
-
-            if (toBeDeleted)
+            try
             {
-                DeleteDocuments(data);
-                return;
+                var data = dataEventArgs.Data;
+                bool toBeDeleted = IsPublishedDataFromUnpublishedScope(data);
+
+                if (toBeDeleted)
+                {
+                    DeleteDocuments(data);
+                    return;
+                }
+
+                foreach (var culture in GetCultures(data))
+                {
+                    var document = GetDocument(data, culture);
+                    if (document == null) continue;
+
+                    _listeners.ForEach(l => l.Update(culture, document));
+                }
             }
-
-            var document = GetDocument(data);
-            if(document == null) return;
-
-            foreach (var culture in GetCultures(data))
+            catch (Exception ex)
             {
-                _listeners.ForEach(l => l.Update(culture, document));
+                Log.LogError(LogTitle, ex);
             }
         }
 
@@ -117,11 +133,18 @@ namespace Composite.Search.DocumentSources
 
         private void DeleteDocuments(IData data)
         {
-            var documentId = GetDocumentId(data);
-
-            foreach (var culture in GetCultures(data))
+            try
             {
-                _listeners.ForEach(l => l.Delete(culture, documentId));
+                var documentId = GetDocumentId(data);
+
+                foreach (var culture in GetCultures(data))
+                {
+                    _listeners.ForEach(l => l.Delete(culture, documentId));
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.LogError(LogTitle, ex);
             }
         }
 

@@ -2,7 +2,6 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Xml.Linq;
 using Composite.Core.Extensions;
 using Composite.Core;
@@ -21,20 +20,22 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
         private static readonly object _flushEnterLock = new object();
         private static readonly object _flushExecuteLock = new object();
         private static DateTime _activeFlushActivityStart = DateTime.MinValue;
-        private static System.Timers.Timer _autoCommitTimer;
+        private static readonly System.Timers.Timer _autoCommitTimer;
 
         private static readonly TimeSpan _updateFrequency = TimeSpan.FromMilliseconds(1000);
         private static readonly TimeSpan _fileIoDelay = TimeSpan.FromMilliseconds(10); // small pause between io operations to reduce asp.net appPool recycles due to FileWatcher buffer fills - edge case, but highly annoying
         private const int NumberOfRetries = 30;
-        private static readonly string LogTitle = "XmlDataProvider";
-        private static bool forceImmediateWrite = false;
+        private static readonly string LogTitle = nameof(XmlDataProvider);
+        private static bool _forceImmediateWrite;
 
 
         static XmlDataProviderDocumentWriter()
         {
-            _autoCommitTimer = new System.Timers.Timer(_updateFrequency.TotalMilliseconds);
-            _autoCommitTimer.AutoReset = true;
-            _autoCommitTimer.Elapsed += new System.Timers.ElapsedEventHandler(OnAutoCommitTimer);
+            _autoCommitTimer = new System.Timers.Timer(_updateFrequency.TotalMilliseconds)
+            {
+                AutoReset = true
+            };
+            _autoCommitTimer.Elapsed += OnAutoCommitTimer;
             _autoCommitTimer.Start();
 
             GlobalEventSystemFacade.SubscribeToShutDownEvent(OnShutDownEvent);
@@ -43,7 +44,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
         private static void OnShutDownEvent(ShutDownEventArgs args)
         {
-            forceImmediateWrite = true;
+            _forceImmediateWrite = true;
             Flush();
         }
 
@@ -52,7 +53,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
         {
             _dirtyRecords.Enqueue(fileRecord);
 
-            if (forceImmediateWrite)
+            if (_forceImmediateWrite)
             {
                 Flush();
             }
@@ -91,7 +92,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
         {
             lock (_flushEnterLock)
             {
-                if (!forceImmediateWrite && (DateTime.Now - _activeFlushActivityStart).TotalSeconds < 30)
+                if (!_forceImmediateWrite && (DateTime.Now - _activeFlushActivityStart).TotalSeconds < 30)
                 {
                     return;
                 }
@@ -120,7 +121,15 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                     }
                     catch (Exception ex)
                     {
+                        if (ex is DirectoryNotFoundException)
+                        {
+                            Log.LogWarning(LogTitle, $"Failed to save file '{fileRecord.FilePath}' as the underlying directory does not exist.");
+                            continue;
+                        }
+
+                        Log.LogCritical(LogTitle, $"Failed to save data to the file: '{fileRecord.FilePath}'");
                         Log.LogError(LogTitle, ex);
+
                         _dirtyRecords.Enqueue(fileRecord);
                     }
                 }
@@ -135,15 +144,11 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotCallXmlWriterCreateWithPath:DoNotCallXmlWriterCreateWithPath", Justification = "This is what we want, to handle broken saves")]
         private static void DoSave(FileRecord fileRecord)
         {
-            XDocument xDocument = new XDocument();
-
-            XElement root = new XElement(GetRootElementName(fileRecord.ElementName));
-            xDocument.Add(root);
+            var root = new XElement(GetRootElementName(fileRecord.ElementName));
+            var xDocument = new XDocument(root);
 
             var recordSet = fileRecord.RecordSet;
-            List<XElement> elements = new List<XElement>(recordSet.Index.GetValues());
-
-            string key = fileRecord.FilePath.ToLowerInvariant();
+            var elements = new List<XElement>(recordSet.Index.GetValues());
 
             Func<IEnumerable<XElement>, IOrderedEnumerable<XElement>> orderer;
             if (TryGetFileOrderer(out orderer, fileRecord.FilePath))
@@ -168,9 +173,11 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                 try
                 {
                     // Saving to temp file and file move to prevent broken saves
-                    XmlWriterSettings xmlWriterSettings = new XmlWriterSettings();
-                    xmlWriterSettings.CheckCharacters = false;
-                    xmlWriterSettings.Indent = true;
+                    var xmlWriterSettings = new XmlWriterSettings
+                    {
+                        CheckCharacters = false,
+                        Indent = true
+                    };
 
                     using (XmlWriter xmlWriter = XmlWriter.Create(fileRecord.TempFilePath, xmlWriterSettings))
                     {
@@ -209,19 +216,17 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                         Log.LogCritical(LogTitle, "Failed deleting the file: " + fileRecord.FilePath);
                         if (lastException != null) throw lastException;
 
-                        throw new InvalidOperationException("Failed to delete a file, this code shouldn't be reacheable");
+                        throw new InvalidOperationException("Failed to delete a file, this code shouldn't be reachable");
                     }
 
                     fileRecord.FileModificationDate = C1File.GetLastWriteTime(fileRecord.FilePath);
                 }
                 catch (Exception exception)
                 {
-                    Log.LogCritical(LogTitle, "Failed to save data to the file file:" + fileRecord.FilePath);
-                    Log.LogCritical(LogTitle, exception);
                     thrownException = exception;
                 }
             }
-            // ThreadAbortException should have a higher prioriry, and therefore we're doing rethrow in a separate block
+            // ThreadAbortException should have a higher priority, and therefore we're doing rethrow in a separate block
             if (thrownException != null) throw thrownException;
         }
 

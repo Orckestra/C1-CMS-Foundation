@@ -1,0 +1,16 @@
+<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+  <g fill="#666" stroke="#666" >
+    <g id="query">
+      <path stroke-miterlimit="50" stroke-linecap="round" stroke-linejoin="round" stroke-dashoffset="0" fill="#ffffff" fill-opacity="0" d="m5.46,16.5l-3.96,0.01l0,-16.01l7.98,0l4,3.9l-0.02,2.1" />
+      <path stroke-miterlimit="50" stroke-linecap="round" stroke-linejoin="round" stroke-dashoffset="0" fill="#ffffff" fill-opacity="0" d="m9.5,0.5l0,4l3.68,0" />
+      <path stroke-miterlimit="50" stroke-linecap="round" stroke-dashoffset="0" fill="#ffffff" fill-opacity="0" d="m4.5,4.5l2.97,0" />
+      <path stroke-miterlimit="50" stroke-linecap="round" stroke-dashoffset="0" fill="#ffffff" fill-opacity="0" d="m4.5,6.5l6,0" />
+      <path stroke-miterlimit="50" stroke-linecap="round" stroke-dashoffset="0" fill="#ffffff" fill-opacity="0" d="m4.5,8.5l1.99,0" />
+      <path stroke-miterlimit="50" stroke-linecap="round" stroke-dashoffset="0" fill="#ffffff" fill-opacity="0" d="m4.5,10.5l0.98,0" />
+      <path stroke-miterlimit="50" stroke-linecap="round" stroke-dashoffset="0" fill="#ffffff" fill-opacity="0" d="m3.5,12.5l1,0" />
+      <path fill="#ffffff" d="m10.1,10.58l-1.1,-0.63l-1.5,2.6l1.09,0.63c-0.05,0.27 -0.08,0.54 -0.08,0.82c0,0.28 0.03,0.55 0.08,0.82l-1.09,0.63l1.5,2.6l1.1,-0.63c0.41,0.35 0.93,0.63 1.43,0.82l0,1.26l3,0l0,-1.26c0.5,-0.19 0.99,-0.47 1.41,-0.82l1.09,0.63l1.5,-2.6l-1.09,-0.63c0.04,-0.27 0.07,-0.54 0.07,-0.82c0,-0.28 -0.03,-0.55 -0.08,-0.82l1.1,-0.63l-1.5,-2.6l-1.09,0.63c-0.42,-0.35 -0.91,-0.63 -1.41,-0.82l0,-1.26l-3,0l0,1.26c-0.5,0.19 -1.02,0.47 -1.43,0.82z" />
+      <path stroke-miterlimit="50" stroke-linejoin="round" stroke-dashoffset="0" fill="#ffffff" fill-opacity="0" d="m10.1,10.58l-1.1,-0.63l-1.5,2.6l1.09,0.63c-0.05,0.27 -0.08,0.54 -0.08,0.82c0,0.28 0.03,0.55 0.08,0.82l-1.09,0.63l1.5,2.6l1.1,-0.63c0.41,0.35 0.93,0.63 1.43,0.82l0,1.26l3,0l0,-1.26c0.5,-0.19 0.99,-0.47 1.41,-0.82l1.09,0.63l1.5,-2.6l-1.09,-0.63c0.04,-0.27 0.07,-0.54 0.07,-0.82c0,-0.28 -0.03,-0.55 -0.08,-0.82l1.1,-0.63l-1.5,-2.6l-1.09,0.63c-0.42,-0.35 -0.91,-0.63 -1.41,-0.82l0,-1.26l-3,0l0,1.26c-0.5,0.19 -1.02,0.47 -1.43,0.82z" />
+      <path stroke-miterlimit="50" stroke-linejoin="round" stroke-dashoffset="0" fill="#ffffff" fill-opacity="0" d="m14.97441,14.04949c0,1.1 -0.89,2 -2,2c-1.1,0 -2,-0.9 -2,-2c0,-1.1 0.9,-2 2,-2c1.11,0 2,0.9 2,2z" />
+    </g>
+  </g>
+</svg>

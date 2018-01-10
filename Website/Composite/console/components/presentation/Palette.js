@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+﻿import React, { PropTypes } from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import Immutable from 'immutable';
 import styled from 'styled-components';
@@ -140,7 +140,7 @@ export function itemSelector(item, props) {
 }
 
 const Palette = props => {
-	return <div>
+	return <PaletteList>
 		{props.itemGroups.size === 0 ?
 			<NoComponentsLabel>
 				<NoComponentsIcon/><br/>
@@ -191,7 +191,7 @@ const Palette = props => {
 				}).toArray()}
 			</ItemGroup>
 		).toArray()}
-	</div>;
+	</PaletteList>;
 };
 
 Palette.propTypes = {

@@ -97,12 +97,12 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
                     return;
                 }
 
-                throw new InvalidOperationException("Database already contains a table named {0}".FormatWith(tableName));
+                throw new InvalidOperationException($"Database already contains a table named {tableName}");
             }
 
             var sql = new StringBuilder();
             var sqlColumns = typeDescriptor.Fields.Select(fieldDescriptor 
-                => GetColumnInfo(tableName, fieldDescriptor.Name, fieldDescriptor, true, false)
+                => GetColumnInfo(tableName, fieldDescriptor.Name, typeDescriptor, fieldDescriptor, true, false)
                 ).ToList();
 
             sql.AppendFormat("CREATE TABLE dbo.[{0}]({1});", tableName, string.Join(",", sqlColumns));
@@ -429,8 +429,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
                 {
                     if (tables.Contains(alteredTableName))
                         throw new InvalidOperationException(
-                            string.Format("Can not rename table to {0}. A table with that name already exists",
-                                          alteredTableName));
+                            $"Can not rename table to {alteredTableName}. A table with that name already exists");
                     RenameTable(originalTableName, alteredTableName);
                 }
 
@@ -444,7 +443,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
                 }
 
                 DropFields(alteredTableName, changeDescriptor.DeletedFields, changeDescriptor.OriginalType.Fields);
-                ImplementFieldChanges(alteredTableName, changeDescriptor.ExistingFields);
+                ImplementFieldChanges(alteredTableName, changeDescriptor.AlteredType, changeDescriptor.ExistingFields);
 
 
                 Dictionary<string, object> defaultValues = null;
@@ -542,7 +541,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
 
                 if (tables.Contains(tableName))
                 {
-                    ExecuteNonQuery(string.Format("DROP TABLE [{0}];", tableName));
+                    ExecuteNonQuery($"DROP TABLE [{tableName}];");
 
                     SqlTableInformationStore.ClearCache(_connectionString, tableName);
                 }
@@ -555,6 +554,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
 
         private void ImplementFieldChanges(
             string tableName, 
+            DataTypeDescriptor typeDescriptor,
             IEnumerable<DataTypeChangeDescriptor.ExistingFieldInfo> existingFieldDescription)
         {
             foreach (var changedFieldDescriptor in existingFieldDescription)
@@ -564,6 +564,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
                 var columnName = changedFieldDescriptor.OriginalField.Name;
 
                 ConfigureColumn(tableName, columnName, 
+                    typeDescriptor,
                     changedFieldDescriptor.AlteredField, changedFieldDescriptor.OriginalField, changes);
             }
         }
@@ -605,13 +606,16 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
         {
             foreach (var addedFieldDescriptor in addedFieldDescriptions)
             {
+                string fieldName = addedFieldDescriptor.Name;
                 object defaultValue = null;
-                if (defaultValues != null && defaultValues.ContainsKey(addedFieldDescriptor.Name))
+                if (defaultValues != null && defaultValues.ContainsKey(fieldName))
                 {
                     defaultValue = defaultValues[addedFieldDescriptor.Name];
                 }
 
-                CreateColumn(tableName, addedFieldDescriptor, defaultValue);
+
+
+                CreateColumn(tableName, changeDescriptor.AlteredType, addedFieldDescriptor, defaultValue);
 
                 // Updating VersionId field
                 if (addedFieldDescriptor.Name == nameof(IVersioned.VersionId)
@@ -720,18 +724,18 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
 
 
 
-        private void CreateColumn(string tableName, DataFieldDescriptor fieldDescriptor, object defaultValue = null)
+        private void CreateColumn(string tableName, DataTypeDescriptor typeDescriptor, DataFieldDescriptor fieldDescriptor, object defaultValue = null)
         {
             if (defaultValue == null && !fieldDescriptor.IsNullable && fieldDescriptor.DefaultValue != null)
             {
                 ExecuteNonQuery("ALTER TABLE [{0}] ADD {1};"
-                            .FormatWith(tableName, GetColumnInfo(tableName, fieldDescriptor.Name, fieldDescriptor, true, false)));
+                            .FormatWith(tableName, GetColumnInfo(tableName, fieldDescriptor.Name, typeDescriptor, fieldDescriptor, true, false)));
                 return;
             }
 
             // Creating a column, making it nullable
             ExecuteNonQuery("ALTER TABLE [{0}] ADD {1};"
-                            .FormatWith(tableName, GetColumnInfo(tableName, fieldDescriptor.Name, fieldDescriptor, true, true)));
+                            .FormatWith(tableName, GetColumnInfo(tableName, fieldDescriptor.Name, typeDescriptor, fieldDescriptor, true, true)));
 
             // Setting default value with "UPDATE" statement
             if (defaultValue != null || (!fieldDescriptor.IsNullable && fieldDescriptor.DefaultValue == null))
@@ -757,17 +761,21 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
             // Making column not nullable if necessary
             if(!fieldDescriptor.IsNullable)
             {
-                AlterColumn(tableName, GetColumnInfo(tableName, fieldDescriptor.Name, fieldDescriptor, false, false));
+                AlterColumn(tableName, GetColumnInfo(tableName, fieldDescriptor.Name, typeDescriptor, fieldDescriptor, false, false));
             }
         }
 
 
 
-        private void ConfigureColumn(string tableName, string columnName, DataFieldDescriptor fieldDescriptor, DataFieldDescriptor originalFieldDescriptor, bool changes)
+        private void ConfigureColumn(string tableName, string columnName, 
+            DataTypeDescriptor typeDescriptor,
+            DataFieldDescriptor fieldDescriptor, DataFieldDescriptor originalFieldDescriptor, bool changes)
         {
-            if (columnName != fieldDescriptor.Name)
+            string fieldName = fieldDescriptor.Name;
+
+            if (columnName != fieldName)
             {
-                RenameColumn(tableName, columnName, fieldDescriptor.Name);
+                RenameColumn(tableName, columnName, fieldName);
             }
 
             if(changes)
@@ -778,7 +786,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
                 {
                     if (fieldDescriptor.StoreType.ToString() != originalFieldDescriptor.StoreType.ToString())
                     {
-                        AlterColumn(tableName, GetColumnInfo(tableName, fieldDescriptor.Name, fieldDescriptor, false, true));
+                        AlterColumn(tableName, GetColumnInfo(tableName, fieldName, typeDescriptor, fieldDescriptor, false, true));
                     }
 
                     string defaultValue = TranslatesIntoDefaultConstraint(fieldDescriptor.DefaultValue)
@@ -789,7 +797,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
                                     .FormatWith(tableName, fieldDescriptor.Name, defaultValue));
                 }
 
-                AlterColumn(tableName, GetColumnInfo(tableName, fieldDescriptor.Name, fieldDescriptor, false, false));
+                AlterColumn(tableName, GetColumnInfo(tableName, fieldDescriptor.Name, typeDescriptor, fieldDescriptor, false, false));
             }
 
             ExecuteNonQuery(SetDefaultValue(tableName, fieldDescriptor.Name, fieldDescriptor.DefaultValue));
@@ -800,9 +808,14 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
             ExecuteNonQuery(string.Format("ALTER TABLE [{0}] ALTER COLUMN {1};", tableName, columnInfo));
         }
 
-        internal string GetColumnInfo(string tableName, string columnName, DataFieldDescriptor fieldDescriptor, bool includeDefault, bool forceNullable)
+        internal string GetColumnInfo(string tableName, string columnName, 
+            DataTypeDescriptor dataTypeDescriptor,
+            DataFieldDescriptor fieldDescriptor, bool includeDefault, bool forceNullable)
         {
             string defaultInfo = string.Empty;
+            string fieldName = fieldDescriptor.Name;
+            bool isKeyField = dataTypeDescriptor.KeyPropertyNames.Contains(fieldName)
+                || fieldDescriptor.ForeignKeyReferenceTypeName != null;
 
             if (TranslatesIntoDefaultConstraint(fieldDescriptor.DefaultValue))
             {
@@ -817,7 +830,8 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
             var defaultValue = fieldDescriptor.DefaultValue;
 
             string collation = string.Empty;
-            if (defaultValue != null && defaultValue.ValueType == DefaultValueType.RandomString)
+            if (defaultValue?.ValueType == DefaultValueType.RandomString
+                || (isKeyField && fieldDescriptor.StoreType.IsString))
             {
                 collation = "COLLATE Latin1_General_CS_AS";
             }

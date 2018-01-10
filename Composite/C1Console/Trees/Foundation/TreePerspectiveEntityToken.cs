@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using Composite.Core.Serialization;
 using System.Text;
+using Composite.Core;
+using Newtonsoft.Json;
 
 
 namespace Composite.C1Console.Trees.Foundation
@@ -15,6 +17,7 @@ namespace Composite.C1Console.Trees.Foundation
 
 
         /// <exclude />
+        [JsonConstructor]
         public TreePerspectiveEntityToken(string id)
         {
             _id = id;
@@ -29,6 +32,7 @@ namespace Composite.C1Console.Trees.Foundation
 
 
         /// <exclude />
+        [JsonIgnore]
         public override string Type
         {
             get { return "C1Trees"; }
@@ -36,6 +40,7 @@ namespace Composite.C1Console.Trees.Foundation
 
 
         /// <exclude />
+        [JsonIgnore]
         public override string Source
         {
             get { return "C1Trees"; }
@@ -52,7 +57,7 @@ namespace Composite.C1Console.Trees.Foundation
         /// <exclude />
         public override string Serialize()
         {
-            return Id;
+            return CompositeJsonSerializer.Serialize(this);
             /*StringBuilder sb = new StringBuilder();
             
             StringConversionServices.SerializeKeyValuePair(sb, "Id", Id);
@@ -71,16 +76,22 @@ namespace Composite.C1Console.Trees.Foundation
         /// <exclude />
         public static EntityToken Deserialize(string serializedEntityToken)
         {
-           /* Dictionary<string, string> dic = StringConversionServices.ParseKeyValueCollection(serializedEntityToken);
-
-            string id = StringConversionServices.DeserializeValueString(dic["Id"]);
-
-            int count = 0;
-            while (true)
+            EntityToken entityToken;
+            if (CompositeJsonSerializer.IsJsonSerialized(serializedEntityToken))
             {
-                string key = "TreeId" + (counter++);
-            }*/
+                entityToken = CompositeJsonSerializer.Deserialize<TreePerspectiveEntityToken>(serializedEntityToken);
+            }
+            else
+            {
+                entityToken = DeserializeLegacy(serializedEntityToken);
+                Log.LogVerbose(nameof(TreePerspectiveEntityToken), entityToken.GetType().FullName);
+            }
+            return entityToken;
+        }
 
+        /// <exclude />
+        public static EntityToken DeserializeLegacy(string serializedEntityToken)
+        {
             return new TreePerspectiveEntityToken(serializedEntityToken);
         }
     }

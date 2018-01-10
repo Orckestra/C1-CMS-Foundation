@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Caching;
 using System.Web.Hosting;
@@ -94,11 +95,6 @@ namespace Composite.Core.WebClient.Presentation
 
             public static MemoryStream Transform(MemoryStream buffer, String mode, String browser, String platform)
             {
-                var readerSettings = new XmlReaderSettings();
-                readerSettings.XmlResolver = null;
-                readerSettings.DtdProcessing = DtdProcessing.Parse;
-                readerSettings.CheckCharacters = false;
-
                 List<string> xsltFilePaths = GetTransformationsInPriority().ToList();
 
                 if (xsltFilePaths.Count == 0)
@@ -108,10 +104,22 @@ namespace Composite.Core.WebClient.Presentation
 
                 // Detection doctype
                 buffer.Seek(0, SeekOrigin.Begin);
-                var line = new C1StreamReader(buffer).ReadLine();
+                string line;
+
+                using (var reader = new StreamReader(buffer, Encoding.UTF8, true, 1024, true))
+                {
+                    line = reader.ReadLine();
+                }
                 var doctype = line.Contains("<!DOCTYPE");
                 buffer.Seek(0, SeekOrigin.Begin);
 
+
+                var readerSettings = new XmlReaderSettings
+                {
+                    XmlResolver = null,
+                    DtdProcessing = DtdProcessing.Parse,
+                    CheckCharacters = false
+                };
 
                 MemoryStream outputStream = null;
 
@@ -160,12 +168,16 @@ namespace Composite.Core.WebClient.Presentation
                         string tempFilePath = TempDirectoryFacade.GetTempFileName(".xml");
 
                         inputStream.Position = 0;
-                        string markup = new C1StreamReader(inputStream).ReadToEnd();
+                        string markup;
+                        using (var sr = new C1StreamReader(inputStream))
+                        {
+                            markup = sr.ReadToEnd();
+                        }
                         
                         C1File.WriteAllText(tempFilePath, markup); 
 
                         throw new InvalidOperationException(
-                            "Incorrect xml markup, source saved in '{0}'".FormatWith(tempFilePath), 
+                            $"Incorrect xml markup, source saved in '{tempFilePath}'", 
                             xmlException);
                     }
                 }
@@ -273,6 +285,7 @@ namespace Composite.Core.WebClient.Presentation
                         catch (Exception ex)
                         {
                             Log.LogCritical("AdministrativeOutputTransformationHttpModule", ex);
+                            throw;
                         }
                     }
 
@@ -288,25 +301,13 @@ namespace Composite.Core.WebClient.Presentation
                 }
             }
 
-            public override bool CanRead
-            {
-                get { return _responseOutputStream.CanRead; }
-            }
+            public override bool CanRead => _responseOutputStream.CanRead;
 
-            public override bool CanSeek
-            {
-                get { return _responseOutputStream.CanSeek; }
-            }
+            public override bool CanSeek => _responseOutputStream.CanSeek;
 
-            public override bool CanWrite
-            {
-                get { return _responseOutputStream.CanWrite; }
-            }
+            public override bool CanWrite => _responseOutputStream.CanWrite;
 
-            public override long Length
-            {
-                get { return _responseOutputStream.Length; }
-            }
+            public override long Length => _responseOutputStream.Length;
 
             public override long Position
             {

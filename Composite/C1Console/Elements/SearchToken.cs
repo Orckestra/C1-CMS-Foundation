@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Composite.Core.Extensions;
 using Composite.Core.Serialization;
 using Composite.Core.Types;
@@ -22,12 +22,7 @@ namespace Composite.C1Console.Elements
         /// <returns>String representation</returns>
         public string Serialize()
         {
-            string serializedSearchToken = SerializationFacade.Serialize(this);
-            string serializedClassName = TypeManager.SerializeType(this.GetType());
-
-            string serializedSearchTokenWithClass = string.Format("{0}|{1}", serializedClassName, serializedSearchToken);
-
-            return serializedSearchTokenWithClass;
+            return CompositeJsonSerializer.SerializeObject(this);
         }
 
 
@@ -38,8 +33,20 @@ namespace Composite.C1Console.Elements
         /// <returns>Deserialized SearchToken</returns>
         public static SearchToken Deserialize( string serializedSearchToken )
         {
-            Verify.ArgumentNotNullOrEmpty("serializedSearchToken", serializedSearchToken);
-            Verify.ArgumentCondition(serializedSearchToken.IndexOf('|') > -1, "serializedSearchToken", "Malformed serializedSearchToken - must be formated like '<class name>|<serialized values>'");
+            Verify.ArgumentNotNullOrEmpty(serializedSearchToken, nameof(serializedSearchToken));
+
+            if (serializedSearchToken.StartsWith("{"))
+            {
+                return CompositeJsonSerializer.Deserialize<SearchToken>(serializedSearchToken);
+            }
+
+            return DeserializeLegacy(serializedSearchToken);
+        }
+
+        private static SearchToken DeserializeLegacy(string serializedSearchToken)
+        {
+            Verify.ArgumentNotNullOrEmpty(serializedSearchToken, nameof(serializedSearchToken));
+            Verify.ArgumentCondition(serializedSearchToken.IndexOf('|') > -1, nameof(serializedSearchToken), "Malformed serializedSearchToken - must be formated like '<class name>|<serialized values>'");
 
             string[] parts = serializedSearchToken.Split('|');
 

@@ -27,6 +27,7 @@
 		</Mode>
 		<Mode name="develop">
 			<Script filename="${root}/lib/autobahnjs/autobahn.js"/>
+			<Script filename="${root}/lib/promise/promise.js"/>
 			<Script filename="${root}/scripts/source/top/interfaces/IAcceptable.js"/>
 			<Script filename="${root}/scripts/source/top/interfaces/IActionListener.js"/>
 			<Script filename="${root}/scripts/source/top/interfaces/IActivatable.js"/>
@@ -203,7 +204,7 @@
 			<Script filename="${root}/scripts/source/top/ui/bindings/data/dialogs/NullPostBackDataDialogBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/data/dialogs/NullPostBackDataDialogSelectorBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/data/selectors/MultiSelectorBinding.js"/>
-      <Script filename="${root}/scripts/source/top/ui/bindings/data/selectors/HierarchicalSelectorBinding.js"/>
+			<Script filename="${root}/scripts/source/top/ui/bindings/data/selectors/HierarchicalSelectorBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/data/dialogs/HTMLDataDialogBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/data/dialogs/MultiSelectorDataDialogBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/data/lazy/LazyBindingSetBinding.js"/>
@@ -299,6 +300,7 @@
 			<Script filename="${root}/scripts/source/top/ui/bindings/explorer/ExplorerMenuBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/explorer/ExplorerToolBarBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/explorer/ExplorerToolBarButtonBinding.js"/>
+			<Script filename="${root}/scripts/source/top/ui/bindings/explorer/ExplorerPopupBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/editors/EditorBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/editors/EditorPopupBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/editors/EditorClickButtonBinding.js"/>
@@ -325,8 +327,8 @@
 			<Script filename="${root}/scripts/source/top/ui/bindings/localization/LocalizationSelectorBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/response/ResponseBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/genericview/AddressBarBinding.js"/>
-      <Script filename="${root}/scripts/source/top/ui/bindings/genericview/GenericViewBinding.js"/>
-      <Script filename="${root}/scripts/source/top/ui/bindings/genericview/PathBinding.js"/>
+			<Script filename="${root}/scripts/source/top/ui/bindings/genericview/GenericViewBinding.js"/>
+			<Script filename="${root}/scripts/source/top/ui/bindings/genericview/PathBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/branding/BrandSnippetBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/UserInterfaceMapping.js"/>
 			<Script filename="${root}/scripts/source/top/ui/UserInterface.js"/>

@@ -27,7 +27,6 @@ namespace Composite.Core.Configuration
         string DataMetaDataDirectory { get; }
         string InlineCSharpFunctionDirectory { get; }
         string PackageLicenseDirectory { get; }
-        IResourceCacheSettings ResourceCacheSettings { get; }
         IEnumerable<string> NonProbableAssemblyNames { get; }
         void AddNonProbableAssemblyName(string assemblyNamePatern);
         void RemoveNonProbableAssemblyName(string assemblyNamePatern);
@@ -44,5 +43,6 @@ namespace Composite.Core.Configuration
         bool PrettifyRenderFunctionExceptions { get; }
         bool FunctionPreviewEnabled { get; }
         TimeZoneInfo TimeZone { get; }
+        bool InheritGlobalReadPermissionOnHiddenPerspectives { get; }
     }
 }

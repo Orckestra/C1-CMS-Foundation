@@ -1,4 +1,4 @@
-WindowBinding.prototype = new FlexBoxBinding;
+﻿WindowBinding.prototype = new FlexBoxBinding;
 WindowBinding.prototype.constructor = WindowBinding;
 WindowBinding.superclass = FlexBoxBinding.prototype;
 
@@ -405,7 +405,7 @@ WindowBinding.prototype.onWindowLoaded = function ( win ) {
 	if ( win == null ) {
 		this.logger.error ( "WindowBinding#onWindowLoaded: Bad argument: " + this.getURL ());
 	} else if ( this.getURL () != WindowBinding.DEFAULT_URL ) {
-		if ( !this._hasLoadActionFired ) {
+		if (!this._hasLoadActionFired && this.hasAccess(win)) {
 			if ( win != null && win.document != null && win.document.body != null ) {
 				win.document.body.style.border = "none";
 				if ( win.WindowManager == undefined && !this._native) {
@@ -556,6 +556,22 @@ WindowBinding.prototype.getFrameElement = function () {
 };
 
 /**
+ * @return {Boolean}
+ */
+WindowBinding.prototype.hasAccess = function (win) {
+
+	var result = false;
+	if (win) {
+		try {
+			result = win.document != null;
+		} catch (e) {
+		}
+	}
+	return result;
+};
+
+
+/**
  * Get the window object hosted by this WindowBinding. 
  * During startup, this may be undefined. 
  * @return {DOMDocumentView}
@@ -580,7 +596,7 @@ WindowBinding.prototype.getContentWindow = function () {
 WindowBinding.prototype.getContentDocument = function () {
 	
 	var result = null, win = this.getContentWindow ();
-	if ( win ) {
+	if (this.hasAccess(win) ) {
 		result = win.document;
 	}
 	return result;

@@ -1,5 +1,6 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Workflow.Runtime;
@@ -191,7 +192,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 
             foreach (ValidationResult result in validationResults)
             {
-                this.ShowFieldMessage(string.Format("{0}.{1}", BindingNames.User, result.Key), result.Message);
+                this.ShowFieldMessage($"{BindingNames.User}.{result.Key}", result.Message);
                 userValidated = false;
             }
 
@@ -396,7 +397,10 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
                     DataFacade.AddNew(userUserGroupRelation);
                 }
 
-                LoggingService.LogVerbose("UserManagement", String.Format("C1 Console user '{0}' updated by '{1}'.", user.Username, UserValidationFacade.GetUsername()), LoggingService.Category.Audit);
+                LoggingService.LogEntry("UserManagement",
+                    $"C1 Console user '{user.Username}' updated by '{UserValidationFacade.GetUsername()}'.", 
+                    LoggingService.Category.Audit,
+                    TraceEventType.Information);
 
                 transactionScope.Complete();
             }

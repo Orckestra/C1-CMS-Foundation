@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -113,7 +113,14 @@ namespace Composite.Core.Types
                 if (targetItemType.IsInstanceOfType(value))
                 {
                     IList targetValue = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(new [] { targetItemType }));
-                    targetValue.Add(value);
+                    if (value is string)
+                    {
+                        ((string)value).Split(',').ForEach(f => targetValue.Add(f));
+                    }
+                    else
+                    {
+                        targetValue.Add(value);
+                    }
                     return targetValue;
                 }
             }
@@ -128,6 +135,7 @@ namespace Composite.Core.Types
             {
                 if (value is Type) return TypeManager.SerializeType((Type)value);
                 if (value is DateTime) return XmlConvert.ToString((DateTime)value, XmlDateTimeSerializationMode.Local);
+                if (value is IEnumerable) return string.Join(",", ((IEnumerable)value).Cast<string>().ToArray());
             }
 
             TypeConverter targetConverter = TypeDescriptor.GetConverter(targetType);

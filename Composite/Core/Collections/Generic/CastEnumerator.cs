@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 
 namespace Composite.Core.Collections.Generic
@@ -23,8 +23,19 @@ namespace Composite.Core.Collections.Generic
         public void Dispose()
         {
             _enumerator = null;
+#if LeakCheck
+            System.GC.SuppressFinalize(this);
+#endif
         }
 
+#if LeakCheck
+        private string stack = System.Environment.StackTrace;
+        /// <exclude />
+        ~CastEnumerator()
+        {
+            Composite.Core.Instrumentation.DisposableResourceTracer.RegisterFinalizerExecution(stack);
+        }
+#endif
         object IEnumerator.Current
         {
             get

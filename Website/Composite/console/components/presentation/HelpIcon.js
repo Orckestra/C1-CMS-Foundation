@@ -1,10 +1,11 @@
-import React, { PropTypes } from 'react';
+﻿import React, { PropTypes } from 'react';
 import styled from 'styled-components';
 import colors from 'console/components/colors.js';
 
 export const Indicator = styled.span.withConfig({ displayName: 'Indicator' })`
 	position: absolute;
-	right: 0;
+	right: -8px;
+	top: 20px;
 
 	&::after {
 		content: "?";

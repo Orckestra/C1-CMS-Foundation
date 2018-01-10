@@ -28,11 +28,6 @@ namespace Composite.Data
     {
         private static readonly Guid DefaultCompositionContainerId = new Guid("eb210a75-be25-401f-b0d4-b3787bce36fa");
 
-        internal static readonly string MetaDataType_IdFieldName = nameof(IPageMetaData.Id);
-        internal static readonly string MetaDataType_PageReferenceFieldName = nameof(IPageMetaData.PageId);
-        internal static readonly string MetaDataType_PageReferenceFieldVersionName = nameof(IPageMetaData.VersionId);
-        internal static readonly string MetaDataType_MetaDataDefinitionFieldName = nameof(IPageMetaData.FieldName);
-
         /// <summary>
         /// Returns all possible meta data types. This is NOT types that only have been defined on any pages or page type
         /// </summary>
@@ -358,48 +353,43 @@ namespace Composite.Data
 
             var lambdaExpression = Expression.Lambda(
                 Expression.And(
-                Expression.And(
-                    Expression.Equal(
-                        Expression.Property(
-                            parameterExpression,
-                            PageMetaDataFacade.GetDefinitionNamePropertyInfo(metaDataType)
+                    Expression.And(
+                        Expression.Equal(
+                            Expression.Property(
+                                parameterExpression,
+                                GetDefinitionPageReferencePropertyInfo(metaDataType)
+                            ),
+                            Expression.Constant(pageId, typeof(Guid))
                         ),
-                        Expression.Constant(
-                            definitionName,
-                            typeof(string)
+                        Expression.Equal(
+                            Expression.Property(
+                                parameterExpression,
+                                GetDefinitionPageReferencePropertyVersionInfo(metaDataType)
+                            ),
+                            Expression.Constant(pageVersionId, typeof(Guid))
                         )
                     ),
                     Expression.Equal(
                         Expression.Property(
                             parameterExpression,
-                            GetDefinitionPageReferencePropertyInfo(metaDataType)
+                            GetDefinitionNamePropertyInfo(metaDataType)
                         ),
-                        Expression.Constant(
-                            pageId,
-                            typeof(Guid)
-                        )
-                    )
-                ),
-                    Expression.Equal(
-                        Expression.Property(
-                            parameterExpression,
-                            GetDefinitionPageReferencePropertyVersionInfo(metaDataType)
-                        ),
-                        Expression.Constant(
-                            pageVersionId,
-                            typeof(Guid)
-                        )
-                    )
-                ),
+                        Expression.Constant(definitionName, typeof(string))
+                    )),
                 parameterExpression
             );
 
-            Expression whereExpression = ExpressionCreator.Where(DataFacade.GetData(metaDataType).Expression, lambdaExpression);
+            using (var conn = new DataConnection())
+            {
+                conn.DisableServices();
 
-            IEnumerable<IData> dataset = ExpressionHelper.GetCastedObjects<IData>(metaDataType, whereExpression);
+                var whereExpression = ExpressionCreator.Where(DataFacade.GetData(metaDataType).Expression, lambdaExpression);
 
-            return dataset.SingleOrDefaultOrException("There're multiple meta data on a page. Page '{0}', definition name '{1}', meta type '{2}'",
-                                                      pageId, definitionName, metaDataType.FullName);
+                IEnumerable<IData> dataset = ExpressionHelper.GetCastedObjects<IData>(metaDataType, whereExpression);
+
+                return dataset.SingleOrDefaultOrException("There're multiple meta data on a page. Page '{0}', definition name '{1}', meta type '{2}'",
+                                                          pageId, definitionName, metaDataType.FullName);
+            }
         }
 
 
@@ -503,21 +493,24 @@ namespace Composite.Data
         /// <exclude />
         public static bool IsDefinitionAllowed(Guid definingItemId, string name, string label, Guid metaDataTypeId)
         {
-            IEnumerable<IPageMetaDataDefinition> pageMetaDataDefinitions = DataFacade.GetData<IPageMetaDataDefinition>().Where(f => f.Name == name).Evaluate();
+            var pageMetaDataDefinitions = DataFacade.GetData<IPageMetaDataDefinition>().Where(f => f.Name == name).Evaluate();
             
             foreach (IPageMetaDataDefinition pageMetaDataDefinition in pageMetaDataDefinitions)
             {
-                if ((pageMetaDataDefinition.DefiningItemId == definingItemId) &&
-                    (pageMetaDataDefinition.MetaDataTypeId == metaDataTypeId) && 
-                    (pageMetaDataDefinition.Label != label) &&
-                    (pageMetaDataDefinitions.Count() == 1))
+                if (pageMetaDataDefinition.DefiningItemId == definingItemId &&
+                    pageMetaDataDefinition.MetaDataTypeId == metaDataTypeId && 
+                    pageMetaDataDefinition.Label != label &&
+                    pageMetaDataDefinitions.Count() == 1)
                 {
                     return true; // Allow renaming of label
                 }
 
-                if (pageMetaDataDefinition.Label != label) return false;
-                if (pageMetaDataDefinition.MetaDataTypeId != metaDataTypeId) return false;
-                if (pageMetaDataDefinition.DefiningItemId == definingItemId) return false;
+                if (pageMetaDataDefinition.Label != label
+                    || pageMetaDataDefinition.MetaDataTypeId != metaDataTypeId
+                    || pageMetaDataDefinition.DefiningItemId == definingItemId)
+                {
+                    return false;
+                }
             }
 
             return true;
@@ -903,7 +896,7 @@ namespace Composite.Data
         {
             Type interfaceType = metaData.DataSourceId.InterfaceType;
 
-            PropertyInfo idPropertyInfo = interfaceType.GetPropertiesRecursively().SingleOrDefault(f => f.Name == MetaDataType_IdFieldName);
+            PropertyInfo idPropertyInfo = interfaceType.GetPropertiesRecursively().SingleOrDefault(f => f.Name == nameof(IPageMetaData.Id));
             idPropertyInfo.SetValue(metaData, Guid.NewGuid(), null);
 
             PropertyInfo namePropertyInfo = GetDefinitionNamePropertyInfo(interfaceType);
@@ -921,7 +914,7 @@ namespace Composite.Data
         /// <exclude />
         public static PropertyInfo GetDefinitionNamePropertyInfo(Type metaDataType)
         {
-            return metaDataType.GetPropertiesRecursively().Single(f => f.Name == MetaDataType_MetaDataDefinitionFieldName);
+            return typeof (IPageMetaData).GetProperty(nameof(IPageMetaData.FieldName));
         }
 
 
@@ -929,13 +922,13 @@ namespace Composite.Data
         /// <exclude />
         public static PropertyInfo GetDefinitionPageReferencePropertyInfo(Type metaDataType)
         {
-            return metaDataType.GetPropertiesRecursively().Last(f => f.Name == MetaDataType_PageReferenceFieldName);
+            return typeof(IPageRelatedData).GetProperty(nameof(IPageRelatedData.PageId));
         }
 
         /// <exclude />
         public static PropertyInfo GetDefinitionPageReferencePropertyVersionInfo(Type metaDataType)
         {
-            return metaDataType.GetPropertiesRecursively().Last(f => f.Name == MetaDataType_PageReferenceFieldVersionName);
+            return typeof(IVersioned).GetProperty(nameof(IVersioned.VersionId));
         }
 
 

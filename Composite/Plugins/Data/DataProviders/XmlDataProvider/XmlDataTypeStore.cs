@@ -20,7 +20,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
     /// This class contains one entry per data-scope/locale-scope that contains
     /// the filename and element name.
     /// </summary>
-    [DebuggerDisplay("{DataTypeDescriptor}")]
+    [DebuggerDisplay("{" + nameof(DataTypeDescriptor) + "}")]
     internal sealed class XmlDataTypeStore
     {
         private IXmlDataProviderHelper _helper;
@@ -30,12 +30,9 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
         public XmlDataTypeStore(DataTypeDescriptor dataTypeDescriptor, Type dataProviderHelperType, Type dataIdClassType, IEnumerable<XmlDataTypeStoreDataScope> xmlDateTypeStoreDataScopes, bool isGeneratedDataType)
         {
-            if (dataProviderHelperType == null) throw new ArgumentNullException("dataProviderHelperType");
-            if (dataIdClassType == null) throw new ArgumentNullException("dataIdClassType");
-
-            DataTypeDescriptor =  dataTypeDescriptor;
-            DataProviderHelperType = dataProviderHelperType;
-            DataIdClassType = dataIdClassType;
+            DataTypeDescriptor =  dataTypeDescriptor ?? throw new ArgumentNullException(nameof(dataTypeDescriptor));
+            DataProviderHelperType = dataProviderHelperType ?? throw new ArgumentNullException(nameof(dataProviderHelperType));
+            DataIdClassType = dataIdClassType ?? throw new ArgumentNullException(nameof(dataIdClassType));
             IsGeneratedDataType = isGeneratedDataType;
 
             _xmlDateTypeStoreDataScopes = xmlDateTypeStoreDataScopes.Evaluate();
@@ -62,17 +59,16 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
         }
 
 
-        public DataTypeDescriptor DataTypeDescriptor { get; private set; }
+        public DataTypeDescriptor DataTypeDescriptor { get; }
 
         /// <summary>
         /// This is a implementation of <see cref="IXmlDataProviderHelper"/> and <see cref="Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration.DataProviderHelperBase"/>
         /// </summary>
-        public Type DataProviderHelperType { get; private set; }
+        public Type DataProviderHelperType { get; }
 
-        public Type DataIdClassType { get; private set; }
+        public Type DataIdClassType { get; }
 
-
-        public bool IsGeneratedDataType { get; private set; }
+        public bool IsGeneratedDataType { get; }
 
 
         public bool HasDataScopeName(DataScopeIdentifier dataScopeIdentifier)
@@ -103,8 +99,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
             {
                 if (culture.Equals(CultureInfo.InvariantCulture) && DataLocalizationFacade.IsLocalized(type))
                 {
-                    throw new InvalidOperationException("Failed to get data for type '{0}', no localization scope is provided for a localized type."
-                        .FormatWith(type.FullName));
+                    throw new InvalidOperationException($"Failed to get data for type '{type.FullName}', no localization scope is provided for a localized type.");
                 }
 
                 throw new InvalidOperationException("Failed to get '{0}' data for data scope ({1}, {2})"
@@ -115,7 +110,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
         }
 
 
-        internal IEnumerable<XmlDataTypeStoreDataScope> XmlDataTypeStoreDataScopes { get { return _xmlDateTypeStoreDataScopes; } }
+        internal IEnumerable<XmlDataTypeStoreDataScope> XmlDataTypeStoreDataScopes => _xmlDateTypeStoreDataScopes;
 
 
         public IXmlDataProviderHelper Helper

@@ -3,6 +3,7 @@ using Composite.C1Console.Security;
 using Composite.C1Console.Security.SecurityAncestorProviders;
 using Composite.Core.Configuration;
 using Composite.Core.IO;
+using Newtonsoft.Json;
 
 
 namespace Composite.Plugins.Elements.ElementProviders.PageTemplateFeatureElementProvider
@@ -71,6 +72,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateFeatureElement
 
 
         /// <exclude />
+        [JsonIgnore]
         public string FeatureName
         {
             get { return this.Source; }

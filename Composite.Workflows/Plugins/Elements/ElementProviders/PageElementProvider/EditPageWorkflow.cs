@@ -269,7 +269,9 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             }
 
 
-            var contents = DataFacade.GetData<IPagePlaceholderContent>(f => f.PageId == selectedPage.Id && f.VersionId == selectedPage.VersionId).ToList();
+            var contents = DataFacade.GetData<IPagePlaceholderContent>(false)
+                .Where(f => f.PageId == selectedPage.Id && f.VersionId == selectedPage.VersionId)
+                .ToList();
             var namedXhtmlFragments = contents.ToDictionary(content => content.PlaceHolderId, content => content.Content ?? "");
 
 
@@ -355,8 +357,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                         }
 
                         var contentDictionary = GetBinding<Dictionary<string, string>>("NamedXhtmlFragments");
-                        var existingContents = DataFacade.GetData<IPagePlaceholderContent>(
-                            f => f.PageId == selectedPage.Id && f.VersionId == selectedPage.VersionId).ToList();
+                        var existingContents = DataFacade.GetData<IPagePlaceholderContent>(false)
+                            .Where(f => f.PageId == selectedPage.Id && f.VersionId == selectedPage.VersionId).ToList();
 
                         foreach (var existingContent in existingContents)
                         {

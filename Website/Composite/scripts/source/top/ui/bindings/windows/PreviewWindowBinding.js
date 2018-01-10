@@ -1,4 +1,4 @@
-PreviewWindowBinding.prototype = new WindowBinding;
+﻿PreviewWindowBinding.prototype = new WindowBinding;
 PreviewWindowBinding.prototype.constructor = PreviewWindowBinding;
 PreviewWindowBinding.superclass = WindowBinding.prototype;
 
@@ -96,35 +96,40 @@ PreviewWindowBinding.prototype.onBindingAttach = function () {
  */
 PreviewWindowBinding.prototype.onWindowLoaded = function ( win ) {
 
-	if ( this.getURL () != WindowBinding.DEFAULT_URL ) {
-		if ( !this._hasFullStop ) {
-			if ( win.isPostBackDocument ) {
-				if ( this._isReturning ) {
-					win.submit ( this._postBackList, this._postBackURL );
-					this._isReturning = false;
-				}
-			} else {
-				this._coverBinding.hide ();	
-			}
-			if ( !win.isDefaultDocument ) {	
-				var self = this;
-				this._loadhandler = {
-					handleEvent : function ( e ) {
-						//self._coverBinding.show ();
-						if ( win.isPostBackDocument ) {
-							self._postBackList = win.postBackList;
-							self._postBackURL = win.postBackURL;
-						} else if ( !win.isDefaultDocument ) {
-							self._fullStop ();
-						}
+	if (this.getURL() != WindowBinding.DEFAULT_URL) {
+
+		if (this.hasAccess(win)) {
+			if (!this._hasFullStop) {
+				if (win.isPostBackDocument) {
+					if (this._isReturning) {
+						win.submit(this._postBackList, this._postBackURL);
+						this._isReturning = false;
 					}
-				};
-				DOMEvents.addEventListener ( 
-					win, 
-					DOMEvents.BEFOREUNLOAD, 
-					this._loadhandler 
-				);
+				} else {
+					this._coverBinding.hide();
+				}
+				if (!win.isDefaultDocument) {
+					var self = this;
+					this._loadhandler = {
+						handleEvent: function (e) {
+							//self._coverBinding.show ();
+							if (win.isPostBackDocument) {
+								self._postBackList = win.postBackList;
+								self._postBackURL = win.postBackURL;
+							} else if (!win.isDefaultDocument) {
+								self._fullStop();
+							}
+						}
+					};
+					DOMEvents.addEventListener(
+						win,
+						DOMEvents.BEFOREUNLOAD,
+						this._loadhandler
+					);
+				}
 			}
+		} else {
+			this._coverBinding.hide();
 		}
 	}
 	
@@ -277,12 +282,14 @@ PreviewWindowBinding.prototype.reset = function () {
 	}
 	
 	if ( this._loadhandler != null ) {
-		if ( this.getURL () != WindowBinding.DEFAULT_URL ) {
-			DOMEvents.removeEventListener ( 
-				this.getContentWindow (), 
-				DOMEvents.BEFOREUNLOAD, 
-				this._loadhandler 
-			);
+		if (this.getURL() != WindowBinding.DEFAULT_URL) {
+			if (this.hasAccess(this._windowBinding)) {
+				DOMEvents.removeEventListener(
+					this.getContentWindow(),
+					DOMEvents.BEFOREUNLOAD,
+					this._loadhandler
+				);
+			}
 			this._loadhandler = null;
 		}
 	}

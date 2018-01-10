@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -57,7 +57,7 @@ namespace Composite.Data.Caching
         private readonly CachingEnumerable<T> _wrappedEnumerable;
         private readonly Func<IQueryable> _getQueryFunc;
 
-        private volatile DataCachingFacade.CachedTable _cachedTable;
+        private volatile CachedTable _cachedTable;
         private static readonly MethodInfo _wrappingMethodInfo;
         private static readonly MethodInfo _listWrappingMethodInfo;
 
@@ -82,7 +82,7 @@ namespace Composite.Data.Caching
             return input.Select(DataWrappingFacade.Wrap<TData>);
         }
 
-        public CachingQueryable(DataCachingFacade.CachedTable cachedTable, Func<IQueryable> originalQueryGetter)
+        public CachingQueryable(CachedTable cachedTable, Func<IQueryable> originalQueryGetter)
         {
             _cachedTable = cachedTable;
 
@@ -234,7 +234,7 @@ namespace Composite.Data.Caching
 
         private IEnumerable<T> GetFromCacheFiltered(object key)
         {
-            var cachedTable = GetRowsByKeyTable();
+            var cachedTable = GetCachedTable().RowsByKey;
             IEnumerable<IData> cachedRows;
 
             if (!cachedTable.TryGetValue(key, out cachedRows))
@@ -257,45 +257,14 @@ namespace Composite.Data.Caching
         }
 
 
-        Dictionary<object, IEnumerable<IData>> GetRowsByKeyTable()
-        {
-            var cachedTable = GetCachedTable();
 
-            var result = cachedTable.RowsByKey;
-            if (result != null)
-            {
-                return result;
-            }
-
-            lock (cachedTable)
-            {
-                result = cachedTable.RowsByKey;
-                if (result != null)
-                {
-                    return result;
-                }
-
-                PropertyInfo keyPropertyInfo = typeof(T).GetKeyProperties().Single();
-
-                result = BuildEnumerable()
-                    .GroupBy(data => keyPropertyInfo.GetValue(data, null))
-                    .ToDictionary(group => group.Key, group => group.ToArray() as IEnumerable<IData>);
-
-                return cachedTable.RowsByKey = result;
-            }
-        }
-
-
-        private DataCachingFacade.CachedTable GetCachedTable()
+        private CachedTable GetCachedTable()
         {
             if (_cachedTable == null)
             {
                 lock (this)
                 {
-                    if (_cachedTable == null)
-                    {
-                        _cachedTable = new DataCachingFacade.CachedTable(GetOriginalQuery());
-                    }
+                    _cachedTable = _cachedTable ?? new CachedTable<T>(GetOriginalQuery().Cast<T>().ToList());
                 }
             }
 

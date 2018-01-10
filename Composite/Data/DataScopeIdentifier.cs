@@ -1,5 +1,6 @@
-using System;
+﻿using System;
 using System.Diagnostics;
+using Newtonsoft.Json;
 
 
 namespace Composite.Data
@@ -29,12 +30,11 @@ namespace Composite.Data
             return DataScopeIdentifier.Public;
         }
 
-
-        private DataScopeIdentifier(string dataScope)
+        [JsonConstructor]
+        private DataScopeIdentifier(string name)
         {
-            this.Name = dataScope;
+            this.Name = name;
         }
-
 
         /// <exclude />
         public string Name
@@ -58,10 +58,10 @@ namespace Composite.Data
 
             switch (serializedData)
             {
-                case "public":
+                case PublicName:
                     return DataScopeIdentifier.Public;
 
-                case "administrated":
+                case AdministratedName:
                     return DataScopeIdentifier.Administrated;
 
                 default:
@@ -73,7 +73,7 @@ namespace Composite.Data
         /// <exclude />
         public PublicationScope ToPublicationScope()
         {
-            return Name == "public" ? PublicationScope.Published : PublicationScope.Unpublished;
+            return Name == PublicName ? PublicationScope.Published : PublicationScope.Unpublished;
         }
 
 

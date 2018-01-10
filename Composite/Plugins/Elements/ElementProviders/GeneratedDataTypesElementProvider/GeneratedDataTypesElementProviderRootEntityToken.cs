@@ -1,6 +1,7 @@
-using System;
+﻿using System;
 using Composite.C1Console.Security;
 using Composite.C1Console.Security.SecurityAncestorProviders;
+using Newtonsoft.Json;
 
 
 namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider
@@ -63,16 +64,20 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
         }
 
         /// <exclude />
+        [JsonIgnore]
         public static string GlobalDataTypeFolderId { get { return "GlobalDataTypeFolder"; } }
 
         /// <exclude />
         [Obsolete("Not used any more")]
+        [JsonIgnore]
         public static string StaticGlobalDataTypeFolderId { get { return "StaticGlobalDataTypeFolder"; } }
 
         /// <exclude />
+        [JsonIgnore]
         public static string PageDataFolderTypeFolderId { get { return "PageDataFolderTypeFolder"; } }
 
         /// <exclude />
+        [JsonIgnore]
         public static string PageMetaDataTypeFolderId { get { return "PageMetaDataTypeFolder"; } }
     }
 }

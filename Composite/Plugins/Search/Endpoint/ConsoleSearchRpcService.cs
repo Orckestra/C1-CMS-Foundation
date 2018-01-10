@@ -13,6 +13,7 @@ using Composite.Core.Linq;
 using Composite.Core.ResourceSystem;
 using Composite.Core.WebClient;
 using Composite.Core.WebClient.Services.WampRouter;
+using Composite.Data;
 using Microsoft.Extensions.DependencyInjection;
 using WampSharp.V2.Rpc;
 
@@ -122,12 +123,12 @@ namespace Composite.Plugins.Search.Endpoint
             };
 
             searchQuery.FilterByUser(UserSettings.Username);
-            searchQuery.AddDefaultFieldFacet(DefaultDocumentFieldNames.Source);
+            searchQuery.AddFieldFacet(DocumentFieldNames.Source);
 
             var result = await _searchProvider.SearchAsync(searchQuery);
 
-            var documents = result.Documents.Evaluate();
-            if (!documents.Any())
+            var items = result.Items.Evaluate();
+            if (!items.Any())
             {
                 return new ConsoleSearchResult
                 {
@@ -137,9 +138,11 @@ namespace Composite.Plugins.Search.Endpoint
                 };
             }
 
+            var documents = items.Select(m => m.Document);
+
             HashSet<string> dataSourceNames;
             Facet[] dsFacets;
-            if (result.Facets != null && result.Facets.TryGetValue(DefaultDocumentFieldNames.Source, out dsFacets))
+            if (result.Facets != null && result.Facets.TryGetValue(DocumentFieldNames.Source, out dsFacets))
             {
                 dataSourceNames = new HashSet<string>(dsFacets.Select(v => v.Value));
             }
@@ -157,24 +160,27 @@ namespace Composite.Plugins.Search.Endpoint
                         .Where(f => f.FieldValuePreserved), 
                     f => f.Name).ToList();
 
-            return new ConsoleSearchResult
+            using (new DataConnection(culture))
             {
-                QueryText = query.Text,
-                Columns = previewFields.Select(pf => new ConsoleSearchResultColumn
+                return new ConsoleSearchResult
                 {
-                    FieldName = MakeFieldNameJsFriendly(pf.Name),
-                    Label = StringResourceSystemFacade.ParseString(pf.Label),
-                    Sortable = pf.Preview.Sortable
-                }).ToArray(),
-                Rows = documents.Select(doc => new ConsoleSearchResultRow
-                {
-                    Label = doc.Label,
-                    Url = GetFocusUrl(doc.SerializedEntityToken),
-                    Values = GetPreviewValues(doc, previewFields)
-                }).ToArray(),
-                FacetFields = GetFacets(result, facetFields),
-                TotalHits = result.TotalHits
-            };
+                    QueryText = query.Text,
+                    Columns = previewFields.Select(pf => new ConsoleSearchResultColumn
+                    {
+                        FieldName = MakeFieldNameJsFriendly(pf.Name),
+                        Label = StringResourceSystemFacade.ParseString(pf.Label),
+                        Sortable = pf.Preview.Sortable
+                    }).ToArray(),
+                    Rows = documents.Select(doc => new ConsoleSearchResultRow
+                    {
+                        Label = doc.Label,
+                        Url = GetFocusUrl(doc.SerializedEntityToken),
+                        Values = GetPreviewValues(doc, previewFields)
+                    }).ToArray(),
+                    FacetFields = GetFacets(result, facetFields),
+                    TotalHits = result.TotalHits
+                };
+            }
         }
 
         private ConsoleSearchResultFacetField[] EmptyFacetsFromSelections(
@@ -185,7 +191,8 @@ namespace Composite.Plugins.Search.Endpoint
 
             return (from selection in query.Selections
                     where selection.Values.Length > 0
-                    let facetField = facetFields.First(ff => ff.Name == selection.FieldName)
+                    let facetField = facetFields.Where(ff => ff.Name == selection.FieldName)
+                                     .FirstOrException($"Facet field '{selection.FieldName}' not found")
                     select new ConsoleSearchResultFacetField
                     {
                         FieldName = MakeFieldNameJsFriendly(selection.FieldName),

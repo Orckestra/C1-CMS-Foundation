@@ -1,4 +1,5 @@
 ﻿using Composite.C1Console.Security;
+using Newtonsoft.Json;
 
 
 namespace Composite.C1Console.Actions.Workflows
@@ -28,6 +29,7 @@ namespace Composite.C1Console.Actions.Workflows
 
 
         /// <exclude />
+        [JsonIgnore]
         public string LockedByUsername
         {
             get { return _lockedByUsername; }
@@ -35,6 +37,7 @@ namespace Composite.C1Console.Actions.Workflows
 
 
         /// <exclude />
+        [JsonIgnore]
         public ActionToken LockedActionToken
         {
             get
@@ -50,6 +53,7 @@ namespace Composite.C1Console.Actions.Workflows
 
 
         /// <exclude />
+        [JsonIgnore]
         public EntityToken LockedEntityToken
         {
             get

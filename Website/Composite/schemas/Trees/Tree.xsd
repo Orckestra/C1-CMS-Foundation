@@ -807,13 +807,13 @@
 
     <xs:attribute name="Label" use="required" type="xs:string">
       <xs:annotation>
-        <xs:documentation>The label of the element. Use ${C1:Data:[TypeName]:[FieldName]} to get a field value of a parent (or self) data element</xs:documentation>
+        <xs:documentation>The label of the element. Use ${C1:Data:[TypeName]:[FieldName]} to get a field value of a parent (or self) data element. Use ${C1:Data:[TypeName]:[FieldName]:[Format]} to format dates, decimals and ints using a format supported by .NET ToString() for the type.</xs:documentation>
       </xs:annotation>
     </xs:attribute>
 
     <xs:attribute name="ToolTip" use="optional" type="xs:string">
       <xs:annotation>
-        <xs:documentation>The tool tip of the element. Use ${C1:Data:[TypeName]:[FieldName]} to get a field value of a parent (or self) data element. Defaults to the label</xs:documentation>
+        <xs:documentation>The tool tip of the element. Use ${C1:Data:[TypeName]:[FieldName]} to get a field value of a parent (or self) data element. Defaults to the label. Use ${C1:Data:[TypeName]:[FieldName]:[Format]} to format dates, decimals and ints using a format supported by .NET ToString() for the type.</xs:documentation>
       </xs:annotation>
     </xs:attribute>
 

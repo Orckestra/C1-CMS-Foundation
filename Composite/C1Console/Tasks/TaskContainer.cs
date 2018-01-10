@@ -17,8 +17,8 @@ namespace Composite.C1Console.Tasks
     {
         private static readonly string LogTitle = typeof (TaskContainer).Name;
 
-        private List<Task> _tasks;
-        private bool _disposed = false;
+        private readonly List<Task> _tasks;
+        private bool _disposed;
 
 
 
@@ -93,18 +93,31 @@ namespace Composite.C1Console.Tasks
         }
 
 
+#if LeakCheck
+        private string stack = Environment.StackTrace;
+
         /// <exclude />
         ~TaskContainer()
         {
-            Dispose();
+            Composite.Core.Instrumentation.DisposableResourceTracer.RegisterFinalizerExecution(stack);
+            Dispose(false);
         }
-
-
+#endif
 
         /// <exclude />
         public void Dispose()
         {
-            if (_disposed == false)
+            Dispose(true);
+#if LeakCheck
+            GC.SuppressFinalize(this);
+#endif
+        }
+
+
+        /// <exclude />
+        public void Dispose(bool disposing)
+        {
+            if (disposing && !_disposed)
             {
                 _disposed = true;
 

@@ -24,6 +24,7 @@ module.exports = {
 
 		.selectTreeNodeAction("ZipTest","Delete Folder")
 		.clickDialogButton("OK")
+		.assertTreeNodeHasNoChild("/", "ZipTest")
 	},
 	afterEach: function (browser, done) {
 		done();

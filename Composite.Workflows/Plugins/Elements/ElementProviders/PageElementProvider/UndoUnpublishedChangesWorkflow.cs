@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using Composite.Data;
 using Composite.Data.Types;
@@ -38,7 +38,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 using (new DataScope(DataScopeIdentifier.Administrated))
                 {
                     administrativePlaceholders =
-                        (from ph in DataFacade.GetData<IPagePlaceholderContent>()
+                        (from ph in DataFacade.GetData<IPagePlaceholderContent>(false)
                          where ph.PageId == pageId && ph.VersionId == versionId
                          select ph).ToList();
                 }
@@ -47,7 +47,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 using (new DataScope(DataScopeIdentifier.Public))
                 {
                     publicPlaceholders =
-                        (from ph in DataFacade.GetData<IPagePlaceholderContent>()
+                        (from ph in DataFacade.GetData<IPagePlaceholderContent>(false)
                          where ph.PageId == pageId && ph.VersionId == versionId
                          select ph).ToList();
                 }

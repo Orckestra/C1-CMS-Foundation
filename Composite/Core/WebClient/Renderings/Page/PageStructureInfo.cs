@@ -11,7 +11,7 @@ using Composite.Data;
 using Composite.Data.Types;
 using Composite.Core.Logging;
 using Composite.Core.Extensions;
-
+using Composite.Core.Linq;
 using MapKey = System.Tuple<Composite.Data.PublicationScope, string, string>;
 
 namespace Composite.Core.WebClient.Renderings.Page
@@ -613,9 +613,16 @@ namespace Composite.Core.WebClient.Renderings.Page
 
         private class SitemapBuildingData
         {
+            private class PageIdComparer : IEqualityComparer<IPage>
+            {
+                public bool Equals(IPage x, IPage y) => x.Id == y.Id;
+
+                public int GetHashCode(IPage obj) => obj.Id.GetHashCode();
+            }
+
             public SitemapBuildingData()
             {
-                Pages = DataFacade.GetData<IPage>().ToList();
+                Pages = DataFacade.GetData<IPage>().Evaluate().Distinct(new PageIdComparer()).ToList();
                 Structures = DataFacade.GetData<IPageStructure>().ToList();
 
                 PageById = new Hashtable<Guid, IPage>();

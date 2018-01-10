@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using Composite.Core.IO.Plugins.IOProvider;
 
 
@@ -19,25 +20,11 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileStreamClass:DoNotUseFileStreamClass")]
-        public string Name
-        {
-            get
-            {
-                return _fileStream.Name;
-            }
-        }
-
+        public string Name => _fileStream.Name;
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileStreamClass:DoNotUseFileStreamClass")]
-        public long Length
-        {
-            get
-            {
-                return _fileStream.Length;
-            }
-        }
-
+        public long Length => _fileStream.Length;
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileStreamClass:DoNotUseFileStreamClass")]
@@ -51,14 +38,8 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileStreamClass:DoNotUseFileStreamClass")]
         public long Position
         {
-            get
-            {
-                return _fileStream.Position;
-            }
-            set
-            {
-                _fileStream.Position = value;
-            }
+            get => _fileStream.Position;
+            set => _fileStream.Position = value;
         }
 
 
@@ -104,36 +85,15 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileStreamClass:DoNotUseFileStreamClass")]
-        public bool CanRead
-        {
-            get
-            {
-                return _fileStream.CanRead;
-            }
-        }
-
+        public bool CanRead => _fileStream.CanRead;
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileStreamClass:DoNotUseFileStreamClass")]
-        public bool CanSeek
-        {
-            get
-            {
-                return _fileStream.CanSeek;
-            }
-        }
-
+        public bool CanSeek => _fileStream.CanSeek;
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileStreamClass:DoNotUseFileStreamClass")]
-        public bool CanWrite
-        {
-            get
-            {
-                return _fileStream.CanWrite;
-            }
-        }
-
+        public bool CanWrite => _fileStream.CanWrite;
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileStreamClass:DoNotUseFileStreamClass")]
@@ -163,10 +123,20 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileStreamClass:DoNotUseFileStreamClass")]
         public void Dispose()
         {
-            this.Close();
-
-            _fileStream.Dispose();
+            _fileStream?.Dispose();
             _fileStream = null;
+#if LeakCheck
+            GC.SuppressFinalize(this);
+#endif
         }
+
+#if LeakCheck
+        private string stack = Environment.StackTrace;
+        /// <exclude />
+        ~LocalC1FileStream()
+        {
+            Composite.Core.Instrumentation.DisposableResourceTracer.RegisterFinalizerExecution(stack);
+        }
+#endif
     }
 }

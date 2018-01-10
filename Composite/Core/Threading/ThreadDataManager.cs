@@ -218,7 +218,7 @@ using(Composite.Core.Threading.ThreadDataManager.EnsureInitialize())
 
         private sealed class ThreadDataManagerScope : IDisposable
         {
-            private bool _disposed = false;
+            private bool _disposed;
             private readonly bool _disposeData;
             private readonly ThreadDataManagerData _threadData;
             private readonly ThreadDataManagerData _threadDataValueToBeRestored;
@@ -239,52 +239,69 @@ using(Composite.Core.Threading.ThreadDataManager.EnsureInitialize())
             }
 
 
-
             public void Dispose()
             {
-                try
+                Dispose(true);
+                GC.SuppressFinalize(this);
+            }
+
+
+            public void Dispose(bool disposing)
+            {
+                if (disposing)
                 {
-                    if (_disposed) throw new ObjectDisposedException(typeof(ThreadDataManagerData).FullName);
+                    try
+                    {
+                        if (_disposed) throw new ObjectDisposedException(typeof(ThreadDataManagerData).FullName);
 
-                    _disposed = true;
+                        _disposed = true;
 
-                    if (_disposeData)
+                        if (_disposeData)
+                        {
+                            try
+                            {
+                                _threadData.Dispose();
+                            }
+                            catch (Exception e)
+                            {
+                                Log.LogError(LogTitle, e);
+                            }
+
+                            Verify.IsTrue(Current == _threadData,
+                                "ThreadDataManager.Current points to a different thread data object!!!");
+                        }
+                    }
+                    finally
+                    {
+                        _threadDataManagerData = _threadDataValueToBeRestored;
+                    }
+                }
+                else
+                {
+                    if (!_disposed && _disposeData)
                     {
                         try
                         {
                             _threadData.Dispose();
                         }
-                        catch(Exception e)
+                        catch (Exception)
                         {
-                            Log.LogError(LogTitle, e);
+                            // silent...
                         }
-
-                        Verify.IsTrue(Current == _threadData, "ThreadDataManager.Current points to a different thread data object!!!");
                     }
-                }
-                finally 
-                {
-                    _threadDataManagerData = _threadDataValueToBeRestored;
                 }
             }
 
 
+#if LeakCheck
+            private string stack = Environment.StackTrace;
+#endif
             ~ThreadDataManagerScope()
             {
-                if (_disposed || !_disposeData)
-                {
-                    return;
-                }
-
-
-                try
-                {
-                    _threadData.Dispose();
-                }
-                catch (Exception)
-                {
-                    // silent...
-                }
+#if LeakCheck
+                Composite.Core.Instrumentation.DisposableResourceTracer.RegisterFinalizerExecution(stack);
+#endif
+                Dispose(false);
             }
         }
     }

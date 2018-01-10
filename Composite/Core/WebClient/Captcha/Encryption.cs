@@ -27,24 +27,12 @@ namespace Composite.Core.WebClient.Captcha
 
         public static string Encrypt(string value)
         {
-            Verify.ArgumentNotNullOrEmpty(value, "value");
+            Verify.ArgumentNotNullOrEmpty(value, nameof(value));
 
-            // Declare the streams used
-            // to encrypt to an in memory
-            // array of bytes.
-            MemoryStream msEncrypt = null;
-            CryptoStream csEncrypt = null;
-            C1StreamWriter swEncrypt = null;
-
-            // Declare the RijndaelManaged object
-            // used to encrypt the data.
-            RijndaelManaged rima = null;
-
-            try
+            // Create a RijndaelManaged object
+            // with the specified key and IV.
+            using (var rima = new RijndaelManaged())
             {
-                // Create a RijndaelManaged object
-                // with the specified key and IV.
-                rima = new RijndaelManaged();
                 rima.Key = _encryptionKey;
                 rima.IV = RijndaelIV;
 
@@ -52,46 +40,27 @@ namespace Composite.Core.WebClient.Captcha
                 ICryptoTransform encryptor = rima.CreateEncryptor();
 
                 // Create the streams used for encryption.
-                msEncrypt = new MemoryStream();
-                csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write);
-                swEncrypt = new C1StreamWriter(csEncrypt);
-
-                //Write all data to the stream.
-                swEncrypt.Write(value);
+                using (var msEncrypt = new MemoryStream())
+                {
+                    using (var csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write))
+                    using (var swEncrypt = new C1StreamWriter(csEncrypt))
+                    {
+                        //Write all data to the stream.
+                        swEncrypt.Write(value);
+                    }
+                    // Return the encrypted bytes from the memory stream.
+                    return ByteToHexString(msEncrypt.ToArray());
+                }
             }
-            finally
-            {
-                if (swEncrypt != null) swEncrypt.Close();
-                if (csEncrypt != null) csEncrypt.Close();
-                if (msEncrypt != null) msEncrypt.Close();
-                if (rima != null) rima.Clear();
-            }
-
-            // Return the encrypted bytes from the memory stream.
-            return ByteToHexString(msEncrypt.ToArray());
         }
 
         public static string Decrypt(string encryptedValue)
         {
-            Verify.ArgumentNotNullOrEmpty(encryptedValue, "encryptedValue");
+            Verify.ArgumentNotNullOrEmpty(encryptedValue, nameof(encryptedValue));
             byte[] encodedSequence = HexStringToByteArray(encryptedValue);
 
-            // TDeclare the streams used
-            // to decrypt to an in memory
-            // array of bytes.
-            MemoryStream msDecrypt = null;
-            CryptoStream csDecrypt = null;
-            C1StreamReader srDecrypt = null;
-
-            // Declare the RijndaelManaged object
-            // used to decrypt the data.
-            RijndaelManaged rima = null;
-
-            try
+            using (var rima = new RijndaelManaged())
             {
-                // Create a RijndaelManaged object
-                // with the specified key and IV.
-                rima = new RijndaelManaged();
                 rima.Key = _encryptionKey;
                 rima.IV = RijndaelIV;
 
@@ -99,20 +68,14 @@ namespace Composite.Core.WebClient.Captcha
                 ICryptoTransform decryptor = rima.CreateDecryptor();
 
                 // Create the streams used for decryption.
-                msDecrypt = new MemoryStream(encodedSequence);
-                csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read);
-                srDecrypt = new C1StreamReader(csDecrypt);
-
-                // Read the decrypted bytes from the decrypting stream
-                // and place them in a string.
-                return srDecrypt.ReadToEnd();
-            }
-            finally
-            {
-                if (srDecrypt != null) srDecrypt.Close();
-                if (csDecrypt != null) csDecrypt.Close();
-                if (msDecrypt != null) msDecrypt.Close();
-                if (rima != null) rima.Clear();
+                using (var msDecrypt = new MemoryStream(encodedSequence))
+                using (var csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
+                using (var srDecrypt = new C1StreamReader(csDecrypt))
+                {
+                    // Read the decrypted bytes from the decrypting stream
+                    // and place them in a string.
+                    return srDecrypt.ReadToEnd();
+                }
             }
         }
 

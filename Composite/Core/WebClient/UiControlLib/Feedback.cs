@@ -58,6 +58,7 @@ namespace Composite.Core.WebClient.UiControlLib
         private Generic _requestTag;
         private Generic _responseTag;
         private Generic _consoleIdField;
+        private Generic _viewIdField;
 
         private string _consoleId;
 
@@ -79,6 +80,11 @@ namespace Composite.Core.WebClient.UiControlLib
             _consoleIdField.Attributes["clientid"] = "__CONSOLEID";
             _consoleIdField.Attributes["name"] = "__CONSOLEID";
 
+            _viewIdField = new Generic("input");
+            _viewIdField.Attributes["type"] = "hidden";
+            _viewIdField.Attributes["clientid"] = "__VIEWID";
+            _viewIdField.Attributes["name"] = "__VIEWID";
+
             // Persisting "__CONSOLEID" field value
             _consoleId = GetConsoleId();
             if (!_consoleId.IsNullOrEmpty())
@@ -89,6 +95,7 @@ namespace Composite.Core.WebClient.UiControlLib
             this.Controls.Add(_requestTag);
             this.Controls.Add(_responseTag);
             _requestTag.Controls.Add(_consoleIdField);
+            _requestTag.Controls.Add(_viewIdField);
         }
 
         /// <exclude />

@@ -1,5 +1,6 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Workflow.Activities;
 using System.Xml.Linq;
@@ -140,7 +141,10 @@ namespace Composite.Plugins.Elements.ElementProviders.UserGroupElementProvider
 
             SetSaveStatus(true);
 
-            LoggingService.LogVerbose("UserManagement", $"C1 Console user group '{userGroup.Name}' updated by '{UserValidationFacade.GetUsername()}'.", LoggingService.Category.Audit);
+            LoggingService.LogEntry("UserManagement", 
+                $"C1 Console user group '{userGroup.Name}' updated by '{UserValidationFacade.GetUsername()}'.", 
+                LoggingService.Category.Audit,
+                TraceEventType.Information);
 
             if (userGroup.Name != this.GetBinding<string>("OldName"))
             {

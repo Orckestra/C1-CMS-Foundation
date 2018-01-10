@@ -197,12 +197,12 @@ namespace Composite.C1Console.Workflow
             }
             catch (WorkflowValidationFailedException exp)
             {
-                StringBuilder errors = new StringBuilder();
+                var errors = new StringBuilder();
                 foreach (ValidationError error in exp.Errors)
                 {
-
                     errors.AppendLine(error.ToString());
                 }
+
                 Log.LogError("WorkflowFacade", errors.ToString());
                 throw;
             }
@@ -913,6 +913,8 @@ namespace Composite.C1Console.Workflow
 
                 DeleteOldWorkflows();
 
+
+                _fileWorkflowPersistenceService.ListenToDynamicallyAddedWorkflows(OnNewWorkflowFileAdded);
                 LoadPersistedWorkflows();
                 LoadPersistedFormData();
 
@@ -1129,30 +1131,36 @@ namespace Composite.C1Console.Workflow
         {
             foreach (Guid instanceId in _fileWorkflowPersistenceService.GetPersistedWorkflows())
             {
-                if (!_resourceLocker.Resources.WorkflowStatusDictionary.ContainsKey(instanceId) 
-                    || _resourceLocker.Resources.WorkflowStatusDictionary[instanceId] != WorkflowInstanceStatus.Running)
-                {
-                    // This will make the runtime load the persisted workflow
-                    WorkflowInstance workflowInstance = null;
-                    try
-                    {
-                        workflowInstance = WorkflowRuntime.GetWorkflow(instanceId);
-                    }
-                    catch (InvalidOperationException)
-                    {
-                        _fileWorkflowPersistenceService.RemovePersistedWorkflow(instanceId);
-                    }
-
-                    if (workflowInstance != null
-                        && !_resourceLocker.Resources.WorkflowPersistingTypeDictionary.ContainsKey(instanceId))
-                    {
-                        Type workflowType = workflowInstance.GetWorkflowDefinition().GetType();
-                        SetWorkflowPersistingType(workflowType, instanceId);
-                    }
-                }
+                LoadPersistedWorkflow(instanceId);
             }
         }
 
+
+        private void LoadPersistedWorkflow(Guid instanceId)
+        {
+            WorkflowInstanceStatus status;
+            if (!_resourceLocker.Resources.WorkflowStatusDictionary.TryGetValue(instanceId, out status)
+                || status != WorkflowInstanceStatus.Running)
+            {
+                // This will make the runtime load the persisted workflow
+                WorkflowInstance workflowInstance = null;
+                try
+                {
+                    workflowInstance = WorkflowRuntime.GetWorkflow(instanceId);
+                }
+                catch (InvalidOperationException)
+                {
+                    _fileWorkflowPersistenceService.RemovePersistedWorkflow(instanceId);
+                }
+
+                if (workflowInstance != null
+                    && !_resourceLocker.Resources.WorkflowPersistingTypeDictionary.ContainsKey(instanceId))
+                {
+                    Type workflowType = workflowInstance.GetWorkflowDefinition().GetType();
+                    SetWorkflowPersistingType(workflowType, instanceId);
+                }
+            }
+        } 
 
 
         private void LoadPersistedFormData()
@@ -1161,38 +1169,60 @@ namespace Composite.C1Console.Workflow
             {
                 foreach (string filename in C1Directory.GetFiles(SerializedWorkflowsDirectory, "*.xml"))
                 {
-                    string guidString = Path.GetFileNameWithoutExtension(filename);
-                    Guid id = Guid.Empty;
+                    TryLoadPersistedFormData(filename);
+                }
+            }
+        }
 
-                    try
-                    {
-                        id = new Guid(guidString);
-                        XDocument doc = XDocumentUtils.Load(filename);
-                        FormData formData = FormData.Deserialize(doc.Root);
+        private void TryLoadPersistedFormData(string filename)
+        {
+            string guidString = Path.GetFileNameWithoutExtension(filename);
 
-                        if (!_resourceLocker.Resources.FormData.ContainsKey(id))
-                        {
-                            _resourceLocker.Resources.FormData.Add(id, formData);
+            Guid id;
+            if (!Guid.TryParse(guidString ?? "", out id)) return;
 
-                            FormsWorkflowBindingCache.Bindings.TryAdd(id, formData.Bindings);
-                        }
-                    }
-                    catch (DataSerilizationException ex)
-                    {
-                        Log.LogWarning(LogTitle, "The workflow {0} contained one or more bindings where data was deleted or data type changed", id);
-                        Log.LogWarning(LogTitle, ex);
+            try
+            {
+                var doc = XDocumentUtils.Load(filename);
+                var formData = FormData.Deserialize(doc.Root);
 
-                        //AbortWorkflow(id);
-                    }
-                    catch (Exception ex)
-                    {
-                        if (id != Guid.Empty)
-                        {
-                            Log.LogCritical(LogTitle, "Could not deserialize form data for the workflow {0}", id);
-                            Log.LogCritical(LogTitle, ex);
-                            AbortWorkflow(id);
-                        }
-                    }
+                if (!_resourceLocker.Resources.FormData.ContainsKey(id))
+                {
+                    _resourceLocker.Resources.FormData.Add(id, formData);
+
+                    FormsWorkflowBindingCache.Bindings.TryAdd(id, formData.Bindings);
+                }
+            }
+            catch (DataSerilizationException ex)
+            {
+                Log.LogWarning(LogTitle, $"The workflow {id} contained one or more bindings where data was deleted or data type changed");
+                Log.LogWarning(LogTitle, ex);
+
+                //AbortWorkflow(id);
+            }
+            catch (Exception ex)
+            {
+                Log.LogCritical(LogTitle, $"Could not deserialize form data for the workflow {id}");
+                Log.LogCritical(LogTitle, ex);
+                AbortWorkflow(id);
+            }
+        }
+
+        private void OnNewWorkflowFileAdded(Guid instanceId)
+        {
+            Thread.Sleep(100);
+
+            if (HostingEnvironment.ApplicationHost.ShutdownInitiated()) return;
+            Log.LogInformation(LogTitle, "New workflow detected: " + instanceId);
+
+            using (ThreadDataManager.EnsureInitialize())
+            {
+                LoadPersistedWorkflow(instanceId);
+
+                string formDataFilename = GetFormDataFileName(instanceId);
+                if (C1File.Exists(formDataFilename))
+                {
+                    TryLoadPersistedFormData(formDataFilename);
                 }
             }
         }
@@ -1272,22 +1302,7 @@ namespace Composite.C1Console.Workflow
 
             if (formData == null) return;
 
-            try
-            {
-                XElement element = formData.Serialize();
-
-                string filename = Path.Combine(SerializedWorkflowsDirectory, string.Format("{0}.xml", instanceId));
-
-                XDocument doc = new XDocument(element);
-                doc.SaveToFile(filename);
-            }
-            catch (Exception ex)
-            {
-                // Stop trying serializing this workflow
-                AbortWorkflow(instanceId);
-
-                Log.LogCritical(LogTitle, ex);
-            }
+            PersistFormData(instanceId, formData);
         }
 
 
@@ -1306,29 +1321,32 @@ namespace Composite.C1Console.Workflow
 
             foreach (var kvp in formDataSetToBePersisted)
             {
-                Guid instanceid = kvp.Key;
-
-                try
-                {
-                    XElement element = kvp.Value.Serialize();
-
-                    string filename = Path.Combine(SerializedWorkflowsDirectory, string.Format("{0}.xml", instanceid));
-
-                    XDocument doc = new XDocument(element);
-                    doc.SaveToFile(filename);
-
-                    Log.LogVerbose(LogTitle, "FormData persisted for workflow id = " + instanceid);
-                }
-                catch (Exception ex)
-                {
-                    // Stop trying serializing this workflow
-                    AbortWorkflow(instanceid);
-
-                    Log.LogCritical(LogTitle, ex);
-                }
+                PersistFormData(kvp.Key, kvp.Value);
             }
         }
 
+
+        private void PersistFormData(Guid instanceId, FormData formData)
+        {
+            try
+            {
+                XElement element = formData.Serialize();
+
+                string filename = GetFormDataFileName(instanceId);
+
+                XDocument doc = new XDocument(element);
+                doc.SaveToFile(filename);
+
+                Log.LogVerbose(LogTitle, "FormData persisted for workflow id = " + instanceId);
+            }
+            catch (Exception ex)
+            {
+                // Stop trying serializing this workflow
+                AbortWorkflow(instanceId);
+
+                Log.LogCritical(LogTitle, ex);
+            }
+        }
 
 
         private void DeletePersistedWorkflow(Guid instanceId)
@@ -1345,17 +1363,22 @@ namespace Composite.C1Console.Workflow
         {
             using (GlobalInitializerFacade.CoreIsInitializedScope)
             {
-                string filename = Path.Combine(SerializedWorkflowsDirectory, string.Format("{0}.xml", instanceId));
+                string filename = GetFormDataFileName(instanceId);
 
                 if (C1File.Exists(filename))
                 {
                     C1File.Delete(filename);
 
-                    Log.LogVerbose(LogTitle, "Persisted FormData deleted for workflow id = {0}", instanceId);
+                    Log.LogVerbose(LogTitle, $"Persisted FormData deleted for workflow id = {instanceId}");
                 }
             }
         }
 
+
+        private string GetFormDataFileName(Guid instanceId)
+        {
+            return Path.Combine(SerializedWorkflowsDirectory, $"{instanceId}.xml");
+        }
 
 
         private void DeleteOldWorkflows()
@@ -1409,9 +1432,7 @@ namespace Composite.C1Console.Workflow
 
         private static bool ConsoleIdEquals(FlowControllerServicesContainer flowControllerServicesContainer, string consoleId)
         {
-            if (flowControllerServicesContainer == null) return false;
-
-            var managementConsoleMessageService = flowControllerServicesContainer.GetService<IManagementConsoleMessageService>();
+            var managementConsoleMessageService = flowControllerServicesContainer?.GetService<IManagementConsoleMessageService>();
 
             if (managementConsoleMessageService == null) return false;
 
@@ -1440,16 +1461,16 @@ namespace Composite.C1Console.Workflow
                 this.EventHandleFilters = new Dictionary<Type, IEventHandleFilter>();
             }
 
-            public Dictionary<Guid, WorkflowInstanceStatus> WorkflowStatusDictionary { get; set; }
-            public Dictionary<Guid, FormData> FormData { get; set; }
-            public Dictionary<Guid, FlowControllerServicesContainer> FlowControllerServicesContainers { get; set; }
+            public Dictionary<Guid, WorkflowInstanceStatus> WorkflowStatusDictionary { get; }
+            public Dictionary<Guid, FormData> FormData { get; }
+            public Dictionary<Guid, FlowControllerServicesContainer> FlowControllerServicesContainers { get; }
 
-            public Dictionary<Guid, WorkflowPersistingType> WorkflowPersistingTypeDictionary { get; set; }
+            public Dictionary<Guid, WorkflowPersistingType> WorkflowPersistingTypeDictionary { get; }
 
-            public Dictionary<Guid, Semaphore> WorkflowIdleWaitSemaphores { get; set; }
-            public Dictionary<int, Exception> ExceptionFromWorkflow { get; set; }
+            public Dictionary<Guid, Semaphore> WorkflowIdleWaitSemaphores { get; private set; }
+            public Dictionary<int, Exception> ExceptionFromWorkflow { get; private set; }
 
-            public Dictionary<Type, IEventHandleFilter> EventHandleFilters { get; set; }
+            public Dictionary<Type, IEventHandleFilter> EventHandleFilters { get; }
 
             public static void InitializeResources(Resources resources)
             {
