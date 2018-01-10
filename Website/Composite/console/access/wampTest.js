@@ -21,7 +21,7 @@ const test = new Promise((resolve, reject) => {
 	let url = new URL(getBaseUrl() + '/Composite/api/Router', location.href);
 	let isConnected = false;
 	url.protocol = url.protocol.replace('http', 'ws');
-	new Wampy(url.href, {
+	const client = new Wampy(url.href, {
 		realm: 'realm',
 		maxRetries: 0,
 		onConnect: () => {

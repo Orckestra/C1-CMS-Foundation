@@ -15,7 +15,7 @@ function getClient(realm) {
 			return Promise.resolve(currentClients[realm]);
 		} else {
 			return new Promise((resolve, reject) => {
-				let url = new URL('/Composite/api/Router', location.href);
+				let url = new URL(getBaseUrl() + '/Composite/api/Router', location.href);
 				url.protocol = url.protocol.replace('http', 'ws');
 				const client = new Wampy(url.href, {
 					realm,
