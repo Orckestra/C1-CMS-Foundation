@@ -1,4 +1,4 @@
-﻿import React, { PropTypes } from 'react';
+import React, { PropTypes } from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import DataFieldWrapper from 'console/components/presentation/DataFieldWrapper.js';
 import DataFieldLabel from 'console/components/presentation/DataFieldLabel.js';
@@ -22,7 +22,6 @@ const Error = styled.span`
 	color: red;
 	font-size: 12px;
 `;
-
 
 const DataField = props => {
 	let handleChange, defaultOption, inputElement, options;
@@ -59,8 +58,12 @@ const DataField = props => {
 			withHelp={props.help ? true : false} />;
 		break;
 	default:
+		handleChange = function (option) {
+			props.updateValue(option.value);
+		};
 		inputElement = <Input
 			{...props}
+			onChange={handleChange}
 			onContextMenu={event => {
 				event.stopPropagation(); // to ensure default context menu is shown here
 			}}
@@ -75,7 +78,7 @@ const DataField = props => {
 				//	<Headline>{props.headline}</Headline> :
 				//	null
 			}
-			
+
 			{props.label ?
 				<DataFieldLabel htmlFor={props.name}>{props.label}</DataFieldLabel> :
 				null}
@@ -94,6 +97,7 @@ DataField.propTypes = {
 	headline: PropTypes.string,
 	label: PropTypes.string,
 	help: PropTypes.string,
+	error: PropTypes.string,
 	value: PropTypes.any,
 	placeholder: PropTypes.string
 };

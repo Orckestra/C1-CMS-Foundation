@@ -11,6 +11,10 @@ import Icon from 'console/components/presentation/Icon.js';
 
 const itemOpenCloseTime = '200ms';
 
+export const PaletteList = styled.div`
+	margin-right: -10px;
+`;
+
 export const ItemGroup = styled.div.withConfig({ displayName: 'ItemGroup' })`
 	overflow: hidden;
 `;

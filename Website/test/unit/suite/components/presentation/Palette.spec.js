@@ -63,17 +63,17 @@ describe('Palette', () => {
 	it('renders an empty palette', () => {
 		props.itemGroups = Immutable.List();
 		renderer.render(<Palette {...props}/>);
-		return expect(renderer, 'to have exactly rendered', <div>
+		return expect(renderer, 'to have exactly rendered', <p.PaletteList>
 			<p.NoComponentsLabel>
 				<p.NoComponentsIcon/><br/>
 				Testing no items
 			</p.NoComponentsLabel>
-		</div>);
+		</p.PaletteList>);
 	});
 
 	it('renders a palette', () => {
 		renderer.render(<Palette {...props}/>);
-		return expect(renderer, 'to have rendered', <div>
+		return expect(renderer, 'to have rendered', <p.PaletteList>
 			<p.ItemGroup key='group1'>
 				<div>
 					<p.ItemGroupTop>
@@ -114,7 +114,7 @@ describe('Palette', () => {
 					</p.InfoBox>
 				</p.Item>
 			</p.ItemGroup>
-		</div>);
+		</p.PaletteList>);
 	});
 
 	it('can select on finish with a double click', () => {
