@@ -1,4 +1,5 @@
-﻿using System.IO;
+using System;
+using System.IO;
 using Composite.C1Console.Elements;
 using Composite.C1Console.Security;
 using Composite.Core;
@@ -56,7 +57,8 @@ namespace Composite.Plugins.Elements.UrlToEntityToken
             if (string.IsNullOrEmpty(mimeType)) return false;
 
             return MimeTypeInfo.IsBrowserPreviewableFile(mimeType)
-                   || (MimeTypeInfo.IsTextFile(mimeType) && fileInfo.Length < 1 << 20 /* 1 MB */);
+                   || (MimeTypeInfo.IsTextFile(mimeType) && fileInfo.Length < 1 << 20 /* 1 MB */)
+                   || fileInfo.Extension.Equals(".dll", StringComparison.OrdinalIgnoreCase);
         }
 
         public EntityToken TryGetEntityToken(string url) => null;
