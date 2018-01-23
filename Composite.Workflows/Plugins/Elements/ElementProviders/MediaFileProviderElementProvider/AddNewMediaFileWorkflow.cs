@@ -1,8 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Workflow.Activities;
-using Composite.C1Console.Actions;
 using Composite.C1Console.Forms.CoreUiControls;
 using Composite.C1Console.Workflow;
 using Composite.Core.IO;
@@ -10,7 +9,6 @@ using Composite.Data;
 using Composite.Data.Types;
 using Composite.Data.Validation.ClientValidationRules;
 using Composite.Data.Transactions;
-using System.Transactions;
 
 
 namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementProvider
@@ -18,8 +16,6 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
     [AllowPersistingWorkflow(WorkflowPersistingType.Never)]
     public sealed partial class AddNewMediaFileWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
-        private static readonly string LogTitle = typeof (AddNewMediaFileWorkflow).Name;
-
         public AddNewMediaFileWorkflow()
         {
             InitializeComponent();
@@ -29,16 +25,15 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
 
         private void Initialize()
         {
-            if (this.EntityToken is MediaRootFolderProviderEntityToken)
+            if (this.EntityToken is MediaRootFolderProviderEntityToken token)
             {
-                MediaRootFolderProviderEntityToken token = (MediaRootFolderProviderEntityToken)this.EntityToken;
                 _storeId = token.Id;
                 _folderPath = "/";
             }
             else
             {
-                DataEntityToken token = (DataEntityToken)this.EntityToken;
-                IMediaFileFolder parentFolder = (IMediaFileFolder)token.Data;
+                var dataEntityToken = (DataEntityToken)this.EntityToken;
+                var parentFolder = (IMediaFileFolder)dataEntityToken.Data;
                 _storeId = parentFolder.StoreId;
                 _folderPath = parentFolder.Path;
             }
@@ -46,7 +41,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
 
 
         [NonSerialized]
-        private string _folderPath = null;
+        private string _folderPath;
         internal string FolderPath
         {
             get
@@ -63,7 +58,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
 
 
         [NonSerialized]
-        private string _storeId = null;
+        private string _storeId;
         internal string StoreId
         {
             get
@@ -81,22 +76,16 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
 
         private IMediaFile GetExistingFile(string folderPath, string filename)
         {
-            IMediaFile existingFile =
-                    (from file in DataFacade.GetData<IMediaFile>()
-                     where (string.Compare(file.FolderPath, folderPath, StringComparison.OrdinalIgnoreCase) == 0) &&
-                           (string.Compare(file.FileName, filename, StringComparison.OrdinalIgnoreCase) == 0)
-                     select file).FirstOrDefault();
-
-            return existingFile;
+            return DataFacade.GetData<IMediaFile>().FirstOrDefault(file =>
+                string.Compare(file.FolderPath, folderPath, StringComparison.OrdinalIgnoreCase) == 0 &&
+                string.Compare(file.FileName, filename, StringComparison.OrdinalIgnoreCase) == 0);
         }
 
 
 
         private void initializeCodeActivity_InitializeBindings_ExecuteCode(object sender, EventArgs e)
         {
-            UploadedFile file = new UploadedFile();
-
-            this.Bindings.Add("UploadedFile", file);
+            this.Bindings.Add("UploadedFile", new UploadedFile());
             this.Bindings.Add("AllowOverwrite", false);
             this.Bindings.Add("Title", "");
             this.Bindings.Add("Description", "");
@@ -109,7 +98,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
         {
             UploadedFile uploadedFile = this.GetBinding<UploadedFile>("UploadedFile");
 
-            if (uploadedFile.HasFile == false)
+            if (!uploadedFile.HasFile)
             {
                 this.ShowFieldMessage("UploadedFile", "${Composite.Management, Website.Forms.Administrative.AddNewMediaFile.MissingUploadedFile.Message}");
                 e.Result = false;
@@ -124,7 +113,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
         private void ValidateStep1Bindings_Finish(object sender, ConditionalEventArgs e)
         {
             ValidateStep1Bindings_Next(sender, e);
-            if (e.Result == false) return;
+            if (!e.Result) return;
 
             UploadedFile uploadedFile = this.GetBinding<UploadedFile>("UploadedFile");
             string filename = uploadedFile.FileName;
@@ -132,7 +121,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
             bool allowOverwrite = this.GetBinding<bool>("AllowOverwrite");
 
             IMediaFile existingFile = GetExistingFile(this.FolderPath, filename);
-            if ((existingFile != null) && (allowOverwrite == false))
+            if (existingFile != null && !allowOverwrite)
             {
                 this.ShowFieldMessage("UploadedFile", "${Composite.Management, Website.Forms.Administrative.AddNewMediaFile.FileExists.Message}");
                 e.Result = false;
@@ -154,13 +143,13 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
 
         private void step2CodeActivity_UpdateBindings_ExecuteCode(object sender, EventArgs e)
         {            
-            if (this.BindingExist("Filename") == false)
+            if (!this.BindingExist("Filename"))
             {
                 UploadedFile uploadedFile = this.GetBinding<UploadedFile>("UploadedFile");
                 this.Bindings.Add("Filename", uploadedFile.FileName);
 
                 this.BindingsValidationRules.Add("Title", new List<ClientValidationRule> { new StringLengthClientValidationRule(0, 256) });
-            }            
+            }
         }
 
 
@@ -172,7 +161,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
             bool allowOverwrite = this.GetBinding<bool>("AllowOverwrite");
 
             IMediaFile existingFile = GetExistingFile(this.FolderPath, filename);
-            if ((existingFile != null) && (allowOverwrite == false))
+            if (existingFile != null && !allowOverwrite)
             {
                 this.ShowFieldMessage("Filename", "${Composite.Management, Website.Forms.Administrative.AddNewMediaFile.FileExists.Message}");
                 e.Result = false;
@@ -194,21 +183,15 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
 
         private void finalizeCodeActivity_Finalize_ExecuteCode(object sender, EventArgs e)
         {
-            AddNewTreeRefresher addNewTreeRefresher = this.CreateAddNewTreeRefresher(this.EntityToken);
+            var addNewTreeRefresher = this.CreateAddNewTreeRefresher(this.EntityToken);
             DataEntityToken focusEntityToken;
 
             UploadedFile uploadedFile = this.GetBinding<UploadedFile>("UploadedFile");
-            string filename;
-            if (this.BindingExist("Filename"))
-            {
-                filename = this.GetBinding<string>("Filename");
-            }
-            else 
-            {
-                filename = uploadedFile.FileName;
-            }
+            var filename = this.BindingExist("Filename")
+                ? this.GetBinding<string>("Filename")
+                : uploadedFile.FileName;
 
-            using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope())
+            using (var transactionScope = TransactionsFacade.CreateNewScope())
             {
                 IMediaFileStore store = DataFacade.GetData<IMediaFileStore>(x => x.Id == this.StoreId).First();
 
@@ -216,19 +199,21 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
 
                 if (existingFile == null)
                 {
-                    WorkflowMediaFile mediaFile = new WorkflowMediaFile();
-                    mediaFile.FileName = System.IO.Path.GetFileName(filename);
-                    mediaFile.FolderPath = this.FolderPath;
-                    mediaFile.Title = this.GetBinding<string>("Title");
-                    mediaFile.Description = this.GetBinding<string>("Description");
-                    mediaFile.Tags = this.GetBinding<string>("Tags");
-                    mediaFile.Culture = C1Console.Users.UserSettings.ActiveLocaleCultureInfo.Name;
-                    mediaFile.Length = uploadedFile.ContentLength;
-                    mediaFile.MimeType = MimeTypeInfo.GetMimeType(uploadedFile);
-
-                    using (System.IO.Stream readStream = uploadedFile.FileStream)
+                    var mediaFile = new WorkflowMediaFile
                     {
-                        using (System.IO.Stream writeStream = mediaFile.GetNewWriteStream())
+                        FileName = System.IO.Path.GetFileName(filename),
+                        FolderPath = this.FolderPath,
+                        Title = this.GetBinding<string>("Title"),
+                        Description = this.GetBinding<string>("Description"),
+                        Tags = this.GetBinding<string>("Tags"),
+                        Culture = C1Console.Users.UserSettings.ActiveLocaleCultureInfo.Name,
+                        Length = uploadedFile.ContentLength,
+                        MimeType = MimeTypeInfo.GetMimeType(uploadedFile)
+                    };
+
+                    using (var readStream = uploadedFile.FileStream)
+                    {
+                        using (var writeStream = mediaFile.GetNewWriteStream())
                         {
                             readStream.CopyTo(writeStream);
                         }
@@ -249,9 +234,9 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
                     fileData.MimeType = MimeTypeInfo.GetMimeType(uploadedFile);
                     fileData.Length = uploadedFile.ContentLength;
 
-                    using (System.IO.Stream readStream = uploadedFile.FileStream)
+                    using (var readStream = uploadedFile.FileStream)
                     {
-                        using (System.IO.Stream writeStream = existingFile.GetNewWriteStream())
+                        using (var writeStream = existingFile.GetNewWriteStream())
                         {
                             readStream.CopyTo(writeStream);
                         }
