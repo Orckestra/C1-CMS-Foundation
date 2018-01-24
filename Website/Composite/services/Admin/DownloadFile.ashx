@@ -129,19 +129,28 @@ public class DownloadFile : IHttpHandler
         {
             lines.AddRange(new []
             {
+                "--------- Version and metadata ---------",
+                "",
                 "Assembly Name       : " + assemblyInfo.GetName().Name,
                 "Version             : " + assemblyInfo.GetName().Version,
-                "Is Debug Dll        : " + assemblyInfo.CustomAttributes.Any(a => a.AttributeType == typeof(DebuggableAttribute)),
+                "Is Debug Dll        : " + assemblyInfo.CustomAttributes.Any(
+                    a => a.AttributeType == typeof(DebuggableAttribute)
+                         && a.ConstructorArguments.Any(
+                             attr => attr.ArgumentType == typeof(DebuggableAttribute.DebuggingModes)
+                                     && ((DebuggableAttribute.DebuggingModes)attr.Value & DebuggableAttribute.DebuggingModes.DisableOptimizations) > 0)
+                ),
                 "ImageRuntimeVersion : " + assemblyInfo.ImageRuntimeVersion,
                 "Full Name           : " + assemblyInfo.FullName
             });
         }
         else
         {
-            lines.Add("The assembly is not loaded or is not a managed assembly");
+            lines.Add("The dll file is not loaded in the current AppDomain or is not a managed assembly");
         }
 
-        lines.Add("-----");
+        lines.Add("");
+        lines.Add("------------- File version -------------");
+        lines.Add("");
 
         if (fileVersion != null)
         {
@@ -165,7 +174,6 @@ public class DownloadFile : IHttpHandler
             {
                 lines.Add("");
                 lines.Add(fileVersion.Comments);
-                lines.Add("");
             }
         }
         else
@@ -176,7 +184,9 @@ public class DownloadFile : IHttpHandler
 
         lines.AddRange(new[]
         {
-            "-----",
+            "",
+            "----------------------------------------",
+            "",
             "Last Modified       : " + fileInfo.LastWriteTime.ToString("O"),
             "Last Modified, UTC  : " + fileInfo.LastWriteTimeUtc.ToString("O"),
             "Creation Time       : " + fileInfo.CreationTime.ToString("O"),
