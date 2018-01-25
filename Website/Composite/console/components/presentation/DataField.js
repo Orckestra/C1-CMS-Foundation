@@ -1,8 +1,11 @@
-import React, { PropTypes } from 'react';
+﻿import React, { PropTypes } from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
+import DataFieldWrapper from 'console/components/presentation/DataFieldWrapper.js';
+import DataFieldLabel from 'console/components/presentation/DataFieldLabel.js';
 import HelpIcon from 'console/components/presentation/HelpIcon.js';
 import Select from 'console/components/presentation/Select.js';
 import Input from 'console/components/presentation/Input.js';
+import TextArea from 'console/components/presentation/TextArea.js';
 import Checkbox from 'console/components/presentation/Checkbox.js';
 import styled from 'styled-components';
 import colors from 'console/components/colors.js';
@@ -15,16 +18,11 @@ const Headline = styled.h4`
 	color: ${colors.fieldLabelColor};
 `;
 
-const Label = styled.label`
-	display: inline-block;
-	padding-left: 10px;
-	padding-right: 0;
-	width: calc(100% - 56px);
+const Error = styled.span`
+	color: red;
+	font-size: 12px;
 `;
 
-const DataFieldWrapper = styled.div`
-	position: relative;
-`;
 
 const DataField = props => {
 	let handleChange, defaultOption, inputElement, options;
@@ -46,39 +44,44 @@ const DataField = props => {
 		options = props.options.toJS();
 		defaultOption = options.filter(option => option.value === props.value)[0];
 		inputElement = <Select
-				id={props.name}
-				value={defaultOption}
-				clearable={false}
-				multi={false}
-				options={options}
-				onChange={handleChange}
-				placeholder={props.placeholder}>
-			</Select>;
+			id={props.name}
+			value={defaultOption}
+			clearable={false}
+			multi={false}
+			options={options}
+			onChange={handleChange}
+			placeholder={props.placeholder}>
+		</Select>;
+		break;
+	case 'textarea':
+		inputElement = <TextArea
+			{...props}
+			withHelp={props.help ? true : false} />;
 		break;
 	default:
-		handleChange = function (event) {
-			props.updateValue(event.target.value);
-		};
 		inputElement = <Input
-			type={props.type}
-			id={props.name}
-			value={props.value}
+			{...props}
 			onContextMenu={event => {
 				event.stopPropagation(); // to ensure default context menu is shown here
 			}}
-			onChange={handleChange}/>;
+			withHelp={props.help ? true : false}
+		/>;
 	}
 
 	return (
 		<DataFieldWrapper>
-			{props.headline ?
-				<Headline>{props.headline}</Headline> :
+			{
+				// props.headline ?
+				//	<Headline>{props.headline}</Headline> :
+				//	null
+			}
+			
+			{props.label ?
+				<DataFieldLabel htmlFor={props.name}>{props.label}</DataFieldLabel> :
 				null}
 			{inputElement}
-			{props.label ?
-				<Label htmlFor={props.name}>{props.label}</Label> :
-				null}
 			{props.help ? <HelpIcon text={props.help} /> : null}
+			{props.error ? <Error>{props.error}</Error> : null}
 		</DataFieldWrapper>
 	);
 };
@@ -86,7 +89,7 @@ const DataField = props => {
 DataField.propTypes = {
 	type: PropTypes.string,
 	options: ImmutablePropTypes.listOf(ImmutablePropTypes.map),
-	updateValue: PropTypes.func.isRequired,
+	updateValue: PropTypes.func,
 	name: PropTypes.string.isRequired,
 	headline: PropTypes.string,
 	label: PropTypes.string,

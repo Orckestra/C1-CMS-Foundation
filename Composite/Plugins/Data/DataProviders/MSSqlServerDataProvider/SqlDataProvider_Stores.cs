@@ -8,7 +8,6 @@ using System.Reflection;
 using Composite.Core;
 using Composite.Core.Collections.Generic;
 using Composite.Core.Configuration;
-using Composite.Core.Extensions;
 using Composite.Core.Instrumentation;
 using Composite.Core.Linq;
 using Composite.Core.Sql;
@@ -31,7 +30,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
         private readonly List<SqlDataTypeStoreTable> _createdSqlDataTypeStoreTables = new List<SqlDataTypeStoreTable>();
         private Assembly _compositeGeneratedAssembly;
 
-        private static readonly Hashtable<Type, bool> _typeLoadResults = new Hashtable<Type, bool>(); 
+        private static readonly Hashtable<Type, bool> _typeLoadResults = new Hashtable<Type, bool>();
 
         public void CreateStores(IReadOnlyCollection<DataTypeDescriptor> dataTypeDescriptors)
         {
@@ -61,7 +60,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                     var interfaceType = type;
                     if (!ValidateTable(interfaceType, tableName, errors))
                     {
-                        throw new InvalidOperationException("Table '{0}' already exist but isn't valid: {1}".FormatWith(tableName, errors.ToString()));
+                        throw new InvalidOperationException($"Table '{tableName}' already exists but isn't valid: {errors.ToString()}");
                     }
                 };
 
@@ -128,7 +127,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                 _createdSqlDataTypeStoreTables.RemoveAll(f => newDataTypeIds.Contains(f.DataTypeId));
 
                 var fields = _createdSqlDataTypeStoreTables.Select(s => new Tuple<string, Type>(s.DataContextFieldName, s.DataContextFieldType)).ToList();
-                
+
                 foreach (var classesInfo in generatedClassesInfo.Values)
                 {
                     fields.AddRange(classesInfo.Fields.Select(f => new Tuple<string, Type>(f.Value.FieldName, f.Value.FieldType)));
@@ -148,7 +147,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
                 if (!generatedClassesInfo.TryGetValue(dataTypeDescriptor, out classesInfo))
                 {
-                    throw new InvalidOperationException("No generated classes for data type '{0}' found".FormatWith(dataTypeDescriptor.Name));
+                    throw new InvalidOperationException($"No generated classes for data type '{dataTypeDescriptor.Name}' found");
                 }
                 InitializeStoreResult initInfo = EmbedDataContextInfo(classesInfo, dataContextClass);
 
@@ -332,7 +331,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                 var dataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(dataTypeId, true);
                 if (dataTypeDescriptor == null)
                 {
-                    throw NewConfigurationException(element, "Failed to get a DataTypeDescriptor by id '{0}'".FormatWith(dataTypeId));
+                    throw NewConfigurationException(element, "Failed to get a DataTypeDescriptor by id '{dataTypeId}'");
                 }
 
                 dataTypeDescriptors.Add(dataTypeDescriptor);
@@ -423,10 +422,10 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                 }
 
                 Verify.IsNotNull(fieldInfo, "Field info is missing");
-                
 
-                FieldInfo dataContextFieldInfo = dataContextType != null 
-                    ? dataContextType.GetField(fieldInfo.FieldName) 
+
+                FieldInfo dataContextFieldInfo = dataContextType != null
+                    ? dataContextType.GetField(fieldInfo.FieldName)
                     : fieldInfo.DataContextField;
 
                 Type sqlDataProvdierHelperType = fieldInfo.SqlHelperClass;
@@ -435,7 +434,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
                 var sqlDataTypeStoreTable = new SqlDataTypeStoreTable(
                     initInfo.DataTypeDescriptor.DataTypeId,
-                    dataContextFieldInfo, 
+                    dataContextFieldInfo,
                     sqlDataProviderHelper,
                     fieldInfo.FieldName,
                     fieldInfo.FieldType);
@@ -479,12 +478,12 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
             return result;
         }
 
-        private InterfaceGeneratedClassesInfo InitializeStoreTypes(InterfaceConfigurationElement element, 
-            Dictionary<DataTypeDescriptor, IEnumerable<SqlDataTypeStoreDataScope>> allSqlDataTypeStoreDataScopes, 
+        private InterfaceGeneratedClassesInfo InitializeStoreTypes(InterfaceConfigurationElement element,
+            Dictionary<DataTypeDescriptor, IEnumerable<SqlDataTypeStoreDataScope>> allSqlDataTypeStoreDataScopes,
             Type dataContextClass,
             Dictionary<Guid, Type> dataTypes,
             bool forceCompile,
-            ref bool dataContextRecompilationNeeded, 
+            ref bool dataContextRecompilationNeeded,
             ref HelperClassesGenerationInfo helperClassesGenerationInfo)
         {
             var result = new InterfaceGeneratedClassesInfo();
@@ -510,7 +509,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
             var dataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(dataTypeId, true);
             if (dataTypeDescriptor == null)
             {
-                throw NewConfigurationException(element, "Failed to get a DataTypeDescriptor by id '{0}'".FormatWith(dataTypeId));
+                throw NewConfigurationException(element, $"Failed to get a DataTypeDescriptor by id '{dataTypeId}'");
             }
 
             result.DataTypeDescriptor = dataTypeDescriptor;
@@ -543,8 +542,8 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                 }
 
                 Dictionary<SqlDataTypeStoreTableKey, StoreTypeInfo> fields;
-                helperClassesGenerationInfo = EnsureNeededTypes(dataTypeDescriptor, 
-                    dataScopes, allSqlDataTypeStoreDataScopes, dataContextClass, 
+                helperClassesGenerationInfo = EnsureNeededTypes(dataTypeDescriptor,
+                    dataScopes, allSqlDataTypeStoreDataScopes, dataContextClass,
                     out fields, ref dataContextRecompilationNeeded, forceCompile);
 
                 result.Fields = fields;
@@ -638,7 +637,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                     && interfaceType.IsAutoUpdateble()
                     && !interfaceType.IsGenerated())
                 {
-                    Log.LogInformation(LogTitle, "Data schema for the data interface '{0}' on the SqlDataProvider '{1}' is not matching and will be updated.", 
+                    Log.LogInformation(LogTitle, "Data schema for the data interface '{0}' on the SqlDataProvider '{1}' is not matching and will be updated.",
                                         initializeStoreResult.InterfaceType, _dataProviderContext.ProviderName);
                     Log.LogInformation(LogTitle, errors.ToString());
                 }
@@ -648,7 +647,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                                      initializeStoreResult.InterfaceType, _dataProviderContext.ProviderName);
                     Log.LogCritical(LogTitle, errors.ToString());
                 }
-                
+
             }
 
             return isValid;
@@ -662,7 +661,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
             if (sqlTableInformation == null)
             {
-                errors.AppendLine("Table '{0}' does not exist".FormatWith(tableName));
+                errors.AppendLine($"Table '{tableName}' does not exist");
                 return false;
             }
 
@@ -670,7 +669,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
             if (primaryKeyCount == 0)
             {
-                errors.AppendLine(string.Format("The table '{0}' is missing a primary key", tableName));
+                errors.AppendLine($"The table '{tableName}' is missing a primary key");
                 return false;
             }
 
@@ -680,12 +679,12 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
             foreach (PropertyInfo property in properties)
             {
-                if (property.Name == "DataSourceId") continue;
+                if (property.Name == nameof(IData.DataSourceId)) continue;
 
                 SqlColumnInformation column = columns.Find(col => col.ColumnName == property.Name);
                 if (column == null)
                 {
-                    errors.AppendLine(string.Format("The interface property named '{0}' does not exist in the table '{1}' as a column", property.Name, sqlTableInformation.TableName));
+                    errors.AppendLine($"The interface property named '{property.Name}' does not exist in the table '{sqlTableInformation.TableName}' as a column.");
                     return false;
                 }
 
@@ -693,7 +692,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                 {
                     if (column.Type != property.PropertyType)
                     {
-                        errors.AppendLine(string.Format("Type mismatch. The interface type '{0}' does not match the database type '{1}'", property.PropertyType, column.Type));
+                        errors.AppendLine($"Type mismatch for property '{property.Name}'. Type '{property.PropertyType}' does not match the database column type '{column.Type}'.");
                         return false;
                     }
                 }
@@ -782,9 +781,9 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
         /// Checks that tables related to specified data type included in current DataContext class, if not - compiles a new version of DataContext that contains them
         /// </summary>
         private HelperClassesGenerationInfo EnsureNeededTypes(
-            DataTypeDescriptor dataTypeDescriptor, 
-            IEnumerable<SqlDataTypeStoreDataScope> sqlDataTypeStoreDataScopes, 
-            Dictionary<DataTypeDescriptor, IEnumerable<SqlDataTypeStoreDataScope>> allSqlDataTypeStoreDataScopes, 
+            DataTypeDescriptor dataTypeDescriptor,
+            IEnumerable<SqlDataTypeStoreDataScope> sqlDataTypeStoreDataScopes,
+            Dictionary<DataTypeDescriptor, IEnumerable<SqlDataTypeStoreDataScope>> allSqlDataTypeStoreDataScopes,
             Type dataContextClassType,
             out Dictionary<SqlDataTypeStoreTableKey, StoreTypeInfo> fields,
             ref bool dataContextRecompileNeeded, bool forceCompile = false)
@@ -866,7 +865,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                         dataTypeDescriptor = DynamicTypeManager.BuildNewDataTypeDescriptor(interfaceType);
                     }
 
-                    return CompileMissingClasses(dataTypeDescriptor, allSqlDataTypeStoreDataScopes, fields, 
+                    return CompileMissingClasses(dataTypeDescriptor, allSqlDataTypeStoreDataScopes, fields,
                         storeDataScopesToCompile, storeDataScopesAlreadyCompiled);
                 }
             }
@@ -884,7 +883,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
             bool success = true;
 
             var connection = SqlConnectionManager.GetConnection(_connectionString);
-            
+
             try
             {
                 var dataContext = (DataContext)Activator.CreateInstance(dataContextClassType, connection);
@@ -910,7 +909,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                 success = false;
             }
 
-            
+
             lock (_typeLoadResults)
             {
                 _typeLoadResults[dataContextClassType] = success;
@@ -928,10 +927,10 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
 
 
-        private HelperClassesGenerationInfo CompileMissingClasses(DataTypeDescriptor dataTypeDescriptor, Dictionary<DataTypeDescriptor, 
+        private HelperClassesGenerationInfo CompileMissingClasses(DataTypeDescriptor dataTypeDescriptor, Dictionary<DataTypeDescriptor,
                                            IEnumerable<SqlDataTypeStoreDataScope>> allSqlDataTypeStoreDataScopes,
                                            Dictionary<SqlDataTypeStoreTableKey, StoreTypeInfo> fields,
-                                           List<SqlDataTypeStoreDataScope> storeDataScopesToCompile, 
+                                           List<SqlDataTypeStoreDataScope> storeDataScopesToCompile,
                                            List<SqlDataTypeStoreDataScope> storeDataScopesAlreadyCompiled)
         {
             return new HelperClassesGenerationInfo
@@ -1019,7 +1018,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                 }
                 else
                 {
-                    Log.LogWarning(LogTitle, "DataContext missing field newly created field '{0}'", fieldName);
+                    Log.LogWarning(LogTitle, $"DataContext missing field newly created field '{fieldName}'");
                 }
             }
         }
@@ -1036,7 +1035,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                 var dataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(dataTypeId, true);
                 if (dataTypeDescriptor == null)
                 {
-                    Log.LogWarning(LogTitle, "Failed to get data type descriptor by id '{0}'".FormatWith(dataTypeId));
+                    Log.LogWarning(LogTitle, $"Failed to get data type descriptor by id '{dataTypeId}'");
                     continue;
                 }
 

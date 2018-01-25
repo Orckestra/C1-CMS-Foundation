@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Configuration;
 using Composite.Core.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -22,7 +23,12 @@ namespace Composite.Core
         private static IServiceCollection _serviceCollection = new ServiceCollection();
         private static IServiceProvider _serviceProvider;
         private static ConcurrentDictionary<Type, bool> _hasTypeLookup = new ConcurrentDictionary<Type, bool>();
-        private static Func<IServiceCollection, IServiceProvider> _serviceProviderBuilder = s => s.BuildServiceProvider();
+        private static Func<IServiceCollection, IServiceProvider> _serviceProviderBuilder = s =>
+        {
+            var configurationSection = (CompilationSection)WebConfigurationManager.GetSection("system.web/compilation");
+
+            return s.BuildServiceProvider(validateScopes: configurationSection?.Debug ?? false);
+        };
 
         /// <summary>
         /// Get service of type T

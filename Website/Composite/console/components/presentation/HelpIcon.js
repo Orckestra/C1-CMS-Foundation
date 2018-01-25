@@ -1,10 +1,11 @@
-import React, { PropTypes } from 'react';
+﻿import React, { PropTypes } from 'react';
 import styled from 'styled-components';
 import colors from 'console/components/colors.js';
 
 const Span = styled.span`
 	position: absolute;
-	right: 0;
+	right: -8px;
+	top: 20px;
 
 	&::after {
 		content: "?";

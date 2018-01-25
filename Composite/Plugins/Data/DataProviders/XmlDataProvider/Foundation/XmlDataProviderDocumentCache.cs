@@ -47,10 +47,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
         }
 
 
-        public static object SyncRoot
-        {
-            get { return _documentEditingSyncRoot; }
-        }
+        public static object SyncRoot => _documentEditingSyncRoot;
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "This is what we want, handle broken saves")]
@@ -132,7 +129,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
             xDocument.Root.RemoveNodes();
 
-            return result;  
+            return result;
         }
 
 
@@ -157,13 +154,15 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
         /// <returns></returns>
         private static IList<C1FileInfo> GetCandidateFiles(string filePath)
         {
-            List<C1FileInfo> files = new List<C1FileInfo>();
+            var files = new List<C1FileInfo>();
             if (C1File.Exists(filePath))
             {
                 files.Add(new C1FileInfo(filePath));
             }
 
-            var tmpFilePaths = C1Directory.GetFiles(Path.GetDirectoryName(filePath), string.Format("{0}.*.tmp", Path.GetFileName(filePath)));
+            var tmpFilePaths = C1Directory.GetFiles(
+                Path.GetDirectoryName(filePath), 
+                $"{Path.GetFileName(filePath)}.*.tmp");
 
             foreach (string tmpFilePath in tmpFilePaths)
             {
@@ -331,19 +330,19 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                     }
                     catch (Exception)
                     {
-                        Log.LogWarning(LogTitle, "Failed to clean up ghost file '{0}'.", filePath);
+                        Log.LogWarning(LogTitle, $"Failed to clean up ghost file '{filePath}'.");
                     }
                 }
             }
 
-            DateTime lastModifiedFileDate = usedFile != null ? usedFile.LastWriteTime : DateTime.Now;
+            DateTime lastModifiedFileDate = usedFile?.LastWriteTime ?? DateTime.Now;
 
             return new FileRecord
             {
                 FilePath = filePath,
                 ElementName = elementName,
                 RecordSet = new RecordSet { Index = index },
-                ReadOnlyElementsList = new List<XElement>(elements),
+                ReadOnlyElementsList = elements,
                 LastModified = DateTime.Now,
                 FileModificationDate = lastModifiedFileDate
             };
@@ -356,8 +355,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
             XDocument dataDocument = null;
             try
             {
-                XmlReaderSettings xmlReaderSettings = new XmlReaderSettings();
-                xmlReaderSettings.CheckCharacters = false;
+                var xmlReaderSettings = new XmlReaderSettings { CheckCharacters = false };
 
                 using (XmlReader xmlReader = XmlReaderUtils.Create(candidateFile.FullName, xmlReaderSettings))
                 {

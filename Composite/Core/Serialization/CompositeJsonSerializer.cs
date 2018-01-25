@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.Serialization;
@@ -40,7 +40,8 @@ namespace Composite.Core.Serialization
             {
                 TypeNameAssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple,
                 TypeNameHandling = TypeNameHandling.Auto,
-                Converters = {new JsonTypeConverter()}
+                Converters = {new JsonTypeConverter()},
+                Binder = CompositeSerializationBinder.Instance
             });
 
             return serializedData;
@@ -58,7 +59,8 @@ namespace Composite.Core.Serialization
                 TypeNameAssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple,
                 TypeNameHandling = TypeNameHandling.Objects,
                 Formatting = Formatting.None,
-                Converters = {new JsonTypeConverter()}
+                Converters = {new JsonTypeConverter()},
+                Binder = CompositeSerializationBinder.Instance
             });
 
             return serializedData;
@@ -128,7 +130,8 @@ namespace Composite.Core.Serialization
         {
             var obj = JsonConvert.DeserializeObject<T>(str, new JsonSerializerSettings
             {
-                TypeNameHandling = TypeNameHandling.Auto
+                TypeNameHandling = TypeNameHandling.Auto,
+                Binder = CompositeSerializationBinder.Instance
             });
             return obj;
         }
@@ -159,7 +162,8 @@ namespace Composite.Core.Serialization
             }
             var obj = JsonConvert.DeserializeObject<T>(combinedObj.ToString(), new JsonSerializerSettings
             {
-                TypeNameHandling = TypeNameHandling.Auto
+                TypeNameHandling = TypeNameHandling.Auto,
+                Binder = CompositeSerializationBinder.Instance
             });
             return obj;
         }
@@ -173,7 +177,8 @@ namespace Composite.Core.Serialization
         {
             var obj = JsonConvert.DeserializeObject(str, new JsonSerializerSettings
             {
-                TypeNameHandling = TypeNameHandling.Objects
+                TypeNameHandling = TypeNameHandling.Objects,
+                Binder = CompositeSerializationBinder.Instance
             });
             return obj;
         }

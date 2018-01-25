@@ -14,6 +14,7 @@
   "devDependencies": {
     "JSONPath": "^0.10.0",
     "autoprefixer-core": "^5.2.1",
+    "chromedriver": "^2.34.0",
     "chokidar-socket-emitter": "0.5.4",
     "csswring": "^3.0.5",
     "eslint": "3.1.1",

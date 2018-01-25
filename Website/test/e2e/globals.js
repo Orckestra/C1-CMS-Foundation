@@ -2,6 +2,7 @@ var timeouts = {
 		basic: 10000,
 		save: 120000,
 		little: 1000,
+		smallest: 250,
 		loading: 25000,
 	};
 

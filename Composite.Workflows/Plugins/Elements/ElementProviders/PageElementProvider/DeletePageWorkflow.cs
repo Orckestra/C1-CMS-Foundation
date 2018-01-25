@@ -1,13 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Workflow.Activities;
 using Composite.C1Console.Events;
 using Composite.Data;
-using Composite.Data.ProcessControlled;
 using Composite.Data.Types;
-using Composite.Data.Transactions;
 using Composite.C1Console.Workflow;
 using Composite.Core.Collections.Generic;
 using Texts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_Plugins_PageElementProvider;
@@ -168,12 +165,10 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
         private void HasPageDeletionBeenConfirmed(object sender, ConditionalEventArgs e)
         {
-            Func<string, bool> isTrueBinding = bindingName =>
-                Bindings.ContainsKey(bindingName)
-                && (bool) Bindings[bindingName];
+            bool IsTrueBinding(string bindingName) => Bindings.ContainsKey(bindingName) && (bool) Bindings[bindingName];
 
-            e.Result = isTrueBinding(BindingNames.DeleteAllVersions)
-                    || isTrueBinding(BindingNames.DeleteChildrenConfirmed);
+            e.Result = IsTrueBinding(BindingNames.DeleteAllVersions)
+                    || IsTrueBinding(BindingNames.DeleteChildrenConfirmed);
         }
 
         private void DeleteCurrentVersion(object sender, EventArgs e)

@@ -19,6 +19,7 @@ namespace Composite.C1Console.Security.Compatibility
     [ApplicationStartup(AbortStartupOnException = false)]
     public static class LegacySerializedEntityTokenUpgrader
     {
+        const string LogTitle = nameof(LegacySerializedEntityTokenUpgrader);
         const string _configFilename = "LegacySerializedEntityTokenUpgrader.config";
         static readonly XName _docRoot = "UpgradeSettings";
         private static ILog _log;
@@ -38,7 +39,7 @@ namespace Composite.C1Console.Security.Compatibility
                 }
                 catch (Exception ex)
                 {
-                    _log.LogError(nameof(LegacySerializedEntityTokenUpgrader), ex);
+                    _log.LogError(LogTitle, ex);
 
                     throw;
                 }
@@ -156,7 +157,7 @@ namespace Composite.C1Console.Security.Compatibility
                                 }
                                 catch (Exception ex)
                                 {
-                                    _log.LogError(nameof(LegacySerializedEntityTokenUpgrader), "Failed to upgrade old token {0} from data type {1} as EntityToken.\n{2}", token, dataType.FullName, ex);
+                                    _log.LogError(LogTitle, $"Failed to upgrade old token '{token}' from data type '{dataType.FullName}' as EntityToken.\n{ex}");
                                 }
                             }
 
@@ -176,11 +177,11 @@ namespace Composite.C1Console.Security.Compatibility
                                 }
                                 catch (Exception ex)
                                 {
-                                    _log.LogError(nameof(LegacySerializedEntityTokenUpgrader), "Failed to upgrade old token {0} from data type {1} as DataSourceId.\n{2}", token, dataType.FullName, ex);
+                                    _log.LogError(LogTitle, $"Failed to upgrade old token '{token}' from data type '{dataType.FullName}' as DataSourceId.\n{ex}");
                                 }
                             }
 
-                            if (rowChange) DataFacade.Update(rowItem);
+                            if (rowChange) DataFacade.Update(rowItem, true, false, false);
                         }
                     }
                 }

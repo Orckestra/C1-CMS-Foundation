@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Xml.Linq;
 using Composite.Core.Instrumentation;
-using Composite.Core.Linq;
 using Composite.Core.WebClient;
 using Composite.Data;
 using Composite.Data.DynamicTypes.Foundation;
@@ -155,6 +155,72 @@ namespace Composite.Core.Routing
             return internalUrl;
         }
 
+        private static string ResolvePrefix(string urlPrefix) => UrlUtils.PublicRootPath + "/" + urlPrefix;
+
+        private static Dictionary<string, IInternalUrlConverter> GetConvertersMap(Func<string, string> mapPrefix)
+        {
+            var result = new Dictionary<string, IInternalUrlConverter>();
+            foreach (var converter in _converters)
+            {
+                foreach (var prefix in converter.AcceptedUrlPrefixes)
+                {
+                    result[mapPrefix(prefix)] = converter;
+                }
+            }
+
+            return result;
+        }
+
+        private static bool IsLinkAttribute(XName attrName) =>
+            attrName.LocalName == "src"
+            || attrName.LocalName == "href"
+            || attrName.LocalName == "srcset";
+
+
+        /// <summary>
+        /// Converts internal urls to public ones in a given html fragment
+        /// </summary>
+        /// <param name="document"></param>
+        /// <returns></returns>
+        public static void ConvertInternalUrlsToPublic(XDocument document)
+        {
+            Verify.ArgumentNotNull(document, nameof(document));
+
+            var convertersMap = GetConvertersMap(ResolvePrefix);
+            if (!convertersMap.Any()) return;
+
+            var urlSpace = new UrlSpace();
+
+            var convertionCache = new Dictionary<string, string>();
+            foreach (var element in document.Descendants())
+            {
+                foreach (var attr in element.Attributes().Where(a => IsLinkAttribute(a.Name)))
+                {
+                    string link = attr.Value;
+                    if (convertionCache.TryGetValue(link, out string cachedLink))
+                    {
+                        attr.Value = cachedLink;
+                        continue;
+                    }
+
+                    foreach (var prefix in convertersMap.Keys)
+                    {
+                        if (link.StartsWith(prefix, StringComparison.OrdinalIgnoreCase))
+                        {
+                            var converter = convertersMap[prefix];
+                            var newLink = converter.ToPublicUrl(link, urlSpace);
+                            if (newLink != null && newLink != link)
+                            {
+                                convertionCache[link] = newLink;
+                                attr.Value = newLink;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
 
         /// <summary>
         /// Converts internal urls to public ones in a given html fragment
@@ -164,34 +230,17 @@ namespace Composite.Core.Routing
         /// <returns></returns>
         internal static string ConvertInternalUrlsToPublic(string html, IEnumerable<IInternalUrlConverter> converters)
         {
-            converters = converters.Evaluate();
-
-            if (!converters.Any())
-            {
-                return html;
-            }
-
-            var convertersMap = new Dictionary<string, IInternalUrlConverter>();
-            foreach (var converter in converters)
-            {
-                foreach (var prefix in converter.AcceptedUrlPrefixes)
-                {
-                    convertersMap[prefix] = converter;
-                }
-            }
-
+            var convertersMap = GetConvertersMap(_ => _);
             if (!convertersMap.Any())
             {
                 return html;
             }
 
-            Func<string, string> resolvedPrefix = urlPrefix => UrlUtils.PublicRootPath + "/" + urlPrefix;
-
             // Urls, generated in UserControl-s may still have "~/" as a prefix
             foreach (var urlPrefix in convertersMap.Keys)
             {
                 string rawUrlPrefix = "~/" + urlPrefix;
-                string resolvedUrlPrefix = resolvedPrefix(urlPrefix);
+                string resolvedUrlPrefix = ResolvePrefix(urlPrefix);
 
                 html = UrlUtils.ReplaceUrlPrefix(html, rawUrlPrefix, resolvedUrlPrefix);
             }
@@ -202,7 +251,7 @@ namespace Composite.Core.Routing
 
             foreach (var pair in convertersMap)
             {
-                string internalPrefix = resolvedPrefix(pair.Key);
+                string internalPrefix = ResolvePrefix(pair.Key);
                 var converter = pair.Value;
 
                 // Bracket encoding fix

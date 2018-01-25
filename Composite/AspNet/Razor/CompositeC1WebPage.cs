@@ -118,13 +118,25 @@ namespace Composite.AspNet.Razor
             return Function(name, Functions.ObjectToDictionary(parameters));
 		}
 
-		/// <summary>
-		/// Executes a C1 Function.
-		/// </summary>
-		/// <param name="name">Function name.</param>
-		/// <param name="parameters">The parameters.</param>
-		/// <returns></returns>
-		public IHtmlString Function(string name, IDictionary<string, object> parameters)
+        /// <summary>
+        /// Executes a C1 Function.
+        /// </summary>
+        /// <param name="name">Function name.</param>
+        /// <param name="parameters">The parameters.</param>
+        /// /// <param name="functionContextContainer">The FunctionContextContainer used to execute the function.</param>
+        /// <returns></returns>
+        public IHtmlString Function(string name, object parameters, FunctionContextContainer functionContextContainer)
+	    {
+	        return Function(name, Functions.ObjectToDictionary(parameters), functionContextContainer);
+	    }
+
+        /// <summary>
+        /// Executes a C1 Function.
+        /// </summary>
+        /// <param name="name">Function name.</param>
+        /// <param name="parameters">The parameters.</param>
+        /// <returns></returns>
+        public IHtmlString Function(string name, IDictionary<string, object> parameters)
 		{
             return Function(name, parameters, GetFunctionContext());
 		}
