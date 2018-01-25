@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
@@ -35,18 +35,29 @@ namespace Composite.Core.WebClient
 	            {
 	                _mediaFileCache.Remove(GetCacheKey(mediaFile.StoreId, mediaFile.Id));
 	            }
-	        }
+	            if (args.Data is IMediaFileData mediaFileData)
+	            {
+	                _mediaFileCache.Remove(GetCacheKey(DefaultMediaStore, mediaFileData.Id));
+	            }
+            }
+
+	        void OnStoreChanged(object sender, StoreEventArgs storeEventArgs)
+	        {
+	            if (!storeEventArgs.DataEventsFired)
+	            {
+	                _mediaFileCache.Clear();
+	            }
+            }
 
 	        DataEvents<IMediaFile>.OnAfterAdd += OnMediaFileChanged;
 	        DataEvents<IMediaFile>.OnAfterUpdate += OnMediaFileChanged;
 	        DataEvents<IMediaFile>.OnDeleted += OnMediaFileChanged;
-	        DataEvents<IMediaFile>.OnStoreChanged += (s, a) =>
-	        {
-	            if (!a.DataEventsFired)
-	            {
-	                _mediaFileCache.Clear();
-                }
-	        };
+	        DataEvents<IMediaFile>.OnStoreChanged += OnStoreChanged;
+
+            DataEvents<IMediaFileData>.OnAfterAdd += OnMediaFileChanged;
+	        DataEvents<IMediaFileData>.OnAfterUpdate += OnMediaFileChanged;
+	        DataEvents<IMediaFileData>.OnDeleted += OnMediaFileChanged;
+	        DataEvents<IMediaFileData>.OnStoreChanged += OnStoreChanged;
 	    }
 
         /// <exclude />
