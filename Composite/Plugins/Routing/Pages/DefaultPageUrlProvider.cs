@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
@@ -598,7 +598,7 @@ namespace Composite.Plugins.Routing.Pages
             return filePath;
         }
 
-        CultureInfo GetCultureInfo(string requestPath, IHostnameBinding hostnameBinding, out string pathWithoutLanguageAndAppRoot)
+        internal static CultureInfo GetCultureInfo(string requestPath, IHostnameBinding hostnameBinding, out string pathWithoutLanguageAndAppRoot)
         {
             int startIndex = requestPath.IndexOf('/', UrlUtils.PublicRootPath.Length) + 1;
 
