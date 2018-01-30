@@ -175,7 +175,7 @@ namespace Composite.Core.WebClient
 
             if (SystemSetupFacade.IsSystemFirstTimeInitialized)
             {
-            ServiceLocator.CreateRequestServicesScope(context);
+            ServiceLocator.CreateServiceScope();
             }
 
             if (LogRequestDetails)
@@ -193,7 +193,7 @@ namespace Composite.Core.WebClient
 
             try
             {
-                ServiceLocator.DisposeRequestServicesScope(context);
+                ServiceLocator.DisposeServiceScope();
 
                 if (LogRequestDetails && context.Items.Contains("Global.asax timer"))
                 {
@@ -353,7 +353,7 @@ namespace Composite.Core.WebClient
                 ApplicationStartupFacade.FireConfigureServices(ServiceLocator.ServiceCollection);
 
                 ServiceLocator.BuildServiceProvider();
-                ServiceLocator.CreateRequestServicesScope(HttpContext.Current);
+                ServiceLocator.CreateServiceScope();
 
                 ApplicationStartupFacade.FireBeforeSystemInitialize(ServiceLocator.ServiceProvider);
             }

@@ -2,9 +2,9 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Configuration;
 using Composite.Core.Configuration;
+using Composite.Core.Threading;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Composite.Core
@@ -19,7 +19,7 @@ namespace Composite.Core
     /// </remarks>
     public static class ServiceLocator
     {
-        private const string HttpContextKey = "HttpApplication.ServiceScope";
+        private const string ThreadDataManagerKey = "ServiceScope";
         private static IServiceCollection _serviceCollection = new ServiceCollection();
         private static IServiceProvider _serviceProvider;
         private static ConcurrentDictionary<Type, bool> _hasTypeLookup = new ConcurrentDictionary<Type, bool>();
@@ -120,7 +120,7 @@ namespace Composite.Core
             {
                 Verify.IsNotNull(_serviceProvider,"IServiceProvider not build - call out of expected sequence.");
 
-                return RequestScopedServiceProvider ?? _serviceProvider;
+                return ScopedServiceProvider ?? _serviceProvider;
             }
         }
 
@@ -188,48 +188,46 @@ namespace Composite.Core
 
 
         /// <summary>
-        /// Creates a service scope associated with the current http context
+        /// Creates a service scope associated with the current thread
         /// </summary>
-        internal static void CreateRequestServicesScope(HttpContext context)
+        public static void CreateServiceScope()
         {
-            Verify.ArgumentNotNull(context, nameof(context));
+            var threadDataManager = ThreadDataManager.GetCurrentNotNull();
+
+            Verify.IsFalse(threadDataManager.HasValue(ThreadDataManagerKey), "Multiple calls to CreateServicesScope unexpected");
             Verify.IsNotNull(_serviceProvider, "ServiceProvider not initialized yet");
-            Verify.IsNull(context.Items[HttpContextKey], "Multiple calls to CreateRequestServicesScope unexpected");
 
             var serviceScopeFactory = (IServiceScopeFactory)_serviceProvider.GetService(typeof(IServiceScopeFactory));
             var serviceScope = serviceScopeFactory.CreateScope();
 
-            context.Items[HttpContextKey] = serviceScope;
+            threadDataManager.SetValue(ThreadDataManagerKey, serviceScope);
         }
 
 
         /// <summary>
-        /// Disposes a service scope associated with the current http context
+        /// Disposes a service scope associated with the current thread
         /// </summary>
-        internal static void DisposeRequestServicesScope(HttpContext context)
+        public static void DisposeServiceScope()
         {
-            Verify.ArgumentNotNull(context, nameof(context));
-            var scope = (IServiceScope)context.Items[HttpContextKey];
-            if (scope != null)
-            {
-                scope.Dispose();
-            }
+            var threadDataManager = ThreadDataManager.GetCurrentNotNull();
+            var scope = (IServiceScope)threadDataManager.GetValue(ThreadDataManagerKey);
+
+            scope?.Dispose();
+            threadDataManager.SetValue(ThreadDataManagerKey, null);
         }
 
 
         /// <summary>
-        /// Return a IServiceScope - if a scope has been initialized on the request (HttpContext) a scoped provider is returned.
+        /// Return a IServiceScope - if a scope has been initialized on the thread a scoped provider is returned.
         /// </summary>
-        private static IServiceProvider RequestScopedServiceProvider
+        private static IServiceProvider ScopedServiceProvider
         {
             get
             {
-                var context = HttpContext.Current;
-                if (context == null) return null;
+                var threadDataManager = ThreadDataManager.Current;
+                var scope = (IServiceScope) threadDataManager?.GetValue(ThreadDataManagerKey);
 
-                var scope = (IServiceScope)context.Items[HttpContextKey];
-
-                return scope != null ? scope.ServiceProvider : null;
+                return scope?.ServiceProvider;
             }
         }
 
