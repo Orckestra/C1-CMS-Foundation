@@ -1,6 +1,5 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using Composite.Core.Threading;
@@ -15,6 +14,7 @@ namespace Composite.Core.Implementation
     public class DataConnectionImplementation : DataConnectionBase, IDisposable
     {
         private IDisposable _threadDataManager;
+        private bool _serviceScopeCreated;
         private readonly DataScope _dataScope;
 
         internal DataScope DataScope => _dataScope;
@@ -31,6 +31,8 @@ namespace Composite.Core.Implementation
             InitializeScope(scope, locale);
 
             _dataScope = new DataScope(this.DataScopeIdentifier, locale);
+
+            _serviceScopeCreated = ServiceLocator.EnsureThreadDataServiceScope();
         }
 
         private void InitializeThreadData()
@@ -198,6 +200,11 @@ namespace Composite.Core.Implementation
         {
             if (disposing)
             {
+                if (_serviceScopeCreated)
+                {
+                    ServiceLocator.DisposeThreadDataServiceScope();
+                }
+
                 _dataScope.Dispose();
 
                 _threadDataManager.Dispose();
