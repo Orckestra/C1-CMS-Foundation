@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
@@ -11,7 +11,11 @@ namespace Composite.Core.IO.Zip
         private const int CopyBufferSize = 4096;
 
         private readonly HashSet<string> _entryNames = new HashSet<string>();
-        private string ZipFilename { get; set; }
+        private readonly Dictionary<string, string> _denormalizedEntryNames = new Dictionary<string, string>();
+
+        private string ZipFilename { get; }
+
+        private static string NormalizePathDelimiters(string path) => path.Replace('\\', '/');
 
         public ZipFileSystem(string zipFilename)
         {
@@ -26,7 +30,7 @@ namespace Composite.Core.IO.Zip
 
         public bool ContainsFile(string filename)
         {
-            filename = filename.Replace('\\', '/');
+            filename = NormalizePathDelimiters(filename);
 
             return GetFilenames().Any(f => f.Equals(filename, StringComparison.OrdinalIgnoreCase));
         }
@@ -35,7 +39,7 @@ namespace Composite.Core.IO.Zip
 
         public bool ContainsDirectory(string directoryName)
         {
-            directoryName = directoryName.Replace('\\', '/');
+            directoryName = NormalizePathDelimiters(directoryName);
 
             return GetDirectoryNames().Any(f => f.Equals(directoryName, StringComparison.OrdinalIgnoreCase));
         }
@@ -54,7 +58,7 @@ namespace Composite.Core.IO.Zip
 
         public IEnumerable<string> GetFilenames(string directoryName)
         {
-            directoryName = directoryName.Replace('\\', '/');
+            directoryName = NormalizePathDelimiters(directoryName);
 
             foreach (var filename in GetFilenames())
             {
@@ -109,14 +113,20 @@ namespace Composite.Core.IO.Zip
 
             var zipArchive = new ZipArchive(C1File.Open(ZipFilename, FileMode.Open, FileAccess.Read));
 
-            var entryPath = filename.Substring(2).Replace('\\', '/');
+
+            var normalizedEntryPath = NormalizePathDelimiters(filename.Substring(2));
+
+            if(!_denormalizedEntryNames.TryGetValue(normalizedEntryPath, out string entryPath))
+            {
+                throw new InvalidOperationException($"Entry '{normalizedEntryPath}' not found");
+            }
 
             var entry = zipArchive.GetEntry(entryPath);
             if (entry == null)
             {
                 zipArchive.Dispose();
 
-                throw new InvalidOperationException($"Entry '{entryPath}' not found");
+                throw new InvalidOperationException($"Failed to extract entry '{entryPath}' from zip archive");
             }
             
             return new StreamWrapper(entry.Open(), () => zipArchive.Dispose());
@@ -162,7 +172,10 @@ namespace Composite.Core.IO.Zip
                 {
                     foreach (var entry in zipArchive.Entries)
                     {
-                        _entryNames.Add(entry.FullName);
+                        var normalizedEntryPath = NormalizePathDelimiters(entry.FullName);
+                        _denormalizedEntryNames[normalizedEntryPath] = entry.FullName;
+
+                        _entryNames.Add(normalizedEntryPath);
                     }
                 }
             }
@@ -177,17 +190,14 @@ namespace Composite.Core.IO.Zip
                 throw new ArgumentException("filename should start with a '~/' or '~\\'");
             }
 
-            filename = filename.Remove(0, 1);
-            filename = filename.Replace('\\', '/');
+            filename = NormalizePathDelimiters(filename.Substring(1));
 
             if (!filename.StartsWith("/"))
             {
                 throw new ArgumentException("filename should start with a '~/' or '~\\'");
             }
 
-            filename = filename.Remove(0, 1);
-
-            return filename;
+            return filename.Substring(1);
         }
 
         private class StreamWrapper : Stream, IDisposable
