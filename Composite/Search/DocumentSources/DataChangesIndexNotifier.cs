@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -19,17 +19,20 @@ namespace Composite.Search.DocumentSources
 
         private Func<IData, CultureInfo, SearchDocument> GetDocument { get; }
         private Func<IData, string> GetDocumentId { get; }
+        private Predicate<IData> DataItemShouldBeIndexed { get; }
 
         public DataChangesIndexNotifier(
             IEnumerable<IDocumentSourceListener> listeners,
             Type interfaceType, 
             Func<IData, CultureInfo, SearchDocument> getDocumentFunc,
-            Func<IData, string> getDocumentIdFunc)
+            Func<IData, string> getDocumentIdFunc,
+            Predicate<IData> dataItemShouldBeIndexed = null)
         {
             _listeners = listeners;
             _interfaceType = interfaceType;
             GetDocument = getDocumentFunc;
             GetDocumentId = getDocumentIdFunc;
+            DataItemShouldBeIndexed = dataItemShouldBeIndexed ?? (_ => !IsPublishedDataFromUnpublishedScope(_));
         }
 
         public void Start()
@@ -65,17 +68,17 @@ namespace Composite.Search.DocumentSources
             return DataLocalizationFacade.ActiveLocalizationCultures;
         }
 
-        private bool IgnoreNotification(DataEventArgs args) => !_listeners.Any();
+        private bool IgnoreNotifications() => !_listeners.Any();
 
         private void Data_OnAfterAdd(object sender, DataEventArgs dataEventArgs)
         {
-            if (IgnoreNotification(dataEventArgs)) return;
+            if (IgnoreNotifications()) return;
 
             try
             {
                 var data = dataEventArgs.Data;
 
-                if (IsPublishedDataFromUnpublishedScope(data))
+                if (!DataItemShouldBeIndexed(data))
                 {
                     return;
                 }
@@ -96,12 +99,12 @@ namespace Composite.Search.DocumentSources
 
         private void Data_OnAfterUpdate(object sender, DataEventArgs dataEventArgs)
         {
-            if (IgnoreNotification(dataEventArgs)) return;
+            if (IgnoreNotifications()) return;
 
             try
             {
                 var data = dataEventArgs.Data;
-                bool toBeDeleted = IsPublishedDataFromUnpublishedScope(data);
+                bool toBeDeleted = !DataItemShouldBeIndexed(data);
 
                 if (toBeDeleted)
                 {
@@ -125,7 +128,7 @@ namespace Composite.Search.DocumentSources
 
         private void Data_OnDeleted(object sender, DataEventArgs dataEventArgs)
         {
-            if (IgnoreNotification(dataEventArgs)) return;
+            if (IgnoreNotifications()) return;
 
             var data = dataEventArgs.Data;
             DeleteDocuments(data);
