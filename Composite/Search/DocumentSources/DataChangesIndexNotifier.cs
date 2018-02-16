@@ -38,15 +38,15 @@ namespace Composite.Search.DocumentSources
         public void Start()
         {
             DataEventSystemFacade.SubscribeToDataAfterAdd(_interfaceType,
-                (sender, args) => GetActionContainer().Add(() => Data_OnAfterAdd(sender, args)),
+                (sender, args) => CatchAll(() => GetActionContainer().Add(() => Data_OnAfterAdd(sender, args))),
                 true);
 
             DataEventSystemFacade.SubscribeToDataAfterUpdate(_interfaceType,
-                (sender, args) => GetActionContainer().Add(() => Data_OnAfterUpdate(sender, args)),
+                (sender, args) => CatchAll(() => GetActionContainer().Add(() => Data_OnAfterUpdate(sender, args))),
                 true);
 
             DataEventSystemFacade.SubscribeToDataDeleted(_interfaceType, 
-                (sender, args) => GetActionContainer().Add(() => Data_OnDeleted(sender, args)),
+                (sender, args) => CatchAll(() => GetActionContainer().Add(() => Data_OnDeleted(sender, args))),
                 true);
         }
 
@@ -156,6 +156,18 @@ namespace Composite.Search.DocumentSources
             return typeof (IPublishControlled).IsAssignableFrom(_interfaceType)
                    && data.DataSourceId.PublicationScope == PublicationScope.Unpublished
                    && ((IPublishControlled)data).PublicationStatus == GenericPublishProcessController.Published;
+        }
+
+        private void CatchAll(Action action)
+        {
+            try
+            {
+                action();
+            }
+            catch (Exception ex)
+            {
+                Log.LogError(nameof(DataChangesIndexNotifier), ex);
+            }
         }
     }
 }
