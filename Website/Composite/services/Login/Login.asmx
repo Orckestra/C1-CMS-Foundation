@@ -1,4 +1,4 @@
-﻿<%@ WebService Language="C#" Class="Composite.Services.Login" %>
+<%@ WebService Language="C#" Class="Composite.Services.Login" %>
 
 using System;
 using System.Collections.Generic;
@@ -73,10 +73,9 @@ namespace Composite.Services
         }
 
         [WebMethod]
-        public bool Logout(bool dummy)
+        public string Logout(bool dummy)
         {
-            UserValidationFacade.Logout();
-            return true;
+            return UserValidationFacade.Logout();
         }
 
         [WebMethod]
