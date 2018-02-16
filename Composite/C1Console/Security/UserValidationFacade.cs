@@ -185,11 +185,22 @@ namespace Composite.C1Console.Security
 
 
         /// <summary>
-        /// Flushes the username from the login session
+        /// Flushes the username from the login session.
         /// </summary>
-        public static void Logout()
+        [Obsolete("Use Logout() instead.")]
+        public static void FlushUsername()
         {
-            LoginSessionStorePluginFacade.FlushUsername();
+            LoginSessionStorePluginFacade.Logout();
+        }
+
+
+
+        /// <summary>
+        /// Flushes the username from the login session (if applicable) and returns a logout URL.
+        /// </summary>
+        public static string Logout()
+        {
+            return LoginSessionStorePluginFacade.Logout();
         }
 
 

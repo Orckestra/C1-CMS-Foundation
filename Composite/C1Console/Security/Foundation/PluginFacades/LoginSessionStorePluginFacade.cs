@@ -53,11 +53,15 @@ namespace Composite.C1Console.Security.Foundation.PluginFacades
         }
 
 
-        public static void FlushUsername()
+        public static string Logout()
         {
             using (_resourceLocker.ReadLocker)
             {
-                _resourceLocker.Resources.Provider.FlushUsername();
+                var provider = _resourceLocker.Resources.Provider;
+
+                provider.FlushUsername();
+
+                return (provider as ILoginSessionStoreRedirectedLogout)?.LogoutUrl;
             }
         }
 

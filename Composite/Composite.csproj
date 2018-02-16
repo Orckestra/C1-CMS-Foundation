@@ -241,6 +241,7 @@
     <Compile Include="C1Console\Forms\ITestAutomationLocatorInformation.cs" />
     <Compile Include="C1Console\Elements\DialogStrings.cs" />
     <Compile Include="C1Console\Security\Compatibility\LegacySerializedEntityTokenUpgrader.cs" />
+    <Compile Include="C1Console\Security\Plugins\LoginSessionStore\ILoginSessionStoreRedirectedLogout.cs" />
     <Compile Include="C1Console\Security\Plugins\LoginSessionStore\INoneConfigurationBasedLoginSessionStore.cs" />
     <Compile Include="C1Console\Security\Plugins\LoginSessionStore\Runtime\LoginSessionStoreResolver.cs" />
     <Compile Include="C1Console\RichContent\ContainerClasses\AntonymContainerClassManager.cs" />
