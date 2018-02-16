@@ -219,9 +219,9 @@ namespace Composite.Core
             }
         }
 
-        internal static bool EnsureThreadDataServiceScope()
+        internal static IDisposable EnsureThreadDataServiceScope()
         {
-            if (RequestScopedServiceProvider != null) return false;
+            if (RequestScopedServiceProvider != null) return EmptyDisposable.Instance;
 
             var current = ThreadDataManager.GetCurrentNotNull();
 
@@ -229,18 +229,9 @@ namespace Composite.Core
             var serviceScope = serviceScopeFactory.CreateScope();
 
             current.SetValue(ThreadDataKey, serviceScope);
-            return true;
+
+            return new ThreadDataServiceScopeDisposable(current);
         }
-
-        internal static void DisposeThreadDataServiceScope()
-        {
-            var current = ThreadDataManager.GetCurrentNotNull();
-            var scope = (IServiceScope) current[ThreadDataKey];
-
-            scope?.Dispose();
-            current.SetValue(ThreadDataKey, null);
-        }
-
 
         /// <summary>
         /// Return a IServiceScope - if a scope has been initialized on the request (HttpContext) a scoped provider is returned.
@@ -265,6 +256,24 @@ namespace Composite.Core
                 }
 
                 return null;
+            }
+        }
+
+        private class ThreadDataServiceScopeDisposable : IDisposable
+        {
+            private readonly ThreadDataManagerData _threadData;
+
+            public ThreadDataServiceScopeDisposable(ThreadDataManagerData threadData)
+            {
+                _threadData = threadData;
+            }
+
+            public void Dispose()
+            {
+                var scope = (IServiceScope)_threadData[ThreadDataKey];
+
+                scope?.Dispose();
+                _threadData.SetValue(ThreadDataKey, null);
             }
         }
 

@@ -14,7 +14,7 @@ namespace Composite.Core.Implementation
     public class DataConnectionImplementation : DataConnectionBase, IDisposable
     {
         private IDisposable _threadDataManager;
-        private bool _serviceScopeCreated;
+        private readonly IDisposable _serviceScope;
         private readonly DataScope _dataScope;
 
         internal DataScope DataScope => _dataScope;
@@ -32,7 +32,7 @@ namespace Composite.Core.Implementation
 
             _dataScope = new DataScope(this.DataScopeIdentifier, locale);
 
-            _serviceScopeCreated = ServiceLocator.EnsureThreadDataServiceScope();
+            _serviceScope = ServiceLocator.EnsureThreadDataServiceScope();
         }
 
         private void InitializeThreadData()
@@ -200,10 +200,7 @@ namespace Composite.Core.Implementation
         {
             if (disposing)
             {
-                if (_serviceScopeCreated)
-                {
-                    ServiceLocator.DisposeThreadDataServiceScope();
-                }
+                _serviceScope?.Dispose();
 
                 _dataScope.Dispose();
 
