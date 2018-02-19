@@ -84,13 +84,10 @@ WebServiceProxy.createProxyOperation = function (operation) {
 			var self = this;
 			var response = request.asyncInvoke(operation.address, function (response) {
 				self._log(operation, response);
-
+				var soapFault = null;
 				if (response) {
 					if (response.fault) {
-						result = SOAPFault.newInstance(operation, response.fault);
-						if (WebServiceProxy.isFaultHandler) {
-							WebServiceProxy.handleFault(result, request, response);
-						}
+						soapFault = SOAPFault.newInstance(operation, response.fault);
 					} else {
 						if (WebServiceProxy.isDOMResult) {
 							result = response.document;
@@ -100,7 +97,7 @@ WebServiceProxy.createProxyOperation = function (operation) {
 					}
 				}
 				request.dispose();
-				onresponse(result);
+				onresponse(result, soapFault);
 			});
 		} else {
 			var request = operation.encoder.encode(
