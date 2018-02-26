@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -197,21 +197,24 @@ namespace Composite.Data
         public static ReadOnlyCollection<IPagePlaceholderContent> GetPlaceholderContent(Guid pageId, Guid versionId)
         {
             string cacheKey = GetCacheKey<IPagePlaceholderContent>(pageId, versionId);
-            var cachedValue = _placeholderCache.Get(cacheKey);
-            if (cachedValue != null)
+            var result = _placeholderCache.Get(cacheKey);
+
+            if (result == null)
             {
-                return cachedValue;
+                using (var conn = new DataConnection())
+                {
+                    conn.DisableServices();
+
+                    var list = DataFacade.GetData<IPagePlaceholderContent>(false)
+                        .Where(f => f.PageId == pageId && f.VersionId == versionId).ToList();
+
+                    result = new ReadOnlyCollection<IPagePlaceholderContent>(list);
+                }
+
+                _placeholderCache.Add(cacheKey, result);
             }
 
-            var list = DataFacade.GetData<IPagePlaceholderContent>(false)
-                .Where(f => f.PageId == pageId 
-                            && f.VersionId == versionId).ToList();
-
-            var readonlyList = new ReadOnlyCollection<IPagePlaceholderContent>(list);
-
-            _placeholderCache.Add(cacheKey, readonlyList);
-
-            return readonlyList;
+            return result;
         }
 
         #endregion Public
