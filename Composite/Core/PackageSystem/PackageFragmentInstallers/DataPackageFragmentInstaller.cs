@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -791,8 +791,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     // TODO: implement check if the same key has already been added
                 }
 
-                // TODO: to be implemented for dynamic types
-                // RegisterKeyToBeAdded(dataType, dataKeyPropertyCollection);
+                RegisterKeyToBeAdded(dataType, dataKeyPropertyCollection);
 
                 // Checking foreign key references
                 foreach (var referenceField in dataTypeDescriptor.Fields.Where(f => f.ForeignKeyReferenceTypeName != null))
