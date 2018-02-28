@@ -965,6 +965,7 @@
     <Compile Include="C1Console\Users\Workflows\ChangeOwnPasswordWorkflow.designer.cs">
       <DependentUpon>ChangeOwnPasswordWorkflow.cs</DependentUpon>
     </Compile>
+    <Compile Include="Properties\GitCommitInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="C1Console\Actions\Workflows\EntityTokenLockedWorkflow.layout">
@@ -1362,11 +1363,26 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
   <Target Name="AfterBuild">
   </Target>
   -->
+  <Target Name="BeforeBuild">
+    <PropertyGroup>
+      <GitBranchFile>$(ProjectDir)git_branch.txt</GitBranchFile>
+      <GitCommitHashFile>$(ProjectDir)git_commithash.txt</GitCommitHashFile>
+    </PropertyGroup>
+    <Exec Command="git -C $(ProjectDir) rev-parse --abbrev-ref HEAD&gt; &quot;$(GitBranchFile)&quot;" />
+    <Exec Command="git -C $(ProjectDir) rev-parse HEAD&gt; &quot;$(GitCommitHashFile)&quot;" />
+    <PropertyGroup>
+      <GitBranch>$([System.IO.File]::ReadAllText("$(GitBranchFile)").Trim())</GitBranch>
+      <GitCommitHash>$([System.IO.File]::ReadAllText("$(GitCommitHashFile)").Trim())</GitCommitHash>
+      <AssemblyInformationalVersionAttribute>[assembly: System.Reflection.AssemblyInformationalVersion("$(GitBranch). Commit Hash: $(GitCommitHash)")]</AssemblyInformationalVersionAttribute>
+    </PropertyGroup>
+    <WriteLinesToFile File="Properties\GitCommitInfo.cs" Lines="$(AssemblyInformationalVersionAttribute)" Overwrite="true">
+    </WriteLinesToFile>
+    <Exec Command="del &quot;$(GitBranchFile)&quot;" />
+    <Exec Command="del &quot;$(GitCommitHashFile)&quot;" />
+  </Target>
   <PropertyGroup>
     <PostBuildEvent>copy "$(TargetPath)" "$(ProjectDir)..\bin\"
 copy "$(TargetPath)" "$(ProjectDir)..\Website\bin\"</PostBuildEvent>
