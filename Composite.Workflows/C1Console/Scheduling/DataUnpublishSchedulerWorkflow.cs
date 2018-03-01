@@ -37,10 +37,16 @@ namespace Composite.C1Console.Scheduling
 
                     DataFacade.Delete(unpublishSchedule);
 
-                    var deletePublished = false;
+                    var data = (IPublishControlled)DataFacade.TryGetDataByUniqueKey(type, DataId);
+                    if (data == null)
+                    {
+                        Log.LogWarning(LogTitle, $"Failed to find data of type '{type}' by id '{DataId}'.");
 
-                    var data = (IPublishControlled)DataFacade.GetDataByUniqueKey(type, DataId);
-                    Verify.IsNotNull(data, "The data with the id {0} does not exist", DataId);
+                        transaction.Complete();
+                        return;
+                    }
+
+                    var deletePublished = false;
 
                     dataEntityToken = data.GetDataEntityToken();
 
@@ -56,7 +62,7 @@ namespace Composite.C1Console.Scheduling
                     }
                     else
                     {
-                        Log.LogWarning(LogTitle, "Scheduled unpublishing of data with label '{0}' could not be done because the data is not in a unpublisheble state", data.GetLabel());
+                        Log.LogWarning(LogTitle, $"Scheduled unpublishing of data with label '{data.GetLabel()}' could not be done because the data is not in a unpublisheble state");
                     }
 
 
@@ -69,7 +75,7 @@ namespace Composite.C1Console.Scheduling
                             {
                                 DataFacade.Delete(deletedData, CascadeDeleteType.Disable);
 
-                                Log.LogVerbose(LogTitle, "Scheduled unpublishing of data with label '{0}' is complete", deletedData.GetLabel());
+                                Log.LogVerbose(LogTitle, $"Scheduled unpublishing of data with label '{deletedData.GetLabel()}' is complete");
                             }
                         }
                     }
