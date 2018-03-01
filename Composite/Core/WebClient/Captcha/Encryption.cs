@@ -3,7 +3,7 @@ using System.Globalization;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
-using System.Web.Hosting;
+using Composite.Core.Configuration;
 using Composite.Core.IO;
 
 
@@ -16,7 +16,7 @@ namespace Composite.Core.WebClient.Captcha
 
         static Encryption()
         {
-            string key = Environment.MachineName + CaptchaConfiguration.Password + HostingEnvironment.ApplicationPhysicalPath;
+            string key = InstallationInformationFacade.InstallationId + CaptchaConfiguration.Password;
 
             byte[] keyBytes = Encoding.UTF8.GetBytes(key);
 
