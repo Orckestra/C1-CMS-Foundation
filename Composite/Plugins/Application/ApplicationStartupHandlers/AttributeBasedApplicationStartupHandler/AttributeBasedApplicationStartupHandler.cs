@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -185,7 +185,14 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
 
                 if(types != null)
                 {
-                    Subscribe(types);
+                    try
+                    {
+                        Subscribe(types);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new InvalidOperationException($"Failed to load startup handlers from '{Path.GetFileName(filePath)}'", ex);
+                    }
                 }
             }
 
