@@ -18,6 +18,8 @@ module.exports = {
 			},
 			close: function () {
 				this.enter();
+				this.waitForElementVisible('@closeButton', this.api.globals.timeouts.basic);
+				this.api.pause(1000);
 				this.click('@closeButton');
 			}
 		}
