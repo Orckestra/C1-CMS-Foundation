@@ -13,7 +13,7 @@ InstallLocale.prototype.command = function (language, code) {
 		.clickLabel(language)
 		.assertFieldValue(null, "URL mapping name", code)
 		.clickDialogButton("OK")
-		.waitForElementNotVisible("#mastercover", this.api.globals.timeouts.loading)
+		.waitForDialogClosed(this.api.globals.timeouts.loading)
 		.openTreeNode("Languages")
 		.assertTreeNodeHasChild("Languages", language)
 		.refresh()
