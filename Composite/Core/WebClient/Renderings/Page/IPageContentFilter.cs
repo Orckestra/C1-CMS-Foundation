@@ -17,7 +17,7 @@ namespace Composite.Core.WebClient.Renderings.Page
         void Filter(XhtmlDocument document, IPage page);
 
         /// <summary>
-        /// Gets the execution order. Filters wil lower values will be executed first.
+        /// Gets the execution order. Filters with lower values will be executed first.
         /// </summary>
         int Order { get; }
     }

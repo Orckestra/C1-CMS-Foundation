@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -32,6 +32,8 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         private List<PackageFragmentValidationResult> _validationResult;
 
         private Dictionary<Type, TypeKeyInstallationData> _dataKeysToBeInstalled;
+        private Dictionary<Guid, TypeKeyInstallationData> _dataKeysToBeInstalledByTypeId;
+
         private Dictionary<Type, HashSet<KeyValuePair<string, object>>> _missingDataReferences;
 
         private static Dictionary<Guid, Guid> _pageVersionIds = new Dictionary<Guid, Guid>();
@@ -41,6 +43,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         {
             _validationResult = new List<PackageFragmentValidationResult>();
             _dataKeysToBeInstalled = new Dictionary<Type, TypeKeyInstallationData>();
+            _dataKeysToBeInstalledByTypeId = new Dictionary<Guid, TypeKeyInstallationData>();
             _missingDataReferences = new Dictionary<Type, HashSet<KeyValuePair<string, object>>>();
 
             if (this.Configuration.Count(f => f.Name == "Types") > 1)
@@ -597,7 +600,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 }
 
 
-                RegisterKeyToBeAdded(dataType, dataKeyPropertyCollection);
+                RegisterKeyToBeAdded(dataType, null, dataKeyPropertyCollection);
 
                 // Checking foreign key references
                 foreach (var foreignKeyProperty in DataAttributeFacade.GetDataReferenceProperties(dataType.InterfaceType))
@@ -632,13 +635,21 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
             // Checking key in the keys to be installed
             var keyValuePair = new KeyValuePair<string, object>(keyPropertyName, referenceKey);
 
-            if (_missingDataReferences.ContainsKey(referredType) && _missingDataReferences[referredType].Contains(keyValuePair))
+            if (_missingDataReferences.TryGetValue(referredType, out var refs) && refs.Contains(keyValuePair))
             {
                 return;
             }
 
-            if (_dataKeysToBeInstalled.ContainsKey(referredType) && _dataKeysToBeInstalled[referredType].KeyRegistered(refereeType, keyValuePair))
+            if (_dataKeysToBeInstalled.TryGetValue(referredType, out var keys)
+                && keys.KeyRegistered(refereeType, keyValuePair))
             {   
+                return;
+            }
+
+            var typeId = referredType.GetImmutableTypeId();
+            if (_dataKeysToBeInstalledByTypeId.TryGetValue(typeId, out var dynamicTypeKeys)
+                && dynamicTypeKeys.KeyRegistered(refereeType, keyValuePair))
+            {
                 return;
             }
 
@@ -705,13 +716,26 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
             return new DataScope(dataType.DataScopeIdentifier, locale);
         }
 
-        private void RegisterKeyToBeAdded(DataType dataType, DataKeyPropertyCollection dataKeyPropertyCollection)
+
+
+        private void RegisterKeyToBeAdded(DataType dataType, DataTypeDescriptor dataTypeDescriptor, DataKeyPropertyCollection dataKeyPropertyCollection)
         {
             if (dataKeyPropertyCollection.Count != 1) return;
 
+            TypeKeyInstallationData typeKeyInstallationData;
 
-            var typeKeyInstallationData = _dataKeysToBeInstalled.GetOrAdd(dataType.InterfaceType,
+            if (dataType.InterfaceType != null)
+            {
+                // Static types
+                typeKeyInstallationData = _dataKeysToBeInstalled.GetOrAdd(dataType.InterfaceType,
                     () => new TypeKeyInstallationData(dataType.InterfaceType));
+            }
+            else
+            {
+                // Dynamic types
+                typeKeyInstallationData = _dataKeysToBeInstalledByTypeId.GetOrAdd(dataTypeDescriptor.DataTypeId,
+                    () => new TypeKeyInstallationData(dataTypeDescriptor));
+            }
 
             var keyValuePair = dataKeyPropertyCollection.KeyProperties.First();
 
@@ -791,8 +815,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     // TODO: implement check if the same key has already been added
                 }
 
-                // TODO: to be implemented for dynamic types
-                // RegisterKeyToBeAdded(dataType, dataKeyPropertyCollection);
+                RegisterKeyToBeAdded(dataType, dataTypeDescriptor, dataKeyPropertyCollection);
 
                 // Checking foreign key references
                 foreach (var referenceField in dataTypeDescriptor.Fields.Where(f => f.ForeignKeyReferenceTypeName != null))
@@ -800,8 +823,8 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     object propertyValue;
                     if (!fieldValues.TryGetValue(referenceField.Name, out propertyValue) 
                         || propertyValue == null
-                        || (propertyValue is Guid && (Guid)propertyValue == Guid.Empty) 
-                        || propertyValue is string && (string)propertyValue == "")
+                        || (propertyValue is Guid guid && guid == Guid.Empty) 
+                        || (propertyValue is string str && str == ""))
                     {
                         continue;
                     }
@@ -858,21 +881,29 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         /// <summary>
         /// Information about data keys to be installed for a given data type
         /// </summary>
-        [DebuggerDisplay("TypeKeyInstallationData {_type.FullName} . DataScopes: {_dataScopes.Count}")]
+        [DebuggerDisplay("TypeKeyInstallationData {_typeName} . DataScopes: {_dataScopes.Count}")]
         private class TypeKeyInstallationData
         {
             private const string AllLocalesKey = "all";
 
             private readonly bool _isLocalized;
             private readonly bool _isPublishable;
-            private readonly Type _type;
+            private readonly string _typeName;
+
             private readonly Dictionary<string, HashSet<KeyValuePair<string, object>>> _dataScopes = new Dictionary<string, HashSet<KeyValuePair<string, object>>>();
 
             public TypeKeyInstallationData(Type type)
             {
                 _isLocalized = DataLocalizationFacade.IsLocalized(type);
                 _isPublishable = typeof(IPublishControlled).IsAssignableFrom(type);
-                _type = type;
+                _typeName = type.FullName;
+            }
+
+            public TypeKeyInstallationData(DataTypeDescriptor typeDescriptor)
+            {
+                _isLocalized = typeDescriptor.SuperInterfaces.Contains(typeof(ILocalizedControlled));
+                _isPublishable = typeDescriptor.SuperInterfaces.Contains(typeof(IPublishControlled));
+                _typeName = typeDescriptor.Name;
             }
 
             public void RegisterKeyUsage(DataType dataType, KeyValuePair<string, object> keyValuePair)
@@ -910,15 +941,10 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
             {
                 string dataScopeKey = GetDataScopeKey(publicationScope, localeName);
 
-                if (!_dataScopes.ContainsKey(dataScopeKey))
-                {
-                    _dataScopes.Add(dataScopeKey, new HashSet<KeyValuePair<string, object>>());
-                }
-
-                var hashset = _dataScopes[dataScopeKey];
+                var hashset = _dataScopes.GetOrAdd(dataScopeKey, () => new HashSet<KeyValuePair<string, object>>());
 
                 Verify.That(!hashset.Contains(keyValuePair), "Item with the same key present twice. Data type: '{0}', field '{1}', value '{2}'",
-                    dataType.InterfaceTypeName ?? "null", keyValuePair.Key, keyValuePair.Value ?? "null");
+                    dataType.InterfaceTypeName ?? dataType.InterfaceTypeName ?? "null", keyValuePair.Key, keyValuePair.Value ?? "null");
 
                 hashset.Add(keyValuePair);
             }

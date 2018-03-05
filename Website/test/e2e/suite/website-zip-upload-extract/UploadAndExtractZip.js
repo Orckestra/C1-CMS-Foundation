@@ -12,18 +12,20 @@ module.exports = {
 		.selectTreeNodeAction("/", "New Folder")
 		.setFieldValue("Folder name", "ZipTest")
 		.clickDialogButton("OK")
+		.waitForDialogClosed()
 		.selectPerspective("System")
 		.selectTreeNodeAction("ZipTest", "Upload and Extract Zip", "Upload File")
 		.setFileFieldValue("Zip file", require('path').resolve(__dirname + '/test.zip'))
 		.clickDialogButton("OK")
+		.waitForDialogClosed()
 		.openTreeNode("ZipTest")
 		.assertTreeNodeHasChild("ZipTest", "root.txt")
 		.openTreeNode("subdir1")
 		.openTreeNode("subdir2")
 		.assertTreeNodeHasChild("subdir2", "simple.txt")
-
 		.selectTreeNodeAction("ZipTest","Delete Folder")
 		.clickDialogButton("OK")
+		.waitForDialogClosed()
 		.assertTreeNodeHasNoChild("/", "ZipTest")
 	},
 	afterEach: function (browser, done) {

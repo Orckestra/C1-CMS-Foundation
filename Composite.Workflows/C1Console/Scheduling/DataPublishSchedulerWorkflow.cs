@@ -36,8 +36,14 @@ namespace Composite.C1Console.Scheduling
                     var publishSchedule = PublishScheduleHelper.GetPublishSchedule(type, DataId, LocaleName);
                     DataFacade.Delete(publishSchedule);
 
-                    var data = (IPublishControlled)DataFacade.GetDataByUniqueKey(type, DataId);
-                    Verify.IsNotNull(data, "The data with the id '{0}' does not exist", DataId);
+                    var data = (IPublishControlled)DataFacade.TryGetDataByUniqueKey(type, DataId);
+                    if (data == null)
+                    {
+                        Log.LogWarning(LogTitle, $"Failed to find data of type '{type}' by id '{DataId}'.");
+
+                        transaction.Complete();
+                        return;
+                    }
 
                     dataEntityToken = data.GetDataEntityToken();
                     
@@ -49,11 +55,11 @@ namespace Composite.C1Console.Scheduling
 
                         DataFacade.Update(data);
 
-                        Log.LogVerbose(LogTitle, "Scheduled publishing of data with label '{0}' is complete", data.GetLabel());
+                        Log.LogVerbose(LogTitle, $"Scheduled publishing of data with label '{data.GetLabel()}' is complete");
                     }
                     else
                     {
-                        Log.LogWarning(LogTitle, "Scheduled publishing of data with label '{0}' could not be done because the data is not in a publisheble state", data.GetLabel());
+                        Log.LogWarning(LogTitle, $"Scheduled publishing of data with label '{data.GetLabel()}' could not be done because the data is not in a publisheble state");
                     }
 
                     transaction.Complete();

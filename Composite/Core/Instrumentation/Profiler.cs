@@ -1,4 +1,4 @@
-﻿#define ProfileMemory
+#define ProfileMemory
 
 using System;
 using System.Collections.Generic;
@@ -227,18 +227,6 @@ namespace Composite.Core.Instrumentation
             }
         }
 
-        private static bool Disabled
-        {
-            get { return false; }
-        }
-
-        private class EmptyDisposable: IDisposable
-        {
-            public static readonly EmptyDisposable Instance = new EmptyDisposable();
-
-            public void  Dispose()
-            {
-            }
-        }
+        private static bool Disabled => false;
     }
 }

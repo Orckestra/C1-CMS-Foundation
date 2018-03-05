@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.Versioning;
+using System.Runtime.InteropServices;
 using System.Web;
 using Composite;
 using Composite.Core.IO;
@@ -127,13 +129,15 @@ public class DownloadFile : IHttpHandler
 
         if (assemblyInfo != null)
         {
+            var attributes = assemblyInfo.CustomAttributes;
+
             lines.AddRange(new []
             {
                 "--------- Version and metadata ---------",
                 "",
                 "Assembly Name       : " + assemblyInfo.GetName().Name,
                 "Version             : " + assemblyInfo.GetName().Version,
-                "Is Debug Dll        : " + assemblyInfo.CustomAttributes.Any(
+                "Is Debug Dll        : " + attributes.Any(
                     a => a.AttributeType == typeof(DebuggableAttribute)
                          && a.ConstructorArguments.Any(
                              attr => attr.ArgumentType == typeof(DebuggableAttribute.DebuggingModes)
@@ -142,6 +146,18 @@ public class DownloadFile : IHttpHandler
                 "ImageRuntimeVersion : " + assemblyInfo.ImageRuntimeVersion,
                 "Full Name           : " + assemblyInfo.FullName
             });
+
+            var guidAttribute = attributes.FirstOrDefault(attr => attr.AttributeType == typeof(GuidAttribute));
+            if (guidAttribute != null)
+            {
+                lines.Add("Guid                : " + (string) guidAttribute.ConstructorArguments.First().Value);
+            }
+
+            var targetFrameworkAttr = attributes.FirstOrDefault(attr => attr.AttributeType == typeof(TargetFrameworkAttribute));
+            if (targetFrameworkAttr != null)
+            {
+                lines.Add("Target Framework    : " + (string) targetFrameworkAttr.ConstructorArguments.First().Value);
+            }
         }
         else
         {
@@ -195,7 +211,7 @@ public class DownloadFile : IHttpHandler
 
 
 
-        var text = string.Join(Environment.NewLine, lines.Select(line => context.Server.HtmlEncode(line)));
+        var text = string.Join(Environment.NewLine, lines);
 
         context.Response.Write(text);
     }

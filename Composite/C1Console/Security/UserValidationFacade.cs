@@ -1,6 +1,5 @@
 using System;
 using System.Web;
-using Composite.Core.Extensions;
 using Composite.Core.Logging;
 using Composite.C1Console.Security.Foundation.PluginFacades;
 using Composite.C1Console.Security.Plugins.LoginProvider;
@@ -54,29 +53,17 @@ namespace Composite.C1Console.Security
                 return ValidationType.Windows;
             }
 
-            throw new InvalidOperationException(string.Format("Validation plugin '{0}' does not implement a known validation interface", LoginProviderPluginFacade.GetValidationPluginType()));
+            throw new InvalidOperationException($"Validation plugin '{LoginProviderPluginFacade.GetValidationPluginType()}' does not implement a known validation interface");
         }
 
 
 
         /// <exclude />
-        public static IEnumerable<string> AllUsernames
-        {
-            get
-            {
-                return LoginProviderPluginFacade.AllUsernames;
-            }
-        }
+        public static IEnumerable<string> AllUsernames => LoginProviderPluginFacade.AllUsernames;
 
 
         /// <exclude />
-        public static bool CanSetUserPassword
-        {
-            get
-            {
-                return LoginProviderPluginFacade.CanSetUserPassword;
-            }
-        }
+        public static bool CanSetUserPassword => LoginProviderPluginFacade.CanSetUserPassword;
 
 
         /// <summary>
@@ -106,7 +93,7 @@ namespace Composite.C1Console.Security
 
             if (loginResult == LoginResult.Success)
             {
-                LoggingService.LogVerbose("UserValidation", String.Format("The user: [{0}], has been validated and accepted. {1}", userName, GetIpInformation()), LoggingService.Category.Audit);
+                LoggingService.LogVerbose("UserValidation", $"The user: [{userName}], has been validated and accepted. {GetIpInformation()}", LoggingService.Category.Audit);
                 PersistUsernameInSessionDataProvider(userName);
             }
             else if (LoginResultDescriptions.ContainsKey(loginResult))
@@ -120,7 +107,7 @@ namespace Composite.C1Console.Security
         private static void LogLoginFailed(string userName, string message)
         {
             LoggingService.LogWarning("UserValidation", 
-                                      "Login as [{0}] failed. {1} {2}".FormatWith(userName, message, GetIpInformation()),
+                                      $"Login as [{userName}] failed. {message} {GetIpInformation()}",
                                       LoggingService.Category.Audit);
         }
 
@@ -145,7 +132,7 @@ namespace Composite.C1Console.Security
                 return string.Empty;
             }
 
-            return " IP address: " + ipaddress;
+            return "IP address: " + ipaddress;
         }
 
 
@@ -185,20 +172,21 @@ namespace Composite.C1Console.Security
 
 
         /// <summary>
-        /// Flushes the username from the login session
+        /// Flushes the username from the login session.
         /// </summary>
-        public static void Logout()
-        {
-            LoginSessionStorePluginFacade.FlushUsername();
-        }
+        [Obsolete("Use Logout() instead.")]
+        public static void FlushUsername() => Logout();
 
+
+
+        /// <summary>
+        /// Flushes the username from the login session (if applicable) and returns a logout URL.
+        /// </summary>
+        public static string Logout() => LoginSessionStorePluginFacade.Logout();
 
 
         /// <exclude />
-        public static bool IsLoggedIn()
-        {
-            return !string.IsNullOrEmpty(LoginSessionStorePluginFacade.StoredUsername);
-        }
+        public static bool IsLoggedIn() => !string.IsNullOrEmpty(LoginSessionStorePluginFacade.StoredUsername);
 
 
 

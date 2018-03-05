@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Web;
 using Composite.C1Console.Security.Foundation.PluginFacades;
 
@@ -132,7 +132,7 @@ using(Composite.Core.Threading.ThreadDataManager.EnsureInitialize())
         /// <returns>An <see cref="System.IDisposable" /> scope</returns>
         public static IDisposable EnsureInitialize()
         {
-            if (Current != null) return new EmptyDisposableObj();
+            if (Current != null) return EmptyDisposable.Instance;
 
             return Initialize();
         }
@@ -206,15 +206,6 @@ using(Composite.Core.Threading.ThreadDataManager.EnsureInitialize())
             }
         }
 
-
-        private sealed class EmptyDisposableObj : IDisposable
-        {
-            public void Dispose()
-            {
-                // Do nothing here...
-            }
-
-        }
 
         private sealed class ThreadDataManagerScope : IDisposable
         {

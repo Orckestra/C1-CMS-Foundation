@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.Globalization;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
-using System.Web.Hosting;
+using Composite.Core.Configuration;
 using Composite.Core.IO;
 
 
@@ -16,19 +16,25 @@ namespace Composite.Core.WebClient.Captcha
 
         static Encryption()
         {
-            var md5 = MD5.Create();
-
-            string key = Environment.MachineName + CaptchaConfiguration.Password + HostingEnvironment.ApplicationPhysicalPath;
+            string key = InstallationInformationFacade.InstallationId + CaptchaConfiguration.Password;
 
             byte[] keyBytes = Encoding.UTF8.GetBytes(key);
 
-            _encryptionKey = md5.ComputeHash(keyBytes);
+            using (var hashAlgorithm = MD5.Create())
+            {
+                _encryptionKey = hashAlgorithm.ComputeHash(keyBytes);
+            }
         }
 
         public static string Encrypt(string value)
         {
             Verify.ArgumentNotNullOrEmpty(value, nameof(value));
 
+            return ByteToHexString(RijndaelEncrypt(value));
+        }
+
+        private static byte[] RijndaelEncrypt(string value)
+        {
             // Create a RijndaelManaged object
             // with the specified key and IV.
             using (var rima = new RijndaelManaged())
@@ -49,7 +55,7 @@ namespace Composite.Core.WebClient.Captcha
                         swEncrypt.Write(value);
                     }
                     // Return the encrypted bytes from the memory stream.
-                    return ByteToHexString(msEncrypt.ToArray());
+                    return msEncrypt.ToArray();
                 }
             }
         }
@@ -59,6 +65,11 @@ namespace Composite.Core.WebClient.Captcha
             Verify.ArgumentNotNullOrEmpty(encryptedValue, nameof(encryptedValue));
             byte[] encodedSequence = HexStringToByteArray(encryptedValue);
 
+            return RijndaelDecrypt(encodedSequence);
+        }
+
+        private static string RijndaelDecrypt(byte[] bytes)
+        {
             using (var rima = new RijndaelManaged())
             {
                 rima.Key = _encryptionKey;
@@ -68,7 +79,7 @@ namespace Composite.Core.WebClient.Captcha
                 ICryptoTransform decryptor = rima.CreateDecryptor();
 
                 // Create the streams used for decryption.
-                using (var msDecrypt = new MemoryStream(encodedSequence))
+                using (var msDecrypt = new MemoryStream(bytes))
                 using (var csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
                 using (var srDecrypt = new C1StreamReader(csDecrypt))
                 {

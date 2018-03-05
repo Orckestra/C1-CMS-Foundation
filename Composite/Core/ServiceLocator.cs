@@ -1,10 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Configuration;
 using Composite.Core.Configuration;
+using Composite.Core.Threading;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Composite.Core
@@ -20,6 +21,7 @@ namespace Composite.Core
     public static class ServiceLocator
     {
         private const string HttpContextKey = "HttpApplication.ServiceScope";
+        private const string ThreadDataKey = "HttpApplication.ServiceScope";
         private static IServiceCollection _serviceCollection = new ServiceCollection();
         private static IServiceProvider _serviceProvider;
         private static ConcurrentDictionary<Type, bool> _hasTypeLookup = new ConcurrentDictionary<Type, bool>();
@@ -213,9 +215,23 @@ namespace Composite.Core
             if (scope != null)
             {
                 scope.Dispose();
+                context.Items.Remove(HttpContextKey);
             }
         }
 
+        internal static IDisposable EnsureThreadDataServiceScope()
+        {
+            if (RequestScopedServiceProvider != null) return EmptyDisposable.Instance;
+
+            var current = ThreadDataManager.GetCurrentNotNull();
+
+            var serviceScopeFactory = (IServiceScopeFactory)_serviceProvider.GetService(typeof(IServiceScopeFactory));
+            var serviceScope = serviceScopeFactory.CreateScope();
+
+            current.SetValue(ThreadDataKey, serviceScope);
+
+            return new ThreadDataServiceScopeDisposable(current);
+        }
 
         /// <summary>
         /// Return a IServiceScope - if a scope has been initialized on the request (HttpContext) a scoped provider is returned.
@@ -225,11 +241,39 @@ namespace Composite.Core
             get
             {
                 var context = HttpContext.Current;
-                if (context == null) return null;
+                if (context != null)
+                {
+                    var scope = (IServiceScope)context.Items[HttpContextKey];
 
-                var scope = (IServiceScope)context.Items[HttpContextKey];
+                    return scope?.ServiceProvider;
+                }
 
-                return scope != null ? scope.ServiceProvider : null;
+                var threadData = ThreadDataManager.Current;
+                if (threadData != null)
+                {
+                    var scope = (IServiceScope) threadData[ThreadDataKey];
+                    return scope?.ServiceProvider;
+                }
+
+                return null;
+            }
+        }
+
+        private class ThreadDataServiceScopeDisposable : IDisposable
+        {
+            private readonly ThreadDataManagerData _threadData;
+
+            public ThreadDataServiceScopeDisposable(ThreadDataManagerData threadData)
+            {
+                _threadData = threadData;
+            }
+
+            public void Dispose()
+            {
+                var scope = (IServiceScope)_threadData[ThreadDataKey];
+
+                scope?.Dispose();
+                _threadData.SetValue(ThreadDataKey, null);
             }
         }
 

@@ -1,4 +1,4 @@
-﻿
+
 /.vs
 /Composite/bin
 /Composite/obj
@@ -36,3 +36,5 @@
 /Packages/
 selenium-debug.log
 /Website/test/e2e/reports/
+
+GitCommitInfo.cs
