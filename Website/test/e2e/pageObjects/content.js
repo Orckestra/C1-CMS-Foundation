@@ -18,20 +18,28 @@ module.exports = {
 	commands: [
 		{
 			enter: function (perspective) {
-				perspective = perspective || "Content"; // for backward compatibility
+        perspective = perspective || "Content"; // for backward compatibility
+
+				var perspectiveButton = '#explorer explorertoolbarbutton[label="'+perspective+'"]';
+				var perspectiveFrame = '#stagedecks stagedeck[data-qa*="'+perspective+'"] iframe';
+
 				this.api.page.appWindow()
 					.enter()
-					.waitForElementNotPresent('dialogcover[hidden="true"]', this.api.globals.timeouts.basic)
-					.waitForElementPresent('#explorer explorertoolbarbutton[label="'+perspective+'"]', this.api.globals.timeouts.basic)
-					.click('#explorer explorertoolbarbutton[label="'+perspective+'"]')
-					.waitForFrameLoad('#stagedecks stagedeck[data-qa*="'+perspective+'"] iframe', this.api.globals.timeouts.basic)
-					.enterFrame('#stagedecks stagedeck[data-qa*="'+perspective+'"] iframe');
+					.waitForElementNotPresent('dialogcover[hidden="true"]', this.api.globals.timeouts.basic);
+
+				this.api.pause(1000);
+
+				this.api.page.appWindow()
+					.waitForElementPresent(perspectiveButton, this.api.globals.timeouts.basic)
+					.click(perspectiveButton)
+					.waitForFrameLoad(perspectiveFrame, this.api.globals.timeouts.basic)
+					.enterFrame(perspectiveFrame);
 				return this;
 			},
 			enterActivePerspective: function () {
 				this.api.page.appWindow()
 					.enter()
-					.enterFrame('#stagedecks stagedeck[selected="true"] iframe');					
+					.enterFrame('#stagedecks stagedeck[selected="true"] iframe');
 				return this;
 			},
 			prepare: function (perspective) {
