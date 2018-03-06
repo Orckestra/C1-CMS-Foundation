@@ -132,7 +132,7 @@ namespace Composite.Core
         {
             Verify.ArgumentNotNull(serviceType, nameof(serviceType));
 
-            if (!SystemSetupFacade.IsSystemFirstTimeInitialized || SystemSetupFacade.SetupIsRunning)
+            if (ServiceLocatorNotInitialized)
             {
                 return false;
             }
@@ -221,7 +221,7 @@ namespace Composite.Core
 
         internal static IDisposable EnsureThreadDataServiceScope()
         {
-            if (RequestScopedServiceProvider != null) return EmptyDisposable.Instance;
+            if (RequestScopedServiceProvider != null || ServiceLocatorNotInitialized) return EmptyDisposable.Instance;
 
             var current = ThreadDataManager.GetCurrentNotNull();
 
@@ -277,5 +277,7 @@ namespace Composite.Core
             }
         }
 
+        private static bool ServiceLocatorNotInitialized =>
+            !SystemSetupFacade.IsSystemFirstTimeInitialized || SystemSetupFacade.SetupIsRunning;
     }
 }
