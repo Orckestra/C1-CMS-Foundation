@@ -56,21 +56,27 @@ public class DownloadFile : IHttpHandler
 
         Verify.IsNotNull(fullFilePath, "Unexpected exception");
 
-        bool isDllPreview = false;
-
         if (isPreview)
         {
-            var extension = Path.GetExtension(fullFilePath);
-            string mimeType = MimeTypeInfo.GetCanonicalFromExtension(extension);
+            var fileInfo = new FileInfo(fullFilePath);
+            string mimeType = MimeTypeInfo.GetCanonicalFromExtension(fileInfo.Extension);
 
             if (!MimeTypeInfo.IsBrowserPreviewableFile(mimeType))
             {
-                if (extension.Equals(".dll", StringComparison.OrdinalIgnoreCase))
+                if (fileInfo.Extension.Equals(".dll", StringComparison.OrdinalIgnoreCase))
                 {
-                    isDllPreview = true;
+                    OutputDllPreviewInformation(context, fullFilePath);
+                    return;
                 }
-                else if (!MimeTypeInfo.IsTextFile(mimeType))
+
+                if (!MimeTypeInfo.IsTextFile(mimeType))
                 {
+                    return;
+                }
+
+                if (fileInfo.Length < 100*1024 && mimeType != "text/plain")
+                {
+                    PreviewWithCodeHighlight(context, fullFilePath);
                     return;
                 }
 
@@ -85,15 +91,7 @@ public class DownloadFile : IHttpHandler
             context.Response.AddHeader("Content-Disposition", "attachment;filename=" + fileName);
         }
 
-        if (isDllPreview)
-        {
-            OutputDllPreviewInformation(context, fullFilePath);
-        }
-        else
-        {
-            context.Response.TransmitFile(fullFilePath);
-        }
-
+        context.Response.TransmitFile(fullFilePath);
         context.ApplicationInstance.CompleteRequest();
     }
 
@@ -213,8 +211,30 @@ public class DownloadFile : IHttpHandler
 
         var text = string.Join(Environment.NewLine, lines);
 
+        context.Response.ContentType = "text/plain";
         context.Response.Write(text);
     }
+
+    private void PreviewWithCodeHighlight(HttpContext context, string fullFilePath)
+    {
+        context.Response.ContentType = "text/html";
+        context.Response.Write(@"
+<html>
+ <head>
+  <link rel=""stylesheet"" href=""highlightjs/vs.css"" />
+  <script src=""highlightjs/highlight.pack.js""></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+ </head>
+ <body><pre><code style=""overflow-x: inherit"">");
+
+        var lines = File.ReadAllLines(fullFilePath);
+        foreach (var line in lines)
+        {
+            context.Response.Write(context.Server.HtmlEncode(line));
+            context.Response.Write(Environment.NewLine);
+        }
+
+        context.Response.Write(@"</body></pre></code></html>");}
 
 
     private bool UserHasRightToDownload(EntityToken file)
