@@ -36,7 +36,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
         private Dictionary<Type, HashSet<KeyValuePair<string, object>>> _missingDataReferences;
 
-        private static Dictionary<Guid, Guid> _pageVersionIds = new Dictionary<Guid, Guid>();
+        private static readonly Dictionary<Guid, Guid> _pageVersionIds = new Dictionary<Guid, Guid>();
 
         /// <exclude />
         public override IEnumerable<PackageFragmentValidationResult> Validate()
@@ -208,15 +208,14 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     }
                 }
 
-                ILocalizedControlled localizedControlled = data as ILocalizedControlled;
-                if (localizedControlled != null)
+                if (data is ILocalizedControlled localizedControlled)
                 {
                     localizedControlled.SourceCultureName = LocalizationScopeManager.MapByType(interfaceType).Name;
                 }
 
-                if (data is IVersioned)
+                if (data is IVersioned versionedData)
                 {
-                    UpdateVersionId((IVersioned)data);
+                    UpdateVersionId(versionedData);
                 }
 
                 DataFacade.AddNew(data, false, true, false); // Ignore validation, this should have been done in the validation face
@@ -249,13 +248,9 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 return;
             }
 
-            if (data is IPage)
+            if (data is IPage page)
             {
-                var page = (IPage)data;
-
-                Guid versionId;
-
-                if (_pageVersionIds.TryGetValue(page.Id, out versionId))
+                if (_pageVersionIds.TryGetValue(page.Id, out Guid versionId))
                 {
                     page.VersionId = versionId;
                 }
@@ -266,22 +261,16 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 }
             }
 
-            else if (data is IPagePlaceholderContent)
+            else if (data is IPagePlaceholderContent pagePlaceholderContent)
             {
-                Guid pageId = ((IPagePlaceholderContent)data).PageId;
-                Guid versionId;
-
-                if (_pageVersionIds.TryGetValue(pageId, out versionId))
+                if (_pageVersionIds.TryGetValue(pagePlaceholderContent.PageId, out Guid versionId))
                 {
                     data.VersionId = versionId;
                 }
             }
-            else if (data is IPageData)
+            else if (data is IPageData pageData)
             {
-                Guid pageId = ((IPageData)data).PageId;
-                Guid versionId;
-
-                if (_pageVersionIds.TryGetValue(pageId, out versionId))
+                if (_pageVersionIds.TryGetValue(pageData.PageId, out Guid versionId))
                 {
                     data.VersionId = versionId;
                 }
@@ -681,7 +670,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
         private static bool IsObsoleteProperty(PropertyInfo propertyInfo)
         {
-            return propertyInfo.Name == "PageId" && propertyInfo.DeclaringType == typeof(IPageData);
+            return propertyInfo.Name == nameof(IPageData.PageId) && propertyInfo.DeclaringType == typeof(IPageData);
         }
 
         private static bool IsObsoleteField(DataTypeDescriptor dataTypeDescriptor, string fieldName)
@@ -694,11 +683,11 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         {
             if ((type == typeof(IImageFile) || type == typeof(IMediaFile))
                 && ((string)key).StartsWith("MediaArchive:")
-                && propertyName == "KeyPath")
+                && propertyName == nameof(IMediaFile.KeyPath))
             {
                 referenceType = typeof(IMediaFileData);
                 referenceKey = new Guid(((string)key).Substring("MediaArchive:".Length));
-                keyPropertyName = "Id";
+                keyPropertyName = nameof(IMediaFileData.Id);
                 return;
             }
 
@@ -820,8 +809,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 // Checking foreign key references
                 foreach (var referenceField in dataTypeDescriptor.Fields.Where(f => f.ForeignKeyReferenceTypeName != null))
                 {
-                    object propertyValue;
-                    if (!fieldValues.TryGetValue(referenceField.Name, out propertyValue) 
+                    if (!fieldValues.TryGetValue(referenceField.Name, out object propertyValue) 
                         || propertyValue == null
                         || (propertyValue is Guid guid && guid == Guid.Empty) 
                         || (propertyValue is string str && str == ""))
