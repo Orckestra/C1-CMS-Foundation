@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
@@ -282,16 +282,16 @@ namespace Composite.Data.Caching
 
         internal static void ClearCache(Type interfaceType, DataScopeIdentifier dataScopeIdentifier, CultureInfo localizationScope)
         {
-            TypeData typeData;
-            if (!_cachedData.TryGetValue(interfaceType, out typeData)) return;
+            if (!_cachedData.TryGetValue(interfaceType, out TypeData typeData)) return;
 
             dataScopeIdentifier = dataScopeIdentifier ?? DataScopeManager.MapByType(interfaceType);
-            localizationScope = localizationScope ?? LocalizationScopeManager.MapByType(interfaceType);
+            localizationScope = !DataLocalizationFacade.IsLocalized(interfaceType)
+                ? CultureInfo.InvariantCulture
+                : (localizationScope ?? LocalizationScopeManager.CurrentLocalizationScope);
 
             var key = new Tuple<DataScopeIdentifier, CultureInfo>(dataScopeIdentifier, localizationScope);
 
-            CachedTable value;
-            typeData.TryRemove(key, out value);
+            typeData.TryRemove(key, out _);
         }
 
 
