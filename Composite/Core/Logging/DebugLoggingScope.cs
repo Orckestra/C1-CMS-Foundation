@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -87,7 +87,7 @@ namespace Composite.Core.Logging
         public void Dispose()
         {
             int endTickCount = Environment.TickCount;
-            if ((endTickCount - _startTickCount) >= _threshold.Milliseconds)
+            if ((endTickCount - _startTickCount) >= _threshold.TotalMilliseconds)
             {
                 LoggingService.LogVerbose(_scopeName, string.Format("Finished {0} ({1} ms)", _actionInfo, endTickCount - _startTickCount));
             }

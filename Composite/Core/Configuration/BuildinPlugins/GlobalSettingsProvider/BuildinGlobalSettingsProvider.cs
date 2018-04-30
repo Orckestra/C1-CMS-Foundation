@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using Composite.Core.Configuration.Plugins.GlobalSettingsProvider;
@@ -27,7 +27,7 @@ namespace Composite.Core.Configuration.BuildinPlugins.GlobalSettingsProvider
         private string _packageLicenseDirectory = "~/PackageLicenses";
         private readonly ICachingSettings _cachingSettings = new BuildinCachingSettings();
         private readonly List<string> _nonProbableAssemblyNames = new List<string>();
-        private readonly int _consoleMessageQueueSecondToLive = TimeSpan.FromMinutes(10).Seconds;
+        private readonly int _consoleMessageQueueSecondToLive = (int) TimeSpan.FromMinutes(10).TotalSeconds;
         private bool _enableDataTypesAutoUpdate = false;
         private bool _broadcastConsoleElementChanges = true;
         private bool _prettifyPublicMarkup = true;
