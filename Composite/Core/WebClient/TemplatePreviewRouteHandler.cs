@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Web;
 using System.Web.Routing;
 using Composite.C1Console.Security;
@@ -34,6 +34,9 @@ namespace Composite.Core.WebClient
         {
             if (!UserValidationFacade.IsLoggedIn())
             {
+                context.Response.ContentType = MimeTypeInfo.Text;
+                context.Response.Write("No user logged in");
+                context.Response.StatusCode = 403;
                 return;
             }
 
