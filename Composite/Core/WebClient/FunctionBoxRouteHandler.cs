@@ -40,7 +40,7 @@ namespace Composite.Core.WebClient
     internal class FunctionBoxHttpHandler : HttpTaskAsyncHandler
     {
         private const int MinCharsPerDescriptionLine = 55;
-        private static readonly string LogTitle = typeof (FunctionBoxHttpHandler).Name;
+        private static readonly string LogTitle = nameof(FunctionBoxHttpHandler);
 
         public override async Task ProcessRequestAsync(HttpContext context)
         {
@@ -48,7 +48,7 @@ namespace Composite.Core.WebClient
             {
                 context.Response.ContentType = MimeTypeInfo.Text;
                 context.Response.Write("No user logged in");
-                context.Response.StatusCode = 403;
+                context.Response.StatusCode = 401;
                 return;
             }
 

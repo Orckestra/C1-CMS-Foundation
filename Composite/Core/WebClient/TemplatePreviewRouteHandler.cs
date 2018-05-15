@@ -36,7 +36,7 @@ namespace Composite.Core.WebClient
             {
                 context.Response.ContentType = MimeTypeInfo.Text;
                 context.Response.Write("No user logged in");
-                context.Response.StatusCode = 403;
+                context.Response.StatusCode = 401;
                 return;
             }
 
@@ -52,10 +52,7 @@ namespace Composite.Core.WebClient
                 Guid pageId = Guid.Parse(p);
 
 
-                string filePath;
-
-                PageTemplatePreview.PlaceholderInformation[] placeholders;
-                PageTemplatePreview.GetPreviewInformation(context, pageId, templateId, out filePath, out placeholders);
+                PageTemplatePreview.GetPreviewInformation(context, pageId, templateId, out string filePath, out _);
 
                 Verify.That(C1File.Exists(filePath), "Preview file missing");
                 context.Response.ContentType = "image/png";
@@ -63,15 +60,12 @@ namespace Composite.Core.WebClient
             }
             catch (Exception ex)
             {
-                Log.LogError(this.GetType().ToString(), ex.ToString());
+                Log.LogError(nameof(TemplatePreviewHttpHandler), ex);
                 throw;
             }
         }
 
 
-        public bool IsReusable
-        {
-            get { return true; }
-        }
+        public bool IsReusable => true;
     }
 }

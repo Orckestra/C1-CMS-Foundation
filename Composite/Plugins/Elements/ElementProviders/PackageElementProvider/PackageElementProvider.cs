@@ -304,7 +304,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
                     {
                         Label = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "ViewAvailableInformationLabel"),
                         ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "ViewAvailableInformationToolTip"),
-                        Icon = ViewInstalledInformationIcon,
+                        Icon = ViewAvailableInformationIcon,
                         Disabled = false,
                         ActionLocation = new ActionLocation
                         {

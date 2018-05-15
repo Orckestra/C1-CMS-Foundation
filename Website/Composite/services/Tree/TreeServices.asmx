@@ -1,4 +1,4 @@
-﻿<%@ WebService Language="C#" Class="Composite.Services.TreeServices" %>
+<%@ WebService Language="C#" Class="Composite.Services.TreeServices" %>
 
 using System;
 using System.Linq;
@@ -332,21 +332,31 @@ namespace Composite.Services
         [WebMethod]
         public ClientBrowserViewSettings GetBrowserUrlByEntityToken(string serializedEntityToken, bool showPublished)
         {
-
-            var entityToken = EntityTokenSerializer.Deserialize(serializedEntityToken);
-
-            using (new DataScope(showPublished ? PublicationScope.Published : PublicationScope.Unpublished))
+            try
             {
-                var browserViewSettings = UrlToEntityTokenFacade.TryGetBrowserViewSettings(entityToken, showPublished);
+                var entityToken = EntityTokenSerializer.Deserialize(serializedEntityToken);
 
-                if (browserViewSettings != null)
+                using (new DataScope(showPublished ? PublicationScope.Published : PublicationScope.Unpublished))
                 {
-                    return new ClientBrowserViewSettings { Url = browserViewSettings.Url, ToolingOn = browserViewSettings.ToolingOn };
+                    var browserViewSettings = UrlToEntityTokenFacade.TryGetBrowserViewSettings(entityToken, showPublished);
+
+                    if (browserViewSettings != null)
+                    {
+                        return new ClientBrowserViewSettings
+                        {
+                            Url = browserViewSettings.Url,
+                            ToolingOn = browserViewSettings.ToolingOn
+                        };
+                    }
                 }
 
+                return null;
             }
-
-            return null;
+            catch (Exception ex)
+            {
+                Log.LogError("GetBrowserUrlByEntityToken", ex);
+                throw;
+            }
         }
 
 
