@@ -301,33 +301,30 @@ namespace Composite.Plugins.Routing.Pages
             var urlBuilder = new UrlBuilder(relativeUrl);
 
             // Structure of a public url:
-            // http://<hostname>[/ApplicationVirtualPath]{/languageCode}[/Path to a page][/c1mode(unpublished)][/c1mode(relative)][UrlSuffix]{/PathInfo}
-           
+            // http[s]://<hostname>[/<ApplicationVirtualPath>]{/<languageCode>}[/<Path to a page>][/c1mode(unpublished)][/c1mode(relative)][<UrlSuffix>][/<PathInfo>]
 
             string filePathAndPathInfo = HttpUtility.UrlDecode(urlBuilder.FullPath);
-            filePathAndPathInfo = RemoveUrlMarkers(filePathAndPathInfo, urlSpace);
 
+            filePathAndPathInfo = RemoveForceRelativeUrlMarker(filePathAndPathInfo, urlSpace);
+            filePathAndPathInfo = ParseAndRemovePublicationScopeMarker(filePathAndPathInfo, out PublicationScope publicationScope);
+
+            CultureInfo locale;
             string pathWithoutLanguageCode;
 
             IHostnameBinding hostnameBinding = urlSpace.ForceRelativeUrls ? null : GetHostnameBindings().FirstOrDefault(b => b.Hostname == urlSpace.Hostname);
 
-            CultureInfo locale = GetCultureInfo(filePathAndPathInfo, hostnameBinding, out pathWithoutLanguageCode);
-            if (locale == null)
+            if (hostnameBinding != null && filePathAndPathInfo == "/")
             {
-                urlKind = UrlKind.Undefined;
-                return null;
+                pathWithoutLanguageCode = "/";
+                locale = CultureInfo.GetCultureInfo(hostnameBinding.Culture);
             }
-
-            var publicationScope = PublicationScope.Published;
-
-            if (filePathAndPathInfo.Contains(UrlMarker_Unpublished))
+            else
             {
-                publicationScope = PublicationScope.Unpublished;
-
-                pathWithoutLanguageCode = pathWithoutLanguageCode.Replace(UrlMarker_Unpublished, string.Empty);
-                if (pathWithoutLanguageCode == string.Empty)
+                locale = GetCultureInfo(filePathAndPathInfo, hostnameBinding, out pathWithoutLanguageCode);
+                if (locale == null)
                 {
-                    pathWithoutLanguageCode = "/";
+                    urlKind = UrlKind.Undefined;
+                    return null;
                 }
             }
 
@@ -583,7 +580,7 @@ namespace Composite.Plugins.Routing.Pages
         }
 
 
-        private static string RemoveUrlMarkers(string filePath, UrlSpace urlSpace)
+        private static string RemoveForceRelativeUrlMarker(string filePath, UrlSpace urlSpace)
         {
             if (urlSpace.ForceRelativeUrls && filePath.Contains(UrlMarker_RelativeUrl))
             {
@@ -593,6 +590,24 @@ namespace Composite.Plugins.Routing.Pages
             if (filePath == string.Empty)
             {
                 filePath = "/";
+            }
+
+            return filePath;
+        }
+
+        private static string ParseAndRemovePublicationScopeMarker(string filePath, out PublicationScope publicationScope)
+        {
+            publicationScope = PublicationScope.Published;
+
+            if (filePath.Contains(UrlMarker_Unpublished))
+            {
+                publicationScope = PublicationScope.Unpublished;
+
+                filePath = filePath.Replace(UrlMarker_Unpublished, string.Empty);
+                if (filePath == string.Empty)
+                {
+                    filePath = "/";
+                }
             }
 
             return filePath;
