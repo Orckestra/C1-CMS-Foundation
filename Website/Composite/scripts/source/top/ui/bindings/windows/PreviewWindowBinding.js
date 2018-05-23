@@ -283,9 +283,10 @@ PreviewWindowBinding.prototype.reset = function () {
 	
 	if ( this._loadhandler != null ) {
 		if (this.getURL() != WindowBinding.DEFAULT_URL) {
-			if (this.hasAccess(this._windowBinding)) {
+			var win = this.getContentWindow();
+			if (this.hasAccess(win)) {
 				DOMEvents.removeEventListener(
-					this.getContentWindow(),
+					win,
 					DOMEvents.BEFOREUNLOAD,
 					this._loadhandler
 				);
