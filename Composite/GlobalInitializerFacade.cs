@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -511,6 +511,7 @@ namespace Composite
                 {
                     Log.LogVerbose(LogTitle, string.Format("Installing packages from: {0}", directory));
                     zipFiles.AddRange(C1Directory.GetFiles(directory, "*.zip")
+                                      .OrderBy(f => f)
                                       .Select(f => new AutoInstallPackageInfo { FilePath = f, ToBeDeleted = true }));
                 }
                 else
