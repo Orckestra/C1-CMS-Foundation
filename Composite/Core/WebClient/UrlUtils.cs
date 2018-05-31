@@ -14,7 +14,7 @@ using Composite.Data;
 
 namespace Composite.Core.WebClient
 {
-    /// <summary>    
+    /// <summary>
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
@@ -29,30 +29,40 @@ namespace Composite.Core.WebClient
         private static readonly string[] UrlStartMarkers = { "\"", "\'", "&#39;", "&#34;" };
         private static readonly string SessionUrlPrefix = "Session_";
 
+
+        /// <exclude />
+        public static string PublicRootPath => _applicationVirtualPath;
+
+
+        /// <exclude />
+        public static string AdminRootPath => $"{_applicationVirtualPath}/{_adminFolderName}";
+
+
+        /// <exclude />
+        public static string RenderersRootPath => $"{_applicationVirtualPath}/{_renderersFolderName}";
+
+
+        /// <exclude />
+        internal static string AdminFolderName => _adminFolderName;
+
+
         static UrlUtils()
         {
-            if (HostingEnvironment.ApplicationVirtualPath != null)
-            {
-                string appPath = HostingEnvironment.ApplicationVirtualPath;
+            string appPath = HostingEnvironment.ApplicationVirtualPath ?? ""; 
 
-                if (appPath.EndsWith("/") || appPath.EndsWith(@"\"))
-                {
-                    appPath = appPath.Remove(appPath.Length - 1, 1);
-                }
-
-                _applicationVirtualPath = appPath;
-            }
-            else
+            if (appPath.EndsWith("/") || appPath.EndsWith(@"\"))
             {
-                _applicationVirtualPath = "";
+                appPath = appPath.Remove(appPath.Length - 1, 1);
             }
+
+            _applicationVirtualPath = appPath;
         }
 
 
         /// <exclude />
         public static string ResolveAdminUrl(string adminRelativePath)
         {
-            if (adminRelativePath == null) throw new ArgumentNullException("adminRelativePath");
+            if (adminRelativePath == null) throw new ArgumentNullException(nameof(adminRelativePath));
             if (adminRelativePath.IndexOf('~') > -1 || adminRelativePath.StartsWith("/") )
             {
                 throw new ArgumentException("The relative URL may not be rooted or contain '~'");
@@ -62,17 +72,17 @@ namespace Composite.Core.WebClient
             string checkForBackSlashes = split[0];
             if (checkForBackSlashes.Contains(@"\"))
             {
-                Log.LogWarning("ResolveAdminUrl", string.Format(@"The url '{0}' contains '\' which is not allowed.", checkForBackSlashes));
+                Log.LogWarning("ResolveAdminUrl", $@"The url '{checkForBackSlashes}' contains '\' which is not allowed.");
             }
 
-            return string.Format("{0}/{1}/{2}", _applicationVirtualPath, _adminFolderName, adminRelativePath);
+            return $"{_applicationVirtualPath}/{_adminFolderName}/{adminRelativePath}";
         }
 
 
         /// <exclude />
         public static string ResolvePublicUrl(string publicRelativePath)
         {
-            if (publicRelativePath == null) throw new ArgumentNullException("publicRelativePath");
+            if (publicRelativePath == null) throw new ArgumentNullException(nameof(publicRelativePath));
 
             if (publicRelativePath.StartsWith("/"))
             {
@@ -84,32 +94,8 @@ namespace Composite.Core.WebClient
                 publicRelativePath = publicRelativePath.Remove(0, 2);
             }
 
-            return string.Format("{0}/{1}", _applicationVirtualPath, publicRelativePath);
+            return $"{_applicationVirtualPath}/{publicRelativePath}";
         }
-
-
-        /// <exclude />
-        public static string PublicRootPath
-        {
-            get
-            {
-                return _applicationVirtualPath;
-            }
-        }
-
-
-        /// <exclude />
-        public static string AdminRootPath
-        {
-            get
-            {
-                return string.Format("{0}/{1}", _applicationVirtualPath, _adminFolderName);
-            }
-        }
-
-
-        /// <exclude />
-        internal static string AdminFolderName => _adminFolderName;
 
 
         /// <summary>
@@ -145,14 +131,6 @@ namespace Composite.Core.WebClient
                    || requestPath.StartsWith(UrlUtils.AdminRootPath + "/", StringComparison.OrdinalIgnoreCase);
         }
 
-        /// <exclude />
-        public static string RenderersRootPath
-        {
-            get
-            {
-                return string.Format("{0}/{1}", _applicationVirtualPath, _renderersFolderName);
-            }
-        }
 
         /// <exclude />
         public static string Combine( string path1, string path2 )
@@ -265,7 +243,7 @@ namespace Composite.Core.WebClient
         {
             if (text.IsNullOrEmpty()) return text;
 
-            byte[] bytes = UTF8Encoding.UTF8.GetBytes(text);
+            byte[] bytes = Encoding.UTF8.GetBytes(text);
 
             byte[] newBytes;
 

@@ -1,4 +1,4 @@
-﻿using Composite.C1Console.Actions;
+using Composite.C1Console.Actions;
 using Composite.C1Console.Events;
 using Composite.C1Console.Elements;
 using Composite.C1Console.Security;
@@ -15,26 +15,25 @@ namespace Composite.Core.WebClient.FlowMediators
             this.ConsoleId = consoleId;
         }
 
-        private string ElementProviderName { get; set; }
-        private string ConsoleId { get; set; }
+        private string ElementProviderName { get; }
+        private string ConsoleId { get; }
 
         public void Execute(EntityToken entityToken, ActionToken actionToken, TaskManagerEvent taskManagerEvent)
         {
-            FlowControllerServicesContainer flowServicesContainer = new FlowControllerServicesContainer();
-            flowServicesContainer.AddService(new ManagementConsoleMessageService(this.ConsoleId));
-            flowServicesContainer.AddService(new ElementDataExchangeService(this.ElementProviderName));
-            flowServicesContainer.AddService(this);
+            var flowServicesContainer = new FlowControllerServicesContainer(
+                new ManagementConsoleMessageService(this.ConsoleId),
+                new ElementDataExchangeService(this.ElementProviderName),
+                this
+            );
 
             FlowToken flowToken = ActionExecutorFacade.Execute(entityToken, actionToken, flowServicesContainer, taskManagerEvent);
 
             IFlowUiDefinition uiDefinition = FlowControllerFacade.GetCurrentUiDefinition(flowToken, flowServicesContainer);
 
-            ActionResult result = new ActionResult();
-
-            if (typeof(FlowUiDefinitionBase).IsAssignableFrom(uiDefinition.GetType()))
+            if (uiDefinition is FlowUiDefinitionBase flowUiDefinition)
             {
                 string serializedEntityToken = EntityTokenSerializer.Serialize(entityToken, true);
-                ViewTransitionHelper.HandleNew(this.ConsoleId, this.ElementProviderName, serializedEntityToken, flowToken, (FlowUiDefinitionBase)uiDefinition);
+                ViewTransitionHelper.HandleNew(this.ConsoleId, this.ElementProviderName, serializedEntityToken, flowToken, flowUiDefinition);
             }
         }
     }
