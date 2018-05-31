@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -501,8 +501,6 @@ namespace Composite.C1Console.Workflow
             {
                 var resources = _resourceLocker.Resources;
 
-                string identity = UserValidationFacade.IsLoggedIn() ? UserValidationFacade.GetUsername() : "(system process)";
-
                 Action releaseIdleWaitSemaphore = () =>
                 {
                     if (resources.WorkflowIdleWaitSemaphores.ContainsKey(instanceId))
@@ -539,9 +537,10 @@ namespace Composite.C1Console.Workflow
                     default:
                         throw new InvalidOperationException("This line should not be reachable.");
                 }
-
-                Log.LogVerbose(LogTitle, "Workflow instance status changed to {0}. Id = {1}, User = {2}", workflowInstanceStatus, instanceId, identity);
             }
+
+            string identity = UserValidationFacade.IsLoggedIn() ? UserValidationFacade.GetUsername() : "(system process)";
+            Log.LogVerbose(LogTitle, "Workflow instance status changed to {0}. Id = {1}, User = {2}", workflowInstanceStatus, instanceId, identity);
         }
         #endregion
 
