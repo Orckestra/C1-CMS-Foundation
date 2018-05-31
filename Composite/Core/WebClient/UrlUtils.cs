@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.IO.Compression;
 using System.Security.Cryptography;
@@ -18,8 +18,11 @@ namespace Composite.Core.WebClient
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
-	public static class UrlUtils
-	{
+    public static class UrlUtils
+    {
+        private const char UrlEncode_EscapeCharacter = '$';
+        private const char UrlEncode_SpaceReplacement = '-';
+
         private static readonly string _adminFolderName = "Composite";
         private static readonly string _renderersFolderName = "Renderers";
         private static readonly string _applicationVirtualPath;
@@ -379,13 +382,10 @@ namespace Composite.Core.WebClient
         /// <exclude />
         public static string EncodeUrlInvalidCharacters(string value)
         {
-            const char separator = '|';
-            const char spaceReplacement = '-';
-
             var symbolsToEncode = new Hashset<char>(new[] { '<', '>', '*', '%', '&', '\\', '?', '/' });
 
-            symbolsToEncode.Add(separator);
-            symbolsToEncode.Add(spaceReplacement);
+            symbolsToEncode.Add(UrlEncode_EscapeCharacter);
+            symbolsToEncode.Add(UrlEncode_SpaceReplacement);
 
             var sb = new StringBuilder(value.Length);
 
@@ -400,31 +400,28 @@ namespace Composite.Core.WebClient
                 int code = (int)ch;
                 Verify.That(code <= 256, "1 byte ASCII code expected");
 
-                sb.Append(separator).Append(code.ToString("X2"));
+                sb.Append(UrlEncode_EscapeCharacter).Append(code.ToString("X2"));
             }
 
-            return sb.Replace(' ', spaceReplacement).ToString();
+            return sb.Replace(' ', UrlEncode_SpaceReplacement).ToString();
         }
 
 
         /// <exclude />
         public static string DecodeUrlInvalidCharacters(string value)
         {
-            const char separator = '|';
-            const char spaceReplacement = '-';
-
             var sb = new StringBuilder(value.Length);
-            ;
+
             for (int position = 0; position < value.Length; position++)
             {
                 var ch = value[position];
-                if (ch == spaceReplacement)
+                if (ch == UrlEncode_SpaceReplacement)
                 {
                     sb.Append(' ');
                     continue;
                 }
 
-                if (ch == separator && position + 2 < value.Length)
+                if (ch == UrlEncode_EscapeCharacter && position + 2 < value.Length)
                 {
                     var hexCode = value.Substring(position + 1, 2).ToLowerInvariant();
                     const string hexadecimalDigits = "0123456789abcdef";
