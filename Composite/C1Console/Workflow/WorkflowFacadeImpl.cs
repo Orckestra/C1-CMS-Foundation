@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -736,9 +737,9 @@ namespace Composite.C1Console.Workflow
         #region FormData methods
         public void AddFormData(Guid instanceId, FormData formData)
         {
-            using (_resourceLocker.Locker)
+            if (!_resourceLocker.Resources.FormData.TryAdd(instanceId, formData))
             {
-                _resourceLocker.Resources.FormData.Add(instanceId, formData);
+                throw new ArgumentException($"Form data for instance ID '{instanceId}' has already been added");
             }
         }
 
@@ -746,34 +747,28 @@ namespace Composite.C1Console.Workflow
 
         public bool TryGetFormData(Guid instanceId, out FormData formData)
         {
-            using (_resourceLocker.Locker)
-            {
-                return _resourceLocker.Resources.FormData.TryGetValue(instanceId, out formData);
-            }
+            return _resourceLocker.Resources.FormData.TryGetValue(instanceId, out formData);
         }
 
 
 
         public FormData GetFormData(Guid instanceId, bool allowCreationIfNotExisting = false)
         {
-            FormData formData;
-            if (!TryGetFormData(instanceId, out formData) && allowCreationIfNotExisting)
+            var allFormData = _resourceLocker.Resources.FormData;
+
+            if (allowCreationIfNotExisting)
             {
-                formData = new FormData();
-                AddFormData(instanceId, formData);
+                return allFormData.GetOrAdd(instanceId, key => new FormData());
             }
 
-            return formData;
+            return allFormData.TryGetValue(instanceId, out var formData) ? formData : null;
         }
 
 
 
         private void RemoveIfExistFormData(Guid instanceId)
         {
-            using (_resourceLocker.Locker)
-            {
-                _resourceLocker.Resources.FormData.Remove(instanceId);
-            }
+            _resourceLocker.Resources.FormData.TryRemove(instanceId, out _);
         }
         #endregion
 
@@ -1154,7 +1149,7 @@ namespace Composite.C1Console.Workflow
 
                 if (!_resourceLocker.Resources.FormData.ContainsKey(id))
                 {
-                    _resourceLocker.Resources.FormData.Add(id, formData);
+                    _resourceLocker.Resources.FormData.TryAdd(id, formData);
 
                     FormsWorkflowBindingCache.Bindings.TryAdd(id, formData.Bindings);
                 }
@@ -1254,19 +1249,15 @@ namespace Composite.C1Console.Workflow
         {
             var resources = _resourceLocker.Resources;
 
-            bool shouldPersist =
-                resources.WorkflowPersistingTypeDictionary
-                         .Any(f => f.Key == instanceId && f.Value != WorkflowPersistingType.Never);
+            bool shouldPersist = resources.WorkflowPersistingTypeDictionary.TryGetValue(instanceId, out var persistanceType)
+                                 && persistanceType != WorkflowPersistingType.Never;
 
-            if (!shouldPersist) return;
-
-
-            FormData formData = resources.FormData.
-                Where(f => f.Key == instanceId).
-                Select(f => f.Value).
-                SingleOrDefault();
-
-            if (formData == null) return;
+            if (!shouldPersist
+                || !resources.FormData.TryGetValue(instanceId, out FormData formData)
+                || formData == null)
+            {
+                return;
+            }
 
             PersistFormData(instanceId, formData);
         }
@@ -1421,14 +1412,14 @@ namespace Composite.C1Console.Workflow
             public Resources()
             {
                 this.WorkflowStatusDictionary = new Dictionary<Guid, WorkflowInstanceStatus>();
-                this.FormData = new Dictionary<Guid, FormData>();
+                this.FormData = new ConcurrentDictionary<Guid, FormData>();
                 this.FlowControllerServicesContainers = new Dictionary<Guid, FlowControllerServicesContainer>();
                 this.WorkflowPersistingTypeDictionary = new Dictionary<Guid, WorkflowPersistingType>();
                 this.EventHandleFilters = new Dictionary<Type, IEventHandleFilter>();
             }
 
             public Dictionary<Guid, WorkflowInstanceStatus> WorkflowStatusDictionary { get; }
-            public Dictionary<Guid, FormData> FormData { get; }
+            public ConcurrentDictionary<Guid, FormData> FormData { get; }
             public Dictionary<Guid, FlowControllerServicesContainer> FlowControllerServicesContainers { get; }
 
             public Dictionary<Guid, WorkflowPersistingType> WorkflowPersistingTypeDictionary { get; }
@@ -1448,7 +1439,7 @@ namespace Composite.C1Console.Workflow
                 foreach (Guid instanceId in instanceIds)
                 {
                     resources.WorkflowStatusDictionary.Remove(instanceId);
-                    resources.FormData.Remove(instanceId);
+					resources.FormData.TryRemove(instanceId, out _);
                     resources.FlowControllerServicesContainers.Remove(instanceId);
                     resources.WorkflowPersistingTypeDictionary.Remove(instanceId);
                 }
