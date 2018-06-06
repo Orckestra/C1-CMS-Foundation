@@ -263,20 +263,13 @@ namespace Composite.C1Console.Workflow
         {
             DoInitialize(0);
 
-            using (_resourceLocker.Locker)
+            SetWorkflowInstanceStatus(instanceId, WorkflowInstanceStatus.Running, false);
+
+            _manualWorkflowSchedulerService.RunWorkflow(instanceId);
+
+            if (_resourceLocker.Resources.ExceptionFromWorkflow.TryRemove(Thread.CurrentThread.ManagedThreadId, out var exception))
             {
-                SetWorkflowInstanceStatus(instanceId, WorkflowInstanceStatus.Running, false);
-
-                _manualWorkflowSchedulerService.RunWorkflow(instanceId);
-
-                int managedThreadId = Thread.CurrentThread.ManagedThreadId;
-
-                if (_resourceLocker.Resources.ExceptionFromWorkflow.TryGetValue(managedThreadId, out var exception))
-                {
-                    _resourceLocker.Resources.ExceptionFromWorkflow.Remove(managedThreadId);
-
-                    throw new InvalidOperationException("Error executing workflow " + instanceId, exception);
-                }
+                throw new InvalidOperationException("Error executing workflow " + instanceId, exception);
             }
         }
 
@@ -303,11 +296,8 @@ namespace Composite.C1Console.Workflow
 
                     workflowInstance.Abort();
                     
-                    Exception exception;
-                    if (_resourceLocker.Resources.ExceptionFromWorkflow.TryGetValue(Thread.CurrentThread.ManagedThreadId, out exception))
+                    if (_resourceLocker.Resources.ExceptionFromWorkflow.TryRemove(Thread.CurrentThread.ManagedThreadId, out var exception))
                     {
-                        _resourceLocker.Resources.ExceptionFromWorkflow.Remove(Thread.CurrentThread.ManagedThreadId);
-
                         throw exception;
                     }
                 }
@@ -948,10 +938,7 @@ namespace Composite.C1Console.Workflow
                     OnWorkflowInstanceTerminatedCleanup(args.WorkflowInstance.InstanceId);
                 }
 
-                using (_resourceLocker.Locker)
-                {
-                    _resourceLocker.Resources.ExceptionFromWorkflow.Add(Thread.CurrentThread.ManagedThreadId, args.Exception);
-                }
+                _resourceLocker.Resources.ExceptionFromWorkflow[Thread.CurrentThread.ManagedThreadId] = args.Exception;
             };
 
 
@@ -1425,7 +1412,7 @@ namespace Composite.C1Console.Workflow
             public Dictionary<Guid, WorkflowPersistingType> WorkflowPersistingTypeDictionary { get; }
 
             public Dictionary<Guid, Semaphore> WorkflowIdleWaitSemaphores { get; private set; }
-            public Dictionary<int, Exception> ExceptionFromWorkflow { get; private set; }
+            public ConcurrentDictionary<int, Exception> ExceptionFromWorkflow { get; private set; }
 
             public Dictionary<Type, IEventHandleFilter> EventHandleFilters { get; }
 
@@ -1445,7 +1432,7 @@ namespace Composite.C1Console.Workflow
                 }
 
                 resources.WorkflowIdleWaitSemaphores = new Dictionary<Guid, Semaphore>();
-                resources.ExceptionFromWorkflow = new Dictionary<int, Exception>();
+                resources.ExceptionFromWorkflow = new ConcurrentDictionary<int, Exception>();
             }
         }
     }
