@@ -22,6 +22,7 @@ namespace Composite.Core.WebClient
     {
         private const char UrlEncode_EscapeCharacter = '$';
         private const char UrlEncode_SpaceReplacement = '-';
+        private const char UrlEncode_SpaceReplacementReplacement = '_';
 
         private static readonly string _adminFolderName = "Composite";
         private static readonly string _renderersFolderName = "Renderers";
@@ -363,12 +364,24 @@ namespace Composite.Core.WebClient
             var symbolsToEncode = new Hashset<char>(new[] { '<', '>', '*', '%', '&', '\\', '?', '/' });
 
             symbolsToEncode.Add(UrlEncode_EscapeCharacter);
-            symbolsToEncode.Add(UrlEncode_SpaceReplacement);
+            symbolsToEncode.Add(UrlEncode_SpaceReplacementReplacement);
 
             var sb = new StringBuilder(value.Length);
 
             foreach (var ch in value)
             {
+                if (ch == UrlEncode_SpaceReplacement)
+                {
+                    sb.Append(UrlEncode_SpaceReplacementReplacement);
+                    continue;
+                }
+
+                if (ch == ' ')
+                {
+                    sb.Append(UrlEncode_SpaceReplacement);
+                    continue;
+                }
+
                 if (!symbolsToEncode.Contains(ch))
                 {
                     sb.Append(ch);
@@ -381,7 +394,7 @@ namespace Composite.Core.WebClient
                 sb.Append(UrlEncode_EscapeCharacter).Append(code.ToString("X2"));
             }
 
-            return sb.Replace(' ', UrlEncode_SpaceReplacement).ToString();
+            return sb.ToString();
         }
 
 
@@ -396,6 +409,12 @@ namespace Composite.Core.WebClient
                 if (ch == UrlEncode_SpaceReplacement)
                 {
                     sb.Append(' ');
+                    continue;
+                }
+
+                if (ch == UrlEncode_SpaceReplacementReplacement)
+                {
+                    sb.Append(UrlEncode_SpaceReplacement);
                     continue;
                 }
 
