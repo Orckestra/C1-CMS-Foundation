@@ -31,7 +31,7 @@ namespace Composite.Plugins.Security.LoginSessionStores.WampContextBasedLoginSes
             {
                 if (WampInvocationContext.Current != null)
                 {
-                    return WampInvocationContext.Current.InvocationDetails.AuthenticationId;
+                    return WampInvocationContext.Current.InvocationDetails.CallerAuthenticationId;
                 }
 
                 return null;
