@@ -529,7 +529,7 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
 
     private static FileOrStream ProcessImageResizing(HttpContext context, IMediaFile file)
     {
-        var resizingOptions = ResizingOptions.Parse(context.Server, context.Request.QueryString);
+        var resizingOptions = ResizingOptions.Parse(context.Request.QueryString);
 
         if (resizingOptions == null || resizingOptions.IsEmpty)
         {

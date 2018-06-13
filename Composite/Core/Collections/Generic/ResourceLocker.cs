@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 
 
@@ -60,13 +60,7 @@ namespace Composite.Core.Collections.Generic
 
 
         /// <exclude />
-        public bool IsInitialized
-        {
-            get
-            {
-                return _initialized;
-            }
-        }
+        public bool IsInitialized => _initialized;
 
 
         /// <exclude />
@@ -114,32 +108,17 @@ namespace Composite.Core.Collections.Generic
             }
             finally
             {
-                if(globalReaderLock != null)
-                {
-                    globalReaderLock.Dispose();
-                }
+                globalReaderLock?.Dispose();
             }
 		}
 
 
         /// <exclude />
-        public IDisposable Locker
-        {
-            get
-            {
-                return new ResourceLockerToken(this);
-            }
-        }
+        public IDisposable Locker => new ResourceLockerToken(this);
 
 
         /// <exclude />
-        public IDisposable ReadLocker
-        {
-            get
-            {
-                return new ResourceLockerToken(this);
-            }
-        }
+        public IDisposable ReadLocker => new ResourceLockerToken(this);
 
 
         /// <exclude />
@@ -170,9 +149,7 @@ namespace Composite.Core.Collections.Generic
 
             internal ResourceLockerToken(ResourceLocker<T> resourceLocker)
             {
-                if (resourceLocker == null) throw new ArgumentNullException("resourceLocker");
-
-                _resourceLocker = resourceLocker;
+                _resourceLocker = resourceLocker ?? throw new ArgumentNullException(nameof(resourceLocker));
 
                 int tires = 120;
 
@@ -192,10 +169,7 @@ namespace Composite.Core.Collections.Generic
                     }
                     finally
                     {
-                        if (coreLock != null)
-                        {
-                            coreLock.Dispose();
-                        }
+                        coreLock?.Dispose();
                     }
 
                     if (!success)
