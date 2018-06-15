@@ -1,13 +1,14 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
-using Composite.Core.Extensions;
-using Composite.Data.DynamicTypes;
-using Composite.Data.GeneratedTypes;
 using Composite.C1Console.Events;
+using Composite.Core.Extensions;
+using Composite.Core.Types;
 using Composite.Core.Xml;
 using Composite.Data;
+using Composite.Data.DynamicTypes;
+using Composite.Data.GeneratedTypes;
 
 
 namespace Composite.Core.PackageSystem.PackageFragmentInstallers
@@ -104,7 +105,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
             if (flushTheSystem)
             {
-                GlobalEventSystemFacade.FlushTheSystem(true);
+                CodeGenerationManager.GenerateCompositeGeneratedAssembly(true);
             }
         }
 
