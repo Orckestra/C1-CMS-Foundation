@@ -223,6 +223,9 @@ TreeSelectorDialogPageBinding.prototype.handleBroadcast = function (broadcast, a
 				if (this._parents.has(arg)) {
 					this._treeBinding._handleCommandBroadcast(broadcast);
 					return;
+				} else if (this._treeBinding.hasToken(arg)) {
+					this._treeBinding._handleCommandBroadcast(broadcast, arg);
+					return;
 				}
 			}
 			break;

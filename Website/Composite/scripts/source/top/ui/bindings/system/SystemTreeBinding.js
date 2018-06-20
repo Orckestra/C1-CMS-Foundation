@@ -925,6 +925,14 @@ SystemTreeBinding.prototype._invokeServerRefresh = function (token) {
 	}
 }
 
+/**
+ * @param {string} token
+ */
+SystemTreeBinding.prototype.hasToken = function (token) {
+
+	return this._entityTokenRegistry.has(token)
+}
+
 
 /**
  * Invoke manual refresh. This was probably caused
