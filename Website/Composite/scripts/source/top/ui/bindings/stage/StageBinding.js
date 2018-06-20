@@ -1,4 +1,4 @@
-﻿StageBinding.prototype = new FocusBinding;
+StageBinding.prototype = new FocusBinding;
 StageBinding.prototype.constructor = StageBinding;
 StageBinding.superclass = FocusBinding.prototype;
 
@@ -118,6 +118,7 @@ StageBinding.select = function (perspectiveElementKey) {
 						case BroadcastMessages.STAGEDECK_CHANGED:
 							if (arg == perspectiveElementKey) {
 								EventBroadcaster.unsubscribe(BroadcastMessages.STAGEDECK_CHANGED, this);
+								StageBinding.selectBrowserTab();
 								resolve();
 							}
 							break;

@@ -348,7 +348,7 @@ TreeSelectorDialogPageBinding.prototype.setNode = function (node) {
 
 	this._genericViewBinding.setNode(node);
 	var generictab = this.bindingWindow.bindingMap.generictab;
-	generictab.containingTabBoxBinding.select(generictab);
+	generictab.containingTabBoxBinding.select(generictab, true);
 	this._updateHistory(node ? node.getEntityToken() : null);
 	this._updateBroadcasters();
 	this._updateAddressBar(node);
