@@ -4,7 +4,7 @@ using System.Reflection;
 #if !InternalBuild
 [assembly: AssemblyTitle("C1 CMS 6.5")]
 #else
-[assembly: AssemblyTitle("C1 CMS 6.4 (Internal Build)")]
+[assembly: AssemblyTitle("C1 CMS 6.5 (Internal Build)")]
 #endif
 
 [assembly: AssemblyCompany("Orckestra Inc")]
