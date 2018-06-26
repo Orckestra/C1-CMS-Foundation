@@ -2,7 +2,7 @@ using System.Reflection;
 
 // General Information about the assemblies Composite and Composite.Workflows  
 #if !InternalBuild
-[assembly: AssemblyTitle("C1 CMS 6.4")]
+[assembly: AssemblyTitle("C1 CMS 6.5")]
 #else
 [assembly: AssemblyTitle("C1 CMS 6.4 (Internal Build)")]
 #endif
@@ -13,4 +13,4 @@ using System.Reflection;
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
-[assembly: AssemblyVersion("6.4.*")]
+[assembly: AssemblyVersion("6.5.*")]
