@@ -941,7 +941,9 @@ Binding.prototype.subTreeFromString = function ( markup ) {
  */
 Binding.prototype.getProperty = function ( attname ) {
 
-	var value = this.bindingElement.getAttribute ( attname );
+	// MS Edge 42 supports only lowercased attributes. It does not return attribute value for attribute name with capital letters. 
+	var value = this.bindingElement.getAttribute ( Client.isEdge ? attname.toLowerCase() : attname );
+
 	if ( value ) {
 		value = Types.castFromString ( value );
 	}
@@ -969,9 +971,9 @@ Binding.prototype.setProperty = function ( prop, value ) {
 		 * This will prevent recursive calls to methods which in turn
 		 * modifies the properties of the binding.
 		 */
-		if ( String ( this.bindingElement.getAttribute ( prop )) != value ) {
+		if ( String ( this.bindingElement.getAttribute ( Client.isEdge ? prop.toLowerCase() : prop )) != value ) {
 
-			this.bindingElement.setAttribute ( prop, value );
+			this.bindingElement.setAttribute ( Client.isEdge ? prop.toLowerCase() : prop, value );
 			if ( this.isAttached == true ) {
 
 				/*
@@ -1008,7 +1010,7 @@ Binding.prototype.setProperty = function ( prop, value ) {
  */
 Binding.prototype.deleteProperty = function ( prop ) {
 
-	this.bindingElement.removeAttribute ( prop );
+	this.bindingElement.removeAttribute ( Client.isEdge ? prop.toLowerCase() : prop );
 }
 
 /**
