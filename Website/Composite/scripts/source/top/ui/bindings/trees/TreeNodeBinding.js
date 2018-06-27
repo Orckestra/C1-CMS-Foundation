@@ -970,6 +970,11 @@ TreeNodeBinding.prototype.handleElement = function ( element ) {
 	return false; // continue updates as normally!
 }
 
+TreeNodeBinding.prototype.getParent = function () {
+
+	return this.getAncestorBindingByLocalName("treenode");
+}
+
 /**
  * TreeNodeBinding factory.
  * @param {DOMDocument} ownerDocument
