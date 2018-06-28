@@ -1,1 +1,0 @@
-<%@ WebHandler Language="C#" Class="Composite.News.NewsRssFeed" %>
