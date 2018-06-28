@@ -1,7 +1,7 @@
 <div class="loginpage">
 	<ui:splash id="splash" class="splash">
 		<ui:decks id="decks" flex="false" class="splash-inner">
-			<ui:brandsnippet snippetName="logo" />
+			<ui:brandsnippet snippetname="logo" />
 			<ui:deck id="introdeck"/>
 			<ui:deck id="logindeck">
 				<ui:fields id="loginfields" >
@@ -77,7 +77,7 @@
 			<ui:deck id="shutdowndeck">
 				<p>Shutting down...</p>
 			</ui:deck>
-			<ui:brandsnippet snippetName="company-logo" />
+			<ui:brandsnippet snippetname="company-logo" />
 		</ui:decks>
 	</ui:splash>
 </div>
