@@ -91,7 +91,7 @@ BrandSnippetBinding.prototype.onBindingAttach = function () {
  */
 BrandSnippetBinding.prototype.getSnippetBrandedUrl = function () {
 
-	return BrandSnippetBinding.SHIPPETBRANDED_URL.replace("{0}", this.getProperty("snippetName"));
+	return BrandSnippetBinding.SHIPPETBRANDED_URL.replace("{0}", this.getProperty("snippetname"));
 }
 
 /**
@@ -99,7 +99,7 @@ BrandSnippetBinding.prototype.getSnippetBrandedUrl = function () {
  */
 BrandSnippetBinding.prototype.getSnippetUrl = function () {
 
-	return BrandSnippetBinding.SHIPPET_URL.replace("{0}", this.getProperty("snippetName"));
+	return BrandSnippetBinding.SHIPPET_URL.replace("{0}", this.getProperty("snippetname"));
 }
 
 /**
