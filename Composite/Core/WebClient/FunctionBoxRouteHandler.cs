@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -12,6 +12,7 @@ using Composite.C1Console.Drawing;
 using Composite.C1Console.Security;
 using Composite.Core.Configuration;
 using Composite.Core.Extensions;
+using Composite.Core.IO;
 using Composite.Core.WebClient.Renderings;
 
 
@@ -39,12 +40,15 @@ namespace Composite.Core.WebClient
     internal class FunctionBoxHttpHandler : HttpTaskAsyncHandler
     {
         private const int MinCharsPerDescriptionLine = 55;
-        private static readonly string LogTitle = typeof (FunctionBoxHttpHandler).Name;
+        private static readonly string LogTitle = nameof(FunctionBoxHttpHandler);
 
         public override async Task ProcessRequestAsync(HttpContext context)
         {
             if (!UserValidationFacade.IsLoggedIn())
             {
+                context.Response.ContentType = MimeTypeInfo.Text;
+                context.Response.Write("No user logged in");
+                context.Response.StatusCode = 401;
                 return;
             }
 

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Linq;
@@ -25,7 +25,7 @@ namespace Composite.Core.WebClient
                 DateTime lastXsltFileWrite = C1File.GetLastWriteTime(stylesheetPath);
 
                 bool compiledVersionExists = _xsltLookup.ContainsKey(stylesheetPath);
-                bool reloadFresh = (DateTime.Now - lastXsltFileWrite).Minutes < 30;
+                bool reloadFresh = (DateTime.Now - lastXsltFileWrite).TotalMinutes < 30;
 
                 if (compiledVersionExists == false || lastXsltFileWrite > _xsltFileTimestamps[stylesheetPath] || reloadFresh)
                 {

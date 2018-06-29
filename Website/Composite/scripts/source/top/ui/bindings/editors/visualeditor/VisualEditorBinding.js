@@ -328,7 +328,7 @@ VisualEditorBinding.prototype.handleBroadcast = function ( broadcast, arg ) {
 
 	VisualEditorBinding.superclass.handleBroadcast.call ( this, broadcast, arg );
 
-	var windowBinding = this.getContentWindow ().bindingMap.tinywindow;
+	var windowBinding = this.getContentWindow().bindingMap.tinywindow;
 	var contentWindow = windowBinding.getContentWindow ();
 
 	switch ( broadcast ) {

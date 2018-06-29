@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -411,9 +411,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
                 if (!tables.Contains(originalTableName))
                 {
                     throw new InvalidOperationException(
-                        string.Format(
-                            "Unable to alter data type store. The database does not contain expected table {0}",
-                            originalTableName));
+                        $"Unable to alter data type store for type '{changeDescriptor.AlteredType.GetFullInterfaceName()}'. The database does not contain expected table '{originalTableName}'");
                 }
 
 
@@ -429,7 +427,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
                 {
                     if (tables.Contains(alteredTableName))
                         throw new InvalidOperationException(
-                            $"Can not rename table to {alteredTableName}. A table with that name already exists");
+                            $"Can not rename table '{originalTableName}' to '{alteredTableName}'. A table with that name already exists");
                     RenameTable(originalTableName, alteredTableName);
                 }
 

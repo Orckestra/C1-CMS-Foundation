@@ -1,11 +1,12 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using Composite.Search.Crawling;
+using Composite.Core;
 using Composite.Core.Linq;
 using Composite.Data;
 using Composite.Data.Types;
+using Composite.Search.Crawling;
 
 namespace Composite.Search.DocumentSources
 {
@@ -58,7 +59,7 @@ namespace Composite.Search.DocumentSources
             {
                 Document = FromMediaFile(m),
                 ContinuationToken = m.Id.ToString()
-            });
+            }).Where(doc => doc.Document != null);
         }
 
         private SearchDocument FromMediaFile(IMediaFile mediaFile)
@@ -69,14 +70,19 @@ namespace Composite.Search.DocumentSources
                 label = mediaFile.FileName;
             }
 
-            string documentId = mediaFile.Id.ToString();
+            if(string.IsNullOrEmpty(label))
+            {
+                Log.LogWarning(nameof(MediaLibraryDocumentSource),
+                    $"A media file has neither FileName nor Label fields specified, Id: '{mediaFile.Id}', StoreId: '{mediaFile.StoreId}'.");
+                return null;
+            }
 
             var docBuilder = new SearchDocumentBuilder(_docBuilderExtensions);
 
             docBuilder.SetDataType(typeof(IMediaFile));
             docBuilder.CrawlData(mediaFile);
 
-            return docBuilder.BuildDocument(Name, documentId, label, null, mediaFile.GetDataEntityToken());
+            return docBuilder.BuildDocument(Name, mediaFile.Id.ToString(), label, null, mediaFile.GetDataEntityToken());
         }
     }
 }

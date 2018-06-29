@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.IO.Compression;
 using System.Security.Cryptography;
@@ -14,42 +14,56 @@ using Composite.Data;
 
 namespace Composite.Core.WebClient
 {
-    /// <summary>    
+    /// <summary>
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
-	public static class UrlUtils
-	{
+    public static class UrlUtils
+    {
+        private const char UrlEncode_EscapeCharacter = '$';
+        private const char UrlEncode_SpaceReplacement = '-';
+        private const char UrlEncode_SpaceReplacementReplacement = '_';
+
         private static readonly string _adminFolderName = "Composite";
         private static readonly string _renderersFolderName = "Renderers";
         private static readonly string _applicationVirtualPath;
         private static readonly string[] UrlStartMarkers = { "\"", "\'", "&#39;", "&#34;" };
         private static readonly string SessionUrlPrefix = "Session_";
 
+
+        /// <exclude />
+        public static string PublicRootPath => _applicationVirtualPath;
+
+
+        /// <exclude />
+        public static string AdminRootPath => $"{_applicationVirtualPath}/{_adminFolderName}";
+
+
+        /// <exclude />
+        public static string RenderersRootPath => $"{_applicationVirtualPath}/{_renderersFolderName}";
+
+
+        /// <exclude />
+        internal static string AdminFolderName => _adminFolderName;
+
+
         static UrlUtils()
         {
-            if (HostingEnvironment.ApplicationVirtualPath != null)
-            {
-                string appPath = HostingEnvironment.ApplicationVirtualPath;
+            string appPath = HostingEnvironment.ApplicationVirtualPath ?? ""; 
 
-                if (appPath.EndsWith("/") || appPath.EndsWith(@"\"))
-                {
-                    appPath = appPath.Remove(appPath.Length - 1, 1);
-                }
-
-                _applicationVirtualPath = appPath;
-            }
-            else
+            if (appPath.EndsWith("/") || appPath.EndsWith(@"\"))
             {
-                _applicationVirtualPath = "";
+                appPath = appPath.Remove(appPath.Length - 1, 1);
             }
+
+            _applicationVirtualPath = appPath;
         }
 
 
         /// <exclude />
         public static string ResolveAdminUrl(string adminRelativePath)
         {
-            if (adminRelativePath == null) throw new ArgumentNullException("adminRelativePath");
+            if (adminRelativePath == null) throw new ArgumentNullException(nameof(adminRelativePath));
             if (adminRelativePath.IndexOf('~') > -1 || adminRelativePath.StartsWith("/") )
             {
                 throw new ArgumentException("The relative URL may not be rooted or contain '~'");
@@ -59,17 +73,17 @@ namespace Composite.Core.WebClient
             string checkForBackSlashes = split[0];
             if (checkForBackSlashes.Contains(@"\"))
             {
-                Log.LogWarning("ResolveAdminUrl", string.Format(@"The url '{0}' contains '\' which is not allowed.", checkForBackSlashes));
+                Log.LogWarning("ResolveAdminUrl", $@"The url '{checkForBackSlashes}' contains '\' which is not allowed.");
             }
 
-            return string.Format("{0}/{1}/{2}", _applicationVirtualPath, _adminFolderName, adminRelativePath);
+            return $"{_applicationVirtualPath}/{_adminFolderName}/{adminRelativePath}";
         }
 
 
         /// <exclude />
         public static string ResolvePublicUrl(string publicRelativePath)
         {
-            if (publicRelativePath == null) throw new ArgumentNullException("publicRelativePath");
+            if (publicRelativePath == null) throw new ArgumentNullException(nameof(publicRelativePath));
 
             if (publicRelativePath.StartsWith("/"))
             {
@@ -81,32 +95,8 @@ namespace Composite.Core.WebClient
                 publicRelativePath = publicRelativePath.Remove(0, 2);
             }
 
-            return string.Format("{0}/{1}", _applicationVirtualPath, publicRelativePath);
+            return $"{_applicationVirtualPath}/{publicRelativePath}";
         }
-
-
-        /// <exclude />
-        public static string PublicRootPath
-        {
-            get
-            {
-                return _applicationVirtualPath;
-            }
-        }
-
-
-        /// <exclude />
-        public static string AdminRootPath
-        {
-            get
-            {
-                return string.Format("{0}/{1}", _applicationVirtualPath, _adminFolderName);
-            }
-        }
-
-
-        /// <exclude />
-        internal static string AdminFolderName => _adminFolderName;
 
 
         /// <summary>
@@ -142,14 +132,6 @@ namespace Composite.Core.WebClient
                    || requestPath.StartsWith(UrlUtils.AdminRootPath + "/", StringComparison.OrdinalIgnoreCase);
         }
 
-        /// <exclude />
-        public static string RenderersRootPath
-        {
-            get
-            {
-                return string.Format("{0}/{1}", _applicationVirtualPath, _renderersFolderName);
-            }
-        }
 
         /// <exclude />
         public static string Combine( string path1, string path2 )
@@ -262,7 +244,7 @@ namespace Composite.Core.WebClient
         {
             if (text.IsNullOrEmpty()) return text;
 
-            byte[] bytes = UTF8Encoding.UTF8.GetBytes(text);
+            byte[] bytes = Encoding.UTF8.GetBytes(text);
 
             byte[] newBytes;
 
@@ -379,18 +361,27 @@ namespace Composite.Core.WebClient
         /// <exclude />
         public static string EncodeUrlInvalidCharacters(string value)
         {
-            const char separator = '|';
-            const char spaceReplacement = '-';
-
             var symbolsToEncode = new Hashset<char>(new[] { '<', '>', '*', '%', '&', '\\', '?', '/' });
 
-            symbolsToEncode.Add(separator);
-            symbolsToEncode.Add(spaceReplacement);
+            symbolsToEncode.Add(UrlEncode_EscapeCharacter);
+            symbolsToEncode.Add(UrlEncode_SpaceReplacementReplacement);
 
             var sb = new StringBuilder(value.Length);
 
             foreach (var ch in value)
             {
+                if (ch == UrlEncode_SpaceReplacement)
+                {
+                    sb.Append(UrlEncode_SpaceReplacementReplacement);
+                    continue;
+                }
+
+                if (ch == ' ')
+                {
+                    sb.Append(UrlEncode_SpaceReplacement);
+                    continue;
+                }
+
                 if (!symbolsToEncode.Contains(ch))
                 {
                     sb.Append(ch);
@@ -400,31 +391,34 @@ namespace Composite.Core.WebClient
                 int code = (int)ch;
                 Verify.That(code <= 256, "1 byte ASCII code expected");
 
-                sb.Append(separator).Append(code.ToString("X2"));
+                sb.Append(UrlEncode_EscapeCharacter).Append(code.ToString("X2"));
             }
 
-            return sb.Replace(' ', spaceReplacement).ToString();
+            return sb.ToString();
         }
 
 
         /// <exclude />
         public static string DecodeUrlInvalidCharacters(string value)
         {
-            const char separator = '|';
-            const char spaceReplacement = '-';
-
             var sb = new StringBuilder(value.Length);
-            ;
+
             for (int position = 0; position < value.Length; position++)
             {
                 var ch = value[position];
-                if (ch == spaceReplacement)
+                if (ch == UrlEncode_SpaceReplacement)
                 {
                     sb.Append(' ');
                     continue;
                 }
 
-                if (ch == separator && position + 2 < value.Length)
+                if (ch == UrlEncode_SpaceReplacementReplacement)
+                {
+                    sb.Append(UrlEncode_SpaceReplacement);
+                    continue;
+                }
+
+                if (ch == UrlEncode_EscapeCharacter && position + 2 < value.Length)
                 {
                     var hexCode = value.Substring(position + 1, 2).ToLowerInvariant();
                     const string hexadecimalDigits = "0123456789abcdef";

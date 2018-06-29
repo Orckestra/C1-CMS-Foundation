@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -6,7 +6,6 @@ using System.Transactions;
 using System.Xml.Linq;
 using Composite.Core;
 using Composite.Core.Collections.Generic;
-using Composite.Core.Extensions;
 using Composite.Core.Threading;
 using Composite.Data;
 using Composite.Data.Caching;
@@ -116,16 +115,18 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
                     XElement element = index[dataId];
 
-                    Verify.ArgumentCondition(element != null, "dataset", "No data element corresponds to the given data id");
+                    if (element == null)
+                    {
+                        throw new ArgumentException($"Cannot update a data item, no data element corresponds to the given data id: '{dataId.Serialize(null)}'; Type: '{type}'; DataScope: '{dataScope}'; Culture: '{culture}'", nameof(dataset));
+                    }
 
                     IXElementWrapper wrapper = data as IXElementWrapper;
-                    Verify.ArgumentCondition(wrapper != null, "dataset", "The type of data was expected to be of type {0}".FormatWith(typeof(IXElementWrapper)));
+                    Verify.ArgumentCondition(wrapper != null, nameof(dataset), $"The type of data was expected to be of type {typeof(IXElementWrapper)}");
 
                     XElement updatedElement = CreateUpdatedXElement(wrapper, element);
 
                     validatedFileRecords.Add(data.DataSourceId, fileRecord);
                     validatedElements.Add(data.DataSourceId, updatedElement);
-
                 }
 
                 foreach (var key in validatedElements.Keys)
@@ -133,7 +134,6 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
                     FileRecord fileRecord = validatedFileRecords[key];
                     fileRecord.Dirty = true;
                     fileRecord.RecordSet.Index[key.DataId] = validatedElements[key];
-
                 }
 
                 XmlDataProviderDocumentCache.SaveChanges();
@@ -212,17 +212,18 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
                 // verify phase
                 foreach (DataSourceId dataSourceId in dataSourceIds)
                 {
-                    Verify.ArgumentCondition(dataSourceId != null, "dataSourceIds", "The enumeration may not contain null values");
+                    Verify.ArgumentCondition(dataSourceId != null, nameof(dataSourceIds), "The enumeration may not contain null values");
 
                     XmlDataTypeStore dataTypeStore = _xmlDataTypeStoresContainer.GetDataTypeStore(dataSourceId.InterfaceType);
 
                     var dataScope = dataSourceId.DataScopeIdentifier;
                     var culture = dataSourceId.LocaleScope;
                     var type = dataSourceId.InterfaceType;
+                    var dataId = dataSourceId.DataId;
 
                     var dataTypeStoreScope = dataTypeStore.GetDataScope(dataScope, culture, type);
 
-                    if (dataTypeStore.Helper._DataIdType != dataSourceId.DataId.GetType())
+                    if (dataTypeStore.Helper._DataIdType != dataId.GetType())
                     {
                         throw new ArgumentException("Only data ids from this provider is allowed to be deleted on on the provider");
                     }
@@ -231,7 +232,10 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
                     var index = fileRecord.RecordSet.Index;
 
-                    Verify.ArgumentCondition(index.ContainsKey(dataSourceId.DataId), "No data element corresponds to the given data id", "dataSourceIds");
+                    if (!index.ContainsKey(dataId))
+                    {
+                        throw new ArgumentException($"Cannot delete a data item, no data element corresponds to the given data id: '{dataId.Serialize(null)}'; Type: '{type}'; DataScope: '{dataScope}'; Culture: '{culture}'", nameof(dataSourceIds));
+                    }
 
                     validated.Add(dataSourceId, fileRecord);
                 }

@@ -1,4 +1,4 @@
-﻿using Composite.C1Console.Security;
+using Composite.C1Console.Security;
 using Composite.Core.Application;
 using Composite.Core.Configuration;
 using Composite.Core.IO;
@@ -120,7 +120,6 @@ namespace Composite.Core.WebClient.HttpModules
 
             if (!_allowC1ConsoleRequests)
             {
-                context.Response.StatusCode = 403;
                 context.Response.ContentType = "text/html";
                 string iePadding = new String('!', 512);
                 context.Response.Write(string.Format(c1ConsoleRequestsNotAllowedHtmlTemplate, iePadding));

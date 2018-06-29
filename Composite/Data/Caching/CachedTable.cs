@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Composite.Data.Caching
@@ -51,6 +51,7 @@ namespace Composite.Data.Caching
                 newTable.AddRange(toAdd);
 
                 _items = newTable;
+                _rowsByKey = null; // Can be optimized as well
 
                 return true;
             }

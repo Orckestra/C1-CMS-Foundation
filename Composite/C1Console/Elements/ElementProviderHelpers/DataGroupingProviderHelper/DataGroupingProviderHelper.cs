@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -270,9 +270,9 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
             var expressionBuilder = new ExpressionBuilder(interfaceType, queryable);
 
             IQueryable resultQueryable = expressionBuilder.
+                Distinct().
                 OrderBy(propertyInfo, true, firstDataFieldDescriptor.TreeOrderingProfile.OrderDescending).
                 Select(propertyInfo, true).
-                Distinct().
                 CreateQuery();
 
             var propertyInfoValueCollection = new PropertyInfoValueCollection();

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Web.UI;
 using Composite.C1Console.Actions;
 using Composite.C1Console.Events;
@@ -26,16 +26,16 @@ namespace Composite.Core.WebClient.FlowMediators
                 Control webControl = null;
                 string viewId = ViewTransitionHelper.MakeViewId(flowHandle.Serialize());
 
-                FlowControllerServicesContainer flowServicesContainer = new FlowControllerServicesContainer();
-                flowServicesContainer.AddService(new ActionExecutionService(elementProviderName, consoleId));
-                flowServicesContainer.AddService(new ManagementConsoleMessageService(consoleId, viewId));
-                flowServicesContainer.AddService(new ElementDataExchangeService(elementProviderName));
+                var flowServicesContainer = new FlowControllerServicesContainer(
+                    new ActionExecutionService(elementProviderName, consoleId),
+                    new ManagementConsoleMessageService(consoleId, viewId),
+                    new ElementDataExchangeService(elementProviderName)
+                );
 
                 FlowToken flowToken = flowHandle.FlowToken;
                 IFlowUiDefinition flowUiDefinition = FlowControllerFacade.GetCurrentUiDefinition(flowToken, flowServicesContainer);
 
-                var formFlowUiDefinition = flowUiDefinition as FormFlowUiDefinition;
-                if (formFlowUiDefinition != null)
+                if (flowUiDefinition is FormFlowUiDefinition formFlowUiDefinition)
                 {
                     uiContainerName = formFlowUiDefinition.UiContainerType.ContainerName;
 
@@ -45,15 +45,12 @@ namespace Composite.Core.WebClient.FlowMediators
 
                     if (string.IsNullOrEmpty(webControl.ID)) webControl.ID = "FlowUI";
 
-                    if (RuntimeInformation.TestAutomationEnabled)
+                    if (RuntimeInformation.TestAutomationEnabled
+                        && formFlowUiDefinition.MarkupProvider is ITestAutomationLocatorInformation testAutomationLocatorInformation)
                     {
-                        var testAutomationLocatorInformation = formFlowUiDefinition.MarkupProvider as ITestAutomationLocatorInformation;
-                        if (testAutomationLocatorInformation != null) {
-                            var htmlform = webControl.Controls.OfType<HtmlForm>().FirstOrDefault();
-                            if (htmlform != null) {
-                                htmlform.Attributes.Add("data-qa", testAutomationLocatorInformation.TestAutomationLocator);
-                            }
-                        }
+                        var htmlform = webControl.Controls.OfType<HtmlForm>().FirstOrDefault();
+
+                        htmlform?.Attributes.Add("data-qa", testAutomationLocatorInformation.TestAutomationLocator);
                     }
                 }
 

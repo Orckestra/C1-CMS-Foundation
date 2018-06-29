@@ -37,7 +37,8 @@ namespace Composite.C1Console.Trees.Workflows
             Dictionary<string, string> selectableTreeIds = new Dictionary<string, string>();
             foreach (Tree tree in TreeFacade.AllTrees)
             {
-                if (tree.HasAttachmentPoints(this.EntityToken) == false) continue;
+                if (!tree.HasAttachmentPoints(this.EntityToken)) continue;
+                if (!tree.HasPossibleAttachmentPoints(this.EntityToken)) continue;
 
                 selectableTreeIds.Add(tree.TreeId, tree.AllowedAttachmentApplicationName);
             }

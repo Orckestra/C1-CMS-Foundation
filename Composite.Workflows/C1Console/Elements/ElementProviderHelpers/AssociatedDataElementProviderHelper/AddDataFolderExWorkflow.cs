@@ -35,6 +35,8 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
         private string HasLocalizationBindingName { get { return "HasLocalization"; } }
 
 
+        private static readonly object _lock = new object();
+
         public AddDataFolderExWorkflow()
         {
             InitializeComponent();
@@ -228,7 +230,16 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
 
             IPage page = (IPage)dataEntityToken.Data;
 
-            page.AddFolderDefinition(type.GetImmutableTypeId());
+            Guid dataTypeId = type.GetImmutableTypeId();
+
+            lock (_lock)
+            {
+                if (page.GetFolderDefinitionId(dataTypeId) == Guid.Empty)
+                {
+                    page.AddFolderDefinition(dataTypeId);
+                }
+            }
+            
 
             SpecificTreeRefresher specificTreeRefresher = this.CreateSpecificTreeRefresher();
             specificTreeRefresher.PostRefreshMesseges(this.EntityToken);

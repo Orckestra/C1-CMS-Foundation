@@ -1,4 +1,4 @@
-﻿/**
+/**
 * MessageQueue!
 */
 window.MessageQueue = new function () {
@@ -332,13 +332,11 @@ window.MessageQueue = new function () {
 					StageBinding.select(perspectiveElementKey)
 						.then(
 						function () {
-							StageBinding.selectBrowserTab();
 							EventBroadcaster.broadcast(
 								BroadcastMessages.SYSTEMTREEBINDING_FOCUS,
 								entityToken
 							);
-						}
-						)
+						});
 
 					this._nextAction();
 					break;
