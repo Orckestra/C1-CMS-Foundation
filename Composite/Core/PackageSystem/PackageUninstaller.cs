@@ -1,8 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
+using Composite.C1Console.Security;
 using Composite.Core.Application;
 using Composite.Core.IO;
 using Composite.Core.IO.Zip;
@@ -139,8 +140,8 @@ namespace Composite.Core.PackageSystem
 
         private void DoUninstallWithoutTransaction()
         {
-            Log.LogInformation(LogTitle, "Uninstalling package '{0}', Id = {1}", PackageInformation.Name, PackageInformation.Id);
-
+            var userName = UserValidationFacade.IsLoggedIn() ? UserValidationFacade.GetUsername() : "<system>";
+            Log.LogInformation(LogTitle, $"Uninstalling package '{PackageInformation.Name}', Id = {PackageInformation.Id}. User name: '{userName}'");
 
             try
             {
