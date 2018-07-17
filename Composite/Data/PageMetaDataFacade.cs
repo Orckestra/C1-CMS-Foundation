@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -229,9 +229,9 @@ namespace Composite.Data
         /// <returns></returns>
         public static bool IsDefinitionAllowed(IPageMetaDataDefinition pageMetaDataDefinition, IPage page)
         {
-            Guid pageId = page.GetPageIdOrNull();
+            if (page != null && pageMetaDataDefinition.DefiningItemId == page.PageTypeId) return true;
 
-            if (pageMetaDataDefinition.DefiningItemId == page.PageTypeId) return true;
+            Guid pageId = page.GetPageIdOrNull();
 
             // Its not a pagetype attached meta data definitions, check page attacked
             int levelsToParent = CountLevelsToParent(pageMetaDataDefinition.DefiningItemId, pageId);
@@ -297,6 +297,8 @@ namespace Composite.Data
         /// <exclude />
         public static IEnumerable<IData> GetMetaData(this IPage page)
         {
+            Verify.ArgumentNotNull(page, nameof(page));
+
             return GetMetaData(page, DataScopeManager.CurrentDataScope);
         }
 
@@ -305,6 +307,8 @@ namespace Composite.Data
         /// <exclude />
         public static IEnumerable<IData> GetMetaData(this IPage page, DataScopeIdentifier dataScopeIdentifier)
         {
+            Verify.ArgumentNotNull(page, nameof(page));
+
             using (new DataScope(dataScopeIdentifier))
             {
                 foreach (IPageMetaDataDefinition pageMetaDataDefinition in page.GetAllowedMetaDataDefinitions())
