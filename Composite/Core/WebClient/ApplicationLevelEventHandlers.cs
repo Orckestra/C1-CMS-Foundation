@@ -109,6 +109,7 @@ namespace Composite.Core.WebClient
 
             services.AddSingleton<IMailer>(new SmtpMailer());
 
+            services.AddTransient<ISiteMapPlugin, CmsPagesSiteMapPlugin>();
 
             VersionedDataHelper.Initialize();
         }

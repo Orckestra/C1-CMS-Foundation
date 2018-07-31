@@ -1,100 +1,91 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using Composite.Core.Extensions;
-using Composite.Core.Routing;
-using Composite.Core.WebClient.Renderings.Page;
+using Composite.Core;
 using Composite.Data;
-using Composite.Data.Types;
 
 namespace Composite.AspNet
 {
     /// <summary>
-    /// Implementation of <see cref="SiteMapProvider"/> that returns cms pages
+    /// Implementation of <see cref="SiteMapProvider"/> which returns nodes returned by registered <see cref="ISiteMapPlugin"/>.
     /// </summary>
-    public class CmsPageSiteMapProvider : SiteMapProvider
+    public class CmsPageSiteMapProvider : SiteMapProvider, ICmsSiteMapProvider
     {
-        private static readonly SiteMapNodeCollection EmptyCollection =
-            SiteMapNodeCollection.ReadOnly(new SiteMapNodeCollection());
+        private static readonly SiteMapNodeCollection EmptyCollection = SiteMapNodeCollection.ReadOnly(new SiteMapNodeCollection());
 
-        /// <exclude />
-        public override SiteMapProvider ParentProvider { get; set; }
+        private readonly List<ISiteMapPlugin> _plugins;
 
-        /// <exclude />
+        /// <inheritdoc />
         public override SiteMapNode CurrentNode
         {
             get
             {
                 var context = HttpContext.Current;
-
                 var node = ResolveSiteMapNode(context) ?? FindSiteMapNode(context);
 
-                return ReturnNodeIfAccessible(node);
+                return SecurityTrimNode(node);
             }
         }
 
         /// <exclude />
-        public override SiteMapNode RootNode => ReturnNodeIfAccessible(GetRootNodeCore());
+        public override SiteMapProvider RootProvider => ParentProvider?.RootProvider ?? this;
 
+        /// <exclude />
+        public override SiteMapNode RootNode => SecurityTrimNode(GetRootNodeCore());
 
-        private SiteMapNode ReturnNodeIfAccessible(SiteMapNode node)
+        /// <inheritdoc />
+        public CmsPageSiteMapProvider()
         {
-            if (node != null && node.IsAccessibleToUser(HttpContext.Current))
+            _plugins = ServiceLocator.GetServices<ISiteMapPlugin>().ToList();
+        }
+
+        /// <inheritdoc />
+        public override SiteMapNode FindSiteMapNode(HttpContext context)
+        {
+            var contextBase = new HttpContextWrapper(context);
+
+            foreach (var plugin in _plugins)
             {
-                return node;
+                var node = plugin.FindSiteMapNode(this, contextBase);
+                if (node != null)
+                {
+                    return SecurityTrimNode(node);
+                }
             }
+
             return null;
         }
 
- 
-
-
-        /// <exclude />
-        public override SiteMapProvider RootProvider
-        {
-            get
-            {
-                return ParentProvider?.RootProvider ?? this;
-            }
-        }
-
-        /// <exclude />
-        public override SiteMapNode FindSiteMapNode(HttpContext context)
-        {
-            string key = PageRenderer.CurrentPageId.ToString();
-
-            return FindSiteMapNodeFromKey(key);
-        }
-
-
-        /// <exclude />
+        /// <inheritdoc />
         public override SiteMapNode FindSiteMapNodeFromKey(string key)
         {
-            Guid pageId = new Guid(key);
-            var page = PageManager.GetPageById(pageId);
+            foreach (var plugin in _plugins)
+            {
+                var node = plugin.FindSiteMapNodeFromKey(this, key);
+                if (node != null)
+                {
+                    return SecurityTrimNode(node);
+                }
+            }
 
-            return page != null ? new CmsPageSiteMapNode(this, page) : null;
+            return null;
         }
 
-        /// <exclude />
+        /// <inheritdoc />
         public override SiteMapNodeCollection GetChildNodes(SiteMapNode node)
         {
-            Verify.ArgumentNotNull(node, "node");
+            Verify.ArgumentNotNull(node, nameof(node));
 
-            var pageSiteMapNode = (CmsPageSiteMapNode)node;
+            var childNodes = new List<SiteMapNode>();
 
-            var context = HttpContext.Current;
-
-            List<SiteMapNode> childNodes;
-            using (new DataScope(pageSiteMapNode.Culture))
+            foreach (var plugin in _plugins)
             {
-                childNodes = PageManager.GetChildrenIDs(pageSiteMapNode.Page.Id)
-                    .Select(PageManager.GetPageById)
-                    .Where(p => p != null)
-                    .Select(p => new CmsPageSiteMapNode(this, p))
-                    .OfType<SiteMapNode>()
-                    .ToList();
+                var pluginChildNodes = plugin.GetChildNodes(node);
+                if (pluginChildNodes != null)
+                {
+                    childNodes.AddRange(pluginChildNodes);
+                }
             }
 
             if (!childNodes.Any())
@@ -102,54 +93,39 @@ namespace Composite.AspNet
                 return EmptyCollection;
             }
 
-            if (SecurityTrimmingEnabled)
-            {
-                childNodes = childNodes.Where(child => child.IsAccessibleToUser(context)).ToList();
-            }
+            childNodes = SecurityTrimList(childNodes);
 
             return new SiteMapNodeCollection(childNodes.ToArray());
         }
 
-        /// <exclude />
+        /// <inheritdoc />
         public override SiteMapNode GetParentNode(SiteMapNode node)
         {
-            Verify.ArgumentNotNull(node, "node");
+            Verify.ArgumentNotNull(node, nameof(node));
 
-            var pageSiteMapNode = (CmsPageSiteMapNode)node;
+            SiteMapNode parentNode = null;
 
-            IPage parentPage = null;
-            using (new DataScope(pageSiteMapNode.Culture))
+            foreach (var plugin in _plugins)
             {
-                Guid parentPageId = PageManager.GetParentId(pageSiteMapNode.Page.Id);
-                if (parentPageId != Guid.Empty)
+                parentNode = plugin.GetParentNode(node);
+                if (parentNode != null)
                 {
-                    parentPage = PageManager.GetPageById(parentPageId);
+                    break;
                 }
             }
 
-            SiteMapNode parentNode;
-            if (parentPage != null)
-            {
-                parentNode = new CmsPageSiteMapNode(this, parentPage);
-            }
-            else
-            {
-                parentNode = ParentProvider?.GetParentNode(node);
-            }
-
-            return parentNode != null && parentNode.IsAccessibleToUser(HttpContext.Current) ? parentNode : null;
+            return SecurityTrimNode(parentNode);
         }
 
-        /// <exclude />
+        /// <inheritdoc />
         protected override SiteMapNode GetRootNodeCore()
         {
-            var context = SiteMapContext.Current;
+            var siteMapContext = SiteMapContext.Current;
 
-            var rootPage = context?.RootPage;
-
+            var rootPage = siteMapContext?.RootPage;
             if (rootPage == null)
             {
-                Guid homePageId = SitemapNavigator.CurrentHomePageId;
+                var homePageId = SitemapNavigator.CurrentHomePageId;
                 if (homePageId == Guid.Empty)
                 {
                     homePageId = PageManager.GetChildrenIDs(Guid.Empty).FirstOrDefault();
@@ -168,52 +144,98 @@ namespace Composite.AspNet
 
             var node = new CmsPageSiteMapNode(this, rootPage);
 
-            return node.IsAccessibleToUser(HttpContext.Current) ? node : null;
+            return SecurityTrimNode(node);
         }
 
         /// <exclude />
         public ICollection<CmsPageSiteMapNode> GetRootNodes()
         {
             var list = new List<CmsPageSiteMapNode>();
-            foreach (Guid rootPageId in PageManager.GetChildrenIDs(Guid.Empty))
+
+            foreach (var rootPageId in PageManager.GetChildrenIDs(Guid.Empty))
             {
                 foreach (var culture in DataLocalizationFacade.ActiveLocalizationCultures)
-                using (new DataScope(culture))
                 {
-                    var page = PageManager.GetPageById(rootPageId);
-                    if (page != null)
+                    using (new DataScope(culture))
                     {
-                        list.Add(new CmsPageSiteMapNode(this, page));
+                        var page = PageManager.GetPageById(rootPageId);
+                        if (page != null)
+                        {
+                            list.Add(new CmsPageSiteMapNode(this, page));
+                        }
                     }
                 }
             }
 
-            return list;
+            return SecurityTrimList(list);
         }
 
-
-        /// <exclude />
+        /// <inheritdoc />
         public override SiteMapNode FindSiteMapNode(string rawUrl)
         {
-            var pageUrl = PageUrls.ParseUrl(rawUrl);
-            if (pageUrl == null || !string.IsNullOrEmpty(pageUrl.PathInfo))
+            foreach (var plugin in _plugins)
             {
-                return null;
+                var node = plugin.FindSiteMapNode(this, rawUrl);
+                if (node != null)
+                {
+                    return SecurityTrimNode(node);
+                }
             }
 
-            var page = pageUrl.GetPage();
-            if (page == null)
-            {
-                return null;
-            }
-
-            return new CmsPageSiteMapNode(this, page);
+            return null;
         }
 
-        /// <exclude />
+        /// <inheritdoc />
         public override bool IsAccessibleToUser(HttpContext ctx, SiteMapNode node)
         {
+            var ctxBase = new HttpContextWrapper(ctx);
+
+            foreach (var plugin in _plugins)
+            {
+                var isAccessibleToUser = plugin.IsAccessibleToUser(ctxBase, node);
+                if (!isAccessibleToUser)
+                {
+                    return false;
+                }
+            }
+
             return true;
+        }
+
+        private T SecurityTrimNode<T>(T node) where T : SiteMapNode
+        {
+            if (node == null)
+            {
+                return null;
+            }
+
+            if (SecurityTrimmingEnabled)
+            {
+                var context = HttpContext.Current;
+                if (!node.IsAccessibleToUser(context))
+                {
+                    return null;
+                }
+            }
+
+            return node;
+        }
+
+        private List<T> SecurityTrimList<T>(List<T> list) where T : SiteMapNode
+        {
+            if (list == null)
+            {
+                return null;
+            }
+
+            if (SecurityTrimmingEnabled)
+            {
+                var context = HttpContext.Current;
+
+                return list.Where(child => child.IsAccessibleToUser(context)).ToList();
+            }
+
+            return list;
         }
     }
 }
