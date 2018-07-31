@@ -48,7 +48,6 @@
     "main": "Composite/console/console.js",
     "dependencies": {
       "fixed-data-table-2": "npm:fixed-data-table-2@^0.7.6",
-      "github/url-polyfill": "github:github/url-polyfill@^0.5.6",
       "normalizr": "npm:normalizr@^2.2.1",
       "plugin-babel": "npm:systemjs-plugin-babel@^0.0.13",
       "rc-table": "npm:rc-table@^5.0.3",
@@ -62,7 +61,7 @@
       "styled-components": "npm:styled-components@^1.1.1",
       "svg": "github:npbenjohnson/plugin-svg@^0.1.0",
       "text": "github:systemjs/plugin-text@^0.0.9",
-      "url-polyfill": "github:github/url-polyfill@^0.5.6",
+      "url-polyfill": "npm:url-polyfill@1.0.13",
       "wampy": "npm:wampy@^4.0.0",
       "whatwg-fetch": "npm:whatwg-fetch@^1.0.0"
     },
@@ -128,9 +127,6 @@
       "zlib": "npm:jspm-nodelibs-zlib@^0.2.0"
     },
     "overrides": {
-      "github:github/url-polyfill@0.5.6": {
-        "main": "url.js"
-      },
       "github:socketio/socket.io-client@1.5.0": {
         "main": "socket.io.js"
       },
