@@ -152,7 +152,20 @@ namespace Composite.AspNet
                 Guid homePageId = SitemapNavigator.CurrentHomePageId;
                 if (homePageId == Guid.Empty)
                 {
-                    homePageId = PageManager.GetChildrenIDs(Guid.Empty).FirstOrDefault();
+                    var context = HttpContext.Current;
+                    if (context == null)
+                    {
+                        homePageId = PageManager.GetChildrenIDs(Guid.Empty).FirstOrDefault();
+                    }
+                    else
+                    {
+                        using (var data = new DataConnection())
+                        {
+                            var pageNode = data.SitemapNavigator.GetPageNodeByHostname(context.Request.Url.Host);
+
+                            homePageId = pageNode.Id;
+                        }
+                    }
                 }
 
                 if (homePageId != Guid.Empty)
