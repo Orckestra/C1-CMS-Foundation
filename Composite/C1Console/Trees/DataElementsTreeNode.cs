@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,6 +47,9 @@ namespace Composite.C1Console.Trees
         /// <exclude />
         public bool ShowForeignItems { get; internal set; }     // Optional
 
+        /// <exclude />
+        public string BrowserUrl { get; internal set; }     // Optional
+
 
         // Cached values
         private Dictionary<Type, ParentFilterHelper> ParentFilteringHelpers { get; set; }
@@ -61,6 +64,7 @@ namespace Composite.C1Console.Trees
 
         private DynamicValuesHelper LabelDynamicValuesHelper { get; set; }
         private DynamicValuesHelper ToolTipDynamicValuesHelper { get; set; }
+        private DynamicValuesHelper BrowserUrlDynamicValuesHelper { get; set; }
 
 
         private static readonly ResourceHandle LocalizeDataTypeIcon = ResourceHandle.BuildIconFromDefaultProvider("tree-localize-data");
@@ -353,6 +357,12 @@ namespace Composite.C1Console.Trees
                 }
             }
 
+            if (this.BrowserUrl != null)
+            {
+                element.PropertyBag.Add("BrowserUrl", this.BrowserUrlDynamicValuesHelper.ReplaceValues(replaceContext));
+                element.PropertyBag.Add("BrowserToolingOn", "false");
+            }
+
 
             if (itemLocalizationEnabledAndForeign)
             {
@@ -460,6 +470,12 @@ namespace Composite.C1Console.Trees
             if (!typeof(ILocalizedControlled).IsAssignableFrom(this.InterfaceType))
             {
                 this.ShowForeignItems = false;
+            }
+
+            if (this.BrowserUrl != null)
+            {
+                this.BrowserUrlDynamicValuesHelper = new DynamicValuesHelper(this.BrowserUrl);
+                this.BrowserUrlDynamicValuesHelper.Initialize(this);
             }
         }
 

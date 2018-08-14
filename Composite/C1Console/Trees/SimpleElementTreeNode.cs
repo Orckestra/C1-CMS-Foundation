@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Composite.C1Console.Elements;
@@ -15,6 +15,7 @@ namespace Composite.C1Console.Trees
         public string ToolTip { get; internal set; }            // Defaults to Label
         public ResourceHandle Icon { get; internal set; }       // Defaults to 'folder'
         public ResourceHandle OpenIcon { get; internal set; }   // Defaults to 'open-folder' or if Icon is set, then, Icon
+        public string BrowserUrl { get; internal set; }         // Defaults to no URL, what will be shows in console browser on focus
 
         // Cached values
         internal DynamicValuesHelper LabelDynamicValuesHelper { get; set; }
@@ -78,6 +79,13 @@ namespace Composite.C1Console.Trees
                 entityToken,
                 dynamicContext.Piggybag.PreparePiggybag(this.ParentNode, parentEntityToken)
                 ));
+
+
+            if (this.BrowserUrl != null)
+            {
+                element.PropertyBag.Add("BrowserUrl", this.BrowserUrl);
+                element.PropertyBag.Add("BrowserToolingOn", "false");
+            }
 
 
             if (parentEntityToken is TreePerspectiveEntityToken)

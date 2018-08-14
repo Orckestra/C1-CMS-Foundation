@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Xml.Linq;
@@ -134,6 +134,7 @@ namespace Composite.C1Console.Trees.Foundation
             XAttribute openedIconAttribute = element.Attribute("OpenedIcon");
             XAttribute showForeignItemsAttribute = element.Attribute("ShowForeignItems");
             XAttribute leafDisplayAttribute = element.Attribute("Display");
+            XAttribute browserUrlAttribute = element.Attribute("BrowserUrl");
 
             if (typeAttribute == null)
             {
@@ -170,8 +171,9 @@ namespace Composite.C1Console.Trees.Foundation
                     Icon = icon,
                     OpenedIcon = openedIcon,
                     ShowForeignItems = showForeignItemsAttribute.GetValueOrDefault("true").ToLowerInvariant() == "true",
-                    Display = leafDisplay
-                };
+                    Display = leafDisplay,
+                    BrowserUrl = browserUrlAttribute.GetValueOrDefault(null)
+            };
 
             List<TreeNode> treeNodes;
             if (tree.BuildProcessContext.DataInteraceToTreeNodes.TryGetValue(interfaceType, out treeNodes) == false)
@@ -229,6 +231,7 @@ namespace Composite.C1Console.Trees.Foundation
             XAttribute toolTipAttribute = element.Attribute("ToolTip");
             XAttribute iconAttribute = element.Attribute("Icon");
             XAttribute openedIconAttribute = element.Attribute("OpenedIcon");
+            XAttribute browserUrlAttribute = element.Attribute("BrowserUrl");
 
             if (idAttribute == null)
             {
@@ -271,8 +274,9 @@ namespace Composite.C1Console.Trees.Foundation
                     Label = labelAttribute.Value,
                     ToolTip = toolTipAttribute.GetValueOrDefault(labelAttribute.Value),
                     Icon = icon,
-                    OpenIcon = openedIcon
-                };
+                    OpenIcon = openedIcon,
+                    BrowserUrl = browserUrlAttribute.GetValueOrDefault(null)
+            };
         }
 
         private static TreeNode BuildRootTreeNode(XElement element, Tree tree)
