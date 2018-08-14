@@ -83,7 +83,14 @@ namespace Composite.C1Console.Trees
 
             if (this.BrowserUrl != null)
             {
-                element.PropertyBag.Add("BrowserUrl", this.BrowserUrl);
+                var url = this.BrowserUrl;
+
+                if (!url.Contains("//"))
+                {
+                    url = Core.WebClient.UrlUtils.ResolvePublicUrl(url);
+                }
+
+                element.PropertyBag.Add("BrowserUrl", url);
                 element.PropertyBag.Add("BrowserToolingOn", "false");
             }
 
