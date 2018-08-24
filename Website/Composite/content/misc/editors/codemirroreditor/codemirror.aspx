@@ -9,6 +9,7 @@
 		top.Application.declareTopLocal(window);
 	</script>
 	<script type="text/javascript" src="../../../../lib/codemirror/lib/codemirror.js"></script>
+    <script type="text/javascript" src="../../../../lib/codemirror/addon/search/searchcursor.js"></script>
 	<script type="text/javascript" src="../../../../lib/codemirror/mode/xml/xml.js"></script>
 	<script type="text/javascript" src="../../../../lib/codemirror/mode/javascript/javascript.js"></script>
 	<script type="text/javascript" src="../../../../lib/codemirror/mode/css/css.js"></script>

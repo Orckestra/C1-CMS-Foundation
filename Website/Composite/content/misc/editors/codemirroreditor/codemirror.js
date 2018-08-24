@@ -9,9 +9,16 @@ window.onload = function () {
 			indentUnit: 4,
 			indentWithTabs: true,
 			extraKeys: {"Tab": "indentMore", "Shift-Tab": "indentLess"},
-			lineNumbers: true,
-			theme: "composite"
-		});
+            lineNumbers: true,
+            theme: "composite",
+            lineWrapping: false
+        });
+
+        if (localStorage.getItem("lineWrapping") == null) {
+            editor.setOption("lineWrapping", true);
+        } else {
+            editor.setOption("lineWrapping", localStorage.getItem("lineWrapping") === 'true');
+        }
 
 		var broadcaster = top.EventBroadcaster;
 		var messages = top.BroadcastMessages;

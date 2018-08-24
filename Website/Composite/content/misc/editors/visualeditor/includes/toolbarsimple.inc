@@ -14,6 +14,7 @@
 		<ui:toolbarbutton cmd="Redo" tooltip="${string:Composite.Web.VisualEditor:ToolBar.ToolTipRedo}" image="${icon:redo}" isdisabled="true" observes="broadcasterCanRedo" /> <!-- image-disabled="${icon:redo-disabled}" -->
 	</ui:toolbargroup>
 	<ui:toolbargroup>
+		<ui:toolbarbutton cmd="compositeSearchAndReplace" label="${string:Composite.Web.VisualEditor:SearchAndReplace.LaunchButton.Label}" image="${icon:generic-search}" isdisabled="true" observes="broadcasterIsActive" />
 		<ui:toolbarbutton cmd="compositeInsertComponent" label="${string:Composite.Web.VisualEditor:Components.LaunchButton.Label}" image="${icon:functioncall}" isdisabled="true" observes="broadcasterIsActive" />
 	</ui:toolbargroup>
 </ui:toolbarbody>
