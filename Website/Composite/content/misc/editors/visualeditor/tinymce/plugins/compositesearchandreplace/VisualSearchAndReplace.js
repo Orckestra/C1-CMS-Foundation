@@ -166,20 +166,23 @@ VisualSearchAndReplace.prototype.handleBroadcast = function (broadcast, arg) {
 VisualSearchAndReplace.prototype.findNext = function () {
 
     if (this.stateChanged()) {
-        this.setOptionsFromUserInput();        
-    }
+        this.setOptionsFromUserInput();
 
-    var result = this._searchReplacePlugin.find(this._findText, this._caseSensitive, this._matchWholeWord);
+        var result = this._searchReplacePlugin.find(this._findText, this._caseSensitive, this._matchWholeWord);
 
-    if (result <= 0) {
-        this.updateMessage("nothing was found");
+        if (result <= 0) {
+            this.updateMessage(StringBundle.getString("Composite.Web.VisualEditor", "SearchAndReplace.NothingFoundMessage"));
+        }
+        else {
+            this.updateMessage(result + " " + StringBundle.getString("Composite.Web.VisualEditor", "SearchAndReplace.ItemsWereFoundMessage"));            
+        }
+
+        this._itemsFound = result;
+        this.setButtonStates();
     }
     else {
-        this.updateMessage(result + " item(s) were found");
+        this.moveNext();
     }
-
-    this._itemsFound = result;
-    this.setButtonStates();
 }
 
 VisualSearchAndReplace.prototype.replaceText = function () {

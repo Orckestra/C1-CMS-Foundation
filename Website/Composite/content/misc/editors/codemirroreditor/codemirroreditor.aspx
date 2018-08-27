@@ -55,10 +55,10 @@ xmlns:control="http://www.composite.net/ns/uicontrol">
 					<ui:toolbarbutton id="formatbutton" label="${string:Composite.Web.SourceEditor:Toolbar.Format.Label}" tooltip="${string:Composite.Web.SourceEditor:Toolbar.Format.ToolTip}" image="${icon:editor-formatsource}"
 						image-disabled="${icon:editor-formatsource-disabled}" observes="broadcasterIsActive"
 						binding="SourceEditorFormatToolbarButtonBinding" />
-							<ui:toolbarbutton id="wordwrapbutton" label="Toggle Word Wrap" tooltip="" image="${icon:editor-formatsource}"
+							<ui:toolbarbutton id="wordwrapbutton" label="${string:Composite.Web.SourceEditor:Toolbar.ToggleWordWrap.Label}" tooltip="" image="${icon:editor-formatsource}"
 								image-disabled="${icon:editor-formatsource-disabled}" observes="broadcasterIsActive"
 								binding="SourceEditorToggleWordWrapToolbarButtonBinding" />
-                            <ui:toolbarbutton id="findandreplacebutton" label="Find and Replace" tooltip="" image="${icon:editor-formatsource}"
+                            <ui:toolbarbutton id="findandreplacebutton" label="${string:Composite.Web.SourceEditor:Toolbar.FindAndReplace.Label}" tooltip="" image="${icon:editor-formatsource}"
 								image-disabled="${icon:editor-formatsource-disabled}" observes="broadcasterIsActive"
 								binding="SourceEditorFindAndReplaceToolBarButtonBinding" />
 				</ui:toolbargroup>

@@ -6,6 +6,29 @@
 		<control:styleloader ID="Styleloader1" runat="server"/>
 		<control:scriptloader ID="Scriptloader1" type="sub" runat="server"/>
         <script src="codemirrorfindandreplace.js" type="text/javascript"></script>
+
+           <style>
+            @namespace ui url(http://www.w3.org/1999/xhtml);
+
+            .checkBoxSettings {
+                float: left;
+            }
+
+            .left-label {
+                float: left;
+                margin-right: 20px;
+                width: 100px;
+            }
+
+            .checkBoxSettings ui|datalabeltext {
+                color:#999 !important;
+            }
+
+            ui|checkbox {
+            }
+          
+        </style>
+
 	</head>
 	<body>
         <div>
@@ -19,32 +42,36 @@
                     <ui:fields>
                         <ui:fieldgroup>
                             <ui:field>
-                                <ui:fielddesc label="${string:Composite.Web.SourceEditor:FindAndReplace.LabelFind}"/>                            
+                                <ui:fielddesc class="left-label" label="${string:Composite.Web.SourceEditor:FindAndReplace.LabelFind}"/>                            
                                 <ui:fielddata>  
                                     <ui:datainput id="searchFor" default="true">
                                     </ui:datainput>
                                 </ui:fielddata>
                             </ui:field>
                             <ui:field>
-                                <ui:fielddesc label="${string:Composite.Web.SourceEditor:FindAndReplace.LabelReplaceWith}"/>
+                                <ui:fielddesc class="left-label" label="${string:Composite.Web.SourceEditor:FindAndReplace.LabelReplaceWith}"/>
                                 <ui:fielddata>
                                     <ui:datainput id="replaceWith"></ui:datainput>
                                 </ui:fielddata>
                             </ui:field>
-                            <ui:field>
-                                <ui:fielddesc label="${string:Composite.Web.SourceEditor:FindAndReplace.LabelWholeWords}"/>
-                                <ui:fielddata>
-                                    <ui:checkbox id="matchWholeWord"></ui:checkbox>
-                                </ui:fielddata>                                
-                            </ui:field>
-                            <ui:field>
-                                <ui:fielddesc label="${string:Composite.Web.SourceEditor:FindAndReplace.LabelMatchCase}"/>                            
-                                <ui:fielddata>
-                                    <ui:checkbox id="matchCase"></ui:checkbox>
-                                </ui:fielddata>
-                            </ui:field>
                         </ui:fieldgroup>
                     </ui:fields>
+                     <div>
+                        <div class="checkBoxSettings">
+                            <ui:field>                                
+                                <ui:fielddata>
+                                    <ui:checkbox label="${string:Composite.Web.SourceEditor:FindAndReplace.LabelWholeWords}" id="matchWholeWord"></ui:checkbox>
+                                </ui:fielddata>                                
+                            </ui:field>
+                        </div>
+                        <div class="checkBoxSettings">
+                            <ui:field>                                
+                                <ui:fielddata>
+                                    <ui:checkbox label="${string:Composite.Web.SourceEditor:FindAndReplace.LabelMatchCase}" id="matchCase"></ui:checkbox>
+                                </ui:fielddata>
+                            </ui:field>     
+                        </div>
+                    </div>                      
                 </ui:flexbox>          
 			    <ui:dialogtoolbar>
 				    <ui:toolbarbody align="right" equalsize="true">
