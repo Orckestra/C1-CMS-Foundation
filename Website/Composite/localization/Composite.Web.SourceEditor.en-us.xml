@@ -29,6 +29,8 @@
   <string key="Toolbar.Insert.Label" value="Insert"/>
   <string key="Toolbar.Format.Label" value="Format"/>
   <string key="Toolbar.Format.ToolTip" value="Format XML source"/>
+  <string key="Toolbar.ToggleWordWrap.Label" value="Toggle word wrap"/>
+  <string key="Toolbar.FindAndReplace.Label" value="Find and replace"/>
   
   <!-- insert dropdown -->
 	<string key="Insert.PageURL.Label" value="Page URL"/>

@@ -186,12 +186,12 @@
   <string key="SearchAndReplace.LabelReplaceWith" value="Replace with" />
   <string key="SearchAndReplace.LabelMatchCase" value="Match case" />
   <string key="SearchAndReplace.LabelWholeWords" value="Whole words" />
-  <string key="SearchAndReplace.ButtonFind" value="Find" />
+  <string key="SearchAndReplace.ButtonFind" value="Find Next" />
   <string key="SearchAndReplace.ButtonReplace" value="Replace" />
   <string key="SearchAndReplace.ButtonReplaceAll" value="Replace all" />
-  <string key="SearchAndReplace.ButtonPrev" value="Prev" />
-  <string key="SearchAndReplace.ButtonNext" value="Next" />  
-  <string key="SearchAndReplace.LaunchButton.Label" value="Find and Replace" />  
+  <string key="SearchAndReplace.NothingFoundMessage" value="nothing was found" />  
+  <string key="SearchAndReplace.ItemsWereFoundMessage" value="item(s) found" />    
+  
 
   <string key="Function.Edit" value="Edit" />
 
