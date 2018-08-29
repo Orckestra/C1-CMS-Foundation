@@ -55,8 +55,6 @@ SourceEditorFindAndReplaceToolBarButtonBinding.prototype.onBindingAttach = funct
 */
 SourceEditorFindAndReplaceToolBarButtonBinding.prototype.initializeSourceEditorComponent = function(binding, editor) {
 
-    debugger;
-
     this._editorBinding = binding;
     this._codemirrorEditor = editor;
 
