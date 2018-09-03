@@ -66,6 +66,7 @@ CodemirrorFindAndReplace.prototype.setPageArgument = function (arg) {
 
     this._initialized = true;
     map.broadcasterReplace.setDisabled(true);
+    map.broadcasterReplaceAll.setDisabled(true);
 }
 
 CodemirrorFindAndReplace.prototype.getChecked = function (control) {
@@ -144,12 +145,14 @@ CodemirrorFindAndReplace.prototype.findNextText = function () {
 
         this._editor.setSelection(this._cursor.from(), this._cursor.to());
         map.broadcasterReplace.setDisabled(false);
+        map.broadcasterReplaceAll.setDisabled(false);
         this._textPosition = this._cursor.to()
 
     }
     else {
         this._textPosition = false;
         map.broadcasterReplace.setDisabled(true);
+        map.broadcasterReplaceAll.setDisabled(true);
     }
 
 }
