@@ -7,7 +7,7 @@ var config = {
 	elements : "editor",
 	theme : "composite",
 	browsers : "msie,gecko",
-	plugins: "autolink,composite,compositelink,table,compositetable,compositeimage,compositerendering,compositecharmap,compositefield,compositetext,compositespellcheck,compositeimageresize,compositecomponent,paste,lists",
+	plugins: "autolink,composite,compositelink,table,compositetable,compositeimage,compositerendering,compositecharmap,compositefield,compositetext,compositespellcheck,compositeimageresize,compositecomponent,paste,lists,searchreplace,compositesearchandreplace",
 	entity_encoding : "raw",
 	convert_fonts_to_spans : false,
 	apply_source_formatting : false,
