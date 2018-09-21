@@ -14,6 +14,8 @@ xmlns:control="http://www.composite.net/ns/uicontrol">
 	<script type="text/javascript" src="bindings/SourceEditorToolBarBinding.js"></script>
 	<script type="text/javascript" src="bindings/SourceEditorInsertToolbarButtonBinding.js"></script>
 	<script type="text/javascript" src="bindings/SourceEditorFormatToolbarButtonBinding.js"></script>
+    <script type="text/javascript" src="bindings/SourceEditorFindAndReplaceToolBarButtonBinding.js" ></script>
+    <script type="text/javascript" src="bindings/SourceEditorToggleWordWrapToolbarButtonBinding.js" ></script>
 </head>
 <body>
 	<ui:broadcasterset>
@@ -53,6 +55,12 @@ xmlns:control="http://www.composite.net/ns/uicontrol">
 					<ui:toolbarbutton id="formatbutton" label="${string:Composite.Web.SourceEditor:Toolbar.Format.Label}" tooltip="${string:Composite.Web.SourceEditor:Toolbar.Format.ToolTip}" image="${icon:editor-formatsource}"
 						image-disabled="${icon:editor-formatsource-disabled}" observes="broadcasterIsActive"
 						binding="SourceEditorFormatToolbarButtonBinding" />
+							<ui:toolbarbutton id="wordwrapbutton" label="${string:Composite.Web.SourceEditor:Toolbar.ToggleWordWrap.Label}" tooltip="" image="${icon:editor-formatsource}"
+								image-disabled="${icon:editor-formatsource-disabled}" observes="broadcasterIsActive"
+								binding="SourceEditorToggleWordWrapToolbarButtonBinding" />
+                            <ui:toolbarbutton id="findandreplacebutton" label="${string:Composite.Web.SourceEditor:Toolbar.FindAndReplace.Label}" tooltip="" image="${icon:editor-formatsource}"
+								image-disabled="${icon:editor-formatsource-disabled}" observes="broadcasterIsActive"
+								binding="SourceEditorFindAndReplaceToolBarButtonBinding" />
 				</ui:toolbargroup>
 			</ui:toolbarbody>
 			<ui:toolbarbody align="right">

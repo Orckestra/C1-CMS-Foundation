@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <strings>
   <!-- preload precaution -->
   <string key="Preload.Key" value="Retrieved on VisualEditorBinding startup to make sure strings are loaded :)" />
@@ -179,6 +179,20 @@
   <string key="SpellCheck.InfoLabel" value="How to spell check ..." />
   <string key="SpellCheck.InfoCaption" value="How to spell check in the Visual Editor" />
   <string key="SpellCheck.InfoText" value="To get suggestions for a misspelled word, press your SHIFT key down when you invoke the context menu." />
+
+  <!-- search and replace -->
+	<string key="SearchAndReplace.LaunchButton.Label" value="Find and Replace" />
+	<string key="SearchAndReplace.LabelTitle" value="Find and replace" />
+  <string key="SearchAndReplace.LabelFind" value="Find" />
+  <string key="SearchAndReplace.LabelReplaceWith" value="Replace with" />
+  <string key="SearchAndReplace.LabelMatchCase" value="Match case" />
+  <string key="SearchAndReplace.LabelWholeWords" value="Whole words" />
+  <string key="SearchAndReplace.ButtonFind" value="Find Next" />
+  <string key="SearchAndReplace.ButtonReplace" value="Replace" />
+  <string key="SearchAndReplace.ButtonReplaceAll" value="Replace all" />
+  <string key="SearchAndReplace.NothingFoundMessage" value="nothing was found" />  
+  <string key="SearchAndReplace.ItemsWereFoundMessage" value="item(s) found" />    
+  
 
   <string key="Function.Edit" value="Edit" />
 

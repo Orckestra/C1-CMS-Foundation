@@ -29,6 +29,8 @@
   <string key="Toolbar.Insert.Label" value="Insert"/>
   <string key="Toolbar.Format.Label" value="Format"/>
   <string key="Toolbar.Format.ToolTip" value="Format XML source"/>
+  <string key="Toolbar.ToggleWordWrap.Label" value="Toggle word wrap"/>
+  <string key="Toolbar.FindAndReplace.Label" value="Find and replace"/>
   
   <!-- insert dropdown -->
 	<string key="Insert.PageURL.Label" value="Page URL"/>
@@ -44,4 +46,16 @@
 	<string key="ResxEditor.OriginalText" value="Original Text"/>
 	<string key="ResxEditor.TranslatedText" value="Translated Text"/>
 	<string key="ResxEditor.Save" value="Save"/>
+
+  <!-- find and replace -->
+  <string key="FindAndReplace.LabelTitle" value="Find and replace" />
+  <string key="FindAndReplace.LabelFind" value="Find" />
+  <string key="FindAndReplace.LabelReplaceWith" value="Replace with" />
+  <string key="FindAndReplace.LabelMatchCase" value="Match case" />
+  <string key="FindAndReplace.LabelWholeWords" value="Whole words" />
+  <string key="FindAndReplace.ButtonFind" value="Find Next" />
+  <string key="FindAndReplace.ButtonReplace" value="Replace" />
+  <string key="FindAndReplace.ButtonReplaceAll" value="Replace all" />
+  <string key="FindAndReplace.LaunchButton.Label" value="Find and Replace" />
+
 </strings>
