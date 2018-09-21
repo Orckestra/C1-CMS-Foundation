@@ -353,11 +353,6 @@ namespace Composite.Core.WebClient.Renderings.Page
             {
                 bool remove = IsDuplicate(uniqueIdValues, c.ClientID);
 
-                if (c.ClientID == "hello")
-                {
-                    var x = 1;
-                }
-
                 if (c.Controls.Count == 0)
                 {
                     switch (c.TagName.ToLower())
