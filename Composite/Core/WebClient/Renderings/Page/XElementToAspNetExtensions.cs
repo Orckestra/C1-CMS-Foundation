@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -312,7 +312,14 @@ namespace Composite.Core.WebClient.Renderings.Page
                 var metaControl = new HtmlMeta();
                 foreach (var attribute in metaTag.Attributes())
                 {
-                    metaControl.Attributes.Add(attribute.Name.LocalName, attribute.Value);
+                    if (attribute.Name.LocalName == "id")
+                    {
+                        metaControl.ID = attribute.Value;
+                    }
+                    else
+                    {
+                        metaControl.Attributes.Add(attribute.Name.LocalName, attribute.Value);
+                    }
                 }
                 headControl.Controls.AddAt(metaTagPosition++, metaControl);
             }
@@ -345,6 +352,11 @@ namespace Composite.Core.WebClient.Renderings.Page
             foreach (HtmlControl c in priorityOrderedControls)
             {
                 bool remove = IsDuplicate(uniqueIdValues, c.ClientID);
+
+                if (c.ClientID == "hello")
+                {
+                    var x = 1;
+                }
 
                 if (c.Controls.Count == 0)
                 {
