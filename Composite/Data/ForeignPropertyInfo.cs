@@ -1,4 +1,5 @@
-﻿using System;
+using Composite.Core.Types;
+using System;
 using System.Reflection;
 
 
@@ -13,7 +14,7 @@ namespace Composite.Data
         internal ForeignPropertyInfo(PropertyInfo sourcePropertyInfo, Type targetType, string targetKeyPropertyName, bool allowCascadeDeletes, object nullReferenceValue, Type nullReferenceValueType, bool isNullableString)
             : this(sourcePropertyInfo, targetType, targetKeyPropertyName, allowCascadeDeletes, isNullableString)
         {
-            this.NullReferenceValue = nullReferenceValue;
+            this.NullReferenceValue = ValueTypeConverter.Convert( nullReferenceValue, sourcePropertyInfo.PropertyType);
             this.NullReferenceValueType = nullReferenceValueType;
             this.IsNullReferenceValueSet = true;
         }
