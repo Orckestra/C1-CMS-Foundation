@@ -287,7 +287,6 @@ SystemJS.config({
   map: {
     "fixed-data-table-2": "npm:fixed-data-table-2@0.7.6",
     "immutable": "npm:immutable@3.8.1",
-    "github/url-polyfill": "github:github/url-polyfill@0.5.6",
     "bluebird": "npm:bluebird@3.4.6",
     "module": "npm:jspm-nodelibs-module@0.2.0",
     "plugin-babel": "npm:systemjs-plugin-babel@0.0.13",
@@ -332,7 +331,7 @@ SystemJS.config({
     "redux-thunk": "npm:redux-thunk@2.1.0",
     "svg": "github:npbenjohnson/plugin-svg@0.1.0",
     "url": "github:jspm/nodelibs-url@0.2.0-alpha",
-    "url-polyfill": "github:github/url-polyfill@0.5.6",
+    "url-polyfill": "npm:url-polyfill@1.0.13",
     "util": "github:jspm/nodelibs-util@0.2.0-alpha",
     "vm": "npm:jspm-nodelibs-vm@0.2.0",
     "wampy": "npm:wampy@4.0.0",
@@ -834,11 +833,6 @@ SystemJS.config({
         "domain-browserify": "npm:domain-browser@1.1.7"
       }
     },
-    "npm:jspm-nodelibs-crypto@0.2.0": {
-      "map": {
-        "crypto-browserify": "npm:crypto-browserify@3.11.0"
-      }
-    },
     "npm:jspm-nodelibs-zlib@0.2.0": {
       "map": {
         "zlib-browserify": "npm:browserify-zlib@0.1.4"
@@ -847,11 +841,6 @@ SystemJS.config({
     "npm:jspm-nodelibs-string_decoder@0.2.0": {
       "map": {
         "string_decoder-browserify": "npm:string_decoder@0.10.31"
-      }
-    },
-    "npm:jspm-nodelibs-os@0.2.0": {
-      "map": {
-        "os-browserify": "npm:os-browserify@0.2.1"
       }
     },
     "github:jspm/nodelibs-http@0.2.0-alpha": {
@@ -872,6 +861,11 @@ SystemJS.config({
     "github:jspm/nodelibs-url@0.2.0-alpha": {
       "map": {
         "url-browserify": "npm:url@0.11.0"
+      }
+    },
+    "github:jspm/nodelibs-crypto@0.2.0-alpha": {
+      "map": {
+        "crypto-browserify": "npm:crypto-browserify@3.11.0"
       }
     }
   }
