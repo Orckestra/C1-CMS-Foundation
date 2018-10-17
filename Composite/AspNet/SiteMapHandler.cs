@@ -33,6 +33,10 @@ namespace Composite.AspNet
             context.Response.ContentEncoding = Encoding.UTF8;
 
             var provider = SiteMap.Provider;
+            if (!(provider is ICmsSiteMapProvider))
+            {
+                throw new NotSupportedException("Configured sitemap provider is not supported");
+            }
 
             var writer = XmlWriter.Create(context.Response.OutputStream, 
                 new XmlWriterSettings {Encoding = Encoding.UTF8, Indent = true});
@@ -41,8 +45,7 @@ namespace Composite.AspNet
 
             if (IsRootRequest(context.Request.RawUrl))
             {
-                var rootNodes = ((CmsPageSiteMapProvider) provider).GetRootNodes();
-
+                var rootNodes = ((ICmsSiteMapProvider)provider).GetRootNodes();
                 if (rootNodes.Count > 1)
                 {
                     WriteSiteMapList(writer, rootNodes);
@@ -257,15 +260,14 @@ namespace Composite.AspNet
             writer.WriteString($"{_requestUrl.Scheme}://{_requestUrl.Host}{node.Url}");
             writer.WriteEndElement();
 
-            var baseNode = node as CmsPageSiteMapNode;
-            if (baseNode != null)
+            if (node is ISchemaOrgSiteMapNode schemaOrgSiteMapNode)
             {
-                var lastEdited = baseNode.LastModified;
+                var lastEdited = schemaOrgSiteMapNode.LastModified;
                 writer.WriteStartElement("lastmod");
                 writer.WriteString(lastEdited.ToUniversalTime().ToString("u").Replace(" ", "T"));
                 writer.WriteEndElement();
 
-                var changeFrequency = baseNode.ChangeFrequency;
+                var changeFrequency = schemaOrgSiteMapNode.ChangeFrequency;
                 if (changeFrequency.HasValue)
                 {
                     writer.WriteStartElement("changefreq");
@@ -273,13 +275,13 @@ namespace Composite.AspNet
                     writer.WriteEndElement();
                 }
 
-                var priority = baseNode.Priority;
+                var priority = schemaOrgSiteMapNode.Priority;
                 if (priority.HasValue)
                 {
                     if (priority > 1 && priority < 10)
                     {
                         writer.WriteStartElement("priority");
-                        writer.WriteString(((decimal) priority.Value/10).ToString("0.0", CultureInfo.InvariantCulture));
+                        writer.WriteString(((decimal)priority.Value / 10).ToString("0.0", CultureInfo.InvariantCulture));
                         writer.WriteEndElement();
                     }
                 }

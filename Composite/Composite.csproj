@@ -211,7 +211,12 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AspNet\CmsPagesSiteMapPlugin.cs" />
     <Compile Include="AspNet\CmsPageSiteMapProvider.cs" />
+    <Compile Include="AspNet\ICmsSiteMapNode.cs" />
+    <Compile Include="AspNet\ICmsSiteMapProvider.cs" />
+    <Compile Include="AspNet\ISchemaOrgSiteMapNode.cs" />
+    <Compile Include="AspNet\ISiteMapPlugin.cs" />
     <Compile Include="AspNet\Razor\RazorFunction.cs" />
     <Compile Include="AspNet\Razor\RazorHelper.cs" />
     <Compile Include="AspNet\Razor\RazorPageTemplate.cs" />
