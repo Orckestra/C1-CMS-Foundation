@@ -50,6 +50,8 @@ namespace Composite.C1Console.Trees
         /// <exclude />
         public string BrowserUrl { get; internal set; }     // Optional
 
+        /// <exclude />
+        public string BrowserImage { get; internal set; }     // Optional
 
         // Cached values
         private Dictionary<Type, ParentFilterHelper> ParentFilteringHelpers { get; set; }
@@ -65,6 +67,7 @@ namespace Composite.C1Console.Trees
         private DynamicValuesHelper LabelDynamicValuesHelper { get; set; }
         private DynamicValuesHelper ToolTipDynamicValuesHelper { get; set; }
         private DynamicValuesHelper BrowserUrlDynamicValuesHelper { get; set; }
+        private DynamicValuesHelper BrowserImageDynamicValuesHelper { get; set; }
 
 
         private static readonly ResourceHandle LocalizeDataTypeIcon = ResourceHandle.BuildIconFromDefaultProvider("tree-localize-data");
@@ -371,6 +374,24 @@ namespace Composite.C1Console.Trees
             }
 
 
+            if (this.BrowserImage != null)
+            {
+                var url = this.BrowserImageDynamicValuesHelper.ReplaceValues(replaceContext);
+
+                if (!url.Contains("//"))
+                {
+                    url = Core.WebClient.UrlUtils.ResolvePublicUrl(url);
+                }
+
+                element.PropertyBag.Add("ListViewImage", url);
+
+                if (this.BrowserUrl == null)
+                {
+                    element.PropertyBag.Add("DetailViewImage", url);
+                }
+            }
+
+
             if (itemLocalizationEnabledAndForeign)
             {
                 var actionToken = new WorkflowActionToken(
@@ -483,6 +504,12 @@ namespace Composite.C1Console.Trees
             {
                 this.BrowserUrlDynamicValuesHelper = new DynamicValuesHelper(this.BrowserUrl);
                 this.BrowserUrlDynamicValuesHelper.Initialize(this);
+            }
+
+            if (this.BrowserImage != null)
+            {
+                this.BrowserImageDynamicValuesHelper = new DynamicValuesHelper(this.BrowserImage);
+                this.BrowserImageDynamicValuesHelper.Initialize(this);
             }
         }
 

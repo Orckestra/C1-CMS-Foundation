@@ -16,6 +16,7 @@ namespace Composite.C1Console.Trees
         public ResourceHandle Icon { get; internal set; }       // Defaults to 'folder'
         public ResourceHandle OpenIcon { get; internal set; }   // Defaults to 'open-folder' or if Icon is set, then, Icon
         public string BrowserUrl { get; internal set; }         // Defaults to no URL, what will be shows in console browser on focus
+        public string BrowserImage { get; internal set; }         // Defaults to no (image) URL, what will be shows in console browser on focus / lists
 
         // Cached values
         internal DynamicValuesHelper LabelDynamicValuesHelper { get; set; }
@@ -92,6 +93,24 @@ namespace Composite.C1Console.Trees
 
                 element.PropertyBag.Add("BrowserUrl", url);
                 element.PropertyBag.Add("BrowserToolingOn", "false");
+            }
+
+
+            if (this.BrowserImage != null)
+            {
+                var url = this.BrowserImage;
+
+                if (!url.Contains("//"))
+                {
+                    url = Core.WebClient.UrlUtils.ResolvePublicUrl(url);
+                }
+
+                element.PropertyBag.Add("ListViewImage", url);
+
+                if (this.BrowserUrl == null)
+                {
+                    element.PropertyBag.Add("DetailViewImage", url);
+                }
             }
 
 

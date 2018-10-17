@@ -823,6 +823,12 @@
 			</xs:annotation>
 		</xs:attribute>
 
+		<xs:attribute name="BrowserImage" use="optional" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>Custom image (URL) to display in the console browser when this element is shown in lists / focused.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+
 		<xs:attributeGroup ref="IconGroup" />
 
     <xs:attributeGroup ref="OpenedIconGroup" />
@@ -955,6 +961,14 @@
 			</xs:annotation>
 		</xs:attribute>
 
+		
+		<xs:attribute name="BrowserImage" use="optional" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>Custom image (URL) for each data item, to display in the console browser when this element is focused. Use ${C1:Data:[TypeName]:[FieldName]} to get a field value of a parent (or self) data element.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+
+		
 		<xs:attributeGroup ref="DisplayGroup" />
 
     <xs:attributeGroup ref="IconGroup" />

@@ -135,6 +135,7 @@ namespace Composite.C1Console.Trees.Foundation
             XAttribute showForeignItemsAttribute = element.Attribute("ShowForeignItems");
             XAttribute leafDisplayAttribute = element.Attribute("Display");
             XAttribute browserUrlAttribute = element.Attribute("BrowserUrl");
+            XAttribute browserImagelAttribute = element.Attribute("BrowserImage");
 
             if (typeAttribute == null)
             {
@@ -172,7 +173,8 @@ namespace Composite.C1Console.Trees.Foundation
                     OpenedIcon = openedIcon,
                     ShowForeignItems = showForeignItemsAttribute.GetValueOrDefault("true").ToLowerInvariant() == "true",
                     Display = leafDisplay,
-                    BrowserUrl = browserUrlAttribute.GetValueOrDefault(null)
+                    BrowserUrl = browserUrlAttribute.GetValueOrDefault(null),
+                    BrowserImage = browserImagelAttribute.GetValueOrDefault(null),
             };
 
             List<TreeNode> treeNodes;
@@ -232,6 +234,7 @@ namespace Composite.C1Console.Trees.Foundation
             XAttribute iconAttribute = element.Attribute("Icon");
             XAttribute openedIconAttribute = element.Attribute("OpenedIcon");
             XAttribute browserUrlAttribute = element.Attribute("BrowserUrl");
+            XAttribute browserImageAttribute = element.Attribute("BrowserImage");
 
             if (idAttribute == null)
             {
@@ -275,7 +278,8 @@ namespace Composite.C1Console.Trees.Foundation
                     ToolTip = toolTipAttribute.GetValueOrDefault(labelAttribute.Value),
                     Icon = icon,
                     OpenIcon = openedIcon,
-                    BrowserUrl = browserUrlAttribute.GetValueOrDefault(null)
+                    BrowserUrl = browserUrlAttribute.GetValueOrDefault(null),
+                    BrowserImage = browserImageAttribute.GetValueOrDefault(null)
             };
         }
 
