@@ -77,23 +77,15 @@ namespace Composite.AspNet
         {
             Verify.ArgumentNotNull(node, nameof(node));
 
-            var childNodes = new List<SiteMapNode>();
+            var childNodes = _plugins.SelectMany(plugin => plugin.GetChildNodes(node)
+                                                           ?? Enumerable.Empty<SiteMapNode>()).ToList();
 
-            foreach (var plugin in _plugins)
-            {
-                var pluginChildNodes = plugin.GetChildNodes(node);
-                if (pluginChildNodes != null)
-                {
-                    childNodes.AddRange(pluginChildNodes);
-                }
-            }
+            childNodes = SecurityTrimList(childNodes);
 
             if (!childNodes.Any())
             {
                 return EmptyCollection;
             }
-
-            childNodes = SecurityTrimList(childNodes);
 
             return new SiteMapNodeCollection(childNodes.ToArray());
         }
@@ -139,7 +131,7 @@ namespace Composite.AspNet
                         {
                             var pageNode = data.SitemapNavigator.GetPageNodeByHostname(context.Request.Url.Host);
 
-                            homePageId = pageNode.Id;
+                            homePageId = pageNode?.Id ?? Guid.Empty;
                         }
                     }
                 }
@@ -203,16 +195,7 @@ namespace Composite.AspNet
         {
             var ctxBase = new HttpContextWrapper(ctx);
 
-            foreach (var plugin in _plugins)
-            {
-                var isAccessibleToUser = plugin.IsAccessibleToUser(ctxBase, node);
-                if (!isAccessibleToUser)
-                {
-                    return false;
-                }
-            }
-
-            return true;
+            return _plugins.All(plugin => plugin.IsAccessibleToUser(ctxBase, node));
         }
 
         private T SecurityTrimNode<T>(T node) where T : SiteMapNode
@@ -241,7 +224,7 @@ namespace Composite.AspNet
                 return null;
             }
 
-            if (SecurityTrimmingEnabled)
+            if (SecurityTrimmingEnabled && list.Count > 0)
             {
                 var context = HttpContext.Current;
 

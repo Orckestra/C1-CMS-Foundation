@@ -1,22 +1,24 @@
 using System;
+using System.Web;
 
 namespace Composite.AspNet
 {
     /// <summary>
-    /// 
+    /// Provides infomation that is used as an addition to <see cref="SiteMapNode"/> when generating sitemap xml file.
+    /// See https://www.sitemaps.org for details
     /// </summary>
     public interface ISchemaOrgSiteMapNode
     {
         /// <summary>
-        /// Gets or sets the last modified.
+        /// Gets the last modification time.
         /// </summary>
         /// <value>
-        /// The last modified.
+        /// The last modification time.
         /// </value>
         DateTime LastModified { get; }
 
         /// <summary>
-        /// Gets or sets the change frequency.
+        /// Gets the change frequency.
         /// </summary>
         /// <value>
         /// The change frequency.
@@ -24,7 +26,7 @@ namespace Composite.AspNet
         SiteMapNodeChangeFrequency? ChangeFrequency { get; }
 
         /// <summary>
-        /// Gets or sets the priority.
+        /// Gets the priority.
         /// </summary>
         /// <value>
         /// The priority.

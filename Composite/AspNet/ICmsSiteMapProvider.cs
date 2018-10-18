@@ -2,10 +2,14 @@ using System.Collections.Generic;
 
 namespace Composite.AspNet
 {
-    /// <exclude />
+    /// <summary>
+    /// An inteface for getting site map data required for rendering /Sitemap.xml file.
+    /// </summary>
     public interface ICmsSiteMapProvider
     {
-        /// <exclude />
+        /// <summary>
+        /// Gets the root nodes.
+        /// </summary>
         ICollection<CmsPageSiteMapNode> GetRootNodes();
     }
 }
