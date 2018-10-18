@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
@@ -461,9 +461,7 @@ namespace Composite.Data
 
             Expression currentExpression = GetPredicateExpressionByUniqueKeyFilterExpression(keyProperties, dataKeyPropertyCollection, parameterExpression);
 
-            Expression<Func<T, bool>> lambdaExpression = Expression.Lambda<Func<T, bool>>(currentExpression, new ParameterExpression[] { parameterExpression });
-
-            return lambdaExpression;
+            return Expression.Lambda<Func<T, bool>>(currentExpression, parameterExpression);
         }
 
 
@@ -473,12 +471,7 @@ namespace Composite.Data
         public static Expression<Func<T, bool>> GetPredicateExpressionByUniqueKey<T>(object dataKeyValue)
             where T : class, IData
         {
-            PropertyInfo propertyInfo = DataAttributeFacade.GetKeyProperties(typeof(T)).Single();
-
-            var dataKeyPropertyCollection = new DataKeyPropertyCollection();
-            dataKeyPropertyCollection.AddKeyProperty(propertyInfo, dataKeyValue);
-
-            return GetPredicateExpressionByUniqueKey<T>(dataKeyPropertyCollection);
+            return GetPredicateExpressionByUniqueKey<T>(ToKeyCollection(typeof(T), dataKeyValue));
         }
 
 
@@ -495,11 +488,9 @@ namespace Composite.Data
 
             Expression currentExpression = GetPredicateExpressionByUniqueKeyFilterExpression(keyProperties, dataKeyPropertyCollection, parameterExpression);
 
-            Type delegateType = typeof(Func<,>).MakeGenericType(new [] { interfaceType, typeof(bool) });
+            Type delegateType = typeof(Func<,>).MakeGenericType(interfaceType, typeof(bool));
 
-            LambdaExpression lambdaExpression = Expression.Lambda(delegateType, currentExpression, new [] { parameterExpression });
-
-            return lambdaExpression;
+            return Expression.Lambda(delegateType, currentExpression, parameterExpression);
         }
 
 
@@ -510,12 +501,7 @@ namespace Composite.Data
         {
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");
 
-            PropertyInfo propertyInfo = DataAttributeFacade.GetKeyProperties(interfaceType).Single();
-
-            var dataKeyPropertyCollection = new DataKeyPropertyCollection();
-                dataKeyPropertyCollection.AddKeyProperty(propertyInfo, dataKeyValue);
-
-            return GetPredicateExpressionByUniqueKey(interfaceType, dataKeyPropertyCollection);
+            return GetPredicateExpressionByUniqueKey(interfaceType, ToKeyCollection(interfaceType, dataKeyValue));
         }
 
 
@@ -548,12 +534,7 @@ namespace Composite.Data
         public static T TryGetDataByUniqueKey<T>(object dataKeyValue)
             where T : class, IData
         {
-            PropertyInfo propertyInfo = DataAttributeFacade.GetKeyProperties(typeof(T)).Single();
-
-            var dataKeyPropertyCollection = new DataKeyPropertyCollection();
-            dataKeyPropertyCollection.AddKeyProperty(propertyInfo, dataKeyValue);
-
-            return TryGetDataByUniqueKey<T>(dataKeyPropertyCollection);
+            return TryGetDataByUniqueKey<T>(ToKeyCollection(typeof(T), dataKeyValue));
         }
 
 
@@ -566,9 +547,9 @@ namespace Composite.Data
 
             IQueryable<T> query = GetData<T>();
 
-            if (query is CachingQueryable_CachedByKey && dataKeyPropertyCollection.Count == 1)
+            if (query is ICachingQueryable_CachedByKey cachedQuery && dataKeyPropertyCollection.Count == 1)
             {
-                return (T) (query as CachingQueryable_CachedByKey).GetCachedValueByKey(dataKeyPropertyCollection.KeyProperties.Single().Value);
+                return (T)cachedQuery.GetCachedValueByKey(dataKeyPropertyCollection.KeyProperties.Single().Value);
             }
 
             Expression<Func<T, bool>> lambdaExpression = GetPredicateExpressionByUniqueKey<T>(dataKeyPropertyCollection);
@@ -585,7 +566,7 @@ namespace Composite.Data
         {
             IData data = TryGetDataByUniqueKey<T>(dataKeyValue);
 
-            if (data == null) throw new InvalidOperationException("No data exist given the data key values");
+            if (data == null) throw new InvalidOperationException("No data exist given the data key value");
 
             return (T)data;
         }
@@ -595,24 +576,18 @@ namespace Composite.Data
         /// <exclude />
         public static IData TryGetDataByUniqueKey(Type interfaceType, object dataKeyValue)
         {
-            Verify.ArgumentNotNull(interfaceType, "interfaceType");
+            Verify.ArgumentNotNull(interfaceType, nameof(interfaceType));
 
-            if(DataCachingFacade.IsDataAccessCacheEnabled(interfaceType))
+            if (DataCachingFacade.IsDataAccessCacheEnabled(interfaceType))
             {
-                var cachedByKey = DataFacade.GetData(interfaceType) as CachingQueryable_CachedByKey;
-                if(cachedByKey != null)
+                var query = GetData(interfaceType);
+                if (query is ICachingQueryable_CachedByKey cachedByKey)
                 {
                     return cachedByKey.GetCachedValueByKey(dataKeyValue);
                 }
             }
-           
 
-            PropertyInfo propertyInfo = DataAttributeFacade.GetKeyProperties(interfaceType).Single();
-
-            DataKeyPropertyCollection dataKeyPropertyCollection = new DataKeyPropertyCollection();
-                dataKeyPropertyCollection.AddKeyProperty(propertyInfo, dataKeyValue);
-
-            return TryGetDataByUniqueKey(interfaceType, dataKeyPropertyCollection);
+            return TryGetDataByUniqueKey(interfaceType, ToKeyCollection(interfaceType, dataKeyValue));
         }
 
         // Overload
@@ -621,23 +596,19 @@ namespace Composite.Data
         {
             Verify.ArgumentNotNull(interfaceType, "interfaceType");
 
+            // TODO: move cache lookup into the overload that takes the DataKeyCollection
             if (DataCachingFacade.IsDataAccessCacheEnabled(interfaceType))
             {
-                var cachedByKey = DataFacade.GetData(interfaceType) as CachingQueryable_CachedByKey;
-                if (cachedByKey != null)
+                var query = GetData(interfaceType);
+                if (query is ICachingQueryable_CachedByKey cachedByKey)
                 {
                     return cachedByKey.GetCachedVersionValuesByKey(dataKeyValue);
                 }
             }
 
-
-            PropertyInfo propertyInfo = DataAttributeFacade.GetKeyProperties(interfaceType).Single();
-
-            DataKeyPropertyCollection dataKeyPropertyCollection = new DataKeyPropertyCollection();
-            dataKeyPropertyCollection.AddKeyProperty(propertyInfo, dataKeyValue);
-
-            return TryGetDataVersionsByUniqueKey(interfaceType, dataKeyPropertyCollection);
+            return TryGetDataVersionsByUniqueKey(interfaceType, ToKeyCollection(interfaceType, dataKeyValue));
         }
+
 
         /// <exclude />
         public static IData TryGetDataByUniqueKey(Type interfaceType, DataKeyPropertyCollection dataKeyPropertyCollection)
@@ -677,14 +648,9 @@ namespace Composite.Data
         {
             Verify.ArgumentNotNull(interfaceType, nameof(interfaceType));
 
-            PropertyInfo propertyInfo = interfaceType.GetKeyProperties().Single();
+            IData data = TryGetDataByUniqueKey(interfaceType, dataKeyValue);
 
-            var dataKeyPropertyCollection = new DataKeyPropertyCollection();
-            dataKeyPropertyCollection.AddKeyProperty(propertyInfo, dataKeyValue);
-
-            IData data = TryGetDataByUniqueKey(interfaceType, dataKeyPropertyCollection);
-
-            Verify.IsNotNull(data, "No data exist given the data key values");
+            Verify.IsNotNull(data, "No data exist given the data key value");
 
             return data;
         }
@@ -704,6 +670,22 @@ namespace Composite.Data
 
             return data;
         }
+
+
+        private static DataKeyPropertyCollection ToKeyCollection(Type interfaceType, object dataKeyValue)
+        {
+            var keyPropertyInfo = interfaceType.GetKeyProperties().Single();
+            return ToKeyCollection(keyPropertyInfo, dataKeyValue);
+        }
+
+
+        private static DataKeyPropertyCollection ToKeyCollection(PropertyInfo keyPropertyInfo, object dataKeyValue)
+        {
+            var dataKeyPropertyCollection = new DataKeyPropertyCollection();
+            dataKeyPropertyCollection.AddKeyProperty(keyPropertyInfo, dataKeyValue);
+            return dataKeyPropertyCollection;
+        }
+
         #endregion
 
 
@@ -1757,9 +1739,9 @@ namespace Composite.Data
         {
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");
 
-            foreach (DataScopeIdentifier dataScopeIdentifier in GetSupportedDataScopes(interfaceType))
+            foreach (var dataScopeIdentifier in GetSupportedDataScopes(interfaceType))
             {
-                using (DataScope dataScope = new DataScope(dataScopeIdentifier))
+                using (new DataScope(dataScopeIdentifier))
                 {
                     IData data = GetData(interfaceType).ToDataEnumerable().FirstOrDefault();
 
@@ -1799,7 +1781,7 @@ namespace Composite.Data
         public static bool ExistsInAnyLocale<T>()
             where T : class, IData
         {
-            return ExistsInAnyLocale<T>(new CultureInfo[] { });
+            return ExistsInAnyLocale<T>(Enumerable.Empty<CultureInfo>());
         }
 
 
@@ -1811,7 +1793,7 @@ namespace Composite.Data
 
             MethodInfo methodInfo = GetExistsInAnyLocaleMethodInfo(interfaceType);
 
-            bool result = (bool)methodInfo.Invoke(null, new object[] { });
+            bool result = (bool)methodInfo.Invoke(null, null);
 
             return result;
         }
@@ -1849,13 +1831,13 @@ namespace Composite.Data
                 if (_resourceLocker.Resources.GenericSetDataInterceptorMethodInfo.TryGetValue(interfaceType, out methodInfo) == false)
                 {
                     MethodInfo nonGenericMethod = typeof(DataFacade).GetMethod(
-                        "SetDataInterceptor",
+                        nameof(SetDataInterceptor),
                         BindingFlags.Static | BindingFlags.Public,
                         null,
                         new Type[] { typeof(DataInterceptor) },
                         null);
 
-                    methodInfo = nonGenericMethod.MakeGenericMethod(new Type[] { interfaceType });
+                    methodInfo = nonGenericMethod.MakeGenericMethod(interfaceType);
 
                     _resourceLocker.Resources.GenericSetDataInterceptorMethodInfo.Add(interfaceType, methodInfo);
                 }
@@ -1870,7 +1852,7 @@ namespace Composite.Data
         public static MethodInfo GetHasDataInterceptorMethodInfo(Type interfaceType)
         {
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");
-            if (typeof(IData).IsAssignableFrom(interfaceType) == false) throw new ArgumentException("The provided type must implement IData", "interfaceType");
+            if (!typeof(IData).IsAssignableFrom(interfaceType)) throw new ArgumentException("The provided type must implement IData", "interfaceType");
 
             MethodInfo methodInfo;
             using (_resourceLocker.Locker)
@@ -1878,13 +1860,13 @@ namespace Composite.Data
                 if (_resourceLocker.Resources.GenericHasDataInterceptorMethodInfo.TryGetValue(interfaceType, out methodInfo) == false)
                 {
                     MethodInfo nonGenericMethod = typeof(DataFacade).GetMethod(
-                        "HasDataInterceptor",
+                        nameof(HasDataInterceptor),
                         BindingFlags.Static | BindingFlags.Public,
                         null,
                         new Type[] { },
                         null);
 
-                    methodInfo = nonGenericMethod.MakeGenericMethod(new Type[] { interfaceType });
+                    methodInfo = nonGenericMethod.MakeGenericMethod(interfaceType);
 
                     _resourceLocker.Resources.GenericHasDataInterceptorMethodInfo.Add(interfaceType, methodInfo);
                 }
@@ -1899,7 +1881,7 @@ namespace Composite.Data
         public static MethodInfo GetClearDataInterceptorMethodInfo(Type interfaceType)
         {
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");
-            if (typeof(IData).IsAssignableFrom(interfaceType) == false) throw new ArgumentException("The provided type must implement IData", "interfaceType");
+            if (!typeof(IData).IsAssignableFrom(interfaceType)) throw new ArgumentException("The provided type must implement IData", "interfaceType");
 
             MethodInfo methodInfo;
             using (_resourceLocker.Locker)
@@ -1907,13 +1889,13 @@ namespace Composite.Data
                 if (_resourceLocker.Resources.GenericClearDataInterceptorMethodInfo.TryGetValue(interfaceType, out methodInfo) == false)
                 {
                     MethodInfo nonGenericMethod = typeof(DataFacade).GetMethod(
-                        "ClearDataInterceptor",
+                        nameof(ClearDataInterceptor),
                         BindingFlags.Static | BindingFlags.Public,
                         null,
                         new Type[] { },
                         null);
 
-                    methodInfo = nonGenericMethod.MakeGenericMethod(new Type[] { interfaceType });
+                    methodInfo = nonGenericMethod.MakeGenericMethod(interfaceType);
 
                     _resourceLocker.Resources.GenericClearDataInterceptorMethodInfo.Add(interfaceType, methodInfo);
                 }
@@ -1928,7 +1910,7 @@ namespace Composite.Data
         public static MethodInfo GetGetDataMethodInfo(Type interfaceType)
         {
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");
-            if (typeof(IData).IsAssignableFrom(interfaceType) == false) throw new ArgumentException("The provided type must implement IData", "interfaceType");
+            if (!typeof(IData).IsAssignableFrom(interfaceType)) throw new ArgumentException("The provided type must implement IData", "interfaceType");
 
             MethodInfo methodInfo;
             using (_resourceLocker.Locker)
@@ -1936,13 +1918,13 @@ namespace Composite.Data
                 if (_resourceLocker.Resources.GenericGetDataFromTypeMethodInfo.TryGetValue(interfaceType, out methodInfo) == false)
                 {
                     MethodInfo nonGenericMethod = typeof(DataFacade).GetMethod(
-                        "GetData",
+                        nameof(GetData),
                         BindingFlags.Static | BindingFlags.Public,
                         null,
-                        new Type[] { typeof(bool), typeof(IEnumerable<string>) },
+                        new[] { typeof(bool), typeof(IEnumerable<string>) },
                         null);
 
-                    methodInfo = nonGenericMethod.MakeGenericMethod(new Type[] { interfaceType });
+                    methodInfo = nonGenericMethod.MakeGenericMethod(interfaceType);
 
                     _resourceLocker.Resources.GenericGetDataFromTypeMethodInfo.Add(interfaceType, methodInfo);
                 }
@@ -1957,7 +1939,7 @@ namespace Composite.Data
         public static MethodInfo GetGetDataFromDataSourceIdMethodInfo(Type interfaceType)
         {
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");
-            if (typeof(IData).IsAssignableFrom(interfaceType) == false) throw new ArgumentException("The provided type must implement IData", "interfaceType");
+            if (!typeof(IData).IsAssignableFrom(interfaceType)) throw new ArgumentException("The provided type must implement IData", "interfaceType");
 
             MethodInfo methodInfo;
             using (_resourceLocker.Locker)
@@ -1966,12 +1948,12 @@ namespace Composite.Data
                 {
                     MethodInfo nonGenericMethod =
                         (from m in typeof(DataFacade).GetMethods(BindingFlags.Public | BindingFlags.Static)
-                         where m.Name == "GetDataFromDataSourceId" &&
+                         where m.Name == nameof(GetDataFromDataSourceId) &&
                                m.IsGenericMethodDefinition &&
                                m.GetParameters().Length == 2
                          select m).Single();
 
-                    methodInfo = nonGenericMethod.MakeGenericMethod(new Type[] { interfaceType });
+                    methodInfo = nonGenericMethod.MakeGenericMethod(interfaceType);
 
                     _resourceLocker.Resources.GenericGetDataFromDataSourceIdMethodInfo.Add(interfaceType, methodInfo);
                 }
@@ -1986,7 +1968,7 @@ namespace Composite.Data
         public static MethodInfo GetGetDataWithPredicatMethodInfo(Type interfaceType)
         {
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");
-            if (typeof(IData).IsAssignableFrom(interfaceType) == false) throw new ArgumentException("The provided type must implement IData", "interfaceType");
+            if (!typeof(IData).IsAssignableFrom(interfaceType)) throw new ArgumentException("The provided type must implement IData", "interfaceType");
 
             MethodInfo methodInfo;
             using (_resourceLocker.Locker)
@@ -1995,14 +1977,14 @@ namespace Composite.Data
                 {
                     MethodInfo genericMethod =
                         (from m in typeof(DataFacade).GetMethods(BindingFlags.Public | BindingFlags.Static)
-                         where m.Name == "GetData" &&
+                         where m.Name == nameof(GetData) &&
                                m.IsGenericMethodDefinition &&
                                m.GetParameters().Length == 1 &&
                                m.GetParameters()[0].ParameterType.IsGenericType &&
                                m.GetParameters()[0].ParameterType.GetGenericTypeDefinition() == typeof(Expression<>)
                          select m).Single();
 
-                    methodInfo = genericMethod.MakeGenericMethod(new Type[] { interfaceType });
+                    methodInfo = genericMethod.MakeGenericMethod(interfaceType);
 
                     _resourceLocker.Resources.GenericGetDataFromTypeWithPredicateMethodInfo.Add(interfaceType, methodInfo);
                 }
@@ -2026,37 +2008,9 @@ namespace Composite.Data
                 {
                     MethodInfo genericMethodInfo = StaticReflection.GetGenericMethodInfo(data => AddNew((IData) null, true, true, true, true, null));
 
-                    methodInfo = genericMethodInfo.MakeGenericMethod(new [] { interfaceType });
+                    methodInfo = genericMethodInfo.MakeGenericMethod(interfaceType);
 
                     _resourceLocker.Resources.GenericAddNewFromTypeMethodInfo.Add(interfaceType, methodInfo);
-                }
-            }
-
-            return methodInfo;
-        }
-
-
-
-        /// <exclude />
-        public static MethodInfo GetMoveMethodInfo(Type interfaceType)
-        {
-            if (interfaceType == null) throw new ArgumentNullException("interfaceType");
-            if (typeof(IData).IsAssignableFrom(interfaceType) == false) throw new ArgumentException("The provided type must implement IData", "interfaceType");
-
-            MethodInfo methodInfo;
-            using (_resourceLocker.Locker)
-            {
-                if (_resourceLocker.Resources.GenericMoveFromTypeMethodInfo.TryGetValue(interfaceType, out methodInfo) == false)
-                {
-                    methodInfo =
-                        (from method in typeof(DataFacade).GetMethods(BindingFlags.Static | BindingFlags.NonPublic)
-                         where method.Name == "Move" &&
-                               method.GetParameters().Length == 3
-                         select method).First();
-
-                    methodInfo = methodInfo.MakeGenericMethod(new Type[] { interfaceType });
-
-                    _resourceLocker.Resources.GenericMoveFromTypeMethodInfo.Add(interfaceType, methodInfo);
                 }
             }
 
@@ -2078,11 +2032,11 @@ namespace Composite.Data
                 {
                     methodInfo =
                         (from method in typeof(DataFacade).GetMethods(BindingFlags.Static | BindingFlags.NonPublic)
-                         where method.Name == "ExistsInAnyLocale" &&
+                         where method.Name == nameof(ExistsInAnyLocale) &&
                                typeof(IEnumerable).IsAssignableFrom(method.GetParameters()[0].ParameterType) == false
                          select method).First();
 
-                    methodInfo = methodInfo.MakeGenericMethod(new Type[] { interfaceType });
+                    methodInfo = methodInfo.MakeGenericMethod(interfaceType);
 
                     _resourceLocker.Resources.GenericExistsInAnyLocaleMethodInfo.Add(interfaceType, methodInfo);
                 }
@@ -2097,7 +2051,7 @@ namespace Composite.Data
         public static MethodInfo GetExistsInAnyLocaleWithParamMethodInfo(Type interfaceType)
         {
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");
-            if (typeof(IData).IsAssignableFrom(interfaceType) == false) throw new ArgumentException("The provided type must implement IData", "interfaceType");
+            if (!typeof(IData).IsAssignableFrom(interfaceType)) throw new ArgumentException("The provided type must implement IData", "interfaceType");
 
             MethodInfo methodInfo;
             using (_resourceLocker.Locker)
@@ -2107,12 +2061,12 @@ namespace Composite.Data
                     methodInfo =
                         (from method in typeof(DataFacade).GetMethods(BindingFlags.Static | BindingFlags.Public)
                          where
-                            (method.Name == "ExistsInAnyLocale") &&
-                            (method.GetParameters().Count() == 1) &&
-                            (typeof(IEnumerable).IsAssignableFrom(method.GetParameters()[0].ParameterType))
+                            method.Name == nameof(ExistsInAnyLocale) &&
+                            method.GetParameters().Length == 1 &&
+                            typeof(IEnumerable).IsAssignableFrom(method.GetParameters()[0].ParameterType)
                          select method).First();
 
-                    methodInfo = methodInfo.MakeGenericMethod(new Type[] { interfaceType });
+                    methodInfo = methodInfo.MakeGenericMethod(interfaceType);
 
                     _resourceLocker.Resources.GenericExistsInAnyLocaleWithParamMethodInfo.Add(interfaceType, methodInfo);
                 }
