@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Composite.C1Console.Actions;
@@ -168,7 +168,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             {
                 VisualData = new ActionVisualizedData
                 {
-                    //Label = "List unpublished Pages and Folder Data",
+                    //Label = "List unpublished Content",
                     //ToolTip = "Get an overview of pages and page folder data that haven't been published yet.",
                     Label = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.ViewUnpublishedItems"),
                     ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.ViewUnpublishedItemsToolTip"),
