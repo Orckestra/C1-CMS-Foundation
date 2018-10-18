@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.UI;
@@ -577,8 +577,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             TrimFieldValues(selectedPage);
 
             if (!FieldHasValidLength(selectedPage.Title, nameof(IPage.Title), 255)
-                || !FieldHasValidLength(selectedPage.MenuTitle, nameof(IPage.MenuTitle), 64)
-                || !FieldHasValidLength(selectedPage.UrlTitle, nameof(IPage.UrlTitle), 64)
+                || !FieldHasValidLength(selectedPage.MenuTitle, nameof(IPage.MenuTitle), 192)
+                || !FieldHasValidLength(selectedPage.UrlTitle, nameof(IPage.UrlTitle), 192)
                 || !FieldHasValidLength(selectedPage.FriendlyUrl, nameof(IPage.FriendlyUrl), 64))
             {
                 e.Result = false;
