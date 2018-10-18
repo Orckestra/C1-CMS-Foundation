@@ -38,3 +38,25 @@ selenium-debug.log
 /Website/test/e2e/reports/
 
 GitCommitInfo.cs
+
+/Website/Composite/content/misc/editors/visualeditor/tinymce/plugins/autolink/plugin.min.js
+/Website/Composite/content/misc/editors/visualeditor/tinymce/plugins/lists/plugin.min.js
+/Website/Composite/content/misc/editors/visualeditor/tinymce/plugins/paste/plugin.min.js
+/Website/Composite/content/misc/editors/visualeditor/tinymce/plugins/table/plugin.min.js
+/Website/Composite/content/misc/editors/visualeditor/tinymce/skins/lightgray/fonts/tinymce.woff
+/Website/Composite/content/misc/editors/visualeditor/tinymce/skins/lightgray/fonts/tinymce.ttf
+/Website/Composite/content/misc/editors/visualeditor/tinymce/skins/lightgray/fonts/tinymce.svg
+/Website/Composite/content/misc/editors/visualeditor/tinymce/skins/lightgray/fonts/tinymce.eot
+/Website/Composite/content/misc/editors/visualeditor/tinymce/skins/lightgray/fonts/tinymce-small.woff
+/Website/Composite/content/misc/editors/visualeditor/tinymce/skins/lightgray/fonts/tinymce-small.ttf
+/Website/Composite/content/misc/editors/visualeditor/tinymce/skins/lightgray/fonts/tinymce-small.svg
+/Website/Composite/content/misc/editors/visualeditor/tinymce/skins/lightgray/fonts/tinymce-small.eot
+/Website/Composite/content/misc/editors/visualeditor/tinymce/tinymce.min.js
+/Website/Composite/content/misc/editors/visualeditor/tinymce/skins/lightgray/skin.min.css
+/Website/Composite/content/misc/editors/visualeditor/tinymce/skins/lightgray/skin.ie7.min.css
+/Website/Composite/content/misc/editors/visualeditor/tinymce/skins/lightgray/img/trans.gif
+/Website/Composite/content/misc/editors/visualeditor/tinymce/skins/lightgray/img/object.gif
+/Website/Composite/content/misc/editors/visualeditor/tinymce/skins/lightgray/img/loader.gif
+/Website/Composite/content/misc/editors/visualeditor/tinymce/skins/lightgray/img/anchor.gif
+/Website/Composite/content/misc/editors/visualeditor/tinymce/skins/lightgray/content.min.css
+/Website/Composite/content/misc/editors/visualeditor/tinymce/skins/lightgray/content.inline.min.css
