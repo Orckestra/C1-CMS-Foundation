@@ -43,6 +43,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             public const string InternalUrlPrefix = "InternalUrlPrefix";
             public const string HasCaching = "HasCaching";
             public const string HasPublishing = "HasPublishing";
+            public const string HasSorting = "HasSorting";
             public const string IsSearchable = "IsSearchable";
 
             public const string OldTypeName = "OldTypeName";
@@ -84,6 +85,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 {BindingNames.InternalUrlPrefix, dataTypeDescriptor.InternalUrlPrefix},
                 {BindingNames.HasCaching, helper.IsCachable},
                 {BindingNames.HasPublishing, helper.IsPublishControlled},
+                {BindingNames.HasSorting, helper.IsSortable},
                 {BindingNames.IsSearchable, helper.IsSearchable},
                 {BindingNames.DataFieldDescriptors, fieldDescriptors},
                 {BindingNames.OldTypeName, dataTypeDescriptor.Name},
@@ -117,6 +119,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 string typeTitle = this.GetBinding<string>(BindingNames.TypeTitle);
                 bool hasCaching = this.GetBinding<bool>(BindingNames.HasCaching);
                 bool hasPublishing = this.GetBinding<bool>(BindingNames.HasPublishing);
+                bool hasSorting = this.GetBinding<bool>(BindingNames.HasSorting);
                 bool isSearchable = this.GetBinding<bool>(BindingNames.IsSearchable);
                 string keyFieldName = this.GetBinding<string>(BindingNames.KeyFieldName);
                 string labelFieldName = this.GetBinding<string>(BindingNames.LabelFieldName);
@@ -167,6 +170,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                     helper.SetCachable(hasCaching);
                     helper.SetSearchable(isSearchable);
                     helper.SetPublishControlled(hasPublishing);
+                    helper.SetSortable(hasSorting);
                     helper.SetLocalizedControlled(hasLocalization);
                 }
 
