@@ -543,18 +543,7 @@ namespace Composite.Data
         public static T TryGetDataByUniqueKey<T>(DataKeyPropertyCollection dataKeyPropertyCollection)
             where T : class, IData
         {
-            Verify.ArgumentNotNull(dataKeyPropertyCollection, "dataKeyPropertyCollection");
-
-            IQueryable<T> query = GetData<T>();
-
-            if (query is ICachingQueryable_CachedByKey cachedQuery && dataKeyPropertyCollection.Count == 1)
-            {
-                return (T)cachedQuery.GetCachedValueByKey(dataKeyPropertyCollection.KeyProperties.Single().Value);
-            }
-
-            Expression<Func<T, bool>> lambdaExpression = GetPredicateExpressionByUniqueKey<T>(dataKeyPropertyCollection);
-
-            return query.FirstOrDefault(lambdaExpression);
+            return (T) TryGetDataByUniqueKey(typeof(T), dataKeyPropertyCollection);
         }
 
 
@@ -578,15 +567,6 @@ namespace Composite.Data
         {
             Verify.ArgumentNotNull(interfaceType, nameof(interfaceType));
 
-            if (DataCachingFacade.IsDataAccessCacheEnabled(interfaceType))
-            {
-                var query = GetData(interfaceType);
-                if (query is ICachingQueryable_CachedByKey cachedByKey)
-                {
-                    return cachedByKey.GetCachedValueByKey(dataKeyValue);
-                }
-            }
-
             return TryGetDataByUniqueKey(interfaceType, ToKeyCollection(interfaceType, dataKeyValue));
         }
 
@@ -595,16 +575,6 @@ namespace Composite.Data
         public static IEnumerable<IData> TryGetDataVersionsByUniqueKey(Type interfaceType, object dataKeyValue)
         {
             Verify.ArgumentNotNull(interfaceType, "interfaceType");
-
-            // TODO: move cache lookup into the overload that takes the DataKeyCollection
-            if (DataCachingFacade.IsDataAccessCacheEnabled(interfaceType))
-            {
-                var query = GetData(interfaceType);
-                if (query is ICachingQueryable_CachedByKey cachedByKey)
-                {
-                    return cachedByKey.GetCachedVersionValuesByKey(dataKeyValue);
-                }
-            }
 
             return TryGetDataVersionsByUniqueKey(interfaceType, ToKeyCollection(interfaceType, dataKeyValue));
         }
@@ -615,6 +585,15 @@ namespace Composite.Data
         {
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");
             if (dataKeyPropertyCollection == null) throw new ArgumentNullException("dataKeyPropertyCollection");
+
+            if (dataKeyPropertyCollection.Count == 1 && DataCachingFacade.IsDataAccessCacheEnabled(interfaceType))
+            {
+                var query = GetData(interfaceType);
+                if (query is ICachingQueryable_CachedByKey cachedByKey)
+                {
+                    return cachedByKey.GetCachedValueByKey(GetConvertedUniqueKey(interfaceType, dataKeyPropertyCollection));
+                }
+            }
 
             LambdaExpression lambdaExpression = GetPredicateExpressionByUniqueKey(interfaceType, dataKeyPropertyCollection);
 
@@ -627,11 +606,21 @@ namespace Composite.Data
             return data;
         }
 
+
         /// <exclude />
         public static IEnumerable<IData> TryGetDataVersionsByUniqueKey(Type interfaceType, DataKeyPropertyCollection dataKeyPropertyCollection)
         {
             Verify.ArgumentNotNull(interfaceType, nameof(interfaceType));
             Verify.ArgumentNotNull(dataKeyPropertyCollection, nameof(dataKeyPropertyCollection));
+
+            if (dataKeyPropertyCollection.Count == 1 && DataCachingFacade.IsDataAccessCacheEnabled(interfaceType))
+            {
+                var query = GetData(interfaceType);
+                if (query is ICachingQueryable_CachedByKey cachedByKey)
+                {
+                    return cachedByKey.GetCachedVersionValuesByKey(GetConvertedUniqueKey(interfaceType, dataKeyPropertyCollection));
+                }
+            }
 
             LambdaExpression lambdaExpression = GetPredicateExpressionByUniqueKey(interfaceType, dataKeyPropertyCollection);
 
@@ -641,6 +630,28 @@ namespace Composite.Data
 
             return ((IEnumerable) queryable).Cast<IData>();
         }
+
+
+        private static object GetConvertedUniqueKey(Type interfaceType, DataKeyPropertyCollection keyCollection)
+        {
+            var keyPropertyInfo = interfaceType.GetKeyProperties().Single();
+            var kvp = keyCollection.KeyProperties.Single();
+
+            if (keyPropertyInfo.Name != kvp.Key)
+            {
+                throw new InvalidOperationException($"Expected value for key '{keyPropertyInfo.Name}' but found '{kvp.Key}'");
+            }
+
+
+            var result = ValueTypeConverter.TryConvert(kvp.Value, keyPropertyInfo.PropertyType, out var conversionException);
+            if (conversionException != null)
+            {
+                throw conversionException;
+            }
+
+            return result;
+        }
+
 
         // Overload
         /// <exclude />
