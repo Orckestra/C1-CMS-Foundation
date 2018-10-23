@@ -140,7 +140,7 @@ img.compositeFunctionWysiwygRepresentation.loaded.editHover {
     cursor: pointer;
 }
 
-img.compositeFunctionWysiwygRepresentation::selection {
+img.compositeFunctionWysiwygRepresentation.mceC1Focused::selection {
     background-color: transparent;
     color: #000;
 }
