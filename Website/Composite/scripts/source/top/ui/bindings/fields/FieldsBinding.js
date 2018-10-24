@@ -83,7 +83,7 @@ FieldsBinding.prototype.onBindingInitialize = function () {
 	if (Client.isEdge) {
 		var editopPage = this.getAncestorBindingByType(EditorPageBinding);
 		if (editopPage && this.bindingElement.childElementCount > 0) {
-			let columnWidth = 430;
+			var columnWidth = 430;
 			this.bindingElement.style.maxWidth = (this.bindingElement.childElementCount + 1) * columnWidth - 1 + 'px';
 		}
 	}
