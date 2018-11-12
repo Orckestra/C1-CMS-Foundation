@@ -562,14 +562,8 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
             };
             collectProviders(simpleElementNode.Elements);
 
-
-            foreach (var attachedProvider in attachedProviders)
-            {
-                if (ElementFacade.ContainsLocalizedData(new ElementProviderHandle(attachedProvider.ProviderName)))
-                {
-                    element.IsLocaleAware = true;
-                }
-            }
+            element.IsLocaleAware = attachedProviders.Any(provider =>
+                ElementFacade.ContainsLocalizedData(new ElementProviderHandle(provider.ProviderName)));
 
 
             if (element.VisualData.HasChildren)
