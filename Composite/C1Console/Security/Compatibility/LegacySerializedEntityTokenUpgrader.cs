@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -23,6 +23,8 @@ namespace Composite.C1Console.Security.Compatibility
         const string _configFilename = "LegacySerializedEntityTokenUpgrader.config";
         static readonly XName _docRoot = "UpgradeSettings";
         private static ILog _log;
+
+        private const int MaxErrorMessagesPerType = 1000;
 
         /// <summary>
         /// See class description - this allow us to run on startup
@@ -65,9 +67,9 @@ namespace Composite.C1Console.Security.Compatibility
             {
                 var _xConfig = GetConfigElement();
                 return true == (bool)_xConfig.Attribute("enabled") &&
-                    (false == (bool)_xConfig.Attribute("completed") ||
-                    true == (bool)_xConfig.Attribute("force") ||
-                    (DateTime)_xConfig.Attribute("last-run") - (DateTime)_xConfig.Attribute("inception") < TimeSpan.FromMinutes(5));
+                       (false == (bool)_xConfig.Attribute("completed") ||
+                        true == (bool)_xConfig.Attribute("force") ||
+                        (DateTime)_xConfig.Attribute("last-run") - (DateTime)_xConfig.Attribute("inception") < TimeSpan.FromMinutes(5));
             }
         }
 
@@ -130,9 +132,13 @@ namespace Composite.C1Console.Security.Compatibility
                     propertiesToUpdate.Add(tokenProperty);
                 }
 
-                using (var dc = new DataConnection(PublicationScope.Unpublished))
+                using (new DataConnection(PublicationScope.Unpublished))
                 {
                     var allRows = DataFacade.GetData(dataType).ToDataList();
+
+                    var toUpdate = new List<IData>();
+
+                    int errors = 0, updated = 0;
 
                     foreach (var rowItem in allRows)
                     {
@@ -142,48 +148,62 @@ namespace Composite.C1Console.Security.Compatibility
                         {
                             string token = tokenProperty.GetValue(rowItem) as string;
 
-                            if (tokenProperty.Name.Contains(_ET))
+                            try
                             {
-                                try
+                                string tokenReserialized;
+
+                                if (tokenProperty.Name.Contains(_ET))
                                 {
                                     var entityToken = EntityTokenSerializer.Deserialize(token);
-                                    var tokenReserialized = EntityTokenSerializer.Serialize(entityToken);
-
-                                    if (tokenReserialized != token)
-                                    {
-                                        tokenProperty.SetValue(rowItem, tokenReserialized);
-                                        rowChange = true;
-                                    }
+                                    tokenReserialized = EntityTokenSerializer.Serialize(entityToken);
                                 }
-                                catch (Exception ex)
+                                else if (tokenProperty.Name.Contains(_DSI))
+                                {
+                                    token = EnsureValidDataSourceId(token);
+                                    var dataSourceId = DataSourceId.Deserialize(token);
+                                    tokenReserialized = dataSourceId.Serialize();
+                                }
+                                else
+                                {
+                                    throw new InvalidOperationException("This line should not be reachable");
+                                }
+
+                                if (tokenReserialized != token)
+                                {
+                                    tokenProperty.SetValue(rowItem, tokenReserialized);
+                                    rowChange = true;
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                errors++;
+                                if (errors <= MaxErrorMessagesPerType)
                                 {
                                     _log.LogError(LogTitle, $"Failed to upgrade old token '{token}' from data type '{dataType.FullName}' as EntityToken.\n{ex}");
                                 }
                             }
+                        }
 
-                            if (tokenProperty.Name.Contains(_DSI))
+                        if (rowChange)
+                        {
+                            updated++;
+                            toUpdate.Add(rowItem);
+
+                            if (toUpdate.Count >= 1000)
                             {
-                                try
-                                {
-                                    token = EnsureValidDataSourceId(token);
-                                    var dataSourceId = DataSourceId.Deserialize(token);
-                                    var dataSourceIdReserialized = dataSourceId.Serialize();
-
-                                    if (dataSourceIdReserialized != token)
-                                    {
-                                        tokenProperty.SetValue(rowItem, dataSourceIdReserialized);
-                                        rowChange = true;
-                                    }
-                                }
-                                catch (Exception ex)
-                                {
-                                    _log.LogError(LogTitle, $"Failed to upgrade old token '{token}' from data type '{dataType.FullName}' as DataSourceId.\n{ex}");
-                                }
+                                DataFacade.Update(toUpdate, true, false, false);
+                                toUpdate.Clear();
                             }
-
-                            if (rowChange) DataFacade.Update(rowItem, true, false, false);
                         }
                     }
+
+                    if (toUpdate.Count > 0)
+                    {
+                        DataFacade.Update(toUpdate, true, false, false);
+                        toUpdate.Clear();
+                    }
+
+                    _log.LogInformation(LogTitle, $"Finished updating serialized tokens for data type '{dataType.FullName}'. Rows: {allRows.Count}, Updated: {updated}, Errors: {errors}");
                 }
             }
         }
@@ -199,8 +219,9 @@ namespace Composite.C1Console.Security.Compatibility
                     token = token.Replace("'_dataIdType_", String.Format(",\\ VersionId=\\'{0}\\''_dataIdType_", pageId));
                 }
             }
-            catch(Exception) {
-                // if we have an issue, caller will act 
+            catch (Exception)
+            {
+                // if we have an issue, caller will act
             }
 
             return token;
