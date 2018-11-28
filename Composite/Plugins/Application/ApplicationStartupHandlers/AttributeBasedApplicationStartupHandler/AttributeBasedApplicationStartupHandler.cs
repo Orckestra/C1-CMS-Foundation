@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -410,9 +410,9 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
                     }
                 }
             }
-            catch (UnauthorizedAccessException)
+            catch (Exception)
             {
-                Log.LogWarning(LogTitle, $"Failed to open file '{CacheFilePath}'");
+                Log.LogWarning(LogTitle, $"Failed to open file '{CacheFilePath}' for writing - this may lead to slower start up times, if this issue persist. In that case, check that this file is accessible to the web application for writes.");
             }
         }
 
