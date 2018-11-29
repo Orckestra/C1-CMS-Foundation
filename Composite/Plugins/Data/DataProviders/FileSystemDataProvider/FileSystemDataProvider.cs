@@ -305,18 +305,6 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemDataProvider
             if (configuration == null) throw new ArgumentException("Expected configuration to be of type FileSystemDataProviderData", "objectConfiguration");
 
             string resolvedRootDirectory = PathUtil.Resolve(configuration.RootDirectory);
-            if (C1Directory.Exists(resolvedRootDirectory) == false)
-            {
-                try
-                {
-                    C1Directory.CreateDirectory(resolvedRootDirectory);
-                }
-                catch (Exception ex)
-                {
-                    string directoryNotFoundMsg = string.Format("The directory '{0}' was not found and could not be created.", configuration.RootDirectory);
-                    throw new ConfigurationErrorsException(directoryNotFoundMsg, ex, configuration.ElementInformation.Source, configuration.ElementInformation.LineNumber);
-                }
-            }
 
             if (typeof(IFile).IsAssignableFrom(configuration.FileInterfaceType) == false)
             {
