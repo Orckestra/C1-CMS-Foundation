@@ -50,11 +50,11 @@ namespace Composite.Core.WebClient.HttpModules
                         {
                             if (!_consoleArtifactsInitialized && !SystemSetupFacade.SetupIsRunning)
                             {
-                                _consoleArtifactsInitialized = true;
                                 HookingFacade.EnsureInitialization();
                                 FlowControllerFacade.Initialize();
                                 ConsoleFacade.Initialize();
                                 ElementProviderLoader.LoadAllProviders();
+                                _consoleArtifactsInitialized = true;
                             }
                         }
                     }
