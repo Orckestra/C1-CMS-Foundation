@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -261,6 +261,7 @@
     <Compile Include="Plugins\Elements\UrlToEntityToken\WebsiteFileUrlToEntityTokenMapper.cs" />
     <Compile Include="Plugins\Elements\UrlToEntityToken\MediaUrlToEntityTokenMapper.cs" />
     <Compile Include="Plugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\String\HierarchicalSelectorWidgetFunction.cs" />
+    <Compile Include="Plugins\Logging\LogTraceListeners\SystemDiagnosticsTrace\SystemDiagnosticsTraceBridge.cs" />
     <Compile Include="Properties\GitCommitInfo.cs" />
     <Compile Include="Search\Crawling\DataFieldProcessors\DateTimeDataFieldProcessor.cs" />
     <Compile Include="Search\Crawling\DataFieldProcessors\FileNameDataFieldProcessor.cs" />
@@ -2686,8 +2687,8 @@
     </PropertyGroup>
     <Exec Condition="Exists('$(SolutionDir)\.git')" Command="git -C $(ProjectDir) rev-parse --abbrev-ref HEAD&gt; &quot;$(GitBranchFile)&quot;" />
     <Exec Condition="Exists('$(SolutionDir)\.git')" Command="git -C $(ProjectDir) rev-parse HEAD&gt; &quot;$(GitCommitHashFile)&quot;" />
-    <Exec Condition="!Exists('$(SolutionDir)\.git')" Command="@echo unknown branch > &quot;$(GitBranchFile)&quot;" />
-    <Exec Condition="!Exists('$(SolutionDir)\.git')" Command="@echo unknown commit > &quot;$(GitCommitHashFile)&quot;" />
+    <Exec Condition="!Exists('$(SolutionDir)\.git')" Command="@echo unknown branch &gt; &quot;$(GitBranchFile)&quot;" />
+    <Exec Condition="!Exists('$(SolutionDir)\.git')" Command="@echo unknown commit &gt; &quot;$(GitCommitHashFile)&quot;" />
     <PropertyGroup>
       <GitBranch>$([System.IO.File]::ReadAllText("$(GitBranchFile)").Trim())</GitBranch>
       <GitCommitHash>$([System.IO.File]::ReadAllText("$(GitCommitHashFile)").Trim())</GitCommitHash>
