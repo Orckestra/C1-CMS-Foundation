@@ -79,13 +79,13 @@ namespace Composite.Core.ResourceSystem
 
             if (!ResourceProviderPluginFacade.LocalizationSectionDefined(section))
             {
-                Log.LogCritical(LogTitle, "Localization section not defined '{0}:{1}'".FormatWith(section, stringName));
+                Log.LogVerbose(LogTitle, "Localization section not defined '{0}:{1}'".FormatWith(section, stringName));
 
                 return Error_SectionNotDefined;
             }
 
 
-            Log.LogWarning(LogTitle, "Localization string not defined '{0}:{1}'".FormatWith(section, stringName));
+            Log.LogVerbose(LogTitle, "Localization string not defined '{0}:{1}'".FormatWith(section, stringName));
 
             return Error_StringNotDefined;
         }
@@ -124,7 +124,7 @@ namespace Composite.Core.ResourceSystem
 
             if(translations == null)
             {
-                Log.LogCritical(LogTitle, "Missing localization section: '{0}'".FormatWith(providerName));
+                Log.LogVerbose(LogTitle, "Missing localization section: '{0}'".FormatWith(providerName));
                 return new List<KeyValuePair>();
             }
 
