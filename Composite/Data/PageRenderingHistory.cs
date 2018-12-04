@@ -129,7 +129,7 @@ namespace Composite.Data
                 return;
             }
 
-            var urlSpace = new UrlSpace(context) { ForceRelativeUrls = true };
+            var urlSpace = new UrlSpace(context) { ForceRelativeUrls = false };
             var url = PageUrls.BuildUrl(page, UrlKind.Public, urlSpace)
                 ?? PageUrls.BuildUrl(page, UrlKind.Renderer, urlSpace);
 
