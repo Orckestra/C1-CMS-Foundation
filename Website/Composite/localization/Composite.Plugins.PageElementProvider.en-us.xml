@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <strings>
   <string key="AddNewPageStep1.DialogLabel" value="Add New Page" />
   <string key="AddNewPageStep1.DialogLabelFormat" value="Add New {0}" />
@@ -62,10 +62,10 @@
   <string key="PageElementProvider.AddPageAtRoot" value="Add Website" />
   <string key="PageElementProvider.AddPageAtRootFormat" value="Add {0}" />
   <string key="PageElementProvider.AddPageAtRootToolTip" value="Add new homepage" />
-  <string key="PageElementProvider.ViewUnpublishedItems" value="List Unpublished Pages" />
-  <string key="PageElementProvider.ViewUnpublishedItemsToolTip" value="Get an overview of pages and page folder data that haven't been published yet." />
-  <string key="PageElementProvider.ViewUnpublishedItems-document-title" value="Unpublished content" />
-  <string key="PageElementProvider.ViewUnpublishedItems-document-description" value="The list below displays pages and page data which are currently being edited or are ready to be approved / published." />
+  <string key="PageElementProvider.ViewUnpublishedItems" value="List Unpublished Content" />
+  <string key="PageElementProvider.ViewUnpublishedItemsToolTip" value="Get an overview of pages and other content that haven't been published yet." />
+  <string key="PageElementProvider.ViewUnpublishedItems-document-title" value="Unpublished Content" />
+  <string key="PageElementProvider.ViewUnpublishedItems-document-description" value="The list below displays pages and other content which are currently in draft or are ready to be approved / published." />
   <string key="PageElementProvider.EditPage" value="Edit Page" />
   <string key="PageElementProvider.EditPageToolTip" value="Edit selected page" />
   <string key="PageElementProvider.Delete" value="Delete" />
@@ -112,7 +112,7 @@
 	<string key="DeletePageWorkflow.ConfirmAllVersionsDeletion.Text" value="This page contains multiple versions" />
 	<string key="DeletePageWorkflow.ConfirmAllVersionsDeletion.DeleteAllVersions" value="Delete all versions" />
 	<string key="DeletePageWorkflow.ConfirmAllVersionsDeletion.DeleteCurrentVersion" value="Delete only current version" />
-  <string key="ViewUnpublishedItems.PageTitleLabel" value="Page Title" />
+  <string key="ViewUnpublishedItems.PageTitleLabel" value="Title" />
   <string key="ViewUnpublishedItems.VersionLabel" value="Version" />
   <string key="ViewUnpublishedItems.StatusLabel" value="Status" />
   <string key="ViewUnpublishedItems.LabelChangedBy" value="Author" />

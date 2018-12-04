@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
@@ -10,6 +10,7 @@ using Composite.C1Console.Elements.Plugins.ElementProvider;
 using Composite.C1Console.Forms.DataServices;
 using Composite.C1Console.Forms.Flows;
 using Composite.C1Console.Security;
+using Composite.Core;
 using Composite.Core.Logging;
 using Composite.Core.Instrumentation;
 using Composite.Plugins.Elements.ElementProviders.VirtualElementProvider;
@@ -280,14 +281,26 @@ namespace Composite.C1Console.Elements
             if (providerName == null) throw new ArgumentNullException("providerName");
             
             IEnumerable<Element> roots;
-            if (!useForeign || !ElementProviderPluginFacade.IsLocaleAwareElementProvider(providerName))
+
+            try
             {
-                roots = ElementProviderPluginFacade.GetRoots(providerName, searchToken).ToList();
+                if (!useForeign || !ElementProviderPluginFacade.IsLocaleAwareElementProvider(providerName))
+                {
+                    roots = ElementProviderPluginFacade.GetRoots(providerName, searchToken).ToList();
+                }
+                else
+                {
+                    roots = ElementProviderPluginFacade.GetForeignRoots(providerName, searchToken).ToList();
+                }
             }
-            else
+            catch (Exception ex) when (providerName != ElementProviderRegistry.RootElementProviderName)
             {
-                roots = ElementProviderPluginFacade.GetForeignRoots(providerName, searchToken).ToList();
+                Log.LogError(nameof(ElementFacade), $"Failed to get root elements for element provider '{providerName}'");
+                Log.LogError(nameof(ElementFacade), ex);
+
+                return Enumerable.Empty<Element>();
             }
+            
 
             if (performSecurityCheck)
             {

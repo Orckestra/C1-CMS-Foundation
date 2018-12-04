@@ -1,10 +1,12 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -249,7 +251,16 @@ namespace Composite.Core.WebClient
 
             if (hostname.IndexOf('.') == -1) return false;
 
-            var dnsResult = System.Net.Dns.GetHostEntry(hostname);
+            IPHostEntry dnsResult;
+            try
+            {
+                dnsResult = System.Net.Dns.GetHostEntry(hostname);
+            }
+            catch (SocketException)
+            {
+                return false;
+            }
+            
             if (dnsResult.AddressList.Length == 0)
             {
                 return false;

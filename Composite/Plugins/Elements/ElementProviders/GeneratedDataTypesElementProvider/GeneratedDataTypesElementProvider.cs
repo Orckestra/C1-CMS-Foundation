@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -303,7 +303,9 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                     });
             }
 
-            globalDataElement.AddAction(
+            if (_websiteItemsView)
+            {
+                globalDataElement.AddAction(
                 new ElementAction(new ActionHandle(new ViewUnpublishedItemsActionToken()))
                 {
                     VisualData = new ActionVisualizedData
@@ -321,6 +323,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                         }
                     }
                 });
+            }
 
 
             roots.Add(globalDataElement);

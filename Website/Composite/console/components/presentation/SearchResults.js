@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components';
 import colors from 'console/components/colors.js';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import Icon from 'console/components/presentation/Icon.js';
+import { handleLinkClick } from 'console/access/utils.js';
 
 export const ResultTable = styled.table`
 width: 100%;
@@ -54,13 +55,13 @@ text-align: left;
 font-weight: normal;
 cursor: default;
 ${props => props.sortable ?
-	css`
+		css`
 		cursor: pointer;
 		&:hover {
 			text-decoration: underline;
 		}` :
-	''
-}
+		''
+	}
 &:first-child {
 	border-left: 1px solid ${colors.borderColor};
 }
@@ -84,19 +85,19 @@ const SearchResults = props => {
 						() => {
 							let searchQuery = props.searchQuery;
 							if (searchQuery.get('sortBy') === col.get('fieldName')) {
-								searchQuery = searchQuery.set('sortInReverseOrder', ! searchQuery.get('sortInReverseOrder'));
+								searchQuery = searchQuery.set('sortInReverseOrder', !searchQuery.get('sortInReverseOrder'));
 							} else {
 								searchQuery = searchQuery.set('sortBy', col.get('fieldName')).set('sortInReverseOrder', false);
 							}
 							props.updateQuery(searchQuery);
 							props.performSearch(searchQuery);
 						} :
-						() => {};
+						() => { };
 					return <ResultTableHeadCell key={col.get('fieldName')} onClick={sort} sortable={col.get('sortable')}>
 						{col.get('label')}
 						{props.searchQuery.get('sortBy') === col.get('fieldName') ?
-						<SortIcon id={props.searchQuery.get('sortInReverseOrder') ? 'chevron-up' : 'chevron-down'}/> :
-						null}
+							<SortIcon id={props.searchQuery.get('sortInReverseOrder') ? 'chevron-up' : 'chevron-down'} /> :
+							null}
 					</ResultTableHeadCell>;
 				}).toArray()}
 			</ResultTableRow>
@@ -106,7 +107,7 @@ const SearchResults = props => {
 				<ResultTableRow key={row.hashCode()}>
 					{props.resultColumns.map(col => <ResultTableBodyCell key={col.get('fieldName')}>
 						{col.get('fieldName') === props.urlColumn ?
-							<ResultLink href={row.get('url')} target="_top">{row.getIn(['values', col.get('fieldName')])}</ResultLink> :
+							<ResultLink href={row.get('url')} target="_top" onClick={handleLinkClick}>{row.getIn(['values', col.get('fieldName')])}</ResultLink> :
 							row.getIn(['values', col.get('fieldName')])
 						}
 					</ResultTableBodyCell>).toArray()}

@@ -92,6 +92,14 @@ namespace Composite.Core
                 }
             }
 
+            public static string UrlPathEncode(string urlPart)
+            {
+                using (new NoHttpContext())
+                {
+                    return HttpUtility.UrlPathEncode(urlPart);
+                }
+            }
+
             public static string UrlDecode(string urlPart)
             {
                 using (new NoHttpContext())

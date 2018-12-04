@@ -1,15 +1,20 @@
-﻿using System;
+using System;
 using System.Web;
 using Composite.C1Console.Security;
-using Composite.Data;
 using Composite.C1Console.Users;
+using Composite.C1Console.Actions;
+using Composite.C1Console.Events;
+using Composite.C1Console.Elements.Foundation;
 using Composite.Core.Configuration;
-
+using Composite.Data;
 
 namespace Composite.Core.WebClient.HttpModules
 {
     internal class AdministrativeDataScopeSetterHttpModule : IHttpModule
     {
+        private static bool _consoleArtifactsInitialized = false;
+        private static object _consoleArtifactsInitializeLock = new object();
+
         public void Init(HttpApplication context)
         {
             if (!SystemSetupFacade.IsSystemFirstTimeInitialized)
@@ -38,6 +43,21 @@ namespace Composite.Core.WebClient.HttpModules
                 if (adminRootRequest && UserValidationFacade.IsLoggedIn())
                 {
                     _dataScope = new DataScope(DataScopeIdentifier.Administrated, UserSettings.ActiveLocaleCultureInfo);
+
+                    if (!_consoleArtifactsInitialized)
+                    {
+                        lock(_consoleArtifactsInitializeLock)
+                        {
+                            if (!_consoleArtifactsInitialized && !SystemSetupFacade.SetupIsRunning)
+                            {
+                                HookingFacade.EnsureInitialization();
+                                FlowControllerFacade.Initialize();
+                                ConsoleFacade.Initialize();
+                                ElementProviderLoader.LoadAllProviders();
+                                _consoleArtifactsInitialized = true;
+                            }
+                        }
+                    }
                 }
             }
 

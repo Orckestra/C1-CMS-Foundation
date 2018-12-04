@@ -331,7 +331,13 @@ public class ImageManipulator : IHttpHandler
     {
         using (Stream writeStream = mediaFile.GetNewWriteStream())
         {
-            image.Save(writeStream, GetImageFormat(mediaFile.MimeType));
+            // Use a temporary memory stream when the writeStream doesn't support returning the stream length which is called when using Image.Save()
+            using (var ms = new MemoryStream())
+            {
+                image.Save(ms, GetImageFormat(mediaFile.MimeType));
+                var buffer = ms.GetBuffer();
+                writeStream.Write(buffer, 0, buffer.Length);
+            }
         }
         DataFacade.Update(mediaFile);
     }

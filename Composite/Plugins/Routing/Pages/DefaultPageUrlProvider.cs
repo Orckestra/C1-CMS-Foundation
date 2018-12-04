@@ -883,7 +883,7 @@ namespace Composite.Plugins.Routing.Pages
                     sb.Append('/');
                 }
 
-                sb.Append(UrlBuilder.DefaultHttpEncoder.UrlEncode(pathInfoPart));
+                sb.Append(UrlBuilder.DefaultHttpEncoder.UrlPathEncode(pathInfoPart));
 
                 isFirst = false;
             }

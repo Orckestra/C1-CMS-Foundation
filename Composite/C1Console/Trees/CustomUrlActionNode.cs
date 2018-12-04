@@ -46,7 +46,7 @@ namespace Composite.C1Console.Trees
         {
             string url = this.UrlDynamicValuesHelper.ReplaceValues(dynamicValuesHelperReplaceContext);
 
-            this.External = url.Contains("://");
+            this.External = url.Contains("//");
 
             if(!External)
             {

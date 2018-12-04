@@ -35,14 +35,13 @@ rd Azure /S /Q
 rd InlineCSharpFunctions /S /Q
 md InlineCSharpFunctions
 
-
-copy TreeDefinitions\PageType.xml TreeDefinitions\PageType.xml.backup /y
-:: del TreeDefinitions\*.xml
-copy TreeDefinitions\PageType.xml.backup TreeDefinitions\PageType.xml /y
-del TreeDefinitions\PageType.xml.backup
-
-:: copy ..\..\..\AutoInstallPackages\Develop\BaseConfigurationDkUs.zip AutoInstallPackages /y
-
+ren TreeDefinitions\PageType.xml PageType.xml.backup
+ren TreeDefinitions\ServerLog.xml ServerLog.xml.backup
+ren TreeDefinitions\UrlConfiguration.xml UrlConfiguration.xml.backup
+del TreeDefinitions\*.xml /Q
+ren TreeDefinitions\PageType.xml.backup PageType.xml
+ren TreeDefinitions\ServerLog.xml.backup ServerLog.xml
+ren TreeDefinitions\UrlConfiguration.xml.backup UrlConfiguration.xml
 
 :: Basic cleanup
 rd ..\..\Frontend\Composite  /S /Q

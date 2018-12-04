@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -350,7 +350,13 @@ namespace Composite.Core.WebClient.Setup
 
         private static IEnumerable<string> GetPackageUrls(XElement setupDescription)
         {
-            int maxkey = setupDescription.Descendants().Attributes(KeyAttributeName).Select(f => (int)f).Max();
+            var keyAttributes = setupDescription.Descendants().Attributes(KeyAttributeName).ToList();
+            if (!keyAttributes.Any())
+            {
+                throw new InvalidOperationException("Invalid setup description: " + setupDescription);
+            }
+
+            int maxkey = keyAttributes.Select(f => (int)f).Max();
 
             SetupSoapClient client = CreateClient();
             

@@ -598,7 +598,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
                     object propertyValue = fieldValues[foreignKeyProperty.SourcePropertyName];
                     
-                    if (propertyValue == null || propertyValue == foreignKeyProperty.NullReferenceValue)
+                    if (propertyValue == null || propertyValue.Equals(foreignKeyProperty.NullReferenceValue))
                     {
                         continue;
                     }

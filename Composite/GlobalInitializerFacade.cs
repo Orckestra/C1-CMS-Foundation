@@ -7,7 +7,6 @@ using System.Reflection;
 using System.Threading;
 using System.Web;
 using System.Web.Hosting;
-using Composite.C1Console.Actions;
 using Composite.C1Console.Events;
 using Composite.C1Console.Security;
 using Composite.C1Console.Workflow;
@@ -25,7 +24,6 @@ using Composite.Core.Types;
 using Composite.Data.Foundation;
 using Composite.Data.ProcessControlled;
 using Composite.Functions.Foundation;
-using Composite.C1Console.Elements.Foundation;
 using Composite.Data.Foundation.PluginFacades;
 using Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Sql;
 
@@ -268,29 +266,9 @@ namespace Composite
             }
 
 
-            if (!RuntimeInformation.IsUnittest)
-            {
-                using (new LogExecutionTime(LogTitle, "Initializing flow system"))
-                {
-                    FlowControllerFacade.Initialize();
-                }
-
-                using (new LogExecutionTime(LogTitle, "Initializing console system"))
-                {
-                    ConsoleFacade.Initialize();
-                }
-            }
-
-
             using (new LogExecutionTime(LogTitle, "Auto installing packages"))
             {
                 DoAutoInstallPackages();
-            }
-
-
-            using (new LogExecutionTime(LogTitle, "Loading element providers"))
-            {
-                ElementProviderLoader.LoadAllProviders();
             }
 
 
@@ -356,22 +334,6 @@ namespace Composite
                 Verify.That(_fatalErrorFlushCount <= 1, "Failed to reload the system. See the log for the details.");
 
                 InitializeTheSystem();
-
-                if (!SystemSetupFacade.SetupIsRunning)
-                {
-                    // Updating "hooks" either in the same thread, or in another
-                    if (initializeHooksInTheSameThread)
-                    {
-                        object threadStartParameter = new KeyValuePair<TimeSpan, StackTrace>(TimeSpan.Zero, new StackTrace());
-                        EnsureHookingFacade(threadStartParameter);
-                    }
-                    else
-                    {
-                        _hookingFacadeThread = new Thread(EnsureHookingFacade) {Name = "EnsureHookingFacade"};
-                        _hookingFacadeThread.Start(new KeyValuePair<TimeSpan, StackTrace>(TimeSpan.FromSeconds(1), new StackTrace()));
-                    }
-                }
-
 
                 IsReinitializingTheSystem = false;
             }

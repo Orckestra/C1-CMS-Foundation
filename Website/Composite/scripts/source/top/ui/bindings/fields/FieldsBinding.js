@@ -76,6 +76,17 @@ FieldsBinding.prototype.onBindingInitialize = function () {
 	if ( firstgroup != null ) {
 		firstgroup.attachClassName ( FieldGroupBinding.CLASSNAME_FIRST );
 	}
+
+	/**
+	 *  Limit width becouse Edge smooth non-breakable items in columns #620
+	 */
+	if (Client.isEdge) {
+		var editopPage = this.getAncestorBindingByType(EditorPageBinding);
+		if (editopPage && this.bindingElement.childElementCount > 0) {
+			var columnWidth = 430;
+			this.bindingElement.style.maxWidth = (this.bindingElement.childElementCount + 1) * columnWidth - 1 + 'px';
+		}
+	}
 }
 
 /**

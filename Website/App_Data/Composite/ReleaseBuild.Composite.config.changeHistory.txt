@@ -1,4 +1,4 @@
-﻿Changes since released 1.0.3070.24011 (Nightly build 20080528.5)
+Changes since released 1.0.3070.24011 (Nightly build 20080528.5)
  - <ToolbarButton /> added to std. Form UI Markup.
  - Composite.Core.Application.Plugins.ApplicationOnlineHandlerConfiguration added
  - <InfoBox /> added to std. Form UI Markup.
@@ -167,3 +167,7 @@ Changes in 6.0 or later
       <add name="FileBasedComponentProvider" type="Composite.Plugins.Components.FileBasedComponentProvider, Composite" directory="~/App_Data/Components" fileSearchPattern="*.xml" topDirectoryOnly="false"/>
     </ComponentProviders>
   </Composite.Plugins.Components.ComponentProviderConfiguration>
+
+  Changes in 6.6 or later:
+  -Added <add name="SystemDiagnosticsTraceBridge" listenerDataType="Microsoft.Practices.EnterpriseLibrary.Logging.Configuration.CustomTraceListenerData, Microsoft.Practices.EnterpriseLibrary.Logging, Version=3.0.0.0" traceOutputOptions="None" type="Composite.Plugins.Logging.LogTraceListeners.SystemDiagnosticsTrace.SystemDiagnosticsTraceBridge, Composite" initializeData="" formatter="Text Formatter" /> to loggingConfiguration/listeners
+  -Added <add name="SystemDiagnosticsTraceBridge" /> to loggingConfiguration/specialSources/allEvents/listeners

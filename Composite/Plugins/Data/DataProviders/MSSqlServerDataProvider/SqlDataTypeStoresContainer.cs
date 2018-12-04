@@ -5,8 +5,6 @@ using System.Data;
 using System.Data.Linq;
 using System.Data.SqlTypes;
 using System.Reflection;
-using Composite.Core;
-using Composite.Core.Extensions;
 using Composite.Core.Sql;
 using Composite.Core.Threading;
 using Composite.Data;
@@ -20,7 +18,6 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
     internal sealed class SqlDataTypeStoresContainer
     {
         private static readonly ConcurrentDictionary<Type, List<PropertyInfo>> _dateTimeProperties = new ConcurrentDictionary<Type, List<PropertyInfo>>();
-        private static readonly object[] EmptyObjectsArray = new object[0];
 
 
         private readonly Dictionary<Type, SqlDataTypeStore> _sqlDataTypeStores = new Dictionary<Type, SqlDataTypeStore>();
@@ -49,22 +46,19 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
         /// <summary>
         /// All working data types 
         /// </summary>
-        public IEnumerable<Type> SupportedInterfaces { get { return _supportedInterfaces; } }
-
+        public IEnumerable<Type> SupportedInterfaces => _supportedInterfaces;
 
 
         /// <summary>
         /// All data types, including non working due to config error or something else
         /// </summary>
-        public IEnumerable<Type> KnownInterfaces { get { return _knownInterfaces; } }
-
+        public IEnumerable<Type> KnownInterfaces => _knownInterfaces;
 
 
         /// <summary>
         /// All working generated data types
         /// </summary>
-        public IEnumerable<Type> GeneratedInterfaces { get { return _generatedInterfaces; } }
-
+        public IEnumerable<Type> GeneratedInterfaces => _generatedInterfaces;
 
 
         internal Type DataContextClass { get; set; }
@@ -76,7 +70,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
             SqlDataTypeStore store;
             if (!_sqlDataTypeStores.TryGetValue(interfaceType, out store))
             {
-                throw new InvalidOperationException("Interface '{0}' is not supported".FormatWith(interfaceType));
+                throw new InvalidOperationException($"Interface '{interfaceType}' is not supported");
             }
             
             return store;
@@ -91,6 +85,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
         /// <param name="sqlDataTypeStore"></param>
         internal void AddSupportedDataTypeStore(Type interfaceType, SqlDataTypeStore sqlDataTypeStore)
         {
+            Verify.That(!_sqlDataTypeStores.ContainsKey(interfaceType), "Type {0} is registered in the SqlDataProvider configuration multiple types", interfaceType);
             _sqlDataTypeStores.Add(interfaceType, sqlDataTypeStore);
 
             _supportedInterfaces.Add(interfaceType);
@@ -123,7 +118,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
             where T : class, IData
         {
             SqlDataTypeStore sqlDataTypeStore = TryGetsqlDataTypeStore(typeof(T));
-            if (sqlDataTypeStore == null) throw new InvalidOperationException(string.Format("The interface '{0}' has not been configures", typeof(T).FullName));
+            if (sqlDataTypeStore == null) throw new InvalidOperationException($"The interface '{typeof(T).FullName}' has not been configured");
 
             var resultDataset = new List<T>();
 
@@ -131,11 +126,11 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
             {
                 foreach (IData data in dataset)
                 {
-                    Verify.ArgumentCondition(data != null, "dataset", "Data set may not contain nulls");
+                    Verify.ArgumentCondition(data != null, "dataset", "Data set may not contain null values");
 
                     IData newData = sqlDataTypeStore.AddNew(data, dataProviderContext, dataContext);
 
-                    (newData as IEntity).Commit();
+                    ((IEntity) newData).Commit();
 
                     CheckConstraints(newData);
 
@@ -179,12 +174,12 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
             {
                 foreach (DataSourceId dataSourceId in dataSourceIds)
                 {
-                    if (dataSourceId == null) throw new ArgumentException("dataSourceIds contains nulls");
+                    if (dataSourceId == null) throw new ArgumentException("dataSourceIds contains null values");
 
                     using (new DataScope(dataSourceId.DataScopeIdentifier, dataSourceId.LocaleScope))
                     {
                         SqlDataTypeStore sqlDataTypeStore = TryGetsqlDataTypeStore(dataSourceId.InterfaceType);
-                        if (sqlDataTypeStore == null) throw new InvalidOperationException(string.Format("The interface '{0}' has not been configures", dataSourceId.InterfaceType.FullName));
+                        if (sqlDataTypeStore == null) throw new InvalidOperationException($"The interface '{dataSourceId.InterfaceType.FullName}' has not been configured");
 
                         IData data = sqlDataTypeStore.GetDataByDataId(dataSourceId.DataId, dataProivderContext);
 
@@ -203,10 +198,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
             }
             finally
             {
-                if (dataContext != null)
-                {
-                    dataContext.Dispose();
-                }
+                dataContext?.Dispose();
             }
         }
 
@@ -233,7 +225,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
             Type entityType = entity.GetType();
 
             ITable table = dataContext.GetTable(entityType);
-            Verify.IsNotNull(table, "Failed to find a table, related to '{0}' type".FormatWith(entityType.FullName));
+            Verify.IsNotNull(table, "Failed to find a table, related to '{0}' type", entityType.FullName);
             return table;
         }
 
@@ -242,24 +234,21 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
         private static void CheckConstraints(IData data)
         {
             // DateTime.MinValue is not supported by SQL, since it has a different minimal value for a date
-            if (data is IChangeHistory)
+            if (data is IChangeHistory changeHistory
+                && changeHistory.ChangeDate == DateTime.MinValue)
             {
-                var changeHistory = (IChangeHistory)data;
-                if (changeHistory.ChangeDate == DateTime.MinValue)
-                {
-                    changeHistory.ChangeDate = DateTime.Now;
-                }
+                changeHistory.ChangeDate = DateTime.Now;
             }
 
             foreach(PropertyInfo dateTimeProperty in GetDateTimeProperties(data.DataSourceId.InterfaceType))
             {
-                object value = dateTimeProperty.GetValue(data, EmptyObjectsArray);
+                object value = dateTimeProperty.GetValue(data, null);
                 if(value == null) continue;
 
                 DateTime dateTime = (DateTime) value;
                 if(dateTime == DateTime.MinValue)
                 {
-                    dateTimeProperty.SetValue(data, SqlDateTime.MinValue.Value, EmptyObjectsArray);
+                    dateTimeProperty.SetValue(data, SqlDateTime.MinValue.Value, null);
                 }
             }
         }
@@ -353,16 +342,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
         internal static void SubmitChanges(DataContext dataContext)
         {
-            try
-            {
-                dataContext.SubmitChanges();
-            }
-            catch (Exception ex)
-            {
-                Log.LogWarning("SqlDataProviderCodeGeneratorResult", ex);
-
-                throw;
-            }
+            dataContext.SubmitChanges();
         }
 
 
