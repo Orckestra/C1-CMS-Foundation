@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -720,11 +720,14 @@ namespace Composite.Data
             ICreationHistory data = dataEventArgs.Data as ICreationHistory;
             if (data != null)
             {
-                data.CreationDate = DateTime.Now;
+                if (data.CreationDate == DateTime.MinValue)
+                {
+                    data.CreationDate = DateTime.Now;
+                }
 
                 try
                 {
-                    if (UserValidationFacade.IsLoggedIn())
+                    if (string.IsNullOrEmpty(data.CreatedBy) && UserValidationFacade.IsLoggedIn())
                     {
                         data.CreatedBy = UserValidationFacade.GetUsername();
                     }
