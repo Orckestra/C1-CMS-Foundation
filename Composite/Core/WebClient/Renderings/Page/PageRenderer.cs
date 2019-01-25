@@ -642,11 +642,8 @@ namespace Composite.Core.WebClient.Renderings.Page
 
                     rootDocument.Root.Add(nestedDocument.Attributes().Except(rootDocument.Root.Attributes(), _nameBasedAttributeComparer));
 
-                    // making <meta property="..." /> from nested documents appear first. We will not filter them later and this ensure desired precedence 
-                    bool IsMetaProperty(XElement e) => e.Name.LocalName == "meta" && e.Attribute("property") != null;
+                    rootDocument.Head.Add(nestedHead.Nodes());
 
-                    rootDocument.Head.AddFirst(nestedHead.Elements().Where(IsMetaProperty));
-                    rootDocument.Head.Add(nestedHead.Nodes().Where(f => !(f is XElement e && IsMetaProperty(e))));
                     rootDocument.Head.Add(nestedHead.Attributes().Except(rootDocument.Head.Attributes(), _nameBasedAttributeComparer));
                     rootDocument.Body.Add(nestedBody.Attributes().Except(rootDocument.Body.Attributes(), _nameBasedAttributeComparer));
 
