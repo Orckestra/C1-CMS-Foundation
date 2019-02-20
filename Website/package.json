@@ -27,7 +27,7 @@
     "grunt-contrib-watch": "~0.6.1",
     "grunt-postcss": "^0.5.5",
     "grunt-svgmin": "3.2.0",
-    "iedriver": "2.53.1",
+    "iedriver": "3.14.1",
     "istanbul": "^0.4.3",
     "istanbul-lib-coverage": "1.0.0",
     "jsdom": "9.4.1",
