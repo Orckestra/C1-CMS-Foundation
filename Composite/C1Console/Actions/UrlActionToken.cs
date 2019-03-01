@@ -91,6 +91,11 @@ namespace Composite.C1Console.Actions
 
             string extendedUrl = $"{url}{(url.Contains("?") ? "&" : "?")}EntityToken={HttpUtility.UrlEncode(serializedEntityToken)}";
 
+            if (extendedUrl.IndexOf("consoleId", StringComparison.OrdinalIgnoreCase) == -1)
+            {
+                extendedUrl = $"{extendedUrl}&consoleId={currentConsoleId}";
+            }
+
             ConsoleMessageQueueFacade.Enqueue(
                 new OpenViewMessageQueueItem
                 {
