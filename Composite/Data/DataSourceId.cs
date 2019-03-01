@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using Composite.Core.Serialization;
@@ -117,7 +117,7 @@ namespace Composite.Data
         public CultureInfo LocaleScope { get; internal set; }
 
         [JsonProperty(PropertyName = "localeScope")]
-        private string LocalScopeName => LocaleScope.Name;
+        private string LocalScopeName => (LocaleScope !=null ? LocaleScope.Name : null);
 
         /// <summary>
         /// True when the data element represents a physically stored element
