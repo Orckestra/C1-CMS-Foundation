@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using Composite.Core.IO;
 using Composite.Core.IO.Plugins.IOProvider;
@@ -127,7 +127,7 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirectoryClass:DoNotUseDirectoryClass")]
         public string[] GetFiles(string path, string searchPattern, SearchOption searchOption)
         {
-            return Directory.GetFiles(path, searchPattern, searchOption);
+            return Directory.Exists(path) ? Directory.GetFiles(path, searchPattern, searchOption) : new string[] { };
         }
 
 
