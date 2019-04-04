@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -269,24 +269,28 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
             IList<C1FileInfo> candidateFiles = GetCandidateFiles(filePath);
 
+            string errorCause = "";
+
             foreach (C1FileInfo candidateFile in candidateFiles)
             {
                 bool tryLoad = true;
+                bool retriedLoad = false;
 
                 while (tryLoad && dataDocument == null)
                 {
-                    dataDocument = TryLoad(candidateFile);
+                    dataDocument = TryLoad(candidateFile, ref errorCause);
 
                     if (dataDocument == null)
                     {
-                        if ((DateTime.Now - candidateFile.LastWriteTime).TotalSeconds > 30)
+                        if (retriedLoad && (DateTime.Now - candidateFile.LastWriteTime).TotalSeconds > 30)
                         {
-                            tryLoad = false;
+                            tryLoad = false; 
                         }
                         else
                         {
                             Thread.Sleep(250); // other processes/servers may be writing to this file at the moment. Patience young padawan!
                         }
+                        retriedLoad = true;
                     }
                 }
 
@@ -300,7 +304,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
             if (dataDocument == null)
             {
                 dataDocument = new XDocument(new XElement("fallback"));
-                Log.LogWarning(LogTitle, "Did not find a healthy XML document for '{0}' - creating an empty store.", filePath);
+                Log.LogWarning(LogTitle, "Did not find a healthy XML document for '{0}' - creating an empty store. {1}", filePath, errorCause);
             }
 
             List<XElement> elements = ExtractElements(dataDocument);
@@ -350,7 +354,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
 
 
-        private static XDocument TryLoad(C1FileInfo candidateFile)
+        private static XDocument TryLoad(C1FileInfo candidateFile, ref string errorCause)
         {
             XDocument dataDocument = null;
             try
@@ -362,8 +366,9 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                     dataDocument = XDocument.Load(xmlReader);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                errorCause = ex.Message;
                 // broken file - should not stop us...
             }
 
