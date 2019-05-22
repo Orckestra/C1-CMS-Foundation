@@ -12,17 +12,12 @@ function UserInterfaceMapping ( map ) {
 	/**
 	 * @type {HashMap<string><BindingImplementation>}
 	 */
-	if (Client.isExplorer) {
-		this.map = {};
-		for (var m in map) {
-			this.map[m.replace("ui:", "")] = map[m];
-		}
-	}
-	else {
-		this.map = map;
-	}
+	this.map = {};
 
-	
+	for (var m in map) {
+		this.map[m.replace('ui:', '')] = map[m];
+		this.map[m] = map[m];
+	}
 }
 
 /**
