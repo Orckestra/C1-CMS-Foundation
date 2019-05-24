@@ -1,4 +1,4 @@
-﻿<cms:formdefinition xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0" xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0">
+<cms:formdefinition xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0" xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0">
 	<cms:bindings>
 		<cms:binding name="Id" type="System.Guid" optional="true" />
 		<cms:binding name="Hostname" type="System.String" optional="true" />
@@ -9,6 +9,7 @@
 		<cms:binding name="PageNotFoundUrl" type="System.String" optional="true" />
 		<cms:binding name="Aliases" type="System.String" optional="true" />
 		<cms:binding name="EnforceHttps" type="System.Boolean" />
+		<cms:binding name="UsePermanentRedirect" type="System.Boolean" />
 	</cms:bindings>
 	<cms:layout>
 		<cms:layout.label>
@@ -67,6 +68,11 @@
 					<cms:bind source="Aliases" />
 				</TextArea.Text>
 			</TextArea>
+			<CheckBox Label="${Orckestra.Tools.UrlConfiguration, HostnameBinding.UsePermanentRedirect.Label}" ItemLabel="${Orckestra.Tools.UrlConfiguration, HostnameBinding.UsePermanentRedirect.ItemLabel}" Help="${Orckestra.Tools.UrlConfiguration, HostnameBinding.UsePermanentRedirect.Help}">
+				<CheckBox.Checked>
+					<cms:bind source="UsePermanentRedirect" />
+				</CheckBox.Checked>
+			</CheckBox>
 		</FieldGroup>
 	</cms:layout>
 </cms:formdefinition>

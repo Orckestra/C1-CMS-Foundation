@@ -658,6 +658,7 @@
     <Content Include="Composite\localization\Composite.Plugins.Components.en-us.xml" />
     <Content Include="Composite\localization\Composite.Plugins.TimezoneDisplayNames.en-us.xml" />
     <Content Include="Composite\localization\Composite.Plugins.TimezoneAbbreviations.en-us.xml" />
+    <Content Include="Composite\localization\Orckestra.Tools.UrlConfiguration.en-us.xml" />
     <Content Include="Composite\scripts\source\top\core\ContextContainer.js" />
     <Content Include="Composite\scripts\source\top\core\ImageProvider.js" />
     <Content Include="Composite\scripts\source\top\interfaces\IContextContainerBinding.js" />

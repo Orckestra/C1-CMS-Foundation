@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Composite.Data.Hierarchy;
 using Composite.Data.Hierarchy.DataAncestorProviders;
 using Microsoft.Practices.EnterpriseLibrary.Validation.Validators;
@@ -70,5 +70,14 @@ namespace Composite.Data.Types
         [DefaultFieldBoolValue(false)]
         [ImmutableFieldId("{1F45F2E7-2FAF-4F33-ACCA-BFF32EF7818A}")]
         bool EnforceHttps { get; set; }
+
+        /// <summary>
+        /// When set to <value>true</value>, the system will use "HTTP 301 Permanent Redirect" when  
+        /// redirecting from an alias to the hostname.
+        /// </summary>
+        [StoreFieldType(PhysicalStoreFieldType.Boolean)]
+        [DefaultFieldBoolValue(true)]
+        [ImmutableFieldId("{d933184a-19c1-4292-8e2e-f4a1a163f087}")]
+        bool UsePermanentRedirect { get; set; }
     }
 }

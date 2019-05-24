@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <strings>
 	<!-- Element tree -->
 	<string key="Tree.ConfigurationElementLabel" value="URL Configuration" />
@@ -37,4 +37,7 @@
 	<string key="HostnameBinding.Custom404Page.Help" value="Url to which request will be redirected in the case there's a request to non-existent c1 page" />
 	<string key="HostnameBinding.Aliases.Label" value="Alias hostnames" />
 	<string key="HostnameBinding.Aliases.Help" value="Hostnames from which all requests will be redirected to the current hostname" />
+	<string key="HostnameBinding.UsePermanentRedirect.Label" value="Alias Redirect" />
+	<string key="HostnameBinding.UsePermanentRedirect.ItemLabel" value="Use permanent redirect (HTTP 301)" />
+	<string key="HostnameBinding.UsePermanentRedirect.Help" value="When redirecting from an alias to the common hostname, a permanent redirect will tell visitors (browsers and search engines) that this redirect should be considered permanent and may be cached. Checking this box has a positive effect on SEO, provided the alias rule do not change in the near future" />
 </strings>
