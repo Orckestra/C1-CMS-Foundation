@@ -572,13 +572,24 @@ namespace Composite.C1Console.Workflow.Activities
             return managementConsoleMessageService.CurrentConsoleId;
         }
 
-
         /// <exclude />
         protected IEnumerable<string> GetConsoleIdsOpenedByCurrentUser()
         {
-            string currentConsoleId = GetCurrentConsoleId();
+            return GetConsoleIdsOpenedByUser(UserSettings.Username);
+        }
 
-            return ConsoleFacade.GetConsoleIdsByUsername(UserSettings.Username).Union(new[] { currentConsoleId });
+        /// <exclude />
+        protected IEnumerable<string> GetConsoleIdsOpenedByUser(string username)
+        {
+            if (UserSettings.Username == username)
+            {
+                string currentConsoleId = GetCurrentConsoleId();
+                return ConsoleFacade.GetConsoleIdsByUsername(username).Union(new[] { currentConsoleId });
+            }
+            else
+            {
+                return ConsoleFacade.GetConsoleIdsByUsername(username);
+            }
         }
 
 
