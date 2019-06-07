@@ -1,4 +1,4 @@
-﻿<%@ WebService Language="C#" Class="Composite.Services.LocalizationService" %>
+<%@ WebService Language="C#" Class="Composite.Services.LocalizationService" %>
 
 using System;
 using System.Linq;
@@ -139,7 +139,7 @@ namespace Composite.Services
 		[WebMethod]
 		public string GetTextDirection(bool dummy)
 		{
-			return UserSettings.ActiveLocaleCultureInfo.TextInfo.IsRightToLeft ? "rtl" : "ltr";
+			return UserSettings.ActiveLocaleCultureInfo == null ? "ltr" : (UserSettings.ActiveLocaleCultureInfo.TextInfo.IsRightToLeft ? "rtl" : "ltr");
 		}
 
 		[WebMethod]
