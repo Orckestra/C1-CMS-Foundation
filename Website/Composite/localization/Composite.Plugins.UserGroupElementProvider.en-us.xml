@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <strings>
 	<string key="UserGroupElementProvider.RootLabel" value="User Groups"/>
   <string key="UserGroupElementProvider.RootToolTip" value="User Groups"/>
@@ -20,14 +20,17 @@
   <string key="EditUserGroup.EditUserGroupStep1.UserGroupNameAlreadyExists" value="A user group with the same name already exists"/>
   <string key="EditUserGroup.EditUserGroupStep1.ActivePerspectiveFieldLabel" value="Perspectives" />
   <string key="EditUserGroup.EditUserGroupStep1.ActivePerspectiveMultiSelectLabel" value="Perspectives" />
-  <string key="EditUserGroup.EditUserGroupStep1.ActivePerspectiveMultiSelectHelp" value="Select which perspectives the user gets access to view" />
+  <string key="EditUserGroup.EditUserGroupStep1.ActivePerspectiveMultiSelectHelp" value="Select which perspectives the users of this group gets access to view" />
   <string key="EditUserGroup.EditUserGroupStep1.GlobalPermissionsFieldLabel" value="Global permissions"/>
   <string key="EditUserGroup.EditUserGroupStep1.GlobalPermissionsMultiSelectLabel" value="Global permissions"/>
-  <string key="EditUserGroup.EditUserGroupStep1.GlobalPermissionsMultiSelectHelp" value="The Administrate permission grants the user group access to manage user group permissions and execute other administrative tasks.  The Configure permission grants access to super user tasks."/>
+  <string key="EditUserGroup.EditUserGroupStep1.GlobalPermissionsMultiSelectHelp" value="Global permissions that users in this group should have. The Administrate permission grants the user group access to manage user group permissions and execute other administrative tasks.  The Configure permission grants access to super user tasks."/>
+	<string key="EditUserGroup.EditUserGroupStep1.ActiveLocalesFieldLabel" value="Data Language Access"/>
+	<string key="EditUserGroup.EditUserGroupStep1.ActiveLocalesMultiSelectLabel" value="Data Languages"/>
+	<string key="EditUserGroup.EditUserGroupStep1.ActiveLocalesMultiSelectHelp" value="Users in this group has access to manage data in the selected languages."/>
 
 
-  
-  <string key="DeleteUserGroup.DeleteUserGroupInitialStep.UserGroupHasUsersTitle" value="User Group Has Users"/>
+
+	<string key="DeleteUserGroup.DeleteUserGroupInitialStep.UserGroupHasUsersTitle" value="User Group Has Users"/>
   <string key="DeleteUserGroup.DeleteUserGroupInitialStep.UserGroupHasUsersMessage" value="You cannot delete a user group that has users."/>
   
   <string key="DeleteUserGroup.DeleteUserGroupStep1.LabelFieldGroup" value="Delete User Group"/>
