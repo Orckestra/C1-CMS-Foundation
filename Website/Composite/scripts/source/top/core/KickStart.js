@@ -371,7 +371,12 @@ var KickStart = new function () {
 
 		    }
 
-            if (result == "success") {
+			if (result == "loginHasNoLanguageAccess") {
+				// TODO: unhardcode
+				alert("The login has no Data Language permissions. Please contact an administrator and ask for a data language to be assigned to your user permissions.");
+			}
+
+			if (result == "success") {
                 isAllowed = true;
             }
 		}

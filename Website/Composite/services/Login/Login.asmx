@@ -23,6 +23,14 @@ namespace Composite.Services
         {
             var result = UserValidationFacade.FormValidateUser(username, password);
 
+            var activeContentCulture = UserSettings.ActiveLocaleCultureInfo;
+
+            if (activeContentCulture==null && result == LoginResult.Success)
+            {
+                    UserValidationFacade.Logout();
+                    return "loginHasNoLanguageAccess";
+            }
+
             switch (result)
             {
                 case LoginResult.Success:
