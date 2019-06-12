@@ -281,6 +281,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
         public IEnumerable<Element> GetChildren(EntityToken entityToken, SearchToken searchToken)
         {
+            if (!DataLocalizationFacade.ActiveLocalizationCultures.Contains(UserSettings.ActiveLocaleCultureInfo)) return Enumerable.Empty<Element>();
+
             if (entityToken is AssociatedDataElementProviderHelperEntityToken associatedData)
             {
                 return _pageAssociatedHelper.GetChildren(associatedData, false);
