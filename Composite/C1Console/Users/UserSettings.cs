@@ -112,23 +112,16 @@ namespace Composite.C1Console.Users
         public static CultureInfo GetCurrentActiveLocaleCultureInfo(string username)
         {
             var key = "CurrentActiveCulture" + username;
-            var cultureInfo = RequestLifetimeCache.TryGet<CultureInfo>(key);
+            if (RequestLifetimeCache.HasKey(key)) return RequestLifetimeCache.TryGet<CultureInfo>(key);
 
-            if (cultureInfo != null) return cultureInfo;
+            var cultureInfo = _implementation.GetCurrentActiveLocaleCultureInfo(username);
+            var allowedCultures = GetActiveLocaleCultureInfos(username, true);
 
-            cultureInfo = _implementation.GetCurrentActiveLocaleCultureInfo(username);
+            if( !allowedCultures.Contains(cultureInfo)) cultureInfo = allowedCultures.FirstOrDefault();
 
-            var allowed = GetActiveLocaleCultureInfos(username, true);
-            if( !allowed.Contains(cultureInfo))
-            {
-                cultureInfo = allowed.FirstOrDefault();
-            }
+            if (cultureInfo != null && !RequestLifetimeCache.HasKey(key)) RequestLifetimeCache.Add(key, cultureInfo);
 
-            if (cultureInfo == null && PermissionsFacade.IsAdministrator(username)) cultureInfo = DataLocalizationFacade.DefaultLocalizationCulture;
-
-            if (cultureInfo!=null && !RequestLifetimeCache.HasKey(key)) RequestLifetimeCache.Add(key, cultureInfo);
-
-            return cultureInfo;
+            return cultureInfo ?? CultureInfo.InvariantCulture;
         }
 
 
