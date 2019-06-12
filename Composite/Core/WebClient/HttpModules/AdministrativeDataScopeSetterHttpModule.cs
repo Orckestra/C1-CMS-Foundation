@@ -42,14 +42,7 @@ namespace Composite.Core.WebClient.HttpModules
 
                 if (adminRootRequest && UserValidationFacade.IsLoggedIn())
                 {
-                    var activeLocale = UserSettings.ActiveLocaleCultureInfo;
-
-                    if (activeLocale==null)
-                    {
-                        throw new InvalidOperationException("No permissions for any content language exists for your user. Contact an administrator and ask for content language access.");
-                    }
-
-                    _dataScope = new DataScope(DataScopeIdentifier.Administrated, activeLocale);
+                    _dataScope = new DataScope(DataScopeIdentifier.Administrated, UserSettings.ActiveLocaleCultureInfo);
 
                     if (!_consoleArtifactsInitialized)
                     {
