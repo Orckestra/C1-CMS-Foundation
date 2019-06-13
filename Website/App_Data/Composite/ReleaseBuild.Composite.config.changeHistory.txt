@@ -171,3 +171,6 @@ Changes in 6.0 or later
   Changes in 6.6 or later:
   -Added <add name="SystemDiagnosticsTraceBridge" listenerDataType="Microsoft.Practices.EnterpriseLibrary.Logging.Configuration.CustomTraceListenerData, Microsoft.Practices.EnterpriseLibrary.Logging, Version=3.0.0.0" traceOutputOptions="None" type="Composite.Plugins.Logging.LogTraceListeners.SystemDiagnosticsTrace.SystemDiagnosticsTraceBridge, Composite" initializeData="" formatter="Text Formatter" /> to loggingConfiguration/listeners
   -Added <add name="SystemDiagnosticsTraceBridge" /> to loggingConfiguration/specialSources/allEvents/listeners
+
+  Changes in 6.7 or later:
+   - n/a
