@@ -106,13 +106,26 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
         public IEnumerable<Element> GetRoots(SearchToken searchToken)
         {
+            EntityToken entityToken = new PageElementProviderEntityToken(_context.ProviderName);
+
+            if (!DataLocalizationFacade.ActiveLocalizationCultures.Contains(UserSettings.ActiveLocaleCultureInfo))
+            {
+                yield return new Element(_context.CreateElementHandle(entityToken))
+                {
+                    VisualData = new ElementVisualizedData
+                    {
+                        Label = "No website access: Missing permissions to any Data Language",
+                        Icon = PageElementProvider.DeactivateLocalization
+                    }
+                };
+                yield break;
+            }
+
             int pages;
             using (new DataScope(DataScopeIdentifier.Administrated))
             {
                 pages = PageServices.GetChildrenCount(Guid.Empty);
             }
-
-            EntityToken entityToken = new PageElementProviderEntityToken(_context.ProviderName);
 
             var dragAndDropInfo = new ElementDragAndDropInfo();
             dragAndDropInfo.AddDropType(typeof(IPage));
@@ -268,6 +281,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
         public IEnumerable<Element> GetChildren(EntityToken entityToken, SearchToken searchToken)
         {
+            if (!DataLocalizationFacade.ActiveLocalizationCultures.Contains(UserSettings.ActiveLocaleCultureInfo)) return Enumerable.Empty<Element>();
+
             if (entityToken is AssociatedDataElementProviderHelperEntityToken associatedData)
             {
                 return _pageAssociatedHelper.GetChildren(associatedData, false);
@@ -301,6 +316,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
         public IEnumerable<Element> GetForeignChildren(EntityToken entityToken, SearchToken searchToken)
         {
             if (entityToken is DataEntityToken dataEntityToken && dataEntityToken.Data == null) return Array.Empty<Element>();
+            if (!DataLocalizationFacade.ActiveLocalizationCultures.Contains(UserSettings.ActiveLocaleCultureInfo)) return Enumerable.Empty<Element>();
 
             if (entityToken is AssociatedDataElementProviderHelperEntityToken associatedData)
             {
