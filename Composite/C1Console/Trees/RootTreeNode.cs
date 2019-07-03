@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Composite.C1Console.Elements;
@@ -67,16 +67,30 @@ namespace Composite.C1Console.Trees
 
         private AncestorMatch GetAncestorFromParentFilter(TreeNodeDynamicContext dynamicContext)
         {
-            var dataNode = dynamicContext.CurrentTreeNode as DataElementsTreeNode;
-            if(dataNode == null) return null;
-            
-            var parentIdFilter = dynamicContext.CurrentTreeNode.FilterNodes.OfType<ParentIdFilterNode>().FirstOrDefault();
-            if (parentIdFilter == null) return null;
+            var treeNode = dynamicContext.CurrentTreeNode;
+            if (treeNode is DataElementsTreeNode)
+            {
+                var parentIdFilter = treeNode.FilterNodes.OfType<ParentIdFilterNode>().FirstOrDefault();
+                if (parentIdFilter == null) return null;
 
-            Type ancestorType = parentIdFilter.ParentFilterType;
-            object key = parentIdFilter.FindParentKeyValue(dynamicContext);
+                Type ancestorType = parentIdFilter.ParentFilterType;
+                object key = parentIdFilter.FindParentKeyValue(dynamicContext);
 
-            return key == null ? null : new AncestorMatch { InterfaceType = ancestorType, KeyValue = key};
+                return key == null ? null : new AncestorMatch { InterfaceType = ancestorType, KeyValue = key};
+            }
+
+            if (treeNode is DataFolderElementsTreeNode
+                && dynamicContext.CurrentEntityToken is TreeDataFieldGroupingElementEntityToken groupEntityToken
+                && groupEntityToken.ChildGeneratingDataElementsReferenceValue != null)
+            {
+                return new AncestorMatch
+                {
+                    InterfaceType = groupEntityToken.ChildGeneratingDataElementsReferenceType,
+                    KeyValue = groupEntityToken.ChildGeneratingDataElementsReferenceValue
+                };
+            }
+
+            return null;
         }
 
 
