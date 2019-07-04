@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Composite.Data;
 using Composite.Data.Types;
@@ -46,6 +47,19 @@ namespace Composite.C1Console.Security
             });
         }
 
+        /// <exclude />
+
+        public static IEnumerable<CultureInfo> GetUserGroupActiveCultures(string username)
+        {
+            Verify.ArgumentNotNullOrEmpty(username, nameof(username));
+
+            return
+                from ugal in DataFacade.GetData<IUserGroupActiveLocale>()
+                join uugr in DataFacade.GetData<IUserUserGroupRelation>() on ugal.UserGroupId equals uugr.UserGroupId
+                join user in DataFacade.GetData<IUser>() on uugr.UserId equals user.Id
+                where user.Username == username
+                select CultureInfo.CreateSpecificCulture(ugal.CultureName);
+        }
 
 
         private static void OnDataChanged(object sender, StoreEventArgs storeEventArgs)
