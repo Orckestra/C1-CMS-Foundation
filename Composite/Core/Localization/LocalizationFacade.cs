@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -189,6 +189,11 @@ namespace Composite.Core.Localization
             }
 
             DynamicTypeManager.AddLocale(cultureInfo);
+
+            if (makeFlush)
+            {
+                C1Console.Events.GlobalEventSystemFacade.FlushTheSystem(false);
+            }
         }
 
 

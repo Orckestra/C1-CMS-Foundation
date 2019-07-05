@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
@@ -115,7 +115,6 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
         }
 
 
-
         public void RemoveLocale(CultureInfo cultureInfo)
         {
             XmlDataProviderDocumentCache.ClearCache();
@@ -148,7 +147,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
                 {
                     if (!dataTypes.TryGetValue(dataTypeDescriptor.DataTypeId, out interfaceType) || interfaceType == null)
                     {
-                        Log.LogWarning(LogTitle, "The data interface type '{0}' does not exists and is not code generated. It will not be usable", dataTypeDescriptor.TypeManagerTypeName);
+                        Log.LogWarning(LogTitle, "The data interface type '{0}' does not exist and is not code generated. It will not be usable", dataTypeDescriptor.TypeManagerTypeName);
                         continue;
                     }
 
