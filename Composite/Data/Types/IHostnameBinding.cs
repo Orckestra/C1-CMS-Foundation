@@ -48,7 +48,7 @@ namespace Composite.Data.Types
         string PageNotFoundUrl { get; set; }
 
         /// <exclude />
-        [StoreFieldType(PhysicalStoreFieldType.String, 512, IsNullable = true)]
+        [StoreFieldType(PhysicalStoreFieldType.LargeString)]
         [ImmutableFieldId("{80C298F2-F493-465D-9F28-4F50DD0C03D5}")]
         string Aliases { get; set; }
 
