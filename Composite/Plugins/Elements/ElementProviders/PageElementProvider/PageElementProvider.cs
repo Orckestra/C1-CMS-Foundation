@@ -108,7 +108,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
         {
             EntityToken entityToken = new PageElementProviderEntityToken(_context.ProviderName);
 
-            if (!DataLocalizationFacade.ActiveLocalizationCultures.Contains(UserSettings.ActiveLocaleCultureInfo))
+            if (UserValidationFacade.IsLoggedIn() 
+                && !DataLocalizationFacade.ActiveLocalizationCultures.Contains(UserSettings.ActiveLocaleCultureInfo))
             {
                 yield return new Element(_context.CreateElementHandle(entityToken))
                 {
@@ -281,7 +282,11 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
         public IEnumerable<Element> GetChildren(EntityToken entityToken, SearchToken searchToken)
         {
-            if (!DataLocalizationFacade.ActiveLocalizationCultures.Contains(UserSettings.ActiveLocaleCultureInfo)) return Enumerable.Empty<Element>();
+            if (UserValidationFacade.IsLoggedIn() 
+                && !DataLocalizationFacade.ActiveLocalizationCultures.Contains(UserSettings.ActiveLocaleCultureInfo)) 
+            {
+                return Enumerable.Empty<Element>();
+            }
 
             if (entityToken is AssociatedDataElementProviderHelperEntityToken associatedData)
             {
@@ -316,7 +321,11 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
         public IEnumerable<Element> GetForeignChildren(EntityToken entityToken, SearchToken searchToken)
         {
             if (entityToken is DataEntityToken dataEntityToken && dataEntityToken.Data == null) return Array.Empty<Element>();
-            if (!DataLocalizationFacade.ActiveLocalizationCultures.Contains(UserSettings.ActiveLocaleCultureInfo)) return Enumerable.Empty<Element>();
+            if (UserValidationFacade.IsLoggedIn()
+                && !DataLocalizationFacade.ActiveLocalizationCultures.Contains(UserSettings.ActiveLocaleCultureInfo))
+            {
+                return Enumerable.Empty<Element>();
+            }
 
             if (entityToken is AssociatedDataElementProviderHelperEntityToken associatedData)
             {
