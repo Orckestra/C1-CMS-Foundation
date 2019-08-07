@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <Scripts>
 	<Type name="sub">
 		<Mode name="operate">
@@ -196,6 +196,7 @@
 			<Script filename="${root}/scripts/source/top/ui/bindings/data/selectors/SelectorBindingSelection.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/data/selectors/DataInputSelectorBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/data/dialogs/DataInputDialogBinding.js"/>
+			<Script filename="${root}/scripts/source/top/ui/bindings/data/dialogs/TreeSelectorDialogBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/data/dialogs/UrlInputDialogBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/data/dialogs/DataInputButtonBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/data/dialogs/DataDialogBinding.js"/>
