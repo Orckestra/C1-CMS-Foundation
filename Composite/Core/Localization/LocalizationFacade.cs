@@ -109,7 +109,7 @@ namespace Composite.Core.Localization
             Verify.That(IsLocaleInstalled(cultureName), "The locale '{0}' is not installed and the url mapping name can not be renamed", cultureName);
             Verify.That(!IsUrlMappingNameInUse(cultureName, newUrlMappingName), "The url mapping '{0}' is already used", newUrlMappingName);
 
-            ISystemActiveLocale systemActiveLocale = DataFacade.GetData<ISystemActiveLocale>().Single(f => f.CultureName != cultureName);            
+            ISystemActiveLocale systemActiveLocale = DataFacade.GetData<ISystemActiveLocale>().Single(f => f.CultureName == cultureName);            
             systemActiveLocale.UrlMappingName = newUrlMappingName;
             DataFacade.Update(systemActiveLocale);
         }
