@@ -416,7 +416,10 @@ namespace Composite.C1Console.Actions
             if (entityToken is DataEntityToken)
             {
                 var dataEntityToken = entityToken as DataEntityToken;
-                lockKey = lockKey + (dataEntityToken.DataSourceId.LocaleScope ?? "").ToString();
+                if (dataEntityToken.DataSourceId != null && dataEntityToken.DataSourceId.LocaleScope != null)
+                {
+                    lockKey = lockKey + dataEntityToken.DataSourceId.LocaleScope.ToString();
+                }
             }
 
             return lockKey;
