@@ -43,6 +43,7 @@
 			<Directory path="\Composite\applets" />
 			<Directory path="\bower_components" />
 			<Directory path="\jspm_packages" />
+			<Directory path="\node_modules" />
 		</Directories>
 		<Files>
 			<File path="\Composite\scripts\compressed\sub-uncompressed.js" />
