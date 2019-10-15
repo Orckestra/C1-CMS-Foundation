@@ -10,14 +10,13 @@
 		</Directories>
 		<Files>
 			<File path="\App_Data\Composite\ReleaseBuild.Composite.config.changeHistory.txt" />
-			<File path="\vwd.webinfo" />
-			<File path="\WebSite.csproj" />
-			<File path="\WebSite.csproj.user" />
-			<File path="\WebSite.csproj.vspscc" />
-			<File path="\Properties\AssemblyInfo.cs" />
 			<File path="*.bat" />
 			<File path="DebugBuild.*" />
 			<File path="*.csproj*" />
+			<File path="/bin/*.pdb" />
+			<File path="/bin/Composite.xml" rename-find=".xml" rename-replace=".xml.yolo" />
+			<File path="/bin/*.xml" />
+			<File path="/bin/Composite.xml.yolo" rename-find=".xml.yolo" rename-replace=".xml" />
 		</Files>
 	</Target>
 
@@ -40,6 +39,7 @@
 			<File path="\ReleaseCleanupConfiguration.xml" />
 			<File path="\Composite\Styles\styles.less" />
 			<File path=".*" />
+			<File path="ReleaseBuild.*" rename-find="ReleaseBuild." rename-replace="" />
 		</Files>
 	</Target>
 </Configuration>
