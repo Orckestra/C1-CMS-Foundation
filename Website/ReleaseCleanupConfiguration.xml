@@ -2,38 +2,22 @@
 <Configuration>
 	<Target name="prejavascriptcompile">
 		<Directories>
-			<Directory path="\App_Code" />
-			<Directory path="\App_Data\Composite\License" />
-			<Directory path="\Spikes" />
 			<Directory path="\obj" />
-			<Directory path="\Tests" />
-			<Directory path="\Develop" />
-			<Directory path="\Bin\da" />
-			<Directory path="\Properties" />
-			<Directory path="\Composite\content\dialogs\querytreeeditor" />
+			<Directory path="\test" />
 			<Directory path="\Composite\content\dialogs\tests" />
 			<Directory path="\Composite\content\views\dev\developer\tests" />
-			<Directory path="\Composite\content\misc\editors\visualeditor\tiny_mce_NEWER" />
 			<Directory path="\Composite\content\views\search" />
-			<Directory path="\Composite\images\icons\harmony" />
-			<Directory path="\Composite\images\icons\mimetypes" />
-			<Directory path="\Composite\images\icons\republic" />
-			<Directory path="\Composite\images\originals" />
-			<Directory path="\Composite\transformations\temp" />
-			<Directory path="\test" />
 		</Directories>
 		<Files>
-			<File path="\App_Data\Composite\clean.bat" />
-			<File path="\App_Data\Composite\AddOnDescriptions_RENAME.xml" />
-			<File path="\App_Data\Composite\Composite.modified.config" />
 			<File path="\App_Data\Composite\ReleaseBuild.Composite.config.changeHistory.txt" />
-			<File path="\Renderers\ExecuteFunction.ashx" />
-			<File path="\.project" />
 			<File path="\vwd.webinfo" />
 			<File path="\WebSite.csproj" />
 			<File path="\WebSite.csproj.user" />
 			<File path="\WebSite.csproj.vspscc" />
 			<File path="\Properties\AssemblyInfo.cs" />
+			<File path="*.bat" />
+			<File path="DebugBuild.*" />
+			<File path="*.csproj*" />
 		</Files>
 	</Target>
 
@@ -41,21 +25,21 @@
 		<Directories>
 			<Directory path="\Composite\scripts\source" />
 			<Directory path="\Composite\applets" />
+			<Directory path="\Composite\Images\Icons\svg" />
+			<Directory path="\Composite\Styles\default" />
 			<Directory path="\bower_components" />
 			<Directory path="\jspm_packages" />
 			<Directory path="\node_modules" />
+			<Directory path="\Composite\lib\codemirror" />
 		</Directories>
 		<Files>
-			<File path="\Composite\scripts\compressed\sub-uncompressed.js" />
-			<File path="\Composite\scripts\compressed\top-uncompressed.js" />
-			<File path="\.bowerrc" />
-			<File path="\.eslintignore" />
-			<File path="\.eslintrc.json" />
 			<File path="\bower.json" />
 			<File path="\gruntfile.js" />
 			<File path="\package.json" />
 			<File path="\jspm.config.js" />
 			<File path="\ReleaseCleanupConfiguration.xml" />
+			<File path="\Composite\Styles\styles.less" />
+			<File path=".*" />
 		</Files>
 	</Target>
 </Configuration>
