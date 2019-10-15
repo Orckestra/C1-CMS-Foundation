@@ -29,13 +29,14 @@
 			<Directory path="\bower_components" />
 			<Directory path="\jspm_packages" />
 			<Directory path="\node_modules" />
-			<Directory path="\Composite\lib\codemirror" />
 		</Directories>
 		<Files>
 			<File path="\bower.json" />
 			<File path="\gruntfile.js" />
 			<File path="\package.json" />
 			<File path="\jspm.config.js" />
+			<File path="\package-lock.json" />
+			<File path="\packages.config" />
 			<File path="\ReleaseCleanupConfiguration.xml" />
 			<File path="\Composite\Styles\styles.less" />
 			<File path=".*" />
