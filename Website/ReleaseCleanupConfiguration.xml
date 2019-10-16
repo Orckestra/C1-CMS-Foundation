@@ -34,12 +34,13 @@
 			<File path="\jspm.config.js" />
 			<File path="\package-lock.json" />
 			<File path="\packages.config" />
-			<File path="\ReleaseCleanupConfiguration.xml" />
 			<File path="\Composite\Styles\styles.less" />
-			<File path="/Composite/console/index.prod.html" rename-find="index.prod.html" rename-replace="index.html" />
-			<!-- clean up /Composite/console dir, keeping index.html -->
+			<File path="/Composite/console/index.prod.html" rename-find="console/index.prod.html" rename-replace="console.yolo/index.prod.html" />
+			<Directory path="/Composite/console" />
+			<File path="/Composite/console.yolo/index.prod.html" rename-find="console.yolo/index.prod.html" rename-replace="console.yolo/index.html" />
 			<File path=".*" />
 			<File path="ReleaseBuild.*" rename-find="ReleaseBuild." rename-replace="" />
+			<File path="\ReleaseCleanupConfiguration.xml" />
 		</CleanupOperations>
 	</Target>
 </Configuration>
