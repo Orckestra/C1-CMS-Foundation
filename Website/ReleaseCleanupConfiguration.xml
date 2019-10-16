@@ -27,7 +27,9 @@
 			<Directory path="\Composite\Images\Icons\svg" />
 			<Directory path="\Composite\Styles\default" />
 			<Directory path="\bower_components" />
+			<!-- keeping around for debug porposes while creating build... This folder should not be around for real.
 			<Directory path="\jspm_packages" />
+			-->
 			<Directory path="\node_modules" />
 		</Directories>
 		<Files>
