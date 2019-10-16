@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Configuration>
 	<Target name="prejavascriptcompile">
-		<Directories>
+		<CleanupOperations>
+			<!-- operations are done in sequence -->
 			<Directory path="\obj" />
 			<Directory path="\test" />
 			<Directory path="\Composite\content\dialogs\tests" />
 			<Directory path="\Composite\content\views\dev\developer\tests" />
 			<Directory path="\Composite\content\views\search" />
-		</Directories>
-		<Files>
 			<File path="\App_Data\Composite\ReleaseBuild.Composite.config.changeHistory.txt" />
 			<File path="*.bat" />
 			<File path="DebugBuild.*" />
@@ -17,11 +16,11 @@
 			<File path="/bin/Composite.xml" rename-find=".xml" rename-replace=".xml.yolo" />
 			<File path="/bin/*.xml" />
 			<File path="/bin/Composite.xml.yolo" rename-find=".xml.yolo" rename-replace=".xml" />
-		</Files>
+		</CleanupOperations>
 	</Target>
 
 	<Target name="postjavascriptcompile">
-		<Directories>
+		<CleanupOperations>
 			<Directory path="\Composite\scripts\source" />
 			<Directory path="\Composite\applets" />
 			<Directory path="\Composite\Images\Icons\svg" />
@@ -29,8 +28,6 @@
 			<Directory path="\bower_components" />
 			<Directory path="\jspm_packages" />
 			<Directory path="\node_modules" />
-		</Directories>
-		<Files>
 			<File path="\bower.json" />
 			<File path="\gruntfile.js" />
 			<File path="\package.json" />
@@ -43,6 +40,6 @@
 			<!-- clean up /Composite/console dir, keeping index.html -->
 			<File path=".*" />
 			<File path="ReleaseBuild.*" rename-find="ReleaseBuild." rename-replace="" />
-		</Files>
+		</CleanupOperations>
 	</Target>
 </Configuration>
