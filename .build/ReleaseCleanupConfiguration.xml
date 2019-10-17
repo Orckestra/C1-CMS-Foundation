@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Configuration>
+	<Target name="prejavascriptcompile">
+		<CleanupOperations>
+			<!-- operations are done in sequence -->
+			<Directory path="/obj" />
+			<Directory path="/test" />
+			<Directory path="/Composite/content/dialogs/tests" />
+			<Directory path="/Composite/content/views/dev/developer/tests" />
+			<Directory path="/Composite/content/views/search" />
+			<Directory path="/Composite/extensions" />
+			<File path="/App_Data/Composite/ReleaseBuild.Composite.config.changeHistory.txt" />
+			<File path="*.bat" />
+			<File path="DebugBuild.*" />
+			<File path="*.csproj*" />
+			<File path="/bin/*.pdb" />
+			<File path="/bin/Composite.xml" rename-find=".xml" rename-replace=".xml.yolo" />
+			<File path="/bin/*.xml" />
+			<File path="/bin/Composite.xml.yolo" rename-find=".xml.yolo" rename-replace=".xml" />
+		</CleanupOperations>
+	</Target>
+
+	<Target name="postjavascriptcompile">
+		<CleanupOperations>
+			<Directory path="/Composite/scripts/source" />
+			<Directory path="/Composite/applets" />
+			<Directory path="/Composite/Images/Icons/svg" />
+			<Directory path="/Composite/Styles/default" />
+			<Directory path="/bower_components" />
+			<Directory path="/jspm_packages" />
+			<Directory path="/node_modules" />
+			<File path="/bower.json" />
+			<File path="/gruntfile.js" />
+			<File path="/package.json" />
+			<File path="/jspm.config.js" />
+			<File path="/package-lock.json" />
+			<File path="/packages.config" />
+			<File path="/Composite/Styles/styles.less" />
+			<File path="/Composite/console/index.prod.html" rename-find="console/index.prod.html" rename-replace="console.index.prod.html" />
+			<Directory path="/Composite/console" />
+			<File path="/Composite/console.index.prod.html" rename-find="console.index.prod.html" rename-replace="console/index.html" />
+			<File path=".*" />
+			<File path="ReleaseBuild.*" rename-find="ReleaseBuild." rename-replace="" />
+			<File path="/ReleaseCleanupConfiguration.xml" />
+		</CleanupOperations>
+	</Target>
+</Configuration>
