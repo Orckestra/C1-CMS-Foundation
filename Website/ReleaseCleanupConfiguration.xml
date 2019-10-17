@@ -8,6 +8,7 @@
 			<Directory path="/Composite/content/dialogs/tests" />
 			<Directory path="/Composite/content/views/dev/developer/tests" />
 			<Directory path="/Composite/content/views/search" />
+			<Directory path="/Composite/extensions" />
 			<File path="/App_Data/Composite/ReleaseBuild.Composite.config.changeHistory.txt" />
 			<File path="*.bat" />
 			<File path="DebugBuild.*" />
