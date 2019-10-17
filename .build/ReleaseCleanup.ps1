@@ -12,7 +12,7 @@ if(-not($cleanupDirectory)) { Throw "You must supply a value for -cleanupDirecto
 $scriptPath = split-path -parent $MyInvocation.MyCommand.Definition
 [xml]$xml = Get-Content (Join-Path $scriptPath "ReleaseCleanupConfiguration.xml")
 
-$targetItems = $xml.SelectNodes("/Configuration/Target[@name='" + $targetName + "']/*/*[@path]")
+$targetItems = $xml.SelectNodes("/Configuration/Target[@name='" + $cleanupTargetName + "']/*/*[@path]")
 
 Foreach ($fileNode in $targetItems) {
     $relPath = $fileNode.Attributes["path"].Value
