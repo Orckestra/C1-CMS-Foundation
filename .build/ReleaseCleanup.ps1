@@ -3,6 +3,7 @@ param (
     [string]$cleanupDirectory
 )
 
+Write-Host "ReleaseCleanup script started..."
 # This script deletes/rename files according to rules in ReleaseCleanupConfiguration.xml - it is used by automated builds
 
 if(-not($cleanupTargetName)) { Throw "You must supply a value for -cleanupTargetName - matching a target name in ReleaseCleanupConfiguration.xml" }
