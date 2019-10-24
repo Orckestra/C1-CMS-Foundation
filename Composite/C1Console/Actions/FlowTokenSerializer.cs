@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Security;
@@ -76,7 +76,7 @@ namespace Composite.C1Console.Actions
             Type flowType = TypeManager.GetType(flowTokenTypeString);
 
             MethodInfo methodInfo = flowType.GetMethod("Deserialize", BindingFlags.Public | BindingFlags.Static);
-            if (methodInfo == null)
+            if (methodInfo == null || !(typeof(FlowToken).IsAssignableFrom(methodInfo.ReturnType)))
             {
                 throw new InvalidOperationException(string.Format("The flow token {0} is missing a public static Deserialize method taking a string as parameter and returning an {1}", flowType, typeof(FlowToken)));
             }
