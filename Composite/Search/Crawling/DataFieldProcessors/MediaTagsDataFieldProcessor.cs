@@ -12,15 +12,8 @@ namespace Composite.Search.Crawling.DataFieldProcessors
         public override string[] GetFacetValues(object value)
         {
             var str = (string)value;
-            var strList = str.Split(',');
-            var result = new string[strList.Length];
-            var index = 0;
-            foreach (var i in strList)
-            {
-                result[index] = i.Trim();
-                index++;
-            }
-            return result;
+            var strList = str.Split(',').Select(i => i.Trim()).ToArray();
+            return strList;
         }
 
         public override DocumentFieldFacet GetDocumentFieldFacet(PropertyInfo propertyInfo)
