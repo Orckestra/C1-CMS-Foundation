@@ -1,3 +1,4 @@
+using Composite.Core.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace Composite.Search.Crawling.DataFieldProcessors
         public override string[] GetFacetValues(object value)
         {
             var str = (string)value;
-            var strList = str.Split(',').Select(i => i.Trim()).ToArray();
+            var strList = str.Split(',').Select(s => s.Trim()).Where(s => !s.IsNullOrEmpty()).ToArray();
             return strList;
         }
 
