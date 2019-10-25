@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Globalization;
 using System.Reflection;
 
@@ -21,10 +21,12 @@ namespace Composite.Search.Crawling.DataFieldProcessors
             return value =>
             {
                 if (value == null) return null;
-                var date = DateTime.ParseExact((string)value, "s", CultureInfo.InvariantCulture);
-
-                return date.ToString("yyyy MMM d");
-            };
+                if (DateTime.TryParseExact((string)value, "s", CultureInfo.InvariantCulture, DateTimeStyles.None, out var date))
+                {
+                    return date.ToString("yyyy MMM d");
+                }
+                return (string)value;
+            };  
         }
 
         /// <exclude />

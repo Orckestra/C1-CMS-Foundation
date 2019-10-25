@@ -265,6 +265,7 @@
     <Compile Include="Properties\GitCommitInfo.cs" />
     <Compile Include="Search\Crawling\DataFieldProcessors\DateTimeDataFieldProcessor.cs" />
     <Compile Include="Search\Crawling\DataFieldProcessors\FileNameDataFieldProcessor.cs" />
+    <Compile Include="Search\Crawling\DataFieldProcessors\MediaTagsDataFieldProcessor.cs" />
     <Compile Include="Search\Crawling\DataFieldProcessors\MimeTypeDataFieldProcessor.cs" />
     <Compile Include="Search\Crawling\DataFieldProcessors\PublicationStatusDataFieldProcessor.cs" />
     <Compile Include="Search\Crawling\DocumentFieldNames.cs" />
