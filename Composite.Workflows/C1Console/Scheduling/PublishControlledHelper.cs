@@ -87,11 +87,16 @@ namespace Composite.C1Console.Scheduling
 
         public static void ReloadDataElementInConsole(DataEntityToken dataEntityToken)
         {
+            if (dataEntityToken == null) throw new ArgumentNullException(nameof(dataEntityToken));
+
             var parentEntityTokens = AuxiliarySecurityAncestorFacade.GetParents(dataEntityToken);
 
-            foreach (var parentEntityToken in parentEntityTokens)
+            if (parentEntityTokens != null) 
             {
-                ConsoleMessageQueueFacade.Enqueue(new RefreshTreeMessageQueueItem { EntityToken = parentEntityToken }, null);
+                foreach (var parentEntityToken in parentEntityTokens)
+                {
+                    ConsoleMessageQueueFacade.Enqueue(new RefreshTreeMessageQueueItem { EntityToken = parentEntityToken }, null);
+                }
             }
         }
 

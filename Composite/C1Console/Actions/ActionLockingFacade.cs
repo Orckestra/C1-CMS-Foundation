@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -21,7 +21,7 @@ namespace Composite.C1Console.Actions
     public static class ActionLockingFacade
     {
         private static readonly string LogTitle = typeof(ActionLockingFacade).Name;
-        private static Dictionary<EntityToken, LockingInformation> _lockingInformations = null;
+        private static Dictionary<string, LockingInformation> _lockingInformations = null;
         private static readonly object _lock = new object();
         private static readonly IFormatter _ownerIdFormatter = new BinaryFormatter();
 
@@ -90,7 +90,8 @@ namespace Composite.C1Console.Actions
             {
                 EnsureInitialization();
 
-                RemoveLockingInformation(entityToken, ownerId);
+                string lockKey = GetLockKey(entityToken);
+                RemoveLockingInformation(lockKey, ownerId);
             }
         }
 
@@ -108,14 +109,14 @@ namespace Composite.C1Console.Actions
             {
                 EnsureInitialization();
 
-                List<EntityToken> entityTokens =
+                List<string> lockKeys =
                     (from li in _lockingInformations
                      where object.Equals(li.Value.OwnerId, ownerId)
                      select li.Key).ToList();
 
-                foreach (EntityToken entityToken in entityTokens)
+                foreach (string lockKey in lockKeys)
                 {
-                    RemoveLockingInformation(entityToken, ownerId);
+                    RemoveLockingInformation(lockKey, ownerId);
                 }
             }
         }
@@ -132,8 +133,8 @@ namespace Composite.C1Console.Actions
             using (GlobalInitializerFacade.CoreIsInitializedScope)
             {
                 EnsureInitialization();
-
-                return _lockingInformations.ContainsKey(entityToken);
+                string lockKey = GetLockKey(entityToken);
+                return _lockingInformations.ContainsKey(lockKey);
             }
         }
 
@@ -150,8 +151,10 @@ namespace Composite.C1Console.Actions
             {
                 EnsureInitialization();
 
+                string lockKey = GetLockKey(entityToken);
+
                 LockingInformation lockingInformation;
-                if (!_lockingInformations.TryGetValue(entityToken, out lockingInformation))
+                if (!_lockingInformations.TryGetValue(lockKey, out lockingInformation))
                 {
                     return null;
                 }
@@ -181,10 +184,10 @@ namespace Composite.C1Console.Actions
             {
                 EnsureInitialization();
 
-                List<Tuple<EntityToken, object>> itemsToRemove =
+                List<Tuple<string, object>> itemsToRemove =
                     (from info in _lockingInformations
                      where info.Value.Username == username
-                     select new Tuple<EntityToken, object>(info.Key, info.Value.OwnerId)).ToList();
+                     select new Tuple<string, object>(info.Key, info.Value.OwnerId)).ToList();
 
                 foreach (var item in itemsToRemove)
                 {
@@ -205,9 +208,11 @@ namespace Composite.C1Console.Actions
             {
                 EnsureInitialization();
 
-                if (_lockingInformations.ContainsKey(entityToken))
+                string lockKey = GetLockKey(entityToken);
+
+                if (_lockingInformations.ContainsKey(lockKey))
                 {
-                    RemoveLockingInformation(entityToken, _lockingInformations[entityToken].OwnerId);
+                    RemoveLockingInformation(lockKey, _lockingInformations[lockKey].OwnerId);
                 }
             }
         }
@@ -223,7 +228,7 @@ namespace Composite.C1Console.Actions
 
                 if (_lockingInformations == null)
                 {
-                    _lockingInformations = new Dictionary<EntityToken, LockingInformation>();
+                    _lockingInformations = new Dictionary<string, LockingInformation>();
 
                     LoadLockingInformation();
                 }
@@ -251,9 +256,7 @@ namespace Composite.C1Console.Actions
 
                 try 
                 {
-                    EntityToken entityToken = EntityTokenSerializer.Deserialize(lockingInformation.SerializedEntityToken);
-
-                    _lockingInformations.Add(entityToken, li);
+                    _lockingInformations.Add(lockingInformation.LockKey, li);
                 }
                 catch (Exception)
                 {
@@ -272,8 +275,10 @@ namespace Composite.C1Console.Actions
 
         private static void AddLockingInformation(EntityToken entityToken, object ownerId)
         {
+            string lockKey = GetLockKey(entityToken);
+
             LockingInformation lockingInformation;
-            if (_lockingInformations.TryGetValue(entityToken, out lockingInformation))
+            if (_lockingInformations.TryGetValue(lockKey, out lockingInformation))
             {
                 if (object.Equals(lockingInformation.OwnerId, ownerId))
                 {
@@ -295,26 +300,26 @@ namespace Composite.C1Console.Actions
 
             ILockingInformation li = DataFacade.BuildNew<ILockingInformation>();
             li.Id = Guid.NewGuid();
-            li.SerializedEntityToken = EntityTokenSerializer.Serialize(entityToken);
+            li.LockKey = lockKey;
             li.SerializedOwnerId = serializedOwnerId;
             li.Username = lockingInformation.Username;
 
             DataFacade.AddNew<ILockingInformation>(li);
-            _lockingInformations.Add(entityToken, lockingInformation);
+            _lockingInformations.Add(lockKey, lockingInformation);
         }
 
 
 
         private static void UpdateLockingInformation(EntityToken entityToken, object newOwnerId)
         {
-            LockingInformation lockingInformation;
-            if (!_lockingInformations.TryGetValue(entityToken, out lockingInformation)) throw new InvalidOperationException("LockingInformation record missing");
+            string lockKey = GetLockKey(entityToken);
 
-            string serializedEntityToken = EntityTokenSerializer.Serialize(entityToken);
+            LockingInformation lockingInformation;
+            if (!_lockingInformations.TryGetValue(lockKey, out lockingInformation)) throw new InvalidOperationException("LockingInformation record missing");
 
             ILockingInformation lockingInformationDataItem =
                 DataFacade.GetData<ILockingInformation>().
-                Single(f => f.SerializedEntityToken == serializedEntityToken);
+                Single(f => f.LockKey == lockKey);
 
             lockingInformationDataItem.SerializedOwnerId = SerializeOwnerId(newOwnerId);
             DataFacade.Update(lockingInformationDataItem);
@@ -324,27 +329,26 @@ namespace Composite.C1Console.Actions
 
 
 
-        private static void RemoveLockingInformation(EntityToken entityToken, object ownerId)
+        private static void RemoveLockingInformation(string lockKey, object ownerId)
         {
             LockingInformation lockingInformation;
-            if (!_lockingInformations.TryGetValue(entityToken, out lockingInformation)) return;
+            if (!_lockingInformations.TryGetValue(lockKey, out lockingInformation)) return;
 
             if (Equals(lockingInformation.OwnerId, ownerId))
             {
-                _lockingInformations.Remove(entityToken);
+                _lockingInformations.Remove(lockKey);
             }
 
             string serializedOwnerId = SerializeOwnerId(ownerId);
-            string serializedEntityToken = EntityTokenSerializer.Serialize(entityToken);
 
             ILockingInformation lockingInformationDataItem =
                 DataFacade.GetData<ILockingInformation>()
-                          .SingleOrDefault(f => f.SerializedEntityToken == serializedEntityToken
+                          .SingleOrDefault(f => f.LockKey == lockKey
                                              && f.SerializedOwnerId == serializedOwnerId);
 
             if (lockingInformationDataItem == null)
             {
-                Log.LogWarning(LogTitle, "Failed to find entity token lock. EntityToken: " + serializedEntityToken);
+                Log.LogWarning(LogTitle, "Failed to find entity token lock. EntityToken: " + lockKey);
                 return;
             }
 
@@ -402,6 +406,23 @@ namespace Composite.C1Console.Actions
         private static void Exit()
         {
             Monitor.Exit(_lock);
+        }
+
+
+        private static string GetLockKey(EntityToken entityToken)
+        {
+            string lockKey = entityToken.Serialize();
+
+            if (entityToken is DataEntityToken)
+            {
+                var dataEntityToken = entityToken as DataEntityToken;
+                if (dataEntityToken.DataSourceId != null && dataEntityToken.DataSourceId.LocaleScope != null)
+                {
+                    lockKey = lockKey + dataEntityToken.DataSourceId.LocaleScope.ToString();
+                }
+            }
+
+            return lockKey;
         }
 
 

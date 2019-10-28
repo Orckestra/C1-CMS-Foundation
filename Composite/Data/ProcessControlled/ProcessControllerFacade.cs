@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -249,7 +249,7 @@ namespace Composite.Data.ProcessControlled
 
                         foreach (IPublishControlledAuxiliary publishControlledAuxiliary in publishControlledAuxiliaries)
                         {
-                            publishControlledAuxiliary.OnAfterDataUpdated(dataEventArgs.Data);
+                            publishControlledAuxiliary.OnAfterBuildNew(dataEventArgs.Data);
                         }
                     }
                 }

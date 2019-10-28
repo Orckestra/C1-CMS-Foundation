@@ -39,6 +39,13 @@ namespace Composite.Plugins.Routing.Pages
         {
             DataEvents<IPage>.OnAfterAdd += (a, b) => UpdateFriendlyUrl((IPage) b.Data);
             DataEvents<IPage>.OnAfterUpdate += (a, b) => UpdateFriendlyUrl((IPage) b.Data);
+            DataEvents<IPage>.OnStoreChanged += (sender, args) =>
+            {
+                if (!args.DataEventsFired)
+                {
+                    lock (_friendlyUrls) _friendlyUrls.Clear();
+                }
+            };
 
             DataEvents<IHostnameBinding>.OnAfterAdd += (a, b) => _hostnameBindings = null;
             DataEvents<IHostnameBinding>.OnAfterUpdate += (a, b) => _hostnameBindings = null;
@@ -425,7 +432,7 @@ namespace Composite.Plugins.Routing.Pages
 
         private PageUrlData ParsePagePath(string pagePath, PublicationScope publicationScope, CultureInfo locale, IHostnameBinding hostnameBinding)
         {
-            // Parshing what's left:
+            // Parsing what's left:
             // [/Path to a page][UrlSuffix]{/PathInfo}
             string pathInfo = null;
 

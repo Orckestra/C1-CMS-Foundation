@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Net;
 using Composite.C1Console.Security;
-using System.Threading;
+using Composite.Core.Caching;
+using Composite.Data;
 
 
 namespace Composite.C1Console.Users
@@ -109,7 +111,17 @@ namespace Composite.C1Console.Users
         /// <exclude />
         public static CultureInfo GetCurrentActiveLocaleCultureInfo(string username)
         {
-            return _implementation.GetCurrentActiveLocaleCultureInfo(username);
+            var key = "CurrentActiveCulture" + username;
+            if (RequestLifetimeCache.HasKey(key)) return RequestLifetimeCache.TryGet<CultureInfo>(key);
+
+            var cultureInfo = _implementation.GetCurrentActiveLocaleCultureInfo(username);
+            var allowedCultures = GetActiveLocaleCultureInfos(username, true);
+
+            if( !allowedCultures.Contains(cultureInfo)) cultureInfo = allowedCultures.FirstOrDefault();
+
+            if (cultureInfo != null && !RequestLifetimeCache.HasKey(key)) RequestLifetimeCache.Add(key, cultureInfo);
+
+            return cultureInfo ?? CultureInfo.InvariantCulture;
         }
 
 
@@ -170,22 +182,24 @@ namespace Composite.C1Console.Users
 
         // Overload
         /// <summary>
-        /// This is an overload for GetActiveLocaleCultureInfos(string username)
+        /// This is an overload for GetActiveLocaleCultureInfos(string username, includeGroupAssignedCultures = true)
         /// using the current username.
         /// </summary>
         public static IEnumerable<CultureInfo> ActiveLocaleCultureInfos
         {
             get
             {
-                return GetActiveLocaleCultureInfos(UserSettings.Username);
+                return GetActiveLocaleCultureInfos(UserSettings.Username, true);
             }
         }
 
 
         /// <exclude />
-        public static IEnumerable<CultureInfo> GetActiveLocaleCultureInfos(string username)
+        public static IEnumerable<CultureInfo> GetActiveLocaleCultureInfos(string username, bool includeGroupAssignedCultures = true)
         {
-            return _implementation.GetActiveLocaleCultureInfos(username);
+            return includeGroupAssignedCultures ?
+                _implementation.GetActiveLocaleCultureInfos(username).Union(UserGroupFacade.GetUserGroupActiveCultures(username)) :
+                _implementation.GetActiveLocaleCultureInfos(username);
         }
 
 

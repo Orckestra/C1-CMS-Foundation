@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Globalization;
 using System.Web;
 using Composite.Core.Extensions;
@@ -220,7 +220,14 @@ namespace Composite.Core.WebClient.Renderings
 
             string newUrl = request.Url.AbsoluteUri.Replace("://" + hostname, "://" + hostnameBinding.Hostname);
 
-            httpContext.Response.Redirect(newUrl, false);
+            if (hostnameBinding.UsePermanentRedirect)
+            {
+                httpContext.Response.RedirectPermanent(newUrl, false);
+            }
+            else
+            {
+                httpContext.Response.Redirect(newUrl, false);
+            }
             httpContext.ApplicationInstance.CompleteRequest();
             return true;
         }

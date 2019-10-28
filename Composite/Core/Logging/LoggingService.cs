@@ -63,23 +63,23 @@ namespace Composite.Core.Logging
 
         static private void LogEntry(string title, string message, Exception exc, Category category, System.Diagnostics.TraceEventType severity, int priority, int eventid)
         {
-            var entry = new Microsoft.Practices.EnterpriseLibrary.Logging.LogEntry();
-
-            // TODO: refactor this code
-            entry.Title = string.Format("({0} - {1}) {2}", AppDomain.CurrentDomain.Id, Thread.CurrentThread.ManagedThreadId, title);
-            entry.Message = message;
-            entry.Severity = severity;
-            entry.Priority = priority;
-            entry.EventId = eventid;
+            var entry = new Microsoft.Practices.EnterpriseLibrary.Logging.LogEntry
+            {
+                Title = $"({AppDomain.CurrentDomain.Id} - {Thread.CurrentThread.ManagedThreadId}) {title}",
+                Message = message,
+                Severity = severity,
+                Priority = priority,
+                EventId = eventid
+            };
 
             if ((category & Category.General) != 0)
             {
-                entry.Categories.Add("General");
+                entry.Categories.Add(nameof(Category.General));
             }
 
             if ((category & Category.Audit) != 0)
             {
-                entry.Categories.Add("Audit");
+                entry.Categories.Add(nameof(Category.Audit));
             }
 
             if (exc != null)
@@ -259,11 +259,10 @@ namespace Composite.Core.Logging
 
         static string PrettyExceptionCallStack(Exception ex)
         {
+            if (ex == null) return "[exception is null]";
+
             string serializedException = ex.ToString();
-
-            string cleanException;
-
-            if (ex.InnerException != null && ExcludeInnerExceptionInformation(ex, serializedException, out cleanException))
+            if (ex.InnerException != null && ExcludeInnerExceptionInformation(ex, serializedException, out var cleanException))
             {
                 return PrettyExceptionCallStack(ex.InnerException) + Environment.NewLine + cleanException;
             }
@@ -323,7 +322,7 @@ namespace Composite.Core.Logging
                 }
                 else
                 {
-                    string path = Path.Combine(PathUtil.BaseDirectory, string.Format("logging{0}.config", Guid.NewGuid()));
+                    string path = Path.Combine(PathUtil.BaseDirectory, $"logging{Guid.NewGuid()}.config");
 
                     using (C1StreamWriter writer = new C1StreamWriter(path))
                     {

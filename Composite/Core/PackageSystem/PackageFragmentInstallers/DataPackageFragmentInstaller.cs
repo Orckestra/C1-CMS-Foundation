@@ -120,9 +120,12 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     }
                     else if (dataType.AddToCurrentLocale)
                     {
-                        Verify.That(UserValidationFacade.IsLoggedIn(), "Cannot add to the current locale as there's no logged in user.");
+                        var currentLocale = DataLocalizationFacade.DefaultLocalizationCulture;
+                        if (UserValidationFacade.IsLoggedIn())
+                        {
+                            currentLocale = UserSettings.ActiveLocaleCultureInfo;
+                        }
 
-                        var currentLocale = UserSettings.ActiveLocaleCultureInfo;
                         using (new DataScope(currentLocale))
                         {
                             XElement element = AddData(dataType, currentLocale);

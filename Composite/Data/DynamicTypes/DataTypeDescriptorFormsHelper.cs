@@ -265,27 +265,34 @@ namespace Composite.Data.DynamicTypes
 
         private static Dictionary<string, string> GetAvailablePublishingFlowTransitions(EntityToken entityToken)
         {
-            var transitionNames = new Dictionary<string, string>
+            if(UserValidationFacade.IsLoggedIn())
+            {
+                var transitionNames = new Dictionary<string, string>
                 {
                     {GenericPublishProcessController.Draft, LocalizationFiles.Composite_Management.PublishingStatus_draft},
                     {GenericPublishProcessController.AwaitingApproval,  LocalizationFiles.Composite_Management.PublishingStatus_awaitingApproval}
                 };
 
-            var username = UserValidationFacade.GetUsername();
-            var userPermissionDefinitions = PermissionTypeFacade.GetUserPermissionDefinitions(username);
-            var userGroupPermissionDefinition = PermissionTypeFacade.GetUserGroupPermissionDefinitions(username);
-            var currentPermissionTypes = PermissionTypeFacade.GetCurrentPermissionTypes(UserValidationFacade.GetUserToken(), entityToken, userPermissionDefinitions, userGroupPermissionDefinition);
-            foreach (var permissionType in currentPermissionTypes)
-            {
-                if (GenericPublishProcessController.AwaitingPublicationActionPermissionType.Contains(permissionType))
+                var username = UserValidationFacade.GetUsername();
+                var userPermissionDefinitions = PermissionTypeFacade.GetUserPermissionDefinitions(username);
+                var userGroupPermissionDefinition = PermissionTypeFacade.GetUserGroupPermissionDefinitions(username);
+                var currentPermissionTypes = PermissionTypeFacade.GetCurrentPermissionTypes(UserValidationFacade.GetUserToken(), entityToken, userPermissionDefinitions, userGroupPermissionDefinition);
+                foreach (var permissionType in currentPermissionTypes)
                 {
-                    transitionNames.Add(GenericPublishProcessController.AwaitingPublication,
-                        LocalizationFiles.Composite_Management.PublishingStatus_awaitingPublication);
-                    break;
+                    if (GenericPublishProcessController.AwaitingPublicationActionPermissionType.Contains(permissionType))
+                    {
+                        transitionNames.Add(GenericPublishProcessController.AwaitingPublication,
+                            LocalizationFiles.Composite_Management.PublishingStatus_awaitingPublication);
+                        break;
+                    }
                 }
-            }
 
-            return transitionNames;
+                return transitionNames;
+            }
+            else
+            {
+                return new Dictionary<string, string>();
+            }
         }
 
 

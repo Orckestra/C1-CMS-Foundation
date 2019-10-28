@@ -228,6 +228,14 @@ namespace Composite.Core.Serialization
             {
                 return Deserialize<T>(obj);
             }
+
+            if (!(typeof(T).IsAssignableFrom(methodInfo.ReturnType)))
+            {
+                string typeName = str.GetValue(TypeKeyString);
+                Log.LogWarning("CompositeJsonSerializer", string.Format("The action {0} is missing a public static Deserialize method taking a string as parameter and returning an {1}", typeName, typeof(T)));
+                throw new InvalidOperationException(string.Format("The token {0} is missing a public static Deserialize method taking a string as parameter and returning an {1}", typeName, typeof(T)));
+            }
+
             return (T)methodInfo.Invoke(null, new object[] { obj });
         }
 

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -354,7 +354,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
                 return new List<ElementAction>();
             }
 
-            if (data is ILocalizedControlled && !UserSettings.ActiveLocaleCultureInfo.Equals(data.DataSourceId.LocaleScope))
+            if (UserSettings.ActiveLocaleCultureInfo == null || data is ILocalizedControlled && !UserSettings.ActiveLocaleCultureInfo.Equals(data.DataSourceId.LocaleScope))
             {
                 return new List<ElementAction>();
             }

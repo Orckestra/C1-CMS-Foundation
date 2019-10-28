@@ -114,7 +114,8 @@ namespace Composite.Core.WebClient
                         {
                             using (new DisableUrlMedataScope())
                             {
-                                BuildManager.GetCompiledType(virtualPath);
+                                string compilePath = (virtualPath.StartsWith("~") ? "" : "~") + virtualPath;
+                                BuildManager.GetCompiledType(compilePath);
                             }
                         }
                         catch (ThreadAbortException)
