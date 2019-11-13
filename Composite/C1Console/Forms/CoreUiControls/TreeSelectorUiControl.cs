@@ -15,13 +15,13 @@ namespace Composite.C1Console.Forms.CoreUiControls
         public string ElementProvider { get; set; }
 
         [FormsProperty]
-        public string SelectionProperty { get; set; }
+        public string SelectableElementPropertyName { get; set; }
 
         [FormsProperty]
-        public string SelectionValue { get; set; }
+        public string SelectableElementPropertyValue { get; set; }
 
         [FormsProperty]
-        public string SelectionResult { get; set; }
+        public string SelectableElementReturnValue { get; set; }
 
         [FormsProperty]
         public string SerializedSearchToken { get; set; }

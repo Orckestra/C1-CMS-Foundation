@@ -47,9 +47,9 @@
 	id="<%= this.UniqueID  %>"
 	name="<%= this.UniqueID  %>"
 	element-provider="<%= FilterCharactersAndEncode(this.ElementProvider)  %>"
-	selection-property="<%= FilterCharactersAndEncode(this.SelectionProperty)  %>"
-	selection-value="<%= FilterCharactersAndEncode(this.SelectionValue)  %>"
-	selection-result="<%= FilterCharactersAndEncode(this.SelectionResult)  %>"
+	selection-property="<%= FilterCharactersAndEncode(this.SelectableElementPropertyName)  %>"
+	selection-value="<%= FilterCharactersAndEncode(this.SelectableElementPropertyValue)  %>"
+	selection-result="<%= FilterCharactersAndEncode(this.SelectableElementReturnValue)  %>"
 	serialized-search-token="<%= FilterCharactersAndEncode(this.SerializedSearchToken)  %>"
 	value="<%= FilterCharactersAndEncode(_currentStringValue) %>" binding="TreeSelectorDialogBinding"
 	<%= ValidationParams() %> />

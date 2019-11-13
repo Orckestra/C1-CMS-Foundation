@@ -32,34 +32,34 @@ namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunc
                     new ConstantValueProvider(string.Empty),
                     StandardWidgetFunctions.TextBoxWidget,
                     null,
-                    "Element Provider", new HelpDefinition("Tree Provider")));
+                    "Element Provider", new HelpDefinition("The name of a tree element provider (as defined in Composite.config)")));
 
             base.AddParameterProfile(
-                new ParameterProfile("SelectionProperty",
+                new ParameterProfile("SelectableElementPropertyName",
                     typeof(string),
                     true,
                     new ConstantValueProvider(string.Empty),
                     StandardWidgetFunctions.TextBoxWidget,
                     null,
-                    "SelectionProperty", new HelpDefinition("")));
+                    "Selectable Element Property Name", new HelpDefinition("The name of a property used to identify a selectable tree element by")));
 
             base.AddParameterProfile(
-                new ParameterProfile("SelectionValue",
+                new ParameterProfile("SelectableElementPropertyValue",
                     typeof(string),
                     false,
                     new ConstantValueProvider(string.Empty),
                     StandardWidgetFunctions.TextBoxWidget,
                     null,
-                    "SelectionValue", new HelpDefinition("")));
+                    "Selectable Element Property Value", new HelpDefinition("The value of the property optionally used (if provided) to further identify a selectable tree element by")));
 
             base.AddParameterProfile(
-                new ParameterProfile("SelectionResult",
+                new ParameterProfile("SelectableElementReturnValue",
                     typeof(string),
                     false,
                     new ConstantValueProvider(string.Empty),
                     StandardWidgetFunctions.TextBoxWidget,
                     null,
-                    "SelectionResult", new HelpDefinition("")));
+                    "Selectable Element Return Value", new HelpDefinition("The value to return for the selected tree element")));
             base.AddParameterProfile(
                 new ParameterProfile("SerializedSearchToken",
                     typeof(string),
@@ -67,15 +67,16 @@ namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunc
                     new ConstantValueProvider(string.Empty),
                     StandardWidgetFunctions.TextBoxWidget,
                     null,
-                    "SerializedSearchToken", new HelpDefinition("")));
+                    "Selectable Element Return Value", new HelpDefinition("A search token to filter tree elements by")));
             base.AddParameterProfile(
                 new ParameterProfile("Required",
                     typeof(bool),
                     false,
-                    new ConstantValueProvider(false),
-                    StandardWidgetFunctions.CheckBoxWidget,
+                    new ConstantValueProvider(true),
+                    StandardWidgetFunctions.GetBoolSelectorWidget("Yes, selection is required", "No, a 'none' selection is allowed."),
                     null,
-                    "Required", new HelpDefinition("")));
+                    "Required", new HelpDefinition("An option that indicates whether the user is required to make a selection")));
+
         }
 
 
@@ -84,7 +85,7 @@ namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunc
             XElement formElement = base.BuildBasicWidgetMarkup("TreeSelector", "SelectedKey", label, helpDefinition, bindingSourceName);
             foreach (var propertyName  in new []
             {
-                "ElementProvider", "SelectionProperty", "SelectionValue", "SelectionResult", "SerializedSearchToken", "Required"
+                "ElementProvider", "SelectableElementPropertyName", "SelectableElementPropertyValue", "SelectableElementReturnValue", "SerializedSearchToken", "Required"
             })
             {
                 string propertyValue = parameters.GetParameter<string>(propertyName);

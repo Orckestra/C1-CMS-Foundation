@@ -47,13 +47,13 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
         public string ElementProvider { get; set; }
 
         /// <exclude />
-        public string SelectionProperty { get; set; }
+        public string SelectableElementPropertyName { get; set; }
 
         /// <exclude />
-        public string SelectionValue { get; set; }
+        public string SelectableElementPropertyValue { get; set; }
 
         /// <exclude />
-        public string SelectionResult { get; set; }
+        public string SelectableElementReturnValue { get; set; }
 
         /// <exclude />
         public string SerializedSearchToken { get; set; }
@@ -111,9 +111,9 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
 
             _userControl.SelectedKey = this.SelectedKey;
             _userControl.ElementProvider = this.ElementProvider;
-            _userControl.SelectionProperty = this.SelectionProperty;
-            _userControl.SelectionValue = this.SelectionValue;
-            _userControl.SelectionResult = this.SelectionResult;
+            _userControl.SelectableElementPropertyName = this.SelectableElementPropertyName;
+            _userControl.SelectableElementPropertyValue = this.SelectableElementPropertyValue;
+            _userControl.SelectableElementReturnValue = this.SelectableElementReturnValue;
             _userControl.SerializedSearchToken = this.SerializedSearchToken;
             _userControl.Required = this.Required;
 
