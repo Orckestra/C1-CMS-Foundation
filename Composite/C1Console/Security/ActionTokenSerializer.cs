@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Security;
@@ -83,7 +83,7 @@ namespace Composite.C1Console.Security
             Type actionType = TypeManager.GetType(actionTokenTypeString);
 
             MethodInfo methodInfo = actionType.GetMethod("Deserialize", BindingFlags.Public | BindingFlags.Static);
-            if (methodInfo == null)
+            if (methodInfo == null || !(typeof(ActionToken).IsAssignableFrom(methodInfo.ReturnType)))
             {
                 Log.LogWarning("ActionTokenSerializer", string.Format("The action token {0} is missing a public static Deserialize method taking a string as parameter and returning an {1}", actionType, typeof(ActionToken)));
                 throw new InvalidOperationException(string.Format("The action token {0} is missing a public static Deserialize method taking a string as parameter and returning an {1}", actionType, typeof(ActionToken)));

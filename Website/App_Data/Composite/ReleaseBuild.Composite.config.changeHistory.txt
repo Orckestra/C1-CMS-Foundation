@@ -173,4 +173,4 @@ Changes in 6.0 or later
   -Added <add name="SystemDiagnosticsTraceBridge" /> to loggingConfiguration/specialSources/allEvents/listeners
 
   Changes in 6.7 or later:
-   - n/a
+  -Added <add userControlVirtualPath="~/Composite/controls/FormsControls/FormUiControlTemplates/Selectors/TreeSelector.ascx" cacheCompiledUserControlType="false" type="Composite.Plugins.Forms.WebChannel.UiControlFactories.TemplatedTreeSelectorUiControlFactory, Composite" name="TreeSelector" /> to configuration/Composite.C1Console.Forms.Plugins.UiControlFactoryConfiguration/Channels/Channel/Namespaces/Namespace/Factories

@@ -233,6 +233,7 @@
     <Compile Include="C1Console\Actions\Data\DataActionTokenResolverFacade.cs" />
     <Compile Include="C1Console\Actions\Data\DataActionTokenResolverRegistry.cs" />
     <Compile Include="C1Console\Actions\DuplicateActionToken.cs" />
+    <Compile Include="C1Console\Forms\CoreUiControls\TreeSelectorUiControl.cs" />
     <Compile Include="C1Console\RichContent\Components\Component.cs" />
     <Compile Include="C1Console\RichContent\Components\ComponentChangeNotifier.cs" />
     <Compile Include="C1Console\RichContent\Components\ComponentManager.cs" />
@@ -260,11 +261,16 @@
     <Compile Include="Data\Types\VersionedDataHelperContract.cs" />
     <Compile Include="Plugins\Elements\UrlToEntityToken\WebsiteFileUrlToEntityTokenMapper.cs" />
     <Compile Include="Plugins\Elements\UrlToEntityToken\MediaUrlToEntityTokenMapper.cs" />
+    <Compile Include="Plugins\Forms\WebChannel\UiControlFactories\TemplatedTreelSelectorUiControlFactory.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Plugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\String\TreeSelectorWidgetFunction.cs" />
     <Compile Include="Plugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\String\HierarchicalSelectorWidgetFunction.cs" />
     <Compile Include="Plugins\Logging\LogTraceListeners\SystemDiagnosticsTrace\SystemDiagnosticsTraceBridge.cs" />
     <Compile Include="Properties\GitCommitInfo.cs" />
     <Compile Include="Search\Crawling\DataFieldProcessors\DateTimeDataFieldProcessor.cs" />
     <Compile Include="Search\Crawling\DataFieldProcessors\FileNameDataFieldProcessor.cs" />
+    <Compile Include="Search\Crawling\DataFieldProcessors\MediaTagsDataFieldProcessor.cs" />
     <Compile Include="Search\Crawling\DataFieldProcessors\MimeTypeDataFieldProcessor.cs" />
     <Compile Include="Search\Crawling\DataFieldProcessors\PublicationStatusDataFieldProcessor.cs" />
     <Compile Include="Search\Crawling\DocumentFieldNames.cs" />

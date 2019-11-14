@@ -324,6 +324,7 @@
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\Selectors\HierarchicalSelector.ascx" />
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\Selectors\SvgIconSelector.ascx" />
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\Selectors\FontIconSelector.ascx" />
+    <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\Selectors\TreeSelector.ascx" />
     <Content Include="Composite\images\branding\brand-icon.png" />
     <Content Include="Composite\images\icons\svg\website-upload-zip-file.svg" />
     <Content Include="Composite\images\icons\svg\optimizely.svg" />
@@ -664,6 +665,7 @@
     <Content Include="Composite\scripts\source\top\interfaces\IContextContainerBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\branding\BrandSnippetBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\buttons\combobutton\SelectorButtonBinding.js" />
+    <Content Include="Composite\scripts\source\top\ui\bindings\data\dialogs\TreeSelectorDialogBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\data\radiocheck\CheckTreeBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\data\radiocheck\CheckTreeNodeBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\data\selectors\HierarchicalSelectorBinding.js" />

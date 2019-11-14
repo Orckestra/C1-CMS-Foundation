@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -79,6 +79,12 @@ namespace Composite.Search.Crawling
                     && propertyInfo.Name == nameof(IMediaFile.MimeType))
                 {
                     return new MimeTypeDataFieldProcessor();
+                }
+
+                if (propertyInfo.DeclaringType == typeof(IMediaFile)
+                    && propertyInfo.Name == nameof(IMediaFile.Tags))
+                {
+                    return new MediaTagsDataFieldProcessor();
                 }
 
                 return new DefaultDataFieldProcessor();

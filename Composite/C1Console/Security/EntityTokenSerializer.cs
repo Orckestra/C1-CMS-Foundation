@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Reflection;
 using System.Security;
 using Composite.Core.Serialization;
@@ -95,7 +95,7 @@ namespace Composite.C1Console.Security
             Type entityType = TypeManager.GetType(entityTokenTypeString);
 
             MethodInfo methodInfo = entityType.GetMethod("Deserialize", BindingFlags.Public | BindingFlags.Static);
-            if (methodInfo == null)
+            if (methodInfo == null || !(typeof(EntityToken).IsAssignableFrom(methodInfo.ReturnType)))
             {
                 throw new InvalidOperationException($"The entity token {entityType} is missing a public static Deserialize method taking a string as parameter and returning an {typeof(EntityToken)}");
             }
