@@ -28,9 +28,8 @@
     <file src="Bin\Microsoft.Practices.EnterpriseLibrary.Logging.dll" target="lib\net471\" />
     <file src="Bin\Microsoft.Practices.EnterpriseLibrary.Validation.dll" target="lib\net471\" />
     <file src="Bin\Microsoft.Practices.ObjectBuilder.dll" target="lib\net471\" />
-
-	<!-- Not referencing Microsoft.Extensions.DependencyInjection via dependencies as they pull 50+ NuGet packages from .NET Core -->
-	<file src="packages\Microsoft.Extensions.DependencyInjection.1.1.0\lib\netstandard1.1\Microsoft.Extensions.DependencyInjection.dll" target="lib\net471\" />
-	<file src="packages\Microsoft.Extensions.DependencyInjection.Abstractions.1.1.0\lib\netstandard1.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll" target="lib\net471\" />	
+    <!-- Not referencing Microsoft.Extensions.DependencyInjection via dependencies as they pull 50+ NuGet packages from .NET Core -->
+    <file src="Bin\Microsoft.Extensions.DependencyInjection.dll" target="lib\net471\" />
+    <file src="Bin\Microsoft.Extensions.DependencyInjection.Abstractions.dll" target="lib\net471\" />	
   </files>
 </package>
