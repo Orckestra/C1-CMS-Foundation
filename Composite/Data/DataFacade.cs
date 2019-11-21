@@ -398,13 +398,6 @@ namespace Composite.Data
         public static IEnumerable<IData> GetDataFromOtherScope(
             IData data, DataScopeIdentifier dataScopeIdentifier, bool useCaching)
         {
-            return GetDataFromOtherScope(data, dataScopeIdentifier, useCaching, true);
-        }
-
-        /// <exclude />
-        public static IEnumerable<IData> GetDataFromOtherScope(
-            IData data, DataScopeIdentifier dataScopeIdentifier, bool useCaching, bool ignoreVersioning)
-        {
             Verify.ArgumentNotNull(data, "data");
             Verify.ArgumentNotNull(dataScopeIdentifier, nameof(dataScopeIdentifier));
 
