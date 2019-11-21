@@ -371,7 +371,7 @@ namespace Composite.Data
 
             using (new DataScope(dataScopeIdentifier))
             {
-                return DataExpressionBuilder.GetQueryableByData<T>(data, true);
+                return DataExpressionBuilder.GetQueryableByData<T>(data);
             }
         }
 
@@ -384,7 +384,7 @@ namespace Composite.Data
 
             using (new DataScope(cultureInfo))
             {
-                return DataExpressionBuilder.GetQueryableByData<T>(data, true);
+                return DataExpressionBuilder.GetQueryableByData<T>(data);
             }
         }
 
@@ -432,7 +432,7 @@ namespace Composite.Data
             {
                 IQueryable table = GetData(data.DataSourceId.InterfaceType, false);
 
-                IQueryable queryable = DataExpressionBuilder.GetQueryableByData(data, table, ignoreVersioning);
+                IQueryable queryable = DataExpressionBuilder.GetQueryableByData(data, table);
 
                 foreach (object obj in queryable)
                 {
