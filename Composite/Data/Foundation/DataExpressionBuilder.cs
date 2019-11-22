@@ -29,21 +29,14 @@ namespace Composite.Data.Foundation
         /// <returns></returns>
         public static IQueryable GetQueryableByData(IData data)
         {
-            return GetQueryableByData(data, true);
+            return GetQueryableByData(data, null);
         }
 
 
 
-        public static IQueryable GetQueryableByData(IData data, bool ignoreVersioning)
+        public static IQueryable GetQueryableByData(IData data, IQueryable sourceQueryable)
         {
-            return GetQueryableByData(data, null, ignoreVersioning);
-        }
-
-
-
-        public static IQueryable GetQueryableByData(IData data, IQueryable sourceQueryable, bool ignoreVersioning)
-        {
-            LambdaExpression whereLambdaExpression = GetWhereLambdaExpression(data, ignoreVersioning);
+            LambdaExpression whereLambdaExpression = GetWhereLambdaExpression(data);
 
             if (sourceQueryable == null)
             {
@@ -59,10 +52,10 @@ namespace Composite.Data.Foundation
 
 
 
-        public static IQueryable<T> GetQueryableByData<T>(T data, bool ignoreVersioning)
+        public static IQueryable<T> GetQueryableByData<T>(T data)
             where T : class, IData
         {
-            LambdaExpression whereLambdaExpression = GetWhereLambdaExpression(data, ignoreVersioning);
+            LambdaExpression whereLambdaExpression = GetWhereLambdaExpression(data);
 
             IQueryable queryable = DataFacade.GetData(data.DataSourceId.InterfaceType);
 
@@ -75,9 +68,9 @@ namespace Composite.Data.Foundation
 
 
 
-        public static Delegate GetWherePredicateDelegate(IData data, bool ignoreVersioning)
+        public static Delegate GetWherePredicateDelegate(IData data)
         {
-            LambdaExpression whereLambdaExpression = GetWhereLambdaExpression(data, ignoreVersioning);
+            LambdaExpression whereLambdaExpression = GetWhereLambdaExpression(data);
 
             Delegate resultDelegate = whereLambdaExpression.Compile();
 
@@ -86,7 +79,7 @@ namespace Composite.Data.Foundation
 
 
 
-        private static LambdaExpression GetWhereLambdaExpression(IData data, bool ignoreVersioning)
+        private static LambdaExpression GetWhereLambdaExpression(IData data)
         {
             var propertyInfoes = data.DataSourceId.InterfaceType.GetPhysicalKeyProperties();
 
