@@ -191,7 +191,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 }
 
 
-                var dataKey = GetKeyPropertyValues(dataType, data, addElement);
+                var dataKey = PopulateAndReturnKeyPropertyValues(dataType, data, addElement);
 
                 if (dataType.AllowOverwrite || dataType.OnlyUpdate)
                 {
@@ -202,7 +202,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
                     if (existingData != null)
                     {
-                        GetKeyPropertyValues(dataType, existingData, addElement);
+                        PopulateAndReturnKeyPropertyValues(dataType, existingData, addElement);
                         DataFacade.Update(existingData, false, true, false);
 
                         continue;
