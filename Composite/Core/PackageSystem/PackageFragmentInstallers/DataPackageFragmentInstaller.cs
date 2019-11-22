@@ -283,8 +283,8 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
             }
         }
 
-
-        private static DataPropertyValueCollection GetKeyPropertyValues(DataType dataType, IData data, XElement addElement)
+        
+        private static DataPropertyValueCollection PopulateAndReturnKeyPropertyValues(DataType dataType, IData dataToPopulate, XElement addElement)
         {
             var dataKeyPropertyCollection = new DataPropertyValueCollection();
 
@@ -304,7 +304,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 PropertyInfo propertyInfo = properties[fieldName];
 
                 object fieldValue = ValueTypeConverter.Convert(attribute.Value, propertyInfo.PropertyType);
-                propertyInfo.SetValue(data, fieldValue, null);
+                propertyInfo.SetValue(dataToPopulate, fieldValue, null);
 
                 if (keyPropertyNames.Contains(fieldName) || versionKeyPropertyNames.Contains(fieldName))
                 {
