@@ -191,15 +191,18 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 }
 
 
-                var dataKey = CopyFieldValues(dataType, data, addElement);
+                var dataKey = PopulateAndReturnKeyPropertyValues(dataType, data, addElement);
 
                 if (dataType.AllowOverwrite || dataType.OnlyUpdate)
                 {
-                    IData existingData = DataFacade.TryGetDataByUniqueKey(interfaceType, dataKey);
+                    List<IData> existingDataList = DataFacade.TryGetDataByLookupKeys(interfaceType, dataKey).ToList();
+                    if (existingDataList.Count > 1) throw new InvalidOperationException("Got more than 1 existing data element when querying on key properties for " + addElement.ToString());
+
+                    IData existingData = existingDataList.FirstOrDefault();
 
                     if (existingData != null)
                     {
-                        CopyFieldValues(dataType, existingData, addElement);
+                        PopulateAndReturnKeyPropertyValues(dataType, existingData, addElement);
                         DataFacade.Update(existingData, false, true, false);
 
                         continue;
@@ -280,12 +283,15 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
             }
         }
 
-
-        private static DataKeyPropertyCollection CopyFieldValues(DataType dataType, IData data, XElement addElement)
+        
+        private static DataPropertyValueCollection PopulateAndReturnKeyPropertyValues(DataType dataType, IData dataToPopulate, XElement addElement)
         {
-            var dataKeyPropertyCollection = new DataKeyPropertyCollection();
+            var dataKeyPropertyCollection = new DataPropertyValueCollection();
 
             var properties = GetDataTypeProperties(dataType.InterfaceType);
+
+            var keyPropertyNames = dataType.InterfaceType.GetKeyPropertyNames();
+            var versionKeyPropertyNames = dataType.InterfaceType.GetVersionKeyPropertyNames();
 
             foreach (XAttribute attribute in addElement.Attributes())
             {
@@ -298,11 +304,11 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 PropertyInfo propertyInfo = properties[fieldName];
 
                 object fieldValue = ValueTypeConverter.Convert(attribute.Value, propertyInfo.PropertyType);
-                propertyInfo.SetValue(data, fieldValue, null);
+                propertyInfo.SetValue(dataToPopulate, fieldValue, null);
 
-                if (dataType.InterfaceType.GetKeyPropertyNames().Contains(fieldName))
+                if (keyPropertyNames.Contains(fieldName) || versionKeyPropertyNames.Contains(fieldName))
                 {
-                    dataKeyPropertyCollection.AddKeyProperty(fieldName, fieldValue);
+                    dataKeyPropertyCollection.AddKeyProperty(propertyInfo, fieldValue);
                 }
             }
 

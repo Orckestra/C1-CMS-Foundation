@@ -370,7 +370,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
             var clientActions = visualTrans.Select(newState => _visualTransitionsActions[newState]()).ToList();
 
 
-            IData publicData = DataFacade.GetDataFromOtherScope(data, DataScopeIdentifier.Public, true, false).FirstOrDefault();
+            IData publicData = DataFacade.GetDataFromOtherScope(data, DataScopeIdentifier.Public, true).FirstOrDefault();
             if (publicData != null)
             {
                 var unpublishAction = new ElementAction(new ActionHandle(new ProxyDataActionToken(ActionIdentifier.Unpublish) { DoIgnoreEntityTokenLocking = true }))

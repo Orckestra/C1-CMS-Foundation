@@ -371,7 +371,7 @@ namespace Composite.Data
 
             using (new DataScope(dataScopeIdentifier))
             {
-                return DataExpressionBuilder.GetQueryableByData<T>(data, true);
+                return DataExpressionBuilder.GetQueryableByData<T>(data);
             }
         }
 
@@ -384,7 +384,7 @@ namespace Composite.Data
 
             using (new DataScope(cultureInfo))
             {
-                return DataExpressionBuilder.GetQueryableByData<T>(data, true);
+                return DataExpressionBuilder.GetQueryableByData<T>(data);
             }
         }
 
@@ -397,13 +397,6 @@ namespace Composite.Data
         /// <exclude />
         public static IEnumerable<IData> GetDataFromOtherScope(
             IData data, DataScopeIdentifier dataScopeIdentifier, bool useCaching)
-        {
-            return GetDataFromOtherScope(data, dataScopeIdentifier, useCaching, true);
-        }
-
-        /// <exclude />
-        public static IEnumerable<IData> GetDataFromOtherScope(
-            IData data, DataScopeIdentifier dataScopeIdentifier, bool useCaching, bool ignoreVersioning)
         {
             Verify.ArgumentNotNull(data, "data");
             Verify.ArgumentNotNull(dataScopeIdentifier, nameof(dataScopeIdentifier));
@@ -432,7 +425,7 @@ namespace Composite.Data
             {
                 IQueryable table = GetData(data.DataSourceId.InterfaceType, false);
 
-                IQueryable queryable = DataExpressionBuilder.GetQueryableByData(data, table, ignoreVersioning);
+                IQueryable queryable = DataExpressionBuilder.GetQueryableByData(data, table);
 
                 foreach (object obj in queryable)
                 {
@@ -509,7 +502,7 @@ namespace Composite.Data
         // Private helper
         private static Expression GetPredicateExpressionByUniqueKeyFilterExpression(IReadOnlyList<PropertyInfo> keyProperties, DataKeyPropertyCollection dataKeyPropertyCollection, ParameterExpression parameterExpression)
         {
-            if (keyProperties.Count != dataKeyPropertyCollection.Count) throw new ArgumentException("Missing og to many key properties");
+            if (keyProperties.Count != dataKeyPropertyCollection.Count) throw new ArgumentException("Missing or too many key properties");
 
             var propertiesWithValues = new List<Tuple<PropertyInfo, object>>();
             foreach (var kvp in dataKeyPropertyCollection.KeyProperties)
@@ -605,6 +598,28 @@ namespace Composite.Data
 
             return data;
         }
+
+        /// <summary>
+        /// Returns all data items of the given type, which matches the provided dataPropertyCollection (property/value pairs)
+        /// </summary>
+        /// <param name="interfaceType">The data type to query - type is expected to implement a subinterface of IData</param>
+        /// <param name="dataPropertyCollection">The properties and values to use for filtering</param>
+        /// <returns>Data matching the provided property values</returns>
+        public static IEnumerable<IData> TryGetDataByLookupKeys(Type interfaceType, DataPropertyValueCollection dataPropertyCollection)
+        {
+            Verify.ArgumentNotNull(interfaceType, nameof(interfaceType));
+            Verify.ArgumentNotNull(dataPropertyCollection, nameof(dataPropertyCollection));
+
+            LambdaExpression lambdaExpression = GetPredicateExpression(interfaceType, dataPropertyCollection);
+
+            MethodInfo methodInfo = GetGetDataWithPredicatMethodInfo(interfaceType);
+
+            var queryable = (IQueryable)methodInfo.Invoke(null, new object[] { lambdaExpression });
+
+            return ((IEnumerable)queryable).Cast<IData>();
+        }
+
+
 
 
         /// <exclude />

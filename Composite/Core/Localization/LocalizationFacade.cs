@@ -178,6 +178,19 @@ namespace Composite.Core.Localization
                             UserSettings.SetForeignLocaleCultureInfo(username, cultureInfo);
                         }
                     }
+
+                    List<Guid> usergroupids =
+                        (from u in DataFacade.GetData<IUserGroup>()
+                         select u.Id).ToList();
+
+                    foreach (Guid usergroupid in usergroupids)
+                    {
+                        var groupLang = DataFacade.BuildNew<IUserGroupActiveLocale>();
+                        groupLang.Id = Guid.NewGuid();
+                        groupLang.CultureName = cultureInfo.ToString();
+                        groupLang.UserGroupId = usergroupid;
+                        DataFacade.AddNew(groupLang);
+                    }
                 }
 
                 if (DataLocalizationFacade.DefaultLocalizationCulture == null)
