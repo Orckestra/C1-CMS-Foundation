@@ -437,6 +437,26 @@ var ViewDefinitions = {
 	}),
 
 	/*
+	 * Stub for tree selector.
+	 */
+	"Composite.Management.TreeSelectorDialog": new DialogViewDefinition({
+		handle: "Composite.Management.TreeSelectorDialog",
+		isMutable	: true,
+		position: Dialog.MODAL,
+		url: Dialog.URL_TREESELECTOR,
+		argument: {
+			label: "",
+			image: "${icon:link}",
+			selectionProperty: "ElementType",
+			selectionValue: null,
+			selectionResult: null,
+			nodes: [
+				{ key: null }
+			]
+		}
+	}),
+
+	/*
 	 * Function selector (ALL TYPES).
 	 */
 	"Composite.Management.FunctionSelectorDialog" : new DialogViewDefinition ({

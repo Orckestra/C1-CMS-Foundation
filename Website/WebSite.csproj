@@ -324,6 +324,7 @@
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\Selectors\HierarchicalSelector.ascx" />
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\Selectors\SvgIconSelector.ascx" />
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\Selectors\FontIconSelector.ascx" />
+    <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\Selectors\TreeSelector.ascx" />
     <Content Include="Composite\images\branding\brand-icon.png" />
     <Content Include="Composite\images\icons\svg\website-upload-zip-file.svg" />
     <Content Include="Composite\images\icons\svg\optimizely.svg" />
@@ -664,6 +665,7 @@
     <Content Include="Composite\scripts\source\top\interfaces\IContextContainerBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\branding\BrandSnippetBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\buttons\combobutton\SelectorButtonBinding.js" />
+    <Content Include="Composite\scripts\source\top\ui\bindings\data\dialogs\TreeSelectorDialogBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\data\radiocheck\CheckTreeBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\data\radiocheck\CheckTreeNodeBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\data\selectors\HierarchicalSelectorBinding.js" />
@@ -2799,19 +2801,18 @@
       )
 
       if not exist "$(ProjectDir)Frontend\Config\VisualEditor\common.xml" (
-      copy "$(ProjectDir)Frontend\Config\VisualEditor\Default.common.xml" "$(ProjectDir)Frontend\Config\VisualEditor\common.xml"
+      copy "$(ProjectDir)Frontend\Config\VisualEditor\ReleaseBuild.common.xml" "$(ProjectDir)Frontend\Config\VisualEditor\common.xml"
       )
 
       if not exist "$(TargetDir)\System.Threading.Tasks.Dataflow.dll" (
       copy "$(ProjectDir)\..\Packages\System.Threading.Tasks.Dataflow.4.6.0\lib\netstandard1.1\System.Threading.Tasks.Dataflow.dll" "$(TargetDir)\System.Threading.Tasks.Dataflow.dll"
       )
 
-
       cd "$(ProjectDir)"
-      .\node_modules\.bin\jspm install --quick
+      robocopy "..\Packages\PhantomJS.2.1.1\tools\phantomjs" "App_Data\Composite\PhantomJs" "phantomjs.exe"
 
+			.\node_modules\.bin\jspm install --quick
 
-      robocopy "$(ProjectDir)\..\Packages\PhantomJS.2.1.1\tools\phantomjs" "$(ProjectDir)\App_Data\Composite\PhantomJs" "phantomjs.exe"
       set rce=%25errorlevel%25
       if not %25rce%25==1 exit %25rce%25 else exit 0</PreBuildEvent>
   </PropertyGroup>

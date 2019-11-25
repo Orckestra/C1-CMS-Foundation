@@ -28,7 +28,7 @@ namespace Composite.Data.Types
         [StoreFieldType(PhysicalStoreFieldType.LargeString)]
         [ImmutableFieldId("{34BD5C80-C5FD-4932-A1E6-3459E2D7802D}")]
         [NotNullValidator()]
-        string SerializedEntityToken { get; set; }
+        string LockKey { get; set; }
 
 
         /// <exclude />
