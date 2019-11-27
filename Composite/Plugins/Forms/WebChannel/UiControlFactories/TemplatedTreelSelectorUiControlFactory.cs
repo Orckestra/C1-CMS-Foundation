@@ -111,9 +111,9 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
 
             _userControl.SelectedKey = this.SelectedKey;
             _userControl.ElementProvider = this.ElementProvider;
-            _userControl.SelectableElementPropertyName = this.SelectableElementPropertyName;
-            _userControl.SelectableElementPropertyValue = this.SelectableElementPropertyValue;
             _userControl.SelectableElementReturnValue = this.SelectableElementReturnValue;
+            _userControl.SelectableElementPropertyName = string.IsNullOrEmpty(this.SelectableElementPropertyName) ? this.SelectableElementReturnValue : this.SelectableElementPropertyName;
+            _userControl.SelectableElementPropertyValue = this.SelectableElementPropertyValue;
             _userControl.SerializedSearchToken = this.SerializedSearchToken;
             _userControl.Required = this.Required;
 
