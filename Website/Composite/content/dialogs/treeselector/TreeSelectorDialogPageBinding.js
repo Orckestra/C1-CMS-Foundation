@@ -601,16 +601,9 @@ TreeSelectorDialogPageBinding.prototype._updateDisplayAndResult = function (tree
 	var prop 		= this._selectionResult;
 
 	selections.each ( function ( binding ) {
-		if (prop == "EntityToken" && binding.node) {
-
-			result.add(
-				binding.node.getEntityToken()
-			);
-		} else {
-			result.add(
-				binding.getProperty(prop)
-			);
-		}
+		result.add(
+			binding.getProperty(prop)
+		);
 		value += binding.getLabel ();
 		if ( selections.hasNext ()) {
 			value += "; ";
