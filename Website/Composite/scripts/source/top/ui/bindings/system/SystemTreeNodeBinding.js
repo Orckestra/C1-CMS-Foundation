@@ -634,6 +634,19 @@ SystemTreeNodeBinding.prototype.selectToken = function (entityToken) {
 }
 
 /**
+ * Get bound element attribute or EnityToken.
+ * @overloads {Binding#getProperty}
+ */
+SystemTreeNodeBinding.prototype.getProperty = function ( attname ) {
+
+	if(attname == 'EntityToken' && this.node && this.node.getEntityToken()) {
+		return this.node.getEntityToken();
+	}
+
+	return SystemTreeNodeBinding.superclass.getProperty.call ( this, attname );
+}
+
+/**
  * SystemTreeNodeBinding factory. Notice that we supply a {@link SystemNode} as argument here!
  * @param {SystemNode} node
  * @param {DOMDocument} ownerDocument
