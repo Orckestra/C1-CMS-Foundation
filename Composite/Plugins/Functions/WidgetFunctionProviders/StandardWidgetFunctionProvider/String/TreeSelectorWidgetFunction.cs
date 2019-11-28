@@ -35,13 +35,22 @@ namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunc
                     "Element Provider", new HelpDefinition("The name of a tree element provider (as defined in Composite.config)")));
 
             base.AddParameterProfile(
-                new ParameterProfile("SelectableElementPropertyName",
+                new ParameterProfile("SelectableElementReturnValue",
                     typeof(string),
                     true,
+                    new ConstantValueProvider("EntityToken"),
+                    StandardWidgetFunctions.TextBoxWidget,
+                    null,
+                    "Element field to return", new HelpDefinition("The name of the element field whose value to return for selection. Typical values here can be DataId (for data trees), Uri (for linkable elements), or EntityToken (for any element). Element providers may provide more fields.")));
+
+            base.AddParameterProfile(
+                new ParameterProfile("SelectableElementPropertyName",
+                    typeof(string),
+                    false,
                     new ConstantValueProvider(string.Empty),
                     StandardWidgetFunctions.TextBoxWidget,
                     null,
-                    "Selectable Element Property Name", new HelpDefinition("The name of a property used to identify a selectable tree element by")));
+                    "Selection filter, Property Name", new HelpDefinition("An element must have this field to be selectable.")));
 
             base.AddParameterProfile(
                 new ParameterProfile("SelectableElementPropertyValue",
@@ -50,16 +59,8 @@ namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunc
                     new ConstantValueProvider(string.Empty),
                     StandardWidgetFunctions.TextBoxWidget,
                     null,
-                    "Selectable Element Property Value", new HelpDefinition("The value of the property optionally used (if provided) to further identify a selectable tree element by")));
+                    "Selection filter, Property Value", new HelpDefinition("The value of the property optionally used (if provided) to further identify a selectable tree element by. Seperate multiple values with spaces.")));
 
-            base.AddParameterProfile(
-                new ParameterProfile("SelectableElementReturnValue",
-                    typeof(string),
-                    false,
-                    new ConstantValueProvider(string.Empty),
-                    StandardWidgetFunctions.TextBoxWidget,
-                    null,
-                    "Selectable Element Return Value", new HelpDefinition("The value to return for the selected tree element")));
             base.AddParameterProfile(
                 new ParameterProfile("SerializedSearchToken",
                     typeof(string),
@@ -67,7 +68,7 @@ namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunc
                     new ConstantValueProvider(string.Empty),
                     StandardWidgetFunctions.TextBoxWidget,
                     null,
-                    "Selectable Element Return Value", new HelpDefinition("A search token to filter tree elements by")));
+                    "Search Token", new HelpDefinition("A search token, seriallized, to filter which tree elements is shown. To filter what is selectable, use the 'Selection filter' properties.")));
             base.AddParameterProfile(
                 new ParameterProfile("Required",
                     typeof(bool),
@@ -85,7 +86,7 @@ namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunc
             XElement formElement = base.BuildBasicWidgetMarkup("TreeSelector", "SelectedKey", label, helpDefinition, bindingSourceName);
             foreach (var propertyName  in new []
             {
-                "ElementProvider", "SelectableElementPropertyName", "SelectableElementPropertyValue", "SelectableElementReturnValue", "SerializedSearchToken", "Required"
+                "ElementProvider", "SelectableElementReturnValue", "SelectableElementPropertyName", "SelectableElementPropertyValue", "SerializedSearchToken", "Required"
             })
             {
                 string propertyValue = parameters.GetParameter<string>(propertyName);
