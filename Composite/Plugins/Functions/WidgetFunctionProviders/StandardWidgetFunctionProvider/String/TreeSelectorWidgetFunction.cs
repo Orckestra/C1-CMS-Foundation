@@ -68,7 +68,7 @@ namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunc
                     new ConstantValueProvider(string.Empty),
                     StandardWidgetFunctions.TextBoxWidget,
                     null,
-                    "Search Token", new HelpDefinition("A search token, seriallized, to filter which tree elements is shown. To filter what is selectable, use the 'Selection filter' properties.")));
+                    "Search Token", new HelpDefinition("A search token, serialized, to filter which tree elements is shown. To filter what is selectable, use the 'Selection filter' properties.")));
             base.AddParameterProfile(
                 new ParameterProfile("Required",
                     typeof(bool),
