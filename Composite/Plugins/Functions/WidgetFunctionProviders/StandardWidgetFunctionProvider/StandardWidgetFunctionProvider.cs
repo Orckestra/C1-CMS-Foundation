@@ -112,6 +112,7 @@ namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunc
             _widgetStaticTypeFunctions.Add(new FontIconSelectorWidgetFuntion(_entityTokenFactory));
             _widgetStaticTypeFunctions.Add(new SvgIconSelectorWidgetFuntion(_entityTokenFactory));
             _widgetStaticTypeFunctions.Add(new ConsoleIconSelectorWidgetFuntion(_entityTokenFactory));
+            _widgetStaticTypeFunctions.Add(new HomePageSelectorWidgetFunction(_entityTokenFactory));
         }
 
 

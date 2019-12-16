@@ -15,14 +15,9 @@ namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunc
         protected PageReferenceSelectorWidgetFunctionBase(string compositeName, Type returnType, EntityTokenFactory entityTokenFactory) : base(compositeName, returnType, entityTokenFactory)
         {
             base.AddParameterProfile(
-                new ParameterProfile("ShowHomePagesOnly", typeof(bool), false,
-                    new ConstantValueProvider(false), StandardWidgetFunctions.GetBoolSelectorWidget("Only Home Pages", "All Pages"), null,
-                    "Show Home Pages Only", new HelpDefinition("TODO")));
-
-            base.AddParameterProfile(
                 new ParameterProfile("HomePageIdFilter", typeof(Guid?), false,
-                    new ConstantValueProvider(null), new WidgetFunctionProvider(NullablePageReferenceSelectorWidgetFunction.CompositeName, new[] { new ConstantParameterRuntimeTreeNode("ShowHomePagesOnly", true.ToString()), }), null,
-                    "Filter by Home Page", new HelpDefinition("TODO")));
+                    new ConstantValueProvider(null), new WidgetFunctionProvider(new HomePageSelectorWidgetFunction(entityTokenFactory)), null,
+                    "Filter by Home Page", new HelpDefinition("If the value is set, tree view will display element from homesite only. You can use GetPageId function here // ask Inna for better description")));
         }
 
         public override XElement GetWidgetMarkup(ParameterList parameters, string label, HelpDefinition helpDefinition, string bindingSourceName)
@@ -32,7 +27,6 @@ namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunc
             var searchToken = new PageSearchToken
             {
                 HomePageIdFilter = parameters.GetParameter<Guid?>("HomePageIdFilter"),
-                ShowHomePagesOnly = parameters.GetParameter<bool>("ShowHomePagesOnly"),
             };
 
             selector.Add(

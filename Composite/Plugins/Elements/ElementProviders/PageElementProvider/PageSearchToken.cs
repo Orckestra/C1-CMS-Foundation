@@ -11,7 +11,5 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 	{
         /// <exclude />
         public Guid? HomePageIdFilter { get; set; }
-        /// <exclude />
-        public bool ShowHomePagesOnly { get; set; }
 	}
 }
