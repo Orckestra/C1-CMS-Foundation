@@ -17,7 +17,7 @@ namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunc
             base.AddParameterProfile(
                 new ParameterProfile("HomePageIdFilter", typeof(Guid?), false,
                     new ConstantValueProvider(null), new WidgetFunctionProvider(new HomePageSelectorWidgetFunction(entityTokenFactory)), null,
-                    "Filter by Home Page", new HelpDefinition("If the value is set, tree view will display element from homesite only. You can use GetPageId function here // ask Inna for better description")));
+                    "Filter by Home Page", new HelpDefinition("Use this field to filter by root website. If not set all websites are shown. You can use GetPageId function to get current page")));
         }
 
         public override XElement GetWidgetMarkup(ParameterList parameters, string label, HelpDefinition helpDefinition, string bindingSourceName)
