@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -133,6 +133,7 @@ namespace Composite.Search.Crawling
             if (fieldName == DocumentFieldNames.LastUpdated) return Texts.FieldNames_LastUpdated;
             if (propertyInfo.Name == nameof(IChangeHistory.ChangedBy)) return Texts.FieldNames_UpdatedBy;
             if (propertyInfo.Name == nameof(IMediaFile.MimeType)) return Texts.FieldNames_MimeType;
+            if (propertyInfo.Name == nameof(IPage.PageTypeId)) return Texts.FieldNames_PageTypeId;
 
             var frpAttribute = propertyInfo.GetCustomAttribute<FormRenderingProfileAttribute>();
             if (!string.IsNullOrEmpty(frpAttribute?.Label))
