@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using Composite.C1Console.Events;
 using Composite.C1Console.Elements;
 using Composite.Core.Logging;
@@ -236,6 +237,8 @@ namespace Composite.Core.WebClient.FlowMediators
                     return;
                 }
 
+                AddEntityTokenToContext(entityToken);
+
                 var elementHandle = new ElementHandle(providerName, entityToken, piggybag);
 
                 ActionToken actionToken = ActionTokenSerializer.Deserialize(serializedActionToken, true);
@@ -245,6 +248,16 @@ namespace Composite.Core.WebClient.FlowMediators
             }
         }
 
+
+        internal const string HttpContextItem_EntityToken = "EntityToken";
+        private static void AddEntityTokenToContext(EntityToken entityToken)
+        {
+            var httpContext = HttpContext.Current;
+            if (httpContext == null)
+                return;
+
+            httpContext.Items[HttpContextItem_EntityToken] = entityToken;
+        }
 
 
         /// <exclude />
@@ -260,7 +273,8 @@ namespace Composite.Core.WebClient.FlowMediators
 
             EntityToken newParentElementEntityToken = EntityTokenSerializer.Deserialize(newParentElementSerializedEntityToken);
             ElementHandle newParentdElementHandle = new ElementHandle(newParentElementProviderName, newParentElementEntityToken, newParentElementPiggybag);
-
+            AddEntityTokenToContext(newParentElementEntityToken);
+            
             return ActionExecutionMediator.ExecuteElementDraggedAndDropped(draggedElementHandle, newParentdElementHandle, dropIndex, consoleId, isCopy);                            
         }
 

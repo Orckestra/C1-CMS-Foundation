@@ -1,14 +1,21 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Web;
+using System.Web.UI;
 using System.Xml.Linq;
 using Composite.Functions;
 using Composite.C1Console.Security;
+using Composite.Core.Extensions;
 using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
 using Composite.Core.ResourceSystem;
+using Composite.Core.Routing;
+using Composite.Core.Routing.Pages;
+using Composite.Core.WebClient.FlowMediators;
 using Composite.Core.WebClient.Renderings.Page;
 using Composite.Data;
+using Composite.Data.Types;
 
 namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Pages
 {
@@ -27,26 +34,61 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
                 SitemapScope = SitemapScope.Current;
             }
 
-            Guid pageId = Guid.Empty;
+            var pageId = GetPageId();
 
             switch (SitemapScope)
             {
                 case SitemapScope.Current:
-                    pageId = PageRenderer.CurrentPageId;
-                    break;
+                    return pageId;
                 case SitemapScope.Parent:
                 case SitemapScope.Level1:
                 case SitemapScope.Level2:
                 case SitemapScope.Level3:
                 case SitemapScope.Level4:
-                    IEnumerable<Guid> pageIds = PageStructureInfo.GetAssociatedPageIds(PageRenderer.CurrentPageId, SitemapScope);
-                    pageId = pageIds.FirstOrDefault();
-                    break;
+                    var pageIds = PageStructureInfo.GetAssociatedPageIds(pageId, SitemapScope);
+                    return pageIds.FirstOrDefault();
                 default:
                     throw new NotImplementedException("Unhandled SitemapScope type: " + SitemapScope.ToString());
             }
+        }
 
-            return pageId;
+        private Guid GetPageId()
+        {
+            return GetCurrentPageIdFromPageRenderer()
+                   ?? GetCurrentPageIdFromPageUrlData()
+                   ?? GetCurrentPageIdFromHttpContext()
+                   ?? Guid.Empty;
+        }
+
+        private Guid? GetCurrentPageIdFromPageRenderer()
+        {
+            var pageId = PageRenderer.CurrentPageId;
+            return pageId == Guid.Empty ? (Guid?)null : pageId;
+        }
+
+        private Guid? GetCurrentPageIdFromPageUrlData()
+        {
+            var pageId = C1PageRoute.PageUrlData?.PageId;
+            return pageId == Guid.Empty ? null : pageId;
+        }
+
+        private Guid? GetCurrentPageIdFromHttpContext()
+        {
+            try
+            {
+                var entityToken = HttpContext.Current?.Items[TreeServicesFacade.HttpContextItem_EntityToken] as DataEntityToken;
+                if (entityToken != null && Type.GetType(entityToken.Type) == typeof(IPage))
+                {
+                    var data = entityToken.Data as IPage;
+                    var pageId = data?.Id;
+                    return pageId == Guid.Empty ? null : pageId;
+                }
+            }
+            catch
+            {
+            }
+
+            return null;
         }
 
 
