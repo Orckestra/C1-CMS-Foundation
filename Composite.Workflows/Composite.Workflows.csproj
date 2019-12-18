@@ -1361,10 +1361,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.  
-       Other similar extension points exist, see Microsoft.Common.targets. 
-  <Target Name="AfterBuild"> 
-  </Target> 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="AfterBuild">
+  </Target>
   -->
   <Target Name="BeforeBuild">
     <PropertyGroup>
@@ -1373,8 +1373,8 @@
     </PropertyGroup>
     <Exec Condition="Exists('$(SolutionDir)\.git')" Command="git -C $(ProjectDir) rev-parse --abbrev-ref HEAD&gt; &quot;$(GitBranchFile)&quot;" />
     <Exec Condition="Exists('$(SolutionDir)\.git')" Command="git -C $(ProjectDir) rev-parse HEAD&gt; &quot;$(GitCommitHashFile)&quot;" />
-    <Exec Condition="!Exists('$(SolutionDir)\.git')" Command="@echo unknown branch &gt; &quot;$(GitBranchFile)&quot;" />
-    <Exec Condition="!Exists('$(SolutionDir)\.git')" Command="@echo unknown commit &gt; &quot;$(GitCommitHashFile)&quot;" />
+    <Exec Condition="!Exists('$(SolutionDir)\.git')" Command="@echo unknown branch > &quot;$(GitBranchFile)&quot;" />
+    <Exec Condition="!Exists('$(SolutionDir)\.git')" Command="@echo unknown commit > &quot;$(GitCommitHashFile)&quot;" />
     <PropertyGroup>
       <GitBranch>$([System.IO.File]::ReadAllText("$(GitBranchFile)").Trim())</GitBranch>
       <GitCommitHash>$([System.IO.File]::ReadAllText("$(GitCommitHashFile)").Trim())</GitCommitHash>
@@ -1386,7 +1386,7 @@
     <Exec Command="del &quot;$(GitCommitHashFile)&quot;" />
   </Target>
   <PropertyGroup>
-    <PostBuildEvent>copy "$(TargetPath)" "$(ProjectDir)..\bin\" 
+    <PostBuildEvent>copy "$(TargetPath)" "$(ProjectDir)..\bin\"
 copy "$(TargetPath)" "$(ProjectDir)..\Website\bin\"</PostBuildEvent>
   </PropertyGroup>
 </Project>

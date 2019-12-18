@@ -259,7 +259,7 @@
     <Compile Include="Data\Caching\CachedTable.cs" />
     <Compile Include="Data\Types\IUserGroupActiveLocale.cs" />
     <Compile Include="Data\Types\VersionedDataHelperContract.cs" />
-    <Compile Include="Plugins\Elements\ElementProviders\PageElementProvider\PageSearchToken.cs" />
+	<Compile Include="Plugins\Elements\ElementProviders\PageElementProvider\PageSearchToken.cs" />
     <Compile Include="Plugins\Elements\UrlToEntityToken\WebsiteFileUrlToEntityTokenMapper.cs" />
     <Compile Include="Plugins\Elements\UrlToEntityToken\MediaUrlToEntityTokenMapper.cs" />
     <Compile Include="Plugins\Forms\WebChannel\UiControlFactories\TemplatedTreelSelectorUiControlFactory.cs">
@@ -2683,11 +2683,11 @@
     </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets. 
-  <Import Project="$(MSBuildExtensionsPath)\Microsoft\Windows Workflow Foundation\v3.5\Workflow.Targets" /> 
-  <Target Name="AfterBuild"> 
-  </Target> 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\Windows Workflow Foundation\v3.5\Workflow.Targets" />
+  <Target Name="AfterBuild">
+  </Target>
   -->
   <Target Name="BeforeBuild">
     <PropertyGroup>
@@ -2709,7 +2709,7 @@
     <Exec Command="del &quot;$(GitCommitHashFile)&quot;" />
   </Target>
   <PropertyGroup>
-    <PostBuildEvent>copy "$(TargetPath)" "$(ProjectDir)..\bin\" 
+    <PostBuildEvent>copy "$(TargetPath)" "$(ProjectDir)..\bin\"
 copy "$(TargetPath)" "$(ProjectDir)..\Website\bin\"</PostBuildEvent>
   </PropertyGroup>
 </Project>
