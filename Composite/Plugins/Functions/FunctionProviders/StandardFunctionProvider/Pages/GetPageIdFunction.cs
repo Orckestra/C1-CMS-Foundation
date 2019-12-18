@@ -1,18 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Web;
-using System.Web.UI;
-using System.Xml.Linq;
+using Composite.C1Console.Actions;
 using Composite.Functions;
-using Composite.C1Console.Security;
-using Composite.Core.Extensions;
 using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
-using Composite.Core.ResourceSystem;
-using Composite.Core.Routing;
 using Composite.Core.Routing.Pages;
-using Composite.Core.WebClient.FlowMediators;
 using Composite.Core.WebClient.Renderings.Page;
 using Composite.Data;
 using Composite.Data.Types;
@@ -34,7 +27,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
                 SitemapScope = SitemapScope.Current;
             }
 
-            var pageId = GetPageId();
+            var pageId = GetCurrentPageId();
 
             switch (SitemapScope)
             {
@@ -52,7 +45,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
             }
         }
 
-        private Guid GetPageId()
+        private Guid GetCurrentPageId()
         {
             return GetCurrentPageIdFromPageRenderer()
                    ?? GetCurrentPageIdFromPageUrlData()
@@ -74,18 +67,12 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
 
         private Guid? GetCurrentPageIdFromHttpContext()
         {
-            try
+            var entityToken = HttpContext.Current?.Items[ActionExecutorFacade.HttpContextItem_EntityToken] as DataEntityToken;
+            if (entityToken != null && Type.GetType(entityToken.Type, throwOnError: false) == typeof(IPage))
             {
-                var entityToken = HttpContext.Current?.Items[TreeServicesFacade.HttpContextItem_EntityToken] as DataEntityToken;
-                if (entityToken != null && Type.GetType(entityToken.Type) == typeof(IPage))
-                {
-                    var data = entityToken.Data as IPage;
-                    var pageId = data?.Id;
-                    return pageId == Guid.Empty ? null : pageId;
-                }
-            }
-            catch
-            {
+                var data = entityToken.Data as IPage;
+                var pageId = data?.Id;
+                return pageId == Guid.Empty ? null : pageId;
             }
 
             return null;
