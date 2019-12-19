@@ -20,7 +20,7 @@ namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunc
         {
         }
 
-        private const string CompositeName = CommonNamespace + ".DataReference." + ".HomePageSelector";
+        private const string CompositeName = CommonNamespace + ".DataReference" + ".HomePageSelector";
 
         /// <exclude />
         public override XElement GetWidgetMarkup(ParameterList parameters, string label, HelpDefinition helpDefinition, string bindingSourceName)

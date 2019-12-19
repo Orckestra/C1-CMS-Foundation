@@ -10,6 +10,6 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 	public class PageSearchToken : SearchToken
 	{
         /// <exclude />
-        public Guid? HomePageIdFilter { get; set; }
+        public Guid? HomePageId { get; set; }
 	}
 }

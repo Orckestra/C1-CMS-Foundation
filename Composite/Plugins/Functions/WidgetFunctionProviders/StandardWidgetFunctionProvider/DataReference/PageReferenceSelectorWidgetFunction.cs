@@ -10,7 +10,7 @@ namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunc
         public const string CompositeName = CompositeNameBase + ".PageSelector";
 
         public PageReferenceSelectorWidgetFunction(EntityTokenFactory entityTokenFactory)
-            : base(CompositeName, typeof(NullableDataReference<IPage>), entityTokenFactory)
+            : base(CompositeName, typeof(DataReference<IPage>), entityTokenFactory)
         {
         }
 

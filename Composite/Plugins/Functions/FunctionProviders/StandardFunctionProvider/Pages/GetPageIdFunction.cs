@@ -6,6 +6,7 @@ using Composite.C1Console.Actions;
 using Composite.Functions;
 using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
 using Composite.Core.Routing.Pages;
+using Composite.Core.WebClient.FlowMediators.FormFlowRendering;
 using Composite.Core.WebClient.Renderings.Page;
 using Composite.Data;
 using Composite.Data.Types;
@@ -50,6 +51,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
             return GetCurrentPageIdFromPageRenderer()
                    ?? GetCurrentPageIdFromPageUrlData()
                    ?? GetCurrentPageIdFromHttpContext()
+                   ?? GetCurrentPageIdFromFormFlow()
                    ?? Guid.Empty;
         }
 
@@ -77,6 +79,22 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
 
             return null;
         }
+
+        private Guid? GetCurrentPageIdFromFormFlow()
+        {
+            var currentFormTreeCompiler = FormFlowUiDefinitionRenderer.CurrentFormTreeCompiler;
+            object selectedPage;
+            if (currentFormTreeCompiler.BindingObjects.TryGetValue("SelectedPage", out selectedPage))
+            {
+                var page = selectedPage as IPage;
+                if (page != null)
+                    return page.Id;
+            }
+
+            return null;
+        }
+
+        
 
 
         protected override IEnumerable<StandardFunctionParameterProfile> StandardFunctionParameterProfiles

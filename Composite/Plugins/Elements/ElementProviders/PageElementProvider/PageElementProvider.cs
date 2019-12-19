@@ -124,7 +124,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
             ICollection<Guid> pageIds = PageServices.GetChildrenIDs(Guid.Empty);
             
-            var homePageIdFilter = (searchToken as PageSearchToken)?.HomePageIdFilter ?? Guid.Empty;
+            var homePageIdFilter = (searchToken as PageSearchToken)?.HomePageId ?? Guid.Empty;
             if (homePageIdFilter != Guid.Empty)
             {
                 pageIds = pageIds.Where(p => p == homePageIdFilter).ToList();
@@ -504,7 +504,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
             if (parentPageId == Guid.Empty)
             {
-                var homePageIdFilter = (searchToken as PageSearchToken)?.HomePageIdFilter ?? Guid.Empty;
+                var homePageIdFilter = (searchToken as PageSearchToken)?.HomePageId ?? Guid.Empty;
                 if (homePageIdFilter != Guid.Empty)
                 {
                     pages = pages.Where(p => p.Id == homePageIdFilter).ToList();
