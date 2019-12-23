@@ -58,20 +58,17 @@ namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunc
 
         private object GetParameterElement(ParameterList parameters)
         {
-            BaseRuntimeTreeNode runtimeTreeNode;
-            if (!parameters.TryGetParameterRuntimeTreeNode(HomePageIdParameterName, out runtimeTreeNode))
+            if (!parameters.TryGetParameterRuntimeTreeNode(HomePageIdParameterName, out var runtimeTreeNode))
             {
                 return null;
             }
 
-            var functionParamNode = runtimeTreeNode as FunctionParameterRuntimeTreeNode;
-            if (functionParamNode != null)
+            if (runtimeTreeNode is FunctionParameterRuntimeTreeNode functionParamNode)
             {
                 return functionParamNode.GetHostedFunction().Serialize();
             }
 
-            var constParamNode = runtimeTreeNode as ConstantParameterRuntimeTreeNode;
-            if (constParamNode != null)
+            if (runtimeTreeNode is ConstantParameterRuntimeTreeNode constParamNode)
             {
                 return constParamNode.GetValue();
             }

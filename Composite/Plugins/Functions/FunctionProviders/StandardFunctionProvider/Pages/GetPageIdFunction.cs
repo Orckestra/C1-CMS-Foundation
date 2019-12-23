@@ -22,15 +22,14 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
 
         public override object Execute(ParameterList parameters, FunctionContextContainer context)
         {
-            SitemapScope SitemapScope;
-            if (parameters.TryGetParameter<SitemapScope>("SitemapScope", out SitemapScope) == false)
+            if (parameters.TryGetParameter<SitemapScope>("SitemapScope", out var sitemapScope) == false)
             {
-                SitemapScope = SitemapScope.Current;
+                sitemapScope = SitemapScope.Current;
             }
 
             var pageId = GetCurrentPageId();
 
-            switch (SitemapScope)
+            switch (sitemapScope)
             {
                 case SitemapScope.Current:
                     return pageId;
@@ -39,10 +38,10 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
                 case SitemapScope.Level2:
                 case SitemapScope.Level3:
                 case SitemapScope.Level4:
-                    var pageIds = PageStructureInfo.GetAssociatedPageIds(pageId, SitemapScope);
+                    var pageIds = PageStructureInfo.GetAssociatedPageIds(pageId, sitemapScope);
                     return pageIds.FirstOrDefault();
                 default:
-                    throw new NotImplementedException("Unhandled SitemapScope type: " + SitemapScope.ToString());
+                    throw new NotImplementedException("Unhandled SitemapScope type: " + sitemapScope.ToString());
             }
         }
 
@@ -83,18 +82,14 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
         private Guid? GetCurrentPageIdFromFormFlow()
         {
             var currentFormTreeCompiler = FormFlowUiDefinitionRenderer.CurrentFormTreeCompiler;
-            object selectedPage;
-            if (currentFormTreeCompiler.BindingObjects.TryGetValue("SelectedPage", out selectedPage))
+            if (currentFormTreeCompiler.BindingObjects.TryGetValue("SelectedPage", out var selectedPage))
             {
-                var page = selectedPage as IPage;
-                if (page != null)
+                if (selectedPage is IPage page)
                     return page.Id;
             }
 
             return null;
         }
-
-        
 
 
         protected override IEnumerable<StandardFunctionParameterProfile> StandardFunctionParameterProfiles
