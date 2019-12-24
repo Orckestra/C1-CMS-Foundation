@@ -122,10 +122,12 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 yield break;
             }
 
-            int pages;
-            using (new DataScope(DataScopeIdentifier.Administrated))
+            ICollection<Guid> pageIds = PageServices.GetChildrenIDs(Guid.Empty);
+            
+            var homePageIdFilter = (searchToken as PageSearchToken)?.HomePageId ?? Guid.Empty;
+            if (homePageIdFilter != Guid.Empty)
             {
-                pages = PageServices.GetChildrenCount(Guid.Empty);
+                pageIds = pageIds.Where(p => p == homePageIdFilter).ToList();
             }
 
             var dragAndDropInfo = new ElementDragAndDropInfo();
@@ -138,7 +140,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 {
                     Label = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.RootLabel"),
                     ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "PageElementProvider.RootLabelToolTip"),
-                    HasChildren = pages != 0,
+                    HasChildren = pageIds.Count != 0,
                     Icon = PageElementProvider.RootClosed,
                     OpenedIcon = PageElementProvider.RootOpen
                 }
@@ -482,18 +484,38 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
         private IEnumerable<IPage> GetChildrenPages(EntityToken entityToken, SearchToken searchToken)
         {
-            Guid? itemId = GetParentPageId(entityToken);
+            var itemId = GetParentPageId(entityToken);
 
-            if (!itemId.HasValue) return new IPage[] { };
+            if (!itemId.HasValue)
+                return Enumerable.Empty<IPage>();
 
+            var parentPageId = itemId.Value;
 
-            if (!searchToken.IsValidKeyword())
+            ICollection<IPage> pages;
+            if (searchToken.IsValidKeyword())
             {
-                return OrderByVersions(PageServices.GetChildren(itemId.Value).Evaluate());
+                var keyword = searchToken.Keyword.ToLowerInvariant();
+                pages = GetPagesByKeyword(keyword, parentPageId);
+            }
+            else
+            {
+                pages = PageServices.GetChildren(parentPageId).Evaluate();
             }
 
-            string keyword = searchToken.Keyword.ToLowerInvariant();
+            if (parentPageId == Guid.Empty)
+            {
+                var homePageIdFilter = (searchToken as PageSearchToken)?.HomePageId ?? Guid.Empty;
+                if (homePageIdFilter != Guid.Empty)
+                {
+                    pages = pages.Where(p => p.Id == homePageIdFilter).ToList();
+                }
+            }
 
+            return OrderByVersions(pages);
+        }
+
+        private ICollection<IPage> GetPagesByKeyword(string keyword, Guid parentId)
+        {
             var predicateItems =
                 from page in DataFacade.GetData<IPage>()
                 where (page.Description != null && page.Description.ToLowerInvariant().Contains(keyword)) ||
@@ -510,7 +532,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 nodes = nodes.Concat(GetAncestorPath(node, keyTree)).ToList();
             }
 
-            List<Guid> pageIds = nodes.Where(x => x.ParentKey == itemId).Select(x => x.Key).Distinct().ToList();
+            List<Guid> pageIds = nodes.Where(x => x.ParentKey == parentId).Select(x => x.Key).Distinct().ToList();
 
             var pages = new List<IPage>();
 
@@ -522,7 +544,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 }
             }
 
-            return OrderByVersions(pages);
+            return pages;
         }
 
         private IEnumerable<IPage> OrderByVersions(IEnumerable<IPage> pages)
