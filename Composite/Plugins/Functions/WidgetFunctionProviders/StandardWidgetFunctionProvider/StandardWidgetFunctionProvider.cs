@@ -107,7 +107,6 @@ namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunc
             _widgetStaticTypeFunctions.Add(new CheckBoxWidgetFuntion(_entityTokenFactory));
             _widgetStaticTypeFunctions.Add(new BoolSelectorWidgetFuntion(_entityTokenFactory));
             _widgetStaticTypeFunctions.Add(new DataTypeSelectorWidgetFunction(_entityTokenFactory));
-            _widgetStaticTypeFunctions.Add(new HomePageSelectorWidgetFunction(_entityTokenFactory));
             _widgetStaticTypeFunctions.Add(new PageReferenceSelectorWidgetFunction(_entityTokenFactory));
             _widgetStaticTypeFunctions.Add(new NullablePageReferenceSelectorWidgetFunction(_entityTokenFactory));
             _widgetStaticTypeFunctions.Add(new FontIconSelectorWidgetFuntion(_entityTokenFactory));
